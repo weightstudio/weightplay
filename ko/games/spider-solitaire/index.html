@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="ko">
 <head>
-    <title id="pageTitle">스파이더 솔리테어 | WeightPlay</title>
+    <title>스파이더 솔리테어 | WeightPlay</title>
 
     <base href="/games/spider-solitaire/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-    <link rel="canonical" href="https://weightplay.com/ko/games/spider-solitaire/" id="metaCanonical" />
+    <link rel="canonical" href="https://weightplay.com/ko/games/spider-solitaire/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/spider-solitaire/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/spider-solitaire/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/spider-solitaire/" />
@@ -26,6 +26,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#0a1f3a" />
+
   <meta name="keywords" content="Spider Solitaire,Spider,Card Game,Solitaire,1 Suit,2 Suits,4 Suits" />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
@@ -41,12 +42,12 @@
   <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4" />
-  <meta id="metaDescription" name="description" content="1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어." />
-    <meta id="ogTitle" property="og:title" content="스파이더 솔리테어 | WeightPlay" />
-    <meta id="ogDescription" property="og:description" content="1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어." />
-    <meta id="ogUrl" property="og:url" content="https://weightplay.com/ko/games/spider-solitaire/" />
-    <meta id="twitterTitle" name="twitter:title" content="스파이더 솔리테어 | WeightPlay" />
-    <meta id="twitterDescription" name="twitter:description" content="1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어." />
+  <meta name="description" content="1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어." />
+    <meta property="og:title" content="스파이더 솔리테어 | WeightPlay" />
+    <meta property="og:description" content="1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어." />
+    <meta property="og:url" content="https://weightplay.com/ko/games/spider-solitaire/" />
+    <meta name="twitter:title" content="스파이더 솔리테어 | WeightPlay" />
+    <meta name="twitter:description" content="1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어." />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -119,9 +120,9 @@
       <header class="stage-header">
         <button id="stageBackBtn" class="stage-back" type="button" data-wp-return="stage" data-sl-aria="back" aria-label="돌아가기"><span aria-hidden="true">&larr;</span></button>
         <div class="stage-title-group">
-          <small data-stage-copy="kicker">Choose a difficulty</small>
-          <h1 data-stage-copy="title">Spider Solitaire</h1>
-          <p data-stage-copy="copy">Choose the suit count before entering the table.</p>
+          <small data-stage-copy="kicker">난이도 선택</small>
+          <h1 data-stage-copy="title">스파이더 솔리테어</h1>
+          <p data-stage-copy="copy">테이블에 들어가기 전에 무늬 수를 선택하세요.</p>
         </div>
       </header>
       <div class="stage-content">
@@ -136,7 +137,7 @@
           <button id="restartBtn" class="secondary-btn" type="button" data-sl="restart">현재 게임 다시 시작</button>
           <button id="newGameBtn" class="secondary-btn" type="button" data-sl="new_game">새 게임</button>
         </div>
-        <nav class="stage-tabs" role="tablist" aria-label="Stage navigation">
+        <nav class="stage-tabs" role="tablist" aria-label="난이도 선택">
           <button type="button" role="tab" aria-selected="true" data-sl="difficulty_label">난이도</button>
         </nav>
       </div>
@@ -155,7 +156,7 @@
       </header>
       <section id="boardShell" class="board-shell">
         <section id="foundationRow" class="foundation-row" data-sl-aria="foundations" aria-label="완료 세트"></section>
-        <section class="stock-row"><button id="stockPile" class="pile stock" type="button" data-sl-aria="stock" aria-label="덱"></button><div class="stock-copy"><strong id="dealLabel" data-sl="deal">10장 배분</strong><small id="dealsLeft"></small></div><div class="control-row" role="group"><button id="undoBtn" class="mini-btn" type="button" data-sl="undo">실행 취소</button><button id="hintBtn" class="mini-btn" type="button" data-sl="hint">힌트</button><button id="copyReplayLinkBtn" class="mini-btn" type="button" data-sl="copy_replay_link">Copy replay link</button><button id="helpBtn" class="mini-btn" type="button" data-sl="help">게임 방법</button></div></section><p id="stockPressureCue" class="stock-pressure-cue" role="status" aria-live="polite" data-runtime-localize="off"></p>
+        <section class="stock-row"><button id="stockPile" class="pile stock" type="button" data-sl-aria="stock" aria-label="덱"></button><div class="stock-copy"><strong id="dealLabel" data-sl="deal">10장 배분</strong><small id="dealsLeft"></small></div><div class="control-row" role="group"><button id="undoBtn" class="mini-btn" type="button" data-sl="undo">실행 취소</button><button id="hintBtn" class="mini-btn" type="button" data-sl="hint">힌트</button><button id="copyReplayLinkBtn" class="mini-btn" type="button" data-sl="copy_replay_link">이 게임 링크 복사</button><button id="helpBtn" class="mini-btn" type="button" data-sl="help">게임 방법</button></div></section><p id="stockPressureCue" class="stock-pressure-cue" role="status" aria-live="polite" data-runtime-localize="off"></p>
         <section id="tableauRow" class="tableau-row" data-sl-aria="tableau" aria-label="테이블"></section>
         <div id="sequenceFx" class="sequence-fx" aria-hidden="true"></div>
       </section>
@@ -169,7 +170,7 @@
 
   </div>
   <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
-    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">스파이더 솔리테어</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>카드 게임</span><span>솔리테어 퍼즐</span><span>수열 전략</span></div></div>
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">스파이더 솔리테어</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>스파이더 솔리테어</span><span>카드 솔리테어</span><span>카드 순서 계획</span></div></div>
     <div class="game-info-sections">
       <section class="game-info-section"><h3 data-sl="target_label" data-i18n="target_label">목표</h3><p data-sl="hero" data-i18n="hero">10개 열에서 같은 무늬의 K부터 A까지를 만드세요. 무늬 수를 선택하고 8세트를 완성합니다.</p></section>
       <section class="game-info-section"><h3 data-sl="help" data-i18n="help">게임 방법</h3><ol>
@@ -184,14 +185,10 @@
 
 
 
-      <div class="game-info-section game-info-related-section" data-wp-spider-related="1.4.0">
-        <h3>관련 게임</h3>
-        <div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/ko/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>클론다이크 솔리테어</strong><span>1장 또는 3장 드로우를 지원하는 클래식 솔리테어. 드래그 앤 드롭, 오토 피니시, 되돌리기 기능을 제공합니다.</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/ko/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>프리셀 솔리테어</strong><span>8개 열, 4개의 프리셀, 4개의 홈셀로 즐기는 클래식 프리셀입니다. 힌트와 실행 취소, 터치 조작을 지원합니다.</span></span></a></div>
-      </div>
+      <div class="game-info-section" data-spider-growth-related="1.4.0" data-runtime-localize="off"><h3>관련 게임</h3><p>다른 솔리테어도 해보고 싶다면 클론다이크의 카드 열 정리나 프리셀의 빈칸 활용을 살펴보세요.</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/ko/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>클론다이크 솔리테어</strong><span>전체 카드 덱으로 열을 정리하며 한 장 또는 세 장 뽑기, 자동 마무리, 실행 취소를 사용할 수 있습니다.</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/ko/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>프리셀 솔리테어</strong><span>여덟 카드 열과 네 임시 칸, 네 기초 더미를 활용하며 힌트와 실행 취소도 지원합니다.</span></span></a></div></div><div class="game-info-section" data-spider-static-faq="1.4.0"><h3>자주 묻는 질문</h3><dl><dt>카드는 몇 장을 사용하나요?</dt><dd>스파이더 솔리테어는 표준 카드 두 벌, 총 104장을 사용합니다. 시작 tableau에 54장, Stock에 50장이 있습니다.</dd><dt>열은 몇 개 있나요?</dt><dd>tableau는 10열입니다. 처음 네 열에는 각각 6장, 나머지 여섯 열에는 각각 5장이 놓입니다.</dd><dt>무늬가 다른 카드도 쌓을 수 있나요?</dt><dd>무늬가 달라도 숫자를 내림차순으로 쌓을 수 있지만, 같은 무늬의 내림차순 묶음만 함께 이동하거나 회수할 수 있습니다.</dd><dt>왜 Stock에서 카드를 나눌 수 없나요?</dt><dd>클래식 스파이더에서는 새 줄을 나누기 전에 10개 열마다 카드가 한 장 이상 있어야 합니다.</dd><dt>이기려면 몇 묶음을 완성해야 하나요?</dt><dd>같은 무늬의 K부터 A까지 이어지는 완성 묶음 8개를 모두 회수해야 합니다.</dd><dt>난이도마다 무엇이 달라지나요?</dt><dd>1·2·4무늬 모드는 무늬 구성만 바꾸며, 10열 규칙은 그대로입니다.</dd><dt>같은 패를 다시 시작할 수 있나요?</dt><dd>현재 게임 다시 시작은 같은 시드를 사용합니다. 새 게임은 다른 패를 만듭니다.</dd><dt>실행 취소로 완성한 묶음도 복원되나요?</dt><dd>네. 실행 취소는 이전 tableau와 완성한 묶음 수를 복원합니다.</dd></dl></div>
 
 
-<div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>카드는 몇 장인가요?</dt><dd>표준 덱 두 개, 총 104장입니다. 처음 테이블에 54장, 덱에 50장이 있습니다.</dd></div><div><dt>열은 몇 개인가요?</dt><dd>열은 열 개이며 처음 네 열은 여섯 장, 나머지는 다섯 장으로 시작합니다.</dd></div><div><dt>다른 무늬를 쌓을 수 있나요?</dt><dd>숫자는 다른 무늬에도 내려갈 수 있지만 같은 무늬 연속 묶음만 함께 이동하거나 수거할 수 있습니다.</dd></div><div><dt>왜 덱이 막히나요?</dt><dd>클래식 스파이더는 열 개 모두에 카드가 있어야 다음 줄을 배분합니다.</dd></div><div><dt>몇 세트를 완성해야 하나요?</dt><dd>같은 무늬 K-A 여덟 세트를 수거해야 합니다.</dd></div><div><dt>난이도는 무엇이 다른가요?</dt><dd>1, 2, 4 무늬가 무늬 구성을 바꾸지만 열 개 규칙은 같습니다.</dd></div><div><dt>같은 딜을 다시 할 수 있나요?</dt><dd>재시작은 같은 딜을 사용하고 새 게임은 새로 섞습니다.</dd></div><div><dt>실행 취소로 완성 세트도 돌아오나요?</dt><dd>네, 이전 테이블과 완성 세트 수를 모두 복원합니다.</dd></div></dl></div></div>
-    </section>
+</section>
   <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>

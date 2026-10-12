@@ -53,7 +53,7 @@
       href="../../src/battle-canvas-standard.css"
       data-wp-battle-standard
     />
-    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260913-block-frame-v38" />
+    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260922-hexa-sort-v39-audio1" />
     <link rel="stylesheet" href="style.css?v=20260922-hexa-sort-v39-audio1" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4" />
     <link rel="stylesheet" href="frame-content.css?v=20261011-hexa-feedback-lane-v40-i7-r1" />
@@ -93,7 +93,7 @@
     data-wp-game-id="hexa-sort"
     data-wp-audience="general"
   >
-    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Clasificación hexagonal</strong><span>Preparing the stacks…</span><div class="loading-track"><i></i></div></div></section>
+    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Clasificación hexagonal</strong><span>Preparando las pilas…</span><div class="loading-track"><i></i></div></div></section>
     <div id="gameFrame" data-wp-frame-root>
     <div id="mainGroup" class="main-group">
       <main id="main" class="main-canvas">
@@ -102,7 +102,7 @@
             class="lobby-return"
             href="/"
             data-wp-return="main"
-            aria-label="Back to WeightPlay"
+            aria-label="Volver a WeightPlay"
             ><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a
           ><strong data-runtime-localize="off">Clasificación hexagonal</strong>
           <div class="main-controls">
@@ -115,8 +115,8 @@
             >
               🔊</button
             ><label class="locale-control"
-              ><span class="sr-only" data-i18n="language">Language</span
-              ><select id="localeSelect" aria-label="Language"></select
+              ><span class="sr-only" data-i18n="language">Idioma</span
+              ><select id="localeSelect" aria-label="Idioma"></select
             ></label>
           </div>
         </header>
@@ -142,23 +142,23 @@
               class="primary endless-action"
               type="button"
               data-runtime-localize="off"
-            >Endless · Best 0</button>
+            >Sin fin · Récord 0</button>
           </div>
         </section>
       </main>
-      <section id="guide" class="game-page-info game-page-info-static" aria-label="Hexa Sort game guide"><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Clasificación de colores</span><span>Pilas hexagonales</span><span>Planificación de cadenas</span></div>
+      <section id="guide" class="game-page-info game-page-info-static" aria-label="Guía de Hexa Sort"><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Clasificación por color</span><span>Pilas hexagonales</span><span>Planificación de cadenas</span></div>
         <h2 data-i18n="howTitle">Cómo jugar</h2>
         <div class="game-info-section">
             <ol>
               <li data-i18n="how1">Elige una de tres pilas y después un hexágono vacío.</li>
-              <li data-i18n="how2">Las capas vecinas iguales se reúnen en la pila más fuerte.</li>
+              <li data-i18n="how2">Se calcula toda la cadena vecina antes de mover una capa superior.</li>
               <li data-i18n="how3">Diez fichas iguales desaparecen y revelan la siguiente cadena.</li>
             </ol>
         </div>
         <div class="game-info-section">
             <p data-i18n="priority">Se compara la cadena completa: primero eliminar diez, luego dejar menos celdas ocupadas y por último concentrar colores iguales.</p>
         </div>
-      <div class="game-info-section" data-hexa-growth-related="1.3.0" data-runtime-localize="off"><h3>Related Games</h3><p>Keep planning color and space with these WeightPlay puzzles:</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="animal-color-springs" href="/en/games/animal-color-springs/"><img src="/assets/animal-color-springs/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Color Springs</strong><span>Sort colored runs between vessels across 30 staged puzzles with changing capacities, seals, and move goals.</span></span></a><a class="game-info-related-card" data-wp-related-id="animal-color-link" href="/en/games/animal-color-link/"><img src="/assets/animal-color-link/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Color Link Garden</strong><span>Connect matching colors without crossing and fill each garden, with Hint, Undo, and Reset across 30 puzzles.</span></span></a></div></div><div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántas fases hay?</dt><dd>La campaña incluye 30 fases diseñadas a mano y un modo infinito.</dd></div><div><dt>¿Puedo mover una pila después de colocarla?</dt><dd>No. La colocación es definitiva y las capas superiores iguales se combinan automáticamente en cadena. Planifica antes de colocar.</dd></div><div><dt>¿Qué fichas se pueden mover?</dt><dd>Solo se puede mover a una pila vecina una secuencia continua de fichas iguales en la parte superior.</dd></div><div><dt>¿Cuándo se elimina un color?</dt><dd>Tras resolver la cadena, una pila conectada se elimina al reunir diez fichas del mismo color.</dd></div><div><dt>¿El modo infinito es aleatorio?</dt><dd>Las opciones cambian, pero las reglas y cada decisión de combinación dependen del estado actual del tablero.</dd></div><div><dt>¿Se guarda el progreso?</dt><dd>Los desbloqueos de campaña, la mejor puntuación infinita y las preferencias se guardan en este navegador.</dd></div><div><dt>¿Qué controles y tamaños de pantalla son compatibles?</dt><dd>Cuando el juego los admite, el tacto, el ratón y el teclado siguen las mismas reglas. La interfaz se adapta como un único diseño lógico en los tamaños requeridos de teléfono, orientación horizontal y escritorio.</dd></div><div><dt>¿El progreso se transfiere automáticamente a otro dispositivo?</dt><dd>No. Actualmente este juego guarda el progreso solo en el almacenamiento local del navegador, por lo que otro perfil de navegador u otro dispositivo tendrá un progreso local independiente, salvo que en el futuro se añada un sistema de cuentas.</dd></div></dl></div></section>
+      <div class="game-info-section" data-hexa-growth-related="1.3.0" data-runtime-localize="off"><h3>Juegos relacionados</h3><p>Sigue practicando color y espacio con estos puzles de WeightPlay:</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="animal-color-springs" href="/es/games/animal-color-springs/"><img src="/assets/animal-color-springs/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Resortes de Colores</strong><span>Ordena grupos de colores entre recipientes en 30 puzles con capacidades, sellos y objetivos de movimientos cambiantes.</span></span></a><a class="game-info-related-card" data-wp-related-id="animal-color-link" href="/es/games/animal-color-link/"><img src="/assets/animal-color-link/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Jardín de Conexiones de Color</strong><span>Conecta colores iguales sin cruzar caminos y llena 30 jardines con Pista, Deshacer y Reiniciar.</span></span></a></div></div><div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><dt>¿Cuántas fases hay?</dt><dd>Hay 30 fases de campaña diseñadas a mano y un modo sin fin.</dd><dt>¿Puedo mover una pila después de colocarla?</dt><dd>No. La colocación es definitiva; las secuencias superiores del mismo color se resuelven automáticamente.</dd><dt>¿Qué fichas se pueden mover?</dt><dd>Solo se puede mover a una pila adyacente una secuencia continua del mismo color situada en la parte superior.</dd><dt>¿Cuándo se elimina un color?</dt><dd>Una pila conectada ya resuelta se elimina al alcanzar diez fichas del mismo color.</dd><dt>¿El modo sin fin es aleatorio?</dt><dd>Las opciones cambian, pero las reglas y cada decisión de combinación son deterministas según el estado actual.</dd><dt>¿Se guarda el progreso?</dt><dd>Los desbloqueos de campaña, la mejor puntuación del modo sin fin y las preferencias se guardan localmente en este navegador.</dd><dt>¿Qué controles y tamaños de pantalla son compatibles?</dt><dd>Cuando el juego los admite, se puede usar la pantalla táctil, el ratón y el teclado. La interfaz se adapta con el mismo diseño lógico a móviles, orientación horizontal y escritorio.</dd><dt>¿El progreso se transfiere automáticamente a otro dispositivo?</dt><dd>No. Actualmente solo se guarda en el almacenamiento local del navegador, así que otro perfil o dispositivo tendrá un progreso independiente, salvo que se añada un sistema de cuentas.</dd></dl></div></section>
     </div>
     <section id="stageScreen" class="active-screen" hidden data-runtime-localize="off">
       <div class="stage-shell">
@@ -174,12 +174,12 @@
               class="return-button"
               type="button"
               data-wp-return="stage"
-              aria-label="Stage navigation"
+              aria-label="Navegación de niveles"
             >
               ←
             </button>
             <div>
-              <strong data-i18n="chooseStage">Choose a Stage</strong
+              <strong data-i18n="chooseStage">Elegir nivel</strong
               ><span id="stageSummary">1 / 30</span>
             </div>
             <button id="stageSound" class="icon-control" type="button" hidden>
@@ -195,7 +195,7 @@
             data-wp-enter-battle
             data-i18n="enter"
           >Entrar</button>
-          <nav class="stage-tabs" aria-label="Stage navigation">
+          <nav class="stage-tabs" aria-label="Navegación de niveles">
             <button
               type="button"
               role="tab"
@@ -225,7 +225,7 @@
                 class="return-button"
                 type="button"
                 data-wp-return="battle"
-                aria-label="Stage navigation"
+                aria-label="Navegación de niveles"
               >
                 ←
               </button>
@@ -235,10 +235,10 @@
               </div>
               <div class="battle-stats">
                 <span
-                  ><b data-i18n="moves">Moves</b
+                  ><b data-i18n="moves">Movimientos</b
                   ><strong id="movesValue">0</strong></span
                 ><span
-                  ><b data-i18n="cleared">Cleared</b
+                  ><b data-i18n="cleared">Eliminadas</b
                   ><strong id="clearedValue">0</strong></span
                 >
               </div>
@@ -247,7 +247,7 @@
                 class="icon-control"
                 type="button"
                 data-wp-battle-utility
-                aria-label="How to play"
+                aria-label="Cómo jugar"
               >
                 ?
               </button>
@@ -263,7 +263,7 @@
                   id="hexBoard"
                   class="hex-board"
                   role="grid"
-                  aria-label="Hex stack board"
+                  aria-label="Tablero de pilas hexagonales"
                   aria-describedby="hexaCoach"
                 ></div>
               </div>
@@ -273,7 +273,7 @@
               <div
                 id="stackTray"
                 class="stack-tray"
-                aria-label="Stack tray"
+                aria-label="Bandeja de pilas"
                 aria-describedby="hexaCoach"
               ></div>
             </div>
@@ -286,7 +286,7 @@
               <p id="helpObjectiveRule" class="help-objective-rule"></p>
               <ol class="battle-help-steps">
                 <li data-i18n="how1">Elige una de tres pilas y después un hexágono vacío.</li>
-                <li data-i18n="how2">Las capas vecinas iguales se reúnen en la pila más fuerte.</li>
+                <li data-i18n="how2">Se calcula toda la cadena vecina antes de mover una capa superior.</li>
                 <li data-i18n="how3">Diez fichas iguales desaparecen y revelan la siguiente cadena.</li>
               </ol>
               <button
@@ -307,8 +307,7 @@
                   class="primary"
                   type="button"
                   data-i18n="continue"
-                >
-                  Continue</button
+                >Continuar</button
                 ><button id="leaveStage" type="button" data-i18n="stageMap">Mapa</button>
               </div>
             </div>
@@ -322,15 +321,13 @@
                 <p id="resultText"></p>
               </div>
               <div class="modal-actions result-actions">
-                <button id="resultStageBtn" type="button" data-i18n="stageMap">
-                  Stage Map</button
+                <button id="resultStageBtn" type="button" data-i18n="stageMap">Mapa</button
                 ><button
                   id="nextBtn"
                   class="primary"
                   type="button"
                   data-i18n="next"
-                >
-                  Next Stage</button
+                >Siguiente</button
                 ><button id="retryBtn" type="button" data-i18n="retry">Jugar de nuevo</button>
               </div>
             </div>

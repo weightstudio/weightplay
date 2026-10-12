@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="zh-Hans">
 <head>
-    <title id="pageTitle">蜘蛛接龙 | WeightPlay</title>
+    <title>蜘蛛接龙 | WeightPlay</title>
 
     <base href="/games/spider-solitaire/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-    <link rel="canonical" href="https://weightplay.com/zh-cn/games/spider-solitaire/" id="metaCanonical" />
+    <link rel="canonical" href="https://weightplay.com/zh-cn/games/spider-solitaire/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/spider-solitaire/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/spider-solitaire/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/spider-solitaire/" />
@@ -26,6 +26,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#0a1f3a" />
+
   <meta name="keywords" content="Spider Solitaire,Spider,Card Game,Solitaire,1 Suit,2 Suits,4 Suits" />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
@@ -41,12 +42,12 @@
   <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4" />
-  <meta id="metaDescription" name="description" content="经典蜘蛛接龙，提供 1、2、4 花色，流畅拖拽、提示与不限次数撤销。" />
-    <meta id="ogTitle" property="og:title" content="蜘蛛接龙 | WeightPlay" />
-    <meta id="ogDescription" property="og:description" content="经典蜘蛛接龙，提供 1、2、4 花色，流畅拖拽、提示与不限次数撤销。" />
-    <meta id="ogUrl" property="og:url" content="https://weightplay.com/zh-cn/games/spider-solitaire/" />
-    <meta id="twitterTitle" name="twitter:title" content="蜘蛛接龙 | WeightPlay" />
-    <meta id="twitterDescription" name="twitter:description" content="经典蜘蛛接龙，提供 1、2、4 花色，流畅拖拽、提示与不限次数撤销。" />
+  <meta name="description" content="经典蜘蛛接龙，提供 1、2、4 花色，流畅拖拽、提示与不限次数撤销。" />
+    <meta property="og:title" content="蜘蛛接龙 | WeightPlay" />
+    <meta property="og:description" content="经典蜘蛛接龙，提供 1、2、4 花色，流畅拖拽、提示与不限次数撤销。" />
+    <meta property="og:url" content="https://weightplay.com/zh-cn/games/spider-solitaire/" />
+    <meta name="twitter:title" content="蜘蛛接龙 | WeightPlay" />
+    <meta name="twitter:description" content="经典蜘蛛接龙，提供 1、2、4 花色，流畅拖拽、提示与不限次数撤销。" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -119,9 +120,9 @@
       <header class="stage-header">
         <button id="stageBackBtn" class="stage-back" type="button" data-wp-return="stage" data-sl-aria="back" aria-label="返回"><span aria-hidden="true">&larr;</span></button>
         <div class="stage-title-group">
-          <small data-stage-copy="kicker">Choose a difficulty</small>
-          <h1 data-stage-copy="title">Spider Solitaire</h1>
-          <p data-stage-copy="copy">Choose the suit count before entering the table.</p>
+          <small data-stage-copy="kicker">选择难度</small>
+          <h1 data-stage-copy="title">蜘蛛接龙</h1>
+          <p data-stage-copy="copy">进入牌桌前，先选择花色数量。</p>
         </div>
       </header>
       <div class="stage-content">
@@ -136,7 +137,7 @@
           <button id="restartBtn" class="secondary-btn" type="button" data-sl="restart">重新开始本局</button>
           <button id="newGameBtn" class="secondary-btn" type="button" data-sl="new_game">新游戏</button>
         </div>
-        <nav class="stage-tabs" role="tablist" aria-label="Stage navigation">
+        <nav class="stage-tabs" role="tablist" aria-label="难度选择">
           <button type="button" role="tab" aria-selected="true" data-sl="difficulty_label">难度</button>
         </nav>
       </div>
@@ -155,7 +156,7 @@
       </header>
       <section id="boardShell" class="board-shell">
         <section id="foundationRow" class="foundation-row" data-sl-aria="foundations" aria-label="已完成牌组"></section>
-        <section class="stock-row"><button id="stockPile" class="pile stock" type="button" data-sl-aria="stock" aria-label="牌库"></button><div class="stock-copy"><strong id="dealLabel" data-sl="deal">发 10 张</strong><small id="dealsLeft"></small></div><div class="control-row" role="group"><button id="undoBtn" class="mini-btn" type="button" data-sl="undo">撤销</button><button id="hintBtn" class="mini-btn" type="button" data-sl="hint">提示</button><button id="copyReplayLinkBtn" class="mini-btn" type="button" data-sl="copy_replay_link">Copy replay link</button><button id="helpBtn" class="mini-btn" type="button" data-sl="help">玩法说明</button></div></section><p id="stockPressureCue" class="stock-pressure-cue" role="status" aria-live="polite" data-runtime-localize="off"></p>
+        <section class="stock-row"><button id="stockPile" class="pile stock" type="button" data-sl-aria="stock" aria-label="牌库"></button><div class="stock-copy"><strong id="dealLabel" data-sl="deal">发 10 张</strong><small id="dealsLeft"></small></div><div class="control-row" role="group"><button id="undoBtn" class="mini-btn" type="button" data-sl="undo">撤销</button><button id="hintBtn" class="mini-btn" type="button" data-sl="hint">提示</button><button id="copyReplayLinkBtn" class="mini-btn" type="button" data-sl="copy_replay_link">复制本局链接</button><button id="helpBtn" class="mini-btn" type="button" data-sl="help">玩法说明</button></div></section><p id="stockPressureCue" class="stock-pressure-cue" role="status" aria-live="polite" data-runtime-localize="off"></p>
         <section id="tableauRow" class="tableau-row" data-sl-aria="tableau" aria-label="牌桌"></section>
         <div id="sequenceFx" class="sequence-fx" aria-hidden="true"></div>
       </section>
@@ -169,7 +170,7 @@
 
   </div>
   <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
-    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">蜘蛛接龙</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>纸牌游戏</span><span>接龙益智</span><span>同花顺序策略</span></div></div>
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">蜘蛛接龙</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>蜘蛛纸牌</span><span>纸牌接龙</span><span>牌序规划</span></div></div>
     <div class="game-info-sections">
       <section class="game-info-section"><h3 data-sl="target_label" data-i18n="target_label">目标</h3><p data-sl="hero" data-i18n="hero">在十列中建立同花色 K 到 A 的牌组。选择花色难度，收走全部八组。</p></section>
       <section class="game-info-section"><h3 data-sl="help" data-i18n="help">玩法说明</h3><ol>
@@ -184,14 +185,10 @@
 
 
 
-      <div class="game-info-section game-info-related-section" data-wp-spider-related="1.4.0">
-        <h3>相关游戏</h3>
-        <div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/zh-cn/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>克朗代克接龙</strong><span>经典单人纸牌接龙，提供 1 或 3 张抽牌、拖拉放置、底部自动收尾与撤销支持。</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/zh-cn/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>FreeCell 接龙</strong><span>经典 FreeCell 接龙：八个公开牌列、四个暂存格、四个牌基，支持提示、撤销与触控操作。</span></span></a></div>
-      </div>
+      <div class="game-info-section" data-spider-growth-related="1.4.0" data-runtime-localize="off"><h3>相关游戏</h3><p>想换种接龙牌阵，可以试试克朗代克的逐列整理，或空当接龙的空格规划。</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/zh-cn/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>克朗代克接龙</strong><span>用完整牌堆整理牌列，可选抽一张或三张，并使用自动收牌与撤销。</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/zh-cn/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>FreeCell 接龙</strong><span>整理八个牌列、四个暂存空格与四个收牌区，也可使用提示与撤销。</span></span></a></div></div><div class="game-info-section" data-spider-static-faq="1.4.0"><h3>常见问题</h3><dl><dt>游戏使用多少张牌？</dt><dd>蜘蛛纸牌使用两副标准扑克牌，共 104 张；起始牌面有 54 张，牌库有 50 张。</dd><dt>牌面有多少列？</dt><dd>牌面共有 10 列。前四列起始各有 6 张，其余六列各有 5 张。</dd><dt>可以叠放不同花色的牌吗？</dt><dd>可以跨花色按点数递减叠牌，但只有同花色的递减牌序能一起移动或收回。</dd><dt>为什么不能从牌库发牌？</dt><dd>经典蜘蛛纸牌要求 10 列都至少有一张牌，才能再发下一行。</dd><dt>获胜需要收回几组牌序？</dt><dd>必须收回八组完整的同花色牌序，每组从 K 依次排到 A。</dd><dt>不同难度有什么变化？</dt><dd>单花色、双花色和四花色模式会改变花色组合；十列规则保持不变。</dd><dt>可以重新开始同一副牌吗？</dt><dd>选择“重新开始当前游戏”会沿用同一个种子；“新游戏”会生成另一副牌。</dd><dt>撤销会还原已收回的完整牌序吗？</dt><dd>会。撤销可以还原前一个牌面，以及已收回的完整牌序数量。</dd></dl></div>
 
 
-<div class="game-info-section"><h3>常见问题</h3><dl><div><dt>使用多少张牌？</dt><dd>使用两副标准牌，共 104 张；初始牌桌有 54 张，牌库有 50 张。</dd></div><div><dt>有多少列？</dt><dd>共有十列；前四列从六张开始，其余六列从五张开始。</dd></div><div><dt>不同花色可以叠放吗？</dt><dd>可以按点数跨花色向下叠放，但只有同花色连续牌组能整组移动或收走。</dd></div><div><dt>为什么牌库不能发牌？</dt><dd>经典蜘蛛接龙要求十列都有牌后，才能发出下一列。</dd></div><div><dt>完成几组才能获胜？</dt><dd>必须收走八组同花色 K 到 A。</dd></div><div><dt>难度有什么区别？</dt><dd>1、2、4 花色改变花色组成，但保留相同的十列规则。</dd></div><div><dt>可以重新玩同一副牌吗？</dt><dd>可以，重新开始会使用同一副牌；新游戏会重新洗牌。</dd></div><div><dt>撤销会还原完成牌组吗？</dt><dd>会，撤销会完整还原上一个牌桌与完成牌组数。</dd></div></dl></div></div>
-    </section>
+</section>
   <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/zh-cn.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>

@@ -53,7 +53,7 @@
       href="../../src/battle-canvas-standard.css"
       data-wp-battle-standard
     />
-    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260913-block-frame-v38" />
+    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260922-hexa-sort-v39-audio1" />
     <link rel="stylesheet" href="style.css?v=20260922-hexa-sort-v39-audio1" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4" />
     <link rel="stylesheet" href="frame-content.css?v=20261011-hexa-feedback-lane-v40-i7-r1" />
@@ -93,7 +93,7 @@
     data-wp-game-id="hexa-sort"
     data-wp-audience="general"
   >
-    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Сортировка гексов</strong><span>Preparing the stacks…</span><div class="loading-track"><i></i></div></div></section>
+    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Сортировка гексов</strong><span>Подготовка стопок…</span><div class="loading-track"><i></i></div></div></section>
     <div id="gameFrame" data-wp-frame-root>
     <div id="mainGroup" class="main-group">
       <main id="main" class="main-canvas">
@@ -102,7 +102,7 @@
             class="lobby-return"
             href="/"
             data-wp-return="main"
-            aria-label="Back to WeightPlay"
+            aria-label="Вернуться в WeightPlay"
             ><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a
           ><strong data-runtime-localize="off">Сортировка гексов</strong>
           <div class="main-controls">
@@ -115,8 +115,8 @@
             >
               🔊</button
             ><label class="locale-control"
-              ><span class="sr-only" data-i18n="language">Language</span
-              ><select id="localeSelect" aria-label="Language"></select
+              ><span class="sr-only" data-i18n="language">Язык</span
+              ><select id="localeSelect" aria-label="Язык"></select
             ></label>
           </div>
         </header>
@@ -142,23 +142,23 @@
               class="primary endless-action"
               type="button"
               data-runtime-localize="off"
-            >Endless · Best 0</button>
+            >Бесконечно · Рекорд 0</button>
           </div>
         </section>
       </main>
-      <section id="guide" class="game-page-info game-page-info-static" aria-label="Hexa Sort game guide"><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Сортировка цветов</span><span>Шестиугольные стопки</span><span>Планирование цепочек</span></div>
+      <section id="guide" class="game-page-info game-page-info-static" aria-label="Руководство по Hexa Sort"><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Сортировка цветов</span><span>Шестиугольные стопки</span><span>Планирование цепочек</span></div>
         <h2 data-i18n="howTitle">Как играть</h2>
         <div class="game-info-section">
             <ol>
               <li data-i18n="how1">Выберите одну из трёх стопок, затем пустой шестиугольник.</li>
-              <li data-i18n="how2">Соседние одинаковые верхние слои собираются в самой сильной стопке.</li>
+              <li data-i18n="how2">Вся соседняя цепочка рассчитывается до движения верхнего слоя.</li>
               <li data-i18n="how3">Десять одинаковых фишек исчезают и открывают следующую цепочку.</li>
             </ol>
         </div>
         <div class="game-info-section">
             <p data-i18n="priority">Сравнивается вся цепочка: сначала удаление десяти, затем меньше занятых клеток, потом концентрация одинаковых цветов.</p>
         </div>
-      <div class="game-info-section" data-hexa-growth-related="1.3.0" data-runtime-localize="off"><h3>Related Games</h3><p>Keep planning color and space with these WeightPlay puzzles:</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="animal-color-springs" href="/en/games/animal-color-springs/"><img src="/assets/animal-color-springs/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Color Springs</strong><span>Sort colored runs between vessels across 30 staged puzzles with changing capacities, seals, and move goals.</span></span></a><a class="game-info-related-card" data-wp-related-id="animal-color-link" href="/en/games/animal-color-link/"><img src="/assets/animal-color-link/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Color Link Garden</strong><span>Connect matching colors without crossing and fill each garden, with Hint, Undo, and Reset across 30 puzzles.</span></span></a></div></div><div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Сколько этапов включено?</dt><dd>В кампании 30 вручную созданных этапов и бесконечный режим.</dd></div><div><dt>Можно ли переместить стопку после размещения?</dt><dd>Нет. Размещение окончательное, а одинаковые верхние слои автоматически сливаются цепочкой. Планируйте ход заранее.</dd></div><div><dt>Какие фишки можно перемещать?</dt><dd>На соседнюю стопку можно перенести только непрерывный ряд одинаковых фишек сверху.</dd></div><div><dt>Когда удаляется цвет?</dt><dd>После обработки цепочки соединённая стопка удаляется, когда в ней набирается десять фишек одного цвета.</dd></div><div><dt>Бесконечный режим случаен?</dt><dd>Предложения меняются, но правила и каждое слияние определяются текущим состоянием поля.</dd></div><div><dt>Сохраняется ли прогресс?</dt><dd>Открытые этапы кампании, лучший счёт в бесконечном режиме и настройки сохраняются в этом браузере.</dd></div><div><dt>Какие способы управления и размеры экрана поддерживаются?</dt><dd>Если игра их поддерживает, сенсорное управление, мышь и клавиатура работают по одним правилам. Интерфейс масштабируется как единая логическая компоновка на нужных размерах телефона, альбомной ориентации и компьютера.</dd></div><div><dt>Прогресс автоматически переносится на другое устройство?</dt><dd>Нет. Сейчас игра сохраняет прогресс только в локальном хранилище браузера, поэтому другой профиль браузера или устройство будет иметь отдельный локальный прогресс, если в будущем не появится система аккаунтов.</dd></div></dl></div></section>
+      <div class="game-info-section" data-hexa-growth-related="1.3.0" data-runtime-localize="off"><h3>Похожие игры</h3><p>Продолжайте планировать цвет и пространство в этих головоломках WeightPlay:</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="animal-color-springs" href="/ru/games/animal-color-springs/"><img src="/assets/animal-color-springs/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Цветные источники животных</strong><span>Сортируйте цветные группы между сосудами в 30 задачах с меняющейся вместимостью, печатями и лимитами ходов.</span></span></a><a class="game-info-related-card" data-wp-related-id="animal-color-link" href="/ru/games/animal-color-link/"><img src="/assets/animal-color-link/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Color Link Garden</strong><span>Соединяйте одинаковые цвета без пересечений и заполняйте 30 садов, используя подсказку, отмену и сброс.</span></span></a></div></div><div class="game-info-section"><h3>Частые вопросы</h3><dl><dt>Сколько этапов включено?</dt><dd>В кампании есть 30 тщательно созданных этапов и бесконечный режим.</dd><dt>Можно ли переместить стопку после размещения?</dt><dd>Нет. Размещение окончательное; верхние последовательности одного цвета обрабатываются автоматически.</dd><dt>Какие фишки можно перемещать?</dt><dd>На соседнюю стопку можно перенести только одну непрерывную последовательность одного цвета с её вершины.</dd><dt>Когда цвет удаляется?</dt><dd>Соединённая обработанная стопка удаляется, когда в ней оказывается десять фишек одного цвета.</dd><dt>Бесконечный режим случаен?</dt><dd>Предложения меняются, но правила и каждое объединение однозначно зависят от текущего состояния.</dd><dt>Сохраняется ли прогресс?</dt><dd>Открытые этапы кампании, лучший результат бесконечного режима и настройки сохраняются локально в этом браузере.</dd><dt>Какие способы управления и размеры экрана поддерживаются?</dt><dd>Если игра их поддерживает, можно использовать сенсорный экран, мышь и клавиатуру. Интерфейс адаптируется с единой логической компоновкой для телефона, альбомного режима и компьютера.</dd><dt>Прогресс автоматически переносится на другое устройство?</dt><dd>Нет. Сейчас он сохраняется только в локальном хранилище браузера, поэтому у другого профиля или устройства будет отдельный прогресс, пока не появится система аккаунтов.</dd></dl></div></section>
     </div>
     <section id="stageScreen" class="active-screen" hidden data-runtime-localize="off">
       <div class="stage-shell">
@@ -174,12 +174,12 @@
               class="return-button"
               type="button"
               data-wp-return="stage"
-              aria-label="Stage navigation"
+              aria-label="Навигация по этапам"
             >
               ←
             </button>
             <div>
-              <strong data-i18n="chooseStage">Choose a Stage</strong
+              <strong data-i18n="chooseStage">Выбор этапа</strong
               ><span id="stageSummary">1 / 30</span>
             </div>
             <button id="stageSound" class="icon-control" type="button" hidden>
@@ -195,7 +195,7 @@
             data-wp-enter-battle
             data-i18n="enter"
           >Войти</button>
-          <nav class="stage-tabs" aria-label="Stage navigation">
+          <nav class="stage-tabs" aria-label="Навигация по этапам">
             <button
               type="button"
               role="tab"
@@ -225,7 +225,7 @@
                 class="return-button"
                 type="button"
                 data-wp-return="battle"
-                aria-label="Stage navigation"
+                aria-label="Навигация по этапам"
               >
                 ←
               </button>
@@ -235,10 +235,10 @@
               </div>
               <div class="battle-stats">
                 <span
-                  ><b data-i18n="moves">Moves</b
+                  ><b data-i18n="moves">Ходы</b
                   ><strong id="movesValue">0</strong></span
                 ><span
-                  ><b data-i18n="cleared">Cleared</b
+                  ><b data-i18n="cleared">Убрано</b
                   ><strong id="clearedValue">0</strong></span
                 >
               </div>
@@ -247,7 +247,7 @@
                 class="icon-control"
                 type="button"
                 data-wp-battle-utility
-                aria-label="How to play"
+                aria-label="Как играть"
               >
                 ?
               </button>
@@ -263,7 +263,7 @@
                   id="hexBoard"
                   class="hex-board"
                   role="grid"
-                  aria-label="Hex stack board"
+                  aria-label="Поле шестиугольных стопок"
                   aria-describedby="hexaCoach"
                 ></div>
               </div>
@@ -273,7 +273,7 @@
               <div
                 id="stackTray"
                 class="stack-tray"
-                aria-label="Stack tray"
+                aria-label="Лоток стопок"
                 aria-describedby="hexaCoach"
               ></div>
             </div>
@@ -286,7 +286,7 @@
               <p id="helpObjectiveRule" class="help-objective-rule"></p>
               <ol class="battle-help-steps">
                 <li data-i18n="how1">Выберите одну из трёх стопок, затем пустой шестиугольник.</li>
-                <li data-i18n="how2">Соседние одинаковые верхние слои собираются в самой сильной стопке.</li>
+                <li data-i18n="how2">Вся соседняя цепочка рассчитывается до движения верхнего слоя.</li>
                 <li data-i18n="how3">Десять одинаковых фишек исчезают и открывают следующую цепочку.</li>
               </ol>
               <button
@@ -307,8 +307,7 @@
                   class="primary"
                   type="button"
                   data-i18n="continue"
-                >
-                  Continue</button
+                >Продолжить</button
                 ><button id="leaveStage" type="button" data-i18n="stageMap">Карта</button>
               </div>
             </div>
@@ -322,15 +321,13 @@
                 <p id="resultText"></p>
               </div>
               <div class="modal-actions result-actions">
-                <button id="resultStageBtn" type="button" data-i18n="stageMap">
-                  Stage Map</button
+                <button id="resultStageBtn" type="button" data-i18n="stageMap">Карта</button
                 ><button
                   id="nextBtn"
                   class="primary"
                   type="button"
                   data-i18n="next"
-                >
-                  Next Stage</button
+                >Следующий этап</button
                 ><button id="retryBtn" type="button" data-i18n="retry">Ещё раз</button>
               </div>
             </div>
@@ -343,7 +340,7 @@
     <script src="../../src/site-config.js"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"hexa-sort"});</script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script>
-    <script src="/src/runtime-locales/ru.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/runtime-locales/ru.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/edge-guard.js"></script>
     <script src="game.js?v=20260922-hexa-sort-v39-audio1"></script>

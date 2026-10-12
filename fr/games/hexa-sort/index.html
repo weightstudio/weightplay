@@ -53,7 +53,7 @@
       href="../../src/battle-canvas-standard.css"
       data-wp-battle-standard
     />
-    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260913-block-frame-v38" />
+    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260922-hexa-sort-v39-audio1" />
     <link rel="stylesheet" href="style.css?v=20260922-hexa-sort-v39-audio1" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4" />
     <link rel="stylesheet" href="frame-content.css?v=20261011-hexa-feedback-lane-v40-i7-r1" />
@@ -93,7 +93,7 @@
     data-wp-game-id="hexa-sort"
     data-wp-audience="general"
   >
-    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Tri hexagonal</strong><span>Preparing the stacks…</span><div class="loading-track"><i></i></div></div></section>
+    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Tri hexagonal</strong><span>Préparation des piles…</span><div class="loading-track"><i></i></div></div></section>
     <div id="gameFrame" data-wp-frame-root>
     <div id="mainGroup" class="main-group">
       <main id="main" class="main-canvas">
@@ -102,7 +102,7 @@
             class="lobby-return"
             href="/"
             data-wp-return="main"
-            aria-label="Back to WeightPlay"
+            aria-label="Retour à WeightPlay"
             ><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a
           ><strong data-runtime-localize="off">Tri hexagonal</strong>
           <div class="main-controls">
@@ -115,8 +115,8 @@
             >
               🔊</button
             ><label class="locale-control"
-              ><span class="sr-only" data-i18n="language">Language</span
-              ><select id="localeSelect" aria-label="Language"></select
+              ><span class="sr-only" data-i18n="language">Langue</span
+              ><select id="localeSelect" aria-label="Langue"></select
             ></label>
           </div>
         </header>
@@ -142,23 +142,23 @@
               class="primary endless-action"
               type="button"
               data-runtime-localize="off"
-            >Endless · Best 0</button>
+            >Sans fin · Meilleur 0</button>
           </div>
         </section>
       </main>
-      <section id="guide" class="game-page-info game-page-info-static" aria-label="Hexa Sort game guide"><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Tri de couleurs</span><span>Piles hexagonales</span><span>Planification de chaînes</span></div>
+      <section id="guide" class="game-page-info game-page-info-static" aria-label="Guide de jeu Hexa Sort"><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Tri par couleur</span><span>Piles hexagonales</span><span>Planification de chaînes</span></div>
         <h2 data-i18n="howTitle">Comment jouer</h2>
         <div class="game-info-section">
             <ol>
               <li data-i18n="how1">Choisissez une des trois piles puis un hexagone vide.</li>
-              <li data-i18n="how2">Les couches voisines identiques vont vers la pile la plus forte.</li>
+              <li data-i18n="how2">Toute la chaîne voisine est calculée avant de déplacer le sommet.</li>
               <li data-i18n="how3">Dix jetons identiques disparaissent et révèlent la chaîne suivante.</li>
             </ol>
         </div>
         <div class="game-info-section">
             <p data-i18n="priority">La chaîne complète est comparée : effacer dix jetons, puis libérer des cases, puis concentrer les couleurs identiques.</p>
         </div>
-      <div class="game-info-section" data-hexa-growth-related="1.3.0" data-runtime-localize="off"><h3>Related Games</h3><p>Keep planning color and space with these WeightPlay puzzles:</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="animal-color-springs" href="/en/games/animal-color-springs/"><img src="/assets/animal-color-springs/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Color Springs</strong><span>Sort colored runs between vessels across 30 staged puzzles with changing capacities, seals, and move goals.</span></span></a><a class="game-info-related-card" data-wp-related-id="animal-color-link" href="/en/games/animal-color-link/"><img src="/assets/animal-color-link/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Color Link Garden</strong><span>Connect matching colors without crossing and fill each garden, with Hint, Undo, and Reset across 30 puzzles.</span></span></a></div></div><div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Combien de niveaux sont inclus ?</dt><dd>La campagne comprend 30 niveaux conçus à la main, plus un mode infini.</dd></div><div><dt>Peut-on déplacer une pile après l’avoir posée ?</dt><dd>Non. Le placement est définitif et les sommets identiques fusionnent automatiquement en chaîne. Planifiez avant de poser.</dd></div><div><dt>Quels jetons peut-on déplacer ?</dt><dd>Seule une suite continue de jetons identiques au sommet d’une pile peut être déplacée vers une pile voisine.</dd></div><div><dt>Quand une couleur est-elle effacée ?</dt><dd>Après résolution de la chaîne, une pile reliée s’efface lorsqu’elle atteint dix jetons de la même couleur.</dd></div><div><dt>Le mode infini est-il aléatoire ?</dt><dd>Les propositions varient, mais les règles et chaque fusion sont déterminées par l’état actuel du plateau.</dd></div><div><dt>La progression est-elle sauvegardée ?</dt><dd>Les niveaux débloqués, le meilleur score du mode infini et les préférences sont enregistrés dans ce navigateur.</dd></div><div><dt>Quels contrôles et quelles tailles d’écran sont pris en charge ?</dt><dd>Lorsque le jeu les prend en charge, le tactile, la souris et le clavier suivent les mêmes règles. L’interface s’adapte comme une seule mise en page logique sur les tailles requises pour mobile, paysage et ordinateur.</dd></div><div><dt>Le progrès est-il transféré automatiquement vers un autre appareil ?</dt><dd>Non. Pour le moment, ce jeu enregistre la progression uniquement dans le stockage local du navigateur ; un autre profil de navigateur ou un autre appareil aura donc une progression locale distincte, sauf si un système de comptes est ajouté plus tard.</dd></div></dl></div></section>
+      <div class="game-info-section" data-hexa-growth-related="1.3.0" data-runtime-localize="off"><h3>Jeux associés</h3><p>Continuez à planifier couleurs et espace avec ces puzzles WeightPlay :</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="animal-color-springs" href="/fr/games/animal-color-springs/"><img src="/assets/animal-color-springs/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Sources de couleurs</strong><span>Triez des groupes colorés entre des récipients dans 30 puzzles aux capacités, sceaux et objectifs de coups variables.</span></span></a><a class="game-info-related-card" data-wp-related-id="animal-color-link" href="/fr/games/animal-color-link/"><img src="/assets/animal-color-link/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Color Link Garden</strong><span>Reliez les couleurs identiques sans croiser les chemins et remplissez 30 jardins avec Indice, Annuler et Réinitialiser.</span></span></a></div></div><div class="game-info-section"><h3>Questions fréquentes</h3><dl><dt>Combien de niveaux sont inclus ?</dt><dd>La campagne comprend 30 niveaux conçus à la main, auxquels s’ajoute le mode infini.</dd><dt>Puis-je déplacer une pile après l’avoir posée ?</dt><dd>Non. Le placement est définitif ; les suites de même couleur au sommet sont résolues automatiquement.</dd><dt>Quelles pièces peut-on déplacer ?</dt><dd>Seule une suite continue de même couleur au sommet d’une pile peut être déplacée vers une pile voisine.</dd><dt>Quand une couleur disparaît-elle ?</dt><dd>Une pile connectée et résolue disparaît lorsqu’elle atteint dix pièces de même couleur.</dd><dt>Le mode infini est-il aléatoire ?</dt><dd>Les propositions varient, mais les règles et chaque fusion dépendent de façon déterministe de l’état actuel.</dd><dt>La progression est-elle sauvegardée ?</dt><dd>Les déblocages de campagne, le meilleur score du mode infini et les préférences sont enregistrés localement dans ce navigateur.</dd><dt>Quels contrôles et quelles tailles d’écran sont pris en charge ?</dt><dd>Lorsque le jeu les prend en charge, l’écran tactile, la souris et le clavier fonctionnent. L’interface s’adapte avec la même mise en page logique au mobile, au paysage et à l’ordinateur.</dd><dt>La progression est-elle transférée automatiquement sur un autre appareil ?</dt><dd>Non. Elle est actuellement enregistrée uniquement dans le stockage local du navigateur ; un autre profil ou appareil aura donc une progression distincte, sauf ajout ultérieur d’un système de comptes.</dd></dl></div></section>
     </div>
     <section id="stageScreen" class="active-screen" hidden data-runtime-localize="off">
       <div class="stage-shell">
@@ -174,12 +174,12 @@
               class="return-button"
               type="button"
               data-wp-return="stage"
-              aria-label="Stage navigation"
+              aria-label="Navigation des niveaux"
             >
               ←
             </button>
             <div>
-              <strong data-i18n="chooseStage">Choose a Stage</strong
+              <strong data-i18n="chooseStage">Choisir un niveau</strong
               ><span id="stageSummary">1 / 30</span>
             </div>
             <button id="stageSound" class="icon-control" type="button" hidden>
@@ -195,7 +195,7 @@
             data-wp-enter-battle
             data-i18n="enter"
           >Entrer</button>
-          <nav class="stage-tabs" aria-label="Stage navigation">
+          <nav class="stage-tabs" aria-label="Navigation des niveaux">
             <button
               type="button"
               role="tab"
@@ -225,7 +225,7 @@
                 class="return-button"
                 type="button"
                 data-wp-return="battle"
-                aria-label="Stage navigation"
+                aria-label="Navigation des niveaux"
               >
                 ←
               </button>
@@ -235,10 +235,10 @@
               </div>
               <div class="battle-stats">
                 <span
-                  ><b data-i18n="moves">Moves</b
+                  ><b data-i18n="moves">Coups</b
                   ><strong id="movesValue">0</strong></span
                 ><span
-                  ><b data-i18n="cleared">Cleared</b
+                  ><b data-i18n="cleared">Effacés</b
                   ><strong id="clearedValue">0</strong></span
                 >
               </div>
@@ -247,7 +247,7 @@
                 class="icon-control"
                 type="button"
                 data-wp-battle-utility
-                aria-label="How to play"
+                aria-label="Comment jouer"
               >
                 ?
               </button>
@@ -263,7 +263,7 @@
                   id="hexBoard"
                   class="hex-board"
                   role="grid"
-                  aria-label="Hex stack board"
+                  aria-label="Plateau de piles hexagonales"
                   aria-describedby="hexaCoach"
                 ></div>
               </div>
@@ -273,7 +273,7 @@
               <div
                 id="stackTray"
                 class="stack-tray"
-                aria-label="Stack tray"
+                aria-label="Bac de piles"
                 aria-describedby="hexaCoach"
               ></div>
             </div>
@@ -286,7 +286,7 @@
               <p id="helpObjectiveRule" class="help-objective-rule"></p>
               <ol class="battle-help-steps">
                 <li data-i18n="how1">Choisissez une des trois piles puis un hexagone vide.</li>
-                <li data-i18n="how2">Les couches voisines identiques vont vers la pile la plus forte.</li>
+                <li data-i18n="how2">Toute la chaîne voisine est calculée avant de déplacer le sommet.</li>
                 <li data-i18n="how3">Dix jetons identiques disparaissent et révèlent la chaîne suivante.</li>
               </ol>
               <button
@@ -307,8 +307,7 @@
                   class="primary"
                   type="button"
                   data-i18n="continue"
-                >
-                  Continue</button
+                >Continuer</button
                 ><button id="leaveStage" type="button" data-i18n="stageMap">Carte</button>
               </div>
             </div>
@@ -322,15 +321,13 @@
                 <p id="resultText"></p>
               </div>
               <div class="modal-actions result-actions">
-                <button id="resultStageBtn" type="button" data-i18n="stageMap">
-                  Stage Map</button
+                <button id="resultStageBtn" type="button" data-i18n="stageMap">Carte</button
                 ><button
                   id="nextBtn"
                   class="primary"
                   type="button"
                   data-i18n="next"
-                >
-                  Next Stage</button
+                >Suivant</button
                 ><button id="retryBtn" type="button" data-i18n="retry">Rejouer</button>
               </div>
             </div>
@@ -343,7 +340,7 @@
     <script src="../../src/site-config.js"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"hexa-sort"});</script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script>
-    <script src="/src/runtime-locales/fr.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/runtime-locales/fr.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/edge-guard.js"></script>
     <script src="game.js?v=20260922-hexa-sort-v39-audio1"></script>

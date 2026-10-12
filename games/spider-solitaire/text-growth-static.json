@@ -1,0 +1,268 @@
+{
+  "locales": {
+    "en": {
+      "tags": ["Spider Solitaire", "Card sequences", "Move planning"],
+      "relatedTitle": "Related Games",
+      "relatedIntro": "Try another solitaire layout: build a descending tableau in Klondike or plan with open cells in FreeCell.",
+      "related": {
+        "klondike-solitaire": "Play a full-deck tableau with draw-one or draw-three choices, automatic finishes, and Undo.",
+        "freecell-solitaire": "Arrange eight open columns with four temporary cells and four foundations; Hint and Undo are available."
+      }
+    },
+    "zh-Hant": {
+      "tags": ["蜘蛛接龍", "紙牌接龍", "牌序規劃"],
+      "relatedTitle": "相關遊戲",
+      "relatedIntro": "想換個接龍牌陣，可以試試克朗代克的逐列整理，或空當接龍的空格規劃。",
+      "related": {
+        "klondike-solitaire": "用完整牌堆整理牌列，可選抽一張或三張，並使用自動收牌與復原。",
+        "freecell-solitaire": "整理八個牌列、四個暫存空格與四個收牌區，也可使用提示與復原。"
+      }
+    },
+    "zh-Hans": {
+      "tags": ["蜘蛛纸牌", "纸牌接龙", "牌序规划"],
+      "relatedTitle": "相关游戏",
+      "relatedIntro": "想换种接龙牌阵，可以试试克朗代克的逐列整理，或空当接龙的空格规划。",
+      "related": {
+        "klondike-solitaire": "用完整牌堆整理牌列，可选抽一张或三张，并使用自动收牌与撤销。",
+        "freecell-solitaire": "整理八个牌列、四个暂存空格与四个收牌区，也可使用提示与撤销。"
+      }
+    },
+    "ja": {
+      "tags": ["スパイダーソリティア", "カードゲーム", "カード列の計画"],
+      "relatedTitle": "関連ゲーム",
+      "relatedIntro": "別のソリティアも試すなら、クロンダイクの列づくりやフリーセルの空きセル活用に挑戦できます。",
+      "related": {
+        "klondike-solitaire": "山札全体を使う場札に、1枚引き・3枚引き、自動組札、元に戻す機能があります。",
+        "freecell-solitaire": "8列の場札、4つの一時セル、4つの組札を使い、ヒントと元に戻す機能も利用できます。"
+      }
+    },
+    "ko": {
+      "tags": ["스파이더 솔리테어", "카드 솔리테어", "카드 순서 계획"],
+      "relatedTitle": "관련 게임",
+      "relatedIntro": "다른 솔리테어도 해보고 싶다면 클론다이크의 카드 열 정리나 프리셀의 빈칸 활용을 살펴보세요.",
+      "related": {
+        "klondike-solitaire": "전체 카드 덱으로 열을 정리하며 한 장 또는 세 장 뽑기, 자동 마무리, 실행 취소를 사용할 수 있습니다.",
+        "freecell-solitaire": "여덟 카드 열과 네 임시 칸, 네 기초 더미를 활용하며 힌트와 실행 취소도 지원합니다."
+      }
+    },
+    "es": {
+      "tags": ["Solitario Spider", "Solitario de cartas", "Planificación de secuencias"],
+      "relatedTitle": "Juegos relacionados",
+      "relatedIntro": "Prueba otro tablero de solitario: ordena columnas en Klondike o planifica con las celdas libres de FreeCell.",
+      "related": {
+        "klondike-solitaire": "Organiza un tablero con la baraja completa y elige robar una o tres cartas; también incluye finalización automática y Deshacer.",
+        "freecell-solitaire": "Organiza ocho columnas, cuatro celdas temporales y cuatro bases; puedes usar Pista y Deshacer."
+      }
+    },
+    "pt-BR": {
+      "tags": ["Paciência Spider", "Paciência de cartas", "Planejamento de sequências"],
+      "relatedTitle": "Jogos relacionados",
+      "relatedIntro": "Experimente outro tabuleiro de paciência: organize colunas no Klondike ou planeje com as células livres do FreeCell.",
+      "related": {
+        "klondike-solitaire": "Organize um tabuleiro com o baralho completo e escolha comprar uma ou três cartas; há finalização automática e Desfazer.",
+        "freecell-solitaire": "Organize oito colunas, quatro células temporárias e quatro fundações; Dica e Desfazer também estão disponíveis."
+      }
+    },
+    "fr": {
+      "tags": ["Spider Solitaire", "Jeu de cartes", "Planification des suites"],
+      "relatedTitle": "Jeux associés",
+      "relatedIntro": "Essayez une autre réussite : organisez les colonnes au Klondike ou planifiez avec les cellules libres de FreeCell.",
+      "related": {
+        "klondike-solitaire": "Organisez un tableau avec tout le jeu et choisissez de piocher une ou trois cartes ; l’assemblage automatique et Annuler sont inclus.",
+        "freecell-solitaire": "Organisez huit colonnes, quatre cellules temporaires et quatre fondations ; Indice et Annuler sont disponibles."
+      }
+    },
+    "de": {
+      "tags": ["Spider-Solitär", "Kartenspiel", "Folgen planen"],
+      "relatedTitle": "Ähnliche Spiele",
+      "relatedIntro": "Probiere ein anderes Solitär-Layout: ordne Spalten bei Klondike oder plane mit den freien Zellen bei FreeCell.",
+      "related": {
+        "klondike-solitaire": "Ordne ein Tableau mit dem vollständigen Kartensatz und wähle Ziehen einer oder drei Karten; automatische Ablage und Rückgängig sind dabei.",
+        "freecell-solitaire": "Ordne acht Spalten, vier freie Zellen und vier Ablagestapel; Hinweis und Rückgängig sind verfügbar."
+      }
+    },
+    "it": {
+      "tags": ["Solitario Spider", "Solitario di carte", "Pianificazione delle sequenze"],
+      "relatedTitle": "Giochi correlati",
+      "relatedIntro": "Prova un altro solitario: ordina le colonne a Klondike oppure pianifica con le celle libere di FreeCell.",
+      "related": {
+        "klondike-solitaire": "Organizza un tableau con il mazzo completo e scegli se pescare una o tre carte; include completamento automatico e Annulla.",
+        "freecell-solitaire": "Organizza otto colonne, quattro celle temporanee e quattro basi; puoi usare Suggerimento e Annulla."
+      }
+    },
+    "ru": {
+      "tags": ["Пасьянс Паук", "Карточный пасьянс", "Планирование последовательностей"],
+      "relatedTitle": "Похожие игры",
+      "relatedIntro": "Попробуйте другой пасьянс: собирайте колонки в «Клондайке» или планируйте ходы с ячейками в «Фриселле».",
+      "related": {
+        "klondike-solitaire": "Собирайте расклад из полной колоды, выбирайте добор по одной или три карты; доступны автосборка и отмена хода.",
+        "freecell-solitaire": "Раскладывайте карты в восьми колонках, используя четыре свободные ячейки и четыре масти; есть подсказка и отмена."
+      }
+    },
+    "hi": {
+      "tags": ["स्पाइडर सॉलिटेयर", "ताश का खेल", "क्रमों की योजना"],
+      "relatedTitle": "संबंधित गेम",
+      "relatedIntro": "एक और सॉलिटेयर लेआउट आज़माएँ: क्लोंडाइक में कॉलम बनाएँ या फ्रीसेल में खाली सेल की योजना बनाएँ।",
+      "related": {
+        "klondike-solitaire": "पूरे ताश के डेक से कॉलम सजाएँ, एक या तीन पत्ते खींचें, और स्वतः पूरा करने तथा पूर्ववत करने का उपयोग करें।",
+        "freecell-solitaire": "आठ कॉलम, चार अस्थायी सेल और चार फाउंडेशन सजाएँ; संकेत और पूर्ववत भी उपलब्ध हैं।"
+      }
+    },
+    "ar": {
+      "tags": ["سوليتير العنكبوت", "لعبة أوراق", "تخطيط تسلسلات الورق"],
+      "relatedTitle": "ألعاب ذات صلة",
+      "relatedIntro": "جرّب ترتيب سوليتير آخر: ابنِ الأعمدة في كلوندايك أو خطّط باستخدام الخلايا المفتوحة في فري سيل.",
+      "related": {
+        "klondike-solitaire": "رتّب الأوراق باستخدام الرزمة كاملة واختر سحب ورقة أو ثلاث؛ تتوفر الإكمالات التلقائية والتراجع.",
+        "freecell-solitaire": "رتّب ثمانية أعمدة وأربع خلايا مؤقتة وأربع خانات أساس؛ يتوفر التلميح والتراجع."
+      }
+    }
+  },
+  "faqTitles": {
+    "en": "Frequently Asked Questions",
+    "zh-Hant": "常見問題",
+    "zh-Hans": "常见问题",
+    "ja": "よくある質問",
+    "ko": "자주 묻는 질문",
+    "es": "Preguntas frecuentes",
+    "pt-BR": "Perguntas frequentes",
+    "fr": "Questions fréquentes",
+    "de": "Häufige Fragen",
+    "it": "Domande frequenti",
+    "ru": "Частые вопросы",
+    "hi": "अक्सर पूछे जाने वाले प्रश्न",
+    "ar": "الأسئلة الشائعة"
+  },
+  "faqOverrides": {
+    "en": [
+      ["How many cards are used?", "Spider Solitaire uses two standard decks: 104 cards total, with 54 in the starting tableau and 50 in the Stock."],
+      ["How many columns are there?", "The tableau has 10 columns. The first four start with six cards each; the remaining six start with five each."],
+      ["Can I stack cards from different suits?", "You can build descending ranks across suits, but only a descending run of one suit moves together or is collected."],
+      ["Why can't I deal from the Stock?", "In classic Spider, every one of the 10 columns must hold at least one card before you deal another row."],
+      ["How many sequences do I need to win?", "Collect all eight complete same-suit sequences, each running from King down to Ace."],
+      ["What changes between difficulty levels?", "One-, two-, and four-suit modes change the mix of suits; the 10-column rules stay the same."],
+      ["Can I restart the same deal?", "Restart Current Game reuses the same seed. New Game creates a different deal."],
+      ["Does Undo restore a completed sequence?", "Yes. Undo restores the previous tableau and the number of completed sequences."]
+    ],
+    "zh-Hant": [
+      ["遊戲使用幾張牌？", "蜘蛛接龍使用兩副標準撲克牌，共 104 張；起始牌面有 54 張，牌庫有 50 張。"],
+      ["牌面有幾列？", "牌面共有 10 列。前四列起始各有 6 張，其餘六列各有 5 張。"],
+      ["可以疊放不同花色的牌嗎？", "可以跨花色按點數遞減疊牌，但只有同花色的遞減牌序能一起移動或收回。"],
+      ["為什麼不能從牌庫發牌？", "經典蜘蛛接龍要求 10 列都至少有一張牌，才能再發下一列。"],
+      ["獲勝需要收回幾組牌序？", "必須收回八組完整的同花色牌序，每組從 K 依序排到 A。"],
+      ["不同難度有什麼變化？", "單花色、雙花色與四花色模式會改變花色組合；十列規則維持不變。"],
+      ["可以重新開始同一副牌嗎？", "選擇「重新開始目前遊戲」會沿用同一個種子；「新遊戲」會建立另一副牌。"],
+      ["復原會還原已收回的完整牌序嗎？", "會。復原可還原前一個牌面，以及已收回的完整牌序數量。"]
+    ],
+    "zh-Hans": [
+      ["游戏使用多少张牌？", "蜘蛛纸牌使用两副标准扑克牌，共 104 张；起始牌面有 54 张，牌库有 50 张。"],
+      ["牌面有多少列？", "牌面共有 10 列。前四列起始各有 6 张，其余六列各有 5 张。"],
+      ["可以叠放不同花色的牌吗？", "可以跨花色按点数递减叠牌，但只有同花色的递减牌序能一起移动或收回。"],
+      ["为什么不能从牌库发牌？", "经典蜘蛛纸牌要求 10 列都至少有一张牌，才能再发下一行。"],
+      ["获胜需要收回几组牌序？", "必须收回八组完整的同花色牌序，每组从 K 依次排到 A。"],
+      ["不同难度有什么变化？", "单花色、双花色和四花色模式会改变花色组合；十列规则保持不变。"],
+      ["可以重新开始同一副牌吗？", "选择“重新开始当前游戏”会沿用同一个种子；“新游戏”会生成另一副牌。"],
+      ["撤销会还原已收回的完整牌序吗？", "会。撤销可以还原前一个牌面，以及已收回的完整牌序数量。"]
+    ],
+    "ko": [
+      ["카드는 몇 장을 사용하나요?", "스파이더 솔리테어는 표준 카드 두 벌, 총 104장을 사용합니다. 시작 tableau에 54장, Stock에 50장이 있습니다."],
+      ["열은 몇 개 있나요?", "tableau는 10열입니다. 처음 네 열에는 각각 6장, 나머지 여섯 열에는 각각 5장이 놓입니다."],
+      ["무늬가 다른 카드도 쌓을 수 있나요?", "무늬가 달라도 숫자를 내림차순으로 쌓을 수 있지만, 같은 무늬의 내림차순 묶음만 함께 이동하거나 회수할 수 있습니다."],
+      ["왜 Stock에서 카드를 나눌 수 없나요?", "클래식 스파이더에서는 새 줄을 나누기 전에 10개 열마다 카드가 한 장 이상 있어야 합니다."],
+      ["이기려면 몇 묶음을 완성해야 하나요?", "같은 무늬의 K부터 A까지 이어지는 완성 묶음 8개를 모두 회수해야 합니다."],
+      ["난이도마다 무엇이 달라지나요?", "1·2·4무늬 모드는 무늬 구성만 바꾸며, 10열 규칙은 그대로입니다."],
+      ["같은 패를 다시 시작할 수 있나요?", "현재 게임 다시 시작은 같은 시드를 사용합니다. 새 게임은 다른 패를 만듭니다."],
+      ["실행 취소로 완성한 묶음도 복원되나요?", "네. 실행 취소는 이전 tableau와 완성한 묶음 수를 복원합니다."]
+    ],
+    "es": [
+      ["¿Cuántas cartas se usan?", "Solitario Spider usa dos barajas estándar: 104 cartas en total, con 54 en el tablero inicial y 50 en el mazo."],
+      ["¿Cuántas columnas hay?", "El tablero tiene 10 columnas. Las cuatro primeras empiezan con seis cartas y las otras seis con cinco."],
+      ["¿Puedo apilar cartas de palos distintos?", "Puedes ordenar valores de forma descendente aunque cambie el palo, pero solo se mueve o recoge junta una secuencia descendente del mismo palo."],
+      ["¿Por qué no puedo repartir del mazo?", "En Spider clásico, las 10 columnas deben tener al menos una carta antes de repartir otra fila."],
+      ["¿Cuántas secuencias necesito para ganar?", "Debes recoger las ocho secuencias completas del mismo palo, cada una de Rey a As."],
+      ["¿Qué cambia entre las dificultades?", "Los modos de uno, dos y cuatro palos cambian la mezcla de palos; las reglas de las 10 columnas no cambian."],
+      ["¿Puedo reiniciar la misma partida?", "Reiniciar la partida actual reutiliza la misma semilla. Nueva partida crea un reparto distinto."],
+      ["¿Deshacer restaura una secuencia completada?", "Sí. Deshacer restaura el tablero anterior y el número de secuencias completadas."]
+    ],
+    "pt-BR": [
+      ["Quantas cartas são usadas?", "Paciência Spider usa dois baralhos padrão: 104 cartas ao todo, com 54 no tableau inicial e 50 no monte."],
+      ["Quantas colunas existem?", "O tableau tem 10 colunas. As quatro primeiras começam com seis cartas cada; as outras seis, com cinco."],
+      ["Posso empilhar cartas de naipes diferentes?", "Você pode ordenar valores em sequência decrescente entre naipes, mas só uma sequência do mesmo naipe se move ou é recolhida junta."],
+      ["Por que não posso comprar do monte?", "No Spider clássico, todas as 10 colunas precisam ter ao menos uma carta antes de distribuir outra fileira."],
+      ["Quantas sequências preciso completar para vencer?", "Recolha as oito sequências completas do mesmo naipe, cada uma do Rei ao Ás."],
+      ["O que muda entre os níveis de dificuldade?", "Os modos de um, dois e quatro naipes mudam a combinação de naipes; as regras das 10 colunas permanecem."],
+      ["Posso reiniciar a mesma distribuição?", "Reiniciar o jogo atual reutiliza a mesma semente. Novo jogo cria outra distribuição."],
+      ["Desfazer restaura uma sequência completa?", "Sim. Desfazer restaura o tableau anterior e a quantidade de sequências completas."]
+    ],
+    "fr": [
+      ["Combien de cartes sont utilisées ?", "Spider Solitaire utilise deux jeux standards, soit 104 cartes : 54 dans le tableau de départ et 50 dans la pioche."],
+      ["Combien de colonnes y a-t-il ?", "Le tableau compte 10 colonnes. Les quatre premières commencent avec six cartes et les six autres avec cinq."],
+      ["Puis-je empiler des cartes de couleurs différentes ?", "Les rangs peuvent descendre en alternant les couleurs, mais seule une suite descendante de même couleur se déplace ou se récupère ensemble."],
+      ["Pourquoi ne puis-je pas distribuer depuis la pioche ?", "Au Spider classique, chaque colonne doit contenir au moins une carte avant de distribuer une nouvelle rangée."],
+      ["Combien de suites faut-il pour gagner ?", "Il faut récupérer les huit suites complètes de même couleur, du Roi à l’As."],
+      ["Qu’est-ce qui change selon la difficulté ?", "Les modes à une, deux ou quatre couleurs changent leur répartition ; les règles des 10 colonnes restent identiques."],
+      ["Puis-je relancer la même donne ?", "Relancer la partie actuelle réutilise la même graine. Nouvelle partie crée une autre donne."],
+      ["Annuler restaure-t-il une suite terminée ?", "Oui. Annuler restaure le tableau précédent et le nombre de suites terminées."]
+    ],
+    "it": [
+      ["Quante carte si usano?", "Solitario Spider usa due mazzi standard, 104 carte in totale: 54 nel tableau iniziale e 50 nel tallone."],
+      ["Quante colonne ci sono?", "Il tableau ha 10 colonne. Le prime quattro iniziano con sei carte ciascuna; le altre sei con cinque."],
+      ["Posso impilare carte di semi diversi?", "Puoi ordinare i valori in modo decrescente anche tra semi diversi, ma solo una sequenza discendente dello stesso seme si sposta o si raccoglie insieme."],
+      ["Perché non posso distribuire dal tallone?", "Nello Spider classico, tutte le 10 colonne devono avere almeno una carta prima di distribuire una nuova fila."],
+      ["Quante sequenze servono per vincere?", "Devi raccogliere tutte e otto le sequenze complete dello stesso seme, dal Re all’Asso."],
+      ["Cosa cambia tra i livelli di difficoltà?", "Le modalità a uno, due e quattro semi cambiano la combinazione dei semi; le regole delle 10 colonne restano uguali."],
+      ["Posso riavviare la stessa distribuzione?", "Riavvia partita attuale riutilizza lo stesso seme iniziale. Nuova partita crea una distribuzione diversa."],
+      ["Annulla ripristina una sequenza completata?", "Sì. Annulla ripristina il tableau precedente e il numero di sequenze completate."]
+    ],
+    "ru": [
+      ["Сколько карт используется?", "В «Пасьянсе Паук» используются две стандартные колоды — всего 104 карты: 54 в начальном раскладе и 50 в запасе."],
+      ["Сколько колонок в раскладе?", "В раскладе 10 колонок. В первых четырёх изначально по шесть карт, в остальных шести — по пять."],
+      ["Можно ли класть карты разных мастей друг на друга?", "Карты можно выстраивать по убыванию и между мастями, но вместе перемещается или убирается только убывающая последовательность одной масти."],
+      ["Почему нельзя раздать карты из запаса?", "В классическом «Пауке» перед новой раздачей в каждой из 10 колонок должна быть хотя бы одна карта."],
+      ["Сколько последовательностей нужно собрать для победы?", "Нужно убрать все восемь полных последовательностей одной масти от короля до туза."],
+      ["Что меняется между уровнями сложности?", "Режимы с одной, двумя и четырьмя мастями меняют их сочетание; правила 10 колонок остаются прежними."],
+      ["Можно ли перезапустить ту же раздачу?", "«Перезапустить текущую игру» использует то же начальное значение. «Новая игра» создаёт другую раздачу."],
+      ["Отменяет ли ход восстановит собранную последовательность?", "Да. Отмена хода восстанавливает предыдущее поле и число собранных последовательностей."]
+    ],
+    "hi": [
+      ["कुल कितने कार्ड इस्तेमाल होते हैं?", "स्पाइडर सॉलिटेयर में दो मानक डेक, कुल 104 कार्ड होते हैं: शुरुआत के tableau में 54 और Stock में 50।"],
+      ["कितने कॉलम होते हैं?", "tableau में 10 कॉलम हैं। पहले चार में शुरुआत में छह-छह कार्ड और बाकी छह में पाँच-पाँच कार्ड होते हैं।"],
+      ["क्या अलग-अलग सूट के कार्ड एक साथ रख सकते हैं?", "आप सूट बदलते हुए भी घटते क्रम में कार्ड रख सकते हैं, लेकिन केवल एक ही सूट की घटती शृंखला साथ चलती या हटती है।"],
+      ["Stock से कार्ड क्यों नहीं बाँट सकते?", "क्लासिक स्पाइडर में अगली पंक्ति बाँटने से पहले सभी 10 कॉलम में कम-से-कम एक कार्ड होना चाहिए।"],
+      ["जीतने के लिए कितनी शृंखलाएँ हटानी होती हैं?", "राजा से इक्का तक की एक ही सूट वाली सभी आठ पूरी शृंखलाएँ हटाएँ।"],
+      ["कठिनाई स्तरों में क्या बदलता है?", "एक, दो और चार-सूट मोड में सूटों का मिश्रण बदलता है; 10 कॉलम के नियम समान रहते हैं।"],
+      ["क्या उसी बाँट को फिर से शुरू कर सकते हैं?", "वर्तमान गेम फिर शुरू करें वही seed उपयोग करता है। नया गेम अलग बाँट बनाता है।"],
+      ["क्या Undo पूरी हुई शृंखला को वापस लाता है?", "हाँ। Undo पिछला tableau और पूरी हुई शृंखलाओं की संख्या बहाल करता है।"]
+    ],
+    "ar": [
+      ["كم عدد الأوراق المستخدمة؟", "يستخدم سوليتير العنكبوت مجموعتين قياسيتين، أي 104 أوراق: 54 في ترتيب البداية و50 في المخزون."],
+      ["كم عموداً في الترتيب؟", "يتكون الترتيب من 10 أعمدة. تبدأ الأعمدة الأربعة الأولى بست أوراق لكل منها، وتبدأ الأعمدة الستة الأخرى بخمس."],
+      ["هل يمكن تكديس أوراق من أنواع مختلفة؟", "يمكن ترتيب القيم تنازلياً بين الأنواع، لكن لا يمكن نقل أو جمع سلسلة معاً إلا إذا كانت تنازلية ومن النوع نفسه."],
+      ["لماذا لا يمكن التوزيع من المخزون؟", "في سوليتير العنكبوت الكلاسيكي، يجب أن يحتوي كل عمود من الأعمدة العشرة على ورقة واحدة على الأقل قبل توزيع صف جديد."],
+      ["كم سلسلة أحتاج للفوز؟", "اجمع السلاسل الثماني الكاملة من النوع نفسه، وتمتد كل واحدة من الملك إلى الآس."],
+      ["ما الذي يتغير بين مستويات الصعوبة؟", "تغيّر أوضاع النوع الواحد أو النوعين أو الأنواع الأربعة مزيج الأنواع؛ وتبقى قواعد الأعمدة العشرة كما هي."],
+      ["هل يمكن إعادة التوزيعة نفسها؟", "تستخدم إعادة تشغيل اللعبة الحالية البذرة نفسها. أما اللعبة الجديدة فتنشئ توزيعة مختلفة."],
+      ["هل يعيد التراجع سلسلة مكتملة؟", "نعم. يعيد التراجع ترتيب الأوراق السابق وعدد السلاسل المكتملة."]
+    ],
+    "ja": [
+      ["何枚のカードを使いますか？", "スパイダーソリティアでは標準デッキ2組、計104枚を使います。初期 tableau に54枚、山札に50枚あります。"],
+      ["列はいくつありますか？", "場には10列あります。最初の4列には6枚ずつ、残りの6列には5枚ずつ配られます。"],
+      ["異なるスートを重ねられますか？", "はい。スートをまたいで数字を降順に並べられますが、まとめて移動または回収できるのは同じスートの降順列だけです。"],
+      ["山札が使えないのはなぜですか？", "クラシックなスパイダーでは、新しい列を配る前に10列すべてに少なくとも1枚のカードが必要です。"],
+      ["勝つには何組の列が必要ですか？", "同じスートのキングからエースまでの列を8組すべて回収する必要があります。"],
+      ["難易度で何が変わりますか？", "1スート、2スート、4スートではスートの組み合わせが変わりますが、10列のルールは共通です。"],
+      ["同じ配り直しで再スタートできますか？", "はい。「現在のゲームを再スタート」では同じシードを使い、「新しいゲーム」では新しい配りを作ります。"],
+      ["取り消しで回収済みの列も戻りますか？", "はい。取り消すと、直前の場全体と回収済みセット数が復元されます。"]
+    ],
+    "de": [
+      ["Wie viele Karten werden verwendet?", "Spider Solitaire verwendet zwei Standarddecks mit insgesamt 104 Karten: 54 liegen anfangs im Tableau und 50 im Talon."],
+      ["Wie viele Spalten gibt es?", "Das Tableau hat zehn Spalten. Die ersten vier beginnen mit je sechs Karten, die übrigen sechs mit je fünf."],
+      ["Können Karten verschiedener Farben gestapelt werden?", "Ja. Rangfolgen können farbübergreifend absteigen, aber nur eine absteigende Folge derselben Farbe lässt sich gemeinsam bewegen oder einsammeln."],
+      ["Warum ist der Talon gesperrt?", "Beim klassischen Spider muss jede der zehn Spalten mindestens eine Karte enthalten, bevor eine neue Reihe ausgeteilt wird."],
+      ["Wie viele Folgen braucht man zum Sieg?", "Acht vollständige Folgen derselben Farbe von König bis Ass müssen eingesammelt werden."],
+      ["Was ändert sich zwischen den Schwierigkeitsstufen?", "1 Farbe, 2 Farben und 4 Farben ändern die Farbmischung; die Regeln für die zehn Spalten bleiben gleich."],
+      ["Kann ich dieselbe Ausgabe neu starten?", "Ja. „Aktuelles Spiel neu starten“ verwendet denselben Startwert; „Neues Spiel“ mischt eine neue Ausgabe."],
+      ["Stellt Rückgängig eine vollständige Folge wieder her?", "Ja. Rückgängig stellt das vorherige Tableau und die Anzahl der eingesammelten Folgen vollständig wieder her."]
+    ]
+  }
+}

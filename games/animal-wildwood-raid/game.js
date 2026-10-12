@@ -1,6 +1,6 @@
 import {STAGES,TOOLS} from './game-data.js';
-import {Simulation,mission} from './simulation.js?v=20261012-wildwood-feedback-v13a';
-import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js?v=20261012-wildwood-feedback-v13a';
+import {Simulation,mission} from './simulation.js?v=20261013-wildwood-issue-v14a';
+import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js?v=20261013-wildwood-issue-v14a';
 import {load,store,award,KEY} from './save.js';
 import {placeLabel} from './label-layout.js';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -82,7 +82,7 @@ function healthLabels(dt){
   if(e.hp<=0){reward.removeAttribute('title');reward.append(icon('clock'),document.createTextNode(statNumber(Math.max(0,Math.ceil(e.respawn||0)))));reward.setAttribute('aria-label',`${t('respawn')} ${Math.max(0,Math.ceil(e.respawn||0))} ${t('seconds')}`);bar.hidden=true;continue;}bar.hidden=false;reward.removeAttribute('aria-label');
   if(e.kind==='hero'){reward.title=statLabel('attack');reward.append(icon('axe'),document.createTextNode(statNumber(e.power)));}
   else if(e.reward){reward.append(icon(statIcon(e.reward.stat)),document.createTextNode(statNumber(e.reward.amount)));reward.title=`${t('permanent')} · ${statLabel(e.reward.stat)} ${statNumber(e.reward.amount)}`;}
-  else reward.textContent=e.kind==='cage'?`${t('rescues')} ${e.order}`:e.kind==='friend'?t('protect'):t('shrines');
+  else reward.textContent=e.kind==='totem'?t('totem'):e.kind==='cage'?`${t('rescues')} ${e.order}`:e.kind==='friend'?t('protect'):t('shrines');
   bar.firstElementChild.style.width=`${Math.max(0,e.hp/e.maxHp)*100}%`;bar.lastElementChild.textContent=`${Math.ceil(e.hp)} / ${Math.ceil(e.maxHp)}`;
   bar.setAttribute('aria-valuenow',Math.ceil(e.hp));bar.setAttribute('aria-valuemax',e.maxHp);bar.setAttribute('aria-label',t('hp'));
  }

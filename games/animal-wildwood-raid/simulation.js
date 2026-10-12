@@ -57,8 +57,9 @@ export class Simulation {
  }
  alive(){return this.ents.filter(e=>e.hp>0);}
  target(range,tool='axe'){
-  return this.alive().filter(e=>e.kind!=='friend'&&dist(e,this.hero)<=range&&(!e.hidden||dist(e,this.hero)<2)&&this.clearLine(this.hero,e))
-   .sort((a,b)=>{const rank=e=>hostile(e)?(tool==='bow'&&['caster','shaman'].includes(e.type)?-2:0):e.kind==='shrine'?1:e.kind==='cage'?2:3;return rank(a)-rank(b)||dist(a,this.hero)-dist(b,this.hero);})[0];
+  const alive=this.alive(),prioritizeTotems=alive.some(e=>e.kind==='totem')&&alive.some(e=>e.boss==='mosswitch');
+  return alive.filter(e=>e.kind!=='friend'&&dist(e,this.hero)<=range&&(!e.hidden||dist(e,this.hero)<2)&&this.clearLine(this.hero,e))
+   .sort((a,b)=>{const rank=e=>prioritizeTotems&&e.kind==='totem'?-2:hostile(e)?(tool==='bow'&&['caster','shaman'].includes(e.type)?-1:0):e.kind==='shrine'?1:e.kind==='cage'?2:3;return rank(a)-rank(b)||dist(a,this.hero)-dist(b,this.hero);})[0];
  }
  clearLine(a,b){return !this.obstacles.some(o=>o.hp>0&&Array.from({length:12},(_,i)=>{const t=(i+1)/13;return Math.abs(a.x+(b.x-a.x)*t-o.x)<o.w&&Math.abs(a.z+(b.z-a.z)*t-o.z)<o.h;}).some(Boolean));}
  use(id){
@@ -166,7 +167,7 @@ export class Simulation {
    if(this.obstacles.some(o=>o.hp>0&&Math.abs(p.x-o.x)<o.w&&Math.abs(p.z-o.z)<o.h))p.life=0;
    if(p.life<=0)continue;
    if(p.enemy){const target=[h,...this.alive().filter(e=>e.kind==='friend')].find(e=>dist(e,p)<.55);if(target){this.hurt(p.power,target);p.life=0;}}
-   else{const target=this.alive().find(e=>e.kind!=='friend'&&e.kind!=='shrine'&&dist(e,p)<e.r+.2);if(target){this.hit(target,p.power,'bow');p.life=0;}}
+   else{const alive=this.alive(),prioritizeTotems=alive.some(e=>e.kind==='totem')&&alive.some(e=>e.boss==='mosswitch'),targets=alive.filter(e=>e.kind!=='friend'&&e.kind!=='shrine'&&!(prioritizeTotems&&e.boss==='mosswitch')&&dist(e,p)<e.r+.2).sort((a,b)=>Number(prioritizeTotems&&b.kind==='totem')-Number(prioritizeTotems&&a.kind==='totem')||dist(a,p)-dist(b,p)),target=targets[0];if(target){this.hit(target,p.power,'bow');p.life=0;}}
   }
   for(const hazard of this.hazards){hazard.delay-=dt;hazard.life-=dt;if(!hazard.hit&&hazard.delay<=0&&dist(h,hazard)<hazard.r){hazard.hit=true;this.hurt(hazard.power);}}
   this.hazards=this.hazards.filter(p=>p.life>0);this.respawns(dt);

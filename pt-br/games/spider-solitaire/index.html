@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-    <title id="pageTitle">Spider Solitaire | WeightPlay</title>
+    <title>Spider Solitaire | WeightPlay</title>
 
     <base href="/games/spider-solitaire/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-    <link rel="canonical" href="https://weightplay.com/pt-br/games/spider-solitaire/" id="metaCanonical" />
+    <link rel="canonical" href="https://weightplay.com/pt-br/games/spider-solitaire/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/spider-solitaire/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/spider-solitaire/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/spider-solitaire/" />
@@ -26,6 +26,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#0a1f3a" />
+
   <meta name="keywords" content="Spider Solitaire,Spider,Card Game,Solitaire,1 Suit,2 Suits,4 Suits" />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
@@ -41,12 +42,12 @@
   <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4" />
-  <meta id="metaDescription" name="description" content="Spider Solitaire clássico com 1, 2 e 4 naipes, arraste fluido, dicas e desfazer ilimitado." />
-    <meta id="ogTitle" property="og:title" content="Spider Solitaire | WeightPlay" />
-    <meta id="ogDescription" property="og:description" content="Spider Solitaire clássico com 1, 2 e 4 naipes, arraste fluido, dicas e desfazer ilimitado." />
-    <meta id="ogUrl" property="og:url" content="https://weightplay.com/pt-br/games/spider-solitaire/" />
-    <meta id="twitterTitle" name="twitter:title" content="Spider Solitaire | WeightPlay" />
-    <meta id="twitterDescription" name="twitter:description" content="Spider Solitaire clássico com 1, 2 e 4 naipes, arraste fluido, dicas e desfazer ilimitado." />
+  <meta name="description" content="Spider Solitaire clássico com 1, 2 e 4 naipes, arraste fluido, dicas e desfazer ilimitado." />
+    <meta property="og:title" content="Spider Solitaire | WeightPlay" />
+    <meta property="og:description" content="Spider Solitaire clássico com 1, 2 e 4 naipes, arraste fluido, dicas e desfazer ilimitado." />
+    <meta property="og:url" content="https://weightplay.com/pt-br/games/spider-solitaire/" />
+    <meta name="twitter:title" content="Spider Solitaire | WeightPlay" />
+    <meta name="twitter:description" content="Spider Solitaire clássico com 1, 2 e 4 naipes, arraste fluido, dicas e desfazer ilimitado." />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -118,9 +119,9 @@
       <header class="stage-header">
         <button id="stageBackBtn" class="stage-back" type="button" data-wp-return="stage" data-sl-aria="back" aria-label="Voltar"><span aria-hidden="true">&larr;</span></button>
         <div class="stage-title-group">
-          <small data-stage-copy="kicker">Choose a difficulty</small>
+          <small data-stage-copy="kicker">Escolha a dificuldade</small>
           <h1 data-stage-copy="title">Spider Solitaire</h1>
-          <p data-stage-copy="copy">Choose the suit count before entering the table.</p>
+          <p data-stage-copy="copy">Escolha o número de naipes antes de entrar na mesa.</p>
         </div>
       </header>
       <div class="stage-content">
@@ -135,7 +136,7 @@
           <button id="restartBtn" class="secondary-btn" type="button" data-sl="restart">Reiniciar partida</button>
           <button id="newGameBtn" class="secondary-btn" type="button" data-sl="new_game">Novo jogo</button>
         </div>
-        <nav class="stage-tabs" role="tablist" aria-label="Stage navigation">
+        <nav class="stage-tabs" role="tablist" aria-label="Navegação por dificuldade">
           <button type="button" role="tab" aria-selected="true" data-sl="difficulty_label">Dificuldade</button>
         </nav>
       </div>
@@ -154,7 +155,7 @@
       </header>
       <section id="boardShell" class="board-shell">
         <section id="foundationRow" class="foundation-row" data-sl-aria="foundations" aria-label="Grupos completos"></section>
-        <section class="stock-row"><button id="stockPile" class="pile stock" type="button" data-sl-aria="stock" aria-label="Monte"></button><div class="stock-copy"><strong id="dealLabel" data-sl="deal">Distribuir 10</strong><small id="dealsLeft"></small></div><div class="control-row" role="group"><button id="undoBtn" class="mini-btn" type="button" data-sl="undo">Desfazer</button><button id="hintBtn" class="mini-btn" type="button" data-sl="hint">Dica</button><button id="copyReplayLinkBtn" class="mini-btn" type="button" data-sl="copy_replay_link">Copy replay link</button><button id="helpBtn" class="mini-btn" type="button" data-sl="help">Como jogar</button></div></section><p id="stockPressureCue" class="stock-pressure-cue" role="status" aria-live="polite" data-runtime-localize="off"></p>
+        <section class="stock-row"><button id="stockPile" class="pile stock" type="button" data-sl-aria="stock" aria-label="Monte"></button><div class="stock-copy"><strong id="dealLabel" data-sl="deal">Distribuir 10</strong><small id="dealsLeft"></small></div><div class="control-row" role="group"><button id="undoBtn" class="mini-btn" type="button" data-sl="undo">Desfazer</button><button id="hintBtn" class="mini-btn" type="button" data-sl="hint">Dica</button><button id="copyReplayLinkBtn" class="mini-btn" type="button" data-sl="copy_replay_link">Copiar link da partida</button><button id="helpBtn" class="mini-btn" type="button" data-sl="help">Como jogar</button></div></section><p id="stockPressureCue" class="stock-pressure-cue" role="status" aria-live="polite" data-runtime-localize="off"></p>
         <section id="tableauRow" class="tableau-row" data-sl-aria="tableau" aria-label="Mesa"></section>
         <div id="sequenceFx" class="sequence-fx" aria-hidden="true"></div>
       </section>
@@ -168,7 +169,7 @@
 
   </div>
   <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
-    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Spider Solitaire</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Jogo de cartas</span><span>Quebra-cabeça de paciência</span><span>Estratégia de sequências</span></div></div>
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Spider Solitaire</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Paciência Spider</span><span>Paciência de cartas</span><span>Planejamento de sequências</span></div></div>
     <div class="game-info-sections">
       <section class="game-info-section"><h3 data-sl="target_label" data-i18n="target_label">Objetivo</h3><p data-sl="hero" data-i18n="hero">Monte sequências K a A do mesmo naipe em dez colunas. Escolha a dificuldade e complete os oito grupos.</p></section>
       <section class="game-info-section"><h3 data-sl="help" data-i18n="help">Como jogar</h3><ol>
@@ -183,14 +184,10 @@
 
 
 
-      <div class="game-info-section game-info-related-section" data-wp-spider-related="1.4.0">
-        <h3>Jogos relacionados</h3>
-        <div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/pt-br/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Solitário Klondike</strong><span>Solitário clássico com fluxo de arrastar e soltar, modos de compra 1/3, auto-finalização e suporte a desfazer.</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/pt-br/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Paciência FreeCell</strong><span>FreeCell clássico com oito colunas abertas, quatro células livres, quatro fundações, dica e desfazer.</span></span></a></div>
-      </div>
+      <div class="game-info-section" data-spider-growth-related="1.4.0" data-runtime-localize="off"><h3>Jogos relacionados</h3><p>Experimente outro tabuleiro de paciência: organize colunas no Klondike ou planeje com as células livres do FreeCell.</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/pt-br/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Solitário Klondike</strong><span>Organize um tabuleiro com o baralho completo e escolha comprar uma ou três cartas; há finalização automática e Desfazer.</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/pt-br/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Paciência FreeCell</strong><span>Organize oito colunas, quatro células temporárias e quatro fundações; Dica e Desfazer também estão disponíveis.</span></span></a></div></div><div class="game-info-section" data-spider-static-faq="1.4.0"><h3>Perguntas frequentes</h3><dl><dt>Quantas cartas são usadas?</dt><dd>Paciência Spider usa dois baralhos padrão: 104 cartas ao todo, com 54 no tableau inicial e 50 no monte.</dd><dt>Quantas colunas existem?</dt><dd>O tableau tem 10 colunas. As quatro primeiras começam com seis cartas cada; as outras seis, com cinco.</dd><dt>Posso empilhar cartas de naipes diferentes?</dt><dd>Você pode ordenar valores em sequência decrescente entre naipes, mas só uma sequência do mesmo naipe se move ou é recolhida junta.</dd><dt>Por que não posso comprar do monte?</dt><dd>No Spider clássico, todas as 10 colunas precisam ter ao menos uma carta antes de distribuir outra fileira.</dd><dt>Quantas sequências preciso completar para vencer?</dt><dd>Recolha as oito sequências completas do mesmo naipe, cada uma do Rei ao Ás.</dd><dt>O que muda entre os níveis de dificuldade?</dt><dd>Os modos de um, dois e quatro naipes mudam a combinação de naipes; as regras das 10 colunas permanecem.</dd><dt>Posso reiniciar a mesma distribuição?</dt><dd>Reiniciar o jogo atual reutiliza a mesma semente. Novo jogo cria outra distribuição.</dd><dt>Desfazer restaura uma sequência completa?</dt><dd>Sim. Desfazer restaura o tableau anterior e a quantidade de sequências completas.</dd></dl></div>
 
 
-<div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Quantas cartas são usadas?</dt><dd>São usados dois baralhos padrão: 104 cartas, com 54 na mesa inicial e 50 no estoque.</dd></div><div><dt>Quantas colunas existem?</dt><dd>São dez colunas; as quatro primeiras começam com seis cartas e as outras seis com cinco.</dd></div><div><dt>Posso empilhar naipes diferentes?</dt><dd>Sim, os valores podem descer entre naipes, mas somente uma sequência do mesmo naipe se move ou é recolhida como grupo.</dd></div><div><dt>Por que o estoque está bloqueado?</dt><dd>O Spider clássico exige uma carta em cada coluna antes de distribuir uma nova fila.</dd></div><div><dt>Quantas sequências preciso completar?</dt><dd>Você precisa recolher oito sequências do mesmo naipe, do Rei ao Ás.</dd></div><div><dt>O que muda entre as dificuldades?</dt><dd>1, 2 e 4 naipes mudam a mistura, mantendo as mesmas regras de dez colunas.</dd></div><div><dt>Posso reiniciar a mesma distribuição?</dt><dd>Sim. Reiniciar usa a mesma distribuição; Novo jogo embaralha uma nova partida.</dd></div><div><dt>Desfazer restaura uma sequência completa?</dt><dd>Sim. Desfazer restaura a mesa anterior e a quantidade de sequências recolhidas.</dd></div></dl></div></div>
-    </section>
+</section>
   <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/pt-br.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>

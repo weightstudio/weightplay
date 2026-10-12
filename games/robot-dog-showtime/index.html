@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow">
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v5">
+<meta name="weightplay-game-version" content="v6">
   <meta name="weightplay-interface-version" content="8">
   <title>Robot Dog Showtime | WeightPlay</title>
   <meta name="description" content="Plan a robot pup and fox partner's stage cues in an original spatial choreography puzzle.">
@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-  <link rel="stylesheet" href="style.css?v=20261010-landscape-fit-3">
+  <link rel="stylesheet" href="style.css?v=20261012-spotlight-mix-1">
   <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js"></script>
   <script src="/src/game-title-registry.js" data-wp-game-title-registry></script>
@@ -40,11 +40,11 @@
       <div class="game-info-tags"><span>Spatial planning</span><span>Choreography puzzle</span><span>30 stages</span></div>
       <small>HOT TOPIC · ORIGINAL GAMEPLAY</small>
       <h2>Plan both dancers' moves, then rehearse the formation.</h2>
-      <p>At Shanghai’s 2026 WorldSkills opening, dancers shared the finale with human-shaped robots. This original puzzle reimagines that teamwork with a block-built robot pup and fox.</p>
+      <p>At the September 2026 WorldSkills opening in Shanghai, dancers shared the finale with full-size humanoid robots. This original puzzle turns that teamwork into routes for a block-built robot pup and fox.</p>
       <div class="guide-grid">
         <article><h3>How to play</h3><p>Choose a performer and beat, select a move or cue, then rehearse both routes together. Some finales need both performers to Bow on the last beat.</p></article>
         <article><h3>Rules</h3><p>Stay on the stage, avoid blocked marks, and never place both performers on the same mark. A wrong beat keeps your plan so you can edit it.</p></article>
-        <article><h3>Progress</h3><p>Clear a stage to save it and open the next one. Revisit any stage you've unlocked.</p></article>
+        <article><h3>Progress</h3><p>Clear a stage to save it and open the next one. Revisit any stage you've unlocked. After clearing Stages 2, 3, or 6, try the optional Spotlight Mix with swapped goals.</p></article>
         <article><h3>Privacy</h3><p>Progress stays in this browser. The game does not need an account.</p></article>
       </div>
       <div class="game-info-section"><h3>FAQ</h3><dl>
@@ -63,6 +63,7 @@
         <button type="button" role="tab" id="stages-21-30" aria-controls="stageRail" aria-selected="false" data-stage-range="2">21–30</button>
       </nav>
       <nav id="stageRail" class="stage-rail" aria-label="Stage selector" data-wp-stage-rail data-wp-stage-center-observer="manual"></nav>
+      <nav id="spotlightRail" class="spotlight-rail" aria-label="Spotlight Mixes" hidden></nav>
     </div>
   </section>
 
@@ -93,9 +94,9 @@
     <div class="play-reserve" aria-hidden="true"></div>
   </section>
 
-  <section id="helpDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle">How to plan the show</h2><ol><li>Select a performer and beat.</li><li>Choose a direction or Wait cue; some finales need a Bow for both performers.</li><li>Rehearse both plans. Edit the first invalid move and try again.</li></ol><button id="closeHelp" class="primary">Continue</button></div></section>
+  <section id="helpDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle">How to plan the show</h2><ol><li>Select a performer and beat.</li><li>Choose a direction or Wait cue; some finales need a Bow for both performers.</li><li>Rehearse both plans. Edit the first invalid move and try again.</li><li>After clearing Stage 2, 3, or 6, choose its optional Spotlight Mix from the stage map to swap the goals.</li></ol><button id="closeHelp" class="primary">Continue</button></div></section>
   <section id="leaveDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle">Keep this rehearsal?</h2><p>Your cue plan is saved in this browser. Continue editing or return to the stage map.</p><div class="result-actions"><button id="continueBattle">Continue</button><button id="returnMap">Stage map</button></div></div></section>
-  <section id="resultDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="dialog-card"><small id="resultKicker">SHOW COMPLETE</small><h2 id="resultTitle">Great formation!</h2><p id="resultText">Both partners reached their marks.</p><div class="result-actions"><button id="resultMap">Stage map</button><button id="nextStage" class="primary">Next stage</button></div></div></section>
+  <section id="resultDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="dialog-card"><small id="resultKicker">SHOW COMPLETE</small><h2 id="resultTitle">Great formation!</h2><p id="resultText">Both partners reached their marks.</p><div class="result-actions"><button id="resultMap">Stage map</button><button id="nextStage" class="primary">Next stage</button><button id="spotlightResult" class="spotlight-action" hidden>Try Spotlight Mix · swap the goals</button></div></div></section>
   <div class="reserve-space body-reserve" aria-hidden="true"></div>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>

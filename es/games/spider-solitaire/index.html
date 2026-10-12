@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="es">
 <head>
-    <title id="pageTitle">Solitario Spider | WeightPlay</title>
+    <title>Solitario Spider | WeightPlay</title>
 
     <base href="/games/spider-solitaire/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-    <link rel="canonical" href="https://weightplay.com/es/games/spider-solitaire/" id="metaCanonical" />
+    <link rel="canonical" href="https://weightplay.com/es/games/spider-solitaire/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/spider-solitaire/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/spider-solitaire/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/spider-solitaire/" />
@@ -26,6 +26,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#0a1f3a" />
+
   <meta name="keywords" content="Spider Solitaire,Spider,Card Game,Solitaire,1 Suit,2 Suits,4 Suits" />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
@@ -41,12 +42,12 @@
   <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4" />
-  <meta id="metaDescription" name="description" content="Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado." />
-    <meta id="ogTitle" property="og:title" content="Solitario Spider | WeightPlay" />
-    <meta id="ogDescription" property="og:description" content="Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado." />
-    <meta id="ogUrl" property="og:url" content="https://weightplay.com/es/games/spider-solitaire/" />
-    <meta id="twitterTitle" name="twitter:title" content="Solitario Spider | WeightPlay" />
-    <meta id="twitterDescription" name="twitter:description" content="Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado." />
+  <meta name="description" content="Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado." />
+    <meta property="og:title" content="Solitario Spider | WeightPlay" />
+    <meta property="og:description" content="Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado." />
+    <meta property="og:url" content="https://weightplay.com/es/games/spider-solitaire/" />
+    <meta name="twitter:title" content="Solitario Spider | WeightPlay" />
+    <meta name="twitter:description" content="Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado." />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -118,9 +119,9 @@
       <header class="stage-header">
         <button id="stageBackBtn" class="stage-back" type="button" data-wp-return="stage" data-sl-aria="back" aria-label="Volver"><span aria-hidden="true">&larr;</span></button>
         <div class="stage-title-group">
-          <small data-stage-copy="kicker">Choose a difficulty</small>
-          <h1 data-stage-copy="title">Spider Solitaire</h1>
-          <p data-stage-copy="copy">Choose the suit count before entering the table.</p>
+          <small data-stage-copy="kicker">Elige la dificultad</small>
+          <h1 data-stage-copy="title">Solitario Spider</h1>
+          <p data-stage-copy="copy">Elige el número de palos antes de entrar a la mesa.</p>
         </div>
       </header>
       <div class="stage-content">
@@ -135,7 +136,7 @@
           <button id="restartBtn" class="secondary-btn" type="button" data-sl="restart">Reiniciar partida</button>
           <button id="newGameBtn" class="secondary-btn" type="button" data-sl="new_game">Nueva partida</button>
         </div>
-        <nav class="stage-tabs" role="tablist" aria-label="Stage navigation">
+        <nav class="stage-tabs" role="tablist" aria-label="Navegación por dificultad">
           <button type="button" role="tab" aria-selected="true" data-sl="difficulty_label">Dificultad</button>
         </nav>
       </div>
@@ -154,7 +155,7 @@
       </header>
       <section id="boardShell" class="board-shell">
         <section id="foundationRow" class="foundation-row" data-sl-aria="foundations" aria-label="Grupos completos"></section>
-        <section class="stock-row"><button id="stockPile" class="pile stock" type="button" data-sl-aria="stock" aria-label="Mazo"></button><div class="stock-copy"><strong id="dealLabel" data-sl="deal">Repartir 10</strong><small id="dealsLeft"></small></div><div class="control-row" role="group"><button id="undoBtn" class="mini-btn" type="button" data-sl="undo">Deshacer</button><button id="hintBtn" class="mini-btn" type="button" data-sl="hint">Pista</button><button id="copyReplayLinkBtn" class="mini-btn" type="button" data-sl="copy_replay_link">Copy replay link</button><button id="helpBtn" class="mini-btn" type="button" data-sl="help">Cómo jugar</button></div></section><p id="stockPressureCue" class="stock-pressure-cue" role="status" aria-live="polite" data-runtime-localize="off"></p>
+        <section class="stock-row"><button id="stockPile" class="pile stock" type="button" data-sl-aria="stock" aria-label="Mazo"></button><div class="stock-copy"><strong id="dealLabel" data-sl="deal">Repartir 10</strong><small id="dealsLeft"></small></div><div class="control-row" role="group"><button id="undoBtn" class="mini-btn" type="button" data-sl="undo">Deshacer</button><button id="hintBtn" class="mini-btn" type="button" data-sl="hint">Pista</button><button id="copyReplayLinkBtn" class="mini-btn" type="button" data-sl="copy_replay_link">Copiar enlace de la partida</button><button id="helpBtn" class="mini-btn" type="button" data-sl="help">Cómo jugar</button></div></section><p id="stockPressureCue" class="stock-pressure-cue" role="status" aria-live="polite" data-runtime-localize="off"></p>
         <section id="tableauRow" class="tableau-row" data-sl-aria="tableau" aria-label="Tablero"></section>
         <div id="sequenceFx" class="sequence-fx" aria-hidden="true"></div>
       </section>
@@ -168,7 +169,7 @@
 
   </div>
   <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
-    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Solitario Spider</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Juego de cartas</span><span>Rompecabezas de solitario</span><span>Estrategia de secuencias</span></div></div>
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Solitario Spider</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Solitario Spider</span><span>Solitario de cartas</span><span>Planificación de secuencias</span></div></div>
     <div class="game-info-sections">
       <section class="game-info-section"><h3 data-sl="target_label" data-i18n="target_label">Objetivo</h3><p data-sl="hero" data-i18n="hero">Forma secuencias K a A del mismo palo en diez columnas. Elige la dificultad y completa los ocho grupos.</p></section>
       <section class="game-info-section"><h3 data-sl="help" data-i18n="help">Cómo jugar</h3><ol>
@@ -183,14 +184,10 @@
 
 
 
-      <div class="game-info-section game-info-related-section" data-wp-spider-related="1.4.0">
-        <h3>Juegos relacionados</h3>
-        <div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/es/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Solitario Klondike</strong><span>Solitario clásico con flujo completo de arrastrar y soltar, modos de 1 o 3 cartas, auto-finish y soporte de deshacer.</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/es/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Solitario FreeCell</strong><span>FreeCell clásico con ocho columnas abiertas, cuatro celdas libres, cuatro fundaciones, pistas y deshacer.</span></span></a></div>
-      </div>
+      <div class="game-info-section" data-spider-growth-related="1.4.0" data-runtime-localize="off"><h3>Juegos relacionados</h3><p>Prueba otro tablero de solitario: ordena columnas en Klondike o planifica con las celdas libres de FreeCell.</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/es/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Solitario Klondike</strong><span>Organiza un tablero con la baraja completa y elige robar una o tres cartas; también incluye finalización automática y Deshacer.</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/es/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Solitario FreeCell</strong><span>Organiza ocho columnas, cuatro celdas temporales y cuatro bases; puedes usar Pista y Deshacer.</span></span></a></div></div><div class="game-info-section" data-spider-static-faq="1.4.0"><h3>Preguntas frecuentes</h3><dl><dt>¿Cuántas cartas se usan?</dt><dd>Solitario Spider usa dos barajas estándar: 104 cartas en total, con 54 en el tablero inicial y 50 en el mazo.</dd><dt>¿Cuántas columnas hay?</dt><dd>El tablero tiene 10 columnas. Las cuatro primeras empiezan con seis cartas y las otras seis con cinco.</dd><dt>¿Puedo apilar cartas de palos distintos?</dt><dd>Puedes ordenar valores de forma descendente aunque cambie el palo, pero solo se mueve o recoge junta una secuencia descendente del mismo palo.</dd><dt>¿Por qué no puedo repartir del mazo?</dt><dd>En Spider clásico, las 10 columnas deben tener al menos una carta antes de repartir otra fila.</dd><dt>¿Cuántas secuencias necesito para ganar?</dt><dd>Debes recoger las ocho secuencias completas del mismo palo, cada una de Rey a As.</dd><dt>¿Qué cambia entre las dificultades?</dt><dd>Los modos de uno, dos y cuatro palos cambian la mezcla de palos; las reglas de las 10 columnas no cambian.</dd><dt>¿Puedo reiniciar la misma partida?</dt><dd>Reiniciar la partida actual reutiliza la misma semilla. Nueva partida crea un reparto distinto.</dd><dt>¿Deshacer restaura una secuencia completada?</dt><dd>Sí. Deshacer restaura el tablero anterior y el número de secuencias completadas.</dd></dl></div>
 
 
-<div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántas cartas se usan?</dt><dd>Se usan dos barajas estándar: 104 cartas, con 54 en la mesa inicial y 50 en el mazo.</dd></div><div><dt>¿Cuántas columnas hay?</dt><dd>Hay diez columnas; las cuatro primeras empiezan con seis cartas y las otras seis con cinco.</dd></div><div><dt>¿Se pueden apilar palos diferentes?</dt><dd>Sí. Los rangos pueden bajar entre palos, pero solo una secuencia descendente del mismo palo puede moverse como grupo o recogerse.</dd></div><div><dt>¿Por qué se bloquea el mazo?</dt><dd>El Spider clásico exige que las diez columnas contengan al menos una carta antes de repartir una fila nueva.</dd></div><div><dt>¿Cuántas secuencias hacen falta para ganar?</dt><dd>Hay que recoger ocho secuencias del mismo palo de Rey a As.</dd></div><div><dt>¿Qué cambia entre las dificultades?</dt><dd>1 palo, 2 palos y 4 palos cambian la mezcla de palos, pero mantienen las mismas reglas de diez columnas.</dd></div><div><dt>¿Puedo reiniciar el mismo reparto?</dt><dd>Sí. Reiniciar partida usa la misma semilla; Nueva partida mezcla un reparto nuevo.</dd></div><div><dt>¿Deshacer restaura una secuencia completada?</dt><dd>Sí. Deshacer restaura la mesa anterior completa y el número de grupos recogidos.</dd></div></dl></div></div>
-    </section>
+</section>
   <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/es.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>

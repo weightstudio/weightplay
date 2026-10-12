@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="ru">
 <head>
-    <title id="pageTitle">Пасьянс Паук | WeightPlay</title>
+    <title>Пасьянс Паук | WeightPlay</title>
 
     <base href="/games/spider-solitaire/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-    <link rel="canonical" href="https://weightplay.com/ru/games/spider-solitaire/" id="metaCanonical" />
+    <link rel="canonical" href="https://weightplay.com/ru/games/spider-solitaire/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/spider-solitaire/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/spider-solitaire/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/spider-solitaire/" />
@@ -26,6 +26,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#0a1f3a" />
+
   <meta name="keywords" content="Spider Solitaire,Spider,Card Game,Solitaire,1 Suit,2 Suits,4 Suits" />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
@@ -41,12 +42,12 @@
   <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4" />
-  <meta id="metaDescription" name="description" content="Классический Пасьянс Паук на 1, 2 или 4 масти с плавным перетаскиванием, подсказками и отменой ходов." />
-    <meta id="ogTitle" property="og:title" content="Пасьянс Паук | WeightPlay" />
-    <meta id="ogDescription" property="og:description" content="Классический Пасьянс Паук на 1, 2 или 4 масти с плавным перетаскиванием, подсказками и отменой ходов." />
-    <meta id="ogUrl" property="og:url" content="https://weightplay.com/ru/games/spider-solitaire/" />
-    <meta id="twitterTitle" name="twitter:title" content="Пасьянс Паук | WeightPlay" />
-    <meta id="twitterDescription" name="twitter:description" content="Классический Пасьянс Паук на 1, 2 или 4 масти с плавным перетаскиванием, подсказками и отменой ходов." />
+  <meta name="description" content="Классический Пасьянс Паук на 1, 2 или 4 масти с плавным перетаскиванием, подсказками и отменой ходов." />
+    <meta property="og:title" content="Пасьянс Паук | WeightPlay" />
+    <meta property="og:description" content="Классический Пасьянс Паук на 1, 2 или 4 масти с плавным перетаскиванием, подсказками и отменой ходов." />
+    <meta property="og:url" content="https://weightplay.com/ru/games/spider-solitaire/" />
+    <meta name="twitter:title" content="Пасьянс Паук | WeightPlay" />
+    <meta name="twitter:description" content="Классический Пасьянс Паук на 1, 2 или 4 масти с плавным перетаскиванием, подсказками и отменой ходов." />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -119,9 +120,9 @@
       <header class="stage-header">
         <button id="stageBackBtn" class="stage-back" type="button" data-wp-return="stage" data-sl-aria="back" aria-label="Назад"><span aria-hidden="true">&larr;</span></button>
         <div class="stage-title-group">
-          <small data-stage-copy="kicker">Choose a difficulty</small>
-          <h1 data-stage-copy="title">Spider Solitaire</h1>
-          <p data-stage-copy="copy">Choose the suit count before entering the table.</p>
+          <small data-stage-copy="kicker">Выберите сложность</small>
+          <h1 data-stage-copy="title">Пасьянс Паук</h1>
+          <p data-stage-copy="copy">Выберите число мастей перед началом игры.</p>
         </div>
       </header>
       <div class="stage-content">
@@ -136,7 +137,7 @@
           <button id="restartBtn" class="secondary-btn" type="button" data-sl="restart">Начать эту игру заново</button>
           <button id="newGameBtn" class="secondary-btn" type="button" data-sl="new_game">Новая игра</button>
         </div>
-        <nav class="stage-tabs" role="tablist" aria-label="Stage navigation">
+        <nav class="stage-tabs" role="tablist" aria-label="Выбор сложности">
           <button type="button" role="tab" aria-selected="true" data-sl="difficulty_label">Сложность</button>
         </nav>
       </div>
@@ -155,7 +156,7 @@
       </header>
       <section id="boardShell" class="board-shell">
         <section id="foundationRow" class="foundation-row" data-sl-aria="foundations" aria-label="Готовые наборы"></section>
-        <section class="stock-row"><button id="stockPile" class="pile stock" type="button" data-sl-aria="stock" aria-label="Колода"></button><div class="stock-copy"><strong id="dealLabel" data-sl="deal">Раздать 10</strong><small id="dealsLeft"></small></div><div class="control-row" role="group"><button id="undoBtn" class="mini-btn" type="button" data-sl="undo">Отменить</button><button id="hintBtn" class="mini-btn" type="button" data-sl="hint">Подсказка</button><button id="copyReplayLinkBtn" class="mini-btn" type="button" data-sl="copy_replay_link">Copy replay link</button><button id="helpBtn" class="mini-btn" type="button" data-sl="help">Как играть</button></div></section><p id="stockPressureCue" class="stock-pressure-cue" role="status" aria-live="polite" data-runtime-localize="off"></p>
+        <section class="stock-row"><button id="stockPile" class="pile stock" type="button" data-sl-aria="stock" aria-label="Колода"></button><div class="stock-copy"><strong id="dealLabel" data-sl="deal">Раздать 10</strong><small id="dealsLeft"></small></div><div class="control-row" role="group"><button id="undoBtn" class="mini-btn" type="button" data-sl="undo">Отменить</button><button id="hintBtn" class="mini-btn" type="button" data-sl="hint">Подсказка</button><button id="copyReplayLinkBtn" class="mini-btn" type="button" data-sl="copy_replay_link">Копировать ссылку на расклад</button><button id="helpBtn" class="mini-btn" type="button" data-sl="help">Как играть</button></div></section><p id="stockPressureCue" class="stock-pressure-cue" role="status" aria-live="polite" data-runtime-localize="off"></p>
         <section id="tableauRow" class="tableau-row" data-sl-aria="tableau" aria-label="Стол"></section>
         <div id="sequenceFx" class="sequence-fx" aria-hidden="true"></div>
       </section>
@@ -169,7 +170,7 @@
 
   </div>
   <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
-    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Пасьянс Паук</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Карточная игра</span><span>Пасьянс-головоломка</span><span>Стратегия последовательностей</span></div></div>
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Пасьянс Паук</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Пасьянс Паук</span><span>Карточный пасьянс</span><span>Планирование последовательностей</span></div></div>
     <div class="game-info-sections">
       <section class="game-info-section"><h3 data-sl="target_label" data-i18n="target_label">Цель</h3><p data-sl="hero" data-i18n="hero">Собирайте одномастные ряды от K до A в десяти колонках. Выберите сложность и уберите все восемь наборов.</p></section>
       <section class="game-info-section"><h3 data-sl="help" data-i18n="help">Как играть</h3><ol>
@@ -184,14 +185,10 @@
 
 
 
-      <div class="game-info-section game-info-related-section" data-wp-spider-related="1.4.0">
-        <h3>Похожие игры</h3>
-        <div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/ru/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Клондайк Солитер</strong><span>Классический пасьянс с перетаскиванием карт, режимами взятия 1/3, автозавершением и отменой хода.</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/ru/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Пасьянс FreeCell</strong><span>Классический FreeCell с восемью открытыми колонками, четырьмя ячейками, четырьмя основаниями, подсказкой и отменой.</span></span></a></div>
-      </div>
+      <div class="game-info-section" data-spider-growth-related="1.4.0" data-runtime-localize="off"><h3>Похожие игры</h3><p>Попробуйте другой пасьянс: собирайте колонки в «Клондайке» или планируйте ходы с ячейками в «Фриселле».</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/ru/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Клондайк Солитер</strong><span>Собирайте расклад из полной колоды, выбирайте добор по одной или три карты; доступны автосборка и отмена хода.</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/ru/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Пасьянс FreeCell</strong><span>Раскладывайте карты в восьми колонках, используя четыре свободные ячейки и четыре масти; есть подсказка и отмена.</span></span></a></div></div><div class="game-info-section" data-spider-static-faq="1.4.0"><h3>Частые вопросы</h3><dl><dt>Сколько карт используется?</dt><dd>В «Пасьянсе Паук» используются две стандартные колоды — всего 104 карты: 54 в начальном раскладе и 50 в запасе.</dd><dt>Сколько колонок в раскладе?</dt><dd>В раскладе 10 колонок. В первых четырёх изначально по шесть карт, в остальных шести — по пять.</dd><dt>Можно ли класть карты разных мастей друг на друга?</dt><dd>Карты можно выстраивать по убыванию и между мастями, но вместе перемещается или убирается только убывающая последовательность одной масти.</dd><dt>Почему нельзя раздать карты из запаса?</dt><dd>В классическом «Пауке» перед новой раздачей в каждой из 10 колонок должна быть хотя бы одна карта.</dd><dt>Сколько последовательностей нужно собрать для победы?</dt><dd>Нужно убрать все восемь полных последовательностей одной масти от короля до туза.</dd><dt>Что меняется между уровнями сложности?</dt><dd>Режимы с одной, двумя и четырьмя мастями меняют их сочетание; правила 10 колонок остаются прежними.</dd><dt>Можно ли перезапустить ту же раздачу?</dt><dd>«Перезапустить текущую игру» использует то же начальное значение. «Новая игра» создаёт другую раздачу.</dd><dt>Отменяет ли ход восстановит собранную последовательность?</dt><dd>Да. Отмена хода восстанавливает предыдущее поле и число собранных последовательностей.</dd></dl></div>
 
 
-<div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Сколько используется карт?</dt><dd>Две стандартные колоды, всего 104 карты: 54 на столе и 50 в колоде.</dd></div><div><dt>Сколько колонок?</dt><dd>Десять колонок; первые четыре начинаются с шести карт, остальные — с пяти.</dd></div><div><dt>Можно ли складывать разные масти?</dt><dd>Да, ранги можно понижать между мастями, но вместе перемещается и убирается только серия одной масти.</dd></div><div><dt>Почему колода заблокирована?</dt><dd>Классический Паук требует карты во всех колонках перед новой раздачей.</dd></div><div><dt>Сколько серий нужно для победы?</dt><dd>Нужно убрать восемь последовательностей одной масти от Короля до Туза.</dd></div><div><dt>Чем отличаются сложности?</dt><dd>1, 2 и 4 масти меняют состав мастей, но сохраняют правила десяти колонок.</dd></div><div><dt>Можно повторить ту же раздачу?</dt><dd>Да. Перезапуск использует ту же раздачу, а Новая игра перемешивает новую.</dd></div><div><dt>Отмена возвращает завершённую серию?</dt><dd>Да, Отмена полностью восстанавливает предыдущий стол и число собранных серий.</dd></div></dl></div></div>
-    </section>
+</section>
   <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/ru.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
