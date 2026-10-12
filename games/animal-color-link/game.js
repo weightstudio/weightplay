@@ -224,7 +224,11 @@
     if(!$("#battle").hidden){$("#stageName").textContent=text("garden",{n:selected+1});$("#status").textContent=text("draw");renderBoard()}
   }
   localeOrder.forEach(code=>{const option=document.createElement("option");option.value=code;option.textContent=window.COLOR_LINK_LOCALES[code].label;$("#locale").append(option)});
-  $("#locale").onchange=event=>{locale=event.target.value;writeStore("wp-locale",locale);applyLocale()};
+  $("#locale").onchange=event=>{
+    locale=event.target.value;
+    if(window.WonderI18n?.setLocale){window.WonderI18n.setLocale(locale);return}
+    writeStore("wp-locale",locale);applyLocale()
+  };
   $("#start").onclick=()=>show("stage");
   $("#stage [data-back]").onclick=()=>show("main");
   $("#battle [data-back]").onclick=()=>{
