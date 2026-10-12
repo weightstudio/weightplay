@@ -21,13 +21,13 @@
     <section class="scene-wrap" aria-label="Shop scene">
       <div class="money"><span data-l10n="cash">SHOP CASH</span><b id="cash">$300</b></div>
       <canvas id="world" aria-label="Isometric shop. Drag an item to reposition it."></canvas>
-      <div class="scene-chip"><span class="live-dot"></span><span data-l10n="openDay">OPEN · DAY</span> <b id="day">1</b> <i data-l10n="noStages">NO STAGES</i></div>
+      <div class="scene-chip"><span class="live-dot"></span><span data-l10n="openDay">OPEN · DAY</span> <b id="day">1</b></div>
       <div class="toast" id="toast" aria-live="polite"></div>
       <div class="sale-pop" id="salePop" aria-live="polite"></div>
       <div class="scene-legend"><span><i class="dot guest"></i><span data-l10n="shoppers">Shoppers</span> <b id="guestCount">0</b></span><span><i class="dot queue"></i><span data-l10n="queue">Queue</span> <b id="queueCount">0</b></span></div>
     </section>
     <section class="shop-panel">
-      <div class="tabs" role="tablist"><button class="active" data-tab="shop" data-l10n="shop">Shop</button><button data-tab="supply" data-l10n="supply">Supply</button><button data-tab="growth" data-l10n="grow">Grow</button><button data-tab="staff" data-l10n="staff">Staff</button></div>
+      <div class="tabs" role="tablist" data-wp-frame-logical-actions="battle"><button class="active" data-tab="shop" data-wp-frame-action="tab" data-l10n="shop">Shop</button><button data-tab="supply" data-wp-frame-action="tab" data-l10n="supply">Supply</button><button data-tab="growth" data-wp-frame-action="tab" data-l10n="grow">Grow</button><button data-tab="staff" data-wp-frame-action="tab" data-l10n="staff">Staff</button></div>
       <div id="panel" class="cards" aria-live="polite"></div>
       <div id="placementControls" class="placement-controls" hidden><span id="placementStatus" role="status"></span><label for="placementProduct" data-l10n="productToDisplay">Product</label><select id="placementProduct"><option value="water" data-l10n="restockWater">Water</option><option value="snacks" data-l10n="restockSnack">Snacks</option><option value="fizz" data-l10n="premiumFizz">Fizz</option></select><button id="cancelPlacement" type="button" data-l10n="cancel">Cancel</button><button id="confirmPlacement" class="primary" type="button" disabled>Place · $0</button></div>
     </section>

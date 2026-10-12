@@ -6,7 +6,7 @@
     <base href="/games/spider-solitaire/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-    <link rel="canonical" href="https://weightplay.com/zh-cn/games/spider-solitaire/" />
+    <link rel="canonical" href="https://weightplay.com/zh-cn/games/spider-solitaire/" id="metaCanonical" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/spider-solitaire/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/spider-solitaire/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/spider-solitaire/" />
@@ -39,8 +39,24 @@
   <meta id="twitterTitle" name="twitter:title" content="Spider Solitaire Online - Play Free" />
   <meta id="twitterDescription" name="twitter:description" content="Classic Spider Solitaire with three difficulty levels, smooth drag-and-drop, Hint, and Undo." />
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp" />
-  <link id="metaCanonical" rel="canonical" href="https://weightplay.com/en/games/spider-solitaire/" />
-  
+
+  <script id="spiderStructuredData" type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Spider Solitaire Online",
+      "url": "https://weightplay.com/en/games/spider-solitaire/",
+      "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
+      "description": "Classic Spider Solitaire with 1 Suit, 2 Suits, and 4 Suits, smooth drag-and-drop, Hint, Undo, and responsive play.",
+      "publisher": { "@type": "Organization", "name": "WeightStudio" },
+      "operatingSystem": "Web Browser",
+      "genre": ["Solitaire", "Card Game", "Puzzle", "Strategy"],
+      "applicationCategory": "Game",
+      "isAccessibleForFree": true,
+      "inLanguage": "en",
+      "audience": { "@type": "Audience", "audienceType": "General players" }
+    }
+  </script>
   <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
@@ -48,7 +64,7 @@
   <link rel="stylesheet" href="style.css?v=20260909-spider-deck-v39" />
   <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4" />
   <meta name="description" content="经典蜘蛛接龙，提供 1、2、4 花色，流畅拖拽、提示与不限次数撤销。" />
     <meta property="og:title" content="蜘蛛接龙 | WeightPlay" />
     <meta property="og:description" content="经典蜘蛛接龙，提供 1、2、4 花色，流畅拖拽、提示与不限次数撤销。" />
@@ -95,15 +111,15 @@
   <div id="mainGroup">
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
-      <a class="main-return" href="/en/" data-wp-return="main" data-sl-aria="back"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+      <a class="main-return" href="/en/" data-wp-return="main" data-sl-aria="back" aria-label="Back"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
       <strong data-sl="title">Spider Solitaire</strong>
       <div class="header-utilities">
         <div class="audio-control settings-control">
-          <button id="audioMenuBtn" class="header-icon-btn settings-menu-btn" type="button" aria-expanded="false" aria-controls="audioPopover" data-sl-aria="settings"><span aria-hidden="true">⚙</span></button>
+          <button id="audioMenuBtn" class="header-icon-btn settings-menu-btn" type="button" aria-expanded="false" aria-controls="audioPopover" data-sl-aria="settings" aria-label="Settings"><span aria-hidden="true">⚙</span></button>
           <div id="audioPopover" class="audio-popover settings-popover is-hidden" role="group">
             <strong class="settings-title" data-sl="settings">Settings</strong>
             <button id="soundBtn" class="audio-setting-row" type="button" aria-pressed="true"><span class="audio-row-icon" aria-hidden="true">SFX</span><span data-sl="sound">Sound Effects</span><span id="soundStateText" class="visually-hidden"></span><span class="audio-switch" aria-hidden="true"></span></button>
-            <label class="locale-box settings-locale-row"><span aria-hidden="true">◎</span><span data-sl="language">Language</span><select id="localeSelect" data-sl-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
+            <label class="locale-box settings-locale-row"><span aria-hidden="true">◎</span><span data-sl="language">Language</span><select id="localeSelect" data-sl-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
           </div>
         </div>
       </div>
@@ -125,7 +141,7 @@
   <section id="stageScreen" class="stage-screen" data-screen="stage" hidden>
     <div class="stage-canvas" data-wp-logical-stage-canvas data-wp-standard-stage-screen data-wp-canvas-max-width="920">
       <header class="stage-header">
-        <button id="stageBackBtn" class="stage-back" type="button" data-wp-return="stage" data-sl-aria="back"><span aria-hidden="true">&larr;</span></button>
+        <button id="stageBackBtn" class="stage-back" type="button" data-wp-return="stage" data-sl-aria="back" aria-label="Back"><span aria-hidden="true">&larr;</span></button>
         <div class="stage-title-group">
           <small data-stage-copy="kicker">Choose a difficulty</small>
           <h1 data-stage-copy="title">Spider Solitaire</h1>
@@ -154,8 +170,8 @@
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas>
       <header class="battle-header">
-        <button id="battleBackBtn" type="button" data-wp-return="battle" data-sl-aria="back">&larr;</button>
-        <button id="battleSoundBtn" class="battle-utility" type="button" data-wp-battle-utility aria-pressed="true" data-sl-aria="sound">♫</button>
+        <button id="battleBackBtn" type="button" data-wp-return="battle" data-sl-aria="back" aria-label="Back">&larr;</button>
+        <button id="battleSoundBtn" class="battle-utility" type="button" data-wp-battle-utility aria-pressed="true" data-sl-aria="sound" aria-label="Sound Effects">♫</button>
         <div class="header-stat"><small data-sl="moves">Moves</small><strong id="moveCount">0</strong></div>
         <div class="header-stat"><small data-sl="time">Time</small><strong id="timeValue">00:00</strong></div>
         <div class="header-stat"><small data-sl="score">Score</small><strong id="scoreValue">500</strong></div>
@@ -163,7 +179,7 @@
       </header>
       <section id="boardShell" class="board-shell">
         <section id="foundationRow" class="foundation-row" data-sl-aria="foundations" aria-label="Completed sets"></section>
-        <section class="stock-row"><button id="stockPile" class="pile stock" type="button" data-sl-aria="stock"></button><div class="stock-copy"><strong id="dealLabel" data-sl="deal">Deal 10</strong><small id="dealsLeft"></small></div><div class="control-row" role="group"><button id="undoBtn" class="mini-btn" type="button" data-sl="undo">Undo</button><button id="hintBtn" class="mini-btn" type="button" data-sl="hint">Hint</button><button id="copyReplayLinkBtn" class="mini-btn" type="button" data-sl="copy_replay_link">Copy replay link</button><button id="helpBtn" class="mini-btn" type="button" data-sl="help">How to Play</button></div></section><p id="stockPressureCue" class="stock-pressure-cue" role="status" aria-live="polite" data-runtime-localize="off"></p>
+        <section class="stock-row"><button id="stockPile" class="pile stock" type="button" data-sl-aria="stock" aria-label="Stock pile"></button><div class="stock-copy"><strong id="dealLabel" data-sl="deal">Deal 10</strong><small id="dealsLeft"></small></div><div class="control-row" role="group"><button id="undoBtn" class="mini-btn" type="button" data-sl="undo">Undo</button><button id="hintBtn" class="mini-btn" type="button" data-sl="hint">Hint</button><button id="copyReplayLinkBtn" class="mini-btn" type="button" data-sl="copy_replay_link">Copy replay link</button><button id="helpBtn" class="mini-btn" type="button" data-sl="help">How to Play</button></div></section><p id="stockPressureCue" class="stock-pressure-cue" role="status" aria-live="polite" data-runtime-localize="off"></p>
         <section id="tableauRow" class="tableau-row" data-sl-aria="tableau" aria-label="Tableau"></section>
         <div id="sequenceFx" class="sequence-fx" aria-hidden="true"></div>
       </section>
@@ -171,13 +187,13 @@
     <div class="battle-ad-reserve" aria-hidden="true"></div>
     <div id="tutorialOverlay" class="dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card tutorial-card"><span class="dialog-kicker" data-sl="learn_kicker">Quick Start</span><h2 id="tutorialTitle" data-sl="learn_title">Spider in five moves</h2><div class="tutorial-visual" aria-hidden="true"><div class="tutorial-visual-row"><span class="tutorial-mini-card tutorial-k">K</span><span class="tutorial-arrow">↓</span><span class="tutorial-mini-card">Q</span><span class="tutorial-arrow">↓</span><span class="tutorial-mini-card tutorial-a">A</span></div><div class="tutorial-visual-row"><span class="tutorial-mini-card tutorial-red">9</span><span class="tutorial-arrow">→</span><span class="tutorial-drop-zone">10</span><span class="tutorial-suit-dot"></span><span class="tutorial-mini-card tutorial-red">8</span></div><div class="tutorial-visual-row tutorial-visual-stock"><span class="tutorial-stock-icon">▦</span><span class="tutorial-arrow">→</span><span class="tutorial-column-dots"><i></i><i></i><i></i><i></i><i></i></span><strong>× 10</strong></div><div class="tutorial-complete-badge">K → A <span>× 8</span></div></div><ol><li data-sl="tip_1">Build cards downward from K to A.</li><li data-sl="tip_2">Only same-suit runs move together.</li><li data-sl="tip_3">Finish a same-suit K → A run to clear it.</li><li data-sl="tip_4">Deal one card to every column from Stock.</li><li data-sl="tip_5">Fill every empty column before dealing.</li></ol><p id="difficultyCoach" class="difficulty-coach" role="note"></p><div class="dialog-actions"><button id="tutorialSkip" class="secondary-btn" type="button" data-sl="skip">Skip</button><button id="tutorialDone" class="primary-btn" type="button" data-sl="got_it">Got it</button></div></div></div>
     <div id="confirmOverlay" class="dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" hidden><div class="dialog-card"><h2 id="confirmTitle" data-sl="confirm_title">Start a new game?</h2><p data-sl="confirm_copy">Your current run will stay available through Undo only until you leave it.</p><div class="dialog-actions"><button id="confirmNo" class="secondary-btn" type="button" data-sl="cancel">Cancel</button><button id="confirmYes" class="primary-btn" type="button" data-sl="confirm">New Game</button></div></div></div>
-    <div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><h2 id="resultTitle" data-sl="victory">Spider Complete!</h2><p id="resultText"></p><div class="result-actions"><button id="resultNewGame" class="primary-btn" type="button" data-sl="new_game">New Game</button><button id="resultRestart" class="secondary-btn" type="button" data-sl="restart">Restart</button><button id="resultClose" class="secondary-btn" type="button" data-sl="return">Return</button></div></div></div>
+    <div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><h2 id="resultTitle" data-sl="victory">Spider Complete!</h2><p id="resultText"></p><div class="result-actions"><button id="resultNewGame" class="primary-btn" type="button" data-sl="new_game">New Game</button><button id="resultRestart" class="secondary-btn" type="button" data-sl="restart">Restart Current Game</button><button id="resultClose" class="secondary-btn" type="button" data-sl="return">Return</button></div></div></div>
     <div id="hintOverlay" class="hint-overlay" role="status" aria-live="polite" hidden></div><div id="dragLayer" class="drag-layer" aria-hidden="true"></div>
   </section>
 
   </div>
   <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
-    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Spider Solitaire</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>纸牌</span><span>益智</span><span>策略</span><span>家庭</span></div></div>
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Spider Solitaire</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Card game</span><span>Solitaire puzzle</span><span>Sequence strategy</span></div></div>
     <div class="game-info-sections">
       <section class="game-info-section"><h3 data-sl="target_label" data-i18n="target_label">Target</h3><p data-sl="hero" data-i18n="hero">构建跨十列的同花色 K 到 A 序列。选择花色数，然后清除所有八组。</p></section>
       <section class="game-info-section"><h3 data-sl="help" data-i18n="help">How to Play</h3><ol>
@@ -188,18 +204,25 @@
         <li data-sl="tip_5" data-i18n="tip_5">交易前填写每个空栏。</li>
       </ol></section>
       <section class="game-info-section"><h3 data-sl="controls_label" data-i18n="controls_label">Controls</h3><p data-sl="controls" data-i18n="controls">拖动一张牌或同花色跑。当一个目的地明确时点击。</p></section>
-    <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>使用多少张牌？</dt><dd>使用两副标准牌，共 104 张；初始牌桌有 54 张，牌库有 50 张。</dd></div><div><dt>有多少列？</dt><dd>共有十列；前四列从六张开始，其余六列从五张开始。</dd></div><div><dt>不同花色可以叠放吗？</dt><dd>可以按点数跨花色向下叠放，但只有同花色连续牌组能整组移动或收走。</dd></div><div><dt>为什么牌库不能发牌？</dt><dd>经典蜘蛛接龙要求十列都有牌后，才能发出下一列。</dd></div><div><dt>完成几组才能获胜？</dt><dd>必须收走八组同花色 K 到 A。</dd></div><div><dt>难度有什么区别？</dt><dd>1、2、4 花色改变花色组成，但保留相同的十列规则。</dd></div><div><dt>可以重新玩同一副牌吗？</dt><dd>可以，重新开始会使用同一副牌；新游戏会重新洗牌。</dd></div><div><dt>撤销会还原完成牌组吗？</dt><dd>会，撤销会完整还原上一个牌桌与完成牌组数。</dd></div></dl></div></div>
-  </section>
-  <script src="../../src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
+    </div>
+
+
+      <div class="game-info-section game-info-related-section" data-wp-spider-related="1.4.0">
+        <h3>Related Games</h3>
+        <div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/en/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Klondike Solitaire</strong><span>Classic solitaire with a full deck drag-and-drop flow, draw 1/3 modes, auto-finish, and undo support.</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/en/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>FreeCell Solitaire</strong><span>Classic FreeCell with eight open columns, four temporary cells, four foundations, Hint, Undo, and touch-friendly play.</span></span></a></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>使用多少张牌？</dt><dd>使用两副标准牌，共 104 张；初始牌桌有 54 张，牌库有 50 张。</dd></div><div><dt>有多少列？</dt><dd>共有十列；前四列从六张开始，其余六列从五张开始。</dd></div><div><dt>不同花色可以叠放吗？</dt><dd>可以按点数跨花色向下叠放，但只有同花色连续牌组能整组移动或收走。</dd></div><div><dt>为什么牌库不能发牌？</dt><dd>经典蜘蛛接龙要求十列都有牌后，才能发出下一列。</dd></div><div><dt>完成几组才能获胜？</dt><dd>必须收走八组同花色 K 到 A。</dd></div><div><dt>难度有什么区别？</dt><dd>1、2、4 花色改变花色组成，但保留相同的十列规则。</dd></div><div><dt>可以重新玩同一副牌吗？</dt><dd>可以，重新开始会使用同一副牌；新游戏会重新洗牌。</dd></div><div><dt>撤销会还原完成牌组吗？</dt><dd>会，撤销会完整还原上一个牌桌与完成牌组数。</dd></div></dl></div></div>
+
+</section>
+  <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
-  <script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/runtime-locales/zh-cn.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1&wp-audio=1.0.0"></script>
   <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+  <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
   <script src="frame.js?v=20260913-spider-block-v40"></script>
   <script src="game.js?v=20260913-spider-block-v40&wp-audio=1.0.0"></script>
   <script src="analytics-ownership.js?v=20260913-spider-block-v40"></script>

@@ -13,3 +13,60 @@ ru:{label:"Русский",shortTitle:"ТАНГРАМ",language:"Язык",retur
 hi:{label:"हिन्दी",shortTitle:"टैंग्राम",language:"भाषा",returnLobby:"WeightPlay पर लौटें",back:"वापस",coverAlt:"रंगीन टैंग्राम जानवर की आकृति",kicker:"पैंको की आकार यात्रा",title:"Panko's Tangram Trail",summary:"सात टुकड़ों को घुमाकर जानवर की आकृति में सही बैठाएँ।",start:"खेल शुरू करें",guideTitle:"कैसे खेलें",guideBody:"टुकड़े को हल्की आकृति पर खींचें और 45 डिग्री घुमाने के लिए छुएँ।",choose:"आकार चुनें",stageList:"स्तर सूची",open:"आकार खोलें",shape:"आकार {n}",progress:"{done}/30 पूरे",locked:"पहले पिछला आकार पूरा करें।",chapter:"अध्याय {n}",placed:"रखे गए {done}/7",boardLabel:"टैंग्राम बोर्ड",pieceLabel:"टैंग्राम टुकड़ा {n}",hint:"संकेत",reset:"रीसेट",status:"हर टुकड़ा उसकी आकृति में रखें।",snap:"टुकड़ा रख दिया।",wrong:"टुकड़े के केंद्र की स्थिति और कोण जाँचें।",complete:"आकार पूरा",resultTitle:"नया जानवर दिखा!",resultBody:"आकार {n}, {moves} चाल में पूरा।",retry:"फिर खेलें",next:"अगला आकार",allDone:"सभी 30 आकार पूरे!"},
 ar:{label:"العربية",shortTitle:"تانغرام",language:"اللغة",returnLobby:"العودة إلى WeightPlay",back:"رجوع",coverAlt:"ظل حيوان ملون من قطع تانغرام",kicker:"مسار الأشكال مع بانكو",title:"Panko's Tangram Trail",summary:"حرّك القطع السبع وأدرها حتى تكتمل هيئة الحيوان.",start:"ابدأ اللعب",guideTitle:"طريقة اللعب",guideBody:"اسحب القطعة إلى مخططها الباهت واضغط لتدويرها 45 درجة. يجب أن تتطابق كل القطع.",choose:"اختر شكلًا",stageList:"قائمة المراحل",open:"افتح الشكل",shape:"الشكل {n}",progress:"اكتمل {done}/30",locked:"أكمل الشكل السابق أولًا.",chapter:"الفصل {n}",placed:"وُضعت {done}/7",boardLabel:"لوحة تانغرام",pieceLabel:"قطعة تانغرام {n}",hint:"تلميح",reset:"إعادة الضبط",status:"ضع كل قطعة داخل مخططها.",snap:"وُضعت القطعة.",wrong:"تحقق من موضع مركز القطعة وزاويتها.",complete:"اكتمل الشكل",resultTitle:"ظهر حيوان جديد!",resultBody:"اكتمل الشكل {n} في {moves} حركة.",retry:"العب مجددًا",next:"الشكل التالي",allDone:"اكتملت الأشكال الثلاثون!"}
 };
+
+// Page-level facts are authored beside the runtime dictionaries so every
+// generated locale route can present the same five verified game facts.
+Object.assign(window.TANGRAM_LOCALES, {
+  en: {
+    geoFacts: [["Gameplay", "Seven-Piece Spatial Puzzle"], ["Genre", "Puzzle · Spatial · Animal"], ["Difficulty", "Easy to Challenging"], ["Estimated Play Time", "2-6 minutes per shape"], ["Skills Trained", "Spatial Reasoning · Visual Planning · Problem Solving"]],
+    geoAccess: "Play for free in your browser; no download is required. WeightPlay is the game platform by WeightStudio."
+  },
+  "zh-Hant": {
+    geoFacts: [["玩法", "七片空間拼圖"], ["類型", "益智 · 空間 · 動物"], ["難度", "簡單至具挑戰性"], ["預估遊玩時間", "每個圖形約 2 至 6 分鐘"], ["練習能力", "空間推理 · 視覺規劃 · 問題解決"]],
+    geoAccess: "可在瀏覽器免費遊玩，無需下載。WeightPlay 是 WeightStudio 的遊戲平台。"
+  },
+  "zh-Hans": {
+    geoFacts: [["玩法", "七片空间拼图"], ["类型", "益智 · 空间 · 动物"], ["难度", "简单至具挑战性"], ["预估游玩时间", "每个图形约 2 至 6 分钟"], ["练习能力", "空间推理 · 视觉规划 · 问题解决"]],
+    geoAccess: "可在浏览器免费游玩，无需下载。WeightPlay 是 WeightStudio 的游戏平台。"
+  },
+  ja: {
+    geoFacts: [["ゲーム内容", "7ピース空間パズル"], ["ジャンル", "パズル · 空間 · 動物"], ["難易度", "やさしい〜むずかしい"], ["目安時間", "1つの形状につき2〜6分"], ["身につく力", "空間推論 · 視覚的プランニング · 問題解決"]],
+    geoAccess: "ブラウザーで無料で遊べ、ダウンロードは不要です。WeightPlay は WeightStudio のゲームプラットフォームです。"
+  },
+  ko: {
+    geoFacts: [["게임플레이", "일곱 조각 공간 퍼즐"], ["장르", "퍼즐 · 공간 · 동물"], ["난이도", "쉬움부터 도전적인 단계까지"], ["예상 시간", "모양당 2~6분"], ["연습 능력", "공간 추론 · 시각적 계획 · 문제 해결"]],
+    geoAccess: "브라우저에서 무료로 플레이할 수 있으며 다운로드가 필요하지 않습니다. WeightPlay는 WeightStudio의 게임 플랫폼입니다."
+  },
+  es: {
+    geoFacts: [["Mecánica", "Rompecabezas espacial de siete piezas"], ["Género", "Rompecabezas · espacial · animales"], ["Dificultad", "De fácil a desafiante"], ["Tiempo estimado", "2-6 minutos por figura"], ["Habilidades que se practican", "Razonamiento espacial · planificación visual · resolución de problemas"]],
+    geoAccess: "Juega gratis en tu navegador, sin descargas. WeightPlay es la plataforma de juegos de WeightStudio."
+  },
+  "pt-BR": {
+    geoFacts: [["Jogabilidade", "Quebra-cabeça espacial de sete peças"], ["Gênero", "Quebra-cabeça · espacial · animais"], ["Dificuldade", "De fácil a desafiador"], ["Tempo estimado", "2 a 6 minutos por forma"], ["Habilidades praticadas", "Raciocínio espacial · planejamento visual · resolução de problemas"]],
+    geoAccess: "Jogue grátis no navegador, sem precisar baixar nada. WeightPlay é a plataforma de jogos da WeightStudio."
+  },
+  fr: {
+    geoFacts: [["Principe du jeu", "Puzzle spatial à sept pièces"], ["Genre", "Puzzle · spatial · animaux"], ["Difficulté", "De facile à corsé"], ["Temps estimé", "2 à 6 minutes par forme"], ["Compétences mobilisées", "Raisonnement spatial · planification visuelle · résolution de problèmes"]],
+    geoAccess: "Jouez gratuitement dans votre navigateur, sans téléchargement. WeightPlay est la plateforme de jeux de WeightStudio."
+  },
+  de: {
+    geoFacts: [["Spielprinzip", "Räumliches Puzzle mit sieben Teilen"], ["Genre", "Puzzle · räumlich · Tiere"], ["Schwierigkeit", "Leicht bis anspruchsvoll"], ["Geschätzte Spielzeit", "2–6 Minuten pro Form"], ["Trainierte Fähigkeiten", "Räumliches Denken · visuelle Planung · Problemlösung"]],
+    geoAccess: "Kostenlos im Browser spielen, ohne Download. WeightPlay ist die Spieleplattform von WeightStudio."
+  },
+  it: {
+    geoFacts: [["Meccanica", "Puzzle spaziale con sette pezzi"], ["Genere", "Puzzle · spaziale · animali"], ["Difficoltà", "Da facile a impegnativo"], ["Tempo stimato", "2–6 minuti per forma"], ["Abilità esercitate", "Ragionamento spaziale · pianificazione visiva · risoluzione dei problemi"]],
+    geoAccess: "Gioca gratis nel browser, senza download. WeightPlay è la piattaforma di giochi di WeightStudio."
+  },
+  ru: {
+    geoFacts: [["Игровой процесс", "Пространственная головоломка из семи деталей"], ["Жанр", "Головоломка · пространственная · животные"], ["Сложность", "От простой к сложной"], ["Время игры", "2–6 минут на фигуру"], ["Развиваемые навыки", "Пространственное мышление · визуальное планирование · решение задач"]],
+    geoAccess: "Играйте бесплатно в браузере — загрузка не нужна. WeightPlay — игровая платформа WeightStudio."
+  },
+  hi: {
+    geoFacts: [["खेल का तरीका", "सात टुकड़ों वाली स्थानिक पहेली"], ["शैली", "पहेली · स्थानिक · पशु"], ["कठिनाई", "आसान से चुनौतीपूर्ण"], ["अनुमानित समय", "हर आकृति के लिए 2–6 मिनट"], ["अभ्यास किए जाने वाले कौशल", "स्थानिक सोच · दृश्य योजना · समस्या समाधान"]],
+    geoAccess: "अपने ब्राउज़र में मुफ़्त खेलें; डाउनलोड की ज़रूरत नहीं। WeightPlay, WeightStudio का गेम प्लेटफ़ॉर्म है।"
+  },
+  ar: {
+    geoFacts: [["طريقة اللعب", "لغز مكاني من سبع قطع"], ["النوع", "ألغاز · مكاني · حيوانات"], ["الصعوبة", "من سهل إلى متدرّج التحدي"], ["الوقت التقديري", "٢–٦ دقائق لكل شكل"], ["المهارات التي تتم ممارستها", "التفكير المكاني · التخطيط البصري · حل المشكلات"]],
+    geoAccess: "العب مجانًا في المتصفح، دون الحاجة إلى تنزيل. WeightPlay هي منصة الألعاب التابعة لـ WeightStudio."
+  }
+});

@@ -1,4 +1,4 @@
-import { COPY, RELATED, ROUTES, SOURCE_URL, COMPARABLE_NAME, VERSION } from './seo-growth-data.mjs';
+import { COPY, RELATED, ROUTES, VERSION } from './seo-growth-data.mjs';
 
 const alias = { 'zh-tw':'zh-Hant', 'zh-cn':'zh-Hans', 'pt-br':'pt-BR' };
 const fallbackTitle = { 'animal-color-springs':'Color Springs', 'animal-color-link':'Color Link Garden' };
@@ -15,10 +15,13 @@ function text(tag, value, className='') {
 }
 
 function ensureTags(guide, copy) {
-  let wrap = guide.querySelector('[data-hexa-growth-tags]');
+  // The locale route ships its own localized tag row for first-response SEO.
+  // Reuse that same row during runtime locale changes instead of appending a
+  // second row beside it.
+  let wrap = guide.querySelector('.game-info-tags[data-wp-gameplay-tags], [data-hexa-growth-tags]');
   if (!wrap) {
     wrap = document.createElement('div');
-    wrap.dataset.hexaGrowthTags = VERSION;
+    wrap.dataset.wpGameplayTags = VERSION;
     wrap.className = 'game-info-tags';
     const heading = guide.querySelector('h2');
     heading?.insertAdjacentElement('afterend', wrap);
@@ -52,25 +55,6 @@ function ensureRelated(guide, locale, copy) {
   section.append(cards);
 }
 
-function ensureComparison(guide, locale, copy) {
-  let section = guide.querySelector('[data-wp-market-comparison]');
-  if (!section) {
-    section = document.createElement('article');
-    section.className = 'game-info-section';
-    guide.append(section);
-  }
-  section.dataset.wpMarketComparison = VERSION;
-  section.dataset.comparisonLocale = locale;
-  section.dataset.runtimeLocalize = 'off';
-  section.replaceChildren();
-  section.append(text('h3', copy.comparisonTitle));
-  const tags = document.createElement('div'); tags.className = 'game-info-tags'; tags.append(text('span', COMPARABLE_NAME));
-  section.append(tags, text('p', copy.comparison), text('p', copy.disclaimer));
-  const p = document.createElement('p');
-  const a = document.createElement('a'); a.href = SOURCE_URL; a.rel = 'nofollow noopener noreferrer'; a.target = '_blank'; a.textContent = copy.source;
-  p.append(a); section.append(p);
-}
-
 function syncShell(copy) {
   document.querySelector('#guide')?.setAttribute('aria-label', copy.shell.guideAria);
   document.querySelector('.lobby-return')?.setAttribute('aria-label', copy.shell.back);
@@ -90,7 +74,6 @@ export function applyHexaGrowth(locale = activeLocale()) {
   guide.dataset.wpGuideDepth = 'true';
   ensureTags(guide, copy);
   ensureRelated(guide, locale, copy);
-  ensureComparison(guide, locale, copy);
   syncShell(copy);
 }
 
