@@ -7356,3 +7356,54 @@ window.WONDER_LOBBY.games.push({
   meta: { en: ["Robot Pup", "Spatial Puzzle"], "zh-Hant": ["機器狗", "空間解謎"] },
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("robot-dog-showtime");
+
+// Owner-requested planned General game identity for the persistent block-animal
+// convenience-store prototype. The internal trial route is added only after a
+// real playable route and approved entrance art exist.
+const animalBlockmartTitle = {
+  __localizedExact: true,
+  en: "Animal Blockmart", "zh-Hant": "動物方塊便利店", "zh-Hans": "动物方块便利店",
+  ja: "どうぶつブロックマート", ko: "동물 블록 마트", es: "Minimercado de Bloques",
+  "pt-BR": "Minimercado de Blocos", fr: "Mini-marché des Blocs", de: "Blocktier-Mini-Markt",
+  it: "Minimarket a Blocchi", ru: "Блочный мини-маркет", hi: "ब्लॉक पशु मिनी-मार्ट",
+  ar: "متجر الحيوانات المكعبة",
+};
+const animalBlockmartType = {
+  __localizedExact: true,
+  en: "Convenience Store Management", "zh-Hant": "便利店經營", "zh-Hans": "便利店经营",
+  ja: "コンビニ経営", ko: "편의점 경영", es: "Gestión de minimercado",
+  "pt-BR": "Gestão de minimercado", fr: "Gestion d’épicerie de quartier",
+  de: "Mini-Markt-Management", it: "Gestione di un minimarket",
+  ru: "Управление мини-маркетом", hi: "मिनी-मार्ट प्रबंधन", ar: "إدارة متجر صغير",
+};
+const animalBlockmartDescription = {
+  __localizedExact: true,
+  en: "Arrange a tiny block-built shop, stock everyday favorites, serve animal neighbors, and reinvest in a bigger, busier store.",
+  "zh-Hant": "擺好方塊貨架、補滿日常商品，服務動物街坊，再把收入投入更大、更忙碌的店面。",
+  "zh-Hans": "摆好方块货架、补满日常商品，服务动物街坊，再把收入投入更大、更忙碌的店面。",
+  ja: "ブロック造りの小さなお店に棚を並べ、商品を補充して動物のご近所さんを迎えよう。売上でお店を広げよう。",
+  ko: "블록으로 지은 작은 가게에 진열대를 놓고 상품을 채워 동물 이웃을 맞이하세요. 매출로 가게를 넓혀 보세요.",
+  es: "Organiza una tienda de bloques, repón productos cotidianos y atiende a tus vecinos animales para ampliar el local.",
+  "pt-BR": "Organize uma lojinha de blocos, reponha produtos do dia a dia e atenda aos vizinhos animais para ampliar a loja.",
+  fr: "Aménagez une boutique en blocs, réapprovisionnez les essentiels et accueillez vos voisins animaux pour agrandir le magasin.",
+  de: "Richte einen kleinen Blockladen ein, fülle Alltagswaren auf und bediene tierische Nachbarn, um den Laden zu vergrößern.",
+  it: "Sistema un negozio a blocchi, rifornisci i prodotti quotidiani e servi i vicini animali per ampliare il locale.",
+  ru: "Расставляйте полки в блочном магазинчике, пополняйте товары и обслуживайте соседей-животных, чтобы расширить магазин.",
+  hi: "ब्लॉक की छोटी दुकान सजाएँ, रोज़मर्रा का सामान भरें और पशु-पड़ोसियों की सेवा करके दुकान बढ़ाएँ।",
+  ar: "رتّب متجرًا صغيرًا من المكعبات، وجدّد السلع اليومية، واستقبل جيرانك من الحيوانات لتوسيع المتجر.",
+};
+const animalBlockmartStatusText = {
+  en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開",
+  ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible",
+  de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
+};
+window.WONDER_LOBBY.games.push({
+  id: "animal-blockmart", audience: "general", status: "planned", internalOnly: true,
+  title: animalBlockmartTitle, statusText: animalBlockmartStatusText, type: animalBlockmartType,
+  description: animalBlockmartDescription,
+  categories: ["Simulation", "Management", "Animal Games"],
+  skills: ["Planning", "Resource Balance", "Spatial Planning"], ages: ["general"],
+  href: "games/animal-blockmart/",
+  meta: { en: ["Store Management", "Growing Shop"], "zh-Hant": ["便利店經營", "擴大店面"] },
+});
+window.WONDER_LOBBY.audiences.generalGameIds.push("animal-blockmart");
