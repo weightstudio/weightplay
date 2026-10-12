@@ -134,10 +134,7 @@ body.general-lobby-page #heroGamesSection { order: 8; }
 /* All three halls share one hero geometry at each viewport size. */
 body.general-lobby-page .general-hero-scene { width: 100%; height: 100%; object-fit: cover; }
 body.general-lobby-page[data-game-hall="topics"] .general-hero-scene { object-position: 66% center; }
-body.general-lobby-page[data-game-hall="topics"] :is(.lobby-search-row,.library-tabs,.vibe-strip,.desktop-filter-reset,.desktop-filter-rail) { display: none !important; }
-@media (min-width: 1120px) {
-  body.general-lobby-page[data-game-hall="topics"] .lobby-shell { padding-inline-start: 0 !important; }
-}
+body.general-lobby-page [data-topic-filter][hidden] { display: none !important; }
 body.general-lobby-page[data-game-hall="topics"] .lobby-hero > .lobby-hero-copy { top: 26px !important; width: min(60%, 720px) !important; max-width: min(60%, 720px) !important; }
 body.general-lobby-page[data-game-hall="topics"] .lobby-hero > .weightplay-version-badge { top: 12px !important; right: 16px !important; bottom: auto !important; left: auto !important; }
 body.general-lobby-page[data-game-hall="topics"] .game-hall-switch button[data-hall-tab="topics"] small { display: none; }
@@ -145,7 +142,7 @@ body.general-lobby-page[data-game-hall="topics"] .game-hall-switch button[data-h
   body.general-lobby-page[data-game-hall="topics"] .lobby-hero > .lobby-hero-copy { width: min(66%, 440px) !important; max-width: min(66%, 440px) !important; }
 }
 html[dir="rtl"] body.general-lobby-page[data-game-hall="topics"] .lobby-hero > .weightplay-version-badge { right: auto !important; left: 16px !important; }
-body.general-lobby-page[data-game-hall="topics"] #heroGamesSection { order: 2; margin-top: 12px; }
+body.general-lobby-page[data-game-hall="topics"] #heroGamesSection { margin-top: 12px; }
 body.general-lobby-page[data-game-hall="topics"] #heroGamesSection .section-heading { margin-bottom: 8px; }
 body.general-lobby-page[data-game-hall="topics"] #heroGames { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
 body.general-lobby-page[data-game-hall="topics"] #heroGames .hero-game-card { min-width: 0; }
@@ -154,13 +151,6 @@ body.general-lobby-page[data-game-hall="topics"] #heroGames .hero-game-art { asp
   body.general-lobby-page[data-game-hall="topics"] #heroGames .hero-game-art { aspect-ratio: 1.35; }
 }
 @media (max-width:900px) and (max-height:500px) and (orientation:landscape) {
-  body.general-lobby-page[data-game-hall="topics"] .lobby-topbar { min-height:52px; margin-bottom:8px; }
-  body.general-lobby-page[data-game-hall="topics"] .lobby-topbar .brand-logo { width:26px; height:26px; }
-  body.general-lobby-page[data-game-hall="topics"] .lobby-topbar h1 { font-size:18px; }
-  body.general-lobby-page[data-game-hall="topics"] .game-hall-switch { margin-bottom:8px; gap:8px; }
-  body.general-lobby-page[data-game-hall="topics"] .game-hall-switch button { min-height:56px; padding:8px 8px 8px 38px; }
-  body.general-lobby-page[data-game-hall="topics"] .game-hall-switch span { font-size:13px; }
-  body.general-lobby-page[data-game-hall="topics"] .game-hall-switch small { display:none; }
   body.general-lobby-page[data-game-hall="topics"] #heroGamesSection { margin-top:0; }
   body.general-lobby-page[data-game-hall="topics"] #heroGamesSection .section-heading { min-height:28px; margin-bottom:4px; }
   body.general-lobby-page[data-game-hall="topics"] #heroGames .hero-game-card { display:grid; grid-template-columns:100px minmax(0,1fr); align-items:stretch; }
@@ -643,9 +633,8 @@ body.general-lobby-page .game-hall-switch button {
   body.general-lobby-page .game-hall-switch button { transition: none; }
 }
 
-/* Fade the full live lobby together so no hall-specific section or control
-   appears before its destination. The existing DOM remains interactive-safe
-   while content is swapped at the shell's fully transparent midpoint. */
+/* The outgoing paint remains visible while the fixed-size destination fades in.
+   Hall motion never applies a layout, position or scale animation. */
 body.general-lobby-page[data-hall-transition-target="tabletop"]::before,
 body.general-lobby-page[data-hall-transition-target="tabletop"] .lobby-hero::before { opacity: 1; }
 body.general-lobby-page[data-hall-transition-target="games"]::before,
@@ -671,8 +660,8 @@ html.hall-content-motion body.general-lobby-page .game-hall-switch button {
 body.general-lobby-page #lobbyToast.hall-motion-toast:not(.hidden) {
   transition: opacity 780ms cubic-bezier(.22,.61,.36,1) !important;
 }
-/* The outgoing room clears while its decoded destination rises into view. */
-.hall-crossfade-snapshot { user-select: none; transform-origin: center center; }
+/* The outgoing room is a frozen, inert visual layer. */
+.hall-crossfade-snapshot { user-select: none; }
 @media (prefers-reduced-motion: reduce) {
   html.hall-content-motion body.general-lobby-page::before,
   html.hall-content-motion body.general-lobby-page::after,
@@ -831,7 +820,7 @@ body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition
 body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .lobby-sound-toggle[aria-checked="true"] .lobby-sound-state { color:var(--hall-selected-ink); }
 
 /* Keep the topic hall's two preview cards in the first view on short screens. */
-body.general-lobby-page[data-game-hall="topics"] #heroGamesSection { order:2 !important; margin-top:12px !important; }
+body.general-lobby-page[data-game-hall="topics"] #heroGamesSection { order:8; margin-top:12px; }
 body.general-lobby-page[data-game-hall="topics"] #heroGames { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
 body.general-lobby-page[data-game-hall="topics"] #heroGames .hero-game-art { aspect-ratio:2.35; }
 body.general-lobby-page[data-game-hall="topics"] :is(#catalogHeading,#gameGrid,#catalogPagination,#mobilePicksSection,#characterShowcaseSection,#freshUpdatesSection,#challengeSpotlightSection,#recommendationsSection,#skillPathsSection,#upcomingGamesSection) { display:none !important; }
@@ -839,14 +828,7 @@ body.general-lobby-page[data-game-hall="topics"] :is(#catalogHeading,#gameGrid,#
   body.general-lobby-page[data-game-hall="topics"] #heroGames .hero-game-art { aspect-ratio:1.35; }
 }
 @media (max-width:900px) and (max-height:500px) and (orientation:landscape) {
-  body.general-lobby-page[data-game-hall="topics"] .lobby-topbar { min-height:52px; margin-bottom:8px; }
-  body.general-lobby-page[data-game-hall="topics"] .lobby-topbar .brand-logo { width:26px; height:26px; }
-  body.general-lobby-page[data-game-hall="topics"] .lobby-topbar h1 { font-size:18px; }
-  body.general-lobby-page[data-game-hall="topics"] .game-hall-switch { margin-bottom:8px; gap:8px; }
-  body.general-lobby-page[data-game-hall="topics"] .game-hall-switch button { min-height:56px; padding:8px 8px 8px 38px; }
   body.general-lobby-page .game-hall-switch .hall-tab-icon { inset-inline-start:8px; width:22px; height:22px; }
-  body.general-lobby-page[data-game-hall="topics"] .game-hall-switch span { font-size:13px; }
-  body.general-lobby-page[data-game-hall="topics"] .game-hall-switch small { display:none; }
   body.general-lobby-page[data-game-hall="topics"] #heroGamesSection { margin-top:0 !important; }
   body.general-lobby-page[data-game-hall="topics"] #heroGamesSection .section-heading { min-height:28px; margin-bottom:4px; }
   body.general-lobby-page[data-game-hall="topics"] #heroGames .hero-game-art { aspect-ratio:3.8; }

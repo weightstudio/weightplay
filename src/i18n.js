@@ -2021,6 +2021,29 @@ const essentialLobbyCopy = {
     };
   });
 
+  const topicsCategoryCopy = {
+    en: ["Casual", "Logic"],
+    "zh-Hant": ["休閒", "邏輯"],
+    "zh-Hans": ["休闲", "逻辑"],
+    ja: ["カジュアル", "論理"],
+    ko: ["캐주얼", "논리"],
+    es: ["Casuales", "Lógica"],
+    "pt-BR": ["Casual", "Lógica"],
+    fr: ["Détente", "Logique"],
+    de: ["Entspannt", "Logik"],
+    it: ["Svago", "Logica"],
+    ru: ["Казуальные", "Логика"],
+    hi: ["हल्के-फुल्के", "तर्क"],
+    ar: ["خفيفة", "منطق"],
+  };
+  Object.entries(topicsCategoryCopy).forEach(([locale, [casual, logic]]) => {
+    dictionaries[locale] = {
+      ...(dictionaries[locale] || {}),
+      "category.Casual": casual,
+      "category.Logic": logic,
+    };
+  });
+
   const extendedSkillCopy = {
     en: ["Timing", "Reaction"],
     "zh-Hant": ["時機", "反應"],

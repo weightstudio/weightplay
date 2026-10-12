@@ -7399,11 +7399,13 @@ const animalBlockmartStatusText = {
 };
 window.WONDER_LOBBY.games.push({
   id: "animal-blockmart", audience: "general", status: "planned", internalOnly: true,
+  internalTrial: "/games/animal-blockmart/index.html?preview=1",
   title: animalBlockmartTitle, statusText: animalBlockmartStatusText, type: animalBlockmartType,
   description: animalBlockmartDescription,
   categories: ["Simulation", "Management", "Animal Games"],
   skills: ["Planning", "Resource Balance", "Spatial Planning"], ages: ["general"],
   href: "games/animal-blockmart/",
+  art: { kind: "image", background: "games/animal-blockmart/assets/poster-v1.webp", hideHero: true },
   meta: { en: ["Store Management", "Growing Shop"], "zh-Hant": ["便利店經營", "擴大店面"] },
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("animal-blockmart");

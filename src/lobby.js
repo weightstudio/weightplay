@@ -52,6 +52,25 @@ if (!isKidsLobby && topicGameIds.size && gameHallSwitch && !gameHallSwitch.query
   gameHallSwitch.append(topicsButton);
 }
 const hallButtons = document.querySelectorAll("[data-hall-tab]");
+const topicHallCategories = new Set(catalogGames
+  .filter(game => topicGameIds.has(game.id))
+  .flatMap(game => game.categories || [])
+  .filter(category => !["Animal Games", "Featured"].includes(category)));
+if (!isKidsLobby) {
+  document.querySelectorAll('.topic-filter, .vibe-options').forEach(group => {
+    for (const category of topicHallCategories) {
+      if ([...group.querySelectorAll('[data-topic-filter]')]
+        .some(button => button.dataset.topicFilter === category)) continue;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.dataset.topicFilter = category;
+      button.dataset.hallOnly = 'topics';
+      button.dataset.i18n = `category.${category}`;
+      button.hidden = true;
+      group.append(button);
+    }
+  });
+}
 const topicButtons = document.querySelectorAll("[data-topic-filter]");
 const skillButtons = document.querySelectorAll("[data-skill-filter]");
 const libraryButtons = document.querySelectorAll("[data-library-tab]");
@@ -511,6 +530,7 @@ function decodeLobbyImage(source) {
   const image = new Image();
   image.decoding = "async";
   image.loading = "eager";
+  image.fetchPriority = 'high';
   return new Promise(resolve => {
     let settled = false;
     const finish = ready => {
@@ -572,6 +592,11 @@ function syncHallPresentation() {
   setActiveButtons(hallButtons, "hallTab", activeHall);
   document.querySelectorAll("[data-hall-only]").forEach((element) => {
     element.hidden = element.dataset.hallOnly !== activeHall;
+  });
+  topicButtons.forEach(button => {
+    button.hidden = Boolean(button.dataset.hallOnly && button.dataset.hallOnly !== activeHall)
+      || (activeHall === 'topics' && button.dataset.topicFilter !== 'all'
+        && !topicHallCategories.has(button.dataset.topicFilter));
   });
   const catalogHallLabel = document.querySelector("#catalogHallLabel");
   const hallNameKey = `hall.${activeHall}`;
@@ -1020,7 +1045,7 @@ function popularGames(limit = 3) {
   if (!isKidsLobby && activeHall === "topics") {
     // The Topics shelf is a preview, not a popularity ranking. Its planned
     // cards are rendered as Coming Soon buttons without rank or play counts.
-    const topicGames = gamesInHall().filter((game) => topicHeroGameIds.includes(game.id));
+    const topicGames = matchingCatalogGames().filter((game) => topicHeroGameIds.includes(game.id));
     return topicGames.slice(0, limit);
   }
   const ranked = rankedPopularGames(limit);
@@ -1542,10 +1567,15 @@ function hallMotionImageSources(targetHall) {
   const sources = new Set([hallHeroImageSource(targetHall)].filter(Boolean));
   const featured = lobby.games.find(game => game.id === lobby.featuredGameId);
   if (featured && gameMatchesHall(featured, targetHall)) sources.add(lobbyThumbnail(primaryArt(featured), 480));
+  const previewIds = targetHall === 'topics' ? topicHeroGameIds
+    : targetHall === 'tabletop' ? tabletopHeroGameIds : lobby.heroGameIds;
+  lobby.games.filter(game => gameMatchesHall(game, targetHall) && previewIds.includes(game.id))
+    .slice(0, 5).forEach(game => sources.add(lobbyThumbnail(game.art?.background || primaryArt(game), 480)));
   return [...sources];
 }
 
 const hallImageWaitLimit = 700;
+const hallCrossfadeDuration = 420;
 const nextLobbyFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
 const lobbyScrollOffset = () => ({
   left: Math.max(window.scrollX, document.documentElement.scrollLeft, document.body.scrollLeft),
@@ -1558,22 +1588,41 @@ function crossfadeHallShell(shell, motion) {
   snapshot.setAttribute('aria-hidden', 'true');
   snapshot.removeAttribute('aria-busy');
   snapshot.inert = true;
+  // Freeze the outgoing paint before changing the body's hall palette/layout.
+  // Otherwise non-ID controls inherit the incoming hall and visibly resize.
+  const originals = [shell, ...shell.querySelectorAll('*')];
+  const copies = [snapshot, ...snapshot.querySelectorAll('*')];
+  originals.forEach((original, index) => {
+    const copy = copies[index];
+    const rect = original.getBoundingClientRect();
+    if (rect.width && rect.height && rect.bottom > 0 && rect.top < innerHeight
+      && rect.right > 0 && rect.left < innerWidth) {
+      const style = getComputedStyle(original);
+      for (const property of style) {
+        copy.style.setProperty(property, style.getPropertyValue(property), 'important');
+      }
+    } else {
+      copy.style.setProperty('visibility', 'hidden', 'important');
+    }
+    copy.style.setProperty('animation', 'none', 'important');
+    copy.style.setProperty('transition', 'none', 'important');
+    copy.style.setProperty('pointer-events', 'none', 'important');
+    copy.removeAttribute('id');
+  });
   // The copy is visual only: no duplicated media playback or live controls.
   snapshot.querySelectorAll('video').forEach(video => video.remove());
-  snapshot.querySelectorAll('[id]').forEach(node => {
-    const original = document.getElementById(node.id);
-    if (original) {
-      const style = getComputedStyle(original);
-      for (const property of style) node.style.setProperty(property, style.getPropertyValue(property));
-    }
-    node.removeAttribute('id');
-  });
   snapshot.querySelectorAll('[data-hall-tab]').forEach(node => node.removeAttribute('data-hall-tab'));
-  Object.assign(snapshot.style, {
+  const geometry = {
     position: 'absolute', top: `${rect.top + lobbyScrollOffset().top}px`, left: `${rect.left + lobbyScrollOffset().left}px`,
     width: `${rect.width}px`, height: `${rect.height}px`, margin: '0',
+    boxSizing: 'border-box', transform: 'none', opacity: '1',
     pointerEvents: 'none', zIndex: '100', overflow: 'hidden'
-  });
+  };
+  for (const [property, value] of Object.entries(geometry)) {
+    snapshot.style.setProperty(property.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`), value, 'important');
+  }
+  // Opacity belongs to the crossfade animation, not the frozen style.
+  snapshot.style.removeProperty('opacity');
   document.body.append(snapshot);
   motion.snapshot = snapshot;
   if (!motion.syncSnapshotPosition) {
@@ -1607,24 +1656,14 @@ function animateHallArrival(shell, motion) {
     const rect = node.getBoundingClientRect();
     return rect.width > 0 && rect.height > 0 && rect.bottom > -24 && rect.top < innerHeight + 24;
   };
-  const blocks = [
-    shell.querySelector('.lobby-hero'),
-    shell.querySelector('.game-hall-switch'),
-    shell.querySelector('.lobby-search-row'),
-    shell.querySelector('.library-tabs'),
-    shell.querySelector('.desktop-filter-rail'),
-    ...[...shell.querySelectorAll('#latestGamesSection .section-heading, #heroGamesSection .section-heading, #catalogHeading')]
-  ].filter(node => node && !node.classList.contains('hidden') && inView(node)).slice(0, 4);
-  const cards = [...shell.querySelectorAll('#latestGames > :is(.game-card, .hero-game-card), #heroGames > :is(.game-card, .hero-game-card), #gameGrid > .game-card:not(.hidden)')]
-    .filter(inView).slice(0, 4);
-  const targets = [...new Set([...blocks, ...cards])];
-  motion.entryAnimations = targets.map((node, index) => node.animate([
-    { opacity: 0, transform: 'translate3d(0, 12px, 0) scale(.992)' },
-    { opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)' }
+  const targets = [...shell.children]
+    .filter(node => !node.classList.contains('hidden') && inView(node));
+  motion.entryAnimations = targets.map(node => node.animate([
+    { opacity: 0 },
+    { opacity: 1 }
   ], {
-    duration: 580,
-    delay: index * 30,
-    easing: 'cubic-bezier(.2,.72,.25,1)',
+    duration: hallCrossfadeDuration,
+    easing: 'ease-in-out',
     fill: 'both'
   }));
 }
@@ -1738,16 +1777,13 @@ function renderLobby(options = {}) {
       motion.commit(targetHall);
       delete document.body.dataset.hallTransitionTarget;
       document.body.dataset.hallMotionPhase = 'enter';
-      // Rise visible controls and artwork into the destination while the old room
-      // clears quickly to prevent overlapping hall labels and shelf content.
+      // All visible regions crossfade together at their final dimensions.
       animateHallArrival(shell, motion);
       motion.fade = snapshot.animate([
-        { offset: 0, opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)' },
-        { offset: .14, opacity: .58, transform: 'translate3d(0, -3px, 0) scale(.998)' },
-        { offset: .3, opacity: 0, transform: 'translate3d(0, -6px, 0) scale(.996)' },
-        { offset: 1, opacity: 0, transform: 'translate3d(0, -9px, 0) scale(.995)' }
+        { opacity: 1 },
+        { opacity: 0 }
       ], {
-        duration: 820, easing: 'cubic-bezier(.3,.1,.2,1)', fill: 'forwards'
+        duration: hallCrossfadeDuration, easing: 'ease-in-out', fill: 'forwards'
       });
       await motion.fade.finished.catch(() => {});
       if (hallMotion !== motion) return;
@@ -2430,7 +2466,9 @@ function applyFilter({ historyMode = "replace" } = {}) {
   if (catalogHeading) catalogHeading.textContent = i18n.t(
     activeLibrary === "recent" ? "library.recent" : activeLibrary === "favorites" ? "library.favorites" : "library.all_games"
   );
-  heroGamesSection.classList.toggle("hidden", isFiltered);
+  if (!isKidsLobby && activeHall === 'topics') renderHeroGames();
+  heroGamesSection.classList.toggle("hidden", activeHall === 'topics'
+    ? heroGames.childElementCount === 0 : isFiltered);
   latestGamesSection.classList.toggle("hidden", isFiltered || isKidsLobby || latestGames.childElementCount === 0);
   discoverySnapshot?.classList.toggle("hidden", isFiltered);
   continuePlayingSection?.classList.toggle("filtered-out", isFiltered);

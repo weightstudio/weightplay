@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive"><meta name="googlebot" content="noindex,nofollow,noarchive">
+  <meta name="description" content="Owner preview: manage a growing block-animal neighborhood shop.">
+  <title>Animal Blockmart · Owner Preview</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-wp-game-id="animal-blockmart" data-game-id="animal-blockmart" data-wp-game-version="v1" data-wp-interface-version="8" data-audience="general">
+  <main id="app">
+    <header class="topbar"><a href="../../index.html?preview=1" class="back" aria-label="Back to owner preview">‹</a><div class="brand"><small data-l10n="sub">WEIGHTPLAY · CONTINUOUS SHOP</small><strong data-l10n="title">Animal Blockmart</strong></div><div class="money"><span data-l10n="cash">SHOP CASH</span><b id="cash">$300</b></div><button id="settingsButton" class="settings-button" aria-label="Settings" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.1a3.9 3.9 0 1 0 0 7.8 3.9 3.9 0 0 0 0-7.8Zm8 4.8a8.7 8.7 0 0 0 0-1.8l1.7-1.3-1.7-3-2 .8a8 8 0 0 0-1.5-.9L16.2 4h-3.5l-.4 2.7a8 8 0 0 0-1.6.9l-2-.8-1.7 3 1.7 1.3a8.7 8.7 0 0 0 0 1.8L7 14.2l1.7 3 2-.8a8 8 0 0 0 1.6.9l.4 2.7h3.5l.4-2.7a8 8 0 0 0 1.5-.9l2 .8 1.7-3L20 12.9Z"/></svg></button><div id="settingsPopover" class="settings-popover" hidden role="dialog" aria-label="Settings"><label for="soundSwitch" data-l10n="sound">Sound</label><button id="soundSwitch" class="switch" data-sound-toggle role="switch" aria-checked="true" aria-label="Sound"><i></i></button></div></header>
+    <section class="scene-wrap" aria-label="Shop scene">
+      <canvas id="world" aria-label="Isometric shop. Drag an item to reposition it."></canvas>
+      <div class="scene-chip"><span class="live-dot"></span><span data-l10n="openDay">OPEN · DAY</span> <b id="day">1</b> <i data-l10n="noStages">NO STAGES</i></div>
+      <div class="scene-actions"><button id="zoomOut" aria-label="Zoom out">−</button><button id="zoomIn" aria-label="Zoom in">+</button><button id="rotate" aria-label="Rotate view">↻</button></div>
+      <div class="toast" id="toast" aria-live="polite"></div>
+      <div class="sale-pop" id="salePop" aria-live="polite"></div>
+      <div class="scene-legend"><span><i class="dot guest"></i><span data-l10n="shoppers">Shoppers</span> <b id="guestCount">0</b></span><span><i class="dot queue"></i><span data-l10n="queue">Queue</span> <b id="queueCount">0</b></span></div>
+    </section>
+    <section class="shop-panel">
+      <div class="tabs" role="tablist"><button class="active" data-tab="shop" data-l10n="shop">Shop</button><button data-tab="supply" data-l10n="supply">Supply</button><button data-tab="growth" data-l10n="grow">Grow</button><button data-tab="staff" data-l10n="staff">Staff</button></div>
+      <div id="panel" class="cards" aria-live="polite"></div>
+    </section>
+    <footer><span data-l10n="viewHint">Drag fixtures · pinch or use +/− · tap ↻ to rotate</span><span data-l10n="saved">Saved on this device</span></footer>
+  </main>
+  <div id="dialog" class="dialog" hidden role="dialog" aria-modal="true"><div class="dialog-card"><div class="dialog-icon">▦</div><h1 data-l10n="welcome">Welcome to Blockmart</h1><p data-l10n="intro">Stock the shelves, welcome shoppers, and grow one persistent shop.</p><ul><li data-l10n="tipRestock">Tap a shelf to restock it.</li><li data-l10n="tipDrag">Drag fixtures to shape open aisles.</li><li data-l10n="tipReinvest">Sales fund stock, equipment, helpers, and expansion.</li></ul><button id="start" class="primary" data-l10n="openShop">Open the shop</button><button id="reset" class="text-button" data-l10n="resetSave">Reset this local save</button></div></div>
+  <script src="../../src/weightplay-audio.js?v=1.0.0"></script><script type="module" src="game.js"></script>
+</body>
+</html>

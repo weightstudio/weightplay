@@ -54,6 +54,7 @@
   PROFILES["animal-bus-jam"] = ["board.move", "board.undo", "feedback.hint", "game.start", "result.lose", "result.win", "ui.click"]
   PROFILES["animal-prism-breakers"] = ["game.start", "impact.glass", "impact.soft", "result.lose", "result.win", "sport.bounce", "ui.click"]
   PROFILES["animal-grove-dominoes"] = [...new Set([...(PROFILES["animal-grove-dominoes"] || []), "board.undo"])]
+  PROFILES["animal-blockmart"] = ["game.start", "reward.coin", "ui.click"]
   /* AUDIO_PROFILES_END */
   const scriptURL = new URL(document.currentScript?.src || 'src/weightplay-audio.js', document.baseURI);
   const siteRoot = new URL('../', scriptURL);
