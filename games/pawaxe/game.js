@@ -1,31 +1,53 @@
 import { RUNTIME_COPY, syncPawaxeGuide, routeLocale } from './public-guide.mjs?v=2';
 import { formatSeconds, localePath } from './locale-text.mjs';
-import { stages,gear } from './campaign.js?v=4';
-import { Combat } from './combat.js?v=6';
+import { stages,gear } from './campaign.js?v=5';
+import { Combat } from './combat.js?v=9';
+import { getCanvasFit } from './layout.js?v=1';
 import { LOCALES,copy } from './locales.js?v=5';
-import { loadSave,storeSave } from './save.js?v=4';
+import { loadSave,storeSave } from './save.js?v=5';
 import { Expedition } from './expedition.js?v=4';
-import { rollLoot,collectGear,promoteGear,shardsNeeded,MAX_RANK,dropChance,tier } from './loot.js?v=4';
-import { expeditionCopy } from './expedition-copy.js?v=6';
-import { playerCopy } from './player-copy.js?v=1';
+import { rollLoot,collectGear,promoteGear,shardsNeeded,MAX_RANK,dropChance,tier } from './loot.js?v=5';
+import { expeditionCopy } from './expedition-copy.js?v=4';
+import { playerCopy } from './player-copy.js?v=2';
 import { companions,rollCompanion,collectCompanion,promoteCompanion } from './companions.js?v=4';
 import { collectionCopy } from './collection-copy.js?v=4';
+import {LocalPractice} from '../../src/game-local-practice.mjs';
 
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const practiceRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
 const save=loadSave();
 try{const locale=localStorage.getItem('weightPlayLocale');if(LOCALES.includes(locale))save.locale=locale;}catch{}
 const entryLocale=routeLocale(location.pathname);
 if(entryLocale)save.locale=entryLocale;
 if(!LOCALES.includes(save.locale))save.locale='zh-Hant';
 let selected=save.unlocked, combat=null,renderer=null,raf=0,last=0,acc=0,node=0,runHp=0,runEnergy=100;
+let practiceMode=false,practiceRun=false,practiceBaseline=null;
 let state='idle',screen='main',runGeneration=0,transitionRemaining=0,modalKind='',resumeAction=null;
-let feedbackUntil=0,feedbackText='',rendererModule=null;
-let journey=null,runKit=null,runKills=0,runDrops=0,runCombo=0;
+let tutorialResumeState=null;
+let feedbackUntil=0,feedbackText='',rendererModule=null,analyticsRound=false,analyticsEverStarted=false,analyticsStartPending=false,analyticsRoundCounter=0;
+let journey=null,runKit=null,runReward=0,runKills=0,runDrops=0,runCombo=0;
 const t=k=>k==='title'?(window.WEIGHTPLAY_GAME_TITLES?.pawaxe?.[save.locale]||copy[save.locale].title):RUNTIME_COPY[save.locale]?.[k]||expeditionCopy[save.locale]?.[k]||playerCopy[save.locale]?.[k]||copy[save.locale]?.[k]||copy.en[k]||k;
 const cc=()=>collectionCopy[save.locale]||collectionCopy.en;
 const pc=()=>playerCopy[save.locale]||playerCopy.en;
 const name=e=>typeof e.id==='number'?pc().stageNames[e.id]:(pc().enemyNames[e.id]||e.name);
-function persist(){if(!storeSave(save))feedback(t('storageError'),5);}
+function snapshotSave(){return JSON.parse(JSON.stringify(save));}
+function restorePracticeSave(){if(!practiceBaseline)return;for(const key of Object.keys(save))delete save[key];Object.assign(save,practiceBaseline);practiceBaseline=null;}
+function setPracticeMode(enabled){
+  if(enabled){if(!practiceBaseline)practiceBaseline=snapshotSave();practiceMode=true;}
+  else{practiceMode=false;practiceRun=false;restorePracticeSave();selected=save.unlocked;if(screen==='stage'){renderStage();renderEquipment();renderCompanions();}}
+}
+function persist(){if(practiceMode||practiceRun)return true;if(!storeSave(save))feedback(t('storageError'),5);}
+function trackPawaxeView(){if(practiceRequested)return false;const analytics=window.WonderAnalytics;if(!analytics?.trackPrivacySafe)return false;analytics.trackPrivacySafe('game_view',{game_id:'pawaxe',game_version:'v52',interface_version:'7',locale:save.locale});return true;}
+if(!practiceRequested&&!trackPawaxeView())window.addEventListener('weightplay:analytics-ready',trackPawaxeView,{once:true});
+function beginAnalyticsRun(){
+  if(practiceMode||practiceRun)return;
+  if(analyticsRound||screen!=='battle'||state!=='live')return;
+  const api=window.WonderAnalytics?.game;
+  if(api?.start){const options={roundKey:`pawaxe-${++analyticsRoundCounter}`};if(analyticsEverStarted&&api.restart)api.restart(options);else api.start(options);analyticsRound=true;analyticsEverStarted=true;return;}
+  if(!analyticsStartPending){analyticsStartPending=true;const generation=runGeneration;window.addEventListener('weightplay:analytics-ready',()=>{analyticsStartPending=false;if(generation===runGeneration)beginAnalyticsRun();},{once:true});}
+}
+function endAnalyticsRun(outcome){if(practiceMode||practiceRun||!analyticsRound)return;window.WonderAnalytics?.game?.end?.(outcome);analyticsRound=false;}
+try{if(save.tutorial&&!practiceRequested)localStorage.setItem('weightplay_tutorial_seen_pawaxe_v1','1');}catch{}
 const locale=$('#locale');
 locale.innerHTML=LOCALES.map(l=>`<option value="${l}">${({'zh-Hant':'繁體中文','zh-Hans':'简体中文',en:'English',ja:'日本語',ko:'한국어',es:'Español','pt-BR':'Português',fr:'Français',de:'Deutsch',it:'Italiano',ru:'Русский',hi:'हिन्दी',ar:'العربية'})[l]}</option>`).join('');
 locale.value=save.locale;
@@ -34,6 +56,8 @@ const healthSummary=document.createElement('div');
 healthSummary.className='health-summary';
 healthSummary.append($('#battleInfo .health-caption'),$('#barrierStatus'),$('#hp'));
 $('#battleInfo .player-health').prepend(healthSummary);
+// The percentage belongs to the settlement control, never on top of the meter.
+// Keep the route percentage centered in its progress track.
 const frame=window.WeightPlayScreenFrame.mount({root:$('#frame'),localeSelect:locale,scenes:{
   main:{root:$('#main'),header:$('#main header'),content:$('.hero')},
   stage:{root:$('#stage'),header:$('#stage header'),content:$('.workspace'),headerInfo:$('#stageInfo')},
@@ -42,25 +66,27 @@ const frame=window.WeightPlayScreenFrame.mount({root:$('#frame'),localeSelect:lo
 let rail=null;
 function fit(){
   if(screen==='main')return;
-  const vv=visualViewport,w=Math.min(920,vv?.width||innerWidth),h=vv?.height||innerHeight;
-  const scale=Math.min(w/390,h/780);
+  const vv=visualViewport,viewportWidth=vv?.width||innerWidth,h=vv?.height||innerHeight;
+  const {availableWidth:w,logicalWidth,logicalHeight,scale}=getCanvasFit(viewportWidth,h);
   const root=$('#'+screen);
-  Object.assign(root.style,{width:`${w/scale}px`,height:`${h/scale}px`,left:`${((vv?.width||innerWidth)-w)/2+(vv?.offsetLeft||0)}px`,top:`${vv?.offsetTop||0}px`,transform:`scale(${scale})`});
+  Object.assign(root.style,{width:`${logicalWidth}px`,height:`${logicalHeight}px`,left:`${(viewportWidth-w)/2+(vv?.offsetLeft||0)}px`,top:`${vv?.offsetTop||0}px`,transform:`scale(${scale})`});
   root.style.setProperty(`--wp-${screen}-canvas-scale`,String(scale));
   if(screen==='stage')rail?.center();
   renderer?.resize();
 }
+function clearSceneFit(id){
+  const root=$('#'+id);
+  if(!root)return;
+  for(const property of ['width','height','left','top','transform'])root.style.removeProperty(property);
+  root.style.removeProperty(`--wp-${id}-canvas-scale`);
+}
 function stopLoop(){cancelAnimationFrame(raf);raf=0;}
 function startLoop(){stopLoop();last=performance.now();acc=0;raf=requestAnimationFrame(loop);}
-function disposeRun(){runGeneration++;stopLoop();renderer?.dispose();renderer=null;combat=null;state='idle';}
-function setLoading(active,progress=0){
-  const panel=$('#loadingPanel');if(!panel)return;
-  panel.classList.toggle('hidden',!active);
-  const fill=$('#loadingFill');if(fill)fill.style.width=`${active?progress:100}%`;
-}
+function disposeRun(){endAnalyticsRun('abandon');runGeneration++;stopLoop();renderer?.dispose();renderer=null;combat=null;state='idle';}
 function show(id){
+  const previous=screen;
   if(id!=='battle')disposeRun();
-  if(id!=='battle')setLoading(false);
+  if(previous!==id&&previous!=='main')clearSceneFit(previous);
   screen=id;['main','stage','battle'].forEach(x=>$('#'+x).hidden=x!==id);
   document.body.dataset.screen=id;document.documentElement.classList.toggle('playing',id!=='main');
   document.documentElement.style.overflow=id==='main'?'':'hidden';document.documentElement.style.overscrollBehavior=id==='main'?'contain':'none';
@@ -86,29 +112,22 @@ function localize(){
 function renderStage(){
   $('#stageNum').textContent=`${save.unlocked}/30`;
   if(!rail)rail=window.WeightPlayStageV6.install($('#rail'),{total:()=>stages.length,poolSize:9,initialIndex:()=>save.unlocked-1,
-    bind:(card,i)=>{const s=stages[i];card.className='stage-card';card.setAttribute('aria-disabled',String(s.id>save.unlocked));
-      card.innerHTML=`<div data-wp-item-content><strong>${t('stages')} ${s.id}</strong><h3>${name(s)}</h3><div>${s.checkpoint?t('boss'):t('forest')}</div><small>${save.cleared.includes(s.id)?t('cleared'):s.id<=save.unlocked?t('ready'):t('locked')}</small></div>`;},
-    activate:i=>{if(i+1<=save.unlocked){selected=i+1;startRun();}}
+    bind:(card,i)=>{const s=stages[i],practiceAccessible=practiceMode&&LocalPractice.enabled;card.className='stage-card';card.setAttribute('aria-disabled',String(s.id>save.unlocked&&!practiceAccessible));
+      card.innerHTML=`<div data-wp-item-content><strong>${t('stages')} ${s.id}</strong><h3>${name(s)}</h3><div>${s.checkpoint?t('boss'):t('forest')}</div><small>${practiceAccessible&&s.id>save.unlocked?'LOCAL PRACTICE':save.cleared.includes(s.id)?t('cleared'):s.id<=save.unlocked?t('ready'):t('locked')}</small></div>`;},
+    activate:i=>{const stageId=i+1;if(practiceMode){void LocalPractice.challenge('pawaxe',stageId);return;}if(stageId<=save.unlocked){selected=stageId;void startRun(stageId,false);}}
   });
   else rail.refresh();
   requestAnimationFrame(()=>{rail?.center(save.unlocked-1);fit();});renderEquipment();
   renderCompanions();
 }
-function objectImage(id){const img=document.createElement('img');img.className='object-icon';img.src=`art/objects/${id}.png`;img.alt='';img.width=80;img.height=80;return img;}
-function setShardCount(container,item,rank,emptyLabel){
-  container.className=item?'shards has-shards':'shards';container.replaceChildren();
-  if(!item){container.textContent=emptyLabel;return;}
-  const icon=objectImage('upgrade-shard');icon.className='shard-icon';icon.width=24;icon.height=24;
-  const count=document.createElement('span');count.textContent=`${t('shards')} ${item.shards}/${shardsNeeded(rank)}`;
-  container.append(icon,count);
-}
+function objectImage(id){const img=document.createElement('img');img.className='object-icon';img.src=`art/objects/${id}.webp`;img.alt='';img.width=80;img.height=80;return img;}
 function renderCompanions(){
   $('#companions').replaceChildren(...companions.map((c,i)=>{
     const d=document.createElement('article'),item=save.companions[c.id],rank=item?.rank||0;d.className='gear companion';d.dataset.companion=c.id;d.classList.toggle('unowned',!item);
     const title=document.createElement('b');title.textContent=cc().names[i];
     const ability=document.createElement('p');ability.className='ability';ability.textContent=`${cc().skills[i]} · ${cc().descriptions[i]}`;
     const stat=document.createElement('p');stat.textContent=`${t('rank')} ${rank+1} · +${rank*8}%`;
-    const shards=document.createElement('p');setShardCount(shards,item,rank,`${t('dropFrom')} ${c.unlock}`);
+    const shards=document.createElement('p');shards.className='shards';shards.textContent=item?`${t('shards')} ${item.shards}/${shardsNeeded(rank)}`:`${t('dropFrom')} ${c.unlock}`;
     const equip=document.createElement('button');equip.textContent=save.companion===c.id?t('equipped'):t('equip');equip.disabled=!item||save.companion===c.id;
     equip.onclick=()=>{save.companion=c.id;persist();renderCompanions();};
     const upgrade=document.createElement('button');upgrade.textContent=rank===MAX_RANK?t('maxRank'):t('promote');upgrade.disabled=!item||rank===MAX_RANK||item.shards<shardsNeeded(rank);
@@ -127,7 +146,7 @@ function renderEquipment(){
     const power=Math.round(((g.slot==='axe'?.12:.025)*level+(g.slot==='axe'?.15:.035)*tier(g))*100);
     const weaponBase={'trail-axe':24,'breaker-axe':28,'quick-axe':18},healthBase=g.id==='bark-vest'?25:g.id==='scout-vest'?10:0;
     p.textContent=`${t('rank')} ${level+1} · ${t('attackPower')} ${g.slot==='axe'?Math.round(weaponBase[g.id]*(1+power/100)):`+${power}%`}${g.slot==='axe'?'':` · ${t('healthPower')} +${healthBase+level*6+tier(g)*8}`}`;
-    const shards=document.createElement('p');setShardCount(shards,item,level,`${t('dropFrom')} ${Math.max(1,g.unlock)}`);
+    const shards=document.createElement('p');shards.className='shards';shards.textContent=item?`${t('shards')} ${item.shards}/${shardsNeeded(level)}`:`${t('dropFrom')} ${Math.max(1,g.unlock)}`;
     const ability=document.createElement('p');ability.className='ability';ability.textContent=cc().abilities[i];
     d.append(icon,b,ability,p,shards);
     const equip=document.createElement('button');equip.textContent=equipped?t('equipped'):t('equip');equip.disabled=equipped||!item;
@@ -141,19 +160,23 @@ function sound(kind,strong=false){
   const cue={hit:"weapon.axe.hit",critical:"combat.critical",break:"combat.shield.break",hurt:"player.hurt",perfect:"combat.critical",block:"combat.block",ally:"magic.cast",defeat:"enemy.defeat",counter:"combat.critical",heal:"magic.heal",swing:"weapon.axe.swing"}[kind];
   if(cue)return window.WeightPlayAudio?.play(cue);
 }
-function feedback(text,seconds=1.4){feedbackText=text;feedbackUntil=performance.now()+seconds*1000;$('#feedback').textContent=text;}
-async function startRun(){
-  disposeRun();node=0;runHp=0;runEnergy=100;runKills=0;runDrops=0;runCombo=0;
-  journey=new Expedition(stages[selected-1]);runKit=JSON.parse(JSON.stringify({loadout:save.loadout,mode:save.mode,collection:save.collection,companion:save.companion,companions:save.companions}));show('battle');state='loading';setLoading(true,28);
+function feedback(text,seconds=1.4){feedbackText=text;feedbackUntil=performance.now()+seconds*1000;$('#feedbackText').textContent=text;}
+async function startRun(stageId=selected,practice=practiceMode){
+  const nextStage=Number(stageId),usingPractice=Boolean(practice||practiceMode);
+  if(!Number.isInteger(nextStage)||nextStage<1||nextStage>stages.length)return;
+  if(usingPractice&&!await LocalPractice.validate())return;
+  if(usingPractice&&!practiceBaseline)practiceBaseline=snapshotSave();
+  practiceRun=usingPractice;selected=nextStage;
+  disposeRun();node=0;runHp=0;runEnergy=100;runReward=0;runKills=0;runDrops=0;runCombo=0;
+  journey=new Expedition(stages[selected-1]);runKit=JSON.parse(JSON.stringify({loadout:save.loadout,mode:save.mode,collection:save.collection,companion:save.companion,companions:save.companions}));show('battle');state='loading';
   lootQueue.length=0;$('#lootToast').hidden=true;$('#damageNumbers').replaceChildren();updateProgress();
-  const generation=runGeneration;
+  const generation=runGeneration;dialog(t('title'),t('preparing'),[], 'loading');
   try{
-    if(!rendererModule){let timer;try{rendererModule=await Promise.race([import('./renderer-3d.js?v=6'),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('LOAD_TIMEOUT')),15000);})]);}finally{clearTimeout(timer);}}
+    if(!rendererModule){let timer;try{rendererModule=await Promise.race([import('./renderer-3d.js?v=49'),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('LOAD_TIMEOUT')),15000);})]);}finally{clearTimeout(timer);}}
     if(generation!==runGeneration||screen!=='battle')return;
-    setLoading(true,74);
     renderer=new rendererModule.PawRenderer($('#canvas'));renderer.setCompanion(runKit.companion);renderer.setRegion(Math.floor((selected-1)/5));
-    closeDialog();startEncounter();setLoading(false);
-  }catch(error){if(generation!==runGeneration)return;setLoading(false);renderer?.dispose();renderer=null;state='error';dialog(t('forestUnavailable'),t('webglRequired'),[[t('replay'),startRun],[t('returnStages'),()=>show('stage')]],'error');console.warn('Pawaxe renderer:',error.message);}
+    closeDialog();startEncounter();
+  }catch(error){if(generation!==runGeneration)return;renderer?.dispose();renderer=null;state='error';dialog(t('forestUnavailable'),t('webglRequired'),[[t('replay'),startRun],[t('returnStages'),()=>show('stage')]],'error');console.warn('Pawaxe renderer:',error.message);}
 }
 function startEncounter(){
   const stage={...stages[selected-1],encounters:[journey.encounter()]};
@@ -163,8 +186,8 @@ function startEncounter(){
   renderer.setEnemies(combat.alive());state='live';transitionRemaining=0;
   $('#targets').classList.toggle('two-rows',combat.enemies.some(e=>e.slot>=3));
   $('.arena').classList.toggle('two-rows',combat.enemies.some(e=>e.slot>=3));
-  $('#allyPortrait').src=`art/objects/${runKit.companion}.png`;
-  $('#hudStage').textContent=`${selected}/30`;updateProgress();updateHud();startLoop();
+  $('#allyPortrait').src=`art/objects/${runKit.companion}.webp`;
+  $('#hudStage').textContent=`${selected}/30`;updateProgress();updateHud();startLoop();beginAnalyticsRun();window.dispatchEvent(new CustomEvent('weightplay:battle-open',{detail:{gameId:'pawaxe'}}));
 }
 function resume(){closeDialog();state='live';startLoop();$('#canvas').focus();}
 function loop(now){
@@ -183,10 +206,10 @@ function loop(now){
       renderer.event(e);sound(e.critical?'critical':e.type,e.critical||e.heavy);
       if(e.type==='defeat'){
         runKills++;
-        const id=e.summon?null:rollLoot(selected,e.boss);
-        if(id){const item=collectGear(save,id);runDrops++;persist();showLoot(item);}
-        const companionId=e.summon?null:rollCompanion(selected,e.boss);
-        if(companionId){const item=collectCompanion(save,companionId);runDrops++;persist();showLoot(item);}
+        if(!practiceRun){const id=e.summon?null:rollLoot(selected,e.boss);
+          if(id){const item=collectGear(save,id);runDrops++;persist();showLoot(item);}
+          const companionId=e.summon?null:rollCompanion(selected,e.boss);
+          if(companionId){const item=collectCompanion(save,companionId);runDrops++;persist();showLoot(item);}}
       }
       const labels={perfect:t('perfect'),block:t('blocked'),break:t('shieldBroken'),counter:t('counter'),interrupt:t('interrupted'),reflect:t('reflected'),exhausted:t('energyEmpty'),phase:t('phase'),heal:t('healed')};
       if(labels[e.type])feedback(labels[e.type]);
@@ -235,19 +258,21 @@ function updateHud(){
     b.querySelector('.enemy-clock').value=e.warned?1-Math.max(0,e.t)/e.warn:0;
   });
   const threat=enemies.filter(e=>e.warned).sort((a,b)=>a.t-b.t)[0];
-  $('#warning').textContent=threat?`${name(threat)} · ${t('incoming')} ${formatSeconds(Math.max(0,threat.t),save.locale)}`:t('tap');
+  const warning=$('#warning');
+  warning.hidden=!threat;
+  warning.textContent=threat?`${name(threat)} · ${t('incoming')} ${formatSeconds(Math.max(0,threat.t),save.locale)}`:'';
   $('#status').textContent=[combat.barrier>0?`${cc().status[0]} ${Math.ceil(combat.barrier)}`:'',...Object.entries(combat.status).filter(([,v])=>v>0).map(([k,v])=>`${k==='crack'?t('crack'):cc().status[k==='burn'?1:2]} ${formatSeconds(v,save.locale)}`)].filter(Boolean).join(' · ');
-  if(performance.now()>feedbackUntil)$('#feedback').textContent='';else $('#feedback').textContent=feedbackText;
+  if(performance.now()>feedbackUntil)$('#feedbackText').textContent='';else $('#feedbackText').textContent=feedbackText;
 }
 function encounterWon(){
   stopLoop();
-  // The first two routes stay generous; the shield and boss checkpoint routes
-  // build enough attrition that Auto does not erase the need to farm or heal.
-  const breather=selected>=3&&selected<=5 ? 0.03 : 0.05;
-  runHp=Math.min(combat.maxHp,combat.hp+combat.maxHp*breather);runEnergy=Math.min(100,combat.energy+18);runCombo=combat.slashes;
-  if(journey.clear()){
+  // A cleared wave gives a small breather, while keeping early-stage farming
+  // meaningful instead of restoring a full bar after every encounter.
+  runHp=Math.min(combat.maxHp,combat.hp+combat.maxHp*.05);runEnergy=Math.min(100,combat.energy+18);runCombo=combat.slashes;
+  if(journey.clear()&&!practiceRun){
     const first=!save.cleared.includes(selected);
-    if(first)save.cleared.push(selected);save.unlocked=Math.max(save.unlocked,Math.min(30,selected+1));persist();
+    runReward=first?stages[selected-1].reward*(stages[selected-1].checkpoint?2:1):5;
+    if(first)save.cleared.push(selected);save.coins=Math.min(999999,save.coins+runReward);save.unlocked=Math.max(save.unlocked,Math.min(30,selected+1));persist();
   }
   updateProgress();state='transition';transitionRemaining=.9;feedback(t('moving'),.9);startLoop();
 }
@@ -256,15 +281,14 @@ function updateProgress(){
   $('#routeProgress').value=percent;$('#routeProgress').setAttribute('aria-label',t('journeyProgress'));
   $('#routeLabel').textContent=complete?t('farm'):`${t('journey')} ${Math.min(journey?.cleared||0,journey?.length||12)}/${journey?.length||12}`;
   $('#routePercent').textContent=`${percent}%`;
-  $('#claim').textContent=complete?'✓':'';
-  $('#claim').disabled=!complete;
+  $('#claim').disabled=!complete;$('#claim').textContent=complete?`✓ ${t('claim')}`:'—';
   $('#claim').classList.toggle('complete',complete);
 }
 let lootUntil=0;const lootQueue=[];
 function showLoot(item){
   if(!$('#lootToast').hidden){lootQueue.push(item);if(lootQueue.length>8)lootQueue.shift();return;}
   const g=gear.find(g=>g.id===item.id);
-  $('#lootIcon').src=`art/objects/${item.fresh?item.id:'upgrade-shard'}.png`;
+  $('#lootIcon').src=`art/objects/${item.id}.webp`;
   const title=item.kind==='companion'?cc().names[companions.findIndex(c=>c.id===item.id)]:pc().gearNames[g.id]||g.name;
   const label=item.kind==='companion'?(item.fresh?cc().newAlly:cc().allyShard):(item.fresh?t('newItem'):t('loot'));
   $('#lootText').textContent=`${label} · ${title}${item.fresh?'':` · ${item.shards}/${shardsNeeded(item.rank)}`}`;
@@ -272,7 +296,8 @@ function showLoot(item){
 }
 function finish(win){
   stopLoop();state='result';win=win||journey.completed;
-  const text=win?`${name(stages[selected-1])} · ${t('kills')} ${runKills} · ${cc().lootTotal} ${runDrops}`:t('failText');
+  endAnalyticsRun(win?'route_clear':'failure');
+  const text=win?`${name(stages[selected-1])}\n${practiceRun?'LOCAL PRACTICE · no progress or rewards':`${t('reward')} +${runReward} · ${t('kills')} ${runKills} · ${cc().lootTotal} ${runDrops}`}`:practiceRun?`${t('failText')}\nLOCAL PRACTICE · no progress or rewards`:t('failText');
   dialog(win?t('victory'):t('fail'),text,[[t('returnStages'),()=>show('stage')],[t('next'),()=>{selected++;startRun();},!win||selected===30],[t('replay'),startRun]],'result');
 }
 function closeDialog(){
@@ -286,17 +311,16 @@ function dialog(title,text,actions,kind='pause'){
 }
 function pause(){
   if(screen!=='battle'||!['live','transition'].includes(state)||modalKind)return;
-  const before=state;resumeAction=()=>{closeDialog();state=before;startLoop();};
-  dialog(t('leaveTitle'),`${selected}/${stages.length} · ${t('leaveText')}`,[[t('continue'),resumeAction],[t('returnStages'),()=>show('stage')]],'pause');
+  const before=state;if(!practiceRun)window.WonderAnalytics?.game?.pause?.('manual');resumeAction=()=>{closeDialog();state=before;if(!practiceRun)window.WonderAnalytics?.game?.resume?.('manual');startLoop();};
+  dialog(t('leaveTitle'),`${t('stages')} ${selected} · ${t('leaveText')}`,[[t('continue'),resumeAction],[t('returnStages'),()=>show('stage')]],'pause');
 }
 function action(kind){if(screen!=='battle'||state!=='live'||modalKind||document.querySelector('.wp-frame-popover:not([hidden])'))return;combat[kind]();updateHud();}
-$('#start').onclick=()=>show('stage');$('#stageBack').onclick=()=>show('main');$('#battleBack').onclick=pause;
-window.addEventListener('weightplay:tutorial-start',event=>{if(event.detail?.gameId==='pawaxe'&&screen==='main')show('stage');});
+$('#start').onclick=()=>show('stage');$('#stageBack').onclick=()=>{if(practiceMode)setPracticeMode(false);show('main');};$('#battleBack').onclick=pause;
 $('#attack').onclick=()=>action('attack');$('#ally').onclick=()=>action('ally');
 $('#auto').onclick=()=>{if(modalKind||screen!=='battle'||!['live','transition'].includes(state)||document.querySelector('.wp-frame-popover:not([hidden])'))return;save.autoAttack=!save.autoAttack;combat.autoAttack=save.autoAttack;persist();updateHud();};
 $('#claim').onclick=()=>{if(journey?.completed&&!modalKind)finish(true);};
 $$('.tabs button').forEach(b=>b.onclick=()=>selectTab(b.dataset.tab));
-locale.onchange=()=>{save.locale=locale.value;try{localStorage.setItem('weightPlayLocale',save.locale);}catch{}persist();localize();const route=localePath(save.locale,location.search,location.hash);if(location.pathname+location.search+location.hash!==route)location.assign(route);};
+locale.onchange=()=>{save.locale=locale.value;if(!practiceMode)try{localStorage.setItem('weightPlayLocale',save.locale);}catch{}persist();localize();const route=localePath(save.locale,location.search,location.hash);if(location.pathname+location.search+location.hash!==route)location.assign(route);};
 $('#canvas').tabIndex=0;
 $('#canvas').addEventListener('pointerdown',e=>{if(state!=='live'||modalKind||e.button!==0)return;const uid=renderer.pick(e.clientX,e.clientY);const i=combat.alive().findIndex(x=>x.uid===uid);if(i>=0)combat.target=i;action('attack');});
 $('#canvas').addEventListener('webglcontextlost',e=>{e.preventDefault();if(screen!=='battle'||!renderer)return;stopLoop();state='error';dialog(t('graphicsInterrupted'),t('restartGraphics'),[[t('replay'),startRun],[t('returnStages'),()=>show('stage')]],'error');});
@@ -312,10 +336,25 @@ document.addEventListener('keydown',e=>{
   else if(['KeyA','KeyD','ArrowLeft','ArrowRight'].includes(e.code)){e.preventDefault();const n=combat.alive().length;combat.target=(combat.target+(['KeyA','ArrowLeft'].includes(e.code)?-1:1)+n)%n;updateHud();}
   else if(e.key==='Escape')pause();
 });
+window.addEventListener('weightplay:tutorial-open',event=>{
+  if(event.detail?.gameId!=='pawaxe'||screen!=='battle'||modalKind||!['live','transition'].includes(state))return;
+  tutorialResumeState=state;stopLoop();state='tutorial';
+});
+window.addEventListener('weightplay:tutorial-close',event=>{
+  if(event.detail?.gameId!=='pawaxe')return;
+  const resumeState=tutorialResumeState;tutorialResumeState=null;
+  if(!resumeState||screen!=='battle'||state!=='tutorial'||modalKind)return;
+  state=resumeState;startLoop();
+});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});
 window.addEventListener('resize',fit);visualViewport?.addEventListener('resize',fit);
 window.addEventListener('pagehide',()=>{disposeRun();});
 window.addEventListener('pageshow',e=>{if(e.persisted)show('main');});
-// Read-only local diagnostics: never grant progress or alter the simulation.
-if(['localhost','127.0.0.1','[::1]'].includes(location.hostname))window.PawaxeDiagnostics=Object.freeze({snapshot:()=>({screen,state,modal:modalKind,stage:selected,node,hp:combat?.hp,energy:combat?.energy,time:combat?.time,auto:save.autoAttack,slashes:combat?.slashes,kills:runKills,drops:runDrops,progress:journey?.progress,completed:journey?.completed,unlocked:save.unlocked,coins:save.coins,raf:Boolean(raf),renderer:renderer?.metrics()||null,targets:combat?.alive().map(e=>({id:e.id,hp:e.hp,shield:e.shield,t:e.t,warn:e.warn,reflect:e.reflect}))||[]}),setBiome:index=>renderer?.setRegion(index)});
+LocalPractice.register({gameId:'pawaxe',stageIds:stages.map(stage=>stage.id),
+  enable:setPracticeMode,
+  startStage:id=>startRun(Number(id),true)
+}).catch(error=>console.error('Local practice setup failed',error));
+// Loopback-only regression fixtures alter only this in-memory encounter and
+// never save campaign, loot or player progress.
+if(['localhost','127.0.0.1','[::1]'].includes(location.hostname))window.PawaxeDiagnostics=Object.freeze({snapshot:()=>({screen,state,modal:modalKind,stage:selected,node,hp:combat?.hp,energy:combat?.energy,time:combat?.time,auto:save.autoAttack,slashes:combat?.slashes,kills:runKills,drops:runDrops,progress:journey?.progress,completed:journey?.completed,unlocked:save.unlocked,coins:save.coins,raf:Boolean(raf),renderer:renderer?.metrics()||null,actorBounds:()=>renderer?.actorBounds()||[],targets:combat?.alive().map(e=>({id:e.id,hp:e.hp,shield:e.shield,t:e.t,warn:e.warn,reflect:e.reflect}))||[]}),setBiome:index=>renderer?.setRegion(index),prepareStage20BossRegression:()=>{if(screen!=='battle'||state!=='live'||selected!==20||!journey)return false;journey.wave=journey.length-1;journey.cleared=journey.length-1;node=journey.wave;startEncounter();return true;},prepareStage20BossHalfHealthRegression:()=>{if(screen!=='battle'||state!=='live'||selected!==20||!combat)return false;const boss=combat.alive().find(e=>e.id==='boss-loom');if(!boss)return false;boss.hp=boss.maxHp*.5;boss.t=5;boss.warned=true;updateHud();return true;},prepareLootToastRegression:()=>{if(screen!=='battle'||state!=='live')return false;lootQueue.length=0;$('#lootToast').hidden=true;showLoot({kind:'companion',id:'frost',fresh:false,rank:0,shards:1});return true;},prepareFailureRegression:()=>{if(screen!=='battle'||state!=='live'||!combat)return false;save.autoAttack=false;combat.autoAttack=false;combat.hp=1;combat.barrier=0;combat.time=1;combat.lastEnemyHit=0;for(const enemy of combat.alive())enemy.t=0;updateHud();return true;}});
 localize();show('main');

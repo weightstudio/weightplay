@@ -1,4 +1,4 @@
-import { ENEMIES } from './campaign.js?v=4';
+import { ENEMIES } from './campaign.js?v=5';
 import { equipmentPower } from './loot.js?v=4';
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 export class Combat {
@@ -26,10 +26,14 @@ export class Combat {
   }
   spawn(id, index = this.alive().length) {
     const boss = id.startsWith('boss-'), def = ENEMIES[id] || ENEMIES.scout;
-    const hp = Math.round((boss ? 230 + this.stage.id*4 : def.hp + Math.floor((this.stage.id-1)/5)*4)*(1.4+Math.min(.55,Math.max(0,this.stage.id-1)*.08)));
+    const firstFarmGate=this.stage.id===4;
+    const hpPressure=firstFarmGate?1.1:1;
+    const attackPressure=firstFarmGate?1.2:1;
+    const attackPace=firstFarmGate?.95:1;
+    const hp = Math.round((boss ? 230 + this.stage.id*4 : def.hp + Math.floor((this.stage.id-1)/5)*4)*(1.4+Math.min(.55,Math.max(0,this.stage.id-1)*.08))*hpPressure);
     const slot=[1,0,2,3,4].slice(0,this.capacity).find(slot=>!this.alive().some(e=>e.slot===slot));
-    const pressure=1.2+Math.min(.25,this.stage.id*.005);
-    const period=def.period*(this.stage.id<=10?.9:.95),opening=def.period*(this.stage.id<=10?.78:.9);
+    const pressure=(1.2+Math.min(.25,this.stage.id*.005))*attackPressure;
+    const period=def.period*(this.stage.id<=10?.9:.95)*attackPace,opening=def.period*(this.stage.id<=10?.78:.9)*attackPace;
     const e = {...def,id,uid:++this.serial,damage:def.damage*pressure,period,hp,maxHp:hp,maxShield:def.shield||0,shield:def.shield||0,
       slot,t:opening+index*.65,warned:false,phase:1,casts:0,opening:0,reflect:0,boss,attackCount:0,disabledMirror:0};
     this.enemies.push(e);
@@ -182,7 +186,9 @@ export class Combat {
         if(support)this.target=alive.indexOf(support);
         if(this.queue===0)this.attack();
       }
-      if(this.energy>=100)this.ally();
+      // Auto can spend offensive companion skills; preserve Moss's restorative
+      // skill until the run is under real pressure instead of wasting it at full HP.
+      if(this.energy>=100&&(this.companion!=='moss'||this.hp<=this.maxHp*.65))this.ally();
     }
     if(this.pending){
       this.pending.time-=dt;

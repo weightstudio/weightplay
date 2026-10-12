@@ -2,6 +2,13 @@
 const local = globalThis.location?.protocol==='http:' && ['localhost','127.0.0.1','[::1]'].includes(globalThis.location.hostname);
 const params = new URLSearchParams(globalThis.location?.search || '');
 const requested = local && params.get('practice')==='1';
+// The shared analytics loader runs after page parsing. Disable its local event
+// collector before it starts so practice runs do not change analytics counts.
+if(requested) {
+  const analytics=globalThis.WONDER_SITE?.analytics;
+  if(analytics)analytics.enabled=false;
+  if(analytics?.gaMeasurementId)globalThis[`ga-disable-${analytics.gaMeasurementId}`]=true;
+}
 let authorized=false;
 const adapters=new Map();
 async function verify() {
@@ -36,8 +43,12 @@ export const LocalPractice=Object.freeze({
     if(!await ready)return false;
     if(!document.querySelector('[data-wp-local-practice]')) {
       const badge=document.createElement('small');badge.dataset.wpLocalPractice='';
-      badge.textContent='LOCAL PRACTICE · no progress / rewards';
-      badge.style.cssText='position:fixed;bottom:2px;left:50%;transform:translateX(-50%);z-index:10000;background:#17243a;color:#f5c84c;padding:2px 6px;font:11px monospace;pointer-events:none';
+      badge.textContent='LOCAL PRACTICE';
+      badge.title='No campaign progress or rewards are saved';
+      badge.setAttribute('aria-label','Local practice; no campaign progress or rewards are saved.');
+      // Keep the local-only marker in the scene header, clear of the Battle
+      // actions and the Stage tabs at every supported viewport size.
+      badge.style.cssText='position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:10000;background:#17243a;color:#f5c84c;padding:2px 6px;font:11px monospace;pointer-events:none;white-space:nowrap';
       document.body.append(badge);
     }
     adapter.enable(true);

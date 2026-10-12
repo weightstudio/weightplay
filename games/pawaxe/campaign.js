@@ -171,7 +171,6 @@ export const stages = [
     "enemies": [
       "scout"
     ],
-    "rule": "分辨自動普攻與玩家防禦；看懂預警再完成路線",
     "checkpoint": false,
     "boss": null,
     "reward": 20
@@ -197,7 +196,6 @@ export const stages = [
     "enemies": [
       "scout"
     ],
-    "rule": "同樣能擋的招式有不同前搖；別一直維持防禦耗乾耐力",
     "checkpoint": false,
     "boss": null,
     "reward": 20
@@ -224,7 +222,6 @@ export const stages = [
     "enemies": [
       "shield"
     ],
-    "rule": "首次護盾，分辨生命傷害與削盾，決定重擊／夥伴先後",
     "checkpoint": false,
     "boss": null,
     "reward": 20
@@ -254,7 +251,6 @@ export const stages = [
       "scout",
       "scout"
     ],
-    "rule": "首次優先目標：壓住治療者而非盲打盾",
     "checkpoint": false,
     "boss": null,
     "reward": 20
@@ -280,7 +276,6 @@ export const stages = [
     "enemies": [
       "scout"
     ],
-    "rule": "Boss 以假起手與真落槌區分反擊時機，不見光就重擊",
     "checkpoint": true,
     "boss": "boss-bell",
     "reward": 20
@@ -308,7 +303,6 @@ export const stages = [
     "enemies": [
       "shield"
     ],
-    "rule": "護盾回復由可視週期驅動，決定集中火力而非平均削盾",
     "checkpoint": false,
     "boss": null,
     "reward": 25
@@ -338,7 +332,6 @@ export const stages = [
       "anchor",
       "scout"
     ],
-    "rule": "引入可攻擊供盾樁；先斷連線或用破盾快速越過",
     "checkpoint": false,
     "boss": null,
     "reward": 25
@@ -367,7 +360,6 @@ export const stages = [
     "enemies": [
       "mender"
     ],
-    "rule": "治療與敵方攻擊交錯，重擊留給施法或反擊有取捨",
     "checkpoint": false,
     "boss": null,
     "reward": 25
@@ -398,7 +390,6 @@ export const stages = [
       "scout",
       "charger"
     ],
-    "rule": "兩個可見敵人的錯峰出手，判斷守勢解除時機",
     "checkpoint": false,
     "boss": null,
     "reward": 25
@@ -427,7 +418,6 @@ export const stages = [
       "anchor",
       "shield"
     ],
-    "rule": "Boss 由兩個不同階段根樁供盾，先拆正在供能者",
     "checkpoint": true,
     "boss": "boss-furnace",
     "reward": 25
@@ -454,7 +444,6 @@ export const stages = [
     "enemies": [
       "mirror"
     ],
-    "rule": "引入重擊反彈；學會普攻等待或用夥伴消亮面",
     "checkpoint": false,
     "boss": null,
     "reward": 30
@@ -483,7 +472,6 @@ export const stages = [
       "mirror",
       "shield"
     ],
-    "rule": "反彈姿態與可格擋突進交錯，先守後拆",
     "checkpoint": false,
     "boss": null,
     "reward": 30
@@ -511,7 +499,6 @@ export const stages = [
     "enemies": [
       "mirror"
     ],
-    "rule": "敵人露出反擊窗口不等於亮面解除，兩種狀態須讀清楚",
     "checkpoint": false,
     "boss": null,
     "reward": 30
@@ -542,7 +529,6 @@ export const stages = [
       "anchor",
       "mirror"
     ],
-    "rule": "能量用在拆多盾還是解除亮面；補給生命／能量選擇改變下一段",
     "checkpoint": false,
     "boss": null,
     "reward": 30
@@ -570,7 +556,6 @@ export const stages = [
     "enemies": [
       "mirror"
     ],
-    "rule": "Boss 輪流保護兩片鏡甲，亮起的鏡片不能重擊；破兩片後才打核心",
     "checkpoint": true,
     "boss": "boss-stag",
     "reward": 30
@@ -597,7 +582,6 @@ export const stages = [
     "enemies": [
       "thorn"
     ],
-    "rule": "引入可格擋的裂痕；選擇事前防禦或事後淨化",
     "checkpoint": false,
     "boss": null,
     "reward": 35
@@ -625,7 +609,6 @@ export const stages = [
     "enemies": [
       "thorn"
     ],
-    "rule": "環境纏根降低耐力回復，不能照前段長時間守勢",
     "checkpoint": false,
     "boss": null,
     "reward": 35
@@ -655,7 +638,6 @@ export const stages = [
       "mender",
       "thorn"
     ],
-    "rule": "優先停治療還是先解除自身裂痕，兩個時鐘同時可讀",
     "checkpoint": false,
     "boss": null,
     "reward": 35
@@ -685,7 +667,6 @@ export const stages = [
       "thorn",
       "charger"
     ],
-    "rule": "先前使用夥伴的時機會影響下一個亮面／裂痕組合",
     "checkpoint": false,
     "boss": null,
     "reward": 35
@@ -712,7 +693,6 @@ export const stages = [
     "enemies": [
       "thorn"
     ],
-    "rule": "Boss 織出兩條不同符根：一條減回耐、一條施裂痕，玩家選拆除順序",
     "checkpoint": true,
     "boss": "boss-loom",
     "reward": 35
@@ -739,7 +719,6 @@ export const stages = [
     "enemies": [
       "caller"
     ],
-    "rule": "首次有限召喚；先殺／打斷召喚者減少後续處理",
     "checkpoint": false,
     "boss": null,
     "reward": 40
@@ -769,7 +748,6 @@ export const stages = [
       "caller",
       "shield"
     ],
-    "rule": "保護來源不同，先斷供盾還是硬破前排後打斷",
     "checkpoint": false,
     "boss": null,
     "reward": 40
@@ -801,15 +779,14 @@ export const stages = [
       "scout",
       "shield"
     ],
-    "rule": "首次三目標，但資訊全部同屏；取捨中斷、減傷與集中擊敗",
     "checkpoint": false,
     "boss": null,
     "reward": 40
   },
   {
     "id": 24,
-    "name": "Safe Supply",
-    "zh": "留一口氣",
+    "name": "Bramble Passage",
+    "zh": "荊棘小徑",
     "encounters": [
       [
         "mirror",
@@ -832,7 +809,6 @@ export const stages = [
       "mirror",
       "thorn"
     ],
-    "rule": "補給前後配置互補，回血與能量不是永遠同一個較優",
     "checkpoint": false,
     "boss": null,
     "reward": 40
@@ -860,7 +836,6 @@ export const stages = [
     "enemies": [
       "caller"
     ],
-    "rule": "Boss 先亮起指令再召喚或群體供盾；斷指令、清支援或守反有不同收益",
     "checkpoint": true,
     "boss": "boss-conductor",
     "reward": 40
@@ -891,7 +866,6 @@ export const stages = [
       "mirror",
       "shield"
     ],
-    "rule": "檢核亮面、護盾與反擊先後；不再逐條停下教學",
     "checkpoint": false,
     "boss": null,
     "reward": 45
@@ -922,7 +896,6 @@ export const stages = [
       "thorn",
       "scout"
     ],
-    "rule": "以可防御裂痕與錯峰攻擊驗證守護／守反流，不排除破陣流",
     "checkpoint": false,
     "boss": null,
     "reward": 45
@@ -954,7 +927,6 @@ export const stages = [
       "anchor",
       "shield"
     ],
-    "rule": "以可中斷支援鏈驗證快斧／破陣流，慢斧也能選時機過關",
     "checkpoint": false,
     "boss": null,
     "reward": 45
@@ -986,7 +958,6 @@ export const stages = [
       "charger",
       "thorn"
     ],
-    "rule": "使用全套已學規則，四次遭遇各選不同優先處理；預告終局三階段",
     "checkpoint": false,
     "boss": null,
     "reward": 45
@@ -1016,7 +987,6 @@ export const stages = [
       "shield",
       "charger"
     ],
-    "rule": "終局依序拆供能、解除鏡甲、把守反與夥伴配合破心核",
     "checkpoint": true,
     "boss": "boss-heart",
     "reward": 45

@@ -1,4 +1,4 @@
-import { gear } from './campaign.js?v=4';
+import { gear } from './campaign.js?v=5';
 import { companions as roster } from './companions.js?v=4';
 export const SAVE_KEY='pawaxeSaveV2';
 export const STARTER=['trail-axe','trail-hood','scout-vest','trail-gloves','trail-boots','nut-charm','copper-ring'];
