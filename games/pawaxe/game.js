@@ -51,11 +51,7 @@ try{if(save.tutorial&&!practiceRequested)localStorage.setItem('weightplay_tutori
 const locale=$('#locale');
 locale.innerHTML=LOCALES.map(l=>`<option value="${l}">${({'zh-Hant':'繁體中文','zh-Hans':'简体中文',en:'English',ja:'日本語',ko:'한국어',es:'Español','pt-BR':'Português',fr:'Français',de:'Deutsch',it:'Italiano',ru:'Русский',hi:'हिन्दी',ar:'العربية'})[l]}</option>`).join('');
 locale.value=save.locale;
-// Keep the shared header's health stat to two rows in every existing route shell.
-const healthSummary=document.createElement('div');
-healthSummary.className='health-summary';
-healthSummary.append($('#battleInfo .health-caption'),$('#barrierStatus'),$('#hp'));
-$('#battleInfo .player-health').prepend(healthSummary);
+// The frame carries the stage only; player health is anchored to Fia in Battle.
 // The percentage belongs to the settlement control, never on top of the meter.
 // Keep the route percentage centered in its progress track.
 const frame=window.WeightPlayScreenFrame.mount({root:$('#frame'),localeSelect:locale,scenes:{
@@ -172,7 +168,7 @@ async function startRun(stageId=selected,practice=practiceMode){
   lootQueue.length=0;$('#lootToast').hidden=true;$('#damageNumbers').replaceChildren();updateProgress();
   const generation=runGeneration;dialog(t('title'),t('preparing'),[], 'loading');
   try{
-    if(!rendererModule){let timer;try{rendererModule=await Promise.race([import('./renderer-3d.js?v=49'),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('LOAD_TIMEOUT')),15000);})]);}finally{clearTimeout(timer);}}
+    if(!rendererModule){let timer;try{rendererModule=await Promise.race([import('./renderer-3d.js?v=57'),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('LOAD_TIMEOUT')),15000);})]);}finally{clearTimeout(timer);}}
     if(generation!==runGeneration||screen!=='battle')return;
     renderer=new rendererModule.PawRenderer($('#canvas'));renderer.setCompanion(runKit.companion);renderer.setRegion(Math.floor((selected-1)/5));
     closeDialog();startEncounter();
@@ -197,7 +193,7 @@ function loop(now){
   const delta=Math.min(.1,Math.max(0,(now-last)/1000));last=now;
   if(document.querySelector('.wp-frame-popover:not([hidden])')){last=now;raf=requestAnimationFrame(loop);return;}
   if(state==='transition'){
-    transitionRemaining-=delta;renderer.walk(delta,.9-transitionRemaining);renderer.render(delta,combat);
+    transitionRemaining-=delta;renderer.walk(delta,.9-transitionRemaining);renderer.render(delta,combat);updateHud();
     if(transitionRemaining<=0){journey.advance();node=journey.wave;startEncounter();return;}
   }else{
     acc=Math.min(acc+delta,.12);
@@ -226,7 +222,7 @@ function loop(now){
         box.append(n);while(box.children.length>4)box.firstElementChild.remove();
       }
     }
-    renderer.setEnemies(combat.alive());updateHud();renderer.render(delta,combat);
+    renderer.setEnemies(combat.alive());renderer.render(delta,combat);updateHud();
     if(combat.lost){finish(false);return;}if(combat.won){encounterWon();return;}
   }
   raf=requestAnimationFrame(loop);
@@ -245,24 +241,33 @@ function updateHud(){
   for(const b of [...box.children])if(!enemies.some(e=>e.uid===+b.dataset.uid))b.remove();
   enemies.forEach((e,i)=>{
     let b=box.querySelector(`[data-uid="${e.uid}"]`);
-    if(!b){b=document.createElement('button');b.className='target';b.dataset.uid=e.uid;b.innerHTML='<strong></strong><span class="enemy-health-row"><progress class="enemy-hp"></progress><span class="enemy-health-value"></span></span><progress class="enemy-shield" max="1"></progress><small></small><progress class="enemy-clock" max="1"></progress>';b.onclick=()=>{if(state==='live'){combat.target=combat.alive().findIndex(x=>x.uid===e.uid);action('attack');}};box.append(b);}
+    if(!b){b=document.createElement('button');b.className='target';b.dataset.uid=e.uid;b.innerHTML='<span class="enemy-health-value"></span><progress class="enemy-hp" max="1"></progress><progress class="enemy-energy" max="1" value="0"></progress>';b.onclick=()=>{if(state==='live'){combat.target=combat.alive().findIndex(x=>x.uid===e.uid);action('attack');}};box.append(b);}
     b.querySelector('.enemy-hp').setAttribute('aria-label',t('enemyHealth'));
-    b.querySelector('.enemy-shield').setAttribute('aria-label',t('enemyShield'));
-    b.querySelector('.enemy-clock').setAttribute('aria-label',t('enemyWarning'));
-    b.style.gridColumn=String(e.slot>=3?e.slot-2:e.slot+1);b.style.gridRow=e.slot>=3?'2':'1';
-    b.setAttribute('aria-pressed',String(i===combat.target));b.classList.toggle('warn',e.warned);b.classList.toggle('boss',e.boss);b.querySelector('strong').textContent=`${e.boss?`${t('boss')} · `:''}${name(e)}`;
+    b.querySelector('.enemy-energy').setAttribute('aria-label',t('enemyWarning'));
+    b.setAttribute('aria-label',`${t('enemyHealth')} ${i+1}`);b.setAttribute('aria-pressed',String(i===combat.target));b.classList.toggle('warn',e.warned);b.classList.toggle('boss',e.boss);b.classList.toggle('shielded',e.shield>0||e.reflect>0);
     const healthBar=b.querySelector('.enemy-hp');healthBar.max=e.maxHp;healthBar.value=e.hp;b.querySelector('.enemy-health-value').textContent=`${Math.ceil(e.hp)}/${Math.ceil(e.maxHp)}`;
-    const shieldBar=b.querySelector('.enemy-shield');shieldBar.max=Math.max(1,e.maxShield||1);shieldBar.value=e.shield;shieldBar.hidden=e.shield<=0;
-    const protectedBySupport=e.boss&&enemies.some(x=>x!==e&&['anchor','mirror-left','mirror-right','root-drain','root-crack'].includes(x.id));
-    b.querySelector('small').textContent=protectedBySupport?t('destroySupport'):e.id==='boss-heart'&&e.phase===3&&e.opening<=0?t('coreOpening'):e.reflect>0?t('mirrorArmor'):e.opening>0?t('opening'):e.shield>0?t('shieldActive'):'';
-    b.querySelector('.enemy-clock').value=e.warned?1-Math.max(0,e.t)/e.warn:0;
+    const attackCharge=e.period>0?Math.max(0,Math.min(1,1-e.t/e.period)):0;b.querySelector('.enemy-energy').value=attackCharge;
   });
   const threat=enemies.filter(e=>e.warned).sort((a,b)=>a.t-b.t)[0];
   const warning=$('#warning');
   warning.hidden=!threat;
-  warning.textContent=threat?`${name(threat)} · ${t('incoming')} ${formatSeconds(Math.max(0,threat.t),save.locale)}`:'';
+  warning.textContent=threat?`${t('incoming')} ${formatSeconds(Math.max(0,threat.t),save.locale)}`:'';
+  positionActorHuds();
   $('#status').textContent=[combat.barrier>0?`${cc().status[0]} ${Math.ceil(combat.barrier)}`:'',...Object.entries(combat.status).filter(([,v])=>v>0).map(([k,v])=>`${k==='crack'?t('crack'):cc().status[k==='burn'?1:2]} ${formatSeconds(v,save.locale)}`)].filter(Boolean).join(' · ');
   if(performance.now()>feedbackUntil)$('#feedbackText').textContent='';else $('#feedbackText').textContent=feedbackText;
+}
+function positionActorHuds(){
+  if(!renderer)return;
+  const area=$('.arena').getBoundingClientRect(),anchors=renderer.hudAnchors();
+  const place=(element,point)=>{
+    if(!point||!point.visible||!area.width||!area.height){element.hidden=true;return;}
+    element.hidden=false;
+    const x=(point.x-area.left)/area.width*100,y=(point.y-area.top)/area.height*100;
+    element.style.left=`${Math.max(5,Math.min(95,x))}%`;
+    element.style.top=`${Math.max(4,Math.min(96,y))}%`;
+  };
+  place($('#playerHud'),anchors.player);
+  for(const button of $('#targets').children)place(button,anchors.enemies.find(anchor=>anchor.uid===Number(button.dataset.uid)));
 }
 function encounterWon(){
   stopLoop();

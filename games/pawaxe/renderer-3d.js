@@ -283,14 +283,19 @@ export class PawRenderer {
     this.setCompanion('nibs');
   }
   setCompanion(id){
-    if(this.nibs)this.hand.remove(this.nibs);
+    const previous=this.nibs;
+    if(previous){
+      this.hand.remove(previous);
+      if(Array.isArray(this.hand.userData.wpBatchSources)){
+        this.hand.userData.wpBatchSources=this.hand.userData.wpBatchSources.filter(mesh=>mesh.userData.wpBatchParent!==previous);
+      }
+    }
     this.nibs=new THREE.Group();this.hand.add(this.nibs);
     this.nibs.userData.companionId=id;
-    // Keep the ally palm-sized on phones and desktop instead of making it
-    // compete with the live target. Lift the scaled model slightly so its
-    // feet remain seated on Fia's paw.
-    this.nibs.scale.setScalar(.72);
-    this.nibs.position.y=.056;
+    // Keep the ally as a small companion perched on the first-person paw. Its
+    // ears, muzzle and scarf stay visible without reading like a second hero.
+    this.nibs.scale.setScalar(.40);
+    this.nibs.position.set(-.38,.08,.22);
     if(id!=='nibs'){
       const c=id==='moss'?0x74ab69:id==='frost'?0x8ccce2:0xe68551;
       this.box(this.nibs,.29,.26,.27,c,0,.21,0);
@@ -310,30 +315,38 @@ export class PawRenderer {
       }
       for(const side of [-1,1]){this.box(this.nibs,.05,.065,.025,0x201e1a,side*.085,.46,.17);this.box(this.nibs,.015,.02,.012,0xffffff,side*.085,.48,.188);}
       this.box(this.nibs,.065,.055,.055,id==='frost'?0xdeb660:0x694e3d,0,.38,.17);
-      this.box(this.nibs,.07,.08,.04,id==='ember'?0xffcd72:0x59ddba,0,.21,.17,true);return;
+      this.box(this.nibs,.07,.08,.04,id==='ember'?0xffcd72:0x59ddba,0,.21,.17,true);
+      this.rebuildCompanionBatches();return;
     }
-    this.box(this.nibs,.28,.29,.24,0xd39442,0,.19,0);
-    this.box(this.nibs,.34,.28,.28,0xe8aa50,0,.43,0);
-    this.box(this.nibs,.25,.12,.04,0xffe1a2,0,.37,.15);
-    this.box(this.nibs,.05,.055,.03,0x513325,0,.415,.18);
-    // Match Nibs' collection portrait in the live palm pose: taller pink-lined
-    // ears, a blue/cyan scarf bib, and the little gold trail pendant.
-    this.box(this.nibs,.115,.18,.085,0xbf7d3e,-.115,.61,0);
-    this.box(this.nibs,.115,.18,.085,0xbf7d3e,.115,.61,0);
-    this.box(this.nibs,.06,.115,.022,0xf0b18d,-.115,.61,.052);
-    this.box(this.nibs,.06,.115,.022,0xf0b18d,.115,.61,.052);
-    this.box(this.nibs,.27,.075,.055,0x1769d2,0,.29,.18);
-    this.box(this.nibs,.20,.025,.025,0x30d5ed,0,.33,.214,true);
-    const pendant=this.box(this.nibs,.105,.12,.05,0xf6bf3e,0,.20,.19,true);pendant.rotation.z=Math.PI/4;
-    this.box(this.nibs,.038,.045,.022,0x30d5ed,0,.20,.222,true);
-    const tail=this.box(this.nibs,.18,.12,.13,0xbd7736,-.19,.17,-.105);tail.rotation.z=.42;
+    this.box(this.nibs,.30,.25,.24,0xb7632c,0,.18,0);
+    this.box(this.nibs,.32,.25,.27,0xd27a34,0,.405,0);
+    this.box(this.nibs,.21,.10,.045,0xf1d3a8,0,.36,.15);
+    this.box(this.nibs,.045,.045,.028,0x513325,0,.405,.18);
+    // Stepped fox ears and a clear blue scarf make the tiny ally read as a
+    // character instead of a stack of same-sized cubes.
+    for(const side of [-1,1]){
+      const earBase=this.box(this.nibs,.09,.12,.08,0x984b25,side*.105,.565,0);earBase.rotation.z=-side*.16;
+      const earTip=this.box(this.nibs,.065,.11,.065,0xc36c35,side*.12,.655,0);earTip.rotation.z=-side*.20;
+      const earInner=this.box(this.nibs,.042,.075,.022,0xf0a98c,side*.105,.585,.052);earInner.rotation.z=-side*.16;
+    }
+    this.box(this.nibs,.25,.085,.055,0x1769d2,0,.275,.18);
+    this.box(this.nibs,.19,.026,.025,0x30d5ed,0,.31,.214,true);
+    const pendant=this.box(this.nibs,.09,.10,.05,0xf6bf3e,0,.19,.19,true);pendant.rotation.z=Math.PI/4;
+    this.box(this.nibs,.036,.04,.022,0x30d5ed,0,.19,.222,true);
+    const tail=this.box(this.nibs,.16,.11,.13,0x8f4d29,-.19,.15,-.105);tail.rotation.z=.42;
     for(const side of [-1,1]){
       this.box(this.nibs,.05,.06,.018,0xf0c384,side*.11,.59,.054);
-      this.box(this.nibs,.046,.065,.025,0x201e1a,side*.085,.455,.145);
-      this.box(this.nibs,.016,.02,.009,0xffffff,side*.085-.008,.474,.16);
-      this.box(this.nibs,.075,.10,.10,0xf4ca84,side*.17,.22,.02);
+      this.box(this.nibs,.046,.060,.025,0x201e1a,side*.085,.43,.145);
+      this.box(this.nibs,.016,.02,.009,0xffffff,side*.085-.008,.448,.16);
+      this.box(this.nibs,.075,.09,.10,0xe8c28a,side*.17,.20,.02);
     }
-    this.box(this.nibs,.07,.09,.04,0x59ddba,0,.21,.14,true).rotation.z=.6;
+    this.box(this.nibs,.07,.08,.04,0x59ddba,0,.20,.14,true).rotation.z=.6;
+    this.rebuildCompanionBatches();
+  }
+  rebuildCompanionBatches(){
+    // setCompanion replaces meshes after the constructor's first batch pass.
+    // Rebuild so the selected ally keeps its authored instance colors in view.
+    if(this.viewBatches?.length)this.rebuildBoxBatches(this.view,[this.hand,this.nibs,this.axeArm],'viewBatches');
   }
   buildFace(parent,fur,markings=0xd9b77e,eyes=0x2b241f,profile='scout'){
     // Layered cuboid masks, eyes and muzzle shapes give each forest species a
@@ -529,12 +542,12 @@ export class PawRenderer {
       this.box(g,.20,.20,.065,rune,0,1.47,.445,true).rotation.z=Math.PI/4;
       this.box(g,.38,.045,.07,trim,0,1.22,.4);
       for(const side of [-1,1]){
-        const leaf=e.id==='scout',ice=e.id==='frostguard',branch=e.id==='thorn'||e.id==='boss-loom';
-        const outer=leaf?0x557949:ice?0xd3fbfa:branch?0x738246:trim;
-        const inner=leaf?0xc4d987:ice?0x8ee0e8:branch?0xa4bd62:dark;
-        const horn=this.box(g,leaf?.19:.16,leaf?.48:ice?.35:branch?.42:.34,leaf?.13:.10,outer,side*.33,leaf?2.58:ice?2.50:branch?2.52:2.45,leaf?-.02:.02);
-        horn.rotation.z=leaf?-side*.28:side*(ice?.24:branch?.38:.20);
-        this.box(g,leaf?.10:.075,leaf?.29:ice?.18:branch?.22:.18,.055,inner,side*.33,leaf?2.58:2.42,.085).rotation.z=leaf?-side*.28:side*.20;
+        const ice=e.id==='frostguard',branch=e.id==='thorn'||e.id==='boss-loom';
+        const outer=ice?0xd3fbfa:branch?0x738246:trim;
+        const inner=ice?0x8ee0e8:branch?0xa4bd62:dark;
+        const horn=this.box(g,.16,ice?.35:branch?.42:.34,.10,outer,side*.33,ice?2.50:branch?2.52:2.45,.02);
+        horn.rotation.z=side*(ice?.24:branch?.38:.20);
+        this.box(g,.075,ice?.18:branch?.22:.18,.055,inner,side*.33,2.42,.085).rotation.z=side*.20;
       }
       for(const side of [-1,1]){
         this.box(g,.09,.67,.065,0xb79968,side*.32,1.17,.35);
@@ -584,9 +597,9 @@ export class PawRenderer {
       this.box(g,.28,.16,.22,0xf1d36f,0,1.80,.06,true).rotation.z=Math.PI/4;
     }
     if(e.id==='scout'){
-      this.box(g,.82,.12,.82,0x557949,0,2.38,0);
-      this.box(g,.28,.23,.27,0xc3d984,0,2.52,.04,true).rotation.z=Math.PI/4;
-      this.box(g,.18,.38,.12,0x90b35e,0,2.68,-.02).rotation.z=.25;
+      const leafLeft=this.box(g,.14,.25,.11,0x90b35e,-.13,2.46,-.02,true);leafLeft.rotation.z=.42;
+      const leafRight=this.box(g,.14,.25,.11,0x90b35e,.13,2.46,-.02,true);leafRight.rotation.z=-.42;
+      this.box(g,.14,.10,.10,0x557949,0,2.34,-.02);
     }
     if(e.id==='emberling'){this.box(g,.27,.45,.25,0xef9f48,.9,1.72,.15,true);this.box(g,.20,.35,.18,0xffd15b,.9,2.05,.15,true);this.box(g,.13,.22,.14,0xffe58a,.9,2.32,.15,true);}
     if(e.id==='frostguard')for(const side of [-1,1]){this.box(g,.25,.5,.25,0x8ee0e8,side*.6,1.9,0,true);this.box(g,.18,.28,.15,0xd9fbff,side*.62,2.15,.02,true);}
@@ -599,7 +612,7 @@ export class PawRenderer {
       for(const side of [-1,1])this.box(g,.17,.26,.14,0xe5d09b,side*.22,1.78,.42);
       g.scale.set(1.22,1.08,1.08);
     }
-    if(e.id==='scout')g.scale.set(.78,.84,.82);
+    if(e.id==='scout')g.scale.set(.92,.82,.90);
     if(e.id==='charger'){
       this.box(g,.60,.25,.56,0xc49b61,0,1.05,.40);
       this.box(g,.19,.14,.10,0xffdfa0,0,1.08,.49,true);
@@ -709,7 +722,11 @@ export class PawRenderer {
     g.scale.y*=1.12;
     // Retain authored proportions so the fixed formation can fit itself to a
     // narrow phone without changing any survivor's lane or identity.
-    g.userData.authoredScale=g.scale.clone();g.userData.baseScale=g.scale.clone();g.userData.recoil=0;this.s.add(g);return g;
+    g.userData.authoredScale=g.scale.clone();g.userData.baseScale=g.scale.clone();g.userData.recoil=0;
+    g.updateMatrixWorld(true);
+    const bounds=new THREE.Box3().setFromObject(g);
+    g.userData.hudTopLocal=Math.max(.65,(bounds.max.y-g.position.y)/Math.max(.001,g.scale.y));
+    this.s.add(g);return g;
   }
   scaleEnemy(g,e){
     g.scale.copy(g.userData.authoredScale);
@@ -805,13 +822,13 @@ export class PawRenderer {
     this.c.fov=THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(48/2))/Math.min(1,aspect/.78)));
     this.c.updateProjectionMatrix();this.vc.aspect=aspect;this.vc.updateProjectionMatrix();
     const halfW=Math.tan(THREE.MathUtils.degToRad(24))*2*aspect;
-    this.axe.scale.setScalar(Math.min(.62,aspect*.56));
-    this.axe.position.set(halfW*.18,-.49,-2);
+    this.axe.scale.setScalar(Math.min(.58,aspect*.52));
+    this.axe.position.set(halfW*.18,-.57,-2);
     this.axeRest=this.axe.position.clone();
     // Keep the companion palm visible while bringing both hands into one
     // coherent first-person action silhouette at phone and desktop sizes.
-    this.hand.position.set(-halfW*.18,-.49,-2);
-    this.hand.scale.setScalar(Math.min(.75,aspect*.86));
+    this.hand.position.set(-halfW*(aspect>1.45?.42:.18),-.57,-2);
+    this.hand.scale.setScalar(Math.min(.69,aspect*.79));
     this.c.lookAt(0,aspect>1.45?1.62:1.4,-3);
     this.fitBackdrop();
     const wide=w/h>1.45,slots=wide?[-2.4,0,2.4,-1.52,1.52]:[-2.0,0,2.0,-1.3,1.3];
@@ -897,6 +914,20 @@ export class PawRenderer {
       actorBounds.push({uid,left:Math.min(...xs),right:Math.max(...xs),top:Math.min(...ys),bottom:Math.max(...ys)});
     }
     return actorBounds;
+  }
+  hudAnchors(){
+    const rect=this.canvas.getBoundingClientRect();
+    this.s.updateMatrixWorld(true);this.c.updateMatrixWorld(true);this.view.updateMatrixWorld(true);this.vc.updateMatrixWorld(true);
+    const project=(point,camera)=>{
+      point.project(camera);
+      return{x:rect.left+(point.x+1)*rect.width/2,y:rect.top+(1-point.y)*rect.height/2,
+        visible:point.z>-1&&point.z<1&&point.x>-1.08&&point.x<1.08&&point.y>-1.08&&point.y<1.08};
+    };
+    const player=project(new THREE.Vector3(0,.45,.10).applyMatrix4(this.hand.matrixWorld),this.vc);
+    const enemies=[...this.models].map(([uid,g])=>({uid,...project(
+      new THREE.Vector3(0,g.userData.hudTopLocal||3,0).applyMatrix4(g.matrixWorld),this.c
+    )}));
+    return{player,enemies};
   }
   metrics(){return{models:this.models.size,effects:this.effects.length,materials:this.materials.size+this.batchMaterials.size+this.actorBatchMaterials.size+(this.groundMaterials?.size||0)+2,geometries:this.r.info.memory.geometries,textures:this.r.info.memory.textures,drawCalls:this.r.info.render.calls,surfaceLoaded:this.surfaceReady,faceShading:Boolean(this.geometry.attributes.color),lanes:[...this.models].map(([uid,g])=>({uid,id:g.userData.enemy?.id,hp:g.userData.enemy?.hp,slot:g.userData.enemy?.slot,x:g.position.x,z:g.position.z,scale:g.scale.toArray(),visible:g.visible})),axeGeometries:this.ownedGeometry.size,backdropLoaded:Boolean(this.backdropMaterial.map),backdropScaleX:this.backdrop.scale.x,backdropTextureRepeatY:this.backdropMaterial.map?.repeat.y??null,region:this.currentRegion};}
   dispose(){this.disposed=true;this.backgroundRequest++;this.backgroundTexture?.dispose();this.backgroundTexture=null;this.backdropMaterial.map=null;this.backdropMaterial.dispose();this.backdropGeometry.dispose();this.contactGeometry.dispose();this.contactMaterial.dispose();this.surfaceTexture.dispose();this.world.traverse(o=>{if(o.isInstancedMesh)o.dispose();});this.effectBatch.dispose();for(const batch of [...this.actorBatches,...this.viewBatches])batch.dispose();this.actorBatches=[];this.viewBatches=[];for(const marks of this.handDetails)marks.dispose();this.handDetails=[];this.geometry.dispose();for(const g of this.ownedGeometry)g.dispose();this.ownedGeometry.clear();this.sun.shadow.map?.dispose();for(const m of this.groundMaterials)m.dispose();this.groundMaterials.clear();for(const m of this.actorBatchMaterials.values())m.dispose();this.actorBatchMaterials.clear();for(const m of this.batchMaterials.values())m.dispose();this.batchMaterials.clear();for(const m of this.materials.values())m.dispose();this.materials.clear();this.models.clear();this.effects=[];this.r.dispose();}

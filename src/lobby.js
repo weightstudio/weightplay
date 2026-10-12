@@ -2748,7 +2748,9 @@ function hiddenTrialUrl(game, trialPath) {
   const currentRoute = window.location.pathname.match(/^\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)(?:\/|$)/u)?.[1];
   const localeSegment = currentRoute || lobbyLocaleSegments[i18n.locale()] || "en";
   const gameUrl = new URL(game.href || "", `${window.location.origin}/${localeSegment}/`);
-  return new URL(trialPath, gameUrl).href;
+  const trialUrl = new URL(trialPath, gameUrl);
+  if (game.id === "animal-blockmart") trialUrl.searchParams.set("lang", i18n.locale());
+  return trialUrl.href;
 }
 
 function handleHiddenTrialGate(game) {

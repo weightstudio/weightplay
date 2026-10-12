@@ -7358,8 +7358,8 @@ window.WONDER_LOBBY.games.push({
 window.WONDER_LOBBY.audiences.generalGameIds.push("robot-dog-showtime");
 
 // Owner-requested planned General game identity for the persistent block-animal
-// convenience-store prototype. The internal trial route is added only after a
-// real playable route and approved entrance art exist.
+// convenience-store prototype. Its real playable route is available only from
+// the owner preview; the entrance poster remains a candidate pending Art review.
 const animalBlockmartTitle = {
   __localizedExact: true,
   en: "Animal Blockmart", "zh-Hant": "動物方塊便利店", "zh-Hans": "动物方块便利店",
