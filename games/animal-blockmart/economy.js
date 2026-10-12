@@ -4,6 +4,9 @@ export const BASE_BROWSE_SECONDS=.27;
 export const COOLER_BROWSE_SECONDS=.12;
 export const BASE_CHECKOUT_SECONDS=1.4;
 export const FAST_CHECKOUT_SECONDS=.7;
+export const RECOVERY_WATER_QUANTITY=4;
+export const RECOVERY_ORDER_LIMIT=2;
+export const RECOVERY_DELIVERY_FEE=8;
 
 function count(value){return Number.isFinite(value)?Math.max(0,Math.floor(value)):0}
 
@@ -29,6 +32,32 @@ export function totalStock(stock={}){
 export function restockOffer(stock,equipment,requestedQuantity,unitCost){
   const quantity=Math.min(count(requestedQuantity),Math.max(0,stockCapacity(equipment)-totalStock(stock)));
   return {quantity,cost:quantity*unitCost};
+}
+
+export function affordableRestockOffer(stock,equipment,requestedQuantity,unitCost,cash=Infinity){
+  const room=Math.max(0,stockCapacity(equipment)-totalStock(stock));
+  const availableCash=Number.isFinite(cash)?Math.max(0,cash):Infinity;
+  const affordable=unitCost>0?Math.floor(availableCash/unitCost):count(requestedQuantity);
+  const quantity=Math.min(count(requestedQuantity),room,affordable);
+  return {quantity,cost:quantity*unitCost};
+}
+
+export function customerBudget(random=Math.random){
+  const segment=Math.max(0,Math.min(.999999,random()));
+  const [minimum,maximum]=segment<.3?[10,24]:segment<.6?[8,28]:segment<.85?[24,70]:[35,90];
+  return Math.floor(minimum+Math.max(0,Math.min(.999999,random()))*(maximum-minimum+1));
+}
+
+export function recoveryShipment(state,unitCost=8,quantity=RECOVERY_WATER_QUANTITY,deliveryFee=RECOVERY_DELIVERY_FEE){
+  const orders=count(state.recoveryOrders);
+  if(!Number.isFinite(state.cash)||state.cash>=unitCost||totalStock(state.stock)>0||orders>=RECOVERY_ORDER_LIMIT)return {ok:false,state};
+  const cost=quantity*unitCost+deliveryFee;
+  return {ok:true,quantity,cost,state:{...state,stock:{...state.stock,water:count(state.stock?.water)+quantity},recoveryOrders:orders+1,recoveryDebt:count(state.recoveryDebt)+cost}};
+}
+
+export function applySaleRevenue(state,grossRevenue){
+  const gross=count(grossRevenue),debtPayment=Math.min(count(state.recoveryDebt),gross),netRevenue=gross-debtPayment;
+  return {state:{...state,cash:(Number.isFinite(state.cash)?Math.max(0,state.cash):0)+netRevenue,recoveryDebt:count(state.recoveryDebt)-debtPayment},grossRevenue:gross,netRevenue,debtPayment};
 }
 
 export function browseSeconds(equipment={}){

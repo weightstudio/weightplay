@@ -67,6 +67,24 @@ const economyCopy={
   ar:{stockCapacity:'سعة المخزون',upgradeComplete:'تم التركيب',legacyUpgradeCredit:'رصيد ترقية محفوظ',checkoutTime:'وقت الدفع',browseTime:'وقت اختيار المنتج',capacityFull:'مساحة التخزين ممتلئة'}
 };
 for(const locale of supportedLocales)Object.assign(dict[locale],economyCopy[locale]);
+const recoveryKeys='recoveryInvoice|recoveryOrder|recoveryPayment'.split('|');
+const recoveryCopy={
+  en:{recoveryInvoice:'Emergency supply balance',recoveryOrder:'Emergency water order · repaid from sales',recoveryPayment:'Paid toward emergency supply'},
+  'zh-Hant':{recoveryInvoice:'緊急進貨欠款',recoveryOrder:'緊急補水 · 由銷售收入償還',recoveryPayment:'已償還緊急進貨款'},
+  'zh-Hans':{recoveryInvoice:'紧急进货欠款',recoveryOrder:'紧急补水 · 由销售收入偿还',recoveryPayment:'已偿还紧急进货款'},
+  ja:{recoveryInvoice:'緊急仕入れ残高',recoveryOrder:'緊急の水を仕入れ · 売上から返済',recoveryPayment:'緊急仕入れ分を返済'},
+  ko:{recoveryInvoice:'긴급 물품 대금',recoveryOrder:'긴급 물 주문 · 매출에서 상환',recoveryPayment:'긴급 물품 대금 상환'},
+  es:{recoveryInvoice:'Saldo de suministro urgente',recoveryOrder:'Pedido urgente de agua · se paga con las ventas',recoveryPayment:'Pago del suministro urgente'},
+  'pt-BR':{recoveryInvoice:'Saldo do fornecedor emergencial',recoveryOrder:'Pedido emergencial de água · pago com as vendas',recoveryPayment:'Pagamento do fornecedor emergencial'},
+  fr:{recoveryInvoice:'Solde du réapprovisionnement d’urgence',recoveryOrder:'Commande d’eau d’urgence · remboursée par les ventes',recoveryPayment:'Remboursement du stock d’urgence'},
+  de:{recoveryInvoice:'Offener Notvorrat',recoveryOrder:'Notbestellung Wasser · Rückzahlung aus Verkäufen',recoveryPayment:'Notvorrat bezahlt'},
+  it:{recoveryInvoice:'Saldo della fornitura d’emergenza',recoveryOrder:'Ordine d’acqua urgente · ripagato con le vendite',recoveryPayment:'Fornitura d’emergenza pagata'},
+  ru:{recoveryInvoice:'Долг за аварийный запас',recoveryOrder:'Срочный заказ воды · оплата из выручки',recoveryPayment:'Оплата аварийного запаса'},
+  hi:{recoveryInvoice:'आपात सामान का बकाया',recoveryOrder:'आपात पानी का ऑर्डर · बिक्री से भुगतान',recoveryPayment:'आपात सामान का भुगतान'},
+  ar:{recoveryInvoice:'رصيد التوريد الطارئ',recoveryOrder:'طلب ماء طارئ · يُسدد من المبيعات',recoveryPayment:'سداد قيمة التوريد الطارئ'}
+};
+for(const locale of supportedLocales)Object.assign(dict[locale],recoveryCopy[locale]||recoveryCopy.en);
+keys.push(...recoveryKeys);
 
 const uxKeys='placementValid|placementBlocked|placementHint|confirmPlace|cancel|productToDisplay|placeShelfHint|premiumDetail|buyPrice|sellPrice|storedInactive|placeFree|moveDevice|toWarehouse|optionalDecor|lifetimeSales|noDailyReset|hired|autoRestockDetail|needMoreCash|placementDone|selectMovePrompt'.split('|');
 const uxCopy={
