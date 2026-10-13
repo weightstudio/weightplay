@@ -21,8 +21,8 @@ for(const [locale,segment]of Object.entries(ROUTES))test(`${locale}: complete na
  assert(page.includes('content="noindex,nofollow"'));assert(page.includes('/games/pawflow/preview-gate.js'));
  assert(page.indexOf('/src/weightplay-audio.js')<page.indexOf('/src/site-config.js'));
  assert(!page.includes('/src/sound.js'));assert(page.includes(COPY[locale].title));
-  assert(page.includes('flow-related-card'));assert(page.includes('weightplay-game-version" content="13"'));
-  assert(page.includes('style.css?v=7'));assert(page.includes('boot.js?v=13'));
+  assert(page.includes('flow-related-card'));assert(page.includes('weightplay-game-version" content="14"'));
+  assert(page.includes('style.css?v=7'));assert(page.includes('boot.js?v=14'));
  assert(page.includes('id="mainProgress" class="wp-standard-main-progress" data-wp-frame-progress'));
 });
 test('preview gate cannot enable gameplay through missing or misleading query values',()=>{
@@ -35,8 +35,8 @@ test('both active screen headers satisfy the shared frame mounting contract',()=
  const screens=read('games/pawflow/screens.mjs');
  for(const id of ['stageHeader','battleHeader'])assert.match(screens,new RegExp(`id="${id}"[^]*?<h2 data-wp-frame-title hidden></h2></header>`));
  assert(!read('games/pawflow/game.js').includes('WonderSound'));
- assert(read('games/pawflow/boot.js').includes("game.js?v=13"));
- assert(read('games/pawflow/game.js').includes('snapshot:()=>({version:13'));
+ assert(read('games/pawflow/boot.js').includes("game.js?v=14"));
+ assert(read('games/pawflow/game.js').includes('snapshot:()=>({version:14'));
 });
 test('local practice is an authenticated, no-save/no-analytics Pawflow adapter',()=>{
  const game=read('games/pawflow/game.js');

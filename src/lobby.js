@@ -1716,6 +1716,7 @@ function renderLobby(options = {}) {
   const regions = [...shell.children].filter(node =>
     !node.matches('.lobby-topbar,.game-hall-switch,.lobby-search-row'));
   const entries = regions.filter(Boolean).map(node => ({ node, inert: node.inert }));
+  const focusWasInContent = entries.some(({node}) => node.contains(document.activeElement));
   const motion = { targetHall: activeHall, options: { ...options }, deferredRender: false, resetScroll: Boolean(options.resetScroll), generation: 0, wakeImageWait: null, quickPickWasDisabled: Boolean(quickPickBtn?.disabled) };
   motion.restore = () => {
     motion.fade?.cancel();
@@ -1724,13 +1725,21 @@ function renderLobby(options = {}) {
     cancelAnimationFrame(motion.snapshotFrame);
     motion.snapshotFrame = null;
     motion.syncSnapshotPosition = null;
-    entries.forEach(({node, inert}) => { node.inert = inert; });
+    entries.forEach(({node, inert}) => {
+      // The Castle Hall manager owns this node's destination state and updates
+      // inert/hidden during commit. Restoring its outgoing inert value here can
+      // make the hidden destination interactive or leave the visible one inert.
+      if (node.id !== 'weightplayCastle') node.inert = inert;
+    });
     if (quickPickBtn) quickPickBtn.disabled = motion.quickPickWasDisabled;
     delete document.body.dataset.hallMotionPhase;
     delete document.body.dataset.hallTransitionTarget;
     shell.removeAttribute('aria-busy');
     document.documentElement.classList.remove('hall-content-motion');
     resumeToastAfterHallMotion(motion.toastState);
+    if (focusWasInContent) {
+      [...hallButtons].find(button => button.dataset.hallTab === activeHall)?.focus({preventScroll:true});
+    }
   };
   motion.commit = (targetHall) => {
     activeHall = targetHall;
@@ -1754,6 +1763,12 @@ function renderLobby(options = {}) {
   if (quickPickBtn) quickPickBtn.disabled = true;
   motion.toastState = pauseToastForHallMotion();
   hallMotion = motion;
+  if (hallMotionQuery.matches || document.hidden) {
+    motion.commit(motion.targetHall);
+    hallMotion = null;
+    motion.restore();
+    return;
+  }
   void (async () => {
     await nextLobbyFrame();
     if (hallMotion !== motion) return;

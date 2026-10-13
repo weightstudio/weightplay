@@ -1,5 +1,5 @@
 import {normalizeDeck,VERSION} from './data.mjs';
-import {normalizeCollection,mergeCollections,clearCount,rewardType} from './progression.mjs';
+import {normalizeCollection,mergeCollections,normalizeGacha,mergeGacha,clearCount,rewardType} from './progression.mjs';
 // Preserve existing player progress across the v1 -> v2 implementation upgrade.
 export const SAVE_KEY='weightplay.fusekeep.v1';
 const int=(n,a,b,fallback=a)=>Number.isFinite(n)?Math.max(a,Math.min(b,Math.trunc(n))):fallback;
@@ -11,11 +11,11 @@ export function normalizeSave(raw){
  const collection=normalizeCollection(source.collection,Array.isArray(source.deck)?source.deck:[]);
  const deck=normalizeDeck(source.deck).filter(type=>collection.owned.includes(type));
  return {version:VERSION,unlocked,stars,collection,deck:normalizeDeck(deck),tutorial:source.tutorial===true,
-  best:Array.from({length:30},(_,i)=>int(source.best?.[i],0,86400))};
+  gacha:normalizeGacha(source.gacha),best:Array.from({length:30},(_,i)=>int(source.best?.[i],0,86400))};
 }
 export function mergeProgress(a,b){
  a=normalizeSave(a);b=normalizeSave(b);
- return normalizeSave({...a,collection:mergeCollections(a.collection,b.collection),unlocked:Math.max(a.unlocked,b.unlocked),tutorial:a.tutorial||b.tutorial,
+ return normalizeSave({...a,collection:mergeCollections(a.collection,b.collection),gacha:mergeGacha(a.gacha,b.gacha),unlocked:Math.max(a.unlocked,b.unlocked),tutorial:a.tutorial||b.tutorial,
   stars:a.stars.map((n,i)=>Math.max(n,b.stars[i])),
   best:a.best.map((n,i)=>n&&b.best[i]?Math.min(n,b.best[i]):n||b.best[i])});
 }

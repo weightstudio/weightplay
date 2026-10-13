@@ -25,13 +25,12 @@ export function mountPlayScreens(){
    <header id="battleHeader"><button type="button" data-wp-return="battle" data-t-aria="back"></button><h2 data-wp-frame-title hidden></h2></header>
    <div id="battleContent">
     <div id="battleHud" data-wp-frame-info><div><span data-t="campaign"></span><strong id="battleLevel"></strong></div><div><span data-wave-label></span><strong id="battleWave"></strong></div><div><span data-t="goldLabel"></span><strong id="battleGold"></strong></div></div>
-    <div class="health-line"><label for="wallMeter" data-t="wall"></label><progress id="wallMeter" max="5000" value="5000"></progress><strong id="wallText">5000/5000</strong></div>
+    <div class="utility-row battle-utilities">
+     <button id="speed" type="button" data-wp-frame-action="secondary" data-t-aria="speed"><span id="speedValue">×1</span></button>
+     <button id="help" type="button" data-wp-frame-action="secondary" data-t-aria="help"><span aria-hidden="true">?</span></button>
+    </div>
     <div id="arenaFrame" data-t-aria="formation" role="group"><div id="arenaHost"></div><div id="padLayer"></div><div id="damageLayer" aria-hidden="true"></div><p id="battleCue" role="status" aria-live="polite" hidden></p></div>
     <div id="commands">
-     <div class="utility-row">
-      <button id="speed" type="button" data-wp-frame-action="secondary" data-t-aria="speed"><span id="speedValue">×1</span></button>
-      <button id="help" type="button" data-wp-frame-action="secondary" data-t-aria="help"><span aria-hidden="true">?</span></button>
-     </div>
      <p id="selectionHint" class="bounded-message"></p>
      <div class="action-row">
       <button id="summon" type="button" data-wp-frame-action="secondary"><span data-t="shortSummon"></span><b id="summonCost"></b></button>
@@ -39,13 +38,24 @@ export function mountPlayScreens(){
       <button id="spell" type="button" data-wp-frame-action="secondary"><span data-t="shortSpell"></span><b id="spellCost"></b></button>
      </div><p id="feedback" class="bounded-message" role="status" aria-live="polite"></p>
     </div>
+    <div class="health-line"><label for="wallMeter" data-t="wall"></label><progress id="wallMeter" max="5000" value="5000"></progress><strong id="wallText">5000/5000</strong></div>
    </div>
    <section id="battleDialog" hidden role="dialog" aria-modal="true" aria-labelledby="dialogTitle" aria-describedby="dialogBody">
     <div class="dialog-card"><h2 id="dialogTitle"></h2><p id="dialogBody"></p><div id="dialogDetails" data-wp-scroll-owner></div><p id="dialogStats"></p><div class="dialog-actions"><button id="modalLeft" type="button" data-wp-frame-action="secondary"></button><button id="modalMiddle" type="button" data-wp-frame-action="primary"></button><button id="modalRight" type="button" data-wp-frame-action="secondary"></button></div></div>
    </section>
   </div>
- </section>`;
+ </section>
+ <dialog id="troopDialog" class="game-dialog" aria-labelledby="troopDialogTitle">
+  <div class="game-dialog-card"><h2 id="troopDialogTitle"></h2><p id="troopDialogBody"></p><progress id="troopDialogProgress" max="12" value="0"></progress><p id="troopDialogRequirements"></p><p id="troopDialogStatus" role="status" aria-live="polite"></p><div class="game-dialog-actions"><button id="troopClose" type="button" data-wp-frame-action="secondary"></button><button id="troopAdvance" type="button" data-wp-frame-action="primary"></button><button id="troopSquad" type="button" data-wp-frame-action="secondary"></button></div></div>
+ </dialog>
+ <dialog id="gachaDialog" class="game-dialog" aria-labelledby="gachaTitle">
+  <div class="game-dialog-card"><h2 id="gachaTitle"></h2><p id="gachaExplain"></p><p id="gachaBalance"></p><p id="gachaResult" role="status" aria-live="polite"></p><div class="game-dialog-actions"><button id="gachaClose" type="button" data-wp-frame-action="secondary"></button><button id="goldDraw" type="button" data-wp-frame-action="primary"></button><button id="diamondDraw" type="button" data-wp-frame-action="primary"></button></div></div>
+ </dialog>`;
  app.append(fragment.content);
+ const recruit=document.createElement('button');
+ recruit.id='openGacha';recruit.type='button';recruit.dataset.wpFrameAction='secondary';
+ recruit.dataset.t='gachaOpen';recruit.textContent=copy.gachaOpen;
+ document.querySelector('#mainContent [data-wp-frame-copy]')?.append(recruit);
  app.querySelector('[data-wave-label]').textContent=buttons.waveLabel;
  for(const node of app.querySelectorAll('[data-t]'))node.textContent=copy[node.dataset.t]??d[node.dataset.t]??'';
  for(const node of app.querySelectorAll('[data-t-aria]'))node.setAttribute('aria-label',copy[node.dataset.tAria]??d[node.dataset.tAria]??'');

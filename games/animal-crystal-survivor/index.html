@@ -47,8 +47,6 @@
 <script defer src="/src/game-official-name.js?v=20260909-dungeon-levels-v26"></script>
 <link rel="stylesheet" href="/src/stage-selector-standard.css" />
 <link rel="stylesheet" href="/src/game-screen-frame.css?v=20260930-shared-stage-badge-v5" />
-<script src="/src/game-entry-loader.js?v=20261013-entry-loader-i9-1"></script>
-<script defer src="/games/animal-crystal-survivor/stage-i9-preview-loader.js?v=20261013-crystal-stage-i9-preview14"></script>
 </head>
   <body data-tutorial-auto-show="false" data-sound-toggle="off">
     <main data-wp-frame-root class="crystal-app" data-play-viewport data-no-mobile-immersive="true">
@@ -228,7 +226,19 @@
     <script src="talent-data.js?v=20260909-dungeon-levels-v26"></script>
     <script src="/src/game-screen-frame.js?v=20260930-stage-get-state-v3"></script>
 <script src="/src/virtual-joystick.js?v=1.0.0"></script>
-<script src="game.js?v=20261013-entry-loader-i9-1&wp-audio=1.0.0"></script>
+<script data-wp-game-entry-bootstrap="i9">
+(() => {
+  const host = window.location.hostname;
+  const loopback = window.location.protocol === "http:"
+    && ["localhost", "127.0.0.1", "[::1]", "::1"].includes(host);
+  const path = window.location.pathname.replace(/\/+$/, "");
+  if (!loopback || new URLSearchParams(window.location.search).get("preview") !== "1"
+      || !/(?:^|\/)games\/animal-crystal-survivor$/.test(path)) return;
+  document.write('<script src="/src/game-entry-loader.js?v=20261013-entry-loader-i9-1"><\/script>');
+  document.write('<script defer src="/games/animal-crystal-survivor/stage-i9-preview-loader.js?v=20261013-crystal-stage-i9-preview14"><\/script>');
+})();
+</script>
+<script src="game.js?v=20261013-entry-loader-i9-v49-2&wp-audio=1.0.0"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260824-crystal-responsive-canvas-v2" data-wp-battle-standard></script>
     <script src="/src/stage-selector-standard.js?v=20260910-stage-workspace1"></script>
 

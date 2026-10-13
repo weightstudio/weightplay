@@ -232,11 +232,12 @@
   let overlayState = null;
   let targetUrl = "";
   let navTimer = 0;
-  let nextFrame = 0;
+  let navigationProbe = null;
   const reset = ({ restoreFocus = false } = {}) => {
+    navigationProbe?.abort();
+    navigationProbe = null;
     active = false;
     window.clearTimeout(navTimer);
-    window.cancelAnimationFrame(nextFrame);
     document.removeEventListener("keydown", onLobbyKeydown, true);
     navTimer = 0;
     overlayState?.overlay.remove();
@@ -246,6 +247,10 @@
   };
   const failNavigation = () => {
     if (!active || !overlayState) return;
+    window.clearTimeout(navTimer);
+    navTimer = 0;
+    navigationProbe?.abort();
+    navigationProbe = null;
     overlayState.overlay.remove();
     const [loadingText, errorTitle, errorCopy, retryText, backText] = copy();
     overlayState = makeOverlay({ mode: "error", titleText: errorTitle, messageText: errorCopy, retry: () => navigate(), cancel: () => reset({ restoreFocus: true }) });
@@ -263,11 +268,26 @@
       overlayState = makeOverlay({ titleText: copy()[6], cancel: () => reset({ restoreFocus: true }) });
     }
     window.clearTimeout(navTimer);
+    navigationProbe?.abort();
+    navigationProbe = new AbortController();
+    const currentProbe = navigationProbe;
     navTimer = window.setTimeout(failNavigation, 20000);
     document.addEventListener("keydown", onLobbyKeydown, true);
-    nextFrame = window.requestAnimationFrame(() => {
-      window.location.assign(targetUrl);
-    });
+    // Probe only the same-origin response headers. A GET here would download
+    // the full document and then make navigation download it again.
+    fetch(targetUrl, { method: "HEAD", cache: "no-store", credentials: "same-origin", signal: currentProbe.signal })
+      .then((response) => {
+        if (!active || navigationProbe !== currentProbe) return;
+        if (!response.ok) { failNavigation(); return; }
+        window.clearTimeout(navTimer);
+        navTimer = 0;
+        navigationProbe = null;
+        window.location.assign(targetUrl);
+      })
+      .catch((error) => {
+        if (!active || navigationProbe !== currentProbe || error?.name === "AbortError") return;
+        failNavigation();
+      });
   };
   function onLobbyKeydown(event) {
     if (active && event.key === "Escape") {
@@ -293,7 +313,8 @@
   document.addEventListener("click", onClick, true);
   window.addEventListener("pagehide", () => {
     window.clearTimeout(navTimer);
-    window.cancelAnimationFrame(nextFrame);
+    navigationProbe?.abort();
+    navigationProbe = null;
     document.removeEventListener("keydown", onLobbyKeydown, true);
     if (overlayState) overlayState.overlay.remove();
     overlayState = null;

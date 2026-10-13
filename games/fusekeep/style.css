@@ -31,8 +31,37 @@
 #deckGrid .troop-card:disabled{opacity:.6;cursor:default;filter:grayscale(.8)}
 #deckGrid .collection-details,#deckGrid .collection-source{margin:0;font:400 13px/1.5 system-ui;overflow-wrap:anywhere}
 #deckGrid .collection-source{margin-bottom:auto;color:var(--wp-ui-muted)}
-#deckGrid .collection-advance{min-height:44px;width:100%;padding:8px;border:1px solid var(--wp-ui-line);background:var(--wp-ui-surface-strong,#263d55);color:var(--wp-ui-text);font:700 14px/1.3 system-ui;cursor:pointer}
-#deckGrid .collection-advance:disabled{opacity:.55;cursor:default}
 
 #deckGrid .troop-card{min-height:160px}#deckGrid [data-wp-item-content]{min-height:136px;gap:6px}#deckGrid img{width:72px;height:72px}
 #commands .utility-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+/* Owner-requested stable battle controls and responsive world viewport. */
+#battleContent{position:relative;grid-template-rows:44px minmax(0,1fr) 44px 24px;gap:5px}
+#battleContent .battle-utilities{position:absolute;z-index:10;inset-block-start:0;inset-inline-end:4px;width:92px;height:44px;grid-template-columns:repeat(2,minmax(40px,44px));gap:4px;justify-content:end}
+#battleHud{padding-inline-end:96px}
+#battleContent #commands{grid-row:3;grid-template-rows:44px;gap:0;overflow:visible}
+#battleContent .health-line{grid-row:4;min-height:24px}
+#battleContent #arenaFrame{grid-row:2}
+#battleContent[data-wide=true]{grid-template-columns:minmax(0,1fr) 174px;grid-template-rows:44px minmax(0,1fr) 24px}
+#battleContent[data-wide=true] #battleHud{grid-column:1;grid-row:1;padding-inline-end:0}
+#battleContent[data-wide=true] #arenaFrame{grid-column:1;grid-row:2}
+#battleContent[data-wide=true] .health-line{grid-column:1;grid-row:3}
+#battleContent[data-wide=true] .battle-utilities{inset-inline-end:0;width:174px}
+#battleContent[data-wide=true] #commands{grid-column:2;grid-row:1/4;grid-template-rows:auto;align-content:start;padding-block-start:50px;overflow:visible}
+#battleContent[data-wide=true] .action-row{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(3,44px)}
+#battleContent[data-wide=true] #feedback{inset-inline-start:8px;inset-inline-end:190px;bottom:31px}
+#deckGrid .collection-card{position:relative;gap:5px}
+#deckGrid .troop-card{position:relative}
+#deckGrid .tier-badge{position:absolute;inset-block-start:6px;inset-inline-end:6px;z-index:2;padding:4px 6px;border-radius:12px;background:#203c5d;color:#fff0c3;border:1px solid #ffe191;font:800 12px/1 system-ui}
+#deckGrid .fragment-progress,#troopDialogProgress{width:100%;height:14px;accent-color:#f2c85e}
+#deckGrid .fragment-count{font:700 12px/1.3 system-ui;text-align:end;font-variant-numeric:tabular-nums;color:var(--wp-ui-muted)}
+.game-dialog{width:min(calc(100% - 24px),600px);max-width:600px;max-height:min(90dvh,720px);padding:0;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface);color:var(--wp-ui-text)}
+.game-dialog::backdrop{background:#0c172bd9}
+.game-dialog-card{display:flex;flex-direction:column;gap:12px;max-height:min(90dvh,720px);overflow:auto;padding:18px;overscroll-behavior:contain}
+.game-dialog-card h2,.game-dialog-card p{margin:0;line-height:1.5;overflow-wrap:anywhere}
+.game-dialog-card h2{font-size:22px}
+.game-dialog-card p{font-size:14px}
+.game-dialog-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;direction:ltr}
+.game-dialog-actions button{min-height:44px;min-width:0;white-space:normal}
+.game-dialog-actions button:disabled{opacity:.52;cursor:not-allowed;filter:grayscale(.3)}
+@media(max-width:420px){.game-dialog-actions{grid-template-columns:1fr}#mainContent [data-t="gachaOpen"]{width:100%}}

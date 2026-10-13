@@ -1,7 +1,7 @@
 import {Battle} from './engine.mjs?v=7';
 import {STEP,STAGES,TYPES,BOSSES} from './data.mjs';
 import {createStore,settle,SAVE_KEY} from './save.mjs?v=7';
-import {shardBalance,nextCost,advanceCollection,rewardType,sources,clearCount} from './progression.mjs';
+import {shardBalance,nextCost,advanceCollection,rewardType,sources,clearCount,gachaBalance,drawCard} from './progression.mjs';
 import {PROGRESSION_COPY} from './progression-copy.mjs';
 import {LOCALES,LABELS,DICT,translator} from './locales.mjs?v=7';
 import {COPY,ROUTES,interpolate} from './copy.mjs';
@@ -77,32 +77,46 @@ function setTab(deck){
  if(deck&&scene==='stage')void loadPortraits();
 }
 function renderDeck(){
- deckNodes.forEach(({button,details,advance,source},index)=>{
-  const type=TYPES[index],owned=saved.collection.owned.includes(type),level=saved.collection.levels[type],cost=nextCost(saved.collection,type);
-  button.setAttribute('aria-pressed',String(draft.includes(type)));button.disabled=!owned;
-  text(details,`${owned?t('tier',{n:level}):t('troopLocked')} · ${t('shards')} ${shardBalance(saved.collection,type)}${cost===null?'':`/${cost}`} · ${t('power',{n:level*10})}`);
-  text(source,t('source',{n:sources(type).join('、')}));
-  text(advance,cost===null?t('maxTier'):`${t(owned?'advanceTroop':'unlockTroop')} · ${cost}`);
-  advance.disabled=cost===null||shardBalance(saved.collection,type)<cost;
+ deckNodes.forEach(({button,details,source,progress,progressText,tierBadge},index)=>{
+  const type=TYPES[index],owned=saved.collection.owned.includes(type),level=saved.collection.levels[type],cost=nextCost(saved.collection,type),balance=shardBalance(saved.collection,type);
+  button.setAttribute('aria-pressed',String(draft.includes(type)));button.disabled=false;
+  text(tierBadge,owned?t('tier',{n:level}):'');tierBadge.hidden=!owned;
+  text(details,`${owned?t('power',{n:level*10}):t('troopLocked')} · ${t('troopProgress',{have:balance,need:cost??balance})}`);
+  progress.max=Math.max(1,cost??balance);progress.value=Math.min(balance,progress.max);progress.setAttribute('aria-label',t('troopProgress',{have:balance,need:cost??balance}));
+  text(progressText,`${balance}/${cost??balance}`);text(source,t('source',{n:sources(type).join('、')}));
  });
  text($('deckCount'),`${draft.length} / 5 · ${t('chance')}`);renderProgress();
 }
+function showTroopDetail(type){
+ saved=store.refresh();const index=TYPES.indexOf(type);if(index<0)return;
+ const owned=saved.collection.owned.includes(type),level=saved.collection.levels[type],cost=nextCost(saved.collection,type),balance=shardBalance(saved.collection,type);
+ text($('troopDialogTitle'),`${d.troops[index]} · ${t('troopDetail')}`);text($('troopDialogBody'),d.roles[index]);
+ const bar=$('troopDialogProgress');bar.max=Math.max(1,cost??balance);bar.value=Math.min(balance,bar.max);bar.setAttribute('aria-label',t('troopProgress',{have:balance,need:cost??balance}));
+ text($('troopDialogRequirements'),`${owned?t('tier',{n:level}):t('troopLocked')} · ${t('troopProgress',{have:balance,need:cost??balance})} · ${cost===null?t('maxTier'):t('power',{n:level*10})}`);
+ text($('troopDialogStatus'),'');text($('troopClose'),t('drawCancel'));const upgrade=$('troopAdvance');text(upgrade,cost===null?t('maxTier'):t(owned?'advanceTroop':'unlockTroop')+` · ${balance}/${cost}`);upgrade.disabled=cost===null||balance<cost;
+ const squad=$('troopSquad'),inSquad=draft.includes(type);text(squad,t(inSquad?'troopRemove':'troopSelect'));squad.disabled=!owned||(!inSquad&&draft.length>=5);squad.setAttribute('aria-label',squad.textContent);
+ $('troopDialog').showModal();
+}
 TYPES.forEach((type,index)=>{
- const card=create('article','collection-card'),details=create('p','collection-details'),source=create('p','collection-source'),advance=create('button','collection-advance');advance.type='button';
+ const card=create('article','collection-card'),details=create('p','collection-details'),source=create('p','collection-source'),progress=create('progress','fragment-progress'),progressText=create('span','fragment-count'),tierBadge=create('span','tier-badge');
  const button=create('button','troop-card');button.type='button';
  const group=create('span');group.dataset.wpItemContent='';
  const image=create('img');image.width=104;image.height=104;image.alt='';image.src=new URL('poster.webp',assetURL).href;
- group.append(image,create('strong','',d.troops[index]),create('span','troop-description',d.roles[index]));button.append(group);
- listen(button,'click',()=>{
-  if(!saved.collection.owned.includes(type))return;
-  cue('click');if(draft.includes(type))draft=draft.filter(id=>id!==type);
-  else if(draft.length<5)draft.push(type);else{text($('deckMessage'),t('deckFull'));return;}
-  text($('deckMessage'),draft.length===5?t('chance'):t('deckMin'));
-  if(draft.length===5)save({...saved,deck:[...draft]});renderDeck();
- });
- listen(advance,'click',()=>{saved=store.refresh();save({...saved,collection:advanceCollection(saved.collection,type)});renderDeck();cue('click');});
- card.append(button,details,source,advance);$('deckGrid').append(card);deckNodes.push({button,image,details,source,advance});
+ group.append(image,tierBadge,create('strong','',d.troops[index]),create('span','troop-description',d.roles[index]));button.append(group);
+ listen(button,'click',()=>{cue('click');showTroopDetail(type);});
+ card.append(button,details,progress,progressText,source);$('deckGrid').append(card);deckNodes.push({button,image,details,source,progress,progressText,tierBadge});
 });
+listen($('troopClose'),'click',()=>$('troopDialog').close());
+listen($('troopAdvance'),'click',()=>{const type=TYPES.find((id,index)=>d.troops[index]=== $('troopDialogTitle').textContent.split(' · ')[0]);if(!type)return;saved=store.refresh();const cost=nextCost(saved.collection,type);if(cost===null||shardBalance(saved.collection,type)<cost)return;save({...saved,collection:advanceCollection(saved.collection,type)});renderDeck();showTroopDetail(type);cue('upgrade');});
+listen($('troopSquad'),'click',()=>{const type=TYPES.find((id,index)=>d.troops[index]=== $('troopDialogTitle').textContent.split(' · ')[0]);if(!type||!saved.collection.owned.includes(type))return;if(draft.includes(type))draft=draft.filter(id=>id!==type);else if(draft.length<5)draft.push(type);else return;text($('deckMessage'),draft.length===5?t('chance'):t('deckMin'));if(draft.length===5)save({...saved,deck:[...draft]});renderDeck();showTroopDetail(type);});
+function renderGacha(){saved=store.refresh();const balance=gachaBalance(saved.collection,saved.gacha);text($('gachaBalance'),t('gachaBalance',{n:balance.gold,d:balance.diamond}));text($('gachaTitle'),t('gachaTitle'));text($('gachaExplain'),t('gachaExplain'));text($('gachaClose'),t('drawCancel'));text($('goldDraw'),t('goldDraw'));text($('diamondDraw'),t('diamondDraw'));}
+listen($('openGacha'),'click',()=>{renderGacha();text($('gachaResult'),'');$('gachaDialog').showModal();});
+listen($('gachaClose'),'click',()=>$('gachaDialog').close());
+let drawBusy=false;
+async function recruit(banner){if(drawBusy)return;drawBusy=true;$('goldDraw').disabled=$('diamondDraw').disabled=true;
+ const run=()=>{saved=store.refresh();const result=drawCard(saved,banner,store.actor);if(!result.ok){text($('gachaResult'),t('drawInsufficient'));return;}save(result.save);renderDeck();const item=result.result;text($('gachaResult'),`${t('drawResult',{rarity:t(`rarity${item.rarity[0].toUpperCase()}${item.rarity.slice(1)}`),name:troopName(item.troop),n:item.fragments})}${item.duplicate?` · ${t('drawDuplicate')}`:''}`);renderGacha();};
+ try{if(navigator.locks?.request)await navigator.locks.request('weightplay-fusekeep-gacha-v1',run);else run();}finally{drawBusy=false;renderGacha();}}
+listen($('goldDraw'),'click',()=>void recruit('gold'));listen($('diamondDraw'),'click',()=>void recruit('diamond'));
 function loadRenderer(){
  if(rendererPromise)return rendererPromise;
  if(rendererAttempts>=2)return Promise.reject(Error('RELOAD_REQUIRED'));
@@ -221,9 +235,9 @@ async function startBattle(id){
 }
 function showResult(){
  if(!battle||modal==='result')return;
- const won=battle.status==='won',id=battle.stage.id;if(won)save(settle(store.refresh(),battle,store.actor));
+ const won=battle.status==='won',id=battle.stage.id;let firstClear=false;if(won){saved=store.refresh();firstClear=clearCount(saved.collection,id)===0;save(settle(saved,battle,store.actor));}
  cue(won?'win':'wrong');
- showModal('result',t(won?'victory':'defeat'),won?t('reward',{name:troopName(battle.shardReward.type),n:battle.shardReward.amount}):'',[
+ showModal('result',t(won?'victory':'defeat'),won?`${t('reward',{name:troopName(battle.shardReward.type),n:battle.shardReward.amount})}${firstClear?` · ${t('firstClearCurrency')}`:''}`:'',[
   {label:t('back'),run:toStage},
   {label:t('next'),run:()=>void startBattle(id+1),disabled:!won||id>=STAGES.length},
   {label:t('retry'),run:()=>void startBattle(id)},

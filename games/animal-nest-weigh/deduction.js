@@ -19,7 +19,26 @@
     const candidates = bounds.flatMap(({ min, max }, i) => min <= rank && rank <= max ? [i] : []);
     return { below, bounds, candidates, proven: candidates.length === 1 ? candidates[0] : null };
   }
-  const api = { rankFor, analyze };
+  // Look ahead using only revealed order. Never receive actual material weights.
+  function suggest(count, clues, target) {
+    const current = analyze(count, clues, target);
+    if (current.proven !== null) return null;
+    let best = null;
+    let bestScore = -Infinity;
+    for (let a = 0; a < count; a += 1) for (let b = a + 1; b < count; b += 1) {
+      if (current.below[a][b] || current.below[b][a]) continue;
+      const outcomes = [[a, b], [b, a]].map(([lighter, heavier]) => {
+        const next = analyze(count, [...clues, { lighter, heavier }], target);
+        return { remaining: next.candidates.length, known: next.below.flat().filter(Boolean).length };
+      });
+      const score = -Math.max(...outcomes.map(o => o.remaining)) * 100
+        - outcomes.reduce((n, o) => n + o.remaining, 0) * 10
+        + Math.min(...outcomes.map(o => o.known));
+      if (score > bestScore) { bestScore = score; best = [a, b]; }
+    }
+    return best;
+  }
+  const api = { rankFor, analyze, suggest };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else window.NestWeighDeduction = api;
 })();

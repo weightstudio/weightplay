@@ -269,16 +269,16 @@ html body[data-wp-game-id="castle-cascade"] #stage {
 }
 .battle-content {
   width: 100%; height: 100%; min-height: 0;
-  grid-template-rows: 94px minmax(0, 1fr) 48px;
+  grid-template-rows: minmax(0, 1fr) 48px;
   gap: 8px; padding: 4px 0 0; align-items: stretch; container-type: size;
 }
 .royal-scoreboard {
-  width: min(100%, 720px); justify-self: center;
-  display: grid; grid-template-columns: 66px minmax(0, 1fr) 76px;
-  align-items: center; gap: 7px; padding: 5px;
-  border: 2px solid #e9bd57; border-radius: 18px;
+  min-width: 0; width: 100%; height: 48px;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(58px, 18%);
+  align-items: center; gap: 6px; padding: 2px 4px;
+  border: 1px solid #e9bd57; border-radius: 12px;
   background: linear-gradient(#345990, #1d3563);
-  box-shadow: inset 0 2px 0 #7b9bc7, 0 4px 0 #142c51, 0 8px 15px #18385840;
+  box-shadow: inset 0 1px 0 #7b9bc7, 0 2px 0 #142c51;
 }
 .keeper-medallion {
   width: 64px; height: 76px; border-radius: 12px;
@@ -287,15 +287,15 @@ html body[data-wp-game-id="castle-cascade"] #stage {
   box-shadow: inset 0 0 0 2px #b97a25, 0 2px 0 #0c2449;
 }
 .royal-goals, .royal-moves {
-  height: 76px; min-width: 0;
+  height: 40px; min-width: 0;
   display: grid; align-content: center; justify-items: center;
-  border: 2px solid #d7b57d; border-radius: 12px;
+  border: 1px solid #d7b57d; border-radius: 8px;
   background: linear-gradient(#fffcf2, #f2e4c9);
   color: #243966; box-shadow: inset 0 2px 3px #b4a08360;
 }
 .royal-stage { font-size: 12px; line-height: 16px; font-weight: 900; color: #4f6080; }
-.battle-objective-indicators { width: 100%; min-height: 44px; }
-.battle-objective-indicators .objective-icons { display: flex; flex-wrap: nowrap; justify-content: center; height: 44px; align-items: center; gap: 4px; }
+.battle-objective-indicators { width: 100%; min-height: 0; }
+.battle-objective-indicators .objective-icons { display: flex; flex-wrap: nowrap; justify-content: flex-start; height: 24px; align-items: center; gap: 3px; overflow: hidden; }
 .objective-icon { background: none; object-fit: contain; }
 /* This separate HUD export also includes the next atlas row's Prism tip. */
 .objective-chip[data-objective="stone"] .objective-icon {
@@ -303,15 +303,15 @@ html body[data-wp-game-id="castle-cascade"] #stage {
   transform: translateY(9%);
 }
 .battle-objective-indicators .objective-chip { position: relative; color: #243966; gap: 1px; min-width: 0; animation: none; }
-.battle-objective-indicators .objective-icon { width: 34px; height: 34px; }
-.battle-objective-indicators .objective-count { min-width: 16px; font-size: 19px; font-weight: 1000; font-variant-numeric: tabular-nums; text-shadow: 0 1px 0 #fff; }
+.battle-objective-indicators .objective-icon { width: 20px; height: 20px; }
+.battle-objective-indicators .objective-count { min-width: 1em; font-size: 12px; font-weight: 1000; font-variant-numeric: tabular-nums; text-shadow: 0 1px 0 #fff; }
 .objective-chip[data-complete="true"] .objective-count { color: #368754; }
 .objective-chip[data-complete="true"]::after { content: "✓"; position: absolute; bottom: -1px; left: 4px; font-size: 12px; color: #fff; background: #348c56; border-radius: 50%; width: 14px; height: 14px; display: grid; place-items: center; }
 .royal-goals:has(.objective-chip:nth-child(4)) .objective-icon { width: 25px; height: 25px; }
 .royal-goals:has(.objective-chip:nth-child(4)) .objective-count { font-size: 15px; min-width: 13px; }
-.royal-goals:has(.objective-chip:nth-child(5)) .objective-icons { flex-wrap: wrap; align-content: center; gap: 1px 3px; }
-.move-number { font-size: 33px; line-height: 36px; font-weight: 1000; font-variant-numeric: tabular-nums; color: #243966; text-shadow: 0 2px 0 #fff; }
-.move-caption { width: 100%; min-height: 24px; padding: 0 2px; font-size: 10px; line-height: 12px; font-weight: 800; text-align: center; overflow: hidden; }
+.royal-goals:has(.objective-chip:nth-child(5)) .objective-icons { flex-wrap: nowrap; gap: 0; }
+.move-number { font-size: 20px; line-height: 22px; font-weight: 1000; font-variant-numeric: tabular-nums; color: #243966; text-shadow: 0 1px 0 #fff; }
+.move-caption { width: 100%; min-height: 12px; padding: 0 1px; font-size: 8px; line-height: 10px; font-weight: 800; text-align: center; overflow: hidden; white-space: nowrap; }
 .royal-moves[data-low="true"] .move-number { color: #b83543; }
 .board-space { width: 100%; height: 100%; min-height: 0; display: grid; place-items: center; container-type: size; }
 .battle[data-mode="siege"] .board-viewport { width: min(100cqw, calc(100cqh / 1.58), 760px); aspect-ratio: 1 / 1.58; }
@@ -333,13 +333,21 @@ html body[data-wp-game-id="castle-cascade"] #stage .stage-card[data-mode="siege"
 @supports not (width: 100cqh) { .board-viewport { width: min(100%, 760px); max-height: 100%; } }
 /* Flexible wide-envelope anchors; fixed logical font/control sizes are preserved. */
 @container castle-battle (min-aspect-ratio: 4/3) {
-  .battle-content { grid-template-columns: 190px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) 48px; }
-  .royal-scoreboard { grid-column: 1; grid-row: 1; width: 190px; height: 174px; align-self: start; grid-template-columns: 66px minmax(0, 1fr); grid-template-rows: 76px 76px; }
-  .royal-scoreboard .keeper-medallion { grid-column: 1; grid-row: 1; }
-  .royal-scoreboard .royal-moves { grid-column: 2; grid-row: 1; width: 100%; }
-  .royal-scoreboard .royal-goals { grid-column: 1 / -1; grid-row: 2; width: 100%; }
-  .board-space { grid-column: 2; grid-row: 1 / 3; }
-  .battle-feedback { grid-column: 1; grid-row: 2; width: 190px; }
+  .battle-content { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) 48px; }
+  .royal-scoreboard { grid-column: auto; grid-row: auto; }
+  .board-space { grid-column: auto; grid-row: 1; }
+  .battle-feedback { grid-column: auto; grid-row: 2; }
+}
+@media (max-width: 380px) {
+  .battle-header { grid-template-columns: 44px minmax(0, 1fr) 0; gap: 4px; padding-inline: 6px; }
+  .battle-header > :last-child { display: none; }
+  .royal-scoreboard { grid-template-columns: minmax(0, 1fr) 54px; gap: 3px; padding-inline: 2px; }
+  .royal-goals { align-items: start; }
+  .royal-stage { font-size: 10px; line-height: 12px; }
+  .battle-objective-indicators .objective-icons { height: 22px; }
+  .battle-objective-indicators .objective-icon { width: 18px; height: 18px; }
+  .battle-objective-indicators .objective-count { font-size: 10px; }
+  .move-number { font-size: 18px; }
 }
 /* Bound dialogs to the same logical Battle envelope as their controls. */
 @container castle-battle (max-height: 500px) {

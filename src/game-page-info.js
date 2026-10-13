@@ -11480,7 +11480,43 @@
 
   function relatedGames(activeId, activeBaseGame) {
     const activeSkills = activeBaseGame.skills || [];
-    return relatedGameEntries(activeId, activeBaseGame, (game) => (game.skills || []).some((skill) => activeSkills.includes(skill))).slice(0, 3);
+    return relatedGameEntries(activeId, activeBaseGame, (game) => (game.skills || []).some((skill) => activeSkills.includes(skill)))
+      .filter((gameId) => isPublicRelatedGame(gameId, activeId))
+      .slice(0, 3);
+  }
+
+  function relatedAudience(gameId, entry) {
+    if (entry?.audience) return entry.audience;
+    const audiences = window.WONDER_LOBBY?.audiences || {};
+    if (audiences.generalGameIds?.includes(gameId)) return "general";
+    if (audiences.kidsGameIds?.includes(gameId)) return "kids";
+    if (audiences.familyGameIds?.includes(gameId)) return "family";
+    return "";
+  }
+
+  function relatedAgeTags(entry) {
+    return Array.isArray(entry?.ages)
+      ? entry.ages.map((age) => String(age).toLowerCase().replace(/\+$/u, "")).filter((age) => age && age !== "general")
+      : [];
+  }
+
+  function isPublicRelatedGame(gameId, activeId) {
+    const catalog = window.WONDER_LOBBY?.games;
+    if (!Array.isArray(catalog)) return false;
+    const target = catalog.find((entry) => entry.id === gameId);
+    const active = catalog.find((entry) => entry.id === activeId);
+    if (!target || target.status !== "playable" || target.internalOnly || target.internalTrial || target.previewOnly) return false;
+    const targetAudience = relatedAudience(gameId, target);
+    const activeAudience = relatedAudience(activeId, active);
+    if (!targetAudience || targetAudience !== activeAudience) return false;
+    const activeAges = relatedAgeTags(active);
+    const targetAges = relatedAgeTags(target);
+    if (targetAudience === "kids" && activeAges.length && targetAges.length && !activeAges.some((age) => targetAges.includes(age))) return false;
+    if (!target.href || !/^games\/[a-z0-9-]+\/$/u.test(target.href)) return false;
+    const officialTitle = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale()];
+    if (typeof officialTitle !== "string" || !officialTitle.trim()) return false;
+    const route = gameHref(gameId);
+    return route.endsWith(`/games/${gameId}/`);
   }
 
   function relatedGameEntries(activeId, activeBaseGame, predicate) {
@@ -11546,20 +11582,17 @@
 
   function relatedCard(gameId) {
     const game = localizedGame(gameId);
-    if (!game) return "";
+    if (!game || !isPublicRelatedGame(gameId, currentGameId())) return "";
     const nativeRelated = currentGameId() === "animal-rune-tactics" ? window.WeightPlayRuneTacticsGuideCopy?.[locale()]?.relatedSummaries?.[gameId] : null;
     const cardCopy = nativeRelated ? {intro:nativeRelated} : localizedRelatedCardCopy?.[locale()]?.[gameId] || {};
     const officialTitle = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale()];
     const cardGame = cardCopy.intro ? { ...game, intro: cardCopy.intro } : game;
-    const imageName = games[currentGameId()]?.relatedCoverMap?.[gameId] || coverImages[gameId] || "weightplay-logo.png";
-    const entryImage = entryRelatedArtwork.get(gameId);
-    const fallbackName = !entryImage && imageName.endsWith(".webp") ? imageName.replace(/\.webp$/u, ".png") : "";
-    const fallbackAttrs = ` data-final-src="${escapeHtml(assetHref("weightplay-logo.png"))}"${
-      fallbackName ? ` data-fallback-src="${escapeHtml(assetHref(fallbackName))}"` : ""
-    }`;
+    const officialPoster = window.WEIGHTPLAY_INTERFACE7_POSTERS?.[gameId] || "";
+    const posterUrl = officialPoster.startsWith("/") ? officialPoster : assetHref("weightplay-logo.png");
+    const fallbackAttrs = ` data-final-src="${escapeHtml(assetHref("weightplay-logo.png"))}"`;
     return `
-      <a class="game-info-related-card" href="${escapeHtml(gameHref(gameId))}">
-        <img src="${escapeHtml(entryImage || assetHref(imageName))}"${fallbackAttrs} alt="" width="320" height="320" loading="eager" decoding="async" />
+      <a class="game-info-related-card" data-game-id="${escapeHtml(gameId)}" href="${escapeHtml(gameHref(gameId))}">
+        <span class="game-info-related-poster"><img src="${escapeHtml(posterUrl)}"${fallbackAttrs} alt="${escapeHtml(officialTitle)}" width="320" height="320" loading="lazy" decoding="async" /></span>
         <span class="game-info-related-copy">
           <strong data-runtime-localize="off">${escapeHtml(officialTitle || cardCopy.title || game.title)}</strong>
           <span>${escapeHtml(nativeRelated || shortDescription(cardGame))}</span>

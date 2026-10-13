@@ -12,6 +12,7 @@
     locale: "en", screen: "main", round: 0, selectedPair: [], selectedTarget: null,
     clues: [], knownPairs: new Set(), comparisons: 0, mistakes: 0, completed: [],
     mastery: {}, phase: "compare", wrong: false, resultVisible: false, lastFeedback: "ready", busy: false,
+    assisted: true, replayClue: null, hintPair: [],
   };
 
   const measurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -153,6 +154,7 @@
 
   function renderMain() {
     $("mainProgress").textContent = copy("progress", { count: state.completed.length });
+    $("startBtn").textContent = state.completed.length ? copy("continueBuilding") : copy("start");
   }
 
   function ensureStageNode(card) {
@@ -232,30 +234,46 @@
 
   function renderClues() {
     const list = $("clueLog");
+    const key = `${state.round}:${state.locale}:${state.clues.length}`;
+    if (list.dataset.clueKey === key) return;
+    list.dataset.clueKey = key;
     list.replaceChildren();
-    state.clues.forEach((clue) => {
+    state.clues.forEach((clue, index) => {
       const item = document.createElement("li");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.clue = String(index);
       const round = rounds[state.round];
-      const first = materialName(round.materials[clue.pair[0]]);
-      const second = materialName(round.materials[clue.pair[1]]);
-      item.textContent = copy("comparisonResult", { first, second, relation: relationFor(round, clue.pair[0], clue.pair[1]) });
+      const first = materialName(round.materials[clue.lighter]);
+      const second = materialName(round.materials[clue.heavier]);
+      button.setAttribute("aria-label", copy("replayClue", { first, second }));
+      for (const value of [clue.lighter, "<", clue.heavier]) {
+        const icon = document.createElement("span");
+        if (value === "<") { icon.textContent = "<"; icon.className = "clue-relation"; }
+        else { icon.className = "tray-icon material-" + round.materials[value]; icon.title = materialName(round.materials[value]); }
+        icon.setAttribute("aria-hidden", "true");
+        button.append(icon);
+      }
+      item.append(button);
       list.append(item);
     });
     list.scrollTop = list.scrollHeight;
   }
 
   function updateBalance() {
-    const clue = pendingPair ? { pair: pendingPair } : state.clues.at(-1);
+    const selecting = state.phase === "compare" && state.selectedPair.length > 0;
+    const clue = pendingPair ? { pair: pendingPair } : selecting ? { pair: state.selectedPair }
+      : state.replayClue !== null ? state.clues[state.replayClue] : state.clues.at(-1);
     const beam = $("balanceBeam");
     const left = $("balanceLeft");
     const right = $("balanceRight");
     if (!clue) {
       left.className = "balance-pan";
       right.className = "balance-pan";
-      left.querySelector(".balance-icon").className = "balance-icon";
-      right.querySelector(".balance-icon").className = "balance-icon";
-      left.querySelector(".balance-label").textContent = "?";
-      right.querySelector(".balance-label").textContent = "?";
+      left.querySelector(".balance-icon").className = "balance-icon is-empty";
+      right.querySelector(".balance-icon").className = "balance-icon is-empty";
+      left.querySelector(".balance-label").textContent = copy("emptyPan");
+      right.querySelector(".balance-label").textContent = copy("emptyPan");
       beam.style.setProperty("--beam-tilt", "0deg");
       $("balanceVisual").dataset.result = "unknown";
       return;
@@ -263,14 +281,15 @@
     const round = rounds[state.round];
     const first = clue.pair[0];
     const second = clue.pair[1];
-    const difference = round.weights[first] - round.weights[second];
-    const angle = pendingPair ? 0 : Math.sign(difference) * -9;
+    const revealing = !pendingPair && !selecting;
+    const difference = revealing ? round.weights[first] - round.weights[second] : 0;
+    const angle = Math.sign(difference) * -9;
     beam.style.setProperty("--beam-tilt", angle + "deg");
     left.querySelector(".balance-icon").className = "balance-icon tray-icon material-" + round.materials[first];
-    right.querySelector(".balance-icon").className = "balance-icon tray-icon material-" + round.materials[second];
+    right.querySelector(".balance-icon").className = second === undefined ? "balance-icon is-empty" : "balance-icon tray-icon material-" + round.materials[second];
     left.querySelector(".balance-label").textContent = materialName(round.materials[first]);
-    right.querySelector(".balance-label").textContent = materialName(round.materials[second]);
-    const outcome = pendingPair ? "unknown" : difference === 0 ? "equal" : difference > 0 ? "left" : "right";
+    right.querySelector(".balance-label").textContent = second === undefined ? copy("emptyPan") : materialName(round.materials[second]);
+    const outcome = !revealing ? "unknown" : difference === 0 ? "equal" : difference > 0 ? "left" : "right";
     $("balanceVisual").dataset.result = outcome;
     if (renderedClueCount !== state.clues.length) {
       renderedClueCount = state.clues.length;
@@ -284,7 +303,7 @@
   function renderBattle() {
     const round = rounds[state.round];
     const info = knowledge();
-    $("roundHint").textContent = copy(round.hint);
+    $("roundHint").textContent = copy("chapterLabel", { number: round.arc }) + " · " + stageName(round, state.round);
     $("progressBadge").textContent = copy("progressBadge", { count: state.completed.length });
     $("requestText").textContent = copy(round.request);
     $("comparisonCount").textContent = copy("weighCount", { count: state.comparisons });
@@ -306,17 +325,28 @@
       const possible = info.candidates.includes(index);
       const { min, max } = info.bounds[index];
       card.classList.toggle("is-selected", selected);
-      card.classList.toggle("is-eliminated", !possible);
-      card.classList.toggle("is-proven", info.proven === index);
+      card.classList.toggle("is-eliminated", state.assisted && !possible);
+      card.classList.toggle("is-proven", state.assisted && info.proven === index);
+      card.classList.toggle("is-hinted", state.hintPair.includes(index));
       card.setAttribute("aria-pressed", String(selected));
       const rank = copy("rankRange", { min: min + 1, max: max + 1 });
-      card.querySelector(".tray-rank").textContent = info.proven === index ? "✓" : !possible ? "×" : `${min + 1}–${max + 1}`;
-      card.setAttribute("aria-label", copy(state.phase === "compare" ? "compareTray" : "answerTray", { name: materialName(round.materials[index]) }) + ". " + rank + ". " + copy(possible ? "candidate" : "ruledOut"));
+      const slot = state.selectedPair.indexOf(index);
+      card.querySelector(".tray-rank").textContent = selected && state.phase === "compare" ? copy(slot === 0 ? "leftPan" : "rightPan") : state.assisted ? info.proven === index ? "✓" : !possible ? "×" : `${min + 1}–${max + 1}` : "—";
+      card.setAttribute("aria-label", copy(state.phase === "compare" ? "compareTray" : "answerTray", { name: materialName(round.materials[index]) }) + (state.assisted ? ". " + rank + ". " + copy(possible ? "candidate" : "ruledOut") : ""));
       card.disabled = state.busy;
     });
-    $("deductionText").textContent = copy(info.proven !== null ? "proofReady" : "candidatesLeft", { count: info.candidates.length });
+    $("deductionText").textContent = state.assisted ? copy(info.proven !== null ? "proofReady" : "candidatesLeft", { count: info.candidates.length }) : copy("independentHelp");
     $("deductionMeter").style.setProperty("--proof-progress", ((round.materials.length - info.candidates.length) / (round.materials.length - 1) * 100) + "%");
-    $("deductionMeter").classList.toggle("is-proven", info.proven !== null);
+    $("deductionMeter").classList.toggle("is-proven", state.assisted && info.proven !== null);
+    $("deductionMeter").classList.toggle("is-independent", !state.assisted);
+    $("assistBtn").textContent = copy(state.assisted ? "assistOn" : "assistOff");
+    $("assistBtn").setAttribute("aria-pressed", String(state.assisted));
+    $("hintBtn").disabled = state.busy || info.proven !== null || state.phase !== "compare";
+    $("battlePanel").dataset.phase = state.phase;
+    $("clueTitle").textContent = copy("notebook", { count: state.clues.length });
+    $("materialBoard").dataset.count = String(round.materials.length);
+    $("compareHeading").textContent = copy(state.phase === "compare" ? "compareTitle" : "answerTitle");
+    document.querySelector(".compare-help").textContent = copy(state.phase === "compare" ? "compareHelp" : "answerHelp");
     $("phaseLabel").textContent = copy(state.phase === "compare" ? "weighStep" : "chooseStep");
     $("phaseActionBtn").textContent = copy(state.busy ? "weighing" : state.phase === "compare" ? "compare" : "check");
     $("phaseActionBtn").disabled = state.busy || (state.phase === "compare" ? state.selectedPair.length !== 2 : state.selectedTarget === null);
@@ -338,7 +368,8 @@
       : state.lastFeedback === "needAnswer" ? copy("needAnswer")
       : state.lastFeedback === "needProof" ? copy("needProof")
       : state.lastFeedback === "inferredPair" ? copy("inferredPair")
-      : info.proven !== null ? copy("proofReady") : copy("strategyHelp");
+      : state.lastFeedback === "hint" ? copy("hintHelp")
+      : state.assisted && info.proven !== null ? copy("proofReady") : copy(state.assisted ? "strategyHelp" : "independentHelp");
     $("battleStatus").textContent = status;
     $("battleStatus").classList.toggle("is-wrong", state.wrong);
     $("mistakeCount").textContent = copy("mistakesCount", { count: state.mistakes });
@@ -375,6 +406,8 @@
     }
     const sources = pair.map((index) => $("materialBoard").querySelector(`[data-material-tray="${index}"] .tray-icon`).getBoundingClientRect());
     pendingPair = pair;
+    state.hintPair = [];
+    state.replayClue = null;
     state.busy = true;
     state.lastFeedback = "";
     renderBattle();
@@ -400,7 +433,7 @@
     state.clues.push({ pair, lighter, heavier });
     state.comparisons = state.clues.length;
     state.selectedTarget = null;
-    if (knowledge().proven !== null) state.phase = "answer";
+    if (state.assisted && knowledge().proven !== null) state.phase = "answer";
     state.lastFeedback = "";
     state.wrong = false;
     playSound("feedback.hint");
@@ -460,6 +493,14 @@
     const saved = bestForStage(state.round);
     const earned = chooseRank();
     const final = state.round === rounds.length - 1;
+    const chapterCompleted = state.completed.filter(index => rounds[index].arc === round.arc).length;
+    $("nestBuildSprite").className = "nest-build-sprite nest-build-" + (chapterCompleted >= 5 ? "complete" : chapterCompleted >= 3 ? "lined" : "frame");
+    $("nestBuildText").textContent = copy("nestBuild", { number: round.arc, count: chapterCompleted });
+    $("nestBuildSteps").replaceChildren(...Array.from({ length: 5 }, (_, i) => {
+      const step = document.createElement("i");
+      step.className = i < chapterCompleted ? "is-built" : "";
+      return step;
+    }));
     $("resultHeading").textContent = copy(final ? "finishTitle" : "resultTitle");
     $("resultText").textContent = copy(final ? "finishText" : "resultText");
     $("resultRank").textContent = earned === 3 ? copy("rankPerfect") : earned === 2 ? copy("rankStrong") : copy("rankGrowing");
@@ -585,6 +626,9 @@
     const safeIndex = Math.max(0, Math.min(rounds.length - 1, Math.trunc(index)));
     if (!stageUnlocked(safeIndex) && safeIndex !== state.round) return false;
     state.round = safeIndex;
+    state.replayClue = null;
+    state.hintPair = [];
+    $("clueLog").dataset.clueKey = "";
     closeLeaveDialog({ restoreFocus: false });
     resetRound({ replay });
     playSound("game.start");
@@ -691,6 +735,8 @@
       const card = event.target.closest("[data-material-tray]");
       if (!card || state.busy || state.resultVisible) return;
       const index = Number(card.dataset.materialTray);
+      state.hintPair = [];
+      state.replayClue = null;
       if (state.phase === "compare") {
         state.selectedPair = state.selectedPair.includes(index)
           ? state.selectedPair.filter((item) => item !== index)
@@ -702,6 +748,42 @@
       state.wrong = false;
       renderBattle();
     });
+    $("clueLog").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-clue]");
+      if (!button || state.busy || state.resultVisible) return;
+      state.replayClue = Number(button.dataset.clue);
+      state.selectedPair = [];
+      state.hintPair = [];
+      renderBattle();
+      const clue = state.clues[state.replayClue];
+      $("comparisonText").textContent = copy("comparisonResult", {
+        first: materialName(rounds[state.round].materials[clue.lighter]),
+        second: materialName(rounds[state.round].materials[clue.heavier]), relation: copy("lighter"),
+      });
+      animate($("balanceBeam"), [{ opacity: .4 }, { opacity: 1 }]);
+    });
+    $("assistBtn").addEventListener("click", () => {
+      if (state.busy) return;
+      state.assisted = !state.assisted;
+      safeSet("weightplay-animal-nest-weigh-assist", String(state.assisted));
+      state.hintPair = [];
+      renderBattle();
+      animate($("deductionMeter"), [{ opacity: .5 }, { opacity: 1 }], 180);
+    });
+    $("hintBtn").addEventListener("click", () => {
+      if (state.busy || state.phase !== "compare") return;
+      state.hintPair = window.NestWeighDeduction.suggest(rounds[state.round].materials.length, state.clues, rounds[state.round].targetType) || [];
+      state.lastFeedback = "hint";
+      renderBattle();
+      state.hintPair.forEach(index => animate($("materialBoard").children[index], [{ filter: "brightness(1.3)" }, { filter: "brightness(1)" }], 360));
+    });
+    for (const [slot, id] of [[0, "balanceLeft"], [1, "balanceRight"]]) {
+      $(id).addEventListener("click", () => {
+        if (state.busy || state.phase !== "compare" || state.resultVisible) return;
+        state.selectedPair.splice(slot, 1);
+        renderBattle();
+      });
+    }
     $("resultStageBtn").addEventListener("click", () => {
       state.resultVisible = false;
       renderBattle();
@@ -768,6 +850,8 @@
     if (!rounds.length) throw new Error("NEST_WEIGH_CAMPAIGN_MISSING");
     state.completed = loadCompleted();
     state.mastery = loadMastery();
+    state.assisted = safeGet("weightplay-animal-nest-weigh-assist", "true") !== "false";
+    mountWorkshop();
     bind();
     mountFrame();
     mountStageController();
@@ -784,6 +868,33 @@
       if (document.readyState === "complete") hideLoading();
       else window.addEventListener("load", hideLoading, { once: true });
       window.setTimeout(hideLoading, 1600);
+    }
+  }
+
+  function mountWorkshop() {
+    const toolbar = document.createElement("div");
+    toolbar.className = "notebook-tools";
+    toolbar.innerHTML = '<button id="assistBtn" type="button" aria-pressed="true"></button><button id="hintBtn" type="button" data-copy="hintAction"></button>';
+    $("deductionMeter").before(toolbar);
+    const title = document.createElement("span");
+    title.id = "clueTitle";
+    title.className = "clue-title";
+    $("clueLog").before(title);
+    const nest = document.createElement("div");
+    nest.className = "nest-build";
+    nest.innerHTML = '<span id="nestBuildSprite" class="nest-build-sprite" aria-hidden="true"></span><div><strong id="nestBuildText"></strong><span id="nestBuildSteps" class="nest-build-steps" aria-hidden="true"></span></div>';
+    $("resultStats").before(nest);
+    // Keep functional scale geometry live: input, labels and motion are DOM-owned.
+    $("balanceVisual").removeAttribute("aria-hidden");
+    for (const id of ["balanceLeft", "balanceRight"]) {
+      const old = $(id);
+      const button = document.createElement("button");
+      button.type = "button";
+      button.id = id;
+      button.className = "balance-pan";
+      button.innerHTML = old.innerHTML;
+      button.setAttribute("data-copy-aria-label", "removePan");
+      old.replaceWith(button);
     }
   }
 

@@ -42,10 +42,10 @@
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36" data-wp-tutorial-style>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
-  <link rel="stylesheet" href="style.css?v=20261011-castle-cascade-v20-i8">
+  <link rel="stylesheet" href="style.css?v=20261013-castle-cascade-v21-i8">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
 </head>
-<body class="has-game-page-info" data-screen="main" data-audience="general" data-wp-game-id="castle-cascade" data-wp-game-version="v20" data-wp-interface-version="8" data-wp-combined-sound="true" data-runtime-localize="off" data-wp-game-owned-guide="true" aria-busy="true">
+<body class="has-game-page-info" data-screen="main" data-audience="general" data-wp-game-id="castle-cascade" data-wp-game-version="v21" data-wp-interface-version="8" data-wp-combined-sound="true" data-runtime-localize="off" data-wp-game-owned-guide="true" aria-busy="true">
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite" aria-atomic="true">
     <div class="loading-card">
       <strong data-t="title">Castle Cascade</strong>
@@ -115,15 +115,13 @@
   <main id="battle" class="screen canvas battle" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
     <header class="scene-header battle-header">
       <button class="icon-button" data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">←</button>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </header>
-    <section class="battle-content">
       <div class="royal-scoreboard">
-        <div class="keeper-medallion" aria-hidden="true"></div>
         <div class="royal-goals"><span id="stageLabel" class="royal-stage"></span><span id="goalIndicators" class="battle-objective-indicators" aria-hidden="true"></span><span id="goalLabel" class="sr-only" aria-live="polite"></span></div>
         <div id="movesLabel" class="royal-moves"></div>
       </div>
+      <span aria-hidden="true"></span>
+    </header>
+    <section class="battle-content">
       <div class="board-space"><div class="board-viewport"><canvas id="sceneCanvas" aria-hidden="true"></canvas><div id="board" class="accessible-board" role="grid" aria-label="Match-three board"></div></div></div>
       <div class="battle-feedback"><p id="instructions" class="instructions" data-t="instructions"></p><p id="status" role="status" aria-live="polite"></p></div>
     </section>
@@ -142,10 +140,10 @@
   <script src="../../src/site-config.js"></script>
   <script src="../../src/i18n.js"></script>
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
-  <script src="locales.js?v=20261011-castle-cascade-v20-i8"></script>
+  <script src="locales.js?v=20261013-castle-cascade-v21-i8"></script>
   <script src="../../src/tutorial.js?v=20260928-castle-cascade-tutorial1"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script type="module" src="game.js?v=20261011-castle-cascade-v20-i8"></script>
+  <script type="module" src="game.js?v=20261013-castle-cascade-v21-i8"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>
