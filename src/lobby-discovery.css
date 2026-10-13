@@ -961,7 +961,7 @@ body.general-lobby-page .demon-event-dialog p { color: #f0f0e2; font-size: 15px;
 body.general-lobby-page .demon-event-dialog-done { margin-top: 10px; }
 @media (min-width: 1120px) {
   body.general-lobby-page .desktop-filter-rail .demon-event-preview { grid-template-columns: 1fr; gap: 8px; flex: 0 0 auto; margin-block-start: auto; padding: 9px; }
-  body.general-lobby-page .desktop-filter-rail .demon-event-art { width: 100%; height: auto; aspect-ratio: 1; }
+  body.general-lobby-page .desktop-filter-rail .demon-event-art { width: 100%; height: 92px; aspect-ratio: auto; }
   body.general-lobby-page .desktop-filter-rail .demon-event-copy h3 { font-size: 15px; }
   body.general-lobby-page .desktop-filter-rail .demon-event-line { font-size: 10px; }
   body.general-lobby-page .desktop-filter-rail .demon-event-actions { flex-direction: column; }
