@@ -7,6 +7,9 @@
   if(document.getElementById('signalFrame'))throw new Error('SIGNAL_FRAME_ROOT_ALREADY_EXISTS');
   const main=document.getElementById('main'),battle=document.getElementById('battleCanvas');
   const root=document.createElement('div');root.id='signalFrame';root.dataset.wpFrameRoot='';
+  const settingsGuardStyle=document.createElement('style');settingsGuardStyle.dataset.signalFrameSettingsGuard='';
+  settingsGuardStyle.textContent='#signalFrame [data-wp-preferences] > button.wp-frame-settings[hidden]{display:none!important;visibility:hidden!important;pointer-events:none!important}';
+  document.head.append(settingsGuardStyle);
   main.before(root);root.append(main,document.getElementById('battleShell'));
   // Locale generation places its owned static guide after the game shell.
   const guide=document.querySelector('.game-page-info');root.after(guide);

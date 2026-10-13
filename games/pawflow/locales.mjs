@@ -20,19 +20,19 @@ const ROWS={
 "ar":"حلقة الكفوف الملونة|ابدأ اللعب|المراحل|لغز اليوم|طريقة اللعب|إيقاف|متابعة|إعادة|التالي|رجوع|مغادرة|جارٍ تحميل الورشة…|تعذر تحميل الورشة. أعد التحميل أو ارجع إلى WeightPlay.|إعادة تحميل|يُحفظ التقدم في هذا المتصفح.|التخزين غير متاح. يستمر التقدم خلال هذه الجلسة فقط.|متابعة المحاولة؟|توجد محاولة محفوظة. تابعها أو ابدأ هذه المرحلة من جديد.|هل تريد المغادرة؟ ستُعاد لوحة هذه المحاولة ورسلها إلى البداية. تبقى المراحل المكتملة وأفضل النتائج محفوظة.|اكتملت الفسيفساء!|جرّب ترتيبًا آخر|امتلأت أماكن الانتظار الخمسة قبل عودة الرسول. أرسل أحد المنتظرين مبكرًا.|لا تصل الألوان المتاحة إلى بكسل مكشوف من اللون نفسه. غيّر ترتيب الإرسال في المحاولة القادمة.|راقب اللون الخارجي أولًا، ثم افتح طريقًا إلى الداخل.|اكتمل الفصل|المرحلة {n}|بكسلات|مفاتيح|إرسالات|السير|انتظار|طابور|فارغ|مقفل|نجوم|الأفضل|تلميح|تراجع|انتظر عودة رسول أو فتح مصراع.|السير ممتلئ. انتظر مكانًا شاغرًا.|اترك مسافة قصيرة بين الرسل.|التراجع غير متاح أو استُخدم بالفعل.|تم التراجع عن الإرسال الأخير.|جرّب {color}، المكان {n}.|مصاريع|يسار / يمين|أعلى / أسفل|{color}، {ammo} شحنات، المكان {n}|التالي: {color}، {ammo} شحنات|غير متاح|الهدف|القاعدة|اللون|لغز ثابت لكل يوم وسجلات منفصلة. يتغير عند منتصف الليل بتوقيت UTC.|لا توجد محاولة محفوظة.|بمساعدة|دون مساعدة|رمّم فسيفساء الحديقة|التحكم ودورة اللعب|ستة أقسام للورشة|نصائح عملية|ملاحظات التصميم|اللاعبون والحفظ المحلي|أسئلة|العمر المقترح: 7+|2–8 دقائق|تخطيط · انتباه · منطق|رسل من الثعالب المكعبة حول ورشة فسيفساء ملونة|توقف الرسم مؤقتًا. استعد المشهد دون تغيير اللوحة أو غادر هذه المحاولة."
 };
 const EXTRA={
-"en":{noHit:"No match. Clear top tiles to expose this color."},
-"zh-Hant":{noHit:"沒有同色露出磚塊。先清除外層，露出這個顏色。"},
-"zh-Hans":{noHit:"没有同色露出砖块。先清除外层，露出这个颜色。"},
-"ja":{noHit:"同じ色の露出タイルがありません。外側を消してこの色を出しましょう。"},
-"ko":{noHit:"같은 색의 노출 타일이 없습니다. 바깥 타일을 먼저 제거하세요."},
-"es":{noHit:"Sin coincidencia. Retira la capa exterior para revelar este color."},
-"pt-BR":{noHit:"Sem combinação. Remova a camada externa para revelar esta cor."},
-"fr":{noHit:"Aucune case visible de cette couleur. Retirez la couche extérieure."},
-"de":{noHit:"Keine sichtbare Kachel dieser Farbe. Räume zuerst die Außenschicht ab."},
-"it":{noHit:"Nessuna tessera visibile di questo colore. Rimuovi lo strato esterno."},
-"ru":{noHit:"Совпадений нет. Уберите внешний слой, чтобы открыть этот цвет."},
-"hi":{noHit:"मेल नहीं मिला। इस रंग को दिखाने के लिए बाहरी परत हटाएँ।"},
-"ar":{noHit:"لا يوجد تطابق ظاهر. أزل الطبقة الخارجية لإظهار هذا اللون."}
+"en":{noHit:"No match. Clear top tiles to expose this color.",stage28Rule:"Break armor, collect the key, and reuse waiting couriers to uncover inner colors."},
+"zh-Hant":{noHit:"沒有同色露出磚塊。先清除外層，露出這個顏色。",stage28Rule:"擊破護甲、取得鑰匙，再重派候補信使來露出內層色彩。"},
+"zh-Hans":{noHit:"没有同色露出砖块。先清除外层，露出这个颜色。",stage28Rule:"击破护甲、取得钥匙，再重派候补信使来露出内层色彩。"},
+"ja":{noHit:"同じ色の露出タイルがありません。外側を消してこの色を出しましょう。",stage28Rule:"装甲を破り、鍵を集め、待機中の配達員を再出発させて内側の色を出そう。"},
+"ko":{noHit:"같은 색의 노출 타일이 없습니다. 바깥 타일을 먼저 제거하세요.",stage28Rule:"장갑을 깨고 열쇠를 모은 뒤 대기 중인 배달원을 다시 보내 안쪽 색을 드러내세요."},
+"es":{noHit:"Sin coincidencia. Retira la capa exterior para revelar este color.",stage28Rule:"Rompe la armadura, recoge la llave y vuelve a enviar mensajeros en espera para revelar colores internos."},
+"pt-BR":{noHit:"Sem combinação. Remova a camada externa para revelar esta cor.",stage28Rule:"Quebre a armadura, pegue a chave e reutilize entregadores em espera para revelar as cores internas."},
+"fr":{noHit:"Aucune case visible de cette couleur. Retirez la couche extérieure.",stage28Rule:"Brisez l’armure, récupérez la clé et relancez les coursiers en attente pour révéler les couleurs intérieures."},
+"de":{noHit:"Keine sichtbare Kachel dieser Farbe. Räume zuerst die Außenschicht ab.",stage28Rule:"Zerschlage die Panzerung, sammle den Schlüssel und schicke wartende Kuriere erneut los, um innere Farben freizulegen."},
+"it":{noHit:"Nessuna tessera visibile di questo colore. Rimuovi lo strato esterno.",stage28Rule:"Rompi l’armatura, raccogli la chiave e rilancia i corrieri in attesa per scoprire i colori interni."},
+"ru":{noHit:"Совпадений нет. Уберите внешний слой, чтобы открыть этот цвет.",stage28Rule:"Пробейте броню, соберите ключ и повторно отправляйте ожидающих курьеров, чтобы открыть внутренние цвета."},
+"hi":{noHit:"मेल नहीं मिला। इस रंग को दिखाने के लिए बाहरी परत हटाएँ।",stage28Rule:"कवच तोड़ें, चाबी लें और अंदर के रंग खोलने के लिए प्रतीक्षारत संदेशवाहकों को फिर भेजें।"},
+"ar":{noHit:"لا يوجد تطابق ظاهر. أزل الطبقة الخارجية لإظهار هذا اللون.",stage28Rule:"اكسر الدروع واجمع المفتاح وأعد إرسال الرسل المنتظرين لكشف الألوان الداخلية."}
 };
 export const COPY=Object.fromEntries(LOCALES.map(locale=>{const row=ROWS[locale].split("|");if(row.length!==KEYS.length)throw Error(`LOCALE_COLUMNS:${locale}`);const d=Object.fromEntries(KEYS.map((key,i)=>[key,row[i]]));Object.assign(d,EXTRA[locale]);for(const key of ["colors","chapters","names","rules"])d[key]=LEXICON[locale][key].split("|");d.summary=LEXICON[locale].summary;return [locale,d];}));
 export function translator(locale){const d=COPY[locale];if(!d)throw Error("UNSUPPORTED_LOCALE");return (key,values={})=>{if(typeof d[key]!=="string")throw Error(`MISSING_COPY:${locale}:${key}`);return d[key].replace(/\{(\w+)\}/g,(_,name)=>String(values[name]??""));};}
