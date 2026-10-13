@@ -1,3 +1,41 @@
+/* Keep the I9 Stage header controls close to Main's inset rhythm while
+   preserving a 44px physical tap target through logical-Canvas scaling. */
+html[data-wp-stage-i9="true"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] .wp-stage-shell-header {
+  --wp-frame-physical-control-size: calc(44px * var(--wp-stage-canvas-inverse-scale, 1));
+  --wp-frame-play-header-height: calc((76px + env(safe-area-inset-top)) * var(--wp-stage-canvas-inverse-scale, 1));
+  box-sizing: border-box !important;
+  grid-template-columns: var(--wp-frame-physical-control-size) minmax(0, 1fr) var(--wp-frame-physical-control-size) !important;
+  height: var(--wp-frame-play-header-height) !important;
+  min-height: var(--wp-frame-play-header-height) !important;
+  max-height: var(--wp-frame-play-header-height) !important;
+  padding: calc(env(safe-area-inset-top) * var(--wp-stage-canvas-inverse-scale, 1)) calc(14px * var(--wp-stage-canvas-inverse-scale, 1)) 0 !important;
+}
+
+html[data-wp-stage-i9="true"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] .wp-stage-shell-header:has(> .wp-stage-header-action) {
+  grid-template-columns: var(--wp-frame-physical-control-size) minmax(0, 1fr) minmax(96px, auto) var(--wp-frame-physical-control-size) !important;
+}
+
+html[data-wp-stage-i9="true"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] .wp-stage-shell-header:has(> .wp-stage-header-action) > .wp-shell-settings {
+  grid-column: 4 !important;
+}
+
+html[data-wp-stage-i9="true"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] .wp-stage-shell-header > :is([data-wp-return="stage"], .wp-shell-settings),
+html[data-wp-stage-i9="true"] body.wp-stage-select-active
+  [data-wp-logical-stage-canvas] .wp-stage-shell-header > .wp-shell-settings > .wp-shell-settings-button {
+  box-sizing: border-box !important;
+  width: var(--wp-frame-physical-control-size) !important;
+  min-width: var(--wp-frame-physical-control-size) !important;
+  max-width: var(--wp-frame-physical-control-size) !important;
+  height: var(--wp-frame-physical-control-size) !important;
+  min-height: var(--wp-frame-physical-control-size) !important;
+  max-height: var(--wp-frame-physical-control-size) !important;
+  margin: 0 !important;
+}
+
 html[data-wp-stage-i9="true"] [data-wp-stage-rail="true"] {
   top: 50% !important;
   padding-inline: max(22px, calc((100% - var(--wp-stage-i9-card-width)) / 2)) !important;

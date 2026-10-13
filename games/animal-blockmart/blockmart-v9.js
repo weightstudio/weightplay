@@ -295,19 +295,19 @@ export function installBlockmartV9(ctx) {
     const block = (name, color, x, y, z, sx, sy, sz) => ctx.cube(group, name, color, x, y, z, sx, sy, sz);
     if (normalized.kind === 'shelf') {
       block('shelf-footprint', 0x9cb1a4, 0, .14, 0, Math.max(.9, width * .9), .16, Math.max(.9, depth * .9));
-      block('shelf-left-post', 0x718b7e, -width * .37, .84, 0, .09, 1.36, depth * .78);
-      block('shelf-right-post', 0x718b7e, width * .37, .84, 0, .09, 1.36, depth * .78);
-      for (const y of [.42, .8, 1.18]) {
-        block('shelf-board', 0xf5e4bf, 0, y, 0, width * .88, .1, depth * .82);
+      block('shelf-left-post', 0x496b60, -width * .37, .94, 0, .11, 1.58, depth * .78);
+      block('shelf-right-post', 0x496b60, width * .37, .94, 0, .11, 1.58, depth * .78);
+      for (const y of [.48, .9, 1.32]) {
+        block('shelf-board', 0xe7d1a7, 0, y, 0, width * .9, .12, depth * .84);
         const sku = ctx.PRODUCTS[normalized.product] ? normalized.product : 'water';
         const catalog = PRODUCT_DEFS[sku];
         for (let i = 0; i < 3; i++) {
-          const x = (i - 1) * Math.min(.24, width * .23), z = 0;
-          addDisplayItem(block, sku, catalog.display, x, y + .17, z, catalog.color);
+          const x = (i - 1) * Math.min(.27, width * .25), z = 0;
+          addDisplayItem(block, sku, catalog.display, x, y + .2, z, catalog.color);
         }
       }
-      block('shelf-sign', 0x16545c, 0, 1.52, depth * .44, width * .74, .18, .07);
-      block('shelf-sign-color', PRODUCT_DEFS[normalized.product]?.color || 0x48b6cf, 0, 1.52, depth * .49, width * .28, .07, .025);
+      block('shelf-sign', 0x123e49, 0, 1.78, depth * .44, width * .76, .2, .08);
+      block('shelf-sign-color', PRODUCT_DEFS[normalized.product]?.color || 0x48b6cf, 0, 1.78, depth * .49, width * .32, .08, .03);
     } else if (normalized.kind === 'checkout') {
       block('checkout-counter', 0xc69c67, 0, .64, 0, .9, .82, .88);
       block('checkout-front', 0x426c73, 0, .4, .46, .78, .48, .08);
@@ -321,11 +321,11 @@ export function installBlockmartV9(ctx) {
       block('checkout-beam', 0xffd76c, 0, 1.14, .12, .48, .05, .12);
     } else if (normalized.kind === 'cooler') {
       block('cooler-footprint', 0x88aeb0, 0, .15, 0, 1.88, .17, 1.88);
-      block('cooler-case', 0x9ed5dc, 0, .9, 0, 1.8, 1.5, 1.8);
-      block('cooler-door', 0xd8f2ee, 0, .92, .93, 1.28, 1.2, .06);
+      block('cooler-case', 0x4d8790, 0, .96, 0, 1.88, 1.62, 1.88);
+      block('cooler-door', 0xb9e0dc, 0, .98, .97, 1.28, 1.28, .07);
       for (let shelf = 0; shelf < 3; shelf++) {
-        block('cooler-shelf', 0x739a99, 0, .42 + shelf * .38, .82, 1.3, .07, .12);
-        addDisplayItem(block, shelf === 1 ? 'juice' : 'fizz', shelf === 1 ? 'juice' : 'fizz', -.38 + shelf * .38, .58 + shelf * .38, .86, shelf === 1 ? 0xe87535 : 0xa34e91);
+        block('cooler-shelf', 0x315d66, 0, .42 + shelf * .4, .82, 1.3, .08, .14);
+        addDisplayItem(block, shelf === 1 ? 'juice' : 'fizz', shelf === 1 ? 'juice' : 'fizz', -.38 + shelf * .38, .58 + shelf * .4, .86, shelf === 1 ? 0xe87535 : 0xa34e91);
       }
     } else if (normalized.kind === 'decor') {
       block('decor-pot', 0xb47e58, 0, .18, 0, .7, .34, .7);
@@ -339,28 +339,30 @@ export function installBlockmartV9(ctx) {
   }
 
   function addDisplayItem(block, sku, display, x, y, z, color) {
-    const size = sku === 'snacks' ? .2 : .18;
+    const size = sku === 'snacks' || sku === 'chips' ? .25 : .23;
+    const itemBlock = (name, itemColor, ix, iy, iz, sx, sy, sz) =>
+      block(name, itemColor, ix, iy, iz, sx * 1.18, sy * 1.18, sz * 1.18);
     if (display === 'water') {
-      block('water-crate', 0x3f8ea7, x, y, z, size * 1.15, .2, .17);
-      block('water-bottle', 0x66cce0, x, y + .18, z, .11, .23, .1);
-      block('water-cap', 0xf7f7e8, x, y + .32, z, .08, .05, .08);
+      itemBlock('water-crate', 0x3f8ea7, x, y, z, size * 1.15, .2, .17);
+      itemBlock('water-bottle', 0x66cce0, x, y + .18, z, .11, .23, .1);
+      itemBlock('water-cap', 0xf7f7e8, x, y + .32, z, .08, .05, .08);
     } else if (display === 'cookies') {
-      block('cookie-packet', 0xd18838, x, y, z, .22, .29, .16);
-      block('cookie-seal', 0xf0c063, x, y + .17, z + .09, .18, .09, .025);
-      block('cookie-mark', 0x764122, x, y + .16, z + .11, .07, .07, .025);
+      itemBlock('cookie-packet', 0xd18838, x, y, z, .22, .29, .16);
+      itemBlock('cookie-seal', 0xf0c063, x, y + .17, z + .09, .18, .09, .025);
+      itemBlock('cookie-mark', 0x764122, x, y + .16, z + .11, .07, .07, .025);
     } else if (display === 'chips') {
-      block('chips-bag', color, x, y, z, .2, .31, .16);
-      block('chips-top', 0xffe575, x, y + .17, z + .09, .19, .08, .025);
-      block('chips-logo', 0xfff3cb, x, y - .02, z + .095, .1, .07, .025);
+      itemBlock('chips-bag', color, x, y, z, .2, .31, .16);
+      itemBlock('chips-top', 0xffe575, x, y + .17, z + .09, .19, .08, .025);
+      itemBlock('chips-logo', 0xfff3cb, x, y - .02, z + .095, .1, .07, .025);
     } else if (display === 'juice') {
-      block('juice-carton', color, x, y, z, .19, .3, .17);
-      block('juice-top', 0xffd190, x, y + .17, z, .2, .06, .18);
-      block('juice-straw', 0xf4f0d6, x + .055, y + .24, z + .02, .035, .15, .035);
-      block('juice-label', 0xffedc7, x, y, z + .095, .12, .1, .025);
+      itemBlock('juice-carton', color, x, y, z, .19, .3, .17);
+      itemBlock('juice-top', 0xffd190, x, y + .17, z, .2, .06, .18);
+      itemBlock('juice-straw', 0xf4f0d6, x + .055, y + .24, z + .02, .035, .15, .035);
+      itemBlock('juice-label', 0xffedc7, x, y, z + .095, .12, .1, .025);
     } else {
-      block('sparkling-can', color, x, y, z, .17, .31, .17);
-      block('sparkling-band', 0xe5eff0, x, y - .01, z + .09, .15, .08, .025);
-      block('sparkling-top', 0xbac9cd, x, y + .17, z, .17, .035, .17);
+      itemBlock('sparkling-can', color, x, y, z, .17, .31, .17);
+      itemBlock('sparkling-band', 0xe5eff0, x, y - .01, z + .09, .15, .08, .025);
+      itemBlock('sparkling-top', 0xbac9cd, x, y + .17, z, .17, .035, .17);
     }
   }
 
@@ -842,6 +844,7 @@ export function installBlockmartV9(ctx) {
     $('panel').replaceChildren();
     mapProducts(); unlockedProducts();
     const tab = ctx.selectedTab;
+    $('panel').dataset.activeTab = tab;
     if (selectedFixtureId && fixtures().some(f => f.id === selectedFixtureId)) renderSelectedFixture();
     if (tab === 'shop') {
       createCard('shelf', ctx.t('smallShelf', ctx.locale), `${ctx.t('oneTile', ctx.locale)} · ${ctx.t('selectFloorThenPlace', ctx.locale)}`, ctx.price(70), () => beginPlacement('shelf', null, 'water', 'single'), { placement: { kind: 'shelf', footprint: 'single', product: 'water' } });

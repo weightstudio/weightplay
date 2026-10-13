@@ -95,33 +95,15 @@
       event.stopImmediatePropagation();
     }
 
-    function onFinish(event) {
-      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
-      const activePointer = pointerId;
-      const didMove = moved;
-      pointerId = null;
-      if (rail.hasPointerCapture?.(activePointer)) {
-        try { rail.releasePointerCapture(activePointer); } catch {}
-      }
-      if (event.type === "pointercancel") {
-        restoreInteraction();
-        config.onCancel?.();
-        event.stopImmediatePropagation();
-        return;
-      }
-      if (!didMove) {
-        restoreInteraction();
-        event.stopImmediatePropagation();
-        return;
-      }
-
-      if (event.cancelable) event.preventDefault();
+    function settleToNearest(suppressTap = true) {
       const index = clampIndex(dragPosition, config.count());
       config.commitIndex(index);
       rail.dataset.wpStageSettling = "true";
-      suppressClick = true;
-      window.clearTimeout(suppressTimer);
-      suppressTimer = window.setTimeout(() => { suppressClick = false; }, 0);
+      if (suppressTap) {
+        suppressClick = true;
+        window.clearTimeout(suppressTimer);
+        suppressTimer = window.setTimeout(() => { suppressClick = false; }, 0);
+      }
       const from = dragPosition;
       const startedAt = performance.now();
       const duration = 280;
@@ -142,6 +124,31 @@
       };
       frame = requestAnimationFrame(settle);
       config.onFrame?.(frame);
+    }
+
+    function onFinish(event) {
+      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
+      const activePointer = pointerId;
+      const didMove = moved;
+      pointerId = null;
+      if (rail.hasPointerCapture?.(activePointer)) {
+        try { rail.releasePointerCapture(activePointer); } catch {}
+      }
+      if (event.type === "pointercancel") {
+        restoreInteraction();
+        config.onCancel?.(event);
+        if (didMove) settleToNearest();
+        event.stopImmediatePropagation();
+        return;
+      }
+      if (!didMove) {
+        restoreInteraction();
+        event.stopImmediatePropagation();
+        return;
+      }
+
+      if (event.cancelable) event.preventDefault();
+      settleToNearest();
       moved = false;
       event.stopImmediatePropagation();
     }
@@ -185,6 +192,49 @@
       transform: "translateY(-50%)", overflowX: "auto", overflowY: "visible",
       scrollSnapType: "none", touchAction: "none",
     })) rail.style.setProperty(property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`), value, "important");
+    const stageRoot = rail.closest("#stagePanel") || stagePage;
+    const safeAreaProbe = document.createElement("span");
+    safeAreaProbe.setAttribute("aria-hidden", "true");
+    safeAreaProbe.style.cssText = [
+      "position:fixed", "inset:0 auto auto 0", "width:0", "height:0",
+      "padding:env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px)",
+      "visibility:hidden", "pointer-events:none",
+    ].join(";");
+    document.body.append(safeAreaProbe);
+    const centerRailInStageRoot = () => {
+      const rootRect = stageRoot?.getBoundingClientRect();
+      const pageRect = stagePage?.getBoundingClientRect();
+      if (!rootRect?.height || !pageRect?.height || !stagePage?.offsetHeight) return;
+      const viewport = window.visualViewport;
+      const viewportTop = viewport?.offsetTop || 0;
+      const viewportBottom = viewportTop + (viewport?.height || window.innerHeight);
+      const safe = getComputedStyle(safeAreaProbe);
+      const safeTop = Number.parseFloat(safe.paddingTop) || 0;
+      const safeBottom = Number.parseFloat(safe.paddingBottom) || 0;
+      const usableTop = Math.max(rootRect.top, viewportTop + safeTop);
+      const usableBottom = Math.min(rootRect.bottom, viewportBottom - safeBottom);
+      if (usableBottom <= usableTop) return;
+      const pageScaleY = pageRect.height / stagePage.offsetHeight || 1;
+      const localCenter = ((usableTop + usableBottom) / 2 - pageRect.top) / pageScaleY;
+      rail.style.setProperty("top", `${localCenter}px`, "important");
+    };
+    let centerFrame = 0;
+    const scheduleCenterRail = () => {
+      if (centerFrame) return;
+      centerFrame = requestAnimationFrame(() => {
+        centerFrame = 0;
+        centerRailInStageRoot();
+      });
+    };
+    const centerResizeObserver = typeof ResizeObserver === "function"
+      ? new ResizeObserver(scheduleCenterRail) : null;
+    centerResizeObserver?.observe(stageRoot);
+    centerResizeObserver?.observe(stagePage);
+    window.addEventListener("resize", scheduleCenterRail, { passive: true });
+    window.addEventListener("orientationchange", scheduleCenterRail, { passive: true });
+    window.visualViewport?.addEventListener("resize", scheduleCenterRail, { passive: true });
+    window.visualViewport?.addEventListener("scroll", scheduleCenterRail, { passive: true });
+    scheduleCenterRail();
     if (artUrl) {
       rail.style.setProperty("--wp-stage-i9-art-image", 'url("' + String(artUrl).replaceAll('"', "%22") + '")');
     }
@@ -225,7 +275,18 @@
     decorate();
     const observer = new MutationObserver(decorate);
     observer.observe(rail, { subtree: true, childList: true, attributes: true, attributeFilter: ["data-stage"] });
-    return Object.freeze({ disconnect: () => observer.disconnect() });
+    return Object.freeze({
+      disconnect() {
+        observer.disconnect();
+        centerResizeObserver?.disconnect();
+        window.removeEventListener("resize", scheduleCenterRail);
+        window.removeEventListener("orientationchange", scheduleCenterRail);
+        window.visualViewport?.removeEventListener("resize", scheduleCenterRail);
+        window.visualViewport?.removeEventListener("scroll", scheduleCenterRail);
+        if (centerFrame) cancelAnimationFrame(centerFrame);
+        safeAreaProbe.remove();
+      },
+    });
   }
 
   function keyboardIndex(key, currentStage, stageCount, rtl = false) {
