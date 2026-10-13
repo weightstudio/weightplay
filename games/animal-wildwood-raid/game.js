@@ -1,5 +1,5 @@
 import {STAGES,TOOLS} from './game-data.js';
-import {Simulation,mission} from './simulation.js?v=20261013-wildwood-stage2-pressure-v33';
+import {Simulation,mission} from './simulation.js?v=20261014-wildwood-survival-wave-v35';
 import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js?v=20261013-wildwood-diamond-shop-v15';
 import {load,store,award,KEY} from './save.js';
 import {placeLabel} from './label-layout.js';

@@ -180,7 +180,10 @@ export class Simulation {
   this.ents=this.ents.filter(e=>e.hp>0||e.spawn||e.kind==='boss'||this.time-(e.defeatedAt??this.time)<1);
   this.shots=this.shots.filter(p=>p.life>0);this.fields.forEach(f=>f.life-=dt);this.fields=this.fields.filter(f=>f.life>0);
   this.drops=this.drops.filter(d=>{if(dist(d,h)>1)return true;if(d.kind==='heart'&&h.hp>0)h.hp=Math.min(h.maxHp,h.hp+Math.max(25,Math.round(h.maxHp*.22)));if(d.kind==='ward')h.ward=1;if(d.kind==='boots')h.boots=8;this.log('pickup',{kind:d.kind,x:d.x,z:d.z});return false;});
-  if(this.stage.protect&&this.time>=this.nextWave&&!this.ready()){this.nextWave+=8;const n=this.stage.id===28?3:2;for(let i=0;i<n&&this.alive().filter(hostile).length<10;i++)this.enemy(this.stage.enemies[(Math.floor(this.time/8)+i)%this.stage.enemies.length],i%2?6:-6,-5+i*3,{summon:true});}
+  // Once the timed protection objective is met, stop adding new waves while
+  // the required guardian fight continues. Existing enemies and the boss
+  // remain active; only the endless post-timer reinforcements stop.
+  if(this.stage.protect&&this.time>=this.nextWave&&!this.objectivesReady()){this.nextWave+=8;const n=this.stage.id===28?3:2;for(let i=0;i<n&&this.alive().filter(hostile).length<10;i++)this.enemy(this.stage.enemies[(Math.floor(this.time/8)+i)%this.stage.enemies.length],i%2?6:-6,-5+i*3,{summon:true});}
   if(h.hp<=0||this.protectedHp<=0){this.lost=true;this.log('loss');return;}
   this.regenClock+=dt;if(this.regenClock>=3-1e-9){this.regenClock=Math.max(0,this.regenClock-3);const healed=Math.min(h.regen,h.maxHp-h.hp);h.hp=Math.min(h.maxHp,Math.round((h.hp+healed)*1000)/1000);this.regenHealed+=healed;if(healed>0)this.log('regen',{amount:healed,x:h.x,z:h.z});}
   if(this.ready()&&dist(h,this.exit)<1.25){this.won=true;this.log('win');}
