@@ -20,6 +20,8 @@ const QUEUE_PATIENCE_SECONDS = 17;
 const STAFFED_QUEUE_SECONDS = .95;
 const TRAFFIC_RECOVERY_FLOOR = 18;
 const CELL_SIZE = .94;
+const VISUAL_CAMERA_YAW = Math.PI / 6;
+const VISUAL_CAMERA_FOCUS_HEIGHT = 1.1;
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const copyPoint = point => point ? { x: point.x, z: point.z } : null;
@@ -362,6 +364,9 @@ export function installBlockmartV9(ctx) {
     const worldSize = footprintSize(normalized), center = fixtureCenter(normalized);
     const group = new THREE.Group();
     group.position.set(center.x, 0, center.z); group.rotation.y = normalized.rotation * Math.PI / 2;
+    // Increase built-in fixture presence without changing grid footprints,
+    // placement bounds, or walkable tiles.
+    group.scale.set(1.06, 1.24, 1.06);
     group.userData.fixture = normalized.id; group.userData.kind = normalized.kind;
     const width = size.width, depth = size.depth;
     const block = (name, color, x, y, z, sx, sy, sz) => ctx.cube(group, name, color, x, y, z, sx, sy, sz);
@@ -506,7 +511,7 @@ export function installBlockmartV9(ctx) {
   function applyFloorArt() {
     const floor = ctx.scene?.getObjectByName('floor-tiles');
     if (!floor || floor === styledFloorTiles || typeof floor.setColorAt !== 'function') return;
-    const colors = [0x789384, 0x668473];
+    const colors = [0x7b9484, 0x779080];
     let index = 0;
     for (let x = 0; x < state().area; x++) {
       for (let z = 0; z < state().area; z++) {
@@ -525,7 +530,7 @@ export function installBlockmartV9(ctx) {
     if (!camera || camera.userData.blockmartArtFit) return;
     const updateProjectionMatrix = camera.updateProjectionMatrix.bind(camera);
     camera.updateProjectionMatrix = function updateBlockmartProjection() {
-      const angle = Number(state().view) || 0;
+      const angle = (Number(state().view) || 0) + VISUAL_CAMERA_YAW;
       const area = Math.max(10, Number(state().area) || 10);
       const horizontal = Math.abs(this.right - this.left);
       const vertical = Math.abs(this.top - this.bottom);
@@ -545,19 +550,23 @@ export function installBlockmartV9(ctx) {
       const rightProjection = corners.map(([x, z]) => x * rightX + z * rightZ);
       const forwardProjection = corners.map(([x, z]) => x * forwardX + z * forwardZ);
       const horizontalSpan = Math.max(...rightProjection) - Math.min(...rightProjection) + 1.2;
-      const cameraHeight = Math.max(.1, Math.abs(this.position.y));
+      const cameraHeight = Math.max(.1, Math.abs(this.position.y - VISUAL_CAMERA_FOCUS_HEIGHT));
       const panX = Number(state().panX) || 0, panZ = Number(state().panZ) || 0;
-      const targetX = floorCenter + panX, targetZ = floorCenter + panZ;
-      const horizontalDistance = Math.hypot(this.position.x - targetX, this.position.z - targetZ);
+      const baseX = floorCenter + panX, baseZ = floorCenter + panZ;
+      const horizontalDistance = 19;
       const elevation = Math.atan2(cameraHeight, Math.max(.1, horizontalDistance));
-      const verticalSpan = (Math.max(...forwardProjection) - Math.min(...forwardProjection)) * Math.sin(elevation) + 3 * Math.cos(elevation);
+      const verticalSpan = (Math.max(...forwardProjection) - Math.min(...forwardProjection)) * Math.sin(elevation) + 3.2 * Math.cos(elevation);
       const fitZoom = Math.min(horizontal / horizontalSpan, vertical / verticalSpan) * .95;
-      const boundsCenter = (Math.max(...rightProjection) + Math.min(...rightProjection)) / 2;
-      const offset = boundsCenter - (floorCenter * rightX + floorCenter * rightZ);
-      this.position.x = targetX + rightX * offset + forwardX * horizontalDistance;
-      this.position.z = targetZ + rightZ * offset + forwardZ * horizontalDistance;
-      this.lookAt(targetX + rightX * offset, .1, targetZ + rightZ * offset);
-      this.zoom = Math.max(.5, Number(state().zoom) || 1) * Math.min(1.8, fitZoom);
+      const rightCenter = (Math.max(...rightProjection) + Math.min(...rightProjection)) / 2;
+      const forwardCenter = (Math.max(...forwardProjection) + Math.min(...forwardProjection)) / 2;
+      const rightOffset = rightCenter - (floorCenter * rightX + floorCenter * rightZ);
+      const forwardOffset = forwardCenter - (floorCenter * forwardX + floorCenter * forwardZ);
+      const focusX = baseX + rightX * rightOffset + forwardX * forwardOffset;
+      const focusZ = baseZ + rightZ * rightOffset + forwardZ * forwardOffset;
+      this.position.x = focusX + forwardX * horizontalDistance;
+      this.position.z = focusZ + forwardZ * horizontalDistance;
+      this.lookAt(focusX, VISUAL_CAMERA_FOCUS_HEIGHT, focusZ);
+      this.zoom = Math.max(.5, Number(state().zoom) || 1) * Math.min(2.1, fitZoom);
       return updateProjectionMatrix();
     };
     camera.userData.blockmartArtFit = true;
@@ -567,7 +576,7 @@ export function installBlockmartV9(ctx) {
   function addDisplayItem(block, sku, display, x, y, z, color) {
     const size = sku === 'snacks' || sku === 'chips' ? .25 : .23;
     const itemBlock = (name, itemColor, ix, iy, iz, sx, sy, sz) =>
-      block(name, itemColor, ix, iy, iz, sx * 1.3, sy * 1.3, sz * 1.3);
+      block(name, itemColor, ix, iy, iz, sx * 1.6, sy * 1.6, sz * 1.6);
     if (display === 'water') {
       itemBlock('water-crate', 0x3f8ea7, x, y, z, size * 1.15, .2, .17);
       itemBlock('water-bottle', 0x66cce0, x, y + .18, z, .11, .23, .1);
@@ -728,7 +737,7 @@ export function installBlockmartV9(ctx) {
     const kinds = [['rabbit', 0xf1d5c1], ['bear', 0xad825f], ['fox', 0xe78c5c], ['cat', 0xb2a4cc]];
     const kind = kinds[ctx.customerId++ % kinds.length];
     const group = ctx.makeAnimal(kind[0], kind[1]);
-    group.position.set(point.x, 0, point.z); ctx.scene.add(group);
+    group.position.set(point.x, 0, point.z); group.scale.setScalar(1.2); ctx.scene.add(group);
     const budget = ctx.customerBudget();
     const customer = { id: ctx.customerId, group, x: point.x, z: point.z, product: chooseProduct(budget),
       state: 'enter', path: [], pathAt: 0, wait: Math.random() * .6, budget, queue: 0,
@@ -1540,6 +1549,15 @@ export function installBlockmartV9(ctx) {
   function install() {
     if (isInstalled) return;
     isInstalled = true;
+    if (typeof ctx.panByPixels === 'function' && !ctx.panByPixels.blockmartVisualYaw) {
+      const panByPixels = ctx.panByPixels;
+      const adjustedPanByPixels = (dx, dy) => {
+        const cosine = Math.cos(VISUAL_CAMERA_YAW), sine = Math.sin(VISUAL_CAMERA_YAW);
+        panByPixels(dx * cosine + dy * sine, -dx * sine + dy * cosine);
+      };
+      adjustedPanByPixels.blockmartVisualYaw = true;
+      ctx.panByPixels = adjustedPanByPixels;
+    }
     migrateCurrentState();
     fitCameraToShop();
     addPopularityHud();

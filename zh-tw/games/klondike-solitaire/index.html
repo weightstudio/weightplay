@@ -26,7 +26,6 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#0a1f3a" />
-  <title data-klocale="ui.meta.title">Klondike Solitaire Online - Play Free Classic Solitaire</title>
   <meta name="description" content="經典單人紙牌接龍，提供 1 或 3 張抽牌、拖拉放置、底部自動收尾與還原支援。" />
   <meta name="keywords" data-klocale="ui.meta.keywords" content="Solitaire,Klondike,Classic Solitaire,Free Solitaire,Play Solitaire Online,Card Game,Patience" />
   <meta property="og:site_name" content="WeightPlay" />
@@ -99,8 +98,8 @@
 <body data-screen="main" data-audience="general" data-wp-game-id="klondike-solitaire" data-wp-game-version="v52" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card">
-      <strong data-klocale="ui.title">Klondike Solitaire</strong>
-      <span id="loadingText" data-klocale="ui.loading.preparing">Preparing your deck</span>
+      <strong data-klocale="ui.title">Klondike 接龍</strong>
+      <span id="loadingText" data-klocale="ui.loading.preparing">準備中...</span>
       <div class="loading-track"><span id="loadingFill"></span></div>
     </div>
   </section>
@@ -112,24 +111,24 @@
         <span aria-hidden="true">&larr;</span>
         <img src="/assets/weightplay-logo.png" alt="" />
       </a>
-      <strong data-klocale="ui.hero.title">Klondike Solitaire</strong>
+      <strong data-klocale="ui.hero.title">Klondike 接龍</strong>
       <div class="header-utilities">
         <div class="audio-control settings-control">
-          <button id="audioMenuBtn" class="header-icon-btn settings-menu-btn" type="button" aria-expanded="false" aria-controls="audioPopover" aria-label="Settings" data-klocale-aria="ui.settings.title">
+          <button id="audioMenuBtn" class="header-icon-btn settings-menu-btn" type="button" aria-expanded="false" aria-controls="audioPopover" aria-label="設定" data-klocale-aria="ui.settings.title">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.4 13a7.9 7.9 0 0 0 0-2l2-1.5-2-3.5-2.5 1a7.7 7.7 0 0 0-1.7-1L15 3.3h-4L10.6 6a7.7 7.7 0 0 0-1.7 1l-2.5-1-2 3.5 2 1.5a7.9 7.9 0 0 0 0 2l-2 1.5 2 3.5 2.5-1a7.7 7.7 0 0 0 1.7 1l.4 2.7h4l.4-2.7a7.7 7.7 0 0 0 1.7-1l2.5 1 2-3.5-2.2-1.5ZM13 15.5A3.5 3.5 0 1 1 13 8a3.5 3.5 0 0 1 0 7.5Z"/></svg>
           </button>
-          <div id="audioPopover" class="audio-popover settings-popover is-hidden" role="group" aria-label="Settings" data-klocale-aria="ui.settings.title">
-            <strong id="settingsTitle" class="settings-title" data-klocale="ui.settings.title">Settings</strong>
+          <div id="audioPopover" class="audio-popover settings-popover is-hidden" role="group" aria-label="設定" data-klocale-aria="ui.settings.title">
+            <strong id="settingsTitle" class="settings-title" data-klocale="ui.settings.title">設定</strong>
             <button id="soundBtn" class="audio-setting-row" type="button" aria-pressed="true">
               <span class="audio-row-icon" aria-hidden="true">SFX</span>
-              <span id="soundSettingLabel" data-klocale="ui.sound.label">Sound Effects</span>
+              <span id="soundSettingLabel" data-klocale="ui.sound.label">音效</span>
               <span id="soundStateText" class="visually-hidden">SFX On</span>
               <span class="audio-switch" aria-hidden="true"></span>
             </button>
             <label class="locale-box settings-locale-row">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 6h-3.1a15.7 15.7 0 0 0-1.4-3.4A8.1 8.1 0 0 1 18.9 8ZM12 4c.9 1 1.6 2.4 2 4h-4c.4-1.6 1.1-3 2-4ZM4.3 14a7.8 7.8 0 0 1 0-4h3.4a16.5 16.5 0 0 0 0 4H4.3Zm.8 2h3.1c.3 1.3.8 2.4 1.4 3.4A8.1 8.1 0 0 1 5.1 16Zm3.1-8H5.1a8.1 8.1 0 0 1 4.5-3.4A15.7 15.7 0 0 0 8.2 8ZM12 20c-.9-1-1.6-2.4-2-4h4c-.4 1.6-1.1 3-2 4Zm2.4-.6c.6-1 1.1-2.1 1.4-3.4h3.1a8.1 8.1 0 0 1-4.5 3.4Zm1.8-5.4H9.8a14.5 14.5 0 0 1 0-4h4.4a14.5 14.5 0 0 1 0 4h2Zm-.4 0a16.5 16.5 0 0 0 0-4h3.9a7.8 7.8 0 0 1 0 4h-3.9Z"/></svg>
-              <span id="languageLabel" data-klocale="ui.language.label">Language</span>
-              <select id="localeSelect" aria-label="Language" data-klocale-aria="ui.language.label">
+              <span id="languageLabel" data-klocale="ui.language.label">語言</span>
+              <select id="localeSelect" aria-label="語言" data-klocale-aria="ui.language.label">
                 <option value="en">English</option>
                 <option value="zh-Hant">繁體中文</option>
                 <option value="zh-Hans">简体中文</option>
@@ -155,30 +154,30 @@
         <img class="cover" src="/assets/interface7-redrawn/klondike-solitaire.webp" width="1254" height="1254" alt="《克朗代克接龍》遊戲圖片" />
       </div>
       <article class="main-copy">
-        <small class="eyebrow" data-klocale="ui.hero.kicker">Classic Card Game</small>
-        <h1 data-klocale="ui.hero.title">克朗代克接龍</h1>
+        <small class="eyebrow" data-klocale="ui.hero.kicker">經典紙牌遊戲</small>
+        <h1 data-klocale="ui.hero.title">Klondike 接龍</h1>
         <p id="menuHint" class="menu-hint" data-i18n="summary">紅黑交錯排牌、翻開暗牌，將各花色從 A 收到 K。</p>
         <div id="statistics" class="stats-panel" role="status" aria-live="polite"></div>
         <div id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite">
-          <strong data-klocale="ui.feature.target_title">Target</strong>
-          <span data-klocale="ui.feature.target_text">Build all four Foundations from A to K.</span>
+          <strong data-klocale="ui.feature.target_title">目標</strong>
+          <span data-klocale="ui.feature.target_text">將 A 至 K 全部收齊到四個基座。</span>
         </div>
         <div class="main-actions">
-          <button id="startBtn" class="primary-btn standard-main-start" data-wp-main-start data-runtime-localize="off" type="button" data-klocale="ui.action.start">Start Game</button>
-          <button id="restartBtn" class="secondary-btn" type="button" data-klocale="ui.action.restart">Restart Current Game</button>
-          <button id="newGameBtn" class="secondary-btn" type="button" data-klocale="ui.action.new_game">New Game</button>
+          <button id="startBtn" class="primary-btn standard-main-start" data-wp-main-start data-runtime-localize="off" type="button" data-klocale="ui.action.start">開始</button>
+          <button id="restartBtn" class="secondary-btn" type="button" data-klocale="ui.action.restart">重新開始此局</button>
+          <button id="newGameBtn" class="secondary-btn" type="button" data-klocale="ui.action.new_game">開始新局</button>
         </div>
       </article>
       <aside class="feature-list">
-        <div><strong data-klocale="ui.feature.target_title">Target</strong><p data-klocale="ui.feature.target_text">Build all four Foundations from A to K.</p></div>
-        <div><strong data-klocale="ui.feature.features_title">Features</strong><p data-klocale="ui.feature.features_text">Single/Multi-card drag, one-click auto-move, Draw 1/3, hint, and auto finish.</p></div>
-        <div><strong data-klocale="ui.feature.performance_title">Performance</strong><p data-klocale="ui.feature.performance_text">Transform-only card movement, reduced re-render churn, and continuous animation tuning.</p></div>
+        <div><strong data-klocale="ui.feature.target_title">目標</strong><p data-klocale="ui.feature.target_text">將 A 至 K 全部收齊到四個基座。</p></div>
+        <div><strong data-klocale="ui.feature.features_title">特色</strong><p data-klocale="ui.feature.features_text">單/多張牌拖曳、點擊選牌、抽 1/3 張、提示與自動完成。</p></div>
+        <div><strong data-klocale="ui.feature.performance_title">效能</strong><p data-klocale="ui.feature.performance_text">僅使用 transform 移動卡片，降低重繪負擔，並持續微調動畫效能。</p></div>
       </aside>
     </section>
   </main>
 
   <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide>
-    <div class="game-info-hero"><div class="game-info-title"><h2 data-klocale="ui.hero.title">Klondike Solitaire</h2></div></div>
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-klocale="ui.hero.title">克朗代克接龍</h2><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>克朗代克接龍</span><span>紅黑交錯牌列</span><span>抽一張／三張</span></div></div></div>
     <div class="game-info-sections">
       <section class="game-info-section"><h3 data-i18n="howTitle">怎麼玩</h3><ol>
         <li data-i18n="rule1">點選明牌，再拖曳或點高亮目的地。牌列須紅黑交錯、由大到小；空列只能放 K 或以 K 開頭的牌組。</li>
@@ -187,48 +186,48 @@
       </ol></section>
       <section class="game-info-section"><h3 data-i18n="helpTitle">卡住時</h3><p data-i18n="help">提示只指出合法走法，不會代打；復原可撤回。自動完成處理安全的收尾走法。重新開始重玩同一副牌，新遊戲另發一副。</p></section>
       <section class="game-info-section"><h3 data-i18n="noteTitle">遊玩紀錄</h3><p data-i18n="note">每副牌是一局完整接龍，沒有關卡選單。統計和抽牌偏好儲存在目前瀏覽器。</p></section>
-    <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>How many cards are used?</dt><dd>Klondike Solitaire uses one standard deck of 52 cards.</dd></div><div><dt>What is the win condition?</dt><dd>Each foundation must be completed from Ace to King in suit order.</dd></div><div><dt>What are Draw 1 and Draw 3?</dt><dd>Draw 1 reveals one card per Stock draw; Draw 3 reveals three.</dd></div><div><dt>Can cards be moved one by one?</dt><dd>Yes, and valid descending alternating-color runs can be moved as a group.</dd></div><div><dt>How do I know a move is legal?</dt><dd>Hint highlights one legal target. Use legal tableau or foundation matches only.</dd></div><div><dt>What does Auto-Finish do?</dt><dd>It moves only legal foundation-safe moves after non-strategic tableau moves are exhausted.</dd></div><div><dt>Can I Undo?</dt><dd>Yes. Undo supports repeated use and fully restores board state.</dd></div><div><dt>What if no suggested move exists?</dt><dd>Hint returns 0 moves available when no move is found.</dd></div></dl></div></div>
+    <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>使用幾張牌？</dt><dd>使用一副標準的 52 張牌。</dd></div><div><dt>勝利條件是什麼？</dt><dd>將四種花色各自依序從 A 收到 K，完成四個牌堆即可獲勝。</dd></div><div><dt>抽一張和抽三張有什麼不同？</dt><dd>抽一張每次從牌庫翻開一張；抽三張則每次翻開三張。</dd></div><div><dt>可以一次移動一張牌嗎？</dt><dd>可以；符合遞減順序且顏色交錯的連續牌組也能一起移動。</dd></div><div><dt>如何判斷走法是否合法？</dt><dd>提示會標出一個合法目的地。只要符合牌列或基礎牌堆的規則即可移動。</dd></div><div><dt>自動完成會做什麼？</dt><dd>在不再有需要策略判斷的牌列走法後，自動完成只會執行安全且合法的收牌走法。</dd></div><div><dt>可以復原嗎？</dt><dd>可以。復原可連續使用，並完整還原牌面狀態。</dd></div><div><dt>沒有提示走法時會怎樣？</dt><dd>找不到合法走法時，提示會顯示目前沒有可用走法。</dd></div></dl></div></div>
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
       <header class="battle-header">
-        <button id="battleBackBtn" type="button" data-wp-return="battle" data-klocale-aria="ui.nav.back_to_main" aria-label="Back">&larr;</button>
+        <button id="battleBackBtn" type="button" data-wp-return="battle" data-klocale-aria="ui.nav.back_to_main" aria-label="返回主畫面">&larr;</button>
         <div class="header-stat">
-          <small data-klocale="ui.header.moves">Moves</small><strong id="moveCount">0</strong>
+          <small data-klocale="ui.header.moves">步數</small><strong id="moveCount">0</strong>
         </div>
         <div class="header-stat">
-          <small data-klocale="ui.header.time">Time</small><strong id="timeValue">00:00</strong>
+          <small data-klocale="ui.header.time">時間</small><strong id="timeValue">00:00</strong>
         </div>
         <div class="header-stat">
-          <small data-klocale="ui.draw_mode.label">Draw Mode</small><strong id="drawModeValue">Draw 1</strong>
+          <small data-klocale="ui.draw_mode.label">發牌模式</small><strong id="drawModeValue">抽一張</strong>
         </div>
-        <button id="drawModeBtn" class="control-mini" type="button" aria-pressed="true">Draw Mode</button>
-        <button id="soundToggleBattle" class="control-mini battle-utility" type="button" data-wp-battle-utility="true" aria-label="Sound: On">Sound: On</button>
+        <button id="drawModeBtn" class="control-mini" type="button" aria-pressed="true">發牌模式</button>
+        <button id="soundToggleBattle" class="control-mini battle-utility" type="button" data-wp-battle-utility="true" aria-label="音效已開啟">音效：開</button>
       </header>
 
       <section class="board-shell">
-        <section id="foundationRow" class="foundation-row" data-klocale-aria="ui.board.foundations" aria-label="Foundations"></section>
+        <section id="foundationRow" class="foundation-row" data-klocale-aria="ui.board.foundations" aria-label="基底堆"></section>
         <section class="stock-row">
           <button id="stockPile" class="pile stock" type="button" data-klocale-aria="ui.board.empty_stock"></button>
           <button id="wastePile" class="pile waste" type="button" data-klocale-aria="ui.board.empty_waste"></button>
           <div class="control-row" role="group" data-klocale-aria="ui.battle.controls_label">
-            <button id="undoBtn" type="button" class="mini-btn" data-klocale="ui.action.undo">Undo</button>
-            <button id="hintBtn" type="button" class="mini-btn" data-klocale="ui.action.hint">Hint</button>
-            <button id="autoFinishBtn" type="button" class="mini-btn" data-klocale="ui.action.auto_finish">Auto Finish</button>
+            <button id="undoBtn" type="button" class="mini-btn" data-klocale="ui.action.undo">回退</button>
+            <button id="hintBtn" type="button" class="mini-btn" data-klocale="ui.action.hint">提示</button>
+            <button id="autoFinishBtn" type="button" class="mini-btn" data-klocale="ui.action.auto_finish">自動完成</button>
           </div>
         </section>
-        <p id="battleTip" class="battle-tip" aria-live="polite">Tap a card to select it. Drag it, or tap a highlighted destination, to move it.</p>
-        <section id="tableauRow" class="tableau-row" data-klocale-aria="ui.board.tableau" aria-label="Tableau" role="region" tabindex="0"></section>
+        <p id="battleTip" class="battle-tip" aria-live="polite">點一下牌先選取。拖曳牌，或點選高亮目的地，才會移動。</p>
+        <section id="tableauRow" class="tableau-row" data-klocale-aria="ui.board.tableau" aria-label="牌列" role="region" tabindex="0"></section>
       </section>
       <div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
         <div class="result-card">
-          <h2 id="resultTitle" data-klocale="ui.result.title">Game Complete</h2>
+          <h2 id="resultTitle" data-klocale="ui.result.title">遊戲完成</h2>
           <p id="resultText"></p>
           <div class="result-actions">
-            <button id="resultNewGame" type="button" class="primary-btn" data-klocale="ui.result.new_game">New Game</button>
-            <button id="resultRestart" type="button" class="secondary-btn" data-klocale="ui.result.restart">Restart</button>
-            <button id="resultClose" type="button" class="secondary-btn" data-klocale="ui.result.return">Return</button>
+            <button id="resultNewGame" type="button" class="primary-btn" data-klocale="ui.result.new_game">新局開始</button>
+            <button id="resultRestart" type="button" class="secondary-btn" data-klocale="ui.result.restart">重玩</button>
+            <button id="resultClose" type="button" class="secondary-btn" data-klocale="ui.result.return">返回</button>
           </div>
         </div>
       </div>

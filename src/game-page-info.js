@@ -14253,6 +14253,14 @@
     localizedGames[locale]["space-rocks"] = { ...games["space-rocks"], ...guide };
   }
 
+  localizedGames.en ||= {};
+  localizedGames.en["space-rocks"] = {
+    ...(localizedGames.en["space-rocks"] || {}),
+    gameplay: "Rotate, thrust, and split rocks",
+    genre: ["Arcade shooter"],
+    text140Tags: ["Inertia-Based Arcade Shooter", "Asteroid Splitting", "Shield + Rapid Fire"],
+  };
+
 
   // Text Growth 1.3.0 owner policy: public Guides use own-gameplay tags only.
   // Keep historical comparison profiles internal, but do not render or generate them.

@@ -26,7 +26,6 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#0a1f3a" />
-  <title data-klocale="ui.meta.title">Klondike Solitaire Online - Play Free Classic Solitaire</title>
   <meta name="description" content="Solitário clássico com fluxo de arrastar e soltar, modos de compra 1/3, auto-finalização e suporte a desfazer." />
   <meta name="keywords" data-klocale="ui.meta.keywords" content="Solitaire,Klondike,Classic Solitaire,Free Solitaire,Play Solitaire Online,Card Game,Patience" />
   <meta property="og:site_name" content="WeightPlay" />
@@ -99,8 +98,8 @@
 <body data-screen="main" data-audience="general" data-wp-game-id="klondike-solitaire" data-wp-game-version="v52" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card">
-      <strong data-klocale="ui.title">Klondike Solitaire</strong>
-      <span id="loadingText" data-klocale="ui.loading.preparing">Preparing your deck</span>
+      <strong data-klocale="ui.title">Solitário Klondike</strong>
+      <span id="loadingText" data-klocale="ui.loading.preparing">Preparing...</span>
       <div class="loading-track"><span id="loadingFill"></span></div>
     </div>
   </section>
@@ -112,24 +111,24 @@
         <span aria-hidden="true">&larr;</span>
         <img src="/assets/weightplay-logo.png" alt="" />
       </a>
-      <strong data-klocale="ui.hero.title">Klondike Solitaire</strong>
+      <strong data-klocale="ui.hero.title">Solitário Klondike</strong>
       <div class="header-utilities">
         <div class="audio-control settings-control">
-          <button id="audioMenuBtn" class="header-icon-btn settings-menu-btn" type="button" aria-expanded="false" aria-controls="audioPopover" aria-label="Settings" data-klocale-aria="ui.settings.title">
+          <button id="audioMenuBtn" class="header-icon-btn settings-menu-btn" type="button" aria-expanded="false" aria-controls="audioPopover" aria-label="Configurações" data-klocale-aria="ui.settings.title">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.4 13a7.9 7.9 0 0 0 0-2l2-1.5-2-3.5-2.5 1a7.7 7.7 0 0 0-1.7-1L15 3.3h-4L10.6 6a7.7 7.7 0 0 0-1.7 1l-2.5-1-2 3.5 2 1.5a7.9 7.9 0 0 0 0 2l-2 1.5 2 3.5 2.5-1a7.7 7.7 0 0 0 1.7 1l.4 2.7h4l.4-2.7a7.7 7.7 0 0 0 1.7-1l2.5 1 2-3.5-2.2-1.5ZM13 15.5A3.5 3.5 0 1 1 13 8a3.5 3.5 0 0 1 0 7.5Z"/></svg>
           </button>
-          <div id="audioPopover" class="audio-popover settings-popover is-hidden" role="group" aria-label="Settings" data-klocale-aria="ui.settings.title">
-            <strong id="settingsTitle" class="settings-title" data-klocale="ui.settings.title">Settings</strong>
+          <div id="audioPopover" class="audio-popover settings-popover is-hidden" role="group" aria-label="Configurações" data-klocale-aria="ui.settings.title">
+            <strong id="settingsTitle" class="settings-title" data-klocale="ui.settings.title">Configurações</strong>
             <button id="soundBtn" class="audio-setting-row" type="button" aria-pressed="true">
               <span class="audio-row-icon" aria-hidden="true">SFX</span>
-              <span id="soundSettingLabel" data-klocale="ui.sound.label">Sound Effects</span>
+              <span id="soundSettingLabel" data-klocale="ui.sound.label">Efeitos sonoros</span>
               <span id="soundStateText" class="visually-hidden">SFX On</span>
               <span class="audio-switch" aria-hidden="true"></span>
             </button>
             <label class="locale-box settings-locale-row">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 6h-3.1a15.7 15.7 0 0 0-1.4-3.4A8.1 8.1 0 0 1 18.9 8ZM12 4c.9 1 1.6 2.4 2 4h-4c.4-1.6 1.1-3 2-4ZM4.3 14a7.8 7.8 0 0 1 0-4h3.4a16.5 16.5 0 0 0 0 4H4.3Zm.8 2h3.1c.3 1.3.8 2.4 1.4 3.4A8.1 8.1 0 0 1 5.1 16Zm3.1-8H5.1a8.1 8.1 0 0 1 4.5-3.4A15.7 15.7 0 0 0 8.2 8ZM12 20c-.9-1-1.6-2.4-2-4h4c-.4 1.6-1.1 3-2 4Zm2.4-.6c.6-1 1.1-2.1 1.4-3.4h3.1a8.1 8.1 0 0 1-4.5 3.4Zm1.8-5.4H9.8a14.5 14.5 0 0 1 0-4h4.4a14.5 14.5 0 0 1 0 4h2Zm-.4 0a16.5 16.5 0 0 0 0-4h3.9a7.8 7.8 0 0 1 0 4h-3.9Z"/></svg>
-              <span id="languageLabel" data-klocale="ui.language.label">Language</span>
-              <select id="localeSelect" aria-label="Language" data-klocale-aria="ui.language.label">
+              <span id="languageLabel" data-klocale="ui.language.label">Idioma</span>
+              <select id="localeSelect" aria-label="Idioma" data-klocale-aria="ui.language.label">
                 <option value="en">English</option>
                 <option value="zh-Hant">繁體中文</option>
                 <option value="zh-Hans">简体中文</option>
@@ -155,30 +154,30 @@
         <img class="cover" src="/assets/interface7-redrawn/klondike-solitaire.webp" width="1254" height="1254" alt="Imagem do jogo Solitário Klondike" />
       </div>
       <article class="main-copy">
-        <small class="eyebrow" data-klocale="ui.hero.kicker">Classic Card Game</small>
+        <small class="eyebrow" data-klocale="ui.hero.kicker">Jogo de cartas clássico</small>
         <h1 data-klocale="ui.hero.title">Solitário Klondike</h1>
         <p id="menuHint" class="menu-hint" data-i18n="summary">Alterne cores, revele cartas ocultas e complete cada naipe do ás ao rei.</p>
         <div id="statistics" class="stats-panel" role="status" aria-live="polite"></div>
         <div id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite">
-          <strong data-klocale="ui.feature.target_title">Target</strong>
-          <span data-klocale="ui.feature.target_text">Build all four Foundations from A to K.</span>
+          <strong data-klocale="ui.feature.target_title">Objetivo</strong>
+          <span data-klocale="ui.feature.target_text">Complete as quatro fundações do Ás ao Rei.</span>
         </div>
         <div class="main-actions">
-          <button id="startBtn" class="primary-btn standard-main-start" data-wp-main-start data-runtime-localize="off" type="button" data-klocale="ui.action.start">Start Game</button>
-          <button id="restartBtn" class="secondary-btn" type="button" data-klocale="ui.action.restart">Restart Current Game</button>
-          <button id="newGameBtn" class="secondary-btn" type="button" data-klocale="ui.action.new_game">New Game</button>
+          <button id="startBtn" class="primary-btn standard-main-start" data-wp-main-start data-runtime-localize="off" type="button" data-klocale="ui.action.start">Começar</button>
+          <button id="restartBtn" class="secondary-btn" type="button" data-klocale="ui.action.restart">Reiniciar partida</button>
+          <button id="newGameBtn" class="secondary-btn" type="button" data-klocale="ui.action.new_game">Novo jogo</button>
         </div>
       </article>
       <aside class="feature-list">
-        <div><strong data-klocale="ui.feature.target_title">Target</strong><p data-klocale="ui.feature.target_text">Build all four Foundations from A to K.</p></div>
-        <div><strong data-klocale="ui.feature.features_title">Features</strong><p data-klocale="ui.feature.features_text">Single/Multi-card drag, one-click auto-move, Draw 1/3, hint, and auto finish.</p></div>
-        <div><strong data-klocale="ui.feature.performance_title">Performance</strong><p data-klocale="ui.feature.performance_text">Transform-only card movement, reduced re-render churn, and continuous animation tuning.</p></div>
+        <div><strong data-klocale="ui.feature.target_title">Objetivo</strong><p data-klocale="ui.feature.target_text">Complete as quatro fundações do Ás ao Rei.</p></div>
+        <div><strong data-klocale="ui.feature.features_title">Recursos</strong><p data-klocale="ui.feature.features_text">Arraste uma ou várias cartas, selecione com um toque, compre 1/3, use dica e autocompletar.</p></div>
+        <div><strong data-klocale="ui.feature.performance_title">Desempenho</strong><p data-klocale="ui.feature.performance_text">Movimento de cartas com transform, menos repinturas e animações ajustadas para partidas longas.</p></div>
       </aside>
     </section>
   </main>
 
   <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide>
-    <div class="game-info-hero"><div class="game-info-title"><h2 data-klocale="ui.hero.title">Klondike Solitaire</h2></div></div>
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-klocale="ui.hero.title">Solitário Klondike</h2><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Paciência Klondike</span><span>Colunas em cores alternadas</span><span>Comprar 1 / 3 cartas</span></div></div></div>
     <div class="game-info-sections">
       <section class="game-info-section"><h3 data-i18n="howTitle">Como jogar</h3><ol>
         <li data-i18n="rule1">Selecione uma carta aberta e arraste-a ou toque no destino destacado. Monte colunas em ordem decrescente alternando cores; apenas reis ou sequências iniciadas por rei ocupam colunas vazias.</li>
@@ -187,24 +186,24 @@
       </ol></section>
       <section class="game-info-section"><h3 data-i18n="helpTitle">Se ficar sem saída</h3><p data-i18n="help">Dica mostra uma jogada sem executá-la. Desfazer reverte um movimento. Finalizar automaticamente resolve jogadas finais seguras. Reiniciar repete a distribuição; Novo jogo cria outra.</p></section>
       <section class="game-info-section"><h3 data-i18n="noteTitle">Seu progresso</h3><p data-i18n="note">Cada distribuição é um desafio completo, sem campanha de fases. Estatísticas e preferência de compra ficam neste navegador.</p></section>
-    <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>How many cards are used?</dt><dd>Klondike Solitaire uses one standard deck of 52 cards.</dd></div><div><dt>What is the win condition?</dt><dd>Each foundation must be completed from Ace to King in suit order.</dd></div><div><dt>What are Draw 1 and Draw 3?</dt><dd>Draw 1 reveals one card per Stock draw; Draw 3 reveals three.</dd></div><div><dt>Can cards be moved one by one?</dt><dd>Yes, and valid descending alternating-color runs can be moved as a group.</dd></div><div><dt>How do I know a move is legal?</dt><dd>Hint highlights one legal target. Use legal tableau or foundation matches only.</dd></div><div><dt>What does Auto-Finish do?</dt><dd>It moves only legal foundation-safe moves after non-strategic tableau moves are exhausted.</dd></div><div><dt>Can I Undo?</dt><dd>Yes. Undo supports repeated use and fully restores board state.</dd></div><div><dt>What if no suggested move exists?</dt><dd>Hint returns 0 moves available when no move is found.</dd></div></dl></div></div>
+    <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Quantas cartas são usadas?</dt><dd>É usado um baralho padrão com 52 cartas.</dd></div><div><dt>Qual é a condição de vitória?</dt><dd>Complete cada uma das quatro fundações do Ás ao Rei, sempre no mesmo naipe.</dd></div><div><dt>Qual é a diferença entre comprar 1 e 3 cartas?</dt><dd>Comprar 1 revela uma carta por vez do monte; Comprar 3 revela três a cada compra.</dd></div><div><dt>Posso mover as cartas uma por uma?</dt><dd>Sim. Sequências válidas em ordem decrescente e com cores alternadas também podem ser movidas juntas.</dd></div><div><dt>Como sei se uma jogada é válida?</dt><dd>A Dica destaca um destino válido. Mova as cartas apenas conforme as regras do quadro ou das fundações.</dd></div><div><dt>O que o preenchimento automático faz?</dt><dd>Quando não restam jogadas estratégicas no quadro, ele executa apenas movimentos seguros e válidos para as fundações.</dd></div><div><dt>Posso desfazer uma jogada?</dt><dd>Sim. Desfazer pode ser usado várias vezes e restaura completamente o estado do tabuleiro.</dd></div><div><dt>E se não houver jogada sugerida?</dt><dd>Quando não encontra uma jogada válida, a Dica informa que não há movimentos disponíveis.</dd></div></dl></div></div>
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
       <header class="battle-header">
-        <button id="battleBackBtn" type="button" data-wp-return="battle" data-klocale-aria="ui.nav.back_to_main" aria-label="Back">&larr;</button>
+        <button id="battleBackBtn" type="button" data-wp-return="battle" data-klocale-aria="ui.nav.back_to_main" aria-label="Voltar à tela principal">&larr;</button>
         <div class="header-stat">
-          <small data-klocale="ui.header.moves">Moves</small><strong id="moveCount">0</strong>
+          <small data-klocale="ui.header.moves">Movimentos</small><strong id="moveCount">0</strong>
         </div>
         <div class="header-stat">
-          <small data-klocale="ui.header.time">Time</small><strong id="timeValue">00:00</strong>
+          <small data-klocale="ui.header.time">Tempo</small><strong id="timeValue">00:00</strong>
         </div>
         <div class="header-stat">
-          <small data-klocale="ui.draw_mode.label">Draw Mode</small><strong id="drawModeValue">Draw 1</strong>
+          <small data-klocale="ui.draw_mode.label">Modo de compra</small><strong id="drawModeValue">Comprar 1</strong>
         </div>
-        <button id="drawModeBtn" class="control-mini" type="button" aria-pressed="true">Draw Mode</button>
-        <button id="soundToggleBattle" class="control-mini battle-utility" type="button" data-wp-battle-utility="true" aria-label="Sound: On">Sound: On</button>
+        <button id="drawModeBtn" class="control-mini" type="button" aria-pressed="true">Modo de compra</button>
+        <button id="soundToggleBattle" class="control-mini battle-utility" type="button" data-wp-battle-utility="true" aria-label="Som ativado">Som: ligado</button>
       </header>
 
       <section class="board-shell">
@@ -213,22 +212,22 @@
           <button id="stockPile" class="pile stock" type="button" data-klocale-aria="ui.board.empty_stock"></button>
           <button id="wastePile" class="pile waste" type="button" data-klocale-aria="ui.board.empty_waste"></button>
           <div class="control-row" role="group" data-klocale-aria="ui.battle.controls_label">
-            <button id="undoBtn" type="button" class="mini-btn" data-klocale="ui.action.undo">Undo</button>
-            <button id="hintBtn" type="button" class="mini-btn" data-klocale="ui.action.hint">Hint</button>
-            <button id="autoFinishBtn" type="button" class="mini-btn" data-klocale="ui.action.auto_finish">Auto Finish</button>
+            <button id="undoBtn" type="button" class="mini-btn" data-klocale="ui.action.undo">Desfazer</button>
+            <button id="hintBtn" type="button" class="mini-btn" data-klocale="ui.action.hint">Dica</button>
+            <button id="autoFinishBtn" type="button" class="mini-btn" data-klocale="ui.action.auto_finish">Conclusão automática</button>
           </div>
         </section>
-        <p id="battleTip" class="battle-tip" aria-live="polite">Tap a card to select it. Drag it, or tap a highlighted destination, to move it.</p>
+        <p id="battleTip" class="battle-tip" aria-live="polite">Toque em uma carta para selecioná-la. Arraste-a ou toque em um destino destacado para movê-la.</p>
         <section id="tableauRow" class="tableau-row" data-klocale-aria="ui.board.tableau" aria-label="Tableau" role="region" tabindex="0"></section>
       </section>
       <div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
         <div class="result-card">
-          <h2 id="resultTitle" data-klocale="ui.result.title">Game Complete</h2>
+          <h2 id="resultTitle" data-klocale="ui.result.title">Jogo concluído</h2>
           <p id="resultText"></p>
           <div class="result-actions">
-            <button id="resultNewGame" type="button" class="primary-btn" data-klocale="ui.result.new_game">New Game</button>
-            <button id="resultRestart" type="button" class="secondary-btn" data-klocale="ui.result.restart">Restart</button>
-            <button id="resultClose" type="button" class="secondary-btn" data-klocale="ui.result.return">Return</button>
+            <button id="resultNewGame" type="button" class="primary-btn" data-klocale="ui.result.new_game">Novo jogo</button>
+            <button id="resultRestart" type="button" class="secondary-btn" data-klocale="ui.result.restart">Repetir</button>
+            <button id="resultClose" type="button" class="secondary-btn" data-klocale="ui.result.return">Voltar</button>
           </div>
         </div>
       </div>
