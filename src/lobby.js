@@ -9,9 +9,6 @@ lobby.games.forEach((game) => {
 });
 let activeGamePreview = null;
 const ownerPreviewMode = new URLSearchParams(window.location.search).get("preview") === "1";
-// This activity concept is a local owner-preview only. It must never appear
-// from the production lobby route, including production `?preview=1` URLs.
-const localLobbyPreview = ownerPreviewMode && ["localhost", "127.0.0.1", "[::1]"].includes(window.location.hostname);
 const audienceMode = document.body?.dataset.audience === "kids" ? "kids" : "general";
 const generalGameIds = new Set(lobby.audiences?.generalGameIds || []);
 const tabletopGameIds = new Set(lobby.audiences?.tabletopGameIds || []);
@@ -185,7 +182,9 @@ const challengeSpotlightSection = document.querySelector("#challengeSpotlightSec
 const characterShowcase = document.querySelector("#characterShowcase");
 const characterShowcaseSection = document.querySelector("#characterShowcaseSection");
 const skillPaths = document.querySelector("#skillPaths");
-const demonEventPreview = localLobbyPreview && !isKidsLobby ? createDemonEventPreview() : null;
+// Public announcement entry for the Block World lobby; gameplay and rewards
+// remain unavailable until the event is implemented and launched.
+const demonEventPreview = !isKidsLobby ? createDemonEventPreview() : null;
 if (demonEventPreview) window.matchMedia("(min-width: 1120px)").addEventListener("change", syncDemonEventPreview);
 const skillPathsSection = document.querySelector("#skillPathsSection");
 const lobbyStats = document.querySelector("#lobbyStats");

@@ -28,9 +28,9 @@ export class Simulation {
  syncGrowth(growth){const hp=Math.max(this.growth.health,growth.health||0),atk=Math.max(this.growth.attack,growth.attack||0);if(this.hero.hp>0)this.hero.hp+=hp-this.growth.health;this.growth={health:hp,attack:atk,regen:Math.max(this.growth.regen,growth.regen||0)};this.hero.maxHp=100+hp;this.hero.power=16+atk;this.hero.regen=Math.round((1+this.growth.regen)*10)/10;}
  grant(e){if(!e.reward)return;const {stat,amount}=e.reward;this.syncGrowth({...this.growth,[stat]:Math.round((this.growth[stat]+amount)*10)/10});this.log('growth',{uid:e.uid,stat,amount,x:e.x,z:e.z});}
  respawns(dt){for(const e of this.ents){if(e.hp>0||!e.spawn||e.respawn==null)continue;
-   // Keep defeated adds down after the Stage 1 harvest or Stage 3 enemy
-   // quota, so players can focus on that guardian's final objective phase.
-   const guardianPhase=(this.stage.id===1&&this.tally.wood>=this.stage.req.wood)||(this.stage.id===3&&this.tally.kills>=this.stage.req.kills);
+   // Keep adds down after the mission's kill quota, or other prerequisites,
+   // so the final guardian phase cannot become an endless respawn loop.
+   const guardianPhase=this.stage.req.kills?this.tally.kills>=this.stage.req.kills:this.stage.type!=='boss'&&this.objectivesReady();
    if(e.kind==='enemy'&&guardianPhase&&this.tally.bosses<this.stage.req.bosses)continue;
    e.respawn-=dt;
    if(e.kind==='enemy'&&e.respawn<=2&&!e.spawnWarning){let spot=null;for(let i=0;i<16;i++){const a=i*2.4,p={x:clamp(e.spawn.x+Math.cos(a)*Math.floor(i/4),-6.3,6.3),z:clamp(e.spawn.z+Math.sin(a)*Math.floor(i/4),-7,7)};if(dist(p,this.hero)>3&&!this.obstacles.some(o=>o.hp>0&&Math.abs(p.x-o.x)<o.w+.6&&Math.abs(p.z-o.z)<o.h+.6)){spot=p;break;}}if(!spot){e.respawn=2.1;continue;}Object.assign(e,spot);e.spawnWarning=true;e.respawn=2;}
@@ -65,7 +65,7 @@ export class Simulation {
  target(range,tool='axe'){
   const alive=this.alive(),prioritizeTotems=alive.some(e=>e.kind==='totem')&&alive.some(e=>e.boss==='mosswitch');
   return alive.filter(e=>e.kind!=='friend'&&(e.kind!=='boss'||this.objectivesReady())&&dist(e,this.hero)<=range&&(!e.hidden||dist(e,this.hero)<2)&&this.clearLine(this.hero,e))
-   .sort((a,b)=>{const rank=e=>prioritizeTotems&&e.kind==='totem'?-2:hostile(e)?(tool==='bow'&&['caster','shaman'].includes(e.type)?-1:0):e.kind==='shrine'?1:e.kind==='cage'?2:3;return rank(a)-rank(b)||dist(a,this.hero)-dist(b,this.hero);})[0];
+   .sort((a,b)=>{const rank=e=>prioritizeTotems&&e.kind==='totem'?-3:e.kind==='boss'&&this.objectivesReady()?-2:hostile(e)?(tool==='bow'&&['caster','shaman'].includes(e.type)?-1:0):e.kind==='shrine'?1:e.kind==='cage'?2:3;return rank(a)-rank(b)||dist(a,this.hero)-dist(b,this.hero);})[0];
  }
  clearLine(a,b){return !this.obstacles.some(o=>o.hp>0&&Array.from({length:12},(_,i)=>{const t=(i+1)/13;return Math.abs(a.x+(b.x-a.x)*t-o.x)<o.w&&Math.abs(a.z+(b.z-a.z)*t-o.z)<o.h;}).some(Boolean));}
  use(id){
