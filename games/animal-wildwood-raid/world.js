@@ -1,14 +1,14 @@
 import * as THREE from './vendor/three/three.module.min.js';
 import {GroundCues} from './ground-cues.js';
 import {axePose,chopBody,ease,enemyWind,enemyStroke} from './combat-pose.js?v=20261003-wildwood-axe-v12a';
-const palette={wood:0x765139,dark:0x302a2c,orange:0xc9763e,cream:0xffdfae,teal:0x258f85,gold:0xf4be58,leaf:0x397a50,moss:0x69905b,stone:0x738782,white:0xd9f3e4,cyan:0x79f4d3,purple:0x875b99,red:0xf2745e,ground:0x537555};
+const palette={wood:0x765139,dark:0x302a2c,orange:0xc9763e,cream:0xffdfae,teal:0x258f85,gold:0xf4be58,leaf:0x397a50,moss:0x69905b,stone:0x738782,white:0xd9f3e4,cyan:0x79f4d3,purple:0x875b99,red:0xf2745e,ground:0x537555,treeBark:0x624b39,treeBarkLight:0x87694b,canopyShade:0x355b3e,canopyMid:0x4b7048,canopyTop:0x668154};
 const materialCells={orange:[0,0],cream:[1,0],leaf:[2,0],moss:[3,0],wood:[0,1],teal:[2,1],dark:[3,3],gold:[0,2],steel:[1,2],edge:[2,2],stone:[3,2],white:[2,2],cyan:[0,3],purple:[1,3],red:[2,3]};
 export class WildwoodWorld {
  constructor(canvas,sim){
   this.canvas=canvas;this.sim=sim;this.parts=[];this.models=new Map();this.batches=new Map();this.effects=[];this.reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   this.renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
   this.scene=new THREE.Scene();this.cues=new GroundCues(this.scene);this.scene.background=new THREE.Color(0x173d3c);
-  this.ground=new THREE.TextureLoader().load(new URL('./art/ground-block-v2.webp',import.meta.url).href);this.ground.colorSpace=THREE.SRGBColorSpace;this.ground.wrapS=this.ground.wrapT=THREE.RepeatWrapping;this.ground.repeat.set(1,1);
+  this.ground=new THREE.TextureLoader().load(new URL('./art/ground-moss-v3.webp',import.meta.url).href);this.ground.colorSpace=THREE.SRGBColorSpace;this.ground.wrapS=this.ground.wrapT=THREE.RepeatWrapping;this.ground.repeat.set(1,1);
   this.materialAtlas=new THREE.TextureLoader().load(new URL('./art/material-atlas-block-v2.png',import.meta.url).href);this.materialAtlas.colorSpace=THREE.SRGBColorSpace;this.materialAtlas.wrapS=this.materialAtlas.wrapT=THREE.ClampToEdgeWrapping;
   this.camera=new THREE.OrthographicCamera(-9,9,11,-11,.1,70);this.camera.position.set(0,20,16);this.camera.lookAt(0,0,0);
   const shape=new THREE.Shape();shape.moveTo(-.46,-.46);shape.lineTo(.46,-.46);shape.lineTo(.46,.46);shape.lineTo(-.46,.46);shape.closePath();
@@ -22,19 +22,28 @@ export class WildwoodWorld {
   this.box(this.static,'wood',[0,-.8,0],[15,1,18]);
   this.box(this.static,'ground',[0,-1.45,0],[60,.3,60]);
   // Forest continues beyond the arena so a following camera never exposes an empty backdrop.
-  for(const side of [-1,1])for(let i=0;i<17;i++){
+  for(const side of [-1,1])for(let i=0;i<13;i++){
    const x=-15+i*1.9,z=side*(11.4+(i%3)*1.3);
    this.tree(this.static,x,z,.85+(i%4)*.12,true);
-   if(i%2===0)this.box(this.static,'stone',[x+.7,-.7,z-1],[.9,.6,.7]);
+   if(i%3===0)this.box(this.static,'stone',[x+.7,-.7,z-1],[.9,.6,.7]);
   }
-  for(let i=0;i<48;i++){const x=(i%2?1:-1)*(8.8+Math.floor(i/14)*1.8),z=-17+(i%14)*2.5;this.tree(this.static,x,z,1+(i%3)*.18,true);}
-  for(let i=0;i<24;i++){const x=(i%2?1:-1)*(5.7+i%3*.2),z=-7+i*.6;this.box(this.static,'leaf',[x,.1,z],[.12,.32,.12]);const flower=this.box(this.static,i%2?'cream':'gold',[x,.3,z],[.2,.12,.2]);flower.rotation.y=i;}
+  for(let i=0;i<24;i++){const side=i%2?1:-1,row=Math.floor(i/12),lane=i%12,x=side*(9+row*2.4+(lane%3)*.15),z=-16+lane*2.8+row*.7;this.tree(this.static,x,z,1+(lane%3)*.12,true);}
   this.heroModel=this.character('hero');this.root.add(this.heroModel);this.exit=new THREE.Group();this.root.add(this.exit);
   this.box(this.exit,'gold',[-1,.8,0],[.25,1.8,.3]);this.box(this.exit,'gold',[1,.8,0],[.25,1.8,.3]);this.box(this.exit,'gold',[0,1.7,0],[2.2,.24,.3]);this.box(this.exit,'cyan',[0,.1,0],[1.8,.1,1.2]);
   this.resize();
  }
  box(parent,color,pos,scale){const n=new THREE.Object3D();n.position.set(...pos);n.scale.set(...scale);parent.add(n);this.parts.push({node:n,color});return n;}
- tree(parent,x,z,scale=1,decor=false){const g=new THREE.Group();g.position.set(x,0,z);g.scale.setScalar(scale);parent.add(g);this.box(g,'wood',[0,.65,0],[.4,1.3,.4]);this.box(g,'gold',[0,.55,.22],[.22,.25,.06]);for(let i=0;i<3;i++)this.box(g,i%2?'moss':'leaf',[0,1.3+i*.5,0],[1.4-i*.3,.65,1.3-i*.3]);return g;}
+ tree(parent,x,z,scale=1,decor=false){
+  const g=new THREE.Group();g.position.set(x,0,z);g.scale.setScalar(scale);parent.add(g);
+  this.box(g,'treeBark',[0,.69,0],[.38,1.38,.38]);this.box(g,'treeBarkLight',[-.075,.72,.195],[.075,.78,.025]);
+  for(const sign of [-1,1]){const branch=this.box(g,'treeBark',[sign*.28,1.37,0],[.58,.2,.23]);branch.rotation.z=-sign*.24;}
+  const crown=new THREE.Group(),variation=Math.abs(Math.sin(x*2.17+z*1.31));crown.rotation.y=variation*Math.PI*.5;g.add(crown);
+  const width=decor ? 0.98 : 1;
+  this.box(crown,'canopyShade',[0,1.68,-.035],[1.42*width,.58,1.3*width]);
+  this.box(crown,'canopyMid',[.035,2.08,0],[1.12*width,.54,1.04*width]);
+  this.box(crown,'canopyTop',[-.045,2.42,-.035],[.76*width,.4,.74*width]);
+  g.userData.crown=crown;return g;
+ }
  character(kind,type=''){
   const g=new THREE.Group(),hero=kind==='hero',friend=kind==='friend',boss=kind==='boss';const color=hero?'orange':friend?'cream':type==='caster'||type==='mosswitch'?'purple':type==='ram'||type==='hornroot'?'wood':'moss';
   this.box(g,hero?'leaf':color,[0,.7,0],[.62,.75,.48]);this.box(g,color,[0,1.28,0],[.78,.62,.65]);
@@ -84,7 +93,7 @@ export class WildwoodWorld {
  model(e){
   let g=new THREE.Group();
   if(['enemy','boss','friend'].includes(e.kind))g=this.character(e.kind,e.type);
-  else if(e.kind==='tree')g=this.tree(new THREE.Group(),0,0,.9);
+  else if(e.kind==='tree'){g=this.tree(new THREE.Group(),0,0,.9);g.userData.crown.rotation.y=(e.uid%7)*Math.PI/14;}
   else if(e.kind==='cage'){
    const rabbit=this.character('friend');rabbit.scale.setScalar(.6);g.add(rabbit);for(const x of [-.65,.65])for(const z of [-.5,.5])this.box(g,'wood',[x,.65,z],[.12,1.4,.12]);this.box(g,'wood',[0,1.25,0],[1.45,.12,1.2]);this.box(g,'gold',[0,.7,.55],[.22,.25,.1]);
   }else{
@@ -92,7 +101,7 @@ export class WildwoodWorld {
   }
   this.root.add(g);return g;
  }
- batch(color){if(this.batches.has(color))return this.batches.get(color);const steel=color==='steel',edge=color==='edge',atlas=color!=='ground'&&!edge?this.materialAtlas:null;const material=new THREE.MeshStandardMaterial({color:edge?0xe6edf2:0xffffff,map:color==='ground'?this.ground:atlas,roughness:steel?.38:edge?.24:.72,metalness:steel?.58:edge?.68:['gold','white'].includes(color)?.28:.03,emissive:color==='cyan'?0x237a71:0,emissiveIntensity:.24});if(atlas){const [column,row]=materialCells[color]||[3,3],inset=.0035,scale=.243,u=column*.25+inset,v=(3-row)*.25+inset;material.onBeforeCompile=shader=>{shader.vertexShader=shader.vertexShader.replace('#include <uv_vertex>',`#include <uv_vertex>\n#ifdef USE_MAP\n vMapUv = vMapUv * vec2(${scale}, ${scale}) + vec2(${u}, ${v});\n#endif`);};material.customProgramCacheKey=()=>`wildwood-material-atlas-${color}`;}const mesh=new THREE.InstancedMesh(this.geometry,material,2048);mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;mesh.count=0;this.scene.add(mesh);this.batches.set(color,mesh);return mesh;}
+ batch(color){if(this.batches.has(color))return this.batches.get(color);const steel=color==='steel',edge=color==='edge',atlas=color!=='ground'&&!edge&&Boolean(materialCells[color])?this.materialAtlas:null,textured=color==='ground'||Boolean(atlas),materialColor=edge?0xe6edf2:textured?0xffffff:(palette[color]??0xffffff);const material=new THREE.MeshStandardMaterial({color:materialColor,map:color==='ground'?this.ground:atlas,roughness:steel?.38:edge?.24:.72,metalness:steel?.58:edge?.68:['gold','white'].includes(color)?.28:.03,emissive:color==='cyan'?0x237a71:0,emissiveIntensity:.24});if(atlas){const [column,row]=materialCells[color],inset=.0035,scale=.243,u=column*.25+inset,v=(3-row)*.25+inset;material.onBeforeCompile=shader=>{shader.vertexShader=shader.vertexShader.replace('#include <uv_vertex>',`#include <uv_vertex>\n#ifdef USE_MAP\n vMapUv = vMapUv * vec2(${scale}, ${scale}) + vec2(${u}, ${v});\n#endif`);};material.customProgramCacheKey=()=>`wildwood-material-atlas-${color}`;}const mesh=new THREE.InstancedMesh(this.geometry,material,2048);mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;mesh.count=0;this.scene.add(mesh);this.batches.set(color,mesh);return mesh;}
  resize(){const r=this.canvas.getBoundingClientRect();this.renderer.setSize(Math.max(1,r.width),Math.max(1,r.height),false);const aspect=r.width/Math.max(1,r.height);const halfH=Math.max(4.8,4.8/aspect),halfW=halfH*aspect;Object.assign(this.camera,{left:-halfW,right:halfW,top:halfH,bottom:-halfH});this.camera.updateProjectionMatrix();}
  consume(events){for(const e of events)if(['hit','hurt','defeat','blocked','immune','wardBlock','pulse','mastery','pickup','dash','spawn','respawn'].includes(e.type)){
    if(e.type==='defeat'&&['enemy','boss'].includes(e.kind)){

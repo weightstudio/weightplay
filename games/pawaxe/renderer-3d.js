@@ -59,7 +59,7 @@ export class PawRenderer {
     this.r.toneMapping=THREE.ACESFilmicToneMapping; this.r.toneMappingExposure=1.0;
     this.r.shadowMap.enabled=true;this.r.shadowMap.type=THREE.PCFSoftShadowMap;
     this.r.info.autoReset=false;
-    this.s=new THREE.Scene(); this.s.background=new THREE.Color(0x8bcac1);this.s.fog=new THREE.Fog(0x8bcac1,14,36);
+    this.s=new THREE.Scene(); this.s.background=new THREE.Color(0x8bcac1);this.s.fog=new THREE.Fog(0x8bcac1,10,38);
     this.effectBatch=new THREE.InstancedMesh(this.geometry,this.batchMaterials.get(true),24);this.effectBatch.count=0;this.effectBatch.instanceMatrix.setUsage(THREE.DynamicDrawUsage);this.effectBatch.castShadow=false;this.effectBatch.receiveShadow=false;this.s.add(this.effectBatch);this.effectScratch=new THREE.Object3D();
     this.c=new THREE.PerspectiveCamera(48,1,.08,70);this.c.position.set(0,2.3,6);this.c.lookAt(0,1.4,-3);
     this.s.add(new THREE.HemisphereLight(0xfffbf2,0x344f54,1.35));
@@ -70,7 +70,7 @@ export class PawRenderer {
     this.backgroundRequest=0;this.backgroundTexture=null;
     this.contactGeometry=new THREE.CircleGeometry(.62,20);
     this.contactMaterial=new THREE.MeshBasicMaterial({color:0x17251d,transparent:true,opacity:.28,depthWrite:false,toneMapped:false,side:THREE.DoubleSide});
-    this.backdropMaterial=new THREE.MeshBasicMaterial({color:0xdde1d6,depthWrite:false,fog:false,toneMapped:false});
+    this.backdropMaterial=new THREE.MeshBasicMaterial({color:0xdde1d6,transparent:true,opacity:.18,depthWrite:false,fog:false,toneMapped:false});
     this.backdropGeometry=new THREE.PlaneGeometry(84,56);
     this.backdrop=new THREE.Mesh(this.backdropGeometry,this.backdropMaterial);this.backdrop.position.set(0,0,-27);this.backdrop.renderOrder=-2;this.s.add(this.backdrop);
     this.world=new THREE.Group();this.s.add(this.world);this.buildWorld();
@@ -150,43 +150,32 @@ export class PawRenderer {
   groundTint(color,opacity){const material=this.material(color).clone();material.transparent=true;material.opacity=opacity;material.depthWrite=false;this.groundMaterials.add(material);return material;}
   buildWorld() {
     this.groundMaterials=new Set();
-    // Keep real 3D contact and shadows while the authored biome trail remains
-    // visible through the ground instead of being masked by a solid colour.
-    this.ground=this.box(this.world,34,.22,58,0x3e6850,0,-.15,-17);this.ground.material=this.groundTint(0x3e6850,.12);
-    this.path=this.box(this.world,4.8,.06,48,0x998666,0,-.025,-16);this.path.material=this.groundTint(0x998666,.30);
-    const pathColors=[0xb3a084,0xa49473,0xc0aa80];
-    for(let i=0;i<18;i++){
-      const x=((i*7)%5-2)*.62,z=3-i*1.95;
-      this.box(this.world,.52+(i%3)*.1,.035,.38,pathColors[i%pathColors.length],x,.018,z).rotation.y=(i%4)*.17;
-    }
-    for(let i=0;i<12;i++){
-      const side=i%2?1:-1,x=side*(3.2+(i%3)*.48),z=2-Math.floor(i/2)*3.5;
-      this.box(this.world,.5,.14,.6,i%2?0x547953:0x628552,x,-.015,z);
-      if(i<8)this.box(this.world,.11,.3,.12,0x82a96a,x-side*.16,.16,z+.08).rotation.z=side*.19;
-    }
-    // Layer low, authored block-foliage and trail stones into the otherwise
-    // broad walkable plane. buildWorld batches these by material below, so the
-    // extra ground detail stays bounded in draw calls on mobile.
-    const foliage=[0x315b45,0x47734d,0x71925a,0x91a968],stem=0x526844;
-    for(let i=0;i<24;i++){
-      const side=i%2?1:-1,row=Math.floor(i/2),x=side*(2.55+(row%6)*.58),z=1.4-Math.floor(row/6)*3.45-(row%3)*.34;
-      const leaf=this.box(this.world,.24+(row%3)*.07,.085,.46,foliage[row%foliage.length],x,-.015,z);
-      leaf.rotation.y=side*(.18+(row%4)*.11);leaf.rotation.z=side*.14;
-      if(row%2===0){
-        const sprout=this.box(this.world,.11,.26,.11,stem,x-side*.08,.1,z+.05);sprout.rotation.z=side*.18;
+    // A continuous opaque trail gives the cast a calm, grounded stage.
+    // Trees frame the arena; small scattered chips no longer compete with it.
+    this.ground=this.box(this.world,70,.22,80,0x547d68,0,-.15,-25);this.ground.material=this.groundTint(0x547d68,1);
+    this.path=this.box(this.world,5.8,.06,80,0xb2a383,0,-.025,-25);this.path.material=this.groundTint(0xb2a383,1);
+    for(const side of [-1,1]){
+      this.box(this.world,.32,.04,80,0x789578,side*3.05,-.015,-25);
+      for(let row=0;row<8;row++){
+        const z=-8-row*5.1,x=side*(4.6+(row%3)*1.25),h=4.8+(row%3)*.7;
+        // Stepped trunks, a few broad canopy masses, and a quiet shaded underside.
+        this.box(this.world,.74,h,.78,0x665f4e,x,h/2,z);
+        this.box(this.world,.17,h*.82,.08,0x81765a,x-side*.22,h*.45,z+.42);
+        this.box(this.world,1.12,.26,1.1,0x5b6953,x,.08,z);
+        this.box(this.world,3.1,.65,2.7,0x345f51,x,h-.15,z);
+        this.box(this.world,3.5,.85,2.9,0x4c8063,x-side*.20,h+.55,z);
+        this.box(this.world,2.6,.65,2.4,0x739779,x-side*.42,h+1.28,z);
+        this.box(this.world,1.5,.38,1.6,0x8aa885,x-side*.62,h+1.75,z);
+        this.box(this.world,1.35,.55,1.3,0x5b896b,x+side*1.30,h+.55,z+.38);
+        if(row%2===0){
+          this.box(this.world,1.35,.35,1.05,0x527d60,side*3.95,.10,z+1.4);
+          this.box(this.world,.95,.22,.8,0x719478,side*3.85,.35,z+1.4);
+        }
       }
-      if(row%5===0)this.box(this.world,.13,.11,.13,row%10?0xe5b65e:0x7fc9b2,x+side*.1,.13,z+.1,true);
-    }
-    const trailStone=[0xc0aa80,0x9b8c6e,0xd1bc91];
-    for(let i=0;i<36;i++){
-      const side=i%2?1:-1,row=Math.floor(i/2),x=side*(.78+(row%5)*.22),z=1.8-Math.floor(row/5)*1.95-(row%2)*.24;
-      if(z< -1.4&&z> -6.4)continue;
-      const stone=this.box(this.world,.16+(row%3)*.05,.025,.15+(row%4)*.035,trailStone[row%trailStone.length],x,.012,z);
-      stone.rotation.y=side*(row%5)*.13;
     }
     // Batch repeating path details by material; their bounded parallax sells forward travel.
     const groups=new Map([[false,[]],[true,[]]]);for(const mesh of [...this.world.children]){if(mesh===this.ground||mesh===this.path)continue;groups.get(Boolean(mesh.userData.wpBatchGlow)).push(mesh);}
-    for(const [glow,meshes] of groups){if(!meshes.length)continue;const batch=new THREE.InstancedMesh(this.geometry,this.batchMaterials.get(glow),meshes.length);batch.userData.poses=[];meshes.forEach((m,i)=>{m.updateMatrix();batch.setMatrixAt(i,m.matrix);batch.setColorAt(i,new THREE.Color(m.userData.wpBatchColor));batch.userData.poses.push({matrix:m.matrix.clone(),travel:m.scale.x<6});this.world.remove(m);});batch.instanceMatrix.needsUpdate=true;batch.instanceColor.needsUpdate=true;batch.castShadow=true;batch.receiveShadow=true;this.world.add(batch);}
+    for(const [glow,meshes] of groups){if(!meshes.length)continue;const batch=new THREE.InstancedMesh(this.geometry,this.batchMaterials.get(glow),meshes.length);batch.userData.poses=[];meshes.forEach((m,i)=>{m.updateMatrix();batch.setMatrixAt(i,m.matrix);batch.setColorAt(i,new THREE.Color(m.userData.wpBatchColor));batch.userData.poses.push({matrix:m.matrix.clone(),travel:m.position.z<=-8&&m.scale.z<6});this.world.remove(m);});batch.instanceMatrix.needsUpdate=true;batch.instanceColor.needsUpdate=true;batch.castShadow=true;batch.receiveShadow=true;this.world.add(batch);}
   }
   walk(dt,elapsed){
     if(this.reduced)return;
