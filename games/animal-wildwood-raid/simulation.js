@@ -4,7 +4,7 @@ const dist=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
 const hostile=e=>e.kind==='enemy'||e.kind==='boss';
 // Stage one teaches the rhythm; stage two introduces the first guardian with
 // a clear step-up. Later stages restore the steep permanent-growth curve.
-const pressure=id=>id===1?.72:id===2?.95:1.55+(id-2)*.025;
+const pressure=id=>id===1?.72:id===2?1:1.55+(id-2)*.025;
 export function mission(stage){
  const s=typeof stage==='number'?STAGES[stage-1]:stage;
  const req=s.type==='gather'?{wood:s.target}:s.type==='defeat'?{kills:s.target}:s.type==='rescue'?{rescues:s.target}:s.type==='shrine'?{shrines:s.target}:s.type==='survive'?{seconds:s.target}:s.type==='boss'?{bosses:BOSS[s.boss].count||1}:s.id===3?{wood:8,kills:3}:{rescues:3,kills:6};
@@ -12,12 +12,12 @@ export function mission(stage){
  return {...s,boss,req,sequence:s.id===27,protect:s.type==='survive',restricted:s.id===23};
 }
 export class Simulation {
- constructor(id,loadout=['bow','lantern','snare'],growth={health:0,attack:0}){
+ constructor(id,loadout=['bow','lantern','snare'],growth={health:0,attack:0},ownedTools=[]){
   this.stage=mission(id);this.time=0;this.tick=0;this.nextId=1;this.events=[];this.ents=[];this.shots=[];this.fields=[];this.drops=[];this.obstacles=[];this.zones=[];
   this.growth={health:Math.max(0,growth.health||0),attack:Math.max(0,growth.attack||0),regen:Math.max(0,growth.regen||0)};this.hazards=[];this.regenClock=0;this.regenHealed=0;
   this.hero={x:0,z:6.5,hp:100+this.growth.health,maxHp:100+this.growth.health,power:16+this.growth.attack,regen:1+this.growth.regen,angle:Math.PI,ward:0,boots:0,invulnerable:0,dash:0,recoil:0,attack:null};
   this.tally={wood:0,kills:0,rescues:0,shrines:0,bosses:0,seconds:0};this.cool={axe:.3,dash:0,...Object.fromEntries(TOOLS.slice(1).map(t=>[t.id,0]))};
-  this.loadout=loadout.filter(id=>TOOLS.some(t=>t.id===id&&t.unlock<=this.stage.id)).slice(0,3);
+  this.loadout=loadout.filter(id=>TOOLS.some(t=>t.id===id&&(t.unlock<=this.stage.id||ownedTools.includes(id)))).slice(0,3);
   this.protectedHp=100;this.won=false;this.lost=false;this.exit={x:0,z:-7.1};this.nextWave=7;this.rng=id*713+19;this.combo=0;this.build();
  }
  random(){this.rng=(this.rng*1664525+1013904223)>>>0;return this.rng/4294967296;}

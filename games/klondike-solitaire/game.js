@@ -1664,7 +1664,10 @@ const KL_I18N = {
   const audio = new SoundEngine(STORAGE_SOUND);
   // The shared preference is authoritative; retain the game's actual card sounds.
   function syncSharedSound() {
-    if (window.WeightPlayAudio?.isMuted) audio.setEnabled(!window.WeightPlayAudio.isMuted());
+    if (window.WeightPlayAudio?.isMuted) {
+      const enabled = !window.WeightPlayAudio.isMuted();
+      if (audio.enabled !== enabled) audio.setEnabled(enabled);
+    }
     setSoundButtons(audio.enabled);
   }
   window.addEventListener('weightplay:audio-volume-change', syncSharedSound);

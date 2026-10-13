@@ -39,56 +39,13 @@ export function createTrunkGeometry(){
  const geometry=new THREE.CylinderGeometry(.19,.27,1.38,7,1,false);geometry.computeVertexNormals();geometry.computeBoundingBox();return geometry;
 }
 function createGroundTexture(){
- const size=512,canvas=document.createElement('canvas');canvas.width=canvas.height=size;
- const ctx=canvas.getContext('2d',{alpha:false}),pixels=ctx.createImageData(size,size);
- // A calm fern-green base keeps the clearing readable, with restrained
- // periodic variation so it feels like soil rather than a flat painted plane.
- for(let y=0;y<size;y++)for(let x=0;x<size;x++){
-  const u=x/size,v=y/size,wave=Math.sin(u*Math.PI*8)*Math.cos(v*Math.PI*6)*3+Math.sin((u+v)*Math.PI*4)*1.7+Math.cos((u-v)*Math.PI*3)*.9,at=(y*size+x)*4;
-  pixels.data[at]=88+wave;pixels.data[at+1]=116+wave;pixels.data[at+2]=79+wave;pixels.data[at+3]=255;
- }
- ctx.putImageData(pixels,0,0);
- let seed=0x51a9e37;
- const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
- const wrapped=(x,y,margin,draw)=>{
-  for(const dx of [-size,0,size])for(const dy of [-size,0,size]){
-   const px=x+dx,py=y+dy;if(px>=-margin&&px<=size+margin&&py>=-margin&&py<=size+margin)draw(px,py);
-  }
- };
- // Soft, edge-wrapped moss blooms add depth at phone scale without bringing
- // back the hard camouflage islands that made the previous ground busy.
- for(let patch=0;patch<34;patch++){
-  const x=random()*size,y=random()*size,radius=24+random()*42,warm=random()>.48;
-  wrapped(x,y,radius,(px,py)=>{
-   const gradient=ctx.createRadialGradient(px,py,0,px,py,radius);
-   gradient.addColorStop(0,warm?'rgba(149,164,103,.12)':'rgba(38,75,55,.11)');gradient.addColorStop(1,'rgba(38,75,55,0)');
-   ctx.fillStyle=gradient;ctx.beginPath();ctx.arc(px,py,radius,0,Math.PI*2);ctx.fill();
-  });
- }
- // Sparse, short grass strokes form quiet local texture instead of dense
- // photoreal detail. Wrapped edge copies keep the CanvasTexture seamless.
- for(let tuft=0;tuft<108;tuft++){
-  const x=random()*size,y=random()*size,angle=random()*Math.PI*2,light=random()>.52,len=5+random()*4,opacity=.16+random()*.075,bladeWidth=1+random()*.45;
-  wrapped(x,y,12,(px,py)=>{
-   ctx.save();ctx.translate(px,py);ctx.rotate(angle);ctx.lineCap='round';ctx.lineWidth=bladeWidth;
-   ctx.strokeStyle=light?`rgba(170,188,127,${opacity})`:`rgba(53,86,59,${opacity})`;
-   for(let blade=-1;blade<=1;blade++){
-    ctx.beginPath();ctx.moveTo(blade*1.4,1.5);ctx.quadraticCurveTo(blade*1.8,-len*.28,blade*2.8,-len);ctx.stroke();
-   }
-   ctx.restore();
-  });
- }
- // Tiny, rare leaf pairs add a woodland cue without introducing large
- // camouflage spots or competing with the actors and health bars.
- for(let leaf=0;leaf<24;leaf++){
-  const x=random()*size,y=random()*size,angle=random()*Math.PI*2,warm=random()>.72,opacity=warm?.15:.17;
-  wrapped(x,y,8,(px,py)=>{
-   ctx.save();ctx.translate(px,py);ctx.rotate(angle);ctx.fillStyle=warm?`rgba(169,139,79,${opacity})`:`rgba(135,151,86,${opacity})`;
-   for(const side of [-1,1]){ctx.beginPath();ctx.ellipse(side*1.6,side*.25,2.1,.9,side*.3,0,Math.PI*2);ctx.fill();}
-   ctx.restore();
-  });
- }
- const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;texture.wrapS=texture.wrapT=THREE.RepeatWrapping;texture.repeat.set(2.8,2.8);texture.anisotropy=4;return texture;
+ // Use the authored moss tile in the live scene. The previous canvas version
+ // was so low-contrast at gameplay scale that the arena read as a flat green
+ // plane, despite the richer v8 ground asset already being present.
+ const url=new URL('./art/ground-moss-v8.webp',import.meta.url).href;
+ const texture=new THREE.TextureLoader().load(url);
+ texture.colorSpace=THREE.SRGBColorSpace;texture.wrapS=texture.wrapT=THREE.RepeatWrapping;
+ texture.repeat.set(2.8,2.8);texture.anisotropy=4;return texture;
 }
 export class WildwoodWorld {
  constructor(canvas,sim){
@@ -107,11 +64,11 @@ export class WildwoodWorld {
   // visually distinct and the center remains open for combat.
   for(const side of [-1,1])for(let i=0;i<6;i++){
    const x=-12.5+i*5,z=side*11.2;
-   this.tree(this.static,x,z,.88+(i%3)*.08,true);
+   this.tree(this.static,x,z,.98+(i%3)*.1,true);
   }
   for(const side of [-1,1])for(let i=0;i<2;i++){
    const x=side*10.6,z=-4+i*8;
-   this.tree(this.static,x,z,.9+i*.08,true);
+   this.tree(this.static,x,z,1.02+i*.1,true);
   }
   this.heroModel=this.character('hero');this.root.add(this.heroModel);this.exit=new THREE.Group();this.root.add(this.exit);
   this.box(this.exit,'gold',[-1,.8,0],[.25,1.8,.3]);this.box(this.exit,'gold',[1,.8,0],[.25,1.8,.3]);this.box(this.exit,'gold',[0,1.7,0],[2.2,.24,.3]);this.box(this.exit,'cyan',[0,.1,0],[1.8,.1,1.2]);

@@ -1,5 +1,5 @@
 import {STAGES,TOOLS} from './game-data.js';
-import {Simulation,mission} from './simulation.js?v=20261013-wildwood-guardian-balance-v31';
+import {Simulation,mission} from './simulation.js?v=20261013-wildwood-stage2-pressure-v33';
 import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js?v=20261013-wildwood-diamond-shop-v15';
 import {load,store,award,KEY} from './save.js';
 import {placeLabel} from './label-layout.js';
@@ -69,8 +69,8 @@ function haptic(duration){if(!navigator.userActivation?.hasBeenActive)return;try
 async function startRun(stageId=selected,forcePractice=practiceMode){
  const usingPractice=Boolean(forcePractice||practiceMode||practiceRun),nextStage=Number(stageId);if(usingPractice&&!await LocalPractice.validate())return;if(!Number.isInteger(nextStage)||nextStage<1||nextStage>STAGES.length||(!usingPractice&&nextStage>save.highestUnlocked))return;
  dispose();if(usingPractice)beginPracticeRun();else{practiceRun=false;restorePracticeSave();}selected=nextStage;const token=generation;hitStopRemaining=0;settled=false;notice='';noticeUntil=0;lastHp=100;await show('battle');if(token!==generation)return;dialog(t('loading'),'',[],'loading');let timer;
- try{World||=(await Promise.race([import('./world.js?v=20261013-wildwood-forest-polish-v27'),new Promise((_,reject)=>timer=setTimeout(()=>reject(new Error('timeout')),15000))])).WildwoodWorld;if(token!==generation)return;
-  sim=new Simulation(selected,save.loadout,save.growth);world=new World($('#arena'),sim);world.render();buttons();await closeDialog();if(token!==generation)return;save.tutorialSeen=true;persist();hud();start();
+ try{World||=(await Promise.race([import('./world.js?v=20261013-wildwood-forest-ground-v28'),new Promise((_,reject)=>timer=setTimeout(()=>reject(new Error('timeout')),15000))])).WildwoodWorld;if(token!==generation)return;
+  sim=new Simulation(selected,save.loadout,save.growth,save.ownedTools);world=new World($('#arena'),sim);world.render();buttons();await closeDialog();if(token!==generation)return;save.tutorialSeen=true;persist();hud();start();
  }catch(error){if(token!==generation)return;world?.dispose();world=null;dialog(t('error'),'',[[t('retry'),startRun],[t('stages'),()=>show('stage')]],'error');console.warn('Wildwood:',error.message);}finally{clearTimeout(timer);}
 }
 function start(){stop();last=performance.now();acc=0;raf=requestAnimationFrame(loop);}
