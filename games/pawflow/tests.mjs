@@ -20,6 +20,21 @@ test('a no-hit hidden-layer return exposes a localized foreground hint',()=>{
  for(const locale of LOCALES)assert.ok(translator(locale)('noHit').trim());
 });
 for(let id=1;id<=30;id++)test(`campaign ${id}: native simulation witness, conservation and checkpoint recovery`,()=>solve(getLevel(id),true));
+test('player hints follow a legal authored step through every campaign witness without dispatching for the player',()=>{
+ for(let id=1;id<=30;id++){
+  const level=getLevel(id),s=createState(level);
+  for(const [i,step] of level.witness.entries()){
+   for(let t=0;t<step.wait;t++)tick(s);
+   const launches=s.launches,chosen=hint(s,level.witness);
+   assert.equal(chosen?.unit?.id,step.id,`hint ${id}:${i}`);
+   assert.equal(s.launches,launches,'hint must not dispatch');
+   assert.equal(dispatch(s,chosen.source,chosen.index).ok,true);
+   finishLap(s);assertState(s);
+  }
+  assert.equal(s.status,'won',`hint-guided campaign ${id}`);
+  assert.equal(stars(s,level.par),2,`hint removes only the no-assistance star for ${id}`);
+ }
+});
 for(let n=0;n<90;n++)test(`daily ${n}: deterministic solvable variant`,()=>{const date=new Date(Date.UTC(2026,8,1+n)),key=dailyKey(date),a=dailyLevel(key),b=dailyLevel(key);assert.deepEqual(a,b);solve(a);});
 const fixture=(cells,units)=>({id:6,signature:'fixture-v1',board:Array.from({length:100},(_,i)=>clone(cells[i]||[])),supply:units,requiredKeys:0,shutters:false,gateTicks:150,phaseOffset:0,reverse:false,par:99});
 const voxel=(color,hp=1,extra={})=>({color,hp,key:false,lock:false,...extra});
@@ -64,4 +79,4 @@ test('two tabs merge permanent records without losing the newer unlock',()=>{
 });
 test('daily rejects nonexistent calendar dates and authored ids outside campaign',()=>{for(const key of ['bad','2026-02-30','2026-13-01'])assert.throws(()=>dailyLevel(key));assert.throws(()=>getLevel(0));assert.throws(()=>authoredLevel(31));});
 test('all boards differ as complete authored layered puzzles',()=>{const hashes=new Set();for(let id=1;id<=30;id++)hashes.add(JSON.stringify(authoredLevel(id)));assert.equal(hashes.size,30);});
-test('fixed authored witnesses do not use hint or rewind and are not autoplay UI',()=>{const source=readFileSync(new URL('./game.js',import.meta.url),'utf8');assert.ok(!source.includes('.witness'));assert.ok(!source.includes('setInterval'));assert.ok(source.includes('data-wp-return'));const css=readFileSync(new URL('./style.css',import.meta.url),'utf8');assert.ok(css.includes('#stageRail [data-wp-item-content]{'));assert.ok(!css.includes('[data-wp-item-content] [data-wp-item-content]'));});
+test('authored witnesses power player-selected hints without autoplay',()=>{const source=readFileSync(new URL('./game.js',import.meta.url),'utf8');assert.ok(source.includes('hint(state,level.witness)'));assert.ok(!source.includes('setInterval'));assert.ok(source.includes('data-wp-return'));const css=readFileSync(new URL('./style.css',import.meta.url),'utf8');assert.ok(css.includes('#stageRail [data-wp-item-content]{'));assert.ok(!css.includes('[data-wp-item-content] [data-wp-item-content]'));});

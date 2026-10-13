@@ -27,7 +27,11 @@ export class Simulation {
   if(kind==='tree'||kind==='enemy'&&!extra.summon)e.spawn={x,z};this.ents.push(e);return e;}
  syncGrowth(growth){const hp=Math.max(this.growth.health,growth.health||0),atk=Math.max(this.growth.attack,growth.attack||0);if(this.hero.hp>0)this.hero.hp+=hp-this.growth.health;this.growth={health:hp,attack:atk,regen:Math.max(this.growth.regen,growth.regen||0)};this.hero.maxHp=100+hp;this.hero.power=16+atk;this.hero.regen=Math.round((1+this.growth.regen)*10)/10;}
  grant(e){if(!e.reward)return;const {stat,amount}=e.reward;this.syncGrowth({...this.growth,[stat]:Math.round((this.growth[stat]+amount)*10)/10});this.log('growth',{uid:e.uid,stat,amount,x:e.x,z:e.z});}
- respawns(dt){for(const e of this.ents){if(e.hp>0||!e.spawn||e.respawn==null)continue;e.respawn-=dt;
+ respawns(dt){for(const e of this.ents){if(e.hp>0||!e.spawn||e.respawn==null)continue;
+   // On the mixed third mission, hold defeated adds in reserve once their
+   // quota is met so the Storm Owl encounter is a deliberate one-on-one.
+   if(this.stage.id===3&&e.kind==='enemy'&&this.objectivesReady()&&this.tally.bosses<this.stage.req.bosses)continue;
+   e.respawn-=dt;
    if(e.kind==='enemy'&&e.respawn<=2&&!e.spawnWarning){let spot=null;for(let i=0;i<16;i++){const a=i*2.4,p={x:clamp(e.spawn.x+Math.cos(a)*Math.floor(i/4),-6.3,6.3),z:clamp(e.spawn.z+Math.sin(a)*Math.floor(i/4),-7,7)};if(dist(p,this.hero)>3&&!this.obstacles.some(o=>o.hp>0&&Math.abs(p.x-o.x)<o.w+.6&&Math.abs(p.z-o.z)<o.h+.6)){spot=p;break;}}if(!spot){e.respawn=2.1;continue;}Object.assign(e,spot);e.spawnWarning=true;e.respawn=2;}
    if(e.respawn<=0){e.hp=e.maxHp;e.wind=null;e.charge=null;e.stun=0;e.exposed=0;e.recoil=0;e.cd=1.3;e.hidden=false;e.spawnWarning=false;e.respawn=null;this.log('respawn',{uid:e.uid,kind:e.kind,x:e.x,z:e.z});}
   }}
@@ -56,9 +60,10 @@ export class Simulation {
   this.drops.push({uid:this.nextId++,kind:'heart',x:5,z:5},{uid:this.nextId++,kind:q.id>=6?'boots':'ward',x:-5,z:-6});
  }
  alive(){return this.ents.filter(e=>e.hp>0);}
+ objectivesReady(){return Object.entries(this.stage.req).filter(([key])=>key!=='bosses').every(([key,value])=>this.tally[key]>=value);}
  target(range,tool='axe'){
   const alive=this.alive(),prioritizeTotems=alive.some(e=>e.kind==='totem')&&alive.some(e=>e.boss==='mosswitch');
-  return alive.filter(e=>e.kind!=='friend'&&dist(e,this.hero)<=range&&(!e.hidden||dist(e,this.hero)<2)&&this.clearLine(this.hero,e))
+  return alive.filter(e=>e.kind!=='friend'&&(e.kind!=='boss'||this.objectivesReady())&&dist(e,this.hero)<=range&&(!e.hidden||dist(e,this.hero)<2)&&this.clearLine(this.hero,e))
    .sort((a,b)=>{const rank=e=>prioritizeTotems&&e.kind==='totem'?-2:hostile(e)?(tool==='bow'&&['caster','shaman'].includes(e.type)?-1:0):e.kind==='shrine'?1:e.kind==='cage'?2:3;return rank(a)-rank(b)||dist(a,this.hero)-dist(b,this.hero);})[0];
  }
  clearLine(a,b){return !this.obstacles.some(o=>o.hp>0&&Array.from({length:12},(_,i)=>{const t=(i+1)/13;return Math.abs(a.x+(b.x-a.x)*t-o.x)<o.w&&Math.abs(a.z+(b.z-a.z)*t-o.z)<o.h;}).some(Boolean));}
@@ -108,7 +113,7 @@ export class Simulation {
  }
  prepare(e,target,kind,wind=.75){const d=dist(e,target)||1;e.wind={kind,left:wind,total:wind,x:target.x,z:target.z,dx:(target.x-e.x)/d,dz:(target.z-e.z)/d,target:target.uid||0};e.angle=Math.atan2(e.wind.dx,e.wind.dz);this.log('tell',{uid:e.uid,kind});}
  actEnemy(e,dt){
-  e.swing=Math.max(0,(e.swing||0)-dt);e.recoil=Math.max(0,e.recoil-dt);if(e.boss&&!e.awake){if(dist(e,this.hero)<5.5||e.hp<e.maxHp)e.awake=true;else return;}e.exposed=Math.max(0,(e.exposed||0)-dt);e.slow=Math.max(0,e.slow-dt);
+  e.swing=Math.max(0,(e.swing||0)-dt);e.recoil=Math.max(0,e.recoil-dt);if(e.boss&&!e.awake){if(!this.objectivesReady())return;if(dist(e,this.hero)<5.5||e.hp<e.maxHp)e.awake=true;else return;}e.exposed=Math.max(0,(e.exposed||0)-dt);e.slow=Math.max(0,e.slow-dt);
   for(const f of this.fields)if(dist(e,f)<f.r)e.slow=.2;
   if(e.hidden&&dist(e,this.hero)<2.3){e.hidden=false;this.log('reveal',{uid:e.uid});e.cd=.8;}
   if(e.stun>0){e.stun-=dt;return;}

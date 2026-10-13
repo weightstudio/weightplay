@@ -115,10 +115,22 @@ export function preview(s,action) {
   if(!dispatch(copy,action.source,action.index,false).ok) return null;
   finishLap(copy,false);return {gain:s.leftHP-copy.leftHP,state:copy};
 }
-export function hint(s) {
+export function hint(s,witness=[]) {
   if(s.status!=='running') return null;
   s.hintUsed=true;
   if(s.active.length) return {wait:true};
+  // Follow the authored constructive route when its next courier is still
+  // available and can make progress now. This is guidance only: the player
+  // still chooses and launches the courier. If play has diverged, retain the
+  // existing local-gain hint as a useful fallback.
+  const next=witness[s.launches];
+  if(next) {
+    const authored=actions(s).find(action=>action.unit.id===next.id);
+    if(authored) {
+      const result=preview(s,authored);
+      if(result?.gain>0&&result.state.reason!=='overflow')return {...authored,gain:result.gain,authored:true};
+    }
+  }
   let best=null;
   for(const action of actions(s)) {
     const p=preview(s,action);if(!p||p.state.reason==='overflow')continue;
