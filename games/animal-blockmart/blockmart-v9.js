@@ -23,6 +23,25 @@ const CELL_SIZE = .94;
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const copyPoint = point => point ? { x: point.x, z: point.z } : null;
+const edgePoint = (point, area) => Number.isInteger(point?.x) && Number.isInteger(point?.z)
+  && point.x >= 0 && point.z >= 0 && point.x < area && point.z < area
+  && (point.x === 0 || point.z === 0 || point.x === area - 1 || point.z === area - 1);
+
+function normalizeEndpoints(requested, fallback, area, fixtures, otherEndpoints = []) {
+  const blocked = new Set(fixtures.flatMap(occupiedTiles).map(tile => `${tile.x},${tile.z}`));
+  const occupied = new Set(otherEndpoints.map(point => `${point.x},${point.z}`));
+  const candidates = Array.isArray(requested) ? requested : fallback;
+  const clean = [...new Map(candidates.filter(point => edgePoint(point, area)
+    && !blocked.has(`${point.x},${point.z}`)
+    && !occupied.has(`${point.x},${point.z}`))
+    .map(point => [`${point.x},${point.z}`, { x: point.x, z: point.z }])).values()];
+  if (clean.length) return clean;
+  const perimeter = [];
+  for (let x = 0; x < area; x++) perimeter.push({ x, z: 0 }, { x, z: area - 1 });
+  for (let z = 1; z < area - 1; z++) perimeter.push({ x: 0, z }, { x: area - 1, z });
+  return perimeter.filter(point => !blocked.has(`${point.x},${point.z}`)
+    && !occupied.has(`${point.x},${point.z}`)).slice(0, 1);
+}
 
 export function migrateV9Save(saved = {}, initial = {}) {
   const state = {
@@ -33,6 +52,9 @@ export function migrateV9Save(saved = {}, initial = {}) {
     equipment: { ...initial.equipment, ...(saved.equipment || {}) },
     warehouse: Array.isArray(saved.warehouse) ? saved.warehouse : [],
     fixtures: Array.isArray(saved.fixtures) ? saved.fixtures : structuredClone(initial.fixtures || []),
+    autoRestockEnabled: saved.autoRestockEnabled === true && Boolean(saved.helper),
+    cashLedger: Array.isArray(saved.cashLedger) ? saved.cashLedger.filter(entry => entry && typeof entry.kind === 'string'
+      && Number.isFinite(entry.amount) && Number.isFinite(entry.balance)).slice(-60) : [],
     unlocked: Array.isArray(saved.unlocked) ? [...new Set([...saved.unlocked, 'chips'])] : ['water', 'snacks', 'chips'],
     cashierCount: Number.isFinite(saved.cashierCount) ? Math.max(0, Math.floor(saved.cashierCount)) : 1,
     popularity: clampPopularity(saved.popularity ?? 58),
@@ -43,6 +65,11 @@ export function migrateV9Save(saved = {}, initial = {}) {
   };
   state.fixtures = state.fixtures.map(fixture => normalizeFixture(fixture));
   state.warehouse = state.warehouse.map(fixture => normalizeFixture(fixture));
+  const placedIds = new Set(state.fixtures.map(fixture => fixture.id).filter(Boolean));
+  state.warehouse = state.warehouse.filter(fixture => !fixture.id || !placedIds.has(fixture.id));
+  const area = Math.max(10, Math.floor(state.area || 10));
+  state.entrances = normalizeEndpoints(saved.entrances, [GRID_ENTRANCES[0]], area, state.fixtures);
+  state.exits = normalizeEndpoints(saved.exits, [{ x: area - 1, z: area - 1 }], area, state.fixtures, state.entrances);
   if (!state.unlocked.includes('water')) state.unlocked.unshift('water');
   if (!state.unlocked.includes('snacks')) state.unlocked.push('snacks');
   return state;
@@ -82,6 +109,8 @@ export function installBlockmartV9(ctx) {
   let pointerState = null;
   let pinchState = null;
   let cardDrag = null;
+  let endpointEdit = null;
+  let endpointMarkers = [];
   let previousFrame = 0;
   let lastQueueUpdate = 0;
   let recoveryTick = 0;
@@ -120,9 +149,9 @@ export function installBlockmartV9(ctx) {
     return { width: size.width, depth: size.depth };
   }
 
-  function walkable(x, z) {
+  function walkable(x, z, ignoreId = null) {
     if (x < 0 || z < 0 || x >= state().area || z >= state().area) return false;
-    return !fixtures().some(f => occupiedTiles(f).some(tile => tile.x === x && tile.z === z));
+    return !fixtures().some(f => f.id !== ignoreId && occupiedTiles(f).some(tile => tile.x === x && tile.z === z));
   }
 
   function accessTiles(fixture) {
@@ -143,10 +172,11 @@ export function installBlockmartV9(ctx) {
     });
   }
 
-  function findPath(start, goals, blocked = null) {
+  function findPath(start, goals, blocked = null, ignoreId = null) {
     if (!start || !goals?.length) return [];
     const key = (x, z) => `${x},${z}`;
-    const goalSet = new Set(goals.filter(p => walkable(p.x, p.z) && !blocked?.(p.x, p.z)).map(p => key(p.x, p.z)));
+    const normalizedGoals = goals.map(p => ({ x: Math.round(p.x), z: Math.round(p.z) }));
+    const goalSet = new Set(normalizedGoals.filter(p => walkable(p.x, p.z, ignoreId) && !blocked?.(p.x, p.z)).map(p => key(p.x, p.z)));
     if (!goalSet.size) return [];
     const origin = { x: Math.round(start.x), z: Math.round(start.z) };
     const queue = [origin];
@@ -158,7 +188,7 @@ export function installBlockmartV9(ctx) {
       if (goalSet.has(pointKey)) { found = point; break; }
       for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
         const x = point.x + dx, z = point.z + dz, nextKey = key(x, z);
-        if (came.has(nextKey) || !walkable(x, z) || blocked?.(x, z)) continue;
+        if (came.has(nextKey) || !walkable(x, z, ignoreId) || blocked?.(x, z)) continue;
         came.set(nextKey, pointKey); queue.push({ x, z });
       }
     }
@@ -171,22 +201,34 @@ export function installBlockmartV9(ctx) {
     return path;
   }
 
-  function routeToCheckout(blockedTiles = [], candidate = null, ignoreId = null) {
+  function routeToCheckout(blockedTiles = [], candidate = null, ignoreId = null, routeOverrides = {}) {
     const blocked = new Set(blockedTiles.map(p => `${p.x},${p.z}`));
     const counters = staffedCounters().filter(f => f.id !== ignoreId);
     if (candidate?.kind === 'checkout' && counters.length < state().cashierCount) counters.push(candidate);
     if (!counters.length) return false;
-    const goals = counters.flatMap(counter => {
-      const size = dimensioned(counter), target = serviceFacingTarget(counter);
-      const x = Math.round(target.x), z = Math.round(target.z);
-      return [{ x, z }];
-    }).filter(p => !blocked.has(`${p.x},${p.z}`) && walkable(p.x, p.z));
+    const goals = counters.map(counter => serviceFacingTarget(counter))
+      .map(point => ({ x: Math.round(point.x), z: Math.round(point.z) }))
+      .filter(point => !blocked.has(`${point.x},${point.z}`) && walkable(point.x, point.z, ignoreId));
     if (!goals.length) return false;
-    return GRID_ENTRANCES.every(start => {
-      if (!walkable(start.x, start.z)) return true;
-      return findPath(start, goals, (x, z) => blocked.has(`${x},${z}`)).length > 0
-        || goals.some(goal => goal.x === start.x && goal.z === start.z);
-    });
+    const entrances = routeOverrides.entrances || (state().entrances?.length ? state().entrances : [GRID_ENTRANCES[0]]);
+    const exits = routeOverrides.exits || (state().exits?.length ? state().exits : [{ x: state().area - 1, z: state().area - 1 }]);
+    const canReach = (start, targets) => targets.some(goal => (start.x === goal.x && start.z === goal.z)
+      || findPath(start, [goal], (x, z) => blocked.has(`${x},${z}`), ignoreId).length > 0);
+    if (entrances.some(start => !walkable(start.x, start.z, ignoreId) || blocked.has(`${start.x},${start.z}`)
+      || !canReach(start, goals))) return false;
+    if (exits.some(exit => !walkable(exit.x, exit.z, ignoreId) || blocked.has(`${exit.x},${exit.z}`))) return false;
+    if (entrances.some(start => !canReach(start, exits))) return false;
+    if (goals.some(goal => !canReach(goal, exits))) return false;
+    for (const counter of counters) {
+      const service = serviceFacingTarget(counter);
+      const serviceTile = { x: Math.round(service.x), z: Math.round(service.z) };
+      for (let rank = 0; rank < QUEUE_LIMIT_PER_REGISTER; rank++) {
+        const queue = queueTile(counter, rank);
+        if (!walkable(queue.x, queue.z, ignoreId) || blocked.has(`${queue.x},${queue.z}`)
+          || !canReach(queue, [serviceTile])) return false;
+      }
+    }
+    return true;
   }
 
   function canPlaceFixture(x, z, ignoreId = null) {
@@ -196,7 +238,8 @@ export function installBlockmartV9(ctx) {
       kind: current?.kind || 'shelf', footprint: current?.footprint || 'single', rotation: current?.rotation || 0,
       x, z, id: ignoreId || current?.fixtureId || '__candidate__'
     });
-    const conflict = footprintConflict(candidate, fixtures(), state().area, ignoreId || current?.fixtureId);
+    const protectedTiles = [...(state().entrances || []), ...(state().exits || [])];
+    const conflict = footprintConflict(candidate, fixtures(), state().area, ignoreId || current?.fixtureId, protectedTiles);
     if (conflict) return false;
     const tiles = occupiedTiles(candidate);
     return routeToCheckout(tiles, candidate, ignoreId || current?.fixtureId);
@@ -229,9 +272,11 @@ export function installBlockmartV9(ctx) {
     if (!point) return ctx.t('selectFloorFirst', ctx.locale);
     const p = currentPlacementCandidate();
     p.x = point.x; p.z = point.z;
-    const conflict = footprintConflict(p, fixtures(), state().area, getPlacement()?.fixtureId);
+    const protectedTiles = [...(state().entrances || []), ...(state().exits || [])];
+    const conflict = footprintConflict(p, fixtures(), state().area, getPlacement()?.fixtureId, protectedTiles);
     if (conflict === 'outside') return ctx.t('placementOutside', ctx.locale);
     if (conflict === 'entrance') return ctx.t('placementEntry', ctx.locale);
+    if (conflict === 'route') return ctx.t('placementEntry', ctx.locale);
     if (conflict === 'occupied') return ctx.t('placementOccupied', ctx.locale);
     if (!routeToCheckout(occupiedTiles(p), p, getPlacement()?.fixtureId)) return ctx.t('placementRoute', ctx.locale);
     const requiresPurchase = !getPlacement()?.fixtureId || p.kind === 'cooler' && !state().equipment.cooler;
@@ -241,6 +286,21 @@ export function installBlockmartV9(ctx) {
   }
 
   function updatePlacementUi() {
+    if (endpointEdit) {
+      const title = ctx.t(endpointEdit.kind === 'entrance' ? 'entrance' : 'exit', ctx.locale);
+      $('placementControls').hidden = false;
+      $('placementProduct').hidden = true; $('placementFootprint').hidden = true; $('rotatePlacement').hidden = true;
+      document.querySelector('label[for=placementProduct]').hidden = true;
+      document.querySelector('label[for=placementFootprint]').hidden = true;
+      const valid = Boolean(endpointEdit.valid);
+      $('placementStatus').classList.toggle('invalid', Boolean(endpointEdit.point && !valid));
+      $('placementStatus').textContent = endpointEdit.point
+        ? (valid ? `${title} · ${ctx.t('routeOpen', ctx.locale)}` : ctx.t('routeBlocked', ctx.locale))
+        : `${ctx.t(endpointEdit.kind === 'entrance' ? 'setEntrance' : 'setExit', ctx.locale)} · ${ctx.t('routeSafetyHint', ctx.locale)}`;
+      $('confirmPlacement').textContent = ctx.t(endpointEdit.kind === 'entrance' ? 'setEntrance' : 'setExit', ctx.locale);
+      $('confirmPlacement').disabled = !valid;
+      return;
+    }
     const p = getPlacement();
     if (!p) return;
     p.valid = Boolean(p.point && canPlaceFixture(p.point.x, p.point.z, p.fixtureId));
@@ -280,6 +340,7 @@ export function installBlockmartV9(ctx) {
     getMeshes().clear();
     stockDisplaySlots.clear();
     fixtures().forEach(fixture => fixtureGroup(fixture));
+    syncLayoutMarkers();
     syncStockDisplays();
     applyFloorArt();
     if (ghostMesh) { ctx.scene.remove(ghostMesh); ghostMesh.geometry.dispose(); ghostMesh.material.dispose(); }
@@ -352,6 +413,33 @@ export function installBlockmartV9(ctx) {
     }
     group.traverse(object => { if (object.isMesh) { object.castShadow = true; object.receiveShadow = true; } });
     ctx.scene.add(group); getMeshes().set(normalized.id, group); return group;
+  }
+
+  function syncLayoutMarkers() {
+    if (!ctx.scene) return;
+    for (const marker of endpointMarkers) {
+      ctx.scene.remove(marker);
+      marker.traverse(object => object.geometry?.dispose());
+    }
+    endpointMarkers = [];
+    const addMarker = (kind, point) => {
+      const entrance = kind === 'entrance';
+      const color = entrance ? 0x087c6a : 0xd78a2c;
+      const group = new THREE.Group();
+      group.name = `store-${kind}-${point.x}-${point.z}`;
+      group.position.set(point.x, 0, point.z);
+      const block = (name, x, y, z, sx, sy, sz, paint = color) => ctx.cube(group, name, paint, x, y, z, sx, sy, sz);
+      block(`${kind}-left-post`, -.36, .5, 0, .12, 1, .12);
+      block(`${kind}-right-post`, .36, .5, 0, .12, 1, .12);
+      block(`${kind}-lintel`, 0, 1, 0, .84, .14, .14);
+      block(`${kind}-threshold`, 0, .13, 0, .86, .12, .86, entrance ? 0x56c7a0 : 0xe5af58);
+      const sign = block(`${kind}-sign`, 0, 1.25, 0, .54, .2, .1, entrance ? 0x164b48 : 0x74441c);
+      sign.userData.endpointLabel = kind;
+      ctx.scene.add(group);
+      endpointMarkers.push(group);
+    };
+    for (const point of state().entrances || []) addMarker('entrance', point);
+    for (const point of state().exits || []) addMarker('exit', point);
   }
 
   function createDisplayUnit(parent, sku, x, y, z) {
@@ -686,7 +774,8 @@ export function installBlockmartV9(ctx) {
     const product = ctx.PRODUCTS[customer.product];
     if (!product) { stopCustomerVisit(customer, 'invalid-product'); return; }
     const sale = ctx.applySaleRevenue(state(), product.price);
-    setState(sale.state);
+    setState(ctx.appendCashLedger(sale.state, { kind: 'sale', amount: sale.netRevenue,
+      debtChange: -sale.debtPayment, product: customer.product, quantity: 1 }));
     state().lifetime += sale.grossRevenue; state().transactions++;
     state().popularity = popularityAfterWait(state().popularity, customer.queueWait, QUEUE_PATIENCE_SECONDS);
     state().popularity = clampPopularity(state().popularity + 1 + currentDecorAppeal() * .025);
@@ -772,6 +861,7 @@ export function installBlockmartV9(ctx) {
 
   function chooseFloor(point) {
     if (!point || !Number.isInteger(point.x) || !Number.isInteger(point.z) || point.x < 0 || point.z < 0 || point.x >= state().area || point.z >= state().area) return;
+    if (endpointEdit) { updateEndpointPreview(point); return; }
     setSelectedFloor(point);
     const p = getPlacement();
     if (p && !p.dragging) updatePlacementPreview(point);
@@ -788,7 +878,52 @@ export function installBlockmartV9(ctx) {
     if (p.point) updatePlacementPreview(p.point); else updatePlacementUi();
   }
 
+  function updateEndpointPreview(point) {
+    if (!endpointEdit) return;
+    endpointEdit.point = copyPoint(point);
+    const field = endpointEdit.kind === 'entrance' ? 'entrances' : 'exits';
+    const otherField = field === 'entrances' ? 'exits' : 'entrances';
+    const protectedElsewhere = (state()[otherField] || []).some(item => item.x === point?.x && item.z === point?.z);
+    const clear = Boolean(point && edgePoint(point, state().area) && walkable(point.x, point.z)
+      && !protectedElsewhere);
+    const proposed = { entrances: field === 'entrances' ? [point] : state().entrances,
+      exits: field === 'exits' ? [point] : state().exits };
+    endpointEdit.valid = clear && routeToCheckout([], null, null, proposed);
+    if (ghostMesh) {
+      ghostMesh.visible = Boolean(point);
+      if (point) { ghostMesh.position.set(point.x, .13, point.z); ghostMesh.material.color.set(endpointEdit.valid ? 0x20bd88 : 0xe45454); }
+    }
+    updatePlacementUi();
+  }
+
+  function beginEndpointEdit(kind) {
+    if (!['entrance', 'exit'].includes(kind) || getPlacement()) return;
+    endpointEdit = { kind, point: null, valid: false };
+    $('placementControls').hidden = false;
+    updatePlacementUi();
+    ctx.toast(`${ctx.t(kind === 'entrance' ? 'setEntrance' : 'setExit', ctx.locale)} · ${ctx.t('routeSafetyHint', ctx.locale)}`);
+  }
+
+  function confirmEndpointEdit() {
+    if (!endpointEdit?.valid || !endpointEdit.point) return false;
+    const kind = endpointEdit.kind;
+    state()[kind === 'entrance' ? 'entrances' : 'exits'] = [copyPoint(endpointEdit.point)];
+    endpointEdit = null;
+    $('placementControls').hidden = true;
+    ctx.buildFloor?.(); syncLayoutMarkers(); ctx.setCamera(); ctx.save(); renderPanel(); refreshHud();
+    ctx.toast(ctx.t(kind === 'entrance' ? 'entranceSaved' : 'exitSaved', ctx.locale));
+    return true;
+  }
+
   function cancelPlacement() {
+    if (endpointEdit) {
+      endpointEdit = null;
+      if (ghostMesh) ghostMesh.visible = false;
+      $('placementControls').hidden = true;
+      $('placementStatus').classList.remove('invalid');
+      ctx.renderPanel(); ctx.toast(ctx.t('placementCancelled', ctx.locale));
+      return;
+    }
     if (!getPlacement()) return;
     setPlacement(null);
     if (ghostMesh) ghostMesh.visible = false;
@@ -799,6 +934,7 @@ export function installBlockmartV9(ctx) {
   }
 
   function confirmPlacement() {
+    if (endpointEdit) { confirmEndpointEdit(); return; }
     const p = getPlacement();
     if (!p?.point) return;
     updatePlacementUi();
@@ -811,8 +947,9 @@ export function installBlockmartV9(ctx) {
     if (old) {
       if (p.kind === 'cooler' && !state().equipment.cooler) {
         const cost = fixtureCost(p.kind, p.footprint);
-        if (state().cash < cost) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
-        state().cash -= cost; state().equipment.cooler = true;
+        const purchase = ctx.spendCash(state(), cost, 'equipment', { detail: 'cooler' });
+        if (!purchase.ok) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
+        setState(purchase.state); state().equipment.cooler = true;
       }
       const moved = { ...old, x: p.point.x, z: p.point.z, rotation: p.rotation, footprint: p.footprint, product: p.product };
       if (oldWarehouse) {
@@ -831,8 +968,9 @@ export function installBlockmartV9(ctx) {
         if (state().diamond < 1) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
         state().diamond--; state().diamondSpent++;
       } else {
-        if (state().cash < cost) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
-        state().cash -= cost;
+        const purchase = ctx.spendCash(state(), cost, 'fixture', { detail: p.kind });
+        if (!purchase.ok) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
+        setState(purchase.state);
       }
       const newId = `${p.kind}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
       state().fixtures.push({ id: newId, kind: p.kind,
@@ -949,14 +1087,18 @@ export function installBlockmartV9(ctx) {
     const stockTotal = ctx.totalStock(state().stock);
     const quantity = Math.min(requested, Math.max(0, capacity - stockTotal), Math.floor(state().cash / product.cost));
     if (!quantity) { ctx.toast(ctx.t(stockTotal >= capacity ? 'capacityFull' : 'cashShort', ctx.locale)); return; }
-    state().cash -= quantity * product.cost; state().stock[productId] = (state().stock[productId] || 0) + quantity;
+    const purchase = ctx.spendCash(state(), quantity * product.cost, 'restock', { product: productId, quantity });
+    if (!purchase.ok) { ctx.toast(ctx.t('cashShort', ctx.locale)); return; }
+    setState(purchase.state); state().stock[productId] = (state().stock[productId] || 0) + quantity;
     ctx.save(); syncStockDisplays(); ctx.renderPanel(); refreshHud();
     ctx.toast(`${quantity} ${product.name} · ${ctx.t('orderedFor', ctx.locale)} ${ctx.price(quantity * product.cost)}`);
   }
 
   function hireCashier() {
     if (state().cash < CASHIER_HIRE_COST) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
-    state().cash -= CASHIER_HIRE_COST;
+    const hire = ctx.spendCash(state(), CASHIER_HIRE_COST, 'cashier');
+    if (!hire.ok) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
+    setState(hire.state);
     state().cashierCount++;
     syncFixtures(); ctx.save(); ctx.renderPanel(); refreshHud();
     ctx.toast(`${ctx.t('cashierHired', ctx.locale)} · ${state().cashierCount}`);
@@ -1063,7 +1205,8 @@ export function installBlockmartV9(ctx) {
     }
     pointerState = { id: event.pointerId, x: event.clientX, y: event.clientY,
       lastX: event.clientX, lastY: event.clientY, moved: false, point,
-      fixture: !getPlacement() ? fixtureAt(point) : null, mode: getPlacement() ? 'placement' : 'pan' };
+      fixture: !getPlacement() && !endpointEdit ? fixtureAt(point) : null,
+      mode: getPlacement() ? 'placement' : endpointEdit ? 'layout-edit' : 'pan' };
     event.stopImmediatePropagation();
   }
 
@@ -1091,7 +1234,9 @@ export function installBlockmartV9(ctx) {
     if (!current || current.id !== event.pointerId) { event.stopImmediatePropagation(); return; }
     const deltaX = event.clientX - current.lastX, deltaY = event.clientY - current.lastY;
     if (Math.hypot(event.clientX - current.x, event.clientY - current.y) > 8) current.moved = true;
-    if (current.mode === 'placement') {
+    if (current.mode === 'layout-edit') {
+      if (current.moved) updateEndpointPreview(pointFromEvent(event));
+    } else if (current.mode === 'placement') {
       if (current.moved) { const placement = getPlacement(); if (placement) placement.dragging = true; updatePlacementPreview(pointFromEvent(event)); }
     } else if (current.fixture) {
       if (current.moved && current.mode !== 'moving-fixture') {
@@ -1113,7 +1258,9 @@ export function installBlockmartV9(ctx) {
     if (pointersMap.size < 2) pinchState = null;
     if (current?.id === event.pointerId) {
       const point = pointFromEvent(event);
-      if (current.mode === 'moving-fixture') {
+      if (current.mode === 'layout-edit') {
+        updateEndpointPreview(point);
+      } else if (current.mode === 'moving-fixture') {
         const placement = getPlacement();
         if (placement) { placement.dragging = false; updatePlacementPreview(point); }
       } else if (current.mode === 'placement') {
@@ -1220,12 +1367,14 @@ export function installBlockmartV9(ctx) {
   }
 
   function automaticRestock() {
-    if (!state().helper || state().stock.water >= 6) return;
+    if (!state().helper || !state().autoRestockEnabled || state().stock.water >= 6) return;
     const product = ctx.PRODUCTS.water;
     const room = ctx.stockCapacity(ctx.activeEquipment()) - ctx.totalStock(state().stock);
     const quantity = Math.min(8, room, Math.floor(state().cash / product.cost));
     if (quantity <= 0) return;
-    state().cash -= quantity * product.cost; state().stock.water += quantity;
+    const purchase = ctx.spendCash(state(), quantity * product.cost, 'autoRestock', { product: 'water', quantity });
+    if (!purchase.ok) return;
+    setState(purchase.state); state().stock.water += quantity;
     ctx.save(); syncStockDisplays(); renderPanel();
   }
 
@@ -1235,7 +1384,9 @@ export function installBlockmartV9(ctx) {
       if (ctx.recoveryTimer >= 12) {
         const order = ctx.recoveryShipment(state(), ctx.PRODUCTS.water.cost);
         if (order.ok) {
-          setState(order.state); ctx.save(); syncStockDisplays(); renderPanel();
+          setState(ctx.appendCashLedger(order.state, { kind: 'recoveryOrder', debtChange: order.cost,
+            product: 'water', quantity: order.quantity }));
+          ctx.save(); syncStockDisplays(); renderPanel();
           ctx.toast(`${ctx.t('recoveryOrder', ctx.locale)} · ${ctx.price(order.cost)}`);
         }
         ctx.recoveryTimer = 0;

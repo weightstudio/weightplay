@@ -18,7 +18,9 @@ export function createBlockGeometry(){
  uv.needsUpdate=true;return geometry;
 }
 export function createCanopyGeometry(){
- const segments=8,rings=[[0,.20,0,0],[.12,.40,-.025,0],[.30,.57,.018,-.012],[.49,.54,.025,.008],[.68,.40,-.014,.018],[.85,.24,.006,0],[.98,.045,0,0]],positions=[],indices=[];
+ // Broad, stepped tiers read as deliberate woodland crowns from the high
+ // gameplay camera, instead of a smooth ball that blends into the grass.
+ const segments=8,rings=[[0,.12,0,0],[.12,.40,-.025,0],[.25,.64,.018,-.012],[.34,.68,.025,.008],[.40,.54,-.014,.018],[.57,.36,.006,0],[.64,.40,-.018,-.012],[.79,.23,.012,.01],[.86,.26,0,0],[.97,.08,0,0],[1,.015,0,0]],positions=[],indices=[];
  for(const [y,r,x,z] of rings)for(let i=0;i<segments;i++){const a=i/segments*Math.PI*2+(i%2)*.035;positions.push(x+Math.cos(a)*r,y,z+Math.sin(a)*r);}
  const bottom=positions.length/3;positions.push(0,0,0);const top=positions.length/3;positions.push(0,1.03,0);
  for(let row=0;row<rings.length-1;row++)for(let i=0;i<segments;i++){const a=row*segments+i,b=row*segments+(i+1)%segments,c=(row+1)*segments+i,d=(row+1)*segments+(i+1)%segments;indices.push(a,c,b,b,c,d);}
@@ -31,24 +33,24 @@ export class WildwoodWorld {
   this.canvas=canvas;this.sim=sim;this.parts=[];this.models=new Map();this.batches=new Map();this.effects=[];this.reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   this.renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
   this.scene=new THREE.Scene();this.cues=new GroundCues(this.scene);this.scene.background=new THREE.Color(0x173d3c);
-  this.ground=new THREE.TextureLoader().load(new URL('./art/ground-moss-v6.png',import.meta.url).href);this.ground.colorSpace=THREE.SRGBColorSpace;this.ground.wrapS=this.ground.wrapT=THREE.RepeatWrapping;this.ground.repeat.set(1,1);this.ground.anisotropy=Math.min(4,this.renderer.capabilities.getMaxAnisotropy());
-  this.camera=new THREE.OrthographicCamera(-9,9,11,-11,.1,70);this.camera.position.set(0,20,16);this.camera.lookAt(0,0,0);
+  this.ground=new THREE.TextureLoader().load(new URL('./art/ground-moss-v7.png',import.meta.url).href);this.ground.colorSpace=THREE.SRGBColorSpace;this.ground.wrapS=this.ground.wrapT=THREE.RepeatWrapping;this.ground.repeat.set(4,4);this.ground.anisotropy=Math.min(4,this.renderer.capabilities.getMaxAnisotropy());
+  this.camera=new THREE.OrthographicCamera(-9,9,11,-11,.1,70);this.camera.position.set(0,26,12);this.camera.lookAt(0,0,0);
   this.geometry=createBlockGeometry();this.canopyGeometry=createCanopyGeometry();
   this.scene.add(new THREE.HemisphereLight(0xd3f3ee,0x345040,2.3));this.sun=new THREE.DirectionalLight(0xffe0a0,3);this.sun.position.set(-6,15,9);this.sun.castShadow=true;this.sun.shadow.mapSize.set(1024,1024);Object.assign(this.sun.shadow.camera,{left:-12,right:12,top:12,bottom:-12,far:40});this.sun.shadow.normalBias=.04;this.scene.add(this.sun);
-  this.root=new THREE.Group();this.static=new THREE.Group();this.root.add(this.static);this.box(this.static,'ground',[0,-.35,0],[15,.6,18]);
-  // Authored stone border and stepping-stone trail establish the entire playable area.
-  for(let i=0;i<19;i++){for(const side of [-1,1])this.box(this.static,i%3?'stone':'moss',[side*7.4,-.05,-8.3+i*.92],[.6,.5,.6]);}
-  for(let i=0;i<11;i++)this.box(this.static,i%2?'moss':'stone',[Math.sin(i*.8)*.5,-.025,7-i*1.4],[1.35,.12,1]);
-  for(let i=0;i<10;i++){const x=(i%2?1:-1)*(7.8+i%3*.35),z=-8+Math.floor(i/2)*2.5;this.tree(this.static,x,z,.8, true);}
-  this.box(this.static,'wood',[0,-.8,0],[15,1,18]);
-  this.box(this.static,'ground',[0,-1.45,0],[60,.3,60]);
-  // Forest continues beyond the arena so a following camera never exposes an empty backdrop.
-  for(const side of [-1,1])for(let i=0;i<10;i++){
-   const x=-15+i*1.9,z=side*(11.4+(i%3)*1.3);
-   this.tree(this.static,x,z,.85+(i%4)*.12,true);
-   if(i%3===0)this.box(this.static,'stone',[x+.7,-.7,z-1],[.9,.6,.7]);
+  this.root=new THREE.Group();this.static=new THREE.Group();this.root.add(this.static);
+  // One continuous forest floor removes the raised arena slab, checker-like
+  // stone rails, and square stepping path that crowded the old view.
+  this.box(this.static,'ground',[0,-.18,0],[60,.3,60]);
+  // Keep a sparse tree line beyond the playable clearing; objective trees stay
+  // visually distinct and the center remains open for combat.
+  for(const side of [-1,1])for(let i=0;i<6;i++){
+   const x=-12.5+i*5,z=side*11.2;
+   this.tree(this.static,x,z,.88+(i%3)*.08,true);
   }
-  for(let i=0;i<18;i++){const side=i%2?1:-1,row=Math.floor(i/9),lane=i%9,x=side*(9+row*2.4+(lane%3)*.15),z=-16+lane*2.8+row*.7;this.tree(this.static,x,z,1+(lane%3)*.12,true);}
+  for(const side of [-1,1])for(let i=0;i<2;i++){
+   const x=side*10.6,z=-4+i*8;
+   this.tree(this.static,x,z,.9+i*.08,true);
+  }
   this.heroModel=this.character('hero');this.root.add(this.heroModel);this.exit=new THREE.Group();this.root.add(this.exit);
   this.box(this.exit,'gold',[-1,.8,0],[.25,1.8,.3]);this.box(this.exit,'gold',[1,.8,0],[.25,1.8,.3]);this.box(this.exit,'gold',[0,1.7,0],[2.2,.24,.3]);this.box(this.exit,'cyan',[0,.1,0],[1.8,.1,1.2]);
   this.resize();
@@ -60,11 +62,11 @@ export class WildwoodWorld {
   this.box(g,'treeBark',[0,.69,0],[.38,1.38,.38]);this.box(g,'treeBarkLight',[-.075,.72,.195],[.075,.78,.025]);
   for(const sign of [-1,1]){const branch=this.box(g,'treeBark',[sign*.28,1.37,0],[.58,.2,.23]);branch.rotation.z=-sign*.24;}
   const crown=new THREE.Group(),variation=Math.abs(Math.sin(x*2.17+z*1.31));crown.rotation.y=variation*Math.PI*.5;g.add(crown);
-  const width=decor ? .92 : 1,skew=(variation-.5)*.2,depth=(variation-.5)*.14;
-  this.foliage(crown,'canopyShade',[0,1.43,-.035],[1.08*width,1.12,.94*width]);
-  this.foliage(crown,'canopyMid',[-.34*width,1.62,.02],[.70*width,.86,.68*width]);
-  this.foliage(crown,'canopyMid',[.35*width,1.64,-.025],[.68*width,.82,.65*width]);
-  this.foliage(crown,'canopyTop',[skew*.65,1.96,depth*.3],[.72*width,.91,.68*width]);
+  const width=(decor?.84:.94)+variation*.12,skew=(variation-.5)*.2,depth=(variation-.5)*.14;
+  this.foliage(crown,'canopyShade',[0,1.40,-.035],[.99*width,1.15,.88*width]);
+  this.foliage(crown,'canopyMid',[-.27*width,1.68,.02],[.65*width,.90,.62*width]);
+  this.foliage(crown,'canopyMid',[.29*width,1.71,-.025],[.63*width,.86,.60*width]);
+  this.foliage(crown,'canopyTop',[skew*.65,2.02,depth*.3],[.55*width,.82,.53*width]);
   g.userData.crown=crown;return g;
  }
  character(kind,type=''){
@@ -151,7 +153,7 @@ export class WildwoodWorld {
   }}
  render(dt=0){
   const sim=this.sim,h=sim.hero;this.heroModel.position.set(h.x,Math.sin(sim.time*10)*(h.attack?.015:0),h.z);this.heroModel.rotation.y=h.angle;
-  this.camera.position.set(h.x,20,h.z+16);this.camera.lookAt(h.x,0,h.z);this.camera.updateMatrixWorld();
+  this.camera.position.set(h.x,26,h.z+12);this.camera.lookAt(h.x,0,h.z);this.camera.updateMatrixWorld();
   const nearby=()=>true; // Camera clipping only: never spawn scenery in the middle of the visible arena.
   const walking=this.lastHero&&Math.hypot(h.x-this.lastHero.x,h.z-this.lastHero.z)>.001;this.lastHero={x:h.x,z:h.z};
   this.walkBlend=(this.walkBlend||0)+((walking?1:0)-(this.walkBlend||0))*(1-Math.exp(-dt*14));

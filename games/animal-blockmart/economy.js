@@ -7,6 +7,7 @@ export const FAST_CHECKOUT_SECONDS=.7;
 export const RECOVERY_WATER_QUANTITY=4;
 export const RECOVERY_ORDER_LIMIT=2;
 export const RECOVERY_DELIVERY_FEE=8;
+export const CASH_LEDGER_LIMIT=60;
 
 function count(value){return Number.isFinite(value)?Math.max(0,Math.floor(value)):0}
 
@@ -27,6 +28,30 @@ export function stockCapacity(equipment={}){
 
 export function totalStock(stock={}){
   return Object.values(stock).reduce((sum,value)=>sum+count(value),0);
+}
+
+export function appendCashLedger(state,entry={}){
+  const amount=Number.isFinite(entry.amount)?Math.trunc(entry.amount):0;
+  const debtChange=Number.isFinite(entry.debtChange)?Math.trunc(entry.debtChange):0;
+  const row={
+    kind:String(entry.kind||'activity'),
+    amount,
+    debtChange,
+    balance:Number.isFinite(state.cash)?Math.floor(state.cash):0,
+    day:count(state.day),
+    ...(entry.product?{product:String(entry.product)}:{}),
+    ...(entry.quantity?{quantity:count(entry.quantity)}:{}),
+    ...(entry.detail?{detail:String(entry.detail)}:{})
+  };
+  return {...state,cashLedger:[...(Array.isArray(state.cashLedger)?state.cashLedger:[]),row].slice(-CASH_LEDGER_LIMIT)};
+}
+
+export function spendCash(state,amount,kind,details={}){
+  const cost=count(amount);
+  if(!cost)return {ok:false,reason:'amount',state};
+  if(!Number.isFinite(state.cash)||state.cash<cost)return {ok:false,reason:'cash',state};
+  const next={...state,cash:state.cash-cost};
+  return {ok:true,charged:cost,state:appendCashLedger(next,{...details,kind,amount:-cost})};
 }
 
 export function restockOffer(stock,equipment,requestedQuantity,unitCost){
@@ -74,16 +99,17 @@ export function purchaseEquipment(state,key,cost){
   const legacyUpgradeCredits=count(state.legacyUpgradeCredits);
   const usesLegacyCredit=legacyUpgradeCredits>0;
   if(!usesLegacyCredit&&state.cash<cost)return {ok:false,reason:'cash',state};
-  return {
-    ok:true,
-    usesLegacyCredit,
-    charged:usesLegacyCredit?0:cost,
-    state:{
+  const next={
       ...state,
       cash:state.cash-(usesLegacyCredit?0:cost),
       upgrades:count(state.upgrades)+1,
       legacyUpgradeCredits:legacyUpgradeCredits-(usesLegacyCredit?1:0),
       equipment:{...state.equipment,[key]:true}
-    }
+    };
+  return {
+    ok:true,
+    usesLegacyCredit,
+    charged:usesLegacyCredit?0:cost,
+    state:appendCashLedger(next,{kind:'equipment',amount:usesLegacyCredit?0:-cost,detail:key})
   };
 }

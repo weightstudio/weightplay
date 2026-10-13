@@ -1,8 +1,9 @@
 (()=>{
   const gameId="animal-prism-breakers",reduced=matchMedia("(prefers-reduced-motion: reduce)"),test=()=>window.__blockTrilogyTest;
-  let canvas,ctx,observer,frame=0,last=performance.now(),particles=[],previous=new Map(),previousBalls=[],previousCombo=0,disposed=false;
+  let canvas,ctx,observer,raf=0,timer=0,last=performance.now(),particles=[],previous=new Map(),previousBalls=[],previousCombo=0,disposed=false;
   const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
   window.PrismBreakerBattleArt={reducedMotion:()=>reduced.matches,
+    getFeedbackStats:()=>({particleCount:particles.length,particleCap:56}),
     drawBackground(g,w,h){g.save();g.globalAlpha=.15;g.strokeStyle="#68cbef";g.lineWidth=1;for(let side of [-1,1]){g.beginPath();g.moveTo(w*.5+side*w*.07,h*.12);g.lineTo(w*.5+side*w*.43,h*.84);g.lineTo(w*.5+side*w*.5,h*.94);g.stroke();g.beginPath();g.moveTo(w*.5+side*w*.16,h*.18);g.lineTo(w*.5+side*w*.31,h*.86);g.stroke()}g.globalAlpha=.09;for(let i=0;i<4;i++){const y=h*(.56+i*.1),inset=w*(.12-i*.015);g.beginPath();g.moveTo(inset,y);g.lineTo(w-inset,y);g.stroke()}g.restore()},
     drawBlock(g,x,y,w,h,b,shielded){
       const c=b.mirror?"#8daeff":b.phase?"#d18cff":b.hp>1?"#ffc66a":"#42d7ee",alpha=shielded?.52:1;
@@ -18,12 +19,13 @@
   function resize(){if(!canvas||!ctx)return;const r=canvas.parentElement.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);canvas.width=Math.max(1,Math.round(r.width*d));canvas.height=Math.max(1,Math.round(r.height*d));canvas.style.width=`${r.width}px`;canvas.style.height=`${r.height}px`;ctx.setTransform(d,0,0,d,0,0)}
   function emit(x,y,color,count=5,spread=.045){if(reduced.matches)return;for(let i=0;i<count&&particles.length<56;i++){const a=Math.PI*2*i/count,s=spread*(.55+Math.random()*.65);particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:.25+Math.random()*.12,max:.37,color,size:1.2+Math.random()*1.4})}}
   function drawParticles(e,now){const r=canvas.getBoundingClientRect(),w=r.width,h=r.height,dt=Math.min(.04,(now-last)/1000);last=now;ctx.clearRect(0,0,w,h);if(!e){previous.clear();previousBalls=[];particles=[];previousCombo=0;return}
-    for(const b of e.blocks){const old=previous.get(b);if(b.hp<=0&&old?.hp>0)emit((old.x+old.w/2)/w,(old.y+old.h/2)/h,"#a9f7ff",7,.055);if(b.hp>0){const shift=e.rules.moving?Math.sin(e.time*1.4+b.y*.9)*.022:0;previous.set(b,{x:(.08+b.x*.105+shift)*w,y:(.08+b.y*.055)*h,w:.095*w,h:.043*h,hp:b.hp})}}for(const b of [...previous.keys()])if(!e.blocks.includes(b))previous.delete(b);
-    const balls=e.balls||[];if(e.combo>previousCombo&&e.combo>=2)for(const b of balls)emit(b.x,b.y,"#ffdf79",3,.025);previousCombo=e.combo;if(e.launched&&previousBalls.length&&balls.length)for(let i=0;i<Math.min(previousBalls.length,balls.length);i++)if(previousBalls[i].vy>0&&balls[i].vy<0&&balls[i].y>.82)emit(balls[i].x,.88,"#8efaff",5,.028);previousBalls=balls.map(b=>({vy:b.vy}));
+    for(const b of e.blocks){const old=previous.get(b);if(b.hp<=0){if(old?.hp>0)emit((old.x+old.w/2)/w,(old.y+old.h/2)/h,"#a9f7ff",7,.055);previous.delete(b)}else{const shift=e.rules.moving?Math.sin(e.time*1.4+b.y*.9)*.022:0;previous.set(b,{x:(.08+b.x*.105+shift)*w,y:(.08+b.y*.055)*h,w:.095*w,h:.043*h,hp:b.hp})}}for(const b of [...previous.keys()])if(!e.blocks.includes(b))previous.delete(b);
+    const balls=e.balls||[];if(e.combo>previousCombo&&e.combo>=2)for(const b of balls)emit(b.x,b.y,"#ffdf79",3,.025);previousCombo=e.combo;if(e.launched&&previousBalls.length&&balls.length)for(const p of previousBalls){const b=balls.reduce((nearest,candidate)=>Math.hypot(candidate.x-p.x,candidate.y-p.y)<Math.hypot(nearest.x-p.x,nearest.y-p.y)?candidate:nearest,balls[0]);if(Math.hypot(b.x-p.x,b.y-p.y)<.12&&p.vy>0&&b.vy<0&&b.y>.82)emit(b.x,.88,"#8efaff",5,.028)}previousBalls=balls.map(b=>({x:b.x,y:b.y,vy:b.vy}));
     if(!reduced.matches){for(const p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;const x=p.x*w,y=p.y*h;ctx.globalAlpha=clamp(p.life/p.max,0,1);ctx.fillStyle=p.color;ctx.beginPath();ctx.moveTo(x,y-p.size);ctx.lineTo(x+p.size*.65,y);ctx.lineTo(x,y+p.size);ctx.lineTo(x-p.size*.65,y);ctx.closePath();ctx.fill()}particles=particles.filter(p=>p.life>0);ctx.globalAlpha=1}else particles=[];
   }
-  function tick(now){if(disposed)return;const state=test()?.getState?.(),active=state?.id===gameId&&state.screen==="battle"&&state.engine?.kind==="breaker";if(active){attach();if(canvas)drawParticles(state.engine,now);frame=requestAnimationFrame(tick)}else{if(canvas&&ctx)ctx.clearRect(0,0,canvas.width,canvas.height);frame=setTimeout(()=>{frame=requestAnimationFrame(tick)},120)}}
-  document.addEventListener("visibilitychange",()=>{if(document.hidden){particles=[];last=performance.now()}else if(!disposed)frame=requestAnimationFrame(tick)});
-  window.addEventListener("pagehide",()=>{disposed=true;cancelAnimationFrame(frame);clearTimeout(frame);observer?.disconnect();canvas?.remove()},{once:true});
-  frame=requestAnimationFrame(tick);
+  function schedule(){if(disposed||document.hidden||raf||timer)return;raf=requestAnimationFrame(tick)}
+  function tick(now){raf=0;if(disposed||document.hidden)return;const state=test()?.getState?.(),active=state?.id===gameId&&state.screen==="battle"&&state.engine?.kind==="breaker";if(active){attach();if(canvas)drawParticles(state.engine,now);raf=requestAnimationFrame(tick)}else{if(canvas&&ctx)ctx.clearRect(0,0,canvas.width,canvas.height);timer=setTimeout(()=>{timer=0;schedule()},120)}}
+  document.addEventListener("visibilitychange",()=>{if(document.hidden){if(raf)cancelAnimationFrame(raf);if(timer)clearTimeout(timer);raf=timer=0;particles=[];last=performance.now()}else{last=performance.now();schedule()}});
+  window.addEventListener("pagehide",()=>{disposed=true;if(raf)cancelAnimationFrame(raf);if(timer)clearTimeout(timer);observer?.disconnect();canvas?.remove()},{once:true});
+  schedule();
 })();

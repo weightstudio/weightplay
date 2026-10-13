@@ -1,6 +1,7 @@
 export const GRID_ENTRANCES = [
   { x: 0, z: 0 }, { x: 0, z: 1 }, { x: 1, z: 0 }, { x: 1, z: 1 }
 ];
+export const GRID_EXITS = [{ x: 9, z: 9 }];
 
 const FOOTPRINTS = {
   single: { width: 1, depth: 1 },
@@ -42,9 +43,11 @@ export function tileInShop(point, area) {
     && point.x >= 0 && point.z >= 0 && point.x < area && point.z < area;
 }
 
-export function footprintConflict(candidate, fixtures, area, ignoreId = null) {
+export function footprintConflict(candidate, fixtures, area, ignoreId = null, protectedTiles = []) {
   const tiles = occupiedTiles(candidate);
   if (!tiles.length || tiles.some(tile => !tileInShop(tile, area))) return 'outside';
+  const protectedKeys = new Set(protectedTiles.map(tileKey));
+  if (tiles.some(tile => protectedKeys.has(tileKey(tile)))) return 'route';
   const occupied = new Set();
   for (const fixture of fixtures) {
     if (fixture.id === ignoreId) continue;
@@ -70,7 +73,10 @@ export function serviceFacingTarget(counter) {
 export function queueTile(counter, rank = 0) {
   const target = serviceFacingTarget(counter);
   const front = serviceVector(counter.rotation);
-  return { x: Math.round(target.x + front.x * rank), z: Math.round(target.z + front.z * rank) };
+  // Two floor tiles between customers leave enough projected space for the
+  // tall block-animal models to read as a line instead of a stack.
+  const distance = 1 + Math.max(0, Math.floor(rank)) * 2;
+  return { x: Math.round(target.x + front.x * distance), z: Math.round(target.z + front.z * distance) };
 }
 
 export function clampPopularity(value) {

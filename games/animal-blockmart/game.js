@@ -1,6 +1,6 @@
 import * as THREE from './vendor/three/three.module.min.js';
 import {resolveLocale,t} from './locales.js';
-import {affordableRestockOffer,applySaleRevenue,browseSeconds,checkoutSeconds,customerBudget,migrateEquipmentState,purchaseEquipment,recoveryShipment,stockCapacity,totalStock} from './economy.js';
+import {affordableRestockOffer,applySaleRevenue,browseSeconds,checkoutSeconds,customerBudget,migrateEquipmentState,purchaseEquipment,recoveryShipment,stockCapacity,totalStock,appendCashLedger,spendCash} from './economy.js';
 import {installBlockmartV9} from './blockmart-v9.js';
 
 const $=id=>document.getElementById(id),canvas=$('world'),cashEl=$('cash'),panel=$('panel'),dialog={hidden:true};
@@ -8,7 +8,7 @@ const locale=resolveLocale(),isOwnerPreview=new URL(location.href).searchParams.
 const SAVE_KEY='weightplay.animal-blockmart.v1';
 const EXPANSION_COST=600;
 const PRODUCTS={water:{name:t('restockWater'),cost:8,price:12,demand:1.55,color:0x5abbd0},snacks:{name:t('restockSnack'),cost:12,price:20,demand:1.0,color:0xf2ae4f},fizz:{name:t('premiumFizz'),cost:45,price:65,demand:.48,color:0xd96da1}};
-const INITIAL={cash:300,area:10,lifetime:0,transactions:0,day:1,recoveryOrders:0,recoveryDebt:0,diamond:0,diamondSpent:0,helper:false,upgrades:0,equipment:{cooler:false,fastCheckout:false},legacyUpgradeCredits:0,unlocked:['water','snacks'],stock:{water:20,snacks:0,fizz:0},fixtures:[{id:'shelf-1',kind:'shelf',product:'water',x:3,z:3},{id:'checkout-1',kind:'checkout',x:7,z:1},{id:'cooler-1',kind:'cooler',x:9,z:4}],milestones:{firstSale:false,firstThousand:false,expanded:false},view:0,zoom:1,panX:0,panZ:0,cameraVersion:2,warehouse:[]};
+const INITIAL={cash:300,area:10,lifetime:0,transactions:0,day:1,recoveryOrders:0,recoveryDebt:0,diamond:0,diamondSpent:0,helper:false,autoRestockEnabled:false,cashLedger:[],entrances:[{x:0,z:0}],exits:[{x:9,z:9}],upgrades:0,equipment:{cooler:false,fastCheckout:false},legacyUpgradeCredits:0,unlocked:['water','snacks'],stock:{water:20,snacks:0,fizz:0},fixtures:[{id:'shelf-1',kind:'shelf',product:'water',x:3,z:3},{id:'checkout-1',kind:'checkout',x:7,z:1},{id:'cooler-1',kind:'cooler',x:9,z:4}],milestones:{firstSale:false,firstThousand:false,expanded:false},view:0,zoom:1,panX:0,panZ:0,cameraVersion:2,warehouse:[]};
 function load(){try{const s=JSON.parse(localStorage.getItem(SAVE_KEY));if(s&&s.version===1&&Number.isFinite(s.cash)&&s.area>=10){const next={...structuredClone(INITIAL),...s,...migrateEquipmentState(s),stock:{...INITIAL.stock,...s.stock},milestones:{...INITIAL.milestones,...s.milestones},recoveryOrders:Number.isFinite(s.recoveryOrders)?Math.max(0,Math.floor(s.recoveryOrders)):0,recoveryDebt:Number.isFinite(s.recoveryDebt)?Math.max(0,Math.floor(s.recoveryDebt)):0,warehouse:Array.isArray(s.warehouse)?s.warehouse:[]};if(!s.cameraVersion){next.view=(Number(s.view)||0)*Math.PI/2;next.panX=0;next.panZ=0;next.cameraVersion=2;if(next.equipment.fastCheckout&&!next.fixtures.some(f=>f.kind==='fastCheckout')&&!next.warehouse.some(f=>f.kind==='fastCheckout')){let spot=null;for(let z=2;z<next.area-1&&!spot;z++)for(let x=2;x<next.area-1;x++)if(!next.fixtures.some(f=>f.x===x&&f.z===z)){spot={x,z};break}if(spot)next.fixtures.push({id:'fastCheckout-legacy-v6',kind:'fastCheckout',...spot})}}return next}}catch{}return structuredClone(INITIAL)}
 let state=load(),renderer,scene,camera,clock=new THREE.Clock(),running=true,gameActive=false,frame=0,elapsed=0,spawnTimer=2,recoveryTimer=0,customerId=0,customers=[],meshes=new Map(),placement=null,selectedTab='shop',drag=null,toastTimer,ghost=null,frameApi=null;
 const materials={};const mat=(c,roughness=.83)=>{const k=`${c}:${roughness}`;return materials[k]??(materials[k]=new THREE.MeshStandardMaterial({color:c,roughness}))};
@@ -20,8 +20,8 @@ function setCamera(){if(!camera)return;const a=Number.isFinite(state.view)?state
 function tileColor(x,z){return ((x+z)%2)?0xc5d9cd:0xb5cec1}
 function buildFloor(){if(!scene)return;const old=scene.getObjectByName('floor-root');if(old){scene.remove(old);old.traverse(o=>{o.geometry?.dispose()})}const root=new THREE.Group();root.name='floor-root';scene.add(root);const tileCount=state.area*state.area,tiles=new THREE.InstancedMesh(new THREE.BoxGeometry(.98,.18,.98),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.9}),tileCount),dummy=new THREE.Object3D();let ti=0;for(let x=0;x<state.area;x++)for(let z=0;z<state.area;z++){dummy.position.set(x,0,z);dummy.updateMatrix();tiles.setMatrixAt(ti,dummy.matrix);tiles.setColorAt(ti,new THREE.Color(tileColor(x,z)));ti++}tiles.name='floor-tiles';tiles.receiveShadow=true;root.add(tiles);
   // Blue and cream perimeter walls make the shop read as one expandable room.
-  for(let x=0;x<state.area;x++){cube(root,'back-wall',x%3===0?0xb6d8d9:0xf4f0df,x,.78,-.5,.98,1.5,.15);cube(root,'front-wall',0xd4e8e2,x,.44,state.area-.5,.98,.85,.15)}
-  for(let z=0;z<state.area;z++){cube(root,'left-wall',0xf4f0df,-.5,.55,z,.15,1.05,.98);cube(root,'right-wall',0xc0dde0,state.area-.5,.65,z,.15,1.25,.98)}
+  const endpoints=[...(state.entrances||[]),...(state.exits||[])];for(let x=0;x<state.area;x++){if(!endpoints.some(p=>p.x===x&&p.z===0))cube(root,'back-wall',x%3===0?0xb6d8d9:0xf4f0df,x,.78,-.5,.98,1.5,.15);if(!endpoints.some(p=>p.x===x&&p.z===state.area-1))cube(root,'front-wall',0xd4e8e2,x,.44,state.area-.5,.98,.85,.15)}
+  for(let z=0;z<state.area;z++){if(!endpoints.some(p=>p.x===0&&p.z===z))cube(root,'left-wall',0xf4f0df,-.5,.55,z,.15,1.05,.98);if(!endpoints.some(p=>p.x===state.area-1&&p.z===z))cube(root,'right-wall',0xc0dde0,state.area-.5,.65,z,.15,1.25,.98)}
   // Wall cooler bays.
   for(let z=2;z<Math.min(8,state.area-1);z+=2){cube(root,'cooler',0xa8dce0,state.area-.72,.76,z,.35,1.4,1.55);cube(root,'cooler-glass',0xd7f5f5,state.area-.49,.78,z,.06,1.08,1.32);cube(root,'cooler-shelf',0xffffff,state.area-.44,.33,z,.05,.06,1.28)}
   const sign=cube(root,'sign',0x139f90,state.area/2,1.65,-.47,3,.42,.08);sign.castShadow=false;
@@ -104,8 +104,8 @@ if(selectedTab==='staff'){
 }
 }
 function restock(k,requested){const offer=stockOffer(k,requested);if(!offer.quantity)return toast(totalStock(state.stock)>=stockCapacity(activeEquipment())?t('capacityFull',locale):t('cashShort',locale));state.cash-=offer.cost;state.stock[k]+=offer.quantity;save();renderPanel();toast(`${offer.quantity} ${PRODUCTS[k].name} · ${t('orderedFor',locale)} ${price(offer.cost)}`)}
-function expand(){if(state.area>10)return;if(state.cash<EXPANSION_COST)return toast(t('cashShort',locale));state.cash-=EXPANSION_COST;state.area=13;state.milestones.expanded=true;buildFloor();syncFixtures();addShopkeeper();resize();save();renderPanel();toast(t('expandSuccess',locale))}
-function hire(){if(state.cash<220)return toast(t('needMoreCash',locale));if(state.helper)return;state.cash-=220;state.helper=true;save();renderPanel();toast(`${t('hireHelper',locale)} · ${t('helperNoWage',locale)}`)}
+function expand(){if(state.area>10)return;const purchase=spendCash(state,EXPANSION_COST,'expansion');if(!purchase.ok)return toast(t('cashShort',locale));state=purchase.state;state.area=13;state.milestones.expanded=true;buildFloor();syncFixtures();addShopkeeper();resize();save();renderPanel();toast(t('expandSuccess',locale))}
+function hire(){if(state.helper)return;const purchase=spendCash(state,220,'helper');if(!purchase.ok)return toast(t('needMoreCash',locale));state=purchase.state;state.helper=true;state.autoRestockEnabled=false;save();renderPanel();toast(`${t('hireHelper',locale)} · ${t('helperNoWage',locale)}`)}
 function gridPoint(ev){const r=canvas.getBoundingClientRect(),v=new THREE.Vector2((ev.clientX-r.left)/r.width*2-1,-(ev.clientY-r.top)/r.height*2+1),ray=new THREE.Raycaster();ray.setFromCamera(v,camera);const hit=new THREE.Vector3();if(!ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),0),hit))return null;return{x:Math.round(hit.x),z:Math.round(hit.z)}}
 function pickFixture(p){if(!p)return null;return state.fixtures.find(f=>f.x===p.x&&f.z===p.z)}
 const pointers=new Map();let gesture=null;
@@ -130,7 +130,7 @@ function installV9(){
     get customerId(){return customerId},set customerId(value){customerId=value},
     get running(){return running},set running(value){running=value},
     get gameActive(){return gameActive},set gameActive(value){gameActive=value},
-    setGhost(value){ghost=value},cube,makeAnimal,gridPoint,panByPixels,setCamera,save,toast,price,showSale,
+    setGhost(value){ghost=value},cube,makeAnimal,gridPoint,panByPixels,setCamera,buildFloor,save,toast,price,showSale,spendCash,appendCashLedger,
     expand,hire,browseSeconds,checkoutSeconds,purchaseEquipment,applySaleRevenue,stockCapacity,totalStock,recoveryShipment,
     customerBudget,
     activeEquipment(){return activeEquipment()},
