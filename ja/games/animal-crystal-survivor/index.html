@@ -208,14 +208,10 @@
 <script src="/src/virtual-joystick.js?v=1.0.0"></script>
 <script data-wp-game-entry-bootstrap="i9">
 (() => {
-  const host = window.location.hostname;
-  const loopback = window.location.protocol === "http:"
-    && ["localhost", "127.0.0.1", "[::1]", "::1"].includes(host);
   const path = window.location.pathname.replace(/\/+$/, "");
-  if (!loopback || new URLSearchParams(window.location.search).get("preview") !== "1"
-      || !/(?:^|\/)games\/animal-crystal-survivor$/.test(path)) return;
+  if (!/(?:^|\/)games\/animal-crystal-survivor$/.test(path)) return;
   document.write('<script src="/src/game-entry-loader.js?v=20261013-entry-loader-i9-1"><\/script>');
-  document.write('<script defer src="/games/animal-crystal-survivor/stage-i9-preview-loader.js?v=20261013-crystal-stage-i9-preview15"><\/script>');
+  document.write('<script defer src="/games/animal-crystal-survivor/stage-i9-preview-loader.js?v=20261013-crystal-stage-i9-public1"><\/script>');
 })();
 </script>
 <script src="game.js?v=20261013-entry-loader-i9-v49-2&wp-audio=1.0.0"></script>

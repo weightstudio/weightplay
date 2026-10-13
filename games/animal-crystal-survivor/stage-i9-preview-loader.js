@@ -1,9 +1,6 @@
 (() => {
-  const params = new URLSearchParams(window.location.search);
-  const host = window.location.hostname;
-  const loopback = window.location.protocol === "http:"
-    && ["localhost", "127.0.0.1", "[::1]", "::1"].includes(host);
-  if (!loopback || params.get("preview") !== "1") return;
+  const path = window.location.pathname.replace(/\/+$/, "");
+  if (!/(?:^|\/)games\/animal-crystal-survivor$/.test(path)) return;
 
   document.documentElement.dataset.crystalStageI9Preview = "true";
   const base = new URL("/games/animal-crystal-survivor/", window.location.origin);
