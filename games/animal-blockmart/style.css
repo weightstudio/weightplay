@@ -244,11 +244,18 @@ body.wp-frame-battle-active #gameGuide{display:none}
 .card{min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1))!important;max-height:calc(72px * var(--wp-battle-canvas-inverse-scale,1))!important}
 .achievement-notice{position:fixed;z-index:30;top:calc(env(safe-area-inset-top,0px) + 12px);left:50%;transform:translateX(-50%);width:min(92vw,460px);padding:12px 16px;border:1px solid #cce8dd;border-radius:14px;background:#173f45;color:#fff;font-size:14px;font-weight:800;text-align:center;box-shadow:0 12px 32px #173f4540;pointer-events:none}
 .achievement-notice[hidden]{display:none}
-#panel[data-active-tab="achievements"] .achievement-row{grid-column:1/-1;grid-template-columns:minmax(0,1fr) auto;min-height:calc(68px * var(--wp-battle-canvas-inverse-scale,1))!important;max-height:none!important;background:#f4faf7;border-color:#c9dfd7}
+#panel[data-active-tab="achievements"] .achievement-heading h2{margin:0;color:#213b49;font-size:16px}
+#panel[data-active-tab="achievements"] .achievement-heading p{margin:3px 0 0;color:#3e5965;font-size:11px;line-height:1.35}
+#panel[data-active-tab="achievements"] .achievement-back{grid-column:1/-1;min-width:0;min-height:44px;padding:8px 12px;border:1px solid #c9dfd7;border-radius:12px;background:#f4faf7;color:#214a49;font-weight:800;text-align:left;white-space:normal}
+#panel[data-active-tab="achievements"] .achievement-row{grid-column:1/-1;display:grid;grid-template-columns:30px minmax(0,1fr) auto;grid-template-rows:auto auto;align-items:center;gap:4px 8px;min-width:0;min-height:70px;padding:8px 10px;border:1px solid #c9dfd7;border-radius:14px;background:#f4faf7;color:#243d49}
 #panel[data-active-tab="achievements"] .achievement-row.is-collected{background:#e7f5ee;border-color:#7ebca2}
-#panel[data-active-tab="achievements"] .achievement-row strong{white-space:normal}
-#panel[data-active-tab="achievements"] .achievement-row small{color:#3e5965}
-#panel[data-active-tab="achievements"] .achievement-back{grid-column:1/-1}
+#panel[data-active-tab="achievements"] .achievement-badge{grid-row:1/3;display:grid;place-items:center;width:30px;height:30px;border-radius:10px;background:#e3f2ee;font-size:19px}
+#panel[data-active-tab="achievements"] .achievement-copy{min-width:0}
+#panel[data-active-tab="achievements"] .achievement-copy h3{margin:0;color:#213b49;font-size:12px;line-height:1.25;white-space:normal;overflow-wrap:anywhere}
+#panel[data-active-tab="achievements"] .achievement-copy p{margin:2px 0 0;color:#3e5965;font-size:10px;line-height:1.2;overflow-wrap:anywhere}
+#panel[data-active-tab="achievements"] .achievement-status{color:#075e50;font-size:11px;white-space:nowrap}
+#panel[data-active-tab="achievements"] .achievement-progress{grid-column:2/4;width:100%;height:6px;accent-color:#159b7e}
+#panel[data-active-tab="achievements"] .achievement-heading{grid-column:1/-1;padding:8px 10px 4px}
 .fixture-row{min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1))}
 .fixture-row .fixture-manage,.fixture-row .fixture-store{min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1));font-size:calc(10px * var(--wp-battle-canvas-inverse-scale,1))}
 .placement-controls{min-height:calc(48px * var(--wp-battle-canvas-inverse-scale,1))}

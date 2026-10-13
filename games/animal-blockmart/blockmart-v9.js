@@ -701,28 +701,36 @@ export function installBlockmartV9(ctx) {
   function renderAchievements() {
     const stateValue = state().achievements;
     const progress = achievementProgress(stateValue);
-    const collected = new Set(stateValue.collectedRewardIds);
-    const back = createCard('achievement-back', ctx.t('achievementBack', ctx.locale), ctx.t('achievementsIntro', ctx.locale), '‹', () => {
-      ctx.selectedTab = 'shop'; renderPanel();
-    });
-    back.classList.add('achievement-back');
+    const heading = document.createElement('section');
+    heading.className = 'achievement-heading';
+    const title = document.createElement('h2'); title.textContent = ctx.t('achievementsTitle', ctx.locale);
+    const intro = document.createElement('p'); intro.textContent = ctx.t('achievementsIntro', ctx.locale);
+    heading.append(title, intro); $('panel').append(heading);
+    const back = document.createElement('button');
+    back.type = 'button'; back.className = 'achievement-back';
+    back.textContent = `‹  ${ctx.t('achievementBack', ctx.locale)}`;
+    back.addEventListener('click', () => { ctx.selectedTab = 'shop'; renderPanel(); });
+    $('panel').append(back);
     for (const achievement of ACHIEVEMENT_CATALOG) {
       const current = progress[achievement.id];
       const complete = current >= achievement.target;
-      const title = ctx.t(`achievement_${achievement.id}`, ctx.locale);
-      const detail = `${ctx.t('achievementReward', ctx.locale)} · ${complete
+      const title = document.createElement('h3'); title.textContent = ctx.t(`achievement_${achievement.id}`, ctx.locale);
+      const detail = document.createElement('p');
+      detail.textContent = `${ctx.t('achievementReward', ctx.locale)} · ${complete
         ? ctx.t('achievementCollected', ctx.locale) : ctx.t('achievementInProgress', ctx.locale)}`;
       const amount = achievement.id === 'gross_1000' ? ctx.price(Math.min(current, achievement.target))
-        : achievement.id === 'expansion_13' ? `${Math.min(current, achievement.target)} × ${Math.min(current, achievement.target)}`
+        : achievement.id === 'expansion_13' ? (current >= achievement.target ? '13 × 13' : '10 × 10 → 13 × 13')
           : `${Math.min(current, achievement.target)} / ${achievement.target}`;
-      const row = createCard(`achievement-${achievement.id}`, title, detail, `${complete ? '✓' : '○'} ${amount}`, () => {});
-      row.classList.add('achievement-row');
-      row.disabled = true;
-      row.setAttribute('aria-label', `${title}: ${amount}. ${detail}`);
-      row.setAttribute('aria-valuenow', String(Math.min(current, achievement.target)));
-      row.setAttribute('aria-valuemax', String(achievement.target));
+      const row = document.createElement('article'); row.className = `achievement-row${complete ? ' is-collected' : ''}`;
       row.dataset.achievementId = achievement.id;
-      if (complete) row.classList.add('is-collected');
+      row.setAttribute('aria-label', `${title.textContent}: ${amount}. ${detail.textContent}`);
+      const badge = document.createElement('span'); badge.className = 'achievement-badge'; badge.setAttribute('aria-hidden', 'true'); badge.textContent = complete ? '🏅' : '◇';
+      const copy = document.createElement('div'); copy.className = 'achievement-copy'; copy.append(title, detail);
+      const status = document.createElement('strong'); status.className = 'achievement-status'; status.textContent = `${complete ? '✓' : '○'} ${amount}`;
+      const meter = document.createElement('progress'); meter.className = 'achievement-progress'; meter.max = achievement.target;
+      meter.value = Math.min(current, achievement.target); meter.setAttribute('aria-label', title.textContent);
+      row.append(badge, copy, status, meter);
+      $('panel').append(row);
     }
   }
 
@@ -1293,11 +1301,11 @@ export function installBlockmartV9(ctx) {
     mapProducts(); unlockedProducts();
     const tab = ctx.selectedTab;
     $('panel').dataset.activeTab = tab;
-    if (selectedFixtureId && fixtures().some(f => f.id === selectedFixtureId)) renderSelectedFixture();
     if (tab === 'achievements') {
       renderAchievements();
       return;
     }
+    if (selectedFixtureId && fixtures().some(f => f.id === selectedFixtureId)) renderSelectedFixture();
     if (tab === 'shop') {
       createCard('shelf-single', ctx.t('smallShelf', ctx.locale), `${ctx.t('oneTile', ctx.locale)} · ${ctx.t('selectFloorThenPlace', ctx.locale)}`, ctx.price(70), () => beginPlacement('shelf', null, 'water', 'single'), { placement: { kind: 'shelf', footprint: 'single', product: 'water' } });
       createCard('shelf-double', ctx.t('doubleShelf', ctx.locale), `${ctx.t('twoTiles', ctx.locale)} · ${ctx.t('selectFloorThenPlace', ctx.locale)}`, ctx.price(120), () => beginPlacement('shelf', null, 'water', 'double'), { placement: { kind: 'shelf', footprint: 'double', product: 'water' } });
@@ -1647,6 +1655,7 @@ export function installBlockmartV9(ctx) {
 
   return {
     install,
+    notifyAchievementUnlocks,
     recordExpansionPurchase: toArea => settleAchievementEvent({ type: 'expansion_purchased', toArea }),
     walkable, accessTiles, routeToCheckout, canPlaceFixture, fixtureAt, fixtureCost,
     fixtureGroup, syncFixtures, beginPlacement, placementReason, updatePlacementPreview,

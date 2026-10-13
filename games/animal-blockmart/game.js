@@ -14,7 +14,7 @@ const EXPANSION_COST=600;
 const PRODUCTS={water:{name:t('restockWater'),cost:8,price:12,demand:1.55,color:0x5abbd0},snacks:{name:t('restockSnack'),cost:12,price:20,demand:1.0,color:0xf2ae4f},fizz:{name:t('premiumFizz'),cost:45,price:65,demand:.48,color:0xd96da1}};
 const INITIAL={cash:300,area:10,lifetime:0,transactions:0,day:1,recoveryOrders:0,recoveryDebt:0,diamond:0,diamondSpent:0,helper:false,autoRestockEnabled:false,cashLedger:[],entrances:[{x:0,z:0}],exits:[{x:9,z:9}],upgrades:0,equipment:{cooler:false,fastCheckout:false},legacyUpgradeCredits:0,unlocked:['water','snacks'],stock:{water:20,snacks:0,fizz:0},fixtures:[{id:'shelf-1',kind:'shelf',product:'water',x:3,z:3},{id:'checkout-1',kind:'checkout',x:7,z:1},{id:'cooler-1',kind:'cooler',x:9,z:4}],milestones:{firstSale:false,firstThousand:false,expanded:false},view:0,zoom:1,panX:0,panZ:0,cameraVersion:2,warehouse:[]};
 function load(){try{const s=JSON.parse(localStorage.getItem(SAVE_KEY));if(s&&s.version===1&&Number.isFinite(s.cash)&&s.area>=10){const next={...structuredClone(INITIAL),...s,...migrateEquipmentState(s),stock:{...INITIAL.stock,...s.stock},milestones:{...INITIAL.milestones,...s.milestones},recoveryOrders:Number.isFinite(s.recoveryOrders)?Math.max(0,Math.floor(s.recoveryOrders)):0,recoveryDebt:Number.isFinite(s.recoveryDebt)?Math.max(0,Math.floor(s.recoveryDebt)):0,warehouse:Array.isArray(s.warehouse)?s.warehouse:[]};if(!s.cameraVersion){next.view=(Number(s.view)||0)*Math.PI/2;next.panX=0;next.panZ=0;next.cameraVersion=2;if(next.equipment.fastCheckout&&!next.fixtures.some(f=>f.kind==='fastCheckout')&&!next.warehouse.some(f=>f.kind==='fastCheckout')){let spot=null;for(let z=2;z<next.area-1&&!spot;z++)for(let x=2;x<next.area-1;x++)if(!next.fixtures.some(f=>f.x===x&&f.z===z)){spot={x,z};break}if(spot)next.fixtures.push({id:'fastCheckout-legacy-v6',kind:'fastCheckout',...spot})}}return next}}catch{}return structuredClone(INITIAL)}
-let state=load(),renderer,scene,camera,clock=new THREE.Clock(),running=true,gameActive=false,frame=0,elapsed=0,spawnTimer=2,recoveryTimer=0,customerId=0,customers=[],meshes=new Map(),placement=null,selectedTab='shop',drag=null,toastTimer,ghost=null,frameApi=null,recordExpansionAchievement=()=>{};
+let state=load(),renderer,scene,camera,clock=new THREE.Clock(),running=true,gameActive=false,frame=0,elapsed=0,spawnTimer=2,recoveryTimer=0,customerId=0,customers=[],meshes=new Map(),placement=null,selectedTab='shop',drag=null,toastTimer,ghost=null,frameApi=null,recordExpansionAchievement=()=>{},notifyAchievementNotice=()=>{};
 const materials={};const mat=(c,roughness=.83)=>{const k=`${c}:${roughness}`;return materials[k]??(materials[k]=new THREE.MeshStandardMaterial({color:c,roughness}))};
 const boxGeo=new THREE.BoxGeometry(1,1,1);function cube(parent,name,color,x,y,z,sx,sy,sz,opts={}){const m=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),mat(color));m.name=name;m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;if(opts.rotation)m.rotation.y=opts.rotation;parent.add(m);return m}
 function makeWorld(){scene=new THREE.Scene();scene.background=new THREE.Color(0xdcece8);scene.fog=new THREE.Fog(0xdcece8,26,42);camera=new THREE.OrthographicCamera(-9,9,6,-6,.1,90);renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;scene.add(new THREE.HemisphereLight(0xf4fffb,0x71847a,1.45));const sun=new THREE.DirectionalLight(0xffe4b7,1.85);sun.position.set(-7,13,8);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);scene.add(sun);scene.add(new THREE.AmbientLight(0xffffff,.3));setCamera();buildFloor();syncFixtures();addShopkeeper();resize();window.addEventListener('resize',resize);}
@@ -142,6 +142,7 @@ function installV9(){
     renderPanel(){return renderPanel()}
   });
   recordExpansionAchievement=v9.recordExpansionPurchase;
+  notifyAchievementNotice=v9.notifyAchievementUnlocks;
   walkable=v9.walkable;accessTiles=v9.accessTiles;routeToCheckout=v9.routeToCheckout;
   canPlaceFixture=v9.canPlaceFixture;pickFixture=v9.fixtureAt;fixtureCost=v9.fixtureCost;
   fixtureGroup=v9.fixtureGroup;syncFixtures=v9.syncFixtures;beginPlacement=v9.beginPlacement;
@@ -174,7 +175,7 @@ window.addEventListener('storage',event=>{
     const latest=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');
     if(latest){latest.achievements=mergeAchievementStates(latest.achievements,state.achievements);localStorage.setItem(SAVE_KEY,JSON.stringify(latest))}
     const newlyUnlocked=(state.achievements.unlockedIds||[]).filter(id=>!before.has(id));
-    if(newlyUnlocked.length){const notice=document.querySelector('.achievement-notice');if(notice){notice.textContent=`${t('achievementUnlocked',locale)} · ${newlyUnlocked.map(id=>t(`achievement_${id}`,locale)).join(' · ')}`;notice.hidden=false;clearTimeout(notice.hideTimer);notice.hideTimer=setTimeout(()=>{notice.hidden=true},3200)}}
+    if(newlyUnlocked.length)notifyAchievementNotice(newlyUnlocked);
     if(selectedTab==='achievements')renderPanel();
   }catch{}
 });

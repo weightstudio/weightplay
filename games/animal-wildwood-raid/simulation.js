@@ -2,9 +2,9 @@ import {STAGES,TOOLS,ENEMIES,BOSS,guardianFor} from './game-data.js';
 export const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const dist=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
 const hostile=e=>e.kind==='enemy'||e.kind==='boss';
-// Stage one teaches the rhythm; stage two starts the real combat curve.
-// Fixed stage pressure preserves the value of permanent earned growth.
-const pressure=id=>id===1?1:1.55+(id-2)*.025;
+// Stage one teaches the rhythm; stage two introduces the first guardian with
+// a clear step-up. Later stages restore the steep permanent-growth curve.
+const pressure=id=>id===1?.72:id===2?.95:1.55+(id-2)*.025;
 export function mission(stage){
  const s=typeof stage==='number'?STAGES[stage-1]:stage;
  const req=s.type==='gather'?{wood:s.target}:s.type==='defeat'?{kills:s.target}:s.type==='rescue'?{rescues:s.target}:s.type==='shrine'?{shrines:s.target}:s.type==='survive'?{seconds:s.target}:s.type==='boss'?{bosses:BOSS[s.boss].count||1}:s.id===3?{wood:8,kills:3}:{rescues:3,kills:6};
