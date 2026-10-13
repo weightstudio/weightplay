@@ -1,0 +1,1158 @@
+import * as THREE from './vendor/three/three.module.min.js';
+import {
+  GRID_ENTRANCES, baseFootprint, footprintSize, occupiedTiles, footprintConflict,
+  serviceVector, serviceFacingTarget, queueTile, clampPopularity, popularityAfterWait,
+  popularityAfterWalkout, decorAppeal, trafficInterval, smoothHeading, fixtureCenter
+} from './blockmart-v9-systems.js';
+
+const PRODUCT_DEFS = {
+  water: { label: 'restockWater', cost: 8, price: 12, demand: 1.45, color: 0x48b6cf, display: 'water' },
+  snacks: { label: 'cookies', cost: 12, price: 20, demand: 1.05, color: 0xc87b31, display: 'cookies' },
+  chips: { label: 'chips', cost: 13, price: 22, demand: .96, color: 0xe8bc38, display: 'chips' },
+  juice: { label: 'juice', cost: 17, price: 30, demand: .78, color: 0xe87535, display: 'juice' },
+  fizz: { label: 'sparklingDrink', cost: 42, price: 62, demand: .5, color: 0xa34e91, display: 'fizz' }
+};
+
+const CASHIER_HIRE_COST = 180;
+const REGISTER_COST = 120;
+const QUEUE_LIMIT_PER_REGISTER = 4;
+const QUEUE_PATIENCE_SECONDS = 17;
+const STAFFED_QUEUE_SECONDS = .95;
+const TRAFFIC_RECOVERY_FLOOR = 18;
+const CELL_SIZE = .94;
+
+const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+const copyPoint = point => point ? { x: point.x, z: point.z } : null;
+
+export function migrateV9Save(saved = {}, initial = {}) {
+  const state = {
+    ...structuredClone(initial),
+    ...saved,
+    stock: { ...initial.stock, ...(saved.stock || {}), chips: saved.stock?.chips || 0, juice: saved.stock?.juice || 0 },
+    milestones: { ...initial.milestones, ...(saved.milestones || {}) },
+    equipment: { ...initial.equipment, ...(saved.equipment || {}) },
+    warehouse: Array.isArray(saved.warehouse) ? saved.warehouse : [],
+    fixtures: Array.isArray(saved.fixtures) ? saved.fixtures : structuredClone(initial.fixtures || []),
+    unlocked: Array.isArray(saved.unlocked) ? [...new Set([...saved.unlocked, 'chips'])] : ['water', 'snacks', 'chips'],
+    cashierCount: Number.isFinite(saved.cashierCount) ? Math.max(0, Math.floor(saved.cashierCount)) : 1,
+    popularity: clampPopularity(saved.popularity ?? 58),
+    popularitySales: Math.max(0, Math.floor(saved.popularitySales || 0)),
+    nextQueueSequence: Math.max(1, Math.floor(saved.nextQueueSequence || 1)),
+    coolerFixtureId: saved.coolerFixtureId || null,
+    fastCheckoutFixtureId: saved.fastCheckoutFixtureId || null
+  };
+  state.fixtures = state.fixtures.map(fixture => normalizeFixture(fixture));
+  state.warehouse = state.warehouse.map(fixture => normalizeFixture(fixture));
+  if (!state.unlocked.includes('water')) state.unlocked.unshift('water');
+  if (!state.unlocked.includes('snacks')) state.unlocked.push('snacks');
+  return state;
+}
+
+export function normalizeFixture(fixture = {}) {
+  const migrated = { ...fixture, rotation: ((Math.floor(fixture.rotation || 0) % 4) + 4) % 4 };
+  if (fixture.kind === 'shelf') migrated.footprint = fixture.footprint === 'double' ? 'double' : 'single';
+  if (fixture.kind === 'cooler') migrated.footprint = 'cooler';
+  if (fixture.kind === 'checkout' || fixture.kind === 'fastCheckout') migrated.footprint = 'counter';
+  if (fixture.kind === 'decor') migrated.footprint = 'decor';
+  return migrated;
+}
+
+export function installBlockmartV9(ctx) {
+  const $ = ctx.$;
+  const getState = () => ctx.state;
+  const setState = value => { ctx.state = value; };
+  const getPlacement = () => ctx.placement;
+  const setPlacement = value => { ctx.placement = value; };
+  const getCustomers = () => ctx.customers;
+  const setCustomers = value => { ctx.customers = value; };
+  const getMeshes = () => ctx.meshes;
+  const mapProducts = () => {
+    for (const [id, product] of Object.entries(PRODUCT_DEFS)) {
+      ctx.PRODUCTS[id] = { ...product, name: ctx.t(product.label, ctx.locale) };
+    }
+    ctx.PRODUCTS.snacks.name = ctx.t('cookies', ctx.locale);
+    ctx.PRODUCTS.fizz.name = ctx.t('sparklingDrink', ctx.locale);
+  };
+
+  let selectedFloor = null;
+  let selectedFixtureId = null;
+  let selectedMarker = null;
+  let ghostMesh = null;
+  let selectionMesh = null;
+  let pointerState = null;
+  let pinchState = null;
+  let cardDrag = null;
+  let previousFrame = 0;
+  let lastQueueUpdate = 0;
+  let recoveryTick = 0;
+  let isInstalled = false;
+
+  const state = () => getState();
+  const setSelectedFloor = point => {
+    selectedFloor = copyPoint(point);
+    updateSelectionMarker();
+  };
+  const fixtures = () => state().fixtures;
+  const allCounters = () => fixtures().filter(f => f.kind === 'checkout').sort((a, b) => String(a.id).localeCompare(String(b.id)));
+  const staffedCounters = () => allCounters().slice(0, state().cashierCount);
+  const counterById = id => staffedCounters().find(f => f.id === id) || null;
+  const decorativeCount = () => fixtures().filter(f => f.kind === 'decor').length;
+  const currentDecorAppeal = () => decorAppeal(decorativeCount());
+
+  function migrateCurrentState() {
+    const migrated = migrateV9Save(state(), ctx.INITIAL);
+    setState(migrated);
+    mapProducts();
+    if (!migrated.fixtures.some(f => f.kind === 'checkout')) {
+      migrated.fixtures.unshift({ id: 'checkout-v9-safe-default', kind: 'checkout', x: 7, z: 1, rotation: 0, footprint: 'counter' });
+      migrated.cashierCount = Math.max(1, migrated.cashierCount);
+    }
+    if (migrated.cashierCount < 1 && migrated.fixtures.some(f => f.kind === 'checkout')) migrated.cashierCount = 1;
+    if (migrated.equipment.cooler && !migrated.coolerFixtureId) migrated.coolerFixtureId = migrated.fixtures.find(f => f.kind === 'cooler')?.id || null;
+    if (migrated.equipment.fastCheckout && !migrated.fastCheckoutFixtureId) migrated.fastCheckoutFixtureId = migrated.fixtures.find(f => f.kind === 'fastCheckout')?.id || null;
+    return migrated;
+  }
+
+  function dimensioned(fixture) {
+    const size = footprintSize(fixture);
+    return { width: size.width, depth: size.depth };
+  }
+
+  function walkable(x, z) {
+    if (x < 0 || z < 0 || x >= state().area || z >= state().area) return false;
+    return !fixtures().some(f => occupiedTiles(f).some(tile => tile.x === x && tile.z === z));
+  }
+
+  function accessTiles(fixture) {
+    const size = dimensioned(fixture);
+    const candidates = [];
+    for (let x = fixture.x; x < fixture.x + size.width; x++) {
+      candidates.push({ x, z: fixture.z - 1 }, { x, z: fixture.z + size.depth });
+    }
+    for (let z = fixture.z; z < fixture.z + size.depth; z++) {
+      candidates.push({ x: fixture.x - 1, z }, { x: fixture.x + size.width, z });
+    }
+    const seen = new Set();
+    return candidates.filter(p => {
+      const key = `${p.x},${p.z}`;
+      if (seen.has(key) || !walkable(p.x, p.z)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
+  function findPath(start, goals, blocked = null) {
+    if (!start || !goals?.length) return [];
+    const key = (x, z) => `${x},${z}`;
+    const goalSet = new Set(goals.filter(p => walkable(p.x, p.z) && !blocked?.(p.x, p.z)).map(p => key(p.x, p.z)));
+    if (!goalSet.size) return [];
+    const origin = { x: Math.round(start.x), z: Math.round(start.z) };
+    const queue = [origin];
+    const came = new Map([[key(origin.x, origin.z), null]]);
+    let found = null;
+    while (queue.length) {
+      const point = queue.shift();
+      const pointKey = key(point.x, point.z);
+      if (goalSet.has(pointKey)) { found = point; break; }
+      for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        const x = point.x + dx, z = point.z + dz, nextKey = key(x, z);
+        if (came.has(nextKey) || !walkable(x, z) || blocked?.(x, z)) continue;
+        came.set(nextKey, pointKey); queue.push({ x, z });
+      }
+    }
+    if (!found) return [];
+    const path = [];
+    let cursor = key(found.x, found.z);
+    while (cursor && cursor !== key(origin.x, origin.z)) {
+      const [x, z] = cursor.split(',').map(Number); path.unshift({ x, z }); cursor = came.get(cursor);
+    }
+    return path;
+  }
+
+  function routeToCheckout(blockedTiles = [], candidate = null, ignoreId = null) {
+    const blocked = new Set(blockedTiles.map(p => `${p.x},${p.z}`));
+    const counters = staffedCounters().filter(f => f.id !== ignoreId);
+    if (candidate?.kind === 'checkout' && counters.length < state().cashierCount) counters.push(candidate);
+    if (!counters.length) return false;
+    const goals = counters.flatMap(counter => {
+      const size = dimensioned(counter), target = serviceFacingTarget(counter);
+      const x = Math.round(target.x), z = Math.round(target.z);
+      return [{ x, z }];
+    }).filter(p => !blocked.has(`${p.x},${p.z}`) && walkable(p.x, p.z));
+    if (!goals.length) return false;
+    return GRID_ENTRANCES.every(start => {
+      if (!walkable(start.x, start.z)) return true;
+      return findPath(start, goals, (x, z) => blocked.has(`${x},${z}`)).length > 0
+        || goals.some(goal => goal.x === start.x && goal.z === start.z);
+    });
+  }
+
+  function canPlaceFixture(x, z, ignoreId = null) {
+    const current = getPlacement();
+    const candidate = normalizeFixture({
+      ...(current?.fixtureId ? fixtures().find(f => f.id === current.fixtureId) || state().warehouse.find(f => f.id === current.fixtureId) || {} : {}),
+      kind: current?.kind || 'shelf', footprint: current?.footprint || 'single', rotation: current?.rotation || 0,
+      x, z, id: ignoreId || current?.fixtureId || '__candidate__'
+    });
+    const conflict = footprintConflict(candidate, fixtures(), state().area, ignoreId || current?.fixtureId);
+    if (conflict) return false;
+    const tiles = occupiedTiles(candidate);
+    return routeToCheckout(tiles, candidate, ignoreId || current?.fixtureId);
+  }
+
+  function fixtureAt(point) {
+    if (!point) return null;
+    return fixtures().find(f => occupiedTiles(f).some(tile => tile.x === point.x && tile.z === point.z)) || null;
+  }
+
+  function fixtureCost(kind, footprint = 'single') {
+    if (kind === 'shelf') return footprint === 'double' ? 120 : 70;
+    if (kind === 'checkout') return REGISTER_COST;
+    if (kind === 'cooler') return 180;
+    if (kind === 'fastCheckout') return 150;
+    if (kind === 'decor') return 0;
+    return 0;
+  }
+
+  function currentPlacementCandidate() {
+    const p = getPlacement();
+    if (!p) return null;
+    const old = p.fixtureId ? fixtures().find(f => f.id === p.fixtureId) || state().warehouse.find(f => f.id === p.fixtureId) : null;
+    return normalizeFixture({ ...(old || {}), id: p.fixtureId || '__candidate__', kind: p.kind,
+      footprint: p.footprint || (p.kind === 'cooler' ? 'cooler' : p.kind === 'checkout' ? 'counter' : 'single'),
+      rotation: p.rotation || 0, product: p.product || 'water', x: p.point?.x ?? -999, z: p.point?.z ?? -999 });
+  }
+
+  function placementReason(point) {
+    if (!point) return ctx.t('selectFloorFirst', ctx.locale);
+    const p = currentPlacementCandidate();
+    p.x = point.x; p.z = point.z;
+    const conflict = footprintConflict(p, fixtures(), state().area, getPlacement()?.fixtureId);
+    if (conflict === 'outside') return ctx.t('placementOutside', ctx.locale);
+    if (conflict === 'entrance') return ctx.t('placementEntry', ctx.locale);
+    if (conflict === 'occupied') return ctx.t('placementOccupied', ctx.locale);
+    if (!routeToCheckout(occupiedTiles(p), p, getPlacement()?.fixtureId)) return ctx.t('placementRoute', ctx.locale);
+    const requiresPurchase = !getPlacement()?.fixtureId || p.kind === 'cooler' && !state().equipment.cooler;
+    if (requiresPurchase && state().cash < fixtureCost(p.kind, p.footprint) && p.kind !== 'decor') return ctx.t('needMoreCash', ctx.locale);
+    if (p.kind === 'decor' && state().diamond < 1) return ctx.t('needMoreCash', ctx.locale);
+    return ctx.t('placementValid', ctx.locale);
+  }
+
+  function updatePlacementUi() {
+    const p = getPlacement();
+    if (!p) return;
+    p.valid = Boolean(p.point && canPlaceFixture(p.point.x, p.point.z, p.fixtureId));
+    const reason = placementReason(p.point);
+    $('placementStatus').textContent = reason;
+    $('placementStatus').classList.toggle('invalid', !p.valid);
+    $('confirmPlacement').disabled = !p.valid;
+    const requiresPurchase = !p.fixtureId || p.kind === 'cooler' && !state().equipment.cooler;
+    const cost = requiresPurchase ? ctx.price(fixtureCost(p.kind, p.footprint)) : ctx.t('placeFree', ctx.locale);
+    $('confirmPlacement').textContent = `${ctx.t('confirmPlace', ctx.locale)} · ${cost}`;
+    if (ghostMesh) {
+      ghostMesh.visible = Boolean(p.point);
+      if (p.point) {
+        const size = footprintSize(currentPlacementCandidate());
+        ghostMesh.geometry.dispose();
+        ghostMesh.geometry = new THREE.BoxGeometry(Math.max(.84, size.width * CELL_SIZE), .045, Math.max(.84, size.depth * CELL_SIZE));
+        ghostMesh.position.set(p.point.x + (size.width - 1) / 2, .13, p.point.z + (size.depth - 1) / 2);
+        ghostMesh.rotation.y = p.rotation * Math.PI / 2;
+        ghostMesh.material.color.set(p.valid ? 0x19a975 : 0xe34949);
+      }
+    }
+    updateSelectionMarker();
+  }
+
+  function updateSelectionMarker() {
+    if (selectionMesh) {
+      selectionMesh.visible = Boolean(selectedFloor);
+      if (selectedFloor) selectionMesh.position.set(selectedFloor.x, .105, selectedFloor.z);
+    }
+  }
+
+  function syncFixtures() {
+    if (!ctx.scene) return;
+    for (const group of getMeshes().values()) {
+      ctx.scene.remove(group); group.traverse(object => object.geometry?.dispose());
+    }
+    getMeshes().clear();
+    fixtures().forEach(fixture => fixtureGroup(fixture));
+    if (ghostMesh) { ctx.scene.remove(ghostMesh); ghostMesh.geometry.dispose(); ghostMesh.material.dispose(); }
+    ghostMesh = new THREE.Mesh(new THREE.BoxGeometry(1, .045, 1), new THREE.MeshBasicMaterial({ color: 0x19a975, transparent: true, opacity: .55, depthWrite: false }));
+    ghostMesh.visible = false; ghostMesh.position.y = .13; ctx.scene.add(ghostMesh); ctx.setGhost(ghostMesh);
+    if (selectionMesh) { ctx.scene.remove(selectionMesh); selectionMesh.geometry.dispose(); selectionMesh.material.dispose(); }
+    selectionMesh = new THREE.Mesh(new THREE.BoxGeometry(.96, .025, .96), new THREE.MeshBasicMaterial({ color: 0xffcc45, transparent: true, opacity: .48, depthWrite: false }));
+    selectionMesh.visible = false; ctx.scene.add(selectionMesh); updateSelectionMarker();
+  }
+
+  function fixtureGroup(fixture) {
+    const normalized = normalizeFixture(fixture), size = baseFootprint(normalized);
+    const worldSize = footprintSize(normalized), center = fixtureCenter(normalized);
+    const group = new THREE.Group();
+    group.position.set(center.x, 0, center.z); group.rotation.y = normalized.rotation * Math.PI / 2;
+    group.userData.fixture = normalized.id; group.userData.kind = normalized.kind;
+    const width = size.width, depth = size.depth;
+    const block = (name, color, x, y, z, sx, sy, sz) => ctx.cube(group, name, color, x, y, z, sx, sy, sz);
+    if (normalized.kind === 'shelf') {
+      block('shelf-footprint', 0x9cb1a4, 0, .14, 0, Math.max(.9, width * .9), .16, Math.max(.9, depth * .9));
+      block('shelf-left-post', 0x718b7e, -width * .37, .84, 0, .09, 1.36, depth * .78);
+      block('shelf-right-post', 0x718b7e, width * .37, .84, 0, .09, 1.36, depth * .78);
+      for (const y of [.42, .8, 1.18]) {
+        block('shelf-board', 0xf5e4bf, 0, y, 0, width * .88, .1, depth * .82);
+        const sku = ctx.PRODUCTS[normalized.product] ? normalized.product : 'water';
+        const catalog = PRODUCT_DEFS[sku];
+        for (let i = 0; i < 3; i++) {
+          const x = (i - 1) * Math.min(.24, width * .23), z = 0;
+          addDisplayItem(block, sku, catalog.display, x, y + .17, z, catalog.color);
+        }
+      }
+      block('shelf-sign', 0x16545c, 0, 1.52, depth * .44, width * .74, .18, .07);
+      block('shelf-sign-color', PRODUCT_DEFS[normalized.product]?.color || 0x48b6cf, 0, 1.52, depth * .49, width * .28, .07, .025);
+    } else if (normalized.kind === 'checkout') {
+      block('checkout-counter', 0xc69c67, 0, .64, 0, .9, .82, .88);
+      block('checkout-front', 0x426c73, 0, .4, .46, .78, .48, .08);
+      block('checkout-display', 0x93e3c7, 0, 1.12, -.13, .36, .24, .3);
+      block('checkout-conveyor', 0x465e63, 0, 1.03, .19, .7, .06, .42);
+      block('checkout-light', staffedCounters().some(f => f.id === normalized.id) ? 0x61ca83 : 0xd55b50, .35, 1.1, -.32, .12, .12, .12);
+      if (staffedCounters().some(f => f.id === normalized.id)) addCashierModel(block);
+    } else if (normalized.kind === 'fastCheckout') {
+      block('checkout-upgrade', 0x426d79, 0, .55, 0, .82, .75, .68);
+      block('checkout-display', 0x9be4cf, 0, .98, .12, .48, .22, .12);
+      block('checkout-beam', 0xffd76c, 0, 1.14, .12, .48, .05, .12);
+    } else if (normalized.kind === 'cooler') {
+      block('cooler-footprint', 0x88aeb0, 0, .15, 0, 1.88, .17, 1.88);
+      block('cooler-case', 0x9ed5dc, 0, .9, 0, 1.8, 1.5, 1.8);
+      block('cooler-door', 0xd8f2ee, 0, .92, .93, 1.28, 1.2, .06);
+      for (let shelf = 0; shelf < 3; shelf++) {
+        block('cooler-shelf', 0x739a99, 0, .42 + shelf * .38, .82, 1.3, .07, .12);
+        addDisplayItem(block, shelf === 1 ? 'juice' : 'fizz', shelf === 1 ? 'juice' : 'fizz', -.38 + shelf * .38, .58 + shelf * .38, .86, shelf === 1 ? 0xe87535 : 0xa34e91);
+      }
+    } else if (normalized.kind === 'decor') {
+      block('decor-pot', 0xb47e58, 0, .18, 0, .7, .34, .7);
+      block('decor-stem', 0x588e57, 0, .55, 0, .15, .54, .15);
+      block('decor-leaf-a', 0x7fb65d, -.2, .82, 0, .42, .34, .27);
+      block('decor-leaf-b', 0x65a34c, .2, .95, .08, .42, .3, .28);
+      block('decor-leaf-c', 0x98c866, 0, 1.12, -.04, .38, .32, .3);
+    }
+    group.traverse(object => { if (object.isMesh) { object.castShadow = true; object.receiveShadow = true; } });
+    ctx.scene.add(group); getMeshes().set(normalized.id, group); return group;
+  }
+
+  function addDisplayItem(block, sku, display, x, y, z, color) {
+    const size = sku === 'snacks' ? .2 : .18;
+    if (display === 'water') {
+      block('water-crate', 0x3f8ea7, x, y, z, size * 1.15, .2, .17);
+      block('water-bottle', 0x66cce0, x, y + .18, z, .11, .23, .1);
+      block('water-cap', 0xf7f7e8, x, y + .32, z, .08, .05, .08);
+    } else if (display === 'cookies') {
+      block('cookie-packet', 0xd18838, x, y, z, .22, .29, .16);
+      block('cookie-seal', 0xf0c063, x, y + .17, z + .09, .18, .09, .025);
+      block('cookie-mark', 0x764122, x, y + .16, z + .11, .07, .07, .025);
+    } else if (display === 'chips') {
+      block('chips-bag', color, x, y, z, .2, .31, .16);
+      block('chips-top', 0xffe575, x, y + .17, z + .09, .19, .08, .025);
+      block('chips-logo', 0xfff3cb, x, y - .02, z + .095, .1, .07, .025);
+    } else if (display === 'juice') {
+      block('juice-carton', color, x, y, z, .19, .3, .17);
+      block('juice-top', 0xffd190, x, y + .17, z, .2, .06, .18);
+      block('juice-straw', 0xf4f0d6, x + .055, y + .24, z + .02, .035, .15, .035);
+      block('juice-label', 0xffedc7, x, y, z + .095, .12, .1, .025);
+    } else {
+      block('sparkling-can', color, x, y, z, .17, .31, .17);
+      block('sparkling-band', 0xe5eff0, x, y - .01, z + .09, .15, .08, .025);
+      block('sparkling-top', 0xbac9cd, x, y + .17, z, .17, .035, .17);
+    }
+  }
+
+  function addCashierModel(block) {
+    block('cashier-body', 0x258b78, -.1, 1.56, -.43, .38, .5, .35);
+    block('cashier-head', 0xb88d6a, -.1, 1.98, -.43, .35, .34, .35);
+    block('cashier-cap', 0x315f6c, -.1, 2.19, -.43, .4, .1, .38);
+    block('cashier-face', 0xffdfb9, -.1, 1.96, -.245, .2, .14, .035);
+  }
+
+  function countersWithCandidate(candidate = null) {
+    const counters = [...staffedCounters()];
+    if (candidate?.kind === 'checkout' && counters.length < state().cashierCount) counters.push(candidate);
+    return counters;
+  }
+
+  function queueLine(counter) {
+    return getCustomers().filter(customer => customer.checkoutId === counter.id
+      && (customer.state === 'queue' || customer.state === 'pay'))
+      .sort((a, b) => a.queueSequence - b.queueSequence);
+  }
+
+  function queueSpotFor(counter, rank) {
+    const spot = queueTile(counter, rank);
+    return walkable(spot.x, spot.z) ? spot : null;
+  }
+
+  function queueRank(customer) {
+    const counter = counterById(customer.checkoutId);
+    return counter ? queueLine(counter).indexOf(customer) : -1;
+  }
+
+  function assignQueueSpot(customer) {
+    const counter = counterById(customer.checkoutId);
+    if (!counter) return false;
+    const rank = queueRank(customer);
+    if (rank < 0 || rank >= QUEUE_LIMIT_PER_REGISTER) return false;
+    const spot = queueSpotFor(counter, rank);
+    if (!spot) return false;
+    if (customer.queueSpot?.x === spot.x && customer.queueSpot?.z === spot.z && customer.path?.length) return true;
+    customer.queueSpot = spot;
+    customer.path = findPath({ x: customer.x, z: customer.z }, [spot]);
+    customer.pathAt = 0; customer.segment = null; customer.queueRank = rank;
+    if (!customer.path.length && (customer.x !== spot.x || customer.z !== spot.z)) return false;
+    return true;
+  }
+
+  function updateQueueLines() {
+    for (const counter of staffedCounters()) {
+      for (const customer of queueLine(counter)) assignQueueSpot(customer);
+    }
+    lastQueueUpdate = performance.now();
+  }
+
+  function routeCustomerOut(customer) {
+    const entrances = GRID_ENTRANCES.filter(p => walkable(p.x, p.z));
+    const paths = entrances.map(point => findPath({ x: customer.x, z: customer.z }, [point]));
+    const path = paths.filter(candidate => candidate.length).sort((a, b) => a.length - b.length)[0] || [];
+    customer.path = path; customer.pathAt = 0; customer.segment = null;
+    customer.exitAt = path.length ? null : performance.now();
+    customer.state = 'leave';
+  }
+
+  function stopCustomerVisit(customer, reason = 'queue') {
+    if (customer.carried && customer.product && state().stock[customer.product] !== undefined) {
+      state().stock[customer.product]++;
+      customer.carried = false;
+    }
+    state().popularity = popularityAfterWalkout(state().popularity);
+    customer.exitReason = reason;
+    routeCustomerOut(customer);
+    ctx.save(); refreshHud();
+  }
+
+  function nearestCounter(customer) {
+    return staffedCounters().map(counter => ({
+      counter,
+      line: queueLine(counter),
+      spot: queueSpotFor(counter, queueLine(counter).length),
+      path: []
+    })).filter(item => item.line.length < QUEUE_LIMIT_PER_REGISTER && item.spot)
+      .map(item => ({ ...item, path: findPath({ x: customer.x, z: customer.z }, [item.spot]) }))
+      .filter(item => item.path.length || (customer.x === item.spot.x && customer.z === item.spot.z))
+      .sort((a, b) => a.line.length - b.line.length || a.path.length - b.path.length)[0] || null;
+  }
+
+  function targetCheckout(customer) {
+    const target = nearestCounter(customer);
+    if (!target) return false;
+    customer.checkoutId = target.counter.id;
+    customer.queueSequence = state().nextQueueSequence++;
+    customer.queueWait = 0;
+    customer.wait = 0;
+    customer.state = 'queue';
+    customer.path = target.path;
+    customer.pathAt = 0; customer.segment = null;
+    customer.queueSpot = target.spot;
+    updateQueueLines();
+    return true;
+  }
+
+  function routeToShelf(customer, shelf) {
+    const path = findPath({ x: customer.x, z: customer.z }, accessTiles(shelf));
+    if (!path.length && !accessTiles(shelf).some(p => p.x === customer.x && p.z === customer.z)) return false;
+    customer.target = shelf; customer.path = path; customer.pathAt = 0;
+    customer.state = 'browse'; customer.wait = 0; customer.segment = null;
+    return true;
+  }
+
+  function unlockedProducts() {
+    const lifetime = state().lifetime;
+    if (lifetime >= 280 && !state().unlocked.includes('juice')) state().unlocked.push('juice');
+    if (lifetime >= 1000 && !state().unlocked.includes('fizz')) state().unlocked.push('fizz');
+    return state().unlocked;
+  }
+
+  function chooseProduct(budget) {
+    const unlocked = new Set(unlockedProducts());
+    const stockedShelves = new Set(fixtures().filter(f => f.kind === 'shelf').map(f => f.product));
+    const available = Object.keys(PRODUCT_DEFS).filter(id => unlocked.has(id) && stockedShelves.has(id)
+      && state().stock[id] > 0 && ctx.PRODUCTS[id].price <= budget);
+    if (!available.length) return null;
+    const weights = available.map(id => PRODUCT_DEFS[id].demand);
+    let sample = Math.random() * weights.reduce((sum, weight) => sum + weight, 0);
+    for (let i = 0; i < available.length; i++) { sample -= weights[i]; if (sample <= 0) return available[i]; }
+    return available[0];
+  }
+
+  function spawn() {
+    const entries = GRID_ENTRANCES.filter(p => walkable(p.x, p.z));
+    if (!entries.length) return;
+    const point = entries[Math.floor(Math.random() * entries.length)];
+    const kinds = [['rabbit', 0xf1d5c1], ['bear', 0xad825f], ['fox', 0xe78c5c], ['cat', 0xb2a4cc]];
+    const kind = kinds[ctx.customerId++ % kinds.length];
+    const group = ctx.makeAnimal(kind[0], kind[1]);
+    group.position.set(point.x, 0, point.z); ctx.scene.add(group);
+    const budget = ctx.customerBudget();
+    const customer = { id: ctx.customerId, group, x: point.x, z: point.z, product: chooseProduct(budget),
+      state: 'enter', path: [], pathAt: 0, wait: Math.random() * .6, budget, queue: 0,
+      queueWait: 0, queueSequence: 0, segment: null, carried: false };
+    getCustomers().push(customer);
+    if (customer.product) {
+      const shelves = fixtures().filter(f => f.kind === 'shelf' && f.product === customer.product && accessTiles(f).length);
+      const shelf = shelves[Math.floor(Math.random() * shelves.length)];
+      if (!shelf || !routeToShelf(customer, shelf)) routeCustomerOut(customer);
+    } else routeCustomerOut(customer);
+  }
+
+  function headingTarget(customer) {
+    if (customer.segment) return Math.atan2(customer.segment.to.x - customer.segment.from.x, customer.segment.to.z - customer.segment.from.z);
+    if (customer.state === 'queue' || customer.state === 'pay') {
+      const counter = counterById(customer.checkoutId);
+      if (counter) {
+        const rank = Math.max(0, queueRank(customer));
+        const target = rank > 0 ? queueTile(counter, rank - 1) : fixtureCenter(counter);
+        return Math.atan2(target.x - customer.x, target.z - customer.z);
+      }
+    }
+    if (customer.state === 'browse' && customer.target) {
+      const center = fixtureCenter(customer.target);
+      return Math.atan2(center.x - customer.x, center.z - customer.z);
+    }
+    if (customer.pathAt < customer.path.length) {
+      const destination = customer.path[customer.pathAt];
+      return Math.atan2(destination.x - customer.x, destination.z - customer.z);
+    }
+    return customer.group.rotation.y;
+  }
+
+  function moveCustomer(customer, delta) {
+    if (customer.pathAt >= customer.path.length) return false;
+    if (!customer.segment) customer.segment = { from: { x: customer.x, z: customer.z }, to: customer.path[customer.pathAt], progress: 0, duration: .3 };
+    const segment = customer.segment;
+    segment.progress = Math.min(segment.duration, segment.progress + delta);
+    const ratio = segment.progress / segment.duration;
+    customer.group.position.set(THREE.MathUtils.lerp(segment.from.x, segment.to.x, ratio), 0, THREE.MathUtils.lerp(segment.from.z, segment.to.z, ratio));
+    if (segment.progress >= segment.duration) {
+      customer.x = segment.to.x; customer.z = segment.to.z; customer.pathAt++; customer.segment = null;
+      if (customer.pathAt >= customer.path.length && customer.state === 'browse') customer.wait = ctx.browseSeconds(ctx.activeEquipment());
+    }
+    return true;
+  }
+
+  function settleSale(customer) {
+    const product = ctx.PRODUCTS[customer.product];
+    if (!product) { stopCustomerVisit(customer, 'invalid-product'); return; }
+    const sale = ctx.applySaleRevenue(state(), product.price);
+    setState(sale.state);
+    state().lifetime += sale.grossRevenue; state().transactions++;
+    state().popularity = popularityAfterWait(state().popularity, customer.queueWait, QUEUE_PATIENCE_SECONDS);
+    state().popularity = clampPopularity(state().popularity + 1 + currentDecorAppeal() * .025);
+    if (!state().milestones.firstSale) { state().milestones.firstSale = true; state().diamond++; }
+    unlockedProducts();
+    ctx.showSale(sale.netRevenue);
+    if (sale.debtPayment) ctx.toast(`${ctx.t('recoveryPayment', ctx.locale)} · ${ctx.price(sale.debtPayment)}`);
+    ctx.save(); refreshHud(); customer.state = 'done'; customer.remove = 0;
+    updateQueueLines(); ctx.renderPanel();
+  }
+
+  function updateCustomer(customer, delta) {
+    if (customer.state === 'done') {
+      customer.remove = (customer.remove || 0) + delta;
+      return customer.remove < .45;
+    }
+    if (customer.state === 'leave') {
+      if (customer.pathAt < customer.path.length) moveCustomer(customer, delta);
+      else { customer.fade = (customer.fade || 0) + delta; if (customer.fade > .35) { ctx.scene.remove(customer.group); return false; } }
+    } else if (customer.state === 'browse') {
+      if (customer.pathAt < customer.path.length) moveCustomer(customer, delta);
+      else {
+        customer.wait -= delta;
+        if (customer.wait <= 0) {
+          const product = ctx.PRODUCTS[customer.product];
+          if (!product || state().stock[customer.product] <= 0 || product.price > customer.budget || !targetCheckout(customer)) stopCustomerVisit(customer, 'no-register');
+          else { state().stock[customer.product]--; customer.carried = true; ctx.renderPanel(); }
+        }
+      }
+    } else if (customer.state === 'queue') {
+      customer.queueWait = (customer.queueWait || 0) + delta;
+      customer.queue = customer.queueWait;
+      const counter = counterById(customer.checkoutId);
+      if (!counter) stopCustomerVisit(customer, 'unavailable-register');
+      else {
+        const rank = queueRank(customer);
+        if (rank < 0 || !assignQueueSpot(customer)) stopCustomerVisit(customer, 'blocked-queue');
+        else if (customer.pathAt < customer.path.length) moveCustomer(customer, delta);
+        else if (rank === 0 && !getCustomers().some(other => other !== customer && other.checkoutId === customer.checkoutId && other.state === 'pay')) {
+          customer.state = 'pay'; customer.wait = STAFFED_QUEUE_SECONDS; customer.serviceCounter = counter;
+        }
+        if (customer.state === 'queue' && customer.queueWait >= QUEUE_PATIENCE_SECONDS) stopCustomerVisit(customer, 'queue');
+      }
+    } else if (customer.state === 'pay') {
+      const counter = counterById(customer.checkoutId);
+      if (!counter) stopCustomerVisit(customer, 'unavailable-register');
+      else {
+        customer.wait -= delta;
+        if (customer.wait <= 0) settleSale(customer);
+      }
+    } else if (customer.state === 'enter') routeCustomerOut(customer);
+    const target = headingTarget(customer);
+    customer.group.rotation.y = smoothHeading(customer.group.rotation.y, target, delta);
+    if (customer.state === 'leave') customer.group.scale.setScalar(Math.max(.01, 1 - (customer.fade || 0) * 1.8));
+    else customer.group.position.y = Math.abs(Math.sin((ctx.elapsed || 0) * 4 + customer.id)) * .035;
+    return true;
+  }
+
+  function beginPlacement(kind, fixtureId = null, product = 'water', footprint = null) {
+    const old = fixtureId ? fixtures().find(f => f.id === fixtureId) || state().warehouse.find(f => f.id === fixtureId) : null;
+    const selectedFootprint = old?.footprint || footprint || (kind === 'cooler' ? 'cooler' : kind === 'checkout' ? 'counter' : kind === 'decor' ? 'decor' : 'single');
+    setPlacement({ kind, fixtureId, product: old?.product || product || 'water', footprint: selectedFootprint,
+      rotation: old?.rotation || 0, point: old ? { x: old.x, z: old.z } : copyPoint(selectedFloor), valid: false, dragging: false });
+    $('placementControls').hidden = false;
+    $('placementProduct').hidden = kind !== 'shelf';
+    $('placementFootprint').hidden = kind !== 'shelf';
+    $('rotatePlacement').hidden = kind === 'decor';
+    document.querySelector('label[for=placementProduct]').hidden = kind !== 'shelf';
+    document.querySelector('label[for=placementFootprint]').hidden = kind !== 'shelf';
+    $('placementProduct').value = old?.product || product || 'water';
+    $('placementFootprint').value = selectedFootprint;
+    if (getPlacement().point) updatePlacementPreview(getPlacement().point);
+    else updatePlacementUi();
+    ctx.toast(ctx.t('placementSelected', ctx.locale));
+  }
+
+  function updatePlacementPreview(point) {
+    const p = getPlacement();
+    if (!p) return;
+    p.point = copyPoint(point);
+    updatePlacementUi();
+  }
+
+  function chooseFloor(point) {
+    if (!point || !Number.isInteger(point.x) || !Number.isInteger(point.z) || point.x < 0 || point.z < 0 || point.x >= state().area || point.z >= state().area) return;
+    setSelectedFloor(point);
+    const p = getPlacement();
+    if (p && !p.dragging) updatePlacementPreview(point);
+    else {
+      $('selectedTileReadout').textContent = `${ctx.t('selectedTile', ctx.locale)} · ${point.x + 1}, ${point.z + 1}`;
+      ctx.toast(`${ctx.t('selectedTile', ctx.locale)} · ${point.x + 1}, ${point.z + 1}`);
+    }
+  }
+
+  function rotatePlacement() {
+    const p = getPlacement();
+    if (!p) return;
+    p.rotation = (p.rotation + 1) % 4;
+    if (p.point) updatePlacementPreview(p.point); else updatePlacementUi();
+  }
+
+  function cancelPlacement() {
+    if (!getPlacement()) return;
+    setPlacement(null);
+    if (ghostMesh) ghostMesh.visible = false;
+    $('placementControls').hidden = true;
+    $('placementStatus').classList.remove('invalid');
+    ctx.renderPanel();
+    ctx.toast(ctx.t('placementCancelled', ctx.locale));
+  }
+
+  function confirmPlacement() {
+    const p = getPlacement();
+    if (!p?.point) return;
+    updatePlacementUi();
+    if (!p.valid || !canPlaceFixture(p.point.x, p.point.z, p.fixtureId)) {
+      p.valid = false; $('confirmPlacement').disabled = true; ctx.toast(ctx.t('placementBlocked', ctx.locale)); return;
+    }
+    const oldFixture = p.fixtureId ? fixtures().find(f => f.id === p.fixtureId) : null;
+    const oldWarehouse = p.fixtureId ? state().warehouse.find(f => f.id === p.fixtureId) : null;
+    const old = oldFixture || oldWarehouse;
+    if (old) {
+      if (p.kind === 'cooler' && !state().equipment.cooler) {
+        const cost = fixtureCost(p.kind, p.footprint);
+        if (state().cash < cost) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
+        state().cash -= cost; state().equipment.cooler = true;
+      }
+      const moved = { ...old, x: p.point.x, z: p.point.z, rotation: p.rotation, footprint: p.footprint, product: p.product };
+      if (oldWarehouse) {
+        state().warehouse = state().warehouse.filter(f => f.id !== old.id);
+        state().fixtures.push(moved);
+      } else state().fixtures[state().fixtures.findIndex(f => f.id === old.id)] = moved;
+      if (p.kind === 'cooler') state().coolerFixtureId = old.id;
+      if (p.kind === 'fastCheckout') state().fastCheckoutFixtureId = old.id;
+    } else {
+      const cost = fixtureCost(p.kind, p.footprint);
+      if (p.kind === 'cooler' || p.kind === 'fastCheckout') {
+        const result = ctx.purchaseEquipment(state(), p.kind, cost);
+        if (!result.ok) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
+        setState(result.state);
+      } else if (p.kind === 'decor') {
+        if (state().diamond < 1) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
+        state().diamond--; state().diamondSpent++;
+      } else {
+        if (state().cash < cost) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
+        state().cash -= cost;
+      }
+      const newId = `${p.kind}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+      state().fixtures.push({ id: newId, kind: p.kind,
+        x: p.point.x, z: p.point.z, rotation: p.rotation, footprint: p.footprint,
+        ...(p.kind === 'shelf' ? { product: p.product } : {}) });
+      if (p.kind === 'cooler') state().coolerFixtureId = newId;
+      if (p.kind === 'fastCheckout') state().fastCheckoutFixtureId = newId;
+      if (p.kind === 'decor') {
+        const pieces = decorativeCount();
+        const boost = Math.max(1, 5 - (pieces - 1) * .7);
+        state().popularity = clampPopularity(state().popularity + boost);
+      }
+    }
+    selectedFixtureId = p.fixtureId || null;
+    setPlacement(null); $('placementControls').hidden = true;
+    syncFixtures(); updateQueueLines(); ctx.save(); ctx.renderPanel(); refreshHud();
+    ctx.toast(ctx.t('placementDone', ctx.locale));
+  }
+
+  function warehouseFixture(id) {
+    const index = state().fixtures.findIndex(f => f.id === id);
+    if (index < 0) return;
+    const fixture = state().fixtures[index];
+    if (fixture.kind === 'checkout' && staffedCounters().length <= 1) {
+      ctx.toast(ctx.t('lastCashierCounter', ctx.locale)); return;
+    }
+    state().warehouse.push(state().fixtures.splice(index, 1)[0]);
+    if (selectedFixtureId === id) selectedFixtureId = null;
+    syncFixtures(); updateQueueLines(); ctx.save(); ctx.renderPanel(); refreshHud();
+    ctx.toast(ctx.t('storedWarehouse', ctx.locale));
+  }
+
+  function rotateSelectedFixture(id) {
+    const fixture = fixtures().find(f => f.id === id);
+    if (!fixture) return;
+    beginPlacement(fixture.kind, fixture.id, fixture.product, fixture.footprint);
+    rotatePlacement();
+  }
+
+  function createCard(icon, title, detail, price, action, options = {}) {
+    const button = document.createElement('button');
+    button.type = 'button'; button.className = `card ${options.className || ''}`.trim();
+    button.disabled = Boolean(options.disabled);
+    const marker = document.createElement('span'); marker.className = `block-icon ${icon}`; marker.setAttribute('aria-hidden', 'true');
+    for (let i = 0; i < 3; i++) marker.append(document.createElement('i'));
+    const copy = document.createElement('span'); copy.className = 'card-copy';
+    const strong = document.createElement('strong'); strong.textContent = title;
+    const small = document.createElement('small'); small.textContent = detail;
+    copy.append(strong, small);
+    const priceNode = document.createElement('em'); priceNode.textContent = price;
+    button.append(marker, copy, priceNode);
+    if (options.placement) {
+      button.dataset.v9Placement = 'true'; button.dataset.kind = options.placement.kind;
+      button.dataset.footprint = options.placement.footprint || 'single'; button.dataset.product = options.placement.product || 'water';
+      button.classList.add('draggable-placement');
+    }
+    button.addEventListener('click', action);
+    $('panel').append(button);
+    return button;
+  }
+
+  function renderSelectedFixture() {
+    const fixture = fixtures().find(f => f.id === selectedFixtureId);
+    if (!fixture) return;
+    createCard('selected-fixture', ctx.t('selectedFixture', ctx.locale), `${ctx.t(fixture.kind === 'shelf' ? 'product' : fixture.kind === 'checkout' ? 'cashRegister' : fixture.kind === 'cooler' ? 'coolerUpgrade' : 'storeCharm', ctx.locale)} · ${ctx.t('footprint', ctx.locale)} ${footprintSize(fixture).width}×${footprintSize(fixture).depth}`, ctx.t('selected', ctx.locale), () => {}, { disabled: true, className: 'fixture-selection-readout' });
+    createCard('rotate', ctx.t('rotateFixture', ctx.locale), ctx.t('turnFixturePrompt', ctx.locale), '↻', () => rotateSelectedFixture(fixture.id));
+    createCard('move', ctx.t('moveFixture', ctx.locale), ctx.t('dragFixturePrompt', ctx.locale), ctx.t('placeFree', ctx.locale), () => beginPlacement(fixture.kind, fixture.id, fixture.product, fixture.footprint));
+    if (fixture.kind !== 'checkout' || staffedCounters().length > 1) {
+      createCard('warehouse', ctx.t('toWarehouse', ctx.locale), ctx.t('keepStockAndLevel', ctx.locale), '↥', () => warehouseFixture(fixture.id));
+    }
+  }
+
+  function addWarehouseControls() {
+    for (const fixture of fixtures()) {
+      if (!['shelf', 'cooler', 'fastCheckout', 'checkout', 'decor'].includes(fixture.kind)) continue;
+      const row = document.createElement('div'); row.className = 'fixture-row';
+      const label = document.createElement('span');
+      const name = fixture.kind === 'shelf' ? ctx.t(PRODUCT_DEFS[fixture.product]?.label || 'shelf', ctx.locale)
+        : ctx.t(fixture.kind === 'checkout' ? 'cashRegister' : fixture.kind === 'cooler' ? 'coolerUpgrade' : fixture.kind === 'fastCheckout' ? 'fasterCheckout' : 'storeCharm', ctx.locale);
+      const size = footprintSize(fixture);
+      label.textContent = `${name} · ${size.width}×${size.depth}`;
+      const move = document.createElement('button'); move.className = 'fixture-manage'; move.textContent = ctx.t('moveFixture', ctx.locale);
+      move.addEventListener('click', () => beginPlacement(fixture.kind, fixture.id, fixture.product, fixture.footprint));
+      const store = document.createElement('button'); store.className = 'fixture-store'; store.textContent = ctx.t('toWarehouse', ctx.locale);
+      store.addEventListener('click', () => warehouseFixture(fixture.id));
+      row.append(label, move, store); $('panel').append(row);
+    }
+    for (const fixture of state().warehouse) {
+      const row = document.createElement('div'); row.className = 'fixture-row warehouse-row';
+      const label = document.createElement('span');
+      label.textContent = `${ctx.t('storedWarehouse', ctx.locale)} · ${ctx.t(fixture.kind === 'shelf' ? PRODUCT_DEFS[fixture.product]?.label || 'shelf' : fixture.kind === 'checkout' ? 'cashRegister' : fixture.kind === 'cooler' ? 'coolerUpgrade' : 'fasterCheckout', ctx.locale)} · ${footprintSize(fixture).width}×${footprintSize(fixture).depth}`;
+      const place = document.createElement('button'); place.className = 'fixture-store'; place.textContent = ctx.t('placeFree', ctx.locale);
+      place.addEventListener('click', () => beginPlacement(fixture.kind, fixture.id, fixture.product, fixture.footprint));
+      row.append(label, place); $('panel').append(row);
+    }
+  }
+
+  function refreshHud() {
+    $('cash').textContent = ctx.price(Math.floor(state().cash));
+    $('day').textContent = state().day;
+    $('popularityValue').textContent = Math.round(state().popularity);
+    $('popularityMeter').style.setProperty('--popularity-fill', `${Math.round(state().popularity)}%`);
+    $('popularityMeter').setAttribute('aria-valuenow', String(Math.round(state().popularity)));
+    $('guestCount').textContent = getCustomers().filter(c => c.state !== 'done' && c.state !== 'leave').length;
+    $('queueCount').textContent = getCustomers().filter(c => c.state === 'queue' || c.state === 'pay').length;
+    const counters = allCounters();
+    if ($('cashierCount')) $('cashierCount').textContent = `${Math.min(state().cashierCount, counters.length)}/${counters.length}`;
+  }
+
+  function stockOrder(productId, requested = 8) {
+    const product = ctx.PRODUCTS[productId];
+    if (!product || !state().unlocked.includes(productId)) return;
+    const capacity = ctx.stockCapacity(ctx.activeEquipment());
+    const stockTotal = ctx.totalStock(state().stock);
+    const quantity = Math.min(requested, Math.max(0, capacity - stockTotal), Math.floor(state().cash / product.cost));
+    if (!quantity) { ctx.toast(ctx.t(stockTotal >= capacity ? 'capacityFull' : 'cashShort', ctx.locale)); return; }
+    state().cash -= quantity * product.cost; state().stock[productId] = (state().stock[productId] || 0) + quantity;
+    ctx.save(); ctx.renderPanel(); refreshHud();
+    ctx.toast(`${quantity} ${product.name} · ${ctx.t('orderedFor', ctx.locale)} ${ctx.price(quantity * product.cost)}`);
+  }
+
+  function hireCashier() {
+    if (state().cash < CASHIER_HIRE_COST) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
+    state().cash -= CASHIER_HIRE_COST;
+    state().cashierCount++;
+    syncFixtures(); ctx.save(); ctx.renderPanel(); refreshHud();
+    ctx.toast(`${ctx.t('cashierHired', ctx.locale)} · ${state().cashierCount}`);
+  }
+
+  function buyRegister() {
+    if (state().cash < REGISTER_COST) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
+    beginPlacement('checkout', null, 'water', 'counter');
+    ctx.renderPanel();
+  }
+
+  function expandDecorAppeal() {
+    const count = decorativeCount();
+    const next = Math.max(1, 5 - count * .7);
+    state().popularity = clampPopularity(state().popularity + next);
+    ctx.save(); refreshHud();
+  }
+
+  function renderPanel() {
+    if (!isInstalled) return;
+    $('panel').replaceChildren();
+    mapProducts(); unlockedProducts();
+    const tab = ctx.selectedTab;
+    if (selectedFixtureId && fixtures().some(f => f.id === selectedFixtureId)) renderSelectedFixture();
+    if (tab === 'shop') {
+      createCard('shelf', ctx.t('smallShelf', ctx.locale), `${ctx.t('oneTile', ctx.locale)} · ${ctx.t('selectFloorThenPlace', ctx.locale)}`, ctx.price(70), () => beginPlacement('shelf', null, 'water', 'single'), { placement: { kind: 'shelf', footprint: 'single', product: 'water' } });
+      createCard('shelf-double', ctx.t('doubleShelf', ctx.locale), `${ctx.t('twoTiles', ctx.locale)} · ${ctx.t('selectFloorThenPlace', ctx.locale)}`, ctx.price(120), () => beginPlacement('shelf', null, 'water', 'double'), { placement: { kind: 'shelf', footprint: 'double', product: 'water' } });
+      createCard('goods', ctx.t('newGoods', ctx.locale), `${ctx.t('productVariety', ctx.locale)} · ${Object.keys(PRODUCT_DEFS).length}`, '›', () => { ctx.selectedTab = 'supply'; renderPanel(); });
+      createCard('queue', ctx.t('popularity', ctx.locale), `${ctx.t('cashierQueueSummary', ctx.locale)} · ${Math.round(state().popularity)}/100`, '', () => {} , { disabled: true });
+    }
+    if (tab === 'supply') {
+      for (const id of Object.keys(PRODUCT_DEFS)) {
+        const product = ctx.PRODUCTS[id], unlocked = state().unlocked.includes(id);
+        const order = Math.min(8, Math.max(0, ctx.stockCapacity(ctx.activeEquipment()) - ctx.totalStock(state().stock)), Math.floor(state().cash / product.cost));
+        const title = ctx.t(product.label, ctx.locale);
+        const detail = unlocked
+          ? `${state().stock[id] || 0} ${ctx.t('onShelf', ctx.locale)} · ${ctx.t('buyPrice', ctx.locale)} ${ctx.price(product.cost)} · ${ctx.t('sellPrice', ctx.locale)} ${ctx.price(product.price)}`
+          : `${ctx.t('unlockAt', ctx.locale)} ${id === 'juice' ? ctx.price(280) : ctx.price(1000)} ${ctx.t('lifetimeSales', ctx.locale)}`;
+        createCard(id, title, detail, unlocked ? `+${order} · ${ctx.price(order * product.cost)}` : ctx.t('locked', ctx.locale), () => stockOrder(id, 8), { disabled: !unlocked || !order });
+      }
+      createCard('shelf', ctx.t('smallShelf', ctx.locale), ctx.t('shelfForSelectedProduct', ctx.locale), ctx.price(70), () => beginPlacement('shelf', null, $('placementProduct').value || 'water', 'single'), { placement: { kind: 'shelf', footprint: 'single', product: 'water' } });
+    }
+    if (tab === 'growth') {
+      createCard('growth', ctx.t('expand', ctx.locale), `${ctx.t('expandDetail', ctx.locale)} · ${state().area} × ${state().area}`, `−${ctx.price(ctx.EXPANSION_COST)}`, ctx.expand, { disabled: state().area > 10 || state().cash < ctx.EXPANSION_COST });
+      const coolerFixture = fixtures().find(f => f.id === state().coolerFixtureId) || state().warehouse.find(f => f.id === state().coolerFixtureId)
+        || fixtures().find(f => f.kind === 'cooler') || state().warehouse.find(f => f.kind === 'cooler');
+      const coolerOwned = Boolean(state().equipment.cooler);
+      const coolerInstalled = coolerOwned && Boolean(coolerFixture && fixtures().some(f => f.id === coolerFixture.id));
+      const coolerLabel = coolerInstalled ? ctx.t('coolerInstalled', ctx.locale)
+        : coolerOwned ? ctx.t('storedInactive', ctx.locale) : `${ctx.t('fourTiles', ctx.locale)} · ${ctx.t('moreCapacity', ctx.locale)}`;
+      createCard('cooler', ctx.t('coolerUpgrade', ctx.locale), `${coolerLabel} · ${ctx.t('stockCapacity', ctx.locale)} ${ctx.totalStock(state().stock)}/${ctx.stockCapacity(ctx.activeEquipment())}`,
+        coolerOwned ? (coolerInstalled ? ctx.t('upgradeComplete', ctx.locale) : ctx.t('placeFree', ctx.locale)) : '−$180',
+        () => beginPlacement('cooler', coolerOwned ? coolerFixture?.id || null : coolerFixture?.id || null, 'water', 'cooler'),
+        { disabled: Boolean(coolerOwned && coolerInstalled), placement: { kind: 'cooler', footprint: 'cooler' } });
+      createCard('token', ctx.t('storeCharm', ctx.locale), `${ctx.t('decorAppeal', ctx.locale)} +${currentDecorAppeal().toFixed(1)} · ${state().diamond} ${ctx.t('tokens', ctx.locale)}`, '−1 ✦', () => beginPlacement('decor', null, 'water', 'decor'), { disabled: state().diamond < 1 || decorativeCount() >= 6, placement: { kind: 'decor', footprint: 'decor' } });
+      createCard('popularity', ctx.t('popularityRecovery', ctx.locale), `${ctx.t('popularityRecoveryDetail', ctx.locale)} · ${ctx.t('popularity', ctx.locale)} ${Math.round(state().popularity)}/100`, '↗', () => {}, { disabled: true });
+      addWarehouseControls();
+    }
+    if (tab === 'staff') {
+      createCard('register', ctx.t('cashRegister', ctx.locale), `${ctx.t('cashierCountLabel', ctx.locale)} ${Math.min(state().cashierCount, allCounters().length)}/${allCounters().length} · ${ctx.t('cashierService', ctx.locale)}`, `−$${REGISTER_COST}`, buyRegister, { placement: { kind: 'checkout', footprint: 'counter' } });
+      createCard('cashier', ctx.t('hireCashier', ctx.locale), `${ctx.t('cashierHireDetail', ctx.locale)} · ${state().cashierCount}`, `−$${CASHIER_HIRE_COST}`, hireCashier, { disabled: state().cash < CASHIER_HIRE_COST });
+      createCard('register', ctx.t('fasterCheckout', ctx.locale), `${ctx.t('checkoutDetail', ctx.locale)} · ${ctx.t('checkoutTime', ctx.locale)} ${ctx.checkoutSeconds(ctx.activeEquipment()).toFixed(1)}s`, state().equipment.fastCheckout ? ctx.t('upgradeComplete', ctx.locale) : '−$150', () => state().equipment.fastCheckout ? beginPlacement('fastCheckout', state().warehouse.find(f => f.kind === 'fastCheckout')?.id || state().fixtures.find(f => f.kind === 'fastCheckout')?.id, 'water', 'counter') : beginPlacement('fastCheckout', null, 'water', 'counter'), { disabled: state().equipment.fastCheckout && fixtures().some(f => f.kind === 'fastCheckout') || !state().equipment.fastCheckout && state().cash < 150, placement: { kind: 'fastCheckout', footprint: 'counter' } });
+      createCard('staff', ctx.t('hireHelper', ctx.locale), state().helper ? ctx.t('helperDuty', ctx.locale) : ctx.t('helperNoWage', ctx.locale), state().helper ? ctx.t('hired', ctx.locale) : '−$220', ctx.hire, { disabled: state().helper || state().cash < 220 });
+      addWarehouseControls();
+    }
+    if (getPlacement()) {
+      $('placementControls').hidden = false;
+      $('placementProduct').value = getPlacement().product || 'water';
+      $('placementFootprint').value = getPlacement().footprint || 'single';
+    }
+    $('selectedTileReadout').textContent = selectedFloor ? `${ctx.t('selectedTile', ctx.locale)} · ${selectedFloor.x + 1}, ${selectedFloor.z + 1}` : ctx.t('noTileSelected', ctx.locale);
+    refreshHud();
+  }
+
+  function pointFromEvent(event) {
+    return ctx.gridPoint(event);
+  }
+
+  function panByPixels(dx, dy) {
+    ctx.panByPixels(dx, dy);
+    ctx.save();
+  }
+
+  function beginCounterOrFixtureDrag(point) {
+    const fixture = fixtureAt(point);
+    return fixture ? { mode: 'fixture', fixture, start: { x: point.x, z: point.z } } : { mode: getPlacement() ? 'placement' : 'pan', start: { x: point.x, z: point.z } };
+  }
+
+  function pointerDown(event) {
+    if (cardDrag?.pointerId === event.pointerId) { event.stopImmediatePropagation(); return; }
+    if (event.button === 2 || event.shiftKey) event.preventDefault();
+    ctx.canvas.setPointerCapture(event.pointerId);
+    const point = pointFromEvent(event);
+    pointersMap.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (pointersMap.size >= 2) {
+      const points = [...pointersMap.values()];
+      pinchState = { distance: Math.hypot(points[0].x - points[1].x, points[0].y - points[1].y),
+        angle: Math.atan2(points[1].y - points[0].y, points[1].x - points[0].x),
+        center: { x: (points[0].x + points[1].x) / 2, y: (points[0].y + points[1].y) / 2 } };
+      pointerState = null; event.stopImmediatePropagation(); return;
+    }
+    pointerState = { id: event.pointerId, x: event.clientX, y: event.clientY,
+      lastX: event.clientX, lastY: event.clientY, moved: false, point,
+      fixture: !getPlacement() ? fixtureAt(point) : null, mode: getPlacement() ? 'placement' : 'pan' };
+    event.stopImmediatePropagation();
+  }
+
+  const pointersMap = new Map();
+
+  function pointerMove(event) {
+    if (cardDrag?.pointerId === event.pointerId) { event.stopImmediatePropagation(); return; }
+    if (pointersMap.has(event.pointerId)) pointersMap.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (pointersMap.size >= 2) {
+      const points = [...pointersMap.values()];
+      const distance = Math.hypot(points[0].x - points[1].x, points[0].y - points[1].y);
+      const angle = Math.atan2(points[1].y - points[0].y, points[1].x - points[0].x);
+      const center = { x: (points[0].x + points[1].x) / 2, y: (points[0].y + points[1].y) / 2 };
+      if (pinchState) {
+        panByPixels(center.x - pinchState.center.x, center.y - pinchState.center.y);
+        const ratio = distance / Math.max(1, pinchState.distance);
+        state().zoom = clamp(state().zoom * ratio, .65, 2);
+        state().view += Math.atan2(Math.sin(angle - pinchState.angle), Math.cos(angle - pinchState.angle));
+        ctx.setCamera();
+      }
+      pinchState = { distance, angle, center };
+      event.stopImmediatePropagation(); return;
+    }
+    const current = pointerState;
+    if (!current || current.id !== event.pointerId) { event.stopImmediatePropagation(); return; }
+    const deltaX = event.clientX - current.lastX, deltaY = event.clientY - current.lastY;
+    if (Math.hypot(event.clientX - current.x, event.clientY - current.y) > 8) current.moved = true;
+    if (current.mode === 'placement') {
+      if (current.moved) { const placement = getPlacement(); if (placement) placement.dragging = true; updatePlacementPreview(pointFromEvent(event)); }
+    } else if (current.fixture) {
+      if (current.moved && current.mode !== 'moving-fixture') {
+        current.mode = 'moving-fixture';
+        beginPlacement(current.fixture.kind, current.fixture.id, current.fixture.product, current.fixture.footprint);
+        getPlacement().dragging = true;
+      }
+      if (current.mode === 'moving-fixture') updatePlacementPreview(pointFromEvent(event));
+      else if (current.moved) panByPixels(deltaX, deltaY);
+    } else if (current.moved) panByPixels(deltaX, deltaY);
+    current.lastX = event.clientX; current.lastY = event.clientY;
+    event.stopImmediatePropagation();
+  }
+
+  function pointerUp(event) {
+    if (cardDrag?.pointerId === event.pointerId) { event.stopImmediatePropagation(); return; }
+    const current = pointerState;
+    pointersMap.delete(event.pointerId);
+    if (pointersMap.size < 2) pinchState = null;
+    if (current?.id === event.pointerId) {
+      const point = pointFromEvent(event);
+      if (current.mode === 'moving-fixture') {
+        const placement = getPlacement();
+        if (placement) { placement.dragging = false; updatePlacementPreview(point); }
+      } else if (current.mode === 'placement') {
+        const placement = getPlacement();
+        if (!current.moved) chooseFloor(point);
+        else if (placement) { placement.dragging = false; updatePlacementPreview(point); }
+      } else if (current.mode === 'pan' && !current.moved) {
+        if (current.fixture) {
+          selectedFixtureId = current.fixture.id; setSelectedFloor(point);
+          ctx.selectedTab = 'growth'; document.querySelectorAll('[data-tab]').forEach(button => button.classList.toggle('active', button.dataset.tab === 'growth'));
+          renderPanel();
+        } else chooseFloor(point);
+      }
+      pointerState = null;
+    }
+    event.stopImmediatePropagation();
+  }
+
+  function pointerCancel(event) {
+    pointersMap.delete(event.pointerId); pointerState = null; pinchState = null;
+    if (getPlacement()) getPlacement().dragging = false;
+    event.stopImmediatePropagation();
+  }
+
+  function startCardDrag(event) {
+    const card = event.target.closest('[data-v9-placement]');
+    if (!card || card.disabled || event.button !== 0) return;
+    cardDrag = { pointerId: event.pointerId, x: event.clientX, y: event.clientY,
+      kind: card.dataset.kind, footprint: card.dataset.footprint, product: card.dataset.product, moved: false };
+  }
+
+  function moveCardDrag(event) {
+    const current = cardDrag;
+    if (!current || current.pointerId !== event.pointerId) return;
+    if (Math.hypot(event.clientX - current.x, event.clientY - current.y) > 8) current.moved = true;
+    const target = document.elementFromPoint(event.clientX, event.clientY);
+    if (!current.moved || !(target === ctx.canvas || ctx.canvas.contains(target))) return;
+    if (!getPlacement() || getPlacement().fromCard !== true) {
+      beginPlacement(current.kind, null, current.product, current.footprint);
+      getPlacement().fromCard = true; getPlacement().dragging = true;
+    }
+    updatePlacementPreview(pointFromEvent(event));
+    event.preventDefault();
+  }
+
+  function endCardDrag(event) {
+    if (!cardDrag || cardDrag.pointerId !== event.pointerId) return;
+    if (cardDrag.moved && getPlacement()?.fromCard) {
+      getPlacement().dragging = false;
+      updatePlacementPreview(pointFromEvent(event));
+      event.preventDefault();
+    }
+    cardDrag = null;
+  }
+
+  function onFootprintChange() {
+    if (!getPlacement() || getPlacement().kind !== 'shelf') return;
+    getPlacement().footprint = $('placementFootprint').value;
+    if (getPlacement().point) updatePlacementPreview(getPlacement().point); else updatePlacementUi();
+  }
+
+  function bindInput() {
+    ctx.canvas.addEventListener('pointerdown', pointerDown, true);
+    ctx.canvas.addEventListener('pointermove', pointerMove, true);
+    ctx.canvas.addEventListener('pointerup', pointerUp, true);
+    ctx.canvas.addEventListener('pointercancel', pointerCancel, true);
+    ctx.canvas.addEventListener('lostpointercapture', pointerCancel, true);
+    ctx.canvas.addEventListener('contextmenu', event => event.preventDefault(), true);
+    document.addEventListener('pointerdown', startCardDrag, true);
+    document.addEventListener('pointermove', moveCardDrag, true);
+    document.addEventListener('pointerup', endCardDrag, true);
+    $('rotatePlacement').addEventListener('click', rotatePlacement);
+    $('placementProduct').addEventListener('change', () => { if (getPlacement()?.kind === 'shelf') getPlacement().product = $('placementProduct').value; });
+    $('placementFootprint').addEventListener('change', onFootprintChange);
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') cancelPlacement();
+      if ((event.key.toLowerCase() === 'r') && selectedFixtureId) rotateSelectedFixture(selectedFixtureId);
+    });
+  }
+
+  function addPopularityHud() {
+    if ($('popularityHud')) return;
+    const hud = document.createElement('div'); hud.id = 'popularityHud'; hud.className = 'popularity-hud';
+    hud.setAttribute('aria-label', ctx.t('popularity', ctx.locale));
+    const label = document.createElement('span'); label.textContent = ctx.t('popularity', ctx.locale);
+    const meter = document.createElement('span'); meter.id = 'popularityMeter'; meter.className = 'popularity-meter';
+    meter.setAttribute('role', 'meter'); meter.setAttribute('aria-valuemin', '0'); meter.setAttribute('aria-valuemax', '100');
+    const value = document.createElement('b'); value.id = 'popularityValue'; value.textContent = String(Math.round(state().popularity));
+    hud.append(label, meter, value); document.querySelector('.scene-hud').prepend(hud);
+    if (!$('selectedTileReadout')) {
+      const readout = document.createElement('span'); readout.id = 'selectedTileReadout'; readout.className = 'selected-tile-readout';
+      readout.textContent = ctx.t('noTileSelected', ctx.locale); document.querySelector('.scene-legend').append(readout);
+    }
+  }
+
+  function refreshTraffic() {
+    const current = state();
+    if (current.lifetime >= 280 && !current.unlocked.includes('juice')) current.unlocked.push('juice');
+    if (current.lifetime >= 1000 && !current.unlocked.includes('fizz')) current.unlocked.push('fizz');
+    current.popularity = clampPopularity(current.popularity + currentDecorAppeal() * .00025);
+    if (current.popularity < TRAFFIC_RECOVERY_FLOOR) current.popularity = clampPopularity(current.popularity + .012);
+    const nextInterval = trafficInterval(current.popularity);
+    if (ctx.spawnTimer > nextInterval) ctx.spawnTimer = nextInterval;
+  }
+
+  function automaticRestock() {
+    if (!state().helper || state().stock.water >= 6) return;
+    const product = ctx.PRODUCTS.water;
+    const room = ctx.stockCapacity(ctx.activeEquipment()) - ctx.totalStock(state().stock);
+    const quantity = Math.min(8, room, Math.floor(state().cash / product.cost));
+    if (quantity <= 0) return;
+    state().cash -= quantity * product.cost; state().stock.water += quantity;
+    ctx.save(); renderPanel();
+  }
+
+  function lowCashRecovery(delta) {
+    if (state().cash < ctx.PRODUCTS.water.cost && ctx.totalStock(state().stock) === 0 && state().recoveryOrders < 2) {
+      ctx.recoveryTimer += delta;
+      if (ctx.recoveryTimer >= 12) {
+        const order = ctx.recoveryShipment(state(), ctx.PRODUCTS.water.cost);
+        if (order.ok) {
+          setState(order.state); ctx.save(); renderPanel();
+          ctx.toast(`${ctx.t('recoveryOrder', ctx.locale)} · ${ctx.price(order.cost)}`);
+        }
+        ctx.recoveryTimer = 0;
+      }
+    } else ctx.recoveryTimer = 0;
+  }
+
+  function gameLoop(timestamp) {
+    requestAnimationFrame(gameLoop);
+    if (!ctx.renderer || document.hidden) { previousFrame = timestamp; return; }
+    const delta = previousFrame ? clamp((timestamp - previousFrame) / 1000, 0, .05) : 0;
+    previousFrame = timestamp;
+    if (ctx.gameActive && ($('#leaveConfirm')?.hidden ?? true)) {
+      ctx.elapsed += delta;
+      ctx.spawnTimer -= delta;
+      if (ctx.spawnTimer <= 0 && getCustomers().filter(c => c.state !== 'done' && c.state !== 'leave').length < 12) {
+        spawn(); ctx.spawnTimer = trafficInterval(state().popularity);
+      }
+      if (timestamp - lastQueueUpdate > 450) updateQueueLines();
+      setCustomers(getCustomers().filter(customer => updateCustomer(customer, delta)));
+      automaticRestock(); lowCashRecovery(delta); refreshTraffic();
+      const day = Math.floor(ctx.elapsed / 60) + 1;
+      if (day > state().day) { state().day = day; ctx.save(); }
+      if (Math.floor(timestamp / 250) !== Math.floor((timestamp - delta * 1000) / 250)) refreshHud();
+    }
+    getCustomers().forEach(customer => { if (customer.state !== 'leave') customer.group.position.y = Math.abs(Math.sin(ctx.elapsed * 4 + customer.id)) * .035; });
+    ctx.renderer.render(ctx.scene, ctx.camera);
+  }
+
+  function install() {
+    if (isInstalled) return;
+    isInstalled = true;
+    migrateCurrentState();
+    addPopularityHud();
+    bindInput();
+    syncFixtures();
+    ctx.save();
+    renderPanel(); refreshHud(); updateQueueLines();
+    ctx.running = false;
+    requestAnimationFrame(gameLoop);
+  }
+
+  return {
+    install,
+    walkable, accessTiles, routeToCheckout, canPlaceFixture, fixtureAt, fixtureCost,
+    fixtureGroup, syncFixtures, beginPlacement, placementReason, updatePlacementPreview,
+    updatePlacementUi, chooseFloor, rotatePlacement, rotateSelectedFixture,
+    cancelPlacement, confirmPlacement, warehouseFixture, routeCustomerOut, updateQueueLines,
+    targetCheckout, chooseProduct, spawn, updateCustomer, renderPanel, stockOrder, hireCashier,
+    addWarehouseControls, refreshHud,
+    activeEquipment: () => ({
+      cooler: Boolean(state().equipment.cooler && fixtures().some(f => f.id === (state().coolerFixtureId || fixtures().find(x => x.kind === 'cooler')?.id))),
+      fastCheckout: Boolean(state().equipment.fastCheckout && fixtures().some(f => f.id === (state().fastCheckoutFixtureId || fixtures().find(x => x.kind === 'fastCheckout')?.id)))
+    })
+  };
+}
+
+
+
+
+

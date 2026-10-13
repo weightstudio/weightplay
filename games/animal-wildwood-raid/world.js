@@ -8,7 +8,7 @@ export class WildwoodWorld {
   this.canvas=canvas;this.sim=sim;this.parts=[];this.models=new Map();this.batches=new Map();this.effects=[];this.reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   this.renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
   this.scene=new THREE.Scene();this.cues=new GroundCues(this.scene);this.scene.background=new THREE.Color(0x173d3c);
-  this.ground=new THREE.TextureLoader().load(new URL('./art/ground-moss-v3.webp',import.meta.url).href);this.ground.colorSpace=THREE.SRGBColorSpace;this.ground.wrapS=this.ground.wrapT=THREE.RepeatWrapping;this.ground.repeat.set(1,1);
+  this.ground=new THREE.TextureLoader().load(new URL('./art/ground-moss-v4.jpg',import.meta.url).href);this.ground.colorSpace=THREE.SRGBColorSpace;this.ground.wrapS=this.ground.wrapT=THREE.RepeatWrapping;this.ground.repeat.set(1,1);
   this.materialAtlas=new THREE.TextureLoader().load(new URL('./art/material-atlas-block-v2.png',import.meta.url).href);this.materialAtlas.colorSpace=THREE.SRGBColorSpace;this.materialAtlas.wrapS=this.materialAtlas.wrapT=THREE.ClampToEdgeWrapping;
   this.camera=new THREE.OrthographicCamera(-9,9,11,-11,.1,70);this.camera.position.set(0,20,16);this.camera.lookAt(0,0,0);
   const shape=new THREE.Shape();shape.moveTo(-.46,-.46);shape.lineTo(.46,-.46);shape.lineTo(.46,.46);shape.lineTo(-.46,.46);shape.closePath();
@@ -18,16 +18,16 @@ export class WildwoodWorld {
   // Authored stone border and stepping-stone trail establish the entire playable area.
   for(let i=0;i<19;i++){for(const side of [-1,1])this.box(this.static,i%3?'stone':'moss',[side*7.4,-.05,-8.3+i*.92],[.6,.5,.6]);}
   for(let i=0;i<11;i++)this.box(this.static,i%2?'moss':'stone',[Math.sin(i*.8)*.5,-.025,7-i*1.4],[1.35,.12,1]);
-  for(let i=0;i<14;i++){const x=(i%2?1:-1)*(7.8+i%3*.35),z=-8+Math.floor(i/2)*2.5;this.tree(this.static,x,z,.8, true);}
+  for(let i=0;i<10;i++){const x=(i%2?1:-1)*(7.8+i%3*.35),z=-8+Math.floor(i/2)*2.5;this.tree(this.static,x,z,.8, true);}
   this.box(this.static,'wood',[0,-.8,0],[15,1,18]);
   this.box(this.static,'ground',[0,-1.45,0],[60,.3,60]);
   // Forest continues beyond the arena so a following camera never exposes an empty backdrop.
-  for(const side of [-1,1])for(let i=0;i<13;i++){
+  for(const side of [-1,1])for(let i=0;i<10;i++){
    const x=-15+i*1.9,z=side*(11.4+(i%3)*1.3);
    this.tree(this.static,x,z,.85+(i%4)*.12,true);
    if(i%3===0)this.box(this.static,'stone',[x+.7,-.7,z-1],[.9,.6,.7]);
   }
-  for(let i=0;i<24;i++){const side=i%2?1:-1,row=Math.floor(i/12),lane=i%12,x=side*(9+row*2.4+(lane%3)*.15),z=-16+lane*2.8+row*.7;this.tree(this.static,x,z,1+(lane%3)*.12,true);}
+  for(let i=0;i<18;i++){const side=i%2?1:-1,row=Math.floor(i/9),lane=i%9,x=side*(9+row*2.4+(lane%3)*.15),z=-16+lane*2.8+row*.7;this.tree(this.static,x,z,1+(lane%3)*.12,true);}
   this.heroModel=this.character('hero');this.root.add(this.heroModel);this.exit=new THREE.Group();this.root.add(this.exit);
   this.box(this.exit,'gold',[-1,.8,0],[.25,1.8,.3]);this.box(this.exit,'gold',[1,.8,0],[.25,1.8,.3]);this.box(this.exit,'gold',[0,1.7,0],[2.2,.24,.3]);this.box(this.exit,'cyan',[0,.1,0],[1.8,.1,1.2]);
   this.resize();
@@ -38,10 +38,10 @@ export class WildwoodWorld {
   this.box(g,'treeBark',[0,.69,0],[.38,1.38,.38]);this.box(g,'treeBarkLight',[-.075,.72,.195],[.075,.78,.025]);
   for(const sign of [-1,1]){const branch=this.box(g,'treeBark',[sign*.28,1.37,0],[.58,.2,.23]);branch.rotation.z=-sign*.24;}
   const crown=new THREE.Group(),variation=Math.abs(Math.sin(x*2.17+z*1.31));crown.rotation.y=variation*Math.PI*.5;g.add(crown);
-  const width=decor ? 0.98 : 1;
-  this.box(crown,'canopyShade',[0,1.68,-.035],[1.42*width,.58,1.3*width]);
-  this.box(crown,'canopyMid',[.035,2.08,0],[1.12*width,.54,1.04*width]);
-  this.box(crown,'canopyTop',[-.045,2.42,-.035],[.76*width,.4,.74*width]);
+  const width=decor ? 0.94 : 1,skew=(variation-.5)*.2,depth=(variation-.5)*.14;
+  this.box(crown,'canopyShade',[0,1.68,-.035],[1.3*width,.52,1.16*width]);
+  this.box(crown,'canopyMid',[skew,2.07,depth],[1.03*width,.5,.96*width]);
+  this.box(crown,'canopyTop',[-skew*.65,2.42,-depth*.4],[.7*width,.38,.66*width]);
   g.userData.crown=crown;return g;
  }
  character(kind,type=''){

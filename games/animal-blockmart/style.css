@@ -9,7 +9,7 @@
 /* Stable Battle geometry: dynamic panel text stays inside fixed regions. */
 #app{grid-template-rows:68px minmax(0,1fr) 216px 28px}
 .shop-panel{min-height:0;display:flex;flex-direction:column}
-.cards{flex:1;min-height:0;max-height:none;grid-auto-rows:minmax(0,1fr);align-content:stretch;overflow:auto}
+.cards{flex:1;min-height:0;max-height:none;grid-auto-rows:minmax(54px,auto);align-content:start;overflow:auto}
 .card{min-height:54px;max-height:72px;overflow:hidden}
 .card strong,.card small{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1;overflow:hidden;white-space:normal}
 .placement-controls{height:48px;flex:none;display:flex;align-items:center;gap:6px;padding:5px 8px;border-top:1px solid var(--line);background:#f7fbfa}
@@ -156,3 +156,38 @@ body.wp-frame-battle-active #gameGuide{display:none}
 .card em{font-size:11px;color:#006b58}
 .card[disabled]{opacity:1;background:#e8f0ef}
 .tabs button.active{background:#e3f2ee;color:#075e50}
+
+/* Placement controls stay tappable and readable at the narrow mobile size. */
+.placement-controls{height:auto;min-height:48px;flex-wrap:wrap;row-gap:5px}
+.placement-controls select,.placement-controls>button:not(.primary),.placement-controls .primary{min-height:44px;height:44px}
+.placement-controls .primary{min-width:82px}
+.placement-controls span{color:#294451}
+.placement-controls span.invalid{color:#a52f32}
+.scene-hud{align-items:center}
+.popularity-hud{flex:0 1 auto;min-width:86px;max-width:34%;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:3px 6px;padding:6px 8px;border:1px solid #d7e6e4;border-radius:12px;background:#fff;color:#1b3340;font-size:9px;font-weight:800;box-shadow:0 3px 12px #37534c18}
+.popularity-hud>b{grid-column:1/-1;text-align:right;font-size:10px}
+.popularity-meter{height:6px;min-width:30px;overflow:hidden;border-radius:99px;background:#dfe9e6}
+.popularity-meter>i{display:block;width:var(--popularity-fill,58%);height:100%;border-radius:inherit;background:linear-gradient(90deg,#d5a13f,#22a77f)}
+.selected-tile-readout{font-weight:800;color:#294451}
+.fixture-row{grid-column:1/-1}
+.fixture-row .fixture-manage{color:#263f4e}
+.fixture-row .fixture-store{color:#263f4e;background:#e3eeeb}
+.warehouse-row,.warehouse-row>span{color:#344f5b}
+.card-copy{min-width:0}
+.card strong,.card small,.card em{overflow-wrap:anywhere}
+.card[aria-pressed="true"],.card.selected{border-color:#159b7e;background:#e5f4ef;box-shadow:inset 0 0 0 1px #159b7e}
+.card{min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1))!important;max-height:calc(72px * var(--wp-battle-canvas-inverse-scale,1))!important}
+.fixture-row{min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1))}
+.fixture-row .fixture-manage,.fixture-row .fixture-store{min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1));font-size:calc(10px * var(--wp-battle-canvas-inverse-scale,1))}
+.placement-controls{min-height:calc(48px * var(--wp-battle-canvas-inverse-scale,1))}
+.placement-controls select,.placement-controls>button:not(.primary),.placement-controls .primary{height:calc(44px * var(--wp-battle-canvas-inverse-scale,1));min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1));font-size:calc(10px * var(--wp-battle-canvas-inverse-scale,1))}
+@media(max-width:600px){
+  .placement-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px 54px minmax(82px,auto);gap:4px;padding:5px}
+  .placement-controls span{grid-column:1/-1;max-height:2.5em;line-height:1.2;overflow:hidden}
+  .placement-controls select{min-width:0;width:100%;padding-inline:4px;font-size:9px}
+  .placement-controls>button:not(.primary){width:44px;padding:0}
+  .placement-controls .primary{width:auto;padding:0 6px;font-size:9px}
+  .popularity-hud{min-width:78px;max-width:29%;gap:3px;padding:5px 6px;font-size:8px}
+  .scene-hud .money{width:84px;min-width:80px}
+}
+@media(max-height:640px) and (max-width:600px){.placement-controls{padding:3px}.placement-controls select,.placement-controls>button:not(.primary),.placement-controls .primary{min-height:44px;height:44px}}
