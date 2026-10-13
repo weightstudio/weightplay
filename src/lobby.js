@@ -382,7 +382,7 @@ function createDemonEventPreview() {
   section.hidden = true;
   section.dataset.runtimeLocalize = "off";
   section.setAttribute("aria-label", strings.title);
-  section.innerHTML = `<div class="demon-event-art" aria-hidden="true"><img src="/assets-preview/demon-assault-preview-keyart-v1.webp" alt="" width="768" height="768" loading="lazy" decoding="async" /></div><div class="demon-event-copy"><h3>${strings.title}</h3><p class="demon-event-line">${strings.line}</p><p class="demon-event-count"><span>${strings.blocks}</span><strong data-owned-blocks>—</strong></p><div class="demon-event-actions"><button class="demon-event-unavailable" type="button" disabled aria-disabled="true">${strings.unavailable}</button><button class="demon-event-details" type="button">${strings.open}</button></div></div>`;
+  section.innerHTML = `<div class="demon-event-art" aria-hidden="true"><img src="/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1" alt="" width="768" height="768" loading="lazy" decoding="async" /></div><div class="demon-event-copy"><h3>${strings.title}</h3><p class="demon-event-line">${strings.line}</p><p class="demon-event-count"><span>${strings.blocks}</span><strong data-owned-blocks>—</strong></p><div class="demon-event-actions"><button class="demon-event-unavailable" type="button" disabled aria-disabled="true">${strings.unavailable}</button><button class="demon-event-details" type="button">${strings.open}</button></div></div>`;
   const dialog = document.createElement("dialog");
   dialog.className = "demon-event-dialog";
   dialog.setAttribute("aria-labelledby", "demonEventDialogTitle");

@@ -2,7 +2,10 @@ import * as THREE from './vendor/three/three.module.min.js';
 import {
   GRID_ENTRANCES, baseFootprint, footprintSize, occupiedTiles, footprintConflict,
   serviceVector, serviceFacingTarget, queueTile, clampPopularity, popularityAfterWait,
-  popularityAfterWalkout, decorAppeal, trafficInterval, smoothHeading, fixtureCenter
+  popularityAfterWalkout, decorAppeal, trafficInterval, smoothHeading, fixtureCenter,
+  ACHIEVEMENT_CATALOG,
+  legacyAchievementProgress, normalizeAchievementState, mergeAchievementStates,
+  achievementProgress, awardCompletedAchievements, recordAchievementEvent
 } from './blockmart-v9-systems.js';
 
 const PRODUCT_DEFS = {
@@ -57,6 +60,7 @@ export function migrateV9Save(saved = {}, initial = {}) {
     autoRestockEnabled: saved.autoRestockEnabled === true && Boolean(saved.helper),
     cashLedger: Array.isArray(saved.cashLedger) ? saved.cashLedger.filter(entry => entry && typeof entry.kind === 'string'
       && Number.isFinite(entry.amount) && Number.isFinite(entry.balance)).slice(-60) : [],
+    achievements: normalizeAchievementState(saved.achievements, legacyAchievementProgress(saved)),
     unlocked: Array.isArray(saved.unlocked) ? [...new Set([...saved.unlocked, 'chips'])] : ['water', 'snacks', 'chips'],
     cashierCount: Number.isFinite(saved.cashierCount) ? Math.max(0, Math.floor(saved.cashierCount)) : 1,
     popularity: clampPopularity(saved.popularity ?? 58),
@@ -140,6 +144,7 @@ export function installBlockmartV9(ctx) {
 
   function migrateCurrentState() {
     const migrated = migrateV9Save(state(), ctx.INITIAL);
+    migrated.achievements = mergeAchievementStates(migrated.achievements, { events: ctx.readAchievementEvents?.() || [] });
     setState(migrated);
     mapProducts();
     if (!migrated.fixtures.some(f => f.kind === 'checkout')) {
@@ -661,6 +666,66 @@ export function installBlockmartV9(ctx) {
     customer.state = 'leave';
   }
 
+  function notifyAchievementUnlocks(ids) {
+    if (!ids.length) return;
+    let notice = document.querySelector('.achievement-notice');
+    if (!notice) {
+      notice = document.createElement('div');
+      notice.className = 'achievement-notice';
+      notice.setAttribute('role', 'status');
+      notice.setAttribute('aria-live', 'polite');
+      notice.hidden = true;
+      document.body.append(notice);
+    }
+    const names = ids.map(id => {
+      const achievement = ACHIEVEMENT_CATALOG.find(item => item.id === id);
+      return achievement ? ctx.t(`achievement_${achievement.id}`, ctx.locale) : '';
+    }).filter(Boolean);
+    notice.textContent = `${ctx.t('achievementUnlocked', ctx.locale)} · ${names.join(' · ')}`;
+    notice.hidden = false;
+    clearTimeout(notice.hideTimer);
+    notice.hideTimer = setTimeout(() => { notice.hidden = true; }, 3200);
+  }
+
+  function settleAchievementEvent(data) {
+    const id = globalThis.crypto?.randomUUID?.() || `ab-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+    const result = recordAchievementEvent(state().achievements, { id, ...data });
+    if (!result.accepted) return;
+    ctx.persistAchievementEvent?.(result.state.events.find(event => event.id === id));
+    state().achievements = mergeAchievementStates(result.state, { events: ctx.readAchievementEvents?.() || [] });
+    notifyAchievementUnlocks(result.newlyUnlocked);
+    ctx.save();
+    if (ctx.selectedTab === 'achievements') renderPanel();
+  }
+
+  function renderAchievements() {
+    const stateValue = state().achievements;
+    const progress = achievementProgress(stateValue);
+    const collected = new Set(stateValue.collectedRewardIds);
+    const back = createCard('achievement-back', ctx.t('achievementBack', ctx.locale), ctx.t('achievementsIntro', ctx.locale), '‹', () => {
+      ctx.selectedTab = 'shop'; renderPanel();
+    });
+    back.classList.add('achievement-back');
+    for (const achievement of ACHIEVEMENT_CATALOG) {
+      const current = progress[achievement.id];
+      const complete = current >= achievement.target;
+      const title = ctx.t(`achievement_${achievement.id}`, ctx.locale);
+      const detail = `${ctx.t('achievementReward', ctx.locale)} · ${complete
+        ? ctx.t('achievementCollected', ctx.locale) : ctx.t('achievementInProgress', ctx.locale)}`;
+      const amount = achievement.id === 'gross_1000' ? ctx.price(Math.min(current, achievement.target))
+        : achievement.id === 'expansion_13' ? `${Math.min(current, achievement.target)} × ${Math.min(current, achievement.target)}`
+          : `${Math.min(current, achievement.target)} / ${achievement.target}`;
+      const row = createCard(`achievement-${achievement.id}`, title, detail, `${complete ? '✓' : '○'} ${amount}`, () => {});
+      row.classList.add('achievement-row');
+      row.disabled = true;
+      row.setAttribute('aria-label', `${title}: ${amount}. ${detail}`);
+      row.setAttribute('aria-valuenow', String(Math.min(current, achievement.target)));
+      row.setAttribute('aria-valuemax', String(achievement.target));
+      row.dataset.achievementId = achievement.id;
+      if (complete) row.classList.add('is-collected');
+    }
+  }
+
   function stopCustomerVisit(customer, reason = 'queue') {
     let restoredStock = false;
     if (customer.carried && customer.product && state().stock[customer.product] !== undefined) {
@@ -790,12 +855,15 @@ export function installBlockmartV9(ctx) {
     if (!product) { stopCustomerVisit(customer, 'invalid-product'); return; }
     const sale = ctx.applySaleRevenue(state(), product.price);
     setState(ctx.appendCashLedger(sale.state, { kind: 'sale', amount: sale.netRevenue,
-      debtChange: -sale.debtPayment, product: customer.product, quantity: 1 }));
+      debtChange: -sale.debtPayment, product: customer.product, quantity: 1,
+      queueWaitSeconds: Number.isFinite(customer.queueWait) ? customer.queueWait : 0 }));
     state().lifetime += sale.grossRevenue; state().transactions++;
     state().popularity = popularityAfterWait(state().popularity, customer.queueWait, QUEUE_PATIENCE_SECONDS);
     state().popularity = clampPopularity(state().popularity + 1 + currentDecorAppeal() * .025);
     if (!state().milestones.firstSale) { state().milestones.firstSale = true; state().diamond++; }
     unlockedProducts();
+    settleAchievementEvent({ type: 'sale_settled', productId: customer.product,
+      grossAmount: sale.grossRevenue, queueWaitSeconds: Number.isFinite(customer.queueWait) ? customer.queueWait : 0 });
     ctx.showSale(sale.netRevenue);
     if (sale.debtPayment) ctx.toast(`${ctx.t('recoveryPayment', ctx.locale)} · ${ctx.price(sale.debtPayment)}`);
     ctx.save(); refreshHud(); customer.state = 'done'; customer.remove = 0;
@@ -1226,10 +1294,17 @@ export function installBlockmartV9(ctx) {
     const tab = ctx.selectedTab;
     $('panel').dataset.activeTab = tab;
     if (selectedFixtureId && fixtures().some(f => f.id === selectedFixtureId)) renderSelectedFixture();
+    if (tab === 'achievements') {
+      renderAchievements();
+      return;
+    }
     if (tab === 'shop') {
       createCard('shelf-single', ctx.t('smallShelf', ctx.locale), `${ctx.t('oneTile', ctx.locale)} · ${ctx.t('selectFloorThenPlace', ctx.locale)}`, ctx.price(70), () => beginPlacement('shelf', null, 'water', 'single'), { placement: { kind: 'shelf', footprint: 'single', product: 'water' } });
       createCard('shelf-double', ctx.t('doubleShelf', ctx.locale), `${ctx.t('twoTiles', ctx.locale)} · ${ctx.t('selectFloorThenPlace', ctx.locale)}`, ctx.price(120), () => beginPlacement('shelf', null, 'water', 'double'), { placement: { kind: 'shelf', footprint: 'double', product: 'water' } });
       createCard('goods', ctx.t('newGoods', ctx.locale), `${ctx.t('productVariety', ctx.locale)} · ${Object.keys(PRODUCT_DEFS).length}`, '›', () => { ctx.selectedTab = 'supply'; renderPanel(); });
+      createCard('achievement-entry', ctx.t('achievementTab', ctx.locale), ctx.t('achievementsIntro', ctx.locale), `${state().achievements.unlockedIds.length}/${ACHIEVEMENT_CATALOG.length}`, () => {
+        ctx.selectedTab = 'achievements'; renderPanel();
+      });
     }
     if (tab === 'supply') {
       for (const id of Object.keys(PRODUCT_DEFS)) {
@@ -1572,6 +1647,7 @@ export function installBlockmartV9(ctx) {
 
   return {
     install,
+    recordExpansionPurchase: toArea => settleAchievementEvent({ type: 'expansion_purchased', toArea }),
     walkable, accessTiles, routeToCheckout, canPlaceFixture, fixtureAt, fixtureCost,
     fixtureGroup, syncFixtures, beginPlacement, placementReason, updatePlacementPreview,
     updatePlacementUi, chooseFloor, rotatePlacement, rotateSelectedFixture,

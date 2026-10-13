@@ -118,3 +118,133 @@ export function fixtureCenter(fixture) {
   return { x: fixture.x + (width - 1) / 2, z: fixture.z + (depth - 1) / 2 };
 }
 
+export const ACHIEVEMENT_CATALOG = Object.freeze([
+  { id: 'first_sale', rewardId: 'badge_first_sale', target: 1 },
+  { id: 'five_products', rewardId: 'badge_five_products', target: 5 },
+  { id: 'gross_1000', rewardId: 'badge_gross_1000', target: 1000 },
+  { id: 'expansion_13', rewardId: 'badge_expansion_13', target: 13 },
+  { id: 'payments_25', rewardId: 'badge_payments_25', target: 25 },
+  { id: 'patient_service_10', rewardId: 'badge_patient_service_10', target: 10 }
+]);
+
+export const ACHIEVEMENT_PRODUCTS = Object.freeze(['water', 'snacks', 'chips', 'juice', 'fizz']);
+export const ACHIEVEMENT_PATIENCE_SECONDS = 17;
+
+const validCount = value => Number.isFinite(value) ? Math.max(0, Math.floor(value)) : 0;
+const validMoney = value => Number.isFinite(value) ? Math.max(0, value) : 0;
+const uniq = values => [...new Set((Array.isArray(values) ? values : []).filter(value => typeof value === 'string' && value))];
+
+export function legacyAchievementProgress(save = {}) {
+  const ledger = Array.isArray(save.cashLedger) ? save.cashLedger : [];
+  const productIds = uniq(ledger.filter(row => row?.kind === 'sale' && ACHIEVEMENT_PRODUCTS.includes(row.product)).map(row => row.product));
+  const patientPayments = ledger.filter(row => row?.kind === 'sale'
+    && Number.isFinite(row.queueWaitSeconds) && row.queueWaitSeconds >= 0
+    && row.queueWaitSeconds <= ACHIEVEMENT_PATIENCE_SECONDS).length;
+  const lifetime = validMoney(save.lifetime);
+  const transactions = validCount(save.transactions);
+  return {
+    firstSale: transactions > 0 || lifetime > 0 ? 1 : 0,
+    productIds,
+    grossSales: lifetime,
+    expandedTo13: save.area >= 13 || save.milestones?.expanded === true ? 1 : 0,
+    payments: transactions,
+    patientPayments
+  };
+}
+
+export function normalizeAchievementState(value = {}, legacy = {}) {
+  const baseline = value.baseline && typeof value.baseline === 'object' ? value.baseline : legacy;
+  const events = (Array.isArray(value.events) ? value.events : []).filter(event => event
+    && typeof event.id === 'string' && event.id && ['sale_settled', 'expansion_purchased'].includes(event.type));
+  const dedupedEvents = [...new Map(events.map(event => [event.id, event])).values()];
+  const unlockedIds = uniq(value.unlockedIds);
+  const collectedRewardIds = uniq(value.collectedRewardIds);
+  return {
+    schemaVersion: 1,
+    baseline: {
+      firstSale: validCount(baseline.firstSale),
+      productIds: uniq(baseline.productIds).filter(id => ACHIEVEMENT_PRODUCTS.includes(id)),
+      grossSales: validMoney(baseline.grossSales),
+      expandedTo13: validCount(baseline.expandedTo13),
+      payments: validCount(baseline.payments),
+      patientPayments: validCount(baseline.patientPayments)
+    },
+    events: dedupedEvents,
+    processedEventIds: uniq([...dedupedEvents.map(event => event.id), ...(Array.isArray(value.processedEventIds) ? value.processedEventIds : [])]),
+    unlockedIds,
+    collectedRewardIds
+  };
+}
+
+export function mergeAchievementStates(left, right) {
+  const a = normalizeAchievementState(left);
+  const b = normalizeAchievementState(right);
+  const events = [...new Map([...a.events, ...b.events].map(event => [event.id, event])).values()];
+  const merged = normalizeAchievementState({
+    schemaVersion: 1,
+    baseline: {
+      firstSale: Math.max(a.baseline.firstSale, b.baseline.firstSale),
+      productIds: uniq([...a.baseline.productIds, ...b.baseline.productIds]),
+      grossSales: Math.max(a.baseline.grossSales, b.baseline.grossSales),
+      expandedTo13: Math.max(a.baseline.expandedTo13, b.baseline.expandedTo13),
+      payments: Math.max(a.baseline.payments, b.baseline.payments),
+      patientPayments: Math.max(a.baseline.patientPayments, b.baseline.patientPayments)
+    },
+    events,
+    unlockedIds: uniq([...a.unlockedIds, ...b.unlockedIds]),
+    collectedRewardIds: uniq([...a.collectedRewardIds, ...b.collectedRewardIds])
+  });
+  return awardCompletedAchievements(merged).state;
+}
+
+export function achievementProgress(value = {}) {
+  const state = normalizeAchievementState(value);
+  const sales = state.events.filter(event => event.type === 'sale_settled');
+  const expanded = state.events.some(event => event.type === 'expansion_purchased' && event.toArea >= 13);
+  const productIds = uniq([...state.baseline.productIds, ...sales.map(event => event.productId)]).filter(id => ACHIEVEMENT_PRODUCTS.includes(id));
+  return {
+    first_sale: Math.max(state.baseline.firstSale, sales.length ? 1 : 0),
+    five_products: productIds.length,
+    gross_1000: state.baseline.grossSales + sales.reduce((sum, event) => sum + validMoney(event.grossAmount), 0),
+    expansion_13: Math.max(state.baseline.expandedTo13, expanded ? 13 : 0),
+    payments_25: state.baseline.payments + sales.length,
+    patient_service_10: state.baseline.patientPayments + sales.filter(event => Number.isFinite(event.queueWaitSeconds)
+      && event.queueWaitSeconds >= 0 && event.queueWaitSeconds <= ACHIEVEMENT_PATIENCE_SECONDS).length
+  };
+}
+
+export function awardCompletedAchievements(value = {}) {
+  const state = normalizeAchievementState(value);
+  const progress = achievementProgress(state);
+  const unlocked = new Set(state.unlockedIds), collected = new Set(state.collectedRewardIds), newlyUnlocked = [];
+  for (const achievement of ACHIEVEMENT_CATALOG) {
+    const amount = progress[achievement.id];
+    if (amount >= achievement.target && !unlocked.has(achievement.id)) newlyUnlocked.push(achievement.id);
+    if (amount >= achievement.target) {
+      unlocked.add(achievement.id);
+      collected.add(achievement.rewardId);
+    }
+  }
+  state.unlockedIds = [...unlocked];
+  state.collectedRewardIds = [...collected];
+  return { state, progress, newlyUnlocked };
+}
+
+export function recordAchievementEvent(value = {}, event = {}) {
+  const state = normalizeAchievementState(value);
+  if (!event.id || typeof event.id !== 'string' || state.processedEventIds.includes(event.id)) {
+    return { ...awardCompletedAchievements(state), accepted: false };
+  }
+  let clean;
+  if (event.type === 'sale_settled' && ACHIEVEMENT_PRODUCTS.includes(event.productId)
+    && Number.isFinite(event.grossAmount) && event.grossAmount >= 0) {
+    clean = { id: event.id, type: event.type, productId: event.productId, grossAmount: event.grossAmount,
+      queueWaitSeconds: Number.isFinite(event.queueWaitSeconds) && event.queueWaitSeconds >= 0 ? event.queueWaitSeconds : null };
+  } else if (event.type === 'expansion_purchased' && Number.isFinite(event.toArea) && event.toArea >= 13) {
+    clean = { id: event.id, type: event.type, toArea: Math.floor(event.toArea) };
+  } else return { ...awardCompletedAchievements(state), accepted: false };
+  state.events.push(clean);
+  state.processedEventIds.push(clean.id);
+  return { ...awardCompletedAchievements(state), accepted: true };
+}
+

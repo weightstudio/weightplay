@@ -2,15 +2,19 @@ import * as THREE from './vendor/three/three.module.min.js';
 import {resolveLocale,t} from './locales.js';
 import {affordableRestockOffer,applySaleRevenue,browseSeconds,checkoutSeconds,customerBudget,migrateEquipmentState,purchaseEquipment,recoveryShipment,stockCapacity,totalStock,appendCashLedger,spendCash} from './economy.js';
 import {installBlockmartV9} from './blockmart-v9.js';
+import {mergeAchievementStates,recordAchievementEvent} from './blockmart-v9-systems.js';
 
 const $=id=>document.getElementById(id),canvas=$('world'),cashEl=$('cash'),panel=$('panel'),dialog={hidden:true};
 const locale=resolveLocale(),isOwnerPreview=new URL(location.href).searchParams.get('preview')==='1';document.documentElement.lang=locale;document.title=`${t('title')}${isOwnerPreview?` · ${t('ownerPreview',locale)}`:''}`;document.querySelectorAll('[data-l10n]').forEach(node=>{node.textContent=t(node.dataset.l10n,locale)});document.querySelectorAll('[data-l10n-content]').forEach(node=>{node.setAttribute('content',t(node.dataset.l10nContent,locale))});document.querySelectorAll('[data-l10n-alt]').forEach(node=>{node.alt=t(node.dataset.l10nAlt,locale)});$('mainHeader').querySelector('[data-wp-return="main"]').setAttribute('aria-label',t('backToPreview',locale));$('battleBack').setAttribute('aria-label',t('backToMain',locale));document.querySelector('.scene-wrap').setAttribute('aria-label',t('sceneLabel',locale));canvas.setAttribute('aria-label',t('canvasLabel',locale));
 const SAVE_KEY='weightplay.animal-blockmart.v1';
+const ACHIEVEMENT_EVENT_PREFIX=`${SAVE_KEY}.achievement-event.`;
+function readAchievementEvents(){const events=[];try{for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(!key?.startsWith(ACHIEVEMENT_EVENT_PREFIX))continue;try{const event=JSON.parse(localStorage.getItem(key));if(event&&typeof event.id==='string')events.push(event)}catch{}}}catch{}return events}
+function persistAchievementEvent(event){if(!event?.id)return;try{const key=`${ACHIEVEMENT_EVENT_PREFIX}${encodeURIComponent(event.id)}`;if(!localStorage.getItem(key))localStorage.setItem(key,JSON.stringify(event));state.achievements=mergeAchievementStates(state.achievements,recordAchievementEvent(state.achievements,event).state)}catch{toast(t('saveFailed',locale))}}
 const EXPANSION_COST=600;
 const PRODUCTS={water:{name:t('restockWater'),cost:8,price:12,demand:1.55,color:0x5abbd0},snacks:{name:t('restockSnack'),cost:12,price:20,demand:1.0,color:0xf2ae4f},fizz:{name:t('premiumFizz'),cost:45,price:65,demand:.48,color:0xd96da1}};
 const INITIAL={cash:300,area:10,lifetime:0,transactions:0,day:1,recoveryOrders:0,recoveryDebt:0,diamond:0,diamondSpent:0,helper:false,autoRestockEnabled:false,cashLedger:[],entrances:[{x:0,z:0}],exits:[{x:9,z:9}],upgrades:0,equipment:{cooler:false,fastCheckout:false},legacyUpgradeCredits:0,unlocked:['water','snacks'],stock:{water:20,snacks:0,fizz:0},fixtures:[{id:'shelf-1',kind:'shelf',product:'water',x:3,z:3},{id:'checkout-1',kind:'checkout',x:7,z:1},{id:'cooler-1',kind:'cooler',x:9,z:4}],milestones:{firstSale:false,firstThousand:false,expanded:false},view:0,zoom:1,panX:0,panZ:0,cameraVersion:2,warehouse:[]};
 function load(){try{const s=JSON.parse(localStorage.getItem(SAVE_KEY));if(s&&s.version===1&&Number.isFinite(s.cash)&&s.area>=10){const next={...structuredClone(INITIAL),...s,...migrateEquipmentState(s),stock:{...INITIAL.stock,...s.stock},milestones:{...INITIAL.milestones,...s.milestones},recoveryOrders:Number.isFinite(s.recoveryOrders)?Math.max(0,Math.floor(s.recoveryOrders)):0,recoveryDebt:Number.isFinite(s.recoveryDebt)?Math.max(0,Math.floor(s.recoveryDebt)):0,warehouse:Array.isArray(s.warehouse)?s.warehouse:[]};if(!s.cameraVersion){next.view=(Number(s.view)||0)*Math.PI/2;next.panX=0;next.panZ=0;next.cameraVersion=2;if(next.equipment.fastCheckout&&!next.fixtures.some(f=>f.kind==='fastCheckout')&&!next.warehouse.some(f=>f.kind==='fastCheckout')){let spot=null;for(let z=2;z<next.area-1&&!spot;z++)for(let x=2;x<next.area-1;x++)if(!next.fixtures.some(f=>f.x===x&&f.z===z)){spot={x,z};break}if(spot)next.fixtures.push({id:'fastCheckout-legacy-v6',kind:'fastCheckout',...spot})}}return next}}catch{}return structuredClone(INITIAL)}
-let state=load(),renderer,scene,camera,clock=new THREE.Clock(),running=true,gameActive=false,frame=0,elapsed=0,spawnTimer=2,recoveryTimer=0,customerId=0,customers=[],meshes=new Map(),placement=null,selectedTab='shop',drag=null,toastTimer,ghost=null,frameApi=null;
+let state=load(),renderer,scene,camera,clock=new THREE.Clock(),running=true,gameActive=false,frame=0,elapsed=0,spawnTimer=2,recoveryTimer=0,customerId=0,customers=[],meshes=new Map(),placement=null,selectedTab='shop',drag=null,toastTimer,ghost=null,frameApi=null,recordExpansionAchievement=()=>{};
 const materials={};const mat=(c,roughness=.83)=>{const k=`${c}:${roughness}`;return materials[k]??(materials[k]=new THREE.MeshStandardMaterial({color:c,roughness}))};
 const boxGeo=new THREE.BoxGeometry(1,1,1);function cube(parent,name,color,x,y,z,sx,sy,sz,opts={}){const m=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),mat(color));m.name=name;m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;if(opts.rotation)m.rotation.y=opts.rotation;parent.add(m);return m}
 function makeWorld(){scene=new THREE.Scene();scene.background=new THREE.Color(0xdcece8);scene.fog=new THREE.Fog(0xdcece8,26,42);camera=new THREE.OrthographicCamera(-9,9,6,-6,.1,90);renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;scene.add(new THREE.HemisphereLight(0xf4fffb,0x71847a,1.45));const sun=new THREE.DirectionalLight(0xffe4b7,1.85);sun.position.set(-7,13,8);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);scene.add(sun);scene.add(new THREE.AmbientLight(0xffffff,.3));setCamera();buildFloor();syncFixtures();addShopkeeper();resize();window.addEventListener('resize',resize);}
@@ -70,7 +74,7 @@ function updateCustomer(c,dt){
 }
 function saleFloat(){const e=$('salePop');e.classList.remove('show');void e.offsetWidth;e.classList.add('show')}
 function showSale(price){cashEl.textContent=`$${Math.floor(state.cash)}`;saleFloat();$('salePop').textContent=`+$${price}`;window.WeightPlayAudio?.play?.('reward.coin')}
-function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify({version:1,...state}));cashEl.textContent=`$${Math.floor(state.cash)}`}catch{toast('Save unavailable · keep this tab open.') }}
+function save(){try{const latest=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');state.achievements=mergeAchievementStates(mergeAchievementStates(state.achievements,latest?.achievements),{events:readAchievementEvents()});localStorage.setItem(SAVE_KEY,JSON.stringify({version:1,...state}));cashEl.textContent=`$${Math.floor(state.cash)}`}catch{toast(t('saveFailed',locale)) }}
 function toast(s){const e=$('toast');e.textContent=s;e.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('show'),2100)}
 function price(n){return `$${n.toLocaleString()}`}
 function stockOffer(k,requested){return affordableRestockOffer(state.stock,activeEquipment(),requested,PRODUCTS[k].cost,state.cash)}
@@ -104,7 +108,7 @@ if(selectedTab==='staff'){
 }
 }
 function restock(k,requested){const offer=stockOffer(k,requested);if(!offer.quantity)return toast(totalStock(state.stock)>=stockCapacity(activeEquipment())?t('capacityFull',locale):t('cashShort',locale));state.cash-=offer.cost;state.stock[k]+=offer.quantity;save();renderPanel();toast(`${offer.quantity} ${PRODUCTS[k].name} · ${t('orderedFor',locale)} ${price(offer.cost)}`)}
-function expand(){if(state.area>10)return;const purchase=spendCash(state,EXPANSION_COST,'expansion');if(!purchase.ok)return toast(t('cashShort',locale));state=purchase.state;state.area=13;state.milestones.expanded=true;buildFloor();syncFixtures();addShopkeeper();resize();save();renderPanel();toast(t('expandSuccess',locale))}
+function expand(){if(state.area>10)return;const purchase=spendCash(state,EXPANSION_COST,'expansion');if(!purchase.ok)return toast(t('cashShort',locale));state=purchase.state;state.area=13;state.milestones.expanded=true;recordExpansionAchievement(13);buildFloor();syncFixtures();addShopkeeper();resize();save();renderPanel();toast(t('expandSuccess',locale))}
 function hire(){if(state.helper)return;const purchase=spendCash(state,220,'helper');if(!purchase.ok)return toast(t('needMoreCash',locale));state=purchase.state;state.helper=true;state.autoRestockEnabled=false;save();renderPanel();toast(`${t('hireHelper',locale)} · ${t('helperNoWage',locale)}`)}
 function gridPoint(ev){const r=canvas.getBoundingClientRect(),v=new THREE.Vector2((ev.clientX-r.left)/r.width*2-1,-(ev.clientY-r.top)/r.height*2+1),ray=new THREE.Raycaster();ray.setFromCamera(v,camera);const hit=new THREE.Vector3();if(!ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),0),hit))return null;return{x:Math.round(hit.x),z:Math.round(hit.z)}}
 function pickFixture(p){if(!p)return null;return state.fixtures.find(f=>f.x===p.x&&f.z===p.z)}
@@ -131,11 +135,13 @@ function installV9(){
     get running(){return running},set running(value){running=value},
     get gameActive(){return gameActive},set gameActive(value){gameActive=value},
     setGhost(value){ghost=value},cube,makeAnimal,gridPoint,panByPixels,setCamera,buildFloor,save,toast,price,showSale,spendCash,appendCashLedger,
+    readAchievementEvents,persistAchievementEvent,
     expand,hire,browseSeconds,checkoutSeconds,purchaseEquipment,applySaleRevenue,stockCapacity,totalStock,recoveryShipment,
     customerBudget,
     activeEquipment(){return activeEquipment()},
     renderPanel(){return renderPanel()}
   });
+  recordExpansionAchievement=v9.recordExpansionPurchase;
   walkable=v9.walkable;accessTiles=v9.accessTiles;routeToCheckout=v9.routeToCheckout;
   canPlaceFixture=v9.canPlaceFixture;pickFixture=v9.fixtureAt;fixtureCost=v9.fixtureCost;
   fixtureGroup=v9.fixtureGroup;syncFixtures=v9.syncFixtures;beginPlacement=v9.beginPlacement;
@@ -160,3 +166,15 @@ if(!isOwnerPreview){
   fallback.append(message,retry);document.body.append(fallback);
 }
 document.addEventListener('visibilitychange',()=>{if(document.hidden){clock.stop();save()}else{clock.start();setCamera()}});
+window.addEventListener('storage',event=>{
+  if(!event.key?.startsWith(ACHIEVEMENT_EVENT_PREFIX)||!event.newValue)return;
+  try{
+    const achievementEvent=JSON.parse(event.newValue),before=new Set(state.achievements?.unlockedIds||[]);
+    state.achievements=mergeAchievementStates(state.achievements,{events:[achievementEvent],processedEventIds:[achievementEvent.id]});
+    const latest=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');
+    if(latest){latest.achievements=mergeAchievementStates(latest.achievements,state.achievements);localStorage.setItem(SAVE_KEY,JSON.stringify(latest))}
+    const newlyUnlocked=(state.achievements.unlockedIds||[]).filter(id=>!before.has(id));
+    if(newlyUnlocked.length){const notice=document.querySelector('.achievement-notice');if(notice){notice.textContent=`${t('achievementUnlocked',locale)} · ${newlyUnlocked.map(id=>t(`achievement_${id}`,locale)).join(' · ')}`;notice.hidden=false;clearTimeout(notice.hideTimer);notice.hideTimer=setTimeout(()=>{notice.hidden=true},3200)}}
+    if(selectedTab==='achievements')renderPanel();
+  }catch{}
+});
