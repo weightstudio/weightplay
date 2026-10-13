@@ -1,0 +1,551 @@
+{
+  "sourceNote": "Locale-owned Klondike 1.4.0 copy preserved verbatim from the earlier accepted static route output at commit 636ea759ed; generator source owns future route regeneration.",
+  "locales": {
+    "en": {
+      "tags": [
+        "Klondike solitaire",
+        "Alternating-color tableau",
+        "Draw 1 / Draw 3"
+      ],
+      "faqTitle": "FAQ",
+      "faq": [
+        [
+          "How many cards are used?",
+          "Klondike Solitaire uses one standard deck of 52 cards."
+        ],
+        [
+          "What is the win condition?",
+          "Each foundation must be completed from Ace to King in suit order."
+        ],
+        [
+          "What are Draw 1 and Draw 3?",
+          "Draw 1 reveals one card per Stock draw; Draw 3 reveals three."
+        ],
+        [
+          "Can cards be moved one by one?",
+          "Yes, and valid descending alternating-color runs can be moved as a group."
+        ],
+        [
+          "How do I know a move is legal?",
+          "Hint highlights one legal target. Use legal tableau or foundation matches only."
+        ],
+        [
+          "What does Auto-Finish do?",
+          "It moves only legal foundation-safe moves after non-strategic tableau moves are exhausted."
+        ],
+        [
+          "Can I Undo?",
+          "Yes. Undo supports repeated use and fully restores board state."
+        ],
+        [
+          "What if no suggested move exists?",
+          "Hint returns 0 moves available when no move is found."
+        ]
+      ]
+    },
+    "zh-Hant": {
+      "tags": [
+        "克朗代克接龍",
+        "紅黑交錯牌列",
+        "抽一張／三張"
+      ],
+      "faqTitle": "常見問題",
+      "faq": [
+        [
+          "使用幾張牌？",
+          "使用一副標準的 52 張牌。"
+        ],
+        [
+          "勝利條件是什麼？",
+          "將四種花色各自依序從 A 收到 K，完成四個牌堆即可獲勝。"
+        ],
+        [
+          "抽一張和抽三張有什麼不同？",
+          "抽一張每次從牌庫翻開一張；抽三張則每次翻開三張。"
+        ],
+        [
+          "可以一次移動一張牌嗎？",
+          "可以；符合遞減順序且顏色交錯的連續牌組也能一起移動。"
+        ],
+        [
+          "如何判斷走法是否合法？",
+          "提示會標出一個合法目的地。只要符合牌列或基礎牌堆的規則即可移動。"
+        ],
+        [
+          "自動完成會做什麼？",
+          "在不再有需要策略判斷的牌列走法後，自動完成只會執行安全且合法的收牌走法。"
+        ],
+        [
+          "可以復原嗎？",
+          "可以。復原可連續使用，並完整還原牌面狀態。"
+        ],
+        [
+          "沒有提示走法時會怎樣？",
+          "找不到合法走法時，提示會顯示目前沒有可用走法。"
+        ]
+      ]
+    },
+    "zh-Hans": {
+      "tags": [
+        "克朗代克接龙",
+        "红黑交替牌列",
+        "抽一张／三张"
+      ],
+      "faqTitle": "常见问题",
+      "faq": [
+        [
+          "使用多少张牌？",
+          "使用一副标准的 52 张牌。"
+        ],
+        [
+          "获胜条件是什么？",
+          "将四种花色各自按顺序从 A 收到 K，完成四个基础牌堆即可获胜。"
+        ],
+        [
+          "抽一张和抽三张有什么区别？",
+          "抽一张每次从牌库翻开一张；抽三张则每次翻开三张。"
+        ],
+        [
+          "可以一次移动一张牌吗？",
+          "可以；符合递减顺序且颜色交替的连续牌组也可以一起移动。"
+        ],
+        [
+          "如何判断走法是否合法？",
+          "提示会标出一个合法目标。只要符合牌列或基础牌堆规则即可移动。"
+        ],
+        [
+          "自动完成会做什么？",
+          "没有需要策略判断的牌列走法后，自动完成只会执行安全且合法的收牌走法。"
+        ],
+        [
+          "可以撤销吗？",
+          "可以。撤销可以连续使用，并完整还原牌面状态。"
+        ],
+        [
+          "没有提示走法时会怎样？",
+          "找不到合法走法时，提示会显示当前没有可用走法。"
+        ]
+      ]
+    },
+    "ja": {
+      "tags": [
+        "クロンダイク・ソリティア",
+        "赤黒交互の場札",
+        "1枚／3枚ドロー"
+      ],
+      "faqTitle": "よくある質問",
+      "faq": [
+        [
+          "カードは何枚使いますか？",
+          "標準的な52枚のトランプを1組使います。"
+        ],
+        [
+          "勝利条件は何ですか？",
+          "4つの組札それぞれを、同じスートでAからKまで完成させます。"
+        ],
+        [
+          "1枚ドローと3枚ドローの違いは？",
+          "1枚ドローでは山札を1枚ずつめくり、3枚ドローでは1回に3枚めくります。"
+        ],
+        [
+          "カードを1枚ずつ動かせますか？",
+          "はい。降順で赤黒が交互になる有効な列なら、まとめて移動できます。"
+        ],
+        [
+          "合法な手をどう見分けますか？",
+          "ヒントは合法な移動先を1つ示します。場札または組札のルールに合う移動だけを行えます。"
+        ],
+        [
+          "自動完了は何をしますか？",
+          "場札で考える必要のある手がなくなると、安全に組札へ移せる合法手だけを実行します。"
+        ],
+        [
+          "手を戻せますか？",
+          "はい。元に戻すは何度でも使え、盤面を完全に直前の状態へ戻します。"
+        ],
+        [
+          "候補手がないとどうなりますか？",
+          "合法手が見つからない場合、ヒントは移動できる手がないと知らせます。"
+        ]
+      ]
+    },
+    "ko": {
+      "tags": [
+        "클론다이크 솔리테어",
+        "색을 번갈아 쌓는 열",
+        "1장／3장 뽑기"
+      ],
+      "faqTitle": "자주 묻는 질문",
+      "faq": [
+        [
+          "카드는 몇 장 사용하나요?",
+          "표준 카드 52장 한 벌을 사용합니다."
+        ],
+        [
+          "승리 조건은 무엇인가요?",
+          "네 기초 더미를 각각 같은 무늬의 A부터 K까지 완성하면 승리합니다."
+        ],
+        [
+          "1장 뽑기와 3장 뽑기의 차이는 무엇인가요?",
+          "1장 뽑기는 덱에서 한 장씩 공개하고, 3장 뽑기는 한 번에 세 장을 공개합니다."
+        ],
+        [
+          "카드를 한 장씩 옮길 수 있나요?",
+          "네. 내림차순이며 색이 번갈아 이어지는 유효한 묶음은 함께 옮길 수 있습니다."
+        ],
+        [
+          "합법적인 수인지 어떻게 알 수 있나요?",
+          "힌트가 가능한 목적지 하나를 강조합니다. 열이나 기초 더미의 규칙에 맞는 수만 둘 수 있습니다."
+        ],
+        [
+          "자동 완료는 무엇을 하나요?",
+          "전략적인 열 이동이 더 없을 때 안전하고 합법적인 기초 더미 이동만 실행합니다."
+        ],
+        [
+          "실행 취소를 사용할 수 있나요?",
+          "네. 여러 번 사용할 수 있으며 보드 상태를 완전히 이전으로 되돌립니다."
+        ],
+        [
+          "추천 수가 없으면 어떻게 되나요?",
+          "가능한 수를 찾지 못하면 힌트가 이동할 수 있는 수가 없다고 알려 줍니다."
+        ]
+      ]
+    },
+    "es": {
+      "tags": [
+        "Solitario Klondike",
+        "Columnas de colores alternos",
+        "Robar 1 / 3 cartas"
+      ],
+      "faqTitle": "Preguntas frecuentes",
+      "faq": [
+        [
+          "¿Cuántas cartas se usan?",
+          "Solitario Klondike utiliza una baraja estándar de 52 cartas."
+        ],
+        [
+          "¿Cuál es la condición de victoria?",
+          "Cada base debe completarse desde el As hasta el Rey en orden de palo."
+        ],
+        [
+          "¿Qué son Robar 1 y Robar 3?",
+          "Robar 1 revela una carta por cada extracción del Mazo; Robar 3 revela tres."
+        ],
+        [
+          "¿Se pueden mover las cartas una por una?",
+          "Sí, y las secuencias válidas descendentes de colores alternos pueden moverse como grupo."
+        ],
+        [
+          "¿Cómo sé si una jugada es legal?",
+          "Pista resalta un destino legal. Usa únicamente coincidencias válidas del cuadro o de las bases."
+        ],
+        [
+          "¿Qué hace Finalización automática?",
+          "Solo mueve jugadas legales y seguras hacia las bases cuando ya no quedan movimientos estratégicos en el cuadro."
+        ],
+        [
+          "¿Puedo usar Deshacer?",
+          "Sí. Deshacer se puede usar repetidamente y restaura por completo el estado anterior del tablero."
+        ],
+        [
+          "¿Qué pasa si no queda ninguna jugada sugerida?",
+          "Pista indica que no hay movimientos disponibles cuando no encuentra ninguna jugada."
+        ]
+      ]
+    },
+    "pt-BR": {
+      "tags": [
+        "Paciência Klondike",
+        "Colunas em cores alternadas",
+        "Comprar 1 / 3 cartas"
+      ],
+      "faqTitle": "Perguntas frequentes",
+      "faq": [
+        [
+          "Quantas cartas são usadas?",
+          "É usado um baralho padrão com 52 cartas."
+        ],
+        [
+          "Qual é a condição de vitória?",
+          "Complete cada uma das quatro fundações do Ás ao Rei, sempre no mesmo naipe."
+        ],
+        [
+          "Qual é a diferença entre comprar 1 e 3 cartas?",
+          "Comprar 1 revela uma carta por vez do monte; Comprar 3 revela três a cada compra."
+        ],
+        [
+          "Posso mover as cartas uma por uma?",
+          "Sim. Sequências válidas em ordem decrescente e com cores alternadas também podem ser movidas juntas."
+        ],
+        [
+          "Como sei se uma jogada é válida?",
+          "A Dica destaca um destino válido. Mova as cartas apenas conforme as regras do quadro ou das fundações."
+        ],
+        [
+          "O que o preenchimento automático faz?",
+          "Quando não restam jogadas estratégicas no quadro, ele executa apenas movimentos seguros e válidos para as fundações."
+        ],
+        [
+          "Posso desfazer uma jogada?",
+          "Sim. Desfazer pode ser usado várias vezes e restaura completamente o estado do tabuleiro."
+        ],
+        [
+          "E se não houver jogada sugerida?",
+          "Quando não encontra uma jogada válida, a Dica informa que não há movimentos disponíveis."
+        ]
+      ]
+    },
+    "fr": {
+      "tags": [
+        "Solitaire Klondike",
+        "Colonnes aux couleurs alternées",
+        "Piocher 1 / 3 cartes"
+      ],
+      "faqTitle": "Questions fréquentes",
+      "faq": [
+        [
+          "Combien de cartes sont utilisées ?",
+          "Une partie utilise un jeu standard de 52 cartes."
+        ],
+        [
+          "Quelle est la condition de victoire ?",
+          "Complétez chacune des quatre fondations de l’As au Roi dans la même famille."
+        ],
+        [
+          "Quelle différence entre Pioche 1 et Pioche 3 ?",
+          "Pioche 1 révèle une carte à chaque tirage ; Pioche 3 en révèle trois."
+        ],
+        [
+          "Peut-on déplacer les cartes une par une ?",
+          "Oui. Les suites valides décroissantes aux couleurs alternées peuvent aussi être déplacées ensemble."
+        ],
+        [
+          "Comment savoir si un coup est légal ?",
+          "Indice met en évidence une destination légale. Déplacez les cartes selon les règles du tableau ou des fondations."
+        ],
+        [
+          "Que fait la finition automatique ?",
+          "Quand il ne reste plus de coup stratégique sur le tableau, elle joue uniquement les déplacements sûrs et légaux vers les fondations."
+        ],
+        [
+          "Puis-je annuler un coup ?",
+          "Oui. Annuler peut être utilisé plusieurs fois et restaure complètement l’état du plateau."
+        ],
+        [
+          "Que se passe-t-il sans coup suggéré ?",
+          "Si aucun coup légal n’est trouvé, Indice indique qu’il n’y a aucun mouvement disponible."
+        ]
+      ]
+    },
+    "de": {
+      "tags": [
+        "Klondike-Solitär",
+        "Tableau mit wechselnden Farben",
+        "1/3 Karten ziehen"
+      ],
+      "faqTitle": "Häufige Fragen",
+      "faq": [
+        [
+          "Wie viele Karten werden verwendet?",
+          "Gespielt wird mit einem Standarddeck aus 52 Karten."
+        ],
+        [
+          "Was ist das Ziel?",
+          "Vervollständige alle vier Grundstapel je Farbe vom Ass bis zum König."
+        ],
+        [
+          "Was ist der Unterschied zwischen 1 und 3 Karten ziehen?",
+          "Bei 1 Karte wird pro Zug eine Karte aufgedeckt, bei 3 Karten werden jeweils drei aufgedeckt."
+        ],
+        [
+          "Kann ich Karten einzeln bewegen?",
+          "Ja. Gültige absteigende Folgen mit wechselnden Farben lassen sich auch gemeinsam bewegen."
+        ],
+        [
+          "Woher weiß ich, ob ein Zug erlaubt ist?",
+          "Hinweis markiert ein erlaubtes Ziel. Bewege Karten nur nach den Regeln für Tableau oder Grundstapel."
+        ],
+        [
+          "Was macht Automatisch beenden?",
+          "Wenn keine strategischen Tableau-Züge mehr nötig sind, führt es nur sichere, erlaubte Züge auf die Grundstapel aus."
+        ],
+        [
+          "Kann ich einen Zug rückgängig machen?",
+          "Ja. Rückgängig lässt sich wiederholt verwenden und stellt den vorherigen Spielstand vollständig wieder her."
+        ],
+        [
+          "Was passiert, wenn kein Zug vorgeschlagen wird?",
+          "Findet Hinweis keinen erlaubten Zug, meldet es, dass keine Züge verfügbar sind."
+        ]
+      ]
+    },
+    "it": {
+      "tags": [
+        "Solitario Klondike",
+        "Colonne a colori alterni",
+        "Pesca 1 / 3 carte"
+      ],
+      "faqTitle": "Domande frequenti",
+      "faq": [
+        [
+          "Quante carte si usano?",
+          "Si usa un mazzo standard da 52 carte."
+        ],
+        [
+          "Qual è la condizione di vittoria?",
+          "Completa ciascuna delle quattro basi dall’Asso al Re dello stesso seme."
+        ],
+        [
+          "Che differenza c’è tra pesca 1 e pesca 3?",
+          "Pesca 1 scopre una carta per volta; Pesca 3 ne scopre tre a ogni pescata."
+        ],
+        [
+          "Posso spostare le carte una alla volta?",
+          "Sì. Le sequenze valide decrescenti con colori alternati si possono spostare anche in gruppo."
+        ],
+        [
+          "Come faccio a sapere se una mossa è valida?",
+          "Suggerimento evidenzia una destinazione valida. Sposta le carte solo secondo le regole del tableau o delle basi."
+        ],
+        [
+          "Cosa fa il completamento automatico?",
+          "Quando non servono più mosse strategiche nel tableau, esegue solo mosse sicure e valide verso le basi."
+        ],
+        [
+          "Posso annullare una mossa?",
+          "Sì. Annulla si può usare più volte e ripristina completamente lo stato del tavolo."
+        ],
+        [
+          "E se non c’è una mossa suggerita?",
+          "Se non trova mosse valide, Suggerimento indica che non ci sono mosse disponibili."
+        ]
+      ]
+    },
+    "ru": {
+      "tags": [
+        "Пасьянс «Клондайк»",
+        "Чередование цветов в колонках",
+        "Добор 1 / 3 карт"
+      ],
+      "faqTitle": "Частые вопросы",
+      "faq": [
+        [
+          "Сколько карт используется?",
+          "Используется одна стандартная колода из 52 карт."
+        ],
+        [
+          "Какова цель игры?",
+          "Соберите все четыре основания по мастям от туза до короля."
+        ],
+        [
+          "Чем добор одной карты отличается от трёх?",
+          "При доборе одной карты открывается одна карта, при доборе трёх — три за раз."
+        ],
+        [
+          "Можно ли перемещать карты по одной?",
+          "Да. Допустимые убывающие последовательности с чередованием цветов можно перемещать целиком."
+        ],
+        [
+          "Как понять, что ход допустим?",
+          "Подсказка выделяет одну допустимую цель. Перемещайте карты только по правилам колонок или оснований."
+        ],
+        [
+          "Что делает автозавершение?",
+          "Когда стратегические ходы в колонках исчерпаны, оно выполняет только безопасные допустимые ходы в основания."
+        ],
+        [
+          "Можно ли отменить ход?",
+          "Да. Отмена доступна многократно и полностью восстанавливает предыдущее состояние поля."
+        ],
+        [
+          "Что будет, если подсказка не найдёт ход?",
+          "Если допустимых ходов нет, подсказка сообщит, что ходов не осталось."
+        ]
+      ]
+    },
+    "hi": {
+      "tags": [
+        "क्लोंडाइक सॉलिटेयर",
+        "बारी-बारी रंगों वाले कॉलम",
+        "1/3 कार्ड लें"
+      ],
+      "faqTitle": "अक्सर पूछे गए प्रश्न",
+      "faq": [
+        [
+          "कितने कार्ड इस्तेमाल होते हैं?",
+          "एक मानक 52-पत्तों की गड्डी इस्तेमाल होती है।"
+        ],
+        [
+          "जीतने की शर्त क्या है?",
+          "चारों आधार ढेरों में हर सूट को इक्के से बादशाह तक पूरा करें।"
+        ],
+        [
+          "1 कार्ड और 3 कार्ड लेने में क्या अंतर है?",
+          "1 कार्ड लेने पर हर बार एक पत्ता खुलता है; 3 कार्ड लेने पर हर बार तीन पत्ते खुलते हैं।"
+        ],
+        [
+          "क्या कार्ड एक-एक करके चल सकते हैं?",
+          "हाँ। घटते क्रम और बारी-बारी रंगों वाली वैध शृंखला को समूह में भी चलाया जा सकता है।"
+        ],
+        [
+          "वैध चाल कैसे पहचानें?",
+          "संकेत एक वैध लक्ष्य को हाइलाइट करता है। केवल कॉलम या आधार के नियमों के अनुसार चाल चलें।"
+        ],
+        [
+          "ऑटो-फिनिश क्या करता है?",
+          "जब कॉलम में रणनीतिक चालें नहीं बचतीं, तब यह केवल सुरक्षित और वैध आधार चालें करता है।"
+        ],
+        [
+          "क्या चाल वापस ले सकते हैं?",
+          "हाँ। पूर्ववत कई बार इस्तेमाल किया जा सकता है और बोर्ड की पिछली स्थिति पूरी तरह लौटाता है।"
+        ],
+        [
+          "सुझाई गई चाल न मिले तो क्या होगा?",
+          "कोई वैध चाल न मिलने पर संकेत बताता है कि अब कोई चाल उपलब्ध नहीं है।"
+        ]
+      ]
+    },
+    "ar": {
+      "tags": [
+        "سوليتير كلوندايك",
+        "أعمدة بألوان متبادلة",
+        "سحب بطاقة أو ثلاث"
+      ],
+      "faqTitle": "الأسئلة الشائعة",
+      "faq": [
+        [
+          "كم عدد البطاقات المستخدمة؟",
+          "تستخدم كلوندايك سوليتير مجموعة قياسية واحدة من 52 بطاقة."
+        ],
+        [
+          "ما شرط الفوز؟",
+          "يجب إكمال كل مجموعة أساس من الآس إلى الملك بترتيب النوع نفسه."
+        ],
+        [
+          "ما الفرق بين سحب بطاقة واحدة وثلاث بطاقات؟",
+          "يكشف سحب بطاقة واحدة بطاقة واحدة في كل مرة، بينما يكشف سحب ثلاث بطاقات ثلاثاً."
+        ],
+        [
+          "هل يمكن نقل البطاقات واحدة تلو الأخرى؟",
+          "نعم، ويمكن نقل التسلسلات الصالحة ذات الألوان المتناوبة كمجموعة."
+        ],
+        [
+          "كيف أعرف أن الحركة قانونية؟",
+          "يسلط التلميح الضوء على وجهة قانونية واحدة؛ استخدم تطابقات اللوحة أو الأساس المسموح بها فقط."
+        ],
+        [
+          "ماذا يفعل الإكمال التلقائي؟",
+          "ينفذ فقط الحركات القانونية الآمنة نحو الأساس بعد استنفاد الحركات غير الاستراتيجية في اللوحة."
+        ],
+        [
+          "هل يمكنني استخدام التراجع؟",
+          "نعم. يدعم التراجع الاستخدام المتكرر ويعيد حالة اللوحة بالكامل."
+        ],
+        [
+          "ماذا يحدث إذا لم توجد حركة مقترحة؟",
+          "يعرض التلميح عدم وجود حركات متاحة عندما لا يجد حركة قانونية."
+        ]
+      ]
+    }
+  }
+}

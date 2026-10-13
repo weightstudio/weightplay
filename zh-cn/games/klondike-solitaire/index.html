@@ -26,7 +26,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#0a1f3a" />
-  <title data-klocale="ui.meta.title">Klondike Solitaire Online - Play Free Classic Solitaire</title>
+
   <meta name="description" content="经典单人纸牌接龙，提供 1 或 3 张抽牌、拖拉放置、底部自动收尾与撤销支持。" />
   <meta name="keywords" data-klocale="ui.meta.keywords" content="Solitaire,Klondike,Classic Solitaire,Free Solitaire,Play Solitaire Online,Card Game,Patience" />
   <meta property="og:site_name" content="WeightPlay" />
@@ -42,23 +42,7 @@
   <link rel="canonical" href="https://weightplay.com/zh-cn/games/klondike-solitaire/" id="metaCanonical" />
   <link id="metaAlternateEn" rel="alternate" hreflang="en" href="https://weightplay.com/en/games/klondike-solitaire/" />
   <link id="metaAlternateDefault" rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/klondike-solitaire/" />
-  <script id="klStructuredData" type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "VideoGame",
-      "name": "Klondike Solitaire Online",
-      "url": "https://weightplay.com/en/games/klondike-solitaire/",
-      "image": "https://weightplay.com/assets/interface7-redrawn/klondike-solitaire.webp",
-      "description": "Classic Klondike Solitaire with drag/drop, Undo, Hint, Auto Finish, Draw 1/3 modes, animations, and cross-device support.",
-      "publisher": { "@type": "Organization", "name": "WeightStudio" },
-      "operatingSystem": "Web Browser",
-      "genre": ["Solitaire", "Card Game", "Puzzle", "Classic"],
-      "applicationCategory": "Game",
-      "isAccessibleForFree": true,
-      "inLanguage": "en",
-      "audience": { "@type": "Audience", "audienceType": "General players" }
-    }
-  </script>
+
   <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
@@ -84,9 +68,9 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Card",
-    "Family"
+    "克朗代克接龙",
+    "红黑交替牌列",
+    "抽一张／三张"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -178,7 +162,7 @@
   </main>
 
   <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide>
-    <div class="game-info-hero"><div class="game-info-title"><h2 data-klocale="ui.hero.title">Klondike Solitaire</h2><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Klondike solitaire</span><span>Alternating-color tableau</span><span>Draw 1 / Draw 3</span></div></div></div>
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-klocale="ui.hero.title">Klondike Solitaire</h2><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>克朗代克接龙</span><span>红黑交替牌列</span><span>抽一张／三张</span></div></div></div>
     <div class="game-info-sections">
       <section class="game-info-section"><h3 data-i18n="howTitle">怎么玩</h3><ol>
         <li data-i18n="rule1">点选明牌，再拖动或点高亮目标。牌列须红黑交错、由大到小；空列只能放 K 或以 K 开头的牌组。</li>
@@ -187,7 +171,7 @@
       </ol></section>
       <section class="game-info-section"><h3 data-i18n="helpTitle">卡住时</h3><p data-i18n="help">提示只指出合法走法，不会代打；撤销可退回。自动完成处理安全的收尾走法。重新开始重玩同一副牌，新游戏另发一副。</p></section>
       <section class="game-info-section"><h3 data-i18n="noteTitle">游玩记录</h3><p data-i18n="note">每副牌是一局完整接龙，没有关卡菜单。统计和抽牌偏好保存在当前浏览器。</p></section>
-    <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>How many cards are used?</dt><dd>Klondike Solitaire uses one standard deck of 52 cards.</dd></div><div><dt>What is the win condition?</dt><dd>Each foundation must be completed from Ace to King in suit order.</dd></div><div><dt>What are Draw 1 and Draw 3?</dt><dd>Draw 1 reveals one card per Stock draw; Draw 3 reveals three.</dd></div><div><dt>Can cards be moved one by one?</dt><dd>Yes, and valid descending alternating-color runs can be moved as a group.</dd></div><div><dt>How do I know a move is legal?</dt><dd>Hint highlights one legal target. Use legal tableau or foundation matches only.</dd></div><div><dt>What does Auto-Finish do?</dt><dd>It moves only legal foundation-safe moves after non-strategic tableau moves are exhausted.</dd></div><div><dt>Can I Undo?</dt><dd>Yes. Undo supports repeated use and fully restores board state.</dd></div><div><dt>What if no suggested move exists?</dt><dd>Hint returns 0 moves available when no move is found.</dd></div></dl></div></div>
+    <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>使用多少张牌？</dt><dd>使用一副标准的 52 张牌。</dd></div><div><dt>获胜条件是什么？</dt><dd>将四种花色各自按顺序从 A 收到 K，完成四个基础牌堆即可获胜。</dd></div><div><dt>抽一张和抽三张有什么区别？</dt><dd>抽一张每次从牌库翻开一张；抽三张则每次翻开三张。</dd></div><div><dt>可以一次移动一张牌吗？</dt><dd>可以；符合递减顺序且颜色交替的连续牌组也可以一起移动。</dd></div><div><dt>如何判断走法是否合法？</dt><dd>提示会标出一个合法目标。只要符合牌列或基础牌堆规则即可移动。</dd></div><div><dt>自动完成会做什么？</dt><dd>没有需要策略判断的牌列走法后，自动完成只会执行安全且合法的收牌走法。</dd></div><div><dt>可以撤销吗？</dt><dd>可以。撤销可以连续使用，并完整还原牌面状态。</dd></div><div><dt>没有提示走法时会怎样？</dt><dd>找不到合法走法时，提示会显示当前没有可用走法。</dd></div></dl></div></div>
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
