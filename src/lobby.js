@@ -450,7 +450,7 @@ function createDemonEventPreview() {
 
 function syncDemonEventPreview() {
   if (!demonEventPreview) return;
-  const show = !isKidsLobby && activeHall === "games" && activeTopic === "Block"
+  const show = !isKidsLobby && activeHall === "games" && (activeTopic === "all" || activeTopic === "Block")
     && activeFilter === "all" && activeSkill === "all" && activeLibrary === "all"
     && activeAvailability === "all" && activeSearch === "" && activeExploreType === "all";
   demonEventPreview.hidden = !show;

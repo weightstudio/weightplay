@@ -217,7 +217,8 @@ export function installBlockmartV9(ctx) {
   function routeToCheckout(blockedTiles = [], candidate = null, ignoreId = null, routeOverrides = {}) {
     const blocked = new Set(blockedTiles.map(p => `${p.x},${p.z}`));
     const counters = staffedCounters().filter(f => f.id !== ignoreId);
-    if (candidate?.kind === 'checkout' && counters.length < state().cashierCount) counters.push(candidate);
+    // Validate a new or moved register as a full lane before anyone is hired for it.
+    if (candidate?.kind === 'checkout' && !counters.some(counter => counter.id === candidate.id)) counters.push(candidate);
     if (!counters.length) return false;
     const goals = counters.map(counter => serviceFacingTarget(counter))
       .map(point => ({ x: Math.round(point.x), z: Math.round(point.z) }))
@@ -232,11 +233,15 @@ export function installBlockmartV9(ctx) {
     if (exits.some(exit => !walkable(exit.x, exit.z, ignoreId) || blocked.has(`${exit.x},${exit.z}`))) return false;
     if (entrances.some(start => !canReach(start, exits))) return false;
     if (goals.some(goal => !canReach(goal, exits))) return false;
+    const queueCells = new Set();
     for (const counter of counters) {
       const service = serviceFacingTarget(counter);
       const serviceTile = { x: Math.round(service.x), z: Math.round(service.z) };
       for (let rank = 0; rank < QUEUE_LIMIT_PER_REGISTER; rank++) {
         const queue = queueTile(counter, rank);
+        const key = `${queue.x},${queue.z}`;
+        if (queueCells.has(key)) return false;
+        queueCells.add(key);
         if (!walkable(queue.x, queue.z, ignoreId) || blocked.has(`${queue.x},${queue.z}`)
           || !canReach(queue, [serviceTile])) return false;
       }
@@ -658,8 +663,9 @@ export function installBlockmartV9(ctx) {
   }
 
   function routeCustomerOut(customer) {
-    const entrances = GRID_ENTRANCES.filter(p => walkable(p.x, p.z));
-    const paths = entrances.map(point => findPath({ x: customer.x, z: customer.z }, [point]));
+    const exits = (state().exits?.length ? state().exits : [{ x: state().area - 1, z: state().area - 1 }])
+      .filter(point => walkable(point.x, point.z));
+    const paths = exits.map(point => findPath({ x: customer.x, z: customer.z }, [point]));
     const path = paths.filter(candidate => candidate.length).sort((a, b) => a.length - b.length)[0] || [];
     customer.path = path; customer.pathAt = 0; customer.segment = null;
     customer.exitAt = path.length ? null : performance.now();
@@ -804,7 +810,8 @@ export function installBlockmartV9(ctx) {
   }
 
   function spawn() {
-    const entries = GRID_ENTRANCES.filter(p => walkable(p.x, p.z));
+    const entries = (state().entrances?.length ? state().entrances : GRID_ENTRANCES)
+      .filter(point => walkable(point.x, point.z));
     if (!entries.length) return;
     const point = entries[Math.floor(Math.random() * entries.length)];
     const kinds = [['rabbit', 0xf1d5c1], ['bear', 0xad825f], ['fox', 0xe78c5c], ['cat', 0xb2a4cc]];
@@ -874,7 +881,7 @@ export function installBlockmartV9(ctx) {
       grossAmount: sale.grossRevenue, queueWaitSeconds: Number.isFinite(customer.queueWait) ? customer.queueWait : 0 });
     ctx.showSale(sale.netRevenue);
     if (sale.debtPayment) ctx.toast(`${ctx.t('recoveryPayment', ctx.locale)} · ${ctx.price(sale.debtPayment)}`);
-    ctx.save(); refreshHud(); customer.state = 'done'; customer.remove = 0;
+    ctx.save(); refreshHud(); routeCustomerOut(customer); customer.remove = 0;
     updateQueueLines(); ctx.renderPanel();
   }
 
