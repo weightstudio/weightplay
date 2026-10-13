@@ -15,8 +15,8 @@ export function layoutLabels(anchors,viewport){
   const minX=margin+halfWidth,maxX=width-margin-halfWidth;
   const minY=Math.min(height-margin,labelHeight+margin),maxY=height-margin;
   const base={x:clamp(anchor.x,minX,maxX),y:clamp(anchor.y,minY,maxY)};
-  const xStep=labelWidth+gap,yStep=labelHeight+gap;
-  const offsets=[[0,0],[0,-yStep],[0,yStep],[-xStep,0],[xStep,0],[-xStep,-yStep],[xStep,-yStep],[-xStep,yStep],[xStep,yStep],[-2*xStep,0],[2*xStep,0]];
+  const xStep=labelWidth+gap,xHalfStep=xStep/2,yStep=labelHeight+gap;
+  const offsets=[[0,0],[0,-yStep],[0,yStep],[-xHalfStep,0],[xHalfStep,0],[-xStep,0],[xStep,0],[-xHalfStep,-yStep],[xHalfStep,-yStep],[-xHalfStep,yStep],[xHalfStep,yStep],[-xStep,-yStep],[xStep,-yStep],[-xStep,yStep],[xStep,yStep],[-2*xStep,0],[2*xStep,0]];
   if(anchor.offset)offsets.unshift([anchor.offset.x,anchor.offset.y]);
   const seen=new Set(),candidates=[];
   for(const [dx,dy] of offsets){
@@ -24,6 +24,7 @@ export function layoutLabels(anchors,viewport){
    if(seen.has(key))continue;seen.add(key);
    const distance=Math.hypot(x-anchor.x,y-anchor.y);
    if(distance>maxDisplacement&&Math.hypot(x-base.x,y-base.y)>0)continue;
+   if(Math.abs(x-anchor.x)>(viewport.maxHorizontalDisplacement??labelWidth/2+14)&&Math.hypot(x-base.x,y-base.y)>0)continue;
    const item={x,y,width:halfWidth*2,height:labelHeight,offset:{x:x-base.x,y:y-base.y},distance};
    const stability=anchor.offset?Math.hypot(item.offset.x-anchor.offset.x,item.offset.y-anchor.offset.y)*.7:0;
    candidates.push({...item,score:Math.hypot(item.offset.x,item.offset.y)+stability});

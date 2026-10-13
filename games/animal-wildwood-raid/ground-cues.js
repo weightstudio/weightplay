@@ -1,6 +1,6 @@
 import * as THREE from './vendor/three/three.module.min.js';
 const TAU=Math.PI*2;
-const colors=Object.fromEntries(Object.entries({amber:0xffd681,danger:0xff896f,root:0xd5a2e8,heal:0x9ef1c9}).map(([k,v])=>[k,new THREE.Color(v)]));
+const colors=Object.fromEntries(Object.entries({amber:0xffd681,danger:0xff896f,root:0xd5a2e8,heal:0x9ef1c9,mud:0xd6bb8d,thorn:0xb891c8,current:0x78d9c5,snare:0x70d8be}).map(([k,v])=>[k,new THREE.Color(v)]));
 // One reusable, unlit, shadow-free batch. Outlines leave the forest floor visible.
 export class GroundCues {
  constructor(scene){
@@ -31,6 +31,13 @@ export class GroundCues {
  }
  render(sim){
   this.count=0;this.kinds=[];
+  // Environmental and player-created areas use radius-matched outlines so
+  // they remain readable without covering the forest floor in square tiles.
+  for(const zone of sim.zones||[]){
+   const color=zone.type==='mud'?'mud':zone.type==='thorn'?(sim.time%3>2.1?'danger':'thorn'):'current';
+   this.kinds.push(`zone-${zone.type}`);this.ring(zone.x,zone.z,zone.r,color,0,TAU,.06);
+  }
+  for(const field of sim.fields||[]){this.kinds.push('snare-field');this.ring(field.x,field.z,field.r,'snare',0,TAU,.06);}
   for(const e of sim.alive())if(e.wind){
    const w=e.wind,p=Math.max(0,Math.min(1,1-w.left/w.total)),color=p>.75?'danger':'amber',angle=Math.atan2(w.dx,w.dz);this.kinds.push(w.kind);
    if(w.kind==='charge'){
@@ -50,7 +57,7 @@ export class GroundCues {
     this.ring(e.x,e.z,r-.11,color,angle-Math.PI,p*TAU,.085);
    }
   }
-  for(const h of sim.hazards||[]){const color=h.delay>0?'amber':'root';this.ring(h.x,h.z,h.r,color);if(h.delay>0)this.ring(h.x,h.z,h.r-.12,color,0,TAU*(1-h.delay/.9),.08);}
+  for(const h of sim.hazards||[]){const color=h.delay>0?'amber':'root';this.kinds.push('root-hazard');this.ring(h.x,h.z,h.r,color);if(h.delay>0)this.ring(h.x,h.z,h.r-.12,color,0,TAU*(1-h.delay/.9),.08);}
   this.geometry.setDrawRange(0,this.count);this.geometry.attributes.position.needsUpdate=true;this.geometry.attributes.color.needsUpdate=true;this.mesh.visible=this.count>0;
  }
  dispose(){this.mesh.removeFromParent();this.geometry.dispose();this.material.dispose();}

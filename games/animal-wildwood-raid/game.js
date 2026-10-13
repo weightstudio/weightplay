@@ -69,7 +69,7 @@ function haptic(duration){if(!navigator.userActivation?.hasBeenActive)return;try
 async function startRun(stageId=selected,forcePractice=practiceMode){
  const usingPractice=Boolean(forcePractice||practiceMode||practiceRun),nextStage=Number(stageId);if(usingPractice&&!await LocalPractice.validate())return;if(!Number.isInteger(nextStage)||nextStage<1||nextStage>STAGES.length||(!usingPractice&&nextStage>save.highestUnlocked))return;
  dispose();if(usingPractice)beginPracticeRun();else{practiceRun=false;restorePracticeSave();}selected=nextStage;const token=generation;hitStopRemaining=0;settled=false;notice='';noticeUntil=0;lastHp=100;await show('battle');if(token!==generation)return;dialog(t('loading'),'',[],'loading');let timer;
- try{World||=(await Promise.race([import('./world.js?v=20261013-wildwood-forest-ground-v28'),new Promise((_,reject)=>timer=setTimeout(()=>reject(new Error('timeout')),15000))])).WildwoodWorld;if(token!==generation)return;
+ try{World||=(await Promise.race([import('./world.js?v=20261014-wildwood-ground-rings-v36'),new Promise((_,reject)=>timer=setTimeout(()=>reject(new Error('timeout')),15000))])).WildwoodWorld;if(token!==generation)return;
   sim=new Simulation(selected,save.loadout,save.growth,save.ownedTools);world=new World($('#arena'),sim);world.render();buttons();await closeDialog();if(token!==generation)return;save.tutorialSeen=true;persist();hud();start();
  }catch(error){if(token!==generation)return;world?.dispose();world=null;dialog(t('error'),'',[[t('retry'),startRun],[t('stages'),()=>show('stage')]],'error');console.warn('Wildwood:',error.message);}finally{clearTimeout(timer);}
 }
@@ -100,7 +100,7 @@ function healthLabels(dt){
   const labelWidth=compact?(e.kind==='hero'?82:e.kind==='boss'?78:56):(e.kind==='hero'?96:e.kind==='boss'?94:76);
   labels.push({e,el,anchor:{x:p.x*width,y:p.y*height,width:labelWidth,height:labelHeight,offset:el.labelOffset}});
  }
- const positions=layoutLabels(labels.map(label=>label.anchor),{width,height,labelHeight,margin:4,gap:4,maxDisplacement:compact?82:68});
+ const positions=layoutLabels(labels.map(label=>label.anchor),{width,height,labelHeight,margin:4,gap:4,maxDisplacement:compact?84:68});
  labels.forEach(({e,el},index)=>{const position=positions[index];el.labelOffset=position.offset;el.hidden=false;el.style.transform=`translate3d(${position.x}px,${position.y}px,0) translate(-50%,-100%)`;
   const signature=[select.value,e.hp,e.maxHp,e.power,e.reward?.stat,e.reward?.amount,Math.ceil(e.respawn||0)].join('|');
   if(el.labelSignature===signature)return;el.labelSignature=signature;

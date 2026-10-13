@@ -200,11 +200,8 @@ export class WildwoodWorld {
   if(this.dynamic){this.root.remove(this.dynamic);const old=this.dynamic;this.parts=this.parts.filter(p=>!isChild(p.node,old));}
   this.dynamic=new THREE.Group();this.root.add(this.dynamic);const d=this.dynamic;
   this.cues.render(sim);
-  for(const hazard of sim.hazards||[])if(hazard.delay<=0)for(let i=0;i<4;i++)this.box(d,'wood',[hazard.x+Math.cos(i*1.57)*.6,.5,hazard.z+Math.sin(i*1.57)*.6],[.16,1,.16]);
   for(const e of sim.ents)if(e.hp<=0&&e.kind==='tree'&&e.spawn)this.box(d,'wood',[e.x,.06,e.z],[.4,.12,.4]);
   for(const o of sim.obstacles)if(o.hp>0&&nearby(o)){this.box(d,o.breakable?'wood':'stone',[o.x,.5,o.z],[o.w*2,1,o.h*2]);this.box(d,'moss',[o.x,1.03,o.z],[o.w*1.9,.12,o.h*1.9]);}
-  for(const z of sim.zones)if(nearby(z))this.box(d,z.type==='mud'?'wood':z.type==='thorn'?(sim.time%3>2.1?'red':'purple'):'teal',[z.x,.01,z.z],[z.r*2,.035,z.r*2]);
-  for(const f of sim.fields)this.box(d,'teal',[f.x,.04,f.z],[f.r*2,.045,f.r*2]);
   for(const p of sim.shots)if(nearby(p))this.box(d,p.enemy?'purple':'gold',[p.x,.5,p.z],[.2,.2,.4]);
   for(const p of sim.drops){if(!nearby(p))continue;const item=new THREE.Group();item.position.set(p.x,.4+Math.sin(sim.time*3)*.1,p.z);item.rotation.y=sim.time;d.add(item);
    if(p.kind==='heart'){for(const sign of [-1,1]){const leaf=this.box(item,'cyan',[sign*.1,.1,0],[.25,.35,.1]);leaf.rotation.z=sign*.5;}this.box(item,'leaf',[0,-.13,0],[.06,.3,.06]);}
