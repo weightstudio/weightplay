@@ -1541,39 +1541,63 @@
     return { x: pad + Math.random() * (W - pad * 2), y: pad + Math.random() * (H - pad * 2) };
   }
 
-  function image(src) {
+  function image(src, onLoad, onError) {
     const img = new Image();
     img.decoding = "async";
+    if (onLoad) img.addEventListener("load", onLoad, { once: true });
+    if (onError) img.addEventListener("error", onError, { once: true });
     img.src = src;
     return img;
   }
 
+  let preloadGeneration = 0;
   function preload() {
+    const generation = ++preloadGeneration;
     const entries = Object.entries(assetPaths);
+    const entryLoader = window.WeightPlayGameEntryLoader?.isActive === true
+      ? window.WeightPlayGameEntryLoader : null;
     let done = 0;
     let settled = false;
+    const failures = [];
+    entryLoader?.begin(entries.length);
     const finish = () => {
-      if (settled) return;
+      if (settled || generation !== preloadGeneration) return;
+      if (entryLoader && failures.length) {
+        settled = true;
+        entryLoader.fail(undefined, () => preload());
+        return;
+      }
       settled = true;
       nodes.loadingText.textContent = "100%";
       nodes.loadingFill.style.width = "100%";
       nodes.loadingPanel.classList.add("hidden");
       draw();
+      entryLoader?.ready();
       track("game_ready", { prototype: true });
       maybeAutostartSmokeRun();
     };
+    if (!entries.length) {
+      finish();
+      return;
+    }
     entries.forEach(([key, src]) => {
-      const img = image(src);
-      images[key] = img;
-      img.onload = img.onerror = () => {
+      let completed = false;
+      const settle = (loaded) => {
+        if (completed || generation !== preloadGeneration) return;
+        completed = true;
         done += 1;
+        if (!loaded) failures.push(key);
         const pct = Math.round((done / entries.length) * 100);
-        nodes.loadingText.textContent = `${pct}%`;
-        nodes.loadingFill.style.width = `${pct}%`;
+        if (entryLoader) entryLoader.assetProgress(done, entries.length);
+        else {
+          nodes.loadingText.textContent = `${pct}%`;
+          nodes.loadingFill.style.width = `${pct}%`;
+        }
         if (done >= entries.length) finish();
       };
+      images[key] = image(src, () => settle(true), () => settle(false));
     });
-    window.setTimeout(finish, 1600);
+    if (!entryLoader) window.setTimeout(finish, 1600);
   }
 
   function setLocale(next) {

@@ -193,6 +193,28 @@
       scrollSnapType: "none", touchAction: "none",
     })) rail.style.setProperty(property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`), value, "important");
     const stageRoot = rail.closest("#stagePanel") || stagePage;
+    const stageHeader = stageRoot?.querySelector(".wp-stage-shell-header")
+      || document.querySelector('[data-wp-frame-header="stage"]')
+      || document.querySelector('[data-wp-return="stage"]')?.closest(
+        'header,.wp-generated-stage-header,.stage-panel-head,.stage-header',
+      );
+    const priorStageHeaderMarker = stageHeader?.getAttribute("data-wp-stage-i9-header");
+    stageHeader?.setAttribute("data-wp-stage-i9-header", "true");
+    const headerLayoutProperties = [
+      "--wp-stage-i9-control-size",
+      "--wp-stage-i9-header-height",
+      "--wp-stage-i9-safe-top",
+      "--wp-stage-i9-side-inset",
+      "--wp-frame-control-size-physical",
+      "--wp-frame-physical-control-size",
+      "--wp-frame-control-size",
+      "--wp-frame-header-height",
+      "padding",
+    ];
+    const priorHeaderLayout = new Map(headerLayoutProperties.map((property) => [property, {
+      value: stageHeader?.style.getPropertyValue(property) || "",
+      priority: stageHeader?.style.getPropertyPriority(property) || "",
+    }]));
     const safeAreaProbe = document.createElement("span");
     safeAreaProbe.setAttribute("aria-hidden", "true");
     safeAreaProbe.style.cssText = [
@@ -211,6 +233,21 @@
       const safe = getComputedStyle(safeAreaProbe);
       const safeTop = Number.parseFloat(safe.paddingTop) || 0;
       const safeBottom = Number.parseFloat(safe.paddingBottom) || 0;
+      const headerRect = stageHeader?.getBoundingClientRect();
+      const stageScale = stageHeader?.offsetWidth > 0
+        ? headerRect.width / stageHeader.offsetWidth : 1;
+      const inverseStageScale = 1 / Math.max(0.01, stageScale || 1);
+      if (stageHeader) {
+        stageHeader.style.setProperty("--wp-stage-i9-control-size", `${46 * inverseStageScale}px`);
+        stageHeader.style.setProperty("--wp-stage-i9-header-height", `${(78 + safeTop) * inverseStageScale}px`);
+        stageHeader.style.setProperty("--wp-stage-i9-safe-top", `${safeTop * inverseStageScale}px`);
+        stageHeader.style.setProperty("--wp-stage-i9-side-inset", `${16 * inverseStageScale}px`);
+        stageHeader.style.setProperty("--wp-frame-control-size-physical", `${46 * inverseStageScale}px`, "important");
+        stageHeader.style.setProperty("--wp-frame-physical-control-size", `${46 * inverseStageScale}px`, "important");
+        stageHeader.style.setProperty("--wp-frame-control-size", `${46 * inverseStageScale}px`, "important");
+        stageHeader.style.setProperty("--wp-frame-header-height", `${(78 + safeTop) * inverseStageScale}px`, "important");
+        stageHeader.style.setProperty("padding", `${safeTop * inverseStageScale}px ${16 * inverseStageScale}px 0`, "important");
+      }
       const usableTop = Math.max(rootRect.top, viewportTop + safeTop);
       const usableBottom = Math.min(rootRect.bottom, viewportBottom - safeBottom);
       if (usableBottom <= usableTop) return;
@@ -283,6 +320,14 @@
         window.removeEventListener("orientationchange", scheduleCenterRail);
         window.visualViewport?.removeEventListener("resize", scheduleCenterRail);
         window.visualViewport?.removeEventListener("scroll", scheduleCenterRail);
+        if (stageHeader) {
+          if (priorStageHeaderMarker === null) stageHeader.removeAttribute("data-wp-stage-i9-header");
+          else stageHeader.setAttribute("data-wp-stage-i9-header", priorStageHeaderMarker);
+          for (const [property, prior] of priorHeaderLayout) {
+            if (prior.value) stageHeader.style.setProperty(property, prior.value, prior.priority);
+            else stageHeader.style.removeProperty(property);
+          }
+        }
         if (centerFrame) cancelAnimationFrame(centerFrame);
         safeAreaProbe.remove();
       },

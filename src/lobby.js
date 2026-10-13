@@ -3012,6 +3012,14 @@ window.addEventListener("pageshow", (event) => {
 setupKidsLobbyPresentation();
 renderLobby();
 loadGameStats();
+if (!isKidsLobby && window.location.protocol === "http:"
+    && ["localhost", "127.0.0.1", "[::1]", "::1"].includes(window.location.hostname)
+    && !document.querySelector('[data-wp-game-entry-loader-bootstrap="true"]')) {
+  const entryLoaderScript = document.createElement("script");
+  entryLoaderScript.src = "/src/game-entry-loader.js?v=20261013-entry-loader-i9-1";
+  entryLoaderScript.dataset.wpGameEntryLoaderBootstrap = "true";
+  document.head.append(entryLoaderScript);
+}
 if (!isKidsLobby) {
   fetch("src/lobby-release-history.json", { cache: "no-cache" })
     .then((response) => { if (!response.ok) throw new Error("Release history unavailable"); return response.json(); })

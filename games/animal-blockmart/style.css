@@ -238,6 +238,37 @@ body.wp-frame-battle-active #gameGuide{display:none}
 
 /* Native-size product marks use distinct block-package silhouettes. */
 .block-icon.water,.block-icon.snacks,.block-icon.chips,.block-icon.juice,.block-icon.fizz{transform:none}
+
+/* Placement controls size themselves to the actual side panel, not viewport width. */
+.shop-panel{container-type:inline-size;container-name:blockmart-panel}
+.placement-controls{
+  height:auto!important;min-height:0!important;flex:none;display:grid!important;
+  grid-template-columns:minmax(0,1fr);gap:8px;padding:10px;
+  align-items:stretch;overflow:visible;border-top:1px solid #c8d9d5;background:#f2f7f5;
+}
+.placement-controls[hidden]{display:none!important}
+.placement-status-region{min-width:0;width:100%;overflow:visible}
+.placement-controls #placementStatus{
+  display:block;width:100%;min-width:0;max-height:none;overflow:visible;
+  white-space:normal;overflow-wrap:anywhere;word-break:normal;
+  color:#203d49;font-size:max(12px,calc(12px * var(--wp-battle-canvas-inverse-scale,1)));
+  line-height:1.35;font-weight:700;
+}
+.placement-controls #placementStatus.invalid{color:#8a2028}
+.placement-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px 8px;min-width:0}
+.placement-fields label{font-size:max(11px,calc(11px * var(--wp-battle-canvas-inverse-scale,1)));line-height:1.2;font-weight:700;color:#294451}
+.placement-fields select{width:100%;min-width:0;height:max(44px,calc(44px * var(--wp-battle-canvas-inverse-scale,1)));min-height:max(44px,calc(44px * var(--wp-battle-canvas-inverse-scale,1)));padding:0 8px;border:1px solid #718c88;border-radius:9px;background:#fff;color:#203d49;font-size:max(12px,calc(12px * var(--wp-battle-canvas-inverse-scale,1)))}
+.placement-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;min-width:0}
+.placement-actions button{min-width:0;min-height:max(44px,calc(44px * var(--wp-battle-canvas-inverse-scale,1)));height:auto;padding:6px 8px;border:1px solid #718c88;border-radius:9px;background:#fff;color:#203d49;font-size:max(12px,calc(12px * var(--wp-battle-canvas-inverse-scale,1)));font-weight:800;line-height:1.2;white-space:normal;overflow-wrap:anywhere}
+.placement-actions .primary{width:auto;min-height:max(44px,calc(44px * var(--wp-battle-canvas-inverse-scale,1)));background:#08745f;border-color:#075e50;color:#fff}
+.placement-actions .primary:disabled{background:#e4ece9;border-color:#71847f;color:#40564f;cursor:not-allowed}
+#placementControls :focus-visible{outline:3px solid #9a5600;outline-offset:2px;position:relative;z-index:1}
+@container blockmart-panel (max-width:300px){
+  .placement-controls{padding:8px;gap:7px}
+  .placement-fields{grid-template-columns:minmax(0,1fr)}
+  .placement-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .placement-actions .primary{grid-column:1/-1}
+}
 .block-icon.water i:nth-child(1){left:9px;top:0;width:7px;height:4px;border-radius:1px;background:#176f89}
 .block-icon.water i:nth-child(2){left:5px;top:4px;width:15px;height:17px;border-radius:3px 3px 2px 2px;background:#5cc7df}
 .block-icon.water i:nth-child(3){left:6px;top:18px;width:13px;height:5px;border-radius:1px;background:#287f9c}
