@@ -2,7 +2,7 @@ import {STAGES,TOOLS} from './game-data.js';
 import {Simulation,mission} from './simulation.js?v=20261014-wildwood-survival-wave-v35';
 import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js?v=20261013-wildwood-diamond-shop-v15';
 import {load,store,award,KEY} from './save.js';
-import {placeLabel} from './label-layout.js';
+import {layoutLabels} from './label-layout.js?v=20261014-wildwood-label-layout-v36';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 let save=load(),practiceSaveBaseline=null;
@@ -94,22 +94,24 @@ function hud(dt=0){if(!sim)return;$('#hudStage').textContent=`${selected} / 30`;
 }
 function healthLabels(dt){
  const priority=e=>e.kind==='hero'?0:e.kind==='boss'?1:e.kind==='enemy'?2:3;
- const all=[{...sim.hero,uid:'hero',kind:'hero'},...sim.ents].sort((a,b)=>priority(a)-priority(b)),active=new Set(),width=$('#worldLabels').clientWidth,height=$('#worldLabels').clientHeight;
+ const all=[{...sim.hero,uid:'hero',kind:'hero'},...sim.ents].sort((a,b)=>priority(a)-priority(b)),active=new Set(),root=$('#worldLabels'),width=root.clientWidth,height=root.clientHeight,compact=width>=600&&height<=260,labelHeight=compact?30:38,labels=[];
  for(const e of all){if(e.hp<=0&&(e.kind!=='tree'||!e.spawn))continue;const lift=e.hp<=0?.2:e.kind==='tree'?3.05:e.kind==='boss'?2.8:e.kind==='hero'?2.55:2.05,p=world.project(e.x,e.z,lift);if(p.x<-.03||p.x>1.03||p.y<0||p.y>.98)continue;active.add(e.uid);
-  let el=unitLabels.get(e.uid);if(!el){el=document.createElement('div');el.className='unit-label unit-'+e.kind;el.dataset.unit=e.uid;el.innerHTML='<div class="reward-tag"></div><div class="unit-health" role="progressbar"><i></i><b></b></div>';unitLabels.set(e.uid,el);$('#worldLabels').append(el);}
-  const labelWidth=e.kind==='hero'?96:e.kind==='boss'?94:76;
-  const position=placeLabel({x:p.x*width,y:p.y*height},{width,height,labelWidth,labelHeight:38,margin:4});
-  el.hidden=false;el.style.transform=`translate3d(${position.x}px,${position.y}px,0) translate(-50%,-100%)`;
+  let el=unitLabels.get(e.uid);if(!el){el=document.createElement('div');el.className='unit-label unit-'+e.kind;el.dataset.unit=e.uid;el.innerHTML='<div class="reward-tag"></div><div class="unit-health" role="progressbar"><i></i><b></b></div>';unitLabels.set(e.uid,el);root.append(el);}
+  const labelWidth=compact?(e.kind==='hero'?82:e.kind==='boss'?78:56):(e.kind==='hero'?96:e.kind==='boss'?94:76);
+  labels.push({e,el,anchor:{x:p.x*width,y:p.y*height,width:labelWidth,height:labelHeight,offset:el.labelOffset}});
+ }
+ const positions=layoutLabels(labels.map(label=>label.anchor),{width,height,labelHeight,margin:4,gap:4,maxDisplacement:compact?82:68});
+ labels.forEach(({e,el},index)=>{const position=positions[index];el.labelOffset=position.offset;el.hidden=false;el.style.transform=`translate3d(${position.x}px,${position.y}px,0) translate(-50%,-100%)`;
   const signature=[select.value,e.hp,e.maxHp,e.power,e.reward?.stat,e.reward?.amount,Math.ceil(e.respawn||0)].join('|');
-  if(el.labelSignature===signature)continue;el.labelSignature=signature;
+  if(el.labelSignature===signature)return;el.labelSignature=signature;
   const reward=el.firstElementChild,bar=el.lastElementChild;reward.replaceChildren();
-  if(e.hp<=0){reward.removeAttribute('title');reward.append(icon('clock'),document.createTextNode(statNumber(Math.max(0,Math.ceil(e.respawn||0)))));reward.setAttribute('aria-label',`${t('respawn')} ${Math.max(0,Math.ceil(e.respawn||0))} ${t('seconds')}`);bar.hidden=true;continue;}bar.hidden=false;reward.removeAttribute('aria-label');
+  if(e.hp<=0){reward.removeAttribute('title');reward.append(icon('clock'),document.createTextNode(statNumber(Math.max(0,Math.ceil(e.respawn||0)))));reward.setAttribute('aria-label',`${t('respawn')} ${Math.max(0,Math.ceil(e.respawn||0))} ${t('seconds')}`);bar.hidden=true;return;}bar.hidden=false;reward.removeAttribute('aria-label');
   if(e.kind==='hero'){reward.title=statLabel('attack');reward.append(icon('axe'),document.createTextNode(statNumber(e.power)));}
   else if(e.reward){reward.append(icon(statIcon(e.reward.stat)),document.createTextNode(statNumber(e.reward.amount)));reward.title=`${t('permanent')} · ${statLabel(e.reward.stat)} ${statNumber(e.reward.amount)}`;}
   else reward.textContent=e.kind==='totem'?t('totem'):e.kind==='cage'?`${t('rescues')} ${e.order}`:e.kind==='friend'?t('protect'):t('shrines');
   bar.firstElementChild.style.width=`${Math.max(0,e.hp/e.maxHp)*100}%`;bar.lastElementChild.textContent=`${Math.ceil(e.hp)} / ${Math.ceil(e.maxHp)}`;
   bar.setAttribute('aria-valuenow',Math.ceil(e.hp));bar.setAttribute('aria-valuemax',e.maxHp);bar.setAttribute('aria-label',t('hp'));
- }
+ });
  for(const [uid,el] of unitLabels){if(!all.some(e=>e.uid===uid)){el.remove();unitLabels.delete(uid);}else el.hidden=!active.has(uid);}
 }
 function finish(){if(settled)return;settled=true;stop();if(sim.won){save.highestUnlocked=Math.max(save.highestUnlocked,Math.min(30,selected+1));save.best[selected]=Math.max(save.best[selected]||0,Math.ceil(sim.hero.hp/sim.hero.maxHp*100));persist();}
