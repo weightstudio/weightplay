@@ -90,22 +90,22 @@ const replayEconomyCopy={
  hi:{gachaExplain:"पहली जीत: 30 में से हर मिशन एक बार 80 सोना और 1 हीरा देता है। पहले से पूरे मिशन को फिर जीतने पर 40 सोना और 4 सैनिक टुकड़े मिलते हैं; UTC दिन में दोबारा खेलने का सोना अधिकतम 120 है। पहली जीत की कुल सीमा 2,400 सोना और 30 हीरे है। सोने से भर्ती (120): सामान्य 75%, दुर्लभ 20%, महाकाव्य 5%; हर 10वीं में दुर्लभ या बेहतर पक्का। हीरे से भर्ती (6): सामान्य 50%, दुर्लभ 35%, महाकाव्य 15%; हर 5वीं में महाकाव्य पक्का। ऑफ़लाइन सीमा डिवाइस की UTC घड़ी से चलती है।",replayGoldResult:"दोबारा जीत का इनाम: +{n} सोना।",replayGoldCapped:"दोबारा जीत का इनाम: दैनिक सोने की सीमा पूरी (UTC 120)।",transactionUnavailable:"यह ब्राउज़र इनाम को सुरक्षित रूप से सहेज नहीं सका। पृष्ठ खुला रखें और फिर प्रयास करें।"},
  ar:{gachaExplain:"الفوز الأول: تمنح كل مهمة من 30 مقدار 80 ذهبًا وماسة واحدة لمرة واحدة. الفوز مجددًا في مهمة مكتملة يمنح 40 ذهبًا و4 شظايا، بحد أقصى 120 ذهبًا من الإعادة في يوم UTC. إجمالي حد الفوز الأول 2,400 ذهب و30 ماسة. السحب بالذهب (120): عادي 75٪، نادر 20٪، ملحمي 5٪؛ السحب العاشر يضمن نادرًا أو أفضل. السحب بالماس (6): عادي 50٪، نادر 35٪، ملحمي 15٪؛ السحب الخامس يضمن ملحميًا. في وضع عدم الاتصال يعتمد الحد على ساعة UTC للجهاز.",replayGoldResult:"مكافأة الإعادة: +{n} ذهب.",replayGoldCapped:"مكافأة الإعادة: تم بلوغ حد الذهب اليومي (120 UTC).",transactionUnavailable:"تعذر حفظ المكافأة بأمان في هذا المتصفح. أبقِ الصفحة مفتوحة وحاول مجددًا."}
 };
-const replayLifetimeCapCopy={
- en:"Replay gold has a 1,200 lifetime cap (3,600 total campaign gold including first clears).",
- 'zh-Hant':"重玩金幣終身上限為 1,200（含首次通關共最多 3,600 戰役金幣）。",
- 'zh-Hans':"重玩金币终身上限为 1,200（含首次通关共最多 3,600 战役金币）。",
- ja:"再挑戦ゴールドは生涯上限1,200（初回報酬と合わせてキャンペーンゴールド最大3,600）。",
- ko:"재도전 골드는 평생 최대 1,200입니다(최초 보상 포함 캠페인 골드 총 3,600).",
- es:"El oro de repetición tiene un límite total de 1.200 (3.600 de oro de campaña contando las primeras victorias).",
- 'pt-BR':"O ouro de repetição tem limite total de 1.200 (3.600 de ouro de campanha incluindo as primeiras vitórias).",
- fr:"Le butin de rejouabilité est plafonné à 1 200 à vie (3 600 pièces de campagne au total, premières victoires incluses).",
- de:"Wiederholungs-Gold ist auf 1.200 insgesamt begrenzt (3.600 Kampagnen-Gold einschließlich Erstsiegen).",
- it:"Le monete da ripetizione hanno un limite totale di 1.200 (3.600 monete campagna incluse le prime vittorie).",
- ru:"Всего за повторы можно получить не более 1 200 золота (всего до 3 600 кампанийного золота с первыми победами).",
- hi:"दोबारा खेलने का सोना कुल 1,200 तक सीमित है (पहली जीत सहित अभियान का कुल सोना 3,600)।",
- ar:"يبلغ الحد الإجمالي لذهب الإعادة 1,200 (بإجمالي 3,600 من ذهب الحملة مع مكافآت الفوز الأول)."
+const replaySustainabilityCopy={
+ en:"Replay gold has no lifetime cap; its daily 120 limit resets each UTC day.",
+ 'zh-Hant':"重玩金幣沒有終身上限；每日最多 120，會在 UTC 換日後重置。",
+ 'zh-Hans':"重玩金币没有终身上限；每日最多 120，会在 UTC 换日后重置。",
+ ja:"再挑戦ゴールドに生涯上限はなく、1日上限120はUTC日付の切り替わりでリセットされます。",
+ ko:"재도전 골드에는 평생 한도가 없으며, UTC 날짜가 바뀌면 일일 120 한도가 초기화됩니다.",
+ es:"El oro de repetición no tiene límite de por vida; el máximo diario de 120 se restablece cada día UTC.",
+ 'pt-BR':"O ouro de repetição não tem limite total; o máximo diário de 120 reinicia a cada dia UTC.",
+ fr:"L’or de rejouabilité n’a pas de plafond à vie ; la limite quotidienne de 120 est réinitialisée chaque jour UTC.",
+ de:"Wiederholungs-Gold hat kein Lebenszeitlimit; das Tageslimit von 120 wird jeden UTC-Tag zurückgesetzt.",
+ it:"Le monete da ripetizione non hanno un limite totale; il limite giornaliero di 120 si azzera a ogni giorno UTC.",
+ ru:"Золото за повторы не ограничено за всё время; дневной предел 120 сбрасывается с каждым новым днём UTC.",
+ hi:"दोबारा खेलने के सोने की कोई आजीवन सीमा नहीं है; 120 की दैनिक सीमा हर UTC दिन पर रीसेट होती है।",
+ ar:"لا يوجد حد إجمالي لذهب الإعادة؛ يُعاد ضبط الحد اليومي البالغ 120 مع كل يوم UTC."
 };
-for(const [locale,values] of Object.entries(replayEconomyCopy)){values.gachaExplain+=` ${replayLifetimeCapCopy[locale]}`;Object.assign(gachaCopy[locale],values);}
+for(const [locale,values] of Object.entries(replayEconomyCopy)){values.gachaExplain+=` ${replaySustainabilityCopy[locale]}`;Object.assign(gachaCopy[locale],values);}
 const rarityLabels={en:['Common','Rare','Epic'],'zh-Hant':['普通','稀有','史詩'],'zh-Hans':['普通','稀有','史诗'],ja:['コモン','レア','エピック'],ko:['일반','희귀','영웅'],es:['Común','Rara','Épica'],'pt-BR':['Comum','Rara','Épica'],fr:['Commun','Rare','Épique'],de:['Gewöhnlich','Selten','Episch'],it:['Comune','Rara','Epica'],ru:['Обычный','Редкий','Эпический'],hi:['सामान्य','दुर्लभ','महाकाव्य'],ar:['عادي','نادر','ملحمي']};
 for(const [locale,[common,rare,epic]] of Object.entries(rarityLabels))Object.assign(gachaCopy[locale],{rarityCommon:common,rarityRare:rare,rarityEpic:epic});
 export const COPY=Object.freeze(Object.fromEntries(Object.keys(ROUTES).map(locale=>{

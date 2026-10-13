@@ -299,25 +299,25 @@ export function installBlockmartV9(ctx) {
     const width = size.width, depth = size.depth;
     const block = (name, color, x, y, z, sx, sy, sz) => ctx.cube(group, name, color, x, y, z, sx, sy, sz);
     if (normalized.kind === 'shelf') {
-      block('shelf-footprint', 0x607e72, 0, .14, 0, Math.max(.9, width * .9), .16, Math.max(.9, depth * .9));
-      block('shelf-left-post', 0x31594f, -width * .37, .94, 0, .11, 1.58, depth * .78);
-      block('shelf-right-post', 0x31594f, width * .37, .94, 0, .11, 1.58, depth * .78);
+      block('shelf-footprint', 0x365b55, 0, .14, 0, Math.max(.9, width * .9), .16, Math.max(.9, depth * .9));
+      block('shelf-left-post', 0x234a4a, -width * .37, 1.06, 0, .13, 1.82, depth * .78);
+      block('shelf-right-post', 0x234a4a, width * .37, 1.06, 0, .13, 1.82, depth * .78);
       const sku = ctx.PRODUCTS[normalized.product] ? normalized.product : 'water';
       const catalog = PRODUCT_DEFS[sku];
       const slots = [];
       const stockRoot = new THREE.Group();
       stockRoot.name = `stock-display-${normalized.id}`;
       group.add(stockRoot);
-      for (const y of [.48, .9, 1.32]) {
-        block('shelf-board', 0xd8b67c, 0, y, 0, width * .9, .12, depth * .84);
+      for (const y of [.45, 1, 1.55]) {
+        block('shelf-board', 0xe0b768, 0, y, 0, width * .9, .14, depth * .84);
         for (let i = 0; i < 3; i++) {
-          const x = (i - 1) * Math.min(.29, width * .29);
-          slots.push({ group: createDisplayUnit(stockRoot, sku, x, y + .2, 0), sku });
+          const x = (i - 1) * Math.min(.32, width * .32);
+          slots.push({ group: createDisplayUnit(stockRoot, sku, x, y + .16, 0), sku });
         }
       }
       stockDisplaySlots.set(normalized.id, { kind: 'shelf', sku, slots });
-      block('shelf-sign', 0x163e48, 0, 1.78, depth * .44, width * .76, .2, .08);
-      block('shelf-sign-color', catalog.color, 0, 1.78, depth * .49, width * .32, .08, .03);
+      block('shelf-sign', 0x123842, 0, 2.22, depth * .44, width * .76, .2, .08);
+      block('shelf-sign-color', catalog.color, 0, 2.22, depth * .49, width * .32, .08, .03);
     } else if (normalized.kind === 'checkout') {
       block('checkout-counter', 0xb9864f, 0, .64, 0, .9, .82, .88);
       block('checkout-front', 0x285965, 0, .4, .46, .78, .48, .08);
@@ -339,8 +339,8 @@ export function installBlockmartV9(ctx) {
       group.add(stockRoot);
       const slots = [];
       for (let shelf = 0; shelf < 3; shelf++) {
-        block('cooler-shelf', 0x274b56, 0, .42 + shelf * .4, .82, 1.3, .08, .14);
-        for (const x of [-.34, .34]) slots.push({ parent: stockRoot, x, y: .61 + shelf * .4, z: .86, group: null, sku: null });
+        block('cooler-shelf', 0x173e4c, 0, .38 + shelf * .45, .82, 1.3, .09, .14);
+        for (const x of [-.34, .34]) slots.push({ parent: stockRoot, x, y: .57 + shelf * .45, z: 1.16, group: null, sku: null });
       }
       stockDisplaySlots.set(normalized.id, { kind: 'cooler', slots });
     } else if (normalized.kind === 'decor') {
@@ -378,36 +378,47 @@ export function installBlockmartV9(ctx) {
       }
     }
     const productOrder = Object.keys(PRODUCT_DEFS);
-    for (const fixture of fixtures()) {
+    const coolerSlots = fixtures().flatMap(fixture => {
       const display = stockDisplaySlots.get(fixture.id);
-      if (display?.kind !== 'cooler') continue;
-      for (const slot of display.slots) {
-        const sku = productOrder.find(id => remaining[id] > 0) || null;
-        if (slot.sku !== sku) {
-          if (slot.group) {
-            slot.parent.remove(slot.group);
-            slot.group.traverse(object => object.geometry?.dispose());
-            slot.group = null;
-          }
-          slot.sku = sku;
-          if (sku) slot.group = createDisplayUnit(slot.parent, sku, slot.x, slot.y, slot.z);
-        }
-        if (slot.group) slot.group.visible = Boolean(sku);
-        if (sku) remaining[sku]--;
+      return display?.kind === 'cooler' ? display.slots : [];
+    });
+    const coolerStock = [];
+    while (coolerStock.length < coolerSlots.length) {
+      let added = false;
+      for (const sku of productOrder) {
+        if (remaining[sku] <= 0) continue;
+        coolerStock.push(sku);
+        remaining[sku]--;
+        added = true;
+        if (coolerStock.length >= coolerSlots.length) break;
       }
+      if (!added) break;
     }
+    coolerSlots.forEach((slot, index) => {
+      const sku = coolerStock[index] || null;
+      if (slot.sku !== sku) {
+        if (slot.group) {
+          slot.parent.remove(slot.group);
+          slot.group.traverse(object => object.geometry?.dispose());
+          slot.group = null;
+        }
+        slot.sku = sku;
+        if (sku) slot.group = createDisplayUnit(slot.parent, sku, slot.x, slot.y, slot.z);
+      }
+      if (slot.group) slot.group.visible = Boolean(sku);
+    });
   }
 
   function applyFloorArt() {
     const floor = ctx.scene?.getObjectByName('floor-tiles');
     if (!floor || floor === styledFloorTiles || typeof floor.setColorAt !== 'function') return;
-    const colors = [0x8ca99a, 0xa2bba8];
+    const colors = [0x789384, 0x668473];
     let index = 0;
     for (let x = 0; x < state().area; x++) {
       for (let z = 0; z < state().area; z++) {
         const entrance = x < 2 && z < 2;
         const checkout = fixtures().some(f => f.kind === 'checkout' && Math.round(f.x) === x && Math.round(f.z) === z);
-        const color = entrance ? 0xc5a86e : checkout ? 0x769d98 : colors[(x + z) % colors.length];
+        const color = entrance ? 0xc7a15c : checkout ? 0x4f8882 : colors[(x + z) % colors.length];
         floor.setColorAt(index++, new THREE.Color(color));
       }
     }
@@ -421,19 +432,38 @@ export function installBlockmartV9(ctx) {
     const updateProjectionMatrix = camera.updateProjectionMatrix.bind(camera);
     camera.updateProjectionMatrix = function updateBlockmartProjection() {
       const angle = Number(state().view) || 0;
-      const spread = Math.abs(Math.cos(angle)) + Math.abs(Math.sin(angle));
       const area = Math.max(10, Number(state().area) || 10);
       const horizontal = Math.abs(this.right - this.left);
       const vertical = Math.abs(this.top - this.bottom);
-      const horizontalSpan = (area + .6) * spread;
+      const floorCenter = (area - 1) / 2;
+      const placedFixtures = fixtures();
+      const corners = placedFixtures.length ? [] : [
+        [-.5, -.5], [-.5, area - .5], [area - .5, -.5], [area - .5, area - .5]
+      ];
+      for (const fixture of placedFixtures) {
+        const size = footprintSize(fixture);
+        const minX = fixture.x - .5, minZ = fixture.z - .5;
+        const maxX = fixture.x + size.width - .5, maxZ = fixture.z + size.depth - .5;
+        corners.push([minX, minZ], [minX, maxZ], [maxX, minZ], [maxX, maxZ]);
+      }
+      const rightX = Math.cos(angle), rightZ = -Math.sin(angle);
+      const forwardX = Math.sin(angle), forwardZ = Math.cos(angle);
+      const rightProjection = corners.map(([x, z]) => x * rightX + z * rightZ);
+      const forwardProjection = corners.map(([x, z]) => x * forwardX + z * forwardZ);
+      const horizontalSpan = Math.max(...rightProjection) - Math.min(...rightProjection) + 1.2;
       const cameraHeight = Math.max(.1, Math.abs(this.position.y));
-      const targetX = (area - 1) / 2 + (Number(state().panX) || 0);
-      const targetZ = (area - 1) / 2 + (Number(state().panZ) || 0);
+      const panX = Number(state().panX) || 0, panZ = Number(state().panZ) || 0;
+      const targetX = floorCenter + panX, targetZ = floorCenter + panZ;
       const horizontalDistance = Math.hypot(this.position.x - targetX, this.position.z - targetZ);
       const elevation = Math.atan2(cameraHeight, Math.max(.1, horizontalDistance));
-      const verticalSpan = area * spread * Math.sin(elevation) + 2.6 * Math.cos(elevation);
+      const verticalSpan = (Math.max(...forwardProjection) - Math.min(...forwardProjection)) * Math.sin(elevation) + 3 * Math.cos(elevation);
       const fitZoom = Math.min(horizontal / horizontalSpan, vertical / verticalSpan) * .95;
-      this.zoom = Math.max(.5, Number(state().zoom) || 1) * Math.min(1.45, fitZoom);
+      const boundsCenter = (Math.max(...rightProjection) + Math.min(...rightProjection)) / 2;
+      const offset = boundsCenter - (floorCenter * rightX + floorCenter * rightZ);
+      this.position.x = targetX + rightX * offset + forwardX * horizontalDistance;
+      this.position.z = targetZ + rightZ * offset + forwardZ * horizontalDistance;
+      this.lookAt(targetX + rightX * offset, .1, targetZ + rightZ * offset);
+      this.zoom = Math.max(.5, Number(state().zoom) || 1) * Math.min(1.8, fitZoom);
       return updateProjectionMatrix();
     };
     camera.userData.blockmartArtFit = true;
@@ -443,7 +473,7 @@ export function installBlockmartV9(ctx) {
   function addDisplayItem(block, sku, display, x, y, z, color) {
     const size = sku === 'snacks' || sku === 'chips' ? .25 : .23;
     const itemBlock = (name, itemColor, ix, iy, iz, sx, sy, sz) =>
-      block(name, itemColor, ix, iy, iz, sx * 1.18, sy * 1.18, sz * 1.18);
+      block(name, itemColor, ix, iy, iz, sx * 1.3, sy * 1.3, sz * 1.3);
     if (display === 'water') {
       itemBlock('water-crate', 0x3f8ea7, x, y, z, size * 1.15, .2, .17);
       itemBlock('water-bottle', 0x66cce0, x, y + .18, z, .11, .23, .1);

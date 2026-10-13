@@ -124,7 +124,7 @@ async function advanceTroop(){
  }finally{troopWriteBusy=false;}
 }
 listen($('troopSquad'),'click',()=>{const type=TYPES.find((id,index)=>d.troops[index]===$('troopDialogTitle').textContent.split(' · ')[0]);if(!type||!saved.collection.owned.includes(type))return;if(draft.includes(type))draft=draft.filter(id=>id!==type);else if(draft.length<5)draft.push(type);else return;text($('deckMessage'),draft.length===5?t('chance'):t('deckMin'));if(draft.length===5)void save(current=>({...current,deck:[...draft]}));renderDeck();showTroopDetail(type);});
-function renderGacha(){saved=store.refresh();const balance=gachaBalance(saved.collection,saved.gacha);text($('gachaBalance'),t('gachaBalance',{n:balance.gold,d:balance.diamond}));text($('gachaTitle'),t('gachaTitle'));text($('gachaExplain'),t('gachaExplain'));text($('gachaClose'),t('drawCancel'));text($('goldDraw'),t('goldDraw'));text($('diamondDraw'),t('diamondDraw'));}
+function renderGacha(){saved=store.refresh();const balance=gachaBalance(saved.collection,saved.gacha);text($('gachaBalance'),t('gachaBalance',{n:balance.gold,d:balance.diamond}));text($('gachaTitle'),t('gachaTitle'));text($('gachaExplain'),t('gachaExplain'));text($('gachaClose'),t('drawCancel'));text($('goldDraw'),t('goldDraw'));text($('diamondDraw'),t('diamondDraw'));$('goldDraw').disabled=$('diamondDraw').disabled=drawBusy;}
 listen($('openGacha'),'click',()=>{renderGacha();text($('gachaResult'),'');$('gachaDialog').showModal();});
 listen($('gachaClose'),'click',()=>$('gachaDialog').close());
 let drawBusy=false;

@@ -1,5 +1,5 @@
 import {normalizeDeck,VERSION} from './data.mjs';
-import {normalizeCollection,mergeCollections,normalizeGacha,mergeGacha,clearCount,rewardType,REPLAY_GOLD_PER_WIN,REPLAY_GOLD_DAILY_CAP,REPLAY_GOLD_LIFETIME_CAP} from './progression.mjs';
+import {normalizeCollection,mergeCollections,normalizeGacha,mergeGacha,clearCount,rewardType,REPLAY_GOLD_PER_WIN,REPLAY_GOLD_DAILY_CAP} from './progression.mjs';
 // Preserve existing player progress across the v1 -> v2 implementation upgrade.
 export const SAVE_KEY='weightplay.fusekeep.v1';
 export const LOCAL_ACTOR='local';
@@ -80,8 +80,8 @@ export function settle(save,battle,actor='local'){
  let gold=80,replayGold=0;
  if(!firstClear){
   gold=0;const day=typeof battle.settlementDay==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(battle.settlementDay)?battle.settlementDay:new Date().toISOString().slice(0,10);
-  const current=gacha.replayGoldByDay[day]||0;replayGold=Math.min(REPLAY_GOLD_PER_WIN,Math.max(0,REPLAY_GOLD_DAILY_CAP-current),Math.max(0,REPLAY_GOLD_LIFETIME_CAP-gacha.replayGoldTotal));
-  gacha.replayGoldByDay[day]=current+replayGold;gacha.replayGoldTotal=int(gacha.replayGoldTotal+replayGold,0,1000000);
+  const current=gacha.replayGoldByDay[day]||0;replayGold=Math.min(REPLAY_GOLD_PER_WIN,Math.max(0,REPLAY_GOLD_DAILY_CAP-current),Math.max(0,Number.MAX_SAFE_INTEGER-gacha.replayGoldTotal));
+  gacha.replayGoldByDay[day]=current+replayGold;gacha.replayGoldTotal=Math.min(Number.MAX_SAFE_INTEGER,gacha.replayGoldTotal+replayGold);
  }
  gacha.settlementIds.push(eventId);result.gacha=normalizeGacha(gacha);
  battle.economyReward={firstClear,gold:firstClear?80:replayGold,diamond:firstClear?1:0,replayGold};return normalizeSave(result);

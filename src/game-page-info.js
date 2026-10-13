@@ -11633,21 +11633,39 @@
     section.querySelectorAll(".game-info-related-card img").forEach((image) => {
       const fallback = image.dataset.fallbackSrc;
       const finalFallback = image.dataset.finalSrc;
-      let attempts = 0;
+      let fallbackStep = 0;
+      const cleanup = () => {
+        image.removeEventListener("error", useFallback);
+        image.removeEventListener("load", onLoad);
+      };
+      const onLoad = () => {
+        if (image.naturalWidth > 0) cleanup();
+      };
       const useFallback = () => {
-        attempts += 1;
-        if (attempts === 1 && fallback && image.src !== fallback) {
-          image.src = fallback;
-          return;
+        if (fallbackStep === 0 && fallback) {
+          fallbackStep = 1;
+          if (image.src !== new URL(fallback, document.baseURI).href) {
+            image.src = fallback;
+            return;
+          }
         }
-        if (finalFallback && image.src !== finalFallback) {
-          image.src = finalFallback;
-          return;
+        if (fallbackStep < 2 && finalFallback) {
+          fallbackStep = 2;
+          if (image.src !== new URL(finalFallback, document.baseURI).href) {
+            image.src = finalFallback;
+            return;
+          }
         }
+        fallbackStep = 3;
         image.classList.add("is-unavailable");
+        cleanup();
       };
       image.addEventListener("error", useFallback);
-      if (image.complete && image.naturalWidth === 0) useFallback();
+      image.addEventListener("load", onLoad);
+      if (image.complete) {
+        if (image.naturalWidth === 0) useFallback();
+        else cleanup();
+      }
     });
   }
 

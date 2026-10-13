@@ -28,7 +28,7 @@
 
     next.hidden = false;
     const nextLabel = canContinue
-      ? (localeCopy.nextStage || "Stage {n}").replace("{n}", String(state.selected + 2))
+      ? (localeCopy.nextStage || "Stage {n}").replace("{n}", String(state.selected + 1))
       : (localeCopy.noNextStage || "Final stage");
     next.textContent = nextLabel;
     next.disabled = !canContinue;
@@ -44,8 +44,6 @@
   new MutationObserver(syncResult).observe(result, {
     attributes: true,
     attributeFilter: ["hidden"],
-    childList: true,
-    subtree: true,
   });
 
   stages.addEventListener("click", () => {

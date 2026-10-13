@@ -1,0 +1,2 @@
+.arena-wrap .prism-feedback-overlay{position:absolute;inset:0;z-index:1;display:block;pointer-events:none;border:0;border-radius:inherit}
+@media(prefers-reduced-motion:reduce){.arena-wrap .prism-feedback-overlay{filter:none}}

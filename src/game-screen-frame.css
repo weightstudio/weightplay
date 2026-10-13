@@ -1586,9 +1586,9 @@ html[data-wp-shared-interface="7"] body.wp-logical-battle-active
 }
 
 @layer wp-frame-contract {
-/* I9 pilot: retain Stage/Battle's physical hit boxes and frame tracks while
-   matching Main's 3:4 visual-control proportion. An inset face leaves equal
-   visible gaps on all four sides; the scene slots and card geometry do not move. */
+/* I9 pilot: use one 78px Stage/Battle bar, 46px physical hit boxes and 16px
+   outer clearance. The visible face remains inset; Battle's inverse-scaled
+   track reserves its own row, while Stage card centering stays unchanged. */
 html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
   [data-wp-frame-scene="battle"] > .wp-frame-header > .wp-frame-return {
   position:relative!important;
@@ -1596,6 +1596,21 @@ html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[da
   background:transparent!important;
   border-color:transparent!important;
   box-shadow:none!important;
+}
+html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
+  [data-wp-frame-scene="battle"] {
+  --wp-frame-play-header-height:calc(78px * var(--wp-battle-canvas-inverse-scale,1))!important;
+  --wp-frame-header-height:calc(78px * var(--wp-battle-canvas-inverse-scale,1))!important;
+  --wp-frame-control-size:calc(46px * var(--wp-battle-canvas-inverse-scale,1))!important;
+  --wp-frame-lobby-return-width:calc(46px * var(--wp-battle-canvas-inverse-scale,1))!important;
+  --wp-frame-rows:calc(78px * var(--wp-battle-canvas-inverse-scale,1)) minmax(0,1fr)!important;
+}
+html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
+  [data-wp-frame-scene="battle"] > .wp-frame-header {
+  --wp-frame-play-header-height:calc(78px * var(--wp-battle-canvas-inverse-scale,1))!important;
+  --wp-frame-header-height:calc(78px * var(--wp-battle-canvas-inverse-scale,1))!important;
+  --wp-frame-control-size:calc(46px * var(--wp-battle-canvas-inverse-scale,1))!important;
+  --wp-frame-lobby-return-width:calc(46px * var(--wp-battle-canvas-inverse-scale,1))!important;
 }
 html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
   [data-wp-frame-scene="battle"] > .wp-frame-header > .wp-frame-return::before,
@@ -1632,7 +1647,11 @@ html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[da
 }
 html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
   [data-wp-frame-scene="battle"] > .wp-frame-header {
-  padding-inline:0!important;
+  height:calc(78px * var(--wp-battle-canvas-inverse-scale,1))!important;
+  min-height:calc(78px * var(--wp-battle-canvas-inverse-scale,1))!important;
+  grid-template-rows:calc(46px * var(--wp-battle-canvas-inverse-scale,1))!important;
+  /* Center 46px targets in a 78px bar: 16px clear space on every side. */
+  padding-inline:calc(16px * var(--wp-battle-canvas-inverse-scale,1))!important;
 }
 /* Stage keeps its accepted hit boxes, header geometry and centering. Only the
    visible face and glyph shrink for this preview. */
@@ -1736,4 +1755,3 @@ html[data-wp-shared-interface="7"] body [data-wp-result-get-icon] {animation:wp-
   html[data-wp-shared-interface="7"] body :is([data-wp-get-icon],[data-wp-result-get-icon]) {transition:none!important}
   html[data-wp-shared-interface="7"] body [data-wp-result-get-icon] {animation:none!important}
 }
-

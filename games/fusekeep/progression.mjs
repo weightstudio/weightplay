@@ -4,9 +4,9 @@ export const ADVANCE_COSTS=[12,20,32,48,68];
 export const UNLOCK_COST=12;
 export const REPLAY_GOLD_PER_WIN=40;
 export const REPLAY_GOLD_DAILY_CAP=120;
-export const REPLAY_GOLD_LIFETIME_CAP=1200;
 const LOCAL_ACTOR='local';
 const integer=n=>Number.isFinite(n)?Math.max(0,Math.min(1000000,Math.trunc(n))):0;
+const safeCurrencyTotal=n=>Number.isFinite(n)?Math.max(0,Math.min(Number.MAX_SAFE_INTEGER,Math.trunc(n))):0;
 export const rewardType=id=>SHARD_ORDER[(id-1)%SHARD_ORDER.length];
 export const sources=type=>Array.from({length:30},(_,i)=>i+1).filter(id=>rewardType(id)===type);
 // Grow-only per-session clear counters preserve wins when tabs reconcile.
@@ -86,7 +86,7 @@ export function normalizeGacha(raw,compact=false){
  const recentDays=Object.keys(replayGoldByDay).sort().slice(-31),daily=Object.fromEntries(recentDays.map(day=>[day,replayGoldByDay[day]]));
  const settlementIds=Array.isArray(source.settlementIds)?[...new Set(source.settlementIds.filter(id=>typeof id==="string"&&/^[a-zA-Z0-9_-]{1,80}$/.test(id)))].slice(-512):[];
  return {counters,cards,pity:{gold:Math.min(9,integer(source.pity?.gold)),diamond:Math.min(4,integer(source.pity?.diamond))},
-  replayGoldTotal:Math.min(REPLAY_GOLD_LIFETIME_CAP,integer(source.replayGoldTotal)),replayGoldByDay:daily,settlementIds};
+  replayGoldTotal:safeCurrencyTotal(source.replayGoldTotal),replayGoldByDay:daily,settlementIds};
 }
 export function mergeGacha(a,b){
  a=normalizeGacha(a,false);b=normalizeGacha(b,false);const counters={...a.counters},cards={...a.cards},replayGoldByDay={...a.replayGoldByDay};

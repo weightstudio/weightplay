@@ -273,7 +273,10 @@ body[data-wp-game-id="animal-mosaic-clues"] #battleScreen [data-wp-battle-utilit
   min-height: 52px;
   max-height: 52px;
   padding-inline: 8px;
-  white-space: nowrap;
+  font-size: clamp(11px, 2.8vw, 14px);
+  line-height: 1.15;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 #resultModal .modal-actions button:disabled {
