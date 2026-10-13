@@ -16,6 +16,21 @@
     hi: "मोज़ेक संग्रह खोला जा रहा है…",
     ar: "جارٍ فتح أرشيف الفسيفساء…",
   };
+  const resultActionCopy = {
+    en: { stageMap: "Stages", nextStage: "Stage {n}", noNextStage: "Final stage" },
+    "zh-Hant": { stageMap: "關卡列表", nextStage: "第 {n} 關", noNextStage: "已是最後一關" },
+    "zh-Hans": { stageMap: "关卡列表", nextStage: "第 {n} 关", noNextStage: "已是最后一关" },
+    ja: { stageMap: "ステージ一覧", nextStage: "ステージ {n}", noNextStage: "最終ステージ" },
+    ko: { stageMap: "단계 목록", nextStage: "{n}단계", noNextStage: "마지막 단계" },
+    es: { stageMap: "Etapas", nextStage: "Fase {n}", noNextStage: "Fase final" },
+    "pt-BR": { stageMap: "Fases", nextStage: "Fase {n}", noNextStage: "Fase final" },
+    fr: { stageMap: "Étapes", nextStage: "Étape {n}", noNextStage: "Dernière étape" },
+    de: { stageMap: "Etappen", nextStage: "Abschnitt {n}", noNextStage: "Letzter Abschnitt" },
+    it: { stageMap: "Fasi", nextStage: "Fase {n}", noNextStage: "Ultima fase" },
+    ru: { stageMap: "Этапы", nextStage: "Этап {n}", noNextStage: "Последний этап" },
+    hi: { stageMap: "चरण सूची", nextStage: "चरण {n}", noNextStage: "अंतिम चरण" },
+    ar: { stageMap: "المراحل", nextStage: "المرحلة {n}", noNextStage: "المرحلة الأخيرة" },
+  };
   const dictionaries = {
     fr: {
       "Use Paint for confirmed cells and Mark for confirmed empty cells.": "Utilisez Peindre pour les cellules confirmées et Marquer pour les cellules vides confirmées.",
@@ -146,6 +161,7 @@
     hi: { title: "जानवर मोज़ेक संकेत", posterAlt: "उल्लू लोमड़ी का मोज़ेक दिखाता है", pitch: "छिपे हुए पशु चित्र को खोलने के लिए हर पंक्ति और स्तंभ के संकेत पढ़ें।", guideTitle: "हर संख्या लगातार खानों की एक श्रृंखला बताती है।", guideIntro: "पक्के खानों में रंग भरें, खाली खानों को चिह्नित करें और कटते संकेतों से बिना अनुमान लगाए हल करें।", growth: "छह अध्यायों में मार्गदर्शित 5×5 चित्रों से गहन निष्कर्ष वाले 12×12 पशु चित्रों तक 30 मोज़ेक हैं।", objective: "संकेतों से हर भरे जाने वाले खाने को उजागर करें।", help: "3 1 संकेत का अर्थ है तीन भरे खाने, कम से कम एक खाली खाना, फिर एक भरा खाना।", win: "छिपा हुआ पशु मोज़ेक पूरा हो गया।", fail: "कटते संकेतों को फिर देखें और दूसरा निष्कर्ष आज़माएँ।", how: ["हर पंक्ति और स्तंभ के अंक किनारे से भीतर की ओर पढ़ें।", "पक्के खानों में रंग भरें और पक्के खाली खानों पर × लगाएँ।", "सभी श्रृंखलाएँ पूरी करके पशु प्रकट करें।"], chapters: chapters.hi, localeCopy: { stage: "चरण {n}", locked: "लॉक", cleared: "पूरा · फिर खेलें", ready: "तैयार", lockedHint: "पहले पिछला चरण पूरा करें।", paint: "रंग भरें", mark: "चिह्न ×", undo: "पूर्ववत", hint: "संकेत", restart: "फिर शुरू करें", conflict: "यह खाना संकेतों से मेल नहीं खाता।", nothingToUndo: "पूर्ववत करने के लिए कुछ नहीं है।", hintApplied: "संकेत: एक निश्चित खाने में रंग भरा गया।", allVisible: "सभी भरे हुए खाने पहले ही दिखाई दे रहे हैं।", marks: "चिह्न", errors: "गलतियाँ", canvas: "नॉनोग्राम मोज़ेक ग्रिड", replay: "फिर खेलें" } },
   };
   for (const [locale, copy] of Object.entries(configCopies)) {
+    Object.assign(copy.localeCopy, resultActionCopy[locale] || resultActionCopy.en);
     const dictionary = {
       "Animal Mosaic Clues": copy.title, "Start Game": ({"zh-Hans":"开始游戏","zh-Hant":"開始遊戲",ja:"ゲーム開始",ko:"게임 시작",es:"Empezar", "pt-BR":"Começar", fr:"Commencer", de:"Spiel starten", it:"Inizia", ru:"Начать игру", hi:"खेल शुरू करें"})[locale] || "Start Game",
       "Deduction mosaic puzzle": copy.gameplay || "", "Read every row and column clue to uncover a hidden animal portrait.": copy.pitch,
@@ -155,8 +171,8 @@
       Filled: copy.localeCopy.paint, "Nonogram mosaic board": copy.localeCopy.canvas, "Use the clues to reveal every filled cell.": copy.objective,
       "A clue such as 3 1 means a run of three filled cells, at least one empty cell, then one filled cell.": copy.help,
       Continue: copy.localeCopy.ready, "Leave this mosaic?": copy.title, "Your completed progress is safe. This attempt will restart.": copy.fail,
-      "Stage Map": copy.localeCopy.stage, "Stage Complete": copy.win, "The hidden animal mosaic is complete.": copy.win,
-      Time: "Time", Mistakes: copy.localeCopy.errors, Hints: copy.localeCopy.hint, Retry: copy.localeCopy.replay, "Next Stage": copy.localeCopy.stage,
+      "Stage Map": copy.localeCopy.stageMap, "Stage Complete": copy.win, "The hidden animal mosaic is complete.": copy.win,
+      Time: "Time", Mistakes: copy.localeCopy.errors, Hints: copy.localeCopy.hint, Retry: copy.localeCopy.replay, "Next Stage": copy.localeCopy.nextStage,
       Ready: copy.localeCopy.ready, Locked: copy.localeCopy.locked, "Cleared · Replay": copy.localeCopy.cleared, "Complete the previous stage first.": copy.localeCopy.lockedHint,
       Paint: copy.localeCopy.paint, "Mark ×": copy.localeCopy.mark, Undo: copy.localeCopy.undo, Hint: copy.localeCopy.hint, Restart: copy.localeCopy.restart,
       "That cell conflicts with the clues.": copy.localeCopy.conflict, "Hint: one certain cell was painted.": copy.localeCopy.hintApplied,
@@ -227,6 +243,7 @@
   };
 
   const config = window.BlockTrilogyConfig;
+  if (config) config.localeCopy = { ...(config.localeCopy || {}), ...(resultActionCopy[activeLocale] || resultActionCopy.en) };
   const ownedConfig = configCopies[activeLocale];
   if (config && ownedConfig) {
     Object.assign(config, ownedConfig, { chapters: [...ownedConfig.chapters], localeCopy: { ...(config.localeCopy || {}), ...(ownedConfig.localeCopy || {}) } });

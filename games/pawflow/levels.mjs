@@ -16,7 +16,7 @@ const PARAMETERS=[
 // Natural visible clears showed these authored efficiency targets were too
 // tight: Stages 6, 7 and 14 cleared at 17, 17 and 21 launches. Keep the
 // three-star rule intact while calibrating par to that demonstrated route.
-const NATURAL_STAR_TARGETS=Object.freeze({6:17,7:17,14:21});
+const NATURAL_STAR_TARGETS=Object.freeze({6:17,7:17,14:24});
 function hash(value){let h=2166136261;for(const c of JSON.stringify(value)){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}return (h>>>0).toString(16);}
 export function authoredLevel(id) {
   if(!Number.isInteger(id)||id<1||id>30)throw RangeError('LEVEL_ID');

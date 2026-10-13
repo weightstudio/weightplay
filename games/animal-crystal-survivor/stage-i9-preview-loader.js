@@ -13,13 +13,13 @@
     link.href = href;
     document.head.append(link);
   };
-  addStyle(new URL("/src/stage-rail-i9.css?v=20261013-stage-rail-i9-header-spacing7", window.location.origin).href);
-  addStyle(new URL("stage-i9-preview.css?v=20261013-crystal-stage-i9-preview7", base).href);
+  addStyle(new URL("/src/stage-rail-i9.css?v=20261013-stage-rail-i9-header-spacing8", window.location.origin).href);
+  addStyle(new URL("stage-i9-preview.css?v=20261013-crystal-stage-i9-preview8", base).href);
   const common = document.createElement("script");
-  common.src = new URL("/src/stage-rail-i9.js?v=20261013-stage-rail-i9-header-spacing7", window.location.origin).href;
+  common.src = new URL("/src/stage-rail-i9.js?v=20261013-stage-rail-i9-header-spacing8", window.location.origin).href;
   common.onload = () => {
     const script = document.createElement("script");
-    script.src = new URL("stage-i9-preview.js?v=20261013-crystal-stage-i9-preview7", base).href;
+    script.src = new URL("stage-i9-preview.js?v=20261013-crystal-stage-i9-preview8", base).href;
     document.head.append(script);
   };
   document.head.append(common);

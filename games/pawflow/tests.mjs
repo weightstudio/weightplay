@@ -21,7 +21,7 @@ test('a no-hit hidden-layer return exposes a localized foreground hint',()=>{
 });
 for(let id=1;id<=30;id++)test(`campaign ${id}: native simulation witness, conservation and checkpoint recovery`,()=>solve(getLevel(id),true));
 test('natural visible launch counts are inside the calibrated Stage 6, 7 and 14 par',()=>{
- for(const [id,par] of [[6,17],[7,17],[14,21]]){
+ for(const [id,par] of [[6,17],[7,17],[14,24]]){
   const level=getLevel(id);assert.equal(level.par,par);
   assert.equal(stars({status:'won',launches:par,hintUsed:false,rewindUsed:false},level.par),3);
  }

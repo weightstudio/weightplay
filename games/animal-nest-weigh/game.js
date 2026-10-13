@@ -224,7 +224,7 @@
     if (state.lastFeedback === "pairAlreadyKnown") return copy("pairAlreadyKnown");
     if (state.lastFeedback === "inferredPair") return copy("inferredPair");
     if (state.busy) return copy("weighing");
-    const clue = state.clues.at(-1);
+    const clue = state.replayClue !== null ? state.clues[state.replayClue] : state.clues.at(-1);
     if (!clue) return copy("comparisonEmpty");
     const round = rounds[state.round];
     const first = materialName(round.materials[clue.pair[0]]);
@@ -267,6 +267,10 @@
     const beam = $("balanceBeam");
     const left = $("balanceLeft");
     const right = $("balanceRight");
+    [left, right].forEach((pan, slot) => {
+      pan.disabled = state.busy || !selecting || state.selectedPair[slot] === undefined;
+      pan.setAttribute("aria-label", `${copy(slot ? "rightPan" : "leftPan")} · ${copy("removePan")}`);
+    });
     if (!clue) {
       left.className = "balance-pan";
       right.className = "balance-pan";
@@ -358,6 +362,9 @@
     phaseToggle.textContent = copy(state.phase === "compare" ? "chooseAction" : "compareMore");
     phaseToggle.disabled = state.busy;
     $("clearSelectionBtn").disabled = state.busy;
+    $("clearSelectionBtn").textContent = "↺";
+    $("clearSelectionBtn").setAttribute("aria-label", copy("clearPair"));
+    $("clearSelectionBtn").title = copy("clearPair");
     $("compareHeading").textContent = copy(state.phase === "compare" ? "compareTitle" : "answerTitle");
     $("comparisonText").textContent = comparisonMessage();
     $("comparisonText").classList.toggle("has-comparison", state.clues.length > 0);
@@ -388,8 +395,8 @@
       playSound("feedback.error");
       return;
     }
-    const pair = uniqueSorted(state.selectedPair);
-    const key = pair.join(":");
+    const pair = state.selectedPair.slice();
+    const key = uniqueSorted(pair).join(":");
     if (state.knownPairs.has(key)) {
       state.lastFeedback = "pairAlreadyKnown";
       state.wrong = false;
@@ -426,7 +433,7 @@
     state.busy = false;
     $("balanceVisual").classList.remove("is-loading");
     state.selectedPair = [];
-    const key = pair.join(":");
+    const key = uniqueSorted(pair).join(":");
     const round = rounds[state.round];
     const [lighter, heavier] = round.weights[pair[0]] < round.weights[pair[1]] ? pair : [pair[1], pair[0]];
     state.knownPairs.add(key);
@@ -464,7 +471,9 @@
     state.selectedPair = [];
     state.selectedTarget = null;
     state.wrong = false;
-    if (state.lastFeedback === "pairAlreadyKnown") state.lastFeedback = "";
+    state.hintPair = [];
+    state.replayClue = null;
+    state.lastFeedback = "";
     renderBattle();
   }
 
@@ -754,6 +763,7 @@
       state.replayClue = Number(button.dataset.clue);
       state.selectedPair = [];
       state.hintPair = [];
+      state.lastFeedback = "";
       renderBattle();
       const clue = state.clues[state.replayClue];
       $("comparisonText").textContent = copy("comparisonResult", {

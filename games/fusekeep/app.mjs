@@ -1,9 +1,9 @@
-import {Battle} from './engine.mjs?v=7';
+import {Battle} from './engine.mjs?v=8';
 import {STEP,STAGES,TYPES,BOSSES} from './data.mjs';
-import {createStore,settle,SAVE_KEY} from './save.mjs?v=7';
+import {createStore,settle,SAVE_KEY} from './save.mjs?v=8';
 import {shardBalance,nextCost,advanceCollection,rewardType,sources,clearCount,gachaBalance,drawCard} from './progression.mjs';
 import {PROGRESSION_COPY} from './progression-copy.mjs';
-import {LOCALES,LABELS,DICT,translator} from './locales.mjs?v=7';
+import {LOCALES,LABELS,DICT,translator} from './locales.mjs?v=8';
 import {COPY,ROUTES,interpolate} from './copy.mjs';
 import {cue,combatAudio,resetAudio} from './audio.mjs';
 const rootURL=new URL('../../',import.meta.url),assetURL=new URL('./assets/',import.meta.url);
@@ -38,7 +38,11 @@ function feedback(key,values={}){
  const aliases={move:'moved',merge:'merged',summon:'summoned',upgrade:'upgraded',spell:'cast'};
  feedbackText=t(aliases[key]||key,values);feedbackExpiry=(battle?.time||0)+3;renderHUD();
 }
-function save(value=saved){saved=store.write(value);renderProgress();}
+async function save(update){
+ const result=await store.transact(current=>({ok:true,save:typeof update==='function'?update(current):update}));
+ if(!result.ok){saved=store.refresh();renderProgress();return result;}
+ saved=result.save;renderProgress();return result;
+}
 function renderProgress(){
  text($('progress'),`${saved.unlocked} / ${STAGES.length}`);text($('starTotal'),`${saved.stars.reduce((a,b)=>a+b,0)} / 90`);
  text($('stageProgress'),`${saved.unlocked} / ${STAGES.length}`);text($('stageDeckCount'),`${draft.length} / 5`);
@@ -107,15 +111,29 @@ TYPES.forEach((type,index)=>{
  card.append(button,details,progress,progressText,source);$('deckGrid').append(card);deckNodes.push({button,image,details,source,progress,progressText,tierBadge});
 });
 listen($('troopClose'),'click',()=>$('troopDialog').close());
-listen($('troopAdvance'),'click',()=>{const type=TYPES.find((id,index)=>d.troops[index]=== $('troopDialogTitle').textContent.split(' · ')[0]);if(!type)return;saved=store.refresh();const cost=nextCost(saved.collection,type);if(cost===null||shardBalance(saved.collection,type)<cost)return;save({...saved,collection:advanceCollection(saved.collection,type)});renderDeck();showTroopDetail(type);cue('upgrade');});
-listen($('troopSquad'),'click',()=>{const type=TYPES.find((id,index)=>d.troops[index]=== $('troopDialogTitle').textContent.split(' · ')[0]);if(!type||!saved.collection.owned.includes(type))return;if(draft.includes(type))draft=draft.filter(id=>id!==type);else if(draft.length<5)draft.push(type);else return;text($('deckMessage'),draft.length===5?t('chance'):t('deckMin'));if(draft.length===5)save({...saved,deck:[...draft]});renderDeck();showTroopDetail(type);});
+let troopWriteBusy=false;
+listen($('troopAdvance'),'click',()=>void advanceTroop());
+async function advanceTroop(){
+ if(troopWriteBusy)return;const type=TYPES.find((id,index)=>d.troops[index]===$('troopDialogTitle').textContent.split(' · ')[0]);if(!type)return;
+ troopWriteBusy=true;$('troopAdvance').disabled=true;
+ try{
+  const result=await store.transact(current=>{const cost=nextCost(current.collection,type);if(cost===null||shardBalance(current.collection,type)<cost)return {ok:false,error:'funds'};
+   return {ok:true,save:{...current,collection:advanceCollection(current.collection,type)}};});
+  if(result.ok){saved=result.save;renderDeck();showTroopDetail(type);cue('upgrade');}
+  else{saved=store.refresh();renderDeck();showTroopDetail(type);text($('troopDialogStatus'),t(result.error==='funds'?'drawInsufficient':'transactionUnavailable'));}
+ }finally{troopWriteBusy=false;}
+}
+listen($('troopSquad'),'click',()=>{const type=TYPES.find((id,index)=>d.troops[index]===$('troopDialogTitle').textContent.split(' · ')[0]);if(!type||!saved.collection.owned.includes(type))return;if(draft.includes(type))draft=draft.filter(id=>id!==type);else if(draft.length<5)draft.push(type);else return;text($('deckMessage'),draft.length===5?t('chance'):t('deckMin'));if(draft.length===5)void save(current=>({...current,deck:[...draft]}));renderDeck();showTroopDetail(type);});
 function renderGacha(){saved=store.refresh();const balance=gachaBalance(saved.collection,saved.gacha);text($('gachaBalance'),t('gachaBalance',{n:balance.gold,d:balance.diamond}));text($('gachaTitle'),t('gachaTitle'));text($('gachaExplain'),t('gachaExplain'));text($('gachaClose'),t('drawCancel'));text($('goldDraw'),t('goldDraw'));text($('diamondDraw'),t('diamondDraw'));}
 listen($('openGacha'),'click',()=>{renderGacha();text($('gachaResult'),'');$('gachaDialog').showModal();});
 listen($('gachaClose'),'click',()=>$('gachaDialog').close());
 let drawBusy=false;
 async function recruit(banner){if(drawBusy)return;drawBusy=true;$('goldDraw').disabled=$('diamondDraw').disabled=true;
- const run=()=>{saved=store.refresh();const result=drawCard(saved,banner,store.actor);if(!result.ok){text($('gachaResult'),t('drawInsufficient'));return;}save(result.save);renderDeck();const item=result.result;text($('gachaResult'),`${t('drawResult',{rarity:t(`rarity${item.rarity[0].toUpperCase()}${item.rarity.slice(1)}`),name:troopName(item.troop),n:item.fragments})}${item.duplicate?` · ${t('drawDuplicate')}`:''}`);renderGacha();};
- try{if(navigator.locks?.request)await navigator.locks.request('weightplay-fusekeep-gacha-v1',run);else run();}finally{drawBusy=false;renderGacha();}}
+ try{
+  const outcome=await store.transact(current=>drawCard(current,banner,store.actor));
+  if(!outcome.ok){saved=store.refresh();text($('gachaResult'),t(outcome.error==='funds'?'drawInsufficient':'transactionUnavailable'));return;}
+  saved=outcome.save;renderDeck();const item=outcome.result;text($('gachaResult'),`${t('drawResult',{rarity:t(`rarity${item.rarity[0].toUpperCase()}${item.rarity.slice(1)}`),name:troopName(item.troop),n:item.fragments})}${item.duplicate?` · ${t('drawDuplicate')}`:''}`);renderGacha();
+ }finally{drawBusy=false;renderGacha();}}
 listen($('goldDraw'),'click',()=>void recruit('gold'));listen($('diamondDraw'),'click',()=>void recruit('diamond'));
 function loadRenderer(){
  if(rendererPromise)return rendererPromise;
@@ -200,7 +218,7 @@ function openPause(leaving=false,background=false){
 function help(intro=false){
  if(!battle)return;
  showModal('help',t('guide'),`${t('chance')} ${t('bossRule')}`,[
-  null,{label:t(intro?'begin':'resume'),run:()=>{if(intro)save({...saved,tutorial:true});hideModal(true);}},null,
+  null,{label:t(intro?'begin':'resume'),run:()=>{if(intro)void save(current=>({...current,tutorial:true}));hideModal(true);}},null,
  ],[d.guideText[1],d.guideText[2],d.guideText[4]]);
 }
 function failure(){
@@ -230,19 +248,29 @@ function seed(){try{return crypto.getRandomValues(new Uint32Array(1))[0];}catch{
 async function startBattle(id){
  if(disposed||!Number.isInteger(id)||id<1||id>saved.unlocked||id>STAGES.length)return;
  if(draft.length!==5){setTab(true);text($('deckMessage'),t('deckMin'));return;}
- disposeRun();save({...saved,deck:[...draft]});draft=[...saved.deck];battle=new Battle(id,draft,seed(),saved.collection.levels);battle.pause(true);speed=1;feedbackText='';
+ disposeRun();const stored=await save(current=>({...current,deck:[...draft]}));if(!stored.ok)return;draft=[...saved.deck];battle=new Battle(id,draft,seed(),saved.collection.levels);battle.pause(true);speed=1;feedbackText='';
  activate('battle');await restoreArena();
 }
-function showResult(){
- if(!battle||modal==='result')return;
- const won=battle.status==='won',id=battle.stage.id;let firstClear=false;if(won){saved=store.refresh();firstClear=clearCount(saved.collection,id)===0;save(settle(saved,battle,store.actor));}
+let resultPending=false;
+async function showResult(){
+ if(!battle||modal==='result'||resultPending)return;
+ resultPending=true;const completed=battle,won=completed.status==='won',id=completed.stage.id;let firstClear=false;
+ if(won){
+  const outcome=await store.transact(current=>{firstClear=clearCount(current.collection,id)===0;return {ok:true,save:settle(current,completed,store.actor)};});
+  if(!outcome.ok){saved=store.refresh();completed.economySaveError=true;}
+  else saved=outcome.save;
+ }
+ resultPending=false;if(battle!==completed||disposed)return;
  cue(won?'win':'wrong');
- showModal('result',t(won?'victory':'defeat'),won?`${t('reward',{name:troopName(battle.shardReward.type),n:battle.shardReward.amount})}${firstClear?` · ${t('firstClearCurrency')}`:''}`:'',[
+ const replay=completed.economyReward;
+ const currency=won?(completed.economySaveError?t('transactionUnavailable'):firstClear?t('firstClearCurrency'):replay?.replayGold?t('replayGoldResult',{n:replay.replayGold}):t('replayGoldCapped')):'';
+ const reward=won&&completed.shardReward?`${t('reward',{name:troopName(completed.shardReward.type),n:completed.shardReward.amount})} · ${currency}`:currency;
+ showModal('result',t(won?'victory':'defeat'),reward,[
   {label:t('back'),run:toStage},
   {label:t('next'),run:()=>void startBattle(id+1),disabled:!won||id>=STAGES.length},
   {label:t('retry'),run:()=>void startBattle(id)},
  ]);
- text($('dialogStats'),`${t('stars')}: ${battle.stars}/3 · ${t('wall')}: ${battle.hp}/${battle.maxHp} · ${t('time')}: ${formatTime(battle.time)}`);
+ text($('dialogStats'),`${t('stars')}: ${completed.stars}/3 · ${t('wall')}: ${completed.hp}/${completed.maxHp} · ${t('time')}: ${formatTime(completed.time)}`);
 }
 function actionable(){return !disposed&&scene==='battle'&&battle?.status==='playing'&&arena&&!modal&&!settingsPaused&&!document.hidden;}
 function action(command){
@@ -385,7 +413,7 @@ listen(document,'visibilitychange',()=>{
  if(document.hidden&&battle&&scene==='battle'&&!modal){settingsPaused=false;frame.close();openPause(false,true);}
 });
 listen(window,'blur',()=>{cancelGesture();if(actionable())openPause(false,true);});
-listen(window,'storage',event=>{if(event.key===SAVE_KEY&&scene!=='battle'){saved=store.refresh();renderProgress();refreshStage();}});
+listen(window,'storage',event=>{if(event.key===SAVE_KEY){saved=store.refresh();renderProgress();refreshStage();if(scene==='battle')renderHUD();}});
 listen($('battleDialog'),'keydown',event=>{
  if(event.key!=='Tab')return;
  const available=modalButtons.filter(button=>!button.disabled&&button.style.visibility!=='hidden');const first=available[0],last=available.at(-1);if(!first)return;
@@ -414,7 +442,7 @@ listen(window,'pageshow',event=>{
 });
 // Observability for the next AI; no cheat setters, release flags, or test acceptance.
 window.FusekeepDiagnostics=Object.freeze({
- snapshot:()=>({scene,version:7,locale,modal,speed,loopActive:Boolean(raf),selected,
+ snapshot:()=>({scene,version:8,locale,modal,speed,loopActive:Boolean(raf),selected,
   battle:battle?{stage:battle.stage.id,wave:battle.wave,status:battle.status,hp:battle.hp,gold:battle.gold,
    board:battle.board.map(unit=>unit?{id:unit.id,type:unit.type,rank:unit.rank}:null),enemies:battle.enemies.length,
    pending:battle.pending.length,shots:battle.shots.length,time:battle.time}:null,

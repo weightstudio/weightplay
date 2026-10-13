@@ -63,6 +63,58 @@ body.wp-frame-battle-active #gameGuide{display:none}
 #gameGuide :is(h2,h3,p,ol){margin-top:0}
 .scene-wrap>.money{position:absolute;z-index:3;right:12px;top:12px;min-width:82px;padding:6px 10px;pointer-events:none}
 
+/* Art pass: give products and equipment distinct silhouettes, and keep every
+   card field legible at native size. The panel itself remains scrollable. */
+.cards{grid-auto-rows:minmax(60px,auto);align-content:start}
+.card{grid-template-columns:30px minmax(0,1fr) auto;min-height:60px;max-height:none;overflow:visible;padding:8px;gap:7px}
+.card strong,.card small{display:block;-webkit-line-clamp:unset;overflow:visible;text-overflow:clip;white-space:normal}
+.card strong{font-size:12px;line-height:1.2;color:#203c48;font-weight:800}
+.card small{font-size:10px;line-height:1.3;color:#526b76;margin-top:3px}
+.card em{font-size:11px;line-height:1.2;color:#006b59;white-space:nowrap}
+.card[disabled]{opacity:1;background:#f1f5f4;border-color:#dce6e4}
+.card[disabled] strong,.card[disabled] small{color:#52666e}
+.fixture-row,.warehouse-row{background:#f6faf9;border-color:#d6e2e1;color:#263f49}
+.fixture-row>span,.warehouse-row>span{color:#304d58;font-weight:700;line-height:1.3;white-space:normal;overflow:visible;text-overflow:clip}
+.fixture-row .fixture-manage{min-height:40px;color:#263f49;white-space:normal;line-height:1.25}
+.fixture-row .fixture-store{min-height:40px;display:grid;place-items:center;color:#264952;background:#e5efed}
+.block-icon{width:28px;height:28px;transform:none}
+.block-icon i{width:10px;height:10px;border:1px solid #ffffffd9;box-shadow:0 1px 2px #153b3c55;transform:none}
+.block-icon i:nth-child(1){left:8px;top:0;border-radius:5px 5px 2px 2px;background:#88d9c4}
+.block-icon i:nth-child(2){left:2px;top:10px;border-radius:2px;background:#149b85}
+.block-icon i:nth-child(3){left:14px;top:10px;border-radius:2px;background:#0c786c}
+.block-icon.water i:nth-child(1){left:8px;top:1px;width:11px;height:20px;border-radius:5px 5px 4px 4px;background:#4bb9d0}
+.block-icon.water i:nth-child(2){left:10px;top:0;width:7px;height:4px;border-radius:2px;background:#217f98}
+.block-icon.water i:nth-child(3){display:none}
+.block-icon.snacks i:nth-child(1){left:4px;top:5px;width:20px;height:16px;border-radius:3px;background:#e7a84d}
+.block-icon.snacks i:nth-child(2){left:7px;top:9px;width:6px;height:6px;border-radius:50%;background:#fff0bc}
+.block-icon.snacks i:nth-child(3){left:16px;top:9px;width:5px;height:5px;border-radius:50%;background:#fff0bc}
+.block-icon.chips i:nth-child(1){left:6px;top:2px;width:17px;height:23px;clip-path:polygon(15% 0,85% 0,100% 100%,0 100%);background:#d87436}
+.block-icon.chips i:nth-child(2){left:10px;top:8px;width:9px;height:7px;border-radius:50%;background:#ffd46e}
+.block-icon.chips i:nth-child(3){display:none}
+.block-icon.juice i:nth-child(1){left:7px;top:5px;width:16px;height:19px;border-radius:2px;background:#ed9a3e;clip-path:polygon(0 18%,22% 0,100% 0,100% 100%,0 100%)}
+.block-icon.juice i:nth-child(2){left:16px;top:0;width:2px;height:7px;background:#25806e}
+.block-icon.juice i:nth-child(3){left:10px;top:10px;width:8px;height:3px;background:#ffe5a0}
+.block-icon.fizz i:nth-child(1){left:8px;top:3px;width:13px;height:22px;border-radius:4px;background:#bc4d90}
+.block-icon.fizz i:nth-child(2){left:11px;top:0;width:7px;height:4px;border-radius:1px;background:#783b72}
+.block-icon.fizz i:nth-child(3){left:10px;top:11px;width:9px;height:3px;background:#f5c9df}
+.block-icon.shelf-single i:nth-child(1),.block-icon.shelf-double i:nth-child(1){left:5px;top:4px;width:19px;height:3px;background:#b77e43}
+.block-icon.shelf-single i:nth-child(2),.block-icon.shelf-double i:nth-child(2){left:5px;top:12px;width:19px;height:3px;background:#a96f37}
+.block-icon.shelf-single i:nth-child(3),.block-icon.shelf-double i:nth-child(3){left:7px;top:2px;width:3px;height:20px;background:#35675c}
+.block-icon.shelf-double:after{content:'';position:absolute;left:18px;top:2px;width:3px;height:20px;background:#35675c}
+.block-icon.cooler i:nth-child(1){left:4px;top:2px;width:21px;height:23px;border-radius:3px;background:#70bdc7}
+.block-icon.cooler i:nth-child(2){left:8px;top:7px;width:13px;height:2px;background:#e1ffff}
+.block-icon.cooler i:nth-child(3){left:8px;top:14px;width:13px;height:2px;background:#e1ffff}
+.block-icon.cash-register i:nth-child(1){left:4px;top:11px;width:21px;height:13px;border-radius:3px;background:#b9854f}
+.block-icon.cash-register i:nth-child(2){left:8px;top:3px;width:12px;height:8px;border-radius:2px;background:#397b7c}
+.block-icon.cash-register i:nth-child(3){left:12px;top:16px;width:6px;height:3px;background:#fff1b7}
+.block-icon.checkout-speed i:nth-child(1){left:4px;top:5px;width:18px;height:18px;border:3px solid #347d75;border-radius:50%;background:transparent}
+.block-icon.checkout-speed i:nth-child(2){left:13px;top:7px;width:3px;height:9px;background:#e28a45;transform:rotate(35deg);transform-origin:bottom}
+.block-icon.checkout-speed i:nth-child(3){left:18px;top:17px;width:8px;height:3px;background:#347d75;transform:rotate(45deg)}
+.block-icon.stock-helper i:nth-child(1){left:5px;top:3px;width:18px;height:20px;border-radius:8px 8px 5px 5px;background:#58a99b}
+.block-icon.stock-helper i:nth-child(2){left:8px;top:7px;width:4px;height:4px;border-radius:50%;background:#fff4d4}
+.block-icon.stock-helper i:nth-child(3){left:16px;top:7px;width:4px;height:4px;border-radius:50%;background:#fff4d4}
+@media(max-width:600px){.card{min-height:58px;padding:6px}.card strong{font-size:11px}.card small{font-size:9px}.card em{font-size:10px}}
+
 /* Keep Battle controls at physical touch size inside the scaled logical canvas. */
 @media (orientation:landscape){
   #app[data-wp-logical-battle-canvas] #battleContent{

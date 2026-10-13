@@ -264,7 +264,8 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
   line-height: 1.35;
 }
 
-.game-info-related {
+.game-info-related,
+.game-info-related-cards {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
@@ -288,24 +289,46 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
   box-shadow: 0 12px 24px rgba(23, 32, 51, 0.14);
 }
 
-.game-info-related-card img {
+.game-info-related-poster,
+.game-info-related-card > img {
   display: block;
   width: 100%;
   aspect-ratio: 1;
-  object-fit: cover;
+  overflow: hidden;
   background: #e6eef8;
+}
+
+.game-info-related-poster {
+  display: grid;
+  place-items: center;
+}
+
+.game-info-related-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  background: #e6eef8;
+}
+
+.game-info-related-card img.is-unavailable {
+  visibility: hidden;
 }
 
 .game-info-related-copy {
   display: grid;
   gap: 5px;
   padding: 10px;
+  min-width: 0;
 }
 
 .game-info-related-copy strong {
   color: #172033;
   font-size: 0.92rem;
   line-height: 1.2;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .game-info-related-copy span {
@@ -317,6 +340,8 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
   font-size: 0.78rem;
   font-weight: 800;
   line-height: 1.35;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 720px) {
@@ -331,7 +356,8 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
     grid-template-columns: 1fr;
   }
 
-  .game-info-related {
+  .game-info-related,
+  .game-info-related-cards {
     grid-template-columns: 1fr;
   }
 
@@ -345,11 +371,17 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
     align-items: stretch;
   }
 
-  .game-info-related-card img {
+  .game-info-related-poster,
+  .game-info-related-card > img {
     width: 92px;
+    height: 92px;
+    aspect-ratio: 1;
+    align-self: start;
+  }
+
+  .game-info-related-card img {
+    width: 100%;
     height: 100%;
-    min-height: 92px;
-    aspect-ratio: auto;
   }
 
   .game-info-related-copy {

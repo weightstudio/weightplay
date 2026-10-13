@@ -66,6 +66,7 @@ export class Arena {
   for(const x of [-4.25,4.25])b.push([x,1.02,3.95,1.1,2.2,1.35,0x354c65],[x,2.18,3.95,1.3,.25,1.5,0x91a3b0],[x,1.5,4.66,.4,.7,.08,0xd2a64d]);
   return b;
  }
+ // Keep one world-space board across viewports: expand orthographic bounds to the view aspect instead of scaling X/Z independently.
  fit(camera,rect,{x=4.95,z0,z1,y=2.8,elevation=42,depth=10}){
   const center=(z0+z1)/2;camera.position.set(0,elevation,center+depth);camera.lookAt(0,.4,center);camera.updateMatrixWorld(true);
   let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;

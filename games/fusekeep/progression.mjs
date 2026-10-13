@@ -2,25 +2,31 @@ import {TYPES,DEFAULT_DECK} from './data.mjs';
 export const SHARD_ORDER=['raccoon','deer','cat',...DEFAULT_DECK];
 export const ADVANCE_COSTS=[12,20,32,48,68];
 export const UNLOCK_COST=12;
+export const REPLAY_GOLD_PER_WIN=40;
+export const REPLAY_GOLD_DAILY_CAP=120;
+export const REPLAY_GOLD_LIFETIME_CAP=1200;
+const LOCAL_ACTOR='local';
 const integer=n=>Number.isFinite(n)?Math.max(0,Math.min(1000000,Math.trunc(n))):0;
 export const rewardType=id=>SHARD_ORDER[(id-1)%SHARD_ORDER.length];
 export const sources=type=>Array.from({length:30},(_,i)=>i+1).filter(id=>rewardType(id)===type);
 // Grow-only per-session clear counters preserve wins when tabs reconcile.
 // Spending is derived from permanent unlocks/tiers, so refresh cannot refund it.
-export function normalizeCollection(raw,legacyDeck=[]){
+export function normalizeCollection(raw,legacyDeck=[],compact=false){
  const source=raw&&typeof raw==='object'?raw:{};
  const previous=raw?(Array.isArray(source.grants)?source.grants:[]):legacyDeck;
  const grants=[...new Set([...DEFAULT_DECK,...previous])].filter(t=>TYPES.includes(t));
- const counts={};
+ const countRows={};
  for(const [actor,values] of Object.entries(source.counts||{})){
   if(!/^[a-zA-Z0-9_-]{1,80}$/.test(actor)||['__proto__','constructor','prototype'].includes(actor)||!Array.isArray(values))continue;
-  const row=Array.from({length:30},(_,i)=>integer(values[i]));if(row.some(Boolean))counts[actor]=row;
+  const row=Array.from({length:30},(_,i)=>integer(values[i]));if(row.some(Boolean))countRows[actor]=row;
  }
- const fragments={};
+ const fragmentRows={};
  for(const [actor,values] of Object.entries(source.fragments||{})){
   if(!/^[a-zA-Z0-9_-]{1,80}$/.test(actor)||['__proto__','constructor','prototype'].includes(actor)||!values||typeof values!=="object")continue;
-  const row={};for(const type of TYPES){const n=integer(values[type]);if(n)row[type]=n;}if(Object.keys(row).length)fragments[actor]=row;
+  const row={};for(const type of TYPES){const n=integer(values[type]);if(n)row[type]=n;}if(Object.keys(row).length)fragmentRows[actor]=row;
  }
+ const counts=compact?(()=>{const row=Array(30).fill(0);for(const values of Object.values(countRows))for(let i=0;i<30;i++)row[i]=integer(row[i]+values[i]);return row.some(Boolean)?{[LOCAL_ACTOR]:row}:{};})():countRows;
+ const fragments=compact?(()=>{const row={};for(const values of Object.values(fragmentRows))for(const type of TYPES)row[type]=integer((row[type]||0)+(values[type]||0));for(const type of TYPES)if(!row[type])delete row[type];return Object.keys(row).length?{[LOCAL_ACTOR]:row}:{};})():fragmentRows;
  const collection={grants,counts,fragments,owned:[...grants],levels:{}};
  for(const type of TYPES){
   const earned=earnedShards(collection,type),unlock=grants.includes(type)?0:UNLOCK_COST;
@@ -52,8 +58,8 @@ export function advanceCollection(collection,type){
  if(!next.owned.includes(type))next.owned.push(type);else next.levels[type]++;
  return next;
 }
-export function mergeCollections(a,b){
- a=normalizeCollection(a);b=normalizeCollection(b);const counts={...a.counts},fragments={...a.fragments};
+export function mergeCollections(a,b,legacyDeckA=[],legacyDeckB=[]){
+ a=normalizeCollection(a,legacyDeckA,false);b=normalizeCollection(b,legacyDeckB,false);const counts={...a.counts},fragments={...a.fragments};
  for(const [actor,row] of Object.entries(b.counts))counts[actor]=row.map((n,i)=>Math.max(n,counts[actor]?.[i]||0));
  for(const [actor,row] of Object.entries(b.fragments)){fragments[actor]={...(fragments[actor]||{})};for(const type of TYPES)fragments[actor][type]=Math.max(row[type]||0,fragments[actor][type]||0);}
  return normalizeCollection({counts,fragments,grants:[...new Set([...a.grants,...b.grants])],owned:[...new Set([...a.owned,...b.owned])],levels:Object.fromEntries(TYPES.map(t=>[t,Math.max(a.levels[t],b.levels[t])]))});
@@ -63,28 +69,39 @@ export const GACHA_BANNERS=Object.freeze({
  gold:Object.freeze({cost:120,threshold:10,guarantee:"rare",odds:Object.freeze({common:.75,rare:.20,epic:.05})}),
  diamond:Object.freeze({cost:6,threshold:5,guarantee:"epic",odds:Object.freeze({common:.50,rare:.35,epic:.15})}),
 });
-export function normalizeGacha(raw){
- const source=raw&&typeof raw==="object"?raw:{},counters={};
+export function normalizeGacha(raw,compact=false){
+ const source=raw&&typeof raw==="object"?raw:{},counterRows={};
  for(const [actor,value] of Object.entries(source.counters||{})){
   if(!/^[a-zA-Z0-9_-]{1,80}$/.test(actor)||["__proto__","constructor","prototype"].includes(actor))continue;
-  const gold=integer(value?.gold),diamond=integer(value?.diamond);if(gold||diamond)counters[actor]={gold,diamond};
+  const gold=integer(value?.gold),diamond=integer(value?.diamond);if(gold||diamond)counterRows[actor]={gold,diamond};
  }
- const cards={};for(const [actor,row] of Object.entries(source.cards||{})){
+ const counters=compact?(()=>{let gold=0,diamond=0;for(const row of Object.values(counterRows)){gold=integer(gold+row.gold);diamond=integer(diamond+row.diamond);}return gold||diamond?{[LOCAL_ACTOR]:{gold,diamond}}:{};})():counterRows;
+ const cardRows={};for(const [actor,row] of Object.entries(source.cards||{})){
   if(!/^[a-zA-Z0-9_-]{1,80}$/.test(actor)||["__proto__","constructor","prototype"].includes(actor)||!row||typeof row!=="object")continue;
-  const counts={};for(const type of TYPES){const n=integer(row[type]);if(n)counts[type]=n;}if(Object.keys(counts).length)cards[actor]=counts;
+  const counts={};for(const type of TYPES){const n=integer(row[type]);if(n)counts[type]=n;}if(Object.keys(counts).length)cardRows[actor]=counts;
  }
- return {counters,cards,pity:{gold:Math.min(9,integer(source.pity?.gold)),diamond:Math.min(4,integer(source.pity?.diamond))}};
+ const cards=compact?(()=>{const row={};for(const values of Object.values(cardRows))for(const type of TYPES)row[type]=integer((row[type]||0)+(values[type]||0));for(const type of TYPES)if(!row[type])delete row[type];return Object.keys(row).length?{[LOCAL_ACTOR]:row}:{};})():cardRows;
+ const replayGoldByDay={};
+ for(const [day,value] of Object.entries(source.replayGoldByDay||{}))if(/^\d{4}-\d{2}-\d{2}$/.test(day))replayGoldByDay[day]=Math.min(REPLAY_GOLD_DAILY_CAP,integer(value));
+ const recentDays=Object.keys(replayGoldByDay).sort().slice(-31),daily=Object.fromEntries(recentDays.map(day=>[day,replayGoldByDay[day]]));
+ const settlementIds=Array.isArray(source.settlementIds)?[...new Set(source.settlementIds.filter(id=>typeof id==="string"&&/^[a-zA-Z0-9_-]{1,80}$/.test(id)))].slice(-512):[];
+ return {counters,cards,pity:{gold:Math.min(9,integer(source.pity?.gold)),diamond:Math.min(4,integer(source.pity?.diamond))},
+  replayGoldTotal:Math.min(REPLAY_GOLD_LIFETIME_CAP,integer(source.replayGoldTotal)),replayGoldByDay:daily,settlementIds};
 }
 export function mergeGacha(a,b){
- a=normalizeGacha(a);b=normalizeGacha(b);const counters={...a.counters},cards={...a.cards};
+ a=normalizeGacha(a,false);b=normalizeGacha(b,false);const counters={...a.counters},cards={...a.cards},replayGoldByDay={...a.replayGoldByDay};
  for(const [actor,row] of Object.entries(b.counters))counters[actor]={gold:Math.max(row.gold,counters[actor]?.gold||0),diamond:Math.max(row.diamond,counters[actor]?.diamond||0)};
  for(const [actor,row] of Object.entries(b.cards)){cards[actor]={...(cards[actor]||{})};for(const type of TYPES)cards[actor][type]=Math.max(row[type]||0,cards[actor][type]||0);}
- return {counters,cards,pity:{gold:Math.max(a.pity.gold,b.pity.gold),diamond:Math.max(a.pity.diamond,b.pity.diamond)}};
+ for(const [day,value] of Object.entries(b.replayGoldByDay))replayGoldByDay[day]=Math.max(value,replayGoldByDay[day]||0);
+ const settlementIds=[...new Set([...a.settlementIds,...b.settlementIds])].slice(-512);
+ return normalizeGacha({counters,cards,pity:{gold:Math.max(a.pity.gold,b.pity.gold),diamond:Math.max(a.pity.diamond,b.pity.diamond)},
+  replayGoldTotal:Math.max(a.replayGoldTotal,b.replayGoldTotal),replayGoldByDay,settlementIds});
 }
 export function gachaBalance(collection,gacha){
  const unique=Array.from({length:30},(_,i)=>clearCount(collection,i+1)>0?1:0).reduce((a,b)=>a+b,0);
  const pulls=Object.values(normalizeGacha(gacha).counters).reduce((a,row)=>({gold:a.gold+row.gold,diamond:a.diamond+row.diamond}),{gold:0,diamond:0});
- return {gold:Math.max(0,unique*80-pulls.gold*GACHA_BANNERS.gold.cost),diamond:Math.max(0,unique-pulls.diamond*GACHA_BANNERS.diamond.cost)};
+ const earnedReplayGold=normalizeGacha(gacha).replayGoldTotal;
+ return {gold:Math.max(0,unique*80+earnedReplayGold-pulls.gold*GACHA_BANNERS.gold.cost),diamond:Math.max(0,unique-pulls.diamond*GACHA_BANNERS.diamond.cost)};
 }
 export function drawRarity(banner,rng=Math.random){
  const rule=GACHA_BANNERS[banner];if(!rule)return null;

@@ -9,7 +9,9 @@
   if (!result || !actions || !stages || !next || !replay) return;
 
   actions.append(stages, next, replay);
-  replay.textContent = window.BlockTrilogyConfig?.localeCopy?.replay || "Replay";
+  const localeCopy = window.BlockTrilogyConfig?.localeCopy || {};
+  stages.textContent = localeCopy.stageMap || "Stage Map";
+  replay.textContent = localeCopy.replay || "Replay";
 
   const setPrimary = (target) => {
     for (const action of [stages, next, replay]) {
@@ -25,6 +27,10 @@
     const canContinue = Boolean(!failed && state && state.selected < 30 && state.unlocked > state.selected);
 
     next.hidden = false;
+    const nextLabel = canContinue
+      ? (localeCopy.nextStage || "Stage {n}").replace("{n}", String(state.selected + 2))
+      : (localeCopy.noNextStage || "Final stage");
+    next.textContent = nextLabel;
     next.disabled = !canContinue;
     next.setAttribute("aria-disabled", String(!canContinue));
 

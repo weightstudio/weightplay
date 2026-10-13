@@ -198,6 +198,17 @@
       || document.querySelector('[data-wp-return="stage"]')?.closest(
         'header,.wp-generated-stage-header,.stage-panel-head,.stage-header',
       );
+    const stageFrameScene = stageHeader?.closest('[data-wp-frame-scene="stage"]');
+    const frameSceneLayoutProperties = [
+      "--wp-frame-control-size",
+      "--wp-frame-header-height",
+      "--wp-frame-rows",
+      "--wp-frame-lobby-return-width",
+    ];
+    const priorFrameSceneLayout = new Map(frameSceneLayoutProperties.map((property) => [property, {
+      value: stageFrameScene?.style.getPropertyValue(property) || "",
+      priority: stageFrameScene?.style.getPropertyPriority(property) || "",
+    }]));
     const priorStageHeaderMarker = stageHeader?.getAttribute("data-wp-stage-i9-header");
     stageHeader?.setAttribute("data-wp-stage-i9-header", "true");
     const headerLayoutProperties = [
@@ -247,6 +258,12 @@
         stageHeader.style.setProperty("--wp-frame-control-size", `${46 * inverseStageScale}px`, "important");
         stageHeader.style.setProperty("--wp-frame-header-height", `${(78 + safeTop) * inverseStageScale}px`, "important");
         stageHeader.style.setProperty("padding", `${safeTop * inverseStageScale}px ${16 * inverseStageScale}px 0`, "important");
+      }
+      if (stageFrameScene) {
+        stageFrameScene.style.setProperty("--wp-frame-control-size", `${46 * inverseStageScale}px`, "important");
+        stageFrameScene.style.setProperty("--wp-frame-header-height", `${(78 + safeTop) * inverseStageScale}px`, "important");
+        stageFrameScene.style.setProperty("--wp-frame-rows", `${(78 + safeTop) * inverseStageScale}px minmax(0,1fr) 56px`, "important");
+        stageFrameScene.style.setProperty("--wp-frame-lobby-return-width", `${46 * inverseStageScale}px`, "important");
       }
       const usableTop = Math.max(rootRect.top, viewportTop + safeTop);
       const usableBottom = Math.min(rootRect.bottom, viewportBottom - safeBottom);
@@ -326,6 +343,12 @@
           for (const [property, prior] of priorHeaderLayout) {
             if (prior.value) stageHeader.style.setProperty(property, prior.value, prior.priority);
             else stageHeader.style.removeProperty(property);
+          }
+        }
+        if (stageFrameScene) {
+          for (const [property, prior] of priorFrameSceneLayout) {
+            if (prior.value) stageFrameScene.style.setProperty(property, prior.value, prior.priority);
+            else stageFrameScene.style.removeProperty(property);
           }
         }
         if (centerFrame) cancelAnimationFrame(centerFrame);

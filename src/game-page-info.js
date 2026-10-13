@@ -1,23 +1,6 @@
 (function () {
   // Opt-in for native Guide owners: reuse comparison delivery without metadata, frame or asset side effects.
   const comparisonOnly = Boolean(document.currentScript?.hasAttribute?.("data-wp-comparison-only"));
-  // Localized entry generation already resolves related artwork from the lobby
-  // catalog. Preserve it before Guide hydration replaces the static cards;
-  // otherwise the legacy fallback map below can resurrect retired artwork.
-  const entryRelatedArtwork = new Map();
-  document.querySelectorAll('.game-info-related-card[href] img[src]').forEach((image) => {
-    const link = image.closest('a');
-    try {
-      const target = new URL(link.href, location.href);
-      const asset = new URL(image.getAttribute('src'), document.baseURI);
-      const id = target.pathname.match(/\/games\/([^/]+)\/?$/u)?.[1];
-      if (id && target.origin === location.origin && asset.origin === location.origin
-          && /\/(?:assets)\//u.test(asset.pathname)
-          && !/\/(?:weightplay-logo|hero)\./u.test(asset.pathname)) {
-        entryRelatedArtwork.set(id, asset.href);
-      }
-    } catch (_) { /* Invalid legacy markup retains the existing fallback. */ }
-  });
   const sharedAssetBase = new URL(".", document.currentScript?.src || location.href);
   if (!comparisonOnly && !document.querySelector('link[href*="stage-selector-standard.css"]')) {
     const link = document.createElement("link");
@@ -6523,6 +6506,39 @@
     return gameIndex >= 0 ? parts[gameIndex + 1] : "";
   }
 
+  let relatedRegistryLoadPromise;
+  function ensureRelatedRegistries() {
+    const ready = () => Boolean(
+      window.WEIGHTPLAY_PUBLIC_GAME_CATALOG
+      && window.WEIGHTPLAY_GAME_TITLES
+      && window.WEIGHTPLAY_INTERFACE7_POSTERS
+    );
+    if (ready()) return Promise.resolve(true);
+    if (relatedRegistryLoadPromise) return relatedRegistryLoadPromise;
+    relatedRegistryLoadPromise = Promise.all([
+      ["WEIGHTPLAY_PUBLIC_GAME_CATALOG", "public-game-catalog.js", "data-wp-public-game-catalog"],
+      ["WEIGHTPLAY_GAME_TITLES", "game-title-registry.js", "data-wp-game-title-registry"],
+      ["WEIGHTPLAY_INTERFACE7_POSTERS", "interface7-poster-registry.js", "data-wp-interface7-poster-registry"],
+    ].map(([globalName, filename, dataAttribute]) => {
+      if (window[globalName]) return Promise.resolve(true);
+      return new Promise((resolve) => {
+        const existing = document.querySelector(`script[${dataAttribute}]`)
+          || [...document.scripts].find((script) => script.src.includes(filename));
+        const script = existing || document.createElement("script");
+        const finish = () => resolve(Boolean(window[globalName]));
+        script.addEventListener("load", finish, { once: true });
+        script.addEventListener("error", finish, { once: true });
+        if (!existing) {
+          script.src = new URL(filename, sharedAssetBase).href;
+          script.setAttribute(dataAttribute, "");
+          document.head.append(script);
+        }
+        if (window[globalName]) finish();
+      });
+    })).then((loaded) => loaded.every(Boolean));
+    return relatedRegistryLoadPromise;
+  }
+
   function escapeHtml(value) {
     return String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
   }
@@ -6537,6 +6553,15 @@
     const raw = table[key] || labels.en[key] || key;
     const localized = window.WeightPlayGameRuntimeLocales?.[activeLocale]?.[raw] || raw;
     return Object.entries(params).reduce((text, [name, value]) => text.replaceAll(`{${name}}`, String(value)), localized);
+  }
+
+  function relatedGamesHeading() {
+    return ({
+      en: "More Related Games", "zh-Hant": "更多相關遊戲", "zh-Hans": "更多相关游戏",
+      ja: "関連ゲームをもっと見る", ko: "더 많은 관련 게임", es: "Más juegos relacionados",
+      "pt-BR": "Mais jogos relacionados", fr: "Plus de jeux associés", de: "Weitere ähnliche Spiele",
+      it: "Altri giochi correlati", ru: "Больше похожих игр", hi: "और संबंधित गेम", ar: "المزيد من الألعاب ذات الصلة",
+    })[locale()] || "More Related Games";
   }
 
   function localizeSkill(skill) {
@@ -11501,22 +11526,25 @@
   }
 
   function isPublicRelatedGame(gameId, activeId) {
-    const catalog = window.WONDER_LOBBY?.games;
-    if (!Array.isArray(catalog)) return false;
-    const target = catalog.find((entry) => entry.id === gameId);
-    const active = catalog.find((entry) => entry.id === activeId);
+    const catalog = window.WEIGHTPLAY_PUBLIC_GAME_CATALOG;
+    const target = catalog?.[gameId];
+    const active = catalog?.[activeId];
     if (!target || target.status !== "playable" || target.internalOnly || target.internalTrial || target.previewOnly) return false;
     const targetAudience = relatedAudience(gameId, target);
     const activeAudience = relatedAudience(activeId, active);
     if (!targetAudience || targetAudience !== activeAudience) return false;
     const activeAges = relatedAgeTags(active);
     const targetAges = relatedAgeTags(target);
-    if (targetAudience === "kids" && activeAges.length && targetAges.length && !activeAges.some((age) => targetAges.includes(age))) return false;
+    if (activeAges.length && targetAges.length && !activeAges.some((age) => targetAges.includes(age))) return false;
     if (!target.href || !/^games\/[a-z0-9-]+\/$/u.test(target.href)) return false;
     const officialTitle = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale()];
     if (typeof officialTitle !== "string" || !officialTitle.trim()) return false;
     const route = gameHref(gameId);
-    return route.endsWith(`/games/${gameId}/`);
+    const routeBase = location.pathname.includes("/weightplay/") ? "/weightplay/games/" : "/games/";
+    const canonicalRoute = `${routeBase}${gameId}/`;
+    const expectedLocalizedRoute = window.WonderI18n?.localizedPath?.(locale(), canonicalRoute);
+    return route.endsWith(`/games/${gameId}/`)
+      && (expectedLocalizedRoute ? route === expectedLocalizedRoute : locale() === "en" && route === canonicalRoute);
   }
 
   function relatedGameEntries(activeId, activeBaseGame, predicate) {
@@ -11612,13 +11640,61 @@
           image.src = fallback;
           return;
         }
-        if (finalFallback && image.src !== finalFallback) image.src = finalFallback;
+        if (finalFallback && image.src !== finalFallback) {
+          image.src = finalFallback;
+          return;
+        }
+        image.classList.add("is-unavailable");
       };
       image.addEventListener("error", useFallback);
       if (image.complete && image.naturalWidth === 0) useFallback();
-      window.setTimeout(() => {
-        if (!image.complete || image.naturalWidth === 0) useFallback();
-      }, 1200);
+    });
+  }
+
+  function enhanceStaticRelatedGuide(section) {
+    if (!section) return;
+    ensureRelatedRegistries().then((loaded) => {
+      section.dataset.wpRelatedGuideReady = "true";
+      if (!loaded) {
+        section.querySelectorAll(".game-info-related-section").forEach((node) => node.remove());
+        return;
+      }
+      const relatedSection = section.querySelector(".game-info-related-section");
+      if (!relatedSection) return;
+      relatedSection.querySelectorAll(".game-info-related-card").forEach((card) => {
+        const id = card.dataset.gameId || card.dataset.relatedGame || new URL(card.href, location.href).pathname.match(/\/games\/([a-z0-9-]+)\//u)?.[1] || "";
+        if (!id || !isPublicRelatedGame(id, currentGameId())) {
+          card.remove();
+          return;
+        }
+        const title = window.WEIGHTPLAY_GAME_TITLES[id][locale()];
+        const href = gameHref(id);
+        const poster = window.WEIGHTPLAY_INTERFACE7_POSTERS[id];
+        if (!poster?.startsWith("/")) {
+          card.remove();
+          return;
+        }
+        card.href = href;
+        card.dataset.gameId = id;
+        const name = card.querySelector("strong");
+        if (name) name.textContent = title;
+        const image = card.querySelector("img");
+        if (image) {
+          image.src = poster;
+          image.alt = `${title} game poster`;
+          image.dataset.finalSrc = assetHref("weightplay-logo.png");
+          image.width = 320;
+          image.height = 320;
+        }
+      });
+      if (!relatedSection.querySelector(".game-info-related-card")) {
+        relatedSection.remove();
+        return;
+      }
+      const heading = relatedSection.querySelector("h3");
+      if (heading) heading.textContent = relatedGamesHeading();
+      relatedSection.dataset.wpRelatedGuideReady = "true";
+      repairRelatedImages(relatedSection);
     });
   }
 
@@ -11792,6 +11868,13 @@
   let animalWordTrailsText140Ready = false;
   function render() {
     if (comparisonOnly) return;
+    if (!window.WEIGHTPLAY_PUBLIC_GAME_CATALOG || !window.WEIGHTPLAY_GAME_TITLES || !window.WEIGHTPLAY_INTERFACE7_POSTERS) {
+      ensureRelatedRegistries().then((loaded) => {
+        if (loaded) render();
+        else document.querySelectorAll(".game-info-related-section").forEach((section) => section.remove());
+      });
+      return;
+    }
     // Word Trails owns its complete 1.4.0 Guide in a locale-keyed JSON file.
     // Wait for that source before the shared renderer can paint its historical
     // 30-level fallback over the generated route copy.
@@ -11896,7 +11979,7 @@
     const related = game.hideRelatedGames
       ? []
       : Array.isArray(game.relatedIds) && game.relatedIds.length
-      ? game.relatedIds.filter((relatedId) => relatedId !== id && games[relatedId]).slice(0, 3)
+      ? game.relatedIds.filter((relatedId) => relatedId !== id && games[relatedId] && isPublicRelatedGame(relatedId, id)).slice(0, 3)
       : relatedGames(id, baseGame);
     const scoreBands = scoreBandsFor(baseGame);
     const section = document.createElement("section");
@@ -11963,7 +12046,7 @@
             <dl>${freeCellFaq.map(([question, answer]) => `<div><dt>${escapeHtml(question)}</dt><dd>${escapeHtml(answer)}</dd></div>`).join("")}</dl>
           </div>
           ${related.length ? `<div class="game-info-section game-info-related-section">
-            <h3>${escapeHtml(uiLabel("relatedGames"))}</h3>
+            <h3>${escapeHtml(relatedGamesHeading())}</h3>
             <div class="game-info-related">${related.map(relatedCard).join("")}</div>
           </div>` : ""}
         </div>
@@ -12085,7 +12168,7 @@
           <dl>${publicFaq.map(([q, a]) => `<div><dt>${escapeHtml(q)}</dt><dd>${escapeHtml(a)}</dd></div>`).join("")}</dl>
         </div>
         ${related.length ? `<div class="game-info-section game-info-related-section">
-          <h3>${escapeHtml(uiLabel("relatedGames"))}</h3>
+          <h3>${escapeHtml(relatedGamesHeading())}</h3>
           ${game.showRelatedSkill === false ? "" : `<p>${escapeHtml(game.relatedIntro || uiLabel("relatedIntro", { skill: localizeSkill(gameSkills[0] || "Focus") }))}</p>`}
           <div class="game-info-related">${related.map(relatedCard).join("")}</div>
         </div>` : ""}
@@ -15622,6 +15705,7 @@
     gameplay: "Whole-Grid Merge Strategy",
     genre: ["Puzzle", "Strategy", "Logic", "Animal"],
     skills: ["Logic", "Spatial Reasoning", "Sequencing"],
+    relatedIds: ["fruit-merge", "animal-mosaic-clues"],
     guideKicker: "WeightPlay Original Game Guide",
     guideTitleSuffix: "Game Guide",
     noteTitle: "Player and Save Information",
@@ -29209,6 +29293,11 @@
   } else if (currentGameId() !== "animal-coloring-studio") {
     render();
   }
+
+  // Static Guide markup remains useful before enhancement; attach the same
+  // poster-failure recovery to its existing images as soon as this script runs.
+  const staticGuide = document.querySelector("section.game-page-info-static");
+  if (!comparisonOnly && staticGuide) enhanceStaticRelatedGuide(staticGuide);
 
   if (currentGameId() === "animal-gearpack-expedition") {
     const gearpackVisibleMetadata = {

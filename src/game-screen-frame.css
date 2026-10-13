@@ -1585,6 +1585,85 @@ html[data-wp-shared-interface="7"] body.wp-logical-battle-active
   min-height:var(--wp-frame-control-size-physical,48px)!important;
 }
 
+@layer wp-frame-contract {
+/* I9 pilot: retain Stage/Battle's physical hit boxes and frame tracks while
+   matching Main's 3:4 visual-control proportion. An inset face leaves equal
+   visible gaps on all four sides; the scene slots and card geometry do not move. */
+html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
+  [data-wp-frame-scene="battle"] > .wp-frame-header > .wp-frame-return {
+  position:relative!important;
+  isolation:isolate;
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
+  [data-wp-frame-scene="battle"] > .wp-frame-header > .wp-frame-return::before,
+html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
+  [data-wp-frame-scene="battle"] > .wp-frame-header .wp-frame-utility::before {
+  content:"";
+  position:absolute;
+  z-index:0;
+  inset:6px;
+  border:2px solid var(--wp-ui-line);
+  border-radius:var(--wp-ui-radius);
+  background:var(--wp-ui-button-image);
+  box-shadow:inset 0 2px 0 var(--wp-ui-highlight),0 3px 0 var(--wp-ui-shadow);
+  pointer-events:none;
+}
+html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
+  [data-wp-frame-scene="battle"] > .wp-frame-header .wp-frame-utility > .wp-frame-settings {
+  position:relative!important;
+  z-index:1;
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
+  [data-wp-frame-scene="battle"] > .wp-frame-header .wp-frame-utility {
+  isolation:isolate;
+}
+html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
+  [data-wp-frame-scene="battle"] > .wp-frame-header :is(.wp-frame-back-icon,.wp-frame-settings-icon) {
+  width:18px!important;
+  height:18px!important;
+  position:relative!important;
+  z-index:1!important;
+}
+html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
+  [data-wp-frame-scene="battle"] > .wp-frame-header {
+  padding-inline:0!important;
+}
+/* Stage keeps its accepted hit boxes, header geometry and centering. Only the
+   visible face and glyph shrink for this preview. */
+html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
+  [data-wp-frame-scene="stage"] > .wp-frame-header > .wp-frame-return {
+  position:relative!important;isolation:isolate;background:transparent!important;
+  border-color:transparent!important;box-shadow:none!important;
+}
+html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
+  [data-wp-frame-scene="stage"] > .wp-frame-header > .wp-frame-return::before,
+html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
+  [data-wp-frame-scene="stage"] > .wp-frame-header .wp-frame-utility::before {
+  content:"";position:absolute;z-index:0;inset:6px;
+  border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);
+  background:var(--wp-ui-button-image);
+  box-shadow:inset 0 2px 0 var(--wp-ui-highlight),0 3px 0 var(--wp-ui-shadow);
+  pointer-events:none;
+}
+html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
+  [data-wp-frame-scene="stage"] > .wp-frame-header .wp-frame-utility {isolation:isolate}
+html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
+  [data-wp-frame-scene="stage"] > .wp-frame-header .wp-frame-utility > .wp-frame-settings {
+  position:relative!important;z-index:1;background:transparent!important;
+  border-color:transparent!important;box-shadow:none!important;
+}
+html[data-wp-shared-interface="7"][data-crystal-stage-i9-preview="true"] body[data-wp-game-id="animal-crystal-survivor"]
+  [data-wp-frame-scene="stage"] > .wp-frame-header :is(.wp-frame-back-icon,.wp-frame-settings-icon) {
+  width:18px!important;height:18px!important;position:relative!important;z-index:1!important;
+}
+}
+
 .wp-stage-shell-header > [data-wp-shell-info] {
   grid-column:2!important;grid-row:1!important;
   box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:none!important;
@@ -1657,3 +1736,4 @@ html[data-wp-shared-interface="7"] body [data-wp-result-get-icon] {animation:wp-
   html[data-wp-shared-interface="7"] body :is([data-wp-get-icon],[data-wp-result-get-icon]) {transition:none!important}
   html[data-wp-shared-interface="7"] body [data-wp-result-get-icon] {animation:none!important}
 }
+
