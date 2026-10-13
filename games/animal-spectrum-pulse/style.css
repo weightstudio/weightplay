@@ -77,3 +77,60 @@ body[data-wp-game-id="animal-spectrum-pulse"] .primary{
   border-radius:3px!important;
   box-shadow:0 5px 0 #8d4c13!important;
 }
+/* Spectrum Pulse — Aurora Observatory. Game-owned surfaces only. */
+body[data-wp-game-id="animal-spectrum-pulse"]{
+ --spectrum-color:#55e8ff;
+ background:radial-gradient(ellipse at 50% 5%,#213e65 0,#0c1730 43%,#050c1d 100%);
+}
+body[data-wp-game-id="animal-spectrum-pulse"] :is(.main-hero,.stage-canvas,.battle-canvas){
+ background-image:radial-gradient(ellipse at 50% 0%,#1e3457,#0a1329 78%)!important;
+ background-size:cover!important;
+}
+body[data-wp-game-id="animal-spectrum-pulse"] .main-hero{border-color:#6683b840;box-shadow:0 20px 80px #0005}
+body[data-wp-game-id="animal-spectrum-pulse"] .poster{border:1px solid #819bd765;box-shadow:0 0 40px #62a5ff1a;object-position:center}
+body[data-wp-game-id="animal-spectrum-pulse"] .main-copy small{color:#77dbef;letter-spacing:.16em}
+body[data-wp-game-id="animal-spectrum-pulse"] .main-copy p{color:#c7d4e9}
+body[data-wp-game-id="animal-spectrum-pulse"] #mainProgress{color:#ffdb99}
+body[data-wp-game-id="animal-spectrum-pulse"] .arena-wrap{border:1px solid #577cae65;box-shadow:inset 0 0 30px #030916;border-radius:8px!important;isolation:isolate}
+body[data-wp-game-id="animal-spectrum-pulse"] .arena-wrap::before{display:none}
+body[data-wp-game-id="animal-spectrum-pulse"] .identity-row{background:#11213a;border:1px solid #4a64874d;color:#a4bdd8;border-radius:6px!important;box-shadow:none!important}
+body[data-wp-game-id="animal-spectrum-pulse"] .identity-row strong{color:#f0f8ff;letter-spacing:.05em}
+body[data-wp-game-id="animal-spectrum-pulse"] .battle-status span{background:#10223b;border:1px solid #6c92b926;box-shadow:none!important}
+body[data-wp-game-id="animal-spectrum-pulse"] .battle-status b{color:#95b0cd;font-size:10px;font-weight:600;letter-spacing:.04em}
+body[data-wp-game-id="animal-spectrum-pulse"] .battle-status strong{font-variant-numeric:tabular-nums;color:#e9f6ff}
+body[data-wp-game-id="animal-spectrum-pulse"] .timing-cue{top:12px;padding:7px 12px;border:1px solid #7084ac65;background:#0b162cf0;color:#bed0e8;border-radius:5px!important;box-shadow:0 5px 16px #0004!important;font-size:12px}
+body[data-wp-game-id="animal-spectrum-pulse"] .timing-cue.ready{border-color:#8cffd8;background:#133d3df2;color:#baffdf}
+body[data-wp-game-id="animal-spectrum-pulse"] .arena-wrap[data-focus="true"] .timing-cue{border-color:#ffdd94;color:#ffdd94;background:#352c21}
+body[data-wp-game-id="animal-spectrum-pulse"] .control-cue{background:#09142ae8;border:1px solid #7296b530;color:#a4bad2;font-size:10px;letter-spacing:.03em;padding:5px 12px;bottom:7px;box-shadow:none!important;border-radius:4px!important}
+body[data-wp-game-id="animal-spectrum-pulse"] .feedback{border:0;background:transparent;color:#d3e8fb;box-shadow:none!important;font-size:12px;line-height:1.4}
+body[data-wp-game-id="animal-spectrum-pulse"] .pulse-button{position:relative;background:linear-gradient(#264d6c,#18334f);border:1px solid #628cb2;color:#dbecfb;border-radius:7px!important;box-shadow:inset 0 1px 0 #b5d8ec30,0 3px 0 #071321!important;letter-spacing:.12em;font-size:18px}
+body[data-wp-game-id="animal-spectrum-pulse"] .pulse-button.ready{background:linear-gradient(#a6fbe1,#53cdbd);border-color:#cbffed;color:#092e36;box-shadow:0 0 25px #5cebd53b,0 3px 0 #267a76!important}
+body[data-wp-game-id="animal-spectrum-pulse"] .pulse-button[data-focus="true"]{border-color:#ffdc87}
+body[data-wp-game-id="animal-spectrum-pulse"] .pulse-button::before,body[data-wp-game-id="animal-spectrum-pulse"] .pulse-button::after{content:"";display:inline-block;vertical-align:middle;width:18px;height:2px;background:currentColor;margin:0 18px;opacity:.65}
+body[data-wp-game-id="animal-spectrum-pulse"] .stage-card{background-image:linear-gradient(#07162805,#091326f5),url('/assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v21')!important;border-color:#6a88b2;border-radius:10px!important}
+body[data-wp-game-id="animal-spectrum-pulse"] .stage-card.centered{border-color:#9bf5ed;box-shadow:0 0 0 2px #78cee133,0 12px 30px #0008}
+body[data-wp-game-id="animal-spectrum-pulse"] :is(.studio-intro,.upgrade,.trail-card){background:linear-gradient(135deg,#1e3450,#111e35);border-color:#6b8ba850;border-radius:8px!important}
+body[data-wp-game-id="animal-spectrum-pulse"] .upgrade strong{color:#f0e5c4}
+body[data-wp-game-id="animal-spectrum-pulse"] .studio-hint{background:#0d1d32;border-color:#62839f70;color:#abd1e7}
+body[data-wp-game-id="animal-spectrum-pulse"] .modal-layer{background:#040c20d9;backdrop-filter:blur(9px)}
+body[data-wp-game-id="animal-spectrum-pulse"] :is(.dialog-card,.result-card){background:radial-gradient(ellipse at 50% 0%,#2b4264,#101c33 75%);border:1px solid #719eb894;border-radius:12px!important;box-shadow:0 24px 100px #0008}
+body[data-wp-game-id="animal-spectrum-pulse"] :is(.dialog-card,.result-card) p{color:#c8d7ec;line-height:1.55}
+body[data-wp-game-id="animal-spectrum-pulse"] .result-card>img{filter:drop-shadow(0 7px 20px #71a4ce40)}
+body[data-wp-game-id="animal-spectrum-pulse"] .result-stats span{background:#07172d;border:1px solid #557ba73b;border-radius:6px}
+body[data-wp-game-id="animal-spectrum-pulse"] .result-stats b{color:#95b4d5;font-size:11px;font-weight:500}
+body[data-wp-game-id="animal-spectrum-pulse"] .result-stats strong{color:#ffe0a3;font-size:20px;font-variant-numeric:tabular-nums}
+body[data-wp-game-id="animal-spectrum-pulse"] .modal-actions button{background:#1b3451;border-color:#6b8ba8;border-radius:6px;color:#d4e7fa}
+body[data-wp-game-id="animal-spectrum-pulse"] .time-low{color:#ffac9c}
+@media(prefers-reduced-motion:no-preference){
+ body[data-wp-game-id="animal-spectrum-pulse"] .pulse-button{transition:background 120ms,border-color 120ms,box-shadow 120ms}
+ body[data-wp-game-id="animal-spectrum-pulse"] .timing-cue{transition:background 100ms,border-color 100ms,color 100ms}
+}
+
+body[data-wp-game-id="animal-spectrum-pulse"] #spectrumTimer{display:inline-block!important;margin-inline-start:auto;min-width:48px;text-align:end;color:#e2d2a9;font-variant-numeric:tabular-nums;font-size:14px;letter-spacing:.05em}
+body[data-wp-game-id="animal-spectrum-pulse"] #spectrumTimer.time-low{color:#ffac9c}
+body[data-wp-game-id="animal-spectrum-pulse"] .identity-row{display:flex;align-items:center;gap:8px;padding-inline:10px}
+body[data-wp-game-id="animal-spectrum-pulse"] #nextIdentity{font-size:11px;color:#91aec9}
+@media(max-width:640px){body[data-wp-game-id="animal-spectrum-pulse"] #nextIdentity{display:none}}
+@media(max-height:500px) and (min-aspect-ratio:3/2){
+ body[data-wp-game-id="animal-spectrum-pulse"] .control-cue{left:auto;right:8px;transform:none;max-width:38%}
+}

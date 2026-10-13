@@ -20,7 +20,8 @@
 
 
   const GAME_ID = "animal-starlight-trails";
-  const GAME_VERSION = "v20";
+  const GAME_VERSION = "v22";
+  const MODULE_BASE = new URL(".", document.currentScript.src);
   const SAVE_KEY = "weightplay_animal_starlight_trails_v1";
   const LOCALE_KEY = "weightPlayLocale";
   const GRAPH_NODE_KEYBOARD_SHORTCUTS = "ArrowUp ArrowDown ArrowLeft ArrowRight Home End Enter Space";
@@ -106,6 +107,24 @@
     it:"Riepilogo partita",ru:"Итоги попытки",hi:"प्रयास सारांश",ar:"ملخص المحاولة"
   };
   Object.entries(resultSummaryLabels).forEach(([key,value])=>{if(!STRINGS[key])return;STRINGS[key].resultSummary=value;delete STRINGS[key].skillReport;});
+
+  const UPGRADE_COPY = {
+    en:["Appearance","Aurora trails","Permanent cyan star cores and luminous trails. All puzzles and hints remain free.","Unlock · 5 diamonds","Equip","Equipped","Golden starlight","Confirm · 5 diamonds","Cancel","Not enough diamonds.","Could not save. No diamonds spent.","Diamonds","Next checkpoint","Constellation preview"],
+    "zh-Hant":["外觀","極光星路","永久解鎖青色星核與極光連線。所有關卡與提示仍可免費使用。","解鎖 · 5 鑽石","套用","使用中","金色星光","確認 · 5 鑽石","取消","鑽石不足。","儲存失敗，未扣除鑽石。","鑽石","下一個星印","星圖預覽"],
+    "zh-Hans":["外观","极光星路","永久解锁青色星核与极光连线。所有关卡与提示仍可免费使用。","解锁 · 5 钻石","应用","使用中","金色星光","确认 · 5 钻石","取消","钻石不足。","保存失败，未扣除钻石。","钻石","下一个星印","星图预览"],
+    ja:["外観","オーロラの星路","水色の星と光の道を永久に解放。全ステージとヒントは無料です。","解放 · ダイヤ5個","使う","使用中","黄金の星光","確定 · ダイヤ5個","キャンセル","ダイヤが足りません。","保存できませんでした。ダイヤは消費されません。","ダイヤ","次の番号星","星座プレビュー"],
+    ko:["꾸미기","오로라 별길","청록색 별과 빛나는 길을 영구 해제합니다. 모든 스테이지와 힌트는 무료입니다.","해제 · 다이아 5개","적용","적용 중","황금 별빛","확인 · 다이아 5개","취소","다이아가 부족합니다.","저장하지 못했습니다. 다이아는 차감되지 않았습니다.","다이아","다음 번호 별","별자리 미리보기"],
+    es:["Aspecto","Senderos de aurora","Desbloquea estrellas cian y senderos luminosos para siempre. Los niveles y las pistas siguen siendo gratis.","Desbloquear · 5 diamantes","Usar","En uso","Luz dorada","Confirmar · 5 diamantes","Cancelar","No hay suficientes diamantes.","No se pudo guardar. No se gastaron diamantes.","Diamantes","Siguiente estrella numerada","Vista de constelación"],
+    "pt-BR":["Aparência","Trilhas de aurora","Desbloqueie estrelas ciano e trilhas luminosas permanentemente. Fases e dicas continuam grátis.","Desbloquear · 5 diamantes","Usar","Em uso","Luz dourada","Confirmar · 5 diamantes","Cancelar","Diamantes insuficientes.","Não foi possível salvar. Nenhum diamante foi gasto.","Diamantes","Próxima estrela numerada","Prévia da constelação"],
+    fr:["Apparence","Sentiers d’aurore","Débloquez définitivement des étoiles cyan et des sentiers lumineux. Niveaux et indices restent gratuits.","Débloquer · 5 diamants","Utiliser","Actif","Lumière dorée","Confirmer · 5 diamants","Annuler","Diamants insuffisants.","Échec de sauvegarde. Aucun diamant dépensé.","Diamants","Prochaine étoile numérotée","Aperçu de la constellation"],
+    de:["Aussehen","Aurorapfade","Türkise Sterne und leuchtende Pfade dauerhaft freischalten. Alle Level und Hinweise bleiben kostenlos.","Freischalten · 5 Diamanten","Anwenden","Aktiv","Goldenes Sternlicht","Bestätigen · 5 Diamanten","Abbrechen","Nicht genug Diamanten.","Speichern fehlgeschlagen. Keine Diamanten verbraucht.","Diamanten","Nächster Zahlenstern","Sternbildvorschau"],
+    it:["Aspetto","Sentieri d’aurora","Sblocca stelle ciano e sentieri luminosi per sempre. Livelli e suggerimenti restano gratuiti.","Sblocca · 5 diamanti","Usa","In uso","Luce dorata","Conferma · 5 diamanti","Annulla","Diamanti insufficienti.","Salvataggio non riuscito. Nessun diamante speso.","Diamanti","Prossima stella numerata","Anteprima costellazione"],
+    ru:["Оформление","Тропы сияния","Навсегда откройте бирюзовые звёзды и светящиеся тропы. Уровни и подсказки остаются бесплатными.","Открыть · 5 алмазов","Применить","Выбрано","Золотой свет","Подтвердить · 5 алмазов","Отмена","Недостаточно алмазов.","Не удалось сохранить. Алмазы не потрачены.","Алмазы","Следующая номерная звезда","Предпросмотр созвездия"],
+    hi:["रूप","ध्रुवप्रभा पथ","फ़िरोज़ी तारे और चमकते पथ हमेशा के लिए खोलें। सभी चरण और संकेत मुफ़्त रहेंगे।","खोलें · 5 हीरे","लगाएँ","लगा हुआ","सुनहरी तारों की रोशनी","पुष्टि · 5 हीरे","रद्द करें","हीरे पर्याप्त नहीं हैं।","सहेजा नहीं जा सका। हीरे खर्च नहीं हुए।","हीरे","अगला क्रमांकित तारा","नक्षत्र पूर्वावलोकन"],
+    ar:["المظهر","مسارات الشفق","افتح نجوماً فيروزية ومسارات مضيئة بشكل دائم. تبقى المراحل والتلميحات مجانية.","فتح · 5 ماسات","استخدام","مستخدم","ضوء ذهبي","تأكيد · 5 ماسات","إلغاء","الماس غير كافٍ.","تعذر الحفظ. لم يُخصم أي ماس.","الماس","النجمة المرقمة التالية","معاينة الكوكبة"]
+  };
+  const upgradeKeys=["appearance","aurora","appearanceDescription","buyAurora","equip","equipped","gold","confirmBuy","cancel","insufficient","purchaseError","diamonds","nextCheckpoint","preview"];
+  Object.entries(UPGRADE_COPY).forEach(([key,values])=>upgradeKeys.forEach((name,i)=>STRINGS[key][name]=values[i]));
 
   const supportedLocales = new Set(["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"]);
   const gameOwnedLocales = new Set(Object.keys(STRINGS));
@@ -254,6 +273,85 @@
   let windowFocused = document.hasFocus();
   let resultActionCommitted = false;
 
+  let observatory = null, observatoryLoading = false, visualGeneration = 0;
+  const APPEARANCE_KEY = "weightplay_starlink_appearance_v1";
+  let appearance = (()=>{try{const raw=JSON.parse(readStorage(APPEARANCE_KEY)||"{}");return {aurora:raw.aurora===true,equipped:raw.aurora===true&&raw.equipped==="aurora"?"aurora":"gold"};}catch{return {aurora:false,equipped:"gold"};}})();
+  let purchasing = false, purchaseArmed = false;
+  let stageTab = "stages";
+  const reducedMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function playMotion(node,frames,duration=240){if(!node)return;node.getAnimations?.().forEach(a=>a.cancel());node.animate?.(reducedMotion()?[{opacity:.65},{opacity:1}]:frames,{duration:reducedMotion()?100:duration,easing:"cubic-bezier(.2,.8,.2,1)"});}
+  function ensureObservatory(){
+    if(observatory||observatoryLoading)return;observatoryLoading=true;
+    import(new URL("observatory-3d.mjs?v=22",MODULE_BASE)).then(({createObservatory})=>{
+      observatory=createObservatory(dom.scene,dom.svg);observatory.build(currentStage());
+      observatory.sync(deriveState(),path,hintNode,appearance.equipped);
+      observatory.setActive(document.body.dataset.screen==="battle"&&dom.leave.hidden&&dom.result.hidden);
+    }).catch(error=>{dom.scene.dataset.renderFallback="true";console.warn("Starlink: playable SVG fallback",error.message);});
+  }
+  function applyAppearance(){document.body.dataset.starlinkAppearance=appearance.equipped;observatory?.sync(deriveState(),path,hintNode,appearance.equipped);}
+  function setupObservatoryUI(){
+    const canvas=dom.stage.querySelector(".stage-canvas");
+    dom.stage.style.setProperty("--wp-stage-art","url('/assets/animal-starlight-trails-observatory-v22.webp')");
+    dom.stage.dataset.wpStageArt="/assets/animal-starlight-trails-observatory-v22.webp";
+    const hud=document.createElement("div");hud.className="starlink-hud";hud.setAttribute("data-wp-shell-info","");
+    hud.append(dom.progress,dom.trailCount.parentElement,dom.starTotal.parentElement);dom.battleBack.after(hud);
+    canvas.dataset.wpStageArt="/assets/animal-starlight-trails-observatory-v22.webp";
+    canvas.style.setProperty("--wp-stage-art","url('/assets/animal-starlight-trails-observatory-v22.webp')");
+    canvas.setAttribute("data-wp-stage-workspace","");
+    const workspace=document.createElement("div");workspace.className="observatory-workspace";
+    workspace.append(dom.chapterKicker.parentElement,dom.stageRail);canvas.append(workspace);
+    dom.chapterKicker.parentElement.insertAdjacentHTML("afterbegin",'<div class="constellation-preview" aria-hidden="true"></div>');
+    dom.chapterKicker.parentElement.insertAdjacentHTML("beforeend",'<div class="observatory-seals" aria-hidden="true"></div>');
+    canvas.insertAdjacentHTML("beforeend",`<section class="appearance-workspace" hidden><div class="appearance-balance"><img src="/assets/wonder-prop-diamond-block-v1.png" alt=""><span></span></div><article class="appearance-card"><div class="appearance-art"><img src="/assets/animal-starlight-trails-observatory-v22.webp" alt=""><img class="appearance-orla" src="/assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""></div><h2></h2><p></p><div class="appearance-actions"><button id="appearanceBuy" type="button"></button><button id="appearanceCancel" type="button" hidden></button></div><button id="appearanceGold" type="button"></button><div class="appearance-status" role="status" aria-live="polite"></div></article></section><nav class="stage-tabs" role="tablist"><button id="constellationTab" type="button" role="tab" aria-selected="true" data-wp-stage-tab="stages"></button><button id="appearanceTab" type="button" role="tab" aria-selected="false" data-wp-stage-tab="equipment"></button></nav>`);
+    $("#constellationTab").addEventListener("click",()=>selectStageTab("stages"));
+    $("#appearanceTab").addEventListener("click",()=>selectStageTab("appearance"));
+    $("#appearanceCancel").addEventListener("click",()=>{purchaseArmed=false;renderAppearance();});
+    $("#appearanceBuy").addEventListener("click",buyAppearance);
+    $("#appearanceGold").addEventListener("click",()=>equipAppearance("gold"));
+    if(!window.WeightPlayWallet){const wallet=document.createElement("script");wallet.src="/src/wallet.js";wallet.onload=renderAppearance;document.head.append(wallet);}
+    window.addEventListener("storage",()=>{if(document.body.dataset.screen==="stage")renderAppearance();});
+    applyAppearance();
+  }
+  function selectStageTab(tab){stageTab=tab;purchaseArmed=false;$(".observatory-workspace").hidden=tab!=="stages";$(".appearance-workspace").hidden=tab!=="appearance";$("#constellationTab").setAttribute("aria-selected",String(tab==="stages"));$("#appearanceTab").setAttribute("aria-selected",String(tab==="appearance"));renderAppearance();playMotion($(tab==="stages"?".observatory-workspace":".appearance-workspace"),[{opacity:0,transform:"translateY(6px)"},{opacity:1,transform:"none"}]);if(tab==="stages")requestAnimationFrame(()=>{window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));positionStageRail(stageIndex);});}
+  function renderAppearance(){
+    if(!$("#appearanceBuy"))return;
+    $("#constellationTab").textContent=t("stages");$("#appearanceTab").textContent=t("appearance");
+    $(".stage-tabs").setAttribute("aria-label",t("chooseStage"));
+    $(".appearance-balance span").textContent=`${t("diamonds")} · ${window.WeightPlayWallet?.read().diamonds??0}`;
+    $(".appearance-card h2").textContent=t("aurora");$(".appearance-card p").textContent=t("appearanceDescription");
+    $("#appearanceBuy").textContent=t(appearance.aurora?(appearance.equipped==="aurora"?"equipped":"equip"):purchaseArmed?"confirmBuy":"buyAurora");
+    $("#appearanceBuy").disabled=purchasing||(appearance.aurora&&appearance.equipped==="aurora")||!window.WeightPlayWallet;
+    $("#appearanceCancel").textContent=t("cancel");$("#appearanceCancel").hidden=!purchaseArmed;
+    $("#appearanceGold").textContent=`${t("gold")} · ${t(appearance.equipped==="gold"?"equipped":"equip")}`;$("#appearanceGold").disabled=appearance.equipped==="gold";
+  }
+  function equipAppearance(equipped){const next={...appearance,equipped};if(!writeStorage(APPEARANCE_KEY,JSON.stringify(next))){$(".appearance-status").textContent=t("purchaseError");return;}appearance=next;applyAppearance();renderAppearance();sound("ui.click");}
+  async function buyAppearance(){
+    if(purchasing)return;if(appearance.aurora){equipAppearance("aurora");return;}
+    if(!purchaseArmed){purchaseArmed=true;$(".appearance-status").textContent="";renderAppearance();return;}
+    purchasing=true;renderAppearance();
+    const transaction=()=>{
+      // Serialize this game's purchases across tabs; re-read ownership under the lock.
+      const latest=JSON.parse(readStorage(APPEARANCE_KEY)||"{}");
+      if(latest.aurora===true){appearance={aurora:true,equipped:latest.equipped==="aurora"?"aurora":"gold"};return;}
+      const wallet=window.WeightPlayWallet;if(!wallet||wallet.read().diamonds<5){$(".appearance-status").textContent=t("insufficient");return;}
+      // Check durable ownership storage before touching the shared wallet.
+      if(!writeStorage(APPEARANCE_KEY,JSON.stringify(appearance)))throw Error("storage unavailable");
+      if(!wallet.spendDiamonds(5)){ $(".appearance-status").textContent=t("insufficient");return; }
+      const next={aurora:true,equipped:"aurora"};
+      if(!writeStorage(APPEARANCE_KEY,JSON.stringify(next))){wallet.addDiamonds(5);throw Error("ownership save failed");}
+      appearance=next;sound("reward.unlock");$(".appearance-status").textContent=t("equipped");
+    };
+    try{if(navigator.locks)await navigator.locks.request("starlink-appearance",transaction);else transaction();}
+    catch{$(".appearance-status").textContent=t("purchaseError");}
+    finally{purchasing=false;purchaseArmed=false;applyAppearance();renderAppearance();}
+  }
+  function renderConstellationPreview(stage){
+    const lines=stage.edges.map(e=>`<line x1="${stage.points[e.from][0]}" y1="${stage.points[e.from][1]}" x2="${stage.points[e.to][0]}" y2="${stage.points[e.to][1]}"/>`).join("");
+    const nodes=stage.points.map(([x,y])=>`<rect x="${x-2.5}" y="${y-2.5}" width="5" height="5"/>`).join("");
+    $(".constellation-preview").innerHTML=`<svg viewBox="0 0 100 100">${lines}${nodes}</svg>`;
+    $(".observatory-seals").innerHTML=Array.from({length:5},(_,i)=>`<i class="${save.cleared[(stage.chapter-1)*5+i]?"lit":""}"></i>`).join("");
+  }
+
   function sound(name){try{window.WeightPlayAudio?.play?.(name);}catch{}}
   function viewportBucket(){const width=Math.min(window.innerWidth||0,window.innerHeight||0);if(width<=480)return"phone";if(width<=720)return"tablet";return"desktop";}
   function analytics(name,data={}){try{window.WonderAnalytics?.track?.(name,{game_id:GAME_ID,game_version:GAME_VERSION,locale,viewport_bucket:viewportBucket(),...data});}catch{}}
@@ -284,7 +382,7 @@
     dom.stageRail.setAttribute("aria-label",t("stageRailLabel"));
     dom.scene.setAttribute("aria-label",t("puzzleLabel"));
     dom.svg.setAttribute("aria-label",t("graphLabel"));
-    renderBattleLeave();
+    renderBattleLeave();renderAppearance();
     dom.loadingText.textContent=t("loading");
     localizeGuide();
     updateMainProgress();
@@ -374,7 +472,7 @@
   new MutationObserver(localizeTutorial).observe(document.body,{childList:true,subtree:true});
 
   function updateMainProgress(){dom.mainProgress.innerHTML=`<strong>${t("progress",{cleared:clearedCount()})}</strong><span>${t("bestStars",{stars:totalStars()})}</span>`;}
-  function setScreen(screen){if(screen!=="stage")cancelStageRailInteraction();document.body.dataset.screen=screen;document.body.classList.toggle("wp-shell-main-active",screen==="main");document.body.classList.toggle("wp-shell-stage-active",screen==="stage");document.body.classList.toggle("wp-shell-battle-active",screen==="battle");document.body.classList.toggle("wp-stage-select-active",screen==="stage");document.documentElement.classList.toggle("wp-stage-select-active",screen==="stage");dom.main.hidden=screen!=="main";dom.guide.hidden=screen!=="main";dom.stage.hidden=screen!=="stage";dom.battle.hidden=screen!=="battle";window.scrollTo({top:0,left:0,behavior:"auto"});
+  function setScreen(screen){visualGeneration+=1;observatory?.setActive(screen==="battle");dom.scene.classList.remove("sparkle","shake");if(screen!=="stage")cancelStageRailInteraction();document.body.dataset.screen=screen;document.body.classList.toggle("wp-shell-main-active",screen==="main");document.body.classList.toggle("wp-shell-stage-active",screen==="stage");document.body.classList.toggle("wp-shell-battle-active",screen==="battle");document.body.classList.toggle("wp-stage-select-active",screen==="stage");document.documentElement.classList.toggle("wp-stage-select-active",screen==="stage");dom.main.hidden=screen!=="main";dom.guide.hidden=screen!=="main";dom.stage.hidden=screen!=="stage";dom.battle.hidden=screen!=="battle";window.scrollTo({top:0,left:0,behavior:"auto"});
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
       if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
@@ -394,12 +492,12 @@
   function setResultCoverage(covered){battleLeaveCovered().forEach(node=>{node.inert=covered;if(covered)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});}
   function trapResultFocus(event){if(dom.result.hidden)return;if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return;}if(event.key!=="Tab")return;const actions=resultActions();if(!actions.length)return;const first=actions[0],last=actions.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus({preventScroll:true});}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus({preventScroll:true});}}
   function cancelActivePointer(pointerId=null){if(activePointer===null||(pointerId!==null&&activePointer!==pointerId))return false;const owner=activePointer;activePointer=null;try{if(dom.svg.hasPointerCapture?.(owner))dom.svg.releasePointerCapture(owner);}catch{}return true;}
-  function openBattleLeave(){if(document.body.dataset.screen!=="battle"||!dom.result.hidden||completing)return;cancelActivePointer();pauseRunClock();renderBattleLeave();setBattleLeaveCoverage(true);(__wpNotifyMeasurement(), dom.leave.hidden=false);dom.continueBattle.focus({preventScroll:true});}
-  function closeBattleLeave(resume=true){if(dom.leave.hidden)return;(__wpNotifyMeasurement(), dom.leave.hidden=true);setBattleLeaveCoverage(false);if(resume)resumeRunClock();requestAnimationFrame(()=>dom.battleBack.focus({preventScroll:true}));}
-  function leaveBattle(){(__wpNotifyMeasurement(), dom.leave.hidden=true);setBattleLeaveCoverage(false);pauseRunClock();sound("ui.click");analytics("return_stage",{from_screen:"battle",input_type:"leave"});showStage(stageIndex,"leave");}
+  function openBattleLeave(){if(document.body.dataset.screen!=="battle"||!dom.result.hidden||completing)return;cancelActivePointer();pauseRunClock();observatory?.setActive(false);renderBattleLeave();setBattleLeaveCoverage(true);(__wpNotifyMeasurement(), dom.leave.hidden=false);dom.continueBattle.focus({preventScroll:true});}
+  function closeBattleLeave(resume=true){if(dom.leave.hidden)return;(__wpNotifyMeasurement(), dom.leave.hidden=true);setBattleLeaveCoverage(false);if(resume){resumeRunClock();observatory?.setActive(true);}requestAnimationFrame(()=>dom.battleBack.focus({preventScroll:true}));}
+  function leaveBattle(){(__wpNotifyMeasurement(), dom.leave.hidden=true);setBattleLeaveCoverage(false);pauseRunClock();sound("ui.click");analytics("return_stage",{from_screen:"battle",input_type:"leave"});showStage(save.unlocked-1,"leave");}
 
   function showMain(){const from=document.body.dataset.screen;clearCompletionTransition();completing=false;(__wpNotifyMeasurement(), dom.result.hidden=true);(__wpNotifyMeasurement(), dom.leave.hidden=true);setBattleLeaveCoverage(false);setResultCoverage(false);setScreen("main");if(from&&from!=="main"&&from!=="loading")analytics("return_session",{from_screen:from});updateMainProgress();requestAnimationFrame(()=>dom.start.focus({preventScroll:true}));}
-  function showStage(focusIndex=stageIndex,inputType="start"){clearCompletionTransition();completing=false;(__wpNotifyMeasurement(), dom.result.hidden=true);(__wpNotifyMeasurement(), dom.leave.hidden=true);setBattleLeaveCoverage(false);setResultCoverage(false);setScreen("stage");stageIndex=Math.max(0,Math.min(29,focusIndex));renderStages();analytics("stage_open",{stage:stageIndex+1,unlocked_count:save.unlocked,cleared_count:clearedCount(),input_type:inputType});installVirtualStageRail();window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));requestAnimationFrame(()=>{window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));focusStageIndex(stageIndex);});}
+  function showStage(focusIndex=save.unlocked-1,inputType="start"){clearCompletionTransition();completing=false;(__wpNotifyMeasurement(), dom.result.hidden=true);(__wpNotifyMeasurement(), dom.leave.hidden=true);setBattleLeaveCoverage(false);setResultCoverage(false);setScreen("stage");selectStageTab("stages");stageIndex=Math.max(0,Math.min(29,focusIndex));renderStages();analytics("stage_open",{stage:stageIndex+1,unlocked_count:save.unlocked,cleared_count:clearedCount(),input_type:inputType});installVirtualStageRail();window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));requestAnimationFrame(()=>{window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));focusStageIndex(stageIndex);});}
 
   function stageStatus(stage){if(save.cleared[stage.id-1])return t("cleared");if(stage.id<=save.unlocked)return t("available");return t("locked");}
   const desiredStageWindow=index=>Math.max(0,Math.min(stages.length-STAGE_CARD_POOL_SIZE,index-Math.floor(STAGE_CARD_POOL_SIZE/2)));
@@ -429,7 +527,7 @@
     window.addEventListener("pointerup",finish,true);window.addEventListener("pointercancel",finish,true);rail.addEventListener("click",event=>{if(!suppressClick)return;suppressClick=false;event.preventDefault();event.stopImmediatePropagation();},true);
   }
 
-  function updateChapterPanel(index){stageIndex=Math.max(0,Math.min(29,index));const stage=stages[stageIndex];dom.chapterKicker.textContent=t("chapter",{number:stage.chapter});dom.chapterTitle.textContent=t(`chapter${stage.chapter}`);dom.chapterRule.textContent=t(`rule${stage.chapter}`);stageCardPool.forEach(card=>{const current=Number(card.dataset.index)===stageIndex;card.classList.toggle("selected",current);card.classList.toggle("centered",current);card.dataset.wpStageCentered=String(current);card.tabIndex=current?0:-1;if(current)card.setAttribute("aria-current","true");else card.removeAttribute("aria-current")});}
+  function updateChapterPanel(index){stageIndex=Math.max(0,Math.min(29,index));const stage=stages[stageIndex];renderConstellationPreview(stage);dom.chapterKicker.textContent=t("chapter",{number:stage.chapter});dom.chapterTitle.textContent=t(`chapter${stage.chapter}`);dom.chapterRule.textContent=t(`rule${stage.chapter}`);stageCardPool.forEach(card=>{const current=Number(card.dataset.index)===stageIndex;card.classList.toggle("selected",current);card.classList.toggle("centered",current);card.dataset.wpStageCentered=String(current);card.tabIndex=current?0:-1;if(current)card.setAttribute("aria-current","true");else card.removeAttribute("aria-current")});}
 
   function startStage(index,event){
     reclaimVisibleForeground(event);
@@ -463,7 +561,7 @@
   }
 
   function validStart(node){const stage=currentStage();if(stage.forcedStart!==null&&node!==stage.forcedStart)return false;let cp=stage.checkpoints[0]===node?1:0;return Boolean(solveFrom(node,new Set(),cp,node===stage.keyNode));}
-  function setFeedback(message,type=""){dom.feedback.textContent=message;dom.feedbackRow.classList.remove("error","success");if(type)dom.feedbackRow.classList.add(type);}
+  function setFeedback(message,type=""){dom.feedback.textContent=message;playMotion(dom.feedback,[{opacity:.35,transform:"translateY(3px)"},{opacity:1,transform:"none"}],180);dom.feedbackRow.classList.remove("error","success");if(type)dom.feedbackRow.classList.add(type);}
   function reject(reason,vars={}){mistakes+=1;sound("feedback.error");analytics("invalid_route",{stage:currentStage().id,reason,path_length:path.length});setFeedback(t(reason,vars),"error");dom.scene.classList.remove("shake");void dom.scene.offsetWidth;dom.scene.classList.add("shake");updateAssist();}
 
   function chooseNode(node){
@@ -471,8 +569,8 @@
     const stage=currentStage();hintNode=null;
     if(path.length===0){if(stage.forcedStart!==null&&node!==stage.forcedStart){reject("wrongStart");return;}if(!validStart(node)){reject("deadEnd");return;}path=[node];sound("ui.click");setFeedback(t("continue"));updateGraph();return;}
     const state=deriveState();const edge=edgeBetween(state.current,node);if(!edge){reject("notConnected");return;}const allowed=transitionAllowed(edge,state.current,state);if(!allowed.ok){reject(allowed.reason,{number:allowed.number});return;}
-    const hadKey=state.keyFound;path.push(node);analytics("node_input",{stage:stage.id,node,path_length:path.length});sound("ui.click");updateGraph();const nextState=deriveState();
-    if(!hadKey&&nextState.keyFound)setFeedback(t("keyFound"),"success");else if(nextState.checkpointProgress<stage.checkpoints.length)setFeedback(t("checkpoint",{number:nextState.checkpointProgress+1}));else setFeedback(t("continue"));
+    const hadKey=state.keyFound;path.push(node);analytics("node_input",{stage:stage.id,node,path_length:path.length});sound("puzzle.match");updateGraph();const nextState=deriveState();
+    if(!hadKey&&nextState.keyFound){sound("mechanism.unlock");setFeedback(t("keyFound"),"success");}else if(nextState.checkpointProgress<stage.checkpoints.length)setFeedback(t("checkpoint",{number:nextState.checkpointProgress+1}));else setFeedback(t("continue"));
     if(nextState.used.size===stage.edges.length){completeStage();return;}
     if(!solveFrom(nextState.current,nextState.used,nextState.checkpointProgress,nextState.keyFound))setFeedback(t("deadEnd"),"error");
   }
@@ -500,14 +598,16 @@ if(completing)return;if(count&&path.length)restarts+=1;path=[];hintNode=null;sou
   }
 
   function buildGraph(){
-    const stage=currentStage();const ns="http://www.w3.org/2000/svg";dom.svg.replaceChildren();
+    const stage=currentStage();const ns="http://www.w3.org/2000/svg";dom.svg.replaceChildren();dom.scene.classList.remove("sparkle","shake");
     const edgeLayer=document.createElementNS(ns,"g");edgeLayer.setAttribute("class","edge-layer");stage.edges.forEach(edge=>{const line=document.createElementNS(ns,"line");const [x1,y1]=stage.points[edge.from],[x2,y2]=stage.points[edge.to];line.setAttribute("x1",x1);line.setAttribute("y1",y1);line.setAttribute("x2",x2);line.setAttribute("y2",y2);line.dataset.edge=edge.key;line.classList.add("graph-edge");if(edge.directed)line.classList.add("directed");if(edge.gate)line.classList.add("gate");line.setAttribute("aria-label",t("edgeLabel",{from:edge.from+1,to:edge.to+1}));edgeLayer.append(line);if(edge.directed){const arrow=document.createElementNS(ns,"path");const midpointX=(x1+x2)/2,midpointY=(y1+y2)/2,angle=Math.atan2(y2-y1,x2-x1)*180/Math.PI;arrow.classList.add("direction-arrow");arrow.dataset.edge=edge.key;arrow.setAttribute("d","M -3.6 -2.7 L 3.8 0 L -3.6 2.7 Z");arrow.setAttribute("transform",`translate(${midpointX} ${midpointY}) rotate(${angle})`);arrow.setAttribute("aria-hidden","true");edgeLayer.append(arrow);}});dom.svg.append(edgeLayer);
-    const nodeLayer=document.createElementNS(ns,"g");nodeLayer.setAttribute("class","node-layer");stage.points.forEach(([x,y],index)=>{const group=document.createElementNS(ns,"g");group.classList.add("graph-node");group.dataset.node=index;group.setAttribute("role","button");group.setAttribute("tabindex",index===graphFocusIndex?"0":"-1");group.setAttribute("aria-keyshortcuts",GRAPH_NODE_KEYBOARD_SHORTCUTS);group.setAttribute("transform",`translate(${x} ${y})`);const halo=document.createElementNS(ns,"circle");halo.setAttribute("r","6.7");halo.classList.add("node-halo");const core=document.createElementNS(ns,"circle");core.setAttribute("r","4.5");core.classList.add("node-core");const label=document.createElementNS(ns,"text");label.classList.add("node-label");label.setAttribute("y",".4");group.append(halo,core,label);group.addEventListener("focus",()=>setGraphFocus(index));group.addEventListener("pointerdown",event=>{if(activePointer!==null||event.isPrimary===false||(event.pointerType==="mouse"&&event.button!==0))return;event.preventDefault();setGraphFocus(index);activePointer=event.pointerId;try{dom.svg.setPointerCapture?.(event.pointerId);}catch{}chooseNode(index);});group.addEventListener("keydown",event=>{if(event.repeat)return;if(event.key==="Enter"||event.key===" "){event.preventDefault();chooseNode(index);return;}if(event.key==="Home"||event.key==="End"){event.preventDefault();setGraphFocus(event.key==="Home"?0:stage.points.length-1,true);return;}if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(event.key)){event.preventDefault();setGraphFocus(directionalGraphNode(index,event.key),true);}});nodeLayer.append(group);});dom.svg.append(nodeLayer);
+    const nodeLayer=document.createElementNS(ns,"g");nodeLayer.setAttribute("class","node-layer");stage.points.forEach(([x,y],index)=>{const group=document.createElementNS(ns,"g");group.classList.add("graph-node");group.dataset.node=index;group.setAttribute("role","button");group.setAttribute("tabindex",index===graphFocusIndex?"0":"-1");group.setAttribute("aria-keyshortcuts",GRAPH_NODE_KEYBOARD_SHORTCUTS);group.setAttribute("transform",`translate(${x} ${y})`);const halo=document.createElementNS(ns,"circle");halo.setAttribute("r","6.7");halo.classList.add("node-halo");const core=document.createElementNS(ns,"rect");core.setAttribute("x","-4.5");core.setAttribute("y","-4.5");core.setAttribute("width","9");core.setAttribute("height","9");core.setAttribute("rx",".7");core.classList.add("node-core");const label=document.createElementNS(ns,"text");label.classList.add("node-label");label.setAttribute("y",".4");group.append(halo,core,label);group.addEventListener("focus",()=>setGraphFocus(index));group.addEventListener("pointerdown",event=>{if(activePointer!==null||event.isPrimary===false||(event.pointerType==="mouse"&&event.button!==0))return;event.preventDefault();setGraphFocus(index);activePointer=event.pointerId;try{dom.svg.setPointerCapture?.(event.pointerId);}catch{}chooseNode(index);});group.addEventListener("keydown",event=>{if(event.repeat)return;if(event.key==="Enter"||event.key===" "){event.preventDefault();chooseNode(index);return;}if(event.key==="Home"||event.key==="End"){event.preventDefault();setGraphFocus(event.key==="Home"?0:stage.points.length-1,true);return;}if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(event.key)){event.preventDefault();setGraphFocus(directionalGraphNode(index,event.key),true);}});nodeLayer.append(group);});dom.svg.append(nodeLayer);observatory?.build(stage);ensureObservatory();
   }
 
   function updateGraph(){
     const stage=currentStage();const state=deriveState();$$('.graph-edge').forEach(line=>{line.classList.toggle("used",state.used.has(line.dataset.edge));const edge=stage.edges.find(item=>item.key===line.dataset.edge);line.classList.toggle("open",Boolean(edge?.gate&&state.keyFound));});
-    $$('.graph-node').forEach(group=>{const node=Number(group.dataset.node);const cpAt=stage.checkpoints.indexOf(node);group.classList.toggle("current",node===state.current);group.classList.toggle("start",node===stage.forcedStart);group.classList.toggle("key",node===stage.keyNode);group.classList.toggle("checkpoint",cpAt>=0);group.classList.toggle("hinted",node===hintNode);const label=group.querySelector(".node-label");label.textContent=cpAt>=0?String(cpAt+1):node===stage.keyNode?"K":node===stage.forcedStart?"S":"";let aria=t("node",{number:node+1});if(node===stage.forcedStart)aria=t("startNode",{number:node+1});if(node===stage.keyNode)aria=t("keyNode",{number:node+1});if(cpAt>=0)aria=t("checkpointNode",{order:cpAt+1});group.setAttribute("aria-label",aria);group.setAttribute("aria-pressed",String(node===state.current));});
+    $$('.graph-node').forEach(group=>{const node=Number(group.dataset.node);const cpAt=stage.checkpoints.indexOf(node);group.classList.toggle("current",node===state.current);group.classList.toggle("start",node===stage.forcedStart);group.classList.toggle("key",node===stage.keyNode);group.classList.toggle("checkpoint",cpAt>=0);group.classList.toggle("hinted",node===hintNode);const label=group.querySelector(".node-label");label.textContent=cpAt>=0?String(cpAt+1):node===stage.keyNode?"⚿":node===stage.forcedStart?"▶":"";let aria=t("node",{number:node+1});if(node===stage.forcedStart)aria=t("startNode",{number:node+1});if(node===stage.keyNode)aria=t("keyNode",{number:node+1});if(cpAt>=0)aria=t("checkpointNode",{order:cpAt+1});group.setAttribute("aria-label",aria);group.setAttribute("aria-pressed",String(node===state.current));});
+    observatory?.sync(state,path,hintNode,appearance.equipped);
+    dom.scene.dataset.complete=String(state.used.size===stage.edges.length);
     const used=state.used.size,total=stage.edges.length;dom.progress.setAttribute("role","progressbar");dom.progress.setAttribute("aria-valuemin","0");dom.progress.setAttribute("aria-valuemax",String(total));dom.progress.setAttribute("aria-valuenow",String(used));dom.progress.setAttribute("aria-label",`${t("trails")}: ${used} / ${total}`);dom.edgeProgress.style.width=`${used/total*100}%`;dom.trailCount.textContent=`${used} / ${total}`;dom.starTotal.textContent=String(totalStars());dom.undo.disabled=path.length===0;updateAssist();
   }
 
@@ -515,15 +615,15 @@ if(completing)return;if(count&&path.length)restarts+=1;path=[];hintNode=null;sou
   function updateAssist(){const key=hints===1&&STRINGS[locale]?.assistOne?"assistOne":"assist";dom.assist.textContent=t(key,{hints,mistakes:mistakes+restarts});}
 
   function completeStage(){
-    if(completing)return;const elapsed=elapsedPlayTime();completing=true;pauseRunClock();const stage=currentStage();const assists=mistakes+restarts+hints*2;const earned=assists===0?3:assists<=3?2:1;const previous=save.bestTimes[stageIndex];save.cleared[stageIndex]=true;save.stars[stageIndex]=Math.max(save.stars[stageIndex]||0,earned);save.bestTimes[stageIndex]=previous===null?elapsed:Math.min(previous,elapsed);save.unlocked=Math.max(save.unlocked,Math.min(30,stage.id+1));persist();sound("result.win");setFeedback(t("complete"),"success");dom.scene.classList.add("sparkle");analytics("game_complete",{stage:stage.id,stars:earned,hints,mistakes:mistakes+restarts,time_ms:elapsed});scheduleCompletionTransition({stageIndex,earned,elapsed,previous});
+    if(completing)return;const elapsed=elapsedPlayTime();completing=true;pauseRunClock();const stage=currentStage();const assists=mistakes+restarts+hints*2;const earned=assists===0?3:assists<=3?2:1;const previous=save.bestTimes[stageIndex];save.cleared[stageIndex]=true;save.stars[stageIndex]=Math.max(save.stars[stageIndex]||0,earned);save.bestTimes[stageIndex]=previous===null?elapsed:Math.min(previous,elapsed);save.unlocked=Math.max(save.unlocked,Math.min(30,stage.id+1));persist();sound("result.win");setFeedback(t("complete"),"success");dom.scene.classList.add("sparkle");analytics("game_complete",{stage:stage.id,stars:earned,hints,mistakes:mistakes+restarts,time_ms:elapsed});cancelActivePointer();scheduleCompletionTransition({stageIndex,earned,elapsed,previous},reducedMotion()?140:850);
   }
 
-  function showResult(earned,elapsed,previous){resultActionCommitted=false;const stage=currentStage();dom.resultTitle.textContent=t("resultTitle");dom.resultStars.textContent="★".repeat(earned)+"☆".repeat(3-earned);dom.resultText.textContent=t("resultText",{edges:stage.edges.length,time:formatTime(elapsed)});const hintFact=hints===1&&STRINGS[locale]?.problemValueOne?t("problemValueOne"):t("problemValue",{hints});dom.resultFacts.textContent=`${t("focusValue",{mistakes:mistakes+restarts})} · ${hintFact}`;const nextStage=stages[stageIndex+1];const nextPreview=nextStage?`${t("next")}: ${t("stage")} ${nextStage.id} · ${t(`chapter${nextStage.chapter}`)}`:"";const bestText=previous===null||elapsed<previous?t("newBest"):t("previousBest",{time:formatTime(previous)});dom.comparison.textContent=[bestText,nextPreview].filter(Boolean).join(" · ");const terminal=stage.id>=30;ensureResultActions();dom.next.hidden=false;dom.next.disabled=terminal;dom.next.classList.toggle("primary-action",!terminal);(__wpNotifyMeasurement(), dom.resultStages.classList.toggle("primary-action",terminal));setResultCoverage(true);(__wpNotifyMeasurement(), dom.result.hidden=false);requestAnimationFrame(()=>{(terminal?dom.resultStages:dom.next).focus({preventScroll:true});window.dispatchEvent(new CustomEvent("weightplay:battle-open"));});
+  function showResult(earned,elapsed,previous){observatory?.setActive(false);resultActionCommitted=false;const stage=currentStage();dom.resultTitle.textContent=t("resultTitle");dom.resultStars.textContent="★".repeat(earned)+"☆".repeat(3-earned);dom.resultText.textContent=t("resultText",{edges:stage.edges.length,time:formatTime(elapsed)});const hintFact=hints===1&&STRINGS[locale]?.problemValueOne?t("problemValueOne"):t("problemValue",{hints});dom.resultFacts.textContent=`${t("focusValue",{mistakes:mistakes+restarts})} · ${hintFact}`;const nextStage=stages[stageIndex+1];const nextPreview=nextStage?`${t("next")}: ${t("stage")} ${nextStage.id} · ${t(`chapter${nextStage.chapter}`)}`:"";const bestText=previous===null||elapsed<previous?t("newBest"):t("previousBest",{time:formatTime(previous)});dom.comparison.textContent=[bestText,nextPreview].filter(Boolean).join(" · ");const terminal=stage.id>=30;ensureResultActions();dom.next.hidden=false;dom.next.disabled=terminal;dom.next.classList.toggle("primary-action",!terminal);(__wpNotifyMeasurement(), dom.resultStages.classList.toggle("primary-action",terminal));setResultCoverage(true);(__wpNotifyMeasurement(), dom.result.hidden=false);requestAnimationFrame(()=>{(terminal?dom.resultStages:dom.next).focus({preventScroll:true});window.dispatchEvent(new CustomEvent("weightplay:battle-open"));});
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
   function commitResultAction(action){if(resultActionCommitted||dom.result.hidden)return;resultActionCommitted=true;action();}
 
-  dom.svg.addEventListener("pointermove",event=>{if(activePointer!==event.pointerId||path.length===0||completing)return;const rect=dom.svg.getBoundingClientRect();const x=(event.clientX-rect.left)/rect.width*100;const y=(event.clientY-rect.top)/rect.height*100;let nearest=-1,best=8.5;currentStage().points.forEach(([nx,ny],index)=>{const distance=Math.hypot(nx-x,ny-y);if(distance<best){best=distance;nearest=index;}});if(nearest>=0&&nearest!==path.at(-1))chooseNode(nearest);});
+  dom.svg.addEventListener("pointermove",event=>{if(activePointer!==event.pointerId||path.length===0||completing)return;const matrix=dom.svg.getScreenCTM();if(!matrix)return;const point=new DOMPoint(event.clientX,event.clientY).matrixTransform(matrix.inverse());const x=point.x,y=point.y;let nearest=-1,best=8.5;currentStage().points.forEach(([nx,ny],index)=>{const distance=Math.hypot(nx-x,ny-y);if(distance<best){best=distance;nearest=index;}});if(nearest>=0&&nearest!==path.at(-1))chooseNode(nearest);});
   const endPointer=event=>cancelActivePointer(event.pointerId);dom.svg.addEventListener("pointerup",endPointer);dom.svg.addEventListener("pointercancel",endPointer);dom.svg.addEventListener("lostpointercapture",endPointer);window.addEventListener("blur",()=>{windowFocused=false;cancelActivePointer();pauseRunClock();suspendCompletionTransition();});window.addEventListener("focus",()=>{windowFocused=true;resumeRunClock();resumeCompletionTransition();});
   dom.battle.addEventListener("pointerdown",reclaimVisibleForeground,true);
   dom.battle.addEventListener("keydown",reclaimVisibleForeground,true);
@@ -536,14 +636,16 @@ if(completing)return;if(count&&path.length)restarts+=1;path=[];hintNode=null;sou
   dom.leave.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){if(event.repeat){event.preventDefault();return;}(__wpNotifyMeasurement(), heldLeaveDecisionKeys.add(event.key));}if(event.key==="Escape"){event.preventDefault();closeBattleLeave();return;}if(event.key!=="Tab")return;const first=dom.continueBattle,last=dom.leaveBattle;if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
   dom.result.addEventListener("keydown",trapResultFocus);
   document.addEventListener("visibilitychange",()=>{if(document.hidden){cancelActivePointer();pauseRunClock();suspendCompletionTransition();}else{resumeRunClock();resumeCompletionTransition();}});window.addEventListener("pagehide",()=>{cancelActivePointer();pauseRunClock();suspendCompletionTransition();});window.addEventListener("pageshow",()=>{resumeRunClock();resumeCompletionTransition();});
-  window.addEventListener("weightplay:tutorial-start",event=>{if(event.detail?.gameId!==GAME_ID)return;sound("ui.click");showStage(0,"tutorial");});dom.start.addEventListener("click",()=>{sound("ui.click");showStage();});dom.stageBack.addEventListener("click",()=>{sound("ui.click");showMain();});dom.battleBack.addEventListener("click",()=>{sound("ui.click");openBattleLeave();});dom.battleUtility.addEventListener("click",()=>{sound("ui.click");showHint();});dom.continueBattle.addEventListener("click",()=>{sound("ui.click");closeBattleLeave();});dom.leaveBattle.addEventListener("click",leaveBattle);dom.undo.addEventListener("click",undo);dom.restart.addEventListener("click",()=>__wpReplayStart(() => restartAttempt(true)));dom.hint.addEventListener("click",showHint);dom.retry.addEventListener("click",()=>commitResultAction(()=>{analytics("completion_action",{action:"retry",stage:stageIndex+1});__wpReplayStart(() => startStage(stageIndex));}));dom.resultStages.addEventListener("click",()=>commitResultAction(()=>{analytics("completion_action",{action:"stages",stage:stageIndex+1});analytics("return_stage",{from_screen:"result",input_type:"result"});showStage(stageIndex,"result");}));dom.next.addEventListener("click",()=>commitResultAction(()=>{const fromStage=stageIndex+1;const toStage=Math.min(29,stageIndex+1)+1;analytics("completion_action",{action:"next",stage:fromStage});analytics("next_stage_start",{from_stage:fromStage,to_stage:toStage});startStage(Math.min(29,stageIndex+1));}));dom.locale.addEventListener("change",()=>{const requested=dom.locale.value;writeStorage(LOCALE_KEY,requested);const prefix=localeRoutePrefixes[requested]||"en";const targetPath=`/${prefix}/games/${GAME_ID}/`;if(location.pathname!==targetPath){location.assign(targetPath+location.search+location.hash);return;}locale=requested;applyLocale();});
+  window.addEventListener("weightplay:tutorial-start",event=>{if(event.detail?.gameId!==GAME_ID)return;sound("ui.click");showStage(0,"tutorial");});dom.start.addEventListener("click",()=>{sound("ui.click");showStage();});dom.stageBack.addEventListener("click",()=>{sound("ui.click");showMain();});dom.battleBack.addEventListener("click",()=>{sound("ui.click");openBattleLeave();});dom.battleUtility.addEventListener("click",()=>{sound("ui.click");showHint();});dom.continueBattle.addEventListener("click",()=>{sound("ui.click");closeBattleLeave();});dom.leaveBattle.addEventListener("click",leaveBattle);dom.undo.addEventListener("click",undo);dom.restart.addEventListener("click",()=>__wpReplayStart(() => restartAttempt(true)));dom.hint.addEventListener("click",showHint);dom.retry.addEventListener("click",()=>commitResultAction(()=>{analytics("completion_action",{action:"retry",stage:stageIndex+1});__wpReplayStart(() => startStage(stageIndex));}));dom.resultStages.addEventListener("click",()=>commitResultAction(()=>{analytics("completion_action",{action:"stages",stage:stageIndex+1});analytics("return_stage",{from_screen:"result",input_type:"result"});showStage(save.unlocked-1,"result");}));dom.next.addEventListener("click",()=>commitResultAction(()=>{const fromStage=stageIndex+1;const toStage=Math.min(29,stageIndex+1)+1;analytics("completion_action",{action:"next",stage:fromStage});analytics("next_stage_start",{from_stage:fromStage,to_stage:toStage});startStage(Math.min(29,stageIndex+1));}));dom.locale.addEventListener("change",()=>{const requested=dom.locale.value;writeStorage(LOCALE_KEY,requested);const prefix=localeRoutePrefixes[requested]||"en";const targetPath=`/${prefix}/games/${GAME_ID}/`;if(location.pathname!==targetPath){location.assign(targetPath+location.search+location.hash);return;}locale=requested;applyLocale();});
 
-  async function boot(){applyLocale();analytics("game_view");const assets=["../../assets/animal-starlight-trails-cover.webp","../../assets/animal-starlight-trails-bg.webp","../../assets/weightplay-character-moon-cap-owl-cutout.webp"];let loaded=0;await Promise.allSettled(assets.map(src=>new Promise(resolve=>{const image=new Image();const done=()=>{loaded+=1;dom.loadingFill.style.width=`${loaded/assets.length*100}%`;resolve();};image.onload=done;image.onerror=done;image.src=src;})));setTimeout(()=>{dom.loading.hidden=true;showMain();},180);}
+  async function boot(){setupObservatoryUI();applyLocale();analytics("game_view");const assets=["/assets/interface7-redrawn/animal-starlight-trails.webp","/assets/animal-starlight-trails-observatory-v22.webp","/assets/weightplay-character-moon-cap-owl-block-v1.webp"];let loaded=0;await Promise.allSettled(assets.map(src=>new Promise(resolve=>{const image=new Image();const done=()=>{loaded+=1;dom.loadingFill.style.width=`${loaded/assets.length*100}%`;resolve();};image.onload=done;image.onerror=done;image.src=src;})));setTimeout(()=>{dom.loading.hidden=true;showMain();},180);}
   if (new URLSearchParams(location.search).get("trial") === "1") {
     window.__animalStarlightTrailsSmoke = {
       stages: stages.map(stage => ({id:stage.id,route:[...stage.route],edges:stage.edges.length,chapter:stage.chapter})),
       leaveCopy: () => Object.fromEntries(Object.entries(STRINGS).map(([key,strings])=>[key,[strings.leaveTitle,strings.leaveText,strings.continueBattle,strings.returnStages]])),
       startStage,
+      renderStats:()=>observatory?.stats()??null,
+      appearance:()=>({...appearance}),
       snapshot: () => ({stage:stageIndex+1,path:[...path],hints,mistakes,restarts,elapsed:elapsedPlayTime(),screen:document.body.dataset.screen,resultVisible:!dom.result.hidden,pointerOwner:activePointer,windowFocused,completionPending:Boolean(pendingCompletion),completionTimerActive:Boolean(completionTimer),save:JSON.parse(JSON.stringify(save))}),
     };
   }

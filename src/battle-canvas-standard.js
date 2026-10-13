@@ -413,6 +413,8 @@
     appliedStateSignature = stateSignature;
     metrics.battleApplied += 1;
     rememberAndSet(root, {
+      // Keep active controls independent of the inactive Stage cleanup.
+      ...(root.hasAttribute("data-wp-frame-play-fill") ? { "--wp-frame-control-size-physical": `${Math.max(48, 48 / scale)}px` } : {}),
       position: "fixed",
       inset: "auto",
       top: `${top}px`,

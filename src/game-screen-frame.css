@@ -199,6 +199,11 @@ html body [data-wp-frame="2"] [data-wp-frame-nav] > * {flex:1!important}
 html body [data-wp-frame="2"] [data-wp-frame-scene].hidden {display:none!important}
 @media(min-width:700px) {html body [data-wp-frame="2"] [data-wp-frame-content="main"] {grid-template-columns:var(--wp-main-poster-size) minmax(0,1fr)}}
 
+/* Full-Canvas play consumers reclaim the former title gap. The shared frame,
+   rather than a game-local header override, owns this declared composition. */
+html body [data-wp-frame="2"] [data-wp-frame-scene][data-wp-frame-play-fill] {gap:0!important;padding:0!important}
+html body [data-wp-frame="2"] [data-wp-frame-scene][data-wp-frame-play-fill] > .wp-frame-header {width:100%!important;margin-inline:0!important}
+
 /* Hidden state and reserved groups belong to the shared contract. */
 html body [data-wp-frame="2"] [data-wp-frame-scene]:is(.is-hidden,[hidden]) {display:none!important}
 html body [data-wp-frame="2"] [data-wp-frame-content] {position:relative!important;inset:auto!important;width:100%!important;min-width:0!important;min-height:0!important;box-sizing:border-box!important}

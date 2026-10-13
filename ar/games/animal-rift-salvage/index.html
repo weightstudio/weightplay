@@ -31,7 +31,7 @@
   <title>فريق إنقاذ الصدع | WeightPlay</title>
   <link rel="icon" href="../../assets/weightplay-logo.png">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-rift-interface-v15">
-  <link rel="stylesheet" href="style.css?v=20260823-arabic-runtime-v12">
+  <link rel="stylesheet" href="style.css?v=20261013-rift-v17">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><meta name="description" content="وجّه حلقة أورلا القمرية عبر 30 منطقة: اجمع الحطام الأصغر وأنقذ النوى العالقة وغادر قبل انغلاق العاصفة." />
     <meta property="og:description" content="وجّه حلقة أورلا القمرية عبر 30 منطقة: اجمع الحطام الأصغر وأنقذ النوى العالقة وغادر قبل انغلاق العاصفة." />
     <meta name="twitter:description" content="وجّه حلقة أورلا القمرية عبر 30 منطقة: اجمع الحطام الأصغر وأنقذ النوى العالقة وغادر قبل انغلاق العاصفة." />
@@ -47,7 +47,7 @@
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-screen="main" data-wp-combined-sound="true" data-wp-game-id="animal-rift-salvage" data-audience="general" data-wp-game-owned-guide>
-  <div id="loading" class="loading-panel"><img src="../../assets/animal-rift-salvage/orla-ring.webp" alt=""><strong data-t="loading">جارٍ معايرة الحلقة القمرية…</strong></div>
+  <div id="loading" class="loading-panel"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><strong data-t="loading">جارٍ معايرة الحلقة القمرية…</strong></div>
 
   <div id="mainGroup" class="main-group" data-screen="main">
     <main id="mainScreen" class="main-screen wp-standard-main-screen">
@@ -87,11 +87,11 @@
 
   <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-rift-salvage/cover.webp" style="--wp-stage-art:url('../../assets/animal-rift-salvage/cover.webp')">
-      <header class="stage-header"><button id="stageBack" type="button" aria-label="رجوع" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseZone">اختر منطقة إنقاذ</strong><span id="stageSummary"></span></div><img src="../../assets/animal-rift-salvage/orla-ring.webp" alt=""></header>
+      <header class="stage-header"><button id="stageBack" type="button" aria-label="رجوع" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseZone">اختر منطقة إنقاذ</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""></header>
       <nav class="stage-tabs"><button id="zonesTab" class="active" type="button" data-t="zones">المناطق</button><button id="observatoryTab" type="button" data-t="observatory">المرصد</button></nav>
       <section id="zonePanel" class="tab-panel zone-panel"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="محدد مناطق الإنقاذ" data-t-aria="stageRailLabel"></div><p id="stageHint" data-t="stageHint">اسحب الشريط واختر منطقة مفتوحة.</p></section>
       <section id="observatoryPanel" class="tab-panel observatory-panel" hidden>
-        <div class="observatory-intro"><img src="../../assets/animal-rift-salvage/orla-ring.webp" alt=""><div><h2 data-t="observatoryTitle">المرصد القمري</h2><p data-t="observatoryIntro">أنفق التروس النجمية على ضبط دائم لحلقة الإنقاذ.</p><strong id="gearCount"></strong></div></div>
+        <div class="observatory-intro"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><div><h2 data-t="observatoryTitle">المرصد القمري</h2><p data-t="observatoryIntro">أنفق التروس النجمية على ضبط دائم لحلقة الإنقاذ.</p><strong id="gearCount"></strong></div></div>
         <div id="upgrades" class="upgrades"></div>
         <p id="observatoryFeedback" class="observatory-feedback" role="status" aria-live="polite"></p>
         <div class="wake-card"><img src="../../assets/animal-rift-salvage/rescue-beacon.webp" alt=""><div><strong data-t="wakeTitle">أثر الكوكبة</strong><p data-t="wakeDesc">أثر نجمي تجميلي بلا ميزة لعب.</p></div><button id="wakeButton" type="button" data-t="wakeBuy">افتح · 10 ◆</button></div>
@@ -110,7 +110,7 @@
 
       <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">قد الحلقة القمرية</h2><ol><li data-t="help1">اضغط واسحب نحو نقطة للتحرك باستمرار.</li><li data-t="help2">الفيروزي أولًا؛ الكهرماني قريب، والأحمر كبير جدًا.</li><li data-t="gunHelp">يطلق الحراس الحمر مقذوفات قاتلة. واصل الحركة وتجنب المسارات المضيئة.</li><li data-t="help3">أكمل الحصة وكل هدف إنقاذ أو منافسة قبل انتهاء الوقت.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">متابعة</button></div></div></section>
       <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">هل تحتفظ بمحاولة الإنقاذ هذه؟</h2><p data-t="leaveText">تستأنف المتابعة الموضع والوقت نفسيهما. والعودة إلى المناطق تنهي المحاولة.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">متابعة</button><button id="leaveStage" type="button" data-t="returnZones">العودة إلى المناطق</button></div></div></section>
-      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/animal-rift-salvage/orla-ring.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">الوقت</b><strong id="resultTime"></strong></span><span><b data-t="bestChain">أفضل سلسلة</b><strong id="resultChain"></strong></span><span><b data-t="medal">الميدالية</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultZones" type="button" data-t="zones">المناطق</button><button id="next" class="primary" type="button" data-t="nextZone">المنطقة التالية</button><button id="retry" type="button" data-t="retry">إعادة المحاولة</button></div></div></section>
+      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">الوقت</b><strong id="resultTime"></strong></span><span><b data-t="bestChain">أفضل سلسلة</b><strong id="resultChain"></strong></span><span><b data-t="medal">الميدالية</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultZones" type="button" data-t="zones">المناطق</button><button id="next" class="primary" type="button" data-t="nextZone">المنطقة التالية</button><button id="retry" type="button" data-t="retry">إعادة المحاولة</button></div></div></section>
     </div>
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>
@@ -118,7 +118,7 @@
   <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ar.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="locales.js?v=20261002-rift-salvage-text140-v1"></script>
-  <script src="game.js?v=20261002-rift-salvage-runtime-v1"></script>
+  <script src="game.js?v=20261013-rift-v17"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>

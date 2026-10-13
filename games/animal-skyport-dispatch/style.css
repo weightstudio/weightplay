@@ -152,3 +152,49 @@
 .tutorial-actions button:focus-visible{outline:3px solid #fff4b7;outline-offset:3px}
 @keyframes skyport-tutorial-enter{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){.tutorial-overlay{animation:none}}
+
+/* The live harbor owns world artwork; DOM layers retain accessible hit targets. */
+#routeField {isolation:isolate;background:#80bfd0 url('../../assets/animal-skyport-dispatch/sky-harbor-v19.webp') 28% center/cover no-repeat}
+#routeField[data-chapter="3"],#routeField[data-chapter="5"] {background-color:#4b6186;background-blend-mode:multiply}
+#routeField[data-chapter="4"] {background-color:#c0a0a6;background-blend-mode:multiply}
+#routeField .skyport-world {position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#routeField .skyport-bg,#routeField .dock>img {display:none}
+#routeField .flight {background:none!important;filter:none!important;border:2px solid #e8ffff99;border-radius:8px;box-shadow:0 0 0 4px #183d5620;transition:border-color .16s,box-shadow .16s}
+#routeField .flight:active,#routeField .flight:focus-visible {border-color:#fff0a8;box-shadow:0 0 0 4px #fff0a850;cursor:grabbing}
+#routeField .dock {filter:none!important}
+#routeField .dock-label {bottom:-10px;border-radius:3px;padding:4px 7px;font-size:10px;background:#18374e;color:#fff;box-shadow:0 2px 0 #07182744}
+#routeField .dock.is-target .dock-label {background:#f7d76b;color:#162335}
+#routeField .dock-target-badge {top:-22px;border-radius:3px;box-shadow:0 3px 0 #60472555;font-size:10px}
+#routeField .route-beacon {border-radius:6px;border:2px solid #efffff;background:#183e58;color:#fff9d6;box-shadow:0 3px 0 #142e49,0 0 0 4px #62e9dc55;font-size:14px;transition:background .16s,border-color .16s,box-shadow .16s}
+#routeField .route-beacon[aria-current="step"] {border-color:#ffe29a;box-shadow:0 3px 0 #70562c,0 0 0 6px #ffe29a55}
+#routeField .route-beacon.passed {background:#237367;border-color:#cffff4;box-shadow:0 2px 0 #133d38}
+#routeField .route-barrier {border-radius:2px;box-shadow:0 2px 0 #6c203d}
+#routeField .route-barrier::before,#routeField .route-barrier::after {border-radius:2px}
+#routeField .route-trace polyline {stroke:#fff0a6;stroke-width:4;filter:drop-shadow(0 2px 1px #183e58)}
+#routeField .feedback {z-index:8;max-width:90%;white-space:normal;text-align:center;pointer-events:none;border-radius:4px;border:1px solid #defaff77;background:#102d46f2;font-size:12px;line-height:1.35}
+#routeField .feedback:empty {visibility:hidden}
+#routeField .feedback[data-tone="success"] {border-color:#a5ffe4;color:#ccffee}
+#routeField .feedback[data-tone="error"] {border-color:#ff9b98;color:#ffe5dd}
+#routeField .world-notice {position:absolute;inset:0;z-index:20;display:grid;place-content:center;gap:16px;padding:24px;text-align:center;background:#17324ef5;color:#fff}
+#routeField .world-notice[hidden] {display:none}
+#battleShell .objective {background:#133147;border-bottom:2px solid #bdab77}
+#battleShell .flight-row {background:#142e45;border-top:2px solid #b9a776}
+#battleShell #objectiveText {font-weight:800}
+#battleShell #resourceText {color:#b9eee5}
+#battleShell .result-rewards span {border-radius:4px}
+#battleShell .result-rewards img {width:30px;height:30px;object-fit:contain}
+.contract-row{height:84px;min-height:84px;grid-template-columns:minmax(0,1fr) 168px}
+.contract-choice span{-webkit-line-clamp:5}
+.insurance-btn{width:168px;display:grid;grid-template-columns:40px minmax(0,1fr);gap:2px 4px;align-content:center;align-items:center;padding:5px 7px}
+.insurance-btn img{width:40px;height:32px;object-fit:contain}
+.insurance-btn strong{font-size:.74rem;line-height:1.15}
+.insurance-btn small{grid-column:1/-1;font-size:.66rem;line-height:1.2;font-weight:500}
+@media (orientation:landscape) and (max-height:520px){
+  .contract-row{height:50px;min-height:50px}
+  .insurance-btn{grid-template-columns:26px minmax(0,1fr);padding:3px 6px;gap:1px 3px}
+  .insurance-btn img{width:26px;height:18px}
+  .insurance-btn strong{font-size:.7rem}
+  .insurance-btn small{font-size:.58rem;line-height:1.12}
+}
+#battleShell .result,#battleShell .leave-confirm,#battleShell .tutorial-card {animation:skyport-tutorial-enter .18s ease-out}
+@media(prefers-reduced-motion:reduce){#routeField *{transition:none!important}#battleShell .result,#battleShell .leave-confirm,#battleShell .tutorial-card{animation:none}}

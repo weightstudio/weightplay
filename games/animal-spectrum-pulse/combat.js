@@ -1,0 +1,167 @@
+/* Spectrum Pulse: deterministic action simulation. Rendering and input are adapters. */
+(function (root) {
+  'use strict';
+  const SIZE = 1120, STEP = 1 / 60, TAU = Math.PI * 2;
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+  function random(seed) { let n = seed >>> 0; return () => { n = (Math.imul(n, 1664525) + 1013904223) >>> 0; return n / 4294967296; }; }
+  const layouts = [
+    [[300,340,150,48],[670,600,150,48],[470,790,48,140]],
+    [[300,300,48,210],[740,570,48,220],[475,560,160,48]],
+    [[290,530,200,48],[660,530,170,48],[535,285,48,125],[535,770,48,125]],
+    [[310,300,180,48],[660,760,170,48],[330,680,48,130],[740,390,48,130]],
+    [[270,410,150,48],[680,670,170,48],[520,320,48,140],[520,740,48,140]],
+    [[280,280,160,48],[680,280,160,48],[280,790,160,48],[680,790,160,48]]
+  ];
+  function plan(level = 0) {
+    level = clamp(Math.floor(level), 0, 29);
+    const sector = Math.floor(level / 5), variant = level % 5;
+    const rotate = (point) => variant % 2 ? { x: SIZE - point.x, y: point.y } : point;
+    return {
+      level, sector, variant, size: SIZE, boss: variant === 4,
+      limit: 155 + sector * 8 + (variant === 4 ? 40 : 0),
+      walls: layouts[sector].map(([x,y,w,h]) => ({x: variant % 2 ? SIZE-x-w : x,y,w,h})),
+      cores: [{x:245,y:270},{x:875,y:410},{x:610,y:935}].map(rotate),
+      barrels: [{x:280,y:225},{x:360,y:210},{x:430,y:215},{x:845,y:350},{x:910,y:350},{x:625,y:870},{x:690,y:900}].map(rotate),
+      start: {x:560,y:650}, exit: {x:560,y:105},
+      offers: [ ['power','rapid','orbit'], ['chain','shield','nova'], ['rapid','freeze','power'], ['orbit','chain','shield'], ['nova','rapid','freeze'] ][variant]
+    };
+  }
+  function circleRect(body, rect, radius = body.r) {
+    return Math.hypot(body.x-clamp(body.x,rect.x,rect.x+rect.w), body.y-clamp(body.y,rect.y,rect.y+rect.h)) < radius;
+  }
+  function clearLine(a,b,walls) {
+    const length=distance(a,b),steps=Math.max(1,Math.ceil(length/18));
+    for(let i=1;i<steps;i++){const p={x:a.x+(b.x-a.x)*i/steps,y:a.y+(b.y-a.y)*i/steps,r:3};if(walls.some(w=>circleRect(p,w)))return false;}
+    return true;
+  }
+  class Combat {
+    constructor(level=0, upgrades={}) {
+      this.map=plan(level); this.rng=random(8923+level*811); this.time=0; this.timeLeft=this.map.limit;
+      this.player={...this.map.start,r:19,hp:6+clamp(upgrades.guard||0,0,3),maxHp:6+clamp(upgrades.guard||0,0,3),invincible:1.2,dx:0,dy:-1,dash:0,dashCooldown:0,pulseCooldown:0,shotCooldown:0};
+      this.stats={power:1+(upgrades.pulse||0)*.08,rate:1+(upgrades.foresight||0)*.09,radius:144,chain:0,orbit:0,freeze:0};
+      this.cores=this.map.cores.map((p,i)=>({...p,id:'c'+i,r:29,hp:240+this.map.sector*28+this.map.variant*8,maximum:240+this.map.sector*28+this.map.variant*8,flash:0}));
+      this.barrels=this.map.barrels.map((p,i)=>({...p,id:'r'+i,r:17,hp:1,flash:0}));
+      this.enemies=[];this.shots=[];this.hostile=[];this.pickups=[];this.effects=[];this.events=[];
+      this.nextId=0;this.kills=0;this.cleared=0;this.score=0;this.combo=0;this.bestCombo=0;this.comboTime=0;this.damageTaken=0;
+      this.paused=false;this.started=false;this.ended=false;this.result=null;this.choice=null;this.perks=[];this.chosen=false;
+      this.bossSpawned=false;this.bossDefeated=false;this.portal=false;this.spawnClock=3.5;this.hitstop=0;this.shake=0;this.orbitClock=0;
+      this.spawn('chaser',450,240);this.spawn('chaser',850,500);this.spawn('chaser',180,580);this.spawn('chaser',920,850);
+      this.spawn(this.map.variant>1?'shooter':'chaser',170,950);
+      if(level>0)this.spawn(level>4?'shooter':'chaser',930,760);
+      if(level>8)this.spawn('brute',245,820);
+    }
+    emit(type,data={}){this.events.push({type,...data});if(this.events.length>256)this.events.shift();}
+    drain(){return this.events.splice(0);}
+    fx(type,x,y,data={}){this.effects.push({type,x,y,life:data.life||.45,maxLife:data.life||.45,...data});if(this.effects.length>100)this.effects.shift();}
+    spawn(type,x,y){
+      const sector=this.map.sector,boss=type==='boss';
+      const hp=(boss?520+sector*100:type==='brute'?110:type==='shooter'?48:34)*(1+sector*.10);
+      const enemy={id:++this.nextId,type,x,y,r:boss?48:type==='brute'?27:21,hp,maximum:hp,flash:0,stun:0,slow:0,kx:0,ky:0,age:0,cooldown:boss?1.4:1+this.rng(),mode:'hunt',tell:0,aim:0,attack:0,dashHits:new Set()};
+      this.enemies.push(enemy);this.fx('spawn',x,y,{life:.8,r:enemy.r+14});return enemy;
+    }
+    move(body,dx,dy){
+      body.x=clamp(body.x+dx,body.r+32,SIZE-body.r-32);
+      for(const w of this.map.walls)if(circleRect(body,w)){body.x=dx>0?w.x-body.r:dx<0?w.x+w.w+body.r:body.x;}
+      body.y=clamp(body.y+dy,body.r+32,SIZE-body.r-32);
+      for(const w of this.map.walls)if(circleRect(body,w)){body.y=dy>0?w.y-body.r:dy<0?w.y+w.h+body.r:body.y;}
+    }
+    start(){if(!this.started){this.started=true;this.emit('start');}}
+    pulse(){
+      if(this.paused||this.ended||this.choice||this.player.pulseCooldown>0)return false;
+      this.start();const p=this.player;p.pulseCooldown=2.6;this.emit('pulse');this.fx('pulse',p.x,p.y,{life:.55,r:this.stats.radius});
+      this.blast(p.x,p.y,this.stats.radius,66*this.stats.power,'pulse',new Set());
+      this.hostile=this.hostile.filter(b=>distance(p,b)>this.stats.radius);
+      this.shake=.16;return true;
+    }
+    dash(x=this.player.dx,y=this.player.dy){
+      const p=this.player;if(this.paused||this.ended||this.choice||p.dashCooldown>0)return false;
+      this.start();const length=Math.hypot(x,y)||1;p.dx=x/length;p.dy=y/length;p.dash=.19;p.dashCooldown=1.7;p.invincible=Math.max(p.invincible,.34);
+      this.dashId=(this.dashId||0)+1;this.emit('dash');this.fx('dash',p.x,p.y,{life:.28,dx:p.dx,dy:p.dy});return true;
+    }
+    hit(target,damage,origin,kind){
+      if(target.hp<=0)return;const old=target.hp;
+      const vulnerable=target.type==='boss'&&target.mode==='recover';
+      const applied=damage*(vulnerable?1.65:1);target.hp-=applied;target.flash=.13;
+      if(target.type){const d=distance(target,origin)||1,force=kind==='pulse'?255:kind==='chain'?190:kind==='dash'?190:30;
+        target.kx+=(target.x-origin.x)/d*force;target.ky+=(target.y-origin.y)/d*force;
+        if(target.type!=='boss'){target.stun=Math.max(target.stun,kind==='shot'?.035:.22);if(this.stats.freeze)target.slow=2;}}
+      this.fx('hit',target.x,target.y,{life:.18,big:kind!=='shot'});
+      if(kind!=='shot')this.fx('number',target.x,target.y-25,{life:.65,value:Math.round(Math.min(applied,old)),critical:vulnerable});
+      if(target.hp<=0){
+        if(target.type){this.kills++;this.combo=this.comboTime>0?this.combo+1:1;this.comboTime=3.5;this.bestCombo=Math.max(this.bestCombo,this.combo);this.score+=Math.round((target.type==='boss'?1000:target.type==='brute'?75:35)*(1+Math.min(this.combo,10)*.1));
+          this.emit('kill',{boss:target.type==='boss'});this.fx('burst',target.x,target.y,{life:.7,big:target.type==='boss'});
+          if(target.type==='boss'){this.bossDefeated=true;this.shake=.35;}else if(this.kills%7===0)this.pickups.push({x:target.x,y:target.y,r:12,type:'heal',life:18});
+        }else if(String(target.id).startsWith('c')){this.cleared++;this.score+=200;this.player.hp=Math.min(this.player.maxHp,this.player.hp+1);this.emit('core',{count:this.cleared});this.fx('core',target.x,target.y,{life:1.1,r:150});this.shake=.25;
+          if(this.cleared===1&&!this.chosen)this.pendingChoice=true;
+          for(let i=0;i<2+this.map.sector%2;i++){const angle=this.rng()*TAU,x=clamp(this.player.x+Math.cos(angle)*360,90,1030),y=clamp(this.player.y+Math.sin(angle)*360,90,1030);if(!this.map.walls.some(w=>circleRect({x,y,r:28},w)))this.spawn(this.map.level>3&&i===0?'brute':i===1&&this.map.level>1?'shooter':'chaser',x,y);}
+        }
+      }
+    }
+    blast(x,y,radius,damage,kind,seen){
+      const origin={x,y};
+      for(const e of this.enemies)if(e.hp>0&&distance(origin,e)<radius+e.r)this.hit(e,damage,origin,kind);
+      for(const c of this.cores)if(c.hp>0&&distance(origin,c)<radius+c.r)this.hit(c,damage,origin,kind);
+      for(const b of this.barrels)if(b.hp>0&&!seen.has(b.id)&&distance(origin,b)<radius+b.r){seen.add(b.id);b.hp=0;this.score+=25;this.fx('chain',b.x,b.y,{life:.65,r:112+this.stats.chain*18});this.emit('chain');this.blast(b.x,b.y,112+this.stats.chain*18,76*this.stats.power,'chain',seen);}
+    }
+    choose(id){if(!this.choice||!this.choice.includes(id))return false;this.perks.push(id);this.chosen=true;this.choice=null;this.pendingChoice=false;
+      if(id==='power')this.stats.power*=1.4;
+      if(id==='rapid')this.stats.rate*=1.55;
+      if(id==='nova')this.stats.radius+=62;
+      if(id==='chain')this.stats.chain+=1;
+      if(id==='orbit')this.stats.orbit+=1;
+      if(id==='freeze')this.stats.freeze=1;
+      if(id==='shield'){this.player.maxHp+=2;this.player.hp=Math.min(this.player.maxHp,this.player.hp+3);}
+      this.emit('upgrade',{id});return true;
+    }
+    hurt(){const p=this.player;if(p.invincible>0||this.ended)return false;p.hp--;this.damageTaken++;p.invincible=1.0;this.combo=0;this.comboTime=0;this.shake=.24;this.fx('hurt',p.x,p.y,{life:.3});this.emit('hurt');if(p.hp<=0)this.finish(false,'health');return true;}
+    fire(enemy,angle,count=1,spread=0,speed=190){for(let i=0;i<count;i++){const a=angle+(i-(count-1)/2)*spread;this.hostile.push({x:enemy.x,y:enemy.y,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,r:7,life:5});}this.emit('enemyShot');}
+    tick(dt=STEP,input={x:0,y:0}){
+      dt=clamp(dt,0,.05);if(this.paused||this.ended||this.choice)return;
+      this.effects=this.effects.filter(e=>(e.life-=dt)>0);this.shake=Math.max(0,this.shake-dt);this.hitstop=Math.max(0,this.hitstop-dt);
+      const p=this.player;let ix=Number(input.x)||0,iy=Number(input.y)||0;const mag=Math.hypot(ix,iy);if(mag>1){ix/=mag;iy/=mag;}
+      if(mag>.05){this.start();if(p.dash<=0){p.dx=ix/(Math.hypot(ix,iy)||1);p.dy=iy/(Math.hypot(ix,iy)||1);}}
+      if(!this.started)return;
+      this.time+=dt;this.timeLeft-=dt;this.comboTime=Math.max(0,this.comboTime-dt);
+      p.invincible=Math.max(0,p.invincible-dt);p.dashCooldown=Math.max(0,p.dashCooldown-dt);p.pulseCooldown=Math.max(0,p.pulseCooldown-dt);p.shotCooldown-=dt;
+      if(p.dash>0){p.dash-=dt;this.move(p,p.dx*920*dt,p.dy*920*dt);if(Math.floor(this.time*60)%3===0)this.fx('after',p.x,p.y,{life:.22});
+        for(const e of this.enemies)if(e.hp>0&&distance(p,e)<p.r+e.r+10&&!e.dashHits.has(this.dashId)){e.dashHits.add(this.dashId);this.hit(e,42*this.stats.power,p,'dash');}
+      }else{this.move(p,ix*235*dt,iy*235*dt);if(this.trail&&mag>.05&&Math.floor(this.time*60)%5===0)this.fx('after',p.x,p.y,{life:.24});}
+      if(p.shotCooldown<=0){const targets=[...this.enemies.filter(e=>e.hp>0),...this.cores.filter(c=>c.hp>0)],target=targets.filter(e=>distance(p,e)<330&&clearLine(p,e,this.map.walls)).sort((a,b)=>distance(p,a)-distance(p,b))[0];
+        if(target){const a=Math.atan2(target.y-p.y,target.x-p.x);this.shots.push({x:p.x,y:p.y,vx:Math.cos(a)*680,vy:Math.sin(a)*680,r:6,life:.64,damage:20*this.stats.power,pierce:this.stats.chain?1:0,hits:new Set()});p.shotCooldown=.31/this.stats.rate;this.fx('muzzle',p.x,p.y,{life:.08});this.emit('shot');}}
+      this.orbitClock-=dt;
+      if(this.stats.orbit&&this.orbitClock<=0){this.orbitClock=.45;for(const e of this.enemies)if(e.hp>0&&distance(p,e)<108)this.hit(e,22*this.stats.power,p,'orbit');}
+      for(const s of this.shots){s.life-=dt;s.x+=s.vx*dt;s.y+=s.vy*dt;if(this.map.walls.some(w=>circleRect(s,w))){s.life=0;continue;}
+        for(const target of [...this.enemies,...this.cores]){if(s.life<=0||target.hp<=0||s.hits.has(target.id)||distance(s,target)>target.r+s.r)continue;s.hits.add(target.id);this.hit(target,s.damage,s,'shot');if(s.pierce-->0)continue;s.life=0;}
+      }this.shots=this.shots.filter(s=>s.life>0);
+      for(const e of this.enemies){if(e.hp<=0)continue;e.age+=dt;e.flash=Math.max(0,e.flash-dt);e.slow=Math.max(0,e.slow-dt);e.stun=Math.max(0,e.stun-dt);e.cooldown-=dt;this.move(e,e.kx*dt,e.ky*dt);e.kx*=Math.exp(-9*dt);e.ky*=Math.exp(-9*dt);if(e.age<.7||e.stun>0)continue;
+        const d=distance(e,p)||1,angle=Math.atan2(p.y-e.y,p.x-e.x),speed=(e.type==='chaser'?88+this.map.sector*7:52)*(e.slow>0?.52:1);
+        if(e.mode==='tell'){e.tell-=dt;if(e.tell<=0){if(e.type==='brute'||(e.type==='boss'&&e.attack%3===2)){e.mode='charge';e.tell=.52;this.emit('charge');}else{const count=e.type==='boss'?12+this.map.sector:1;for(let i=0;i<count;i++)this.fire(e,e.type==='boss'?e.aim+i*TAU/count:e.aim, e.type==='shooter'&&this.map.sector>=3?3:1,.18,e.type==='boss'?165:190);e.mode='recover';e.tell=e.type==='boss'?1.7:.35;}}}
+        else if(e.mode==='charge'){this.move(e,Math.cos(e.aim)*630*dt,Math.sin(e.aim)*630*dt);e.tell-=dt;if(e.tell<=0){e.mode='recover';e.tell=e.type==='boss'?2.2:.8;}}
+        else if(e.mode==='recover'){e.tell-=dt;if(e.tell<=0){e.mode='hunt';e.cooldown=e.type==='boss'?1.25:1.6;}}
+        else if(e.type==='boss'){if(e.cooldown<=0){e.attack++;e.aim=angle;e.mode='tell';e.tell=e.attack%3===2?.9:.75;this.emit('telegraph',{boss:true});}else if(d>200)this.move(e,Math.cos(angle)*45*dt,Math.sin(angle)*45*dt);}
+        else if((e.type==='shooter'&&d<410)||(e.type==='brute'&&d<380&&e.cooldown<=0)){if(e.cooldown<=0&&clearLine(e,p,this.map.walls)){e.aim=angle;e.mode='tell';e.tell=e.type==='brute'?.75:.65;}else if(e.type==='shooter'&&d<185)this.move(e,-Math.cos(angle)*speed*dt,-Math.sin(angle)*speed*dt);}
+        else{const before={x:e.x,y:e.y};this.move(e,Math.cos(angle)*speed*dt,Math.sin(angle)*speed*dt);if(distance(e,before)<speed*dt*.25)this.move(e,Math.cos(angle+Math.PI/2)*speed*dt,Math.sin(angle+Math.PI/2)*speed*dt);}
+        if(distance(e,p)<e.r+p.r){if(p.dash>0)continue;this.hurt();const dx=(e.x-p.x)/d,dy=(e.y-p.y)/d;e.kx+=dx*100;e.ky+=dy*100;}
+      }
+      for(let i=0;i<this.enemies.length;i++)for(let j=i+1;j<this.enemies.length;j++){const a=this.enemies[i],b=this.enemies[j];if(a.hp<=0||b.hp<=0)continue;const d=distance(a,b)||1,min=a.r+b.r;if(d<min){const push=(min-d)*.3,dx=(a.x-b.x)/d,dy=(a.y-b.y)/d;this.move(a,dx*push,dy*push);this.move(b,-dx*push,-dy*push);}}
+      this.enemies=this.enemies.filter(e=>e.hp>0);
+      for(const b of this.hostile){b.life-=dt;b.x+=b.vx*dt;b.y+=b.vy*dt;if(this.map.walls.some(w=>circleRect(b,w)))b.life=0;if(distance(b,p)<p.r+b.r){this.hurt();b.life=0;}}
+      this.hostile=this.hostile.filter(b=>b.life>0);
+      for(const c of this.cores)c.flash=Math.max(0,c.flash-dt);
+      for(const item of this.pickups){item.life-=dt;if(distance(item,p)<70){const d=distance(item,p)||1;item.x+=(p.x-item.x)/d*360*dt;item.y+=(p.y-item.y)/d*360*dt;}if(distance(item,p)<p.r+12){p.hp=Math.min(p.maxHp,p.hp+1);item.life=0;this.emit('heal');}}
+      this.pickups=this.pickups.filter(item=>item.life>0);
+      if(this.ended)return;
+      this.spawnClock-=dt;
+      if(this.spawnClock<=0&&!this.portal&&this.enemies.length<(this.bossSpawned?6:22)){this.spawnClock=Math.max(2.8,5.2-this.map.sector*.4);const count=this.bossSpawned?1:this.map.level===0?2:3+(this.map.sector>=3?1:0);
+        for(let i=0;i<count;i++){const a=this.rng()*TAU,x=clamp(p.x+Math.cos(a)*410,85,SIZE-85),y=clamp(p.y+Math.sin(a)*410,85,SIZE-85);if(this.map.walls.some(w=>circleRect({x,y,r:28},w)))continue;this.spawn(this.map.level>1&&this.nextId%4===0?'shooter':this.map.level>3&&this.nextId%5===0?'brute':'chaser',x,y);}}
+      if(this.cleared===3){if(this.map.boss&&!this.bossSpawned){this.bossSpawned=true;this.spawn('boss',560,205);this.emit('boss');}if(!this.map.boss||this.bossDefeated){if(!this.portal){this.portal=true;this.emit('portal');}if(distance(p,this.map.exit)<55)this.finish(true);}}
+      if(this.pendingChoice&&!this.ended){this.choice=[...this.map.offers];this.pendingChoice=false;this.emit('choice');}
+      if(this.timeLeft<=0&&!this.ended)this.finish(false,'time');
+    }
+    finish(win,reason='health'){if(this.ended)return;this.ended=true;this.choice=null;const medal=win?(this.damageTaken<=2&&this.time<this.map.limit*.68?3:this.damageTaken<=5?2:1):0;this.result={win,reason,medal,seconds:this.time,score:this.score,kills:this.kills,cores:this.cleared,bestCombo:this.bestCombo};this.emit(win?'win':'lose');}
+    objective(){if(this.portal)return{...this.map.exit,type:'exit'};const boss=this.enemies.find(e=>e.type==='boss');if(boss)return{...boss,type:'boss'};const core=this.cores.filter(c=>c.hp>0).sort((a,b)=>distance(this.player,a)-distance(this.player,b))[0];return core?{...core,type:'core'}:null;}
+    snapshot(){return{level:this.map.level,started:this.started,paused:this.paused,ended:this.ended,time:this.time,timeLeft:this.timeLeft,player:{...this.player},cleared:this.cleared,kills:this.kills,score:this.score,combo:this.combo,bestCombo:this.bestCombo,choice:this.choice,perks:[...this.perks],portal:this.portal,bossSpawned:this.bossSpawned,bossDefeated:this.bossDefeated,objective:this.objective(),result:this.result,enemies:this.enemies.map(({dashHits,...e})=>e),cores:this.cores.map(c=>({...c})),barrels:this.barrels.map(c=>({...c})),walls:this.map.walls};}
+  }
+  root.SpectrumCombat={Combat,plan,STEP,SIZE,circleRect,clearLine};
+})(typeof window==='undefined'?globalThis:window);

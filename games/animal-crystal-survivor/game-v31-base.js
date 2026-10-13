@@ -2058,6 +2058,35 @@
   function installVirtualStageRail() {
     const rail = nodes.stageRail;
     if (rail.dataset.wpStageVirtualDrag === "true") return;
+    if (document.documentElement.dataset.crystalStageI9Preview === "true"
+        && window.WeightPlayStageRailI9?.attachLogical) {
+      const controller = window.WeightPlayStageRailI9.attachLogical(rail, {
+        readPosition: currentStageLogicalPosition,
+        writePosition: positionStageRail,
+        pitch: () => stageRailGeometry().pitch,
+        count: () => STAGE_COUNT,
+        onStart() {
+          cancelAnimationFrame(stageSettleFrame);
+          stageSettleFrame = 0;
+        },
+        onFrame(frame) { stageSettleFrame = frame; },
+        commitIndex(index) {
+          stageBrowseStage = index + 1;
+          syncStageCards();
+        },
+        onSettled(index) {
+          stageSettleFrame = 0;
+          stageBrowseStage = index + 1;
+          positionStageRail(index);
+          syncStageCards();
+          rail.querySelector(`[data-stage="${stageBrowseStage}"]`)?.focus({ preventScroll: true });
+        },
+      });
+      if (controller) {
+        restoreStageRailInteraction = controller.cancel;
+        return;
+      }
+    }
     rail.dataset.wpStageVirtualDrag = "true";
     rail.dataset.wpStageCenterObserver = "manual";
     let pointerId = null, startX = 0, lastX = 0, dragLogical = 0, moved = false, suppressClick = false;
@@ -3761,7 +3790,10 @@
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
     const rtl = document.documentElement.dir === "rtl";
     const current = Number(activeCard.dataset.stage);
-    const nextStage = event.key === "Home" ? 1 : event.key === "End" ? STAGE_COUNT : Math.max(1, Math.min(STAGE_COUNT, current + (event.key === "ArrowRight" ? (rtl ? -1 : 1) : (rtl ? 1 : -1))));
+    const sharedNext = document.documentElement.dataset.crystalStageI9Preview === "true"
+      ? window.WeightPlayStageRailI9?.keyboardIndex(event.key, current, STAGE_COUNT, rtl)
+      : null;
+    const nextStage = sharedNext ?? (event.key === "Home" ? 1 : event.key === "End" ? STAGE_COUNT : Math.max(1, Math.min(STAGE_COUNT, current + (event.key === "ArrowRight" ? (rtl ? -1 : 1) : (rtl ? 1 : -1)))));
     event.preventDefault();
     if (nextStage <= save.unlockedStage) { save.selectedStage = nextStage; persist(); }
     selectStage(nextStage, true, true);

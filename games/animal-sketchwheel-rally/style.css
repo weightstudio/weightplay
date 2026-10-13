@@ -70,3 +70,6 @@ button:focus-visible,canvas:focus-visible{outline:3px solid #fff0b4;outline-offs
 @media(max-height:500px) and (orientation:landscape){.battle-live{grid-template-rows:48px 28px minmax(0,1fr) 90px}}
 
 .result-rux{width:112px;height:84px;border-radius:12px;background:url("../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp") center 48%/cover;box-shadow:0 4px 18px #071f3270}
+
+/* Long challenge and timed-gate labels share the fixed HUD row. */
+.objective-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:8px}.objective-row>*{min-width:0;overflow-wrap:anywhere;line-height:1.15}#nextTerrain{text-align:end}

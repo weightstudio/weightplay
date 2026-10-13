@@ -1,0 +1,23 @@
+html[data-crystal-stage-i9-preview="true"] body.wp-stage-select-active .wp-stage-art-shell {
+  --wp-stage-scrim:
+    radial-gradient(ellipse 62% 54% at 50% 48%, rgb(12 79 119 / 20%), rgb(4 11 25 / 54%)),
+    linear-gradient(180deg, rgb(6 16 32 / 22%), rgb(5 13 28 / 56%)) !important;
+}
+
+html[data-crystal-stage-i9-preview="true"] #stagePage[data-wp-stage-i9-page] {
+  --wp-stage-i9-card-width: 292px !important;
+  --wp-stage-i9-card-height: clamp(324px, 45vh, 372px) !important;
+  --wp-stage-i9-card-art-image: url("/assets/animal-crystal-survivor-otter-cover-v26.webp");
+  --wp-stage-i9-card-radius: 23px;
+  --wp-stage-i9-accent: #9cfaff;
+  --wp-stage-i9-accent-soft: #8ff3f0;
+  --wp-stage-i9-reward: #ffe18c;
+  --wp-stage-i9-reward-soft: #fff4c6;
+  --wp-stage-i9-card-surface:
+    radial-gradient(ellipse at 50% 40%, rgb(17 118 150 / 20%), transparent 55%),
+    linear-gradient(156deg, #173d53 0%, #0a1d31 55%, #071522 100%);
+}
+
+html[data-crystal-stage-i9-preview="true"] body.wp-stage-select-active .wp-stage-art-shell {
+  background-position: center, center !important;
+}

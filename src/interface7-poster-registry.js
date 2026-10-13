@@ -107,7 +107,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "animal-skybridge-rivals": "/assets/interface7-redrawn/animal-skybridge-rivals.webp",
   "animal-skyport-dispatch": "/assets/interface7-redrawn/animal-skyport-dispatch.webp",
   "animal-skyspire-drop": "/assets/interface7-redrawn/animal-skyspire-drop.webp",
-  "animal-spectrum-pulse": "/assets/interface7-redrawn/animal-spectrum-pulse.webp",
+  "animal-spectrum-pulse": "/assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v21",
   "animal-starlight-trails": "/assets/interface7-redrawn/animal-starlight-trails.webp",
   "animal-story-stitch": "/assets/interface7-redrawn/animal-story-stitch.webp",
   "animal-sunbeam-garden": "/assets/interface7-redrawn/animal-sunbeam-garden.webp",
@@ -188,6 +188,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "zoo-helper-day": "/assets/zoo-helper-day/cover-block-v1.png"
 });
 window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
+  "/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp": "/assets/lobby-thumbs/w480/assets__animal-sketchwheel-rally__animal-sketchwheel-rally-cover-v18.webp",
   "/assets/fusekeep/poster.webp": "/assets/lobby-thumbs/w480/assets__fusekeep__poster.webp",
   "/assets/castle-cascade-poster.webp": "/assets/lobby-thumbs/w480/assets__castle-cascade-poster.webp",
   "/assets/animal-dice-bastion/cover-block-v1.png": "/assets/animal-dice-bastion/cover-block-v1.png",
@@ -297,7 +298,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/assets/interface7-redrawn/animal-skybridge-rivals.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-skybridge-rivals.webp",
   "/assets/interface7-redrawn/animal-skyport-dispatch.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-skyport-dispatch.webp",
   "/assets/interface7-redrawn/animal-skyspire-drop.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-skyspire-drop.webp",
-  "/assets/interface7-redrawn/animal-spectrum-pulse.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-spectrum-pulse.webp",
+  "/assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v21": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-spectrum-pulse.webp?v=20261013-spectrum-v21",
   "/assets/interface7-redrawn/animal-starlight-trails.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-starlight-trails.webp",
   "/assets/interface7-redrawn/animal-story-stitch.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-story-stitch.webp",
   "/assets/interface7-redrawn/animal-sunbeam-garden.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-sunbeam-garden.webp",

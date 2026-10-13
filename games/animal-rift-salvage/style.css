@@ -29,6 +29,38 @@ body.wp-stage-select-active #stageSummary{display:none}
 /* Game v9: keep the promised Moon Chain time reward visible without changing
    the Battle Canvas tracks or the shared Interface V6 scale. */
 .chain-badge{min-width:118px}
+.rift-clock{position:absolute;inset-inline-start:12px;top:66px;padding:5px 9px;background:#102d3de8;border:1px solid #65828a;color:#dbefec;border-radius:4px;font-size:12px;font-variant-numeric:tabular-nums;pointer-events:none;box-shadow:0 3px 0 #031321}
+.rift-clock.urgent{color:#ffe1a2;border-color:#f3b466;background:#543926ed}
+.rift-pickup{position:absolute;left:0;top:0;z-index:5;pointer-events:none;color:#e3fff3;font-weight:900;font-size:18px;text-shadow:0 2px 1px #07152d,0 0 9px #5df7d7;will-change:transform,opacity}
+.rift-record{color:#b2dacf;font-variant-numeric:tabular-nums;font-size:13px;padding:8px;background:#102f42;border-inline-start:3px solid #e6bf6b}
+.rift-graphics-error{position:fixed;z-index:200;inset:15%;display:flex;flex-direction:column;justify-content:center;gap:15px;padding:24px;background:#0c2239;border:2px solid #76ead4;border-radius:8px;box-shadow:0 0 0 100vmax #020a18df;text-align:center}
+.rift-graphics-error button{min-height:48px;background:#e9cd86;color:#132536;border:0;font-weight:800}
+
+/* Game-owned foundry surfaces. Shared headers, returns and settings retain ownership. */
+.arena-wrap{border-radius:8px;border-color:#456476;background:#09172a;box-shadow:inset 0 0 0 3px #172e40;transition:border-color .16s,box-shadow .16s}
+.arena-wrap.rift-damaged{border-color:#ff8190;box-shadow:inset 0 0 0 3px #ff819099}
+.salvage-progress,.chain-badge{border-radius:5px;background:#102e3fea;border-color:#426d76;box-shadow:0 3px 0 #020c17}
+.salvage-progress em{border-radius:0;background:linear-gradient(90deg,#2ba798,var(--rift-accent,#68ecd8));box-shadow:none}
+.salvage-progress i{border-radius:2px}
+.chain-badge:after{content:"";display:block;position:absolute;bottom:0;inset-inline-start:0;height:3px;width:var(--chain-charge,0%);background:#efc97a;transition:width .08s linear}
+.control-cue{background:#0b2034df;border:1px solid #395766;border-radius:4px;padding:5px 10px;color:#cbdedc}
+.stage-card{position:relative;isolation:isolate;overflow:hidden;border-radius:8px;border-color:#4d6875;background:linear-gradient(155deg,#304b61,#112537 65%);box-shadow:0 7px 0 #081727,0 15px 30px #0005;transition:border-color .16s,box-shadow .16s,filter .16s}
+.stage-card:before{content:"";position:absolute;z-index:-1;right:-18px;top:12px;width:145px;height:110px;background:repeating-linear-gradient(90deg,transparent 0 22px,#ffffff0a 22px 24px),repeating-linear-gradient(0deg,transparent 0 22px,#ffffff0a 22px 24px);transform:rotate(-18deg);border:12px solid var(--chapter-accent);opacity:.24;box-shadow:0 0 0 9px #040e22,0 0 0 12px var(--chapter-accent)}
+.stage-card:after{content:attr(aria-posinset);position:absolute;right:16px;top:6px;font-size:68px;line-height:1;font-weight:900;color:var(--chapter-accent);opacity:.18;pointer-events:none}
+.stage-card.centered{border-color:var(--chapter-accent);box-shadow:0 0 0 2px #d4efe6,0 7px 0 #173b48,0 14px 30px #0006}
+.stage-card small:first-child{color:var(--chapter-accent);text-transform:uppercase;letter-spacing:.04em}
+.stage-card.locked:not(.centered){filter:saturate(.35) brightness(.65)}
+.observatory-intro,.upgrade,.wake-card{border-radius:7px;border-color:#466876;background:linear-gradient(135deg,#18394a,#0c2335);box-shadow:inset 0 1px #78999433,0 4px #071a2a}
+.upgrade{border-top:3px solid #74d8cc;transition:border-color .16s,background .16s}
+.upgrade[data-upgrade="compression"]{border-top-color:#cfabff}.upgrade[data-upgrade="stability"]{border-top-color:#edc67b}
+.upgrade b{letter-spacing:.25em;font-size:20px}.upgrade:active{background:#245465}
+.dialog-card,.result-card{border-radius:8px;border-color:#77baad;background:linear-gradient(140deg,#15394b,#0b2035);box-shadow:0 8px 0 #041322,0 24px 80px #0009}
+.dialog-card,.result-card,.observatory-panel:not([hidden]){animation:rift-panel-in .2s ease-out}
+.result-stats span{border-radius:4px;border-top:2px solid #628781;background:#163546}
+.result-stats strong{color:#ffe4a4;font-variant-numeric:tabular-nums}
+@keyframes rift-panel-in{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.dialog-card,.result-card,.observatory-panel:not([hidden]){animation:none}.salvage-progress em,.stage-card,.arena-wrap,.chain-badge:after{transition:none}}
+@media(max-height:500px) and (min-aspect-ratio:3/2){.rift-clock{top:auto;bottom:9px;font-size:11px}.control-cue{padding:3px 7px}}
 .chain-badge strong{line-height:1}
 .chain-hint{display:block;max-width:120px;margin-top:2px;color:#c8f8ff;font-size:10px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 

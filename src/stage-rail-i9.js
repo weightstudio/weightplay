@@ -1,0 +1,246 @@
+/* Reusable pointer rail for the optional Stage I9 card system.
+   Games provide logical-position and selection adapters; this module owns
+   pointer capture, tap/drag separation and the shared settle curve. */
+(() => {
+  "use strict";
+  const controllers = new WeakMap();
+
+  function clampIndex(value, count) {
+    return Math.max(0, Math.min(Math.max(0, count - 1), Math.round(value)));
+  }
+
+  function attachLogical(rail, config = {}) {
+    const existing = controllers.get(rail);
+    if (existing) return existing;
+    if (!rail || typeof config.readPosition !== "function"
+        || typeof config.writePosition !== "function"
+        || typeof config.pitch !== "function"
+        || typeof config.count !== "function"
+        || typeof config.commitIndex !== "function") return null;
+
+    rail.dataset.wpStageVirtualDrag = "true";
+    rail.dataset.wpStageCenterObserver = "manual";
+    rail.dataset.wpStageGesture = "i9";
+    const abort = new AbortController();
+    let pointerId = null;
+    let startX = 0;
+    let lastX = 0;
+    let dragPosition = 0;
+    let moved = false;
+    let suppressClick = false;
+    let suppressTimer = 0;
+    let frame = 0;
+    let closed = false;
+
+    function restoreInteraction() {
+      const active = pointerId;
+      pointerId = null;
+      moved = false;
+      if (active !== null && rail.hasPointerCapture?.(active)) {
+        try { rail.releasePointerCapture(active); } catch {}
+      }
+      rail.style.removeProperty("scroll-behavior");
+      rail.style.removeProperty("scroll-snap-type");
+      delete rail.dataset.wpStageSettling;
+      delete rail.dataset.wpDragDown;
+      rail.classList.remove("wp-stage-dragging");
+    }
+
+    function cancelSettle() {
+      if (!frame) return;
+      cancelAnimationFrame(frame);
+      frame = 0;
+      config.onFrame?.(0);
+      delete rail.dataset.wpStageSettling;
+    }
+
+    function dispose() {
+      if (closed) return;
+      closed = true;
+      cancelSettle();
+      restoreInteraction();
+      window.clearTimeout(suppressTimer);
+      abort.abort();
+      controllers.delete(rail);
+    }
+
+    function onDown(event) {
+      if (closed || event.isPrimary === false || (event.button ?? 0) !== 0) return;
+      cancelSettle();
+      if (config.onStart?.(event) === false) return;
+      pointerId = event.pointerId;
+      rail.dataset.wpDragDown = "1";
+      startX = lastX = event.clientX;
+      dragPosition = config.readPosition();
+      moved = false;
+      rail.style.setProperty("scroll-behavior", "auto", "important");
+      rail.style.setProperty("scroll-snap-type", "none", "important");
+      event.stopImmediatePropagation();
+    }
+
+    function onMove(event) {
+      if (event.pointerId !== pointerId) return;
+      const delta = event.clientX - lastX;
+      lastX = event.clientX;
+      if (!moved && Math.abs(event.clientX - startX) > 4) {
+        moved = true;
+        try { rail.setPointerCapture?.(event.pointerId); } catch {}
+        rail.classList.add("wp-stage-dragging");
+        config.onDragStart?.();
+      }
+      if (!moved) return;
+      if (event.cancelable) event.preventDefault();
+      const pitch = Math.max(1, Number(config.pitch()) || 1);
+      dragPosition = config.writePosition(dragPosition - delta / pitch);
+      event.stopImmediatePropagation();
+    }
+
+    function onFinish(event) {
+      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
+      const activePointer = pointerId;
+      const didMove = moved;
+      pointerId = null;
+      if (rail.hasPointerCapture?.(activePointer)) {
+        try { rail.releasePointerCapture(activePointer); } catch {}
+      }
+      if (event.type === "pointercancel") {
+        restoreInteraction();
+        config.onCancel?.();
+        event.stopImmediatePropagation();
+        return;
+      }
+      if (!didMove) {
+        restoreInteraction();
+        event.stopImmediatePropagation();
+        return;
+      }
+
+      if (event.cancelable) event.preventDefault();
+      const index = clampIndex(dragPosition, config.count());
+      config.commitIndex(index);
+      rail.dataset.wpStageSettling = "true";
+      suppressClick = true;
+      window.clearTimeout(suppressTimer);
+      suppressTimer = window.setTimeout(() => { suppressClick = false; }, 0);
+      const from = dragPosition;
+      const startedAt = performance.now();
+      const duration = 280;
+      const settle = (now) => {
+        const progress = Math.max(0, Math.min(1, (now - startedAt) / duration));
+        const eased = progress * progress * (3 - 2 * progress);
+        config.writePosition(from + (index - from) * eased);
+        if (progress < 1) {
+          frame = requestAnimationFrame(settle);
+          config.onFrame?.(frame);
+          return;
+        }
+        frame = 0;
+        config.onFrame?.(0);
+        config.writePosition(index);
+        config.onSettled?.(index);
+        restoreInteraction();
+      };
+      frame = requestAnimationFrame(settle);
+      config.onFrame?.(frame);
+      moved = false;
+      event.stopImmediatePropagation();
+    }
+
+    rail.addEventListener("pointerdown", onDown, { capture: true, signal: abort.signal });
+    document.addEventListener("pointermove", onMove, { capture: true, signal: abort.signal });
+    document.addEventListener("pointerup", onFinish, { capture: true, signal: abort.signal });
+    document.addEventListener("pointercancel", onFinish, { capture: true, signal: abort.signal });
+    rail.addEventListener("click", (event) => {
+      if (!suppressClick) return;
+      suppressClick = false;
+      window.clearTimeout(suppressTimer);
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }, { capture: true, signal: abort.signal });
+    rail.addEventListener("dragstart", (event) => event.preventDefault(), {
+      capture: true, signal: abort.signal,
+    });
+
+    const controller = Object.freeze({ cancel: dispose });
+    controllers.set(rail, controller);
+    return controller;
+  }
+
+  function mountVisual(rail, { artUrl, artPositionForStage } = {}) {
+    if (!rail) return null;
+    document.documentElement.dataset.wpStageI9 = "true";
+    const stagePage = rail.closest("#stagePage") || rail.parentElement;
+    if (stagePage) stagePage.dataset.wpStageI9Page = "true";
+    rail.dataset.wpStageI9 = "true";
+    rail.dataset.wpStageRail = "true";
+    const pageStyle = stagePage ? getComputedStyle(stagePage) : null;
+    const cardWidth = pageStyle?.getPropertyValue("--wp-stage-i9-card-width").trim() || "292px";
+    const cardHeight = pageStyle?.getPropertyValue("--wp-stage-i9-card-height").trim() || "clamp(324px,45vh,372px)";
+    // Existing game selectors often use an ID and outrank shared class rules.
+    // These layout values are therefore applied inline by the reusable adapter.
+    for (const [property, value] of Object.entries({
+      position: "absolute", left: "0px", right: "0px", top: "50%", width: "100%",
+      height: cardHeight, minHeight: cardHeight, maxHeight: cardHeight,
+      margin: "0px", paddingInline: `max(22px,calc((100% - ${cardWidth}) / 2))`,
+      transform: "translateY(-50%)", overflowX: "auto", overflowY: "visible",
+      scrollSnapType: "none", touchAction: "none",
+    })) rail.style.setProperty(property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`), value, "important");
+    if (artUrl) {
+      rail.style.setProperty("--wp-stage-i9-art-image", 'url("' + String(artUrl).replaceAll('"', "%22") + '")');
+    }
+    const decorate = () => {
+      rail.querySelectorAll(":scope > .stage-card").forEach((card) => {
+        let art = card.querySelector(":scope > .wp-stage-i9-card-art");
+        if (!art) {
+          art = document.createElement("span");
+          art.className = "wp-stage-i9-card-art";
+          art.setAttribute("aria-hidden", "true");
+          card.prepend(art);
+        }
+        const stage = Math.max(1, Number(card.dataset.stage) || 1);
+        const positions = [52, 65, 41, 57, 69, 47];
+        const position = typeof artPositionForStage === "function"
+          ? artPositionForStage(stage, card)
+          : "50% " + positions[Math.floor((stage - 1) / 5) % positions.length] + "%";
+        card.style.setProperty("--wp-stage-i9-art-position", String(position));
+        for (const [property, value] of Object.entries({
+          boxSizing: "border-box", position: "relative", display: "block",
+          flex: `0 0 ${cardWidth}`, width: cardWidth, minWidth: cardWidth,
+          maxWidth: cardWidth, height: cardHeight, minHeight: cardHeight,
+          maxHeight: cardHeight, padding: "0px", overflow: "hidden",
+          border: "2px solid rgb(179 222 237 / 56%)", borderRadius: "var(--wp-stage-i9-card-radius,23px)",
+          textAlign: "left", background: "var(--wp-stage-i9-card-surface,linear-gradient(156deg,#173d53,#071522))",
+          color: "#f5fbff", boxShadow: "0 18px 38px rgb(0 5 18 / 54%), inset 0 1px 0 rgb(255 255 255 / 22%)",
+          filter: card.classList.contains("is-selected") ? "saturate(1.08) brightness(1.04)" : "saturate(.72) brightness(.72)",
+          opacity: card.classList.contains("is-selected") ? "1" : ".78",
+          transform: card.classList.contains("is-selected") ? "scale(1)" : "scale(.92) translateY(5px)",
+          transition: "transform 220ms cubic-bezier(.2,.8,.2,1),filter 180ms ease,opacity 180ms ease,box-shadow 220ms ease",
+        })) card.style.setProperty(property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`), value, "important");
+        if (card.classList.contains("is-selected")) {
+          card.style.setProperty("border-color", "var(--wp-stage-i9-accent,#9cfaff)", "important");
+          card.style.setProperty("box-shadow", "0 0 0 2px rgb(156 250 255 / 46%), 0 0 34px rgb(65 222 247 / 44%), 0 22px 42px rgb(0 5 18 / 62%), inset 0 1px 0 rgb(255 255 255 / 42%)", "important");
+        }
+      });
+    };
+    decorate();
+    const observer = new MutationObserver(decorate);
+    observer.observe(rail, { subtree: true, childList: true, attributes: true, attributeFilter: ["data-stage"] });
+    return Object.freeze({ disconnect: () => observer.disconnect() });
+  }
+
+  function keyboardIndex(key, currentStage, stageCount, rtl = false) {
+    const current = Math.max(1, Math.min(stageCount, Number(currentStage) || 1));
+    if (key === "Home") return 1;
+    if (key === "End") return stageCount;
+    if (key === "ArrowRight") return Math.max(1, Math.min(stageCount, current + (rtl ? -1 : 1)));
+    if (key === "ArrowLeft") return Math.max(1, Math.min(stageCount, current + (rtl ? 1 : -1)));
+    return null;
+  }
+
+  window.WeightPlayStageRailI9 = Object.freeze({
+    version: 1,
+    attachLogical,
+    mountVisual,
+    keyboardIndex,
+  });
+})();

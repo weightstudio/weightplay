@@ -1,10 +1,11 @@
 import * as THREE from './vendor/three/three.module.min.js';
-import {wheelOutline} from './rally-core.mjs';
+import {wheelOutline,gateForm} from './rally-core.mjs?v=19';
+import {presets,required} from './rally-data.mjs?v=19';
 
 const palettes=[['#87bdb3','#497967','#bddba4'],['#88b6cc','#47657b','#b7d7e3'],['#a9bf97','#77704e','#cad39b'],['#9f9ac3','#5a557b','#c6b5ed'],['#e4b1a0','#915c63','#efc796'],['#719faf','#38596f','#a3ded1']];
 export class RallyScene {
   constructor(canvas,level,elevation){
-    this.resources=new Set();this.canvas=canvas;this.level=level;this.elevation=elevation;this.wheelKey='';this.disposed=false;
+    this.gates=[];this.resources=new Set();this.canvas=canvas;this.level=level;this.elevation=elevation;this.wheelKey='';this.disposed=false;
     this.reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
     try{
       this.renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'low-power'});
@@ -42,6 +43,17 @@ export class RallyScene {
       for(let x=-4;x<108;x+=5){if(this.level.terrain.some((t,i)=>t==='gap'&&Math.abs(x*10-this.level.positions[i])<45))continue;const y=this.elevation(this.level,x*10)/10;this.block(this.world,x,y+.03,z, .08,.05,3.05,'#d5b66d',.5);this.block(this.world,x,y-2.4,z, .5,3.7,2.2,'#354c50');}
       this.level.terrain.forEach((type,i)=>{const x=this.level.positions[i]/10,y=this.elevation(this.level,this.level.positions[i])/10;
         if(type==='tunnel'){for(const dx of [-3,0,3]){const base=this.elevation(this.level,(x+dx)*10)/10;this.block(this.world,x+dx,base+2,z-1.75,.55,4,.4,'#77668a');this.block(this.world,x+dx,base+2,z+1.75,.55,4,.4,'#77668a');this.block(this.world,x+dx,base+4,z,.6,.5,3.9,'#a995c8');this.block(this.world,x+dx,base+3.65,z,.62,.13,3.2,'#ffd474',.5);}}
+        if(type==='boost'){
+          this.block(this.world,x,y+.07,z,6.8,.12,3.04,'#256f85',.6);
+          for(let j=-2;j<=2;j+=2)for(const side of [-1,1]){const arrow=this.block(this.world,x+j,y+.15,z+side*.4,1.15,.06,.16,'#ffe39a',.5);arrow.rotation.y=side*Math.PI/4;}
+        }
+        if(type==='gate'){
+          const gx=x-3.4,base=this.elevation(this.level,gx*10)/10;
+          for(const side of [-1,1])this.block(this.world,gx,base+2.7,z+side*1.85,.5,5.4,.4,'#535b86',.5);
+          const beam=this.block(this.world,gx,base+5,z,.65,.35,4.1,'#b9a6f2',.5);
+          const sign=this.block(this.world,gx,base+5.7,z,.12,1,.4,'#ffe39a',.6);
+          this.gates.push({index:i,beam,sign,base,player:z>0});
+        }
         if(type==='mud'||type==='ice')this.block(this.world,x,y+.06,z,6.5,.09,3.04,type==='ice'?'#85e7eb':'#5c4634',type==='ice'?.5:0);
         if(type==='wind'){this.block(this.world,x,y+1.8,z-1.8,.25,3.6,.25,'#d5b66d');for(let j=0;j<3;j++)this.block(this.world,x+.65+j*.55,y+3.25-j*.12,z-1.8,.6,.38,.12,'#e5edce');}
         if(type==='gap')for(const dx of [-4,4])this.block(this.world,x+dx,this.elevation(this.level,(x+dx)*10)/10+.12,z,.35,.2,3.05,'#ffd06b',.4);
@@ -106,7 +118,12 @@ export class RallyScene {
   draw(run){
     if(this.disposed)return;const key=JSON.stringify(run.profile);if(key!==this.wheelKey){this.setWheels(this.player,run.profile);this.wheelKey=key;}
     this.updateKart(this.player,run.player,run.profile,run.speed,run.elapsed,run.impact);
-    this.updateKart(this.rival,run.rival,{kind:'circle',width:.62,height:.56},this.level.rival,run.elapsed,0);
+    const rivalIndex=this.level.terrain.findIndex((_,i)=>Math.abs(run.rival-this.level.positions[i])<50),rivalType=this.level.terrain[rivalIndex];
+    const rivalKind=rivalType==='gate'?gateForm(run.elapsed,this.level.positions[rivalIndex]):required[rivalType]||'circle',rivalProfile=presets[rivalKind];
+    if(rivalKind!==this.rivalKind){this.setWheels(this.rival,rivalProfile);this.rivalKind=rivalKind;}
+    this.updateKart(this.rival,run.rival,rivalProfile,this.level.rival,run.elapsed,0);
+    for(const gate of this.gates){const form=gate.player&&run.gateLatch?.index===gate.index?run.gateLatch.form:gateForm(run.elapsed,this.level.positions[gate.index]),tall=form==='tall';gate.beam.position.y=gate.base+(tall?5:3.55);gate.sign.position.y=gate.beam.position.y+.8;gate.sign.scale.set(.12,tall?1:.36,tall?.36:1.1);}
+
     const x=run.player/10+3;this.camera.position.set(x-4,16,22);this.camera.lookAt(x,1.3,0);
     this.sun.position.set(x+6,20,12);this.sun.target.position.set(x,0,0);
     if(run.passed.length!==this.lastPass){this.lastPass=run.passed.length;this.burstAt=run.elapsed;}

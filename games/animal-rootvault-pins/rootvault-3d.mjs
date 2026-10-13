@@ -104,7 +104,7 @@ export class Rootvault3D {
     }
     return g;
   }
-  sync(state, layout, selected, blocked) {
+  sync(state, layout, selected, blocked, selectedRoom) {
     if (this.disposed) return;
     const { width, height, rooms, pins } = layout;
     if (this.width !== width || this.height !== height) {
@@ -121,6 +121,7 @@ export class Rootvault3D {
       this.box(this.world,0x728e48,x,-y+15,-5,5,7,4);
     }
     for (const pin of Object.values(state.pins)) {
+      if(pin.pulled || pin.from !== selectedRoom) continue;
       const a = rooms[pin.from], b = rooms[pin.to], dx = b.x-a.x, dy = -(b.y-a.y), length = Math.hypot(dx,dy);
       const active = pin.id === selected;
       const beam = this.box(this.world, active ? 0x70efd2 : pin.pulled ? 0x43786a : 0x586450,
@@ -129,13 +130,7 @@ export class Rootvault3D {
       const arrow = this.mesh(this.world, 'arrow', active ? 0xffe1a0 : 0x8aa88b,
         a.x+dx*.74, -a.y+dy*.74, 0, 5, 12, 3, true, active);
       arrow.rotation.z = Math.atan2(dy,dx)-Math.PI/2;
-      if (!pin.pulled) {
-        const p = pins[pin.id], locked = pin.lock && !state.unlocked.has(pin.lock);
-        const handleWidth = Math.min(62, (layout.pinWidth || 76)-10);
-        this.box(this.world, locked ? 0x9275b0 : 0xd6a047, p.x, -p.y+8, 18, handleWidth, 5, 5, true, active);
-        const head = this.mesh(this.world, 'ring', locked ? 0xc7a4ec : 0xffd779, p.x-handleWidth/2+4, -p.y+8, 20, 8, 8, 4, true, active);
-        head.rotation.x = .25;
-      }
+
     }
     for (const room of Object.values(state.rooms)) {
       const p = rooms[room.id], g = new T.Group(); g.position.set(p.x,-p.y,0); this.world.add(g);

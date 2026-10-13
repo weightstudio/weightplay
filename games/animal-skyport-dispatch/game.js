@@ -19,6 +19,44 @@
 
   const $ = (id) => document.getElementById(id);
   const GAME_ID = 'animal-skyport-dispatch';
+  const worldModuleURL = new URL('skyport-world.js?v=19', document.currentScript.src).href;
+  let world = null, worldGeneration = 0, worldLoading = false, worldLoadTimer = 0;
+  const worldShouldPause = () => document.hidden || tutorialOpen || !$('leaveConfirm').classList.contains('hidden') || !$('result').classList.contains('hidden');
+  const worldCopy = {
+    en:['Preparing the skyport…','The 3D harbor could not load. Retry to keep playing.'],
+    'zh-Hant':['正在準備天空港…','立體港口載入失敗，請重試繼續遊玩。'], 'zh-Hans':['正在准备天空港…','立体港口加载失败，请重试继续游玩。'],
+    ja:['スカイポートを準備中…','3D港を読み込めません。再試行してください。'], ko:['하늘항 준비 중…','3D 항구를 불러오지 못했습니다. 다시 시도하세요.'],
+    es:['Preparando el puerto…','No se pudo cargar el puerto 3D. Reinténtalo.'], 'pt-BR':['Preparando o porto…','Não foi possível carregar o porto 3D. Tente novamente.'],
+    fr:['Préparation du port…','Le port 3D ne charge pas. Réessayez.'], de:['Himmelshafen wird vorbereitet…','Der 3D-Hafen konnte nicht laden. Erneut versuchen.'],
+    it:['Preparazione del porto…','Impossibile caricare il porto 3D. Riprova.'], ru:['Подготовка порта…','Не удалось загрузить 3D-порт. Повторите попытку.'],
+    hi:['आकाश बंदरगाह तैयार हो रहा है…','3D बंदरगाह लोड नहीं हुआ। फिर से प्रयास करें।'], ar:['جارٍ تجهيز الميناء…','تعذر تحميل الميناء ثلاثي الأبعاد. أعد المحاولة.'],
+  };
+  function worldNotice(failed=false) {
+    let panel=$('worldNotice');
+    if(!panel){panel=document.createElement('div');panel.id='worldNotice';panel.className='world-notice';panel.setAttribute('role','status');$('routeField').append(panel);}
+    panel.replaceChildren(document.createTextNode((worldCopy[activeLocale()]||worldCopy.en)[failed?1:0]));
+    if(failed){const retry=document.createElement('button');retry.className='secondary';retry.textContent=t('retry');retry.onclick=()=>startWorld();panel.append(retry);}
+    panel.hidden=false;
+  }
+  async function startWorld() {
+    const generation=++worldGeneration;
+    clearTimeout(worldLoadTimer);
+    world?.dispose();world=null;worldLoading=true;worldNotice();
+    worldLoadTimer=setTimeout(()=>{if(generation===worldGeneration){worldGeneration++;worldNotice(true);}},10000);
+    try {
+      const {SkyportWorld}=await import(worldModuleURL);
+      if(generation!==worldGeneration||$('battleShell').classList.contains('hidden'))return;
+      world=new SkyportWorld($('routeField'));
+      world.update({kind:state.kind,chapter:state.config?.chapter,gold:Boolean(save.goldFleet)});
+      worldLoading=false;$('worldNotice').hidden=true;
+      world.setPaused(worldShouldPause());
+    } catch(error) {if(generation===worldGeneration){worldLoading=true;worldNotice(true);console.warn('Skyport renderer unavailable',error.message);}}
+    finally {if(generation===worldGeneration)clearTimeout(worldLoadTimer);}
+  }
+  function stopWorld(){clearTimeout(worldLoadTimer);worldGeneration++;world?.dispose();world=null;worldLoading=false;}
+  $('routeField').addEventListener('skyport:context-lost',()=>{worldLoading=true;worldNotice(true);});
+  window.addEventListener('pagehide',stopWorld);
+  window.addEventListener('pageshow',()=>{if(!$('battleShell').classList.contains('hidden')&&!world)startWorld();});
   window.addEventListener('weightplay:castle-reward', (event) => {
     const detail = event.detail || {};
     if (detail.gameId !== GAME_ID || detail.completionId !== 'first-completion' || $('result').classList.contains('hidden')) return;
@@ -35,6 +73,10 @@
   // declarations run before the shared controllers load, so their responsive
   // envelopes supersede the historical numeric desktop maximum.
   const stageScreen = $('stageScreen');
+  // Let the active shared scaler retain its physical control size locally;
+  // an inactive sibling scaler may clear the document-level inherited token.
+  stageScreen?.setAttribute('data-wp-frame-play-fill', '');
+  document.querySelector('.battle-canvas')?.setAttribute('data-wp-frame-play-fill', '');
   stageScreen?.setAttribute('data-wp-canvas-max-width', '920');
   stageScreen?.setAttribute('data-wp-stage-landscape-width', '760');
   stageScreen?.setAttribute('data-wp-stage-landscape-height', '334');
@@ -78,6 +120,21 @@
     ar: { reputation:'السمعة', coins:'عملات السماء', blueprintStamps:'طوابع المخطط', medals:'الأوسمة', safe:'توجيه آمن', errors:'الأخطاء', protected:'تمت حماية مكافأة العقد', retry:'إعادة المحاولة مجانية', total:'المجموع', shiftUnlocked:'تم فتح المناوبة {n}', allShiftsComplete:'اكتملت كل المناوبات' },
   };
   const playSound = (cue) => window.WeightPlayAudio?.play?.(cue);
+  const fleetCopy={
+    en:['Gold fleet','Permanent golden airship paint · 5 Diamonds','Gold equipped','Saving unavailable. No purchase.'],
+    'zh-Hant':['金色船隊','永久金色飛船塗裝 · 5 鑽石','金色已裝備','無法儲存，未購買。'],
+    'zh-Hans':['金色船队','永久金色飞船涂装 · 5 钻石','金色已装备','无法保存，未购买。'],
+    ja:['金色船団','永久の金色塗装 · 5ダイヤ','金色を装備中','保存できません。購入していません。'],
+    ko:['황금 함대','영구 황금 도색 · 다이아 5개','황금 장착됨','저장 불가. 구매하지 않았습니다.'],
+    es:['Flota dorada','Pintura dorada permanente · 5 diamantes','Oro equipado','No se puede guardar. Sin compra.'],
+    'pt-BR':['Frota dourada','Pintura dourada permanente · 5 diamantes','Ouro equipado','Não é possível salvar. Sem compra.'],
+    fr:['Flotte dorée','Peinture dorée permanente · 5 diamants','Or équipé','Sauvegarde indisponible. Aucun achat.'],
+    de:['Goldflotte','Dauerhafte Goldlackierung · 5 Diamanten','Gold aktiv','Speichern nicht möglich. Kein Kauf.'],
+    it:['Flotta dorata','Vernice dorata permanente · 5 diamanti','Oro attivo','Salvataggio non disponibile. Nessun acquisto.'],
+    ru:['Золотой флот','Золотая окраска навсегда · 5 алмазов','Золото активно','Сохранение недоступно. Покупки нет.'],
+    hi:['स्वर्ण बेड़ा','स्थायी सुनहरी रंगाई · 5 हीरे','सुनहरा रंग चालू','सहेजना उपलब्ध नहीं। खरीद नहीं हुई।'],
+    ar:['أسطول ذهبي','طلاء ذهبي دائم · 5 ماسات','الذهبي مفعّل','الحفظ غير متاح. لم يتم الشراء.'],
+  };
   function syncSoundToggle() {
     const toggle = $('soundToggle');
     if (!toggle) return;
@@ -242,6 +299,7 @@
       coins: boundedInteger(source.coins, 0, 0),
       stamps: boundedInteger(source.stamps, 0, 0),
       medals,
+      goldFleet: source.goldFleet === true,
       tutorialComplete: source.tutorialComplete === true || (source.tutorialComplete !== false && (unlocked > 1 || medals[1] > 0)),
       ...(source.insuranceReady === true ? {insuranceReady:true} : {})
     };
@@ -452,8 +510,24 @@
     const storedLocale = readStorage('weightPlayLocale');
     return skyportDynamicText[storedLocale] ? storedLocale : 'en';
   };
+  const leaveCopyByLocale={
+    en:['Leave this shift?','Shift {shift}: {done}/{goal} flights and {errors}/3 errors. This shift progress will be lost; saved rewards stay safe.','Keep playing','Leave shift'],
+    'zh-Hant':['離開這個班次？','班次 {shift}：已完成 {done}/{goal} 架飛船，錯誤 {errors}/3。本班次進度將會失去；已儲存的獎勵會保留。','繼續遊玩','離開班次'],
+    'zh-Hans':['离开这个班次？','班次 {shift}：已完成 {done}/{goal} 艘飞艇，错误 {errors}/3。本班次进度将丢失；已保存的奖励会保留。','继续游玩','离开班次'],
+    ja:['このシフトを終了しますか？','シフト{shift}：{done}/{goal}便、ミス{errors}/3。今回の進行は失われますが、保存済みの報酬は残ります。','プレイを続ける','シフトを終了'],
+    ko:['이 교대를 나갈까요?','교대 {shift}: 비행선 {done}/{goal}대, 오류 {errors}/3. 이번 진행은 사라지지만 저장된 보상은 유지됩니다.','계속 플레이','교대 나가기'],
+    es:['¿Salir de este turno?','Turno {shift}: {done}/{goal} vuelos y {errors}/3 errores. Perderás este progreso; las recompensas guardadas se conservan.','Seguir jugando','Salir del turno'],
+    'pt-BR':['Sair deste turno?','Turno {shift}: {done}/{goal} voos e {errors}/3 erros. O progresso deste turno será perdido; as recompensas salvas ficam.','Continuar jogando','Sair do turno'],
+    fr:['Quitter ce service ?','Service {shift} : {done}/{goal} vols, {errors}/3 erreurs. Cette progression sera perdue ; les récompenses sauvegardées restent.','Continuer à jouer','Quitter le service'],
+    de:['Diese Schicht verlassen?','Schicht {shift}: {done}/{goal} Flüge, {errors}/3 Fehler. Dieser Fortschritt geht verloren; gespeicherte Belohnungen bleiben.','Weiterspielen','Schicht verlassen'],
+    it:['Uscire da questo turno?','Turno {shift}: {done}/{goal} voli, {errors}/3 errori. Perderai questi progressi; le ricompense salvate restano.','Continua a giocare','Esci dal turno'],
+    ru:['Покинуть смену?','Смена {shift}: рейсы {done}/{goal}, ошибки {errors}/3. Прогресс этой смены пропадёт; сохранённые награды останутся.','Продолжить игру','Покинуть смену'],
+    hi:['यह शिफ्ट छोड़ें?','शिफ्ट {shift}: {done}/{goal} उड़ानें, {errors}/3 त्रुटियाँ। इस शिफ्ट की प्रगति मिट जाएगी; सहेजे पुरस्कार बने रहेंगे।','खेलते रहें','शिफ्ट छोड़ें'],
+    ar:['مغادرة هذه المناوبة؟','المناوبة {shift}: الرحلات {done}/{goal} والأخطاء {errors}/3. ستفقد تقدم هذه المناوبة؛ تبقى المكافآت المحفوظة.','متابعة اللعب','مغادرة المناوبة'],
+  };
   const t = (key, values = {}) => {
-    const template = skyportDynamicText[activeLocale()]?.[key] ?? skyportUiText[activeLocale()]?.[key] ?? skyportStageText[activeLocale()]?.[key] ?? strings[locale]?.[key] ?? strings.en?.[key] ?? key;
+    const currentLocale=activeLocale(),leaveKey=['leaveTitle','leaveCopy','keepPlaying','leaveShift'].indexOf(key);
+    const template = (leaveKey<0?undefined:leaveCopyByLocale[currentLocale]?.[leaveKey]) ?? skyportDynamicText[currentLocale]?.[key] ?? skyportUiText[currentLocale]?.[key] ?? skyportStageText[currentLocale]?.[key] ?? strings[currentLocale]?.[key] ?? strings.en?.[key] ?? key;
     return Object.entries(values).reduce((value, [name, replacement]) => String(value).replace(`{${name}}`, replacement), template);
   };
   function ensureTutorialPanel() {
@@ -523,9 +597,11 @@
   normalizeResultActions();
   const persist = () => writeStorage(saveKey, JSON.stringify(save));
   const show = (id) => {
+    if(id==='mainScreen'||id==='stageScreen')stopWorld();
     if (id !== 'stageScreen') cancelStageMotion();
     ['mainScreen','stageScreen','battleShell','result'].forEach((screen) => $(screen).classList.toggle('hidden', screen !== id && !(id === 'result' && screen === 'battleShell')));
     const resultOpen = id === 'result';
+    if(resultOpen)world?.setPaused(true);
     $('battleLive').inert = resultOpen || tutorialOpen;
     $('battleLive').setAttribute('aria-hidden', resultOpen || tutorialOpen ? 'true' : 'false');
     $('mainHeader').classList.toggle('hidden', id !== 'mainScreen');
@@ -606,6 +682,7 @@
       $('battleLive').setAttribute('aria-hidden', 'false');
       save.tutorialComplete = true;
       persist();
+      world?.setPaused(document.hidden);
       $('flight').focus({preventScroll:true});
     }, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 180);
   }
@@ -642,11 +719,17 @@
     const balance = window.WeightPlayWallet?.read?.().diamonds || 0;
     $('contractToggle').checked = Boolean(state.contract);
     $('contractToggle').disabled = insuranceActive;
-    $('contractText').textContent = message || (insurancePending ? t('insuranceDecision', {before:balance, after:Math.max(0,balance-5)}) : state.contract ? t('contractDescription') : t('insuranceSelect'));
-    $('insuranceBtn').textContent = insuranceActive ? t('insuranceActive') : insurancePending ? t('insuranceConfirm', {before:balance, after:Math.max(0,balance-5)}) : t('insurance');
-    $('insuranceBtn').disabled = insuranceActive || !state.contract;
+    const fleet=fleetCopy[activeLocale()]||fleetCopy.en;
+    $('contractText').textContent = message || t('contractDescription');
+    const button=$('insuranceBtn');
+    const label=save.goldFleet ? fleet[2] : insurancePending ? t('insuranceConfirm', {before:balance, after:Math.max(0,balance-5)}) : `${fleet[0]} · 5`;
+    const preview=document.createElement('img');preview.src='/assets/animal-skyport-dispatch/gold-fleet-v19.webp';preview.alt='';preview.width=40;preview.height=32;
+    const title=document.createElement('strong');title.textContent=label;
+    const detail=document.createElement('small');detail.textContent=save.goldFleet?fleet[1]:`${fleet[1]} · ${balance}/5`;
+    button.replaceChildren(preview,title,detail);
+    $('insuranceBtn').disabled = Boolean(save.goldFleet);
     $('insuranceBtn').classList.toggle('is-confirming', insurancePending);
-    $('insuranceBtn').setAttribute('aria-label', insurancePending ? t('insuranceConfirmLabel', {before:balance, after:Math.max(0,balance-5)}) : t('insuranceLabel', {balance}));
+    $('insuranceBtn').setAttribute('aria-label', `${fleet[1]} ${balance}/5. ${label}`);
   }
   function renderStagesLegacy() {
     if ($('stageScreen').classList.contains('hidden')) return;
@@ -933,18 +1016,18 @@
       if(leg===blockedLeg){
         const a=nodes[leg],b=nodes[leg+1],dx=b.x-a.x,dy=b.y-a.y,length=Math.max(.001,Math.hypot(dx,dy)),nx=-dy/length,ny=dx/length,mid={x:a.x+dx*.70,y:a.y+dy*.70},half=Math.min(.115,Math.max(.065,length*.22)),barrier={a:{x:mid.x-nx*half,y:mid.y-ny*half},b:{x:mid.x+nx*half,y:mid.y+ny*half},leg,order:1};
         const blockedA=metric(barrier.a),blockedB=metric(barrier.b),clearOfEarlier=safeRoute.slice(1).every((point,index)=>segmentGap(metric(safeRoute[index]),metric(point),blockedA,blockedB)>.035),candidates=[];for(const distance of [half+.12,half+.19,half+.26])for(const side of [1,-1])candidates.push({x:Math.max(.06,Math.min(.94,mid.x+nx*side*distance)),y:Math.max(.07,Math.min(.93,mid.y+ny*side*distance))});
-        const clear=detour=>{const trial=[...safeRoute,detour,b].map(metric);for(let index=1;index<trial.length;index++)if(segmentGap(trial[index-1],trial[index],blockedA,blockedB)<.025)return false;for(let index=1;index<trial.length;index++)for(let prior=1;prior<index-2;prior++)if(segmentsIntersect(trial[prior-1],trial[prior],trial[index-1],trial[index]))return false;return true},detour=candidates.find(clear);if(clearOfEarlier&&detour){barrier.detour=detour;barriers.push(barrier);safeRoute.push(detour)}
+        const clear=detour=>{const trial=[...safeRoute,detour,b].map(metric);for(let index=1;index<trial.length;index++)if(segmentGap(trial[index-1],trial[index],blockedA,blockedB)<.025)return false;for(let index=1;index<trial.length;index++)for(let prior=1;prior<index-1;prior++)if(segmentsIntersect(trial[prior-1],trial[prior],trial[index-1],trial[index]))return false;return true},detour=candidates.find(clear);if(clearOfEarlier&&detour){barrier.detour=detour;barriers.push(barrier);safeRoute.push(detour)}
       }
       safeRoute.push(nodes[leg+1])
     }
     const candidates=interiorBarriers.slice((config.layout+state.flightIndex)%interiorBarriers.length).concat(interiorBarriers,borderBarriers),clearance=.045;for(const [a,b] of candidates){if(barriers.length>=config.barriers)break;const candidate={a:{x:a[0],y:a[1]},b:{x:b[0],y:b[1]},order:barriers.length+1},ca=metric(candidate.a),cb=metric(candidate.b),clearRoute=safeRoute.slice(1).every((point,index)=>segmentGap(metric(safeRoute[index]),metric(point),ca,cb)>clearance),clearNodes=nodes.every(point=>segmentDistance(metric(point),ca,cb)>clearance);if(clearRoute&&clearNodes)barriers.push(candidate)}
     return{barriers,beacons,safeRoute}
   }
-  function renderRouteChallenges(){const container=$('routeChallenges'),beacons=state.beacons||[],barriers=state.barriers||[];container.innerHTML='';container.setAttribute('role','group');container.setAttribute('aria-label',`${t('routeRule')} ${t('nodeProgress',{done:0,goal:beacons.length})}`);for(const barrier of barriers){const node=document.createElement('span'),dx=barrier.b.x-barrier.a.x,dy=barrier.b.y-barrier.a.y;node.className='route-barrier';node.setAttribute('role','img');node.setAttribute('aria-label',t('routeRuleBlocked'));node.style.left=`${barrier.a.x*100}%`;node.style.top=`${barrier.a.y*100}%`;node.style.width=`${Math.hypot(dx,dy)*100}%`;node.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;container.append(node)}for(const beacon of beacons){const node=document.createElement('span');node.className='route-beacon';node.setAttribute('role','img');node.setAttribute('aria-label',`${beacon.order}. ${t('nodeProgress',{done:beacon.order,goal:beacons.length})}`);node.setAttribute('aria-current',beacon.order===1?'step':'false');node.dataset.order=`(${beacon.order})`;node.style.left=`${beacon.x*100}%`;node.style.top=`${beacon.y*100}%`;container.append(node)}}
-  function renderRouteTrace(){const svg=$('routeTrace'),field=$('routeField'),progress=routeProgress(routePoints),beacons=state.beacons||[];svg.setAttribute('viewBox',`0 0 ${field.clientWidth} ${field.clientHeight}`);$('routeTracePath').setAttribute('points',routePoints.map(point=>`${point.x},${point.y}`).join(' '));svg.classList.toggle('invalid',progress.barrier||progress.selfCross);state.routePassed=progress.beacons;$('resourceText').textContent=t('nodeProgress',{done:progress.beacons,goal:beacons.length});document.querySelectorAll('.route-beacon').forEach((node,index)=>{const passed=index<progress.beacons;node.classList.toggle('passed',passed);node.setAttribute('aria-current',index===progress.beacons?'step':'false')})}
+  function renderRouteChallenges(){const container=$('routeChallenges'),beacons=state.beacons||[],barriers=state.barriers||[];container.innerHTML='';container.setAttribute('role','group');container.setAttribute('aria-label',`${t('routeRule')} ${t('nodeProgress',{done:0,goal:beacons.length})}`);for(const barrier of barriers){const node=document.createElement('span'),dx=(barrier.b.x-barrier.a.x)*$('routeField').clientWidth,dy=(barrier.b.y-barrier.a.y)*$('routeField').clientHeight;node.className='route-barrier';node.setAttribute('role','img');node.setAttribute('aria-label',t('routeRuleBlocked'));node.style.left=`${barrier.a.x*100}%`;node.style.top=`${barrier.a.y*100}%`;node.style.width=`${Math.hypot(dx,dy)}px`;node.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;container.append(node)}for(const beacon of beacons){const node=document.createElement('span');node.className='route-beacon';node.setAttribute('role','img');node.setAttribute('aria-label',`${beacon.order}. ${t('nodeProgress',{done:beacon.order,goal:beacons.length})}`);node.setAttribute('aria-current',beacon.order===1?'step':'false');node.dataset.order=`(${beacon.order})`;node.style.left=`${beacon.x*100}%`;node.style.top=`${beacon.y*100}%`;container.append(node)}}
+  function renderRouteTrace(){const svg=$('routeTrace'),field=$('routeField'),progress=routeProgress(routePoints),beacons=state.beacons||[];svg.setAttribute('viewBox',`0 0 ${field.clientWidth} ${field.clientHeight}`);$('routeTracePath').setAttribute('points',routePoints.map(point=>`${point.x},${point.y}`).join(' '));svg.classList.toggle('invalid',progress.barrier||progress.selfCross);if(progress.beacons>(state.routePassed||0))playSound("ui.tick");state.routePassed=progress.beacons;$('resourceText').textContent=t('nodeProgress',{done:progress.beacons,goal:beacons.length});document.querySelectorAll('.route-beacon').forEach((node,index)=>{const passed=index<progress.beacons;node.classList.toggle('passed',passed);node.setAttribute('aria-current',index===progress.beacons?'step':'false')})}
   function segmentDistance(point,a,b){const dx=b.x-a.x,dy=b.y-a.y,length=dx*dx+dy*dy;if(!length)return Math.hypot(point.x-a.x,point.y-a.y);const t=Math.max(0,Math.min(1,((point.x-a.x)*dx+(point.y-a.y)*dy)/length)),x=a.x+t*dx,y=a.y+t*dy;return Math.hypot(point.x-x,point.y-y)}
   function segmentsIntersect(a,b,c,d){const cross=(p,q,r)=>(q.x-p.x)*(r.y-p.y)-(q.y-p.y)*(r.x-p.x),abC=cross(a,b,c),abD=cross(a,b,d),cdA=cross(c,d,a),cdB=cross(c,d,b),epsilon=.00001;return Math.abs(abC)<epsilon&&segmentDistance(c,a,b)<epsilon||Math.abs(abD)<epsilon&&segmentDistance(d,a,b)<epsilon||Math.abs(cdA)<epsilon&&segmentDistance(a,c,d)<epsilon||Math.abs(cdB)<epsilon&&segmentDistance(b,c,d)<epsilon||(abC>0)!==(abD>0)&&(cdA>0)!==(cdB>0)}
-  function routeProgress(points){const field=$('routeField'),width=field.clientWidth,height=field.clientHeight,scale=Math.min(width,height);let beaconIndex=0,barrier=false,selfCross=false;for(let index=1;index<points.length;index++){const a=points[index-1],b=points[index];for(const blocked of state.barriers||[]){const c={x:blocked.a.x*width,y:blocked.a.y*height},d={x:blocked.b.x*width,y:blocked.b.y*height};if(segmentGap(a,b,c,d)<Math.max(7,scale*.018))barrier=true}while(state.beacons?.[beaconIndex]){const beacon=state.beacons[beaconIndex],point={x:beacon.x*width,y:beacon.y*height};if(segmentDistance(point,a,b)<Math.min(width,height)*.07)beaconIndex++;else break}for(let prior=1;prior<index-2;prior++)if(segmentsIntersect(points[prior-1],points[prior],a,b)){selfCross=true;break}}return{barrier,selfCross,beacons:beaconIndex,valid:!barrier&&!selfCross&&beaconIndex===(state.beacons?.length||0)}}
+  function routeProgress(points){const field=$('routeField'),width=field.clientWidth,height=field.clientHeight,scale=Math.min(width,height);let beaconIndex=0,barrier=false,selfCross=false;for(let index=1;index<points.length;index++){const a=points[index-1],b=points[index];for(const blocked of state.barriers||[]){const c={x:blocked.a.x*width,y:blocked.a.y*height},d={x:blocked.b.x*width,y:blocked.b.y*height};if(segmentGap(a,b,c,d)<Math.max(7,scale*.018))barrier=true}while(state.beacons?.[beaconIndex]){const beacon=state.beacons[beaconIndex],point={x:beacon.x*width,y:beacon.y*height};if(segmentDistance(point,a,b)<Math.min(width,height)*.07)beaconIndex++;else break}for(let prior=1;prior<index-1;prior++)if(segmentsIntersect(points[prior-1],points[prior],a,b)){selfCross=true;break}}return{barrier,selfCross,beacons:beaconIndex,valid:!barrier&&!selfCross&&beaconIndex===(state.beacons?.length||0)}}
   function repairSafeRoute(){const field=$('routeField'),space=routeFieldSpace(),flight=routeFieldCenter($('flight'),space),start=flight?{x:flight.x/field.clientWidth,y:flight.y/field.clientHeight}:{x:.5,y:.5},target=routeTargetPoint(),base=[start,...(state.beacons||[]).map(point=>({x:point.x,y:point.y}))],toPixels=route=>route.map(point=>({x:point.x*field.clientWidth,y:point.y*field.clientHeight})),valid=route=>routeProgress(toPixels(route)).valid,preferred=state.barriers?.[0]?.detour?[state.barriers[0].detour]:[],direct=[...base,...preferred,target];if(valid(direct)){state.safeRoute=direct;return true}const edge=[];for(const value of [.10,.20,.30,.40,.50,.60,.70,.80,.90])edge.push({x:.055,y:value},{x:.945,y:value},{x:value,y:.065},{x:value,y:.935});for(const point of edge){const route=[...base,point,target];if(valid(route)){state.safeRoute=route;return true}}for(const first of edge)for(const second of edge){const route=[...base,first,second,target];if(valid(route)){state.safeRoute=route;return true}}const grid=[];for(const x of [.08,.22,.36,.50,.64,.78,.92])for(const y of [.08,.22,.36,.50,.64,.78,.92])grid.push({x,y});for(const first of grid)for(const second of grid){const route=[...base,first,second,target];if(valid(route)){state.safeRoute=route;return true}}state.safeRoute=[...base,target];return false}
   function renderGuidanceLine() {
     const space = routeFieldSpace();
@@ -969,11 +1052,12 @@
     state = {shift, config, done:0, errors:0, goal:config.goal, flightIndex:0, matched:0, selected:false, routePassed:0, contract:Boolean(state.contract)};
     setBattleHelp(false);
     show('battleShell');
-    playSound("ui.click");
+    playSound("game.start");
     nextFlight();
     renderHud();
     focusCurrentBattleAction();
     openFirstPlayTutorial();
+    startWorld();
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
@@ -990,11 +1074,12 @@
     repairSafeRoute();
     state.selected = false;
     setDockKeyboardMode(false);
-    $('flight').style.backgroundImage = `url('../../assets/animal-skyport-dispatch-airship-${kind}.webp')`;
+    $('flight').style.backgroundImage = 'none';
+    world?.update({kind,chapter:state.config.chapter,gold:Boolean(save.goldFleet)});
     $('weatherZone').classList.add('hidden');
     // The task card is the durable instruction. Keep the floating layer empty
     // until an actual success or error needs immediate feedback.
-    $('feedback').textContent = '';
+    if(!state.done)$('feedback').textContent = '';
     $('routeLine').style.opacity = '0';
     $('routeLine').classList.remove('is-guidance');
     routePoints=[];
@@ -1008,6 +1093,7 @@
     show('result');
     window.ShowResultGet?.(GAME_ID, false);
     if (win) playSound("result.win");
+    else playSound("result.lose");
     $('resultTitle').textContent = win ? t('win') : t('lose');
     $('resultCopy').textContent = win ? t('winCopy') : (state.lastError || t('loseCopy'));
     const activeLocale = window.WonderI18n?.actualLocale?.() || readStorage('weightPlayLocale') || document.documentElement.lang || 'en';
@@ -1016,7 +1102,7 @@
     const coinReward = shiftConfig[state.shift].coin + (state.contract && state.errors === 0 ? 20 : 0);
     const unlockEvidence = state.shift < TOTAL_SHIFTS ? resultLabels.shiftUnlocked.replace('{n}', state.shift + 1) : resultLabels.allShiftsComplete;
     $('resultRewards').innerHTML = win
-      ? `<span>${resultLabels.reputation} +${state.done * 5} · ${totalLabel(save.reputation)}</span><span>${resultLabels.coins} +${coinReward} · ${totalLabel(save.coins)}</span><span>${resultLabels.blueprintStamps} +${shiftConfig[state.shift].stamps} · ${totalLabel(save.stamps)}</span><span>${resultLabels.medals} ${save.medals[state.shift] || 1}/3</span><span>${unlockEvidence}</span>`
+      ? `<span>${resultLabels.reputation} +${state.done * 5} · ${totalLabel(save.reputation)}</span><span><img src="/assets/wonder-prop-coin-block-v1.png" alt="" width="30" height="30">${resultLabels.coins} +${coinReward} · ${totalLabel(save.coins)}</span><span>${resultLabels.blueprintStamps} +${shiftConfig[state.shift].stamps} · ${totalLabel(save.stamps)}</span><span>${resultLabels.medals} ${save.medals[state.shift] || 1}/3</span><span>${unlockEvidence}</span>`
       : `<span>${resultLabels.safe} ${state.done}/${state.goal}</span><span>${resultLabels.errors} ${state.errors}/3</span><span>${insuredRun ? `${resultLabels.protected} +20 · ${totalLabel(save.coins)}` : resultLabels.retry}</span>`;
     const terminalWin = win && state.shift >= TOTAL_SHIFTS;
     resultActionClaimed = false;
@@ -1070,12 +1156,14 @@
     }
   }
   function closeLeaveConfirm({restoreFocus=true} = {}) {
+    world?.setPaused(document.hidden||tutorialOpen);
     (__wpNotifyMeasurement(), $('leaveConfirm').classList.add('hidden'));
     $('battleLive').inert = false;
     $('battleLive').setAttribute('aria-hidden', 'false');
     if (restoreFocus) requestAnimationFrame(() => $('flight').focus({preventScroll:true}));
   }
   function openLeaveConfirm() {
+    world?.setPaused(true);
     cancelRouteGesture({restoreGuidance:false});
     state.selected = false;
     setDockKeyboardMode(false);
@@ -1111,15 +1199,19 @@
     }
   }
   function battleDecisionOpen() {
-    return tutorialOpen || !$('leaveConfirm').classList.contains('hidden') || !$('result').classList.contains('hidden');
+    return worldLoading || tutorialOpen || !$('leaveConfirm').classList.contains('hidden') || !$('result').classList.contains('hidden');
   }
   function finish(ok, chosenDock = ok ? state.dock : '') {
     if (battleDecisionOpen()) return;
     const primary = chosenDock === state.dock;
     if (primary && !state.routeViolation) {
+      const acceptedRoute=routePoints.length>1?routePoints:state.safeRoute.map(p=>({x:p.x*$('routeField').clientWidth,y:p.y*$('routeField').clientHeight}));
+      world?.dispatch(acceptedRoute);
       state.done += 1;
       state.matched += 1;
       $('feedback').textContent = t('dockMatched');
+      $('feedback').dataset.tone='success';
+      $('feedback').animate([{opacity:.35},{opacity:1}],{duration:220});
       if (state.done >= state.goal) {
         renderHud();
         const config = shiftConfig[state.shift];
@@ -1135,14 +1227,17 @@
         result(true);
         return;
       }
-      playSound("result.win");
+      playSound("feedback.success");
       nextFlight();
     } else {
-      playSound("result.lose");
+      playSound("feedback.error");
+      world?.reject();
       state.errors += 1;
       state.lastError = state.routeViolation==='barrier'?t('routeStorm'):state.routeViolation==='self'?t('routeSelf'):state.routeViolation==='beacon'?t('routeBeacon'):t('wrongDock');
       state.routeViolation='';
       $('feedback').textContent = state.lastError;
+      $('feedback').dataset.tone='error';
+      $('feedback').animate([{opacity:.35},{opacity:1}],{duration:220});
       if (state.errors >= 3) { if (insuranceActive && state.contract) { save.coins = (save.coins || 0) + 20; persist(); } result(false); }
     }
     renderHud();
@@ -1312,7 +1407,7 @@
     if (event.repeat && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();
   });
   $('insuranceBtn').onclick = () => {
-    if (insuranceActive || !state.contract) return;
+    if (save.goldFleet) return;
     const balance = window.WeightPlayWallet?.read?.().diamonds || 0;
     if (balance < 5) { clearInsuranceConfirmation(); renderContractControls(t('insuranceNeed', {balance})); return; }
     if (!insurancePending) {
@@ -1322,11 +1417,21 @@
       return;
     }
     clearInsuranceConfirmation();
-    if (!window.WeightPlayWallet?.spendDiamonds?.(5)) { renderContractControls(t('insuranceNeed', {balance:window.WeightPlayWallet?.read?.().diamonds || 0})); return; }
-    insuranceActive = true;
-    state.contract = true;
-    save.insuranceReady = true;
-    persist();
+    // Refuse before charging when saves are unavailable; compensate a failed
+    // ownership write through the same shared wallet, never private currency.
+    if(!persist()){renderContractControls((fleetCopy[activeLocale()]||fleetCopy.en)[3]);return;}
+    let charged=false;
+    try {
+      charged=Boolean(window.WeightPlayWallet?.spendDiamonds?.(5));
+      if(!charged){renderContractControls(t('insuranceNeed', {balance:window.WeightPlayWallet?.read?.().diamonds || 0}));return;}
+      save.goldFleet=true;
+      if(!persist())throw new Error('SAVE_UNAVAILABLE');
+      playSound('shop.purchase');
+    } catch {
+      save.goldFleet=false;
+      if(charged)window.WeightPlayWallet?.addDiamonds?.(5);
+      renderContractControls((fleetCopy[activeLocale()]||fleetCopy.en)[3]);return;
+    }
     renderContractControls();
     requestAnimationFrame(() => {
       (document.querySelector(`.stage-card[data-shift="${state.shift}"]`) || document.querySelector('.stage-card[aria-disabled="false"]'))?.focus({preventScroll:true});
@@ -1393,15 +1498,18 @@
   window.addEventListener('mouseup', routePointer);
   $('flight').addEventListener('lostpointercapture', (event) => { if (dragging && event.pointerId === routePointerId) cancelRouteGesture({announce:true}); });
   window.addEventListener('blur', () => {
+    world?.setPaused(true);
     windowFocused = false;
     if (dragging) cancelRouteGesture({announce:true});
     suspendInsuranceConfirmation();
   });
   window.addEventListener('focus', () => {
+    world?.setPaused(worldShouldPause());
     windowFocused = true;
     resumeInsuranceConfirmation();
   });
   document.addEventListener('visibilitychange', () => {
+    world?.setPaused(worldShouldPause());
     if (document.hidden) {
       if (dragging) cancelRouteGesture({announce:true});
       suspendInsuranceConfirmation();
@@ -1429,6 +1537,7 @@
         state.routeViolation = '';
         finish(true, state.dock);
       },
+      worldStats(){return world?.stats()||{disposed:true};},
       snapshot() {
         return {
           shift: state.shift,
@@ -1449,6 +1558,12 @@
       auditSafeRoute(){const field=$("routeField"),points=(state.safeRoute||[]).map(point=>({x:point.x*field.clientWidth,y:point.y*field.clientHeight}));return routeProgress(points)},
     };
   }
+  const routeResize = new ResizeObserver(() => {
+    if (!$('battleShell').classList.contains('hidden') && state.kind) {
+      cancelRouteGesture({restoreGuidance:false}); renderRouteChallenges(); repairSafeRoute(); renderGuidanceLine();
+    }
+  });
+  routeResize.observe($('routeField'));
   installVirtualStageDrag();
   localize();
 })();

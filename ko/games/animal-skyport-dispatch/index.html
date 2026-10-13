@@ -9,7 +9,7 @@
 
     <script src="../../../src/game-layout-config.js?v=20260919-banner1"></script>
 
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Animal Skyport Dispatch","url":"https://weightplay.com/ko/games/animal-skyport-dispatch/","image":"https://weightplay.com/assets/animal-skyport-dispatch-cover.webp","genre":["퍼즐","전략","동물","Browser Game"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"ko","isAccessibleForFree":true,"description":"Cloudline Skyport에서 30개의 경로 퍼즐 교대를 진행하세요. 비행선에서 출발해 번호가 붙은 노드를 순서대로 지나 지정된 도크에 도착하는 경로를 그립니다.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"audience":{"@type":"PeopleAudience","audienceType":"General players"},"alternateName":"Skyport Dispatch"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Animal Skyport Dispatch","url":"https://weightplay.com/ko/games/animal-skyport-dispatch/","image":"https://weightplay.com/assets/interface7-redrawn/animal-skyport-dispatch.webp","genre":["퍼즐","전략","동물","Browser Game"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"ko","isAccessibleForFree":true,"description":"Cloudline Skyport에서 30개의 경로 퍼즐 교대를 진행하세요. 비행선에서 출발해 번호가 붙은 노드를 순서대로 지나 지정된 도크에 도착하는 경로를 그립니다.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"audience":{"@type":"PeopleAudience","audienceType":"General players"},"alternateName":"Skyport Dispatch"}</script>
     <link rel="canonical" href="https://weightplay.com/ko/games/animal-skyport-dispatch/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-skyport-dispatch/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-skyport-dispatch/" />
@@ -35,7 +35,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-    <link rel="stylesheet" href="style.css?v=20260821-short-landscape-main-v7" />
+    <link rel="stylesheet" href="style.css?v=20261013-v19-block-harbor" />
     <link rel="stylesheet" href="main-flow.css" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4"><meta name="description" content="Cloudline Skyport에서 30개의 경로 퍼즐 교대를 진행하세요. 비행선에서 출발해 번호가 붙은 노드를 순서대로 지나 지정된 도크에 도착하는 경로를 그립니다." />
     <meta property="og:site_name" content="WeightPlay" />
@@ -60,7 +60,7 @@
         <label class="locale"><span data-i18n="language">Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
       <section id="mainScreen" class="main-screen">
-        <img class="cover" src="../../assets/animal-skyport-dispatch-cover.webp" alt="Animal Skyport Dispatch 게임 이미지" />
+        <img class="cover" src="../../assets/interface7-redrawn/animal-skyport-dispatch.webp" alt="Animal Skyport Dispatch 게임 이미지" />
         <h2 data-i18n="headline">Keep Cloudline Skyport moving.</h2>
         <p class="main-summary wp-standard-main-summary" data-i18n="intro">Draw safe routes and match airships to docks.</p>
         <p id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite">Best shift: 1</p>
@@ -86,7 +86,7 @@
     </div>
   </section>
       </section>
-      <section id="stageScreen" class="stage-screen hidden" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-skyport-dispatch-cover.webp" style="--wp-stage-art:url('../../assets/animal-skyport-dispatch-cover.webp')">
+      <section id="stageScreen" class="stage-screen hidden" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/interface7-redrawn/animal-skyport-dispatch.webp" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-skyport-dispatch.webp')">
         <button id="stageBack" class="return" data-wp-return="stage" aria-label="뒤로">&larr;</button>
         <div class="stage-copy" data-runtime-localize="off"><strong data-i18n="chooseShift">Choose a shift</strong><span id="bestText"></span></div>
         <div class="contract-row" data-runtime-localize="off"><label class="contract-choice"><input id="contractToggle" type="checkbox" /><span id="contractText">Priority contract: finish with no errors for bonus sky coins.</span></label><button id="insuranceBtn" class="secondary insurance-btn" type="button">Insure 5 diamonds</button></div>
@@ -99,12 +99,12 @@
           <header class="battle-hud"><button id="battleBack" class="return" data-wp-return="battle" aria-label="뒤로">&larr;</button><div class="battle-hud-info"><strong id="shiftText"></strong><span id="scoreText"></span></div><button id="battleHelp" class="utility-button battle-utility" type="button" data-wp-battle-utility aria-label="How to dispatch" title="How to dispatch" aria-expanded="false" aria-controls="battleHelpPopover">?</button></header>
           <div class="objective" data-runtime-localize="off"><span id="objectiveText"></span><span id="resourceText" role="status" aria-live="polite"></span><strong id="flightTask" aria-live="polite"><span class="task-destination"></span><span class="task-steps"></span></strong></div>
           <div id="routeField" data-runtime-localize="off" class="route-field">
-            <img class="skyport-bg" src="../../assets/animal-skyport-dispatch-skyport-bg.webp" alt="" />
+
             <img id="weatherZone" class="weather-zone hidden" alt="" />
             <div id="flight" class="flight" role="button" tabindex="0" data-wp-primary-action aria-describedby="flightTask feedback flightHint"></div>
-            <div class="dock cargo" data-dock="cargo" role="button" tabindex="-1"><img src="../../assets/animal-skyport-dispatch-dock-cargo.webp" alt="" /><span class="dock-target-badge" aria-hidden="true"></span><span class="dock-label"></span></div>
-            <div class="dock passenger" data-dock="passenger" role="button" tabindex="-1"><img src="../../assets/animal-skyport-dispatch-dock-passenger.webp" alt="" /><span class="dock-target-badge" aria-hidden="true"></span><span class="dock-label"></span></div>
-            <div class="dock repair" data-dock="repair" role="button" tabindex="-1"><img src="../../assets/animal-skyport-dispatch-dock-repair.webp" alt="" /><span class="dock-target-badge" aria-hidden="true"></span><span class="dock-label"></span></div>
+            <div class="dock cargo" data-dock="cargo" role="button" tabindex="-1"><span class="dock-target-badge" aria-hidden="true"></span><span class="dock-label"></span></div>
+            <div class="dock passenger" data-dock="passenger" role="button" tabindex="-1"><span class="dock-target-badge" aria-hidden="true"></span><span class="dock-label"></span></div>
+            <div class="dock repair" data-dock="repair" role="button" tabindex="-1"><span class="dock-target-badge" aria-hidden="true"></span><span class="dock-label"></span></div>
             <div id="routeChallenges" class="route-challenges"></div>
             <svg id="routeTrace" class="route-trace" aria-hidden="true"><polyline id="routeTracePath"></polyline></svg>
             <div id="routeLine" class="route-line"></div>
@@ -122,7 +122,7 @@
     <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/wallet.js"></script>
-    <script src="game.js?v=20261006-v18-first-play-tutorial&wp-audio=1.0.0"></script>
+    <script src="game.js?v=20261013-v19-block-harbor&wp-audio=1.0.0"></script>
     <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260813-skyport-landscape-v5" data-wp-battle-standard></script>
     <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>

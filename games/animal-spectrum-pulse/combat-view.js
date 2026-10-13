@@ -1,0 +1,68 @@
+(function(root){
+ 'use strict';
+ const TAU=Math.PI*2, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+ class CombatView{
+  constructor(canvas){this.canvas=canvas;this.ctx=canvas.getContext('2d',{alpha:false});this.camera={x:560,y:650};this.images={};this.reduced=matchMedia('(prefers-reduced-motion: reduce)');}
+  async load(){const sources={hero:'/assets/weightplay-character-drum-belly-panda-block-v1.webp',enemies:'/assets/animal-spectrum-pulse/action-enemies-v22.webp',background:'/assets/animal-spectrum-pulse/arena-bg.webp',core:'/assets/animal-spectrum-pulse/checkpoint-crown.webp',charge:'/assets/animal-spectrum-pulse/node-coral.webp',heal:'/assets/animal-spectrum-pulse/node-cyan.webp',portal:'/assets/animal-spectrum-pulse/gate-crown.webp'};await Promise.all(Object.entries(sources).map(([key,src])=>new Promise(resolve=>{const im=new Image();im.onload=()=>{this.images[key]=im;resolve()};im.onerror=()=>{console.warn('Spectrum asset unavailable',src);resolve()};im.src=src+'?v=20261013-action-v22';})));}
+  reset(state){this.camera.x=state.player.x;this.camera.y=state.player.y;}
+  sprite(key,x,y,size,alpha=1,flip=false,tile=null,flash=false){const im=this.images[key];if(!im)return;const c=this.ctx;c.save();c.globalAlpha*=alpha;c.translate(x,y);if(flip)c.scale(-1,1);if(flash)c.filter='brightness(1.8)';if(tile!==null){const w=im.width/2,h=im.height/2;c.drawImage(im,(tile%2)*w,Math.floor(tile/2)*h,w,h,-size/2,-size/2,size,size);}else{const ratio=im.width/im.height,w=ratio>=1?size:size*ratio,h=ratio>=1?size/ratio:size;c.drawImage(im,-w/2,-h/2,w,h);}c.restore();}
+  draw(state,words={}){
+   if(!state)return;const c=this.ctx,w=this.canvas.width,h=this.canvas.height,p=state.player,dpr=w/Math.max(1,this.canvas.getBoundingClientRect().width),wide=w/h>1.25;
+   const scale=h/(wide?(h/dpr<300?300:500):850),viewW=w/scale,viewH=h/scale;
+   this.camera.x+=(p.x-this.camera.x)*.14;this.camera.y+=(p.y-this.camera.y)*.14;
+   const camX=viewW>=1200?560:clamp(this.camera.x,viewW/2-35,1155-viewW/2),camY=viewH>=1200?560:clamp(this.camera.y,viewH/2-35,1155-viewH/2);
+   c.fillStyle='#050c1c';c.fillRect(0,0,w,h);
+   c.save();const shake=this.reduced.matches?0:state.shake*11;
+   c.translate(w/2+(Math.sin(state.time*87)*shake*scale),h/2+(Math.cos(state.time*67)*shake*scale));c.scale(scale,scale);c.translate(-camX,-camY);
+   // Approved architecture forms the backdrop; grid lines are functional arena geometry.
+   if(this.images.background){c.globalAlpha=.24;c.drawImage(this.images.background,0,0,1120,1120);c.globalAlpha=1;}
+   c.fillStyle='#081a29a8';c.fillRect(30,30,1060,1060);c.strokeStyle='#243e50';c.lineWidth=1;
+   for(let i=40;i<=1080;i+=80){c.beginPath();c.moveTo(i,32);c.lineTo(i,1088);c.stroke();c.beginPath();c.moveTo(32,i);c.lineTo(1088,i);c.stroke();}
+   c.strokeStyle=['#47dce5','#71e5ad','#a892ff','#ff9e6b','#f188d3','#ffda78'][state.map.sector];c.lineWidth=4;c.strokeRect(32,32,1056,1056);
+   for(const wall of state.map.walls){c.fillStyle='#030710a0';c.fillRect(wall.x+8,wall.y+10,wall.w,wall.h);c.fillStyle='#1f394b';c.fillRect(wall.x,wall.y,wall.w,wall.h);c.fillStyle='#355468';c.fillRect(wall.x,wall.y,wall.w,6);c.strokeStyle='#82b2bf66';c.lineWidth=2;c.strokeRect(wall.x,wall.y,wall.w,wall.h);}
+   const exit=state.map.exit;c.save();c.translate(exit.x,exit.y);c.strokeStyle=state.portal?'#93ffe1':'#31475b';c.lineWidth=4;c.beginPath();c.ellipse(0,10,47,22,0,0,TAU);c.stroke();
+   if(state.portal){c.shadowColor='#70ffe0';c.shadowBlur=20;this.sprite('portal',0,-10,98);c.shadowBlur=0;c.fillStyle='#c4ffe9';c.font='bold 15px system-ui';c.textAlign='center';c.fillText(words.exit||'EXIT',0,65);}c.restore();
+   for(const barrel of state.barrels)if(barrel.hp>0){c.strokeStyle='#ffb07655';c.setLineDash([4,6]);c.lineWidth=1;c.beginPath();c.arc(barrel.x,barrel.y,27,0,TAU);c.stroke();c.setLineDash([]);this.sprite('charge',barrel.x,barrel.y,45);}
+   for(const core of state.cores){if(core.hp<=0){c.strokeStyle='#55dcc966';c.lineWidth=2;c.beginPath();c.arc(core.x,core.y,38,0,TAU);c.stroke();continue;}
+    const pulse=this.reduced.matches?1:1+Math.sin(state.time*3+core.x)*.06;c.fillStyle='#e4a9621b';c.beginPath();c.arc(core.x,core.y,55,0,TAU);c.fill();this.sprite('core',core.x,core.y-8,91*pulse,1,false,null,core.flash>0);this.bar(core.x,core.y+45,65,5,core.hp/core.maximum,'#ffca70');
+   }
+   for(const enemy of state.enemies){if(enemy.mode!=='tell')continue;c.save();c.translate(enemy.x,enemy.y);const charging=enemy.type==='brute'||(enemy.type==='boss'&&enemy.attack%3===2);
+    if(charging){c.rotate(enemy.aim);c.fillStyle='#ff635530';c.fillRect(0,-enemy.r,360,enemy.r*2);c.strokeStyle='#ff9e82';c.lineWidth=2;c.strokeRect(0,-enemy.r,360,enemy.r*2);c.setLineDash([10,10]);c.beginPath();c.moveTo(15,0);c.lineTo(360,0);c.stroke();c.setLineDash([]);}else if(enemy.type==='boss'){c.strokeStyle='#ff866a';c.lineWidth=3;c.beginPath();c.arc(0,0,enemy.r+24,0,TAU);c.stroke();for(let i=0;i<12;i++){const a=enemy.aim+i*TAU/12;c.beginPath();c.moveTo(Math.cos(a)*65,Math.sin(a)*65);c.lineTo(Math.cos(a)*105,Math.sin(a)*105);c.stroke();}}else{c.rotate(enemy.aim);c.strokeStyle='#ff766ccc';c.lineWidth=2;c.setLineDash([8,7]);c.beginPath();c.moveTo(0,0);c.lineTo(360,0);c.stroke();}c.restore();
+   }
+   for(const item of state.pickups)this.sprite('heal',item.x,item.y,32);
+   const actors=state.enemies.map(e=>({kind:'enemy',y:e.y,value:e})).concat([{kind:'player',y:p.y,value:p}]).sort((a,b)=>a.y-b.y);
+   for(const actor of actors){const e=actor.value;c.fillStyle='#0008';c.beginPath();c.ellipse(e.x,e.y+e.r*.65,e.r*1.2,e.r*.55,0,0,TAU);c.fill();
+    if(actor.kind==='player'){const blinking=p.invincible>0&&!this.reduced.matches&&Math.floor(state.time*12)%2===0;
+      c.strokeStyle=p.dash>0?'#c4ffff':'#55e9ed88';c.lineWidth=3;c.beginPath();c.ellipse(p.x,p.y+17,28,13,0,0,TAU);c.stroke();this.sprite('hero',p.x,p.y-12,93,blinking?.65:1,p.dx<-.1);this.bar(p.x,p.y-66,56,6,p.hp/p.maxHp,p.hp<=2?'#ff7586':'#75f0bb');
+      if(state.stats.orbit)for(let i=0;i<3;i++){const a=state.time*3+i*TAU/3;this.sprite('heal',p.x+Math.cos(a)*83,p.y+Math.sin(a)*83,24);}
+    }else{const tile={chaser:0,shooter:1,brute:2,boss:3}[e.type],size=e.type==='boss'?158:e.type==='brute'?95:78;this.sprite('enemies',e.x,e.y-e.r*.3,size,e.age<.7?.5:1,e.x<p.x,tile,e.flash>0);
+      if(e.hp<e.maximum||e.type==='boss')this.bar(e.x,e.y-size*.56,e.type==='boss'?130:48,e.type==='boss'?8:4,e.hp/e.maximum,e.mode==='recover'?'#8bf4d7':'#ff8297');
+      if(e.mode==='recover'&&e.type==='boss'){c.textAlign='center';c.font='bold 17px system-ui';c.fillStyle='#9effde';c.fillText(words.break||'BREAK!',e.x,e.y-108);}
+    }
+   }
+   for(const s of state.shots){c.strokeStyle='#a1ffff';c.lineWidth=5;c.beginPath();c.moveTo(s.x-s.vx*.024,s.y-s.vy*.024);c.lineTo(s.x,s.y);c.stroke();c.fillStyle='#fff';c.fillRect(s.x-3,s.y-3,6,6);}
+   for(const b of state.hostile){c.fillStyle='#ff7568';c.beginPath();c.arc(b.x,b.y,b.r+2,0,TAU);c.fill();c.fillStyle='#fff2b1';c.beginPath();c.arc(b.x,b.y,3,0,TAU);c.fill();}
+   for(const fx of state.effects){const f=1-fx.life/fx.maxLife;c.save();c.globalAlpha=1-f;c.translate(fx.x,fx.y);
+    if(fx.type==='number'){c.font=`bold ${fx.critical?25:18}px system-ui`;c.textAlign='center';c.fillStyle=fx.critical?'#ffe393':'#e0ffff';c.fillText(String(fx.value),0,-f*38);}
+    else if(fx.type==='after'){if(!this.reduced.matches)this.sprite('hero',0,-12,93,.28);}
+    else if(fx.type==='pulse'||fx.type==='chain'||fx.type==='core'){const r=fx.r*(.15+f*.85);c.strokeStyle=fx.type==='pulse'?'#9efff0':'#ffd48c';c.lineWidth=fx.type==='pulse'?8:5;c.beginPath();c.arc(0,0,r,0,TAU);c.stroke();if(!this.reduced.matches){c.globalAlpha*=.15;c.fillStyle=c.strokeStyle;c.fill();}}
+    else if(fx.type==='spawn'){c.strokeStyle='#dd9bff';c.lineWidth=2;c.beginPath();c.arc(0,0,fx.r*(1-f*.5),0,TAU);c.stroke();}
+    else if(fx.type==='hurt'){c.strokeStyle='#ff677d';c.lineWidth=5;c.beginPath();c.arc(0,0,28+f*35,0,TAU);c.stroke();}
+    else if(!this.reduced.matches){const count=fx.big?16:8;c.fillStyle=fx.type==='hit'?'#ffecb0':'#90fff1';for(let i=0;i<count;i++){const a=i*2.399,d=(fx.big?100:45)*f;c.fillRect(Math.cos(a)*d,Math.sin(a)*d,6*(1-f)+2,6*(1-f)+2);}}
+    c.restore();
+   }
+   c.restore();
+   // The objective pointer follows position, never a colour-match window.
+   const objective=state.objective();if(objective){const ox=(objective.x-camX)*scale+w/2,oy=(objective.y-camY)*scale+h/2,margin=42*dpr;
+    if(ox<margin||ox>w-margin||oy<margin||oy>h-margin){const x=clamp(ox,margin,w-margin),y=clamp(oy,margin,h-margin),a=Math.atan2(oy-h/2,ox-w/2);c.save();c.translate(x,y);c.rotate(a);c.fillStyle=state.portal?'#95ffde':'#ffe099';c.beginPath();c.moveTo(15*dpr,0);c.lineTo(-8*dpr,-9*dpr);c.lineTo(-8*dpr,9*dpr);c.closePath();c.fill();c.restore();}
+   }
+   const mini=66*dpr,mx=w-mini-12*dpr,my=12*dpr;c.fillStyle='#071426d9';c.fillRect(mx,my,mini,mini);c.strokeStyle='#42677c';c.lineWidth=dpr;c.strokeRect(mx,my,mini,mini);
+   const dot=(x,y,color,size=3)=>{c.fillStyle=color;c.fillRect(mx+x/1120*mini-size*dpr/2,my+y/1120*mini-size*dpr/2,size*dpr,size*dpr);};
+   for(const core of state.cores)if(core.hp>0)dot(core.x,core.y,'#ffd476',4);for(const e of state.enemies)dot(e.x,e.y,'#fb7798',e.type==='boss'?5:2);if(state.portal)dot(exit.x,exit.y,'#91ffcc',5);dot(p.x,p.y,'#fff',5);
+   if(state.combo>1){c.textAlign='left';c.fillStyle='#ffdb82';c.font=`900 ${21*dpr}px system-ui`;c.fillText(`${state.combo} ${words.chain||'CHAIN'}`,14*dpr,31*dpr);c.fillStyle='#4d6575';c.fillRect(14*dpr,39*dpr,80*dpr,3*dpr);c.fillStyle='#ffdb82';c.fillRect(14*dpr,39*dpr,80*dpr*state.comboTime/3.5,3*dpr);}
+   if(!state.started){c.fillStyle='#051320b8';c.fillRect(0,h*.41,w,h*.19);c.fillStyle='#fff';c.textAlign='center';c.font=`700 ${15*dpr}px system-ui`;const text=words.move||'MOVE TO BEGIN';c.fillText(text,w/2,h*.50);c.fillStyle='#b7dce8';c.font=`${11*dpr}px system-ui`;c.fillText(words.auto||'AUTO FIRE · SPACE PULSE · SHIFT DASH',w/2,h*.55);}
+  }
+  bar(x,y,width,height,ratio,color){const c=this.ctx;c.fillStyle='#061020';c.fillRect(x-width/2-1,y-1,width+2,height+2);c.fillStyle=color;c.fillRect(x-width/2,y,width*clamp(ratio,0,1),height);}
+ }
+ root.SpectrumCombatView=CombatView;
+})(window);

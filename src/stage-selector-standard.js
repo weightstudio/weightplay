@@ -154,7 +154,7 @@
 
   function rememberStageStyles(root) {
     if (!root || savedStageStyles.has(root)) return;
-    const properties = ["position", "inset", "top", "right", "bottom", "left", "box-sizing", "width", "min-width", "max-width", "height", "min-height", "max-height", "margin", "overflow", "transform", "transform-origin"];
+    const properties = ["position", "inset", "top", "right", "bottom", "left", "box-sizing", "width", "min-width", "max-width", "height", "min-height", "max-height", "margin", "overflow", "transform", "transform-origin", "--wp-frame-control-size-physical"];
     savedStageStyles.set(root, Object.fromEntries(properties.map((property) => [property, [root.style.getPropertyValue(property), root.style.getPropertyPriority(property)]])));
   }
 
@@ -306,6 +306,9 @@
     style.setProperty("--wp-stage-reserve-top", `${availableHeight}px`);
     rememberStageStyles(root);
     const declarations = {
+      // An inactive Battle scaler may clear the inherited HTML variable.
+      // The active Canvas owns its control size and restores it on exit.
+      ...(root.hasAttribute("data-wp-frame-play-fill") ? { "--wp-frame-control-size-physical": `${Math.max(48, 48 / scale)}px` } : {}),
       position: "fixed", inset: "auto", top: `${top}px`, right: "auto", bottom: "auto", left: `${left}px`,
       "box-sizing": "border-box", width: `${logicalWidth}px`, "min-width": `${logicalWidth}px`, "max-width": `${logicalWidth}px`,
       height: `${logicalHeight}px`, "min-height": `${logicalHeight}px`, "max-height": `${logicalHeight}px`, margin: "0", overflow: "hidden",

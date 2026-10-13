@@ -32,6 +32,12 @@ export function wheelOutline(p){
   if(p.points?.length>3){const rx=Math.max(...p.points.map(q=>Math.abs(q.x-.5))),ry=Math.max(...p.points.map(q=>Math.abs(q.y-.5)));return p.points.map(q=>({x:(q.x-.5)/(rx||1)*p.width/.62,y:-(q.y-.5)/(ry||1)*p.height/.56}));}
   return Array.from({length:p.kind==='spike'?16:48},(_,i)=>{const a=i*Math.PI*2/(p.kind==='spike'?16:48),r=p.kind==='spike'?(i%2?.58:1):1;return{x:Math.cos(a)*r*p.width/.62,y:Math.sin(a)*r*p.height/.56}});
 }
+export function gateForm(elapsed,position=0){return Math.floor((elapsed+position/120)/3)%2?'wide':'tall';}
+export function challengeComplete(run,level,win){return !!win&&(level.challenge==='clean'?(run.stalls||0)===0:level.challenge==='combo'?(run.bestChain||0)>=level.comboTarget:run.elapsed<=level.par);}
+export function settleChallenge(save,run,level,win){
+  const complete=challengeComplete(run,level,win),key=String(level.id),fresh=complete&&!save.challenges?.[key];
+  if(complete){save.challenges??={};save.challenges[key]=true;}return {complete,bonus:fresh?4:0};
+}
 export function stepRace(run,level,dt,{pass,performance,axle=0,drawing=false}={}){
   if(run.ended||run.firstProfile)return [];
   const events=[];
@@ -40,26 +46,33 @@ export function stepRace(run,level,dt,{pass,performance,axle=0,drawing=false}={}
   run.elapsed+=dt;run.time-=dt;run.boost=Math.max(0,run.boost-dt);run.impact=Math.max(0,run.impact-dt*3);run.forgePulse=Math.max(0,(run.forgePulse||0)-dt);
   const i=run.terrainIndex,type=level.terrain[i],pos=level.positions[i],entry=pos-34;
   const near=type&&run.player>=entry-1&&run.player<=pos+54;
-  const fits=!type||pass(type,run.profile),quality=type?performance(type,run.profile):1;
+  const form=gateForm(run.elapsed,pos),gateFits=form==='tall'?pass('stairs',run.profile)&&run.profile.width<=.58:pass('tunnel',run.profile);
+  let fits=!type||(type==='gate'?(run.gateLatch?.index===i||gateFits):pass(type,run.profile));
+  if(type==='gate'&&near&&fits&&!run.gateLatch)run.gateLatch={index:i,form};
+  const quality=type==='gate'?1:type?performance(type,run.profile):1;
   run.terrainScore=quality;
   let target=(18+run.profile.speed*19+axle*1.4)*(run.boost>0?1.3:1);
-  const hard=['stairs','tunnel','gap','wind'].includes(type);
+  const hard=['stairs','tunnel','gap','wind','gate'].includes(type);
   if(near){target*=fits?(.86+quality*.24):(.18+quality*.12);if(!fits&&hard)target=0;}
   const wasStalled=run.stalled;
   run.stalled=!!(near&&!fits);
-  if(run.stalled&&!wasStalled){run.chain=0;run.clean=false;run.impact=.7;events.push({kind:'stall',type});}
+  if(run.stalled&&!wasStalled){run.stalls=(run.stalls||0)+1;run.chain=0;run.clean=false;run.impact=.7;events.push({kind:'stall',type});}
   if(!run.stalled&&wasStalled)events.push({kind:'recover',type});
   run.speed+=(target-run.speed)*Math.min(1,dt*7);
   let next=run.player+run.speed*dt;
   // Sweep against entry: a long frame cannot tunnel through an unmet obstacle.
-  if(type&&!fits&&hard&&next>=entry&&run.player<=pos+54){next=Math.min(next,entry);run.speed=0;}
+  if(type&&!fits&&hard&&next>=entry&&run.player<=pos+54){next=Math.max(run.player,Math.min(next,entry));run.speed=0;}
+  // Latch on the swept entry frame as well as a stationary admission.
+  if(type==='gate'&&fits&&!run.gateLatch&&next>=entry&&run.player<=pos+54)run.gateLatch={index:i,form};
   run.player=next;
   const rivalObstacle=level.terrain.findIndex((_,j)=>Math.abs(run.rival-level.positions[j])<44);
-  const rivalFactor=rivalObstacle<0?1.08:({stairs:.82,mud:.72,tunnel:.84,gap:.82,ice:.76,wind:.85,flat:1.03}[level.terrain[rivalObstacle]]);
+  const rivalFactor=rivalObstacle<0?1.08:({stairs:.82,mud:.72,tunnel:.84,gap:.82,ice:.76,wind:.85,flat:1.03,boost:1.3,gate:.62}[level.terrain[rivalObstacle]]);
   run.rival+=level.rival*rivalFactor*dt;
   if(type&&run.player>pos+54){
     run.passed.push(type);run.terrainIndex++;
     if(run.clean!==false&&fits){run.chain=(run.chain||0)+1;run.bestChain=Math.max(run.bestChain||0,run.chain);run.boost=1.2+Math.min(3,run.chain)*.25;}
+    if(type==='boost'&&fits&&run.clean!==false)run.boost=3;
+    run.gateLatch=null;
     run.clean=true;events.push({kind:'pass',type,chain:run.chain||0});
   }
   if(run.player>=1000){run.player=1000;events.push({kind:'finish',win:true});}

@@ -1,18 +1,30 @@
 import * as THREE from './vendor/three/three.module.min.js';
 import {GroundCues} from './ground-cues.js';
 import {axePose,chopBody,ease,enemyWind,enemyStroke} from './combat-pose.js?v=20261003-wildwood-axe-v12a';
-const palette={wood:0x765139,dark:0x302a2c,orange:0xc9763e,cream:0xffdfae,teal:0x258f85,gold:0xf4be58,leaf:0x397a50,moss:0x69905b,stone:0x738782,white:0xd9f3e4,cyan:0x79f4d3,purple:0x875b99,red:0xf2745e,ground:0x537555,treeBark:0x624b39,treeBarkLight:0x87694b,canopyShade:0x355b3e,canopyMid:0x4b7048,canopyTop:0x668154};
-const materialCells={orange:[0,0],cream:[1,0],leaf:[2,0],moss:[3,0],wood:[0,1],teal:[2,1],dark:[3,3],gold:[0,2],steel:[1,2],edge:[2,2],stone:[3,2],white:[2,2],cyan:[0,3],purple:[1,3],red:[2,3]};
+const palette={wood:0x765139,dark:0x302a2c,orange:0xc9763e,cream:0xffdfae,teal:0x258f85,gold:0xf4be58,leaf:0x397a50,moss:0x69905b,stone:0x738782,steel:0x617781,edge:0xe6edf2,white:0xd9f3e4,cyan:0x79f4d3,purple:0x875b99,red:0xf2745e,ground:0x537555,treeBark:0x624b39,treeBarkLight:0x87694b,canopyShade:0x355b3e,canopyMid:0x4b7048,canopyTop:0x668154};
+export function createBlockGeometry(){
+ const shape=new THREE.Shape();shape.moveTo(-.46,-.46);shape.lineTo(.46,-.46);shape.lineTo(.46,.46);shape.lineTo(-.46,.46);shape.closePath();
+ const geometry=new THREE.ExtrudeGeometry(shape,{depth:.92,bevelEnabled:true,bevelSize:.04,bevelThickness:.04,bevelSegments:2,steps:1});geometry.translate(0,0,-.46);geometry.computeBoundingBox();
+ // ExtrudeGeometry's stock cap/side UVs use shape coordinates, including
+ // negative values. Project each face into one full, bounded surface tile.
+ const position=geometry.attributes.position,normal=geometry.attributes.normal,uv=geometry.attributes.uv,{min,max}=geometry.boundingBox;
+ const unit=(value,low,high)=>Math.max(0,Math.min(1,(value-low)/(high-low)));
+ for(let i=0;i<position.count;i++){
+  const x=position.getX(i),y=position.getY(i),z=position.getZ(i),nx=Math.abs(normal.getX(i)),ny=Math.abs(normal.getY(i)),nz=Math.abs(normal.getZ(i));
+  const u=nx>=ny&&nx>=nz?unit(z,min.z,max.z):unit(x,min.x,max.x);
+  const v=ny>=nx&&ny>=nz?unit(z,min.z,max.z):unit(y,min.y,max.y);
+  uv.setXY(i,u,v);
+ }
+ uv.needsUpdate=true;return geometry;
+}
 export class WildwoodWorld {
  constructor(canvas,sim){
   this.canvas=canvas;this.sim=sim;this.parts=[];this.models=new Map();this.batches=new Map();this.effects=[];this.reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   this.renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
   this.scene=new THREE.Scene();this.cues=new GroundCues(this.scene);this.scene.background=new THREE.Color(0x173d3c);
   this.ground=new THREE.TextureLoader().load(new URL('./art/ground-moss-v4.jpg',import.meta.url).href);this.ground.colorSpace=THREE.SRGBColorSpace;this.ground.wrapS=this.ground.wrapT=THREE.RepeatWrapping;this.ground.repeat.set(1,1);
-  this.materialAtlas=new THREE.TextureLoader().load(new URL('./art/material-atlas-block-v2.png',import.meta.url).href);this.materialAtlas.colorSpace=THREE.SRGBColorSpace;this.materialAtlas.wrapS=this.materialAtlas.wrapT=THREE.ClampToEdgeWrapping;
   this.camera=new THREE.OrthographicCamera(-9,9,11,-11,.1,70);this.camera.position.set(0,20,16);this.camera.lookAt(0,0,0);
-  const shape=new THREE.Shape();shape.moveTo(-.46,-.46);shape.lineTo(.46,-.46);shape.lineTo(.46,.46);shape.lineTo(-.46,.46);shape.closePath();
-  this.geometry=new THREE.ExtrudeGeometry(shape,{depth:.92,bevelEnabled:true,bevelSize:.04,bevelThickness:.04,bevelSegments:2,steps:1});this.geometry.translate(0,0,-.46);
+  this.geometry=createBlockGeometry();
   this.scene.add(new THREE.HemisphereLight(0xd3f3ee,0x345040,2.3));this.sun=new THREE.DirectionalLight(0xffe0a0,3);this.sun.position.set(-6,15,9);this.sun.castShadow=true;this.sun.shadow.mapSize.set(1024,1024);Object.assign(this.sun.shadow.camera,{left:-12,right:12,top:12,bottom:-12,far:40});this.sun.shadow.normalBias=.04;this.scene.add(this.sun);
   this.root=new THREE.Group();this.static=new THREE.Group();this.root.add(this.static);this.box(this.static,'ground',[0,-.35,0],[15,.6,18]);
   // Authored stone border and stepping-stone trail establish the entire playable area.
@@ -49,7 +61,7 @@ export class WildwoodWorld {
   this.box(g,hero?'leaf':color,[0,.7,0],[.62,.75,.48]);this.box(g,color,[0,1.28,0],[.78,.62,.65]);
   this.box(g,hero||friend?'cream':'wood',[0,1.12,.37],[.5,.22,.2]);
   for(const s of [-1,1]){
-   this.box(g,'cream',[s*.27,1.25,.33],[.2,.25,.08]);this.box(g,'dark',[s*.16,1.4,.35],[.095,.105,.04]);this.box(g,'white',[s*.17,1.425,.375],[.03,.035,.015]);this.box(g,color,[s*.29,1.67,0],[.2,friend?.5:.25,.2]);this.box(g,'dark',[s*.29,1.69,.08],[.1,.1,.04]);
+   this.box(g,'cream',[s*.27,1.25,.33],[.2,.25,.08]);this.box(g,'dark',[s*.16,1.4,.39],[.095,.105,.04]);this.box(g,'white',[s*.17,1.425,.416],[.03,.035,.015]);this.box(g,color,[s*.29,1.67,0],[.2,friend?.5:.25,.2]);this.box(g,'dark',[s*.29,1.69,.115],[.1,.1,.04]);
   }
   this.box(g,'dark',[0,1.2,.49],[.12,.08,.08]);
   const legs=[];for(const sign of [-1,1]){const hip=new THREE.Group();hip.position.set(sign*.2,.49,0);g.add(hip);this.box(hip,'dark',[0,-.25,0],[.25,.48,.34]);this.box(hip,hero?'wood':'dark',[0,-.43,.08],[.29,.17,.4]);legs.push(hip);}
@@ -101,7 +113,14 @@ export class WildwoodWorld {
   }
   this.root.add(g);return g;
  }
- batch(color){if(this.batches.has(color))return this.batches.get(color);const steel=color==='steel',edge=color==='edge',atlas=color!=='ground'&&!edge&&Boolean(materialCells[color])?this.materialAtlas:null,textured=color==='ground'||Boolean(atlas),materialColor=edge?0xe6edf2:textured?0xffffff:(palette[color]??0xffffff);const material=new THREE.MeshStandardMaterial({color:materialColor,map:color==='ground'?this.ground:atlas,roughness:steel?.38:edge?.24:.72,metalness:steel?.58:edge?.68:['gold','white'].includes(color)?.28:.03,emissive:color==='cyan'?0x237a71:0,emissiveIntensity:.24});if(atlas){const [column,row]=materialCells[color],inset=.0035,scale=.243,u=column*.25+inset,v=(3-row)*.25+inset;material.onBeforeCompile=shader=>{shader.vertexShader=shader.vertexShader.replace('#include <uv_vertex>',`#include <uv_vertex>\n#ifdef USE_MAP\n vMapUv = vMapUv * vec2(${scale}, ${scale}) + vec2(${u}, ${v});\n#endif`);};material.customProgramCacheKey=()=>`wildwood-material-atlas-${color}`;}const mesh=new THREE.InstancedMesh(this.geometry,material,2048);mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;mesh.count=0;this.scene.add(mesh);this.batches.set(color,mesh);return mesh;}
+ batch(color){
+  if(this.batches.has(color))return this.batches.get(color);
+  const steel=color==='steel',edge=color==='edge';
+  // Model geometry provides the block silhouette. Fur, cloth, faces and props
+  // use their authored colors, not pictures of stone walls baked onto every face.
+  const material=new THREE.MeshStandardMaterial({color:color==='ground'?0xffffff:(palette[color]??0xffffff),map:color==='ground'?this.ground:null,roughness:steel?.38:edge?.24:.72,metalness:steel?.58:edge?.68:color==='gold'?.28:.03,emissive:color==='cyan'?0x237a71:0,emissiveIntensity:.24});
+  const mesh=new THREE.InstancedMesh(this.geometry,material,2048);mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;mesh.count=0;this.scene.add(mesh);this.batches.set(color,mesh);return mesh;
+ }
  resize(){const r=this.canvas.getBoundingClientRect();this.renderer.setSize(Math.max(1,r.width),Math.max(1,r.height),false);const aspect=r.width/Math.max(1,r.height);const halfH=Math.max(4.8,4.8/aspect),halfW=halfH*aspect;Object.assign(this.camera,{left:-halfW,right:halfW,top:halfH,bottom:-halfH});this.camera.updateProjectionMatrix();}
  consume(events){for(const e of events)if(['hit','hurt','defeat','blocked','immune','wardBlock','pulse','mastery','pickup','dash','spawn','respawn'].includes(e.type)){
    if(e.type==='defeat'&&['enemy','boss'].includes(e.kind)){
@@ -166,6 +185,6 @@ export class WildwoodWorld {
  }
  metrics(){return {drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,materials:this.batches.size+1,cues:{vertices:this.cues.count,kinds:this.cues.kinds},models:this.models.size,effects:this.effects.length,fragments:this.effects.filter(f=>f.shatter).length,deadHostileModels:this.sim.ents.filter(e=>e.hp<=0&&['enemy','boss'].includes(e.kind)&&this.models.get(e.uid)?.visible).length,deathSlabs:this.parts.filter(p=>p.node.parent===this.dynamic&&p.color==='gold'&&p.node.position.y===.06).length,visibleObjects:[...this.models.values()].filter(g=>g.visible).length,bladeTip:this.heroModel.userData.bladeTip.getWorldPosition(new THREE.Vector3()).toArray(),heroPose:{elbow:this.heroModel.userData.elbow.rotation.x,arm:this.heroModel.userData.arm.rotation.x,leg:this.heroModel.userData.legs[0].rotation.x}};}
  project(x,z,height=.5){const v=new THREE.Vector3(x,height,z).project(this.camera);return {x:(v.x+1)/2,y:(1-v.y)/2};}
- dispose(){this.cues.dispose();this.sun.shadow.map?.dispose();this.ground.dispose();this.materialAtlas.dispose();this.geometry.dispose();for(const b of this.batches.values()){b.dispose();b.material.dispose();}this.batches.clear();this.parts=[];this.models.clear();this.effects=[];this.renderer.dispose();}
+ dispose(){this.cues.dispose();this.sun.shadow.map?.dispose();this.ground.dispose();this.geometry.dispose();for(const b of this.batches.values()){b.dispose();b.material.dispose();}this.batches.clear();this.parts=[];this.models.clear();this.effects=[];this.renderer.dispose();}
 }
 function isChild(n,parent){for(let p=n;p;p=p.parent)if(p===parent)return true;return false;}
