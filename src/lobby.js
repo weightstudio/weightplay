@@ -9,6 +9,9 @@ lobby.games.forEach((game) => {
 });
 let activeGamePreview = null;
 const ownerPreviewMode = new URLSearchParams(window.location.search).get("preview") === "1";
+// This activity concept is a local owner-preview only. It must never appear
+// from the production lobby route, including production `?preview=1` URLs.
+const localLobbyPreview = ownerPreviewMode && ["localhost", "127.0.0.1", "[::1]"].includes(window.location.hostname);
 const audienceMode = document.body?.dataset.audience === "kids" ? "kids" : "general";
 const generalGameIds = new Set(lobby.audiences?.generalGameIds || []);
 const tabletopGameIds = new Set(lobby.audiences?.tabletopGameIds || []);
@@ -182,6 +185,8 @@ const challengeSpotlightSection = document.querySelector("#challengeSpotlightSec
 const characterShowcase = document.querySelector("#characterShowcase");
 const characterShowcaseSection = document.querySelector("#characterShowcaseSection");
 const skillPaths = document.querySelector("#skillPaths");
+const demonEventPreview = localLobbyPreview && !isKidsLobby ? createDemonEventPreview() : null;
+if (demonEventPreview) window.matchMedia("(min-width: 1120px)").addEventListener("change", syncDemonEventPreview);
 const skillPathsSection = document.querySelector("#skillPathsSection");
 const lobbyStats = document.querySelector("#lobbyStats");
 const featuredGame = document.querySelector("#featuredGame");
@@ -346,6 +351,108 @@ function gameHall(game) {
 
 function gameMatchesHall(game, hall = activeHall) {
   return isKidsLobby || gameHall(game) === hall;
+}
+
+function createDemonEventPreview() {
+  const copy = {
+    en: { badge: "PREVIEW · PLANNING", title: "Demon Assault", line: "A block-built alarm is stirring beyond the portal.", blocks: "Collected blocks", note: "Your collected-block total sets the planned ammo cap. Blocks and castle materials are never spent.", open: "Activity details", modal: "Activity concept", reward: "Diamond rewards are still being planned. Nothing is available to claim.", close: "Close" },
+    "zh-Hant": { badge: "預覽／規劃中", title: "惡魔來襲", line: "方塊警戒燈亮起，傳送門另一側傳來動靜。", blocks: "累計收集方塊", note: "已收集方塊總數只決定規劃中的彈藥上限；方塊與城堡材料都不會被扣除。", open: "活動說明", modal: "活動概念說明", reward: "鑽石獎勵仍在企劃中，目前沒有可領取的獎勵。", close: "關閉" },
+    "zh-Hans": { badge: "预览／规划中", title: "恶魔来袭", line: "方块警戒灯亮起，传送门另一侧传来动静。", blocks: "累计收集方块", note: "已收集方块总数只决定规划中的弹药上限；方块与城堡材料都不会被扣除。", open: "活动说明", modal: "活动概念说明", reward: "钻石奖励仍在企划中，目前没有可领取的奖励。", close: "关闭" },
+    ja: { badge: "プレビュー・企画中", title: "デーモン襲来", line: "ブロック警報が光り、ポータルの向こうで何かが動き出す。", blocks: "累計ブロック収集数", note: "収集済みブロック数は企画中の弾薬上限だけに反映されます。ブロックも城の素材も消費しません。", open: "イベントの説明", modal: "イベント案", reward: "ダイヤ報酬は企画中です。現在、受け取れる報酬はありません。", close: "閉じる" },
+    ko: { badge: "미리보기 · 기획 중", title: "악마 습격", line: "블록 경보등이 켜지고 포털 너머에서 움직임이 감지됩니다.", blocks: "누적 수집 블록", note: "수집한 블록 수는 기획 중인 탄약 한도에만 반영됩니다. 블록과 성 재료는 차감되지 않습니다.", open: "이벤트 안내", modal: "이벤트 구상", reward: "다이아 보상은 아직 기획 중입니다. 현재 받을 수 있는 보상은 없습니다.", close: "닫기" },
+    es: { badge: "VISTA PREVIA · EN PLANIFICACIÓN", title: "Asalto demoníaco", line: "La alarma de bloques se enciende; algo se mueve tras el portal.", blocks: "Bloques acumulados", note: "El total de bloques recogidos solo definirá el límite de munición previsto. No se gastarán bloques ni materiales del castillo.", open: "Detalles del evento", modal: "Concepto del evento", reward: "Las recompensas de diamantes siguen en planificación. No hay nada que reclamar.", close: "Cerrar" },
+    "pt-BR": { badge: "PRÉVIA · EM PLANEJAMENTO", title: "Invasão demoníaca", line: "O alerta de blocos acende; algo se move além do portal.", blocks: "Blocos coletados", note: "O total de blocos coletados definirá apenas o limite planejado de munição. Nenhum bloco ou material do castelo será gasto.", open: "Detalhes do evento", modal: "Conceito do evento", reward: "As recompensas em diamantes ainda estão em planejamento. Nada está disponível para resgate.", close: "Fechar" },
+    fr: { badge: "APERÇU · EN PRÉPARATION", title: "Assaut démoniaque", line: "L’alerte en blocs s’allume ; quelque chose bouge derrière le portail.", blocks: "Blocs cumulés", note: "Le total de blocs collectés définira uniquement la limite de munitions prévue. Aucun bloc ni matériau du château ne sera dépensé.", open: "Détails de l’événement", modal: "Concept de l’événement", reward: "Les récompenses en diamants sont encore à l’étude. Rien ne peut être réclamé.", close: "Fermer" },
+    de: { badge: "VORSCHAU · IN PLANUNG", title: "Dämonenangriff", line: "Der Blockalarm leuchtet auf. Hinter dem Portal regt sich etwas.", blocks: "Gesammelte Blöcke", note: "Die gesammelte Blockzahl bestimmt nur die geplante Munitionsgrenze. Blöcke und Burgmaterial werden nicht verbraucht.", open: "Eventdetails", modal: "Eventkonzept", reward: "Diamantbelohnungen werden noch geplant. Es gibt nichts einzulösen.", close: "Schließen" },
+    it: { badge: "ANTEPRIMA · IN PROGETTAZIONE", title: "Assalto dei demoni", line: "L’allarme a blocchi si accende: qualcosa si muove oltre il portale.", blocks: "Blocchi raccolti", note: "Il totale dei blocchi raccolti definirà solo il limite di munizioni previsto. Non verranno consumati blocchi né materiali del castello.", open: "Dettagli evento", modal: "Idea dell’evento", reward: "Le ricompense in diamanti sono ancora in fase di progettazione. Non c’è nulla da riscattare.", close: "Chiudi" },
+    ru: { badge: "ПРЕВЬЮ · В ПЛАНАХ", title: "Нашествие демонов", line: "Блочная тревога вспыхнула — за порталом что-то движется.", blocks: "Всего собрано блоков", note: "Общее число собранных блоков будет влиять только на планируемый лимит боеприпасов. Блоки и материалы замка не расходуются.", open: "Об игре-событии", modal: "Концепция события", reward: "Алмазные награды пока планируются. Сейчас нечего получать.", close: "Закрыть" },
+    hi: { badge: "पूर्वावलोकन · योजना में", title: "दानवों का हमला", line: "ब्लॉक चेतावनी चमकती है; पोर्टल के पार कुछ हलचल है।", blocks: "कुल एकत्रित ब्लॉक", note: "एकत्रित ब्लॉकों की कुल संख्या केवल नियोजित बारूद सीमा तय करेगी। ब्लॉक या किले की सामग्री खर्च नहीं होगी।", open: "इवेंट विवरण", modal: "इवेंट की योजना", reward: "हीरे के पुरस्कार अभी योजना में हैं। अभी कुछ भी पाने के लिए उपलब्ध नहीं है।", close: "बंद करें" },
+    ar: { badge: "معاينة · قيد التخطيط", title: "هجوم الشياطين", line: "يضيء إنذار المكعبات، وتتحرك ظلال خلف البوابة.", blocks: "إجمالي المكعبات المجموعة", note: "سيحدد إجمالي المكعبات المجموعة سقف الذخيرة المخطط فقط. لن تُستهلك المكعبات أو مواد القلعة.", open: "تفاصيل الفعالية", modal: "تصور الفعالية", reward: "مكافآت الألماس ما زالت قيد التخطيط. لا توجد مكافأة متاحة للمطالبة بها.", close: "إغلاق" },
+  };
+  const locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || "en";
+  const strings = copy[locale] || copy.en;
+  const section = document.createElement("section");
+  section.className = "demon-event-preview";
+  section.hidden = true;
+  section.dataset.runtimeLocalize = "off";
+  section.setAttribute("aria-label", `${strings.title} · ${strings.badge}`);
+  section.innerHTML = `<div class="demon-event-art" aria-hidden="true"><span class="demon-portal"></span><span class="demon-figure"><i class="demon-horn demon-horn-left"></i><i class="demon-horn demon-horn-right"></i><i class="demon-face"><b></b><b></b><em></em></i><i class="demon-body"></i></span><span class="demon-cube demon-cube-one"></span><span class="demon-cube demon-cube-two"></span><span class="demon-alert"></span></div><div class="demon-event-copy"><span class="demon-event-badge">${strings.badge}</span><h3>${strings.title}</h3><p class="demon-event-line">${strings.line}</p><p class="demon-event-count"><span>${strings.blocks}</span><strong data-owned-blocks>—</strong></p><button class="demon-event-open" type="button">${strings.open}</button></div>`;
+  const dialog = document.createElement("dialog");
+  dialog.className = "demon-event-dialog";
+  dialog.setAttribute("aria-labelledby", "demonEventDialogTitle");
+  dialog.innerHTML = `<form method="dialog"><button class="demon-event-close" type="submit" aria-label="${strings.close}">×</button></form><span class="demon-event-badge">${strings.badge}</span><h2 id="demonEventDialogTitle">${strings.modal}</h2><h3>${strings.title}</h3><p>${strings.note}</p><p>${strings.reward}</p><button class="demon-event-dialog-done" type="button">${strings.close}</button>`;
+  document.body.append(dialog);
+  const openButton = section.querySelector(".demon-event-open");
+  const doneButton = dialog.querySelector(".demon-event-dialog-done");
+  let returnFocus = null;
+  function restoreFocus() {
+    const target = returnFocus;
+    returnFocus = null;
+    if (target?.isConnected && !target.hidden) target.focus({ preventScroll: true });
+  }
+  openButton.addEventListener("click", () => {
+    returnFocus = openButton;
+    if (typeof dialog.showModal === "function") {
+      dialog.showModal();
+      dialog.querySelector(".demon-event-close")?.focus({ preventScroll: true });
+    }
+  });
+  dialog.addEventListener("keydown", event => {
+    if (event.key !== "Tab") return;
+    const focusable = [...dialog.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+      .filter(element => !element.hidden && element.getClientRects().length);
+    if (!focusable.length) {
+      event.preventDefault();
+      dialog.focus({ preventScroll: true });
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const active = document.activeElement;
+    if (event.shiftKey && (active === first || !dialog.contains(active))) {
+      event.preventDefault();
+      last.focus({ preventScroll: true });
+    } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
+      event.preventDefault();
+      first.focus({ preventScroll: true });
+    }
+  });
+  doneButton.addEventListener("click", () => dialog.close());
+  dialog.addEventListener("close", restoreFocus);
+  dialog.addEventListener("cancel", () => requestAnimationFrame(restoreFocus));
+  const countNode = section.querySelector("[data-owned-blocks]");
+  const updateCount = () => {
+    try {
+      const count = window.WeightPlayCastle?.ownedBlocks?.();
+      countNode.textContent = Number.isFinite(Number(count)) && Number(count) >= 0 ? Math.floor(Number(count)).toLocaleString(locale) : "—";
+    } catch { countNode.textContent = "—"; }
+  };
+  window.addEventListener("weightplay:castle-ready", updateCount);
+  window.addEventListener("weightplay:castle-updated", updateCount);
+  updateCount();
+  let inViewport = false;
+  const motionPreference = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+  const updateMotion = () => section.dataset.motion = inViewport && !document.hidden && !motionPreference?.matches ? "on" : "off";
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(entries => { inViewport = Boolean(entries[0]?.isIntersecting); updateMotion(); }, { threshold: 0.12 });
+    observer.observe(section);
+  }
+  document.addEventListener("visibilitychange", updateMotion);
+  motionPreference?.addEventListener?.("change", updateMotion);
+  return section;
+}
+
+function syncDemonEventPreview() {
+  if (!demonEventPreview) return;
+  const show = !isKidsLobby && activeHall === "games" && activeTopic === "Block"
+    && activeFilter === "all" && activeSkill === "all" && activeLibrary === "all"
+    && activeAvailability === "all" && activeSearch === "" && activeExploreType === "all";
+  demonEventPreview.hidden = !show;
+  const desktop = window.matchMedia("(min-width: 1120px)").matches;
+  const desktopRail = document.querySelector(".desktop-filter-rail");
+  const mobileAnchor = document.querySelector(".lobby-hero");
+  if (desktop && desktopRail && demonEventPreview.parentElement !== desktopRail) desktopRail.append(demonEventPreview);
+  else if (!desktop && mobileAnchor && demonEventPreview.previousElementSibling !== mobileAnchor) mobileAnchor.after(demonEventPreview);
 }
 
 const exploreTypeRules = [
@@ -2436,6 +2543,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
     return;
   }
   if (!renderingHallMotion) settleHallMotion();
+  syncDemonEventPreview();
   renderExploreTypes();
   let upcomingVisibleCount = 0;
   const isFiltered =

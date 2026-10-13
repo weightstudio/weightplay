@@ -7351,7 +7351,7 @@ window.WONDER_LOBBY.games.push({
   skills: ["Spatial Planning", "Sequencing", "Timing"],
   ages: ["7", "family"], ageTags: ["7", "family"], ageLabel: "7+",
   recommendedAge: "7+", difficulty: "Easy", estimatedPlayTime: "1-3 minutes",
-  description: robotDogShowtimeDescription, href: "games/robot-dog-showtime/",
+  description: robotDogShowtimeDescription, href: "games/robot-dog-showtime/", internalTrial: "index.html?preview=1",
   art: { kind: "image", background: "/assets/robot-dog-showtime-cover-v3.webp", hideHero: true },
   meta: { en: ["Robot Pup", "Spatial Puzzle"], "zh-Hant": ["機器狗", "空間解謎"] },
 });

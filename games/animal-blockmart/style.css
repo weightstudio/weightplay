@@ -350,3 +350,33 @@ body.wp-frame-battle-active #gameGuide{display:none}
 .block-icon.fizz i:nth-child(1){left:9px;top:0;width:7px;height:4px;background:#77406f}
 .block-icon.fizz i:nth-child(2){left:7px;top:4px;width:12px;height:18px;border-radius:3px 3px 4px 4px;background:#a34e91}
 .block-icon.fizz i:nth-child(3){left:8px;top:12px;width:10px;height:5px;background:#f0d9ec}
+
+/* Inventory, fixture, and cash rows remain legible and tappable in the scroll panel. */
+.fixture-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;align-items:center;gap:6px;padding:6px 8px;border:1px solid #c7d9d5;border-radius:10px;background:#f1f6f4;color:#203d49}
+.fixture-row>span{min-width:0;overflow-wrap:anywhere;font-size:12px;font-weight:700}
+.fixture-row button{min-width:44px;min-height:44px;padding:5px 8px;border:1px solid #718c88;border-radius:9px;background:#fff;color:#203d49;font-size:11px;font-weight:800}
+.fixture-row .fixture-rotate{width:44px;padding:0;font-size:20px}
+.fixture-row button:disabled{opacity:.55}
+.fixture-product-select{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(110px,1fr);align-items:center;gap:8px;margin:4px 0;padding:8px 10px;border:1px solid #c7d9d5;border-radius:10px;background:#f1f6f4;color:#203d49;font-weight:700}
+.fixture-product-select select{min-width:0;min-height:44px;padding:6px 9px;border:1px solid #718c88;border-radius:9px;background:#fff;color:#203d49;font-size:13px;font-weight:700}
+.inventory-summary,.cash-activity{grid-column:1/-1;grid-row:span 2;align-self:start;min-width:0;margin:6px 0;padding:10px;border:1px solid #bfd3cf;border-radius:12px;background:#f1f6f4;color:#203d49}
+.inventory-summary h3,.cash-activity h3{margin:0 0 8px;color:#173746;font-size:14px;font-weight:900}
+.inventory-summary p{margin:5px 0;color:#294451;font-size:12px;font-weight:700;line-height:1.35;overflow-wrap:anywhere}
+.cash-activity>p{margin:5px 0;color:#294451;font-size:12px;font-weight:700}
+.cash-activity .cash-debt{padding:7px 9px;border-radius:8px;background:#fff0e8;color:#7a3518}
+.cash-activity-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start;padding:7px 0;border-top:1px solid #d8e4e1;color:#203d49;font-size:11px;font-weight:700;line-height:1.3}
+.cash-activity-row>span:first-child{min-width:0;overflow-wrap:anywhere}
+.cash-activity-row>span:last-child{text-align:right;white-space:normal;color:#174b3d}
+.popularity-hud[role="button"],.scene-hud .money[role="button"]{cursor:pointer;touch-action:manipulation}
+.scene-hud .money[role="button"],.scene-hud .popularity-hud[role="button"]{pointer-events:auto}
+.popularity-hud[role="button"]:focus-visible,.scene-hud .money[role="button"]:focus-visible{outline:3px solid #9a5600;outline-offset:2px}
+.toggle-card[aria-pressed="true"]{border-color:#08745f!important;background:#e3f2ee!important;color:#075e50!important}
+@media(max-width:600px){
+  .fixture-row{grid-template-columns:minmax(0,1fr) 44px 44px;gap:4px;padding:5px}
+  .fixture-row .fixture-manage{grid-column:1/2;grid-row:2}
+  .fixture-row .fixture-rotate{grid-column:2;grid-row:2}
+  .fixture-row .fixture-store{grid-column:3;grid-row:2}
+  .fixture-row>span{grid-column:1/-1}
+  .fixture-product-select{grid-template-columns:minmax(0,1fr)}
+  .cash-activity-row{font-size:12px}
+}

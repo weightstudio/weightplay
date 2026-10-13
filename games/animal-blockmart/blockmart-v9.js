@@ -66,7 +66,13 @@ export function migrateV9Save(saved = {}, initial = {}) {
   state.fixtures = state.fixtures.map(fixture => normalizeFixture(fixture));
   state.warehouse = state.warehouse.map(fixture => normalizeFixture(fixture));
   const placedIds = new Set(state.fixtures.map(fixture => fixture.id).filter(Boolean));
-  state.warehouse = state.warehouse.filter(fixture => !fixture.id || !placedIds.has(fixture.id));
+  const knownAssetIds = new Set(placedIds);
+  state.warehouse = state.warehouse.filter(fixture => {
+    if (!fixture.id) return true;
+    if (knownAssetIds.has(fixture.id)) return false;
+    knownAssetIds.add(fixture.id);
+    return true;
+  });
   const area = Math.max(10, Math.floor(state.area || 10));
   state.entrances = normalizeEndpoints(saved.entrances, [GRID_ENTRANCES[0]], area, state.fixtures);
   state.exits = normalizeEndpoints(saved.exits, [{ x: area - 1, z: area - 1 }], area, state.fixtures, state.entrances);
@@ -296,7 +302,7 @@ export function installBlockmartV9(ctx) {
       $('placementStatus').classList.toggle('invalid', Boolean(endpointEdit.point && !valid));
       $('placementStatus').textContent = endpointEdit.point
         ? (valid ? `${title} · ${ctx.t('routeOpen', ctx.locale)}` : ctx.t('routeBlocked', ctx.locale))
-        : `${ctx.t(endpointEdit.kind === 'entrance' ? 'setEntrance' : 'setExit', ctx.locale)} · ${ctx.t('routeSafetyHint', ctx.locale)}`;
+        : `${ctx.t(endpointEdit.kind === 'entrance' ? 'setEntrance' : 'setExit', ctx.locale)} · ${ctx.t('endpointPickHint', ctx.locale)}`;
       $('confirmPlacement').textContent = ctx.t(endpointEdit.kind === 'entrance' ? 'setEntrance' : 'setExit', ctx.locale);
       $('confirmPlacement').disabled = !valid;
       return;
@@ -901,7 +907,7 @@ export function installBlockmartV9(ctx) {
     endpointEdit = { kind, point: null, valid: false };
     $('placementControls').hidden = false;
     updatePlacementUi();
-    ctx.toast(`${ctx.t(kind === 'entrance' ? 'setEntrance' : 'setExit', ctx.locale)} · ${ctx.t('routeSafetyHint', ctx.locale)}`);
+    ctx.toast(`${ctx.t(kind === 'entrance' ? 'setEntrance' : 'setExit', ctx.locale)} · ${ctx.t('endpointPickHint', ctx.locale)}`);
   }
 
   function confirmEndpointEdit() {
@@ -1038,9 +1044,90 @@ export function installBlockmartV9(ctx) {
     createCard('selected-fixture', ctx.t('selectedFixture', ctx.locale), `${ctx.t(fixture.kind === 'shelf' ? 'product' : fixture.kind === 'checkout' ? 'cashRegister' : fixture.kind === 'cooler' ? 'coolerUpgrade' : 'storeCharm', ctx.locale)} · ${ctx.t('footprint', ctx.locale)} ${footprintSize(fixture).width}×${footprintSize(fixture).depth}`, ctx.t('selected', ctx.locale), () => {}, { disabled: true, className: 'fixture-selection-readout' });
     createCard('rotate', ctx.t('rotateFixture', ctx.locale), ctx.t('turnFixturePrompt', ctx.locale), '↻', () => rotateSelectedFixture(fixture.id));
     createCard('move', ctx.t('moveFixture', ctx.locale), ctx.t('dragFixturePrompt', ctx.locale), ctx.t('placeFree', ctx.locale), () => beginPlacement(fixture.kind, fixture.id, fixture.product, fixture.footprint));
+    if (fixture.kind === 'shelf') {
+      const row = document.createElement('label'); row.className = 'fixture-product-select';
+      const label = document.createElement('span'); label.textContent = ctx.t('chooseProduct', ctx.locale);
+      const select = document.createElement('select'); select.setAttribute('aria-label', label.textContent);
+      for (const id of state().unlocked) {
+        const option = document.createElement('option'); option.value = id;
+        option.textContent = ctx.t(PRODUCT_DEFS[id]?.label || 'shelf', ctx.locale); select.append(option);
+      }
+      select.value = fixture.product;
+      select.addEventListener('change', () => {
+        const index = state().fixtures.findIndex(item => item.id === fixture.id);
+        if (index < 0) return;
+        state().fixtures[index] = { ...state().fixtures[index], product: select.value };
+        syncFixtures(); ctx.save(); renderPanel();
+        ctx.toast(ctx.t('shelfProductChanged', ctx.locale));
+      });
+      row.append(label, select); $('panel').append(row);
+    }
     if (fixture.kind !== 'checkout' || staffedCounters().length > 1) {
       createCard('warehouse', ctx.t('toWarehouse', ctx.locale), ctx.t('keepStockAndLevel', ctx.locale), '↥', () => warehouseFixture(fixture.id));
     }
+  }
+
+  function renderWarehouseSummary() {
+    const section = document.createElement('section'); section.className = 'inventory-summary';
+    const heading = document.createElement('h3'); heading.textContent = ctx.t('warehouseSummary', ctx.locale);
+    section.append(heading);
+    const groups = [
+      ['shelf', fixture => fixture.kind === 'shelf'],
+      ['cashRegister', fixture => fixture.kind === 'checkout'],
+      ['coolerUpgrade', fixture => fixture.kind === 'cooler'],
+      ['fasterCheckout', fixture => fixture.kind === 'fastCheckout']
+    ];
+    for (const [key, matches] of groups) {
+      const placed = fixtures().filter(matches).length;
+      const stored = state().warehouse.filter(matches).length;
+      if (!placed && !stored) continue;
+      const row = document.createElement('p'); row.textContent = `${ctx.t(key, ctx.locale)} · ${ctx.t('owned', ctx.locale)} ${placed + stored} · ${ctx.t('placed', ctx.locale)} ${placed} · ${ctx.t('stored', ctx.locale)} ${stored}`;
+      section.append(row);
+    }
+    $('panel').append(section);
+  }
+
+  function renderCashActivity() {
+    const section = document.createElement('section'); section.className = 'cash-activity'; section.id = 'cashActivity';
+    const heading = document.createElement('h3');
+    heading.textContent = `${ctx.t('spendingTitle', ctx.locale)} · ${ctx.price(Math.floor(state().cash))}`;
+    section.append(heading);
+    if (state().recoveryDebt > 0) {
+      const debt = document.createElement('p'); debt.className = 'cash-debt';
+      debt.textContent = `${ctx.t('recoveryInvoice', ctx.locale)} ${ctx.price(state().recoveryDebt)}`;
+      section.append(debt);
+    }
+    const ledger = Array.isArray(state().cashLedger) ? state().cashLedger.slice(-8).reverse() : [];
+    if (!ledger.length) {
+      const empty = document.createElement('p'); empty.textContent = ctx.t('noSpendRecords', ctx.locale); section.append(empty);
+    }
+    const labels = { restock: 'manualOrderLabel', autoRestock: 'automaticWaterOrder', fixture: 'purchaseLabel',
+      equipment: 'purchaseLabel', cashier: 'purchaseLabel', helper: 'purchaseLabel', expansion: 'purchaseLabel',
+      sale: 'salesLabel', recoveryOrder: 'debtBorrowedLabel' };
+    const detailLabels = { shelf: 'shelf', checkout: 'cashRegister', cooler: 'coolerUpgrade',
+      fastCheckout: 'fasterCheckout', expansion: 'expand', helper: 'hireHelper', cashier: 'hireCashier' };
+    for (const entry of ledger) {
+      const row = document.createElement('div'); row.className = 'cash-activity-row';
+      const name = document.createElement('span');
+      const label = ctx.t(labels[entry.kind] || 'purchaseLabel', ctx.locale);
+      const product = entry.product ? ` · ${ctx.t(PRODUCT_DEFS[entry.product]?.label || entry.product, ctx.locale)}` : '';
+      const detailKey = entry.detail || (['cashier', 'helper', 'expansion'].includes(entry.kind) ? entry.kind : '');
+      const detail = detailKey ? ` · ${ctx.t(detailLabels[detailKey] || detailKey, ctx.locale)}` : '';
+      name.textContent = `${label}${detail}${product}${entry.quantity ? ` ×${entry.quantity}` : ''}`;
+      const amounts = document.createElement('span');
+      const cashText = entry.amount ? `${entry.amount > 0 ? '+' : '−'}${ctx.price(Math.abs(entry.amount))}` : '—';
+      const debtText = entry.debtChange ? ` · ${ctx.t(entry.debtChange > 0 ? 'debtBorrowedLabel' : 'debtPaidLabel', ctx.locale)} ${ctx.price(Math.abs(entry.debtChange))}` : '';
+      amounts.textContent = `${cashText}${debtText}`;
+      row.append(name, amounts); section.append(row);
+    }
+    $('panel').append(section);
+  }
+
+  function openCashActivity() {
+    ctx.selectedTab = 'supply';
+    document.querySelectorAll('[data-tab]').forEach(button => button.classList.toggle('active', button.dataset.tab === 'supply'));
+    renderPanel();
+    $('cashActivity')?.scrollIntoView({ block: 'nearest' });
   }
 
   function addWarehouseControls() {
@@ -1054,9 +1141,13 @@ export function installBlockmartV9(ctx) {
       label.textContent = `${name} · ${size.width}×${size.depth}`;
       const move = document.createElement('button'); move.className = 'fixture-manage'; move.textContent = ctx.t('moveFixture', ctx.locale);
       move.addEventListener('click', () => beginPlacement(fixture.kind, fixture.id, fixture.product, fixture.footprint));
+      const rotate = document.createElement('button'); rotate.className = 'fixture-rotate';
+      rotate.textContent = '↻'; rotate.setAttribute('aria-label', `${ctx.t('rotateFixture', ctx.locale)} · ${name}`);
+      rotate.disabled = fixture.kind === 'decor';
+      rotate.addEventListener('click', () => rotateSelectedFixture(fixture.id));
       const store = document.createElement('button'); store.className = 'fixture-store'; store.textContent = ctx.t('toWarehouse', ctx.locale);
       store.addEventListener('click', () => warehouseFixture(fixture.id));
-      row.append(label, move, store); $('panel').append(row);
+      row.append(label, move, rotate, store); $('panel').append(row);
     }
     for (const fixture of state().warehouse) {
       const row = document.createElement('div'); row.className = 'fixture-row warehouse-row';
@@ -1130,7 +1221,6 @@ export function installBlockmartV9(ctx) {
       createCard('shelf-single', ctx.t('smallShelf', ctx.locale), `${ctx.t('oneTile', ctx.locale)} · ${ctx.t('selectFloorThenPlace', ctx.locale)}`, ctx.price(70), () => beginPlacement('shelf', null, 'water', 'single'), { placement: { kind: 'shelf', footprint: 'single', product: 'water' } });
       createCard('shelf-double', ctx.t('doubleShelf', ctx.locale), `${ctx.t('twoTiles', ctx.locale)} · ${ctx.t('selectFloorThenPlace', ctx.locale)}`, ctx.price(120), () => beginPlacement('shelf', null, 'water', 'double'), { placement: { kind: 'shelf', footprint: 'double', product: 'water' } });
       createCard('goods', ctx.t('newGoods', ctx.locale), `${ctx.t('productVariety', ctx.locale)} · ${Object.keys(PRODUCT_DEFS).length}`, '›', () => { ctx.selectedTab = 'supply'; renderPanel(); });
-      createCard('queue', ctx.t('popularity', ctx.locale), `${ctx.t('cashierQueueSummary', ctx.locale)} · ${Math.round(state().popularity)}/100`, '', () => {} , { disabled: true });
     }
     if (tab === 'supply') {
       for (const id of Object.keys(PRODUCT_DEFS)) {
@@ -1143,8 +1233,10 @@ export function installBlockmartV9(ctx) {
         createCard(id, title, detail, unlocked ? `+${order} · ${ctx.price(order * product.cost)}` : ctx.t('locked', ctx.locale), () => stockOrder(id, 8), { disabled: !unlocked || !order });
       }
       createCard('shelf-single', ctx.t('smallShelf', ctx.locale), ctx.t('shelfForSelectedProduct', ctx.locale), ctx.price(70), () => beginPlacement('shelf', null, $('placementProduct').value || 'water', 'single'), { placement: { kind: 'shelf', footprint: 'single', product: 'water' } });
+      renderCashActivity();
     }
     if (tab === 'growth') {
+      renderWarehouseSummary();
       createCard('growth', ctx.t('expand', ctx.locale), `${ctx.t('expandDetail', ctx.locale)} · ${state().area} × ${state().area}`, `−${ctx.price(ctx.EXPANSION_COST)}`, ctx.expand, { disabled: state().area > 10 || state().cash < ctx.EXPANSION_COST });
       const coolerFixture = fixtures().find(f => f.id === state().coolerFixtureId) || state().warehouse.find(f => f.id === state().coolerFixtureId)
         || fixtures().find(f => f.kind === 'cooler') || state().warehouse.find(f => f.kind === 'cooler');
@@ -1157,14 +1249,24 @@ export function installBlockmartV9(ctx) {
         () => beginPlacement('cooler', coolerOwned ? coolerFixture?.id || null : coolerFixture?.id || null, 'water', 'cooler'),
         { disabled: Boolean(coolerOwned && coolerInstalled), placement: { kind: 'cooler', footprint: 'cooler' } });
       createCard('store-charm', ctx.t('storeCharm', ctx.locale), `${ctx.t('decorAppeal', ctx.locale)} +${currentDecorAppeal().toFixed(1)} · ${state().diamond} ${ctx.t('tokens', ctx.locale)}`, '−1 ✦', () => beginPlacement('decor', null, 'water', 'decor'), { disabled: state().diamond < 1 || decorativeCount() >= 6, placement: { kind: 'decor', footprint: 'decor' } });
-      createCard('popularity', ctx.t('popularityRecovery', ctx.locale), `${ctx.t('popularityRecoveryDetail', ctx.locale)} · ${ctx.t('popularity', ctx.locale)} ${Math.round(state().popularity)}/100`, '↗', () => {}, { disabled: true });
+      createCard('entrance', ctx.t('entrance', ctx.locale), ctx.t('routeSafetyHint', ctx.locale), '↔', () => beginEndpointEdit('entrance'));
+      createCard('exit', ctx.t('exit', ctx.locale), ctx.t('routeSafetyHint', ctx.locale), '↔', () => beginEndpointEdit('exit'));
       addWarehouseControls();
     }
     if (tab === 'staff') {
+      renderWarehouseSummary();
       createCard('cash-register', ctx.t('cashRegister', ctx.locale), `${ctx.t('cashierCountLabel', ctx.locale)} ${Math.min(state().cashierCount, allCounters().length)}/${allCounters().length} · ${ctx.t('cashierService', ctx.locale)}`, `−$${REGISTER_COST}`, buyRegister, { placement: { kind: 'checkout', footprint: 'counter' } });
       createCard('cashier', ctx.t('hireCashier', ctx.locale), `${ctx.t('cashierHireDetail', ctx.locale)} · ${state().cashierCount}`, `−$${CASHIER_HIRE_COST}`, hireCashier, { disabled: state().cash < CASHIER_HIRE_COST });
       createCard('checkout-speed', ctx.t('fasterCheckout', ctx.locale), `${ctx.t('checkoutDetail', ctx.locale)} · ${ctx.t('checkoutTime', ctx.locale)} ${ctx.checkoutSeconds(ctx.activeEquipment()).toFixed(1)}s`, state().equipment.fastCheckout ? ctx.t('upgradeComplete', ctx.locale) : '−$150', () => state().equipment.fastCheckout ? beginPlacement('fastCheckout', state().warehouse.find(f => f.kind === 'fastCheckout')?.id || state().fixtures.find(f => f.kind === 'fastCheckout')?.id, 'water', 'counter') : beginPlacement('fastCheckout', null, 'water', 'counter'), { disabled: state().equipment.fastCheckout && fixtures().some(f => f.kind === 'fastCheckout') || !state().equipment.fastCheckout && state().cash < 150, placement: { kind: 'fastCheckout', footprint: 'counter' } });
-      createCard('stock-helper', ctx.t('hireHelper', ctx.locale), state().helper ? ctx.t('helperDuty', ctx.locale) : ctx.t('helperNoWage', ctx.locale), state().helper ? ctx.t('hired', ctx.locale) : '−$220', ctx.hire, { disabled: state().helper || state().cash < 220 });
+      createCard('stock-helper', ctx.t('hireHelper', ctx.locale), state().helper ? ctx.t('helperAutoRestockHint', ctx.locale) : ctx.t('helperNoWage', ctx.locale), state().helper ? ctx.t('hired', ctx.locale) : '−$220', ctx.hire, { disabled: state().helper || state().cash < 220 });
+      const auto = createCard('auto-restock', ctx.t('autoRestock', ctx.locale), ctx.t('autoRestockOptIn', ctx.locale),
+        state().autoRestockEnabled ? ctx.t('autoRestockOn', ctx.locale) : ctx.t('autoRestockOff', ctx.locale), () => {
+          if (!state().helper) { ctx.toast(ctx.t('helperNeeded', ctx.locale)); return; }
+          state().autoRestockEnabled = !state().autoRestockEnabled;
+          ctx.save(); renderPanel(); refreshHud();
+          ctx.toast(ctx.t(state().autoRestockEnabled ? 'autoRestockTurnedOn' : 'autoRestockTurnedOff', ctx.locale));
+        }, { disabled: !state().helper, className: state().autoRestockEnabled ? 'toggle-card active' : 'toggle-card' });
+      auto.setAttribute('aria-pressed', String(Boolean(state().autoRestockEnabled)));
       addWarehouseControls();
     }
     if (getPlacement()) {
@@ -1342,18 +1444,37 @@ export function installBlockmartV9(ctx) {
   }
 
   function addPopularityHud() {
-    if ($('popularityHud')) return;
-    const hud = document.createElement('div'); hud.id = 'popularityHud'; hud.className = 'popularity-hud';
-    hud.setAttribute('aria-label', ctx.t('popularity', ctx.locale));
-    const label = document.createElement('span'); label.textContent = ctx.t('popularity', ctx.locale);
-    const meter = document.createElement('span'); meter.id = 'popularityMeter'; meter.className = 'popularity-meter';
-    meter.setAttribute('role', 'meter'); meter.setAttribute('aria-valuemin', '0'); meter.setAttribute('aria-valuemax', '100');
-    const value = document.createElement('b'); value.id = 'popularityValue'; value.textContent = String(Math.round(state().popularity));
-    hud.append(label, meter, value); document.querySelector('.scene-hud').prepend(hud);
+    let hud = $('popularityHud');
+    if (!hud) {
+      hud = document.createElement('div'); hud.id = 'popularityHud'; hud.className = 'popularity-hud';
+      const label = document.createElement('span'); label.textContent = ctx.t('popularity', ctx.locale);
+      const meter = document.createElement('span'); meter.id = 'popularityMeter'; meter.className = 'popularity-meter';
+      meter.setAttribute('role', 'meter'); meter.setAttribute('aria-valuemin', '0'); meter.setAttribute('aria-valuemax', '100');
+      const value = document.createElement('b'); value.id = 'popularityValue'; value.textContent = String(Math.round(state().popularity));
+      hud.append(label, meter, value); document.querySelector('.scene-hud').prepend(hud);
+    }
+    hud.setAttribute('role', 'button'); hud.setAttribute('tabindex', '0');
+    hud.setAttribute('aria-label', `${ctx.t('popularity', ctx.locale)} · ${ctx.t('explainPopularity', ctx.locale)}`);
+    if (hud.dataset.helpBound !== 'true') {
+      const explain = () => ctx.toast(ctx.t('explainPopularity', ctx.locale));
+      hud.addEventListener('click', explain);
+      hud.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); explain(); } });
+      hud.dataset.helpBound = 'true';
+    }
     if (!$('selectedTileReadout')) {
       const readout = document.createElement('span'); readout.id = 'selectedTileReadout'; readout.className = 'selected-tile-readout';
       readout.textContent = ctx.t('noTileSelected', ctx.locale); document.querySelector('.scene-legend').append(readout);
     }
+  }
+
+  function bindCashHud() {
+    const cash = document.querySelector('.scene-hud .money');
+    if (!cash || cash.dataset.activityBound === 'true') return;
+    cash.setAttribute('role', 'button'); cash.setAttribute('tabindex', '0');
+    cash.setAttribute('aria-label', ctx.t('openCashActivity', ctx.locale));
+    cash.addEventListener('click', openCashActivity);
+    cash.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openCashActivity(); } });
+    cash.dataset.activityBound = 'true';
   }
 
   function refreshTraffic() {
@@ -1422,6 +1543,7 @@ export function installBlockmartV9(ctx) {
     migrateCurrentState();
     fitCameraToShop();
     addPopularityHud();
+    bindCashHud();
     bindInput();
     syncFixtures();
     ctx.save();

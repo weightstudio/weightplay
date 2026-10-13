@@ -1,7 +1,7 @@
 import * as THREE from './vendor/three/three.module.min.js';
 import {GroundCues} from './ground-cues.js';
 import {axePose,chopBody,ease,enemyWind,enemyStroke} from './combat-pose.js?v=20261003-wildwood-axe-v12a';
-const palette={wood:0x765139,dark:0x302a2c,orange:0xc9763e,cream:0xffdfae,teal:0x258f85,gold:0xf4be58,leaf:0x397a50,moss:0x69905b,stone:0x738782,steel:0x617781,edge:0xe6edf2,white:0xd9f3e4,cyan:0x79f4d3,purple:0x875b99,red:0xf2745e,ground:0x537555,treeBark:0x624b39,treeBarkLight:0x87694b,canopyShade:0x355b3e,canopyMid:0x4b7048,canopyTop:0x668154};
+const palette={wood:0x765139,dark:0x302a2c,orange:0xc9763e,cream:0xffdfae,teal:0x258f85,gold:0xf4be58,leaf:0x397a50,moss:0x69905b,stone:0x738782,steel:0x617781,edge:0xe6edf2,white:0xd9f3e4,cyan:0x79f4d3,purple:0x875b99,red:0xf2745e,ground:0x537555,treeBark:0x624b39,treeBarkLight:0x87694b,canopyShade:0x315b3b,canopyMid:0x4d7749,canopyTop:0x769354,canopyShadeFern:0x375b40,canopyMidFern:0x58784c,canopyTopFern:0x84995d,canopyShadeCool:0x315743,canopyMidCool:0x4c7558,canopyTopCool:0x77947a};
 export function createBlockGeometry(){
  const shape=new THREE.Shape();shape.moveTo(-.46,-.46);shape.lineTo(.46,-.46);shape.lineTo(.46,.46);shape.lineTo(-.46,.46);shape.closePath();
  const geometry=new THREE.ExtrudeGeometry(shape,{depth:.92,bevelEnabled:true,bevelSize:.04,bevelThickness:.04,bevelSegments:2,steps:1});geometry.translate(0,0,-.46);geometry.computeBoundingBox();
@@ -18,22 +18,71 @@ export function createBlockGeometry(){
  uv.needsUpdate=true;return geometry;
 }
 export function createCanopyGeometry(){
- // Broad, stepped tiers read as deliberate woodland crowns from the high
- // gameplay camera, instead of a smooth ball that blends into the grass.
- const segments=8,rings=[[0,.12,0,0],[.12,.40,-.025,0],[.25,.64,.018,-.012],[.34,.68,.025,.008],[.40,.54,-.014,.018],[.57,.36,.006,0],[.64,.40,-.018,-.012],[.79,.23,.012,.01],[.86,.26,0,0],[.97,.08,0,0],[1,.015,0,0]],positions=[],indices=[];
- for(const [y,r,x,z] of rings)for(let i=0;i<segments;i++){const a=i/segments*Math.PI*2+(i%2)*.035;positions.push(x+Math.cos(a)*r,y,z+Math.sin(a)*r);}
+ // One clean, stepped foliage tier is instanced three times per tree. Keeping
+ // each tier to a single skirt avoids the many nested rings that made the
+ // previous crown look like a stack of little bushes at phone scale.
+ const segments=9,rings=[[0,.08,0,0],[.16,.47,-.018,0],[.23,.62,.012,-.01],[.30,.59,.02,.008],[.43,.43,-.01,.012],[.67,.25,.012,0],[.87,.11,-.014,-.008],[.97,.035,.01,.012],[1,.01,0,0]],positions=[],indices=[];
+ for(let row=0;row<rings.length;row++){
+  const [y,r,x,z]=rings[row];
+  for(let i=0;i<segments;i++){
+   const a=i/segments*Math.PI*2+(i%2)*.025,edge=1+.055*Math.sin(i*2.31+row*1.41)+.025*Math.cos(i*3.17-row*.72);
+   positions.push(x+Math.cos(a)*r*edge,y,z+Math.sin(a)*r*edge);
+  }
+ }
  const bottom=positions.length/3;positions.push(0,0,0);const top=positions.length/3;positions.push(0,1.03,0);
  for(let row=0;row<rings.length-1;row++)for(let i=0;i<segments;i++){const a=row*segments+i,b=row*segments+(i+1)%segments,c=(row+1)*segments+i,d=(row+1)*segments+(i+1)%segments;indices.push(a,c,b,b,c,d);}
  const last=(rings.length-1)*segments;
  for(let i=0;i<segments;i++){indices.push(bottom,(i+1)%segments,i);indices.push(last+i,top,last+(i+1)%segments);}
  const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setIndex(indices);geometry.computeVertexNormals();geometry.computeBoundingBox();return geometry;
 }
+function createGroundTexture(){
+ const size=512,canvas=document.createElement('canvas');canvas.width=canvas.height=size;
+ const ctx=canvas.getContext('2d',{alpha:false}),pixels=ctx.createImageData(size,size);
+ // A nearly even sage base replaces the blurry camouflage patches. Very low
+ // amplitude tile-periodic variation keeps the surface from reading as flat.
+ for(let y=0;y<size;y++)for(let x=0;x<size;x++){
+  const u=x/size,v=y/size,wave=Math.sin(u*Math.PI*8)*Math.cos(v*Math.PI*6)*2+Math.sin((u+v)*Math.PI*4)*1.05+Math.cos((u-v)*Math.PI*3)*.55,at=(y*size+x)*4;
+  pixels.data[at]=98+wave;pixels.data[at+1]=122+wave;pixels.data[at+2]=76+wave;pixels.data[at+3]=255;
+ }
+ ctx.putImageData(pixels,0,0);
+ let seed=0x51a9e37;
+ const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+ const wrapped=(x,y,margin,draw)=>{
+  for(const dx of [-size,0,size])for(const dy of [-size,0,size]){
+   const px=x+dx,py=y+dy;if(px>=-margin&&px<=size+margin&&py>=-margin&&py<=size+margin)draw(px,py);
+  }
+ };
+ // Sparse, short grass strokes form quiet local texture instead of dense
+ // photoreal detail. Wrapped edge copies keep the CanvasTexture seamless.
+ for(let tuft=0;tuft<108;tuft++){
+  const x=random()*size,y=random()*size,angle=random()*Math.PI*2,light=random()>.52,len=5+random()*4,opacity=.16+random()*.075,bladeWidth=1+random()*.45;
+  wrapped(x,y,12,(px,py)=>{
+   ctx.save();ctx.translate(px,py);ctx.rotate(angle);ctx.lineCap='round';ctx.lineWidth=bladeWidth;
+   ctx.strokeStyle=light?`rgba(170,188,127,${opacity})`:`rgba(53,86,59,${opacity})`;
+   for(let blade=-1;blade<=1;blade++){
+    ctx.beginPath();ctx.moveTo(blade*1.4,1.5);ctx.quadraticCurveTo(blade*1.8,-len*.28,blade*2.8,-len);ctx.stroke();
+   }
+   ctx.restore();
+  });
+ }
+ // Tiny, rare leaf pairs add a woodland cue without introducing large
+ // camouflage spots or competing with the actors and health bars.
+ for(let leaf=0;leaf<24;leaf++){
+  const x=random()*size,y=random()*size,angle=random()*Math.PI*2,warm=random()>.72,opacity=warm?.15:.17;
+  wrapped(x,y,8,(px,py)=>{
+   ctx.save();ctx.translate(px,py);ctx.rotate(angle);ctx.fillStyle=warm?`rgba(169,139,79,${opacity})`:`rgba(135,151,86,${opacity})`;
+   for(const side of [-1,1]){ctx.beginPath();ctx.ellipse(side*1.6,side*.25,2.1,.9,side*.3,0,Math.PI*2);ctx.fill();}
+   ctx.restore();
+  });
+ }
+ const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;texture.wrapS=texture.wrapT=THREE.RepeatWrapping;texture.repeat.set(2,2);texture.anisotropy=4;return texture;
+}
 export class WildwoodWorld {
  constructor(canvas,sim){
   this.canvas=canvas;this.sim=sim;this.parts=[];this.models=new Map();this.batches=new Map();this.effects=[];this.reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   this.renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
   this.scene=new THREE.Scene();this.cues=new GroundCues(this.scene);this.scene.background=new THREE.Color(0x173d3c);
-  this.ground=new THREE.TextureLoader().load(new URL('./art/ground-moss-v7.png',import.meta.url).href);this.ground.colorSpace=THREE.SRGBColorSpace;this.ground.wrapS=this.ground.wrapT=THREE.RepeatWrapping;this.ground.repeat.set(4,4);this.ground.anisotropy=Math.min(4,this.renderer.capabilities.getMaxAnisotropy());
+  this.ground=createGroundTexture();this.ground.anisotropy=Math.min(4,this.renderer.capabilities.getMaxAnisotropy());
   this.camera=new THREE.OrthographicCamera(-9,9,11,-11,.1,70);this.camera.position.set(0,26,12);this.camera.lookAt(0,0,0);
   this.geometry=createBlockGeometry();this.canopyGeometry=createCanopyGeometry();
   this.scene.add(new THREE.HemisphereLight(0xd3f3ee,0x345040,2.3));this.sun=new THREE.DirectionalLight(0xffe0a0,3);this.sun.position.set(-6,15,9);this.sun.castShadow=true;this.sun.shadow.mapSize.set(1024,1024);Object.assign(this.sun.shadow.camera,{left:-12,right:12,top:12,bottom:-12,far:40});this.sun.shadow.normalBias=.04;this.scene.add(this.sun);
@@ -60,13 +109,14 @@ export class WildwoodWorld {
  tree(parent,x,z,scale=1,decor=false){
   const g=new THREE.Group();g.position.set(x,0,z);g.scale.setScalar(scale);parent.add(g);
   this.box(g,'treeBark',[0,.69,0],[.38,1.38,.38]);this.box(g,'treeBarkLight',[-.075,.72,.195],[.075,.78,.025]);
+  for(const sign of [-1,1]){const root=this.box(g,'treeBark',[sign*.12,.075,0],[.26,.12,.24]);root.rotation.z=-sign*.24;}
   for(const sign of [-1,1]){const branch=this.box(g,'treeBark',[sign*.28,1.37,0],[.58,.2,.23]);branch.rotation.z=-sign*.24;}
   const crown=new THREE.Group(),variation=Math.abs(Math.sin(x*2.17+z*1.31));crown.rotation.y=variation*Math.PI*.5;g.add(crown);
-  const width=(decor?.84:.94)+variation*.12,skew=(variation-.5)*.2,depth=(variation-.5)*.14;
-  this.foliage(crown,'canopyShade',[0,1.40,-.035],[.99*width,1.15,.88*width]);
-  this.foliage(crown,'canopyMid',[-.27*width,1.68,.02],[.65*width,.90,.62*width]);
-  this.foliage(crown,'canopyMid',[.29*width,1.71,-.025],[.63*width,.86,.60*width]);
-  this.foliage(crown,'canopyTop',[skew*.65,2.02,depth*.3],[.55*width,.82,.53*width]);
+  const width=(decor?.86:.98)+variation*.1,skew=(variation-.5)*.16,depth=(variation-.5)*.12;
+  const colors=variation<.34?['canopyShade','canopyMid','canopyTop']:variation<.68?['canopyShadeFern','canopyMidFern','canopyTopFern']:['canopyShadeCool','canopyMidCool','canopyTopCool'];
+  this.foliage(crown,colors[0],[0,1.43,-.035],[.98*width,1.04,.88*width]);
+  this.foliage(crown,colors[1],[skew,1.82,.02],[.74*width,.82,.69*width]);
+  this.foliage(crown,colors[2],[skew*.55,2.13,depth*.3],[.49*width,.64,.47*width]);
   g.userData.crown=crown;return g;
  }
  character(kind,type=''){

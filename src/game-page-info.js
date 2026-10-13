@@ -106,7 +106,7 @@
       difficulty: "Easy to Challenging",
       time: "3-10 minutes",
       skills: ["Inertia Control", "Aim", "Risk Timing"], hideSkillsFact: true, showRelatedSkill: false,
-      relatedIds: ["alien-defender", "road-crosser", "animal-abyss-diver"],
+      relatedIds: ["snake", "maze-chase"],
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
       intro: "Space Rocks is an original inertia space shooter. Pilot Rux through three drifting waves, rotate and thrust with momentum, fire in every direction, split large crystal rocks into smaller fragments, and save Shield for the Wave 3 guardian core.",
