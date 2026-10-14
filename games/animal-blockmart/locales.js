@@ -243,6 +243,27 @@ const achievementCopy={
 };
 for(const locale of supportedLocales)Object.assign(dict[locale],Object.fromEntries(achievementKeys.map((key,index)=>[key,(achievementCopy[locale]||achievementCopy.en)[index]])));
 keys.push(...achievementKeys);
+const staffShelfKeys=['availableStock','changeShelfProduct','registerRoster','registerStaffed','registerVacant','hireForRegister','fillFirstVacancy','noRegisterVacancy','addRegister'];
+const staffShelfCopy={
+ en:['Shop stock','Change product','Registers and cashiers','Cashier assigned','Needs a cashier','Hire cashier','Fill the first vacancy first.','Add a register before hiring another cashier.','Add register'],
+ 'zh-Hant':['店內庫存','更換商品','收銀台與員工','已有收銀員','待聘收銀員','聘用收銀員','請先補滿前一個空缺。','請先新增收銀台，再聘用下一位收銀員。','新增收銀台'],
+ 'zh-Hans':['店内库存','更换商品','收银台与员工','已有收银员','待聘收银员','聘用收银员','请先补满前一个空缺。','请先新增收银台，再聘用下一位收银员。','新增收银台'],
+ ja:['店内在庫','商品を変更','レジとスタッフ','スタッフ配置済み','スタッフが必要','スタッフを雇う','先に最初の空席を埋めてください。','次のスタッフを雇う前にレジを追加してください。','レジを追加'],
+ ko:['매장 재고','상품 변경','계산대와 직원','직원 배치됨','직원 필요','계산원 고용','먼저 앞의 빈자리를 채우세요.','계산원을 더 고용하려면 계산대를 추가하세요.','계산대 추가'],
+ es:['Stock de tienda','Cambiar producto','Cajas y personal','Cajero asignado','Necesita cajero','Contratar cajero','Cubre primero la primera vacante.','Añade una caja antes de contratar otro cajero.','Añadir caja'],
+ 'pt-BR':['Estoque da loja','Trocar produto','Caixas e funcionários','Caixa com funcionário','Precisa de funcionário','Contratar caixa','Preencha primeiro a primeira vaga.','Adicione um caixa antes de contratar outro funcionário.','Adicionar caixa'],
+ fr:['Stock du magasin','Changer de produit','Caisses et employés','Employé affecté','Employé requis','Recruter un employé','Pourvoyez d’abord la première place libre.','Ajoutez une caisse avant de recruter un autre employé.','Ajouter une caisse'],
+ de:['Ladenbestand','Produkt wechseln','Kassen und Personal','Personal zugewiesen','Personal benötigt','Kassenkraft einstellen','Besetze zuerst den ersten freien Platz.','Füge eine Kasse hinzu, bevor du weitere Kassenkräfte einstellst.','Kasse hinzufügen'],
+ it:['Scorte del negozio','Cambia prodotto','Casse e personale','Cassiere assegnato','Cassiere necessario','Assumi cassiere','Copri prima il primo posto libero.','Aggiungi una cassa prima di assumere un altro cassiere.','Aggiungi cassa'],
+ ru:['Запас магазина','Сменить товар','Кассы и сотрудники','Кассир назначен','Нужен кассир','Нанять кассира','Сначала заполните первое свободное место.','Добавьте кассу перед наймом следующего кассира.','Добавить кассу'],
+ hi:['दुकान का स्टॉक','उत्पाद बदलें','कैश काउंटर और कर्मचारी','कैशियर नियुक्त','कैशियर चाहिए','कैशियर नियुक्त करें','पहले पहली खाली जगह भरें।','अगला कैशियर रखने से पहले कैश काउंटर जोड़ें।','कैश काउंटर जोड़ें'],
+ ar:['مخزون المتجر','تغيير المنتج','الصناديق والموظفون','موظف معيّن','يحتاج إلى موظف','توظيف أمين صندوق','املأ أول وظيفة شاغرة أولاً.','أضف صندوقاً قبل توظيف أمين صندوق آخر.','إضافة صندوق']
+};
+for(const locale of supportedLocales)Object.assign(dict[locale],Object.fromEntries(staffShelfKeys.map((key,index)=>[key,staffShelfCopy[locale][index]])));
+keys.push(...staffShelfKeys);
+const shelfUnitCopy={en:'Shelf','zh-Hant':'貨架','zh-Hans':'货架',ja:'棚',ko:'선반',es:'Estante','pt-BR':'Prateleira',fr:'Étagère',de:'Regal',it:'Scaffale',ru:'Полка',hi:'शेल्फ़',ar:'رف'};
+for(const locale of supportedLocales)dict[locale].shelfUnit=shelfUnitCopy[locale];
+keys.push('shelfUnit');
 export const localeKeys=keys;
 const aliases={'zh-tw':'zh-Hant','zh-hant':'zh-Hant','zh-cn':'zh-Hans','zh-hans':'zh-Hans','pt-br':'pt-BR'};
 export function resolveLocale(){const q=new URL(location.href).searchParams.get('lang');const ref=(()=>{try{return new URL(document.referrer).pathname.split('/')[1]}catch{return''}})();const here=location.pathname.split('/')[1];const raw=q||ref||here||document.documentElement.lang||'en';const locale=aliases[raw.toLowerCase()]||raw;return supportedLocales.includes(locale)?locale:'en'}

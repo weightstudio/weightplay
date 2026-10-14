@@ -184,11 +184,11 @@
 @media (min-width:661px) and (max-height:760px) and (orientation:landscape) {
   #logicBattle .logic-battle-wrap {
     grid-template-columns:minmax(0,1fr) 220px;
-    grid-template-rows:72px 44px minmax(148px,1fr);
-    gap:8px;
+    grid-template-rows:44px 44px minmax(148px,1fr);
+    gap:6px;
   }
   #logicBattle .logic-board-panel { grid-column:1; grid-row:1 / 4; }
-  #logicBattle #logicStatus { grid-column:2; grid-row:1; height:72px; }
+  #logicBattle #logicStatus { grid-column:2; grid-row:1; height:44px; }
   #logicBattle .four-difficulty { grid-column:2; grid-row:2; }
   #logicBattle .logic-action-row { grid-column:2; grid-row:3; height:148px; grid-template-columns:minmax(0,1fr); grid-template-rows:repeat(3,44px); align-self:end; }
   #logicBattle #logicBoard { height:100%; }

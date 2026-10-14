@@ -400,7 +400,7 @@ function createDemonEventPreview() {
       let blocks = "";
       try { const count = window.WeightPlayCastle?.ownedBlocks?.(); if (Number.isFinite(Number(count)) && Number(count) >= 0) blocks = `&blocks=${encodeURIComponent(Math.floor(Number(count)))}`; } catch {}
       const params = `?locale=${encodeURIComponent(locale)}${blocks}`;
-      window.location.href = `/assets-preview/demon-assault-battle-candidate.html${params}`;
+      window.location.href = `/assets-preview/demon-assault-camera-candidate.html${params}`;
     });
     doneButton.before(launch);
   }

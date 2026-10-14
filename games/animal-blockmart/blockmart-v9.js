@@ -115,6 +115,7 @@ export function installBlockmartV9(ctx) {
 
   let selectedFloor = null;
   let selectedFixtureId = null;
+  let productPickerFixtureId = null;
   let selectedMarker = null;
   let ghostMesh = null;
   let selectionMesh = null;
@@ -943,7 +944,7 @@ export function installBlockmartV9(ctx) {
     $('rotatePlacement').hidden = kind === 'decor';
     document.querySelector('label[for=placementProduct]').hidden = kind !== 'shelf';
     document.querySelector('label[for=placementFootprint]').hidden = kind !== 'shelf';
-    $('placementProduct').value = old?.product || product || 'water';
+    refreshPlacementProducts(old?.product || product || 'water');
     $('placementFootprint').value = selectedFootprint;
     if (getPlacement().point) updatePlacementPreview(getPlacement().point);
     else updatePlacementUi();
@@ -1042,6 +1043,9 @@ export function installBlockmartV9(ctx) {
     const oldFixture = p.fixtureId ? fixtures().find(f => f.id === p.fixtureId) : null;
     const oldWarehouse = p.fixtureId ? state().warehouse.find(f => f.id === p.fixtureId) : null;
     const old = oldFixture || oldWarehouse;
+    if (p.kind === 'shelf' && !state().unlocked.includes(p.product) && p.product !== old?.product) {
+      ctx.toast(productLockReason(p.product)); return;
+    }
     if (old) {
       if (p.kind === 'cooler' && !state().equipment.cooler) {
         const cost = fixtureCost(p.kind, p.footprint);
@@ -1133,30 +1137,80 @@ export function installBlockmartV9(ctx) {
   function renderSelectedFixture() {
     const fixture = fixtures().find(f => f.id === selectedFixtureId);
     if (!fixture) return;
-    createCard('selected-fixture', ctx.t('selectedFixture', ctx.locale), `${ctx.t(fixture.kind === 'shelf' ? 'product' : fixture.kind === 'checkout' ? 'cashRegister' : fixture.kind === 'cooler' ? 'coolerUpgrade' : 'storeCharm', ctx.locale)} · ${ctx.t('footprint', ctx.locale)} ${footprintSize(fixture).width}×${footprintSize(fixture).depth}`, ctx.t('selected', ctx.locale), () => {}, { disabled: true, className: 'fixture-selection-readout' });
-    createCard('rotate', ctx.t('rotateFixture', ctx.locale), ctx.t('turnFixturePrompt', ctx.locale), '↻', () => rotateSelectedFixture(fixture.id));
-    createCard('move', ctx.t('moveFixture', ctx.locale), ctx.t('dragFixturePrompt', ctx.locale), ctx.t('placeFree', ctx.locale), () => beginPlacement(fixture.kind, fixture.id, fixture.product, fixture.footprint));
+    const section = document.createElement('section'); section.className = 'fixture-detail'; section.dataset.fixtureId = fixture.id;
+    const head = document.createElement('div'); head.className = 'fixture-detail-heading';
+    head.append(fixtureIllustration(fixture));
+    const copy = document.createElement('div');
+    const title = document.createElement('h3');
+    title.textContent = fixture.kind === 'shelf' ? `${ctx.t('shelfUnit', ctx.locale)} ${fixtures().filter(f => f.kind === 'shelf').indexOf(fixture) + 1}` : fixtureLabel(fixture);
+    const detail = document.createElement('p');
+    detail.textContent = fixture.kind === 'shelf' ? `${productName(fixture.product)} · ${ctx.t('availableStock', ctx.locale)} ${state().stock[fixture.product] || 0}` : `${ctx.t('footprint', ctx.locale)} ${footprintSize(fixture).width}×${footprintSize(fixture).depth}`;
+    copy.append(title, detail); head.append(copy); section.append(head);
     if (fixture.kind === 'shelf') {
-      const row = document.createElement('label'); row.className = 'fixture-product-select';
-      const label = document.createElement('span'); label.textContent = ctx.t('chooseProduct', ctx.locale);
-      const select = document.createElement('select'); select.setAttribute('aria-label', label.textContent);
-      for (const id of state().unlocked) {
-        const option = document.createElement('option'); option.value = id;
-        option.textContent = ctx.t(PRODUCT_DEFS[id]?.label || 'shelf', ctx.locale); select.append(option);
-      }
-      select.value = fixture.product;
-      select.addEventListener('change', () => {
-        const index = state().fixtures.findIndex(item => item.id === fixture.id);
-        if (index < 0) return;
-        state().fixtures[index] = { ...state().fixtures[index], product: select.value };
-        syncFixtures(); ctx.save(); renderPanel();
-        ctx.toast(ctx.t('shelfProductChanged', ctx.locale));
-      });
-      row.append(label, select); $('panel').append(row);
+      const change = actionButton('changeShelfProduct', () => { productPickerFixtureId = productPickerFixtureId === fixture.id ? null : fixture.id; renderPanel(); $('panel').scrollTop = 0; });
+      change.classList.add('shelf-product-action'); change.setAttribute('aria-expanded', String(productPickerFixtureId === fixture.id));
+      section.append(change);
+      if (productPickerFixtureId === fixture.id) section.append(renderProductPicker(fixture));
     }
-    if (fixture.kind !== 'checkout' || staffedCounters().length > 1) {
-      createCard('warehouse', ctx.t('toWarehouse', ctx.locale), ctx.t('keepStockAndLevel', ctx.locale), '↥', () => warehouseFixture(fixture.id));
+    const tools = document.createElement('div'); tools.className = 'fixture-context-tools';
+    tools.append(actionButton('rotateFixture', () => rotateSelectedFixture(fixture.id)), actionButton('moveFixture', () => beginPlacement(fixture.kind, fixture.id, fixture.product, fixture.footprint)));
+    if (fixture.kind !== 'checkout' || staffedCounters().length > 1) tools.append(actionButton('toWarehouse', () => warehouseFixture(fixture.id)));
+    section.append(tools); $('panel').append(section);
+  }
+
+  const productName = id => ctx.t(PRODUCT_DEFS[id]?.label || 'shelf', ctx.locale);
+  const fixtureLabel = fixture => ctx.t(({shelf:'shelfUnit',checkout:'cashRegister',cooler:'coolerUpgrade',fastCheckout:'fasterCheckout',decor:'storeCharm'})[fixture.kind] || 'selectedFixture', ctx.locale);
+  function actionButton(key, action) {
+    const button = document.createElement('button'); button.type = 'button'; button.textContent = ctx.t(key, ctx.locale); button.addEventListener('click', action); return button;
+  }
+
+  function fixtureIllustration(fixture) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 120 80'); svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', fixture.kind === 'shelf' ? `${ctx.t('shelfUnit', ctx.locale)} · ${productName(fixture.product)}` : fixtureLabel(fixture));
+    svg.classList.add('fixture-illustration');
+    const shape = (x, y, w, h, fill) => { const rect = document.createElementNS(svg.namespaceURI, 'rect'); for (const [name,value] of Object.entries({x,y,width:w,height:h,fill})) rect.setAttribute(name,String(value)); svg.append(rect); };
+    shape(3,65,114,8,'#dcebe7');
+    if (fixture.kind === 'shelf') {
+      shape(15,7,8,61,'#84603f'); shape(98,7,8,61,'#84603f');
+      for (const y of [34,60]) { shape(20,y,81,7,'#b18550'); for (const x of [29,48,67,86]) { const color=`#${(PRODUCT_DEFS[fixture.product]?.color || 0x48b6cf).toString(16).padStart(6,'0')}`; shape(x,y-19,11,18,color); shape(x+2,y-16,7,4,'#fff2d5'); } }
+    } else if (fixture.kind === 'cooler') {
+      shape(15,6,90,62,'#315b64');shape(22,15,33,43,'#8ebfc3');shape(61,15,33,43,'#8ebfc3');
+      for (const y of [28,45]) for (const x of [29,41,68,80]) { shape(x,y-8,8,11,'#60cadd');shape(x+2,y-10,4,3,'#eefbff'); }
+      shape(57,17,3,36,'#efbe53');shape(21,61,78,5,'#244650');
+    } else if (fixture.kind === 'decor') {
+      shape(44,46,33,19,'#ad7846');shape(39,43,43,7,'#c9965c');shape(57,15,8,30,'#348e69');shape(38,22,28,13,'#53ac74');shape(61,12,24,13,'#63bb80');
+    } else {
+      shape(14,36,92,29,'#ac7b48'); shape(14,49,92,16,'#285965'); shape(62,17,28,19,'#426b70'); shape(66,20,20,11,'#9bd9bd');
+      if (staffedCounters().some(counter => counter.id === fixture.id)) { shape(28,8,19,18,'#ba916c'); shape(24,27,27,17,'#258b78'); shape(26,4,23,6,'#315f6c'); }
     }
+    return svg;
+  }
+
+  function productLockReason(id) { return `${ctx.t('unlockAt', ctx.locale)} ${ctx.price(id === 'juice' ? 280 : 1000)} ${ctx.t('lifetimeSales', ctx.locale)}`; }
+  function setShelfProduct(fixtureId, productId) {
+    if (!PRODUCT_DEFS[productId] || !state().unlocked.includes(productId)) { ctx.toast(productLockReason(productId)); return false; }
+    const fixture = fixtures().find(item => item.id === fixtureId && item.kind === 'shelf');
+    if (!fixture) return false;
+    fixture.product = productId; productPickerFixtureId = null;
+    syncFixtures(); ctx.save(); renderPanel(); ctx.toast(`${ctx.t('shelfProductChanged', ctx.locale)} · ${productName(productId)}`); return true;
+  }
+  function renderProductPicker(fixture) {
+    const picker = document.createElement('div'); picker.className = 'shelf-product-picker'; picker.setAttribute('role','group'); picker.setAttribute('aria-label',ctx.t('chooseProduct',ctx.locale));
+    for (const id of Object.keys(PRODUCT_DEFS)) {
+      const unlocked = state().unlocked.includes(id); const button = document.createElement('button'); button.type = 'button'; button.dataset.productId = id; button.disabled = !unlocked;
+      button.className = `product-choice${fixture.product === id ? ' is-selected' : ''}`; button.setAttribute('aria-pressed',String(fixture.product === id));
+      const sample = document.createElement('span'); sample.className = `block-icon ${id} product-swatch`; sample.setAttribute('aria-hidden','true'); for (let i=0;i<3;i++) sample.append(document.createElement('i'));
+      const name = document.createElement('strong'); name.textContent = productName(id);
+      const note = document.createElement('small'); note.textContent = unlocked ? `${ctx.t('availableStock',ctx.locale)} ${state().stock[id] || 0}` : productLockReason(id);
+      button.append(sample,name,note); button.addEventListener('click',()=>setShelfProduct(fixture.id,id)); picker.append(button);
+    }
+    return picker;
+  }
+  function refreshPlacementProducts(selected) {
+    const select = $('placementProduct'); select.replaceChildren();
+    for (const id of Object.keys(PRODUCT_DEFS)) { const option = document.createElement('option'); option.value = id; option.disabled = !state().unlocked.includes(id); option.textContent = `${productName(id)}${option.disabled ? ` · ${productLockReason(id)}` : ''}`; select.append(option); }
+    select.value = selected;
   }
 
   function renderWarehouseSummary() {
@@ -1277,14 +1331,41 @@ export function installBlockmartV9(ctx) {
     ctx.toast(`${quantity} ${product.name} · ${ctx.t('orderedFor', ctx.locale)} ${ctx.price(quantity * product.cost)}`);
   }
 
-  function hireCashier() {
+  function nextVacantRegister() { return allCounters()[state().cashierCount] || null; }
+  function hireCashier(registerId = null) {
+    const vacancy = nextVacantRegister();
+    if (!vacancy || (registerId && vacancy.id !== registerId)) { ctx.toast(ctx.t('noRegisterVacancy', ctx.locale)); return false; }
+    if (!routeToCheckout([], vacancy)) { ctx.toast(ctx.t('routeBlocked', ctx.locale)); return false; }
     if (state().cash < CASHIER_HIRE_COST) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
     const hire = ctx.spendCash(state(), CASHIER_HIRE_COST, 'cashier');
     if (!hire.ok) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
     setState(hire.state);
     state().cashierCount++;
-    syncFixtures(); ctx.save(); ctx.renderPanel(); refreshHud();
+    syncFixtures(); ctx.save(); ctx.renderPanel(); $('panel').scrollTop = 0; refreshHud();
     ctx.toast(`${ctx.t('cashierHired', ctx.locale)} · ${state().cashierCount}`);
+    return true;
+  }
+
+  function renderRegisterRoster() {
+    const section = document.createElement('section'); section.className = 'register-roster';
+    const heading = document.createElement('h3'); heading.textContent = ctx.t('registerRoster', ctx.locale); section.append(heading);
+    const counters = allCounters(), staffed = new Set(staffedCounters().map(counter => counter.id)), next = nextVacantRegister();
+    counters.forEach((counter, index) => {
+      const row = document.createElement('article'); row.className = 'register-staff-card'; row.dataset.registerId = counter.id;
+      row.append(fixtureIllustration(counter));
+      const copy = document.createElement('div'); const title = document.createElement('h4'); title.textContent = `${ctx.t('cashRegister', ctx.locale)} ${index + 1}`;
+      const status = document.createElement('p'); status.className = staffed.has(counter.id) ? 'register-staffed' : 'register-vacant'; status.textContent = ctx.t(staffed.has(counter.id) ? 'registerStaffed' : 'registerVacant', ctx.locale);
+      copy.append(title,status); row.append(copy);
+      if (!staffed.has(counter.id)) {
+        const valid = routeToCheckout([], counter); const hire = actionButton('hireForRegister',()=>hireCashier(counter.id)); hire.textContent += ` · ${ctx.price(CASHIER_HIRE_COST)}`; hire.dataset.hireRegister = counter.id;
+        hire.disabled = next?.id !== counter.id || !valid || state().cash < CASHIER_HIRE_COST; row.append(hire);
+        const reason = document.createElement('small'); reason.textContent = !valid ? ctx.t('routeBlocked', ctx.locale) : next?.id !== counter.id ? ctx.t('fillFirstVacancy',ctx.locale) : state().cash < CASHIER_HIRE_COST ? ctx.t('needMoreCash',ctx.locale) : ctx.t('cashierHireDetail',ctx.locale); row.append(reason);
+      }
+      section.append(row);
+    });
+    if (!next) { const hint = document.createElement('p'); hint.className = 'register-hire-hint'; hint.textContent = ctx.t('noRegisterVacancy',ctx.locale); section.append(hint); }
+    const add = actionButton('addRegister',buyRegister); add.className = 'add-register-action'; add.textContent += ` · ${ctx.price(REGISTER_COST)}`; add.disabled = state().cash < REGISTER_COST; section.append(add);
+    $('panel').append(section);
   }
 
   function buyRegister() {
@@ -1312,7 +1393,7 @@ export function installBlockmartV9(ctx) {
       renderAchievements();
       return;
     }
-    if (selectedFixtureId && fixtures().some(f => f.id === selectedFixtureId)) renderSelectedFixture();
+    if (tab === 'growth' && selectedFixtureId && fixtures().some(f => f.id === selectedFixtureId)) renderSelectedFixture();
     if (tab === 'shop') {
       createCard('shelf-single', ctx.t('smallShelf', ctx.locale), `${ctx.t('oneTile', ctx.locale)} · ${ctx.t('selectFloorThenPlace', ctx.locale)}`, ctx.price(70), () => beginPlacement('shelf', null, 'water', 'single'), { placement: { kind: 'shelf', footprint: 'single', product: 'water' } });
       createCard('shelf-double', ctx.t('doubleShelf', ctx.locale), `${ctx.t('twoTiles', ctx.locale)} · ${ctx.t('selectFloorThenPlace', ctx.locale)}`, ctx.price(120), () => beginPlacement('shelf', null, 'water', 'double'), { placement: { kind: 'shelf', footprint: 'double', product: 'water' } });
@@ -1353,9 +1434,7 @@ export function installBlockmartV9(ctx) {
       addWarehouseControls();
     }
     if (tab === 'staff') {
-      renderWarehouseSummary();
-      createCard('cash-register', ctx.t('cashRegister', ctx.locale), `${ctx.t('cashierCountLabel', ctx.locale)} ${Math.min(state().cashierCount, allCounters().length)}/${allCounters().length} · ${ctx.t('cashierService', ctx.locale)}`, `−$${REGISTER_COST}`, buyRegister, { placement: { kind: 'checkout', footprint: 'counter' } });
-      createCard('cashier', ctx.t('hireCashier', ctx.locale), `${ctx.t('cashierHireDetail', ctx.locale)} · ${state().cashierCount}`, `−$${CASHIER_HIRE_COST}`, hireCashier, { disabled: state().cash < CASHIER_HIRE_COST });
+      renderRegisterRoster();
       createCard('checkout-speed', ctx.t('fasterCheckout', ctx.locale), `${ctx.t('checkoutDetail', ctx.locale)} · ${ctx.t('checkoutTime', ctx.locale)} ${ctx.checkoutSeconds(ctx.activeEquipment()).toFixed(1)}s`, state().equipment.fastCheckout ? ctx.t('upgradeComplete', ctx.locale) : '−$150', () => state().equipment.fastCheckout ? beginPlacement('fastCheckout', state().warehouse.find(f => f.kind === 'fastCheckout')?.id || state().fixtures.find(f => f.kind === 'fastCheckout')?.id, 'water', 'counter') : beginPlacement('fastCheckout', null, 'water', 'counter'), { disabled: state().equipment.fastCheckout && fixtures().some(f => f.kind === 'fastCheckout') || !state().equipment.fastCheckout && state().cash < 150, placement: { kind: 'fastCheckout', footprint: 'counter' } });
       createCard('stock-helper', ctx.t('hireHelper', ctx.locale), state().helper ? ctx.t('helperAutoRestockHint', ctx.locale) : ctx.t('helperNoWage', ctx.locale), state().helper ? ctx.t('hired', ctx.locale) : '−$220', ctx.hire, { disabled: state().helper || state().cash < 220 });
       const auto = createCard('auto-restock', ctx.t('autoRestock', ctx.locale), ctx.t('autoRestockOptIn', ctx.locale),
@@ -1366,7 +1445,6 @@ export function installBlockmartV9(ctx) {
           ctx.toast(ctx.t(state().autoRestockEnabled ? 'autoRestockTurnedOn' : 'autoRestockTurnedOff', ctx.locale));
         }, { disabled: !state().helper, className: state().autoRestockEnabled ? 'toggle-card active' : 'toggle-card' });
       auto.setAttribute('aria-pressed', String(Boolean(state().autoRestockEnabled)));
-      addWarehouseControls();
     }
     if (getPlacement()) {
       $('placementControls').hidden = false;
@@ -1472,7 +1550,7 @@ export function installBlockmartV9(ctx) {
         if (current.fixture) {
           selectedFixtureId = current.fixture.id; setSelectedFloor(point);
           ctx.selectedTab = 'growth'; document.querySelectorAll('[data-tab]').forEach(button => button.classList.toggle('active', button.dataset.tab === 'growth'));
-          renderPanel();
+          renderPanel(); $('panel').scrollTop = 0;
         } else chooseFloor(point);
       }
       pointerState = null;
@@ -1534,7 +1612,12 @@ export function installBlockmartV9(ctx) {
     document.addEventListener('pointermove', moveCardDrag, true);
     document.addEventListener('pointerup', endCardDrag, true);
     $('rotatePlacement').addEventListener('click', rotatePlacement);
-    $('placementProduct').addEventListener('change', () => { if (getPlacement()?.kind === 'shelf') getPlacement().product = $('placementProduct').value; });
+    $('placementProduct').addEventListener('change', () => {
+      const placement = getPlacement(); if (placement?.kind !== 'shelf') return;
+      const id = $('placementProduct').value;
+      if (!state().unlocked.includes(id)) { $('placementProduct').value = placement.product; ctx.toast(productLockReason(id)); return; }
+      placement.product = id;
+    });
     $('placementFootprint').addEventListener('change', onFootprintChange);
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') cancelPlacement();

@@ -10,7 +10,7 @@
   };
 
   appendStyle("art.css?v=20260921-sudoku-block-scene-v1");
-  appendStyle("interface-7-cleanup.css?v=20261004-sudoku-landscape-main-v1");
+  appendStyle("interface-7-cleanup.css?v=20261014-sudoku-short-landscape-canvas-i9-v1");
 
   const app = window.WPClassicLogic?.mount("sudoku");
   if (!app) return;

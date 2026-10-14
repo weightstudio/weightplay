@@ -584,6 +584,25 @@
     document.body.append(script);
   }
 
+  let lifecycleRetryBound = false;
+  function ensureLifecycleRuntime() {
+    if (!lifecycleRetryBound) {
+      lifecycleRetryBound = true;
+      window.addEventListener("weightplay:lifecycle-retry", ensureLifecycleRuntime);
+    }
+    if (window.WeightPlayLifecycle || window.__weightPlayLifecycleRequested) return;
+    window.__weightPlayLifecycleRequested = true;
+    const script = document.createElement("script");
+    script.src = `${new URL("game-lifecycle-controller.js", sharedAssetBase).href}?v=20261014-lifecycle-v1`;
+    script.dataset.wpLifecycleController = "true";
+    script.addEventListener("load", () => window.dispatchEvent(new Event("weightplay:lifecycle-ready")), { once: true });
+    script.addEventListener("error", () => {
+      window.__weightPlayLifecycleRequested = false;
+      window.dispatchEvent(new Event("weightplay:lifecycle-error"));
+    }, { once: true });
+    document.head.append(script);
+  }
+
   function ensureBattleCanvasRuntime() {
     if (document.body?.dataset.wpBattleLayout === "native") return;
     if (!document.querySelector('link[href*="battle-canvas-standard.css"]')) {
@@ -1630,6 +1649,7 @@
     normalizeMarketFiveSemantics();
     ensureStageSelectorRuntime();
     ensureStageV6Runtime();
+    ensureLifecycleRuntime();
     ensureBattleCanvasRuntime();
     ensureGameInfoRuntime();
     build();

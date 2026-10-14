@@ -65,6 +65,8 @@
     app.board.setAttribute('role', 'group');
     app.board.setAttribute('aria-label', app.title);
     Object.assign(battle.dataset, { wpBattleMinWidth: '390', wpBattleMinHeight: '720', wpBattleLandscapeWidth: '760', wpBattleLandscapeHeight: '350' });
+    battle.setAttribute('data-wp-frame-logical-header', 'battle');
+    battle.setAttribute('data-wp-frame-play-fill', '');
     const info = document.createElement('div'), stat = document.createElement('div');
     stat.append(app.battleChip); info.append(stat); content.append(info);
     const difficulty = document.createElement('div');
