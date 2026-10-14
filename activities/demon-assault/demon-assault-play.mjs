@@ -1,13 +1,14 @@
-import {CanvasBattleRenderer,loadBattleImages,RENDER_REVISION} from './demon-assault-canvas.mjs';
+import {CanvasBattleRenderer,loadBattleImages,RENDER_REVISION,imageDiagnostics,installBattleArt} from './demon-assault-canvas.mjs?v=20261014-asset-recovery-2';
 let THREE;
 import {STAGES,WORLD,BOSS,ANCHOR,MAX_PULL,STEP,pullPoint,makeShot,tickShot,trace} from './demon-assault-v4-physics.mjs';
 import {VERSION,SAVE_KEY,readSave,transaction,openSession,nextStage,settle,dailyStatus,finished} from './demon-assault-daily-store.mjs';
 import {playCopy as copy,dailyCopy} from './demon-assault-daily-copy.mjs';
-import {BattleCamera} from './demon-assault-v4-camera.mjs';
+import {BattleCamera} from './demon-assault-v4-camera.mjs?v=20261014-settle-1';
 const rig=new BattleCamera(WORLD.width,ANCHOR.x,BOSS.x);
 let panPointer=null,panX=0;
 const $=id=>document.getElementById(id),params=new URLSearchParams(location.search),locale=params.get('locale')||'zh-Hant',t=copy(locale);
 const dailyText=dailyCopy(locale);
+installBattleArt();
 document.documentElement.lang=locale;
 const blockParam=params.get('blocks'),blocks=blockParam&&/^\d{1,16}$/.test(blockParam)?Math.min(Number(blockParam),Number.MAX_SAFE_INTEGER):0;
 const arena=$('arena'),modal=$('modal'),fx=$('effects'),ctx=fx.getContext('2d');
@@ -27,13 +28,28 @@ const cameraLabels={
  hi:['गुलेल','बॉस','देखने के लिए खींचें','गुलेल की ओर वापसी','ब्लॉक का पीछा','टक्कर विराम','दिशा और ताकत','कैमरा चल रहा है'],
  ar:['المقلاع','الزعيم','اسحب للاستكشاف','العودة إلى المقلاع','تتبع المكعب','توقف الاصطدام','الاتجاه والقوة','تحريك الكاميرا']};
 const cl=cameraLabels[locale]||cameraLabels.en,cameraCopy=Object.fromEntries(['sling','boss','idle','intro','follow','hold','aim','travel'].map((k,i)=>[k,cl[i]]));
+const aimLabels={
+ 'zh-Hant':['預測：命中惡魔','預測：擊中守衛','預測：未命中'],
+ 'zh-Hans':['预测：命中恶魔','预测：击中守卫','预测：未命中'],
+ en:['Predicted Boss hit','Predicted guard hit','Predicted miss'],
+ ja:['予測：ボスに命中','予測：ガードに命中','予測：外れ'],
+ ko:['예측: 보스 명중','예측: 수비 명중','예측: 빗나감'],
+ es:['Previsión: jefe','Previsión: guardia','Previsión: fallo'],
+ 'pt-BR':['Previsão: chefe','Previsão: guarda','Previsão: erro'],
+ fr:['Prévision : boss','Prévision : garde','Prévision : raté'],
+ de:['Prognose: Bosstreffer','Prognose: Wache','Prognose: Fehlschuss'],
+ it:['Previsione: boss','Previsione: guardia','Previsione: mancato'],
+ ru:['Прогноз: босс','Прогноз: страж','Прогноз: промах'],
+ hi:['अनुमान: बॉस पर वार','अनुमान: रक्षक पर वार','अनुमान: निशाना चूका'],
+ ar:['متوقع: إصابة الزعيم','متوقع: إصابة الحارس','متوقع: إخفاق']
+}[locale]||['Predicted Boss hit','Predicted guard hit','Predicted miss'];
 $('cameraSling').querySelector('span').textContent=cl[0];$('cameraBoss').querySelector('span').textContent=cl[1];rig.reduce(reduced.matches);
 function navigateCamera(target){if(!started||rig.locked||pull||shot||busy||modal.open)return;cancelPull(false);rig.go(target);render(0);}
 $('cameraSling').onclick=()=>navigateCamera(ANCHOR.x);$('cameraBoss').onclick=()=>navigateCamera(BOSS.x);
 
 function readView(){try{return readSave()}catch{return null}}
 let state=readView(),started=false,disposed=false,active=true,onscreen=true,modalKind='',primaryAction=null,secondaryAction=null;
-let pull=null,pointer=null,shot=null,power=5,busy=false,time=0,frame=0,last=0,acc=0,recoil=0,hitTime=-100,defeatTime=-100,spawnTime=0,feedbackUntil=0,keyboard=false,keyboardAngle=32;
+let pull=null,aimPreview=null,pointer=null,shot=null,power=5,busy=false,time=0,frame=0,last=0,acc=0,recoil=0,hitTime=-100,defeatTime=-100,spawnTime=0,feedbackUntil=0,keyboard=false,keyboardAngle=32;
 let width=390,height=661,viewScale=1,landscape=false,offsetX=0,offsetY=0,particlePool=[],floaters=[],lastOutcome=null;
 let renderer,scene,camera,root,boss,bossMap,ammoMesh,sling,slingArt,backBand,frontBand,rails,starfield,assetsLoaded=false;
 let renderMode='loading',battleImages=null,loadDiagnostic=null;
@@ -101,10 +117,10 @@ function leave(){const map={'zh-Hant':'zh-tw','zh-Hans':'zh-cn','pt-BR':'pt-br'}
 $('back').onclick=()=>started?openModal('leave',t.leave,t.leaveCopy,t.continue,closeModal,t.back,leave):leave();
 $('help').onclick=()=>openModal('help',t.help,t.rules,t.continue,closeModal,t.restart,()=>openModal('restart',t.confirmRestart,t.restartCopy,t.restart,restart,t.continue,closeModal));
 $('cancel').onclick=()=>cancelPull(true);
-for(const b of document.querySelectorAll('[data-power]'))b.onclick=()=>{if(shot||busy)return;power=Number(b.dataset.power);syncUI();render(0);};
+for(const b of document.querySelectorAll('[data-power]'))b.onclick=()=>{if(shot||busy)return;power=Number(b.dataset.power);syncUI();if(pull)updatePull(pull);else render(0);};
 function canPull(){return assetsLoaded&&started&&state?.run.status==='playing'&&!state.run.pending&&!shot&&!pull&&!busy&&!modal.open&&active&&onscreen&&!rig.locked&&dailyStatus(state).canFire;}
-function cancelPull(announce){const oldPan=panPointer;panPointer=null;if(oldPan!==null&&arena.hasPointerCapture(oldPan))arena.releasePointerCapture(oldPan);rig.cancelAim();padReset();if(pointer!==null&&arena.hasPointerCapture(pointer))arena.releasePointerCapture(pointer);pointer=null;pull=null;keyboard=false;$('power').classList.remove('show');$('cancel').disabled=true;if(announce)note(t.cancelled);}
-function updatePull(p){pull=pullPoint(p);const n=Math.hypot(pull.x-ANCHOR.x,pull.y-ANCHOR.y)/MAX_PULL;text('powerValue',`${Math.round(n*100)}%`);$('powerFill').style.width=`${n*100}%`;render(0);}
+function cancelPull(announce){const oldPan=panPointer;panPointer=null;if(oldPan!==null&&arena.hasPointerCapture(oldPan))arena.releasePointerCapture(oldPan);rig.cancelAim();padReset();if(pointer!==null&&arena.hasPointerCapture(pointer))arena.releasePointerCapture(pointer);pointer=null;pull=null;aimPreview=null;keyboard=false;$('power').classList.remove('show');$('cancel').disabled=true;if(announce)note(t.cancelled);}
+function updatePull(p){pull=pullPoint(p);const n=Math.hypot(pull.x-ANCHOR.x,pull.y-ANCHOR.y)/MAX_PULL,angle=Math.round(Math.atan2(ANCHOR.y-pull.y,ANCHOR.x-pull.x)*180/Math.PI),path=trace(pull,power,state.run.defenders),outcome=path.events.find(e=>e.kind!=='bounce')?.kind||'miss';aimPreview={angle,powerPercent:Math.round(n*100),outcome,path};text('powerValue',`${aimPreview.powerPercent}% · ${angle}°`);text('aimPrediction',aimLabels[outcome==='boss'?0:outcome==='minion'?1:2]);$('aimPrediction').dataset.outcome=outcome;$('powerFill').style.width=`${n*100}%`;render(0);}
 arena.addEventListener('pointerdown',e=>{
  if(!e.isPrimary||pointer!==null||panPointer!==null||e.button>0||!canPull())return;
  const p=toWorld(e.clientX,e.clientY);e.preventDefault();arena.focus({preventScroll:true});
@@ -135,7 +151,7 @@ function update(dt){rig.update(dt,shot);time+=dt;recoil=Math.max(0,recoil-dt);if
 }
 function drawEffects(){drawPad();ctx.clearRect(0,0,width,height);const line=(a,b,color,width=3)=>{const p=toScreen(a.x,a.y),q=toScreen(b.x,b.y);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.lineWidth=width;ctx.strokeStyle=color;ctx.stroke();};
  const pouch=pull||{x:ANCHOR.x,y:ANCHOR.y+(recoil&&!reduced.matches?Math.sin(recoil*60)*recoil*15:0)};if(state?.run.status==='playing'){line({x:ANCHOR.x-22,y:ANCHOR.y+15},pouch,'#3b211f',7*viewScale);line({x:ANCHOR.x-22,y:ANCHOR.y+15},pouch,'#d3a568',3*viewScale);line({x:ANCHOR.x+22,y:ANCHOR.y+15},pouch,'#50302a',7*viewScale);line({x:ANCHOR.x+22,y:ANCHOR.y+15},pouch,'#e4b977',3*viewScale);}
- if(pull){const path=trace(pull,power,state.run.defenders);ctx.beginPath();path.points.forEach((q,i)=>{const p=toScreen(q.x,q.y);if(i===0)ctx.moveTo(p.x,p.y);else ctx.lineTo(p.x,p.y);});ctx.strokeStyle='#f4db96aa';ctx.lineWidth=1.2;ctx.setLineDash([3,7]);ctx.stroke();ctx.setLineDash([]);for(let i=0;i<path.points.length;i++){const p=toScreen(path.points[i].x,path.points[i].y);ctx.beginPath();ctx.arc(p.x,p.y,Math.max(2,2.8*viewScale),0,Math.PI*2);ctx.fillStyle=`rgba(255,240,197,${.9-i/path.points.length*.45})`;ctx.fill();}const end=path.events.find(e=>e.kind!=='bounce');if(end){const p=toScreen(end.x,end.y);ctx.strokeStyle=end.kind==='boss'?'#ffce7f':'#9fe8f1';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(p.x,p.y,11*viewScale,0,Math.PI*2);ctx.stroke();}}
+ if(pull){const path=aimPreview?.path||trace(pull,power,state.run.defenders);ctx.beginPath();path.points.forEach((q,i)=>{const p=toScreen(q.x,q.y);if(i===0)ctx.moveTo(p.x,p.y);else ctx.lineTo(p.x,p.y);});ctx.strokeStyle='#f4db96aa';ctx.lineWidth=1.2;ctx.setLineDash([3,7]);ctx.stroke();ctx.setLineDash([]);for(let i=0;i<path.points.length;i++){const p=toScreen(path.points[i].x,path.points[i].y);ctx.beginPath();ctx.arc(p.x,p.y,Math.max(2,2.8*viewScale),0,Math.PI*2);ctx.fillStyle=`rgba(255,240,197,${.9-i/path.points.length*.45})`;ctx.fill();}const end=path.events.find(e=>e.kind!=='bounce');if(end){const p=toScreen(end.x,end.y);ctx.strokeStyle=end.kind==='boss'?'#ffce7f':'#9fe8f1';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(p.x,p.y,11*viewScale,0,Math.PI*2);ctx.stroke();}}
  if(shot&&!reduced.matches){const a=shot.trail;for(let i=1;i<a.length;i++)line(a[i-1],a[i],`rgba(138,233,255,${i/a.length*.6})`,i/a.length*6*viewScale);}
  for(const f of floaters){const age=time-f.born,p=toScreen(f.x,f.y+(reduced.matches?0:age*35));ctx.globalAlpha=clamp(1-age/.9,0,1);ctx.font=`800 ${Math.max(14,22*viewScale)}px system-ui`;ctx.textAlign='center';ctx.fillStyle=f.color;ctx.shadowColor='#1b0d20';ctx.shadowBlur=5;ctx.fillText(f.label,p.x,p.y);ctx.shadowBlur=0;ctx.globalAlpha=1;}
  if(!started||modal.open)return;if(!shot&&!pull&&state?.run.status==='playing'){const p=toScreen(ANCHOR.x,ANCHOR.y);ctx.strokeStyle='#b7f5ec';ctx.lineWidth=1.2;ctx.globalAlpha=.35;ctx.beginPath();ctx.arc(p.x,p.y,Math.max(23,26*viewScale),0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;}
@@ -153,7 +169,7 @@ $('world').addEventListener('webglcontextlost',e=>{e.preventDefault();cancelPull
 function dispose(){if(disposed)return;disposed=true;cancelAnimationFrame(frame);observer.disconnect();resizeObserver.disconnect();for(const group of Object.values(resources))for(const r of group)r.dispose();renderer?.dispose();}
 window.addEventListener('pagehide',e=>{cancelPull(false);if(!e.persisted)dispose();});window.addEventListener('pageshow',e=>{if(e.persisted){active=true;wake();}});
 // Read-only diagnostics for proportional verification. No state setter or reward shortcut.
-Object.defineProperty(window,'DemonAssaultPreview',{value:Object.freeze({snapshot:()=>({version:VERSION,daily:dailyStatus(state),revision:state?.revision,run:state?JSON.parse(JSON.stringify(state.run)):null,milestones:state?JSON.parse(JSON.stringify(state.milestones)):null,pulling:!!pull,shot:shot?{id:shot.id,x:shot.x,y:shot.y,bounces:shot.bounces}:null,metrics:{...metrics},camera:rig.snapshot(),outcome:lastOutcome,reducedMotion:reduced.matches,active,onscreen,landscape,anchor:toScreen(ANCHOR.x,ANCHOR.y),viewScale,renderMode,renderRevision:RENDER_REVISION,loadDiagnostic:loadDiagnostic?{...loadDiagnostic}:null,assetsReady:assetsLoaded,renderer:renderer?{calls:renderer.info.render.calls,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures}:null}),project:(x,y)=>toScreen(x,y)}),writable:false});
+Object.defineProperty(window,'DemonAssaultPreview',{value:Object.freeze({snapshot:()=>({version:VERSION,daily:dailyStatus(state),revision:state?.revision,run:state?JSON.parse(JSON.stringify(state.run)):null,milestones:state?JSON.parse(JSON.stringify(state.milestones)):null,pulling:!!pull,aim:aimPreview?{angle:aimPreview.angle,powerPercent:aimPreview.powerPercent,outcome:aimPreview.outcome}:null,shot:shot?{id:shot.id,x:shot.x,y:shot.y,bounces:shot.bounces}:null,metrics:{...metrics},camera:rig.snapshot(),outcome:lastOutcome,reducedMotion:reduced.matches,active,onscreen,landscape,anchor:toScreen(ANCHOR.x,ANCHOR.y),viewScale,renderMode,renderRevision:RENDER_REVISION,assetDiagnostics:imageDiagnostics(),loadDiagnostic:loadDiagnostic?{...loadDiagnostic}:null,assetsReady:assetsLoaded,renderer:renderer?{calls:renderer.info.render.calls,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures}:null}),project:(x,y)=>toScreen(x,y)}),writable:false});
 for(const [id,key]of Object.entries({previewTag:'preview',objective:'damage',bossName:'boss',ammoLabel:'ammo',hint:'hint',powerLabel:'power',loadText:'loading',loadRetry:'retry'}))text(id,t[key]);$('back').setAttribute('aria-label',t.back);$('help').setAttribute('aria-label',t.help);$('cancel').setAttribute('aria-label',t.cancel);$('loadRetry').onclick=()=>location.reload();
 function showLoadFailure(error){diagnostic('assets-or-canvas',error);assetsLoaded=false;cancelAnimationFrame(frame);frame=0;text('loadText',t.loadFail);text('loadDetails',loadDiagnostic.code);$('loading').hidden=false;$('loadRetry').hidden=false;$('loadBack').hidden=false;}
 $('loadBack').textContent=t.back;$('loadBack').onclick=leave;

@@ -1,16 +1,27 @@
-// Uses the same world coordinates, art and authoritative physics as WebGL.
-// No gameplay state is created or spent by loading or drawing a scene.
-export const RENDER_REVISION='canvas-recovery-1';
-const names={boss:'demon-assault-boss-v2.png',sling:'demon-assault-sling-v2.png',scene:'demon-assault-sideview-v3.png'};
+// Same approved art, world coordinates and authoritative physics in both renderers.
+import {FALLBACK_ART} from './demon-assault-image-pack.mjs?v=20261014-asset-recovery-2';
+export const RENDER_REVISION='asset-recovery-2';
+const names={boss:'demon-assault-boss-v2.webp',sling:'demon-assault-sling-v2.webp'},assetDiagnostics=[];
+export const imageDiagnostics=()=>assetDiagnostics.map(row=>({...row,errors:[...row.errors]}));
+export function installBattleArt(){for(const image of document.querySelectorAll('[data-battle-art]'))image.src=FALLBACK_ART[image.dataset.battleArt];}
+async function decodeImage(src,name){const image=new Image();await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error(`ASSET_DECODE_TIMEOUT:${name}`)),3000);image.onload=()=>{clearTimeout(timer);resolve();};image.onerror=()=>{clearTimeout(timer);reject(Error(`ASSET_DECODE:${name}`));};image.src=src;});if(!image.naturalWidth||!image.naturalHeight)throw Error(`ASSET_EMPTY:${name}`);return image;}
 export async function loadBattleImages(){
  const images=await Promise.all(Object.entries(names).map(async([key,name])=>{
-  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
-  try{
-   const response=await fetch(new URL(name,import.meta.url),{signal:controller.signal});
-   if(!response.ok)throw new Error(`ASSET_HTTP_${response.status}:${name}`);
-   const blob=await response.blob(),url=URL.createObjectURL(blob),image=new Image();
-   try{await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(new Error(`ASSET_DECODE:${name}`));controller.signal.addEventListener('abort',()=>reject(new Error(`ASSET_TIMEOUT:${name}`)),{once:true});image.src=url;});if(!image.naturalWidth||!image.naturalHeight)throw new Error(`ASSET_EMPTY:${name}`);return[key,image];}finally{URL.revokeObjectURL(url);}
-  }catch(error){if(error.name==='AbortError')throw new Error(`ASSET_TIMEOUT:${name}`);if(error.message.startsWith('ASSET_'))throw error;throw new Error(`ASSET_NETWORK:${name}`);}finally{clearTimeout(timer);}
+  const errors=[];
+  for(let attempt=0;attempt<2;attempt++){
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),3500);
+   try{
+    const url=new URL(name,import.meta.url);url.searchParams.set('v','20261014-original-art-2');if(attempt)url.searchParams.set('retry',String(attempt));
+    const response=await fetch(url,{signal:controller.signal,cache:attempt?'reload':'default'});
+    if(!response.ok)throw Error(`ASSET_HTTP_${response.status}:${name}`);
+    if(!/^image\/(png|webp)(?:;|$)/i.test(response.headers.get('content-type')||''))throw Error(`ASSET_CONTENT_TYPE:${name}`);
+    const blob=await response.blob(),objectURL=URL.createObjectURL(blob);
+    try{const image=await decodeImage(objectURL,name);assetDiagnostics.push({asset:key,source:'network',attempts:attempt+1,errors});return[key,image];}finally{URL.revokeObjectURL(objectURL);}
+   }catch(error){errors.push(error.name==='AbortError'?`ASSET_TIMEOUT:${name}`:error.message.startsWith('ASSET_')?error.message:`ASSET_NETWORK:${name}`);}finally{clearTimeout(timer);}
+  }
+  // Individual image failures recover from art carried in the module graph.
+  // Drawing never creates or spends a daily run.
+  const image=await decodeImage(FALLBACK_ART[key],name);assetDiagnostics.push({asset:key,source:'embedded-original-art',attempts:2,errors});return[key,image];
  }));
  return Object.fromEntries(images);
 }

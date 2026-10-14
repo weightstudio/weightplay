@@ -1,4 +1,5 @@
 // Camera owns no gameplay state. All exits from flight go through finish().
+export const CAMERA_REVISION='settle-framing-1';
 export class BattleCamera {
  constructor(world, sling, boss) { Object.assign(this,{world,sling,boss,x:boss,span:500,mode:'idle',elapsed:0,vertical:0,reduced:false,flightExits:0}); }
  clamp(x) { return Math.max(this.span/2,Math.min(this.world-this.span/2,x)); }
@@ -11,7 +12,7 @@ export class BattleCamera {
  aim() { this.x=this.clamp(this.sling);this.vertical=0;this.mode='aim'; }
  cancelAim() { if(this.mode==='aim')this.mode='idle';this.endPan(); }
  follow() { this.mode='follow';this.motion=null;this.elapsed=0; }
- finish() { this.mode='hold';this.motion=null;this.elapsed=0;this.flightExits++; }
+ finish() { this.mode='hold';this.motion=null;this.elapsed=0;this.flightExits++;this.settleFrom={x:this.x,vertical:Math.max(0,Math.min(290,this.vertical))};if(this.reduced){this.x=this.clamp(this.boss);this.vertical=0;} }
  reset() { this.motion=null;this.mode='idle';this.vertical=0;this.x=this.clamp(this.sling); }
  reduce(value) { this.reduced=value;if(value&&this.motion){this.x=this.motion.to;this.motion=null;this.mode='idle';this.vertical=0;} }
  update(dt,shot) {
@@ -22,9 +23,16 @@ export class BattleCamera {
    // Essential camera tracking stays active under reduced motion; no look-ahead or overshoot.
    const target=this.clamp(shot.x+(this.reduced?0:Math.sign(shot.vx)*this.span*.12));
    this.x=this.clamp(this.x+(target-this.x)*(1-Math.exp(-dt*12)));
-   this.vertical+=(Math.max(0,shot.y-360)-this.vertical)*(1-Math.exp(-dt*12));
+   this.vertical+=(Math.max(0,Math.min(290,shot.y-360))-this.vertical)*(1-Math.exp(-dt*12));
   }
-  if(this.mode==='hold'&&this.elapsed>=(this.reduced?.15:.8))this.mode='idle';
+  if(this.mode==='hold'){
+   // Restore the ground/Boss composition before releasing the flight lock.
+   // Flight may track above the arena; its vertical offset must never leak into idle.
+   const u=this.reduced?1:Math.min(1,this.elapsed/.45),ease=1-(1-u)**3;
+   this.x=this.clamp(this.settleFrom.x+(this.clamp(this.boss)-this.settleFrom.x)*ease);
+   this.vertical=this.settleFrom.vertical*(1-ease);
+   if(this.elapsed>=(this.reduced?.15:.8)){this.x=this.clamp(this.boss);this.vertical=0;this.mode='idle';this.settleFrom=null;}
+  }
  }
- snapshot(){return{mode:this.mode,locked:this.locked,x:this.x,span:this.span,min:this.span/2,max:this.world-this.span/2,vertical:this.vertical,flightExits:this.flightExits};}
+ snapshot(){return{revision:CAMERA_REVISION,mode:this.mode,locked:this.locked,x:this.x,span:this.span,min:this.span/2,max:this.world-this.span/2,vertical:this.vertical,flightExits:this.flightExits};}
 }
