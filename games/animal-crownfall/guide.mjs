@@ -421,19 +421,19 @@ const extendedGuide={
 for(const [locale,parts] of Object.entries(DETAILS))parts.push(...extendedGuide[locale]);
 // Public gameplay tags and related-game heading; indices 0–29 remain stable.
 const discoveryCopy={
- en:['Connected-block removal','Order puzzle','Route planning','Related games'],
- 'zh-Hant':['相連方塊消除','順序解謎','路線規劃','相關遊戲'],
- 'zh-Hans':['相连方块消除','顺序解谜','路线规划','相关游戏'],
- ja:['つながったブロックの消去','順序パズル','ルート計画','関連ゲーム'],
- ko:['연결된 블록 제거','순서 퍼즐','경로 계획','관련 게임'],
- es:['Eliminación de bloques conectados','Puzle de orden','Planificación de rutas','Juegos relacionados'],
- 'pt-BR':['Remoção de blocos conectados','Quebra-cabeça de ordem','Planejamento de rotas','Jogos relacionados'],
- fr:['Suppression de blocs reliés','Casse-tête de séquence','Planification du parcours','Jeux associés'],
- de:['Verbundene Blöcke entfernen','Reihenfolge-Rätsel','Routenplanung','Ähnliche Spiele'],
- it:['Rimozione di blocchi collegati','Rompicapo di sequenza','Pianificazione del percorso','Giochi correlati'],
- ru:['Удаление связанных блоков','Головоломка на порядок','Планирование маршрута','Похожие игры'],
- hi:['जुड़े ब्लॉक हटाना','क्रम की पहेली','रास्ते की योजना','संबंधित खेल'],
- ar:['إزالة الكتل المتصلة','لغز ترتيب','تخطيط المسار','ألعاب ذات صلة']
+ en:['Connected-block removal','Order puzzle','Route planning',"More Related Games"],
+ 'zh-Hant':['相連方塊消除','順序解謎','路線規劃',"更多相關遊戲"],
+ 'zh-Hans':['相连方块消除','顺序解谜','路线规划',"更多相关游戏"],
+ ja:['つながったブロックの消去','順序パズル','ルート計画',"関連ゲームをもっと見る"],
+ ko:['연결된 블록 제거','순서 퍼즐','경로 계획',"더 많은 관련 게임"],
+ es:['Eliminación de bloques conectados','Puzle de orden','Planificación de rutas',"Más juegos relacionados"],
+ 'pt-BR':['Remoção de blocos conectados','Quebra-cabeça de ordem','Planejamento de rotas',"Mais jogos relacionados"],
+ fr:['Suppression de blocs reliés','Casse-tête de séquence','Planification du parcours',"Plus de jeux associés"],
+ de:['Verbundene Blöcke entfernen','Reihenfolge-Rätsel','Routenplanung',"Weitere ähnliche Spiele"],
+ it:['Rimozione di blocchi collegati','Rompicapo di sequenza','Pianificazione del percorso',"Altri giochi correlati"],
+ ru:['Удаление связанных блоков','Головоломка на порядок','Планирование маршрута',"Больше похожих игр"],
+ hi:['जुड़े ब्लॉक हटाना','क्रम की पहेली','रास्ते की योजना',"और संबंधित गेम"],
+ ar:['إزالة الكتل المتصلة','لغز ترتيب','تخطيط المسار',"المزيد من الألعاب ذات الصلة"]
 };
 for(const [locale,parts] of Object.entries(DETAILS))parts.push(...discoveryCopy[locale]);
 export const RELATED=[

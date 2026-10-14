@@ -73,9 +73,8 @@ export function serviceFacingTarget(counter) {
 export function queueTile(counter, rank = 0) {
   const target = serviceFacingTarget(counter);
   const front = serviceVector(counter.rotation);
-  // Two floor tiles between customers leave enough projected space for the
-  // tall block-animal models to read as a line instead of a stack.
-  const distance = Math.max(0, Math.floor(rank)) * 2;
+  // One adjacent floor tile keeps the .67-tile bodies apart without empty gaps.
+  const distance = Math.max(0, Math.floor(rank));
   return { x: Math.round(target.x + front.x * distance), z: Math.round(target.z + front.z * distance) };
 }
 
@@ -101,7 +100,8 @@ export function decorAppeal(count) {
 
 export function trafficInterval(popularity) {
   const value = clampPopularity(popularity);
-  return 10 - value * 0.065;
+  // Quiet shops remain recoverable; a popular shop benefits from more tills.
+  return value <= 50 ? 8 - value * .08 : 4 - (value - 50) * .062;
 }
 
 export function trafficRate(popularity) {

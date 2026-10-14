@@ -84,6 +84,7 @@ export function changeEmployeeRole(state,employeeId,role,registerId=null){
   const register=(state.fixtures||[]).find(f=>f.kind==='checkout'&&(!registerId||f.id===registerId)&&!occupied.has(f.id));
   if(role==='checkout'&&!register)return {ok:false,reason:'vacancy',state};
   employee.role=role;employee.registerId=role==='checkout'?register.id:null;employee.workSeconds=0;
+  delete employee.work;
   return {ok:true,state:{...state,employees,cashierCount:employees.filter(e=>e.role==='checkout').length,helper:state.helper||role==='restock'}};
 }
 

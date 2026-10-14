@@ -1,0 +1,87 @@
+{
+  "producer": "built-in image_gen",
+  "ownerTaskId": "01a13125-cedb-714c-9a26-132149d82084",
+  "grant": "animal-blockmart-v10-post-art-management-repair-v1",
+  "target": "v11/I8",
+  "decision": "Candidate artwork; independent Art recheck pending",
+  "promptTemplate": "Original Animal Blockmart premium isolated catalog miniature; cuboid construction, teal/ochre/cream, isometric 3D, material details, warm studio light, transparent margins, no UI/text/logos/watermarks.",
+  "items": [
+    {
+      "id": "shelf",
+      "path": "/Users/kuoyu/Documents/MacMini/Project/WeightPlay/generated_images/exec-2beb568d-6e42-4c54-a9fa-e08e98b2392e.png",
+      "destination": "games/animal-blockmart/assets/item-shelf-v11.png",
+      "sha256": "a4d44a03ee5ad0937330a20e81b1ecdb9970197d658883c33cd6c35d38e17c7b",
+      "bytes": 1489966
+    },
+    {
+      "id": "water",
+      "path": "/Users/kuoyu/Documents/MacMini/Project/WeightPlay/generated_images/exec-d0d1b1c5-d3a0-4ff4-a290-4e321811eb43.png",
+      "destination": "games/animal-blockmart/assets/item-water-v11.png",
+      "sha256": "7d8ac53e11af0ad344d5907e1b10749b2f4b4d91d2c0a6fc37897b7ae86d4769",
+      "bytes": 1028676
+    },
+    {
+      "id": "snacks",
+      "path": "/Users/kuoyu/Documents/MacMini/Project/WeightPlay/generated_images/exec-d675c5e5-60b8-4476-a720-c096bf761fca.png",
+      "destination": "games/animal-blockmart/assets/item-snacks-v11.png",
+      "sha256": "a15b39e6bca2da367ab34798fb27170ffd6d6196869a050d76ddbd9646a88d7c",
+      "bytes": 1757200
+    },
+    {
+      "id": "chips",
+      "path": "/Users/kuoyu/Documents/MacMini/Project/WeightPlay/generated_images/exec-c39bfd4a-8275-4302-8eed-66c24f8369ac.png",
+      "destination": "games/animal-blockmart/assets/item-chips-v11.png",
+      "sha256": "0d3bbb1d7dbeeba020987812f6cafced2891fe03c6d5c4471a184ddfd0ede53e",
+      "bytes": 1649794
+    },
+    {
+      "id": "juice",
+      "path": "/Users/kuoyu/Documents/MacMini/Project/WeightPlay/generated_images/exec-ad349eda-d686-47ae-bdec-51c54d846873.png",
+      "destination": "games/animal-blockmart/assets/item-juice-v11.png",
+      "sha256": "3478a5f29c1cfa8f094e45404d4af1087d70db49b2c834b1f38e6711713e230b",
+      "bytes": 952524
+    },
+    {
+      "id": "fizz",
+      "path": "/Users/kuoyu/Documents/MacMini/Project/WeightPlay/generated_images/exec-ce8aeaa9-c7e4-4558-85bc-215394edee22.png",
+      "destination": "games/animal-blockmart/assets/item-fizz-v11.png",
+      "sha256": "54bac8b4a12e1873687c8ba8abe55c416a8f724860f0888b50c5841c82eeeb40",
+      "bytes": 1597731
+    },
+    {
+      "id": "cooler",
+      "path": "/Users/kuoyu/Documents/MacMini/Project/WeightPlay/generated_images/exec-1b312928-125e-41cd-9ce4-a2a13f228cf9.png",
+      "destination": "games/animal-blockmart/assets/item-cooler-v11.png",
+      "sha256": "1ed2ea728c4cd9ff6c0163033287b02525498362411c03e2096b062baf3a48c5",
+      "bytes": 1661622
+    },
+    {
+      "id": "checkout",
+      "path": "/Users/kuoyu/Documents/MacMini/Project/WeightPlay/generated_images/exec-6d1a18d1-7cae-4c38-aecf-9d0166c703f4.png",
+      "destination": "games/animal-blockmart/assets/item-checkout-v11.png",
+      "sha256": "b7d752723f182324458237073294efdfb3fa26a3010e2877a0e206762441e098",
+      "bytes": 1849031
+    },
+    {
+      "id": "fastCheckout",
+      "path": "/Users/kuoyu/Documents/MacMini/Project/WeightPlay/generated_images/exec-29f3b1f8-2495-4886-8255-395b33c5b1ae.png",
+      "destination": "games/animal-blockmart/assets/item-fastCheckout-v11.png",
+      "sha256": "1195b9cb590c93459dbc5c130f4bb79b7ccb641623931e250cb273d130d7645a",
+      "bytes": 1410022
+    },
+    {
+      "id": "decor",
+      "path": "/Users/kuoyu/Documents/MacMini/Project/WeightPlay/generated_images/exec-b720abaa-d8d5-4998-b3f9-9541b7b125de.png",
+      "destination": "games/animal-blockmart/assets/item-decor-v11.png",
+      "sha256": "7dc113fee9adcde7206228d8bf60e74008e24cd179bab10b6c4d38e9881dc9c9",
+      "bytes": 1134971
+    },
+    {
+      "id": "shelf-double",
+      "path": "/Users/kuoyu/Documents/MacMini/Project/WeightPlay/generated_images/exec-c87fea1e-ab29-4da9-ade9-be49fc5d873a.png",
+      "destination": "games/animal-blockmart/assets/item-shelf-double-v11.png",
+      "sha256": "663df266bc08cb69a2abb8cfbc03d4784929dd0f82381bd01013c348c3a88c44",
+      "bytes": 2245017
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import * as THREE from './vendor/three/three.module.min.js';
-import {liveElapsedWindow,simulationSteps,migrateEmployees,hireStoreEmployee,changeEmployeeRole,upgradeEmployeeSkill,employeeCheckoutSeconds,employeeRestockSeconds,employeeSkillCost,EMPLOYEE_HIRE_COST,EMPLOYEE_SKILL_LIMIT,EMPLOYEE_RESTOCK_BATCH} from './economy.js';
+import {liveElapsedWindow,simulationSteps,migrateEmployees,hireStoreEmployee,changeEmployeeRole,upgradeEmployeeSkill,employeeCheckoutSeconds,employeeRestockSeconds,employeeSkillCost,EMPLOYEE_HIRE_COST,EMPLOYEE_SKILL_LIMIT,EMPLOYEE_RESTOCK_BATCH} from './economy.js?v=11';
 import {
   GRID_ENTRANCES, baseFootprint, footprintSize, occupiedTiles, footprintConflict,
   serviceVector, serviceFacingTarget, queueTile, clampPopularity, popularityAfterWait,
@@ -7,7 +7,7 @@ import {
   ACHIEVEMENT_CATALOG,
   legacyAchievementProgress, normalizeAchievementState, mergeAchievementStates,
   achievementProgress, awardCompletedAchievements, recordAchievementEvent
-} from './blockmart-v9-systems.js';
+} from './blockmart-v9-systems.js?v=11';
 
 const PRODUCT_DEFS = {
   water: { label: 'waterProduct', cost: 8, price: 12, demand: 1.45, color: 0x48b6cf, display: 'water' },
@@ -20,7 +20,7 @@ const PRODUCT_DEFS = {
 const CASHIER_HIRE_COST = 180;
 const REGISTER_COST = 120;
 const QUEUE_LIMIT_PER_REGISTER = 4;
-const QUEUE_PATIENCE_SECONDS = 17;
+const QUEUE_PATIENCE_SECONDS = 30;
 const TRAFFIC_RECOVERY_FLOOR = 18;
 const CELL_SIZE = .94;
 const VISUAL_CAMERA_YAW = Math.PI / 6;
@@ -86,7 +86,7 @@ export function migrateV9Save(saved = {}, initial = {}) {
   if (!state.unlocked.includes('snacks')) state.unlocked.push('snacks');
   state.employees = migrateEmployees(state,state.fixtures,state.warehouse);
   state.cashierCount = state.employees.filter(employee => employee.role === 'checkout').length;
-  state.storeModelVersion = 10;
+  state.storeModelVersion = 11;
   return state;
 }
 
@@ -132,6 +132,8 @@ export function installBlockmartV9(ctx) {
   let recoveryTick = 0;
   let isInstalled = false;
   let cameraOrbit = false;
+  let growthCategory = 'equipment';
+  let selectedCatalogKey = null;
   let simulationBusy=false,transactionBusy=false,owned=false,faulted=false,lease=null,disposed=false;
   let work=Promise.resolve(),checkpointTimer=null;
   let manualPaused=false;
@@ -142,6 +144,7 @@ export function installBlockmartV9(ctx) {
   let tabToken;
   try{tabToken=sessionStorage.getItem('blockmart.live-tab');if(!tabToken){tabToken=documentId;sessionStorage.setItem('blockmart.live-tab',tabToken)}}catch{tabToken=documentId}
   const customerMeshes=new Map();
+  const employeeMeshes=new Map();
   const stockDisplaySlots = new Map();
   let styledFloorTiles = null;
 
@@ -422,7 +425,6 @@ export function installBlockmartV9(ctx) {
       block('checkout-display', 0x7ed5b6, 0, 1.12, -.13, .36, .24, .3);
       block('checkout-conveyor', 0x465e63, 0, 1.03, .19, .7, .06, .42);
       block('checkout-light', staffedCounters().some(f => f.id === normalized.id) ? 0x61ca83 : 0xd55b50, .35, 1.1, -.32, .12, .12, .12);
-      if (staffedCounters().some(f => f.id === normalized.id)) addCashierModel(block);
     } else if (normalized.kind === 'fastCheckout') {
       block('checkout-upgrade', 0x426d79, 0, .55, 0, .82, .75, .68);
       block('checkout-display', 0x9be4cf, 0, .98, .12, .48, .22, .12);
@@ -538,7 +540,7 @@ export function installBlockmartV9(ctx) {
   function applyFloorArt() {
     const floor = ctx.scene?.getObjectByName('floor-tiles');
     if (!floor || floor === styledFloorTiles || typeof floor.setColorAt !== 'function') return;
-    const colors = [0x7b9484, 0x779080];
+    const colors = [0xc8dce5, 0xece4d1];
     let index = 0;
     for (let x = 0; x < state().area; x++) {
       for (let z = 0; z < state().area; z++) {
@@ -960,7 +962,7 @@ export function installBlockmartV9(ctx) {
     const old = fixtureId ? fixtures().find(f => f.id === fixtureId) || state().warehouse.find(f => f.id === fixtureId) : null;
     const selectedFootprint = old?.footprint || footprint || (kind === 'cooler' ? 'cooler' : kind === 'checkout' ? 'counter' : kind === 'decor' ? 'decor' : 'single');
     setPlacement({ kind, fixtureId, product: old?.product || product || 'water', footprint: selectedFootprint,
-      rotation: old?.rotation || 0, point: old ? { x: old.x, z: old.z } : copyPoint(selectedFloor), valid: false, dragging: false });
+      rotation: old?.rotation || 0, point: old && fixtures().some(f=>f.id===old.id) ? { x: old.x, z: old.z } : copyPoint(selectedFloor), valid: false, dragging: false });
     $('placementControls').hidden = false;
     $('placementProduct').hidden = kind !== 'shelf';
     $('placementFootprint').hidden = kind !== 'shelf';
@@ -1070,17 +1072,12 @@ export function installBlockmartV9(ctx) {
       ctx.toast(productLockReason(p.product)); return;
     }
     if (old) {
-      if (p.kind === 'cooler' && !state().equipment.cooler) {
-        const cost = fixtureCost(p.kind, p.footprint);
-        const purchase = ctx.purchaseEquipment(state(), 'cooler', cost);
-        if (!purchase.ok) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
-        setState(purchase.state); state().equipment.cooler = true;
-      }
       const moved = { ...old, x: p.point.x, z: p.point.z, rotation: p.rotation, footprint: p.footprint, product: p.product };
       if (oldWarehouse) {
         state().warehouse = state().warehouse.filter(f => f.id !== old.id);
         state().fixtures.push(moved);
       } else state().fixtures[state().fixtures.findIndex(f => f.id === old.id)] = moved;
+      if (p.kind === 'decor' && old.appealApplied === false) { moved.appealApplied=true;state().popularity=clampPopularity(state().popularity+Math.max(1,5-decorativeCount()*.7)); }
       if (p.kind === 'cooler') state().coolerFixtureId = old.id;
       if (p.kind === 'fastCheckout') state().fastCheckoutFixtureId = old.id;
     } else {
@@ -1131,7 +1128,7 @@ export function installBlockmartV9(ctx) {
 
   function rotateSelectedFixture(id) {
     const fixture = fixtures().find(f => f.id === id);
-    if (!fixture) return;
+    if (!fixture) {ctx.toast(ctx.t('selectFixtureFirst',ctx.locale));return false;}
     const candidate = {...fixture,rotation:((fixture.rotation || 0)+1)%4};
     const conflict = footprintConflict(candidate,fixtures(),state().area,id,[...state().entrances,...state().exits]);
     if (conflict || !routeToCheckout(occupiedTiles(candidate),candidate,id)) {
@@ -1140,7 +1137,7 @@ export function installBlockmartV9(ctx) {
       return false;
     }
     Object.assign(fixture,candidate);
-    syncFixtures(); rerouteLiveCustomers(); updateQueueLines(); ctx.save(); renderPanel();
+    syncFixtures(); rerouteLiveCustomers(); updateQueueLines(); ctx.save(); renderPanel();ctx.toast(`${ctx.t('fixtureRotated',ctx.locale)} · ${fixture.rotation*90}°`);
     return true;
   }
 
@@ -1161,8 +1158,7 @@ export function installBlockmartV9(ctx) {
     const button = document.createElement('button');
     button.type = 'button'; button.className = `card ${options.className || ''}`.trim();
     button.disabled = Boolean(options.disabled);
-    const marker = document.createElement('span'); marker.className = `block-icon ${icon}`; marker.setAttribute('aria-hidden', 'true');
-    for (let i = 0; i < 3; i++) marker.append(document.createElement('i'));
+    const marker = itemArt(PRODUCT_DEFS[icon]?icon:icon==='checkout-speed'?'fastCheckout':icon==='store-charm'?'decor':icon==='shelf-single'?'shelf':icon==='shelf-double'?'shelf-double':icon==='cooler'?'cooler':'checkout');
     const copy = document.createElement('span'); copy.className = 'card-copy';
     const strong = document.createElement('strong'); strong.textContent = title;
     const small = document.createElement('small'); small.textContent = detail;
@@ -1209,27 +1205,75 @@ export function installBlockmartV9(ctx) {
     const button = document.createElement('button'); button.type = 'button'; button.textContent = ctx.t(key, ctx.locale); button.addEventListener('click',()=>transact(action)); return button;
   }
 
+  const catalog = [
+    {key:'shelf-single',kind:'shelf',footprint:'single',label:'smallShelf',art:'shelf'},
+    {key:'shelf-double',kind:'shelf',footprint:'double',label:'doubleShelf',art:'shelf-double'},
+    {key:'checkout',kind:'checkout',footprint:'counter',label:'cashRegister',art:'checkout'},
+    {key:'cooler',kind:'cooler',footprint:'cooler',label:'coolerUpgrade',art:'cooler'},
+    {key:'fastCheckout',kind:'fastCheckout',footprint:'counter',label:'fasterCheckout',art:'fastCheckout'},
+    {key:'decor',kind:'decor',footprint:'decor',label:'storeCharm',art:'decor'}
+  ];
+  const catalogMatches=(entry,item)=>item.kind===entry.kind && (entry.kind!=='shelf'||item.footprint===entry.footprint);
+  function itemArt(id,alt='') {
+    const image=document.createElement('img');image.className='item-art';image.src=`./assets/item-${id}-v11.png`;image.alt=alt;image.width=72;image.height=72;image.decoding='async';return image;
+  }
   function fixtureIllustration(fixture) {
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('viewBox', '0 0 120 80'); svg.setAttribute('role', 'img');
-    svg.setAttribute('aria-label', fixture.kind === 'shelf' ? `${ctx.t('shelfUnit', ctx.locale)} · ${productName(fixture.product)}` : fixtureLabel(fixture));
-    svg.classList.add('fixture-illustration');
-    const shape = (x, y, w, h, fill) => { const rect = document.createElementNS(svg.namespaceURI, 'rect'); for (const [name,value] of Object.entries({x,y,width:w,height:h,fill})) rect.setAttribute(name,String(value)); svg.append(rect); };
-    shape(3,65,114,8,'#dcebe7');
-    if (fixture.kind === 'shelf') {
-      shape(15,7,8,61,'#84603f'); shape(98,7,8,61,'#84603f');
-      for (const y of [34,60]) { shape(20,y,81,7,'#b18550'); for (const x of [29,48,67,86]) { const color=`#${(PRODUCT_DEFS[fixture.product]?.color || 0x48b6cf).toString(16).padStart(6,'0')}`; shape(x,y-19,11,18,color); shape(x+2,y-16,7,4,'#fff2d5'); } }
-    } else if (fixture.kind === 'cooler') {
-      shape(15,6,90,62,'#315b64');shape(22,15,33,43,'#8ebfc3');shape(61,15,33,43,'#8ebfc3');
-      for (const y of [28,45]) for (const x of [29,41,68,80]) { shape(x,y-8,8,11,'#60cadd');shape(x+2,y-10,4,3,'#eefbff'); }
-      shape(57,17,3,36,'#efbe53');shape(21,61,78,5,'#244650');
-    } else if (fixture.kind === 'decor') {
-      shape(44,46,33,19,'#ad7846');shape(39,43,43,7,'#c9965c');shape(57,15,8,30,'#348e69');shape(38,22,28,13,'#53ac74');shape(61,12,24,13,'#63bb80');
+    const entry=catalog.find(entry=>catalogMatches(entry,fixture));
+    const image=itemArt(entry?.art || 'shelf',fixtureLabel(fixture));image.classList.add('fixture-illustration');return image;
+  }
+  function buyCatalogItem(entry) {
+    if(entry.kind==='decor') {
+      if(state().diamond<1 || [...fixtures(),...state().warehouse].filter(f=>f.kind==='decor').length>=6){ctx.toast(ctx.t('needMoreCash',ctx.locale));return false;}
+      state().diamond--;state().diamondSpent++;
     } else {
-      shape(14,36,92,29,'#ac7b48'); shape(14,49,92,16,'#285965'); shape(62,17,28,19,'#426b70'); shape(66,20,20,11,'#9bd9bd');
-      if (staffedCounters().some(counter => counter.id === fixture.id)) { shape(28,8,19,18,'#ba916c'); shape(24,27,27,17,'#258b78'); shape(26,4,23,6,'#315f6c'); }
+      const cost=fixtureCost(entry.kind,entry.footprint);
+      const result=(entry.kind==='cooler'||entry.kind==='fastCheckout') ? ctx.purchaseEquipment(state(),entry.kind,cost) : ctx.spendCash(state(),cost,'fixture',{detail:entry.key});
+      if(!result.ok){ctx.toast(ctx.t('needMoreCash',ctx.locale));return false;}
+      setState(result.state);
     }
-    return svg;
+    // The starter cooler is already physical property; its paid module upgrades it.
+    const existing=entry.kind==='cooler'?[...fixtures(),...state().warehouse].find(f=>f.kind==='cooler'):null;
+    const fixture=existing || normalizeFixture({id:`${entry.kind}-${crypto.randomUUID()}`,kind:entry.kind,footprint:entry.footprint,product:'water',x:-999,z:-999,rotation:0,appealApplied:false});
+    if(!existing)state().warehouse.push(fixture);
+    if(entry.kind==='cooler')state().coolerFixtureId=fixture.id;
+    if(entry.kind==='fastCheckout')state().fastCheckoutFixtureId=fixture.id;
+    selectedCatalogKey=entry.key;ctx.save();syncFixtures();renderPanel();refreshHud();ctx.toast(ctx.t('itemBoughtStored',ctx.locale));return true;
+  }
+  function renderCatalogRow(entry) {
+    const placed=fixtures().filter(f=>catalogMatches(entry,f)),stored=state().warehouse.filter(f=>catalogMatches(entry,f));
+    const row=document.createElement('article');row.className='catalog-row';row.dataset.catalogKey=entry.key;
+    const imageButton=document.createElement('button');imageButton.type='button';imageButton.className='item-image-button';imageButton.setAttribute('aria-label',`${ctx.t('itemOptions',ctx.locale)} · ${ctx.t(entry.label,ctx.locale)}`);imageButton.setAttribute('aria-expanded',String(selectedCatalogKey===entry.key));
+    imageButton.append(itemArt(entry.art));imageButton.addEventListener('click',()=>{selectedCatalogKey=selectedCatalogKey===entry.key?null:entry.key;renderPanel()});
+    const copy=document.createElement('div');copy.className='item-copy';const title=document.createElement('h3');title.textContent=ctx.t(entry.label,ctx.locale);
+    const counts=document.createElement('p');counts.textContent=`${ctx.t('ownedTotal',ctx.locale)} ${placed.length+stored.length} · ${ctx.t('placedCount',ctx.locale)} ${placed.length} · ${ctx.t('storedCount',ctx.locale)} ${stored.length}`;
+    const price=document.createElement('strong');price.className='item-price';price.textContent=entry.kind==='decor'?'1 ✦':ctx.price(fixtureCost(entry.kind,entry.footprint));copy.append(title,counts,price);
+    const buy=actionButton('buyItem',()=>buyCatalogItem(entry));buy.className='item-buy';buy.dataset.buyItem=entry.key;
+    buy.disabled=entry.kind==='decor' ? state().diamond<1 || placed.length+stored.length>=6 : state().cash<fixtureCost(entry.kind,entry.footprint) || ((entry.kind==='cooler'||entry.kind==='fastCheckout')&&state().equipment[entry.kind]);
+    row.append(imageButton,copy,buy);
+    if(selectedCatalogKey===entry.key){
+      const options=document.createElement('div');options.className='item-owned-options';
+      if(!placed.length&&!stored.length){const hint=document.createElement('p');hint.textContent=ctx.t('buyBeforePlace',ctx.locale);options.append(hint);}
+      [...stored,...placed].forEach((fixture,index)=>{
+        const line=document.createElement('div');line.className='owned-option';const name=document.createElement('span');const isStored=stored.some(f=>f.id===fixture.id);name.textContent=`${index+1} · ${ctx.t(isStored?'storedCount':'placedCount',ctx.locale)}`;line.append(name);
+        line.append(actionButton(isStored?'placeFree':'moveFixture',()=>beginPlacement(fixture.kind,fixture.id,fixture.product,fixture.footprint)));
+        if(!isStored){line.append(actionButton('rotateFixture',()=>rotateSelectedFixture(fixture.id)));line.append(actionButton('toWarehouse',()=>warehouseFixture(fixture.id)));}
+        options.append(line);
+      });row.append(options);
+    }
+    $('panel').append(row);return row;
+  }
+  function renderGrowthCatalog() {
+    const categories=document.createElement('div');categories.className='growth-categories';categories.setAttribute('role','tablist');
+    for(const [id,key] of [['equipment','equipmentCategory'],['decor','decorCategory'],['layout','layoutCategory']]){
+      const button=document.createElement('button');button.type='button';button.textContent=ctx.t(key,ctx.locale);button.dataset.growthCategory=id;button.setAttribute('role','tab');button.setAttribute('aria-selected',String(growthCategory===id));button.addEventListener('click',()=>{growthCategory=id;selectedCatalogKey=null;renderPanel()});categories.append(button);
+    }
+    $('panel').append(categories);
+    if(growthCategory==='layout'){
+      createCard('growth',ctx.t('expand',ctx.locale),`${ctx.t('expandDetail',ctx.locale)} · ${state().area} × ${state().area}`,ctx.price(ctx.EXPANSION_COST),ctx.expand,{disabled:state().area>10||state().cash<ctx.EXPANSION_COST});
+      createCard('entrance',ctx.t('entrance',ctx.locale),ctx.t('routeSafetyHint',ctx.locale),'↔',()=>beginEndpointEdit('entrance'));
+      createCard('exit',ctx.t('exit',ctx.locale),ctx.t('routeSafetyHint',ctx.locale),'↔',()=>beginEndpointEdit('exit'));
+    }else for(const entry of catalog.filter(item=>growthCategory==='decor'?item.kind==='decor':item.kind!=='decor'))renderCatalogRow(entry);
+    renderCashActivity();
   }
 
   function productLockReason(id) { return `${ctx.t('unlockAt', ctx.locale)} ${ctx.price(id === 'juice' ? 280 : 1000)} ${ctx.t('lifetimeSales', ctx.locale)}`; }
@@ -1245,7 +1289,7 @@ export function installBlockmartV9(ctx) {
     for (const id of Object.keys(PRODUCT_DEFS)) {
       const unlocked = state().unlocked.includes(id); const button = document.createElement('button'); button.type = 'button'; button.dataset.productId = id; button.disabled = !unlocked;
       button.className = `product-choice${fixture.product === id ? ' is-selected' : ''}`; button.setAttribute('aria-pressed',String(fixture.product === id));
-      const sample = document.createElement('span'); sample.className = `block-icon ${id} product-swatch`; sample.setAttribute('aria-hidden','true'); for (let i=0;i<3;i++) sample.append(document.createElement('i'));
+      const sample = itemArt(id);
       const name = document.createElement('strong'); name.textContent = productName(id);
       const note = document.createElement('small'); note.textContent = unlocked ? `${ctx.t('availableStock',ctx.locale)} ${state().stock[id] || 0}` : productLockReason(id);
       button.append(sample,name,note); button.addEventListener('click',()=>transact(()=>setShelfProduct(fixture.id,id))); picker.append(button);
@@ -1434,24 +1478,19 @@ export function installBlockmartV9(ctx) {
   function renderShelves() {
     const shelves=[...fixtures(),...state().warehouse].filter(f=>f.kind==='shelf');
     shelves.forEach((fixture,index)=>{
-      const stored=state().warehouse.some(f=>f.id===fixture.id);
-      const card=document.createElement('article');card.className='owned-shelf-card';card.dataset.fixtureId=fixture.id;
-      if(selectedFixtureId===fixture.id)card.classList.add('is-selected');
-      const head=document.createElement('div');head.className='fixture-detail-heading';head.append(fixtureIllustration(fixture));
-      const copy=document.createElement('div');const title=document.createElement('h3');title.textContent=`${ctx.t('shelfUnit',ctx.locale)} ${index+1}`;
-      const sku=document.createElement('span');sku.className=`block-icon ${fixture.product} product-swatch`;sku.setAttribute('aria-hidden','true');for(let i=0;i<3;i++)sku.append(document.createElement('i'));
-      const name=document.createElement('strong');name.textContent=productName(fixture.product);
-      const count=document.createElement('p');count.dataset.shelfStock=fixture.product;count.textContent=`${ctx.t('availableStock',ctx.locale)} ${state().stock[fixture.product]||0}`;
-      copy.append(title,sku,name,count);head.append(copy);card.append(head);
+      const stored=state().warehouse.some(f=>f.id===fixture.id),expanded=selectedFixtureId===fixture.id;
+      const card=document.createElement('article');card.className=`owned-shelf-card compact-shelf${expanded?' is-selected':''}`;card.dataset.fixtureId=fixture.id;
+      const image=document.createElement('button');image.type='button';image.className='item-image-button';image.setAttribute('aria-label',`${ctx.t('itemOptions',ctx.locale)} · ${ctx.t('shelfUnit',ctx.locale)} ${index+1}`);image.setAttribute('aria-expanded',String(expanded));image.append(itemArt(fixture.product));image.addEventListener('click',()=>{selectedFixtureId=expanded?null:fixture.id;renderPanel()});
+      const copy=document.createElement('div');copy.className='item-copy';const title=document.createElement('h3');title.textContent=`${ctx.t('shelfUnit',ctx.locale)} ${index+1} · ${productName(fixture.product)}`;
+      const count=document.createElement('p');count.dataset.shelfStock=fixture.product;const status=document.createElement('small');status.textContent=ctx.t(stored?'storedCount':'placedCount',ctx.locale);copy.append(title,count,status);card.append(image,copy);
       const actions=document.createElement('div');actions.className='shelf-actions';
-      if(stored){const place=actionButton('placeFree',()=>beginPlacement('shelf',fixture.id,fixture.product,fixture.footprint));actions.append(place);}
-      else{const order=actionButton('restockAction',()=>stockOrder(fixture.product));order.dataset.restockProduct=fixture.product;actions.append(order);}
-      const change=actionButton('changeShelfProduct',()=>{selectedFixtureId=fixture.id;productPickerFixtureId=productPickerFixtureId===fixture.id?null:fixture.id;renderPanel();});change.setAttribute('aria-expanded',String(productPickerFixtureId===fixture.id));actions.append(change);card.append(actions);
-      if(productPickerFixtureId===fixture.id)card.append(renderProductPicker(fixture));
-      if(!stored){const tools=document.createElement('div');tools.className='fixture-context-tools';tools.append(actionButton('rotateFixture',()=>rotateSelectedFixture(fixture.id)),actionButton('moveFixture',()=>beginPlacement('shelf',fixture.id,fixture.product,fixture.footprint)),actionButton('toWarehouse',()=>warehouseFixture(fixture.id)));card.append(tools);}
-      else{const note=document.createElement('small');note.textContent=ctx.t('storedWarehouse',ctx.locale);card.append(note);}
+      if(stored)actions.append(actionButton('placeFree',()=>beginPlacement('shelf',fixture.id,fixture.product,fixture.footprint)));
+      else{const order=actionButton('restockAction',()=>stockOrder(fixture.product));order.dataset.restockProduct=fixture.product;actions.append(order,actionButton('rotateFixture',()=>rotateSelectedFixture(fixture.id)));}
+      card.append(actions);
+      if(expanded){const tools=document.createElement('div');tools.className='shelf-expanded';tools.append(actionButton('changeShelfProduct',()=>{productPickerFixtureId=productPickerFixtureId===fixture.id?null:fixture.id;renderPanel()}));if(!stored)tools.append(actionButton('moveFixture',()=>beginPlacement('shelf',fixture.id,fixture.product,fixture.footprint)),actionButton('toWarehouse',()=>warehouseFixture(fixture.id)));card.append(tools);if(productPickerFixtureId===fixture.id)card.append(renderProductPicker(fixture));}
       $('panel').append(card);
     });
+    for(const entry of catalog.filter(item=>item.kind==='shelf'))renderCatalogRow(entry);
   }
 
   function refreshPanelValues() {
@@ -1463,6 +1502,7 @@ export function installBlockmartV9(ctx) {
     for(const card of document.querySelectorAll('[data-employee-id]')){const employee=employees().find(e=>e.id===card.dataset.employeeId);if(!employee)continue;for(const button of card.querySelectorAll('[data-skill]')){const cost=employeeSkillCost(button.dataset.skill,employee.skills[button.dataset.skill]);button.disabled=!cost||state().cash<cost;}}
     const hire=$('hireEmployee');if(hire)hire.disabled=state().cash<EMPLOYEE_HIRE_COST||($('newEmployeeRole').value==='checkout'&&!nextVacantRegister());
     for(const button of document.querySelectorAll('[data-hire-register]'))button.disabled=state().cash<EMPLOYEE_HIRE_COST||Boolean(counterEmployee(button.dataset.hireRegister))||!routeToCheckout([],allCounters().find(f=>f.id===button.dataset.hireRegister));
+    for(const button of document.querySelectorAll('[data-buy-item]')){const entry=catalog.find(item=>item.key===button.dataset.buyItem);button.disabled=entry.kind==='decor'?state().diamond<1||[...fixtures(),...state().warehouse].filter(f=>f.kind==='decor').length>=6:state().cash<fixtureCost(entry.kind,entry.footprint)||Boolean((entry.kind==='cooler'||entry.kind==='fastCheckout')&&state().equipment[entry.kind]);}
   }
 
   function ownedStock(){return ctx.totalStock(state().stock)+getCustomers().filter(c=>c.carried).length;}
@@ -1490,9 +1530,7 @@ export function installBlockmartV9(ctx) {
   }
 
   function buyRegister() {
-    if (state().cash < REGISTER_COST) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
-    beginPlacement('checkout', null, 'water', 'counter');
-    ctx.renderPanel();
+    return buyCatalogItem(catalog.find(entry=>entry.key==='checkout'));
   }
 
   function expandDecorAppeal() {
@@ -1514,47 +1552,11 @@ export function installBlockmartV9(ctx) {
       renderAchievements();
       return;
     }
-    if (tab === 'shop') {
-      renderShelves();
-      createCard('shelf-single', ctx.t('smallShelf', ctx.locale), `${ctx.t('oneTile', ctx.locale)} · ${ctx.t('selectFloorThenPlace', ctx.locale)}`, ctx.price(70), () => beginPlacement('shelf', null, 'water', 'single'), { placement: { kind: 'shelf', footprint: 'single', product: 'water' } });
-      createCard('shelf-double', ctx.t('doubleShelf', ctx.locale), `${ctx.t('twoTiles', ctx.locale)} · ${ctx.t('selectFloorThenPlace', ctx.locale)}`, ctx.price(120), () => beginPlacement('shelf', null, 'water', 'double'), { placement: { kind: 'shelf', footprint: 'double', product: 'water' } });
-    }
-    if (tab === 'supply') {
-      for (const id of Object.keys(PRODUCT_DEFS)) {
-        const product = ctx.PRODUCTS[id], unlocked = state().unlocked.includes(id);
-        const order = Math.min(8, Math.max(0, ctx.stockCapacity(ctx.activeEquipment()) - ctx.totalStock(state().stock)), Math.floor(state().cash / product.cost));
-        const title = ctx.t(product.label, ctx.locale);
-        const detail = unlocked
-          ? `${state().stock[id] || 0} ${ctx.t('onShelf', ctx.locale)} · ${ctx.t('buyPrice', ctx.locale)} ${ctx.price(product.cost)} · ${ctx.t('sellPrice', ctx.locale)} ${ctx.price(product.price)}`
-          : `${ctx.t('unlockAt', ctx.locale)} ${id === 'juice' ? ctx.price(280) : ctx.price(1000)} ${ctx.t('lifetimeSales', ctx.locale)}`;
-        createCard(id, title, detail, unlocked ? `+${order} · ${ctx.price(order * product.cost)}` : ctx.t('locked', ctx.locale), () => stockOrder(id, 8), { disabled: !unlocked || !order });
-      }
-      createCard('shelf-single', ctx.t('smallShelf', ctx.locale), ctx.t('shelfForSelectedProduct', ctx.locale), ctx.price(70), () => beginPlacement('shelf', null, $('placementProduct').value || 'water', 'single'), { placement: { kind: 'shelf', footprint: 'single', product: 'water' } });
-      renderCashActivity();
-    }
-    if (tab === 'growth') {
-      renderWarehouseSummary();
-      createCard('growth', ctx.t('expand', ctx.locale), `${ctx.t('expandDetail', ctx.locale)} · ${state().area} × ${state().area}`, `−${ctx.price(ctx.EXPANSION_COST)}`, ctx.expand, { disabled: state().area > 10 || state().cash < ctx.EXPANSION_COST });
-      const coolerFixture = fixtures().find(f => f.id === state().coolerFixtureId) || state().warehouse.find(f => f.id === state().coolerFixtureId)
-        || fixtures().find(f => f.kind === 'cooler') || state().warehouse.find(f => f.kind === 'cooler');
-      const coolerOwned = Boolean(state().equipment.cooler);
-      const coolerInstalled = coolerOwned && Boolean(coolerFixture && fixtures().some(f => f.id === coolerFixture.id));
-      const coolerLabel = coolerInstalled ? ctx.t('coolerInstalled', ctx.locale)
-        : coolerOwned ? ctx.t('storedInactive', ctx.locale) : `${ctx.t('fourTiles', ctx.locale)} · ${ctx.t('moreCapacity', ctx.locale)}`;
-      createCard('cooler', ctx.t('coolerUpgrade', ctx.locale), `${coolerLabel} · ${ctx.t('stockCapacity', ctx.locale)} ${ctx.totalStock(state().stock)}/${ctx.stockCapacity(ctx.activeEquipment())}`,
-        coolerOwned ? (coolerInstalled ? ctx.t('upgradeComplete', ctx.locale) : ctx.t('placeFree', ctx.locale)) : '−$180',
-        () => beginPlacement('cooler', coolerOwned ? coolerFixture?.id || null : coolerFixture?.id || null, 'water', 'cooler'),
-        { disabled: Boolean(coolerOwned && coolerInstalled), placement: { kind: 'cooler', footprint: 'cooler' } });
-      createCard('store-charm', ctx.t('storeCharm', ctx.locale), `${ctx.t('decorAppeal', ctx.locale)} +${currentDecorAppeal().toFixed(1)} · ${state().diamond} ${ctx.t('tokens', ctx.locale)}`, '−1 ✦', () => beginPlacement('decor', null, 'water', 'decor'), { disabled: state().diamond < 1 || decorativeCount() >= 6, placement: { kind: 'decor', footprint: 'decor' } });
-      createCard('entrance', ctx.t('entrance', ctx.locale), ctx.t('routeSafetyHint', ctx.locale), '↔', () => beginEndpointEdit('entrance'));
-      createCard('exit', ctx.t('exit', ctx.locale), ctx.t('routeSafetyHint', ctx.locale), '↔', () => beginEndpointEdit('exit'));
-      addWarehouseControls();
-      renderCashActivity();
-    }
+    if (tab === 'shop') renderShelves();
+    if (tab === 'growth') renderGrowthCatalog();
     if (tab === 'staff') {
       renderEmployees();
       renderRegisterRoster();
-      createCard('checkout-speed', ctx.t('fasterCheckout', ctx.locale), `${ctx.t('checkoutDetail', ctx.locale)} · ${ctx.t('checkoutTime', ctx.locale)} ${employeeCheckoutSeconds({},ctx.activeEquipment()).toFixed(1)}s`, state().equipment.fastCheckout ? ctx.t('upgradeComplete', ctx.locale) : '−$150', () => state().equipment.fastCheckout ? beginPlacement('fastCheckout', state().warehouse.find(f => f.kind === 'fastCheckout')?.id || state().fixtures.find(f => f.kind === 'fastCheckout')?.id, 'water', 'counter') : beginPlacement('fastCheckout', null, 'water', 'counter'), { disabled: state().equipment.fastCheckout && fixtures().some(f => f.kind === 'fastCheckout') || !state().equipment.fastCheckout && state().cash < 150, placement: { kind: 'fastCheckout', footprint: 'counter' } });
       const auto = createCard('auto-restock', ctx.t('autoRestock', ctx.locale), ctx.t('autoRestockOptIn', ctx.locale),
         state().autoRestockEnabled ? ctx.t('autoRestockOn', ctx.locale) : ctx.t('autoRestockOff', ctx.locale), () => {
           if (!employees().some(e=>e.role==='restock')) { ctx.toast(ctx.t('helperNeeded', ctx.locale)); return; }
@@ -1716,7 +1718,7 @@ export function installBlockmartV9(ctx) {
   }
 
   function bindInput() {
-    const orbit=actionButton('cameraOrbit',()=>{cameraOrbit=!cameraOrbit;orbit.setAttribute('aria-pressed',String(cameraOrbit));});orbit.id='cameraOrbit';orbit.className='camera-orbit';orbit.setAttribute('aria-pressed','false');document.querySelector('.scene-wrap').append(orbit);
+    const orbit=actionButton('cameraOrbit',()=>{cameraOrbit=!cameraOrbit;state().view=(state().view||0)+Math.PI/8;ctx.setCamera();ctx.save();orbit.setAttribute('aria-pressed',String(cameraOrbit));ctx.toast(ctx.t(cameraOrbit?'cameraDragRotate':'cameraDragPan',ctx.locale));});orbit.id='cameraOrbit';orbit.className='camera-orbit';orbit.setAttribute('aria-pressed','false');document.querySelector('.scene-wrap').append(orbit);
     ctx.canvas.addEventListener('pointerdown', pointerDown, true);
     ctx.canvas.addEventListener('pointermove', pointerMove, true);
     ctx.canvas.addEventListener('pointerup', pointerUp, true);
@@ -1786,19 +1788,111 @@ export function installBlockmartV9(ctx) {
     if (ctx.spawnTimer > nextInterval) ctx.spawnTimer = nextInterval;
   }
 
+  function staffHome(employee) {
+    const origin=state().entrances[0] || {x:0,z:0};
+    const index=Math.max(0,employees().filter(e=>e.role==='restock').findIndex(e=>e.id===employee.id));
+    const choices=[];
+    for(let z=0;z<state().area;z++)for(let x=0;x<state().area;x++)if(walkable(x,z))choices.push({x,z});
+    choices.sort((a,b)=>Math.abs(a.x-origin.x)+Math.abs(a.z-origin.z)-Math.abs(b.x-origin.x)-Math.abs(b.z-origin.z));
+    return choices[Math.min(index+1,choices.length-1)] || origin;
+  }
   function automaticRestock(delta) {
-    for(const employee of employees().filter(e=>e.role==='restock')) {
-      if(!state().autoRestockEnabled){employee.workSeconds=0;continue;}
-      employee.workSeconds+=delta;
-      const interval=employeeRestockSeconds(employee);
-      if(employee.workSeconds<interval)continue;
-      employee.workSeconds%=interval;
-      const productId=[...new Set(fixtures().filter(f=>f.kind==='shelf').map(f=>f.product))].filter(id=>state().unlocked.includes(id)&&(state().stock[id]||0)<6).sort((a,b)=>(state().stock[a]||0)-(state().stock[b]||0))[0];
-      if(!productId)continue;
-      const product=ctx.PRODUCTS[productId],room=ctx.stockCapacity(ctx.activeEquipment())-ownedStock();
-      const quantity=Math.min(EMPLOYEE_RESTOCK_BATCH,Math.max(0,room),Math.floor(state().cash/product.cost));if(quantity<=0)continue;
-      const purchase=ctx.spendCash(state(),quantity*product.cost,'autoRestock',{product:productId,quantity});if(!purchase.ok)continue;
-      setState(purchase.state);state().stock[productId]=(state().stock[productId]||0)+quantity;ctx.save();syncStockDisplays();refreshPanelValues();
+    // Only simulation transactions advance these saved jobs. Drawing never settles stock.
+    for(const id of employees().filter(e=>e.role==='restock').map(e=>e.id)) {
+      let employee=employees().find(e=>e.id===id),home=staffHome(employee);
+      let job=employee.work;
+      if(!job || !Number.isFinite(job.x) || !Number.isFinite(job.z))job=employee.work={phase:'idle',...home,heading:0,path:[],wait:0};
+      if(!['idle','travel','stock','return'].includes(job.phase))job.phase='idle';
+      if(!Array.isArray(job.path))job.path=[];
+      if(!Number.isFinite(job.wait))job.wait=0;
+      if(!state().autoRestockEnabled){job.phase='idle';job.path=[];employee.workSeconds=0;continue;}
+      const target=fixtures().find(f=>f.id===job.targetId&&f.kind==='shelf'&&f.product===job.productId);
+      if((job.phase==='travel'||job.phase==='stock')&&!target){job.phase='idle';job.path=[];job.wait=0;}
+      if(job.phase==='idle') {
+        employee.workSeconds+=delta;
+        if(employee.workSeconds<employeeRestockSeconds(employee))continue;
+        const candidates=fixtures().filter(f=>f.kind==='shelf'&&state().unlocked.includes(f.product)&&(state().stock[f.product]||0)<6)
+          .sort((a,b)=>(state().stock[a.product]||0)-(state().stock[b.product]||0));
+        const free=walkable(Math.round(job.x),Math.round(job.z));
+        if(!free){job.x=home.x;job.z=home.z;}
+        for(const fixture of candidates){
+          const path=findPath({x:Math.round(job.x),z:Math.round(job.z)},accessTiles(fixture));
+          const alreadyThere=accessTiles(fixture).some(p=>p.x===Math.round(job.x)&&p.z===Math.round(job.z));
+          if(!path.length&&!alreadyThere)continue;
+          employee.workSeconds=0;Object.assign(job,{phase:path.length?'travel':'stock',targetId:fixture.id,productId:fixture.product,path,wait:0,delivered:0,jobId:crypto.randomUUID()});break;
+        }
+      } else if(job.phase==='travel'||job.phase==='return') {
+        if(job.path.length && !walkable(job.path[0].x,job.path[0].z)) {
+          const goals=job.phase==='return'?[home]:accessTiles(target);
+          job.path=findPath({x:Math.round(job.x),z:Math.round(job.z)},goals);
+          if(!job.path.length){job.phase='idle';continue;}
+        }
+        const point=job.path[0];
+        if(point){const dx=point.x-job.x,dz=point.z-job.z,distance=Math.hypot(dx,dz),step=Math.min(distance,delta*2.2);job.heading=smoothHeading(job.heading,Math.atan2(dx,dz),delta);if(distance<=step+.0001){job.x=point.x;job.z=point.z;job.path.shift();}else{job.x+=dx/distance*step;job.z+=dz/distance*step;}}
+        if(!job.path.length){job.phase=job.phase==='return'?'idle':'stock';job.wait=0;}
+      } else if(job.phase==='stock') {
+        const center=fixtureCenter(target);job.heading=smoothHeading(job.heading,Math.atan2(center.x-job.x,center.z-job.z),delta);job.wait+=delta;
+        if(job.wait<Math.max(.65,1.4*.82**employee.skills.restock))continue;
+        const product=ctx.PRODUCTS[job.productId],room=ctx.stockCapacity(ctx.activeEquipment())-ownedStock();
+        const quantity=Math.min(EMPLOYEE_RESTOCK_BATCH,Math.max(0,room),Math.floor(state().cash/product.cost));
+        // Advance first; the cash/stock and return phase are one atomic persisted commit.
+        job.phase='return';job.wait=0;job.path=findPath({x:Math.round(job.x),z:Math.round(job.z)},[home]);
+        if(quantity>0){const purchase=ctx.spendCash(state(),quantity*product.cost,'autoRestock',{product:job.productId,quantity,detail:job.jobId});if(purchase.ok){setState(purchase.state);state().stock[job.productId]=(state().stock[job.productId]||0)+quantity;employee=employees().find(e=>e.id===id);employee.work.delivered=quantity;ctx.save();}}
+      }
+    }
+  }
+
+  function makeStaffModel(primary,role) {
+    const group=new THREE.Group();group.name='uniform-employee';
+    const skin=primary?0x9da7af:0xc69b75;
+    const block=(name,color,x,y,z,sx,sy,sz)=>ctx.cube(group,name,color,x,y,z,sx,sy,sz);
+    block('uniform-body',0x087e77,0,.78,0,.62,.68,.4);
+    block('uniform-apron',0x0caf9b,0,.7,.245,.52,.55,.08);
+    block('uniform-belt',0x83532b,0,.51,.25,.58,.08,.07);
+    block('uniform-pocket',0x06675d,.12,.68,.3,.21,.18,.035);
+    block('staff-badge',0xffd26b,-.16,.98,.245,.14,.1,.045);
+    block('head',skin,0,1.37,.015,.73,.61,.56);
+    block('muzzle',0xc6c9c7,0,1.22,.33,.4,.25,.2);
+    for(const x of [-.2,.2]){
+      block('ear',skin,x*1.45,1.75,0,.21,.29,.2);block('inner-ear',0xe1b7b2,x*1.45,1.76,.11,.1,.16,.02);
+      block('eye-white',0xfff6de,x,1.43,.304,.16,.2,.055);block('eye-pupil',0x483121,x,1.43,.34,.08,.12,.035);block('eye-glint',0xffffff,x-.02,1.47,.366,.035,.04,.015);
+    }
+    block('eyebrow',0x324650,-.2,1.57,.31,.18,.055,.045);block('eyebrow',0x324650,.2,1.57,.31,.18,.055,.045);
+    block('smile',0x423631,.05,1.15,.445,.12,.045,.025);
+    block('uniform-cap',0x064951,0,1.72,.01,.63,.15,.48);block('uniform-brim',0x17a593,0,1.65,.27,.67,.07,.25);
+    block('cap-badge',0xf1be42,0,1.74,.26,.15,.1,.035);
+    if(primary){
+      // Cuboid gear horn, goggles, shoulder kit and pocket tool match the original Rux.
+      for(const x of [-.18,.18]){block('goggle-frame',0xe5a425,x,1.73,.305,.27,.23,.08);block('goggle-lens',0x21aaad,x,1.73,.353,.18,.14,.04);}
+      for(const [x,y,sx,sy] of [[0,1.53,.28,.08],[0,1.25,.28,.08],[-.18,1.39,.08,.28],[.18,1.39,.08,.28],[0,1.61,.09,.13],[0,1.17,.09,.13],[-.26,1.39,.13,.09],[.26,1.39,.13,.09]])block('rux-gear-horn',0xf6bb36,x,y,.48,sx,sy,.19);
+      block('tool-strap',0x83532b,.34,.84,.03,.08,.61,.44);block('tool-pouch',0x9f6435,.4,.53,.12,.16,.28,.27);block('wrench',0xbfc8ca,.43,.78,.25,.05,.24,.06);
+    }
+    for(const side of [-1,1]){
+      const arm=new THREE.Group();arm.name=side<0?'staff-arm-left':'staff-arm-right';arm.position.set(side*.41,1.0,0);group.add(arm);ctx.cube(arm,'uniform-sleeve',0x087e77,0,-.13,0,.2,.3,.24);ctx.cube(arm,'hand',skin,0,-.36,.02,.2,.21,.22);
+      const leg=new THREE.Group();leg.name=side<0?'staff-leg-left':'staff-leg-right';leg.position.set(side*.17,.43,0);group.add(leg);ctx.cube(leg,'uniform-trouser',0x294d58,0,-.14,0,.25,.32,.29);ctx.cube(leg,'boot',0x614a35,0,-.35,.05,.29,.17,.4);ctx.cube(leg,'boot-trim',0xf2bf56,0,-.35,.255,.23,.11,.025);
+    }
+    const crate=new THREE.Group();crate.name='staff-crate';crate.position.set(0,.83,.53);group.add(crate);ctx.cube(crate,'crate-box',0xc99b62,0,0,0,.52,.31,.39);ctx.cube(crate,'crate-band',0xf8e3b8,0,0,.2,.12,.31,.02);ctx.cube(crate,'crate-label',0x30c0d0,.13,.02,.22,.15,.12,.02);crate.visible=role==='restock';
+    return group;
+  }
+  function drawEmployees(delta=.1) {
+    const oldRux=ctx.scene.getObjectByName('rux-shopkeeper');if(oldRux){ctx.scene.remove(oldRux);oldRux.traverse(o=>o.geometry?.dispose());}
+    const ids=new Set(employees().map(e=>e.id));
+    for(const [id,mesh] of employeeMeshes)if(!ids.has(id)){ctx.scene.remove(mesh);mesh.traverse(o=>o.geometry?.dispose());employeeMeshes.delete(id);}
+    for(const employee of employees()){
+      let mesh=employeeMeshes.get(employee.id);
+      if(mesh&&mesh.userData.role!==employee.role){ctx.scene.remove(mesh);mesh.traverse(o=>o.geometry?.dispose());employeeMeshes.delete(employee.id);mesh=null;}
+      if(!mesh){mesh=makeStaffModel(employee.id===employees()[0]?.id,employee.role);mesh.userData.employeeId=employee.id;mesh.userData.role=employee.role;employeeMeshes.set(employee.id,mesh);ctx.scene.add(mesh);}
+      let x,z,heading=0,phase='idle';
+      if(employee.role==='checkout'){
+        const counter=allCounters().find(f=>f.id===employee.registerId);mesh.visible=Boolean(counter);if(!counter)continue;
+        const center=fixtureCenter(counter),front=serviceVector(counter.rotation);x=center.x-front.x*.64;z=center.z-front.z*.64;heading=Math.atan2(front.x,front.z);phase=getCustomers().some(c=>c.state==='pay'&&c.checkoutId===counter.id)?'scan':'idle';
+      }else{mesh.visible=true;const job=employee.work || staffHome(employee);x=job.x;z=job.z;heading=job.heading||0;phase=job.phase||'idle';}
+      const blend=mesh.userData.initialized?1-Math.exp(-18*delta):1;mesh.position.x+=(x-mesh.position.x)*blend;mesh.position.z+=(z-mesh.position.z)*blend;mesh.position.y=.12;mesh.rotation.y=smoothHeading(mesh.rotation.y,heading,delta,18);mesh.userData.initialized=true;mesh.userData.workPhase=phase;
+      const moving=phase==='travel'||phase==='return',wave=Math.sin(ctx.elapsed*11),stocking=phase==='stock',carrying=phase==='travel'||stocking;
+      mesh.getObjectByName('staff-crate').visible=carrying;
+      mesh.getObjectByName('staff-arm-left').rotation.x=carrying?-.7-(stocking ? .22*wave:0):moving ? .35*wave:phase==='scan'?-.25-.15*wave:0;
+      mesh.getObjectByName('staff-arm-right').rotation.x=carrying?-.7+(stocking ? .22*wave:0):moving?-.35*wave:0;
+      mesh.getObjectByName('staff-leg-left').rotation.x=moving ? .3*wave:0;mesh.getObjectByName('staff-leg-right').rotation.x=moving?-.3*wave:0;
     }
   }
 
@@ -1865,7 +1959,7 @@ export function installBlockmartV9(ctx) {
       const saved=ctx.readSaved();
       if(saved?.liveOwner?.documentId!==documentId){owned=false;lease?.setPaused('ownership',true);adoptSaved(saved);refreshOwnership();return false;}
       adoptSaved(saved);transactionBusy=true;
-      try{action();storeRuntime();state().storeRevision=(state().storeRevision||0)+1;ctx.rawSave();if(manualPaused&&!document.hidden&&ctx.gameActive){drawCustomers();ctx.renderer.render(ctx.scene,ctx.camera)}}finally{transactionBusy=false;}
+      try{action();storeRuntime();state().storeRevision=(state().storeRevision||0)+1;ctx.rawSave();if(manualPaused&&!document.hidden&&ctx.gameActive){drawCustomers();drawEmployees();ctx.renderer.render(ctx.scene,ctx.camera)}}finally{transactionBusy=false;}
       return true;
     });
   }
@@ -1892,7 +1986,7 @@ export function installBlockmartV9(ctx) {
   }
   function simulateStep(delta){
     ctx.elapsed+=delta;ctx.spawnTimer-=delta;
-    if(ctx.spawnTimer<=0&&getCustomers().filter(c=>c.state!=='done'&&c.state!=='leave').length<12){spawn();ctx.spawnTimer=trafficInterval(state().popularity);}
+    if(ctx.spawnTimer<=0&&getCustomers().filter(c=>c.state!=='done'&&c.state!=='leave').length<24){spawn();ctx.spawnTimer=trafficInterval(state().popularity);}
     updateQueueLines();setCustomers(getCustomers().filter(customer=>updateCustomer(customer,delta)));
     automaticRestock(delta);lowCashRecovery(delta);refreshTraffic();state().day=Math.floor(ctx.elapsed/60)+1;
   }
@@ -1953,7 +2047,7 @@ export function installBlockmartV9(ctx) {
     const delta = previousFrame ? clamp((timestamp - previousFrame) / 1000, 0, .05) : 0;
     previousFrame = timestamp;
     if (Math.floor(timestamp/250)!==Math.floor((timestamp-delta*1000)/250)){refreshHud();refreshPanelValues();}
-    drawCustomers(delta);
+    drawCustomers(delta);drawEmployees(delta);
     ctx.renderer.render(ctx.scene, ctx.camera);
   }
 
@@ -1961,6 +2055,7 @@ export function installBlockmartV9(ctx) {
     if (isInstalled) return;
     isInstalled = true;
     migrateCurrentState();
+    const oldRux=ctx.scene.getObjectByName('rux-shopkeeper');if(oldRux){ctx.scene.remove(oldRux);oldRux.traverse(o=>o.geometry?.dispose());}
     fitCameraToShop();
     addPopularityHud();
     bindCashHud();
@@ -1982,6 +2077,7 @@ export function installBlockmartV9(ctx) {
     cancelPlacement, confirmPlacement:()=>transact(confirmPlacement), warehouseFixture:id=>transact(()=>warehouseFixture(id)), routeCustomerOut, updateQueueLines,
     targetCheckout, chooseProduct, spawn, updateCustomer, renderPanel, stockOrder, hireCashier,
     addWarehouseControls, refreshHud,
+    automaticRestock,drawEmployees,makeStaffModel,buyCatalogItem,catalog,simulateStep,fitCameraToShop,
     activeEquipment: () => ({
       cooler: Boolean(state().equipment.cooler && fixtures().some(f => f.id === (state().coolerFixtureId || fixtures().find(x => x.kind === 'cooler')?.id))),
       fastCheckout: Boolean(state().equipment.fastCheckout && fixtures().some(f => f.id === (state().fastCheckoutFixtureId || fixtures().find(x => x.kind === 'fastCheckout')?.id)))

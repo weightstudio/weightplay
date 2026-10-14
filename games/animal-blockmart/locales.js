@@ -290,6 +290,24 @@ const badgeTabCopy={en:'Badges','zh-Hant':'成就','zh-Hans':'成就',ja:'実績
 for(const locale of supportedLocales)dict[locale].badgesTab=badgeTabCopy[locale];keys.push('badgesTab');
 const waterProductCopy={en:'Water','zh-Hant':'礦泉水','zh-Hans':'矿泉水',ja:'水',ko:'생수',es:'Agua','pt-BR':'Água',fr:'Eau',de:'Wasser',it:'Acqua',ru:'Вода',hi:'पानी',ar:'ماء'};
 for(const locale of supportedLocales)dict[locale].waterProduct=waterProductCopy[locale];keys.push('waterProduct');
+const managementV11Keys=['equipmentCategory','decorCategory','layoutCategory','ownedTotal','placedCount','storedCount','buyItem','buyBeforePlace','itemOptions','itemBoughtStored','selectFixtureFirst','fixtureRotated','cameraDragRotate','cameraDragPan','workerPreparing','workerTravel','workerStock','workerReturn'];
+const managementV11Copy={
+en:['Equipment','Decor','Layout','Owned','Placed','Stored','Buy','Buy an item first, then place it free.','Item options','Purchased. Tap its picture to place it.','Select an installed fixture first.','Rotated','Drag the scene to rotate','Drag the scene to pan','Preparing stock','Carrying stock','Stocking the shelf','Returning'],
+'zh-Hant':['設備','裝飾','布局','持有','已擺放','倉庫','購買','先購買，再免費擺放。','物件操作','已購買，點圖片即可擺放。','請先選擇已擺放的設施。','已旋轉','拖曳場景以旋轉','拖曳場景以平移','準備貨物','搬運貨物','正在上架','返回取貨'],
+'zh-Hans':['设备','装饰','布局','持有','已摆放','仓库','购买','先购买，再免费摆放。','物件操作','已购买，点图片即可摆放。','请先选择已摆放的设施。','已旋转','拖动场景以旋转','拖动场景以平移','准备货物','搬运货物','正在上架','返回取货'],
+ja:['設備','装飾','配置','所有','設置','倉庫','購入','購入後は無料で設置できます。','アイテム操作','購入済み。画像から設置できます。','設置済みの設備を選択。','回転済み','ドラッグで回転','ドラッグで移動','商品を準備','商品を運搬','棚に補充中','戻っています'],
+ko:['설비','장식','배치','보유','배치됨','창고','구매','구매 후 무료로 배치하세요.','물품 작업','구매 완료. 그림을 눌러 배치하세요.','배치된 설비를 선택하세요.','회전 완료','드래그하여 회전','드래그하여 이동','상품 준비','상품 운반','선반 보충 중','복귀 중'],
+es:['Equipo','Decoración','Plano','Total','Colocado','Almacén','Comprar','Compra primero y coloca gratis.','Opciones','Comprado. Toca la imagen para colocar.','Selecciona un mueble colocado.','Girado','Arrastra para girar','Arrastra para mover','Preparando','Transportando','Reponiendo','Regresando'],
+'pt-BR':['Equipamento','Decoração','Planta','Total','Colocado','Estoque','Comprar','Compre e coloque gratuitamente.','Opções','Comprado. Toque na imagem para colocar.','Selecione um móvel colocado.','Girado','Arraste para girar','Arraste para mover','Preparando','Transportando','Repondo','Retornando'],
+fr:['Équipement','Décor','Plan','Total','Placés','Réserve','Acheter','Achetez puis placez gratuitement.','Options','Acheté. Touchez l’image pour placer.','Choisissez un meuble installé.','Tourné','Glissez pour tourner','Glissez pour déplacer','Préparation','Transport','Réassort','Retour'],
+de:['Geräte','Deko','Grundriss','Besitz','Platziert','Lager','Kaufen','Erst kaufen, dann kostenlos platzieren.','Optionen','Gekauft. Bild zum Platzieren antippen.','Platziertes Möbel auswählen.','Gedreht','Ziehen zum Drehen','Ziehen zum Verschieben','Vorbereitung','Transport','Regal auffüllen','Rückweg'],
+it:['Attrezzatura','Arredi','Pianta','Totale','Collocati','Magazzino','Compra','Compra e colloca gratuitamente.','Opzioni','Acquistato. Tocca l’immagine per collocare.','Seleziona un arredo collocato.','Ruotato','Trascina per ruotare','Trascina per spostare','Preparazione','Trasporto','Rifornimento','Ritorno'],
+ru:['Оборудование','Декор','План','Всего','На месте','Склад','Купить','Купите, затем разместите бесплатно.','Действия','Куплено. Нажмите картинку для размещения.','Выберите установленный предмет.','Повёрнуто','Тяните для поворота','Тяните для перемещения','Подготовка','Доставка','Пополнение','Возвращение'],
+hi:['उपकरण','सजावट','नक्शा','कुल','रखे हुए','गोदाम','खरीदें','पहले खरीदें, फिर मुफ्त रखें।','वस्तु विकल्प','खरीद लिया। रखने के लिए चित्र दबाएँ।','रखी हुई वस्तु चुनें।','घुमाया','घुमाने के लिए खींचें','खिसकाने के लिए खींचें','सामान की तैयारी','सामान ले जाना','शेल्फ़ भरना','वापसी'],
+ar:['معدات','زينة','مخطط','المملوك','الموضوع','المخزن','شراء','اشترِ أولاً ثم ضع مجاناً.','خيارات العنصر','تم الشراء. اضغط الصورة للوضع.','اختر تجهيزاً موضوعاً.','تم التدوير','اسحب للتدوير','اسحب للتحريك','تجهيز البضاعة','نقل البضاعة','تعبئة الرف','العودة']
+};
+for(const locale of supportedLocales)Object.assign(dict[locale],Object.fromEntries(managementV11Keys.map((key,index)=>[key,managementV11Copy[locale][index]])));
+keys.push(...managementV11Keys);
 const aliases={'zh-tw':'zh-Hant','zh-hant':'zh-Hant','zh-cn':'zh-Hans','zh-hans':'zh-Hans','pt-br':'pt-BR'};
 export function resolveLocale(){const q=new URL(location.href).searchParams.get('lang');const ref=(()=>{try{return new URL(document.referrer).pathname.split('/')[1]}catch{return''}})();const here=location.pathname.split('/')[1];const raw=q||ref||here||document.documentElement.lang||'en';const locale=aliases[raw.toLowerCase()]||raw;return supportedLocales.includes(locale)?locale:'en'}
 export function t(key,locale=resolveLocale()){return dict[locale]?.[key]??dict.en[key]??key}
