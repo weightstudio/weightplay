@@ -422,3 +422,31 @@ body.wp-frame-battle-active #gameGuide{display:none}
   .fixture-product-select{grid-template-columns:minmax(0,1fr)}
   .cash-activity-row{font-size:12px}
 }
+.owned-shelf-card,.employee-card{background:#fff9ea;color:#204650;border:1px solid #9bb9b0;border-radius:14px;padding:calc(12px / var(--wp-frame-scale,1));min-width:0;display:flex;flex-direction:column;gap:calc(8px / var(--wp-frame-scale,1))}
+.owned-shelf-card.is-selected{outline:3px solid #127b6b;outline-offset:-3px}
+.owned-shelf-card h3,.employee-card h3{margin:0;font-size:calc(16px / var(--wp-frame-scale,1))}
+.owned-shelf-card p,.employee-card p{margin:0;color:#385c60;font-size:calc(13px / var(--wp-frame-scale,1))}
+.owned-shelf-card .product-swatch{display:inline-block;vertical-align:middle;width:calc(38px / var(--wp-frame-scale,1));height:calc(38px / var(--wp-frame-scale,1));margin-inline-end:8px}
+.owned-shelf-card strong{font-size:calc(15px / var(--wp-frame-scale,1));color:#204650}
+.shelf-actions,.employee-roster{display:flex;flex-direction:column;gap:calc(8px / var(--wp-frame-scale,1))}
+.owned-shelf-card button,.employee-roster button,.employee-roster select{box-sizing:border-box;min-height:calc(44px / var(--wp-frame-scale,1));padding:calc(9px / var(--wp-frame-scale,1));font-size:calc(13px / var(--wp-frame-scale,1));font-weight:700;background:#edf4e5;color:#204650;border:1px solid #739c8c;border-radius:9px;white-space:normal;overflow-wrap:anywhere}
+.employee-roster select{width:100%;min-width:0;background:#fffdf4}
+.employee-card label{font-size:calc(13px / var(--wp-frame-scale,1));font-weight:700;display:flex;flex-direction:column;gap:6px}
+.owned-shelf-card button:disabled,.employee-roster button:disabled{background:#e6e8de;color:#62766f;border-color:#b7c5b9;opacity:1}
+.camera-orbit,.continue-here{position:absolute;right:calc(10px / var(--wp-frame-scale,1));bottom:calc(42px / var(--wp-frame-scale,1));min-height:calc(44px / var(--wp-frame-scale,1));padding:calc(8px / var(--wp-frame-scale,1));background:#fff9ea;color:#204650;border:1px solid #72968a;border-radius:10px;font-size:calc(12px / var(--wp-frame-scale,1));font-weight:700;max-width:45%}
+.camera-orbit[aria-pressed=true]{background:#176d60;color:#fff}
+.continue-here{bottom:calc(94px / var(--wp-frame-scale,1));z-index:5;background:#176d60;color:#fff}
+.owned-shelf-card,.employee-roster,.camera-orbit,.continue-here{--bm-control-scale:var(--wp-battle-canvas-inverse-scale,1)}
+#panel[data-active-tab="shop"]{display:flex;flex-direction:column;gap:8px}
+#panel[data-active-tab="shop"]>*{flex:0 0 auto;height:auto}
+.owned-shelf-card,.employee-card{padding:calc(12px * var(--bm-control-scale));gap:calc(8px * var(--bm-control-scale))}
+.owned-shelf-card h3,.employee-card h3{font-size:calc(16px * var(--bm-control-scale))}
+.owned-shelf-card p,.employee-card p,.employee-card label{font-size:calc(13px * var(--bm-control-scale))}
+.owned-shelf-card strong{font-size:calc(15px * var(--bm-control-scale))}
+.owned-shelf-card .product-swatch{width:calc(38px * var(--bm-control-scale));height:calc(38px * var(--bm-control-scale))}
+.owned-shelf-card button,.employee-roster button,.employee-roster select,.camera-orbit,.continue-here{min-height:calc(44px * var(--bm-control-scale));padding:calc(9px * var(--bm-control-scale));font-size:calc(13px * var(--bm-control-scale))}
+.camera-orbit{right:calc(10px * var(--bm-control-scale));bottom:calc(42px * var(--bm-control-scale))}
+.continue-here{right:calc(10px * var(--bm-control-scale));bottom:calc(94px * var(--bm-control-scale))}
+.business-pause{--bm-control-scale:var(--wp-battle-canvas-inverse-scale,1);position:absolute;left:calc(10px * var(--bm-control-scale));bottom:calc(42px * var(--bm-control-scale));max-width:45%;min-height:calc(44px * var(--bm-control-scale));padding:calc(9px * var(--bm-control-scale));font-size:calc(13px * var(--bm-control-scale));font-weight:700;border:1px solid #72968a;border-radius:10px;background:#fff9ea;color:#204650}
+.business-pause[aria-pressed=true]{background:#176d60;color:#fff}
+.tabs button{min-width:0;white-space:normal;overflow-wrap:anywhere;font-size:calc(12px * var(--wp-battle-canvas-inverse-scale,1));line-height:1.15;padding-inline:4px}

@@ -18,34 +18,28 @@ export function createBlockGeometry(){
  uv.needsUpdate=true;return geometry;
 }
 export function createCanopyGeometry(){
- // One clean, stepped foliage tier is instanced three times per tree. Keeping
- // each tier to a single skirt avoids the many nested rings that made the
- // previous crown look like a stack of little bushes at phone scale.
- const segments=9,rings=[[0,.08,0,0],[.16,.47,-.018,0],[.23,.62,.012,-.01],[.30,.59,.02,.008],[.43,.43,-.01,.012],[.67,.25,.012,0],[.87,.11,-.014,-.008],[.97,.035,.01,.012],[1,.01,0,0]],positions=[],indices=[];
- for(let row=0;row<rings.length;row++){
-  const [y,r,x,z]=rings[row];
-  for(let i=0;i<segments;i++){
-   const a=i/segments*Math.PI*2+(i%2)*.025,edge=1+.055*Math.sin(i*2.31+row*1.41)+.025*Math.cos(i*3.17-row*.72);
-   positions.push(x+Math.cos(a)*r*edge,y,z+Math.sin(a)*r*edge);
-  }
+ // Faceted rounded leaf masses make a broad crown with an organic edge. The
+ // small deterministic wobble keeps neighboring clusters from reading as
+ // identical balls while retaining the game's low-poly finish.
+ const geometry=new THREE.IcosahedronGeometry(1,1),position=geometry.attributes.position,colors=new Float32Array(position.count*3);
+ for(let i=0;i<position.count;i++){
+  const x=position.getX(i),y=position.getY(i),z=position.getZ(i);
+  const wobble=1+.05*Math.sin(x*8.1+z*5.3+y*4.7),facet=.94+.08*Math.sin(x*9.7-y*5.2+z*7.1),height=.83+.18*y;
+  position.setXYZ(i,x*.62*wobble,.5+y*.52,z*.58*wobble);
+  colors[i*3]=facet*height;colors[i*3+1]=facet*(height+.015);colors[i*3+2]=facet*(height-.025);
  }
- const bottom=positions.length/3;positions.push(0,0,0);const top=positions.length/3;positions.push(0,1.03,0);
- for(let row=0;row<rings.length-1;row++)for(let i=0;i<segments;i++){const a=row*segments+i,b=row*segments+(i+1)%segments,c=(row+1)*segments+i,d=(row+1)*segments+(i+1)%segments;indices.push(a,c,b,b,c,d);}
- const last=(rings.length-1)*segments;
- for(let i=0;i<segments;i++){indices.push(bottom,(i+1)%segments,i);indices.push(last+i,top,last+(i+1)%segments);}
- const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setIndex(indices);geometry.computeVertexNormals();geometry.computeBoundingBox();return geometry;
+ position.needsUpdate=true;geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.computeVertexNormals();geometry.computeBoundingBox();return geometry;
 }
 export function createTrunkGeometry(){
  const geometry=new THREE.CylinderGeometry(.19,.27,1.38,7,1,false);geometry.computeVertexNormals();geometry.computeBoundingBox();return geometry;
 }
 function createGroundTexture(){
- // Use the authored moss tile in the live scene. The previous canvas version
- // was so low-contrast at gameplay scale that the arena read as a flat green
- // plane, despite the richer v8 ground asset already being present.
- const url=new URL('./art/ground-moss-v8.webp',import.meta.url).href;
+ // Use the softly painted moss tile for natural depth without large stones,
+ // sharp paths, or repeated high-contrast grass marks in the combat space.
+ const url=new URL('./art/ground-moss-v4.jpg',import.meta.url).href;
  const texture=new THREE.TextureLoader().load(url);
  texture.colorSpace=THREE.SRGBColorSpace;texture.wrapS=texture.wrapT=THREE.RepeatWrapping;
- texture.repeat.set(2.8,2.8);texture.anisotropy=4;return texture;
+ texture.repeat.set(3.2,3.2);texture.anisotropy=4;return texture;
 }
 export class WildwoodWorld {
  constructor(canvas,sim){
@@ -83,12 +77,14 @@ export class WildwoodWorld {
   for(const sign of [-1,1]){const root=this.box(g,'treeBark',[sign*.12,.075,0],[.26,.12,.24]);root.rotation.z=-sign*.24;}
   for(const sign of [-1,1])this.woodSegment(g,'treeBark',[sign*.17,1.26,0],[.68,.37,.68],[0,0,sign*-.78]);
   const crown=new THREE.Group(),variation=Math.abs(Math.sin(x*2.17+z*1.31));crown.rotation.y=variation*Math.PI*.5;g.add(crown);
-  const width=(decor?.9:1.02)+variation*.1,skew=(variation-.5)*.16,depth=(variation-.5)*.12;
+  const width=(decor?.96:1.04)+variation*.08,skew=(variation-.5)*.12,depth=(variation-.5)*.1;
   const colors=variation<.34?['canopyShade','canopyMid','canopyTop']:variation<.68?['canopyShadeFern','canopyMidFern','canopyTopFern']:['canopyShadeCool','canopyMidCool','canopyTopCool'];
-  this.foliage(crown,colors[0],[0,1.43,-.035],[1.02*width,1.08,.9*width]);
-  this.foliage(crown,colors[1],[skew,1.84,.02],[.76*width,.84,.71*width]);
-  this.foliage(crown,colors[2],[skew*.55,2.16,depth*.3],[.52*width,.67,.5*width]);
-  this.foliage(crown,colors[2],[skew*.25,2.45,depth*.18],[.29*width,.4,.28*width]);
+  this.foliage(crown,colors[0],[0,1.38,-.035],[1.42*width,1.28,1.28*width]);
+  this.foliage(crown,colors[1],[skew,1.66,.02],[1.22*width,1.22,1.10*width]);
+  this.foliage(crown,colors[1],[-.42*width,1.60,.12],[.88*width,.94,.83*width]);
+  this.foliage(crown,colors[1],[.42*width,1.62,-.08],[.88*width,.94,.83*width]);
+  this.foliage(crown,colors[2],[skew*.45,1.98,depth*.25],[.88*width,.88,.80*width]);
+  this.foliage(crown,colors[2],[skew*.2,2.17,depth*.18],[.55*width,.56,.52*width]);
   g.userData.crown=crown;return g;
  }
  character(kind,type=''){
@@ -154,11 +150,11 @@ export class WildwoodWorld {
   const steel=color==='steel',edge=color==='edge';
   // Model geometry provides the block silhouette. Fur, cloth, faces and props
   // use their authored colors, not pictures of stone walls baked onto every face.
-  const canopy=shape==='canopy',trunk=shape==='trunk',geometry=canopy?this.canopyGeometry:trunk?this.trunkGeometry:this.geometry,material=new THREE.MeshStandardMaterial({color:color==='ground'?0xffffff:(palette[color]??0xffffff),map:color==='ground'?this.ground:null,roughness:(canopy||trunk)? .88 : steel? .38 : edge? .24 : .72,metalness:steel? .58 : edge? .68 : color==='gold'? .28 : .03,emissive:color==='cyan'?0x237a71:0,emissiveIntensity:.24,flatShading:canopy||trunk});
+  const canopy=shape==='canopy',trunk=shape==='trunk',geometry=canopy?this.canopyGeometry:trunk?this.trunkGeometry:this.geometry,material=new THREE.MeshStandardMaterial({color:color==='ground'?0xffffff:(palette[color]??0xffffff),map:color==='ground'?this.ground:null,vertexColors:canopy,roughness:(canopy||trunk)? .88 : steel? .38 : edge? .24 : .72,metalness:steel? .58 : edge? .68 : color==='gold'? .28 : .03,emissive:color==='cyan'?0x237a71:0,emissiveIntensity:.24,flatShading:canopy||trunk});
   const mesh=new THREE.InstancedMesh(geometry,material,2048);mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;mesh.count=0;this.scene.add(mesh);this.batches.set(key,mesh);return mesh;
  }
  resize(){const r=this.canvas.getBoundingClientRect();this.renderer.setSize(Math.max(1,r.width),Math.max(1,r.height),false);const aspect=r.width/Math.max(1,r.height);const halfH=Math.max(4.8,4.8/aspect),halfW=halfH*aspect;Object.assign(this.camera,{left:-halfW,right:halfW,top:halfH,bottom:-halfH});this.camera.updateProjectionMatrix();}
- consume(events){for(const e of events)if(['hit','hurt','defeat','blocked','immune','wardBlock','pulse','mastery','pickup','dash','spawn','respawn'].includes(e.type)){
+ consume(events){for(const e of events)if(['hit','hurt','defeat','blocked','immune','wardBlock','pulse','mastery','pickup','dash','spawn','respawn','totemSpawn'].includes(e.type)){
    if(e.type==='defeat'&&['enemy','boss'].includes(e.kind)){
     const actor=this.sim.ents.find(a=>a.uid===e.uid),colors=['moss','wood','cream','dark'];
     if(['caster','shaman','mosswitch'].includes(actor?.type))colors[0]='purple';
@@ -170,7 +166,7 @@ export class WildwoodWorld {
     for(let i=0;i<count;i++){const g=new THREE.Group();this.root.add(g);const size=(e.kind==='boss'?.4:.3)*(i%3===0?1.3:1);this.box(g,colors[i%colors.length],[0,0,0],[size,size,size]);this.effects.push({g,x:e.x,z:e.z,angle:i*2.4,life:.7,total:.7,shatter:true,height:.45+(i%3)*.4,spread:this.reduced?.3:1.1+(i%3)*.25});}
     continue;
    }
-   const arrival=['spawn','respawn'].includes(e.type),count=this.reduced?2:arrival?4:e.type==='defeat'?6:3,color=e.type==='hurt'?'red':['pickup','blocked','immune','dash','spawn','respawn'].includes(e.type)?'cyan':'gold';
+   const arrival=['spawn','respawn','totemSpawn'].includes(e.type),count=this.reduced?2:arrival?4:e.type==='defeat'?6:3,color=e.type==='hurt'?'red':e.type==='totemSpawn'?'purple':['pickup','blocked','immune','dash','spawn','respawn'].includes(e.type)?'cyan':'gold';
    for(let i=0;i<count&&this.effects.length<24;i++){const g=new THREE.Group();this.root.add(g);this.box(g,color,[0,0,0],[arrival?0.16:0.13,arrival?0.16:0.13,arrival?0.16:0.13]);this.effects.push({g,x:e.x??this.sim.hero.x,z:e.z??this.sim.hero.z,angle:i*2.4,life:arrival?0.42:0.35,total:arrival?0.42:0.35});}
   }}
  render(dt=0){

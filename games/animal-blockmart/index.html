@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow,noarchive"><meta name="googlebot" content="noindex,nofollow,noarchive">
-  <meta name="description" content="Owner preview: manage a growing block-animal neighborhood shop." data-l10n-content="pageDescription"><meta name="weightplay-game-id" content="animal-blockmart"><meta name="weightplay-game-version" content="v9"><meta name="weightplay-interface-version" content="8">
+  <meta name="description" content="Owner preview: manage a growing block-animal neighborhood shop." data-l10n-content="pageDescription"><meta name="weightplay-game-id" content="animal-blockmart"><meta name="weightplay-game-version" content="v10"><meta name="weightplay-interface-version" content="8">
   <title>Animal Blockmart · Owner Preview</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260927-interface7"><link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260927-interface7"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
   <link rel="stylesheet" href="style.css">
   <script src="../../src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
+  <script src="../../src/game-lifecycle-controller.js?v=20261014-lifecycle-v1" defer></script>
 </head>
-<body data-wp-game-id="animal-blockmart" data-game-id="animal-blockmart" data-wp-game-version="v9" data-wp-interface-version="8" data-audience="general">
+<body data-wp-game-id="animal-blockmart" data-game-id="animal-blockmart" data-wp-game-version="v10" data-wp-interface-version="8" data-audience="general">
   <main id="gameFrameRoot" data-wp-frame-root>
     <section id="mainScreen" class="frame-main-screen" data-screen="main">
       <header id="mainHeader" class="topbar wp-main-shell-header"><a href="../../index.html?preview=1" class="back wp-shell-return" data-wp-return="main" aria-label="Back to owner preview"><span aria-hidden="true">←</span></a><strong class="wp-shell-main-title" data-wp-frame-title data-l10n="title">Animal Blockmart</strong></header>
@@ -26,7 +27,7 @@
       <div class="scene-legend"><span><i class="dot guest"></i><span data-l10n="shoppers">Shoppers</span> <b id="guestCount">0</b></span><span><i class="dot queue"></i><span data-l10n="queue">Queue</span> <b id="queueCount">0</b></span><span id="selectedTileReadout" class="selected-tile-readout" data-l10n="noTileSelected">No floor selected</span></div>
     </section>
     <section class="shop-panel">
-      <div class="tabs" role="tablist" data-wp-frame-logical-actions="battle"><button class="active" data-tab="shop" data-wp-frame-action="tab" data-l10n="shop">Shop</button><button data-tab="supply" data-wp-frame-action="tab" data-l10n="supply">Supply</button><button data-tab="growth" data-wp-frame-action="tab" data-l10n="grow">Grow</button><button data-tab="staff" data-wp-frame-action="tab" data-l10n="staff">Staff</button></div>
+      <div class="tabs" role="tablist" data-wp-frame-logical-actions="battle"><button class="active" data-tab="shop" data-wp-frame-action="tab" data-l10n="shelvesTab">Shelves</button><button data-tab="staff" data-wp-frame-action="tab" data-l10n="staff">Staff</button><button data-tab="growth" data-wp-frame-action="tab" data-l10n="grow">Grow</button><button data-tab="achievements" data-wp-frame-action="tab" data-l10n="badgesTab">Badges</button></div>
       <div id="panel" class="cards" aria-live="polite"></div>
       <div id="placementControls" class="placement-controls" hidden><div class="placement-status-region"><span id="placementStatus" role="status" aria-live="polite"></span></div><div class="placement-fields"><label for="placementProduct" data-l10n="productToDisplay">Product</label><select id="placementProduct"><option value="water" data-l10n="restockWater">Water</option><option value="snacks" data-l10n="cookies">Cookies</option><option value="chips" data-l10n="chips">Chips</option><option value="juice" data-l10n="juice">Juice</option><option value="fizz" data-l10n="sparklingDrink">Sparkling drink</option></select><label for="placementFootprint" data-l10n="footprint">Footprint</label><select id="placementFootprint"><option value="single" data-l10n="oneTile">1 tile</option><option value="double" data-l10n="twoTiles">2 tiles</option></select></div><div class="placement-actions" role="group" aria-label="Placement actions"><button id="rotatePlacement" type="button" data-l10n="rotateFixture">Rotate</button><button id="cancelPlacement" type="button" data-l10n="cancel">Cancel</button><button id="confirmPlacement" class="primary" type="button" disabled>Place · $0</button></div></div>
     </section>

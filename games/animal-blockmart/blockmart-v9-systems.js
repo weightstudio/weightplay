@@ -75,7 +75,7 @@ export function queueTile(counter, rank = 0) {
   const front = serviceVector(counter.rotation);
   // Two floor tiles between customers leave enough projected space for the
   // tall block-animal models to read as a line instead of a stack.
-  const distance = 1 + Math.max(0, Math.floor(rank)) * 2;
+  const distance = Math.max(0, Math.floor(rank)) * 2;
   return { x: Math.round(target.x + front.x * distance), z: Math.round(target.z + front.z * distance) };
 }
 

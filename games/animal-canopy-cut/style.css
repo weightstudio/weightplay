@@ -119,3 +119,6 @@ body[data-wp-game-id="animal-canopy-cut"] .battle-screen{border:0!important;bord
  #app .result-actions{grid-template-columns:repeat(3,1fr);width:min(600px,100%)}
 }
 @media(prefers-reduced-motion:reduce){#app *{scroll-behavior:auto!important}}
+
+/* The authored Guide belongs to Main; keep it outside both play scenes. */
+body[data-wp-game-id="animal-canopy-cut"]:not([data-screen="main"]) > .game-page-info{display:none!important}

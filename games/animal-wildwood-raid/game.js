@@ -1,6 +1,6 @@
 import {STAGES,TOOLS} from './game-data.js';
-import {Simulation,mission} from './simulation.js?v=20261014-wildwood-survival-wave-v35';
-import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js?v=20261013-wildwood-diamond-shop-v15';
+import {Simulation,mission} from './simulation.js?v=20261014-wildwood-forest-polish-v38e';
+import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js?v=20261014-wildwood-forest-polish-v38e';
 import {load,store,award,KEY} from './save.js';
 import {layoutLabels} from './label-layout.js?v=20261014-wildwood-label-layout-v36';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
@@ -69,7 +69,7 @@ function haptic(duration){if(!navigator.userActivation?.hasBeenActive)return;try
 async function startRun(stageId=selected,forcePractice=practiceMode){
  const usingPractice=Boolean(forcePractice||practiceMode||practiceRun),nextStage=Number(stageId);if(usingPractice&&!await LocalPractice.validate())return;if(!Number.isInteger(nextStage)||nextStage<1||nextStage>STAGES.length||(!usingPractice&&nextStage>save.highestUnlocked))return;
  dispose();if(usingPractice)beginPracticeRun();else{practiceRun=false;restorePracticeSave();}selected=nextStage;const token=generation;hitStopRemaining=0;settled=false;notice='';noticeUntil=0;lastHp=100;await show('battle');if(token!==generation)return;dialog(t('loading'),'',[],'loading');let timer;
- try{World||=(await Promise.race([import('./world.js?v=20261014-wildwood-ground-rings-v36'),new Promise((_,reject)=>timer=setTimeout(()=>reject(new Error('timeout')),15000))])).WildwoodWorld;if(token!==generation)return;
+ try{World||=(await Promise.race([import('./world.js?v=20261014-wildwood-forest-polish-v38e'),new Promise((_,reject)=>timer=setTimeout(()=>reject(new Error('timeout')),15000))])).WildwoodWorld;if(token!==generation)return;
   sim=new Simulation(selected,save.loadout,save.growth,save.ownedTools);world=new World($('#arena'),sim);world.render();buttons();await closeDialog();if(token!==generation)return;save.tutorialSeen=true;persist();hud();start();
  }catch(error){if(token!==generation)return;world?.dispose();world=null;dialog(t('error'),'',[[t('retry'),startRun],[t('stages'),()=>show('stage')]],'error');console.warn('Wildwood:',error.message);}finally{clearTimeout(timer);}
 }
@@ -79,7 +79,7 @@ function loop(now){if(!sim||modal)return;const dt=Math.min(.08,(now-last)/1000);
  if(document.querySelector('.wp-frame-popover:not([hidden])')){resetInput();acc=0;raf=requestAnimationFrame(loop);return;}
  if(hitStopRemaining>0){hitStopRemaining=Math.max(0,hitStopRemaining-dt);world.render(0);hud(0);raf=requestAnimationFrame(loop);return;}
  acc+=dt;while(acc>=1/60&&!sim.won&&!sim.lost){sim.step(1/60,input());acc-=1/60;}
- const events=sim.events.splice(0);flushGrowth(events);world.consume(events);for(const e of events){if(['hit','hurt','defeat','blocked','wardBlock','pickup','win','loss','dash'].includes(e.type))sound(e.type);if(e.type==='sequence')sound('invalid');const key={immune:'immune',blocked:'blocked',phase:'phase',pickup:'pickup',sequence:'sequence',wardBlock:'blocked'}[e.type];if(key){notice=t(key);noticeUntil=sim.time+1.7;}if(e.type==='growth'){notice=`${t('permanent')} · ${statLabel(e.stat)} +${statNumber(e.amount)}`;noticeUntil=sim.time+2;sound('pickup');flyReward(statIcon(e.stat),`+${statNumber(e.amount)}`,e.x,e.z,'#feedback');}if(e.type==='defeat'&&e.kind==='tree')flyReward('wood','+2',e.x,e.z,'#objective');if(e.type==='pickup')flyReward(e.kind,'',e.x,e.z,'#feedback');if(e.type==='regen')flyReward('heart',`+${statNumber(e.amount)}`,e.x,e.z,'.unit-label.unit-hero .unit-health');if(e.type==='hurt'&&!e.friend&&!matchMedia('(prefers-reduced-motion: reduce)').matches)haptic(15);}
+ const events=sim.events.splice(0);flushGrowth(events);world.consume(events);for(const e of events){if(['hit','hurt','defeat','blocked','wardBlock','pickup','win','loss','dash'].includes(e.type))sound(e.type);if(e.type==='sequence')sound('invalid');const key={immune:'immune',blocked:'blocked',phase:'phase',totemSpawn:'totemSpawn',pickup:'pickup',sequence:'sequence',wardBlock:'blocked'}[e.type];if(key){notice=t(key);noticeUntil=sim.time+(key==='totemSpawn'?3:1.7);}if(e.type==='growth'){notice=`${t('permanent')} · ${statLabel(e.stat)} +${statNumber(e.amount)}`;noticeUntil=sim.time+2;sound('pickup');flyReward(statIcon(e.stat),`+${statNumber(e.amount)}`,e.x,e.z,'#feedback');}if(e.type==='defeat'&&e.kind==='tree')flyReward('wood','+2',e.x,e.z,'#objective');if(e.type==='pickup')flyReward(e.kind,'',e.x,e.z,'#feedback');if(e.type==='regen')flyReward('heart',`+${statNumber(e.amount)}`,e.x,e.z,'.unit-label.unit-hero .unit-health');if(e.type==='hurt'&&!e.friend&&!matchMedia('(prefers-reduced-motion: reduce)').matches)haptic(15);}
  const impactMs=events.reduce((strongest,e)=>{if(e.type==='hurt'||e.type==='wardBlock')return Math.max(strongest,55);if(e.type==='blocked')return Math.max(strongest,45);if(e.type==='hit'){const target=sim.ents.find(actor=>actor.uid===e.uid);return Math.max(strongest,target?.kind==='boss'?70:target?.kind==='enemy'?55:35);}return strongest;},0);hitStopRemaining=Math.max(hitStopRemaining,impactMs/1000);
  world.render(dt);hud(dt);if(sim.won||sim.lost){finish();return;}raf=requestAnimationFrame(loop);
 }

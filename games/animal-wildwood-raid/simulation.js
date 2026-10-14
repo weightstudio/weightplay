@@ -25,6 +25,7 @@ export class Simulation {
  entity(kind,x,z,extra={}){const e={uid:this.nextId++,kind,x,z,hp:24,maxHp:24,r:.4,angle:0,recoil:0,...extra};
   if(['tree','enemy','boss'].includes(kind)){const stat=kind==='tree'?(e.uid%2?'health':'attack'):['health','attack','regen'][e.uid%3];e.reward={stat,amount:stat==='regen'?(kind==='boss'?.3:.1):kind==='boss'?(stat==='health'?30+this.stage.id*3:5+Math.floor(this.stage.id/3)):stat==='health'?(kind==='tree'?6:10)+Math.floor(this.stage.id/4)*2:(kind==='tree'?1:2)+Math.floor(this.stage.id/8)};if(kind!=='tree'&&stat!=='regen')e.reward.amount=Math.ceil(e.reward.amount*1.5);}
   if(kind==='tree'||kind==='enemy'&&!extra.summon)e.spawn={x,z};this.ents.push(e);return e;}
+ spawnMosswitchTotem(boss,phase){const dx=this.hero.x-boss.x,dz=this.hero.z-boss.z,length=Math.hypot(dx,dz)||1,totem=this.entity('totem',boss.x+dx/length*1.45,boss.z+dz/length*1.45,{hp:30,maxHp:30,phase});this.log('totemSpawn',{uid:totem.uid,x:totem.x,z:totem.z,phase});return totem;}
  syncGrowth(growth){const hp=Math.max(this.growth.health,growth.health||0),atk=Math.max(this.growth.attack,growth.attack||0);if(this.hero.hp>0)this.hero.hp+=hp-this.growth.health;this.growth={health:hp,attack:atk,regen:Math.max(this.growth.regen,growth.regen||0)};this.hero.maxHp=100+hp;this.hero.power=16+atk;this.hero.regen=Math.round((1+this.growth.regen)*10)/10;}
  grant(e){if(!e.reward)return;const {stat,amount}=e.reward;this.syncGrowth({...this.growth,[stat]:Math.round((this.growth[stat]+amount)*10)/10});this.log('growth',{uid:e.uid,stat,amount,x:e.x,z:e.z});}
  respawns(dt){for(const e of this.ents){if(e.hp>0||!e.spawn||e.respawn==null)continue;
@@ -136,7 +137,7 @@ export class Simulation {
    if(c.left<=0)e.charge=null;return;
   }
   e.cd-=dt;const d=dist(e,target),dx=target.x-e.x,dz=target.z-e.z;
-  if(e.boss){const phase=Math.min(e.phases,1+Math.floor((1-e.hp/e.maxHp)*e.phases));if(phase>e.phase){e.phase=phase;this.log('phase',{uid:e.uid,phase});if(e.boss==='mosswitch')this.entity('totem',e.x+2,e.z,{hp:30,maxHp:30});if(e.boss==='heartwood'){this.zones.push({x:e.phase===2?-3:3,z:1,r:1.4,type:'thorn'});e.cd=.8;}}
+  if(e.boss){const phase=Math.min(e.phases,1+Math.floor((1-e.hp/e.maxHp)*e.phases));if(phase>e.phase){e.phase=phase;this.log('phase',{uid:e.uid,phase});if(e.boss==='mosswitch')this.spawnMosswitchTotem(e,phase);if(e.boss==='heartwood'){this.zones.push({x:e.phase===2?-3:3,z:1,r:1.4,type:'thorn'});e.cd=.8;}}
   }
   const healer=e.type==='shaman'||e.role==='healer';
   if(e.cd<=0){

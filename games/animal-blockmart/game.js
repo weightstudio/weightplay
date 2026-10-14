@@ -74,7 +74,9 @@ function updateCustomer(c,dt){
 }
 function saleFloat(){const e=$('salePop');e.classList.remove('show');void e.offsetWidth;e.classList.add('show')}
 function showSale(price){cashEl.textContent=`$${Math.floor(state.cash)}`;saleFloat();$('salePop').textContent=`+$${price}`;window.WeightPlayAudio?.play?.('reward.coin')}
-function save(){try{const latest=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');state.achievements=mergeAchievementStates(mergeAchievementStates(state.achievements,latest?.achievements),{events:readAchievementEvents()});localStorage.setItem(SAVE_KEY,JSON.stringify({version:1,...state}));cashEl.textContent=`$${Math.floor(state.cash)}`}catch{toast(t('saveFailed',locale)) }}
+let saveDelegate=null;
+function save(){if(saveDelegate)return saveDelegate();return rawSave()}
+function rawSave(){const latest=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');state.achievements=mergeAchievementStates(mergeAchievementStates(state.achievements,latest?.achievements),{events:readAchievementEvents()});localStorage.setItem(SAVE_KEY,JSON.stringify({version:1,...state}));cashEl.textContent=`$${Math.floor(state.cash)}`}
 function toast(s){const e=$('toast');e.textContent=s;e.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('show'),2100)}
 function price(n){return `$${n.toLocaleString()}`}
 function stockOffer(k,requested){return affordableRestockOffer(state.stock,activeEquipment(),requested,PRODUCTS[k].cost,state.cash)}
@@ -113,7 +115,7 @@ function hire(){if(state.helper)return;const purchase=spendCash(state,220,'helpe
 function gridPoint(ev){const r=canvas.getBoundingClientRect(),v=new THREE.Vector2((ev.clientX-r.left)/r.width*2-1,-(ev.clientY-r.top)/r.height*2+1),ray=new THREE.Raycaster();ray.setFromCamera(v,camera);const hit=new THREE.Vector3();if(!ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),0),hit))return null;return{x:Math.round(hit.x),z:Math.round(hit.z)}}
 function pickFixture(p){if(!p)return null;return state.fixtures.find(f=>f.x===p.x&&f.z===p.z)}
 const pointers=new Map();let gesture=null;
-function panByPixels(dx,dy){const r=canvas.getBoundingClientRect(),scale=state.area/Math.max(1,Math.min(r.width,r.height)),a=state.view;const rightX=Math.cos(a),rightZ=-Math.sin(a),downX=Math.sin(a),downZ=Math.cos(a);state.panX+=(-dx*rightX-dy*downX)*scale;state.panZ+=(-dx*rightZ-dy*downZ)*scale;const limit=state.area*.38;state.panX=THREE.MathUtils.clamp(state.panX,-limit,limit);state.panZ=THREE.MathUtils.clamp(state.panZ,-limit,limit);setCamera()}
+function panByPixels(dx,dy){const r=canvas.getBoundingClientRect(),plane=new THREE.Plane(new THREE.Vector3(0,1,0),0),ray=new THREE.Raycaster(),a=new THREE.Vector3(),b=new THREE.Vector3();ray.setFromCamera(new THREE.Vector2(0,0),camera);if(!ray.ray.intersectPlane(plane,a))return;ray.setFromCamera(new THREE.Vector2(2*dx/Math.max(1,r.width),-2*dy/Math.max(1,r.height)),camera);if(!ray.ray.intersectPlane(plane,b))return;const limit=state.area*.65;state.panX=THREE.MathUtils.clamp(state.panX-(b.x-a.x),-limit,limit);state.panZ=THREE.MathUtils.clamp(state.panZ-(b.z-a.z),-limit,limit);setCamera()}
 canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('wheel',e=>{e.preventDefault();state.zoom=THREE.MathUtils.clamp(state.zoom*Math.exp(-e.deltaY*.001),.65,2);setCamera();save()},{passive:false});canvas.addEventListener('pointerdown',e=>{if(e.button===2||e.shiftKey)e.preventDefault();canvas.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(placement){updatePlacementPreview(gridPoint(e));return}if(pointers.size===2){const pts=[...pointers.values()];gesture={type:'multi',distance:Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y),angle:Math.atan2(pts[1].y-pts[0].y,pts[1].x-pts[0].x),centroid:{x:(pts[0].x+pts[1].x)/2,y:(pts[0].y+pts[1].y)/2}};drag=null;return}const p=gridPoint(e),f=pickFixture(p);drag={id:e.pointerId,startX:e.clientX,startY:e.clientY,lastX:e.clientX,lastY:e.clientY,moved:false,rotate:e.shiftKey,fixture:f,point:p}});
 canvas.addEventListener('pointermove',e=>{if(pointers.has(e.pointerId))pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(placement){updatePlacementPreview(gridPoint(e));return}if(pointers.size===2){const pts=[...pointers.values()],distance=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y),angle=Math.atan2(pts[1].y-pts[0].y,pts[1].x-pts[0].x),centroid={x:(pts[0].x+pts[1].x)/2,y:(pts[0].y+pts[1].y)/2};if(gesture){panByPixels(centroid.x-gesture.centroid.x,centroid.y-gesture.centroid.y);state.zoom=THREE.MathUtils.clamp(state.zoom*distance/Math.max(1,gesture.distance),.65,2);state.view+=Math.atan2(Math.sin(angle-gesture.angle),Math.cos(angle-gesture.angle));setCamera()}gesture={type:'multi',distance,angle,centroid};return}if(!drag)return;const dx=e.clientX-drag.lastX,dy=e.clientY-drag.lastY;if(Math.hypot(e.clientX-drag.startX,e.clientY-drag.startY)>8)drag.moved=true;if(drag.moved){if(drag.rotate){state.view+=dx*.008;setCamera()}else panByPixels(dx,dy)}drag.lastX=e.clientX;drag.lastY=e.clientY});
 canvas.addEventListener('pointerup',e=>{const wasMulti=Boolean(gesture);pointers.delete(e.pointerId);gesture=null;if(wasMulti)save();if(placement){updatePlacementPreview(gridPoint(e));drag=null;return}if(drag&&drag.id===e.pointerId&&!drag.moved&&drag.fixture){selectedTab='growth';document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab==='growth'));renderPanel();toast(t('selectMovePrompt',locale))}else if(drag?.moved){save()}drag=null});
@@ -135,6 +137,7 @@ function installV9(){
     get running(){return running},set running(value){running=value},
     get gameActive(){return gameActive},set gameActive(value){gameActive=value},
     setGhost(value){ghost=value},cube,makeAnimal,gridPoint,panByPixels,setCamera,buildFloor,save,toast,price,showSale,spendCash,appendCashLedger,
+    rawSave,saveKey:SAVE_KEY,readSaved(){return JSON.parse(localStorage.getItem(SAVE_KEY)||'null')},readCompatibleSaved:load,setSaveDelegate(value){saveDelegate=value},
     readAchievementEvents,persistAchievementEvent,
     expand,hire,browseSeconds,checkoutSeconds,purchaseEquipment,applySaleRevenue,stockCapacity,totalStock,recoveryShipment,
     customerBudget,
@@ -166,16 +169,3 @@ if(!isOwnerPreview){
   const retry=document.createElement('button');retry.type='button';retry.textContent=t('retry',locale);retry.addEventListener('click',()=>location.reload());
   fallback.append(message,retry);document.body.append(fallback);
 }
-document.addEventListener('visibilitychange',()=>{if(document.hidden){clock.stop();save()}else{clock.start();setCamera()}});
-window.addEventListener('storage',event=>{
-  if(!event.key?.startsWith(ACHIEVEMENT_EVENT_PREFIX)||!event.newValue)return;
-  try{
-    const achievementEvent=JSON.parse(event.newValue),before=new Set(state.achievements?.unlockedIds||[]);
-    state.achievements=mergeAchievementStates(state.achievements,{events:[achievementEvent],processedEventIds:[achievementEvent.id]});
-    const latest=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');
-    if(latest){latest.achievements=mergeAchievementStates(latest.achievements,state.achievements);localStorage.setItem(SAVE_KEY,JSON.stringify(latest))}
-    const newlyUnlocked=(state.achievements.unlockedIds||[]).filter(id=>!before.has(id));
-    if(newlyUnlocked.length)notifyAchievementNotice(newlyUnlocked);
-    if(selectedTab==='achievements')renderPanel();
-  }catch{}
-});
