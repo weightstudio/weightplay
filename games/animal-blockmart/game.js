@@ -143,6 +143,31 @@ canvas.addEventListener('pointerup',e=>{const wasMulti=Boolean(gesture);pointers
 canvas.addEventListener('pointercancel',e=>{pointers.delete(e.pointerId);gesture=null;drag=null});canvas.addEventListener('lostpointercapture',e=>{pointers.delete(e.pointerId);gesture=null;drag=null});
 function animate(){if(!running)return;requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);if(dialog.hidden&&!$('app').hidden){elapsed+=dt;spawnTimer-=dt;if(spawnTimer<=0&&customers.length<12){spawn();spawnTimer=5}customers=customers.filter(c=>updateCustomer(c,dt));const helperOrder=stockOffer('water',10);if(state.helper&&state.stock.water<6&&helperOrder.quantity>0&&state.cash>=helperOrder.cost){state.cash-=helperOrder.cost;state.stock.water+=helperOrder.quantity;save();renderPanel()}if(state.cash<PRODUCTS.water.cost&&Object.values(state.stock).every(n=>n===0)&&state.recoveryOrders<2){recoveryTimer+=dt;if(recoveryTimer>=12){const recovery=recoveryShipment(state,PRODUCTS.water.cost);if(recovery.ok){state=recovery.state;save();renderPanel();toast(`${t('recoveryOrder',locale)} · ${price(recovery.cost)}`)}recoveryTimer=0}}else recoveryTimer=0;if(Math.floor(elapsed/60)+1>state.day){state.day=Math.floor(elapsed/60)+1;save();$('day').textContent=state.day}}if(++frame%30===0){$('guestCount').textContent=customers.length;$('queueCount').textContent=customers.filter(c=>c.state==='queue'||c.state==='pay').length;cashEl.textContent=price(Math.floor(state.cash));}customers.forEach(c=>{c.group.position.y=Math.abs(Math.sin(elapsed*4+c.id))*.035});renderer.render(scene,camera)}
 document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));selectedTab=b.dataset.tab;$('panel').scrollTop=0;renderPanel()}));$('confirmPlacement').addEventListener('click',()=>confirmPlacement());$('cancelPlacement').addEventListener('click',()=>cancelPlacement());$('placementProduct').addEventListener('change',()=>{if(placement?.kind==='shelf')placement.product=$('placementProduct').value});window.addEventListener('resize',syncVisibleViewport,{passive:true});window.visualViewport?.addEventListener('resize',syncVisibleViewport,{passive:true});window.visualViewport?.addEventListener('scroll',syncVisibleViewport,{passive:true});syncVisibleViewport();$('mainStart').addEventListener('click',()=>{window.WeightPlayAudio?.unlock?.();window.WeightPlayAudio?.play?.('game.start');gameActive=true;$('mainScreen').hidden=true;$('app').hidden=false;dialog.hidden=true;frameApi?.activate('battle');resize();clock.start();if(!localStorage.getItem(SAVE_KEY))save();requestAnimationFrame(resize)});$('battleBack').addEventListener('click',()=>{$('leaveConfirm').hidden=false});$('continueBattle').addEventListener('click',()=>{$('leaveConfirm').hidden=true});$('returnMain').addEventListener('click',()=>{gameActive=false;$('leaveConfirm').hidden=true;$('app').hidden=true;$('mainScreen').hidden=false;frameApi?.activate('main')});
+// The modal owns focus while the existing lifecycle pauses shop simulation.
+let leaveFocus=null;const leaveInert=new Map();
+function syncLeaveFocus(){
+  const modal=$('leaveConfirm');
+  if(!modal.hidden){
+    leaveFocus=document.activeElement;
+    for(const node of $('app').children)if(node!==modal){leaveInert.set(node,node.inert);node.inert=true;}
+    $('continueBattle').focus({preventScroll:true});
+  }else{
+    for(const [node,inert] of leaveInert)node.inert=inert;leaveInert.clear();
+    const target=gameActive&&leaveFocus?.isConnected?leaveFocus:$('mainStart');
+    target?.focus({preventScroll:true});leaveFocus=null;
+  }
+}
+$('battleBack').addEventListener('click',syncLeaveFocus);
+$('continueBattle').addEventListener('click',syncLeaveFocus);
+$('returnMain').addEventListener('click',syncLeaveFocus);
+document.addEventListener('keydown',event=>{
+  if($('leaveConfirm').hidden)return;
+  if(event.key==='Escape'){event.preventDefault();event.stopImmediatePropagation();$('continueBattle').click();}
+  else if(event.key==='Tab'){
+    event.preventDefault();const buttons=[$('continueBattle'),$('returnMain')],index=buttons.indexOf(document.activeElement);
+    buttons[(index+(event.shiftKey?-1:1)+buttons.length)%buttons.length].focus({preventScroll:true});
+  }
+},true);
 function installV9(){
   const v9=installBlockmartV9({
     $:id=>document.getElementById(id),t,locale,INITIAL,PRODUCTS,EXPANSION_COST,THREE,

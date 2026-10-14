@@ -2016,7 +2016,7 @@ export function installBlockmartV9(ctx) {
     });
     $('placementFootprint').addEventListener('change', onFootprintChange);
     document.addEventListener('keydown', event => {
-      if(!ctx.gameActive||!$('leaveConfirm').hidden||document.querySelector('#app .wp-frame-popover:not([hidden]),#app .wp-shell-settings-popover:not([hidden])'))return;
+      if(event.defaultPrevented||!ctx.gameActive||!$('leaveConfirm').hidden||document.querySelector('#app .wp-frame-popover:not([hidden]),#app .wp-shell-settings-popover:not([hidden])'))return;
       if(event.target.closest('input,select,textarea'))return;
       if (event.key === 'Escape') cancelPlacement();
       if ((event.key.toLowerCase() === 'r') && selectedFixtureId) transact(()=>rotateSelectedFixture(selectedFixtureId));
