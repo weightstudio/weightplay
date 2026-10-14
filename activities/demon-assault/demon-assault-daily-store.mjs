@@ -3,56 +3,82 @@ import {validSave as validLegacy,freshRun,nextStage,settle,SAVE_KEY as LEGACY_KE
 export {freshRun,nextStage,settle};
 export const VERSION='demon-assault-daily-play-1';
 export const SAVE_KEY='weightplayDemonAssaultDailyV1';
-const LOCK=SAVE_KEY+':transaction',DAY=86400000,TAIPEI=8*3600000;
-export const dayKey=now=>new Date(now+TAIPEI).toISOString().slice(0,10);
-export const nextMidnight=now=>Math.floor((now+TAIPEI)/DAY)*DAY+DAY-TAIPEI;
-export const finished=d=>!!d&&(d.run.status==='empty'||(d.run.status==='cleared'&&d.run.stage===STAGES.length-1));
-export function dailyStatus(d,now=Date.now()){
- const rollback=!!d&&now<d.lastSeenAt-2000;
- const today=dayKey(now),inProgress=!!d?.dayKey&&!finished(d),usedToday=!!d?.lastQualifiedDay&&today<=d.lastQualifiedDay;
- return{today,dayKey:d?.dayKey||null,clockBlocked:rollback,state:rollback?'clock':inProgress?'progress':usedToday?'done':'ready',
-  canStart:!rollback&&!inProgress&&!usedToday,canFire:!rollback&&!finished(d),nextAt:nextMidnight(Math.max(now,d?.lastSeenAt||0)),localOnly:true};
+export const DAILY_REVISION='device-midnight-2';
+const LOCK=SAVE_KEY+':transaction',DAY=86400000,formatters=new Map(),midnights=new Map(),zones=new Map();
+export function validTimeZone(zone){if(typeof zone!=='string'||zone.length>100)return false;if(zones.has(zone))return zones.get(zone);let valid=false;try{valid=!!new Intl.DateTimeFormat('en',{timeZone:zone}).resolvedOptions().timeZone;}catch{}if(zones.size>128)zones.clear();zones.set(zone,valid);return valid;}
+export function deviceTimeZone(){try{const zone=Intl.DateTimeFormat().resolvedOptions().timeZone;return validTimeZone(zone)?zone:'UTC';}catch{return 'UTC';}}
+export function dayKey(now,zone=deviceTimeZone()){
+ if(!validTimeZone(zone)||!Number.isFinite(now))throw Error('CLOCK_INVALID');
+ let formatter=formatters.get(zone);if(!formatter){formatter=new Intl.DateTimeFormat('en-US-u-ca-gregory-nu-latn',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'});formatters.set(zone,formatter);}
+ const parts=Object.fromEntries(formatter.formatToParts(now).map(p=>[p.type,p.value]));return `${parts.year}-${parts.month}-${parts.day}`;
 }
-function valid(d){return d?.schemaVersion===1&&d.version===VERSION&&Number.isFinite(d.lastSeenAt)&&d.lastSeenAt>=0
- &&(d.dayKey===null||/^\d{4}-\d{2}-\d{2}$/.test(d.dayKey))
- &&(d.lastQualifiedDay===null||/^\d{4}-\d{2}-\d{2}$/.test(d.lastQualifiedDay))
- &&(d.dayKey===null?d.run?.shots===0:d.dayKey===d.lastQualifiedDay)
- &&validLegacy({...d,version:LEGACY_VERSION});}
-export function makeDailyStore({storage,locks,now=Date.now}){
- const read=()=>{const raw=storage.getItem(SAVE_KEY);if(raw===null)return null;let d;try{d=JSON.parse(raw);}catch{throw Error('CORRUPT_DAILY_SAVE');}if(!valid(d))throw Error('CORRUPT_DAILY_SAVE');return d;};
+// Search the first instant of the next civil date. This follows IANA DST rules,
+// including 23/25-hour days and zones whose midnight is skipped by a transition.
+export function nextMidnight(now,zone=deviceTimeZone()){
+ return firstDateAfter(dayKey(now,zone),zone);
+}
+function firstDateAfter(today,zone){
+ const key=zone+':'+today;if(midnights.has(key))return midnights.get(key);
+ const seed=Date.parse(today+'T00:00:00Z');if(!Number.isFinite(seed))throw Error('CLOCK_INVALID');
+ let lo=seed-36*3600000,hi=seed+60*3600000;
+ while(hi-lo>1){const middle=Math.floor((lo+hi)/2);if(dayKey(middle,zone)<=today)lo=middle;else hi=middle;}
+ if(midnights.size>64)midnights.clear();midnights.set(key,hi);return hi;
+}
+export const finished=d=>!!d&&(d.run.status==='empty'||(d.run.status==='cleared'&&d.run.stage===STAGES.length-1));
+function normalize(d,stamp,zone){
+ if(!d)return null;const next={...d},safeStamp=Math.max(stamp,d.lastSeenAt);
+ if(d.schemaVersion===1){
+  const oldStart=d.lastQualifiedDay?Date.parse(d.lastQualifiedDay+'T00:00:00+08:00'):0,oldEnd=oldStart?oldStart+DAY:0;
+  const today=dayKey(safeStamp,zone),overlap=oldEnd&&(dayKey(oldStart,zone)===today||dayKey(oldEnd-1,zone)===today);
+  Object.assign(next,{schemaVersion:2,calendarTimeZone:zone,runTimeZone:d.dayKey?'Asia/Taipei':null,lastQualifiedAt:null,nextEligibleAt:oldEnd});
+  // A used legacy date is never converted into a free local-date run. Its old
+  // fence is honored, then the first eligible local midnight takes over.
+  if(oldEnd&&(oldEnd>safeStamp||overlap))next.nextEligibleAt=Math.max(nextMidnight(Math.max(safeStamp,oldEnd-1),zone),firstDateAfter(d.lastQualifiedDay,zone));
+ }
+ if(next.calendarTimeZone!==zone){
+  next.calendarTimeZone=zone;
+  if(next.lastQualifiedDay)next.nextEligibleAt=Math.max(nextMidnight(Math.max(safeStamp,next.nextEligibleAt-1),zone),firstDateAfter(next.lastQualifiedDay,zone));
+ }
+ return next;
+}
+export function dailyStatus(raw,now=Date.now(),zone=deviceTimeZone()){
+ const d=normalize(raw,now,zone),rollback=!!d&&now<d.lastSeenAt-2000,today=dayKey(now,zone),inProgress=!!d?.dayKey&&!finished(d),fence=d?.lastQualifiedDay?Math.max(d.nextEligibleAt,firstDateAfter(d.lastQualifiedDay,zone)):0,eligible=now>=fence;
+ return{revision:DAILY_REVISION,today,dayKey:d?.dayKey||null,timeZone:zone,runTimeZone:d?.runTimeZone||null,clockBlocked:rollback,state:rollback?'clock':inProgress?'progress':eligible?'ready':'done',canStart:!rollback&&!inProgress&&eligible,canFire:!rollback&&!finished(d)&&(!!d?.dayKey||eligible),nextAt:eligible?nextMidnight(Math.max(now,d?.lastSeenAt||0),zone):fence,afterCurrentRun:inProgress&&eligible,localOnly:true};
+}
+function valid(d){
+ const common=[1,2].includes(d?.schemaVersion)&&d.version===VERSION&&Number.isFinite(d.lastSeenAt)&&d.lastSeenAt>=0&&(d.dayKey===null||/^\d{4}-\d{2}-\d{2}$/.test(d.dayKey))&&(d.lastQualifiedDay===null||/^\d{4}-\d{2}-\d{2}$/.test(d.lastQualifiedDay))&&(d.dayKey===null?d.run?.shots===0:d.dayKey===d.lastQualifiedDay)&&validLegacy({...d,version:LEGACY_VERSION});
+ return common&&(d.schemaVersion===1||(validTimeZone(d.calendarTimeZone)&&(d.dayKey?validTimeZone(d.runTimeZone):d.runTimeZone===null)&&Number.isFinite(d.nextEligibleAt)&&d.nextEligibleAt>=0&&(d.lastQualifiedAt===null||Number.isFinite(d.lastQualifiedAt))));
+}
+export function makeDailyStore({storage,locks,now=Date.now,timeZone=deviceTimeZone}){
+ const zone=()=>{const z=typeof timeZone==='function'?timeZone():timeZone;if(!validTimeZone(z))throw Error('TIME_ZONE_INVALID');return z;};
+ const readRaw=()=>{const raw=storage.getItem(SAVE_KEY);if(raw===null)return null;let d;try{d=JSON.parse(raw);}catch{throw Error('CORRUPT_DAILY_SAVE');}if(!valid(d))throw Error('CORRUPT_DAILY_SAVE');return d;};
+ const read=()=>normalize(readRaw(),now(),zone());
  async function transact(change,{allowNew=false}={}){
   if(!locks?.request)throw Error('WEB_LOCKS_REQUIRED');
   return locks.request(LOCK,async()=>{
-   const old=read(),stamp=now();if(!Number.isFinite(stamp))throw Error('CLOCK_INVALID');
-   const oldStatus=dailyStatus(old,stamp),copy=old&&JSON.parse(JSON.stringify(old)),next=change(copy);
-   if(!next)return{state:old,changed:false};
+   const raw=readRaw(),stamp=now(),tz=zone();if(!Number.isFinite(stamp))throw Error('CLOCK_INVALID');
+   const old=normalize(raw,stamp,tz),oldStatus=dailyStatus(old,stamp,tz),copy=old&&JSON.parse(JSON.stringify(old));let next=change(copy);
+   if(!next){if(JSON.stringify(raw)===JSON.stringify(old))return{state:old,changed:false};next=old;}
+   if(!next)return{state:null,changed:false};
    const newRun=!!old&&next.run.id!==old.run.id,fire=next.run.shots>(old?.run.shots||0);
    if(old?.dayKey&&!newRun&&(next.run.ammo>old.run.ammo||next.run.cap!==old.run.cap||next.run.blocks!==old.run.blocks||next.run.shots<old.run.shots))throw Error('DAILY_RESOURCE_REFILL_FORBIDDEN');
    if(newRun&&(!allowNew||!oldStatus.canStart))throw Error('DAILY_RUN_ALREADY_USED');
    if(fire&&oldStatus.clockBlocked)throw Error('CLOCK_ROLLBACK');
    if(fire&&finished(old))throw Error('DAILY_RUN_FINISHED');
-   if(fire&&!old?.dayKey&&old?.lastQualifiedDay&&dayKey(stamp)<=old.lastQualifiedDay)throw Error('DAILY_RUN_ALREADY_USED');
-   // Preserve old-day resources through midnight. The first shot, not viewing,
-   // assigns the day and freezes the run's original cap in this same write.
-   next.schemaVersion=1;next.version=VERSION;next.revision=(old?.revision||0)+1;
-   next.lastSeenAt=Math.max(stamp,old?.lastSeenAt||0);
-   next.dayKey=newRun?null:(old?.dayKey||next.dayKey||null);
-   next.lastQualifiedDay=old?.lastQualifiedDay||next.lastQualifiedDay||null;
-   if(fire&&!next.dayKey){next.dayKey=dayKey(stamp);next.lastQualifiedDay=next.dayKey;}
-   if(!valid(next))throw Error('INVALID_DAILY_TRANSITION');
-   storage.setItem(SAVE_KEY,JSON.stringify(next));return{state:next,changed:true};
+   if(fire&&!old?.dayKey&&!oldStatus.canStart)throw Error('DAILY_RUN_ALREADY_USED');
+   next.schemaVersion=2;next.version=VERSION;next.revision=(old?.revision||0)+1;next.lastSeenAt=Math.max(stamp,old?.lastSeenAt||0);
+   next.calendarTimeZone=old?.calendarTimeZone||tz;next.runTimeZone=newRun?null:(old?.runTimeZone||null);
+   next.dayKey=newRun?null:(old?.dayKey||null);next.lastQualifiedDay=old?.lastQualifiedDay||null;next.lastQualifiedAt=old?.lastQualifiedAt||null;next.nextEligibleAt=old?.nextEligibleAt||0;
+   if(fire&&!next.dayKey){next.dayKey=dayKey(stamp,tz);next.lastQualifiedDay=next.dayKey;next.lastQualifiedAt=stamp;next.runTimeZone=tz;next.nextEligibleAt=nextMidnight(stamp,tz);}
+   if(!valid(next))throw Error('INVALID_DAILY_TRANSITION');storage.setItem(SAVE_KEY,JSON.stringify(next));return{state:next,changed:true};
   });
  }
- async function open(blocks){
-  return transact(d=>{
-   if(d){if(finished(d)&&dailyStatus(d,now()).canStart)return{...d,run:freshRun(blocks),dayKey:null};return null;}
-   let legacy=null;try{const raw=JSON.parse(storage.getItem(LEGACY_KEY)||'null');if(validLegacy(raw))legacy=raw;}catch{}
-   // Existing active V4 progress is copied without touching its original save.
-   // Prior shots already spent a run; conservatively bind that migrated run today.
-   if(legacy&&!finished(legacy))return{run:legacy.run,milestones:legacy.milestones,dayKey:legacy.run.shots?dayKey(now()):null,lastQualifiedDay:legacy.run.shots?dayKey(now()):null};
-   return{run:freshRun(blocks),milestones:{},dayKey:null,lastQualifiedDay:null};
-  },{allowNew:true});
- }
+ async function open(blocks){return transact(d=>{
+  if(d){if(finished(d)&&dailyStatus(d,now(),zone()).canStart)return{...d,run:freshRun(blocks),dayKey:null,runTimeZone:null};return null;}
+  let legacy=null;try{const raw=JSON.parse(storage.getItem(LEGACY_KEY)||'null');if(validLegacy(raw))legacy=raw;}catch{}
+  if(legacy&&!finished(legacy))return{run:legacy.run,milestones:legacy.milestones};
+  return{run:freshRun(blocks),milestones:{}};
+ },{allowNew:true});}
  return{read,transaction:transact,open};
 }
 const current=()=>makeDailyStore({storage:localStorage,locks:navigator.locks});

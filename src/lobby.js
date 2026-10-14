@@ -378,20 +378,20 @@ function createDemonEventPreview() {
     note: ({ "zh-Hant": "累計已收集方塊數只會決定彈藥上限；方塊與城堡材料都不會被扣除。", "zh-Hans": "累计已收集方块数只会决定弹药上限；方块与城堡材料都不会被扣除。" })[locale] || localized.note,
   };
   const daily = {
-    en: ["Play now", "One run daily · 00:00 Taiwan time", "This version awards no diamonds."],
-    "zh-Hant": ["立即挑戰", "每日一場 · 台灣時間 00:00 重置", "此版本不發放鑽石。"],
-    "zh-Hans": ["立即挑战", "每日一场 · 台湾时间 00:00 重置", "此版本不发放钻石。"],
-    ja: ["今すぐ挑戦", "1日1回 · 台湾時間0時に更新", "このバージョンではダイヤ報酬はありません。"],
-    ko: ["지금 도전", "하루 한 판 · 대만 시간 00시 초기화", "이 버전은 다이아를 지급하지 않습니다."],
-    es: ["Jugar ahora", "Una partida diaria · 00:00 Taiwán", "Esta versión no entrega diamantes."],
-    "pt-BR": ["Jogar agora", "Uma partida diária · 00h Taiwan", "Esta versão não concede diamantes."],
-    fr: ["Jouer", "Une partie par jour · 00:00 Taïwan", "Cette version ne donne aucun diamant."],
-    de: ["Jetzt spielen", "Ein Lauf täglich · 00:00 Taiwan", "Diese Version vergibt keine Diamanten."],
-    it: ["Gioca ora", "Una partita al giorno · 00:00 Taiwan", "Questa versione non assegna diamanti."],
-    ru: ["Играть", "Один бой в день · 00:00 Тайвань", "Эта версия не выдаёт алмазы."],
-    hi: ["अभी खेलें", "रोज़ एक खेल · ताइवान समय 00:00", "इस संस्करण में हीरे नहीं मिलते।"],
-    ar: ["العب الآن", "جولة يومياً · 00:00 بتوقيت تايوان", "هذا الإصدار لا يمنح الألماس."]
-  }[locale] || ["Play now", "One run daily · 00:00 Taiwan time", "This version awards no diamonds."];
+    en: ["Play now", "One run daily · local midnight", "This version awards no diamonds."],
+    "zh-Hant": ["立即挑戰", "每日一次 · 當地午夜重置", "此版本不發放鑽石。"],
+    "zh-Hans": ["立即挑战", "每日一次 · 当地午夜重置", "此版本不发放钻石。"],
+    ja: ["今すぐ挑戦", "1日1回 · 現地の午前0時に更新", "このバージョンではダイヤ報酬はありません。"],
+    ko: ["지금 도전", "하루 한 판 · 현지 자정 초기화", "이 버전은 다이아를 지급하지 않습니다."],
+    es: ["Jugar ahora", "Una partida diaria · medianoche local", "Esta versión no entrega diamantes."],
+    "pt-BR": ["Jogar agora", "Uma partida diária · meia-noite local", "Esta versão não concede diamantes."],
+    fr: ["Jouer", "Une partie par jour · minuit local", "Cette version ne donne aucun diamant."],
+    de: ["Jetzt spielen", "Ein Lauf täglich · lokale Mitternacht", "Diese Version vergibt keine Diamanten."],
+    it: ["Gioca ora", "Una partita al giorno · mezzanotte locale", "Questa versione non assegna diamanti."],
+    ru: ["Играть", "Один бой в день · местная полночь", "Эта версия не выдаёт алмазы."],
+    hi: ["अभी खेलें", "रोज़ एक खेल · स्थानीय आधी रात", "इस संस्करण में हीरे नहीं मिलते।"],
+    ar: ["العب الآن", "جولة يومياً · منتصف الليل المحلي", "هذا الإصدار لا يمنح الألماس."]
+  }[locale] || ["Play now", "One run daily · local midnight", "This version awards no diamonds."];
   strings.reward = daily[2];
   const section = document.createElement("section");
   section.className = "demon-event-preview";

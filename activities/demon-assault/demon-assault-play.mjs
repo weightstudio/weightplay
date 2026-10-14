@@ -1,8 +1,8 @@
 import {CanvasBattleRenderer,loadBattleImages,RENDER_REVISION,imageDiagnostics,installBattleArt} from './demon-assault-canvas.mjs?v=20261014-asset-recovery-2';
 let THREE;
 import {STAGES,WORLD,BOSS,ANCHOR,MAX_PULL,STEP,pullPoint,makeShot,tickShot,trace} from './demon-assault-v4-physics.mjs';
-import {VERSION,SAVE_KEY,readSave,transaction,openSession,nextStage,settle,dailyStatus,finished} from './demon-assault-daily-store.mjs';
-import {playCopy as copy,dailyCopy} from './demon-assault-daily-copy.mjs';
+import {VERSION,SAVE_KEY,readSave,transaction,openSession,nextStage,settle,dailyStatus,finished} from './demon-assault-daily-store.mjs?v=20261014-device-midnight-2';
+import {playCopy as copy,dailyCopy} from './demon-assault-daily-copy.mjs?v=20261014-device-midnight-2';
 import {BattleCamera} from './demon-assault-v4-camera.mjs?v=20261014-settle-1';
 const rig=new BattleCamera(WORLD.width,ANCHOR.x,BOSS.x);
 let panPointer=null,panX=0;
@@ -86,7 +86,8 @@ function setup(){
  const positions=new Float32Array(60*3);for(let i=0;i<60;i++){positions[i*3]=(i*137)%WORLD.width;positions[i*3+1]=120+(i*73)%430;positions[i*3+2]=-30;}
  const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.BufferAttribute(positions,3));resources.geometry.add(sg);const sm=new THREE.PointsMaterial({size:1.6,color:0xeab267,transparent:true,opacity:.5});resources.material.add(sm);starfield=new THREE.Points(sg,sm);root.add(starfield);
 }
-function syncDaily(){const d=dailyStatus(state);text('previewTag',dailyText.daily);text('dailyState',dailyText[d.state]);const next=new Intl.DateTimeFormat(locale,{timeZone:'Asia/Taipei',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(d.nextAt);text('dailyNext',dailyText.nextAt+' '+next+' · Asia/Taipei');$('dailyStatusLine').title=dailyText.rule+' '+dailyText.local;}
+let dailySyncKey='';
+function syncDaily(){const now=Date.now(),key=Math.floor(now/1000)+':'+state?.revision+':'+state?.run?.id;if(key===dailySyncKey)return;dailySyncKey=key;const d=dailyStatus(state,now);text('previewTag',dailyText.daily);text('dailyState',dailyText[d.state]);const seconds=Math.max(0,Math.ceil((d.nextAt-now)/1000)),countdown=[Math.floor(seconds/3600),Math.floor(seconds/60)%60,seconds%60].map(n=>String(n).padStart(2,'0')).join(':');text('dailyNext',d.afterCurrentRun?dailyText.afterRun:dailyText.nextAt+' '+countdown);$('dailyStatusLine').title=dailyText.rule+' '+dailyText.local;}
 function syncCamera(){syncDaily();
  offsetX=width/2-rig.x*viewScale;offsetY=height*.84+WORLD.ground*viewScale+rig.vertical*viewScale;
  if(root)root.position.set(-rig.x,(height/2-offsetY)/viewScale,0);

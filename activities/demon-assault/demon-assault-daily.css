@@ -2,6 +2,7 @@
 #liveGame{grid-template-rows:52px 40px 47px minmax(0,1fr) 66px 92px}
 #dailyStatusLine{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 18px;background:#233448;border-bottom:1px solid #93aec044;z-index:3;font-size:11px;color:#e4ebf3;min-width:0}
 #dailyState{color:#ffe3a6;white-space:nowrap}#dailyNext{text-align:right;overflow-wrap:anywhere;font-size:10px}
+#dailyNext{font-variant-numeric:tabular-nums}
 @media(max-width:600px) and (orientation:portrait){#liveGame{grid-template-rows:48px 44px 47px minmax(0,1fr) 64px 86px 174px}#dailyStatusLine{padding-inline:10px;font-size:10px}#dailyNext{font-size:9px;max-width:63%}}
 @media(max-height:680px) and (orientation:portrait){#liveGame{grid-template-rows:48px 40px 47px minmax(0,1fr) 58px 86px 130px}}
 @media(max-height:500px) and (orientation:landscape){#liveGame{grid-template-rows:44px 30px 34px minmax(0,1fr) 54px 64px}#arena{width:min(100%,calc((100dvh - 226px)*3))}}
