@@ -992,3 +992,5 @@ body.general-lobby-page .demon-event-dialog-done { margin-top: 10px; }
   body.general-lobby-page .explore-type-games .hero-game-copy { min-height: 42px; padding: 6px; }
   body.general-lobby-page .explore-type-games .hero-game-copy strong { font-size: 11px; }
 }
+.demon-event-preview .demon-event-play{cursor:pointer;background:linear-gradient(135deg,#f1bc72,#d78f4e);color:#241c2c;border-color:#ffc980;font-weight:800;opacity:1}
+.demon-event-preview .demon-event-play:hover{filter:brightness(1.08)}

@@ -1,0 +1,26 @@
+@import url('./demon-assault-v3.css');
+#liveGame{grid-template-rows:52px 47px minmax(0,1fr) 66px 92px}
+#arena{background-size:var(--world-width,1600px) 100%;background-position:var(--world-left,0px) center}
+#sceneCaption{background:#142336d9;padding:5px 8px;border-radius:4px;max-width:75%;font-size:10px}
+.boss-label{background:#17263eda;border:1px solid #dbba8055;border-radius:6px;padding:7px 9px}
+.aim-hint{left:50%;top:auto;bottom:9px;max-width:75%}
+#cameraNav{display:grid;grid-template-columns:152px minmax(0,1fr) 152px;gap:20px;align-items:center;padding:5px 20px;background:linear-gradient(#23334a,#18253a);border-top:1px solid #acbcce55;z-index:3}
+#cameraNav button{display:flex;align-items:center;justify-content:center;gap:9px;height:54px;border:1px solid #839db26b;border-radius:9px;background:linear-gradient(#35495e,#253248);font-size:12px;font-weight:800;padding:3px 9px;min-width:44px}
+#cameraNav button img{width:42px;height:44px;object-fit:contain;filter:drop-shadow(0 2px 3px #0b1324)}
+#cameraNav button[aria-current=true]{border-color:#f5d593;background:linear-gradient(#66513b,#3a3540)}
+.camera-readout{text-align:center;min-width:0}.camera-readout span{display:block;font-size:11px;line-height:1.5;color:#ebdfc9;min-height:17px}
+.camera-map{height:5px;background:#080f1dc9;border-radius:4px;margin:7px auto 0;max-width:320px;position:relative;overflow:hidden}
+#cameraWindow{display:block;position:absolute;height:100%;width:30%;background:#edc589;border-radius:4px}
+#aimPad[aria-disabled=true]{opacity:.6}
+@media(max-width:600px) and (orientation:portrait){
+ #liveGame{grid-template-rows:48px 47px minmax(0,1fr) 64px 86px 174px}
+ #cameraNav{grid-template-columns:92px minmax(0,1fr) 92px;gap:8px;padding:5px 9px}
+ #cameraNav button{gap:3px;padding:3px 4px;font-size:10px;height:52px}#cameraNav button img{width:32px;height:40px}
+ .camera-readout span{font-size:9px;line-height:1.4}#sceneCaption{max-width:90%}
+ .control-track{height:86px}#aimDeck{padding-bottom:8px}#aimPad{height:158px;min-height:120px}
+ .boss-label{width:112px}.aim-hint{font-size:11px;left:50%;bottom:10px;max-width:90%;top:auto}
+}
+@media(max-height:680px) and (orientation:portrait){#liveGame{grid-template-rows:48px 47px minmax(0,1fr) 58px 86px 130px}#aimPad{height:120px;min-height:110px}#aimDeck{padding-top:3px;padding-bottom:3px}.pad-copy p{font-size:10px;margin:4px 0}#cameraNav button{height:48px}}
+@media(max-height:500px) and (orientation:landscape){#liveGame{grid-template-rows:44px 34px minmax(0,1fr) 54px 64px}#cameraNav{padding-block:3px;grid-template-columns:135px minmax(0,1fr) 135px}#cameraNav button{height:48px}.boss-label{padding:3px 6px;font-size:9px}#cameraNav button img{height:38px}.aim-hint{bottom:4px;max-width:55%;padding:4px 8px;font-size:10px}}
+
+@media(max-height:500px) and (orientation:landscape){#arena{width:min(100%,calc((100dvh - 196px)*3));justify-self:center}}

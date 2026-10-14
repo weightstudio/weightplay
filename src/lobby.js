@@ -377,31 +377,48 @@ function createDemonEventPreview() {
     reward: ({ en: "Diamond rewards are not open yet. Nothing is available to claim.", "zh-Hant": "鑽石獎勵尚未開放，目前沒有可領取的獎勵。", "zh-Hans": "钻石奖励尚未开放，目前没有可领取的奖励。", ja: "ダイヤ報酬はまだ受け取れません。", ko: "다이아 보상은 아직 받을 수 없습니다.", es: "Las recompensas de diamantes aún no están disponibles.", "pt-BR": "As recompensas em diamantes ainda não estão disponíveis.", fr: "Les récompenses en diamants ne sont pas encore disponibles.", de: "Diamantbelohnungen sind noch nicht verfügbar.", it: "Le ricompense in diamanti non sono ancora disponibili.", ru: "Алмазные награды пока недоступны.", hi: "हीरे के पुरस्कार अभी उपलब्ध नहीं हैं。", ar: "مكافآت الألماس غير متاحة بعد." })[locale] || "Diamond rewards are not open yet.",
     note: ({ "zh-Hant": "累計已收集方塊數只會決定彈藥上限；方塊與城堡材料都不會被扣除。", "zh-Hans": "累计已收集方块数只会决定弹药上限；方块与城堡材料都不会被扣除。" })[locale] || localized.note,
   };
+  const daily = {
+    en: ["Play now", "One run daily · 00:00 Taiwan time", "This version awards no diamonds."],
+    "zh-Hant": ["立即挑戰", "每日一場 · 台灣時間 00:00 重置", "此版本不發放鑽石。"],
+    "zh-Hans": ["立即挑战", "每日一场 · 台湾时间 00:00 重置", "此版本不发放钻石。"],
+    ja: ["今すぐ挑戦", "1日1回 · 台湾時間0時に更新", "このバージョンではダイヤ報酬はありません。"],
+    ko: ["지금 도전", "하루 한 판 · 대만 시간 00시 초기화", "이 버전은 다이아를 지급하지 않습니다."],
+    es: ["Jugar ahora", "Una partida diaria · 00:00 Taiwán", "Esta versión no entrega diamantes."],
+    "pt-BR": ["Jogar agora", "Uma partida diária · 00h Taiwan", "Esta versão não concede diamantes."],
+    fr: ["Jouer", "Une partie par jour · 00:00 Taïwan", "Cette version ne donne aucun diamant."],
+    de: ["Jetzt spielen", "Ein Lauf täglich · 00:00 Taiwan", "Diese Version vergibt keine Diamanten."],
+    it: ["Gioca ora", "Una partita al giorno · 00:00 Taiwan", "Questa versione non assegna diamanti."],
+    ru: ["Играть", "Один бой в день · 00:00 Тайвань", "Эта версия не выдаёт алмазы."],
+    hi: ["अभी खेलें", "रोज़ एक खेल · ताइवान समय 00:00", "इस संस्करण में हीरे नहीं मिलते।"],
+    ar: ["العب الآن", "جولة يومياً · 00:00 بتوقيت تايوان", "هذا الإصدار لا يمنح الألماس."]
+  }[locale] || ["Play now", "One run daily · 00:00 Taiwan time", "This version awards no diamonds."];
+  strings.reward = daily[2];
   const section = document.createElement("section");
   section.className = "demon-event-preview";
   section.hidden = true;
   section.dataset.runtimeLocalize = "off";
   section.setAttribute("aria-label", strings.title);
-  section.innerHTML = `<div class="demon-event-art" aria-hidden="true"><img src="/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1" alt="" width="768" height="768" loading="lazy" decoding="async" /></div><div class="demon-event-copy"><h3>${strings.title}</h3><p class="demon-event-line">${strings.line}</p><p class="demon-event-count"><span>${strings.blocks}</span><strong data-owned-blocks>—</strong></p><div class="demon-event-actions"><button class="demon-event-unavailable" type="button" disabled aria-disabled="true">${strings.unavailable}</button><button class="demon-event-details" type="button">${strings.open}</button></div></div>`;
+  section.innerHTML = `<div class="demon-event-art" aria-hidden="true"><img src="/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1" alt="" width="768" height="768" loading="lazy" decoding="async" /></div><div class="demon-event-copy"><h3>${strings.title}</h3><p class="demon-event-line">${strings.line}</p><p class="demon-event-count"><span>${strings.blocks}</span><strong data-owned-blocks>—</strong></p><div class="demon-event-actions"><button class="demon-event-unavailable demon-event-play" type="button">${daily[0]}</button><button class="demon-event-details" type="button">${strings.open}</button></div></div>`;
   const dialog = document.createElement("dialog");
   dialog.className = "demon-event-dialog";
   dialog.setAttribute("aria-labelledby", "demonEventDialogTitle");
-  dialog.innerHTML = `<form method="dialog"><button class="demon-event-close" type="submit" aria-label="${strings.close}">×</button></form><h2 id="demonEventDialogTitle">${strings.modal}</h2><h3>${strings.title}</h3><p>${strings.note}</p><p>${strings.reward}</p><button class="demon-event-dialog-done" type="button">${strings.close}</button>`;
+  dialog.innerHTML = `<form method="dialog"><button class="demon-event-close" type="submit" aria-label="${strings.close}">×</button></form><h2 id="demonEventDialogTitle">${strings.modal}</h2><h3>${strings.title}</h3><p>${strings.note}</p><p>${daily[1]}</p><p>${strings.reward}</p><button class="demon-event-dialog-done" type="button">${strings.close}</button>`;
   document.body.append(dialog);
   const openButton = section.querySelector(".demon-event-details");
   const doneButton = dialog.querySelector(".demon-event-dialog-done");
-  const localHost = window.location.protocol === "http:" && ["localhost", "127.0.0.1", "[::1]"].includes(window.location.hostname);
-  if (ownerPreviewMode && !isKidsLobby && localHost) {
+  if (!isKidsLobby) {
     const launch = document.createElement("button");
     launch.type = "button";
     launch.className = "demon-event-dialog-done";
-    launch.textContent = ({ en: "Open local battle candidate", "zh-Hant": "開啟本機戰鬥候選", "zh-Hans": "打开本机战斗候选", ja: "ローカル戦闘候補を開く", ko: "로컬 전투 후보 열기", es: "Abrir candidato local", "pt-BR": "Abrir candidato local", fr: "Ouvrir le candidat local", de: "Lokalen Kandidaten öffnen", it: "Apri candidato locale", ru: "Открыть локальный бой", hi: "स्थानीय युद्ध उम्मीदवार खोलें", ar: "افتح نسخة المعركة المحلية" })[locale] || "Open local battle candidate";
-    launch.addEventListener("click", () => {
+    launch.textContent = daily[0];
+    const startDailyBattle = () => {
       let blocks = "";
       try { const count = window.WeightPlayCastle?.ownedBlocks?.(); if (Number.isFinite(Number(count)) && Number(count) >= 0) blocks = `&blocks=${encodeURIComponent(Math.floor(Number(count)))}`; } catch {}
       const params = `?locale=${encodeURIComponent(locale)}${blocks}`;
-      window.location.href = `/assets-preview/demon-assault-camera-candidate.html${params}`;
-    });
+      window.location.href = `/activities/demon-assault/${params}`;
+    };
+    launch.addEventListener("click", startDailyBattle);
+    section.querySelector(".demon-event-play").addEventListener("click", startDailyBattle);
     doneButton.before(launch);
   }
   let returnFocus = null;
