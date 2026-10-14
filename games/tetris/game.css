@@ -198,6 +198,12 @@ body[data-game-id="tetris"] #controls button {
 }
 body[data-game-id="tetris"] #controls button.primary { background: #ffd273; color: #112033; }
 body[data-game-id="tetris"] #controls button:is(:hover, :active, :focus) { transform: none; }
+body[data-game-id="tetris"] #controls button:focus-visible {
+  outline: 3px solid #f7d784;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 2px #071321;
+  z-index: 1;
+}
 body[data-game-id="tetris"] #gameMessage.is-clearing { animation: tetris-message-clear 380ms ease-out both; }
 body[data-game-id="tetris"] .round-label { min-width: 0; font-size: 13px; font-variant-numeric: tabular-nums; }
 body[data-game-id="tetris"] .tetris-dialog {

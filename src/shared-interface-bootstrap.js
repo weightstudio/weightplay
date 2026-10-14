@@ -59,7 +59,9 @@
     const metaValue = meta?.getAttribute("content") ?? null;
     const bodyValue = body?.getAttribute("data-wp-interface-version") ?? null;
     const isMissing = value => value === null || value.trim() === "";
-    const isValid = value => /^[1-9]\d*$/.test(value || "");
+    // Keep the per-game exact identity as text; I9.1 is an implementation
+    // revision of Interface 9 and must not be rounded through Number.
+    const isValid = value => /^(?:0|[1-9]\d*)(?:\.(?:0|[1-9]\d*))?$/.test(value || "");
     const warnIdentity = (code, details) => {
       console.warn("[WeightPlay] Shared interface identity diagnostic", {
         code,

@@ -154,6 +154,50 @@ export function installBlockmartV9(ctx) {
   let manualPaused=false;
   let pendingView=null,viewWriteQueued=false,lastCheckpoint=0;
   let visibleSaleRevenue=0;
+  const visibleSaleSources=[];
+  const feedbackAnimations=new Set(),feedbackNodes=new Set();
+  const worldFeedback=new Map();
+  const fixtureVisualKey=fixture=>JSON.stringify([fixture.kind,fixture.x,fixture.z,fixture.rotation,fixture.product,fixture.product2,fixture.footprint,fixture.decorType]);
+  function disposeVisual(group){group.removeFromParent();group.traverse(object=>{object.geometry?.dispose();if(object.isInstancedMesh)object.dispose();if(object.userData.ownedFixtureMaterial)object.material?.dispose();});}
+  function finishWorldFeedback(group){const effect=worldFeedback.get(group);if(!effect)return;worldFeedback.delete(group);for(const item of effect.materials){item.node.material=item.original;item.clone.dispose();}if(effect.exit)disposeVisual(group);else group.visible=effect.to>0;}
+  function fadeWorld(group,from,to,exit=false){
+    finishWorldFeedback(group);if(worldFeedback.size>=8)finishWorldFeedback(worldFeedback.keys().next().value);
+    group.traverse(node=>{if(node!==group&&worldFeedback.has(node))finishWorldFeedback(node);});
+    const materials=[];group.traverse(node=>{if(node.isMesh&&!Array.isArray(node.material)){const original=node.material,clone=original.clone();clone.transparent=true;clone.opacity=original.opacity*from;node.material=clone;materials.push({node,original,clone});}});
+    group.visible=true;worldFeedback.set(group,{materials,from,to,exit,elapsed:0,duration:reduceMotion()?.08:.2});
+  }
+  function drawWorldFeedback(delta){for(const [group,effect] of worldFeedback){effect.elapsed+=delta;const fraction=Math.min(1,effect.elapsed/effect.duration),alpha=effect.from+(effect.to-effect.from)*(1-(1-fraction)**2);for(const item of effect.materials)item.clone.opacity=item.original.opacity*alpha;if(fraction===1)finishWorldFeedback(group);}}
+  const reduceMotion=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function animateFeedback(element,frames,duration=180){
+    if(!element||document.hidden||!ctx.gameActive)return;
+    for(const animation of feedbackAnimations)if(animation.effect?.target===element){animation.cancel();feedbackAnimations.delete(animation);}
+    if(feedbackAnimations.size>=12){const oldest=feedbackAnimations.values().next().value;oldest.cancel();feedbackAnimations.delete(oldest);}
+    const animation=element.animate(frames,{duration:reduceMotion()?80:duration,easing:'ease-out'});
+    feedbackAnimations.add(animation);animation.finished.catch(()=>{}).finally(()=>feedbackAnimations.delete(animation));
+  }
+  function settleFeedback(){for(const animation of feedbackAnimations)animation.cancel();feedbackAnimations.clear();for(const node of feedbackNodes)node.remove();feedbackNodes.clear();for(const group of [...worldFeedback.keys()])finishWorldFeedback(group);visibleSaleSources.length=0;}
+  function saleTransfer(point){
+    if(!point||document.hidden||!ctx.gameActive||feedbackNodes.size>=4)return;
+    const target=document.querySelector('.scene-hud .money'),rect=target?.getBoundingClientRect(),world=ctx.canvas.getBoundingClientRect();if(!rect?.width||!world.width)return;
+    const projected=new THREE.Vector3(point.x,.95,point.z).project(ctx.camera);
+    const destination={x:rect.left+rect.width/2,y:rect.top+rect.height/2};
+    const origin={x:clamp(world.left+(projected.x+1)*world.width/2,world.left+10,world.right-10),y:clamp(world.top+(1-projected.y)*world.height/2,world.top+10,world.bottom-10)};
+    if(reduceMotion()){animateFeedback(target,[{filter:'brightness(1.35)'},{filter:'brightness(1)'}]);return;}
+    const coin=document.createElement('i');coin.className='blockmart-sale-transfer';coin.setAttribute('aria-hidden','true');coin.style.left=`${origin.x}px`;coin.style.top=`${origin.y}px`;document.body.append(coin);feedbackNodes.add(coin);
+    const animation=coin.animate([{transform:'translate(-50%,-50%)',opacity:1},{transform:`translate(calc(-50% + ${destination.x-origin.x}px),calc(-50% + ${destination.y-origin.y}px))`,opacity:1}],{duration:420,easing:'cubic-bezier(.2,.7,.3,1)'});feedbackAnimations.add(animation);
+    animation.finished.then(()=>{if(ctx.gameActive&&!document.hidden)animateFeedback(target,[{filter:'brightness(1.35)'},{filter:'brightness(1)'}]);}).catch(()=>{}).finally(()=>{coin.remove();feedbackNodes.delete(coin);feedbackAnimations.delete(animation);});
+  }
+  function installFeedback(){
+    const root=$('gameFrameRoot')||document.body;
+    root.addEventListener('pointerdown',event=>{const control=event.target.closest('button,select,[role="button"]');if(control&&!control.disabled)animateFeedback(control,[{filter:'brightness(.82)'},{filter:'brightness(1)'}],140);});
+    root.addEventListener('keydown',event=>{if(['Enter',' '].includes(event.key)){const control=event.target.closest('button,[role="button"]');if(control&&!control.disabled)animateFeedback(control,[{filter:'brightness(.82)'},{filter:'brightness(1)'}],140);}});
+    root.addEventListener('change',event=>animateFeedback(event.target,[{filter:'brightness(.8)'},{filter:'brightness(1)'}]));
+    const observer=new MutationObserver(records=>{for(const record of records){const target=record.target;if(record.type==='childList'&&target===$('panel')&&record.addedNodes.length)animateFeedback(target,[{opacity:.55},{opacity:1}]);else if(record.type==='attributes'&&record.attributeName==='hidden'&&!target.hidden&&target.matches('#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice'))animateFeedback(target,[{opacity:.55},{opacity:1}]);}});
+    observer.observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden']});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)settleFeedback();});
+    $('returnMain')?.addEventListener('click',settleFeedback);
+    window.addEventListener('pagehide',()=>{settleFeedback();observer.disconnect();},{once:true});
+  }
   const visibleAchievementIds=new Set();
   const documentId=globalThis.crypto?.randomUUID?.() || `doc-${Date.now()}-${Math.random()}`;
   let tabToken;
@@ -397,12 +441,12 @@ export function installBlockmartV9(ctx) {
 
   function syncFixtures() {
     if (!ctx.scene) return;
-    for (const group of getMeshes().values()) {
-      ctx.scene.remove(group); group.traverse(object => {object.geometry?.dispose();if(object.isInstancedMesh)object.dispose();if(object.userData.ownedFixtureMaterial)object.material?.dispose();});
-    }
+    const previous=new Map([...getMeshes()].map(([id,group])=>[id,group.userData.visualKey]));
+    const current=new Map(fixtures().map(f=>[f.id,fixtureVisualKey(f)]));
+    for (const [id,group] of getMeshes()) {finishWorldFeedback(group);if(current.get(id)!==previous.get(id))fadeWorld(group,1,0,true);else disposeVisual(group);}
     getMeshes().clear();
     stockDisplaySlots.clear();
-    fixtures().forEach(fixture => fixtureGroup(fixture));
+    fixtures().forEach(fixture => {const group=fixtureGroup(fixture);group.userData.visualKey=fixtureVisualKey(fixture);if(previous.get(fixture.id)!==group.userData.visualKey)fadeWorld(group,.35,1);});
     syncLayoutMarkers();
     syncStockDisplays();
     applyFloorArt();
@@ -459,8 +503,8 @@ export function installBlockmartV9(ctx) {
     const block = (name, color, x, y, z, sx, sy, sz) => ctx.cube(group, name, color, x, y, z, sx, sy, sz);
     if (normalized.kind === 'shelf') {
       block('shelf-footprint', 0x365b55, 0, .14, 0, Math.max(.9, width * .9), .16, Math.max(.9, depth * .9));
-      block('shelf-left-post', 0x234a4a, -width * .37, 1.06, 0, .13, 1.82, depth * .78);
-      block('shelf-right-post', 0x234a4a, width * .37, 1.06, 0, .13, 1.82, depth * .78);
+      // Open corner posts keep packages visible from the normal isometric view.
+      for(const side of [-1,1])for(const end of [-1,1])block('shelf-corner-post',0x234a4a,side*width*.37,1.06,end*depth*.36,.13,1.82,.13);
       const sku = ctx.PRODUCTS[normalized.product] ? normalized.product : 'water';
       const catalog = PRODUCT_DEFS[sku];
       const slots = [];
@@ -601,9 +645,10 @@ export function installBlockmartV9(ctx) {
     for (const fixture of fixtures()) {
       const display = stockDisplaySlots.get(fixture.id);
       if (display?.kind !== 'shelf') continue;
-      for (const slot of display.slots) {
+      // Fill upper/front bays first so a low-stock shelf is readable from above.
+      for (const slot of [...display.slots].reverse()) {
         const visible = remaining[slot.sku] > 0;
-        slot.group.visible = visible;
+        if(slot.group.userData.stockVisible!==visible){slot.group.userData.stockVisible=visible;if(worldFeedback.has(getMeshes().get(fixture.id)))slot.group.visible=visible;else fadeWorld(slot.group,visible?.25:1,visible?1:0);}
         if (visible) remaining[slot.sku]--;
       }
     }
@@ -616,12 +661,11 @@ export function installBlockmartV9(ctx) {
       if(sku)remaining[sku]--;
       if (slot.sku !== sku) {
         if (slot.group) {
-          slot.parent.remove(slot.group);
-          slot.group.traverse(object => object.geometry?.dispose());
+          const old=slot.group;finishWorldFeedback(old);old.updateWorldMatrix(true,false);ctx.scene.attach(old);fadeWorld(old,1,0,true);
           slot.group = null;
         }
         slot.sku = sku;
-        if (sku) slot.group = createDisplayUnit(slot.parent, sku, slot.x, slot.y, slot.z);
+        if (sku) {slot.group=createDisplayUnit(slot.parent,sku,slot.x,slot.y,slot.z);if(!worldFeedback.has(slot.parent.parent))fadeWorld(slot.group,.25,1);}
       }
       if (slot.group) slot.group.visible = Boolean(sku);
     });
@@ -1010,8 +1054,8 @@ export function installBlockmartV9(ctx) {
     unlockedProducts();
     settleAchievementEvent({ type: 'sale_settled', productId: customer.product,
       grossAmount: sale.grossRevenue, queueWaitSeconds: Number.isFinite(customer.queueWait) ? customer.queueWait : 0 });
-    if(simulationBusy)visibleSaleRevenue+=sale.netRevenue;
-    else{ctx.showSale(sale.netRevenue);if(sale.debtPayment)ctx.toast(`${ctx.t('recoveryPayment',ctx.locale)} · ${ctx.price(sale.debtPayment)}`);}
+    if(simulationBusy){visibleSaleRevenue+=sale.netRevenue;if(sale.netRevenue>0&&visibleSaleSources.length<4)visibleSaleSources.push({x:customer.group.position.x,z:customer.group.position.z});}
+    else{ctx.showSale(sale.netRevenue);if(sale.netRevenue>0)saleTransfer(customer.group.position);if(sale.debtPayment)ctx.toast(`${ctx.t('recoveryPayment',ctx.locale)} · ${ctx.price(sale.debtPayment)}`);}
     ctx.save(); routeCustomerOut(customer); customer.remove = 0;
     updateQueueLines();
     if(!simulationBusy){refreshHud();refreshPanelValues();}
@@ -2205,7 +2249,7 @@ export function installBlockmartV9(ctx) {
       if(!committed)break;
       await new Promise(resolve=>setTimeout(resolve,0));
     }
-    if(!document.hidden){syncStockDisplays();refreshHud();refreshPanelValues();if(owned&&!faulted){if(visibleSaleRevenue>0)ctx.showSale(visibleSaleRevenue);visibleSaleRevenue=0;if(visibleAchievementIds.size){notifyAchievementUnlocks([...visibleAchievementIds]);visibleAchievementIds.clear();}}}
+    if(!document.hidden){syncStockDisplays();refreshHud();refreshPanelValues();if(owned&&!faulted){if(visibleSaleRevenue>0)ctx.showSale(visibleSaleRevenue);visibleSaleRevenue=0;for(const point of visibleSaleSources)saleTransfer(point);visibleSaleSources.length=0;if(visibleAchievementIds.size){notifyAchievementUnlocks([...visibleAchievementIds]);visibleAchievementIds.clear();}}}
   }
   function onElapsed(milliseconds){
     if(!owned||faulted||disposed||!ctx.gameActive)return;
@@ -2248,11 +2292,11 @@ export function installBlockmartV9(ctx) {
 
   function gameLoop(timestamp) {
     requestAnimationFrame(gameLoop);
-    if (!ctx.renderer || document.hidden || !ctx.gameActive || (lease&&!lease.active)) { previousFrame = timestamp; return; }
+    if (!ctx.renderer || document.hidden || !ctx.gameActive) { previousFrame = timestamp; return; }
     const delta = previousFrame ? clamp((timestamp - previousFrame) / 1000, 0, .05) : 0;
     previousFrame = timestamp;
     if (Math.floor(timestamp/250)!==Math.floor((timestamp-delta*1000)/250)){refreshHud();refreshPanelValues();}
-    drawCustomers(delta);drawEmployees(delta);
+    drawWorldFeedback(delta);drawCustomers(lease&&!lease.active?0:delta);drawEmployees(lease&&!lease.active?0:delta);
     ctx.renderer.render(ctx.scene, ctx.camera);
   }
 
@@ -2265,6 +2309,7 @@ export function installBlockmartV9(ctx) {
     addPopularityHud();
     bindCashHud();
     bindInput();
+    installFeedback();
     syncFixtures();
     if(ctx.saveKey)setupTransactions();else ctx.save();
     renderPanel(); refreshHud(); updateQueueLines();

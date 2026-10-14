@@ -39,16 +39,18 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-2048/" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"2048：森林进化","url":"https://weightplay.com/zh-cn/games/animal-2048/","image":"https://weightplay.com/assets/animal-2048/cover-block-v1.png","description":"滑动 4×4 棋盘合并相同动物，在 30 个森林任务中管理步数；无尽森林没有步数上限。","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"zh-Hans","isAccessibleForFree":true,"genre":["方格合并益智","棋盘策略","动物进化"],"audience":{"@type":"Audience","audienceType":"General players"},"alternateName":"2048: Forest Evolution"}</script>
   <link rel="stylesheet" href="../../src/loading-screen.css" />
-  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
   <link rel="stylesheet" href="../../src/play-viewport.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20260925-issue-1157-v28" />
+  <link rel="stylesheet" href="style.css?v=20261014-formal-i9-forest-v35" />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-frame-style><meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-2048.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
+  <meta name="weightplay-game-version" content="v35" />
+  <meta name="weightplay-interface-version" content="9" />
 </head>
-<body data-screen="main" data-game-id="animal-2048" data-wp-game-owned-guide>
+<body data-game-version="v35" data-interface-version="9" data-wp-game-version="v35" data-wp-interface-version="9" data-screen="main" data-game-id="animal-2048" data-wp-game-owned-guide>
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-wp-frame-title data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">2048：森林进化</strong><span id="loadingText" data-i18n="loading">Opening the forest sanctuary…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
 
   <main id="forestApp" data-wp-frame-root>
@@ -69,19 +71,20 @@
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen style="--wp-stage-art:url('../../assets/animal-2048/cover-block-v1.webp')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-frame-logical-header="stage" data-wp-stage-art="/assets/animal-2048/cover-block-v1.webp" style="--wp-stage-art:url('../../assets/animal-2048/cover-block-v1.webp')">
       <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back" data-i18n-aria="back"><span aria-hidden="true">←</span></button><strong data-wp-frame-title data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">2048：森林进化</strong></header>
       <div id="stageContent" class="stage-content"><div id="stageSummary" class="stage-summary"></div>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Mission selection" data-i18n-aria="stageRailLabel"></div>
       </div>
-      <nav class="stage-mode-tabs" data-wp-frame-nav role="tablist" aria-label="Stage modes" data-i18n-aria="stageModeLabel"><button id="campaignTab" data-wp-frame-action="tab" role="tab" aria-selected="true" aria-controls="stageRail" type="button" data-stage-mode="campaign" data-i18n="stages">Stages</button><button id="challengeTab" data-wp-frame-action="tab" role="tab" aria-selected="false" aria-controls="stageRail" type="button" data-stage-mode="challenge" data-i18n="challengeMode">Challenge</button></nav>
+      <nav class="stage-mode-tabs" data-wp-frame-stage-nav role="tablist" aria-label="Stage modes" data-i18n-aria="stageModeLabel"><button id="campaignTab" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" role="tab" aria-selected="true" aria-controls="stageRail" type="button" data-stage-mode="campaign" data-i18n="stages">Stages</button><button id="challengeTab" data-wp-frame-action="tab" role="tab" aria-selected="false" aria-controls="stageRail" type="button" data-stage-mode="challenge" data-i18n="challengeMode">Challenge</button></nav>
+  <section id="tutorialPanel" class="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" type="button" aria-label="Close" data-i18n-aria="close">×</button><img src="../../assets/animal-2048/orla-block-v1.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Slide the whole forest grid.</h2><ol><li data-i18n="tutorial1">Swipe up, down, left, or right.</li><li data-i18n="tutorial2">Matching animals merge once per move.</li><li data-i18n="tutorial3">Keep a corner stable and protect empty spaces.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start Mission 1</button></div></section>
     </div>
     <div class="stage-ad-reserve wp-stage-physical-reserve" aria-hidden="true"></div>
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas>
+    <div class="battle-canvas" data-wp-battle-canvas-root data-wp-frame-play-fill data-wp-frame-logical-header="battle">
       <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back" data-i18n-aria="back"><span aria-hidden="true">←</span></button><strong data-wp-frame-title data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">2048：森林进化</strong></header>
       <div id="battleLive" class="battle-live"><div id="battleInfo"><div><span id="stageLabel"></span><strong id="goalValue"></strong></div><div><span data-i18n="moves">Moves</span><strong id="movesValue">0</strong></div><div><span data-i18n="score">Score</span><strong id="scoreValue">0</strong></div></div>
       <section id="objectiveRow" class="objective-row"></section>
@@ -90,13 +93,12 @@
       <div class="direction-pad" aria-label="Direction controls" data-i18n-aria="directionControls"><button type="button" data-direction="up" aria-label="Up" data-i18n-aria="up">↑</button><button type="button" data-direction="left" aria-label="Left" data-i18n-aria="left">←</button><button type="button" data-direction="down" aria-label="Down" data-i18n-aria="down">↓</button><button type="button" data-direction="right" aria-label="Right" data-i18n-aria="right">→</button></div>
 
       </div>
-      <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/animal-2048/orla-block-v1.webp" alt="" /><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Replay</button></div></div></section>
+      <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/animal-2048/orla-block-v1.webp" alt="" /><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText" tabindex="0" data-wp-scroll-owner></p><p id="bestText" tabindex="0" data-wp-scroll-owner class="best-text"></p><div class="result-actions" data-wp-frame-logical-actions="battle"><button id="resultStagesBtn" data-wp-frame-action="secondary" type="button" data-i18n="stages">Stages</button><button id="nextBtn" data-wp-frame-action="secondary" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" data-wp-frame-action="secondary" type="button" data-i18n="retry">Replay</button></div></div></section>
       <section id="leavePanel" class="leave-overlay" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="leave-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Leave this mission?</h2><p id="leaveText"></p><div><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Stages</button></div></div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
-  <section id="tutorialPanel" class="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" type="button" aria-label="Close" data-i18n-aria="close">×</button><img src="../../assets/animal-2048/orla-block-v1.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Slide the whole forest grid.</h2><ol><li data-i18n="tutorial1">Swipe up, down, left, or right.</li><li data-i18n="tutorial2">Matching animals merge once per move.</li><li data-i18n="tutorial3">Keep a corner stable and protect empty spaces.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start Mission 1</button></div></section>
 
   </main>
     <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off" aria-label="动物 2048 游戏指南" data-i18n-aria="guideLabel">
@@ -109,12 +111,12 @@
       <div class="game-info-section"><h3>森林任务与无尽森林</h3><p>每个任务都从固定棋盘与生成种子开始，因此重试会重现相同起始条件。无尽森林是独立模式：每次从新棋盘开始，没有步数上限，直到四个方向都无法改变棋盘才结束。最佳分数与最高动物只保存在当前浏览器。</p></div>
       <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>怎样才算一步？</dt><dd>方向必须让棋盘产生变化才算有效。有效移动消耗一步、每对相同动物最多合并一次，并新增一只低阶动物。</dd></div><div><dt>为什么滑动后棋盘没动？</dt><dd>如果该方向没有方块可移动或合并，移动就不会成立，也不会消耗步数或新增动物。</dd></div><div><dt>任务会要求哪些目标？</dt><dd>目标可能是合成指定动物、达到分数或完成合并次数；检查条件也可能要求留下空格或单步合并多组动物。</dd></div><div><dt>任务失败后可以重试吗？</dt><dd>可以，重试免费，并会从该任务固定的棋盘与生成顺序重新开始。</dd></div><div><dt>哪些进度会保存？</dt><dd>通关、星星、最佳分数、解锁任务与无尽森林记录只保存在当前浏览器，不需要账号。</dd></div><div><dt>无尽森林何时结束？</dt><dd>没有步数上限；当四个方向都无法改变棋盘时，这一局才会结束。</dd></div></dl></div>
       <div class="game-info-section"><h3 data-i18n="guideSaveTitle">玩家与存档信息</h3><p data-i18n="guideSave">关卡进度、星星、最佳分数与解锁任务只存储在当前浏览器，不需要登录账号；规划报告也不是正式能力测验。</p></div>
-      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><p>再试试另一款方块益智，或用不同方式推理格子。</p><div class="game-info-related-cards"><a class="game-info-related-card" href="/zh-cn/games/fruit-merge/" data-related-game="fruit-merge"><strong>合成塔</strong><span>合并相同水果方块，并在变化的棋盘上安排空间。</span></a><a class="game-info-related-card" href="/zh-cn/games/animal-mosaic-clues/" data-related-game="animal-mosaic-clues"><strong>马赛克线索</strong><span>依据行列线索填出图案格子。</span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><p>再试试另一款方块益智，或用不同方式推理格子。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-mosaic-clues" data-related-game="animal-mosaic-clues" href="/zh-cn/games/animal-mosaic-clues/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-mosaic-clues.webp" data-final-src="/assets/weightplay-logo.png" alt="马赛克线索" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">马赛克线索</strong><span>依据行列线索填出图案格子。</span></span></a></div></div>
     </div>
   </section>
   <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-cn.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="locales.js?v=20260913-forest-guide-v26"></script><script src="/src/stage-virtualization-standard.js?v=20260809-stage-v6-source-demotion-v8" data-wp-stage-virtualization-standard></script><script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2" data-wp-frame-script></script><script src="campaign.js?v=20260925-issue-1157-v28"></script><script src="game.js?v=20260925-issue-1157-v28&wp-audio=1.0.0"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20261002-coloring-studio-text140-v1"></script>
+  <script src="locales.js?v=20260913-forest-guide-v26"></script><script src="/src/stage-virtualization-standard.js?v=20260809-stage-v6-source-demotion-v8" data-wp-stage-virtualization-standard></script><script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2" data-wp-frame-script></script><script src="interface-ui.js?v=20261014-formal-i9-forest-v35"></script><script src="campaign.js?v=20261014-formal-i9-forest-v35"></script><script src="game.js?v=20261014-formal-i9-forest-v35&wp-audio=1.0.0"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
 
 </body>
 </html>

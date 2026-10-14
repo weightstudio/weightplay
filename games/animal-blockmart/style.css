@@ -508,3 +508,27 @@ body.wp-frame-battle-active #gameGuide{display:none}
 #app .growth-categories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:calc(5px * var(--wp-battle-canvas-inverse-scale,1));width:100%}#app .growth-categories button{width:100%;min-width:0;min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1));height:auto;white-space:normal;overflow-wrap:anywhere;text-overflow:clip;font-size:calc(12px * var(--wp-battle-canvas-inverse-scale,1));line-height:1.25}#app .scene-hud .money{width:calc(100px * var(--wp-battle-canvas-inverse-scale,1));min-width:calc(100px * var(--wp-battle-canvas-inverse-scale,1));max-width:35%;padding:calc(6px * var(--wp-battle-canvas-inverse-scale,1));box-sizing:border-box}#app .scene-hud .money span{display:block;width:100%;white-space:normal;overflow:visible;overflow-wrap:anywhere;text-overflow:clip}
 #app #panel .growth-categories{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}#app .scene-hud .money[role="button"],#app .scene-hud .popularity-hud[role="button"]{min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1));box-sizing:border-box}
 #app #panel .growth-categories>*{grid-column:auto!important;min-width:0}.shelf-product-picker [data-product-slot][aria-pressed="true"]{background:#cfe8d7;color:#153f3d;border-color:#08745f}
+
+/* The logical canvas scales icons and achievements as well as their targets. */
+@layer wp-frame-contract {
+  html body #app #battleHeader :is(.wp-frame-back-icon,.wp-frame-settings-icon),
+  html body #app #wp-frame-battle-settings .wp-frame-sound-icon {
+    flex:0 0 calc(24px * var(--wp-battle-canvas-inverse-scale,1))!important;
+    width:calc(24px * var(--wp-battle-canvas-inverse-scale,1))!important;
+    height:calc(24px * var(--wp-battle-canvas-inverse-scale,1))!important;
+  }
+}
+#app #panel[data-active-tab="achievements"] .achievement-heading h2{font-size:calc(16px * var(--wp-battle-canvas-inverse-scale,1))}
+#app #panel[data-active-tab="achievements"] .achievement-heading p{font-size:calc(13px * var(--wp-battle-canvas-inverse-scale,1))}
+#app #panel[data-active-tab="achievements"] .achievement-back{min-height:calc(45px * var(--wp-battle-canvas-inverse-scale,1));font-size:calc(13px * var(--wp-battle-canvas-inverse-scale,1));padding:calc(8px * var(--wp-battle-canvas-inverse-scale,1))}
+#app #panel[data-active-tab="achievements"] .achievement-row{grid-template-columns:calc(30px * var(--wp-battle-canvas-inverse-scale,1)) minmax(0,1fr) auto;min-height:calc(74px * var(--wp-battle-canvas-inverse-scale,1));padding:calc(8px * var(--wp-battle-canvas-inverse-scale,1));gap:calc(4px * var(--wp-battle-canvas-inverse-scale,1)) calc(8px * var(--wp-battle-canvas-inverse-scale,1))}
+#app #panel[data-active-tab="achievements"] .achievement-badge{width:calc(30px * var(--wp-battle-canvas-inverse-scale,1));height:calc(30px * var(--wp-battle-canvas-inverse-scale,1));font-size:calc(19px * var(--wp-battle-canvas-inverse-scale,1))}
+#app #panel[data-active-tab="achievements"] .achievement-copy h3{font-size:calc(13px * var(--wp-battle-canvas-inverse-scale,1))}
+#app #panel[data-active-tab="achievements"] .achievement-copy p{font-size:calc(12px * var(--wp-battle-canvas-inverse-scale,1))}
+#app #panel[data-active-tab="achievements"] .achievement-status{font-size:calc(12px * var(--wp-battle-canvas-inverse-scale,1))}
+#app #panel[data-active-tab="achievements"] .achievement-progress{height:calc(6px * var(--wp-battle-canvas-inverse-scale,1))}
+.blockmart-sale-transfer{position:fixed;width:12px;height:12px;border:2px solid #885c19;border-radius:3px;background:#ffd361;box-shadow:0 2px 4px #173f4540;z-index:90;pointer-events:none}
+@layer wp-frame-contract {
+  html body #gameGuide .game-info-hero,
+  html body #gameGuide .game-info-hero *{color:#213f4b!important}
+}

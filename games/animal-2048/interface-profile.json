@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "gameId": "animal-2048",
+  "audience": "general",
+  "interfaceVersion": 9,
+  "flow": "main-stage-battle",
+  "stage": {
+    "enabled": true,
+    "leftWorkspace": null,
+    "rightWorkspace": null
+  },
+  "battle": {
+    "enabled": true
+  }
+}

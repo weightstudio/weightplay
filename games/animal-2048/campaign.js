@@ -75,7 +75,10 @@
     card.dataset.index = String(INFINITE_INDEX);
     card.setAttribute("aria-disabled", "false");
     card.setAttribute("aria-label", `${text("challengeMode")}: ${text("infiniteMode")}`);
-    card.innerHTML = `<small><span>${text("challengeMode")}</span><span>∞</span></small><strong>${text("infiniteMode")}</strong><span>${text("endlessCardBest", {score:endlessBest()})}</span>`;
+    let content = card.querySelector(":scope > [data-wp-item-content]");
+    if (!content) { content = document.createElement("div"); content.dataset.wpItemContent = ""; card.append(content); }
+    window.WeightPlayForestInterface.bindCard(card, INFINITE_INDEX);
+    content.innerHTML = `<small><span>${text("challengeMode")}</span><span>∞</span></small><strong>${text("infiniteMode")}</strong><span>${text("endlessCardBest", {score:endlessBest()})}</span>`;
   };
   stageApi.install = (rail, options = {}) => {
     if (rail?.id !== "stageRail" || typeof options.bind !== "function") return originalInstall(rail, options);
@@ -130,5 +133,8 @@
       window.__animal2048Smoke?.showStage?.();
     }, true);
   };
-  setTimeout(normalizeStageNavigation, 0);
+  // Later parser-blocking game.js must capture the legacy tab before removal.
+  // DOMContentLoaded owns this one initial normalization; no competing timer.
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", normalizeStageNavigation, {once:true});
+  else normalizeStageNavigation();
 })();
