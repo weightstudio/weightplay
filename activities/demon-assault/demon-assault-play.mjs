@@ -1,5 +1,5 @@
 import {makeShieldCanvas,SHIELD_REVISION} from './demon-assault-shield.mjs?v=20261014-obsidian-shield-1';
-import {CanvasBattleRenderer,loadBattleImages,RENDER_REVISION,imageDiagnostics,installBattleArt} from './demon-assault-canvas.mjs?v=20261014-asset-recovery-2';
+import {CanvasBattleRenderer,loadBattleImages,RENDER_REVISION,imageDiagnostics,installBattleArt} from './demon-assault-canvas.mjs?v=20261014-ammo-shield-1';
 let THREE;
 import {STAGES,WORLD,BOSS,ANCHOR,MAX_PULL,STEP,pullPoint,makeShot,tickShot,trace} from './demon-assault-v4-physics.mjs?v=20261014-ammo-exact-1';
 import {VERSION,SAVE_KEY,readSave,transaction,openSession,nextStage,settle,launchShot,dailyStatus,finished} from './demon-assault-daily-store.mjs?v=20261014-ammo-exact-1';
@@ -31,19 +31,19 @@ const cameraLabels={
  ar:['المقلاع','الزعيم','اسحب للاستكشاف','العودة إلى المقلاع','تتبع المكعب','توقف الاصطدام','الاتجاه والقوة','تحريك الكاميرا']};
 const cl=cameraLabels[locale]||cameraLabels.en,cameraCopy=Object.fromEntries(['sling','boss','idle','intro','follow','hold','aim','travel'].map((k,i)=>[k,cl[i]]));
 const aimLabels={
- 'zh-Hant':['預測：命中惡魔','預測：擊中守衛','預測：未命中'],
- 'zh-Hans':['预测：命中恶魔','预测：击中守卫','预测：未命中'],
+ 'zh-Hant':['預測：命中惡魔','預測：擊中暗黑護盾','預測：未命中'],
+ 'zh-Hans':['预测：命中恶魔','预测：击中暗黑护盾','预测：未命中'],
  en:['Predicted Boss hit','Predicted dark shield hit','Predicted miss'],
  ja:['予測：ボスに命中','予測：暗黒シールドに命中','予測：外れ'],
  ko:['예측: 보스 명중','예측: 암흑 방패 명중','예측: 빗나감'],
- es:['Previsión: jefe','Previsión: guardia','Previsión: fallo'],
- 'pt-BR':['Previsão: chefe','Previsão: guarda','Previsão: erro'],
- fr:['Prévision : boss','Prévision : garde','Prévision : raté'],
- de:['Prognose: Bosstreffer','Prognose: Wache','Prognose: Fehlschuss'],
- it:['Previsione: boss','Previsione: guardia','Previsione: mancato'],
- ru:['Прогноз: босс','Прогноз: страж','Прогноз: промах'],
+ es:['Previsión: jefe','Previsión: escudo oscuro','Previsión: fallo'],
+ 'pt-BR':['Previsão: chefe','Previsão: escudo sombrio','Previsão: erro'],
+ fr:['Prévision : boss','Prévision : bouclier sombre','Prévision : raté'],
+ de:['Prognose: Bosstreffer','Prognose: dunkler Schild','Prognose: Fehlschuss'],
+ it:['Previsione: boss','Previsione: scudo oscuro','Previsione: mancato'],
+ ru:['Прогноз: босс','Прогноз: тёмный щит','Прогноз: промах'],
  hi:['अनुमान: बॉस पर वार','अनुमान: अंधेरे ढाल पर वार','अनुमान: निशाना चूका'],
- ar:['متوقع: إصابة الزعيم','متوقع: إصابة الحارس','متوقع: إخفاق']
+ ar:['متوقع: إصابة الزعيم','متوقع: إصابة الدرع المظلم','متوقع: إخفاق']
 }[locale]||['Predicted Boss hit','Predicted dark shield hit','Predicted miss'];
 $('cameraSling').querySelector('span').textContent=cl[0];$('cameraBoss').querySelector('span').textContent=cl[1];rig.reduce(reduced.matches);
 function navigateCamera(target){if(!started||rig.locked||pull||shot||busy||modal.open)return;cancelPull(false);rig.go(target);render(0);}
