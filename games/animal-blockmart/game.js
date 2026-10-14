@@ -1,7 +1,7 @@
 import * as THREE from './vendor/three/three.module.min.js';
 import {resolveLocale,t} from './locales.js?v=12';
 import {affordableRestockOffer,applySaleRevenue,browseSeconds,checkoutSeconds,customerBudget,migrateEquipmentState,purchaseEquipment,recoveryShipment,stockCapacity,totalStock,appendCashLedger,spendCash} from './economy.js?v=12';
-import {installBlockmartV9} from './blockmart-v9.js?v=12';
+import {installBlockmartV9} from './blockmart-v9.js?v=13';
 import {mergeAchievementStates,recordAchievementEvent} from './blockmart-v9-systems.js?v=12';
 
 const $=id=>document.getElementById(id),canvas=$('world'),cashEl=$('cash'),panel=$('panel'),dialog={hidden:true};

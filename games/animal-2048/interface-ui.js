@@ -13,13 +13,21 @@
       const api = window.WeightPlayCastle;
       if (!api?.read || !api.key) return null;
       const raw = localStorage.getItem(api.key);
+      let historyKnown = raw === null;
       if (raw !== null) {
         const stored = JSON.parse(raw);
         if (!stored || ![1, 2, 3].includes(stored.version)) return null;
         if (stored.completions !== undefined && (!stored.completions || typeof stored.completions !== 'object' || Array.isArray(stored.completions))) return null;
+        historyKnown = stored.worldSchema === 1 && Boolean(stored.completions);
       }
-      const save = JSON.parse(localStorage.getItem('weightplay_animal_2048_v1') || '{}');
-      return { completions: api.read().completions, cleared: save?.cleared || {} };
+      const rawProgress = localStorage.getItem('weightplay_animal_2048_v1');
+      let progress = {}, progressKnown = true;
+      try {
+        progress = JSON.parse(rawProgress || '{}');
+        progressKnown = rawProgress === null || Boolean(progress && typeof progress === 'object' && !Array.isArray(progress) && ('unlocked' in progress || 'cleared' in progress));
+        if (progress?.cleared !== undefined && (!progress.cleared || typeof progress.cleared !== 'object' || Array.isArray(progress.cleared))) progressKnown = false;
+      } catch { progressKnown = false; }
+      return { completions: api.read().completions, cleared: progress?.cleared || {}, unlocked: Math.max(1, Number(progress?.unlocked) || 1), historyKnown, progressKnown };
     } catch { return null; }
   }
 
@@ -34,7 +42,7 @@
     }
     const saved = history();
     const state = !saved ? 'unknown' : saved.completions[`${gameId}:stage-${index + 1}`]
-      ? 'collected' : saved.cleared[index] ? 'unknown' : 'not-collected';
+      ? 'collected' : !saved.historyKnown || !saved.progressKnown || saved.cleared[index] || (saved.unlocked > index + 1 && !Object.prototype.hasOwnProperty.call(saved.cleared, index)) ? 'unknown' : 'not-collected';
     card.dataset.wpGetGameId = gameId;
     card.dataset.wpGetIndex = String(index);
     if (card.dataset.wpGetState !== state) card.dataset.wpGetState = state;

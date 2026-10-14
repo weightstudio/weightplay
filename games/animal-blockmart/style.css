@@ -532,3 +532,10 @@ body.wp-frame-battle-active #gameGuide{display:none}
   html body #gameGuide .game-info-hero,
   html body #gameGuide .game-info-hero *{color:#213f4b!important}
 }
+/* Animate the final visible frame while hidden immediately stops input/logic. */
+#gameFrameRoot :is(#mainScreen,#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice){opacity:1;transition:opacity .18s ease-out,display .18s allow-discrete}
+#gameFrameRoot :is(#mainScreen,#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice)[hidden]{opacity:0;pointer-events:none}
+#gameFrameRoot :is(#mainScreen,#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice)[hidden] *{pointer-events:none!important}
+@starting-style{#gameFrameRoot :is(#mainScreen,#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice){opacity:0}}
+#mainScreen button:active{filter:brightness(.82)}
+@media(prefers-reduced-motion:reduce){#gameFrameRoot :is(#mainScreen,#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice){transition-duration:.08s,.08s}}
