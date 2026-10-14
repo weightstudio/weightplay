@@ -994,3 +994,25 @@ body.general-lobby-page .demon-event-dialog-done { margin-top: 10px; }
 }
 .demon-event-preview .demon-event-play{cursor:pointer;background:linear-gradient(135deg,#f1bc72,#d78f4e);color:#241c2c;border-color:#ffc980;font-weight:800;opacity:1}
 .demon-event-preview .demon-event-play:hover{filter:brightness(1.08)}
+/* Demon activity: original square poster, one clear primary action. */
+body.general-lobby-page .demon-event-preview{grid-template-columns:96px minmax(0,1fr);gap:14px;padding:12px;background:linear-gradient(145deg,#172b39,#273747 65%,#392635);border-color:#aa715f;box-shadow:inset 0 1px 0 #70808966,0 3px 0 #12232d}
+body.general-lobby-page .demon-event-art{width:96px;height:96px;aspect-ratio:1;border-color:#80748d;border-radius:3px}
+body.general-lobby-page .demon-event-copy h3{margin:0 0 7px;font-size:17px;line-height:1.2}
+body.general-lobby-page .demon-event-line{font-size:11px;line-height:1.5;color:#d5dde0}
+body.general-lobby-page .demon-event-count{margin-top:9px;font-size:11px;align-items:center}
+body.general-lobby-page .demon-event-actions{gap:8px;margin-top:10px;align-items:center}
+body.general-lobby-page .demon-event-actions button{margin:0;min-height:44px;line-height:1.2;padding:8px 12px;box-shadow:none}
+body.general-lobby-page .demon-event-actions .demon-event-details{background:transparent;border-color:transparent;color:#cfe2e7;font-weight:650;text-decoration:underline;text-underline-offset:3px;padding-inline:4px}
+body.general-lobby-page .demon-event-dialog{padding:24px;border-width:2px;border-radius:8px;background:linear-gradient(145deg,#172a38,#273948);box-shadow:0 12px 40px #0008}
+body.general-lobby-page .demon-event-dialog .demon-event-close{width:44px;height:44px;border-radius:6px;font-size:23px;background:transparent;border-color:transparent;color:#dbe6e9}
+body.general-lobby-page .demon-event-dialog-heading{padding-right:36px;margin-bottom:18px}
+body.general-lobby-page .demon-event-dialog .demon-event-dialog-eyebrow{font-size:11px;letter-spacing:.08em;margin:0 0 7px;color:#b9cdd3}
+body.general-lobby-page .demon-event-dialog h2{margin:0;font-size:26px;line-height:1.25}
+body.general-lobby-page .demon-event-dialog-body{display:grid;gap:12px}
+body.general-lobby-page .demon-event-dialog-body p{margin:0;font-size:14px;line-height:1.65}
+body.general-lobby-page .demon-event-dialog-schedule{padding:11px 12px;border:1px solid #7e9ca244;border-radius:5px;background:#11232b66;color:#ffe1a2}
+body.general-lobby-page .demon-event-dialog .demon-event-dialog-reward{font-size:12px;color:#bcced3}
+body.general-lobby-page .demon-event-dialog-actions{display:flex;gap:12px;margin-top:22px;padding-top:16px;border-top:1px solid #78949a44}
+body.general-lobby-page .demon-event-dialog-actions .demon-event-dialog-play{width:100%;min-height:48px;margin:0;padding:10px 16px;border-radius:5px;font-size:14px;box-shadow:none}
+@media(min-width:1120px){body.general-lobby-page .desktop-filter-rail .demon-event-preview{grid-template-columns:1fr;gap:12px;padding:9px}body.general-lobby-page .desktop-filter-rail .demon-event-art{width:100%;height:auto;aspect-ratio:1}body.general-lobby-page .desktop-filter-rail .demon-event-actions{gap:3px;margin-top:10px}body.general-lobby-page .desktop-filter-rail .demon-event-actions .demon-event-play{width:100%;min-height:44px}body.general-lobby-page .desktop-filter-rail .demon-event-actions .demon-event-details{width:auto;align-self:center}body.general-lobby-page .desktop-filter-rail .demon-event-copy h3{font-size:16px}}
+@media(max-width:360px){body.general-lobby-page .demon-event-preview{grid-template-columns:86px minmax(0,1fr);gap:10px;padding:10px}body.general-lobby-page .demon-event-art{width:86px;height:86px}body.general-lobby-page .demon-event-line{font-size:10px}body.general-lobby-page .demon-event-copy h3{font-size:16px}body.general-lobby-page .demon-event-actions{gap:3px}body.general-lobby-page .demon-event-actions button{padding-inline:8px}body.general-lobby-page .demon-event-dialog{width:calc(100vw - 24px);padding:20px}body.general-lobby-page .demon-event-dialog h2{font-size:23px}}

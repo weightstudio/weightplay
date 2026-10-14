@@ -1,3 +1,4 @@
+import {drawDarkShield} from './demon-assault-shield.mjs?v=20261014-obsidian-shield-1';
 // Same approved art, world coordinates and authoritative physics in both renderers.
 import {FALLBACK_ART} from './demon-assault-image-pack.mjs?v=20261014-asset-recovery-2';
 export const RENDER_REVISION='asset-recovery-2';
@@ -34,7 +35,7 @@ export class CanvasBattleRenderer{
   sprite(this.images.sling,anchor.x,136,80,120);
   const cleared=run?.status==='cleared',age=time-defeatTime,hit=Math.max(0,1-(time-hitTime)/.28),breath=reduced?0:Math.sin(time*1.8)*.006;
   if(!cleared||age<.75)sprite(this.images.boss,boss.x,boss.y+(reduced?0:hit*4),300*(1+breath),300*(1-breath),cleared?1-age/.75:Math.min(1,(time-spawnTime)/.35),reduced?0:hit*Math.sin(time*55)*.018);
-  for(const guard of run?.defenders||[])if(guard.alive)sprite(this.images.boss,guard.x,guard.y,47,47);
+  for(const guard of run?.defenders||[])if(guard.alive)drawDarkShield(c,project,scale,guard);
   if(run?.status==='playing'){
    const p=project((shot||pull||anchor).x,(shot||pull||anchor).y),size=17*scale;c.save();c.translate(p.x,p.y);c.rotate(shot&&!reduced?time*4:.12);
    c.fillStyle='#b98a45';c.fillRect(-size*.65,-size*.65,size*1.3,size*1.3);c.fillStyle='#43bacb';c.fillRect(-size/2,-size/2,size,size);c.fillStyle='#d4ffff';c.fillRect(-size/2,-size/2,size,size*.28);c.strokeStyle='#ffe2a1';c.lineWidth=Math.max(1,2*scale);c.strokeRect(-size*.65,-size*.65,size*1.3,size*1.3);c.restore();

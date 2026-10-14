@@ -495,3 +495,8 @@ body.wp-frame-battle-active #gameGuide{display:none}
 #leaveConfirm p{color:#264e56;font-size:calc(14px * var(--wp-battle-canvas-inverse-scale,1));line-height:1.45}
 #leaveConfirm button{width:100%;height:auto!important;min-height:calc(45px * var(--wp-battle-canvas-inverse-scale,1))!important;font-size:calc(13px * var(--wp-battle-canvas-inverse-scale,1))!important;padding:calc(10px * var(--wp-battle-canvas-inverse-scale,1));margin-top:calc(8px * var(--wp-battle-canvas-inverse-scale,1))}
 #leaveConfirm .text-button{color:#173e49}
+/* Narrow physical panels reserve two complete rows for longer translations. */
+@media(max-width:600px),(max-width:1000px) and (orientation:landscape){
+  #app .tabs[data-wp-frame-logical-actions="battle"]{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,calc(45px * var(--wp-battle-canvas-inverse-scale,1)));height:auto}
+}
+#app #battleHeader .brand small{display:none}
