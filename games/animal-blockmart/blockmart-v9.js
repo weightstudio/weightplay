@@ -136,6 +136,8 @@ export function installBlockmartV9(ctx) {
   let work=Promise.resolve(),checkpointTimer=null;
   let manualPaused=false;
   let pendingView=null,viewWriteQueued=false,lastCheckpoint=0;
+  let visibleSaleRevenue=0;
+  const visibleAchievementIds=new Set();
   const documentId=globalThis.crypto?.randomUUID?.() || `doc-${Date.now()}-${Math.random()}`;
   let tabToken;
   try{tabToken=sessionStorage.getItem('blockmart.live-tab');if(!tabToken){tabToken=documentId;sessionStorage.setItem('blockmart.live-tab',tabToken)}}catch{tabToken=documentId}
@@ -688,7 +690,7 @@ export function installBlockmartV9(ctx) {
   }
 
   function notifyAchievementUnlocks(ids) {
-    if(simulationBusy)return;
+    if(simulationBusy){ids.forEach(id=>visibleAchievementIds.add(id));return;}
     if (!ids.length) return;
     let notice = document.querySelector('.achievement-notice');
     if (!notice) {
@@ -697,7 +699,7 @@ export function installBlockmartV9(ctx) {
       notice.setAttribute('role', 'status');
       notice.setAttribute('aria-live', 'polite');
       notice.hidden = true;
-      document.body.append(notice);
+      document.querySelector('.scene-wrap').append(notice);
     }
     const names = ids.map(id => {
       const achievement = ACHIEVEMENT_CATALOG.find(item => item.id === id);
@@ -900,7 +902,8 @@ export function installBlockmartV9(ctx) {
     unlockedProducts();
     settleAchievementEvent({ type: 'sale_settled', productId: customer.product,
       grossAmount: sale.grossRevenue, queueWaitSeconds: Number.isFinite(customer.queueWait) ? customer.queueWait : 0 });
-    if(!simulationBusy){ctx.showSale(sale.netRevenue);if(sale.debtPayment)ctx.toast(`${ctx.t('recoveryPayment',ctx.locale)} · ${ctx.price(sale.debtPayment)}`);}
+    if(simulationBusy)visibleSaleRevenue+=sale.netRevenue;
+    else{ctx.showSale(sale.netRevenue);if(sale.debtPayment)ctx.toast(`${ctx.t('recoveryPayment',ctx.locale)} · ${ctx.price(sale.debtPayment)}`);}
     ctx.save(); routeCustomerOut(customer); customer.remove = 0;
     updateQueueLines();
     if(!simulationBusy){refreshHud();refreshPanelValues();}
@@ -1313,7 +1316,7 @@ export function installBlockmartV9(ctx) {
 
   function openCashActivity() {
     ctx.selectedTab = 'growth';
-    document.querySelectorAll('[data-tab]').forEach(button => button.classList.toggle('active', button.dataset.tab === 'supply'));
+    document.querySelectorAll('[data-tab]').forEach(button => button.classList.toggle('active', button.dataset.tab === 'growth'));
     renderPanel();
     $('cashActivity')?.scrollIntoView({ block: 'nearest' });
   }
@@ -1846,7 +1849,7 @@ export function installBlockmartV9(ctx) {
     $('app').dataset.businessOwner=owned?'active':'following';document.querySelector('.shop-panel').inert=!owned||faulted;
   }
   function failAdapter(error){
-    faulted=true;owned=false;lease?.setPaused('adapter-error',true);refreshOwnership();ctx.toast(ctx.t('businessPaused',ctx.locale));console.error('Blockmart live transaction stopped',error);
+    faulted=true;owned=false;visibleSaleRevenue=0;visibleAchievementIds.clear();lease?.setPaused('adapter-error',true);refreshOwnership();ctx.toast(ctx.t('businessPaused',ctx.locale));console.error('Blockmart live transaction stopped',error);
   }
   function enqueue(job){work=work.then(()=>{if(!disposed)return job()}).catch(failAdapter);return work;}
   async function locked(job){
@@ -1903,7 +1906,7 @@ export function installBlockmartV9(ctx) {
       if(!committed)break;
       await new Promise(resolve=>setTimeout(resolve,0));
     }
-    if(!document.hidden){syncStockDisplays();refreshHud();refreshPanelValues();}
+    if(!document.hidden){syncStockDisplays();refreshHud();refreshPanelValues();if(owned&&!faulted){if(visibleSaleRevenue>0)ctx.showSale(visibleSaleRevenue);visibleSaleRevenue=0;if(visibleAchievementIds.size){notifyAchievementUnlocks([...visibleAchievementIds]);visibleAchievementIds.clear();}}}
   }
   function onElapsed(milliseconds){
     if(!owned||faulted||disposed||!ctx.gameActive)return;

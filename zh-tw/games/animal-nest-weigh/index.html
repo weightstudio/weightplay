@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <base href="/games/animal-nest-weigh/" />
     <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-nest-weigh/" />
@@ -25,17 +26,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v7">
-  <meta name="weightplay-interface-version" content="8">
+  <meta name="weightplay-game-version" content="v8">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="每次比較兩種巢材並保留較重或較輕的線索，在 30 堂無計時課程中推理指定名次。" />
   <title>巢材秤重 | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="/src/loading-screen.css?v=20260702-unified1" data-wp-loading-screen>
   <link rel="stylesheet" href="/src/tutorial.css?v=20260701-style1">
-  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
   <link rel="stylesheet" href="../../src/game-ui-theme.css">
-  <link rel="stylesheet" href="style.css?v=20261013-nest-workshop">
+  <link rel="stylesheet" href="style.css?v=20261014-nest-v8-i9-result-slots">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -77,7 +78,7 @@
 }
     </script>
   </head>
-<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-nest-weigh" data-wp-game-version="v7" data-screen="main" data-wp-banner-ads="false">
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-nest-weigh" data-wp-game-version="v8" data-screen="main" data-wp-banner-ads="false" data-wp-game-owned-guide>
   <section id="loadingPanel" class="loading-panel" aria-live="polite" aria-busy="true">
     <div class="loading-card"><strong data-copy="title">Nest Weigh-In</strong><span data-copy="loading">Getting the nest table ready…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
   </section>
@@ -121,16 +122,17 @@
       <div class="game-info-section"><h3>開發設計理念</h3><p>《巢材秤重》把比較推理做成可讀的遊戲決策，而不是速度測驗。固定的課程資料讓每個答案都能解釋；托盤逐步增加與最低比較次數則讓六段流程有清楚的挑戰曲線。響應式的主畫面、課程、對戰與結果流程，在觸控和桌面上都維持相同的配對秤重判斷。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家與儲存資訊</h3><p>《巢材秤重》是一般玩家可遊玩的瀏覽器益智遊戲，不需要帳號、購買、聊天、排行榜或廣告流程。已解鎖課程與最佳比較結果只保存在目前瀏覽器；清除網站資料或更換裝置可能會移除本機進度。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>共有幾堂課？</dt><dd>共有 30 堂具名、可重玩的課程，分成六段；第 5、10、15、20、25、30 堂是檢查點。</dd></div><div><dt>後面的課程如何變化？</dt><dd>托盤會從三個增加到七個，需求加入第二順位，部分課程也要求先完成更多可見比較。</dd></div><div><dt>應該怎樣選擇比較配對？</dt><dd>先比較能夠夾住指定排序位置的兩個托盤，再記住可見結果，逐步建立順序。</dd></div><div><dt>答錯後會怎樣？</dt><dd>課程仍可再次嘗試。你可以重設比較或改選另一個托盤，不會失去已解鎖課程。</dd></div><div><dt>進度會保存嗎？</dt><dd>已解鎖課程與最佳比較結果只保存在目前瀏覽器。</dd></div><div><dt>會顯示確切重量數字嗎？</dt><dd>不會。每次秤量只會顯示兩個托盤中哪一個較重。整理畫面上保留的比較結果，就能推理出指定名次。</dd></div><div><dt>為什麼不能重複秤同一對？</dt><dd>已比較過的結果會留在畫面上，重秤不會增加新線索。請改選能縮小目標名次範圍的另一對巢材。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/animal-balance-grove/"><img src="/assets/interface7-redrawn/animal-balance-grove.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>平衡林地</strong><span>《平衡林地》是一款平靜的三座森林小橋益智遊戲，透過選擇有名字的石頭讓橋保持穩定。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>方舟搬運隊</strong><span>在 30 座手工設計的天空方舟倉庫中行走、推動與拉回符文貨箱。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-balance-grove" href="/zh-tw/games/animal-balance-grove/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-balance-grove.webp" data-final-src="/assets/weightplay-logo.png" alt="平衡林地" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">平衡林地</strong><span>《平衡林地》是一款平靜的三座森林小橋益智遊戲，透過選擇有名字的石頭讓橋保持穩定。</span></span></a></div></div>
     </div>
-  </section>
+  <button id="tutorialOpenBtn" class="nest-tutorial-replay" type="button" data-copy="tutorialOpen">Replay how to play</button>
+</section>
       <div class="locale-source" hidden aria-hidden="true"><select id="localeSelect" aria-label="Choose a language">
         <option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option>
       </select></div>
     </div>
 
     <section id="stageScreen" class="stage-screen" hidden>
-      <section id="stageCanvas" class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="/games/animal-nest-weigh/assets/animal-nest-weigh-cover.webp" style="--wp-stage-art:url('/games/animal-nest-weigh/assets/animal-nest-weigh-cover.webp')">
+      <section id="stageCanvas" class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="/games/animal-nest-weigh/assets/animal-nest-weigh-cover.webp" style="--wp-stage-art:url('/games/animal-nest-weigh/assets/animal-nest-weigh-cover.webp')" data-wp-frame-logical-header="stage" data-wp-frame-play-fill>
         <header id="stageHeader" class="stage-header">
           <button id="stageBackBtn" type="button" data-wp-return="stage" data-copy-aria-label="back"><span aria-hidden="true">←</span></button>
           <strong data-wp-frame-title data-copy="title">Nest Weigh-In</strong>
@@ -149,7 +151,7 @@
     </section>
 
     <section id="battleScreen" class="battle-screen" hidden>
-      <section id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="788" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" style="--wp-battle-art:url('assets/animal-nest-weigh-cover.webp');--wp-material-atlas:url('assets/animal-nest-weigh-material-atlas.png')">
+      <section id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="788" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" style="--wp-battle-art:url('assets/animal-nest-weigh-cover.webp');--wp-material-atlas:url('assets/animal-nest-weigh-material-atlas.png')" data-wp-frame-logical-header="battle" data-wp-frame-play-fill>
         <header id="battleHeader" class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-copy-aria-label="back"><span aria-hidden="true">←</span></button>
           <strong data-wp-frame-title data-copy="title">Nest Weigh-In</strong>
@@ -191,6 +193,7 @@
             <p id="mistakeCount" class="mistake-count"></p>
           </div>
           <section id="resultPanel" class="result-panel" hidden aria-labelledby="resultHeading">
+<div class="nest-result-copy">
             <div class="result-art"><img src="assets/animal-nest-weigh-taro.webp" alt="" aria-hidden="true"></div>
             <p class="eyebrow" data-copy="resultKicker">NEST RESULT</p>
             <h2 id="resultHeading"></h2>
@@ -198,7 +201,8 @@
             <div class="feather-award"><span id="featherStars" class="feather-stars"></span><strong id="resultRank"></strong></div>
             <p id="newBestBadge" class="new-best" hidden data-copy="newBest">New personal best!</p>
             <p id="resultStats" class="result-stats"></p>
-            <div class="result-actions" data-wp-frame-logical-actions="battle">
+            </div>
+<div class="result-actions" data-wp-frame-logical-actions="battle">
               <button id="resultStageBtn" class="secondary-btn" type="button" data-wp-frame-action="secondary"></button>
               <button id="resultNextBtn" class="primary-btn" type="button" data-wp-frame-action="primary"></button>
               <button id="resultReplayBtn" class="secondary-btn" type="button" data-wp-frame-action="secondary"></button>
@@ -234,7 +238,7 @@
   <script src="locales.js?v=20261013-nest-workshop"></script>
   <script src="game-data.js?v=20261013-nest-workshop"></script>
   <script src="deduction.js?v=20261013-nest-workshop"></script>
-  <script src="game.js?v=20261013-nest-workshop"></script>
+  <script src="game.js?v=20261014-guide-i9-v8"></script>
   <script src="tutorial.js?v=20261013-nest-workshop"></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>

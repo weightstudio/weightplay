@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <base href="/games/animal-nest-weigh/" />
     <link rel="canonical" href="https://weightplay.com/en/games/animal-nest-weigh/" />
@@ -25,17 +26,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v7">
-  <meta name="weightplay-interface-version" content="8">
+  <meta name="weightplay-game-version" content="v8">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="Compare nest materials two at a time, keep each heavier-or-lighter clue, and infer a requested rank across 30 untimed lessons." />
   <title>Nest Weigh-In | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="/src/loading-screen.css?v=20260702-unified1" data-wp-loading-screen>
   <link rel="stylesheet" href="/src/tutorial.css?v=20260701-style1">
-  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
   <link rel="stylesheet" href="../../src/game-ui-theme.css">
-  <link rel="stylesheet" href="style.css?v=20261013-nest-workshop">
+  <link rel="stylesheet" href="style.css?v=20261014-nest-v8-i9-result-slots">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -76,7 +77,7 @@
 }
     </script>
   </head>
-<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-nest-weigh" data-wp-game-version="v7" data-screen="main" data-wp-banner-ads="false">
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-nest-weigh" data-wp-game-version="v8" data-screen="main" data-wp-banner-ads="false" data-wp-game-owned-guide>
   <section id="loadingPanel" class="loading-panel" aria-live="polite" aria-busy="true">
     <div class="loading-card"><strong data-copy="title">Nest Weigh-In</strong><span data-copy="loading">Getting the nest table ready…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
   </section>
@@ -120,16 +121,17 @@
       <div class="game-info-section"><h3>Developer Design Note</h3><p>Nest Weigh-In makes comparison reasoning visible instead of turning it into a speed test. Fixed lesson data keeps every answer explainable, while the growing tray count and minimum-comparison rules give the six-arc campaign a clear learning curve. The responsive Main, Stage, Battle, and Result flow keeps the same pair-weighing decision readable on touch and desktop.</p></div>
       <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Nest Weigh-In is a General-audience browser puzzle. No account, purchase, chat, leaderboard, or advertising flow is required. Unlocked lessons and the best comparison result stay in this browser; clearing site data or changing devices may remove that local progress.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many lessons are included?</dt><dd>There are 30 authored, replayable lessons across six arcs, with checkpoints at lessons 5, 10, 15, 20, 25, and 30.</dd></div><div><dt>What is different about later lessons?</dt><dd>The tray count grows from three to seven, requests include second-rank choices, and selected lessons require more visible comparisons before checking.</dd></div><div><dt>How should I choose a comparison pair?</dt><dd>Compare two trays that help bracket the requested rank, then keep the visible result in mind while building the order.</dd></div><div><dt>What happens after a wrong answer?</dt><dd>The lesson stays available for another try. Reset the comparison or choose a different tray without losing unlocked lessons.</dd></div><div><dt>Is progress saved?</dt><dd>Unlocked lessons and the best comparison result are saved only in this browser.</dd></div><div><dt>Do I see exact weights?</dt><dd>No. Each weighing only shows which of the two trays is heavier. Combine those visible comparisons to prove the requested rank.</dd></div><div><dt>Why can&#39;t I weigh a pair again?</dt><dd>The result of a known pair stays visible. Another weighing would add no clue, so choose a different pair that can narrow the requested rank.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Related Games</h3><div class="game-info-related"><a class="game-info-related-card" href="/en/games/animal-balance-grove/"><img src="/assets/interface7-redrawn/animal-balance-grove.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Balance Grove</strong><span>Balance Grove is a calm three-grove puzzle about choosing named stones to steady forest bridges.</span></span></a><a class="game-info-related-card" href="/en/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Cratebound</strong><span>Walk, push, and pull rune cargo through thirty authored sky-ark warehouses.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>More Related Games</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-balance-grove" href="/en/games/animal-balance-grove/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-balance-grove.webp" data-final-src="/assets/weightplay-logo.png" alt="Balance Grove" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Balance Grove</strong><span>Balance Grove is a calm three-grove puzzle about choosing named stones to steady forest bridges.</span></span></a></div></div>
     </div>
-  </section>
+  <button id="tutorialOpenBtn" class="nest-tutorial-replay" type="button" data-copy="tutorialOpen">Replay how to play</button>
+</section>
       <div class="locale-source" hidden aria-hidden="true"><select id="localeSelect" aria-label="Choose a language">
         <option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option>
       </select></div>
     </div>
 
     <section id="stageScreen" class="stage-screen" hidden>
-      <section id="stageCanvas" class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="/games/animal-nest-weigh/assets/animal-nest-weigh-cover.webp" style="--wp-stage-art:url('/games/animal-nest-weigh/assets/animal-nest-weigh-cover.webp')">
+      <section id="stageCanvas" class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="/games/animal-nest-weigh/assets/animal-nest-weigh-cover.webp" style="--wp-stage-art:url('/games/animal-nest-weigh/assets/animal-nest-weigh-cover.webp')" data-wp-frame-logical-header="stage" data-wp-frame-play-fill>
         <header id="stageHeader" class="stage-header">
           <button id="stageBackBtn" type="button" data-wp-return="stage" data-copy-aria-label="back"><span aria-hidden="true">←</span></button>
           <strong data-wp-frame-title data-copy="title">Nest Weigh-In</strong>
@@ -148,7 +150,7 @@
     </section>
 
     <section id="battleScreen" class="battle-screen" hidden>
-      <section id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="788" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" style="--wp-battle-art:url('assets/animal-nest-weigh-cover.webp');--wp-material-atlas:url('assets/animal-nest-weigh-material-atlas.png')">
+      <section id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="788" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" style="--wp-battle-art:url('assets/animal-nest-weigh-cover.webp');--wp-material-atlas:url('assets/animal-nest-weigh-material-atlas.png')" data-wp-frame-logical-header="battle" data-wp-frame-play-fill>
         <header id="battleHeader" class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-copy-aria-label="back"><span aria-hidden="true">←</span></button>
           <strong data-wp-frame-title data-copy="title">Nest Weigh-In</strong>
@@ -190,6 +192,7 @@
             <p id="mistakeCount" class="mistake-count"></p>
           </div>
           <section id="resultPanel" class="result-panel" hidden aria-labelledby="resultHeading">
+<div class="nest-result-copy">
             <div class="result-art"><img src="assets/animal-nest-weigh-taro.webp" alt="" aria-hidden="true"></div>
             <p class="eyebrow" data-copy="resultKicker">NEST RESULT</p>
             <h2 id="resultHeading"></h2>
@@ -197,7 +200,8 @@
             <div class="feather-award"><span id="featherStars" class="feather-stars"></span><strong id="resultRank"></strong></div>
             <p id="newBestBadge" class="new-best" hidden data-copy="newBest">New personal best!</p>
             <p id="resultStats" class="result-stats"></p>
-            <div class="result-actions" data-wp-frame-logical-actions="battle">
+            </div>
+<div class="result-actions" data-wp-frame-logical-actions="battle">
               <button id="resultStageBtn" class="secondary-btn" type="button" data-wp-frame-action="secondary"></button>
               <button id="resultNextBtn" class="primary-btn" type="button" data-wp-frame-action="primary"></button>
               <button id="resultReplayBtn" class="secondary-btn" type="button" data-wp-frame-action="secondary"></button>
@@ -233,7 +237,7 @@
   <script src="locales.js?v=20261013-nest-workshop"></script>
   <script src="game-data.js?v=20261013-nest-workshop"></script>
   <script src="deduction.js?v=20261013-nest-workshop"></script>
-  <script src="game.js?v=20261013-nest-workshop"></script>
+  <script src="game.js?v=20261014-guide-i9-v8"></script>
   <script src="tutorial.js?v=20261013-nest-workshop"></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>

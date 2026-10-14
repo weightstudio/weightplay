@@ -207,3 +207,15 @@ html, body { min-height: 100%; margin: 0; }
  *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; }
  .nest-flight,.nest-spark { display:none; }
 }
+
+/* Result content owns a bounded reading slot; actions keep one fixed footer.
+   All authored text/art and game IDs remain in the same permanent copy root. */
+body[data-wp-game-id="animal-nest-weigh"] #resultPanel{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) max(52px,var(--wp-frame-control-size-physical,48px));align-content:stretch;gap:12px;overflow:hidden}
+#resultPanel>.nest-result-copy{grid-column:1;grid-row:1;display:grid;min-width:0;min-height:0;align-content:safe center;justify-items:center;gap:12px;overflow:auto;text-align:center;overscroll-behavior:contain}
+#resultPanel>.result-actions{grid-column:1;grid-row:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:8px;width:100%;height:100%;min-height:0}
+#resultPanel>.result-actions>button{min-width:0;max-width:100%;height:100%;white-space:normal}
+@media(orientation:landscape) and (max-height:500px){
+ #resultPanel>.nest-result-copy{grid-template-columns:130px minmax(0,1fr);align-content:start;justify-items:start;gap:6px 14px;text-align:start}
+ #resultPanel>.nest-result-copy>.result-art{grid-column:1;grid-row:1/9;width:120px}
+ #resultPanel>.nest-result-copy>*:not(.result-art){grid-column:2;min-width:0;max-width:100%}
+}

@@ -54,16 +54,45 @@
   addStylesheet("game-screen-frame.css");
 
   const addInterfaceMeta = () => {
-    let meta = document.querySelector('meta[name="weightplay-interface-version"]');
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.name = "weightplay-interface-version";
-      document.head.append(meta);
+    const meta = document.querySelector('meta[name="weightplay-interface-version"]');
+    const body = document.body;
+    const metaValue = meta?.getAttribute("content") ?? null;
+    const bodyValue = body?.getAttribute("data-wp-interface-version") ?? null;
+    const isMissing = value => value === null || value.trim() === "";
+    const isValid = value => /^[1-9]\d*$/.test(value || "");
+    const warnIdentity = (code, details) => {
+      console.warn("[WeightPlay] Shared interface identity diagnostic", {
+        code,
+        path: location.pathname,
+        meta: metaValue,
+        body: bodyValue,
+        ...details,
+      });
+    };
+
+    const invalid = [metaValue, bodyValue].filter(value => !isMissing(value) && !isValid(value));
+    if (invalid.length) {
+      warnIdentity("INVALID_INTERFACE_IDENTITY", { invalid });
+      return;
     }
-    meta.content = "7";
-    document.body?.setAttribute("data-wp-interface-version", "7");
+    if (!isMissing(metaValue) && !isMissing(bodyValue) && metaValue !== bodyValue) {
+      warnIdentity("INTERFACE_IDENTITY_CONFLICT", {});
+      return;
+    }
+
+    // Preserve a declared per-game version. The historical I7 fallback is
+    // used only when both markers are absent; a single valid marker fills its
+    // missing counterpart so the two identity surfaces stay in agreement.
+    const version = !isMissing(metaValue) ? metaValue : !isMissing(bodyValue) ? bodyValue : "7";
+    let resolvedMeta = meta;
+    if (!resolvedMeta) {
+      resolvedMeta = document.createElement("meta");
+      resolvedMeta.name = "weightplay-interface-version";
+      document.head.append(resolvedMeta);
+    }
+    if (isMissing(metaValue)) resolvedMeta.content = version;
+    if (body && isMissing(bodyValue)) body.setAttribute("data-wp-interface-version", version);
   };
-  addInterfaceMeta();
 
   // Reuse canonical identity; retain the prior resolver for older cached site-config.
   const gameIdFromPath = () => window.WONDER_SITE?.gameIdFromPath?.()
