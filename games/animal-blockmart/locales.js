@@ -328,6 +328,9 @@ ar:'حليب|خبز|زبادي|مثلجات|معكرونة|البطة الجاد
 };
 for(const locale of supportedLocales){const values=businessV12Rows[locale].split('|');if(values.length!==businessV12Keys.length)throw new Error(`Incomplete Blockmart v12 locale: ${locale}`);businessV12Keys.forEach((key,index)=>dict[locale][key]=values[index]);dict[locale].viewHint=dict[locale].cameraDragPan;}
 keys.push(...businessV12Keys);
+dict.de.businessUpgrades='Betrieb';
+const grossMarginCopy={en:'Gross margin','zh-Hant':'銷售毛利','zh-Hans':'销售毛利',ja:'売上粗利',ko:'판매 이익',es:'Margen bruto','pt-BR':'Margem bruta',fr:'Marge brute',de:'Rohertrag',it:'Margine lordo',ru:'Валовая прибыль',hi:'सकल लाभ',ar:'هامش الربح الإجمالي'};
+for(const locale of supportedLocales)dict[locale].grossMargin=grossMarginCopy[locale];keys.push('grossMargin');
 const aliases={'zh-tw':'zh-Hant','zh-hant':'zh-Hant','zh-cn':'zh-Hans','zh-hans':'zh-Hans','pt-br':'pt-BR'};
 export function resolveLocale(){const q=new URL(location.href).searchParams.get('lang');const ref=(()=>{try{return new URL(document.referrer).pathname.split('/')[1]}catch{return''}})();const here=location.pathname.split('/')[1];const raw=q||ref||here||document.documentElement.lang||'en';const locale=aliases[raw.toLowerCase()]||raw;return supportedLocales.includes(locale)?locale:'en'}
 export function t(key,locale=resolveLocale()){return dict[locale]?.[key]??dict.en[key]??key}

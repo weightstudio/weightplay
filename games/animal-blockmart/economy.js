@@ -31,8 +31,9 @@ export function businessUpgradeCost(id,level=0){
   const base={checkout:240,restock:200,storage:180}[id];
   return base&&count(level)<BUSINESS_UPGRADE_LIMIT?base*(count(level)+1):0;
 }
-export function purchaseBusinessUpgrade(state,id){
+export function purchaseBusinessUpgrade(state,id,expectedLevel=state.businessUpgrades?.levels?.[id]||0){
   const normalized=migrateBusinessUpgrades(state),level=normalized.businessUpgrades.levels[id],cost=businessUpgradeCost(id,level);
+  if(level!==expectedLevel)return {ok:false,reason:'stale',state};
   if(!cost)return {ok:false,reason:'max',state};
   const result=spendCash(normalized,cost,'businessUpgrade',{detail:id});
   if(!result.ok)return {...result,state};
@@ -40,11 +41,15 @@ export function purchaseBusinessUpgrade(state,id){
   return result;
 }
 export const EXPANSIONS=Object.freeze([{from:10,to:13,cost:500},{from:13,to:16,cost:1400},{from:16,to:19,cost:3500},{from:19,to:22,cost:8000}]);
-export function purchaseExpansion(state){
+export function purchaseExpansion(state,expectedArea=state.area){
+  if(state.area!==expectedArea)return {ok:false,reason:'stale',state};
   const offer=EXPANSIONS.find(item=>item.from===state.area);
   if(!offer)return {ok:false,reason:'max',state};
   const result=spendCash(state,offer.cost,'expansion',{detail:String(offer.to)});
-  if(result.ok)result.state={...result.state,area:offer.to,milestones:{...state.milestones,expanded:true}};
+  if(result.ok){
+    const shift=points=>Array.isArray(points)?points.map(point=>({...point,x:point.x===offer.from-1?offer.to-1:point.x,z:point.z===offer.from-1?offer.to-1:point.z})):points;
+    result.state={...result.state,area:offer.to,milestones:{...state.milestones,expanded:true},...(state.entrances?{entrances:shift(state.entrances)}:{}),...(state.exits?{exits:shift(state.exits)}:{})};
+  }
   return result;
 }
 export function normalizeBusinessPerformance(value={}){

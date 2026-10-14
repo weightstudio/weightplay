@@ -1,0 +1,118 @@
+{
+  "tool": "built-in image_gen",
+  "intent": "Eight original standalone transparent catalog icons; cuboid animals, goods and humorous landmarks, teal/cream/amber isometric style, no text or real brands. Lossless encoding only; no pixel edits.",
+  "assets": [
+    {
+      "id": "milk",
+      "original": "generated_images/exec-b61f2cab-068a-425a-9f16-d588163ea4c4.png",
+      "sourceSha256": "977a5038e3b2f6bb47b3640db69fad3d98ee72facfb343dfcd5917e944d1b76e",
+      "asset": "games/animal-blockmart/assets/item-milk-v12.webp",
+      "sha256": "a25aaa6b02874f78365ac204a7c175482ec1255902ca5a0b69304c614e31e19a",
+      "size": [
+        1254,
+        1254
+      ],
+      "pixelIdentical": true,
+      "sourceBytes": 710591,
+      "assetBytes": 425252
+    },
+    {
+      "id": "bread",
+      "original": "generated_images/exec-080996d7-c40f-4099-acb7-f6a31c9d6835.png",
+      "sourceSha256": "c0a00d05504fff9ea3aa3ece7f92854a51f08e953fcf105a2af5896c7be747a9",
+      "asset": "games/animal-blockmart/assets/item-bread-v12.webp",
+      "sha256": "fdc7eb29d9f39fdcd1303bde1841a9ec08b0d7cd20f755bc6247d5c4442177b3",
+      "size": [
+        1254,
+        1254
+      ],
+      "pixelIdentical": true,
+      "sourceBytes": 1178728,
+      "assetBytes": 726700
+    },
+    {
+      "id": "yogurt",
+      "original": "generated_images/exec-86a9bef8-1a14-44f9-8ce0-6c06b02ea47c.png",
+      "sourceSha256": "bd4355cf1be4fa66cf860fc6874b6196c254f963523e8bd316b9464ec1e92109",
+      "asset": "games/animal-blockmart/assets/item-yogurt-v12.webp",
+      "sha256": "a8b1eb47ad1f52b35ef3004e6cd4022885ffd5e9dbde72b6abc502bcb93073ff",
+      "size": [
+        1254,
+        1254
+      ],
+      "pixelIdentical": true,
+      "sourceBytes": 1062790,
+      "assetBytes": 645412
+    },
+    {
+      "id": "icecream",
+      "original": "generated_images/exec-c0d5df4d-7ced-45f6-988e-285204a8337a.png",
+      "sourceSha256": "54bc8fa9670c12fda0ccac867079070f7fd6f18f7e5371bf96f04c8ba324398b",
+      "asset": "games/animal-blockmart/assets/item-icecream-v12.webp",
+      "sha256": "e1668c8850aa8b7c92f46eb5292bcdfa882eddececc7ce06deb335d113b614fc",
+      "size": [
+        1254,
+        1254
+      ],
+      "pixelIdentical": true,
+      "sourceBytes": 1205800,
+      "assetBytes": 764868
+    },
+    {
+      "id": "noodles",
+      "original": "generated_images/exec-114cdce5-c142-423e-83d3-de518e3cfe19.png",
+      "sourceSha256": "3e58933bb9d8eb84bbebec98bdcdf1b27cd358503c6379b8dc866834940788bc",
+      "asset": "games/animal-blockmart/assets/item-noodles-v12.webp",
+      "sha256": "abc92e4dfa123a260e81ed071b20e18f49422e2debfc1a09d743b510a83ed8de",
+      "size": [
+        1254,
+        1254
+      ],
+      "pixelIdentical": true,
+      "sourceBytes": 1025453,
+      "assetBytes": 649432
+    },
+    {
+      "id": "duck",
+      "original": "generated_images/exec-e4ec022f-814e-4d11-8de0-4bc21d5ab70c.png",
+      "sourceSha256": "e2059dd4db1554065c4846194aef2c1b0c42538f66eb83cb3cb119c03ca025c6",
+      "asset": "games/animal-blockmart/assets/item-duck-v12.webp",
+      "sha256": "9bdc9312a77e300c2d556fb60c99a04365607a9c6f1cbc04b0a6030ed0391044",
+      "size": [
+        1254,
+        1254
+      ],
+      "pixelIdentical": true,
+      "sourceBytes": 922149,
+      "assetBytes": 606060
+    },
+    {
+      "id": "bread-throne",
+      "original": "generated_images/exec-091aa808-8769-4b13-95c9-7282371f3e07.png",
+      "sourceSha256": "8c07ea84c4701ea884ad32d824b73d189c54abccfb2bda0192120153e0c22bf2",
+      "asset": "games/animal-blockmart/assets/item-bread-throne-v12.webp",
+      "sha256": "e7ae6f68b52761679178ad3887afa4a4aa402641472748f36f4b883772b51a67",
+      "size": [
+        1254,
+        1254
+      ],
+      "pixelIdentical": true,
+      "sourceBytes": 1286229,
+      "assetBytes": 883630
+    },
+    {
+      "id": "receipt-king",
+      "original": "generated_images/exec-fc9d4b48-6f16-48d9-b4a0-6297ceec1d64.png",
+      "sourceSha256": "eb22fdd58270044c6a21777c27d226a95c4fee27c80c1589d0bbf490269fc616",
+      "asset": "games/animal-blockmart/assets/item-receipt-king-v12.webp",
+      "sha256": "622c49f8adca7e311b925ab3fd57b290764cba70ce2ede723ef6a518bd6e2b0b",
+      "size": [
+        1254,
+        1254
+      ],
+      "pixelIdentical": true,
+      "sourceBytes": 681038,
+      "assetBytes": 451700
+    }
+  ]
+}
