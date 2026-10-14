@@ -1,6 +1,6 @@
-import {VERSION as LEGACY_VERSION,STAGES} from './demon-assault-v4-physics.mjs';
-import {validSave as validLegacy,freshRun,nextStage,settle,SAVE_KEY as LEGACY_KEY} from './demon-assault-v4-store.mjs';
-export {freshRun,nextStage,settle};
+import {VERSION as LEGACY_VERSION,STAGES,ammoLimit,AMMO_POLICY} from './demon-assault-v4-physics.mjs?v=20261014-ammo-exact-1';
+import {validSave as validLegacy,freshRun,nextStage,settle,launchShot,SAVE_KEY as LEGACY_KEY} from './demon-assault-v4-store.mjs?v=20261014-ammo-exact-1';
+export {freshRun,nextStage,settle,launchShot};
 export const VERSION='demon-assault-daily-play-1';
 export const SAVE_KEY='weightplayDemonAssaultDailyV1';
 export const DAILY_REVISION='device-midnight-2';
@@ -39,6 +39,7 @@ function normalize(d,stamp,zone){
   next.calendarTimeZone=zone;
   if(next.lastQualifiedDay)next.nextEligibleAt=Math.max(nextMidnight(Math.max(safeStamp,next.nextEligibleAt-1),zone),firstDateAfter(next.lastQualifiedDay,zone));
  }
+ if(next.run.ammoPolicy!==AMMO_POLICY){const r={...next.run},spent=r.cap-r.ammo,cap=ammoLimit(r.blocks),invalidPending=r.pending&&r.pending.power>cap;r.ammoCorrection={previousCap:r.cap,previousAmmo:r.ammo,spent,voidedPending:invalidPending?{...r.pending}:null};r.cap=cap;r.ammo=Math.max(0,cap-spent);r.ammoPolicy=AMMO_POLICY;if(invalidPending)r.pending=null;if(!r.ammo&&!r.pending&&r.status==='playing')r.status='empty';next.run=r;}
  return next;
 }
 export function dailyStatus(raw,now=Date.now(),zone=deviceTimeZone()){
@@ -46,7 +47,7 @@ export function dailyStatus(raw,now=Date.now(),zone=deviceTimeZone()){
  return{revision:DAILY_REVISION,today,dayKey:d?.dayKey||null,timeZone:zone,runTimeZone:d?.runTimeZone||null,clockBlocked:rollback,state:rollback?'clock':inProgress?'progress':eligible?'ready':'done',canStart:!rollback&&!inProgress&&eligible,canFire:!rollback&&!finished(d)&&(!!d?.dayKey||eligible),nextAt:eligible?nextMidnight(Math.max(now,d?.lastSeenAt||0),zone):fence,afterCurrentRun:inProgress&&eligible,localOnly:true};
 }
 function valid(d){
- const common=[1,2].includes(d?.schemaVersion)&&d.version===VERSION&&Number.isFinite(d.lastSeenAt)&&d.lastSeenAt>=0&&(d.dayKey===null||/^\d{4}-\d{2}-\d{2}$/.test(d.dayKey))&&(d.lastQualifiedDay===null||/^\d{4}-\d{2}-\d{2}$/.test(d.lastQualifiedDay))&&(d.dayKey===null?d.run?.shots===0:d.dayKey===d.lastQualifiedDay)&&validLegacy({...d,version:LEGACY_VERSION});
+ const common=[1,2].includes(d?.schemaVersion)&&d.version===VERSION&&Number.isFinite(d.lastSeenAt)&&d.lastSeenAt>=0&&(d.dayKey===null||/^\d{4}-\d{2}-\d{2}$/.test(d.dayKey))&&(d.lastQualifiedDay===null||/^\d{4}-\d{2}-\d{2}$/.test(d.lastQualifiedDay))&&(d.dayKey===null?d.run?.shots===0:d.dayKey===d.lastQualifiedDay)&&validLegacy({...d,version:LEGACY_VERSION},{allowLegacyCapacity:true});
  return common&&(d.schemaVersion===1||(validTimeZone(d.calendarTimeZone)&&(d.dayKey?validTimeZone(d.runTimeZone):d.runTimeZone===null)&&Number.isFinite(d.nextEligibleAt)&&d.nextEligibleAt>=0&&(d.lastQualifiedAt===null||Number.isFinite(d.lastQualifiedAt))));
 }
 export function makeDailyStore({storage,locks,now=Date.now,timeZone=deviceTimeZone}){
@@ -64,6 +65,7 @@ export function makeDailyStore({storage,locks,now=Date.now,timeZone=deviceTimeZo
    if(old?.dayKey&&!newRun&&(next.run.ammo>old.run.ammo||next.run.cap!==old.run.cap||next.run.blocks!==old.run.blocks||next.run.shots<old.run.shots))throw Error('DAILY_RESOURCE_REFILL_FORBIDDEN');
    if(newRun&&(!allowNew||!oldStatus.canStart))throw Error('DAILY_RUN_ALREADY_USED');
    if(fire&&oldStatus.clockBlocked)throw Error('CLOCK_ROLLBACK');
+   if(fire&&old&&(!Number.isSafeInteger(next.run.pending?.power)||next.run.pending.power<1||next.run.pending.power>old.run.ammo||old.run.pending||next.run.shots!==old.run.shots+1||next.run.ammo!==old.run.ammo-next.run.pending.power))throw Error('INVALID_SHOT_COST');
    if(fire&&finished(old))throw Error('DAILY_RUN_FINISHED');
    if(fire&&!old?.dayKey&&!oldStatus.canStart)throw Error('DAILY_RUN_ALREADY_USED');
    next.schemaVersion=2;next.version=VERSION;next.revision=(old?.revision||0)+1;next.lastSeenAt=Math.max(stamp,old?.lastSeenAt||0);
@@ -74,9 +76,9 @@ export function makeDailyStore({storage,locks,now=Date.now,timeZone=deviceTimeZo
   });
  }
  async function open(blocks){return transact(d=>{
-  if(d){if(finished(d)&&dailyStatus(d,now(),zone()).canStart)return{...d,run:freshRun(blocks),dayKey:null,runTimeZone:null};return null;}
-  let legacy=null;try{const raw=JSON.parse(storage.getItem(LEGACY_KEY)||'null');if(validLegacy(raw))legacy=raw;}catch{}
-  if(legacy&&!finished(legacy))return{run:legacy.run,milestones:legacy.milestones};
+  if(d){if(!d.dayKey&&!d.run.shots&&!d.run.pending&&d.run.blocks!==ammoLimit(blocks))return{...d,run:{...d.run,...freshRun(blocks),id:d.run.id}};if(finished(d)&&dailyStatus(d,now(),zone()).canStart&&d.dayKey)return{...d,run:freshRun(blocks),dayKey:null,runTimeZone:null};return null;}
+  let legacy=null;try{const raw=JSON.parse(storage.getItem(LEGACY_KEY)||'null');if(validLegacy(raw,{allowLegacyCapacity:true}))legacy=raw;}catch{}
+  if(legacy&&!finished(legacy)){const migrated=normalize({schemaVersion:2,version:VERSION,revision:legacy.revision,run:legacy.run,milestones:legacy.milestones,lastSeenAt:now(),calendarTimeZone:zone(),runTimeZone:null,dayKey:null,lastQualifiedDay:null,lastQualifiedAt:null,nextEligibleAt:0},now(),zone());return{run:migrated.run,milestones:legacy.milestones};}
   return{run:freshRun(blocks),milestones:{}};
  },{allowNew:true});}
  return{read,transaction:transact,open};

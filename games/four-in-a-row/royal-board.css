@@ -68,16 +68,26 @@
 #logicBattle .four-column-actions {
   grid-column:1;
   grid-row:1;
-  width:100%;
+  width:min(100%,calc((100cqh - 52px) * 7 / 6));
   height:44px;
+  padding:0 10px;
+  justify-self:center;
+  box-sizing:border-box;
   display:grid;
   grid-template-columns:repeat(7,minmax(0,1fr));
   gap:6px;
   direction:ltr;
 }
 #logicBattle .four-column-actions button {
+  width:100%;
+  height:44px;
+  min-height:44px;
   min-width:0;
   padding:0;
+  box-sizing:border-box;
+}
+#logicBattle .four-column-actions[data-wp-frame-logical-actions="battle"] [data-wp-frame-action] {
+  transform:scaleY(1.02);
 }
 #logicBattle .four-difficulty {
   grid-row:4;

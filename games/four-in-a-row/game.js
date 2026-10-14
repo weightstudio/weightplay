@@ -219,6 +219,7 @@
       let columns = current.parentElement.querySelector('.four-column-actions');
       if (!columns) {
         columns = document.createElement('div'); columns.className = 'four-column-actions';
+        columns.setAttribute('data-wp-frame-logical-actions', 'battle');
         for (let column = 0; column < 7; column++) {
           const button = document.createElement('button'); button.type = 'button';
           button.textContent = String(column + 1); button.dataset.fourColumn = String(column);

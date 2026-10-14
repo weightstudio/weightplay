@@ -372,7 +372,7 @@ export function installBlockmartV9(ctx) {
   function syncFixtures() {
     if (!ctx.scene) return;
     for (const group of getMeshes().values()) {
-      ctx.scene.remove(group); group.traverse(object => object.geometry?.dispose());
+      ctx.scene.remove(group); group.traverse(object => {object.geometry?.dispose();if(object.userData.ownedFixtureMaterial)object.material?.dispose();});
     }
     getMeshes().clear();
     stockDisplaySlots.clear();
@@ -411,6 +411,8 @@ export function installBlockmartV9(ctx) {
       group.add(stockRoot);
       for (const y of [.45, 1, 1.55]) {
         block('shelf-board', 0xe0b768, 0, y, 0, width * .9, .14, depth * .84);
+        block('shelf-price-strip', 0xfff0ce, 0, y, depth * .43, width * .82, .075, .025);
+        for (const x of [-.27, 0, .27]) block('shelf-price-tag', 0x285965, x, y, depth * .445, .095, .033, .012);
         for (let i = 0; i < 3; i++) {
           const x = (i - 1) * Math.min(.32, width * .32);
           slots.push({ group: createDisplayUnit(stockRoot, sku, x, y + .16, 0), sku });
@@ -424,6 +426,11 @@ export function installBlockmartV9(ctx) {
       block('checkout-front', 0x285965, 0, .4, .46, .78, .48, .08);
       block('checkout-display', 0x7ed5b6, 0, 1.12, -.13, .36, .24, .3);
       block('checkout-conveyor', 0x465e63, 0, 1.03, .19, .7, .06, .42);
+      block('checkout-counter-trim', 0xefcc8d, 0, .98, 0, .98, .09, .96);
+      block('checkout-keypad', 0x29444b, .19, 1.07, .25, .23, .045, .16);
+      for (const x of [.13,.2,.27]) for (const z of [.22,.28]) block('checkout-key', 0xf5e8c5, x, 1.1, z, .037, .018, .037);
+      block('checkout-drawer', 0xd7b777, 0, .67, .485, .66, .18, .025);
+      block('checkout-drawer-pull', 0x36566a, 0, .67, .51, .2, .035, .025);
       block('checkout-light', staffedCounters().some(f => f.id === normalized.id) ? 0x61ca83 : 0xd55b50, .35, 1.1, -.32, .12, .12, .12);
     } else if (normalized.kind === 'fastCheckout') {
       block('checkout-upgrade', 0x426d79, 0, .55, 0, .82, .75, .68);
@@ -431,16 +438,32 @@ export function installBlockmartV9(ctx) {
       block('checkout-beam', 0xffd76c, 0, 1.14, .12, .48, .05, .12);
     } else if (normalized.kind === 'cooler') {
       block('cooler-footprint', 0x567e80, 0, .15, 0, 1.88, .17, 1.88);
-      block('cooler-case', 0x315f6d, 0, .96, 0, 1.88, 1.62, 1.88);
-      block('cooler-door', 0xa8d6d6, 0, .98, .97, 1.28, 1.28, .07);
-      block('cooler-handle', 0xf0c46f, .55, .98, 1.02, .07, .38, .1);
+      block('cooler-interior-back', 0xc5e5db, 0, .96, -.83, 1.72, 1.47, .12);
+      for (const x of [-.86,.86]) {
+        block('cooler-side', 0x315f6d, x, .96, 0, .14, 1.62, 1.88);
+        block('cooler-side-trim', 0x6db5ae, x*1.09, 1.42, 0, .035, .12, 1.63);
+        for (let row=0;row<3;row++) block('cooler-side-vent', 0x1c424d, x*1.09, .38+row*.08, 0, .035, .024, .52);
+      }
+      block('cooler-top', 0x315f6d, 0, 1.78, 0, 1.88, .17, 1.88);
+      block('cooler-header', 0xf3dd9a, 0, 1.72, .96, 1.66, .16, .07);
+      block('cooler-header-mark', 0x21868b, 0, 1.72, 1.005, .47, .075, .025);
+      for (const x of [-.43,.43]) {
+        const glass=block('cooler-glass', 0xc8f6f0, x, .98, 1.005, .76, 1.25, .025);
+        glass.material=glass.material.clone();glass.material.transparent=true;glass.material.opacity=.18;glass.material.depthWrite=false;glass.userData.ownedFixtureMaterial=true;
+        for (const edge of [-1,1]) {
+          block('cooler-door-edge', 0x80b5b1, x+edge*.39, .98, 1.03, .055, 1.33, .06);
+          block('cooler-door-rail', 0x80b5b1, x, .98+edge*.65, 1.03, .78, .055, .06);
+        }
+        block('cooler-handle', 0xf0c46f, x+(x<0?.3:-.3), .98, 1.08, .06, .4, .09);
+      }
       const stockRoot = new THREE.Group();
       stockRoot.name = `stock-display-${normalized.id}`;
       group.add(stockRoot);
       const slots = [];
       for (let shelf = 0; shelf < 3; shelf++) {
-        block('cooler-shelf', 0x173e4c, 0, .38 + shelf * .45, .82, 1.3, .09, .14);
-        for (const x of [-.34, .34]) slots.push({ parent: stockRoot, x, y: .57 + shelf * .45, z: 1.16, group: null, sku: null });
+        block('cooler-shelf', 0x6ba7a2, 0, .38 + shelf * .45, .22, 1.62, .07, 1.4);
+        block('cooler-price-rail', 0xffebbb, 0, .38 + shelf * .45, .95, 1.58, .075, .035);
+        for (const x of [-.43, .43]) slots.push({ parent: stockRoot, x, y: .57 + shelf * .45, z: .68, group: null, sku: null });
       }
       stockDisplaySlots.set(normalized.id, { kind: 'cooler', slots });
     } else if (normalized.kind === 'decor') {
@@ -1158,7 +1181,9 @@ export function installBlockmartV9(ctx) {
     const button = document.createElement('button');
     button.type = 'button'; button.className = `card ${options.className || ''}`.trim();
     button.disabled = Boolean(options.disabled);
-    const marker = itemArt(PRODUCT_DEFS[icon]?icon:icon==='checkout-speed'?'fastCheckout':icon==='store-charm'?'decor':icon==='shelf-single'?'shelf':icon==='shelf-double'?'shelf-double':icon==='cooler'?'cooler':'checkout');
+    const artwork=PRODUCT_DEFS[icon]?icon:({'checkout-speed':'fastCheckout','store-charm':'decor','shelf-single':'shelf','shelf-double':'shelf-double',cooler:'cooler'})[icon];
+    const marker=artwork?itemArt(artwork):document.createElement('span');
+    if(!artwork){marker.className='functional-icon';marker.setAttribute('aria-hidden','true');marker.textContent=({growth:'↗',entrance:'⇢',exit:'⇥','auto-restock':'↻'})[icon] || '•';}
     const copy = document.createElement('span'); copy.className = 'card-copy';
     const strong = document.createElement('strong'); strong.textContent = title;
     const small = document.createElement('small'); small.textContent = detail;
@@ -1215,7 +1240,7 @@ export function installBlockmartV9(ctx) {
   ];
   const catalogMatches=(entry,item)=>item.kind===entry.kind && (entry.kind!=='shelf'||item.footprint===entry.footprint);
   function itemArt(id,alt='') {
-    const image=document.createElement('img');image.className='item-art';image.src=`./assets/item-${id}-v11.png`;image.alt=alt;image.width=72;image.height=72;image.decoding='async';return image;
+    const image=document.createElement('img');image.className='item-art';image.src=`./assets/item-${id}-v11.webp`;image.alt=alt;image.width=72;image.height=72;image.decoding='async';return image;
   }
   function fixtureIllustration(fixture) {
     const entry=catalog.find(entry=>catalogMatches(entry,fixture));
@@ -1247,6 +1272,7 @@ export function installBlockmartV9(ctx) {
     const copy=document.createElement('div');copy.className='item-copy';const title=document.createElement('h3');title.textContent=ctx.t(entry.label,ctx.locale);
     const counts=document.createElement('p');counts.textContent=`${ctx.t('ownedTotal',ctx.locale)} ${placed.length+stored.length} · ${ctx.t('placedCount',ctx.locale)} ${placed.length} · ${ctx.t('storedCount',ctx.locale)} ${stored.length}`;
     const price=document.createElement('strong');price.className='item-price';price.textContent=entry.kind==='decor'?'1 ✦':ctx.price(fixtureCost(entry.kind,entry.footprint));copy.append(title,counts,price);
+    if(entry.kind==='checkout'){const activation=document.createElement('p');activation.className='activation-cost';activation.textContent=`${ctx.t('counterActivationCost',ctx.locale)} ${ctx.price(REGISTER_COST)} + ${ctx.price(EMPLOYEE_HIRE_COST)} = ${ctx.price(REGISTER_COST+EMPLOYEE_HIRE_COST)}`;copy.append(activation);}
     const buy=actionButton('buyItem',()=>buyCatalogItem(entry));buy.className='item-buy';buy.dataset.buyItem=entry.key;
     buy.disabled=entry.kind==='decor' ? state().diamond<1 || placed.length+stored.length>=6 : state().cash<fixtureCost(entry.kind,entry.footprint) || ((entry.kind==='cooler'||entry.kind==='fastCheckout')&&state().equipment[entry.kind]);
     row.append(imageButton,copy,buy);
@@ -1339,7 +1365,7 @@ export function installBlockmartV9(ctx) {
     const labels = { restock: 'manualOrderLabel', autoRestock: 'automaticWaterOrder', fixture: 'purchaseLabel',
       equipment: 'purchaseLabel', cashier: 'purchaseLabel', helper: 'purchaseLabel', expansion: 'purchaseLabel',
       sale: 'salesLabel', recoveryOrder: 'debtBorrowedLabel' };
-    const detailLabels = { shelf: 'shelf', checkout: 'cashRegister', cooler: 'coolerUpgrade',
+    const detailLabels = { 'shelf-single':'smallShelf','shelf-double':'doubleShelf',shelf: 'shelf', checkout: 'cashRegister', cooler: 'coolerUpgrade',
       fastCheckout: 'fasterCheckout', expansion: 'expand', helper: 'hireHelper', cashier: 'hireCashier' };
     for (const entry of ledger) {
       const row = document.createElement('div'); row.className = 'cash-activity-row';
@@ -1347,7 +1373,7 @@ export function installBlockmartV9(ctx) {
       const label = ctx.t(entry.kind==='employee'?'hireEmployee':entry.kind==='staffSkill'?(entry.detail==='checkout'?'checkoutSkill':'restockSkill'):entry.kind==='autoRestock'?'restockAction':labels[entry.kind] || 'purchaseLabel', ctx.locale);
       const product = entry.product ? ` · ${ctx.t(PRODUCT_DEFS[entry.product]?.label || entry.product, ctx.locale)}` : '';
       const detailKey = entry.detail || (['cashier', 'helper', 'expansion'].includes(entry.kind) ? entry.kind : '');
-      const detail = entry.kind==='staffSkill'?'':entry.kind==='employee'?` · ${ctx.t(entry.detail==='checkout'?'cashierRole':'restockerRole',ctx.locale)}`:detailKey ? ` · ${ctx.t(detailLabels[detailKey] || detailKey, ctx.locale)}` : '';
+      const detail = entry.kind==='staffSkill'?'':entry.kind==='employee'?` · ${ctx.t(entry.detail==='checkout'?'cashierRole':'restockerRole',ctx.locale)}`:detailLabels[detailKey] ? ` · ${ctx.t(detailLabels[detailKey], ctx.locale)}` : '';
       name.textContent = `${label}${detail}${product}${entry.quantity ? ` ×${entry.quantity}` : ''}`;
       const amounts = document.createElement('span');
       const cashText = entry.amount ? `${entry.amount > 0 ? '+' : '−'}${ctx.price(Math.abs(entry.amount))}` : '—';
@@ -1530,7 +1556,9 @@ export function installBlockmartV9(ctx) {
   }
 
   function buyRegister() {
-    return buyCatalogItem(catalog.find(entry=>entry.key==='checkout'));
+    const purchased=buyCatalogItem(catalog.find(entry=>entry.key==='checkout'));
+    if(purchased){ctx.selectedTab='growth';growthCategory='equipment';document.querySelectorAll('[data-tab]').forEach(button=>button.classList.toggle('active',button.dataset.tab==='growth'));renderPanel();}
+    return purchased;
   }
 
   function expandDecorAppeal() {
@@ -1542,6 +1570,8 @@ export function installBlockmartV9(ctx) {
 
   function renderPanel() {
     if (!isInstalled || simulationBusy) return;
+    const scroll=$('panel').dataset.activeTab===ctx.selectedTab?$('panel').scrollTop:0;
+    const active=document.activeElement,focusSelector=active?.dataset.buyItem?`[data-buy-item="${CSS.escape(active.dataset.buyItem)}"]`:active?.dataset.restockProduct?`[data-restock-product="${CSS.escape(active.dataset.restockProduct)}"]`:active?.id?`#${CSS.escape(active.id)}`:null;
     applyFloorArt();
     syncStockDisplays();
     $('panel').replaceChildren();
@@ -1550,6 +1580,7 @@ export function installBlockmartV9(ctx) {
     $('panel').dataset.activeTab = tab;
     if (tab === 'achievements') {
       renderAchievements();
+      $('panel').scrollTop=scroll;
       return;
     }
     if (tab === 'shop') renderShelves();
@@ -1574,10 +1605,20 @@ export function installBlockmartV9(ctx) {
     $('selectedTileReadout').textContent = selectedFloor ? `${ctx.t('selectedTile', ctx.locale)} · ${selectedFloor.x + 1}, ${selectedFloor.z + 1}` : ctx.t('noTileSelected', ctx.locale);
     refreshHud();
     refreshPanelValues();
+    $('panel').scrollTop=scroll;
+    if(focusSelector)$('panel').querySelector(focusSelector)?.focus({preventScroll:true});
   }
 
   function pointFromEvent(event) {
     return ctx.gridPoint(event);
+  }
+
+  function fixtureFromEvent(event) {
+    const rect=ctx.canvas.getBoundingClientRect();if(!rect.width||!rect.height)return null;
+    const ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2((event.clientX-rect.left)/rect.width*2-1,-(event.clientY-rect.top)/rect.height*2+1),ctx.camera);
+    let mesh=ray.intersectObjects([...getMeshes().values()],true)[0]?.object;
+    while(mesh&&!mesh.userData.fixture)mesh=mesh.parent;
+    return fixtures().find(f=>f.id===mesh?.userData.fixture) || null;
   }
 
   function panByPixels(dx, dy) {
@@ -1594,7 +1635,8 @@ export function installBlockmartV9(ctx) {
     if (cardDrag?.pointerId === event.pointerId) { event.stopImmediatePropagation(); return; }
     if (event.button === 2 || event.shiftKey) event.preventDefault();
     ctx.canvas.setPointerCapture(event.pointerId);
-    const point = pointFromEvent(event);
+    const visualFixture=!getPlacement()&&!endpointEdit?fixtureFromEvent(event):null;
+    const point = pointFromEvent(event) || (visualFixture?{x:visualFixture.x,z:visualFixture.z}:null);
     pointersMap.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (pointersMap.size >= 2) {
       const points = [...pointersMap.values()];
@@ -1605,7 +1647,7 @@ export function installBlockmartV9(ctx) {
     }
     pointerState = { id: event.pointerId, x: event.clientX, y: event.clientY,
       lastX: event.clientX, lastY: event.clientY, moved: false, point,
-      fixture: !getPlacement() && !endpointEdit ? fixtureAt(point) : null,
+      fixture: !getPlacement() && !endpointEdit ? visualFixture || fixtureAt(point) : null,
       mode: getPlacement() ? 'placement' : endpointEdit ? 'layout-edit' : (event.button===2||event.shiftKey||cameraOrbit ? 'orbit' : 'pan') };
     event.stopImmediatePropagation();
   }
@@ -1665,8 +1707,9 @@ export function installBlockmartV9(ctx) {
       } else if (current.mode === 'pan' && !current.moved) {
         if (current.fixture) {
           selectedFixtureId = current.fixture.id; setSelectedFloor(point);
-          ctx.selectedTab = current.fixture.kind==='shelf'?'shop':'growth'; document.querySelectorAll('[data-tab]').forEach(button => button.classList.toggle('active', button.dataset.tab === ctx.selectedTab));
-          renderPanel(); $('panel').scrollTop = 0;
+          ctx.selectedTab = current.fixture.kind==='shelf'?'shop':'growth';growthCategory=current.fixture.kind==='decor'?'decor':'equipment';selectedCatalogKey=catalog.find(entry=>catalogMatches(entry,current.fixture))?.key;
+          document.querySelectorAll('[data-tab]').forEach(button => button.classList.toggle('active', button.dataset.tab === ctx.selectedTab));
+          renderPanel();$('panel').querySelector(`[data-fixture-id="${CSS.escape(current.fixture.id)}"]`)?.scrollIntoView({block:'nearest'});
         } else chooseFloor(point);
       }
       pointerState = null;
@@ -1837,7 +1880,7 @@ export function installBlockmartV9(ctx) {
         const quantity=Math.min(EMPLOYEE_RESTOCK_BATCH,Math.max(0,room),Math.floor(state().cash/product.cost));
         // Advance first; the cash/stock and return phase are one atomic persisted commit.
         job.phase='return';job.wait=0;job.path=findPath({x:Math.round(job.x),z:Math.round(job.z)},[home]);
-        if(quantity>0){const purchase=ctx.spendCash(state(),quantity*product.cost,'autoRestock',{product:job.productId,quantity,detail:job.jobId});if(purchase.ok){setState(purchase.state);state().stock[job.productId]=(state().stock[job.productId]||0)+quantity;employee=employees().find(e=>e.id===id);employee.work.delivered=quantity;ctx.save();}}
+        if(quantity>0){const purchase=ctx.spendCash(state(),quantity*product.cost,'autoRestock',{product:job.productId,quantity});if(purchase.ok){setState(purchase.state);state().stock[job.productId]=(state().stock[job.productId]||0)+quantity;employee=employees().find(e=>e.id===id);employee.work.delivered=quantity;ctx.save();}}
       }
     }
   }
@@ -1864,7 +1907,7 @@ export function installBlockmartV9(ctx) {
     if(primary){
       // Cuboid gear horn, goggles, shoulder kit and pocket tool match the original Rux.
       for(const x of [-.18,.18]){block('goggle-frame',0xe5a425,x,1.73,.305,.27,.23,.08);block('goggle-lens',0x21aaad,x,1.73,.353,.18,.14,.04);}
-      for(const [x,y,sx,sy] of [[0,1.53,.28,.08],[0,1.25,.28,.08],[-.18,1.39,.08,.28],[.18,1.39,.08,.28],[0,1.61,.09,.13],[0,1.17,.09,.13],[-.26,1.39,.13,.09],[.26,1.39,.13,.09]])block('rux-gear-horn',0xf6bb36,x,y,.48,sx,sy,.19);
+      for(const [x,y,sx,sy] of [[0,1.53,.28,.08],[0,1.25,.28,.08],[-.18,1.39,.08,.28],[.18,1.39,.08,.28],[0,1.61,.09,.13],[0,1.17,.09,.13],[-.26,1.39,.13,.09],[.26,1.39,.13,.09]])block('rux-gear-horn',0xf6bb36,x-.4,y,.48,sx,sy,.19);
       block('tool-strap',0x83532b,.34,.84,.03,.08,.61,.44);block('tool-pouch',0x9f6435,.4,.53,.12,.16,.28,.27);block('wrench',0xbfc8ca,.43,.78,.25,.05,.24,.06);
     }
     for(const side of [-1,1]){
@@ -1881,7 +1924,7 @@ export function installBlockmartV9(ctx) {
     for(const employee of employees()){
       let mesh=employeeMeshes.get(employee.id);
       if(mesh&&mesh.userData.role!==employee.role){ctx.scene.remove(mesh);mesh.traverse(o=>o.geometry?.dispose());employeeMeshes.delete(employee.id);mesh=null;}
-      if(!mesh){mesh=makeStaffModel(employee.id===employees()[0]?.id,employee.role);mesh.userData.employeeId=employee.id;mesh.userData.role=employee.role;employeeMeshes.set(employee.id,mesh);ctx.scene.add(mesh);}
+      if(!mesh){const primary=employee.id===employees()[0]?.id;mesh=makeStaffModel(primary,employee.role);mesh.scale.setScalar(primary?1.32:1.1);mesh.userData.employeeId=employee.id;mesh.userData.role=employee.role;employeeMeshes.set(employee.id,mesh);ctx.scene.add(mesh);}
       let x,z,heading=0,phase='idle';
       if(employee.role==='checkout'){
         const counter=allCounters().find(f=>f.id===employee.registerId);mesh.visible=Boolean(counter);if(!counter)continue;
@@ -1934,6 +1977,10 @@ export function installBlockmartV9(ctx) {
       if(!mesh){mesh=ctx.makeAnimal(customer.kind||'rabbit',customer.color||0xf1d5c1);mesh.position.set(customer.group.position.x,customer.group.position.y,customer.group.position.z);mesh.rotation.y=customer.group.rotation.y;customerMeshes.set(customer.id,mesh);ctx.scene.add(mesh);}
       const group=customer.group,blend=1-Math.exp(-18*delta);
       mesh.position.x+=(group.position.x-mesh.position.x)*blend;mesh.position.z+=(group.position.z-mesh.position.z)*blend;mesh.position.y=group.position.y;mesh.rotation.y=smoothHeading(mesh.rotation.y,group.rotation.y,delta,18);mesh.scale.setScalar(group.scale.value || 1.2);
+      const stride=Math.sin(ctx.elapsed*11+customer.id),moving=Boolean(customer.segment||customer.pathAt<customer.path?.length);
+      for(const [name,sign] of [['customer-leg-left',1],['customer-leg-right',-1],['customer-arm-left',-1],['customer-arm-right',1]]){const part=mesh.getObjectByName(name);if(part)part.rotation.x=moving?stride*.28*sign:0;}
+      const bag=mesh.getObjectByName('customer-purchase');if(bag)bag.visible=Boolean(customer.carried);
+      for(const [name,sign] of [['customer-brow-left',1],['customer-brow-right',-1]]){const brow=mesh.getObjectByName(name);if(brow)brow.rotation.z=Math.min(.25,(customer.queueWait||0)/60)*sign;}
     }
   }
   function refreshOwnership(){

@@ -82,6 +82,8 @@
 
   battleHeader?.querySelector("h1")?.remove();
   battle?.setAttribute("data-wp-interface7-no-stage", "");
+  battle?.setAttribute("data-wp-frame-logical-header", "battle");
+  battle?.setAttribute("data-wp-frame-play-fill", "");
 
   if (leave) leave.dataset.wpBattleSubstate = "leave-confirm";
   if (result) result.dataset.wpBattleSubstate = "result";
@@ -92,6 +94,49 @@
   }
 
   syncCopy();
+
+  // Presentation only: canonical analytics/castle still decides and commits
+  // every reward. A committed receipt belongs to this actual native round.
+  result?.querySelector(".logic-result-card")?.setAttribute("data-wp-result-card", "");
+  let resultObtained = false;
+  let rewardRoundStartedAt = Date.now();
+  const seenRewardEvents = new WeakSet();
+  const clearResultReward = () => {
+    resultObtained = false;
+    window.ShowResultGet?.("sudoku", false);
+  };
+  root.addEventListener("click", (event) => {
+    if (!event.target.closest("#startButton, #resultReplay, #logicReset")) return;
+    rewardRoundStartedAt = Date.now();
+    clearResultReward();
+  }, true);
+  root.addEventListener("change", (event) => {
+    if (!event.target.matches("#logicBoard .logic-select")) return;
+    rewardRoundStartedAt = Date.now();
+    clearResultReward();
+  }, true);
+  window.addEventListener("weightplay:castle-reward", (event) => {
+    const reward = event.detail;
+    if (result?.hidden || battle?.hidden || document.visibilityState === "hidden"
+      || reward?.gameId !== "sudoku" || reward.completionId !== "first-completion"
+      || !(Number(reward.amount) > 0) || seenRewardEvents.has(reward)) return;
+    try {
+      const saved = JSON.parse(localStorage.getItem("weightplayCastleV1") || "null");
+      const committed = Number(saved?.completions?.["sudoku:first-completion"]);
+      if (!committed || committed < rewardRoundStartedAt) return;
+    } catch { return; }
+    seenRewardEvents.add(reward);
+    resultObtained = true;
+    window.ShowResultGet?.("sudoku", true);
+    const rewardRound = rewardRoundStartedAt;
+    queueMicrotask(() => {
+      // Other canonical reward listeners can append the notice later in this
+      // same dispatch. Dismiss only this still-visible Result's UI notice.
+      if (!result.hidden && !battle.hidden && resultObtained && rewardRound === rewardRoundStartedAt) {
+        window.WeightPlayCastle?.dismissRewardNotice?.("sudoku");
+      }
+    });
+  });
 
   let returnFocus = battleBack;
   const setBattleInert = (value) => {
@@ -164,6 +209,8 @@
   const syncResultState = () => {
     if (!result) return;
     const active = !result.hidden;
+    if (active) window.ShowResultGet?.("sudoku", resultObtained);
+    else clearResultReward();
     if (resultClose) {
       resultClose.hidden = true;
       resultClose.setAttribute("aria-hidden", "true");

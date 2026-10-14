@@ -308,6 +308,8 @@ ar:['معدات','زينة','مخطط','المملوك','الموضوع','الم
 };
 for(const locale of supportedLocales)Object.assign(dict[locale],Object.fromEntries(managementV11Keys.map((key,index)=>[key,managementV11Copy[locale][index]])));
 keys.push(...managementV11Keys);
+const activationCopy={en:'Ready-to-run: register + employee','zh-Hant':'啟用總成本：收銀台＋員工','zh-Hans':'启用总成本：收银台＋员工',ja:'稼働費用：レジ＋スタッフ',ko:'가동 비용: 계산대 + 직원',es:'Puesta en marcha: caja + empleado','pt-BR':'Custo para operar: caixa + funcionário',fr:'Mise en service : caisse + employé',de:'Betriebsbereit: Kasse + Mitarbeiter',it:'Costo operativo: cassa + dipendente',ru:'Запуск: касса + сотрудник',hi:'शुरू करने की लागत: काउंटर + कर्मचारी',ar:'تكلفة التشغيل: الصندوق + الموظف'};
+for(const locale of supportedLocales)dict[locale].counterActivationCost=activationCopy[locale];keys.push('counterActivationCost');
 const aliases={'zh-tw':'zh-Hant','zh-hant':'zh-Hant','zh-cn':'zh-Hans','zh-hans':'zh-Hans','pt-br':'pt-BR'};
 export function resolveLocale(){const q=new URL(location.href).searchParams.get('lang');const ref=(()=>{try{return new URL(document.referrer).pathname.split('/')[1]}catch{return''}})();const here=location.pathname.split('/')[1];const raw=q||ref||here||document.documentElement.lang||'en';const locale=aliases[raw.toLowerCase()]||raw;return supportedLocales.includes(locale)?locale:'en'}
 export function t(key,locale=resolveLocale()){return dict[locale]?.[key]??dict.en[key]??key}

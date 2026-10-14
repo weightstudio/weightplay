@@ -5,7 +5,8 @@ export const STAGES=Object.freeze([{hp:20,reward:3},{hp:30,reward:5},{hp:40,rewa
 export const ANCHOR=Object.freeze({x:170,y:165});
 export const BOSS=Object.freeze({x:1345,y:230});
 export const MAX_PULL=88,GRAVITY=370,SPEED=13.5,RADIUS=9,STEP=1/180;
-export const ammoLimit=n=>60+Math.min(60,5*Math.floor(Math.log2(Math.max(0,Number(n)||0)+1)));
+export const AMMO_POLICY='collection-exact-1';
+export const ammoLimit=n=>Math.min(Number.MAX_SAFE_INTEGER,Math.max(0,Math.floor(Number(n)||0)));
 export function formation(stage){return(stage===0?[]:stage===1?[[640,115],[640,205],[720,155],[720,290]]:[[605,115],[605,235],[690,170],[690,320],[755,115]]).map(([x,y],i)=>({id:`${stage}:${i}`,x:x+500,y,r:22,alive:true}));}
 export function pullPoint(p){let x=Math.min(0,p.x-ANCHOR.x),y=p.y-ANCHOR.y,len=Math.hypot(x,y);if(len>MAX_PULL){x*=MAX_PULL/len;y*=MAX_PULL/len;}return{x:ANCHOR.x+x,y:ANCHOR.y+y};}
 export function makeShot(p,power,id){return{id,power,x:p.x,y:p.y,vx:(ANCHOR.x-p.x)*SPEED,vy:(ANCHOR.y-p.y)*SPEED,age:0,bounces:0,done:false,trail:[]};}

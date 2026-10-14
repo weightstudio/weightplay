@@ -402,14 +402,14 @@ function createDemonEventPreview() {
   const dialog = document.createElement("dialog");
   dialog.className = "demon-event-dialog";
   dialog.setAttribute("aria-labelledby", "demonEventDialogTitle");
-  dialog.innerHTML = `<form method="dialog"><button class="demon-event-close" type="submit" aria-label="${strings.close}">×</button></form><h2 id="demonEventDialogTitle">${strings.modal}</h2><h3>${strings.title}</h3><p>${strings.note}</p><p>${daily[1]}</p><p>${strings.reward}</p><button class="demon-event-dialog-done" type="button">${strings.close}</button>`;
+  dialog.innerHTML = `<form method="dialog"><button class="demon-event-close" type="submit" aria-label="${strings.close}">×</button></form><header class="demon-event-dialog-heading"><p class="demon-event-dialog-eyebrow">${strings.open}</p><h2 id="demonEventDialogTitle">${strings.title}</h2></header><div class="demon-event-dialog-body"><p>${strings.note}</p><p class="demon-event-dialog-schedule">${daily[1]}</p><p class="demon-event-dialog-reward">${strings.reward}</p></div><div class="demon-event-dialog-actions"></div>`;
   document.body.append(dialog);
   const openButton = section.querySelector(".demon-event-details");
-  const doneButton = dialog.querySelector(".demon-event-dialog-done");
+  const dialogActions = dialog.querySelector(".demon-event-dialog-actions");
   if (!isKidsLobby) {
     const launch = document.createElement("button");
     launch.type = "button";
-    launch.className = "demon-event-dialog-done";
+    launch.className = "demon-event-dialog-done demon-event-dialog-play";
     launch.textContent = daily[0];
     const startDailyBattle = () => {
       let blocks = "";
@@ -419,7 +419,7 @@ function createDemonEventPreview() {
     };
     launch.addEventListener("click", startDailyBattle);
     section.querySelector(".demon-event-play").addEventListener("click", startDailyBattle);
-    doneButton.before(launch);
+    dialogActions.append(launch);
   }
   let returnFocus = null;
   function restoreFocus() {
@@ -454,7 +454,7 @@ function createDemonEventPreview() {
       first.focus({ preventScroll: true });
     }
   });
-  doneButton.addEventListener("click", () => dialog.close());
+  
   dialog.addEventListener("close", restoreFocus);
   dialog.addEventListener("cancel", () => requestAnimationFrame(restoreFocus));
   const countNode = section.querySelector("[data-owned-blocks]");
