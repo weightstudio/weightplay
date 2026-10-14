@@ -390,6 +390,20 @@ function createDemonEventPreview() {
   document.body.append(dialog);
   const openButton = section.querySelector(".demon-event-details");
   const doneButton = dialog.querySelector(".demon-event-dialog-done");
+  const localHost = window.location.protocol === "http:" && ["localhost", "127.0.0.1", "[::1]"].includes(window.location.hostname);
+  if (ownerPreviewMode && !isKidsLobby && localHost) {
+    const launch = document.createElement("button");
+    launch.type = "button";
+    launch.className = "demon-event-dialog-done";
+    launch.textContent = ({ en: "Open local battle candidate", "zh-Hant": "開啟本機戰鬥候選", "zh-Hans": "打开本机战斗候选", ja: "ローカル戦闘候補を開く", ko: "로컬 전투 후보 열기", es: "Abrir candidato local", "pt-BR": "Abrir candidato local", fr: "Ouvrir le candidat local", de: "Lokalen Kandidaten öffnen", it: "Apri candidato locale", ru: "Открыть локальный бой", hi: "स्थानीय युद्ध उम्मीदवार खोलें", ar: "افتح نسخة المعركة المحلية" })[locale] || "Open local battle candidate";
+    launch.addEventListener("click", () => {
+      let blocks = "";
+      try { const count = window.WeightPlayCastle?.ownedBlocks?.(); if (Number.isFinite(Number(count)) && Number(count) >= 0) blocks = `&blocks=${encodeURIComponent(Math.floor(Number(count)))}`; } catch {}
+      const params = `?locale=${encodeURIComponent(locale)}${blocks}`;
+      window.location.href = `/assets-preview/demon-assault-battle-candidate.html${params}`;
+    });
+    doneButton.before(launch);
+  }
   let returnFocus = null;
   function restoreFocus() {
     const target = returnFocus;
