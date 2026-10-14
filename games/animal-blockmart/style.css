@@ -527,7 +527,9 @@ body.wp-frame-battle-active #gameGuide{display:none}
 #app #panel[data-active-tab="achievements"] .achievement-copy p{font-size:calc(12px * var(--wp-battle-canvas-inverse-scale,1))}
 #app #panel[data-active-tab="achievements"] .achievement-status{font-size:calc(12px * var(--wp-battle-canvas-inverse-scale,1))}
 #app #panel[data-active-tab="achievements"] .achievement-progress{height:calc(6px * var(--wp-battle-canvas-inverse-scale,1))}
-.blockmart-sale-transfer{position:fixed;width:12px;height:12px;border:2px solid #885c19;border-radius:3px;background:#ffd361;box-shadow:0 2px 4px #173f4540;z-index:90;pointer-events:none}
+.blockmart-sale-transfer{position:fixed;display:grid;place-items:center;width:18px;height:18px;border:1px solid #885c19;border-radius:3px;background:#ffd361;color:#315443;font:800 12px system-ui;box-shadow:0 2px 4px #173f4540;z-index:90;pointer-events:none}
+.package-art-retry{bottom:calc(114px * var(--wp-battle-canvas-inverse-scale,1))}
+#app #toast{max-width:calc(100% - 24px * var(--wp-battle-canvas-inverse-scale,1));white-space:normal;overflow-wrap:anywhere;text-align:center;box-sizing:border-box}
 @layer wp-frame-contract {
   html body #gameGuide .game-info-hero,
   html body #gameGuide .game-info-hero *{color:#213f4b!important}

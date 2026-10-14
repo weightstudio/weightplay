@@ -183,7 +183,7 @@ export function installBlockmartV9(ctx) {
     const destination={x:rect.left+rect.width/2,y:rect.top+rect.height/2};
     const origin={x:clamp(world.left+(projected.x+1)*world.width/2,world.left+10,world.right-10),y:clamp(world.top+(1-projected.y)*world.height/2,world.top+10,world.bottom-10)};
     if(reduceMotion()){animateFeedback(target,[{filter:'brightness(1.35)'},{filter:'brightness(1)'}]);return;}
-    const coin=document.createElement('i');coin.className='blockmart-sale-transfer';coin.setAttribute('aria-hidden','true');coin.style.left=`${origin.x}px`;coin.style.top=`${origin.y}px`;document.body.append(coin);feedbackNodes.add(coin);
+    const coin=document.createElement('i');coin.className='blockmart-sale-transfer';coin.textContent='$';coin.setAttribute('aria-hidden','true');coin.style.left=`${origin.x}px`;coin.style.top=`${origin.y}px`;document.body.append(coin);feedbackNodes.add(coin);
     const animation=coin.animate([{transform:'translate(-50%,-50%)',opacity:1},{transform:`translate(calc(-50% + ${destination.x-origin.x}px),calc(-50% + ${destination.y-origin.y}px))`,opacity:1}],{duration:420,easing:'cubic-bezier(.2,.7,.3,1)'});feedbackAnimations.add(animation);
     animation.finished.then(()=>{if(ctx.gameActive&&!document.hidden)animateFeedback(target,[{filter:'brightness(1.35)'},{filter:'brightness(1)'}]);}).catch(()=>{}).finally(()=>{coin.remove();feedbackNodes.delete(coin);feedbackAnimations.delete(animation);});
   }
@@ -196,7 +196,8 @@ export function installBlockmartV9(ctx) {
     observer.observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden']});
     document.addEventListener('visibilitychange',()=>{if(document.hidden)settleFeedback();});
     $('returnMain')?.addEventListener('click',settleFeedback);
-    window.addEventListener('pagehide',()=>{settleFeedback();observer.disconnect();},{once:true});
+    window.addEventListener('pagehide',event=>{settleFeedback();observer.disconnect();if(!event.persisted){packageAtlas?.dispose();for(const material of packageLabelMaterials.values())material.dispose();packageLabelMaterials.clear();}});
+    window.addEventListener('pageshow',event=>{if(event.persisted)observer.observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden']});});
   }
   const visibleAchievementIds=new Set();
   const documentId=globalThis.crypto?.randomUUID?.() || `doc-${Date.now()}-${Math.random()}`;
@@ -213,13 +214,13 @@ export function installBlockmartV9(ctx) {
     if(packageAtlasLoading)return packageAtlas;
     packageAtlasLoading=true;
     const texture=new THREE.TextureLoader().load(new URL('./assets/package-labels-v13.webp',import.meta.url).href,loaded=>{
-      if(disposed){loaded.dispose();return;}
+      if(disposed){loaded.dispose();packageAtlas=null;packageAtlasLoading=false;return;}
       packageAtlasLoading=false;packageAtlas=loaded;
       ctx.scene.userData.packageAtlas={status:'ready',width:loaded.image.width,height:loaded.image.height,regions:10};
       for(const material of packageLabelMaterials.values()){material.map=loaded;material.needsUpdate=true;}
       $('packageArtRetry')?.remove();
     },undefined,()=>{
-      packageAtlasLoading=false;packageAtlas=null;
+      texture.dispose();packageAtlasLoading=false;packageAtlas=null;
       ctx.scene.userData.packageAtlas={status:'failed',regions:10};
       if(disposed)return;
       for(const material of packageLabelMaterials.values()){material.map=null;material.needsUpdate=true;}
@@ -236,7 +237,7 @@ export function installBlockmartV9(ctx) {
     // Print artwork on the physical front/back faces. UV cropping retains
     // graphic proportions on wide tubs; the package remains solid world geometry.
     const tileAspect=.6,crop=Math.min(1,tileAspect/(width/height)),center=.54;
-    const low=(1-row)*.5+(.5-center-crop/2)*.5+.25,high=low+crop*.5;
+    const low=(1-row)*.5+Math.max(0,Math.min(1-crop,center-crop/2))*.5,high=low+crop*.5;
     for(const side of [-1,1]){const geometry=new THREE.PlaneGeometry(width*1.6,height*1.6),uv=geometry.attributes.uv,u0=col*.2+.003,u1=(col+1)*.2-.003;
       uv.setXY(0,u0,high-.003);uv.setXY(1,u1,high-.003);uv.setXY(2,u0,low+.003);uv.setXY(3,u1,low+.003);uv.needsUpdate=true;
       const label=new THREE.Mesh(geometry,material);label.name=`printed-${sku}-label`;label.position.set(0,y*1.6,side*z*1.6);label.rotation.y=side<0?Math.PI:0;label.userData.packageLabel=true;unit.add(label);
@@ -499,7 +500,7 @@ export function installBlockmartV9(ctx) {
   function batchBoxes(root, recursive=true) {
     if(root.userData.boxBatch)return;
     const boxes=[];
-    const inspect=object=>{if(object.isMesh&&!object.isInstancedMesh&&object.geometry?.type==='BoxGeometry'&&!Array.isArray(object.material)&&!object.material.transparent)boxes.push(object);};
+    const inspect=object=>{if(object.isMesh&&!object.isInstancedMesh&&object.geometry?.type==='BoxGeometry'&&!Array.isArray(object.material)&&!object.material.transparent&&!object.userData.separatePackageMaterial)boxes.push(object);};
     if(recursive)root.traverse(inspect);else root.children.forEach(inspect);
     if(!boxes.length)return;
     const material=new THREE.MeshStandardMaterial({color:0xffffff,roughness:root.userData.packageFinish?.roughness??.83,metalness:root.userData.packageFinish?.metalness??0});
@@ -583,12 +584,12 @@ export function installBlockmartV9(ctx) {
         block('cooler-side-trim', 0x6db5ae, x*1.09, 1.42, 0, .035, .12, 1.63);
         for (let row=0;row<3;row++) block('cooler-side-vent', 0x1c424d, x*1.09, .38+row*.08, 0, .035, .024, .52);
       }
-      block('cooler-top', 0x315f6d, 0, 1.78, 0, 1.88, .17, 1.88);
-      block('cooler-header', 0xf3dd9a, 0, 1.72, .96, 1.66, .16, .07);
-      block('cooler-header-mark', 0x21868b, 0, 1.72, .97, .47, .075, .025);
+      block('cooler-top', 0x315f6d, 0, 1.83, 0, 1.84, .11, 1.82);
+      block('cooler-header', 0xf3dd9a, 0, 1.76, .96, 1.66, .14, .06);
+      block('cooler-header-mark', 0x21868b, 0, 1.76, .97, .47, .065, .025);
       for (const x of [-.43,.43]) {
-        const glass=block('cooler-glass', 0xc8f6f0, x, .98, .92, .76, 1.25, .025);
-        glass.material=glass.material.clone();glass.material.transparent=true;glass.material.opacity=.18;glass.material.depthWrite=false;glass.userData.ownedFixtureMaterial=true;
+        const glass=block('cooler-glass', 0xedfaf8, x, .98, .92, .76, 1.25, .025);
+        glass.material=glass.material.clone();glass.material.transparent=true;glass.material.opacity=.075;glass.material.roughness=.18;glass.material.depthWrite=false;glass.userData.ownedFixtureMaterial=true;
         for (const edge of [-1,1]) {
           block('cooler-door-edge', 0x80b5b1, x+edge*.39, .98, .95, .055, 1.33, .06);
           block('cooler-door-rail', 0x80b5b1, x, .98+edge*.65, .95, .78, .055, .06);
@@ -607,11 +608,32 @@ export function installBlockmartV9(ctx) {
       stockDisplaySlots.set(normalized.id, { kind: 'cooler', slots });
     } else if (normalized.kind === 'decor') {
       if(normalized.decorType==='duck'){
-        block('duck-pedestal',0x265e69,0,.19,0,.8,.3,.8);block('duck-body',0xf4c23d,0,.68,0,.68,.55,.62);block('duck-head',0xffd757,0,1.12,.12,.51,.49,.47);block('duck-beak',0xed8431,0,1.06,.43,.4,.12,.22);for(const x of [-.16,.16])block('duck-eye',0x293e40,x,1.2,.36,.07,.085,.035);block('duck-bowtie',0x207f89,0,.89,.35,.35,.12,.06);
+        block('duck-plinth-base',0x204f5c,0,.085,0,.86,.13,.82);block('duck-plinth-step',0x327d82,0,.19,0,.76,.12,.72);block('duck-plinth-gold-rim',0xeab753,0,.269,0,.79,.033,.75);block('duck-plaque',0x133d46,0,.173,.424,.45,.09,.025);
+        for(const x of [-.18,.18]){block('duck-leg',0xdca133,x,.435,.02,.115,.2,.115);block('duck-webbed-foot',0xf19939,x,.335,.15,.23,.07,.34);}
+        block('duck-body',0xf2bf3d,0,.74,0,.62,.55,.55);block('duck-neck',0xf3c54a,0,1.015,.09,.25,.16,.27);block('duck-head',0xffd75d,0,1.22,.12,.48,.44,.43);block('duck-upper-beak',0xec8d30,0,1.151,.399,.36,.085,.19);block('duck-lower-beak',0xc87827,0,1.094,.405,.32,.034,.185);
+        for(const x of [-.145,.145]){block('duck-eye',0x24383b,x,1.267,.344,.068,.075,.027);const brow=block('duck-serious-brow',0x4d4731,x,1.322,.346,.1,.025,.025);brow.rotation.z=x<0?-.18:.18;}
+        for(const side of [-1,1]){block('duck-wing',0xeeb237,side*.327,.765,-.015,.15,.34,.39);block('duck-wing-tip',0xd89b2b,side*.35,.66,-.055,.1,.15,.3);}
+        block('duck-tail',0xe9ad32,0,.72,-.363,.28,.15,.21);block('duck-tail-step',0xf5c245,0,.79,-.385,.19,.09,.14);
+        block('duck-jacket',0x176e77,0,.717,.293,.48,.34,.038);block('duck-collar',0xffebbc,0,.929,.293,.37,.07,.034);
+        for(const side of [-1,1]){const lapel=block('duck-lapel',0x2f9292,side*.105,.84,.319,.11,.18,.03);lapel.rotation.z=side*.23;}
+        block('duck-tie-knot',0xe58c38,0,.9,.347,.09,.075,.033);block('duck-ceo-tie',0xf1b044,0,.78,.343,.076,.2,.035);block('duck-badge',0xffe4a6,.16,.786,.323,.105,.067,.016);block('duck-badge-line',0x1b666c,.16,.786,.334,.071,.015,.014);
       }else if(normalized.decorType==='bread'){
-        block('bread-throne-base',0x684530,0,.23,0,.78,.38,.74);block('bread-throne-seat',0xd2a466,0,.62,0,.74,.25,.63);block('bread-throne-back',0xe7bf80,0,1.15,-.24,.76,1.01,.25);for(const x of [-.28,0,.28])block('bread-score',0xa77343,x,1.5,-.07,.095,.21,.035);for(const x of [-.35,.35])block('bread-throne-arm',0xb7773e,x,.84,.13,.13,.33,.61);
+        for(const x of [-.3,.3])for(const z of [-.26,.26])block('bread-throne-leg',0x835633,x,.22,z,.13,.4,.13);
+        block('bread-throne-seat-crust',0xb57b43,0,.568,0,.75,.22,.67);block('bread-throne-seat-crumb',0xf2d39c,0,.702,.02,.62,.057,.55);block('bread-throne-seat-slice',0xdeae6f,0,.64,.343,.65,.13,.032);
+        block('bread-throne-loaf-back',0xd2a063,0,1.16,-.265,.73,.71,.24);block('bread-throne-toast-face',0xffdfa0,0,1.16,-.127,.56,.56,.034);
+        for(const [i,width] of [.71,.58,.38].entries()){block('bread-throne-arched-crust',0xe4b575,0,1.5+i*.108,-.265,width,.13,.24);block('bread-throne-arched-crumb',0xf3d39a,0,1.49+i*.103,-.13,Math.max(.18,width-.16),.075,.026);}
+        for(const x of [-.19,0,.19])block('bread-throne-baked-score',0x9e6939,x,1.575,-.125,.03,.13,.025);
+        for(const side of [-1,1]){block('bread-throne-loaf-arm',0xbc8148,side*.366,.92,.09,.15,.31,.59);block('bread-throne-arm-cap',0xdfb176,side*.366,1.105,.09,.12,.075,.57);block('bread-throne-arm-crumb',0xf0cd94,side*.281,.92,.09,.023,.18,.46);}
+        for(const [x,y] of [[-.16,1.05],[.15,1.22],[.08,1.02]])block('bread-throne-crumb-detail',0xd6a96c,x,y,-.107,.027,.032,.017);
       }else if(normalized.decorType==='crown'){
-        block('receipt-base',0x1f777d,0,.22,0,.77,.36,.72);block('receipt-scroll',0xfff2cd,0,.96,0,.54,1.13,.19);for(let i=0;i<5;i++)block('receipt-line',0x396570,0,.62+i*.14,.11,.33,.035,.025);block('receipt-crown',0xf0bb35,0,1.61,0,.69,.19,.29);for(const x of [-.25,0,.25])block('crown-point',0xffd965,x,1.8,0,.13,.23,.26);
+        block('receipt-base',0x185c67,0,.12,0,.81,.19,.75);block('receipt-plinth-step',0x278d92,0,.285,0,.69,.14,.64);block('receipt-gold-plinth',0xeab845,0,.391,0,.72,.036,.66);
+        block('receipt-paper',0xfff0ce,0,1.032,.025,.49,1.03,.085);for(const x of [-.252,.252])block('receipt-folded-edge',0xe4d3a7,x,1.02,.055,.03,.98,.067);
+        for(let i=0;i<7;i++)block('receipt-tear-tooth',0xffe9ba,-.205+i*.069,.491+(i%2)*.018,.038,.056,.085,.09);
+        block('receipt-animal-mark',0xf0bf63,0,1.38,.079,.17,.125,.018);for(const x of [-.058,.058])block('receipt-mark-ear',0xf0bf63,x,1.46,.079,.046,.038,.018);for(const x of [-.042,.042])block('receipt-mark-eye',0x295257,x,1.397,.096,.02,.026,.014);block('receipt-mark-muzzle',0xffe8bc,0,1.356,.096,.074,.037,.018);
+        for(let i=0;i<5;i++){block('receipt-item-line',0x365e65,-.058,.74+i*.112,.079,.21+(i%2)*.052,.019,.013);block('receipt-price-line',0x365e65,.16,.74+i*.112,.079,.061,.019,.013);}
+        block('receipt-divider',0xb3904d,0,.647,.08,.37,.015,.014);for(let i=0;i<8;i++)block('receipt-barcode',0x36717a,-.155+i*.043,.568,.082,.013+(i%2)*.006,.074,.012);
+        for(const z of [-.145,.145])block('crown-front-band',0xe7b63f,0,1.636,z,.66,.098,.045);for(const x of [-.31,.31])block('crown-side-band',0xc9922c,x,1.636,0,.045,.098,.28);
+        for(const [i,x] of [-.25,-.125,0,.125,.25].entries()){const height=i===2?.235:i%2?.125:.185;for(let tier=0;tier<3;tier++)block('crown-stepped-point',tier%2?0xf9d76c:0xe9bb48,x,1.715+tier*height/3,0,.106-tier*.027,height/3+.009,.23-tier*.039);block('crown-jewel',i%2?0xb56559:0x247b82,x,1.717+height,0,.032,.037,.044);}
       }else{
       block('decor-pot', 0xb47e58, 0, .18, 0, .7, .34, .7);
       block('decor-stem', 0x588e57, 0, .55, 0, .15, .54, .15);
@@ -779,39 +801,35 @@ export function installBlockmartV9(ctx) {
 
   function addDisplayItem(block, sku, display, x, y, z, color) {
     const size = sku === 'snacks' || sku === 'chips' ? .25 : .23;
-    const itemBlock = (name, itemColor, ix, iy, iz, sx, sy, sz) =>
-      block(name, itemColor, ix, iy, iz, sx * 1.6, sy * 1.6, sz * 1.6);
+    const itemBlock = (name, itemColor, ix, iy, iz, sx, sy, sz) => {
+      const mesh=block(name,itemColor,ix*1.6,iy*1.6,iz*1.6,sx*1.6,sy*1.6,sz*1.6);
+      if(/lid|cap|seal|rim|lip|ring/.test(name)){
+        mesh.material=mesh.material.clone();mesh.material.roughness=sku==='fizz'?.2:.4;
+        mesh.material.metalness=sku==='fizz'?.7:sku==='yogurt'?.45:['chips','snacks'].includes(sku)?.2:0;
+        mesh.userData.separatePackageMaterial=true;mesh.userData.ownedFixtureMaterial=true;
+      }
+      return mesh;
+    };
     if(sku==='milk'){
-      itemBlock('milk-carton',0xfff2dc,x,y,z,.21,.31,.18);itemBlock('milk-blue-panel',0x398bd1,x,y,z+.099,.18,.22,.018);itemBlock('milk-cap',0x398bd1,x+.045,y+.185,z,.065,.055,.065);itemBlock('milk-emblem',0xfff2dc,x,y+.02,z+.115,.1,.08,.02);
+      itemBlock('milk-carton',0xfff2dc,x,y,z,.2,.25,.17);for(const [level,depth] of [.17,.12,.065].entries())itemBlock('milk-gable',0xf6efd7,x,y+.145+level*.026,z,.2,.03,depth);itemBlock('milk-seal',0x598aca,x,y+.229,z,.19,.025,.025);itemBlock('milk-cap',0x397db9,x+.055,y+.185,z+.042,.055,.035,.055);itemBlock('milk-base-band',0x398bd1,x,y-.1,z,.205,.04,.176);
     }else if(sku==='bread'){
-      itemBlock('bread-loaf',0xe2ae64,x,y,z,.25,.22,.18);itemBlock('bread-sleeve',0xffedcd,x,y-.035,z+.095,.25,.11,.025);for(const score of [-.07,0,.07])itemBlock('bread-score',0xa97437,x+score,y+.12,z,.03,.025,.11);
+      itemBlock('bread-loaf',0xdaaa63,x,y,z,.25,.16,.18);for(const [level,width] of [.22,.17,.105].entries())itemBlock('bread-arched-crust',0xe6b474,x,y+.1+level*.029,z,width,.036,.18);itemBlock('bread-paper-sleeve',0xffedcd,x,y-.047,z,.263,.08,.207);itemBlock('bread-sleeve-band',0x287e77,x,y-.016,z,.266,.014,.21);for(const score of [-.075,0,.075])itemBlock('bread-baked-score',0x9a6537,x+score,y+.187,z,.018,.012,.135);
     }else if(sku==='yogurt'){
-      itemBlock('yogurt-cup',0xffefd9,x,y,z,.23,.21,.2);itemBlock('yogurt-lid',0xf079a4,x,y+.13,z,.26,.045,.23);itemBlock('yogurt-label',0xf079a4,x,y,z+.115,.15,.12,.02);for(const px of [-.035,.035])itemBlock('yogurt-berry',0xa93866,x+px,y+.16,z,.04,.035,.04);
+      for(const [level,width] of [.185,.215,.235].entries())itemBlock('yogurt-tapered-cup',0xffefd9,x,y-.07+level*.067,z,width,.07,.17+level*.018);itemBlock('yogurt-foil-lid',0xf2a5c0,x,y+.119,z,.26,.027,.23);itemBlock('yogurt-foil-tab',0xe6e0d3,x+.112,y+.136,z+.02,.06,.012,.055);itemBlock('yogurt-base-band',0xc45a86,x,y-.105,z,.19,.016,.18);
     }else if(sku==='icecream'){
-      itemBlock('icecream-tub',0x66b597,x,y,z,.26,.19,.2);itemBlock('icecream-lid',0xffebc8,x,y+.12,z,.28,.04,.22);itemBlock('icecream-label',0xf2e9c6,x,y,z+.114,.18,.075,.02);for(const px of [-.045,.045])itemBlock('icecream-chocolate',0x684132,x+px,y+.155,z,.055,.025,.05);
+      itemBlock('icecream-tub',0x78bca4,x,y,z,.28,.17,.23);itemBlock('icecream-base',0x3b8b79,x,y-.098,z,.25,.027,.215);itemBlock('icecream-cream-lip',0xffe6b8,x,y+.096,z,.295,.027,.243);itemBlock('icecream-overhang-lid',0xd7ead5,x,y+.119,z,.31,.031,.256);itemBlock('icecream-lid-center',0x6aab92,x,y+.139,z,.278,.012,.227);for(const px of [-.075,0,.075])itemBlock('icecream-chocolate-mark',0x644536,x+px,y+.149,z,.045,.008,.06);
     }else if(sku==='noodles'){
-      itemBlock('noodle-box',0xf49b4f,x,y,z,.23,.25,.2);itemBlock('noodle-label',0xfff0d1,x,y,z+.113,.17,.13,.02);for(const px of [-.035,.035])itemBlock('noodle-chopstick',0xc29459,x+px,y+.2,z,.02,.22,.02);
+      itemBlock('noodle-cup',0xf49b4f,x,y,z,.22,.22,.2);itemBlock('noodle-base',0xc36b32,x,y-.125,z,.185,.025,.18);itemBlock('noodle-cup-lip',0xffedc4,x,y+.125,z,.252,.032,.229);itemBlock('noodle-open-broth',0x9b682c,x,y+.146,z,.206,.012,.177);for(const [i,px] of [-.065,-.02,.025,.07].entries()){const strand=itemBlock('noodle-wavy-strand',0xf6d87c,x+px,y+.157,z,.027,.016,.148);strand.rotation.y=i%2?.16:-.16;}for(const px of [-.033,.026]){const stick=itemBlock('noodle-chopstick',0xa57943,x+px,y+.21,z+.02,.013,.21,.013);stick.rotation.z=-.23;}for(const [px,pz] of [[-.07,.05],[.055,-.045]])itemBlock('noodle-garnish',0x508149,x+px,y+.17,z+pz,.026,.016,.027);
     }else if (display === 'water') {
-      itemBlock('water-crate', 0x3f8ea7, x, y, z, size * 1.15, .2, .17);
-      itemBlock('water-bottle', 0x66cce0, x, y + .18, z, .11, .23, .1);
-      itemBlock('water-cap', 0xf7f7e8, x, y + .32, z, .08, .05, .08);
+      itemBlock('water-bottle-body',0x60bfd4,x,y,z,.16,.24,.15);itemBlock('water-base-rib',0x3d9fb7,x,y-.125,z,.164,.025,.154);itemBlock('water-shoulder',0x80d3df,x,y+.146,z,.13,.052,.125);itemBlock('water-neck',0xb2e2e6,x,y+.193,z,.075,.048,.075);itemBlock('water-cap',0xffefd8,x,y+.229,z,.086,.037,.086);itemBlock('water-wrap-band',0xfff4df,x,y-.013,z,.165,.12,.157);
     } else if (display === 'cookies') {
-      itemBlock('cookie-packet', 0xd18838, x, y, z, .22, .29, .16);
-      itemBlock('cookie-seal', 0xf0c063, x, y + .17, z + .09, .18, .09, .025);
-      itemBlock('cookie-mark', 0x764122, x, y + .16, z + .11, .07, .07, .025);
+      itemBlock('cookie-packet',0xa8662f,x,y,z,.22,.27,.17);itemBlock('cookie-top-seal',0xe9bf6a,x,y+.155,z,.25,.035,.155);itemBlock('cookie-base-fold',0x76502b,x,y-.154,z,.19,.032,.148);for(const side of [-1,1])itemBlock('cookie-side-fold',0xc59148,x+side*.108,y+.025,z,.02,.22,.17);
     } else if (display === 'chips') {
-      itemBlock('chips-bag', color, x, y, z, .2, .31, .16);
-      itemBlock('chips-top', 0xffe575, x, y + .17, z + .09, .19, .08, .025);
-      itemBlock('chips-logo', 0xfff3cb, x, y - .02, z + .095, .1, .07, .025);
+      itemBlock('chips-puffed-body',color,x,y,z,.24,.17,.19);itemBlock('chips-bag-top',0xf1c645,x,y+.111,z,.211,.07,.165);itemBlock('chips-bag-bottom',0xd4a329,x,y-.11,z,.202,.07,.156);itemBlock('chips-top-seal',0xffdf73,x,y+.157,z,.245,.025,.14);itemBlock('chips-bottom-seal',0xae7b2d,x,y-.155,z,.214,.022,.142);
     } else if (display === 'juice') {
-      itemBlock('juice-carton', color, x, y, z, .19, .3, .17);
-      itemBlock('juice-top', 0xffd190, x, y + .17, z, .2, .06, .18);
-      itemBlock('juice-straw', 0xf4f0d6, x + .055, y + .24, z + .02, .035, .15, .035);
-      itemBlock('juice-label', 0xffedc7, x, y, z + .095, .12, .1, .025);
+      itemBlock('juice-carton',color,x,y,z,.2,.25,.17);for(const [level,depth] of [.17,.12,.065].entries())itemBlock('juice-gable',0xffd893,x,y+.145+level*.026,z,.2,.03,depth);itemBlock('juice-top-seal',0xe69a46,x,y+.229,z,.19,.025,.025);const straw=itemBlock('juice-straw',0xffefd4,x+.055,y+.269,z+.02,.025,.13,.025);straw.rotation.z=-.15;itemBlock('juice-straw-band',0x368755,x+.045,y+.3,z+.02,.027,.023,.027);
     } else {
-      itemBlock('sparkling-can', color, x, y, z, .17, .31, .17);
-      itemBlock('sparkling-band', 0xe5eff0, x, y - .01, z + .09, .15, .08, .025);
-      itemBlock('sparkling-top', 0xbac9cd, x, y + .17, z, .17, .035, .17);
+      itemBlock('sparkling-can',color,x,y,z,.19,.29,.19);for(const side of [-1,1]){itemBlock('sparkling-shoulder',0xa881ab,x,y+side*.158,z,.174,.035,.174);itemBlock('sparkling-metal-ring',0xd8dfda,x,y+side*.184,z,.197,.022,.197);}itemBlock('sparkling-gold-band',0xebc369,x,y-.105,z,.192,.026,.192);itemBlock('sparkling-metal-lid',0xc0cac5,x,y+.197,z,.169,.009,.169);itemBlock('sparkling-pull-tab',0xf1f2e4,x,y+.207,z-.026,.061,.009,.027);itemBlock('sparkling-opening',0x3c4b52,x,y+.211,z+.033,.045,.006,.046);
     }
   }
 
@@ -1998,6 +2016,7 @@ export function installBlockmartV9(ctx) {
     });
     $('placementFootprint').addEventListener('change', onFootprintChange);
     document.addEventListener('keydown', event => {
+      if(!ctx.gameActive||!$('leaveConfirm').hidden||document.querySelector('#app .wp-frame-popover:not([hidden]),#app .wp-shell-settings-popover:not([hidden])'))return;
       if(event.target.closest('input,select,textarea'))return;
       if (event.key === 'Escape') cancelPlacement();
       if ((event.key.toLowerCase() === 'r') && selectedFixtureId) transact(()=>rotateSelectedFixture(selectedFixtureId));
@@ -2157,14 +2176,14 @@ export function installBlockmartV9(ctx) {
     batchBoxes(group);
     return group;
   }
-  function drawEmployees(delta=.1) {
+  function drawEmployees(delta=.1,feedbackDelta=delta) {
     const oldRux=ctx.scene.getObjectByName('rux-shopkeeper');if(oldRux){ctx.scene.remove(oldRux);oldRux.traverse(o=>o.geometry?.dispose());}
     const ids=new Set(employees().map(e=>e.id));
-    for(const [id,mesh] of employeeMeshes)if(!ids.has(id)){ctx.scene.remove(mesh);mesh.traverse(o=>{o.geometry?.dispose();if(o.isInstancedMesh)o.dispose();if(o.userData.ownedFixtureMaterial)o.material?.dispose();});employeeMeshes.delete(id);}
+    for(const [id,mesh] of employeeMeshes)if(!ids.has(id)){finishWorldFeedback(mesh);fadeWorld(mesh,1,0,true);employeeMeshes.delete(id);}
     for(const employee of employees()){
       let mesh=employeeMeshes.get(employee.id);
-      if(mesh&&mesh.userData.role!==employee.role){ctx.scene.remove(mesh);mesh.traverse(o=>{o.geometry?.dispose();if(o.isInstancedMesh)o.dispose();if(o.userData.ownedFixtureMaterial)o.material?.dispose();});employeeMeshes.delete(employee.id);mesh=null;}
-      if(!mesh){const primary=employee.id===employees()[0]?.id;mesh=makeStaffModel(primary,employee.role);mesh.scale.setScalar(primary?1.32:1.1);mesh.userData.employeeId=employee.id;mesh.userData.role=employee.role;employeeMeshes.set(employee.id,mesh);ctx.scene.add(mesh);}
+      if(mesh&&mesh.userData.role!==employee.role){finishWorldFeedback(mesh);fadeWorld(mesh,1,0,true);employeeMeshes.delete(employee.id);mesh=null;}
+      if(!mesh){const primary=employee.id===employees()[0]?.id;mesh=makeStaffModel(primary,employee.role);mesh.scale.setScalar(primary?1.32:1.1);mesh.userData.employeeId=employee.id;mesh.userData.role=employee.role;employeeMeshes.set(employee.id,mesh);ctx.scene.add(mesh);fadeWorld(mesh,.35,1);}
       let x,z,heading=0,phase='idle';
       if(employee.role==='checkout'){
         const counter=allCounters().find(f=>f.id===employee.registerId);mesh.visible=Boolean(counter);if(!counter)continue;
@@ -2172,7 +2191,7 @@ export function installBlockmartV9(ctx) {
       }else{mesh.visible=true;const job=employee.work || staffHome(employee);x=job.x;z=job.z;heading=job.heading||0;phase=job.phase||'idle';}
       const blend=mesh.userData.initialized?1-Math.exp(-18*delta):1;mesh.position.x+=(x-mesh.position.x)*blend;mesh.position.z+=(z-mesh.position.z)*blend;mesh.position.y=.12;mesh.rotation.y=smoothHeading(mesh.rotation.y,heading,delta,18);mesh.userData.initialized=true;mesh.userData.workPhase=phase;
       const moving=phase==='travel'||phase==='return',wave=Math.sin(ctx.elapsed*11),stocking=phase==='stock',carrying=phase==='travel'||stocking;
-      mesh.getObjectByName('staff-crate').visible=carrying;
+      const crate=mesh.getObjectByName('staff-crate');mesh.userData.crateBlend=(mesh.userData.crateBlend||0)+(Number(carrying)-(mesh.userData.crateBlend||0))*(1-Math.exp(-24*feedbackDelta));crate.visible=mesh.userData.crateBlend>.01;crate.scale.setScalar(reduceMotion()?1:.7+.3*mesh.userData.crateBlend);
       mesh.getObjectByName('staff-arm-left').rotation.x=carrying?-.7-(stocking ? .22*wave:0):moving ? .35*wave:phase==='scan'?-.25-.15*wave:0;
       mesh.getObjectByName('staff-arm-right').rotation.x=carrying?-.7+(stocking ? .22*wave:0):moving?-.35*wave:0;
       mesh.getObjectByName('staff-leg-left').rotation.x=moving ? .3*wave:0;mesh.getObjectByName('staff-leg-right').rotation.x=moving?-.3*wave:0;
@@ -2210,17 +2229,17 @@ export function installBlockmartV9(ctx) {
     ctx.recoveryTimer=Number.isFinite(saved.recoveryTimer)?saved.recoveryTimer:0;ctx.customerId=Math.max(0,saved.customerId||0);
     setCustomers((Array.isArray(saved.customers)?saved.customers:[]).map(data=>{const pose=data.pose || {};return {...data,group:modelGroup(pose.x??data.x,pose.z??data.z,pose),target:fixtures().find(f=>f.id===data.targetId),serviceCounter:fixtures().find(f=>f.id===data.serviceCounterId)};}));
   }
-  function drawCustomers(delta=.1){
+  function drawCustomers(delta=.1,feedbackDelta=delta){
     const live=new Set(getCustomers().map(customer=>customer.id));
     for(const [id,mesh] of customerMeshes)if(!live.has(id)){ctx.scene.remove(mesh);mesh.traverse(node=>{node.geometry?.dispose();if(node.isInstancedMesh)node.dispose();if(node.userData.ownedFixtureMaterial)node.material?.dispose();});customerMeshes.delete(id);}
     for(const customer of getCustomers()){
       let mesh=customerMeshes.get(customer.id);
       if(!mesh){mesh=ctx.makeAnimal(customer.kind||'rabbit',customer.color||0xf1d5c1);batchBoxes(mesh);mesh.position.set(customer.group.position.x,customer.group.position.y,customer.group.position.z);mesh.rotation.y=customer.group.rotation.y;customerMeshes.set(customer.id,mesh);ctx.scene.add(mesh);}
-      const group=customer.group,blend=1-Math.exp(-18*delta);
-      mesh.position.x+=(group.position.x-mesh.position.x)*blend;mesh.position.z+=(group.position.z-mesh.position.z)*blend;mesh.position.y=group.position.y;mesh.rotation.y=smoothHeading(mesh.rotation.y,group.rotation.y,delta,18);mesh.scale.setScalar(group.scale.value || 1.2);
+      const group=customer.group,blend=1-Math.exp(-18*delta);mesh.userData.enterAge=(mesh.userData.enterAge||0)+feedbackDelta;
+      mesh.position.x+=(group.position.x-mesh.position.x)*blend;mesh.position.z+=(group.position.z-mesh.position.z)*blend;mesh.position.y=group.position.y;mesh.rotation.y=smoothHeading(mesh.rotation.y,group.rotation.y,delta,18);mesh.scale.setScalar((group.scale.value || 1.2)*(reduceMotion()?1:.8+.2*Math.min(1,mesh.userData.enterAge/.16)));
       const stride=Math.sin(ctx.elapsed*11+customer.id),moving=Boolean(customer.segment||customer.pathAt<customer.path?.length);
       for(const [name,sign] of [['customer-leg-left',1],['customer-leg-right',-1],['customer-arm-left',-1],['customer-arm-right',1]]){const part=mesh.getObjectByName(name);if(part)part.rotation.x=moving?stride*.28*sign:0;}
-      const bag=mesh.getObjectByName('customer-purchase');if(bag)bag.visible=Boolean(customer.carried);
+      const bag=mesh.getObjectByName('customer-purchase');if(bag){mesh.userData.bagBlend=(mesh.userData.bagBlend||0)+(Number(Boolean(customer.carried))-(mesh.userData.bagBlend||0))*(1-Math.exp(-24*feedbackDelta));bag.visible=mesh.userData.bagBlend>.01;bag.scale.setScalar(reduceMotion()?1:.7+.3*mesh.userData.bagBlend);}
       for(const [name,sign] of [['customer-brow-left',1],['customer-brow-right',-1]]){const brow=mesh.getObjectByName(name);if(brow)brow.rotation.z=Math.min(.25,(customer.queueWait||0)/60)*sign;}
       updateBoxBatch(mesh);
     }
@@ -2336,7 +2355,7 @@ export function installBlockmartV9(ctx) {
     const delta = previousFrame ? clamp((timestamp - previousFrame) / 1000, 0, .05) : 0;
     previousFrame = timestamp;
     if (Math.floor(timestamp/250)!==Math.floor((timestamp-delta*1000)/250)){refreshHud();refreshPanelValues();}
-    drawWorldFeedback(delta);drawCustomers(lease&&!lease.active?0:delta);drawEmployees(lease&&!lease.active?0:delta);
+    drawWorldFeedback(delta);drawCustomers(lease&&!lease.active?0:delta,delta);drawEmployees(lease&&!lease.active?0:delta,delta);
     ctx.renderer.render(ctx.scene, ctx.camera);
   }
 

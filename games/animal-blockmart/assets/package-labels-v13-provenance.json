@@ -1,0 +1,30 @@
+{
+  "tool": "built-in image_gen",
+  "purpose": "Original flat printed label atlas, mapped to actual 3D package faces",
+  "original": "generated_images/exec-460d265d-9536-4dfd-ba89-c7e24f8ee03b.png",
+  "originalSha256": "00dd9277ca8d9a5ad264e0c94e907160b0a0cc2456318eef531981a7117ef553",
+  "asset": "games/animal-blockmart/assets/package-labels-v13.webp",
+  "assetSha256": "0f1ee05ef6d5c407ff78b749a3867efd7c8021c50791a93d667816f2f27e229d",
+  "width": 1536,
+  "height": 1024,
+  "bytes": 1751054,
+  "encoding": "lossless WebP; identical decoded pixels",
+  "regions": [
+    [
+      "water",
+      "snacks",
+      "chips",
+      "juice",
+      "fizz"
+    ],
+    [
+      "milk",
+      "bread",
+      "yogurt",
+      "icecream",
+      "noodles"
+    ]
+  ],
+  "promptRecord": "docs/image-requests.md#animal-blockmart-v13-package-label-atlas--2026-10-14",
+  "runtimeBudget": "One atlas texture; <=16MiB decoded+mipmaps; package geometry/material meshes remain real3D"
+}
