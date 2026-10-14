@@ -1,5 +1,5 @@
 import * as THREE from './vendor/three/three.module.min.js';
-import {liveElapsedWindow,simulationSteps,migrateEmployees,hireStoreEmployee,changeEmployeeRole,upgradeEmployeeSkill,employeeCheckoutSeconds,employeeRestockSeconds,employeeSkillCost,EMPLOYEE_HIRE_COST,EMPLOYEE_SKILL_LIMIT,EMPLOYEE_RESTOCK_BATCH} from './economy.js?v=11';
+import {liveElapsedWindow,simulationSteps,migrateEmployees,hireStoreEmployee,changeEmployeeRole,employeeCheckoutSeconds,employeeRestockSeconds,migrateBusinessUpgrades,trainedEmployee,businessUpgradeCost,purchaseBusinessUpgrade,purchaseExpansion,EXPANSIONS,normalizeBusinessPerformance,recordBusinessSale,businessPerformance,EMPLOYEE_HIRE_COST,EMPLOYEE_RESTOCK_BATCH} from './economy.js?v=11';
 import {
   GRID_ENTRANCES, baseFootprint, footprintSize, occupiedTiles, footprintConflict,
   serviceVector, serviceFacingTarget, queueTile, clampPopularity, popularityAfterWait,
@@ -13,9 +13,15 @@ const PRODUCT_DEFS = {
   water: { label: 'waterProduct', cost: 8, price: 12, demand: 1.45, color: 0x48b6cf, display: 'water' },
   snacks: { label: 'cookies', cost: 12, price: 20, demand: 1.05, color: 0xc87b31, display: 'cookies' },
   chips: { label: 'chips', cost: 13, price: 22, demand: .96, color: 0xe8bc38, display: 'chips' },
-  juice: { label: 'juice', cost: 17, price: 30, demand: .78, color: 0xe87535, display: 'juice' },
-  fizz: { label: 'sparklingDrink', cost: 42, price: 62, demand: .5, color: 0xa34e91, display: 'fizz' }
+  juice: { label: 'juice', cost: 17, price: 30, demand: .78, color: 0xe87535, display: 'juice',unlock:280,cold:true },
+  fizz: { label: 'sparklingDrink', cost: 42, price: 62, demand: .5, color: 0xa34e91, display: 'fizz',unlock:1000,cold:true },
+  milk: {label:'milk',cost:14,price:24,demand:1.2,color:0x6398dc,display:'juice',unlock:500,cold:true},
+  bread: {label:'bread',cost:10,price:18,demand:1.1,color:0xbc894a,display:'cookies',unlock:600},
+  yogurt: {label:'yogurt',cost:18,price:32,demand:.92,color:0xe482a3,display:'fizz',unlock:1500,cold:true},
+  icecream: {label:'icecream',cost:26,price:44,demand:.72,color:0x87c4a4,display:'juice',unlock:3000,cold:true},
+  noodles: {label:'noodles',cost:21,price:35,demand:.85,color:0xf29549,display:'chips',unlock:4500}
 };
+const DECOR_DEFS={duck:{cost:1800,label:'duckStatue',appeal:1},bread:{cost:4200,label:'breadThrone',appeal:2},crown:{cost:10000,label:'kingReceipt',appeal:3}};
 
 const CASHIER_HIRE_COST = 180;
 const REGISTER_COST = 120;
@@ -27,7 +33,9 @@ const VISUAL_CAMERA_YAW = Math.PI / 6;
 const VISUAL_CAMERA_FOCUS_HEIGHT = 1.1;
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-const copyPoint = point => point ? { x: point.x, z: point.z } : null;
+const copyPoint = point => point ? { x: point.x, z: point.z,...(Number.isInteger(point.rotation)?{rotation:point.rotation}:{}) } : null;
+const inwardPoint=(point,area=10)=>{const vector=serviceVector(point.rotation??inwardRotation(point,area));return {x:point.x+Math.round(vector.x),z:point.z+Math.round(vector.z)};};
+const inwardRotation=(point,area)=>point.z===0?0:point.x===0?1:point.z===area-1?2:3;
 const edgePoint = (point, area) => Number.isInteger(point?.x) && Number.isInteger(point?.z)
   && point.x >= 0 && point.z >= 0 && point.x < area && point.z < area
   && (point.x === 0 || point.z === 0 || point.x === area - 1 || point.z === area - 1);
@@ -39,13 +47,13 @@ function normalizeEndpoints(requested, fallback, area, fixtures, otherEndpoints 
   const clean = [...new Map(candidates.filter(point => edgePoint(point, area)
     && !blocked.has(`${point.x},${point.z}`)
     && !occupied.has(`${point.x},${point.z}`))
-    .map(point => [`${point.x},${point.z}`, { x: point.x, z: point.z }])).values()];
+    .map(point => [`${point.x},${point.z}`, { x: point.x, z: point.z,rotation:Number.isInteger(point.rotation)?((point.rotation%4)+4)%4:inwardRotation(point,area) }])).values()];
   if (clean.length) return clean;
   const perimeter = [];
   for (let x = 0; x < area; x++) perimeter.push({ x, z: 0 }, { x, z: area - 1 });
   for (let z = 1; z < area - 1; z++) perimeter.push({ x: 0, z }, { x: area - 1, z });
   return perimeter.filter(point => !blocked.has(`${point.x},${point.z}`)
-    && !occupied.has(`${point.x},${point.z}`)).slice(0, 1);
+    && !occupied.has(`${point.x},${point.z}`)).slice(0, 1).map(point=>({...point,rotation:inwardRotation(point,area)}));
 }
 
 export function migrateV9Save(saved = {}, initial = {}) {
@@ -86,14 +94,21 @@ export function migrateV9Save(saved = {}, initial = {}) {
   if (!state.unlocked.includes('snacks')) state.unlocked.push('snacks');
   state.employees = migrateEmployees(state,state.fixtures,state.warehouse);
   state.cashierCount = state.employees.filter(employee => employee.role === 'checkout').length;
-  state.storeModelVersion = 11;
-  return state;
+  if((saved.storeModelVersion||0)<12)for(const fixture of [...state.fixtures,...state.warehouse])if(fixture.kind==='shelf'&&PRODUCT_DEFS[fixture.product]?.cold)fixture.legacyShelfCold=fixture.product;
+  for(const id of Object.keys(PRODUCT_DEFS))state.stock[id]=Math.max(0,Math.floor(state.stock[id]||0));
+  const migrated=migrateBusinessUpgrades(state);
+  migrated.businessPerformance=normalizeBusinessPerformance(saved.businessPerformance);
+  if(!saved.businessPerformance)migrated.businessPerformance.paidProducts=[...new Set([...(state.achievements.baseline.productIds||[]),...state.achievements.events.filter(e=>e.type==='sale_settled').map(e=>e.productId),...state.cashLedger.filter(e=>e.kind==='sale').map(e=>e.product)])].filter(id=>PRODUCT_DEFS[id]);
+  migrated.growthGoals={...(saved.growthGoals||{})};
+  migrated.storeModelVersion = 12;
+  return migrated;
 }
 
 export function normalizeFixture(fixture = {}) {
   const migrated = { ...fixture, rotation: ((Math.floor(fixture.rotation || 0) % 4) + 4) % 4 };
   if (fixture.kind === 'shelf') migrated.footprint = fixture.footprint === 'double' ? 'double' : 'single';
-  if (fixture.kind === 'cooler') migrated.footprint = 'cooler';
+  if(fixture.kind==='shelf'){if(!PRODUCT_DEFS[migrated.product])migrated.product='water';if(!PRODUCT_DEFS[migrated.product2])delete migrated.product2;}
+  if (fixture.kind === 'cooler') {migrated.footprint = 'cooler';if(!PRODUCT_DEFS[migrated.product]?.cold)migrated.product='juice';if(!PRODUCT_DEFS[migrated.product2]?.cold)migrated.product2='milk';}
   if (fixture.kind === 'checkout' || fixture.kind === 'fastCheckout') migrated.footprint = 'counter';
   if (fixture.kind === 'decor') migrated.footprint = 'decor';
   return migrated;
@@ -147,6 +162,8 @@ export function installBlockmartV9(ctx) {
   const employeeMeshes=new Map();
   const stockDisplaySlots = new Map();
   let styledFloorTiles = null;
+  let cachedHomeLayout='',cachedHomes=new Map();
+  let pickerSlot=0;
 
   const state = () => getState();
   const setSelectedFloor = point => {
@@ -157,10 +174,13 @@ export function installBlockmartV9(ctx) {
   const allCounters = () => fixtures().filter(f => f.kind === 'checkout').sort((a, b) => String(a.id).localeCompare(String(b.id)));
   const employees = () => state().employees || (state().employees = migrateEmployees(state(),fixtures(),state().warehouse || []));
   const counterEmployee = id => employees().find(employee => employee.role === 'checkout' && employee.registerId === id);
+  const trained = employee => trainedEmployee(employee,state().businessUpgrades);
+  const fixtureProducts = fixture => [...new Set([fixture.product,...(fixture.footprint==='double'||fixture.kind==='cooler'?[fixture.product2]:[])].filter(id=>PRODUCT_DEFS[id]))];
+  const salesFixtures = id => fixtures().filter(f=>(f.kind==='shelf'||f.kind==='cooler'&&state().equipment.cooler)&&fixtureProducts(f).includes(id));
   const staffedCounters = () => allCounters().filter(counter => counterEmployee(counter.id));
   const counterById = id => staffedCounters().find(f => f.id === id) || null;
   const decorativeCount = () => fixtures().filter(f => f.kind === 'decor').length;
-  const currentDecorAppeal = () => decorAppeal(decorativeCount());
+  const currentDecorAppeal = () => Math.min(18,decorAppeal(fixtures().filter(f=>f.kind==='decor'&&!f.decorType).length)+fixtures().filter(f=>f.kind==='decor'&&DECOR_DEFS[f.decorType]).reduce((sum,f)=>sum+DECOR_DEFS[f.decorType].appeal,0));
 
   function migrateCurrentState() {
     const migrated = migrateV9Save(state(), ctx.INITIAL);
@@ -245,6 +265,7 @@ export function installBlockmartV9(ctx) {
     if (!goals.length) return false;
     const entrances = routeOverrides.entrances || (state().entrances?.length ? state().entrances : [GRID_ENTRANCES[0]]);
     const exits = routeOverrides.exits || (state().exits?.length ? state().exits : [{ x: state().area - 1, z: state().area - 1 }]);
+    if([...entrances,...exits].some(p=>{const inside=inwardPoint(p);return !walkable(inside.x,inside.z,ignoreId)||blocked.has(`${inside.x},${inside.z}`);}))return false;
     const canReach = (start, targets) => targets.some(goal => (start.x === goal.x && start.z === goal.z)
       || findPath(start, [goal], (x, z) => blocked.has(`${x},${z}`), ignoreId).length > 0);
     if (entrances.some(start => !walkable(start.x, start.z, ignoreId) || blocked.has(`${start.x},${start.z}`)
@@ -326,13 +347,13 @@ export function installBlockmartV9(ctx) {
     if (endpointEdit) {
       const title = ctx.t(endpointEdit.kind === 'entrance' ? 'entrance' : 'exit', ctx.locale);
       $('placementControls').hidden = false;
-      $('placementProduct').hidden = true; $('placementFootprint').hidden = true; $('rotatePlacement').hidden = true;
+      $('placementProduct').hidden = true; $('placementFootprint').hidden = true; $('rotatePlacement').hidden = false;
       document.querySelector('label[for=placementProduct]').hidden = true;
       document.querySelector('label[for=placementFootprint]').hidden = true;
       const valid = Boolean(endpointEdit.valid);
       $('placementStatus').classList.toggle('invalid', Boolean(endpointEdit.point && !valid));
       $('placementStatus').textContent = endpointEdit.point
-        ? (valid ? `${title} · ${ctx.t('routeOpen', ctx.locale)}` : ctx.t('routeBlocked', ctx.locale))
+        ? (valid ? `${title} · ${endpointEdit.rotation*90}° · ${ctx.t('routeOpen', ctx.locale)}` : ctx.t('endpointDirection', ctx.locale))
         : `${ctx.t(endpointEdit.kind === 'entrance' ? 'setEntrance' : 'setExit', ctx.locale)} · ${ctx.t('endpointPickHint', ctx.locale)}`;
       $('confirmPlacement').textContent = ctx.t(endpointEdit.kind === 'entrance' ? 'setEntrance' : 'setExit', ctx.locale);
       $('confirmPlacement').disabled = !valid;
@@ -445,9 +466,9 @@ export function installBlockmartV9(ctx) {
         block('shelf-board', 0xe0b768, 0, y, 0, width * .9, .14, depth * .84);
         block('shelf-price-strip', 0xfff0ce, 0, y, depth * .43, width * .82, .075, .025);
         for (const x of [-.27, 0, .27]) block('shelf-price-tag', 0x285965, x, y, depth * .445, .095, .033, .012);
-        for (let i = 0; i < 3; i++) {
-          const x = (i - 1) * Math.min(.32, width * .32);
-          slots.push({ group: createDisplayUnit(stockRoot, sku, x, y + .16, 0), sku });
+        for (const z of depth > 1 ? [-.42,.42] : [0]) for (const x of [-.15,.15]) {
+          const slotSku=z>0&&normalized.product2?normalized.product2:sku;
+          slots.push({ group: createDisplayUnit(stockRoot, slotSku, x, y + .075, z), sku:slotSku });
         }
       }
       stockDisplaySlots.set(normalized.id, { kind: 'shelf', sku, slots });
@@ -495,15 +516,23 @@ export function installBlockmartV9(ctx) {
       for (let shelf = 0; shelf < 3; shelf++) {
         block('cooler-shelf', 0x6ba7a2, 0, .38 + shelf * .45, .22, 1.62, .07, 1.4);
         block('cooler-price-rail', 0xffebbb, 0, .38 + shelf * .45, .95, 1.58, .075, .035);
-        for (const x of [-.43, .43]) slots.push({ parent: stockRoot, x, y: .57 + shelf * .45, z: .68, group: null, sku: null });
+        for (const x of [-.43, .43]) slots.push({ parent: stockRoot, x, y: .425 + shelf * .45, z: .68, group: null, sku: null,assignedSku:x<0?(normalized.product||'juice'):(normalized.product2||'milk') });
       }
       stockDisplaySlots.set(normalized.id, { kind: 'cooler', slots });
     } else if (normalized.kind === 'decor') {
+      if(normalized.decorType==='duck'){
+        block('duck-pedestal',0x265e69,0,.19,0,.8,.3,.8);block('duck-body',0xf4c23d,0,.68,0,.68,.55,.62);block('duck-head',0xffd757,0,1.12,.12,.51,.49,.47);block('duck-beak',0xed8431,0,1.06,.43,.4,.12,.22);for(const x of [-.16,.16])block('duck-eye',0x293e40,x,1.2,.36,.07,.085,.035);block('duck-bowtie',0x207f89,0,.89,.35,.35,.12,.06);
+      }else if(normalized.decorType==='bread'){
+        block('bread-throne-base',0x684530,0,.23,0,.78,.38,.74);block('bread-throne-seat',0xd2a466,0,.62,0,.74,.25,.63);block('bread-throne-back',0xe7bf80,0,1.15,-.24,.76,1.01,.25);for(const x of [-.28,0,.28])block('bread-score',0xa77343,x,1.5,-.07,.095,.21,.035);for(const x of [-.35,.35])block('bread-throne-arm',0xb7773e,x,.84,.13,.13,.33,.61);
+      }else if(normalized.decorType==='crown'){
+        block('receipt-base',0x1f777d,0,.22,0,.77,.36,.72);block('receipt-scroll',0xfff2cd,0,.96,0,.54,1.13,.19);for(let i=0;i<5;i++)block('receipt-line',0x396570,0,.62+i*.14,.11,.33,.035,.025);block('receipt-crown',0xf0bb35,0,1.61,0,.69,.19,.29);for(const x of [-.25,0,.25])block('crown-point',0xffd965,x,1.8,0,.13,.23,.26);
+      }else{
       block('decor-pot', 0xb47e58, 0, .18, 0, .7, .34, .7);
       block('decor-stem', 0x588e57, 0, .55, 0, .15, .54, .15);
       block('decor-leaf-a', 0x7fb65d, -.2, .82, 0, .42, .34, .27);
       block('decor-leaf-b', 0x65a34c, .2, .95, .08, .42, .3, .28);
       block('decor-leaf-c', 0x98c866, 0, 1.12, -.04, .38, .32, .3);
+      }
     }
     batchBoxes(group,false);
     group.traverse(object => { if (object.isMesh) { object.castShadow = true; object.receiveShadow = true; } });
@@ -523,12 +552,15 @@ export function installBlockmartV9(ctx) {
       const group = new THREE.Group();
       group.name = `store-${kind}-${point.x}-${point.z}`;
       group.position.set(point.x, 0, point.z);
+      group.rotation.y=(point.rotation||0)*Math.PI/2+(entrance?0:Math.PI);
       const block = (name, x, y, z, sx, sy, sz, paint = color) => ctx.cube(group, name, paint, x, y, z, sx, sy, sz);
       block(`${kind}-left-post`, -.36, .5, 0, .12, 1, .12);
       block(`${kind}-right-post`, .36, .5, 0, .12, 1, .12);
       block(`${kind}-lintel`, 0, 1, 0, .84, .14, .14);
       block(`${kind}-threshold`, 0, .13, 0, .86, .12, .86, entrance ? 0x56c7a0 : 0xe5af58);
       const sign = block(`${kind}-sign`, 0, 1.25, 0, .54, .2, .1, entrance ? 0x164b48 : 0x74441c);
+      block(`${kind}-arrow`,0,.23,.16,.12,.04,.5,color);
+      for(const x of [-.13,.13]){const wing=block(`${kind}-arrow-wing`,x,.23,.34,.26,.04,.09,color);wing.rotation.y=x<0?Math.PI/4:-Math.PI/4;}
       sign.userData.endpointLabel = kind;
       ctx.scene.add(group);
       endpointMarkers.push(group);
@@ -542,10 +574,18 @@ export function installBlockmartV9(ctx) {
     unit.name = `stock-unit-${sku}`;
     unit.userData.productSku = sku;
     unit.position.set(x, y, z);
-    parent.add(unit);
     const block = (name, color, px, py, pz, sx, sy, sz) => ctx.cube(unit, name, color, px, py, pz, sx, sy, sz);
     const catalog = PRODUCT_DEFS[sku];
     addDisplayItem(block, sku, catalog.display, 0, 0, 0, catalog.color);
+    // Fit every SKU to the shelf's internal bay, then anchor its bottom above
+    // the board. Work in local space so fixture yaw never changes the fit.
+    unit.position.set(0,0,0);
+    const bounds=new THREE.Box3().setFromObject(unit),size=bounds.getSize(new THREE.Vector3());
+    const fit=Math.min(.26/size.x,.4/size.y,.32/size.z,1);
+    unit.scale.setScalar(fit);
+    unit.position.set(x-(bounds.min.x+bounds.max.x)*.5*fit,y-bounds.min.y*fit,z-(bounds.min.z+bounds.max.z)*.5*fit);
+    unit.userData.displayBounds={width:size.x*fit,height:size.y*fit,depth:size.z*fit};
+    parent.add(unit);
     return unit;
   }
 
@@ -556,30 +596,18 @@ export function installBlockmartV9(ctx) {
       const display = stockDisplaySlots.get(fixture.id);
       if (display?.kind !== 'shelf') continue;
       for (const slot of display.slots) {
-        const visible = remaining[display.sku] > 0;
+        const visible = remaining[slot.sku] > 0;
         slot.group.visible = visible;
-        if (visible) remaining[display.sku]--;
+        if (visible) remaining[slot.sku]--;
       }
     }
-    const productOrder = Object.keys(PRODUCT_DEFS);
     const coolerSlots = fixtures().flatMap(fixture => {
       const display = stockDisplaySlots.get(fixture.id);
       return display?.kind === 'cooler' ? display.slots : [];
     });
-    const coolerStock = [];
-    while (coolerStock.length < coolerSlots.length) {
-      let added = false;
-      for (const sku of productOrder) {
-        if (remaining[sku] <= 0) continue;
-        coolerStock.push(sku);
-        remaining[sku]--;
-        added = true;
-        if (coolerStock.length >= coolerSlots.length) break;
-      }
-      if (!added) break;
-    }
-    coolerSlots.forEach((slot, index) => {
-      const sku = coolerStock[index] || null;
+    coolerSlots.forEach(slot => {
+      const sku = state().equipment.cooler&&remaining[slot.assignedSku]>0 ? slot.assignedSku : null;
+      if(sku)remaining[sku]--;
       if (slot.sku !== sku) {
         if (slot.group) {
           slot.parent.remove(slot.group);
@@ -741,7 +769,7 @@ export function installBlockmartV9(ctx) {
   function routeCustomerOut(customer) {
     const exits = (state().exits?.length ? state().exits : [{ x: state().area - 1, z: state().area - 1 }])
       .filter(point => walkable(point.x, point.z));
-    const paths = exits.map(point => findPath({ x: customer.x, z: customer.z }, [point]));
+    const paths = exits.map(point => {const inside=inwardPoint(point,state().area),start={x:customer.x,z:customer.z};if(start.x===point.x&&start.z===point.z)return [];const path=findPath(start,[inside]);if(path.length||start.x===inside.x&&start.z===inside.z)path.push(copyPoint(point));return path;});
     const path = paths.filter(candidate => candidate.length).sort((a, b) => a.length - b.length)[0] || [];
     customer.path = path; customer.pathAt = 0; customer.segment = null;
     customer.exitAt = path.length ? null : performance.now();
@@ -829,6 +857,7 @@ export function installBlockmartV9(ctx) {
       restoredStock = true;
     }
     state().popularity = popularityAfterWalkout(state().popularity);
+    if(!customer.exitReason)state().businessPerformance.walkouts++;
     customer.exitReason = reason;
     routeCustomerOut(customer);
     ctx.save();
@@ -864,8 +893,10 @@ export function installBlockmartV9(ctx) {
   }
 
   function routeToShelf(customer, shelf) {
-    const path = findPath({ x: customer.x, z: customer.z }, accessTiles(shelf));
-    if (!path.length && !accessTiles(shelf).some(p => p.x === customer.x && p.z === customer.z)) return false;
+    const entrance=state().entrances.find(p=>p.x===customer.x&&p.z===customer.z),start=entrance?inwardPoint(entrance):{x:customer.x,z:customer.z};
+    const path = findPath(start, accessTiles(shelf));
+    if (!path.length && !accessTiles(shelf).some(p => p.x === start.x && p.z === start.z)) return false;
+    if(entrance)path.unshift(start);
     customer.target = shelf; customer.path = path; customer.pathAt = 0;
     customer.state = 'browse'; customer.wait = 0; customer.segment = null;
     return true;
@@ -873,14 +904,13 @@ export function installBlockmartV9(ctx) {
 
   function unlockedProducts() {
     const lifetime = state().lifetime;
-    if (lifetime >= 280 && !state().unlocked.includes('juice')) state().unlocked.push('juice');
-    if (lifetime >= 1000 && !state().unlocked.includes('fizz')) state().unlocked.push('fizz');
+    for(const [id,product] of Object.entries(PRODUCT_DEFS))if(lifetime>=(product.unlock||0)&&!state().unlocked.includes(id))state().unlocked.push(id);
     return state().unlocked;
   }
 
   function chooseProduct(budget) {
     const unlocked = new Set(unlockedProducts());
-    const stockedShelves = new Set(fixtures().filter(f => f.kind === 'shelf').map(f => f.product));
+    const stockedShelves = new Set(fixtures().filter(f=>f.kind==='shelf'||f.kind==='cooler'&&state().equipment.cooler).flatMap(fixtureProducts));
     const available = Object.keys(PRODUCT_DEFS).filter(id => unlocked.has(id) && stockedShelves.has(id)
       && state().stock[id] > 0 && ctx.PRODUCTS[id].price <= budget);
     if (!available.length) return null;
@@ -903,8 +933,10 @@ export function installBlockmartV9(ctx) {
       state: 'enter', path: [], pathAt: 0, wait: Math.random() * .6, budget, queue: 0,
       queueWait: 0, queueSequence: 0, segment: null, carried: false,kind:kind[0],color:kind[1] };
     getCustomers().push(customer);
+    state().businessPerformance.visits++;
+    if(!customer.product&&fixtures().some(f=>f.kind==='shelf'||f.kind==='cooler'&&state().equipment.cooler)&&ownedStock()===0)state().businessPerformance.stockouts++;
     if (customer.product) {
-      const shelves = fixtures().filter(f => f.kind === 'shelf' && f.product === customer.product && accessTiles(f).length);
+      const shelves = salesFixtures(customer.product).filter(f=>accessTiles(f).length);
       const shelf = shelves[Math.floor(Math.random() * shelves.length)];
       if (!shelf || !routeToShelf(customer, shelf)) routeCustomerOut(customer);
     } else routeCustomerOut(customer);
@@ -954,6 +986,7 @@ export function installBlockmartV9(ctx) {
       debtChange: -sale.debtPayment, product: customer.product, quantity: 1,
       queueWaitSeconds: Number.isFinite(customer.queueWait) ? customer.queueWait : 0 }));
     state().lifetime += sale.grossRevenue; state().transactions++;
+    state().businessPerformance=recordBusinessSale(state().businessPerformance,{product:customer.product,time:ctx.elapsed,gross:sale.grossRevenue,cost:product.cost,wait:customer.queueWait||0,counterId:customer.checkoutId});
     customer.carried=false;customer.purchased=true;
     state().popularity = popularityAfterWait(state().popularity, customer.queueWait, QUEUE_PATIENCE_SECONDS);
     state().popularity = clampPopularity(state().popularity + 1 + currentDecorAppeal() * .025);
@@ -996,7 +1029,7 @@ export function installBlockmartV9(ctx) {
         if (rank < 0 || !assignQueueSpot(customer)) stopCustomerVisit(customer, 'blocked-queue');
         else if (customer.pathAt < customer.path.length) moveCustomer(customer, delta);
         else if (rank === 0 && !getCustomers().some(other => other !== customer && other.checkoutId === customer.checkoutId && other.state === 'pay')) {
-          customer.state = 'pay'; customer.wait = employeeCheckoutSeconds(counterEmployee(counter.id),ctx.activeEquipment()); customer.serviceCounter = counter;
+          customer.state = 'pay'; customer.wait = employeeCheckoutSeconds(trained(counterEmployee(counter.id)),ctx.activeEquipment()); customer.serviceCounter = counter;
         }
         if (customer.state === 'queue' && customer.queueWait >= QUEUE_PATIENCE_SECONDS) stopCustomerVisit(customer, 'queue');
       }
@@ -1016,6 +1049,7 @@ export function installBlockmartV9(ctx) {
   }
 
   function beginPlacement(kind, fixtureId = null, product = 'water', footprint = null) {
+    cameraOrbit=false;$('cameraOrbit')?.setAttribute('aria-pressed','false');
     const old = fixtureId ? fixtures().find(f => f.id === fixtureId) || state().warehouse.find(f => f.id === fixtureId) : null;
     const selectedFootprint = old?.footprint || footprint || (kind === 'cooler' ? 'cooler' : kind === 'checkout' ? 'counter' : kind === 'decor' ? 'decor' : 'single');
     setPlacement({ kind, fixtureId, product: old?.product || product || 'water', footprint: selectedFootprint,
@@ -1053,6 +1087,7 @@ export function installBlockmartV9(ctx) {
   }
 
   function rotatePlacement() {
+    if(endpointEdit){endpointEdit.rotation=(endpointEdit.rotation+1)%4;updateEndpointPreview(endpointEdit.point);return;}
     const p = getPlacement();
     if (!p) return;
     p.rotation = (p.rotation + 1) % 4;
@@ -1061,7 +1096,9 @@ export function installBlockmartV9(ctx) {
 
   function updateEndpointPreview(point) {
     if (!endpointEdit) return;
-    endpointEdit.point = copyPoint(point);
+    if(point&&!endpointEdit.point)endpointEdit.rotation=inwardRotation(point,state().area);
+    endpointEdit.point = point?{...copyPoint(point),rotation:endpointEdit.rotation}:null;
+    point=endpointEdit.point;
     const field = endpointEdit.kind === 'entrance' ? 'entrances' : 'exits';
     const otherField = field === 'entrances' ? 'exits' : 'entrances';
     const protectedElsewhere = (state()[otherField] || []).some(item => item.x === point?.x && item.z === point?.z);
@@ -1079,7 +1116,8 @@ export function installBlockmartV9(ctx) {
 
   function beginEndpointEdit(kind) {
     if (!['entrance', 'exit'].includes(kind) || getPlacement()) return;
-    endpointEdit = { kind, point: null, valid: false };
+    cameraOrbit=false;$('cameraOrbit')?.setAttribute('aria-pressed','false');
+    endpointEdit = { kind, point: null, valid: false,rotation:0 };
     $('placementControls').hidden = false;
     updatePlacementUi();
     ctx.toast(`${ctx.t(kind === 'entrance' ? 'setEntrance' : 'setExit', ctx.locale)} · ${ctx.t('endpointPickHint', ctx.locale)}`);
@@ -1203,7 +1241,7 @@ export function installBlockmartV9(ctx) {
       customer.segment=null;customer.x=Math.round(customer.group.position.x);customer.z=Math.round(customer.group.position.z);
       if(customer.state==='leave')routeCustomerOut(customer);
       else if(customer.state==='browse') {
-        const target=fixtures().find(f=>f.id===customer.target?.id&&f.product===customer.product);
+        const target=salesFixtures(customer.product).find(f=>f.id===customer.target?.id);
         if(!target||!routeToShelf(customer,target))stopCustomerVisit(customer,'layout-change');
       } else if(customer.state==='queue'||customer.state==='pay') {
         customer.state='queue';if(!targetCheckout(customer))stopCustomerVisit(customer,'layout-change');
@@ -1271,8 +1309,11 @@ export function installBlockmartV9(ctx) {
     {key:'cooler',kind:'cooler',footprint:'cooler',label:'coolerUpgrade',art:'cooler'},
     {key:'fastCheckout',kind:'fastCheckout',footprint:'counter',label:'fasterCheckout',art:'fastCheckout'},
     {key:'decor',kind:'decor',footprint:'decor',label:'storeCharm',art:'decor'}
+    ,...Object.entries(DECOR_DEFS).map(([id,item])=>({key:`decor-${id}`,kind:'decor',decorType:id,footprint:'decor',label:item.label,art:'decor',cost:item.cost}))
   ];
-  const catalogMatches=(entry,item)=>item.kind===entry.kind && (entry.kind!=='shelf'||item.footprint===entry.footprint);
+  const catalogMatches=(entry,item)=>item.kind===entry.kind && (entry.kind!=='shelf'||item.footprint===entry.footprint)&&(entry.kind!=='decor'||(entry.decorType||null)===(item.decorType||null));
+  const catalogCost=entry=>entry.cost||fixtureCost(entry.kind,entry.footprint);
+  const catalogAffordable=entry=>entry.kind==='decor'&&!entry.decorType?state().diamond>=1:[...fixtures(),...state().warehouse].some(f=>catalogMatches(entry,f))&&entry.decorType?false:state().cash>=catalogCost(entry);
   function itemArt(id,alt='') {
     const image=document.createElement('img');image.className='item-art';image.src=`./assets/item-${id}-v11.webp`;image.alt=alt;image.width=72;image.height=72;image.decoding='async';return image;
   }
@@ -1282,8 +1323,8 @@ export function installBlockmartV9(ctx) {
   }
   function buyCatalogItem(entry) {
     if(entry.kind==='decor') {
-      if(state().diamond<1 || [...fixtures(),...state().warehouse].filter(f=>f.kind==='decor').length>=6){ctx.toast(ctx.t('needMoreCash',ctx.locale));return false;}
-      state().diamond--;state().diamondSpent++;
+      if(entry.decorType){if(!catalogAffordable(entry))return false;const purchase=ctx.spendCash(state(),entry.cost,'fixture',{detail:entry.key});if(!purchase.ok)return false;setState(purchase.state);}
+      else{if(state().diamond<1 || [...fixtures(),...state().warehouse].filter(f=>f.kind==='decor'&&!f.decorType).length>=6){ctx.toast(ctx.t('needMoreCash',ctx.locale));return false;}state().diamond--;state().diamondSpent++;}
     } else {
       const cost=fixtureCost(entry.kind,entry.footprint);
       const result=(entry.kind==='cooler'||entry.kind==='fastCheckout') ? ctx.purchaseEquipment(state(),entry.kind,cost) : ctx.spendCash(state(),cost,'fixture',{detail:entry.key});
@@ -1292,7 +1333,7 @@ export function installBlockmartV9(ctx) {
     }
     // The starter cooler is already physical property; its paid module upgrades it.
     const existing=entry.kind==='cooler'?[...fixtures(),...state().warehouse].find(f=>f.kind==='cooler'):null;
-    const fixture=existing || normalizeFixture({id:`${entry.kind}-${crypto.randomUUID()}`,kind:entry.kind,footprint:entry.footprint,product:'water',x:-999,z:-999,rotation:0,appealApplied:false});
+    const fixture=existing || normalizeFixture({id:`${entry.kind}-${crypto.randomUUID()}`,kind:entry.kind,decorType:entry.decorType,footprint:entry.footprint,product:'water',x:-999,z:-999,rotation:0,appealApplied:false});
     if(!existing)state().warehouse.push(fixture);
     if(entry.kind==='cooler')state().coolerFixtureId=fixture.id;
     if(entry.kind==='fastCheckout')state().fastCheckoutFixtureId=fixture.id;
@@ -1305,10 +1346,12 @@ export function installBlockmartV9(ctx) {
     imageButton.append(itemArt(entry.art));imageButton.addEventListener('click',()=>{selectedCatalogKey=selectedCatalogKey===entry.key?null:entry.key;renderPanel()});
     const copy=document.createElement('div');copy.className='item-copy';const title=document.createElement('h3');title.textContent=ctx.t(entry.label,ctx.locale);
     const counts=document.createElement('p');counts.textContent=`${ctx.t('ownedTotal',ctx.locale)} ${placed.length+stored.length} · ${ctx.t('placedCount',ctx.locale)} ${placed.length} · ${ctx.t('storedCount',ctx.locale)} ${stored.length}`;
-    const price=document.createElement('strong');price.className='item-price';price.textContent=entry.kind==='decor'?'1 ✦':ctx.price(fixtureCost(entry.kind,entry.footprint));copy.append(title,counts,price);
+    const price=document.createElement('strong');price.className='item-price';price.textContent=entry.kind==='decor'&&!entry.decorType?'1 ✦':ctx.price(catalogCost(entry));copy.append(title,counts,price);
+    if(entry.decorType){const effect=document.createElement('p');effect.textContent=`${ctx.t('optionalDecor',ctx.locale)} · ${ctx.t('popularity',ctx.locale)} +${DECOR_DEFS[entry.decorType].appeal}`;copy.append(effect);}
+    if(entry.kind==='shelf'||entry.kind==='cooler'){const purpose=document.createElement('p');purpose.textContent=ctx.t(entry.kind==='cooler'?'coolerPurpose':entry.footprint==='double'?'doublePurpose':'singlePurpose',ctx.locale);copy.append(purpose);}
     if(entry.kind==='checkout'){const activation=document.createElement('p');activation.className='activation-cost';activation.textContent=`${ctx.t('counterActivationCost',ctx.locale)} ${ctx.price(REGISTER_COST)} + ${ctx.price(EMPLOYEE_HIRE_COST)} = ${ctx.price(REGISTER_COST+EMPLOYEE_HIRE_COST)}`;copy.append(activation);}
     const buy=actionButton('buyItem',()=>buyCatalogItem(entry));buy.className='item-buy';buy.dataset.buyItem=entry.key;
-    buy.disabled=entry.kind==='decor' ? state().diamond<1 || placed.length+stored.length>=6 : state().cash<fixtureCost(entry.kind,entry.footprint) || ((entry.kind==='cooler'||entry.kind==='fastCheckout')&&state().equipment[entry.kind]);
+    buy.disabled=!catalogAffordable(entry)||entry.kind==='decor'&&!entry.decorType&&placed.length+stored.length>=6||((entry.kind==='cooler'||entry.kind==='fastCheckout')&&state().equipment[entry.kind]);
     row.append(imageButton,copy,buy);
     if(selectedCatalogKey===entry.key){
       const options=document.createElement('div');options.className='item-owned-options';
@@ -1318,47 +1361,86 @@ export function installBlockmartV9(ctx) {
         line.append(actionButton(isStored?'placeFree':'moveFixture',()=>beginPlacement(fixture.kind,fixture.id,fixture.product,fixture.footprint)));
         if(!isStored){line.append(actionButton('rotateFixture',()=>rotateSelectedFixture(fixture.id)));line.append(actionButton('toWarehouse',()=>warehouseFixture(fixture.id)));}
         options.append(line);
+        if(entry.kind==='cooler'){const change=actionButton('changeShelfProduct',()=>{pickerSlot=0;productPickerFixtureId=productPickerFixtureId===fixture.id?null:fixture.id;renderPanel()});options.append(change);if(productPickerFixtureId===fixture.id)options.append(renderProductPicker(fixture));}
       });row.append(options);
     }
     $('panel').append(row);return row;
   }
   function renderGrowthCatalog() {
     const categories=document.createElement('div');categories.className='growth-categories';categories.setAttribute('role','tablist');
-    for(const [id,key] of [['equipment','equipmentCategory'],['decor','decorCategory'],['layout','layoutCategory']]){
+    for(const [id,key] of [['equipment','equipmentCategory'],['upgrades','businessUpgrades'],['decor','decorCategory'],['layout','layoutCategory']]){
       const button=document.createElement('button');button.type='button';button.textContent=ctx.t(key,ctx.locale);button.dataset.growthCategory=id;button.setAttribute('role','tab');button.setAttribute('aria-selected',String(growthCategory===id));button.addEventListener('click',()=>{growthCategory=id;selectedCatalogKey=null;renderPanel()});categories.append(button);
     }
     $('panel').append(categories);
     if(growthCategory==='layout'){
-      createCard('growth',ctx.t('expand',ctx.locale),`${ctx.t('expandDetail',ctx.locale)} · ${state().area} × ${state().area}`,ctx.price(ctx.EXPANSION_COST),ctx.expand,{disabled:state().area>10||state().cash<ctx.EXPANSION_COST});
+      const offer=EXPANSIONS.find(item=>item.from===state().area);
+      createCard('growth',ctx.t('expand',ctx.locale),`${state().area} × ${state().area}${offer?` → ${offer.to} × ${offer.to} · +${offer.to**2-offer.from**2}`:''}`,offer?ctx.price(offer.cost):ctx.t('upgradeComplete',ctx.locale),expandStore,{disabled:!offer||state().cash<offer.cost});
       createCard('entrance',ctx.t('entrance',ctx.locale),ctx.t('routeSafetyHint',ctx.locale),'↔',()=>beginEndpointEdit('entrance'));
       createCard('exit',ctx.t('exit',ctx.locale),ctx.t('routeSafetyHint',ctx.locale),'↔',()=>beginEndpointEdit('exit'));
-    }else for(const entry of catalog.filter(item=>growthCategory==='decor'?item.kind==='decor':item.kind!=='decor'))renderCatalogRow(entry);
-    renderCashActivity();
+    }else if(growthCategory==='upgrades')renderBusinessUpgrades();
+    else for(const entry of catalog.filter(item=>growthCategory==='decor'?item.kind==='decor':item.kind!=='decor'))renderCatalogRow(entry);
+    if(growthCategory==='upgrades')renderCashActivity();
+  }
+  function expandStore(){const result=purchaseExpansion(state());if(!result.ok)return false;setState(result.state);settleAchievementEvent({type:'expansion_purchased',toArea:state().area});ctx.buildFloor();syncFixtures();rerouteLiveCustomers();ctx.resize();ctx.save();renderPanel();ctx.toast(ctx.t('expandSuccess',ctx.locale));return true;}
+  function renderBusinessUpgrades(){
+    const legacy=Object.values(state().businessUpgrades.legacySkills).reduce((sum,s)=>sum+80*s.checkout*(s.checkout+1)/2+70*s.restock*(s.restock+1)/2,0);
+    if(legacy){const hint=document.createElement('p');hint.textContent=`${ctx.t('legacyTraining',ctx.locale)} · ${ctx.price(legacy)}`;$('panel').append(hint);}
+    for(const id of ['checkout','restock','storage']){
+      const level=state().businessUpgrades.levels[id],cost=businessUpgradeCost(id,level);
+      const effect=id==='storage'?`${ctx.stockCapacity(ctx.activeEquipment())} → ${ctx.stockCapacity({...ctx.activeEquipment(),storageLevel:level+1})}`:id==='checkout'?`${(3.5*.8**level).toFixed(1)}s → ${Math.max(.55,3.5*.8**(level+1)).toFixed(1)}s`:`${(12*.82**level).toFixed(1)}s → ${Math.max(2,12*.82**(level+1)).toFixed(1)}s`;
+      const button=createCard(id==='storage'?'cooler':'checkout-speed',ctx.t(id==='storage'?'stockCapacity':id==='checkout'?'checkoutSkill':'restockSkill',ctx.locale),`${ctx.t('wholeTeam',ctx.locale)} · ${level}/5 · ${cost?effect:ctx.t('upgradeComplete',ctx.locale)}`,cost?ctx.price(cost):ctx.t('upgradeComplete',ctx.locale),()=>{const result=purchaseBusinessUpgrade(state(),id);if(result.ok){setState(result.state);ctx.save();renderPanel()}},{disabled:!cost||state().cash<cost});button.dataset.businessUpgrade=id;
+    }
+  }
+  function growthGoalRows(){return [
+    {id:'firstSale',key:'guideFirst',amount:state().transactions,target:1,tab:'shop'},
+    {id:'twoProducts',key:'guideSecond',amount:state().businessPerformance.paidProducts.length,target:2,tab:'shop'},
+    {id:'team',key:'guideTeam',amount:employees().length,target:2,tab:'staff'},
+    {id:'capacity',key:'guideQueue',amount:staffedCounters().length,target:2,tab:'growth'},
+    {id:'expansion',key:'guideExpand',amount:state().area,target:16,tab:'growth'},
+    {id:'landmark',key:'guideLandmark',amount:fixtures().filter(f=>f.decorType).length,target:1,tab:'growth'}];}
+  function recordGrowthGoals(){for(const goal of growthGoalRows())if(goal.amount>=goal.target&&!state().growthGoals[goal.id])state().growthGoals[goal.id]={activeSeconds:ctx.elapsed};}
+  function openManagement(tab){ctx.selectedTab=tab;growthCategory='equipment';document.querySelectorAll('[data-tab]').forEach(button=>button.classList.toggle('active',button.dataset.tab===tab));renderPanel();}
+  function renderGuide(){
+    if(state().guideDismissed)return;
+    const next=growthGoalRows().find(goal=>!state().growthGoals[goal.id]);if(!next)return;
+    const section=document.createElement('section');section.className='business-guide';section.setAttribute('aria-label',ctx.t('guideTitle',ctx.locale));
+    const text=document.createElement('p');text.textContent=ctx.t(next.key,ctx.locale);const dismiss=actionButton('cancel',()=>{state().guideDismissed=true;ctx.save();renderPanel()});dismiss.className='guide-dismiss';dismiss.textContent='×';
+    const go=actionButton('guideTitle',()=>openManagement(next.tab));section.append(text,go,dismiss);$('panel').append(section);
+  }
+  function renderBusinessSummary(){
+    const section=document.createElement('section');section.className='business-summary';
+    const heading=document.createElement('h3');heading.textContent=ctx.t('recentBusiness',ctx.locale);section.append(heading);
+    const facts=document.createElement('p');facts.dataset.businessSummary='true';section.append(facts);
+    for(const goal of growthGoalRows()){const button=actionButton(goal.key,()=>openManagement(goal.tab));button.className='growth-goal';button.textContent=`${state().growthGoals[goal.id]?'✓':''} ${ctx.t(goal.key,ctx.locale)} · ${Math.min(goal.amount,goal.target)}/${goal.target}`;section.append(button);}
+    const restore=actionButton('guideTitle',()=>{state().guideDismissed=false;ctx.save();openManagement('shop')});section.append(restore);$('panel').append(section);
   }
 
-  function productLockReason(id) { return `${ctx.t('unlockAt', ctx.locale)} ${ctx.price(id === 'juice' ? 280 : 1000)} ${ctx.t('lifetimeSales', ctx.locale)}`; }
+  function productLockReason(id) { return `${ctx.t('unlockAt', ctx.locale)} ${ctx.price(PRODUCT_DEFS[id]?.unlock||0)} ${ctx.t('lifetimeSales', ctx.locale)}`; }
+  function compatibleProduct(fixture,id){return fixture.kind==='cooler'?Boolean(PRODUCT_DEFS[id]?.cold):!PRODUCT_DEFS[id]?.cold||fixture.legacyShelfCold===id;}
   function setShelfProduct(fixtureId, productId) {
     if (!PRODUCT_DEFS[productId] || !state().unlocked.includes(productId)) { ctx.toast(productLockReason(productId)); return false; }
-    const fixture = [...fixtures(),...state().warehouse].find(item => item.id === fixtureId && item.kind === 'shelf');
+    const fixture = [...fixtures(),...state().warehouse].find(item => item.id === fixtureId && ['shelf','cooler'].includes(item.kind));
     if (!fixture) return false;
-    fixture.product = productId; productPickerFixtureId = null;
+    if(!compatibleProduct(fixture,productId)){ctx.toast(ctx.t(PRODUCT_DEFS[productId]?.cold?'coldOnly':'dryOnly',ctx.locale));return false;}
+    fixture[pickerSlot?'product2':'product'] = productId; productPickerFixtureId = null;
     syncFixtures(); rerouteLiveCustomers(); ctx.save(); renderPanel(); ctx.toast(`${ctx.t('shelfProductChanged', ctx.locale)} · ${productName(productId)}`); return true;
   }
   function renderProductPicker(fixture) {
     const picker = document.createElement('div'); picker.className = 'shelf-product-picker'; picker.setAttribute('role','group'); picker.setAttribute('aria-label',ctx.t('chooseProduct',ctx.locale));
+    if(fixture.footprint==='double'||fixture.kind==='cooler')for(const slot of [0,1]){const button=document.createElement('button');button.type='button';button.textContent=`${ctx.t('productToDisplay',ctx.locale)} ${slot+1}`;button.setAttribute('aria-pressed',String(pickerSlot===slot));button.addEventListener('click',()=>{pickerSlot=slot;renderPanel()});picker.append(button);}
     for (const id of Object.keys(PRODUCT_DEFS)) {
-      const unlocked = state().unlocked.includes(id); const button = document.createElement('button'); button.type = 'button'; button.dataset.productId = id; button.disabled = !unlocked;
-      button.className = `product-choice${fixture.product === id ? ' is-selected' : ''}`; button.setAttribute('aria-pressed',String(fixture.product === id));
+      const unlocked = state().unlocked.includes(id),compatible=compatibleProduct(fixture,id),selected=fixture[pickerSlot?'product2':'product']===id; const button = document.createElement('button'); button.type = 'button'; button.dataset.productId = id; button.disabled = !unlocked||!compatible;
+      button.className = `product-choice${selected ? ' is-selected' : ''}`; button.setAttribute('aria-pressed',String(selected));
       const sample = itemArt(id);
       const name = document.createElement('strong'); name.textContent = productName(id);
-      const note = document.createElement('small'); note.textContent = unlocked ? `${ctx.t('availableStock',ctx.locale)} ${state().stock[id] || 0}` : productLockReason(id);
+      const note = document.createElement('small'); note.textContent = !compatible?ctx.t(PRODUCT_DEFS[id]?.cold?'coldOnly':'dryOnly',ctx.locale):unlocked ? `${ctx.t('availableStock',ctx.locale)} ${state().stock[id] || 0}` : productLockReason(id);
       button.append(sample,name,note); button.addEventListener('click',()=>transact(()=>setShelfProduct(fixture.id,id))); picker.append(button);
     }
     return picker;
   }
   function refreshPlacementProducts(selected) {
     const select = $('placementProduct'); select.replaceChildren();
-    for (const id of Object.keys(PRODUCT_DEFS)) { const option = document.createElement('option'); option.value = id; option.disabled = !state().unlocked.includes(id); option.textContent = `${productName(id)}${option.disabled ? ` · ${productLockReason(id)}` : ''}`; select.append(option); }
+    for (const id of Object.keys(PRODUCT_DEFS)) { const option = document.createElement('option'); option.value = id;const compatible=compatibleProduct(getPlacement()||{kind:'shelf'},id); option.disabled = !state().unlocked.includes(id)||!compatible; option.textContent = `${productName(id)}${!compatible?` · ${ctx.t('coldOnly',ctx.locale)}`:option.disabled ? ` · ${productLockReason(id)}` : ''}`; select.append(option); }
     select.value = selected;
   }
 
@@ -1505,8 +1587,7 @@ export function installBlockmartV9(ctx) {
     const section=document.createElement('section');section.className='employee-roster';
     for(const [index,employee] of employees().entries()){
       const card=document.createElement('article');card.className='employee-card';card.dataset.employeeId=employee.id;
-      const heading=document.createElement('h3');heading.textContent=`${ctx.t('employee',ctx.locale)} ${index+1}`;card.append(heading);
-      const label=document.createElement('label');label.textContent=ctx.t('employeeRole',ctx.locale);
+      const label=document.createElement('label');label.className='employee-heading';label.textContent=`${ctx.t('employee',ctx.locale)} ${index+1}`;
       const select=document.createElement('select');select.dataset.employeeRole=employee.id;
       for(const role of ['checkout','restock']){const option=document.createElement('option');option.value=role;option.textContent=ctx.t(role==='checkout'?'cashierRole':'restockerRole',ctx.locale);option.disabled=role==='checkout'&&employee.role!=='checkout'&&!nextVacantRegister();select.append(option);}
       select.value=employee.role;label.append(select);card.append(label);
@@ -1517,16 +1598,6 @@ export function installBlockmartV9(ctx) {
       });});
       const registerIndex=allCounters().findIndex(f=>f.id===employee.registerId);
       const status=document.createElement('p');status.textContent=employee.role==='restock'?ctx.t('helperAutoRestockHint',ctx.locale):registerIndex>=0?`${ctx.t('cashRegister',ctx.locale)} ${registerIndex+1}`:employee.registerId?ctx.t('storedInactive',ctx.locale):ctx.t('employeeUnassigned',ctx.locale);card.append(status);
-      for(const skill of ['checkout','restock']){
-        const level=employee.skills[skill],cost=employeeSkillCost(skill,level),seconds=skill==='checkout'?employeeCheckoutSeconds(employee,ctx.activeEquipment()):employeeRestockSeconds(employee);
-        const next={...employee,skills:{...employee.skills,[skill]:level+1}};
-        const nextSeconds=skill==='checkout'?employeeCheckoutSeconds(next,ctx.activeEquipment()):employeeRestockSeconds(next);
-        const button=actionButton(skill==='checkout'?'checkoutSkill':'restockSkill',()=>{
-          const result=upgradeEmployeeSkill(state(),employee.id,skill);if(!result.ok)return;
-          setState(result.state);ctx.save();renderPanel();
-        });button.dataset.skill=skill;button.textContent+=` · ${level}/${EMPLOYEE_SKILL_LIMIT} · ${seconds.toFixed(1)}s${cost?` → ${nextSeconds.toFixed(1)}s · ${ctx.price(cost)}`:` · ${ctx.t('upgradeComplete',ctx.locale)}`}`;
-        button.disabled=!cost||state().cash<cost;card.append(button);
-      }
       section.append(card);
     }
     const hire=actionButton('hireEmployee',()=>hireEmployee($('newEmployeeRole').value));hire.id='hireEmployee';hire.textContent+=` · ${ctx.price(EMPLOYEE_HIRE_COST)}`;hire.disabled=state().cash<EMPLOYEE_HIRE_COST;
@@ -1536,18 +1607,20 @@ export function installBlockmartV9(ctx) {
   }
 
   function renderShelves() {
-    const shelves=[...fixtures(),...state().warehouse].filter(f=>f.kind==='shelf');
+    const shelves=[...fixtures(),...state().warehouse].filter(f=>f.kind==='shelf'||f.kind==='cooler'&&state().equipment.cooler);
     shelves.forEach((fixture,index)=>{
       const stored=state().warehouse.some(f=>f.id===fixture.id),expanded=selectedFixtureId===fixture.id;
       const card=document.createElement('article');card.className=`owned-shelf-card compact-shelf${expanded?' is-selected':''}`;card.dataset.fixtureId=fixture.id;
       const image=document.createElement('button');image.type='button';image.className='item-image-button';image.setAttribute('aria-label',`${ctx.t('itemOptions',ctx.locale)} · ${ctx.t('shelfUnit',ctx.locale)} ${index+1}`);image.setAttribute('aria-expanded',String(expanded));image.append(itemArt(fixture.product));image.addEventListener('click',()=>{selectedFixtureId=expanded?null:fixture.id;renderPanel()});
       const copy=document.createElement('div');copy.className='item-copy';const title=document.createElement('h3');title.textContent=`${ctx.t('shelfUnit',ctx.locale)} ${index+1} · ${productName(fixture.product)}`;
-      const count=document.createElement('p');count.dataset.shelfStock=fixture.product;const status=document.createElement('small');status.textContent=ctx.t(stored?'storedCount':'placedCount',ctx.locale);copy.append(title,count,status);card.append(image,copy);
+      for(const id of fixtureProducts(fixture)){const count=document.createElement('p');count.dataset.shelfStock=id;copy.append(count);}
+      const status=document.createElement('small');status.textContent=ctx.t(stored?'storedCount':'placedCount',ctx.locale);copy.append(status);card.append(image,copy);
+      for(const id of fixtureProducts(fixture)){const insight=document.createElement('small');insight.dataset.skuInsight=id;copy.append(insight);}
       const actions=document.createElement('div');actions.className='shelf-actions';
-      if(stored)actions.append(actionButton('placeFree',()=>beginPlacement('shelf',fixture.id,fixture.product,fixture.footprint)));
-      else{const order=actionButton('restockAction',()=>stockOrder(fixture.product));order.dataset.restockProduct=fixture.product;actions.append(order,actionButton('rotateFixture',()=>rotateSelectedFixture(fixture.id)));}
+      if(stored)actions.append(actionButton('placeFree',()=>beginPlacement(fixture.kind,fixture.id,fixture.product,fixture.footprint)));
+      else{for(const id of fixtureProducts(fixture)){const order=actionButton('restockAction',()=>stockOrder(id));order.dataset.restockProduct=id;actions.append(order);}actions.append(actionButton('rotateFixture',()=>rotateSelectedFixture(fixture.id)));}
       card.append(actions);
-      if(expanded){const tools=document.createElement('div');tools.className='shelf-expanded';tools.append(actionButton('changeShelfProduct',()=>{productPickerFixtureId=productPickerFixtureId===fixture.id?null:fixture.id;renderPanel()}));if(!stored)tools.append(actionButton('moveFixture',()=>beginPlacement('shelf',fixture.id,fixture.product,fixture.footprint)),actionButton('toWarehouse',()=>warehouseFixture(fixture.id)));card.append(tools);if(productPickerFixtureId===fixture.id)card.append(renderProductPicker(fixture));}
+      if(expanded){const tools=document.createElement('div');tools.className='shelf-expanded';tools.append(actionButton('changeShelfProduct',()=>{pickerSlot=0;productPickerFixtureId=productPickerFixtureId===fixture.id?null:fixture.id;renderPanel()}));if(!stored)tools.append(actionButton('moveFixture',()=>beginPlacement(fixture.kind,fixture.id,fixture.product,fixture.footprint)),actionButton('toWarehouse',()=>warehouseFixture(fixture.id)));card.append(tools);if(productPickerFixtureId===fixture.id)card.append(renderProductPicker(fixture));}
       $('panel').append(card);
     });
     for(const entry of catalog.filter(item=>item.kind==='shelf'))renderCatalogRow(entry);
@@ -1557,12 +1630,14 @@ export function installBlockmartV9(ctx) {
     for(const node of document.querySelectorAll('[data-shelf-stock]')){const id=node.dataset.shelfStock,p=ctx.PRODUCTS[id];node.textContent=`${ctx.t('availableStock',ctx.locale)} ${state().stock[id]||0} · ${ctx.t('buyPrice',ctx.locale)} ${ctx.price(p.cost)} · ${ctx.t('sellPrice',ctx.locale)} ${ctx.price(p.price)}`;}
     for(const button of document.querySelectorAll('[data-restock-product]')){
       const id=button.dataset.restockProduct,product=ctx.PRODUCTS[id],quantity=Math.min(8,Math.max(0,ctx.stockCapacity(ctx.activeEquipment())-ownedStock()),Math.floor(state().cash/product.cost));
-      button.textContent=`${ctx.t('restockAction',ctx.locale)} +${quantity} · ${ctx.price(quantity*product.cost)}`;button.disabled=!quantity;
+      button.textContent=`${productName(id)} +${quantity} · ${ctx.price(quantity*product.cost)}`;button.disabled=!quantity;
     }
-    for(const card of document.querySelectorAll('[data-employee-id]')){const employee=employees().find(e=>e.id===card.dataset.employeeId);if(!employee)continue;for(const button of card.querySelectorAll('[data-skill]')){const cost=employeeSkillCost(button.dataset.skill,employee.skills[button.dataset.skill]);button.disabled=!cost||state().cash<cost;}}
+    for(const node of document.querySelectorAll('[data-sku-insight]')){const id=node.dataset.skuInsight,product=PRODUCT_DEFS[id],facts=businessPerformance(state().businessPerformance,ctx.elapsed,id),elapsed=Math.min(180,ctx.elapsed),rate=elapsed>=30&&facts.payments>=3?facts.payments/(elapsed/60):0;node.textContent=`${ctx.t('unitMargin',ctx.locale)} ${ctx.price(product.price-product.cost)} · ${ctx.t('demandEstimate',ctx.locale)} ${product.demand.toFixed(2)} · ${ctx.t('actualPaid',ctx.locale)} ${facts.payments}${rate?` · ${ctx.t('stockMinutes',ctx.locale)} ~${((state().stock[id]||0)/rate).toFixed(1)}`:` · ${ctx.t('moreData',ctx.locale)}`}`;}
+    for(const node of document.querySelectorAll('[data-business-summary]')){const facts=businessPerformance(state().businessPerformance,ctx.elapsed);node.textContent=`${ctx.t('actualPaid',ctx.locale)} ${facts.payments} · ${ctx.t('lifetimeSales',ctx.locale)} ${ctx.price(facts.gross)} · ${ctx.t('unitMargin',ctx.locale)} ${ctx.price(facts.margin)} · ${ctx.t('queue',ctx.locale)} ${getCustomers().filter(c=>c.state==='queue'||c.state==='pay').length}/${staffedCounters().length*QUEUE_LIMIT_PER_REGISTER} · ${ctx.t('stockouts',ctx.locale)} ${state().businessPerformance.stockouts} · ${ctx.t('stockCapital',ctx.locale)} ${ctx.price(Object.entries(state().stock).reduce((sum,[id,quantity])=>sum+(PRODUCT_DEFS[id]?.cost||0)*quantity,0)+getCustomers().filter(c=>c.carried).reduce((sum,c)=>sum+(PRODUCT_DEFS[c.product]?.cost||0),0))}`;}
+    for(const button of document.querySelectorAll('[data-business-upgrade]')){const cost=businessUpgradeCost(button.dataset.businessUpgrade,state().businessUpgrades.levels[button.dataset.businessUpgrade]);button.disabled=!cost||state().cash<cost;}
     const hire=$('hireEmployee');if(hire)hire.disabled=state().cash<EMPLOYEE_HIRE_COST||($('newEmployeeRole').value==='checkout'&&!nextVacantRegister());
     for(const button of document.querySelectorAll('[data-hire-register]'))button.disabled=state().cash<EMPLOYEE_HIRE_COST||Boolean(counterEmployee(button.dataset.hireRegister))||!routeToCheckout([],allCounters().find(f=>f.id===button.dataset.hireRegister));
-    for(const button of document.querySelectorAll('[data-buy-item]')){const entry=catalog.find(item=>item.key===button.dataset.buyItem);button.disabled=entry.kind==='decor'?state().diamond<1||[...fixtures(),...state().warehouse].filter(f=>f.kind==='decor').length>=6:state().cash<fixtureCost(entry.kind,entry.footprint)||Boolean((entry.kind==='cooler'||entry.kind==='fastCheckout')&&state().equipment[entry.kind]);}
+    for(const button of document.querySelectorAll('[data-buy-item]')){const entry=catalog.find(item=>item.key===button.dataset.buyItem);button.disabled=!catalogAffordable(entry)||entry.kind==='decor'&&!entry.decorType&&[...fixtures(),...state().warehouse].filter(f=>catalogMatches(entry,f)).length>=6||Boolean((entry.kind==='cooler'||entry.kind==='fastCheckout')&&state().equipment[entry.kind]);}
   }
 
   function ownedStock(){return ctx.totalStock(state().stock)+getCustomers().filter(c=>c.carried).length;}
@@ -1612,6 +1687,7 @@ export function installBlockmartV9(ctx) {
     mapProducts(); unlockedProducts();
     const tab = ctx.selectedTab;
     $('panel').dataset.activeTab = tab;
+    renderGuide();
     if (tab === 'achievements') {
       renderAchievements();
       $('panel').scrollTop=scroll;
@@ -1619,6 +1695,7 @@ export function installBlockmartV9(ctx) {
     }
     if (tab === 'shop') renderShelves();
     if (tab === 'growth') renderGrowthCatalog();
+    if(tab==='growth')renderBusinessSummary();
     if (tab === 'staff') {
       renderEmployees();
       renderRegisterRoster();
@@ -1682,7 +1759,7 @@ export function installBlockmartV9(ctx) {
     pointerState = { id: event.pointerId, x: event.clientX, y: event.clientY,
       lastX: event.clientX, lastY: event.clientY, moved: false, point,
       fixture: !getPlacement() && !endpointEdit ? visualFixture || fixtureAt(point) : null,
-      mode: getPlacement() ? 'placement' : endpointEdit ? 'layout-edit' : (event.button===2||event.shiftKey||cameraOrbit ? 'orbit' : 'pan') };
+      mode: getPlacement() ? 'placement' : endpointEdit ? 'layout-edit' : (cameraOrbit ? 'orbit' : 'pan') };
     event.stopImmediatePropagation();
   }
 
@@ -1700,7 +1777,7 @@ export function installBlockmartV9(ctx) {
         panByPixels(center.x - pinchState.center.x, center.y - pinchState.center.y);
         const ratio = distance / Math.max(1, pinchState.distance);
         state().zoom = clamp(state().zoom * ratio, .65, 2);
-        state().view += Math.atan2(Math.sin(angle - pinchState.angle), Math.cos(angle - pinchState.angle));
+        if(cameraOrbit&&!getPlacement()&&!endpointEdit)state().view += Math.atan2(Math.sin(angle - pinchState.angle), Math.cos(angle - pinchState.angle));
         ctx.setCamera();
         ctx.save();
       }
@@ -1795,7 +1872,7 @@ export function installBlockmartV9(ctx) {
   }
 
   function bindInput() {
-    const orbit=actionButton('cameraOrbit',()=>{cameraOrbit=!cameraOrbit;state().view=(state().view||0)+Math.PI/8;ctx.setCamera();ctx.save();orbit.setAttribute('aria-pressed',String(cameraOrbit));ctx.toast(ctx.t(cameraOrbit?'cameraDragRotate':'cameraDragPan',ctx.locale));});orbit.id='cameraOrbit';orbit.className='camera-orbit';orbit.setAttribute('aria-pressed','false');document.querySelector('.scene-wrap').append(orbit);
+    const orbit=actionButton('cameraOrbit',()=>{if(getPlacement()||endpointEdit)return;cameraOrbit=!cameraOrbit;orbit.setAttribute('aria-pressed',String(cameraOrbit));ctx.toast(ctx.t(cameraOrbit?'cameraDragRotate':'cameraDragPan',ctx.locale));});orbit.id='cameraOrbit';orbit.className='camera-orbit';orbit.setAttribute('aria-pressed','false');document.querySelector('.scene-wrap').append(orbit);
     ctx.canvas.addEventListener('pointerdown', pointerDown, true);
     ctx.canvas.addEventListener('pointermove', pointerMove, true);
     ctx.canvas.addEventListener('pointerup', pointerUp, true);
@@ -1817,7 +1894,7 @@ export function installBlockmartV9(ctx) {
       if(event.target.closest('input,select,textarea'))return;
       if (event.key === 'Escape') cancelPlacement();
       if ((event.key.toLowerCase() === 'r') && selectedFixtureId) transact(()=>rotateSelectedFixture(selectedFixtureId));
-      if(['q','e'].includes(event.key.toLowerCase())){state().view+=(event.key.toLowerCase()==='q'?-.12:.12);ctx.setCamera();ctx.save();}
+      if(cameraOrbit&&!getPlacement()&&!endpointEdit&&['q','e'].includes(event.key.toLowerCase())){state().view+=(event.key.toLowerCase()==='q'?-.12:.12);ctx.setCamera();ctx.save();}
     });
   }
 
@@ -1857,8 +1934,7 @@ export function installBlockmartV9(ctx) {
 
   function refreshTraffic() {
     const current = state();
-    if (current.lifetime >= 280 && !current.unlocked.includes('juice')) current.unlocked.push('juice');
-    if (current.lifetime >= 1000 && !current.unlocked.includes('fizz')) current.unlocked.push('fizz');
+    unlockedProducts();
     current.popularity = clampPopularity(current.popularity + currentDecorAppeal() * .00025);
     if (current.popularity < TRAFFIC_RECOVERY_FLOOR) current.popularity = clampPopularity(current.popularity + .012);
     const nextInterval = trafficInterval(current.popularity);
@@ -1866,14 +1942,21 @@ export function installBlockmartV9(ctx) {
   }
 
   function staffHome(employee) {
+    const layoutKey=JSON.stringify([state().area,fixtures().map(f=>[f.id,f.x,f.z,f.rotation,f.product,f.product2]),state().entrances,state().exits,employees().filter(e=>e.role==='restock').map(e=>e.id)]);
+    if(cachedHomeLayout!==layoutKey){cachedHomeLayout=layoutKey;cachedHomes.clear();}
+    if(cachedHomes.has(employee.id))return cachedHomes.get(employee.id);
     const origin=state().entrances[0] || {x:0,z:0};
     const index=Math.max(0,employees().filter(e=>e.role==='restock').findIndex(e=>e.id===employee.id));
+    const doors=[...state().entrances,...state().exits],queues=allCounters().flatMap(counter=>Array.from({length:QUEUE_LIMIT_PER_REGISTER},(_,rank)=>queueTile(counter,rank)));
     const choices=[];
-    for(let z=0;z<state().area;z++)for(let x=0;x<state().area;x++)if(walkable(x,z))choices.push({x,z});
+    for(let z=0;z<state().area;z++)for(let x=0;x<state().area;x++)if(walkable(x,z)
+      &&doors.every(p=>Math.abs(p.x-x)+Math.abs(p.z-z)>1)&&!queues.some(p=>p.x===x&&p.z===z))choices.push({x,z});
     choices.sort((a,b)=>Math.abs(a.x-origin.x)+Math.abs(a.z-origin.z)-Math.abs(b.x-origin.x)-Math.abs(b.z-origin.z));
-    return choices[Math.min(index+1,choices.length-1)] || origin;
+    const reachable=choices.filter(p=>findPath(origin,[p]).length);
+    const home=reachable[Math.min(index,reachable.length-1)] || {x:employee.work?.x??origin.x,z:employee.work?.z??origin.z};cachedHomes.set(employee.id,home);return home;
   }
   function automaticRestock(delta) {
+    const layoutKey=JSON.stringify([state().area,fixtures().map(f=>[f.id,f.x,f.z,f.rotation,f.product,f.product2]),state().entrances,state().exits]);
     // Only simulation transactions advance these saved jobs. Drawing never settles stock.
     for(const id of employees().filter(e=>e.role==='restock').map(e=>e.id)) {
       let employee=employees().find(e=>e.id===id),home=staffHome(employee);
@@ -1883,12 +1966,24 @@ export function installBlockmartV9(ctx) {
       if(!Array.isArray(job.path))job.path=[];
       if(!Number.isFinite(job.wait))job.wait=0;
       if(!state().autoRestockEnabled){job.phase='idle';job.path=[];employee.workSeconds=0;continue;}
-      const target=fixtures().find(f=>f.id===job.targetId&&f.kind==='shelf'&&f.product===job.productId);
+      const target=salesFixtures(job.productId).find(f=>f.id===job.targetId);
       if((job.phase==='travel'||job.phase==='stock')&&!target){job.phase='idle';job.path=[];job.wait=0;}
+      if(job.layoutKey!==layoutKey){
+        job.layoutKey=layoutKey;
+        const start={x:Math.round(job.x),z:Math.round(job.z)};
+        if(!walkable(start.x,start.z)){job.x=home.x;job.z=home.z;job.phase='idle';job.path=[];job.wait=0;}
+        else if(job.phase==='travel'||job.phase==='stock'){
+          const goals=accessTiles(target),atGoal=goals.some(p=>p.x===start.x&&p.z===start.z);
+          job.path=findPath(start,goals);job.phase=atGoal?'stock':job.path.length?'travel':'idle';job.wait=0;
+        }else if(job.phase==='return'||job.phase==='idle'){
+          job.path=findPath(start,[home]);job.phase=job.path.length?'return':'idle';
+        }
+      }
       if(job.phase==='idle') {
         employee.workSeconds+=delta;
-        if(employee.workSeconds<employeeRestockSeconds(employee))continue;
-        const candidates=fixtures().filter(f=>f.kind==='shelf'&&state().unlocked.includes(f.product)&&(state().stock[f.product]||0)<6)
+        if(employee.workSeconds<employeeRestockSeconds(trained(employee)))continue;
+        const claimed=new Set(employees().filter(e=>e.id!==id&&['travel','stock'].includes(e.work?.phase)).map(e=>e.work.productId));
+        const candidates=fixtures().filter(f=>f.kind==='shelf'||f.kind==='cooler'&&state().equipment.cooler).flatMap(f=>fixtureProducts(f).map(product=>({...f,product}))).filter(f=>!claimed.has(f.product)&&state().unlocked.includes(f.product)&&(state().stock[f.product]||0)<6)
           .sort((a,b)=>(state().stock[a.product]||0)-(state().stock[b.product]||0));
         const free=walkable(Math.round(job.x),Math.round(job.z));
         if(!free){job.x=home.x;job.z=home.z;}
@@ -1908,8 +2003,9 @@ export function installBlockmartV9(ctx) {
         if(point){const dx=point.x-job.x,dz=point.z-job.z,distance=Math.hypot(dx,dz),step=Math.min(distance,delta*2.2);job.heading=smoothHeading(job.heading,Math.atan2(dx,dz),delta);if(distance<=step+.0001){job.x=point.x;job.z=point.z;job.path.shift();}else{job.x+=dx/distance*step;job.z+=dz/distance*step;}}
         if(!job.path.length){job.phase=job.phase==='return'?'idle':'stock';job.wait=0;}
       } else if(job.phase==='stock') {
+        if(!accessTiles(target).some(p=>p.x===Math.round(job.x)&&p.z===Math.round(job.z))){job.phase='idle';job.wait=0;continue;}
         const center=fixtureCenter(target);job.heading=smoothHeading(job.heading,Math.atan2(center.x-job.x,center.z-job.z),delta);job.wait+=delta;
-        if(job.wait<Math.max(.65,1.4*.82**employee.skills.restock))continue;
+        if(job.wait<Math.max(.65,1.4*.82**trained(employee).skills.restock))continue;
         const product=ctx.PRODUCTS[job.productId],room=ctx.stockCapacity(ctx.activeEquipment())-ownedStock();
         const quantity=Math.min(EMPLOYEE_RESTOCK_BATCH,Math.max(0,room),Math.floor(state().cash/product.cost));
         // Advance first; the cash/stock and return phase are one atomic persisted commit.
@@ -2043,7 +2139,7 @@ export function installBlockmartV9(ctx) {
       const saved=ctx.readSaved();
       if(saved?.liveOwner?.documentId!==documentId){owned=false;lease?.setPaused('ownership',true);adoptSaved(saved);refreshOwnership();return false;}
       adoptSaved(saved);transactionBusy=true;
-      try{action();storeRuntime();state().storeRevision=(state().storeRevision||0)+1;ctx.rawSave();if(manualPaused&&!document.hidden&&ctx.gameActive){drawCustomers();drawEmployees();ctx.renderer.render(ctx.scene,ctx.camera)}}finally{transactionBusy=false;}
+      try{action();recordGrowthGoals();storeRuntime();state().storeRevision=(state().storeRevision||0)+1;ctx.rawSave();if(manualPaused&&!document.hidden&&ctx.gameActive){drawCustomers();drawEmployees();ctx.renderer.render(ctx.scene,ctx.camera)}}finally{transactionBusy=false;}
       return true;
     });
   }
@@ -2165,6 +2261,7 @@ export function installBlockmartV9(ctx) {
     activeEquipment: () => ({
       cooler: Boolean(state().equipment.cooler && fixtures().some(f => f.id === (state().coolerFixtureId || fixtures().find(x => x.kind === 'cooler')?.id))),
       fastCheckout: Boolean(state().equipment.fastCheckout && fixtures().some(f => f.id === (state().fastCheckoutFixtureId || fixtures().find(x => x.kind === 'fastCheckout')?.id)))
+      ,doubleShelves:fixtures().filter(f=>f.kind==='shelf'&&f.footprint==='double').length,storageLevel:state().businessUpgrades?.levels.storage||0
     })
   };
 }

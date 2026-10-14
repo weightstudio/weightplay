@@ -157,7 +157,7 @@ function installV9(){
     get customerId(){return customerId},set customerId(value){customerId=value},
     get running(){return running},set running(value){running=value},
     get gameActive(){return gameActive},set gameActive(value){gameActive=value},
-    setGhost(value){ghost=value},cube,makeAnimal,gridPoint,panByPixels,setCamera,buildFloor,save,toast,price,showSale,spendCash,appendCashLedger,
+    setGhost(value){ghost=value},cube,makeAnimal,gridPoint,panByPixels,setCamera,buildFloor,resize,save,toast,price,showSale,spendCash,appendCashLedger,
     rawSave,saveKey:SAVE_KEY,readSaved(){return JSON.parse(localStorage.getItem(SAVE_KEY)||'null')},readCompatibleSaved:load,setSaveDelegate(value){saveDelegate=value},
     readAchievementEvents,persistAchievementEvent,
     expand,hire,browseSeconds,checkoutSeconds,purchaseEquipment,applySaleRevenue,stockCapacity,totalStock,recoveryShipment,

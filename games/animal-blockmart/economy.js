@@ -12,6 +12,57 @@ export const EMPLOYEE_HIRE_COST=180;
 export const EMPLOYEE_SKILL_LIMIT=5;
 export const EMPLOYEE_RESTOCK_BATCH=4;
 
+export const BUSINESS_UPGRADE_LIMIT=5;
+export function migrateBusinessUpgrades(state={}){
+  const existing=state.businessUpgrades?.schemaVersion===1;
+  const legacy=existing?structuredClone(state.businessUpgrades.legacySkills||{}):{};
+  const employees=(state.employees||[]).map(employee=>{
+    if(!existing)legacy[employee.id]={checkout:Math.min(5,count(employee.skills?.checkout)),restock:Math.min(5,count(employee.skills?.restock))};
+    return {...employee,skills:{checkout:0,restock:0}};
+  });
+  const levels=Object.fromEntries(['checkout','restock','storage'].map(id=>[id,Math.min(BUSINESS_UPGRADE_LIMIT,count(state.businessUpgrades?.levels?.[id]))]));
+  return {...state,employees,businessUpgrades:{schemaVersion:1,levels,legacySkills:legacy}};
+}
+export function trainedEmployee(employee={},upgrades={}){
+  const inherited=upgrades.legacySkills?.[employee.id]||employee.skills||{};
+  return {...employee,skills:{checkout:count(inherited.checkout)+count(upgrades.levels?.checkout),restock:count(inherited.restock)+count(upgrades.levels?.restock)}};
+}
+export function businessUpgradeCost(id,level=0){
+  const base={checkout:240,restock:200,storage:180}[id];
+  return base&&count(level)<BUSINESS_UPGRADE_LIMIT?base*(count(level)+1):0;
+}
+export function purchaseBusinessUpgrade(state,id){
+  const normalized=migrateBusinessUpgrades(state),level=normalized.businessUpgrades.levels[id],cost=businessUpgradeCost(id,level);
+  if(!cost)return {ok:false,reason:'max',state};
+  const result=spendCash(normalized,cost,'businessUpgrade',{detail:id});
+  if(!result.ok)return {...result,state};
+  result.state.businessUpgrades.levels[id]=level+1;
+  return result;
+}
+export const EXPANSIONS=Object.freeze([{from:10,to:13,cost:500},{from:13,to:16,cost:1400},{from:16,to:19,cost:3500},{from:19,to:22,cost:8000}]);
+export function purchaseExpansion(state){
+  const offer=EXPANSIONS.find(item=>item.from===state.area);
+  if(!offer)return {ok:false,reason:'max',state};
+  const result=spendCash(state,offer.cost,'expansion',{detail:String(offer.to)});
+  if(result.ok)result.state={...result.state,area:offer.to,milestones:{...state.milestones,expanded:true}};
+  return result;
+}
+export function normalizeBusinessPerformance(value={}){
+  return {schemaVersion:1,visits:count(value.visits),walkouts:count(value.walkouts),stockouts:count(value.stockouts),paidProducts:[...new Set((value.paidProducts||[]).filter(id=>typeof id==='string'))].slice(0,32),
+    sales:(Array.isArray(value.sales)?value.sales:[]).filter(row=>row&&typeof row.product==='string'&&Number.isFinite(row.time)&&row.time>=0&&Number.isFinite(row.gross)&&row.gross>=0&&Number.isFinite(row.cost)&&row.cost>=0).slice(-256)};
+}
+export function recordBusinessSale(value,row){
+  const next=normalizeBusinessPerformance(value);
+  if(!row||typeof row.product!=='string'||!Number.isFinite(row.time)||!Number.isFinite(row.gross)||!Number.isFinite(row.cost))return next;
+  next.paidProducts=[...new Set([...next.paidProducts,row.product])].slice(0,32);
+  next.sales=[...next.sales.filter(s=>s.time>=row.time-180),{...row}].slice(-256);
+  return next;
+}
+export function businessPerformance(value,activeSeconds,product=null){
+  const state=normalizeBusinessPerformance(value),sales=state.sales.filter(row=>row.time>=activeSeconds-180&&row.time<=activeSeconds&&(!product||row.product===product));
+  return {payments:sales.length,gross:sales.reduce((sum,row)=>sum+row.gross,0),margin:sales.reduce((sum,row)=>sum+row.gross-row.cost,0),waiting:sales.length?sales.reduce((sum,row)=>sum+(row.wait||0),0)/sales.length:0};
+}
+
 // Cursor covers only elapsed time reported by a live lifecycle lease. A fresh
 // document starts at now; no wall-clock gap from a closed page is rewarded.
 export function liveElapsedWindow(cursor,start,end){
@@ -110,7 +161,7 @@ export function migrateEquipmentState(saved={}){
 }
 
 export function stockCapacity(equipment={}){
-  return BASE_STOCK_CAPACITY+(equipment.cooler?COOLER_STOCK_BONUS:0);
+  return BASE_STOCK_CAPACITY+(equipment.cooler?COOLER_STOCK_BONUS:0)+Math.min(8,count(equipment.doubleShelves))*20+Math.min(5,count(equipment.storageLevel))*20;
 }
 
 export function totalStock(stock={}){
