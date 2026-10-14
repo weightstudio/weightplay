@@ -69,11 +69,10 @@
     continueButton.textContent = text('continue'); leaveButton.textContent = text('main');
   };
   translateLeave();
-  let previous = null, generation = 0, leaving = false, suspended = false, unfocused = false;
+  let previous = null, previousPhase = null, previousOwner = null, generation = 0, leaving = false, suspended = false, unfocused = false;
   const sync = () => {
     const phase = document.body.dataset.screen;
     const scene = phase === 'main' ? 'main' : 'battle';
-    if (scene !== previous) generation++;
     if (scene === 'main') { leaving = false; clock.cancelAll(); }
     // Named reasons remain independent of visibility and each other.
     clock.setPaused('scene-away', scene !== 'battle');
@@ -83,6 +82,8 @@
     clock.setPaused('window-blur', unfocused);
     const settingsOpen = [...root.querySelectorAll('.wp-frame-popover')].some(panel => !panel.hidden);
     clock.setPaused('settings', settingsOpen);
+    const ownerKey = `${phase}:${leaving}:${suspended}:${unfocused}:${settingsOpen}`;
+    if (ownerKey !== previousOwner) generation++;
     leave.hidden = !leaving;
     if (!leaving) leave.querySelector('.tic-leave-copy').scrollTop = 0;
     play.inert = leaving || phase === 'result' || !clock.active;
@@ -97,7 +98,7 @@
     window.WeightPlayTicGuide?.refresh();
     window.WeightPlayBattleCanvas?.sync();
     window.WeightPlayTicBoardPresentation?.sync();
-    if (scene !== 'main' && previous === 'main') {
+    if (phase === 'battle' && (previousPhase === 'main' || previousPhase === 'result')) {
       window.scrollTo({top:0,left:0,behavior:'auto'});
       const owner = generation;
       queueMicrotask(() => {
@@ -106,7 +107,7 @@
       });
     }
     if (scene === 'main' && previous && previous !== 'main') main.querySelector('#startBtn').focus({preventScroll:true});
-    previous = scene;
+    previous = scene; previousPhase = phase; previousOwner = ownerKey;
   };
   const resume = () => {
     if (!leaving) return;
