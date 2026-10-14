@@ -69,6 +69,7 @@
     battle.setAttribute('data-wp-frame-play-fill', '');
     const info = document.createElement('div'), stat = document.createElement('div');
     stat.append(app.battleChip); info.append(stat); content.append(info);
+    content.querySelector('.logic-action-row')?.setAttribute('data-wp-frame-logical-actions', 'battle');
     const difficulty = document.createElement('div');
     difficulty.id = 'fourDifficulty'; difficulty.className = 'four-difficulty';
     content.append(difficulty);

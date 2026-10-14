@@ -65,7 +65,7 @@
   justify-items:center;
   container-type:normal;
 }
-#logicBattle .four-column-actions {
+  #logicBattle .four-column-actions {
   grid-column:1;
   grid-row:1;
   width:min(100%,calc((100cqh - 52px) * 7 / 6));
@@ -86,7 +86,7 @@
   padding:0;
   box-sizing:border-box;
 }
-#logicBattle .four-column-actions[data-wp-frame-logical-actions="battle"] [data-wp-frame-action] {
+  #logicBattle .four-column-actions[data-wp-frame-logical-actions="battle"] [data-wp-frame-action] {
   transform:scaleY(1.02);
 }
 #logicBattle .four-difficulty {
@@ -203,8 +203,18 @@
   #logicBattle .logic-action-row { grid-column:2; grid-row:3; height:148px; grid-template-columns:minmax(0,1fr); grid-template-rows:repeat(3,44px); align-self:end; }
   #logicBattle #logicBoard { height:100%; }
   #logicBattle .four-board-layout { width:100%; height:100%; grid-template-columns:minmax(0,1fr); grid-template-rows:44px minmax(0,1fr); container-type:size; }
+  /* The seven-by-six cells determine the board's content height.  Its 8px
+     padding and 2px border add 20px outside that grid, so subtract them from
+     the available container height before deriving the content width. */
   #logicBattle .logic-connect-board { grid-column:1; grid-row:2; width:min(100%,calc((100cqh - 52px) * 7 / 6)); height:auto; aspect-ratio:auto; }
   #logicBattle :is(.logic-result,.logic-leave) { align-items:start; }
+}
+@media (min-width:661px) and (max-height:300px) and (orientation:landscape) {
+  #logicBattle .logic-action-row { height:calc(45.2px * var(--wp-battle-canvas-inverse-scale,1)); min-height:calc(45.2px * var(--wp-battle-canvas-inverse-scale,1)); grid-template-columns:repeat(3,minmax(0,1fr)); grid-template-rows:calc(45.2px * var(--wp-battle-canvas-inverse-scale,1)); align-self:start; }
+  #logicBattle .logic-action-row [data-wp-frame-action] { height:calc(45.2px * var(--wp-battle-canvas-inverse-scale,1))!important; min-height:calc(45.2px * var(--wp-battle-canvas-inverse-scale,1))!important; }
+  #logicBattle .four-column-actions { width:min(100%,calc((100cqh - 112px) * 7 / 6)); }
+  #logicBattle .four-column-actions[data-wp-frame-logical-actions="battle"] [data-wp-frame-action] { transform:translateX(-5.25px) scaleY(1.02); }
+  #logicBattle .logic-connect-board { width:min(100%,calc((100cqh - 112px) * 7 / 6)); }
 }
 @keyframes four-disc-drop { from {transform:translateY(var(--drop-distance));opacity:.35;} 75% {transform:translateY(2px);} to {transform:translateY(0);opacity:1;} }
 @media (prefers-reduced-motion:reduce) {

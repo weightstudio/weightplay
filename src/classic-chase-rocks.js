@@ -292,13 +292,25 @@
       [[13, 13], [7, 5], [1, 13], [13, 1]],
     ];
     const homes = homeSets[(state.level - 1) % homeSets.length];
-    state.maze = { player: { x: 1, y: 1, dir: "down", next: "down", grace: 6000 }, pellets, pelletTotal: pellets.size, beacons, power: 0, moveClock: 0, enemyClock: -4500, combo: 0, lives: 5, enemies: [
+    state.maze = { started: false, player: { x: 1, y: 1, dir: "down", next: "down", grace: 6000 }, pellets, pelletTotal: pellets.size, beacons, power: 0, moveClock: 0, enemyClock: -4500, combo: 0, lives: 5, enemies: [
       { x: homes[0][0], y: homes[0][1], homeX: homes[0][0], homeY: homes[0][1], type: "direct", color: "#ff7d9f" }, { x: homes[1][0], y: homes[1][1], homeX: homes[1][0], homeY: homes[1][1], type: "predict", color: "#68e1ff" }, { x: homes[2][0], y: homes[2][1], homeX: homes[2][0], homeY: homes[2][1], type: "ambush", color: "#c48cff" }, { x: homes[3][0], y: homes[3][1], homeX: homes[3][0], homeY: homes[3][1], type: "wander", color: "#ffd66d" }
     ] };
     state.input = {};
     setMessage(tr("ready")); updateHud(); drawMaze();
   }
-  function mazeSetDirection(direction) { if (gameId !== "maze" || !state.running) return; state.maze.player.next = direction; tone("movement.step", 0.025, "triangle", 0.018); }
+  function mazeSetDirection(direction) {
+    if (gameId !== "maze" || !state.running) return;
+    const maze = state.maze;
+    const player = maze.player;
+    if (!maze.started) {
+      const initial = DIRS[direction];
+      if (!mazeCanMove(player.x + initial.x, player.y + initial.y)) return;
+      player.dir = direction;
+      maze.started = true;
+    }
+    player.next = direction;
+    tone("movement.step", 0.025, "triangle", 0.018);
+  }
   function mazeResolvePlayerCollision() {
     const maze = state.maze; const player = maze.player;
     const enemy = maze.enemies.find((item) => item.x === player.x && item.y === player.y);
@@ -341,7 +353,9 @@
     });
   }
   function updateMaze(dt) {
-    const maze = state.maze; maze.power = Math.max(0, maze.power - dt * 1000); maze.player.grace = Math.max(0, (maze.player.grace || 0) - dt * 1000); maze.moveClock += dt * 1000; maze.enemyClock += dt * 1000;
+    const maze = state.maze;
+    if (!maze.started) { updateHud(); drawMaze(); return; }
+    maze.power = Math.max(0, maze.power - dt * 1000); maze.player.grace = Math.max(0, (maze.player.grace || 0) - dt * 1000); maze.moveClock += dt * 1000; maze.enemyClock += dt * 1000;
     const playerRate = Math.max(72, 126 - state.level * 10); const enemyRate = Math.max(1000, 2900 - state.level * 500);
     while (maze.moveClock >= playerRate) { maze.moveClock -= playerRate; mazeStepPlayer(); if (!state.running) return; }
     while (maze.enemyClock >= enemyRate) { maze.enemyClock -= enemyRate; mazeEnemyStep(); if (!state.running) return; }

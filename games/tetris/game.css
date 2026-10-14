@@ -11,6 +11,7 @@ body[data-game-id="tetris"][data-screen="battle"] #battleScreen .battle-canvas {
   max-height: calc(100dvh - var(--wp-ad-reserve-height, 0px)) !important;
 }
 body[data-game-id="tetris"] #battleScreen .battle-panel {
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 320px);
   grid-template-rows: 56px minmax(0, 1fr);
@@ -187,9 +188,9 @@ body[data-game-id="tetris"] #controls .control-row {
   direction: ltr;
 }
 body[data-game-id="tetris"] #controls button {
-  min-width: 0;
+  min-width: 50px;
   height: 52px;
-  min-height: 48px;
+  min-height: 50px;
   padding: 0;
   border-radius: 11px;
   font-size: 23px;
@@ -274,7 +275,7 @@ body[data-game-id="tetris"][data-screen="result"] #resultScreen .arcade-panel { 
 @media (orientation: landscape) and (max-height: 430px) {
   body[data-game-id="tetris"] #battleScreen .battle-panel {
     grid-template-columns: minmax(0, 44%) minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr) 52px;
+    grid-template-rows: 56px minmax(0, 1fr) 52px;
     gap: 6px 12px;
     padding: 7px;
   }
@@ -285,9 +286,9 @@ body[data-game-id="tetris"][data-screen="result"] #resultScreen .arcade-panel { 
   }
   body[data-game-id="tetris"] #battleScreen .battle-top { grid-column: 2; grid-row: 1; }
   body[data-game-id="tetris"] #battleScreen .game-message { grid-column: 2; grid-row: 2; align-self: start; }
-  body[data-game-id="tetris"] #battleScreen #controls { grid-column: 2; grid-row: 3; padding: 5px; }
+  body[data-game-id="tetris"] #battleScreen #controls { grid-column: 2; grid-row: 3; padding: 0 4px; }
   body[data-game-id="tetris"] #controls .control-row { gap: 4px; }
-  body[data-game-id="tetris"] #controls button { height: 48px; font-size: 20px; }
+  body[data-game-id="tetris"] #controls button { height: 50px; min-height: 50px; font-size: 20px; }
   body[data-game-id="tetris"][data-screen="result"] #resultScreen .arcade-panel { justify-content: flex-start; }
 }
 

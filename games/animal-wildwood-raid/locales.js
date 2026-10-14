@@ -142,3 +142,57 @@ for(const [i,l] of LOCALES.entries()){
  COPY[l].equipmentHelp+=` ${stationaryHints[i]}`;
  effects[l]=stationaryHints[i]+'|'+effects[l].split('|').slice(1).join('|');
 }
+const clarityMessages={
+ en:{stageRule:'Drag to browse · tap to play. Finish the goal and guardian, then reach the golden gate. Brindle at 0 HP means defeat.',lastHitHero:'Last damage to Brindle: {source} · {attack} · {damage} HP.',lastHitFriend:'Protected friend fell: {source} · {attack} · {damage} HP.',lastHitUnknownHero:'Brindle reached 0 HP.',lastHitUnknownFriend:'The protected friend reached 0 HP.',savedProgress:'Saved progress and permanent growth are kept.',unknownSource:'Unknown source'},
+ 'zh-Hant':{stageRule:'左右拖曳瀏覽 · 點關卡開始。完成目標並打倒守衛，再前往金色出口；Brindle 生命歸零即失敗。',lastHitHero:'Brindle 最後受到的傷害：{source} · {attack} · {damage} 點。',lastHitFriend:'夥伴倒下：{source} · {attack} · {damage} 點傷害。',lastHitUnknownHero:'Brindle 生命歸零。',lastHitUnknownFriend:'受保護的夥伴生命歸零。',savedProgress:'已儲存進度與永久能力都會保留。',unknownSource:'未知來源'},
+ 'zh-Hans':{stageRule:'左右拖动浏览 · 点关卡开始。完成目标并击败守卫，再前往金色出口；Brindle 生命归零即失败。',lastHitHero:'Brindle 最后受到的伤害：{source} · {attack} · {damage} 点。',lastHitFriend:'伙伴倒下：{source} · {attack} · {damage} 点伤害。',lastHitUnknownHero:'Brindle 生命归零。',lastHitUnknownFriend:'受保护的伙伴生命归零。',savedProgress:'已保存进度和永久能力都会保留。',unknownSource:'未知来源'},
+ ja:{stageRule:'ドラッグで閲覧 · タップで開始。目標と守護者を倒してから黄金の門へ。Brindleの体力が0になると敗北。',lastHitHero:'Brindleへの最後のダメージ：{source} · {attack} · {damage} HP。',lastHitFriend:'仲間が倒れました：{source} · {attack} · {damage} ダメージ。',lastHitUnknownHero:'Brindleの体力が0になりました。',lastHitUnknownFriend:'守る仲間の体力が0になりました。',savedProgress:'保存済みの進行と永続強化は保持されます。',unknownSource:'不明な攻撃元'},
+ ko:{stageRule:'드래그로 둘러보기 · 탭하여 시작하세요. 목표와 수호자를 물리친 뒤 황금 문으로 가세요. Brindle의 체력이 0이면 패배합니다.',lastHitHero:'Brindle의 마지막 피해: {source} · {attack} · {damage} 체력.',lastHitFriend:'보호하던 친구가 쓰러졌습니다: {source} · {attack} · {damage} 피해.',lastHitUnknownHero:'Brindle의 체력이 0이 되었습니다.',lastHitUnknownFriend:'보호하던 친구의 체력이 0이 되었습니다.',savedProgress:'저장된 진행과 영구 능력은 유지됩니다.',unknownSource:'알 수 없는 공격원'},
+ es:{stageRule:'Arrastra para explorar · toca para jugar. Cumple el objetivo y derrota al guardián antes de llegar al arco dorado. Brindle cae si su salud llega a 0.',lastHitHero:'Último daño a Brindle: {source} · {attack} · {damage} de salud.',lastHitFriend:'El amigo protegido cayó: {source} · {attack} · {damage} de daño.',lastHitUnknownHero:'La salud de Brindle llegó a 0.',lastHitUnknownFriend:'La salud del amigo protegido llegó a 0.',savedProgress:'Se conservan el progreso y las mejoras permanentes.',unknownSource:'Origen desconocido'},
+ 'pt-BR':{stageRule:'Arraste para explorar · toque para jogar. Cumpra o objetivo e derrote o guardião antes de chegar ao portão dourado. Brindle perde se a vida chegar a 0.',lastHitHero:'Último dano em Brindle: {source} · {attack} · {damage} de vida.',lastHitFriend:'O amigo protegido caiu: {source} · {attack} · {damage} de dano.',lastHitUnknownHero:'A vida de Brindle chegou a 0.',lastHitUnknownFriend:'A vida do amigo protegido chegou a 0.',savedProgress:'O progresso e os atributos permanentes ficam salvos.',unknownSource:'Origem desconhecida'},
+ fr:{stageRule:'Faites glisser pour parcourir · touchez pour jouer. Terminez l’objectif et battez le gardien avant la porte dorée. Brindle perd à 0 PV.',lastHitHero:'Derniers dégâts sur Brindle : {source} · {attack} · {damage} PV.',lastHitFriend:'L’ami protégé est tombé : {source} · {attack} · {damage} dégâts.',lastHitUnknownHero:'Les PV de Brindle sont tombés à 0.',lastHitUnknownFriend:'Les PV de l’ami protégé sont tombés à 0.',savedProgress:'La progression et les améliorations permanentes sont conservées.',unknownSource:'Source inconnue'},
+ de:{stageRule:'Ziehen zum Stöbern · Tippen zum Spielen. Erfülle das Ziel und besiege den Wächter, bevor du das goldene Tor erreichst. Bei 0 LP verliert Brindle.',lastHitHero:'Letzter Schaden an Brindle: {source} · {attack} · {damage} LP.',lastHitFriend:'Der beschützte Freund fiel: {source} · {attack} · {damage} Schaden.',lastHitUnknownHero:'Brindles LP sind auf 0 gesunken.',lastHitUnknownFriend:'Die LP des beschützten Freundes sind auf 0 gesunken.',savedProgress:'Gespeicherter Fortschritt und dauerhafte Werte bleiben erhalten.',unknownSource:'Unbekannte Quelle'},
+ it:{stageRule:'Trascina per sfogliare · tocca per giocare. Completa l’obiettivo e sconfiggi il guardiano prima del cancello dorato. Brindle perde a 0 salute.',lastHitHero:'Ultimi danni a Brindle: {source} · {attack} · {damage} salute.',lastHitFriend:'L’amico protetto è caduto: {source} · {attack} · {damage} danni.',lastHitUnknownHero:'La salute di Brindle è arrivata a 0.',lastHitUnknownFriend:'La salute dell’amico protetto è arrivata a 0.',savedProgress:'I progressi salvati e gli attributi permanenti restano.',unknownSource:'Fonte sconosciuta'},
+ ru:{stageRule:'Перетаскивайте для просмотра · нажмите, чтобы играть. Выполните цель и победите стража, затем идите к золотым воротам. При 0 здоровья Бриндл проигрывает.',lastHitHero:'Последний урон Бриндлу: {source} · {attack} · {damage} ОЗ.',lastHitFriend:'Защищаемый друг пал: {source} · {attack} · урон {damage}.',lastHitUnknownHero:'Здоровье Бриндла упало до 0.',lastHitUnknownFriend:'Здоровье защищаемого друга упало до 0.',savedProgress:'Сохранённый прогресс и постоянные усиления останутся.',unknownSource:'Неизвестный источник'},
+ hi:{stageRule:'खींचकर देखें · टैप करके खेलें। लक्ष्य पूरा करें और रक्षक को हराकर सुनहरे द्वार तक जाएँ। Brindle का स्वास्थ्य 0 होने पर हार होती है।',lastHitHero:'Brindle को आखिरी चोट: {source} · {attack} · {damage} स्वास्थ्य।',lastHitFriend:'सुरक्षित मित्र गिर गया: {source} · {attack} · {damage} क्षति।',lastHitUnknownHero:'Brindle का स्वास्थ्य 0 हो गया।',lastHitUnknownFriend:'सुरक्षित मित्र का स्वास्थ्य 0 हो गया।',savedProgress:'सहेजी प्रगति और स्थायी क्षमताएँ बनी रहेंगी।',unknownSource:'अज्ञात स्रोत'},
+ ar:{stageRule:'اسحب للتصفح · المس للعب. أكمل الهدف واهزم الحارس ثم اتجه إلى البوابة الذهبية. يخسر Brindle عند وصول صحته إلى 0.',lastHitHero:'آخر ضرر على Brindle: {source} · {attack} · {damage} صحة.',lastHitFriend:'سقط الصديق المحمي: {source} · {attack} · ضرر {damage}.',lastHitUnknownHero:'وصلت صحة Brindle إلى 0.',lastHitUnknownFriend:'وصلت صحة الصديق المحمي إلى 0.',savedProgress:'سيبقى التقدم المحفوظ والتحسن الدائم.',unknownSource:'مصدر غير معروف'}
+};
+const combatants={
+ en:['Thornling','Ram','Spore caster','Sneak','Shaman','Shield enemy','Thorns'],
+ 'zh-Hant':['刺棘獸','衝角獸','孢子術士','潛行者','薩滿','盾衛','荊棘地帶'],
+ 'zh-Hans':['刺棘兽','冲角兽','孢子术士','潜行者','萨满','盾卫','荆棘地带'],
+ ja:['茨の小鬼','突進獣','胞子術師','影潜み','シャーマン','盾持ち','茨の地面'],
+ ko:['가시 정령','돌진 짐승','포자술사','잠복꾼','주술사','방패병','가시 지대'],
+ es:['Espinillo','Carnero','Lanzahongos','Acechador','Chamán','Guardia con escudo','Espinas'],
+ 'pt-BR':['Espinheiro','Carneiro','Lançador de esporos','Furtivo','Xamã','Guardião de escudo','Espinhos'],
+ fr:['Épineux','Bélier','Lance-spores','Rôdeur','Chaman','Porte-bouclier','Ronces'],
+ de:['Dornling','Rammbock','Sporenwerfer','Schleicher','Schamane','Schildwächter','Dornen'],
+ it:['Spinaling','Ariete','Lancia-spore','Furtivo','Sciamano','Guardia con scudo','Rovi'],
+ ru:['Терновик','Таран','Споровик','Лазутчик','Шаман','Щитоносец','Шипы'],
+ hi:['काँटेदार जीव','मेंढ़ा','बीजाणु जादूगर','छिपकर वार करने वाला','शमन','ढालधारी','काँटे'],
+ ar:['كائن شوكي','كبش','رامي الأبواغ','متسلل','شامان','حامل الدرع','الأشواك']
+};
+const attackLabels={
+ en:['melee','sweep','charge','projectile','root trap','burst','thorn damage','unknown attack'],
+ 'zh-Hant':['近戰','橫掃','衝撞','投射物','根刺陷阱','環形彈幕','荊棘傷害','未知攻擊'],
+ 'zh-Hans':['近战','横扫','冲撞','投射物','根刺陷阱','环形弹幕','荆棘伤害','未知攻击'],
+ ja:['近接攻撃','薙ぎ払い','突進','弾丸','根の罠','全方位攻撃','茨のダメージ','不明な攻撃'],
+ ko:['근접 공격','휩쓸기','돌진','투사체','뿌리 덫','범위 공격','가시 피해','알 수 없는 공격'],
+ es:['cuerpo a cuerpo','barrido','embestida','proyectil','trampa de raíces','estallido radial','daño de espinas','ataque desconocido'],
+ 'pt-BR':['corpo a corpo','varrida','investida','projétil','armadilha de raízes','explosão radial','dano de espinhos','ataque desconhecido'],
+ fr:['corps à corps','balayage','charge','projectile','piège de racines','salve circulaire','dégâts des ronces','attaque inconnue'],
+ de:['Nahkampf','Rundumschlag','Ansturm','Geschoss','Wurzelfalle','Rundumsalve','Dornen-Schaden','unbekannter Angriff'],
+ it:['corpo a corpo','spazzata','carica','proiettile','trappola di radici','esplosione radiale','danni dei rovi','attacco sconosciuto'],
+ ru:['ближний бой','размашистый удар','рывок','снаряд','ловушка корней','круговой залп','урон от шипов','неизвестная атака'],
+ hi:['नज़दीकी हमला','झाड़ू वार','धावा','प्रक्षेप्य','जड़ का जाल','चारों ओर प्रहार','काँटों की क्षति','अज्ञात हमला'],
+ ar:['اشتباك قريب','ضربة كاسحة','اندفاع','مقذوف','فخ الجذور','انفجار دائري','ضرر الأشواك','هجوم غير معروف']
+};
+const enemyIds=['thornling','ram','caster','sneak','shaman','shield','thorns'];
+const attackIds=['melee','sweep','charge','shot','roots','burst','thorns','unknown'];
+for(const [i,language] of LOCALES.entries()){
+ Object.assign(COPY[language],clarityMessages[language]);
+ enemyIds.forEach((id,index)=>COPY[language][`combatant_${id}`]=combatants[language][index]);
+ attackIds.forEach((id,index)=>COPY[language][`attack_${id}`]=attackLabels[language][index]);
+ COPY[language].attack_environment=attackLabels[language][6];
+ COPY[language].combatant_unknown=clarityMessages[language].unknownSource;
+}

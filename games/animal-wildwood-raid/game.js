@@ -1,6 +1,6 @@
 import {STAGES,TOOLS} from './game-data.js';
-import {Simulation,mission} from './simulation.js?v=20261014-wildwood-forest-polish-v38e';
-import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js?v=20261014-wildwood-forest-polish-v38e';
+import {Simulation,mission} from './simulation.js?v=20261014-wildwood-mission-clarity-v39a';
+import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js?v=20261014-wildwood-mission-clarity-v39a';
 import {load,store,award,KEY} from './save.js';
 import {layoutLabels} from './label-layout.js?v=20261014-wildwood-label-layout-v36';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
@@ -69,7 +69,7 @@ function haptic(duration){if(!navigator.userActivation?.hasBeenActive)return;try
 async function startRun(stageId=selected,forcePractice=practiceMode){
  const usingPractice=Boolean(forcePractice||practiceMode||practiceRun),nextStage=Number(stageId);if(usingPractice&&!await LocalPractice.validate())return;if(!Number.isInteger(nextStage)||nextStage<1||nextStage>STAGES.length||(!usingPractice&&nextStage>save.highestUnlocked))return;
  dispose();if(usingPractice)beginPracticeRun();else{practiceRun=false;restorePracticeSave();}selected=nextStage;const token=generation;hitStopRemaining=0;settled=false;notice='';noticeUntil=0;lastHp=100;await show('battle');if(token!==generation)return;dialog(t('loading'),'',[],'loading');let timer;
- try{World||=(await Promise.race([import('./world.js?v=20261014-wildwood-forest-polish-v38e'),new Promise((_,reject)=>timer=setTimeout(()=>reject(new Error('timeout')),15000))])).WildwoodWorld;if(token!==generation)return;
+ try{World||=(await Promise.race([import('./world.js?v=20261014-wildwood-mission-clarity-v39a'),new Promise((_,reject)=>timer=setTimeout(()=>reject(new Error('timeout')),15000))])).WildwoodWorld;if(token!==generation)return;
   sim=new Simulation(selected,save.loadout,save.growth,save.ownedTools);world=new World($('#arena'),sim);world.render();buttons();await closeDialog();if(token!==generation)return;save.tutorialSeen=true;persist();hud();start();
  }catch(error){if(token!==generation)return;world?.dispose();world=null;dialog(t('error'),'',[[t('retry'),startRun],[t('stages'),()=>show('stage')]],'error');console.warn('Wildwood:',error.message);}finally{clearTimeout(timer);}
 }
@@ -115,7 +115,9 @@ function healthLabels(dt){
  for(const [uid,el] of unitLabels){if(!all.some(e=>e.uid===uid)){el.remove();unitLabels.delete(uid);}else el.hidden=!active.has(uid);}
 }
 function finish(){if(settled)return;settled=true;stop();if(sim.won){save.highestUnlocked=Math.max(save.highestUnlocked,Math.min(30,selected+1));save.best[selected]=Math.max(save.best[selected]||0,Math.ceil(sim.hero.hp/sim.hero.maxHp*100));persist();}
- const win=sim.won;dialog(win?(selected===30?t('complete'):t('clear')):t('fail'),`${objective(sim.stage,sim.tally)} · ${t('hp')} ${Math.ceil(sim.hero.hp)} / ${sim.hero.maxHp} · ${t('permanent')}: ${t('hp')} +${save.growth.health}, ${t('power')} +${save.growth.attack}, ${t('regen')} +${statNumber(save.growth.regen)}`,
+ const win=sim.won,damage=sim.lastDamage,source=damage?.sourceKind==='boss'?guardianName(damage.source):t(`combatant_${damage?.source||'unknown'}`),attack=t(`attack_${damage?.attack||'unknown'}`),damageLine=damage?t(damage.target==='friend'?'lastHitFriend':'lastHitHero').replace('{source}',source).replace('{attack}',attack).replace('{damage}',statNumber(damage.amount)):t(sim.protectedHp<=0?'lastHitUnknownFriend':'lastHitUnknownHero');
+ const resultText=[`${objective(sim.stage,sim.tally)} · ${t('hp')} ${Math.ceil(sim.hero.hp)} / ${sim.hero.maxHp}`,!win?damageLine:'',!win?t('savedProgress'):'',`${t('permanent')}: ${t('hp')} +${save.growth.health}, ${t('power')} +${save.growth.attack}, ${t('regen')} +${statNumber(save.growth.regen)}`].filter(Boolean).join('\n');
+ dialog(win?(selected===30?t('complete'):t('clear')):t('fail'),resultText,
  [[t('stages'),()=>show('stage')],[t('next'),()=>{selected++;startRun();},!win||selected===30],[t('retry'),startRun]],'result');
 }
 async function closeDialog(next){const node=$('#modal'),token=++modalToken;if(node.hidden){modal='';$('.battle-area').inert=false;frame.activate('battle');syncJoystickAvailability();next?.();return;}modal='closing';syncJoystickAvailability();$('.battle-area').inert=true;modalAnimation?.cancel();const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,duration=reduced?70:120;modalAnimation=node.animate?.(reduced?[{opacity:1},{opacity:0}]:[{opacity:1,transform:'translateY(0)'},{opacity:0,transform:'translateY(5px)'}],{duration,easing:'ease-in',fill:'forwards'});if(modalAnimation)await modalAnimation.finished.catch(()=>{});else await new Promise(resolve=>setTimeout(resolve,duration));if(token!==modalToken)return;node.hidden=true;modalAnimation=null;modal='';$('.battle-area').inert=false;frame.activate('battle');syncJoystickAvailability();next?.();}

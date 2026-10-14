@@ -76,6 +76,11 @@
    window.WeightPlayCastle.dismissRewardNotice('hangman');
   });
  });
+ // Main language choice uses the platform's canonical authored locale route.
+ // Capture before the legacy native listener selects its in-place locale.
+ select.addEventListener('change',()=>{
+  if(document.body.dataset.screen==='main')window.WonderI18n?.setLocale?.(select.value,{navigate:true});
+ },true);
  window.addEventListener('weightplay:shell-sync',sync);window.addEventListener('weightplay:interaction-state',sync);select.addEventListener('change',translate);
  window.addEventListener('blur',()=>{unfocused=true;sync();});window.addEventListener('focus',()=>{unfocused=false;sync();});document.addEventListener('visibilitychange',sync);
  window.addEventListener('pagehide',()=>{suspended=true;generation++;frame.close();sync();});window.addEventListener('pageshow',()=>{suspended=false;sync();});
