@@ -530,6 +530,39 @@
     const template = (leaveKey<0?undefined:leaveCopyByLocale[currentLocale]?.[leaveKey]) ?? skyportDynamicText[currentLocale]?.[key] ?? skyportUiText[currentLocale]?.[key] ?? skyportStageText[currentLocale]?.[key] ?? strings[currentLocale]?.[key] ?? strings.en?.[key] ?? key;
     return Object.entries(values).reduce((value, [name, replacement]) => String(value).replace(`{${name}}`, replacement), template);
   };
+  // Keep the existing contract and fleet controls in their owned Equipment
+  // workspace. These permanent panes share one Stage canvas and bottom bar.
+  const equipmentNames = {en:'Equipment','zh-Hant':'裝備','zh-Hans':'装备',ja:'装備',ko:'장비',es:'Equipo','pt-BR':'Equipamento',fr:'Équipement',de:'Ausrüstung',it:'Dotazione',ru:'Снаряжение',hi:'उपकरण',ar:'المعدات'};
+  const stageWorkspace = document.createElement('div');
+  stageWorkspace.id = 'stageWorkspace'; stageWorkspace.className = 'skyport-stage-workspace';
+  stageWorkspace.setAttribute('data-wp-stage-workspace','');
+  const stagesPane = document.createElement('section');
+  stagesPane.id = 'stagesPane'; stagesPane.className = 'skyport-stages-pane';
+  stagesPane.append(stageScreen.querySelector('.stage-copy'), $('stageRail'));
+  const equipmentPane = document.createElement('section');
+  equipmentPane.id = 'equipmentPane'; equipmentPane.className = 'skyport-equipment-pane hidden';
+  equipmentPane.append(stageScreen.querySelector('.contract-row'));
+  stageWorkspace.append(stagesPane, equipmentPane);
+  const stageTabs = stageScreen.querySelector('.stage-tabs');
+  stageScreen.insertBefore(stageWorkspace,stageTabs);
+  const stagesTab = stageTabs.querySelector('button');
+  stagesTab.id = 'stagesTab'; stagesTab.setAttribute('aria-controls','stagesPane');
+  const equipmentTab = document.createElement('button');
+  equipmentTab.id='equipmentTab'; equipmentTab.type='button'; equipmentTab.setAttribute('aria-controls','equipmentPane');
+  stageTabs.lastElementChild.replaceWith(equipmentTab);
+  function selectStageWorkspace(name) {
+    const equipment = name === 'equipment';
+    stagesPane.classList.toggle('hidden',equipment); equipmentPane.classList.toggle('hidden',!equipment);
+    stagesPane.inert=equipment; equipmentPane.inert=!equipment;
+    stagesTab.setAttribute('aria-current',equipment?'false':'page'); equipmentTab.setAttribute('aria-current',equipment?'page':'false');
+    equipmentTab.textContent=equipmentNames[activeLocale()]||equipmentNames.en;
+    if(equipment){cancelStageMotion();renderContractControls();}else if(!stageScreen.classList.contains('hidden'))renderStages();
+  }
+  stagesTab.onclick=()=>selectStageWorkspace('stages');
+  equipmentTab.onclick=()=>selectStageWorkspace('equipment');
+  equipmentPane.inert=true;
+  equipmentTab.textContent=equipmentNames[activeLocale()]||equipmentNames.en;
+  equipmentTab.setAttribute('aria-current','false');
   function ensureTutorialPanel() {
     if ($('tutorialPanel')) return;
     const canvas = $('battleHelpPopover')?.parentElement;
@@ -599,6 +632,7 @@
   const show = (id) => {
     if(id==='mainScreen'||id==='stageScreen')stopWorld();
     if (id !== 'stageScreen') cancelStageMotion();
+    if (id === 'stageScreen') selectStageWorkspace('stages');
     ['mainScreen','stageScreen','battleShell','result'].forEach((screen) => $(screen).classList.toggle('hidden', screen !== id && !(id === 'result' && screen === 'battleShell')));
     const resultOpen = id === 'result';
     if(resultOpen)world?.setPaused(true);
@@ -716,6 +750,7 @@
     armInsuranceConfirmation(insuranceConfirmRemaining);
   }
   function renderContractControls(message = '') {
+    equipmentTab.textContent=equipmentNames[activeLocale()]||equipmentNames.en;
     const balance = window.WeightPlayWallet?.read?.().diamonds || 0;
     $('contractToggle').checked = Boolean(state.contract);
     $('contractToggle').disabled = insuranceActive;

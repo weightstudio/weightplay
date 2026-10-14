@@ -2,8 +2,8 @@
   "use strict";
 
   const GAME_ID = "lights-out";
-  const GAME_VERSION = "v13";
-  const INTERFACE_VERSION = "8";
+  const GAME_VERSION = "v15";
+  const INTERFACE_VERSION = "9";
   const LOCALE_MAP = {
     en: "en",
     "zh-tw": "zh-Hant",

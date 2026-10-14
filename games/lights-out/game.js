@@ -99,6 +99,8 @@
   app.battle.dataset.wpBattleMinHeight = "720";
   app.battle.dataset.wpBattleLandscapeWidth = "760";
   app.battle.dataset.wpBattleLandscapeHeight = "350";
+  app.battle.setAttribute("data-wp-frame-logical-header", "battle");
+  app.battle.setAttribute("data-wp-frame-play-fill", "");
 
   const frame = window.WeightPlayScreenFrame.mount({
     root,

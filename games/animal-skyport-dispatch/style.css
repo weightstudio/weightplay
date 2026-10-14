@@ -62,11 +62,6 @@
   .contract-row{height:50px;min-height:50px}
   .contract-choice{padding:5px 9px;font-size:.7rem}
   .insurance-btn{font-size:.7rem}
-  .stage-rail>.stage-card{height:122px!important;min-height:122px!important;max-height:122px!important;padding:10px;font-size:.78rem}
-  /* The shared selector imposes a 198px rail and 190px cards. In the
-     334px landscape canvas those defaults spill into the bottom tab row. */
-  #stageScreen #stageRail{min-height:0!important}
-  #stageScreen #stageRail>.stage-card{height:122px!important;min-height:122px!important;max-height:122px!important}
 }
 
 /* Keep localized Battle actions readable inside the fixed logical footer. */
@@ -140,7 +135,7 @@
 .battle-hud-info #scoreText{min-width:0;flex:0 1 auto;white-space:nowrap;text-align:end}
 [dir="rtl"] .battle-hud-info{flex-direction:column;justify-content:center;gap:0;font-size:clamp(.58rem,2.4vw,.7rem);line-height:1}
 [dir="rtl"] .battle-hud-info>*{width:100%;text-align:center!important}
-.result-next-preview:empty{display:none}
+.result-next-preview:empty{visibility:hidden}
 .tutorial-overlay{position:absolute;inset:0;z-index:9;display:grid;place-items:center;overflow:auto;padding:clamp(14px,4vw,28px);background:#061521ed;animation:skyport-tutorial-enter .18s ease-out both}
 .tutorial-overlay.is-closing{animation-direction:reverse}
 .tutorial-card{width:min(100%,520px);display:grid;gap:12px;padding:clamp(18px,4vw,28px);border:1px solid #6ca8b6;border-radius:18px;background:linear-gradient(145deg,#193e5c,#0b263d);box-shadow:0 16px 42px #0008;color:#f6fbff}
@@ -198,3 +193,30 @@
 }
 #battleShell .result,#battleShell .leave-confirm,#battleShell .tutorial-card {animation:skyport-tutorial-enter .18s ease-out}
 @media(prefers-reduced-motion:reduce){#routeField *{transition:none!important}#battleShell .result,#battleShell .leave-confirm,#battleShell .tutorial-card{animation:none}}
+
+/* Formal I9: one bounded workspace and the standard three equal tab tracks. */
+#stageScreen{grid-template-rows:var(--wp-frame-control-size-physical,48px) minmax(0,1fr) max(56px,calc(56px * var(--wp-stage-canvas-inverse-scale,1)));gap:0}
+.skyport-stage-workspace{min-width:0;min-height:0;position:relative;overflow:hidden}
+.skyport-stages-pane{height:100%;min-height:0;position:relative}
+.skyport-stages-pane .stage-copy{display:none}
+.skyport-stages-pane #stageRail{position:absolute;left:0;right:0;top:clamp(8px,calc(38% - 95px),calc(100% - 198px));height:198px}
+.skyport-equipment-pane{height:100%;min-height:0;overflow:auto;padding:16px 12px}
+#stageScreen .stage-tabs{grid-template-columns:repeat(3,minmax(0,1fr));height:max(56px,calc(56px * var(--wp-stage-canvas-inverse-scale,1)));min-height:56px;padding:max(6px,calc(6px * var(--wp-stage-canvas-inverse-scale,1)));gap:8px}
+#stageScreen .stage-tabs>span{background:none}
+#stageScreen .stage-tabs button{height:max(44px,calc(44px * var(--wp-stage-canvas-inverse-scale,1)));min-height:44px;padding:6px;font-size:max(14px,calc(14px * var(--wp-stage-canvas-inverse-scale,1)));line-height:1.1;white-space:nowrap}
+#stagesTab{grid-column:2}
+#equipmentTab{grid-column:3}
+#stageScreen .stage-tabs button[aria-current="page"]{background:#17465b;border-color:#ffd66a;box-shadow:0 0 10px #ffd66a44}
+#stageScreen .stage-tabs button[aria-current="false"]{background:#10364c;border-color:#6ca8b6;box-shadow:none}
+/* Outcomes reserve the same content slots; actions cannot move with reward
+   count, localized copy or the unavailable next-shift preview. */
+#battleShell .result{grid-template-columns:minmax(0,420px);grid-template-rows:44px 58px 144px 66px 48px;align-content:center;justify-content:center;gap:8px;padding:14px}
+#battleShell #resultTitle,#battleShell #resultCopy{display:grid;place-items:center;overflow:auto}
+#battleShell .result-rewards{height:144px;align-content:start;overflow:auto}
+#battleShell .result-next-preview{height:66px;margin:0;overflow:auto}
+#battleShell .result-actions{height:48px;width:100%}
+@media(max-height:500px){
+ #battleShell .result{grid-template-rows:30px 36px 74px 46px 48px;gap:5px;padding:8px}
+ #battleShell .result-rewards{height:74px}
+ #battleShell .result-next-preview{height:46px;padding:5px 8px;font-size:12px}
+}
