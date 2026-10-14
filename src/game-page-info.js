@@ -11946,6 +11946,18 @@
     const isFreeCell = id === "freecell-solitaire";
     const publicFaq = isGeneralGuardYard ? game.faq.slice(0, -1) : game.faq;
     syncLocalizedMetadata(game, identity);
+    // Route shells may opt in to a fully authored static Guide when the
+    // locale owns complete localized copy. Honor that shared contract before
+    // the generic renderer removes and rebuilds Guide nodes from fallback data.
+    const preservedStaticGuide = document.querySelector(
+      "section.game-page-info-static[data-wp-preserve-static-guide]",
+    );
+    if (preservedStaticGuide) {
+      preservedStaticGuide.setAttribute("aria-label", uiLabel("guideLabel", { title: game.title }));
+      document.documentElement.classList.add("has-game-page-info");
+      document.body.classList.add("has-game-page-info");
+      return;
+    }
     // One Line owns fully authored, locale-specific static Guides in each
     // route shell. Preserve that reviewed copy after metadata is synchronized.
     if (id === "animal-one-line" && document.querySelector("section.game-page-info-static")) {
