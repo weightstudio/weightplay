@@ -1,6 +1,6 @@
 import {STAGES,TOOLS} from './game-data.js';
 import {Simulation,mission} from './simulation.js?v=20261014-wildwood-mission-clarity-v39a';
-import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js?v=20261014-wildwood-mission-clarity-v39a';
+import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js?v=20261015-wildwood-guide-v41';
 import {load,store,award,KEY} from './save.js';
 import {layoutLabels} from './label-layout.js?v=20261014-wildwood-label-layout-v36';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
@@ -10,7 +10,7 @@ const growthActor=crypto.randomUUID(),unitLabels=new Map();let storageBlocked=fa
 let screen='main',selected=save.highestUnlocked,sim=null,world=null,World=null,raf=0,last=0,acc=0,generation=0,modal='',rail=null,tab='stages',keys=new Set(),joystick=null,audio=null,notice='',noticeUntil=0,lastHp=100,settled=false,hitStopRemaining=0,modalToken=0,modalAnimation=null,screenTransitionToken=0,screenInitialized=false;
 const activeFlights=new Map(),acknowledgementTimers=new Map();
 const WARD_DIAMOND_COST=10;let wardPurchasePending=false,wardPurchaseConfirming=false,wardPurchaseFeedback='';
-const select=$('#localeSelect');const localeNames=['English','繁體中文','简体中文','日本語','한국어','Español','Português','Français','Deutsch','Italiano','Русский','हिन्दी','العربية'];
+const select=$('#localeSelect');const localeNames=['English','繁體中文','简体中文','日本語','한국어','Español','Português','Français','Deutsch','Italiano','Русский','हिन्दी','العربية'];const guideReturn=$('.guide-return a');if(guideReturn)guideReturn.href=`${location.pathname}${location.search}#main`;
 LOCALES.forEach((l,i)=>select.add(new Option(localeNames[i],l)));select.value=locale();
 const frame=window.WeightPlayScreenFrame.mount({root:$('#frame'),localeSelect:select,scenes:{main:{root:$('#main'),header:$('#main header'),content:$('.hero')},stage:{root:$('#stage'),header:$('#stage header'),content:$('.workspace'),headerInfo:$('#stageInfo')},battle:{root:$('#battle'),header:$('#battle header'),content:$('.battle-area'),headerInfo:$('#battleInfo')}}});
 function icon(id){if(id==='clock'){const s=document.createElement('span');s.className='clock-icon';s.setAttribute('aria-hidden','true');return s;}const regen=id==='regen';if(regen)id='heart';const i={axe:0,bow:1,lantern:2,snare:3,ward:4,mastery:5,wood:6,heart:7,boots:8,cage:10,shrine:11,badge:15}[id]??15;const s=document.createElement('span');s.className=regen?'icon regen-icon':'icon';s.style.backgroundPosition=`${i%4*100/3}% ${Math.floor(i/4)*100/3}%`;s.setAttribute('aria-hidden','true');return s;}

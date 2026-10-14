@@ -139,7 +139,6 @@ const stationaryHints=[
 ];
 for(const [i,l] of LOCALES.entries()){
  COPY[l].moveHint=stationaryHints[i];
- COPY[l].equipmentHelp+=` ${stationaryHints[i]}`;
  effects[l]=stationaryHints[i]+'|'+effects[l].split('|').slice(1).join('|');
 }
 const clarityMessages={
