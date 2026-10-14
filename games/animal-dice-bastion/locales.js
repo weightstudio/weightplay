@@ -193,6 +193,8 @@
   };
   Object.assign(en,relatedGuideCopy.en);
   Object.entries(relatedGuideCopy).forEach(([code,values])=>{if(code!=="en")Object.assign(core[code],values);});
+  Object.assign(en, window.AnimalDiceBastionLocaleData?.en || {});
+  const completeEnglishGuideDetail = en.guideDetail;
   const dictionaries = { en };
   Object.entries(core).forEach(([code, values]) => {
     const generated = window.AnimalDiceBastionLocaleData?.[code] || {};
@@ -220,6 +222,17 @@
     ar:["دفاعات متدرجة","اختر الحارس الأول وادمج الحراس المتطابقين في السمة والرتبة. اترك خانة للاستدعاء واحتفظ بالأوامر للموجات الخطرة. الدمج يختار سمة جديدة عشوائيًا؛ إعادة التشكيل تحفظ الرتبة لكنها تمنع النجمة الثالثة.","تضيف الدفاعات الجديدة الدروع والأسراب والمعالجين والتسرع وأقفال الفتحات ومرافقي الأبطال وزعماء متنوعين."]
   };
   for (const [code,[progressTitle,guideDetail,progressText]] of Object.entries(conciseGuide)) Object.assign(dictionaries[code],{progressTitle,guideDetail,progressText});
+  // Keep the complete authored 1.4 Guide detail from the locale source. The
+  // older conciseGuide assignment above remains for progression headings and
+  // summaries, but must not replace the initial-HTML Guide after runtime boot.
+  dictionaries.en.guideDetail = completeEnglishGuideDetail;
+  for (const code of Object.keys(core)) {
+    const authoredGuideDetail = window.AnimalDiceBastionLocaleData?.[code]?.guideDetail;
+    if (authoredGuideDetail) dictionaries[code].guideDetail = authoredGuideDetail;
+  }
+  if (dictionaries["zh-Hans"]?.guideDetail) {
+    dictionaries["zh-Hans"].guideDetail = dictionaries["zh-Hans"].guideDetail.replaceAll("取得", "获得");
+  }
   const progressionCopy = {
     en:['Next','Adapt your formation to armor, swarms, healers and bosses as new defenses unlock.'],
     'zh-Hant':['下一關','解鎖新防線，調整陣容應對護甲、怪群、治療者與首領。'],

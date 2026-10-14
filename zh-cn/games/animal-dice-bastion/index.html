@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="style.css?v=20260921-desktop-battle-v31"><link rel="stylesheet" href="../../src/game-ui-theme.css">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="骰灵堡垒 | WeightPlay" />
@@ -96,28 +96,28 @@
       </section>
     </main>
 
-    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="游戏指南">
+    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="游戏指南" data-wp-text-growth-version="1.4.0">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay 原创游戏指南</span>
         <h2 data-wp-game-title data-runtime-localize="off">骰灵堡垒</h2>
         <p data-i18n="guideIntro">苔贝太郎用活体符文骰子守卫着水晶堡垒。每次召唤都会改变棋盘，但仔细的合并和及时的命令可以让运气在你的掌控之中。</p>
-        <p data-i18n="guideDetail">先选开场守护兽，再召唤并合并相同属性、相同阶级的守护兽。留一格给下一次召唤，把指令留给危险波次，守住水晶。合并会重抽属性；重铸保留阶级，但本局无法获得第三颗星。</p>
-      </div><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>策略</span><span>塔防</span><span>合并升级</span></div></div>
+        <p data-i18n="guideDetail">每场防守都是一段短而清晰的规划循环。战斗开始时先选择首发守护者的属性，再消耗能量，把一级守护者放入空的符文格。守护者会自动攻击，所以玩家真正要决定的是何时召唤、何时合并相同配对，以及哪个指令应该保留。合并必须使用相同属性和等级的守护者；合并后会产生更强的守护者，并重新抽取它的属性，可能打开新的配对，也可能要求你改用另一种角色规划。不要急着填满所有格子：空格能让下一次召唤落地，低等级配对也可能是应对下一波最安全的答案。战斗集结会在六秒内提高守护者攻速；符文爆发会打击并减速道路前方的五个威胁；符文重铸保留等级但改变属性，不过使用后该场防守不能获得第三颗星。五种角色各有目的：林地提供稳定攻击，火花快速累积能量，月影减慢最前面的敌人，熔炉拆除护甲，潮汐攻击成群敌人。六个章节依次加入护甲、怪群、治疗者、加速、符文格封锁、精英护卫与不同首领，共三十个原创防线。敌人抵达水晶会扣除核心生命；清除所有波次与首领即可获胜，保留至少一半核心且不使用符文重铸可获得三颗星。已解锁关卡、星星、符文尘与工坊升级只留在本浏览器，不需要帐号、上传、下注、付费抽奖、现金奖励或真钱概率。这个游戏让你从公平的随机召唤中建立计划，理解角色差异，再重玩一次改善下一个决定。</p>
+      </div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-i18n="guide140Tag1">符文合并</span><span data-i18n="guide140Tag2">塔防策略</span><span data-i18n="guide140Tag3">守城策略</span></div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">怎么玩</h3><ol>
           <li data-i18n="how1">先选择首发守护者，再消耗充能，将一阶守护者召唤到空的符文格。</li>
           <li data-i18n="how2">将两个具有相同亲和力的守护者拖放到一起，以创建一个更强的守护者。</li>
-          <li data-i18n="how3">使用{rally}、{reroll}和{burst}，同时守护者会自动停止每一波。</li>
+          <li data-i18n="how3">使用集结、重塑和爆发，同时守护者会自动停止每一波。</li>
         </ol></article>
         <article class="game-info-section"><h3 data-i18n="rulesTitle">规则与结果</h3><p data-i18n="rulesText">到达堡垒的生物会消除核心完整性。清除每一波和 Boss 以获得胜利。保留至少一半的核心并避免重掷以获得全部三颗星。</p></article>
         <article class="game-info-section"><h3 data-i18n="progressTitle">逐步进阶的防线</h3><p data-i18n="progressText">后续防线会加入护甲、怪群、治疗者、急速、插槽锁、冠军护卫与不同首领。</p></article>
-        <article class="game-info-section"><h3 data-i18n="tipsTitle">实用技巧</h3><p data-i18n="tipsText">不要立即合并每一对。保留有用的低排名对，直到空位或收费订单为您提供更安全的下一步行动。</p></article>
+        <article class="game-info-section"><h3 data-i18n="guide140DesignTitle">设计笔记</h3><p data-i18n="guide140DesignText">战斗采用自动攻击，让玩家专注于棋盘空间、合并时机和指令使用。</p></article><article class="game-info-section"><h3 data-i18n="tipsTitle">实用技巧</h3><p data-i18n="tipsText">不要立即合并每一对。保留有用的低排名对，直到空位或收费订单为您提供更安全的下一步行动。</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">保存和隐私</h3><p data-i18n="saveText">解锁的阶段、星星、符文灰尘和创意工坊升级仅保留在此浏览器中。不需要帐户、上传或个人信息。</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">常见问题解答</h3><dl>
           <div><dt data-i18n="faq1q">这是赌博游戏吗？</dt><dd data-i18n="faq1a">不可以。骰子仅显示守护者等级。没有投注、付费随机抽奖、现金奖励或真钱机会机制。</dd></div>
           <div><dt data-i18n="faq2q">糟糕的平局会结束比赛吗？</dt><dd data-i18n="faq2a">连续召唤仍没有可合并组合时，召唤会优先选择场上已有的属性。阶级仍须相同，不保证立即能合并。</dd></div>
-        </dl></article>
-        
+        <div><dt data-i18n="guide140FaqRankQuestion">菱形标记代表什么？</dt><dd data-i18n="rankGuide">菱形代表1–6级，不是第六种骰子。</dd></div><div><dt data-i18n="guide140FaqStarsQuestion">怎样获得三颗星？</dt><dd data-i18n="rulesText">到达堡垒的生物会消除核心完整性。清除每一波和 Boss 以获得胜利。保留至少一半的核心并避免重掷以获得全部三颗星。</dd></div></dl></article>
+
         <article class="game-info-section"><h3 data-i18n="relatedTitle">相关游戏</h3><p data-i18n="relatedIntro">如果你想继续在压力下规划防线，可以接着挑战：</p><div class="game-info-related">
           <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="../../games/beast-tactician/"><img src="../../assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">兽王守卫</strong><span data-i18n="relatedBeastDescription">建立畅通的森林路线、安排防守者，在六种变化的首领规则下守住水晶核心。</span></span></a>
           <a class="game-info-related-card" data-wp-related-id="animal-rune-tactics" href="../../games/animal-rune-tactics/"><img src="../../assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-i18n="relatedRuneTitle">动物符文战棋</strong><span data-i18n="relatedRuneDescription">从清楚的符文角色组成队伍，再配合敌方编队的变化掌握移动与技能时机。</span></span></a>
@@ -226,13 +226,13 @@
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
-  <script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/runtime-locales/zh-cn.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/wallet.js"></script>
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="locale-data.js?v=20260831-arabic-copy"></script>
-  <script src="locales.js?v=20260731-public16"></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+  <script src="locales.js?v=20261014-dice-bastion-guide-140-v3"></script>
+  <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
   <script src="frame.js"></script>
   <script src="game.js?v=20260921-desktop-battle-v31&wp-audio=1.0.0"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>

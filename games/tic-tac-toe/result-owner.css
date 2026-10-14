@@ -1,0 +1,28 @@
+/* Content geometry only; the shared Battle scaler remains the sole envelope owner. */
+html.popular-tic-tac-toe-active .popular-arcade {
+  grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 0px);
+}
+html.popular-tic-tac-toe-active .tic-ad-reserve {
+  height: var(--wp-ad-reserve-height, 0px);
+  min-height: var(--wp-ad-reserve-height, 0px);
+}
+html.popular-tic-tac-toe-active #battleScreen { position: relative; }
+html.popular-tic-tac-toe-active #battleScreen > .battle-panel[hidden] { display: none !important; }
+html.popular-tic-tac-toe-active #battleScreen > #resultScreen {
+  position: absolute; inset: var(--wp-frame-play-header-height, 48px) 0 0; width: 100%;
+  height: calc(100% - var(--wp-frame-play-header-height, 48px));
+  min-width: 0; min-height: 0; margin: 0;
+}
+html.popular-tic-tac-toe-active #battleScreen > #resultScreen .arcade-panel {
+  box-sizing: border-box; display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto;
+  align-content: stretch; gap: 16px; padding: 24px;
+}
+html.popular-tic-tac-toe-active #battleScreen > #resultScreen .result-actions {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;
+}
+html.popular-tic-tac-toe-active #battleScreen > #resultScreen .result-actions button {
+  min-height: 52px; min-width: 0; white-space: normal;
+}
+html.popular-tic-tac-toe-active #battleScreen > #resultScreen #resultStats {
+  min-height: 0; overflow: auto; align-content: center;
+}

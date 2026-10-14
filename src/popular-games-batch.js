@@ -1894,11 +1894,12 @@
         __wpMeasurement.screen = __wpNextScreen; __wpNotifyMeasurement(); }
     };
     let snakeTimer = null;
+    const ticUiClock = game.type === "tic" ? window.WeightPlayTicUiClock : null;
     let ticResultTimer = null;
     let ticReplyTimer = null;
     const stopCheckersAiTimer = () => { if (checkersAiTimer) { window.clearTimeout(checkersAiTimer); checkersAiTimer = null; } };
-    const stopTicResultTimer = () => { if (ticResultTimer) { window.clearTimeout(ticResultTimer); ticResultTimer = null; } };
-    const stopTicReplyTimer = () => { if (ticReplyTimer) { window.clearTimeout(ticReplyTimer); ticReplyTimer = null; } };
+    const stopTicResultTimer = () => { if (ticResultTimer) { (ticUiClock || window).clearTimeout(ticResultTimer); ticResultTimer = null; } };
+    const stopTicReplyTimer = () => { if (ticReplyTimer) { (ticUiClock || window).clearTimeout(ticReplyTimer); ticReplyTimer = null; } };
     let checkersLeaveDialog = null;
     let checkersLeaveReturnFocus = null;
     let checkersResumeAi = false;
@@ -2019,7 +2020,7 @@
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 };
     const renderResult = () => { if (game.type === "tetris") { renderTetrisResult(); return; } const best = Number(localStorage.getItem(key(gameId)) || 0); const ticOutcome = TIC_OUTCOME_COPY[locale] || TIC_OUTCOME_COPY.en; const masteryCopy = MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en; const checkersOutcome = game.type === "checkers" ? state.outcome || (state.success ? "win" : "loss") : ""; els.resultTitle.textContent = game.type === "checkers" ? checkersCopy(locale, `${checkersOutcome}Title`) : game.type === "tic" && state.outcome ? ticOutcome[`${state.outcome}Title`] : state.success ? copy(locale, "success") : copy(locale, "failure"); const baseCopy = game.type === "checkers" ? checkersCopy(locale, `${checkersOutcome}Copy`) : game.type === "tic" && state.outcome ? ticOutcome[`${state.outcome}Copy`] : state.success ? copy(locale, "successCopy") : copy(locale, "failureCopy"); els.resultCopy.textContent = game.type === "wordle" ? `${baseCopy} ${(WORDLE_RESULT_COPY[locale] || WORDLE_RESULT_COPY.en)(state.target)}` : game.type === "hangman" ? `${baseCopy} ${(HANGMAN_RESULT_COPY[locale] || HANGMAN_RESULT_COPY.en)(state.target)}` : game.type === "mahjong" ? `${baseCopy} ${state.depth === "mastery" ? masteryCopy.result : `${MAHJONG_RESULT_COPY[locale] || MAHJONG_RESULT_COPY.en} ${masteryCopy.button}.`}` : baseCopy; els.result.dataset.outcome = game.type === "checkers" ? checkersOutcome : game.type === "tic" ? state.outcome : state.success ? "win" : "loss"; els.resultStats.innerHTML = `<span class="stat">${copy(locale, "score")}<strong>${state.score}</strong></span><span class="stat">${copy(locale, "moves")}<strong>${state.moves}</strong></span><span class="stat">${copy(locale, "best")}<strong>${Math.max(best, state.score)}</strong></span>`; if (els.resultGoal) { (__wpNotifyMeasurement(), els.resultGoal.hidden = !["breakout", "tetris"].includes(game.type)); if (game.type === "breakout") els.resultGoal.textContent = breakoutResultGoalCopy(locale, state.shots, state.stage || 1); if (game.type === "tetris") els.resultGoal.textContent = tetrisResultTargetCopy(locale, state.moves); } if (els.mastery) { els.mastery.hidden = game.type !== "mahjong" || !state.success || state.depth === "mastery"; els.mastery.textContent = masteryCopy.button; } };
-    const finish = (success) => { if (state.done) return; stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer(); state.done = true; state.success = success; state.score = success ? Math.max(state.score, state.moves * 10 + 100) : state.score; const best = Number(localStorage.getItem(key(gameId)) || 0); if ((game.type === "snake" || success) && state.score > best) { try { localStorage.setItem(key(gameId), String(state.score)); } catch {} } if (game.type === "checkers") trackCheckers("match_result", { outcome: state.outcome, score: state.score }); if (game.type === "tic" && state.winningCells?.length === 3) { show("battle"); ticResultTimer = window.setTimeout(() => { ticResultTimer = null; if (!state.done) return; renderResult(); show("result"); }, 520); return; } renderResult(); show("result");
+    const finish = (success) => { if (state.done) return; stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer(); state.done = true; state.success = success; state.score = success ? Math.max(state.score, state.moves * 10 + 100) : state.score; const best = Number(localStorage.getItem(key(gameId)) || 0); if ((game.type === "snake" || success) && state.score > best) { try { localStorage.setItem(key(gameId), String(state.score)); } catch {} } if (game.type === "checkers") trackCheckers("match_result", { outcome: state.outcome, score: state.score }); if (game.type === "tic" && state.winningCells?.length === 3) { show("battle"); ticResultTimer = (ticUiClock || window).setTimeout(() => { ticResultTimer = null; if (!state.done) return; renderResult(); show("result"); }, 520); return; } renderResult(); show("result");
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (success ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 };
     const moveSnake = () => {
@@ -2264,7 +2265,7 @@
               } else {
                 state.rivalCell = rivalMove;
                 announce(ticRivalReplyCopy(locale, rivalMove), "good", "ticRivalReply");
-                ticReplyTimer = window.setTimeout(() => {
+                ticReplyTimer = (ticUiClock || window).setTimeout(() => {
                   ticReplyTimer = null;
                   if (state.done || state.rivalCell !== rivalMove) return;
                   state.rivalCell = -1;

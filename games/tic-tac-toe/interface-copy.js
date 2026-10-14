@@ -1,0 +1,11 @@
+/* Additional navigation UI only; original game and Guide copy remain native. */
+(() => {
+  const locales = ['en','zh-Hant','zh-Hans','ja','ko','es','pt-BR','fr','de','it','ru','hi','ar'];
+  const copy = {
+    title: ['Leave this round?', '離開這一局？', '离开这一局？', 'この対局を離れますか？', '이번 판을 나갈까요?', '¿Salir de esta ronda?', 'Sair desta rodada?', 'Quitter cette manche ?', 'Diese Runde verlassen?', 'Uscire da questa partita?', 'Покинуть этот раунд?', 'यह राउंड छोड़ें?', 'مغادرة هذه الجولة؟'],
+    consequence: ['Leaving clears this round’s board. Your saved best score and settings are kept.', '離開會清除這一局的棋盤；已儲存的最佳分數與設定會保留。', '离开会清除这一局的棋盘；已保存的最佳分数与设置会保留。', '離れるとこの対局の盤面が消去されます。保存済みの最高得点と設定は保持されます。', '나가면 이번 판의 보드가 지워집니다. 저장된 최고 점수와 설정은 유지됩니다.', 'Al salir se borra el tablero de esta ronda. Se conservan tu mejor puntuación guardada y los ajustes.', 'Sair limpa o tabuleiro desta rodada. Seu recorde salvo e as configurações são mantidos.', 'Quitter efface le plateau de cette manche. Votre meilleur score enregistré et vos réglages sont conservés.', 'Beim Verlassen wird das Brett dieser Runde geleert. Dein gespeicherter Bestwert und deine Einstellungen bleiben erhalten.', 'Uscire cancella il tabellone di questa partita. Il record salvato e le impostazioni vengono conservati.', 'При выходе поле этого раунда очищается. Сохранённый рекорд и настройки сохраняются.', 'बाहर जाने से इस राउंड का बोर्ड साफ़ हो जाएगा। आपका सहेजा गया सर्वश्रेष्ठ स्कोर और सेटिंग्स बनी रहेंगी।', 'تؤدي المغادرة إلى مسح لوحة هذه الجولة. تبقى أفضل نتيجة محفوظة وإعداداتك كما هي.'],
+    continue: ['Continue playing', '繼續遊玩', '继续游玩', '対局を続ける', '계속 플레이', 'Seguir jugando', 'Continuar jogando', 'Continuer à jouer', 'Weiterspielen', 'Continua a giocare', 'Продолжить игру', 'खेल जारी रखें', 'متابعة اللعب'],
+    main: ['Return to Main', '返回主畫面', '返回主画面', 'メインに戻る', '메인으로 돌아가기', 'Volver al inicio', 'Voltar ao início', 'Revenir à l’accueil', 'Zur Startseite', 'Torna alla home', 'На главную', 'मुख्य स्क्रीन पर लौटें', 'العودة للرئيسية'],
+  };
+  window.WeightPlayTicInterfaceText = key => copy[key][Math.max(0, locales.indexOf(document.documentElement.lang))];
+})();

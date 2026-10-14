@@ -2042,4 +2042,73 @@
     "starsWord": "نجوم"
   }
 };
+Object.assign(window.AnimalDiceBastionLocaleData.en ||= {}, {
+  rankGuide: "Diamonds show guardian ranks 1–6; they do not indicate a sixth guardian affinity.",
+  rulesText: "Clear every wave and Boss, keep at least half of the core, and do not use Rune Reforge during that defense.",
+  guide140DesignTitle: "Design note",
+  guide140DesignText: "Combat stays automatic so your choices focus on board space, merge timing, and when to spend an order.",
+  guide140FaqRankQuestion: "What do the diamond markers mean?",
+  guide140FaqStarsQuestion: "How do I earn three stars?",
+  guide140Tag1: "Rune merge", guide140Tag2: "Tower defense", guide140Tag3: "Strategy",
+});
+Object.assign(window.AnimalDiceBastionLocaleData["zh-Hant"], {
+  guide140DesignTitle: "設計筆記", guide140DesignText: "戰鬥採自動攻擊，讓玩家把心力放在版面空間、合併時機與指令使用。",
+  guide140FaqRankQuestion: "菱形標記代表什麼？", guide140FaqStarsQuestion: "如何取得三顆星？",
+  guide140Tag1: "符文合併", guide140Tag2: "塔防策略", guide140Tag3: "守城策略",
+});
+Object.assign(window.AnimalDiceBastionLocaleData["zh-Hans"], {
+  guide140DesignTitle: "设计笔记", guide140DesignText: "战斗采用自动攻击，让玩家专注于棋盘空间、合并时机和指令使用。",
+  guide140FaqRankQuestion: "菱形标记代表什么？", guide140FaqStarsQuestion: "怎样获得三颗星？",
+  guide140Tag1: "符文合并", guide140Tag2: "塔防策略", guide140Tag3: "守城策略",
+});
+Object.assign(window.AnimalDiceBastionLocaleData.ja, {
+  guide140DesignTitle: "デザインノート", guide140DesignText: "戦闘は自動攻撃にし、盤面の空き、合成のタイミング、指令を使う場面に判断を集中できるようにしています。",
+  guide140FaqRankQuestion: "ひし形のマークは何を表しますか？", guide140FaqStarsQuestion: "星を3つ獲得する条件は？",
+  guide140Tag1: "ルーン合成", guide140Tag2: "タワーディフェンス", guide140Tag3: "戦略",
+});
+Object.assign(window.AnimalDiceBastionLocaleData.ko, {
+  guide140DesignTitle: "디자인 노트", guide140DesignText: "전투는 자동 공격으로 진행되어 보드 공간, 합성 시점, 명령 사용 타이밍에 판단을 집중할 수 있습니다.",
+  guide140FaqRankQuestion: "다이아몬드 표시는 무엇을 뜻하나요?", guide140FaqStarsQuestion: "별 세 개를 얻으려면 어떻게 해야 하나요?",
+  guide140Tag1: "룬 합성", guide140Tag2: "타워 디펜스", guide140Tag3: "전략",
+});
+Object.assign(window.AnimalDiceBastionLocaleData.es, {
+  guide140DesignTitle: "Nota de diseño", guide140DesignText: "El combate es automático para que tus decisiones se centren en el espacio del tablero, el momento de fusionar y cuándo usar una orden.",
+  guide140FaqRankQuestion: "¿Qué indican los marcadores de diamante?", guide140FaqStarsQuestion: "¿Cómo consigo tres estrellas?",
+  guide140Tag1: "Fusión de runas", guide140Tag2: "Defensa de torres", guide140Tag3: "Estrategia",
+});
+Object.assign(window.AnimalDiceBastionLocaleData["pt-BR"], {
+  guide140DesignTitle: "Nota de design", guide140DesignText: "O combate é automático para que suas decisões se concentrem no espaço do tabuleiro, no momento de fundir e em quando usar uma ordem.",
+  guide140FaqRankQuestion: "O que indicam os marcadores em forma de diamante?", guide140FaqStarsQuestion: "Como ganhar três estrelas?",
+  guide140Tag1: "Fusão de runas", guide140Tag2: "Defesa de torres", guide140Tag3: "Estratégia",
+});
+Object.assign(window.AnimalDiceBastionLocaleData.fr, {
+  guide140DesignTitle: "Note de conception", guide140DesignText: "Les attaques sont automatiques afin que vos choix portent sur les cases libres, le moment des fusions et l'utilisation des ordres.",
+  guide140FaqRankQuestion: "Que signifient les marqueurs en losange ?", guide140FaqStarsQuestion: "Comment obtenir trois étoiles ?",
+  guide140Tag1: "Fusion de runes", guide140Tag2: "Défense de tours", guide140Tag3: "Stratégie",
+});
+Object.assign(window.AnimalDiceBastionLocaleData.de, {
+  guide140DesignTitle: "Designnotiz", guide140DesignText: "Der Kampf läuft automatisch, damit deine Entscheidungen sich auf freie Felder, den Fusionszeitpunkt und den Einsatz von Befehlen konzentrieren.",
+  guide140FaqRankQuestion: "Was bedeuten die Rautenmarkierungen?", guide140FaqStarsQuestion: "Wie bekomme ich drei Sterne?",
+  guide140Tag1: "Runenfusion", guide140Tag2: "Tower Defense", guide140Tag3: "Strategie",
+});
+Object.assign(window.AnimalDiceBastionLocaleData.it, {
+  guide140DesignTitle: "Nota di design", guide140DesignText: "Il combattimento è automatico, così le tue scelte riguardano gli spazi liberi, il momento della fusione e l'uso degli ordini.",
+  guide140FaqRankQuestion: "Che cosa indicano i simboli a rombo?", guide140FaqStarsQuestion: "Come si ottengono tre stelle?",
+  guide140Tag1: "Fusione runica", guide140Tag2: "Difesa della torre", guide140Tag3: "Strategia",
+});
+Object.assign(window.AnimalDiceBastionLocaleData.ru, {
+  guide140DesignTitle: "Примечание о дизайне", guide140DesignText: "Бой проходит автоматически, чтобы решения касались свободных ячеек, момента слияния и применения приказов.",
+  guide140FaqRankQuestion: "Что означают ромбовидные отметки?", guide140FaqStarsQuestion: "Как получить три звезды?",
+  guide140Tag1: "Слияние рун", guide140Tag2: "Защита башни", guide140Tag3: "Стратегия",
+});
+Object.assign(window.AnimalDiceBastionLocaleData.hi, {
+  guide140DesignTitle: "डिज़ाइन टिप्पणी", guide140DesignText: "लड़ाई अपने आप चलती है, ताकि आपके फैसले बोर्ड की खाली जगह, मिलाने के समय और आदेश देने पर केंद्रित रहें।",
+  guide140FaqRankQuestion: "हीरे के निशान क्या दर्शाते हैं?", guide140FaqStarsQuestion: "तीन सितारे कैसे मिलते हैं?",
+  guide140Tag1: "रून मिलान", guide140Tag2: "टावर रक्षा", guide140Tag3: "रणनीति",
+});
+Object.assign(window.AnimalDiceBastionLocaleData.ar, {
+  guide140DesignTitle: "ملاحظة تصميمية", guide140DesignText: "تجري الهجمات تلقائيًا لتترك قراراتك منصبة على الخانات الفارغة وتوقيت الدمج واستخدام الأوامر.",
+  guide140FaqRankQuestion: "ماذا تعني العلامات الماسية؟", guide140FaqStarsQuestion: "كيف أحصل على ثلاث نجوم؟",
+  guide140Tag1: "دمج الرون", guide140Tag2: "الدفاع عن الأبراج", guide140Tag3: "استراتيجية",
+});
 })();

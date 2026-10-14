@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "stage": {
+    "enabled": false
+  },
+  "battle": {
+    "enabled": true
+  }
+}

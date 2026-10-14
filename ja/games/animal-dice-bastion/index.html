@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="style.css?v=20260921-desktop-battle-v31"><link rel="stylesheet" href="../../src/game-ui-theme.css">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="ダイス砦 | WeightPlay" />
@@ -96,28 +96,28 @@
       </section>
     </main>
 
-    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="ゲームガイド">
+    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="ゲームガイド" data-wp-text-growth-version="1.4.0">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay オリジナルゲームガイド</span>
         <h2 data-wp-game-title data-runtime-localize="off">ダイス砦</h2>
         <p data-i18n="guideIntro">苔貝太郎は生きたルーンダイスで水晶の砦を守っています。召喚するたびに盤面が変化しますが、慎重なマージとタイムリーな命令で運をコントロールできます。</p>
-        <p data-i18n="guideDetail">最初の守護獣を選び、同じ属性とランクを召喚・合成しましょう。次の召喚用に空きを残し、危険な敵の波に指令を使って水晶を守ります。合成後の属性は抽選されます。再鋳造はランクを保ちますが、星3個は獲得できません。</p>
-      </div><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>戦略</span><span>タワーディフェンス</span><span>合体・強化</span></div></div>
+        <p data-i18n="guideDetail">各防衛は、短く分かりやすい計画のループです。バトルの最初に開始ガーディアンの属性を選び、チャージを使って空いたルーン枠へランク1のガーディアンを召喚します。ガーディアンは自動で攻撃するため、プレイヤーが決めるのは召喚のタイミング、同じ組み合わせをマージするタイミング、そしてどの命令を温存するかです。マージには同じ属性とランクが必要です。成功すると強いガーディアンになりますが、属性は再抽選されるため、新しいペアが開くことも、別の役割を考える必要が生まれることもあります。盤面をすぐに埋めないでください。空き枠があれば次の召喚を置けますし、低ランクのペアは次のウェーブへの安全な答えになります。バトルラリーは6秒間攻撃速度を高め、ルーンバーストは道の前方にいる5体の敵を攻撃して遅くします。ルーンリフォージはランクを保ったまま属性を変えますが、その防衛では3つ目の星を獲得できません。グローブは安定した攻撃、スパークはチャージ、ムーンは先頭の敵の減速、フォージはアーマー破壊、タイドは集団への攻撃を担当します。6章にはアーマー、群れ、ヒーラー、加速、枠ロック、チャンピオン護衛、異なるボスが順に登場し、全30ステージで学習の流れを作ります。敵が水晶に到達するとコアが減ります。全ウェーブとボスを倒し、コアを半分以上残してリフォージを使わなければ3つ星です。解放したステージ、星、ルーンダスト、工房アップグレードはこのブラウザだけに保存され、アカウント、アップロード、賭け、課金抽選、現金報酬はありません。公平な驚きから計画を作り、役割の違いを学び、次の判断を改善するゲームです。</p>
+      </div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-i18n="guide140Tag1">ルーン合成</span><span data-i18n="guide140Tag2">タワーディフェンス</span><span data-i18n="guide140Tag3">戦略</span></div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">遊び方</h3><ol>
           <li data-i18n="how1">初手の守護者を選び、チャージを消費して空のルーン枠にランク1守護者を召喚します。</li>
           <li data-i18n="how2">同じ親和性とランクを持つ 2 人のガーディアンをドラッグして、より強力なガーディアンを 1 人作成します。</li>
-          <li data-i18n="how3">ガーディアンが各ウェーブを自動的に停止している間に、{rally}、{reroll}、{burst} を使用します。</li>
+          <li data-i18n="how3">ガーディアンが各ウェーブを自動的に停止している間に、集結、再鍛造、バースト を使用します。</li>
         </ol></article>
         <article class="game-info-section"><h3 data-i18n="rulesTitle">ルールと結果</h3><p data-i18n="rulesText">要塞に到達したクリーチャーはコアの完全性を取り除きます。すべてのウェーブとボスをクリアすると勝利します。少なくとも半分のコアを保持し、再ロールを避けて 3 つ星をすべて獲得してください。</p></article>
         <article class="game-info-section"><h3 data-i18n="progressTitle">広がる防衛戦</h3><p data-i18n="progressText">新たな防衛戦では、アーマー、スウォーム、ヒーラー、ヘイスト、スロットロック、チャンピオン護衛、さまざまなボスが登場します。</p></article>
-        <article class="game-info-section"><h3 data-i18n="tipsTitle">実践的なヒント</h3><p data-i18n="tipsText">すべてのペアをすぐにマージしないでください。空のスロットまたはチャージされたオーダーによってより安全な次の動きが得られるまで、有用な低ランクのペアを保持してください。</p></article>
+        <article class="game-info-section"><h3 data-i18n="guide140DesignTitle">デザインノート</h3><p data-i18n="guide140DesignText">戦闘は自動攻撃にし、盤面の空き、合成のタイミング、指令を使う場面に判断を集中できるようにしています。</p></article><article class="game-info-section"><h3 data-i18n="tipsTitle">実践的なヒント</h3><p data-i18n="tipsText">すべてのペアをすぐにマージしないでください。空のスロットまたはチャージされたオーダーによってより安全な次の動きが得られるまで、有用な低ランクのペアを保持してください。</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">保存とプライバシー</h3><p data-i18n="saveText">ロック解除されたステージ、スター、ルーンダスト、ワークショップのアップグレードは、このブラウザー内にのみ残ります。アカウント、アップロード、個人情報は必要ありません。</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">よくある質問</h3><dl>
           <div><dt data-i18n="faq1q">これはギャンブルゲームですか?</dt><dd data-i18n="faq1a">いいえ、ダイスはガーディアンのランクのみを示します。賭け、有料のランダムな抽選、賞金、またはリアルマネーのチャンスの仕組みはありません。</dd></div>
           <div><dt data-i18n="faq2q">悪い引き分けでランが終了することはありますか?</dt><dd data-i18n="faq2a">合成できる組がない召喚が続くと、盤上の属性が優先されます。ランクも一致する必要があり、すぐ合成できる保証はありません。</dd></div>
-        </dl></article>
-        
+        <div><dt data-i18n="guide140FaqRankQuestion">ひし形のマークは何を表しますか？</dt><dd data-i18n="rankGuide">ひし形はランク1～6。6種目ではありません。</dd></div><div><dt data-i18n="guide140FaqStarsQuestion">星を3つ獲得する条件は？</dt><dd data-i18n="rulesText">要塞に到達したクリーチャーはコアの完全性を取り除きます。すべてのウェーブとボスをクリアすると勝利します。少なくとも半分のコアを保持し、再ロールを避けて 3 つ星をすべて獲得してください。</dd></div></dl></article>
+
         <article class="game-info-section"><h3 data-i18n="relatedTitle">関連ゲーム</h3><p data-i18n="relatedIntro">プレッシャー下のルート計画を続けたいなら、次はこちら：</p><div class="game-info-related">
           <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="../../games/beast-tactician/"><img src="../../assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">ビースト戦術家</strong><span data-i18n="relatedBeastDescription">森の通路を開き、防衛役を配置し、変化する6種類のボス規則に対応して結晶核を守ります。</span></span></a>
           <a class="game-info-related-card" data-wp-related-id="animal-rune-tactics" href="../../games/animal-rune-tactics/"><img src="../../assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-i18n="relatedRuneTitle">どうぶつルーン戦術</strong><span data-i18n="relatedRuneDescription">役割が分かる部隊を編成し、変化する敵編成に合わせて移動と能力のタイミングを読みます。</span></span></a>
@@ -227,13 +227,13 @@
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
-  <script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/wallet.js"></script>
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="locale-data.js?v=20260831-arabic-copy"></script>
-  <script src="locales.js?v=20260731-public16"></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+  <script src="locales.js?v=20261014-dice-bastion-guide-140-v3"></script>
+  <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
   <script src="frame.js"></script>
   <script src="game.js?v=20260921-desktop-battle-v31&wp-audio=1.0.0"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
