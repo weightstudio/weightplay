@@ -372,7 +372,7 @@ export function installBlockmartV9(ctx) {
   function syncFixtures() {
     if (!ctx.scene) return;
     for (const group of getMeshes().values()) {
-      ctx.scene.remove(group); group.traverse(object => {object.geometry?.dispose();if(object.userData.ownedFixtureMaterial)object.material?.dispose();});
+      ctx.scene.remove(group); group.traverse(object => {object.geometry?.dispose();if(object.isInstancedMesh)object.dispose();if(object.userData.ownedFixtureMaterial)object.material?.dispose();});
     }
     getMeshes().clear();
     stockDisplaySlots.clear();
@@ -386,6 +386,38 @@ export function installBlockmartV9(ctx) {
     if (selectionMesh) { ctx.scene.remove(selectionMesh); selectionMesh.geometry.dispose(); selectionMesh.material.dispose(); }
     selectionMesh = new THREE.Mesh(new THREE.BoxGeometry(.96, .025, .96), new THREE.MeshBasicMaterial({ color: 0xffcc45, transparent: true, opacity: .48, depthWrite: false }));
     selectionMesh.visible = false; ctx.scene.add(selectionMesh); updateSelectionMarker();
+  }
+
+  // Preserve named cuboid joints while combining their colored rendered boxes.
+  function batchBoxes(root, recursive=true) {
+    if(root.userData.boxBatch)return;
+    const boxes=[];
+    const inspect=object=>{if(object.isMesh&&!object.isInstancedMesh&&object.geometry?.type==='BoxGeometry'&&!Array.isArray(object.material)&&!object.material.transparent)boxes.push(object);};
+    if(recursive)root.traverse(inspect);else root.children.forEach(inspect);
+    if(!boxes.length)return;
+    const material=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.83});
+    const batch=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),material,boxes.length);
+    batch.name='combined-cuboids';batch.castShadow=true;batch.receiveShadow=true;batch.frustumCulled=false;batch.userData.ownedFixtureMaterial=true;
+    const sources=boxes.map((mesh,index)=>{
+      const node=new THREE.Object3D(),shape=mesh.geometry.parameters;
+      node.name=mesh.name;node.position.copy(mesh.position);node.rotation.copy(mesh.rotation);node.scale.copy(mesh.scale);node.visible=mesh.visible;node.userData={...mesh.userData};
+      mesh.parent.add(node);mesh.parent.remove(mesh);batch.setColorAt(index,mesh.material.color);mesh.geometry.dispose();
+      return {node,size:new THREE.Vector3(shape.width,shape.height,shape.depth)};
+    });
+    root.add(batch);root.userData.boxBatch={batch,sources,inverse:new THREE.Matrix4(),matrix:new THREE.Matrix4(),sizeMatrix:new THREE.Matrix4()};
+    updateBoxBatch(root);
+  }
+  function updateBoxBatch(root) {
+    const data=root.userData.boxBatch;if(!data)return;
+    root.updateMatrixWorld(true);data.inverse.copy(root.matrixWorld).invert();
+    data.sources.forEach(({node,size},index)=>{
+      let visible=true,current=node;
+      while(current&&current!==root){visible=visible&&current.visible;current=current.parent;}
+      data.matrix.multiplyMatrices(data.inverse,node.matrixWorld);
+      data.sizeMatrix.makeScale(visible?size.x:0,visible?size.y:0,visible?size.z:0);
+      data.matrix.multiply(data.sizeMatrix);data.batch.setMatrixAt(index,data.matrix);
+    });
+    data.batch.instanceMatrix.needsUpdate=true;
   }
 
   function fixtureGroup(fixture) {
@@ -473,6 +505,7 @@ export function installBlockmartV9(ctx) {
       block('decor-leaf-b', 0x65a34c, .2, .95, .08, .42, .3, .28);
       block('decor-leaf-c', 0x98c866, 0, 1.12, -.04, .38, .32, .3);
     }
+    batchBoxes(group,false);
     group.traverse(object => { if (object.isMesh) { object.castShadow = true; object.receiveShadow = true; } });
     ctx.scene.add(group); getMeshes().set(normalized.id, group); return group;
   }
@@ -561,6 +594,7 @@ export function installBlockmartV9(ctx) {
   }
 
   function applyFloorArt() {
+    const floorRoot=ctx.scene?.getObjectByName('floor-root');if(floorRoot)batchBoxes(floorRoot,false);
     const floor = ctx.scene?.getObjectByName('floor-tiles');
     if (!floor || floor === styledFloorTiles || typeof floor.setColorAt !== 'function') return;
     const colors = [0xc8dce5, 0xece4d1];
@@ -1915,15 +1949,16 @@ export function installBlockmartV9(ctx) {
       const leg=new THREE.Group();leg.name=side<0?'staff-leg-left':'staff-leg-right';leg.position.set(side*.17,.43,0);group.add(leg);ctx.cube(leg,'uniform-trouser',0x294d58,0,-.14,0,.25,.32,.29);ctx.cube(leg,'boot',0x614a35,0,-.35,.05,.29,.17,.4);ctx.cube(leg,'boot-trim',0xf2bf56,0,-.35,.255,.23,.11,.025);
     }
     const crate=new THREE.Group();crate.name='staff-crate';crate.position.set(0,.83,.53);group.add(crate);ctx.cube(crate,'crate-box',0xc99b62,0,0,0,.52,.31,.39);ctx.cube(crate,'crate-band',0xf8e3b8,0,0,.2,.12,.31,.02);ctx.cube(crate,'crate-label',0x30c0d0,.13,.02,.22,.15,.12,.02);crate.visible=role==='restock';
+    batchBoxes(group);
     return group;
   }
   function drawEmployees(delta=.1) {
     const oldRux=ctx.scene.getObjectByName('rux-shopkeeper');if(oldRux){ctx.scene.remove(oldRux);oldRux.traverse(o=>o.geometry?.dispose());}
     const ids=new Set(employees().map(e=>e.id));
-    for(const [id,mesh] of employeeMeshes)if(!ids.has(id)){ctx.scene.remove(mesh);mesh.traverse(o=>o.geometry?.dispose());employeeMeshes.delete(id);}
+    for(const [id,mesh] of employeeMeshes)if(!ids.has(id)){ctx.scene.remove(mesh);mesh.traverse(o=>{o.geometry?.dispose();if(o.isInstancedMesh)o.dispose();if(o.userData.ownedFixtureMaterial)o.material?.dispose();});employeeMeshes.delete(id);}
     for(const employee of employees()){
       let mesh=employeeMeshes.get(employee.id);
-      if(mesh&&mesh.userData.role!==employee.role){ctx.scene.remove(mesh);mesh.traverse(o=>o.geometry?.dispose());employeeMeshes.delete(employee.id);mesh=null;}
+      if(mesh&&mesh.userData.role!==employee.role){ctx.scene.remove(mesh);mesh.traverse(o=>{o.geometry?.dispose();if(o.isInstancedMesh)o.dispose();if(o.userData.ownedFixtureMaterial)o.material?.dispose();});employeeMeshes.delete(employee.id);mesh=null;}
       if(!mesh){const primary=employee.id===employees()[0]?.id;mesh=makeStaffModel(primary,employee.role);mesh.scale.setScalar(primary?1.32:1.1);mesh.userData.employeeId=employee.id;mesh.userData.role=employee.role;employeeMeshes.set(employee.id,mesh);ctx.scene.add(mesh);}
       let x,z,heading=0,phase='idle';
       if(employee.role==='checkout'){
@@ -1936,6 +1971,7 @@ export function installBlockmartV9(ctx) {
       mesh.getObjectByName('staff-arm-left').rotation.x=carrying?-.7-(stocking ? .22*wave:0):moving ? .35*wave:phase==='scan'?-.25-.15*wave:0;
       mesh.getObjectByName('staff-arm-right').rotation.x=carrying?-.7+(stocking ? .22*wave:0):moving?-.35*wave:0;
       mesh.getObjectByName('staff-leg-left').rotation.x=moving ? .3*wave:0;mesh.getObjectByName('staff-leg-right').rotation.x=moving?-.3*wave:0;
+      updateBoxBatch(mesh);
     }
   }
 
@@ -1971,16 +2007,17 @@ export function installBlockmartV9(ctx) {
   }
   function drawCustomers(delta=.1){
     const live=new Set(getCustomers().map(customer=>customer.id));
-    for(const [id,mesh] of customerMeshes)if(!live.has(id)){ctx.scene.remove(mesh);mesh.traverse(node=>node.geometry?.dispose());customerMeshes.delete(id);}
+    for(const [id,mesh] of customerMeshes)if(!live.has(id)){ctx.scene.remove(mesh);mesh.traverse(node=>{node.geometry?.dispose();if(node.isInstancedMesh)node.dispose();if(node.userData.ownedFixtureMaterial)node.material?.dispose();});customerMeshes.delete(id);}
     for(const customer of getCustomers()){
       let mesh=customerMeshes.get(customer.id);
-      if(!mesh){mesh=ctx.makeAnimal(customer.kind||'rabbit',customer.color||0xf1d5c1);mesh.position.set(customer.group.position.x,customer.group.position.y,customer.group.position.z);mesh.rotation.y=customer.group.rotation.y;customerMeshes.set(customer.id,mesh);ctx.scene.add(mesh);}
+      if(!mesh){mesh=ctx.makeAnimal(customer.kind||'rabbit',customer.color||0xf1d5c1);batchBoxes(mesh);mesh.position.set(customer.group.position.x,customer.group.position.y,customer.group.position.z);mesh.rotation.y=customer.group.rotation.y;customerMeshes.set(customer.id,mesh);ctx.scene.add(mesh);}
       const group=customer.group,blend=1-Math.exp(-18*delta);
       mesh.position.x+=(group.position.x-mesh.position.x)*blend;mesh.position.z+=(group.position.z-mesh.position.z)*blend;mesh.position.y=group.position.y;mesh.rotation.y=smoothHeading(mesh.rotation.y,group.rotation.y,delta,18);mesh.scale.setScalar(group.scale.value || 1.2);
       const stride=Math.sin(ctx.elapsed*11+customer.id),moving=Boolean(customer.segment||customer.pathAt<customer.path?.length);
       for(const [name,sign] of [['customer-leg-left',1],['customer-leg-right',-1],['customer-arm-left',-1],['customer-arm-right',1]]){const part=mesh.getObjectByName(name);if(part)part.rotation.x=moving?stride*.28*sign:0;}
       const bag=mesh.getObjectByName('customer-purchase');if(bag)bag.visible=Boolean(customer.carried);
       for(const [name,sign] of [['customer-brow-left',1],['customer-brow-right',-1]]){const brow=mesh.getObjectByName(name);if(brow)brow.rotation.z=Math.min(.25,(customer.queueWait||0)/60)*sign;}
+      updateBoxBatch(mesh);
     }
   }
   function refreshOwnership(){

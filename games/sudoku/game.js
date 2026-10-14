@@ -28,6 +28,7 @@
   const leaveMain = root.querySelector("#leaveStages");
   const result = app.result;
   const resultMenu = root.querySelector("#resultMenu");
+  const resultReplay = root.querySelector("#resultReplay");
   const resultClose = root.querySelector("#resultClose");
 
   const copy = {
@@ -206,9 +207,39 @@
     }
   }, true);
 
+  let restoreMainResultFocus = false;
+  document.addEventListener("pointerdown", () => { restoreMainResultFocus = false; }, true);
+  const restoreMainFocusAfterPlacement = () => {
+    if (!restoreMainResultFocus || main.hidden || !battle.hidden) return;
+    if (document.activeElement === document.body) root.querySelector("#startButton")?.focus({ preventScroll: true });
+  };
+  new MutationObserver(restoreMainFocusAfterPlacement).observe(root, { childList: true, subtree: true });
+  root.addEventListener("keydown", (event) => {
+    if (event.isTrusted) restoreMainResultFocus = false;
+    if (result?.hidden || battle?.hidden || event.key !== "Tab") return;
+    const actions = [...result.querySelectorAll("button:not([disabled])")]
+      .filter(button => !button.hidden && button.getClientRects().length);
+    if (!actions.length) return;
+    const first = actions[0], last = actions[actions.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault(); last.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault(); first.focus({ preventScroll: true });
+    }
+  }, true);
+  document.addEventListener("focusin", (event) => {
+    if (restoreMainResultFocus && event.target !== document.body && event.target.id !== "startButton") restoreMainResultFocus = false;
+    if (result && !result.hidden && !battle.hidden && !result.contains(event.target)) {
+      resultReplay?.focus({ preventScroll: true });
+    }
+  });
+  let resultWasActive = false;
   const syncResultState = () => {
     if (!result) return;
     const active = !result.hidden;
+    const justOpened = active && !resultWasActive;
+    const justClosed = !active && resultWasActive;
+    resultWasActive = active;
     if (active) window.ShowResultGet?.("sudoku", resultObtained);
     else clearResultReward();
     if (resultClose) {
@@ -220,9 +251,15 @@
       if (leave && !leave.hidden) closeLeave({ focus: false });
       setBattleInert(true);
       document.body.dataset.wpBattleSubstate = "result";
+      if (justOpened) resultReplay?.focus({ preventScroll: true });
     } else if (!leave || leave.hidden) {
       setBattleInert(false);
       if (document.body.dataset.wpBattleSubstate === "result") document.body.removeAttribute("data-wp-battle-substate");
+      if (justClosed) {
+        restoreMainResultFocus = !main.hidden;
+        const destination = !main.hidden ? root.querySelector("#startButton") : battleBack;
+        destination?.focus({ preventScroll: true });
+      }
     }
   };
 
