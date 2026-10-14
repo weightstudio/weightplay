@@ -33,7 +33,7 @@
   const TUTORIAL_KEY = "weightplay_tutorial_seen_animal_2048_v1";
   const LOCALE_SEGMENTS = {en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",es:"es",ja:"ja",ko:"ko","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const SEGMENTS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",es:"es",ja:"ja",ko:"ko","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
-  const GAME_ID="animal-2048",GAME_VERSION="v37",INTERFACE_VERSION="9";
+  const GAME_ID="animal-2048",GAME_VERSION="v38",INTERFACE_VERSION="9";
   const interfaceValidationRun=new URLSearchParams(location.search).get("qa")==="interface-validator";
   const firstSegment = location.pathname.split("/").filter(Boolean)[0] || "en";
   const readStorage=(key)=>{try{return localStorage.getItem(key);}catch{return null;}};
@@ -301,6 +301,8 @@ if(battleDecisionBlocked())return;const restartCount=restarts+1,startIndex=stage
     if(/^https?:$/.test(location.protocol)&&SEGMENTS[next]&&LOCALE_SEGMENTS[firstSegment]){event.stopPropagation();location.href=`/${SEGMENTS[next]}/games/animal-2048/${location.search}${location.hash}`;return;}
     if(!LOCALIZED_STRINGS[next])return;locale=next;writeStorage("weightPlayLocale",locale);setTimeout(applyLocale,0);
   });
+  // The routed Main proxy must not retag the old document before navigation.
+  dom.main.querySelector("#wp-frame-main-locale")?.addEventListener("change",event=>{if(/^https?:$/.test(location.protocol))event.stopPropagation();});
   const cancelSwipe=(pointerId=null)=>{if(!swipeStart||(pointerId!==null&&swipeStart.id!==pointerId))return false;const owner=swipeStart.id;swipeStart=null;try{if(dom.board.hasPointerCapture?.(owner))dom.board.releasePointerCapture(owner);}catch{}return true;};
   dom.board.addEventListener("pointerdown",event=>{if(swipeStart||event.isPrimary===false||(event.pointerType==="mouse"&&event.button!==0))return;swipeStart={x:event.clientX,y:event.clientY,id:event.pointerId};try{dom.board.setPointerCapture?.(event.pointerId);}catch{}});dom.board.addEventListener("pointerup",event=>{if(!swipeStart||swipeStart.id!==event.pointerId)return;const dx=event.clientX-swipeStart.x,dy=event.clientY-swipeStart.y;cancelSwipe(event.pointerId);if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;performMove(Math.abs(dx)>Math.abs(dy)?dx>0?"right":"left":dy>0?"down":"up");});dom.board.addEventListener("pointercancel",event=>cancelSwipe(event.pointerId));dom.board.addEventListener("lostpointercapture",event=>cancelSwipe(event.pointerId));window.addEventListener("blur",()=>cancelSwipe());window.addEventListener("pagehide",()=>cancelSwipe());document.addEventListener("visibilitychange",()=>{if(document.hidden)cancelSwipe();});
   document.addEventListener("keydown",event=>{if(event.defaultPrevented||event.target.closest?.("[data-wp-preferences]"))return;if(!dom.leave.hidden){if(event.key==="Escape"){event.preventDefault();dom.leaveContinue.click();}return;}if(document.body.dataset.screen!=="battle"||!dom.result.hidden)return;const map={ArrowUp:"up",w:"up",W:"up",ArrowDown:"down",s:"down",S:"down",ArrowLeft:"left",a:"left",A:"left",ArrowRight:"right",d:"right",D:"right"};if(map[event.key]){event.preventDefault();performMove(map[event.key]);}else if(event.key==="u"||event.key==="U"){event.preventDefault();undo();}else if(event.key==="r"||event.key==="R"){event.preventDefault();restart();}else if(event.key==="h"||event.key==="H"){event.preventDefault();showHint();}});

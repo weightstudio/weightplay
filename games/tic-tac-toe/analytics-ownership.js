@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "tic-tac-toe";
-  const GAME_VERSION = "v34";
+  const GAME_VERSION = "v37";
   const INTERFACE_VERSION = "9";
   const LOCALE_MAP = {
     en: "en",

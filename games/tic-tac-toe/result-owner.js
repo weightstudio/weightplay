@@ -12,6 +12,7 @@
   result.setAttribute('role', 'dialog');
   result.setAttribute('aria-modal', 'true');
   result.setAttribute('aria-labelledby', 'resultTitle');
+  result.querySelector('.result-actions').setAttribute('data-wp-frame-logical-actions', 'battle');
   const retry = result.querySelector('#retryBtn');
   let previousPhase = null;
   const sync = () => {

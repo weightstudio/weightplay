@@ -326,7 +326,7 @@ body.wp-frame-battle-active #gameGuide{display:none}
   align-items:stretch;overflow:visible;border-top:1px solid #c8d9d5;background:#f2f7f5;
 }
 .placement-controls[hidden]{display:none!important}
-.placement-status-region{min-width:0;width:100%;overflow:visible}
+.placement-status-region{min-width:0;width:100%;max-height:max(48.6px,calc(48.6px * var(--wp-battle-canvas-inverse-scale,1)));overflow-y:auto;overscroll-behavior-y:contain}
 .placement-controls #placementStatus{
   display:block;width:100%;min-width:0;max-height:none;overflow:visible;
   white-space:normal;overflow-wrap:anywhere;word-break:normal;
@@ -406,9 +406,20 @@ body.wp-frame-battle-active #gameGuide{display:none}
 .register-staff-card .register-staffed{color:#12694c;font-weight:800}.register-staff-card .register-vacant{color:#855015;font-weight:800}
 #panel:is([data-active-tab="staff"],[data-active-tab="growth"]){display:flex;flex-direction:column;gap:8px}
 #panel:is([data-active-tab="staff"],[data-active-tab="growth"])>*{flex:0 0 auto;height:auto}
-.placement-fields{grid-template-columns:minmax(0,24%) minmax(0,1fr);align-items:center}
+.placement-fields{grid-template-columns:repeat(2,minmax(0,1fr));align-items:center}
 .placement-fields label{min-width:0;overflow-wrap:anywhere}
 .placement-fields select{min-width:0;max-width:100%;width:100%;text-overflow:ellipsis}
+.placement-fields label[for="placementProduct"]{grid-column:1;grid-row:1}
+.placement-fields label[for="placementFootprint"]{grid-column:2;grid-row:1}
+.placement-fields #placementProduct{grid-column:1;grid-row:2}
+.placement-fields #placementFootprint{grid-column:2;grid-row:2}
+/* The logical canvas scales down on tablet portraits too. Reserve physical
+   panel space for both 45px selector/action rows and localized status text. */
+@media(orientation:portrait){
+  #app[data-wp-logical-battle-canvas] #battleContent{
+    grid-template-rows:minmax(0,1fr) calc(320px * var(--wp-battle-canvas-inverse-scale,1)) calc(20px * var(--wp-battle-canvas-inverse-scale,1));
+  }
+}
 @keyframes management-enter{from{opacity:.55;transform:translateY(3px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.fixture-detail,.register-roster{animation:none}}
 .popularity-hud[role="button"]:focus-visible,.scene-hud .money[role="button"]:focus-visible{outline:3px solid #9a5600;outline-offset:2px}

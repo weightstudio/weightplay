@@ -31,6 +31,7 @@
   mainHeader.querySelector('[data-wp-return="main"]').href = `/${localeRoute}/`;
   const actions = battleHeader.querySelector('.control-row');
   actions.className = 'tic-native-actions';
+  actions.setAttribute('data-wp-frame-logical-actions', 'battle');
   for (const button of actions.querySelectorAll('button')) button.setAttribute('data-wp-frame-action', 'secondary');
   play.append(actions);
   const info = document.createElement('div');
@@ -50,6 +51,17 @@
     main: {root:main, header:mainHeader, content:mainContent},
     battle: {root:battle, header:battleHeader, content:play, headerInfo:info},
   }});
+  // Keep the native document-capture measurement before taking route ownership.
+  const routedMainLocale = () => /^https?:$/.test(location.protocol) && document.body.dataset.screen === 'main' && typeof window.WonderI18n?.setLocale === 'function';
+  localeSelect.addEventListener('change', event => {
+    if (!routedMainLocale()) return;
+    event.stopImmediatePropagation();
+    window.WonderI18n.setLocale(localeSelect.value);
+  }, true);
+  // The outer proxy must not retag the old document while its route is leaving.
+  main.querySelector('#wp-frame-main-locale')?.addEventListener('change', event => {
+    if (routedMainLocale()) event.stopPropagation();
+  });
   const clock = window.WeightPlayTicUiClock;
   if (!clock) throw new Error('TIC_UI_CLOCK_REQUIRED');
   const back = battleHeader.querySelector('[data-wp-return="battle"]');
@@ -60,6 +72,7 @@
   leave.setAttribute('aria-labelledby', 'ticLeaveTitle'); leave.setAttribute('aria-describedby', 'ticLeaveText');
   leave.innerHTML = '<h2 id="ticLeaveTitle"></h2><div class="tic-leave-copy"><p id="ticLeaveText"></p></div><div class="tic-leave-actions"><button id="ticContinue" type="button" data-wp-frame-action="primary"></button><button id="ticLeaveMain" type="button" data-wp-frame-action="secondary"></button></div>';
   battle.append(leave);
+  leave.querySelector('.tic-leave-actions').setAttribute('data-wp-frame-logical-actions', 'battle');
   const continueButton = leave.querySelector('#ticContinue');
   const leaveButton = leave.querySelector('#ticLeaveMain');
   const translateLeave = () => {
