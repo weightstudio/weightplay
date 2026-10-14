@@ -3,8 +3,8 @@ window.WPPopularArcade?.mount("tic-tac-toe");
 (() => {
   "use strict";
 
-  document.body.dataset.gameVersion = "v31";
-  document.body.dataset.wpGameVersion = "v31";
+  document.body.dataset.gameVersion = "v33";
+  document.body.dataset.wpGameVersion = "v33";
   document.body.dataset.wpInterfaceVersion = "9";
 
   const labels = {
@@ -67,6 +67,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
     const relatedState = section.querySelector('.game-info-related-section a[href], .guide-related a[href]') ? "cards" : "empty";
     if (section.dataset.wpGuideRelatedState !== relatedState) section.dataset.wpGuideRelatedState = relatedState;
     if (section.dataset.wpGuideRelatedInterface !== "9") section.dataset.wpGuideRelatedInterface = "9";
+    if (!mainActive) return;
     if (section.dataset.ticTacToeGuideCompact === "true") return;
     section.dataset.ticTacToeGuideCompact = "true";
     section.classList.add("tic-tac-toe-guide-compact");
@@ -80,10 +81,11 @@ window.WPPopularArcade?.mount("tic-tac-toe");
     section.append(details);
   };
 
+  window.WeightPlayTicGuide = Object.freeze({refresh: () => document.querySelectorAll(".game-page-info").forEach(compactGuide)});
   const guideObserver = new MutationObserver(() => {
     document.querySelectorAll(".game-page-info").forEach(compactGuide);
   });
-  guideObserver.observe(document.body, { childList: true, subtree: true });
+  guideObserver.observe(document.body, { childList: true });
   document.querySelectorAll(".game-page-info").forEach(compactGuide);
   if (header && mainScreen && !mainScreen.contains(header)) mainScreen.prepend(header);
   const battleTop = document.querySelector("#battleScreen .battle-top");

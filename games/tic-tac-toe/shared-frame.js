@@ -94,6 +94,9 @@
       guide.hidden = scene !== 'main'; guide.inert = scene !== 'main';
       guide.setAttribute('aria-hidden', String(scene !== 'main'));
     }
+    window.WeightPlayTicGuide?.refresh();
+    window.WeightPlayBattleCanvas?.sync();
+    window.WeightPlayTicBoardPresentation?.sync();
     if (scene !== 'main' && previous === 'main') {
       window.scrollTo({top:0,left:0,behavior:'auto'});
       const owner = generation;
