@@ -226,6 +226,7 @@ export function installBlockmartV9(ctx) {
       for(const material of packageLabelMaterials.values()){material.map=null;material.needsUpdate=true;}
       ctx.toast(ctx.t('packageTextureError',ctx.locale));
       if(!$('packageArtRetry')){const button=document.createElement('button');button.id='packageArtRetry';button.className='camera-orbit package-art-retry';button.type='button';button.textContent=ctx.t('retry',ctx.locale);button.setAttribute('aria-label',ctx.t('packageTextureError',ctx.locale));button.addEventListener('click',loadPackageAtlas);document.querySelector('.scene-wrap').append(button);}
+      refreshOwnership();
     });
     texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=Math.min(4,ctx.renderer.capabilities.getMaxAnisotropy());
     packageAtlas=texture;ctx.scene.userData.packageAtlas={status:'loading',regions:10};return texture;
@@ -2273,9 +2274,10 @@ export function installBlockmartV9(ctx) {
     if(!button){button=document.createElement('button');button.id='continueHere';button.className='continue-here';button.type='button';button.addEventListener('click',()=>claimOwnership(true));document.querySelector('.scene-wrap').append(button);}
     let stack=$('businessSceneControls');
     if(!stack){stack=document.createElement('div');stack.id='businessSceneControls';stack.className='business-scene-controls';document.querySelector('.scene-wrap').append(stack);}
-    const cameraButton=$('cameraOrbit');
+    const cameraButton=$('cameraOrbit'),artRetry=$('packageArtRetry');
     if(button.parentElement!==stack)stack.prepend(button);
     if(cameraButton&&cameraButton.parentElement!==stack)stack.append(cameraButton);
+    if(artRetry&&artRetry.parentElement!==stack)stack.prepend(artRetry);
     button.textContent=ctx.t(faulted?'businessRetry':'continueHere',ctx.locale);button.hidden=owned&&!faulted;
     $('app').dataset.businessOwner=owned?'active':'following';document.querySelector('.shop-panel').inert=!owned||faulted;
   }
