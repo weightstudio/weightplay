@@ -541,3 +541,18 @@ body.wp-frame-battle-active #gameGuide{display:none}
 @starting-style{#gameFrameRoot :is(#mainScreen,#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice){opacity:0}}
 #mainScreen button:active{filter:brightness(.82)}
 @media(prefers-reduced-motion:reduce){#gameFrameRoot :is(#mainScreen,#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice){transition-duration:.08s,.08s}}
+
+/* v14: session controls stack by their actual translated height. */
+.business-scene-controls{--bm-control-scale:var(--wp-battle-canvas-inverse-scale,1);position:absolute;right:calc(10px * var(--bm-control-scale));bottom:calc(64px * var(--bm-control-scale));display:flex;flex-direction:column;gap:calc(8px * var(--bm-control-scale));max-width:45%;align-items:stretch}
+.business-scene-controls>:is(#continueHere,#cameraOrbit){position:static;max-width:none;min-width:0;overflow-wrap:anywhere;flex-shrink:0}
+/* Scene display transitions retain only an inert, out-of-flow content fade.
+   Header identities paint immediately; the retired scene cannot add a layout slot. */
+#gameFrameRoot{position:relative}
+#gameFrameRoot :is(#mainScreen,#app){opacity:1;transition:display .18s allow-discrete}
+#gameFrameRoot :is(#mainScreen,#app):not([hidden]){position:relative;z-index:2}
+#gameFrameRoot :is(#mainScreen,#app)[hidden]{position:absolute;inset-inline:0;top:0;opacity:1;z-index:1}
+#gameFrameRoot :is(#mainScreen,#app)>[data-wp-frame-content]{opacity:1;transition:opacity .18s ease-out}
+#gameFrameRoot :is(#mainScreen,#app)[hidden]>[data-wp-frame-content]{opacity:0}
+#gameFrameRoot :is(#mainScreen,#app)[hidden]>header{visibility:hidden}
+@starting-style{#gameFrameRoot :is(#mainScreen,#app){opacity:1}#gameFrameRoot :is(#mainScreen,#app):not([hidden])>[data-wp-frame-content]{opacity:0}}
+@media(prefers-reduced-motion:reduce){#gameFrameRoot :is(#mainScreen,#app),#gameFrameRoot :is(#mainScreen,#app)>[data-wp-frame-content]{transition-duration:.08s}}

@@ -1,19 +1,36 @@
 import * as THREE from './vendor/three/three.module.min.js';
-import {resolveLocale,t} from './locales.js?v=13';
+import {resolveLocale,t} from './locales.js?v=14';
 import {affordableRestockOffer,applySaleRevenue,browseSeconds,checkoutSeconds,customerBudget,migrateEquipmentState,purchaseEquipment,recoveryShipment,stockCapacity,totalStock,appendCashLedger,spendCash} from './economy.js?v=12';
-import {installBlockmartV9} from './blockmart-v9.js?v=13';
+import {installBlockmartV9} from './blockmart-v9.js?v=14';
 import {mergeAchievementStates,recordAchievementEvent} from './blockmart-v9-systems.js?v=12';
 
 const $=id=>document.getElementById(id),canvas=$('world'),cashEl=$('cash'),panel=$('panel'),dialog={hidden:true};
 const locale=resolveLocale(),isOwnerPreview=new URL(location.href).searchParams.get('preview')==='1';document.documentElement.lang=locale;document.title=`${t('title')}${isOwnerPreview?` · ${t('ownerPreview',locale)}`:''}`;document.querySelectorAll('[data-l10n]').forEach(node=>{node.textContent=t(node.dataset.l10n,locale)});document.querySelectorAll('[data-l10n-content]').forEach(node=>{node.setAttribute('content',t(node.dataset.l10nContent,locale))});document.querySelectorAll('[data-l10n-alt]').forEach(node=>{node.alt=t(node.dataset.l10nAlt,locale)});$('mainHeader').querySelector('[data-wp-return="main"]').setAttribute('aria-label',t('backToPreview',locale));$('battleBack').setAttribute('aria-label',t('backToMain',locale));document.querySelector('.scene-wrap').setAttribute('aria-label',t('sceneLabel',locale));canvas.setAttribute('aria-label',t('canvasLabel',locale));
 const SAVE_KEY='weightplay.animal-blockmart.v1';
+// Retain the last genuinely readable snapshot in this document; never infer lost progress.
+let lastReadableSaveRaw=null,pendingSaveRecovery=null;
+function showSaveRecovery(){if(pendingSaveRecovery&&gameActive){toast(t(pendingSaveRecovery,locale));pendingSaveRecovery=null;}}
+function readSavedSnapshot(){
+  const raw=localStorage.getItem(SAVE_KEY);
+  if(raw===null)return null;
+  try{const value=JSON.parse(raw);if(value?.version===1&&Number.isFinite(value.cash)&&value.area>=10)lastReadableSaveRaw=raw;return value;}
+  catch(error){if(!(error instanceof SyntaxError))throw error;return lastReadableSaveRaw===null?null:JSON.parse(lastReadableSaveRaw);}
+}
+function preserveCorruptSave(raw){
+  const prefix=SAVE_KEY+'.corrupt';let key=prefix;
+  if(localStorage.getItem(key)!==null&&localStorage.getItem(key)!==raw)key=prefix+'.'+crypto.randomUUID();
+  if(localStorage.getItem(key)!==null&&localStorage.getItem(key)!==raw)throw Error('Corrupt-save backup collision');
+  localStorage.setItem(key,raw);
+  if(localStorage.getItem(key)!==raw||localStorage.getItem(SAVE_KEY)!==raw)throw Error('Corrupt-save preservation failed');
+  return key;
+}
 const ACHIEVEMENT_EVENT_PREFIX=`${SAVE_KEY}.achievement-event.`;
 function readAchievementEvents(){const events=[];try{for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(!key?.startsWith(ACHIEVEMENT_EVENT_PREFIX))continue;try{const event=JSON.parse(localStorage.getItem(key));if(event&&typeof event.id==='string')events.push(event)}catch{}}}catch{}return events}
 function persistAchievementEvent(event){if(!event?.id)return;try{const key=`${ACHIEVEMENT_EVENT_PREFIX}${encodeURIComponent(event.id)}`;if(!localStorage.getItem(key))localStorage.setItem(key,JSON.stringify(event));state.achievements=mergeAchievementStates(state.achievements,recordAchievementEvent(state.achievements,event).state)}catch{toast(t('saveFailed',locale))}}
 const EXPANSION_COST=600;
 const PRODUCTS={water:{name:t('restockWater'),cost:8,price:12,demand:1.55,color:0x5abbd0},snacks:{name:t('restockSnack'),cost:12,price:20,demand:1.0,color:0xf2ae4f},fizz:{name:t('premiumFizz'),cost:45,price:65,demand:.48,color:0xd96da1}};
 const INITIAL={cash:300,area:10,lifetime:0,transactions:0,day:1,recoveryOrders:0,recoveryDebt:0,diamond:0,diamondSpent:0,helper:false,autoRestockEnabled:false,cashLedger:[],entrances:[{x:0,z:0}],exits:[{x:9,z:9}],upgrades:0,equipment:{cooler:false,fastCheckout:false},legacyUpgradeCredits:0,unlocked:['water','snacks'],stock:{water:20,snacks:0,fizz:0},fixtures:[{id:'shelf-1',kind:'shelf',product:'water',x:3,z:3},{id:'checkout-1',kind:'checkout',x:7,z:1},{id:'cooler-1',kind:'cooler',x:8,z:6}],milestones:{firstSale:false,firstThousand:false,expanded:false},view:0,zoom:1,panX:0,panZ:0,cameraVersion:2,warehouse:[]};
-function load(){try{const s=JSON.parse(localStorage.getItem(SAVE_KEY));if(s&&s.version===1&&Number.isFinite(s.cash)&&s.area>=10){const next={...structuredClone(INITIAL),...s,...migrateEquipmentState(s),stock:{...INITIAL.stock,...s.stock},milestones:{...INITIAL.milestones,...s.milestones},recoveryOrders:Number.isFinite(s.recoveryOrders)?Math.max(0,Math.floor(s.recoveryOrders)):0,recoveryDebt:Number.isFinite(s.recoveryDebt)?Math.max(0,Math.floor(s.recoveryDebt)):0,warehouse:Array.isArray(s.warehouse)?s.warehouse:[]};if(!s.cameraVersion){next.view=(Number(s.view)||0)*Math.PI/2;next.panX=0;next.panZ=0;next.cameraVersion=2;if(next.equipment.fastCheckout&&!next.fixtures.some(f=>f.kind==='fastCheckout')&&!next.warehouse.some(f=>f.kind==='fastCheckout')){let spot=null;for(let z=2;z<next.area-1&&!spot;z++)for(let x=2;x<next.area-1;x++)if(!next.fixtures.some(f=>f.x===x&&f.z===z)){spot={x,z};break}if(spot)next.fixtures.push({id:'fastCheckout-legacy-v6',kind:'fastCheckout',...spot})}}return next}}catch{}return structuredClone(INITIAL)}
+function load(){try{const s=readSavedSnapshot();if(s&&s.version===1&&Number.isFinite(s.cash)&&s.area>=10){const next={...structuredClone(INITIAL),...s,...migrateEquipmentState(s),stock:{...INITIAL.stock,...s.stock},milestones:{...INITIAL.milestones,...s.milestones},recoveryOrders:Number.isFinite(s.recoveryOrders)?Math.max(0,Math.floor(s.recoveryOrders)):0,recoveryDebt:Number.isFinite(s.recoveryDebt)?Math.max(0,Math.floor(s.recoveryDebt)):0,warehouse:Array.isArray(s.warehouse)?s.warehouse:[]};if(!s.cameraVersion){next.view=(Number(s.view)||0)*Math.PI/2;next.panX=0;next.panZ=0;next.cameraVersion=2;if(next.equipment.fastCheckout&&!next.fixtures.some(f=>f.kind==='fastCheckout')&&!next.warehouse.some(f=>f.kind==='fastCheckout')){let spot=null;for(let z=2;z<next.area-1&&!spot;z++)for(let x=2;x<next.area-1;x++)if(!next.fixtures.some(f=>f.x===x&&f.z===z)){spot={x,z};break}if(spot)next.fixtures.push({id:'fastCheckout-legacy-v6',kind:'fastCheckout',...spot})}}return next}}catch{}return structuredClone(INITIAL)}
 let state=load(),renderer,scene,camera,clock=new THREE.Clock(),running=true,gameActive=false,frame=0,elapsed=0,spawnTimer=2,recoveryTimer=0,customerId=0,customers=[],meshes=new Map(),placement=null,selectedTab='shop',drag=null,toastTimer,ghost=null,frameApi=null,recordExpansionAchievement=()=>{},notifyAchievementNotice=()=>{};
 const materials={};const mat=(c,roughness=.83)=>{const k=`${c}:${roughness}`;return materials[k]??(materials[k]=new THREE.MeshStandardMaterial({color:c,roughness}))};
 const boxGeo=new THREE.BoxGeometry(1,1,1);function cube(parent,name,color,x,y,z,sx,sy,sz,opts={}){const m=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),mat(color));m.name=name;m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;if(opts.rotation)m.rotation.y=opts.rotation;parent.add(m);return m}
@@ -97,7 +114,18 @@ function saleFloat(){const e=$('salePop');e.classList.remove('show');void e.offs
 function showSale(price){cashEl.textContent=`$${Math.floor(state.cash)}`;saleFloat();$('salePop').textContent=`+$${price}`;window.WeightPlayAudio?.play?.('reward.coin')}
 let saveDelegate=null;
 function save(){if(saveDelegate)return saveDelegate();return rawSave()}
-function rawSave(){const latest=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');state.achievements=mergeAchievementStates(mergeAchievementStates(state.achievements,latest?.achievements),{events:readAchievementEvents()});localStorage.setItem(SAVE_KEY,JSON.stringify({version:1,...state}));cashEl.textContent=`$${Math.floor(state.cash)}`}
+function rawSave(){
+  const raw=localStorage.getItem(SAVE_KEY);let latest=null,recovered=false,restored=false;
+  try{latest=raw===null?null:JSON.parse(raw);}catch(error){
+    if(!(error instanceof SyntaxError))throw error;
+    preserveCorruptSave(raw);restored=lastReadableSaveRaw!==null;latest=restored?JSON.parse(lastReadableSaveRaw):null;recovered=true;
+  }
+  if(Number.isInteger(latest?.version)&&latest.version>1)throw Error('Unsupported future save schema');
+  state.achievements=mergeAchievementStates(mergeAchievementStates(state.achievements,latest?.achievements),{events:readAchievementEvents()});
+  const serialized=JSON.stringify({version:1,...state});
+  localStorage.setItem(SAVE_KEY,serialized);lastReadableSaveRaw=serialized;cashEl.textContent='$'+Math.floor(state.cash);
+  if(recovered){pendingSaveRecovery=restored?'saveRecoveredKnown':'saveRecoveredFresh';showSaveRecovery();}
+}
 function toast(s){const e=$('toast');e.textContent=s;e.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('show'),2100)}
 function price(n){return `$${n.toLocaleString()}`}
 function stockOffer(k,requested){return affordableRestockOffer(state.stock,activeEquipment(),requested,PRODUCTS[k].cost,state.cash)}
@@ -158,6 +186,7 @@ function syncLeaveFocus(){
   }
 }
 $('battleBack').addEventListener('click',syncLeaveFocus);
+$('mainStart').addEventListener('click',showSaveRecovery);
 $('continueBattle').addEventListener('click',syncLeaveFocus);
 $('returnMain').addEventListener('click',syncLeaveFocus);
 document.addEventListener('keydown',event=>{
@@ -183,7 +212,7 @@ function installV9(){
     get running(){return running},set running(value){running=value},
     get gameActive(){return gameActive},set gameActive(value){gameActive=value},
     setGhost(value){ghost=value},cube,makeAnimal,gridPoint,panByPixels,setCamera,buildFloor,resize,save,toast,price,showSale,spendCash,appendCashLedger,
-    rawSave,saveKey:SAVE_KEY,readSaved(){return JSON.parse(localStorage.getItem(SAVE_KEY)||'null')},readCompatibleSaved:load,setSaveDelegate(value){saveDelegate=value},
+    rawSave,saveKey:SAVE_KEY,readSaved:readSavedSnapshot,readCompatibleSaved:load,setSaveDelegate(value){saveDelegate=value},
     readAchievementEvents,persistAchievementEvent,
     expand,hire,browseSeconds,checkoutSeconds,purchaseEquipment,applySaleRevenue,stockCapacity,totalStock,recoveryShipment,
     customerBudget,

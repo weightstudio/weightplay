@@ -192,7 +192,7 @@ export function installBlockmartV9(ctx) {
     root.addEventListener('pointerdown',event=>{const control=event.target.closest('button,select,[role="button"]');if(control&&!control.disabled)animateFeedback(control,[{filter:'brightness(.82)'},{filter:'brightness(1)'}],140);});
     root.addEventListener('keydown',event=>{if(['Enter',' '].includes(event.key)){const control=event.target.closest('button,[role="button"]');if(control&&!control.disabled)animateFeedback(control,[{filter:'brightness(.82)'},{filter:'brightness(1)'}],140);}});
     root.addEventListener('change',event=>animateFeedback(event.target,[{filter:'brightness(.8)'},{filter:'brightness(1)'}]));
-    const observer=new MutationObserver(records=>{for(const record of records){const target=record.target;if(record.type==='childList'&&target===$('panel')&&record.addedNodes.length)animateFeedback(target,[{opacity:.55},{opacity:1}]);else if(record.type==='attributes'&&record.attributeName==='hidden'&&!target.hidden&&target.matches('#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice'))animateFeedback(target,[{opacity:.55},{opacity:1}]);}});
+    const observer=new MutationObserver(records=>{for(const record of records){const target=record.target;if(record.type==='childList'&&target===$('panel')&&record.addedNodes.length)animateFeedback(target,[{opacity:.55},{opacity:1}]);else if(record.type==='attributes'&&record.attributeName==='hidden'&&!target.hidden&&target.matches('#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice')){if(target.id==='app')refreshGuidance();animateFeedback(target.id==='app'?$('battleContent'):target,[{opacity:.55},{opacity:1}]);}}});
     observer.observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden']});
     document.addEventListener('visibilitychange',()=>{if(document.hidden)settleFeedback();});
     $('returnMain')?.addEventListener('click',settleFeedback);
@@ -1519,19 +1519,42 @@ export function installBlockmartV9(ctx) {
     {id:'landmark',key:'guideLandmark',amount:fixtures().filter(f=>f.decorType).length,target:1,tab:'growth'}];}
   function recordGrowthGoals(){for(const goal of growthGoalRows())if(goal.amount>=goal.target&&!state().growthGoals[goal.id])state().growthGoals[goal.id]={activeSeconds:ctx.elapsed};}
   function openManagement(tab){ctx.selectedTab=tab;growthCategory='equipment';document.querySelectorAll('[data-tab]').forEach(button=>button.classList.toggle('active',button.dataset.tab===tab));renderPanel();}
+  function nextGuideGoal(){return growthGoalRows().find(goal=>!state().growthGoals[goal.id])||{id:'complete',key:'guideComplete',tab:'achievements'};}
+  function reserveGuideHeight(button){
+    if(!button?.clientWidth)return;
+    const css=getComputedStyle(button),signature=button.clientWidth+'/'+css.font+'/'+css.lineHeight+'/'+ctx.locale;
+    if(button.dataset.guideSize===signature)return;
+    const probe=document.createElement('div');probe.setAttribute('aria-hidden','true');
+    Object.assign(probe.style,{position:'fixed',left:'-100000px',visibility:'hidden',pointerEvents:'none',boxSizing:'border-box',width:button.clientWidth+'px',font:css.font,lineHeight:css.lineHeight,padding:css.padding,whiteSpace:'normal',overflowWrap:css.overflowWrap});
+    document.body.append(probe);let height=0;
+    try{for(const key of [...growthGoalRows().map(goal=>goal.key),'guideComplete']){probe.textContent=ctx.t(key,ctx.locale);height=Math.max(height,probe.getBoundingClientRect().height);}button.style.minHeight=Math.ceil(height+2)+'px';button.dataset.guideSize=signature;}finally{probe.remove();}
+  }
+  function refreshGuidance(){
+    const section=$('panel').querySelector('.business-guide'),next=nextGuideGoal();
+    if(section&&!state().guideDismissed&&ctx.selectedTab==='shop'){
+      const button=section.querySelector('.guide-open');reserveGuideHeight(button);
+      if(button.dataset.guideGoal!==next.id){button.dataset.guideGoal=next.id;button.textContent=ctx.t(next.key,ctx.locale);animateFeedback(button,[{opacity:.8},{opacity:1}]);}
+    }
+    const labels={firstSale:'achievement_first_sale',twoProducts:'productToDisplay',team:'hireEmployee',capacity:'registerRoster',expansion:'expand',landmark:'decorCategory'};
+    for(const goal of growthGoalRows()){
+      const button=$('panel').querySelector('[data-growth-goal="'+goal.id+'"]');if(!button)continue;
+      const text=(state().growthGoals[goal.id]?'✓ ':'')+ctx.t(labels[goal.id],ctx.locale)+' · '+Math.min(goal.amount,goal.target)+'/'+goal.target;
+      if(button.textContent!==text){button.textContent=text;animateFeedback(button,[{opacity:.8},{opacity:1}]);}
+    }
+  }
   function renderGuide(){
     if(state().guideDismissed||ctx.selectedTab!=='shop')return;
-    const next=growthGoalRows().find(goal=>!state().growthGoals[goal.id]);if(!next)return;
+    const next=nextGuideGoal();
     const section=document.createElement('section');section.className='business-guide';section.setAttribute('aria-label',ctx.t('guideTitle',ctx.locale));
     const dismiss=actionButton('cancel',()=>{state().guideDismissed=true;ctx.save();renderPanel()});dismiss.className='guide-dismiss';dismiss.textContent='×';
-    const go=actionButton('guideTitle',()=>openManagement(next.tab));go.className='guide-open';go.textContent=ctx.t(next.key,ctx.locale);section.append(go,dismiss);$('panel').append(section);
+    const go=actionButton('guideTitle',()=>openManagement(nextGuideGoal().tab));go.className='guide-open';go.dataset.guideGoal=next.id;go.textContent=ctx.t(next.key,ctx.locale);section.append(go,dismiss);$('panel').append(section);reserveGuideHeight(go);
   }
   function renderBusinessSummary(){
     const section=document.createElement('section');section.className='business-summary';
     const heading=document.createElement('h3');heading.textContent=ctx.t('recentBusiness',ctx.locale);section.append(heading);
     const facts=document.createElement('p');facts.dataset.businessSummary='true';section.append(facts);
     const labels={firstSale:'achievement_first_sale',twoProducts:'productToDisplay',team:'hireEmployee',capacity:'registerRoster',expansion:'expand',landmark:'decorCategory'};
-    for(const goal of growthGoalRows()){const button=actionButton(goal.key,()=>openManagement(goal.tab));button.className='growth-goal';button.title=ctx.t(goal.key,ctx.locale);button.textContent=`${state().growthGoals[goal.id]?'✓':''} ${ctx.t(labels[goal.id],ctx.locale)} · ${Math.min(goal.amount,goal.target)}/${goal.target}`;section.append(button);}
+    for(const goal of growthGoalRows()){const button=actionButton(goal.key,()=>openManagement(goal.tab));button.className='growth-goal';button.dataset.growthGoal=goal.id;button.title=ctx.t(goal.key,ctx.locale);button.textContent=`${state().growthGoals[goal.id]?'✓':''} ${ctx.t(labels[goal.id],ctx.locale)} · ${Math.min(goal.amount,goal.target)}/${goal.target}`;section.append(button);}
     const restore=actionButton('guideTitle',()=>{state().guideDismissed=false;ctx.save();openManagement('shop')});section.append(restore);$('panel').append(section);
   }
 
@@ -1749,6 +1772,7 @@ export function installBlockmartV9(ctx) {
   }
 
   function refreshPanelValues() {
+    refreshGuidance();
     for(const node of document.querySelectorAll('[data-shelf-stock]')){const id=node.dataset.shelfStock,p=ctx.PRODUCTS[id];node.textContent=`${ctx.t('availableStock',ctx.locale)} ${state().stock[id]||0} · ${ctx.t('buyPrice',ctx.locale)} ${ctx.price(p.cost)} · ${ctx.t('sellPrice',ctx.locale)} ${ctx.price(p.price)}`;}
     for(const button of document.querySelectorAll('[data-restock-product]')){
       const id=button.dataset.restockProduct,product=ctx.PRODUCTS[id],quantity=Math.min(8,Math.max(0,ctx.stockCapacity(ctx.activeEquipment())-ownedStock()),Math.floor(state().cash/product.cost));
@@ -2247,6 +2271,11 @@ export function installBlockmartV9(ctx) {
   function refreshOwnership(){
     let button=$('continueHere');
     if(!button){button=document.createElement('button');button.id='continueHere';button.className='continue-here';button.type='button';button.addEventListener('click',()=>claimOwnership(true));document.querySelector('.scene-wrap').append(button);}
+    let stack=$('businessSceneControls');
+    if(!stack){stack=document.createElement('div');stack.id='businessSceneControls';stack.className='business-scene-controls';document.querySelector('.scene-wrap').append(stack);}
+    const cameraButton=$('cameraOrbit');
+    if(button.parentElement!==stack)stack.prepend(button);
+    if(cameraButton&&cameraButton.parentElement!==stack)stack.append(cameraButton);
     button.textContent=ctx.t(faulted?'businessRetry':'continueHere',ctx.locale);button.hidden=owned&&!faulted;
     $('app').dataset.businessOwner=owned?'active':'following';document.querySelector('.shop-panel').inert=!owned||faulted;
   }
