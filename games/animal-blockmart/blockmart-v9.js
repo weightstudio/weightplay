@@ -205,6 +205,43 @@ export function installBlockmartV9(ctx) {
   const customerMeshes=new Map();
   const employeeMeshes=new Map();
   const stockDisplaySlots = new Map();
+  let packageAtlas=null,packageAtlasLoading=false;
+  const packageLabelMaterials=new Map();
+  const packageRegions=['water','snacks','chips','juice','fizz','milk','bread','yogurt','icecream','noodles'];
+  const packageFinish=sku=>sku==='fizz'?{roughness:.3,metalness:.45}:['water','yogurt','icecream'].includes(sku)?{roughness:.48,metalness:.02}:['chips','snacks'].includes(sku)?{roughness:.52,metalness:.12}:{roughness:.86,metalness:0};
+  function loadPackageAtlas(){
+    if(packageAtlasLoading)return packageAtlas;
+    packageAtlasLoading=true;
+    const texture=new THREE.TextureLoader().load(new URL('./assets/package-labels-v13.webp',import.meta.url).href,loaded=>{
+      if(disposed){loaded.dispose();return;}
+      packageAtlasLoading=false;packageAtlas=loaded;
+      ctx.scene.userData.packageAtlas={status:'ready',width:loaded.image.width,height:loaded.image.height,regions:10};
+      for(const material of packageLabelMaterials.values()){material.map=loaded;material.needsUpdate=true;}
+      $('packageArtRetry')?.remove();
+    },undefined,()=>{
+      packageAtlasLoading=false;packageAtlas=null;
+      ctx.scene.userData.packageAtlas={status:'failed',regions:10};
+      if(disposed)return;
+      for(const material of packageLabelMaterials.values()){material.map=null;material.needsUpdate=true;}
+      ctx.toast(ctx.t('packageTextureError',ctx.locale));
+      if(!$('packageArtRetry')){const button=document.createElement('button');button.id='packageArtRetry';button.className='camera-orbit package-art-retry';button.type='button';button.textContent=ctx.t('retry',ctx.locale);button.setAttribute('aria-label',ctx.t('packageTextureError',ctx.locale));button.addEventListener('click',loadPackageAtlas);document.querySelector('.scene-wrap').append(button);}
+    });
+    texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=Math.min(4,ctx.renderer.capabilities.getMaxAnisotropy());
+    packageAtlas=texture;ctx.scene.userData.packageAtlas={status:'loading',regions:10};return texture;
+  }
+  function packageLabel(unit,sku,width,height,y,z){
+    if(!packageAtlas&&!packageAtlasLoading)loadPackageAtlas();
+    const index=packageRegions.indexOf(sku),col=index%5,row=Math.floor(index/5),finish=packageFinish(sku);
+    let material=packageLabelMaterials.get(sku);if(!material){material=new THREE.MeshStandardMaterial({color:0xffffff,map:packageAtlas,...finish});packageLabelMaterials.set(sku,material);}
+    // Print artwork on the physical front/back faces. UV cropping retains
+    // graphic proportions on wide tubs; the package remains solid world geometry.
+    const tileAspect=.6,crop=Math.min(1,tileAspect/(width/height)),center=.54;
+    const low=(1-row)*.5+(.5-center-crop/2)*.5+.25,high=low+crop*.5;
+    for(const side of [-1,1]){const geometry=new THREE.PlaneGeometry(width*1.6,height*1.6),uv=geometry.attributes.uv,u0=col*.2+.003,u1=(col+1)*.2-.003;
+      uv.setXY(0,u0,high-.003);uv.setXY(1,u1,high-.003);uv.setXY(2,u0,low+.003);uv.setXY(3,u1,low+.003);uv.needsUpdate=true;
+      const label=new THREE.Mesh(geometry,material);label.name=`printed-${sku}-label`;label.position.set(0,y*1.6,side*z*1.6);label.rotation.y=side<0?Math.PI:0;label.userData.packageLabel=true;unit.add(label);
+    }
+  }
   let styledFloorTiles = null;
   let cachedHomeLayout='',cachedHomes=new Map();
   let pickerSlot=0;
@@ -465,7 +502,7 @@ export function installBlockmartV9(ctx) {
     const inspect=object=>{if(object.isMesh&&!object.isInstancedMesh&&object.geometry?.type==='BoxGeometry'&&!Array.isArray(object.material)&&!object.material.transparent)boxes.push(object);};
     if(recursive)root.traverse(inspect);else root.children.forEach(inspect);
     if(!boxes.length)return;
-    const material=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.83});
+    const material=new THREE.MeshStandardMaterial({color:0xffffff,roughness:root.userData.packageFinish?.roughness??.83,metalness:root.userData.packageFinish?.metalness??0});
     const batch=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),material,boxes.length);
     batch.name='combined-cuboids';batch.castShadow=true;batch.receiveShadow=true;batch.frustumCulled=false;batch.userData.ownedFixtureMaterial=true;
     const sources=boxes.map((mesh,index)=>{
@@ -622,10 +659,13 @@ export function installBlockmartV9(ctx) {
     const unit = new THREE.Group();
     unit.name = `stock-unit-${sku}`;
     unit.userData.productSku = sku;
+    unit.userData.packageFinish=packageFinish(sku);
     unit.position.set(x, y, z);
     const block = (name, color, px, py, pz, sx, sy, sz) => ctx.cube(unit, name, color, px, py, pz, sx, sy, sz);
     const catalog = PRODUCT_DEFS[sku];
     addDisplayItem(block, sku, catalog.display, 0, 0, 0, catalog.color);
+    const face={water:[.145,.2,0,.082],snacks:[.205,.235,0,.09],chips:[.21,.23,0,.098],juice:[.18,.22,0,.09],fizz:[.18,.25,0,.103],milk:[.18,.22,0,.09],bread:[.235,.12,-.018,.111],yogurt:[.22,.15,-.005,.119],icecream:[.26,.14,-.005,.126],noodles:[.21,.19,0,.112]}[sku];
+    packageLabel(unit,sku,...face);
     // Fit every SKU to the shelf's internal bay, then anchor its bottom above
     // the board. Work in local space so fixture yaw never changes the fit.
     unit.position.set(0,0,0);
