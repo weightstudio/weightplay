@@ -577,3 +577,18 @@ body.wp-frame-battle-active #gameGuide{display:none}
 #gameFrameRoot :is(#mainScreen,#app)[hidden]>header{visibility:hidden}
 @starting-style{#gameFrameRoot :is(#mainScreen,#app){opacity:1}#gameFrameRoot :is(#mainScreen,#app):not([hidden])>[data-wp-frame-content]{opacity:0}}
 @media(prefers-reduced-motion:reduce){#gameFrameRoot :is(#mainScreen,#app),#gameFrameRoot :is(#mainScreen,#app)>[data-wp-frame-content]{transition-duration:.08s}}
+/* Language owns text flow; the world/management tracks keep their spatial coordinates. */
+html[dir="rtl"] #battleContent{direction:ltr}
+html[dir="rtl"] #battleContent>*{direction:rtl}
+/* Catalog purchases share the image/copy row on every management category. */
+#app .catalog-row{grid-template-columns:calc(44px * var(--bm-control-scale)) minmax(0,1fr) minmax(calc(44px * var(--bm-control-scale)),auto);align-items:center;direction:ltr}
+#app .catalog-row .item-buy{grid-column:3;grid-row:1;align-self:center;min-width:calc(44px * var(--bm-control-scale));max-width:calc(88px * var(--bm-control-scale));margin:0;padding:calc(7px * var(--bm-control-scale))}
+#app .catalog-row .item-copy{grid-column:2;grid-row:1;overflow-wrap:anywhere}
+#app .catalog-row .item-copy h3{overflow-wrap:anywhere}
+#app .decor-traffic{color:#173e49;font-size:calc(13px * var(--wp-battle-canvas-inverse-scale,1));font-weight:750;margin:calc(8px * var(--wp-battle-canvas-inverse-scale,1)) 0;line-height:1.4}
+#app .catalog-row .item-image-button{grid-column:1;grid-row:1;min-width:calc(44px * var(--bm-control-scale));min-height:calc(44px * var(--bm-control-scale));width:calc(44px * var(--bm-control-scale));height:calc(44px * var(--bm-control-scale));padding:0}
+#app .catalog-row .item-image-button .item-art{width:100%;height:auto}
+#app .catalog-row .item-owned-options{grid-column:1/-1}
+html[dir="rtl"] #app .catalog-row :is(.item-copy,.item-buy,.item-owned-options){direction:rtl}
+#app .achievement-claim{min-width:calc(44px * var(--wp-battle-canvas-inverse-scale,1));min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1));max-width:calc(115px * var(--wp-battle-canvas-inverse-scale,1));padding:calc(6px * var(--wp-battle-canvas-inverse-scale,1));font-size:calc(13px * var(--wp-battle-canvas-inverse-scale,1));border:1px solid #075c4d;border-radius:9px;background:#08745f;color:white;white-space:normal;overflow-wrap:anywhere}
+#app .achievement-claim:disabled{background:#e1e7e3;color:#465d53;border-color:#b1c1ba;opacity:1}

@@ -954,6 +954,61 @@ const issueV14GuideRows={
   ]
 };
 for(const locale of supportedLocales){const values=issueV14GuideRows[locale];if(values.length!==issueV14GuideKeys.length)throw new Error("Incomplete Blockmart v14 guide: "+locale);issueV14GuideKeys.forEach((key,index)=>dict[locale][key]=values[index]);}keys.push(...issueV14GuideKeys.filter(key=>!keys.includes(key)));
+// v15: choosing the employee role is the only automatic-restock control.
+const roleRestockCopy={
+ en:['Restock staff automatically buy up to 4 affordable units per trip. They wait when cash or storage is short.','Hire staff and choose Restock for automatic paid deliveries. Keep cash for stock.'],
+ 'zh-Hant':['補貨員每趟自動購入最多 4 件負擔得起的商品；現金或空間不足時等待。','雇用員工並選擇補貨職務，即會自動付費補貨；記得預留進貨現金。'],
+ 'zh-Hans':['补货员每趟自动购入最多 4 件负担得起的商品；现金或空间不足时等待。','雇用员工并选择补货职务，即会自动付费补货；记得预留进货现金。'],
+ ja:['補充担当は1回につき購入可能な商品を最大4個自動で仕入れます。資金や空き容量が足りない間は待機します。','スタッフを雇い、補充担当を選ぶと自動で有料仕入れを行います。仕入れ資金を残しましょう。'],
+ ko:['보충 직원은 매번 살 수 있는 상품을 최대 4개 자동 구매합니다. 자금이나 보관 공간이 부족하면 기다립니다.','직원을 고용하고 보충 역할을 선택하면 자동으로 유료 입고합니다. 재고 구매 자금을 남겨 두세요.'],
+ es:['El personal de reposición compra hasta 4 unidades asequibles por viaje. Espera si falta dinero o espacio.','Contrata personal y elige Reposición para compras automáticas. Reserva dinero para existencias.'],
+ 'pt-BR':['A equipe de reposição compra até 4 unidades por viagem, conforme o saldo. Aguarda se faltar dinheiro ou espaço.','Contrate funcionários e escolha Reposição para compras automáticas. Reserve dinheiro para estoque.'],
+ fr:['Le personnel de réassort achète au plus 4 unités abordables par trajet. Il attend si les fonds ou la place manquent.','Embauchez et choisissez Réassort pour les achats automatiques. Gardez des fonds pour le stock.'],
+ de:['Nachfüllkräfte kaufen je Weg bis zu 4 bezahlbare Einheiten automatisch. Bei Geld- oder Platzmangel warten sie.','Personal einstellen und Nachfüllen wählen: Der Einkauf läuft automatisch. Geld für Waren zurücklegen.'],
+ it:['Gli addetti al rifornimento acquistano fino a 4 unità per viaggio secondo il saldo. Aspettano se mancano fondi o spazio.','Assumi e scegli Rifornimento per gli acquisti automatici. Conserva fondi per le scorte.'],
+ ru:['Сотрудник пополнения автоматически покупает до 4 доступных по цене единиц за рейс. Если денег или места мало, он ждёт.','Наймите сотрудника и выберите пополнение для автоматических закупок. Оставляйте деньги на товар.'],
+ hi:['पुनर्भरण कर्मचारी हर चक्कर में बजट के अनुसार अधिकतम 4 सामान अपने आप खरीदते हैं। पैसे या जगह की कमी पर वे इंतज़ार करते हैं।','कर्मचारी रखें और पुनर्भरण की भूमिका चुनें; खरीद अपने आप होगी। सामान के लिए नकदी बचाएँ।'],
+ ar:['يشتري موظف التزويد تلقائيًا حتى 4 وحدات يستطيع المتجر دفع ثمنها في الرحلة. ينتظر عند نقص المال أو المساحة.','وظّف موظفًا واختر دور التزويد ليشتري المخزون تلقائيًا. احتفظ بمال لشراء السلع.']
+};
+for(const locale of supportedLocales){[dict[locale].helperAutoRestockHint,dict[locale].guideTeam]=roleRestockCopy[locale];}
+const rewardProfitKeys=['achievementsIntro','reward_payments','reward_restocked','reward_gross','reward_equipment','reward_minutes','reward_service','rewardTier','claimReward','netProfitMinute','netProfitWindow'];
+const rewardProfitCopy={
+ en:['Claim cash at each milestone. Your total progress carries into the next tier.','Customer payments','Items restocked','Total sales revenue','Equipment acquired','Minutes open','Customers served within 17 seconds','Tier','Claim','Average net profit / min:','Last 60 operating seconds. Sales minus stock purchases; other purchases and rewards excluded.'],
+ 'zh-Hant':['達標後點擊領獎，累積進度保留並進入下一階。','累積結帳次數','累積補貨件數','累積銷售金額','累積取得設備','累積營業分鐘','17 秒內完成服務','第幾階','領取獎金','平均每分鐘淨收益：','最近 60 秒營運時間：商品收入減補貨成本；不含設備、擴建與獎金。'],
+ 'zh-Hans':['达标后点击领奖，累计进度保留并进入下一阶。','累计结账次数','累计补货件数','累计销售金额','累计取得设备','累计营业分钟','17 秒内完成服务','阶段','领取奖金','平均每分钟净收益：','最近 60 秒营业时间：商品收入减补货成本；不含设备、扩建与奖金。'],
+ ja:['達成したらタップで受け取り。累計進捗を保ったまま次の段階へ。','累計会計回数','累計仕入れ個数','累計売上','取得した設備','累計営業分数','17秒以内の接客','段階','受け取る','平均純利益 / 分：','直近60秒の営業時間。売上から仕入れを差し引き、設備と報酬は除外。'],
+ ko:['목표 달성 후 눌러 보상을 받으세요. 누적 진행은 다음 단계에 유지됩니다.','누적 결제','누적 보충 수량','누적 매출','획득한 장비','누적 영업 시간(분)','17초 이내 서비스','단계','보상 받기','분당 평균 순수익:','최근 영업 60초의 매출에서 재고 구입비를 뺍니다. 장비와 보상은 제외합니다.'],
+ es:['Reclama dinero al alcanzar cada meta. El progreso acumulado continúa.','Pagos de clientes','Unidades repuestas','Ventas acumuladas','Equipos adquiridos','Minutos de apertura','Clientes atendidos en 17 segundos','Nivel','Cobrar','Beneficio neto medio / min:','Últimos 60 segundos de actividad: ventas menos compras de stock. Excluye equipos y premios.'],
+ 'pt-BR':['Resgate dinheiro a cada meta. O progresso acumulado continua na próxima etapa.','Pagamentos de clientes','Unidades repostas','Vendas acumuladas','Equipamentos adquiridos','Minutos de funcionamento','Clientes atendidos em 17 segundos','Etapa','Resgatar','Lucro líquido médio / min:','Últimos 60 segundos de operação: vendas menos compras de estoque. Exclui equipamentos e prêmios.'],
+ fr:['Réclamez la prime à chaque palier. La progression cumulée est conservée.','Paiements clients','Articles réapprovisionnés','Ventes cumulées','Équipements acquis','Minutes d’ouverture','Clients servis en 17 secondes','Palier','Réclamer','Bénéfice net moyen / min :','60 dernières secondes d’activité : ventes moins achats de stock. Hors équipements et primes.'],
+ de:['Prämie bei jedem Ziel abholen. Der Gesamtfortschritt bleibt erhalten.','Kundenzahlungen','Nachgefüllte Artikel','Gesamtumsatz','Erworbene Ausstattung','Geöffnete Minuten','Kunden in 17 Sekunden bedient','Stufe','Abholen','Ø Nettogewinn / Min.:','Letzte 60 Betriebssekunden: Umsatz minus Wareneinkauf. Ausstattung und Prämien zählen nicht.'],
+ it:['Riscatta il premio a ogni traguardo. I progressi cumulativi restano.','Pagamenti clienti','Articoli riforniti','Vendite cumulative','Attrezzature acquisite','Minuti di apertura','Clienti serviti entro 17 secondi','Livello','Riscuoti','Utile netto medio / min:','Ultimi 60 secondi di attività: vendite meno acquisti di scorte. Esclusi attrezzature e premi.'],
+ ru:['Забирайте деньги за каждый этап. Общий прогресс сохраняется.','Оплаты покупателей','Пополнено товаров','Общая выручка','Получено оборудования','Минуты работы','Клиенты обслужены за 17 секунд','Этап','Получить','Средняя чистая прибыль / мин:','Последние 60 секунд работы: продажи минус закупки. Оборудование и награды не учитываются.'],
+ hi:['हर लक्ष्य पर पुरस्कार लें। कुल प्रगति अगले चरण में बनी रहती है।','ग्राहक भुगतान','भरे गए सामान','कुल बिक्री','प्राप्त उपकरण','दुकान खुलने के मिनट','17 सेकंड में सेवा','चरण','इनाम लें','औसत शुद्ध लाभ / मिनट:','पिछले 60 सक्रिय सेकंड: बिक्री घटा सामान की खरीद। उपकरण और पुरस्कार शामिल नहीं हैं।'],
+ ar:['اضغط لاستلام المكافأة عند كل هدف. يستمر التقدم التراكمي إلى المرحلة التالية.','مدفوعات الزبائن','وحدات أُعيد تزويدها','إجمالي المبيعات','المعدات المكتسبة','دقائق العمل','زبائن خُدموا خلال 17 ثانية','المرحلة','استلام','متوسط صافي الربح / دقيقة:','آخر 60 ثانية عمل: المبيعات ناقص شراء المخزون. لا تشمل المعدات والمكافآت.']
+};
+for(const locale of supportedLocales){Object.assign(dict[locale],Object.fromEntries(rewardProfitKeys.map((key,i)=>[key,rewardProfitCopy[locale][i]])));dict[locale].badgesTab=dict[locale].achievementTab;}
+keys.push(...rewardProfitKeys.filter(key=>!keys.includes(key)));
+const decorTrafficCopy={
+ en:['Decoration traffic','Extra customers while placed. More decorations add a smaller bonus.'],
+ 'zh-Hant':['裝飾額外客流','擺放後吸引更多客人；越多裝飾，新增效益逐漸遞減。'],
+ 'zh-Hans':['装饰额外客流','摆放后吸引更多客人；装饰越多，新增效益逐渐递减。'],
+ ja:['装飾による追加来客','設置中は来客が増加。追加するほど増分は小さくなります。'],
+ ko:['장식 추가 방문객','배치한 장식이 손님을 늘립니다. 많을수록 추가 효과는 줄어듭니다.'],
+ es:['Clientes extra por decoración','Atrae clientes al colocarla. Cada decoración adicional aporta menos.'],
+ 'pt-BR':['Clientes extras por decoração','Atrai clientes quando colocada. Cada decoração adicional contribui menos.'],
+ fr:['Clientèle bonus des décorations','Attire des clients une fois placée. Les ajouts ont un effet décroissant.'],
+ de:['Zusatzkundschaft durch Dekoration','Aufgestellte Deko zieht Kunden an. Weitere Stücke bringen weniger Zuwachs.'],
+ it:['Clienti extra dalle decorazioni','Attira clienti quando posizionata. Ogni aggiunta rende meno.'],
+ ru:['Дополнительные посетители от декора','Привлекает клиентов, пока стоит в зале. Каждая следующая даёт меньший прирост.'],
+ hi:['सजावट से अतिरिक्त ग्राहक','रखी हुई सजावट ग्राहक बढ़ाती है। हर अतिरिक्त सजावट का लाभ थोड़ा कम होता है।'],
+ ar:['زبائن إضافيون من الزينة','تجذب الزبائن عند وضعها. تقل الزيادة مع كل قطعة إضافية.']
+};
+for(const locale of supportedLocales)[dict[locale].decorTraffic,dict[locale].decorTrafficHint]=decorTrafficCopy[locale];
+keys.push('decorTraffic','decorTrafficHint');
+const decorPlacedCopy=['Placed: extra customers','擺放：增加客流','摆放：增加客流','設置で来客増加','배치 시 방문객 증가','Colocada: más clientes','Colocada: mais clientes','Placée : plus de clients','Aufgestellt: mehr Kunden','Posizionata: più clienti','В зале: больше клиентов','रखने पर अधिक ग्राहक','عند وضعها: زبائن أكثر'];
+for(const [i,locale]of supportedLocales.entries())dict[locale].decorPlaced=decorPlacedCopy[i];
+keys.push('decorPlaced');
 const aliases={'zh-tw':'zh-Hant','zh-hant':'zh-Hant','zh-cn':'zh-Hans','zh-hans':'zh-Hans','pt-br':'pt-BR'};
 export function resolveLocale(){const q=new URL(location.href).searchParams.get('lang');const ref=(()=>{try{return new URL(document.referrer).pathname.split('/')[1]}catch{return''}})();const here=location.pathname.split('/')[1];const raw=q||ref||here||document.documentElement.lang||'en';const locale=aliases[raw.toLowerCase()]||raw;return supportedLocales.includes(locale)?locale:'en'}
 export function t(key,locale=resolveLocale()){return dict[locale]?.[key]??dict.en[key]??key}

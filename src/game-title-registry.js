@@ -2878,5 +2878,21 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Шоу робопса",
     "hi": "रोबोट कुत्ते का शो",
     "ar": "عرض الكلب الآلي"
+  },
+  "animal-blockmart": {
+    "__localizedExact": true,
+    "en": "Animal Blockmart",
+    "zh-Hant": "動物方塊便利店",
+    "zh-Hans": "动物方块便利店",
+    "ja": "どうぶつブロックマート",
+    "ko": "동물 블록 마트",
+    "es": "Minimercado de Bloques",
+    "pt-BR": "Minimercado de Blocos",
+    "fr": "Mini-marché des Blocs",
+    "de": "Blocktier-Mini-Markt",
+    "it": "Minimarket a Blocchi",
+    "ru": "Блочный мини-маркет",
+    "hi": "ब्लॉक पशु मिनी-मार्ट",
+    "ar": "متجر الحيوانات المكعبة"
   }
 };

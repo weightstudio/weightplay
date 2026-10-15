@@ -1,3 +1,4 @@
+import {recordStoreTransaction} from './rewards-profit.js?v=15';
 export const BASE_STOCK_CAPACITY=40;
 export const COOLER_STOCK_BONUS=30;
 export const BASE_BROWSE_SECONDS=.27;
@@ -186,7 +187,7 @@ export function appendCashLedger(state,entry={}){
     ...(entry.quantity?{quantity:count(entry.quantity)}:{}),
     ...(entry.detail?{detail:String(entry.detail)}:{})
   };
-  return {...state,cashLedger:[...(Array.isArray(state.cashLedger)?state.cashLedger:[]),row].slice(-CASH_LEDGER_LIMIT)};
+  return {...recordStoreTransaction(state,entry),cashLedger:[...(Array.isArray(state.cashLedger)?state.cashLedger:[]),row].slice(-CASH_LEDGER_LIMIT)};
 }
 
 export function spendCash(state,amount,kind,details={}){

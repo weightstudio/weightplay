@@ -78,7 +78,7 @@
   }, true);
   window.WPPopularArcade?.mount("wordle");
   // v17 is already assigned to the shared-audio migration in the version record.
-  document.body.dataset.gameVersion = "v18";
+  document.body.dataset.gameVersion = "v19";
   document.body.dataset.wordleReview = "owner-20260923";
   syncBattleSubstate();
   const focusableLeaveActions = () => [...(leaveModal?.querySelectorAll("button:not([disabled])") || [])]

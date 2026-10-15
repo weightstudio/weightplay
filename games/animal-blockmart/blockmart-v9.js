@@ -1,5 +1,7 @@
+import {panelElement,reconcilePanel} from './panel-view.js?v=15';
+import {REWARD_TRACKS,normalizeRewards,rewardOffer,claimReward,normalizeOperatingFlow,netProfitPerMinute,decorationTraffic} from './rewards-profit.js?v=15';
 import * as THREE from './vendor/three/three.module.min.js';
-import {liveElapsedWindow,simulationSteps,migrateEmployees,hireStoreEmployee,changeEmployeeRole,employeeCheckoutSeconds,employeeRestockSeconds,migrateBusinessUpgrades,trainedEmployee,businessUpgradeCost,purchaseBusinessUpgrade,purchaseExpansion,EXPANSIONS,normalizeBusinessPerformance,recordBusinessSale,businessPerformance,EMPLOYEE_HIRE_COST,EMPLOYEE_RESTOCK_BATCH} from './economy.js?v=12';
+import {liveElapsedWindow,simulationSteps,migrateEmployees,hireStoreEmployee,changeEmployeeRole,employeeCheckoutSeconds,employeeRestockSeconds,migrateBusinessUpgrades,trainedEmployee,businessUpgradeCost,purchaseBusinessUpgrade,purchaseExpansion,EXPANSIONS,normalizeBusinessPerformance,recordBusinessSale,businessPerformance,EMPLOYEE_HIRE_COST,EMPLOYEE_RESTOCK_BATCH} from './economy.js?v=15';
 import {
   GRID_ENTRANCES, baseFootprint, footprintSize, occupiedTiles, footprintConflict,
   serviceVector, serviceFacingTarget, queueTile, clampPopularity, popularityAfterWait,
@@ -65,7 +67,6 @@ export function migrateV9Save(saved = {}, initial = {}) {
     equipment: { ...initial.equipment, ...(saved.equipment || {}) },
     warehouse: Array.isArray(saved.warehouse) ? saved.warehouse : [],
     fixtures: Array.isArray(saved.fixtures) ? saved.fixtures : structuredClone(initial.fixtures || []),
-    autoRestockEnabled: saved.autoRestockEnabled === true && Boolean(saved.helper),
     cashLedger: Array.isArray(saved.cashLedger) ? saved.cashLedger.filter(entry => entry && typeof entry.kind === 'string'
       && Number.isFinite(entry.amount) && Number.isFinite(entry.balance)).slice(-60) : [],
     achievements: normalizeAchievementState(saved.achievements, legacyAchievementProgress(saved)),
@@ -77,6 +78,8 @@ export function migrateV9Save(saved = {}, initial = {}) {
     coolerFixtureId: saved.coolerFixtureId || null,
     fastCheckoutFixtureId: saved.fastCheckoutFixtureId || null
   };
+  // The saved employee role owns the job; obsolete opt-in flags cannot disable it.
+  delete state.autoRestockEnabled;
   state.fixtures = state.fixtures.map(fixture => normalizeFixture(fixture));
   state.warehouse = state.warehouse.map(fixture => normalizeFixture(fixture));
   const placedIds = new Set(state.fixtures.map(fixture => fixture.id).filter(Boolean));
@@ -100,6 +103,8 @@ export function migrateV9Save(saved = {}, initial = {}) {
   migrated.businessPerformance=normalizeBusinessPerformance(saved.businessPerformance);
   if(!saved.businessPerformance)migrated.businessPerformance.paidProducts=[...new Set([...(state.achievements.baseline.productIds||[]),...state.achievements.events.filter(e=>e.type==='sale_settled').map(e=>e.productId),...state.cashLedger.filter(e=>e.kind==='sale').map(e=>e.product)])].filter(id=>PRODUCT_DEFS[id]);
   migrated.growthGoals={...(saved.growthGoals||{})};
+  migrated.achievementRewards=normalizeRewards(state);
+  migrated.operatingFlow=normalizeOperatingFlow(saved.operatingFlow,saved.simulation?.activeSeconds||0);
   migrated.storeModelVersion = 12;
   return migrated;
 }
@@ -115,7 +120,8 @@ export function normalizeFixture(fixture = {}) {
 }
 
 export function installBlockmartV9(ctx) {
-  const $ = ctx.$;
+  let panelDraft=null;
+  const $ = id=>id==='panel'&&panelDraft?panelDraft:ctx.$(id);
   const getState = () => ctx.state;
   const setState = value => { ctx.state = value; };
   const getPlacement = () => ctx.placement;
@@ -183,7 +189,7 @@ export function installBlockmartV9(ctx) {
     const destination={x:rect.left+rect.width/2,y:rect.top+rect.height/2};
     const origin={x:clamp(world.left+(projected.x+1)*world.width/2,world.left+10,world.right-10),y:clamp(world.top+(1-projected.y)*world.height/2,world.top+10,world.bottom-10)};
     if(reduceMotion()){animateFeedback(target,[{filter:'brightness(1.35)'},{filter:'brightness(1)'}]);return;}
-    const coin=document.createElement('i');coin.className='blockmart-sale-transfer';coin.textContent='$';coin.setAttribute('aria-hidden','true');coin.style.left=`${origin.x}px`;coin.style.top=`${origin.y}px`;document.body.append(coin);feedbackNodes.add(coin);
+    const coin=panelElement('i');coin.className='blockmart-sale-transfer';coin.textContent='$';coin.setAttribute('aria-hidden','true');coin.style.left=`${origin.x}px`;coin.style.top=`${origin.y}px`;document.body.append(coin);feedbackNodes.add(coin);
     const animation=coin.animate([{transform:'translate(-50%,-50%)',opacity:1},{transform:`translate(calc(-50% + ${destination.x-origin.x}px),calc(-50% + ${destination.y-origin.y}px))`,opacity:1}],{duration:420,easing:'cubic-bezier(.2,.7,.3,1)'});feedbackAnimations.add(animation);
     animation.finished.then(()=>{if(ctx.gameActive&&!document.hidden)animateFeedback(target,[{filter:'brightness(1.35)'},{filter:'brightness(1)'}]);}).catch(()=>{}).finally(()=>{coin.remove();feedbackNodes.delete(coin);feedbackAnimations.delete(animation);});
   }
@@ -192,12 +198,12 @@ export function installBlockmartV9(ctx) {
     root.addEventListener('pointerdown',event=>{const control=event.target.closest('button,select,[role="button"]');if(control&&!control.disabled)animateFeedback(control,[{filter:'brightness(.82)'},{filter:'brightness(1)'}],140);});
     root.addEventListener('keydown',event=>{if(['Enter',' '].includes(event.key)){const control=event.target.closest('button,[role="button"]');if(control&&!control.disabled)animateFeedback(control,[{filter:'brightness(.82)'},{filter:'brightness(1)'}],140);}});
     root.addEventListener('change',event=>animateFeedback(event.target,[{filter:'brightness(.8)'},{filter:'brightness(1)'}]));
-    const observer=new MutationObserver(records=>{for(const record of records){const target=record.target;if(record.type==='childList'&&target===$('panel')&&record.addedNodes.length)animateFeedback(target,[{opacity:.55},{opacity:1}]);else if(record.type==='attributes'&&record.attributeName==='hidden'&&!target.hidden&&target.matches('#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice')){if(target.id==='app')refreshGuidance();animateFeedback(target.id==='app'?$('battleContent'):target,[{opacity:.55},{opacity:1}]);}}});
-    observer.observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden']});
+    const observer=new MutationObserver(records=>{for(const record of records){const target=record.target;if(record.type==='attributes'&&record.attributeName==='hidden'&&!target.hidden&&target.matches('#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice')){if(target.id==='app')refreshGuidance();animateFeedback(target.id==='app'?$('battleContent'):target,[{opacity:.55},{opacity:1}]);}}});
+    observer.observe(root,{subtree:true,attributes:true,attributeFilter:['hidden']});
     document.addEventListener('visibilitychange',()=>{if(document.hidden)settleFeedback();});
     $('returnMain')?.addEventListener('click',settleFeedback);
     window.addEventListener('pagehide',event=>{settleFeedback();observer.disconnect();if(!event.persisted){packageAtlas?.dispose();for(const material of packageLabelMaterials.values())material.dispose();packageLabelMaterials.clear();}});
-    window.addEventListener('pageshow',event=>{if(event.persisted)observer.observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden']});});
+    window.addEventListener('pageshow',event=>{if(event.persisted)observer.observe(root,{subtree:true,attributes:true,attributeFilter:['hidden']});});
   }
   const visibleAchievementIds=new Set();
   const documentId=globalThis.crypto?.randomUUID?.() || `doc-${Date.now()}-${Math.random()}`;
@@ -225,7 +231,7 @@ export function installBlockmartV9(ctx) {
       if(disposed)return;
       for(const material of packageLabelMaterials.values()){material.map=null;material.needsUpdate=true;}
       ctx.toast(ctx.t('packageTextureError',ctx.locale));
-      if(!$('packageArtRetry')){const button=document.createElement('button');button.id='packageArtRetry';button.className='camera-orbit package-art-retry';button.type='button';button.textContent=ctx.t('retry',ctx.locale);button.setAttribute('aria-label',ctx.t('packageTextureError',ctx.locale));button.addEventListener('click',loadPackageAtlas);document.querySelector('.scene-wrap').append(button);}
+      if(!$('packageArtRetry')){const button=panelElement('button');button.id='packageArtRetry';button.className='camera-orbit package-art-retry';button.type='button';button.textContent=ctx.t('retry',ctx.locale);button.setAttribute('aria-label',ctx.t('packageTextureError',ctx.locale));button.addEventListener('click',loadPackageAtlas);document.querySelector('.scene-wrap').append(button);}
       refreshOwnership();
     });
     texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=Math.min(4,ctx.renderer.capabilities.getMaxAnisotropy());
@@ -350,20 +356,20 @@ export function installBlockmartV9(ctx) {
     const goals = counters.map(counter => serviceFacingTarget(counter))
       .map(point => ({ x: Math.round(point.x), z: Math.round(point.z) }))
       .filter(point => !blocked.has(`${point.x},${point.z}`) && walkable(point.x, point.z, ignoreId));
-    if (!goals.length) return false;
+    if (goals.length!==counters.length) return false;
     const entrances = routeOverrides.entrances || (state().entrances?.length ? state().entrances : [GRID_ENTRANCES[0]]);
     const exits = routeOverrides.exits || (state().exits?.length ? state().exits : [{ x: state().area - 1, z: state().area - 1 }]);
     if([...entrances,...exits].some(p=>{const inside=inwardPoint(p);return !walkable(inside.x,inside.z,ignoreId)||blocked.has(`${inside.x},${inside.z}`);}))return false;
     const canReach = (start, targets) => targets.some(goal => (start.x === goal.x && start.z === goal.z)
       || findPath(start, [goal], (x, z) => blocked.has(`${x},${z}`), ignoreId).length > 0);
     if (entrances.some(start => !walkable(start.x, start.z, ignoreId) || blocked.has(`${start.x},${start.z}`)
-      || !canReach(start, goals))) return false;
+      || goals.some(goal=>!canReach(start,[goal])))) return false;
     if (exits.some(exit => !walkable(exit.x, exit.z, ignoreId) || blocked.has(`${exit.x},${exit.z}`))) return false;
-    if (entrances.some(start => !canReach(start, exits))) return false;
+    if (entrances.some(start => !canReach(start, exits))||exits.some(exit=>!entrances.some(start=>canReach(start,[exit])))) return false;
     if (goals.some(goal => !canReach(goal, exits))) return false;
     const retailFixtures=fixtures().filter(f=>['shelf','cooler'].includes(f.kind)&&f.id!==ignoreId);
     if(candidate&&['shelf','cooler'].includes(candidate.kind))retailFixtures.push(candidate);
-    if(retailFixtures.some(fixture=>{const access=accessTiles(fixture).filter(p=>!blocked.has(`${p.x},${p.z}`));return !access.length||!entrances.some(start=>canReach(start,access));}))return false;
+    if(retailFixtures.some(fixture=>{const access=accessTiles(fixture).filter(p=>!blocked.has(`${p.x},${p.z}`));return !access.length||entrances.some(start=>!canReach(start,access));}))return false;
     const queueCells = new Set();
     for (const counter of counters) {
       const service = serviceFacingTarget(counter);
@@ -406,7 +412,7 @@ export function installBlockmartV9(ctx) {
     if (kind === 'checkout') return REGISTER_COST;
     if (kind === 'cooler') return 180;
     if (kind === 'fastCheckout') return 150;
-    if (kind === 'decor') return 0;
+    if (kind === 'decor') return 90;
     return 0;
   }
 
@@ -432,7 +438,7 @@ export function installBlockmartV9(ctx) {
     if (!routeToCheckout(occupiedTiles(p), p, getPlacement()?.fixtureId)) return ctx.t('placementRoute', ctx.locale);
     const requiresPurchase = !getPlacement()?.fixtureId || p.kind === 'cooler' && !state().equipment.cooler;
     if (requiresPurchase && state().cash < fixtureCost(p.kind, p.footprint) && p.kind !== 'decor') return ctx.t('needMoreCash', ctx.locale);
-    if (p.kind === 'decor' && !getPlacement()?.fixtureId && state().diamond < 1) return ctx.t('needMoreCash', ctx.locale);
+    if (p.kind === 'decor' && !getPlacement()?.fixtureId && state().diamond < 1 && state().cash<fixtureCost('decor')) return ctx.t('needMoreCash', ctx.locale);
     return ctx.t('placementValid', ctx.locale);
   }
 
@@ -905,7 +911,7 @@ export function installBlockmartV9(ctx) {
     if (!ids.length) return;
     let notice = document.querySelector('.achievement-notice');
     if (!notice) {
-      notice = document.createElement('div');
+      notice = panelElement('div');
       notice.className = 'achievement-notice';
       notice.setAttribute('role', 'status');
       notice.setAttribute('aria-live', 'polite');
@@ -932,7 +938,7 @@ export function installBlockmartV9(ctx) {
     const result = recordAchievementEvent(state().achievements, { id, ...data });
     if (!result.accepted) return;
     state().achievements = mergeAchievementStates(result.state, { events: ctx.readAchievementEvents?.() || [] });
-    notifyAchievementUnlocks(result.newlyUnlocked);
+    // Retain legacy badge history; cash rewards are now explicitly claimed by tier.
     ctx.save();
     if (ctx.selectedTab === 'achievements' && !simulationBusy) renderPanel();
   }
@@ -940,36 +946,33 @@ export function installBlockmartV9(ctx) {
   function renderAchievements() {
     const stateValue = state().achievements;
     const progress = achievementProgress(stateValue);
-    const heading = document.createElement('section');
+    const heading = panelElement('section');
     heading.className = 'achievement-heading';
-    const title = document.createElement('h2'); title.textContent = ctx.t('achievementsTitle', ctx.locale);
-    const intro = document.createElement('p'); intro.textContent = ctx.t('achievementsIntro', ctx.locale);
+    const title = panelElement('h2'); title.textContent = ctx.t('achievementsTitle', ctx.locale);
+    const intro = panelElement('p'); intro.textContent = ctx.t('achievementsIntro', ctx.locale);
     heading.append(title, intro); $('panel').append(heading);
-    const back = document.createElement('button');
+    const back = panelElement('button');
     back.type = 'button'; back.className = 'achievement-back';
     back.textContent = `‹  ${ctx.t('achievementBack', ctx.locale)}`;
     back.addEventListener('click', () => { ctx.selectedTab = 'shop'; renderPanel(); });
     $('panel').append(back);
-    for (const achievement of ACHIEVEMENT_CATALOG) {
-      const current = progress[achievement.id];
-      const complete = current >= achievement.target;
-      const title = document.createElement('h3'); title.textContent = ctx.t(`achievement_${achievement.id}`, ctx.locale);
-      const detail = document.createElement('p');
-      detail.textContent = `${ctx.t('achievementReward', ctx.locale)} · ${complete
-        ? ctx.t('achievementCollected', ctx.locale) : ctx.t('achievementInProgress', ctx.locale)}`;
-      const amount = achievement.id === 'gross_1000' ? ctx.price(Math.min(current, achievement.target))
-        : achievement.id === 'expansion_13' ? (current >= achievement.target ? '13 × 13' : '10 × 10 → 13 × 13')
-          : `${Math.min(current, achievement.target)} / ${achievement.target}`;
-      const row = document.createElement('article'); row.className = `achievement-row${complete ? ' is-collected' : ''}`;
-      row.dataset.achievementId = achievement.id;
-      row.setAttribute('aria-label', `${title.textContent}: ${amount}. ${detail.textContent}`);
-      const badge = document.createElement('span'); badge.className = 'achievement-badge'; badge.setAttribute('aria-hidden', 'true'); badge.textContent = complete ? '🏅' : '◇';
-      const copy = document.createElement('div'); copy.className = 'achievement-copy'; copy.append(title, detail);
-      const status = document.createElement('strong'); status.className = 'achievement-status'; status.textContent = `${complete ? '✓' : '○'} ${amount}`;
-      const meter = document.createElement('progress'); meter.className = 'achievement-progress'; meter.max = achievement.target;
-      meter.value = Math.min(current, achievement.target); meter.setAttribute('aria-label', title.textContent);
-      row.append(badge, copy, status, meter);
-      $('panel').append(row);
+    for (const track of REWARD_TRACKS) {
+      const offer=rewardOffer(state(),track.id,ctx.elapsed);
+      const row=panelElement('article');row.className='achievement-row';row.dataset.achievementId=track.id;
+      const badge=panelElement('span');badge.className='achievement-badge';badge.textContent=offer.ready?'✦':'◇';badge.setAttribute('aria-hidden','true');
+      const copy=panelElement('div');copy.className='achievement-copy';
+      const title=panelElement('h3');title.textContent=ctx.t('reward_'+track.id,ctx.locale);
+      const detail=panelElement('p');detail.textContent=`${ctx.t('rewardTier',ctx.locale)} ${offer.tier+1} · ${offer.progress.toLocaleString()} / ${offer.target.toLocaleString()}`;
+      copy.append(title,detail);
+      const claim=actionButton('claimReward',()=>{
+        const result=claimReward(state(),track.id,offer.tier,ctx.elapsed);if(!result.ok)return;
+        setState(ctx.appendCashLedger(result.state,{kind:'achievementReward',amount:result.reward,detail:track.id+':'+offer.tier}));
+        ctx.save();refreshHud();renderPanel();ctx.toast(`${ctx.t('claimReward',ctx.locale)} +${ctx.price(result.reward)}`);
+      });
+      claim.className='achievement-claim';claim.dataset.claimReward=track.id;claim.dataset.rewardTier=String(offer.tier);
+      claim.disabled=!offer.ready;claim.textContent=`${ctx.t(offer.ready?'claimReward':'achievementInProgress',ctx.locale)} +${ctx.price(offer.reward)}`;
+      const meter=panelElement('progress');meter.className='achievement-progress';meter.max=offer.target;meter.value=Math.min(offer.progress,offer.target);meter.setAttribute('aria-label',title.textContent);
+      row.append(badge,copy,claim,meter);$('panel').append(row);
     }
   }
 
@@ -1307,8 +1310,8 @@ export function installBlockmartV9(ctx) {
         if (!result.ok) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
         setState(result.state);
       } else if (p.kind === 'decor') {
-        if (state().diamond < 1) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
-        state().diamond--; state().diamondSpent++;
+        if(state().diamond>=1){state().diamond--;state().diamondSpent++;setState(ctx.appendCashLedger(state(),{kind:'fixture',amount:0,detail:'decor'}));}
+        else{const purchase=ctx.spendCash(state(),cost,'fixture',{detail:'decor'});if(!purchase.ok){ctx.toast(ctx.t('needMoreCash',ctx.locale));return;}setState(purchase.state);}
       } else {
         const purchase = ctx.spendCash(state(), cost, 'fixture', { detail: p.kind });
         if (!purchase.ok) { ctx.toast(ctx.t('needMoreCash', ctx.locale)); return; }
@@ -1375,17 +1378,17 @@ export function installBlockmartV9(ctx) {
   }
 
   function createCard(icon, title, detail, price, action, options = {}) {
-    const button = document.createElement('button');
+    const button = panelElement('button');
     button.type = 'button'; button.className = `card ${options.className || ''}`.trim();
     button.disabled = Boolean(options.disabled);
     const artwork=PRODUCT_DEFS[icon]?icon:({'checkout-speed':'fastCheckout','store-charm':'decor','shelf-single':'shelf','shelf-double':'shelf-double',cooler:'cooler'})[icon];
-    const marker=artwork?itemArt(artwork):document.createElement('span');
+    const marker=artwork?itemArt(artwork):panelElement('span');
     if(!artwork){marker.className='functional-icon';marker.setAttribute('aria-hidden','true');marker.textContent=({growth:'↗',entrance:'⇢',exit:'⇥','auto-restock':'↻'})[icon] || '•';}
-    const copy = document.createElement('span'); copy.className = 'card-copy';
-    const strong = document.createElement('strong'); strong.textContent = title;
-    const small = document.createElement('small'); small.textContent = detail;
+    const copy = panelElement('span'); copy.className = 'card-copy';
+    const strong = panelElement('strong'); strong.textContent = title;
+    const small = panelElement('small'); small.textContent = detail;
     copy.append(strong, small);
-    const priceNode = document.createElement('em'); priceNode.textContent = price;
+    const priceNode = panelElement('em'); priceNode.textContent = price;
     button.append(marker, copy, priceNode);
     if (options.placement) {
       button.dataset.v9Placement = 'true'; button.dataset.kind = options.placement.kind;
@@ -1400,13 +1403,13 @@ export function installBlockmartV9(ctx) {
   function renderSelectedFixture() {
     const fixture = fixtures().find(f => f.id === selectedFixtureId);
     if (!fixture) return;
-    const section = document.createElement('section'); section.className = 'fixture-detail'; section.dataset.fixtureId = fixture.id;
-    const head = document.createElement('div'); head.className = 'fixture-detail-heading';
+    const section = panelElement('section'); section.className = 'fixture-detail'; section.dataset.fixtureId = fixture.id;
+    const head = panelElement('div'); head.className = 'fixture-detail-heading';
     head.append(fixtureIllustration(fixture));
-    const copy = document.createElement('div');
-    const title = document.createElement('h3');
+    const copy = panelElement('div');
+    const title = panelElement('h3');
     title.textContent = fixture.kind === 'shelf' ? `${ctx.t('shelfUnit', ctx.locale)} ${fixtures().filter(f => f.kind === 'shelf').indexOf(fixture) + 1}` : fixtureLabel(fixture);
-    const detail = document.createElement('p');
+    const detail = panelElement('p');
     detail.textContent = fixture.kind === 'shelf' ? `${productName(fixture.product)} · ${ctx.t('availableStock', ctx.locale)} ${state().stock[fixture.product] || 0}` : `${ctx.t('footprint', ctx.locale)} ${footprintSize(fixture).width}×${footprintSize(fixture).depth}`;
     copy.append(title, detail); head.append(copy); section.append(head);
     if (fixture.kind === 'shelf') {
@@ -1415,7 +1418,7 @@ export function installBlockmartV9(ctx) {
       section.append(change);
       if (productPickerFixtureId === fixture.id) section.append(renderProductPicker(fixture));
     }
-    const tools = document.createElement('div'); tools.className = 'fixture-context-tools';
+    const tools = panelElement('div'); tools.className = 'fixture-context-tools';
     tools.append(actionButton('rotateFixture', () => rotateSelectedFixture(fixture.id)), actionButton('moveFixture', () => beginPlacement(fixture.kind, fixture.id, fixture.product, fixture.footprint)));
     if (fixture.kind !== 'checkout' || staffedCounters().length > 1) tools.append(actionButton('toWarehouse', () => warehouseFixture(fixture.id)));
     section.append(tools); $('panel').append(section);
@@ -1424,7 +1427,7 @@ export function installBlockmartV9(ctx) {
   const productName = id => ctx.t(PRODUCT_DEFS[id]?.label || 'shelf', ctx.locale);
   const fixtureLabel = fixture => ctx.t(({shelf:'shelfUnit',checkout:'cashRegister',cooler:'coolerUpgrade',fastCheckout:'fasterCheckout',decor:'storeCharm'})[fixture.kind] || 'selectedFixture', ctx.locale);
   function actionButton(key, action) {
-    const button = document.createElement('button'); button.type = 'button'; button.textContent = ctx.t(key, ctx.locale); button.addEventListener('click',()=>transact(action)); return button;
+    const button = panelElement('button'); button.type = 'button'; button.textContent = ctx.t(key, ctx.locale); button.addEventListener('click',()=>transact(action)); return button;
   }
 
   const catalog = [
@@ -1438,9 +1441,9 @@ export function installBlockmartV9(ctx) {
   ];
   const catalogMatches=(entry,item)=>item.kind===entry.kind && (entry.kind!=='shelf'||item.footprint===entry.footprint)&&(entry.kind!=='decor'||(entry.decorType||null)===(item.decorType||null));
   const catalogCost=entry=>entry.cost||fixtureCost(entry.kind,entry.footprint);
-  const catalogAffordable=entry=>entry.kind==='decor'&&!entry.decorType?state().diamond>=1:[...fixtures(),...state().warehouse].some(f=>catalogMatches(entry,f))&&entry.decorType?false:['cooler','fastCheckout'].includes(entry.kind)&&!state().equipment[entry.kind]&&state().legacyUpgradeCredits>0?true:state().cash>=catalogCost(entry);
+  const catalogAffordable=entry=>entry.kind==='decor'&&!entry.decorType&&state().diamond>=1?true:['cooler','fastCheckout'].includes(entry.kind)&&!state().equipment[entry.kind]&&state().legacyUpgradeCredits>0?true:state().cash>=catalogCost(entry);
   function itemArt(id,alt='') {
-    const image=document.createElement('img');image.className='item-art';image.src=`./assets/item-${id}-${['milk','bread','yogurt','icecream','noodles','duck','bread-throne','receipt-king'].includes(id)?'v12':'v11'}.webp`;image.alt=alt;image.width=72;image.height=72;image.decoding='async';return image;
+    const image=panelElement('img');image.className='item-art';image.src=`./assets/item-${id}-${['milk','bread','yogurt','icecream','noodles','duck','bread-throne','receipt-king'].includes(id)?'v12':'v11'}.webp`;image.alt=alt;image.width=72;image.height=72;image.decoding='async';return image;
   }
   function fixtureIllustration(fixture) {
     const entry=catalog.find(entry=>catalogMatches(entry,fixture));
@@ -1448,8 +1451,8 @@ export function installBlockmartV9(ctx) {
   }
   function buyCatalogItem(entry) {
     if(entry.kind==='decor') {
-      if(entry.decorType){if(!catalogAffordable(entry))return false;const purchase=ctx.spendCash(state(),entry.cost,'fixture',{detail:entry.key});if(!purchase.ok)return false;setState(purchase.state);}
-      else{if(state().diamond<1 || [...fixtures(),...state().warehouse].filter(f=>f.kind==='decor'&&!f.decorType).length>=6){ctx.toast(ctx.t('needMoreCash',ctx.locale));return false;}state().diamond--;state().diamondSpent++;}
+      if(!entry.decorType&&state().diamond>=1){state().diamond--;state().diamondSpent++;setState(ctx.appendCashLedger(state(),{kind:'fixture',amount:0,detail:'decor'}));}
+      else{const purchase=ctx.spendCash(state(),catalogCost(entry),'fixture',{detail:entry.key});if(!purchase.ok){ctx.toast(ctx.t('needMoreCash',ctx.locale));return false;}setState(purchase.state);}
     } else {
       const cost=fixtureCost(entry.kind,entry.footprint);
       const result=(entry.kind==='cooler'||entry.kind==='fastCheckout') ? ctx.purchaseEquipment(state(),entry.kind,cost) : ctx.spendCash(state(),cost,'fixture',{detail:entry.key});
@@ -1466,23 +1469,23 @@ export function installBlockmartV9(ctx) {
   }
   function renderCatalogRow(entry) {
     const placed=fixtures().filter(f=>catalogMatches(entry,f)),stored=state().warehouse.filter(f=>catalogMatches(entry,f));
-    const row=document.createElement('article');row.className='catalog-row';row.dataset.catalogKey=entry.key;
-    const imageButton=document.createElement('button');imageButton.type='button';imageButton.className='item-image-button';imageButton.setAttribute('aria-label',`${ctx.t('itemOptions',ctx.locale)} · ${ctx.t(entry.label,ctx.locale)}`);imageButton.setAttribute('aria-expanded',String(selectedCatalogKey===entry.key));
+    const row=panelElement('article');row.className='catalog-row';row.dataset.catalogKey=entry.key;
+    const imageButton=panelElement('button');imageButton.type='button';imageButton.className='item-image-button';imageButton.setAttribute('aria-label',`${ctx.t('itemOptions',ctx.locale)} · ${ctx.t(entry.label,ctx.locale)}`);imageButton.setAttribute('aria-expanded',String(selectedCatalogKey===entry.key));
     imageButton.append(itemArt(entry.art));imageButton.addEventListener('click',()=>{selectedCatalogKey=selectedCatalogKey===entry.key?null:entry.key;renderPanel()});
-    const copy=document.createElement('div');copy.className='item-copy';const title=document.createElement('h3');title.textContent=ctx.t(entry.label,ctx.locale);
-    const counts=document.createElement('p');counts.textContent=`${ctx.t('ownedTotal',ctx.locale)} ${placed.length+stored.length} · ${ctx.t('placedCount',ctx.locale)} ${placed.length} · ${ctx.t('storedCount',ctx.locale)} ${stored.length}`;
-    const price=document.createElement('strong');price.className='item-price';price.textContent=entry.kind==='decor'&&!entry.decorType?'1 ✦':['cooler','fastCheckout'].includes(entry.kind)&&!state().equipment[entry.kind]&&state().legacyUpgradeCredits>0?ctx.t('legacyUpgradeCredit',ctx.locale):ctx.price(catalogCost(entry));copy.append(title,counts,price);
-    if(entry.decorType){const effect=document.createElement('p');effect.textContent=`${ctx.t('optionalDecor',ctx.locale)} · ${ctx.t('popularity',ctx.locale)} +${DECOR_DEFS[entry.decorType].appeal}`;copy.append(effect);}
-    if(entry.kind==='shelf'||entry.kind==='cooler'){const purpose=document.createElement('p');purpose.textContent=ctx.t(entry.kind==='cooler'?'coolerPurpose':entry.footprint==='double'?'doublePurpose':'singlePurpose',ctx.locale);copy.append(purpose);}
-    if(entry.kind==='checkout'){const activation=document.createElement('p');activation.className='activation-cost';activation.textContent=`${ctx.t('counterActivationCost',ctx.locale)} ${ctx.price(REGISTER_COST)} + ${ctx.price(EMPLOYEE_HIRE_COST)} = ${ctx.price(REGISTER_COST+EMPLOYEE_HIRE_COST)}`;copy.append(activation);}
+    const copy=panelElement('div');copy.className='item-copy';const title=panelElement('h3');title.textContent=ctx.t(entry.label,ctx.locale);
+    const counts=panelElement('p');counts.textContent=`${ctx.t('ownedTotal',ctx.locale)} ${placed.length+stored.length} · ${ctx.t('placedCount',ctx.locale)} ${placed.length} · ${ctx.t('storedCount',ctx.locale)} ${stored.length}`;
+    const price=panelElement('strong');price.className='item-price';price.textContent=entry.kind==='decor'&&!entry.decorType&&state().diamond>=1?'1 ✦':['cooler','fastCheckout'].includes(entry.kind)&&!state().equipment[entry.kind]&&state().legacyUpgradeCredits>0?ctx.t('legacyUpgradeCredit',ctx.locale):ctx.price(catalogCost(entry));copy.append(title,counts,price);
+    if(entry.kind==='decor'){const effect=panelElement('p');effect.textContent=ctx.t('decorPlaced',ctx.locale);copy.append(effect);}
+    if(entry.kind==='shelf'||entry.kind==='cooler'){const purpose=panelElement('p');purpose.textContent=ctx.t(entry.kind==='cooler'?'coolerPurpose':entry.footprint==='double'?'doublePurpose':'singlePurpose',ctx.locale);copy.append(purpose);}
+    if(entry.kind==='checkout'){const activation=panelElement('p');activation.className='activation-cost';activation.textContent=`${ctx.t('counterActivationCost',ctx.locale)} ${ctx.price(REGISTER_COST)} + ${ctx.price(EMPLOYEE_HIRE_COST)} = ${ctx.price(REGISTER_COST+EMPLOYEE_HIRE_COST)}`;copy.append(activation);}
     const buy=actionButton('buyItem',()=>buyCatalogItem(entry));buy.className='item-buy';buy.dataset.buyItem=entry.key;
-    buy.disabled=!catalogAffordable(entry)||entry.kind==='decor'&&!entry.decorType&&placed.length+stored.length>=6||((entry.kind==='cooler'||entry.kind==='fastCheckout')&&state().equipment[entry.kind]);
+    buy.disabled=!catalogAffordable(entry)||((entry.kind==='cooler'||entry.kind==='fastCheckout')&&state().equipment[entry.kind]);
     row.append(imageButton,copy,buy);
     if(selectedCatalogKey===entry.key){
-      const options=document.createElement('div');options.className='item-owned-options';
-      if(!placed.length&&!stored.length){const hint=document.createElement('p');hint.textContent=ctx.t('buyBeforePlace',ctx.locale);options.append(hint);}
+      const options=panelElement('div');options.className='item-owned-options';
+      if(!placed.length&&!stored.length){const hint=panelElement('p');hint.textContent=ctx.t('buyBeforePlace',ctx.locale);options.append(hint);}
       [...stored,...placed].forEach((fixture,index)=>{
-        const line=document.createElement('div');line.className='owned-option';const name=document.createElement('span');const isStored=stored.some(f=>f.id===fixture.id);name.textContent=`${index+1} · ${ctx.t(isStored?'storedCount':'placedCount',ctx.locale)}`;line.append(name);
+        const line=panelElement('div');line.className='owned-option';const name=panelElement('span');const isStored=stored.some(f=>f.id===fixture.id);name.textContent=`${index+1} · ${ctx.t(isStored?'storedCount':'placedCount',ctx.locale)}`;line.append(name);
         line.append(actionButton(isStored?'placeFree':'moveFixture',()=>beginPlacement(fixture.kind,fixture.id,fixture.product,fixture.footprint)));
         if(!isStored){line.append(actionButton('rotateFixture',()=>rotateSelectedFixture(fixture.id)));line.append(actionButton('toWarehouse',()=>warehouseFixture(fixture.id)));}
         options.append(line);
@@ -1492,11 +1495,12 @@ export function installBlockmartV9(ctx) {
     $('panel').append(row);return row;
   }
   function renderGrowthCatalog() {
-    const categories=document.createElement('div');categories.className='growth-categories';categories.setAttribute('role','tablist');
+    const categories=panelElement('div');categories.className='growth-categories';categories.setAttribute('role','tablist');
     for(const [id,key] of [['equipment','equipmentCategory'],['upgrades','businessUpgrades'],['decor','decorCategory'],['layout','layoutCategory']]){
-      const button=document.createElement('button');button.type='button';button.textContent=ctx.t(key,ctx.locale);button.dataset.growthCategory=id;button.setAttribute('role','tab');button.setAttribute('aria-selected',String(growthCategory===id));button.addEventListener('click',()=>{growthCategory=id;selectedCatalogKey=null;renderPanel()});categories.append(button);
+      const button=panelElement('button');button.type='button';button.textContent=ctx.t(key,ctx.locale);button.dataset.growthCategory=id;button.setAttribute('role','tab');button.setAttribute('aria-selected',String(growthCategory===id));button.addEventListener('click',()=>{growthCategory=id;selectedCatalogKey=null;renderPanel()});categories.append(button);
     }
     $('panel').append(categories);
+    if(growthCategory==='decor'){const bonus=panelElement('p');bonus.className='decor-traffic';bonus.dataset.decorTraffic='true';bonus.title=ctx.t('decorTrafficHint',ctx.locale);$('panel').append(bonus);}
     if(growthCategory==='layout'){
       const offer=EXPANSIONS.find(item=>item.from===state().area);
       createCard('growth',ctx.t('expand',ctx.locale),`${state().area} × ${state().area}${offer?` → ${offer.to} × ${offer.to} · +${offer.to**2-offer.from**2}`:''}`,offer?ctx.price(offer.cost):ctx.t('upgradeComplete',ctx.locale),()=>expandStore(offer?.from),{disabled:!offer||state().cash<offer.cost});
@@ -1504,12 +1508,12 @@ export function installBlockmartV9(ctx) {
       createCard('exit',ctx.t('exit',ctx.locale),ctx.t('routeSafetyHint',ctx.locale),'↔',()=>beginEndpointEdit('exit'));
     }else if(growthCategory==='upgrades')renderBusinessUpgrades();
     else for(const entry of catalog.filter(item=>growthCategory==='decor'?item.kind==='decor':item.kind!=='decor'))renderCatalogRow(entry);
-    if(growthCategory==='upgrades')renderCashActivity();
+
   }
   function expandStore(expectedArea){const result=purchaseExpansion(state(),expectedArea);if(!result.ok)return false;setState(result.state);settleAchievementEvent({type:'expansion_purchased',toArea:state().area});ctx.buildFloor();syncFixtures();rerouteLiveCustomers();ctx.resize();ctx.save();renderPanel();ctx.toast(ctx.t('expandSuccess',ctx.locale));return true;}
   function renderBusinessUpgrades(){
     const legacy=Object.values(state().businessUpgrades.legacySkills).reduce((sum,s)=>sum+80*s.checkout*(s.checkout+1)/2+70*s.restock*(s.restock+1)/2,0);
-    if(legacy){const hint=document.createElement('p');hint.textContent=`${ctx.t('legacyTraining',ctx.locale)} · ${ctx.price(legacy)}`;$('panel').append(hint);}
+    if(legacy){const hint=panelElement('p');hint.textContent=`${ctx.t('legacyTraining',ctx.locale)} · ${ctx.price(legacy)}`;$('panel').append(hint);}
     for(const id of ['checkout','restock','storage']){
       const level=state().businessUpgrades.levels[id],cost=businessUpgradeCost(id,level);
       const effect=id==='storage'?`${ctx.stockCapacity(ctx.activeEquipment())} → ${ctx.stockCapacity({...ctx.activeEquipment(),storageLevel:level+1})}`:id==='checkout'?`${(3.5*.8**level).toFixed(1)}s → ${Math.max(.55,3.5*.8**(level+1)).toFixed(1)}s`:`${(12*.82**level).toFixed(1)}s → ${Math.max(2,12*.82**(level+1)).toFixed(1)}s`;
@@ -1530,7 +1534,7 @@ export function installBlockmartV9(ctx) {
     if(!button?.clientWidth)return;
     const css=getComputedStyle(button),signature=button.clientWidth+'/'+css.font+'/'+css.lineHeight+'/'+ctx.locale;
     if(button.dataset.guideSize===signature)return;
-    const probe=document.createElement('div');probe.setAttribute('aria-hidden','true');
+    const probe=panelElement('div');probe.setAttribute('aria-hidden','true');
     Object.assign(probe.style,{position:'fixed',left:'-100000px',visibility:'hidden',pointerEvents:'none',boxSizing:'border-box',width:button.clientWidth+'px',font:css.font,lineHeight:css.lineHeight,padding:css.padding,whiteSpace:'normal',overflowWrap:css.overflowWrap});
     document.body.append(probe);let height=0;
     try{for(const key of [...growthGoalRows().map(goal=>goal.key),'guideComplete']){probe.textContent=ctx.t(key,ctx.locale);height=Math.max(height,probe.getBoundingClientRect().height);}button.style.minHeight=Math.ceil(height+2)+'px';button.dataset.guideSize=signature;}finally{probe.remove();}
@@ -1551,14 +1555,14 @@ export function installBlockmartV9(ctx) {
   function renderGuide(){
     if(state().guideDismissed||ctx.selectedTab!=='shop')return;
     const next=nextGuideGoal();
-    const section=document.createElement('section');section.className='business-guide';section.setAttribute('aria-label',ctx.t('guideTitle',ctx.locale));
+    const section=panelElement('section');section.className='business-guide';section.setAttribute('aria-label',ctx.t('guideTitle',ctx.locale));
     const dismiss=actionButton('cancel',()=>{state().guideDismissed=true;ctx.save();renderPanel()});dismiss.className='guide-dismiss';dismiss.textContent='×';
     const go=actionButton('guideTitle',()=>openManagement(nextGuideGoal().tab));go.className='guide-open';go.dataset.guideGoal=next.id;go.textContent=ctx.t(next.key,ctx.locale);section.append(go,dismiss);$('panel').append(section);reserveGuideHeight(go);
   }
   function renderBusinessSummary(){
-    const section=document.createElement('section');section.className='business-summary';
-    const heading=document.createElement('h3');heading.textContent=ctx.t('recentBusiness',ctx.locale);section.append(heading);
-    const facts=document.createElement('p');facts.dataset.businessSummary='true';section.append(facts);
+    const section=panelElement('section');section.className='business-summary';
+    const heading=panelElement('h3');heading.textContent=ctx.t('recentBusiness',ctx.locale);section.append(heading);
+    const facts=panelElement('p');facts.id='cashActivity';facts.dataset.netProfit='true';section.append(facts);
     const labels={firstSale:'achievement_first_sale',twoProducts:'productToDisplay',team:'hireEmployee',capacity:'registerRoster',expansion:'expand',landmark:'decorCategory'};
     for(const goal of growthGoalRows()){const button=actionButton(goal.key,()=>openManagement(goal.tab));button.className='growth-goal';button.dataset.growthGoal=goal.id;button.title=ctx.t(goal.key,ctx.locale);button.textContent=`${state().growthGoals[goal.id]?'✓':''} ${ctx.t(labels[goal.id],ctx.locale)} · ${Math.min(goal.amount,goal.target)}/${goal.target}`;section.append(button);}
     const restore=actionButton('guideTitle',()=>{state().guideDismissed=false;ctx.save();openManagement('shop')});section.append(restore);$('panel').append(section);
@@ -1575,27 +1579,27 @@ export function installBlockmartV9(ctx) {
     syncFixtures(); rerouteLiveCustomers(); ctx.save(); renderPanel(); ctx.toast(`${ctx.t('shelfProductChanged', ctx.locale)} · ${productName(productId)}`); return true;
   }
   function renderProductPicker(fixture) {
-    const picker = document.createElement('div'); picker.className = 'shelf-product-picker'; picker.setAttribute('role','group'); picker.setAttribute('aria-label',ctx.t('chooseProduct',ctx.locale));
-    if(fixture.footprint==='double'||fixture.kind==='cooler')for(const slot of [0,1]){const button=document.createElement('button');button.type='button';button.dataset.productSlot=String(slot);button.textContent=`${ctx.t('productToDisplay',ctx.locale)} ${slot+1} · ${fixture[slot?'product2':'product']?productName(fixture[slot?'product2':'product']):ctx.t('chooseProduct',ctx.locale)}`;button.setAttribute('aria-pressed',String(pickerSlot===slot));button.addEventListener('click',()=>{pickerSlot=slot;renderPanel()});picker.append(button);}
+    const picker = panelElement('div'); picker.className = 'shelf-product-picker'; picker.setAttribute('role','group'); picker.setAttribute('aria-label',ctx.t('chooseProduct',ctx.locale));
+    if(fixture.footprint==='double'||fixture.kind==='cooler')for(const slot of [0,1]){const button=panelElement('button');button.type='button';button.dataset.productSlot=String(slot);button.textContent=`${ctx.t('productToDisplay',ctx.locale)} ${slot+1} · ${fixture[slot?'product2':'product']?productName(fixture[slot?'product2':'product']):ctx.t('chooseProduct',ctx.locale)}`;button.setAttribute('aria-pressed',String(pickerSlot===slot));button.addEventListener('click',()=>{pickerSlot=slot;renderPanel()});picker.append(button);}
     for (const id of Object.keys(PRODUCT_DEFS)) {
-      const unlocked = state().unlocked.includes(id),compatible=compatibleProduct(fixture,id),selected=fixture[pickerSlot?'product2':'product']===id; const button = document.createElement('button'); button.type = 'button'; button.dataset.productId = id; button.disabled = !unlocked||!compatible;
+      const unlocked = state().unlocked.includes(id),compatible=compatibleProduct(fixture,id),selected=fixture[pickerSlot?'product2':'product']===id; const button = panelElement('button'); button.type = 'button'; button.dataset.productId = id; button.disabled = !unlocked||!compatible;
       button.className = `product-choice${selected ? ' is-selected' : ''}`; button.setAttribute('aria-pressed',String(selected));
       const sample = itemArt(id);
-      const name = document.createElement('strong'); name.textContent = productName(id);
-      const note = document.createElement('small'); note.textContent = !compatible?ctx.t(PRODUCT_DEFS[id]?.cold?'coldOnly':'dryOnly',ctx.locale):unlocked ? `${ctx.t('availableStock',ctx.locale)} ${state().stock[id] || 0}` : productLockReason(id);
+      const name = panelElement('strong'); name.textContent = productName(id);
+      const note = panelElement('small'); note.textContent = !compatible?ctx.t(PRODUCT_DEFS[id]?.cold?'coldOnly':'dryOnly',ctx.locale):unlocked ? `${ctx.t('availableStock',ctx.locale)} ${state().stock[id] || 0}` : productLockReason(id);
       button.append(sample,name,note); button.addEventListener('click',()=>transact(()=>setShelfProduct(fixture.id,id))); picker.append(button);
     }
     return picker;
   }
   function refreshPlacementProducts(selected) {
     const select = $('placementProduct'); select.replaceChildren();
-    for (const id of Object.keys(PRODUCT_DEFS)) { const option = document.createElement('option'); option.value = id;const compatible=compatibleProduct(getPlacement()||{kind:'shelf'},id); option.disabled = !state().unlocked.includes(id)||!compatible; option.textContent = `${productName(id)}${!compatible?` · ${ctx.t('coldOnly',ctx.locale)}`:option.disabled ? ` · ${productLockReason(id)}` : ''}`; select.append(option); }
+    for (const id of Object.keys(PRODUCT_DEFS)) { const option = panelElement('option'); option.value = id;const compatible=compatibleProduct(getPlacement()||{kind:'shelf'},id); option.disabled = !state().unlocked.includes(id)||!compatible; option.textContent = `${productName(id)}${!compatible?` · ${ctx.t('coldOnly',ctx.locale)}`:option.disabled ? ` · ${productLockReason(id)}` : ''}`; select.append(option); }
     select.value = selected;
   }
 
   function renderWarehouseSummary() {
-    const section = document.createElement('section'); section.className = 'inventory-summary';
-    const heading = document.createElement('h3'); heading.textContent = ctx.t('warehouseSummary', ctx.locale);
+    const section = panelElement('section'); section.className = 'inventory-summary';
+    const heading = panelElement('h3'); heading.textContent = ctx.t('warehouseSummary', ctx.locale);
     section.append(heading);
     const groups = [
       ['shelf', fixture => fixture.kind === 'shelf'],
@@ -1607,47 +1611,15 @@ export function installBlockmartV9(ctx) {
       const placed = fixtures().filter(matches).length;
       const stored = state().warehouse.filter(matches).length;
       if (!placed && !stored) continue;
-      const row = document.createElement('p'); row.textContent = `${ctx.t(key, ctx.locale)} · ${ctx.t('owned', ctx.locale)} ${placed + stored} · ${ctx.t('placed', ctx.locale)} ${placed} · ${ctx.t('stored', ctx.locale)} ${stored}`;
+      const row = panelElement('p'); row.textContent = `${ctx.t(key, ctx.locale)} · ${ctx.t('owned', ctx.locale)} ${placed + stored} · ${ctx.t('placed', ctx.locale)} ${placed} · ${ctx.t('stored', ctx.locale)} ${stored}`;
       section.append(row);
     }
     $('panel').append(section);
   }
 
   function renderCashActivity() {
-    const section = document.createElement('section'); section.className = 'cash-activity'; section.id = 'cashActivity';
-    const heading = document.createElement('h3');
-    heading.textContent = `${ctx.t('spendingTitle', ctx.locale)} · ${ctx.price(Math.floor(state().cash))}`;
-    section.append(heading);
-    if (state().recoveryDebt > 0) {
-      const debt = document.createElement('p'); debt.className = 'cash-debt';
-      debt.textContent = `${ctx.t('recoveryInvoice', ctx.locale)} ${ctx.price(state().recoveryDebt)}`;
-      section.append(debt);
-    }
-    const ledger = Array.isArray(state().cashLedger) ? state().cashLedger.slice(-8).reverse() : [];
-    if (!ledger.length) {
-      const empty = document.createElement('p'); empty.textContent = ctx.t('noSpendRecords', ctx.locale); section.append(empty);
-    }
-    const labels = { restock: 'manualOrderLabel', autoRestock: 'automaticWaterOrder', fixture: 'purchaseLabel',
-      equipment: 'purchaseLabel', cashier: 'purchaseLabel', helper: 'purchaseLabel', expansion: 'purchaseLabel',
-      sale: 'salesLabel', recoveryOrder: 'debtBorrowedLabel' };
-    const detailLabels = { 'shelf-single':'smallShelf','shelf-double':'doubleShelf',shelf: 'shelf', checkout: 'cashRegister', cooler: 'coolerUpgrade',
-      fastCheckout: 'fasterCheckout', expansion: 'expand', helper: 'hireHelper', cashier: 'hireCashier' };
-    for (const entry of ledger) {
-      const row = document.createElement('div'); row.className = 'cash-activity-row';
-      const name = document.createElement('span');
-      const label = ctx.t(entry.kind==='businessUpgrade'?'businessUpgrades':entry.kind==='employee'?'hireEmployee':entry.kind==='staffSkill'?(entry.detail==='checkout'?'checkoutSkill':'restockSkill'):entry.kind==='autoRestock'?'restockAction':labels[entry.kind] || 'purchaseLabel', ctx.locale);
-      const product = entry.product ? ` · ${ctx.t(PRODUCT_DEFS[entry.product]?.label || entry.product, ctx.locale)}` : '';
-      const detailKey = entry.detail || (['cashier', 'helper', 'expansion'].includes(entry.kind) ? entry.kind : '');
-      const itemKey={'decor-duck':'duckStatue','decor-bread':'breadThrone','decor-crown':'kingReceipt'}[detailKey];
-      const detail = entry.kind==='businessUpgrade'?` · ${ctx.t(({checkout:'checkoutSkill',restock:'restockSkill',storage:'stockCapacity'})[entry.detail]||'businessUpgrades',ctx.locale)}`:entry.kind==='staffSkill'?'':entry.kind==='employee'?` · ${ctx.t(entry.detail==='checkout'?'cashierRole':'restockerRole',ctx.locale)}`:itemKey?` · ${ctx.t(itemKey,ctx.locale)}`:entry.kind==='expansion'&&/^\d+$/.test(detailKey)?` · ${detailKey} × ${detailKey}`:detailLabels[detailKey] ? ` · ${ctx.t(detailLabels[detailKey], ctx.locale)}` : '';
-      name.textContent = `${label}${detail}${product}${entry.quantity ? ` ×${entry.quantity}` : ''}`;
-      const amounts = document.createElement('span');
-      const cashText = entry.amount ? `${entry.amount > 0 ? '+' : '−'}${ctx.price(Math.abs(entry.amount))}` : '—';
-      const debtText = entry.debtChange ? ` · ${ctx.t(entry.debtChange > 0 ? 'debtBorrowedLabel' : 'debtPaidLabel', ctx.locale)} ${ctx.price(Math.abs(entry.debtChange))}` : '';
-      amounts.textContent = `${cashText}${debtText}`;
-      row.append(name, amounts); section.append(row);
-    }
-    $('panel').append(section);
+    const section=panelElement('section');section.className='cash-activity';section.id='cashActivity';
+    const value=panelElement('p');value.dataset.netProfit='true';section.append(value);$('panel').append(section);
   }
 
   function openCashActivity() {
@@ -1660,27 +1632,27 @@ export function installBlockmartV9(ctx) {
   function addWarehouseControls() {
     for (const fixture of fixtures()) {
       if (!['shelf', 'cooler', 'fastCheckout', 'checkout', 'decor'].includes(fixture.kind)) continue;
-      const row = document.createElement('div'); row.className = 'fixture-row';
-      const label = document.createElement('span');
+      const row = panelElement('div'); row.className = 'fixture-row';
+      const label = panelElement('span');
       const name = fixture.kind === 'shelf' ? ctx.t(PRODUCT_DEFS[fixture.product]?.label || 'shelf', ctx.locale)
         : ctx.t(fixture.kind === 'checkout' ? 'cashRegister' : fixture.kind === 'cooler' ? 'coolerUpgrade' : fixture.kind === 'fastCheckout' ? 'fasterCheckout' : 'storeCharm', ctx.locale);
       const size = footprintSize(fixture);
       label.textContent = `${name} · ${size.width}×${size.depth}`;
-      const move = document.createElement('button'); move.className = 'fixture-manage'; move.textContent = ctx.t('moveFixture', ctx.locale);
+      const move = panelElement('button'); move.className = 'fixture-manage'; move.textContent = ctx.t('moveFixture', ctx.locale);
       move.addEventListener('click', () => beginPlacement(fixture.kind, fixture.id, fixture.product, fixture.footprint));
-      const rotate = document.createElement('button'); rotate.className = 'fixture-rotate';
+      const rotate = panelElement('button'); rotate.className = 'fixture-rotate';
       rotate.textContent = '↻'; rotate.setAttribute('aria-label', `${ctx.t('rotateFixture', ctx.locale)} · ${name}`);
       rotate.disabled = fixture.kind === 'decor';
       rotate.addEventListener('click', () => transact(()=>rotateSelectedFixture(fixture.id)));
-      const store = document.createElement('button'); store.className = 'fixture-store'; store.textContent = ctx.t('toWarehouse', ctx.locale);
+      const store = panelElement('button'); store.className = 'fixture-store'; store.textContent = ctx.t('toWarehouse', ctx.locale);
       store.addEventListener('click', () => transact(()=>warehouseFixture(fixture.id)));
       row.append(label, move, rotate, store); $('panel').append(row);
     }
     for (const fixture of state().warehouse) {
-      const row = document.createElement('div'); row.className = 'fixture-row warehouse-row';
-      const label = document.createElement('span');
+      const row = panelElement('div'); row.className = 'fixture-row warehouse-row';
+      const label = panelElement('span');
       label.textContent = `${ctx.t('storedWarehouse', ctx.locale)} · ${ctx.t(fixture.kind === 'shelf' ? PRODUCT_DEFS[fixture.product]?.label || 'shelf' : fixture.kind === 'checkout' ? 'cashRegister' : fixture.kind === 'cooler' ? 'coolerUpgrade' : 'fasterCheckout', ctx.locale)} · ${footprintSize(fixture).width}×${footprintSize(fixture).depth}`;
-      const place = document.createElement('button'); place.className = 'fixture-store'; place.textContent = ctx.t('placeFree', ctx.locale);
+      const place = panelElement('button'); place.className = 'fixture-store'; place.textContent = ctx.t('placeFree', ctx.locale);
       place.addEventListener('click', () => beginPlacement(fixture.kind, fixture.id, fixture.product, fixture.footprint));
       row.append(label, place); $('panel').append(row);
     }
@@ -1734,12 +1706,12 @@ export function installBlockmartV9(ctx) {
   }
 
   function renderEmployees() {
-    const section=document.createElement('section');section.className='employee-roster';
+    const section=panelElement('section');section.className='employee-roster';
     for(const [index,employee] of employees().entries()){
-      const card=document.createElement('article');card.className='employee-card';card.dataset.employeeId=employee.id;
-      const label=document.createElement('label');label.className='employee-heading';label.textContent=`${ctx.t('employee',ctx.locale)} ${index+1}`;
-      const select=document.createElement('select');select.dataset.employeeRole=employee.id;
-      for(const role of ['checkout','restock']){const option=document.createElement('option');option.value=role;option.textContent=ctx.t(role==='checkout'?'cashierRole':'restockerRole',ctx.locale);option.disabled=role==='checkout'&&employee.role!=='checkout'&&!nextVacantRegister();select.append(option);}
+      const card=panelElement('article');card.className='employee-card';card.dataset.employeeId=employee.id;
+      const label=panelElement('label');label.className='employee-heading';label.textContent=`${ctx.t('employee',ctx.locale)} ${index+1}`;
+      const select=panelElement('select');select.dataset.employeeRole=employee.id;
+      for(const role of ['checkout','restock']){const option=panelElement('option');option.value=role;option.textContent=ctx.t(role==='checkout'?'cashierRole':'restockerRole',ctx.locale);option.disabled=role==='checkout'&&employee.role!=='checkout'&&!nextVacantRegister();select.append(option);}
       select.value=employee.role;label.append(select);card.append(label);
       select.addEventListener('change',()=>{const role=select.value;transact(()=>{
         const result=changeEmployeeRole(state(),employee.id,role);
@@ -1747,12 +1719,12 @@ export function installBlockmartV9(ctx) {
         setState(result.state);rerouteLiveCustomers();syncFixtures();ctx.save();renderPanel();
       });});
       const registerIndex=allCounters().findIndex(f=>f.id===employee.registerId);
-      const status=document.createElement('p');status.textContent=employee.role==='restock'?ctx.t('helperAutoRestockHint',ctx.locale):registerIndex>=0?`${ctx.t('cashRegister',ctx.locale)} ${registerIndex+1}`:employee.registerId?ctx.t('storedInactive',ctx.locale):ctx.t('employeeUnassigned',ctx.locale);card.append(status);
+      const status=panelElement('p');status.textContent=employee.role==='restock'?ctx.t('helperAutoRestockHint',ctx.locale):registerIndex>=0?`${ctx.t('cashRegister',ctx.locale)} ${registerIndex+1}`:employee.registerId?ctx.t('storedInactive',ctx.locale):ctx.t('employeeUnassigned',ctx.locale);card.append(status);
       section.append(card);
     }
     const hire=actionButton('hireEmployee',()=>hireEmployee($('newEmployeeRole').value));hire.id='hireEmployee';hire.textContent+=` · ${ctx.price(EMPLOYEE_HIRE_COST)}`;hire.disabled=state().cash<EMPLOYEE_HIRE_COST;
-    const role=document.createElement('select');role.id='newEmployeeRole';role.setAttribute('aria-label',ctx.t('employeeRole',ctx.locale));
-    for(const value of ['restock','checkout']){const option=document.createElement('option');option.value=value;option.textContent=ctx.t(value==='checkout'?'cashierRole':'restockerRole',ctx.locale);option.disabled=value==='checkout'&&!nextVacantRegister();role.append(option);}
+    const role=panelElement('select');role.id='newEmployeeRole';role.setAttribute('aria-label',ctx.t('employeeRole',ctx.locale));
+    for(const value of ['restock','checkout']){const option=panelElement('option');option.value=value;option.textContent=ctx.t(value==='checkout'?'cashierRole':'restockerRole',ctx.locale);option.disabled=value==='checkout'&&!nextVacantRegister();role.append(option);}
     section.append(role,hire);$('panel').append(section);
   }
 
@@ -1760,18 +1732,18 @@ export function installBlockmartV9(ctx) {
     const shelves=[...fixtures(),...state().warehouse].filter(f=>f.kind==='shelf'||f.kind==='cooler'&&state().equipment.cooler);
     shelves.forEach((fixture,index)=>{
       const stored=state().warehouse.some(f=>f.id===fixture.id),expanded=selectedFixtureId===fixture.id;
-      const card=document.createElement('article');card.className=`owned-shelf-card compact-shelf${expanded?' is-selected':''}`;card.dataset.fixtureId=fixture.id;
-      const image=document.createElement('button');image.type='button';image.className='item-image-button';image.setAttribute('aria-label',`${ctx.t('itemOptions',ctx.locale)} · ${ctx.t('shelfUnit',ctx.locale)} ${index+1}`);image.setAttribute('aria-expanded',String(expanded));image.append(itemArt(fixture.product));image.addEventListener('click',()=>{selectedFixtureId=expanded?null:fixture.id;renderPanel()});
-      const copy=document.createElement('div');copy.className='item-copy';const title=document.createElement('h3');title.textContent=`${ctx.t('shelfUnit',ctx.locale)} ${index+1} · ${productName(fixture.product)}`;
+      const card=panelElement('article');card.className=`owned-shelf-card compact-shelf${expanded?' is-selected':''}`;card.dataset.fixtureId=fixture.id;
+      const image=panelElement('button');image.type='button';image.className='item-image-button';image.setAttribute('aria-label',`${ctx.t('itemOptions',ctx.locale)} · ${ctx.t('shelfUnit',ctx.locale)} ${index+1}`);image.setAttribute('aria-expanded',String(expanded));image.append(itemArt(fixture.product));image.addEventListener('click',()=>{selectedFixtureId=expanded?null:fixture.id;renderPanel()});
+      const copy=panelElement('div');copy.className='item-copy';const title=panelElement('h3');title.textContent=`${ctx.t('shelfUnit',ctx.locale)} ${index+1} · ${productName(fixture.product)}`;
       copy.append(title);
-      for(const id of fixtureProducts(fixture)){const count=document.createElement('p');count.dataset.shelfStock=id;copy.append(count);}
-      const status=document.createElement('small');status.textContent=ctx.t(stored?'storedCount':'placedCount',ctx.locale);copy.append(status);card.append(image,copy);
-      if(expanded)for(const id of fixtureProducts(fixture)){const insight=document.createElement('small');insight.dataset.skuInsight=id;copy.append(insight);}
-      const actions=document.createElement('div');actions.className='shelf-actions';
+      for(const id of fixtureProducts(fixture)){const count=panelElement('p');count.dataset.shelfStock=id;copy.append(count);}
+      const status=panelElement('small');status.textContent=ctx.t(stored?'storedCount':'placedCount',ctx.locale);copy.append(status);card.append(image,copy);
+      if(expanded)for(const id of fixtureProducts(fixture)){const insight=panelElement('small');insight.dataset.skuInsight=id;copy.append(insight);}
+      const actions=panelElement('div');actions.className='shelf-actions';
       if(stored)actions.append(actionButton('placeFree',()=>beginPlacement(fixture.kind,fixture.id,fixture.product,fixture.footprint)));
       else{for(const id of fixtureProducts(fixture)){const order=actionButton('restockAction',()=>stockOrder(id));order.dataset.restockProduct=id;actions.append(order);}actions.append(actionButton('rotateFixture',()=>rotateSelectedFixture(fixture.id)));}
       card.append(actions);
-      if(expanded){const tools=document.createElement('div');tools.className='shelf-expanded';tools.append(actionButton('changeShelfProduct',()=>{pickerSlot=0;productPickerFixtureId=productPickerFixtureId===fixture.id?null:fixture.id;renderPanel()}));if(!stored)tools.append(actionButton('moveFixture',()=>beginPlacement(fixture.kind,fixture.id,fixture.product,fixture.footprint)),actionButton('toWarehouse',()=>warehouseFixture(fixture.id)));card.append(tools);if(productPickerFixtureId===fixture.id)card.append(renderProductPicker(fixture));}
+      if(expanded){const tools=panelElement('div');tools.className='shelf-expanded';tools.append(actionButton('changeShelfProduct',()=>{pickerSlot=0;productPickerFixtureId=productPickerFixtureId===fixture.id?null:fixture.id;renderPanel()}));if(!stored)tools.append(actionButton('moveFixture',()=>beginPlacement(fixture.kind,fixture.id,fixture.product,fixture.footprint)),actionButton('toWarehouse',()=>warehouseFixture(fixture.id)));card.append(tools);if(productPickerFixtureId===fixture.id)card.append(renderProductPicker(fixture));}
       $('panel').append(card);
     });
     for(const entry of catalog.filter(item=>item.kind==='shelf'))renderCatalogRow(entry);
@@ -1779,39 +1751,46 @@ export function installBlockmartV9(ctx) {
 
   function refreshPanelValues() {
     refreshGuidance();
+    for(const node of document.querySelectorAll('[data-decor-traffic]'))node.textContent=`${ctx.t('decorTraffic',ctx.locale)} +${(decorationTraffic(fixtures()).bonus*100).toFixed(1)}%`;
+    for(const row of document.querySelectorAll('.achievement-row[data-achievement-id]')){
+      const offer=rewardOffer(state(),row.dataset.achievementId,ctx.elapsed);if(!offer)continue;
+      row.querySelector('.achievement-copy p').textContent=`${ctx.t('rewardTier',ctx.locale)} ${offer.tier+1} · ${offer.progress.toLocaleString()} / ${offer.target.toLocaleString()}`;
+      const button=row.querySelector('.achievement-claim');button.disabled=!offer.ready;button.textContent=`${ctx.t(offer.ready?'claimReward':'achievementInProgress',ctx.locale)} +${ctx.price(offer.reward)}`;
+      row.querySelector('progress').value=Math.min(offer.progress,offer.target);
+    }
     for(const node of document.querySelectorAll('[data-shelf-stock]')){const id=node.dataset.shelfStock,p=ctx.PRODUCTS[id];node.textContent=`${ctx.t('availableStock',ctx.locale)} ${state().stock[id]||0} · ${ctx.t('buyPrice',ctx.locale)} ${ctx.price(p.cost)} · ${ctx.t('sellPrice',ctx.locale)} ${ctx.price(p.price)}`;}
     for(const button of document.querySelectorAll('[data-restock-product]')){
       const id=button.dataset.restockProduct,product=ctx.PRODUCTS[id],quantity=Math.min(8,Math.max(0,ctx.stockCapacity(ctx.activeEquipment())-ownedStock()),Math.floor(state().cash/product.cost));
       button.textContent=`${productName(id)} +${quantity} · ${ctx.price(quantity*product.cost)}`;button.disabled=!quantity;
     }
     for(const node of document.querySelectorAll('[data-sku-insight]')){const id=node.dataset.skuInsight,product=PRODUCT_DEFS[id],facts=businessPerformance(state().businessPerformance,ctx.elapsed,id),elapsed=Math.min(180,ctx.elapsed),rate=elapsed>=30&&facts.payments>=3?facts.payments/(elapsed/60):0;node.textContent=`${ctx.t('unitMargin',ctx.locale)} ${ctx.price(product.price-product.cost)} · ${ctx.t('demandEstimate',ctx.locale)} ${product.demand.toFixed(2)} · ${ctx.t('actualPaid',ctx.locale)} ${facts.payments}${rate?` · ${ctx.t('stockMinutes',ctx.locale)} ~${((state().stock[id]||0)/rate).toFixed(1)}`:` · ${ctx.t('moreData',ctx.locale)}`}`;}
-    for(const node of document.querySelectorAll('[data-business-summary]')){const facts=businessPerformance(state().businessPerformance,ctx.elapsed);node.textContent=`${ctx.t('actualPaid',ctx.locale)} ${facts.payments} · ${ctx.t('salesLabel',ctx.locale)} ${ctx.price(facts.gross)} · ${ctx.t('grossMargin',ctx.locale)} ${ctx.price(facts.margin)} · ${ctx.t('queue',ctx.locale)} ${getCustomers().filter(c=>c.state==='queue'||c.state==='pay').length}/${staffedCounters().length*QUEUE_LIMIT_PER_REGISTER} · ${ctx.t('stockouts',ctx.locale)} ${state().businessPerformance.stockouts} · ${ctx.t('stockCapital',ctx.locale)} ${ctx.price(Object.entries(state().stock).reduce((sum,[id,quantity])=>sum+(PRODUCT_DEFS[id]?.cost||0)*quantity,0)+getCustomers().filter(c=>c.carried).reduce((sum,c)=>sum+(PRODUCT_DEFS[c.product]?.cost||0),0))}`;}
+    for(const node of document.querySelectorAll('[data-net-profit]')){const net=netProfitPerMinute(state(),ctx.elapsed);node.textContent=`${ctx.t('netProfitMinute',ctx.locale)} ${net<0?'−':''}${ctx.price(Math.abs(net))}`;node.title=ctx.t('netProfitWindow',ctx.locale);}
     for(const button of document.querySelectorAll('[data-business-upgrade]')){const cost=businessUpgradeCost(button.dataset.businessUpgrade,state().businessUpgrades.levels[button.dataset.businessUpgrade]);button.disabled=!cost||state().cash<cost;}
     const hire=$('hireEmployee');if(hire)hire.disabled=state().cash<EMPLOYEE_HIRE_COST||($('newEmployeeRole').value==='checkout'&&!nextVacantRegister());
     for(const button of document.querySelectorAll('[data-hire-register]'))button.disabled=state().cash<EMPLOYEE_HIRE_COST||Boolean(counterEmployee(button.dataset.hireRegister))||!routeToCheckout([],allCounters().find(f=>f.id===button.dataset.hireRegister));
-    for(const button of document.querySelectorAll('[data-buy-item]')){const entry=catalog.find(item=>item.key===button.dataset.buyItem);button.disabled=!catalogAffordable(entry)||entry.kind==='decor'&&!entry.decorType&&[...fixtures(),...state().warehouse].filter(f=>catalogMatches(entry,f)).length>=6||Boolean((entry.kind==='cooler'||entry.kind==='fastCheckout')&&state().equipment[entry.kind]);}
+    for(const button of document.querySelectorAll('[data-buy-item]')){const entry=catalog.find(item=>item.key===button.dataset.buyItem);button.disabled=!catalogAffordable(entry)||Boolean((entry.kind==='cooler'||entry.kind==='fastCheckout')&&state().equipment[entry.kind]);}
   }
 
   function ownedStock(){return ctx.totalStock(state().stock)+getCustomers().filter(c=>c.carried).length;}
 
   function renderRegisterRoster() {
-    const section = document.createElement('section'); section.className = 'register-roster';
-    const heading = document.createElement('h3'); heading.textContent = ctx.t('registerRoster', ctx.locale); section.append(heading);
+    const section = panelElement('section'); section.className = 'register-roster';
+    const heading = panelElement('h3'); heading.textContent = ctx.t('registerRoster', ctx.locale); section.append(heading);
     const counters = allCounters(), staffed = new Set(staffedCounters().map(counter => counter.id)), next = nextVacantRegister();
     counters.forEach((counter, index) => {
-      const row = document.createElement('article'); row.className = 'register-staff-card'; row.dataset.registerId = counter.id;
+      const row = panelElement('article'); row.className = 'register-staff-card'; row.dataset.registerId = counter.id;
       row.append(fixtureIllustration(counter));
-      const copy = document.createElement('div'); const title = document.createElement('h4'); title.textContent = `${ctx.t('cashRegister', ctx.locale)} ${index + 1}`;
-      const status = document.createElement('p'); status.className = staffed.has(counter.id) ? 'register-staffed' : 'register-vacant'; status.textContent = ctx.t(staffed.has(counter.id) ? 'registerStaffed' : 'registerVacant', ctx.locale);
+      const copy = panelElement('div'); const title = panelElement('h4'); title.textContent = `${ctx.t('cashRegister', ctx.locale)} ${index + 1}`;
+      const status = panelElement('p'); status.className = staffed.has(counter.id) ? 'register-staffed' : 'register-vacant'; status.textContent = ctx.t(staffed.has(counter.id) ? 'registerStaffed' : 'registerVacant', ctx.locale);
       copy.append(title,status); row.append(copy);
       if (!staffed.has(counter.id)) {
         const valid = routeToCheckout([], counter); const hire = actionButton('hireForRegister',()=>hireCashier(counter.id)); hire.textContent += ` · ${ctx.price(CASHIER_HIRE_COST)}`; hire.dataset.hireRegister = counter.id;
         hire.disabled = next?.id !== counter.id || !valid || state().cash < CASHIER_HIRE_COST; row.append(hire);
-        const reason = document.createElement('small'); reason.textContent = !valid ? ctx.t('routeBlocked', ctx.locale) : next?.id !== counter.id ? ctx.t('fillFirstVacancy',ctx.locale) : state().cash < CASHIER_HIRE_COST ? ctx.t('needMoreCash',ctx.locale) : ctx.t('cashierHireDetail',ctx.locale); row.append(reason);
+        const reason = panelElement('small'); reason.textContent = !valid ? ctx.t('routeBlocked', ctx.locale) : next?.id !== counter.id ? ctx.t('fillFirstVacancy',ctx.locale) : state().cash < CASHIER_HIRE_COST ? ctx.t('needMoreCash',ctx.locale) : ctx.t('cashierHireDetail',ctx.locale); row.append(reason);
       }
       section.append(row);
     });
-    if (!next) { const hint = document.createElement('p'); hint.className = 'register-hire-hint'; hint.textContent = ctx.t('noRegisterVacancy',ctx.locale); section.append(hint); }
+    if (!next) { const hint = panelElement('p'); hint.className = 'register-hire-hint'; hint.textContent = ctx.t('noRegisterVacancy',ctx.locale); section.append(hint); }
     const add = actionButton('addRegister',buyRegister); add.className = 'add-register-action'; add.textContent += ` · ${ctx.price(REGISTER_COST)}`; add.disabled = state().cash < REGISTER_COST; section.append(add);
     $('panel').append(section);
   }
@@ -1831,8 +1810,11 @@ export function installBlockmartV9(ctx) {
 
   function renderPanel() {
     if (!isInstalled || simulationBusy) return;
-    const scroll=$('panel').dataset.activeTab===ctx.selectedTab?$('panel').scrollTop:0;
+    const livePanel=ctx.$('panel');
+    const scroll=livePanel.dataset.activeTab===ctx.selectedTab?livePanel.scrollTop:0;
     const active=document.activeElement,focusSelector=active?.dataset.buyItem?`[data-buy-item="${CSS.escape(active.dataset.buyItem)}"]`:active?.dataset.restockProduct?`[data-restock-product="${CSS.escape(active.dataset.restockProduct)}"]`:active?.id?`#${CSS.escape(active.id)}`:null;
+    panelDraft=livePanel.cloneNode(false);
+    try {
     applyFloorArt();
     syncStockDisplays();
     $('panel').replaceChildren();
@@ -1851,14 +1833,6 @@ export function installBlockmartV9(ctx) {
     if (tab === 'staff') {
       renderEmployees();
       renderRegisterRoster();
-      const auto = createCard('auto-restock', ctx.t('autoRestock', ctx.locale), ctx.t('autoRestockOptIn', ctx.locale),
-        state().autoRestockEnabled ? ctx.t('autoRestockOn', ctx.locale) : ctx.t('autoRestockOff', ctx.locale), () => {
-          if (!employees().some(e=>e.role==='restock')) { ctx.toast(ctx.t('helperNeeded', ctx.locale)); return; }
-          state().autoRestockEnabled = !state().autoRestockEnabled;
-          ctx.save(); renderPanel(); refreshHud();
-          ctx.toast(ctx.t(state().autoRestockEnabled ? 'autoRestockTurnedOn' : 'autoRestockTurnedOff', ctx.locale));
-        }, { disabled: !employees().some(e=>e.role==='restock'), className: state().autoRestockEnabled ? 'toggle-card active' : 'toggle-card' });
-      auto.setAttribute('aria-pressed', String(Boolean(state().autoRestockEnabled)));
     }
     if (getPlacement()) {
       $('placementControls').hidden = false;
@@ -1869,7 +1843,13 @@ export function installBlockmartV9(ctx) {
     refreshHud();
     refreshPanelValues();
     $('panel').scrollTop=scroll;
-    if(focusSelector)$('panel').querySelector(focusSelector)?.focus({preventScroll:true});
+    } finally {
+      const draft=panelDraft;panelDraft=null;
+      livePanel.dataset.activeTab=ctx.selectedTab;reconcilePanel(livePanel,draft);
+      reserveGuideHeight(livePanel.querySelector('.guide-open'));refreshPanelValues();
+      livePanel.scrollTop=scroll;
+      if(focusSelector&&document.activeElement!==active)livePanel.querySelector(focusSelector)?.focus({preventScroll:true});
+    }
   }
 
   function pointFromEvent(event) {
@@ -2053,16 +2033,17 @@ export function installBlockmartV9(ctx) {
       if(cameraOrbit&&!getPlacement()&&!endpointEdit&&['q','e'].includes(event.key.toLowerCase())){state().view+=(event.key.toLowerCase()==='q'?-.12:.12);ctx.setCamera();ctx.save();}
     });
   }
-  function setCameraMode(enabled){cameraOrbit=enabled;const button=$('cameraOrbit');if(button){button.setAttribute('aria-pressed',String(enabled));button.textContent=ctx.t(enabled?'cameraDragRotate':'cameraOrbit',ctx.locale);}}
+  // A toggle keeps its name and target; pressed state and the existing toast explain its mode.
+  function setCameraMode(enabled){cameraOrbit=enabled;const button=$('cameraOrbit');if(button){button.setAttribute('aria-pressed',String(enabled));}}
 
   function addPopularityHud() {
     let hud = $('popularityHud');
     if (!hud) {
-      hud = document.createElement('div'); hud.id = 'popularityHud'; hud.className = 'popularity-hud';
-      const label = document.createElement('span'); label.textContent = ctx.t('popularity', ctx.locale);
-      const meter = document.createElement('span'); meter.id = 'popularityMeter'; meter.className = 'popularity-meter';
+      hud = panelElement('div'); hud.id = 'popularityHud'; hud.className = 'popularity-hud';
+      const label = panelElement('span'); label.textContent = ctx.t('popularity', ctx.locale);
+      const meter = panelElement('span'); meter.id = 'popularityMeter'; meter.className = 'popularity-meter';
       meter.setAttribute('role', 'meter'); meter.setAttribute('aria-valuemin', '0'); meter.setAttribute('aria-valuemax', '100');
-      const value = document.createElement('b'); value.id = 'popularityValue'; value.textContent = String(Math.round(state().popularity));
+      const value = panelElement('b'); value.id = 'popularityValue'; value.textContent = String(Math.round(state().popularity));
       hud.append(label, meter, value); document.querySelector('.scene-hud').prepend(hud);
     }
     hud.setAttribute('role', 'button'); hud.setAttribute('tabindex', '0');
@@ -2074,7 +2055,7 @@ export function installBlockmartV9(ctx) {
       hud.dataset.helpBound = 'true';
     }
     if (!$('selectedTileReadout')) {
-      const readout = document.createElement('span'); readout.id = 'selectedTileReadout'; readout.className = 'selected-tile-readout';
+      const readout = panelElement('span'); readout.id = 'selectedTileReadout'; readout.className = 'selected-tile-readout';
       readout.textContent = ctx.t('noTileSelected', ctx.locale); document.querySelector('.scene-legend').append(readout);
     }
   }
@@ -2083,7 +2064,7 @@ export function installBlockmartV9(ctx) {
     const cash = document.querySelector('.scene-hud .money');
     if (!cash || cash.dataset.activityBound === 'true') return;
     cash.setAttribute('role', 'button'); cash.setAttribute('tabindex', '0');
-    cash.setAttribute('aria-label', ctx.t('openCashActivity', ctx.locale));
+    cash.setAttribute('aria-label', ctx.t('netProfitMinute', ctx.locale));
     cash.addEventListener('click', openCashActivity);
     cash.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openCashActivity(); } });
     cash.dataset.activityBound = 'true';
@@ -2094,7 +2075,7 @@ export function installBlockmartV9(ctx) {
     unlockedProducts();
     current.popularity = clampPopularity(current.popularity + currentDecorAppeal() * .00025);
     if (current.popularity < TRAFFIC_RECOVERY_FLOOR) current.popularity = clampPopularity(current.popularity + .012);
-    const nextInterval = trafficInterval(current.popularity);
+    const nextInterval = trafficInterval(current.popularity)/(1+decorationTraffic(fixtures()).bonus);
     if (ctx.spawnTimer > nextInterval) ctx.spawnTimer = nextInterval;
   }
 
@@ -2123,7 +2104,6 @@ export function installBlockmartV9(ctx) {
       if(!['idle','travel','stock','return'].includes(job.phase))job.phase='idle';
       if(!Array.isArray(job.path))job.path=[];
       if(!Number.isFinite(job.wait))job.wait=0;
-      if(!state().autoRestockEnabled){job.phase='idle';job.path=[];employee.workSeconds=0;continue;}
       const target=salesFixtures(job.productId).find(f=>f.id===job.targetId);
       if((job.phase==='travel'||job.phase==='stock')&&!target){job.phase='idle';job.path=[];job.wait=0;}
       if(job.layoutKey!==layoutKey){
@@ -2140,8 +2120,12 @@ export function installBlockmartV9(ctx) {
       if(job.phase==='idle') {
         employee.workSeconds+=delta;
         if(employee.workSeconds<employeeRestockSeconds(trained(employee)))continue;
+        // No money/room/path means waiting, with one bounded search per work interval.
+        employee.workSeconds=0;
+        const room=ctx.stockCapacity(ctx.activeEquipment())-ownedStock();
+        if(room<=0)continue;
         const claimed=new Set(employees().filter(e=>e.id!==id&&['travel','stock'].includes(e.work?.phase)).map(e=>e.work.productId));
-        const candidates=fixtures().filter(f=>f.kind==='shelf'||f.kind==='cooler'&&state().equipment.cooler).flatMap(f=>fixtureProducts(f).map(product=>({...f,product}))).filter(f=>!claimed.has(f.product)&&state().unlocked.includes(f.product)&&(state().stock[f.product]||0)<6)
+        const candidates=fixtures().filter(f=>f.kind==='shelf'||f.kind==='cooler'&&state().equipment.cooler).flatMap(f=>fixtureProducts(f).map(product=>({...f,product}))).filter(f=>!claimed.has(f.product)&&state().unlocked.includes(f.product)&&(state().stock[f.product]||0)<6&&state().cash>=ctx.PRODUCTS[f.product].cost)
           .sort((a,b)=>(state().stock[a.product]||0)-(state().stock[b.product]||0));
         const free=walkable(Math.round(job.x),Math.round(job.z));
         if(!free){job.x=home.x;job.z=home.z;}
@@ -2276,9 +2260,9 @@ export function installBlockmartV9(ctx) {
   }
   function refreshOwnership(){
     let button=$('continueHere');
-    if(!button){button=document.createElement('button');button.id='continueHere';button.className='continue-here';button.type='button';button.addEventListener('click',()=>claimOwnership(true));document.querySelector('.scene-wrap').append(button);}
+    if(!button){button=panelElement('button');button.id='continueHere';button.className='continue-here';button.type='button';button.addEventListener('click',()=>claimOwnership(true));document.querySelector('.scene-wrap').append(button);}
     let stack=$('businessSceneControls');
-    if(!stack){stack=document.createElement('div');stack.id='businessSceneControls';stack.className='business-scene-controls';document.querySelector('.scene-wrap').append(stack);}
+    if(!stack){stack=panelElement('div');stack.id='businessSceneControls';stack.className='business-scene-controls';document.querySelector('.scene-wrap').append(stack);}
     const cameraButton=$('cameraOrbit'),artRetry=$('packageArtRetry');
     if(button.parentElement!==stack)stack.prepend(button);
     if(cameraButton&&cameraButton.parentElement!==stack)stack.append(cameraButton);
@@ -2329,8 +2313,8 @@ export function installBlockmartV9(ctx) {
     });
   }
   function simulateStep(delta){
-    ctx.elapsed+=delta;ctx.spawnTimer-=delta;
-    if(ctx.spawnTimer<=0&&getCustomers().filter(c=>c.state!=='done'&&c.state!=='leave').length<24){spawn();ctx.spawnTimer=trafficInterval(state().popularity);}
+    ctx.elapsed+=delta;state().operatingFlow=normalizeOperatingFlow(state().operatingFlow,ctx.elapsed);ctx.spawnTimer-=delta;
+    if(ctx.spawnTimer<=0&&getCustomers().filter(c=>c.state!=='done'&&c.state!=='leave').length<24){spawn();ctx.spawnTimer=trafficInterval(state().popularity)/(1+decorationTraffic(fixtures()).bonus);}
     updateQueueLines();setCustomers(getCustomers().filter(customer=>updateCustomer(customer,delta)));
     automaticRestock(delta);lowCashRecovery(delta);refreshTraffic();state().day=Math.floor(ctx.elapsed/60)+1;
   }
@@ -2361,7 +2345,7 @@ export function installBlockmartV9(ctx) {
     lease=window.WeightPlayLifecycle.register('animal-blockmart',{background:'continue',onElapsed,onStateChange(){previousFrame=0;}});
     lease.setPaused('scene-away',!ctx.gameActive);lease.setPaused('ownership',!owned);lease.setPaused('manual',manualPaused);
     checkpointTimer=setInterval(()=>{const now=performance.now();if(!faulted&&(now-lastCheckpoint>=(document.hidden?1000:90))){lastCheckpoint=now;lease?.checkpoint()}},100);
-    if(!$('businessPause')){const button=document.createElement('button');button.id='businessPause';button.className='business-pause';button.type='button';button.textContent=ctx.t('businessPause',ctx.locale);button.setAttribute('aria-pressed','false');button.addEventListener('click',()=>{manualPaused=!manualPaused;lease.setPaused('manual',manualPaused);button.textContent=ctx.t(manualPaused?'businessResume':'businessPause',ctx.locale);button.setAttribute('aria-pressed',String(manualPaused));});document.querySelector('.scene-wrap').append(button);}
+    if(!$('businessPause')){const button=panelElement('button');button.id='businessPause';button.className='business-pause';button.type='button';button.textContent=ctx.t('businessPause',ctx.locale);button.setAttribute('aria-pressed','false');button.addEventListener('click',()=>{manualPaused=!manualPaused;lease.setPaused('manual',manualPaused);button.setAttribute('aria-pressed',String(manualPaused));});document.querySelector('.scene-wrap').append(button);}
     $('mainStart').addEventListener('click',()=>lease.setPaused('scene-away',false));
     $('battleBack').addEventListener('click',()=>lease.setPaused('help-modal',true));
     $('continueBattle').addEventListener('click',()=>lease.setPaused('help-modal',false));
