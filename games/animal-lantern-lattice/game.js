@@ -410,11 +410,9 @@
     document.body.dataset.screen = screen;
     if (screen === "main") renderProgress();
     if (sharedFrame) sharedFrame.activate(screen === "result" ? "battle" : screen, { covered: screen === "result" });
-    if (screen === "main") {
-      // Complete the scene handoff before Guide flow can introduce a scrollbar.
-      window.dispatchEvent(new Event("weightplay:stage-sync"));
-      window.WeightPlayBattleCanvas?.sync();
-    }
+    // Complete both shared owners before the next scene's first interaction.
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
+    window.WeightPlayBattleCanvas?.sync();
   };
   const renderStages = ({ entry = false } = {}) => {
     const rail = $("stageList");

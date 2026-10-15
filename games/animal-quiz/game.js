@@ -1324,7 +1324,7 @@ function updateProgress() {
   const previous = progress[stageKey] || {};
   const previousBest = Number(previous.bestScore) || 0;
   const bestScore = Math.max(previousBest, state.score);
-  const improvementPercent = previousBest > 0 ? Math.round(((state.score - previousBest) / previousBest) * 100) : state.score > 0 ? 100 : 0;
+  const improvementPercent = previousBest > 0 ? Math.round(((state.score - previousBest) / previousBest) * 100) : 0;
   saveProgress(stageKey, {
     cleared: true,
     lastScore: state.score,

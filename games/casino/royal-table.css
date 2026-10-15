@@ -29,6 +29,30 @@ body[data-wp-card-game="casino"] #battleScreen #cardGameActions .card-game-quick
  margin:0;padding:8px;font-size:11px;line-height:1.2;overflow:auto;
 }
 body[data-wp-card-game="casino"] #battleScreen #cardGameActions button {width:100%;min-width:0;height:44px;}
+body.casino-return-confirm-open {overflow:hidden;}
+.casino-return-confirm {position:fixed;inset:0;z-index:10000;display:grid;place-items:center;box-sizing:border-box;padding:16px;background:#03140fe8;}
+.casino-return-confirm[hidden] {display:none!important;}
+.casino-return-card {box-sizing:border-box;width:min(100%,420px);padding:22px;border:1px solid #d7b96f;border-radius:16px;background:radial-gradient(ellipse at top,#254d42,#071e22);box-shadow:0 20px 60px #000b;color:#fff4d3;animation:casino-return-enter 140ms ease-out both;}
+.casino-return-card h2 {margin:0 0 10px;font-size:clamp(20px,5vw,26px);line-height:1.2;}
+.casino-return-card p {margin:0 0 18px;color:#f1e7ce;line-height:1.45;}
+.casino-return-actions {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+.casino-return-actions button {min-width:0;min-height:48px;padding:9px 10px;border:1px solid #cbb376;border-radius:10px;font:700 14px/1.2 system-ui,sans-serif;cursor:pointer;}
+.casino-return-continue {background:linear-gradient(135deg,#ffe4a0,#e6bc5b);color:#183329;}
+.casino-return-leave {background:#143a31;color:#fff0ca;}
+.casino-return-actions button:focus-visible {outline:3px solid #fff0a8;outline-offset:2px;}
+@keyframes casino-return-enter {from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+body.casino-tutorial-open {overflow:hidden;}
+.casino-tutorial-help {display:block;width:100%;min-height:44px;margin:0 0 14px;padding:9px 12px;border:1px solid #b99b60;border-radius:10px;background:#0b342c;color:#fff0cf;font:700 14px/1.2 system-ui,sans-serif;cursor:pointer;}
+.casino-tutorial-help:focus-visible,.casino-tutorial-start:focus-visible {outline:3px solid #fff0a8;outline-offset:2px;}
+.casino-tutorial-overlay {position:fixed;inset:0;z-index:10001;display:grid;place-items:center;box-sizing:border-box;padding:16px;background:#03140fe8;}
+.casino-tutorial-card {box-sizing:border-box;width:min(100%,480px);max-height:90vh;overflow:auto;padding:20px;border:1px solid #d7b96f;border-radius:16px;background:radial-gradient(ellipse at top,#254d42,#071e22);box-shadow:0 20px 60px #000b;color:#fff4d3;animation:casino-return-enter 140ms ease-out both;}
+.casino-tutorial-card h2 {margin:0 0 14px;font-size:clamp(20px,5vw,26px);line-height:1.2;}
+.casino-tutorial-steps {display:grid;gap:12px;margin:0 0 18px;padding-inline-start:24px;}
+.casino-tutorial-steps li {padding-inline-start:4px;}
+.casino-tutorial-steps strong,.casino-tutorial-steps span {display:block;}
+.casino-tutorial-steps strong {margin-bottom:4px;color:#ffe1a0;}
+.casino-tutorial-steps span {line-height:1.4;color:#f1e7ce;}
+.casino-tutorial-start {width:100%;min-height:48px;padding:10px 12px;border:1px solid #cbb376;border-radius:10px;background:linear-gradient(135deg,#ffe4a0,#e6bc5b);color:#183329;font:700 14px/1.2 system-ui,sans-serif;cursor:pointer;}
 body.casino-royal-table .card-choice-summary {border-color:#b99b60;background:#0b342c;color:#fff0cf;}
 body.casino-royal-table #cardGameCenter {width:100%;min-width:0;}
 body.casino-royal-table #cardGameCenter .card-choice-summary {box-sizing:border-box;max-width:100%;}
@@ -51,4 +75,4 @@ body.casino-royal-table #resultOverlay .result-card {background:radial-gradient(
  body.casino-royal-table .table-row {gap:4px;}
  body.casino-royal-table #cardGameActions button {padding:4px 6px;font-size:11px;}
 }
-@media(prefers-reduced-motion:reduce){body.casino-royal-table .playing-card {animation:none!important;transition:none!important;}}
+@media(prefers-reduced-motion:reduce){body.casino-royal-table .playing-card,.casino-return-card,.casino-tutorial-card {animation:none!important;transition:none!important;}}

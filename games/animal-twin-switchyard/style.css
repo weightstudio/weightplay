@@ -11,6 +11,29 @@
 .battle-ad-reserve{width:min(920px,100%);height:var(--wp-ad-reserve-height, 0px);min-height:var(--wp-ad-reserve-height, 0px);margin:0 auto;pointer-events:none;background:transparent}
 @media(max-width:560px){.stage-screen{padding-inline:10px!important}.stage-screen .stage-grid{min-height:190px}.battle-screen{padding:10px!important}.battle-screen .canvas-wrap{padding:6px}}
 
+/* Preserve a distinct Stage title and score line in the narrow Battle header. */
+@media (max-width: 560px) {
+  .battle-screen .section-head {
+    gap: 8px;
+    padding-bottom: 12px;
+  }
+
+  .battle-screen .battle-head > div:nth-child(2) {
+    min-width: 0;
+  }
+
+  .battle-screen .battle-head h2 {
+    font-size: 1rem;
+  }
+
+  .battle-screen .battle-head .hud {
+    flex: 0 0 auto;
+    gap: 6px;
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+}
+
 /* The shared shell moves the Stage title into the header grid and retires the
    game's old sound button. Keep one title track so the title never sits under
    a second control on a phone. */
