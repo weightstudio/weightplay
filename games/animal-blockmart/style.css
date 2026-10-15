@@ -443,7 +443,7 @@ body.wp-frame-battle-active #gameGuide{display:none}
 .owned-shelf-card button,.employee-roster button,.employee-roster select{box-sizing:border-box;min-height:calc(44px / var(--wp-frame-scale,1));padding:calc(9px / var(--wp-frame-scale,1));font-size:calc(13px / var(--wp-frame-scale,1));font-weight:700;background:#edf4e5;color:#204650;border:1px solid #739c8c;border-radius:9px;white-space:normal;overflow-wrap:anywhere}
 .employee-roster select{width:100%;min-width:0;background:#fffdf4}
 .employee-card label{font-size:calc(13px / var(--wp-frame-scale,1));font-weight:700;display:flex;flex-direction:column;gap:6px}
-.owned-shelf-card button:disabled,.employee-roster button:disabled{background:#e6e8de;color:#62766f;border-color:#b7c5b9;opacity:1}
+.owned-shelf-card button:disabled,.employee-roster button:disabled{background:#e6e8de;color:#465d53;border-color:#b7c5b9;opacity:1}
 .camera-orbit,.continue-here{position:absolute;right:calc(10px / var(--wp-frame-scale,1));bottom:calc(42px / var(--wp-frame-scale,1));min-height:calc(44px / var(--wp-frame-scale,1));padding:calc(8px / var(--wp-frame-scale,1));background:#fff9ea;color:#204650;border:1px solid #72968a;border-radius:10px;font-size:calc(12px / var(--wp-frame-scale,1));font-weight:700;max-width:45%}
 .camera-orbit[aria-pressed=true]{background:#176d60;color:#fff}
 .continue-here{bottom:calc(94px / var(--wp-frame-scale,1));z-index:5;background:#176d60;color:#fff}
