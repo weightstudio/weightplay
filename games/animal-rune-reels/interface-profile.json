@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "gameId": "animal-rune-reels",
+  "audience": "general",
+  "interfaceVersion": 9,
+  "flow": "main-stage-battle",
+  "stage": {
+    "enabled": true,
+    "leftWorkspace": "team",
+    "rightWorkspace": "equipment"
+  },
+  "battle": {
+    "enabled": true
+  }
+}

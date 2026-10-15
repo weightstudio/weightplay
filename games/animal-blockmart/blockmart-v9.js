@@ -249,9 +249,14 @@ export function installBlockmartV9(ctx) {
   let pickerSlot=0;
 
   const state = () => getState();
+  function refreshSelectedFloorLabel() {
+    const readout = $('selectedTileReadout');
+    if (readout) readout.textContent = selectedFloor ? `${ctx.t('selectedTile', ctx.locale)} · ${selectedFloor.x + 1}, ${selectedFloor.z + 1}` : ctx.t('noTileSelected', ctx.locale);
+  }
   const setSelectedFloor = point => {
     selectedFloor = copyPoint(point);
     updateSelectionMarker();
+    refreshSelectedFloorLabel();
   };
   const fixtures = () => state().fixtures;
   const allCounters = () => fixtures().filter(f => f.kind === 'checkout').sort((a, b) => String(a.id).localeCompare(String(b.id)));
@@ -1860,7 +1865,7 @@ export function installBlockmartV9(ctx) {
       $('placementProduct').value = getPlacement().product || 'water';
       $('placementFootprint').value = getPlacement().footprint || 'single';
     }
-    $('selectedTileReadout').textContent = selectedFloor ? `${ctx.t('selectedTile', ctx.locale)} · ${selectedFloor.x + 1}, ${selectedFloor.z + 1}` : ctx.t('noTileSelected', ctx.locale);
+    refreshSelectedFloorLabel();
     refreshHud();
     refreshPanelValues();
     $('panel').scrollTop=scroll;
