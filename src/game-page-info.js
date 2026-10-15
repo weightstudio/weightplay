@@ -14269,7 +14269,7 @@
   localizedGames.en["space-rocks"] = {
     ...(localizedGames.en["space-rocks"] || {}),
     gameplay: "Rotate, thrust, and split rocks",
-    genre: ["Arcade shooter"],
+    genre: ["Arcade shooter", "Space action"],
     text140Tags: ["Inertia-Based Arcade Shooter", "Asteroid Splitting", "Shield + Rapid Fire"],
   };
 

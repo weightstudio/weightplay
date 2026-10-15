@@ -232,9 +232,9 @@ const dictionary = {
     nextStage: "Next Stage",
     stages: "Stages",
     lobby: "Lobby",
-    reportTitle: "Skill Report",
+    reportTitle: "Round Results",
     previousBest: "Previous Best",
-    todayScore: "Today's Score",
+    todayScore: "Round Score",
     improvement: "Improvement",
     animalKnowledge: "Animal Knowledge",
     memory: "Memory",
@@ -392,9 +392,9 @@ const dictionary = {
     nextStage: "\u4e0b\u4e00\u95dc",
     stages: "\u95dc\u5361",
     lobby: "\u5927\u5ef3",
-    reportTitle: "\u80fd\u529b\u5831\u544a",
+    reportTitle: "\u672c\u95dc\u7d50\u679c",
     previousBest: "\u4e4b\u524d\u6700\u4f73",
-    todayScore: "\u4eca\u5929\u5206\u6578",
+    todayScore: "\u672c\u95dc\u5206\u6578",
     improvement: "\u9032\u6b65\u5e45\u5ea6",
     animalKnowledge: "\u52d5\u7269\u8a8d\u8b58",
     memory: "\u8a18\u61b6\u529b",
@@ -515,7 +515,7 @@ dictionary.es = {
   rulePicture: "Imagen + rasgo", ruleHabitat: "Pista de hábitat", ruleSilhouette: "Pista de silueta", ruleAction: "Pista de comportamiento", ruleFood: "Pista de alimentación", ruleMixed: "Mezcla de dos pistas",
   prompt: "¿Qué animal es?", choose: "Elige uno", correct: "¡Correcto!", wrong: "Inténtalo de nuevo", animalNote: "Dato animal: {animal} - {clue}", loading: "Cargando", loadingFailed: "No se pudo cargar. Actualiza la página e inténtalo de nuevo.",
   question: "{stage}  {current} / {total}", battleQuestion: "Nivel {n} · {current}/{total}", winTitle: "¡Nivel completado!", winText: "Respondiste {score} / {total}.", allClearTitle: "¡Todo completado!", allClearText: "Completaste los {count} niveles de animales.",
-  again: "Jugar de nuevo", nextStage: "Siguiente nivel", stages: "Niveles", lobby: "Sala de juegos", reportTitle: "Informe de habilidades", previousBest: "Mejor anterior", todayScore: "Puntuación de hoy", improvement: "Mejora",
+  again: "Jugar de nuevo", nextStage: "Siguiente nivel", stages: "Niveles", lobby: "Sala de juegos", reportTitle: "Resultado de la ronda", previousBest: "Mejor anterior", todayScore: "Puntuación de la ronda", improvement: "Mejora",
   animalKnowledge: "Conocimiento animal", memory: "Memoria", reading: "Lectura", reportGreat: "¡Excelente! Reconociste bien los animales y usaste las pistas con atención.", reportGood: "¡Buen esfuerzo! Juega otra vez para conocer mejor los rasgos animales.", reportTry: "¡Buena práctica! Mira despacio la imagen y la pista e inténtalo otra vez.",
   lion: "León", hippo: "Hipopótamo", snake: "Serpiente", rabbit: "Conejo", turtle: "Tortuga", elephant: "Elefante", penguin: "Pingüino", monkey: "Mono", bear: "Oso", cat: "Gato", dog: "Perro", fox: "Zorro", giraffe: "Jirafa", zebra: "Cebra", panda: "Panda", koala: "Koala", frog: "Rana", whale: "Ballena", owl: "Búho", cow: "Vaca",
 
@@ -557,7 +557,7 @@ dictionary.de = {
   prompt: "Welches Tier ist das?", choose: "Wähle eine Antwort", correct: "Richtig!", wrong: "Versuch es noch einmal", animalNote: "Tierwissen: {animal} – {clue}",
   loading: "Wird geladen", loadingFailed: "Das Laden ist fehlgeschlagen. Aktualisiere die Seite und versuche es erneut.", question: "{stage}  {current} / {total}", battleQuestion: "Level {n} · {current}/{total}",
   winTitle: "Level geschafft!", winText: "Du hast {score} / {total} richtig beantwortet.", allClearTitle: "Alles geschafft!", allClearText: "Du hast alle {count} Tierlevel abgeschlossen.",
-  again: "Noch einmal spielen", nextStage: "Nächstes Level", stages: "Levelauswahl", lobby: "Spielewelt", reportTitle: "Lernbericht", previousBest: "Bisheriger Bestwert", todayScore: "Heutiges Ergebnis", improvement: "Verbesserung",
+  again: "Noch einmal spielen", nextStage: "Nächstes Level", stages: "Levelauswahl", lobby: "Spielewelt", reportTitle: "Rundenergebnis", previousBest: "Bisheriger Bestwert", todayScore: "Rundenergebnis", improvement: "Verbesserung",
   animalKnowledge: "Tierwissen", memory: "Gedächtnis", reading: "Lesen", reportGreat: "Klasse! Du hast die Tiere sicher erkannt und die Hinweise gut genutzt.", reportGood: "Gut gemacht! Spiele noch einmal, um dir die Tiermerkmale besser zu merken.", reportTry: "Gute Übung! Sieh dir Bild und Hinweis in Ruhe an und versuche es noch einmal.",
   clueFrog: "Ich springe und quake.", actionFrog: "Ich springe weit und fange Insekten mit meiner langen Zunge.",
   leaveTitle: "Möchtest du das Quiz verlassen?", leaveText: "Deine Antworten in diesem Level werden zurückgesetzt.", keepPlaying: "Weiterspielen", leaveStage: "Level verlassen",
@@ -1342,19 +1342,13 @@ function renderSkillReport() {
   const total = currentStage().questions.length;
   const progress = loadProgress()[stageKey] || {};
   const previousBest = Number(progress.previousBest) || 0;
-  const improvementPercent = Number(progress.improvementPercent) || 0;
   const ratio = state.score / total;
   const messageKey = ratio >= 0.85 ? "reportGreat" : ratio >= 0.6 ? "reportGood" : "reportTry";
-  const improvementText = improvementPercent > 0 ? `+${improvementPercent}%` : "0%";
   skillReport.innerHTML = `
     <h2>${t("reportTitle")}</h2>
     <dl>
-      <dt>${t("previousBest")}</dt><dd>${previousBest} / ${total}</dd>
+      <dt>${t("previousBest")}</dt><dd>${previousBest > 0 ? `${previousBest} / ${total}` : "—"}</dd>
       <dt>${t("todayScore")}</dt><dd>${state.score} / ${total}</dd>
-      <dt>${t("improvement")}</dt><dd>${improvementText}</dd>
-      <dt>${t("animalKnowledge")}</dt><dd class="stars">${stars(scoreStars(state.score, total))}</dd>
-      <dt>${t("memory")}</dt><dd class="stars">${stars(scoreStars(state.score, total, -1))}</dd>
-      <dt>${t("reading")}</dt><dd class="stars">${stars(scoreStars(state.score, total, -1))}</dd>
     </dl>
     <p>${t(messageKey)}</p>
   `;
