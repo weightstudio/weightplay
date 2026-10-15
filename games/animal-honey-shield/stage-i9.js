@@ -79,6 +79,9 @@
           return `50% ${[52, 65, 41, 57, 69, 47][Math.floor(index / 5) % 6]}%`;
         },
       });
+      for (const property of ["overflow-x", "overflow-y", "scroll-snap-type", "touch-action"]) {
+        rail.style.removeProperty(property);
+      }
     } else visual.refresh();
     const selected = rail.querySelector('.stage-card[aria-current="true"]');
     const label = selected?.querySelector("[data-wp-item-content] > span")?.textContent?.trim() || "";

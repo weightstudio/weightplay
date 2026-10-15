@@ -21,6 +21,8 @@ html[data-honey-stage-i9="true"] #stageWorkspace .stage-rail {
 }
 
 html[data-honey-stage-i9="true"] #stageWorkspace .stage-card .wp-stage-i9-card-art {
+  height: 100% !important;
+  border-radius: 21px;
   font-style: normal;
   text-shadow: none;
 }
