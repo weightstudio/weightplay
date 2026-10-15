@@ -42,14 +42,16 @@
     <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"宠物花园方块","alternateName":"寵物花園方塊","url":"https://weightplay.com/zh-cn/games/garden-tiles/","image":"https://weightplay.com/assets/garden-tiles-cover.png","description":"《花园方块》是动物图案记忆配对游戏，包含 30 个可存档挑战。翻开方块找出相同图案；六个章节加入不同规则，关卡没有倒计时。","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"zh-Hans","isAccessibleForFree":true,"genre":["动物图片记忆配对","翻面寻找成对图案","30 个存档挑战"],"audience":{"@type":"Audience","audienceType":"Kids and families","suggestedMinAge":6},"learningResourceType":"Skill practice through play","educationalUse":"Practice Memory, Focus, Problem Solving through family-friendly browser gameplay."}</script>
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261015-garden-tiles-i9-guide" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
   <meta name="twitter:title" content="宠物花园方块 | WeightPlay" />
     <meta name="twitter:description" content="《花园方块》是动物图案记忆配对游戏，包含 30 个可存档挑战。翻开方块找出相同图案；六个章节加入不同规则，关卡没有倒计时。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/garden-tiles.webp" />
-  </head>
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+</head>
   <body>
     <main class="garden-game" data-wp-logical-battle-canvas data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="350">
       <header class="topbar">
@@ -148,7 +150,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-garden-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261015-garden-tiles-i9-guide";
+          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
           script.dataset.gardenGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -193,7 +195,7 @@
       <div class="game-info-section"><h3>开发设计理念</h3><p>本作用不同记忆要求增加难度，而不是加入紧张倒数。关卡与游戏画面使用单一等比例缩放的响应式画布填满安全视窗，短横向屏幕会切换到兼容的横向逻辑范围。原生按钮支持触控和键盘，失误图案保留足够时间，切到背景时也会暂停提示时间。预览、薄雾、微风与游行分别练习不同的观察方式，同时维持 Kids 游戏的平静节奏。</p></div>
       <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>本作适合 6+ 与亲子游玩。星星与技能报告只整理本次本设备游戏的配对、步数、重试和星星，不是智力测验、诊断、发展评估，也不会和其他孩子比较。Kids 版本没有广告、登录、聊天或购买要求。</p></div>
       <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>共有多少挑战？</dt><dd>共有六篇 30 关，检查点位于第 5、10、15、20、25、30 关。</dd></div><div><dt>游戏有倒数吗？</dt><dd>没有。花园薄雾只会让单次第一张牌在短暂时间后盖回。</dd></div><div><dt>为什么后期卡牌会移动？</dt><dd>调皮微风会在失误后移动未完成牌；花园游行则在成功后轮转。</dd></div><div><dt>星星怎么计算？</dt><dd>依完整两张牌尝试次数计算；只要清完牌面就能继续。</dd></div><div><dt>进度会保存吗？</dt><dd>已解锁关卡与最佳星星会保存在目前浏览器。</dd></div><div><dt>手机和键盘都能玩吗？</dt><dd>可以，牌卡使用支持触控、鼠标与键盘的原生按钮。</dd></div><div><dt>需要付费或会显示广告吗？</dt><dd>不需要帐号或购买；Kids 版本也不会发出广告请求。</dd></div><div><dt>技能报告是正式测验吗？</dt><dd>不是，只是本次完成关卡的游戏摘要。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><p>因为这款游戏会练习 记忆，也可以试试这些游戏：</p><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/star-memory/"><img src="/assets/interface7-redrawn/star-memory.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>星星翻牌</strong><span>《动物星星翻牌》是一段有 30 关的夜空图片配对旅程。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-quiz/"><img src="/assets/animal-quiz/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>小博士</strong><span>《动物小博士》是一款免费双语 Kids 知识游戏，共有 30 个可存档关卡，每关包含十种不重复的动物。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><p>因为这款游戏会练习 记忆，也可以试试这些游戏：</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="star-memory" href="/zh-cn/games/star-memory/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/star-memory.webp" data-final-src="/assets/weightplay-logo.png" alt="星星翻牌" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">星星翻牌</strong><span>《动物星星翻牌》是一段有 30 关的夜空图片配对旅程。</span></span></a><a class="game-info-related-card" data-game-id="animal-quiz" href="/zh-cn/games/animal-quiz/"><span class="game-info-related-poster"><img src="/assets/animal-quiz/cover-block-v1.png" data-final-src="/assets/weightplay-logo.png" alt="小博士" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">小博士</strong><span>《动物小博士》是一款免费双语 Kids 知识游戏，共有 30 个可存档关卡，每关包含十种不重复的动物。</span></span></a></div></div>
     </div>
   </section>
 </body>

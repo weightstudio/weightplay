@@ -42,14 +42,16 @@
     <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"ガーデンタイル","alternateName":"寵物花園方塊","url":"https://weightplay.com/ja/games/garden-tiles/","image":"https://weightplay.com/assets/garden-tiles-cover.png","description":"Garden Tilesは動物の絵合わせ記憶ゲームで、30の保存可能なチャレンジを収録。タイルをめくって同じ絵を探します。6章でルールが変わり、制限時間はありません。","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"ja","isAccessibleForFree":true,"genre":["動物写真の記憶ゲーム","伏せた絵札のペア探し","30の保存チャレンジ"],"audience":{"@type":"Audience","audienceType":"Kids and families","suggestedMinAge":6},"learningResourceType":"Skill practice through play","educationalUse":"Practice Memory, Focus, Problem Solving through family-friendly browser gameplay."}</script>
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261015-garden-tiles-i9-guide" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
   <meta name="twitter:title" content="ガーデンタイル | WeightPlay" />
     <meta name="twitter:description" content="Garden Tilesは動物の絵合わせ記憶ゲームで、30の保存可能なチャレンジを収録。タイルをめくって同じ絵を探します。6章でルールが変わり、制限時間はありません。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/garden-tiles.webp" />
-  </head>
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+</head>
   <body>
     <main class="garden-game" data-wp-logical-battle-canvas data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="350">
       <header class="topbar">
@@ -149,7 +151,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-garden-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261015-garden-tiles-i9-guide";
+          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
           script.dataset.gardenGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -193,7 +195,7 @@
       <div class="game-info-section"><h3>開発者メモ</h3><p>難しさは面全体のタイマーではなく、予告、短時間の選択、外れたカードの再配置、正解後の移動という記憶ルールの変化から生まれます。タッチとキーボードの両方でネイティブのカードボタンを操作できます。Kids版に広告やログインはなく、進行はこのブラウザーだけに保存します。</p></div>
       <div class="game-info-section game-info-parent"><h3>保護者向け</h3><p>6歳以上の家族向け記憶ゲームです。星とスキルレポートは現在のプレイ結果をまとめるだけで、知能検査、診断、発達評価、ほかの子どもとの比較ではありません。</p></div>
       <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>全部で何面ありますか？</dt><dd>30面あり、5、10、15、20、25、30面がチェックポイントです。各章で異なる記憶ルールが加わります。</dd></div><div><dt>面に制限時間はありますか？</dt><dd>ありません。Garden Mistでは最初に選んだ札だけが短時間で閉じますが、面全体のカウントダウンはありません。</dd></div><div><dt>開始時の予告では何をしますか？</dt><dd>盤面を閉じる前に全ての絵が短く表示されます。位置を覚えてからペアを探します。</dd></div><div><dt>カードが動くルールは？</dt><dd>Playful Gustは外れた後に残った不一致カードを並べ替え、Garden Paradeはペア正解後に残りのカードを移動させます。</dd></div><div><dt>手数と星はどう関係しますか？</dt><dd>2枚を選ぶ試みを1手として数え、効率よく全てのペアを見つけるほど星が増えます。クリアすると次へ進めます。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>開放済みとクリア済みの面、選択中の面、最高の星数がこのブラウザーに保存されます。</dd></div><div><dt>スマートフォンやキーボードに対応しますか？</dt><dd>はい。カードはタッチ、ポインター、キーボードで選べます。</dd></div><div><dt>無料で遊べますか？</dt><dd>はい。Kids版は無料で、ログインや広告リクエストはありません。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><p>このゲームでは記憶力を練習するので、こちらもどうぞ：</p><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/star-memory/"><img src="/assets/interface7-redrawn/star-memory.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>星空メモリー</strong><span>星空メモリーは、動物のカードをめくってペアを見つける全30ステージの記憶ゲームです。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-quiz/"><img src="/assets/animal-quiz/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>クイズ</strong><span>どうぶつクイズは、写真とヒントを比べ、動物に関する答えを選ぶクイズを楽しめるWeightPlayオリジナル作品です。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>関連ゲームをもっと見る</h3><p>このゲームでは記憶力を練習するので、こちらもどうぞ：</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="star-memory" href="/ja/games/star-memory/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/star-memory.webp" data-final-src="/assets/weightplay-logo.png" alt="星空メモリー" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">星空メモリー</strong><span>星空メモリーは、動物のカードをめくってペアを見つける全30ステージの記憶ゲームです。</span></span></a><a class="game-info-related-card" data-game-id="animal-quiz" href="/ja/games/animal-quiz/"><span class="game-info-related-poster"><img src="/assets/animal-quiz/cover-block-v1.png" data-final-src="/assets/weightplay-logo.png" alt="クイズ" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">クイズ</strong><span>どうぶつクイズは、写真とヒントを比べ、動物に関する答えを選ぶクイズを楽しめるWeightPlayオリジナル作品です。</span></span></a></div></div>
     </div>
   </section>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="ガーデンタイル";document.title="ガーデンタイル | WeightPlay";},{once:true});</script>
