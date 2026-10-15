@@ -2507,11 +2507,23 @@ body.reef-fisher-playing .weightplay-version-badge {
 /* v27: one Stage workspace at a time; equipment copy has its own scrollable
    content track instead of being squeezed under the mission rail. */
 #stagePanel.stage-panel {
-  grid-template-rows: 48px minmax(0, 1fr) 56px;
+  grid-template-rows: var(--wp-frame-control-size-physical, 48px) minmax(0, 1fr) 56px;
   gap: 8px;
   padding-bottom: 0;
   --wp-stage-art: url('/assets/interface7-redrawn/animal-reef-fisher.webp');
   background-image: linear-gradient(rgb(4 33 46 / 80%), rgb(6 49 61 / 92%)), url('/assets/interface7-redrawn/animal-reef-fisher.webp');
+}
+#stagePanel .stage-head {
+  grid-template-columns: var(--wp-frame-control-size-physical, 48px) minmax(0, 1fr) var(--wp-frame-control-size-physical, 48px);
+  height: var(--wp-frame-control-size-physical, 48px);
+}
+#stagePanel .stage-return {
+  width: var(--wp-frame-control-size-physical, 48px);
+  min-width: var(--wp-frame-control-size-physical, 48px);
+  max-width: var(--wp-frame-control-size-physical, 48px);
+  height: var(--wp-frame-control-size-physical, 48px);
+  min-height: var(--wp-frame-control-size-physical, 48px);
+  max-height: var(--wp-frame-control-size-physical, 48px);
 }
 #stagePanel .stage-workspace {
   display: grid;
@@ -2552,10 +2564,22 @@ body.reef-fisher-playing .weightplay-version-badge {
   box-shadow: inset 0 -4px #63e6be, 0 0 0 2px #63e6be;
 }
 #stagePanel #reefGearWorkspace {
-  grid-template-rows: 24px 48px minmax(0, 1fr);
+  grid-template-rows: 24px 48px 40px minmax(0, 1fr);
   gap: 12px;
   padding: 12px;
 }
+#stagePanel .reef-gear-feedback {
+  height: 40px;
+  margin: 0;
+  padding: 4px 8px;
+  color: #f8fafc;
+  font-size: 12px;
+  line-height: 16px;
+  overflow: hidden;
+}
+#stagePanel .reef-stage-workspace:not([hidden]) { animation: reef-workspace-enter 180ms ease-out both; }
+body.reef-fisher-result .reef-result-scroll { animation: reef-workspace-enter 220ms ease-out both; }
+@keyframes reef-workspace-enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 #stagePanel #reefGearWorkspace .gear-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2646,6 +2670,8 @@ body.reef-fisher-playing .weightplay-version-badge {
   text-align: center;
 }
 #stagePanel .reef-album-card .catch-thumb { width: 88px; height: 88px; }
+#stagePanel .reef-album-card > [data-wp-item-content] { display: grid; place-items: center; gap: 6px; min-height: 160px; }
+#stagePanel .reef-album-card [data-wp-item-collection-status] { min-height: 24px; display: flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; }
 #stagePanel .reef-album-card[data-collected="false"] .catch-thumb { filter: grayscale(1); opacity: .45; }
 #stagePanel .stage-ad-reserve { display: none; }
 
@@ -2734,16 +2760,40 @@ body.reef-fisher-playing #reelActionBtn {
   user-select: none;
 }
 body.reef-fisher-playing .battle-shell {
+  display: grid;
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: 48px minmax(0, 1fr) 52px 232px;
   gap: 6px;
   padding: 8px;
 }
+body.reef-fisher-playing .battle-shell > :is(.hud-row, .play-frame, .catch-hud, .tension-panel) {
+  position: static;
+  inset: auto;
+  margin: 0;
+}
 body.reef-fisher-playing .battle-shell > .hud-row {
   grid-area: 1 / 1;
-  grid-template-columns: 48px minmax(0, 1.5fr) minmax(0, .65fr) minmax(0, .65fr);
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
   grid-template-rows: 48px;
   height: 48px;
+}
+body.reef-fisher-playing .hud-row > .reef-mission-hud {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, .65fr) minmax(0, .65fr);
+  grid-template-rows: 48px;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+body.reef-fisher-playing .reef-mission-hud > div { padding: 5px 6px; }
+body.reef-fisher-playing .hud-row > #battleHelpBtn {
+  position: static;
+  inset: auto;
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
 }
 body.reef-fisher-playing .battle-shell > .play-frame {
   grid-area: 2 / 1;
@@ -2772,6 +2822,7 @@ body.reef-fisher-playing .battle-shell > .tension-panel {
   min-height: 232px;
   max-height: 232px;
   padding: 8px;
+  position: relative;
 }
 body.reef-fisher-playing .tension-control {
   display: grid;
@@ -2779,7 +2830,10 @@ body.reef-fisher-playing .tension-control {
   gap: 4px;
   height: 216px;
 }
-body.reef-fisher-playing .tension-head { grid-template-columns: 84px minmax(0, 1fr); }
+body.reef-fisher-playing .tension-head { grid-template-columns: 84px minmax(0, 1fr) 44px; }
+body.reef-fisher-playing #reefTensionPressure { width: 100%; height: 16px; accent-color: #63e6be; }
+body.reef-fisher-playing #safeBand { display: none; }
+body.reef-fisher-playing .tension-lane { background: linear-gradient(90deg,#b1dce3,#edf9f7,#b1dce3); }
 body.reef-fisher-playing .tension-lane { height: 52px; min-height: 52px; }
 body.reef-fisher-playing .tension-marker { top: 3px; width: 44px; height: 44px; animation: none; }
 body.reef-fisher-playing .tension-coach {

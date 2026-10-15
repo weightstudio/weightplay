@@ -1044,7 +1044,7 @@ const expansionRuleCopy=[
 ];
 for(const [i,locale]of supportedLocales.entries())[dict[locale].expand,dict[locale].visitorCapacity,dict[locale].expansionTrafficHint]=expansionRuleCopy[i];
 keys.push('visitorCapacity','expansionTrafficHint');
-const remainingCountLabels=['Remaining','剩餘數量','剩余数量','残り','남은 수량','Disponibles','Disponíveis','Restants','Verfügbar','Disponibili','Осталось','शेष','المتبقي'];
+const remainingCountLabels=['Remaining','剩餘數量','剩余数量','残り','남은 수량','Quedan','Restam','Restants','Verfügbar','Disponibili','Осталось','शेष','المتبقي'];
 for(const [index,locale]of supportedLocales.entries())dict[locale].remainingCount=remainingCountLabels[index];
 keys.push('remainingCount');
 const aliases={'zh-tw':'zh-Hant','zh-hant':'zh-Hant','zh-cn':'zh-Hans','zh-hans':'zh-Hans','pt-br':'pt-BR'};

@@ -8892,7 +8892,8 @@ select,
 
 /* Square entrance art also applies to owner-preview cards. Text height must
    not stretch the image track; hover/focus must not crop the composition. */
-.general-lobby-page .upcoming-game-art {
+.general-lobby-page .upcoming-game-art,
+.kids-lobby-page .upcoming-game-art {
   width: 100%;
   height: auto;
   aspect-ratio: 1;
@@ -8900,7 +8901,10 @@ select,
 }
 .general-lobby-page .upcoming-game-art img,
 .general-lobby-page .upcoming-game-card:hover .upcoming-game-art img,
-.general-lobby-page .upcoming-game-card:focus-visible .upcoming-game-art img {
+.general-lobby-page .upcoming-game-card:focus-visible .upcoming-game-art img,
+.kids-lobby-page .upcoming-game-art img,
+.kids-lobby-page .upcoming-game-card:hover .upcoming-game-art img,
+.kids-lobby-page .upcoming-game-card:focus-visible .upcoming-game-art img {
   object-fit: contain;
   object-position: center;
   transform: none;

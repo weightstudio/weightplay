@@ -1,6 +1,15 @@
 ﻿(async () => {
-  const fishing = await import('./reef-simulation.js');
-  const { ReefScene } = await import('./reef-3d.js');
+  let fishing, ReefScene, bootDeadline;
+  try {
+    const modules = await Promise.race([
+      Promise.all([import('./reef-simulation.js'), import('./reef-3d.js')]),
+      new Promise((resolve, reject) => { bootDeadline = setTimeout(() => reject(new Error('reef-module-timeout')), 12000); }),
+    ]);
+    fishing = modules[0]; ReefScene = modules[1].ReefScene;
+  } catch {
+    showReefBootFailure();
+    return;
+  } finally { clearTimeout(bootDeadline); }
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -84,14 +93,21 @@
     `);
   }
   const canvas = $("gameCanvas");
-  const ctx = null; // The Battle canvas belongs exclusively to the real-time 3D renderer.
   let reefScene = null;
+  let sceneRecoveryExtension = null;
+  let sceneWebGLContext = null;
+  let sceneRecoveryFailures = 0;
   let fishingState = null;
   let stageTab = 'map';
   let sceneError = false;
   let landingWon = false;
   let renderDelta = 0;
   let actionPointerId = null;
+  let lanePointerId = null;
+  let keyboardActionHeld = false;
+  let sceneRecovering = false;
+  const rewardMotions = new Set();
+  const gearFeedbackAnimations = new Set();
   const nodes = {
     localeSelect: $("localeSelect"),
     loadingPanel: $("loadingPanel"),
@@ -642,7 +658,7 @@
     ko: ['얕은 암초 · 안정형','물길 · 돌진형','깊은 웅덩이 · 무거운 물고기','낚시터를 고르고 물이나 Space를 길게 누르세요.','놓으면 선택한 곳으로 던집니다.','찌를 보며 입질을 기다리세요!','미끼 탐색 중…찌가 깊이 잠길 때까지 기다리세요.','입질! 눌러 챔질하세요!','길게 눌러 감기','놓아서 줄 풀기','낚싯대 왼쪽','낚싯대 오른쪽','돌진 중 · 줄을 풀어요','휴식 중 · 지금 감아요','물고기 돌진 준비','입질을 놓쳤어요. 다시 던지세요.','줄이 너무 느슨해 놓쳤어요. 다시 던지세요.','장력이 높아 줄이 끊겼어요. 다시 던지세요.','낚시 성공!','거리','지도','장비','도감','미발견','3D 장면을 열 수 없어요. 재시도하거나 스테이지로 가세요.','장면 재시도','찌가 날아갑니다','급류 예고 · 줄을 풀어요','방어 중 · 줄을 안정시키세요','목표 세기'],
     es: ['Arrecife cercano · estable','Canal · veloz','Poza profunda · pesado','Elige un punto; mantén agua o Espacio para cargar.','Suelta para lanzar al punto elegido.','¡Mira el flotador y espera la picada!','Está tanteando… espera la inmersión fuerte.','¡PICADA! ¡Pulsa para clavar!','Mantén para recoger','Suelta para aflojar','Caña a la izquierda','Caña a la derecha','Corre · afloja la línea','Descansa · recoge ahora','Prepara una carrera','Picada perdida. Lanza otra vez.','Línea floja: escapó. Vuelve a lanzar.','La línea se rompió. Vuelve a lanzar.','¡Captura a bordo!','Distancia','Mapa','Equipo','Álbum','Sin descubrir','Escena 3D no disponible. Reintenta o vuelve a Misiones.','Reintentar escena','Flotador en vuelo','Ráfaga próxima · afloja','Guardia cerrada · estabiliza','Potencia objetivo'],
     'pt-BR': ['Recife perto · estável','Canal · veloz','Poço fundo · pesado','Escolha um ponto; segure a água ou Espaço para carregar.','Solte para lançar ao ponto escolhido.','Olhe a boia e espere a fisgada!','Está beliscando… espere afundar bem.','MORDEU! Aperte para fisgar!','Segure para recolher','Solte para aliviar','Vara à esquerda','Vara à direita','Correndo · alivie a linha','Descansando · recolha agora','Preparando uma corrida','Perdeu a fisgada. Lance de novo.','Linha frouxa: escapou. Lance de novo.','A linha rompeu. Lance de novo.','Peixe a bordo!','Distância','Mapa','Equipamento','Álbum','Não descoberto','Cena 3D indisponível. Tente de novo ou volte às Missões.','Tentar cena','Boia no ar','Rajada chegando · alivie','Defesa fechada · estabilize','Força alvo'],
-    fr: ['Récif proche · calme','Chen al · rapide'.replace('Chen al','Chenal'),'Fosse · lourd','Choisissez un lieu ; maintenez l’eau ou Espace.','Relâchez pour lancer au lieu choisi.','Surveillez le flotteur, attendez la touche !','Il grignote… attendez la grande plongée.','TOUCHE ! Appuyez pour ferrer !','Maintenez pour mouliner','Relâchez pour détendre','Canne à gauche','Canne à droite','Il fuit · détendez la ligne','Repos · moulinez maintenant','Il prépare une fuite','Touche manquée. Relancez.','Ligne trop lâche : il fuit. Relancez.','Ligne cassée. Relancez.','Poisson à bord !','Distance','Carte','Équipement','Album','Non découvert','Scène 3D indisponible. Réessayez ou revenez aux missions.','Réessayer','Flotteur en vol','Rafale imminente · détendez','Garde fermée · stabilisez','Puissance cible'],
+    fr: ['Récif proche · calme','Chenal · rapide','Fosse · lourd','Choisissez un lieu ; maintenez l’eau ou Espace.','Relâchez pour lancer au lieu choisi.','Surveillez le flotteur, attendez la touche !','Il grignote… attendez la grande plongée.','TOUCHE ! Appuyez pour ferrer !','Maintenez pour mouliner','Relâchez pour détendre','Canne à gauche','Canne à droite','Il fuit · détendez la ligne','Repos · moulinez maintenant','Il prépare une fuite','Touche manquée. Relancez.','Ligne trop lâche : il fuit. Relancez.','Ligne cassée. Relancez.','Poisson à bord !','Distance','Carte','Équipement','Album','Non découvert','Scène 3D indisponible. Réessayez ou revenez aux missions.','Réessayer','Flotteur en vol','Rafale imminente · détendez','Garde fermée · stabilisez','Puissance cible'],
     de: ['Nahes Riff · ruhig','Strömung · flink','Tiefer Pool · schwer','Angelplatz wählen; Wasser oder Leertaste halten.','Loslassen und zum gewählten Platz werfen.','Pose beobachten und auf den Biss warten!','Er knabbert… auf kräftiges Abtauchen warten.','BISS! Zum Anschlagen drücken!','Halten zum Einholen','Loslassen zum Entlasten','Rute nach links','Rute nach rechts','Flucht · Schnur entlasten','Erholung · jetzt einholen','Fisch bereitet Flucht vor','Biss verpasst. Erneut auswerfen.','Schnur zu locker: entkommen. Neu auswerfen.','Schnur gerissen. Neu auswerfen.','Fang an Bord!','Abstand','Karte','Ausrüstung','Album','Unentdeckt','3D-Szene nicht verfügbar. Erneut versuchen oder zu Stufen.','Szene neu laden','Pose im Flug','Böe kommt · Schnur entlasten','Panzer geschlossen · stabil halten','Zielstärke'],
     it: ['Scoglio vicino · calmo','Canale · rapido','Pozza profonda · pesante','Scegli un punto; tieni acqua o Spazio per caricare.','Rilascia per lanciare al punto scelto.','Osserva il galleggiante e attendi il morso!','Sta assaggiando… aspetta che affondi forte.','MORSO! Premi per ferrare!','Tieni per recuperare','Rilascia per allentare','Canna a sinistra','Canna a destra','Scatta · allenta la lenza','Riposa · recupera ora','Prepara uno scatto','Morso perso. Lancia ancora.','Lenza lenta: è fuggito. Lancia ancora.','Lenza rotta. Lancia ancora.','Pesce a bordo!','Distanza','Mappa','Attrezzatura','Album','Da scoprire','Scena 3D non disponibile. Riprova o torna alle missioni.','Riprova scena','Galleggiante in volo','Raffica in arrivo · allenta','Guardia chiusa · stabilizza','Potenza obiettivo'],
     ru: ['Ближний риф · спокойные','Протока · быстрые','Глубокий омут · тяжёлые','Выберите место; удерживайте воду или Пробел.','Отпустите, чтобы забросить к выбранному месту.','Следите за поплавком и ждите поклёвки!','Пробует наживку… ждите сильного погружения.','КЛЮЁТ! Нажмите для подсечки!','Держите для подмотки','Отпустите для ослабления','Удочку влево','Удочку вправо','Рывок · ослабьте леску','Отдыхает · подматывайте','Готовится к рывку','Поклёвка пропущена. Забросьте снова.','Леска ослабла: рыба ушла. Забросьте снова.','Леска порвалась. Забросьте снова.','Улов на борту!','Расстояние','Карта','Снаряжение','Альбом','Не открыто','3D-сцена недоступна. Повторите или вернитесь к этапам.','Повторить сцену','Поплавок в полёте','Скоро порыв · ослабьте леску','Защита закрыта · держите ровно','Целевая сила'],
@@ -650,6 +666,23 @@
     ar: ['شعاب قريبة · هادئ','قناة تيار · سريع','بركة عميقة · ثقيل','اختر موقعًا؛ اضغط الماء أو المسافة للشحن.','أفلت للرمي إلى الموقع المحدد.','راقب العوامة وانتظر العضة!','يقضم الطُعم… انتظر الغوص القوي.','عضة! اضغط لتثبيت الخطاف!','اضغط للسحب','أفلت لإرخاء الخيط','السنارة يسارًا','السنارة يمينًا','اندفاع · أرخِ الخيط','استراحة · اسحب الآن','يستعد للاندفاع','فاتت العضة. ارمِ مجددًا.','الخيط مرتخٍ: هربت السمكة. ارمِ مجددًا.','انقطع الخيط. ارمِ مجددًا.','الصيد على القارب!','المسافة','الخريطة','المعدات','الألبوم','غير مكتشف','مشهد 3D غير متاح. أعد المحاولة أو ارجع للمراحل.','أعد المشهد','العوامة في الهواء','هبة قادمة · أرخِ الخيط','الدرع مغلق · حافظ على الثبات','القوة المستهدفة'],
   };
   function ft(key) { const lang = window.WonderI18n?.actualLocale?.() || locale; return fishingCopy[lang]?.[fishingCopyKeys.indexOf(key)] || fishingCopy.en[fishingCopyKeys.indexOf(key)] || key; }
+  const mechanicsKeys = ['open','drift','snag','tide','storm','abyss','rod','reel','line','bait','cast','strike'];
+  const mechanicsCopy = {
+    en:['Open water · gentle pull','Kelp drift · shifting current','Coral snags · avoid right pressure','Moon tide · alternating current','Storm · gust every 3 seconds','Abyss · drift, guard and gusts','Reel fish toward the boat faster.','Counter-steering reduces running pressure more.','Higher tension tolerance and longer escape grace.','Shorter bite wait, longer strike window, more Notes.','Cast','Strike!'],
+    'zh-Hant':['開放海面 · 平緩拉力','海藻漂流 · 流向變化','珊瑚纏礁 · 避免向右施壓','月潮 · 海流交替','風暴 · 每三秒突流','深淵 · 漂流、護甲與突流','主動收線時，更快把魚拉向船。','反向移竿時，更有效降低衝刺壓力。','提高張力容許值，延長逃脫緩衝。','縮短等待、延長提竿時機並增加筆記。','拋竿','提竿！'],
+    'zh-Hans':['开放海面 · 平缓拉力','海藻漂流 · 流向变化','珊瑚缠礁 · 避免向右施压','月潮 · 海流交替','风暴 · 每三秒急流','深渊 · 漂流、护甲与急流','主动收线时，更快把鱼拉向船。','反向移竿时，更有效降低冲刺压力。','提高张力容许值，延长逃脱缓冲。','缩短等待、延长提竿时机并增加笔记。','抛竿','提竿！'],
+    ja:['開けた海 · 穏やかな引き','海藻流 · 変化する潮流','サンゴ · 右への力に注意','月の潮 · 交互の流れ','嵐 · 3秒ごとの突流','深淵 · 潮流とガードと突流','巻いて魚を船へ引く速度が上がります。','逆方向の操作で突進の張力をより軽減。','張力の許容と逃走までの猶予が増加。','待ち時間を短縮し、合わせ時間とノートを増加。','投げる','合わせる！'],
+    ko:['열린 바다 · 부드러운 당김','해초 흐름 · 바뀌는 해류','산호 · 오른쪽 힘 주의','달 조수 · 번갈아 흐름','폭풍 · 3초마다 급류','심해 · 해류, 방어, 급류','감는 동안 물고기를 더 빨리 당깁니다.','반대 방향 조작으로 돌진 장력을 줄입니다.','장력 허용치와 탈출 유예 시간이 늘어납니다.','대기 단축, 챔질 시간과 노트 증가.','던지기','챔질!'],
+    es:['Mar abierto · tirón suave','Algas · corriente cambiante','Coral · evita presión derecha','Marea lunar · corriente alterna','Tormenta · ráfaga cada 3 s','Abismo · deriva, guardia y ráfagas','Recoge al pez hacia el barco más rápido.','Contradirigir reduce más la presión de carreras.','Más tolerancia de tensión y margen de escape.','Menos espera, más tiempo de clavado y Notas.','Lanzar','¡Clavar!'],
+    'pt-BR':['Mar aberto · puxão suave','Algas · corrente variável','Coral · evite pressão à direita','Maré lunar · corrente alternada','Tempestade · rajada a cada 3 s','Abismo · corrente, defesa e rajadas','Recolhe o peixe mais rápido até o barco.','Direção oposta reduz mais a pressão da corrida.','Mais tolerância de tensão e margem de fuga.','Menos espera, mais tempo de fisgada e Notas.','Lançar','Fisgar!'],
+    fr:['Mer ouverte · traction douce','Algues · courant changeant','Corail · évitez la pression à droite','Marée lunaire · courant alterné','Tempête · rafale toutes les 3 s','Abysse · courant, garde et rafales','Ramène le poisson plus vite en moulinant.','Le contre-braquage réduit davantage la tension.','Plus de tolérance et de délai avant la fuite.','Moins d’attente, plus de temps pour ferrer et de Notes.','Lancer','Ferrer !'],
+    de:['Offenes Meer · sanfter Zug','Algen · wechselnde Strömung','Korallen · rechten Druck meiden','Mondflut · wechselnder Strom','Sturm · Böe alle 3 Sekunden','Abgrund · Strömung, Panzer, Böen','Zieht den Fisch beim Einholen schneller zum Boot.','Gegenlenken senkt den Fluchtdruck stärker.','Mehr Spannungstoleranz und Fluchtpuffer.','Kürzere Wartezeit, längeres Bissfenster, mehr Notizen.','Auswerfen','Anschlagen!'],
+    it:['Mare aperto · trazione dolce','Alghe · corrente variabile','Corallo · evita pressione a destra','Marea lunare · corrente alternata','Tempesta · raffica ogni 3 s','Abisso · corrente, difesa e raffiche','Recupera il pesce verso la barca più in fretta.','Controsterzare riduce di più la pressione.','Più tolleranza di tensione e margine di fuga.','Meno attesa, più tempo per ferrare e Note.','Lancia','Ferra!'],
+    ru:['Открытое море · плавная тяга','Водоросли · меняющееся течение','Коралл · избегайте давления вправо','Лунный прилив · смена течения','Шторм · порыв каждые 3 с','Бездна · течение, защита, порывы','Быстрее подтягивает рыбу к лодке при подмотке.','Противодействие сильнее снижает давление рывка.','Больше допустимое натяжение и время до побега.','Меньше ожидания, дольше подсечка, больше заметок.','Заброс','Подсечь!'],
+    hi:['खुला पानी · हल्का खिंचाव','समुद्री घास · बदलती धारा','मूंगा · दायाँ दबाव न दें','चाँद ज्वार · बदलती धारा','तूफ़ान · हर 3 सेकंड झोंका','गहराई · धारा, कवच, झोंके','रील घुमाते समय मछली तेज़ी से नाव की ओर आती है।','उलटी दिशा मोड़ने पर दौड़ का दबाव अधिक घटता है।','तनाव सहनशीलता और भागने की मोहलत बढ़ती है।','प्रतीक्षा कम, फँसाने का समय और नोट्स अधिक।','फेंकें','फँसाएँ!'],
+    ar:['مياه مفتوحة · سحب لطيف','أعشاب · تيار متغير','مرجان · تجنب ضغط اليمين','مد قمري · تيار متناوب','عاصفة · هبة كل 3 ثوانٍ','هاوية · تيار ودرع وهبات','اسحب السمكة نحو القارب بسرعة أكبر.','التوجيه المعاكس يخفف ضغط الاندفاع أكثر.','تحمل شد أعلى ومهلة أطول قبل الهرب.','انتظار أقصر ومهلة تثبيت أطول وملاحظات أكثر.','ارمِ','ثبّت!'],
+  };
+  function mt(key) { const lang = window.WonderI18n?.actualLocale?.() || locale; return (mechanicsCopy[lang] || mechanicsCopy.en)[mechanicsKeys.indexOf(key)] || key; }
 
   const assetPaths = {
     bg: "../../assets/animal-reef-fisher-reef-bg.webp",
@@ -985,7 +1018,7 @@
   }
 
   function missionRuleLabel(zone) {
-    return stageT(`rule${zone.rule[0].toUpperCase()}${zone.rule.slice(1)}`);
+    return mt(zone.rule);
   }
 
   function localizedValue(values) {
@@ -1010,7 +1043,7 @@
     label.textContent = rule;
     nodes.zoneText.textContent = `${zone.stage} · ${name}`;
     box.setAttribute("aria-label", `${missionLabel} · ${name} · ${rule}`);
-    canvas.setAttribute("aria-label", `${t("playAreaAria")} ${missionLabel} · ${name} · ${rule}`);
+    canvas.setAttribute("aria-label", `${ft('chooseSpot')} ${ft('strike')} ${ft('reelHold')} ${ft('easeLine')} ${missionLabel} · ${name} · ${rule}`);
   }
 
   const levelTerms = {
@@ -1151,8 +1184,11 @@
     nodes.leaveTitle.textContent = t("leaveTitle");
     nodes.leaveKeepBtn.textContent = t("keepFishing");
     nodes.leaveConfirmBtn.textContent = t("leaveExpedition");
-    canvas.setAttribute("aria-label", t("playAreaAria"));
-    nodes.tensionLane.setAttribute("aria-label", t("tensionLaneAria"));
+    canvas.setAttribute("aria-label", `${ft('chooseSpot')} ${ft('strike')} ${ft('reelHold')} ${ft('easeLine')} ${ft('counterLeft')} / ${ft('counterRight')}`);
+    nodes.tensionLane.setAttribute("aria-label", `${ft('counterLeft')} / ${ft('counterRight')}`);
+    document.querySelector('[data-ui="castHint"]')?.replaceChildren(document.createTextNode(ft('chooseSpot')));
+    document.querySelector('[data-ui="menuHint"]')?.replaceChildren(document.createTextNode(`${ft('chooseSpot')} ${ft('strike')} ${ft('reelHold')}`));
+    document.querySelector('[data-ui="tensionMarker"]')?.replaceChildren(document.createTextNode('↔'));
     updateSonarButton();
     updateSoundButton();
     renderMenu();
@@ -1183,6 +1219,7 @@
     }))).then(() => {
       assetsReady = true;
       window.__ANIMAL_REEF_FISHER_ASSETS_READY__ = true;
+      if (state === 'stage' && stageTab === 'album') renderAlbum();
     });
   }
 
@@ -1207,7 +1244,7 @@
       return `
         <div class="gear-card">
           <div data-wp-item-content><img src="${item.img}" alt="" />
-          <div><strong>${localizedValue(item.name)}</strong><span>${formatLevel(level)}</span><small class="gear-effect">${t(item.effectKey)}</small></div></div>
+          <div><strong>${localizedValue(item.name)}</strong><span>${formatLevel(level)}</span><small class="gear-effect">${['rod','reel','line','bait'].includes(item.id) ? mt(item.id) : t(item.effectKey)}</small></div></div>
           <button class="secondary-btn" data-gear="${item.id}" type="button">${maxed ? t("max") : `${t("upgrade")} ${cost}`}</button>
         </div>
       `;
@@ -1244,22 +1281,36 @@
     if (!panel) return;
     const cards = fish.map(item => {
       const collected = save.album.includes(item.id);
-      return `<article class="reef-album-card" data-collected="${collected}"><span class="catch-thumb" style="${fishFrameStyle(item)}" aria-hidden="true"></span><strong>${collected ? localizedValue(item.name) : ft('unknownFish')}</strong><span>${collected ? t(item.rare ? 'rareFish' : 'commonFish') : '—'}</span></article>`;
+      return `<article class="reef-album-card" data-collected="${collected}" data-wp-item-id="${item.id}"><div data-wp-item-content><span class="catch-thumb" style='${fishFrameStyle(item)}' aria-hidden="true"></span><strong>${collected ? localizedValue(item.name) : ft('unknownFish')}</strong><span>${collected ? t(item.rare ? 'rareFish' : 'commonFish') : '—'}</span><span data-wp-item-collection-status><span data-wp-item-collection-icon aria-hidden="true"></span><span data-wp-item-collection-label></span></span></div></article>`;
     }).join('');
     if (panel.dataset.albumSignature !== `${locale}:${save.album.join(',')}:${assetsReady}`) {
       panel.innerHTML = `<div class="reef-album-grid">${cards}</div>`;
       panel.dataset.albumSignature = `${locale}:${save.album.join(',')}:${assetsReady}`;
     }
+    const historyCopy = {
+      en:['Collected','Not collected','History unknown'], 'zh-Hant':['已收藏','尚未收藏','尚無紀錄'], 'zh-Hans':['已收藏','尚未收藏','暂无记录'],
+      ja:['収集済み','未収集','記録なし'], ko:['수집함','미수집','기록 없음'], es:['Coleccionado','Sin coleccionar','Sin registro'],
+      'pt-BR':['Coletado','Não coletado','Sem registro'], fr:['Collectionné','Non collectionné','Historique inconnu'], de:['Gesammelt','Nicht gesammelt','Verlauf unbekannt'],
+      it:['Raccolto','Non raccolto','Storico sconosciuto'], ru:['Собрано','Не собрано','Нет записи'], hi:['संग्रहित','संग्रह नहीं हुआ','रिकॉर्ड अज्ञात'], ar:['تم جمعها','لم تجمع','السجل غير معروف'],
+    };
+    const labels = historyCopy[locale] || historyCopy.en;
+    panel.querySelectorAll('.reef-album-card').forEach(card => {
+      // An absent legacy album entry is unknown, never fabricated history.
+      window.WeightPlayScreenFrame?.setItemCollectionStatus(card, {
+        itemId:card.dataset.wpItemId, state:save.album.includes(card.dataset.wpItemId) ? 'collected' : 'unknown',
+        labels:{collected:labels[0],'not-collected':labels[1],unknown:labels[2]},
+      });
+    });
   }
 
   function syncStageTabs() {
     const names = {map:'reefMapWorkspace',gear:'reefGearWorkspace',album:'reefAlbumWorkspace'};
     Object.entries(names).forEach(([tab,id]) => {
       const panel = $(id); if (panel) { panel.hidden = tab !== stageTab; panel.classList.toggle('is-hidden',tab !== stageTab); }
-      const button = document.querySelector(`[data-reef-tab="${tab}"]`);
-      if (button) { button.setAttribute('aria-selected',String(tab === stageTab)); button.setAttribute('aria-controls',id); button.textContent = ft(`${tab}Tab`); }
+      const button = document.querySelector(`button[data-reef-tab="${tab}"]`);
+      if (button) { button.setAttribute('aria-selected',String(tab === stageTab)); button.tabIndex = tab === stageTab ? 0 : -1; button.setAttribute('aria-controls',id); button.textContent = ft(`${tab}Tab`); }
     });
-    stagePanel.dataset.reefTab = stageTab;
+    stagePanel.dataset.reefActiveTab = stageTab;
   }
 
   function stageWindowLimit() {
@@ -1275,7 +1326,7 @@
     button.type = "button";
     button.className = "zone-card stage-card";
     button.dataset.wpStagePoolNode = String(poolIndex + 1);
-    button.innerHTML = '<span class="zone-art"><img alt="" /></span><strong></strong><span></span>';
+    button.innerHTML = '<span class="zone-art"><img alt="" /></span><strong></strong><span class="zone-card-rule"></span>';
     return button;
   }
 
@@ -1287,6 +1338,10 @@
     button.dataset.zone = zone.id;
     button.dataset.stage = String(zone.stage);
     button.dataset.stageIndex = String(index);
+    button.dataset.wpGetGameId = GAME_ID;
+    button.dataset.wpGetIndex = String(index);
+    const completions = window.WeightPlayCastle?.read?.().completions || {};
+    button.dataset.wpGetState = completions[`${GAME_ID}:stage-${zone.stage}`] ? 'collected' : 'unknown';
     button.setAttribute("aria-posinset", String(index + 1));
     button.setAttribute("aria-setsize", String(zones.length));
     button.setAttribute("aria-disabled", String(locked));
@@ -1296,7 +1351,8 @@
     const image = button.querySelector("img");
     image.src = zone.img;
     button.querySelector("strong").textContent = `${missionLabel} · ${missionName(zone)}`;
-    button.querySelector(":scope > span:last-child").textContent = locked ? t("locked") : `${zone.checkpoint ? t("bossMission") : ruleLabel} · ${t("goal")} ${zone.goal}`;
+    button.querySelector('.zone-card-rule').textContent = locked ? t("locked") : `${zone.checkpoint ? t("bossMission") : ruleLabel} · ${t("goal")} ${zone.goal}`;
+    window.ShowGet?.(GAME_ID,index);
   }
 
   function syncStageCards() {
@@ -1557,6 +1613,7 @@
   }
 
   function showPanel(which) {
+    if (which !== 'stage') { gearFeedbackAnimations.forEach(animation=>animation.cancel()); gearFeedbackAnimations.clear(); }
     if (which !== "stage") cancelStageRailInteraction();
     if (which !== "game") {
       disposeReefScene();
@@ -1755,6 +1812,7 @@
     if (!run || run.finished) return;
     cancelFishingInput();
     run.finished = true;
+    run.won = Boolean(won);
     state = "result";
     const bonus = won ? 12 : 5;
     const earned = run.catches * (4 + save.gear.bait) + bonus;
@@ -1769,7 +1827,7 @@
     renderResultSummary();
     const totalReelTime = run.safeReelTime + run.dangerReelTime;
     const mostlySafe = totalReelTime >= 0.75 && run.safeReelTime / totalReelTime >= 0.7;
-    nodes.resultAdviceText.textContent = won ? t("nextCastWin") : t(mostlySafe ? "nextCastFailSafe" : "nextCastFail");
+    nodes.resultAdviceText.textContent = won ? `${ft('chooseSpot')} · ${ft('fishRecover')}` : `${ft('reelHold')} · ${ft('easeLine')} · ${ft('fishRecover')}`;
     const dangerPercent = totalReelTime > 0
       ? Math.round((run.dangerReelTime / totalReelTime) * 100)
       : 0;
@@ -1826,6 +1884,7 @@
     for (const button of [nodes.nextZoneBtn, nodes.retryBtn, nodes.resultMenuBtn]) button.disabled = false;
     const primaryResultAction = syncResultActions(won);
     showPanel("result");
+    window.ShowResultGet?.(GAME_ID,false);
     focusPanel(nodes.resultPanel);
     nodes.resultPanel.scrollTop = 0;
     renderMenu();
@@ -1877,7 +1936,9 @@
     fishing.pressFishing(fishingState); syncFishingState(); processFishingEvents();
   }
 
-  function landFish() {
+  function landFish(catchSerial = fishingState?.eventSerial) {
+    if (!run || run.finished || !run.hookFish || run.lastSettledCatchSerial === catchSerial) return;
+    run.lastSettledCatchSerial = catchSerial;
     const caught = run.hookFish;
     const id = caught.id;
     const isNew = !save.album.includes(id);
@@ -1899,6 +1960,7 @@
     run.splashTimer = 0.8;
     run.catchToastTimer = 1.7;
     showCatchToast(caught, points, notes, isNew);
+    animateCatchReward(caught);
     updateCatchHud();
     nodes.goalText.textContent = `${run.catches}/${run.zone.goal}`;
     nodes.hintText.textContent = `${t("landed")} ${localizedValue(caught.name)} +${points}`;
@@ -2108,7 +2170,7 @@
       const rarity = item.rare ? t("rareFish") : t("commonFish");
       return `
         <div class="catch-item">
-          <div class="catch-thumb" style="${fishFrameStyle(item)}" aria-hidden="true"></div>
+          <div class="catch-thumb" style='${fishFrameStyle(item)}' aria-hidden="true"></div>
           <div>
             <strong>${localizedValue(item.name)}</strong>
             <span>${rarity}${entry.isNew ? t("newTag") : ""}</span>
@@ -2119,40 +2181,13 @@
     }).join("");
   }
 
-  function lineBreak() {
-    run.phase = "aim";
-    run.hookFish = null;
-    run.splashTimer = 1;
-    run.lineBreakRecoveryVisible = true;
-    nodes.hintText.textContent = lineBreakRecoveryText();
-    updateTensionGuide();
-    updateSonarButton();
-    playSound("feedback.error");
-    track("line_break", { zone: run.zone.id, stage: run.zone.stage, input_type: run.lastInputType });
-  }
-
-  function missionTensionWindow(zone, elapsed = 0, gearValues = save.gear) {
-    const baseMin = 38 - (Number(gearValues?.rod) || 1);
-    const baseMax = 62 + (Number(gearValues?.line) || 1);
-    let center = (baseMin + baseMax) / 2;
-    let halfWidth = (baseMax - baseMin) / 2;
-    if (zone?.rule === "drift") center += Math.sin(elapsed * 0.82) * 10;
-    if (zone?.rule === "snag") halfWidth -= 1 + (Math.sin(elapsed * 1.35) + 1) * 4;
-    if (zone?.rule === "tide") center += Math.floor(elapsed / 4) % 2 === 0 ? 11 : -11;
-    if (zone?.rule === "storm") halfWidth -= 3;
-    if (zone?.rule === "abyss") {
-      center += Math.sin(elapsed * 1.05) * 9;
-      halfWidth -= 5;
-    }
-    if (zone?.boss?.profile === "kelp") center += Math.sin(elapsed * 1.25) * 4;
-    halfWidth = Math.max(7, halfWidth);
-    center = Math.max(halfWidth + 2, Math.min(98 - halfWidth, center));
-    return { safeMin:center - halfWidth, safeMax:center + halfWidth };
-  }
-
   function tensionRange() {
     const safeMin = 16, safeMax = 81 + (save.gear.line || 1) * 1.6;
     return {safeMin,safeMax,safe:!fishingState || (fishingState.tension >= safeMin && fishingState.tension <= safeMax)};
+  }
+
+  function missionTensionWindow(zone, elapsed = 0, gearValues = save.gear) {
+    return {safeMin:16,safeMax:81 + (Number(gearValues?.line) || 1) * 1.6};
   }
 
   function fishBehavior(item) {
@@ -2244,33 +2279,48 @@
     nodes.castMeter.setAttribute("aria-valuetext", `${power}% · ${run?.phase === "charging" ? t("charging") : t("castHint")}`);
   }
 
+  function markerVisualLeft(steering = 0) {
+    const fraction = (Math.max(-1,Math.min(1,Number(steering) || 0)) + 1) / 2;
+    const offset = 22 - fraction * 44;
+    return `calc(${fraction * 100}% ${offset < 0 ? '-' : '+'} ${Math.abs(offset)}px)`;
+  }
+
   function updateTensionGuide() {
     updateCastMeter();
     const fs = fishingState;
     const active = Boolean(fs?.phase === 'reel');
     const safeMin = 16, safeMax = 81 + (save.gear.line || 1) * 1.6;
-    nodes.safeBand.style.left = `${safeMin}%`;
-    nodes.safeBand.style.width = `${safeMax-safeMin}%`;
+    nodes.safeBand.hidden = true;
+    nodes.safeBand.style.display = 'none';
     nodes.tensionLane.classList.toggle('is-active', active);
     const safe = !active || (fs.tension >= safeMin && fs.tension <= safeMax);
     nodes.tensionLane.classList.toggle('is-safe', active && safe);
     nodes.tensionLane.classList.toggle('is-danger', active && !safe);
     nodes.tensionLane.setAttribute('aria-valuenow', String(Math.round((fs?.steering || 0) * 50 + 50)));
     nodes.tensionLane.setAttribute('aria-valuetext', `${ft('counterLeft')} / ${ft('counterRight')}`);
-    nodes.tensionMarker.style.left = `${fs?.tension || 40}%`;
+    nodes.tensionMarker.style.left = markerVisualLeft(fs?.steering || 0);
+    const pressure = $('reefTensionPressure');
+    if (pressure) { pressure.value = fs?.tension ?? 40; pressure.high = safeMax; pressure.setAttribute('aria-valuenow',String(Math.round(fs?.tension ?? 40))); pressure.setAttribute('aria-label',t('tensionTitle')); }
+    const leftLabel = nodes.tensionLane.querySelector('.lane-label-left'), rightLabel = nodes.tensionLane.querySelector('.lane-label-right');
+    if (leftLabel) leftLabel.textContent = '←'; if (rightLabel) rightLabel.textContent = '→';
     const phase = fs?.phase || 'aim';
     const key = ({aim:'chooseSpot',charging:'chargeCast',flight:'casting',wait:'waitBite',nibble:'nibble',bite:'strike',landing:'landing'})[phase];
     let cue = key ? ft(key) : fs?.gustWarning ? ft('gustSoon') : !fs?.shieldOpen ? ft('guarded') : ft(fs?.cycle === 'run' ? 'fishRun' : fs?.cycle === 'telegraph' ? 'fishTelegraph' : 'fishRecover');
     if (sceneError) cue = ft('renderError');
-    if (run?.recoveryCue && phase === 'aim') cue = run.recoveryCue;
+    if (run?.recoveryCue && ['aim','escape'].includes(phase)) cue = run.recoveryCue;
     nodes.tensionCoach.textContent = active ? `${cue} · ${ft(fs.direction > 0 ? 'counterLeft' : 'counterRight')}` : cue;
     nodes.hintText.textContent = cue;
-    nodes.tensionStatus.textContent = active ? `${Math.round(fs.tension)}% · ${Math.round(fs.distance)}m` : phase === 'charging' ? `${Math.round(fs.castPower)}% · ${ft('castTarget')} ${fishing.SPOTS[fs.spot].accuracy}%` : cue;
+    nodes.tensionStatus.textContent = active ? `${Math.round(fs.tension)}%` : phase === 'charging' ? `${Math.round(fs.castPower)}% / ${fishing.SPOTS[fs.spot].accuracy}%` : '';
+    if (pressure) pressure.setAttribute('aria-valuetext',`${Math.round(fs?.tension ?? 40)}% · ${cue} · ${ft('easeLine')}`);
     const action = $('reelActionBtn');
     if (action) {
-      action.textContent = sceneError ? ft('retryScene') : phase === 'bite' ? ft('strike') : active ? ft(fs.reeling ? 'easeLine' : 'reelHold') : ['aim','charging'].includes(phase) ? ft('chargeCast') : cue;
-      action.disabled = !sceneError && !['aim','charging','bite','reel'].includes(phase);
-      action.setAttribute('aria-label',action.textContent); action.setAttribute('aria-pressed',String(Boolean(fs?.reeling)));
+      action.textContent = sceneError ? ft('retryScene') : phase === 'bite' ? mt('strike') : active ? ft(fs.reeling ? 'easeLine' : 'reelHold') : ['aim','charging'].includes(phase) ? mt('cast') : '…';
+      const actionUnavailable = !sceneError && !['aim','charging','bite','reel'].includes(phase);
+      // Disabled buttons surrender keyboard focus to body. Move it to the
+      // stable arena first so the next fresh Space can strike the bite.
+      if (actionUnavailable && document.activeElement === action && state === 'game' && !leaveDecisionOpen) canvas.focus({preventScroll:true});
+      action.disabled = actionUnavailable;
+      action.setAttribute('aria-label',sceneError ? ft('renderError') : phase === 'bite' ? ft('strike') : active ? `${ft('reelHold')} · ${ft('easeLine')}` : ['aim','charging'].includes(phase) ? ft('chargeCast') : cue); action.setAttribute('aria-pressed',String(Boolean(fs?.reeling)));
     }
     if ($('spotNameText')) $('spotNameText').textContent = ft(['spotReef','spotChannel','spotPool'][fs?.spot || 0]);
     if ($('fightDistanceText')) $('fightDistanceText').textContent = active ? `${ft('distance')} ${fs.distance.toFixed(1)}m` : '';
@@ -2297,8 +2347,9 @@
       if (type === 'bite') playSound('alert.warning');
       if (type === 'hook') { playSound('movement.hook'); track('fish_hooked',{fish:run.hookFish?.id,stage:run.zone.stage,input_type:run.lastInputType}); }
       if (type === 'gust') playSound('water.splash');
-      if (type === 'land') landFish();
+      if (type === 'land') landFish(event.serial);
       if (['miss','slack','break'].includes(type)) {
+        reefScene?.burst(fishingState.float);
         run.hookFish = null; run.recoveryCue = ft(type === 'miss' ? 'missedBite' : type === 'slack' ? 'slackEscape' : 'lineEscape');
         playSound('feedback.error'); track(type === 'break' ? 'line_break' : 'fish_escape',{stage:run.zone.stage,cause:type,input_type:run.lastInputType});
       }
@@ -2321,69 +2372,58 @@
     renderDelta += dt; updateTensionGuide(); updateSonarButton();
   }
 
-  function drawSpriteSheet(img, cols, rows, index, x, y, w, h) {
-    if (!img || !img.width) return;
-    const sx = (index % cols) * (img.width / cols);
-    const sy = Math.floor(index / cols) * (img.height / rows);
-    ctx.drawImage(img, sx, sy, img.width / cols, img.height / rows, x, y, w, h);
-  }
-
-  function drawFishSprite(fishData, x, y, w, h, facing = "right") {
-    const swimFrame = Math.floor(performance.now() / 180) % 3;
-    const frameCanvas = fishFrameCanvas(fishData, swimFrame);
-    if (!frameCanvas) return;
-    const bob = Math.sin(performance.now() / 240) * 3;
-    const ratio = frameCanvas.width / frameCanvas.height;
-    let drawW = w;
-    let drawH = w / ratio;
-    if (drawH > h) {
-      drawH = h;
-      drawW = h * ratio;
-    }
-    const drawX = x + (w - drawW) / 2;
-    const drawY = y + bob + (h - drawH) / 2;
-    if (facing === "left") {
-      ctx.save();
-      ctx.translate(drawX + drawW, drawY);
-      ctx.scale(-1, 1);
-      ctx.drawImage(frameCanvas, 0, 0, drawW, drawH);
-      ctx.restore();
-      return;
-    }
-    ctx.drawImage(frameCanvas, drawX, drawY, drawW, drawH);
-  }
-
   function configureArena() { reefScene?.resize(); }
 
   function disposeReefScene() {
+    rewardMotions.forEach(motion => { motion.animation.cancel(); motion.node.remove(); }); rewardMotions.clear();
     if (!reefScene) return;
     reefScene.dispose(); reefScene = null;
   }
 
+  function animateCatchReward(item) {
+    if (!reefScene || !fishingState) return;
+    const origin = reefScene.screenPoint(fishingState.float), destination = nodes.runValueText.getBoundingClientRect();
+    const node = document.createElement('span'); node.className = 'catch-thumb';
+    node.setAttribute('aria-hidden','true'); node.style.cssText = `${fishFrameStyle(item)};position:fixed;left:${origin.x-22}px;top:${origin.y-22}px;width:44px;height:44px;z-index:100;pointer-events:none;`;
+    document.body.append(node);
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const animation = node.animate(reduced ? [{opacity:1},{opacity:0}] : [{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${destination.left+destination.width/2-origin.x}px,${destination.top+destination.height/2-origin.y}px) scale(.35)`,opacity:0}], {duration:reduced?150:650,easing:'cubic-bezier(.2,.7,.2,1)',fill:'forwards'});
+    const motion = {animation,node}; rewardMotions.add(motion);
+    animation.finished.then(() => { node.remove(); rewardMotions.delete(motion); }, () => { node.remove(); rewardMotions.delete(motion); });
+  }
+
   async function retryReefScene() {
+    if (sceneRecovering) return;
+    if (sceneRecoveryFailures >= 2) { window.location.reload(); return; }
+    sceneRecovering = true;
     cancelAnimationFrame(raf); raf = 0;
+    if (sceneWebGLContext?.isContextLost()) {
+      await new Promise(resolve => {
+        const timer = setTimeout(done, 1800);
+        function done() { clearTimeout(timer); canvas.removeEventListener('webglcontextrestored',done); resolve(); }
+        canvas.addEventListener('webglcontextrestored',done,{once:true});
+        // Cache the extension while the context is live. Asking for it after
+        // loss can return null, including on a second failed scene attempt.
+        try { sceneRecoveryExtension?.restoreContext(); } catch { /* Native restoration can still arrive. */ }
+      });
+    }
     disposeReefScene(); sceneError = false;
     try {
       reefScene = new ReefScene(canvas, () => {
         sceneError = true; cancelFishingInput(); cancelAnimationFrame(raf); raf = 0; updateTensionGuide();
       });
       if (reefScene.renderer.getContext().isContextLost()) throw new Error('WebGL context lost');
+      sceneWebGLContext = reefScene.renderer.getContext();
+      sceneRecoveryExtension = sceneWebGLContext.getExtension('WEBGL_lose_context');
+      sceneRecoveryFailures = 0;
       draw(); restartFishingLoop();
     } catch (error) {
+      sceneRecoveryFailures += 1;
       disposeReefScene(); sceneError = true;
       canvas.dataset.renderer = 'unavailable';
       updateTensionGuide();
     }
-  }
-
-  function drawImageCover(img, x, y, width, height) {
-    if (!img?.width || !img?.height) return;
-    const scale = Math.max(width / img.width, height / img.height);
-    const sourceWidth = width / scale;
-    const sourceHeight = height / scale;
-    const sourceX = (img.width - sourceWidth) / 2;
-    const sourceY = (img.height - sourceHeight) / 2;
-    ctx.drawImage(img, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
+    sceneRecovering = false;
   }
 
   function fishingVisual() {
@@ -2432,24 +2472,27 @@
 
   function releaseCast(evt) {
     if (state !== 'game' || !run || !fishingState) return;
+    if (Number.isFinite(evt?.pointerId) && evt.pointerId === lanePointerId) { lanePointerId = null; return; }
     if (Number.isFinite(evt?.pointerId) && evt.pointerId !== actionPointerId && (!pointer.down || pointer.id !== evt.pointerId)) return;
     if (Number.isFinite(evt?.pointerId) && actionPointerId !== null && evt.pointerId !== actionPointerId) { pointer.down = false; pointer.id = null; return; }
-    if (!Number.isFinite(evt?.pointerId) && pointer.source !== 'keyboard') return;
+    if (!Number.isFinite(evt?.pointerId) && !keyboardActionHeld) return;
     if (fishingState.phase === 'charging' && !run.hookFish) run.hookFish = pickHookFish();
     actionPointerId = null;
+    keyboardActionHeld = false;
     fishing.releaseFishing(fishingState,run.hookFish); pointer.down = false; pointer.id = null; pointer.keyboardHeld = false;
     syncFishingState(); processFishingEvents(); updateTensionGuide(); updateSonarButton();
   }
 
   function cancelFishingInput(evt) {
+    if (Number.isFinite(evt?.pointerId) && lanePointerId === evt.pointerId) { lanePointerId = null; return; }
     if (Number.isFinite(evt?.pointerId) && pointer.id !== evt.pointerId) return;
-    pointer.down = false; pointer.id = null; actionPointerId = null; pointer.keyboardHeld = false; pointer.source = 'canvas';
+    pointer.down = false; pointer.id = null; actionPointerId = null; lanePointerId = null; keyboardActionHeld = false; pointer.keyboardHeld = false; pointer.source = 'canvas';
     if (fishingState) fishing.cancelFishing(fishingState); syncFishingState();
   }
 
   function startKeyboardCharge() {
     if (!fishingState || pointer.down || sceneError || state !== 'game') return;
-    run.recoveryCue = ''; run.lastInputType = 'keyboard'; pointer.down = true; pointer.source = 'keyboard'; pointer.keyboardHeld = true;
+    run.recoveryCue = ''; run.lastInputType = 'keyboard'; pointer.down = true; pointer.source = 'keyboard'; pointer.keyboardHeld = true; keyboardActionHeld = true;
     fishing.pressFishing(fishingState); syncFishingState(); processFishingEvents(); updateTensionGuide();
   }
 
@@ -2573,19 +2616,37 @@
     clearDiamondPurchaseConfirmation();
     const item = gear.find((g) => g.id === id);
     const level = Number(save.gear[id]) || 1;
-    if (!item || level >= 5) return;
+    if (!item) return;
+    if (level >= 5) {
+      showGearFeedback(`${localizedValue(item.name)} · ${t('max')}`,t('gearMaxLabel',{gear:localizedValue(item.name),level}));
+      return;
+    }
     const cost = item.cost * level;
     if (save.notes < cost) {
+      showGearFeedback(`${t('reefNotes')} ${Math.floor(save.notes)}/${cost}`,t('gearUpgradeNeedLabel',{gear:localizedValue(item.name),beforeLevel:level,afterLevel:level+1,cost,balance:Math.floor(save.notes),need:cost-Math.floor(save.notes)}));
       playSound("feedback.error");
       return;
     }
+    const before = Math.floor(save.notes);
     save.notes -= cost;
     save.gear[id] = level + 1;
     saveProgress();
     renderMenu();
+    showGearFeedback(`${localizedValue(item.name)} · ${formatLevel(level+1)}`,t('gearUpgradeLabel',{gear:localizedValue(item.name),beforeLevel:level,afterLevel:level+1,cost,before,after:Math.floor(save.notes)}));
+    for (const node of [nodes.notesText,nodes.gearGrid.querySelector(`[data-gear="${id}"]`)?.closest('.gear-card')]) {
+      if (!node?.animate) continue;
+      const animation=node.animate([{opacity:.65},{opacity:1}],{duration:200,easing:'ease-out'});
+      gearFeedbackAnimations.add(animation);animation.finished.then(()=>gearFeedbackAnimations.delete(animation),()=>gearFeedbackAnimations.delete(animation));
+    }
     if (restoreFocus) restoreGearFocus(id);
     playSound("reward.upgrade");
     track("gear_upgrade", { gear: id, level: level + 1, input_type: actionInputType });
+  }
+
+  function showGearFeedback(shortCopy, fullCopy) {
+    const feedback=$('reefGearFeedback');
+    if (!feedback) return;
+    feedback.textContent=shortCopy;feedback.setAttribute('aria-label',fullCopy);feedback.setAttribute('title',fullCopy);
   }
 
   function restoreGearFocus(id) {
@@ -2785,11 +2846,19 @@
     if (!nextMuted) playSound("ui.click");
   });
   canvas.addEventListener("pointerdown", startCharge);
-  document.querySelectorAll('[data-reef-tab]').forEach(button => button.addEventListener('click', () => {
+  document.querySelectorAll('button[data-reef-tab]').forEach(button => button.addEventListener('click', () => {
     stageTab = button.dataset.reefTab;
     syncStageTabs();
     if (stageTab === 'map') requestAnimationFrame(() => { installVirtualStageDrag(); focusSelectedZone(); });
     else if (stageTab === 'album') renderAlbum();
+  }));
+  document.querySelectorAll('button[data-reef-tab]').forEach(button => button.addEventListener('keydown', event => {
+    if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+    event.preventDefault();
+    const buttons = [...document.querySelectorAll('button[data-reef-tab]')];
+    const index = buttons.indexOf(button);
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length-1 : (index + (event.key === 'ArrowLeft' ? -1 : 1) + buttons.length) % buttons.length;
+    buttons[next].click(); buttons[next].focus({preventScroll:true});
   }));
   $('spotPrevBtn')?.addEventListener('click', () => { if (fishingState && fishing.chooseSpot(fishingState,fishingState.spot - 1)) { run.recoveryCue = ''; updateTensionGuide(); draw(); } });
   $('spotNextBtn')?.addEventListener('click', () => { if (fishingState && fishing.chooseSpot(fishingState,fishingState.spot + 1)) { run.recoveryCue = ''; updateTensionGuide(); draw(); } });
@@ -2809,6 +2878,16 @@
     if (pointer.down && pointer.id === evt.pointerId) updatePointer(evt);
   });
   window.addEventListener("pointerup", releaseCast);
+  window.addEventListener('weightplay:castle-reward', event => {
+    const detail = event.detail || {};
+    if (detail.gameId !== GAME_ID || !run?.finished || !run.won || state !== 'result' || detail.completionId !== `stage-${run.zone.stage}`) return;
+    const completedRun = run;
+    queueMicrotask(() => {
+      if (run !== completedRun || state !== 'result') return;
+      window.ShowResultGet?.(GAME_ID,true);
+      window.WeightPlayCastle?.dismissRewardNotice?.(GAME_ID);
+    });
+  });
   window.addEventListener("pointercancel", cancelFishingInput);
   function suspendBackgroundFishing() {
     cancelFishingInput();
@@ -2846,14 +2925,13 @@
   nodes.tensionLane.addEventListener("pointerdown", (evt) => {
     reclaimVisiblePlayerInteraction(evt);
     if (evt.isPrimary === false || (evt.button !== undefined && evt.button !== 0)) return;
-    if (pointer.down && !['keyboard','action'].includes(pointer.source)) return;
-    pointer.down = true;
-    pointer.id = Number.isFinite(evt.pointerId) ? evt.pointerId : null;
+    if (lanePointerId !== null) return;
+    lanePointerId = Number.isFinite(evt.pointerId) ? evt.pointerId : null;
     nodes.tensionLane.setPointerCapture?.(evt.pointerId);
     updateLanePointer(evt);
   });
   nodes.tensionLane.addEventListener("pointermove", (evt) => {
-    if (pointer.down && pointer.id === evt.pointerId) updateLanePointer(evt);
+    if (lanePointerId === evt.pointerId) updateLanePointer(evt);
   });
   nodes.tensionLane.addEventListener("pointercancel", cancelFishingInput);
   nodes.tensionLane.addEventListener("lostpointercapture", cancelFishingInput);
@@ -2861,9 +2939,10 @@
     control.addEventListener("keydown", handleFishingKeyDown);
     control.addEventListener("keyup", handleFishingKeyUp);
     control.addEventListener("focusout", () => {
-      if (pointer.source === "keyboard" && run?.phase === "charging") cancelFishingInput();
+      if (keyboardActionHeld) cancelFishingInput();
     });
   });
+  $('reelActionBtn')?.addEventListener('focusout', () => { if (keyboardActionHeld) cancelFishingInput(); });
 
   if (isTestMode) {
     window.__AnimalReefFisherTest = {
@@ -3073,6 +3152,10 @@
   window.addEventListener("orientationchange", updateBattleScale);
   window.visualViewport?.addEventListener("resize", updateBattleScale, { passive: true });
   applyLocale();
+  // Let the shared Settings owner adopt the existing tutorial action instead
+  // of leaving a private floating control over the Main poster.
+  adoptReefTutorialAction();
+  window.WeightPlayAudio?.preload?.(['projectile.launch','water.splash','movement.hook','alert.warning','reward.collect','reward.unlock','shop.purchase','game.start','result.win','result.lose']);
   state = "main";
   showPanel("main");
   window.__ANIMAL_REEF_FISHER_BOOTED__ = true;
@@ -3096,3 +3179,53 @@
 
   window.addEventListener("beforeunload", () => {cancelAnimationFrame(raf); disposeReefScene();});
 })();
+
+// This finite loader failure surface is deliberately independent of both game
+// modules. It never opens a scene, initializes a save, or changes the Wallet.
+function adoptReefTutorialAction() {
+  const adopt = () => {
+    const button = document.querySelector('.wp-tutorial-button');
+    const main = document.getElementById('mainPanel');
+    if (!button || !main) return false;
+    button.id = 'helpBtn'; main.append(button);
+    window.WeightPlayScreenFrame?.autoMountDocument?.();
+    return true;
+  };
+  if (!adopt() && document.readyState !== 'complete') document.addEventListener('DOMContentLoaded', adopt, {once:true});
+}
+
+function showReefBootFailure() {
+  adoptReefTutorialAction();
+  const copy = {
+    en:['The fishing scene could not load. Check your connection and retry. Your saved progress is unchanged.','Retry loading'],
+    'zh-Hant':['釣魚場景載入失敗，請檢查連線後重試。已儲存的進度保持不變。','重新載入'],
+    'zh-Hans':['钓鱼场景加载失败，请检查连接后重试。已保存的进度保持不变。','重新加载'],
+    ja:['釣りの画面を読み込めませんでした。接続を確認して再試行してください。保存済みの進行は保持されています。','読み込みを再試行'],
+    ko:['낚시 장면을 불러오지 못했어요. 연결을 확인하고 다시 시도하세요. 저장된 진행은 유지됩니다.','다시 불러오기'],
+    es:['No se pudo cargar la escena de pesca. Comprueba la conexión y reintenta. Tu progreso guardado se conserva.','Reintentar carga'],
+    'pt-BR':['Não foi possível carregar a cena de pesca. Confira a conexão e tente de novo. Seu progresso salvo foi mantido.','Tentar carregar'],
+    fr:['La scène de pêche n’a pas pu se charger. Vérifiez la connexion puis réessayez. Votre progression enregistrée est conservée.','Réessayer le chargement'],
+    de:['Die Angelszene konnte nicht geladen werden. Verbindung prüfen und erneut versuchen. Dein gespeicherter Fortschritt bleibt erhalten.','Erneut laden'],
+    it:['Impossibile caricare la scena di pesca. Controlla la connessione e riprova. I progressi salvati sono conservati.','Riprova caricamento'],
+    ru:['Не удалось загрузить сцену рыбалки. Проверьте соединение и повторите. Сохранённый прогресс не изменён.','Повторить загрузку'],
+    hi:['मछली पकड़ने का दृश्य लोड नहीं हुआ। कनेक्शन जाँचकर फिर कोशिश करें। आपकी सहेजी प्रगति सुरक्षित है।','फिर लोड करें'],
+    ar:['تعذر تحميل مشهد الصيد. تحقق من الاتصال وأعد المحاولة. تقدمك المحفوظ لم يتغير.','أعد التحميل'],
+  };
+  const requested = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || 'en';
+  const aliases = {'zh-tw':'zh-Hant','zh-hant':'zh-Hant','zh-cn':'zh-Hans','zh-hans':'zh-Hans','pt-br':'pt-BR'};
+  const language = aliases[requested.toLowerCase()] || requested.split('-')[0];
+  const labels = copy[language] || copy.en;
+  const loading = document.getElementById('loadingPanel');
+  if (loading) { loading.hidden = true; loading.classList.add('is-hidden'); }
+  const main = document.getElementById('mainPanel');
+  if (main) { main.hidden = false; main.classList.remove('is-hidden'); }
+  const message = main?.querySelector('[data-ui="menuHint"]');
+  if (message) { message.textContent = labels[0]; message.classList.add('main-summary'); message.removeAttribute('data-ui'); message.dataset.runtimeLocalize = 'off'; message.setAttribute('role','alert'); }
+  const retry = document.getElementById('startBtn');
+  if (retry) {
+    retry.textContent = labels[1]; retry.disabled = false; retry.removeAttribute('data-ui'); retry.dataset.runtimeLocalize = 'off';
+    retry.setAttribute('aria-label',labels[1]); retry.addEventListener('click', () => window.location.reload(), {once:true});
+  }
+  document.body.dataset.reefState = 'main'; document.documentElement.dataset.reefState = 'main';
+  window.__ANIMAL_REEF_FISHER_LOAD_FAILED__ = true;
+}

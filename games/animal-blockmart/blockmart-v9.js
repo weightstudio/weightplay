@@ -1728,7 +1728,7 @@ export function installBlockmartV9(ctx) {
     // the owner has hundreds of separate shelves; instance tools live in the scene selection.
     const skus=[...new Set(fixtures().filter(f=>f.kind==='shelf'||f.kind==='cooler'&&state().equipment.cooler).flatMap(fixtureProducts))];
     for(const id of skus){
-      const card=panelElement('article');card.className='owned-shelf-card compact-shelf product-stock-card';card.dataset.productId=id;
+      const card=panelElement('article');card.id=`stockCard-${id}`;card.className='owned-shelf-card compact-shelf product-stock-card';card.dataset.skuRow=id;
       const image=panelElement('span');image.className='item-image-button';image.append(itemArt(id));
       const copy=panelElement('div');copy.className='item-copy';const title=panelElement('h3');title.textContent=productName(id);
       const count=panelElement('p');count.dataset.shelfStock=id;copy.append(title,count);card.append(image,copy);
@@ -1747,7 +1747,7 @@ export function installBlockmartV9(ctx) {
       const button=row.querySelector('.achievement-claim');button.disabled=!offer.ready;button.textContent=`${ctx.t(offer.ready?'claimReward':'achievementInProgress',ctx.locale)} +${ctx.price(offer.reward)}`;
       row.querySelector('progress').value=Math.min(offer.progress,offer.target);
     }
-    for(const node of document.querySelectorAll('[data-shelf-stock]')){const id=node.dataset.shelfStock,p=ctx.PRODUCTS[id];node.textContent=`${ctx.t('availableStock',ctx.locale)} ${state().stock[id]||0} · ${ctx.t('buyPrice',ctx.locale)} ${ctx.price(p.cost)} · ${ctx.t('sellPrice',ctx.locale)} ${ctx.price(p.price)}`;}
+    for(const node of document.querySelectorAll('[data-shelf-stock]')){const id=node.dataset.shelfStock,p=ctx.PRODUCTS[id],name=node.closest('.fixture-detail')?`${productName(id)} · `:'';node.textContent=`${name}${ctx.t('availableStock',ctx.locale)} ${state().stock[id]||0} · ${ctx.t('buyPrice',ctx.locale)} ${ctx.price(p.cost)} · ${ctx.t('sellPrice',ctx.locale)} ${ctx.price(p.price)}`;}
     for(const button of document.querySelectorAll('[data-restock-product]')){
       const id=button.dataset.restockProduct,product=ctx.PRODUCTS[id],quantity=Math.min(8,Math.max(0,ctx.stockCapacity(ctx.activeEquipment())-ownedStock()),Math.floor(state().cash/product.cost));
       button.textContent=`${productName(id)} +${quantity} · ${ctx.price(quantity*product.cost)}`;button.disabled=!quantity;

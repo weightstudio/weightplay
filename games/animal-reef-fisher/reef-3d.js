@@ -5,21 +5,25 @@ import { SPOTS, clamp } from './reef-simulation.js';
 export class ReefScene {
   constructor(canvas, onFailure) {
     this.canvas = canvas; this.onFailure = onFailure; this.disposed = false;
-    this.geometries = new Set(); this.materials = new Map(); this.particles = [];
+    this.geometries = new Set(); this.materials = new Map(); this.particles = []; this.instances = [];
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'low-power' });
     this.renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.15;
-    this.scene = new THREE.Scene(); this.scene.background = new THREE.Color('#8cdae4');
-    this.scene.fog = new THREE.Fog('#8cdae4', 19, 38);
+    this.renderer.toneMappingExposure = .85;
+    this.scene = new THREE.Scene(); this.scene.background = new THREE.Color('#287e95');
+    this.scene.fog = new THREE.Fog('#287e95', 38, 70);
     this.camera = new THREE.PerspectiveCamera(38, 1, .1, 70);
     this.camera.position.set(0, 13, 16); this.camera.lookAt(0, 0, .4);
-    this.scene.add(new THREE.HemisphereLight('#d9ffff', '#2e6877', 2.5));
-    const sun = new THREE.DirectionalLight('#fff0ce', 3.2); sun.position.set(-6, 12, 7); this.scene.add(sun);
-    this.box = this.own(new THREE.BoxGeometry(1, 1, 1));
+    this.scene.add(new THREE.HemisphereLight('#d9ffff', '#12384d', 1.2));
+    const sun = new THREE.DirectionalLight('#fff0ce', 2); sun.position.set(-6, 12, 7); this.scene.add(sun);
+    const square=new THREE.Shape();square.moveTo(-.475,-.475);square.lineTo(.475,-.475);square.lineTo(.475,.475);square.lineTo(-.475,.475);square.closePath();
+    // A restrained chamfer catches light while every character remains visibly
+    // built from separate square, planar blocks at phone size.
+    this.box = this.own(new THREE.ExtrudeGeometry(square,{depth:.95,steps:1,bevelEnabled:true,bevelThickness:.025,bevelSize:.025,bevelSegments:1,curveSegments:1}).translate(0,0,-.475));
     this.oct = this.own(new THREE.OctahedronGeometry(1));
     this.buildWorld(); this.buildBoat(); this.buildFish(); this.buildLine(); this.buildParticles();
+    [this.world,this.boat,this.hero,this.bubbles,this.rod,this.rodFlex,this.arm,...this.fishes.flatMap(f=>[f.root,f.tail])].forEach(root=>this.batchParts(root));
     this.contextLost = (event) => { event.preventDefault(); if (!this.disposed) this.onFailure?.('context'); };
     canvas.addEventListener('webglcontextlost', this.contextLost);
     this.resize(); canvas.dataset.renderer = 'three-webgl2';
@@ -27,7 +31,7 @@ export class ReefScene {
   own(geometry) { this.geometries.add(geometry); return geometry; }
   mat(color, glow = false) {
     const key = `${color}:${glow}`;
-    if (!this.materials.has(key)) this.materials.set(key, new THREE.MeshStandardMaterial({ color, roughness: .65,
+    if (!this.materials.has(key)) this.materials.set(key, new THREE.MeshStandardMaterial({ color, roughness: .48,
       ...(glow ? { emissive: color, emissiveIntensity: .45 } : {}) }));
     return this.materials.get(key);
   }
@@ -35,26 +39,129 @@ export class ReefScene {
     const mesh = new THREE.Mesh(this.box, this.mat(color)); mesh.position.set(x, y, z); mesh.scale.set(w, h, d);
     mesh.rotation.z = rotation; parent.add(mesh); return mesh;
   }
+  batchParts(root) {
+    if(!root)return;
+    const groups=new Map();
+    for(const mesh of root.children)if(mesh.isMesh&&!mesh.isInstancedMesh&&!Array.isArray(mesh.material)) {
+      if(!groups.has(mesh.material))groups.set(mesh.material,[]);groups.get(mesh.material).push(mesh);
+    }
+    for(const [material,parts] of groups) {
+      if(parts.length<2)continue;
+      const arrays={position:[],normal:[],uv:[]};
+      for(const mesh of parts) {
+        mesh.updateMatrix();const geometry=(mesh.geometry.index?mesh.geometry.toNonIndexed():mesh.geometry.clone()).applyMatrix4(mesh.matrix);
+        for(const key of Object.keys(arrays))arrays[key].push(geometry.attributes[key]?.array||new Float32Array(0));
+        geometry.dispose();root.remove(mesh);
+      }
+      const merged=this.own(new THREE.BufferGeometry());
+      for(const [key,entries] of Object.entries(arrays)) {
+        const values=new Float32Array(entries.reduce((sum,a)=>sum+a.length,0));let offset=0;
+        for(const a of entries){values.set(a,offset);offset+=a.length;}
+        if(values.length)merged.setAttribute(key,new THREE.BufferAttribute(values,key==='uv'?2:3));
+      }
+      merged.computeBoundingSphere();root.add(new THREE.Mesh(merged,material));
+    }
+  }
+  contactShadow(parent,x,z,width,depth,opacity=.24) {
+    const material=new THREE.ShaderMaterial({transparent:true,depthWrite:false,uniforms:{strength:{value:opacity}},
+      vertexShader:'varying vec2 vUv; void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
+      fragmentShader:'varying vec2 vUv; uniform float strength; void main(){vec2 q=(vUv-.5)*2.;float a=exp(-dot(q,q)*3.8)*strength;gl_FragColor=vec4(.015,.09,.12,a);}',
+    });
+    this.materials.set(`contact-${this.materials.size}`,material);
+    const shadow=new THREE.Mesh(this.own(new THREE.PlaneGeometry(width,depth).rotateX(-Math.PI/2)),material);shadow.position.set(x,-.095,z);shadow.renderOrder=3;parent.add(shadow);return shadow;
+  }
   buildWorld() {
     this.world = new THREE.Group(); this.scene.add(this.world);
-    this.block(this.world, '#168d9c', 0, -.5, 0, 20, .5, 19);
-    this.block(this.world, '#53c9c9', 0, -.2, 0, 17, .16, 16);
-    this.block(this.world, '#d6d69b', -7, .1, 3, 3, .7, 8);
-    this.block(this.world, '#f3dfad', -6.6, .28, 3, 2, .35, 7);
-    // Authored reef shelves, branch coral, kelp, and a distant stepped lighthouse.
+    this.block(this.world, '#306f83', 0, -2.8, 0, 90, .5, 90);
+    // An authored shallow-to-deep water field gives the cove depth without
+    // textures, external services or extra gameplay information.
+    const waterGeometry = this.own(new THREE.PlaneGeometry(80,80,40,40).rotateX(-Math.PI/2));
+    const waterPositions = waterGeometry.attributes.position;
+    const waterColors = new Float32Array(waterPositions.count*3);
+    const shallowColor = new THREE.Color('#36bdb5'), deepColor = new THREE.Color('#074f82');
+    for(let i=0;i<waterPositions.count;i++) {
+      const x=waterPositions.getX(i),z=waterPositions.getZ(i);
+      const shallow=Math.exp(-((x+5)*(x+5)+(z-1)*(z-1))/50);
+      const deep=Math.exp(-((x-4)*(x-4)+(z+3)*(z+3))/70);
+      const color=new THREE.Color('#0a88a2').lerp(shallowColor,shallow*.7).lerp(deepColor,deep*.65);
+      color.toArray(waterColors,i*3);
+    }
+    waterGeometry.setAttribute('color',new THREE.BufferAttribute(waterColors,3));
+    this.waterTime={value:0};
+    const waterMaterial=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.30,metalness:.16,transparent:true,opacity:.72,depthWrite:false});
+    waterMaterial.onBeforeCompile=shader=>{
+      shader.uniforms.reefWaterTime=this.waterTime;
+      shader.vertexShader='varying vec3 reefWaterWorld;\n'+shader.vertexShader;
+      shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\nreefWaterWorld=(modelMatrix*vec4(position,1.)).xyz;');
+      shader.fragmentShader='uniform float reefWaterTime; varying vec3 reefWaterWorld;\n'+shader.fragmentShader;
+      shader.fragmentShader=shader.fragmentShader.replace('#include <normal_fragment_begin>',`#include <normal_fragment_begin>
+        float wx=reefWaterWorld.x;float wz=reefWaterWorld.z;float wt=reefWaterTime;
+        float slopeX=.10*cos(wx*1.1+wz*.45+wt*.7)+.045*cos(wx*2.9-wz*.7-wt*.8);
+        float slopeZ=.07*cos(wz*1.3+wx*.35+wt*.55)+.035*cos(wz*3.4+wt*.7);
+        normal=normalize(mat3(viewMatrix)*normalize(vec3(-slopeX,1.,-slopeZ)));`);
+    };
+    waterMaterial.customProgramCacheKey=()=> 'reef-original-water-normal-v1';
+    this.materials.set('water-field',waterMaterial);
+    this.water=new THREE.Mesh(waterGeometry,waterMaterial);this.water.position.y=-.12;this.water.renderOrder=2;this.world.add(this.water);
+    // Lights are collected against the camera's layers. Keep this restrained
+    // reflection fill on the same visible layer so the moving normals receive it.
+    const sheenLight=new THREE.DirectionalLight('#d4fbff',.25);sheenLight.position.set(1,10,-12);this.scene.add(sheenLight);
+    // Stepped coves, sand ledges and a timber jetty replace the old giant slab.
+    const cove=[[-7.9,-8],[-7.6,-7],[-6.6,-5.2],[-5.8,-3.9],[-6.3,-2.4],[-5.8,-1],[-6.2,.2],[-5.7,1.5],[-5.8,3],[-6.6,4.3],[-6.4,6],[-7.9,8]];
+    for(const [offset,y,depth,color] of [[-.25,-.9,.75,'#516e75'],[0,-.18,.32,'#beac82'],[-.2,.14,.12,'#e3d2a1']]) {
+      const shape=new THREE.Shape();cove.forEach(([x,z],i)=>i?shape.lineTo(x+offset,-z):shape.moveTo(x+offset,-z));shape.closePath();
+      const geometry=this.own(new THREE.ExtrudeGeometry(shape,{depth,steps:1,bevelEnabled:true,bevelThickness:.025,bevelSize:.025,bevelSegments:1}).rotateX(-Math.PI/2));
+      const mesh=new THREE.Mesh(geometry,this.mat(color));mesh.position.y=y;this.world.add(mesh);
+    }
+    // Two low coastal landmarks break the sand mass without competing with the
+    // otter, float or three selectable fishing spots.
+    for(const [x,z] of [[-7.05,-2.2],[-7.18,3.55]]) {
+      this.block(this.world,'#758b85',x,.46,z,.82,.55,.67).rotation.y=.22;
+      this.block(this.world,'#a3aaa0',x-.18,.77,z+.04,.5,.18,.48).rotation.y=-.16;
+      this.block(this.world,'#657b78',x+.36,.31,z+.24,.43,.26,.4);
+      for(const side of [-1,0,1])this.block(this.world,'#348d78',x-.4+side*.1,.57,z-.38,.1,.62,.1,side*.32);
+      this.block(this.world,'#54a68c',x-.4,.89,z-.38,.25,.11,.14);
+      this.block(this.world,'#eee0b6',x+.5,.3,z-.28,.18,.08,.15);
+    }
+    for (let i=0;i<6;i++) this.block(this.world,'#ad7649',-5.8+i*.24,.12,3.8,.19,.16,1.1);
+    for (const z of [3.35,4.25]) this.block(this.world,'#765137',-5.85,-.1,z,.18,.8,.18);
+    this.buildReefGarden();
+    const rippleGeometry=this.own(new THREE.RingGeometry(.35,.365,24));
+    const rippleMaterial=new THREE.MeshBasicMaterial({color:'#85d9dc',transparent:true,opacity:.32,side:THREE.DoubleSide});this.materials.set('ripples',rippleMaterial);
+    this.rippleMesh=new THREE.InstancedMesh(rippleGeometry,rippleMaterial,12);this.instances.push(this.rippleMesh);this.world.add(this.rippleMesh);
+    this.rippleTransform=new THREE.Object3D();
+    for(let i=0;i<12;i++) {
+      this.rippleTransform.rotation.set(-Math.PI/2,0,0);this.rippleTransform.position.set(-5+(i%4)*3.1,-.105,-5+Math.floor(i/4)*3.7);this.rippleTransform.scale.set(1.8,.48,1);this.rippleTransform.updateMatrix();this.rippleMesh.setMatrixAt(i,this.rippleTransform.matrix);
+    }
+    this.rippleMesh.instanceMatrix.needsUpdate=true;this.rippleMesh.computeBoundingSphere();
+    // Contiguous submerged terraces frame a clear casting channel rather than
+    // isolated toy blocks sitting above an opaque plane.
     for (let i = 0; i < 12; i++) {
       const a = i * 2.399; const radius = 5.7 + (i % 3) * .45;
       const x = Math.cos(a) * radius, z = Math.sin(a) * radius;
-      this.block(this.world, i % 2 ? '#387c84' : '#5fa99c', x, -.08, z, 1.1, .5, .9);
+      const turn=Math.sin(i*1.7)*.34;
+      this.block(this.world,['#326c79','#477f87','#5d8f90'][i%3],x,-1.1,z,2.2+(i%3)*.24,.4,1.55+(i%2)*.27).rotation.y=turn;
+      this.block(this.world,['#74a89d','#96b8a4','#699e9c'][i%3],x+.15+Math.sin(i)*.16,-.78,z-.1,1.65+(i%4)*.13,.22,1.18+(i%3)*.13).rotation.y=turn+.12;
+      this.block(this.world, i % 2 ? '#578c8b' : '#87b7a2', x, -.49, z, .95+(i%3)*.12, .3, .7+(i%2)*.17).rotation.y=turn-.1;
       if (i % 3 === 0) {
-        this.block(this.world, '#f18e89', x, .28, z, .2, .9, .2);
-        this.block(this.world, '#ffb29b', x + .28, .38, z, .65, .15, .18);
-        this.block(this.world, '#f18e89', x + .52, .6, z, .16, .45, .16);
-      } else this.block(this.world, '#34977c', x, .3, z, .2, 1.15, .13, -.2);
+        this.block(this.world, '#e48783', x, -.23, z, .2, .55, .2);
+        this.block(this.world, '#ffc6a0', x + .28, -.12, z, .65, .15, .18);
+        this.block(this.world, '#e48783', x + .52, .04, z, .16, .35, .16);
+      } else this.block(this.world, '#3ba68c', x, -.1, z, .16, .9, .12, -.2);
     }
     this.block(this.world, '#e2d4a4', 5, 1.1, -7, 1.1, 2.5, 1.1);
     this.block(this.world, '#e48255', 5, 2.65, -7, 1.5, .5, 1.5);
     this.block(this.world, '#fff4ae', 5, 2.22, -6.43, .6, .45, .1);
+    this.block(this.world, '#7c9b91', 5, -.04, -7, 2.1, .45, 1.9);
+    this.block(this.world, '#d6b476', 5, 1.7, -7, 1.2, .12, 1.2);
+    this.block(this.world, '#d6b476', 5, 2.1, -7, 1.2, .12, 1.2);
+    this.block(this.world, '#497d89', 5.57, 2.28, -7, .08, .4, .7);
+    this.block(this.world,'#f4e2ad',5,.32,-7,1.5,.22,1.4);
+    this.block(this.world,'#bb7959',5,1.13,-7,1.13,.2,1.13);
+    this.block(this.world,'#286b79',4.98,1.44,-6.43,.33,.4,.05);
+    this.block(this.world,'#fff1bf',4.98,1.44,-6.39,.2,.27,.03);
+    const roof=new THREE.Mesh(this.own(new THREE.ConeGeometry(1.05,.48,4).rotateY(Math.PI/4)),this.mat('#ba7554'));roof.position.set(5,2.94,-7);this.world.add(roof);
+    this.contactShadow(this.world,5,-7,3.5,2.9,.25);
     this.markers = SPOTS.map((spot, index) => {
       const root = new THREE.Group(); root.position.set(spot.x, .04, spot.z); this.scene.add(root);
       const geometry = this.own(new THREE.RingGeometry(.62, .69, 32));
@@ -65,13 +172,49 @@ export class ReefScene {
       return root;
     });
   }
+  buildReefGarden() {
+    const beds=[[-4.8,-3.1],[1.8,-5],[5.15,.65],[-.4,4.8]];
+    const colors=['#df8b83','#edbc76','#258673','#417d80'];
+    const blocks=colors.map(()=>[]);
+    beds.forEach(([x,z],site)=>{
+      // Layered mineral base, stepped fan-coral crowns, and bent kelp fronds.
+      for(let j=0;j<3;j++) blocks[3].push([x+(j-1)*.38,-.025+j*.025,z,.8-j*.13,.16,.7-j*.08,0]);
+      for(let j=0;j<3;j++) {
+        const cx=x+(j-1)*.34,cz=z+(j%2)*.28;
+        blocks[site%2].push([cx,.2,cz,.14,.5,.13,0]);
+        blocks[site%2].push([cx+.13,.4,cz,.4,.12,.13,-.15]);
+        blocks[site%2].push([cx+.28,.55,cz,.12,.35,.12,.12]);
+      }
+      for(let j=0;j<3;j++) for(let tier=0;tier<3;tier++) blocks[2].push([x-.65+j*.17+tier*.07,.12+tier*.23,z-.28,.1,.3,.08,-.18-tier*.1]);
+    });
+    const transform=new THREE.Object3D();
+    blocks.forEach((parts,index)=>{
+      const mesh=new THREE.InstancedMesh(this.box,this.mat(colors[index]),parts.length);
+      this.instances.push(mesh);
+      parts.forEach(([x,y,z,w,h,d,rotation],i)=>{transform.position.set(x,y-.35,z);transform.rotation.set(0,0,rotation);transform.scale.set(w,h,d);transform.updateMatrix();mesh.setMatrixAt(i,transform.matrix);});
+      mesh.instanceMatrix.needsUpdate=true;mesh.computeBoundingSphere();this.world.add(mesh);
+    });
+  }
   buildBoat() {
-    this.boat = new THREE.Group(); this.boat.position.set(-3.6, .15, 3.1); this.scene.add(this.boat);
+    this.boat = new THREE.Group(); this.boat.position.set(-3.6, -.08, 3.1); this.scene.add(this.boat);
+    this.contactShadow(this.scene,-3.6,3.1,3.7,2.35,.3);
     this.block(this.boat, '#884c33', 0, .16, 0, 2.5, .45, 1.5);
     this.block(this.boat, '#d9ab69', 0, .44, 0, 2.15, .16, 1.25);
     for (const side of [-1, 1]) this.block(this.boat, '#b97248', 0, .61, side * .69, 2.5, .32, .13);
     this.block(this.boat, '#f4d39b', 1.18, .42, 0, .2, .44, 1.22);
-    this.hero = new THREE.Group(); this.hero.position.set(-.2, .64, 0); this.hero.rotation.y = -.15; this.boat.add(this.hero);
+    this.block(this.boat,'#784b36',0,-.05,0,2.1,.28,1.14);
+    this.block(this.boat,'#ad704a',1.37,.2,0,.36,.4,.95);
+    this.block(this.boat,'#d4a26c',1.55,.28,0,.14,.24,.6);
+    for(const side of [-1,1]) {
+      this.block(this.boat,'#2b8993',0,.28,side*.74,2.42,.13,.06);
+      this.block(this.boat,'#e8c992',0,.73,side*.7,2.52,.09,.16);
+      this.block(this.boat,'#5b4839',-.72,.56,side*.58,.12,.14,.12);
+    }
+    for(let i=0;i<7;i++)this.block(this.boat,'#ae8055',-.9+i*.3,.53,0,.018,.018,1.18);
+    this.block(this.boat,'#b68b60',-.63,.61,0,.19,.16,1.2);
+    this.block(this.boat,'#4b6e73',.72,.59,-.24,.33,.2,.4);
+    this.block(this.boat,'#f2d083',.72,.71,-.24,.3,.06,.37);
+    this.hero = new THREE.Group(); this.hero.scale.setScalar(1.18); this.hero.position.set(-.2, .64, 0); this.hero.rotation.y = -.15; this.boat.add(this.hero);
     // Nori: stepped otter anatomy, cream box muzzle, goggles, fin sleeves, coral charm.
     this.block(this.hero, '#76523d', 0, .7, 0, .65, .9, .5);
     this.block(this.hero, '#ef9e48', 0, .72, .12, .73, .62, .4);
@@ -80,10 +223,13 @@ export class ReefScene {
     for (const side of [-1, 1]) {
       this.block(this.hero, '#76523d', side * .39, 1.8, .02, .22, .24, .21);
       this.block(this.hero, '#dba47d', side * .39, 1.82, .14, .12, .13, .04);
-      this.block(this.hero, '#9ce6e4', side * .22, 1.47, .39, .38, .3, .12);
-      this.block(this.hero, '#eefbf3', side * .22, 1.48, .46, .24, .19, .025);
-      this.block(this.hero, '#183b48', side * .22, 1.48, .48, .11, .16, .03);
-      this.block(this.hero, '#ffffff', side * .24, 1.53, .501, .035, .045, .018);
+      this.block(this.hero,'#eec16d',side*.22,1.72,.37,.4,.28,.12);
+      this.block(this.hero,'#38b5d1',side*.22,1.72,.445,.3,.18,.06);
+      this.block(this.hero,'#b9f5f5',side*.25,1.77,.482,.11,.04,.015);
+      this.block(this.hero, '#eefbf3', side * .22, 1.43, .35, .22, .23, .04);
+      this.block(this.hero, '#183b48', side * .22, 1.43, .38, .11, .18, .035);
+      this.block(this.hero,'#3aacc5',side*.22,1.38,.404,.08,.055,.014);
+      this.block(this.hero, '#ffffff', side * .24, 1.49, .409, .035, .045, .018);
       this.block(this.hero, '#dfc199', side * .13, 1.25, .4, .29, .19, .22);
       this.block(this.hero, '#76523d', side * .25, .15, .2, .25, .3, .5);
       const arm = new THREE.Group(); arm.position.set(side * .44, .93, .03); this.hero.add(arm);
@@ -93,35 +239,50 @@ export class ReefScene {
       for (const j of [-1, 1]) this.block(this.hero, '#e2caac', side * .37, 1.24 + j * .045, .47, .25, .02, .02, side * j * .15);
     }
     this.block(this.hero, '#294751', 0, 1.29, .54, .15, .09, .1);
+    this.block(this.hero,'#493d37',0,1.12,.43,.17,.11,.09);
+    this.block(this.hero,'#ee947d',0,1.09,.488,.09,.045,.025);
     this.block(this.hero, '#e2c483', 0, 1.87, .01, 1.02, .12, .85);
     this.block(this.hero, '#d7ac64', 0, 2.02, -.03, .66, .23, .57);
     this.block(this.hero, '#369aa2', 0, 1.98, .27, .65, .08, .04);
     this.block(this.hero, '#f08979', -.23, .64, .37, .16, .19, .09);
+    this.block(this.hero,'#edaa8b',-.23,.75,.37,.08,.28,.08);
+    this.block(this.hero,'#edaa8b',-.17,.76,.37,.18,.07,.08);
+    this.block(this.hero,'#277d8b',-.25,1.01,.2,.28,.13,.4,-.25);
+    this.block(this.hero,'#277d8b',.25,1.01,.2,.28,.13,.4,.25);
+    this.block(this.hero,'#f1d488',.06,.73,.39,.19,.14,.06);
+    this.block(this.hero,'#4e9fa6',.06,.73,.427,.09,.065,.025);
+    this.block(this.hero,'#745039',-.4,.5,-.17,.24,.32,.22);
+    this.block(this.hero,'#51bcc3',0,.3,-.57,.28,.13,.32);
     this.block(this.hero, '#76523d', 0, .2, -.47, .34, .25, .65, -.12);
     this.bubbles = new THREE.Group(); this.hero.add(this.bubbles);
     for (let i = 0; i < 3; i++) this.block(this.bubbles, '#9ae9ef', -.6 - i * .16, .4 + i * .3, .18, .1, .1, .1);
     this.rod = new THREE.Group(); this.rod.position.set(.46, .7, .25); this.rod.rotation.z = -.55; this.hero.add(this.rod);
     this.block(this.rod, '#384951', 0, .3, 0, .07, .8, .07);
-    this.block(this.rod, '#e3cb86', 0, .95, 0, .055, .6, .055);
-    this.rodTip = new THREE.Object3D(); this.rodTip.position.set(0, 1.28, 0); this.rod.add(this.rodTip);
+    this.rodFlex = new THREE.Group(); this.rodFlex.position.y = .7; this.rod.add(this.rodFlex);
+    this.block(this.rodFlex, '#e3cb86', 0, .3, 0, .055, .6, .055);
+    this.rodTip = new THREE.Object3D(); this.rodTip.position.set(0, .63, 0); this.rodFlex.add(this.rodTip);
     this.block(this.rod, '#f4b65d', .08, .22, 0, .18, .2, .12);
   }
   buildFish() {
     this.fishRoot = new THREE.Group(); this.scene.add(this.fishRoot); this.fishes = [];
     const colors = ['#f5b258','#a9d78c','#ed8b80','#9edbdc','#deae54','#f0c55b','#c0b2ea','#5bbfcf','#d6a6c8','#f0db7f','#7098de','#8cddd2'];
+    const tailShape=new THREE.Shape();tailShape.moveTo(0,0);tailShape.lineTo(-.3,.3);tailShape.lineTo(-.46,.3);tailShape.lineTo(-.33,0);tailShape.lineTo(-.46,-.3);tailShape.lineTo(-.3,-.3);tailShape.closePath();
+    const tailGeometry=this.own(new THREE.ExtrudeGeometry(tailShape,{depth:.08,steps:1,bevelEnabled:true,bevelSize:.012,bevelThickness:.012,bevelSegments:1}).translate(0,0,-.04));
     for (let i = 0; i < 12; i++) {
       const root = new THREE.Group(); this.fishRoot.add(root); root.visible = false;
       const ray = [3,10].includes(i), jelly = i === 6, horse = i === 8, puffer = i === 1;
-      this.block(root, colors[i], 0, 0, 0, horse ? .36 : puffer ? .7 : 1.05, jelly ? .5 : ray ? .19 : .48, ray ? 1.3 : puffer ? .64 : .43);
+      this.block(root, colors[i], 0, 0, 0, horse ? .36 : puffer ? .7 : i === 2 ? .8 : i === 4 ? 1.3 : 1.05, jelly ? .5 : ray ? .19 : i === 2 ? .65 : .48, ray ? 1.3 : puffer ? .64 : .43);
       this.block(root, '#e5ead2', .18, -.15, .02, horse ? .3 : .7, .14, .4);
       this.block(root, colors[i], .51, .025, 0, horse ? .4 : .25, .37, .4);
       const tail = new THREE.Group(); tail.position.x = -.58; root.add(tail);
-      this.block(tail, colors[i], -.14, 0, 0, .35, ray ? .1 : .5, .11, -.18);
+      const tailMesh=new THREE.Mesh(tailGeometry,this.mat(colors[i]));tailMesh.scale.y=ray?.35:1;tail.add(tailMesh);
+      this.mat(colors[i]).roughness=.34;
       this.block(root, colors[i], -.04, .31, 0, .4, .27, .1, -.3);
       for (const side of [-1, 1]) {
         this.block(root, '#173e50', .48, .1, side * .22, .09, .11, .025);
         this.block(root, '#ffffff', .5, .12, side * .238, .027, .035, .012);
         this.block(root, colors[i], .05, -.03, side * .34, .28, .08, ray ? .55 : .25, side * .2);
+        if(!jelly&&!horse)this.block(root,'#4b7778',.27,.01,side*.235,.035,ray?.12:.24,.02,-.12);
       }
       if (jelly) for (let j = 0; j < 4; j++) this.block(root, '#ccbfef', -.3 + j * .2, -.55, 0, .07, .7, .07, j % 2 ? .2 : -.2);
       if (horse) { this.block(root, colors[i], .3, .5, 0, .35, .6, .29); this.block(root, colors[i], .53, .72, 0, .45, .16, .2); }
@@ -129,7 +290,11 @@ export class ReefScene {
       if (i === 0 || i === 7) for (let j = 0; j < 3; j++) this.block(root, '#e6f1d5', -.3 + j * .22, .04, .229, .09, .35, .02);
       if ([5,11].includes(i)) for (let j = 0; j < 3; j++) this.block(root, '#fff1a7', -.2 + j * .23, .48 + (j === 1 ? .12 : 0), 0, .15, .22, .17);
       if (i === 9) this.block(root, '#fff6a2', .55, .4, 0, .16, .19, .16);
-      this.fishes.push({ root, tail });
+      if (i === 2) { this.block(root,'#f6d6ad',-.15,.48,0,.6,.16,.12); this.block(root,colors[i],-.35,.62,0,.22,.2,.08); }
+      if (i === 4) { this.block(root,'#e7c37c',.64,-.12,0,.4,.16,.5); this.block(root,'#4b8e6b',-.1,.37,0,.65,.16,.14); }
+      if (i === 10) for (const side of [-1,1]) this.block(root,'#4966a2',-.25,.02,side*.95,.65,.1,.7,side*.25);
+      if (i === 11) for (const side of [-1,1]) this.block(root,'#ccfff0',-.05,.14,side*.25,.16,.5,.08,.4);
+      this.fishes.push({ root, tail, mouth:new THREE.Vector3(i === 4 ? .84 : .635,i === 4 ? -.12 : .025,0), lastFightRoll:0 });
     }
     // Merge static mesh parts by material to bound draw calls for twelve authored species.
     // Only the active species is visible. Tail remains independent for struggle animation.
@@ -165,8 +330,16 @@ export class ReefScene {
     if (this.width === w && this.height === h) return; this.width = w; this.height = h;
     this.renderer.setSize(w, h, false); this.camera.aspect = w / h;
     // Same world information in every arena: fit the fixed authored 14 x 12 envelope.
-    const distance = Math.max(18, 14 / (2 * Math.tan(THREE.MathUtils.degToRad(19)) * this.camera.aspect));
-    this.camera.position.set(0, distance * .63, distance * .78); this.camera.lookAt(0, .2, .25); this.camera.updateProjectionMatrix();
+    let distance = Math.max(17, 11.5 / (2 * Math.tan(THREE.MathUtils.degToRad(19)) * this.camera.aspect));
+    const anchors=[[-5.2,.25,4],[-5.2,3.6,3.1],[-1.5,4.6,3.1],[-2.1,.25,4],...SPOTS.flatMap(spot=>[[spot.x-.8,.3,spot.z-.8],[spot.x+.8,.3,spot.z+.8]])];
+    // Pan both camera and target, then fit the actual boat/head/rod/spot bounds.
+    // This keeps all actionable world information equal across arena shapes.
+    for(let attempt=0;attempt<24;attempt++) {
+      this.camera.position.set(-.7,distance*.63,distance*.78);this.camera.lookAt(-.7,.2,.25);
+      this.camera.updateProjectionMatrix();this.camera.updateMatrixWorld(true);
+      if(anchors.every(([x,y,z])=>{const p=new THREE.Vector3(x,y,z).project(this.camera);return Math.abs(p.x)<.93&&Math.abs(p.y)<.93;}))break;
+      distance*=1.025;
+    }
   }
   pickSpot(clientX, clientY) {
     const rect = this.canvas.getBoundingClientRect();
@@ -175,29 +348,51 @@ export class ReefScene {
     const hit = this.camera.position.clone().addScaledVector(ray, t);
     return SPOTS.reduce((best, spot, i) => Math.hypot(hit.x - spot.x, hit.z - spot.z) < Math.hypot(hit.x - SPOTS[best].x, hit.z - SPOTS[best].z) ? i : best, 0);
   }
+  screenPoint(position) {
+    const point = new THREE.Vector3(position.x,position.y,position.z).project(this.camera);
+    const rect = this.canvas.getBoundingClientRect();
+    return {x:rect.left+(point.x+1)*rect.width/2,y:rect.top+(1-point.y)*rect.height/2};
+  }
   render(s, dt = 0) {
     if (this.disposed) return; this.resize();
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.waterTime.value=reduced?0:s.elapsed;
+    const color = ({open:'#287e95',drift:'#207b78',snag:'#278d9d',tide:'#294965',storm:'#35576b',abyss:'#163d58'})[s.zone.rule] || '#287e95';
+    this.scene.background.set(color); this.scene.fog.color.set(color);
+    for(let i=0;i<12;i++) {this.rippleTransform.position.set(-5+(i%4)*3.1+(reduced?0:Math.sin(s.elapsed*.6+i)*.15),-.105,-5+Math.floor(i/4)*3.7);this.rippleTransform.updateMatrix();this.rippleMesh.setMatrixAt(i,this.rippleTransform.matrix);}
+    this.rippleMesh.instanceMatrix.needsUpdate=true;
     this.boat.rotation.z = reduced ? 0 : Math.sin(s.elapsed * 1.1) * .018;
     this.hero.rotation.z = s.phase === 'reel' ? -.1 - s.tension / 900 : s.phase === 'charging' ? -.15 : 0;
     this.rod.rotation.z = s.phase === 'charging' ? -.55 + s.castPower / 150 : s.phase === 'reel' ? -.6 + s.tension / 230 + s.steering * .14 : -.55;
+    this.rodFlex.rotation.z = s.phase === 'charging' ? -s.castPower / 250 : s.phase === 'reel' ? s.tension / 350 : s.phase === 'flight' && !reduced ? Math.sin(s.phaseAge * 13) * Math.exp(-s.phaseAge * 4) * .3 : 0;
     this.arm.rotation.x = s.reeling ? Math.sin(s.elapsed * 17) * .12 : 0;
     this.markers.forEach((marker, i) => { marker.visible = ['aim','charging'].includes(s.phase); marker.scale.setScalar(i === s.spot ? 1.22 : .8); });
     const active = !['aim','charging'].includes(s.phase);
-    this.floatRoot.visible = active && s.phase !== 'landing'; this.floatRoot.position.set(s.float.x, s.float.y + .05, s.float.z);
-    this.line.visible = active; this.rodTip.getWorldPosition(this.tipVector);
+    this.floatRoot.visible = active && !['landing','escape'].includes(s.phase); this.floatRoot.position.set(s.float.x, s.float.y + .05, s.float.z);
+    this.line.visible = active && s.phase !== 'escape'; this.rodTip.getWorldPosition(this.tipVector);
+    const endpointY = s.float.y + (['reel','landing'].includes(s.phase) ? .15 : 0);
     for (let i = 0; i <= 32; i++) { const p = i / 32;
       this.linePositions[i*3] = this.tipVector.x + (s.float.x - this.tipVector.x) * p;
-      this.linePositions[i*3+1] = this.tipVector.y + (s.float.y - this.tipVector.y) * p - Math.sin(p * Math.PI) * (s.phase === 'reel' ? (100-s.tension)/130 : .45);
+      this.linePositions[i*3+1] = this.tipVector.y + (endpointY - this.tipVector.y) * p - Math.sin(p * Math.PI) * (s.phase === 'reel' ? (100-s.tension)/130 : .45);
       this.linePositions[i*3+2] = this.tipVector.z + (s.float.z - this.tipVector.z) * p;
     }
     this.line.geometry.attributes.position.needsUpdate = true;
     const index = Number(s.fish?.id?.split('-')[1]) - 1;
-    this.fishes.forEach((fish, i) => { fish.root.visible = i === index && ['reel','landing','bite'].includes(s.phase); });
+    this.fishes.forEach((fish, i) => { fish.root.visible = i === index && ['reel','landing','bite','escape'].includes(s.phase); });
     const fish = this.fishes[index];
-    if (fish) { fish.root.position.set(s.float.x, s.float.y + (s.phase === 'landing' ? .3 : -.15), s.float.z);
-      fish.root.scale.setScalar(s.fish?.boss ? 1.35 : 1); fish.root.rotation.y = s.direction < 0 ? Math.PI : 0;
-      fish.root.rotation.z = s.phase === 'landing' ? -.25 : reduced ? 0 : Math.sin(s.elapsed * 9) * (s.cycle === 'run' ? .18 : .05);
+    if (fish) { const scale = s.fish?.boss ? 1.65 : 1.25;
+      const fightYaw=s.direction<0?Math.PI:0;
+      const turn=clamp(s.phaseAge/.16,0,1),settle=reduced?1:turn*turn*(3-2*turn);
+      fish.root.scale.setScalar(scale);
+      fish.root.rotation.y=s.phase==='landing'?fightYaw+(Math.PI-fightYaw)*settle:fightYaw;
+      const roll=reduced?0:Math.sin(s.elapsed*9)*(s.cycle === 'run' ? .18 : .05);
+      fish.root.rotation.z=s.phase==='landing'?fish.lastFightRoll+(-.1-fish.lastFightRoll)*settle:roll;
+      if(s.phase!=='landing')fish.lastFightRoll=roll;
+      // Rotate around the hooked mouth, including roll. The simulation float
+      // and visible line endpoint remain fixed while the body turns clear of Nori.
+      this.mouthOffset ||= new THREE.Vector3();
+      this.mouthOffset.copy(fish.mouth).multiplyScalar(scale).applyQuaternion(fish.root.quaternion);
+      fish.root.position.set(s.float.x-this.mouthOffset.x,endpointY-this.mouthOffset.y,s.float.z-this.mouthOffset.z);
       fish.tail.rotation.y = reduced ? 0 : Math.sin(s.elapsed * (s.cycle === 'run' ? 17 : 7)) * .5; }
     this.fxPositions.fill(-100);
     this.particles = this.particles.filter((particle) => particle.age < .8);
@@ -210,6 +405,7 @@ export class ReefScene {
     geometries: this.renderer.info.memory.geometries, textures: this.renderer.info.memory.textures, particles: this.particles.length, disposed: this.disposed }; }
   dispose() {
     if (this.disposed) return; this.disposed = true; this.canvas.removeEventListener('webglcontextlost', this.contextLost);
+    this.instances.forEach(mesh=>mesh.dispose());this.instances.length=0;
     this.geometries.forEach(g => g.dispose()); this.materials.forEach(m => m.dispose());
     // The stable shell owns this canvas/context. Dispose GPU objects but reuse the
     // same context on Retry; forcing loss here would poison that stable canvas.

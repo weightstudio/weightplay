@@ -11,7 +11,7 @@ export function createFishingState(zone, gear = {}) {
     stamina: 100, fish: null, cycle: 'recover', direction: 1, steering: 0,
     reeling: false, landed: false, eventSerial: 0, events: [], castAccuracy: 0,
     float: { x: SPOTS[0].x, y: 0, z: SPOTS[0].z }, fightElapsed: 0,
-    gustWarning: false, shieldOpen: true, lastGust: 0, inputTime: 0 };
+    gustWarning: false, shieldOpen: true, lastGust: 0, inputTime: 0, castOffset:{x:0,z:0} };
 }
 function emit(s, type) { s.events.push({ type, serial: ++s.eventSerial }); }
 function enter(s, phase) { s.phase = phase; s.phaseAge = 0; }
@@ -35,6 +35,8 @@ export function releaseFishing(s, fish) {
   s.reeling = false;
   if (s.phase !== 'charging') return false;
   s.fish = fish; s.castAccuracy = 1 - Math.min(1, Math.abs(s.castPower - SPOTS[s.spot].accuracy) / 65);
+  const error = (s.castPower - SPOTS[s.spot].accuracy) / 65;
+  s.castOffset = {x:error * .7,z:-error * .85};
   enter(s, 'flight'); emit(s, 'cast'); return true;
 }
 export function cancelFishing(s) {
@@ -43,7 +45,7 @@ export function cancelFishing(s) {
 }
 export function setSteering(s, amount) { s.steering = clamp(amount, -1, 1); }
 function escape(s, cause) {
-  enter(s, 'aim'); s.fish = null; s.reeling = false; s.danger = 0; emit(s, cause);
+  enter(s, 'escape'); s.reeling = false; s.danger = 0; emit(s, cause);
 }
 export function drainFishingEvents(s) { return s.events.splice(0); }
 export function stepFishing(s, elapsed) {
@@ -60,8 +62,8 @@ function advance(s, dt) {
     if (s.castPower <= 0) { s.castPower = 0; s.castDir = 1; }
   } else if (s.phase === 'flight') {
     const p = clamp(s.phaseAge / .7, 0, 1);
-    s.float.x = -3.6 + (spot.x + 3.6) * p;
-    s.float.z = 3.1 + (spot.z - 3.1) * p;
+    s.float.x = -3.6 + (spot.x + s.castOffset.x + 3.6) * p;
+    s.float.z = 3.1 + (spot.z + s.castOffset.z - 3.1) * p;
     s.float.y = Math.sin(p * Math.PI) * (2 + s.castPower / 70);
     if (p >= 1) { s.float.y = 0; enter(s, 'wait'); emit(s, 'splash'); }
   } else if (s.phase === 'wait') {
@@ -80,20 +82,28 @@ function advance(s, dt) {
     const profile = s.fish?.bossProfile || s.fish?.behavior || 'steady';
     const heavy = ['heavy','kelp','storm','abyss'].includes(profile);
     const dart = ['dart','coral','moon'].includes(profile);
-    const period = heavy ? 6 : dart ? 4.5 : 5;
+    // Authored mission ordinal changes the decision pattern, then the sea rule
+    // combines with it. Mission 2 cross-current, 3 mid-run reversals, 4 long runs.
+    const mission = s.zone.school;
+    const period = mission === 'heavy' ? 6.8 : heavy ? 6 : dart ? 4.5 : 5;
     const phase = s.fightElapsed % period;
     s.cycle = phase < .85 ? 'telegraph' : phase < (heavy ? 3.3 : dart ? 2.7 : 2.25) ? 'run' : 'recover';
     const turn = Math.floor(s.fightElapsed / period);
     s.direction = turn % 2 ? -1 : 1;
     if (profile === 'moon' && s.cycle === 'telegraph') s.direction *= -1;
+    if (mission === 'dart' && phase > 1.8 && s.cycle === 'run') s.direction *= -1;
     const counter = clamp(-s.steering * s.direction, -1, 1);
     const control = .7 + (s.gear.reel || 1) * .15;
     const env = s.zone.rule;
-    const surge = s.cycle === 'run' ? (heavy ? 13 : dart ? 15 : 9) : s.cycle === 'telegraph' ? 1 : -5;
+    let surge = s.cycle === 'run' ? (heavy ? 13 : dart ? 15 : 9) : s.cycle === 'telegraph' ? 1 : -5;
+    if (profile === 'crown') surge += Math.sin(s.fightElapsed * Math.PI * 1.2) * 5;
+    if (mission === 'heavy' && s.cycle === 'run') surge += 3;
     let environmental = Math.sin(s.elapsed * .9) * spot.current * 2;
+    if (mission === 'mixed') environmental += Math.sin(s.elapsed * 1.7) * 3.5;
     if (env === 'drift') environmental += Math.sin(s.elapsed * .82) * 3;
     if (env === 'tide') environmental += (Math.floor(s.elapsed / 4) % 2 ? -1 : 1) * 3;
     if (env === 'snag') environmental += Math.max(0, s.steering) * 3;
+    if (env === 'abyss') environmental += Math.sin(s.elapsed * 1.05) * 4;
     const gustTime = s.fightElapsed % 3;
     s.gustWarning = ['storm','abyss'].includes(env) && gustTime > 2.2;
     const gust = Math.floor(s.fightElapsed / 3);
@@ -119,10 +129,13 @@ function advance(s, dt) {
       s.distance = Math.max(0, s.distance - dt * strength * recovery * (1 + Math.max(0, counter) * .3));
       s.stamina = Math.max(0, s.stamina - dt * strength * 3);
     } else if (!s.reeling) s.distance = Math.min(s.initialDistance + 5, s.distance + dt * (s.cycle === 'run' ? .6 : .18));
-    s.float.x = spot.x + Math.sin(s.fightElapsed * (dart ? 2.3 : 1.2)) * .65 + s.steering * .25;
-    s.float.z = 3.1 + (spot.z - 3.1) * clamp(s.distance / s.initialDistance, 0, 1);
+    s.float.x = spot.x + s.castOffset.x + Math.sin(s.fightElapsed * (dart ? 2.3 : 1.2)) * .65 + s.steering * .25;
+    s.float.z = 3.1 + (spot.z + s.castOffset.z - 3.1) * clamp(s.distance / s.initialDistance, 0, 1);
     s.float.y = s.cycle === 'run' ? Math.max(0, Math.sin(s.fightElapsed * 6)) * .15 : -.06;
     if (s.distance <= 0 && s.inputTime > .2) { enter(s, 'landing'); s.reeling = false; s.landed = true; emit(s, 'land'); }
+  } else if (s.phase === 'escape') {
+    s.float.x += dt * s.direction * 4; s.float.z -= dt * 2; s.float.y -= dt * .7;
+    if (s.phaseAge >= .45) { s.fish = null; enter(s,'aim'); emit(s,'ready'); }
   } else if (s.phase === 'landing') {
     const p = clamp(s.phaseAge / .95, 0, 1);
     s.float.x += (-3.6 - s.float.x) * Math.min(1, dt * 6);

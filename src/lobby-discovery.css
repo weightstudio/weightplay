@@ -819,19 +819,15 @@ body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition
 body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .lobby-sound-toggle[aria-checked="true"],
 body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .lobby-sound-toggle[aria-checked="true"] .lobby-sound-state { color:var(--hall-selected-ink); }
 
-/* Keep the topic hall's two preview cards in the first view on short screens. */
+/* Preserve the complete square poster in the topic hall's preview cards. */
 body.general-lobby-page[data-game-hall="topics"] #heroGamesSection { order:8; margin-top:12px; }
 body.general-lobby-page[data-game-hall="topics"] #heroGames { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
-body.general-lobby-page[data-game-hall="topics"] #heroGames .hero-game-art { aspect-ratio:2.35; }
+body.general-lobby-page[data-game-hall="topics"] #heroGames .hero-game-art { aspect-ratio:1; }
 body.general-lobby-page[data-game-hall="topics"] :is(#catalogHeading,#gameGrid,#catalogPagination,#mobilePicksSection,#characterShowcaseSection,#freshUpdatesSection,#challengeSpotlightSection,#recommendationsSection,#skillPathsSection,#upcomingGamesSection) { display:none !important; }
-@media (max-width:720px) {
-  body.general-lobby-page[data-game-hall="topics"] #heroGames .hero-game-art { aspect-ratio:1.35; }
-}
 @media (max-width:900px) and (max-height:500px) and (orientation:landscape) {
   body.general-lobby-page .game-hall-switch .hall-tab-icon { inset-inline-start:8px; width:22px; height:22px; }
   body.general-lobby-page[data-game-hall="topics"] #heroGamesSection { margin-top:0 !important; }
   body.general-lobby-page[data-game-hall="topics"] #heroGamesSection .section-heading { min-height:28px; margin-bottom:4px; }
-  body.general-lobby-page[data-game-hall="topics"] #heroGames .hero-game-art { aspect-ratio:3.8; }
   body.general-lobby-page[data-game-hall="topics"] .hero-game-copy { padding:6px 8px; }
   body.general-lobby-page[data-game-hall="topics"] .hero-game-copy :is(strong,small,em) { font-size:11px; }
 }

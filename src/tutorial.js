@@ -670,14 +670,20 @@
         { icon: "3", en: ["Clear", "Match every pair; use Hint, Undo, or Shuffle when needed."], "zh-Hant": ["清除", "配對所有牌；需要時可使用提示、復原或洗牌。"] },
       ],
     },
-    "animal-reef-fisher": {
-      title: { en: "Cast and control tension.", "zh-Hant": "拋竿並控制張力。" },
-      steps: [
-        { icon: "1", en: ["Cast", "Hold in the reef play area to charge, then release to cast."], "zh-Hant": ["拋竿", "按住礁海畫面蓄力，放開即可拋竿。"] },
-        { icon: "2", en: ["Tension", "When a fish is hooked, drag left or right and keep the red marker inside the green safe band."], "zh-Hant": ["張力", "魚上鉤後，左右拖曳紅色標記，讓它留在綠色安全區。"] },
-        { icon: "3", en: ["Upgrade", "Use Reef Notes for gear upgrades. Diamonds are optional tools only."], "zh-Hant": ["升級", "用礁石筆記升級裝備；鑽石道具只是選用工具。"] },
-      ],
-    },
+    "animal-reef-fisher": (() => {
+      // This game's active-fishing facts are owned beside the game and are
+      // loaded before this shared dialog. Other games keep their own copy.
+      const copy = window.REEF_FISHER_GUIDE_PATCH || { en: { faq: [
+        ['How do I hook and land a fish?', 'Choose a spot. Hold to charge, release to cast and press at the bite. Hold to reel, release to ease tension and steer against the fish.'],
+        ['Is my progress kept?', 'Existing album, Reef Notes, gear and unlocked missions are kept.'],
+      ] } };
+      return {
+        title: Object.fromEntries(Object.entries(copy).map(([locale, facts]) => [locale, facts.faq[0][0]])),
+        steps: [0, 1].map(index => ({ icon: String(index + 1),
+          ...Object.fromEntries(Object.entries(copy).map(([locale, facts]) => [locale, facts.faq[index]])),
+        })),
+      };
+    })(),
     "animal-auto-squad": {
       title: { en: "Draft and fight.", "zh-Hant": "招募與戰鬥。" },
       steps: [

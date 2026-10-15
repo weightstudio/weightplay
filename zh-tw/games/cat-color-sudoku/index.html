@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260901-cat-color-sudoku-guide-v7">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-  <link rel="stylesheet" href="style.css?v=20260901-cat-color-sudoku-guide-v7">
+  <link rel="stylesheet" href="style.css?v=20261015-cat-color-sudoku-v8-geometry-feedback">
   <link rel="stylesheet" href="art.css?v=20260921-cat-color-sudoku-block-scene-v1">
   <meta name="description" content="在每一列、每一欄與每個彩色圖紋區域各放一隻貓，而且貓咪不能相鄰。" />
     <meta property="og:site_name" content="WeightPlay" />
@@ -114,7 +114,7 @@
       <nav class="related" aria-labelledby="relatedTitle"><h3 id="relatedTitle" data-t="relatedTitle">更多邏輯遊戲</h3><a href="../sudoku/index.html?trial=1" data-t="relatedSudoku">數字數獨</a><a href="../minefield-logic/index.html?trial=1" data-t="relatedMinefield">地雷邏輯</a></nav>
   </section>
 
-  <main id="stage" class="screen canvas stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" hidden>
+  <main id="stage" class="screen canvas stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" hidden>
     <header class="scene-header">
       <button id="stageBack" type="button" data-wp-return="stage" data-t-aria="backLobby" aria-label="返回 WeightPlay">←</button>
       <div><small data-t="choose">選擇月光地圖</small><h2 data-t="shortTitle">貓咪彩域</h2></div>
@@ -124,11 +124,11 @@
     <nav class="stage-tabs" data-t-aria="stageRailLabel" aria-label="月光地圖選擇"><span aria-hidden="true"></span><button class="stage-tab active" type="button" aria-current="page" data-t="stages">關卡</button><span aria-hidden="true"></span></nav>
   </main>
 
-  <main id="battle" class="screen canvas battle-screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+  <main id="battle" class="screen canvas battle-screen" data-screen="battle" data-wp-frame-play-fill data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
     <header class="scene-header">
       <button id="battleBack" type="button" data-wp-return="battle" data-t-aria="battleBack" aria-label="返回地圖列表">←</button>
-      <div><small id="battleChapter"></small><h2 id="battleStage"></h2></div>
-      <div class="battle-header-tools"><span id="objective"></span><button id="battleUtility" class="utility-button" type="button" data-wp-battle-utility data-t-aria="audio" aria-label="音效"><span aria-hidden="true">♪</span></button></div>
+      <div class="battle-header-hud"><small id="battleChapter"></small><h2 id="battleStage"></h2><span id="objective"></span></div>
+      <button id="battleUtility" class="utility-button" type="button" data-wp-battle-utility data-t-aria="audio" aria-label="音效"><span aria-hidden="true">♪</span></button>
     </header>
     <section class="battle-content">
       <div class="board-wrap">
@@ -154,7 +154,7 @@
   <script src="levels.js?v=20260819-cat-color-sudoku-v1"></script>
   <script src="locales.js?v=20261010-cat-color-text-growth-140"></script>
   <script src="text-growth-140.js?v=20261010-cat-color-text-growth-140"></script>
-  <script src="game.js?v=20260903-cat-color-sudoku-v7-audio&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261015-cat-color-sudoku-v8-geometry-feedback&wp-audio=1.0.0"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js?v=20260819-cat-color-sudoku-v1" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>

@@ -1,5 +1,9 @@
 (() => {
   "use strict";
+  const practiceRequested = location.protocol==="http:"
+    && ["localhost","127.0.0.1","[::1]"].includes(location.hostname)
+    && new URLSearchParams(location.search).get("practice")==="1";
+  let practiceEnabled=false,practiceIsolation=false,localPractice=null,trialStartTicket=0;
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -8,7 +12,7 @@
     paused: Boolean(run?.paused || run?.suspended || backgroundSuspended), node: document.body,
     activityMode: "input", idleSeconds: 300
   });
-  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  function __wpNotifyMeasurement() { if(practiceRequested)return; try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
   // Explicit authored replay actions count only when a new round was actually created.
   function __wpReplayStart(action) {
     const previous = __wpMeasurement.roundKey, value = action();
@@ -419,7 +423,7 @@
   });
 
   function readStorage(key) { try { return localStorage.getItem(key); } catch { return null; } }
-  function writeStorage(key, value) { try { localStorage.setItem(key, value); return true; } catch { return false; } }
+  function writeStorage(key, value) { if(practiceRequested&&key.startsWith("aht-"))return false; try { localStorage.setItem(key, value); return true; } catch { return false; } }
   const localeCodes = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const returnLabels = Object.freeze({
     en: "Back",
@@ -478,6 +482,7 @@
   let pointer = null;
   let moveTarget = null;
   let stageSelectionFrame = 0;
+  let stageRailController = null;
   let backgroundSuspended = false;
   let windowHasFocus = document.hasFocus();
   let quitSuspended = false;
@@ -681,6 +686,7 @@
   }
 
   function trackTrialEvent(name, details = {}) {
+    if(practiceRequested)return;
     window.WonderAnalytics?.track?.(name, {
       game_id: "animal-hero-trials",
       game_version: GAME_VERSION,
@@ -867,7 +873,7 @@
       marks,
     });
     $("#masteryCost").textContent = masterySummary;
-    $("#masteryBtn").disabled = !masteryReady;
+    $("#masteryBtn").disabled = practiceRequested || !masteryReady;
     $("#masteryBtn").setAttribute("aria-label", `${t("mastery")}, ${masteryLevel}. ${masterySummary}`);
     syncSoundToggle();
     renderHeroPicker();
@@ -905,25 +911,47 @@
     });
   }
 
-  function renderStages() {
-    const rail = $("#stageRail");
-    rail.innerHTML = "";
-    for (let stage = 1; stage <= TRIAL_COUNT; stage += 1) {
+  function bindStageCard(button,index) {
+      const stage=index+1;
       const definition=trialDefinition(stage);
       const region=regions[definition.region];
-      const locked=stage>unlocked;
-      const button = document.createElement("button");
+      const locked=stage>unlocked&&!practiceEnabled;
       button.className = `stage-card${locked ? " locked" : ""}${definition.checkpoint ? " checkpoint" : ""}`;
       button.dataset.stage = String(stage);
+      if(stage===Math.min(TRIAL_COUNT,unlocked))button.dataset.wpStageRecommended="true";
+      else delete button.dataset.wpStageRecommended;
       button.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
       if(locked)button.setAttribute("aria-disabled","true");
+      else button.removeAttribute("aria-disabled");
       const detail = locked ? t("locked") : interpolate("roomsAndMarks",{marks:definition.reward});
       const title=localizedValue(definition.titleEn,definition.titleZh,definition.titleEs,definition.titleAr);
       const rule=localizedPair(region.rule);
       const boss=definition.boss?` · ${localizedPair(definition.boss.name)}`:"";
       button.innerHTML = `<div class="stage-card-content" data-wp-item-content><img src="${ASSET_ROOT}${definition.boss?.asset || "animal-hero-trials-arena.png"}" alt=""><strong>${localizedValue("Trial", "試煉", "Prueba", "التجربة")} ${stage} · ${title}</strong><span>${detail}<br>${rule}${boss}<br>${interpolate("recommended",{hero:localizedPair(heroNames[definition.recommended])})}</span></div>`;
       button.tabIndex = stage === Math.min(TRIAL_COUNT, unlocked) ? 0 : -1;
-      button.onclick = () => stage <= unlocked && startTrial(stage);
+  }
+
+  function renderStages() {
+    const rail = $("#stageRail");
+    // The shared virtualizer owns gesture settling. Native smooth scrolling
+    // must not animate its absolute centering a second time on scene entry.
+    rail.style.setProperty("scroll-behavior","auto","important");
+    if(window.WeightPlayStageV6 && !rail.dataset.wpStageVirtualizationInstalled) {
+      rail.replaceChildren();
+      stageRailController=window.WeightPlayStageV6.install(rail,{
+        total:()=>TRIAL_COUNT,poolSize:9,initialIndex:()=>Math.min(TRIAL_COUNT,unlocked)-1,
+        bind:bindStageCard,
+        activate:index=>{if(index+1<=unlocked||practiceEnabled)startTrial(index+1);},
+      });
+      return;
+    }
+    if(stageRailController) {stageRailController.refresh();return;}
+    // Compatibility for an older cached shell until its shared runtime loads.
+    rail.innerHTML="";
+    for(let index=0;index<TRIAL_COUNT;index++) {
+      const button=document.createElement("button");
+      bindStageCard(button,index);
+      button.onclick=()=>{if(index+1<=unlocked||practiceEnabled)startTrial(index+1);};
       rail.append(button);
     }
     scheduleCenteredStageCard();
@@ -933,6 +961,7 @@
     stageSelectionFrame=0;
     const rail=$("#stageRail");
     if(!rail||!rail.getClientRects().length)return;
+    if(rail.dataset.wpStageCenterObserver==="manual")return;
     const railRect=rail.getBoundingClientRect();
     const center=railRect.left+railRect.width/2;
     const cards=[...rail.querySelectorAll(".stage-card")];
@@ -965,8 +994,17 @@
     }
   }
 
-  function focusStage(stage = Math.min(TRIAL_COUNT, unlocked)) {
-    sceneFrame("stage", () => setStageTabStop($(`#stageRail .stage-card[data-stage="${stage}"]`), true));
+  function focusStage() {
+    sceneFrame("stage", () => {
+      const rail=$("#stageRail");
+      stageRailController?.center(Math.min(TRIAL_COUNT,unlocked)-1);
+      const card=rail.querySelector(`[data-stage="${Math.min(TRIAL_COUNT,unlocked)}"]`);
+      if(rail.dataset.wpStageVirtualizationInstalled==="true") {
+        card?.focus({preventScroll:true});
+        return;
+      }
+      setStageTabStop(card,true);
+    });
   }
 
   function focusMain() {
@@ -990,14 +1028,29 @@
   }
 
   function startTrial(stage, startReason = "stage_select") {
+    const ticket=++trialStartTicket;
+    const generation=sceneGeneration;
+    if(practiceIsolation) {
+      if(!practiceEnabled || !localPractice)return;
+      localPractice.validate().then(valid=>{
+        if(valid&&ticket===trialStartTicket&&generation===sceneGeneration) beginTrial(stage,startReason);
+      });
+      return;
+    }
+    if(practiceRequested)return; // Authentication cannot fall through to a rewarded run.
+    beginTrial(stage,startReason);
+  }
+
+  function beginTrial(stage, startReason) {
+    cancelAnimationFrame(frame);
     (__wpNotifyMeasurement(), backgroundSuspended = false);
     show("battle");
     const hero = heroes[selectedHero] || heroes.leo;
     const maxHp = hero.hp + mastery * 12;
     run = {
       active: true,
-      stage:Math.max(1,Math.min(unlocked,Number(stage)||1)),
-      definition:trialDefinition(Math.max(1,Math.min(unlocked,Number(stage)||1))),
+      stage:Math.max(1,Math.min(practiceEnabled?TRIAL_COUNT:unlocked,Number(stage)||1)),
+      definition:trialDefinition(Math.max(1,Math.min(practiceEnabled?TRIAL_COUNT:unlocked,Number(stage)||1))),
       room: 1,
       hp: maxHp,
       maxHp,
@@ -1007,6 +1060,7 @@
       cool: 0,
       attackCool: 0,
       invulnerable: 0,
+      dashSafe: 0,
       guard: 0,
       rerollUsed: false,
       rerollPending: false,
@@ -1051,6 +1105,7 @@
   function spawn() {
     run.hazards = [];
     run.fx = [];
+    run.strike = null;
     run.leo = { x: WORLD_WIDTH / 2, y: 430 };
     clearMovementInput();
     const definition=run.definition;
@@ -1198,6 +1253,7 @@
     enemy.stun = .5;
     enemy.open = Math.max(enemy.open || 0, 1.5);
     enemy.cd = Math.max(enemy.cd || 0, 1.7);
+    if(enemy.bossRule==="prism")enemy.guard=0;
   }
   function hazardContains(hazard, point) {
     const distance = Math.hypot(point.x - hazard.x, point.y - hazard.y);
@@ -1248,6 +1304,7 @@
       enemy.attackTo = target;
     }
     enemy.attackCount = (enemy.attackCount || 0) + 1;
+    if(kind==="prism")enemy.guard=3;
   }
   function updateEnemies(dt) {
     const liveWarnings = () => run.enemies.filter((enemy) => enemy.hp>0 && enemy.warning>0).length;
@@ -1260,7 +1317,13 @@
       enemy.hitFlash = Math.max(0,(enemy.hitFlash||0)-dt);
       enemy.hitOffsetX = (enemy.hitOffsetX || 0) * Math.max(0,1-dt*14);
       enemy.hitOffsetY = (enemy.hitOffsetY || 0) * Math.max(0,1-dt*14);
-      if (enemy.bossRule === "crown") enemy.phase = enemy.hp/enemy.max < .33 ? 2 : enemy.hp/enemy.max < .66 ? 1 : 0;
+      if (enemy.bossRule === "crown") {
+        const phase=enemy.hp/enemy.max<.33?2:enemy.hp/enemy.max<.66?1:0;
+        if(phase!==enemy.phase) {
+          enemy.phase=phase;enemy.guard=phase===1?2:0;
+          if(phase===2)for(let i=0;i<2;i++)run.enemies.push({x:worldX(80+i*230),y:110,hp:52,max:52,type:i?"armored":"raven",cd:2+i*.5,guard:i?2:0,animSeed:i*2});
+        }
+      }
       if (enemy.bossRule === "summon" && !enemy.summoned && enemy.hp/enemy.max < .55) {
         enemy.summoned = true;
         for (let i=0;i<2;i++) run.enemies.push({x:worldX(80+i*230),y:110,hp:45,max:45,type:i?"boar":"scout",cd:1.8+i*.5,guard:0,animSeed:i*2});
@@ -1286,8 +1349,12 @@
       }
       const speed=(enemy.boss?27:profile.speed*1.3)*(enemy.slow>0?.55:1);
       if (distance>range*.65) {
-        enemy.x=Math.max(38,Math.min(422,enemy.x+ex/distance*speed*dt));
-        enemy.y=Math.max(78,Math.min(520,enemy.y+ey/distance*speed*dt));
+        const side=enemy.type==="raven"?Math.sin(enemy.animSeed||0)*.55:0;
+        enemy.x=Math.max(38,Math.min(422,enemy.x+(ex/distance-ey/distance*side)*speed*dt));
+        enemy.y=Math.max(78,Math.min(520,enemy.y+(ey/distance+ex/distance*side)*speed*dt));
+      } else if(enemy.type==="hunter"&&distance<115) {
+        enemy.x=Math.max(38,Math.min(422,enemy.x-ex/distance*speed*dt));
+        enemy.y=Math.max(78,Math.min(520,enemy.y-ey/distance*speed*dt));
       }
     }
     const remaining=[];
@@ -1296,7 +1363,7 @@
       hazard.t-=dt;
       if (hazard.t>0) { remaining.push(hazard); continue; }
       const hit=hazardContains(hazard,run.leo);
-      if (hit) hurt(hazard.damage);
+      if (hit && run.dashSafe<=0) hurt(hazard.damage);
       else if (hazard.threatened) {
         run.counter=Math.max(run.counter,2.4);
         run.dodges++;
@@ -1305,6 +1372,7 @@
       }
       hazard.owner.warning=0;
       hazard.owner.open=1.35;
+      if(hazard.owner.bossRule==="prism")hazard.owner.guard=0;
       hazard.owner.cd=2.2;
       run.fx.push({type:"impact",x:hazard.x,y:hazard.y,t:.22,hazard:{...hazard}});
     }
@@ -1314,13 +1382,16 @@
   function damageEnemy(enemy,amount,source="auto") {
     if(!enemy||enemy.hp<=0) return 0;
     let applied=amount;
+    const hadGuard=enemy.guard>0;
+    const resisted=enemy.bossRule==="charge"&&!(enemy.open>0);
+    const blocked=hadGuard||resisted;
     if(enemy.guard>0){
       applied*=source==="skill"?.65:.25;
       if(source==="skill") enemy.guard=Math.max(0,enemy.guard-1);
     }
+    if(resisted)applied*=.65;
     const exposed = enemy.open>0 || run.counter>0;
     if(exposed) { applied*=1.65+run.build.exploit*.35; combatNotice(2); }
-    const blocked = applied < amount;
     enemy.hp-=applied;
     playSound(blocked ? "combat.block" : run.heroId === "leo" || run.heroId === "fia" ? "weapon.sword.hit" : "magic.hit");
     if (enemy.hp <= 0) {
@@ -1329,8 +1400,8 @@
       if(run.build.siphon) run.hp=Math.min(run.maxHp,run.hp+3*run.build.siphon);
     }
     if(source==="skill") {
-      if(enemy.guard===0 && blocked) { combatNotice(3); playSound("combat.shield.break"); }
       interrupt(enemy);
+      if(enemy.guard===0 && hadGuard) { combatNotice(3); playSound("combat.shield.break"); }
     }
     const direction = Math.atan2(enemy.y - run.leo.y, enemy.x - run.leo.x);
     enemy.hitFlash = Math.max(enemy.hitFlash || 0, source === "skill" ? 0.24 : 0.16);
@@ -1373,6 +1444,7 @@
       run.leo.x = Math.max(worldX(35), Math.min(worldX(355), run.leo.x + (dx / length) * 125));
       run.leo.y = Math.max(80, Math.min(520, run.leo.y + (dy / length) * 125));
       run.invulnerable = 0.55;
+      run.dashSafe = 0.55;
       run.fx.push({ type: "roar", x: (from.x + run.leo.x) / 2, y: (from.y + run.leo.y) / 2, t: 0.3 });
       for (const enemy of run.enemies) {
         if (hazardContains({kind:"line",x:from.x,y:from.y,toX:run.leo.x,toY:run.leo.y,radius:52},enemy)) {
@@ -1560,7 +1632,7 @@
           ? interpolate("rerollConfirmStatus", { balance, result })
           : "");
     $("#rerollLabel").textContent = run.rerollPending ? `${t("reroll")} · ${balance} → ${result}` : `${t("reroll")} · ${balance}`;
-    button.disabled = run.rerollUsed;
+    button.disabled = practiceIsolation || run.rerollUsed;
     button.classList.toggle("is-confirming", Boolean(run.rerollPending && !run.rerollUsed));
     button.setAttribute("aria-label", status || `${t("reroll")} · 3 Diamonds · ${balance}`);
     $("#rerollStatus").textContent = status;
@@ -1608,6 +1680,7 @@
   }
 
   function rerollBlessings() {
+    if(practiceIsolation || practiceRequested)return;
     if (run.rerollUsed) return updateRerollUi(t("rerollUsed"));
     const balance = window.WeightPlayWallet?.read?.().diamonds || 0;
     if (balance < 3) return updateRerollUi(interpolate("rerollNeed", { balance }));
@@ -1634,6 +1707,8 @@
   }
 
   function finish(won) {
+    if(!run || run.settled)return;
+    run.settled=true;
     (__wpNotifyMeasurement(), backgroundSuspended = false);
     run.active = false;
     cancelAnimationFrame(frame);
@@ -1668,10 +1743,10 @@
       __wpReplayStart(() => startTrial(run.stage, "replay"));
     });
     if (won) {
-      const gain = run.definition.reward;
+      const gain = practiceIsolation?0:run.definition.reward;
       const previousUnlocked = unlocked;
       marks += gain;
-      unlocked = Math.max(unlocked, Math.min(TRIAL_COUNT, run.stage + 1));
+      if(!practiceIsolation) unlocked = Math.max(unlocked, Math.min(TRIAL_COUNT, run.stage + 1));
       save();
       const masteryCost = 5 + mastery * 4;
       const remaining = Math.max(0, masteryCost - marks);
@@ -1744,6 +1819,7 @@
     run.cool = Math.max(0, run.cool - dt);
     run.attackCool = Math.max(0, run.attackCool - dt);
     run.invulnerable = Math.max(0, run.invulnerable - dt);
+    run.dashSafe = Math.max(0, run.dashSafe - dt);
     run.guard = Math.max(0, run.guard - dt);
     run.heroFlash = Math.max(0, run.heroFlash - dt);
     run.heroKick = Math.max(0, run.heroKick - dt);
@@ -2175,6 +2251,7 @@
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
   $("#masteryBtn").onclick = () => {
+    if(practiceRequested)return;
     const cost = 5 + mastery * 4;
     if (marks >= cost) {
       trackTrialEvent("mastery_upgrade_open", {
@@ -2232,13 +2309,58 @@
   });
   bindTapMove();
   if (new URLSearchParams(location.search).has("smoke")) window.__heroTrialSmoke = {
+    combatContract:()=>({
+      circleCenter:hazardContains({kind:"circle",x:0,y:0,radius:40},{x:0,y:0}),
+      circleOutside:hazardContains({kind:"circle",x:0,y:0,radius:40},{x:41,y:0}),
+      lineCenter:hazardContains({kind:"line",x:0,y:0,toX:100,toY:0,radius:20},{x:50,y:19}),
+      lineOutside:hazardContains({kind:"line",x:0,y:0,toX:100,toY:0,radius:20},{x:50,y:21}),
+      ringSafeCenter:hazardContains({kind:"ring",x:0,y:0,inner:40,radius:100},{x:0,y:0}),
+      ringDanger:hazardContains({kind:"ring",x:0,y:0,inner:40,radius:100},{x:60,y:0}),
+      ringOutside:hazardContains({kind:"ring",x:0,y:0,inner:40,radius:100},{x:101,y:0}),
+    }),
     definitions:()=>trials.map((trial)=>({stage:trial.stage,region:trial.region,titleEn:trial.titleEn,titleZh:trial.titleZh,checkpoint:trial.checkpoint,enemies:[...trial.enemies],encounters:trial.encounters.map((encounter)=>({...encounter,types:[...encounter.types]})),recommended:trial.recommended,reward:trial.reward,boss:trial.boss?{id:trial.boss.id,nameEn:trial.boss.name[0],nameZh:trial.boss.name[1],asset:trial.boss.asset,rule:trial.boss.rule}:null})),
     prepare:(stage,room=1)=>{ unlocked=TRIAL_COUNT; startTrial(stage); run.room=Math.max(1,Math.min(3,room)); spawn(); return window.__heroTrialSmoke.snapshot(); },
     damageFirst:(amount=20,source="auto")=>{ const enemy=run?.enemies[0]; return enemy?{applied:damageEnemy(enemy,amount,source),enemy:{...enemy}}:null; },
     forceRoomClear:()=>{ if(!run) return null; run.enemies=[]; if(run.room>=3) finish(true); else chooseBlessing(); return window.__heroTrialSmoke.snapshot(); },
     setCooldown:(value=0)=>{ if(!run) return null; run.cool=Math.max(0,Number(value)||0); updateHud(); return window.__heroTrialSmoke.snapshot(); },
     setHealth:(value)=>{ if(!run) return null; run.hp=Math.max(0,Math.min(run.maxHp,Number(value)||0)); updateHud(); return window.__heroTrialSmoke.snapshot(); },
-    snapshot: () => ({ pointer, moveTarget: moveTarget ? { ...moveTarget } : null, stick: { ...stick }, active: Boolean(run?.active), hp: run?.hp ?? null, cooldown: run?.cool ?? null, player: run ? { ...run.leo } : null, run:run?{stage:run.stage,room:run.room,checkpoint:run.definition.checkpoint,boss:run.definition.boss?.id||null,guidancePhase:run.guidancePhase,guidanceTimer:run.guidanceTimer,firstAutoAttack:run.firstAutoAttack,attackRange:heroes[run.heroId].range}:null, visual:run?{shake:run.shake,heroFlash:run.heroFlash,heroKick:run.heroKick,effects:run.fx.map((effect)=>({type:effect.type,value:effect.value||0,t:effect.t}))}:null, unlocked,marks, enemies: run?.enemies.map((enemy) => ({ x: enemy.x, y: enemy.y, hp: enemy.hp,max:enemy.max,type:enemy.type,bossId:enemy.bossId||null,bossRule:enemy.bossRule||null,guard:enemy.guard||0,warning:enemy.warning||0,phase:enemy.phase||0,hitFlash:enemy.hitFlash||0,hitOffsetX:enemy.hitOffsetX||0,hitOffsetY:enemy.hitOffsetY||0 })) || [] })
+    snapshot: () => ({
+      pointer,moveTarget:moveTarget?{...moveTarget}:null,stick:{...stick},
+      active:Boolean(run?.active),hp:run?.hp??null,maxHp:run?.maxHp??null,
+      cooldown:run?.cool??null,player:run?{...run.leo}:null,
+      run:run?{stage:run.stage,room:run.room,heroId:run.heroId,build:{...run.build},
+        checkpoint:run.definition.checkpoint,boss:run.definition.boss?.id||null,
+        guidancePhase:run.guidancePhase,guidanceTimer:run.guidanceTimer,
+        firstAutoAttack:run.firstAutoAttack,attackRange:heroes[run.heroId].range,
+        dodges:run.dodges,counter:run.counter,guard:run.guard,time:run.time}:null,
+      hazards:run?.hazards.map(({kind,x,y,toX,toY,radius,inner,t,duration,damage})=>({kind,x,y,toX,toY,radius,inner,t,duration,damage}))||[],
+      visual:run?{shake:run.shake,heroFlash:run.heroFlash,heroKick:run.heroKick,
+        effects:run.fx.map(effect=>({type:effect.type,value:effect.value||0,t:effect.t}))}:null,
+      unlocked,marks,
+      enemies:run?.enemies.map(enemy=>({x:enemy.x,y:enemy.y,hp:enemy.hp,max:enemy.max,
+        type:enemy.type,bossId:enemy.bossId||null,bossRule:enemy.bossRule||null,
+        guard:enemy.guard||0,warning:enemy.warning||0,phase:enemy.phase||0,
+        open:enemy.open||0,stun:enemy.stun||0,attackCount:enemy.attackCount||0,
+        hitFlash:enemy.hitFlash||0,hitOffsetX:enemy.hitOffsetX||0,hitOffsetY:enemy.hitOffsetY||0}))||[],
+    })
   };
   localize();
+  if(practiceRequested) import("../../src/game-local-practice.mjs").then(({LocalPractice})=>{
+    localPractice=LocalPractice;
+    return LocalPractice.register({gameId:"animal-hero-trials",stageIds:trials.map(trial=>trial.stage),
+      enable:enabled=>{
+        practiceEnabled=enabled;
+        if(enabled)practiceIsolation=true;
+        else if(practiceIsolation) {
+          trialStartTicket++;
+          if(run)run.active=false;
+          cancelAnimationFrame(frame);
+          clearMovementInput();
+          show("stage");
+        }
+        renderStages();
+      },
+      startStage:stage=>startTrial(Number(stage),"local_practice"),
+    });
+  }).catch(()=>{practiceEnabled=false;});
 })();

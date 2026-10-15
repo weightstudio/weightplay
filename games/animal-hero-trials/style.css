@@ -186,6 +186,11 @@ body.wp-stage-select-active #stageView .stage-rail {
 #battleView .battle-head>.health{flex:1 1 0;min-width:0;overflow:hidden}
 #battleView #roomText{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 #battleView .battle-tools{flex:0 0 auto}
+#resultModal>section{height:360px;display:grid;grid-template-rows:100px 52px minmax(0,1fr) 50px;gap:8px}
+#resultFx{justify-self:center}
+#resultTitle,#resultCopy{margin:0}
+#resultTitle{display:grid;place-items:center}
+#resultCopy{overflow:auto;line-height:1.4}
 .hero-option,.choice,.stage-card,.skill-btn{transition:border-color 140ms ease,background-color 140ms ease,box-shadow 140ms ease}
 .hero-option:active,.choice:active,.stage-card:active,.skill-btn:active{box-shadow:inset 0 0 0 3px #ffe7a3}
 .modal:not(.hidden)>section{animation:aht-panel-in 180ms ease-out both}
