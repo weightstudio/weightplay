@@ -16,5 +16,21 @@
     hi: ["योजना", "उपचार उपकरण से ऊपर तक खाली स्तंभ चाहिए। भट्टी: हर तीसरा वार पलटवार रोकता है। प्रकृति: खुली आपूर्ति 2 जंग हटाती है। कारवाँ: जोड़ मुहरों का प्रतिरोध करते हैं।", "सुरक्षित · जीवन खर्च नहीं", "ओवरड्राइव · हर वार में 2 जीवन से ढाल भेदें; 3 से कम जीवन पर बंद", "कार्यशाला 2 पर ओवरड्राइव खुलेगा", "अगला: शत्रु जीवन −{hit}, ढाल −{shield}; खर्च −{cost}, पलटवार −{counter}", "उपचार {heal} · बंद आपूर्ति {blocked}", "पलटवार रुका"],
     ar: ["الخطة", "تحتاج أدوات الشفاء إلى عمود خالٍ حتى الأعلى. الحدادة: كل ضربة ثالثة تقطع الرد. الطبيعة: الإمداد يزيل درجتين من التآكل. القافلة: الروابط تقاوم الأختام.", "حذر · بلا تكلفة صحة", "اندفاع · يخترق الدرع مقابل صحتين لكل ضربة؛ يتوقف دون 3 صحة", "يفتح الاندفاع في الورشة 2", "التالي: صحة العدو −{hit}، الدرع −{shield}؛ التكلفة −{cost}، الرد −{counter}", "شفاء {heal} · إمدادات محجوبة {blocked}", "تم قطع الرد"]
   };
+  const counterLines={
+    en:"Counter {counter} · Cost {cost} · Heal {heal}",
+    "zh-Hant":"反擊 {counter} · 耗血 {cost} · 恢復 {heal}",
+    "zh-Hans":"反击 {counter} · 耗血 {cost} · 恢复 {heal}",
+    ja:"反撃 {counter} · 消費 {cost} · 回復 {heal}",
+    ko:"반격 {counter} · 소모 {cost} · 회복 {heal}",
+    es:"Réplica {counter} · Coste {cost} · Cura {heal}",
+    "pt-BR":"Revide {counter} · Custo {cost} · Cura {heal}",
+    fr:"Riposte {counter} · Coût {cost} · Soin {heal}",
+    de:"Konter {counter} · Kosten {cost} · Heilung {heal}",
+    it:"Risposta {counter} · Costo {cost} · Cura {heal}",
+    ru:"Ответ {counter} · Цена {cost} · Лечение {heal}",
+    hi:"पलटवार {counter} · खर्च {cost} · उपचार {heal}",
+    ar:"الرد {counter} · التكلفة {cost} · الشفاء {heal}"
+  };
+  keys.push("strategyCounter");Object.entries(rows).forEach(([locale,values])=>values.push(counterLines[locale]));
   globalThis.WeightPlayGearpackStrategyLocales = Object.fromEntries(Object.entries(rows).map(([locale, values]) => [locale, Object.fromEntries(keys.map((key, index) => [key, values[index]]))]));
 })();

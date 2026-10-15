@@ -92,6 +92,23 @@
     ar: ["تبديل الفوانيس", "اختر خانتين ممتلئتين لتبديل الفانوسين دون احتساب فحص.", "اختر الفانوس الثاني.", "تم التبديل. قارن الروابط المضيئة قبل الفحص."],
   };
   const editText = (index) => (editCopy[state.locale] || editCopy.en)[index];
+  const rosterCopy = {
+    en: ["Use these lights", "Use the listed lights: {name} ×{count}."],
+    "zh-Hant": ["必用燈影", "請依清單使用燈影：{name} ×{count}。"],
+    "zh-Hans": ["必用灯影", "请依清单使用灯影：{name} ×{count}。"],
+    ja: ["使う灯り", "一覧の灯りを使ってください：{name} ×{count}。"],
+    ko: ["필요한 등불", "목록의 등불을 사용하세요: {name} ×{count}."],
+    es: ["Luces necesarias", "Usa las luces indicadas: {name} ×{count}."],
+    "pt-BR": ["Luzes necessárias", "Use as luzes indicadas: {name} ×{count}."],
+    fr: ["Lumières requises", "Utilisez les lumières indiquées : {name} ×{count}."],
+    de: ["Benötigte Lichter", "Nutze die angegebenen Lichter: {name} ×{count}."],
+    it: ["Luci necessarie", "Usa le luci indicate: {name} ×{count}."],
+    ru: ["Нужные огни", "Используйте указанные огни: {name} ×{count}."],
+    hi: ["ज़रूरी दीप", "सूची वाले दीप लगाएँ: {name} ×{count}।"],
+    ar: ["الفوانيس المطلوبة", "استخدم الفوانيس المدرجة: {name} ×{count}."],
+  };
+  const rosterText = (index, values = {}) => (rosterCopy[state.locale] || rosterCopy.en)[index]
+    .replace(/\{(\w+)\}/g, (_, key) => values[key] ?? "");
   const routeStyle = document.createElement("style");
   routeStyle.textContent = `
     #battleScreen #resultScreen[hidden]{display:none!important}
@@ -99,8 +116,15 @@
     #battleContent .clue-pair .chain-icon{width:32px;height:32px}
     #battleContent .clue-link{border-color:#607795}
     #battleContent .clue-link.is-linked{border-color:#9de7c5;background:#194b42}
-    #battleContent .chain-card>strong{flex-wrap:nowrap;min-height:30px}
-    .route-edit-toggle{margin-inline-start:auto;min-height:30px;max-width:56%;padding:3px 7px;border:1px solid #8ba0b6;border-radius:3px;background:#213c54;color:#f6f1df;font-size:11px;line-height:1.15;transition:background-color .16s,border-color .16s}
+    #battleContent .chain-card>strong{flex-wrap:nowrap;min-height:44px}
+    .route-edit-toggle{margin-inline-start:auto;min-height:max(46px,calc(46px * var(--wp-battle-canvas-inverse-scale,1)));max-width:56%;padding:3px 7px;border:1px solid #8ba0b6;border-radius:3px;background:#213c54;color:#f6f1df;font-size:11px;line-height:1.15;transition:background-color .16s,border-color .16s}
+    #battleContent .chain-slot{min-height:max(46px,calc(46px * var(--wp-battle-canvas-inverse-scale,1)))}
+    .route-roster{display:flex;flex-wrap:wrap;align-items:center;gap:3px 7px;margin:6px 0 0;font-size:11px;line-height:1.2}
+    .route-roster-label{color:#e6e2d4}
+    .route-roster-item{display:inline-flex;align-items:center;gap:2px;border-bottom:2px solid #f4c86a;color:#f4c86a}
+    .route-roster-item.is-satisfied{border-color:#8adbc5;color:#8adbc5}
+    .route-roster-item .chain-icon{width:20px;height:20px}
+    .route-roster-item .roster-name{font-size:10px}
     .route-edit-toggle[aria-pressed=true]{border-color:#ffe08a;background:#685326;color:#fff4ca}
     #battleContent .chain-slot.is-swap-picked{outline:2px solid #ffe08a;outline-offset:-3px;background:#685326}
     #battleContent .chain-slot.is-linked-edge:before{background:#9de7c5;box-shadow:0 0 7px #9de7c5}
@@ -115,23 +139,28 @@
     .route-star-budget{color:#ffe08a;font-size:12px;letter-spacing:2px;margin-inline-start:7px}
     .clue-compact-hint{display:none}
     @media(prefers-reduced-motion:reduce){.route-edit-toggle{transition:none}}
+    @media(max-width:500px){
+      #battleContent.is-dense .lantern-choice{grid-template-columns:auto minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:4px;padding:4px}
+      #battleContent.is-dense .lantern-choice .lantern-icon{width:32px;height:32px;filter:none}
+      #battleContent.is-dense .lantern-choice b{font-size:11px;align-self:center}
+    }
     @media(min-width:700px) and (max-height:560px){
-      #battleContent{grid-template-rows:minmax(42px,1fr) 76px 94px 44px;gap:4px}
+      #battleContent{grid-template-rows:minmax(24px,1fr) 100px 94px 44px;gap:4px;padding:4px}
       #battleContent .clue-card{grid-column:1;grid-row:1/4}
       #battleContent .battle-copy{grid-column:2;grid-row:1;font-size:11px}
       #battleContent .battle-rule,#battleContent .battle-hint{font-size:11px;line-height:1.2}
       #battleContent .chain-card{grid-column:2;grid-row:2;padding:4px}
-      #battleContent .chain-list{height:34px}
+      #battleContent .chain-list{height:44px}
       #battleContent .lantern-grid{grid-column:2;grid-row:3}
       #battleContent .battle-status{grid-column:1;grid-row:4}
       #battleContent .battle-actions{grid-column:2;grid-row:4}
       #battleContent .clue-detailed-hint{display:none}
-      #battleContent .clue-compact-hint{display:inline}
+      #battleContent .clue-compact-hint{display:none}
       #battleContent .lantern-choice{grid-template-columns:auto minmax(0,1fr);grid-template-rows:1fr;min-height:0;padding:4px}
       #battleContent .lantern-choice .lantern-icon{width:38px;height:38px}
       #battleContent .lantern-choice b{align-self:center;font-size:11px}
       #battleContent .clue-pair .chain-icon{width:25px;height:25px}
-      .route-edit-toggle{font-size:10px;min-height:26px}
+      .route-edit-toggle{font-size:10px}
     }
     @media(orientation:landscape) and (max-height:460px){
       #battleScreen #resultScreen:not([hidden]){display:grid!important;grid-template-columns:80px minmax(0,1fr);grid-template-rows:28px 28px 28px minmax(32px,1fr) 28px 44px;align-content:stretch;justify-content:stretch;align-items:center;gap:4px 10px;padding:8px!important}
@@ -236,6 +265,7 @@
   let stageBrowseIndex = 0;
   let stageRailResizeObserver = null;
   let stageProgressSnapshot = null;
+  let stageBestsSnapshot = {};
   const centerStageAfterViewportChange = () => {
     if (state.screen === "stage") requestAnimationFrame(() => stageRailController?.center(stageBrowseIndex));
   };
@@ -246,6 +276,21 @@
     return value;
   };
   const spanHint = () => (spanCopy[state.locale] || spanCopy.en)[1];
+  const spanBrief = () => ({
+    en: "+2: one light between. +3: two between. Wind-turn reverses arrows.",
+    "zh-Hant": "+2：中間隔一盞；+3：隔兩盞。風轉時箭頭反向。",
+    "zh-Hans": "+2：中间隔一盏；+3：隔两盏。风转时箭头反向。",
+    ja: "+2は間に1つ、+3は2つ。逆風では矢印を逆読み。",
+    ko: "+2는 사이에 하나, +3은 둘. 역풍은 화살표를 거꾸로 읽어요.",
+    es: "+2: una luz entre ambas. +3: dos. El viento invierte las flechas.",
+    "pt-BR": "+2: uma luz entre elas. +3: duas. O vento inverte as setas.",
+    fr: "+2 : une lumière entre les deux. +3 : deux. Le vent inverse les flèches.",
+    de: "+2: ein Licht dazwischen. +3: zwei. Gegenwind kehrt Pfeile um.",
+    it: "+2: una luce in mezzo. +3: due. Il vento inverte le frecce.",
+    ru: "+2: один огонь между ними. +3: два. Ветер разворачивает стрелки.",
+    hi: "+2: बीच में एक दीप। +3: दो। उलटी हवा में तीर उलटे पढ़ें।",
+    ar: "+2: فانوس بينهما. +3: فانوسان. الرياح تعكس الأسهم.",
+  }[state.locale] || "+2: one light between. +3: two between. Wind-turn reverses arrows.");
   const clueText = ({ previous, name, distance = 1 }) => distance === 1
     ? t("clueFollow", { previous: t(previous), name: t(name) })
     : (spanCopy[state.locale] || spanCopy.en)[0].replaceAll("{previous}", t(previous)).replaceAll("{name}", t(name)).replaceAll("{steps}", String(distance));
@@ -363,7 +408,7 @@
   const renderStages = ({ entry = false } = {}) => {
     const rail = $("stageList");
     const progress = stageProgressSnapshot = readProgress();
-    const stageBests = readStageBests();
+    stageBestsSnapshot = readStageBests();
     if (entry) stageBrowseIndex = state.campaignRun ? 0 : progress.highestUnlocked - 1;
     rail.setAttribute("aria-label", `${t("stageAll")} · ${t("progressBody", { unlocked: progress.highestUnlocked, total: paths.length })}`);
     // The shared rail skin enables smooth scrolling for legacy CSS snap rails.
@@ -398,7 +443,7 @@
       for (let spot = 0; spot < item.target.length; spot += 1) pips.append(document.createElement("i"));
       const best = document.createElement("span");
       best.className = "stage-card-best";
-      const bestChecks = stageBests[String(index + 1)];
+      const bestChecks = stageBestsSnapshot[String(index + 1)];
       best.textContent = bestChecks
         ? t("stageBest", { count: bestChecks, stars: starMarks(starCountForChecks(bestChecks)) })
         : t("noBest");
@@ -438,11 +483,12 @@
   const renderBattle = () => {
     const item = paths[state.path];
     const target = expectedTarget(item);
+    $("battleContent").classList.toggle("is-dense", routeClues(item, state.path).length >= 3);
     $("roundLabel").textContent = t("stageRound", { n: state.path + 1, total: paths.length });
     $("battleRule").textContent = t(item.ruleKey, ruleVars(item));
     const hint = $("battleHint");
     if (item.clueSteps) {
-      const detailed = Object.assign(document.createElement("span"), { className: "clue-detailed-hint", textContent: spanHint() });
+      const detailed = Object.assign(document.createElement("span"), { className: "clue-detailed-hint", textContent: spanBrief() });
       const compact = Object.assign(document.createElement("span"), { className: "clue-compact-hint", textContent: t("clueHint") });
       compact.setAttribute("aria-hidden", "true"); hint.replaceChildren(detailed, compact);
       hint.setAttribute("aria-label", spanHint()); hint.title = spanHint();
@@ -465,6 +511,8 @@
         const button = document.createElement("button");
         button.type = "button"; button.className = "clue-link"; button.dataset.clueIndex = String(index);
         button.dataset.clueDistance = String(distance);
+        button.dataset.clueFrom = item.reverse ? name : previous;
+        button.dataset.clueTo = item.reverse ? previous : name;
         const visual = document.createElement("span"); visual.className = "clue-pair"; visual.dir = "ltr";
         const arrow = Object.assign(document.createElement("span"), { className: "clue-arrow", textContent: "→" });
         if (distance > 1) arrow.style.width = "32px";
@@ -479,6 +527,23 @@
       }));
       clueList.dataset.deck = clueDeckKey;
     }
+    let roster = $("routeRoster");
+    if (!roster) {
+      roster = document.createElement("div"); roster.id = "routeRoster"; roster.className = "route-roster";
+      clueList.after(roster);
+    }
+    const rosterLabel = Object.assign(document.createElement("span"), { className: "route-roster-label", textContent: rosterText(0) });
+    // Canonical animal order discloses the multiset, never the route order.
+    roster.replaceChildren(rosterLabel, ...lanterns.filter(lantern => target.includes(lantern.id)).map(lantern => {
+      const count = target.filter(id => id === lantern.id).length;
+      const used = state.chain.filter(id => id === lantern.id).length;
+      const chip = document.createElement("span"); chip.className = `route-roster-item${used === count ? " is-satisfied" : ""}`;
+      chip.dataset.requiredLantern = lantern.id; chip.dataset.requiredCount = String(count);
+      chip.title = `${t(lantern.key)} ×${count}`;
+      chip.append(icon(lantern, "chain-icon"), Object.assign(document.createElement("span"), { className: "roster-name", textContent: t(lantern.key) }),
+        Object.assign(document.createElement("span"), { textContent: `×${count}` }));
+      return chip;
+    }));
     const joined = linkedClues();
     clueList.querySelectorAll(".clue-link").forEach((button, index) => {
       const wasJoined = button.classList.contains("is-linked");
@@ -560,7 +625,7 @@
       slot.setAttribute("aria-hidden", String(!lantern));
       if (lantern) {
         slot.setAttribute("aria-label", state.swapMode ? `${editText(0)}: ${index + 1} · ${t(lantern.key)}` : t("undoLantern", { position: index + 1, name: t(lantern.key) }));
-      }
+      } else slot.removeAttribute("aria-label");
       if (changed || !slot.children.length) slot.replaceChildren(...(lantern ? [icon(lantern, "chain-icon")] : []),
         Object.assign(document.createElement("span"), { className: "chain-position", textContent: String(index + 1) }));
       if (state.motionSlot === index) flash(slot);
@@ -805,19 +870,27 @@
     state.checks += 1;
     state.sessionChecks += 1;
     renderBattle();
-    const firstMismatch = target.findIndex((id, index) => id !== state.chain[index]);
     const decoyChosen = item.decoy && state.chain.includes(item.decoy);
-    track("check", { path: state.path + 1, checks: state.sessionChecks, correct: firstMismatch < 0 && !decoyChosen });
+    const missing = lanterns.find(({ id }) => state.chain.filter(entry => entry === id).length < target.filter(entry => entry === id).length);
+    const failedClue = linkedClues().findIndex(joined => !joined);
+    track("check", { path: state.path + 1, checks: state.sessionChecks, correct: !missing && failedClue < 0 && !decoyChosen });
     if (decoyChosen) {
-      state.errorSlot = state.chain.indexOf(item.decoy); state.verifiedPrefix = Math.max(0, firstMismatch);
+      state.errorSlot = state.chain.indexOf(item.decoy); state.verifiedPrefix = 0;
       renderBattle(); flash($("chainList").children[state.errorSlot]); audio?.play("feedback.error");
       setBattleStatus(t("decoyWrong", { name: t(item.decoy) }), "error");
       return;
     }
-    if (firstMismatch >= 0) {
-      state.errorSlot = firstMismatch; state.verifiedPrefix = firstMismatch;
-      renderBattle(); flash($("chainList").children[firstMismatch]); audio?.play("feedback.error");
-      setBattleStatus(t("wrong", { n: firstMismatch + 1 }), "error");
+    if (missing) {
+      state.errorSlot = state.chain.findIndex(id => state.chain.filter(entry => entry === id).length > target.filter(entry => entry === id).length);
+      state.verifiedPrefix = 0;
+      renderBattle(); audio?.play("feedback.error");
+      setBattleStatus(rosterText(1, { name: t(missing.key), count: target.filter(id => id === missing.id).length }), "error");
+      return;
+    }
+    if (failedClue >= 0) {
+      state.errorSlot = -1; state.verifiedPrefix = 0; state.focusedClue = failedClue;
+      renderBattle(); audio?.play("feedback.error");
+      setBattleStatus(clueText(routeClues(item, state.path)[failedClue]), "error");
       return;
     }
     setBattleStatus(t("correct"), "success");
@@ -884,7 +957,14 @@
     stageRailController = null;
   });
   document.addEventListener("visibilitychange", () => { if (document.hidden) cancelEffects(); });
-  window.setTimeout(() => { $("loadingPanel").hidden = true; show("main"); applyLocale(); track("main_ready"); }, 260);
+  const revealMain = () => {
+    // Install the one persistent rail owner before Main becomes interactive;
+    // returning from Stage must not add a second set of document writers.
+    renderStages();
+    $("loadingPanel").hidden = true; show("main"); applyLocale(); track("main_ready");
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", revealMain, { once: true });
+  else revealMain();
   window.__ANIMAL_LANTERN_LATTICE_TEST__ = {
     paths,
     lanterns,
@@ -906,9 +986,13 @@
     const stageCanvas = stageScreen?.querySelector(".stage-canvas");
     stageScreen?.setAttribute("data-wp-logical-stage-canvas", "");
     stageScreen?.setAttribute("data-wp-canvas-max-width", "920");
+    stageScreen?.setAttribute("data-wp-frame-play-fill", "");
+    stageScreen?.setAttribute("data-wp-frame-logical-header", "stage");
     stageCanvas?.setAttribute("data-wp-standard-stage-screen", "");
     battleScreen?.setAttribute("data-wp-logical-battle-canvas", "");
     battleScreen?.setAttribute("data-wp-canvas-max-width", "920");
+    battleScreen?.setAttribute("data-wp-frame-play-fill", "");
+    battleScreen?.setAttribute("data-wp-frame-logical-header", "battle");
     // Use the shared scaler's compact envelope instead of shrinking a 788px
     // portrait reference into landscape and leaving unreadable controls.
     battleScreen?.setAttribute("data-wp-battle-landscape-width", "760");

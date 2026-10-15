@@ -53,20 +53,25 @@
   function planStrike(enemy, stats, run) {
     const build = traits(stats);
     const number = Math.max(0, run.playerTurn || 0) + 1;
-    const attack = enemy.phase === "brace-rage" && (run.enemyTurn || 0) % 2 === 0
+    const openingDamage = !run.openingApplied && enemy.openingHit
+      ? Math.max(1, enemy.openingHit - Math.floor(stats.armor / 2)) : 0;
+    const healthAfterOpening = run.armor - openingDamage;
+    const rawAttack = enemy.phase === "brace-rage" && (run.enemyTurn || 0) % 2 === 0
       ? Math.max(1, Math.ceil(stats.atk / 2)) : stats.atk;
+    const attack = healthAfterOpening > 0 ? rawAttack : 0;
     // Overdrive is paid only when it can actually pierce a live shield. Never
     // spend the last two HP or charge for an effect with no applicable target.
-    const piercing = run.approach === "overdrive" && run.enemyShield > 0 && run.armor > 2;
+    const piercing = run.approach === "overdrive" && run.enemyShield > 0 && healthAfterOpening > 2;
     const lifeCost = piercing ? 2 : 0;
     const shieldDamage = piercing ? 0 : Math.min(Math.max(0, run.enemyShield || 0), attack);
     const healthDamage = attack - shieldDamage;
     const reflected = healthDamage > 0 ? Math.max(0, enemy.reflect || 0) : 0;
     const interrupted = build.forge && number % 3 === 0;
-    const defeated = healthDamage >= run.enemyHp;
+    const defeated = attack > 0 && healthDamage >= run.enemyHp;
+    const exhausted = healthAfterOpening - lifeCost - reflected <= 0;
     const counter = counterDamage(enemy, stats, run);
-    return { number, attack, piercing, lifeCost, shieldDamage, healthDamage, reflected,
-      interrupted, defeated, counterDamage: defeated || interrupted ? 0 : counter.damage,
+    return { number, attack, piercing, lifeCost, openingDamage, shieldDamage, healthDamage, reflected,
+      interrupted, defeated, exhausted, counterDamage: defeated || interrupted || exhausted ? 0 : counter.damage,
       counter, cleanse: build.nature && stats.heal > 0 ? 2 : 0, relay: build.caravan };
   }
 

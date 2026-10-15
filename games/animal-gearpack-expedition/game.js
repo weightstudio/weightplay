@@ -120,12 +120,12 @@
   ];
   items.forEach((item,index)=>{item.name.es=spanishItemNames[index];});
   const regions = [
-    {name:["Gearwood Trail","齒輪森林小徑"],background:"../../assets/animal-gearpack-expedition-forest-bg.webp",boss:"Root Guardian"},
-    {name:["Moonlit Quarry","月光礦場"],background:"../../assets/animal-gearpack-expedition-bg-moonlit-quarry.webp",boss:"Crystal Warden"},
-    {name:["Clockwork Hollow","發條樹洞"],background:"../../assets/animal-gearpack-expedition-bg-clockwork-hollow.webp",boss:"Hollow Colossus"},
-    {name:["Ember Foundry","餘燼鑄造廠"],background:"../../assets/animal-gearpack-expedition-bg-ember-foundry.webp",boss:"Furnace Leviathan"},
-    {name:["Storm Observatory","風暴觀測台"],background:"../../assets/animal-gearpack-expedition-bg-storm-observatory.webp",boss:"Tempest Archon"},
-    {name:["Eclipse Vault","日蝕寶庫"],background:"../../assets/animal-gearpack-expedition-bg-eclipse-vault.webp",boss:"Eclipse Hoardmaster"}
+    {name:["Gearwood Trail","齒輪森林小徑"],background:"../../assets/animal-gearpack-expedition-v24/bg-forest.webp",boss:"Root Guardian"},
+    {name:["Moonlit Quarry","月光礦場"],background:"../../assets/animal-gearpack-expedition-v24/bg-moonlit-quarry.webp",boss:"Crystal Warden"},
+    {name:["Clockwork Hollow","發條樹洞"],background:"../../assets/animal-gearpack-expedition-v24/bg-clockwork-hollow.webp",boss:"Hollow Colossus"},
+    {name:["Ember Foundry","餘燼鑄造廠"],background:"../../assets/animal-gearpack-expedition-v24/bg-ember-foundry.webp",boss:"Furnace Leviathan"},
+    {name:["Storm Observatory","風暴觀測台"],background:"../../assets/animal-gearpack-expedition-v24/bg-storm-observatory.webp",boss:"Tempest Archon"},
+    {name:["Eclipse Vault","日蝕寶庫"],background:"../../assets/animal-gearpack-expedition-v24/bg-eclipse-vault.webp",boss:"Eclipse Hoardmaster"}
   ];
   const spanishRegions = [
     ["Sendero del Bosque Engranaje","Guardián Raíz"],
@@ -204,29 +204,29 @@
   stages.forEach((definition,index)=>{definition.name.push(spanishStages[index][0]);definition.rule.push(spanishStages[index][1]);});
 
   const enemyCatalog = {
-    scout:{name:["Shadow Fox Scout","暗影狐斥候"],hp:18,damage:5,asset:"../../assets/animal-gearpack-expedition-enemy-fox-scout.webp"},
-    ambusher:{name:["Thorn Fox Ambusher","荊棘狐伏擊手"],hp:20,damage:5,asset:"../../assets/animal-gearpack-expedition-enemy-fox-scout.webp",openingHit:3},
-    boar:{name:["Armored Boar","重甲野豬"],hp:26,damage:7,asset:"../../assets/animal-gearpack-expedition-enemy-armored-boar.webp"},
-    platedBoar:{name:["Ironplate Boar","鐵板野豬"],hp:29,damage:7,asset:"../../assets/animal-gearpack-expedition-enemy-armored-boar.webp",shield:7},
-    crow:{name:["Crystal Crow","水晶烏鴉"],hp:25,damage:6,asset:"../../assets/animal-gearpack-expedition-enemy-crystal-crow.webp"},
-    linkCrow:{name:["Prism Tax Crow","稜鏡稅羽鴉"],hp:26,damage:6,asset:"../../assets/animal-gearpack-expedition-enemy-crystal-crow.webp",isolation:1},
-    moonMoth:{name:["Moon Veil Moth","月幕蛾"],hp:27,damage:6,asset:"../../assets/animal-gearpack-expedition-enemy-crystal-crow.webp",suppressTag:"moon"},
-    prismRam:{name:["Prism Ram","稜鏡山羊"],hp:31,damage:7,asset:"../../assets/animal-gearpack-expedition-enemy-armored-boar.webp",shield:10},
-    gearJackal:{name:["Gear Jackal","發條胡狼"],hp:28,damage:5,asset:"../../assets/animal-gearpack-expedition-enemy-fox-scout.webp",rage:1},
-    magnetBeetle:{name:["Magnet Beetle","磁力甲蟲"],hp:30,damage:6,asset:"../../assets/animal-gearpack-expedition-enemy-armored-boar.webp",isolation:2},
-    rustCrow:{name:["Rustwing Crow","鏽翼烏鴉"],hp:29,damage:6,asset:"../../assets/animal-gearpack-expedition-enemy-crystal-crow.webp",corrosion:1},
-    steamToad:{name:["Steam Toad","蒸汽蟾蜍"],hp:33,damage:7,asset:"../../assets/animal-gearpack-expedition-enemy-armored-boar.webp",corrosion:2},
-    furnaceBoar:{name:["Furnace Boar","熔爐野豬"],hp:35,damage:7,asset:"../../assets/animal-gearpack-expedition-enemy-armored-boar.webp",rowHeat:1},
-    galeScout:{name:["Gale Fox Scout","疾風狐斥候"],hp:30,damage:6,asset:"../../assets/animal-gearpack-expedition-enemy-fox-scout.webp",openingHit:5},
-    coilLynx:{name:["Coil Lynx","線圈山貓"],hp:34,damage:7,asset:"../../assets/animal-gearpack-expedition-enemy-crystal-crow.webp",overload:true},
-    eclipseMimic:{name:["Eclipse Mimic","日蝕擬態獸"],hp:36,damage:7,asset:"../../assets/animal-gearpack-expedition-enemy-fox-scout.webp",mimic:true},
-    tagSealer:{name:["Vault Tag Sealer","寶庫材質封印獸"],hp:37,damage:7,asset:"../../assets/animal-gearpack-expedition-enemy-crystal-crow.webp",rotatingSeal:true},
-    rootGuardian:{name:["Root Guardian","樹根守衛"],hp:62,damage:10,asset:"../../assets/animal-gearpack-expedition-enemy-root-guardian.webp",boss:true,regrow:6,counterTag:"nature"},
-    crystalWarden:{name:["Crystal Warden","水晶守衛"],hp:72,damage:11,asset:"../../assets/animal-gearpack-expedition-boss-crystal-warden.webp",boss:true,shield:18,reflect:4},
-    hollowColossus:{name:["Hollow Colossus","發條巨像"],hp:82,damage:10,asset:"../../assets/animal-gearpack-expedition-boss-hollow-colossus.webp",boss:true,phase:"brace-rage"},
-    furnaceLeviathan:{name:["Furnace Leviathan","熔爐巨獸"],hp:92,damage:11,asset:"../../assets/animal-gearpack-expedition-boss-furnace-leviathan.webp",boss:true,rowHeat:2,corrosion:1},
-    tempestArchon:{name:["Tempest Archon","風暴統領"],hp:102,damage:11,asset:"../../assets/animal-gearpack-expedition-boss-tempest-archon.webp",boss:true,isolation:3,openingHit:4},
-    eclipseHoardmaster:{name:["Eclipse Hoardmaster","日蝕藏主"],hp:116,damage:12,asset:"../../assets/animal-gearpack-expedition-boss-eclipse-hoardmaster.webp",boss:true,isolation:2,rotatingSeal:true,phase:"vault"}
+    scout:{name:["Shadow Fox Scout","暗影狐斥候"],hp:18,damage:5,asset:"../../assets/animal-rune-tactics-enemy-rune-fox-block-v1.webp"},
+    ambusher:{name:["Thorn Fox Ambusher","荊棘狐伏擊手"],hp:20,damage:5,asset:"../../assets/animal-rune-tactics-enemy-rune-fox-block-v1.webp",openingHit:3},
+    boar:{name:["Armored Boar","重甲野豬"],hp:26,damage:7,asset:"../../assets/animal-rune-reels/block-v1/enemy-armored-boar-block-v1.webp"},
+    platedBoar:{name:["Ironplate Boar","鐵板野豬"],hp:29,damage:7,asset:"../../assets/animal-rune-reels/block-v1/enemy-armored-boar-block-v1.webp",shield:7},
+    crow:{name:["Crystal Crow","水晶烏鴉"],hp:25,damage:6,asset:"../../assets/animal-rune-reels/block-v1/enemy-crystal-crow-block-v1.webp"},
+    linkCrow:{name:["Prism Tax Crow","稜鏡稅羽鴉"],hp:26,damage:6,asset:"../../assets/animal-rune-reels/block-v1/enemy-crystal-crow-block-v1.webp",isolation:1},
+    moonMoth:{name:["Moon Veil Moth","月幕蛾"],hp:27,damage:6,asset:"../../assets/animal-rune-tactics-enemy-moth-block-v1.webp",suppressTag:"moon"},
+    prismRam:{name:["Prism Ram","稜鏡山羊"],hp:31,damage:7,asset:"../../assets/animal-rune-tactics-enemy-ram-block-v1.webp",shield:10},
+    gearJackal:{name:["Gear Jackal","發條胡狼"],hp:28,damage:5,asset:"../../assets/animal-rune-tactics-enemy-rune-fox-block-v1.webp",rage:1},
+    magnetBeetle:{name:["Magnet Beetle","磁力甲蟲"],hp:30,damage:6,asset:"../../assets/animal-gearpack-expedition-v24/enemy-magnet-beetle.webp",isolation:2},
+    rustCrow:{name:["Rustwing Crow","鏽翼烏鴉"],hp:29,damage:6,asset:"../../assets/animal-rune-reels/block-v1/enemy-crystal-crow-block-v1.webp",corrosion:1},
+    steamToad:{name:["Steam Toad","蒸汽蟾蜍"],hp:33,damage:7,asset:"../../assets/animal-gearpack-expedition-v24/enemy-steam-toad.webp",corrosion:2},
+    furnaceBoar:{name:["Furnace Boar","熔爐野豬"],hp:35,damage:7,asset:"../../assets/animal-rune-reels/block-v1/enemy-armored-boar-block-v1.webp",rowHeat:1},
+    galeScout:{name:["Gale Fox Scout","疾風狐斥候"],hp:30,damage:6,asset:"../../assets/animal-rune-tactics-enemy-rune-fox-block-v1.webp",openingHit:5},
+    coilLynx:{name:["Coil Lynx","線圈山貓"],hp:34,damage:7,asset:"../../assets/animal-gearpack-expedition-v24/enemy-coil-lynx.webp",overload:true},
+    eclipseMimic:{name:["Eclipse Mimic","日蝕擬態獸"],hp:36,damage:7,asset:"../../assets/animal-rune-tactics-enemy-rune-fox-block-v1.webp",mimic:true},
+    tagSealer:{name:["Vault Tag Sealer","寶庫材質封印獸"],hp:37,damage:7,asset:"../../assets/animal-rune-reels/block-v1/enemy-crystal-crow-block-v1.webp",rotatingSeal:true},
+    rootGuardian:{name:["Root Guardian","樹根守衛"],hp:62,damage:10,asset:"../../assets/animal-rune-reels/block-v1/enemy-root-guardian-block-v1.webp",boss:true,regrow:6,counterTag:"nature"},
+    crystalWarden:{name:["Crystal Warden","水晶守衛"],hp:72,damage:11,asset:"../../assets/animal-gearpack-expedition-v24/boss-crystal-warden.webp",boss:true,shield:18,reflect:4},
+    hollowColossus:{name:["Hollow Colossus","發條巨像"],hp:82,damage:10,asset:"../../assets/animal-gearpack-expedition-v24/boss-hollow-colossus.webp",boss:true,phase:"brace-rage"},
+    furnaceLeviathan:{name:["Furnace Leviathan","熔爐巨獸"],hp:92,damage:11,asset:"../../assets/animal-gearpack-expedition-v24/boss-furnace-leviathan.webp",boss:true,rowHeat:2,corrosion:1},
+    tempestArchon:{name:["Tempest Archon","風暴統領"],hp:102,damage:11,asset:"../../assets/animal-gearpack-expedition-v24/boss-tempest-archon.webp",boss:true,isolation:3,openingHit:4},
+    eclipseHoardmaster:{name:["Eclipse Hoardmaster","日蝕藏主"],hp:116,damage:12,asset:"../../assets/animal-gearpack-expedition-v24/boss-eclipse-hoardmaster.webp",boss:true,isolation:2,rotatingSeal:true,phase:"vault"}
   };
   const spanishEnemyNames = {
     scout:"Explorador zorro de sombra",ambusher:"Emboscador zorro de espinas",boar:"Jabalí acorazado",platedBoar:"Jabalí de placas de hierro",
@@ -680,7 +680,7 @@
   function spendDiamonds(cost){if(practiceMode)return false;if(window.WeightPlayWallet)return window.WeightPlayWallet.spendDiamonds(cost);if(progress.diamonds<cost)return false;progress.diamonds-=cost;saveProgress();return true;}
   function itemById(id){return items.find((item)=>item.id===id);}
   function itemName(item){return item.name[locale]||translateForLocale(item.name.en);}
-  function itemAsset(item){return `${ASSET}${item.id}.webp`;}
+  function itemAsset(item){return ["moon-charm","scout-lantern","spark-coil","thorn-whip"].includes(item.id)?`../../assets/animal-gearpack-expedition-v24/item-${item.id}.webp`:`${ASSET}${item.id}.webp`;}
   function setFeedback(text){const row=$("#feedbackRow");row.classList.remove("is-item-details");row.removeAttribute("title");row.removeAttribute("aria-label");row.textContent=text;}
   function setItemFeedback(item){
     const shape=shapeFor(item),width=Math.max(...shape.map(([x])=>x))+1,height=Math.max(...shape.map(([,y])=>y))+1;
@@ -804,7 +804,7 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
   }
 
   function enemyAt(room,stageIndex=selectedStage){const definition=stages[Math.max(0,Math.min(STAGE_COUNT-1,Number(stageIndex)||0))];const base=enemyCatalog[definition.enemies[Math.max(0,Math.min(ROOMS_PER_STAGE-1,Number(room)||0))]];const region=Math.floor(stageIndex/5),step=stageIndex%5;return {...base,id:definition.enemies[room],hp:base.hp+region*3+step*2,damage:base.damage+Math.floor(region/2)};}
-  function prepareEnemyState(enemy){if(!Number.isFinite(run.blueprintLevel))run.blueprintLevel=workshopLevel();run.enemyHp=enemy.hp;run.enemyMaxHp=enemy.hp;run.enemyShield=Math.max(0,Number(enemy.shield)||0);run.enemyTurn=0;run.playerTurn=0;run.approach=run.approach||"steady";run.corrosion=0;run.sealIndex=0;run.openingApplied=false;document.querySelectorAll(".actor").forEach(actor=>actor.classList.remove("is-defeated","is-hit","is-attacking"));}
+  function prepareEnemyState(enemy){if(!Number.isFinite(run.blueprintLevel))run.blueprintLevel=workshopLevel();run.enemyHp=enemy.hp;run.enemyMaxHp=enemy.hp;run.enemyShield=Math.max(0,Number(enemy.shield)||0);run.enemyTurn=0;run.playerTurn=0;run.approach=run.approach||"steady";run.corrosion=0;run.sealIndex=0;run.openingApplied=false;document.querySelectorAll(".actor").forEach(actor=>actor.classList.remove("is-defeated","is-hit","is-attacking","is-blocked","is-shield-break","is-staggered"));}
   async function requestRun(stageIndex=selectedStage){
     if(!practiceMode){newRun(stageIndex);return;}
     if(practiceStarting||!localPractice?.enabled)return;
@@ -841,33 +841,61 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
       atk:base.atk+links*2+blueprint.attack,armor:Math.max(0,base.armor+links+blueprint.armor-(run.corrosion||0)),heal:supply.healing+(supply.open.size?blueprint.heal:0)};
   }
   function renderPack(){const grid=$("#packGrid");grid.replaceChildren();const supply=Strategy.supplyAccess(run.placed,items),laneCells=new Set(supply.lanes.flatMap(lane=>lane.cells.map(([x,y])=>`${x},${y}`))),occupied=occupiedCells(),linked=linkedItems(),blueprint=blueprintSnapshot(),pending=selectedItem?itemById(selectedItem):null;for(let y=0;y<PACK_ROWS;y++)for(let x=0;x<PACK_COLS;x++){const cell=document.createElement("button");cell.type="button";cell.className="pack-cell";cell.dataset.x=x;cell.dataset.y=y;cell.disabled=resolving;if(laneCells.has(`${x},${y}`))cell.classList.add("is-supply-lane");const placed=occupied.get(`${x},${y}`);if(!placed&&pending&&canPlace(pending,x,y))cell.classList.add("is-valid");if(placed){cell.classList.add("is-occupied");const placementIndex=run.placed.indexOf(placed);if(supply.blocked.has(placementIndex))cell.classList.add("is-supply-blocked");if(supply.open.has(placementIndex))cell.classList.add("is-supply-open");if(linked.has(placed))cell.classList.add("is-adjacent");if(blueprint.members.has(placed))cell.classList.add("is-blueprint");if(placed.x===x&&placed.y===y){const img=document.createElement("img");img.className="placed-item";img.src=itemAsset(itemById(placed.id));img.alt=itemName(itemById(placed.id));cell.append(img);}cell.addEventListener("click",(event)=>{noteInput(event);pickUpPlaced(placed);});}else cell.addEventListener("click",(event)=>{noteInput(event);placeSelected(x,y);});grid.append(cell);}const tray=$("#itemTray");tray.replaceChildren();run.tray.forEach((id,index)=>{const item=itemById(id),button=document.createElement("button"),selected=index===selectedTrayIndex;button.type="button";button.disabled=resolving;button.className=`tray-item${selected?" is-selected":""}`;button.innerHTML=`<img src="${itemAsset(item)}" alt=""><span>${itemName(item)}</span>`;button.addEventListener("click",(event)=>{noteInput(event);if(resolving)return;selectedItem=id;selectedTrayIndex=index;rotated=false;setItemFeedback(item);renderBattle();});tray.append(button);});}
-  function mechanicText(enemy,s){const parts=[];if(run.enemyShield>0)parts.push(`${t("shielded")} ${run.enemyShield}`);if(enemy.openingHit)parts.push(`${t("openingStrike")} ${enemy.openingHit}`);if(enemy.isolation&&s.isolated)parts.push(`${s.isolated} ${t("isolated")}`);if(enemy.corrosion)parts.push(`${t("corrosion")} ${run.corrosion||0}`);if(enemy.rowHeat&&s.topRow)parts.push(`${t("heat")} ${s.topRow}`);if(s.seal)parts.push(`${t("seal")} ${t(`tag${s.seal[0].toUpperCase()}${s.seal.slice(1)}`)}`);if(enemy.phase)parts.push(t("bossPhase"));parts.push(t("strategySupply",{heal:s.heal,blocked:s.supply.blocked.size}));return parts.join(" · ");}
+  function mechanicText(enemy,s){const parts=[];if(run.enemyShield>0)parts.push(`${t("shielded")} ${run.enemyShield}`);if(enemy.openingHit&&!run.openingApplied)parts.push(`${t("openingStrike")} ${Math.max(1,enemy.openingHit-Math.floor(s.armor/2))}`);if(enemy.isolation&&s.isolated)parts.push(`${s.isolated} ${t("isolated")}`);if(enemy.corrosion)parts.push(`${t("corrosion")} ${run.corrosion||0}`);if(enemy.rowHeat&&s.topRow)parts.push(`${t("heat")} ${s.topRow}`);if(s.seal)parts.push(`${t("seal")} ${t(`tag${s.seal[0].toUpperCase()}${s.seal.slice(1)}`)}`);if(enemy.phase)parts.push(t("bossPhase"));parts.push(t("strategySupply",{heal:s.heal,blocked:s.supply.blocked.size}));return parts.join(" · ");}
   function encounterPressureText(enemy,s){const parts=[];if(enemy.shield)parts.push(`${t("shielded")} ${enemy.shield}`);if(enemy.openingHit)parts.push(`${t("openingStrike")} ${enemy.openingHit}`);if(enemy.isolation&&s.isolated)parts.push(`${s.isolated} ${t("isolated")}`);if(enemy.corrosion)parts.push(`${t("corrosion")} ${Math.max(1,run.corrosion||enemy.corrosion)}`);if(enemy.rowHeat&&s.topRow)parts.push(`${t("heat")} ${s.topRow}`);if(s.seal)parts.push(`${t("seal")} ${t(`tag${s.seal[0].toUpperCase()}${s.seal.slice(1)}`)}`);if(enemy.phase)parts.push(t("bossPhase"));return parts.join(" · ")||localized(stages[run.stage].rule);}
   function encounterLessonText(enemy,s){const build=s.links?t("encounterBuildLinked",{links:s.links,attack:s.links*2,defense:s.links}):t("encounterBuildNoLinks"),pressure=encounterPressureText(enemy,s).replace(/[.!?。！？]+$/u,"");return t("encounterLesson",{enemy:localized(enemy.name),health:`${Math.max(0,Math.ceil(run.armor))} ${t("health")}`,build,pressure});}
-  function packPlanText(enemy,s){const next=Strategy.planStrike(enemy,s,run);return t("strategyForecast",{hit:next.healthDamage,shield:next.shieldDamage,cost:next.lifeCost+next.reflected,counter:next.counterDamage});}
+  function packPlanText(enemy,s){const next=Strategy.planStrike(enemy,s,run);return t("strategyForecast",{hit:next.healthDamage,shield:next.shieldDamage,cost:next.openingDamage+next.lifeCost+next.reflected,counter:next.counterDamage});}
   function openStrategyPlan(){
     if(!run||resolving)return;
-    const s=stats(),enemy=enemyAt(run.room,run.stage),choices=showModal(t("strategyPlan"),`${t("strategyGuide")} · ${t("strategySupply",{heal:s.heal,blocked:s.supply.blocked.size})} · ${packPlanText(enemy,s)}`);
+    const s=stats(),enemy=enemyAt(run.room,run.stage),builds=s.blueprints.map(build=>t(build.nameKey)).join(" · ")||t("blueprintNone"),choices=showModal(t("strategyPlan"),`${builds} · ${t("strategyGuide")} · ${t("strategySupply",{heal:s.heal,blocked:s.supply.blocked.size})} · ${packPlanText(enemy,s)}`);
     const choose=approach=>{run.approach=approach;saveRun();closeModal();renderBattle();};
-    choices.append(choiceButton(`${run.approach==="steady"?"✓ ":""}${t("strategySteady")}`,()=>choose("steady")));
-    const overdrive=choiceButton(`${run.approach==="overdrive"?"✓ ":""}${t("strategyOverdrive")}`,()=>choose("overdrive"));
+    choices.append(choiceButton(`${run.approach==="steady"?"✓ ":""}${t("strategySteady")}`,()=>choose("steady"),itemById("leaf-buckler")));
+    const overdrive=choiceButton(`${run.approach==="overdrive"?"✓ ":""}${t("strategyOverdrive")}`,()=>choose("overdrive"),itemById("spark-coil"));
     overdrive.disabled=run.blueprintLevel<2;if(overdrive.disabled)overdrive.textContent=t("strategyLocked");choices.append(overdrive);
     choices.append(choiceButton(t("continue"),()=>closeModal()));modalEscapeHandler=()=>closeModal();focusModalChoice();
   }
   function syncHealthMeter(node,value,max,label,valueText){const safeMax=Math.max(1,Math.ceil(Number(max)||1)),safeValue=Math.max(0,Math.min(safeMax,Math.ceil(Number(value)||0)));node.setAttribute("role","meter");node.setAttribute("aria-valuemin","0");node.setAttribute("aria-valuenow",String(safeValue));node.setAttribute("aria-valuemax",String(safeMax));node.setAttribute("aria-label",label);node.setAttribute("aria-valuetext",valueText);node.querySelector("span").style.width=`${safeValue/safeMax*100}%`;}
   function updateFightButtonLabel(enemy,s){const button=$("#fightBtn");if(resolving){button.setAttribute("aria-label",t(combatPaused?"resumeCombat":"autoFighting"));return;}button.setAttribute("aria-label",run.placed.length?t("fightReadyLabel",{enemy:localized(enemy.name),hp:Math.max(0,Math.ceil(run.enemyHp)),attack:s.atk,defense:s.armor,mechanic:mechanicText(enemy,s)}):t("fightBlockedLabel"));}
-  function renderBattle(updatePack=true){if(!run)return;$(".encounter-scene").classList.toggle("is-paused",combatPaused);const enemy=enemyAt(run.room,run.stage),s=stats(),selected=selectedItem?itemById(selectedItem):null,enemyHealth=Math.max(0,Math.ceil(run.enemyHp)),playerHealth=Math.max(0,Math.ceil(run.armor)),enemyName=localized(enemy.name);$("#roomLabel").textContent=`${t("stage")} ${run.stage+1}/30 · ${t("encounter")} ${run.room+1}/5`;$("#armorLabel").textContent=`${t("health")} ${playerHealth}/${run.maxArmor}`;$("#objectiveText").textContent=`${enemyName} · ${mechanicText(enemy,s)}`;const plan=packPlanText(enemy,s);$("#objectivePlan").textContent=plan;$("#objectivePlan").title=plan;$("#objectivePlan").setAttribute("aria-label",plan);$("#currencyText").textContent=`${t("gold")} ${run.gold} · ${t("diamonds")} ${diamondBalance()}`;$("#statsText").textContent=`${t("attack")} ${s.atk} · ${t("defense")} ${s.armor} · ${t("links")} ${s.links}`;$(".encounter-scene").style.backgroundImage=`url("${regions[run.region].background}")`;$("#enemyActor").src=enemy.asset;$("#enemyActor").alt=enemyName;syncHealthMeter($("#enemyHpBar"),enemyHealth,run.enemyMaxHp,enemyName,`${enemyName} ${enemyHealth}/${run.enemyMaxHp}${run.enemyShield?`, ${t("shielded")} ${run.enemyShield}`:""}`);syncHealthMeter($("#playerHpBar"),playerHealth,run.maxArmor,t("health"),`${t("health")} ${playerHealth}/${run.maxArmor}`);$("#fightBtn").textContent=resolving?t(combatPaused?"resumeCombat":"autoFighting"):t("fight");$("#fightBtn").disabled=resolving&&!combatPaused;$("#rotateBtn").disabled=resolving||!selectedItem;$("#sellBtn").disabled=resolving||!selectedItem;const utility=$("#pauseBtn");utility.textContent=resolving?(combatPaused?"▶":"❚❚"):"≡";utility.setAttribute("aria-label",t(resolving?(combatPaused?"resumeCombat":"pauseCombatAction"):"strategyPlan"));utility.title=utility.getAttribute("aria-label");if(selected){const next=shapeDimensions(selected,!rotated),value=Math.max(1,Math.floor(selected.gold/2));$("#rotateBtn").setAttribute("aria-label",t("rotateItemLabel",{item:itemName(selected),...next}));$("#sellBtn").setAttribute("aria-label",t("sellItemLabel",{item:itemName(selected),value}));}else{$("#rotateBtn").removeAttribute("aria-label");$("#sellBtn").removeAttribute("aria-label");}$("#battleBackBtn").disabled=false;if(updatePack)renderPack();updateFightButtonLabel(enemy,s);}
+  function renderBattle(updatePack=true){if(!run)return;$(".encounter-scene").classList.toggle("is-paused",combatPaused);const enemy=enemyAt(run.room,run.stage),s=stats(),selected=selectedItem?itemById(selectedItem):null,enemyHealth=Math.max(0,Math.ceil(run.enemyHp)),playerHealth=Math.max(0,Math.ceil(run.armor)),enemyName=localized(enemy.name);$("#roomLabel").textContent=`${t("stage")} ${run.stage+1}/30 · ${t("encounter")} ${run.room+1}/5`;$("#armorLabel").textContent=`${t("health")} ${playerHealth}/${run.maxArmor}`;$("#objectiveText").textContent=`${enemyName} · ${mechanicText(enemy,s)}`;const plan=packPlanText(enemy,s);const next=Strategy.planStrike(enemy,s,run),healed=next.defeated||next.interrupted||next.exhausted?0:Math.min(s.heal,Math.max(0,run.maxArmor-run.armor+next.openingDamage+next.lifeCost+next.reflected));$("#objectivePlan").textContent=t("strategyCounter",{counter:next.counterDamage,cost:next.openingDamage+next.lifeCost+next.reflected,heal:healed});$("#objectivePlan").title=plan;$("#objectivePlan").setAttribute("aria-label",plan);renderCurrency($("#currencyText"),run.gold,diamondBalance());renderStats($("#statsText"),s);$(".encounter-scene").style.backgroundImage=`url("${regions[run.region].background}")`;$("#enemyActor").src=enemy.asset;$("#enemyActor").alt=enemyName;syncHealthMeter($("#enemyHpBar"),enemyHealth,run.enemyMaxHp,enemyName,`${enemyName} ${enemyHealth}/${run.enemyMaxHp}${run.enemyShield?`, ${t("shielded")} ${run.enemyShield}`:""}`);syncHealthMeter($("#playerHpBar"),playerHealth,run.maxArmor,t("health"),`${t("health")} ${playerHealth}/${run.maxArmor}`);$("#fightBtn").textContent=resolving?t(combatPaused?"resumeCombat":"autoFighting"):t("fight");$("#fightBtn").disabled=resolving&&!combatPaused;$("#rotateBtn").disabled=resolving||!selectedItem;$("#sellBtn").disabled=resolving||!selectedItem;const utility=$("#pauseBtn");utility.textContent=resolving?(combatPaused?"▶":"❚❚"):t("strategyPlan");utility.setAttribute("aria-label",t(resolving?(combatPaused?"resumeCombat":"pauseCombatAction"):"strategyPlan"));utility.title=utility.getAttribute("aria-label");if(selected){const next=shapeDimensions(selected,!rotated),value=Math.max(1,Math.floor(selected.gold/2));$("#rotateBtn").setAttribute("aria-label",t("rotateItemLabel",{item:itemName(selected),...next}));$("#sellBtn").setAttribute("aria-label",t("sellItemLabel",{item:itemName(selected),value}));}else{$("#rotateBtn").removeAttribute("aria-label");$("#sellBtn").removeAttribute("aria-label");}$("#battleBackBtn").disabled=false;if(updatePack)renderPack();updateFightButtonLabel(enemy,s);}
+  function renderStats(node,stats){
+    node.setAttribute("role","img");
+    if(!node.querySelector("img")){
+      node.replaceChildren();
+      [["atk",itemAsset(itemById("forge-hammer"))],["armor",itemAsset(itemById("leaf-buckler"))],["links","../../assets/animal-gearpack-expedition-icons/adjacency.webp"]].forEach(([kind,src])=>{
+        const image=document.createElement("img"),value=document.createElement("span");image.src=src;image.alt="";value.dataset.stat=kind;node.append(image,value);
+      });
+    }
+    ["atk","armor","links"].forEach(kind=>node.querySelector(`[data-stat="${kind}"]`).textContent=String(stats[kind]));
+    node.setAttribute("aria-label",`${t("attack")} ${stats.atk} · ${t("defense")} ${stats.armor} · ${t("links")} ${stats.links}`);node.title=node.getAttribute("aria-label");
+  }
+  function renderCurrency(node,gold,diamonds){
+    node.setAttribute("role","img");
+    if(!node.querySelector("img")){
+      node.replaceChildren();
+      [["gold","../../assets/animal-gearpack-expedition-v24/icon-gold.webp"],["diamonds","../../assets/animal-rune-reels/block-v1/ui-diamond-block-v1.webp"]].forEach(([kind,src])=>{
+        const image=document.createElement("img"),value=document.createElement("span");image.src=src;image.alt="";value.dataset.currency=kind;node.append(image,value);
+      });
+    }
+    node.querySelector('[data-currency="gold"]').textContent=String(gold);node.querySelector('[data-currency="diamonds"]').textContent=String(diamonds);
+    node.setAttribute("aria-label",`${t("gold")} ${gold} · ${t("diamonds")} ${diamonds}`);
+  }
   const rewardFlights=new Set();
+  function syncContactTravel(hero,target){
+    const paint=node=>{const rect=node.getBoundingClientRect(),width=node.naturalWidth||rect.width,height=node.naturalHeight||rect.height,fit=Math.min(rect.width/width,rect.height/height),paintWidth=width*fit;return {left:rect.left+(rect.width-paintWidth)/2,right:rect.left+(rect.width+paintWidth)/2,width:paintWidth};};
+    const from=paint(hero),to=paint(target),scene=$(".encounter-scene").getBoundingClientRect(),scale=Number(getComputedStyle(document.documentElement).getPropertyValue("--wp-battle-canvas-scale"))||1;
+    const distance=Math.min(scene.width*.6,Math.max(12,to.left-from.right+Math.min(from.width,to.width)*.16))/scale;
+    hero.style.setProperty("--gearpack-strike-x",`${distance}px`);target.style.setProperty("--gearpack-strike-x",`${distance}px`);
+  }
   function clearRewardFlights(){rewardFlights.forEach(({node,animation})=>{animation.cancel();node.remove();});rewardFlights.clear();}
   function showGoldTransfer(){
     if(matchMedia("(prefers-reduced-motion: reduce)").matches||document.hidden)return;
     clearRewardFlights();
     const source=$("#enemyActor").getBoundingClientRect(),destination=$("#currencyText").getBoundingClientRect();
-    const node=document.createElement("img");node.src="../../assets/animal-gearpack-expedition-icons/gold.webp";node.alt="";node.className="gold-flight";
+    const node=document.createElement("img");node.src="../../assets/animal-gearpack-expedition-v24/icon-gold.webp";node.alt="";node.className="gold-flight";
     node.style.left=`${source.x+source.width/2-12}px`;node.style.top=`${source.y+source.height/2-12}px`;document.body.append(node);
     const dx=destination.x+destination.width/2-source.x-source.width/2,dy=destination.y+destination.height/2-source.y-source.height/2;
     const animation=node.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:`translate(${dx}px,${dy}px) scale(.5)`,opacity:.2}],{duration:460,easing:"cubic-bezier(.2,.7,.4,1)"});
-    const flight={node,animation};rewardFlights.add(flight);animation.finished.then(()=>{node.remove();rewardFlights.delete(flight);},()=>{});
+    const flight={node,animation};rewardFlights.add(flight);animation.finished.then(()=>{node.remove();rewardFlights.delete(flight);sound("reward.coin");if(!document.hidden)$("#currencyText").animate([{filter:"brightness(1.6)"},{filter:"none"}],{duration:160});},()=>{});
   }
   function updateStrategyGuide(){
     const host=document.querySelector(".game-page-info .game-info-title");if(!host)return;
@@ -880,7 +908,7 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
   function showCombatFx(text,delay=420){clearCombatFx();$("#combatFx").textContent=text;combatFxPending=true;combatFxRemaining=delay;if(!document.hidden&&windowFocused)armCombatFx(delay);}
   function suspendCombatFx(){if(!combatFxPending)return;if(combatFxTimer){combatFxRemaining=Math.max(0,combatFxDueAt-performance.now());clearTimeout(combatFxTimer);combatFxTimer=0;}}
   function resumeCombatFx(){if(combatFxPending&&!combatFxTimer)armCombatFx(combatFxRemaining);}
-  function resetCombatLifecycle(){clearRewardFlights();clearTimeout(combatTimer);combatTimer=0;combatPendingCallback=null;combatRemaining=0;combatDueAt=0;combatPaused=false;clearCombatFx();$("#playerCombatFx").textContent="";document.querySelectorAll(".actor").forEach(actor=>actor.classList.remove("is-attacking","is-hit","is-defeated"));}
+  function resetCombatLifecycle(){clearRewardFlights();clearTimeout(combatTimer);combatTimer=0;combatPendingCallback=null;combatRemaining=0;combatDueAt=0;combatPaused=false;clearCombatFx();$("#playerCombatFx").textContent="";document.querySelectorAll(".actor").forEach(actor=>actor.classList.remove("is-attacking","is-hit","is-defeated","is-blocked","is-shield-break","is-staggered"));}
   function scheduleCombat(callback,delay){clearTimeout(combatTimer);combatTimer=0;combatPendingCallback=callback;combatRemaining=Math.max(0,delay);combatDueAt=performance.now()+combatRemaining;if(combatPaused)return;combatTimer=setTimeout(()=>{combatTimer=0;combatPendingCallback=null;combatRemaining=0;combatDueAt=0;callback();},combatRemaining);}
   function pauseCombat(){if(!resolving||combatPaused)return;if(combatTimer){combatRemaining=Math.max(0,combatDueAt-performance.now());clearTimeout(combatTimer);combatTimer=0;}suspendCombatFx();rewardFlights.forEach(({animation})=>animation.pause());combatPaused=true;setFeedback(t("combatPaused"));renderBattle();$("#battleBackBtn").disabled=false;}
   function resumeCombat(){if(!resolving||!combatPaused)return;combatPaused=false;rewardFlights.forEach(({animation})=>animation.play());resumeCombatFx();setFeedback(t("autoFighting"));renderBattle();const callback=combatPendingCallback,delay=combatRemaining;if(callback)scheduleCombat(callback,delay);else autoCombatRound();}
@@ -888,18 +916,18 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
     if(!resolving||!run)return;
     const enemy=enemyAt(run.room,run.stage),s=stats(),strike=Strategy.planStrike(enemy,s,run);
     const rux=$("#ruxActor"),target=$("#enemyActor");
-    rux.classList.remove("is-attacking","is-hit");target.classList.remove("is-hit","is-attacking","is-defeated");void rux.offsetWidth;rux.classList.add("is-attacking");
+    rux.classList.remove("is-attacking","is-hit");target.classList.remove("is-hit","is-attacking","is-defeated","is-blocked","is-shield-break","is-staggered");syncContactTravel(rux,target);void rux.offsetWidth;rux.classList.add("is-attacking");
     scheduleCombat(()=>{
       if(!resolving||!run)return;
       const shieldBefore=run.enemyShield;
       run.playerTurn=strike.number;run.enemyShield-=strike.shieldDamage;run.enemyHp-=strike.healthDamage;run.armor-=strike.lifeCost+strike.reflected;
-      target.classList.remove("is-hit");void target.offsetWidth;target.classList.add("is-hit");
+      const reaction=strike.interrupted?"is-staggered":shieldBefore&&run.enemyShield===0?"is-shield-break":strike.shieldDamage&&!strike.healthDamage?"is-blocked":"is-hit";target.classList.remove("is-hit","is-blocked","is-shield-break","is-staggered");void target.offsetWidth;target.classList.add(reaction);
       sound(shieldBefore&&run.enemyShield===0?"combat.shield.break":strike.shieldDamage&&!strike.healthDamage?"combat.block":"combat.strike");
       showCombatFx(strike.shieldDamage?`${t("shielded")} −${strike.shieldDamage}${strike.healthDamage?` · −${strike.healthDamage}`:""}`:`−${strike.healthDamage}`);
       if(strike.lifeCost+strike.reflected)$("#playerCombatFx").textContent=`−${strike.lifeCost+strike.reflected}`;
       saveRun();renderBattle(false);
       if(run.armor<=0){scheduleCombat(()=>showResult(false),500);return;}
-      if(run.enemyHp<=0){sound("enemy.defeat");target.classList.add("is-defeated");run.gold+=4+run.room*2;showGoldTransfer();progress.bestRoom=Math.max(progress.bestRoom,run.room+1);saveProgress();saveRun();scheduleCombat(roomVictory,520);return;}
+      if(run.enemyHp<=0){sound("enemy.defeat");target.classList.remove("is-hit","is-blocked","is-shield-break","is-staggered");target.classList.add("is-defeated");run.gold+=4+run.room*2;showGoldTransfer();progress.bestRoom=Math.max(progress.bestRoom,run.room+1);saveProgress();saveRun();scheduleCombat(roomVictory,520);return;}
       scheduleCombat(()=>{
         if(!resolving||!run)return;
         if(!strike.interrupted){target.classList.remove("is-attacking");void target.offsetWidth;target.classList.add("is-attacking");}
@@ -1029,7 +1057,7 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
     const render=()=>{
       const balance=diamondBalance();
       const message=refreshUsed?t("refreshUsed"):refreshPending?t("refreshDecision",{before:balance,after:balance-3}):`${t("gold")} ${run.gold} · ${t("diamonds")} ${balance}`;
-      const choices=showModal(t("merchant"),message,"../../assets/animal-gearpack-expedition-orla.webp");
+      const choices=showModal(t("merchant"),message,"../../assets/animal-rune-reels/block-v1/hero-moon-cap-orla-block-v1.webp");const balanceArt=document.createElement("div");balanceArt.className="currency-art";renderCurrency(balanceArt,run.gold,balance);$("#modalText").append(balanceArt);
       stock.forEach((item)=>choices.append(itemChoiceButton(item,()=>{
         clearConfirmation();
         if(run.gold<item.gold){$("#modalText").textContent=t("notEnough");return;}
@@ -1054,7 +1082,7 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
     };
     render();
   }
-  function showResult(won){if(!run||resultSettled)return;resultSettled=true;clearTimeout(combatTimer);resolving=false;const finishedStage=run.stage,xp=won?35+Math.floor(finishedStage/5)*5:8+run.room*4,previousUnlocked=progress.unlockedStage;progress.workshopXp+=xp;if(won){progress.completedStages=[...new Set([...progress.completedStages,finishedStage+1])].sort((a,b)=>a-b);progress.unlockedStage=Math.max(previousUnlocked,Math.min(STAGE_COUNT,finishedStage+2));selectedStage=Math.min(STAGE_COUNT-1,finishedStage+1);centeredStage=selectedStage;progress.selectedStage=selectedStage;}saveProgress();sound(won ? "result.win" : "result.lose");track("encounter_result",{stage:finishedStage+1,encounter:run.room+1,outcome:won?"win":"loss",result_reason:won?"stage_cleared":"player_defeated"});track("result",{stage:finishedStage+1,encounter:run.room+1,outcome:won?"win":"loss",result_reason:won?"stage_cleared":"player_defeated"});track("game_end",{result:won?"win":"loss",room:run.room+1,stage:finishedStage+1,region:run.region+1});const resultParts=[`+${xp} XP`,`${t("workshop")} ${formatLevel(1+Math.floor(progress.workshopXp/40))} · ${progress.workshopXp} XP`,`${t("discoveries")} ${progress.discoveries.length}/12`];if(won&&finishedStage===STAGE_COUNT-1)resultParts.unshift(t("allStagesCleared"));else if(won&&progress.unlockedStage>previousUnlocked)resultParts.push(formatStageUnlocked(finishedStage+2));let decisionClaimed=false;const claim=(action)=>()=>{if(decisionClaimed)return;decisionClaimed=true;action();};const [stagesLabel,nextLabel,replayLabel]=activeResultLabels(),choices=showModal(won?t("stageCleared"):t("defeat"),resultParts.join(" · "),won?"../../assets/animal-gearpack-expedition-icons/victory-sparkle.webp":"../../assets/animal-gearpack-expedition-rux.webp");(__wpNotifyMeasurement(), $("#modal").classList.add("is-result"));const stagesChoice=choiceButton(stagesLabel,claim(()=>{closeModal();run=null;saveRun();showScreen("stage",true);})),nextChoice=choiceButton(nextLabel,claim(()=>{track("next_stage",{stage:finishedStage+2,from_stage:finishedStage+1,outcome:"result_next"});closeModal();run=null;saveRun();requestRun(finishedStage+1);})),replayChoice=choiceButton(replayLabel,claim(()=>{track("retry",{stage:finishedStage+1,outcome:"result_retry"});closeModal();run=null;saveRun();__wpReplayStart(() => requestRun(finishedStage));}));stagesChoice.dataset.resultAction="stages";nextChoice.dataset.resultAction="next";replayChoice.dataset.resultAction="replay";nextChoice.disabled=!won||finishedStage>=STAGE_COUNT-1;choices.append(stagesChoice,nextChoice,replayChoice);const primaryChoice=nextChoice.disabled?(won?stagesChoice:replayChoice):nextChoice;primaryChoice.classList.add("primary");focusModalChoice(primaryChoice);
+  function showResult(won){if(!run||resultSettled)return;resultSettled=true;clearTimeout(combatTimer);resolving=false;const finishedStage=run.stage,xp=won?35+Math.floor(finishedStage/5)*5:8+run.room*4,previousUnlocked=progress.unlockedStage;progress.workshopXp+=xp;if(won){progress.completedStages=[...new Set([...progress.completedStages,finishedStage+1])].sort((a,b)=>a-b);progress.unlockedStage=Math.max(previousUnlocked,Math.min(STAGE_COUNT,finishedStage+2));selectedStage=Math.min(STAGE_COUNT-1,finishedStage+1);centeredStage=selectedStage;progress.selectedStage=selectedStage;}saveProgress();sound(won ? "result.win" : "result.lose");track("encounter_result",{stage:finishedStage+1,encounter:run.room+1,outcome:won?"win":"loss",result_reason:won?"stage_cleared":"player_defeated"});track("result",{stage:finishedStage+1,encounter:run.room+1,outcome:won?"win":"loss",result_reason:won?"stage_cleared":"player_defeated"});track("game_end",{result:won?"win":"loss",room:run.room+1,stage:finishedStage+1,region:run.region+1});const resultParts=[`+${xp} XP`,`${t("workshop")} ${formatLevel(1+Math.floor(progress.workshopXp/40))} · ${progress.workshopXp} XP`,`${t("discoveries")} ${progress.discoveries.length}/12`];if(won&&finishedStage===STAGE_COUNT-1)resultParts.unshift(t("allStagesCleared"));else if(won&&progress.unlockedStage>previousUnlocked)resultParts.push(formatStageUnlocked(finishedStage+2));let decisionClaimed=false;const claim=(action)=>()=>{if(decisionClaimed)return;decisionClaimed=true;action();};const [stagesLabel,nextLabel,replayLabel]=activeResultLabels(),choices=showModal(won?t("stageCleared"):t("defeat"),resultParts.join(" · "),won?"../../assets/animal-gearpack-expedition-icons/victory-sparkle.webp":"../../assets/animal-rune-reels/block-v1/hero-gear-horn-rux-block-v1.webp");(__wpNotifyMeasurement(), $("#modal").classList.add("is-result"));const stagesChoice=choiceButton(stagesLabel,claim(()=>{closeModal();run=null;saveRun();showScreen("stage",true);})),nextChoice=choiceButton(nextLabel,claim(()=>{track("next_stage",{stage:finishedStage+2,from_stage:finishedStage+1,outcome:"result_next"});closeModal();run=null;saveRun();requestRun(finishedStage+1);})),replayChoice=choiceButton(replayLabel,claim(()=>{track("retry",{stage:finishedStage+1,outcome:"result_retry"});closeModal();run=null;saveRun();__wpReplayStart(() => requestRun(finishedStage));}));stagesChoice.dataset.resultAction="stages";nextChoice.dataset.resultAction="next";replayChoice.dataset.resultAction="replay";nextChoice.disabled=!won||finishedStage>=STAGE_COUNT-1;choices.append(stagesChoice,nextChoice,replayChoice);const primaryChoice=nextChoice.disabled?(won?stagesChoice:replayChoice):nextChoice;primaryChoice.classList.add("primary");focusModalChoice(primaryChoice);
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
 

@@ -42,6 +42,15 @@ body[data-game-id="tetris"] .battle-back {
   background: rgba(255,255,255,.07); color: var(--arcade-accent);
   font-size: 1.45rem; font-weight: 900;
 }
+/* Preserve physical touch size when the shared logical canvas scales down. */
+html body[data-game-id="tetris"] #battleScreen button {
+  min-width: var(--tetris-physical-control, var(--wp-frame-control-size-physical, 48px)) !important;
+  min-height: var(--tetris-physical-control, var(--wp-frame-control-size-physical, 48px)) !important;
+}
+html body[data-game-id="tetris"] #battleScreen #battleBackBtn {
+  width: var(--tetris-physical-control, var(--wp-frame-control-size-physical, 48px)) !important;
+  height: var(--tetris-physical-control, var(--wp-frame-control-size-physical, 48px)) !important;
+}
 body[data-game-id="tetris"] #battleScreen .battle-utility { width: var(--wp-frame-control-size-physical, 48px); min-width: var(--wp-frame-control-size-physical, 48px); height: var(--wp-frame-control-size-physical, 48px); min-height: var(--wp-frame-control-size-physical, 48px); }
 body[data-game-id="tetris"] #battleScreen .board-wrap {
   grid-column: 1;
@@ -349,3 +358,11 @@ body[data-game-id="tetris"][data-screen="result"] #resultScreen .arcade-panel { 
   }
 }
 @keyframes tetris-clear-reduced { 0% { opacity: 0; } 35% { opacity: .8; } 100% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Override the shared legacy .01ms rule with brief, stationary emphasis. */
+  body[data-game-id="tetris"] .tetris-grid.is-clearing::after {
+    animation: tetris-clear-reduced 160ms ease-out both !important;
+  }
+  body[data-game-id="tetris"] .tetris-grid.is-locking { outline: 2px solid #baffef; outline-offset: 1px; }
+}
