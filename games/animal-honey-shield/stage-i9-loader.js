@@ -1,8 +1,7 @@
-/* Owner-requested visual sample. Normal game entries keep their current UI. */
+/* Permanent Honey Shield Interface 9 Stage treatment. */
 (() => {
   "use strict";
-  if (new URLSearchParams(location.search).get("stage-i9") !== "1") return;
-  const version = "honey-stage-i9-sample-1";
+  const version = "honey-stage-i9-permanent-1";
   const style = (path) => {
     const link = document.createElement("link");
     link.rel = "stylesheet";
@@ -16,11 +15,11 @@
     node.onerror = reject;
     document.head.append(node);
   });
-  document.documentElement.dataset.honeyStageI9Preview = "true";
+  document.documentElement.dataset.honeyStageI9 = "true";
   style("/src/stage-rail-i9.css");
-  style("/games/animal-honey-shield/stage-i9-preview.css");
+  style("/games/animal-honey-shield/stage-i9.css");
   (async () => {
     if (!window.WeightPlayStageRailI9) await script("/src/stage-rail-i9.js");
-    await script("/games/animal-honey-shield/stage-i9-preview.js");
-  })().catch((error) => console.error("Honey Shield Stage preview could not load", error));
+    await script("/games/animal-honey-shield/stage-i9.js");
+  })().catch((error) => console.error("Honey Shield Stage I9 could not load", error));
 })();

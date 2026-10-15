@@ -266,6 +266,8 @@ body[data-screen="main"]>.wp-tutorial-button:focus-visible{transform:none}
 
 /* Short-landscape feedback and actions own tracks outside the actor viewport. */
 @media(max-height:460px) and (orientation:landscape){
+  /* The shared 420px poster may scroll; the summary and Start stay in the first fold. */
+  body[data-screen="main"] #mainScreen .wp-standard-main-copy{align-content:start}
   body[data-screen="battle"] #battleScreen .battle-canvas[data-wp-logical-battle-canvas]{
     grid-template-rows:var(--wp-frame-play-header-height,48px) 38px minmax(0,1fr) 40px 52px!important;
   }

@@ -39,7 +39,6 @@ html[data-wp-shared-interface="7"] body.wp-stage-select-active
 html[data-wp-stage-i9="true"] [data-wp-stage-rail="true"] {
   top: 50% !important;
   padding-inline: max(22px, calc((100% - var(--wp-stage-i9-card-width)) / 2)) !important;
-  overflow-y: visible !important;
 }
 
 html[data-wp-stage-i9="true"] [data-wp-stage-rail="true"] .stage-card {
@@ -82,10 +81,10 @@ html[data-wp-stage-i9="true"] [data-wp-stage-rail="true"] .wp-stage-i9-card-art 
   right: 0;
   left: 0;
   display: block;
-  height: 53%;
-  border-radius: 21px 21px 0 0;
+  height: 100%;
+  border-radius: 21px;
   background-image:
-    linear-gradient(180deg, rgb(5 20 37 / 5%) 28%, rgb(7 22 36 / 8%) 56%, #0b1d2d 100%),
+    linear-gradient(180deg, rgb(5 20 37 / 4%) 22%, rgb(7 22 36 / 10%) 48%, rgb(8 23 37 / 58%) 76%, rgb(8 23 37 / 84%) 100%),
     var(--wp-stage-i9-art-image, none);
   background-position: center, var(--wp-stage-i9-art-position, 50% 52%);
   background-size: cover, cover;
@@ -429,10 +428,6 @@ html[data-wp-stage-i9="true"] [data-wp-stage-i9-page] .wp-stage-i9-briefing-deta
 @media (max-height: 560px) {
   html[data-wp-stage-i9="true"] [data-wp-stage-i9-page] {
     --wp-stage-i9-card-height: 300px !important;
-  }
-
-  html[data-wp-stage-i9="true"] [data-wp-stage-rail="true"] .wp-stage-i9-card-art {
-    height: 46%;
   }
 
   html[data-wp-stage-i9="true"] [data-wp-stage-i9-page] .wp-stage-i9-briefing {

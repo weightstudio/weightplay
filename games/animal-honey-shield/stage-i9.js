@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  if (document.documentElement.dataset.honeyStageI9Preview !== "true") return;
+  if (document.documentElement.dataset.honeyStageI9 !== "true") return;
   const rail = document.getElementById("stageRail");
   const page = document.getElementById("stageWorkspace");
   const chapter = page?.querySelector(".chapter-panel");

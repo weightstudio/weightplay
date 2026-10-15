@@ -1,5 +1,5 @@
 /* The Dungeon Venture Stage component, with Honey Shield's own artwork. */
-html[data-honey-stage-i9-preview="true"] #stageWorkspace {
+html[data-honey-stage-i9="true"] #stageWorkspace {
   --wp-stage-i9-card-width: 292px;
   --wp-stage-i9-card-height: clamp(96px, calc(100dvh - 190px), 372px);
   --wp-stage-i9-card-radius: 23px;
@@ -15,21 +15,21 @@ html[data-honey-stage-i9-preview="true"] #stageWorkspace {
   overflow: hidden !important;
 }
 
-html[data-honey-stage-i9-preview="true"] #stageWorkspace .stage-rail {
+html[data-honey-stage-i9="true"] #stageWorkspace .stage-rail {
   bottom: auto !important;
   gap: 18px !important;
 }
 
-html[data-honey-stage-i9-preview="true"] #stageWorkspace .stage-card .wp-stage-i9-card-art {
+html[data-honey-stage-i9="true"] #stageWorkspace .stage-card .wp-stage-i9-card-art {
   font-style: normal;
   text-shadow: none;
 }
 
-html[data-honey-stage-i9-preview="true"] #stageWorkspace .stage-card.selected {
+html[data-honey-stage-i9="true"] #stageWorkspace .stage-card.selected {
   border-color: var(--wp-stage-i9-accent) !important;
 }
 
-html[data-honey-stage-i9-preview="true"] #stageWorkspace .stage-card > [data-wp-item-content] > span {
+html[data-honey-stage-i9="true"] #stageWorkspace .stage-card > [data-wp-item-content] > span {
   align-self: flex-start !important;
   padding: 4px 12px;
   border: 1px solid rgb(126 246 227 / 70%);
@@ -38,7 +38,7 @@ html[data-honey-stage-i9-preview="true"] #stageWorkspace .stage-card > [data-wp-
   font-size: .75rem !important;
 }
 
-html[data-honey-stage-i9-preview="true"] #stageWorkspace .wp-stage-i9-briefing-details .chapter-panel {
+html[data-honey-stage-i9="true"] #stageWorkspace .wp-stage-i9-briefing-details .chapter-panel {
   position: static;
   display: grid;
   gap: 4px;
@@ -49,25 +49,25 @@ html[data-honey-stage-i9-preview="true"] #stageWorkspace .wp-stage-i9-briefing-d
   background: none;
 }
 
-html[data-honey-stage-i9-preview="true"] #stageWorkspace .wp-stage-i9-briefing-details .chapter-panel strong {
+html[data-honey-stage-i9="true"] #stageWorkspace .wp-stage-i9-briefing-details .chapter-panel strong {
   font-size: .85rem;
 }
 
-html[data-honey-stage-i9-preview="true"] #stageWorkspace .wp-stage-i9-briefing-details #stageSummary {
+html[data-honey-stage-i9="true"] #stageWorkspace .wp-stage-i9-briefing-details #stageSummary {
   margin-top: 6px;
   font-size: .72rem;
 }
 
 @media (max-height: 360px) {
-  html[data-honey-stage-i9-preview="true"] #stageWorkspace .stage-card > [data-wp-item-content] {
+  html[data-honey-stage-i9="true"] #stageWorkspace .stage-card > [data-wp-item-content] {
     max-height: 68%;
     gap: 2px !important;
     inset-block-end: 8px !important;
   }
-  html[data-honey-stage-i9-preview="true"] #stageWorkspace .stage-card strong {
+  html[data-honey-stage-i9="true"] #stageWorkspace .stage-card strong {
     font-size: 1.15rem !important;
   }
-  html[data-honey-stage-i9-preview="true"] #stageWorkspace .stage-card :is(small, [data-wp-item-content] > span) {
+  html[data-honey-stage-i9="true"] #stageWorkspace .stage-card :is(small, [data-wp-item-content] > span) {
     font-size: .65rem !important;
   }
 }

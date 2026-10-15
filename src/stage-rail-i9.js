@@ -189,8 +189,7 @@
       position: "absolute", left: "0px", right: "0px", top: "50%", width: "100%",
       height: cardHeight, minHeight: cardHeight, maxHeight: cardHeight,
       margin: "0px", paddingInline: `max(22px,calc((100% - ${cardWidth}) / 2))`,
-      transform: "translateY(-50%)", overflowX: "auto", overflowY: "visible",
-      scrollSnapType: "none", touchAction: "none",
+      transform: "translateY(-50%)",
     })) rail.style.setProperty(property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`), value, "important");
     const stageRoot = rail.closest("#stagePanel") || stagePage;
     const stageHeader = stageRoot?.querySelector(".wp-stage-shell-header")
