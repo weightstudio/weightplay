@@ -12,6 +12,9 @@ export const CASH_LEDGER_LIMIT=60;
 export const EMPLOYEE_HIRE_COST=180;
 export const EMPLOYEE_SKILL_LIMIT=5;
 export const EMPLOYEE_RESTOCK_BATCH=4;
+export function visitorCapacity(area=10){return Math.min(48,24+Math.max(0,Math.floor((Number(area)||10)-10))*2);}
+export function visitorRenderLimit(area=10){return visitorCapacity(area)+12;}
+export function shopDemandMultiplier(area=10){return 1+Math.min(12,Math.max(0,(Number(area)||10)-10))*.025;}
 
 export const BUSINESS_UPGRADE_LIMIT=5;
 export function migrateBusinessUpgrades(state={}){
@@ -48,8 +51,10 @@ export function purchaseExpansion(state,expectedArea=state.area){
   if(!offer)return {ok:false,reason:'max',state};
   const result=spendCash(state,offer.cost,'expansion',{detail:String(offer.to)});
   if(result.ok){
-    const shift=points=>Array.isArray(points)?points.map(point=>({...point,x:point.x===offer.from-1?offer.to-1:point.x,z:point.z===offer.from-1?offer.to-1:point.z})):points;
-    result.state={...result.state,area:offer.to,milestones:{...state.milestones,expanded:true},...(state.entrances?{entrances:shift(state.entrances)}:{}),...(state.exits?{exits:shift(state.exits)}:{})};
+    // The existing business entrances remain fixed passage anchors when new
+    // floor surrounds them. Editing a new entrance/exit still uses the perimeter.
+    const anchors=Object.fromEntries(['entrances','exits'].map(key=>[key,(state[key]||[]).map(point=>({...point}))]));
+    result.state={...result.state,area:offer.to,milestones:{...state.milestones,expanded:true},endpointAnchors:anchors};
   }
   return result;
 }

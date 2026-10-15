@@ -1,7 +1,7 @@
 import {panelElement,reconcilePanel} from './panel-view.js?v=15';
 import {REWARD_TRACKS,normalizeRewards,rewardOffer,claimReward,normalizeOperatingFlow,netProfitPerMinute,decorationTraffic} from './rewards-profit.js?v=15';
 import * as THREE from './vendor/three/three.module.min.js';
-import {liveElapsedWindow,simulationSteps,migrateEmployees,hireStoreEmployee,changeEmployeeRole,employeeCheckoutSeconds,employeeRestockSeconds,migrateBusinessUpgrades,trainedEmployee,businessUpgradeCost,purchaseBusinessUpgrade,purchaseExpansion,EXPANSIONS,normalizeBusinessPerformance,recordBusinessSale,businessPerformance,EMPLOYEE_HIRE_COST,EMPLOYEE_RESTOCK_BATCH} from './economy.js?v=15';
+import {liveElapsedWindow,simulationSteps,migrateEmployees,hireStoreEmployee,changeEmployeeRole,employeeCheckoutSeconds,employeeRestockSeconds,migrateBusinessUpgrades,trainedEmployee,businessUpgradeCost,purchaseBusinessUpgrade,purchaseExpansion,EXPANSIONS,normalizeBusinessPerformance,recordBusinessSale,businessPerformance,visitorCapacity,visitorRenderLimit,shopDemandMultiplier,EMPLOYEE_HIRE_COST,EMPLOYEE_RESTOCK_BATCH} from './economy.js?v=15';
 import {
   GRID_ENTRANCES, baseFootprint, footprintSize, occupiedTiles, footprintConflict,
   serviceVector, serviceFacingTarget, queueTile, clampPopularity, popularityAfterWait,
@@ -42,11 +42,12 @@ const edgePoint = (point, area) => Number.isInteger(point?.x) && Number.isIntege
   && point.x >= 0 && point.z >= 0 && point.x < area && point.z < area
   && (point.x === 0 || point.z === 0 || point.x === area - 1 || point.z === area - 1);
 
-function normalizeEndpoints(requested, fallback, area, fixtures, otherEndpoints = []) {
+function normalizeEndpoints(requested, fallback, area, fixtures, otherEndpoints = [], retainedAnchors=[]) {
   const blocked = new Set(fixtures.flatMap(occupiedTiles).map(tile => `${tile.x},${tile.z}`));
   const occupied = new Set(otherEndpoints.map(point => `${point.x},${point.z}`));
   const candidates = Array.isArray(requested) ? requested : fallback;
-  const clean = [...new Map(candidates.filter(point => edgePoint(point, area)
+  const retained=new Set((Array.isArray(retainedAnchors)?retainedAnchors:[]).filter(p=>Number.isInteger(p?.x)&&Number.isInteger(p?.z)&&p.x>=0&&p.z>=0&&p.x<area&&p.z<area).map(p=>`${p.x},${p.z}`));
+  const clean = [...new Map(candidates.filter(point => (edgePoint(point, area)||retained.has(`${point?.x},${point?.z}`))
     && !blocked.has(`${point.x},${point.z}`)
     && !occupied.has(`${point.x},${point.z}`))
     .map(point => [`${point.x},${point.z}`, { x: point.x, z: point.z,rotation:Number.isInteger(point.rotation)?((point.rotation%4)+4)%4:inwardRotation(point,area) }])).values()];
@@ -91,8 +92,8 @@ export function migrateV9Save(saved = {}, initial = {}) {
     return true;
   });
   const area = Math.max(10, Math.floor(state.area || 10));
-  state.entrances = normalizeEndpoints(saved.entrances, [GRID_ENTRANCES[0]], area, state.fixtures);
-  state.exits = normalizeEndpoints(saved.exits, [{ x: area - 1, z: area - 1 }], area, state.fixtures, state.entrances);
+  state.entrances = normalizeEndpoints(saved.entrances, [GRID_ENTRANCES[0]], area, state.fixtures,[],saved.endpointAnchors?.entrances);
+  state.exits = normalizeEndpoints(saved.exits, [{ x: area - 1, z: area - 1 }], area, state.fixtures, state.entrances,saved.endpointAnchors?.exits);
   if (!state.unlocked.includes('water')) state.unlocked.unshift('water');
   if (!state.unlocked.includes('snacks')) state.unlocked.push('snacks');
   state.employees = migrateEmployees(state,state.fixtures,state.warehouse);
@@ -1001,7 +1002,11 @@ export function installBlockmartV9(ctx) {
     })).filter(item => item.line.length < QUEUE_LIMIT_PER_REGISTER && item.spot)
       .map(item => ({ ...item, path: findPath({ x: customer.x, z: customer.z }, [item.spot]) }))
       .filter(item => item.path.length || (customer.x === item.spot.x && customer.z === item.spot.z))
-      .sort((a, b) => a.line.length - b.line.length || a.path.length - b.path.length)[0] || null;
+      .map(item=>{
+        const duration=employeeCheckoutSeconds(trained(counterEmployee(item.counter.id)),ctx.activeEquipment());let clear=0;
+        for(const queued of item.line){const walk=Math.max(0,(queued.path.length-queued.pathAt)*.3-(queued.segment?.progress||0));clear=queued.state==='pay'?clear+Math.max(0,queued.wait):Math.max(clear,walk)+duration;}
+        return {...item,estimatedFinish:Math.max(clear,item.path.length*.3)+duration};
+      }).sort((a,b)=>a.estimatedFinish-b.estimatedFinish||a.path.length-b.path.length||String(a.counter.id).localeCompare(String(b.counter.id)))[0] || null;
   }
 
   function targetCheckout(customer) {
@@ -1010,6 +1015,7 @@ export function installBlockmartV9(ctx) {
     customer.checkoutId = target.counter.id;
     customer.queueSequence = state().nextQueueSequence++;
     customer.queueWait = 0;
+    customer.queueEntered = false;
     customer.wait = 0;
     customer.state = 'queue';
     customer.path = target.path;
@@ -1035,19 +1041,27 @@ export function installBlockmartV9(ctx) {
     return state().unlocked;
   }
 
-  function chooseProduct(budget) {
+  function chooseShoppingRoute(budget,origin=state().entrances?.[0]||GRID_ENTRANCES[0]) {
     const unlocked = new Set(unlockedProducts());
     const stockedShelves = new Set(fixtures().filter(f=>f.kind==='shelf'||f.kind==='cooler'&&state().equipment.cooler).flatMap(fixtureProducts));
     const available = Object.keys(PRODUCT_DEFS).filter(id => unlocked.has(id) && stockedShelves.has(id)
       && state().stock[id] > 0 && ctx.PRODUCTS[id].price <= budget);
-    if (!available.length) return null;
-    const weights = available.map(id => PRODUCT_DEFS[id].demand);
+    const start=state().entrances.some(p=>p.x===origin.x&&p.z===origin.z)?inwardPoint(origin):origin;
+    const options=available.map(id=>{
+      const routes=salesFixtures(id).map(shelf=>{const access=accessTiles(shelf),path=findPath(start,access);return{product:id,shelf,path,distance:path.length};}).filter(row=>row.path.length||accessTiles(row.shelf).some(p=>p.x===start.x&&p.z===start.z));
+      routes.sort((a,b)=>a.distance-b.distance||String(a.shelf.id).localeCompare(String(b.shelf.id)));return routes[0];
+    }).filter(Boolean);
+    if (!options.length) return null;
+    const weights = options.map(row => PRODUCT_DEFS[row.product].demand);
     let sample = Math.random() * weights.reduce((sum, weight) => sum + weight, 0);
-    for (let i = 0; i < available.length; i++) { sample -= weights[i]; if (sample <= 0) return available[i]; }
-    return available[0];
+    for (let i = 0; i < options.length; i++) { sample -= weights[i]; if (sample <= 0) return options[i]; }
+    return options[0];
   }
+  function chooseProduct(budget,origin){return chooseShoppingRoute(budget,origin)?.product||null;}
+  function canAdmitVisitor(){return getCustomers().filter(c=>!['done','leave'].includes(c.state)).length<visitorCapacity(state().area)&&getCustomers().length<visitorRenderLimit(state().area);}
 
   function spawn() {
+    if(!canAdmitVisitor())return false;
     const entries = (state().entrances?.length ? state().entrances : GRID_ENTRANCES)
       .filter(point => walkable(point.x, point.z));
     if (!entries.length) return;
@@ -1056,17 +1070,18 @@ export function installBlockmartV9(ctx) {
     const kind = kinds[ctx.customerId++ % kinds.length];
     const group = modelGroup(point.x,point.z);
     const budget = ctx.customerBudget();
-    const customer = { id: ctx.customerId, group, x: point.x, z: point.z, product: chooseProduct(budget),
+    const choice=chooseShoppingRoute(budget,point);
+    const customer = { id: ctx.customerId, group, x: point.x, z: point.z, product: choice?.product||null,
       state: 'enter', path: [], pathAt: 0, wait: Math.random() * .6, budget, queue: 0,
       queueWait: 0, queueSequence: 0, segment: null, carried: false,kind:kind[0],color:kind[1] };
     getCustomers().push(customer);
     state().businessPerformance.visits++;
     if(!customer.product&&fixtures().some(f=>f.kind==='shelf'||f.kind==='cooler'&&state().equipment.cooler)&&ownedStock()===0)state().businessPerformance.stockouts++;
     if (customer.product) {
-      const shelves = salesFixtures(customer.product).filter(f=>accessTiles(f).length);
-      const shelf = shelves[Math.floor(Math.random() * shelves.length)];
+      const shelf = choice.shelf;
       if (!shelf || !routeToShelf(customer, shelf)) routeCustomerOut(customer);
     } else routeCustomerOut(customer);
+    return true;
   }
 
   function headingTarget(customer) {
@@ -1147,7 +1162,8 @@ export function installBlockmartV9(ctx) {
         }
       }
     } else if (customer.state === 'queue') {
-      customer.queueWait = (customer.queueWait || 0) + delta;
+      if(customer.pathAt>=customer.path.length)customer.queueEntered=true;
+      if(customer.queueEntered)customer.queueWait = (customer.queueWait || 0) + delta;
       customer.queue = customer.queueWait;
       const counter = counterById(customer.checkoutId);
       if (!counter) stopCustomerVisit(customer, 'unavailable-register');
@@ -1473,7 +1489,7 @@ export function installBlockmartV9(ctx) {
     const imageButton=panelElement('button');imageButton.type='button';imageButton.className='item-image-button';imageButton.setAttribute('aria-label',`${ctx.t('itemOptions',ctx.locale)} · ${ctx.t(entry.label,ctx.locale)}`);imageButton.setAttribute('aria-expanded',String(selectedCatalogKey===entry.key));
     imageButton.append(itemArt(entry.art));imageButton.addEventListener('click',()=>{selectedCatalogKey=selectedCatalogKey===entry.key?null:entry.key;renderPanel()});
     const copy=panelElement('div');copy.className='item-copy';const title=panelElement('h3');title.textContent=ctx.t(entry.label,ctx.locale);
-    const counts=panelElement('p');counts.textContent=`${ctx.t('ownedTotal',ctx.locale)} ${placed.length+stored.length} · ${ctx.t('placedCount',ctx.locale)} ${placed.length} · ${ctx.t('storedCount',ctx.locale)} ${stored.length}`;
+    const counts=panelElement('p');counts.textContent=`${ctx.t('ownedTotal',ctx.locale)} ${placed.length+stored.length}`;counts.setAttribute('aria-label',`${counts.textContent} · ${ctx.t('placedCount',ctx.locale)} ${placed.length} · ${ctx.t('storedCount',ctx.locale)} ${stored.length}`);
     const price=panelElement('strong');price.className='item-price';price.textContent=entry.kind==='decor'&&!entry.decorType&&state().diamond>=1?'1 ✦':['cooler','fastCheckout'].includes(entry.kind)&&!state().equipment[entry.kind]&&state().legacyUpgradeCredits>0?ctx.t('legacyUpgradeCredit',ctx.locale):ctx.price(catalogCost(entry));copy.append(title,counts,price);
     if(entry.kind==='decor'){const effect=panelElement('p');effect.textContent=ctx.t('decorPlaced',ctx.locale);copy.append(effect);}
     if(entry.kind==='shelf'||entry.kind==='cooler'){const purpose=panelElement('p');purpose.textContent=ctx.t(entry.kind==='cooler'?'coolerPurpose':entry.footprint==='double'?'doublePurpose':'singlePurpose',ctx.locale);copy.append(purpose);}
@@ -1503,14 +1519,15 @@ export function installBlockmartV9(ctx) {
     if(growthCategory==='decor'){const bonus=panelElement('p');bonus.className='decor-traffic';bonus.dataset.decorTraffic='true';bonus.title=ctx.t('decorTrafficHint',ctx.locale);$('panel').append(bonus);}
     if(growthCategory==='layout'){
       const offer=EXPANSIONS.find(item=>item.from===state().area);
-      createCard('growth',ctx.t('expand',ctx.locale),`${state().area} × ${state().area}${offer?` → ${offer.to} × ${offer.to} · +${offer.to**2-offer.from**2}`:''}`,offer?ctx.price(offer.cost):ctx.t('upgradeComplete',ctx.locale),()=>expandStore(offer?.from),{disabled:!offer||state().cash<offer.cost});
+      createCard('growth',ctx.t('expand',ctx.locale),`${state().area} × ${state().area}${offer?` → ${offer.to} × ${offer.to} · ${ctx.t('visitorCapacity',ctx.locale)} ${visitorCapacity(state().area)}→${visitorCapacity(offer.to)}`:''}`,offer?ctx.price(offer.cost):ctx.t('upgradeComplete',ctx.locale),()=>expandStore(offer?.from),{disabled:!offer||state().cash<offer.cost});
+      const hint=panelElement('p');hint.className='decor-traffic';hint.textContent=ctx.t('expansionTrafficHint',ctx.locale);$('panel').append(hint);
       createCard('entrance',ctx.t('entrance',ctx.locale),ctx.t('routeSafetyHint',ctx.locale),'↔',()=>beginEndpointEdit('entrance'));
       createCard('exit',ctx.t('exit',ctx.locale),ctx.t('routeSafetyHint',ctx.locale),'↔',()=>beginEndpointEdit('exit'));
     }else if(growthCategory==='upgrades')renderBusinessUpgrades();
     else for(const entry of catalog.filter(item=>growthCategory==='decor'?item.kind==='decor':item.kind!=='decor'))renderCatalogRow(entry);
 
   }
-  function expandStore(expectedArea){const result=purchaseExpansion(state(),expectedArea);if(!result.ok)return false;setState(result.state);settleAchievementEvent({type:'expansion_purchased',toArea:state().area});ctx.buildFloor();syncFixtures();rerouteLiveCustomers();ctx.resize();ctx.save();renderPanel();ctx.toast(ctx.t('expandSuccess',ctx.locale));return true;}
+  function expandStore(expectedArea){const result=purchaseExpansion(state(),expectedArea);if(!result.ok)return false;setState(result.state);settleAchievementEvent({type:'expansion_purchased',toArea:state().area});ctx.buildFloor();syncFixtures();ctx.resize();ctx.save();renderPanel();ctx.toast(ctx.t('expandSuccess',ctx.locale));return true;}
   function renderBusinessUpgrades(){
     const legacy=Object.values(state().businessUpgrades.legacySkills).reduce((sum,s)=>sum+80*s.checkout*(s.checkout+1)/2+70*s.restock*(s.restock+1)/2,0);
     if(legacy){const hint=panelElement('p');hint.textContent=`${ctx.t('legacyTraining',ctx.locale)} · ${ctx.price(legacy)}`;$('panel').append(hint);}
@@ -1713,9 +1730,9 @@ export function installBlockmartV9(ctx) {
       const select=panelElement('select');select.dataset.employeeRole=employee.id;
       for(const role of ['checkout','restock']){const option=panelElement('option');option.value=role;option.textContent=ctx.t(role==='checkout'?'cashierRole':'restockerRole',ctx.locale);option.disabled=role==='checkout'&&employee.role!=='checkout'&&!nextVacantRegister();select.append(option);}
       select.value=employee.role;label.append(select);card.append(label);
-      select.addEventListener('change',()=>{const role=select.value;transact(()=>{
+      select.addEventListener('change',event=>{const liveSelect=event.currentTarget,role=liveSelect.value;transact(()=>{
         const result=changeEmployeeRole(state(),employee.id,role);
-        if(!result.ok){select.value=employee.role;ctx.toast(ctx.t('noRegisterVacancy',ctx.locale));return;}
+        if(!result.ok){liveSelect.value=employees().find(e=>e.id===employee.id)?.role||employee.role;ctx.toast(ctx.t('noRegisterVacancy',ctx.locale));return;}
         setState(result.state);rerouteLiveCustomers();syncFixtures();ctx.save();renderPanel();
       });});
       const registerIndex=allCounters().findIndex(f=>f.id===employee.registerId);
@@ -2075,7 +2092,7 @@ export function installBlockmartV9(ctx) {
     unlockedProducts();
     current.popularity = clampPopularity(current.popularity + currentDecorAppeal() * .00025);
     if (current.popularity < TRAFFIC_RECOVERY_FLOOR) current.popularity = clampPopularity(current.popularity + .012);
-    const nextInterval = trafficInterval(current.popularity)/(1+decorationTraffic(fixtures()).bonus);
+    const nextInterval = trafficInterval(current.popularity)/(1+decorationTraffic(fixtures()).bonus)/shopDemandMultiplier(current.area);
     if (ctx.spawnTimer > nextInterval) ctx.spawnTimer = nextInterval;
   }
 
@@ -2314,7 +2331,7 @@ export function installBlockmartV9(ctx) {
   }
   function simulateStep(delta){
     ctx.elapsed+=delta;state().operatingFlow=normalizeOperatingFlow(state().operatingFlow,ctx.elapsed);ctx.spawnTimer-=delta;
-    if(ctx.spawnTimer<=0&&getCustomers().filter(c=>c.state!=='done'&&c.state!=='leave').length<24){spawn();ctx.spawnTimer=trafficInterval(state().popularity)/(1+decorationTraffic(fixtures()).bonus);}
+    if(ctx.spawnTimer<=0&&canAdmitVisitor()){spawn();ctx.spawnTimer=trafficInterval(state().popularity)/(1+decorationTraffic(fixtures()).bonus)/shopDemandMultiplier(state().area);}
     updateQueueLines();setCustomers(getCustomers().filter(customer=>updateCustomer(customer,delta)));
     automaticRestock(delta);lowCashRecovery(delta);refreshTraffic();state().day=Math.floor(ctx.elapsed/60)+1;
   }

@@ -51,11 +51,11 @@
     ready:"Ready",cooldown:"{seconds}s",activeSeconds:"Boost {seconds}s",selectGuardian:"Select a guardian",cost:"Cost {cost}",
     boardLabel:"Guardian merge board",objective:"Stop every creature before it reaches the crystal.",
     summoned:"{guardian} guardian summoned.",droughtGift:"Taro steadied fate: a matching {guardian} appeared.",
-    boardFull:"The board is full. Merge a matching pair or Reroll one guardian.",
+    boardFull:"The board is full. Merge guardians with the same affinity and rank, or use Rune Reforge to change one guardian's affinity while keeping its rank.",
     notEnoughCharge:"Need {cost} charge.",mergeSelect:"{guardian} rank {rank} selected.",
-    mergeNeedMatch:"Merge requires the same affinity and rank.",merged:"Merged into rank {rank} {guardian}.",
-    maxRank:"This guardian is already at maximum rank.",rerolled:"Rank {rank} reforged into {guardian}.",
-    rerollNeed:"Select a guardian and keep {cost} charge.",rallyUsed:"Rally accelerates every guardian!",
+    mergeNeedMatch:"Only guardians with the same affinity and rank can be merged.",merged:"Merged into rank {rank} {guardian}.",
+    maxRank:"This guardian is already at maximum rank.",rerolled:"Rune Reforge complete: new affinity {guardian}; rank {rank} stays the same.",
+    rerollNeed:"Select a guardian and have at least {cost} charge for Rune Reforge.",rallyUsed:"Rally accelerates every guardian!",
     rallyNotReady:"Rally is still recovering.",burstUsed:"Rune Burst struck the lead threats!",
     burstNotReady:"Rune Burst charges through guardian attacks.",burstNoTargets:"Wait for an enemy to enter the road.",waveStarts:"Wave {wave} begins.",
     bossWarning:"BOSS APPROACHING",coreHit:"Core hit! {core} integrity remains.",
@@ -66,7 +66,7 @@
     pause:"Pause",pauseTitle:"Defense paused",pauseText:"The wave and every guardian are frozen while you take a break.",
     resume:"Resume",tutorialTitle:"Summon, match, and defend",
     tutorial1:"Summon fills one empty rune slot with a random guardian.",
-    tutorial2:"Merge matching affinity and rank. The stronger result rerolls its affinity.",
+    tutorial2:"Merge guardians with the same affinity and rank. The merge raises rank by one and gives the new guardian a random affinity.",
     tutorial3:"Save {rally} and {burst} for dense waves or a Boss.",tutorialStart:"Guard the bastion",
     leaveTitle:"Leave this defense?",leaveText:"Continue keeps this exact Battle frozen. Returning to Stages ends only this attempt.",
     continue:"Continue",returnStages:"Return to Stages",resultKicker:"Bastion report",
@@ -104,7 +104,7 @@
     ar:{planBurst:"احتفظ بانفجار الرون لأكبر تجمع من الأعداء.",boardLabel:"لوحة دمج الحراس"}
   };
   Object.entries(terminology).forEach(([code, values]) => Object.assign(core[code], values));
-  Object.assign(core["zh-Hant"],{rally:"全軍集結",reroll:"符文重塑",rallyHint:"全體攻速 ×1.72 · 6秒",burstHint:"攻擊並緩速最前5名",rerollHint:"保留等級 · 更換屬性",activeSeconds:"強化 {seconds}秒",rerolled:"{rank}級重塑為{guardian}。",burstNoTargets:"等待敵人進入道路再施放。",guardianGuideTitle:"五種守護定位 · 六個等級",rankGuide:"菱形代表1–6級，不是第六種骰子。",groveRole:"穩定強力單擊",sparkRole:"高速累積能量",moonRole:"緩速最前方敵人",forgeRole:"破解敵人護甲",tideRole:"對怪群造成濺射",selectedGuardian:"{guardian} · {rank}/6級 · {role}"});
+  Object.assign(core["zh-Hant"],{rally:"全軍集結",reroll:"符文重塑",rallyHint:"全體攻速 ×1.72 · 6秒",burstHint:"攻擊並緩速最前5名",rerollHint:"保留等級 · 更換屬性",activeSeconds:"強化 {seconds}秒",boardFull:"守護者合成盤已滿。請合併屬性與等級相同的守護者，或用「符文重塑」更換一名守護者的屬性（等級不變）。",mergeNeedMatch:"只有屬性與等級都相同的守護者才能合併。",rerolled:"符文重塑完成：新屬性為{guardian}，等級仍為 {rank}。",rerollNeed:"請選擇一名守護者，並備妥至少 {cost} 點能量以使用符文重塑。",tutorial2:"合併屬性與等級相同的守護者。合併後等級會提升一級，新守護者的屬性則會隨機決定。",burstNoTargets:"等待敵人進入道路再施放。",guardianGuideTitle:"五種守護定位 · 六個等級",rankGuide:"菱形代表1–6級，不是第六種骰子。",groveRole:"穩定強力單擊",sparkRole:"高速累積能量",moonRole:"緩速最前方敵人",forgeRole:"破解敵人護甲",tideRole:"對怪群造成濺射",selectedGuardian:"{guardian} · {rank}/6級 · {role}"});
   Object.assign(core["zh-Hans"],{rally:"全军集结",reroll:"符文重塑",rallyHint:"全体攻速 ×1.72 · 6秒",burstHint:"攻击并减速最前5名",rerollHint:"保留等级 · 更换属性",activeSeconds:"强化 {seconds}秒",rerolled:"{rank}级重塑为{guardian}。",burstNoTargets:"等待敌人进入道路后再施放。",guardianGuideTitle:"五种守护定位 · 六个等级",rankGuide:"菱形代表1–6级，不是第六种骰子。",groveRole:"稳定强力单击",sparkRole:"高速积累能量",moonRole:"减速最前方敌人",forgeRole:"破解敌人护甲",tideRole:"对怪群造成溅射",selectedGuardian:"{guardian} · {rank}/6级 · {role}"});
   Object.assign(core.ja,{rally:"全軍ラリー",reroll:"ルーン再鍛造",rallyHint:"全員の攻速 ×1.72・6秒",burstHint:"先頭5体を攻撃・減速",rerollHint:"ランク維持・属性変更",activeSeconds:"強化 {seconds}秒",burstNoTargets:"敵が道に入るまで待ってください。",guardianGuideTitle:"5つの役割・6ランク",rankGuide:"ひし形はランク1～6。6種目ではありません。",groveRole:"安定した強打",sparkRole:"高速チャージ",moonRole:"先頭を減速",forgeRole:"敵の装甲を破壊",tideRole:"群れへ範囲攻撃",selectedGuardian:"{guardian}・ランク{rank}/6・{role}"});
   Object.assign(core.ko,{rally:"전군 집결",reroll:"룬 재련",rallyHint:"전체 공속 ×1.72 · 6초",burstHint:"선두 5명 공격·감속",rerollHint:"등급 유지 · 속성 변경",activeSeconds:"강화 {seconds}초",burstNoTargets:"적이 길에 들어올 때까지 기다리세요.",guardianGuideTitle:"수호자 5종 · 6등급",rankGuide:"마름모는 1~6등급이며 여섯째 주사위가 아닙니다.",groveRole:"안정적인 강타",sparkRole:"빠른 충전",moonRole:"선두 적 감속",forgeRole:"적 방어력 파괴",tideRole:"무리 범위 피해",selectedGuardian:"{guardian} · {rank}/6등급 · {role}"});
@@ -157,9 +157,9 @@
     threatBasic:"穩定前進的闇影",threatArmor:"裝甲甲蟲",threatSwarm:"密集幽光怪群",threatHeal:"治療幽光",threatHaste:"加速突進者",threatLock:"符文格封鎖脈衝",threatChampion:"菁英護衛",threatBoss:"首領波次",
     planPairs:"預留一組可合併的守護者。",planForge:"鍛造守護者最擅長破甲。",planTide:"潮汐守護者能控制密集怪群。",planBurst:"把符文爆發留給敵人最密集的時刻。",rewardDust:"+{dust} 符文之塵",stageSummary:"已解鎖 {unlocked}/30 · {stars} 顆星",
     core:"核心",wave:"波次",charge:"能量",summon:"召喚",rally:"全軍集結",burst:"符文爆發",reroll:"符文重塑",rallyHint:"全體攻速 ×1.72 · 6 秒",burstHint:"攻擊並緩速最前方 5 名敵人",rerollHint:"保留等級 · 更換屬性",ready:"可使用",cooldown:"{seconds} 秒",activeSeconds:"強化 {seconds} 秒",selectGuardian:"選擇守護者",cost:"消耗 {cost}",boardLabel:"守護者合成盤",objective:"在所有敵人抵達水晶前阻止它們。",
-    summoned:"已召喚{guardian}守護者。",droughtGift:"太郎穩定了命運：出現可配對的{guardian}守護者。",boardFull:"版面已滿。請合併一組相同守護者，或重塑一名守護者。",notEnoughCharge:"需要 {cost} 點能量。",mergeSelect:"已選擇 {rank} 階{guardian}。",mergeNeedMatch:"只能合併屬性與等級都相同的守護者。",merged:"已合併成 {rank} 階{guardian}。",maxRank:"這名守護者已達最高等級。",rerolled:"已將 {rank} 階守護者重塑為{guardian}。",rerollNeed:"請先選擇守護者，並保留 {cost} 點能量。",rallyUsed:"全軍集結使所有守護者加速！",rallyNotReady:"全軍集結仍在冷卻。",burstUsed:"符文爆發擊中了最前方的敵人！",burstNotReady:"守護者攻擊時會累積符文爆發。",burstNoTargets:"請等敵人進入道路後再施放。",waveStarts:"第 {wave} 波開始。",bossWarning:"首領逼近",coreHit:"核心受損！剩餘 {core} 點生命。",
+    summoned:"已召喚{guardian}守護者。",droughtGift:"太郎穩定了命運：出現可配對的{guardian}守護者。",boardFull:"守護者合成盤已滿。請合併屬性與等級相同的守護者，或用「符文重塑」更換一名守護者的屬性（等級不變）。",notEnoughCharge:"需要 {cost} 點能量。",mergeSelect:"已選擇 {rank} 階{guardian}。",mergeNeedMatch:"只有屬性與等級都相同的守護者才能合併。",merged:"已合併成 {rank} 階{guardian}。",maxRank:"這名守護者已達最高等級。",rerolled:"符文重塑完成：新屬性為{guardian}，等級仍為 {rank}。",rerollNeed:"請選擇一名守護者，並備妥至少 {cost} 點能量以使用符文重塑。",rallyUsed:"全軍集結使所有守護者加速！",rallyNotReady:"全軍集結仍在冷卻。",burstUsed:"符文爆發擊中了最前方的敵人！",burstNotReady:"守護者攻擊時會累積符文爆發。",burstNoTargets:"請等敵人進入道路後再施放。",waveStarts:"第 {wave} 波開始。",bossWarning:"首領逼近",coreHit:"核心受損！剩餘 {core} 點生命。",
     grove:"樹林",spark:"火花",moon:"月光",forge:"鍛造",tide:"潮汐",guardianGuideTitle:"五種守護定位 · 六個等級",rankGuide:"菱形數字代表 1–6 階，不是第六種骰子。",groveRole:"穩定的強力單體攻擊",sparkRole:"高速攻擊並累積能量",moonRole:"緩速最前方敵人",forgeRole:"擊破敵人護甲",tideRole:"對怪群造成濺射傷害",selectedGuardian:"{guardian} · {rank}/6 階 · {role}",
-    pause:"暫停",pauseTitle:"防線已暫停",pauseText:"暫停期間，波次與所有守護者都會停止。",resume:"繼續遊戲",tutorialTitle:"召喚、合併、守住堡壘",tutorial1:"召喚會在一個空符文格放入隨機守護者。",tutorial2:"合併屬性與等級相同的守護者；升階後會重新決定屬性。",tutorial3:"把{rally}與{burst}留給密集波次或首領。",tutorialStart:"開始守城",leaveTitle:"要離開這場防守嗎？",leaveText:"選擇繼續會保留並恢復目前戰鬥；返回關卡會結束本次挑戰。",continue:"繼續",returnStages:"返回關卡",
+    pause:"暫停",pauseTitle:"防線已暫停",pauseText:"暫停期間，波次與所有守護者都會停止。",resume:"繼續遊戲",tutorialTitle:"召喚、合併、守住堡壘",tutorial1:"召喚會在一個空符文格放入隨機守護者。",tutorial2:"合併屬性與等級相同的守護者。合併後等級會提升一級，新守護者的屬性則會隨機決定。",tutorial3:"把{rally}與{burst}留給密集波次或首領。",tutorialStart:"開始守城",leaveTitle:"要離開這場防守嗎？",leaveText:"選擇繼續會保留並恢復目前戰鬥；返回關卡會結束本次挑戰。",continue:"繼續",returnStages:"返回關卡",
     resultKicker:"堡壘戰報",victory:"成功守住堡壘！",defeat:"闇影突破了水晶防線",victoryText:"你的守護者陣容成功撐過所有波次。",defeatText:"預留一組可合併守護者，並嘗試調整指令時機。",next:"下一關",retry:"再玩一次",coreLeft:"剩餘核心",merges:"合併次數",dustEarned:"符文之塵",noNext:"已完成最終關卡",stage:"第 {stage} 關",starsWord:"星"
   });
   const stageContinuationCopy = {

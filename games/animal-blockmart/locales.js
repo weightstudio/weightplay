@@ -974,7 +974,7 @@ for(const locale of supportedLocales){[dict[locale].helperAutoRestockHint,dict[l
 const rewardProfitKeys=['achievementsIntro','reward_payments','reward_restocked','reward_gross','reward_equipment','reward_minutes','reward_service','rewardTier','claimReward','netProfitMinute','netProfitWindow'];
 const rewardProfitCopy={
  en:['Claim cash at each milestone. Your total progress carries into the next tier.','Customer payments','Items restocked','Total sales revenue','Equipment acquired','Minutes open','Customers served within 17 seconds','Tier','Claim','Average net profit / min:','Last 60 operating seconds. Sales minus stock purchases; other purchases and rewards excluded.'],
- 'zh-Hant':['達標後點擊領獎，累積進度保留並進入下一階。','累積結帳次數','累積補貨件數','累積銷售金額','累積取得設備','累積營業分鐘','17 秒內完成服務','第幾階','領取獎金','平均每分鐘淨收益：','最近 60 秒營運時間：商品收入減補貨成本；不含設備、擴建與獎金。'],
+ 'zh-Hant':['達標後點擊領獎，累積進度保留並進入下一階。','累積結帳次數','累積補貨件數','累積銷售金額','累積取得設備','累積營業分鐘','17 秒內完成服務','階段','領取獎金','平均每分鐘淨收益：','最近 60 秒營運時間：商品收入減補貨成本；不含設備、擴建與獎金。'],
  'zh-Hans':['达标后点击领奖，累计进度保留并进入下一阶。','累计结账次数','累计补货件数','累计销售金额','累计取得设备','累计营业分钟','17 秒内完成服务','阶段','领取奖金','平均每分钟净收益：','最近 60 秒营业时间：商品收入减补货成本；不含设备、扩建与奖金。'],
  ja:['達成したらタップで受け取り。累計進捗を保ったまま次の段階へ。','累計会計回数','累計仕入れ個数','累計売上','取得した設備','累計営業分数','17秒以内の接客','段階','受け取る','平均純利益 / 分：','直近60秒の営業時間。売上から仕入れを差し引き、設備と報酬は除外。'],
  ko:['목표 달성 후 눌러 보상을 받으세요. 누적 진행은 다음 단계에 유지됩니다.','누적 결제','누적 보충 수량','누적 매출','획득한 장비','누적 영업 시간(분)','17초 이내 서비스','단계','보상 받기','분당 평균 순수익:','최근 영업 60초의 매출에서 재고 구입비를 뺍니다. 장비와 보상은 제외합니다.'],
@@ -1009,6 +1009,41 @@ keys.push('decorTraffic','decorTrafficHint');
 const decorPlacedCopy=['Placed: extra customers','擺放：增加客流','摆放：增加客流','設置で来客増加','배치 시 방문객 증가','Colocada: más clientes','Colocada: mais clientes','Placée : plus de clients','Aufgestellt: mehr Kunden','Posizionata: più clienti','В зале: больше клиентов','रखने पर अधिक ग्राहक','عند وضعها: زبائن أكثر'];
 for(const [i,locale]of supportedLocales.entries())dict[locale].decorPlaced=decorPlacedCopy[i];
 keys.push('decorPlaced');
+const compactSlotCopy=[
+ ['1 dry product','2 dry products · stock +20','2 cold products · stock +30'],
+ ['1 款乾貨','2 款乾貨 · 庫存 +20','2 款冷藏 · 庫存 +30'],
+ ['1 款干货','2 款干货 · 库存 +20','2 款冷藏 · 库存 +30'],
+ ['常温1種','常温2種 · 在庫 +20','冷蔵2種 · 在庫 +30'],
+ ['상온 상품 1종','상온 2종 · 재고 +20','냉장 2종 · 재고 +30'],
+ ['1 producto seco','2 secos · stock +20','2 fríos · stock +30'],
+ ['1 produto seco','2 secos · estoque +20','2 frios · estoque +30'],
+ ['1 produit sec','2 secs · stock +20','2 froids · stock +30'],
+ ['1 Trockenware','2 Trockenwaren · Lager +20','2 Kühlwaren · Lager +30'],
+ ['1 prodotto secco','2 secchi · scorte +20','2 freddi · scorte +30'],
+ ['1 сухой товар','2 сухих · запас +20','2 охлаждённых · запас +30'],
+ ['1 सूखा उत्पाद','2 सूखे · भंडार +20','2 ठंडे · भंडार +30'],
+ ['منتج جاف واحد','منتجان جافان · مخزون +20','منتجان مبردان · مخزون +30']
+];
+for(const [i,locale]of supportedLocales.entries())[dict[locale].singlePurpose,dict[locale].doublePurpose,dict[locale].coolerPurpose]=compactSlotCopy[i];
+const profitPeriodCopy=['Last 60 operating seconds','最近 60 秒營運時間','最近 60 秒营业时间','直近60秒の営業時間','최근 영업 60초','Últimos 60 segundos de actividad','Últimos 60 segundos de operação','60 dernières secondes d’activité','Letzte 60 Betriebssekunden','Ultimi 60 secondi di attività','Последние 60 секунд работы','पिछले 60 सक्रिय सेकंड','آخر 60 ثانية عمل'];
+for(const [i,locale]of supportedLocales.entries())dict[locale].recentBusiness=profitPeriodCopy[i];
+const expansionRuleCopy=[
+ ['Expand shop','Visitor capacity','More space brings more visitors. Existing passages and fixtures stay put; provide enough checkout service.'],
+ ['擴建店面','接待容量','擴建增加空間與來客；原出入口和設備不搬動，記得增加收銀服務。'],
+ ['扩建店面','接待容量','扩建增加空间与来客；原出入口和设备不搬动，记得增加收银服务。'],
+ ['店舗を拡張','来客定員','空間と来客が増えます。既存の出入口と設備はそのまま。会計能力も増やしましょう。'],
+ ['매장 확장','방문객 정원','공간과 방문객이 늘어납니다. 기존 출입구와 장비는 유지됩니다. 계산 서비스도 늘리세요.'],
+ ['Ampliar tienda','Capacidad de clientes','Más espacio atrae visitas. Los accesos y equipos se conservan; amplía también el servicio de caja.'],
+ ['Ampliar loja','Capacidade de clientes','Mais espaço atrai visitas. Acessos e equipamentos ficam no lugar; amplie também o atendimento nos caixas.'],
+ ['Agrandir la boutique','Capacité clients','Plus d’espace attire des clients. Accès et équipements restent en place ; adaptez aussi les caisses.'],
+ ['Laden erweitern','Kundenkapazität','Mehr Platz bringt mehr Kundschaft. Zugänge und Ausstattung bleiben stehen; erweitere auch den Kassenservice.'],
+ ['Espandi negozio','Capienza clienti','Più spazio attira clienti. Accessi e attrezzature restano al loro posto; aumenta anche il servizio alle casse.'],
+ ['Расширить магазин','Вместимость','Больше места привлекает клиентов. Входы и оборудование остаются на месте; увеличивайте и число кассиров.'],
+ ['दुकान बढ़ाएँ','ग्राहक क्षमता','अधिक जगह से ग्राहक बढ़ते हैं। पुराने रास्ते और उपकरण अपनी जगह रहते हैं; भुगतान सेवा भी बढ़ाएँ।'],
+ ['توسعة المتجر','سعة الزبائن','المساحة الأكبر تجذب زبائن أكثر. تبقى المداخل والمعدات في أماكنها؛ زِد خدمة الدفع أيضًا.']
+];
+for(const [i,locale]of supportedLocales.entries())[dict[locale].expand,dict[locale].visitorCapacity,dict[locale].expansionTrafficHint]=expansionRuleCopy[i];
+keys.push('visitorCapacity','expansionTrafficHint');
 const aliases={'zh-tw':'zh-Hant','zh-hant':'zh-Hant','zh-cn':'zh-Hans','zh-hans':'zh-Hans','pt-br':'pt-BR'};
 export function resolveLocale(){const q=new URL(location.href).searchParams.get('lang');const ref=(()=>{try{return new URL(document.referrer).pathname.split('/')[1]}catch{return''}})();const here=location.pathname.split('/')[1];const raw=q||ref||here||document.documentElement.lang||'en';const locale=aliases[raw.toLowerCase()]||raw;return supportedLocales.includes(locale)?locale:'en'}
 export function t(key,locale=resolveLocale()){return dict[locale]?.[key]??dict.en[key]??key}
