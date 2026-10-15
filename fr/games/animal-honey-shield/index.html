@@ -32,7 +32,7 @@
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
   <link rel="stylesheet" href="style.css?v=20261001-honey-shield-result-v63" /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -114,16 +114,13 @@
           <div><dt data-i18n="faq3q">Puis-je perdre malgré un mur doré ?</dt><dd data-i18n="faq3a">Oui. La couleur dorée indique que le mur est fixé, pas que Pip est entièrement entouré. Les abeilles empruntent les chemins restants. Vérifiez les ouvertures avant de dépenser tout votre nectar.</dd></div>
           <div><dt data-i18n="faq4q">Comment les étoiles sont-elles attribuées ?</dt><dd data-i18n="faq4a">Protégez d’abord Pip jusqu’à la fin du compte à rebours. Une victoire coûtant au plus 45 unités de nectar donne trois étoiles ; plus de 45 et au plus 72 en donne deux ; plus de 72 en donne une. Une tentative perdue ne rapporte aucune étoile.</dd></div>
           <div><dt data-i18n="faq5q">Rejouer efface-t-il mon meilleur résultat ?</dt><dd data-i18n="faq5a">Non. Une victoire peut améliorer les étoiles enregistrées, mais un résultat inférieur ne les remplace pas. Les niveaux ouverts restent aussi disponibles dans le même navigateur.</dd></div></dl></article>
-        <article class="game-info-section"><h3 data-i18n="relatedTitle">Jeux associés</h3><p data-i18n="relatedIntro">Si vous aimez dessiner une défense sous pression, essayez ensuite ces jeux :</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/fr/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Bataillon de prismes</strong><span data-i18n="relatedPrismDescription">Changez de voie parmi les trois disponibles pour concentrer le tir automatique sur les monstres et les bombes et protéger le cristal.</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/fr/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Gardien des bêtes</strong><span data-i18n="relatedBeastDescription">Ouvrez une route dans la forêt, placez des défenseurs et protégez un cœur de cristal selon six règles de boss.</span></span></a>
-        </div></article>
+        <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Plus de jeux associés</h3><p data-i18n="relatedIntro">Si vous aimez dessiner une défense sous pression, essayez ensuite ces jeux :</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="beast-tactician" href="/fr/games/beast-tactician/"><span class="game-info-related-poster"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" data-final-src="/assets/weightplay-logo.png" alt="Gardien des bêtes" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Gardien des bêtes</strong><span data-i18n="relatedBeastDescription">Ouvrez une route dans la forêt, placez des défenseurs et protégez un cœur de cristal selon six règles de boss.</span></span></a></div></div>
       </div>
     </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="400" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-honey-shield.webp')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-frame-logical-header="stage" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="400" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-honey-shield.webp')">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Retour à l&#39;accueil">←</button>
         <div><strong data-i18n="title" data-wp-game-title data-runtime-localize="off">Bouclier de Miel</strong><span id="stageSummary"></span></div>
@@ -136,7 +133,7 @@
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Retour aux niveaux">←</button>
@@ -209,6 +206,6 @@
   <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55&amp;wp-text=20260929-honey140-final"></script><script src="game.js?v=20261001-honey-shield-result-v63&amp;wp-text=20260929-honey140-final"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
+  <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
 </body>
 </html>

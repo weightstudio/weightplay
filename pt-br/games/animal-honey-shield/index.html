@@ -32,7 +32,7 @@
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
   <link rel="stylesheet" href="style.css?v=20261001-honey-shield-result-v63" /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -114,16 +114,13 @@
           <div><dt data-i18n="faq3q">Posso perder mesmo com uma parede dourada?</dt><dd data-i18n="faq3a">Sim. Dourado significa que a parede está fixa, não que Pip esteja totalmente cercado. As abelhas usam qualquer caminho restante. Confira as aberturas antes de gastar o resto do néctar.</dd></div>
           <div><dt data-i18n="faq4q">Como as estrelas são calculadas?</dt><dd data-i18n="faq4a">Primeiro proteja Pip até o fim do tempo. Vencer usando no máximo 45 de néctar rende três estrelas; mais de 45 e até 72 rende duas; mais de 72 rende uma. Tentativas perdidas não dão estrelas.</dd></div>
           <div><dt data-i18n="faq5q">Repetir uma fase apaga meu melhor resultado?</dt><dd data-i18n="faq5a">Não. Uma vitória pode melhorar as estrelas salvas, mas um resultado pior não as substitui. As fases abertas também continuam disponíveis no mesmo navegador.</dd></div></dl></article>
-        <article class="game-info-section"><h3 data-i18n="relatedTitle">Jogos relacionados</h3><p data-i18n="relatedIntro">Se você gosta de desenhar uma defesa sob pressão, experimente estes jogos:</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/pt-br/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Batalhão de Prismas</strong><span data-i18n="relatedPrismDescription">Alterne entre três pistas para concentrar o disparo automático em monstros e bombas e proteger o cristal.</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/pt-br/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Abra uma rota na floresta, posicione defensores e mantenha um núcleo de cristal seguro sob seis regras de chefe.</span></span></a>
-        </div></article>
+        <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Mais jogos relacionados</h3><p data-i18n="relatedIntro">Se você gosta de desenhar uma defesa sob pressão, experimente estes jogos:</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="beast-tactician" href="/pt-br/games/beast-tactician/"><span class="game-info-related-poster"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" data-final-src="/assets/weightplay-logo.png" alt="Beast Guardian" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Abra uma rota na floresta, posicione defensores e mantenha um núcleo de cristal seguro sob seis regras de chefe.</span></span></a></div></div>
       </div>
     </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="400" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-honey-shield.webp')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-frame-logical-header="stage" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="400" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-honey-shield.webp')">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Voltar ao início">←</button>
         <div><strong data-i18n="title" data-wp-game-title data-runtime-localize="off">Escudo de Mel</strong><span id="stageSummary"></span></div>
@@ -136,7 +133,7 @@
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Voltar às fases">←</button>
@@ -209,6 +206,6 @@
   <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55&amp;wp-text=20260929-honey140-final"></script><script src="game.js?v=20261001-honey-shield-result-v63&amp;wp-text=20260929-honey140-final"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
+  <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
 </body>
 </html>

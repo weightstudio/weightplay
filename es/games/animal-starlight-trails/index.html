@@ -68,7 +68,7 @@
     </script>
   <link rel="stylesheet" href="../../src/tutorial.css" />
   <link rel="stylesheet" href="../../src/loading-screen.css" />
-  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="style.css?v=20261013-observatory-v22" />
@@ -116,12 +116,12 @@
       <div class="game-info-section"><h3>Nota de diseño</h3><p>El Canvas lógico adaptable llena la zona segura de Nivel y Batalla sin deformar sus elementos. Móvil y escritorio conservan la misma información y la reserva inferior nunca cubre controles.</p></div>
       <div class="game-info-section game-info-parent"><h3>Información del jugador y guardado</h3><p>Senderos Estelares es gratuito, no requiere cuenta y guarda el progreso solo en este navegador. Los comentarios de habilidades son entretenimiento, no una evaluación formal.</p></div>
       <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Puedo pasar dos veces por la misma estrella?</dt><dd>Sí. Puedes volver a visitar una estrella, pero cada sendero que conecta dos estrellas solo se recorre una vez.</dd></div><div><dt>¿Por qué no puedo recorrer el sendero del cometa rosa?</dt><dd>La flecha indica el sentido permitido. No es válido entrar por el extremo opuesto.</dd></div><div><dt>¿Qué ocurre al llegar a un callejón sin salida?</dt><dd>La ruta actual permanece visible; puedes deshacer uno o varios pasos o reiniciar gratis.</dd></div><div><dt>¿Es obligatorio usar pistas?</dt><dd>No. Todos los niveles se pueden resolver sin pistas; Pista solo señala una siguiente estrella que mantiene una ruta válida.</dd></div><div><dt>¿Se guarda el progreso?</dt><dd>Sí. Los desbloqueos, las mejores estrellas y los mejores tiempos se guardan localmente en este navegador.</dd></div><div><dt>¿Cuántos niveles hay?</dt><dd>Hay 30 niveles diseñados en seis capítulos de reglas. El nivel 30 se puede repetir después de completarlo.</dd></div><div><dt>¿Qué reduce la calificación de estrellas?</dt><dd>Cada movimiento inválido cuenta uno; Reiniciar después de dibujar una ruta también cuenta uno, y cada Pista cuenta dos. Cero penalizaciones da tres estrellas, de una a tres da dos y más da una. Deshacer por sí solo no penaliza.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/es/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line</strong><span>One Line es un puzle original de 30 niveles con Mimi.</span></span></a><a class="game-info-related-card" href="/es/games/animal-prism-breakers/"><img src="/assets/interface7-redrawn/animal-prism-breakers.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Rompeprismas</strong><span>Mueve la pala bajo cada orbe de luz que rebota, controla el ángulo con el punto de contacto y rompe todos los cristales rompibles antes de perder los tres orbes.</span></span></a><a class="game-info-related-card" href="/es/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Cajas Enlazadas</strong><span>Camina, empuja y arrastra cargamento rúnico por treinta almacenes de un arca celeste diseñados a mano.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Más juegos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-one-line" href="/es/games/animal-one-line/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-one-line.webp" data-final-src="/assets/weightplay-logo.png" alt="One Line" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">One Line</strong><span>One Line es un puzle original de 30 niveles con Mimi.</span></span></a></div></div>
     </div>
   </section>
 
   <section id="stageScreen" class="stage-shell" data-wp-canvas-max-width="920" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="358" style="--wp-stage-art:url('../../assets/animal-starlight-trails-observatory-v22.webp')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-frame-logical-header="stage" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="358" style="--wp-stage-art:url('../../assets/animal-starlight-trails-observatory-v22.webp')">
       <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back">&larr;</button><div><strong data-i18n="chooseStage">Choose Constellation</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt="" /></header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-management-nav data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Constellations"></div>
@@ -129,7 +129,7 @@
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
-    <div class="trail-battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+    <div class="trail-battle-canvas" data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-canvas-max-width="920">
       <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><div><i id="edgeProgress"></i></div></div><div class="battle-stat"><small data-i18n="trails">Trails</small><strong id="trailCount">0 / 0</strong></div><div class="battle-stat"><small data-i18n="stars">Stars</small><strong id="starTotal">0</strong></div><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility data-wp-primary-action aria-label="Hint">?</button></header>
       <div id="objectiveRow" class="objective-row"></div>
       <section id="puzzleScene" class="puzzle-scene" aria-label="Constellation puzzle"><svg id="graphSvg" viewBox="0 0 100 100" role="group" aria-label="One-stroke constellation"></svg><div id="hintPulse" class="hint-pulse" hidden></div></section>
@@ -149,12 +149,11 @@
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="../../src/tutorial.js"></script>
   <script src="guide-locales.js?v=20260930-starlink-faq1"></script>
-  <script src="game.js?v=20261013-observatory-v22"></script>
+  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2" data-wp-frame-script></script><script src="game.js?v=20261013-observatory-v22"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
   <script src="../../src/edge-guard.js"></script>
-  <script data-wp-comparison-only src="../../src/game-page-info.js?v=20260824-starlight-hindi-guide-ownership-v19"></script>
+  <script data-wp-comparison-only src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
-</body>
+  </body>
 </html>

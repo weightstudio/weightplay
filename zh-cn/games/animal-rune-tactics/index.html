@@ -43,9 +43,9 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261015-rune-tactics-i9-guide" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link rel="stylesheet" href="style.css?v=20261011-v33-65211c8d4d0b" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4"><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-tutorial-auto-show="false" data-wp-combined-sound="true">
@@ -198,7 +198,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260701-wallet1"></script>
-<script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
+<script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
 <script src="../../src/stage-selector-standard.js?v=20260923-rune-v24"></script>
 <script src="/games/animal-rune-tactics/combat-core.js?v=20261011-v33-7cced709a5c7"></script>
 <script src="/games/animal-rune-tactics/combat-copy.js?v=20261011-v33-c2215269c2d0"></script>
@@ -209,7 +209,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-rune-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261015-rune-tactics-i9-guide";
+          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
           script.dataset.runeGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -257,7 +257,7 @@
       <div class="game-info-section"><h3>开发设计理念</h3><p>每波 6 名敌人，每两回合或清场后抵达。扫荡任务须消灭全部波次；切断援军任务也可占领两个节点，再清除场上敌人获胜。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>解锁进度、星星、符文、小队成长与英雄升级会保存在此浏览器。清除网站数据或改用其他浏览器可能移除或分开存档。所有任务均不需要钻石；三钻重选奖励与十八钻训练栏都是可选项目，没有跨设备云端同步保证。</p></div>
       <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>同一回合可以移动再攻击吗？</dt><dd>可以。先移动选中的英雄，再使用一次攻击、防守或技能；战斗行动完成后，该英雄本回合便结束。</dd></div><div><dt>为什么不能用技能？</dt><dd>请检查剩余能量、是否已用完战斗行动，以及是否处于沉默状态；普通攻击或防守可能仍可使用。</dd></div><div><dt>伤害预览是零，代表攻击坏掉了吗？</dt><dd>不一定。飞行免疫、护盾或护甲可能减少或阻挡伤害；换位置或换英雄后再看一次预览。</dd></div><div><dt>必须拿满三颗星才能继续吗？</dt><dd>不用。没有全员存活或回合目标星星，获胜仍可推进战役；之后重玩只会补发尚未获得的星星奖励。</dd></div><div><dt>重试会删掉升级吗？</dt><dd>重试只重置该场战斗，不会删除已保存的战役升级；清除浏览器存储数据则可能移除存档。</dd></div><div><dt>第 30 关之后还有什么？</dt><dd>战役在第 30 关结束，可重玩已解锁任务并改善星星记录，不会出现不存在的第 31 关。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-auto-squad/"><img src="/assets/animal-auto-squad-cover-block-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>自走小队</strong><span>先安排动物阵形，再观看小队自动战斗。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-relic-hunters/"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>遗迹猎人</strong><span>探索房间、收集遗物，挑战 30 次远征。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-auto-squad" href="/zh-cn/games/animal-auto-squad/"><span class="game-info-related-poster"><img src="/assets/animal-auto-squad-cover-block-v2.webp" data-final-src="/assets/weightplay-logo.png" alt="自走小队" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">自走小队</strong><span>先安排动物阵形，再观看小队自动战斗。</span></span></a><a class="game-info-related-card" data-game-id="animal-relic-hunters" href="/zh-cn/games/animal-relic-hunters/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" data-final-src="/assets/weightplay-logo.png" alt="遗迹猎人" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">遗迹猎人</strong><span>探索房间、收集遗物，挑战 30 次远征。</span></span></a></div></div>
     </div>
   </section>
 </body>

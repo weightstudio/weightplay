@@ -27,8 +27,8 @@
   <title>スペース・ロックス | WeightPlay</title>
   <link rel="stylesheet" href="../../src/classic-chase-rocks.css?v=20260905-space-score-reserve-v19">
   <link rel="stylesheet" href="art.css?v=20260921-space-rocks-block-scene-v1">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260905-space-score-reserve-v19">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
   <style data-space-rocks-result-occlusion-fix>
     /* Keep the generated return control at its physical target size even when
        the owning logical Battle Canvas is uniformly scaled. */
@@ -111,7 +111,7 @@
   </main>
     <script src="../../src/battle-canvas-standard.js?v=20260808-play-lock1" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
+  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <section class="game-page-info game-page-info-static" aria-label="スペース・ロックス ゲーム情報">
 
     <div class="game-info-hero">
@@ -135,10 +135,10 @@
       <div class="game-info-section"><h3>開発者メモ</h3><p>スペースロックスは、オリジナルのCanvasフィールド、船、クリスタルロック、UFO、ガーディアン、粒子、サウンドを使います。レスポンシブな論理キャンバス、キーボードとタッチ操作、ローカライズされた合図、スコアとベスト記録、成功・失敗・リプレイ・リスタート・メイン画面への復帰を備えています。</p></div>
       <div class="game-info-section game-info-save"><h3>プレイヤーと保存情報</h3><p>ベストスコアとサウンド設定はこのブラウザに保存されます。アカウントや購入は不要です。ブラウザデータを消去すると、このローカル記録が削除される場合があります。</p></div>
       <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>慣性はどう操作しますか？</dt><dd>推進すると速度が増し、船はその後も漂います。回転と短い推進で次の軌道を作り、すぐに止まるとは考えないでください。</dd></div><div><dt>大きな岩に当たるとどうなりますか？</dt><dd>中サイズの岩、さらに小さな破片へ分裂します。分裂の連鎖をすべて片付けると、スコアと破片カウントが増えます。</dd></div><div><dt>ラピッドファイアとは何ですか？</dt><dd>一時的に射撃間隔を短くする強化で、破片が密集した場所を片付けやすくします。</dd></div><div><dt>シールドはどう使いますか？</dt><dd>危険地帯を抜けるときやガーディアンに近づくときに使います。容量は限られ、無防備な衝突が5回でラウンド終了です。</dd></div><div><dt>3ウェーブ目は何が変わりますか？</dt><dd>オレンジ色のガーディアンコアが現れ、危険が増えます。コアの合図とシールドのタイミングが重要です。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>ベストスコアとサウンド設定はこのブラウザに保存され、アカウントは不要です。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/snake/"><img src="/assets/interface7-redrawn/snake.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>スネーク</strong><span>グリッドで成長するヘビを動かして餌を集め、体とGate／Orbitの障害マスを避けます。</span></span></a><a class="game-info-related-card" href="/ja/games/maze-chase/"><img src="/assets/interface7-redrawn/maze-chase.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>メイズチェイス</strong><span>メイズチェイスは、固定迷路で星のかけらを集めるオリジナルゲームです。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>関連ゲームをもっと見る</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="snake" href="/ja/games/snake/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/snake.webp" data-final-src="/assets/weightplay-logo.png" alt="スネーク" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">スネーク</strong><span>グリッドで成長するヘビを動かして餌を集め、体とGate／Orbitの障害マスを避けます。</span></span></a><a class="game-info-related-card" data-game-id="maze-chase" href="/ja/games/maze-chase/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/maze-chase.webp" data-final-src="/assets/weightplay-logo.png" alt="メイズチェイス" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">メイズチェイス</strong><span>メイズチェイスは、固定迷路で星のかけらを集めるオリジナルゲームです。</span></span></a></div></div>
     </div>
   </section>
-<script src="../../src/game-page-info.js?v=20261013-space-related-public-140-v2" data-wp-game-info-static></script>
+<script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1" data-wp-game-info-static></script>
   <script src="/games/space-rocks/analytics-ownership.js?v=20260905-space-score-reserve-v19"></script><script src="../../src/classic-chase-rocks.js?v=20260905-space-score-reserve-v19"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="スペース・ロックス";document.title="スペース・ロックス | WeightPlay";},{once:true});</script>
 </body>

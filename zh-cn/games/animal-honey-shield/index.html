@@ -32,7 +32,7 @@
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
   <link rel="stylesheet" href="style.css?v=20261001-honey-shield-result-v63" /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -114,16 +114,13 @@
           <div><dt data-i18n="faq3q">防线变成金色后，还会失败吗？</dt><dd data-i18n="faq3a">会。金色只表示墙已固定，不代表皮普周围已完全封住。蜜蜂仍会走剩下的通路；花完花蜜前，先检查两侧是否留有缺口。</dd></div>
           <div><dt data-i18n="faq4q">星级如何计算？</dt><dd data-i18n="faq4a">先保护皮普到倒计时结束。通关时消耗不超过 45 花蜜可得三星；超过 45、但不超过 72 可得两星；超过 72 则得一星。失败的尝试不会获得星星。</dd></div>
           <div><dt data-i18n="faq5q">重玩会覆盖最佳成绩吗？</dt><dd data-i18n="faq5a">不会。通关可以提高已保存的最佳星级，较差的结果不会取代它。已解锁关卡也会在同一个浏览器中保留。</dd></div></dl></article>
-        <article class="game-info-section"><h3 data-i18n="relatedTitle">相关游戏</h3><p data-i18n="relatedIntro">如果你喜欢在压力下画出防线，可以接着挑战：</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/zh-cn/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">棱光军团</strong><span data-i18n="relatedPrismDescription">在三条路线间切换，把自动火力集中到来袭的怪物或炸弹，守住水晶。</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/zh-cn/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">兽王守卫</strong><span data-i18n="relatedBeastDescription">建立保持畅通的森林路线、安排防守者，在六种首领规则下守住水晶核心。</span></span></a>
-        </div></article>
+        <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><p data-i18n="relatedIntro">如果你喜欢在压力下画出防线，可以接着挑战：</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="beast-tactician" href="/zh-cn/games/beast-tactician/"><span class="game-info-related-poster"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" data-final-src="/assets/weightplay-logo.png" alt="兽王守卫" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">兽王守卫</strong><span data-i18n="relatedBeastDescription">建立保持畅通的森林路线、安排防守者，在六种首领规则下守住水晶核心。</span></span></a></div></div>
       </div>
     </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="400" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-honey-shield.webp')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-frame-logical-header="stage" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="400" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-honey-shield.webp')">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="返回主界面">←</button>
         <div><strong data-i18n="title" data-wp-game-title data-runtime-localize="off">蜂蜜盾</strong><span id="stageSummary"></span></div>
@@ -136,7 +133,7 @@
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="返回关卡">←</button>
@@ -209,6 +206,6 @@
   <script src="locales.js?v=20260913-honey-shield-route-diagnosis-v55&amp;wp-text=20260929-honey140-final"></script><script src="game.js?v=20261001-honey-shield-result-v63&amp;wp-text=20260929-honey140-final"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
+  <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
 </body>
 </html>

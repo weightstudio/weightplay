@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <base href="/games/checkers/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
@@ -35,7 +36,7 @@
   @media (max-width: 700px) { .preview-art img { min-height: 140px; } }
 </style>
 <link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260909-checkers-feedback-v21">
-<link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-checkers-feedback-v21">
+<link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="西洋跳棋 | WeightPlay" />
@@ -74,7 +75,8 @@
   }
 }
     </script>
-  </head>
+    <link rel="stylesheet" href="/src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+</head>
 <body data-wp-game-id="checkers" data-wp-game-version="v21" data-wp-interface-version="7" data-wp-battle-layout="native" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true">
 <main id="popularArcade" class="popular-arcade">
   <header class="arcade-header checkers-shell-header">
@@ -130,8 +132,9 @@
       <div class="game-info-section"><h3>開發設計理念</h3><p>西洋跳棋使用同一套合法走法引擎處理觸控、滑鼠、鍵盤焦點、提示與對手回合。選中的棋子和合法落點以不同標記呈現，讓你能直接看出哪些斜向選擇可走，以及為什麼有吃子時不能走安靜步。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家與存檔說明</h3><p>不需登入或購買即可遊玩。未完成的對局不會保存；只有最佳紀錄會留在這個瀏覽器。清除網站資料可能會刪除該紀錄。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>有吃子時可以不吃嗎？</dt><dd>不可以。只要盤上任何一枚棋子能吃子，你就必須選擇其中一種吃子走法。</dd></div><div><dt>連跳何時結束？</dt><dd>同一枚棋子落地後若仍能吃子，就必須繼續；沒有可接續的吃子時，回合才結束。 若這次吃子升王，回合會立即結束。</dd></div><div><dt>棋子怎麼升王？</dt><dd>普通棋子走到對面底列就會升為王，之後能沿斜線前後移動與吃子。</dd></div><div><dt>怎樣贏得對局？</dt><dd>讓對手沒有棋子或沒有合法走法即可獲勝；長時間沒有吃子或升王時可能和局。</dd></div><div><dt>提示會替我走棋嗎？</dt><dd>不會。提示只標出一枚合法起始棋子，目的格和完整走法仍由你決定。</dd></div><div><dt>對局或最佳紀錄會保存嗎？</dt><dd>未完成對局不會保存；最佳紀錄只留在目前瀏覽器。遊玩不需登入或購買。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>熄燈遊戲</strong><span>熄燈遊戲是經典 5×5 開關益智遊戲：按下一格與其上下左右鄰格，關掉全部燈光。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/four-in-a-row/"><img src="/assets/interface7-redrawn/four-in-a-row.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>四子棋</strong><span>四子棋是經典 7×6 重力棋盤遊戲：把棋子落入欄位，橫向、直向或斜向連成四子。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="lights-out" href="/zh-tw/games/lights-out/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/lights-out.webp" data-final-src="/assets/weightplay-logo.png" alt="熄燈遊戲" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">熄燈遊戲</strong><span>熄燈遊戲是經典 5×5 開關益智遊戲：按下一格與其上下左右鄰格，關掉全部燈光。</span></span></a><a class="game-info-related-card" data-game-id="four-in-a-row" href="/zh-tw/games/four-in-a-row/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/four-in-a-row.webp" data-final-src="/assets/weightplay-logo.png" alt="四子棋" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">四子棋</strong><span>四子棋是經典 7×6 重力棋盤遊戲：把棋子落入欄位，橫向、直向或斜向連成四子。</span></span></a></div></div>
     </div>
   </section>
+  <script src="/src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
 </body>
 </html>

@@ -70,7 +70,7 @@
   }
 }
     </script>
-  </head>
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-frame-style></head>
 <body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-magnet-meadow" data-wp-game-version="v12" data-screen="main">
   <div id="app">
     <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-main-screen>
@@ -113,7 +113,7 @@
     </section>
 
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
-      <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
+      <div class="stage-canvas" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-frame-logical-header="stage" data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
         <header class="panel-head"><button id="stageBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="stage" type="button" data-copy-aria-label="back" aria-label="戻る"><span aria-hidden="true">←</span></button><h2 data-copy="stages">草原マップ</h2><button id="stageInfoBtn" class="icon-btn panel-utility utility-button wp-shell-legacy-control" hidden type="button" aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings" aria-hidden="true" tabindex="-1" aria-label="設定"><span aria-hidden="true">⚙</span><span class="sr-only" data-copy="settings">設定</span></button></header>
         <p class="panel-intro" data-copy="mapIntro">Each dock teaches how one move changes the linked pair.</p>
         <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div>
@@ -123,7 +123,7 @@
     </section>
 
     <section id="battleScreen" class="screen" data-screen="battle" hidden>
-      <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" data-wp-canvas-max-width="920">
+      <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-battle-canvas-root data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" data-wp-canvas-max-width="920">
         <header class="panel-head"><button id="battleBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="battle" type="button" data-copy-aria-label="back" aria-label="戻る"><span aria-hidden="true">←</span></button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn panel-utility utility-button" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound" aria-label="Sound">♫</button></header>
         <div id="battlePanel">
           <div class="mission-row"><div><p class="eyebrow" data-copy="dockKicker">MEADOW DOCK</p><p id="roundHint" class="panel-intro"></p></div><span id="relationBadge" class="relation-badge"></span></div>
@@ -149,7 +149,7 @@
     </section>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="locales.js?v=20260924-magnet-meadow-v12-guide"></script>
+  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2" data-wp-frame-script></script><script src="locales.js?v=20260924-magnet-meadow-v12-guide"></script>
   <script src="game.js?v=20260924-magnet-meadow-v12-guide"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>

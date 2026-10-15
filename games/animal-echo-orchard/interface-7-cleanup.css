@@ -60,3 +60,9 @@ body[data-wp-game-id="animal-echo-orchard"] .battle-ad-reserve { height:var(--wp
   body[data-wp-game-id="animal-echo-orchard"] #battleScreen .battle-utility .icon-btn { width:48px!important;min-width:48px!important;max-width:48px!important;height:48px!important;min-height:48px!important;max-height:48px!important;font-size:inherit!important; }
   body[data-wp-game-id="animal-echo-orchard"] #resultScreen .result-guide { display:none!important; }
 }
+/* I9 shared-frame Battle context remains in the play area below the title-free HUD. */
+html body[data-wp-frame="2"] #battleScreen .battle-content { gap: 6px; }
+html body[data-wp-frame="2"] #battleScreen .battle-context { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; min-width: 0; }
+html body[data-wp-frame="2"] #battleScreen .battle-context .eyebrow { margin: 0; color: #f4d27e; }
+html body[data-wp-frame="2"] #battleScreen .battle-context h2 { margin: 0; color: #fff; font-size: clamp(1rem, 2.4vw, 1.3rem); }
+html body[data-wp-frame="2"] #battleScreen .battle-utility { display: flex; justify-content: flex-end; align-items: center; min-width: 0; }

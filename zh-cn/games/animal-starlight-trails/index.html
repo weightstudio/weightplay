@@ -68,7 +68,7 @@
     </script>
   <link rel="stylesheet" href="../../src/tutorial.css" />
   <link rel="stylesheet" href="../../src/loading-screen.css" />
-  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="style.css?v=20261013-observatory-v22" />
@@ -116,12 +116,12 @@
       <div class="game-info-section"><h3>开发设计理念</h3><p>Starlink 使用响应式逻辑 Canvas 填满 Stage 与 Battle 的安全区域，不会分别拉伸子元素。手机与宽萤幕会保留相同路线信息与操作，底部 56px 预留区也不会盖住游戏或结算按钮。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>Starlink 可免费在浏览器游玩，不需账号。解锁进度、最佳星等与时间只保存在目前浏览器；清除网站数据或更换浏览器可能建立另一份记录。技能反馈仅供游戏鼓励，不是正式能力评量。</p></div>
       <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>星点可以重复经过吗？</dt><dd>可以。星点可以再次经过，但每条连接星路只能走一次。</dd></div><div><dt>为什么粉色彗星星路不能通过？</dt><dd>箭头标明该星路允许的方向；从另一端进入不合法。</dd></div><div><dt>走到死路时会怎样？</dt><dd>当前路线会保留，你可以免费撤销一步或多步，也可以重新开始。</dd></div><div><dt>一定要使用提示吗？</dt><dd>不用。每一关都能不靠提示解开；提示只会标出一颗仍可完成路线的下一颗星。</dd></div><div><dt>进度会保存吗？</dt><dd>会。关卡解锁、最佳星级和最佳时间只存储在当前浏览器。</dd></div><div><dt>共有多少个关卡？</dt><dd>共有六个规则章节、30 个设计关卡。完成后仍可重玩第 30 关。</dd></div><div><dt>哪些操作会降低关卡星级？</dt><dd>错误操作各计一次；画出路线后重新开始也计一次；每次提示计两次。惩罚为零得三星，一至三得两星，更多得一星。单独撤销不扣分。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line 一笔到底</strong><span>One Line 一笔到底是由彩虹跳跳米米主演的 30 关格子解谜游戏。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-prism-breakers/"><img src="/assets/interface7-redrawn/animal-prism-breakers.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>棱光破砖队</strong><span>在每颗回弹的光球下方移动球板，用接触位置控制反弹角度，并在三颗光球全部耗尽前击碎所有可破坏水晶。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>方舟搬运队</strong><span>在 30 座手工设计的天空方舟仓库中行走、推动与拉回符文货箱。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-one-line" href="/zh-cn/games/animal-one-line/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-one-line.webp" data-final-src="/assets/weightplay-logo.png" alt="One Line 一笔到底" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">One Line 一笔到底</strong><span>One Line 一笔到底是由彩虹跳跳米米主演的 30 关格子解谜游戏。</span></span></a></div></div>
     </div>
   </section>
 
   <section id="stageScreen" class="stage-shell" data-wp-canvas-max-width="920" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="358" style="--wp-stage-art:url('../../assets/animal-starlight-trails-observatory-v22.webp')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-frame-logical-header="stage" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="358" style="--wp-stage-art:url('../../assets/animal-starlight-trails-observatory-v22.webp')">
       <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back">&larr;</button><div><strong data-i18n="chooseStage">Choose Constellation</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt="" /></header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-management-nav data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Constellations"></div>
@@ -129,7 +129,7 @@
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
-    <div class="trail-battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+    <div class="trail-battle-canvas" data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-canvas-max-width="920">
       <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><div><i id="edgeProgress"></i></div></div><div class="battle-stat"><small data-i18n="trails">Trails</small><strong id="trailCount">0 / 0</strong></div><div class="battle-stat"><small data-i18n="stars">Stars</small><strong id="starTotal">0</strong></div><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility data-wp-primary-action aria-label="Hint">?</button></header>
       <div id="objectiveRow" class="objective-row"></div>
       <section id="puzzleScene" class="puzzle-scene" aria-label="Constellation puzzle"><svg id="graphSvg" viewBox="0 0 100 100" role="group" aria-label="One-stroke constellation"></svg><div id="hintPulse" class="hint-pulse" hidden></div></section>
@@ -149,12 +149,11 @@
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="../../src/tutorial.js"></script>
   <script src="guide-locales.js?v=20260930-starlink-faq1"></script>
-  <script src="game.js?v=20261013-observatory-v22"></script>
+  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2" data-wp-frame-script></script><script src="game.js?v=20261013-observatory-v22"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
   <script src="../../src/edge-guard.js"></script>
-  <script data-wp-comparison-only src="../../src/game-page-info.js?v=20260824-starlight-hindi-guide-ownership-v19"></script>
+  <script data-wp-comparison-only src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
-</body>
+  </body>
 </html>

@@ -42,7 +42,7 @@
     <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Pet Garden Tiles","alternateName":"寵物花園方塊","url":"https://weightplay.com/ko/games/garden-tiles/","image":"https://weightplay.com/assets/garden-tiles-cover.png","description":"Garden Tiles는 동물 그림 기억 짝맞추기 게임으로 저장 가능한 챌린지 30개를 제공합니다. 타일을 뒤집어 같은 그림을 찾으세요. 6개 챕터마다 규칙이 바뀌며 시간 제한은 없습니다.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"ko","isAccessibleForFree":true,"genre":["동물 그림 기억력 짝맞추기","뒤집힌 그림 짝 찾기","30개 저장 챌린지"],"audience":{"@type":"Audience","audienceType":"Kids and families","suggestedMinAge":6},"learningResourceType":"Skill practice through play","educationalUse":"Practice Memory, Focus, Problem Solving through family-friendly browser gameplay."}</script>
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261015-garden-tiles-i9-guide" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
@@ -148,7 +148,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-garden-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261001-garden-tiles-text140-v1";
+          script.src = "../../src/game-page-info.js?v=20261015-garden-tiles-i9-guide";
           script.dataset.gardenGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);

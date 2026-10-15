@@ -35,11 +35,11 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
-  <link rel="stylesheet" href="../../src/game-page-info.css">
-  <script defer src="../../src/game-page-info.js?v=20261003-sketchwheel-text140-v2"></script>
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
+  <script defer src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
   <script defer src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4"><meta name="description" content="Draw wheels for 30 races. Match roundness, height, grip, and width to each terrain. Speed affects gap crossings, and strong later passes can grant a brief boost." />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><meta name="description" content="Draw wheels for 30 races. Match roundness, height, grip, and width to each terrain. Speed affects gap crossings, and strong later passes can grant a brief boost." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Sketchwheel Rally | WeightPlay" />
@@ -101,7 +101,7 @@
   <script src="../../src/battle-canvas-standard.js"></script>
   <script src="locales.js?v=20261013-rally-v19"></script>
   <script src="game.js?v=20261013-rally-v19&wp-audio=1.0.0"></script>
-  <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
+  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
   <section class="game-page-info game-page-info-static" aria-label="Sketchwheel Rally game information">
 
     <div class="game-info-hero">
@@ -124,7 +124,7 @@
       <div class="game-info-section"><h3>Developer Design Note</h3><p>The wheel is visibly attached to the vehicle, rotates with travel, meets the ground line, and faces the direction of motion. Draw coordinates and rendered shape share one scale on phone and desktop. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
       <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>No account, purchase, or public leaderboard is required. Clears, bolts, upgrades, lens state, and local best times stay in this browser. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many races are in Sketchwheel Rally?</dt><dd>There are 30 authored races across six chapters, with five races in each chapter.</dd></div><div><dt>What wheel works on ice?</dt><dd>Use a grippy profile: the game checks grip for ice. A smooth round wheel is not automatically the best match.</dd></div><div><dt>Where is my progress saved?</dt><dd>Race clears, bolts, upgrades, lens state, and best times are saved in this browser. They do not sync to another browser or device.</dd></div><div><dt>Can I redraw during a rally?</dt><dd>Yes. Redraw before the next terrain section when its needs change.</dd></div><div><dt>Does the rival use my wheel?</dt><dd>No. The rival sets race pressure; your result depends on the shape you draw.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Related Games</h3><div class="game-info-related"><a class="game-info-related-card" href="/en/games/animal-prism-breakers/"><img src="/assets/interface7-redrawn/animal-prism-breakers.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Prism Breakers</strong><span>Move the paddle beneath each returning light orb, control the rebound with the contact point, and shatter every breakable crystal before all three orbs are lost.</span></span></a><a class="game-info-related-card" href="/en/games/animal-bounce-brawl/"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Bounce Brawl</strong><span>Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>More Related Games</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-prism-breakers" href="/en/games/animal-prism-breakers/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-prism-breakers.webp" data-final-src="/assets/weightplay-logo.png" alt="Prism Breakers" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Prism Breakers</strong><span>Move the paddle beneath each returning light orb, control the rebound with the contact point, and shatter every breakable crystal before all three orbs are lost.</span></span></a></div></div>
     </div>
   </section>
 </body>

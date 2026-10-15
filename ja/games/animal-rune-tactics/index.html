@@ -43,9 +43,9 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261015-rune-tactics-i9-guide" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link rel="stylesheet" href="style.css?v=20261011-v33-65211c8d4d0b" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4"><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-tutorial-auto-show="false" data-wp-combined-sound="true">
@@ -199,7 +199,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260701-wallet1"></script>
-<script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
+<script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
 <script src="../../src/stage-selector-standard.js?v=20260923-rune-v24"></script>
 <script src="/games/animal-rune-tactics/combat-core.js?v=20261011-v33-7cced709a5c7"></script>
 <script src="/games/animal-rune-tactics/combat-copy.js?v=20261011-v33-c2215269c2d0"></script>
@@ -210,7 +210,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-rune-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261015-rune-tactics-i9-guide";
+          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
           script.dataset.runeGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -258,7 +258,7 @@
       <div class="game-info-section"><h3>開発者メモ</h3><p>各波6体が2ターンごと、または敵一掃後に登場。掃討任務は全波撃破。増援阻止任務は両中継点を確保し、残る敵を倒しても勝利。</p></div>
       <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>解放状況、星、ルーン、部隊の成長、仲間の強化はこのブラウザーに保存されます。サイトデータの削除やブラウザー変更で、保存が消えたり別の記録になったりします。全ミッションはダイヤなしで遊べます。報酬の引き直しは3ダイヤ、訓練枠は18ダイヤの任意機能です。端末間のクラウド同期は保証していません。</p></div>
       <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>移動したターンに攻撃できますか？</dt><dd>はい。先に移動し、その後に攻撃・ガード・スキルを1回使えます。戦闘行動を終えたヒーローは行動終了です。</dd></div><div><dt>スキルが使えないのはなぜですか？</dt><dd>エネルギー不足、戦闘行動の使用済み、沈黙を確認してください。通常攻撃やガードは使える場合があります。</dd></div><div><dt>予測ダメージが0なら不具合ですか？</dt><dd>必ずしもそうではありません。飛行中の無効化、盾、装甲の影響があります。位置やヒーローを変えて予測を確認してください。</dd></div><div><dt>先へ進むには星3個が必要ですか？</dt><dd>いいえ。生存や目標ターン数の星を逃しても勝利すれば進めます。再挑戦で未取得の報酬だけを獲得できます。</dd></div><div><dt>再挑戦すると強化も消えますか？</dt><dd>その戦闘だけがリセットされ、保存済みの強化は残ります。ブラウザーの保存データを消すと記録を失う場合があります。</dd></div><div><dt>ミッション30の後は？</dt><dd>キャンペーンは30で終了します。解放済みミッションの星を改善できますが、存在しないミッション31は作られません。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-auto-squad/"><img src="/assets/animal-auto-squad-cover-block-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>オート分隊</strong><span>動物の陣形を決めてから、部隊の自動戦闘を見守ります。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-relic-hunters/"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>レリックハンター</strong><span>部屋を探索し、遺物を集めながら30の遠征に挑みます。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>関連ゲームをもっと見る</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-auto-squad" href="/ja/games/animal-auto-squad/"><span class="game-info-related-poster"><img src="/assets/animal-auto-squad-cover-block-v2.webp" data-final-src="/assets/weightplay-logo.png" alt="オート分隊" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">オート分隊</strong><span>動物の陣形を決めてから、部隊の自動戦闘を見守ります。</span></span></a><a class="game-info-related-card" data-game-id="animal-relic-hunters" href="/ja/games/animal-relic-hunters/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" data-final-src="/assets/weightplay-logo.png" alt="レリックハンター" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">レリックハンター</strong><span>部屋を探索し、遺物を集めながら30の遠征に挑みます。</span></span></a></div></div>
     </div>
   </section>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="ルーン戦術";document.title="ルーン戦術 | WeightPlay";},{once:true});</script>

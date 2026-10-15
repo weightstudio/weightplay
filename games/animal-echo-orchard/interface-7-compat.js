@@ -26,6 +26,24 @@
   let coveredNodes = [];
   let resultObserver = null;
   let bodyObserver = null;
+  let frameSlots = null;
+
+  function mountSharedFrame() {
+    const battle = $("battleScreen");
+    const oldHeader = battle?.querySelector("[data-wp-shell-header=\"battle\"]");
+    if (!battle || !oldHeader || battle.querySelector("[data-wp-shell-content=\"battle\"]")) return;
+    const content = document.createElement("div");
+    content.className = "battle-content wp-frame-play-content";
+    content.dataset.wpShellContent = "battle";
+    oldHeader.querySelectorAll(":scope > .battle-context, :scope > .battle-utility").forEach((node) => content.append(node));
+    while (oldHeader.nextSibling) content.append(oldHeader.nextSibling);
+    oldHeader.after(content);
+    content.querySelector("#battleUtilityBtn")?.setAttribute("hidden", "");
+    frameSlots = window.WeightPlayScreenFrame?.mountSlots?.({
+      root: $("app"), main: $("mainScreen"), stage: $("stageScreen"), battle: $("battleScreen")
+    }) || null;
+    frameSlots?.sync?.();
+  }
 
   function localeKey() {
     const raw = $("localeSelect")?.value || document.documentElement.lang || "en";
@@ -78,7 +96,7 @@
     }
     if (!stage.querySelector(".echo-stage-nav")) {
       const nav = document.createElement("nav");
-      nav.className = "echo-stage-nav";
+      nav.className = "echo-stage-nav stage-tabs";
       nav.setAttribute("aria-label", labels().stages);
       nav.innerHTML = '<span aria-hidden="true"></span><button type="button" role="tab" aria-selected="true" data-echo-stage-tab></button><span aria-hidden="true"></span>';
       stage.appendChild(nav);
@@ -214,6 +232,7 @@
       result.hidden = false;
       battleDirty = false;
       queueMicrotask(normalizeResult);
+      frameSlots?.sync?.();
       try {
         window.dispatchEvent(new CustomEvent("weightplay:screen-change", { detail: { screen: "battle", node: battle, owner: battle.parentElement } }));
       } catch { /* optional frame/analytics notice */ }
@@ -227,6 +246,7 @@
     }
     if (scene === "battle") battleDirty = false;
     if (!leaveDialog?.hidden) closeLeaveDialog();
+    frameSlots?.sync?.();
   }
 
   function bindSafety() {
@@ -247,6 +267,7 @@
     ensureStageNav();
     ensureLeaveDialog();
     ensureResultSubstate();
+    mountSharedFrame();
     bindSafety();
     normalizeCopy();
     syncScene();

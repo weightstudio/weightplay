@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/snake/"+location.search+location.hash)}catch{location.replace("/en/games/snake/"+location.search+location.hash)}})();</script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
@@ -27,7 +28,7 @@
     <meta name="weightplay-release-state" content="playable">
     <title>Snake | WeightPlay</title>
     <link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260926-snake-v32-battle-envelope">
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260910-snake-compact-main-v30">
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
     <link rel="stylesheet" href="art.css?v=20260926-snake-v32-leave-confirm">
     <link rel="stylesheet" href="../../src/loading-screen.css">
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260928-snake-tutorial1">
@@ -77,7 +78,7 @@
           <dl><div><dt>Do the edges stop the snake?</dt><dd>No. The snake wraps from one edge of the grid to the opposite edge.</dd></div><div><dt>What ends a run?</dt><dd>Hitting a blocked obstacle cell or the snake&#39;s own trail ends the run.</dd></div><div><dt>How does the snake grow?</dt><dd>Each food pickup adds a segment and points, leaving less open space for later turns.</dd></div><div><dt>Are the boards different?</dt><dd>Runs rotate among Open, Gate, and Orbit patterns; Gate and Orbit include visible obstacle cells.</dd></div><div><dt>What happens at a milestone?</dt><dd>The target food pickup immediately adds the bonus. The run continues toward its next target.</dd></div><div><dt>What is saved?</dt><dd>Best score and run count are stored locally in this browser; the active run is not saved.</dd></div></dl>
         </div>
       </div>
-    </section>
+    <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>More Related Games</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="block-blast" href="/en/games/block-blast/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/block-blast.webp" data-final-src="/assets/weightplay-logo.png" alt="Block Blast" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Block Blast</strong><span>Place three shapes on an 8×8 board and clear complete rows and columns.</span></span></a><a class="game-info-related-card" data-game-id="animal-prism-battalion" href="/en/games/animal-prism-battalion/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" data-final-src="/assets/weightplay-logo.png" alt="Prism Battalion" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Prism Battalion</strong><span>The battery fires on its own.</span></span></a></div></div></section>
     <!-- adsense-static-guide:end -->
     <script>
       document.body.dataset.gameId = "snake";

@@ -67,7 +67,7 @@
     </script>
   <link rel="stylesheet" href="../../src/tutorial.css" />
   <link rel="stylesheet" href="../../src/loading-screen.css" />
-  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="style.css?v=20261013-observatory-v22" />
@@ -115,12 +115,12 @@
       <div class="game-info-section"><h3>Nota de design</h3><p>Starlink usa um Canvas lógico responsivo que preenche a área segura do palco e da batalha sem esticar os elementos individuais do quebra-cabeça. O espaço extra é distribuído por meio de trilhas e âncoras estáveis, para que telefones e navegadores de desktop amplos mostrem as mesmas informações e controles de rota. A reserva de anúncios geral separada nunca se sobrepõe à jogabilidade ou às ações de resultado.</p></div>
       <div class="game-info-section game-info-parent"><h3>Informações do jogador e salvamento</h3><p>Starlink é executado gratuitamente no navegador e não requer conta. Desbloqueios, melhores classificações e tempos são armazenados apenas neste navegador; limpar os dados do site ou alterar os navegadores pode criar um salvamento separado. O feedback de habilidades é um entretenimento de apoio e não uma avaliação formal de habilidades.</p></div>
       <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Posso passar duas vezes pela mesma estrela?</dt><dd>Sim. Você pode visitar uma estrela novamente, mas cada trilha que liga duas estrelas só pode ser percorrida uma vez.</dd></div><div><dt>Por que não consigo seguir a trilha do cometa rosa?</dt><dd>A seta indica o sentido permitido. Entrar pela outra ponta não é válido.</dd></div><div><dt>O que acontece ao chegar a um beco sem saída?</dt><dd>A rota atual continua visível; você pode desfazer um ou mais passos ou reiniciar sem custo.</dd></div><div><dt>É obrigatório usar dicas?</dt><dd>Não. Todas as fases podem ser resolvidas sem dicas; Dica apenas marca uma próxima estrela que mantém uma rota possível.</dd></div><div><dt>O progresso fica salvo?</dt><dd>Sim. Desbloqueios, melhores avaliações por estrelas e melhores tempos ficam salvos localmente neste navegador.</dd></div><div><dt>Quantas fases existem?</dt><dd>São 30 fases criadas em seis capítulos de regras. A fase 30 continua disponível para replay após a conclusão.</dd></div><div><dt>O que reduz a avaliação por estrelas?</dt><dd>Cada movimento inválido conta um; Reiniciar depois de traçar uma rota também conta um, e cada Dica conta dois. Zero penalidades rende três estrelas, de uma a três rende duas e mais rende uma. Desfazer, por si só, não penaliza.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line</strong><span>One Line é um quebra-cabeça original de grade de 30 estágios estrelado por Rainbow Hop Mimi.</span></span></a><a class="game-info-related-card" href="/pt-br/games/animal-prism-breakers/"><img src="/assets/interface7-redrawn/animal-prism-breakers.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Quebra-Prismas</strong><span>Mova a raquete sob cada esfera de luz que retorna, controle o ângulo pelo ponto de contato e quebre todos os cristais quebráveis antes de perder as três esferas.</span></span></a><a class="game-info-related-card" href="/pt-br/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Arca de Carga</strong><span>Empurre, puxe e conduza cargas rúnicas por 30 armazéns celestes com gelo, sinais, ímãs e caixas ligadas.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Mais jogos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-one-line" href="/pt-br/games/animal-one-line/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-one-line.webp" data-final-src="/assets/weightplay-logo.png" alt="One Line" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">One Line</strong><span>One Line é um quebra-cabeça original de grade de 30 estágios estrelado por Rainbow Hop Mimi.</span></span></a></div></div>
     </div>
   </section>
 
   <section id="stageScreen" class="stage-shell" data-wp-canvas-max-width="920" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="358" style="--wp-stage-art:url('../../assets/animal-starlight-trails-observatory-v22.webp')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-frame-logical-header="stage" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="358" style="--wp-stage-art:url('../../assets/animal-starlight-trails-observatory-v22.webp')">
       <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back">&larr;</button><div><strong data-i18n="chooseStage">Choose Constellation</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt="" /></header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-management-nav data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Constellations"></div>
@@ -128,7 +128,7 @@
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
-    <div class="trail-battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+    <div class="trail-battle-canvas" data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-canvas-max-width="920">
       <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><div><i id="edgeProgress"></i></div></div><div class="battle-stat"><small data-i18n="trails">Trails</small><strong id="trailCount">0 / 0</strong></div><div class="battle-stat"><small data-i18n="stars">Stars</small><strong id="starTotal">0</strong></div><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility data-wp-primary-action aria-label="Hint">?</button></header>
       <div id="objectiveRow" class="objective-row"></div>
       <section id="puzzleScene" class="puzzle-scene" aria-label="Constellation puzzle"><svg id="graphSvg" viewBox="0 0 100 100" role="group" aria-label="One-stroke constellation"></svg><div id="hintPulse" class="hint-pulse" hidden></div></section>
@@ -148,12 +148,11 @@
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="../../src/tutorial.js"></script>
   <script src="guide-locales.js?v=20260930-starlink-faq1"></script>
-  <script src="game.js?v=20261013-observatory-v22"></script>
+  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2" data-wp-frame-script></script><script src="game.js?v=20261013-observatory-v22"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
   <script src="../../src/edge-guard.js"></script>
-  <script data-wp-comparison-only src="../../src/game-page-info.js?v=20260824-starlight-hindi-guide-ownership-v19"></script>
+  <script data-wp-comparison-only src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
-</body>
+  </body>
 </html>
