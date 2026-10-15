@@ -173,7 +173,7 @@
     return controller;
   }
 
-  function mountVisual(rail, { artUrl, artPositionForStage } = {}) {
+  function mountVisual(rail, { artUrl, artPositionForStage, artTagName = "span" } = {}) {
     if (!rail) return null;
     document.documentElement.dataset.wpStageI9 = "true";
     const stagePage = rail.closest("#stagePage") || rail.parentElement;
@@ -296,7 +296,9 @@
       rail.querySelectorAll(":scope > .stage-card").forEach((card) => {
         let art = card.querySelector(":scope > .wp-stage-i9-card-art");
         if (!art) {
-          art = document.createElement("span");
+          // Some game adapters address their authored status with querySelector
+          // ("span"). Let those adapters keep that node as their first span.
+          art = document.createElement(artTagName === "i" ? "i" : "span");
           art.className = "wp-stage-i9-card-art";
           art.setAttribute("aria-hidden", "true");
           card.prepend(art);
@@ -307,6 +309,7 @@
           ? artPositionForStage(stage, card)
           : "50% " + positions[Math.floor((stage - 1) / 5) % positions.length] + "%";
         card.style.setProperty("--wp-stage-i9-art-position", String(position));
+        const selected = card.matches('.is-selected,.selected,[aria-current="true"],[aria-selected="true"]');
         for (const [property, value] of Object.entries({
           boxSizing: "border-box", position: "relative", display: "block",
           flex: `0 0 ${cardWidth}`, width: cardWidth, minWidth: cardWidth,
@@ -315,12 +318,12 @@
           border: "2px solid rgb(179 222 237 / 56%)", borderRadius: "var(--wp-stage-i9-card-radius,23px)",
           textAlign: "left", background: "var(--wp-stage-i9-card-surface,linear-gradient(156deg,#173d53,#071522))",
           color: "#f5fbff", boxShadow: "0 18px 38px rgb(0 5 18 / 54%), inset 0 1px 0 rgb(255 255 255 / 22%)",
-          filter: card.classList.contains("is-selected") ? "saturate(1.08) brightness(1.04)" : "saturate(.72) brightness(.72)",
-          opacity: card.classList.contains("is-selected") ? "1" : ".78",
-          transform: card.classList.contains("is-selected") ? "scale(1)" : "scale(.92) translateY(5px)",
+          filter: selected ? "saturate(1.08) brightness(1.04)" : "saturate(.72) brightness(.72)",
+          opacity: selected ? "1" : ".78",
+          transform: selected ? "scale(1)" : "scale(.92) translateY(5px)",
           transition: "transform 220ms cubic-bezier(.2,.8,.2,1),filter 180ms ease,opacity 180ms ease,box-shadow 220ms ease",
         })) card.style.setProperty(property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`), value, "important");
-        if (card.classList.contains("is-selected")) {
+        if (selected) {
           card.style.setProperty("border-color", "var(--wp-stage-i9-accent,#9cfaff)", "important");
           card.style.setProperty("box-shadow", "0 0 0 2px rgb(156 250 255 / 46%), 0 0 34px rgb(65 222 247 / 44%), 0 22px 42px rgb(0 5 18 / 62%), inset 0 1px 0 rgb(255 255 255 / 42%)", "important");
         }
@@ -330,6 +333,7 @@
     const observer = new MutationObserver(decorate);
     observer.observe(rail, { subtree: true, childList: true, attributes: true, attributeFilter: ["data-stage"] });
     return Object.freeze({
+      refresh: decorate,
       disconnect() {
         observer.disconnect();
         centerResizeObserver?.disconnect();

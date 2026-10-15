@@ -1,4 +1,17 @@
 /* Tetris-only Battle geometry and feedback. */
+/* The shared Main strip is 44px. Two bounded full-width lines keep its
+   heading out of the old narrow flex column without moving Start Game. */
+body[data-game-id="tetris"] #mainScreen .main-progress {
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr);
+  grid-template-rows:20px 20px;
+  gap:0;
+  align-content:center;
+}
+body[data-game-id="tetris"] #mainScreen .main-progress > :is(strong,span) {
+  min-width:0;max-width:100%;margin:0;font-size:13px;line-height:20px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
 body[data-game-id="tetris"] #battleScreen .battle-canvas {
   flex: 1 1 auto;
   height: calc(100dvh - var(--wp-ad-reserve-height, 0px));

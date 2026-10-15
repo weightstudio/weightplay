@@ -389,6 +389,28 @@
     pankoCheck: "판코 점검",
   });
 
+  // Result copy describes only values measured by the game. Unsupported
+  // ability ratings or inferences about a player's attention/planning do not
+  // belong in a short-session report.
+  const reportCopy = {
+    en: { noComparableRecord: "No comparable record", reportNote: "Recorded this round", targetHitEvidence: "Order hits {hits}/{moves}", largestGroupEvidence: "Largest group {count}", bestStreakEvidence: "Best streak x{count}" },
+    "zh-Hant": { noComparableRecord: "尚無可比較紀錄", reportNote: "本次遊戲紀錄", targetHitEvidence: "訂單命中 {hits}/{moves}", largestGroupEvidence: "最大群組 {count}", bestStreakEvidence: "最高連擊 x{count}" },
+    "zh-Hans": { noComparableRecord: "暂无可比较记录", reportNote: "本次游戏记录", targetHitEvidence: "订单命中 {hits}/{moves}", largestGroupEvidence: "最大群组 {count}", bestStreakEvidence: "最高连击 x{count}" },
+    ja: { noComparableRecord: "比較できる記録はありません", reportNote: "今回のプレイ記録", targetHitEvidence: "注文達成 {hits}/{moves}", largestGroupEvidence: "最大グループ {count}", bestStreakEvidence: "最長連続 x{count}" },
+    ko: { noComparableRecord: "비교할 기록 없음", reportNote: "이번 플레이 기록", targetHitEvidence: "주문 달성 {hits}/{moves}", largestGroupEvidence: "최대 그룹 {count}", bestStreakEvidence: "최고 연속 x{count}" },
+    es: { noComparableRecord: "Sin registro comparable", reportNote: "Datos de esta partida", targetHitEvidence: "Pedidos acertados {hits}/{moves}", largestGroupEvidence: "Grupo mayor {count}", bestStreakEvidence: "Mejor racha x{count}" },
+    "pt-BR": { noComparableRecord: "Sem registro comparável", reportNote: "Dados desta rodada", targetHitEvidence: "Pedidos atendidos {hits}/{moves}", largestGroupEvidence: "Maior grupo {count}", bestStreakEvidence: "Melhor sequência x{count}" },
+    fr: { noComparableRecord: "Aucun résultat comparable", reportNote: "Données de cette partie", targetHitEvidence: "Commandes réussies {hits}/{moves}", largestGroupEvidence: "Plus grand groupe {count}", bestStreakEvidence: "Meilleure série x{count}" },
+    de: { noComparableRecord: "Kein vergleichbarer Eintrag", reportNote: "Daten dieser Runde", targetHitEvidence: "Erfüllte Bestellungen {hits}/{moves}", largestGroupEvidence: "Größte Gruppe {count}", bestStreakEvidence: "Beste Serie x{count}" },
+    it: { noComparableRecord: "Nessun risultato confrontabile", reportNote: "Dati di questa partita", targetHitEvidence: "Ordini completati {hits}/{moves}", largestGroupEvidence: "Gruppo più grande {count}", bestStreakEvidence: "Miglior serie x{count}" },
+    ru: { noComparableRecord: "Нет записи для сравнения", reportNote: "Данные этой игры", targetHitEvidence: "Заказы выполнены {hits}/{moves}", largestGroupEvidence: "Самая большая группа {count}", bestStreakEvidence: "Лучшая серия x{count}" },
+    hi: { noComparableRecord: "तुलना के लिए कोई रिकॉर्ड नहीं", reportNote: "इस खेल का डेटा", targetHitEvidence: "ऑर्डर पूरे {hits}/{moves}", largestGroupEvidence: "सबसे बड़ा समूह {count}", bestStreakEvidence: "सबसे लंबी श्रृंखला x{count}" },
+    ar: { noComparableRecord: "لا يوجد سجل للمقارنة", reportNote: "بيانات هذه الجولة", targetHitEvidence: "الطلبات المنجزة {hits}/{moves}", largestGroupEvidence: "أكبر مجموعة {count}", bestStreakEvidence: "أفضل سلسلة x{count}" },
+  };
+  for (const [locale, copy] of Object.entries(reportCopy)) {
+    text[locale] = Object.assign(Object.create(text[locale] || text.en), copy);
+  }
+
   const colors = [
     { id: "berry", labelKey: "bunny", asset: "../../assets/bubble-bakery/bunny-block-v1.png" },
     { id: "sky", labelKey: "whale", asset: "../../assets/bubble-bakery/whale-block-v1.png" },
@@ -1527,25 +1549,16 @@
   }
 
   function recordSkillReport({ stageNo, won, earned, previousBest }) {
-    const stage = stages[currentStage];
-    const moveRatio = moves / Math.max(1, stage.moves);
-    const orderScore = won ? 5 : Math.max(1, 3 - Object.values(orders).filter((need) => need > 0).length);
-    const skillScores = {
-      logic: clamp(won ? earned + 2 : orderScore, 1, 5),
-      focus: clamp(Math.round(moveRatio * 4) + (won ? 1 : 0), 1, 5),
-      problemSolving: clamp(won ? Math.max(3, earned + 1) : orderScore, 1, 5),
-    };
     const progress = readProgress();
     const previous = progress[stageNo] || {};
     const bestScore = Math.max(previousBest, score);
-    const improvementPercent = previousBest > 0 ? Math.round(((score - previousBest) / previousBest) * 100) : (score > 0 ? 100 : 0);
+    const improvementPercent = previousBest > 0 ? Math.round(((score - previousBest) / previousBest) * 100) : null;
     progress[stageNo] = {
       lastScore: score,
       bestScore,
       playCount: Number(previous.playCount || 0) + 1,
       lastPlayedAt: new Date().toISOString(),
       improvementPercent,
-      skillScores,
       evidence: {
         validMovesUsed,
         orderTargetMoves,
@@ -1559,27 +1572,25 @@
       previousBest,
       score,
       improvementPercent,
-      skillScores,
       validMovesUsed,
       orderTargetMoves,
       largestGroup,
       bestOrderStreak,
-      messageKey: bestScore > previousBest && previousBest > 0 ? "reportNewBest" : (won ? "reportGreat" : "reportGood"),
     };
   }
 
   function renderSkillReport(report) {
-    const { previousBest, score: resultScore, improvementPercent, skillScores } = report;
-    const improvementText = improvementPercent > 0 ? `+${improvementPercent}%` : `${improvementPercent}%`;
+    const { previousBest, score: resultScore, improvementPercent } = report;
+    const improvementText = improvementPercent === null ? t("noComparableRecord") : improvementPercent > 0 ? `+${improvementPercent}%` : `${improvementPercent}%`;
     nodes.skillReport.innerHTML = `
       <strong>${t("skillReport")}</strong>
       <div class="skill-score-row"><span>${t("previousBest")}</span><b>${previousBest}</b></div>
       <div class="skill-score-row"><span>${t("todayScore")}</span><b>${resultScore}</b></div>
       <div class="skill-score-row"><span>${t("improvement")}</span><b>${improvementText}</b></div>
-      <div class="skill-stars"><span>${t("logic")}<small>${t("targetHitEvidence", { hits: report.orderTargetMoves, moves: report.validMovesUsed })}</small></span><b>${starIcons(skillScores.logic, 5)}</b></div>
-      <div class="skill-stars"><span>${t("focus")}<small>${t("largestGroupEvidence", { count: report.largestGroup })}</small></span><b>${starIcons(skillScores.focus, 5)}</b></div>
-      <div class="skill-stars"><span>${t("problemSolving")}<small>${t("bestStreakEvidence", { count: report.bestOrderStreak })}</small></span><b>${starIcons(skillScores.problemSolving, 5)}</b></div>
-      <p>${t(report.messageKey)}</p>
+      <div class="skill-evidence-row">${t("targetHitEvidence", { hits: report.orderTargetMoves, moves: report.validMovesUsed })}</div>
+      <div class="skill-evidence-row">${t("largestGroupEvidence", { count: report.largestGroup })}</div>
+      <div class="skill-evidence-row">${t("bestStreakEvidence", { count: report.bestOrderStreak })}</div>
+      <p>${t("reportNote")}</p>
     `;
   }
 
@@ -1735,6 +1746,10 @@
       setMoves(nextMoves) {
         moves = clamp(Math.floor(Number(nextMoves) || 0), 0, 999);
         updateHud();
+        return this.snapshot();
+      },
+      setScore(nextScore) {
+        score = Math.max(0, Math.floor(Number(nextScore) || 0));
         return this.snapshot();
       },
       async popAt(row, column) {

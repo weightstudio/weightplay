@@ -1002,6 +1002,26 @@ body.is-bakery-playing .order-progress span {
   animation: panel-in .24s ease both;
 }
 
+/* Result remains a fixed overlay. Long translated copy scrolls inside the
+   card instead of changing the Battle board's measured canvas geometry. */
+.result-card {
+  max-height: calc((100vh - 40px) / var(--bakery-frame-scale, 1));
+  max-height: calc((100dvh - 40px) / var(--bakery-frame-scale, 1));
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+#resultTitle,
+#resultText {
+  color: #3d2618;
+  line-height: 1.35;
+}
+
+#resultTitle {
+  font-size: 1.25rem;
+}
+
 .stars {
   color: #ffb000;
   font-size: 1.45rem;
@@ -1130,6 +1150,13 @@ body.is-bakery-playing .order-progress span {
   text-align: center;
   line-height: 1.35;
   color: #68402a;
+}
+
+.skill-evidence-row {
+  color: #4a2918;
+  font-weight: 800;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 .loading-card div {
@@ -1630,7 +1657,7 @@ body.is-bakery-playing .order-progress span {
   }
 
   .result-card {
-    max-height: calc(100svh - 24px);
+    max-height: calc((100svh - 24px) / var(--bakery-frame-scale, 1));
     overflow-y: auto;
     padding: 16px;
     gap: 10px;

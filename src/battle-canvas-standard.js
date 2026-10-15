@@ -190,7 +190,7 @@
   ]);
   const useCssViewportCardEnvelope = cssViewportCardGames.has(gameId);
   const defaultConfig = [
-    "[data-wp-logical-battle-canvas],#battleScreen,#battleView,#battlePage,#battle,[data-screen='battle'],.battle-screen,.battle-shell,.battle-page",
+    "[data-wp-battle-canvas-root],[data-wp-logical-battle-canvas],#battleScreen,#battleView,#battlePage,#battle,[data-screen='battle'],.battle-screen,.battle-shell,.battle-page",
     390,
     788,
   ];

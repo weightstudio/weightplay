@@ -1,11 +1,124 @@
 body[data-game-id="snake"] #battleScreen {
   background:
-    linear-gradient(145deg, rgba(7, 35, 41, .58), rgba(3, 18, 29, .82)),
-    url("assets/snake-board-block-v1.png") center / cover no-repeat;
+    radial-gradient(ellipse at 70% 0, #253d65 0, transparent 55%),
+    linear-gradient(145deg, #15243b, #071420);
 }
 
 body[data-game-id="snake"] #battleScreen .arcade-panel {
   background: rgba(7, 29, 38, .78);
+}
+
+/* Fixed content tracks keep every message family out of the board budget. */
+body[data-game-id="snake"][data-screen="battle"] #battleScreen .battle-panel {
+  grid-template-rows: 96px minmax(0, 1fr) 72px 96px;
+}
+
+body[data-game-id="snake"][data-screen="battle"] #battleScreen .battle-top {
+  grid-template-rows: 42px 46px;
+}
+
+body[data-game-id="snake"][data-screen="battle"] #battleScreen .round-label {
+  block-size: 42px;
+  line-height: 21px;
+  overflow: auto;
+}
+
+body[data-game-id="snake"][data-screen="battle"] #battleScreen .game-message {
+  block-size: 72px;
+  min-block-size: 72px;
+  max-block-size: 72px;
+  line-height: 24px;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+body[data-game-id="snake"] #battleScreen .board-wrap {
+  position: relative;
+  container-type: size;
+  border-color: #597081;
+  background: linear-gradient(145deg, #102138, #08131e);
+}
+
+body[data-game-id="snake"] #battleScreen .board {
+  container-type: size;
+}
+
+body[data-game-id="snake"][data-screen="battle"] #battleScreen .snake-grid {
+  width: min(100cqw, 100cqh, 360px);
+  height: min(100cqw, 100cqh, 360px);
+  max-width: none;
+  max-height: none;
+  aspect-ratio: 1;
+}
+
+body[data-game-id="snake"] #battleScreen .snake-scene {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(100cqw, 100cqh, 360px);
+  height: min(100cqw, 100cqh, 360px);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+body[data-game-id="snake"] #battleScreen .snake-scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+body[data-game-id="snake"] #battleScreen .snake-scene canvas[hidden] {
+  display: none;
+}
+
+body[data-game-id="snake"] #battleScreen .snake-scene.is-active {
+  animation: snake-scene-enter 160ms ease-out both;
+}
+
+@keyframes snake-scene-enter {
+  from { opacity: .3; }
+  to { opacity: 1; }
+}
+
+body[data-game-id="snake"][data-snake-renderer="3d"] #battleScreen .snake-grid {
+  opacity: 0;
+}
+
+body[data-game-id="snake"] #battleScreen .snake-render-notice {
+  position: absolute;
+  inset: 8px 8px auto 64px;
+  margin: 0;
+  padding: 4px 8px;
+  color: #fff5df;
+  background: #17243a;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+@media (min-width: 651px) {
+  body[data-game-id="snake"][data-screen="battle"] #battleScreen .battle-panel {
+    grid-template-rows: 114px minmax(0, 1fr) 96px;
+  }
+
+  body[data-game-id="snake"][data-screen="battle"] #battleScreen .battle-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 60px 46px;
+    gap: 8px;
+  }
+
+  body[data-game-id="snake"][data-screen="battle"] #battleScreen .round-label {
+    block-size: 60px;
+    line-height: 20px;
+  }
+
+  body[data-game-id="snake"] #battleScreen .board-wrap {
+    padding-top: 54px;
+  }
+
+  body[data-game-id="snake"] #battleScreen .snake-scene {
+    top: calc(50% + 24.5px);
+  }
 }
 
 body[data-game-id="snake"] .snake-leave-dialog {
@@ -46,4 +159,104 @@ body[data-game-id="snake"] .snake-leave-actions {
 
 body[data-game-id="snake"] .snake-leave-actions button {
   min-height: 44px;
+}
+
+body[data-game-id="snake"] #resultScreen .snake-impact-review {
+  width: 160px;
+  max-width: 100%;
+  margin: 12px auto;
+}
+
+body[data-game-id="snake"] #resultScreen .snake-impact-review[hidden] {
+  display: none;
+}
+
+body[data-game-id="snake"] #resultScreen .snake-impact-grid {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 2px;
+  padding: 6px;
+  aspect-ratio: 1;
+  border: 1px solid #8da9b9;
+  border-radius: 8px;
+  background: #071923;
+  direction: ltr;
+}
+
+body[data-game-id="snake"] #resultScreen .snake-impact-cell {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 2px;
+  background: #203d48;
+}
+
+body[data-game-id="snake"] #resultScreen .snake-impact-cell.is-body {
+  background: #7ee7c9;
+}
+
+body[data-game-id="snake"] #resultScreen .snake-impact-cell.is-obstacle {
+  background: #b75570;
+}
+
+body[data-game-id="snake"] #resultScreen .snake-impact-cell.is-food {
+  background: #ffd47d;
+}
+
+body[data-game-id="snake"] #resultScreen .snake-impact-cell.is-impact {
+  z-index: 1;
+  outline: 2px solid #fff5df;
+  background: #a71e43;
+  animation: snake-impact-emphasis 420ms ease-out both;
+}
+
+body[data-game-id="snake"] #resultScreen .snake-impact-cell.is-impact::after {
+  content: "×";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font: 900 12px/1 sans-serif;
+}
+
+body[data-game-id="snake"] #resultScreen .snake-impact-review figcaption {
+  margin-top: 6px;
+  color: #f5f8ff;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+@keyframes snake-impact-emphasis {
+  from { opacity: .45; }
+  to { opacity: 1; }
+}
+
+@media (min-aspect-ratio: 3/2) and (max-height: 500px) {
+  body[data-game-id="snake"] #resultScreen .arcade-panel.snake-impact-visible {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 144px;
+    grid-template-rows: repeat(4, auto);
+    align-content: center;
+    align-items: center;
+    gap: 8px 16px;
+  }
+
+  body[data-game-id="snake"] #resultScreen .snake-impact-visible > :is(h2, p, .stats, .result-actions) {
+    grid-column: 1;
+  }
+
+  body[data-game-id="snake"] #resultScreen .snake-impact-review {
+    grid-column: 2;
+    grid-row: 1 / 5;
+    width: 144px;
+    margin: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-game-id="snake"] #battleScreen .snake-scene.is-active,
+  body[data-game-id="snake"] #resultScreen .snake-impact-cell.is-impact {
+    animation: none;
+  }
 }

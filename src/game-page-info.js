@@ -28572,6 +28572,21 @@
     }
   }
   const textGrowth140GameplayTags = {
+    "space-rocks": {
+      en: ["Inertia-Based Arcade Shooter", "Asteroid Splitting", "Shield + Rapid Fire"],
+      "zh-Hant": ["慣性街機射擊", "隕石分裂", "護盾與快速射擊"],
+      "zh-Hans": ["惯性街机射击", "小行星分裂", "护盾与快速射击"],
+      ja: ["慣性型アーケードシューティング", "小惑星の分裂", "シールド＋連射"],
+      ko: ["관성 기반 아케이드 슈팅", "소행성 분할", "보호막 + 연사"],
+      es: ["Disparos arcade con inercia", "Fragmentación de asteroides", "Escudo y fuego rápido"],
+      "pt-BR": ["Tiro arcade com inércia", "Fragmentação de asteroides", "Escudo + tiro rápido"],
+      fr: ["Tir arcade basé sur l’inertie", "Fragmentation d’astéroïdes", "Bouclier + tir rapide"],
+      de: ["Trägheitsbasierter Arcade-Shooter", "Asteroiden zerteilen", "Schild + Schnellfeuer"],
+      it: ["Sparatutto arcade basato sull’inerzia", "Frammentazione degli asteroidi", "Scudo + fuoco rapido"],
+      ru: ["Аркадный шутер с инерцией", "Разделение астероидов", "Щит + скорострельность"],
+      hi: ["जड़त्व-आधारित आर्केड शूटर", "क्षुद्रग्रहों को तोड़ना", "ढाल + तेज़ फायर"],
+      ar: ["تصويب أركيد قائم على القصور الذاتي", "تفتيت الكويكبات", "درع + إطلاق سريع"],
+    },
     "maze-chase": {
       en: ["Fixed-maze route planning", "Four Wisp patterns", "Beacon counterattack"],
       "zh-Hant": ["固定迷宮路線規劃", "四種光靈追逐模式", "信標反擊"],

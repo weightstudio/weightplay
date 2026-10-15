@@ -479,7 +479,7 @@
     ".stage-panel", "[data-wp-standard-stage-screen]",
   ];
   const BATTLE_SELECTORS = [
-    "[data-wp-logical-battle-canvas]", "#battle", "#battleScreen", "#battleView",
+    "[data-wp-battle-canvas-root]", "[data-wp-logical-battle-canvas]", "#battle", "#battleScreen", "#battleView",
     "#battleShell", "#battlePage", "#gamePanel", "#playPanel", "#mainPanel",
     ".quiz-playing .animal-game",
     ".dash-playing .dash-game",

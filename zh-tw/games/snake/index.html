@@ -1,9 +1,11 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <base href="/games/snake/" />
+
+    <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
+
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
 <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
@@ -30,8 +32,8 @@
     <meta name="weightplay-release-state" content="playable">
     <title>貪食蛇 | WeightPlay</title>
     <link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260926-snake-v32-battle-envelope">
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-    <link rel="stylesheet" href="art.css?v=20260926-snake-v32-leave-confirm">
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260910-snake-compact-main-v30">
+    <link rel="stylesheet" href="art.css?v=20261015-snake-v33-board-feedback">
     <link rel="stylesheet" href="../../src/loading-screen.css">
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260928-snake-tutorial1">
     <meta name="description" content="在格線上引導逐漸變長的蛇收集食物，並繞開蛇身與 Gate、Orbit 障礙。棋盤邊緣會接到對側；撞上障礙或自身軌跡才會結束本局。" />
@@ -50,7 +52,6 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "貪食蛇",
-  "alternateName": "Snake",
   "url": "https://weightplay.com/zh-tw/games/snake/",
   "image": "https://weightplay.com/assets/interface7-redrawn/snake.webp",
   "description": "在格線上引導逐漸變長的蛇收集食物，並繞開蛇身與 Gate、Orbit 障礙。棋盤邊緣會接到對側；撞上障礙或自身軌跡才會結束本局。",
@@ -63,12 +64,14 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "街機"
+    "街機",
+    "Browser Game"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players"
-  }
+  },
+  "alternateName": "Snake"
 }
     </script>
 
@@ -126,10 +129,10 @@
     </script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/tutorial.js?v=20261004-snake-text-growth-140-tutorial-v1"></script>
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4" data-wp-shell-standard />
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
-    <script src="../../src/popular-games-batch.js?v=20261004-snake-text-growth-140-v1"></script><script src="game.js"></script><section class="game-page-info game-page-info-static" aria-label="貪食蛇 遊戲資訊">
+  <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
+    <script src="../../src/popular-games-batch.js?v=20261015-snake-text-growth-140-v33-board-feedback"></script><script type="module" src="/games/snake/game.js?v=20261015-snake-v33-board-feedback"></script><section class="game-page-info game-page-info-static" aria-label="貪食蛇 遊戲資訊">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>貪食蛇</h2><p>在格線上引導逐漸變長的蛇收集食物，並繞開蛇身與 Gate、Orbit 障礙。棋盤邊緣會接到對側；撞上障礙或自身軌跡才會結束本局。</p></div>
@@ -148,7 +151,7 @@
       <div class="game-info-section"><h3>開發設計理念</h3><p>貪食蛇使用 WeightPlay 自有的星蛇、夜間格線、食物火花、響應式外框、13 語系控制與持續生存玩法。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>最佳分數與遊玩次數會保存在這個瀏覽器；進行中的本局不會保存。不需要帳號。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>蛇會被棋盤邊緣擋住嗎？</dt><dd>不會。蛇會從棋盤一側穿出，並從對側出現。</dd></div><div><dt>什麼情況會結束本局？</dt><dd>撞上封鎖障礙格或自己的蛇身軌跡就會結束。</dd></div><div><dt>蛇怎麼變長？</dt><dd>每次吃到食物都會增加一節蛇身與分數，讓之後的轉彎空間更少。</dd></div><div><dt>每局棋盤都一樣嗎？</dt><dd>格局會在 Open、Gate、Orbit 間輪替；Gate 與 Orbit 有看得見的障礙格。</dd></div><div><dt>達到里程碑會怎樣？</dt><dd>吃到目標食物時立即加上獎勵分數，之後會繼續朝下一個目標前進。</dd></div><div><dt>哪些進度會保存？</dt><dd>最佳分數與遊玩次數會保存在這個瀏覽器；進行中的本局不會保存。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="block-blast" href="/zh-tw/games/block-blast/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/block-blast.webp" data-final-src="/assets/weightplay-logo.png" alt="方塊爆破" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">方塊爆破</strong><span>把三個形狀放進 8×8 棋盤，消除完整橫排與直列。</span></span></a><a class="game-info-related-card" data-game-id="animal-prism-battalion" href="/zh-tw/games/animal-prism-battalion/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" data-final-src="/assets/weightplay-logo.png" alt="稜光軍團" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">稜光軍團</strong><span>砲台會自己開火，你要決定現在該守哪一路。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/block-blast/"><img src="/assets/interface7-redrawn/block-blast.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>方塊爆破</strong><span>把三個形狀放進 8×8 棋盤，消除完整橫排與直列。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>稜光軍團</strong><span>砲台會自己開火，你要決定現在該守哪一路。</span></span></a></div></div>
     </div>
   </section>
 </body>
