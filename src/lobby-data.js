@@ -2295,7 +2295,7 @@ id:"animal-tide-tally",audience:"general",status:"planned",href:"games/animal-ti
 
 window.WONDER_LOBBY.games.push({
   id: "animal-reef-fisher",
-  previewVideo: "assets/previews/animal-reef-fisher-battle.webm",
+  previewVideo: "assets/previews/animal-reef-fisher-battle.webm?v=20261015-reef-v28",
   title: { en: "Animal Reef Fisher", "zh-Hant": "動物珊瑚釣手" },
   status: "playable",
   statusText: { en: "Playable", "zh-Hant": "可遊玩" },

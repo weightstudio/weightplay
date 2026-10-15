@@ -1,0 +1,120 @@
+{
+  "provenance": "WeightPlay original procedural fish geometry; offline capture only",
+  "source": "../../reef-3d.js",
+  "sourceSha256": "5cac3b20080a5563c24fa4b2dccb317aa87515619106892b7157788731850bc4",
+  "engineSha256": "e2b5ee6bccd38fd6d8a2428546b83c5f2426d84b152ef82be8055556e3b40eb6",
+  "config": {
+    "size": 256,
+    "padding": 0.1,
+    "camera": [
+      2.1,
+      1.5,
+      4.5
+    ],
+    "projection": "orthographic",
+    "background": "transparent",
+    "colorSpace": "srgb",
+    "toneMapping": "ACESFilmic",
+    "exposure": 0.85,
+    "pose": "neutral; no runtime update",
+    "engine": "Three.js r180 (MIT), repository pinned"
+  },
+  "entries": [
+    {
+      "id": "fish-1",
+      "opaque": 10219,
+      "edge": 0,
+      "file": "fish-1.png",
+      "sha256": "c6aeccca9b9a59e632cddcbe48a34b2672204f5eafd2a56ee361ec2adc537dfb",
+      "bytes": 5247
+    },
+    {
+      "id": "fish-2",
+      "opaque": 9890,
+      "edge": 0,
+      "file": "fish-2.png",
+      "sha256": "b403ba026f9fe6558dbf096567fdfa29baabb0acde0cab2042aa674fd28fb1aa",
+      "bytes": 5214
+    },
+    {
+      "id": "fish-3",
+      "opaque": 11965,
+      "edge": 0,
+      "file": "fish-3.png",
+      "sha256": "da502915e550f557cc15ffaf9800a0571aa216a078793b0b3cf5e8f174a1e3b8",
+      "bytes": 5322
+    },
+    {
+      "id": "fish-4",
+      "opaque": 7930,
+      "edge": 0,
+      "file": "fish-4.png",
+      "sha256": "39df14777a771ee06521a4672614aff090b9866f6553c4e0fcd7d24512a7b9df",
+      "bytes": 4442
+    },
+    {
+      "id": "fish-5",
+      "opaque": 10007,
+      "edge": 0,
+      "file": "fish-5.png",
+      "sha256": "756064fc77275e187cbf7fd53997ed91c63acbc9ca72884eff6a952ec1f15e4f",
+      "bytes": 5133
+    },
+    {
+      "id": "fish-6",
+      "opaque": 11688,
+      "edge": 0,
+      "file": "fish-6.png",
+      "sha256": "71d655eba081b280ac9f89f74584b00ad9c69b5c154de58457e0835d391345cd",
+      "bytes": 5459
+    },
+    {
+      "id": "fish-7",
+      "opaque": 12752,
+      "edge": 0,
+      "file": "fish-7.png",
+      "sha256": "81e737d2cf9422b1b72f22d9324244fa819057f45b816ea12e2a8ac5cf2b099a",
+      "bytes": 5857
+    },
+    {
+      "id": "fish-8",
+      "opaque": 10219,
+      "edge": 0,
+      "file": "fish-8.png",
+      "sha256": "26c2f035d663eb043a56d515bceb375dca8a81f25ae85e9441ecb0adbc492a18",
+      "bytes": 5258
+    },
+    {
+      "id": "fish-9",
+      "opaque": 10183,
+      "edge": 0,
+      "file": "fish-9.png",
+      "sha256": "f80d024dd977b17c120fabd50e405652f960bd1fbfc1677a048df7573ef710bc",
+      "bytes": 4985
+    },
+    {
+      "id": "fish-10",
+      "opaque": 10675,
+      "edge": 0,
+      "file": "fish-10.png",
+      "sha256": "42140b60df877f6191a5d694662dd6c0971c9e69283cff1d143bb1fb83eea530",
+      "bytes": 5193
+    },
+    {
+      "id": "fish-11",
+      "opaque": 6085,
+      "edge": 0,
+      "file": "fish-11.png",
+      "sha256": "f9362e9d951dc7ba133e46819ed5ab6411054ef50ef4ce781f86d54da2e3b9bc",
+      "bytes": 4662
+    },
+    {
+      "id": "fish-12",
+      "opaque": 11698,
+      "edge": 0,
+      "file": "fish-12.png",
+      "sha256": "89b6d7c959259470daa339c5e74c0ddf02a8486668ad078a3e9205e5f316d87e",
+      "bytes": 5764
+    }
+  ]
+}

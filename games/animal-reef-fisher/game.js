@@ -1,4 +1,5 @@
-﻿(async () => {
+(async () => {
+  const reefAssetBase = new URL('.', document.currentScript.src);
   let fishing, ReefScene, bootDeadline;
   try {
     const modules = await Promise.race([
@@ -35,7 +36,7 @@
   document.querySelector(".battle-shell")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-reef-fisher";
-  const GAME_VERSION = 27;
+  const GAME_VERSION = 28;
   const INTERFACE_VERSION = 9;
   const saveKey = "weightplay_animal_reef_fisher_v1";
   const localeKey = "weightPlayLocale";
@@ -688,8 +689,6 @@
     bg: "../../assets/animal-reef-fisher-reef-bg.webp",
     otter: "../../assets/animal-reef-fisher-otter-fisher.webp",
     boat: "../../assets/animal-reef-fisher-boat-safe.webp",
-    fishA: "../../assets/animal-reef-fisher-fish-sheet-a.webp",
-    fishB: "../../assets/animal-reef-fisher-fish-sheet-b.webp",
     splash: "../../assets/animal-reef-fisher-fx-splash.webp",
     shimmer: "../../assets/animal-reef-fisher-fx-rare-shimmer.webp",
     sonar: "../../assets/animal-reef-fisher-fx-sonar-pulse.webp",
@@ -819,9 +818,7 @@
     return {
       id: `fish-${index + 1}`,
       name: { en: fishNames[index][0], "zh-Hant": fishNames[index][1] },
-      sheet: index < 6 ? "fishA" : "fishB",
-      sx: 0,
-      sy: index % 6,
+      icon: new URL(`assets/fish-icons/fish-${index + 1}.png`, reefAssetBase).href,
       rare,
       behavior,
       points: tier * 12 + (rare ? 34 : 0),
@@ -831,72 +828,6 @@
   ["Rayado de laguna","Pez globo burbuja","Pinzón de coral","Raya de cristal","Pargo de algas","Carpa Corona Solar","Medusa lunar","Corredor de aleta azul","Caballito de mar perla","Farol del arrecife","Manta de tormenta","Pez Corona de Cristal"].forEach((name,index)=>{fish[index].name.es=name;});
   ["سمكة شريط البحيرة","سمكة النفيخة الفقاعية","سمكة شرشور المرجان","سمكة الشعاع الزجاجي","سمكة نقّار الأعشاب","كوي التاج الشمسي","قنديل البحر القمري","عدّاء الزعنفة الزرقاء","فرس البحر اللؤلؤي","فانوس الشعاب","شيطان بحر العاصفة","سمكة التاج الكريستالي"].forEach((name,index)=>{fish[index].name.ar=name;});
 
-  const fishFrameCrops = {
-    fishA: [
-      [
-        { x: 309, y: 16, w: 243, h: 158 },
-        { x: 650, y: 29, w: 260, h: 152 },
-        { x: 995, y: 33, w: 233, h: 148 },
-      ],
-      [
-        { x: 315, y: 186, w: 234, h: 166 },
-        { x: 648, y: 160, w: 243, h: 192 },
-        { x: 991, y: 160, w: 238, h: 192 },
-      ],
-      [
-        { x: 288, y: 331, w: 270, h: 191 },
-        { x: 637, y: 331, w: 258, h: 159 },
-        { x: 981, y: 331, w: 259, h: 161 },
-      ],
-      [
-        { x: 285, y: 502, w: 263, h: 191 },
-        { x: 629, y: 503, w: 266, h: 156 },
-        { x: 968, y: 504, w: 263, h: 157 },
-      ],
-      [
-        { x: 284, y: 672, w: 276, h: 192 },
-        { x: 618, y: 678, w: 273, h: 186 },
-        { x: 962, y: 680, w: 273, h: 184 },
-      ],
-      [
-        { x: 301, y: 843, w: 225, h: 150 },
-        { x: 648, y: 843, w: 225, h: 152 },
-        { x: 983, y: 843, w: 249, h: 161 },
-      ],
-    ],
-    fishB: [
-      [
-        { x: 242, y: 19, w: 296, h: 162 },
-        { x: 589, y: 26, w: 300, h: 155 },
-        { x: 941, y: 31, w: 306, h: 150 },
-      ],
-      [
-        { x: 261, y: 160, w: 282, h: 170 },
-        { x: 618, y: 160, w: 283, h: 168 },
-        { x: 978, y: 160, w: 291, h: 170 },
-      ],
-      [
-        { x: 303, y: 368, w: 233, h: 136 },
-        { x: 650, y: 369, w: 227, h: 153 },
-        { x: 997, y: 371, w: 229, h: 129 },
-      ],
-      [
-        { x: 271, y: 502, w: 258, h: 191 },
-        { x: 614, y: 502, w: 268, h: 191 },
-        { x: 993, y: 502, w: 216, h: 154 },
-      ],
-      [
-        { x: 243, y: 672, w: 297, h: 192 },
-        { x: 596, y: 672, w: 295, h: 192 },
-        { x: 943, y: 673, w: 299, h: 191 },
-      ],
-      [
-        { x: 0, y: 843, w: 521, h: 181 },
-        { x: 615, y: 843, w: 276, h: 141 },
-        { x: 982, y: 843, w: 250, h: 142 },
-      ],
-    ],
-  };
 
   const reefFisherLeaveLabels = {
     en: ["Keep Fishing", "Leave Expedition"],
@@ -961,9 +892,6 @@
   let backgroundSuspended = document.hidden;
   let leaveDecisionOpen = false;
   const images = {};
-  const fishThumbCache = {};
-  const fishCropCache = {};
-  const fishFrameCanvasCache = {};
   let assetsReady = false;
   let preloadPromise = null;
 
@@ -1974,147 +1902,8 @@
     return fish.find((item) => item.id === id) || fish[0];
   }
 
-  function isFishSheetBackground(data, offset) {
-    const r = data[offset];
-    const g = data[offset + 1];
-    const b = data[offset + 2];
-    const a = data[offset + 3];
-    return a <= 22 || (r > 185 && b > 145 && g < 105 && r - g > 90 && b - g > 70);
-  }
-
-  function fishFrameCrop(img, item, frame = 1) {
-    const cols = 3;
-    const rows = 6;
-    const frameIndex = Math.max(0, Math.min(cols - 1, frame));
-    const frameH = img.height / rows;
-    const row = {
-      sx: 0,
-      sy: Math.round(item.sy * frameH),
-      sw: Math.round(img.width),
-      sh: Math.round(frameH),
-    };
-    const cacheKey = `${item.sheet}:${item.sy}:${frameIndex}:${img.width}x${img.height}`;
-    if (fishCropCache[cacheKey]) return fishCropCache[cacheKey];
-    const fallback = fishFrameCrops[item.sheet]?.[item.sy]?.[frameIndex];
-    try {
-      const probe = document.createElement("canvas");
-      probe.width = row.sw;
-      probe.height = row.sh;
-      const probeCtx = probe.getContext("2d", { willReadFrequently: true });
-      probeCtx.clearRect(0, 0, probe.width, probe.height);
-      probeCtx.drawImage(img, row.sx, row.sy, row.sw, row.sh, 0, 0, row.sw, row.sh);
-      const data = probeCtx.getImageData(0, 0, row.sw, row.sh).data;
-      const activeColumns = [];
-      for (let x = 0; x < row.sw; x += 1) {
-        let activePixels = 0;
-        for (let y = 0; y < row.sh; y += 1) {
-          const offset = (y * row.sw + x) * 4;
-          if (!isFishSheetBackground(data, offset)) activePixels += 1;
-        }
-        activeColumns[x] = activePixels > 1;
-      }
-      const clusters = [];
-      let start = -1;
-      let gap = 0;
-      const maxGap = Math.max(16, Math.round(row.sw * 0.012));
-      activeColumns.forEach((active, x) => {
-        if (active) {
-          if (start < 0) start = x;
-          gap = 0;
-        } else if (start >= 0) {
-          gap += 1;
-          if (gap > maxGap) {
-            const end = x - gap;
-            if (end - start > 28) clusters.push({ start, end });
-            start = -1;
-            gap = 0;
-          }
-        }
-      });
-      if (start >= 0) clusters.push({ start, end: row.sw - 1 });
-      const expectedCenter = ((frameIndex + 0.5) * row.sw) / cols;
-      const cluster = clusters
-        .slice()
-        .sort((a, b) => Math.abs((a.start + a.end) / 2 - expectedCenter) - Math.abs((b.start + b.end) / 2 - expectedCenter))[0];
-      if (cluster) {
-        let minY = row.sh;
-        let maxY = -1;
-        for (let y = 0; y < row.sh; y += 1) {
-          for (let x = cluster.start; x <= cluster.end; x += 1) {
-            const offset = (y * row.sw + x) * 4;
-            if (!isFishSheetBackground(data, offset)) {
-              minY = Math.min(minY, y);
-              maxY = Math.max(maxY, y);
-            }
-          }
-        }
-        const pad = Math.max(6, Math.round(Math.min(row.sw / cols, row.sh) * 0.04));
-        const x = Math.max(0, cluster.start - pad);
-        const y = Math.max(0, minY - pad);
-        const right = Math.min(row.sw, cluster.end + pad + 1);
-        const bottom = Math.min(row.sh, maxY + pad + 1);
-        fishCropCache[cacheKey] = {
-          sx: row.sx + x,
-          sy: row.sy + y,
-          sw: Math.max(1, right - x),
-          sh: Math.max(1, bottom - y),
-          cellSx: row.sx,
-          cellSy: row.sy,
-          cellSw: row.sw,
-          cellSh: row.sh,
-        };
-        return fishCropCache[cacheKey];
-      }
-    } catch {
-      // Canvas sampling can fail on unexpected asset states; fall back to the bounded atlas cell.
-    }
-    fishCropCache[cacheKey] = fallback
-      ? { sx: fallback.x, sy: fallback.y, sw: fallback.w, sh: fallback.h, cellSx: row.sx, cellSy: row.sy, cellSw: row.sw, cellSh: row.sh }
-      : { ...row, cellSx: row.sx, cellSy: row.sy, cellSw: row.sw, cellSh: row.sh };
-    return fishCropCache[cacheKey];
-  }
-
-  function fishFrameCanvas(item, frame = 1) {
-    const img = images[item.sheet];
-    if (!img) return null;
-    const frameIndex = Math.max(0, Math.min(2, frame));
-    const crop = fishFrameCrop(img, item, frameIndex);
-    const cacheKey = `${item.sheet}:${item.sy}:${frameIndex}:${crop.sx},${crop.sy},${crop.sw},${crop.sh}`;
-    if (fishFrameCanvasCache[cacheKey]) return fishFrameCanvasCache[cacheKey];
-    const frameCanvas = document.createElement("canvas");
-    frameCanvas.width = Math.max(1, Math.round(crop.sw));
-    frameCanvas.height = Math.max(1, Math.round(crop.sh));
-    const frameCtx = frameCanvas.getContext("2d", { willReadFrequently: true });
-    frameCtx.clearRect(0, 0, frameCanvas.width, frameCanvas.height);
-    frameCtx.drawImage(img, crop.sx, crop.sy, crop.sw, crop.sh, 0, 0, frameCanvas.width, frameCanvas.height);
-    try {
-      const pixels = frameCtx.getImageData(0, 0, frameCanvas.width, frameCanvas.height);
-      for (let i = 0; i < pixels.data.length; i += 4) {
-        if (isFishSheetBackground(pixels.data, i)) {
-          pixels.data[i + 3] = 0;
-        }
-      }
-      frameCtx.putImageData(pixels, 0, 0);
-    } catch {
-      // If pixel reads are unavailable, the bounded crop still prevents adjacent atlas frames.
-    }
-    fishFrameCanvasCache[cacheKey] = frameCanvas;
-    return frameCanvas;
-  }
-
-  function fishThumbUrl(item, frame = 1) {
-    const cacheKey = `${item.sheet}:${item.sy}:${frame}`;
-    if (fishThumbCache[cacheKey]) return fishThumbCache[cacheKey];
-    const frameCanvas = fishFrameCanvas(item, frame);
-    if (!frameCanvas) return assetPaths[item.sheet];
-    const thumb = document.createElement("canvas");
-    thumb.width = 180;
-    thumb.height = Math.max(96, Math.round((thumb.width * frameCanvas.height) / frameCanvas.width));
-    const thumbCtx = thumb.getContext("2d");
-    thumbCtx.clearRect(0, 0, thumb.width, thumb.height);
-    thumbCtx.drawImage(frameCanvas, 0, 0, thumb.width, thumb.height);
-    fishThumbCache[cacheKey] = thumb.toDataURL("image/png");
-    return fishThumbCache[cacheKey];
+  function fishThumbUrl(item) {
+    return item.icon;
   }
 
   function fishFrameStyle(item) {
@@ -2762,11 +2551,13 @@
   nodes.resultMenuBtn.addEventListener("click", (event) => commitResultDecision(() => {
     track("stages", { from: "result", zone: run?.zone?.id, stage: run?.zone?.stage, input_type: eventInputType(event) });
     playSound("ui.click");
+    stageTab = 'map';
+    selectedZone = zones[Math.min(zones.length - 1, Math.max(0, save.unlockedZone - 1))].id;
     state = "stage";
     showPanel("stage");
     renderMenu();
     focusPanel(nodes.stagePanel);
-    window.requestAnimationFrame(() => nodes.stagePanel.querySelector(".zone-card.is-selected:not(:disabled)")?.focus({ preventScroll: true }));
+    window.requestAnimationFrame(focusSelectedZone);
   }));
   nodes.resultPanel.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) {
@@ -3099,23 +2890,7 @@
         return fishingVisual();
       },
       readFishSheetGrid() {
-        const img = images.fishA || { width: 0, height: 0 };
-        const sampleCrop = img.width ? fishFrameCrop(img, fish[0], 0) : null;
-        const allCrops = fish.map((item) => ({
-          id: item.id,
-          sheet: item.sheet,
-          sy: item.sy,
-          frames: [0, 1, 2].map((frame) => fishFrameCrop(images[item.sheet] || img, item, frame)),
-          thumbIsTrimmed: fishFrameStyle(item).includes("data:image/png"),
-        }));
-        return {
-          cols: 3,
-          rows: 6,
-          safeCrop: sampleCrop,
-          cropMode: "per-row-color-key-cluster",
-          cropCount: allCrops.reduce((sum, item) => sum + item.frames.length, 0),
-          sample: allCrops,
-        };
+        return { cropMode: "original-three-rgba-icon", sample: fish.map(item => ({ id:item.id, icon:item.icon })) };
       },
       forceHookForControlTest() {
         if (!run || run.finished) startRun();

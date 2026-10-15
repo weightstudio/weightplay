@@ -23,7 +23,7 @@
   __wpNotifyMeasurement();
 
 
-  const GAME_VERSION = "v21";
+  const GAME_VERSION = "v22";
 
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -2209,7 +2209,13 @@
       if (run && document.body.dataset.gameView === "battle") briefing.textContent = fallback;
     }, 2400);
   };
-  $("#skillBtn").onclick = skill;
+  $("#skillBtn").onclick = (event) => {
+    skill();
+    // A pointer skill action must not strand mixed-input players on a button
+    // whose native keyboard guard suppresses subsequent movement.
+    if(event.detail>0 && run?.active && $("#choiceModal").classList.contains("hidden")
+      && $("#resultModal").classList.contains("hidden")) canvas.focus({preventScroll:true});
+  };
   $("#skillBtn").addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });

@@ -45,6 +45,11 @@ body.go-fish-royal-table .card-book-progress {border:1px solid #cfad70;backgroun
 body.go-fish-royal-table .card-choice-summary {background:#092c25df;border-color:#bfac7080;color:#fff2d7;}
 body.go-fish-royal-table #resultOverlay .result-card {background:radial-gradient(ellipse at top,#254d42,#071e22);border-color:#d7b96f;}
 body.go-fish-royal-table #cardGameHand {flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;justify-content:flex-start;padding:5px;}
+body.go-fish-royal-table .card-game-player-header {min-height:44px;align-items:center;}
+body.go-fish-royal-table .card-game-player-header > small {min-width:0;}
+body.go-fish-royal-table .go-fish-hand-scroll {display:flex;direction:ltr;flex:0 0 88px;margin-inline-start:auto;}
+body.go-fish-royal-table .go-fish-hand-scroll button {box-sizing:border-box;flex:0 0 44px;width:44px;height:44px;padding:0;border:1px solid #cbb376;border-radius:9px;background:#092727;color:#fff1cf;font:700 24px/1 system-ui;cursor:pointer;}
+body.go-fish-royal-table .go-fish-hand-scroll button:disabled {visibility:hidden;pointer-events:none;}
 body.go-fish-royal-table .card-game-board,
 body.go-fish-royal-table #cardGameTable,
 body.go-fish-royal-table .card-game-player,

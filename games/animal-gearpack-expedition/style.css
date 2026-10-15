@@ -173,12 +173,12 @@ body[data-wp-game-id="animal-gearpack-expedition"][data-screen="stage"] [data-wp
   }
 }
 body[data-wp-game-id="animal-gearpack-expedition"] #battleScreen .battle-header #pauseBtn {
-  width:48px!important;
-  min-width:48px!important;
-  max-width:48px!important;
-  height:48px!important;
-  min-height:48px!important;
-  max-height:48px!important;
+  width:var(--wp-frame-control-size-physical,48px)!important;
+  min-width:var(--wp-frame-control-size-physical,48px)!important;
+  max-width:var(--wp-frame-control-size-physical,48px)!important;
+  height:var(--wp-frame-control-size-physical,48px)!important;
+  min-height:var(--wp-frame-control-size-physical,48px)!important;
+  max-height:var(--wp-frame-control-size-physical,48px)!important;
 }
 @media(max-height:460px) and (orientation:landscape){
   body[data-wp-game-id="animal-gearpack-expedition"][data-wp-frame-tutorial="true"] .wp-tutorial-card {
@@ -241,3 +241,21 @@ body[data-wp-game-id="animal-gearpack-expedition"] #battleScreen .battle-header 
 @keyframes gearpack-shatter{0%{filter:brightness(1.8) drop-shadow(0 0 12px #8dfaff);transform:translateX(7px) scale(1.03)}100%{filter:drop-shadow(0 6px 6px #0008);transform:none}}
 @keyframes gearpack-stagger{0%{filter:brightness(1.6) drop-shadow(0 0 10px #ffd572);transform:translateX(12px) rotate(3deg)}55%{transform:translateX(7px)}100%{filter:drop-shadow(0 6px 6px #0008);transform:none}}
 @media(prefers-reduced-motion:reduce){.actor.is-blocked,.actor.is-shield-break,.actor.is-staggered{animation:none}}
+
+/* Short-landscape feedback and actions own tracks outside the actor viewport. */
+@media(max-height:460px) and (orientation:landscape){
+  body[data-screen="battle"] #battleScreen .battle-canvas[data-wp-logical-battle-canvas]{
+    grid-template-rows:var(--wp-frame-play-header-height,48px) 38px minmax(0,1fr) 40px 52px!important;
+  }
+  body[data-screen="battle"] #battleScreen .battle-canvas>.encounter-scene{grid-row:3!important}
+  body[data-screen="battle"] #battleScreen .battle-canvas>.pack-panel{grid-row:3/6!important}
+  body[data-screen="battle"] #battleScreen .battle-canvas>.feedback-row{
+    grid-row:4!important;align-self:stretch;margin:0;height:40px;min-height:0;
+    font-size:14px;line-height:1.15;
+  }
+  body[data-screen="battle"] #battleScreen .battle-canvas>.feedback-row.is-item-details{height:40px}
+  body[data-screen="battle"] #battleScreen .battle-canvas>.feedback-row.is-item-details span{font-size:14px;line-height:1.15}
+  body[data-screen="battle"] #battleScreen .battle-canvas>.battle-actions{
+    grid-row:5!important;align-self:stretch;margin:0;
+  }
+}

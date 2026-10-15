@@ -140,6 +140,12 @@
     .clue-compact-hint{display:none}
     @media(prefers-reduced-motion:reduce){.route-edit-toggle{transition:none}}
     @media(max-width:500px){
+      #battleContent.is-dense{grid-template-rows:auto auto auto minmax(150px,1fr) auto 48px}
+      #battleContent.is-dense .clue-card{padding:5px}
+      #battleContent.is-dense .clue-pair .chain-icon{width:26px;height:26px}
+      #battleContent.is-dense .clue-arrow{font-size:13px;white-space:nowrap}
+      #battleContent.is-dense .route-roster-item .chain-icon{width:18px;height:18px}
+      #battleContent.is-dense .battle-rule,#battleContent.is-dense .battle-hint{font-size:12px;line-height:1.2}
       #battleContent.is-dense .lantern-choice{grid-template-columns:auto minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:4px;padding:4px}
       #battleContent.is-dense .lantern-choice .lantern-icon{width:32px;height:32px;filter:none}
       #battleContent.is-dense .lantern-choice b{font-size:11px;align-self:center}

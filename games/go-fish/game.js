@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const GAME_VERSION = "v25";
+  const GAME_VERSION = "v28";
   const ownedObservers = [];
   let observersSuspended = false;
   function observeOwned(node, callback, options) {

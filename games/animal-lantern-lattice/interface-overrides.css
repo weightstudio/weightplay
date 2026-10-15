@@ -6,12 +6,8 @@ body{margin:0;min-height:100vh;background:radial-gradient(circle at 20% 0,#28456
 button,select{font:inherit}
 button{cursor:pointer}
 [hidden]{display:none!important}
-.loading-panel{min-height:100vh;display:grid;place-items:center}
-.loading-card{width:min(88vw,430px);padding:32px;border:1px solid #4f6c92;border-radius:18px;background:#122039e8;text-align:center;box-shadow:0 8px 0 #0006}
-.loading-card span{display:block;color:var(--gold);font-size:42px}
-.loading-card strong{display:block;margin:10px 0 18px;font-size:18px}
-.loading-track{height:8px;border-radius:99px;background:#0a1221;overflow:hidden}
-.loading-track i{display:block;width:45%;height:100%;background:linear-gradient(90deg,var(--gold),var(--mint));animation:load 1s ease-in-out infinite alternate}
+#loadingPanel{--wp-loading-backdrop:rgba(6,12,24,.74);--wp-loading-card:#122039f5;--wp-loading-text:var(--ink);--wp-loading-muted:var(--gold);--wp-loading-track:#0a1221;--wp-loading-fill-a:var(--gold);--wp-loading-fill-b:var(--mint)}
+.loading-card .loading-track i{width:45%;animation:load 1s ease-in-out infinite alternate}
 #guideHero .game-info-facts{grid-template-columns:repeat(4,minmax(0,1fr))}
 @media(max-width:720px){#guideHero .game-info-facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @keyframes load{to{transform:translateX(125%)}}
