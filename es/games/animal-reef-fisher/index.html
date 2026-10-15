@@ -42,12 +42,12 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-    <link rel="stylesheet" href="style.css?v=20260909-reef-main-poster-v25" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><link rel="stylesheet" href="/src/stage-selector-standard.css?v=20260918-ui-fix1" data-wp-stage-standard>
-<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
-<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
+    <link rel="stylesheet" href="style.css?v=20261015-reef-v27" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4"><link rel="stylesheet" href="/src/stage-selector-standard.css?v=20260918-ui-fix1" data-wp-stage-standard>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-tutorial-auto-show="false" data-sound-toggle="off">
     <main class="reef-app" data-no-mobile-immersive="true">
@@ -101,13 +101,15 @@
           <strong data-ui="chooseZone">Elegir misión del arrecife</strong>
         </header>
         <div class="stage-workspace">
+          <section id="reefMapWorkspace" class="reef-stage-workspace" role="tabpanel" aria-labelledby="reefTabMap">
           <div class="profile-grid">
             <div><span data-ui="reefNotes">Reef Notes</span><strong id="notesText">0</strong></div>
             <div><span data-ui="album">Álbum</span><strong id="albumText">0/12</strong></div>
             <div><span data-ui="diamonds">Diamantes</span><strong id="diamondText">0</strong></div>
           </div>
           <div id="zoneRow" class="zone-row stage-rail" data-wp-stage-rail aria-label="Zonas del arrecife"></div>
-          <section class="stage-upgrades" data-wp-stage-management-nav>
+          </section>
+          <section id="reefGearWorkspace" class="stage-upgrades reef-stage-workspace" role="tabpanel" aria-labelledby="reefTabGear" hidden>
             <strong data-ui="prepareGear">Preparar equipo</strong>
           <div class="shop-row">
             <button id="lureBtn" class="secondary-btn" type="button"></button>
@@ -115,7 +117,15 @@
           </div>
           <div id="gearGrid" class="gear-grid" aria-label="Mejoras de equipo"></div>
           </section>
+          <section id="reefAlbumWorkspace" class="reef-stage-workspace reef-album-workspace" role="tabpanel" aria-labelledby="reefTabAlbum" hidden>
+            <div id="reefAlbumGrid" class="reef-album-grid"></div>
+          </section>
         </div>
+        <nav class="reef-stage-tabs" role="tablist" data-wp-stage-management-nav aria-label="Reef preparation">
+          <button id="reefTabMap" class="secondary-btn" type="button" role="tab" data-reef-tab="map" aria-controls="reefMapWorkspace" aria-selected="true" data-ui="reefMap">Reef Map</button>
+          <button id="reefTabGear" class="secondary-btn" type="button" role="tab" data-reef-tab="gear" aria-controls="reefGearWorkspace" aria-selected="false" tabindex="-1" data-ui="gearUpgrades">Mejoras de equipo</button>
+          <button id="reefTabAlbum" class="secondary-btn" type="button" role="tab" data-reef-tab="album" aria-controls="reefAlbumWorkspace" aria-selected="false" tabindex="-1" data-ui="album">Álbum</button>
+        </nav>
         <div class="stage-ad-reserve" aria-hidden="true"></div>
       </section>
 
@@ -152,6 +162,11 @@
           </button>
           <button id="battleHelpBtn" class="icon-btn battle-help-btn utility-button" data-wp-battle-utility data-wp-primary-action type="button" aria-label="Tensión de la línea" aria-controls="tensionCoach" aria-expanded="true">?</button>
           <div class="tension-control">
+            <div class="reef-spot-controls">
+              <button id="spotPrevBtn" class="secondary-btn" type="button" aria-label="Previous fishing spot">←</button>
+              <strong id="spotNameText" aria-live="polite"></strong>
+              <button id="spotNextBtn" class="secondary-btn" type="button" aria-label="Next fishing spot">→</button>
+            </div>
             <div class="tension-head">
               <strong data-ui="tensionTitle">Tensión de la línea</strong>
               <span id="tensionStatus" data-ui="tensionStatusAim">Paso 1: mantén pulsado el mar para cargar y suelta para lanzar.</span>
@@ -163,12 +178,17 @@
               <div id="tensionMarker" class="tension-marker"><span data-ui="tensionMarker">Arrastra</span></div>
             </div>
             <div id="tensionCoach" class="tension-coach" data-ui="tensionCoachAim">Mantén pulsado el mar o la barra espaciadora para lanzar. Cuando pique un pez, arrastra el mando rojo, desliza por el mar o usa las flechas izquierda y derecha.</div>
+            <div class="reef-fight-controls">
+              <div class="reef-fight-readout"><strong id="fightDistanceText"></strong><span id="fightStateText" aria-live="polite"></span></div>
+              <button id="reelActionBtn" class="primary-btn" type="button">Cast</button>
+            </div>
           </div>
           <div id="hintText" class="hint" data-ui="castHint">Mantén pulsado el arrecife para cargar y suelta para lanzar.</div>
         </div>
         <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultBuildCue resultMissionPreview">
           <img class="result-otter" src="../../assets/animal-reef-fisher-cover.webp" alt="" />
           <div class="result-content">
+            <div class="reef-result-scroll">
             <h2 id="resultTitle">Expedition Complete</h2>
             <p id="resultText"></p>
             <div class="score-strip">
@@ -183,6 +203,7 @@
             <p id="resultAdviceText" class="result-advice"></p>
             <p id="resultBuildCue" class="result-build-cue" aria-live="polite"></p>
             <p id="resultMissionPreview" class="result-preview is-hidden" aria-live="polite"></p>
+            </div>
             <div class="result-actions">
               <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="stages">Fases</button>
               <button id="nextZoneBtn" class="primary-btn" type="button" data-ui="nextStage">Siguiente fase</button>
@@ -201,12 +222,13 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260708-reef-tension-clarity1"></script>
     <script src="../../src/wallet.js?v=20260706-diamond1"></script>
-  <script src="game.js?v=20260926-reef-fisher-v26-analytics-id&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261015-reef-v27&wp-audio=1.0.0"></script>
     <script src="../../src/game-page-info-general-reviewed.js?v=20261003-reef-fisher-text140-v2"></script>
+    <script src="reef-guide.js?v=20261015-reef-v27"></script>
     <section class="game-page-info game-page-info-static" aria-label="Información de Pescador del Arrecife">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Pescador del Arrecife</h2><p>En 30 misiones de arrecife, carga el lanzamiento y mantén el marcador en la banda verde SEGURA al recoger la línea. Si se rompe, pierdes tiempo de misión; las capturas llenan un álbum de 12 criaturas y las Notas del Arrecife mejoran seis equipos.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Pescador del Arrecife</h2><p>Elige un punto, lanza, clava al ver la picada y alterna recoger y aflojar la línea en 30 misiones de pesca.</p></div>
       <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>misiones de pesca en arrecifes</span><span>control de tensión de línea</span><span>colección de capturas</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Campaña de control de la tensión de la línea</strong></div><div class="game-info-fact"><span>Género</span><strong>Pesca · Colección · Precisión temporal · Animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Progresivo</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>2-4 minutos por misión</strong></div></div>
     </div>
@@ -214,27 +236,20 @@
     <div class="game-info-sections">
       <div class="game-info-section"><h3>Mundo y misión</h3><p>El Reef Archive mantiene gráficos actualizados para Sunny Shore, Kelp Garden, Coral Gate, Moon Tide, Storm Shelf y Abyssal Blue. Las mareas estacionales inusuales han alejado a los peces de sus rutas registradas. Bubble Fin lleva el barco de exploración a través de cada ruta, utilizando las capturas para confirmar qué especies todavía viajan allí y cómo el agua tira ahora contra un hilo de pescar.</p>
 <p>Las notas de arrecife son créditos de campo que se utilizan para mejorar el equipo de reconocimiento. Cada quinta misión llega a un marcador de hábitat custodiado por Sun Crown Guardian, Kelp Leviathan, Coral Ram Ray, Eclipse Manta, Storm Lantern Warden o Crystal Crown Sovereign. Landing the Guardian valida el gráfico de esa región. La Misión 30 presenta el sexto gráfico y finaliza la campaña sin crear la Misión 31.</p></div>
-      <div class="game-info-section"><h3>Sistemas del juego</h3><p>Flujo de la misión: seleccione cualquier tarjeta desbloqueada del riel horizontal. La mayoría de los goles requieren dos o tres recepciones. Una victoria guarda el progreso y desbloquea exactamente la siguiente misión; Las misiones anteriores siguen siendo rejugables.</p>
-<p>Lanzamiento y reloj: una expedición comienza con 90 segundos, más cinco segundos por cada nivel de alcance del barco por encima del nivel 1. Mantén el agua o el espacio para cargar y suelta para lanzar. Más potencia acorta el retraso de la mordida; no selecciona un pez más raro.</p>
-<p>Control de línea: después de un bocado, arrastra la perilla roja, deslízate sobre el mar o usa Izquierda y Derecha. El control SAFE elimina el poder de los peces. Permanecer fuera de la banda demasiado tiempo rompe la línea, vuelve al casting y deja el reloj de la misión en marcha.</p>
-<p>Identidades de los peces: las especies normales tiran con patrones constantes, veloces o pesados. La identidad actual aparece en la instrucción del gancho y en el resultado de la sonda. Las nuevas especies otorgan una bonificación de álbum además de puntos y notas de arrecife.</p>
-<p>Condiciones del mar: Aguas Abiertas es estable; Kelp Drift mueve la banda; Coral Snags cambia su ancho; Moon Tide cambia de bando; Storm Gust aplica un empujón de línea cronometrado; Abyss Trial combina deriva, presión y ráfagas.</p>
-<p>Equipo y herramientas opcionales: caña, carrete, hilo, cebo, bote y escáner tienen cinco niveles locales. El escáner amplía los grupos de especies anteriores. Un señuelo raro de tres diamantes garantiza un lanzamiento elegible raro, mientras que un sonar de dos diamantes revela y bloquea el siguiente pez. Ambos requieren confirmación y ninguno es necesario para progresar.</p></div>
-      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Lee la condición del mar y el objetivo de capturas; luego elige una misión desbloqueada.</li><li>Mantén pulsada la superficie del agua o la barra espaciadora para cargar y suelta para lanzar. Más potencia reduce la espera hasta la picada, pero no elige un pez más raro.</li><li>Cuando pique, mueve el indicador rojo con el mando rojo, deslizando por la superficie del agua o con las flechas. Déjalo en la zona verde SEGURA para reducir la fuerza del pez.</li><li>Si se rompe la línea, el pez escapa y vuelves a lanzar; el reloj de la misión no se reinicia.</li><li>En Resultados, revisa las capturas, las Notas y las novedades del álbum. Vuelve al Mapa del arrecife para repetir o elegir la siguiente misión desbloqueada.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Elija la fuerza de la caña o la calidad del cebo cuando las peleas seguras tomen demasiado tiempo; elija Control del carrete o Durabilidad de la línea cuando el marcador escape repetidamente de SAFE.</li><li>Las misiones Kelp, Moon y Abyss mueven deliberadamente el centro seguro. Siga el área verde, no la marca 50.</li><li>Coral Ram Ray y Crystal Crown Sovereign no pueden perder poder mientras están protegidos. Utilice esa fase para estabilizarse de modo que la siguiente apertura comience de manera segura.</li><li>Las ráfagas de tormenta siguen un ritmo de tres segundos. Mantenga cerca de la mitad de la banda actual antes del destello, luego corrija después de presionar.</li><li>Un reparto completo acorta la espera pero no afecta la rareza. Guarde el Rare Lure de un solo elenco para una entrada rara del álbum que falta.</li><li>Utilice Sonar cuando sepa que el comportamiento constante, veloz, pesado o Guardián vale más que la rara captura garantizada del señuelo.</li></ul></div>
-      <div class="game-info-section"><h3>Progreso y dificultad</h3><p>Las misiones 1 a 5 utilizan una banda estable de Open Water. Los primeros cuatro enseñan el lanzamiento, la recuperación de la línea y las identidades de tracción normal; Sun Crown Guardian finaliza el capítulo con suaves pulsos de corona.</p>
-<p>Las misiones 6 a 10 mueven a toda la banda a través de Kelp Drift. Kelp Leviathan combina el objetivo en movimiento con un fuerte tirón sostenido.</p>
-<p>Las misiones 11 a 15 hacen que la banda se ensanche y se estreche alrededor de Coral Snags. Coral Ram Ray agrega fases abiertas y vigiladas de dos segundos.</p>
-<p>Las misiones 16 a 20 cambian la banda segura entre lados cada cuatro segundos. Eclipse Manta hace una finta antes de revertir su tirón.</p>
-<p>Las misiones 21 a 25 estrechan la banda y golpean la línea con una ráfaga de tormenta de tres segundos. Storm Lantern Warden mantiene activo un fuerte tirón entre ráfagas.</p>
-<p>Las misiones 26 a 30 combinan presión en movimiento y ráfagas en Abyss Trial. Crystal Crown Sovereign agrega ventanas de armadura para la prueba final de combinación de reglas.</p></div>
-      <div class="game-info-section"><h3>Nota de diseño</h3><p>Seis regiones presentan seis condiciones marinas en bloques de cinco misiones. La zona SEGURA verde indica dónde el control reduce la fuerza del pez. Si se mueve o estrecha, ajusta el indicador; una línea rota consume el mismo reloj de misión.</p></div>
+      <div class="game-info-section"><h3>Sistemas del juego</h3><p>El arrecife cercano, el canal y la poza profunda tienen peces y riesgos distintos. Elige un punto, mantén el agua o Espacio y suelta para lanzar; pulsa de nuevo ante la señal clara de picada.</p>
+<p>Mantén para recoger hacia el bote y suelta para aliviar tensión. Arrastra el control o usa Izquierda y Derecha contra la carrera anunciada del pez. Atiende al aviso de rotura y recoge cuando descanse; esperar no captura peces.</p>
+<p>Seis mares conservan corrientes, enganches, cambios de marea, ráfagas y abismo. Las misiones 5, 10, 15, 20, 25 y 30 presentan seis Guardianes con señales y aperturas propias.</p>
+<p>Se conservan el álbum de 12 especies, las Notas, el equipo y las misiones desbloqueadas. Seis mejoras afectan partes distintas de la pesca; cada nivel del bote sobre el primero añade cinco segundos. Señuelo y sonar opcionales conservan confirmación y coste.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>El arrecife cercano, el canal y la poza profunda tienen peces y riesgos distintos. Elige un punto, mantén el agua o Espacio y suelta para lanzar; pulsa de nuevo ante la señal clara de picada.</li><li>Mantén para recoger hacia el bote y suelta para aliviar tensión. Arrastra el control o usa Izquierda y Derecha contra la carrera anunciada del pez. Atiende al aviso de rotura y recoge cuando descanse; esperar no captura peces.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Mantén para recoger hacia el bote y suelta para aliviar tensión. Arrastra el control o usa Izquierda y Derecha contra la carrera anunciada del pez. Atiende al aviso de rotura y recoge cuando descanse; esperar no captura peces.</li></ul></div>
+      <div class="game-info-section"><h3>Progreso y dificultad</h3><p>Seis mares conservan corrientes, enganches, cambios de marea, ráfagas y abismo. Las misiones 5, 10, 15, 20, 25 y 30 presentan seis Guardianes con señales y aperturas propias.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>Se conservan el álbum de 12 especies, las Notas, el equipo y las misiones desbloqueadas. Seis mejoras afectan partes distintas de la pesca; cada nivel del bote sobre el primero añade cinco segundos. Señuelo y sonar opcionales conservan confirmación y coste.</p></div>
       <div class="game-info-section game-info-parent"><h3>Información del jugador y guardado</h3><p>No se requiere cuenta. Este navegador almacena misiones desbloqueadas y seleccionadas, notas de arrecife, mejores capturas, 12 entradas de álbumes, seis niveles de equipo y estado de señuelo o sonda preparados. Borrar el almacenamiento del sitio o cambiar de navegador puede iniciar un guardado por separado. El saldo Diamante compartido es opcional y se utiliza únicamente para las preparaciones confirmadas de Señuelo y Sonar. Las 30 misiones, los seis Guardianes, los niveles de equipamiento y el progreso normal del álbum siguen estando disponibles sin esas herramientas. Los informes de habilidades resumen la carrera actual para entretener y no son un diagnóstico, clasificación o evaluación formal de habilidades.</p></div>
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Qué pierdo si salgo antes de Resultados?</dt><dd>Se pierden la expedición actual, sus capturas y cualquier Cebo raro o Sonar preparado. El álbum, las Notas del Arrecife y el equipo guardados permanecen en este navegador.</dd></div><div><dt>¿Por qué se mueve o estrecha la zona SEGURA verde?</dt><dd>Depende de la condición del mar: las corrientes entre algas mueven la zona, el coral cambia su anchura, la marea alterna el lado, las ráfagas empujan la línea y las profundidades combinan varias condiciones.</dd></div><div><dt>¿Necesito Diamantes para completar la campaña?</dt><dd>No. El Cebo raro o el Sonar requieren confirmación y son opcionales. Las misiones, los Guardianes, las capturas normales y las mejoras no necesitan Diamantes.</dd></div><div><dt>¿Dónde se guarda mi progreso?</dt><dd>Las misiones desbloqueadas, las Notas, el álbum, el equipo y las mejores capturas se guardan en este navegador. No se sincronizan y pueden borrarse al eliminar los datos del sitio.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Más juegos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-rift-salvage" href="/es/games/animal-rift-salvage/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-rift-salvage.webp" data-final-src="/assets/weightplay-logo.png" alt="Rescate en la Grieta" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Rescate en la Grieta</strong><span>Guía el anillo lunar de Orla por treinta zonas, recoge restos pequeños para crecer, rescata núcleos y supera a los rivales.</span></span></a><a class="game-info-related-card" data-game-id="animal-cratebound" href="/es/games/animal-cratebound/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-cratebound.webp" data-final-src="/assets/weightplay-logo.png" alt="Cajas Enlazadas" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Cajas Enlazadas</strong><span>Camina, empuja y arrastra cargamento rúnico por treinta almacenes de un arca celeste diseñados a mano.</span></span></a></div></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cómo clavo y capturo un pez?</dt><dd>El arrecife cercano, el canal y la poza profunda tienen peces y riesgos distintos. Elige un punto, mantén el agua o Espacio y suelta para lanzar; pulsa de nuevo ante la señal clara de picada. Mantén para recoger hacia el bote y suelta para aliviar tensión. Arrastra el control o usa Izquierda y Derecha contra la carrera anunciada del pez. Atiende al aviso de rotura y recoge cuando descanse; esperar no captura peces.</dd></div><div><dt>¿Se conserva mi progreso anterior?</dt><dd>Se conservan el álbum de 12 especies, las Notas, el equipo y las misiones desbloqueadas. Seis mejoras afectan partes distintas de la pesca; cada nivel del bote sobre el primero añade cinco segundos. Señuelo y sonar opcionales conservan confirmación y coste.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/es/games/animal-rift-salvage/"><img src="/assets/interface7-redrawn/animal-rift-salvage.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Rescate en la Grieta</strong><span>Guía el anillo lunar de Orla por treinta zonas, recoge restos pequeños para crecer, rescata núcleos y supera a los rivales.</span></span></a><a class="game-info-related-card" href="/es/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Cajas Enlazadas</strong><span>Camina, empuja y arrastra cargamento rúnico por treinta almacenes de un arca celeste diseñados a mano.</span></span></a></div></div>
     </div>
   </section>
-<script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+<script src="../../src/game-page-info.js?v=20261003-reef-fisher-text140-v2"></script>
+  <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
 </body>
 </html>

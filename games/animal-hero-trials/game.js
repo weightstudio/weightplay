@@ -26,6 +26,9 @@
   const ASSET_ROOT = "../../assets/";
   const WORLD_WIDTH = 460;
   const WORLD_HEIGHT = 560;
+  const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
+  // Gameplay timers stay identical in reduced motion; only decorative motion changes.
+  const reducedMotion = () => motionPreference.matches;
   const LEGACY_WORLD_WIDTH = 390;
   const WORLD_X_SCALE = WORLD_WIDTH / LEGACY_WORLD_WIDTH;
   const worldX = (value) => value * WORLD_X_SCALE;
@@ -1014,6 +1017,13 @@
       last: performance.now(),
       bless: { power: 0, speed: 0, heal: 0 },
       fx: [],
+      hazards: [],
+      counter: 0,
+      combatMessage: "",
+      combatMessageTime: 0,
+      dodges: 0,
+      build: { exploit: 0, echo: 0, momentum: 0, refuge: 0, siphon: 0, reach: 0 },
+      buildSeed: Math.floor(Math.random()*1000000),
       time: 0,
       shake: 0,
       heroFlash: 0,
@@ -1039,13 +1049,17 @@
 }
 
   function spawn() {
+    run.hazards = [];
+    run.fx = [];
+    run.leo = { x: WORLD_WIDTH / 2, y: 430 };
+    clearMovementInput();
     const definition=run.definition;
     const encounter=definition.encounters[run.room-1];
     updateBattleBriefing();
     if (run.room === 3 && definition.checkpoint) {
       const boss=definition.boss;
       const hp = 190 + definition.region * 44;
-      run.enemies = [{ x:WORLD_WIDTH / 2,y:125,hp,max:hp,cd:0,boss:true,bossId:boss.id,bossRule:boss.rule,type:"boss",special:2.8,warning:0,phase:0,guard:boss.rule==="prism"||boss.rule==="crown"?3:0,summoned:false,hitFlash:0,hitOffsetX:0,hitOffsetY:0,animSeed:0 }];
+      run.enemies = [{ x:WORLD_WIDTH / 2,y:125,hp,max:hp,cd:1.5,boss:true,bossId:boss.id,bossRule:boss.rule,type:"boss",special:2.8,warning:0,phase:0,guard:boss.rule==="prism"||boss.rule==="crown"?3:0,summoned:false,hitFlash:0,hitOffsetX:0,hitOffsetY:0,animSeed:0 }];
       $("#roomText").textContent = roomLabel(run.room, true);
       $("#objective").textContent = interpolate("bossObjectiveNamed",{boss:localizedPair(boss.name)});
       updateHud();
@@ -1061,7 +1075,7 @@
       const point=points[index%points.length];
       const baseHp=(elite?84:28)+definition.region*9+run.room*6+definition.stage*.45;
       const hp=Math.round(baseHp*encounter.hpScale*(elite&&count>1?.7:1));
-      return { x:worldX(point[0]), y:point[1], hp, max:hp, cd:0, type, elite, special:1.6+index*.3, warning:0, guard:(profile.guard||0)+(elite?1:0), phase:0, hitFlash:0, hitOffsetX:0, hitOffsetY:0, animSeed:index * 1.7 + run.room };
+      return { x:worldX(point[0]), y:point[1], hp, max:hp, cd:1+index*.45, type, elite, special:1.6+index*.3, warning:0, guard:(profile.guard||0)+(elite?1:0), phase:0, hitFlash:0, hitOffsetX:0, hitOffsetY:0, animSeed:index * 1.7 + run.room };
     });
     $("#roomText").textContent = roomLabel(run.room,elite);
     const enemyNames=[...new Set(run.enemies.map((enemy)=>localizedPair(enemyProfiles[enemy.type].name)))].join(" + ");
@@ -1086,14 +1100,16 @@
     const showControls = inFirstRoom && !run.controlHintDismissed;
     const showRange = inFirstRoom && run.guidancePhase === "range" && run.guidanceTimer > 0;
     const showHit = inFirstRoom && run.guidancePhase === "hit" && run.guidanceTimer > 0;
-    hint.hidden = !(showControls || showRange || showHit);
+    hint.hidden = false;
     if (showControls) {
       const skillName = localizedSkillName(heroes[run.heroId].skill);
-      hint.textContent = interpolate("controlHint", { skill: skillName });
+      hint.textContent = `${interpolate("controlHint", { skill: skillName })} · ${combatText(0)}`;
     } else if (showRange) {
       hint.textContent = t("rangeHint");
     } else if (showHit) {
       hint.textContent = t("rangeHitHint");
+    } else {
+      hint.textContent = run.combatMessageTime>0 ? run.combatMessage : combatText(0);
     }
     canvas.dataset.guidancePhase = showControls ? "controls" : showRange ? "range" : showHit ? "hit" : "done";
     canvas.dataset.attackRange = String(heroes[run.heroId].range);
@@ -1119,6 +1135,182 @@
     }));
   }
 
+  const combatWords = {
+    en: ["Leave the amber zone · Strike when the enemy turns mint", "DODGED", "COUNTER", "BREAK", "OPEN", "Exploit", "Echo", "Momentum", "Refuge", "Siphon", "Reach"],
+    "zh-Hant": ["離開琥珀預告區 · 敵人變綠時反擊", "閃避", "反擊", "破防", "破綻", "破綻追擊", "回響", "動能", "庇護", "汲取", "延伸"],
+    "zh-Hans": ["离开琥珀预告区 · 敌人变绿时反击", "闪避", "反击", "破防", "破绽", "破绽追击", "回响", "动能", "庇护", "汲取", "延伸"],
+    ja: ["琥珀色の予告から出よう · 緑の敵に反撃", "回避", "反撃", "破壊", "隙", "追撃", "反響", "勢い", "加護", "吸収", "射程"],
+    ko: ["호박색 경고 구역을 벗어나세요 · 초록 적에게 반격", "회피", "반격", "방어 파괴", "빈틈", "추격", "메아리", "기세", "보호", "흡수", "사거리"],
+    es: ["Sal del área ámbar · Ataca al enemigo verde", "ESQUIVA", "CONTRA", "ROTURA", "ABIERTO", "Aprovechar", "Eco", "Impulso", "Refugio", "Absorción", "Alcance"],
+    "pt-BR": ["Saia da área âmbar · Ataque o inimigo verde", "ESQUIVA", "CONTRA", "QUEBRA", "ABERTO", "Explorar", "Eco", "Impulso", "Refúgio", "Absorção", "Alcance"],
+    fr: ["Quittez la zone ambrée · Frappez l’ennemi vert", "ESQUIVE", "CONTRE", "BRISÉ", "OUVERT", "Exploiter", "Écho", "Élan", "Refuge", "Siphon", "Portée"],
+    de: ["Bernsteinzone verlassen · Grüne Gegner angreifen", "AUSWEICHEN", "KONTER", "BRUCH", "OFFEN", "Ausnutzen", "Echo", "Schwung", "Zuflucht", "Entzug", "Reichweite"],
+    it: ["Esci dall’area ambra · Colpisci il nemico verde", "SCHIVATA", "CONTRATTACCO", "ROTTURA", "APERTO", "Sfrutta", "Eco", "Slancio", "Rifugio", "Risucchio", "Portata"],
+    ru: ["Уйдите из янтарной зоны · Бейте зелёного врага", "УКЛОНЕНИЕ", "КОНТРАТАКА", "ПРОБОЙ", "ОТКРЫТ", "Уязвимость", "Эхо", "Разгон", "Укрытие", "Поглощение", "Дальность"],
+    hi: ["पीले क्षेत्र से बाहर निकलें · हरे शत्रु पर वार करें", "बचाव", "पलटवार", "कवच टूटा", "अवसर", "अवसर वार", "गूँज", "गति", "आश्रय", "अवशोषण", "पहुँच"],
+    ar: ["غادر المنطقة الكهرمانية · اضرب العدو الأخضر", "تفادٍ", "هجوم مضاد", "كسر", "مكشوف", "استغلال", "صدى", "زخم", "ملجأ", "امتصاص", "مدى"],
+  };
+  const combatText = (index) => (combatWords[locale] || combatWords.en)[index];
+  const dashDescriptions = {
+    en:"Dash in your movement direction (toward the nearest enemy when still), gain 0.55s invulnerability, and deal {damage} damage along the path.",
+    "zh-Hant":"向移動方向衝刺（靜止時朝最近敵人）、獲得 0.55 秒無敵，對路徑敵人造成 {damage} 傷害。",
+    "zh-Hans":"向移动方向冲刺（静止时朝最近敌人）、获得 0.55 秒无敌，对路径敌人造成 {damage} 伤害。",
+    ja:"移動方向へダッシュ（静止時は最寄りの敵へ）。0.55秒無敵になり、経路上に{damage}ダメージ。",
+    ko:"이동 방향으로 돌진합니다(정지 시 가장 가까운 적). 0.55초 무적, 경로에 피해 {damage}.",
+    es:"Corre en la dirección de movimiento (quieta: al enemigo más cercano), gana 0,55 s de invulnerabilidad e inflige {damage} de daño en la ruta.",
+    "pt-BR":"Avance na direção do movimento (parada: inimigo mais próximo), ganhe 0,55 s de invulnerabilidade e cause {damage} de dano no caminho.",
+    fr:"Foncez dans la direction du mouvement (à l’arrêt : ennemi proche), devenez invulnérable 0,55 s et infligez {damage} dégâts sur le trajet.",
+    de:"In Bewegungsrichtung sprinten (im Stand zum nächsten Gegner), 0,55 s unverwundbar sein und {damage} Schaden auf dem Weg verursachen.",
+    it:"Scatta nella direzione del movimento (da ferma: nemico vicino), ottieni 0,55 s di invulnerabilità e infliggi {damage} danni sul percorso.",
+    ru:"Рывок по движению (стоя — к ближайшему врагу), неуязвимость 0,55 с и {damage} урона на пути.",
+    hi:"चलने की दिशा में दौड़ें (रुके हों तो निकटतम शत्रु की ओर), 0.55 सेकंड अभेद्यता और रास्ते में {damage} क्षति।",
+    ar:"اندفع باتجاه الحركة (عند الثبات نحو أقرب عدو)، مع حصانة 0.55 ثانية وضرر {damage} على المسار.",
+  };
+  for(const [language,description] of Object.entries(dashDescriptions)) {
+    copy[language] ||= {};
+    copy[language].fiaSkillEffect=description;
+  }
+  const buildEffects = {
+    en:["Open-enemy damage +35%", "Skill grants 1.4s counter damage", "After dodge: attack interval −32%", "After dodge: guard for 1.1s", "Defeat: recover 3 HP", "Attack range +24"],
+    "zh-Hant":["破綻傷害 +35%", "技能給予 1.4 秒反擊增傷", "閃避後攻擊間隔 −32%", "閃避後防護 1.1 秒", "擊敗敵人恢復 3 生命", "攻擊範圍 +24"],
+    "zh-Hans":["破绽伤害 +35%", "技能给予 1.4 秒反击增伤", "闪避后攻击间隔 −32%", "闪避后防护 1.1 秒", "击败敌人恢复 3 生命", "攻击范围 +24"],
+    ja:["隙のある敵へのダメージ +35%", "スキル後1.4秒間反撃強化", "回避後の攻撃間隔 −32%", "回避後1.1秒間防御", "撃破時に体力3回復", "攻撃範囲 +24"],
+    ko:["빈틈 피해 +35%", "스킬 후 1.4초 반격 강화", "회피 후 공격 간격 −32%", "회피 후 1.1초 보호", "처치 시 체력 3 회복", "공격 범위 +24"],
+    es:["Daño a enemigos abiertos +35%", "Habilidad: contraataque durante 1,4 s", "Tras esquivar: intervalo −32%", "Tras esquivar: guardia 1,1 s", "Derrota: recupera 3 PV", "Alcance de ataque +24"],
+    "pt-BR":["Dano a inimigos abertos +35%", "Habilidade: contra-ataque por 1,4 s", "Após esquiva: intervalo −32%", "Após esquiva: guarda por 1,1 s", "Derrota: recupera 3 PV", "Alcance de ataque +24"],
+    fr:["Dégâts aux ennemis ouverts +35%", "Compétence : contre pendant 1,4 s", "Après esquive : intervalle −32%", "Après esquive : garde 1,1 s", "Élimination : récupère 3 PV", "Portée d’attaque +24"],
+    de:["Schaden gegen offene Gegner +35%", "Fähigkeit: 1,4 s Konterbonus", "Nach Ausweichen: Intervall −32%", "Nach Ausweichen: 1,1 s Schutz", "Besiegen: 3 LP heilen", "Angriffsreichweite +24"],
+    it:["Danni ai nemici aperti +35%", "Abilità: contrattacco per 1,4 s", "Dopo schivata: intervallo −32%", "Dopo schivata: guardia 1,1 s", "Sconfitta: recupera 3 PV", "Portata d’attacco +24"],
+    ru:["Урон по открытым врагам +35%", "Умение: контрурон на 1,4 с", "После уклонения: интервал −32%", "После уклонения: защита на 1,1 с", "Победа над врагом: +3 ОЗ", "Дальность атаки +24"],
+    hi:["खुले शत्रु पर क्षति +35%", "कौशल: 1.4 सेकंड पलटवार बोनस", "बचाव के बाद: वार अंतराल −32%", "बचाव के बाद: 1.1 सेकंड रक्षा", "शत्रु हारने पर: 3 स्वास्थ्य वापस", "वार की पहुँच +24"],
+    ar:["ضرر العدو المكشوف +35%", "المهارة: ضرر مضاد لمدة 1.4 ثانية", "بعد التفادي: فاصل الهجوم −32%", "بعد التفادي: حماية 1.1 ثانية", "هزيمة عدو: استعادة 3 صحة", "مدى الهجوم +24"],
+  };
+  function buildDescription(trait) {
+    return (buildEffects[locale] || buildEffects.en)[["exploit","echo","momentum","refuge","siphon","reach"].indexOf(trait)];
+  }
+  function combatNotice(index) {
+    run.combatMessage = combatText(index);
+    run.combatMessageTime = .85;
+  }
+  function interrupt(enemy) {
+    run.hazards = run.hazards.filter((hazard) => hazard.owner !== enemy);
+    enemy.warning = 0;
+    enemy.stun = .5;
+    enemy.open = Math.max(enemy.open || 0, 1.5);
+    enemy.cd = Math.max(enemy.cd || 0, 1.7);
+  }
+  function hazardContains(hazard, point) {
+    const distance = Math.hypot(point.x - hazard.x, point.y - hazard.y);
+    if (hazard.kind === "ring") return distance >= hazard.inner && distance <= hazard.radius;
+    if (hazard.kind === "line") {
+      const dx = hazard.toX - hazard.x, dy = hazard.toY - hazard.y;
+      const t = Math.max(0, Math.min(1, ((point.x-hazard.x)*dx + (point.y-hazard.y)*dy) / (dx*dx+dy*dy || 1)));
+      return Math.hypot(point.x-hazard.x-dx*t, point.y-hazard.y-dy*t) <= hazard.radius;
+    }
+    return distance <= hazard.radius;
+  }
+  function prepareAttack(enemy) {
+    const boss = enemy.boss;
+    const kind = boss ? enemy.bossRule : enemy.type;
+    const duration = boss ? 1.15 : enemy.type === "hunter" ? 1.05 : .9;
+    const damage = boss ? (enemy.phase === 2 ? 22 : 18) : enemy.elite ? 19 : enemy.type === "boar" ? 17 : 13;
+    const add = (shape) => {
+      const hazard = { owner: enemy, x: enemy.x, y: enemy.y, radius: 52, kind: "circle", damage, t: duration, duration, ...shape };
+      hazard.threatened = hazardContains(hazard, run.leo);
+      run.hazards.push(hazard);
+    };
+    // Targets and trajectories are locked now. None track the hero during wind-up.
+    const target = { x: run.leo.x, y: run.leo.y };
+    enemy.warning = duration;
+    enemy.attackFrom = { x: enemy.x, y: enemy.y };
+    enemy.attackTo = null;
+    if (kind === "prism" || kind === "crown" && enemy.phase === 1) {
+      add({kind:"line", x:40, y:target.y, toX:420, toY:target.y, radius:29});
+      add({kind:"line", x:target.x, y:76, toX:target.x, toY:520, radius:29});
+    } else if (kind === "shockwave" || kind === "summon" || kind === "crown" && enemy.phase === 0) {
+      if(kind==="shockwave" && (enemy.attackCount||0)%2) add({radius:112});
+      else add({kind:"ring", inner:66, radius:235});
+    } else if (kind === "volley" || kind === "hunter" || kind === "crown") {
+      add({...target, radius:boss?60:48});
+      if (boss) {
+        const side = (enemy.attackCount || 0) % 2 ? 1 : -1;
+        add({x:Math.max(45,Math.min(415,target.x+side*115)), y:Math.max(80,target.y-65), radius:55});
+        add({x:Math.max(45,Math.min(415,target.x-side*100)), y:Math.min(510,target.y+70), radius:55});
+      }
+    } else if (kind === "charge" || kind === "boar" || kind === "raven") {
+      const distance = Math.hypot(target.x-enemy.x,target.y-enemy.y) || 1;
+      const travel = Math.min(distance+45, boss?360:190);
+      const end = { x:Math.max(40,Math.min(420,enemy.x+(target.x-enemy.x)/distance*travel)), y:Math.max(80,Math.min(515,enemy.y+(target.y-enemy.y)/distance*travel)) };
+      enemy.attackTo = end;
+      add({kind:"line",toX:end.x,toY:end.y,radius:boss?39:28});
+    } else {
+      add({...target,radius:enemy.elite?65:53});
+      enemy.attackTo = target;
+    }
+    enemy.attackCount = (enemy.attackCount || 0) + 1;
+  }
+  function updateEnemies(dt) {
+    const liveWarnings = () => run.enemies.filter((enemy) => enemy.hp>0 && enemy.warning>0).length;
+    for (const enemy of run.enemies) {
+      if (enemy.hp <= 0) continue;
+      enemy.cd = Math.max(0, (enemy.cd || 0)-dt);
+      enemy.open = Math.max(0, (enemy.open || 0)-dt);
+      enemy.stun = Math.max(0, (enemy.stun || 0)-dt);
+      enemy.slow = Math.max(0, (enemy.slow || 0)-dt);
+      enemy.hitFlash = Math.max(0,(enemy.hitFlash||0)-dt);
+      enemy.hitOffsetX = (enemy.hitOffsetX || 0) * Math.max(0,1-dt*14);
+      enemy.hitOffsetY = (enemy.hitOffsetY || 0) * Math.max(0,1-dt*14);
+      if (enemy.bossRule === "crown") enemy.phase = enemy.hp/enemy.max < .33 ? 2 : enemy.hp/enemy.max < .66 ? 1 : 0;
+      if (enemy.bossRule === "summon" && !enemy.summoned && enemy.hp/enemy.max < .55) {
+        enemy.summoned = true;
+        for (let i=0;i<2;i++) run.enemies.push({x:worldX(80+i*230),y:110,hp:45,max:45,type:i?"boar":"scout",cd:1.8+i*.5,guard:0,animSeed:i*2});
+      }
+      if (enemy.warning>0) {
+        enemy.warning = Math.max(0,enemy.warning-dt);
+        // The last 160ms is the committed, visible approach to the locked impact.
+        if (enemy.attackTo && enemy.warning < .16) {
+          const p = 1-enemy.warning/.16;
+          enemy.x=enemy.attackFrom.x+(enemy.attackTo.x-enemy.attackFrom.x)*p;
+          enemy.y=enemy.attackFrom.y+(enemy.attackTo.y-enemy.attackFrom.y)*p;
+        }
+        continue;
+      }
+      if (enemy.stun>0 || enemy.open>0) continue;
+      const ex=run.leo.x-enemy.x, ey=run.leo.y-enemy.y;
+      const distance=Math.hypot(ex,ey)||1;
+      const profile=enemyProfiles[enemy.type] || enemyProfiles.scout;
+      const range=enemy.boss?310:enemy.type==="hunter"?270:enemy.type==="boar"?230:160;
+      if (distance < range && enemy.cd<=0 && liveWarnings() < (run.stage<=2?2:3)) {
+        prepareAttack(enemy);
+        continue;
+      }
+      const speed=(enemy.boss?27:profile.speed*1.3)*(enemy.slow>0?.55:1);
+      if (distance>range*.65) {
+        enemy.x=Math.max(38,Math.min(422,enemy.x+ex/distance*speed*dt));
+        enemy.y=Math.max(78,Math.min(520,enemy.y+ey/distance*speed*dt));
+      }
+    }
+    const remaining=[];
+    for (const hazard of run.hazards) {
+      if (hazard.owner.hp<=0) continue;
+      hazard.t-=dt;
+      if (hazard.t>0) { remaining.push(hazard); continue; }
+      const hit=hazardContains(hazard,run.leo);
+      if (hit) hurt(hazard.damage);
+      else if (hazard.threatened) {
+        run.counter=Math.max(run.counter,2.4);
+        run.dodges++;
+        if (run.build.refuge) run.guard=Math.max(run.guard,1.1);
+        combatNotice(1);
+      }
+      hazard.owner.warning=0;
+      hazard.owner.open=1.35;
+      hazard.owner.cd=2.2;
+      run.fx.push({type:"impact",x:hazard.x,y:hazard.y,t:.22,hazard:{...hazard}});
+    }
+    run.hazards=remaining;
+  }
+
   function damageEnemy(enemy,amount,source="auto") {
     if(!enemy||enemy.hp<=0) return 0;
     let applied=amount;
@@ -1126,25 +1318,34 @@
       applied*=source==="skill"?.65:.25;
       if(source==="skill") enemy.guard=Math.max(0,enemy.guard-1);
     }
-    if(enemy.bossRule==="charge"&&!enemy.open) applied*=.35;
-    if(enemy.bossRule==="crown"&&enemy.phase===1&&source!=="skill") applied*=.3;
+    const exposed = enemy.open>0 || run.counter>0;
+    if(exposed) { applied*=1.65+run.build.exploit*.35; combatNotice(2); }
     const blocked = applied < amount;
     enemy.hp-=applied;
     playSound(blocked ? "combat.block" : run.heroId === "leo" || run.heroId === "fia" ? "weapon.sword.hit" : "magic.hit");
-    if (enemy.hp <= 0) playSound("enemy.defeat");
+    if (enemy.hp <= 0) {
+      playSound("enemy.defeat");
+      run.fx.push({type:"defeat",x:enemy.x,y:enemy.y,t:.32,image:enemy.boss?images[`boss-${enemy.bossId}`]:images[`enemy-${enemy.type}`],size:enemy.boss?126:68});
+      if(run.build.siphon) run.hp=Math.min(run.maxHp,run.hp+3*run.build.siphon);
+    }
+    if(source==="skill") {
+      if(enemy.guard===0 && blocked) { combatNotice(3); playSound("combat.shield.break"); }
+      interrupt(enemy);
+    }
     const direction = Math.atan2(enemy.y - run.leo.y, enemy.x - run.leo.x);
     enemy.hitFlash = Math.max(enemy.hitFlash || 0, source === "skill" ? 0.24 : 0.16);
     enemy.hitOffsetX = Math.cos(direction) * (source === "skill" ? 9 : 5);
     enemy.hitOffsetY = Math.sin(direction) * (source === "skill" ? 9 : 5);
-    run.shake = Math.max(run.shake, source === "skill" ? 0.16 : 0.055);
+    run.shake = reducedMotion()?0:Math.max(run.shake, source === "skill" ? 0.12 : 0.025);
     run.heroKick = Math.max(run.heroKick, source === "skill" ? 0.12 : 0.06);
-    run.fx.push({ type: "damage", x: enemy.x, y: enemy.y - (enemy.boss ? 72 : 44), t: 0.62, vy: -30, value: Math.max(1, Math.round(applied)), source });
+    run.fx.push({ type: "damage", x: enemy.x, y: enemy.y - (enemy.boss ? 72 : 44), t: 0.62, vy: -30, value: Math.max(1, Math.round(applied)), source,blocked,strong:exposed });
     return applied;
   }
 
   function skill() {
     if (!run?.active || run.cool > 0) return;
     beginRangeGuidance();
+    if(run.build.echo) run.counter=Math.max(run.counter,1.4);
     playSound(run.heroId === "leo" ? "weapon.sword.swing" : run.heroId === "fia" ? "movement.dash" : "magic.cast");
     if (run.heroId === "leo") {
       run.cool = Math.max(2.5, 5 - run.bless.speed * 0.5);
@@ -1162,35 +1363,23 @@
       run.cool = Math.max(2.2, 4.2 - run.bless.speed * 0.45);
       const skillTarget = [...run.enemies].sort((a, b) => Math.hypot(a.x - run.leo.x, a.y - run.leo.y) - Math.hypot(b.x - run.leo.x, b.y - run.leo.y))[0];
       let { x: dx, y: dy } = movementIntent();
-      if (skillTarget) {
+      if (skillTarget && !dx && !dy) {
         dx = skillTarget.x - run.leo.x;
         dy = skillTarget.y - run.leo.y;
       }
-      const length = Math.hypot(dx, dy) || 1;
       if (!dx && !dy) dy = -1;
+      const length = Math.hypot(dx, dy) || 1;
       const from = { ...run.leo };
-      run.leo.x = Math.max(35, Math.min(355, run.leo.x + (dx / length) * 125));
+      run.leo.x = Math.max(worldX(35), Math.min(worldX(355), run.leo.x + (dx / length) * 125));
       run.leo.y = Math.max(80, Math.min(520, run.leo.y + (dy / length) * 125));
       run.invulnerable = 0.55;
       run.fx.push({ type: "roar", x: (from.x + run.leo.x) / 2, y: (from.y + run.leo.y) / 2, t: 0.3 });
-      let dashTarget = null;
-      let dashDistance = Infinity;
       for (const enemy of run.enemies) {
-        const distance = Math.hypot(enemy.x - run.leo.x, enemy.y - run.leo.y);
-        if (distance < dashDistance) {
-          dashDistance = distance;
-          dashTarget = enemy;
-        }
-        if (distance < 105) {
+        if (hazardContains({kind:"line",x:from.x,y:from.y,toX:run.leo.x,toY:run.leo.y,radius:52},enemy)) {
           damageEnemy(enemy,30 + run.bless.power * 6,"skill");
           run.fx.push({ type: "hit", x: enemy.x, y: enemy.y, t: 0.25 });
           run.fx.push({ type: "slash", x: enemy.x, y: enemy.y, fromX: from.x, fromY: from.y, t: 0.2 });
         }
-      }
-      if (dashTarget && dashDistance >= 105 && dashDistance < 190) {
-        damageEnemy(dashTarget,22 + run.bless.power * 5,"skill");
-        run.fx.push({ type: "hit", x: dashTarget.x, y: dashTarget.y, t: 0.25 });
-        run.fx.push({ type: "slash", x: dashTarget.x, y: dashTarget.y, fromX: from.x, fromY: from.y, t: 0.2 });
       }
       return;
     }
@@ -1223,13 +1412,17 @@
     const roleReduction = run.heroId === "taro" ? 0.76 : 1;
     const applied = run.guard > 0 ? Math.ceil(amount * 0.3) : Math.ceil(amount * roleReduction);
     run.hp -= applied;
+    run.invulnerable = .38;
+    run.counter = 0;
+    playSound(run.guard>0?"combat.block":"player.hurt");
     run.heroFlash = Math.max(run.heroFlash, 0.24);
-    run.shake = Math.max(run.shake, 0.18);
+    run.shake = reducedMotion()?0:Math.max(run.shake, 0.14);
     run.fx.push({ type: "damage", x: run.leo.x, y: run.leo.y - 58, t: 0.7, vy: -34, value: applied, source: "hurt" });
     run.fx.push({ type: "shadow", x: run.leo.x, y: run.leo.y, t: 0.34 });
   }
 
   function autoAttack() {
+    if(run.strike) return;
     if (run.attackCool > 0) return;
     let target = null;
     let distance = Infinity;
@@ -1241,12 +1434,27 @@
       }
     }
     const hero = heroes[run.heroId];
-    if (!target || distance > hero.range) return;
+    if (!target || distance > hero.range+run.build.reach*24) return;
     let damage = hero.attack + run.bless.power * 2;
     if (target.marked) {
       damage += 18;
       target.marked -= 1;
     }
+    // A short committed strike makes preparation, travel and contact distinct.
+    run.strike={target,damage,t:.13,duration:.13,fromX:run.leo.x,fromY:run.leo.y};
+    playSound(run.heroId==="leo"||run.heroId==="fia"?"weapon.sword.swing":"magic.cast");
+    run.attackCool=(run.heroId==="fia"?.46:run.heroId==="orla"?.78:run.heroId==="taro"?.9:.64)*(run.build.momentum&&run.counter>0?.68:1);
+  }
+
+  function resolveStrike(dt) {
+    const strike=run.strike;
+    if(!strike) return;
+    strike.t-=dt;
+    if(strike.t>0) return;
+    run.strike=null;
+    const target=strike.target;
+    if(target.hp<=0 || Math.hypot(target.x-run.leo.x,target.y-run.leo.y)>heroes[run.heroId].range+run.build.reach*24+26) return;
+    const damage=strike.damage;
     damageEnemy(target,damage,"auto");
     if (run.room === 1 && !run.firstAutoAttack) {
       run.firstAutoAttack = true;
@@ -1262,7 +1470,6 @@
       }
     }
     if (run.heroId === "taro") target.slow = 1.1;
-    run.attackCool = run.heroId === "fia" ? 0.34 : run.heroId === "orla" ? 0.78 : run.heroId === "taro" ? 0.9 : 0.6;
     run.fx.push({ type: "hit", x: target.x, y: target.y, t: 0.22 });
     run.fx.push({ type: "slash", x: target.x, y: target.y, fromX: run.leo.x, fromY: run.leo.y, t: 0.18 });
   }
@@ -1299,6 +1506,13 @@
   function renderBlessings(rerolled) {
     blessingDecisionCommitted = false;
     const options = blessingPool(rerolled);
+    const branches=[["exploit","echo"],["momentum","reach"],["refuge","siphon"]];
+    const wordIndex={exploit:5,echo:6,momentum:7,refuge:8,siphon:9,reach:10};
+    options.forEach((option,index)=>{
+      option.trait=branches[index][((run.buildSeed >>> ((run.room-1)*3+index)) & 1) ^ (rerolled?1:0)];
+      option.name=combatText(wordIndex[option.trait]);
+      option.copy += ` · ${buildDescription(option.trait)}`;
+    });
     const box = $("#choices");
     box.innerHTML = "";
     for (const option of options) {
@@ -1319,6 +1533,7 @@
           rerolled,
         });
         run.bless[option.id] += option.amount;
+        run.build[option.trait] += 1;
         if (option.id === "heal") run.hp = Math.min(run.maxHp, run.hp + 24 * option.amount);
         setChoiceModal(false, false);
         run.room += 1;
@@ -1509,6 +1724,8 @@
     const dt = Math.min(0.033, (now - run.last) / 1000);
     run.last = now;
     run.time += dt;
+    run.counter=Math.max(0,run.counter-dt);
+    run.combatMessageTime=Math.max(0,run.combatMessageTime-dt);
     const { x: dx, y: dy } = movementIntent();
     const length = Math.hypot(dx, dy) || 1;
     const moving = Boolean(dx || dy);
@@ -1539,79 +1756,18 @@
       }
     }
 
-    const reinforcements=[];
-    for (const enemy of run.enemies) {
-      const ex = run.leo.x - enemy.x;
-      const ey = run.leo.y - enemy.y;
-      const distance = Math.hypot(ex, ey) || 1;
-      enemy.cd -= dt;
-      enemy.special=(enemy.special||0)-dt;
-      enemy.open=Math.max(0,(enemy.open||0)-dt);
-      enemy.slow=Math.max(0,(enemy.slow||0)-dt);
-      const profile=enemy.boss?null:enemyProfiles[enemy.type]||enemyProfiles.scout;
-      let moveX=ex/distance; let moveY=ey/distance; let moveSpeed=enemy.boss?22:profile.speed;
-
-      if(enemy.type==="raven"){
-        const side=(Math.floor(enemy.x+enemy.y)%2?1:-1);
-        moveX=(ex/distance)*.72-(ey/distance)*.55*side;
-        moveY=(ey/distance)*.72+(ex/distance)*.55*side;
-      }
-      if(enemy.type==="hunter"){
-        if(distance<128){ moveX=-ex/distance; moveY=-ey/distance; }
-        else if(distance<188){ moveX=0; moveY=0; }
-        if(distance<profile.range&&enemy.cd<=0){ hurt(profile.damage); enemy.cd=1.7; run.fx.push({type:"shadow",x:run.leo.x,y:run.leo.y,t:.3}); }
-      }
-      if(enemy.type==="boar"){
-        if(enemy.warning>0){ enemy.warning-=dt; moveSpeed=0; if(enemy.warning<=0){ enemy.open=.9; enemy.special=3.2; moveSpeed=105; } }
-        else if(enemy.special<=0){ enemy.warning=.65; run.fx.push({type:"roar",x:enemy.x,y:enemy.y,t:.65}); moveSpeed=0; }
-        else if(enemy.open>0) moveSpeed=105;
-      }
-
-      if(enemy.boss){
-        const rule=enemy.bossRule;
-        if(rule==="prism"){
-          if(enemy.special<=0){ enemy.guard=enemy.guard>0?0:3; enemy.special=enemy.guard>0?3.2:1.8; run.fx.push({type:"roar",x:enemy.x,y:enemy.y,t:.45}); }
-        } else if(rule==="charge"){
-          if(enemy.warning>0){ enemy.warning-=dt; moveSpeed=0; if(enemy.warning<=0){ enemy.open=1.1; enemy.special=3.4; moveSpeed=118; } }
-          else if(enemy.special<=0){ enemy.warning=.8; moveSpeed=0; run.fx.push({type:"roar",x:enemy.x,y:enemy.y,t:.8}); }
-          else if(enemy.open>0) moveSpeed=118;
-        } else if(rule==="volley"){
-          moveSpeed=18;
-          if(enemy.special<=0){ if(distance<285) hurt(8); enemy.special=2.5; run.fx.push({type:"shadow",x:run.leo.x,y:run.leo.y,t:.45}); }
-        } else if(rule==="summon"){
-          if(!enemy.summoned&&enemy.hp/enemy.max<.55){ enemy.summoned=true; for(let i=0;i<2;i+=1) reinforcements.push({x:worldX(90+i*210),y:120,hp:54,max:54,cd:0,type:i?"boar":"scout",special:1.4,warning:0,guard:0,phase:0,hitFlash:0,hitOffsetX:0,hitOffsetY:0,animSeed:i * 2.1 + 4}); }
-          if(enemy.special<=0){ if(distance<170) hurt(9); enemy.special=3.2; run.fx.push({type:"roar",x:enemy.x,y:enemy.y,t:.55}); }
-        } else if(rule==="crown"){
-          const ratio=enemy.hp/enemy.max;
-          if(ratio<.66&&enemy.phase===0){ enemy.phase=1; enemy.guard=2; enemy.special=1.4; }
-          if(ratio<.33&&enemy.phase===1){ enemy.phase=2; enemy.guard=0; reinforcements.push({x:worldX(85),y:120,hp:62,max:62,cd:0,type:"raven",special:1,warning:0,guard:0,phase:0,hitFlash:0,hitOffsetX:0,hitOffsetY:0,animSeed:5},{x:worldX(305),y:120,hp:62,max:62,cd:0,type:"armored",special:1,warning:0,guard:2,phase:0,hitFlash:0,hitOffsetX:0,hitOffsetY:0,animSeed:7}); }
-          if(enemy.special<=0){ if(distance<210) hurt(enemy.phase===2?12:9); enemy.special=enemy.phase===2?2.2:3; run.fx.push({type:"shadow",x:run.leo.x,y:run.leo.y,t:.5}); }
-        } else {
-          if(enemy.warning>0){ enemy.warning-=dt; if(enemy.warning<=0){ if(distance<155) hurt(11); run.fx.push({type:"shadow",x:run.leo.x,y:run.leo.y,t:.38}); } }
-          else if(enemy.special<=0){ enemy.warning = 0.7; enemy.special=4.2; run.fx.push({type:"roar",x:enemy.x,y:enemy.y,t:.7}); }
-        }
-      }
-
-      const slowedMoveSpeed = moveSpeed * (enemy.slow > 0 ? 0.55 : 1);
-      enemy.x=Math.max(worldX(32),Math.min(worldX(358),enemy.x+moveX*slowedMoveSpeed*dt));
-      enemy.y=Math.max(70,Math.min(525,enemy.y+moveY*slowedMoveSpeed*dt));
-      enemy.hitFlash = Math.max(0, (enemy.hitFlash || 0) - dt);
-      enemy.hitOffsetX *= Math.max(0, 1 - dt * 12);
-      enemy.hitOffsetY *= Math.max(0, 1 - dt * 12);
-      const contactRange=enemy.boss?54:profile.range;
-      if(enemy.type!=="hunter"&&distance<contactRange&&enemy.cd<=0){ hurt(enemy.boss?7:profile.damage); enemy.cd=1; run.fx.push({type:"shadow",x:run.leo.x,y:run.leo.y,t:.3}); }
-    }
-    if(reinforcements.length) run.enemies.push(...reinforcements);
+    updateEnemies(dt);
+    resolveStrike(dt);
     autoAttack();
     run.enemies = run.enemies.filter((enemy) => enemy.hp > 0);
     run.fx.forEach((effect) => {
       effect.t -= dt;
       if (effect.type === "damage") {
-        effect.y += (effect.vy || -30) * dt;
+        if(!reducedMotion()) effect.y += (effect.vy || -30) * dt;
         effect.vy = (effect.vy || -30) + 58 * dt;
       }
     });
-    run.fx = run.fx.filter((effect) => effect.t > 0);
+    run.fx = run.fx.filter((effect) => effect.t > 0).slice(-48);
     if (run.hp <= 0) return finish(false);
     if (!run.enemies.length) return run.room >= 3 ? finish(true) : chooseBlessing();
     draw();
@@ -1619,17 +1775,57 @@
     frame = requestAnimationFrame(loop);
   }
 
+  function hazardPath(hazard) {
+    ctx.beginPath();
+    if(hazard.kind==="line") {
+      const angle=Math.atan2(hazard.toY-hazard.y,hazard.toX-hazard.x);
+      const px=-Math.sin(angle)*hazard.radius,py=Math.cos(angle)*hazard.radius;
+      ctx.moveTo(hazard.x+px,hazard.y+py);
+      ctx.lineTo(hazard.toX+px,hazard.toY+py);
+      ctx.arc(hazard.toX,hazard.toY,hazard.radius,angle+Math.PI/2,angle-Math.PI/2,true);
+      ctx.lineTo(hazard.x-px,hazard.y-py);
+      ctx.arc(hazard.x,hazard.y,hazard.radius,angle-Math.PI/2,angle+Math.PI/2,true);
+      ctx.closePath();
+    } else {
+      ctx.arc(hazard.x,hazard.y,hazard.radius,0,Math.PI*2);
+      if(hazard.kind==="ring") {
+        ctx.moveTo(hazard.x+hazard.inner,hazard.y);
+        ctx.arc(hazard.x,hazard.y,hazard.inner,0,Math.PI*2,true);
+      }
+    }
+  }
   function draw() {
     ctx.save();
-    if (run.shake > 0) {
+    if (run.shake > 0 && !reducedMotion()) {
       const shake = run.shake * 34;
       ctx.translate((Math.random() - 0.5) * shake, (Math.random() - 0.5) * shake);
     }
     ctx.clearRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
     ctx.drawImage(images.bg, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+    for(const hazard of run.hazards) {
+      const progress=1-hazard.t/hazard.duration;
+      hazardPath(hazard);
+      ctx.fillStyle=`rgba(255,176,47,${.12+progress*.15})`;
+      ctx.fill("evenodd");
+      ctx.strokeStyle=progress>.78?"#fff1ad":"#ffc659";
+      ctx.lineWidth=3;
+      ctx.setLineDash(progress>.78?[]:[7,5]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      const marker=hazard.kind==="ring"?{x:hazard.x,y:hazard.y-hazard.radius*.7}:{x:hazard.x,y:hazard.y};
+      ctx.strokeStyle="#ffe8a2";
+      ctx.lineWidth=4;
+      ctx.beginPath();ctx.arc(marker.x,marker.y,10,-Math.PI/2,-Math.PI/2+Math.PI*2*progress);ctx.stroke();
+    }
+    for(const effect of run.fx) {
+      if(effect.type!=="impact") continue;
+      hazardPath(effect.hazard);
+      ctx.fillStyle=`rgba(255,192,86,${effect.t*.65})`;ctx.fill("evenodd");
+      ctx.strokeStyle=`rgba(255,235,170,${effect.t*3})`;ctx.lineWidth=3;ctx.stroke();
+    }
 
     if (moveTarget) {
-      const pulse = 1 + Math.sin(run.time * 8) * 0.12;
+      const pulse = reducedMotion()?1:1 + Math.sin(run.time * 8) * 0.12;
       ctx.strokeStyle = "#ffe88a";
       ctx.lineWidth = 3;
       ctx.globalAlpha = 0.9;
@@ -1656,7 +1852,7 @@
       }
       if (target) {
         canvas.dataset.guidanceTarget = String(run.enemies.indexOf(target));
-        const pulse = 1 + Math.sin(run.time * 7) * 0.08;
+        const pulse = reducedMotion()?1:1 + Math.sin(run.time * 7) * 0.08;
         const guideColor = run.guidancePhase === "hit" ? "#7be0b1" : "#7cecff";
         ctx.save();
         ctx.globalAlpha = run.guidancePhase === "hit" ? 0.85 : 0.72;
@@ -1682,12 +1878,12 @@
     for (const enemy of run.enemies) {
       const enemyImage = enemy.boss ? images[`boss-${enemy.bossId}`] : images[`enemy-${enemy.type}`] || images.enemy;
       const size = enemy.boss ? 126 : enemy.elite ? 82 : 68;
-      const bob = Math.sin(run.time * (enemy.boss ? 2.1 : 3.5) + (enemy.animSeed || 0)) * (enemy.boss ? 2 : 3);
-      const drawX = enemy.x + (enemy.hitOffsetX || 0);
-      const drawY = enemy.y + (enemy.hitOffsetY || 0) + bob;
+      const bob = reducedMotion()?0:Math.sin(run.time * (enemy.boss ? 2.1 : 3.5) + (enemy.animSeed || 0)) * (enemy.boss ? 2 : 3);
+      const drawX = enemy.x + (reducedMotion()?0:enemy.hitOffsetX || 0);
+      const drawY = enemy.y + (reducedMotion()?0:enemy.hitOffsetY || 0) + bob;
       ctx.save();
       ctx.translate(drawX, drawY);
-      ctx.rotate(Math.sin(run.time * 3 + (enemy.animSeed || 0)) * 0.025);
+      if(!reducedMotion()) ctx.rotate(Math.sin(run.time * 3 + (enemy.animSeed || 0)) * 0.025);
       ctx.drawImage(enemyImage, -size / 2, -size / 2, size, size);
       ctx.restore();
       if ((enemy.hitFlash || 0) > 0) {
@@ -1702,10 +1898,15 @@
       const barWidth = enemy.boss ? 100 : 56;
       const barY = drawY - size / 2 - 9;
       ctx.fillRect(drawX - barWidth / 2, barY, barWidth, 6);
-      ctx.fillStyle = "#7be0b1";
+      ctx.fillStyle = enemy.open>0?"#7be0b1":"#efd074";
       ctx.fillRect(drawX - barWidth / 2, barY, (barWidth * enemy.hp) / enemy.max, 6);
       if(enemy.guard>0){ ctx.strokeStyle="#78e9ff"; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(drawX,drawY,size*.48,0,Math.PI*2); ctx.stroke(); }
       if(enemy.warning>0){ ctx.strokeStyle="#ffd45f"; ctx.lineWidth=4; ctx.beginPath(); ctx.arc(drawX,drawY,size*.58,0,Math.PI*2); ctx.stroke(); }
+      if(enemy.open>0) {
+        ctx.strokeStyle="#77f0ca";ctx.lineWidth=2;ctx.beginPath();ctx.arc(drawX,drawY,size*.52,0,Math.PI*2);ctx.stroke();
+        ctx.font="bold 12px system-ui";ctx.textAlign="center";ctx.fillStyle="#b6ffe3";ctx.strokeStyle="#08251d";ctx.lineWidth=3;
+        ctx.strokeText(combatText(4),drawX,barY-7);ctx.fillText(combatText(4),drawX,barY-7);
+      }
       if (enemy.marked) {
         ctx.strokeStyle = "#7cecff";
         ctx.lineWidth = 3;
@@ -1718,9 +1919,9 @@
     const heroWidth = run.heroId === "taro" ? 94 : run.heroId === "orla" ? 82 : 78;
     const heroHeight = run.heroId === "taro" ? 78 : 90;
     const moving = Boolean(moveTarget || Object.values(keys).some(Boolean));
-    const heroBob = moving ? Math.sin(run.stepPhase) * 3 : Math.sin(run.time * 2.2) * 1.2;
-    const heroX = run.leo.x - (run.heroKick > 0 ? run.lastMoveX * 5 : 0);
-    const heroY = run.leo.y + heroBob - (run.heroKick > 0 ? run.lastMoveY * 3 : 0);
+    const heroBob = reducedMotion()?0:moving ? Math.sin(run.stepPhase) * 3 : Math.sin(run.time * 2.2) * 1.2;
+    const heroX = run.leo.x - (!reducedMotion()&&run.heroKick > 0 ? run.lastMoveX * 5 : 0);
+    const heroY = run.leo.y + heroBob - (!reducedMotion()&&run.heroKick > 0 ? run.lastMoveY * 3 : 0);
     ctx.fillStyle = "#06171299";
     ctx.beginPath();
     ctx.ellipse(run.leo.x, run.leo.y + heroHeight * 0.42, heroWidth * (moving ? 0.46 : 0.4), 8, 0, 0, Math.PI * 2);
@@ -1736,11 +1937,22 @@
     ctx.globalAlpha = run.invulnerable > 0 ? 0.72 : 1;
     ctx.save();
     ctx.translate(heroX, heroY);
-    ctx.rotate(Math.max(-0.08, Math.min(0.08, run.lastMoveX * 0.08)));
-    ctx.scale(1 + (moving ? Math.sin(run.stepPhase) * 0.025 : 0), 1 - (moving ? Math.sin(run.stepPhase) * 0.025 : 0));
+    if(!reducedMotion()) {
+      ctx.rotate(Math.max(-0.08, Math.min(0.08, run.lastMoveX * 0.08)));
+      ctx.scale(1 + (moving ? Math.sin(run.stepPhase) * 0.025 : 0), 1 - (moving ? Math.sin(run.stepPhase) * 0.025 : 0));
+    }
     ctx.drawImage(images[hero.image], -heroWidth / 2, -heroHeight / 2, heroWidth, heroHeight);
     ctx.restore();
     ctx.globalAlpha = 1;
+    if(run.counter>0) {
+      ctx.strokeStyle="#9af4dc";ctx.lineWidth=2;ctx.setLineDash([5,5]);ctx.beginPath();ctx.arc(run.leo.x,run.leo.y,42,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+    }
+    if(run.strike) {
+      const strike=run.strike;
+      const p=reducedMotion()?1:1-strike.t/strike.duration;
+      ctx.strokeStyle="#ffe9a9";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(strike.fromX,strike.fromY);
+      ctx.lineTo(strike.fromX+(strike.target.x-strike.fromX)*p,strike.fromY+(strike.target.y-strike.fromY)*p);ctx.stroke();
+    }
     if (run.guard > 0) {
       ctx.strokeStyle = "#55e0b1";
       ctx.lineWidth = 5;
@@ -1749,9 +1961,16 @@
       ctx.stroke();
     }
     for (const effect of run.fx) {
+      if(effect.type==="impact") continue;
+      if(effect.type==="defeat") {
+        const scale=reducedMotion()?1:.8+effect.t*.625;
+        ctx.globalAlpha=effect.t/.32;
+        ctx.drawImage(effect.image,effect.x-effect.size*scale/2,effect.y-effect.size*scale/2,effect.size*scale,effect.size*scale);
+        ctx.globalAlpha=1;continue;
+      }
       if (effect.type === "damage") {
         ctx.globalAlpha = Math.min(1, effect.t * 3);
-        ctx.fillStyle = effect.source === "hurt" ? "#ff8b8b" : effect.source === "skill" ? "#ffe88a" : "#fff7dc";
+        ctx.fillStyle = effect.source === "hurt" ? "#ff8b8b" : effect.blocked?"#8fe8ff":effect.strong?"#91ffcf":effect.source === "skill" ? "#ffe88a" : "#fff7dc";
         ctx.font = "900 20px system-ui, sans-serif";
         ctx.textAlign = "center";
         ctx.lineWidth = 4;

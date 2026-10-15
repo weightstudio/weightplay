@@ -1,4 +1,6 @@
-﻿(() => {
+﻿(async () => {
+  const fishing = await import('./reef-simulation.js');
+  const { ReefScene } = await import('./reef-3d.js');
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -24,8 +26,8 @@
   document.querySelector(".battle-shell")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-reef-fisher";
-  const GAME_VERSION = 26;
-  const INTERFACE_VERSION = 6;
+  const GAME_VERSION = 27;
+  const INTERFACE_VERSION = 9;
   const saveKey = "weightplay_animal_reef_fisher_v1";
   const localeKey = "weightPlayLocale";
   const sessionStorageFallback = new Map();
@@ -82,7 +84,14 @@
     `);
   }
   const canvas = $("gameCanvas");
-  const ctx = canvas.getContext("2d");
+  const ctx = null; // The Battle canvas belongs exclusively to the real-time 3D renderer.
+  let reefScene = null;
+  let fishingState = null;
+  let stageTab = 'map';
+  let sceneError = false;
+  let landingWon = false;
+  let renderDelta = 0;
+  let actionPointerId = null;
   const nodes = {
     localeSelect: $("localeSelect"),
     loadingPanel: $("loadingPanel"),
@@ -623,6 +632,24 @@
     resultBuildCueSafe: "كسبت {notes} من ملاحظات الشعاب. بقي الشد آمنًا معظم الوقت؛ طوّر قوة الصنارة أو جودة الطُعم عندما يضيق الوقت.",
     resultBuildCueNoCatch: "كسبت {notes} من ملاحظات الشعاب. لم تصل أي سمكة إلى مرحلة الإنزال هذه المرة؛ استخدم إلقاءً أقوى ثم فكّر في قوة الصنارة أو جودة الطُعم.",
   };
+
+  const fishingCopyKeys = ['spotReef','spotChannel','spotPool','chooseSpot','chargeCast','waitBite','nibble','strike','reelHold','easeLine','counterLeft','counterRight','fishRun','fishRecover','fishTelegraph','missedBite','slackEscape','lineEscape','landing','distance','mapTab','gearTab','albumTab','unknownFish','renderError','retryScene','casting','gustSoon','guarded','castTarget'];
+  const fishingCopy = {
+    en: ['Near reef · steady','Current channel · darting','Deep pool · heavy','Choose a fishing spot; hold water or Space to charge.','Release to cast at the selected spot.','Watch the float. Wait for the bite!','A nibble… wait for the strong dip.','BITE! Press to strike!','Hold to reel','Release to ease the line','Move rod left','Move rod right','Fish running · ease pressure','Recovery · reel now','Fish preparing a run','Missed bite. Cast again.','Too much slack: fish escaped. Cast again.','Line broke under pressure. Cast again.','Catch landed!','Distance','Map','Gear','Album','Undiscovered','3D scene unavailable. Retry or return to Stages.','Retry scene','Float in flight','Gust coming · ease the line','Guard closed · hold position','Target power'],
+    'zh-Hant': ['近礁 · 平穩魚','流帶 · 衝刺魚','深池 · 沉重魚','選釣點；按住水面或空白鍵蓄力。','放開，朝選定釣點拋竿。','觀察浮標，等待咬鉤！','試探中…等浮標明顯下沉。','咬鉤！按下提竿！','按住收線','放開鬆線','向左移竿','向右移竿','魚衝刺 · 放鬆魚線','休息空檔 · 現在收線','魚準備衝刺','錯過咬鉤，再拋一次。','魚線太鬆，魚逃走了；重新拋竿。','張力過大斷線；重新拋竿。','成功收魚！','距離','地圖','裝備','圖鑑','尚未發現','3D 場景無法使用；重試或返回關卡。','重試場景','浮標飛行中','突流將至 · 放鬆魚線','護甲關閉 · 穩住魚線','目標力道'],
+    'zh-Hans': ['近礁 · 平稳鱼','流带 · 冲刺鱼','深池 · 沉重鱼','选钓点；按住水面或空格键蓄力。','松开，朝选定钓点抛竿。','观察浮标，等待咬钩！','试探中…等浮标明显下沉。','咬钩！按下提竿！','按住收线','松开松线','向左移竿','向右移竿','鱼冲刺 · 放松鱼线','休息空档 · 现在收线','鱼准备冲刺','错过咬钩，再抛一次。','鱼线太松，鱼逃走了；重新抛竿。','张力过大断线；重新抛竿。','成功收鱼！','距离','地图','装备','图鉴','尚未发现','3D 场景无法使用；重试或返回关卡。','重试场景','浮标飞行中','突流将至 · 放松鱼线','护甲关闭 · 稳住鱼线','目标力度'],
+    ja: ['浅い礁 · 穏やかな魚','水路 · 素早い魚','深い池 · 重い魚','釣り場を選び、水面かSpaceを長押し。','離して選んだ釣り場へ投げよう。','ウキを見て、アタリを待とう！','つついている…大きく沈むまで待とう。','アタリ！押して合わせよう！','長押しで巻く','離して糸を緩める','竿を左へ','竿を右へ','魚が走る · 糸を緩めよう','休み中 · 今巻こう','魚が走る準備中','アタリを逃した。もう一度投げよう。','糸が緩すぎて逃げた。再び投げよう。','張力で糸が切れた。再び投げよう。','釣り上げた！','距離','地図','装備','図鑑','未発見','3Dを表示できません。再試行かステージへ。','再試行','ウキが飛んでいます','突流の予告 · 糸を緩めよう','ガード中 · 姿勢を保とう','目標の力'],
+    ko: ['얕은 암초 · 안정형','물길 · 돌진형','깊은 웅덩이 · 무거운 물고기','낚시터를 고르고 물이나 Space를 길게 누르세요.','놓으면 선택한 곳으로 던집니다.','찌를 보며 입질을 기다리세요!','미끼 탐색 중…찌가 깊이 잠길 때까지 기다리세요.','입질! 눌러 챔질하세요!','길게 눌러 감기','놓아서 줄 풀기','낚싯대 왼쪽','낚싯대 오른쪽','돌진 중 · 줄을 풀어요','휴식 중 · 지금 감아요','물고기 돌진 준비','입질을 놓쳤어요. 다시 던지세요.','줄이 너무 느슨해 놓쳤어요. 다시 던지세요.','장력이 높아 줄이 끊겼어요. 다시 던지세요.','낚시 성공!','거리','지도','장비','도감','미발견','3D 장면을 열 수 없어요. 재시도하거나 스테이지로 가세요.','장면 재시도','찌가 날아갑니다','급류 예고 · 줄을 풀어요','방어 중 · 줄을 안정시키세요','목표 세기'],
+    es: ['Arrecife cercano · estable','Canal · veloz','Poza profunda · pesado','Elige un punto; mantén agua o Espacio para cargar.','Suelta para lanzar al punto elegido.','¡Mira el flotador y espera la picada!','Está tanteando… espera la inmersión fuerte.','¡PICADA! ¡Pulsa para clavar!','Mantén para recoger','Suelta para aflojar','Caña a la izquierda','Caña a la derecha','Corre · afloja la línea','Descansa · recoge ahora','Prepara una carrera','Picada perdida. Lanza otra vez.','Línea floja: escapó. Vuelve a lanzar.','La línea se rompió. Vuelve a lanzar.','¡Captura a bordo!','Distancia','Mapa','Equipo','Álbum','Sin descubrir','Escena 3D no disponible. Reintenta o vuelve a Misiones.','Reintentar escena','Flotador en vuelo','Ráfaga próxima · afloja','Guardia cerrada · estabiliza','Potencia objetivo'],
+    'pt-BR': ['Recife perto · estável','Canal · veloz','Poço fundo · pesado','Escolha um ponto; segure a água ou Espaço para carregar.','Solte para lançar ao ponto escolhido.','Olhe a boia e espere a fisgada!','Está beliscando… espere afundar bem.','MORDEU! Aperte para fisgar!','Segure para recolher','Solte para aliviar','Vara à esquerda','Vara à direita','Correndo · alivie a linha','Descansando · recolha agora','Preparando uma corrida','Perdeu a fisgada. Lance de novo.','Linha frouxa: escapou. Lance de novo.','A linha rompeu. Lance de novo.','Peixe a bordo!','Distância','Mapa','Equipamento','Álbum','Não descoberto','Cena 3D indisponível. Tente de novo ou volte às Missões.','Tentar cena','Boia no ar','Rajada chegando · alivie','Defesa fechada · estabilize','Força alvo'],
+    fr: ['Récif proche · calme','Chen al · rapide'.replace('Chen al','Chenal'),'Fosse · lourd','Choisissez un lieu ; maintenez l’eau ou Espace.','Relâchez pour lancer au lieu choisi.','Surveillez le flotteur, attendez la touche !','Il grignote… attendez la grande plongée.','TOUCHE ! Appuyez pour ferrer !','Maintenez pour mouliner','Relâchez pour détendre','Canne à gauche','Canne à droite','Il fuit · détendez la ligne','Repos · moulinez maintenant','Il prépare une fuite','Touche manquée. Relancez.','Ligne trop lâche : il fuit. Relancez.','Ligne cassée. Relancez.','Poisson à bord !','Distance','Carte','Équipement','Album','Non découvert','Scène 3D indisponible. Réessayez ou revenez aux missions.','Réessayer','Flotteur en vol','Rafale imminente · détendez','Garde fermée · stabilisez','Puissance cible'],
+    de: ['Nahes Riff · ruhig','Strömung · flink','Tiefer Pool · schwer','Angelplatz wählen; Wasser oder Leertaste halten.','Loslassen und zum gewählten Platz werfen.','Pose beobachten und auf den Biss warten!','Er knabbert… auf kräftiges Abtauchen warten.','BISS! Zum Anschlagen drücken!','Halten zum Einholen','Loslassen zum Entlasten','Rute nach links','Rute nach rechts','Flucht · Schnur entlasten','Erholung · jetzt einholen','Fisch bereitet Flucht vor','Biss verpasst. Erneut auswerfen.','Schnur zu locker: entkommen. Neu auswerfen.','Schnur gerissen. Neu auswerfen.','Fang an Bord!','Abstand','Karte','Ausrüstung','Album','Unentdeckt','3D-Szene nicht verfügbar. Erneut versuchen oder zu Stufen.','Szene neu laden','Pose im Flug','Böe kommt · Schnur entlasten','Panzer geschlossen · stabil halten','Zielstärke'],
+    it: ['Scoglio vicino · calmo','Canale · rapido','Pozza profonda · pesante','Scegli un punto; tieni acqua o Spazio per caricare.','Rilascia per lanciare al punto scelto.','Osserva il galleggiante e attendi il morso!','Sta assaggiando… aspetta che affondi forte.','MORSO! Premi per ferrare!','Tieni per recuperare','Rilascia per allentare','Canna a sinistra','Canna a destra','Scatta · allenta la lenza','Riposa · recupera ora','Prepara uno scatto','Morso perso. Lancia ancora.','Lenza lenta: è fuggito. Lancia ancora.','Lenza rotta. Lancia ancora.','Pesce a bordo!','Distanza','Mappa','Attrezzatura','Album','Da scoprire','Scena 3D non disponibile. Riprova o torna alle missioni.','Riprova scena','Galleggiante in volo','Raffica in arrivo · allenta','Guardia chiusa · stabilizza','Potenza obiettivo'],
+    ru: ['Ближний риф · спокойные','Протока · быстрые','Глубокий омут · тяжёлые','Выберите место; удерживайте воду или Пробел.','Отпустите, чтобы забросить к выбранному месту.','Следите за поплавком и ждите поклёвки!','Пробует наживку… ждите сильного погружения.','КЛЮЁТ! Нажмите для подсечки!','Держите для подмотки','Отпустите для ослабления','Удочку влево','Удочку вправо','Рывок · ослабьте леску','Отдыхает · подматывайте','Готовится к рывку','Поклёвка пропущена. Забросьте снова.','Леска ослабла: рыба ушла. Забросьте снова.','Леска порвалась. Забросьте снова.','Улов на борту!','Расстояние','Карта','Снаряжение','Альбом','Не открыто','3D-сцена недоступна. Повторите или вернитесь к этапам.','Повторить сцену','Поплавок в полёте','Скоро порыв · ослабьте леску','Защита закрыта · держите ровно','Целевая сила'],
+    hi: ['पास की रीफ़ · स्थिर','धारा · तेज़','गहरा कुंड · भारी','जगह चुनें; पानी या Space दबाकर ताकत भरें।','चुनी जगह फेंकने के लिए छोड़ें।','तैरते काँटे को देखें, काटने की प्रतीक्षा करें!','चारा छू रही है… तेज़ डुबकी तक रुकें।','काट लिया! फँसाने के लिए दबाएँ!','खींचने के लिए दबाएँ','डोर ढीली करने के लिए छोड़ें','छड़ी बाएँ','छड़ी दाएँ','मछली दौड़ रही है · डोर ढीली करें','आराम कर रही है · अब खींचें','मछली दौड़ने को तैयार','मौका छूटा। फिर फेंकें।','डोर ढीली थी: मछली छूटी। फिर फेंकें।','डोर टूट गई। फिर फेंकें।','मछली नाव पर!','दूरी','नक्शा','सामान','एल्बम','अनदेखी','3D दृश्य उपलब्ध नहीं। फिर कोशिश करें या चरणों पर जाएँ।','दृश्य फिर खोलें','काँटा हवा में','झोंका आने वाला है · डोर छोड़ें','कवच बंद · स्थिर रखें','लक्ष्य ताकत'],
+    ar: ['شعاب قريبة · هادئ','قناة تيار · سريع','بركة عميقة · ثقيل','اختر موقعًا؛ اضغط الماء أو المسافة للشحن.','أفلت للرمي إلى الموقع المحدد.','راقب العوامة وانتظر العضة!','يقضم الطُعم… انتظر الغوص القوي.','عضة! اضغط لتثبيت الخطاف!','اضغط للسحب','أفلت لإرخاء الخيط','السنارة يسارًا','السنارة يمينًا','اندفاع · أرخِ الخيط','استراحة · اسحب الآن','يستعد للاندفاع','فاتت العضة. ارمِ مجددًا.','الخيط مرتخٍ: هربت السمكة. ارمِ مجددًا.','انقطع الخيط. ارمِ مجددًا.','الصيد على القارب!','المسافة','الخريطة','المعدات','الألبوم','غير مكتشف','مشهد 3D غير متاح. أعد المحاولة أو ارجع للمراحل.','أعد المشهد','العوامة في الهواء','هبة قادمة · أرخِ الخيط','الدرع مغلق · حافظ على الثبات','القوة المستهدفة'],
+  };
+  function ft(key) { const lang = window.WonderI18n?.actualLocale?.() || locale; return fishingCopy[lang]?.[fishingCopyKeys.indexOf(key)] || fishingCopy.en[fishingCopyKeys.indexOf(key)] || key; }
 
   const assetPaths = {
     bg: "../../assets/animal-reef-fisher-reef-bg.webp",
@@ -1179,8 +1206,8 @@
       const maxed = level >= 5;
       return `
         <div class="gear-card">
-          <img src="${item.img}" alt="" />
-          <div><strong>${localizedValue(item.name)}</strong><span>${formatLevel(level)}</span><small class="gear-effect">${t(item.effectKey)}</small></div>
+          <div data-wp-item-content><img src="${item.img}" alt="" />
+          <div><strong>${localizedValue(item.name)}</strong><span>${formatLevel(level)}</span><small class="gear-effect">${t(item.effectKey)}</small></div></div>
           <button class="secondary-btn" data-gear="${item.id}" type="button">${maxed ? t("max") : `${t("upgrade")} ${cost}`}</button>
         </div>
       `;
@@ -1207,7 +1234,32 @@
     nodes.sonarPrepBtn.setAttribute("aria-label", save.sonarReady ? t("sonarReady") : diamondPurchasePending === "sonar" ? t("sonarConfirmLabel", { before:diamondBalance, after:Math.max(0,diamondBalance-sonarCost) }) : t("sonarBuyLabel", { balance:diamondBalance }));
     nodes.lureBtn.classList.toggle("is-confirming", diamondPurchasePending === "lure");
     nodes.sonarPrepBtn.classList.toggle("is-confirming", diamondPurchasePending === "sonar");
-    if (state === "stage") window.requestAnimationFrame(() => positionStageRail(selectedStageIndex));
+    renderAlbum();
+    syncStageTabs();
+    if (state === "stage" && stageTab === 'map') window.requestAnimationFrame(() => positionStageRail(selectedStageIndex));
+  }
+
+  function renderAlbum() {
+    const panel = $('reefAlbumWorkspace');
+    if (!panel) return;
+    const cards = fish.map(item => {
+      const collected = save.album.includes(item.id);
+      return `<article class="reef-album-card" data-collected="${collected}"><span class="catch-thumb" style="${fishFrameStyle(item)}" aria-hidden="true"></span><strong>${collected ? localizedValue(item.name) : ft('unknownFish')}</strong><span>${collected ? t(item.rare ? 'rareFish' : 'commonFish') : '—'}</span></article>`;
+    }).join('');
+    if (panel.dataset.albumSignature !== `${locale}:${save.album.join(',')}:${assetsReady}`) {
+      panel.innerHTML = `<div class="reef-album-grid">${cards}</div>`;
+      panel.dataset.albumSignature = `${locale}:${save.album.join(',')}:${assetsReady}`;
+    }
+  }
+
+  function syncStageTabs() {
+    const names = {map:'reefMapWorkspace',gear:'reefGearWorkspace',album:'reefAlbumWorkspace'};
+    Object.entries(names).forEach(([tab,id]) => {
+      const panel = $(id); if (panel) { panel.hidden = tab !== stageTab; panel.classList.toggle('is-hidden',tab !== stageTab); }
+      const button = document.querySelector(`[data-reef-tab="${tab}"]`);
+      if (button) { button.setAttribute('aria-selected',String(tab === stageTab)); button.setAttribute('aria-controls',id); button.textContent = ft(`${tab}Tab`); }
+    });
+    stagePanel.dataset.reefTab = stageTab;
   }
 
   function stageWindowLimit() {
@@ -1507,6 +1559,7 @@
   function showPanel(which) {
     if (which !== "stage") cancelStageRailInteraction();
     if (which !== "game") {
+      disposeReefScene();
       cancelAnimationFrame(raf);
       raf = 0;
     }
@@ -1543,7 +1596,7 @@
   }
 
   function restartFishingLoop() {
-    if (backgroundSuspended || document.hidden || leaveDecisionOpen || state !== "game" || !run || run.finished) return;
+    if (backgroundSuspended || document.hidden || leaveDecisionOpen || sceneError || state !== "game" || !run || run.finished) return;
     cancelAnimationFrame(raf);
     lastTime = performance.now();
     raf = requestAnimationFrame(tick);
@@ -1642,6 +1695,8 @@
     save.sonarReady = false;
     save.selectedZone = selectedZone;
     saveProgress();
+    fishingState = fishing.createFishingState(zone,{...save.gear});
+    landingWon = false;
     renderBattleMissionBriefing(zone);
     nodes.goalText.textContent = `${run.catches}/${zone.goal}`;
     nodes.hintText.textContent = t("castHint");
@@ -1653,6 +1708,7 @@
     state = "game";
     showPanel("game");
     focusPanel(nodes.gamePanel);
+    await retryReefScene();
     if (!assetsReady) {
       nodes.startBtn.disabled = true;
       nodes.retryBtn.disabled = true;
@@ -1662,6 +1718,7 @@
       nodes.retryBtn.disabled = false;
       focusPanel(nodes.gamePanel);
     }
+    if (sceneError) return;
     if (returnedToMain) {
       track("return_session", { source: "main_start", entry_action: entryAction, input_type: run.lastInputType });
       returnedToMain = false;
@@ -1786,9 +1843,9 @@
     const regionIndex = Math.floor((run.zone.stage - 1) / 5);
     const poolLimit = Math.min(12, ([4, 6, 8, 10, 11, 12][regionIndex] || 12) + Math.max(0, (Number(save.gear.scan) || 1) - 1));
     let pool = fish.slice(0, poolLimit).filter((item) => item.id !== run.zone.boss?.fishId);
-    if (run.zone.school === "steady") pool = pool.filter((item) => item.behavior === "steady");
-    if (run.zone.school === "dart") pool = pool.filter((item) => item.behavior === "dart");
-    if (run.zone.school === "heavy") pool = pool.filter((item) => item.behavior === "heavy");
+    const behavior = fishing.SPOTS[fishingState?.spot || 0].behavior;
+    const preferred = pool.filter(item => item.behavior === behavior);
+    pool = preferred.length ? preferred : fish.filter(item => item.behavior === behavior && !item.rare && item.id !== run.zone.boss?.fishId);
     if (!pool.length) pool = fish.slice(0, poolLimit).filter((item) => item.id !== run.zone.boss?.fishId);
     if (run.lureCharges > 0) {
       run.lureCharges -= 1;
@@ -1816,25 +1873,8 @@
 
   function hookFish() {
     if (!run.hookFish) run.hookFish = pickHookFish();
-    const behavior = fishBehavior(run.hookFish);
-    run.phase = "reel";
-    run.tension = 50;
-    run.struggle = 0;
-    run.fishPower = (45 + Math.random() * 40) * behavior.endurance;
-    run.initialFishPower = run.fishPower;
-    run.reelElapsed = 0;
-    run.reelControlAge = Infinity;
-    run.lastGustCycle = 0;
-    run.bossShieldOpen = true;
-    run.hazardFlash = 0;
-    run.fishTimer = 1.2;
-    run.splashTimer = 0.8;
-    run.tensionSafe = true;
-    nodes.hintText.textContent = hookedHint(run.hookFish);
-    updateTensionGuide();
-    updateSonarButton();
-    track("fish_hooked", { fish: run.hookFish.id, zone: run.zone.id, stage: run.zone.stage, input_type: run.lastInputType });
-    playSound("movement.hook");
+    fishingState.fish = run.hookFish; fishingState.phase = 'bite';
+    fishing.pressFishing(fishingState); syncFishingState(); processFishingEvents();
   }
 
   function landFish() {
@@ -1854,8 +1894,8 @@
     run.lastCatch = { id, points, notes, isNew };
     run.catches += 1;
     run.notes += notes;
-    run.phase = "aim";
-    run.hookFish = null;
+    run.phase = "landing";
+    landingWon = run.catches >= run.zone.goal;
     run.splashTimer = 0.8;
     run.catchToastTimer = 1.7;
     showCatchToast(caught, points, notes, isNew);
@@ -1864,8 +1904,8 @@
     nodes.hintText.textContent = `${t("landed")} ${localizedValue(caught.name)} +${points}`;
     updateTensionGuide();
     updateSonarButton();
-    if (run.catches >= run.zone.goal) finishRun(true);
-    else playSound(isNew ? "reward.upgrade" : "feedback.success");
+    playSound(isNew ? "reward.unlock" : "reward.collect");
+    saveProgress();
   }
 
   function fishById(id) {
@@ -2111,14 +2151,8 @@
   }
 
   function tensionRange() {
-    if (!run) return { safeMin: 38, safeMax: 62, safe: true };
-    const elapsed = Math.max(0, (run.duration || expeditionSeconds) - run.time);
-    const { safeMin, safeMax } = missionTensionWindow(run.zone, elapsed);
-    return {
-      safeMin,
-      safeMax,
-      safe: run.tension >= safeMin && run.tension <= safeMax,
-    };
+    const safeMin = 16, safeMax = 81 + (save.gear.line || 1) * 1.6;
+    return {safeMin,safeMax,safe:!fishingState || (fishingState.tension >= safeMin && fishingState.tension <= safeMax)};
   }
 
   function fishBehavior(item) {
@@ -2212,111 +2246,79 @@
 
   function updateTensionGuide() {
     updateCastMeter();
-    const range = tensionRange();
-    nodes.safeBand.style.left = `${range.safeMin}%`;
-    nodes.safeBand.style.width = `${range.safeMax - range.safeMin}%`;
-    nodes.tensionLane.classList.toggle("is-active", Boolean(run && run.phase === "reel"));
-    nodes.tensionLane.classList.toggle("is-safe", Boolean(run && run.phase === "reel" && range.safe));
-    nodes.tensionLane.classList.toggle("is-danger", Boolean(run && run.phase === "reel" && !range.safe));
-    const tensionValue = Math.round(run?.tension ?? 50);
-    const tensionState = tensionValue < range.safeMin ? t("tensionLow") : tensionValue > range.safeMax ? t("tensionHigh") : t("tensionSafe");
-    nodes.tensionLane.setAttribute("aria-valuenow", String(tensionValue));
-    nodes.tensionLane.setAttribute("aria-valuetext", `${tensionValue}% - ${tensionState}`);
-    const hasSonarLock = Boolean(run && run.phase === "aim" && run.hookFish && !run.sonarReady);
-    if (hasSonarLock) nodes.tensionStatus.textContent = t("sonarStatus", { fish: localizedValue(run.hookFish.name) });
-    else if (!run || run.phase === "aim") nodes.tensionStatus.textContent = t("tensionStatusAim");
-    else if (run.phase === "charging" || run.phase === "cast") nodes.tensionStatus.textContent = t("tensionStatusCharging");
-    else if (run.phase === "reel") {
-      const initialPower = Math.max(1, Number(run.initialFishPower) || Number(run.fishPower) || 1);
-      const progress = Math.max(0, Math.min(100, Math.round((1 - run.fishPower / initialPower) * 100)));
-      const tensionCopy = range.safe ? t("tensionStatusSafe") : t("tensionStatusDanger");
-      nodes.tensionStatus.textContent = `${tensionCopy} · ${t("landingProgress", { progress })}`;
+    const fs = fishingState;
+    const active = Boolean(fs?.phase === 'reel');
+    const safeMin = 16, safeMax = 81 + (save.gear.line || 1) * 1.6;
+    nodes.safeBand.style.left = `${safeMin}%`;
+    nodes.safeBand.style.width = `${safeMax-safeMin}%`;
+    nodes.tensionLane.classList.toggle('is-active', active);
+    const safe = !active || (fs.tension >= safeMin && fs.tension <= safeMax);
+    nodes.tensionLane.classList.toggle('is-safe', active && safe);
+    nodes.tensionLane.classList.toggle('is-danger', active && !safe);
+    nodes.tensionLane.setAttribute('aria-valuenow', String(Math.round((fs?.steering || 0) * 50 + 50)));
+    nodes.tensionLane.setAttribute('aria-valuetext', `${ft('counterLeft')} / ${ft('counterRight')}`);
+    nodes.tensionMarker.style.left = `${fs?.tension || 40}%`;
+    const phase = fs?.phase || 'aim';
+    const key = ({aim:'chooseSpot',charging:'chargeCast',flight:'casting',wait:'waitBite',nibble:'nibble',bite:'strike',landing:'landing'})[phase];
+    let cue = key ? ft(key) : fs?.gustWarning ? ft('gustSoon') : !fs?.shieldOpen ? ft('guarded') : ft(fs?.cycle === 'run' ? 'fishRun' : fs?.cycle === 'telegraph' ? 'fishTelegraph' : 'fishRecover');
+    if (sceneError) cue = ft('renderError');
+    if (run?.recoveryCue && phase === 'aim') cue = run.recoveryCue;
+    nodes.tensionCoach.textContent = active ? `${cue} · ${ft(fs.direction > 0 ? 'counterLeft' : 'counterRight')}` : cue;
+    nodes.hintText.textContent = cue;
+    nodes.tensionStatus.textContent = active ? `${Math.round(fs.tension)}% · ${Math.round(fs.distance)}m` : phase === 'charging' ? `${Math.round(fs.castPower)}% · ${ft('castTarget')} ${fishing.SPOTS[fs.spot].accuracy}%` : cue;
+    const action = $('reelActionBtn');
+    if (action) {
+      action.textContent = sceneError ? ft('retryScene') : phase === 'bite' ? ft('strike') : active ? ft(fs.reeling ? 'easeLine' : 'reelHold') : ['aim','charging'].includes(phase) ? ft('chargeCast') : cue;
+      action.disabled = !sceneError && !['aim','charging','bite','reel'].includes(phase);
+      action.setAttribute('aria-label',action.textContent); action.setAttribute('aria-pressed',String(Boolean(fs?.reeling)));
     }
-    else nodes.tensionStatus.textContent = t("tensionStatusHooked");
-    if (hasSonarLock) nodes.tensionCoach.textContent = sonarScanMessage(run.hookFish);
-    else if (!run || run.phase === "aim") nodes.tensionCoach.textContent = t("tensionCoachAim");
-    else if (run.hookFish?.boss && ["coral", "abyss"].includes(run.hookFish.bossProfile)) nodes.tensionCoach.textContent = t(run.bossShieldOpen ? "bossShieldOpen" : "bossShieldClosed");
-    else if (run.phase === "reel") nodes.tensionCoach.textContent = range.safe ? t("tensionCoachSafe") : t("tensionCoachDanger");
-    else nodes.tensionCoach.textContent = t("tensionCoachReel");
-    if (run?.lineBreakRecoveryVisible) nodes.hintText.textContent = lineBreakRecoveryText();
+    if ($('spotNameText')) $('spotNameText').textContent = ft(['spotReef','spotChannel','spotPool'][fs?.spot || 0]);
+    if ($('fightDistanceText')) $('fightDistanceText').textContent = active ? `${ft('distance')} ${fs.distance.toFixed(1)}m` : '';
+    if ($('fightStateText')) $('fightStateText').textContent = active ? cue : '';
+    for (const id of ['spotPrevBtn','spotNextBtn']) if ($(id)) { $(id).disabled = phase !== 'aim'; $(id).setAttribute('aria-label',ft('chooseSpot')); }
+    document.querySelector('.play-frame')?.setAttribute('data-fishing-phase',phase);
+  }
+
+  function syncFishingState() {
+    if (!run || !fishingState) return;
+    const fs = fishingState;
+    run.phase = fs.phase; run.castPower = fs.castPower; run.tension = fs.tension;
+    run.struggle = fs.danger; run.fishPower = fs.distance; run.initialFishPower = fs.initialDistance;
+    run.reelElapsed = fs.fightElapsed; run.bossShieldOpen = fs.shieldOpen; run.lastGustCycle = fs.lastGust;
+    if (fs.phase === 'reel') run.hookFish = fs.fish;
+  }
+
+  function processFishingEvents() {
+    for (const event of fishing.drainFishingEvents(fishingState)) {
+      const type = event.type;
+      if (type === 'cast') { playSound('projectile.launch'); track('cast',{power:Math.round(fishingState.castPower),zone:run.zone.id,stage:run.zone.stage,fish:run.hookFish?.id,input_type:run.lastInputType}); }
+      if (['splash','bite','land','gust'].includes(type)) reefScene?.burst(fishingState.float,type === 'land' && run.hookFish?.rare);
+      if (type === 'splash') playSound('water.splash');
+      if (type === 'bite') playSound('alert.warning');
+      if (type === 'hook') { playSound('movement.hook'); track('fish_hooked',{fish:run.hookFish?.id,stage:run.zone.stage,input_type:run.lastInputType}); }
+      if (type === 'gust') playSound('water.splash');
+      if (type === 'land') landFish();
+      if (['miss','slack','break'].includes(type)) {
+        run.hookFish = null; run.recoveryCue = ft(type === 'miss' ? 'missedBite' : type === 'slack' ? 'slackEscape' : 'lineEscape');
+        playSound('feedback.error'); track(type === 'break' ? 'line_break' : 'fish_escape',{stage:run.zone.stage,cause:type,input_type:run.lastInputType});
+      }
+      if (type === 'ready') { run.hookFish = null; if (landingWon) { landingWon = false; finishRun(true); } }
+    }
   }
 
   function update(dt) {
-    if (state !== "game" || !run || run.finished) return;
+    if (state !== 'game' || !run || run.finished || sceneError || !fishingState) return;
     run.time -= dt;
-    if (run.time <= 0) {
-      finishRun(run.catches >= run.zone.goal);
-      return;
+    if (run.time <= 0 && fishingState.phase !== 'landing') { finishRun(run.catches >= run.zone.goal); return; }
+    nodes.timeText.textContent = Math.max(0,Math.ceil(run.time)); nodes.goalText.textContent = `${run.catches}/${run.zone.goal}`;
+    fishing.stepFishing(fishingState,dt); syncFishingState(); processFishingEvents();
+    if (fishingState.phase === 'reel') {
+      const safe = fishingState.tension >= 16 && fishingState.tension <= 81 + save.gear.line * 1.6;
+      if (safe) run.safeReelTime += dt; else run.dangerReelTime += dt;
     }
-    nodes.timeText.textContent = Math.max(0, Math.ceil(run.time));
-    nodes.goalText.textContent = `${run.catches}/${run.zone.goal}`;
-
-    if (run.phase === "charging") {
-      run.castPower += dt * run.castDir * 62;
-      if (run.castPower >= 100) {
-        run.castPower = 100;
-        run.castDir = -1;
-      }
-      if (run.castPower <= 0) {
-        run.castPower = 0;
-        run.castDir = 1;
-      }
-    }
-
-    if (run.phase === "cast") {
-      run.fishTimer -= dt;
-      if (run.fishTimer <= 0) hookFish();
-    }
-
-    if (run.phase === "reel") {
-      run.reelElapsed += dt;
-      const pointerReeling = pointer.down && pointer.source !== "keyboard";
-      const keyboardReeling = pointer.source === "keyboard" && pointer.keyboardHeld;
-      if (pointerReeling || keyboardReeling) run.reelControlAge = 0;
-      else run.reelControlAge += dt;
-      const gearControl = save.gear.reel * 0.4 + save.gear.line * 0.28;
-      const target = pointer.down ? Math.max(0, Math.min(100, pointer.tensionPct)) : 50;
-      const behavior = fishBehavior(run.hookFish);
-      const pull = behavior.pull(run.reelElapsed * 1000, run.zone.speed) + (run.hookFish.rare ? 6 : 0);
-      run.tension += (target - run.tension) * dt * (1.4 + gearControl) + pull * dt;
-      let warningPlayedThisStep = false;
-      if (["storm", "abyss"].includes(run.zone.rule)) {
-        const gustCycle = Math.floor(run.reelElapsed / 3);
-        if (gustCycle > run.lastGustCycle) {
-          run.lastGustCycle = gustCycle;
-          run.tension += (gustCycle % 2 ? 1 : -1) * (run.zone.rule === "abyss" ? 18 : 13);
-          run.hazardFlash = 1.1;
-          playSound("alert.warning");
-          warningPlayedThisStep = true;
-        }
-      }
-      run.tension = Math.max(0, Math.min(100, run.tension));
-      const { safe } = tensionRange();
-      if (safe) run.safeReelTime += dt;
-      else run.dangerReelTime += dt;
-      if (!safe && run.tensionSafe && !warningPlayedThisStep) playSound("alert.warning");
-      run.tensionSafe = safe;
-      if (!safe) run.struggle += dt;
-      else run.struggle = Math.max(0, run.struggle - dt * 1.8);
-      const shieldProfile = ["coral", "abyss"].includes(run.hookFish?.bossProfile);
-      run.bossShieldOpen = !shieldProfile || Math.floor(run.reelElapsed / 2) % 2 === 0;
-      const baseProgress = 9 + save.gear.rod * 1.7 + save.gear.bait * 0.9;
-      // SAFE is the player-visible success condition. Requiring an additional
-      // hidden recent-input pulse made correct steady control appear inert.
-      const normalProgress = safe ? baseProgress : 0;
-      const bossProgress = run.hookFish?.boss ? (normalProgress && run.bossShieldOpen ? baseProgress : 0) : normalProgress;
-      run.fishPower -= dt * bossProgress;
-      if (run.struggle > 2.2) lineBreak();
-      if (run.fishPower <= 0 && run.phase === "reel") landFish();
-    }
-
-    run.splashTimer = Math.max(0, run.splashTimer - dt);
-    run.sonarPulse = Math.max(0, run.sonarPulse - dt);
-    run.catchToastTimer = Math.max(0, run.catchToastTimer - dt);
-    run.hazardFlash = Math.max(0, run.hazardFlash - dt);
-    if (run.catchToastTimer <= 0) nodes.catchToast.classList.add("is-hidden");
-    nodes.tensionMarker.style.left = `${run.tension}%`;
-    updateTensionGuide();
+    run.sonarPulse = Math.max(0,run.sonarPulse-dt); run.catchToastTimer = Math.max(0,run.catchToastTimer-dt);
+    if (run.catchToastTimer <= 0) nodes.catchToast.classList.add('is-hidden');
+    renderDelta += dt; updateTensionGuide(); updateSonarButton();
   }
 
   function drawSpriteSheet(img, cols, rows, index, x, y, w, h) {
@@ -2351,14 +2353,27 @@
     ctx.drawImage(frameCanvas, drawX, drawY, drawW, drawH);
   }
 
-  function configureArena() {
-    // The shared logical Battle canvas gives the water scene a 366 x 450
-    // track. Match that portrait ratio internally so the scene fills without
-    // stretching fish or creating a false band below the water.
-    H = 1180;
-    canvas.width = W;
-    canvas.height = H;
-    canvas.style.setProperty("--reef-arena-ratio", `${W} / ${H}`);
+  function configureArena() { reefScene?.resize(); }
+
+  function disposeReefScene() {
+    if (!reefScene) return;
+    reefScene.dispose(); reefScene = null;
+  }
+
+  async function retryReefScene() {
+    cancelAnimationFrame(raf); raf = 0;
+    disposeReefScene(); sceneError = false;
+    try {
+      reefScene = new ReefScene(canvas, () => {
+        sceneError = true; cancelFishingInput(); cancelAnimationFrame(raf); raf = 0; updateTensionGuide();
+      });
+      if (reefScene.renderer.getContext().isContextLost()) throw new Error('WebGL context lost');
+      draw(); restartFishingLoop();
+    } catch (error) {
+      disposeReefScene(); sceneError = true;
+      canvas.dataset.renderer = 'unavailable';
+      updateTensionGuide();
+    }
   }
 
   function drawImageCover(img, x, y, width, height) {
@@ -2372,114 +2387,12 @@
   }
 
   function fishingVisual() {
-    const t = performance.now() / 1000;
-    if (run?.phase === "cast") {
-      return { bobberX: 570 + Math.sin(t * 1.4) * 42, bobberY: 288 + Math.cos(t * 1.1) * 18 };
-    }
-    if (run?.phase === "reel" && run.hookFish) {
-      const bobberX = 476 + Math.sin(t * 1.4) * 80;
-      const bobberY = 240 + Math.cos(t * 1.1) * 45;
-      const fishWidth = run.hookFish.boss ? 224 : run.hookFish.rare ? 174 : 156;
-      const fishHeight = run.hookFish.boss ? 116 : run.hookFish.rare ? 90 : 76;
-      const fishX = bobberX + fishWidth * (0.5 - hookedFishMouthInset);
-      return {
-        bobberX,
-        bobberY,
-        fishX,
-        fishY: bobberY + 6,
-        fishWidth,
-        fishHeight,
-        fishFacing: hookedFishFacing,
-        mouthX: fishX - fishWidth * (0.5 - hookedFishMouthInset),
-      };
-    }
-    return null;
+    return fishingState ? {...fishingState.float,phase:fishingState.phase,fishId:fishingState.fish?.id || '',worldCoordinates:true} : null;
   }
 
   function draw() {
-    ctx.clearRect(0, 0, W, H);
-    drawImageCover(images.bg, 0, 0, W, H);
-    ctx.fillStyle = "rgba(2, 38, 48, 0.12)";
-    ctx.fillRect(0, 0, W, H);
-
-    ctx.save();
-    ctx.translate(0, (H - 540) / 2);
-
-    if (images.boat) ctx.drawImage(images.boat, 34, 288, 196, 116);
-    drawSpriteSheet(images.otter, 3, 2, run && run.phase === "reel" ? 2 : 0, 42, 236, 132, 132);
-
-    if (run) {
-      if (run.phase === "aim" || run.phase === "charging") {
-        const powerY = 430 - (run.castPower / 100) * 270;
-        ctx.strokeStyle = "rgba(255,255,255,0.75)";
-        ctx.lineWidth = 5;
-        ctx.setLineDash([10, 10]);
-        ctx.beginPath();
-        ctx.moveTo(172, 320);
-        ctx.quadraticCurveTo(390, powerY, 600, powerY + 40);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      }
-
-      const visual = fishingVisual();
-      if (visual) {
-        ctx.strokeStyle = "rgba(255,255,255,0.9)";
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.moveTo(172, 320);
-        ctx.quadraticCurveTo((172 + visual.bobberX) / 2, Math.min(218, visual.bobberY - 54), visual.bobberX, visual.bobberY);
-        ctx.stroke();
-        ctx.fillStyle = "rgba(255, 255, 255, 0.96)";
-        ctx.beginPath();
-        ctx.arc(visual.bobberX, visual.bobberY, 12, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = "#ff8a3d";
-        ctx.beginPath();
-        ctx.arc(visual.bobberX, visual.bobberY + 2, 9, 0, Math.PI);
-        ctx.fill();
-      }
-
-      if (run.phase === "cast") {
-        // The cast visual is drawn by fishingVisual so the line always ends at its float.
-      }
-
-      if (run.phase === "reel") {
-        const f = run.hookFish;
-        if (f && visual) {
-          drawFishSprite(f, visual.fishX - visual.fishWidth / 2, visual.fishY - visual.fishHeight / 2, visual.fishWidth, visual.fishHeight, visual.fishFacing);
-          if (f.rare || run.sonarPulse > 0) drawSpriteSheet(images.shimmer, 1, 1, 0, visual.fishX - 18, visual.fishY - 18, 150, 110);
-          if (f.boss) {
-            ctx.save();
-            ctx.fillStyle = run.bossShieldOpen ? "rgba(7, 76, 67, .9)" : "rgba(92, 34, 18, .92)";
-            ctx.strokeStyle = run.bossShieldOpen ? "#9fffd2" : "#ffd08a";
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.roundRect(354, 104, 350, 48, 16);
-            ctx.fill();
-            ctx.stroke();
-            ctx.fillStyle = "#fff";
-            ctx.font = "900 22px Arial, sans-serif";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText(localizedValue(f.name), 529, 128, 326);
-            ctx.restore();
-          }
-        }
-      }
-
-      if (run.hazardFlash > 0) {
-        ctx.fillStyle = `rgba(174, 226, 255, ${Math.min(.3, run.hazardFlash * .24)})`;
-        ctx.fillRect(0, 0, W, 540);
-      }
-
-      if (run.splashTimer > 0) {
-        drawSpriteSheet(images.splash, 1, 1, 0, 540, 312, 150, 120);
-      }
-      if (run.sonarPulse > 0) {
-        drawSpriteSheet(images.sonar, 1, 1, 0, 360, 120, 270, 270);
-      }
-    }
-    ctx.restore();
+    if (fishingState && reefScene && !sceneError) reefScene.render(fishingState,renderDelta);
+    renderDelta = 0;
   }
 
   function updateVisibleElapsed(elapsed) {
@@ -2493,7 +2406,7 @@
 
   function tick(now) {
     raf = 0;
-    if (backgroundSuspended || document.hidden || leaveDecisionOpen || state !== "game" || !run || run.finished) return;
+    if (backgroundSuspended || document.hidden || leaveDecisionOpen || sceneError || state !== "game" || !run || run.finished) return;
     const elapsed = (now - lastTime) / 1000;
     lastTime = now;
     updateVisibleElapsed(elapsed);
@@ -2504,129 +2417,62 @@
   function startCharge(evt) {
     reclaimVisiblePlayerInteraction(evt);
     if (evt.isPrimary === false || (evt.button !== undefined && evt.button !== 0)) return;
-    if (state !== "game" || !run) return;
-    run.lineBreakRecoveryVisible = false;
-    run.lastInputType = eventInputType(evt);
-    if (run.phase === "charging" && pointer.down) {
-      evt.preventDefault();
-      if (pointer.source === "keyboard") releaseCast();
-      else releaseCast({ pointerId: pointer.id });
-      return;
-    }
-    if (run.phase !== "aim" && run.phase !== "reel") return;
-    if (pointer.down && pointer.source !== "keyboard") return;
+    if (state !== 'game' || !run || run.finished || leaveDecisionOpen) return;
+    if (sceneError) { retryReefScene(); return; }
+    if (!fishingState || pointer.down) return;
+    evt.preventDefault(); run.recoveryCue = ''; run.lastInputType = eventInputType(evt);
     pointer.id = Number.isFinite(evt.pointerId) ? evt.pointerId : null;
+    if (evt.currentTarget === $('reelActionBtn')) actionPointerId = pointer.id;
+    pointer.down = true; pointer.source = evt.currentTarget === $('reelActionBtn') ? 'action' : 'canvas';
     try { evt.currentTarget?.setPointerCapture?.(evt.pointerId); } catch {}
-    if (run.phase === "reel") {
-      pointer.down = true;
-      updatePointer(evt);
-      nodes.hintText.textContent = hookedHint(run.hookFish);
-      updateTensionGuide();
-      return;
-    }
-    pointer.down = true;
-    updatePointer(evt);
-    run.phase = "charging";
-    run.castPower = 0;
-    run.castDir = 1;
-    nodes.hintText.textContent = t("charging");
-    updateTensionGuide();
-    updateSonarButton();
+    if (fishingState.phase === 'aim' && evt.currentTarget === canvas) fishing.chooseSpot(fishingState,reefScene.pickSpot(evt.clientX,evt.clientY));
+    if (evt.currentTarget === canvas && fishingState.phase === 'reel') updatePointer(evt);
+    fishing.pressFishing(fishingState); syncFishingState(); processFishingEvents(); updateTensionGuide();
   }
 
   function releaseCast(evt) {
-    if (state !== "game" || !run) return;
-    const pointerRelease = Number.isFinite(evt?.pointerId);
-    if (pointerRelease && (!pointer.down || pointer.source === "keyboard" || pointer.id !== evt.pointerId)) return;
-    if (!pointerRelease && pointer.source !== "keyboard") return;
-    pointer.down = false;
-    pointer.id = null;
-    if (run.phase === "charging") {
-      if (!run.hookFish) run.hookFish = pickHookFish();
-      run.phase = "cast";
-      run.fishTimer = Math.max(0.45, 1.45 - run.castPower / 100);
-      updateTensionGuide();
-      updateSonarButton();
-      track("cast", { power: Math.round(run.castPower), zone: run.zone.id, stage: run.zone.stage, fish: run.hookFish.id, input_type: run.lastInputType });
-      playSound("movement.release");
-    }
+    if (state !== 'game' || !run || !fishingState) return;
+    if (Number.isFinite(evt?.pointerId) && evt.pointerId !== actionPointerId && (!pointer.down || pointer.id !== evt.pointerId)) return;
+    if (Number.isFinite(evt?.pointerId) && actionPointerId !== null && evt.pointerId !== actionPointerId) { pointer.down = false; pointer.id = null; return; }
+    if (!Number.isFinite(evt?.pointerId) && pointer.source !== 'keyboard') return;
+    if (fishingState.phase === 'charging' && !run.hookFish) run.hookFish = pickHookFish();
+    actionPointerId = null;
+    fishing.releaseFishing(fishingState,run.hookFish); pointer.down = false; pointer.id = null; pointer.keyboardHeld = false;
+    syncFishingState(); processFishingEvents(); updateTensionGuide(); updateSonarButton();
   }
 
   function cancelFishingInput(evt) {
     if (Number.isFinite(evt?.pointerId) && pointer.id !== evt.pointerId) return;
-    pointer.down = false;
-    pointer.id = null;
-    pointer.source = "canvas";
-    pointer.tensionPct = 50;
-    pointer.keyboardHeld = false;
-    if (state !== "game" || !run || run.phase !== "charging") return;
-    run.phase = "aim";
-    run.castPower = 0;
-    run.castDir = 1;
-    nodes.hintText.textContent = t("castHint");
-    updateTensionGuide();
-    updateSonarButton();
+    pointer.down = false; pointer.id = null; actionPointerId = null; pointer.keyboardHeld = false; pointer.source = 'canvas';
+    if (fishingState) fishing.cancelFishing(fishingState); syncFishingState();
   }
 
   function startKeyboardCharge() {
-    if (state !== "game" || !run || run.phase !== "aim") return;
-    run.lineBreakRecoveryVisible = false;
-    run.lastInputType = "keyboard";
-    pointer.down = true;
-    pointer.id = null;
-    pointer.source = "keyboard";
-    pointer.tensionPct = 50;
-    run.phase = "charging";
-    run.castPower = 0;
-    run.castDir = 1;
-    nodes.hintText.textContent = t("charging");
-    updateTensionGuide();
-    updateSonarButton();
+    if (!fishingState || pointer.down || sceneError || state !== 'game') return;
+    run.recoveryCue = ''; run.lastInputType = 'keyboard'; pointer.down = true; pointer.source = 'keyboard'; pointer.keyboardHeld = true;
+    fishing.pressFishing(fishingState); syncFishingState(); processFishingEvents(); updateTensionGuide();
   }
 
   function adjustKeyboardTension(delta) {
-    if (state !== "game" || !run || run.phase !== "reel") return;
-    run.lastInputType = "keyboard";
-    pointer.down = true;
-    pointer.id = null;
-    pointer.source = "keyboard";
-    pointer.keyboardHeld = true;
-    pointer.tensionPct = Math.max(0, Math.min(100, pointer.tensionPct + delta));
+    if (!fishingState || state !== 'game') return;
+    run.lastInputType = 'keyboard';
+    if (fishingState.phase === 'aim') fishing.chooseSpot(fishingState,fishingState.spot + Math.sign(delta));
+    else if (fishingState.phase === 'reel') fishing.setSteering(fishingState,fishingState.steering + delta / 25);
     updateTensionGuide();
   }
 
   function handleFishingKeyDown(evt) {
     reclaimVisiblePlayerInteraction(evt);
-    if (state !== "game" || !run) return;
-    if (evt.code === "Space" && (run.phase === "aim" || (run.phase === "charging" && pointer.source === "keyboard"))) {
-      evt.preventDefault();
-      if (evt.repeat) return;
-      if (run.phase === "aim") startKeyboardCharge();
-      else releaseCast();
-      return;
-    }
-    if (run.phase !== "reel") return;
-    const step = evt.shiftKey ? 10 : 5;
-    if (evt.key === "ArrowLeft") {
-      evt.preventDefault();
-      adjustKeyboardTension(-step);
-    } else if (evt.key === "ArrowRight") {
-      evt.preventDefault();
-      adjustKeyboardTension(step);
-    } else if (evt.key === "Home") {
-      evt.preventDefault();
-      adjustKeyboardTension(-100);
-    } else if (evt.key === "End") {
-      evt.preventDefault();
-      adjustKeyboardTension(100);
-    }
+    if (state !== 'game' || !run || leaveDecisionOpen) return;
+    if (evt.code === 'Space' || evt.code === 'Enter') { evt.preventDefault(); if (!evt.repeat) startKeyboardCharge(); return; }
+    if (evt.key === 'ArrowLeft' || evt.key === 'ArrowRight') { evt.preventDefault(); adjustKeyboardTension(evt.key === 'ArrowLeft' ? -5 : 5); }
+    else if (evt.key === 'Home') { evt.preventDefault(); if (fishingState) fishing.setSteering(fishingState,-1); }
+    else if (evt.key === 'End') { evt.preventDefault(); if (fishingState) fishing.setSteering(fishingState,1); }
   }
 
   function handleFishingKeyUp(evt) {
-    if (evt.key === "ArrowLeft" || evt.key === "ArrowRight") pointer.keyboardHeld = false;
-    if (evt.code !== "Space" || state !== "game" || !run || run.phase !== "charging") return;
-    evt.preventDefault();
-    releaseCast();
+    if (evt.code !== 'Space' && evt.code !== 'Enter') return;
+    evt.preventDefault(); releaseCast();
   }
 
   function updatePointer(evt) {
@@ -2636,6 +2482,7 @@
     pointer.x = point.clientX - rect.left;
     pointer.y = point.clientY - rect.top;
     pointer.tensionPct = Math.max(0, Math.min(100, (pointer.x / rect.width) * 100));
+    if (fishingState?.phase === "reel") fishing.setSteering(fishingState,pointer.tensionPct / 50 - 1);
   }
 
   function updateLanePointer(evt) {
@@ -2646,6 +2493,7 @@
     pointer.source = "lane";
     if (run) run.lastInputType = eventInputType(evt);
     pointer.tensionPct = pct * 100;
+    if (fishingState) fishing.setSteering(fishingState,pct * 2 - 1);
     pointer.x = pct * canvasRect.width;
     pointer.y = canvasRect.height * 0.86;
   }
@@ -2779,6 +2627,8 @@
   }, true);
   nodes.startBtn.addEventListener("click", () => {
     playSound("ui.click");
+    stageTab = 'map';
+    selectedZone = zones[Math.min(zones.length - 1, Math.max(0, save.unlockedZone - 1))].id;
     state = "stage";
     showPanel("stage");
     renderMenu();
@@ -2935,6 +2785,26 @@
     if (!nextMuted) playSound("ui.click");
   });
   canvas.addEventListener("pointerdown", startCharge);
+  document.querySelectorAll('[data-reef-tab]').forEach(button => button.addEventListener('click', () => {
+    stageTab = button.dataset.reefTab;
+    syncStageTabs();
+    if (stageTab === 'map') requestAnimationFrame(() => { installVirtualStageDrag(); focusSelectedZone(); });
+    else if (stageTab === 'album') renderAlbum();
+  }));
+  $('spotPrevBtn')?.addEventListener('click', () => { if (fishingState && fishing.chooseSpot(fishingState,fishingState.spot - 1)) { run.recoveryCue = ''; updateTensionGuide(); draw(); } });
+  $('spotNextBtn')?.addEventListener('click', () => { if (fishingState && fishing.chooseSpot(fishingState,fishingState.spot + 1)) { run.recoveryCue = ''; updateTensionGuide(); draw(); } });
+  $('reelActionBtn')?.addEventListener('pointerdown', startCharge);
+  $('reelActionBtn')?.addEventListener('pointercancel', cancelFishingInput);
+  $('reelActionBtn')?.addEventListener('lostpointercapture', cancelFishingInput);
+  $('reelActionBtn')?.addEventListener('keydown', handleFishingKeyDown);
+  $('reelActionBtn')?.addEventListener('keyup', handleFishingKeyUp);
+  $('reelActionBtn')?.addEventListener('click', event => {
+    // Assistive activation has no pointerdown. Pointer activation already ran.
+    if (event.detail !== 0 || state !== 'game') return;
+    if (sceneError) { retryReefScene(); return; }
+    if (pointer.down || !fishingState) return;
+    if (fishingState.phase === 'bite') { fishing.pressFishing(fishingState); syncFishingState(); processFishingEvents(); updateTensionGuide(); }
+  });
   canvas.addEventListener("pointermove", (evt) => {
     if (pointer.down && pointer.id === evt.pointerId) updatePointer(evt);
   });
@@ -2976,7 +2846,7 @@
   nodes.tensionLane.addEventListener("pointerdown", (evt) => {
     reclaimVisiblePlayerInteraction(evt);
     if (evt.isPrimary === false || (evt.button !== undefined && evt.button !== 0)) return;
-    if (pointer.down && pointer.source !== "keyboard") return;
+    if (pointer.down && !['keyboard','action'].includes(pointer.source)) return;
     pointer.down = true;
     pointer.id = Number.isFinite(evt.pointerId) ? evt.pointerId : null;
     nodes.tensionLane.setPointerCapture?.(evt.pointerId);
@@ -2997,6 +2867,12 @@
 
   if (isTestMode) {
     window.__AnimalReefFisherTest = {
+      read3D() { return reefScene?.counters() || {disposed:true}; },
+      readFishing() { return fishingState ? JSON.parse(JSON.stringify(fishingState)) : null; },
+      chooseSpot(index) { fishing.chooseSpot(fishingState,index); updateTensionGuide(); return this.readFishing(); },
+      pressAction() { fishing.pressFishing(fishingState); syncFishingState(); processFishingEvents(); return this.readState(); },
+      releaseAction() { if (fishingState.phase === 'charging' && !run.hookFish) run.hookFish = pickHookFish(); fishing.releaseFishing(fishingState,run.hookFish); syncFishingState(); processFishingEvents(); return this.readState(); },
+      steer(value) { fishing.setSteering(fishingState,value); return this.readFishing(); },
       startRun,
       definitions() {
         return zones.map((zone) => ({
@@ -3218,5 +3094,5 @@
     window.__ANIMAL_REEF_FISHER_FIRST_SCREEN__.loadingHidden = true;
   }
 
-  window.addEventListener("beforeunload", () => cancelAnimationFrame(raf));
+  window.addEventListener("beforeunload", () => {cancelAnimationFrame(raf); disposeReefScene();});
 })();

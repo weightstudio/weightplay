@@ -22,11 +22,13 @@
   <meta name="description" content="Owner preview: manage a growing block-animal neighborhood shop." data-l10n-content="pageDescription"><meta name="weightplay-game-id" content="animal-blockmart"><meta name="weightplay-game-version" content="v15"><meta name="weightplay-interface-version" content="8">
   <title>Animal Blockmart · Owner Preview</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260927-interface7"><link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260927-interface7"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/loading-screen.css?v=1">
   <link rel="stylesheet" href="style.css?v=15">
   <script src="../../src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
   <script src="../../src/game-lifecycle-controller.js?v=20261014-lifecycle-v1" defer></script>
 </head>
 <body data-wp-game-id="animal-blockmart" data-game-id="animal-blockmart" data-wp-game-version="v15" data-wp-interface-version="8" data-audience="general">
+  <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite"><div class="loading-card"><strong data-l10n="title">Animal Blockmart</strong><div aria-hidden="true"><i id="loadingFill"></i></div></div></div>
   <main id="gameFrameRoot" data-wp-frame-root>
     <section id="mainScreen" class="frame-main-screen" data-screen="main">
       <header id="mainHeader" class="topbar wp-main-shell-header"><a href="../../index.html?preview=1" class="back wp-shell-return" data-wp-return="main" aria-label="Back to owner preview"><span aria-hidden="true">←</span></a><strong class="wp-shell-main-title" data-wp-frame-title data-l10n="title">Animal Blockmart</strong></header>
@@ -53,16 +55,19 @@
     </div>
     <section id="leaveConfirm" class="leave-confirm" data-wp-battle-substate="leave-confirm" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div><h2 id="leaveTitle" data-l10n="leaveTitle">Return to the shop menu?</h2><p data-l10n="leaveText">The shop keeps running and your progress stays saved.</p><button id="continueBattle" class="primary" type="button" data-l10n="continuePlaying">Continue shopping</button><button id="returnMain" class="text-button" type="button" data-l10n="returnMain">Return to Main</button></div></section>
     </div>
+    <!-- adsense-static-guide:start -->
     <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide>
       <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-l10n="guideKicker">WeightPlay Original Game Guide</span><h2 data-l10n="title">Animal Blockmart</h2><p data-l10n="guideSummary">Keep your neighborhood store stocked and help each sale fund the next improvement.</p></div></div>
       <div class="game-info-sections">
-        <div class="game-info-section"><h3 data-l10n="guideGoalTitle">Goal</h3><p data-l10n="guideGoalBody">Build a varied, stocked shop and reinvest paid sales in your team and a larger store.</p></div>
-        <div class="game-info-section"><h3 data-l10n="guideStart">How to play</h3><ol><li data-l10n="guideStock">Choose shelf products and order stock; cold goods need a cooler.</li><li data-l10n="guidePlace">Bought fixtures enter Warehouse. Place them on valid tiles; storing and placing again is free.</li><li data-l10n="guideGrow">Restock, hire, improve the team and expand up to22×22.</li></ol></div>
-        <div class="game-info-section"><h3 data-l10n="guideControlsTitle">Controls and rules</h3><p data-l10n="guideControlsBody">Drag to pan; enable Rotate camera to rotate. Wheel or pinch to zoom. R rotates a selected fixture; Cancel or Escape cancels placement and keeps owned fixtures in Warehouse.</p></div>
-        <div class="game-info-section"><h3 data-l10n="guideFinishingTitle">Finishing and feedback</h3><p data-l10n="guideFinishingBody">Paid sales increase cash and unlock shop goals. Keep operating after the goals; Return to Main pauses the shop and retains progress on this device.</p></div>
+        <div class="game-info-section"><h3 data-l10n="guideGoalTitle">Goal</h3><p data-l10n="guideGoalBody">Build a stocked, varied animal shop. Reinvest paid sales in supplies, staff, equipment and a store up to22×22.</p></div>
+        <div class="game-info-section first-steps"><h3 data-l10n="guideStart">How to play</h3><ol><li data-l10n="guideStock">Choose products on each shelf and order stock. Check unit cost and sale price; cold goods need a cooler.</li><li data-l10n="guidePlace">Bought fixtures enter Warehouse. Choose a valid tile and confirm placement. Storing and placing owned fixtures again is free.</li><li data-l10n="guideGrow">Keep stock money aside, hire staff, buy useful team upgrades and expand10→13→16→19→22. Landmarks are optional.</li></ol></div>
+        <div class="game-info-section"><h3 data-l10n="guideControlsTitle">Controls and rules</h3><p data-l10n="guideControlsBody">Drag to pan. Enable Rotate camera to rotate by dragging; wheel or pinch to zoom. R rotates a selected fixture. Cancel or Escape cancels pending placement; owned fixtures remain in Warehouse.</p></div>
+        <div class="game-info-section"><h3 data-l10n="guideFinishingTitle">Finishing and feedback</h3><p data-l10n="guideFinishingBody">Paid sales increase cash and complete shop goals. Keep operating after the goals, or use Return to Main to pause. Progress stays on this device and resumes when you open the shop.</p></div>
       </div>
     </section>
+    <!-- adsense-static-guide:end -->
   </main>
+  <script src="../../src/edge-guard.js?v=1"></script>
   <script src="../../src/weightplay-audio.js?v=1.0.0"></script><script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script><script src="../../src/battle-canvas-standard.js?v=20260911-folded-field-battle-envelope-v1"></script><script src="../../src/game-page-info.js?v=20260927-interface7"></script><script type="module" src="game.js?v=15"></script>
 </body>
 </html>

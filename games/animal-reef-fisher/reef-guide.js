@@ -1,0 +1,119 @@
+/* Game-owned Guide facts shared by initial HTML generation and runtime. */
+(() => {
+  const copy = {
+    en: [
+      "Choose a reef fishing spot, cast, strike when the float bites, then reel and ease the line to land fish across 30 missions.",
+      "Near reef, current channel and deep pool offer different fish and risks. Select a spot before holding the water or Space to charge; release to cast, then press again at the visible bite cue.",
+      "Hold to reel toward the boat; release to relieve tension. Drag the rod control or use Left and Right against the fish's shown run direction. Watch the warning before a line break and reel during recovery; waiting alone never lands a fish.",
+      "Six seas retain their current, snag, tide, gust and abyss differences. Missions 5, 10, 15, 20, 25 and 30 test six named Guardians with distinct tells and openings.",
+      "Keep your existing 12-species album, Reef Notes, gear and unlocked missions. Six saved equipment paths improve different parts of fishing; a boat level above Level 1 adds five seconds. Optional lure and sonar purchases keep their existing confirmation and cost.",
+      "How do I hook and land a fish?", "Is my previous progress kept?"
+    ],
+    "zh-Hant": [
+      "選擇礁區釣點、拋竿，在浮標咬鉤時提竿，再交替收線與放鬆魚線，完成 30 個釣魚任務。",
+      "近礁、流帶與深池有不同魚群和風險。先選釣點，按住海面或空白鍵蓄力、放開拋竿，再於清楚的咬鉤提示出現時重新按下提竿。",
+      "按住收線，把魚拉向船；放開讓張力下降。拖曳移竿控制或按左右方向鍵，對抗魚所顯示的奔游方向。注意斷線預警，趁魚恢復時收線；只等待不會自動釣起魚。",
+      "六片海域保留海流、纏礁、換潮、突流與深淵的差異。第 5、10、15、20、25、30 關由六隻有不同預告與破綻的守護魚考驗操作。",
+      "舊有 12 種圖鑑、礁石筆記、裝備與解鎖任務繼續保留。六種裝備改善不同釣魚環節；小船每高於等級 1 一級增加五秒。選用魚餌與聲納沿用原有確認和費用。",
+      "如何提竿與收魚？", "舊進度會保留嗎？"
+    ],
+    "zh-Hans": [
+      "选择礁区钓点、抛竿，在浮标咬钩时提竿，再交替收线与放松鱼线，完成 30 个钓鱼任务。",
+      "近礁、流带与深池有不同鱼群和风险。先选钓点，按住海面或空格键蓄力、松开抛竿，再于清楚的咬钩提示出现时重新按下提竿。",
+      "按住收线，把鱼拉向船；松开让张力下降。拖动移竿控制或按左右方向键，对抗鱼显示的奔游方向。注意断线预警，趁鱼恢复时收线；只等待不会自动钓起鱼。",
+      "六片海域保留海流、缠礁、换潮、突流与深渊的差异。第 5、10、15、20、25、30 关由六条有不同预告与破绽的守护鱼考验操作。",
+      "旧有 12 种图鉴、礁石笔记、装备与解锁任务继续保留。六种装备改善不同钓鱼环节；小船每高于等级 1 一级增加五秒。选用鱼饵与声纳沿用原有确认和费用。",
+      "如何提竿与收鱼？", "旧进度会保留吗？"
+    ],
+    ja: [
+      "釣り場を選び、投げ、浮きのアタリに合わせて竿を上げ、巻く・緩めるを使い分けて30の任務に挑みます。",
+      "近いサンゴ礁、潮流帯、深い池では魚と危険が異なります。場所を選び、水面かスペースを長押しして投げ、明確なアタリの合図でもう一度押します。",
+      "長押しで巻き、離すと糸の張りが下がります。竿の操作をドラッグするか左右キーで、魚の予告された走りに逆らいます。警告に注意し、魚が休む間に巻きましょう。放置では釣れません。",
+      "6海域には流れ、サンゴ、潮の反転、突風、深淵の違いが残ります。5・10・15・20・25・30番目の任務では、異なる予告と隙を持つ6匹の守護魚に挑みます。",
+      "以前の12種の図鑑、リーフノート、装備、解放済み任務は保持されます。6種類の装備は異なる操作を改善し、船はレベル1を超えるごとに5秒追加します。任意のルアーとソナーは従来の確認と費用を維持します。",
+      "どうやって合わせて釣り上げますか？", "以前の進行は残りますか？"
+    ],
+    ko: [
+      "낚시터를 고르고 던진 뒤 찌의 입질에 맞춰 채세요. 감기와 줄 풀기를 조절하며 30개 임무에서 물고기를 낚으세요.",
+      "가까운 산호초, 물살 길, 깊은 웅덩이는 어종과 위험이 다릅니다. 지점을 고르고 수면이나 스페이스를 길게 눌렀다 놓아 던진 뒤, 뚜렷한 입질 신호에 다시 누르세요.",
+      "누르면 줄을 감아 배 쪽으로 끌고, 놓으면 장력이 낮아집니다. 조절기를 끌거나 좌우 키로 예고된 물고기의 이동에 맞서세요. 줄 끊김 경고를 보고 물고기가 쉴 때 감으세요. 기다리기만 하면 잡히지 않습니다.",
+      "여섯 바다는 해류, 산호 걸림, 조류 반전, 돌풍, 심연의 차이를 유지합니다. 5·10·15·20·25·30번 임무에서는 서로 다른 예고와 빈틈을 가진 수호어 여섯 마리에 도전합니다.",
+      "기존 12종 도감, 산호초 노트, 장비와 해제한 임무는 보존됩니다. 여섯 장비는 서로 다른 낚시 요소를 개선하며 배는 1레벨을 초과할 때마다 5초를 더합니다. 선택형 미끼와 소나는 기존 확인 절차와 비용을 유지합니다.",
+      "어떻게 채고 끌어올리나요?", "이전 진행은 유지되나요?"
+    ],
+    es: [
+      "Elige un punto, lanza, clava al ver la picada y alterna recoger y aflojar la línea en 30 misiones de pesca.",
+      "El arrecife cercano, el canal y la poza profunda tienen peces y riesgos distintos. Elige un punto, mantén el agua o Espacio y suelta para lanzar; pulsa de nuevo ante la señal clara de picada.",
+      "Mantén para recoger hacia el bote y suelta para aliviar tensión. Arrastra el control o usa Izquierda y Derecha contra la carrera anunciada del pez. Atiende al aviso de rotura y recoge cuando descanse; esperar no captura peces.",
+      "Seis mares conservan corrientes, enganches, cambios de marea, ráfagas y abismo. Las misiones 5, 10, 15, 20, 25 y 30 presentan seis Guardianes con señales y aperturas propias.",
+      "Se conservan el álbum de 12 especies, las Notas, el equipo y las misiones desbloqueadas. Seis mejoras afectan partes distintas de la pesca; cada nivel del bote sobre el primero añade cinco segundos. Señuelo y sonar opcionales conservan confirmación y coste.",
+      "¿Cómo clavo y capturo un pez?", "¿Se conserva mi progreso anterior?"
+    ],
+    "pt-BR": [
+      "Escolha um ponto, arremesse, fisgue na mordida e alterne recolher e aliviar a linha em 30 missões de pesca.",
+      "O recife próximo, o canal e o poço profundo têm peixes e riscos diferentes. Escolha um ponto, segure a água ou Espaço e solte para lançar; pressione novamente no sinal claro de mordida.",
+      "Segure para recolher rumo ao barco e solte para aliviar a tensão. Arraste o controle ou use Esquerda e Direita contra a corrida anunciada do peixe. Observe o aviso de ruptura e recolha durante a recuperação; esperar não captura peixes.",
+      "Seis mares mantêm correntes, enroscos, mudanças de maré, rajadas e abismo. As missões 5, 10, 15, 20, 25 e 30 apresentam seis Guardiões com sinais e aberturas próprias.",
+      "O álbum de 12 espécies, as Notas, o equipamento e as missões liberadas são preservados. Seis melhorias afetam partes diferentes da pesca; cada nível do barco acima do primeiro soma cinco segundos. Isca e sonar opcionais mantêm confirmação e custo.",
+      "Como fisgar e capturar um peixe?", "Meu progresso anterior será mantido?"
+    ],
+    fr: [
+      "Choisissez un poste, lancez, ferrez à la touche puis alternez moulinage et relâchement de la ligne dans 30 missions.",
+      "Le récif proche, le courant et la fosse offrent des poissons et risques différents. Choisissez un poste, maintenez l’eau ou Espace puis relâchez pour lancer ; appuyez de nouveau au signal net de touche.",
+      "Maintenez pour ramener le poisson et relâchez pour réduire la tension. Glissez le contrôle ou utilisez Gauche et Droite contre sa fuite annoncée. Surveillez l’alerte de rupture et moulinez pendant sa récupération ; attendre ne suffit pas.",
+      "Six mers conservent courants, accrocs, inversion des marées, rafales et abîme. Les missions 5, 10, 15, 20, 25 et 30 opposent six Gardiens aux annonces et ouvertures distinctes.",
+      "L’album de 12 espèces, les Notes, l’équipement et les missions débloquées sont conservés. Six améliorations agissent sur différents aspects ; chaque niveau du bateau après le premier ajoute cinq secondes. Le leurre et le sonar facultatifs gardent leur confirmation et leur coût.",
+      "Comment ferrer et ramener un poisson ?", "Ma progression précédente est-elle conservée ?"
+    ],
+    de: [
+      "Wähle einen Angelplatz, wirf aus, setze beim Biss den Haken und wechsle in 30 Missionen zwischen Einholen und Nachgeben.",
+      "Nahes Riff, Strömung und tiefes Becken bieten andere Fische und Risiken. Wähle einen Platz, halte Wasserfläche oder Leertaste und lasse zum Werfen los. Drücke beim deutlichen Bisssignal erneut.",
+      "Halte zum Einholen und lasse los, um Spannung abzubauen. Ziehe die Steuerung oder nutze Links und Rechts gegen die angekündigte Flucht. Beachte die Bruchwarnung und hole in Erholungsphasen ein. Warten allein fängt keinen Fisch.",
+      "Sechs Meere behalten Strömung, Korallenhindernisse, Gezeitenwechsel, Böen und Abgrund. In Mission 5, 10, 15, 20, 25 und 30 warten sechs Wächter mit eigenen Vorzeichen und Öffnungen.",
+      "Album mit 12 Arten, Riffnotizen, Ausrüstung und freigeschaltete Missionen bleiben erhalten. Sechs Verbesserungen beeinflussen verschiedene Angelaspekte; jede Bootsstufe über Stufe 1 bringt fünf Sekunden. Köder und Sonar behalten Bestätigung und Kosten.",
+      "Wie setze ich den Haken und lande einen Fisch?", "Bleibt mein bisheriger Fortschritt erhalten?"
+    ],
+    it: [
+      "Scegli un punto, lancia, ferra all’abboccata e alterna recupero e rilascio della lenza in 30 missioni.",
+      "La barriera vicina, il canale e la pozza profonda offrono pesci e rischi diversi. Scegli il punto, tieni premuto sull’acqua o Spazio e rilascia per lanciare; premi di nuovo al chiaro segnale di abboccata.",
+      "Tieni premuto per recuperare verso la barca e rilascia per ridurre la tensione. Trascina il controllo o usa Sinistra e Destra contro la fuga annunciata. Osserva l’avviso di rottura e recupera durante le pause; aspettare non cattura pesci.",
+      "Sei mari mantengono correnti, incagli, inversioni di marea, raffiche e abisso. Le missioni 5, 10, 15, 20, 25 e 30 presentano sei Guardiani con segnali e aperture distinti.",
+      "Album di 12 specie, Note, attrezzatura e missioni sbloccate vengono conservati. Sei miglioramenti agiscono su aspetti diversi; ogni livello della barca oltre il primo aggiunge cinque secondi. Esca e sonar opzionali mantengono conferma e costo.",
+      "Come ferro e catturo un pesce?", "I progressi precedenti restano?"
+    ],
+    ru: [
+      "Выберите место, забросьте снасть, подсеките при поклёвке и чередуйте подмотку с ослаблением лески в 30 заданиях.",
+      "Ближний риф, течение и глубокая заводь отличаются рыбой и риском. Выберите место, удерживайте воду или Пробел и отпустите для заброса. При явном сигнале поклёвки нажмите снова.",
+      "Удерживайте для подмотки к лодке, отпускайте для снижения натяжения. Тяните регулятор или нажимайте Влево и Вправо против показанного рывка. Следите за предупреждением обрыва и мотайте во время отдыха рыбы. Ожидание само по себе не даёт улова.",
+      "Шесть морей сохраняют течения, зацепы, смену прилива, порывы и глубину. В заданиях 5, 10, 15, 20, 25 и 30 ждут шесть Стражей со своими сигналами и уязвимыми фазами.",
+      "Альбом 12 видов, записи, снасти и открытые задания сохраняются. Шесть улучшений меняют разные стороны ловли; каждый уровень лодки выше первого добавляет пять секунд. Необязательные приманка и сонар сохраняют подтверждение и стоимость.",
+      "Как подсечь и вытащить рыбу?", "Сохранится ли прежний прогресс?"
+    ],
+    hi: [
+      "मछली पकड़ने की जगह चुनें, डोरी फेंकें, काटने के संकेत पर काँटा लगाएँ और 30 मिशनों में खींचने व डोरी ढीली करने के बीच संतुलन रखें।",
+      "नज़दीकी रीफ़, बहाव का रास्ता और गहरा कुंड अलग मछलियाँ और जोखिम देते हैं। जगह चुनकर पानी या स्पेस को दबाए रखें और छोड़कर फेंकें; साफ़ काटने के संकेत पर फिर दबाएँ।",
+      "नाव की ओर खींचने के लिए दबाएँ और तनाव घटाने के लिए छोड़ें। नियंत्रण खींचें या बाएँ-दाएँ कुंजियों से मछली की दिखाई गई दौड़ का मुकाबला करें। टूटने की चेतावनी देखें और मछली के आराम में खींचें; केवल इंतज़ार करने से मछली नहीं मिलती।",
+      "छह समुद्रों में बहाव, प्रवाल की अटकन, ज्वार बदलना, तेज़ झोंके और गहराई अलग रहते हैं। मिशन 5, 10, 15, 20, 25 और 30 में अलग संकेत व मौके वाले छह रक्षक हैं।",
+      "12 प्रजातियों का पुराना संग्रह, रीफ़ नोट्स, उपकरण और खुले मिशन सुरक्षित रहते हैं। छह उन्नयन मछली पकड़ने के अलग हिस्से सुधारते हैं; नाव में स्तर 1 के बाद हर स्तर पाँच सेकंड जोड़ता है। वैकल्पिक चारा और सोनार की पुष्टि व कीमत वही रहती है।",
+      "काँटा लगाकर मछली कैसे निकालें?", "क्या मेरी पुरानी प्रगति बची रहेगी?"
+    ],
+    ar: [
+      "اختر موقع الصيد، وألقِ الخيط، وارفع السنارة عند إشارة العضة، ثم بدّل بين اللف وإرخاء الخيط عبر 30 مهمة.",
+      "تختلف الشعاب القريبة وممر التيار والحوض العميق في الأسماك والمخاطر. اختر الموقع واضغط على الماء أو المسافة ثم حرر للإلقاء؛ اضغط مجددًا عند إشارة العضة الواضحة.",
+      "اضغط باستمرار للّف نحو القارب وحرر لتخفيف الشد. اسحب التحكم أو استخدم اليمين واليسار لمقاومة اندفاع السمكة المعلن. راقب تحذير الانقطاع ولف أثناء استراحتها؛ الانتظار وحده لا يصطاد السمكة.",
+      "تحتفظ البحار الستة باختلافات التيارات والتشابك والمد والهبات والهاوية. تضم المهام 5 و10 و15 و20 و25 و30 ست أسماك حراسة بإشارات وفرص مختلفة.",
+      "يُحفظ ألبوم الأنواع الاثني عشر وملاحظات الشعاب والعتاد والمهام المفتوحة. تحسن ست ترقيات جوانب مختلفة من الصيد؛ يضيف كل مستوى للقارب فوق الأول خمس ثوانٍ. يبقى تأكيد الطعم والسونار الاختياريين وتكلفتهما كما كانا.",
+      "كيف أرفع السنارة وأصطاد السمكة؟", "هل يبقى تقدمي السابق؟"
+    ]
+  };
+  const patches = Object.fromEntries(Object.entries(copy).map(([locale, c]) => [locale, {
+    intro: c[0], systems: c.slice(1, 5), how: [c[1], c[2]],
+    strategyTips: [c[2]], progression: [c[3]], designNote: c[4],
+    faq: [[c[5], `${c[1]} ${c[2]}`], [c[6], c[4]]]
+  }]));
+  window.REEF_FISHER_GUIDE_PATCH = patches;
+  for (const [locale, patch] of Object.entries(patches)) {
+    const target = window.WeightPlayGeneralReviewedGuides?.[locale]?.games?.["animal-reef-fisher"];
+    if (target) Object.assign(target, patch);
+  }
+})();

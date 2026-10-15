@@ -244,3 +244,6 @@ if(!isOwnerPreview){
   const retry=document.createElement('button');retry.type='button';retry.textContent=t('retry',locale);retry.addEventListener('click',()=>location.reload());
   fallback.append(message,retry);document.body.append(fallback);
 }
+// The shared loader covers the real module/world startup, including cold imports.
+// No minimum timer, fake percentage or business-state transition owns readiness.
+$('loadingPanel')?.classList.add('hidden');

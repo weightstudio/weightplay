@@ -199,7 +199,7 @@
     "start": "开始游戏",
     "guideLabel": "游戏指南",
     "guideKicker": "WeightPlay 原创游戏指南",
-    "guideTitle": "从每一个惊喜中打造更强大的董事会",
+    "guideTitle": "从每次惊喜召唤中，构筑更强的棋盘",
     "guideIntro": "苔贝太郎用活体符文骰子守卫着水晶堡垒。每次召唤都会改变棋盘，但仔细的合并和及时的命令可以让运气在你的掌控之中。",
     "guide140Tag1": "合成防守",
     "guide140Tag2": "随机召唤",

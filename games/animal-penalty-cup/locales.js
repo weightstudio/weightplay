@@ -87,5 +87,24 @@
   for(const [code,name] of Object.entries(teamNames))all[code].teamName=name;
   for(const [code,copy] of Object.entries(defendTarget))all[code].defendTarget=copy;
   for(const [code,copy] of Object.entries(lateLossCopy))all[code].lateLossCopy=copy;
+  // Game-owned action feedback: each supported locale owns its new copy.
+  const feedback={
+    en:["Hold a numbered target. Release in gold.","Keep holding… release in gold.","Perfect goal!","Keeper saved — try another zone.","Same zone again! Change your aim.","Draw — replay?","Still level after eight pairs. Replay to decide the cup; earlier progress is safe."],
+    "zh-Hant":["按住球門數字，力道到金色時放開。","繼續按住，進入金色區再放開。","完美射門，進球！","被守門員撲出，試試其他區。","同一區被看穿了，換個目標！","平手，再決勝負！","八回合後仍平手。重賽決勝負，先前進度會保留。"],
+    "zh-Hans":["按住球门数字，力量到金色时松开。","继续按住，进入金色区再松开。","完美射门，进球！","被守门员扑出，试试其他区。","同一区被看穿了，换个目标！","平局，再决胜负！","八回合后仍平局。重赛决胜负，之前进度会保留。"],
+    ja:["ゴールの数字を押し、金色で離そう。","押したまま、金色で離そう。","完璧なゴール！","キーパーがセーブ。別の場所を狙おう。","同じ場所は読まれた！狙いを変えよう。","引き分け！再挑戦","8回でも同点。再試合で決着を。これまでの進行は保存されます。"],
+    ko:["골대 숫자를 누르고 금색에서 놓으세요.","계속 누르다 금색에서 놓으세요.","완벽한 골!","골키퍼가 막았어요. 다른 곳을 노리세요.","같은 곳을 읽혔어요! 방향을 바꾸세요.","무승부! 다시 도전","8회 후에도 동점이에요. 재경기로 승부를 가리세요. 이전 진행은 유지됩니다."],
+    es:["Mantén un número. Suelta en dorado.","Sigue pulsando… suelta en dorado.","¡Gol perfecto!","Parada rival. Prueba otra zona.","¡Leyó tu repetición! Cambia de zona.","Empate: ¿revancha?","Iguales tras ocho rondas. Repite para decidir; conservas tu progreso anterior."],
+    "pt-BR":["Segure um número. Solte no dourado.","Continue segurando… solte no dourado.","Gol perfeito!","O goleiro defendeu. Tente outra zona.","Ele leu a repetição! Mude a mira.","Empate: revanche?","Empate após oito rodadas. Jogue de novo para decidir; seu progresso anterior está salvo."],
+    fr:["Maintiens un numéro. Relâche dans l’or.","Maintiens… relâche dans l’or.","But parfait !","Arrêt adverse. Essaie une autre zone.","Répétition anticipée ! Change de zone.","Égalité : rejouer ?","Égalité après huit tours. Rejoue pour départager ; ta progression est conservée."],
+    de:["Halte eine Zahl. Lass im Gold los.","Weiter halten… im Gold loslassen.","Perfektes Tor!","Gehalten! Ziele auf eine andere Zone.","Wiederholung erkannt! Wechsle die Zone.","Unentschieden: Revanche?","Nach acht Runden gleichauf. Spiele erneut um den Sieg; bisheriger Fortschritt bleibt erhalten."],
+    it:["Tieni premuto un numero. Rilascia nell’oro.","Continua a tenere… rilascia nell’oro.","Gol perfetto!","Parata avversaria. Prova un’altra zona.","Ripetizione prevista! Cambia mira.","Pareggio: rivincita?","Pari dopo otto turni. Rigioca per decidere; i progressi precedenti sono salvi."],
+    ru:["Зажми номер. Отпусти на золотом.","Держи… отпусти на золотом.","Идеальный гол!","Вратарь отбил. Попробуй другую зону.","Повтор предсказан! Смени цель.","Ничья! Переиграть?","После восьми раундов ничья. Переиграй, чтобы определить победителя. Прогресс сохранён."],
+    hi:["गोल का अंक दबाएँ। सुनहरे भाग में छोड़ें।","दबाए रखें… सुनहरे भाग में छोड़ें।","शानदार गोल!","गोलकीपर ने रोका। दूसरा क्षेत्र चुनें।","वही क्षेत्र पहचान लिया! निशाना बदलें।","बराबरी! फिर खेलें?","आठ दौर के बाद भी बराबरी। विजेता तय करने के लिए फिर खेलें। पिछली प्रगति सुरक्षित है।"],
+    ar:["اضغط مطولًا على رقم وأفلت في الذهبي.","واصل الضغط… وأفلت في الذهبي.","هدف متقن!","تصدى الحارس. جرّب منطقة أخرى.","توقّع التكرار! غيّر اتجاهك.","تعادل! إعادة المباراة؟","استمر التعادل بعد ثماني جولات. أعد المباراة لحسم الكأس؛ تقدمك السابق محفوظ."]
+  };
+  for(const [code,copy] of Object.entries(feedback)){
+    ["shootHint","charging","perfectGoal","opponentSaved","repeatSaved","drawResult","drawCopy"].forEach((key,index)=>all[code][key]=copy[index]);
+  }
   root.ANIMAL_PENALTY_LOCALES=all;
 })(window);

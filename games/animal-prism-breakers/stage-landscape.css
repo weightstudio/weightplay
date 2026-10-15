@@ -335,7 +335,30 @@ body[data-wp-game-id="animal-prism-breakers"] #stageHintCopy {
 }
 
 body[data-wp-game-id="animal-prism-breakers"] #battleScreen .battle-header.wp-battle-shell-header {
-  --wp-frame-control-size: 52px;
+  --wp-frame-control-size: calc(48px * var(--wp-battle-canvas-inverse-scale, 1)) !important;
+  --wp-frame-physical-control-size: calc(48px * var(--wp-battle-canvas-inverse-scale, 1)) !important;
+  /* Use the already reserved header row, so its background contains both
+     controls and their vertical breathing room without reducing the arena. */
+  height: 100% !important;
+  min-height: 0 !important;
+  padding-inline: 4px !important;
+  align-self: stretch;
+}
+
+body[data-wp-game-id="animal-prism-breakers"] #battleScreen .battle-header.wp-battle-shell-header > :is(#battleBack, #battleHelp) {
+  box-sizing: border-box !important;
+  width: calc(48px * var(--wp-battle-canvas-inverse-scale, 1)) !important;
+  min-width: calc(48px * var(--wp-battle-canvas-inverse-scale, 1)) !important;
+  max-width: calc(48px * var(--wp-battle-canvas-inverse-scale, 1)) !important;
+  height: calc(48px * var(--wp-battle-canvas-inverse-scale, 1)) !important;
+  min-height: calc(48px * var(--wp-battle-canvas-inverse-scale, 1)) !important;
+  max-height: calc(48px * var(--wp-battle-canvas-inverse-scale, 1)) !important;
+  align-self: center !important;
+  margin: 0 !important;
+}
+
+body[data-wp-game-id="animal-prism-breakers"] #battleScreen .battle-header.wp-battle-shell-header > .battle-title {
+  display: none !important;
 }
 
 @media (min-height: 501px) {

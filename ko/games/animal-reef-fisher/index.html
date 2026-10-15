@@ -42,12 +42,12 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-    <link rel="stylesheet" href="style.css?v=20260909-reef-main-poster-v25" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><link rel="stylesheet" href="/src/stage-selector-standard.css?v=20260918-ui-fix1" data-wp-stage-standard>
-<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
-<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
+    <link rel="stylesheet" href="style.css?v=20261015-reef-v27" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4"><link rel="stylesheet" href="/src/stage-selector-standard.css?v=20260918-ui-fix1" data-wp-stage-standard>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-tutorial-auto-show="false" data-sound-toggle="off">
     <main class="reef-app" data-no-mobile-immersive="true">
@@ -101,13 +101,15 @@
           <strong data-ui="chooseZone">리프 미션 선택</strong>
         </header>
         <div class="stage-workspace">
+          <section id="reefMapWorkspace" class="reef-stage-workspace" role="tabpanel" aria-labelledby="reefTabMap">
           <div class="profile-grid">
             <div><span data-ui="reefNotes">리프 노트</span><strong id="notesText">0</strong></div>
             <div><span data-ui="album">도감</span><strong id="albumText">0/12</strong></div>
             <div><span data-ui="diamonds">다이아몬드</span><strong id="diamondText">0</strong></div>
           </div>
           <div id="zoneRow" class="zone-row stage-rail" data-wp-stage-rail aria-label="리프 구역"></div>
-          <section class="stage-upgrades" data-wp-stage-management-nav>
+          </section>
+          <section id="reefGearWorkspace" class="stage-upgrades reef-stage-workspace" role="tabpanel" aria-labelledby="reefTabGear" hidden>
             <strong data-ui="prepareGear">장비 준비</strong>
           <div class="shop-row">
             <button id="lureBtn" class="secondary-btn" type="button"></button>
@@ -115,7 +117,15 @@
           </div>
           <div id="gearGrid" class="gear-grid" aria-label="장비 업그레이드"></div>
           </section>
+          <section id="reefAlbumWorkspace" class="reef-stage-workspace reef-album-workspace" role="tabpanel" aria-labelledby="reefTabAlbum" hidden>
+            <div id="reefAlbumGrid" class="reef-album-grid"></div>
+          </section>
         </div>
+        <nav class="reef-stage-tabs" role="tablist" data-wp-stage-management-nav aria-label="Reef preparation">
+          <button id="reefTabMap" class="secondary-btn" type="button" role="tab" data-reef-tab="map" aria-controls="reefMapWorkspace" aria-selected="true" data-ui="reefMap">Reef Map</button>
+          <button id="reefTabGear" class="secondary-btn" type="button" role="tab" data-reef-tab="gear" aria-controls="reefGearWorkspace" aria-selected="false" tabindex="-1" data-ui="gearUpgrades">장비 업그레이드</button>
+          <button id="reefTabAlbum" class="secondary-btn" type="button" role="tab" data-reef-tab="album" aria-controls="reefAlbumWorkspace" aria-selected="false" tabindex="-1" data-ui="album">도감</button>
+        </nav>
         <div class="stage-ad-reserve" aria-hidden="true"></div>
       </section>
 
@@ -152,6 +162,11 @@
           </button>
           <button id="battleHelpBtn" class="icon-btn battle-help-btn utility-button" data-wp-battle-utility data-wp-primary-action type="button" aria-label="낚싯줄 장력" aria-controls="tensionCoach" aria-expanded="true">?</button>
           <div class="tension-control">
+            <div class="reef-spot-controls">
+              <button id="spotPrevBtn" class="secondary-btn" type="button" aria-label="Previous fishing spot">←</button>
+              <strong id="spotNameText" aria-live="polite"></strong>
+              <button id="spotNextBtn" class="secondary-btn" type="button" aria-label="Next fishing spot">→</button>
+            </div>
             <div class="tension-head">
               <strong data-ui="tensionTitle">낚싯줄 장력</strong>
               <span id="tensionStatus" data-ui="tensionStatusAim">1단계: 바다를 길게 눌러 충전한 뒤 손을 떼서 낚시하세요.</span>
@@ -163,12 +178,17 @@
               <div id="tensionMarker" class="tension-marker"><span data-ui="tensionMarker">드래그</span></div>
             </div>
             <div id="tensionCoach" class="tension-coach" data-ui="tensionCoachAim">바다 또는 스페이스 키를 눌러 낚시하세요. 물고기가 물면 빨간 손잡이를 드래그하거나 바다를 좌우로 밀고 좌우 키를 사용하세요.</div>
+            <div class="reef-fight-controls">
+              <div class="reef-fight-readout"><strong id="fightDistanceText"></strong><span id="fightStateText" aria-live="polite"></span></div>
+              <button id="reelActionBtn" class="primary-btn" type="button">Cast</button>
+            </div>
           </div>
           <div id="hintText" class="hint" data-ui="castHint">리프를 길게 눌러 충전하고 손을 떼서 낚시하세요.</div>
         </div>
         <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultBuildCue resultMissionPreview">
           <img class="result-otter" src="../../assets/animal-reef-fisher-cover.webp" alt="" />
           <div class="result-content">
+            <div class="reef-result-scroll">
             <h2 id="resultTitle">Expedition Complete</h2>
             <p id="resultText"></p>
             <div class="score-strip">
@@ -183,6 +203,7 @@
             <p id="resultAdviceText" class="result-advice"></p>
             <p id="resultBuildCue" class="result-build-cue" aria-live="polite"></p>
             <p id="resultMissionPreview" class="result-preview is-hidden" aria-live="polite"></p>
+            </div>
             <div class="result-actions">
               <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="stages">스테이지</button>
               <button id="nextZoneBtn" class="primary-btn" type="button" data-ui="nextStage">다음 스테이지</button>
@@ -201,12 +222,13 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260708-reef-tension-clarity1"></script>
     <script src="../../src/wallet.js?v=20260706-diamond1"></script>
-  <script src="game.js?v=20260926-reef-fisher-v26-analytics-id&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261015-reef-v27&wp-audio=1.0.0"></script>
     <script src="../../src/game-page-info-general-reviewed.js?v=20261003-reef-fisher-text140-v2"></script>
+    <script src="reef-guide.js?v=20261015-reef-v27"></script>
     <section class="game-page-info game-page-info-static" aria-label="Animal Reef Fisher 게임 정보">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2 data-wp-game-title data-runtime-localize="off">Animal Reef Fisher</h2><p>30개 산호초 미션마다 캐스팅을 충전한 뒤 릴을 감는 동안 빨간 마커를 초록색 SAFE 구간에 두세요. 줄이 끊기면 미션 시간이 줄어듭니다. 어획은 12칸 앨범에 기록되고 Reef Notes로 여섯 장비를 업그레이드할 수 있습니다.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2 data-wp-game-title data-runtime-localize="off">Animal Reef Fisher</h2><p>낚시터를 고르고 던진 뒤 찌의 입질에 맞춰 채세요. 감기와 줄 풀기를 조절하며 30개 임무에서 물고기를 낚으세요.</p></div>
       <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>산호초 낚시 미션</span><span>줄 장력 조절</span><span>어획 앨범 수집</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>낚싯줄 장력 조절 캠페인</strong></div><div class="game-info-fact"><span>장르</span><strong>낚시 · 수집 · 타이밍 · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>프로그레시브</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>미션당 2~4분</strong></div></div>
     </div>
@@ -214,27 +236,20 @@
     <div class="game-info-sections">
       <div class="game-info-section"><h3>세계와 목표</h3><p>Reef Archive는 Sunny Shore, Kelp Garden, Coral Gate, Moon Tide, Storm Shelf 및 Abyssal Blue에 대한 현재 차트를 유지 관리합니다. 비정상적인 계절 조수로 인해 물고기가 기록된 경로에서 멀어졌습니다. Bubble Fin은 각 경로를 통해 조사 보트를 타고 어획물을 사용하여 어떤 종이 ​​여전히 그곳을 이동하는지, 그리고 물이 이제 낚싯줄에 어떻게 당겨지는지 확인합니다.</p>
 <p>리프 노트(Reef Notes)는 측량 장비를 개선하는 데 사용되는 현장 크레딧입니다. 각 다섯 번째 임무는 Sun Crown Guardian, Kelp Leviathan, Coral Ram Ray, Eclipse Manta, Storm Lantern Warden 또는 Crystal Crown Sovereign이 지키는 서식지 표시에 도달합니다. Guardian을 착륙시키면 해당 지역의 차트가 검증됩니다. 미션 30은 여섯 번째 차트를 작성하고 미션 31을 만들지 않고 캠페인을 종료합니다.</p></div>
-      <div class="game-info-section"><h3>게임 시스템</h3><p>임무 흐름: 수평 레일에서 잠금 해제된 카드를 선택합니다. 대부분의 목표에는 두세 번의 캐치가 필요합니다. 승리하면 진행 상황이 저장되고 정확히 다음 임무가 잠금 해제됩니다. 이전 임무는 계속해서 재생할 수 있습니다.</p>
-<p>시전 및 시계: 탐험은 90초로 시작되며 레벨 1 이상의 각 보트 범위 레벨에 대해 5초가 더해집니다. 물이나 공간을 잡고 충전하고 시전하려면 놓아야 합니다. 전력이 많을수록 바이트 지연이 단축됩니다. 더 희귀한 물고기를 선택하지 않습니다.</p>
-<p>라인 컨트롤: 물린 후 빨간색 손잡이를 드래그하거나 바다에서 슬라이드하거나 왼쪽 및 오른쪽을 사용하세요. SAFE 컨트롤은 물고기의 힘을 제거합니다. 밴드 외부에 너무 오래 머무르면 라인이 끊어지고 캐스팅으로 돌아가 미션 시계가 계속 작동하게 됩니다.</p>
-<p>물고기의 정체성: 일반 종은 꾸준하고, 돌진하거나, 무거운 패턴을 보입니다. 현재 ID는 후크 명령과 Sonar 결과에 나타납니다. 새로운 종은 포인트와 리프 노트 외에 앨범 보너스도 받습니다.</p>
-<p>바다 상태: 개방 수역(Open Water)은 안정적입니다. Kelp Drift가 밴드를 움직입니다. Coral Snags는 너비를 변경합니다. Moon Tide는 측면을 전환합니다. Storm Gust는 시간 제한 푸시를 적용합니다. Abyss Trial은 드리프트, 압력, 돌풍을 결합합니다.</p>
-<p>장비 및 옵션 도구: 로드, 릴, 라인, 미끼, 보트 및 스캐너에는 5개의 로컬 레벨이 있습니다. 스캐너는 이전 종 풀을 확장합니다. 3개의 다이아몬드 Rare Lure는 한 번의 희귀한 적격 캐스팅을 보장하고, 2개의 다이아몬드 소나는 다음 물고기 한 마리를 드러내고 잠급니다. 둘 다 확인이 필요하며 진행을 위해 필요하지 않습니다.</p></div>
-      <div class="game-info-section"><h3>게임 방법</h3><ol><li>해역 조건과 어획 목표를 확인한 뒤 잠금 해제된 미션을 고르세요.</li><li>바다나 Space를 눌러 캐스팅을 충전하고 놓으세요. 더 강한 캐스팅은 입질 대기 시간을 줄일 뿐, 더 희귀한 물고기를 고르지는 않습니다.</li><li>입질이 오면 빨간 손잡이, 바다 위 스와이프, 방향키로 마커를 움직여 초록색 SAFE 구간 안에서 물고기의 힘을 줄이세요.</li><li>줄이 끊기면 물고기가 달아나고 캐스팅 단계로 돌아갑니다. 미션 시간은 초기화되지 않습니다.</li><li>결과 화면에서 어획, Reef Notes, 새 앨범 기록을 확인한 뒤 산호초 지도로 돌아가 다시 하거나 다음 잠금 해제 미션을 선택하세요.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>안전한 싸움이 너무 오래 걸리면 낚싯대 강도나 미끼 품질을 선택하세요. 마커가 반복적으로 SAFE를 벗어나면 릴 제어 또는 라인 내구성을 선택하십시오.</li><li>켈프, 문, 어비스 미션은 의도적으로 안전 센터를 이동합니다. 50 표시가 아닌 녹색 영역을 추적하십시오.</li><li>산호 램 레이와 크리스탈 크라운 소버린은 보호받는 동안 힘을 잃을 수 없습니다. 해당 단계를 사용하여 안정화하면 다음 개방이 안전하게 시작됩니다.</li><li>폭풍 돌풍은 3초의 리듬을 따릅니다. 플래시 전에 현재 밴드의 중간 부분을 잡고 누른 다음 수정합니다.</li><li>풀캐스트를 사용하면 대기 시간이 단축되지만 희귀도에는 영향을 미치지 않습니다. 누락된 희귀 앨범 항목을 위해 원캐스트 Rare Lure를 저장하세요.</li><li>꾸준하고, 날렵하고, 무겁거나, 가디언의 행동이 미끼의 보장된 희귀 캐치보다 더 가치가 있다는 것을 알 때 소나를 사용하십시오.</li></ul></div>
-      <div class="game-info-section"><h3>진행과 난이도</h3><p>미션 1~5는 안정적인 오픈 워터 밴드를 사용합니다. 처음 4개는 캐스팅, 라인 복구 및 정상적인 당김 특성을 가르칩니다. Sun Crown Guardian은 부드러운 크라운 펄스로 장을 마무리합니다.</p>
-<p>임무 6-10은 전체 밴드를 Kelp Drift를 통해 이동시킵니다. Kelp Leviathan은 움직이는 표적과 지속적으로 무거운 당김을 결합합니다.</p>
-<p>미션 11-15는 밴드가 Coral Snags 주변에서 더 넓고 더 좁게 호흡하도록 만듭니다. Coral Ram Ray는 2초의 보호 단계와 개방 단계를 추가합니다.</p>
-<p>미션 16~20에서는 4초마다 안전 밴드를 측면 간에 전환합니다. Eclipse Manta는 당김을 반전시키기 전에 시늉을 합니다.</p>
-<p>미션 21-25에서는 범위를 좁히고 3초 동안의 Storm Gust로 라인을 공격합니다. 폭풍 랜턴 감시자는 돌풍 사이에도 강력한 당김을 유지합니다.</p>
-<p>미션 26-30은 Abyss Trial에서 움직이는 압력과 돌풍을 결합합니다. Crystal Crown Sovereign은 최종 규칙 조합 테스트를 위해 갑옷 창을 추가합니다.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>여섯 지역은 각각 다섯 미션에 걸쳐 해역 규칙을 소개합니다. SAFE 구간 안에 있으면 물고기의 힘이 줄어듭니다. 구간이 움직이거나 좁아질 때 위치를 조정하고, 줄이 끊겨도 미션 시간이 계속 흐르는 점을 기억하세요.</p></div>
+      <div class="game-info-section"><h3>게임 시스템</h3><p>가까운 산호초, 물살 길, 깊은 웅덩이는 어종과 위험이 다릅니다. 지점을 고르고 수면이나 스페이스를 길게 눌렀다 놓아 던진 뒤, 뚜렷한 입질 신호에 다시 누르세요.</p>
+<p>누르면 줄을 감아 배 쪽으로 끌고, 놓으면 장력이 낮아집니다. 조절기를 끌거나 좌우 키로 예고된 물고기의 이동에 맞서세요. 줄 끊김 경고를 보고 물고기가 쉴 때 감으세요. 기다리기만 하면 잡히지 않습니다.</p>
+<p>여섯 바다는 해류, 산호 걸림, 조류 반전, 돌풍, 심연의 차이를 유지합니다. 5·10·15·20·25·30번 임무에서는 서로 다른 예고와 빈틈을 가진 수호어 여섯 마리에 도전합니다.</p>
+<p>기존 12종 도감, 산호초 노트, 장비와 해제한 임무는 보존됩니다. 여섯 장비는 서로 다른 낚시 요소를 개선하며 배는 1레벨을 초과할 때마다 5초를 더합니다. 선택형 미끼와 소나는 기존 확인 절차와 비용을 유지합니다.</p></div>
+      <div class="game-info-section"><h3>게임 방법</h3><ol><li>가까운 산호초, 물살 길, 깊은 웅덩이는 어종과 위험이 다릅니다. 지점을 고르고 수면이나 스페이스를 길게 눌렀다 놓아 던진 뒤, 뚜렷한 입질 신호에 다시 누르세요.</li><li>누르면 줄을 감아 배 쪽으로 끌고, 놓으면 장력이 낮아집니다. 조절기를 끌거나 좌우 키로 예고된 물고기의 이동에 맞서세요. 줄 끊김 경고를 보고 물고기가 쉴 때 감으세요. 기다리기만 하면 잡히지 않습니다.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>누르면 줄을 감아 배 쪽으로 끌고, 놓으면 장력이 낮아집니다. 조절기를 끌거나 좌우 키로 예고된 물고기의 이동에 맞서세요. 줄 끊김 경고를 보고 물고기가 쉴 때 감으세요. 기다리기만 하면 잡히지 않습니다.</li></ul></div>
+      <div class="game-info-section"><h3>진행과 난이도</h3><p>여섯 바다는 해류, 산호 걸림, 조류 반전, 돌풍, 심연의 차이를 유지합니다. 5·10·15·20·25·30번 임무에서는 서로 다른 예고와 빈틈을 가진 수호어 여섯 마리에 도전합니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>기존 12종 도감, 산호초 노트, 장비와 해제한 임무는 보존됩니다. 여섯 장비는 서로 다른 낚시 요소를 개선하며 배는 1레벨을 초과할 때마다 5초를 더합니다. 선택형 미끼와 소나는 기존 확인 절차와 비용을 유지합니다.</p></div>
       <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>계정이 필요하지 않습니다. 이 브라우저는 잠금 해제 및 선택된 미션, 리프 노트, 베스트 캐치, 12개의 앨범 항목, 6개의 장비 레벨, 준비된 루어 또는 소나 상태를 저장합니다. 사이트 저장 공간을 비우거나 브라우저를 변경하면 별도의 저장이 시작될 수 있습니다. 공유 다이아몬드 잔액은 선택 사항이며 확인된 루어 및 소나 준비에만 사용됩니다. 30개의 미션, 6개의 Guardians, 장비 레벨 및 일반 앨범 진행은 해당 도구 없이도 계속 사용할 수 있습니다. 기술 보고서는 현재 엔터테인먼트 실행을 요약하며 진단, 순위 또는 공식적인 능력 평가가 아닙니다.</p></div>
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>결과 화면 전에 나가면 무엇을 잃나요?</dt><dd>진행 중인 원정, 그 원정에서 잡은 물고기, 준비한 희귀 미끼나 소나는 사라집니다. 저장된 앨범 기록, Reef Notes, 장비는 이 브라우저에 남습니다.</dd></div><div><dt>초록 SAFE 구간은 왜 움직이거나 좁아지나요?</dt><dd>미션의 바다 상태 때문입니다. 해초가 흐르며 구간을 움직이고 산호초가 폭을 바꾸며, 조수가 방향을 바꾸고 돌풍이 낚싯줄을 밀어요. 깊은 바다 미션에서는 여러 조건이 함께 나타납니다.</dd></div><div><dt>캠페인 완료에 다이아몬드가 필요한가요?</dt><dd>아니요. 확인 후 사용하는 희귀 미끼와 소나는 선택 사항입니다. 미션, Guardian, 일반 어획, 장비 업그레이드에는 다이아몬드가 필요하지 않습니다.</dd></div><div><dt>진행 상황은 어디에 저장되나요?</dt><dd>미션 잠금 해제, Reef Notes, 앨범, 장비, 최고 어획은 이 브라우저에 저장됩니다. 브라우저 간 동기화는 없으며 사이트 데이터를 지우면 사라질 수 있습니다.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>더 많은 관련 게임</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-rift-salvage" href="/ko/games/animal-rift-salvage/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-rift-salvage.webp" data-final-src="/assets/weightplay-logo.png" alt="균열 회수대" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">균열 회수대</strong><span>오를라의 달 회수 고리를 이끌어 30개 성계 구역에서 작은 잔해부터 흡수하고 구조 코어를 구해 경쟁자를 앞지르세요.</span></span></a><a class="game-info-related-card" data-game-id="animal-cratebound" href="/ko/games/animal-cratebound/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-cratebound.webp" data-final-src="/assets/weightplay-logo.png" alt="크레이트바운드" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">크레이트바운드</strong><span>30개의 수제 하늘 창고에서 룬 화물을 밀고 당기며 얼음 레일, 신호, 자석, 연결 상자를 해결하세요.</span></span></a></div></div>
+      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>어떻게 채고 끌어올리나요?</dt><dd>가까운 산호초, 물살 길, 깊은 웅덩이는 어종과 위험이 다릅니다. 지점을 고르고 수면이나 스페이스를 길게 눌렀다 놓아 던진 뒤, 뚜렷한 입질 신호에 다시 누르세요. 누르면 줄을 감아 배 쪽으로 끌고, 놓으면 장력이 낮아집니다. 조절기를 끌거나 좌우 키로 예고된 물고기의 이동에 맞서세요. 줄 끊김 경고를 보고 물고기가 쉴 때 감으세요. 기다리기만 하면 잡히지 않습니다.</dd></div><div><dt>이전 진행은 유지되나요?</dt><dd>기존 12종 도감, 산호초 노트, 장비와 해제한 임무는 보존됩니다. 여섯 장비는 서로 다른 낚시 요소를 개선하며 배는 1레벨을 초과할 때마다 5초를 더합니다. 선택형 미끼와 소나는 기존 확인 절차와 비용을 유지합니다.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/animal-rift-salvage/"><img src="/assets/interface7-redrawn/animal-rift-salvage.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>균열 회수대</strong><span>오를라의 달 회수 고리를 이끌어 30개 성계 구역에서 작은 잔해부터 흡수하고 구조 코어를 구해 경쟁자를 앞지르세요.</span></span></a><a class="game-info-related-card" href="/ko/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>크레이트바운드</strong><span>30개의 수제 하늘 창고에서 룬 화물을 밀고 당기며 얼음 레일, 신호, 자석, 연결 상자를 해결하세요.</span></span></a></div></div>
     </div>
   </section>
-<script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+<script src="../../src/game-page-info.js?v=20261003-reef-fisher-text140-v2"></script>
+  <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
 </body>
 </html>

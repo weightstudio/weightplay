@@ -1044,6 +1044,9 @@ const expansionRuleCopy=[
 ];
 for(const [i,locale]of supportedLocales.entries())[dict[locale].expand,dict[locale].visitorCapacity,dict[locale].expansionTrafficHint]=expansionRuleCopy[i];
 keys.push('visitorCapacity','expansionTrafficHint');
+const remainingCountLabels=['Remaining','剩餘數量','剩余数量','残り','남은 수량','Disponibles','Disponíveis','Restants','Verfügbar','Disponibili','Осталось','शेष','المتبقي'];
+for(const [index,locale]of supportedLocales.entries())dict[locale].remainingCount=remainingCountLabels[index];
+keys.push('remainingCount');
 const aliases={'zh-tw':'zh-Hant','zh-hant':'zh-Hant','zh-cn':'zh-Hans','zh-hans':'zh-Hans','pt-br':'pt-BR'};
 export function resolveLocale(){const q=new URL(location.href).searchParams.get('lang');const ref=(()=>{try{return new URL(document.referrer).pathname.split('/')[1]}catch{return''}})();const here=location.pathname.split('/')[1];const raw=q||ref||here||document.documentElement.lang||'en';const locale=aliases[raw.toLowerCase()]||raw;return supportedLocales.includes(locale)?locale:'en'}
 export function t(key,locale=resolveLocale()){return dict[locale]?.[key]??dict.en[key]??key}

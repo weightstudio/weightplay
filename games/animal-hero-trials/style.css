@@ -180,3 +180,21 @@ body.wp-stage-select-active #stageView .stage-rail {
 }
 /* v20: the governed wide-layout Main poster stays at the canonical 420px
    column even in short landscape. Phone sizing remains fluid and square. */
+
+/* Finite acknowledgements preserve the shared scene/control rectangles. */
+.health i{transition:width 160ms ease-out}
+#battleView .battle-head>.health{flex:1 1 0;min-width:0;overflow:hidden}
+#battleView #roomText{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#battleView .battle-tools{flex:0 0 auto}
+.hero-option,.choice,.stage-card,.skill-btn{transition:border-color 140ms ease,background-color 140ms ease,box-shadow 140ms ease}
+.hero-option:active,.choice:active,.stage-card:active,.skill-btn:active{box-shadow:inset 0 0 0 3px #ffe7a3}
+.modal:not(.hidden)>section{animation:aht-panel-in 180ms ease-out both}
+.choice{animation:aht-choice-in 160ms ease-out both}
+.choice:nth-child(2){animation-delay:35ms}.choice:nth-child(3){animation-delay:70ms}
+@keyframes aht-panel-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes aht-choice-in{from{opacity:.2;transform:translateX(-5px)}to{opacity:1;transform:translateX(0)}}
+@media(prefers-reduced-motion:reduce){
+  .health i,.hero-option,.choice,.stage-card,.skill-btn{transition:none}
+  .modal:not(.hidden)>section,.choice{animation:aht-emphasis 80ms linear both;animation-delay:0ms}
+  @keyframes aht-emphasis{from{opacity:.65}to{opacity:1}}
+}

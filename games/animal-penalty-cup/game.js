@@ -10,6 +10,6 @@
      Interface 7 adapter can bind a fixed nine-node pool before the generic
      Stage selector scans. Absolute URLs keep every locale route on one source. */
   document.write('<script src="/src/stage-virtualization-standard.js?v=20260924-penalty-i7-bounded3"><\/script>');
-  document.write('<script src="/games/animal-penalty-cup/game-v6-base.js?v=20260924-penalty-i7-bounded3&wp-audio=1.0.0"><\/script>');
+  document.write('<script src="/games/animal-penalty-cup/game-v6-base.js?v=20261015-penalty-play-v9&wp-audio=1.0.0"><\/script>');
   document.write('<script src="/games/animal-penalty-cup/interface-7-compat.js?v=20260924-penalty-i7-bounded3"><\/script>');
 })();

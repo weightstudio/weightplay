@@ -42,12 +42,12 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-    <link rel="stylesheet" href="style.css?v=20260909-reef-main-poster-v25" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><link rel="stylesheet" href="/src/stage-selector-standard.css?v=20260918-ui-fix1" data-wp-stage-standard>
-<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
-<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
+    <link rel="stylesheet" href="style.css?v=20261015-reef-v27" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4"><link rel="stylesheet" href="/src/stage-selector-standard.css?v=20260918-ui-fix1" data-wp-stage-standard>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-tutorial-auto-show="false" data-sound-toggle="off">
     <main class="reef-app" data-no-mobile-immersive="true">
@@ -101,13 +101,15 @@
           <strong data-ui="chooseZone">रीफ मिशन चुनें</strong>
         </header>
         <div class="stage-workspace">
+          <section id="reefMapWorkspace" class="reef-stage-workspace" role="tabpanel" aria-labelledby="reefTabMap">
           <div class="profile-grid">
             <div><span data-ui="reefNotes">रीफ नोट्स</span><strong id="notesText">0</strong></div>
             <div><span data-ui="album">एल्बम</span><strong id="albumText">0/12</strong></div>
             <div><span data-ui="diamonds">हीरे</span><strong id="diamondText">0</strong></div>
           </div>
           <div id="zoneRow" class="zone-row stage-rail" data-wp-stage-rail aria-label="रीफ क्षेत्र"></div>
-          <section class="stage-upgrades" data-wp-stage-management-nav>
+          </section>
+          <section id="reefGearWorkspace" class="stage-upgrades reef-stage-workspace" role="tabpanel" aria-labelledby="reefTabGear" hidden>
             <strong data-ui="prepareGear">उपकरण तैयार करें</strong>
           <div class="shop-row">
             <button id="lureBtn" class="secondary-btn" type="button"></button>
@@ -115,7 +117,15 @@
           </div>
           <div id="gearGrid" class="gear-grid" aria-label="उपकरण अपग्रेड"></div>
           </section>
+          <section id="reefAlbumWorkspace" class="reef-stage-workspace reef-album-workspace" role="tabpanel" aria-labelledby="reefTabAlbum" hidden>
+            <div id="reefAlbumGrid" class="reef-album-grid"></div>
+          </section>
         </div>
+        <nav class="reef-stage-tabs" role="tablist" data-wp-stage-management-nav aria-label="Reef preparation">
+          <button id="reefTabMap" class="secondary-btn" type="button" role="tab" data-reef-tab="map" aria-controls="reefMapWorkspace" aria-selected="true" data-ui="reefMap">Reef Map</button>
+          <button id="reefTabGear" class="secondary-btn" type="button" role="tab" data-reef-tab="gear" aria-controls="reefGearWorkspace" aria-selected="false" tabindex="-1" data-ui="gearUpgrades">उपकरण अपग्रेड</button>
+          <button id="reefTabAlbum" class="secondary-btn" type="button" role="tab" data-reef-tab="album" aria-controls="reefAlbumWorkspace" aria-selected="false" tabindex="-1" data-ui="album">एल्बम</button>
+        </nav>
         <div class="stage-ad-reserve" aria-hidden="true"></div>
       </section>
 
@@ -152,6 +162,11 @@
           </button>
           <button id="battleHelpBtn" class="icon-btn battle-help-btn utility-button" data-wp-battle-utility data-wp-primary-action type="button" aria-label="लाइन तनाव" aria-controls="tensionCoach" aria-expanded="true">?</button>
           <div class="tension-control">
+            <div class="reef-spot-controls">
+              <button id="spotPrevBtn" class="secondary-btn" type="button" aria-label="Previous fishing spot">←</button>
+              <strong id="spotNameText" aria-live="polite"></strong>
+              <button id="spotNextBtn" class="secondary-btn" type="button" aria-label="Next fishing spot">→</button>
+            </div>
             <div class="tension-head">
               <strong data-ui="tensionTitle">लाइन तनाव</strong>
               <span id="tensionStatus" data-ui="tensionStatusAim">चरण 1: चार्ज करने के लिए समुद्र को दबाकर रखें, फिर छोड़कर कास्ट करें।</span>
@@ -163,12 +178,17 @@
               <div id="tensionMarker" class="tension-marker"><span data-ui="tensionMarker">खींचें</span></div>
             </div>
             <div id="tensionCoach" class="tension-coach" data-ui="tensionCoachAim">कास्ट करने के लिए समुद्र या स्पेस दबाकर रखें। मछली फँसने पर लाल नॉब खींचें, समुद्र पर बाएँ-दाएँ स्वाइप करें या तीर कुंजियाँ इस्तेमाल करें।</div>
+            <div class="reef-fight-controls">
+              <div class="reef-fight-readout"><strong id="fightDistanceText"></strong><span id="fightStateText" aria-live="polite"></span></div>
+              <button id="reelActionBtn" class="primary-btn" type="button">Cast</button>
+            </div>
           </div>
           <div id="hintText" class="hint" data-ui="castHint">चार्ज करने के लिए रीफ पर दबाकर रखें और कास्ट करने के लिए छोड़ें।</div>
         </div>
         <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultBuildCue resultMissionPreview">
           <img class="result-otter" src="../../assets/animal-reef-fisher-cover.webp" alt="" />
           <div class="result-content">
+            <div class="reef-result-scroll">
             <h2 id="resultTitle">Expedition Complete</h2>
             <p id="resultText"></p>
             <div class="score-strip">
@@ -183,6 +203,7 @@
             <p id="resultAdviceText" class="result-advice"></p>
             <p id="resultBuildCue" class="result-build-cue" aria-live="polite"></p>
             <p id="resultMissionPreview" class="result-preview is-hidden" aria-live="polite"></p>
+            </div>
             <div class="result-actions">
               <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="stages">चरण</button>
               <button id="nextZoneBtn" class="primary-btn" type="button" data-ui="nextStage">अगला चरण</button>
@@ -201,12 +222,13 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260708-reef-tension-clarity1"></script>
     <script src="../../src/wallet.js?v=20260706-diamond1"></script>
-  <script src="game.js?v=20260926-reef-fisher-v26-analytics-id&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261015-reef-v27&wp-audio=1.0.0"></script>
     <script src="../../src/game-page-info-general-reviewed.js?v=20261003-reef-fisher-text140-v2"></script>
+    <script src="reef-guide.js?v=20261015-reef-v27"></script>
     <section class="game-page-info game-page-info-static" aria-label="Animal Reef Fisher गेम की जानकारी">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2 data-wp-game-title data-runtime-localize="off">Animal Reef Fisher</h2><p>30 रीफ़ मिशनों में कास्ट चार्ज करें और रील करते समय मार्कर को हरे SAFE बैंड में रखें। लाइन टूटने पर मिशन का समय चलता रहता है। पकड़ी गई मछलियाँ 12 जीवों वाले एल्बम में जुड़ती हैं, और रीफ़ नोट्स से छह तरह के उपकरण अपग्रेड होते हैं।</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2 data-wp-game-title data-runtime-localize="off">Animal Reef Fisher</h2><p>मछली पकड़ने की जगह चुनें, डोरी फेंकें, काटने के संकेत पर काँटा लगाएँ और 30 मिशनों में खींचने व डोरी ढीली करने के बीच संतुलन रखें।</p></div>
       <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>रीफ़ मछली पकड़ने के मिशन</span><span>लाइन तनाव नियंत्रण</span><span>कैच संग्रह</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>मछली पकड़ने की डोरी का तनाव संभालने वाला अभियान</strong></div><div class="game-info-fact"><span>शैली</span><strong>मछली पकड़ना · संग्रह · सही समय चुनना · समुद्री जीव</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>प्रगतिशील</strong></div><div class="game-info-fact"><span>अनुमानित समय</span><strong>प्रति मिशन 2-4 मिनट</strong></div></div>
     </div>
@@ -214,27 +236,20 @@
     <div class="game-info-sections">
       <div class="game-info-section"><h3>दुनिया और लक्ष्य</h3><p>रीफ आर्काइव सनी शोर, केल्प गार्डन, कोरल गेट, मून टाइड, स्टॉर्म शेल्फ और एबिसल ब्लू के लिए वर्तमान चार्ट बनाए रखता है। असामान्य मौसमी ज्वार ने मछलियों को उनकी दर्ज गलियों से दूर कर दिया है। बबल फिन सर्वेक्षण नाव को प्रत्येक मार्ग से ले जाता है, कैच का उपयोग करके यह पुष्टि करता है कि कौन सी प्रजातियां अभी भी वहां यात्रा करती हैं और पानी अब मछली पकड़ने की रेखा के खिलाफ कैसे खींचता है।</p>
 <p>रीफ नोट्स फ़ील्ड क्रेडिट हैं जिनका उपयोग सर्वेक्षण गियर को बेहतर बनाने के लिए किया जाता है। प्रत्येक पाँचवाँ मिशन सन क्राउन गार्जियन, केल्प लेविथान, कोरल राम रे, एक्लिप्स मंटा, स्टॉर्म लैंटर्न वार्डन, या क्रिस्टल क्राउन सॉवरेन द्वारा संरक्षित निवास स्थान तक पहुँचता है। गार्जियन की लैंडिंग उस क्षेत्र के चार्ट को मान्य करती है। मिशन 30 छठा चार्ट दाखिल करता है और मिशन 31 बनाए बिना अभियान समाप्त करता है।</p></div>
-      <div class="game-info-section"><h3>गेम सिस्टम</h3><p>मिशन प्रवाह: क्षैतिज रेल से किसी भी अनलॉक कार्ड का चयन करें। अधिकांश लक्ष्यों के लिए दो या तीन कैच की आवश्यकता होती है। एक जीत प्रगति को बचाती है और अगले मिशन को खोल देती है; पहले के मिशन पुनः चलाने योग्य बने रहेंगे।</p>
-<p>कास्ट और क्लॉक: एक अभियान 90 सेकंड के साथ शुरू होता है, साथ ही लेवल 1 से ऊपर प्रत्येक बोट रेंज स्तर के लिए पांच सेकंड। चार्ज करने के लिए पानी या जगह को पकड़ें और कास्ट करने के लिए छोड़ें। अधिक शक्ति काटने में देरी को कम करती है; यह किसी दुर्लभ मछली का चयन नहीं करता है।</p>
-<p>रेखा नियंत्रण: काटने के बाद, लाल घुंडी खींचें, समुद्र पर स्लाइड करें, या बाएँ और दाएँ का उपयोग करें। सुरक्षित नियंत्रण से मछली की शक्ति समाप्त हो जाती है। बैंड के बाहर बहुत देर तक रहने से लाइन टूट जाती है, कास्टिंग पर लौट आता है, और मिशन घड़ी चालू हो जाती है।</p>
-<p>मछली की पहचान: सामान्य प्रजातियाँ स्थिर, डार्टिंग या भारी पैटर्न में खींचती हैं। वर्तमान पहचान हुक निर्देश और सोनार परिणाम में दिखाई देती है। नई प्रजातियाँ अंक और रीफ नोट्स के अलावा एक एल्बम बोनस भी प्रदान करती हैं।</p>
-<p>समुद्र की स्थिति: खुला पानी स्थिर है; केल्प ड्रिफ्ट बैंड को चलाता है; कोरल स्नैग्स अपनी चौड़ाई बदलता है; चंद्रमा का ज्वार पक्ष बदलता है; स्टॉर्म गस्ट एक समयबद्ध लाइन पुश लागू करता है; एबिस ट्रायल बहाव, दबाव और झोंकों को जोड़ता है।</p>
-<p>गियर और वैकल्पिक उपकरण: रॉड, रील, लाइन, बैट, नाव और स्कैनर के पांच स्थानीय स्तर हैं। स्कैनर पहले की प्रजाति के पूलों का विस्तार करता है। तीन-डायमंड रेयर ल्यूर एक दुर्लभ योग्य कास्ट की गारंटी देता है, जबकि दो-डायमंड सोनार एक अगली मछली को प्रकट करता है और उसे लॉक कर देता है। दोनों को पुष्टि की आवश्यकता है और प्रगति के लिए किसी की भी आवश्यकता नहीं है।</p></div>
-      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>समुद्री स्थिति और कैच लक्ष्य पढ़ें, फिर खुला मिशन चुनें।</li><li>कास्ट चार्ज करने के लिए पानी की सतह पर उंगली या Space दबाकर रखें, फिर छोड़ें। अधिक ताकत से मछली के काटने का इंतज़ार घटता है, पर दुर्लभ मछली नहीं चुनी जाती।</li><li>मछली के चारा लेने पर लाल नियामक, पानी की सतह पर स्वाइप या ऐरो कुंजियों से मार्कर चलाएँ। मछली का ज़ोर घटाने के लिए इसे हरे SAFE बैंड में रखें।</li><li>लाइन टूटने पर मछली बच निकलती है और कास्ट फिर शुरू होता है; मिशन की घड़ी रीसेट नहीं होती।</li><li>नतीजे में कैच, Reef Notes और एल्बम की नई प्रविष्टियाँ देखें। रीफ़ मैप पर लौटकर मिशन दोहराएँ या अगला खुला मिशन चुनें।</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>रणनीति संकेत</h3><ul><li>जब सुरक्षित लड़ाई में बहुत अधिक समय लगे तो रॉड की ताकत या चारा की गुणवत्ता चुनें; जब मार्कर बार-बार सुरक्षित बच जाता है तो रील कंट्रोल या लाइन ड्यूरेबिलिटी चुनें।</li><li>केल्प, मून और एबिस मिशन जानबूझकर सुरक्षित केंद्र में चले जाते हैं। हरित क्षेत्र को ट्रैक करें, 50 के निशान को नहीं।</li><li>कोरल राम रे और क्रिस्टल क्राउन सॉवरेन सुरक्षा के दौरान अपनी शक्ति नहीं खो सकते। स्थिर करने के लिए उस चरण का उपयोग करें ताकि अगला उद्घाटन सुरक्षित रूप से शुरू हो।</li><li>तूफ़ान के झोंके तीन सेकंड की लय का अनुसरण करते हैं। फ़्लैश से पहले वर्तमान बैंड के मध्य के पास पकड़ें, फिर धक्का देने के बाद सही करें।</li><li>पूरी कास्ट प्रतीक्षा को कम करती है लेकिन दुर्लभता को प्रभावित नहीं करती है। एक लुप्त दुर्लभ एल्बम प्रविष्टि के लिए वन-कास्ट रेयर ल्यूर को सहेजें।</li><li>सोनार का उपयोग तब करें जब यह पता हो कि स्थिर, तेज, भारी या गार्जियन व्यवहार लालच की गारंटी वाली दुर्लभ पकड़ से अधिक मूल्यवान है।</li></ul></div>
-      <div class="game-info-section"><h3>प्रगति और कठिनाई</h3><p>मिशन 1-5 एक स्थिर ओपन वॉटर बैंड का उपयोग करते हैं। पहले चार कास्टिंग, लाइन रिकवरी और सामान्य पुल पहचान सिखाते हैं; सन क्राउन गार्जियन ने चिकनी क्राउन दालों के साथ अध्याय समाप्त किया।</p>
-<p>मिशन 6-10 पूरे बैंड को केल्प ड्रिफ्ट के माध्यम से ले जाता है। केल्प लेविथान गतिशील लक्ष्य को निरंतर भारी खिंचाव के साथ जोड़ता है।</p>
-<p>मिशन 11-15 बैंड को कोरल स्नैग्स के चारों ओर चौड़ा और संकरा बनाता है। कोरल राम रे दो-सेकंड संरक्षित और खुले चरण जोड़ता है।</p>
-<p>मिशन 16-20 हर चार सेकंड में पक्षों के बीच सुरक्षित बैंड को स्विच करता है। एक्लिप्स मंटा अपना खिंचाव उलटने से पहले लड़खड़ाता है।</p>
-<p>मिशन 21-25 बैंड को संकीर्ण करता है और तीन सेकंड के स्टॉर्म गस्ट के साथ लाइन पर हमला करता है। स्टॉर्म लैंटर्न वार्डन झोंकों के बीच भारी खिंचाव को सक्रिय रखता है।</p>
-<p>मिशन 26-30 एबिस ट्रायल में बढ़ते दबाव और झोंकों को जोड़ता है। क्रिस्टल क्राउन सॉवरेन अंतिम नियम-संयोजन परीक्षण के लिए कवच विंडो जोड़ता है।</p></div>
-      <div class="game-info-section"><h3>डिज़ाइन नोट</h3><p>छह क्षेत्र पाँच-पाँच मिशनों में समुद्र की छह स्थितियाँ सिखाते हैं। SAFE बैंड में रहने से नियंत्रण मछली की ताकत घटाता है। बैंड खिसके या संकरा हो तो मार्कर मिलाएँ; लाइन टूटने के बाद भी मिशन का समय चलता है।</p></div>
+      <div class="game-info-section"><h3>गेम सिस्टम</h3><p>नज़दीकी रीफ़, बहाव का रास्ता और गहरा कुंड अलग मछलियाँ और जोखिम देते हैं। जगह चुनकर पानी या स्पेस को दबाए रखें और छोड़कर फेंकें; साफ़ काटने के संकेत पर फिर दबाएँ।</p>
+<p>नाव की ओर खींचने के लिए दबाएँ और तनाव घटाने के लिए छोड़ें। नियंत्रण खींचें या बाएँ-दाएँ कुंजियों से मछली की दिखाई गई दौड़ का मुकाबला करें। टूटने की चेतावनी देखें और मछली के आराम में खींचें; केवल इंतज़ार करने से मछली नहीं मिलती।</p>
+<p>छह समुद्रों में बहाव, प्रवाल की अटकन, ज्वार बदलना, तेज़ झोंके और गहराई अलग रहते हैं। मिशन 5, 10, 15, 20, 25 और 30 में अलग संकेत व मौके वाले छह रक्षक हैं।</p>
+<p>12 प्रजातियों का पुराना संग्रह, रीफ़ नोट्स, उपकरण और खुले मिशन सुरक्षित रहते हैं। छह उन्नयन मछली पकड़ने के अलग हिस्से सुधारते हैं; नाव में स्तर 1 के बाद हर स्तर पाँच सेकंड जोड़ता है। वैकल्पिक चारा और सोनार की पुष्टि व कीमत वही रहती है।</p></div>
+      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>नज़दीकी रीफ़, बहाव का रास्ता और गहरा कुंड अलग मछलियाँ और जोखिम देते हैं। जगह चुनकर पानी या स्पेस को दबाए रखें और छोड़कर फेंकें; साफ़ काटने के संकेत पर फिर दबाएँ।</li><li>नाव की ओर खींचने के लिए दबाएँ और तनाव घटाने के लिए छोड़ें। नियंत्रण खींचें या बाएँ-दाएँ कुंजियों से मछली की दिखाई गई दौड़ का मुकाबला करें। टूटने की चेतावनी देखें और मछली के आराम में खींचें; केवल इंतज़ार करने से मछली नहीं मिलती।</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>रणनीति संकेत</h3><ul><li>नाव की ओर खींचने के लिए दबाएँ और तनाव घटाने के लिए छोड़ें। नियंत्रण खींचें या बाएँ-दाएँ कुंजियों से मछली की दिखाई गई दौड़ का मुकाबला करें। टूटने की चेतावनी देखें और मछली के आराम में खींचें; केवल इंतज़ार करने से मछली नहीं मिलती।</li></ul></div>
+      <div class="game-info-section"><h3>प्रगति और कठिनाई</h3><p>छह समुद्रों में बहाव, प्रवाल की अटकन, ज्वार बदलना, तेज़ झोंके और गहराई अलग रहते हैं। मिशन 5, 10, 15, 20, 25 और 30 में अलग संकेत व मौके वाले छह रक्षक हैं।</p></div>
+      <div class="game-info-section"><h3>डिज़ाइन नोट</h3><p>12 प्रजातियों का पुराना संग्रह, रीफ़ नोट्स, उपकरण और खुले मिशन सुरक्षित रहते हैं। छह उन्नयन मछली पकड़ने के अलग हिस्से सुधारते हैं; नाव में स्तर 1 के बाद हर स्तर पाँच सेकंड जोड़ता है। वैकल्पिक चारा और सोनार की पुष्टि व कीमत वही रहती है।</p></div>
       <div class="game-info-section game-info-parent"><h3>खिलाड़ी और सेव जानकारी</h3><p>किसी खाते की आवश्यकता नहीं है. यह ब्राउज़र अनलॉक किए गए और चयनित मिशन, रीफ नोट्स, सर्वश्रेष्ठ कैच, 12 एल्बम प्रविष्टियां, छह गियर स्तर और तैयार ल्यूर या सोनार स्थिति को संग्रहीत करता है। साइट संग्रहण साफ़ करने या ब्राउज़र बदलने से एक अलग सेव शुरू हो सकता है। साझा डायमंड बैलेंस वैकल्पिक है और इसका उपयोग केवल पुष्टिकृत ल्यूर और सोनार तैयारियों के लिए किया जाता है। सभी 30 मिशन, छह अभिभावक, गियर स्तर और सामान्य एल्बम प्रगति उन उपकरणों के बिना उपलब्ध रहते हैं। कौशल रिपोर्टें मनोरंजन की वर्तमान दौड़ का सारांश प्रस्तुत करती हैं और निदान, रैंकिंग या औपचारिक क्षमता मूल्यांकन नहीं हैं।</p></div>
-      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>नतीजे से पहले बाहर निकलने पर क्या खोता है?</dt><dd>मौजूदा अभियान, उसमें पकड़ी मछलियाँ और पहले से तैयार दुर्लभ चारा या मछली खोजने वाला सोनार खो जाता है। एल्बम की सहेजी प्रविष्टियाँ, रीफ़ नोट्स और उपकरण इस ब्राउज़र में सुरक्षित रहते हैं।</dd></div><div><dt>हरा SAFE बैंड क्यों खिसकता या संकरा होता है?</dt><dd>यह मिशन की समुद्री स्थिति है: समुद्री घास के बीच की धारा बैंड खिसकाती है, मूँगे उसकी चौड़ाई बदलते हैं, ज्वार दिशा बदलता है, तेज़ हवा लाइन को धकेलती है और गहरे पानी में कई स्थितियाँ एक साथ आती हैं।</dd></div><div><dt>क्या अभियान पूरा करने के लिए हीरे चाहिए?</dt><dd>नहीं। दुर्लभ चारा और मछली खोजने वाला सोनार वैकल्पिक हैं और पुष्टि माँगते हैं। मिशन, रक्षक मछलियों, सामान्य पकड़ और उपकरणों के उन्नयन के लिए हीरे आवश्यक नहीं हैं।</dd></div><div><dt>मेरी प्रगति कहाँ सहेजी जाती है?</dt><dd>खुले मिशन, रीफ़ नोट्स, एल्बम, उपकरण और सबसे अच्छी पकड़ इसी ब्राउज़र में सहेजे जाते हैं। ब्राउज़र के बीच सिंक नहीं होता; साइट डेटा मिटाने से सेव हट सकता है।</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>और संबंधित गेम</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-rift-salvage" href="/hi/games/animal-rift-salvage/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-rift-salvage.webp" data-final-src="/assets/weightplay-logo.png" alt="रिफ्ट बचाव दल" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">रिफ्ट बचाव दल</strong><span>चंद्र वलय को चलाएं, छोटे मलबे से आकार बढ़ाएं और 30 क्षेत्रों में बचाव कोर तथा मुकुट मलबा वापस लाएं।</span></span></a><a class="game-info-related-card" data-game-id="animal-cratebound" href="/hi/games/animal-cratebound/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-cratebound.webp" data-final-src="/assets/weightplay-logo.png" alt="क्रेटबाउंड" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">क्रेटबाउंड</strong><span>30 हस्तनिर्मित आकाश-गोदामों में चलें, संदूक धकेलें और खींचें, तथा बर्फीली पटरियों, संकेतों और चुंबकों को सुलझाएँ।</span></span></a></div></div>
+      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>काँटा लगाकर मछली कैसे निकालें?</dt><dd>नज़दीकी रीफ़, बहाव का रास्ता और गहरा कुंड अलग मछलियाँ और जोखिम देते हैं। जगह चुनकर पानी या स्पेस को दबाए रखें और छोड़कर फेंकें; साफ़ काटने के संकेत पर फिर दबाएँ। नाव की ओर खींचने के लिए दबाएँ और तनाव घटाने के लिए छोड़ें। नियंत्रण खींचें या बाएँ-दाएँ कुंजियों से मछली की दिखाई गई दौड़ का मुकाबला करें। टूटने की चेतावनी देखें और मछली के आराम में खींचें; केवल इंतज़ार करने से मछली नहीं मिलती।</dd></div><div><dt>क्या मेरी पुरानी प्रगति बची रहेगी?</dt><dd>12 प्रजातियों का पुराना संग्रह, रीफ़ नोट्स, उपकरण और खुले मिशन सुरक्षित रहते हैं। छह उन्नयन मछली पकड़ने के अलग हिस्से सुधारते हैं; नाव में स्तर 1 के बाद हर स्तर पाँच सेकंड जोड़ता है। वैकल्पिक चारा और सोनार की पुष्टि व कीमत वही रहती है।</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>मिलते-जुलते खेल</h3><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/animal-rift-salvage/"><img src="/assets/interface7-redrawn/animal-rift-salvage.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>रिफ्ट बचाव दल</strong><span>चंद्र वलय को चलाएं, छोटे मलबे से आकार बढ़ाएं और 30 क्षेत्रों में बचाव कोर तथा मुकुट मलबा वापस लाएं।</span></span></a><a class="game-info-related-card" href="/hi/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>क्रेटबाउंड</strong><span>30 हस्तनिर्मित आकाश-गोदामों में चलें, संदूक धकेलें और खींचें, तथा बर्फीली पटरियों, संकेतों और चुंबकों को सुलझाएँ।</span></span></a></div></div>
     </div>
   </section>
-<script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+<script src="../../src/game-page-info.js?v=20261003-reef-fisher-text140-v2"></script>
+  <script src="../../src/game-screen-frame.js?v=20261006-interface7-physical-header-targets-v4"></script>
 </body>
 </html>
