@@ -25,6 +25,7 @@ let practiceMode=false,practiceRun=false,practiceBaseline=null;
 let state='idle',screen='main',runGeneration=0,transitionRemaining=0,modalKind='',resumeAction=null;
 let tutorialResumeState=null;
 let feedbackUntil=0,feedbackText='',rendererModule=null,analyticsRound=false,analyticsEverStarted=false,analyticsStartPending=false,analyticsRoundCounter=0;
+let rendererLoadAttempt=0;
 let journey=null,runKit=null,runReward=0,runKills=0,runDrops=0,runCombo=0;
 const t=k=>k==='title'?(window.WEIGHTPLAY_GAME_TITLES?.pawaxe?.[save.locale]||copy[save.locale].title):RUNTIME_COPY[save.locale]?.[k]||expeditionCopy[save.locale]?.[k]||playerCopy[save.locale]?.[k]||copy[save.locale]?.[k]||copy.en[k]||k;
 const cc=()=>collectionCopy[save.locale]||collectionCopy.en;
@@ -168,11 +169,22 @@ async function startRun(stageId=selected,practice=practiceMode){
   lootQueue.length=0;$('#lootToast').hidden=true;$('#damageNumbers').replaceChildren();updateProgress();
   const generation=runGeneration;dialog(t('title'),t('preparing'),[], 'loading');
   try{
-    if(!rendererModule){let timer;try{rendererModule=await Promise.race([import('./renderer-3d.js?v=57'),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('LOAD_TIMEOUT')),15000);})]);}finally{clearTimeout(timer);}}
+    if(!rendererModule){let timer;try{
+      const attempt=++rendererLoadAttempt;
+      // A failed ES-module URL can remain rejected for the lifetime of a tab.
+      // A new retry URL lets a recovered connection actually load the scene.
+      const url=new URL('./renderer-3d.js?v=58',import.meta.url);
+      if(attempt>1)url.searchParams.set('retry',String(attempt));
+      rendererModule=await Promise.race([import(url.href),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('LOAD_TIMEOUT')),15000);})]);
+    }finally{clearTimeout(timer);}}
     if(generation!==runGeneration||screen!=='battle')return;
     renderer=new rendererModule.PawRenderer($('#canvas'));renderer.setCompanion(runKit.companion);renderer.setRegion(Math.floor((selected-1)/5));
     closeDialog();startEncounter();
-  }catch(error){if(generation!==runGeneration)return;renderer?.dispose();renderer=null;state='error';dialog(t('forestUnavailable'),t('webglRequired'),[[t('replay'),startRun],[t('returnStages'),()=>show('stage')]],'error');console.warn('Pawaxe renderer:',error.message);}
+  }catch(error){if(generation!==runGeneration)return;renderer?.dispose();renderer=null;state='error';
+    const graphicsUnavailable=/Error creating WebGL context|WebGL 2 is not available/i.test(error.message||'');
+    dialog(t('forestUnavailable'),t(graphicsUnavailable?'webglRequired':'restartGraphics'),[[t('replay'),startRun],[t('returnStages'),()=>show('stage')]],'error');
+    console.warn('Pawaxe renderer:',error.message);
+  }
 }
 function startEncounter(){
   const stage={...stages[selected-1],encounters:[journey.encounter()]};

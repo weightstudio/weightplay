@@ -1,6 +1,6 @@
 import * as THREE from './vendor/three/three.module.min.js';
-import { buildAxe } from './axe-model.js?v=5';
-import { buildEnemy, buildCompanion, buildPaw } from './actor-models.js';
+import { buildAxe } from './axe-model.js?v=6';
+import { buildEnemy, buildCompanion, buildPaw } from './actor-models.js?v=2';
 
 // One renderer per run. Geometry/material caches are bounded and disposed together.
 export class PawRenderer {

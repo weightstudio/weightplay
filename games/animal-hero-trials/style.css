@@ -96,6 +96,10 @@ body:not([data-screen="battle"]) #battleView {
 .main-view .main-copy {
   grid-column: auto;
 }
+.wp-standard-main-poster-media {
+  display: block;
+  background: center / cover no-repeat url("../../assets/animal-hero-trials-cover.png");
+}
 .main-view #startBtn {
   grid-column: auto;
   grid-row: auto;
@@ -106,6 +110,10 @@ body:not([data-screen="battle"]) #battleView {
 @media (min-width: 700px) {
   .main-view .main-copy {
     grid-column: 2;
+    /* The copy is nested inside the single-row composition grid. Keeping the
+       old outer-scene row=2 here creates an implicit row and a large blank
+       gap before the title on wide screens. */
+    grid-row: auto;
   }
 }
 
@@ -188,11 +196,55 @@ body.wp-stage-select-active #stageView .stage-rail {
 #battleView .battle-head>.health{flex:1 1 0;min-width:0;overflow:hidden}
 #battleView #roomText{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 #battleView .battle-tools{flex:0 0 auto}
-#resultModal>section{height:360px;display:grid;grid-template-rows:100px 52px minmax(0,1fr) 50px;gap:8px}
+#resultModal>section{height:min(360px,calc(100dvh - 40px));max-height:min(90dvh,calc(100dvh - 40px));min-height:0;display:grid;grid-template-rows:100px 52px minmax(0,1fr) 50px;gap:8px}
 #resultFx{justify-self:center}
 #resultTitle,#resultCopy{margin:0}
 #resultTitle{display:grid;place-items:center}
 #resultCopy{overflow:auto;line-height:1.4}
+
+/* Give Stage decisions their room before decorative art: a compact square
+   preview sits beside the complete, readable localized trial facts. The
+   shared 264x190 card and uniform canvas scale remain untouched. */
+body.wp-stage-select-active #stageView .stage-card-content {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  align-content: center;
+  align-items: start;
+  gap: 6px 10px;
+  min-width: 0;
+}
+body.wp-stage-select-active #stageView .stage-card-content > img {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+}
+body.wp-stage-select-active #stageView .stage-card-content > strong {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  font-size: 18px;
+  line-height: 1.2;
+}
+body.wp-stage-select-active #stageView .stage-card-content > span {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+  font-size: 16px;
+  line-height: 1.25;
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  #resultModal > section {
+    height: 290px;
+    max-height: 290px;
+    padding: 12px;
+    grid-template-rows: 74px 42px minmax(0, 1fr) 42px;
+    gap: 6px;
+  }
+  #resultFx { width: 108px; height: 72px; }
+}
 .hero-option,.choice,.stage-card,.skill-btn{transition:border-color 140ms ease,background-color 140ms ease,box-shadow 140ms ease}
 .hero-option:active,.choice:active,.stage-card:active,.skill-btn:active{box-shadow:inset 0 0 0 3px #ffe7a3}
 .modal:not(.hidden)>section{animation:aht-panel-in 180ms ease-out both}

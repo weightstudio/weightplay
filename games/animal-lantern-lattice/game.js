@@ -410,9 +410,10 @@
     document.body.dataset.screen = screen;
     if (screen === "main") renderProgress();
     if (sharedFrame) sharedFrame.activate(screen === "result" ? "battle" : screen, { covered: screen === "result" });
-    // Complete both shared owners before the next scene's first interaction.
+    // Complete shared scene owners before the next scene's first interaction.
     window.dispatchEvent(new Event("weightplay:stage-sync"));
     window.WeightPlayBattleCanvas?.sync();
+    window.WeightPlayStageArtwork?.sync?.();
   };
   const renderStages = ({ entry = false } = {}) => {
     const rail = $("stageList");

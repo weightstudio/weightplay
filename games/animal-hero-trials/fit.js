@@ -1,8 +1,8 @@
 (() => {
   const canvas = document.querySelector("#game");
   const wrap = document.querySelector(".canvas-wrap");
-  const LOGICAL_WIDTH = 460;
   const LOGICAL_HEIGHT = 560;
+  const MIN_LOGICAL_WIDTH = 460;
   function fit() {
     if (!canvas || !wrap) return;
     const box = wrap.getBoundingClientRect();
@@ -12,8 +12,9 @@
     const ownerLayoutWidth = owner?.offsetWidth || ownerBox?.width || 0;
     const ownerScale = ownerBox?.width && ownerLayoutWidth ? ownerBox.width / ownerLayoutWidth : 1;
     const safeScale = Number.isFinite(ownerScale) && ownerScale > 0 ? ownerScale : 1;
-    const scale = Math.min(box.width / (LOGICAL_WIDTH * safeScale), box.height / (LOGICAL_HEIGHT * safeScale));
-    canvas.style.width = `${LOGICAL_WIDTH * scale}px`;
+    const logicalWidth = Math.max(MIN_LOGICAL_WIDTH, Math.round(LOGICAL_HEIGHT * box.width / box.height));
+    const scale = Math.min(box.width / (logicalWidth * safeScale), box.height / (LOGICAL_HEIGHT * safeScale));
+    canvas.style.width = `${logicalWidth * scale}px`;
     canvas.style.height = `${LOGICAL_HEIGHT * scale}px`;
   }
   new ResizeObserver(fit).observe(wrap);

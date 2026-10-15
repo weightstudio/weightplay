@@ -28,13 +28,24 @@
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const ASSET_ROOT = "../../assets/";
-  const WORLD_WIDTH = 460;
+  const heroPosterUrl = new URL("/assets/animal-hero-trials-cover.png", location.origin).href;
+  const restoreHeroPosterMetadata = () => {
+    document.querySelectorAll('meta[property="og:image"], meta[name="twitter:image"]').forEach((meta) => {
+      meta.content = heroPosterUrl;
+    });
+  };
+  restoreHeroPosterMetadata();
+  document.addEventListener("DOMContentLoaded", restoreHeroPosterMetadata, { once: true });
+  window.addEventListener("weightplay-interface7-poster-registry-ready", () => {
+    requestAnimationFrame(restoreHeroPosterMetadata);
+  }, { once: true });
+  let WORLD_WIDTH = 460;
   const WORLD_HEIGHT = 560;
   const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
   // Gameplay timers stay identical in reduced motion; only decorative motion changes.
   const reducedMotion = () => motionPreference.matches;
   const LEGACY_WORLD_WIDTH = 390;
-  const WORLD_X_SCALE = WORLD_WIDTH / LEGACY_WORLD_WIDTH;
+  let WORLD_X_SCALE = WORLD_WIDTH / LEGACY_WORLD_WIDTH;
   const worldX = (value) => value * WORLD_X_SCALE;
   const copy = {
     en: {
@@ -531,6 +542,42 @@
   let activeScene = "main";
   let sceneGeneration = 0;
   let battleHelpRestoreTimer = 0;
+
+  function fitBattleWorld() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    if (rect.width < 1 || rect.height < 1) return;
+    // Use a wider logical arena in a short, wide Battle envelope. The Canvas
+    // remains uniformly scaled; the existing formation gains room to spread.
+    const width = Math.max(460, Math.round(WORLD_HEIGHT * rect.width / rect.height));
+    if (Math.abs(width - WORLD_WIDTH) < 2) return;
+    const factor = width / WORLD_WIDTH;
+    WORLD_WIDTH = width;
+    WORLD_X_SCALE = WORLD_WIDTH / LEGACY_WORLD_WIDTH;
+    canvas.width = WORLD_WIDTH;
+    canvas.height = WORLD_HEIGHT;
+    if (!run) return;
+    run.leo.x *= factor;
+    run.enemies.forEach((enemy) => { enemy.x *= factor; });
+    run.hazards.forEach((hazard) => {
+      hazard.x *= factor;
+      if (Number.isFinite(hazard.toX)) hazard.toX *= factor;
+    });
+    run.fx.forEach((effect) => {
+      if (Number.isFinite(effect.x)) effect.x *= factor;
+      if (Number.isFinite(effect.fromX)) effect.fromX *= factor;
+      if (effect.hazard) {
+        effect.hazard.x *= factor;
+        if (Number.isFinite(effect.hazard.toX)) effect.hazard.toX *= factor;
+      }
+    });
+    if (moveTarget) moveTarget.x *= factor;
+    if (run.strike) run.strike.fromX *= factor;
+  }
+
+  const battleWorldObserver = new ResizeObserver(() => {
+    if (activeScene === "battle") fitBattleWorld();
+  });
+  battleWorldObserver.observe(canvas.parentElement);
 
   function sceneFrame(scene, callback) {
     const generation = sceneGeneration;
@@ -1045,6 +1092,7 @@
     cancelAnimationFrame(frame);
     (__wpNotifyMeasurement(), backgroundSuspended = false);
     show("battle");
+    fitBattleWorld();
     const hero = heroes[selectedHero] || heroes.leo;
     const maxHp = hero.hp + mastery * 12;
     run = {
@@ -1425,7 +1473,15 @@
     enemy.hitOffsetY = Math.sin(direction) * (source === "skill" ? 9 : 5);
     run.shake = reducedMotion()?0:Math.max(run.shake, source === "skill" ? 0.12 : 0.025);
     run.heroKick = Math.max(run.heroKick, source === "skill" ? 0.12 : 0.06);
-    run.fx.push({ type: "damage", x: enemy.x, y: enemy.y - (enemy.boss ? 72 : 44), t: 0.62, vy: -30, value: Math.max(1, Math.round(applied)), source,blocked,strong:exposed });
+    const enemySize = enemy.boss ? 126 : enemy.elite ? 82 : 68;
+    const labelY = enemy.y - enemySize / 2 - 18;
+    const nearbyLabels = run.fx.filter((effect) => effect.type === "damage"
+      && effect.source !== "hurt"
+      && Math.abs((effect.labelY ?? effect.y) - labelY) < 25
+      && Math.abs(effect.x - enemy.x) < 64).length;
+    const lane = nearbyLabels === 0 ? 0 : (nearbyLabels % 2 ? 1 : -1) * 22;
+    const stack = Math.floor((nearbyLabels + 1) / 3);
+    run.fx.push({ type: "damage", x: enemy.x + lane, y: labelY - stack * 16, labelY, t: 0.62, vy: -24, value: Math.max(1, Math.round(applied)), source,blocked,strong:exposed });
     return applied;
   }
 
@@ -1505,7 +1561,7 @@
     playSound(run.guard>0?"combat.block":"player.hurt");
     run.heroFlash = Math.max(run.heroFlash, 0.24);
     run.shake = reducedMotion()?0:Math.max(run.shake, 0.14);
-    run.fx.push({ type: "damage", x: run.leo.x, y: run.leo.y - 58, t: 0.7, vy: -34, value: applied, source: "hurt" });
+    run.fx.push({ type: "damage", x: run.leo.x, y: run.leo.y - (run.heroId === "taro" ? 39 : 45) - 20, t: 0.7, vy: -24, value: applied, source: "hurt" });
     run.fx.push({ type: "shadow", x: run.leo.x, y: run.leo.y, t: 0.34 });
   }
 
@@ -1898,7 +1954,24 @@
       ctx.translate((Math.random() - 0.5) * shake, (Math.random() - 0.5) * shake);
     }
     ctx.clearRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-    ctx.drawImage(images.bg, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+    const bgRatio = images.bg.width / images.bg.height;
+    const worldRatio = WORLD_WIDTH / WORLD_HEIGHT;
+    if (bgRatio > worldRatio) {
+      const sourceWidth = images.bg.height * worldRatio;
+      ctx.drawImage(images.bg, (images.bg.width - sourceWidth) / 2, 0, sourceWidth, images.bg.height, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+    } else {
+      const sourceHeight = images.bg.width / worldRatio;
+      ctx.drawImage(images.bg, 0, (images.bg.height - sourceHeight) / 2, images.bg.width, sourceHeight, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+    }
+    // Put skill rings beneath fighters so impact stays visible without
+    // masking faces or important silhouettes.
+    for (const effect of run.fx) {
+      if (effect.type !== "roar" && effect.type !== "hit") continue;
+      const size = effect.type === "roar" ? 180 : 74;
+      ctx.globalAlpha = Math.min(effect.type === "roar" ? 0.48 : 0.68, effect.t * 2.4);
+      ctx.drawImage(effect.type === "roar" ? images.roar : images.hit, effect.x - size / 2, effect.y - size / 2, size, size);
+      ctx.globalAlpha = 1;
+    }
     for(const hazard of run.hazards) {
       const progress=1-hazard.t/hazard.duration;
       hazardPath(hazard);
@@ -2068,7 +2141,7 @@
       if (effect.type === "damage") {
         ctx.globalAlpha = Math.min(1, effect.t * 3);
         ctx.fillStyle = effect.source === "hurt" ? "#ff8b8b" : effect.blocked?"#8fe8ff":effect.strong?"#91ffcf":effect.source === "skill" ? "#ffe88a" : "#fff7dc";
-        ctx.font = "900 20px system-ui, sans-serif";
+        ctx.font = "900 17px system-ui, sans-serif";
         ctx.textAlign = "center";
         ctx.lineWidth = 4;
         ctx.strokeStyle = "#13211b";
@@ -2095,7 +2168,8 @@
         ctx.globalAlpha = 1;
         continue;
       }
-      const image = effect.type === "roar" ? images.roar : effect.type === "hit" ? images.hit : images.shadow;
+      if (effect.type === "roar" || effect.type === "hit") continue;
+      const image = images.shadow;
       const size = effect.type === "roar" ? 180 : 74;
       ctx.globalAlpha = Math.min(1, effect.t * 4);
       ctx.drawImage(image, effect.x - size / 2, effect.y - size / 2, size, size);

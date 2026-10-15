@@ -252,9 +252,9 @@
   });
 
   const stages = [
-    rescueStage("First Apple Drop", "第一顆蘋果", "One calm bounce", "平靜的一次彈跳", { fruit: "apple", animal: "rabbit", startX: 48, targetX: 50, paddleX: 50, gravity: 980 }),
-    rescueStage("Sunny Banana Arc", "陽光香蕉弧線", "Guide a rightward breeze", "順著右風引導", { fruit: "banana", animal: "lion", startX: 35, targetX: 68, paddleX: 52, wind: 24 }),
-    rescueStage("Berry Return", "莓果回程", "Guide a leftward breeze", "順著左風引導", { fruit: "berry", animal: "panda", startX: 66, targetX: 34, paddleX: 48, wind: -22 }),
+    rescueStage("First Apple Drop", "第一顆蘋果", "One calm bounce", "平靜的一次彈跳", { fruit: "apple", animal: "rabbit", startX: 50, targetX: 50, paddleX: 50, gravity: 980, targetTolerance: 28 }),
+    rescueStage("Sunny Banana Arc", "陽光香蕉弧線", "Guide a rightward breeze", "順著右風引導", { fruit: "banana", animal: "lion", startX: 40, targetX: 64, paddleX: 32, wind: 18, targetTolerance: 20 }),
+    rescueStage("Berry Return", "莓果回程", "Guide a leftward breeze", "順著左風引導", { fruit: "berry", animal: "panda", startX: 60, targetX: 40, paddleX: 68, wind: -16, targetTolerance: 20 }),
     rescueStage("Fox's Long Basket", "狐狸的遠方籃子", "Cross the whole clearing", "橫越整片空地", { fruit: "apple", animal: "fox", startX: 28, targetX: 74, paddleX: 45, wind: 38, targetTolerance: 13 }),
     rescueStage("Panko's Balance Check", "Panko 平衡檢核", "Follow a gently moving basket", "追上緩慢移動的籃子", { fruit: "banana", animal: "koala", startX: 72, targetX: 34, paddleX: 55, wind: -24, basketMotion: { amplitude: 7, speed: 1.2 }, checkpoint: true }),
 
@@ -834,7 +834,7 @@
   function applyLeafBounce(route, playfieldHeight, offset = 0) {
     bounceCount += 1;
     fruit.vy = -Math.max(610, playfieldHeight * 1.08) * Number(route.bouncePower || 1);
-    fruit.vx += offset * 520;
+    fruit.vx += offset * 280;
     return { bounceCount, vx: fruit.vx, vy: fruit.vy };
   }
 

@@ -1121,3 +1121,26 @@ body:not(.is-vine-playing):not(.is-vine-stage-select) #startBtn {
   body.is-vine-playing .result-card a { min-height: 52px; font-size: 1rem; }
   body.is-vine-playing .stars { font-size: 2rem; }
 }
+
+/* Keep game-owned copy legible over the shared Interface 9 shell. */
+body.is-vine-playing .hud-pill,
+body.is-vine-playing .hud-pill :is(span, b, strong) {
+  color: #2d2417 !important;
+}
+
+body.is-vine-playing .result-card,
+body.is-vine-playing .result-card > :is(strong, span, p) {
+  color: #2d2417 !important;
+}
+
+/* The Cut shadow needs its own breathing room above the live hint. */
+body.is-vine-playing .game-panel {
+  row-gap: 26px;
+}
+
+body.is-vine-playing .hint-text {
+  min-height: 38px;
+  padding: 10px 8px 2px;
+  line-height: 1.3;
+  color: #315528 !important;
+}

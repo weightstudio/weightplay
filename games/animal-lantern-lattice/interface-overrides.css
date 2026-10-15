@@ -205,3 +205,17 @@ body[data-wp-game-id="animal-lantern-lattice"] :is(.wp-tutorial-button,.wp-tutor
   min-width:46px!important;
   min-height:46px!important;
 }
+/* The shared short-screen fallback has one explicit column. Keep this
+   game's authored two-column Result explicit so the action span is full-width. */
+@media(orientation:landscape) and (max-height:460px){
+  #battleScreen #resultScreen.wp-lantern-result-substate:not([hidden]){
+    grid-template-columns:80px minmax(0,1fr)!important;
+  }
+}
+#battleScreen #resultScreen .result-actions>button{
+  height:auto!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere;
+  padding-block:4px!important;
+  line-height:1.15!important;
+}

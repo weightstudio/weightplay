@@ -35,7 +35,7 @@
   const SAVE_KEY = "weightplayGearpackProgressV1";
   const RUN_KEY = "weightplayGearpackRunV1";
   const GAME_ID = "animal-gearpack-expedition";
-  const GAME_VERSION = 24;
+  const GAME_VERSION = 25;
   const INTERFACE_VERSION = 9;
   const copy = {
     en: { title:"Animal Gearpack Expedition",internal:"Internal Trial",pitch:"Pack equipment, build adjacency combos, and guide Rux through the Gearwood route.",start:"Start Game",chooseRegion:"Choose Region",packmaster:"Packmaster Rux",region1:"Gearwood Trail",region1Meta:"5 rooms · Root Guardian",region2:"Moonlit Quarry",region3:"Clockwork Hollow",locked:"Locked",backpack:"Gearpack 11 x 7",rotate:"Rotate",sell:"Sell",fight:"Start Encounter",strike:"Resolve Clash",room:"Room",armor:"Armor",objective:"Arrange gear, then defeat the route guardian.",workshop:"Workshop",discoveries:"Discoveries",gold:"Gold",diamonds:"Diamonds",items:"items",selected:"Selected",placed:"Placed",blocked:"That shape does not fit there.",rotated:"Item rotated.",needGear:"Place at least one item before fighting.",victory:"Route Cleared",defeat:"Caravan Broken",continue:"Continue",retry:"Retry Route",regions:"Back to Regions",chooseLoot:"Choose one item",merchant:"Orla's Caravan Shop",buy:"Buy",leave:"Leave Shop",refresh:"Refresh for 3 Diamonds",confirmRefresh:"Spend 3 Diamonds to refresh Orla's stock?",notEnough:"Not enough currency.",boss:"Root Guardian",scout:"Shadow Fox Scout",boar:"Armored Boar",crow:"Crystal Crow",reward:"Reward",saved:"Workshop progress saved.",full:"Your pack has no room for that item.",pickedUp:"Returned to tray",sold:"Sold" },
@@ -142,7 +142,7 @@
     stage("Scout Fork","斥候岔路","Fox Scouts strike before unprepared packs.","狐狸斥候會搶先攻擊未準備的行囊。",["scout","ambusher","boar","crow","ambusher"],2),
     stage("Ironroot Crossing","鐵根交叉口","Plated Boars absorb the first hit with armor.","裝甲野豬會用護板吸收第一次攻擊。",["boar","platedBoar","scout","platedBoar","boar"]),
     stage("Crystal Canopy","水晶樹冠","Crystal Crows punish every isolated item.","水晶烏鴉會懲罰沒有相鄰連結的裝備。",["crow","linkCrow","boar","ambusher","linkCrow"]),
-    stage("Root Guardian","樹根守衛","Nature links stop the Guardian from regrowing armor.","自然材質連結可阻止守衛重新長出護甲。",["ambusher","platedBoar","crow","linkCrow","rootGuardian"]),
+    stage("Root Guardian","樹根守衛","Nature links stop the Guardian from recovering Health.","自然材質連結可阻止守衛恢復生命。",["ambusher","platedBoar","crow","linkCrow","rootGuardian"]),
     stage("Silver Descent","銀月下坡","Moon Moths suppress Moon links during their encounter.","月蛾在場時會壓制月光材質連結。",["scout","moonMoth","crow","boar","moonMoth"]),
     stage("Echo Vein","回音礦脈","Prism Crows tax isolated gear; compact the pack.","稜鏡烏鴉會針對孤立裝備，請壓緊配置。",["moonMoth","linkCrow","platedBoar","crow","linkCrow"],2),
     stage("Prism Lift","稜鏡升降台","Barriers reward one strong opening strike.","稜鏡屏障考驗高傷害的第一擊。",["platedBoar","prismRam","moonMoth","linkCrow","prismRam"]),
@@ -594,6 +594,23 @@
 
   // Own the short controls too: shared prose translation must not determine
   // whether a dynamic action, health value or recovery button is localized.
+  // The Guardian restores enemyHp, never its shield. Own the corrected route
+  // rule in every locale rather than falling through an older catalog phrase.
+  Object.assign(stages[4].rule,{
+    en:"Nature links stop the Guardian from recovering Health.",
+    "zh-Hant":"自然材質連結可阻止守衛恢復生命。",
+    "zh-Hans":"自然材质连接可阻止守卫恢复生命。",
+    ja:"自然素材の連結で守護者の体力回復を止めよう。",
+    ko:"자연 소재 연결로 수호자의 체력 회복을 막으세요.",
+    es:"Los enlaces de Naturaleza impiden que el Guardián recupere Vida.",
+    "pt-BR":"Conexões de Natureza impedem o Guardião de recuperar Vida.",
+    fr:"Les liens de Nature empêchent le Gardien de récupérer de la vie.",
+    de:"Natur-Verbindungen verhindern, dass der Wächter Leben regeneriert.",
+    it:"I legami Natura impediscono al Guardiano di recuperare Vita.",
+    ru:"Связи Природы не дают стражу восстанавливать здоровье.",
+    hi:"प्रकृति की कड़ियाँ संरक्षक को स्वास्थ्य वापस पाने से रोकती हैं।",
+    ar:"روابط الطبيعة تمنع الحارس من استعادة صحته."
+  });
   const runtimeControlKeys="internal|locked|rotate|sell|room|armor|workshop|gold|diamonds|selected|placed|continue|buy|boss|reward|refreshNeed|battleSteps|attack|defense|links|health|tagForge|tagMoon|sellValue|backToLobby|language|backToMain|ruxAlt|chooseExpedition|stage|checkpoint|completed|nextExpedition|retryStage|backToStages|shielded|leaveBattleTitle|confirmLeaveBattle".split("|");
   const runtimeControls={
     ja:["内部試遊","未解放","回転","売却","部屋","装甲","工房","金貨","ダイヤ","選択中","配置済み","続ける","購入","根の守護者","報酬","ダイヤが3個必要です。残高 {balance}/3。","①装備を選ぶ ②緑のマスに置く ③遭遇開始","攻撃","防御","連結","体力","鍛造","月","売値","WeightPlayに戻る","言語","メインに戻る","歯車角のルクス","遠征を選択","ステージ","守護者","クリア済み","次のステージ","再挑戦","ステージ選択","盾","この遠征を離れますか？","ステージ選択に戻る"],
@@ -613,6 +630,94 @@
   runtimeSourceSupplements.it["Crystal Warden"]="Custode di cristallo";
   runtimeSourceSupplements.ru["Crystal Warden"]="Кристальный страж";
   runtimeSourceSupplements.hi["Crystal Warden"]="क्रिस्टल संरक्षक";
+  // Dynamic labels must be translated before substituting item/enemy values;
+  // a rendered English sentence cannot use the static catalog's template key.
+  const runtimeActionKeys="refreshLabel|refreshConfirmLabel|combatPaused|resumeCombat|packGridLabel|cellLabel|placeItem|pickUpItem|cannotPlace|emptyCell|selectItem|selectedItem|itemTrayLabel|pauseCombatAction|rotateItemLabel|sellItemLabel|fightBlockedLabel|fightReadyLabel".split("|");
+  const runtimeActions={
+    ja:[
+      "商品3点を入れ替えます。ダイヤ3個が必要です。現在の残高は{balance}個。",
+      "商品更新を1回確定します。ダイヤ3個を使い、残高は{before}個から{after}個になります。",
+      "戦闘を一時停止しました。準備ができたら再開してください。","遭遇を再開",
+      "バックパックのマス目、7行11列","{row}行{column}列。{action}","ここに{item}を置く。","{item}を取り出す。",
+      "ここには{item}を置けません。","空きマス。トレイから装備を選んでください。","{item}を選ぶ。","{item}を選択中。",
+      "使用できる装備","遭遇を一時停止","{item}を{width}×{height}に回転","{item}を金貨{value}枚で売る",
+      "遭遇を開始できません。先に装備を1点以上置いてください。",
+      "{enemy}との自動戦闘を開始。敵の体力は{hp}。自分の攻撃は{attack}、防御は{defense}。{mechanic}。どちらかが倒れるまで自動で戦います。"
+    ],
+    ko:[
+      "상점 물품 세 개를 교체합니다. 다이아 3개가 필요합니다. 현재 잔액 {balance}개.",
+      "상점 새로고침을 한 번 확정합니다. 다이아 3개를 사용하여 잔액이 {before}개에서 {after}개가 됩니다.",
+      "전투를 일시 정지했습니다. 준비되면 계속하세요.","전투 계속",
+      "가방 격자, 7행 11열","{row}행 {column}열. {action}","여기에 {item} 배치.","{item} 회수.",
+      "여기에 {item}을 놓을 수 없습니다.","빈칸입니다. 대기 칸에서 장비를 선택하세요.","{item} 선택.","{item} 선택됨.",
+      "사용 가능한 장비","전투 일시 정지","{item}을 {width} × {height}로 회전","{item}을 금화 {value}개에 판매",
+      "전투를 시작할 수 없습니다. 먼저 장비를 하나 이상 배치하세요.",
+      "{enemy}와 자동 전투 시작. 적 체력 {hp}, 내 공격 {attack}, 방어 {defense}. {mechanic}. 한쪽이 쓰러질 때까지 자동으로 전투합니다."
+    ],
+    "pt-BR":[
+      "Substituir os três itens da loja. Custa 3 Diamantes. Saldo atual: {balance}.",
+      "Confirmar uma atualização da loja. Gastar 3 Diamantes. Saldo de {before} para {after}.",
+      "Combate pausado. Continue quando estiver pronto.","Continuar encontro",
+      "Grade da mochila, 7 linhas por 11 colunas","Linha {row}, coluna {column}. {action}","Colocar {item} aqui.","Recolher {item}.",
+      "{item} não cabe aqui.","Espaço vazio. Escolha equipamento na bandeja.","Selecionar {item}.","{item} selecionado.",
+      "Equipamento disponível","Pausar encontro","Girar {item} para {width} × {height}","Vender {item} por {value} moedas",
+      "Encontro indisponível. Coloque pelo menos um item antes de lutar.",
+      "Iniciar encontro automático contra {enemy}, com {hp} de vida. Seu Ataque é {attack} e sua Defesa é {defense}. {mechanic}. O combate continua automaticamente até um dos lados cair."
+    ],
+    fr:[
+      "Remplacer les trois objets de la boutique. Coût : 3 diamants. Solde actuel : {balance}.",
+      "Confirmer un renouvellement de la boutique. Dépenser 3 diamants. Solde : {before} → {after}.",
+      "Combat en pause. Reprenez quand vous êtes prêt.","Reprendre le combat",
+      "Grille du sac, 7 lignes et 11 colonnes","Ligne {row}, colonne {column}. {action}","Placer {item} ici.","Reprendre {item}.",
+      "{item} ne rentre pas ici.","Case vide. Choisissez un équipement dans le plateau.","Choisir {item}.","{item} sélectionné.",
+      "Équipement disponible","Mettre le combat en pause","Tourner {item} en {width} × {height}","Vendre {item} pour {value} pièces",
+      "Combat indisponible. Placez au moins un objet avant de combattre.",
+      "Lancer le combat automatique contre {enemy}, avec {hp} points de vie. Votre Attaque : {attack}, votre Défense : {defense}. {mechanic}. Le combat continue automatiquement jusqu’à la défaite d’un camp."
+    ],
+    de:[
+      "Alle drei Ladenobjekte ersetzen. Kosten: 3 Diamanten. Aktuelles Guthaben: {balance}.",
+      "Eine Ladenerneuerung bestätigen. 3 Diamanten ausgeben. Guthaben von {before} auf {after}.",
+      "Der Kampf wurde unterbrochen. Fortfahren, wenn Sie bereit sind.","Begegnung fortsetzen",
+      "Rucksackraster mit 7 Reihen und 11 Spalten","Reihe {row}, Spalte {column}. {action}","{item} hier platzieren.","{item} aufnehmen.",
+      "{item} passt hier nicht hin.","Leeres Feld. Wählen Sie Ausrüstung aus der Ablage.","{item} auswählen.","{item} ausgewählt.",
+      "Verfügbare Ausrüstung","Begegnung pausieren","{item} auf {width} × {height} drehen","{item} für {value} Gold verkaufen",
+      "Begegnung nicht verfügbar. Platzieren Sie zuerst mindestens ein Ausrüstungsteil.",
+      "Automatische Begegnung gegen {enemy} mit {hp} Leben starten. Ihr Angriff: {attack}, Ihre Verteidigung: {defense}. {mechanic}. Der Kampf läuft automatisch, bis eine Seite besiegt ist."
+    ],
+    it:[
+      "Sostituisci tutti e tre gli oggetti del negozio. Costa 3 diamanti. Saldo attuale: {balance}.",
+      "Conferma un aggiornamento del negozio. Spendi 3 diamanti. Saldo da {before} a {after}.",
+      "Combattimento in pausa. Riprendi quando sei pronto.","Riprendi lo scontro",
+      "Griglia dello zaino, 7 righe per 11 colonne","Riga {row}, colonna {column}. {action}","Posiziona {item} qui.","Riprendi {item}.",
+      "{item} non entra qui.","Casella vuota. Scegli un equipaggiamento dal vassoio.","Seleziona {item}.","{item} selezionato.",
+      "Equipaggiamento disponibile","Metti in pausa lo scontro","Ruota {item} a {width} × {height}","Vendi {item} per {value} monete",
+      "Scontro non disponibile. Posiziona almeno un oggetto prima di combattere.",
+      "Avvia lo scontro automatico contro {enemy}, con {hp} punti vita. Il tuo Attacco è {attack}, la tua Difesa è {defense}. {mechanic}. Il combattimento continua automaticamente finché una delle parti viene sconfitta."
+    ],
+    ru:[
+      "Заменить все три товара. Стоимость: 3 алмаза. Текущий баланс: {balance}.",
+      "Подтвердить одно обновление магазина. Потратить 3 алмаза. Баланс: {before} → {after}.",
+      "Бой приостановлен. Продолжите, когда будете готовы.","Продолжить бой",
+      "Сетка рюкзака: 7 рядов и 11 столбцов","Ряд {row}, столбец {column}. {action}","Разместить {item} здесь.","Забрать {item}.",
+      "{item} здесь не помещается.","Пустая ячейка. Выберите снаряжение в лотке.","Выбрать {item}.","Выбран предмет: {item}.",
+      "Доступное снаряжение","Приостановить бой","Повернуть {item}: {width} × {height}","Продать {item} за {value} монет",
+      "Бой недоступен. Сначала разместите хотя бы один предмет.",
+      "Начать автоматический бой против {enemy}, здоровье врага: {hp}. Ваша атака: {attack}, защита: {defense}. {mechanic}. Бой продолжается автоматически до поражения одной из сторон."
+    ],
+    hi:[
+      "दुकान की तीनों वस्तुएँ बदलें। लागत 3 हीरे है। वर्तमान शेष {balance}।",
+      "दुकान को एक बार ताज़ा करने की पुष्टि करें। 3 हीरे खर्च होंगे। शेष {before} से {after} होगा।",
+      "लड़ाई रुकी है। तैयार होने पर जारी रखें।","मुठभेड़ जारी रखें",
+      "बैग का जाल, 7 पंक्तियाँ और 11 स्तंभ","पंक्ति {row}, स्तंभ {column}। {action}","{item} यहाँ रखें।","{item} वापस लें।",
+      "{item} यहाँ नहीं समाता।","खाली खाना। ट्रे से उपकरण चुनें।","{item} चुनें।","{item} चुना गया।",
+      "उपलब्ध उपकरण","मुठभेड़ रोकें","{item} को {width} × {height} में घुमाएँ","{item} को {value} सिक्कों में बेचें",
+      "मुठभेड़ उपलब्ध नहीं है। लड़ने से पहले कम से कम एक उपकरण रखें।",
+      "{enemy} के विरुद्ध स्वचालित मुठभेड़ शुरू करें। दुश्मन का स्वास्थ्य {hp} है। आपका आक्रमण {attack}, रक्षा {defense} है। {mechanic}। एक पक्ष के हारने तक लड़ाई अपने आप चलती है।"
+    ]
+  };
+  for(const [code,values] of Object.entries(runtimeActions)){
+    Object.assign(runtimeCopySupplements[code],Object.fromEntries(runtimeActionKeys.map((key,index)=>[key,values[index]])));
+  }
   function translateForLocale(value,target=locale){
     const source=String(value??"");
     const supplement=runtimeSourceSupplements[target]?.[source];
@@ -1015,7 +1120,8 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
     });
     const dimensions=shapeDimensions(item,false),tagKey=`tag${item.tag[0].toUpperCase()}${item.tag.slice(1)}`,tag=t(tagKey);
     const space=t(fits?"lootSpaceFit":"lootSpaceNoFit",dimensions);
-    const link=activeSeal(enemyAt(run.room,run.stage))===item.tag?t("lootLinkSealed",{tag}):joins?t("lootLinkJoin",{tag}):t("lootLinkNone",{tag});
+    const sealed=activeSeal(enemyAt(run.room,run.stage))===item.tag&&!current.blueprints.some(build=>build.id==="caravan");
+    const link=sealed?t("lootLinkSealed",{tag}):joins?t("lootLinkJoin",{tag}):t("lootLinkNone",{tag});
     return [t("lootCurrent",{attack:current.atk,defense:current.armor,healing:current.heal,links:current.links}),t("lootAdds",{attack:item.atk,defense:item.armor,healing:item.heal}),space,link].join(" ");
   }
   function itemChoiceButton(item,handler,prefix="",withComparison=false){

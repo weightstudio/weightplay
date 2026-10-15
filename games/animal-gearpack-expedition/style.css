@@ -233,6 +233,21 @@ body[data-wp-game-id="animal-gearpack-expedition"] #battleScreen .battle-header 
 .currency-art img{width:24px;height:24px;object-fit:contain}
 
 /* The compact live counter stays readable; the Plan modal owns the complete forecast. */
+/* Keep the shared help launcher legible over this game's detailed poster. */
+body[data-screen="main"]>.wp-tutorial-button{
+  width:48px;height:48px;opacity:1;background:#ffd978;color:#102d29;
+  border:2px solid #fff0a8;font-size:24px;box-shadow:0 3px 0 #102d29,0 0 0 2px #102d29;
+}
+body[data-screen="main"]>.wp-tutorial-button:hover,
+body[data-screen="main"]>.wp-tutorial-button:focus-visible{transform:none}
+
+/* The existing 44px/40px track owns long status text, including its scroll. */
+.feedback-row:not(.is-item-details){
+  height:44px;min-height:0;flex-direction:column;align-items:stretch;
+  justify-content:safe center;white-space:normal;overflow-wrap:anywhere;
+  overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;
+  padding-block:2px;line-height:1.25;text-align:center;
+}
 .objective-row,#objectivePlan,#currencyText{font-size:16px;line-height:1}
 #currencyText img{width:16px;height:16px}
 #pauseBtn{font-size:16px;line-height:1}
@@ -264,5 +279,11 @@ body[data-wp-game-id="animal-gearpack-expedition"] #battleScreen .battle-header 
   body[data-screen="battle"] #battleScreen .battle-canvas>.feedback-row.is-item-details span{font-size:14px;line-height:1.15}
   body[data-screen="battle"] #battleScreen .battle-canvas>.battle-actions{
     grid-row:5!important;align-self:stretch;margin:0;
+  }
+  body[data-screen="battle"] #battleScreen .battle-actions button:not(.primary){
+    flex-direction:column;gap:0;padding:2px 4px;font-size:14px;line-height:1.15;
+  }
+  body[data-screen="battle"] #battleScreen .battle-actions button:not(.primary) img{
+    width:20px!important;height:20px!important;
   }
 }
