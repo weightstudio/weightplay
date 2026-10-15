@@ -3184,11 +3184,26 @@
 // modules. It never opens a scene, initializes a save, or changes the Wallet.
 function adoptReefTutorialAction() {
   const adopt = () => {
-    const button = document.querySelector('.wp-tutorial-button');
+    const button = document.querySelector('.wp-tutorial-button,[data-wp-tutorial-action]');
     const main = document.getElementById('mainPanel');
     if (!button || !main) return false;
     button.id = 'helpBtn'; main.append(button);
     window.WeightPlayScreenFrame?.autoMountDocument?.();
+    const popover = main.querySelector('.wp-shell-settings-popover');
+    if (!popover) return false;
+    button.classList.remove('wp-tutorial-button','wp-main-legacy-layout','wp-shell-legacy-control');
+    button.removeAttribute('aria-hidden');
+    button.classList.add('wp-shell-settings-extra','secondary-btn');
+    button.dataset.wpTutorialAction = 'embedded';
+    button.textContent = button.getAttribute('aria-label') || '?';
+    popover.append(button);
+    if (!button.dataset.wpTutorialSettingsBound) {
+      button.dataset.wpTutorialSettingsBound = 'true';
+      button.addEventListener('click', () => {
+        const settings = button.closest('.wp-shell-settings')?.querySelector('.wp-shell-settings-button');
+        if (settings?.getAttribute('aria-expanded') === 'true') settings.click();
+      }, {capture:true});
+    }
     return true;
   };
   if (!adopt() && document.readyState !== 'complete') document.addEventListener('DOMContentLoaded', adopt, {once:true});

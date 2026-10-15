@@ -1090,7 +1090,9 @@
     document.querySelectorAll(".home-link").forEach((link) => {
       link.setAttribute("aria-label", labels.lobbyAria);
     });
-    document.querySelector(".wp-tutorial-button")?.setAttribute("aria-label", labels.aria);
+    const tutorialAction = document.querySelector('.wp-tutorial-button,[data-wp-tutorial-action]');
+    tutorialAction?.setAttribute('aria-label', labels.aria);
+    if (tutorialAction?.dataset.wpTutorialAction === 'embedded') tutorialAction.textContent = labels.aria;
     const openTutorial = document.querySelector(".wp-tutorial-backdrop");
     if (openTutorial?.dataset.gameId) {
       renderTutorial(openTutorial, openTutorial.dataset.gameId, openTutorial.dataset.fromButton === "true");

@@ -222,6 +222,9 @@ html body [data-wp-frame="2"] [data-wp-frame-action="tab"][aria-selected="true"]
 /* Opt-in tutorial skin for migrated games; no changes to non-adopters. */
 body[data-wp-frame-tutorial="true"] .wp-tutorial-backdrop {
   grid-template-columns:minmax(0,1fr);
+  /* The modal must remain above the shared Main header (100) and Settings
+     owner (110), including its close target in short landscape viewports. */
+  z-index:200;
 }
 body[data-wp-frame-tutorial="true"] .wp-tutorial-card {
   width:min(100%,430px);min-width:0;max-width:100%;

@@ -42,10 +42,11 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260824-crystal-responsive-canvas-v1" data-wp-battle-standard />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"勇闖地監","alternateName":"Dungeon Venture","url":"https://weightplay.com/zh-tw/games/animal-crystal-survivor/","image":"https://weightplay.com/assets/animal-crystal-survivor-otter-cover-v26.png","description":"30 關動作生存戰役：撐過倒數、清除波次或擊敗首領。收集經驗水晶選擇法術，培養可重置的天賦路線。","genre":["動作","生存","戰役","首領戰","動物","Browser Game"],"gamePlatform":"Web browser","operatingSystem":"Any","playMode":"SinglePlayer","keywords":"action survival game, 30-stage campaign, wave survival, boss battles, browser game","audience":{"@type":"Audience","audienceType":"General action and survival players"},"publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"zh-Hant","isAccessibleForFree":true,"applicationCategory":"Game"}</script><link rel="stylesheet" href="/src/stage-selector-standard.css" />
 <link rel="stylesheet" href="/src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
+<link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 <meta name="twitter:title" content="勇闖地監 | WeightPlay" />
     <meta name="twitter:description" content="30 關動作生存戰役：撐過倒數、清除波次或擊敗首領。收集經驗水晶選擇法術，培養可重置的天賦路線。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-crystal-survivor-otter-cover-v26.webp" />
@@ -223,7 +224,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-crystal-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261011-crystal-joystick-v43";
+          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
           script.dataset.crystalGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -265,7 +266,7 @@
 
       <div class="game-info-section game-info-parent"><h3>玩家與存檔說明</h3><p>關卡與天賦儲存在目前瀏覽器；清除瀏覽器資料會移除存檔。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>每一關的目標是什麼？</dt><dd>關卡會顯示目標：撐到倒數結束、清除 3 或 5 波，或在時間結束前擊敗首領。第一關 45 秒，每關最長 3 分鐘。</dd></div><div><dt>魔法會自動攻擊嗎？</dt><dd>會。移動閃避並收集經驗水晶；升級時選擇法術，魔法會自動鎖定敵人攻擊。</dd></div><div><dt>進度會保存嗎？</dt><dd>關卡進度與天賦會保存在此瀏覽器；清除瀏覽器資料會移除存檔。</dd></div><div><dt>持續生效的天賦怎麼運作？</dt><dd>戰鬥經驗會提升冒險等級並提供天賦點。達成分支前置條件後可配點；重置會退回已分配點數，方便重新選擇。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>更多相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="獸王守衛遊戲海報" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>獸王守衛</strong><span>《獸王守衛》是一套以自由改造路線為核心的英雄塔防戰役。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" alt="星珠要塞遊戲海報" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>星珠要塞</strong><span>《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的防守戰役。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-rift-salvage/"><img src="/assets/interface7-redrawn/animal-rift-salvage.webp" alt="裂隙回收隊遊戲海報" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>裂隙回收隊</strong><span>引導奧拉的月輪挑戰 30 個星界區域，先回收小型殘骸成長，再救援核心、超越對手並收回王冠遺物。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="beast-tactician" href="/zh-tw/games/beast-tactician/"><span class="game-info-related-poster"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" data-final-src="/assets/weightplay-logo.png" alt="獸王守衛" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">獸王守衛</strong><span>《獸王守衛》是一套以自由改造路線為核心的英雄塔防戰役。</span></span></a><a class="game-info-related-card" data-game-id="animal-orb-fortress" href="/zh-tw/games/animal-orb-fortress/"><span class="game-info-related-poster"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" data-final-src="/assets/weightplay-logo.png" alt="星珠要塞" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">星珠要塞</strong><span>《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的防守戰役。</span></span></a><a class="game-info-related-card" data-game-id="animal-rift-salvage" href="/zh-tw/games/animal-rift-salvage/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-rift-salvage.webp" data-final-src="/assets/weightplay-logo.png" alt="裂隙回收隊" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">裂隙回收隊</strong><span>引導奧拉的月輪挑戰 30 個星界區域，先回收小型殘骸成長，再救援核心、超越對手並收回王冠遺物。</span></span></a></div></div>
     </div>
   </section>
 </body>
