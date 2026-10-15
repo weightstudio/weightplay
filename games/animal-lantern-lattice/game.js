@@ -13,51 +13,147 @@
 
   const paths = [
     { titleKey: "stage1Title", arcKey: "arc1", target: ["owl", "fox", "otter"], ruleKey: "straightRule", rewardKey: "stageReward" },
-    { titleKey: "stage2Title", arcKey: "arc1", target: ["rabbit", "turtle", "panda"], ruleKey: "straightRule", rewardKey: "stageReward" },
-    { titleKey: "stage3Title", arcKey: "arc1", target: ["fox", "otter", "panda"], ruleKey: "straightRule", rewardKey: "stageReward" },
-    { titleKey: "stage4Title", arcKey: "arc1", target: ["owl", "rabbit", "turtle", "panda"], ruleKey: "straightRule", rewardKey: "stageReward" },
-    { titleKey: "stage5Title", arcKey: "arc1", target: ["owl", "fox", "otter", "panda"], reverse: true, checkpoint: true, ruleKey: "reverseRule", rewardKey: "checkpointReward1" },
+    { titleKey: "stage2Title", arcKey: "arc1", target: ["rabbit", "turtle", "panda"], reverse: true, ruleKey: "reverseRule", rewardKey: "stageReward" },
+    { titleKey: "stage3Title", arcKey: "arc1", target: ["fox", "otter", "panda"], clueSteps: [[0,2],[1,2]], ruleKey: "straightRule", rewardKey: "stageReward" },
+    { titleKey: "stage4Title", arcKey: "arc1", target: ["owl", "rabbit", "turtle", "panda"], clueSteps: [[0,2],[1,2],[2,3]], ruleKey: "straightRule", rewardKey: "stageReward" },
+    { titleKey: "stage5Title", arcKey: "arc1", target: ["owl", "fox", "otter", "panda"], clueSteps: [[0,1],[0,2],[1,3]], reverse: true, checkpoint: true, ruleKey: "reverseRule", rewardKey: "checkpointReward1" },
     { titleKey: "stage6Title", arcKey: "arc2", target: ["rabbit", "owl", "turtle"], decoy: "fox", ruleKey: "decoyRule", rewardKey: "stageReward" },
-    { titleKey: "stage7Title", arcKey: "arc2", target: ["fox", "panda", "otter", "rabbit"], decoy: "turtle", ruleKey: "decoyRule", rewardKey: "stageReward" },
-    { titleKey: "stage8Title", arcKey: "arc2", target: ["turtle", "owl", "panda"], decoy: "fox", ruleKey: "decoyRule", rewardKey: "stageReward" },
-    { titleKey: "stage9Title", arcKey: "arc2", target: ["otter", "rabbit", "fox", "turtle"], decoy: "panda", ruleKey: "decoyRule", rewardKey: "stageReward" },
-    { titleKey: "stage10Title", arcKey: "arc2", target: ["owl", "panda", "rabbit", "otter"], decoy: "turtle", checkpoint: true, ruleKey: "decoyRule", rewardKey: "checkpointReward2" },
+    { titleKey: "stage7Title", arcKey: "arc2", target: ["fox", "panda", "otter", "rabbit"], clueSteps: [[0,1],[0,2],[1,3]], decoy: "turtle", ruleKey: "decoyRule", rewardKey: "stageReward" },
+    { titleKey: "stage8Title", arcKey: "arc2", target: ["turtle", "owl", "panda"], clueSteps: [[0,2],[1,2]], decoy: "fox", ruleKey: "decoyRule", rewardKey: "stageReward" },
+    { titleKey: "stage9Title", arcKey: "arc2", target: ["otter", "rabbit", "fox", "turtle"], clueSteps: [[0,3],[0,1],[1,2]], decoy: "panda", ruleKey: "decoyRule", rewardKey: "stageReward" },
+    { titleKey: "stage10Title", arcKey: "arc2", target: ["owl", "panda", "rabbit", "otter"], clueSteps: [[0,3],[1,3],[0,1]], decoy: "turtle", checkpoint: true, ruleKey: "decoyRule", rewardKey: "checkpointReward2" },
     { titleKey: "stage11Title", arcKey: "arc3", target: ["owl", "fox", "owl", "otter"], echoId: "owl", ruleKey: "echoRule", rewardKey: "stageReward" },
-    { titleKey: "stage12Title", arcKey: "arc3", target: ["rabbit", "turtle", "panda", "turtle"], echoId: "turtle", ruleKey: "echoRule", rewardKey: "stageReward" },
-    { titleKey: "stage13Title", arcKey: "arc3", target: ["fox", "otter", "panda", "otter"], echoId: "otter", ruleKey: "echoRule", rewardKey: "stageReward" },
-    { titleKey: "stage14Title", arcKey: "arc3", target: ["panda", "rabbit", "panda", "turtle"], echoId: "panda", ruleKey: "echoRule", rewardKey: "stageReward" },
-    { titleKey: "stage15Title", arcKey: "arc3", target: ["owl", "rabbit", "turtle", "owl", "panda"], echoId: "owl", checkpoint: true, ruleKey: "echoRule", rewardKey: "checkpointReward3" },
+    { titleKey: "stage12Title", arcKey: "arc3", target: ["rabbit", "turtle", "panda", "turtle"], clueSteps: [[0,1],[0,2],[1,3],[2,3]], echoId: "turtle", ruleKey: "echoRule", rewardKey: "stageReward" },
+    { titleKey: "stage13Title", arcKey: "arc3", target: ["fox", "otter", "panda", "otter"], clueSteps: [[0,2],[1,2],[2,3]], echoId: "otter", ruleKey: "echoRule", rewardKey: "stageReward" },
+    { titleKey: "stage14Title", arcKey: "arc3", target: ["panda", "rabbit", "panda", "turtle"], clueSteps: [[0,1],[0,2],[1,3]], echoId: "panda", ruleKey: "echoRule", rewardKey: "stageReward" },
+    { titleKey: "stage15Title", arcKey: "arc3", target: ["owl", "rabbit", "turtle", "owl", "panda"], clueSteps: [[0,3],[0,1],[1,2],[3,4]], echoId: "owl", checkpoint: true, ruleKey: "echoRule", rewardKey: "checkpointReward3" },
     { titleKey: "stage16Title", arcKey: "arc4", target: ["fox", "rabbit", "otter", "panda"], reverse: true, ruleKey: "reverseRule", rewardKey: "stageReward" },
-    { titleKey: "stage17Title", arcKey: "arc4", target: ["turtle", "panda", "owl"], reverse: true, ruleKey: "reverseRule", rewardKey: "stageReward" },
-    { titleKey: "stage18Title", arcKey: "arc4", target: ["otter", "fox", "rabbit", "turtle"], reverse: true, ruleKey: "reverseRule", rewardKey: "stageReward" },
-    { titleKey: "stage19Title", arcKey: "arc4", target: ["panda", "owl", "otter", "rabbit"], reverse: true, ruleKey: "reverseRule", rewardKey: "stageReward" },
-    { titleKey: "stage20Title", arcKey: "arc4", target: ["rabbit", "fox", "turtle", "panda", "owl"], reverse: true, checkpoint: true, ruleKey: "reverseRule", rewardKey: "checkpointReward4" },
+    { titleKey: "stage17Title", arcKey: "arc4", target: ["turtle", "panda", "owl"], clueSteps: [[0,2],[1,2]], reverse: true, ruleKey: "reverseRule", rewardKey: "stageReward" },
+    { titleKey: "stage18Title", arcKey: "arc4", target: ["otter", "fox", "rabbit", "turtle"], clueSteps: [[0,1],[0,2],[1,3]], reverse: true, ruleKey: "reverseRule", rewardKey: "stageReward" },
+    { titleKey: "stage19Title", arcKey: "arc4", target: ["panda", "owl", "otter", "rabbit"], clueSteps: [[0,3],[0,1],[1,2]], reverse: true, ruleKey: "reverseRule", rewardKey: "stageReward" },
+    { titleKey: "stage20Title", arcKey: "arc4", target: ["rabbit", "fox", "turtle", "panda", "owl"], clueSteps: [[0,2],[1,3],[2,4],[0,1]], reverse: true, checkpoint: true, ruleKey: "reverseRule", rewardKey: "checkpointReward4" },
     { titleKey: "stage21Title", arcKey: "arc5", target: ["owl", "fox", "owl", "turtle"], echoId: "owl", decoy: "panda", ruleKey: "decoyEchoRule", rewardKey: "stageReward" },
-    { titleKey: "stage22Title", arcKey: "arc5", target: ["rabbit", "otter", "panda", "otter", "fox"], echoId: "otter", decoy: "turtle", ruleKey: "decoyEchoRule", rewardKey: "stageReward" },
-    { titleKey: "stage23Title", arcKey: "arc5", target: ["turtle", "owl", "turtle", "panda"], echoId: "turtle", decoy: "fox", ruleKey: "decoyEchoRule", rewardKey: "stageReward" },
-    { titleKey: "stage24Title", arcKey: "arc5", target: ["panda", "fox", "rabbit", "fox", "otter"], echoId: "fox", decoy: "owl", ruleKey: "decoyEchoRule", rewardKey: "stageReward" },
-    { titleKey: "stage25Title", arcKey: "arc5", target: ["otter", "rabbit", "otter", "turtle", "panda"], echoId: "otter", decoy: "fox", checkpoint: true, ruleKey: "decoyEchoRule", rewardKey: "checkpointReward5" },
+    { titleKey: "stage22Title", arcKey: "arc5", target: ["rabbit", "otter", "panda", "otter", "fox"], clueSteps: [[0,2],[1,3],[2,4],[0,1]], echoId: "otter", decoy: "turtle", ruleKey: "decoyEchoRule", rewardKey: "stageReward" },
+    { titleKey: "stage23Title", arcKey: "arc5", target: ["turtle", "owl", "turtle", "panda"], clueSteps: [[0,2],[1,2],[2,3],[0,1]], echoId: "turtle", decoy: "fox", ruleKey: "decoyEchoRule", rewardKey: "stageReward" },
+    { titleKey: "stage24Title", arcKey: "arc5", target: ["panda", "fox", "rabbit", "fox", "otter"], clueSteps: [[0,2],[1,3],[2,4],[0,1]], echoId: "fox", decoy: "owl", ruleKey: "decoyEchoRule", rewardKey: "stageReward" },
+    { titleKey: "stage25Title", arcKey: "arc5", target: ["otter", "rabbit", "otter", "turtle", "panda"], clueSteps: [[0,2],[1,3],[0,1],[3,4]], echoId: "otter", decoy: "fox", checkpoint: true, ruleKey: "decoyEchoRule", rewardKey: "checkpointReward5" },
     { titleKey: "stage26Title", arcKey: "arc6", target: ["owl", "panda", "owl", "rabbit"], reverse: true, echoId: "owl", decoy: "fox", ruleKey: "masteryRule", rewardKey: "stageReward" },
-    { titleKey: "stage27Title", arcKey: "arc6", target: ["fox", "turtle", "panda", "turtle", "otter"], reverse: true, echoId: "turtle", decoy: "rabbit", ruleKey: "masteryRule", rewardKey: "stageReward" },
-    { titleKey: "stage28Title", arcKey: "arc6", target: ["rabbit", "otter", "rabbit", "owl", "panda"], reverse: true, echoId: "rabbit", decoy: "turtle", ruleKey: "masteryRule", rewardKey: "stageReward" },
-    { titleKey: "stage29Title", arcKey: "arc6", target: ["panda", "fox", "panda", "turtle", "owl"], reverse: true, echoId: "panda", decoy: "otter", ruleKey: "masteryRule", rewardKey: "stageReward" },
-    { titleKey: "stage30Title", arcKey: "arc6", target: ["turtle", "rabbit", "turtle", "fox", "panda", "owl"], reverse: true, echoId: "turtle", decoy: "otter", checkpoint: true, ruleKey: "masteryRule", rewardKey: "checkpointReward6" },
+    { titleKey: "stage27Title", arcKey: "arc6", target: ["fox", "turtle", "panda", "turtle", "otter"], clueSteps: [[0,2],[1,3],[2,4],[0,1]], reverse: true, echoId: "turtle", decoy: "rabbit", ruleKey: "masteryRule", rewardKey: "stageReward" },
+    { titleKey: "stage28Title", arcKey: "arc6", target: ["rabbit", "otter", "rabbit", "owl", "panda"], clueSteps: [[0,3],[0,1],[1,2],[3,4]], reverse: true, echoId: "rabbit", decoy: "turtle", ruleKey: "masteryRule", rewardKey: "stageReward" },
+    { titleKey: "stage29Title", arcKey: "arc6", target: ["panda", "fox", "panda", "turtle", "owl"], clueSteps: [[0,2],[1,3],[2,4],[0,1]], reverse: true, echoId: "panda", decoy: "otter", ruleKey: "masteryRule", rewardKey: "stageReward" },
+    { titleKey: "stage30Title", arcKey: "arc6", target: ["turtle", "rabbit", "turtle", "fox", "panda", "owl"], clueSteps: [[0,2],[1,3],[2,4],[3,5],[0,1]], reverse: true, echoId: "turtle", decoy: "otter", checkpoint: true, ruleKey: "masteryRule", rewardKey: "checkpointReward6" },
   ];
 
   const routeLocaleMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const routeSegment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const routeLocale = routeLocaleMap[routeSegment] || null;
   const progressKey = "weightplay-animal-lantern-lattice-progress-v2";
-  const campaignBestKey = "weightplay-animal-lantern-lattice-best-v3";
+  const campaignBestKey = "weightplay-animal-lantern-lattice-best-v4";
   // v1 counted incomplete prompts as checks. Keep it in storage, but start a
   // clean record for the new complete-chain-only score so star ranks are fair.
-  const stageBestKey = "weightplay-animal-lantern-lattice-stage-best-v2";
+  const stageBestKey = "weightplay-animal-lantern-lattice-stage-best-v3";
+  // Old scores remain stored under their original keys. New clue definitions
+  // use fresh scoreboards; cleared/unlocked progress is never reset.
+  const spanCopy = {
+    en: ["{previous} is {steps} slots before {name}.", "An arrow without a number means the next slot. +2 leaves one lantern between; +3 leaves two. Wind-turn reads every arrow backward. Swap filled slots to test a plan for free."],
+    "zh-Hant": ["{previous} 在 {name} 前 {steps} 格。", "無數字箭頭表示緊鄰下一格；+2 中間隔一盞燈，+3 隔兩盞。風轉時所有箭頭反向。可免費交換已填燈位試排。"],
+    "zh-Hans": ["{previous} 在 {name} 前 {steps} 格。", "无数字箭头表示紧邻下一格；+2 中间隔一盏灯，+3 隔两盏。风转时所有箭头反向。可免费交换已填灯位试排。"],
+    ja: ["{previous}は{name}の{steps}マス前です。", "数字なしの矢印は隣のマス。+2は間に1つ、+3は2つの灯りを置きます。風向きが逆なら矢印も逆読み。埋まったマスは無料で交換できます。"],
+    ko: ["{previous}: {name}보다 {steps}칸 앞.", "숫자 없는 화살표는 바로 다음 칸이에요. +2는 사이에 등불 하나, +3은 둘을 둡니다. 역풍에서는 화살표를 거꾸로 읽어요. 채운 칸은 무료로 교환할 수 있어요."],
+    es: ["{previous} está {steps} posiciones antes de {name}.", "Sin número: casilla siguiente. +2 deja una luz entre ambas; +3 deja dos. El viento invierte todas las flechas. Intercambia casillas llenas gratis para probar tu plan."],
+    "pt-BR": ["{previous} fica {steps} posições antes de {name}.", "Sem número: próxima posição. +2 deixa uma luz entre elas; +3 deixa duas. O vento inverte todas as setas. Troque posições preenchidas de graça para testar seu plano."],
+    fr: ["{previous} est {steps} cases avant {name}.", "Sans nombre : case suivante. +2 laisse une lumière entre les deux ; +3 en laisse deux. Le vent inverse toutes les flèches. Échangez gratuitement les cases remplies pour tester votre idée."],
+    de: ["{previous} steht {steps} Plätze vor {name}.", "Ohne Zahl: nächster Platz. Bei +2 bleibt ein Licht dazwischen, bei +3 zwei. Bei Gegenwind gelten alle Pfeile rückwärts. Tausche belegte Plätze kostenlos zum Ausprobieren."],
+    it: ["{previous} è {steps} caselle prima di {name}.", "Senza numero: casella successiva. +2 lascia una luce in mezzo; +3 ne lascia due. Il vento inverte tutte le frecce. Scambia gratuitamente le caselle piene per provare un'idea."],
+    ru: ["{previous} на {steps} позиции раньше {name}.", "Без числа — соседняя ячейка. +2 оставляет между ними один огонь, +3 — два. Ветер разворачивает все стрелки. Заполненные ячейки можно менять местами без проверки."],
+    hi: ["{previous}, {name} से {steps} खाने पहले है।", "बिना अंक का तीर: अगला खाना। +2 में बीच में एक दीप, +3 में दो दीप रखें। उलटी हवा में सभी तीर उलटे पढ़ें। भरे खाने मुफ्त में बदलकर अपनी योजना आज़माएँ।"],
+    ar: ["{previous} يسبق {name} بمقدار {steps} خانات.", "السهم بلا رقم يعني الخانة التالية. +2 يترك فانوسًا واحدًا بينهما، و+3 يترك اثنين. الرياح تعكس جميع الأسهم. بدّل الخانات الممتلئة مجانًا لاختبار خطتك."],
+  };
   const state = {
     locale: routeLocale || "en", path: 0, chain: [], motionSlot: null, sessionChecks: 0, checks: 0,
     screen: "main", campaignRun: false, lastResultCampaign: false,
     focusedClue: null, errorSlot: -1, verifiedPrefix: 0,
+    swapMode: false, swapSlot: null,
   };
+  // Game-owned interaction UI. Keep the shared shell and every route's SEO intact.
+  const editCopy = {
+    en: ["Swap lights", "Choose two filled slots to exchange their lights. No check is used.", "Choose the second light.", "Lights exchanged. Compare the glowing links before checking."],
+    "zh-Hant": ["交換燈位", "選兩個已填格交換燈影，不計檢查次數。", "再選一盞要交換的燈。", "燈位已交換，先比對亮起的連結再檢查。"],
+    "zh-Hans": ["交换灯位", "选两个已填格交换灯影，不计检查次数。", "再选一盏要交换的灯。", "灯位已交换，先比对亮起的连结再检查。"],
+    ja: ["灯りを交換", "埋まった2つのマスを選ぶと交換できます。確認回数は増えません。", "交換するもう1つの灯りを選んでください。", "交換しました。光ったつながりを比べてから確認しましょう。"],
+    ko: ["등불 교환", "채워진 두 칸을 선택해 교환하세요. 확인 횟수는 늘지 않아요.", "교환할 두 번째 등불을 선택하세요.", "교환했어요. 빛나는 연결을 비교한 뒤 확인하세요."],
+    es: ["Intercambiar luces", "Elige dos casillas llenas para intercambiarlas sin gastar comprobaciones.", "Elige la segunda luz.", "Luces intercambiadas. Compara los enlaces iluminados antes de comprobar."],
+    "pt-BR": ["Trocar luzes", "Escolha duas posições preenchidas para trocar sem gastar verificações.", "Escolha a segunda luz.", "Luzes trocadas. Compare as ligações acesas antes de verificar."],
+    fr: ["Échanger les lumières", "Choisissez deux cases remplies pour les échanger sans vérification.", "Choisissez la deuxième lumière.", "Lumières échangées. Comparez les liens allumés avant de vérifier."],
+    de: ["Lichter tauschen", "Wähle zwei gefüllte Plätze zum Tauschen. Das zählt nicht als Prüfung.", "Wähle das zweite Licht.", "Lichter getauscht. Vergleiche die leuchtenden Verbindungen vor der Prüfung."],
+    it: ["Scambia le luci", "Scegli due caselle piene per scambiarle senza usare verifiche.", "Scegli la seconda luce.", "Luci scambiate. Confronta i collegamenti accesi prima di verificare."],
+    ru: ["Обменять огни", "Выберите две заполненные ячейки для обмена без проверки.", "Выберите второй огонь.", "Огни обменены. Сравните светящиеся связи перед проверкой."],
+    hi: ["दीप बदलें", "दो भरे खाने चुनकर दीप बदलें। जाँच की गिनती नहीं बढ़ेगी।", "दूसरा दीप चुनें।", "दीप बदल गए। जाँच से पहले चमकते संबंधों की तुलना करें।"],
+    ar: ["تبديل الفوانيس", "اختر خانتين ممتلئتين لتبديل الفانوسين دون احتساب فحص.", "اختر الفانوس الثاني.", "تم التبديل. قارن الروابط المضيئة قبل الفحص."],
+  };
+  const editText = (index) => (editCopy[state.locale] || editCopy.en)[index];
+  const routeStyle = document.createElement("style");
+  routeStyle.textContent = `
+    #battleScreen #resultScreen[hidden]{display:none!important}
+    #battleContent .clue-text{color:#edf2ed;opacity:1}
+    #battleContent .clue-pair .chain-icon{width:32px;height:32px}
+    #battleContent .clue-link{border-color:#607795}
+    #battleContent .clue-link.is-linked{border-color:#9de7c5;background:#194b42}
+    #battleContent .chain-card>strong{flex-wrap:nowrap;min-height:30px}
+    .route-edit-toggle{margin-inline-start:auto;min-height:30px;max-width:56%;padding:3px 7px;border:1px solid #8ba0b6;border-radius:3px;background:#213c54;color:#f6f1df;font-size:11px;line-height:1.15;transition:background-color .16s,border-color .16s}
+    .route-edit-toggle[aria-pressed=true]{border-color:#ffe08a;background:#685326;color:#fff4ca}
+    #battleContent .chain-slot.is-swap-picked{outline:2px solid #ffe08a;outline-offset:-3px;background:#685326}
+    #battleContent .chain-slot.is-linked-edge:before{background:#9de7c5;box-shadow:0 0 7px #9de7c5}
+    #battleContent .chain-slot.is-unlinked-edge:before{background:#6688ae;box-shadow:none}
+    #battleContent .chain-slot.is-clue-focus{border-color:#ffe08a}
+    #battleContent .lantern-choice{position:relative;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;gap:2px;padding:8px;background:linear-gradient(150deg,#284866,#162b44);border-color:#7693b0}
+    #battleContent .lantern-choice .lantern-icon{width:64px;height:64px;align-self:center;filter:drop-shadow(0 5px 3px #0006)}
+    #battleContent .lantern-choice b{font-size:13px;line-height:1.15;align-self:end}
+    #battleContent .lantern-choice.is-selected{background:#142b36;border-color:#65938d}
+    #battleContent .lantern-choice:disabled{opacity:.6}
+    #battleContent .lantern-choice .lantern-used{position:absolute;inset-inline-end:6px;top:5px}
+    .route-star-budget{color:#ffe08a;font-size:12px;letter-spacing:2px;margin-inline-start:7px}
+    .clue-compact-hint{display:none}
+    @media(prefers-reduced-motion:reduce){.route-edit-toggle{transition:none}}
+    @media(min-width:700px) and (max-height:560px){
+      #battleContent{grid-template-rows:minmax(42px,1fr) 76px 94px 44px;gap:4px}
+      #battleContent .clue-card{grid-column:1;grid-row:1/4}
+      #battleContent .battle-copy{grid-column:2;grid-row:1;font-size:11px}
+      #battleContent .battle-rule,#battleContent .battle-hint{font-size:11px;line-height:1.2}
+      #battleContent .chain-card{grid-column:2;grid-row:2;padding:4px}
+      #battleContent .chain-list{height:34px}
+      #battleContent .lantern-grid{grid-column:2;grid-row:3}
+      #battleContent .battle-status{grid-column:1;grid-row:4}
+      #battleContent .battle-actions{grid-column:2;grid-row:4}
+      #battleContent .clue-detailed-hint{display:none}
+      #battleContent .clue-compact-hint{display:inline}
+      #battleContent .lantern-choice{grid-template-columns:auto minmax(0,1fr);grid-template-rows:1fr;min-height:0;padding:4px}
+      #battleContent .lantern-choice .lantern-icon{width:38px;height:38px}
+      #battleContent .lantern-choice b{align-self:center;font-size:11px}
+      #battleContent .clue-pair .chain-icon{width:25px;height:25px}
+      .route-edit-toggle{font-size:10px;min-height:26px}
+    }
+    @media(orientation:landscape) and (max-height:460px){
+      #battleScreen #resultScreen:not([hidden]){display:grid!important;grid-template-columns:80px minmax(0,1fr);grid-template-rows:28px 28px 28px minmax(32px,1fr) 28px 44px;align-content:stretch;justify-content:stretch;align-items:center;gap:4px 10px;padding:8px!important}
+      #resultScreen .result-orla{grid-column:1;grid-row:1/6;width:80px;max-height:100px;align-self:center}
+      #resultScreen .result-spark{display:none}
+      #resultScreen h2{grid-column:2;grid-row:1;font-size:22px;line-height:1.1}
+      #resultScreen #resultRating{grid-column:2;grid-row:2;font-size:24px;line-height:1}
+      #resultScreen #resultRoute{grid-column:2;grid-row:3;min-height:26px}
+      #resultScreen #resultText{grid-column:2;grid-row:4;font-size:12px;line-height:1.25}
+      #resultScreen .skill-report{grid-column:2;grid-row:5;display:flex;justify-content:center;align-items:center;gap:8px;width:100%;padding:3px 6px;font-size:12px;line-height:1}
+      #resultScreen .skill-report strong{flex:0 0 70px;font-size:8px;line-height:1.1}
+      #resultScreen .skill-report span{font-size:10px;line-height:1.1}
+      #resultScreen .result-actions{grid-column:1/-1;grid-row:6;width:100%;max-width:none;align-self:end}
+    }
+  `;
+  document.head.append(routeStyle);
   const $ = (id) => document.getElementById(id);
+  // A Stage touch can finish after Battle has replaced its hit target. Require
+  // a fresh pointer gesture for a lantern choice; do not charge an unseen move.
+  let pointerSequence = 0;
+  let battleEntryPointer = -1;
+  document.addEventListener("pointerdown", () => { pointerSequence += 1; }, { capture: true });
   const setBattleStatus = (message, feedback = "neutral") => {
     const status = $("battleStatus");
     status.textContent = message;
@@ -111,13 +207,17 @@
   };
   const linkedClues = () => {
     const item = paths[state.path];
+    const clues = routeClues(item, state.path);
     const available = new Map();
-    state.chain.slice(1).forEach((id, index) => {
-      const key = `${state.chain[index]}:${id}`;
-      available.set(key, (available.get(key) || 0) + 1);
+    new Set(clues.map(({ distance }) => distance)).forEach((distance) => {
+      state.chain.forEach((id, index) => {
+        if (index + distance >= state.chain.length) return;
+        const key = `${distance}:${id}:${state.chain[index + distance]}`;
+        available.set(key, (available.get(key) || 0) + 1);
+      });
     });
-    return routeClues(item, state.path).map(({ previous, name }) => {
-      const key = item.reverse ? `${name}:${previous}` : `${previous}:${name}`;
+    return clues.map(({ previous, name, distance }) => {
+      const key = item.reverse ? `${distance}:${name}:${previous}` : `${distance}:${previous}:${name}`;
       const count = available.get(key) || 0;
       if (count) available.set(key, count - 1);
       return count > 0;
@@ -128,7 +228,7 @@
     state.focusedClue = state.focusedClue === index ? null : index;
     renderBattle();
     const clue = routeClues(paths[state.path], state.path)[index];
-    setBattleStatus(t("clueFollow", { previous: t(clue.previous), name: t(clue.name) }), "hint");
+    setBattleStatus(clueText(clue), "hint");
     audio?.play("feedback.hint");
   };
   let sharedFrame = null;
@@ -145,6 +245,10 @@
     Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
     return value;
   };
+  const spanHint = () => (spanCopy[state.locale] || spanCopy.en)[1];
+  const clueText = ({ previous, name, distance = 1 }) => distance === 1
+    ? t("clueFollow", { previous: t(previous), name: t(name) })
+    : (spanCopy[state.locale] || spanCopy.en)[0].replaceAll("{previous}", t(previous)).replaceAll("{name}", t(name)).replaceAll("{steps}", String(distance));
   const icon = (lantern, className) => {
     const node = document.createElement("span");
     node.className = className;
@@ -213,7 +317,8 @@
   };
   const expectedTarget = (item) => item.reverse ? [...item.target].reverse() : item.target;
   const routeClues = (item, seed) => {
-    const clues = item.target.slice(1).map((name, index) => ({ previous: item.target[index], name }));
+    const steps = item.clueSteps || item.target.slice(1).map((_, index) => [index, index + 1]);
+    const clues = steps.map(([from, to]) => ({ previous: item.target[from], name: item.target[to], distance: to - from }));
     let value = (seed + 1) * 2654435761 >>> 0;
     const random = () => {
       value ^= value << 13;
@@ -335,22 +440,39 @@
     const target = expectedTarget(item);
     $("roundLabel").textContent = t("stageRound", { n: state.path + 1, total: paths.length });
     $("battleRule").textContent = t(item.ruleKey, ruleVars(item));
-    $("battleHint").textContent = t("clueHint");
-    $("sessionChecks").textContent = String(state.sessionChecks);
+    const hint = $("battleHint");
+    if (item.clueSteps) {
+      const detailed = Object.assign(document.createElement("span"), { className: "clue-detailed-hint", textContent: spanHint() });
+      const compact = Object.assign(document.createElement("span"), { className: "clue-compact-hint", textContent: t("clueHint") });
+      compact.setAttribute("aria-hidden", "true"); hint.replaceChildren(detailed, compact);
+      hint.setAttribute("aria-label", spanHint()); hint.title = spanHint();
+    } else {
+      hint.textContent = t("clueHint"); hint.removeAttribute("aria-label"); hint.removeAttribute("title");
+    }
+    $("sessionChecks").textContent = String(state.checks);
+    const starBudget = document.createElement("span");
+    const availableStars = starCountForChecks(state.checks + 1);
+    starBudget.className = "route-star-budget";
+    starBudget.textContent = "★".repeat(availableStars) + "☆".repeat(3 - availableStars);
+    starBudget.setAttribute("role", "img");
+    starBudget.setAttribute("aria-label", t("starRating", { stars: availableStars }));
+    $("sessionChecks").append(starBudget);
     const clueList = $("clueList");
     const clueDeckKey = `${state.path}:${state.locale}`;
     if (clueList.dataset.deck !== clueDeckKey) {
-      clueList.replaceChildren(...routeClues(item, state.path).map(({ previous, name }, index) => {
+      clueList.replaceChildren(...routeClues(item, state.path).map(({ previous, name, distance }, index) => {
         const li = document.createElement("li");
         const button = document.createElement("button");
         button.type = "button"; button.className = "clue-link"; button.dataset.clueIndex = String(index);
+        button.dataset.clueDistance = String(distance);
         const visual = document.createElement("span"); visual.className = "clue-pair"; visual.dir = "ltr";
         const arrow = Object.assign(document.createElement("span"), { className: "clue-arrow", textContent: "→" });
+        if (distance > 1) arrow.style.width = "32px";
         arrow.setAttribute("aria-hidden", "true");
         visual.append(icon(lanterns.find((entry) => entry.id === previous), "chain-icon"), arrow,
           icon(lanterns.find((entry) => entry.id === name), "chain-icon"));
         const label = Object.assign(document.createElement("span"), { className: "clue-text",
-          textContent: t("clueFollow", { name: t(name), previous: t(previous) }) });
+          textContent: clueText({ previous, name, distance }) });
         button.append(visual, label);
         button.addEventListener("click", () => focusClue(index)); li.append(button);
         return li;
@@ -363,7 +485,8 @@
       button.classList.toggle("is-linked", joined[index]);
       button.classList.toggle("is-focused", state.focusedClue === index);
       button.setAttribute("aria-pressed", String(state.focusedClue === index));
-      button.querySelector(".clue-arrow").textContent = joined[index] ? "✓" : "→";
+      const distance = Number(button.dataset.clueDistance);
+      button.querySelector(".clue-arrow").textContent = `${joined[index] ? "✓" : item.reverse ? "←" : "→"}${distance > 1 ? ` +${distance}` : ""}`;
       if (joined[index] && !wasJoined) flash(button);
     });
     let meter = $("linkMeter");
@@ -377,22 +500,66 @@
     meter.classList.toggle("is-complete", linked === joined.length);
     $("chainList").parentElement.classList.toggle("is-ready", state.chain.length === target.length);
     const chainList = $("chainList");
+    let editButton = $("routeEditBtn");
+    if (!editButton) {
+      editButton = document.createElement("button"); editButton.id = "routeEditBtn";
+      editButton.type = "button"; editButton.className = "route-edit-toggle";
+      editButton.addEventListener("click", () => {
+        if (state.screen !== "battle") return;
+        state.swapMode = !state.swapMode; state.swapSlot = null;
+        renderBattle();
+        setBattleStatus(state.swapMode ? editText(1) : t("chainProgress", { count: state.chain.length, total: expectedTarget(paths[state.path]).length }), "hint");
+      });
+      chainList.parentElement.querySelector("strong").insertBefore(editButton, meter);
+    }
+    editButton.textContent = `↔ ${editText(0)}`;
+    editButton.setAttribute("aria-pressed", String(state.swapMode));
+    editButton.title = editText(1);
     chainList.setAttribute("aria-label", t("chainProgress", { count: state.chain.length, total: target.length }));
     if (chainList.children.length !== target.length) chainList.replaceChildren(...Array.from({ length: target.length }, (_, index) => {
       const slot = document.createElement("button"); slot.type = "button";
-      slot.dataset.chainSlot = String(index); slot.addEventListener("click", () => rewindChain(index));
+      slot.dataset.chainSlot = String(index); slot.addEventListener("click", () => {
+        if (!state.swapMode) { rewindChain(index); return; }
+        if (state.screen !== "battle" || !state.chain[index]) return;
+        if (state.swapSlot === null) {
+          state.swapSlot = index; renderBattle(); setBattleStatus(editText(2), "hint");
+        } else {
+          const first = state.swapSlot;
+          state.swapSlot = null;
+          [state.chain[first], state.chain[index]] = [state.chain[index], state.chain[first]];
+          state.errorSlot = -1; state.verifiedPrefix = 0;
+          renderBattle();
+          if (first !== index) {
+            flash(chainList.children[first]); flash(chainList.children[index]);
+            audio?.play("board.move"); setBattleStatus(editText(3), "hint");
+          } else setBattleStatus(editText(1), "hint");
+        }
+      });
       return slot;
     }));
+    const remainingEdges = new Map();
+    routeClues(item, state.path).filter(({ distance }) => distance === 1).forEach(({ previous, name }) => {
+      const key = item.reverse ? `${name}:${previous}` : `${previous}:${name}`;
+      remainingEdges.set(key, (remainingEdges.get(key) || 0) + 1);
+    });
     [...chainList.children].forEach((slot, index) => {
       const id = state.chain[index];
       const lantern = id && lanterns.find((entry) => entry.id === id);
       const changed = slot.dataset.lantern !== (id || "");
       slot.className = `chain-slot${lantern ? " has-light" : ""}${state.errorSlot === index ? " is-wrong" : ""}${index < state.verifiedPrefix ? " is-verified" : ""}`;
+      slot.classList.toggle("is-swap-picked", state.swapSlot === index);
+      if (lantern && index > 0) {
+        const key = `${state.chain[index - 1]}:${id}`;
+        const count = remainingEdges.get(key) || 0;
+        const edge = count > 0;
+        if (edge) remainingEdges.set(key, count - 1);
+        slot.classList.add(edge ? "is-linked-edge" : "is-unlinked-edge");
+      }
       slot.dataset.lantern = id || "";
       slot.disabled = !lantern;
       slot.setAttribute("aria-hidden", String(!lantern));
       if (lantern) {
-        slot.setAttribute("aria-label", t("undoLantern", { position: index + 1, name: t(lantern.key) }));
+        slot.setAttribute("aria-label", state.swapMode ? `${editText(0)}: ${index + 1} · ${t(lantern.key)}` : t("undoLantern", { position: index + 1, name: t(lantern.key) }));
       }
       if (changed || !slot.children.length) slot.replaceChildren(...(lantern ? [icon(lantern, "chain-icon")] : []),
         Object.assign(document.createElement("span"), { className: "chain-position", textContent: String(index + 1) }));
@@ -407,12 +574,13 @@
       button.className = "lantern-choice"; button.dataset.lantern = lantern.id;
       const count = document.createElement("span"); count.className = "lantern-used"; count.setAttribute("aria-hidden", "true");
       button.append(icon(lantern, "lantern-icon"), Object.assign(document.createElement("b"), { textContent: t(lantern.key) }), count);
-      button.addEventListener("click", () => chooseLantern(lantern.id));
+      button.addEventListener("click", (event) => chooseLantern(lantern.id, event));
       return button;
       }));
       grid.dataset.deck = clueDeckKey;
     }
     const focused = state.focusedClue === null ? null : routeClues(item, state.path)[state.focusedClue];
+    [...chainList.children].forEach((slot) => slot.classList.toggle("is-clue-focus", Boolean(focused && [focused.previous, focused.name].includes(slot.dataset.lantern))));
     grid.querySelectorAll(".lantern-choice").forEach((button) => {
       const id = button.dataset.lantern;
       const used = state.chain.filter((entry) => entry === id).length;
@@ -477,8 +645,8 @@
         guide.steps[4],
         guide.steps[5],
       ],
-      rules: `${t("guideRules")} ${t("clueHint")}`,
-      tips: t("guideTips"),
+      rules: `${t("guideRules")} ${spanHint()}`,
+      tips: `${t("guideTips")} ${spanHint()}`,
     };
   };
   const renderGuide = () => {
@@ -562,18 +730,21 @@
     state.chain = [];
     state.motionSlot = null;
     state.focusedClue = null;
+    state.swapMode = false; state.swapSlot = null;
     state.errorSlot = -1;
     state.verifiedPrefix = 0;
     state.checks = 0;
     state.campaignRun = campaign;
     state.lastResultCampaign = false;
     if (resetSession) state.sessionChecks = 0;
+    battleEntryPointer = pointerSequence;
     show("battle");
     renderBattle();
     setBattleStatus(t("chainProgress", { count: 0, total: expectedTarget(paths[state.path]).length }));
     track("path_start", { path: state.path + 1, arc: paths[state.path].arcKey });
   };
-  const chooseLantern = (id) => {
+  const chooseLantern = (id, event = null) => {
+    if (event?.detail > 0 && pointerSequence === battleEntryPointer) return;
     if (state.screen !== "battle" || !lanterns.some((lantern) => lantern.id === id)) return;
     const item = paths[state.path];
     const used = state.chain.filter((entry) => entry === id).length;
@@ -586,6 +757,7 @@
     state.chain.push(id);
     state.motionSlot = state.chain.length - 1;
     state.errorSlot = -1; state.verifiedPrefix = 0;
+    state.swapSlot = null;
     renderBattle();
     flyLight(id, source, $("chainList").children[state.chain.length - 1]);
     setBattleStatus(t(state.chain.length === expectedTarget(item).length ? "chainReady" : "chainProgress",
@@ -600,6 +772,7 @@
     state.chain = state.chain.slice(0, index);
     state.motionSlot = null;
     state.errorSlot = -1; state.verifiedPrefix = 0;
+    state.swapSlot = null;
     renderBattle();
     setBattleStatus(t("chainProgress", { count: state.chain.length, total: expectedTarget(paths[state.path]).length }));
     audio?.play("board.undo");
@@ -612,6 +785,7 @@
     state.chain = [];
     state.motionSlot = null;
     state.errorSlot = -1; state.verifiedPrefix = 0;
+    state.swapSlot = null;
     renderBattle();
     setBattleStatus(t("chainProgress", { count: 0, total: expectedTarget(paths[state.path]).length }));
     if (hadLights) audio?.play("board.undo");
@@ -735,6 +909,10 @@
     stageCanvas?.setAttribute("data-wp-standard-stage-screen", "");
     battleScreen?.setAttribute("data-wp-logical-battle-canvas", "");
     battleScreen?.setAttribute("data-wp-canvas-max-width", "920");
+    // Use the shared scaler's compact envelope instead of shrinking a 788px
+    // portrait reference into landscape and leaving unreadable controls.
+    battleScreen?.setAttribute("data-wp-battle-landscape-width", "760");
+    battleScreen?.setAttribute("data-wp-battle-landscape-height", "334");
 
     const markup = [
       '<link rel="stylesheet" href="/src/stage-selector-standard.css" data-wp-stage-standard>',

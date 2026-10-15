@@ -2,18 +2,52 @@
   "use strict";
 
   const gameScriptUrl = document.currentScript?.src || document.baseURI;
+  const loadPanel = document.getElementById("loadingPanel");
+  const loadRetry = document.getElementById("sudokuLoadRetry");
+  const loadStatus = document.getElementById("sudokuLoadStatus");
+  const loadEvents = new AbortController();
+  const loadingCopy = {
+    en: ["Loading…", "Could not load the puzzle. Retry to load it again.", "Retry"],
+    "zh-Hant": ["載入中…", "謎題載入失敗，請重試。", "重試"],
+    "zh-Hans": ["加载中…", "谜题加载失败，请重试。", "重试"],
+    ja: ["読み込み中…", "パズルを読み込めませんでした。再試行してください。", "再試行"],
+    ko: ["불러오는 중…", "퍼즐을 불러오지 못했습니다. 다시 시도하세요.", "다시 시도"],
+    es: ["Cargando…", "No se pudo cargar el puzle. Vuelve a intentarlo.", "Reintentar"],
+    "pt-BR": ["Carregando…", "Não foi possível carregar. Tente novamente.", "Tentar novamente"],
+    fr: ["Chargement…", "Impossible de charger la grille. Réessayez.", "Réessayer"],
+    de: ["Wird geladen…", "Das Rätsel konnte nicht geladen werden. Bitte erneut versuchen.", "Erneut versuchen"],
+    it: ["Caricamento…", "Impossibile caricare il puzzle. Riprova.", "Riprova"],
+    ru: ["Загрузка…", "Не удалось загрузить головоломку. Повторите попытку.", "Повторить"],
+    hi: ["लोड हो रहा है…", "पहेली लोड नहीं हुई। फिर कोशिश करें।", "फिर कोशिश करें"],
+    ar: ["جارٍ التحميل…", "تعذّر تحميل اللغز. أعد المحاولة.", "إعادة المحاولة"],
+  };
+  const loadText = loadingCopy[document.documentElement.lang] || loadingCopy.en;
+  if (loadStatus) loadStatus.textContent = loadText[0];
+  if (loadRetry) {
+    loadRetry.textContent = loadText[2];
+    loadRetry.addEventListener("click", () => location.reload(), { signal: loadEvents.signal });
+  }
+  const failLoading = () => {
+    if (loadEvents.signal.aborted || !loadPanel) return;
+    loadPanel.dataset.state = "error";
+    loadPanel.setAttribute("aria-busy", "false");
+    if (loadStatus) loadStatus.textContent = loadText[1];
+    if (loadRetry) loadRetry.hidden = false;
+  };
+  window.addEventListener("pagehide", () => loadEvents.abort(), { once: true });
   const appendStyle = (href) => {
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = new URL(href, gameScriptUrl).href;
     document.head.appendChild(link);
+    return link;
   };
 
-  appendStyle("art.css?v=20260921-sudoku-block-scene-v1");
-  appendStyle("interface-7-cleanup.css?v=20261014-sudoku-short-landscape-canvas-i9-v1");
+  const artStyle = appendStyle("art.css?v=20261015-sudoku-runtime-contract-v25");
+  const layoutStyle = appendStyle("interface-7-cleanup.css?v=20261014-sudoku-short-landscape-canvas-i9-v1");
 
   const app = window.WPClassicLogic?.mount("sudoku");
-  if (!app) return;
+  if (!app) { failLoading(); return; }
 
   const root = app.root;
   const main = app.main;
@@ -30,6 +64,31 @@
   const resultMenu = root.querySelector("#resultMenu");
   const resultReplay = root.querySelector("#resultReplay");
   const resultClose = root.querySelector("#resultClose");
+  const firstStepsTemplate = document.createElement("template");
+  firstStepsTemplate.innerHTML = '<section class="sudoku-first-steps first-steps"><ol></ol></section>';
+  const firstSteps = firstStepsTemplate.content.firstElementChild;
+  const tutorialCopy = {
+    en: ["Pick an empty cell", "Check row, column and 3×3 box", "Enter 1–9 without repeats"],
+    "zh-Hant": ["選一個空格", "檢查行、列及 3×3 宮格", "輸入 1～9，不可重複"],
+    "zh-Hans": ["选一个空格", "检查行、列及 3×3 宫格", "输入 1～9，不可重复"],
+    ja: ["空きマスを選ぶ", "行・列・3×3を確認", "1～9を重複なく入れる"],
+    ko: ["빈칸 선택", "가로·세로·3×3 확인", "1~9를 중복 없이 입력"],
+    es: ["Elige una casilla vacía", "Revisa fila, columna y caja", "Pon 1–9 sin repetir"],
+    "pt-BR": ["Escolha uma casa vazia", "Confira linha, coluna e bloco", "Insira 1–9 sem repetir"],
+    fr: ["Choisissez une case vide", "Vérifiez ligne, colonne et bloc", "Entrez 1–9 sans doublon"],
+    de: ["Leeres Feld wählen", "Zeile, Spalte, Block prüfen", "1–9 ohne Wiederholung"],
+    it: ["Scegli una casella vuota", "Controlla riga, colonna e blocco", "Inserisci 1–9 senza doppioni"],
+    ru: ["Выберите пустую клетку", "Проверьте строку, столбец, блок", "Введите 1–9 без повторов"],
+    hi: ["खाली खाना चुनें", "पंक्ति, कॉलम और 3×3 जाँचें", "बिना दोहराए 1–9 भरें"],
+    ar: ["اختر خانة فارغة", "تحقّق من الصف والعمود والمربع", "أدخل 1–9 دون تكرار"],
+  };
+  const stepList = firstSteps.querySelector("ol");
+  const stepLabels = [1, 2, 3].map((number) => {
+    const item = document.createElement("li");
+    const badge = document.createElement("b"); badge.textContent = String(number); badge.setAttribute("aria-hidden", "true");
+    const label = document.createElement("span");
+    item.append(badge, label); stepList.append(item); return label;
+  });
 
   const copy = {
     en: { leaveTitle: "Leave this puzzle?", leaveText: "Your current board entries and undo history will be discarded. Saved preferences are not affected.", continue: "Continue Playing", main: "Return to Main" },
@@ -63,6 +122,10 @@
     if (leaveContinue) leaveContinue.textContent = t.continue;
     if (leaveMain) leaveMain.textContent = t.main;
     if (resultMenu) resultMenu.textContent = t.main;
+    const steps = tutorialCopy[localeKey()] || tutorialCopy.en;
+    stepLabels.forEach((label, index) => { label.textContent = steps[index]; });
+    const start = root.querySelector("#startButton");
+    if (start?.parentElement && firstSteps.nextSibling !== start) start.before(firstSteps);
     if (battleBack) {
       battleBack.setAttribute("aria-label", t.main);
       battleBack.title = t.main;
@@ -270,4 +333,26 @@
 
   window.addEventListener("weightplay:shell-sync", syncCopy);
   window.WeightPlayScreenFrame?.autoMountDocument?.();
+
+  // Reuse the shared loadingPanel/card, closing only after real required
+  // stylesheet, document and poster readiness. No minimum timer or fake percent.
+  const styleReady = (link) => link.sheet ? Promise.resolve() : new Promise((resolve, reject) => {
+    link.addEventListener("load", resolve, { once: true, signal: loadEvents.signal });
+    link.addEventListener("error", reject, { once: true, signal: loadEvents.signal });
+  });
+  const documentReady = document.readyState === "complete" ? Promise.resolve() : new Promise(resolve => {
+    window.addEventListener("load", resolve, { once: true, signal: loadEvents.signal });
+  });
+  Promise.all([styleReady(artStyle), styleReady(layoutStyle), documentReady, document.fonts?.ready])
+    .then(async () => {
+      const image = main?.querySelector(".wp-standard-main-poster img, .logic-poster img");
+      if (image?.decode) await image.decode();
+      if (!window.__weightPlayEdgeGuardInstalled) throw new Error("Shared edge guard did not become ready");
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      if (loadEvents.signal.aborted || !loadPanel) return;
+      syncCopy();
+      loadPanel.hidden = true;
+      loadPanel.classList.add("hidden");
+      loadPanel.setAttribute("aria-busy", "false");
+    }).catch(failLoading);
 })();

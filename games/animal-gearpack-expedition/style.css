@@ -192,3 +192,16 @@ body[data-wp-game-id="animal-gearpack-expedition"] #battleScreen .battle-header 
     align-content:start;
   }
 }
+
+/* Supplies retain a clear route to the bag opening. Pattern + border convey state without color alone. */
+.pack-cell.is-supply-lane{background:repeating-linear-gradient(90deg,#164c45 0 40%,#3c9f88 40% 60%,#164c45 60% 100%);border-style:solid}
+.pack-cell.is-supply-open{box-shadow:inset 0 3px 0 #9aefd1}
+.pack-cell.is-supply-blocked{background:repeating-linear-gradient(135deg,#582d31 0 4px,#301f25 4px 8px);border:2px dashed #ffb4a5}
+.pack-cell.is-supply-blocked .placed-item{filter:grayscale(.65)}
+.actor.is-attacking{animation:gearpack-strike .32s ease-in-out}
+.enemy.is-attacking{animation:gearpack-counter .32s ease-in-out}
+.actor.is-hit{animation:gearpack-contact .22s ease-out}
+@keyframes gearpack-strike{0%{transform:translateX(-4px)}50%{transform:translateX(14px) scale(1.04)}100%{transform:none}}
+@keyframes gearpack-counter{0%{transform:translateX(4px)}50%{transform:translateX(-14px) scale(1.04)}100%{transform:none}}
+@keyframes gearpack-contact{0%{filter:brightness(1.65) drop-shadow(0 0 7px #ffdc85);transform:translateX(3px)}100%{filter:drop-shadow(0 6px 6px #0008);transform:none}}
+@media(prefers-reduced-motion:reduce){.actor.is-attacking,.enemy.is-attacking,.actor.is-hit{animation:none}}

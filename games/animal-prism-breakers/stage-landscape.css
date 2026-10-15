@@ -257,7 +257,7 @@ body[data-wp-game-id="animal-prism-breakers"] #stageScreen.active-screen:not([hi
 }
 
 body[data-wp-game-id="animal-prism-breakers"] [data-wp-logical-stage-canvas] {
-  padding: 8px 8px calc(88px / var(--wp-stage-canvas-scale, 1) + 8px) !important;
+  padding: 8px 8px calc(max(56px, 88px / var(--wp-stage-canvas-scale, 1)) + 8px) !important;
 }
 
 body[data-wp-game-id="animal-prism-breakers"] .stage-canvas > .stage-tabs {
@@ -380,18 +380,22 @@ body[data-wp-game-id="animal-prism-breakers"] #battleScreen .battle-header.wp-ba
 /* Keep Stage title-free even during the frame's first layout after Battle
    returns, before the shared shell re-adopts its permanent header classes. */
 body[data-wp-game-id="animal-prism-breakers"] #stageScreen .stage-canvas {
-  grid-template-rows: 48px minmax(0, 1fr) 32px !important;
+  --prism-stage-control-track: max(48px, calc(48px * var(--wp-stage-canvas-inverse-scale, 1)));
+  grid-template-rows: var(--prism-stage-control-track) minmax(0, 1fr) auto !important;
 }
 
 body[data-wp-game-id="animal-prism-breakers"] #stageScreen .stage-header {
+  border: 0 !important;
+  --wp-frame-control-size: var(--prism-stage-control-track) !important;
+  --wp-frame-physical-control-size: var(--prism-stage-control-track) !important;
   box-sizing: border-box !important;
   display: grid !important;
-  grid-template-columns: 48px minmax(0, 1fr) 48px !important;
+  grid-template-columns: var(--prism-stage-control-track) minmax(0, 1fr) var(--prism-stage-control-track) !important;
   align-items: center !important;
   gap: 8px !important;
-  height: 48px !important;
-  min-height: 48px !important;
-  max-height: 48px !important;
+  height: var(--prism-stage-control-track) !important;
+  min-height: var(--prism-stage-control-track) !important;
+  max-height: var(--prism-stage-control-track) !important;
   padding: 0 4px !important;
 }
 
@@ -406,6 +410,19 @@ body[data-wp-game-id="animal-prism-breakers"] #stageScreen .stage-header > :is(
 
 @media (max-height: 500px) and (min-aspect-ratio: 3 / 2) {
   body[data-wp-game-id="animal-prism-breakers"] #stageScreen .stage-canvas {
-    grid-template-rows: 48px minmax(0, 1fr) 44px !important;
+    grid-template-rows: var(--prism-stage-control-track) minmax(0, 1fr) 44px !important;
   }
+}
+
+/* The actual Stage controls share the declared physical header track.
+   The existing Stage scaler owns inverse compensation and the rail keeps
+   the remaining flexible track, so enlarging the target never overlays it. */
+body[data-wp-game-id="animal-prism-breakers"] #stageScreen .stage-header :is(#stageBack, .wp-shell-settings-button) {
+  box-sizing: border-box !important;
+  width: var(--prism-stage-control-track) !important;
+  min-width: var(--prism-stage-control-track) !important;
+  max-width: var(--prism-stage-control-track) !important;
+  height: var(--prism-stage-control-track) !important;
+  min-height: var(--prism-stage-control-track) !important;
+  max-height: var(--prism-stage-control-track) !important;
 }

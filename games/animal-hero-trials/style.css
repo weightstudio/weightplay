@@ -114,7 +114,7 @@ body:not([data-screen="battle"]) #battleView {
    ready for future Team/Equipment work without inventing disabled controls. */
 body.wp-stage-select-active #stageView.wp-standard-stage-panel {
   display: grid !important;
-  grid-template-rows: 48px 112px 92px 48px minmax(0, 1fr) !important;
+  grid-template-rows: var(--wp-frame-control-size-physical,48px) 112px 92px 48px minmax(0, 1fr) !important;
   gap: 8px !important;
   padding: 8px !important;
   background: transparent;

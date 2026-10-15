@@ -1225,6 +1225,22 @@
     copy[language] ||= {};
     copy[language].fiaSkillEffect=description;
   }
+  const markDescriptions = {
+    en:"Deal {damage} damage to the nearest enemy; its next 3 automatic hits each deal +18 damage.",
+    "zh-Hant":"對最近敵人造成 {damage} 傷害，對該敵人的接下來 3 次自動攻擊各追加 18 傷害。",
+    "zh-Hans":"对最近敌人造成 {damage} 伤害，对该敌人的接下来 3 次自动攻击各追加 18 伤害。",
+    ja:"最寄りの敵に{damage}ダメージ。その敵への次の自動攻撃3回に各18ダメージ追加。",
+    ko:"가장 가까운 적에게 피해 {damage}. 해당 적을 향한 다음 자동 공격 3회에 각각 피해 +18.",
+    es:"Inflige {damage} de daño al enemigo más cercano; los próximos 3 ataques automáticos contra él causan +18 cada uno.",
+    "pt-BR":"Cause {damage} de dano ao inimigo mais próximo; os próximos 3 ataques automáticos contra ele causam +18 cada.",
+    fr:"Inflige {damage} dégâts à l’ennemi proche ; les 3 prochaines attaques automatiques contre lui infligent chacune +18 dégâts.",
+    de:"Dem nächsten Gegner {damage} Schaden zufügen; die nächsten 3 automatischen Treffer gegen ihn verursachen jeweils +18 Schaden.",
+    it:"Infliggi {damage} danni al nemico più vicino; i prossimi 3 attacchi automatici contro di lui infliggono +18 ciascuno.",
+    ru:"{damage} урона ближайшему врагу; следующие 3 автоудара по нему наносят по +18 урона.",
+    hi:"निकटतम शत्रु को {damage} क्षति; उस पर अगले 3 स्वचालित वारों में प्रत्येक को +18 क्षति।",
+    ar:"ألحق {damage} ضررًا بأقرب عدو؛ الضربات التلقائية الثلاث التالية عليه تسبب كل منها 18 ضررًا إضافيًا.",
+  };
+  for(const [language,description] of Object.entries(markDescriptions)) copy[language].orlaSkillEffect=description;
   const buildEffects = {
     en:["Open-enemy damage +35%", "Skill grants 1.4s counter damage", "After dodge: attack interval −32%", "After dodge: guard for 1.1s", "Defeat: recover 3 HP", "Attack range +24"],
     "zh-Hant":["破綻傷害 +35%", "技能給予 1.4 秒反擊增傷", "閃避後攻擊間隔 −32%", "閃避後防護 1.1 秒", "擊敗敵人恢復 3 生命", "攻擊範圍 +24"],
@@ -1493,20 +1509,25 @@
     run.fx.push({ type: "shadow", x: run.leo.x, y: run.leo.y, t: 0.34 });
   }
 
-  function autoAttack() {
-    if(run.strike) return;
-    if (run.attackCool > 0) return;
+  function selectAttackTarget(enemies,player,range=Infinity) {
     let target = null;
     let distance = Infinity;
-    for (const enemy of run.enemies) {
-      const current = Math.hypot(enemy.x - run.leo.x, enemy.y - run.leo.y);
+    for (const enemy of enemies) {
+      const current = Math.hypot(enemy.x - player.x, enemy.y - player.y);
+      if(enemy.hp<=0 || current>range) continue;
       if (!target || (enemy.marked && !target.marked) || (Boolean(enemy.marked) === Boolean(target.marked) && current < distance)) {
         distance = current;
         target = enemy;
       }
     }
+    return target;
+  }
+
+  function autoAttack() {
+    if(run.strike || run.attackCool>0) return;
     const hero = heroes[run.heroId];
-    if (!target || distance > hero.range+run.build.reach*24) return;
+    const target=selectAttackTarget(run.enemies,run.leo,hero.range+run.build.reach*24);
+    if (!target) return;
     let damage = hero.attack + run.bless.power * 2;
     if (target.marked) {
       damage += 18;
@@ -2309,6 +2330,17 @@
   });
   bindTapMove();
   if (new URLSearchParams(location.search).has("smoke")) window.__heroTrialSmoke = {
+    targetContract:()=>{
+      const near={x:30,y:0,hp:10},far={x:150,y:0,hp:10,marked:3};
+      const marked={x:80,y:0,hp:10,marked:1},dead={x:5,y:0,hp:0,marked:1};
+      const point={x:0,y:0};
+      return {
+        distantMarkCannotBlock:selectAttackTarget([far,near],point,100)===near,
+        reachableMarkPriority:selectAttackTarget([near,marked],point,100)===marked,
+        outOfRangeNoStrike:selectAttackTarget([far],point,100)===null,
+        deadCannotBlock:selectAttackTarget([dead,near],point,100)===near,
+      };
+    },
     combatContract:()=>({
       circleCenter:hazardContains({kind:"circle",x:0,y:0,radius:40},{x:0,y:0}),
       circleOutside:hazardContains({kind:"circle",x:0,y:0,radius:40},{x:41,y:0}),
