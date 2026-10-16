@@ -3,6 +3,7 @@
 @layer wp-frame-contract {
 html body [data-wp-frame="2"][data-wp-play-ui="1"] :is([data-wp-frame-scene="stage"],[data-wp-frame-scene="battle"]) {
   box-sizing:border-box!important;border:0!important;border-radius:0!important;
+  height:100vh!important;height:100dvh!important;min-height:100vh!important;min-height:100dvh!important;
 }
 html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-group] {display:contents!important}
 html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-info][hidden] {display:none!important}
@@ -31,7 +32,8 @@ html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-stat] {
 html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-stat] :is(span,small) {font:600 calc(11 * var(--wp-play-unit,1px))/1.2 system-ui!important}
 html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-stat] :is(b,strong) {font:800 calc(14 * var(--wp-play-unit,1px))/1.2 system-ui!important}
 html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="stage"] {
-  gap:0!important;padding:0!important;min-height:0!important;
+  gap:0!important;padding:0!important;height:100vh!important;height:100dvh!important;
+  min-height:100vh!important;min-height:100dvh!important;
   background-image:linear-gradient(#09122099,#091220bb),var(--wp-play-background)!important;
   background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;
 }

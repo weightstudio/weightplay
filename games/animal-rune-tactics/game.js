@@ -30,6 +30,7 @@
   let rows = 5;
   const MISSION_COUNT = 30;
   const CHAPTER_SIZE = 5;
+  // Local smoke instrumentation is host-gated; game routes never use mode query parameters.
   const localTestHost = ["127.0.0.1", "localhost", "[::1]"].includes(window.location.hostname);
   const testMode = localTestHost;
 

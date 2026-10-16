@@ -9,7 +9,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="weightplay-game-version" content="v33" />
+    <meta name="weightplay-game-version" content="v34" />
+    <meta name="weightplay-interface-version" content="9" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#11251f" />
     <meta name="description" content="Guida leone, gufo e tartaruga in 30 missioni a turni: tabelloni da 6×6, terreni, sei boss e potenziamenti permanenti." />
@@ -44,14 +45,14 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-    <link rel="stylesheet" href="style.css?v=20261011-v33-65211c8d4d0b" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <link rel="stylesheet" href="style.css?v=20261017-v34-ee8cd9b5b88a" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-shared-frame-v1"><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play4">
+<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-<body data-tutorial-auto-show="false" data-wp-combined-sound="true">
-    <main class="rune-app" data-runtime-localize="off" data-wp-frame-root data-no-mobile-immersive="true">
+<body data-tutorial-auto-show="false" data-wp-combined-sound="true" data-wp-game-id="animal-rune-tactics" data-wp-game-version="v34" data-wp-interface-version="9">
+    <main class="rune-app" data-runtime-localize="off" data-wp-frame-root data-wp-play-ui="1" data-no-mobile-immersive="true">
       <header class="topbar">
         <a id="backBtn" class="back-btn" data-wp-return="main" href="/" aria-label="Torna alla raccolta"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
         <div class="brand">
@@ -200,11 +201,12 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260701-wallet1"></script>
-<script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
-<script src="../../src/stage-selector-standard.js?v=20260923-rune-v24"></script>
+<script src="../../src/game-screen-frame.js?v=20261017-interface9-shared-frame-v1"></script>
+<script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+<script src="/src/game-play-ui.js?v=20261016-shared-play2"></script>
 <script src="/games/animal-rune-tactics/combat-core.js?v=20261011-v33-7cced709a5c7"></script>
 <script src="/games/animal-rune-tactics/combat-copy.js?v=20261011-v33-c2215269c2d0"></script>
-<script src="game.js?v=20261011-v33-e6dcd4bfe108"></script>
+<script src="game.js?v=20261017-v34-4de8aa16d94d"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260923-rune-v25-858a43890c36"></script>
     <script>
       (() => {
@@ -243,14 +245,14 @@
 <p>Spara una fascia larga 3 caselle nella direzione scelta. Interrompe i superstiti; nessun danno agli alleati. Bombarda 3×3 caselle attorno a qualsiasi casella. Marca i superstiti; nessun danno agli alleati. Colpisce tutti i nemici entro 2 caselle da Tartaruga. Cura 2 a ogni alleato e blocca 2 del prossimo colpo.</p>
 <p>Alleati sui lati opposti di un nemico permettono l’accerchiamento. Armatura, scudi, sigilli e immunità in volo modificano l’anteprima dei danni. Marea, fuoco e rotazione del bordo possono cambiare le posizioni sicure alla fine del turno.</p>
 <p>Ogni missione conserva tre stelle: vittoria, sopravvivenza di tutti e tre gli eroi e obiettivo di turni indicato. Ogni nuova stella assegna quattro Rune una sola volta. Una stella mancata non annulla la vittoria e quelle già ottenute non pagano di nuovo.</p>
+<p>Entra in un nodo dorato per ricaricare una volta l’energia dell’eroe.</p>
+<p>Nelle missioni per fermare i rinforzi: Conquista entrambi i nodi per fermare i rinforzi e sconfiggi i nemici rimasti. Ogni nodo ricarica energia una volta. Il blocco richiama un’ultima ondata di guardie. ★ Capitano: +12 PV, +1 attacco. Marchialo e finiscilo con un altro eroe.</p>
+<p>Alternare gli eroi nelle azioni carica Risonanza. A 3, il prossimo MAP ottiene +2 danni e consuma la carica.</p>
 <p>MAP costa 3 Energia. Ogni sconfitta restituisce 1 (max 1 per azione); attacco, guardia e ogni turno danno 1.</p>
 <p>Arrivano 6 nemici ogni due turni o quando il campo è libero. Le missioni di eliminazione richiedono tutte le ondate; quelle di blocco permettono anche di conquistare entrambi i nodi e battere i nemici rimasti.</p>
 <p>Un nemico superstite contrattacca una volta per turno entro gittata. Il Leone interrompe; gli scudi assorbono il colpo.</p>
 <p>◎ La mira segue l’eroe. Esci dalla gittata, interrompi il tiratore o assorbi il colpo con uno scudo.</p>
-<p>Le rune permanenti si scelgono solo alla prima vittoria di ogni missione.</p>
-<p>Entra in un nodo dorato per ricaricare una volta l’energia dell’eroe.</p>
-<p>Nelle missioni per fermare i rinforzi: Conquista entrambi i nodi per fermare i rinforzi e sconfiggi i nemici rimasti. Ogni nodo ricarica energia una volta. Il blocco richiama un’ultima ondata di guardie. ★ Capitano: +12 PV, +1 attacco. Marchialo e finiscilo con un altro eroe.</p>
-<p>Alternare gli eroi nelle azioni carica Risonanza. A 3, il prossimo MAP ottiene +2 danni e consuma la carica.</p></div>
+<p>Le rune permanenti si scelgono solo alla prima vittoria di ogni missione.</p></div>
       <div class="game-info-section"><h3>Come si gioca</h3><ol><li>Avvia il gioco, scorri le carte e attiva una missione sbloccata. Leggi prima terreno e nemici.</li><li>Seleziona un eroe con il tocco o il mouse, muovilo su una casella evidenziata e scegli attacco, difesa o abilità. Le frecce spostano il focus; Invio o Spazio attiva una casella.</li><li>Muovi, mira con MAP e spara. Spazza via interi gruppi! MAP costa 3 Energia. Ogni sconfitta restituisce 1 (max 1 per azione); attacco, guardia e ogni turno danno 1.</li><li>Le rune permanenti si scelgono solo alla prima vittoria di ogni missione.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Muovi, mira con MAP e spara. Spazza via interi gruppi!</li><li>Sfrutta la distanza del gufo contro nemici che contrattaccano in mischia. Non sprecare un attacco a distanza su un bersaglio volante immune.</li><li>Difendere può salvare la stella di sopravvivenza. Cerca l’obiettivo di turni in una nuova prova invece di perdere una missione quasi vinta.</li></ul></div>
       <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>Le missioni 1–10 insegnano posizionamento, percorsi bloccati, sostegno tra nemici, contrattacchi e radici. Le missioni 5 e 10 sono scontri con boss.</p>
@@ -259,7 +261,7 @@
       <div class="game-info-section"><h3>Nota di design</h3><p>Arrivano 6 nemici ogni due turni o quando il campo è libero. Le missioni di eliminazione richiedono tutte le ondate; quelle di blocco permettono anche di conquistare entrambi i nodi e battere i nemici rimasti.</p></div>
       <div class="game-info-section game-info-parent"><h3>Informazioni del giocatore e salvataggio</h3><p>Sblocchi, stelle, Rune, crescita e potenziamenti sono salvati in questo browser. Cancellare i dati del sito o cambiare browser può eliminare o separare i progressi. Tutte le missioni sono giocabili senza Diamanti. Ripetere le ricompense per tre Diamanti e aprire l’allenamento per diciotto sono facoltativi. Non è garantita la sincronizzazione nel cloud.</p></div>
       <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Posso muovermi e attaccare nello stesso turno?</dt><dd>Sì. Muovi prima l’eroe, poi usa un attacco, una difesa o un’abilità. L’azione di combattimento conclude il suo turno.</dd></div><div><dt>Perché un’abilità non è disponibile?</dt><dd>Controlla energia, azione di combattimento già usata e silenzio. Attacco normale o difesa potrebbero essere ancora disponibili.</dd></div><div><dt>Un’anteprima di zero danni indica un errore?</dt><dd>Non necessariamente. Immunità in volo, scudi o armatura possono impedire i danni. Cambia posizione o eroe e ricontrolla.</dd></div><div><dt>Servono tre stelle per avanzare?</dt><dd>No. La vittoria permette di procedere senza le stelle di sopravvivenza o turni. Rigioca per le ricompense mancanti.</dd></div><div><dt>Riprovare cancella i potenziamenti?</dt><dd>Azzera quel combattimento, non i potenziamenti salvati. Cancellare la memoria del browser può eliminare i progressi.</dd></div><div><dt>Cosa accade dopo la missione 30?</dt><dd>La campagna termina lì. Puoi ripetere missioni e migliorare le stelle; non viene creata una missione 31 inesistente.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Altri giochi correlati</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-auto-squad" href="/it/games/animal-auto-squad/"><span class="game-info-related-poster"><img src="/assets/animal-auto-squad-cover-block-v2.webp" data-final-src="/assets/weightplay-logo.png" alt="Squadra Automatica" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Squadra Automatica</strong><span>Prepara la formazione degli animali prima dei combattimenti automatici.</span></span></a><a class="game-info-related-card" data-game-id="animal-relic-hunters" href="/it/games/animal-relic-hunters/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" data-final-src="/assets/weightplay-logo.png" alt="Animal Relic Hunters" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Animal Relic Hunters</strong><span>Esplora stanze e raccogli reliquie in 30 spedizioni.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Giochi correlati</h3><div class="game-info-related"><a class="game-info-related-card" href="/it/games/animal-auto-squad/"><img src="/assets/animal-auto-squad-cover-block-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Squadra Automatica</strong><span>Prepara la formazione degli animali prima dei combattimenti automatici.</span></span></a><a class="game-info-related-card" href="/it/games/animal-relic-hunters/"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Animal Relic Hunters</strong><span>Esplora stanze e raccogli reliquie in 30 spedizioni.</span></span></a></div></div>
     </div>
   </section>
 </body>

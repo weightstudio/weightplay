@@ -85,7 +85,7 @@ button:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid
 .game-info-title h2 { margin: 8px 0; }
 .game-info-title p { margin: 0; line-height: 1.55; }
 .game-info-kicker { color: #d7bbff; font-size: .78rem; font-weight: 800; }
-.game-info-sections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; overflow: hidden; border-radius: 0 0 18px 18px; background: transparent; }
+.game-info-sections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; overflow: hidden; border-radius: 0 0 18px 18px; }
 .game-info-section { padding: 18px 20px; background: #fffdf8; line-height: 1.6; }
 .game-info-section h3 { margin: 0 0 8px; font-size: 1.04rem; }
 .game-info-section p { margin: 0; }
