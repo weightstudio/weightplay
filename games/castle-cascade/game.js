@@ -730,11 +730,12 @@ function bindControls() {
   document.querySelector("#battle [data-back]").addEventListener("click", requestLeaveBattle);
   document.querySelector("#stageTabButton").addEventListener("click", () => playSound("ui.click"));
   document.querySelector("#toStages").addEventListener("click", () => { playSound("ui.click"); screen("stage"); renderStageList(); });
-  document.querySelector("#retry").addEventListener("click", () => { playSound("ui.click"); startStage(selectedStage); });
+  document.querySelector("#retry").addEventListener("click", () => { playSound("ui.click"); startStage(gameState?.stage ?? selectedStage); });
   document.querySelector("#continueBattle").addEventListener("click", () => { playSound("ui.click"); closeLeaveConfirmation(); });
   document.querySelector("#returnToMap").addEventListener("click", returnToStageMap);
   document.querySelector("#next").addEventListener("click", () => {
-    if (selectedStage + 1 < unlocked && selectedStage + 1 < LEVELS.length) startStage(selectedStage + 1);
+    const nextStage = (gameState?.stage ?? selectedStage) + 1;
+    if (nextStage < unlocked && nextStage < LEVELS.length) startStage(nextStage);
   });
   document.addEventListener("keydown", handleKeydown);
 }
