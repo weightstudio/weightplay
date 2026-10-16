@@ -103,14 +103,15 @@
   function resetInput(){for(const key of Object.keys(input))input[key]=false;document.querySelectorAll(".flight-controls button").forEach(b=>b.classList.remove("pressed"));}
   function endRun(success,reason){
     if(!run||run.ended)return;run.ended=true;run.perfect=success;
-    if(success){run.score=Math.floor(run.score)+500+Math.round((100-run.spill)*4);save.unlocked=Math.max(save.unlocked,Math.min(2,run.index+1));if(run.score>save.best[run.index])save.best[run.index]=run.score;save.flips[run.index]=Math.max(save.flips[run.index],run.flips);persist();safeCall("result.win");}
+    const roughLanding=success&&reason==="roughLanding";
+    if(success){run.score=roughLanding?Math.floor(run.score*.7):Math.floor(run.score)+500+Math.round((100-run.spill)*4);save.unlocked=Math.max(save.unlocked,Math.min(2,run.index+1));if(run.score>save.best[run.index])save.best[run.index]=run.score;save.flips[run.index]=Math.max(save.flips[run.index],run.flips);persist();safeCall("result.win");}
     else safeCall("result.lose");
     updateProgress();updateStageSummary();
-    $("resultTitle").textContent=success?t("winTitle"):t("loseTitle");
+    $("resultTitle").textContent=roughLanding?t("roughTitle"):success?t("winTitle"):t("loseTitle");
     $("resultScore").textContent=String(Math.floor(run.score));$("resultFlips").textContent=String(run.flips);$("resultBest").textContent=String(save.best[run.index]||0);
-    $("resultText").textContent=success?t("winCopy",{n:routeName(run.index)}):t(reason||"badLanding");
+    $("resultText").textContent=roughLanding?t("roughLanding",{n:routeName(run.index)}):success?t("winCopy",{n:routeName(run.index)}):t(reason||"badLanding");
     $("skillReport").textContent=t("skillReport",{flips:run.flips,spill:Math.round(run.spill)});
-    $("nextBtn").hidden=!success||run.index>=2;$("resultPanel").hidden=false;$("hint").textContent=success?t("landed"):t("tryAgain");resetInput();
+    $("nextBtn").hidden=!success||run.index>=2;$("resultPanel").hidden=false;$("hint").textContent=roughLanding?t("roughLanding",{n:routeName(run.index)}):success?t("landed"):t("tryAgain");resetInput();
   }
   function update(dt){
     if(!run||run.ended||run.paused)return;
@@ -134,10 +135,13 @@
       if(turns>run.lastTurns){run.flips+=turns-run.lastTurns;run.score+=650*(turns-run.lastTurns);run.lastTurns=turns;safeCall("feedback.success");showToast(t("flip",{n:run.flips}),850);}
       const tilt=Math.abs(normAngle(run.angle));
       run.spill=clamp(run.spill+Math.max(0,tilt-.24)*dt*5+Math.abs(run.angVel)*dt*.5-(tilt<.12&&Math.abs(run.angVel)<.25?dt*3:0),0,100);
-      // Unbraked descents can exceed the gentle-touchdown limit, while BOOST
-      // still gives players enough time to feather a mobile-safe correction.
+      // Unbraked descents can exceed the gentle-touchdown limit. In the
+      // landing window, holding BOOST becomes a stable brake: it can arrest a
+      // fast drop but cannot bounce the tram upward out of the landing window.
+      const inLandingWindow=run.elapsed/run.duration>=run.approachProgress;
       run.vy=clamp(run.vy+(input.boost?.5:-.10)*dt,-.5,.5);
       run.vy*=Math.pow(.7,dt);
+      if(input.boost&&inLandingWindow)run.vy=Math.min(0,run.vy);
       const before=run.altitude;run.altitude=clamp(run.altitude+run.vy*dt,PAD_ALTITUDE,.83);
       const touchedPadHeight=before>PAD_ALTITUDE&&run.altitude<=PAD_ALTITUDE&&run.vy<0;
       if(run.altitude===.83)run.vy=0;
@@ -150,11 +154,8 @@
         const level=Math.abs(normAngle(run.angle))<.34&&Math.abs(run.angVel)<.85;
         const impactSpeed=Math.abs(run.vy);
         run.altitude=PAD_ALTITUDE;run.vy=0;
-        if(!aligned)endRun(false,"badLanding");
-        else if(!level)endRun(false,"tilted");
-        else if(impactSpeed>.22)endRun(false,"hardLanding");
-        else if(run.spill>=98)endRun(false,"spilled");
-        else endRun(true,"landed");
+        const landingResult=window.FlyingTramLandingRules.resolve({routeIndex:run.index,aligned,level,impactSpeed,spill:run.spill});
+        endRun(landingResult==="landed"||landingResult==="roughLanding",landingResult);
         return;
       }
       if(run.elapsed>=run.duration){endRun(false,"height");return;}
@@ -166,7 +167,7 @@
     $("teaValue").textContent=run.spill>70?t("sloshing"):run.spill>35?t("wobbly"):t("steady");
     const altitudePercent=Math.round(clamp((run.altitude-PAD_ALTITUDE)/(.83-PAD_ALTITUDE),0,1)*100);
     $("readout").textContent=`${Math.round(Math.abs(normAngle(run.angle))*180/Math.PI)}° · ${t("windShort")} ${run.wind>0?"↗":"↙"} · ${t("heightShort")} ${altitudePercent}%`;if(run.lostJunk)$("readout").textContent+=` · 🧾 ${run.lostJunk}`;
-    $("hint").textContent=run.spill>70?t("calmHint"):run.elapsed/run.duration>=run.approachProgress?t("landingHint"):t("flightHint");
+    $("hint").textContent=run.spill>70?t("calmHint"):run.elapsed/run.duration>=run.approachProgress?(run.vy<-.2?(input.boost?t("brakingHint"):t("brakeHint")):t("landingHint")):t("flightHint");
   }
   function draw(){
     const canvas=$("gameCanvas"),ctx=canvas.getContext("2d"),w=1000;

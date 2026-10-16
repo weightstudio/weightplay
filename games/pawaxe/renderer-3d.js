@@ -1,11 +1,20 @@
 import * as THREE from './vendor/three/three.module.min.js';
-import { buildAxe } from './axe-model.js?v=6';
-import { buildEnemy, buildCompanion, buildPaw } from './actor-models.js?v=2';
+// Retry the failed model dependency as well as its parent renderer module.
+const modelUrl=(file,version)=>{
+  const url=new URL(file,import.meta.url);url.searchParams.set('v',version);
+  const retry=new URL(import.meta.url).searchParams.get('retry');
+  if(retry)url.searchParams.set('retry',retry);
+  return url.href;
+};
+const [{buildAxe},{buildEnemy,buildCompanion,buildPaw}]=await Promise.all([
+  import(modelUrl('./axe-model.js','7')),import(modelUrl('./actor-models.js','3'))
+]);
 
 // One renderer per run. Geometry/material caches are bounded and disposed together.
 export class PawRenderer {
   constructor(canvas) {
     this.canvas=canvas; this.materials=new Map(); this.models=new Map(); this.effects=[];this.ownedGeometry=new Set();this.handDetails=[];this.disposed=false;this.surfaceReady=false;
+    try{
     const outline=new THREE.Shape();outline.moveTo(-.44,-.44);outline.lineTo(.44,-.44);outline.lineTo(.44,.44);outline.lineTo(-.44,.44);outline.closePath();
     this.geometry=new THREE.ExtrudeGeometry(outline,{depth:.88,bevelEnabled:true,bevelSegments:1,steps:1,bevelSize:.035,bevelThickness:.035});this.geometry.translate(0,0,-.44);
     const normals=this.geometry.attributes.normal,faceShade=new Float32Array(normals.count*3),faceLight=new THREE.Vector3(-.32,.72,.62).normalize(),faceNormal=new THREE.Vector3();
@@ -17,7 +26,11 @@ export class PawRenderer {
     this.geometry.setAttribute('color',new THREE.BufferAttribute(faceShade,3));
     this.clock=0; this.swingTime=0; this.shake=0;
     this.reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    this.r=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'low-power'});
+    try{this.r=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'low-power'});}
+    catch(firstError){
+      // Some mobile GPUs reject the multisampled context but accept a plain one.
+      this.r=new THREE.WebGLRenderer({canvas,antialias:false,powerPreference:'default'});
+    }
     this.r.setPixelRatio(Math.min(devicePixelRatio||1,1.5)); this.r.outputColorSpace=THREE.SRGBColorSpace;
     const grainSize=64,grain=new Uint8Array(grainSize*grainSize*4);let grainSeed=0x51f15e;
     for(let i=0;i<grainSize*grainSize;i++){
@@ -79,6 +92,7 @@ export class PawRenderer {
     const toolFill=new THREE.DirectionalLight(0xffd197,.55);toolFill.position.set(2,-1,4);this.view.add(toolFill);
     this.vc=new THREE.PerspectiveCamera(48,1,.01,10);this.buildHands();this.rebuildBoxBatches(this.view,[this.hand,this.nibs,this.axe],'viewBatches');this.resize();
     this.ray=new THREE.Raycaster();this.pointer=new THREE.Vector2();
+    }catch(error){this.dispose();throw error;}
   }
   material(color,glow=false) {
     const key=color+':'+glow;if(this.materials.has(key))return this.materials.get(key);
@@ -431,5 +445,21 @@ export class PawRenderer {
     return{player,enemies};
   }
   metrics(){return{models:this.models.size,effects:this.effects.length,materials:this.materials.size+this.batchMaterials.size+this.actorBatchMaterials.size+(this.groundMaterials?.size||0)+2,geometries:this.r.info.memory.geometries,textures:this.r.info.memory.textures,drawCalls:this.r.info.render.calls,surfaceLoaded:this.surfaceReady,faceShading:Boolean(this.geometry.attributes.color),lanes:[...this.models].map(([uid,g])=>({uid,id:g.userData.enemy?.id,hp:g.userData.enemy?.hp,slot:g.userData.enemy?.slot,x:g.position.x,z:g.position.z,scale:g.scale.toArray(),visible:g.visible})),axeGeometries:this.ownedGeometry.size,backdropLoaded:Boolean(this.backdropMaterial.map),backdropScaleX:this.backdrop.scale.x,backdropTextureRepeatY:this.backdropMaterial.map?.repeat.y??null,region:this.currentRegion};}
-  dispose(){this.disposed=true;this.backgroundRequest++;this.backgroundTexture?.dispose();this.backgroundTexture=null;this.backdropMaterial.map=null;this.backdropMaterial.dispose();this.backdropGeometry.dispose();this.contactGeometry.dispose();this.contactMaterial.dispose();this.surfaceTexture.dispose();this.world.traverse(o=>{if(o.isInstancedMesh)o.dispose();});this.effectBatch.dispose();for(const batch of [...this.actorBatches,...this.viewBatches])batch.dispose();this.actorBatches=[];this.viewBatches=[];for(const marks of this.handDetails)marks.dispose();this.handDetails=[];this.geometry.dispose();for(const g of this.ownedGeometry)g.dispose();this.ownedGeometry.clear();this.sun.shadow.map?.dispose();for(const m of this.groundMaterials)m.dispose();this.groundMaterials.clear();for(const m of this.actorBatchMaterials.values())m.dispose();this.actorBatchMaterials.clear();for(const m of this.batchMaterials.values())m.dispose();this.batchMaterials.clear();for(const m of this.materials.values())m.dispose();this.materials.clear();this.models.clear();this.effects=[];this.r.dispose();}
+  dispose(){
+    if(this.disposed)return;
+    this.disposed=true;this.backgroundRequest=(this.backgroundRequest||0)+1;
+    this.backgroundTexture?.dispose();this.backgroundTexture=null;
+    if(this.backdropMaterial)this.backdropMaterial.map=null;
+    for(const resource of [this.backdropMaterial,this.backdropGeometry,this.contactGeometry,this.contactMaterial,this.surfaceTexture,this.effectBatch,this.geometry,this.sun?.shadow?.map])resource?.dispose();
+    this.world?.traverse(o=>{if(o.isInstancedMesh)o.dispose();});
+    for(const batch of [...(this.actorBatches||[]),...(this.viewBatches||[]),...this.handDetails])batch.dispose();
+    this.actorBatches=[];this.viewBatches=[];this.handDetails=[];
+    for(const g of this.ownedGeometry)g.dispose();this.ownedGeometry.clear();
+    for(const collection of [this.groundMaterials,this.actorBatchMaterials,this.batchMaterials,this.materials]){
+      if(!collection)continue;
+      for(const resource of collection.values())resource.dispose();
+      collection.clear();
+    }
+    this.models.clear();this.effects=[];this.r?.dispose();
+  }
 }
