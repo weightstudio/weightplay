@@ -2008,6 +2008,17 @@
     const audioButton = document.querySelector("#soundBtn");
     let battleUtility = document.querySelector("[data-wp-battle-utility]");
     const localeSelect = document.querySelector("#localeSelect");
+    // The shared shell assigns Back and Settings to the outside columns of
+    // its Battle header. Keep all game-owned header content in one middle
+    // group so the status text cannot occupy the same grid cell as the stats.
+    const battleTopbar = battle?.querySelector(".card-game-topbar");
+    const topbarStats = battleTopbar?.querySelector(".card-game-stats");
+    if (battleTopbar && topbarStats && status && !battleTopbar.querySelector(".card-game-topbar-group")) {
+      const topbarGroup = document.createElement("div");
+      topbarGroup.className = "card-game-topbar-group";
+      topbarStats.before(topbarGroup);
+      topbarGroup.append(topbarStats, status);
+    }
     // War's single action is a viewport-level touch surface. Keeping the
     // action row inside the transformed logical Canvas lets a live
     // wide-to-portrait resize expose the previous Canvas coordinates until

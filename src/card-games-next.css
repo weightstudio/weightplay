@@ -17,14 +17,15 @@ body[data-wp-card-game] { margin: 0; background: #0a1f3a; }
 .card-table-ui { width: 100%; height: 100%; margin: 0 auto; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 10px; padding: 12px; box-sizing: border-box; }
 .card-game-topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; }
 .card-game-topbar .battle-back { flex: 0 0 44px; }
+.card-game-topbar-group { display: flex; min-width: 0; flex: 1 1 auto; align-items: center; justify-content: center; gap: 8px; }
 .battle-utility { box-sizing: border-box; flex: 0 0 44px; width: 44px; min-width: 44px; min-height: 44px; border: 1px solid rgba(255,255,255,.28); border-radius: 12px; color: #f8fafc; background: rgba(9, 29, 47, .75); cursor: pointer; font-size: 20px; }
 .battle-utility:focus-visible { outline: 3px solid #ffefa7; outline-offset: 2px; }
-.card-game-stats { display: flex; justify-content: center; gap: 8px; flex: 1; flex-wrap: wrap; }
+.card-game-stats { display: flex; min-width: 0; justify-content: center; gap: 8px; flex: 1 1 auto; flex-wrap: wrap; }
 .card-stat { min-width: 78px; padding: 5px 10px; border-radius: 12px; background: rgba(9, 29, 47, .75); border: 1px solid rgba(255,255,255,.14); text-align: center; }
 .card-stat small { display: block; color: #b9d8d3; font-size: 11px; }
 .card-stat strong { font-size: 15px; }
 .card-stat-history strong { font-size: 11px; white-space: nowrap; }
-.card-game-status { min-width: 120px; text-align: right; color: #d7f9e7; font-size: 13px; }
+.card-game-status { min-width: 0; flex: 0 1 auto; text-align: right; color: #d7f9e7; font-size: 13px; overflow-wrap: anywhere; }
 .card-game-board { min-height: 0; display: grid; grid-template-rows: auto minmax(150px, 1fr) auto; gap: 10px; overflow: auto; padding: 2px 0 4px; }
 .card-opponents { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .opponent-card { min-height: 50px; padding: 8px; border-radius: 12px; background: rgba(7, 28, 43, .58); border: 1px solid rgba(255,255,255,.14); }
@@ -215,16 +216,22 @@ body[data-wp-card-game="cribbage"] .cribbage-guide-disclosure .game-info-section
 .card-speed-pile { min-height: 112px; border-radius: 16px; display: flex; align-items: center; justify-content: center; background: rgba(4, 25, 41, .55); border: 1px dashed rgba(255,255,255,.3); }
 .card-build { display: inline-flex; gap: 3px; align-items: center; padding: 5px; border: 2px solid #f5c84c; border-radius: 10px; background: rgba(245,200,76,.12); }
 .card-build small { color: #ffefa7; font-size: 11px; }
-body[data-wp-card-game] > .result-overlay { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; box-sizing: border-box; padding: 16px; color: #f8fafc; background: rgba(4, 25, 41, .78); backdrop-filter: blur(4px); }
-body[data-wp-card-game] > .result-overlay[hidden] { display: none; }
+body[data-wp-card-game] > .result-overlay,
+body[data-wp-card-game] [data-wp-logical-battle-canvas] > .result-overlay { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; box-sizing: border-box; padding: 16px; color: #f8fafc; background: rgba(4, 25, 41, .78); backdrop-filter: blur(4px); }
+body[data-wp-card-game] > .result-overlay[hidden],
+body[data-wp-card-game] [data-wp-logical-battle-canvas] > .result-overlay[hidden] { display: none; }
 /* The body-level Result modal owns the top layer. Hide War's viewport-fixed
    action row only while that modal is open so its quick guide cannot cross the
    compact-landscape Result title or action buttons. */
 body[data-wp-card-game="war"]:has(> .result-overlay:not([hidden])) #battleScreen > #cardGameActions { visibility: hidden; pointer-events: none; }
-body[data-wp-card-game] > .result-overlay .result-card { width: min(100%, 420px); box-sizing: border-box; padding: 24px; border: 1px solid rgba(255,255,255,.18); border-radius: 20px; background: linear-gradient(145deg, #123a63, #0a213f); box-shadow: 0 22px 50px rgba(0,0,0,.4); text-align: center; }
-body[data-wp-card-game] > .result-overlay .result-card h2 { margin: 0 0 8px; }
-body[data-wp-card-game] > .result-overlay .result-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
-body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 44px; flex: 1 1 110px; }
+body[data-wp-card-game] > .result-overlay .result-card,
+body[data-wp-card-game] [data-wp-logical-battle-canvas] > .result-overlay .result-card { width: min(100%, 420px); box-sizing: border-box; padding: 24px; border: 1px solid rgba(255,255,255,.18); border-radius: 20px; background: linear-gradient(145deg, #123a63, #0a213f); box-shadow: 0 22px 50px rgba(0,0,0,.4); text-align: center; }
+body[data-wp-card-game] > .result-overlay .result-card h2,
+body[data-wp-card-game] [data-wp-logical-battle-canvas] > .result-overlay .result-card h2 { margin: 0 0 8px; }
+body[data-wp-card-game] > .result-overlay .result-actions,
+body[data-wp-card-game] [data-wp-logical-battle-canvas] > .result-overlay .result-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+body[data-wp-card-game] > .result-overlay .result-actions button,
+body[data-wp-card-game] [data-wp-logical-battle-canvas] > .result-overlay .result-actions button { min-height: 44px; flex: 1 1 110px; }
 @media (max-width: 560px) {
   .card-table-ui { padding: 8px; gap: 7px; }
   .card-game-board { gap: 7px; }
@@ -232,6 +239,7 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   .card-empty-slot { width: 43px; height: 61px; font-size: 10px; }
   .card-hand { gap: 5px; }
   .card-stat { min-width: 62px; padding-inline: 7px; }
+  .card-game-topbar .card-stat { min-width: 0; padding-inline: 3px; }
   .card-game-status { min-width: 74px; font-size: 11px; }
 }
 /* Arabic Spades keeps the compact-portrait Battle controls inside the logical

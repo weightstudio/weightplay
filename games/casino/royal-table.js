@@ -142,6 +142,7 @@
       });
       const start=document.createElement('button');
       start.type='button';start.className='casino-tutorial-start';start.textContent=copy.button;
+      start.setAttribute('data-wp-tutorial-next','');
       panel.append(heading,steps,start);tutorialLayer.append(panel);document.body.append(tutorialLayer);
       document.body.classList.add('casino-tutorial-open');
       start.focus({preventScroll:true});
@@ -169,6 +170,11 @@
   const battle=document.getElementById('battleScreen');
   const backButton=document.getElementById('battleBackBtn');
   const resultOverlay=document.getElementById('resultOverlay');
+  const battleCanvas=battle?.querySelector('[data-wp-logical-battle-canvas]');
+  const cardPlaySurface=battle?.querySelector('.card-table-ui');
+  // Result and leave confirmation are Battle substates, so keep them inside
+  // Casino's one shared logical Canvas instead of creating viewport portals.
+  if(battleCanvas&&resultOverlay?.parentElement!==battleCanvas)battleCanvas.append(resultOverlay);
   if(battle&&backButton&&resultOverlay){
     const confirmLayer=document.createElement('div');
     confirmLayer.id='casinoLeaveConfirm';
@@ -187,15 +193,34 @@
     const continueButton=document.createElement('button');
     continueButton.type='button';
     continueButton.className='casino-return-continue';
+    continueButton.id='casinoReturnContinue';
     const leaveButton=document.createElement('button');
     leaveButton.type='button';
     leaveButton.className='casino-return-leave';
+    leaveButton.id='casinoReturnLeave';
     panel.setAttribute('aria-labelledby',heading.id);
     panel.setAttribute('aria-describedby',message.id);
     panel.append(heading,message,actions);
     actions.append(continueButton,leaveButton);
     confirmLayer.append(panel);
-    document.body.append(confirmLayer);
+    (battleCanvas||document.body).append(confirmLayer);
+
+    const syncBattleInteraction=()=>{
+      const blocked=!resultOverlay.hidden||!confirmLayer.hidden;
+      if(cardPlaySurface){
+        cardPlaySurface.inert=blocked;
+        if(blocked)cardPlaySurface.setAttribute('aria-hidden','true');
+        else cardPlaySurface.removeAttribute('aria-hidden');
+      }
+    };
+    const resultStateObserver=new MutationObserver(()=>{
+      const resultOpen=!resultOverlay.hidden;
+      syncBattleInteraction();
+      if(resultOpen)resultOverlay.querySelector('.result-actions button:not(:disabled)')?.focus({preventScroll:true});
+      else if(document.activeElement?.closest('#resultOverlay'))backButton.focus({preventScroll:true});
+    });
+    resultStateObserver.observe(resultOverlay,{attributes:true,attributeFilter:['hidden']});
+    syncBattleInteraction();
 
     let allowReturn=false;
     const syncCopy=()=>{
@@ -211,12 +236,14 @@
     const closeConfirm=()=>{
       confirmLayer.hidden=true;
       document.body.classList.remove('casino-return-confirm-open');
+      syncBattleInteraction();
       backButton.focus({preventScroll:true});
     };
     const openConfirm=()=>{
       if(!confirmLayer.hidden)return;
       confirmLayer.hidden=false;
       document.body.classList.add('casino-return-confirm-open');
+      syncBattleInteraction();
       continueButton.focus({preventScroll:true});
     };
     backButton.addEventListener('click',event=>{
@@ -230,9 +257,11 @@
     leaveButton.addEventListener('click',()=>{
       confirmLayer.hidden=true;
       document.body.classList.remove('casino-return-confirm-open');
+      syncBattleInteraction();
       allowReturn=true;
       backButton.click();
       allowReturn=false;
+      document.getElementById('startBtn')?.focus({preventScroll:true});
     });
     panel.addEventListener('keydown',event=>{
       if(event.key==='Escape'){
@@ -246,7 +275,7 @@
       if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
       else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
     });
-    window.addEventListener('pagehide',()=>localeObserver.disconnect(),{once:true});
+    window.addEventListener('pagehide',()=>{localeObserver.disconnect();resultStateObserver.disconnect();},{once:true});
     window.addEventListener('pageshow',event=>{
       if(event.persisted)localeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
     });

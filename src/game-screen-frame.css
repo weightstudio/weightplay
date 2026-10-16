@@ -406,6 +406,7 @@ body[data-wp-frame-tutorial="true"] :is(.wp-tutorial-action,.wp-tutorial-close):
 }
 
 .wp-shell-settings-popover {
+  box-sizing: border-box;
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
