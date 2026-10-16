@@ -5,8 +5,9 @@
   const getStorage = key => { try { return localStorage.getItem(key); } catch { return null; } };
   const setStorage = (key, value) => { try { localStorage.setItem(key, value); } catch {} };
   const routeMap = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
-  let locale = getStorage("weightPlayLocale") || getStorage("weightplay-locale") || "en";
-  if (!LOCALES[locale]) locale = "en";
+  const routedLocale = window.WonderI18n?.localeFromPath?.() || "";
+  const preferredLocale = routedLocale || window.WonderI18n?.actualLocale?.() || getStorage("weightPlayLocale") || getStorage("weightplay-locale") || document.documentElement.lang || "en";
+  let locale = LOCALES[preferredLocale] ? preferredLocale : "en";
   const t = (key, vars = {}) => {
     let value = LOCALES[locale]?.[key] ?? LOCALES.en[key] ?? key;
     if (Array.isArray(value)) return value;
@@ -21,6 +22,7 @@
   let run = null;
   const clamp = (v,min,max) => Math.max(min,Math.min(max,v));
   const normAngle = a => Math.atan2(Math.sin(a),Math.cos(a));
+  const PAD_ALTITUDE = .14;
   const safeCall = name => { try { window.WeightPlayAudio?.play?.(name); } catch {} };
 
   function applyLocale() {
@@ -93,7 +95,7 @@
   }
   function startRun(index){
     if(index>save.unlocked)return;
-    selectedStage=index;run={index,duration:[45,47,49][index],elapsed:0,launch:0,launched:false,angle:0,angVel:0,lastTurns:0,flips:0,spill:0,altitude:.42,vy:0,score:0,paused:false,ended:false,perfect:false,wind:0,lostJunk:0,junk:[{x:-37,y:10,vx:0,vy:0,kind:0},{x:8,y:11,vx:0,vy:0,kind:1}]};
+    selectedStage=index;run={index,duration:[45,47,49][index],padWidth:[164,128,104][index],approachProgress:[.71,.78,.82][index],elapsed:0,launch:0,launched:false,angle:0,angVel:0,lastTurns:0,flips:0,spill:0,altitude:.42,vy:0,score:0,paused:false,ended:false,perfect:false,wind:0,lostJunk:0,junk:[{x:-37,y:10,vx:0,vy:0,kind:0},{x:8,y:11,vx:0,vy:0,kind:1}]};
     $("resultPanel").hidden=true;$("leavePanel").hidden=true;$("pausePanel").hidden=true;resetInput();
     $("stageLabel").textContent=routeName(index);$("timeValue").textContent=String(run.duration);$("cupFill").style.width="0%";$("teaValue").textContent=t("steady");$("scoreLabel").textContent="0";$("hint").textContent=t("flightHint");
     safeCall("game.start");showScreen("battle");
@@ -134,28 +136,35 @@
       run.spill=clamp(run.spill+Math.max(0,tilt-.24)*dt*5+Math.abs(run.angVel)*dt*.5-(tilt<.12&&Math.abs(run.angVel)<.25?dt*3:0),0,100);
       run.vy=clamp(run.vy+(input.boost?.5:-.16)*dt,-.5,.5);
       run.vy*=Math.pow(.7,dt);
-      const before=run.altitude;run.altitude=clamp(run.altitude+run.vy*dt,.19,.83);
-      if(run.altitude===.19||run.altitude===.83)run.vy=0;
+      const before=run.altitude;run.altitude=clamp(run.altitude+run.vy*dt,PAD_ALTITUDE,.83);
+      const touchedPadHeight=before>PAD_ALTITUDE&&run.altitude<=PAD_ALTITUDE&&run.vy<0;
+      if(run.altitude===.83)run.vy=0;
       run.score+=dt*(8+run.index*2);for(const item of run.junk){if(item.lost)continue;item.vx=clamp((item.vx-Math.sin(run.angle)*3.4+run.wind*.55)*Math.pow(.82,dt*8),-55,55);item.vy=clamp((item.vy+(input.boost?0.85:-0.45))*Math.pow(.88,dt*8),-45,45);item.x+=item.vx*dt;item.y+=item.vy*dt;if(Math.abs(item.x)>88||item.y<-96||item.y>32){item.lost=true;run.lostJunk++;run.score=Math.max(0,run.score-120);run.spill=clamp(run.spill+14,0,100);safeCall("ui.click");showToast(t("sloshing"));}}
       if(run.spill>=100){endRun(false,"spilled");return;}
-      if(run.altitude<=.19&&before===.19&&run.elapsed>7){endRun(false,"tooLow");return;}
-      if(run.elapsed>=run.duration){
+      if(touchedPadHeight){
+        const progress=clamp(run.elapsed/run.duration,0,1);
+        const padGap=(1-progress)*280;
+        const aligned=progress>=run.approachProgress&&padGap<=run.padWidth/2;
         const level=Math.abs(normAngle(run.angle))<.34&&Math.abs(run.angVel)<.85;
-        const height=run.altitude>=.28&&run.altitude<=.84&&Math.abs(run.vy)<.24;
-        if(level&&height&&run.spill<98)endRun(true,"winCopy");
+        const impactSpeed=Math.abs(run.vy);
+        run.altitude=PAD_ALTITUDE;run.vy=0;
+        if(!aligned)endRun(false,"badLanding");
         else if(!level)endRun(false,"tilted");
-        else if(!height)endRun(false,"height");
-        else endRun(false,"spilled");
+        else if(impactSpeed>.22)endRun(false,"hardLanding");
+        else if(run.spill>=98)endRun(false,"spilled");
+        else endRun(true,"landed");
         return;
       }
+      if(run.elapsed>=run.duration){endRun(false,"height");return;}
     }
     const remaining=Math.max(0,Math.ceil(run.duration-run.elapsed));
     $("timeValue").textContent=String(remaining);
     $("scoreLabel").textContent=String(Math.floor(run.score));
     $("cupFill").style.width=`${Math.round(run.spill)}%`;
     $("teaValue").textContent=run.spill>70?t("sloshing"):run.spill>35?t("wobbly"):t("steady");
-    $("readout").textContent=`${Math.round(Math.abs(normAngle(run.angle))*180/Math.PI)}° · ${t("windShort")} ${run.wind>0?"↗":"↙"}`;if(run.lostJunk)$("readout").textContent+=` · 🧾 ${run.lostJunk}`;
-    $("hint").textContent=run.spill>70?t("calmHint"):t("flightHint");
+    const altitudePercent=Math.round(clamp((run.altitude-PAD_ALTITUDE)/(.83-PAD_ALTITUDE),0,1)*100);
+    $("readout").textContent=`${Math.round(Math.abs(normAngle(run.angle))*180/Math.PI)}° · ${t("windShort")} ${run.wind>0?"↗":"↙"} · ${t("heightShort")} ${altitudePercent}%`;if(run.lostJunk)$("readout").textContent+=` · 🧾 ${run.lostJunk}`;
+    $("hint").textContent=run.spill>70?t("calmHint"):run.elapsed/run.duration>=run.approachProgress?t("landingHint"):t("flightHint");
   }
   function draw(){
     const canvas=$("gameCanvas"),ctx=canvas.getContext("2d"),w=1000;
@@ -168,10 +177,14 @@
     for(let i=0;i<8;i++){const x=((i*175-camX*.22)%1250+1250)%1250-100,y=65+(i%3)*47;ctx.fillStyle="#ffffff44";ctx.fillRect(x,y,86,18);ctx.fillRect(x+17,y-13,46,16);}
     const skyline=[120,205,144,265,180,225,135,250,165,210,155,280,130,220];
     skyline.forEach((bh,i)=>{const x=((i*88-camX*.58)%1320+1320)%1320-140;ctx.fillStyle=i%2?"#264c6b":"#315b78";ctx.fillRect(x,h-bh-74,72,bh);ctx.fillStyle="#bddae155";for(let y=h-bh-58;y<h-96;y+=24)for(let xx=x+10;xx<x+64;xx+=18)ctx.fillRect(xx,y,7,10);});
-    const runwayX=850-progress*480;ctx.fillStyle="#193754";ctx.fillRect(0,h-75,w,75);ctx.fillStyle="#263f56";ctx.fillRect(runwayX,h-105,164,30);ctx.fillStyle="#f8d567";ctx.fillRect(runwayX+22,h-118,120,12);ctx.fillStyle="#fff";ctx.fillRect(runwayX+32,h-105,10,30);ctx.fillRect(runwayX+122,h-105,10,30);
-    ctx.fillStyle="#d5f5ff";ctx.font="900 18px system-ui";ctx.textAlign="center";ctx.fillText(t("pad"),runwayX+82,h-128);
+    const tramX=135+progress*485;
+    const runwayCenter=tramX+(1-progress)*280;
+    const runwayX=runwayCenter-r.padWidth/2;
+    ctx.fillStyle="#193754";ctx.fillRect(0,h-75,w,75);ctx.fillStyle="#263f56";ctx.fillRect(runwayX,h-105,r.padWidth,30);
+    const padInset=Math.max(9,r.padWidth*.13);ctx.fillStyle="#f8d567";ctx.fillRect(runwayX+padInset,h-118,r.padWidth-2*padInset,12);ctx.fillStyle="#fff";ctx.fillRect(runwayX+padInset+10,h-105,9,30);ctx.fillRect(runwayX+r.padWidth-padInset-19,h-105,9,30);
+    ctx.fillStyle="#d5f5ff";ctx.font="900 18px system-ui";ctx.textAlign="center";ctx.fillText(t("pad"),runwayCenter,h-128);
     for(let i=0;i<4;i++){const gx=(i*262+80-tsec*36)%(w+60);ctx.strokeStyle="#ffffff55";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(gx,180+i%2*54);ctx.lineTo(gx+55,180+i%2*54);ctx.stroke();}
-    const tramX=135+progress*485, tramY=h-132-r.altitude*190+Math.sin(tsec*1.2)*8;
+    const tramY=h-132-r.altitude*190+(r.altitude>PAD_ALTITUDE+.03?Math.sin(tsec*1.2)*8:0);
     const angle=normAngle(r.angle);
     ctx.save();ctx.translate(tramX,tramY);ctx.rotate(angle);
     // Original cuboid sky tram, drawn from simple geometric blocks.

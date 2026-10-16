@@ -92,12 +92,12 @@ body:not(.rescue-playing):not(.rescue-stage-select) .rescue-game { width: min(10
 .rescue-main-preview img { width: 100%; height: 66px; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(42,77,31,.2)); }
 .rescue-main-preview span { color: #3e702d; font-size: 1.55rem; font-weight: 1000; text-align: center; }
 
-html body[data-wp-frame="2"] [data-wp-frame-scene="stage"].wp-stage-art-shell#stageSelect {
+html body[data-wp-game-id="animal-rescue"] #stageSelect.wp-stage-art-shell {
+  background-color: #17243a !important;
+  background-image: var(--wp-stage-scrim), var(--wp-stage-art) !important;
+  background-position: center, center !important;
   background-size: cover, contain !important;
-}
-
-html body[data-wp-frame="2"] #stageSelect {
-  background-size: cover, contain !important;
+  background-repeat: no-repeat, no-repeat !important;
 }
 
 @media (min-width: 700px) {
@@ -145,6 +145,26 @@ html body[data-wp-frame="2"] #stageSelect {
     max-height: calc(100dvh - 84px);
     aspect-ratio: 1;
     object-fit: contain;
+  }
+
+  html body[data-wp-game-id="animal-rescue"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: min(294px, calc(100dvh - 96px));
+    grid-template-columns: var(--wp-main-landscape-poster-size) minmax(0, 1fr) !important;
+  }
+
+  html body[data-wp-game-id="animal-rescue"] :is(
+    .wp-standard-main-poster,
+    .wp-standard-main-poster-media,
+    .wp-standard-main-poster-media > img,
+    .wp-standard-main-poster > img
+  ) {
+    width: var(--wp-main-landscape-poster-size) !important;
+    min-width: 0 !important;
+    max-width: var(--wp-main-landscape-poster-size) !important;
+    height: var(--wp-main-landscape-poster-size) !important;
+    min-height: 0 !important;
+    max-height: var(--wp-main-landscape-poster-size) !important;
+    object-fit: contain !important;
   }
 }
 
