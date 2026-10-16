@@ -20,6 +20,7 @@
 
 const $=id=>document.getElementById(id),GAME_VERSION=28,INTERFACE_VERSION=9,INTERFACE_TARGET_VERSION=9,LOCALES=window.ROOTVAULT_PIN_LOCALES||{},DYNAMIC_LOCALES=window.ROOTVAULT_PIN_DYNAMIC_LOCALES||{},CODES=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],LABELS={en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"},STORE="weightplay:animal-rootvault-pins:v1",memory=new Map();
 const els={loading:$("loadingPanel"),mainGroup:$("mainGroup"),stageScreen:$("stageScreen"),battleScreen:$("battleScreen"),localeSelect:$("localeSelect"),mainProgress:$("mainProgress"),start:$("start"),stageBack:$("stageBack"),stageRail:$("stageRail"),stageSummary:$("stageSummary"),briefTab:$("briefTab"),workshopTab:$("workshopTab"),briefPanel:$("briefPanel"),workshopPanel:$("workshopPanel"),selectedNumber:$("selectedNumber"),selectedName:$("selectedName"),selectedRule:$("selectedRule"),enterStage:$("enterStage"),seedCount:$("seedCount"),workshopHint:$("workshopHint"),upgradeList:$("upgradeList"),battleLive:$("battleLive"),battleBack:$("battleBack"),battleChapter:$("battleChapter"),battleStage:$("battleStage"),pullCount:$("pullCount"),battleHelp:$("battleHelp"),ruleCue:$("ruleCue"),board:$("chamberBoard"),feedback:$("feedback"),restart:$("restart"),pullPin:$("pullPin"),helpModal:$("helpModal"),helpClose:$("helpClose"),leaveModal:$("leaveModal"),leaveContinue:$("leaveContinue"),leaveStage:$("leaveStage"),resultModal:$("resultModal"),resultCard:document.querySelector(".result-card"),resultKicker:$("resultKicker"),resultTitle:$("resultTitle"),resultText:$("resultText"),resultPulls:$("resultPulls"),resultBest:$("resultBest"),resultReward:$("resultReward"),retry:$("retry"),resultStages:$("resultStages"),next:$("next")};
+els.goalTrack=$("goalTrack");
 const storage={get(key){try{return localStorage.getItem(key)}catch{return memory.get(key)||null}},set(key,value){try{localStorage.setItem(key,value)}catch{memory.set(key,value)}}};
 const defaultSave=()=>({unlocked:1,completed:{},best:{},seeds:0,upgrades:[0,0,0],tutorial:false});
 function normalizeSave(raw){const value=raw&&typeof raw==="object"?raw:{};return{unlocked:Math.max(1,Math.min(30,Number(value.unlocked)||1)),completed:value.completed&&typeof value.completed==="object"?value.completed:{},best:value.best&&typeof value.best==="object"?value.best:{},seeds:Math.max(0,Number(value.seeds)||0),upgrades:[0,1,2].map(i=>Math.max(0,Math.min(3,Number(value.upgrades?.[i])||0))),tutorial:Boolean(value.tutorial)}}
@@ -60,6 +61,7 @@ function syncMotion(){
     else if(!blocked&&animation.playState==="paused")animation.play();
   }
   els.board.dataset.rvPaused=String(motionBlocked("battle"));
+  boardView?.setMotionBlocked?.(motionBlocked("battle"));
 }
 function enterMotion(node){
   if(!node||node.hidden)return;
@@ -138,7 +140,7 @@ function buildLevel(index){const chapter=Math.floor(index/5),v=index%5,b=createB
   if(chapter===5){r("W",.08,.1,["water"]);r("E",.3,.3,["ember"]);r("H",.56,.08,["ward"]);r("A",.86,.16,["taro"]);r("K",.09,.52,["key"]);r("L",.36,.56,["lock"],"lock");r("X",.62,.55,["shadow"]);r("C",.88,.68,["core"]);r("S",.5,.87,[],"sanctuary");r("V",.12,.82,[],"void");p("W","E",{id:"water"});p("H","A",{id:"ward"});p("K","L",{id:"key"});p("A","E",{id:"taro",lock:"rune"});p("E","X",{id:"ember"});p("X","S",{id:"shadow"});p("C","S",{id:"core"});if(v>=1)p("A","X",{required:false,id:"d1"});if(v>=2)p("C","X",{required:false,id:"d2"});if(v>=3)p("W","S",{required:false,id:"d3"});if(v>=4)p("K","V",{required:false,id:"d4"})}
   return b.finish()}
 const levels=Array.from({length:30},(_,index)=>buildLevel(index));
-function createRun(level){return{level,rooms:Object.fromEntries(level.rooms.map(room=>[room.id,{...room,contents:[...room.contents]}])),pins:Object.fromEntries(level.pins.map(pin=>[pin.id,{...pin,pulled:false}])),unlocked:new Set(),armor:false,pulls:0,ended:false,result:null,events:[]}}
+function createRun(level,{guided=false}={}){return{level,rooms:Object.fromEntries(level.rooms.map(room=>[room.id,{...room,contents:[...room.contents]}])),pins:Object.fromEntries(level.pins.map(pin=>[pin.id,{...pin,pulled:false}])),unlocked:new Set(),armor:false,pulls:0,ended:false,result:null,events:[],guided}}
 function removeOne(contents,type){const index=contents.indexOf(type);if(index<0)return false;contents.splice(index,1);return true}
 function resolveRoom(state,room){const events=[];if(room.contents.includes("key")&&room.contents.includes("lock")){removeOne(room.contents,"key");removeOne(room.contents,"lock");state.unlocked.add(room.lock||"rune");events.push("unlocked")}
   while(room.contents.includes("water")&&room.contents.includes("ember")){removeOne(room.contents,"water");removeOne(room.contents,"ember");events.push("steam")}
@@ -195,6 +197,11 @@ function renderBattleHeader(){const level=levels[stageIndex];els.battleChapter.t
 // Layout is derived only from level identity and the actual board rectangle.
 // Contents, selection and removed pins cannot shift surviving targets.
 let boardLayout=null,boardView=null,boardModule=null,boardLoad=null,boardViewEpoch=0,board3DFailed=false;
+function syncGoalTrack(){
+  const sanctuary=run?.rooms.S?.contents||[];
+  for(const item of ["taro","core"]){const icon=[...(els.goalTrack?.querySelectorAll("[data-goal]")||[])].find(node=>node.dataset.goal===item);if(icon)icon.dataset.safe=String(sanctuary.includes(item))}
+  const destination=[...(els.goalTrack?.querySelectorAll("[data-goal]")||[])].find(node=>node.dataset.goal==="sanctuary");if(destination)destination.dataset.safe=String(sanctuary.includes("taro")&&sanctuary.includes("core"));
+}
 function computeBoardLayout(){
   const width=els.board.clientWidth,height=els.board.clientHeight;
   const key=stageIndex+":"+width+":"+height;
@@ -271,6 +278,7 @@ function renderBoard(){
   if(!run)return;
   const layout=computeBoardLayout(),canvas=boardView?.canvas;
   if(!selectedRoom||!run.rooms[selectedRoom]?.contents.length||!outgoing(selectedRoom).length){selectedRoom=Object.values(run.rooms).find(room=>room.contents.length&&outgoing(room.id).length)?.id||null;selectedPin=null}
+  if(run.guided&&run.pulls===0&&!selectedPin){const first=run.level.solution[0];if(first&&run.pins[first]?.from===selectedRoom)selectedPin=first}
   els.board.dataset.compact=String(layout.compact);
   cancelMotion(els.board);els.board.replaceChildren(...(canvas?[canvas]:[]));
   els.board.dataset.chapter=String(run.level.chapter);
@@ -293,7 +301,7 @@ function renderBoard(){
     if(room.type==="sanctuary"||room.type==="void")pieces.prepend(pieceNode(room.type));
     pieces.dataset.itemCount=String(pieces.childElementCount);node.append(label,pieces);els.board.append(node);
   }
-  renderChoices();markSelectedRoute();updatePullButton();syncMotion();syncBoardView();requestBoardView();
+  renderChoices();markSelectedRoute();updatePullButton();syncGoalTrack();syncMotion();syncBoardView();requestBoardView();
 }
 
 function queueBoardLayout(){if(boardLayoutFrame)cancelAnimationFrame(boardLayoutFrame);boardLayoutFrame=requestAnimationFrame(()=>{boardLayoutFrame=requestAnimationFrame(()=>{boardLayoutFrame=0;if(screen==="battle"&&run&&!busy)renderBoard()})})}
@@ -304,7 +312,7 @@ function selectPin(pinId){
   const focused=document.activeElement?.dataset.pin===pinId;
   selectedPin=pinId;selectedRoom=pin.from;lastSelectedHint=pinId;renderBoard();
   if(focused)routeChoices.querySelector(`[data-pin="${pinId}"]`)?.focus({preventScroll:true});
-  els.feedback.textContent=pin.lock&&!run.unlocked.has(pin.lock)?t("lockedPin"):t("routeSelection",{from:roomName(run.rooms[pin.from]),to:roomName(run.rooms[pin.to]),items:""});
+  els.feedback.textContent=pin.lock&&!run.unlocked.has(pin.lock)?t("lockedPin"):t("routeSelection",{from:roomName(run.rooms[pin.from]),to:roomName(run.rooms[pin.to]),items:materialNames(run.rooms[pin.from].contents)});
   // Restore keyboard focus after rebuilding the current route choices.
   markSelectedRoute();updatePullButton();syncBoardView();
   const art=routeChoices.querySelector(`[data-pin="${pinId}"] .pin-art`);
@@ -328,7 +336,8 @@ function addEffect(room,type){
 }
 function eventFeedback(events,empty){if(empty)return t("empty");if(events.includes("unlocked"))return t("unlocked");if(events.includes("steam"))return t("steam");if(events.includes("wardUsed"))return t("wardUsed");if(events.includes("warded"))return t("warded");return t("pulled")}
 function animateMove(result){
-  boardView?.hideSource(result.source.id);
+  if(reducedMotion())return;
+  if(boardView?.beginTransfer?.(result.source.id,result.target.id,computeBoardLayout(),{duration:440,blocked:()=>motionBlocked("battle")}))return;
   const sourceNode=els.board.querySelector(`[data-room="${result.source.id}"]`),from=roomCenter(result.source),to=roomCenter(result.target);
   const duration=reducedMotion()?0:440;
   if(!duration)return;
@@ -411,7 +420,7 @@ if(!run)return;clearPullCompletion();const keep=save.upgrades[1]>0?lastSelectedH
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
     if (__wpMeasurement.roundKey !== __wpPreviousRound) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
 }
-function startBattle(index,{skipTutorial=false}={}){resultView?.dispose();resultView=null;clearPullCompletion();stageIndex=Math.max(0,Math.min(29,index));run=createRun(levels[stageIndex]);selectedPin=null;selectedRoom=null;busy=false;lastSelectedHint=null;lastInputType="unknown";(__wpNotifyMeasurement(), modalOpen=false);(__wpNotifyMeasurement(), els.resultModal.hidden=true);(__wpNotifyMeasurement(), els.leaveModal.hidden=true);(__wpNotifyMeasurement(), els.helpModal.hidden=true);setBattleLiveCovered(false);setScreen("battle");renderBattleHeader();renderBoard();queueBoardLayout();els.feedback.textContent=t("ready");window.WeightPlayAudio?.play?.("game.start");track("game_start");track("chamber_start");settleFocus("battle")
+function startBattle(index,{skipTutorial=false}={}){resultView?.dispose();resultView=null;clearPullCompletion();stageIndex=Math.max(0,Math.min(29,index));run=createRun(levels[stageIndex],{guided:!skipTutorial&&stageIndex%5===0&&!save.completed[String(stageIndex)]});selectedPin=null;selectedRoom=null;busy=false;lastSelectedHint=null;lastInputType="unknown";(__wpNotifyMeasurement(), modalOpen=false);(__wpNotifyMeasurement(), els.resultModal.hidden=true);(__wpNotifyMeasurement(), els.leaveModal.hidden=true);(__wpNotifyMeasurement(), els.helpModal.hidden=true);setBattleLiveCovered(false);setScreen("battle");renderBattleHeader();renderBoard();queueBoardLayout();els.feedback.textContent=run.guided&&selectedPin?t("routeSelection",{from:roomName(run.rooms[run.pins[selectedPin].from]),to:roomName(run.rooms[run.pins[selectedPin].to]),items:materialNames(run.rooms[run.pins[selectedPin].from].contents)}):t("ready");window.WeightPlayAudio?.play?.("game.start");track("game_start");track("chamber_start");settleFocus("battle")
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
 function renderResultArt(win){

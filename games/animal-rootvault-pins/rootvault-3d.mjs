@@ -106,6 +106,7 @@ export class Rootvault3D {
   }
   sync(state, layout, selected, blocked, selectedRoom) {
     if (this.disposed) return;
+    this.cancelTransfer(false);
     const { width, height, rooms, pins } = layout;
     if (this.width !== width || this.height !== height) {
       this.width = width; this.height = height;
@@ -159,7 +160,71 @@ export class Rootvault3D {
     }
     this.render(blocked);
   }
-  hideSource(id) { const group = this.contents.get(id); if (group) { group.visible = false; this.render(); } }
+  beginTransfer(sourceId, targetId, layout, { duration = 440, blocked = () => false } = {}) {
+    if (this.disposed || this.transfer) return false;
+    const group = this.contents.get(sourceId), from = layout.rooms[sourceId], to = layout.rooms[targetId];
+    if (!group || !from || !to) return false;
+    group.removeFromParent();
+    group.position.set(from.x, -from.y, 0);
+    group.scale.setScalar(layout.roomScale || 1);
+    group.visible = true;
+    this.world.add(group);
+    const transfer = {
+      group,
+      from: { x: from.x, y: -from.y },
+      to: { x: to.x, y: -to.y },
+      duration: Math.max(1, duration),
+      elapsed: 0,
+      lastAt: 0,
+      frame: 0,
+      paused: false,
+      blocked,
+      step: null,
+    };
+    transfer.step = now => {
+      if (this.disposed || this.transfer !== transfer) return;
+      if (transfer.blocked()) { transfer.paused = true; transfer.frame = 0; return; }
+      if (transfer.lastAt) transfer.elapsed += now - transfer.lastAt;
+      transfer.lastAt = now;
+      const progress = Math.min(1, transfer.elapsed / transfer.duration);
+      const eased = progress * progress * (3 - 2 * progress);
+      group.position.set(
+        transfer.from.x + (transfer.to.x - transfer.from.x) * eased,
+        transfer.from.y + (transfer.to.y - transfer.from.y) * eased,
+        0,
+      );
+      this.render();
+      if (progress >= 1) { transfer.frame = 0; this.transfer = null; return; }
+      transfer.frame = requestAnimationFrame(transfer.step);
+    };
+    this.transfer = transfer;
+    this.setMotionBlocked(blocked());
+    return true;
+  }
+  setMotionBlocked(blocked) {
+    const transfer = this.transfer;
+    if (!transfer) return;
+    if (blocked) {
+      if (transfer.frame) cancelAnimationFrame(transfer.frame);
+      transfer.frame = 0;
+      transfer.paused = true;
+      return;
+    }
+    if (transfer.paused || !transfer.frame) {
+      transfer.paused = false;
+      transfer.lastAt = 0;
+      transfer.frame = requestAnimationFrame(transfer.step);
+    }
+  }
+  cancelTransfer() {
+    const transfer = this.transfer;
+    if (!transfer) return false;
+    if (transfer.frame) cancelAnimationFrame(transfer.frame);
+    transfer.frame = 0;
+    transfer.group.visible = false;
+    this.transfer = null;
+    return true;
+  }
   render() {
     if (this.disposed) return;
     this.renderer.render(this.scene, this.camera);
@@ -170,6 +235,7 @@ export class Rootvault3D {
   }
   dispose() {
     if (this.disposed) return; this.disposed = true;
+    this.cancelTransfer(false);
     this.canvas.removeEventListener('webglcontextlost', this.onLoss);
     this.world.clear(); this.contents.clear();
     Object.values(this.geo).forEach(g => g.dispose());

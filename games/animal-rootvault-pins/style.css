@@ -510,7 +510,7 @@ a:focus-visible {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.objective-row span {
+.objective-row #ruleCue {
   min-width: 0;
   max-width: 42%;
   color: #ffdf6a;
@@ -518,6 +518,46 @@ a:focus-visible {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.objective-row .goal-track {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  max-width: none;
+  color: #d6e8d7;
+  overflow: visible;
+}
+.goal-track i {
+  display: grid;
+  place-items: center;
+  width: 19px;
+  height: 22px;
+  border: 1px solid #a6cfb8;
+  border-radius: 4px;
+  opacity: .62;
+  font-style: normal;
+}
+.goal-track i::before {
+  content: "";
+  width: 17px;
+  height: 17px;
+  background-image: url("../../assets/animal-rootvault-pins/animal-rootvault-pins-character-atlas.webp");
+  background-size: 200% 200%;
+  background-position: 0 0;
+}
+.goal-track [data-goal="core"]::before,
+.goal-track [data-goal="sanctuary"]::before {
+  background-image: url("../../assets/animal-rootvault-pins/animal-rootvault-pins-object-atlas.webp");
+  background-size: 400% 200%;
+}
+.goal-track [data-goal="core"]::before { background-position: 66.667% 0; }
+.goal-track [data-goal="sanctuary"]::before { background-position: 66.667% 100%; }
+.goal-track i[data-safe="true"] {
+  opacity: 1;
+  border-color: #72f3c9;
+  box-shadow: 0 0 8px #72f3c977;
+}
+.goal-track b { color: #f6d479; font-size: 12px; }
 .chamber-board {
   position: relative;
   width: 100%;
