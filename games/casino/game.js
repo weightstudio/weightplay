@@ -24,18 +24,5 @@
     mainCopy.insertBefore(progress, mainCopy.querySelector(".main-actions") || null);
   }
 
-  const topbar = document.querySelector("#battleScreen .card-game-topbar");
-  if (topbar && !topbar.querySelector("[data-wp-battle-utility]")) {
-    const utility = document.createElement("button");
-    utility.id = "battleUtilityBtn";
-    utility.className = "battle-utility header-icon-btn";
-    utility.type = "button";
-    utility.dataset.wpBattleUtility = "true";
-    utility.setAttribute("aria-label", "Settings");
-    utility.title = "Settings";
-    utility.textContent = "⚙";
-    topbar.append(utility);
-  }
-
   window.WPCardGamesNext?.mount({ id: "casino" });
 })();

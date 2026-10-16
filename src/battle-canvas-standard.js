@@ -414,8 +414,11 @@
     appliedStateSignature = stateSignature;
     metrics.battleApplied += 1;
     rememberAndSet(root, {
-      // Keep active controls independent of the inactive Stage cleanup.
-      ...(root.hasAttribute("data-wp-frame-play-fill") ? { "--wp-frame-control-size-physical": `${Math.max(48, 48 / scale)}px` } : {}),
+      // Scope the physical control track to its logical Canvas. Relying on an
+      // html-level value lets an inner game-frame reset or miss the inherited
+      // variable after Main -> Battle; the Canvas owns the transform, so its
+      // local inverse-scaled value is the stable source for every game.
+      "--wp-frame-control-size-physical": `${Math.max(48, 48 / scale)}px`,
       position: "fixed",
       inset: "auto",
       top: `${top}px`,

@@ -144,5 +144,5 @@ html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-play-actions] > [dat
   box-shadow:inset 0 2px 0 var(--wp-ui-highlight),0 3px 0 var(--wp-ui-shadow)!important;
   font:700 calc(16 * var(--wp-play-unit,1px))/1.2 system-ui!important;white-space:nowrap!important;
 }
-html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-play-actions] :is(button,a)[aria-pressed="true"] {background:var(--wp-ui-active)!important}
+html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-play-actions] :is(button,a):is([aria-pressed="true"],[role="tab"][aria-selected="true"]) {background:var(--wp-ui-active)!important}
 }

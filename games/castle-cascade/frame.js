@@ -13,7 +13,7 @@
     const localeSelect = document.getElementById("locale");
     const localeControl = mainHeader.querySelector(".locale");
     localeControl.hidden = true;
-    root.append(localeControl);
+    localeControl.style.setProperty("display", "none", "important");
 
     const stageBack = stageHeader.querySelector('[data-wp-return="stage"]');
     const stageInfo = stageHeader.querySelector(".stage-hud");

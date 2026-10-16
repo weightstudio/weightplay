@@ -281,108 +281,6 @@ body.is-rune-playing .pause-toggle {
   height: 20px;
 }
 
-.mission-grid {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  padding-bottom: 2px;
-}
-
-.mission-grid::-webkit-scrollbar {
-  display: none;
-}
-
-.mission-card {
-  display: grid;
-  align-content: start;
-  gap: 5px;
-  flex: 0 0 min(76vw, 230px);
-  min-height: 108px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  color: var(--text);
-  background: rgba(11, 40, 31, 0.72);
-  padding: 10px;
-  text-align: left;
-  scroll-snap-align: center;
-}
-
-.mission-card__top {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.mission-card__top b {
-  flex: 0 0 auto;
-  border-radius: 999px;
-  background: rgba(103, 242, 190, 0.14);
-  color: var(--mint);
-  font-size: 0.68rem;
-  line-height: 1;
-  padding: 5px 7px;
-}
-
-.mission-card small,
-.mission-card span {
-  color: var(--muted);
-  font-size: 0.8rem;
-  line-height: 1.25;
-}
-
-.mission-card em {
-  display: block;
-  color: #f7dc88;
-  font-size: 0.76rem;
-  font-style: normal;
-  font-weight: 800;
-  line-height: 1.25;
-}
-
-.mission-card .mission-card__traits {
-  display: block;
-  margin-top: 2px;
-  color: #9ff3d0;
-  font-size: 0.72rem;
-  font-weight: 800;
-  line-height: 1.15;
-}
-
-.mission-card.is-active {
-  border-color: rgba(248, 214, 106, 0.5);
-}
-
-.mission-card.is-active .mission-card__top b {
-  background: rgba(248, 214, 106, 0.18);
-  color: var(--gold);
-}
-
-.mission-card.is-centered {
-  border-color: #8affd4;
-  outline: 3px solid rgba(103, 242, 190, 0.92);
-  outline-offset: -4px;
-  box-shadow:
-    0 0 0 3px rgba(248, 214, 106, 0.72),
-    0 0 24px 7px rgba(103, 242, 190, 0.58),
-    inset 0 0 22px rgba(103, 242, 190, 0.16);
-}
-
-.mission-card.is-centered:disabled,
-.mission-card.is-centered[aria-disabled="true"] {
-  opacity: 0.78;
-}
-
-.mission-card:disabled,
-.mission-card[aria-disabled="true"] {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
 .diamond-card {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -1303,10 +1201,6 @@ body.is-rune-playing .pause-toggle {
   .hero-upgrade-grid {
     grid-template-columns: 1fr;
   }
-
-  .mission-card {
-    flex-basis: min(82vw, 250px);
-  }
 }
 
 body.is-rune-playing {
@@ -1514,21 +1408,12 @@ body.is-rune-playing .rune-app[data-wp-logical-battle-canvas] {
   }
 }
 
-/* Standard Stage owns missions and every pre-battle management system. */
-#stagePanel.wp-standard-stage-panel {
-  grid-template-rows: 52px minmax(0, 1fr) 52px;
-  background-color: #17243a;
-  background-image: linear-gradient(rgb(5 18 15 / 80%), rgb(14 36 30 / 92%)), url("../../assets/animal-rune-tactics-cover.webp");
-  background-position: center;
-  background-size: cover;
-}
-
+/* Shared I9 owns Stage chrome, card geometry, posters, briefing, and gestures. */
 .rune-stage-workspace {
   min-width: 0;
   min-height: 0;
   overflow: hidden;
 }
-
 .rune-stage-view {
   display: none;
   width: 100%;
@@ -1536,150 +1421,22 @@ body.is-rune-playing .rune-app[data-wp-logical-battle-canvas] {
   min-width: 0;
   min-height: 0;
 }
-
 .rune-stage-view.is-active { display: grid; }
-
-.rune-stage-view[data-rune-stage-view="missions"] {
-  grid-template-rows: minmax(0, 1fr);
-}
-
+.rune-stage-view[data-rune-stage-view="missions"] { grid-template-rows: minmax(0, 1fr); }
 #stagePanel .mission-list {
-  display: grid;
-  grid-template-rows: 44px 190px minmax(0, 1fr);
-  align-content: stretch;
-  gap: 8px;
-  min-width: 0;
-  min-height: 0;
-  padding: 8px;
-  overflow: hidden;
-  border-radius: 8px;
-  background: rgb(7 25 20 / 90%);
-}
-
-#stagePanel .mission-briefing {
-  display: grid;
-  grid-template-rows: auto minmax(82px, 1fr) auto auto;
-  align-content: stretch;
-  gap: 8px;
-  min-height: 0;
-  padding: 12px;
-  overflow: hidden;
-  border: 1px solid rgba(103, 242, 190, 0.28);
-  border-radius: 10px;
-  background: linear-gradient(145deg, rgba(14, 62, 48, 0.96), rgba(5, 28, 23, 0.96));
-  pointer-events: none;
-}
-
-#stagePanel .mission-briefing__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  min-width: 0;
-}
-
-#stagePanel .mission-briefing__head strong { color: #f8d66a; }
-
-#stagePanel .mission-briefing__head em {
-  overflow: hidden;
-  color: #f8fafc;
-  font-style: normal;
-  font-weight: 900;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-#stagePanel .mission-briefing__enemies {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 0;
-  overflow: hidden;
-}
-
-#stagePanel .mission-briefing__enemy {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto auto;
-  justify-items: center;
-  width: min(96px, 28%);
-  height: 100%;
-  min-height: 0;
-  padding: 6px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
-  background: rgba(2, 13, 11, 0.56);
-}
-
-#stagePanel .mission-briefing__enemy img {
+  display: block;
+  position: relative;
   width: 100%;
   height: 100%;
+  min-width: 0;
   min-height: 0;
-  object-fit: contain;
-}
-
-#stagePanel .mission-briefing__enemy b,
-#stagePanel .mission-briefing__enemy small {
-  max-width: 100%;
   overflow: hidden;
-  font-size: 10px;
-  line-height: 12px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
-
-#stagePanel .mission-briefing__enemy small { color: #67f2be; }
-
-#stagePanel .mission-briefing p {
-  margin: 0;
-  color: #d9eee6;
-  font-size: 11px;
-  line-height: 15px;
-}
-
-#stagePanel .mission-briefing p b {
-  margin-right: 6px;
-  color: #f8d66a;
-}
-
-#stagePanel .mission-grid {
-  width: 100%;
-  height: 190px;
-  min-height: 190px;
-  max-height: 190px;
-  gap: 12px;
-  margin: 0;
-  padding: 0 calc((100% - 264px) / 2);
-  touch-action: pan-x;
-}
-
-#stagePanel .mission-card {
-  align-content: center;
-  flex: 0 0 264px;
-  width: 264px;
-  min-width: 264px;
-  max-width: 264px;
-  height: 190px;
-  min-height: 190px;
-  max-height: 190px;
-  padding: 14px;
-  overflow: hidden;
-  border-radius: 8px;
-  background: rgb(11 40 31 / 96%);
-}
-
-#stagePanel .mission-card :is(strong, span, small, em) {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .rune-stage-view[data-rune-stage-view="heroes"] {
   grid-template-rows: auto minmax(0, 1fr);
   gap: 8px;
   overflow: hidden;
 }
-
 #stagePanel .growth-summary,
 #stagePanel .hero-upgrade-list,
 #stagePanel .diamond-card {
@@ -1687,7 +1444,6 @@ body.is-rune-playing .rune-app[data-wp-logical-battle-canvas] {
   justify-self: center;
   background: rgb(7 25 20 / 92%);
 }
-
 #stagePanel .hero-upgrade-list {
   min-height: 0;
   padding: 10px;
@@ -1695,53 +1451,11 @@ body.is-rune-playing .rune-app[data-wp-logical-battle-canvas] {
   overflow-y: auto;
   overscroll-behavior: contain;
 }
-
 .rune-stage-view[data-rune-stage-view="training"] {
   align-content: start;
   overflow-y: auto;
 }
-
 #stagePanel .diamond-card { padding: 14px; }
-
-.rune-stage-tabs {
-  display: grid;
-  grid-template-columns: repeat(3, 104px);
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 2px 8px;
-  border-radius: 8px;
-  background: rgb(7 25 20 / 94%);
-}
-
-.rune-stage-tabs button {
-  width: 104px;
-  min-width: 104px;
-  max-width: 104px;
-  height: 44px;
-  min-height: 44px;
-  max-height: 44px;
-  padding: 4px 6px;
-  overflow: hidden;
-  border: 1px solid rgb(255 255 255 / 18%);
-  border-radius: 8px;
-  color: #f8fafc;
-  background: #24483c;
-  font-size: 13px;
-  font-weight: 900;
-}
-
-.rune-stage-tabs button.is-active {
-  border-color: #f8d66a;
-  background: #087f63;
-}
-
-@media (max-height: 560px) {
-  #stagePanel .mission-list { grid-template-rows: 34px 176px minmax(0, 1fr); }
-  #stagePanel .mission-grid,
-  #stagePanel .mission-card { height: 176px; min-height: 176px; max-height: 176px; }
-  .rune-stage-view[data-rune-stage-view="missions"] { grid-template-rows: minmax(0, 1fr); }
-}
 
 /* Direct issue repair: phone-first tactical surface and universal HUD hierarchy. */
 body.wp-standard-stage-page .sound-toggle,
@@ -2276,33 +1990,6 @@ body.wp-standard-stage-page #stagePanel.wp-standard-stage-panel {
 }
 
 body.wp-standard-stage-page .rune-stage-workspace { overflow: hidden; }
-body.wp-standard-stage-page #stagePanel .mission-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 12px;
-}
-body.wp-standard-stage-page #stagePanel .mission-grid {
-  flex: 0 0 210px;
-  height: 210px;
-  min-height: 210px;
-  max-height: 210px;
-  padding-inline: max(16px, calc((100% - 304px) / 2));
-}
-body.wp-standard-stage-page #stagePanel .mission-card {
-  flex-basis: 304px;
-  width: 304px;
-  min-width: 304px;
-  max-width: 304px;
-  height: 210px;
-  min-height: 210px;
-  max-height: 210px;
-}
-body.wp-standard-stage-page #stagePanel .mission-briefing {
-  flex: 1 1 auto;
-  grid-template-rows: auto minmax(96px, 1fr) auto auto;
-  padding: 14px;
-}
 body.wp-standard-stage-page .rune-stage-view[data-rune-stage-view="heroes"] {
   grid-template-rows: auto auto minmax(0, 1fr);
   gap: 10px;
@@ -2314,17 +2001,7 @@ body.wp-standard-stage-page #stagePanel .hero-upgrade-list {
   width: min(100%, 720px);
   justify-self: center;
 }
-body.wp-standard-stage-page .rune-stage-tabs {
-  grid-template-columns: repeat(3, minmax(0, 150px));
-  gap: 10px;
-  padding: 7px 12px;
-}
-body.wp-standard-stage-page .rune-stage-tabs button {
-  width: 100%;
-  min-width: 0;
-  max-width: none;
-  height: 44px;
-}
+
 
 html body.wp-logical-battle-active.is-rune-playing .rune-app {
   position: fixed !important;
@@ -2489,12 +2166,6 @@ html body.wp-logical-battle-active.is-rune-playing .battle-ad-reserve {
 
 @media (max-width: 560px) {
   body.wp-standard-stage-page #stagePanel.wp-standard-stage-panel { width: 100%; }
-  body.wp-standard-stage-page #stagePanel .mission-list { padding: 8px; }
-  body.wp-standard-stage-page #stagePanel .mission-grid,
-  body.wp-standard-stage-page #stagePanel .mission-card { height: 184px; min-height: 184px; max-height: 184px; }
-  body.wp-standard-stage-page #stagePanel .mission-grid { flex-basis: 184px; }
-  body.wp-standard-stage-page #stagePanel .mission-card { flex-basis: 272px; width: 272px; min-width: 272px; max-width: 272px; }
-  body.wp-standard-stage-page #stagePanel .mission-briefing { grid-template-rows: auto minmax(78px, 1fr) auto auto; padding: 10px; }
 }
 
 @media (min-width: 561px) and (max-width: 699px) and (min-height: 561px) {
@@ -2830,11 +2501,6 @@ html body .rune-app #runeBattleScene .game-panel > .hud { grid-row:1!important; 
 html body .rune-app #runeBattleScene :is(.pause-panel,.result-panel,.reward-panel) { position:absolute!important; inset:0!important; width:100%!important; height:100%!important; max-width:none!important; max-height:none!important; transform:none!important; }
 html body .rune-app [data-wp-frame-copy] > [hidden] { display:none!important; }
 html body #stagePanel .mission-list { display:block!important; position:relative!important; width:100%!important; height:100%!important; padding:0!important; overflow:hidden!important; }
-html body #stagePanel .mission-grid { position:absolute!important; top:38%!important; transform:translateY(-50%)!important; width:100%!important; height:190px!important; min-height:190px!important; max-height:190px!important; padding-inline:max(0px,calc((100% - 264px)/2))!important; }
-html body #stagePanel .mission-card { flex-basis:264px!important; width:264px!important; min-width:264px!important; max-width:264px!important; height:190px!important; min-height:190px!important; max-height:190px!important; }
-html body #stagePanel .mission-briefing { position:absolute; inset:calc(38% + 110px) 12px 8px; min-height:0!important; overflow:auto!important; }
-html body #stagePanel .rune-stage-tabs { direction:ltr; }
-html body #stagePanel .rune-stage-tabs button { direction:inherit; }
 html body #runeBattleScene .damage-preview { position:absolute; inset:4px 4px auto auto; padding:2px 5px; border-radius:4px; background:#122c25; color:#ffe9a2; font:bold 12px/1.2 system-ui; pointer-events:none; }
 @media (min-width:700px) {
   html body .rune-app #runeBattleScene > #gamePanel.game-panel { grid-template-columns:minmax(0,1fr) minmax(230px, .8fr)!important; grid-template-rows:34px 28px minmax(0,1fr)!important; }
@@ -2856,8 +2522,6 @@ html body #runeBattleScene .damage-preview { position:absolute; inset:4px 4px au
   html body .rune-app #runeBattleScene .actions button { height:46px!important; min-height:46px!important; max-height:46px!important; }
   html body .rune-app #runeBattleScene .terrain-mark { font-size:9px!important; }
   html body #stagePanel #rune-stage-view-missions { grid-template-rows:minmax(0,1fr)!important; }
-  html body #stagePanel .mission-grid { top:50%!important; }
-  html body #stagePanel .mission-briefing { display:none!important; }
 }
 @media (prefers-reduced-motion:reduce) { .rune-app *, .rune-app *::before, .rune-app *::after { scroll-behavior:auto!important; } }
 
@@ -3015,19 +2679,6 @@ html body .rune-app #runeBattleScene .command-selected strong {font-weight:750!i
 @layer wp-frame-contract {
  html body .rune-app #menuPanel [data-wp-frame-title] {white-space:normal!important;overflow:visible!important;text-overflow:clip!important;font-size:clamp(16px,4.1vw,20px)!important;line-height:1.15!important;}
 }
-html body #stagePanel .mission-briefing__head {flex-wrap:wrap;}
-html body #stagePanel .mission-briefing__head em {white-space:normal;overflow:visible;text-overflow:clip;min-width:0;}
-html body #stagePanel .mission-card {align-content:center!important;gap:7px!important;padding:12px!important;}
-html body #stagePanel .mission-card :is(strong,span,small,em) {white-space:normal!important;overflow:visible!important;text-overflow:clip!important;-webkit-line-clamp:unset!important;max-height:none!important;}
-html body #stagePanel .mission-card__top {align-items:center;}
-html body #stagePanel .mission-card__top strong {font-size:15px!important;line-height:19px!important;}
-html body #stagePanel .mission-card__top b {flex-shrink:0;}
-html body #stagePanel .mission-briefing {grid-template-rows:none!important;grid-auto-rows:max-content;align-content:start;pointer-events:auto;}
-html body #stagePanel .mission-briefing__enemies {display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:8px;overflow:visible;}
-html body #stagePanel .mission-briefing__enemy {min-width:0;width:100%;max-width:100%;height:auto;grid-template-rows:48px auto auto;align-content:start;}
-html body #stagePanel .mission-briefing__enemy img {height:48px;}
-html body #stagePanel .mission-briefing__enemy :is(b,small) {white-space:normal;overflow:visible;text-overflow:clip;line-height:1.35;}
-html body #stagePanel .mission-rules summary {cursor:pointer;min-height:32px;color:#9debd1;}
 html body .rune-app #runeBattleScene .turn-roster-item {grid-template-columns:28px minmax(0,1fr)!important;}
 html body .rune-app #runeBattleScene .turn-roster-item img {width:28px!important;}
 html body .rune-app #runeBattleScene .turn-roster-item strong {white-space:normal!important;text-overflow:clip!important;overflow:visible!important;}

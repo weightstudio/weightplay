@@ -6,6 +6,9 @@
   document.body.classList.add('wp-premium-table','casino-royal-table');
   document.body.dataset.gameVersion='v26';
   document.body.dataset.cardDeck='klondike';
+  // Commit the shared logical Canvas envelope before tutorial UI or the first
+  // player input can observe the newly opened Battle scene.
+  window.addEventListener('weightplay:battle-open',()=>window.WeightPlayBattleCanvas?.sync?.());
   const signatures=new WeakMap();
   function decorate(root) {
     const signature=[...root.querySelectorAll('.playing-card')].map(card=>card.getAttribute('aria-label')).join('|');
@@ -120,6 +123,10 @@
     };
     const showTutorial=()=>{
       if(tutorialLayer)return;
+      const battleScreen=document.getElementById('battleScreen');
+      const battleCanvas=battleScreen?.querySelector('[data-wp-logical-battle-canvas]');
+      const owner=battleScreen&&!battleScreen.hidden?battleCanvas:document.getElementById('mainScreen');
+      if(!owner)return;
       const copy=getTutorialCopy();
       tutorialLayer=document.createElement('div');
       tutorialLayer.id='tutorialPanel';
@@ -143,7 +150,8 @@
       const start=document.createElement('button');
       start.type='button';start.className='casino-tutorial-start';start.textContent=copy.button;
       start.setAttribute('data-wp-tutorial-next','');
-      panel.append(heading,steps,start);tutorialLayer.append(panel);document.body.append(tutorialLayer);
+      panel.append(heading,steps,start);tutorialLayer.append(panel);
+      owner.append(tutorialLayer);
       document.body.classList.add('casino-tutorial-open');
       start.focus({preventScroll:true});
       start.addEventListener('click',closeTutorial);
