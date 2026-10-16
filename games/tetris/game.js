@@ -1,7 +1,7 @@
 window.WPPopularArcade?.mount("tetris");
 // This game-owned identity supersedes the shared legacy mount default.
 document.body.dataset.gameVersion = "v23";
-document.body.dataset.interfaceVersion = "7";
+document.body.dataset.wpInterfaceVersion = "9";
 
 // Measure the actual shared transform; inactive shared-shell cleanup can
 // temporarily remove its inherited physical-size token while retaining scale.

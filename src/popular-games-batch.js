@@ -1429,6 +1429,10 @@
             if (guideKicker) guideKicker.textContent = ui.kicker;
             if (guideTitle) guideTitle.textContent = els.title.textContent;
             if (guideIntro) guideIntro.textContent = ui.intro;
+            const guideTags = [...(guideRoot.querySelectorAll(".game-info-tags > span") || [])];
+            (ui.tags || []).forEach((tag, index) => {
+              if (guideTags[index]) guideTags[index].textContent = tag;
+            });
             const facts = [...guideRoot.querySelectorAll(".game-info-fact")];
             [[ui.gameplay, ui.gameplayValue], [ui.genre, ui.genreValue]].forEach(([label, value], index) => {
               const fact = facts[index];
@@ -1550,7 +1554,7 @@
       [...els.board.querySelectorAll(".tetris-next-grid i")].forEach((cell,i) => { cell.classList.toggle("filled",nextCells.has(i)); });
       const labels = {left:copy(locale,"left"),right:copy(locale,"right"),rotate:copy(locale,"rotate"),down:ui.soft,drop:ui.hard};
       [...els.controls.querySelectorAll("button")].forEach((control) => { control.setAttribute("aria-label",labels[control.dataset.action]); control.title = labels[control.dataset.action]; });
-      const utility = document.querySelector("#battleUtilityBtn");
+      const utility = document.querySelector("#pauseBtn");
       if (utility) { utility.textContent = "Ⅱ"; utility.setAttribute("aria-label",ui.pause); utility.title = ui.pause; }
     };
     const tetrisSettingsButton = game.type === "tetris" ? document.querySelector("#audioMenuBtn") : null;
@@ -2467,7 +2471,7 @@
       render();
       els.start?.focus({ preventScroll: true });
     };
-    const renderShell = () => { shell(); if (game.type === "wordle") { const c = window.WPWordleUI.copy(locale); els.objective.textContent = c[0]; els.instruction.textContent = c[1]; els.objective.dataset.runtimeLocalize = "off"; els.instruction.dataset.runtimeLocalize = "off"; syncWordleLeaveDialog(); } syncSnakeLeaveDialog(); syncTetrisShellChrome(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; const progress = document.querySelector("[data-wp-main-progress]"); if (progress && game.type === "mahjong") { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = copy(locale, game.objective); } if (game.type === "breakout") { const ui = breakoutMainCopy(locale); const value = progress?.querySelector("span"); if (value) value.textContent = ui.progress; } if (game.type === "mahjong") window.WPMahjong.decorate(els, locale); };
+    const renderShell = () => { shell(); if (game.type === "wordle") { const c = window.WPWordleUI.copy(locale); els.objective.textContent = c[0]; els.instruction.textContent = c[1]; els.objective.dataset.runtimeLocalize = "off"; els.instruction.dataset.runtimeLocalize = "off"; syncWordleLeaveDialog(); } syncSnakeLeaveDialog(); syncTetrisShellChrome(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); if (game.type === "tetris") { root.dataset.debugLocale = locale; root.dataset.debugStart = els.start.textContent; } if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; const progress = document.querySelector("[data-wp-main-progress]"); if (progress && game.type === "mahjong") { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = copy(locale, game.objective); } if (game.type === "breakout") { const ui = breakoutMainCopy(locale); const value = progress?.querySelector("span"); if (value) value.textContent = ui.progress; } if (game.type === "mahjong") window.WPMahjong.decorate(els, locale); };
     els.start.addEventListener("click", () => game.type === "breakout" ? openBreakoutStages() : start("start")); els.retry.addEventListener("click", () => { trackCheckers("replay", { from: "result" }); if (game.type === "breakout") startBreakoutStage(state.stage || 1); else __wpReplayStart(() => start("retry")); }); if (els.mastery) els.mastery.addEventListener("click", () => start("mastery")); els.home.addEventListener("click", () => { trackCheckers("main_return", { from: "result" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); if (game.type === "breakout") { show("stage"); renderStage(); render(); } else { show("main"); state = makeState(game.type); render(); } }); els.hint.addEventListener("click", hint); els.restart.addEventListener("click", () => game.type === "breakout" ? startBreakoutStage(state.stage || 1) : __wpReplayStart(() => start("restart")));
     els.breakoutLeaveDialog?.addEventListener("cancel", (event) => { event.preventDefault(); closeBreakoutLeaveDialog(); });
     els.breakoutLeaveContinue?.addEventListener("click", () => closeBreakoutLeaveDialog());
@@ -2536,7 +2540,7 @@
         if (document.body.dataset.screen === "battle") openTetrisDialog();
       });
       // Capture before the shared legacy restart/return handlers can discard a run.
-      [document.querySelector("#battleBackBtn"),els.restart,document.querySelector("#battleUtilityBtn")].forEach((node) => {
+      [document.querySelector("#battleBackBtn"),els.restart,document.querySelector("#pauseBtn")].forEach((node) => {
         node?.addEventListener("click", (event) => { event.preventDefault(); event.stopImmediatePropagation(); openTetrisDialog(node === els.restart ? "restart" : "pause"); }, true);
       });
       document.addEventListener("keydown", (event) => {
