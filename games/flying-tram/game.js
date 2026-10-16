@@ -134,7 +134,9 @@
       if(turns>run.lastTurns){run.flips+=turns-run.lastTurns;run.score+=650*(turns-run.lastTurns);run.lastTurns=turns;safeCall("feedback.success");showToast(t("flip",{n:run.flips}),850);}
       const tilt=Math.abs(normAngle(run.angle));
       run.spill=clamp(run.spill+Math.max(0,tilt-.24)*dt*5+Math.abs(run.angVel)*dt*.5-(tilt<.12&&Math.abs(run.angVel)<.25?dt*3:0),0,100);
-      run.vy=clamp(run.vy+(input.boost?.5:-.16)*dt,-.5,.5);
+      // Keep release-to-descend controllable: braking stays useful without
+      // requiring frame-perfect BOOST taps during a short mobile landing window.
+      run.vy=clamp(run.vy+(input.boost?.5:-.07)*dt,-.5,.5);
       run.vy*=Math.pow(.7,dt);
       const before=run.altitude;run.altitude=clamp(run.altitude+run.vy*dt,PAD_ALTITUDE,.83);
       const touchedPadHeight=before>PAD_ALTITUDE&&run.altitude<=PAD_ALTITUDE&&run.vy<0;

@@ -775,6 +775,10 @@ body.rescue-stage-select .stage-select {
   display: none !important;
 }
 
+body[data-wp-game-id="animal-rescue"]:not(.rescue-playing) #hud {
+  display: none !important;
+}
+
 body.rescue-playing .game-page-info {
   display: none !important;
 }

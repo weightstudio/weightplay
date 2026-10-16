@@ -785,9 +785,13 @@ function startLevel(index) {
   animalName.textContent = t(level.animal);
   renderBoard(true);
   updateHud();
+  window.dispatchEvent(new Event("weightplay:battle-sync"));
+  window.dispatchEvent(new Event("weightplay:stage-sync"));
+  window.dispatchEvent(new Event("weightplay:shell-sync"));
   window.WeightPlayGame?.exitMobileGameMode?.();
   document.body.classList.remove("wp-mobile-game-mode", "weightplay-active-viewport");
   document.querySelector(".rescue-game")?.classList.remove("weightplay-active-viewport");
+  window.WeightPlayBattleCanvas?.sync?.();
   updateBattleScale();
   window.WeightPlayAudio?.play("game.start");
   window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, stage: level.id, locale: locale() });
