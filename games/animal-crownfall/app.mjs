@@ -32,7 +32,7 @@ else {try{const saved=localStorage.getItem('weightPlayLocale');if(LOCALES.includ
 let save,storageOK=true;try{save=normalize(JSON.parse(localStorage.getItem(SAVE_KEY)||'null'));}catch{save=normalize(null);storageOK=false;}
 // Discard legacy practice resumes without touching the stored campaign record.
 if(save.run?.practice)save.run=null;
-let stageController=null,practiceMode=false,practiceRun=false;
+let stageController=null,selectedStageIndex=null,practiceMode=false,practiceRun=false;
 let screen='main',state=null,history=[],moveHistory=[],usedHint=false,busy=false,paused=false,renderer=null,modalKind='',hintLevel=0,hintCache=null,pending=null,pendingRoute='',settlingRoute='',transactionBase=null,session=0,targetMoves=0;
 const t=(key,args)=>key==='title'?(window.WEIGHTPLAY_GAME_TITLES?.['animal-crownfall']?.[locale]||text(locale,key,args)):text(locale,key,args);
 const stageConfig=createCrownfallStageConfig({getLocale:()=>locale,getSave:()=>save,isPractice:()=>practiceMode});
@@ -60,7 +60,6 @@ window.WonderI18n?.setLocale?.(locale,{navigate:false,dispatch:false});
 let frame=window.WeightPlayScreenFrame.mount({root:$('gameFrame'),localeSelect:$('locale'),playUI:true,scenes:{main:{root:$('main'),header:$('main').querySelector('header'),content:$('hero')},stage:{root:$('stage'),header:$('stage').querySelector('header'),content:$('stageContent')},battle:{root:$('battle'),header:$('battle').querySelector('header'),content:$('battleContent'),headerInfo:$('battleInfo')}}});
 const stageInfoGroup=window.WeightPlayScreenFrame.createGroup();stageInfoGroup.add($('stageSummary'));frame.stageTopUI.add(stageInfoGroup);
 const battleInfoGroup=window.WeightPlayScreenFrame.createGroup();[...$('battleInfo').children].forEach(node=>battleInfoGroup.add(node));frame.battleTopUI.add(battleInfoGroup);
-frame.commonDownButton.clear();
 document.querySelector('#battle .wp-frame-popover').append($('reduced').closest('.motion'));
 $('locale').addEventListener('change',()=>{locale=$('locale').value;try{localStorage.setItem('weightPlayLocale',locale);}catch{}window.WonderI18n?.setLocale?.(locale,{navigate:false});translate();});
 // Keep the shared settings component on this game's selected dictionary.
@@ -68,13 +67,15 @@ window.addEventListener('wonder:locale-change',()=>{const next=window.WonderI18n
 function updateMain(){const cleared=Object.values(save.badges).filter(v=>v[0]).length;$('progress').textContent=`${t('clearBadge')} ${cleared} / 30`;$('resumeSlot').hidden=!save.run;$('resume').textContent=t(save.run?.practice?'resumePractice':'resume');}
 function fitScene(){renderer?.resize();}
 window.addEventListener('resize',fitScene);window.visualViewport?.addEventListener('resize',fitScene);
-function changeScreen(next){if(next!=='stage')stageController?.cancel();for(const id of ['stage','battle']){const node=$(id),active=id===next;node.toggleAttribute('data-wp-logical-stage-canvas',active&&id==='stage');if(!active){for(const key of ['width','height','transform'])node.style.removeProperty(key);delete node.dataset.canvasScale;}}screen=next;tracking()?.screen(next,{node:$(next),locale});document.body.dataset.screen=next;for(const id of ['main','stage','battle'])$(id).hidden=id!==next;const guide=$('mainGuide')||document.querySelector('#gameFrame > .game-page-info');if(guide)guide.hidden=next!=='main';$('generalReserve').hidden=true;frame.activate(next);fitScene();if(next!=='battle'){renderer?.destroy();renderer=null;$('arena').querySelectorAll('.cell-access').forEach(n=>n.remove());}if(next==='main')updateMain();if(next==='stage')renderStages({reset:true});window.scrollTo(0,0);}
+function changeScreen(next){const previousScreen=screen;if(next!=='stage')stageController?.cancel();for(const id of ['stage','battle']){const node=$(id),active=id===next;node.toggleAttribute('data-wp-logical-stage-canvas',active&&id==='stage');if(!active){for(const key of ['width','height','transform'])node.style.removeProperty(key);delete node.dataset.canvasScale;}}screen=next;tracking()?.screen(next,{node:$(next),locale});document.body.dataset.screen=next;for(const id of ['main','stage','battle'])$(id).hidden=id!==next;const guide=$('mainGuide')||document.querySelector('#gameFrame > .game-page-info');if(guide)guide.hidden=next!=='main';$('generalReserve').hidden=true;frame.activate(next);fitScene();if(next!=='battle'){renderer?.destroy();renderer=null;$('arena').querySelectorAll('.cell-access').forEach(n=>n.remove());}if(next==='main')updateMain();if(next==='stage')renderStages({reset:previousScreen==='main'});window.scrollTo(0,0);}
 function renderStages({reset=true}={}){
  const rail=$('stageRail');$('stageSummary').textContent=`${t('clearBadge')} ${Object.values(save.badges).filter(v=>v[0]).length} / ${LEVELS.length}`;
+ const highest=save.unlocked-1;
+ selectedStageIndex=reset||!Number.isInteger(selectedStageIndex)?highest:Math.max(selectedStageIndex,highest);
  if(!stageController){
   if(!window.WeightPlayPlayUI)throw new Error('SHARED_PLAY_UI_MISSING');
-  stageController=window.WeightPlayPlayUI.mountStage({page:$('stageContent'),rail,config:stageConfig,selected:save.unlocked-1,onStart:index=>startLevel(index+1,null,practiceMode),isActive:()=>screen==='stage'});
- }else stageController.refresh(reset?save.unlocked-1:stageController.selected);
+  stageController=window.WeightPlayPlayUI.mountStage({page:$('stageContent'),rail,config:stageConfig,selected:selectedStageIndex,onSelect:index=>{selectedStageIndex=index;},onStart:index=>startLevel(index+1,null,practiceMode),isActive:()=>screen==='stage'});
+ }else stageController.refresh(selectedStageIndex);
 }
 function label(a,kind,s){if(kind==='hero')return `⚔ ${heroPower(s)}`;if(kind==='enemy'){const p=powerOf(s,a),bonus=p-a.power;return `${a.boss?'♛ ':s.required.includes(a.id)?'◆ ':''}${a.shield?'▣ ':''}${a.direction==='left'?'→ ':a.direction==='right'?'← ':''}${p}${bonus?` (+${bonus})`:''}${a.buff?' ⚑':''}`;}if(['sword','power','multiply'].includes(a.kind))return `${u(a.kind)} ${a.kind==='multiply'?`×${a.amount}`:`+${a.amount||0}`}`;return a.kind==='crown'?'♛':`${({key:'◆',rune:'◇',seal:'●'})[a.kind]}${a.link&&a.kind!=='rune'?a.link:''}`;}
 function reason(s){if(!s.reason)return t('lost');const code={power:'powerFail',shield:'shieldFail'}[s.reason.code]||s.reason.code;return t(code,s.reason);}
