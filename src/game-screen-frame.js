@@ -625,6 +625,7 @@
   }
 
   function ensureStageSelectorRuntime() {
+    if (document.querySelector('[data-wp-play-ui="1"]')) return;
     if (!STAGE_RAIL_SELECTORS.some((selector) => document.querySelector(selector))) return;
     if (!document.querySelector('link[href*="stage-selector-standard.css"]')) {
       const link = document.createElement("link");

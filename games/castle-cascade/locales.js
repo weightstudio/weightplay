@@ -143,6 +143,25 @@ window.CC_I18N = {
   },
 };
 
+const CC_STAGE_I18N = {
+  en: { locked: "Locked" },
+  "zh-Hant": { locked: "尚未解鎖" },
+  "zh-Hans": { locked: "尚未解锁" },
+  ja: { locked: "未解放" },
+  ko: { locked: "잠김" },
+  es: { locked: "Bloqueado" },
+  "pt-BR": { locked: "Bloqueada" },
+  fr: { locked: "Verrouillé" },
+  de: { locked: "Gesperrt" },
+  it: { locked: "Bloccato" },
+  ru: { locked: "Закрыто" },
+  hi: { locked: "बंद" },
+  ar: { locked: "مغلقة" },
+};
+for (const [locale, strings] of Object.entries(CC_STAGE_I18N)) {
+  Object.assign(window.CC_I18N[locale], strings);
+}
+
 const CC_EXTRA_I18N = {
   en: ["Meet Boom Mane Leo", "WeightPlay Original Game Guide", "Match-three board", "Board art unavailable", "Board paused", "No legal move"],
   "zh-Hant": ["認識 Boom Mane Leo", "WeightPlay 原創遊戲指南", "三消棋盤", "棋盤美術素材無法使用", "棋盤已暫停", "沒有合法步數"],

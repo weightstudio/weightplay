@@ -1,5 +1,5 @@
 import {STAGES,TOOLS} from './game-data.js';
-import {Simulation,mission} from './simulation.js?v=20261014-wildwood-mission-clarity-v39a';
+import {Simulation,mission} from './simulation.js?v=20261016-wildwood-pressure-v42a';
 import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js?v=20261015-wildwood-guide-v41';
 import {load,store,award,KEY} from './save.js';
 import {layoutLabels} from './label-layout.js?v=20261014-wildwood-label-layout-v36';

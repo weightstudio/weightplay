@@ -9,10 +9,10 @@ import {
 } from "./cascade-core.js?v=20261011-birds-v20";
 import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261011-birds-v20";
 import { SIEGE_LEVELS, siegeSnapshot, siegeRemaining } from "./siege-core.js?v=20261011-birds-v20";
+import { createCastleCascadeStageConfig } from "./stage-config.js";
 
 const GAME_ID = "castle-cascade";
 const SAVE_KEY = "wp-castle-cascade";
-const LION_POSTER_URL = new URL("../../assets/castle-cascade-poster.webp", import.meta.url).href;
 const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
 const SEGMENT_LOCALES = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
 const ARC_START = [0, 5, 10, 15, 20, 25];
@@ -36,9 +36,10 @@ let lastRendererStats = null;
 let boardAvailable = false;
 let pendingResultStatus = null;
 let leaveReturnFocus = null;
-let initialObjectiveKeys = [];
 let tutorialSurface = null;
 let tutorialExit = null;
+let screenFrame = null;
+let stageSelector = null;
 
 function cancelTutorialExit() {
   if (!tutorialExit) return;
@@ -169,10 +170,11 @@ function screen(id) {
     node.hidden = node.id !== id;
   }
   document.body.dataset.screen = id;
+  screenFrame?.activate(id);
   document.querySelector("#result").hidden = true;
   document.querySelector("#leaveConfirm").hidden = true;
   document.querySelector("#battle .battle-content").inert = false;
-  document.querySelector("#battle .battle-header").inert = false;
+  document.querySelector('#battle [data-wp-frame-header="battle"]').inert = false;
   pendingResultStatus = null;
   leaveReturnFocus = null;
   // Shared scene controllers subscribe on window. A non-bubbling document
@@ -195,6 +197,7 @@ function screen(id) {
     renderAccessibleBoard();
     renderBattleHud();
   }
+  if (id === "stage") renderStageList();
   if (id === "battle") {
     window.dispatchEvent(new CustomEvent("weightplay:battle-open", { detail: { screen: id, gameId: GAME_ID } }));
   }
@@ -256,77 +259,38 @@ function objectiveName(key, count) {
   return copy?.objectiveNames?.[key] || key;
 }
 
-function makeObjectiveIndicators(counts, className = "objective-icons", keys = OBJECTIVE_ORDER.filter(key => counts[key] > 0)) {
-  const strip = document.createElement("span");
-  strip.className = className;
-  strip.setAttribute("aria-hidden", "true");
-  for (const key of keys) {
-    const count = counts[key] || 0;
-    const chip = document.createElement("span");
-    chip.className = "objective-chip";
-    chip.dataset.objective = key;
-    chip.dataset.complete = String(!count);
-    const icon = document.createElement("img");
-    icon.className = "objective-icon";
-    icon.src = new URL(key === "siege" ? "./assets/siege-castle-v2.png" : `./assets/objective-${key}-v3.webp`, import.meta.url).href;
-    icon.alt = "";
-    icon.width = icon.height = 40;
-    const amount = document.createElement("span");
-    amount.className = "objective-count";
-    amount.textContent = number(count);
-    chip.append(icon, amount);
-    strip.append(chip);
-  }
-  return strip;
+function renderStageList() {
+  if (!document.querySelector("#stageRail")) return;
+  selectedStage = Math.max(0, Math.min(LEVELS.length - 1, Math.max(selectedStage, unlocked - 1)));
+  const progressLabel = text("progress", { count: number(unlocked) });
+  const stageProgress = document.querySelector("#progress");
+  stageProgress.textContent = `${number(unlocked)}/${number(LEVELS.length)}`;
+  stageProgress.setAttribute("aria-label", progressLabel);
+  document.querySelector("#mainProgress").textContent = progressLabel;
+  if (document.body.dataset.screen === "stage") ensureStageSelector().refresh(selectedStage);
+  else stageSelector?.refresh(selectedStage);
 }
 
-function renderStageList() {
-  const rail = document.querySelector("#stageRail");
-  if (!rail) return;
-  const activeCardHadFocus = rail.contains(document.activeElement);
-  rail.replaceChildren();
-  document.querySelector("#progress").textContent = text("progress", { count: number(unlocked) });
-  document.querySelector("#mainProgress").textContent = text("progress", { count: number(unlocked) });
-  for (let index = 0; index < LEVELS.length; index += 1) {
-    const level = LEVELS[index];
-    const arcIndex = Math.floor(index / 5);
-    const objective = objectiveSummary(level);
-    const stageText = `${text("stage")} ${number(index + 1)}`;
-    const moveText = text("movesLeft", { count: number(level.moves) });
-    const card = document.createElement("button");
-    card.type = "button";
-    card.className = `stage-card${index === selectedStage ? " selected" : ""}`;
-    card.dataset.stageIndex = String(index);
-    card.dataset.mode = SIEGE_LEVELS[index] ? "siege" : "puzzle";
-    card.disabled = index >= unlocked;
-    if (index === selectedStage && !card.disabled) card.dataset.wpStageRecommended = "true";
-    card.setAttribute("aria-label", text("stageAria", { stage: stageText, objective, moves: moveText }));
-    card.setAttribute("aria-current", index === selectedStage ? "step" : "false");
-
-    const title = document.createElement("strong");
-    title.textContent = stageText;
-    const art = document.createElement("img");
-    art.src = SIEGE_LEVELS[index] ? new URL("./assets/siege-castle-v2.png", import.meta.url).href : LION_POSTER_URL;
-    art.alt = "";
-    art.setAttribute("aria-hidden", "true");
-    const chapter = document.createElement("span");
-    chapter.className = "stage-arc";
-    chapter.textContent = SIEGE_LEVELS[index] ? text("siegeTitle") : `${text("arc")} ${number(arcIndex + 1)} · ${copy?.arcNames?.[arcIndex] || ""}`;
-    const goal = document.createElement("span");
-    goal.className = "stage-objective";
-    const stageCounts = Object.fromEntries(OBJECTIVE_ORDER.map((key) => [key, level.obstacles?.[key]?.length || 0]));
-    if (SIEGE_LEVELS[index]) {
-      goal.append(makeObjectiveIndicators({ siege: SIEGE_LEVELS[index].reduce((sum, wave) => sum + wave.length, 0) }, "objective-icons stage-objective-icons", ["siege"]));
-    } else goal.append(makeObjectiveIndicators(stageCounts, "objective-icons stage-objective-icons"));
-    const moves = document.createElement("span");
-    moves.className = "stage-moves";
-    moves.textContent = moveText;
-    goal.append(moves);
-    card.append(title, art, chapter, goal);
-    card.addEventListener("click", () => startStage(index));
-    rail.append(card);
-  }
-  if (activeCardHadFocus) rail.querySelector(`[data-stage-index="${selectedStage}"]`)?.focus({ preventScroll: true });
+function ensureStageSelector() {
+  if (stageSelector) return stageSelector;
+  stageSelector = window.WeightPlayPlayUI.mountStage({
+    page: document.querySelector("#stageWorkspace"),
+    rail: document.querySelector("#stageRail"),
+    config: createCastleCascadeStageConfig({
+      levels: LEVELS,
+      sieges: SIEGE_LEVELS,
+      unlocked: () => unlocked,
+      text,
+      number,
+      objective: objectiveSummary,
+      arcNames: () => copy?.arcNames || [],
+    }),
+    selected: selectedStage,
+    isActive: () => document.body.dataset.screen === "stage",
+    onSelect(index) { selectedStage = index; },
+    onStart(index) { startStage(index); },
+  });
+  return stageSelector;
 }
 
 function renderBattleHud(board = gameState?.board, siege = renderer?.siege ?? gameState?.siege) {
@@ -335,28 +299,21 @@ function renderBattleHud(board = gameState?.board, siege = renderer?.siege ?? ga
   const counts = siege ? { siege: siegeRemaining(siege) } : objectiveCounts(board || gameState.board);
   const goals = OBJECTIVE_ORDER.filter((key) => counts[key] > 0)
     .map((key) => `${number(counts[key])} ${objectiveName(key, counts[key])}`);
-  document.querySelector("#stageLabel").textContent = siege ? `${stageText} · ${text("siegeTitle")}` : stageText;
+  const stageLabel = document.querySelector("#stageLabel");
+  stageLabel.textContent = stageText;
+  stageLabel.setAttribute("aria-label", siege ? `${stageText} · ${text("siegeTitle")}` : stageText);
   document.querySelector("#instructions").textContent = siege ? text("siegeInstructions") : text("instructions");
-  const indicators = document.querySelector("#goalIndicators");
-  if (!indicators.firstElementChild) {
-    indicators.append(makeObjectiveIndicators(counts, "objective-icons", initialObjectiveKeys));
-  }
-  for (const chip of indicators.querySelectorAll(".objective-chip")) {
-    const amount = chip.querySelector(".objective-count");
-    const count = counts[chip.dataset.objective] || 0;
-    const next = number(count);
-    if (amount.textContent !== next) {
-      amount.textContent = next;
-      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-        amount.animate([{ transform: "scale(1.25)", color: "#ab6508" }, { transform: "scale(1)", color: "#243966" }], { duration: 260, easing: "ease-out" });
-    }
-    chip.dataset.complete = String(!count);
-  }
-  document.querySelector("#goalLabel").textContent = `${text("goal")}: ${goals.length ? goals.join(copy?.objectiveJoin || " · ") : text("objectiveEmpty")}`;
+  const goalLabel = document.querySelector("#goalLabel");
+  const goalDescription = `${text("goal")}: ${goals.length ? goals.join(copy?.objectiveJoin || " · ") : text("objectiveEmpty")}`;
+  goalLabel.textContent = siege ? `${number(siege.wave + 1)}/${number(siege.totalWaves)}` : goals.length ? goals.join(copy?.objectiveJoin || " · ") : text("objectiveEmpty");
+  goalLabel.setAttribute("aria-label", goalDescription);
+  goalLabel.title = goalDescription;
   if (siege) {
     const health = siege.targets.filter(target => target.hp > 0)
       .map(target => `${copy.siegeKinds?.[target.kind] || target.kind} ${number(target.hp)}/${number(target.maxHp)}`);
-    document.querySelector("#goalLabel").textContent = `${text("siegeGoal")}. ${text("siegeWave", { wave: number(siege.wave + 1), total: number(siege.totalWaves) })}. ${health.join(" · ")}`;
+    const siegeDescription = `${text("siegeGoal")}. ${text("siegeWave", { wave: number(siege.wave + 1), total: number(siege.totalWaves) })}. ${health.join(" · ")}`;
+    goalLabel.setAttribute("aria-label", siegeDescription);
+    goalLabel.title = siegeDescription;
   }
   const moves = document.querySelector("#movesLabel");
   if (!moves.firstElementChild) {
@@ -471,12 +428,10 @@ function showResult(status) {
 function startStage(index) {
   if (!Number.isInteger(index) || index < 0 || index >= unlocked || index >= LEVELS.length) return;
   selectedStage = index;
+  stageSelector?.refresh(index);
   if (renderer) disposeRenderer();
   gameState = createState(index, unlocked);
   document.querySelector("#battle").dataset.mode = gameState.siege ? "siege" : "puzzle";
-  const initialCounts = objectiveCounts(gameState.board);
-  initialObjectiveKeys = gameState.siege ? ["siege"] : OBJECTIVE_ORDER.filter(key => initialCounts[key] > 0);
-  document.querySelector("#goalIndicators").replaceChildren();
   selectedCell = -1;
   focusCell = 40;
   busy = false;
@@ -738,7 +693,7 @@ function requestLeaveBattle() {
   leaveReturnFocus = document.querySelector('#battle [data-back]');
   renderer?.setPaused(true);
   document.querySelector("#battle .battle-content").inert = true;
-  document.querySelector("#battle .battle-header").inert = true;
+  document.querySelector('#battle [data-wp-frame-header="battle"]').inert = true;
   dialog.hidden = false;
   document.querySelector("#continueBattle").focus({ preventScroll: true });
 }
@@ -748,7 +703,7 @@ function closeLeaveConfirmation() {
   if (dialog.hidden) return;
   dialog.hidden = true;
   document.querySelector("#battle .battle-content").inert = false;
-  document.querySelector("#battle .battle-header").inert = false;
+  document.querySelector('#battle [data-wp-frame-header="battle"]').inert = false;
   renderer?.setPaused(false);
   const pending = pendingResultStatus;
   pendingResultStatus = null;
@@ -769,19 +724,11 @@ function returnToStageMap() {
   renderStageList();
 }
 
-function scrollChapter(direction) {
-  const targetStage = Math.max(0, Math.min(LEVELS.length - 1, selectedStage + direction * 5));
-  selectedStage = targetStage;
-  renderStageList();
-  document.querySelector(`[data-stage-index="${targetStage}"]`)?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", inline: "center", block: "nearest" });
-}
-
 function bindControls() {
   document.querySelector("#start").addEventListener("click", () => { playSound("ui.click"); screen("stage"); });
   document.querySelector("#stage [data-back]").addEventListener("click", () => { playSound("ui.click"); screen("main"); });
   document.querySelector("#battle [data-back]").addEventListener("click", requestLeaveBattle);
-  document.querySelector("#prevGroup").addEventListener("click", () => { playSound("ui.click"); scrollChapter(-1); });
-  document.querySelector("#nextGroup").addEventListener("click", () => { playSound("ui.click"); scrollChapter(1); });
+  document.querySelector("#stageTabButton").addEventListener("click", () => playSound("ui.click"));
   document.querySelector("#toStages").addEventListener("click", () => { playSound("ui.click"); screen("stage"); renderStageList(); });
   document.querySelector("#retry").addEventListener("click", () => { playSound("ui.click"); startStage(selectedStage); });
   document.querySelector("#continueBattle").addEventListener("click", () => { playSound("ui.click"); closeLeaveConfirmation(); });
@@ -817,6 +764,7 @@ window.__CASTLE_CASCADE_DIAGNOSTICS__ = Object.freeze({
 });
 
 installLocaleSelect();
+screenFrame = window.mountCastleCascadeFrame();
 bindControls();
 translatePage();
 screen("main");

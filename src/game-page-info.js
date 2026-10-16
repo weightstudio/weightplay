@@ -1,15 +1,16 @@
 (function () {
   // Opt-in for native Guide owners: reuse comparison delivery without metadata, frame or asset side effects.
   const comparisonOnly = Boolean(document.currentScript?.hasAttribute?.("data-wp-comparison-only"));
+  const sharedPlayUI = Boolean(document.querySelector('[data-wp-play-ui="1"]'));
   const sharedAssetBase = new URL(".", document.currentScript?.src || location.href);
-  if (!comparisonOnly && !document.querySelector('link[href*="stage-selector-standard.css"]')) {
+  if (!comparisonOnly && !sharedPlayUI && !document.querySelector('link[href*="stage-selector-standard.css"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = new URL("stage-selector-standard.css?v=20260720-explicit-recommendation3", sharedAssetBase).href;
     link.dataset.wpStageStandard = "true";
     document.head.appendChild(link);
   }
-  if (!comparisonOnly && !document.querySelector('script[src*="stage-selector-standard.js"]')) {
+  if (!comparisonOnly && !sharedPlayUI && !document.querySelector('script[src*="stage-selector-standard.js"]')) {
     const script = document.createElement("script");
     script.src = new URL("stage-selector-standard.js?v=20260720-explicit-recommendation3", sharedAssetBase).href;
     script.dataset.wpStageStandard = "true";
