@@ -113,6 +113,10 @@
       onStart:()=>isActive(),commitIndex:index=>select(index,{center:false}),onSettled:index=>select(index,{focus:false}),
     });
     listen(rail,'keydown',event => {
+      // A focused card can retain focus after its owning Stage scene is hidden.
+      // Battle arrow keys must then belong only to the live game, not the
+      // parked selector behind it.
+      if(!isActive())return;
       if(event.repeat && ['Enter',' '].includes(event.key)){event.preventDefault();return;}
       const next=window.WeightPlayStageRailI9.keyboardIndex(event.key,current+1,config.count,getComputedStyle(rail).direction==='rtl');
       if(next!==null){event.preventDefault();drag.cancel();select(next-1,{focus:true});}

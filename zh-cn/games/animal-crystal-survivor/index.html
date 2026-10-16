@@ -47,12 +47,12 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"勇闯地牢","alternateName":"Dungeon Venture","url":"https://weightplay.com/zh-cn/games/animal-crystal-survivor/","image":"https://weightplay.com/assets/animal-crystal-survivor-otter-cover-v26.png","description":"30 关动作生存战役：撑过倒计时、清除波次或击败首领。收集经验水晶选择法术，培养可重置的天赋路线。","genre":["动作","生存","战役","首领战","动物","Browser Game"],"gamePlatform":"Web browser","operatingSystem":"Any","playMode":"SinglePlayer","keywords":"action survival game, 30-stage campaign, wave survival, boss battles, browser game","audience":{"@type":"Audience","audienceType":"General action and survival players"},"publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"zh-Hans","isAccessibleForFree":true,"applicationCategory":"Game"}</script><link rel="stylesheet" href="/src/stage-selector-standard.css" />
 <link rel="stylesheet" href="/src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
 <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261016-shared-play2" />
   <meta name="twitter:title" content="勇闯地牢 | WeightPlay" />
     <meta name="twitter:description" content="30 关动作生存战役：撑过倒计时、清除波次或击败首领。收集经验水晶选择法术，培养可重置的天赋路线。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-crystal-survivor-otter-cover-v26.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261016-shared-play2" />
 </head>
   <body data-tutorial-auto-show="false" data-sound-toggle="off">
     <main data-wp-frame-root class="crystal-app" data-play-viewport data-no-mobile-immersive="true">
@@ -200,7 +200,7 @@
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-crystal-survivor", release_state: "release_candidate" });</script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-cn.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
@@ -208,7 +208,7 @@
     <script src="/src/game-screen-frame.js?v=20260921-interface7-single-frame-v2-20261016-shared-play2"></script>
 <script src="/src/virtual-joystick.js?v=1.0.0"></script>
 <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
-  <script src="/src/game-play-ui.js?v=20261016-shared-play1"></script>
+  <script src="/src/game-play-ui.js?v=20261017-shared-play3"></script>
   <script src="/games/animal-crystal-survivor/stage-config.js?v=20261016-shared-play1"></script>
 <script data-wp-game-entry-bootstrap="i9">
 (() => {
@@ -269,7 +269,7 @@
 
       <div class="game-info-section game-info-parent"><h3>玩家与存档说明</h3><p>关卡与天赋保存在当前浏览器；清除浏览器数据会移除存档。</p></div>
       <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>每一关的目标是什么？</dt><dd>关卡会显示目标：撑到倒计时结束、清除 3 或 5 波，或在时间结束前击败首领。第一关 45 秒，每关最长 3 分钟。</dd></div><div><dt>魔法会自动攻击吗？</dt><dd>会。移动躲避并收集经验水晶；升级时选择法术，魔法会自动锁定敌人攻击。</dd></div><div><dt>进度会保存吗？</dt><dd>关卡进度与天赋会保存在此浏览器；清除浏览器数据会移除存档。</dd></div><div><dt>持续生效的天赋怎么运作？</dt><dd>战斗经验会提升冒险等级并提供天赋点。满足分支前置条件后可分配点数；重置会返还已分配点数，方便重新选择。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="beast-tactician" href="/zh-cn/games/beast-tactician/"><span class="game-info-related-poster"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" data-final-src="/assets/weightplay-logo.png" alt="兽王守卫" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">兽王守卫</strong><span>《兽王守卫》是一套以自由改造路线为核心的英雄塔防战役。</span></span></a><a class="game-info-related-card" data-game-id="animal-orb-fortress" href="/zh-cn/games/animal-orb-fortress/"><span class="game-info-related-poster"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" data-final-src="/assets/weightplay-logo.png" alt="星珠要塞" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">星珠要塞</strong><span>《动物星珠要塞》是一套以阅读战场与规划反弹路线为核心的防守战役。</span></span></a><a class="game-info-related-card" data-game-id="animal-rift-salvage" href="/zh-cn/games/animal-rift-salvage/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-rift-salvage.webp" data-final-src="/assets/weightplay-logo.png" alt="裂隙回收队" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">裂隙回收队</strong><span>引导奥拉的月轮挑战 30 个星界区域，先回收小型残骸成长，再救援核心、超越对手并收回王冠遗物。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>兽王守卫</strong><span>《兽王守卫》是路线建构塔防战役，可部署橡果守卫、斥候弓手、符文工兵、爆鬃雷欧、苔甲太郎、月帽欧拉、电爪菲雅与齿角鲁克斯共 8 名防御者。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>星珠要塞</strong><span>《动物星珠要塞》是一套以阅读战场与规划反弹路线为核心的防守战役。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-rift-salvage/"><img src="/assets/interface7-redrawn/animal-rift-salvage.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>裂隙回收队</strong><span>引导奥拉的月轮挑战 30 个星界区域，先回收小型残骸成长，再救援核心、超越对手并收回王冠遗物。</span></span></a></div></div>
     </div>
   </section>
 </body>
