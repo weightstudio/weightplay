@@ -331,6 +331,11 @@
     document.body.classList.toggle("safari-main", name === "main");
     sizeFrameRoot();
     const result = name === "result";
+    // The shared frame scene contract uses display:grid!important. Keep its
+    // inactive scenes truly out of layout; .is-active alone cannot hide them.
+    dom.mainScreen.hidden = name !== "main";
+    dom.stageScreen.hidden = name !== "stage";
+    dom.battleScreen.hidden = name !== "battle" && !result;
     dom.loadingScreen.classList.toggle("is-active", name === "loading");
     dom.mainScreen.classList.toggle("is-active", name === "main");
     dom.stageScreen.classList.toggle("is-active", name === "stage");

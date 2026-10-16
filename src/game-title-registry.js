@@ -2894,5 +2894,21 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Блочный мини-маркет",
     "hi": "ब्लॉक पशु मिनी-मार्ट",
     "ar": "متجر الحيوانات المكعبة"
+  },
+  "flying-tram": {
+    "__localizedExact": true,
+    "en": "Skybound Tram",
+    "zh-Hant": "飛天電車",
+    "zh-Hans": "飞天电车",
+    "ja": "空飛ぶトラム",
+    "ko": "하늘 전차",
+    "es": "Tranvía Volador",
+    "pt-BR": "Bonde Voador",
+    "fr": "Tramway Volant",
+    "de": "Himmelsbahn",
+    "it": "Tram Volante",
+    "ru": "Летающий трамвай",
+    "hi": "उड़ती ट्राम",
+    "ar": "الترام الطائر"
   }
 };

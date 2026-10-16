@@ -67,6 +67,18 @@
     battleContent.querySelector('.play-frame')?.setAttribute('data-wp-logical-battle-canvas', '');
     battle.prepend(battleHeader, battleContent);
 
+    // Keep the game-owned Pause action beside the aim hint, outside the
+    // shared return/stats/settings header's single control row.
+    const pauseButton = byId('pauseButton');
+    const battleMessage = byId('battleMessage');
+    const battleLive = byId('battleLive');
+    if (pauseButton && battleMessage && battleLive) {
+      const messageRow = document.createElement('div');
+      messageRow.className = 'battle-message-row';
+      messageRow.append(pauseButton, battleMessage);
+      battleLive.prepend(messageRow);
+    }
+
     const frame = window.WeightPlayScreenFrame.mount({
       root,
       localeSelect: byId('localeSelect'),

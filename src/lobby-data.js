@@ -7409,3 +7409,61 @@ window.WONDER_LOBBY.games.push({
   meta: { en: ["Store Management", "Growing Shop"], "zh-Hant": ["便利店經營", "擴大店面"] },
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("animal-blockmart");
+
+const flyingTramTitle = {
+  __localizedExact: true,
+  en: "Skybound Tram", "zh-Hant": "飛天電車", "zh-Hans": "飞天电车",
+  ja: "空飛ぶトラム", ko: "하늘 전차", es: "Tranvía Volador",
+  "pt-BR": "Bonde Voador", fr: "Tramway Volant", de: "Himmelsbahn",
+  it: "Tram Volante", ru: "Летающий трамвай", hi: "उड़ती ट्राम", ar: "الترام الطائر",
+};
+const flyingTramType = {
+  __localizedExact: true,
+  en: "Flip & Landing Arcade", "zh-Hant": "空翻著陸街機", "zh-Hans": "空翻着陆街机",
+  ja: "フリップ着陸アーケード", ko: "플립 착륙 아케이드", es: "Arcade de giros y aterrizajes",
+  "pt-BR": "Arcade de giros e pousos", fr: "Arcade de figures et d’atterrissages",
+  de: "Flip- und Lande-Arcade", it: "Arcade di acrobazie e atterraggi",
+  ru: "Аркада с переворотами и посадкой", hi: "फ़्लिप और लैंडिंग आर्केड", ar: "أركيد الشقلبات والهبوط",
+};
+const flyingTramDescription = {
+  __localizedExact: true,
+  en: "Boost a chunky sky tram, flip for points, keep one bubble tea from sloshing over, then settle onto three tricky rooftop pads.",
+  "zh-Hant": "推進方塊電車、空翻賺分，穩住快灑出的珍奶，再挑戰三條愈來愈難的屋頂航線。",
+  "zh-Hans": "推动方块电车、空翻得分，稳住快洒出的珍奶，再挑战三条越来越难的屋顶航线。",
+  ja: "ブロックのトラムを加速して宙返りで得点。揺れるタピオカをこぼさず、難度が上がる屋上ルートに着陸しよう。",
+  ko: "각진 전차를 띄우고 플립으로 점수를 얻으세요. 흔들리는 버블티를 지키며 점점 어려워지는 옥상 활주로에 착륙하세요.",
+  es: "Impulsa un tranvía de bloques, gira para sumar puntos, evita derramar el té y aterriza en tres azoteas cada vez más difíciles.",
+  "pt-BR": "Impulsione um bonde de blocos, gire para pontuar, evite derramar o chá e pouse em três telhados cada vez mais difíceis.",
+  fr: "Propulsez un tram en blocs, enchaînez les flips, gardez le thé dans son gobelet et posez-vous sur trois toits de plus en plus difficiles.",
+  de: "Schubse eine kantige Bahn an, drehe dich für Punkte, halte den Tee im Becher und lande auf drei immer schwierigeren Dächern.",
+  it: "Lancia un tram a blocchi, fai capriole per punti, non rovesciare il tè e atterra su tre tetti sempre più difficili.",
+  ru: "Разгоняйте блочный трамвай, крутитесь ради очков, не расплескайте чай и садитесь на три всё более сложные крыши.",
+  hi: "घनाकार ट्राम को उड़ाएँ, फ़्लिप से अंक पाएँ, चाय छलकने से बचाएँ और तीन कठिन होती छतों पर उतरें।",
+  ar: "ادفع ترامًا مكعبًا، واقلبه لتحصل على النقاط، وحافظ على الشاي ثم اهبط على ثلاثة أسطح تزداد صعوبة.",
+};
+const flyingTramStatusText = {
+  en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開",
+  ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible",
+  de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
+};
+window.WONDER_LOBBY.games.push({
+  id: "flying-tram", audience: "general", status: "planned", internalOnly: true,
+  internalTrial: "/games/flying-tram/index.html?preview=1",
+  title: flyingTramTitle, statusText: flyingTramStatusText, type: flyingTramType,
+  description: flyingTramDescription,
+  categories: ["Arcade", "Vehicle Games", "Animal Games"],
+  skills: ["Timing", "Focus", "Hand-Eye Coordination"], ages: ["general"], ageTags: ["general"],
+  recommendedAge: "13+", difficulty: "Medium", estimatedPlayTime: "30-60 seconds",
+  href: "games/flying-tram/",
+  art: { kind: "image", background: "games/flying-tram/assets/cover-block-v1.webp", hideHero: true },
+  meta: {
+    en: ["45-Second Flight", "Flip & Land"], "zh-Hant": ["45 秒飛行", "空翻著陸"],
+    "zh-Hans": ["45 秒飞行", "空翻着陆"], ja: ["45秒フライト", "フリップ着陸"],
+    ko: ["45초 비행", "플립 착륙"], es: ["Vuelo de 45 s", "Giros y aterrizaje"],
+    "pt-BR": ["Voo de 45 s", "Giro e pouso"], fr: ["Vol de 45 s", "Flip et atterrissage"],
+    de: ["45-Sekunden-Flug", "Flip und Landung"], it: ["Volo di 45 s", "Giro e atterraggio"],
+    ru: ["Полёт 45 секунд", "Переворот и посадка"], hi: ["45 सेकंड की उड़ान", "फ़्लिप और लैंडिंग"],
+    ar: ["رحلة ٤٥ ثانية", "قلب وهبوط"],
+  },
+});
+window.WONDER_LOBBY.audiences.generalGameIds.push("flying-tram");

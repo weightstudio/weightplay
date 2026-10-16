@@ -424,17 +424,17 @@ const localizedPageSupport = {
 const assetBase = "../../assets/";
 
 const animalAssets = {
-  lion: { src: "assets/lion-voxel-v1.png", local: true, fallback: "Lion" },
+  lion: { src: "assets/lion-voxel-v2.png", local: true, fallback: "Lion" },
   panda: { src: "assets/panda-voxel-v1.png", local: true, fallback: "Panda" },
-  elephant: { src: "assets/elephant-voxel-v1.png", local: true, fallback: "Elephant" },
+  elephant: { src: "assets/elephant-voxel-v2.png", local: true, fallback: "Elephant" },
   turtle: { src: "assets/turtle-voxel-v1.png", local: true, fallback: "Turtle" },
   rabbit: { src: "assets/rabbit-voxel-v1.png", local: true, fallback: "Rabbit" },
-  penguin: { src: "assets/penguin-voxel-v1.png", local: true, fallback: "Penguin" },
+  penguin: { src: "assets/penguin-voxel-v2.png", local: true, fallback: "Penguin" },
   fox: { src: "assets/fox-voxel-v1.png", local: true, fallback: "Fox" },
-  monkey: { src: "assets/monkey-voxel-v1.png", local: true, fallback: "Monkey" },
-  koala: { src: "assets/koala-voxel-v1.png", local: true, fallback: "Koala" },
+  monkey: { src: "assets/monkey-voxel-v2.png", local: true, fallback: "Monkey" },
+  koala: { src: "assets/koala-voxel-v2.png", local: true, fallback: "Koala" },
   giraffe: { src: "assets/giraffe-voxel-v1.png", local: true, fallback: "Giraffe" },
-  dolphin: { src: "assets/dolphin-voxel-v1.png", local: true, fallback: "Dolphin" },
+  dolphin: { src: "assets/dolphin-voxel-v2.png", local: true, fallback: "Dolphin" },
   cow: { src: "assets/cow-voxel-v1.png", local: true, fallback: "Cow" },
 };
 
@@ -448,7 +448,7 @@ const fruitAssets = [
 
 const tileAssets = {
   home: { src: "assets/home-voxel-v1.png", local: true, fallback: "Home" },
-  rock: { src: "assets/rock-voxel-v1.png", local: true, fallback: "Rock" },
+  rock: { src: "assets/rock-voxel-v2.png", local: true, fallback: "Rock" },
   water: { src: "assets/water-voxel-v1.png", local: true, fallback: "Water" },
   key: { src: "assets/key-voxel-v1.png", local: true, fallback: "Key" },
   gate: { src: "assets/gate-voxel-v1.png", local: true, fallback: "Gate" },

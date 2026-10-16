@@ -38,6 +38,8 @@ button { border: 0; cursor: pointer; color: inherit; }
 .canvas-slot { position: relative; min-height: 0; overflow: hidden; }
 .game-canvas {
   --scale: 1;
+  container-name: bubble-logical-canvas;
+  container-type: size;
   position: absolute;
   width: 390px;
   height: 788px;
@@ -144,7 +146,8 @@ body:not(.safari-main) .screen.is-active.weightplay-active-viewport {
 .battle-screen { background: #d9f8f6; }
 .battle-live { height: 100%; }
 .battle-live.is-hidden { display: none; }
-.battle-utility-button { width: 44px; height: 44px; border-radius: 8px; background: rgba(255,255,255,.14); color: #fff; font-size: 20px; font-weight: 900; }
+.battle-message-row { display: grid; grid-template-columns: 44px minmax(0,1fr); align-items: center; gap: 6px; height: 48px; margin: 0 8px; }
+.battle-utility-button { width: 44px; height: 44px; border-radius: 8px; background: #15344c; color: #fff; font-size: 20px; font-weight: 900; }
 .battle-utility-button:focus { outline: 4px solid #ffe676; outline-offset: 2px; }
 .battle-message { height: 35px; display: grid; place-items: center; background: #fff1aa; color: #684719; font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 12px; }
 .play-frame { width: 372px; height: 558px; margin: 5px auto 0; padding: 5px 6px; border-radius: 8px; background: #fff; box-shadow: 0 4px 0 rgba(23,67,83,.22); overflow: hidden; }
@@ -206,18 +209,17 @@ body:not(.safari-main) .wp-tutorial-button { display: none !important; }
 .modal-panel .primary-button { width: 100%; height: 54px; }
 .modal-close { position: absolute; right: 12px; top: 12px; width: 42px; height: 42px; border-radius: 50%; background: #173047; color: #fff; font-size: 28px; }
 
-@media (min-width: 560px) and (orientation: portrait) {
+@container bubble-logical-canvas (min-width: 520px) and (orientation: portrait) {
   .battle-live {
     display: grid;
     grid-template-columns: 380px minmax(0, 1fr);
-    grid-template-rows: 70px 35px minmax(0, 1fr);
+    grid-template-rows: 48px minmax(0, 1fr);
   }
-  .battle-header,
-  .battle-message { grid-column: 1 / -1; }
-  .play-frame { grid-column: 1; grid-row: 3; margin: 5px 0 0 8px; }
+  .battle-message-row { grid-column: 1 / -1; grid-row: 1; }
+  .play-frame { grid-column: 1; grid-row: 2; margin: 5px 0 0 8px; }
   .queue-bar {
     grid-column: 2;
-    grid-row: 3;
+    grid-row: 2;
     height: 558px;
     margin: 5px 8px 0 0;
     grid-template-columns: 1fr;
@@ -230,15 +232,16 @@ body:not(.safari-main) .wp-tutorial-button { display: none !important; }
   .result-panel { width: min(500px, calc(100% - 24px)); }
 }
 
-@media (orientation: landscape) {
+@container bubble-logical-canvas (orientation: landscape) {
   .battle-live {
     display: grid;
     grid-template-columns: 220px 300px minmax(0, 1fr);
-    grid-template-rows: 30px minmax(0, 1fr);
+    grid-template-rows: 44px minmax(0, 1fr);
     gap: 4px;
     padding: 4px;
   }
-  .battle-message { grid-column: 2 / 4; grid-row: 1; height: 30px; border-radius: 8px; }
+  .battle-message-row { grid-column: 2 / 4; grid-row: 1; height: 44px; grid-template-columns: 44px minmax(0,1fr); margin: 0; }
+  .battle-message { height: 30px; border-radius: 8px; }
   .play-frame {
     grid-column: 2;
     grid-row: 2;
@@ -291,6 +294,18 @@ body:not(.safari-main) .wp-tutorial-button { display: none !important; }
   .skill-report { grid-column: 3; grid-row: 4; height: 100%; }
   .result-actions { grid-column: 1 / 4; grid-row: 5; width: auto; margin-left: 188px; }
   .result-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: 54px; gap: 8px; }
+}
+
+/* At desktop landscape heights, preserve the playfield's logical ratio inside
+   the same 300px track instead of stretching it to the full battle row. */
+@container bubble-logical-canvas (orientation: landscape) and (min-height: 450px) {
+  .play-frame {
+    align-self: center;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    aspect-ratio: 360 / 548;
+  }
 }
 
 @media (orientation: landscape) and (max-height: 460px) {
