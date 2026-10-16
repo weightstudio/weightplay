@@ -1,0 +1,16 @@
+/* Content only. All card geometry, pooling and gestures live in Play UI. */
+window.DungeonVentureStageConfig = ({stages, save, text, regionName, stageName, stageRule, enemyLesson, modeObjective, rewardState}) => ({
+  gameId:'animal-crystal-survivor',count:stages.length,
+  poster:'/assets/animal-crystal-survivor-otter-cover-v26.webp',
+  stage(index) {
+    const item=stages[index], state=save(), locked=item.number>state.unlockedStage;
+    const cleared=state.completedStages.includes(item.number);
+    return {
+      id:item.number,kicker:regionName(item),title:`${text('stage')} ${item.number}`,subtitle:stageName(item),
+      status:locked ? text('stageLocked') : cleared ? text('stageCleared') : text('stageReady'),
+      summary:stageRule(item),details:[stageRule(item),enemyLesson(item),modeObjective(item)],
+      locked,cleared,rewardState:rewardState(item.number),
+      posterPosition:`50% ${[52,65,41,57,69,47][item.region]}%`,
+    };
+  },
+});

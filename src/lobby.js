@@ -3177,11 +3177,9 @@ window.addEventListener("pageshow", (event) => {
 setupKidsLobbyPresentation();
 renderLobby();
 loadGameStats();
-if (!isKidsLobby && window.location.protocol === "http:"
-    && ["localhost", "127.0.0.1", "[::1]", "::1"].includes(window.location.hostname)
-    && !document.querySelector('[data-wp-game-entry-loader-bootstrap="true"]')) {
+if (!isKidsLobby && !document.querySelector('[data-wp-game-entry-loader-bootstrap="true"]')) {
   const entryLoaderScript = document.createElement("script");
-  entryLoaderScript.src = "/src/game-entry-loader.js?v=20261013-entry-loader-i9-1";
+  entryLoaderScript.src = "/src/game-entry-loader.js?v=20261016-stage-i9-permanent-2";
   entryLoaderScript.dataset.wpGameEntryLoaderBootstrap = "true";
   document.head.append(entryLoaderScript);
 }

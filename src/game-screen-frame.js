@@ -124,6 +124,29 @@
   const frameScriptUrl = document.currentScript?.src || new URL('/src/game-screen-frame.js', location.origin).href;
   const mounts = new WeakMap();
   const slotMounts = new WeakMap();
+  // Content groups carry game-owned nodes; shared slots retain layout ownership.
+  function createGroup() {
+    const element = document.createElement('div');
+    element.dataset.wpFrameGroup = '';
+    const changed = () => element.dispatchEvent(new Event('weightplay:group-change', {bubbles:true}));
+    const api = {
+      element,
+      add(node) { element.append(node.element || node); changed(); return api; },
+      remove(node) { const child = node.element || node; if (child.parentElement === element) child.remove(); changed(); return api; },
+      clear() { element.replaceChildren(); changed(); return api; },
+    };
+    return Object.freeze(api);
+  }
+  function contentSlot(element, refresh) {
+    const api = {
+      element,
+      add(node) { element.append(node.element || node); refresh(); return api; },
+      remove(node) { const child = node.element || node; if (child.parentElement === element) child.remove(); refresh(); return api; },
+      clear() { element.replaceChildren(); refresh(); return api; },
+      refresh,
+    };
+    return Object.freeze(api);
+  }
   const lobbyLogoUrl = new URL('../assets/weightplay-logo.png', document.currentScript.src).href;
   const copy = {
     en: ['Settings', 'Language', 'Sound', 'On', 'Muted'], 'zh-Hant': ['設定', '語言', '聲音', '開啟', '靜音'],
@@ -171,7 +194,7 @@
     refresh();
     return {utility,button,panel,select,sound,close,refresh,destroy(){const wasOpen=!panel.hidden;abort.abort();utility.remove();if(wasOpen)notifyInteraction();}};
   }
-  function mount({ root, scenes, localeSelect }) {
+  function mount({ root, scenes, localeSelect, playUI = false }) {
     if (mounts.has(root)) return mounts.get(root);
     if (!root || !scenes.main || !scenes.battle) throw new Error('FRAME_SCENES_REQUIRED');
     const abort = new AbortController();
@@ -183,6 +206,8 @@
     const entries = {};
     let active = null, activeCovered = false;
     root.dataset.wpFrame = '2';
+    if (playUI) root.dataset.wpPlayUi = '1';
+    const topSlots = {}, bottomSlots = {};
     for (const [name, scene] of Object.entries(scenes)) {
       const header = scene.header;
       const back = header.querySelector(`[data-wp-return="${name}"]`);
@@ -216,18 +241,71 @@
       const title = header.querySelector('[data-wp-frame-title]');
       if (!title) throw new Error(`FRAME_TITLE_REQUIRED:${name}`);
       title.hidden = name !== 'main';
-      if (scene.headerInfo) {
+      if (scene.headerInfo || (playUI && name !== 'main')) {
+        scene.headerInfo ||= document.createElement('div');
+        if (playUI && !scene.headerInfo.isConnected) scene.content.append(scene.headerInfo);
         if (!['stage','battle'].includes(name) || !scene.content.contains(scene.headerInfo)) throw new Error('FRAME_BATTLE_INFO_SLOT_REQUIRED');
-        if (!scene.headerInfo.children.length || scene.headerInfo.children.length>4) throw new Error('FRAME_BATTLE_INFO_REQUIRES_ONE_TO_FOUR_STATS');
+        if (!playUI && (!scene.headerInfo.children.length || scene.headerInfo.children.length>4)) throw new Error('FRAME_BATTLE_INFO_REQUIRES_ONE_TO_FOUR_STATS');
         title.hidden = true;
         scene.headerInfo.setAttribute('data-wp-frame-info','');
         scene.headerInfo.style.setProperty('--wp-frame-stat-count',scene.headerInfo.children.length);
         scene.headerInfo.querySelectorAll(':scope > *').forEach(node => node.setAttribute('data-wp-frame-stat',''));
         header.append(scene.headerInfo);
+        if (playUI) {
+          const refreshInfo = () => {
+            const stats = [...scene.headerInfo.children].flatMap(node => node.hasAttribute('data-wp-frame-group') ? [...node.children] : [node]);
+            scene.headerInfo.hidden = !stats.length;
+            scene.headerInfo.style.setProperty('--wp-frame-stat-count', Math.max(1, stats.length));
+            stats.forEach(node => node.setAttribute('data-wp-frame-stat',''));
+          };
+          listen(scene.headerInfo, 'weightplay:group-change', refreshInfo);
+          topSlots[name] = contentSlot(scene.headerInfo, refreshInfo);
+          refreshInfo();
+        }
       }
       const settings=createSettings({localeSelect,showLanguage:name==='main',id:name,onOpen:()=>Object.values(entries).forEach(entry=>entry.close())});
       header.append(settings.utility);
       entries[name] = { ...scene, ...settings };
+      if (playUI && name === 'stage') {
+        const nav = scene.root.querySelector('[data-wp-frame-nav]') || document.createElement('nav');
+        nav.dataset.wpFrameNav = '';
+        nav.dataset.wpPlayActions = '';
+        scene.root.append(nav);
+        const refreshButtons = () => {
+          nav.querySelectorAll('button,a').forEach(button => { button.dataset.wpFrameAction ||= 'secondary'; });
+          nav.hidden = !nav.querySelector('button,a');
+          scene.root.dataset.wpPlayActionsEmpty = String(nav.hidden);
+          window.dispatchEvent(new Event('weightplay:play-actions-change'));
+        };
+        listen(nav,'weightplay:group-change',refreshButtons);
+        bottomSlots[name] = contentSlot(nav, refreshButtons);
+        refreshButtons();
+      }
+    }
+    let playLayoutFrame = 0;
+    function syncPlayLayout() {
+      playLayoutFrame = 0;
+      for (const name of ['stage','battle']) {
+        const entry=entries[name];
+        if (!entry?.root.getClientRects().length || !entry.root.offsetWidth) continue;
+        const inverse=entry.root.offsetWidth/entry.root.getBoundingClientRect().width;
+        for (const node of [entry.root,entry.header]) {
+          for (const key of ['--wp-frame-control-size','--wp-frame-control-size-physical','--wp-frame-physical-control-size','--wp-frame-header-height','--wp-frame-lobby-return-width'])node.style.setProperty(key,`${48*inverse}px`,'important');
+          node.style.setProperty('--wp-play-unit',`${inverse}px`);
+          node.style.setProperty('--wp-play-control',`${48*inverse}px`);
+          node.style.setProperty('--wp-frame-header-inset',`${12*inverse}px`);
+          node.style.setProperty('--wp-frame-header-gap',`${8*inverse}px`);
+        }
+        const footer=name==='stage' && !bottomSlots.stage.element.hidden ? 56*inverse : 0;
+        entry.root.style.setProperty('--wp-play-footer',`${footer}px`);
+        entry.root.style.setProperty('--wp-frame-rows',`${48*inverse}px minmax(0,1fr)${name==='stage' ? ` ${footer}px` : ''}`,'important');
+      }
+    }
+    const schedulePlayLayout=()=>{if(playUI&&!playLayoutFrame)playLayoutFrame=requestAnimationFrame(syncPlayLayout);};
+    const playResize=playUI ? new ResizeObserver(schedulePlayLayout) : null;
+    if(playUI){
+      for(const name of ['stage','battle'])if(entries[name])playResize.observe(entries[name].root);
+      for(const event of ['resize','weightplay:stage-sync','weightplay:battle-sync','weightplay:play-actions-change'])listen(window,event,schedulePlayLayout);
     }
     function refresh() {
       for (const entry of Object.values(entries)) {
@@ -290,6 +368,9 @@
     listen(window, 'wonder:locale-change', () => queueMicrotask(refresh));
     listen(window, 'weightplay:audio-volume-change', refresh);
     const api = Object.freeze({
+      stageTopUI: topSlots.stage,
+      battleTopUI: topSlots.battle,
+      commonDownButton: bottomSlots.stage,
       activate(name, { covered = false } = {}) {
         if (!entries[name]) throw new Error(`FRAME_UNKNOWN_SCENE:${name}`);
         if(active!==name||activeCovered!==covered)close();
@@ -303,12 +384,14 @@
           entry.root.setAttribute('aria-hidden', String(!enabled));
         }
         refresh();
+        schedulePlayLayout();
         notifyAnalytics();
       },
       close,
       refresh,
       get active() { return active; },
       destroy() {
+        playResize?.disconnect();cancelAnimationFrame(playLayoutFrame);
         try { window.dispatchEvent(new CustomEvent('weightplay:screen-change', {detail:{owner:root,release:true}})); } catch { /* Optional analytics. */ }
         releaseRootLifecycle(); close(); abort.abort(); Object.values(entries).forEach(entry => entry.destroy()); mounts.delete(root);
       },
@@ -1790,6 +1873,6 @@
   setTimeout(begin, 0);
   if (document.readyState !== "loading") begin();
   }
-  window.WeightPlayScreenFrame = Object.freeze({ version: 7, mount, mountSlots, autoMountDocument, createSettings, setItemCollectionStatus, showGet, showResultGet });
+  window.WeightPlayScreenFrame = Object.freeze({ version: 7, mount, mountSlots, autoMountDocument, createSettings, createGroup, setItemCollectionStatus, showGet, showResultGet });
   queueMicrotask(autoMountDocument);
 })();

@@ -17,17 +17,24 @@
     stage.append(workspace);stageHeader.querySelectorAll(':scope > div,:scope > span').forEach(n=>n.remove());
     stage.querySelector('.stage-tabs').setAttribute('data-wp-frame-nav','');
     const live=document.getElementById('battleLive'),info=battleHeader.querySelector('.battle-title');
-    live.prepend(info);live.querySelector('.battle-actions').prepend(document.getElementById('pauseBtn'));
+    live.querySelector('.battle-actions').prepend(document.getElementById('pauseBtn'));
     const battleTitle=document.createElement('strong');battleTitle.setAttribute('data-wp-frame-title','');battleHeader.append(battleTitle);battle.prepend(battleHeader);
     for(const [selector,slot] of Object.entries({'.main-poster':'poster','.main-copy':'copy','.main-copy > p':'summary','#mainProgress':'progress'}))main.querySelector(selector).setAttribute(`data-wp-frame-${slot}`,'');
     main.querySelectorAll('.main-copy > small,.main-copy > h1').forEach(n=>n.hidden=true);
     root.querySelectorAll('button:not([data-wp-return]):not(.stage-card)').forEach(n=>n.setAttribute('data-wp-frame-action',n.classList.contains('primary-action')?'primary':'secondary'));
     document.querySelectorAll('#tutorialPanel button').forEach(n=>n.setAttribute('data-wp-frame-action',n.classList.contains('primary-action')?'primary':'secondary'));
-    const frame=window.WeightPlayScreenFrame.mount({root,localeSelect,scenes:{
+    const frame=window.WeightPlayScreenFrame.mount({root,localeSelect,playUI:true,scenes:{
       main:{root:main,header:mainHeader,content:main.querySelector('.main-hero')},
       stage:{root:stage,header:stageHeader,content:workspace},
-      battle:{root:battle,header:battleHeader,content:live,headerInfo:info}
+      battle:{root:battle,header:battleHeader,content:live}
     }});
+    const group=window.WeightPlayScreenFrame.createGroup();
+    for(const node of [...info.children])group.add(node);
+    info.remove();frame.battleTopUI.add(group);
+    frame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup().add(document.getElementById('stageSummary')));
+    const stagesButton=document.getElementById('stageTabsBtn');
+    stagesButton.dataset.wpFrameAction='tab';stagesButton.setAttribute('aria-pressed','true');
+    frame.commonDownButton.clear().add(stagesButton);
     frame.activate('main');window.addEventListener('pagehide',event=>{if(!event.persisted)frame.destroy()});
     return frame;
   };

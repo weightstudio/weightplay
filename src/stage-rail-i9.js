@@ -1,4 +1,4 @@
-/* Reusable pointer rail for the optional Stage I9 card system.
+/* Reusable pointer rail for the shared Stage I9 card system.
    Games provide logical-position and selection adapters; this module owns
    pointer capture, tap/drag separation and the shared settle curve. */
 (() => {
@@ -99,7 +99,7 @@
       if (!moved) return;
       if (event.cancelable) event.preventDefault();
       const pitch = Math.max(1, Number(config.pitch()) || 1);
-      dragPosition = config.writePosition(dragPosition - delta / pitch);
+      dragPosition = config.writePosition(dragPosition - delta / pitch * (config.direction?.() || 1));
       event.stopImmediatePropagation();
     }
 

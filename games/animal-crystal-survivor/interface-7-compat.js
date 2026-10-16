@@ -11,15 +11,8 @@
     const gamePanel = document.getElementById("gamePanel");
     const battleLive = document.getElementById("battleLive");
 
-    /* Interface 7 Stage navigation owns three stable slots. This game has no
-       Team screen, so the left slot intentionally remains empty. Reuse the
-       existing Stages and Equipment buttons/listeners without cloning them. */
-    if (stageNav) {
-      stageNav.removeAttribute("data-wp-frame-nav");
-      stageNav.setAttribute("data-wp-frame-stage-nav", "");
-    }
-    stageTab?.setAttribute("data-wp-frame-stage-slot", "stages");
-    equipmentTab?.setAttribute("data-wp-frame-stage-slot", "equipment");
+    // Stage actions are mounted through the shared commonDownButton slot.
+    // This adapter retains only accessible copy and Result lifecycle behavior.
 
     const syncStageAccessibleName = () => {
       if (!stagePanel || !stageTab) return;

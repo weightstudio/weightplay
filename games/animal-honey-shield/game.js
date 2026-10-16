@@ -23,7 +23,6 @@
   const STORAGE_KEY="weightplay_animal_honey_shield_v1";
   const TUTORIAL_KEY="weightplay_tutorial_seen_animal_honey_shield_v1";
   const GAME_VERSION="v63";
-  const interfaceValidationRun=new URLSearchParams(location.search).get("qa")==="interface-validator";
   const ROUTE_LOCALES={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR",en:"en",ja:"ja",ko:"ko",es:"es",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const platformLocale=window.WonderI18n?.actualLocale?.();
@@ -107,8 +106,7 @@
     {sky:"#b47d9d",ground:"#67435f",accent:"#ffbddb",terrain:"bramble"},
     {sky:"#d49a49",ground:"#78512c",accent:"#ffe27d",terrain:"ruins"},
   ];
-  const STAGE_CARD_POOL_SIZE=9;
-  let stageWindowStart=0,stageCardPool=[],stageSettleRaf=0,stageDragController=null;
+  let stageSelector=null;
   const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
   const TERRAIN_ZONES=[
     [
@@ -273,7 +271,7 @@
     if(active)requestAnimationFrame(()=>{document.documentElement.scrollTop=0;document.body.scrollTop=0;window.scrollTo({left:0,top:0,behavior:"instant"})});
   }
   function showScreen(next){
-    if(next!=="stage")stageDragController?.cancel();
+    if(next!=="stage")stageSelector?.cancel();
     if(document.activeElement instanceof HTMLElement)document.activeElement.blur();
     screen=next;document.body.dataset.screen=next;
     frame?.activate(next);if($("mainGuide"))$("mainGuide").hidden=next!=="main";
@@ -301,58 +299,21 @@
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
-  function stageRailScale(){const rail=$("stageRail");return Math.max(.01,rail.getBoundingClientRect().width/Math.max(1,rail.offsetWidth))}
-  function stageWindowLimit(){return Math.max(0,30-STAGE_CARD_POOL_SIZE)}
-  function desiredStageWindow(index){return clamp(index-Math.floor(STAGE_CARD_POOL_SIZE/2),0,stageWindowLimit())}
-  function createStageCard(){
-    const button=document.createElement("button");button.type="button";button.className="stage-card";
-    button.innerHTML="<small></small><strong></strong><span></span>";
-    button.addEventListener("click",()=>{const index=Number(button.dataset.stageIndex);if(index<save.unlocked){selectedStage=index;startStage(index)}});
-    button.addEventListener("focus",()=>{const index=Number(button.dataset.stageIndex);if(Number.isInteger(index)){selectedStage=index;ensureStageWindow(index);updateStageChapter()}});
-    return button;
-  }
-  function bindStageCard(button,index){
-    const unlocked=index<save.unlocked,best=save.stars[index]||0;
-    button.dataset.stage=String(index);button.dataset.stageIndex=String(index);button.setAttribute("aria-posinset",String(index+1));button.setAttribute("aria-setsize","30");button.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");button.setAttribute("aria-disabled",String(!unlocked));button.classList.toggle("locked",!unlocked);
-    button.querySelector("small").textContent=fmt("chapter",{n:Math.floor(index/5)+1});button.querySelector("strong").textContent=String(index+1);button.querySelector("span").textContent=unlocked?(save.cleared[index]?fmt("stars",{n:best}):fmt("stage",{n:index+1})):fmt("locked");
-  }
-  function syncStageSelection(){
-    stageCardPool.forEach(card=>{const index=Number(card.dataset.stageIndex),selected=index===selectedStage;bindStageCard(card,index);card.classList.toggle("selected",selected);card.classList.toggle("wp-stage-centered",selected);card.tabIndex=selected?0:-1;if(selected)card.setAttribute("aria-current","true");else card.removeAttribute("aria-current");if(selected&&index<save.unlocked)card.dataset.wpStageRecommended="true";else delete card.dataset.wpStageRecommended});
-  }
-  function buildStageCardPool(){
-    const rail=$("stageRail");rail.replaceChildren();stageWindowStart=desiredStageWindow(selectedStage);stageCardPool=Array.from({length:STAGE_CARD_POOL_SIZE},(_,offset)=>{const card=createStageCard();bindStageCard(card,stageWindowStart+offset);rail.append(card);return card});
-    rail.dataset.wpStageVirtualized="bounded-recycle";rail.dataset.wpStagePoolSize=String(STAGE_CARD_POOL_SIZE);rail.dataset.wpStageTotal="30";
-  }
-  function moveStageWindow(targetStart){
-    const rail=$("stageRail"),target=clamp(targetStart,0,stageWindowLimit());if(!stageCardPool.length){buildStageCardPool();return 0}let recycled=0;
-    while(stageWindowStart<target){const card=rail.firstElementChild,anchor=card?.nextElementSibling,before=anchor?.getBoundingClientRect().left;stageWindowStart++;rail.append(card);bindStageCard(card,stageWindowStart+stageCardPool.length-1);recycled++;const after=anchor?.getBoundingClientRect().left;if(Number.isFinite(before)&&Number.isFinite(after))rail.scrollLeft+=(after-before)/stageRailScale()}
-    while(stageWindowStart>target){const card=rail.lastElementChild,anchor=card?.previousElementSibling,before=anchor?.getBoundingClientRect().left;stageWindowStart--;rail.prepend(card);bindStageCard(card,stageWindowStart);recycled++;const after=anchor?.getBoundingClientRect().left;if(Number.isFinite(before)&&Number.isFinite(after))rail.scrollLeft+=(after-before)/stageRailScale()}
-    stageCardPool=[...rail.children];rail.dataset.wpStageWindowStart=String(stageWindowStart);rail.dataset.wpStageWindowEnd=String(stageWindowStart+stageCardPool.length-1);if(recycled)rail.dataset.wpStageRecycleCount=String(Number(rail.dataset.wpStageRecycleCount||0)+recycled);return recycled;
-  }
-  function ensureStageWindow(index){if(!stageCardPool.length)buildStageCardPool();moveStageWindow(desiredStageWindow(index));syncStageSelection()}
-  function stageRailGeometry(){const rail=$("stageRail"),cards=[...rail.children],rect=rail.getBoundingClientRect(),first=cards[0]?.getBoundingClientRect(),second=cards[1]?.getBoundingClientRect(),delta=first&&second?(second.left+second.width/2)-(first.left+first.width/2):0;return{rail,center:rect.left+rect.width/2,pitch:Math.abs(delta)||282,orientation:Math.sign(delta)||1}}
-  function nearestStageCard(){const rail=$("stageRail"),rect=rail.getBoundingClientRect(),center=rect.left+rect.width/2;return stageCardPool.reduce((best,card)=>{const box=card.getBoundingClientRect(),distance=Math.abs(box.left+box.width/2-center);return!best||distance<best.distance?{card,distance}:best},null)?.card||null}
-  function currentStageLogicalPosition(){const card=nearestStageCard();if(!card)return selectedStage;const index=Number(card.dataset.stageIndex),rect=card.getBoundingClientRect(),geometry=stageRailGeometry();return clamp(index+(geometry.center-(rect.left+rect.width/2))/(geometry.pitch*geometry.orientation),0,29)}
-  function centerStageCard(card,smooth=false){const rail=$("stageRail");if(!rail||!card)return;const railRect=rail.getBoundingClientRect(),cardRect=card.getBoundingClientRect(),left=rail.scrollLeft+((cardRect.left+cardRect.width/2)-(railRect.left+railRect.width/2))/stageRailScale();rail.scrollTo({left,behavior:smooth?"smooth":"auto"})}
-  function positionStageRail(position){const logical=clamp(position,0,29),anchorIndex=Math.round(logical),recycled=moveStageWindow(desiredStageWindow(anchorIndex));if(recycled)syncStageSelection();const card=$("stageRail").querySelector(`[data-stage-index="${anchorIndex}"]`);if(!card)return logical;centerStageCard(card);const geometry=stageRailGeometry(),fraction=logical-anchorIndex;if(Math.abs(fraction)>.0001)geometry.rail.scrollLeft+=fraction*geometry.orientation*geometry.pitch/stageRailScale();return logical}
-  function selectStage(index,center=false){selectedStage=clamp(index,0,29);ensureStageWindow(selectedStage);updateStageChapter();if(center)centerSelected(false)}
-  function installVirtualStageDrag(){
-    const rail=$("stageRail");if(!rail||stageDragController||!window.WeightPlayStageRailI9)return;
-    stageDragController=window.WeightPlayStageRailI9.attachLogical(rail,{
-      readPosition:currentStageLogicalPosition,
-      writePosition:positionStageRail,
-      pitch:()=>stageRailGeometry().pitch,
-      count:()=>30,
-      onStart:()=>screen==="stage",
-      onFrame(frame){stageSettleRaf=frame},
-      commitIndex(index){selectStage(index)},
-      onSettled(index){positionStageRail(index);syncStageSelection()},
+  function ensureStageSelector(){
+    if(stageSelector)return stageSelector;
+    stageSelector=window.WeightPlayPlayUI.mountStage({
+      page:$("stageWorkspace"),rail:$("stageRail"),
+      config:window.HoneyShieldStageConfig({save:()=>save,text:fmt}),selected:selectedStage,
+      isActive:()=>screen==="stage",
+      onSelect(index){selectedStage=index;updateStageChapter()},
+      onStart:startStage,
     });
-    rail.addEventListener("keydown",event=>{let next=selectedStage;if(event.key==="ArrowLeft")next--;else if(event.key==="ArrowRight")next++;else if(event.key==="Home")next=0;else if(event.key==="End")next=29;else if((event.key==="Enter"||event.key===" ")&&selectedStage<save.unlocked){event.preventDefault();startStage(selectedStage);return}else return;event.preventDefault();selectStage(clamp(next,0,29),true);$("stageRail").querySelector(`[data-stage-index="${selectedStage}"]`)?.focus()});
+    return stageSelector;
   }
-  window.addEventListener("weightplay:stage-rail-ready",installVirtualStageDrag);
   function renderStages(){
-    const highest=Math.min(29,save.unlocked-1);selectedStage=clamp(Math.max(selectedStage,highest),0,29);ensureStageWindow(selectedStage);updateStageSummary();updateStageChapter();
+    const highest=Math.min(29,save.unlocked-1);
+    selectedStage=clamp(Math.max(selectedStage,highest),0,29);
+    ensureStageSelector().refresh(selectedStage);updateStageSummary();updateStageChapter();
   }
   function updateStageSummary(){
     const done=Object.keys(save.cleared).length,stars=Object.values(save.stars).reduce((sum,n)=>sum+n,0);
@@ -363,7 +324,7 @@
     const chapter=Math.floor(selectedStage/5),titles=fmt("chapters"),rules=fmt("chapterRules");
     $("chapterKicker").textContent=fmt("chapter",{n:chapter+1});$("chapterTitle").textContent=titles[chapter]||titles[0];$("chapterRule").textContent=rules[chapter]||rules[0];
   }
-  function centerSelected(smooth=false){ensureStageWindow(selectedStage);const card=$("stageRail")?.querySelector(`[data-stage-index="${selectedStage}"]`);centerStageCard(card,smooth)}
+  function centerSelected(){ensureStageSelector().refresh(selectedStage)}
   function level(index){
     const chapter=Math.floor(index/5),slot=index%5,theme=THEMES[chapter];
     const dogPositions=[
@@ -1585,7 +1546,7 @@
   }
   $("startBtn").addEventListener("click",()=>{
     selectedStage=Math.min(29,save.unlocked-1);showScreen("stage");updateStageChapter();
-    if(!safeGet(TUTORIAL_KEY)&&!interfaceValidationRun){tutorialReturnFocus=$("startBtn");(__wpNotifyMeasurement(), $("tutorialPanel").hidden=false);frame?.activate(screen,{covered:true});requestAnimationFrame(()=>$("tutorialStartBtn").focus())}
+    if(!safeGet(TUTORIAL_KEY)){tutorialReturnFocus=$("startBtn");(__wpNotifyMeasurement(), $("tutorialPanel").hidden=false);frame?.activate(screen,{covered:true});requestAnimationFrame(()=>$("tutorialStartBtn").focus())}
   });
   $("stageBackBtn").addEventListener("click",()=>{showScreen("main");requestAnimationFrame(()=>$("startBtn").focus())});
   $("battleBackBtn").addEventListener("click",()=>openModal($("leavePanel"),"leaveContinueBtn"));
@@ -1890,8 +1851,8 @@
       return{before:points.length,after:cleaned.length,removed:points.length-cleaned.length,closed:Math.hypot(cleaned[0].x-cleaned.at(-1).x,cleaned[0].y-cleaned.at(-1).y)<1};
     },
     levelDigest:()=>Array.from({length:30},(_,index)=>{const spec=level(index);return{theme:spec.theme.terrain,topology:spec.topology,dog:[spec.dog.x,spec.dog.y],hives:spec.hives.map(hive=>[hive.x,hive.y]),solids:spec.solids.map(solid=>solid.kind==="platform"?[solid.kind,solid.x,solid.y,solid.w,solid.h]:[solid.kind,solid.x,solid.y,solid.r]),zones:spec.zones.map(zone=>[zone.kind,zone.x,zone.y,zone.w,zone.h,zone.dx||0,zone.dy||0]),speed:spec.speed}}),
-    stagePool:()=>({count:stageCardPool.length,start:stageWindowStart,total:Number($("stageRail")?.dataset.wpStageTotal||0),ids:stageCardPool.map(card=>card.dataset.stageIndex)}),
+    stagePool:()=>({count:stageSelector?.pool.length||0,start:Number($("stageRail").dataset.wpStageWindowStart||0),total:Number($("stageRail").dataset.wpStageTotal||0),ids:stageSelector?.pool.map(card=>card.dataset.stageIndex)||[]}),
     fail(){finish(false)},locale:()=>locale
   };
-  frame=window.mountHoneyShieldFrame();installVirtualStageDrag();loadAssets();updateMainProgress();
+  frame=window.mountHoneyShieldFrame();loadAssets();updateMainProgress();
 })();

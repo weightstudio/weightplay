@@ -1,14 +1,10 @@
-/* Shared, opt-in lobby-to-game loader. The current I9 preview enables it only
-   on a loopback origin; other games keep their existing entry flow. */
+/* Shared lobby-to-game loader for the permanently adopted Dungeon Venture entry. */
 (() => {
   const GAME_ID = "animal-crystal-survivor";
-  const STYLE_URL = "/src/game-entry-loader.css?v=20261013-entry-loader-i9-1";
+  const STYLE_URL = "/src/game-entry-loader.css?v=20261016-stage-i9-permanent-2";
   const ROOT_CLASS = "wp-game-entry-loader";
-  const isLoopback = window.location.protocol === "http:"
-    && ["localhost", "127.0.0.1", "[::1]", "::1"].includes(window.location.hostname);
   const path = window.location.pathname.replace(/\/+$/, "");
   const gamePath = new RegExp(`(?:^|/)games/${GAME_ID}$`).test(path);
-  const preview = new URLSearchParams(window.location.search).get("preview") === "1";
 
   if (document.documentElement.dataset.wpGameEntryLoaderInstalled === "true") return;
   document.documentElement.dataset.wpGameEntryLoaderInstalled = "true";
@@ -123,7 +119,7 @@
     window.location.assign(target);
   };
 
-  if (isLoopback && gamePath && preview) {
+  if (gamePath) {
     const state = { root: null, loaded: 0, total: null, retry: null, ready: false, fadeTimer: 0 };
     const hideLegacyPanel = () => {
       const panel = document.getElementById("loadingPanel");
@@ -227,7 +223,7 @@
     return;
   }
 
-  if (!isLoopback || gamePath || path.endsWith("/404")) return;
+  if (gamePath || path.endsWith("/404")) return;
   let active = false;
   let overlayState = null;
   let targetUrl = "";
@@ -304,7 +300,6 @@
     if (url.origin !== window.location.origin || !new RegExp(`(?:^|/)games/${GAME_ID}/?$`).test(url.pathname)) return;
     event.preventDefault();
     if (active) return;
-    url.searchParams.set("preview", "1");
     active = true;
     targetUrl = url.href;
     overlayState = makeOverlay({ titleText: copy()[6], cancel: () => reset({ restoreFocus: true }) });
