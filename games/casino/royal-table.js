@@ -99,7 +99,7 @@
   };
   window.addEventListener('load',settleLoading,{once:true});
   if(document.readyState==='complete')settleLoading();
-  const tutorialGuide=document.querySelector('.classic-guide');
+  const tutorialGuide=document.querySelector('.game-page-info');
   if(tutorialGuide){
     const tutorialButton=document.createElement('button');
     tutorialButton.type='button';
@@ -163,8 +163,7 @@
     });
     window.addEventListener('weightplay:battle-open',()=>{
       let seen=false;try{seen=localStorage.getItem(tutorialSeenKey)==='1';}catch{}
-      const params=new URLSearchParams(location.search);
-      if(!seen&&!params.has('smoke')&&!params.has('qa')&&!params.has('test'))showTutorial();
+      if(!seen)showTutorial();
     });
   }
   const battle=document.getElementById('battleScreen');
