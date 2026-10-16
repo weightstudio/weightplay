@@ -20,7 +20,7 @@ html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-info] {
   height:var(--wp-frame-control-size)!important;
 }
 html body [data-wp-frame="2"][data-wp-play-ui="1"] :is([data-wp-frame-scene="stage"],[data-wp-frame-scene="battle"]) :is(.wp-frame-back-icon,.wp-frame-settings-icon) {
-  width:calc(24 * var(--wp-play-unit,1px))!important;height:calc(24 * var(--wp-play-unit,1px))!important;
+  width:calc(20 * var(--wp-play-unit,1px))!important;height:calc(20 * var(--wp-play-unit,1px))!important;
 }
 html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-stat] {
   color:var(--wp-ui-text)!important;font:600 calc(13 * var(--wp-play-unit,1px))/1.2 system-ui!important;

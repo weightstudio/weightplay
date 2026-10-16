@@ -290,7 +290,8 @@
         if (!entry?.root.getClientRects().length || !entry.root.offsetWidth) continue;
         const inverse=entry.root.offsetWidth/entry.root.getBoundingClientRect().width;
         for (const node of [entry.root,entry.header]) {
-          for (const key of ['--wp-frame-control-size','--wp-frame-control-size-physical','--wp-frame-physical-control-size','--wp-frame-header-height','--wp-frame-lobby-return-width'])node.style.setProperty(key,`${48*inverse}px`,'important');
+          for (const key of ['--wp-frame-control-size','--wp-frame-control-size-physical','--wp-frame-physical-control-size','--wp-frame-lobby-return-width'])node.style.setProperty(key,`${44*inverse}px`,'important');
+          node.style.setProperty('--wp-frame-header-height',`${56*inverse}px`,'important');
           node.style.setProperty('--wp-play-unit',`${inverse}px`);
           node.style.setProperty('--wp-play-control',`${48*inverse}px`);
           node.style.setProperty('--wp-frame-header-inset',`${12*inverse}px`);
@@ -298,7 +299,7 @@
         }
         const footer=name==='stage' && !bottomSlots.stage.element.hidden ? 56*inverse : 0;
         entry.root.style.setProperty('--wp-play-footer',`${footer}px`);
-        entry.root.style.setProperty('--wp-frame-rows',`${48*inverse}px minmax(0,1fr)${name==='stage' ? ` ${footer}px` : ''}`,'important');
+        entry.root.style.setProperty('--wp-frame-rows',`${56*inverse}px minmax(0,1fr)${name==='stage' ? ` ${footer}px` : ''}`,'important');
       }
     }
     const schedulePlayLayout=()=>{if(playUI&&!playLayoutFrame)playLayoutFrame=requestAnimationFrame(syncPlayLayout);};

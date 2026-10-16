@@ -68,15 +68,6 @@ body[data-screen="battle"] .wp-tutorial-button{top:70px}
 body[data-wp-game-id="animal-crownfall"]:has(.wp-shell-settings-popover:not([hidden])) .wp-tutorial-button{display:none}
 body[data-screen="stage"] .wp-tutorial-button{display:none}
 #stageContent{position:relative;display:block}
-#stageSummary{position:absolute;inset-inline:16px;bottom:0;height:48px;margin:0;display:flex;align-items:center;justify-content:center;z-index:2;pointer-events:none}
-#stageRail{position:absolute;inset-inline:0;top:clamp(0px,calc(38% - 103px),calc(100% - 206px));height:206px;padding:8px max(16px,calc(50% - 132px));gap:12px;touch-action:none;scroll-snap-type:none;scrollbar-width:none;direction:ltr}
-#stageRail::-webkit-scrollbar{display:none}
-#stageRail .stage-card{flex:0 0 264px;width:264px;height:190px;min-height:190px;max-height:190px;padding:12px;gap:8px;box-sizing:border-box}
-#stageRail .stage-card .number{font-size:36px}
-#stageRail .stage-card strong{font-size:20px}
-#stageRail .stage-card small{max-width:100%;font-size:12px;line-height:16px}
-#stageRail .stage-card[aria-disabled="true"]{opacity:.65}
-#stageRail .stage-card.centered{border-color:#edb74e;box-shadow:0 0 0 2px #edb74e,0 0 16px #edb74e99}
 #mainGuide{margin-top:16px;padding:0 16px}
 #mainGuide .game-info-sections{display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
 #mainGuide p,#mainGuide ol,#mainGuide ul,#mainGuide dl{max-width:72ch}

@@ -3,6 +3,7 @@ import {cameraText} from './camera-copy.mjs';
 import {LEVELS} from './levels.mjs';
 import {COPY,LOCALES,SEGMENTS,NATIVE,text} from './locales.mjs';
 import {NAMES} from './stage-copy.mjs';
+import {createCrownfallStageConfig} from './stage-config.mjs';
 import {DETAILS} from './guide.mjs';
 import {upgradeText} from './upgrade-copy.mjs';
 import {normalize,award,SAVE_KEY} from './save.mjs';
@@ -31,9 +32,10 @@ else {try{const saved=localStorage.getItem('weightPlayLocale');if(LOCALES.includ
 let save,storageOK=true;try{save=normalize(JSON.parse(localStorage.getItem(SAVE_KEY)||'null'));}catch{save=normalize(null);storageOK=false;}
 // Discard legacy practice resumes without touching the stored campaign record.
 if(save.run?.practice)save.run=null;
-let stageController=null,stageCenterFrame=0,practiceMode=false,practiceRun=false;
+let stageController=null,practiceMode=false,practiceRun=false;
 let screen='main',state=null,history=[],moveHistory=[],usedHint=false,busy=false,paused=false,renderer=null,modalKind='',hintLevel=0,hintCache=null,pending=null,pendingRoute='',settlingRoute='',transactionBase=null,session=0,targetMoves=0;
 const t=(key,args)=>key==='title'?(window.WEIGHTPLAY_GAME_TITLES?.['animal-crownfall']?.[locale]||text(locale,key,args)):text(locale,key,args);
+const stageConfig=createCrownfallStageConfig({getLocale:()=>locale,getSave:()=>save,isPractice:()=>practiceMode});
 const stageName=id=>NAMES[locale][id-1];
 const u=(key,args)=>upgradeText(locale,key,args);
 const idleFeedback=()=>state?.calculation?powerResult(state.calculation):'';
@@ -52,25 +54,27 @@ function contactSound(event){
 // Practice runs never overwrite campaign resume, progress, or reward state.
 const persist=()=>{if(practiceMode||practiceRun)return;try{localStorage.setItem(SAVE_KEY,JSON.stringify(save));storageOK=true;}catch{storageOK=false;}};
 const runSave=()=>{if(busy||practiceMode||practiceRun)return;if(state?.status==='playing')save.run={level:state.level,actions:clone(moveHistory),usedHint,campaign:5};else if(state)save.run=null;persist();};
-function translate(){document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';document.title=`${t('title')} | WeightPlay`;$('locale').value=locale;document.querySelectorAll('[data-t]').forEach(n=>n.textContent=t(n.dataset.t));document.querySelectorAll('[data-aria]').forEach(n=>n.setAttribute('aria-label',t(n.dataset.aria)));document.querySelectorAll('[data-guide]').forEach(n=>n.textContent=DETAILS[locale][Number(n.dataset.guide)]);document.querySelectorAll('[data-related-game]').forEach(card=>{const id=card.dataset.relatedGame;card.href=`/${SEGMENTS[LOCALES.indexOf(locale)]}/games/${id}/`;const title=window.WEIGHTPLAY_GAME_TITLES[id][locale];card.querySelector('[data-related-title]').textContent=title;card.querySelector('img')?.setAttribute('alt',title);});const relatedHeading=$('mainGuide').querySelector('.game-info-related-section h3');if(relatedHeading)relatedHeading.textContent=DETAILS[locale][33];document.querySelector('meta[name="description"]').content=t('goal');updateMain();if(screen==='stage')renderStages();frame?.refresh();}
+function translate(){document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';document.title=`${t('title')} | WeightPlay`;$('locale').value=locale;document.querySelectorAll('[data-t]').forEach(n=>n.textContent=t(n.dataset.t));document.querySelectorAll('[data-aria]').forEach(n=>n.setAttribute('aria-label',t(n.dataset.aria)));document.querySelectorAll('[data-guide]').forEach(n=>n.textContent=DETAILS[locale][Number(n.dataset.guide)]);document.querySelectorAll('[data-related-game]').forEach(card=>{const id=card.dataset.relatedGame;card.href=`/${SEGMENTS[LOCALES.indexOf(locale)]}/games/${id}/`;const title=window.WEIGHTPLAY_GAME_TITLES[id][locale];card.querySelector('[data-related-title]').textContent=title;card.querySelector('img')?.setAttribute('alt',title);});const relatedHeading=$('mainGuide').querySelector('.game-info-related-section h3');if(relatedHeading)relatedHeading.textContent=DETAILS[locale][33];document.querySelector('meta[name="description"]').content=t('goal');updateMain();if(screen==='stage')renderStages({reset:false});frame?.refresh();}
 for(let i=0;i<LOCALES.length;i++)$('locale').add(new Option(NATIVE[i],LOCALES[i]));
 window.WonderI18n?.setLocale?.(locale,{navigate:false,dispatch:false});
-let frame=window.WeightPlayScreenFrame.mount({root:$('gameFrame'),localeSelect:$('locale'),scenes:{main:{root:$('main'),header:$('main').querySelector('header'),content:$('hero')},stage:{root:$('stage'),header:$('stage').querySelector('header'),content:$('stageContent')},battle:{root:$('battle'),header:$('battle').querySelector('header'),content:$('battleContent'),headerInfo:$('battleInfo')}}});
+let frame=window.WeightPlayScreenFrame.mount({root:$('gameFrame'),localeSelect:$('locale'),playUI:true,scenes:{main:{root:$('main'),header:$('main').querySelector('header'),content:$('hero')},stage:{root:$('stage'),header:$('stage').querySelector('header'),content:$('stageContent')},battle:{root:$('battle'),header:$('battle').querySelector('header'),content:$('battleContent'),headerInfo:$('battleInfo')}}});
+const stageInfoGroup=window.WeightPlayScreenFrame.createGroup();stageInfoGroup.add($('stageSummary'));frame.stageTopUI.add(stageInfoGroup);
+const battleInfoGroup=window.WeightPlayScreenFrame.createGroup();[...$('battleInfo').children].forEach(node=>battleInfoGroup.add(node));frame.battleTopUI.add(battleInfoGroup);
+frame.commonDownButton.clear();
 document.querySelector('#battle .wp-frame-popover').append($('reduced').closest('.motion'));
 $('locale').addEventListener('change',()=>{locale=$('locale').value;try{localStorage.setItem('weightPlayLocale',locale);}catch{}window.WonderI18n?.setLocale?.(locale,{navigate:false});translate();});
 // Keep the shared settings component on this game's selected dictionary.
 window.addEventListener('wonder:locale-change',()=>{const next=window.WonderI18n?.actualLocale?.();if(LOCALES.includes(next))locale=next;translate();});
 function updateMain(){const cleared=Object.values(save.badges).filter(v=>v[0]).length;$('progress').textContent=`${t('clearBadge')} ${cleared} / 30`;$('resumeSlot').hidden=!save.run;$('resume').textContent=t(save.run?.practice?'resumePractice':'resume');}
-function fitScene(){if(screen==='main')return;stageController?.center();renderer?.resize();}
+function fitScene(){renderer?.resize();}
 window.addEventListener('resize',fitScene);window.visualViewport?.addEventListener('resize',fitScene);
-function changeScreen(next){if(next!=='stage'){cancelAnimationFrame(stageCenterFrame);if(stageController){stageController.destroy();$('stageRail').replaceChildren();stageController=null;}}for(const id of ['stage','battle']){const node=$(id),active=id===next;node.toggleAttribute('data-wp-logical-stage-canvas',active&&id==='stage');if(!active){for(const key of ['width','height','transform'])node.style.removeProperty(key);delete node.dataset.canvasScale;}}screen=next;tracking()?.screen(next,{node:$(next),locale});document.body.dataset.screen=next;for(const id of ['main','stage','battle'])$(id).hidden=id!==next;const guide=$('mainGuide')||document.querySelector('#gameFrame > .game-page-info');if(guide)guide.hidden=next!=='main';$('generalReserve').hidden=true;frame.activate(next);fitScene();if(next!=='battle'){renderer?.destroy();renderer=null;$('arena').querySelectorAll('.cell-access').forEach(n=>n.remove());}if(next==='main')updateMain();if(next==='stage')renderStages();window.scrollTo(0,0);}
-function renderStages(){
+function changeScreen(next){if(next!=='stage')stageController?.cancel();for(const id of ['stage','battle']){const node=$(id),active=id===next;node.toggleAttribute('data-wp-logical-stage-canvas',active&&id==='stage');if(!active){for(const key of ['width','height','transform'])node.style.removeProperty(key);delete node.dataset.canvasScale;}}screen=next;tracking()?.screen(next,{node:$(next),locale});document.body.dataset.screen=next;for(const id of ['main','stage','battle'])$(id).hidden=id!==next;const guide=$('mainGuide')||document.querySelector('#gameFrame > .game-page-info');if(guide)guide.hidden=next!=='main';$('generalReserve').hidden=true;frame.activate(next);fitScene();if(next!=='battle'){renderer?.destroy();renderer=null;$('arena').querySelectorAll('.cell-access').forEach(n=>n.remove());}if(next==='main')updateMain();if(next==='stage')renderStages({reset:true});window.scrollTo(0,0);}
+function renderStages({reset=true}={}){
  const rail=$('stageRail');$('stageSummary').textContent=`${t('clearBadge')} ${Object.values(save.badges).filter(v=>v[0]).length} / ${LEVELS.length}`;
- if(!stageController)stageController=window.WeightPlayStageV6.install(rail,{total:LEVELS.length,poolSize:9,initialIndex:()=>save.unlocked-1,
- bind(card,index){const level=LEVELS[index],locked=!practiceMode&&level.id>save.unlocked;card.classList.add('stage-card');card.dataset.stage=String(level.id);card.setAttribute('role','listitem');card.setAttribute('aria-disabled',String(locked));if(!card.children.length)card.innerHTML='<span class="number"></span><strong></strong><small></small><small></small>';card.children[0].textContent=String(level.id).padStart(2,'0');card.children[1].textContent=stageName(level.id);card.children[2].textContent=level.id%5===0?t('boss'):t('goal');card.children[3].textContent=practiceMode?t('practice'):locked?t('locked'):(save.badges[level.id]||[false,false,false]).map(v=>v?'★':'☆').join(' ');},
- activate:index=>{if(practiceMode||index<save.unlocked)startLevel(index+1,null,practiceMode);}});
- else stageController.refresh();
- cancelAnimationFrame(stageCenterFrame);const controller=stageController;stageCenterFrame=requestAnimationFrame(()=>{if(screen==='stage'&&stageController===controller)controller.center(save.unlocked-1);});
+ if(!stageController){
+  if(!window.WeightPlayPlayUI)throw new Error('SHARED_PLAY_UI_MISSING');
+  stageController=window.WeightPlayPlayUI.mountStage({page:$('stageContent'),rail,config:stageConfig,selected:save.unlocked-1,onStart:index=>startLevel(index+1,null,practiceMode),isActive:()=>screen==='stage'});
+ }else stageController.refresh(reset?save.unlocked-1:stageController.selected);
 }
 function label(a,kind,s){if(kind==='hero')return `⚔ ${heroPower(s)}`;if(kind==='enemy'){const p=powerOf(s,a),bonus=p-a.power;return `${a.boss?'♛ ':s.required.includes(a.id)?'◆ ':''}${a.shield?'▣ ':''}${a.direction==='left'?'→ ':a.direction==='right'?'← ':''}${p}${bonus?` (+${bonus})`:''}${a.buff?' ⚑':''}`;}if(['sword','power','multiply'].includes(a.kind))return `${u(a.kind)} ${a.kind==='multiply'?`×${a.amount}`:`+${a.amount||0}`}`;return a.kind==='crown'?'♛':`${({key:'◆',rune:'◇',seal:'●'})[a.kind]}${a.link&&a.kind!=='rune'?a.link:''}`;}
 function reason(s){if(!s.reason)return t('lost');const code={power:'powerFail',shield:'shieldFail'}[s.reason.code]||s.reason.code;return t(code,s.reason);}
