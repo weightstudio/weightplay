@@ -72,6 +72,15 @@ button { cursor: pointer; }
   .touch-controls { grid-template-columns: 52px minmax(100px, 260px) 52px; gap: 6px; }
   .control, .restart { min-height: 40px; }
   .restart { min-width: 40px; }
+  .result-screen { padding: 6px; }
+  .result-card { padding: 8px 12px; }
+  .result-card h2 { margin: 2px 0 4px; font-size: clamp(1.25rem, 5vh, 1.75rem); line-height: 1.1; }
+  .result-copy { flex-basis: 3.2em; min-height: 3.2em; max-height: 3.2em; margin-bottom: 4px; font-size: .82rem; line-height: 1.35; }
+  .stats { gap: 4px; margin: 4px 0; }
+  .stats > span { gap: 2px; padding: 4px 6px; font-size: .68rem; }
+  .stats strong { font-size: 1rem; }
+  .result-actions { flex-basis: 40px; gap: 6px; }
+  .result-actions button { height: 40px; min-height: 40px; max-height: 40px; font-size: 11px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
