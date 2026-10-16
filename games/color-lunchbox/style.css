@@ -642,6 +642,7 @@ body.lunch-stage .stage-card.locked.is-centered {
 
 .food-card strong {
   font-size: 24px;
+  color: #2d2513;
 }
 
 .feedback {
@@ -1467,12 +1468,25 @@ body.lunch-playing .hud-item-score span,
 body.lunch-playing .hud-item-round span {
   font-size: 11px;
   line-height: 12px;
+  color: #a4bdb9 !important;
+}
+
+body.lunch-stage .hud-item span,
+body.lunch-stage .hud-item-score span,
+body.lunch-stage .hud-item-round span {
+  color: #a4bdb9 !important;
 }
 
 body.lunch-playing .hud-item-score strong,
 body.lunch-playing .hud-item-round strong {
   font-size: 18px;
   line-height: 20px;
+  color: #f6f2dd !important;
+}
+
+body.lunch-stage .hud-item-score strong,
+body.lunch-stage .hud-item-round strong {
+  color: #f6f2dd !important;
 }
 
 body.lunch-playing .lunchbox strong {

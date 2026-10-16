@@ -23,11 +23,11 @@
   const unlockKey = "weightplay_hidden_safari_unlocked";
   const starKey = "weightplay_hidden_safari_stars";
   const progressKey = "weightplay_progress_animal-hidden-safari";
-  const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru"];
+  const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const storageFallback = new Map();
   const safariFrame = document.querySelector(".safari-game");
-  safariFrame?.setAttribute("data-wp-stage-landscape-width", "760");
-  safariFrame?.setAttribute("data-wp-stage-landscape-height", "360");
+  let stageSelector = null;
+  let selectedStage = 0;
 
   function storageRead(key) {
     try {
@@ -245,6 +245,30 @@
   });
 
   const localeOverrides = {
+    hi: {
+      back: "वापस",
+      backToHabitats: "आवास सूची पर वापस",
+      pause: "रोकें",
+      pauseAria: "खोज रोकें",
+      pauseTitle: "खोज रुकी हुई है",
+      pauseText: "आपका आवास आपका इंतज़ार कर रहा है। तैयार हों तो जारी रखें।",
+      resume: "खोज जारी रखें",
+      leaveHabitat: "आवास सूची पर वापस जाएँ",
+      hint: "संकेत",
+      hintTarget: "यह ढूँढें: {target}!",
+    },
+    ar: {
+      back: "رجوع",
+      backToHabitats: "العودة إلى الموائل",
+      pause: "إيقاف مؤقت",
+      pauseAria: "إيقاف البحث مؤقتاً",
+      pauseTitle: "البحث متوقف مؤقتاً",
+      pauseText: "موئلك ينتظرك. استأنف عندما تكون مستعداً.",
+      resume: "متابعة البحث",
+      leaveHabitat: "العودة إلى الموائل",
+      hint: "تلميح",
+      hintTarget: "ابحث عن {target}!",
+    },
     ko: {
       locked: "잠긴 서식지",
       resume: "계속 찾기",
@@ -345,11 +369,14 @@
     button.id = "pauseBtn";
     button.className = "pause-btn";
     button.type = "button";
-    document.querySelector(".play-head")?.insertBefore(button, $("hintBtn"));
+    $("hintBtn")?.parentElement?.insertBefore(button, $("hintBtn"));
   }
   const nodes = {
+    mainScreen: $("mainScreen"),
     localeSelect: $("localeSelect"),
     mainPanel: $("mainPanel"),
+    stageWorkspace: $("stageWorkspace"),
+    battleContent: $("battleContent"),
     startGameBtn: $("startGameBtn"),
     stageBackMainBtn: $("stageBackMainBtn"),
     menuPanel: $("menuPanel"),
@@ -420,7 +447,6 @@
   let pauseReturnFocus = null;
   let scenePointerOwner = null;
   let completedScenePointer = null;
-  let stageCenterFrame = 0;
   const transientFeedbackTasks = new Map();
   let transientFeedbackSuspended = false;
 
@@ -611,66 +637,42 @@
   }
 
   function renderStageGrid() {
-    nodes.stageGrid.innerHTML = "";
-    stages.forEach((stage, index) => {
-      const stageNo = index + 1;
-      const isLocked = stageNo > unlocked;
-      const button = document.createElement("button");
-      button.className = "stage-card";
-      button.type = "button";
-      button.dataset.stageIndex = String(index);
-      if (isLocked) {
-        button.classList.add("locked");
-        button.setAttribute("aria-disabled", "true");
-      }
-      button.innerHTML = `
-        <b>${animalImg(stage.targets[0][0], "stage-animal")}</b>
-        <strong>${t("stage", { n: stageNo })} - ${t(`habitat.${stage.habitat}`)}</strong>
-        <em>${stageRuleLabel(stage)}${stage.checkpoint ? ` · ${t("checkpoint")}` : ""}</em>
-        <span>${starsFor(stageNo)}${bestLine(stageNo)}</span>
-        ${isLocked ? `<span class="stage-lock-label">${t("locked")}</span>` : ""}
-      `;
-      button.addEventListener("click", () => {
-        if (nodes.stageGrid.dataset.draggingClick === "1") return;
-        if (stageNo > unlocked) {
-          showFloatingText(t("locked"), 50, 50);
-          playSound("ui.click");
-          return;
-        }
-        startStage(index);
+    if (stageSelector && !nodes.stageGrid.dataset.wpStageGesture) {
+      stageSelector.destroy();
+      stageSelector = null;
+    }
+    if (!stageSelector) {
+      stageSelector = window.WeightPlayPlayUI.mountStage({
+        page: nodes.stageWorkspace, rail: nodes.stageGrid, selected: selectedStage,
+        config: {
+          count: stages.length, poster: "../../assets/animal-hidden-safari/cover-block-v1.png",
+          background: "../../assets/animal-hidden-safari/cover-block-v1.png",
+          stage(index) {
+            const item = stages[index], stageNo = index + 1;
+            return {
+              id: stageNo, kicker: t("stage", { n: stageNo }),
+              title: t(`habitat.${item.habitat}`),
+              subtitle: `${stageRuleLabel(item)}${item.checkpoint ? ` · ${t("checkpoint")}` : ""}`,
+              status: `${starsFor(stageNo)}${bestLine(stageNo)}`,
+              summary: t("menuHint"), details: [stageRuleLabel(item)],
+              locked: stageNo > unlocked, cleared: Boolean(stars[stageNo]?.stars),
+              poster: "../../assets/animal-hidden-safari/cover-block-v1.png",
+            };
+          },
+        },
+        isActive: () => document.body.classList.contains("safari-stage"),
+        onSelect: index => { selectedStage = index; },
+        onStart: index => startStage(index),
       });
-      nodes.stageGrid.appendChild(button);
-    });
-    scheduleCenteredStageCard();
-  }
-
-  function updateCenteredStageCard() {
-    stageCenterFrame = 0;
-    if (!document.body.classList.contains("safari-stage")) return;
-    const railBox = nodes.stageGrid.getBoundingClientRect();
-    const railCenter = railBox.left + railBox.width / 2;
-    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
-    let centeredCard = null;
-    let closestDistance = Infinity;
-    cards.forEach((card) => {
-      const box = card.getBoundingClientRect();
-      const distance = Math.abs(box.left + box.width / 2 - railCenter);
-      if (distance < closestDistance) {
-        centeredCard = card;
-        closestDistance = distance;
-      }
-    });
-    cards.forEach((card) => {
-      const isCentered = card === centeredCard;
-      card.classList.toggle("is-centered", isCentered);
-      if (isCentered) card.setAttribute("aria-current", "true");
-      else card.removeAttribute("aria-current");
-    });
-  }
-
-  function scheduleCenteredStageCard() {
-    if (stageCenterFrame) return;
-    stageCenterFrame = requestAnimationFrame(updateCenteredStageCard);
+    }
+    const stageInfoSlot = window.__animalHiddenSafariFrame.stageTopUI.element;
+    const stageHeader = nodes.menuPanel.querySelector('[data-wp-frame-header="stage"]');
+    if (stageInfoSlot.parentElement !== stageHeader) stageHeader.append(stageInfoSlot);
+    stageSelector.refresh(Math.min(selectedStage, unlocked - 1));
+    const progressText = t("stage", { n: unlocked }) + " / " + stages.length;
+    const mainProgress = document.getElementById("mainProgress");
+    if (mainProgress) mainProgress.textContent = progressText;
+    window.__animalHiddenSafariSetStageFrameCopy?.(t("chooseStage"));
   }
 
   function rejectRepeatedScreenActivation(event) {
@@ -681,12 +683,12 @@
   }
 
   function focusStageCard(index = Math.max(0, Math.min(stages.length - 1, unlocked - 1))) {
-    const card = nodes.stageGrid.querySelector(`[data-stage-index="${index}"]`)
-      || nodes.stageGrid.querySelector(".stage-card:not(.locked)");
-    card?.focus({ preventScroll: true });
-    card?.scrollIntoView({ block: "nearest", inline: "center" });
-    scheduleCenteredStageCard();
+    stageSelector?.select(index, { focus: true });
   }
+
+  window.__animalHiddenSafariStartSelected = () => startStage(Math.min(selectedStage, unlocked - 1));
+  window.__animalHiddenSafariSelectedStage = () => Math.min(selectedStage + 1, unlocked);
+  window.__animalHiddenSafariSelectedStageLabel = () => t("stage", { n: Math.min(selectedStage + 1, unlocked) });
 
   function syncSharedScene(scene) {
     if (scene === "battle") {
@@ -698,35 +700,12 @@
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
 
+    window.__animalHiddenSafariFrame?.activate(scene);
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
       if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
-
-  function resetSafariFrame() {
-    const root = document.documentElement.style;
-    [
-      "--safari-frame-left",
-      "--safari-frame-top",
-      "--safari-logical-width",
-      "--safari-logical-height",
-      "--safari-frame-width",
-      "--safari-frame-height",
-      "--safari-frame-scale",
-    ].forEach((property) => root.removeProperty(property));
-    const shell = document.querySelector(".safari-game");
-    [
-      "position", "inset", "left", "top", "width", "min-width", "max-width",
-      "height", "min-height", "max-height", "margin", "overflow", "transform",
-      "transform-origin",
-    ].forEach((property) => shell?.style.removeProperty(property));
-    if (shell) {
-      delete shell.dataset.logicalWidth;
-      delete shell.dataset.logicalHeight;
-      delete shell.dataset.commonScale;
-    }
-  }
 
   function showMenu(focusIndex) {
     resetScenePointerOwnership();
@@ -738,14 +717,16 @@
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     nodes.playPanel.inert = false;
     nodes.playPanel.removeAttribute("aria-hidden");
+    nodes.battleContent.inert = false;
+    nodes.battleContent.removeAttribute("aria-hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
+    nodes.mainScreen.classList.add("hidden");
     nodes.mainPanel.classList.add("hidden");
     document.body.classList.remove("safari-playing", "safari-result");
     document.documentElement.classList.add("safari-stage");
     document.body.classList.add("safari-stage");
     renderStageGrid();
-    updateSafariFrame();
     syncSharedScene("stage");
     requestAnimationFrame(() => focusStageCard(focusIndex));
   }
@@ -758,13 +739,13 @@
     hiddenStartedAt = 0;
     acceptingInput = false;
     nodes.mainPanel.classList.remove("hidden");
+    nodes.mainScreen.classList.remove("hidden");
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     document.documentElement.classList.remove("safari-stage");
     document.body.classList.remove("safari-stage", "safari-playing", "safari-result");
     syncSharedScene("main");
-    resetSafariFrame();
     requestAnimationFrame(() => {
       requestAnimationFrame(() => nodes.startGameBtn.focus({ preventScroll: true }));
     });
@@ -774,6 +755,8 @@
     resetScenePointerOwnership();
     closePause(false);
     clearTransientFeedback();
+    selectedStage = index;
+    stageSelector?.select(index, { notify: false });
     currentStage = index;
     found = new Set();
     hintsLeft = 2;
@@ -788,8 +771,11 @@
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     nodes.playPanel.inert = false;
     nodes.playPanel.removeAttribute("aria-hidden");
+    nodes.battleContent.inert = false;
+    nodes.battleContent.removeAttribute("aria-hidden");
     document.body.classList.remove("safari-result");
     nodes.menuPanel.classList.add("hidden");
+    nodes.mainScreen.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     document.body.classList.add("safari-playing");
     document.documentElement.classList.remove("safari-stage");
@@ -804,9 +790,7 @@
     window.WeightPlayGame?.exitMobileGameMode?.();
     document.body.classList.remove("wp-mobile-game-mode", "weightplay-active-viewport");
     document.querySelector(".safari-game")?.classList.remove("weightplay-active-viewport");
-    updateSafariFrame();
     syncSharedScene("battle");
-    requestAnimationFrame(updateSafariFrame);
     startTimer();
     requestAnimationFrame(() => nodes.targetsLayer.querySelector(".target[data-index]:not(:disabled)")?.focus({ preventScroll: true }));
     track("game_start", { level: index + 1 });
@@ -815,42 +799,6 @@
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
 
-  function updateSafariFrame() {
-    const isStage = document.body.classList.contains("safari-stage");
-    if (!isStage && !document.body.classList.contains("safari-playing")) return;
-    const viewport = window.visualViewport;
-    const safeWidth = viewport?.width || window.innerWidth;
-    const viewportHeight = viewport?.height || window.innerHeight;
-    const viewportWidth = Math.min(Math.max(1, safeWidth), 920);
-    const root = document.documentElement.style;
-    const isShortLandscape = viewportHeight <= 430 && viewportWidth > viewportHeight;
-    const logicalWidth = isShortLandscape ? 760 : 390;
-    const logicalHeight = isStage ? (isShortLandscape ? 360 : 788) : isShortLandscape ? 350 : 390 * 16 / 9;
-    const scale = Math.min(viewportWidth / logicalWidth, viewportHeight / logicalHeight);
-    const envelopeWidth = viewportWidth / scale;
-    const envelopeHeight = viewportHeight / scale;
-    const frameWidth = envelopeWidth * scale;
-    const frameHeight = envelopeHeight * scale;
-    const frame = safariFrame;
-    root.setProperty("--safari-frame-left", `${Math.max(0, (safeWidth - viewportWidth) / 2)}px`);
-    root.setProperty("--safari-frame-top", "0px");
-    root.setProperty("--safari-logical-width", `${envelopeWidth}px`);
-    root.setProperty("--safari-logical-height", `${envelopeHeight}px`);
-    root.setProperty("--safari-frame-width", `${frameWidth}px`);
-    root.setProperty("--safari-frame-height", `${frameHeight}px`);
-    root.setProperty("--safari-frame-scale", String(scale));
-    if (frame) {
-      frame.dataset.logicalWidth = envelopeWidth.toFixed(4);
-      frame.dataset.logicalHeight = envelopeHeight.toFixed(4);
-      frame.dataset.commonScale = scale.toFixed(6);
-    }
-    scheduleCenteredStageCard();
-  }
-
-  window.addEventListener("resize", updateSafariFrame);
-  window.addEventListener("orientationchange", updateSafariFrame);
-  window.visualViewport?.addEventListener("resize", updateSafariFrame);
-  window.visualViewport?.addEventListener("scroll", updateSafariFrame);
 
   function renderScene() {
     nodes.targetsLayer.innerHTML = "";
@@ -1037,8 +985,8 @@
     pauseReturnFocus = returnFocus;
     pauseSearchTimer();
     pauseTransientFeedback();
-    nodes.playPanel.inert = true;
-    nodes.playPanel.setAttribute("aria-hidden", "true");
+    nodes.battleContent.inert = true;
+    nodes.battleContent.setAttribute("aria-hidden", "true");
     (__wpNotifyMeasurement(), nodes.pausePanel.classList.remove("hidden"));
     requestAnimationFrame(() => nodes.resumeBtn.focus({ preventScroll: true }));
   }
@@ -1051,6 +999,8 @@
     (__wpNotifyMeasurement(), nodes.pausePanel.classList.add("hidden"));
     nodes.playPanel.inert = false;
     nodes.playPanel.removeAttribute("aria-hidden");
+    nodes.battleContent.inert = false;
+    nodes.battleContent.removeAttribute("aria-hidden");
     resumeSearchTimer();
     resumeTransientFeedback();
     if (restoreFocus) requestAnimationFrame(() => returnFocus?.focus({ preventScroll: true }));
@@ -1101,8 +1051,8 @@
     nodes.nextStageBtn.classList.toggle("result-primary-action", !isFinalStage);
     (__wpNotifyMeasurement(), nodes.resultStagesBtn.classList.toggle("result-primary-action", isFinalStage));
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
-    nodes.playPanel.inert = true;
-    nodes.playPanel.setAttribute("aria-hidden", "true");
+    nodes.battleContent.inert = true;
+    nodes.battleContent.setAttribute("aria-hidden", "true");
     document.body.classList.add("safari-result");
     requestAnimationFrame(() => {
       const primaryAction = isFinalStage ? nodes.resultStagesBtn : nodes.nextStageBtn;
@@ -1281,7 +1231,6 @@
       }
     }, true);
     nodes.startGameBtn.addEventListener("click", () => showMenu());
-    nodes.stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
     nodes.stageBackMainBtn.addEventListener("click", showMain);
     nodes.resultStagesBtn.addEventListener("click", () => showMenu(currentStage));
     nodes.retryBtn.addEventListener("click", () => __wpReplayStart(() => startStage(currentStage)));
@@ -1388,6 +1337,7 @@
   }
 
   localizeStatic();
+  window.__animalHiddenSafariFrame = window.mountAnimalHiddenSafariFrame();
   bind();
   installSmokeApi();
   showMain();

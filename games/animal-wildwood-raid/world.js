@@ -154,7 +154,7 @@ export class WildwoodWorld {
   const mesh=new THREE.InstancedMesh(geometry,material,2048);mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;mesh.count=0;this.scene.add(mesh);this.batches.set(key,mesh);return mesh;
  }
  resize(){const r=this.canvas.getBoundingClientRect();this.renderer.setSize(Math.max(1,r.width),Math.max(1,r.height),false);const aspect=r.width/Math.max(1,r.height);const halfH=Math.max(4.8,4.8/aspect),halfW=halfH*aspect;Object.assign(this.camera,{left:-halfW,right:halfW,top:halfH,bottom:-halfH});this.camera.updateProjectionMatrix();}
- consume(events){for(const e of events)if(['hit','hurt','defeat','blocked','immune','wardBlock','pulse','mastery','pickup','dash','spawn','respawn','totemSpawn'].includes(e.type)){
+ consume(events){for(const e of events)if(['hit','hurt','defeat','blocked','immune','wardBlock','pulse','mastery','pickup','dash','spawn','respawn','totemSpawn','withdraw'].includes(e.type)){
    if(e.type==='defeat'&&['enemy','boss'].includes(e.kind)){
     const actor=this.sim.ents.find(a=>a.uid===e.uid),colors=['moss','wood','cream','dark'];
     if(['caster','shaman','mosswitch'].includes(actor?.type))colors[0]='purple';
@@ -166,7 +166,7 @@ export class WildwoodWorld {
     for(let i=0;i<count;i++){const g=new THREE.Group();this.root.add(g);const size=(e.kind==='boss'?.4:.3)*(i%3===0?1.3:1);this.box(g,colors[i%colors.length],[0,0,0],[size,size,size]);this.effects.push({g,x:e.x,z:e.z,angle:i*2.4,life:.7,total:.7,shatter:true,height:.45+(i%3)*.4,spread:this.reduced?.3:1.1+(i%3)*.25});}
     continue;
    }
-   const arrival=['spawn','respawn','totemSpawn'].includes(e.type),count=this.reduced?2:arrival?4:e.type==='defeat'?6:3,color=e.type==='hurt'?'red':e.type==='totemSpawn'?'purple':['pickup','blocked','immune','dash','spawn','respawn'].includes(e.type)?'cyan':'gold';
+   const arrival=['spawn','respawn','totemSpawn'].includes(e.type),count=this.reduced?2:arrival?4:e.type==='withdraw'?5:e.type==='defeat'?6:3,color=e.type==='hurt'?'red':e.type==='totemSpawn'?'purple':['pickup','blocked','immune','dash','spawn','respawn','withdraw'].includes(e.type)?'cyan':'gold';
    for(let i=0;i<count&&this.effects.length<24;i++){const g=new THREE.Group();this.root.add(g);this.box(g,color,[0,0,0],[arrival?0.16:0.13,arrival?0.16:0.13,arrival?0.16:0.13]);this.effects.push({g,x:e.x??this.sim.hero.x,z:e.z??this.sim.hero.z,angle:i*2.4,life:arrival?0.42:0.35,total:arrival?0.42:0.35});}
   }}
  render(dt=0){

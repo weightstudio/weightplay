@@ -30,14 +30,21 @@ export class Simulation {
  syncGrowth(growth){const hp=Math.max(this.growth.health,growth.health||0),atk=Math.max(this.growth.attack,growth.attack||0);if(this.hero.hp>0)this.hero.hp+=hp-this.growth.health;this.growth={health:hp,attack:atk,regen:Math.max(this.growth.regen,growth.regen||0)};this.hero.maxHp=100+hp;this.hero.power=16+atk;this.hero.regen=Math.round((1+this.growth.regen)*10)/10;}
  grant(e){if(!e.reward)return;const {stat,amount}=e.reward;this.syncGrowth({...this.growth,[stat]:Math.round((this.growth[stat]+amount)*10)/10});this.log('growth',{uid:e.uid,stat,amount,x:e.x,z:e.z});}
  respawns(dt){for(const e of this.ents){if(e.hp>0||!e.spawn||e.respawn==null)continue;
-   // Keep adds down after the mission's kill quota, or other prerequisites,
-   // so the final guardian phase cannot become an endless respawn loop.
+   // Keep defeated adds down after the mission's kill quota, or other
+   // prerequisites, so the final guardian phase cannot become an endless
+   // respawn loop.
    const guardianPhase=this.stage.req.kills?this.tally.kills>=this.stage.req.kills:this.stage.type!=='boss'&&this.objectivesReady();
    if(e.kind==='enemy'&&guardianPhase&&this.tally.bosses<this.stage.req.bosses)continue;
    e.respawn-=dt;
    if(e.kind==='enemy'&&e.respawn<=2&&!e.spawnWarning){let spot=null;for(let i=0;i<16;i++){const a=i*2.4,p={x:clamp(e.spawn.x+Math.cos(a)*Math.floor(i/4),-6.3,6.3),z:clamp(e.spawn.z+Math.sin(a)*Math.floor(i/4),-7,7)};if(dist(p,this.hero)>3&&!this.obstacles.some(o=>o.hp>0&&Math.abs(p.x-o.x)<o.w+.6&&Math.abs(p.z-o.z)<o.h+.6)){spot=p;break;}}if(!spot){e.respawn=2.1;continue;}Object.assign(e,spot);e.spawnWarning=true;e.respawn=2;}
    if(e.respawn<=0){e.hp=e.maxHp;e.wind=null;e.charge=null;e.stun=0;e.exposed=0;e.recoil=0;e.cd=1.3;e.hidden=false;e.spawnWarning=false;e.respawn=null;this.log('respawn',{uid:e.uid,kind:e.kind,x:e.x,z:e.z});}
   }}
+ withdrawStageThreeAdds(){
+  for(const e of this.ents){if(e.kind!=='enemy')continue;e.wind=null;e.charge=null;e.spawn=undefined;e.respawn=null;e.spawnWarning=false;if(e.hp<=0)continue;e.hp=0;e.defeatedAt=this.time;this.log('withdraw',{uid:e.uid,kind:e.kind,x:e.x,z:e.z});}
+  // Projectiles already in flight should not keep punishing the player after
+  // the Stage 3 kill objective has moved the encounter into its harvest phase.
+  this.shots=this.shots.filter(p=>!p.enemy);
+ }
  enemy(type,x,z,extra={}){const base=ENEMIES[type],scale=(1+this.stage.id*.2+this.stage.id**2*.015)*pressure(this.stage.id),d={...base,hp:Math.round(base.hp*scale),damage:Math.round(base.damage*(1+this.stage.id*.18)*pressure(this.stage.id)),speed:base.speed*1.15},enemy=this.entity('enemy',x,z,{...d,type,maxHp:d.hp,cd:1+this.random(),wind:null,slow:0,stun:0,hidden:type==='sneak',...extra});this.log('spawn',{uid:enemy.uid,kind:enemy.kind,x:enemy.x,z:enemy.z,summon:Boolean(extra.summon)});return enemy;}
  build(){
   const q=this.stage;
@@ -94,7 +101,7 @@ export class Simulation {
   if(e.hp===0){
    if(e.kind==='tree')this.tally.wood+=2;
    if(e.kind==='cage')this.tally.rescues++;
-   if(e.kind==='enemy'&&!e.summon)this.tally.kills++;
+   if(e.kind==='enemy'&&!e.summon){this.tally.kills++;if(this.stage.id===3&&this.tally.kills>=this.stage.req.kills)this.withdrawStageThreeAdds();}
    if(e.kind==='boss')this.tally.bosses++;
    this.grant(e);e.defeatedAt=this.time;if(e.spawn)e.respawn=e.kind==='tree'?12:16;
    if(hostile(e)&&++this.combo%3===0){this.drops.push({uid:this.nextId++,kind:'heart',x:e.x,z:e.z});if(this.drops.length>24)this.drops.splice(this.drops.findIndex(d=>d.kind==='heart'),1);}

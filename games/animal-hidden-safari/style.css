@@ -1,16 +1,16 @@
-:root {
+:root{
   color-scheme: light;
   font-family: "Arial Rounded MT Bold", "Noto Sans TC", system-ui, sans-serif;
   background: #9fe1ff;
   color: #183126;
 }
 
-* {
+*{
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
 
-.visually-hidden {
+.visually-hidden{
   position: absolute;
   width: 1px;
   height: 1px;
@@ -22,13 +22,12 @@
   border: 0;
 }
 
-html,
-body {
+html, body{
   min-height: 100%;
   overscroll-behavior: none;
 }
 
-body {
+body{
   margin: 0;
   background:
     radial-gradient(circle at 82% 10%, rgba(255, 230, 96, 0.88), transparent 12rem),
@@ -37,12 +36,11 @@ body {
   user-select: none;
 }
 
-button,
-select {
+button, select{
   font: inherit;
 }
 
-.safari-game {
+.safari-game{
   width: min(100%, 820px);
   min-height: 100vh;
   margin: 0 auto;
@@ -52,18 +50,14 @@ select {
   gap: 14px;
 }
 
-.topbar {
+.topbar{
   display: grid;
   grid-template-columns: 58px minmax(0, 1fr) auto;
   gap: 10px;
   align-items: center;
 }
 
-.home-link,
-.soft-btn,
-.hint-btn,
-.result-card button,
-.result-card a {
+.home-link, .soft-btn, .hint-btn, .result-card button, .result-card a{
   min-height: 44px;
   border: 0;
   border-radius: 14px;
@@ -74,7 +68,7 @@ select {
   text-decoration: none;
 }
 
-.home-link {
+.home-link{
   width: 58px;
   min-height: 44px;
   display: grid;
@@ -85,29 +79,28 @@ select {
   font-size: 1.4rem;
 }
 
-.home-link img {
+.home-link img{
   width: 28px;
   height: 28px;
   object-fit: contain;
 }
 
-.title-block p,
-.title-block h1 {
+.title-block p, .title-block h1{
   margin: 0;
 }
 
-.title-block p {
+.title-block p{
   font-size: 0.74rem;
   font-weight: 900;
   color: rgba(24, 49, 38, 0.68);
 }
 
-.title-block h1 {
+.title-block h1{
   font-size: clamp(1.18rem, 4.4vw, 2.25rem);
   line-height: 1.02;
 }
 
-.language-picker {
+.language-picker{
   min-width: 112px;
   display: grid;
   gap: 4px;
@@ -116,7 +109,7 @@ select {
   color: rgba(24, 49, 38, 0.72);
 }
 
-.language-picker select {
+.language-picker select{
   width: 100%;
   border: 0;
   border-radius: 12px;
@@ -126,46 +119,48 @@ select {
   font-weight: 900;
 }
 
-.menu-panel,
-.play-panel {
+.menu-panel{
   flex: 1;
   display: grid;
   align-content: start;
   gap: 14px;
 }
 
-.cover {
-  width: 100%;
-  aspect-ratio: 4 / 3;
+.cover{
+  width: min(100%, 42vh);
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
   border-radius: 22px;
-  object-fit: cover;
+  object-fit: contain;
+  justify-self: center;
   box-shadow: 0 18px 38px rgba(37, 78, 58, 0.22);
 }
 
-.menu-copy {
+.menu-copy{
   display: grid;
   gap: 4px;
 }
 
-.menu-copy strong {
+.menu-copy strong{
   font-size: 1.35rem;
 }
 
-.menu-copy span {
+.menu-copy span{
   color: rgba(24, 49, 38, 0.72);
   font-weight: 800;
 }
 
 /* Keep the primary Main action in a short desktop viewport. */
-@media (min-width: 800px) and (max-height: 800px) {
+@media (min-width: 800px) and (max-height: 800px){
   .main-panel {
     gap: 10px;
   }
 
   .main-panel .cover {
-    aspect-ratio: 16 / 9;
-    max-height: 410px;
-    object-position: center 44%;
+    width: min(100%, 42vh, 410px);
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    object-position: center;
   }
 
   .main-panel .menu-copy {
@@ -183,101 +178,9 @@ select {
     font-size: 0.9rem;
   }
 }
+.stage-entry-btn{ min-height:44px; border:0; border-radius:12px; background:linear-gradient(180deg,#fff9d6,#ffd56d); font-weight:900; }
 
-.stage-grid {
-  display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  /* The rail owns horizontal drags so both directions stay reliable on touch screens. */
-  touch-action: none;
-  gap: 10px;
-}
-.stage-grid::-webkit-scrollbar { display: none; }
-
-.stage-card {
-  position: relative;
-  flex: 0 0 min(74vw, 280px);
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
-  min-height: 96px;
-  border: 0;
-  border-radius: 18px;
-  padding: 12px;
-  display: grid;
-  gap: 5px;
-  text-align: left;
-  background: linear-gradient(145deg, #fff9dc, #ffffff);
-  color: #214233;
-  box-shadow: 0 10px 22px rgba(54, 91, 69, 0.17);
-  font-weight: 900;
-}
-
-.stage-head { display:grid; grid-template-columns:44px minmax(0,1fr); align-items:center; gap:10px; }
-.stage-head button, .stage-entry-btn { min-height:44px; border:0; border-radius:12px; background:linear-gradient(180deg,#fff9d6,#ffd56d); font-weight:900; }
-.stage-head button { width:44px; font-size:1.4rem; }
-html.safari-stage, body.safari-stage { height:var(--wp-mobile-vh,100dvh); overflow:hidden; }
-body.safari-stage .topbar, body.safari-stage .game-page-info, body.safari-stage .wp-tutorial-button { display:none !important; }
-body.safari-stage .safari-game { position:fixed; left:var(--safari-frame-left,0); top:0; width:var(--safari-logical-width,390px); min-width:0; max-width:none; height:var(--safari-logical-height,788px); min-height:0; max-height:none; padding:0; overflow:hidden; transform:scale(var(--safari-frame-scale,1)); transform-origin:top left; }
-body.safari-stage .stage-panel { height:100%; padding:8px; grid-template-rows:44px minmax(0,1fr); overflow:hidden; }
-body.safari-stage .stage-grid { align-items:center; padding-inline:calc((100% - min(74vw,280px))/2); }
-
-/* The local Canvas owns geometry; the shared helper owns only rail drag and snap. */
-body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-stage-canvas] {
-  position: static !important;
-  z-index: auto !important;
-  inset: auto !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  transform: none !important;
-}
-
-.stage-card.locked {
-  background: linear-gradient(145deg, #dfe5e1, #f4f5f4);
-  color: #4c5b53;
-}
-
-.stage-card.locked .stage-animal {
-  filter: grayscale(1) opacity(0.58);
-}
-
-.stage-card.is-centered {
-  box-shadow:
-    inset 0 0 0 4px #ffe36b,
-    0 0 0 3px rgba(255, 255, 255, 0.96),
-    0 0 24px 9px rgba(255, 216, 64, 0.92),
-    0 12px 26px rgba(54, 91, 69, 0.25);
-}
-
-.stage-lock-label {
-  position: absolute;
-  top: 9px;
-  right: 9px;
-  max-width: 46%;
-  padding: 3px 7px;
-  border-radius: 999px;
-  background: rgba(41, 57, 49, 0.88);
-  color: #fff !important;
-  font-size: 0.66rem !important;
-  line-height: 1.15;
-  text-align: center;
-}
-
-.stage-card b {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-}
-
-.stage-animal,
-.chip-animal,
-.target-animal {
+.stage-animal, .chip-animal, .target-animal{
   display: block;
   width: 100%;
   height: 100%;
@@ -287,50 +190,27 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   -webkit-user-drag: none;
 }
 
-.stage-animal {
+.stage-animal{
   filter: drop-shadow(0 6px 8px rgba(30, 64, 44, 0.24));
 }
 
-.stage-card span {
-  font-size: 0.86rem;
-  color: rgba(33, 66, 51, 0.68);
+.pause-btn, .hint-btn){
+  align-self: center;
+  justify-self: center;
+  flex: 0 0 auto;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .85), 0 3px 0 rgba(35, 64, 51, .2);
 }
 
-.stage-card em {
-  display: block;
-  color: #2f7650;
-  font-size: 0.72rem;
-  font-style: normal;
-  font-weight: 900;
+.pause-btn):focus-visible, body.safari-playing .hint-btn:focus-visible, body.safari-playing .result-card button:focus-visible{
+  outline: 3px solid #0d7657;
+  outline-offset: 2px;
 }
 
-.play-head {
-  display: grid;
-  grid-template-columns: 40px minmax(0, 1fr) 40px auto;
-  gap: 10px;
-  align-items: center;
-}
-
-.play-return {
-  width: 40px;
-  height: 40px;
-  min-height: 40px;
-  display: grid;
-  place-items: center;
-  border: 0;
-  border-radius: 12px;
-  background: rgba(255, 249, 214, 0.96);
-  color: #234033;
-  box-shadow: 0 8px 18px rgba(46, 83, 64, 0.18);
-  font-size: 1.45rem;
-  font-weight: 900;
-}
-
-.pause-btn {
-  width: 40px;
-  min-width: 40px;
-  height: 40px;
-  min-height: 40px;
+.pause-btn{
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
   padding: 0;
   border: 0;
   border-radius: 10px;
@@ -342,12 +222,11 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   line-height: 1;
 }
 
-.soft-btn,
-.hint-btn {
+.soft-btn, .hint-btn{
   padding: 0 13px;
 }
 
-.hint-btn {
+.hint-btn{
   display: inline-flex;
   gap: 6px;
   align-items: center;
@@ -355,26 +234,24 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   background: linear-gradient(180deg, #fff9d6, #ffd56d);
 }
 
-.hint-btn:disabled {
+.hint-btn:disabled{
   opacity: 0.48;
 }
 
-.progress-card {
+.progress-card{
   display: grid;
   gap: 5px;
   font-weight: 900;
 }
 
-.progress-card div,
-.loading-card div {
+.progress-card div, .loading-card div{
   height: 12px;
   overflow: hidden;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.62);
 }
 
-.progress-card i,
-.loading-card i {
+.progress-card i, .loading-card i{
   display: block;
   width: 0%;
   height: 100%;
@@ -383,7 +260,7 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   transition: width 0.28s ease;
 }
 
-.scene {
+.scene{
   position: relative;
   width: 100%;
   aspect-ratio: 1.34 / 1;
@@ -400,57 +277,56 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
     0 18px 34px rgba(48, 82, 63, 0.2);
 }
 
-.scene[data-theme="river"] {
+.scene[data-theme="river"]{
   background:
     linear-gradient(180deg, rgba(27, 99, 122, 0.02), rgba(27, 99, 122, 0.04)),
     url("../../assets/animal-hidden-safari/river-background-block-v1.png") center / cover no-repeat,
     #84d75f;
 }
 
-.scene[data-theme="pond"] {
+.scene[data-theme="pond"]{
   background:
     linear-gradient(180deg, rgba(28, 118, 116, 0.02), rgba(60, 142, 89, 0.04)),
     url("../../assets/animal-hidden-safari/pond-background-block-v1.png") center / cover no-repeat,
     #86d879;
 }
 
-.scene[data-theme="sunset"] {
+.scene[data-theme="sunset"]{
   background:
     linear-gradient(180deg, rgba(142, 82, 35, 0.02), rgba(92, 78, 28, 0.04)),
     url("../../assets/animal-hidden-safari/sunset-background-block-v1.png") center / cover no-repeat,
     #f2b94e;
 }
 
-.scene[data-theme="jungle"] {
+.scene[data-theme="jungle"]{
   background:
     linear-gradient(180deg, rgba(18, 75, 39, 0.04), rgba(12, 57, 31, 0.08)),
     url("../../assets/animal-hidden-safari/jungle-background-block-v1.png") center / cover no-repeat,
     #367d49;
 }
 
-.scene[data-theme="lookout"] {
+.scene[data-theme="lookout"]{
   background:
     linear-gradient(180deg, rgba(34, 98, 143, 0.02), rgba(159, 103, 34, 0.08)),
     url("../../assets/animal-hidden-safari/lookout-background-block-v1.png") center / cover no-repeat,
     #c89948;
 }
 
-.float-layer {
+.float-layer{
   position: absolute;
   pointer-events: none;
 }
 
-.targets-layer {
+.targets-layer{
   position: absolute;
   pointer-events: none;
 }
 
-.targets-layer,
-.float-layer {
+.targets-layer, .float-layer{
   inset: 0;
 }
 
-.target {
+.target{
   position: absolute;
   width: var(--size);
   height: var(--size);
@@ -469,24 +345,24 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   isolation: isolate;
 }
 
-.target-hit-area {
+.target-hit-area{
   position: absolute;
   inset: -6px;
   border-radius: inherit;
 }
 
-.target:focus-visible {
+.target:focus-visible{
   outline: 3px solid #fff4a8;
   outline-offset: 4px;
 }
 
-.target-animal {
+.target-animal{
   position: relative;
   z-index: 1;
   filter: saturate(0.95) contrast(0.96);
 }
 
-.target-cover {
+.target-cover{
   position: absolute;
   z-index: 2;
   left: 50%;
@@ -502,7 +378,7 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   filter: drop-shadow(0 4px 4px rgba(31, 68, 41, 0.16));
 }
 
-.target-cover-leaf {
+.target-cover-leaf{
   top: -7%;
   bottom: auto;
   width: 108%;
@@ -510,34 +386,34 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   opacity: 0.84;
 }
 
-.target-cover-water {
+.target-cover-water{
   bottom: -5%;
   height: 50%;
   opacity: 0.82;
 }
 
-.target-cover-dust {
+.target-cover-dust{
   bottom: -8%;
   height: 48%;
   opacity: 0.72;
 }
 
-.target:active {
+.target:active{
   transform: translate(-50%, -50%) scale(0.92);
   opacity: 1;
 }
 
-.target.found {
+.target.found{
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -50%) scale(1.55) rotate(12deg);
 }
 
-.target.hint {
+.target.hint{
   animation: hint-pulse 0.72s ease-in-out infinite alternate;
 }
 
-.hint-feedback {
+.hint-feedback{
   display: none;
   position: absolute;
   z-index: 4;
@@ -552,54 +428,54 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   filter: drop-shadow(0 4px 8px rgba(117, 76, 10, 0.28));
 }
 
-.target.hint .hint-feedback {
+.target.hint .hint-feedback{
   display: block;
   animation: hint-ring-turn 4.8s linear infinite;
 }
 
-.scene.is-ordered .target.is-current:not(.found) {
+.scene.is-ordered .target.is-current:not(.found){
   box-shadow: 0 0 0 3px rgba(255, 244, 168, 0.94), 0 0 18px rgba(255, 214, 77, 0.72);
 }
 
-.scene.is-ordered .target.is-waiting:not(:focus-visible) {
+.scene.is-ordered .target.is-waiting:not(:focus-visible){
   opacity: 0.82;
 }
 
-.target.wrong-order {
+.target.wrong-order{
   animation: safari-wrong-order 0.34s ease-in-out;
 }
 
-.target.is-decoy:not(.found) .target-animal {
+.target.is-decoy:not(.found) .target-animal{
   filter: saturate(0.72) contrast(0.9);
 }
 
-.scene.is-camouflage .target:not(:focus-visible):not(.hint) .target-animal {
+.scene.is-camouflage .target:not(:focus-visible):not(.hint) .target-animal{
   opacity: 0.76;
   filter: saturate(0.78) contrast(0.9);
 }
 
-.scene.is-camouflage .target-cover {
+.scene.is-camouflage .target-cover{
   width: 110%;
   height: 56%;
   opacity: 0.92;
 }
 
-.scene.is-drift .target:not(.found):not(.hint) {
+.scene.is-drift .target:not(.found):not(.hint){
   animation: safari-drift 3.4s ease-in-out var(--drift-delay, 0s) infinite alternate;
 }
 
 @keyframes safari-drift {
-  from { transform: translate(calc(-50% - 5px), calc(-50% + 2px)); }
-  to { transform: translate(calc(-50% + 5px), calc(-50% - 2px)); }
+  from{ transform: translate(calc(-50% - 5px), calc(-50% + 2px)); }
+  to{ transform: translate(calc(-50% + 5px), calc(-50% - 2px)); }
 }
 
 @keyframes safari-wrong-order {
-  0%, 100% { transform: translate(-50%, -50%); }
-  33% { transform: translate(calc(-50% - 5px), -50%); }
-  66% { transform: translate(calc(-50% + 5px), -50%); }
+  0%, 100%{ transform: translate(-50%, -50%); }
+  33%{ transform: translate(calc(-50% - 5px), -50%); }
+  66%{ transform: translate(calc(-50% + 5px), -50%); }
 }
 
-.image-feedback {
+.image-feedback{
   position: absolute;
   z-index: 18;
   width: var(--feedback-size);
@@ -611,11 +487,11 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   -webkit-user-drag: none;
 }
 
-.image-feedback-found {
+.image-feedback-found{
   animation: found-burst 0.72s ease-out forwards;
 }
 
-.float-text {
+.float-text{
   position: absolute;
   z-index: 20;
   transform: translate(-50%, -50%);
@@ -628,7 +504,7 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   animation: float-up 0.9s ease-out forwards;
 }
 
-.target-panel {
+.target-panel{
   border-radius: 22px;
   padding: 12px;
   display: grid;
@@ -637,14 +513,14 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   box-shadow: 0 10px 22px rgba(54, 91, 69, 0.16);
 }
 
-.target-panel > div:first-child {
+.target-panel > div:first-child{
   display: flex;
   justify-content: space-between;
   gap: 12px;
   font-weight: 900;
 }
 
-.target-status {
+.target-status{
   display: inline-flex;
   gap: 8px;
   align-items: center;
@@ -652,7 +528,7 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   color: rgba(35, 64, 51, 0.72);
 }
 
-.target-status b {
+.target-status b{
   min-width: 58px;
   padding: 3px 8px;
   border-radius: 999px;
@@ -661,13 +537,13 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   font-size: 0.78rem;
 }
 
-.target-list {
+.target-list{
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
 }
 
-.target-chip {
+.target-chip{
   min-height: 54px;
   border-radius: 16px;
   display: grid;
@@ -679,29 +555,28 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   text-align: center;
 }
 
-.target-chip b {
+.target-chip b{
   width: 30px;
   height: 30px;
   display: grid;
   place-items: center;
 }
 
-.chip-animal {
+.chip-animal{
   filter: drop-shadow(0 3px 4px rgba(41, 80, 48, 0.18));
 }
 
-.target-chip span {
+.target-chip span{
   font-size: 0.8rem;
   line-height: 1;
 }
 
-.target-chip.done {
+.target-chip.done{
   opacity: 0.46;
   text-decoration: line-through;
 }
 
-.result-panel,
-.loading-panel {
+.result-panel, .loading-panel{
   position: fixed;
   inset: 0;
   z-index: 80;
@@ -712,7 +587,7 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   backdrop-filter: blur(8px);
 }
 
-.safari-pause-panel {
+.safari-pause-panel{
   position: fixed;
   inset: 0;
   z-index: 90;
@@ -723,9 +598,9 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   backdrop-filter: blur(8px);
 }
 
-.safari-pause-panel.hidden { display: none !important; }
+.safari-pause-panel.hidden{ display: none !important; }
 
-.safari-pause-card {
+.safari-pause-card{
   width: min(100%, 330px);
   display: grid;
   gap: 12px;
@@ -737,14 +612,13 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   text-align: center;
 }
 
-.safari-pause-card strong { font-size: 1.45rem; }
-.safari-pause-card p { margin: 0; font-weight: 800; line-height: 1.4; }
-.safari-pause-actions { display: grid; gap: 10px; }
-.safari-pause-card button { min-height: 50px; border: 0; border-radius: 12px; background: #ffd56d; color: #234033; font: inherit; font-weight: 1000; }
-.safari-pause-card #leaveHabitatBtn { background: #e8efe7; }
+.safari-pause-card strong{ font-size: 1.45rem; }
+.safari-pause-card p{ margin: 0; font-weight: 800; line-height: 1.4; }
+.safari-pause-actions{ display: grid; gap: 10px; }
+.safari-pause-card button{ min-height: 50px; border: 0; border-radius: 12px; background: #ffd56d; color: #234033; font: inherit; font-weight: 1000; }
+.safari-pause-card #leaveHabitatBtn{ background: #e8efe7; }
 
-.result-card,
-.loading-card {
+.result-card, .loading-card{
   width: min(100%, 430px);
   border-radius: 26px;
   padding: 22px;
@@ -756,11 +630,11 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   box-shadow: 0 22px 48px rgba(25, 52, 40, 0.28);
 }
 
-.result-card strong {
+.result-card strong{
   font-size: 1.5rem;
 }
 
-.result-celebration {
+.result-celebration{
   display: block;
   width: min(68vw, 188px);
   max-height: 156px;
@@ -769,13 +643,13 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   pointer-events: none;
 }
 
-.stars {
+.stars{
   font-size: 2rem;
   color: #ffb91f;
   letter-spacing: 0;
 }
 
-.skill-report {
+.skill-report{
   display: grid;
   gap: 7px;
   border-radius: 18px;
@@ -784,33 +658,33 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   text-align: left;
 }
 
-.skill-report > b {
+.skill-report > b{
   text-align: center;
 }
 
-.skill-report dl {
+.skill-report dl{
   display: grid;
   gap: 5px;
   margin: 0;
 }
 
-.skill-report dl div {
+.skill-report dl div{
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
   gap: 8px;
   align-items: center;
 }
 
-.skill-report dt {
+.skill-report dt{
   font-weight: 800;
 }
 
-.skill-report dd {
+.skill-report dd{
   margin: 0;
   text-align: right;
 }
 
-.skill-report p {
+.skill-report p{
   margin: 0;
   padding-top: 6px;
   border-top: 1px solid rgba(35, 64, 51, 0.22);
@@ -818,135 +692,114 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   text-align: center;
 }
 
-.result-card button,
-.result-card a {
+.result-card button, .result-card a{
   display: grid;
   place-items: center;
 }
 
-.result-card .result-primary-action {
+.result-card .result-primary-action{
   background: linear-gradient(#ffe98a, #ffc43d);
   color: #3d2b08;
   box-shadow: 0 6px 0 #a96f18, 0 10px 22px rgba(84, 55, 8, 0.24);
 }
 
-.result-card button:disabled {
+.result-card button:disabled{
   cursor: not-allowed;
   opacity: 0.52;
   box-shadow: none;
 }
 
-.loading-card i {
+.loading-card i{
   width: 0%;
 }
 
-.hidden {
+.hidden{
   display: none !important;
 }
 
 @keyframes float-up {
-  from {
+  from{
     opacity: 1;
     transform: translate(-50%, -50%);
   }
-  to {
+  to{
     opacity: 0;
     transform: translate(-50%, -140%);
   }
 }
 
 @keyframes hint-pulse {
-  from {
+  from{
     transform: translate(-50%, -50%) scale(1);
   }
-  to {
+  to{
     transform: translate(-50%, -50%) scale(1.08);
   }
 }
 
 @keyframes hint-ring-turn {
-  to {
+  to{
     transform: rotate(360deg);
   }
 }
 
 @keyframes found-burst {
-  0% {
+  0%{
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.45) rotate(-8deg);
   }
-  24% {
+  24%{
     opacity: 1;
     transform: translate(-50%, -50%) scale(1.08) rotate(0deg);
   }
-  100% {
+  100%{
     opacity: 0;
     transform: translate(-50%, -50%) scale(1.35) rotate(8deg);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .target.hint,
-  .target.hint .hint-feedback,
-  .image-feedback-found,
-  .scene.is-drift .target:not(.found):not(.hint),
-  .target.wrong-order {
+  .target.hint, .target.hint .hint-feedback, .image-feedback-found, .scene.is-drift .target:not(.found):not(.hint), .target.wrong-order{
     animation-duration: 0.01ms;
     animation-iteration-count: 1;
   }
 }
 
 @media (max-width: 560px) {
-  html:has(body.safari-playing), body.safari-playing { overflow: hidden !important; touch-action: none; }
-  body.safari-playing .safari-game { width: 100vw; height: var(--wp-mobile-vh, 100svh); min-height: 0; display:block; padding:7px 10px 0; overflow:hidden; }
-  body.safari-playing .topbar, body.safari-playing .menu-panel, body.safari-playing .game-page-info { display: none !important; }
-  body.safari-playing .play-panel { height:100%; min-height:0; display:grid; grid-template-rows:40px minmax(0,1fr) 160px; gap:6px; overflow:hidden; }
-  body.safari-playing .play-head { grid-template-columns:40px minmax(0,1fr) 40px auto; min-height:0; }
-  body.safari-playing .progress-card { grid-column:auto; grid-row:auto; }
-  body.safari-playing .scene { min-height:0; height:auto; }
-  body.safari-playing .target-panel { padding: 8px; gap: 6px; }
-  body.safari-playing .target-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
-  body.safari-playing .target-chip { min-height: 46px; grid-template-columns:32px minmax(0,1fr); gap:4px; padding:4px; text-align:left; }
-  body.safari-playing .target-chip b { width:32px; height:32px; }
-  body.safari-playing .target-chip span { font-size:0.7rem; overflow-wrap:anywhere; }
-  .topbar {
+  html:has(body.safari-playing), body.safari-playing{ overflow: hidden !important; touch-action: none; }
+  body.safari-playing .topbar, body.safari-playing .menu-panel, body.safari-playing .game-page-info{ display: none !important; }
+  body.safari-playing .progress-card{ grid-column:auto; grid-row:auto; }
+  body.safari-playing .scene{ min-height:0; height:auto; }
+  body.safari-playing .target-panel{ padding: 8px; gap: 6px; }
+  body.safari-playing .target-list{ grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  body.safari-playing .target-chip{ min-height: 46px; grid-template-columns:32px minmax(0,1fr); gap:4px; padding:4px; text-align:left; }
+  body.safari-playing .target-chip b{ width:32px; height:32px; }
+  body.safari-playing .target-chip span{ font-size:0.7rem; overflow-wrap:anywhere; }
+  .topbar{
     grid-template-columns: 44px minmax(0, 1fr);
   }
 
-  .language-picker {
+  .language-picker{
     grid-column: 1 / -1;
     grid-template-columns: auto 1fr;
     align-items: center;
   }
 
-  .scene {
+  .scene{
     min-height: 360px;
   }
 
-  .target-list {
+  .target-list{
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 /* Final fixed-ratio override remains after legacy responsive rules. */
-html:has(body.safari-playing), body.safari-playing { width:100%; height:100dvh; overflow:hidden !important; }
-body.safari-playing .safari-game { width:100%; height:100dvh; min-height:0; display:grid; place-items:center; padding:4px; overflow:hidden; }
-body.safari-playing .topbar, body.safari-playing .menu-panel, body.safari-playing .game-page-info { display:none !important; }
-body.safari-playing .play-panel {
-  width:min(calc(100vw - 8px), calc((100dvh - 8px) * 9 / 16));
-  height:auto;
-  max-height:calc(100dvh - 8px);
-  aspect-ratio:9 / 16;
-  min-height:0;
-  display:grid;
-  grid-template-rows:40px minmax(0,1fr) 160px;
-  gap:6px;
-  overflow:hidden;
-}
+html:has(body.safari-playing), body.safari-playing{ width:100%; height:100dvh; overflow:hidden !important; }
+body.safari-playing .topbar, body.safari-playing .menu-panel, body.safari-playing .game-page-info{ display:none !important; }
 
 /* Battle Canvas geometry is independent from the ratio-sensitive seek scene. */
-html:has(body.safari-playing),
-body.safari-playing {
+html:has(body.safari-playing), body.safari-playing{
   position: fixed;
   inset: 0;
   width: 100vw;
@@ -956,89 +809,36 @@ body.safari-playing {
   touch-action: none;
 }
 
-body.safari-playing .safari-game {
-  position: fixed;
-  inset: 0;
-  display: block;
-  width: 100vw;
-  max-width: none;
-  height: 100dvh;
-  min-height: 0;
-  padding: 0;
-  overflow: hidden;
-  transform: none !important;
-}
-
-html body.safari-playing #playPanel.play-panel,
-html body.wp-mobile-game-mode.safari-playing #playPanel.play-panel.weightplay-active-viewport {
-  position: fixed !important;
-  inset: auto !important;
-  left: var(--safari-frame-left, 0) !important;
-  top: 0 !important;
-  display: grid !important;
-  grid-template-rows: 40px minmax(0, 1fr) 160px !important;
-  align-content: start;
-  gap: 6px !important;
-  width: var(--safari-logical-width, 390px) !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  height: var(--safari-logical-height, 693.333px) !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  padding: 0 !important;
-  aspect-ratio: auto !important;
-  overflow: hidden !important;
-  transform: scale(var(--safari-frame-scale, 1)) !important;
-  transform-origin: top left !important;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
-body.safari-playing .play-head {
-  grid-template-columns: 48px minmax(0, 1fr) 40px 72px;
-  gap: 6px;
-  min-height: 40px;
-}
-
-body.safari-playing .play-return {
-  width: 48px;
-  min-width: 48px;
-  height: 48px;
-  min-height: 48px;
-  font-size: 22px;
-  line-height: 26px;
-}
-
-body.safari-playing .progress-card {
+body.safari-playing .progress-card{
   min-width: 0;
   overflow: hidden;
   font-size: 11px;
   line-height: 14px;
 }
 
-body.safari-playing .progress-card span {
+body.safari-playing .progress-card span{
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-body.safari-playing .progress-card div {
+body.safari-playing .progress-card div{
   height: 8px;
 }
 
-body.safari-playing .hint-btn {
+body.safari-playing .hint-btn{
   width: 72px;
   min-width: 72px;
   height: 40px;
-  min-height: 40px;
+  min-height: 48px;
   padding: 0 6px;
   font-size: 11px;
   line-height: 14px;
   white-space: nowrap;
 }
 
-body.safari-playing .scene {
+body.safari-playing .scene{
   width: min(100%, 430px);
   height: auto;
   min-height: 0;
@@ -1049,7 +849,7 @@ body.safari-playing .scene {
   justify-self: center;
 }
 
-body.safari-playing .target-panel {
+body.safari-playing .target-panel{
   height: 160px;
   min-height: 160px;
   padding: 6px;
@@ -1057,26 +857,25 @@ body.safari-playing .target-panel {
   overflow: hidden;
 }
 
-body.safari-playing .target-panel > div:first-child {
+body.safari-playing .target-panel > div:first-child{
   height: 22px;
   min-height: 22px;
   font-size: 11px;
   line-height: 14px;
 }
 
-body.safari-playing .target-status,
-body.safari-playing .target-status b {
+body.safari-playing .target-status, body.safari-playing .target-status b{
   font-size: 10px;
   line-height: 13px;
 }
 
-body.safari-playing .target-list {
+body.safari-playing .target-list{
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 5px;
   min-height: 0;
 }
 
-body.safari-playing .target-chip {
+body.safari-playing .target-chip{
   grid-template-columns: 32px minmax(0, 1fr);
   min-width: 0;
   min-height: 54px;
@@ -1086,12 +885,12 @@ body.safari-playing .target-chip {
   text-align: left;
 }
 
-body.safari-playing .target-chip b {
+body.safari-playing .target-chip b{
   width: 32px;
   height: 32px;
 }
 
-body.safari-playing .target-chip span {
+body.safari-playing .target-chip span{
   min-width: 0;
   overflow: hidden;
   font-size: 11px;
@@ -1099,48 +898,15 @@ body.safari-playing .target-chip span {
   overflow-wrap: anywhere;
 }
 
-body.safari-playing .weightplay-version-badge,
-body.safari-playing .sound-toggle,
-body.safari-playing .wp-tutorial-button,
-body.safari-playing .wp-shell-settings,
-body.safari-playing .wp-generated-main-header,
-body.safari-playing.safari-result .wp-generated-battle-header {
+body.safari-playing .weightplay-version-badge, body.safari-playing .sound-toggle, body.safari-playing .wp-tutorial-button, body.safari-playing .wp-shell-settings, body.safari-playing .wp-generated-main-header, body.safari-playing.safari-result .wp-generated-battle-header{
   display: none !important;
 }
 
 /* Kids keeps one logical Battle composition in every orientation. */
-@media (max-height: 430px) {
-  html body.wp-logical-battle-active.safari-playing #playPanel.play-panel,
-  html body.safari-playing #playPanel.play-panel,
-  html body.wp-mobile-game-mode.safari-playing #playPanel.play-panel.weightplay-active-viewport {
-    grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-rows: 40px minmax(0, 1fr) 160px !important;
-    grid-template-areas: none !important;
-  }
-
-  body.safari-playing .play-head,
+@media (max-height: 430px){
   body.safari-playing .scene,
   body.safari-playing .target-panel {
     grid-area: auto !important;
-  }
-
-  html body.safari-playing #playPanel #scene.scene {
-    width: min(100%, 430px) !important;
-    height: auto !important;
-  }
-
-  html body.safari-playing #playPanel .target-panel {
-    height: 160px !important;
-  }
-
-  html body.safari-playing #playPanel #targetList.target-list {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  }
-
-  html body.safari-playing #playPanel #targetList .target-chip {
-    grid-template-columns: 32px minmax(0, 1fr) !important;
-    min-height: 54px !important;
-    height: 54px !important;
   }
 
   body.safari-playing .target-chip b {
@@ -1154,11 +920,7 @@ body.safari-playing.safari-result .wp-generated-battle-header {
   }
 }
 
-body.safari-playing.safari-result #playPanel {
-  visibility: hidden;
-}
-
-body.safari-playing .result-panel {
+body.safari-playing .result-panel{
   position: fixed !important;
   inset: auto !important;
   left: var(--safari-frame-left, 0) !important;
@@ -1172,7 +934,7 @@ body.safari-playing .result-panel {
   transform-origin: top left !important;
 }
 
-body.safari-playing .result-card {
+body.safari-playing .result-card{
   width: 100%;
   height: 100%;
   max-height: 100%;
@@ -1183,67 +945,47 @@ body.safari-playing .result-card {
   overflow-y: hidden;
 }
 
-body.safari-playing .result-card strong {
+body.safari-playing .result-card strong{
   font-size: 1.25rem;
 }
 
-body.safari-playing .result-celebration {
+body.safari-playing #resultText{
+  max-height: min(18vh, 108px);
+  overflow: auto;
+  overflow-wrap: anywhere;
+  overscroll-behavior: contain;
+  padding-inline: 4px;
+}
+
+body.safari-playing .result-celebration{
   width: 104px;
   max-height: 72px;
   margin: -6px auto -3px;
 }
 
-body.safari-playing .stars {
+body.safari-playing .stars{
   font-size: 1.65rem;
 }
 
-body.safari-playing .skill-report {
+body.safari-playing .skill-report{
   gap: 4px;
   padding: 8px;
   align-self: start;
 }
 
-body.safari-playing .result-actions {
+body.safari-playing .result-actions{
   display: grid;
-  grid-template-rows: repeat(3, minmax(44px, 1fr));
+  grid-template-rows: repeat(3, minmax(48px, 1fr));
   gap: 7px;
 }
 
-body.safari-playing .result-card button,
-body.safari-playing .result-card a {
-  min-height: 44px;
+body.safari-playing .result-card button, body.safari-playing .result-card a{
+  min-height: 48px;
 }
 
 @media (max-height: 430px) {
-  html body.wp-logical-battle-active.safari-playing #playPanel.play-panel,
-  html body.safari-playing #playPanel.play-panel,
-  html body.wp-mobile-game-mode.safari-playing #playPanel.play-panel.weightplay-active-viewport {
-    grid-template-columns: minmax(0, 1fr) 220px !important;
-    grid-template-rows: 40px minmax(0, 1fr) !important;
-    grid-template-areas: "head head" "scene targets" !important;
-    gap: 4px !important;
-  }
 
-  body.safari-playing .play-head {
-    grid-area: head !important;
-    grid-column: 1 / -1 !important;
-    grid-row: 1 !important;
-    width: 100% !important;
-    grid-template-columns: 48px minmax(0, 1fr) 44px 72px !important;
-    gap: 6px !important;
-    min-height: 40px !important;
-  }
-
-  body.safari-playing .play-return {
-    width: 48px !important;
-    min-width: 48px !important;
-    height: 48px !important;
-    min-height: 48px !important;
-    font-size: 22px !important;
-    line-height: 26px !important;
-  }
-
-  body.safari-playing .pause-btn {
+  body.safari-playing .pause-btn{
     width: 44px !important;
     min-width: 44px !important;
     height: 44px !important;
@@ -1251,7 +993,7 @@ body.safari-playing .result-card a {
     font-size: 10px !important;
   }
 
-  body.safari-playing .hint-btn {
+  body.safari-playing .hint-btn{
     width: 72px !important;
     min-width: 72px !important;
     height: 44px !important;
@@ -1260,78 +1002,34 @@ body.safari-playing .result-card a {
     line-height: 14px !important;
   }
 
-  body.safari-playing .progress-card {
+  body.safari-playing .progress-card{
     font-size: 11px !important;
     line-height: 14px !important;
   }
 
-  body.safari-playing .progress-card div {
+  body.safari-playing .progress-card div{
     height: 8px !important;
   }
 
-  html body.safari-playing #playPanel #scene.scene {
-    grid-area: scene !important;
-    width: auto !important;
-    height: 100% !important;
-    max-width: 100% !important;
-    max-height: 100% !important;
-    aspect-ratio: 1 / 1 !important;
-    justify-self: center !important;
-  }
-
-  html body.safari-playing #playPanel .target-panel {
-    grid-area: targets !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    padding: 5px !important;
-    gap: 5px !important;
-  }
-
-  body.safari-playing .target-panel > div:first-child {
+  body.safari-playing .target-panel > div:first-child{
     height: 22px !important;
     min-height: 22px !important;
     font-size: 11px !important;
     line-height: 14px !important;
   }
 
-  body.safari-playing .target-status,
-  body.safari-playing .target-status b {
+  body.safari-playing .target-status, body.safari-playing .target-status b{
     font-size: 10px !important;
     line-height: 13px !important;
-  }
-
-  html body.safari-playing #playPanel #targetList.target-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    align-content: start;
-    overflow: hidden;
-  }
-
-  html body.safari-playing #playPanel #targetList .target-chip {
-    grid-template-columns: 26px minmax(0, 1fr) !important;
-    min-height: 44px !important;
-    height: 44px !important;
-    max-height: 44px !important;
-    padding: 3px !important;
-    gap: 3px !important;
-  }
-
-  html body.safari-playing #playPanel #targetList .target-chip b {
-    width: 26px !important;
-    height: 26px !important;
-  }
-
-  html body.safari-playing #playPanel #targetList .target-chip span {
-    font-size: 10px !important;
-    line-height: 12px !important;
   }
 }
 
 @media (max-height: 430px) and (orientation: landscape) {
-  body.safari-playing .result-panel {
+  body.safari-playing .result-panel{
     padding: 10px !important;
   }
 
-  body.safari-playing .result-card {
+  body.safari-playing .result-card{
     position: absolute;
     inset: 10px;
     width: auto;
@@ -1344,7 +1042,7 @@ body.safari-playing .result-card a {
     overflow: hidden;
   }
 
-  body.safari-playing .result-celebration {
+  body.safari-playing .result-celebration{
     grid-column: 1;
     grid-row: 1 / 5;
     width: 160px;
@@ -1352,11 +1050,11 @@ body.safari-playing .result-card a {
     margin: auto;
   }
 
-  body.safari-playing #resultTitle { grid-column: 2; grid-row: 1; }
-  body.safari-playing .stars { grid-column: 2; grid-row: 2; }
-  body.safari-playing #resultText { grid-column: 2; grid-row: 3; }
-  body.safari-playing .skill-report { grid-column: 2; grid-row: 4; min-height: 0; }
-  body.safari-playing .result-actions {
+  body.safari-playing #resultTitle{ grid-column: 2; grid-row: 1; }
+  body.safari-playing .stars{ grid-column: 2; grid-row: 2; }
+  body.safari-playing #resultText{ grid-column: 2; grid-row: 3; }
+  body.safari-playing .skill-report{ grid-column: 2; grid-row: 4; min-height: 0; }
+  body.safari-playing .result-actions{
     position: absolute;
     right: 12px;
     top: 50%;
@@ -1365,9 +1063,70 @@ body.safari-playing .result-card a {
     grid-template-rows: repeat(3, 48px);
   }
 
-  body.safari-playing .result-card button,
-  body.safari-playing .result-card a {
+  body.safari-playing .result-card button, body.safari-playing .result-card a{
     min-height: 48px;
     font-size: 15px;
   }
 }
+
+/* Battle gameplay lives inside the shared frame's logical Canvas. */
+body.safari-playing #battleContent {
+  display:grid;
+  grid-template-rows:minmax(0,1fr) 160px;
+  gap:6px;
+  min-width:0;
+  min-height:0;
+  overflow:hidden;
+}
+body.safari-playing.safari-result #battleContent { visibility:hidden; }
+body.safari-playing.safari-result [data-wp-frame-header="battle"] { visibility:hidden; }
+body:is(.wp-frame-stage-active,.wp-frame-battle-active) .game-page-info,
+body:is(.wp-frame-stage-active,.wp-frame-battle-active) .wp-tutorial-button { display:none!important; }
+body.safari-playing #scene {
+  width:min(100%,430px);
+  height:auto;
+  min-width:0;
+  min-height:0;
+  max-width:100%;
+  max-height:100%;
+  aspect-ratio:1;
+  justify-self:center;
+  align-self:end;
+}
+body.safari-playing #resultPanel {
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-height:none!important;
+  padding:18px!important;
+  overflow:hidden!important;
+  transform:none!important;
+  z-index:90;
+}
+@media (max-height:430px) and (orientation:landscape) {
+  body.safari-playing #battleContent {
+    grid-template-columns:minmax(0,1fr) 220px;
+    grid-template-rows:minmax(0,1fr);
+    align-items:stretch;
+  }
+  body.safari-playing #scene {
+    width:min(100%, calc(100vh - 106px)) !important;
+    height:auto !important;
+    justify-self:center;
+    align-self:center;
+  }
+  body.safari-playing .target-panel { height:100%; min-height:0; }
+  body.safari-playing .target-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  body.safari-playing .target-chip { min-height:44px; height:44px; grid-template-columns:26px minmax(0,1fr); }
+  body.safari-playing .target-chip b { width:26px; height:26px; }
+}
+/* The Battle Canvas shared stylesheet has legacy direct-child tracks for
+   older Hidden Safari markup. The I9 content is now nested under #battleContent. */
+body.wp-logical-battle-active.safari-playing #battleContent > #scene,
+body.wp-logical-battle-active.safari-playing #battleContent > .target-panel {
+  grid-area:auto!important;
+  grid-column:auto!important;
+  grid-row:auto!important;
+}
+body.wp-logical-battle-active.safari-playing #battleContent > #scene { align-self:end!important; }

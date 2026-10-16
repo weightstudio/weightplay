@@ -45,3 +45,8 @@ button:not(:disabled):active{filter:brightness(1.16);transform:translateY(1px)}
 @media (orientation:landscape) and (max-height:500px){#worldLabels .unit-label{width:56px;font-size:9px;line-height:12px}#worldLabels .unit-label.unit-hero{width:82px}#worldLabels .unit-label.unit-boss{width:78px}.reward-tag{min-height:16px;gap:2px;font-size:9px}.reward-tag .icon{width:16px;height:16px}.unit-health{height:14px}.unit-health b{font-size:8px;line-height:12px}}
 .modal-card #modalText{white-space:pre-line}
 @media (orientation:landscape) and (max-height:500px){.modal{align-items:center;padding:8px 12px}.modal-card{padding:12px 16px;line-height:1.35}.modal-card h2{font-size:22px;margin:0 0 6px}.modal-card p{margin:6px 0}.modal-card button{min-height:38px;margin-top:6px;padding:4px 8px}}
+#loadingPanel .loading-card>div{position:relative}
+#loadingPanel #loadingFill{width:34%;transform:translateX(-120%);animation:wildwood-loading-sweep 1.25s ease-in-out infinite}
+@keyframes wildwood-loading-sweep{to{transform:translateX(390%)}}
+@media(prefers-reduced-motion:reduce){#loadingPanel #loadingFill{animation:none;transform:none;width:34%}}
+@media (orientation:landscape) and (max-height:560px){.main-scene{padding:6px 12px}.main-scene .hero{grid-template-columns:minmax(0,min(56vh,240px)) minmax(0,1fr);gap:16px;padding:10px}.main-scene .hero>img{height:min(56vh,240px);aspect-ratio:auto}.main-scene .hero-copy{line-height:1.35}.main-scene .hero-copy p{margin:6px 0}.main-scene .hero-copy .main-progress{height:36px;min-height:36px}.main-scene .hero-copy .primary{height:44px}}

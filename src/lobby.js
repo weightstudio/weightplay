@@ -470,13 +470,57 @@ function createDemonEventPreview() {
   updateCount();
   let inViewport = false;
   const motionPreference = window.matchMedia?.("(prefers-reduced-motion: reduce)");
-  const updateMotion = () => section.dataset.motion = inViewport && !document.hidden && !motionPreference?.matches ? "on" : "off";
+  let artSession = null;
+  let artLoading = false;
+  let artGeneration = 0;
+  let artAbort = null;
+  let artFailed = false;
+  let artDisposed = false;
+  const releaseArt = () => {
+    artGeneration += 1;
+    artAbort?.abort();
+    artAbort = null;
+    artSession?.destroy();
+    artSession = null;
+  };
+  const updateMotion = () => {
+    const play = !artDisposed && !section.hidden && inViewport && !document.hidden && !motionPreference?.matches;
+    section.dataset.motion = play ? "on" : "off";
+    if (!play) { releaseArt(); return; }
+    if (artLoading || artSession || artFailed) return;
+    artLoading = true;
+    const generation = ++artGeneration;
+    const controller = new AbortController();
+    artAbort = controller;
+    const isCurrent = () => generation === artGeneration && !artDisposed && section.dataset.motion === "on" && !section.hidden && !document.hidden;
+    import("/src/demon-event-pixi.mjs")
+      .then(module => isCurrent() ? module.mountDemonEventArt(section.querySelector(".demon-event-art"), { isCurrent, signal: controller.signal }) : null)
+      .then(session => { if (isCurrent()) artSession = session; else session?.destroy(); })
+      .catch(() => { if (isCurrent()) artFailed = true; })
+      .finally(() => { artLoading = false; if (!artFailed && !artDisposed && section.dataset.motion === "on" && !artSession) updateMotion(); });
+  };
+  let visibilityObserver;
   if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(entries => { inViewport = Boolean(entries[0]?.isIntersecting); updateMotion(); }, { threshold: 0.12 });
-    observer.observe(section);
+    visibilityObserver = new IntersectionObserver(entries => { inViewport = Boolean(entries[0]?.isIntersecting); updateMotion(); }, { threshold: 0.12 });
+    visibilityObserver.observe(section.querySelector(".demon-event-art"));
   }
+  const hiddenObserver = new MutationObserver(updateMotion);
+  hiddenObserver.observe(section, { attributes: true, attributeFilter: ["hidden"] });
   document.addEventListener("visibilitychange", updateMotion);
   motionPreference?.addEventListener?.("change", updateMotion);
+  const onPageHide = event => {
+    releaseArt();
+    if (event.persisted) return;
+    artDisposed = true;
+    visibilityObserver?.disconnect();
+    hiddenObserver.disconnect();
+    document.removeEventListener("visibilitychange", updateMotion);
+    motionPreference?.removeEventListener?.("change", updateMotion);
+    window.removeEventListener("pageshow", updateMotion);
+    window.removeEventListener("pagehide", onPageHide);
+  };
+  window.addEventListener("pagehide", onPageHide);
+  window.addEventListener("pageshow", updateMotion);
   return section;
 }
 

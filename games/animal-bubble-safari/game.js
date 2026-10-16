@@ -145,7 +145,7 @@
   }
 
   const dom = Object.fromEntries([
-    "viewport","gameCanvas","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleLive","pauseButton","pauseOverlay","pauseResume","resultScreen","guideModal","stageRail","stageStatus","playCanvas","localeSelect",
+    "viewport","canvasSlot","gameCanvas","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleLive","pauseButton","pauseOverlay","pauseResume","resultScreen","guideModal","stageRail","stageStatus","playCanvas","localeSelect",
     "mainProgress","albumCount","starCount","stageSkill","stageGoal","battleStageName","shotsLeft","rescueProgress","scoreValue","battleMessage","battleGoal",
     "currentPreview","nextPreview","resultTitle","resultStars","resultScore","resultShots","resultRescued","rewardStars","rewardCoins","rewardAlbum","skillText","resultProgress","retryStage","nextStage","backToMap"
   ].map(id => [id, document.getElementById(id)]));
@@ -185,7 +185,7 @@
   let locale = requestedLocale;
   let save = loadSave();
   let selectedStage = Math.min(save.unlocked, stageDefs.length);
-  let centeredStageFrame = 0;
+  let sharedStageController = null;
   let currentScreen = "loading";
   let audioEnabled = !window.WeightPlayAudio.isMuted();
   window.addEventListener("weightplay:audio-volume-change", () => { audioEnabled = !window.WeightPlayAudio.isMuted(); });
@@ -264,15 +264,18 @@
   function fitCanvas() {
     const responsiveCanvas = currentScreen === "stage" || currentScreen === "battle" || currentScreen === "result";
     const mainCanvas = currentScreen === "main";
-    const scrollportWidth = document.documentElement.clientWidth || window.innerWidth;
+    // The viewport wrapper remains visible while individual scenes are hidden.
+    // Measure that stable owner, never a hidden Main/Stage child whose rect can be 0.
+    const viewportRect = dom.viewport.getBoundingClientRect();
+    const scrollportWidth = viewportRect.width || document.documentElement.clientWidth || window.innerWidth;
     const layoutWidth = responsiveCanvas
-      ? Math.max(1, scrollportWidth, window.innerWidth || 0, window.visualViewport?.width || 0)
+      ? Math.max(1, scrollportWidth)
       : Math.max(1, scrollportWidth);
     const width = responsiveCanvas || mainCanvas ? Math.min(layoutWidth, 920) : layoutWidth;
     const frameLeft = responsiveCanvas || mainCanvas ? Math.max(0, (layoutWidth - width) / 2) : 0;
     const height = responsiveCanvas || mainCanvas
-      ? Math.max(1, document.documentElement.clientHeight || 0, window.innerHeight || 0, window.visualViewport?.height || 0)
-      : Math.max(1, window.innerHeight || document.documentElement.clientHeight);
+      ? Math.max(1, viewportRect.height || document.documentElement.clientHeight || window.innerHeight || 0)
+      : Math.max(1, viewportRect.height || window.innerHeight || document.documentElement.clientHeight);
     const landscape = responsiveCanvas && width > height;
     const widePortrait = responsiveCanvas && !landscape && width >= 560;
     const minimumWidth = landscape ? 844 : widePortrait ? 520 : LOGICAL_WIDTH;
@@ -304,10 +307,29 @@
     }
   }
 
+  function sizeFrameRoot() {
+    if (currentScreen === "main") {
+      // Main stays in document flow for the guide, while its game scene
+      // children are absolutely positioned. Give the frame a definite
+      // viewport block size so those children cannot collapse their owner.
+      const height = Math.max(1, window.innerHeight || document.documentElement.clientHeight || 1);
+      dom.viewport.style.setProperty("height", `${height}px`, "important");
+      dom.viewport.style.setProperty("min-height", "0px", "important");
+      dom.canvasSlot.style.setProperty("height", "100%", "important");
+      dom.canvasSlot.style.setProperty("min-height", "100%", "important");
+      return;
+    }
+    dom.viewport.style.removeProperty("height");
+    dom.viewport.style.removeProperty("min-height");
+    dom.canvasSlot.style.removeProperty("height");
+    dom.canvasSlot.style.removeProperty("min-height");
+  }
+
   function showScreen(name) {
     if (name !== "stage") clearStageStatus();
     currentScreen = name;
     document.body.classList.toggle("safari-main", name === "main");
+    sizeFrameRoot();
     const result = name === "result";
     dom.loadingScreen.classList.toggle("is-active", name === "loading");
     dom.mainScreen.classList.toggle("is-active", name === "main");
@@ -319,6 +341,10 @@
     else dom.battleLive.removeAttribute("aria-hidden");
     (__wpNotifyMeasurement(), dom.resultScreen.classList.toggle("is-active", result));
     fitCanvas();
+    if (["main", "stage", "battle"].includes(name)) window.BubbleSafariFrame?.activate(name);
+    else if (result) window.BubbleSafariFrame?.activate("battle");
+    if (name === "stage") window.dispatchEvent(new Event("weightplay:stage-sync"));
+    if (name === "battle" || result) window.dispatchEvent(new Event("weightplay:battle-sync"));
     track("screen_view", { screen: name });
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
@@ -334,113 +360,72 @@
 
   function renderStageRail() {
     clearStageStatus();
-    dom.stageRail.innerHTML = "";
-    stageDefs.forEach(stage => {
-      const locked = stage.id > save.unlocked;
-      const card = document.createElement("button");
-      card.type = "button";
-      card.className = "stage-card" + (stage.id === selectedStage ? " is-selected" : "") + (locked ? " is-locked" : "");
-      card.setAttribute("aria-disabled", String(locked));
-      const stars = save.bestStars[stage.id] || 0;
-      card.innerHTML = `<img src="${ASSET_ROOT}animal-bubble-safari-bg.webp" alt=""><div><b>${stage.id}. ${stageTitle(stage)}</b><span>${t(stage.goalKey)}</span><em>${"★".repeat(stars)}${"☆".repeat(3-stars)}</em><span>${locked ? t("locked") : stars ? t("completed") : t(stage.skillKey)}</span></div>`;
-      card.addEventListener("click", () => {
-        if (locked) showLockedStage(stage, card);
-        else startStage(stage.id);
-      });
-      dom.stageRail.appendChild(card);
-    });
+    if (!sharedStageController) return;
+    sharedStageController.refresh(selectedStage - 1);
     updateStageSummary();
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      centerSelectedStage("auto");
-      requestAnimationFrame(() => centerSelectedStage("auto"));
-    }));
-    setTimeout(() => {
-      if (dom.stageScreen.classList.contains("is-active")) centerSelectedStage("auto");
-    }, 80);
-  }
-
-  function updateCenteredStageCard() {
-    centeredStageFrame = 0;
-    const cards = [...dom.stageRail.querySelectorAll(".stage-card")];
-    if (!cards.length || !dom.stageScreen.classList.contains("is-active")) return;
-    const canvasRect = dom.gameCanvas.getBoundingClientRect();
-    const stageCenter = canvasRect.left + canvasRect.width / 2;
-    const centered = cards.reduce((nearest, card) => {
-      const rect = card.getBoundingClientRect();
-      const distance = Math.abs(rect.left + rect.width / 2 - stageCenter);
-      return !nearest || distance < nearest.distance ? { card, distance } : nearest;
-    }, null)?.card;
-    for (const card of cards) {
-      const isCentered = card === centered;
-      card.classList.toggle("is-centered", isCentered);
-      if (isCentered) card.setAttribute("aria-current", "true");
-      else card.removeAttribute("aria-current");
-    }
-  }
-
-  function scheduleCenteredStageCard() {
-    if (centeredStageFrame) cancelAnimationFrame(centeredStageFrame);
-    centeredStageFrame = requestAnimationFrame(updateCenteredStageCard);
   }
 
   function selectStage(id, center) {
     if (id > save.unlocked) return;
     selectedStage = id;
-    [...dom.stageRail.children].forEach((card, index) => card.classList.toggle("is-selected", index + 1 === id));
+    sharedStageController?.select(id - 1, { center: Boolean(center), focus: Boolean(center) });
     updateStageSummary();
-    if (center) centerSelectedStage("smooth");
   }
 
-  function centerSelectedStage(behavior) {
-    const card = dom.stageRail.children[selectedStage - 1];
-    centerStageCard(card, behavior);
-  }
-
-  function centerStageCard(card, behavior = "auto") {
-    if (!card) return;
-    const canvasRect = dom.gameCanvas.getBoundingClientRect();
-    const cardRect = card.getBoundingClientRect();
-    const commonScale = Number(dom.gameCanvas.dataset.commonScale) || 1;
-    const stageCenter = canvasRect.left + canvasRect.width / 2;
-    const maximum = Math.max(0, dom.stageRail.scrollWidth - dom.stageRail.clientWidth);
-    const target = Math.max(0, Math.min(maximum, dom.stageRail.scrollLeft + (cardRect.left + cardRect.width / 2 - stageCenter) / commonScale));
-    dom.stageRail.scrollTo({ left:target, behavior });
-    scheduleCenteredStageCard();
-  }
-
-  let lockedStageActivation = null;
-  const lockedCardAtPoint = (x, y) => [...dom.stageRail.querySelectorAll(".stage-card.is-locked")].find(card => {
-    const rect = card.getBoundingClientRect();
-    return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
-  });
-  dom.stageRail.addEventListener("pointerdown", event => {
-    const card = lockedCardAtPoint(event.clientX, event.clientY);
-    if (!card || event.isPrimary === false || event.button !== 0) {
-      lockedStageActivation = null;
-      return;
+  function mountSharedStageRail() {
+    const page = document.getElementById("stageContent");
+    const stageStartAction = document.getElementById("stageStartAction");
+    if (!page || !stageStartAction || !window.WeightPlayPlayUI || !window.BubbleSafariFrame) {
+      throw new Error("BUBBLE_SAFARI_I9_SHARED_STAGE_REQUIRED");
     }
-    lockedStageActivation = { id:event.pointerId, x:event.clientX, y:event.clientY, card, moved:false };
-  }, true);
-  document.addEventListener("pointermove", event => {
-    if (!lockedStageActivation || event.pointerId !== lockedStageActivation.id) return;
-    if (Math.hypot(event.clientX - lockedStageActivation.x, event.clientY - lockedStageActivation.y) > 6) lockedStageActivation.moved = true;
-  }, true);
-  const finishLockedStageActivation = event => {
-    if (!lockedStageActivation || event.pointerId !== lockedStageActivation.id) return;
-    const activation = lockedStageActivation;
-    lockedStageActivation = null;
-    if (event.type === "pointercancel" || activation.moved) return;
-    const stageIndex = [...dom.stageRail.children].indexOf(activation.card);
-    const stage = stageDefs[stageIndex];
-    if (stage) {
+    sharedStageController = window.WeightPlayPlayUI.mountStage({
+      page,
+      rail: dom.stageRail,
+      selected: selectedStage - 1,
+      config: {
+        count: stageDefs.length,
+        gameId: "animal-bubble-safari",
+        poster: "/assets/animal-bubble-safari-bg.webp",
+        background: "/assets/animal-bubble-safari-cover.webp",
+        stage(index) {
+          const stage = stageDefs[index];
+          const stars = save.bestStars[stage.id] || 0;
+          const locked = stage.id > save.unlocked;
+          return {
+            id: stage.id,
+            kicker: `${t("level")} ${stage.id}`,
+            title: stageTitle(stage),
+            subtitle: t(stage.goalKey),
+            status: locked ? t("locked") : stars ? `${t("completed")} · ${stars} / 3 ★` : t(stage.skillKey),
+            summary: `${t(stage.goalKey)} · ${t(stage.skillKey)}`,
+            details: [t(stage.skillKey), t(stage.goalKey), t(stage.hintKey)],
+            locked,
+            cleared: stars > 0,
+            poster: "/assets/animal-bubble-safari-bg.webp",
+          };
+        },
+      },
+      onSelect(index) { selectedStage = index + 1; updateStageSummary(); },
+      onStart(index) { startStage(index + 1); },
+      isActive: () => currentScreen === "stage",
+    });
+    dom.stageRail.addEventListener("click", event => {
+      const card = event.target.closest?.(".stage-card");
+      if (!card || !dom.stageRail.contains(card)) return;
       event.preventDefault();
-      showLockedStage(stage, activation.card);
-    }
-  };
-  document.addEventListener("pointerup", finishLockedStageActivation, true);
-  document.addEventListener("pointercancel", finishLockedStageActivation, true);
-  dom.stageRail.addEventListener("scroll", scheduleCenteredStageCard, { passive:true });
-  dom.stageRail.addEventListener("wonder:stage-snap", scheduleCenteredStageCard);
+      event.stopImmediatePropagation();
+      const index = Number(card.dataset.stageIndex);
+      const stage = stageDefs[index];
+      if (!stage) return;
+      if (stage.id > save.unlocked) {
+        showLockedStage(stage, card);
+        return;
+      }
+      sharedStageController.select(index, { center: true, focus: true });
+    }, true);
+    stageStartAction.addEventListener("click", () => startStage(selectedStage));
+    window.addEventListener("wonder:locale-change", () => sharedStageController?.refresh(selectedStage - 1));
+  }
 
   function updateStageSummary() {
     const stage = stageDefs[selectedStage - 1];
@@ -531,6 +516,12 @@
   }
 
   function startStage(id) {
+    if (id > save.unlocked) {
+      const lockedStage = stageDefs[id - 1];
+      const lockedCard = dom.stageRail.querySelector(`[data-stage="${id}"]`);
+      if (lockedStage && lockedCard) showLockedStage(lockedStage, lockedCard);
+      return;
+    }
     clearTimeout(resultTimer);
     isPaused = false;
     (__wpNotifyMeasurement(), dom.pauseOverlay.hidden = true);
@@ -1158,24 +1149,17 @@
   document.addEventListener("visibilitychange", () => { if (document.hidden) cancelAim(); });
   let viewportStageSettleFrame = 0;
   const handleViewportResize = () => {
-    const cards = [...dom.stageRail.querySelectorAll(".stage-card")];
-    const preservedCard = dom.stageScreen.classList.contains("is-active")
-      ? dom.stageRail.querySelector(".stage-card.is-centered")
-      : null;
-    const preservedIndex = preservedCard ? cards.indexOf(preservedCard) : selectedStage - 1;
+    sizeFrameRoot();
     fitCanvas();
-    if (viewportStageSettleFrame) cancelAnimationFrame(viewportStageSettleFrame);
-    viewportStageSettleFrame = requestAnimationFrame(() => {
-      viewportStageSettleFrame = requestAnimationFrame(() => {
-        viewportStageSettleFrame = 0;
-        if (!dom.stageScreen.classList.contains("is-active")) return;
-        centerStageCard(dom.stageRail.children[preservedIndex] || dom.stageRail.children[selectedStage - 1], "auto");
-      });
-    });
+    if (dom.stageScreen.classList.contains("is-active")) sharedStageController?.refresh(selectedStage - 1);
   };
   window.addEventListener("resize", handleViewportResize, { passive:true });
   window.visualViewport?.addEventListener("resize", handleViewportResize, { passive:true });
+  const viewportObserver = new ResizeObserver(handleViewportResize);
+  viewportObserver.observe(dom.viewport);
+  window.addEventListener("pagehide", event => { if (!event.persisted) viewportObserver.disconnect(); });
 
+  mountSharedStageRail();
   applyLocale();
   fitCanvas();
   const revealLoadingCover = () => dom.loadingCover.classList.add("is-ready");

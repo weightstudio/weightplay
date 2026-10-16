@@ -288,6 +288,51 @@ body:has([data-screen="stage"]:not(.hidden):not(.is-hidden):not([hidden])) .wp-t
     line-height: 1.12;
   }
   body[data-wp-game-id="freecell-solitaire"] .wp-tutorial-action { min-height: 40px; }
+
+  /* Wildwood's three gameplay steps need a compact landscape arrangement so
+     both the final instruction and the primary Start Playing action remain
+     visible on short screens. The game ID keeps this treatment local. */
+  body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-card {
+    width: min(96vw, 760px);
+    max-height: calc(100svh - 16px);
+    padding: 10px;
+    gap: 8px;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-head { gap: 8px; }
+  body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-head strong {
+    font-size: clamp(1rem, 3.6vw, 1.35rem);
+  }
+  body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-close {
+    width: 32px;
+    height: 32px;
+  }
+  body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+  body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-step {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 6px;
+    align-content: center;
+  }
+  body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    font-size: 1rem;
+    justify-self: center;
+  }
+  body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-copy { text-align: center; }
+  body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-copy b { font-size: .78rem; }
+  body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-copy span {
+    font-size: .70rem;
+    line-height: 1.15;
+  }
+  body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-action { min-height: 40px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
