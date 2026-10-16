@@ -108,7 +108,7 @@
     {sky:"#d49a49",ground:"#78512c",accent:"#ffe27d",terrain:"ruins"},
   ];
   const STAGE_CARD_POOL_SIZE=9;
-  let stageWindowStart=0,stageCardPool=[],stageSettleRaf=0;
+  let stageWindowStart=0,stageCardPool=[],stageSettleRaf=0,stageDragController=null;
   const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
   const TERRAIN_ZONES=[
     [
@@ -273,6 +273,7 @@
     if(active)requestAnimationFrame(()=>{document.documentElement.scrollTop=0;document.body.scrollTop=0;window.scrollTo({left:0,top:0,behavior:"instant"})});
   }
   function showScreen(next){
+    if(next!=="stage")stageDragController?.cancel();
     if(document.activeElement instanceof HTMLElement)document.activeElement.blur();
     screen=next;document.body.dataset.screen=next;
     frame?.activate(next);if($("mainGuide"))$("mainGuide").hidden=next!=="main";
@@ -336,14 +337,20 @@
   function positionStageRail(position){const logical=clamp(position,0,29),anchorIndex=Math.round(logical),recycled=moveStageWindow(desiredStageWindow(anchorIndex));if(recycled)syncStageSelection();const card=$("stageRail").querySelector(`[data-stage-index="${anchorIndex}"]`);if(!card)return logical;centerStageCard(card);const geometry=stageRailGeometry(),fraction=logical-anchorIndex;if(Math.abs(fraction)>.0001)geometry.rail.scrollLeft+=fraction*geometry.orientation*geometry.pitch/stageRailScale();return logical}
   function selectStage(index,center=false){selectedStage=clamp(index,0,29);ensureStageWindow(selectedStage);updateStageChapter();if(center)centerSelected(false)}
   function installVirtualStageDrag(){
-    const rail=$("stageRail");if(!rail||rail.dataset.wpStageVirtualDrag==="true")return;rail.dataset.wpStageVirtualDrag="true";rail.dataset.wpStageCenterObserver="manual";
-    let pointerId=null,startX=0,lastX=0,logical=0,moved=false,suppressClick=false;
-    rail.addEventListener("pointerdown",event=>{if(event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;cancelAnimationFrame(stageSettleRaf);pointerId=event.pointerId;startX=lastX=event.clientX;logical=currentStageLogicalPosition();moved=false;rail.style.scrollBehavior="auto";rail.style.scrollSnapType="none";event.stopImmediatePropagation()},true);
-    document.addEventListener("pointermove",event=>{if(event.pointerId!==pointerId)return;const delta=event.clientX-lastX;lastX=event.clientX;if(!moved&&Math.abs(event.clientX-startX)>4)moved=true;if(moved){if(event.cancelable)event.preventDefault();logical=positionStageRail(logical-delta/stageRailGeometry().pitch)}event.stopImmediatePropagation()},true);
-    const finish=event=>{if(pointerId===null||(event.pointerId!==undefined&&event.pointerId!==pointerId))return;pointerId=null;if(moved){if(event.cancelable)event.preventDefault();const from=logical,index=Math.round(logical),start=performance.now(),duration=340;selectStage(index);positionStageRail(from);const settle=now=>{const p=clamp((now-start)/duration,0,1),e=p*p*(3-2*p);positionStageRail(from+(index-from)*e);if(p<1)stageSettleRaf=requestAnimationFrame(settle);else{positionStageRail(index);syncStageSelection();rail.style.removeProperty("scroll-behavior");rail.style.removeProperty("scroll-snap-type")}};stageSettleRaf=requestAnimationFrame(settle);suppressClick=true;setTimeout(()=>{suppressClick=false},0)}else{rail.style.removeProperty("scroll-behavior");rail.style.removeProperty("scroll-snap-type")}moved=false;event.stopImmediatePropagation()};
-    document.addEventListener("pointerup",finish,true);document.addEventListener("pointercancel",finish,true);rail.addEventListener("click",event=>{if(suppressClick){suppressClick=false;event.preventDefault();event.stopImmediatePropagation()}},true);
+    const rail=$("stageRail");if(!rail||stageDragController||!window.WeightPlayStageRailI9)return;
+    stageDragController=window.WeightPlayStageRailI9.attachLogical(rail,{
+      readPosition:currentStageLogicalPosition,
+      writePosition:positionStageRail,
+      pitch:()=>stageRailGeometry().pitch,
+      count:()=>30,
+      onStart:()=>screen==="stage",
+      onFrame(frame){stageSettleRaf=frame},
+      commitIndex(index){selectStage(index)},
+      onSettled(index){positionStageRail(index);syncStageSelection()},
+    });
     rail.addEventListener("keydown",event=>{let next=selectedStage;if(event.key==="ArrowLeft")next--;else if(event.key==="ArrowRight")next++;else if(event.key==="Home")next=0;else if(event.key==="End")next=29;else if((event.key==="Enter"||event.key===" ")&&selectedStage<save.unlocked){event.preventDefault();startStage(selectedStage);return}else return;event.preventDefault();selectStage(clamp(next,0,29),true);$("stageRail").querySelector(`[data-stage-index="${selectedStage}"]`)?.focus()});
   }
+  window.addEventListener("weightplay:stage-rail-ready",installVirtualStageDrag);
   function renderStages(){
     const highest=Math.min(29,save.unlocked-1);selectedStage=clamp(Math.max(selectedStage,highest),0,29);ensureStageWindow(selectedStage);updateStageSummary();updateStageChapter();
   }

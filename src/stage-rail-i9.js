@@ -54,14 +54,22 @@
       delete rail.dataset.wpStageSettling;
     }
 
-    function dispose() {
-      if (closed) return;
-      closed = true;
+    function cancelMotion() {
       cancelSettle();
       restoreInteraction();
       window.clearTimeout(suppressTimer);
+      suppressClick = false;
+    }
+
+    function dispose() {
+      if (closed) return;
+      closed = true;
+      cancelMotion();
       abort.abort();
       controllers.delete(rail);
+      delete rail.dataset.wpStageVirtualDrag;
+      delete rail.dataset.wpStageCenterObserver;
+      delete rail.dataset.wpStageGesture;
     }
 
     function onDown(event) {
@@ -168,7 +176,8 @@
       capture: true, signal: abort.signal,
     });
 
-    const controller = Object.freeze({ cancel: dispose });
+    // Scene changes stop motion; only final teardown removes the listeners.
+    const controller = Object.freeze({ cancel: cancelMotion, dispose });
     controllers.set(rail, controller);
     return controller;
   }
@@ -248,21 +257,21 @@
         ? headerRect.width / stageHeader.offsetWidth : 1;
       const inverseStageScale = 1 / Math.max(0.01, stageScale || 1);
       if (stageHeader) {
-        stageHeader.style.setProperty("--wp-stage-i9-control-size", `${46 * inverseStageScale}px`);
-        stageHeader.style.setProperty("--wp-stage-i9-header-height", `${(78 + safeTop) * inverseStageScale}px`);
+        stageHeader.style.setProperty("--wp-stage-i9-control-size", `${48 * inverseStageScale}px`);
+        stageHeader.style.setProperty("--wp-stage-i9-header-height", `${(48 + safeTop) * inverseStageScale}px`);
         stageHeader.style.setProperty("--wp-stage-i9-safe-top", `${safeTop * inverseStageScale}px`);
         stageHeader.style.setProperty("--wp-stage-i9-side-inset", `${16 * inverseStageScale}px`);
-        stageHeader.style.setProperty("--wp-frame-control-size-physical", `${46 * inverseStageScale}px`, "important");
-        stageHeader.style.setProperty("--wp-frame-physical-control-size", `${46 * inverseStageScale}px`, "important");
-        stageHeader.style.setProperty("--wp-frame-control-size", `${46 * inverseStageScale}px`, "important");
-        stageHeader.style.setProperty("--wp-frame-header-height", `${(78 + safeTop) * inverseStageScale}px`, "important");
+        stageHeader.style.setProperty("--wp-frame-control-size-physical", `${48 * inverseStageScale}px`, "important");
+        stageHeader.style.setProperty("--wp-frame-physical-control-size", `${48 * inverseStageScale}px`, "important");
+        stageHeader.style.setProperty("--wp-frame-control-size", `${48 * inverseStageScale}px`, "important");
+        stageHeader.style.setProperty("--wp-frame-header-height", `${(48 + safeTop) * inverseStageScale}px`, "important");
         stageHeader.style.setProperty("padding", `${safeTop * inverseStageScale}px ${16 * inverseStageScale}px 0`, "important");
       }
       if (stageFrameScene) {
-        stageFrameScene.style.setProperty("--wp-frame-control-size", `${46 * inverseStageScale}px`, "important");
-        stageFrameScene.style.setProperty("--wp-frame-header-height", `${(78 + safeTop) * inverseStageScale}px`, "important");
-        stageFrameScene.style.setProperty("--wp-frame-rows", `${(78 + safeTop) * inverseStageScale}px minmax(0,1fr) 56px`, "important");
-        stageFrameScene.style.setProperty("--wp-frame-lobby-return-width", `${46 * inverseStageScale}px`, "important");
+        stageFrameScene.style.setProperty("--wp-frame-control-size", `${48 * inverseStageScale}px`, "important");
+        stageFrameScene.style.setProperty("--wp-frame-header-height", `${(48 + safeTop) * inverseStageScale}px`, "important");
+        stageFrameScene.style.setProperty("--wp-frame-rows", `${(48 + safeTop) * inverseStageScale}px minmax(0,1fr) 56px`, "important");
+        stageFrameScene.style.setProperty("--wp-frame-lobby-return-width", `${48 * inverseStageScale}px`, "important");
       }
       const usableTop = Math.max(rootRect.top, viewportTop + safeTop);
       const usableBottom = Math.min(rootRect.bottom, viewportBottom - safeBottom);

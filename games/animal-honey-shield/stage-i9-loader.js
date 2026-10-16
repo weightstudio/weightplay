@@ -20,6 +20,7 @@
   style("/games/animal-honey-shield/stage-i9.css");
   (async () => {
     if (!window.WeightPlayStageRailI9) await script("/src/stage-rail-i9.js");
+    window.dispatchEvent(new Event("weightplay:stage-rail-ready"));
     await script("/games/animal-honey-shield/stage-i9.js");
   })().catch((error) => console.error("Honey Shield Stage I9 could not load", error));
 })();

@@ -1,9 +1,8 @@
-/* Keep I9 Stage header controls visually balanced: 46px controls, 16px inset
-   on every side, and a tap target that remains above the shared 44px minimum. */
+/* All I9 Stage screens share the compact 48px header and return control. */
 html[data-wp-shared-interface="7"] body.wp-stage-select-active
   [data-wp-logical-stage-canvas] [data-wp-stage-i9-header="true"] {
-  --wp-frame-physical-control-size: var(--wp-stage-i9-control-size, 46px);
-  --wp-frame-play-header-height: var(--wp-stage-i9-header-height, 78px);
+  --wp-frame-physical-control-size: var(--wp-stage-i9-control-size, 48px);
+  --wp-frame-play-header-height: var(--wp-stage-i9-header-height, 48px);
   box-sizing: border-box !important;
   grid-template-columns: var(--wp-frame-physical-control-size) minmax(0, 1fr) var(--wp-frame-physical-control-size) !important;
   height: var(--wp-frame-play-header-height) !important;
@@ -44,6 +43,9 @@ html[data-wp-stage-i9="true"] [data-wp-stage-rail="true"] {
 html[data-wp-stage-i9="true"] [data-wp-stage-rail="true"] .stage-card {
   position: relative !important;
   isolation: isolate;
+  /* Recycled pool nodes must paint immediately when moved back on screen. */
+  content-visibility: visible !important;
+  contain-intrinsic-size: none !important;
   display: block !important;
   box-sizing: border-box !important;
   width: var(--wp-stage-i9-card-width) !important;
