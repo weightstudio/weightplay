@@ -1,6 +1,6 @@
 import {STAGES,TOOLS} from './game-data.js';
-import {Simulation,mission} from './simulation.js?v=20261016-wildwood-stage3-harvest-v43a';
-import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js?v=20261015-wildwood-guide-v41';
+import {Simulation,mission} from './simulation.js?v=20261017-wildwood-stumpback-opening-v45a';
+import {LOCALES,locale,t,objective,stageName,guideRules,toolEffect,guardianName} from './locales.js?v=20261017-wildwood-stumpback-opening-v45b';
 import {load,store,award,KEY} from './save.js';
 import {layoutLabels} from './label-layout.js?v=20261014-wildwood-label-layout-v36';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
@@ -94,7 +94,7 @@ function loop(now){if(!sim||modal||tutorialPending||tutorialOpen)return;const dt
 function hud(dt=0){if(!sim)return;$('#hudStage').textContent=`${selected} / 30`;$('#runTime').textContent=`${Math.floor(sim.time)}s`;const objectiveEl=$('#objective'),objectiveText=sim.ready()?t('exit'):`${objective(sim.stage,sim.tally)}${sim.stage.protect?' · '+t('protect')+' '+Math.ceil(sim.protectedHp):''}`,objectiveValue=`${sim.stage.req.wood?'wood|':''}${objectiveText}`;if(objectiveEl.dataset.motionValue!==objectiveValue){objectiveEl.replaceChildren();if(sim.stage.req.wood)objectiveEl.append(icon('wood'));objectiveEl.append(document.createTextNode(objectiveText));objectiveEl.dataset.motionValue=objectiveValue;acknowledge(objectiveEl);}
  const feedbackEl=$('#feedback'),feedbackText=storageBlocked?t('storage'):sim.time<noticeUntil?notice:sim.stage.sequence?t('sequence'):t('moveHint');if(feedbackEl.dataset.motionValue!==feedbackText){feedbackEl.textContent=feedbackText;feedbackEl.dataset.motionValue=feedbackText;if(notice)acknowledge(feedbackEl);}$('#damage').classList.toggle('hurt',sim.hero.recoil>0);
  for(const b of $('#actions').children){const id=b.dataset.id,cd=sim.cool[id];b.dataset.ready=String(cd===0);b.disabled=id==='empty'||cd>0;b.querySelector('small').textContent=id==='empty'?'':cd>0?cd.toFixed(1):t('ready');}
- const bosses=sim.ents.filter(e=>e.kind==='boss'),max=bosses.reduce((a,e)=>a+e.maxHp,0);$('#bossBar').hidden=!bosses.some(e=>e.hp>0&&e.awake);$('#bossHp').value=max?bosses.reduce((a,e)=>a+e.hp,0)/max*100:0;$('#bossName').textContent=`${guardianName(sim.stage.boss)} · ${Math.max(1,...bosses.map(e=>e.phase))} · ${Math.ceil(bosses.reduce((a,e)=>a+e.hp,0))} / ${max}`;
+ const bosses=sim.ents.filter(e=>e.kind==='boss'),max=bosses.reduce((a,e)=>a+e.maxHp,0),opening=bosses.some(e=>e.hp>0&&e.awake&&e.exposed>0);$('#bossBar').hidden=!bosses.some(e=>e.hp>0&&e.awake);$('#bossBar').classList.toggle('opening',opening);$('#bossHp').value=max?bosses.reduce((a,e)=>a+e.hp,0)/max*100:0;$('#bossName').textContent=`${guardianName(sim.stage.boss)} · ${Math.max(1,...bosses.map(e=>e.phase))} · ${Math.ceil(bosses.reduce((a,e)=>a+e.hp,0))} / ${max}${opening?' · '+t('opening'):''}`;
  healthLabels(dt);
  const map=$('#minimap').getContext('2d');map.clearRect(0,0,112,132);const point=(x,z,color,r=3)=>{map.fillStyle=color;map.fillRect((x+7)/14*112-r,(z+8)/16*132-r,r*2,r*2);};
  for(const o of sim.obstacles)if(o.hp>0){map.fillStyle='#788f86';map.fillRect((o.x-o.w+7)/14*112,(o.z-o.h+8)/16*132,o.w/7*112,o.h/8*132);}

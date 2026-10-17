@@ -136,7 +136,7 @@ export class Simulation {
    else if(w.kind==='roots'){for(const [x,z] of [[w.x,w.z],[w.x-2,w.z],[w.x+2,w.z],...(e.phase>=2?[[w.x,w.z-2],[w.x,w.z+2]]:[])])this.hazards.push({x:clamp(x,-6,6),z:clamp(z,-7,7),r:1,delay:.9,life:2.8,power:e.damage,hit:false,sourceUid:e.uid,sourceKind:e.kind,sourceActor:e.boss||e.type,attack:'roots'});}
    else if(w.kind==='heal'){const targets=this.alive().filter(x=>x!==e&&hostile(x)&&dist(e,x)<4);targets.forEach(x=>x.hp=Math.min(x.maxHp,x.hp+Math.max(12,x.maxHp*.07)));this.log('heal',{x:e.x,z:e.z});}
    else if(w.kind==='summon'){if(this.alive().filter(hostile).length<9){this.enemy('thornling',e.x+1,e.z+1,{summon:true});this.enemy('caster',e.x-1,e.z+1,{summon:true});}this.log('summon');}
-   else{const locked=w.target?this.ents.find(x=>x.uid===w.target):this.hero;if(locked&&locked.hp>0&&dist(e,locked)<(w.kind==='sweep'?2.5:1.65))this.hurt(e.damage,locked,{uid:e.uid,kind:e.kind,actor:e.boss||e.type,attack:w.kind});e.exposed=e.boss?1.6:.4;this.log('swing',{uid:e.uid,x:e.x,z:e.z});}
+   else{const locked=w.target?this.ents.find(x=>x.uid===w.target):this.hero;if(locked&&locked.hp>0&&dist(e,locked)<(w.kind==='sweep'?2.5:1.65))this.hurt(e.damage,locked,{uid:e.uid,kind:e.kind,actor:e.boss||e.type,attack:w.kind});e.exposed=e.boss==='stumpback'?2.4:e.boss?1.6:.4;this.log('swing',{uid:e.uid,x:e.x,z:e.z});}
    e.cd=(e.boss?1.7:ENEMIES[e.type].cooldown)*Math.max(.75,1-(this.stage.id-1)*.009);return;
   }
   if(e.charge){const c=e.charge;c.left-=dt;const nx=e.x+c.dx*12*dt,nz=e.z+c.dz*12*dt;
