@@ -1,11 +1,3 @@
-/* Beast Guardian v17 base styles are preserved byte-for-byte in
-   defense-v17-base.css. Keep the mature gameplay presentation first, then
-   apply only the scoped Interface 7 shared-shell cleanup. */
-@import url("./defense-v17-base.css?v=20260924-interface7-cleanup1");
-@import url("./interface-7-cleanup.css?v=20260924-interface7-cleanup1");
-
-/* mountSlots publishes the current Stage progress in the shared play-top.
-   Do not leave the legacy Stage header copy as a second content-row label. */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="beast-tactician"].guardian-stage .wp-frame-stage-context :is(#stageTitle, #stageProgressText) {
-  display: none !important;
-}
+/* Preserve Beast Guardian's gameplay art and board styling. Shared I9 frame,
+   Stage cards, sizing, and gestures load after this legacy content stylesheet. */
+@import url("./defense-v17-base.css?v=20261017-beast-i9-shared-play1");

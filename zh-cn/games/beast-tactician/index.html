@@ -39,10 +39,11 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260910-beast-rally-block-v14" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260910-beast-rally-block-v14" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
-    <link rel="stylesheet" href="defense.css?v=20260926-beast-tactician-v19-interface7" />
+    <link rel="stylesheet" href="defense.css?v=20261017-beast-i9-shared-play1" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-shared-frame-v1" />
+    <link rel="stylesheet" href="../../src/interface9-shared-screens.css?v=20261016-interface9-shell1" />
+    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261017-shared-play5" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -80,12 +81,11 @@
       #gamePanel .build-panel, #gamePanel .canvas-shell, #gamePanel .command-row { min-width:0; max-width:100%; }
       @media (orientation:landscape) and (max-width:900px) { body:not(.guardian-playing):not(.guardian-stage) .poster-frame { width:420px!important; max-width:calc(100vw - 24px); } }
     </style>
+
   <meta name="twitter:title" content="兽王守卫 | WeightPlay" />
     <meta name="twitter:description" content="《兽王守卫》是路线建构塔防战役，可部署橡果守卫、斥候弓手、符文工兵、爆鬃雷欧、苔甲太郎、月帽欧拉、电爪菲雅与齿角鲁克斯共 8 名防御者。守护水晶，通关六个各有五关的区域。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" />
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
+  </head>
   <body data-game-id="beast-tactician" data-wp-game-id="beast-tactician" data-wp-game-version="v19" data-screen="main" data-wp-combined-sound="true">
     <main class="guardian-app" data-wp-game-shell-root data-wp-frame-root data-runtime-localize="off">
       <header class="guardian-topbar" data-wp-shell-header="main">
@@ -149,7 +149,7 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="stage-panel is-hidden" data-screen="stage" data-wp-shell-slot="stage" data-wp-standard-stage-screen data-wp-stage-workspace data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334">
+      <section id="stagePanel" class="stage-panel is-hidden" data-screen="stage" data-wp-shell-slot="stage">
         <header class="stage-header" data-wp-shell-header="stage">
           <button id="stageBackBtn" class="secondary-btn play-return" data-wp-return="stage" type="button" aria-label="返回主页" hidden>&larr;</button>
           <div class="stage-header-copy">
@@ -157,10 +157,10 @@
             <span id="stageProgressText">1 / 30</span>
           </div>
         </header>
-        <div class="stage-workspace" data-wp-stage-workspace>
+        <div id="stageWorkspace" class="stage-workspace">
           <section id="stagePage" class="stage-page" aria-labelledby="stageTabBtn">
             <div class="stage-progress"><span id="bestStageLabel">最高阶段</span><strong id="bestStageText">1 / 30</strong></div>
-            <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-center-observer="manual" data-wp-stage-settle-duration="340" data-wp-stage-easing="smoothstep" aria-label="阶段选择列"></div>
+            <div id="stageRail" class="stage-rail" aria-label="阶段选择列"></div>
           </section>
           <section id="techPanel" class="stage-page equipment-page is-hidden" aria-labelledby="equipmentTabBtn" aria-live="polite">
             <div class="equipment-summary">
@@ -253,8 +253,9 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/tutorial.js?v=20260701-style1"></script>
-    <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
-    <script src="../../src/stage-selector-standard.js?v=20260910-beast-rally-block-v14" data-wp-stage-standard></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-shared-frame-v1"></script>
+    <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+    <script src="../../src/game-play-ui.js?v=20261017-shared-play5"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260910-beast-rally-block-v14" data-wp-battle-standard></script>
     <script src="game.js?v=20260926-beast-tactician-v19-interface7&wp-audio=1.0.0"></script>
     <section class="game-page-info game-page-info-static" aria-label="兽王守卫 游戏信息">
@@ -279,7 +280,7 @@
       <div class="game-info-section"><h3>开发设计理念</h3><p>本作采自由配置，是因为核心决策不只是买哪座塔，而是每个角色如何改变移动时间、射击角度与阻挡风险。波次之间保留五秒倒数，让五波仍像同一场连续防卫，同时给玩家短暂调整时间。关卡分成六个机制区域，难度会先透过新反制与规则组合成长，再增加数值。手机与桌面共用大型建置卡与格子操作，键盘也能移动游标、建置、选取、升级、出售、切换角色与开始波次。相较于以战前编队为主的《动物自走小队》，《兽王守卫》允许玩家即时重塑战场并在波次中回应。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家与存档说明</h3><p>浏览器会在本设备保存最高解锁关卡、已通关关卡、最佳星等、永久科技、升级点、钻石余额与外观所有权；基本游玩不需要登录。清除本站浏览器保存数据可能会移除这些进度。钻石操作完全可选，不是解锁关卡的必要条件。</p></div>
       <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>兽王守卫可以免费玩吗？</dt><dd>可以。完整 战役能直接在浏览器游玩，不要求购买或登录。</dd></div><div><dt>要怎么开始关卡？</dt><dd>在滑动关卡列选择已解锁关卡后开始防卫；非最终波通过后会在五秒倒数结束时自动接续。</dd></div><div><dt>为什么敌人有时会直接打守卫？</dt><dd>当所有通往核心的合法路线都被封死时，地面敌人会攻击附近阻挡者。下一次可出售或换位置，保留一条开放道路。</dd></div><div><dt>六个 Boss 有什么不同？</dt><dd>暗影巨汉快速攻城、森林巨兽召援、铁皮巨像重建护甲、翠绿古木回血、暴风掠夺者加速护卫、虚根皇帝则有两次阶段转换。</dd></div><div><dt>星等代表什么？</dt><dd>星等依胜利时剩余核心生命计算。惊险通关仍可解锁下一关，之后能重玩改进路线与最佳星等。</dd></div><div><dt>哪些进度会保存？</dt><dd>解锁、通关、星等、升级点、永久科技、钻石与外观所有权都会保存在目前浏览器本设备。</dd></div><div><dt>钻石可以做什么？</dt><dd>钻石可选择性用于核心复活、结果奖励重抽或黄金守卫框，不影响正常战役解锁。</dd></div><div><dt>可以部署哪些防御者？</dt><dd>共有八名：橡果守卫、斥候弓手、符文工兵、爆鬃雷欧、苔甲太郎、月帽欧拉、电爪菲雅与齿角鲁克斯。</dd></div><div><dt>可以部署哪些防御者？</dt><dd>共有八名：橡果守卫、斥候弓手、符文工兵、爆鬃雷欧、苔甲太郎、月帽欧拉、电爪菲雅与齿角鲁克斯。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-rune-tactics" href="/zh-cn/games/animal-rune-tactics/"><span class="game-info-related-poster"><img src="/assets/animal-rune-tactics-cover.webp" data-final-src="/assets/weightplay-logo.png" alt="符文战棋" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">符文战棋</strong><span>《符文战棋》是包含 30 个设计关卡、三位动物英雄与六位首领的原创单人战役。</span></span></a><a class="game-info-related-card" data-game-id="animal-prism-battalion" href="/zh-cn/games/animal-prism-battalion/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" data-final-src="/assets/weightplay-logo.png" alt="棱光军团" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">棱光军团</strong><span>炮台会自动开火，你要决定现在该守哪一路。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>符文战棋</strong><span>《符文战棋》是包含 30 个设计关卡、三位动物英雄与六位首领的原创单人战役。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>棱光军团</strong><span>炮台会自动开火，你要决定现在该守哪一路。</span></span></a></div></div>
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>

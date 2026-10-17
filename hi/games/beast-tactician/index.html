@@ -39,10 +39,11 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260910-beast-rally-block-v14" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260910-beast-rally-block-v14" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
-    <link rel="stylesheet" href="defense.css?v=20260926-beast-tactician-v19-interface7" />
+    <link rel="stylesheet" href="defense.css?v=20261017-beast-i9-shared-play1" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-shared-frame-v1" />
+    <link rel="stylesheet" href="../../src/interface9-shared-screens.css?v=20261016-interface9-shell1" />
+    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261017-shared-play5" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -79,12 +80,11 @@
       #gamePanel .build-panel, #gamePanel .canvas-shell, #gamePanel .command-row { min-width:0; max-width:100%; }
       @media (orientation:landscape) and (max-width:900px) { body:not(.guardian-playing):not(.guardian-stage) .poster-frame { width:420px!important; max-width:calc(100vw - 24px); } }
     </style>
+
   <meta name="twitter:title" content="Beast Guardian | WeightPlay" />
     <meta name="twitter:description" content="Beast Guardian रास्ते बनाने वाला टावर-डिफेंस अभियान है। Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" />
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
+  </head>
   <body data-game-id="beast-tactician" data-wp-game-id="beast-tactician" data-wp-game-version="v19" data-screen="main" data-wp-combined-sound="true">
     <main class="guardian-app" data-wp-game-shell-root data-wp-frame-root data-runtime-localize="off">
       <header class="guardian-topbar" data-wp-shell-header="main">
@@ -148,7 +148,7 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="stage-panel is-hidden" data-screen="stage" data-wp-shell-slot="stage" data-wp-standard-stage-screen data-wp-stage-workspace data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334">
+      <section id="stagePanel" class="stage-panel is-hidden" data-screen="stage" data-wp-shell-slot="stage">
         <header class="stage-header" data-wp-shell-header="stage">
           <button id="stageBackBtn" class="secondary-btn play-return" data-wp-return="stage" type="button" aria-label="मुख्य पृष्ठ पर जाएँ" hidden>&larr;</button>
           <div class="stage-header-copy">
@@ -156,10 +156,10 @@
             <span id="stageProgressText">1 / 30</span>
           </div>
         </header>
-        <div class="stage-workspace" data-wp-stage-workspace>
+        <div id="stageWorkspace" class="stage-workspace">
           <section id="stagePage" class="stage-page" aria-labelledby="stageTabBtn">
             <div class="stage-progress"><span id="bestStageLabel">सर्वश्रेष्ठ स्टेज</span><strong id="bestStageText">1 / 30</strong></div>
-            <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-center-observer="manual" data-wp-stage-settle-duration="340" data-wp-stage-easing="smoothstep" aria-label="स्टेज चयन"></div>
+            <div id="stageRail" class="stage-rail" aria-label="स्टेज चयन"></div>
           </section>
           <section id="techPanel" class="stage-page equipment-page is-hidden" aria-labelledby="equipmentTabBtn" aria-live="polite">
             <div class="equipment-summary">
@@ -252,8 +252,9 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/tutorial.js?v=20260701-style1"></script>
-    <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
-    <script src="../../src/stage-selector-standard.js?v=20260910-beast-rally-block-v14" data-wp-stage-standard></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-shared-frame-v1"></script>
+    <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+    <script src="../../src/game-play-ui.js?v=20261017-shared-play5"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260910-beast-rally-block-v14" data-wp-battle-standard></script>
     <script src="game.js?v=20260926-beast-tactician-v19-interface7&wp-audio=1.0.0"></script>
     <section class="game-page-info game-page-info-static" aria-label="Beast Guardian गेम की जानकारी">
@@ -278,7 +279,7 @@
       <div class="game-info-section"><h3>डिज़ाइन नोट</h3><p>खेल में इकाइयों को स्वतंत्र रूप से रखने दिया जाता है, क्योंकि मुख्य निर्णय केवल यह नहीं है कि कौन-सा टावर खरीदा जाए; यह भी है कि हर इकाई की जगह बदलने से यात्रा समय, हमले के कोण और रास्ता रुकने का जोखिम कैसे बदलता है। लहरों के बीच पाँच सेकंड का बदलाव लगातार चल रही रक्षा का एहसास बनाए रखता है और थोड़ी योजना का समय देता है। विभिन्न स्टेज छह यांत्रिक चरणों में बाँटे गए हैं, इसलिए कठिनाई केवल आँकड़े बढ़ाने के बजाय नए जवाबों और संयोजनों से बढ़ती है। टच खिलाड़ी माउस खिलाड़ियों जैसे ही बड़े निर्माण कार्ड और ग्रिड खाने इस्तेमाल करते हैं; कीबोर्ड से टाइल कर्सर चलाना, बनाना, चुनना, अपग्रेड करना, बेचना, यूनिट बदलना और लहर शुरू करना भी संभव है। यह खेल Animal Auto Squad से अलग है: दोनों तैयारी को महत्व देते हैं, लेकिन यहाँ सक्रिय लहरों के दौरान मैदान को फिर से बनाने और प्रतिक्रिया देने की सुविधा है।</p></div>
       <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>ब्राउज़र इस डिवाइस पर उच्चतम अनलॉक स्टेज, स्टेज क्लियर, सर्वश्रेष्ठ स्टार रेटिंग, स्थायी प्रौद्योगिकी स्तर, अपग्रेड पॉइंट, डायमंड बैलेंस और कॉस्मेटिक स्वामित्व संग्रहीत करता है। बुनियादी खेल के लिए किसी लॉगिन की आवश्यकता नहीं है, और इस साइट के ब्राउज़र संग्रहण को साफ़ करने से वह प्रगति समाप्त हो सकती है। डायमंड कार्रवाइयां वैकल्पिक हैं और अभियान चरणों को अनलॉक करने के लिए इनकी आवश्यकता नहीं है।</p></div>
       <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>क्या बीस्ट गार्जियन खेलने के लिए स्वतंत्र है?</dt><dd>हाँ। पूरा अभियान बिना किसी आवश्यक खरीदारी या लॉगिन के ब्राउज़र में चलता है।</dd></div><div><dt>मैं एक मंच कैसे शुरू करूं?</dt><dd>स्वाइप रेल से एक अनलॉक चरण चुनें, फिर बचाव शुरू करें। साफ़ की गई गैर-अंतिम तरंगें पांच सेकंड की उलटी गिनती के बाद स्वचालित रूप से शुरू हो जाती हैं।</dd></div><div><dt>दुश्मन कभी-कभी रक्षक पर हमला क्यों करते हैं?</dt><dd>जब कोर तक जाने वाले हर कानूनी रास्ते को सील कर दिया जाता है तो जमीनी दुश्मन पास के अवरोधक पर हमला करते हैं। अगले प्रयास में किसी इकाई को बेचें या उसका स्थान बदलें, या एक खुली लेन वाला मार्ग डिज़ाइन करें।</dd></div><div><dt>छह बॉस किस प्रकार भिन्न हैं?</dt><dd>शैडो ब्रूट तेजी से अवरोधकों पर हमला करता है, फॉरेस्ट बेहेमोथ एस्कॉर्ट्स को बुलाता है, आयरनबार्क कोलोसस कवच का पुनर्निर्माण करता है, वर्डेंट एंशिएंट हील्स, टेम्पेस्ट रैगर सहयोगियों को तेज करता है, और वॉयडरूट सम्राट दो बार चरण बदलता है।</dd></div><div><dt>सितारे क्या मापते हैं?</dt><dd>सितारे जीत के बाद बचे क्रिस्टल कोर स्वास्थ्य को दर्शाते हैं। एक क्लोज़ क्लियर अभी भी अगले चरण को अनलॉक करता है, जबकि एक मजबूत मार्ग के साथ दोबारा खेलने से सहेजी गई रेटिंग में सुधार हो सकता है।</dd></div><div><dt>क्या बीस्ट गार्जियन प्रगति बचाता है?</dt><dd>हाँ. इस ब्राउज़र में अनलॉक, क्लियर, स्टार, अपग्रेड पॉइंट, स्थायी तकनीक, डायमंड और कॉस्मेटिक स्वामित्व स्थानीय रूप से सहेजे जाते हैं।</dd></div><div><dt>हीरे क्या कर सकते हैं?</dt><dd>हीरे वैकल्पिक रूप से एक कोर रिवाइव की पुष्टि करते हैं, एक परिणाम इनाम को फिर से रोल करते हैं, या सुनहरे फ्रेम को अनलॉक करते हैं। सामान्य अभियान प्रगति के लिए उनकी आवश्यकता नहीं है।</dd></div><div><dt>मैं किन रक्षकों को तैनात कर सकता हूँ?</dt><dd>कुल आठ: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia और Gear Horn Rux।</dd></div><div><dt>मैं किन रक्षकों को तैनात कर सकता हूँ?</dt><dd>कुल आठ: Acorn Guard, Scout Archer, Rune Sapper, Boom Mane Leo, Moss Shell Taro, Moon Cap Orla, Spark Paw Fia और Gear Horn Rux।</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>और संबंधित गेम</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-rune-tactics" href="/hi/games/animal-rune-tactics/"><span class="game-info-related-poster"><img src="/assets/animal-rune-tactics-cover.webp" data-final-src="/assets/weightplay-logo.png" alt="रूण रणनीति" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">रूण रणनीति</strong><span>रूण रणनीति एक मौलिक एकल-खिलाड़ी अभियान है, जिसमें 30 बनाए गए मिशन, तीन पशु नायक और छह बॉस हैं। 6×6 खानों के बोर्ड पर भूभाग समझें, नायकों को सही जगह ले जाएँ और उनके हमलों का क्रम तय करें।</span></span></a><a class="game-info-related-card" data-game-id="animal-prism-battalion" href="/hi/games/animal-prism-battalion/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" data-final-src="/assets/weightplay-logo.png" alt="प्रिज़्म बटालियन" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">प्रिज़्म बटालियन</strong><span>बैटरी अपने आप गोली चलाती है। आपको चुनना है कि तीन लेन में अभी किस पर ध्यान दें: पास आता दुश्मन, बम या अगली गोलियों को मजबूत करने वाला पावर कोर।</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>मिलते-जुलते खेल</h3><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>रूण रणनीति</strong><span>रूण रणनीति एक मौलिक एकल-खिलाड़ी अभियान है, जिसमें 30 बनाए गए मिशन, तीन पशु नायक और छह बॉस हैं। 6×6 खानों के बोर्ड पर भूभाग समझें, नायकों को सही जगह ले जाएँ और उनके हमलों का क्रम तय करें।</span></span></a><a class="game-info-related-card" href="/hi/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>प्रिज़्म बटालियन</strong><span>बैटरी अपने आप गोली चलाती है। आपको चुनना है कि तीन लेन में अभी किस पर ध्यान दें: पास आता दुश्मन, बम या अगली गोलियों को मजबूत करने वाला पावर कोर।</span></span></a></div></div>
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>

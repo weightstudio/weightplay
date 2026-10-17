@@ -246,54 +246,86 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     "ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S R Escape",
   );
   const ctx = nodes.canvas.getContext("2d");
-const gameShell = window.WeightPlayScreenFrame.mountSlots({
-    gameId: GAME_ID,
-    root: document.querySelector("[data-wp-game-shell-root]"),
-    main: nodes.menuPanel,
-    stage: nodes.stagePanel,
-    battle: nodes.gamePanel,
+  const frameRoot = document.querySelector("[data-wp-game-shell-root]");
+  const mainHeader = frameRoot.querySelector('[data-wp-shell-header="main"]');
+  nodes.menuPanel.prepend(mainHeader);
+  nodes.gameTitle.setAttribute("data-wp-frame-title", "");
+  mainHeader.querySelector(".brand-lockup")?.replaceWith(nodes.gameTitle);
+  const mainContent = document.createElement("div");
+  mainContent.id = "mainContent";
+  for (const node of [...nodes.menuPanel.children]) if (node !== mainHeader) mainContent.append(node);
+  nodes.menuPanel.append(mainContent);
+  const legacySettings = mainHeader.querySelector(".audio-control");
+  const mainPoster = mainContent.querySelector(".cover");
+  const mainCopy = mainContent.querySelector(".main-copy");
+  mainPoster?.setAttribute("data-wp-frame-poster", "");
+  mainCopy?.setAttribute("data-wp-frame-copy", "");
+  nodes.menuHint?.setAttribute("data-wp-frame-summary", "");
+  nodes.mainProgress?.setAttribute("data-wp-frame-progress", "");
+  nodes.startBtn?.setAttribute("data-wp-frame-action", "primary");
+
+  const stageHeader = nodes.stagePanel.querySelector('[data-wp-shell-header="stage"]');
+  nodes.stageTitle?.setAttribute("data-wp-frame-title", "");
+  if (nodes.stageTitle) nodes.stageTitle.hidden = true;
+  if (nodes.stageTitle) stageHeader.append(nodes.stageTitle);
+  const stageHeaderInfo = document.createElement("div");
+  stageHeaderInfo.id = "stageHeaderInfo";
+  stageHeaderInfo.setAttribute("data-wp-frame-info", "");
+  const stageWorkspace = document.querySelector("#stageWorkspace") || nodes.stagePanel.querySelector(".stage-workspace");
+  stageWorkspace.append(stageHeaderInfo);
+  const stageProgressGroup = window.WeightPlayScreenFrame.createGroup();
+  stageProgressGroup.add(nodes.stageProgressText);
+  stageHeader.querySelector(".stage-header-copy")?.remove();
+  nodes.stagePanel.classList.add("wp-stage-art-shell");
+  nodes.stagePanel.dataset.wpFramePlayFill = "";
+
+  const battleHeader = nodes.gamePanel.querySelector('[data-wp-shell-header="battle"]');
+  battleHeader.id = "battleHeader";
+  const battleTitle = document.createElement("strong");
+  battleTitle.setAttribute("data-wp-frame-title", "");
+  battleTitle.hidden = true;
+  battleTitle.textContent = nodes.gameTitle.textContent;
+  battleHeader.append(battleTitle);
+  const battleContent = document.createElement("div");
+  battleContent.id = "battleContent";
+  nodes.gamePanel.dataset.wpFramePlayFill = "";
+  const waveIntelPanel = nodes.gamePanel.querySelector("#waveIntelPanel");
+  for (const node of [waveIntelPanel, nodes.bossPanel, nodes.gamePanel.querySelector(".battle-layout"), nodes.gamePanel.querySelector(".command-row")]) {
+    if (node) battleContent.append(node);
+  }
+  const resultPanel = nodes.gamePanel.querySelector("#resultPanel");
+  nodes.gamePanel.insertBefore(battleContent, resultPanel || null);
+  const battleHeaderInfo = document.createElement("div");
+  battleHeaderInfo.id = "battleHeaderInfo";
+  battleHeaderInfo.setAttribute("data-wp-frame-info", "");
+  battleContent.append(battleHeaderInfo);
+  const battleInfoGroup = window.WeightPlayScreenFrame.createGroup();
+  for (const node of [...battleHeader.children]) {
+    if (node === nodes.menuBtn || node === battleTitle || node === legacySettings) continue;
+    if (node.matches?.(".header-utilities")) continue;
+    if (node === battleHeaderInfo) continue;
+    if (node.matches?.("#waveIntelPanel")) continue;
+    if (node.matches?.("#speedBtn") || node.matches?.("div")) battleInfoGroup.add(node);
+  }
+
+  const gameShell = window.WeightPlayScreenFrame.mount({
+    root: frameRoot,
+    localeSelect: nodes.localeSelect,
+    playUI: true,
+    scenes: {
+      main: { root: nodes.menuPanel, header: mainHeader, content: mainContent },
+      stage: { root: nodes.stagePanel, header: stageHeader, content: stageWorkspace, headerInfo: stageHeaderInfo },
+      battle: { root: nodes.gamePanel, header: battleHeader, content: battleContent, headerInfo: battleHeaderInfo },
+    },
   });
-  // Battle uses the shared V6 header for navigation and Settings, while its
-  // own HUD supplies the live stage data. Keep the header context useful but
-  // do not repeat the public game name during active play.
-  const battleFrameHeader = document.querySelector("#wp-shared-battle-header");
-  const battleFrameTitle = battleFrameHeader?.querySelector("[data-wp-frame-title]");
-  if (battleFrameHeader && battleFrameTitle) {
-    const battleHeaderContext = document.createElement("span");
-    battleHeaderContext.id = "battleHeaderContext";
-    const battleInfo = document.createElement("div");
-    battleInfo.setAttribute("data-wp-frame-info", "");
-    battleInfo.style.setProperty("--wp-frame-stat-count", "1");
-    const battleStat = document.createElement("div");
-    battleStat.setAttribute("data-wp-frame-stat", "");
-    battleStat.append(battleHeaderContext);
-    battleInfo.append(battleStat);
-    battleHeaderContext.setAttribute("aria-live", "polite");
-    battleHeaderContext.setAttribute("aria-atomic", "true");
-    battleFrameHeader.append(battleInfo);
-    nodes.battleHeaderContext = battleHeaderContext;
-  }
-  // Stage follows the same current shared-frame rule as Battle: the public
-  // game name belongs to Main, while active play surfaces show only useful
-  // local context. Keep the progress in the shared header so the content
-  // area can stay focused on the selectable stage cards.
-  const stageFrameHeader = document.querySelector("#wp-shared-stage-header");
-  const stageFrameTitle = stageFrameHeader?.querySelector("[data-wp-frame-title]");
-  if (stageFrameHeader && stageFrameTitle) {
-    const stageHeaderContext = document.createElement("span");
-    stageHeaderContext.id = "stageHeaderContext";
-    const stageInfo = document.createElement("div");
-    stageInfo.setAttribute("data-wp-frame-info", "");
-    stageInfo.style.setProperty("--wp-frame-stat-count", "1");
-    const stageStat = document.createElement("div");
-    stageStat.setAttribute("data-wp-frame-stat", "");
-    stageStat.append(stageHeaderContext);
-    stageInfo.append(stageStat);
-    stageHeaderContext.setAttribute("aria-live", "polite");
-    stageHeaderContext.setAttribute("aria-atomic", "true");
-    stageFrameHeader.append(stageInfo);
-    nodes.stageHeaderContext = stageHeaderContext;
-  }
+  gameShell.stageTopUI.add(stageProgressGroup);
+  gameShell.battleTopUI.add(battleInfoGroup);
+  gameShell.commonDownButton.clear().add(nodes.stageTabBtn).add(nodes.equipmentTabBtn);
+  gameShell.commonDownButton.element.setAttribute("aria-label", "Stage pages");
+  nodes.stageTabBtn.dataset.wpFrameAction = "tab";
+  nodes.equipmentTabBtn.dataset.wpFrameAction = "tab";
+  nodes.stageTabs?.remove();
+  legacySettings?.remove();
 
   const text = {
     en: {
@@ -903,24 +935,15 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     });
   });
   const STAGE_COUNT = stages.length;
-  const STAGE_CARD_POOL_SIZE = 9;
-  const STAGE_NAV_SHORTCUTS = "ArrowLeft ArrowRight Home End";
-  let stageWindowStart = 0;
-  let stageCardPool = [];
   let stageBrowseId = 0;
-  let stageSettleFrame = 0;
-  let stageScrollRecycleLock = false;
+  let stageSelector = null;
 
   function clampStage(value, minimum = 1, maximum = STAGE_COUNT) {
     return Math.max(minimum, Math.min(maximum, Number(value) || minimum));
   }
 
   function cancelStageSettlement() {
-    if (stageSettleFrame) window.cancelAnimationFrame(stageSettleFrame);
-    stageSettleFrame = 0;
-    nodes.stageRail?.style.removeProperty("scroll-behavior");
-    nodes.stageRail?.style.removeProperty("scroll-snap-type");
-    if (nodes.stageRail) delete nodes.stageRail.dataset.wpStageSettling;
+    stageSelector?.cancel();
   }
 
   function applyCleanTraditionalChineseContent() {
@@ -2336,7 +2359,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     if (nodes.settingsTitle) nodes.settingsTitle.textContent = t("audioSettings");
     nodes.stageBackBtn.setAttribute("aria-label", t("backToMain"));
     nodes.stageRail.setAttribute("aria-label", t("stageSelector"));
-    nodes.stageTabs?.setAttribute("aria-label", t("stagePages"));
+    gameShell.commonDownButton.element.setAttribute("aria-label", t("stagePages"));
     nodes.menuBtn.setAttribute("aria-label", t("backToStages"));
     renderPauseDecision();
     nodes.gameTitle.textContent = t("title");
@@ -2391,10 +2414,11 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
   }
 
   function syncStageHeaderContext() {
-    if (!nodes.stageHeaderContext) return;
-    const title = nodes.stageTitle?.textContent?.trim() || t("stagesTab");
-    const progress = nodes.stageProgressText?.textContent?.trim();
-    nodes.stageHeaderContext.textContent = progress ? `${title} · ${progress}` : title;
+    if (!nodes.stageProgressText) return;
+    nodes.stageTitle.textContent = t(state.screen === "tech" ? "equipmentTab" : "stagesTab");
+    nodes.stageProgressText.textContent = state.screen === "tech"
+      ? t("equipmentTab")
+      : `${t("stage")} ${stageBrowseId || state.save.bestStage} / ${STAGE_COUNT}`;
   }
 
   function renderBuildCards() {
@@ -2439,264 +2463,63 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     });
   }
 
-  function stageWindowLimit() {
-    return Math.max(0, STAGE_COUNT - STAGE_CARD_POOL_SIZE);
-  }
+  const stageConfig = {
+    gameId: GAME_ID,
+    count: STAGE_COUNT,
+    poster: "/assets/beast-tactician-cover.webp",
+    background: "/assets/beast-tactician-battle-bg.webp",
+    stage(index) {
+      const stage = stages[index];
+      if (!stage) throw new RangeError(`BEAST_STAGE_INDEX:${index}`);
+      const id = stage.id;
+      const locked = id > state.save.bestStage;
+      const stars = Number(state.save.stars?.[id] || 0);
+      const cleared = Boolean(state.save.clears?.[id]);
+      const threat = localizedStageIntel(stage.intel.threat);
+      const plan = localizedStageIntel(stage.intel.plan);
+      const reward = `+${stage.reward.points} ${t("upgradePoints")} / +${stage.reward.diamonds} ${t("diamonds")}`;
+      const status = locked ? t("locked") : stars ? t("starRating", { stars }) : cleared ? t("cleared") : stage.boss ? t("bossStage") : t("stage");
+      return {
+        id,
+        kicker: `${t("stage")} ${id}`,
+        title: localizedValue(stage.name),
+        subtitle: stage.boss ? localizedStageBossLabel() : `${stage.waves} ${t("wave")}`,
+        status,
+        summary: `${t("threatIntel")}: ${threat} · ${t("recommendedPlan")}: ${plan}`,
+        details: [
+          `${t("threatIntel")}: ${threat}`,
+          `${t("recommendedPlan")}: ${plan}`,
+          `${t("rewardIntel")}: ${reward}`,
+        ],
+        locked,
+        cleared,
+        poster: "/assets/beast-tactician-cover.webp",
+      };
+    },
+  };
 
-  function desiredStageWindow(stageId) {
-    return Math.max(0, Math.min(stageWindowLimit(), stageId - 1 - Math.floor(STAGE_CARD_POOL_SIZE / 2)));
-  }
-
-  function createStageCard(poolIndex) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "stage-card";
-    button.dataset.wpStagePoolNode = String(poolIndex + 1);
-    button.addEventListener("click", () => {
-      const stageId = Number(button.dataset.stageId);
-      if (!Number.isInteger(stageId)) return;
-      if (button.getAttribute("aria-disabled") === "true") return showToast(t("lockedStage"));
-      startStage(stageId);
+  function ensureStageSelector() {
+    if (stageSelector) return stageSelector;
+    if (!window.WeightPlayPlayUI) throw new Error("SHARED_PLAY_UI_MISSING");
+    stageSelector = window.WeightPlayPlayUI.mountStage({
+      page: nodes.stagePage,
+      rail: nodes.stageRail,
+      config: stageConfig,
+      selected: Math.max(0, clampStage(stageBrowseId || state.save.bestStage) - 1),
+      isActive: () => state.screen === "stages",
+      onSelect(index) {
+        stageBrowseId = index + 1;
+        syncStageHeaderContext();
+      },
+      onStart(index) { startStage(index + 1); },
     });
-    return button;
-  }
-
-  function bindStageCard(button, stageId) {
-    const stage = stages[stageId - 1];
-    if (!stage) return;
-    const unlocked = stageId <= state.save.bestStage;
-    const current = stageId === stageBrowseId;
-    const recommended = unlocked && stageId === Math.min(STAGE_COUNT, state.save.bestStage);
-    const bestStars = Number(state.save.stars?.[stageId] || 0);
-    const status = !unlocked ? t("locked") : bestStars ? t("starRating", { stars: bestStars }) : state.save.clears[stageId] ? t("cleared") : stage.boss ? t("bossStage") : t("stage");
-    const rewardText = `+${stage.reward.points} ${t("upgradePoints")} / +${stage.reward.diamonds} ${t("diamonds")}`;
-    button.dir = document.documentElement.dir || "ltr";
-    button.dataset.stageId = String(stageId);
-    button.dataset.stageIndex = String(stageId - 1);
-    button.dataset.index = String(stageId - 1);
-    button.setAttribute("aria-posinset", String(stageId));
-    button.setAttribute("aria-setsize", String(STAGE_COUNT));
-    button.setAttribute("aria-keyshortcuts", STAGE_NAV_SHORTCUTS);
-    button.setAttribute("aria-disabled", String(!unlocked));
-    button.tabIndex = current ? 0 : -1;
-    if (current) button.setAttribute("aria-current", "true");
-    else button.removeAttribute("aria-current");
-    if (recommended) button.dataset.wpStageRecommended = "true";
-    else delete button.dataset.wpStageRecommended;
-    button.innerHTML = `<strong>${stage.id}. ${localizedValue(stage.name)}</strong><span class="stage-status">${status}</span><span class="stage-intel"><span class="stage-threat"><b>${t("threatIntel")}:</b> ${localizedStageIntel(stage.intel.threat)}</span><span class="stage-plan"><b>${t("recommendedPlan")}:</b> ${localizedStageIntel(stage.intel.plan)}</span></span><span class="stage-meta">${stage.waves} ${t("wave")} · ${stage.boss ? localizedStageBossLabel() : t("guardianRoute")}</span><span class="stage-reward"><b>${t("rewardIntel")}:</b> ${rewardText}</span>`;
-  }
-
-  function buildStageCardPool() {
-    const count = Math.min(STAGE_CARD_POOL_SIZE, STAGE_COUNT);
-    nodes.stageRail.dir = "ltr";
-    nodes.stageRail.replaceChildren();
-    stageWindowStart = desiredStageWindow(stageBrowseId);
-    stageCardPool = Array.from({ length: count }, (_, offset) => {
-      const button = createStageCard(offset);
-      bindStageCard(button, stageWindowStart + offset + 1);
-      nodes.stageRail.append(button);
-      return button;
-    });
-    Object.assign(nodes.stageRail.dataset, {
-      wpStageVirtualized: "bounded-recycle",
-      wpStagePoolSize: String(count),
-      wpStageTotal: String(STAGE_COUNT),
-      wpStageRecycleCount: "0",
-      wpStageWindowStart: String(stageWindowStart + 1),
-      wpStageWindowEnd: String(stageWindowStart + count),
-      wpStageCenterObserver: "manual",
-    });
-  }
-
-  function moveStageWindow(targetStart) {
-    const target = Math.max(0, Math.min(stageWindowLimit(), targetStart));
-    if (!stageCardPool.length) {
-      buildStageCardPool();
-      return 0;
-    }
-    let recycledCount = 0;
-    while (stageWindowStart < target) {
-      const recycled = nodes.stageRail.firstElementChild;
-      const anchor = recycled?.nextElementSibling;
-      const before = anchor?.getBoundingClientRect().left;
-      stageWindowStart += 1;
-      nodes.stageRail.append(recycled);
-      bindStageCard(recycled, stageWindowStart + stageCardPool.length);
-      recycledCount += 1;
-      const after = anchor?.getBoundingClientRect().left;
-      if (Number.isFinite(before) && Number.isFinite(after)) nodes.stageRail.scrollLeft += after - before;
-    }
-    while (stageWindowStart > target) {
-      const recycled = nodes.stageRail.lastElementChild;
-      const anchor = recycled?.previousElementSibling;
-      const before = anchor?.getBoundingClientRect().left;
-      stageWindowStart -= 1;
-      nodes.stageRail.prepend(recycled);
-      bindStageCard(recycled, stageWindowStart + 1);
-      recycledCount += 1;
-      const after = anchor?.getBoundingClientRect().left;
-      if (Number.isFinite(before) && Number.isFinite(after)) nodes.stageRail.scrollLeft += after - before;
-    }
-    stageCardPool = [...nodes.stageRail.children];
-    nodes.stageRail.dataset.wpStageWindowStart = String(stageWindowStart + 1);
-    nodes.stageRail.dataset.wpStageWindowEnd = String(stageWindowStart + stageCardPool.length);
-    if (recycledCount) nodes.stageRail.dataset.wpStageRecycleCount = String(Number(nodes.stageRail.dataset.wpStageRecycleCount || 0) + recycledCount);
-    return recycledCount;
-  }
-
-  // The shared Stage controller owns the pointer gesture. This small adapter
-  // only keeps the nine-card DOM window continuous when native scrolling
-  // reaches either edge of the bounded pool.
-  function recycleStageWindowFromScroll() {
-    const rail = nodes.stageRail;
-    if (!rail || stageScrollRecycleLock || rail.dataset.wpStageSettling === "true") return;
-    const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
-    if (maxScroll <= 0) return;
-    const { pitch } = stageRailGeometry();
-    const threshold = Math.max(rail.clientWidth * 0.28, pitch * 0.72);
-    const atStart = rail.scrollLeft <= threshold;
-    const atEnd = rail.scrollLeft >= maxScroll - threshold;
-    const target = atEnd
-      ? Math.min(stageWindowLimit(), stageWindowStart + 1)
-      : atStart
-        ? Math.max(0, stageWindowStart - 1)
-        : stageWindowStart;
-    if (target === stageWindowStart) return;
-    stageScrollRecycleLock = true;
-    try {
-      moveStageWindow(target);
-    } finally {
-      stageScrollRecycleLock = false;
-    }
-  }
-
-  function ensureStageWindow(stageId) {
-    if (!stageCardPool.length || stageCardPool.some((card) => !card.isConnected)) buildStageCardPool();
-    moveStageWindow(desiredStageWindow(stageId));
-    stageCardPool.forEach((button) => bindStageCard(button, Number(button.dataset.stageId)));
-  }
-
-  function stageRailGeometry() {
-    const first = stageCardPool[0]?.getBoundingClientRect();
-    const second = stageCardPool[1]?.getBoundingClientRect();
-    const railRect = nodes.stageRail.getBoundingClientRect();
-    const delta = first && second ? (second.left + second.width / 2) - (first.left + first.width / 2) : 0;
-    return {
-      center: railRect.left + railRect.width / 2,
-      pitch: Math.abs(delta) || (first?.width || 264) + 14,
-      orientation: Math.sign(delta) || 1,
-    };
-  }
-
-  function nearestStageCard() {
-    const { center } = stageRailGeometry();
-    return stageCardPool.reduce((nearest, card) => {
-      const box = card.getBoundingClientRect();
-      const distance = Math.abs(box.left + box.width / 2 - center);
-      return !nearest || distance < nearest.distance ? { card, distance } : nearest;
-    }, null)?.card || null;
-  }
-
-  function currentStageLogicalPosition() {
-    const card = nearestStageCard();
-    if (!card) return stageBrowseId - 1;
-    const stageId = Number(card.dataset.stageId);
-    const box = card.getBoundingClientRect();
-    const geometry = stageRailGeometry();
-    return Math.max(0, Math.min(STAGE_COUNT - 1, (stageId - 1) + (geometry.center - (box.left + box.width / 2)) / (geometry.pitch * geometry.orientation)));
-  }
-
-  function positionStageRail(logicalPosition) {
-    const logical = Math.max(0, Math.min(STAGE_COUNT - 1, logicalPosition));
-    const anchorIndex = Math.round(logical);
-    moveStageWindow(desiredStageWindow(anchorIndex + 1));
-    const card = nodes.stageRail.querySelector(`[data-stage-id="${anchorIndex + 1}"]`);
-    if (!card) return logical;
-    // scrollIntoView is inconsistent when the shared frame clips a nested
-    // transformed grid. Calculate the owning rail's scroll offset explicitly
-    // so the visual card and aria-current/focus state always agree.
-    const rail = nodes.stageRail;
-    const railBox = rail.getBoundingClientRect();
-    const cardBox = card.getBoundingClientRect();
-    const railCenter = railBox.left + railBox.width / 2;
-    const cardCenter = cardBox.left + cardBox.width / 2;
-    const renderedScrollDelta = cardCenter - railCenter;
-    const renderedScrollScale = card.offsetWidth ? cardBox.width / card.offsetWidth : 1;
-    const targetScroll = rail.scrollLeft + renderedScrollDelta / Math.max(0.01, renderedScrollScale);
-    const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
-    const previousBehavior = rail.style.getPropertyValue("scroll-behavior");
-    const previousPriority = rail.style.getPropertyPriority("scroll-behavior");
-    rail.style.setProperty("scroll-behavior", "auto", "important");
-    rail.scrollLeft = Math.max(0, Math.min(maxScroll, targetScroll));
-    if (previousBehavior) rail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
-    else rail.style.removeProperty("scroll-behavior");
-    const geometry = stageRailGeometry();
-    const fraction = logical - anchorIndex;
-    if (Math.abs(fraction) > 0.0001) nodes.stageRail.scrollLeft += fraction * geometry.orientation * geometry.pitch;
-    else markStageCardCurrent(card);
-    nodes.stageRail.dataset.wpStageDragLogical = logical.toFixed(4);
-    return logical;
-  }
-
-  function syncCenteredStageCard() {
-    if (!stageCardPool.length || !nodes.stageRail.getClientRects().length || nodes.stageRail.clientWidth <= 0) return null;
-    const nearest = nearestStageCard();
-    const stageId = Number(nearest?.dataset.stageId);
-    if (!Number.isInteger(stageId)) return null;
-    stageBrowseId = stageId;
-    return markStageCardCurrent(nearest);
-  }
-
-  function markStageCardCurrent(selected) {
-    if (!selected) return null;
-    stageCardPool.forEach((card) => {
-      const current = card === selected;
-      card.tabIndex = current ? 0 : -1;
-      if (current) card.setAttribute("aria-current", "true");
-      else card.removeAttribute("aria-current");
-    });
-    return selected;
-  }
-
-  function settleStageRail(from, stageId, immediate = false) {
-    cancelStageSettlement();
-    const target = clampStage(stageId) - 1;
-    stageBrowseId = target + 1;
-    if (immediate) {
-      positionStageRail(target);
-      syncCenteredStageCard();
-      return;
-    }
-    const started = performance.now();
-    nodes.stageRail.style.setProperty("scroll-behavior", "auto", "important");
-    nodes.stageRail.style.setProperty("scroll-snap-type", "none", "important");
-    nodes.stageRail.dataset.wpStageSettling = "true";
-    const animate = (now) => {
-      const progress = Math.max(0, Math.min(1, (now - started) / 340));
-      const eased = progress * progress * (3 - 2 * progress);
-      positionStageRail(from + (target - from) * eased);
-      if (progress < 1) stageSettleFrame = requestAnimationFrame(animate);
-      else {
-        stageSettleFrame = 0;
-        positionStageRail(target);
-        syncCenteredStageCard();
-        nodes.stageRail.style.removeProperty("scroll-behavior");
-        nodes.stageRail.style.removeProperty("scroll-snap-type");
-        delete nodes.stageRail.dataset.wpStageSettling;
-        nodes.stageRail.dispatchEvent(new CustomEvent("wonder:stage-snap", { detail: { index: target } }));
-      }
-    };
-    stageSettleFrame = requestAnimationFrame(animate);
+    return stageSelector;
   }
 
   function renderStages() {
-    stageBrowseId = clampStage(state.save.bestStage);
-    ensureStageWindow(stageBrowseId);
-    stageCardPool.forEach((button) => bindStageCard(button, Number(button.dataset.stageId)));
-    // Capture the intended stage before the hidden-to-visible frame transition
-    // can let an early zero-sized rail sync overwrite stageBrowseId.
-    const targetStage = stageBrowseId;
-    requestAnimationFrame(() => centerStageCard(targetStage));
+    stageBrowseId = clampStage(stageBrowseId || state.save.bestStage);
+    ensureStageSelector().refresh(stageBrowseId - 1);
+    syncStageHeaderContext();
   }
 
   function focusCurrentStage() {
@@ -2705,15 +2528,15 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
 
   function centerStageCard(stageId) {
     stageBrowseId = clampStage(stageId);
-    ensureStageWindow(stageBrowseId);
-    stageCardPool.forEach((button) => bindStageCard(button, Number(button.dataset.stageId)));
-    const targetStage = stageBrowseId;
-    window.requestAnimationFrame(() => settleStageRail(targetStage - 1, targetStage, true));
+    ensureStageSelector().refresh(stageBrowseId - 1);
+    syncStageHeaderContext();
   }
 
-  function snapStageRailToNearest(behavior = "smooth") {
-    const logical = currentStageLogicalPosition();
-    settleStageRail(logical, Math.round(logical) + 1, behavior === "auto");
+  function syncCenteredStageCard() {
+    if (!stageSelector) return null;
+    stageBrowseId = stageSelector.selected + 1;
+    syncStageHeaderContext();
+    return stageBrowseId;
   }
 
   function unitRoleText(unit) {
@@ -3024,7 +2847,10 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     const stage = stages[id - 1];
     const tech = state.save.tech;
     state.currentStage = id;
+    stageBrowseId = clampStage(id);
     state.stage = stage;
+    stageSelector?.refresh(stageBrowseId - 1);
+    syncStageHeaderContext();
     state.coins = stage.startCoins + tech.economy * 20;
     state.coreHp = stage.coreHp;
     state.wave = 0;
@@ -3069,11 +2895,6 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     nodes.coreText.textContent = Math.max(0, Math.ceil(state.coreHp));
     nodes.coinText.textContent = Math.floor(state.coins);
     nodes.waveText.textContent = state.stage ? `${state.wave}/${state.stage.waves}` : "0/0";
-    if (nodes.battleHeaderContext) {
-      nodes.battleHeaderContext.textContent = state.stage
-        ? `${t("stage")} ${state.currentStage} · ${t("wave")} ${state.wave}/${state.stage.waves}`
-        : "";
-    }
     const autoWavePending = !state.runningWave && state.nextWaveTimer > 0;
     nodes.waveBtn.textContent = state.runningWave
       ? t("nextWave")
@@ -5481,23 +5302,6 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
       state.keyboardMode = true;
       updateCanvasAccessibility();
     });
-    nodes.stageRail.addEventListener("keydown", (event) => {
-      const card = event.target.closest(".stage-card");
-      if (card && ["Home", "End", "ArrowLeft", "ArrowRight"].includes(event.key)) {
-        const rtl = document.documentElement.dir === "rtl";
-        const direction = event.key === "ArrowRight" ? (rtl ? -1 : 1) : event.key === "ArrowLeft" ? (rtl ? 1 : -1) : 0;
-        const stageId = event.key === "Home" ? 1 : event.key === "End" ? STAGE_COUNT : Number(card.dataset.stageId) + direction;
-        event.preventDefault();
-        stageBrowseId = clampStage(stageId);
-        ensureStageWindow(stageBrowseId);
-        stageCardPool.forEach((button) => bindStageCard(button, Number(button.dataset.stageId)));
-        centerStageCard(stageBrowseId);
-        window.requestAnimationFrame(() => nodes.stageRail.querySelector(`[data-stage-id="${stageBrowseId}"]`)?.focus({ preventScroll: true }));
-        return;
-      }
-      if (event.repeat && (event.key === mainEntryKeyboardKey || event.key === battleExitKeyboardKey)) event.preventDefault();
-      if (card && card.getAttribute("aria-disabled") === "true" && (event.key === "Enter" || event.key === " ")) event.preventDefault();
-    });
     document.addEventListener("keyup", (event) => {
       if (event.key === mainEntryKeyboardKey) mainEntryKeyboardKey = "";
       if (event.key === battleExitKeyboardKey) battleExitKeyboardKey = "";
@@ -5507,26 +5311,6 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
       mainEntryKeyboardKey = "";
       battleExitKeyboardKey = "";
     });
-    // The shared Stage controller owns pointer tracking, click suppression,
-    // and nearest-card settling. A second scroll timer or mouse drag handler
-    // here makes touch compatibility events fight that controller mid-gesture.
-    let stageCenteredTimer = 0;
-    nodes.stageRail.addEventListener("scroll", () => {
-      if (nodes.stageRail.dataset.wpStageVirtualized === "bounded-recycle") {
-        recycleStageWindowFromScroll();
-        return;
-      }
-      window.clearTimeout(stageCenteredTimer);
-      stageCenteredTimer = window.setTimeout(syncCenteredStageCard, 120);
-    }, { passive: true });
-    nodes.stageRail.addEventListener("wonder:stage-snap", syncCenteredStageCard);
-    nodes.stageRail.addEventListener("wheel", (event) => {
-      const delta = Math.abs(event.deltaY) > Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
-      if (!delta) return;
-      event.preventDefault();
-      const from = currentStageLogicalPosition();
-      settleStageRail(from, Math.round(from) + (delta > 0 ? 2 : 0));
-    }, { passive: false });
     let buildDrag = null;
     let ignoreBuildClick = false;
     nodes.buildCards.addEventListener("wheel", (event) => {
@@ -6437,23 +6221,23 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
   }
 
   function getVirtualStageState() {
+    const selector = ensureStageSelector();
+    const pool = selector.pool;
     return {
-      poolSize: stageCardPool.length,
+      poolSize: pool.length,
       total: STAGE_COUNT,
-      start: stageWindowStart + 1,
-      end: stageWindowStart + stageCardPool.length,
+      start: Number(nodes.stageRail.dataset.wpStageWindowStart || 0) + 1,
+      end: Number(nodes.stageRail.dataset.wpStageWindowEnd || Math.max(0, pool.length - 1)) + 1,
       recycleCount: Number(nodes.stageRail.dataset.wpStageRecycleCount || 0),
-      browsed: stageBrowseId,
+      browsed: selector.selected + 1,
       settling: nodes.stageRail.dataset.wpStageSettling === "true",
-      ids: stageCardPool.map((card) => Number(card.dataset.stageId)),
+      ids: pool.map((card) => Number(card.dataset.stageIndex) + 1),
     };
   }
 
   function browseVirtualStage(stageId) {
     stageBrowseId = clampStage(stageId);
-    ensureStageWindow(stageBrowseId);
-    stageCardPool.forEach((button) => bindStageCard(button, Number(button.dataset.stageId)));
-    positionStageRail(stageBrowseId - 1);
+    ensureStageSelector().refresh(stageBrowseId - 1);
     syncCenteredStageCard();
     return getVirtualStageState();
   }
@@ -6472,18 +6256,22 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     renderStages();
     centerStageCard(7);
     const current = nodes.stageRail.querySelector('[aria-current="true"]');
-    const previous = nodes.stageRail.querySelector('[data-stage-id="3"]');
-    const future = nodes.stageRail.querySelector('[data-stage-id="8"]');
-    nodes.stageRail.scrollLeft = nodes.stageRail.scrollWidth;
-    snapStageRailToNearest("auto");
+    const previous = nodes.stageRail.querySelector('[data-stage-index="2"]');
+    const future = nodes.stageRail.querySelector('[data-stage-index="7"]');
+    const currentStage = Number(current?.dataset.stageIndex || -1) + 1;
+    const previousReplayable = previous?.getAttribute("aria-disabled") === "false";
+    const futureLocked = future?.getAttribute("aria-disabled") === "true";
+    const beforeRecycle = Number(nodes.stageRail.dataset.wpStageRecycleCount || 0);
+    centerStageCard(STAGE_COUNT);
+    centerStageCard(7);
     const result = {
-      cards: nodes.stageRail.querySelectorAll(".stage-card").length,
+      cards: stageSelector.pool.length,
       horizontal: nodes.stageRail.scrollWidth > nodes.stageRail.clientWidth,
       snapType: getComputedStyle(nodes.stageRail).scrollSnapType,
-      currentStage: Number(current?.dataset.stageId || 0),
-      previousReplayable: previous?.getAttribute("aria-disabled") === "false",
-      futureLocked: future?.getAttribute("aria-disabled") === "true",
-      scrollLeft: nodes.stageRail.scrollLeft,
+      currentStage,
+      previousReplayable,
+      futureLocked,
+      recycled: Number(nodes.stageRail.dataset.wpStageRecycleCount || 0) > beforeRecycle,
     };
     state.manualSimulation = false;
     return result;
@@ -6502,13 +6290,15 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     setScreen("stages");
     renderStages();
     centerStageCard(7);
+    const selected = nodes.stageRail.querySelector('[aria-current="true"]');
+    const briefing = nodes.stagePage.querySelector(".wp-stage-i9-briefing");
     return {
       screen: state.screen,
-      cards: nodes.stageRail.querySelectorAll(".stage-card").length,
-      current: nodes.stageRail.querySelector('[aria-current="true"]')?.dataset.stageId || "",
-      intelRows: nodes.stageRail.querySelectorAll(".stage-intel").length,
-      rewardRows: nodes.stageRail.querySelectorAll(".stage-reward").length,
-      currentText: nodes.stageRail.querySelector('[aria-current="true"]')?.textContent || "",
+      cards: stageSelector.pool.length,
+      current: selected?.dataset.stage || "",
+      briefingVisible: Boolean(briefing && !briefing.hidden),
+      currentText: selected?.textContent || "",
+      briefingText: briefing?.textContent || "",
     };
   }
 
