@@ -6,14 +6,15 @@
     <base href="/games/animal-ring-garden/" />
   <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="description" content="Поверните три кольца лепестков, чтобы узор лунного сада расцвёл, и повторите с меньшим числом поворотов." />
-  <meta name="weightplay-game-id" content="animal-ring-garden" />
-  <meta name="weightplay-audience" content="general" />
-  <meta name="weightplay-game-version" content="v12" />
-  <meta name="weightplay-interface-version" content="6" />
+  <meta name="weightplay-game-id" content="animal-ring-garden">
+  <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-version" content="v13">
+  <meta name="weightplay-interface-version" content="9">
+  <meta name="theme-color" content="#163440">
   <title>Узоры вращающихся колец | WeightPlay</title>
   <link rel="canonical" href="https://weightplay.com/ru/games/animal-ring-garden/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-ring-garden/" />
@@ -30,10 +31,13 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-ring-garden/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-ring-garden/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-ring-garden/" />
-    <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
-  <link rel="stylesheet" href="style.css?v=20260907-ring-garden-responsive-v11" />
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
-  <link rel="stylesheet" href="interface-7-cleanup.css?v=20260923-ring-i7-cleanup2" /><meta property="og:site_name" content="WeightPlay" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2">
+  <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261016-shared-play1">
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261017-shared-play-spacing1">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261017-interface9-shell1">
+  <link rel="stylesheet" href="style.css?v=20261018-animal-ring-garden-i9-v13">
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Узоры вращающихся колец | WeightPlay" />
     <meta property="og:description" content="Поверните три кольца лепестков, чтобы узор лунного сада расцвёл, и повторите с меньшим числом поворотов." />
@@ -43,105 +47,39 @@
     <meta name="twitter:title" content="Узоры вращающихся колец | WeightPlay" />
     <meta name="twitter:description" content="Поверните три кольца лепестков, чтобы узор лунного сада расцвёл, и повторите с меньшим числом поворотов." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-ring-garden.webp" />
-      <link rel="stylesheet" href="../../src/game-page-info.css?v=20260907-ring-garden-responsive-v11" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Узоры вращающихся колец","alternateName":"Rotating Ring Puzzles","url":"https://weightplay.com/ru/games/animal-ring-garden/","image":"https://weightplay.com/assets/interface7-redrawn/animal-ring-garden.webp","description":"Поверните три кольца лепестков, чтобы узор лунного сада расцвёл, и повторите с меньшим числом поворотов.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ru","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Puzzle","Pattern","Planning","Family","Animal"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":6}}</script>
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-<body data-wp-game-id="animal-ring-garden" data-wp-audience="general" data-wp-game-version="v12" data-wp-combined-sound="true" data-runtime-localize="off">
-  <main id="app" class="app-shell">
-    <section id="loading-screen" class="screen loading-screen" aria-live="polite">
-      <div class="loading-mark" aria-hidden="true">✦</div>
-      <p id="loading-copy">Waking the moon garden…</p>
-    </section>
-
-    <section id="mainScreen" class="screen main-screen" data-screen="main" hidden>
+<body data-screen="main" data-audience="general" data-wp-game-id="animal-ring-garden" data-wp-game-version="v13" data-wp-interface-version="9" data-wp-combined-sound="true" data-runtime-localize="off">
+  <div id="app" class="app-shell" data-wp-frame-root data-wp-play-ui="1">
+    <main id="mainScreen" class="screen main-screen" data-screen="main">
       <header class="topbar main-header">
-        <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" /></a>
-        <strong class="wp-shell-main-title" id="main-header-title" data-wp-game-title data-runtime-localize="off">Узоры вращающихся колец</strong>
-        <div class="topbar-actions"><button id="settings-button" class="utility-button game-settings-button" type="button" hidden>⚙ <span>Settings</span></button></div>
+        <a class="return-link" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span></a>
+        <strong class="wp-shell-main-title" id="main-header-title" data-wp-frame-title data-wp-game-title data-runtime-localize="off">Узоры вращающихся колец</strong>
+        <label class="locale"><span id="language-label">Language</span><select id="locale" aria-label="Language">
+          <option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option>
+        </select></label>
       </header>
-      <div class="main-content">
-        <img class="concept-cover main-cover" src="assets/animal-ring-garden-cover.png" alt="Изображение игры «Узоры вращающихся колец»" draggable="false" />
-        <img class="mimi-guide main-mimi" src="assets/animal-ring-garden-mimi.png" alt="Rainbow Hop Mimi, your moon-garden guide" draggable="false" />
-        <p class="eyebrow" id="main-eyebrow">MOONLIGHT PATTERN PUZZLE</p>
-        <h1 id="main-title" data-wp-game-title data-runtime-localize="off">Узоры вращающихся колец</h1>
-        <p class="lede" id="main-lede">Turn three petal rings until the moon-garden pattern blooms.</p>
-        <p id="main-summary" class="main-summary" aria-label="Gameplay summary">Turn each ring to match the target petals.</p>
-        <p id="mainProgress" class="main-progress" data-wp-main-progress aria-live="polite">Gardens: 0 / 4</p>
-        <div class="fact-row" aria-label="Game facts"><span id="fact-one">4 gardens</span><span id="fact-two">Ring turns</span><span id="fact-three">Calm replay</span></div>
-        <button id="startBtn" data-wp-main-start class="primary-button standard-main-start" type="button">Start Game</button>
-      </div>
-    </section>
+      <section class="main-content" data-wp-frame-content="main">
+        <img class="concept-cover main-cover" data-wp-frame-poster src="assets/animal-ring-garden-cover.png" alt="Изображение игры «Узоры вращающихся колец»" draggable="false">
+        <div class="main-copy" data-wp-frame-copy>
+          <p class="eyebrow" id="main-eyebrow">MOONLIGHT PATTERN PUZZLE</p>
+          <h1 id="main-title" data-wp-game-title>Узоры вращающихся колец</h1>
+          <p class="lede" id="main-lede">Turn three petal rings until the moon-garden pattern blooms.</p>
+          <p id="main-summary" class="main-summary" aria-label="Gameplay summary" data-wp-frame-summary>A calm three-ring puzzle with four moonlit gardens.</p>
+          <p id="mainProgress" class="main-progress" data-wp-main-progress aria-live="polite">Garden progress: 0 / 4</p>
+          <div class="fact-row" aria-label="Game facts"><span id="fact-one">4 gardens</span><span id="fact-two">Ring turns</span><span id="fact-three">Calm replay</span></div>
+          <button id="startBtn" data-wp-main-start data-wp-frame-action="primary" class="primary-button" type="button">Start Garden</button>
+        </div>
+      </section>
+    </main>
 
-    <section class="guide-card" data-screen="main" data-wp-game-guide aria-label="Ring Garden game guide">
-      <h2 id="guide-title">How to play</h2>
-      <div class="guide-grid"><p id="guide-one">Read the target petals.</p><p id="guide-two">Turn one ring at a time.</p><p id="guide-three">Reset calmly if the pattern misses.</p></div>
-    </section>
-
-    <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('assets/animal-ring-garden-cover.png')" hidden>
-      <header class="topbar stage-header">
-        <button id="stage-back" class="return-link" data-wp-return="stage" type="button" aria-label="Back to Main"><span aria-hidden="true">←</span></button>
-        <strong class="stage-header-title" aria-hidden="true">Choose a garden</strong>
-        <div class="topbar-actions"><button id="stage-settings" class="utility-button game-settings-button" data-wp-settings type="button" hidden>⚙ <span>Settings</span></button></div>
-      </header>
-      <div class="stage-workspace">
-        <p class="eyebrow" id="stage-eyebrow">CHOOSE A GARDEN</p>
-        <h1 id="stage-title">Where will you bloom?</h1>
-        <p class="lede" id="stage-lede">Each garden has a different three-ring pattern.</p>
-        <div id="garden-list" class="garden-list stage-list stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last"></div>
-      </div>
-      <nav class="stage-tabs" aria-label="Garden sections"><span class="stage-tab-slot" aria-hidden="true"></span><button id="stage-tab" type="button" role="tab" aria-selected="true">Stages</button><span class="stage-tab-slot" aria-hidden="true"></span></nav>
-    </section>
-
-    <section id="battleScreen" class="screen battle-screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
-      <header class="topbar battle-header">
-        <button id="battle-back" class="return-link" data-wp-return="battle" type="button" aria-label="Back to Stages"><span aria-hidden="true">←</span></button>
-        <strong class="battle-header-title" aria-hidden="true">Moon garden</strong>
-        <div class="topbar-actions"><button id="battle-settings" class="utility-button" data-wp-battle-utility data-wp-settings type="button" hidden>⚙ <span>Settings</span></button></div>
-      </header>
-      <div id="play-panel" class="content-column battle-content">
-        <div class="battle-heading"><div><p class="eyebrow" id="battle-eyebrow">MOON GARDEN</p><h1 id="battle-title">Garden One</h1></div><div class="turn-badge"><span id="turn-label">Turns</span> <strong id="turn-count">0</strong></div></div>
-        <p id="battle-clue" class="clue-card">Match the three rings to the target petals.</p>
-        <div class="target-card" aria-label="Target pattern"><span id="target-label">Target</span><div id="target-pattern" class="target-pattern"></div></div>
-        <img class="ring-atlas-art" src="assets/animal-ring-garden-ring-atlas.png" alt="" aria-hidden="true" draggable="false" />
-        <div id="ring-board" class="ring-board" aria-label="Three petal rings"></div>
-        <p id="battle-status" class="status" role="status" aria-live="polite">Choose a ring to begin.</p>
-        <div class="battle-actions"><button id="reset-button" class="secondary-button" type="button">Reset</button></div>
-      </div>
-      <div id="result-panel" class="content-column result-panel" data-wp-result-audit hidden>
-        <p class="eyebrow" id="result-eyebrow">GARDEN COMPLETE</p>
-        <img class="mimi-guide result-mimi" src="assets/animal-ring-garden-mimi.png" alt="Rainbow Hop Mimi celebrates the blooming garden" draggable="false" />
-        <h1 id="result-title">The petals align!</h1>
-        <p id="result-copy" class="lede">Your moon garden is glowing.</p>
-        <div class="result-card"><span id="result-turn-label">Turns</span><strong id="result-turns">0</strong><span id="result-best-label">Best</span><strong id="result-best">—</strong></div>
-        <p id="result-status" class="status" role="status" aria-live="polite"></p>
-        <div class="result-actions"><button id="result-main" class="secondary-button" type="button">Stages</button><button id="next-button" class="primary-button" type="button">Next Garden</button></div>
-      </div>
-    </section>
-    <div class="battle-ad-reserve" data-screen="battle" data-wp-ad-reserve aria-hidden="true"></div>
-  </main>
-
-  <dialog id="settings-dialog" class="settings-dialog wp-shell-settings-popover"><form method="dialog" class="settings-card"><div class="settings-head"><h2 id="settings-title">Settings</h2><button class="close-button" value="close" aria-label="Close settings">×</button></div><label for="locale-select" id="language-label">Language</label><select id="locale-select"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select><button id="sound-toggle" class="secondary-button" data-sound-toggle type="button" aria-pressed="true">Sound: On</button></form></dialog>
-
-  <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script><script>window.WONDER_SITE?.localization&&(window.WONDER_SITE.localization.useLocaleRoutes=false);</script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/runtime-locales/ru.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
-  <script src="locales.js?v=20260907-ring-garden-responsive-v11"></script>
-  <script src="game.js?v=20260907-ring-garden-responsive-v11"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
-  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-  <script src="interface-7-compat.js?v=20260923-ring-i7-cleanup2"></script>
-  <script src="interface-7-followup.js?v=20260923-ring-i7-cleanup2"></script>
-<section class="game-page-info game-page-info-static" aria-label="Информация об игре Узоры вращающихся колец">
+    <section class="game-page-info game-page-info-static" aria-label="Информация об игре Узоры вращающихся колец">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Узоры вращающихся колец</h2><p>Поверните три кольца лепестков, чтобы узор лунного сада расцвёл, и повторите с меньшим числом поворотов.</p></div>
+
       <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Пазл вращения узоров</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Puzzle · Pattern · Planning · Family · Animal</strong></div></div>
     </div>
 
@@ -157,5 +95,72 @@
 
     </div>
   </section>
+
+    <main id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
+      <header class="topbar stage-header">
+        <button id="stage-back" class="return-link" data-wp-return="stage" type="button" aria-label="Back to Main"><span aria-hidden="true">←</span></button>
+        <strong class="stage-header-title" id="stage-header-title" data-wp-frame-title hidden>Choose a garden</strong>
+      </header>
+      <section id="stageWorkspace" class="stage-workspace">
+        <div id="garden-list" class="garden-list" data-wp-stage-rail role="group" aria-label="Garden stages"></div>
+      </section>
+    </main>
+
+    <main id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+      <header class="topbar battle-header">
+        <button id="battle-back" class="return-link" data-wp-return="battle" type="button" aria-label="Back to Stages"><span aria-hidden="true">←</span></button>
+        <strong class="battle-header-title" id="battle-header-title" data-wp-frame-title hidden>Moon garden</strong>
+      </header>
+      <section id="battleContent" class="battle-content">
+        <div id="play-panel" class="play-panel">
+          <p class="eyebrow" id="battle-eyebrow">MOON GARDEN</p>
+          <h1 id="battle-title">Firefly Arbor</h1>
+          <p id="battle-clue" class="clue-card">Match the three rings to the target petals.</p>
+          <div class="target-card" aria-label="Target pattern"><span id="target-label">Target</span><div id="target-pattern" class="target-dots"></div></div>
+          <img class="ring-atlas-art" src="assets/animal-ring-garden-ring-atlas.png" alt="" aria-hidden="true" draggable="false">
+          <div id="ring-board" class="ring-board" aria-label="Three petal rings"></div>
+          <p id="battle-status" class="status" role="status" aria-live="polite">Choose a ring to begin.</p>
+          <div class="battle-actions"><button id="reset-button" class="secondary-button" type="button">Reset</button></div>
+        </div>
+        <section id="result-panel" class="result-panel" data-wp-result-audit hidden>
+          <p class="eyebrow" id="result-eyebrow">GARDEN COMPLETE</p>
+          <img class="mimi-guide result-mimi" src="assets/animal-ring-garden-mimi.png" alt="Rainbow Hop Mimi celebrates the blooming garden" draggable="false">
+          <h2 id="result-title">The petals align!</h2>
+          <p id="result-copy" class="lede">Your moon garden is glowing.</p>
+          <div class="result-card"><span id="result-turn-label">Turns</span><strong id="result-turns">0</strong><span id="result-best-label">Best</span><strong id="result-best">—</strong></div>
+          <p id="result-status" class="status" role="status" aria-live="polite"></p>
+          <div class="result-actions">
+            <button id="result-main" class="secondary-button" data-wp-frame-action="secondary" type="button">Back to Gardens</button>
+            <button id="next-button" class="secondary-button" data-wp-frame-action="secondary" type="button">Next Garden</button>
+            <button id="result-retry" class="secondary-button" data-wp-frame-action="secondary" type="button">Replay</button>
+          </div>
+        </section>
+      </section>
+      <dialog id="leaveConfirm" class="leave-confirm" aria-labelledby="ring-leave-title" aria-describedby="ring-leave-copy">
+        <form method="dialog" class="leave-card">
+          <h2 id="ring-leave-title">Leave this garden?</h2>
+          <p id="ring-leave-copy">Your current ring turns in this garden will be lost. Completed gardens and best scores stay saved.</p>
+          <div class="leave-actions">
+            <button id="ring-leave-continue" class="secondary-button" value="continue">Continue playing</button>
+            <button id="ring-leave-stages" class="secondary-button" value="leave">Return to Stages</button>
+          </div>
+        </form>
+      </dialog>
+    </main>
+    <div class="battle-ad-reserve" data-screen="battle" data-wp-ad-reserve aria-hidden="true"></div>
+  </div>
+
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
+  <script src="locales.js?v=20261018-animal-ring-garden-i9-v13"></script>
+  <script src="game.js?v=20261018-animal-ring-garden-i9-v13"></script>
+  <script src="stage-config.js?v=20261018-animal-ring-garden-i9-v13"></script>
+  <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+  <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+  <script src="frame.js?v=20261018-animal-ring-garden-i9-v13"></script>
+<script src="/src/runtime-locales/ru.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

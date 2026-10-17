@@ -98,5 +98,25 @@
     ar: "اختر حلقة للبدء؛ الحلقات التي تحمل ↻ تحتاج إلى دورات إضافية."
   };
   Object.entries(initialAlignmentCopy).forEach(([localeKey, value]) => { copy[localeKey].begin = value; });
+
+  const interface9Labels = {
+    en: { guideKicker: "WEIGHTPLAY ORIGINAL GAME GUIDE", guideStepsTitle: "How to play", replay: "Replay", leaveTitle: "Leave this garden?", leaveBody: "Your current ring turns in this garden will be lost. Completed gardens and best scores stay saved.", continueBattle: "Continue playing", returnToMap: "Return to Stages" },
+    "zh-Hant": { guideKicker: "WEIGHTPLAY 原創遊戲指南", guideStepsTitle: "遊戲方法", replay: "重新遊玩", leaveTitle: "要離開這座花園嗎？", leaveBody: "這座花園目前的花環轉動進度會消失；已完成花園與最佳成績仍會保留。", continueBattle: "繼續遊玩", returnToMap: "返回關卡" },
+    "zh-Hans": { guideKicker: "WEIGHTPLAY 原创游戏指南", guideStepsTitle: "玩法", replay: "重新游玩", leaveTitle: "要离开这座花园吗？", leaveBody: "这座花园当前的花环转动进度会丢失；已完成花园与最佳成绩仍会保留。", continueBattle: "继续游玩", returnToMap: "返回关卡" },
+    ja: { guideKicker: "WEIGHTPLAY オリジナルゲームガイド", guideStepsTitle: "遊び方", replay: "もう一度", leaveTitle: "この庭を離れますか？", leaveBody: "この庭での現在のリング操作は失われます。クリア済みの庭とベスト記録は保存されます。", continueBattle: "続ける", returnToMap: "ステージに戻る" },
+    ko: { guideKicker: "WEIGHTPLAY 오리지널 게임 가이드", guideStepsTitle: "플레이 방법", replay: "다시 플레이", leaveTitle: "이 정원을 나갈까요?", leaveBody: "이 정원의 현재 링 회전 진행은 사라집니다. 완료한 정원과 최고 기록은 저장됩니다.", continueBattle: "계속 플레이", returnToMap: "스테이지로 돌아가기" },
+    es: { guideKicker: "GUÍA DEL JUEGO ORIGINAL DE WEIGHTPLAY", guideStepsTitle: "Cómo jugar", replay: "Repetir", leaveTitle: "¿Salir de este jardín?", leaveBody: "Se perderán los giros actuales de este jardín. Los jardines completados y los mejores resultados seguirán guardados.", continueBattle: "Seguir jugando", returnToMap: "Volver a niveles" },
+    "pt-BR": { guideKicker: "GUIA DO JOGO ORIGINAL WEIGHTPLAY", guideStepsTitle: "Como jogar", replay: "Jogar de novo", leaveTitle: "Sair deste jardim?", leaveBody: "As rotações atuais deste jardim serão perdidas. Jardins concluídos e melhores resultados continuam salvos.", continueBattle: "Continuar jogando", returnToMap: "Voltar às fases" },
+    fr: { guideKicker: "GUIDE DU JEU ORIGINAL WEIGHTPLAY", guideStepsTitle: "Comment jouer", replay: "Rejouer", leaveTitle: "Quitter ce jardin ?", leaveBody: "Les rotations en cours dans ce jardin seront perdues. Les jardins terminés et les meilleurs scores restent enregistrés.", continueBattle: "Continuer", returnToMap: "Retour aux niveaux" },
+    de: { guideKicker: "ANLEITUNG ZUM WEIGHTPLAY-ORIGINALSPIEL", guideStepsTitle: "So wird gespielt", replay: "Noch einmal", leaveTitle: "Diesen Garten verlassen?", leaveBody: "Die aktuellen Ringdrehungen in diesem Garten gehen verloren. Abgeschlossene Gärten und Bestwerte bleiben gespeichert.", continueBattle: "Weiterspielen", returnToMap: "Zurück zu den Stufen" },
+    it: { guideKicker: "GUIDA AL GIOCO ORIGINALE WEIGHTPLAY", guideStepsTitle: "Come si gioca", replay: "Rigioca", leaveTitle: "Uscire da questo giardino?", leaveBody: "Le rotazioni attuali in questo giardino andranno perse. I giardini completati e i record resteranno salvati.", continueBattle: "Continua a giocare", returnToMap: "Torna ai livelli" },
+    ru: { guideKicker: "РУКОВОДСТВО ПО ИГРЕ WEIGHTPLAY", guideStepsTitle: "Как играть", replay: "Сыграть снова", leaveTitle: "Покинуть этот сад?", leaveBody: "Текущие повороты колец в этом саду будут потеряны. Пройденные сады и лучшие результаты сохранятся.", continueBattle: "Продолжить игру", returnToMap: "Вернуться к садам" },
+    hi: { guideKicker: "WEIGHTPLAY मूल गेम गाइड", guideStepsTitle: "कैसे खेलें", replay: "फिर खेलें", leaveTitle: "इस बगीचे से बाहर जाएँ?", leaveBody: "इस बगीचे में मौजूदा रिंग घुमाव मिट जाएँगे। पूरे किए गए बगीचे और सर्वश्रेष्ठ स्कोर सुरक्षित रहेंगे।", continueBattle: "खेल जारी रखें", returnToMap: "बगीचों पर लौटें" },
+    ar: { guideKicker: "دليل لعبة WEIGHTPLAY الأصلية", guideStepsTitle: "طريقة اللعب", replay: "العب مجددًا", leaveTitle: "مغادرة هذه الحديقة؟", leaveBody: "ستفقد دورات الحلقات الحالية في هذه الحديقة. ستبقى الحدائق المكتملة وأفضل النتائج محفوظة.", continueBattle: "متابعة اللعب", returnToMap: "العودة إلى الحدائق" },
+  };
+  Object.entries(interface9Labels).forEach(([localeKey, values]) => {
+    Object.assign(copy[localeKey], values, { guideIntro: copy[localeKey].summary || copy.en.summary });
+  });
+
   window.RING_GARDEN_COPY = copy;
 })();

@@ -20,6 +20,7 @@
     ? window.__WEIGHTPLAY_ROUTE_LOCALE__
     : COPY["en"] ? "en" : LOCALES[0];
   const state = { locale: initialLocale, record: 0, solved: 0, selected: null, accepted: false, sound: true, result: false };
+  const sharedFrame = window.__ANIMAL_FOOTPRINT_FOLIO_FRAME__ || null;
 
   function t(key, values = {}) {
     const copy = COPY[state.locale] || COPY.en || {};
@@ -31,8 +32,25 @@
     const marker = MARKERS[key];
     return `<span class="marker-icon marker-atlas marker-atlas-${key} ${extra}" aria-hidden="true" data-marker-art="atlas"></span>`;
   }
-  function track(name, payload = {}) { window.WonderAnalytics?.track?.(name, { game_id: "animal-footprint-folio", game_version: "v6", interface_version: 6, ...payload }); }
+  function track(name, payload = {}) { window.WonderAnalytics?.track?.(name, { game_id: "animal-footprint-folio", game_version: "v7", interface_version: 9, ...payload }); }
   function syncSharedSettingsIds() {
+    const activeScene = document.body.dataset.screen === "battle" ? "battle" : "main";
+    const frameHosts = [...document.querySelectorAll("#mainScreen .wp-frame-utility, #battleScreen .wp-frame-utility")];
+    if (frameHosts.length) {
+      frameHosts.forEach((host) => {
+        const scene = host.closest("#battleScreen") ? "battle" : "main";
+        const button = host.querySelector("[data-wp-settings]");
+        const popover = host.querySelector(".wp-frame-popover");
+        if (!button || !popover) return;
+        button.id = scene === "battle" ? "battleSettingsButton" : "settingsButton";
+        popover.id = scene === activeScene ? "settingsPopover" : `${scene}SettingsPopover`;
+        button.setAttribute("aria-controls", popover.id);
+        button.hidden = false;
+        button.removeAttribute("aria-hidden");
+        button.tabIndex = 0;
+      });
+      return;
+    }
     const host = document.querySelector(".wp-shell-settings");
     if (host) document.querySelector(".wp-shell-locale-source")?.classList.remove("wp-shell-locale-source");
     const button = host?.querySelector(".wp-shell-settings-button");
@@ -47,6 +65,7 @@
     if (popover) popover.id = "settingsPopover";
   }
   function syncSharedSettingsPlacement(name) {
+    if (document.querySelector("#app[data-wp-frame='2']")) return;
     const host = document.querySelector(".wp-shell-settings");
     const target = name === "main"
       ? document.querySelector("#mainScreen .main-header")
@@ -92,6 +111,7 @@
       mainScreen.classList.remove("wp-standard-main-flow-node");
     }
     document.body.dataset.screen = name;
+    sharedFrame?.activate(name);
     const guide = document.querySelector("[data-wp-game-guide]");
     if (guide) guide.hidden = name !== "main";
     if (name === "main") {
@@ -114,7 +134,7 @@
     document.title = `${t("title")} | WeightPlay`;
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
     $("#locale")?.setAttribute("aria-label", t("language"));
-    document.querySelector(".wp-shell-settings-button")?.setAttribute("aria-label", t("settings"));
+    document.querySelector(".wp-shell-settings-button, .wp-frame-settings")?.setAttribute("aria-label", t("settings"));
     $("#battleBack")?.setAttribute("aria-label", t("back"));
     $(".poster").setAttribute("alt", t("coverAlt"));
     renderRecord();

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" data-wp-official-name>
 <head>
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-footprint-folio/"+location.search+location.hash)}catch{location.replace("/en/games/animal-footprint-folio/"+location.search+location.hash)}})();</script>
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-footprint-folio/")}catch{location.replace("/en/games/animal-footprint-folio/")}})();</script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
@@ -26,23 +26,24 @@
   <title>Footprint Sequence Logic | WeightPlay</title>
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-footprint-folio">
-  <meta name="weightplay-game-version" content="v6">
-  <meta name="weightplay-interface-version" content="6">
+  <meta name="weightplay-game-version" content="v7">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="weightplay-scene-controls" content="immutable">
-    <link rel="stylesheet" href="style.css?v=20260921-footprint-folio-settings-v6">
+    <link rel="stylesheet" href="style.css?v=20261018-animal-footprint-folio-i9-v1">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260913-footprint-folio-interface7-guide-v1">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261018-animal-footprint-folio-i9-v1"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+  <link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20261018-animal-footprint-folio-i9-v1">
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
   <script src="/src/shared-interface-bootstrap.js?v=20261017-shared-dark-loader1" data-wp-shared-interface="7"></script>
 
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-animal-footprint-folio-i9-v1">
 </head>
-<body data-audience="general" data-wp-game-id="animal-footprint-folio" data-wp-game-version="v6" data-wp-battle-settings="visible" data-wp-game-owned-guide="true" data-screen="main">
-  <main class="shell" id="app">
+<body data-audience="general" data-wp-game-id="animal-footprint-folio" data-wp-game-version="v7" data-wp-interface-version="9" data-wp-battle-settings="visible" data-wp-game-owned-guide="true" data-screen="main">
+  <main class="shell" id="app" data-wp-frame-root>
     <section class="screen active main-screen wp-standard-main-screen" id="mainScreen" data-screen="main" aria-labelledby="gameTitle">
       <header class="topbar main-header wp-main-shell-header">
         <a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-        <strong class="wp-shell-main-title wp-standard-main-title" data-copy="title" data-wp-game-title data-runtime-localize="off">Footprint Sequence Logic</strong>
+        <strong class="wp-shell-main-title wp-standard-main-title" data-copy="title" data-wp-game-title data-wp-frame-title data-runtime-localize="off">Footprint Sequence Logic</strong>
         <label class="wp-shell-locale-source"><span data-copy="language">Language</span><select id="locale" aria-label="Language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option>
             <option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option>
@@ -53,18 +54,18 @@
 
       <div class="main-grid wp-standard-main-composition">
         <div class="poster-wrap wp-standard-main-poster">
-          <img class="poster main-poster wp-standard-main-poster-media" src="assets/animal-footprint-folio-cover.png" alt="Trail Logic clue markers">
+          <img class="poster main-poster wp-standard-main-poster-media" data-wp-frame-poster src="assets/animal-footprint-folio-cover.png" alt="Trail Logic clue markers">
           <div class="poster-stamp">FIELD NOTE 03</div>
         </div>
-        <div class="intro wp-standard-main-copy">
+        <div class="intro wp-standard-main-copy" data-wp-frame-copy>
           <p class="eyebrow" data-copy="eyebrow">FIELD NOTE · 6+</p>
           <h1 id="gameTitle" class="wp-standard-main-heading" data-copy="title" data-wp-game-title data-runtime-localize="off">Footprint Sequence Logic</h1>
-          <p class="lede main-summary wp-standard-main-summary" data-copy="lede">Choose the marker that keeps each trail record in sequence.</p>
+          <p class="lede main-summary wp-standard-main-summary" data-wp-frame-summary data-copy="lede">Choose the marker that keeps each trail record in sequence.</p>
           <div class="fact-row"><span data-copy="fact1">3 records</span><span data-copy="fact2">Visible clues</span><span data-copy="fact3">Gentle retry</span></div>
-          <p class="progress-note wp-standard-main-progress" id="mainProgress" data-wp-main-progress data-copy="ready">Three trail records ready</p>
+          <p class="progress-note wp-standard-main-progress" id="mainProgress" data-wp-main-progress data-wp-frame-progress data-copy="ready">Three trail records ready</p>
           <div class="button-row">
-            <button class="primary-button wp-standard-main-start" id="startButton" type="button" data-wp-main-start data-copy="start">Start field note</button>
-            <button class="secondary-button" id="guideButton" type="button" data-copy="guideButton">How to play</button>
+            <button class="primary-button wp-standard-main-start" id="startButton" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start">Start field note</button>
+            <button class="secondary-button" id="guideButton" type="button" data-wp-frame-action="secondary" data-copy="guideButton">How to play</button>
           </div>
         </div>
       </div>
@@ -115,7 +116,10 @@
     </section>
     <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
   </main>
-  <script src="locales.js?v=20260921-footprint-folio-settings-v6"></script>
-  <script src="game.js?v=20260921-footprint-folio-settings-v6"></script>
+  <script src="locales.js?v=20261018-animal-footprint-folio-i9-v1"></script>
+  <script src="/src/game-screen-frame.js?v=20261018-animal-footprint-folio-i9-v1"></script>
+  <script src="/src/battle-canvas-standard.js?v=20261018-animal-footprint-folio-i9-v1"></script>
+  <script src="frame.js?v=20261018-animal-footprint-folio-i9-v1"></script>
+  <script src="game.js?v=20261018-animal-footprint-folio-i9-v1"></script>
 </body>
 </html>
