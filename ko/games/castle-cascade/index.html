@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v22">
+  <meta name="weightplay-game-version" content="v23">
   <meta name="weightplay-interface-version" content="9">
   <meta name="theme-color" content="#30184d">
   <title>캐슬 캐스케이드 | WeightPlay</title>
@@ -72,13 +72,13 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
   <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
   <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36" data-wp-tutorial-style>
-  <link rel="stylesheet" href="style.css?v=20261017-castle-cascade-v22-guide-shared-frame-fix-v2">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-castle-cascade-v22-shared-main-backdrop-v2">
-<link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="style.css?v=20261017-castle-cascade-v23-terrain-bird">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-guide-compatibility-v1">
+<link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261017-interface9-guide-theme1">
   <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261017-shared-play-spacing1">
   <meta name="twitter:image" content="https://weightplay.com/assets/castle-cascade-poster.webp" />
   </head>
-<body class="has-game-page-info" data-screen="main" data-audience="general" data-wp-game-id="castle-cascade" data-wp-game-version="v22" data-wp-interface-version="9" data-wp-combined-sound="true" data-runtime-localize="off" data-wp-game-owned-guide="true" aria-busy="true">
+<body class="has-game-page-info" data-screen="main" data-audience="general" data-wp-game-id="castle-cascade" data-wp-game-version="v23" data-wp-interface-version="9" data-wp-combined-sound="true" data-runtime-localize="off" data-wp-game-owned-guide="true" aria-busy="true">
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite" aria-atomic="true">
     <div class="loading-card">
       <strong data-t="title">캐슬 캐스케이드</strong>
@@ -112,8 +112,8 @@
       </div>
       <div class="game-info-sections">
         <div class="game-info-section"><h3 data-t="howTitle">게임 방법</h3><p data-t="howBody">이웃한 보석 두 개를 바꾸어 세 개 이상을 맞추세요. 이동 횟수가 끝나기 전에 모든 목표를 완료하세요. 매치가 없는 교환은 횟수를 쓰지 않습니다.</p></div>
-        <div class="game-info-section"><h3 data-t="powerTitle">파워 피스</h3><p data-t="powerBody">네 개를 한 줄로 맞추면 화살, T자나 L자로 맞추면 폭탄, 2×2로 맞추면 새, 다섯 개를 한 줄로 맞추면 프리즘이 생깁니다. 파워 피스끼리 바꾸면 효과가 결합됩니다.</p></div>
-        <div class="game-info-section"><h3 data-t="campaignTitle">성의 30개 스테이지</h3><p data-t="campaignBody">여섯 장에서 상자, 사슬, 열쇠, 색의 문, 돌, 봉인을 만납니다. 열쇠는 보석과 함께 떨어지며 출구에 도달해야 전달됩니다. 다섯 스테이지마다 공성전입니다. 처음 보드에는 장애물이 없습니다. 제거한 조각은 같은 열의 가장 앞선 적을 공격하며 특수 공격은 더 강합니다. 멧돼지는 턴마다 한 칸, 숫양은 한 턴 충전 후 두 칸 전진합니다. 보드에 닿으면 한 줄에 풀을 만들고 물러납니다. 인접 매치나 특수 공격 한 번으로 풀만 제거하며 아래 조각은 남습니다. 이동 횟수 안에 모든 웨이브를 격파하세요. 가로 세 개는 세 열에 한 발씩, 세로 세 개는 한 열에 세 발을 쏩니다. 공성전의 새는 다른 보드 조각 대신 성을 공격하고, 성이 없으면 남은 몬스터를 공격합니다. 새 두 마리는 모두 날아가며 조합한 특수 조각도 운반합니다.</p></div>
+        <div class="game-info-section"><h3 data-t="powerTitle">파워 피스</h3><p data-t="powerBody">네 개를 한 줄로 맞추면 화살, T자나 L자로 맞추면 폭탄, 2×2로 맞추면 새, 다섯 개를 한 줄로 맞추면 프리즘이 생깁니다. 파워 피스끼리 바꾸면 효과가 결합됩니다. 새는 먼저 상하좌우 네 칸을 공격한 뒤 목표로 날아갑니다. 공성전에서는 성을 겨냥합니다.</p></div>
+        <div class="game-info-section"><h3 data-t="campaignTitle">성의 30개 스테이지</h3><p data-t="campaignBody">여섯 장에서 상자, 사슬, 열쇠, 색의 문, 돌, 봉인을 만납니다. 열쇠는 보석과 함께 떨어지며 출구에 도달해야 전달됩니다. 다섯 스테이지마다 공성전입니다. 처음 보드에는 장애물이 없습니다. 제거한 조각은 같은 열의 가장 앞선 적을 공격하며 특수 공격은 더 강합니다. 멧돼지는 턴마다 한 칸, 숫양은 한 턴 충전 후 두 칸 전진합니다. 보드에 닿으면 한 줄에 풀을 만들고 물러납니다. 인접 매치나 특수 공격 한 번으로 풀만 제거하며 아래 조각은 남습니다. 이동 횟수 안에 모든 웨이브를 격파하세요. 가로 세 개는 세 열에 한 발씩, 세로 세 개는 한 열에 세 발을 쏩니다. 공성전의 새는 출발 시 주변을 공격한 뒤 성을 공격하고, 성이 없으면 남은 몬스터를 공격합니다. 새 두 마리는 모두 날아가며 조합한 특수 조각도 운반합니다. H자, 십자, 고리, 모래시계, 마름모, 계단 모양 보드가 등장합니다. 빈 공간에는 조각이 없으며 교환하거나 매치할 수 없습니다. 낙하는 연결된 세로 구간 안에서만 일어납니다.</p></div>
         <div class="game-info-section"><h3 data-t="strategyTitle">전략</h3><p data-t="strategyBody">장애물 근처에서 매치를 만드세요. 화살은 행이나 열, 폭탄은 주변 칸, 새는 유용한 목표, 프리즘은 같은 색을 제거합니다. 돌은 파워 피스로 맞혀야 합니다. 가능한 수가 없으면 보석이 무료로 섞입니다.</p></div>
         <div class="game-info-section"><h3 data-t="faqTitle">자주 묻는 질문</h3><dl>
           <div><dt data-t="faqQuestion">잘못된 교환은 횟수를 쓰나요?</dt><dd data-t="faqAnswer">아니요. 매치가 없으면 원래대로 돌아가고 횟수도 유지됩니다.</dd></div>
@@ -166,7 +166,7 @@
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <script src="../../src/i18n.js"></script>
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
-  <script src="locales.js?v=20261016-castle-cascade-v22-main-guide"></script>
+  <script src="locales.js?v=20261017-castle-cascade-v23-terrain-bird"></script>
   <script src="../../src/tutorial.js?v=20260928-castle-cascade-tutorial1"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
@@ -174,9 +174,9 @@
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-interface9-stage-footer-reserve-v3"></script>
+  <script src="../../src/game-screen-frame.js?v=20261017-interface9-settings-locale-adoption-v1"></script>
   <script src="frame.js?v=20261017-castle-cascade-i9-locale-slot-fix-v1"></script>
-  <script type="module" src="game.js?v=20261016-castle-cascade-v22-main-guide"></script>
+  <script type="module" src="game.js?v=20261017-castle-cascade-v23-terrain-bird"></script>
 <script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>

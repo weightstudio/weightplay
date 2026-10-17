@@ -61,6 +61,92 @@ html body [data-wp-frame="2"] [data-wp-frame-action="tab"] {
   box-shadow: inset 0 1px 0 var(--wp-i9-glint) !important;
 }
 
+/* I9 Main Guides use the same Block Arcade surface and one continuous reading panel. */
+html body[data-wp-interface-version="9"] .game-page-info {
+  box-sizing: border-box;
+  width: min(var(--wp-main-width, 920px), calc(100% - 2 * var(--wp-main-gutter, 12px)));
+  max-width: var(--wp-main-width, 920px);
+  margin: 16px auto calc(40px + env(safe-area-inset-bottom));
+  padding: 12px;
+  border: 2px solid var(--wp-ui-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--wp-ui-surface);
+  color: var(--wp-ui-text);
+  box-shadow: 0 5px 0 var(--wp-ui-shadow);
+}
+
+html body[data-wp-interface-version="9"] .game-page-info .game-info-hero {
+  border-radius: var(--wp-ui-radius) var(--wp-ui-radius) 0 0;
+  background: var(--wp-ui-header-image);
+  color: var(--wp-ui-text);
+}
+
+html body[data-wp-interface-version="9"] .game-page-info :is(.game-info-kicker, h2, h3, dt) {
+  color: var(--wp-ui-text);
+}
+
+html body[data-wp-interface-version="9"] .game-page-info :is(p, li, dd, .game-info-fact > span, .game-info-related-copy span) {
+  color: var(--wp-ui-muted);
+}
+
+html body[data-wp-interface-version="9"] .game-page-info .game-info-facts {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+html body[data-wp-interface-version="9"] .game-page-info :is(.game-info-fact, .game-info-related-card) {
+  border-color: var(--wp-ui-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--wp-ui-background);
+  color: var(--wp-ui-text);
+}
+
+html body[data-wp-interface-version="9"] .game-page-info .game-info-fact strong,
+html body[data-wp-interface-version="9"] .game-page-info .game-info-related-copy strong {
+  color: var(--wp-ui-text);
+}
+
+html body[data-wp-interface-version="9"] .game-page-info .game-info-tags > span {
+  border: 1px solid var(--wp-ui-tag-border);
+  border-radius: var(--wp-ui-radius);
+  background: var(--wp-ui-tag-background);
+  color: var(--wp-ui-tag-text);
+}
+
+html body[data-wp-interface-version="9"] .game-page-info .game-info-sections {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  margin-top: 12px;
+  overflow: hidden;
+  border-radius: 0 0 var(--wp-ui-radius) var(--wp-ui-radius);
+  background: var(--wp-ui-surface);
+}
+
+html body[data-wp-interface-version="9"] .game-page-info .game-info-section {
+  min-width: 0;
+  padding: 14px 12px;
+  border: 0;
+  border-top: 1px solid var(--wp-ui-line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--wp-ui-text);
+  box-shadow: none;
+}
+
+html body[data-wp-interface-version="9"] .game-page-info .game-info-section :is(h3, dt) {
+  color: var(--wp-ui-text);
+}
+
+html body[data-wp-interface-version="9"] .game-page-info .game-info-section :is(p, li, dd) {
+  color: var(--wp-ui-muted);
+}
+
+@media (min-width: 721px) {
+  html body[data-wp-interface-version="9"] .game-page-info .game-info-facts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html body [data-wp-frame="2"] :is(.wp-frame-return, .wp-frame-settings, .stage-card, .mission-card, .region-card, .route-card, .day-card, .zone-card, .expedition-card, .zone-node) {
     transition: none !important;

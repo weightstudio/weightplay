@@ -1,6 +1,6 @@
-import { BOARD_HEIGHT, BOARD_WIDTH } from "./cascade-core.js?v=20261011-birds-v20";
-import { siegeSnapshot } from "./siege-core.js?v=20261011-birds-v20";
-import { siegeLayout, drawSiegeField, drawSiegeVolley, prepareVolley, applySiegeContacts, applyEnemyContact, drawGrassSpread } from "./siege-renderer.js?v=20261011-birds-v20";
+import { BOARD_HEIGHT, BOARD_WIDTH } from "./cascade-core.js?v=20261017-terrain-bird-v23";
+import { siegeSnapshot } from "./siege-core.js?v=20261017-terrain-bird-v23";
+import { siegeLayout, drawSiegeField, drawSiegeVolley, prepareVolley, applySiegeContacts, applyEnemyContact, drawGrassSpread } from "./siege-renderer.js?v=20261017-terrain-bird-v23";
 
 const COLS = 5;
 const ROWS = 4;
@@ -328,7 +328,8 @@ export class CastleCascade2D {
     if (x < bounds.x || y < bounds.y || x >= bounds.x + bounds.size || y >= bounds.y + bounds.size) return -1;
     const col = Math.floor(((x - bounds.x) / bounds.size) * BOARD_WIDTH);
     const row = Math.floor(((y - bounds.y) / bounds.size) * BOARD_HEIGHT);
-    return row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH ? row * BOARD_WIDTH + col : -1;
+    const index = row * BOARD_WIDTH + col;
+    return row >= 0 && row < BOARD_HEIGHT && col >= 0 && col < BOARD_WIDTH && !this.board?.[index]?.void ? index : -1;
   }
 
   setBoard(board, selectedIndex = -1, focusIndex = -1, highlights = []) {
@@ -468,6 +469,24 @@ export class CastleCascade2D {
     const inset = cell * .12;
     const gold = ctx.createLinearGradient(0, bounds.y, 0, bounds.y + bounds.size);
     gold.addColorStop(0, "#fff1a5"); gold.addColorStop(.3, "#e6a821"); gold.addColorStop(1, "#ad681a");
+    if (this.board?.some(tile => tile.void)) {
+      ctx.save(); ctx.beginPath();
+      this.board.forEach((tile, index) => {
+        if (!tile.void) ctx.rect(bounds.x + index % 9 * cell - 1.5, bounds.y + Math.floor(index / 9) * cell - 1.5, cell + 3, cell + 3);
+      });
+      ctx.shadowColor = "#26355377"; ctx.shadowBlur = cell * .16; ctx.shadowOffsetY = cell * .08;
+      ctx.fillStyle = gold; ctx.fill(); ctx.shadowBlur = ctx.shadowOffsetY = 0;
+      this.board.forEach((tile, index) => {
+        if (tile.void) return;
+        const row = Math.floor(index / 9), col = index % 9;
+        ctx.fillStyle = (row + col) % 2 ? "#bed6ee" : "#cbe0f4";
+        ctx.fillRect(bounds.x + col * cell, bounds.y + row * cell, cell, cell);
+        ctx.strokeStyle = "#728dbb66"; ctx.lineWidth = .6;
+        ctx.strokeRect(bounds.x + col * cell, bounds.y + row * cell, cell, cell);
+      });
+      ctx.restore();
+      return;
+    }
     ctx.save();
     ctx.shadowColor = "#26355366"; ctx.shadowBlur = cell * .28; ctx.shadowOffsetY = cell * .12;
     roundRect(ctx, bounds.x - inset, bounds.y - inset, bounds.size + inset * 2, bounds.size + inset * 2, cell * .18);
@@ -487,7 +506,7 @@ export class CastleCascade2D {
   drawTiles(bounds, time, hidden = null) {
     const cell = bounds.size / BOARD_WIDTH;
     this.board.forEach((tile, index) => {
-      if (!tile || hidden?.has(index)) return;
+      if (!tile || tile.void || hidden?.has(index)) return;
       const x = bounds.x + (index % BOARD_WIDTH) * cell;
       const y = bounds.y + Math.floor(index / BOARD_WIDTH) * cell;
       const cx = x + cell / 2;
@@ -510,7 +529,7 @@ export class CastleCascade2D {
   }
 
   drawTile(tile, index, cx, cy, cell, alpha = 1, scale = 1) {
-    if (!tile) return;
+    if (!tile || tile.void) return;
     const ctx = this.context;
     ctx.save();
     ctx.globalAlpha *= alpha;
@@ -789,7 +808,7 @@ export class CastleCascade2D {
       : effects.some(e => e.type === "combo-burst") ? 780
       : effects.some(e => ["bird", "flock", "bird-carry"].includes(e.type)) ? 700
         : effects.length ? 620 : 360;
-    const impactAt = effects.some(e => e.type === "bird-carry") ? .68
+    const impactAt = effects.some(e => e.type === "bird-launch") ? .22 : effects.some(e => e.type === "bird-carry") ? .68
       : effects.length && effects.every(e => ["bird", "flock", "combo-burst"].includes(e.type)) ? .68 : .22;
     return this.runMotion({ kind: "clear", batch, onImpact, onObjectiveImpact, objectiveContacts:this.objectiveContacts(batch), impactAt, chainDepth, finalBoard: batch.cleared, duration: duration * cascadeTempo(chainDepth) });
   }
@@ -894,6 +913,7 @@ export class CastleCascade2D {
       if (["cross", "siege"].includes(effect.type)) arrivals.push(.22 + Math.min(Math.abs(row-r), Math.abs(col-c)) * .015 + Math.max(Math.abs(row-r), Math.abs(col-c)) / 8 * .38);
       if (["bird", "bird-carry"].includes(effect.type) && index === effect.target) arrivals.push(.68);
       if (effect.type === "flock" && effect.targets?.includes(index)) arrivals.push(.68);
+      if (effect.type === "bird-launch" && (effect.index === index || effect.targets.includes(index))) arrivals.push(.22);
       if (["prism", "prism-combo", "spectrum"].includes(effect.type) && effect.targets?.includes(index)) arrivals.push(.28 + distance * .018);
     }
     return arrivals.length ? Math.min(...arrivals) : .22;
@@ -912,10 +932,11 @@ export class CastleCascade2D {
       const start = this.hitStart(batch, index);
       const hit = clamp((progress - start) / (batch.visualEffects.length ? .34 : .50), 0, 1);
       const flying = batch.siege?.attacks.find(shot => shot.bird && shot.index === index);
-      if (flying) {
+      const departing = batch.visualEffects.some(effect => effect.type === "bird-launch" && effect.index === index);
+      if (flying || departing) {
         // Anticipate departure without breaking the bird into gem fragments.
-        this.drawPower("bird", cx, cy - Math.sin(progress * Math.PI) * cell * .09, cell);
-        if (flying.payload) this.drawPower(flying.payload, cx, cy + cell * .28, cell * .5);
+        if (flying || progress < .32) this.drawPower("bird", cx, cy - Math.sin(progress * Math.PI) * cell * .09, cell);
+        if (flying?.payload) this.drawPower(flying.payload, cx, cy + cell * .28, cell * .5);
         continue;
       }
       if (progress < start) {
@@ -1057,7 +1078,10 @@ export class CastleCascade2D {
   drawGravityMotion(bounds, motion, time) {
     this.context.save();
     this.context.beginPath();
-    this.context.rect(bounds.x, bounds.y, bounds.size, bounds.size);
+    const tileSize = bounds.size / BOARD_WIDTH;
+    this.board.forEach((tile, index) => {
+      if (!tile.void) this.context.rect(bounds.x + index % 9 * tileSize, bounds.y + Math.floor(index / 9) * tileSize, tileSize, tileSize);
+    });
     this.context.clip();
     const elapsed = time - motion.started;
     const cell = bounds.size / BOARD_WIDTH;
@@ -1128,7 +1152,21 @@ export class CastleCascade2D {
       const col = center % BOARD_WIDTH;
       const cx = bounds.x + (col + 0.5) * cell;
       const cy = bounds.y + (row + 0.5) * cell;
-      if (effect.type === "arrow") {
+      if (effect.type === "bird-launch") {
+        const contact = clamp((progress - .12) / .10, 0, 1);
+        const fade = 1 - clamp((progress - .22) / .22, 0, 1);
+        if (contact > 0 && fade > 0) {
+          const ctx = this.context;
+          ctx.save(); ctx.globalAlpha *= fade;
+          for (const target of effect.targets) {
+            const tx = bounds.x + (target % 9 + .5) * cell, ty = bounds.y + (Math.floor(target / 9) + .5) * cell;
+            this.drawBeam(cx, cy, cx + (tx - cx) * contact, cy + (ty - cy) * contact, "#72e4dc", cell * .14, cell * .22);
+            if (progress >= .22) this.drawRing(tx, ty, cell * (.20 + (1 - fade) * .35), fade, "#e1fff0", cell * .055);
+          }
+          this.drawRing(cx, cy, cell * (.16 + contact * .2), fade, "#e1fff0", cell * .05);
+          ctx.restore();
+        }
+      } else if (effect.type === "arrow") {
         this.drawRocketLine(bounds, cx, cy, effect.axis === "h", progress, cell, combined ? 1.4 : 1);
       } else if (effect.type === "bomb" || effect.type === "nova") {
         const charge = clamp(progress/.22, 0, 1);
@@ -1310,7 +1348,7 @@ export class CastleCascade2D {
     const fromY = bounds.y + (Math.floor(from / BOARD_WIDTH) + 0.5) * cell;
     const toX = bounds.x + ((to % BOARD_WIDTH) + 0.5) * cell;
     const toY = bounds.y + (Math.floor(to / BOARD_WIDTH) + 0.5) * cell;
-    progress = clamp((progress - .12) / .56, 0, 1);
+    progress = clamp((progress - .32) / .36, 0, 1);
     if (progress >= 1) return;
     const arc = Math.sin(progress * Math.PI) * cell * 1.8;
     const x = fromX + (toX - fromX) * progress;
@@ -1388,6 +1426,7 @@ export class CastleCascade2D {
     const ctx = this.context;
     const cell = bounds.size / BOARD_WIDTH;
     for (const [index, selected] of [[this.focusIndex, false], [this.selectedIndex, true]]) {
+      if (this.board?.[index]?.void) continue;
       if (!selected && !this.keyboardFocus) continue;
       if (!Number.isInteger(index) || index < 0 || index >= BOARD_WIDTH * BOARD_HEIGHT || (index === this.selectedIndex && !selected)) continue;
       const row = Math.floor(index / BOARD_WIDTH);

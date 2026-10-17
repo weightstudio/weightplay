@@ -1,7 +1,22 @@
-import { createSiege, resolveSiegeBatch, advanceSiegeTurn } from "./siege-core.js?v=20261011-birds-v20";
+import { createSiege, resolveSiegeBatch, advanceSiegeTurn } from "./siege-core.js?v=20261017-terrain-bird-v23";
 export const BOARD_WIDTH = 9;
 export const BOARD_HEIGHT = 9;
 export const CELL_COUNT = BOARD_WIDTH * BOARD_HEIGHT;
+
+export const BOARD_SHAPES = {
+  full: Array(9).fill("#########"),
+  h: ["###...###", "###...###", "###...###", "#########", "#########", "#########", "###...###", "###...###", "###...###"],
+  cross: ["...###...", "...###...", "...###...", "#########", "#########", "#########", "...###...", "...###...", "...###..."],
+  ring: ["#########", "#########", "#########", "###...###", "###...###", "###...###", "#########", "#########", "#########"],
+  hourglass: ["#########", "#########", ".#######.", "..#####..", "...###...", "..#####..", ".#######.", "#########", "#########"],
+  diamond: ["....#....", "...###...", "..#####..", ".#######.", "#########", ".#######.", "..#####..", "...###...", "....#...."],
+  stair: ["###......", "####.....", "#####....", "######...", "#######..", "########.", "#########", "#########", "#########"],
+};
+const STAGE_SHAPES = [
+  "full", "h", "stair", "diamond", "h", "cross", "ring", "hourglass", "stair", "cross",
+  "h", "h", "h", "h", "hourglass", "stair", "cross", "ring", "hourglass", "h",
+  "diamond", "stair", "cross", "ring", "stair", "h", "diamond", "h", "hourglass", "cross",
+];
 
 export const LEVELS = [
   { moves: 26, colors: 4, obstacles: { crate: [72, 73, 74, 75, 76, 77, 78, 79, 80] } },
@@ -35,13 +50,14 @@ export const LEVELS = [
   { moves: 29, colors: 5, obstacles: { chain: [27, 29, 31, 33, 35], stone: [45, 47, 49, 51, 53], seal: [63, 65, 67, 69, 71], crate: [72, 74, 76, 78, 80] } },
   { moves: 32, colors: 5, obstacles: { gate: [27, 28, 29, 33, 34, 35, 45, 46, 47, 51, 52, 53], gateColor: 4, key: [1, 7], exit: [73, 79], stone: [36, 40, 44, 54, 58, 62], seal: [64, 66, 68, 70], crate: [72, 74, 76, 78, 80] } },
 ];
+LEVELS.forEach((level, stage) => { level.shape = STAGE_SHAPES[stage]; });
 
 const COPY_PIECE_FIELDS = ["c", "p", "key"];
 const OBJECTIVE_KEYS = ["crate", "chain", "key", "gate", "stone", "seal"];
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
 function cell(color = null) {
-  return { c: color, p: null, box: 0, chain: 0, key: 0, exit: 0, gate: 0, gateColor: 0, stone: 0, seal: 0, grass: 0 };
+  return { c: color, p: null, box: 0, chain: 0, key: 0, exit: 0, gate: 0, gateColor: 0, stone: 0, seal: 0, grass: 0, void: 0 };
 }
 
 export function cloneBoard(board) {
@@ -56,7 +72,7 @@ function nextRandom(state) {
 function isMatchable(tile) {
   // A stored power awaits player activation or a hit from an active power.
   // Its underlying color must not restart it when gravity makes a match.
-  return tile.c !== null && !tile.p && !tile.box && !tile.stone && !tile.gate && !tile.grass;
+  return tile.c !== null && !tile.void && !tile.p && !tile.box && !tile.stone && !tile.gate && !tile.grass;
 }
 
 export function matchGroups(board) {
@@ -151,9 +167,13 @@ export function createState(stageIndex = 0, unlocked = 1) {
   };
 
   // Fill with the state-owned seeded generator, then remove only opening matches.
-  state.board = Array.from({ length: CELL_COUNT }, () => cell(Math.floor(nextRandom(state) * level.colors)));
+  state.board = Array.from({ length: CELL_COUNT }, (_, index) => {
+    const tile = cell(Math.floor(nextRandom(state) * level.colors));
+    if (BOARD_SHAPES[level.shape][Math.floor(index / 9)][index % 9] === ".") { tile.void = 1; tile.c = null; }
+    return tile;
+  });
   clearOpeningMatches(state.board, level.colors);
-  const obstacles = state.siege ? {} : level.obstacles;
+  const obstacles = state.siege ? {} : terrainObstacles(state.board, level.obstacles);
   (obstacles.crate || []).forEach((index) => { state.board[index].box = 1; });
   (obstacles.chain || []).forEach((index) => { state.board[index].chain = 1; });
   (obstacles.key || []).forEach((index) => { state.board[index].key = 1; });
@@ -166,7 +186,25 @@ export function createState(stageIndex = 0, unlocked = 1) {
   (obstacles.stone || []).forEach((index) => { state.board[index].stone = 2; });
   (obstacles.seal || []).forEach((index) => { state.board[index].seal = 1; });
   clearOpeningMatches(state.board, level.colors);
+  if (!legalMoves(state.board).length) reshuffle(state);
   return state;
+}
+
+function terrainObstacles(board, authored) {
+  const result = { gateColor: authored.gateColor };
+  for (const key of ["crate", "chain", "key", "exit", "gate", "stone", "seal"]) {
+    const used = new Set((authored[key] || []).filter(index => !board[index].void));
+    result[key] = (authored[key] || []).map(index => {
+      if (!board[index].void) return index;
+      const candidates = board.flatMap((tile, at) => !tile.void && !used.has(at) ? [at] : []);
+      const distance = at => Math.abs(Math.floor(at / 9) - Math.floor(index / 9)) * 2 + Math.abs(at % 9 - index % 9);
+      candidates.sort((a, b) => distance(a) - distance(b) || a - b);
+      const at = candidates[0];
+      used.add(at);
+      return at;
+    });
+  }
+  return result;
 }
 
 export function objectiveCounts(board) {
@@ -189,7 +227,7 @@ export function isComplete(board) {
 
 export function canSwap(board, index) {
   const tile = board[index];
-  return Boolean(tile && !tile.box && !tile.chain && !tile.gate && !tile.stone && !tile.grass);
+  return Boolean(tile && !tile.void && !tile.box && !tile.chain && !tile.gate && !tile.stone && !tile.grass);
 }
 
 function adjacent(a, b) {
@@ -315,11 +353,11 @@ function bestTarget(board, excluded = new Set(), carriedPower = null) {
       if (!board[at].key) keyRoute.add(at);
     }
   });
-  const value = index => excluded.has(index) ? 0 : targetScore(board[index]) + (keyRoute.has(index) ? 100 : 0);
+  const value = index => excluded.has(index) || board[index].void ? 0 : targetScore(board[index]) + (keyRoute.has(index) ? 100 : 0);
   let choice = -1;
   let best = -Infinity;
   board.forEach((tile, index) => {
-    if (excluded.has(index)) return;
+    if (excluded.has(index) || tile.void) return;
     let score = value(index);
     if (carriedPower) {
       const footprint = new Set([index]), powerHits = new Set();
@@ -375,6 +413,7 @@ function addArea(set, index, radius, powerSet) {
 }
 
 function addPowerEffect(board, index, power, direct, powerSet, excludedBirdTargets, visualEffects = [], siege = null) {
+  if (board[index]?.void) return;
   direct.add(index);
   powerSet.add(index);
   if (power === "arrowH") {
@@ -387,10 +426,12 @@ function addPowerEffect(board, index, power, direct, powerSet, excludedBirdTarge
     addArea(direct, index, 2, powerSet);
     visualEffects.push({ type: "bomb", index, radius: 2 });
   } else if (power === "bird") {
+    addBirdLaunch(board, index, direct, powerSet, visualEffects);
     if (siege) {
       visualEffects.push({ type: "siege-bird", index });
       return;
     }
+    direct.forEach(at => excludedBirdTargets.add(at));
     const target = bestTarget(board, excludedBirdTargets);
     if (target >= 0) {
       direct.add(target);
@@ -410,6 +451,13 @@ function addPowerEffect(board, index, power, direct, powerSet, excludedBirdTarge
     });
     visualEffects.push({ type: "prism", index, color, targets });
   }
+}
+
+function addBirdLaunch(board, index, direct, powerSet, visualEffects) {
+  if (visualEffects.some(effect => effect.type === "bird-launch" && effect.index === index)) return;
+  const targets = [...addAdjacentHitCells(new Set([index]))].filter(at => !board[at].void);
+  targets.forEach(at => { direct.add(at); powerSet.add(at); });
+  visualEffects.push({ type: "bird-launch", index, targets });
 }
 
 function expandTriggeredPowers(board, direct, powerSet, suppressed = new Set(), visualEffects = [], siege = null) {
@@ -478,8 +526,8 @@ function resolveOneBatch(state, direct, powerSet, specials = [], forceGate = fal
   const specialByCell = new Map(specials.map(special => [special.at, special]));
   const board = state.board;
   const before = cloneBoard(board);
-  const directHits = [...direct].sort((a, b) => a - b);
-  const adjacentHits = [...addAdjacentHitCells(direct)].sort((a, b) => a - b);
+  const directHits = [...direct].filter(index => !board[index].void).sort((a, b) => a - b);
+  const adjacentHits = [...addAdjacentHitCells(new Set(directHits))].filter(index => !board[index].void).sort((a, b) => a - b);
   const matchingColors = new Set(directHits.map((index) => board[index].c).filter((color) => color !== null));
   const stats = { crate: 0, chain: 0, key: 0, gate: 0, stone: 0, seal: 0, grass: 0, special: specials[0]?.power || null, specials: specials.map(special => special.power) };
   const openedGates = new Set();
@@ -539,7 +587,7 @@ function resolveOneBatch(state, direct, powerSet, specials = [], forceGate = fal
     after: cloneBoard(board),
     directHits,
     adjacentHits,
-    powerHits: [...powerSet].sort((a, b) => a - b),
+    powerHits: [...powerSet].filter(index => !board[index].void).sort((a, b) => a - b),
     visualEffects,
     createdSpecial: specials[0] || null,
     createdSpecials: specials,
@@ -558,12 +606,12 @@ function dropAndRefill(state) {
   for (let col = 0; col < BOARD_WIDTH; col += 1) {
     let bottom = BOARD_HEIGHT - 1;
     while (bottom >= 0) {
-      if (board[bottom * BOARD_WIDTH + col].box || board[bottom * BOARD_WIDTH + col].gate || board[bottom * BOARD_WIDTH + col].stone || board[bottom * BOARD_WIDTH + col].grass) {
+      if (board[bottom * BOARD_WIDTH + col].void || board[bottom * BOARD_WIDTH + col].box || board[bottom * BOARD_WIDTH + col].gate || board[bottom * BOARD_WIDTH + col].stone || board[bottom * BOARD_WIDTH + col].grass) {
         bottom -= 1;
         continue;
       }
       const segmentBottom = bottom;
-      while (bottom >= 0 && !board[bottom * BOARD_WIDTH + col].box && !board[bottom * BOARD_WIDTH + col].gate && !board[bottom * BOARD_WIDTH + col].stone && !board[bottom * BOARD_WIDTH + col].grass) bottom -= 1;
+      while (bottom >= 0 && !board[bottom * BOARD_WIDTH + col].void && !board[bottom * BOARD_WIDTH + col].box && !board[bottom * BOARD_WIDTH + col].gate && !board[bottom * BOARD_WIDTH + col].stone && !board[bottom * BOARD_WIDTH + col].grass) bottom -= 1;
       const segmentTop = bottom + 1;
       const payloads = [];
       for (let row = segmentBottom; row >= segmentTop; row -= 1) {
@@ -660,6 +708,7 @@ function comboEffect(state, a, b) {
   const visualEffects = [];
   let forceGate = false;
   const isArrow = (power) => typeof power === "string" && power.startsWith("arrow");
+  for (const index of [a, b]) if (board[index].p === "bird") addBirdLaunch(board, index, direct, powerSet, visualEffects);
 
   if (powerA === "prism" || powerB === "prism") {
     const prismIndex = powerA === "prism" ? a : b;
@@ -707,7 +756,7 @@ function comboEffect(state, a, b) {
     suppressed.add(a);
     suppressed.add(b);
   } else if (powerA === "bird" && powerB === "bird") {
-    const excluded = new Set([a, b]);
+    const excluded = new Set(direct);
     const targets = [];
     for (let count = 0; count < 2; count += 1) {
       const target = bestTarget(board, excluded);
@@ -726,7 +775,7 @@ function comboEffect(state, a, b) {
     const partnerIndex = bird === a ? b : a;
     const partnerPower = board[partnerIndex].p;
     if (partnerPower) {
-      const target = bestTarget(board, new Set([a, b]), partnerPower);
+      const target = bestTarget(board, new Set(direct), partnerPower);
       if (target >= 0) {
         visualEffects.push({ type: "bird-carry", index: bird, target, power: partnerPower });
         addPowerEffect(board, target, partnerPower, direct, powerSet, new Set([target]), visualEffects);
@@ -770,7 +819,7 @@ function finishState(state) {
 export function reshuffle(state) {
   const level = LEVELS[state.stage];
   const movable = state.board.map((tile, index) => ({ tile, index }))
-    .filter(({ tile }) => !tile.box && !tile.chain && !tile.gate && !tile.stone && !tile.grass);
+    .filter(({ tile }) => !tile.void && !tile.box && !tile.chain && !tile.gate && !tile.stone && !tile.grass);
   const original = movable.map(({ tile }) => tile.c);
   for (let attempt = 0; attempt < 64; attempt += 1) {
     const colors = [...original];

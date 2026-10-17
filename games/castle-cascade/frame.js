@@ -11,9 +11,6 @@
     const stageHeader = stage.querySelector(".stage-header");
     const battleHeader = battle.querySelector(".battle-header");
     const localeSelect = document.getElementById("locale");
-    const localeControl = mainHeader.querySelector(".locale");
-    localeControl.hidden = true;
-    localeControl.style.setProperty("display", "none", "important");
 
     const stageBack = stageHeader.querySelector('[data-wp-return="stage"]');
     const stageInfo = stageHeader.querySelector(".stage-hud");

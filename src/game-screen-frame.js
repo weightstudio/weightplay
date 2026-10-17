@@ -190,11 +190,30 @@
     utility.innerHTML = '<button type="button" class="wp-frame-settings wp-shell-settings-button" data-wp-settings aria-expanded="false"><span class="wp-frame-settings-icon" aria-hidden="true"></span></button><div class="wp-frame-popover wp-shell-settings-popover" role="dialog" hidden><label><span></span><select></select></label><div class="wp-shell-combined-sound-row"><span></span><button type="button" role="switch" class="wp-frame-sound"><span class="wp-frame-sound-icon" aria-hidden="true"></span><span class="wp-frame-sound-state"></span></button></div></div>';
     const button=utility.querySelector('button'), panel=utility.querySelector('.wp-frame-popover'), select=utility.querySelector('select');
     const languageText=panel.querySelector('label > span'), soundText=panel.querySelector('div > span'), sound=panel.querySelector('.wp-frame-sound'), soundState=sound.querySelector('.wp-frame-sound-state');
+    let restoreLocaleSource = null;
     panel.id=`wp-frame-${id}-settings`;button.setAttribute('aria-controls',panel.id);
     // The canonical locale normalizer identifies the shared select by stable ID.
     select.id=`wp-frame-${id}-locale`;
     utility.setAttribute('data-runtime-localize','off');
     for(const option of localeSelect?.options||[])select.add(option.cloneNode(true));
+    if (localeSelect) {
+      const localeOwner = localeSelect.closest('label,.language-picker,.locale-picker,.locale-control,.locale,.lang-switch') || localeSelect;
+      if (!localeOwner.closest('[data-wp-frame-locale-source]') && localeOwner.parentNode) {
+        const sourceParent = localeOwner.parentNode;
+        const sourceNext = localeOwner.nextSibling;
+        const sourceSlot = document.createElement('div');
+        sourceSlot.hidden = true;
+        sourceSlot.dataset.wpFrameLocaleSource = '';
+        sourceSlot.setAttribute('aria-hidden', 'true');
+        sourceSlot.append(localeOwner);
+        utility.append(sourceSlot);
+        restoreLocaleSource = () => {
+          if (sourceParent.isConnected) {
+            sourceParent.insertBefore(localeOwner, sourceNext?.parentNode === sourceParent ? sourceNext : null);
+          }
+        };
+      }
+    }
     panel.querySelector('label').hidden=!showLanguage||!localeSelect;
     const close=(focus=false)=>{const wasOpen=!panel.hidden;panel.hidden=true;button.setAttribute('aria-expanded','false');if(wasOpen)notifyInteraction();if(focus)button.focus({preventScroll:true});};
     const refresh=()=>{
@@ -215,7 +234,7 @@
     listen(document,'keydown',e=>{if(e.key==='Escape'&&!panel.hidden){e.preventDefault();e.stopPropagation();close(true);}});
     listen(window,'wonder:locale-change',refresh);listen(window,'weightplay:audio-volume-change',refresh);
     refresh();
-    return {utility,button,panel,select,sound,close,refresh,destroy(){const wasOpen=!panel.hidden;abort.abort();utility.remove();if(wasOpen)notifyInteraction();}};
+    return {utility,button,panel,select,sound,close,refresh,destroy(){const wasOpen=!panel.hidden;abort.abort();restoreLocaleSource?.();utility.remove();if(wasOpen)notifyInteraction();}};
   }
   function mount({ root, scenes, localeSelect, playUI = false }) {
     if (mounts.has(root)) return mounts.get(root);

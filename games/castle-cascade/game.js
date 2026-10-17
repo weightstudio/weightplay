@@ -6,9 +6,9 @@ import {
   createState,
   objectiveCounts,
   playSwap,
-} from "./cascade-core.js?v=20261011-birds-v20";
-import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261011-birds-v20";
-import { SIEGE_LEVELS, siegeSnapshot, siegeRemaining } from "./siege-core.js?v=20261011-birds-v20";
+} from "./cascade-core.js?v=20261017-terrain-bird-v23";
+import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261017-terrain-bird-v23";
+import { SIEGE_LEVELS, siegeSnapshot, siegeRemaining } from "./siege-core.js?v=20261017-terrain-bird-v23";
 import { createCastleCascadeStageConfig } from "./stage-config.js";
 
 const GAME_ID = "castle-cascade";
@@ -364,14 +364,19 @@ function renderAccessibleBoard() {
   board.setAttribute("aria-label", text("boardLabel"));
   const fragment = document.createDocumentFragment();
   gameState.board.forEach((tile, index) => {
+    if (tile.void) return;
     const row = Math.floor(index / 9) + 1;
     const col = (index % 9) + 1;
     const button = document.createElement("button");
     button.type = "button";
     button.className = "grid-cell";
     button.dataset.index = String(index);
+    button.style.gridColumn = String(col);
+    button.style.gridRow = String(row);
     button.tabIndex = index === focusCell ? 0 : -1;
     button.setAttribute("role", "gridcell");
+    button.setAttribute("aria-rowindex", String(row));
+    button.setAttribute("aria-colindex", String(col));
     button.setAttribute("aria-label", text("cellLabel", { row: number(row), col: number(col), content: tileDescription(tile, index) }));
     button.setAttribute("aria-selected", String(index === selectedCell));
     button.setAttribute("aria-disabled", String(!canSwap(gameState.board, index)));
@@ -433,7 +438,7 @@ function startStage(index) {
   gameState = createState(index, unlocked);
   document.querySelector("#battle").dataset.mode = gameState.siege ? "siege" : "puzzle";
   selectedCell = -1;
-  focusCell = 40;
+  focusCell = gameState.board[40].void ? gameState.board.findIndex(tile => !tile.void) : 40;
   busy = false;
   boardAvailable = false;
   document.querySelector("#result").hidden = true;
@@ -679,6 +684,17 @@ function handleKeydown(event) {
   else if (event.key === "End") next = Math.floor(focusCell / 9) * 9 + 8;
   else return;
   event.preventDefault();
+  if (event.key === "Home" || event.key === "End") {
+    const step = event.key === "Home" ? 1 : -1;
+    while (gameState.board[next]?.void && Math.floor(next / 9) === Math.floor(focusCell / 9)) next += step;
+  } else {
+    const step = next - focusCell;
+    while (step && gameState.board[next]?.void) {
+      const candidate = next + step;
+      if (candidate < 0 || candidate >= 81 || Math.abs(step) === 1 && Math.floor(candidate / 9) !== Math.floor(focusCell / 9)) { next = focusCell; break; }
+      next = candidate;
+    }
+  }
   if (next !== focusCell) focusBoardCell(next);
 }
 

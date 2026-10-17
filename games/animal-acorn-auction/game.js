@@ -1,22 +1,10 @@
+/* Acorn Auction uses the shared I9 screen frame and shared Stage rail. */
 (() => {
   "use strict";
 
-  if (window.__ACORN_AUCTION_INTERFACE7_COMPAT__) return;
-  window.__ACORN_AUCTION_INTERFACE7_COMPAT__ = true;
-  document.body?.setAttribute("data-wp-preserve-document-scroll", "true");
-
   const routeLocales = {
-    en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es",
-    "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar"
-  };
-  const startLabels = {
-    en: "Start Game", "zh-Hant": "開始遊戲", "zh-Hans": "开始游戏", ja: "ゲーム開始", ko: "게임 시작",
-    es: "Iniciar juego", "pt-BR": "Iniciar jogo", fr: "Commencer", de: "Spiel starten", it: "Inizia gioco",
-    ru: "Начать игру", hi: "गेम शुरू करें", ar: "ابدأ اللعبة"
-  };
-  const stageLabels = {
-    en: "Stages", "zh-Hant": "關卡", "zh-Hans": "关卡", ja: "ステージ", ko: "스테이지", es: "Niveles",
-    "pt-BR": "Fases", fr: "Niveaux", de: "Level", it: "Livelli", ru: "Уровни", hi: "स्तर", ar: "المراحل"
+    en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko",
+    es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar",
   };
   const leaveMessages = {
     en: "Leave “{stage}” and return to Stages? Any pending result or unfinished picks for this round will be discarded; rounds already completed stay completed.",
@@ -26,70 +14,27 @@
     ko: "“{stage}”에서 나가 스테이지로 돌아갈까요? 이 라운드의 완료되지 않은 선택이나 대기 중인 결과는 사라지지만 이미 완료한 라운드는 유지됩니다.",
     es: "¿Salir de «{stage}» y volver a Niveles? Se descartarán las elecciones sin terminar o el resultado pendiente de esta ronda; las rondas ya completadas se conservarán.",
     "pt-BR": "Sair de “{stage}” e voltar às Fases? As escolhas não concluídas ou o resultado pendente desta rodada serão descartados; as rodadas já concluídas serão mantidas.",
-    fr: "Quitter « {stage} » et revenir aux Niveaux ? Les choix non terminés ou le résultat en attente de cette manche seront abandonnés ; les manches déjà terminées resteront enregistrées.",
+    fr: "Quitter « {stage} » et revenir aux Niveaux ? Les choix non terminés ou le résultat en attente de cette manche seront abandonnés ; les manches déjà terminées resteront.",
     de: "„{stage}“ verlassen und zu den Leveln zurückkehren? Unfertige Entscheidungen oder das ausstehende Ergebnis dieser Runde werden verworfen; bereits abgeschlossene Runden bleiben erhalten.",
-    it: "Uscire da “{stage}” e tornare ai Livelli? Le scelte non completate o il risultato in attesa di questo round verranno scartati; i round già completati resteranno salvati.",
-    ru: "Выйти из «{stage}» и вернуться к уровням? Незавершённые выборы или ожидающий результат этого раунда будут сброшены; уже завершённые раунды сохранятся.",
-    hi: "“{stage}” छोड़कर स्तरों पर लौटें? इस राउंड की अधूरी पसंदें या लंबित परिणाम हटा दिए जाएँगे; पहले से पूरे किए गए राउंड सुरक्षित रहेंगे।",
-    ar: "هل تريد مغادرة «{stage}» والعودة إلى المراحل؟ ستُلغى الاختيارات غير المكتملة أو النتيجة المعلّقة لهذه الجولة، بينما ستبقى الجولات المكتملة محفوظة."
+    it: "Uscire da “{stage}” e tornare ai Livelli? Le scelte non completate o il risultato in attesa di questo round verranno scartati; i round già completati resteranno.",
+    ru: "Выйти из «{stage}» и вернуться к уровням? Незавершённые выборы или ожидающий результат этого раунда будут сброшены; завершённые раунды сохранятся.",
+    hi: "“{stage}” छोड़कर स्तरों पर लौटें? इस राउंड की अधूरी पसंदें या लंबित परिणाम हट जाएँगे; पहले से पूरे किए गए राउंड सुरक्षित रहेंगे।",
+    ar: "هل تريد مغادرة «{stage}» والعودة إلى المراحل؟ ستُلغى الاختيارات غير المكتملة أو النتيجة المعلّقة لهذه الجولة، بينما ستبقى الجولات المكتملة.",
   };
   const continueLabels = {
     en: "Continue playing", "zh-Hant": "繼續遊玩", "zh-Hans": "继续游戏", ja: "プレイを続ける", ko: "계속 플레이",
     es: "Seguir jugando", "pt-BR": "Continuar jogando", fr: "Continuer à jouer", de: "Weiterspielen", it: "Continua a giocare",
-    ru: "Продолжить игру", hi: "खेल जारी रखें", ar: "متابعة اللعب"
+    ru: "Продолжить игру", hi: "खेल जारी रखें", ar: "متابعة اللعب",
   };
   const returnLabels = {
     en: "Return to Stages", "zh-Hant": "返回關卡", "zh-Hans": "返回关卡", ja: "ステージへ戻る", ko: "스테이지로 돌아가기",
     es: "Volver a Niveles", "pt-BR": "Voltar às Fases", fr: "Retour aux niveaux", de: "Zu den Leveln", it: "Torna ai livelli",
-    ru: "К уровням", hi: "स्तरों पर लौटें", ar: "العودة إلى المراحل"
+    ru: "К уровням", hi: "स्तरों पर लौटें", ar: "العودة إلى المراحل",
   };
+  const locale = () => routeLocales[location.pathname.split("/").filter(Boolean)[0]?.toLowerCase?.()]
+    || window.WonderI18n?.actualLocale?.() || document.documentElement.lang || "en";
 
-  const normalizeLocale = (value) => {
-    const raw = String(value || "");
-    if (raw === "zh-TW" || raw.toLowerCase() === "zh-tw") return "zh-Hant";
-    if (raw === "zh-CN" || raw.toLowerCase() === "zh-cn") return "zh-Hans";
-    if (raw.toLowerCase().startsWith("pt")) return "pt-BR";
-    return startLabels[raw] ? raw : "en";
-  };
-  const localeFromPath = () => routeLocales[location.pathname.split("/").filter(Boolean)[0]?.toLowerCase?.()] || null;
-  const currentLocale = () => normalizeLocale(localeFromPath() || document.documentElement.lang || "en");
-
-  Object.entries(startLabels).forEach(([locale, label]) => {
-    if (window.ACORN_AUCTION_LOCALES?.[locale]) window.ACORN_AUCTION_LOCALES[locale].start = label;
-  });
-
-  const startButton = document.getElementById("startBtn");
-  startButton?.setAttribute("data-wp-main-start", "true");
-
-  const ensureStageNav = () => {
-    const stage = document.getElementById("stageScreen");
-    if (!stage) return;
-    let nav = document.getElementById("acornInterface7StageNav");
-    if (!nav) {
-      nav = document.createElement("nav");
-      nav.id = "acornInterface7StageNav";
-      nav.className = "acorn-interface7-stage-nav";
-      nav.innerHTML = '<span class="acorn-interface7-stage-slot" aria-hidden="true"></span><button id="acornInterface7StagesTab" class="acorn-interface7-stage-tab is-active" type="button" aria-current="page"></button><span class="acorn-interface7-stage-slot" aria-hidden="true"></span>';
-      stage.appendChild(nav);
-      nav.querySelector("button")?.addEventListener("click", () => {
-        stage.querySelector('#stageList [aria-selected="true"]')?.scrollIntoView?.({ behavior: "smooth", block: "nearest", inline: "center" });
-      });
-    }
-    const locale = currentLocale();
-    const tab = document.getElementById("acornInterface7StagesTab");
-    if (tab) tab.textContent = stageLabels[locale] || stageLabels.en;
-    nav.setAttribute("aria-label", stageLabels[locale] || stageLabels.en);
-  };
-
-  const retireLegacyExtras = () => {
-    document.querySelectorAll("#mainScreen .cover-badge, #mainScreen > .eyebrow, #mainScreen .guide-art-wrap, #mainScreen #mapBtn, #battleScreen #backMarketBtn")
-      .forEach((node) => {
-        node.setAttribute("aria-hidden", "true");
-        node.setAttribute("tabindex", "-1");
-      });
-  };
-
-  const installBattleLeaveGuard = () => {
+  function installBattleLeaveGuard() {
     const button = document.getElementById("battleBackBtn");
     if (!button || button.dataset.wpAcornLeaveGuard === "true") return;
     button.dataset.wpAcornLeaveGuard = "true";
@@ -98,19 +43,18 @@
     let coveredNodes = [];
 
     const ensureDialog = () => {
-      let dialog = document.getElementById("acornInterface7LeaveDialog");
+      let dialog = document.getElementById("acornLeaveDialog");
       if (dialog) return dialog;
       const battle = document.getElementById("battleScreen");
       if (!battle) return null;
       dialog = document.createElement("div");
-      dialog.id = "acornInterface7LeaveDialog";
-      dialog.className = "acorn-interface7-leave-layer";
+      dialog.id = "acornLeaveDialog";
       dialog.setAttribute("role", "dialog");
       dialog.setAttribute("aria-modal", "true");
-      dialog.setAttribute("aria-labelledby", "acornInterface7LeaveMessage");
+      dialog.setAttribute("aria-labelledby", "acornLeaveMessage");
       dialog.hidden = true;
-      dialog.innerHTML = '<div class="acorn-interface7-leave-card"><p id="acornInterface7LeaveMessage"></p><div class="acorn-interface7-leave-actions"><button id="acornInterface7Continue" class="primary" type="button"></button><button id="acornInterface7Return" class="secondary" type="button"></button></div></div>';
-      battle.appendChild(dialog);
+      dialog.innerHTML = '<div class="acorn-leave-card"><p id="acornLeaveMessage"></p><div class="acorn-leave-actions"><button id="acornContinue" class="primary" data-wp-frame-action="primary" type="button"></button><button id="acornReturn" class="secondary" data-wp-frame-action="secondary" type="button"></button></div></div>';
+      battle.append(dialog);
       return dialog;
     };
 
@@ -118,7 +62,6 @@
       coveredNodes.forEach(({ node, inert }) => { node.inert = inert; });
       coveredNodes = [];
     };
-
     const closeDialog = ({ resume = false, restoreFocus = false } = {}) => {
       const dialog = ensureDialog();
       if (!dialog || dialog.hidden) return;
@@ -128,29 +71,28 @@
       pausedPending = null;
       if (restoreFocus) button.focus({ preventScroll: true });
     };
-
     const openDialog = () => {
       const battle = document.getElementById("battleScreen");
       const dialog = ensureDialog();
       if (!battle || !dialog) return;
-      const locale = currentLocale();
-      const stage = document.getElementById("roundTitle")?.textContent?.trim() || stageLabels[locale] || stageLabels.en;
-      const message = (leaveMessages[locale] || leaveMessages.en).replace("{stage}", stage);
-      dialog.querySelector("#acornInterface7LeaveMessage").textContent = message;
-      dialog.querySelector("#acornInterface7Continue").textContent = continueLabels[locale] || continueLabels.en;
-      dialog.querySelector("#acornInterface7Return").textContent = returnLabels[locale] || returnLabels.en;
+      const activeLocale = locale();
+      const stageName = document.getElementById("roundTitle")?.textContent?.trim() || "";
+      const message = (leaveMessages[activeLocale] || leaveMessages.en).replace("{stage}", stageName);
+      dialog.querySelector("#acornLeaveMessage").textContent = message;
+      dialog.querySelector("#acornContinue").textContent = continueLabels[activeLocale] || continueLabels.en;
+      dialog.querySelector("#acornReturn").textContent = returnLabels[activeLocale] || returnLabels.en;
       pausedPending = window.__ACORN_AUCTION_INTERFACE_BRIDGE__?.pausePending?.() || null;
       coveredNodes = [...battle.children]
         .filter((node) => node !== dialog)
         .map((node) => ({ node, inert: Boolean(node.inert) }));
       coveredNodes.forEach(({ node }) => { node.inert = true; });
       dialog.hidden = false;
-      dialog.querySelector("#acornInterface7Continue")?.focus({ preventScroll: true });
+      dialog.querySelector("#acornContinue")?.focus({ preventScroll: true });
     };
 
     const dialog = ensureDialog();
-    dialog?.querySelector("#acornInterface7Continue")?.addEventListener("click", () => closeDialog({ resume: true, restoreFocus: true }));
-    dialog?.querySelector("#acornInterface7Return")?.addEventListener("click", () => {
+    dialog?.querySelector("#acornContinue")?.addEventListener("click", () => closeDialog({ resume: true, restoreFocus: true }));
+    dialog?.querySelector("#acornReturn")?.addEventListener("click", () => {
       closeDialog();
       bypass = true;
       button.click();
@@ -176,7 +118,6 @@
         first.focus();
       }
     });
-
     button.addEventListener("click", (event) => {
       if (bypass) {
         bypass = false;
@@ -190,18 +131,18 @@
       event.stopImmediatePropagation();
       openDialog();
     }, true);
-  };
+  }
 
-  ensureStageNav();
-  retireLegacyExtras();
-  installBattleLeaveGuard();
-
-  import("/src/stage-selector-standard.js");
-  import("./game-v4-base.js?v=20260924-acorn-auction-v6-i7-issue-repair").then(() => {
-    ensureStageNav();
-    retireLegacyExtras();
-    installBattleLeaveGuard();
-    window.dispatchEvent(new Event("weightplay:stage-sync"));
-    document.getElementById("localeSelect")?.addEventListener("change", () => queueMicrotask(ensureStageNav));
-  });
+  import("./game-v4-base.js?v=20261017-acorn-auction-i9-candidate1")
+    .then(() => {
+      window.mountAnimalAcornAuctionFrame();
+      installBattleLeaveGuard();
+      window.WeightPlayGameEntryLoader?.ready?.();
+    })
+    .catch((error) => {
+      console.error("Acorn Auction failed to load", error);
+      window.WeightPlayGameEntryLoader?.fail?.(error.message || "Acorn Auction startup failed");
+      const status = document.querySelector("#loading p");
+      if (status) status.setAttribute("role", "alert");
+    });
 })();

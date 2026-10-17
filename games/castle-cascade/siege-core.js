@@ -92,9 +92,12 @@ export function advanceSiegeTurn(siege, board, freshWave = false) {
     enemy.row = toRow;
     if (toRow === 4) {
       // Preserve a playable bottom area. Never refill a partly-cleared grass row.
-      const row = Array.from({ length: 6 }, (_, i) => i).find(r => board.slice(r * 9, r * 9 + 9).every(tile => !tile.grass));
+      const row = Array.from({ length: 6 }, (_, i) => i).find(r => {
+        const tiles = board.slice(r * 9, r * 9 + 9).filter(tile => !tile.void);
+        return tiles.length && tiles.every(tile => !tile.grass);
+      });
       if (row !== undefined) {
-        const cells = Array.from({ length: 9 }, (_, col) => row * 9 + col);
+        const cells = Array.from({ length: 9 }, (_, col) => row * 9 + col).filter(index => !board[index].void);
         cells.forEach(index => { board[index].grass = 1; });
         infestations.push({ id: enemy.id, row, cells });
       }

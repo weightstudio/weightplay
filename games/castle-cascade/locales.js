@@ -235,7 +235,7 @@ const CC_SIEGE_I18N = {
       "Moss boar",
       "Stone ram"
     ],
-    "Every fifth stage is a siege with an obstacle-free starting board. Each cleared gem fires up its own lane at the first enemy in that lane. Powers hit harder. Boars advance one step per turn; rams charge for a turn, then advance two. At the board edge they cover a row with grass and retreat. An adjacent match or power hit removes grass in one hit, preserving the piece underneath. Defeat every wave before moves run out. A horizontal triple fires three lanes at once; a vertical triple fires three shots up one lane. In siege stages, birds fly straight to a castle (or a remaining monster), instead of attacking a board tile. Two birds both fly; birds can carry combined powers.",
+    "Every fifth stage is a siege with an obstacle-free starting board. Each cleared gem fires up its own lane at the first enemy in that lane. Powers hit harder. Boars advance one step per turn; rams charge for a turn, then advance two. At the board edge they cover a row with grass and retreat. An adjacent match or power hit removes grass in one hit, preserving the piece underneath. Defeat every wave before moves run out. A horizontal triple fires three lanes at once; a vertical triple fires three shots up one lane. In siege stages, birds fly straight to a castle (or a remaining monster), after its launch blast. Two birds both fly; birds can carry combined powers.",
     "Grass · 1 hit",
     "Monsters advance.",
     "Ram charging: two steps next turn!",
@@ -253,7 +253,7 @@ const CC_SIEGE_I18N = {
       "苔草野豬",
       "石角山羊"
     ],
-    "每五關穿插攻城戰，初始棋盤沒有箱子等障礙。每顆消除方塊沿自己的直行向上飛，擊中同路線最前方的敵人；特殊消除威力更強。苔草野豬每回合前進一格；石角山羊先蓄力一回合，再衝兩格。抵達棋盤時會讓整排長出草堆，然後後退。草堆旁消除或特殊攻擊打一下即可清除草堆，保留底下的方塊。步數用完前擊破所有波次即可過關。 橫向三消是三路各一發，直向三消是同一路連續三發。攻城關卡的小鳥會直接飛去攻擊城堡；沒有城堡時攻擊剩下的怪物，不再啄棋盤上的其他方塊。雙鳥會各自飛出，小鳥也可以攜帶合體的特殊符號。",
+    "每五關穿插攻城戰，初始棋盤沒有箱子等障礙。每顆消除方塊沿自己的直行向上飛，擊中同路線最前方的敵人；特殊消除威力更強。苔草野豬每回合前進一格；石角山羊先蓄力一回合，再衝兩格。抵達棋盤時會讓整排長出草堆，然後後退。草堆旁消除或特殊攻擊打一下即可清除草堆，保留底下的方塊。步數用完前擊破所有波次即可過關。 橫向三消是三路各一發，直向三消是同一路連續三發。攻城關卡的小鳥會直接飛去攻擊城堡；沒有城堡時攻擊剩下的怪物，起飛前仍會打中上下左右四格。雙鳥會各自飛出，小鳥也可以攜帶合體的特殊符號。",
     "草堆・受擊一次清除",
     "怪物向前推進！",
     "石角山羊蓄力：下回合衝刺兩格！",
@@ -271,7 +271,7 @@ const CC_SIEGE_I18N = {
       "苔草野猪",
       "石角山羊"
     ],
-    "每五关穿插攻城战，初始棋盘没有箱子等障碍。每颗消除方块沿自己的直行向上飞，击中同路线最前方的敌人；特殊消除威力更强。苔草野猪每回合前进一格；石角山羊先蓄力一回合，再冲两格。抵达棋盘时会让整排长出草堆，然后后退。草堆旁消除或特殊攻击打一下即可清除草堆，保留底下的方块。步数用完前击破所有波次即可过关。 横向三消是三路各一发，直向三消是同一路连续三发。攻城关卡的小鸟会直接飞去攻击城堡；没有城堡时攻击剩下的怪物，不再啄棋盘上的其他方块。双鸟会各自飞出，小鸟也可以携带合体的特殊符号。",
+    "每五关穿插攻城战，初始棋盘没有箱子等障碍。每颗消除方块沿自己的直行向上飞，击中同路线最前方的敌人；特殊消除威力更强。苔草野猪每回合前进一格；石角山羊先蓄力一回合，再冲两格。抵达棋盘时会让整排长出草堆，然后后退。草堆旁消除或特殊攻击打一下即可清除草堆，保留底下的方块。步数用完前击破所有波次即可过关。 横向三消是三路各一发，直向三消是同一路连续三发。攻城关卡的小鸟会直接飞去攻击城堡；没有城堡时攻击剩下的怪物，起飞前仍会打中上下左右四格。双鸟会各自飞出，小鸟也可以携带合体的特殊符号。",
     "草堆・受击一次清除",
     "怪物向前推进！",
     "石角山羊蓄力：下回合冲刺两格！",
@@ -289,7 +289,7 @@ const CC_SIEGE_I18N = {
       "苔イノシシ",
       "石の雄羊"
     ],
-    "5ステージごとに攻城戦。最初の盤面に障害物はありません。消したピースは同じ列の一番手前の敵に当たり、特殊攻撃は威力が上がります。イノシシは毎ターン1歩、雄羊は1ターン溜めて2歩進みます。盤面に着くと横一列を草で覆って後退します。隣でのマッチか特殊攻撃1回で草だけを除去できます。手数が尽きる前に全ウェーブを倒しましょう。 横3個なら3列に1発ずつ、縦3個なら同じ列に3発。攻城戦の鳥は盤面の別のピースではなく城を攻撃し、城がなければ残るモンスターを攻撃します。鳥2羽は両方飛び、合体した特殊ピースも運べます。",
+    "5ステージごとに攻城戦。最初の盤面に障害物はありません。消したピースは同じ列の一番手前の敵に当たり、特殊攻撃は威力が上がります。イノシシは毎ターン1歩、雄羊は1ターン溜めて2歩進みます。盤面に着くと横一列を草で覆って後退します。隣でのマッチか特殊攻撃1回で草だけを除去できます。手数が尽きる前に全ウェーブを倒しましょう。 横3個なら3列に1発ずつ、縦3個なら同じ列に3発。攻城戦の鳥は離陸時の周囲への攻撃後に城を攻撃し、城がなければ残るモンスターを攻撃します。鳥2羽は両方飛び、合体した特殊ピースも運べます。",
     "草・1回で除去",
     "敵が前進！",
     "雄羊が溜め中：次は2歩！",
@@ -307,7 +307,7 @@ const CC_SIEGE_I18N = {
       "이끼 멧돼지",
       "돌 숫양"
     ],
-    "다섯 스테이지마다 공성전입니다. 처음 보드에는 장애물이 없습니다. 제거한 조각은 같은 열의 가장 앞선 적을 공격하며 특수 공격은 더 강합니다. 멧돼지는 턴마다 한 칸, 숫양은 한 턴 충전 후 두 칸 전진합니다. 보드에 닿으면 한 줄에 풀을 만들고 물러납니다. 인접 매치나 특수 공격 한 번으로 풀만 제거하며 아래 조각은 남습니다. 이동 횟수 안에 모든 웨이브를 격파하세요. 가로 세 개는 세 열에 한 발씩, 세로 세 개는 한 열에 세 발을 쏩니다. 공성전의 새는 다른 보드 조각 대신 성을 공격하고, 성이 없으면 남은 몬스터를 공격합니다. 새 두 마리는 모두 날아가며 조합한 특수 조각도 운반합니다.",
+    "다섯 스테이지마다 공성전입니다. 처음 보드에는 장애물이 없습니다. 제거한 조각은 같은 열의 가장 앞선 적을 공격하며 특수 공격은 더 강합니다. 멧돼지는 턴마다 한 칸, 숫양은 한 턴 충전 후 두 칸 전진합니다. 보드에 닿으면 한 줄에 풀을 만들고 물러납니다. 인접 매치나 특수 공격 한 번으로 풀만 제거하며 아래 조각은 남습니다. 이동 횟수 안에 모든 웨이브를 격파하세요. 가로 세 개는 세 열에 한 발씩, 세로 세 개는 한 열에 세 발을 쏩니다. 공성전의 새는 출발 시 주변을 공격한 뒤 성을 공격하고, 성이 없으면 남은 몬스터를 공격합니다. 새 두 마리는 모두 날아가며 조합한 특수 조각도 운반합니다.",
     "풀 · 1회 타격",
     "몬스터 전진!",
     "숫양 충전: 다음 턴 두 칸!",
@@ -325,7 +325,7 @@ const CC_SIEGE_I18N = {
       "Jabalí de musgo",
       "Carnero de piedra"
     ],
-    "Cada quinto nivel es un asedio sin obstáculos iniciales. Cada gema eliminada golpea al primer enemigo de su columna; los poderes hacen más daño. El jabalí avanza un paso por turno; el carnero carga un turno y avanza dos. Al llegar al tablero cubren una fila de hierba y retroceden. Una combinación adyacente o un poder quita la hierba de un golpe y conserva la pieza debajo. Vence todas las oleadas antes de agotar los movimientos. Tres fichas horizontales disparan por tres columnas; tres verticales, tres veces por una. En asedios, los pájaros atacan un castillo o un monstruo restante, no otra ficha. Los dos pájaros de una pareja vuelan y pueden transportar poderes combinados.",
+    "Cada quinto nivel es un asedio sin obstáculos iniciales. Cada gema eliminada golpea al primer enemigo de su columna; los poderes hacen más daño. El jabalí avanza un paso por turno; el carnero carga un turno y avanza dos. Al llegar al tablero cubren una fila de hierba y retroceden. Una combinación adyacente o un poder quita la hierba de un golpe y conserva la pieza debajo. Vence todas las oleadas antes de agotar los movimientos. Tres fichas horizontales disparan por tres columnas; tres verticales, tres veces por una. En asedios, los pájaros atacan un castillo o un monstruo restante, después de su ataque de despegue. Los dos pájaros de una pareja vuelan y pueden transportar poderes combinados.",
     "Hierba · 1 golpe",
     "¡Los monstruos avanzan!",
     "¡Carnero cargando: dos pasos después!",
@@ -343,7 +343,7 @@ const CC_SIEGE_I18N = {
       "Javali de musgo",
       "Carneiro de pedra"
     ],
-    "A cada cinco fases há um cerco sem obstáculos iniciais. Cada gema removida atinge o primeiro inimigo da sua coluna; poderes causam mais dano. O javali avança um passo por turno; o carneiro carrega por um turno e avança dois. Ao chegar ao tabuleiro, cobrem uma linha com grama e recuam. Uma combinação adjacente ou um poder remove a grama com um golpe, preservando a peça embaixo. Vença todas as ondas antes de acabar as jogadas. Três peças na horizontal disparam em três colunas; na vertical, três vezes na mesma. No cerco, pássaros atacam um castelo ou monstro restante, em vez de outra peça. Os dois pássaros de uma dupla voam e podem carregar poderes combinados.",
+    "A cada cinco fases há um cerco sem obstáculos iniciais. Cada gema removida atinge o primeiro inimigo da sua coluna; poderes causam mais dano. O javali avança um passo por turno; o carneiro carrega por um turno e avança dois. Ao chegar ao tabuleiro, cobrem uma linha com grama e recuam. Uma combinação adjacente ou um poder remove a grama com um golpe, preservando a peça embaixo. Vença todas as ondas antes de acabar as jogadas. Três peças na horizontal disparam em três colunas; na vertical, três vezes na mesma. No cerco, pássaros atacam um castelo ou monstro restante, depois do ataque de decolagem. Os dois pássaros de uma dupla voam e podem carregar poderes combinados.",
     "Grama · 1 golpe",
     "Monstros avançando!",
     "Carneiro carregando: dois passos depois!",
@@ -361,7 +361,7 @@ const CC_SIEGE_I18N = {
       "Sanglier moussu",
       "Bélier de pierre"
     ],
-    "Tous les cinq niveaux, un siège commence sans obstacles sur le plateau. Chaque gemme retirée touche le premier ennemi de sa colonne ; les pouvoirs frappent plus fort. Le sanglier avance d’un pas par tour ; le bélier charge un tour puis avance de deux pas. Au bord du plateau, ils couvrent une rangée d’herbe puis reculent. Une combinaison voisine ou un pouvoir enlève l’herbe en un coup et conserve la pièce dessous. Vainquez toutes les vagues avant de manquer de coups. Trois pièces horizontales tirent sur trois colonnes ; trois verticales tirent trois fois dans une seule. En siège, les oiseaux visent un château ou un monstre restant, pas une autre pièce. Les deux oiseaux d’une paire volent et peuvent porter des pouvoirs combinés.",
+    "Tous les cinq niveaux, un siège commence sans obstacles sur le plateau. Chaque gemme retirée touche le premier ennemi de sa colonne ; les pouvoirs frappent plus fort. Le sanglier avance d’un pas par tour ; le bélier charge un tour puis avance de deux pas. Au bord du plateau, ils couvrent une rangée d’herbe puis reculent. Une combinaison voisine ou un pouvoir enlève l’herbe en un coup et conserve la pièce dessous. Vainquez toutes les vagues avant de manquer de coups. Trois pièces horizontales tirent sur trois colonnes ; trois verticales tirent trois fois dans une seule. En siège, les oiseaux visent un château ou un monstre restant, après leur attaque au décollage. Les deux oiseaux d’une paire volent et peuvent porter des pouvoirs combinés.",
     "Herbe · 1 coup",
     "Les monstres avancent !",
     "Bélier en charge : deux pas ensuite !",
@@ -379,7 +379,7 @@ const CC_SIEGE_I18N = {
       "Mooskeiler",
       "Steinwidder"
     ],
-    "Jede fünfte Stufe ist eine Belagerung ohne anfängliche Hindernisse. Entfernte Steine treffen den vordersten Gegner ihrer Spalte; Kräfte sind stärker. Keiler gehen pro Zug einen Schritt. Widder laden einen Zug auf und gehen dann zwei Schritte. Am Spielfeld bedecken sie eine Reihe mit Gras und ziehen sich zurück. Eine benachbarte Kombination oder Kraft entfernt das Gras mit einem Treffer; der Stein darunter bleibt. Besiege alle Wellen innerhalb der Züge. Drei waagerechte Steine feuern in drei Spalten, drei senkrechte dreimal in derselben. Bei Belagerungen greifen Vögel eine Burg oder verbleibende Monster statt anderer Steine an. Beide Vögel eines Paars fliegen und können kombinierte Kräfte tragen.",
+    "Jede fünfte Stufe ist eine Belagerung ohne anfängliche Hindernisse. Entfernte Steine treffen den vordersten Gegner ihrer Spalte; Kräfte sind stärker. Keiler gehen pro Zug einen Schritt. Widder laden einen Zug auf und gehen dann zwei Schritte. Am Spielfeld bedecken sie eine Reihe mit Gras und ziehen sich zurück. Eine benachbarte Kombination oder Kraft entfernt das Gras mit einem Treffer; der Stein darunter bleibt. Besiege alle Wellen innerhalb der Züge. Drei waagerechte Steine feuern in drei Spalten, drei senkrechte dreimal in derselben. Bei Belagerungen greifen Vögel eine Burg oder verbleibende Monster nach ihrem Startangriff an. Beide Vögel eines Paars fliegen und können kombinierte Kräfte tragen.",
     "Gras · 1 Treffer",
     "Monster rücken vor!",
     "Widder lädt auf: danach zwei Schritte!",
@@ -397,7 +397,7 @@ const CC_SIEGE_I18N = {
       "Cinghiale muschioso",
       "Ariete di pietra"
     ],
-    "Ogni quinto livello è un assedio senza ostacoli iniziali. Le gemme eliminate colpiscono il primo nemico della propria colonna; i poteri sono più forti. Il cinghiale avanza di un passo a turno; l’ariete carica un turno e avanza di due. Al tabellone coprono una riga d’erba e arretrano. Un abbinamento adiacente o un potere elimina l’erba con un colpo, conservando la tessera sotto. Sconfiggi tutte le ondate prima di finire le mosse. Tre tessere orizzontali sparano in tre colonne; tre verticali sparano tre volte nella stessa. Durante un assedio gli uccelli colpiscono un castello o un mostro rimasto, non un’altra tessera. Entrambi gli uccelli di una coppia volano e possono trasportare poteri combinati.",
+    "Ogni quinto livello è un assedio senza ostacoli iniziali. Le gemme eliminate colpiscono il primo nemico della propria colonna; i poteri sono più forti. Il cinghiale avanza di un passo a turno; l’ariete carica un turno e avanza di due. Al tabellone coprono una riga d’erba e arretrano. Un abbinamento adiacente o un potere elimina l’erba con un colpo, conservando la tessera sotto. Sconfiggi tutte le ondate prima di finire le mosse. Tre tessere orizzontali sparano in tre colonne; tre verticali sparano tre volte nella stessa. Durante un assedio gli uccelli colpiscono un castello o un mostro rimasto, dopo l’attacco alla partenza. Entrambi gli uccelli di una coppia volano e possono trasportare poteri combinati.",
     "Erba · 1 colpo",
     "I mostri avanzano!",
     "Ariete in carica: poi due passi!",
@@ -415,7 +415,7 @@ const CC_SIEGE_I18N = {
       "Мшистый кабан",
       "Каменный баран"
     ],
-    "Каждый пятый уровень — осада без начальных препятствий. Убранный камень бьёт первого врага в своём столбце; усилители наносят больше урона. Кабан идёт на шаг за ход, баран готовится ход и идёт на два. Дойдя до поля, они покрывают ряд травой и отступают. Соседняя комбинация или усилитель убирает траву одним ударом, сохраняя камень под ней. Победите все волны до конца ходов. Три камня по горизонтали стреляют по трём столбцам, по вертикали — трижды по одному. При осаде птицы атакуют замок или оставшегося монстра, а не другую фишку. Обе птицы пары летят и могут нести объединённые усилители.",
+    "Каждый пятый уровень — осада без начальных препятствий. Убранный камень бьёт первого врага в своём столбце; усилители наносят больше урона. Кабан идёт на шаг за ход, баран готовится ход и идёт на два. Дойдя до поля, они покрывают ряд травой и отступают. Соседняя комбинация или усилитель убирает траву одним ударом, сохраняя камень под ней. Победите все волны до конца ходов. Три камня по горизонтали стреляют по трём столбцам, по вертикали — трижды по одному. При осаде птицы атакуют замок или оставшегося монстра, после удара при взлёте. Обе птицы пары летят и могут нести объединённые усилители.",
     "Трава · 1 удар",
     "Монстры наступают!",
     "Баран готовится: затем два шага!",
@@ -433,7 +433,7 @@ const CC_SIEGE_I18N = {
       "काई वाला सूअर",
       "पत्थर का मेढ़ा"
     ],
-    "हर पाँचवाँ चरण बिना शुरुआती बाधाओं की घेराबंदी है। हटाया गया रत्न अपने कॉलम के पहले दुश्मन को मारता है; शक्तियाँ अधिक नुकसान करती हैं। सूअर हर चाल में एक कदम चलता है। मेढ़ा एक चाल तैयारी करके दो कदम चलता है। बोर्ड पर पहुँचकर वे एक पंक्ति पर घास उगाते हैं और पीछे हटते हैं। पास का मिलान या शक्ति एक वार में घास हटाती है, नीचे का रत्न बचता है। चालें खत्म होने से पहले सभी लहरें हराएँ। आड़ी तिकड़ी तीन कॉलम में एक-एक वार करती है; खड़ी तिकड़ी एक कॉलम में तीन वार। घेराबंदी में पक्षी किसी दूसरी टाइल के बजाय महल या बचे राक्षस पर हमला करते हैं। जोड़ी के दोनों पक्षी उड़ते हैं और संयुक्त शक्तियाँ भी ले जा सकते हैं।",
+    "हर पाँचवाँ चरण बिना शुरुआती बाधाओं की घेराबंदी है। हटाया गया रत्न अपने कॉलम के पहले दुश्मन को मारता है; शक्तियाँ अधिक नुकसान करती हैं। सूअर हर चाल में एक कदम चलता है। मेढ़ा एक चाल तैयारी करके दो कदम चलता है। बोर्ड पर पहुँचकर वे एक पंक्ति पर घास उगाते हैं और पीछे हटते हैं। पास का मिलान या शक्ति एक वार में घास हटाती है, नीचे का रत्न बचता है। चालें खत्म होने से पहले सभी लहरें हराएँ। आड़ी तिकड़ी तीन कॉलम में एक-एक वार करती है; खड़ी तिकड़ी एक कॉलम में तीन वार। घेराबंदी में पक्षी उड़ान की शुरुआत में आसपास वार करके महल या बचे राक्षस पर हमला करते हैं। जोड़ी के दोनों पक्षी उड़ते हैं और संयुक्त शक्तियाँ भी ले जा सकते हैं।",
     "घास · 1 वार",
     "राक्षस आगे बढ़े!",
     "मेढ़ा तैयारी में: अगली बार दो कदम!",
@@ -451,7 +451,7 @@ const CC_SIEGE_I18N = {
       "خنزير طحلبي",
       "كبش حجري"
     ],
-    "كل مرحلة خامسة حصار يبدأ بلا عوائق على اللوحة. تصيب الجوهرة المزالة أقرب عدو في عمودها، والقوى أشد ضرراً. يتقدم الخنزير خطوة كل دور؛ يستعد الكبش دوراً ثم يتقدم خطوتين. عند اللوحة يغطون صفاً بالعشب ثم يتراجعون. تطابق مجاور أو قوة يزيل العشب بضربة واحدة ويحفظ القطعة تحته. اهزم كل الموجات قبل نفاد الحركات. ثلاث قطع أفقية تطلق في ثلاثة أعمدة، والثلاث العمودية تطلق ثلاث مرات في عمود واحد. في الحصار تهاجم الطيور قلعة أو وحشاً متبقياً بدلاً من قطعة أخرى. يطير طائرا الزوج كلاهما ويمكنهما حمل القوى المدمجة.",
+    "كل مرحلة خامسة حصار يبدأ بلا عوائق على اللوحة. تصيب الجوهرة المزالة أقرب عدو في عمودها، والقوى أشد ضرراً. يتقدم الخنزير خطوة كل دور؛ يستعد الكبش دوراً ثم يتقدم خطوتين. عند اللوحة يغطون صفاً بالعشب ثم يتراجعون. تطابق مجاور أو قوة يزيل العشب بضربة واحدة ويحفظ القطعة تحته. اهزم كل الموجات قبل نفاد الحركات. ثلاث قطع أفقية تطلق في ثلاثة أعمدة، والثلاث العمودية تطلق ثلاث مرات في عمود واحد. في الحصار تهاجم الطيور قلعة أو وحشاً متبقياً بعد ضربة الإقلاع. يطير طائرا الزوج كلاهما ويمكنهما حمل القوى المدمجة.",
     "عشب · ضربة واحدة",
     "الوحوش تتقدم!",
     "الكبش يستعد: خطوتان بعدها!",
@@ -463,4 +463,65 @@ for (const [locale, [siegeTitle, siegeGoal, siegeWave, siegeBlocked, siegeWin, s
   Object.assign(window.CC_I18N[locale], { siegeTitle, siegeGoal, siegeWave, siegeBlocked, siegeWin, siegeInstructions, siegeBody, grassName, enemyAdvance, enemyCharge, grassSpread,
     siegeKinds: Object.fromEntries(["castle", "bramble", "ram"].map((kind, index) => [kind, kinds[index]])) });
   window.CC_I18N[locale].campaignBody += ` ${siegeBody}`;
+}
+
+// Terrain and bird departure help follows the current owner rules.
+const CC_TERRAIN_HELP = {
+  "en": [
+    "Stages use H, cross, ring, hourglass, diamond and stair terrain. Gaps contain no tiles; matches and falls stay inside playable areas.",
+    "A Bird first hits its four orthogonal neighbors, then flies to its target. In siege stages it seeks a castle."
+  ],
+  "zh-Hant": [
+    "關卡穿插 H 型、十字、環形、沙漏、菱形與階梯棋盤。缺口沒有方塊，不能交換或消除；掉落只在同一段有效區域內進行。",
+    "小鳥會先攻擊上下左右四格，再飛向目標；攻城關卡會飛去打城堡。"
+  ],
+  "zh-Hans": [
+    "关卡穿插 H 型、十字、环形、沙漏、菱形与阶梯棋盘。缺口没有方块，不能交换或消除；掉落只在同一段有效区域内进行。",
+    "小鸟会先攻击上下左右四格，再飞向目标；攻城关卡会飞去打城堡。"
+  ],
+  "ja": [
+    "H形、十字、環、砂時計、ひし形、階段状の盤面が登場。穴にはピースがなく、入れ替えや消去はできません。落下はつながった縦の区間内で行われます。",
+    "鳥は上下左右を先に攻撃してから目標へ飛びます。攻城戦では城を狙います。"
+  ],
+  "ko": [
+    "H자, 십자, 고리, 모래시계, 마름모, 계단 모양 보드가 등장합니다. 빈 공간에는 조각이 없으며 교환하거나 매치할 수 없습니다. 낙하는 연결된 세로 구간 안에서만 일어납니다.",
+    "새는 먼저 상하좌우 네 칸을 공격한 뒤 목표로 날아갑니다. 공성전에서는 성을 겨냥합니다."
+  ],
+  "es": [
+    "Hay tableros en H, cruz, anillo, reloj de arena, rombo y escalera. Los huecos no tienen fichas y no permiten intercambios ni combinaciones. Las caídas quedan dentro de cada tramo vertical.",
+    "El pájaro golpea primero las cuatro casillas vecinas en cruz y luego vuela a su objetivo. En asedios busca un castillo."
+  ],
+  "pt-BR": [
+    "Há tabuleiros em H, cruz, anel, ampulheta, losango e escada. Buracos não contêm peças e não permitem trocas nem combinações. As quedas ficam em cada trecho vertical conectado.",
+    "O pássaro atinge primeiro as quatro casas vizinhas em cruz e depois voa ao alvo. No cerco, procura um castelo."
+  ],
+  "fr": [
+    "Les plateaux prennent des formes de H, croix, anneau, sablier, losange et escalier. Les trous ne contiennent aucune pièce et ne permettent ni échange ni combinaison. Les chutes restent dans chaque segment vertical.",
+    "L’oiseau frappe d’abord les quatre cases voisines en croix, puis vole vers sa cible. En siège, il vise un château."
+  ],
+  "de": [
+    "Es gibt H-, Kreuz-, Ring-, Sanduhr-, Rauten- und Treppenfelder. Lücken enthalten keine Steine und erlauben keinen Tausch oder Treffer. Steine fallen nur innerhalb zusammenhängender senkrechter Abschnitte.",
+    "Der Vogel trifft zuerst die vier direkten Nachbarfelder und fliegt dann zum Ziel. Bei Belagerungen sucht er eine Burg."
+  ],
+  "it": [
+    "I tabelloni hanno forme a H, croce, anello, clessidra, rombo e scala. Nei buchi non ci sono tessere né scambi o abbinamenti. Le cadute restano nei segmenti verticali collegati.",
+    "L’uccello colpisce prima le quattro caselle adiacenti a croce e poi vola al bersaglio. Negli assedi cerca un castello."
+  ],
+  "ru": [
+    "Поля бывают в форме H, креста, кольца, песочных часов, ромба и лестницы. В пустотах нет фишек, их нельзя менять или собирать. Фишки падают только внутри связного вертикального участка.",
+    "Птица сначала бьёт четыре соседние клетки по кресту, а затем летит к цели. При осаде она выбирает замок."
+  ],
+  "hi": [
+    "चरणों में H, क्रॉस, छल्ला, रेतघड़ी, हीरा और सीढ़ी आकार के बोर्ड हैं। खाली जगहों पर टाइल नहीं होती, इसलिए वहाँ अदला-बदली या मिलान नहीं होता। गिरावट जुड़े हुए ऊर्ध्व खंड में रहती है।",
+    "पक्षी पहले ऊपर, नीचे, बाएँ और दाएँ वार करता है, फिर लक्ष्य तक उड़ता है। घेराबंदी में वह महल चुनता है।"
+  ],
+  "ar": [
+    "تتنوع اللوحات بين شكل H والصليب والحلقة والساعة الرملية والمعين والسلم. الفراغات بلا قطع ولا تسمح بالتبديل أو المطابقة. تسقط القطع داخل كل مقطع عمودي متصل فقط.",
+    "يضرب الطائر أولاً الخانات الأربع المجاورة فوقه وتحته وعن يمينه ويساره، ثم يطير إلى هدفه. في الحصار يستهدف قلعة."
+  ]
+};
+for (const [locale, [terrain, bird]] of Object.entries(CC_TERRAIN_HELP)) {
+  const copy = window.CC_I18N[locale];
+  copy.campaignBody += ` ${terrain}`;
+  copy.powerBody += ` ${bird}`;
 }
