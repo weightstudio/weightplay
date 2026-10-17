@@ -11,10 +11,10 @@ import { expeditionCopy } from './expedition-copy.js?v=4';
 import { playerCopy } from './player-copy.js?v=2';
 import { companions,rollCompanion,collectCompanion,promoteCompanion } from './companions.js?v=4';
 import { collectionCopy } from './collection-copy.js?v=4';
+import { createPawaxeStageConfig } from './stage-config.mjs?v=1';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
 
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const practiceRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
 const save=loadSave();
 try{const locale=localStorage.getItem('weightPlayLocale');if(LOCALES.includes(locale))save.locale=locale;}catch{}
 const entryLocale=routeLocale(location.pathname);
@@ -32,6 +32,7 @@ const t=k=>k==='title'?(window.WEIGHTPLAY_GAME_TITLES?.pawaxe?.[save.locale]||co
 const cc=()=>collectionCopy[save.locale]||collectionCopy.en;
 const pc=()=>playerCopy[save.locale]||playerCopy.en;
 const name=e=>typeof e.id==='number'?pc().stageNames[e.id]:(pc().enemyNames[e.id]||e.name);
+const stageConfig=createPawaxeStageConfig({stages,getText:t,getSave:()=>save,isPractice:()=>practiceMode&&LocalPractice.enabled,getStageName:name});
 function snapshotSave(){return JSON.parse(JSON.stringify(save));}
 function restorePracticeSave(){if(!practiceBaseline)return;for(const key of Object.keys(save))delete save[key];Object.assign(save,practiceBaseline);practiceBaseline=null;}
 function setPracticeMode(enabled){
@@ -39,8 +40,8 @@ function setPracticeMode(enabled){
   else{practiceMode=false;practiceRun=false;restorePracticeSave();selected=save.unlocked;if(screen==='stage'){renderStage();renderEquipment();renderCompanions();}}
 }
 function persist(){if(practiceMode||practiceRun)return true;if(!storeSave(save))feedback(t('storageError'),5);}
-function trackPawaxeView(){if(practiceRequested)return false;const analytics=window.WonderAnalytics;if(!analytics?.trackPrivacySafe)return false;analytics.trackPrivacySafe('game_view',{game_id:'pawaxe',game_version:'v52',interface_version:'7',locale:save.locale});return true;}
-if(!practiceRequested&&!trackPawaxeView())window.addEventListener('weightplay:analytics-ready',trackPawaxeView,{once:true});
+function trackPawaxeView(){const analytics=window.WonderAnalytics;if(!analytics?.trackPrivacySafe)return false;analytics.trackPrivacySafe('game_view',{game_id:'pawaxe',game_version:'v53',interface_version:'9',locale:save.locale});return true;}
+if(!trackPawaxeView())window.addEventListener('weightplay:analytics-ready',trackPawaxeView,{once:true});
 function beginAnalyticsRun(){
   if(practiceMode||practiceRun)return;
   if(analyticsRound||screen!=='battle'||state!=='live')return;
@@ -49,27 +50,30 @@ function beginAnalyticsRun(){
   if(!analyticsStartPending){analyticsStartPending=true;const generation=runGeneration;window.addEventListener('weightplay:analytics-ready',()=>{analyticsStartPending=false;if(generation===runGeneration)beginAnalyticsRun();},{once:true});}
 }
 function endAnalyticsRun(outcome){if(practiceMode||practiceRun||!analyticsRound)return;window.WonderAnalytics?.game?.end?.(outcome);analyticsRound=false;}
-try{if(save.tutorial&&!practiceRequested)localStorage.setItem('weightplay_tutorial_seen_pawaxe_v1','1');}catch{}
+try{if(save.tutorial)localStorage.setItem('weightplay_tutorial_seen_pawaxe_v1','1');}catch{}
 const locale=$('#locale');
 locale.innerHTML=LOCALES.map(l=>`<option value="${l}">${({'zh-Hant':'繁體中文','zh-Hans':'简体中文',en:'English',ja:'日本語',ko:'한국어',es:'Español','pt-BR':'Português',fr:'Français',de:'Deutsch',it:'Italiano',ru:'Русский',hi:'हिन्दी',ar:'العربية'})[l]}</option>`).join('');
 locale.value=save.locale;
 // The frame carries the stage only; player health is anchored to Fia in Battle.
 // The percentage belongs to the settlement control, never on top of the meter.
 // Keep the route percentage centered in its progress track.
-const frame=window.WeightPlayScreenFrame.mount({root:$('#frame'),localeSelect:locale,scenes:{
+const frame=window.WeightPlayScreenFrame.mount({root:$('#frame'),localeSelect:locale,playUI:true,scenes:{
   main:{root:$('#main'),header:$('#main header'),content:$('.hero')},
   stage:{root:$('#stage'),header:$('#stage header'),content:$('.workspace'),headerInfo:$('#stageInfo')},
   battle:{root:$('#battle'),header:$('#battle header'),content:$('.battle-area'),headerInfo:$('#battleInfo')}
 }});
-let rail=null;
+const stageInfoGroup=window.WeightPlayScreenFrame.createGroup();[...$('#stageInfo').children].forEach(node=>stageInfoGroup.add(node));frame.stageTopUI.add(stageInfoGroup);
+const battleInfoGroup=window.WeightPlayScreenFrame.createGroup();[...$('#battleInfo').children].forEach(node=>battleInfoGroup.add(node));frame.battleTopUI.add(battleInfoGroup);
+const stageActionGroup=window.WeightPlayScreenFrame.createGroup();$$('.tabs button').forEach(button=>{button.dataset.wpFrameAction='tab';button.setAttribute('aria-pressed',String(button.dataset.tab==='stage'));stageActionGroup.add(button);});frame.commonDownButton.clear().add(stageActionGroup);
+let stageUI=null;
 function fit(){
   if(screen==='main')return;
+  if(screen==='stage'){renderer?.resize();return;}
   const vv=visualViewport,viewportWidth=vv?.width||innerWidth,h=vv?.height||innerHeight;
   const {availableWidth:w,logicalWidth,logicalHeight,scale}=getCanvasFit(viewportWidth,h);
   const root=$('#'+screen);
   Object.assign(root.style,{width:`${logicalWidth}px`,height:`${logicalHeight}px`,left:`${(viewportWidth-w)/2+(vv?.offsetLeft||0)}px`,top:`${vv?.offsetTop||0}px`,transform:`scale(${scale})`});
   root.style.setProperty(`--wp-${screen}-canvas-scale`,String(scale));
-  if(screen==='stage')rail?.center();
   renderer?.resize();
 }
 function clearSceneFit(id){
@@ -90,7 +94,7 @@ function show(id){
   document.documentElement.style.overflow=id==='main'?'':'hidden';document.documentElement.style.overscrollBehavior=id==='main'?'contain':'none';
   document.body.style.overflow=id==='main'?'':'hidden';document.body.style.overscrollBehavior=id==='main'?'contain':'none';
   $('#modal').hidden=true;modalKind='';$('.battle-area').inert=false;frame.activate(id);fit();
-  if(id==='stage'){selected=save.unlocked;selectTab('stage');renderStage();}
+  if(id==='stage'){if(previous==='main')selected=save.unlocked;selected=Math.max(1,Math.min(selected,practiceMode&&LocalPractice.enabled?stages.length:save.unlocked));selectTab('stage');renderStage();}
   if(id==='main')$('#progress').textContent=`${t('stages')} ${save.unlocked} / 30`;
 }
 function localize(){
@@ -100,22 +104,21 @@ function localize(){
   $$('[data-i18n-title]').forEach(el=>el.setAttribute('title',t(el.dataset.i18nTitle)));
   $$('[data-i18n-alt]').forEach(el=>el.setAttribute('alt',t(el.dataset.i18nAlt)));
   $('#progress').textContent=`${t('stages')} ${save.unlocked} / 30`;
-  $('#stageHint').textContent=t('stageHint');
   $('#allyDescription').textContent=cc().rosterHint;
   document.title=`${t('title')} | WeightPlay`;
   for(const el of $$('meta[property="og:title"],meta[name="twitter:title"]'))el.content=document.title;
   syncPawaxeGuide(save.locale);
-  frame.refresh();renderEquipment();renderCompanions();if(rail)rail.refresh();
+  frame.refresh();renderEquipment();renderCompanions();stageUI?.refresh(selected-1);
 }
 function renderStage(){
   $('#stageNum').textContent=`${save.unlocked}/30`;
-  if(!rail)rail=window.WeightPlayStageV6.install($('#rail'),{total:()=>stages.length,poolSize:9,initialIndex:()=>save.unlocked-1,
-    bind:(card,i)=>{const s=stages[i],practiceAccessible=practiceMode&&LocalPractice.enabled;card.className='stage-card';card.setAttribute('aria-disabled',String(s.id>save.unlocked&&!practiceAccessible));
-      card.innerHTML=`<div data-wp-item-content><strong>${t('stages')} ${s.id}</strong><h3>${name(s)}</h3><div>${s.checkpoint?t('boss'):t('forest')}</div><small>${practiceAccessible&&s.id>save.unlocked?'LOCAL PRACTICE':save.cleared.includes(s.id)?t('cleared'):s.id<=save.unlocked?t('ready'):t('locked')}</small></div>`;},
-    activate:i=>{const stageId=i+1;if(practiceMode){void LocalPractice.challenge('pawaxe',stageId);return;}if(stageId<=save.unlocked){selected=stageId;void startRun(stageId,false);}}
+  if(!stageUI)stageUI=window.WeightPlayPlayUI.mountStage({page:$('#stagePanel'),rail:$('#rail'),config:stageConfig,selected:selected-1,
+    onSelect:index=>{selected=index+1;},
+    onStart:index=>{const stageId=index+1;selected=stageId;if(practiceMode){void LocalPractice.challenge('pawaxe',stageId);return;}void startRun(stageId,false);},
+    isActive:()=>screen==='stage'&&!$('#stagePanel').hidden,
   });
-  else rail.refresh();
-  requestAnimationFrame(()=>{rail?.center(save.unlocked-1);fit();});renderEquipment();
+  else stageUI.refresh(selected-1);
+  renderEquipment();
   renderCompanions();
 }
 function objectImage(id){const img=document.createElement('img');img.className='object-icon';img.src=`art/objects/${id}.webp`;img.alt='';img.width=80;img.height=80;return img;}
@@ -153,7 +156,7 @@ function renderEquipment(){
     u.onclick=()=>{if(promoteGear(save,g.id)){persist();renderEquipment();}};d.append(u);return d;
   }));
 }
-function selectTab(tab){$$('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));['ally','stage','equip'].forEach(x=>$('#'+x+'Panel').hidden=x!==tab);if(tab==='stage')requestAnimationFrame(()=>rail?.center());}
+function selectTab(tab){$$('.tabs button').forEach(b=>{const active=b.dataset.tab===tab;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});['ally','stage','equip'].forEach(x=>$('#'+x+'Panel').hidden=x!==tab);if(tab==='stage')stageUI?.refresh(selected-1);}
 function sound(kind,strong=false){
   const cue={hit:"weapon.axe.hit",critical:"combat.critical",break:"combat.shield.break",hurt:"player.hurt",perfect:"combat.critical",block:"combat.block",ally:"magic.cast",defeat:"enemy.defeat",counter:"combat.critical",heal:"magic.heal",swing:"weapon.axe.swing"}[kind];
   if(cue)return window.WeightPlayAudio?.play(cue);
@@ -345,7 +348,7 @@ $('#attack').onclick=()=>action('attack');$('#ally').onclick=()=>action('ally');
 $('#auto').onclick=()=>{if(modalKind||screen!=='battle'||!['live','transition'].includes(state)||document.querySelector('.wp-frame-popover:not([hidden])'))return;save.autoAttack=!save.autoAttack;combat.autoAttack=save.autoAttack;persist();updateHud();};
 $('#claim').onclick=()=>{if(journey?.completed&&!modalKind)finish(true);};
 $$('.tabs button').forEach(b=>b.onclick=()=>selectTab(b.dataset.tab));
-locale.onchange=()=>{save.locale=locale.value;if(!practiceMode)try{localStorage.setItem('weightPlayLocale',save.locale);}catch{}persist();localize();const route=localePath(save.locale,location.search,location.hash);if(location.pathname+location.search+location.hash!==route)location.assign(route);};
+locale.onchange=()=>{save.locale=locale.value;if(!practiceMode)try{localStorage.setItem('weightPlayLocale',save.locale);}catch{}persist();localize();const route=localePath(save.locale,'',location.hash);if(location.pathname+location.hash!==route)location.assign(route);};
 $('#canvas').tabIndex=0;
 $('#canvas').addEventListener('pointerdown',e=>{if(state!=='live'||modalKind||e.button!==0)return;const uid=renderer.pick(e.clientX,e.clientY);const i=combat.alive().findIndex(x=>x.uid===uid);if(i>=0)combat.target=i;action('attack');});
 $('#canvas').addEventListener('webglcontextlost',e=>{e.preventDefault();if(screen!=='battle'||!renderer)return;stopLoop();state='error';dialog(t('graphicsInterrupted'),t('restartGraphics'),[[t('replay'),startRun],[t('returnStages'),()=>show('stage')]],'error');});
@@ -364,6 +367,9 @@ document.addEventListener('keydown',e=>{
 window.addEventListener('weightplay:tutorial-open',event=>{
   if(event.detail?.gameId!=='pawaxe'||screen!=='battle'||modalKind||!['live','transition'].includes(state))return;
   tutorialResumeState=state;stopLoop();state='tutorial';
+});
+window.addEventListener('weightplay:tutorial-start',event=>{
+  if(event.detail?.gameId==='pawaxe'&&screen==='main')show('stage');
 });
 window.addEventListener('weightplay:tutorial-close',event=>{
   if(event.detail?.gameId!=='pawaxe')return;
