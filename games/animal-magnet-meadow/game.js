@@ -200,7 +200,7 @@
 
   const updateStageProgress = () => {
     const progress = $("sharedStageProgress");
-    if (progress) progress.textContent = copy("progress", { count: state.completed.length }).replaceAll("/3", "/" + rounds.length);
+    if (progress) progress.textContent = copy("round", { number: stageBrowseIndex + 1, total: rounds.length });
   };
 
   const updateBattleHud = () => {

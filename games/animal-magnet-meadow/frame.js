@@ -22,6 +22,7 @@
     root.querySelectorAll('button:not([data-wp-return]):not(.stage-card)').forEach(button => {
       button.dataset.wpFrameAction = button.matches('[data-wp-main-start], [data-wp-primary-action], .primary-btn') ? 'primary' : 'secondary';
     });
+    document.getElementById('stageTabs').dataset.wpFrameNav = '';
 
     const frame = window.WeightPlayScreenFrame.mount({
       root,

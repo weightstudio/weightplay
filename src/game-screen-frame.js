@@ -12,7 +12,7 @@
       return;
     }
     const script = document.createElement('script');
-    script.src = '/src/game-entry-loader.js?v=20261017-shared-dark-loader1';
+    script.src = '/src/game-entry-loader.js?v=20261018-entry-readiness-bridge2';
     script.dataset.wpGameEntryLoaderBootstrap = 'true';
     script.async = false;
     document.head.append(script);

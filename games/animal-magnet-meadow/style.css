@@ -52,16 +52,6 @@ h1,h2,p { margin-top:0; }
 #mainScreen .hero-copy > h1,
 #mainScreen #mapBtn { display:none!important; }
 
-/* Stage cards keep game-specific copy/state appearance. The shared Stage
-   selector owns card dimensions, rail spacing, centering, drag and snap. */
-#stageScreen .stage-card { text-align:center; }
-#stageScreen .stage-card strong { display:block; font-size:1.02rem; }
-#stageScreen .stage-card span:not(.stage-number) { color:var(--muted); }
-#stageScreen .stage-card b { color:var(--gold); font-size:.8rem; }
-#stageScreen .stage-number { color:var(--teal); font-weight:800; }
-#stageScreen .stage-card.is-cleared { --wp-ui-accent:#6ee7d0; }
-#stageScreen .stage-card[aria-disabled="true"] { opacity:.58; cursor:not-allowed; }
-
 /* Battle keeps its authored meadow art inside the common screen frame.
    Stage uses the shared Play UI background and per-stage poster records. */
 #battleScreen .battle-canvas {

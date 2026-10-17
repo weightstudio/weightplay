@@ -234,6 +234,8 @@
       window.clearTimeout(autoTimeout);
       cancelAnimationFrame(autoFrame);
       window.removeEventListener('load', scheduleAuto);
+      document.removeEventListener('load', onMainImageSettled, true);
+      document.removeEventListener('error', onMainImageSettled, true);
     }
     function scheduleAuto() {
       if (!autoFrame && !state.ready && !state.failed && !state.engineOwned) {
@@ -245,17 +247,30 @@
       if (state.ready || state.failed || state.engineOwned || document.readyState !== 'complete') return;
       const panels = [...document.querySelectorAll('#loadingPanel,.loading-panel')];
       if (panels.some(panel => !(panel.hidden || panel.classList.contains('hidden') || panel.classList.contains('is-hidden') || panel.style.display === 'none' || panel.getAttribute('aria-hidden') === 'true'))) return;
-      const main = document.querySelector('[data-wp-frame-scene="main"]');
-      if (!main?.getClientRects().length) return;
-      const start = main.querySelector('[data-wp-main-start],[data-wp-frame-action="primary"],#startBtn,#startGameBtn,#start');
-      if (!start?.getClientRects().length || start.disabled || start.getAttribute('aria-disabled') === 'true') return;
-      const images = [...main.querySelectorAll('img:not([loading="lazy"])')].filter(img => img.getClientRects().length);
+      const visible = node => Boolean(node && !node.closest('[hidden]') && node.getClientRects().length
+        && getComputedStyle(node).visibility !== 'hidden' && getComputedStyle(node).visibility !== 'collapse');
+      // autoMountDocument supports legacy game-owned Main roots as well as
+      // explicit mount() scenes. I9 metadata does not rewrite every legacy DOM
+      // into data-wp-frame-scene, so readiness must accept both input forms.
+      const main = [...document.querySelectorAll('[data-wp-frame-scene="main"],[data-wp-frame-main],[data-screen="main"],#main,#mainScreen,.main-screen,.main-canvas,main.main,.wp-standard-main-screen')]
+        .find(node => node !== document.body && node !== document.documentElement && visible(node));
+      if (!main) return;
+      const start = [...main.querySelectorAll('[data-wp-main-start],[data-wp-frame-action="primary"],.standard-main-start,#startBtn,#startGameBtn,#startGame,#start,#playBtn,#beginBtn,#showStageBtn,button[data-start-game]')].find(visible);
+      if (!start || start.disabled || start.getAttribute('aria-disabled') === 'true') return;
+      const images = [...main.querySelectorAll('img:not([loading="lazy"])')].filter(visible);
       if (images.some(img => !img.complete)) return;
       if (images.some(img => !img.naturalWidth)) { fail(); return; }
       ready();
     }
+    function onMainImageSettled(event) {
+      // An image inserted/replaced after window.load can finish without any
+      // attribute mutation. Recheck actual readiness on its native load/error.
+      if (event.target instanceof HTMLImageElement) scheduleAuto();
+    }
     observer.observe(document.documentElement, {childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden','style','disabled','aria-disabled','aria-hidden','src']});
     window.addEventListener('load', scheduleAuto, {once:true});
+    document.addEventListener('load', onMainImageSettled, true);
+    document.addEventListener('error', onMainImageSettled, true);
     scheduleAuto();
     return;
   }
