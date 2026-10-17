@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
   <link rel="stylesheet" href="../../src/play-viewport.css" />
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-  <link rel="stylesheet" href="style.css?v=20261015-hero-v22-assembly1" />
+  <link rel="stylesheet" href="style.css?v=20261018-hero-reconstruction1" />
   <link rel="stylesheet" href="progress-cards.css" />
   <style>.canvas-wrap canvas:focus-visible{outline:5px solid #ffd45f;outline-offset:-5px}</style>
   <style>
@@ -48,19 +48,19 @@
     .reroll-row{margin-top:10px;display:grid;gap:5px}.reroll-row button{height:46px;min-height:46px;border:1px solid #8edbb3;border-radius:9px;background:#0c281f;color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;font-weight:900}.reroll-row button.is-confirming{border-color:#ffd45f;background:#3b3315;box-shadow:0 0 0 2px #ffd45f33}.reroll-row button:disabled{opacity:.48}.reroll-row img{width:24px;height:24px;object-fit:contain}.reroll-row small{display:grid;place-items:center;min-height:36px;color:#ffd45f}
     .modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.modal-actions button{min-height:50px;border-radius:10px;font-weight:900}.modal-actions .secondary{border:1px solid #8edbb3;background:#0c281f;color:#fff}
     .hero-picker{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(86px,1fr);gap:7px;overflow-x:auto;scrollbar-width:none}.hero-option{height:112px;border:1px solid #4f8b70;border-radius:9px;background:#102d24;color:#fff;padding:5px;display:grid;grid-template-rows:48px auto auto;justify-items:center;align-content:center;gap:2px}.hero-option.selected{border:2px solid #ffd45f;background:#194635}.hero-option img{width:48px;height:48px;object-fit:contain}.hero-option b{font-size:11px;line-height:1.1;text-align:center}.hero-option small{display:grid;gap:1px;font-size:8px;line-height:1.15;color:#bfe6d2;text-align:center}
-    #stageView{height:100dvh;min-height:0;overflow:hidden}.stage-rail{min-height:0}
-    .stage-card{padding:8px;gap:4px}.stage-card img{min-height:0}.stage-card span{color:#d9eee4}.stage-card.checkpoint{border:3px solid #ffd45f;box-shadow:0 0 0 2px #8b6424}.stage-card.checkpoint img{object-fit:contain;background:#0b221b}
+    #stageView:not([data-wp-frame-scene]){height:100dvh;min-height:0;overflow:hidden}.legacy-stage-rail{min-height:0}
+    .legacy-stage-card{padding:8px;gap:4px}.legacy-stage-card img{min-height:0}.legacy-stage-card span{color:#d9eee4}.legacy-stage-card.checkpoint{border:3px solid #ffd45f;box-shadow:0 0 0 2px #8b6424}.legacy-stage-card.checkpoint img{object-fit:contain;background:#0b221b}
     body:not([data-game-view="battle"]) .battle-ad{display:none}
     body[data-game-view="stage"] .game-page-info, body[data-game-view="battle"] .game-page-info{display:none!important}
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"英雄試煉","url":"https://weightplay.com/zh-tw/games/animal-hero-trials/","image":"https://weightplay.com/assets/animal-hero-trials-cover.png","description":"選擇四位英雄之一，以點按、拖曳或鍵盤走位，挑戰 30 個三房間試煉。選擇免費祝福、破解六個檢查點 Boss，並用試煉印記提升永久生命精通。","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"zh-Hant","isAccessibleForFree":true,"genre":["動作","Roguelite","動物","Browser Game"],"audience":{"@type":"Audience","audienceType":"General action and roguelite players"},"alternateName":"Hero Trials"}</script>
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><link rel="stylesheet" href="/src/stage-selector-standard.css?v=20260918-ui-fix1" data-wp-stage-standard>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"英雄試煉","url":"https://weightplay.com/zh-tw/games/animal-hero-trials/","image":"https://weightplay.com/assets/interface7-redrawn/animal-hero-trials.webp","description":"選擇四位英雄之一，以點按、拖曳或鍵盤走位，挑戰 30 個三房間試煉。選擇免費祝福、破解六個檢查點 Boss，並用試煉印記提升永久生命精通。","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"zh-Hant","isAccessibleForFree":true,"genre":["動作","Roguelite","動物","Browser Game"],"audience":{"@type":"Audience","audienceType":"General action and roguelite players"},"alternateName":"Hero Trials"}</script>
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
 <style>
-  body[data-wp-game-id="animal-hero-trials"] #stageView.wp-stage-art-shell .stage-card { grid-template-rows: minmax(0, 1fr); gap: 4px; }
-  body[data-wp-game-id="animal-hero-trials"] #stageView .stage-card [data-wp-item-content] { width: 100%; height: 100%; gap: 4px; }
-  body[data-wp-game-id="animal-hero-trials"] #stageView .stage-card [data-wp-item-content] > img { flex: 1 1 56px; height: auto; min-height: 0; }
-  body[data-wp-game-id="animal-hero-trials"] #stageView .stage-card [data-wp-item-content] > strong { flex: 0 0 30px; }
-  body[data-wp-game-id="animal-hero-trials"] #stageView .stage-card [data-wp-item-content] > span { flex: 0 0 66px; }
+  body[data-wp-game-id="animal-hero-trials"] #stageView:not([data-wp-frame-scene]).wp-stage-art-shell .legacy-stage-card { grid-template-rows: minmax(0, 1fr); gap: 4px; }
+  body[data-wp-game-id="animal-hero-trials"] #stageView:not([data-wp-frame-scene]) .legacy-stage-card [data-wp-item-content] { width: 100%; height: 100%; gap: 4px; }
+  body[data-wp-game-id="animal-hero-trials"] #stageView:not([data-wp-frame-scene]) .legacy-stage-card [data-wp-item-content] > img { flex: 1 1 56px; height: auto; min-height: 0; }
+  body[data-wp-game-id="animal-hero-trials"] #stageView:not([data-wp-frame-scene]) .legacy-stage-card [data-wp-item-content] > strong { flex: 0 0 30px; }
+  body[data-wp-game-id="animal-hero-trials"] #stageView:not([data-wp-frame-scene]) .legacy-stage-card [data-wp-item-content] > span { flex: 0 0 66px; }
 </style>
   <meta name="twitter:title" content="英雄試煉 | WeightPlay" />
     <meta name="twitter:description" content="選擇四位英雄之一，以點按、拖曳或鍵盤走位，挑戰 30 個三房間試煉。選擇免費祝福、破解六個檢查點 Boss，並用試煉印記提升永久生命精通。" />
@@ -69,10 +69,10 @@
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
+<link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared1"><link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0"></head>
 <body data-game-view="main" data-screen="main" data-game-id="animal-hero-trials" data-tutorial-auto-show="false" data-wp-battle-settings="visible" data-sound-toggle="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-wp-game-title data-runtime-localize="off">英雄試煉</strong><span>載入中</span><div class="loading-track"><i></i></div></div></section>
-  <main id="main" class="app">
+  <main id="main" class="app" data-wp-frame-root>
     <section id="mainView" class="view main-view wp-standard-main-screen" data-screen="main">
       <header class="main-header wp-shell-header wp-main-shell-header">
         <a class="lobby-return" data-wp-return="main" href="/" aria-label="返回 WeightPlay"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
@@ -90,7 +90,7 @@
         </div>
       </section>
     </section>
-    <section id="stageView" data-wp-frame-play-fill class="view hidden wp-standard-stage-panel wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-stage-art="/assets/animal-hero-trials-cover.png" style="--wp-stage-art:url('/assets/animal-hero-trials-cover.png')">
+    <section id="stageView" data-wp-frame-play-fill class="view hidden wp-standard-stage-panel wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-stage-art="/assets/interface7-redrawn/animal-hero-trials.webp" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-hero-trials.webp')">
       <header class="compact-head wp-standard-stage-heading"><button id="stageBack" class="icon-btn" data-wp-return="stage" type="button" aria-label="返回">&larr;</button></header>
       <div id="heroPicker" class="hero-picker" aria-label="選擇英雄"></div>
       <div class="progress-card"><span><img src="../../assets/animal-hero-trials-icon-trial-gate.png" alt="" aria-hidden="true" /><span class="progress-copy"><b data-t="marks">試煉印記</b><strong id="markCount">0</strong></span></span><button id="masteryBtn" type="button"><img src="../../assets/animal-hero-trials-icon-heart-mastery.png" alt="" aria-hidden="true" /><span data-t="mastery">生命精通</span><b id="masteryLevel">Lv.0</b><small id="masteryCost">全英雄最大生命 +0 → +12 · 需要 5 枚／目前 0 枚印記</small></button></div>
@@ -108,7 +108,7 @@
     <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"animal-hero-trials"});</script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/tutorial.js"></script>
-  <script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="/src/stage-virtualization-standard.js?v=20260809-stage-v6-source-demotion-v8"></script><script src="game.js?v=20261015-hero-v22-assembly1&wp-audio=1.0.0"></script><section class="game-page-info game-page-info-static" aria-label="英雄試煉 遊戲資訊">
+  <script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="/src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script><script src="/src/stage-rail-i9.js?v=20261017-shared1"></script><script src="/src/game-play-ui.js?v=20261017-shared1"></script><script src="/src/virtual-joystick.js?v=1.0.0"></script><script src="game.js?v=20261018-hero-reconstruction1&wp-audio=1.0.0"></script><section class="game-page-info game-page-info-static" aria-label="英雄試煉 遊戲資訊">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2 data-wp-game-title data-runtime-localize="off">英雄試煉</h2><p>《英雄試煉》是一款包含 30 個試煉的動作遊戲，四位英雄各有不同生命、速度、攻擊射程與主動技能。點按或拖曳來移動，英雄會自動攻擊射程內最近的敵人。每關有三個房間：清除前兩房後，從攻擊、冷卻或恢復中免費選一項祝福，接著挑戰菁英隊長或檢查點 Boss。勝利可取得試煉印記、解鎖下一關，並累積永久生命精通。</p><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>點按與拖曳走位</span><span>三房間動作闖關</span><span>英雄技能時機</span></div></div>
@@ -116,6 +116,7 @@
     </div>
 
     <div class="game-info-sections">
+<p class="hero-control-note" data-runtime-localize="off">拖曳共用搖桿、點按目的地，或使用 WASD／方向鍵移動。空白鍵施放英雄技能；Shift 或「閃避」可短暫安全移動，之後冷卻 3.1 秒。離開琥珀色預警區，在敵人綠色破綻期間反擊。選關畫面的「英雄與精通」可更換英雄。</p>
       <div class="game-info-section"><h3>世界與任務</h3><p>六道暗影門從根木林一路開到虛空王冠。根木林放出追逐獸群，稜晶峽谷賦予飛行與護盾，餘燼熔爐驅動有預警的衝鋒，月影長廊武裝遠程敵人，深淵甲殼強化護衛，最後的王冠則混合所有規則。每次勝利會穩定一段道路並解鎖下一個試煉。</p>
 <p>爆鬃獅 Leo、星爪狐 Fia、月帽貓頭鷹 Orla 與苔殼龜 Taro 組成輪替英雄隊。每五關是一個區域檢查點；在第 30 關擊敗虛空王冠帝就會關閉最後一道門，遊戲不會產生隱藏的第 31 關。</p></div>
       <div class="game-info-section"><h3>遊戲系統</h3><p>四位英雄：Leo 均衡並使用範圍怒吼；Fia 高速且能無敵衝刺造成傷害；Orla 從遠處攻擊並標記目標，讓接下來三次對該目標的自動攻擊增傷；Taro 生命最高，可開啟限時減傷守護。</p>
@@ -140,7 +141,7 @@
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
-  <script>window.addEventListener("load",()=>document.querySelector("#loadingPanel")?.classList.add("hidden"),{once:true});</script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+
+
 </body>
 </html>

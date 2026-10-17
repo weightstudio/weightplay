@@ -11,17 +11,8 @@
   <meta name="theme-color" content="#17243a">
   <title>Block Apex | WeightPlay</title>
   <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <!-- Planned routes stay out of production collection; the trial route uses the shared local/test-safe collector. -->
-  <script>
-    window.__weightPlayAnalyticsRequested=true;
-    if(/^https?:$/.test(location.protocol)&&new URLSearchParams(location.search).has('trial')) {
-      const analyticsLoader=document.createElement('script');
-      analyticsLoader.src=new URL('../../src/analytics.js',location.href).href;
-      analyticsLoader.async=true;
-      analyticsLoader.dataset.wpAnalyticsLoader='true';
-      document.head.append(analyticsLoader);
-    }
-  </script>
+  <!-- Planned routes stay out of production collection without URL-driven switches. -->
+  <script>window.__weightPlayAnalyticsRequested=true;</script>
   <script src="../../src/game-layout-config.js"></script>
   <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <link rel="stylesheet" href="../../src/game-ui-theme.css">

@@ -22,11 +22,14 @@ try{
       return url.origin===base.origin||['data:','blob:'].includes(url.protocol)?route.continue():route.abort();
     });
     const page=await context.newPage(),errors=[],missing=[];page.setDefaultTimeout(15000);
+    await page.addInitScript(localeCode=>{
+      localStorage.setItem('weightPlayLocale',localeCode);
+      localStorage.setItem('weightplay_tutorial_seen_block-apex_v1','1');
+    },locale);
     page.on('pageerror',error=>errors.push(error.message));
     page.on('response',response=>{if(response.url().startsWith(base.origin)&&response.status()>=400)missing.push(`${response.status()} ${response.url()}`);});
     try{
-      const url=new URL('/games/block-apex/',base);url.searchParams.set('lang',locale);
-      await page.goto(url.href,{waitUntil:'domcontentloaded'});
+      await page.goto(new URL('/games/block-apex/',base).href,{waitUntil:'domcontentloaded'});
       await page.waitForFunction(()=>document.body.dataset.apexBooted==='true');
       assert.equal(await page.locator('#bootError').isVisible(),false);
       assert.equal(await page.locator('#localeSelect option').count(),13);

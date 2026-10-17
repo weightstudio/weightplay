@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
   <link rel="stylesheet" href="../../src/play-viewport.css" />
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-  <link rel="stylesheet" href="style.css?v=20261015-hero-v22-assembly1" />
+  <link rel="stylesheet" href="style.css?v=20261018-hero-reconstruction1" />
   <link rel="stylesheet" href="progress-cards.css" />
   <style>.canvas-wrap canvas:focus-visible{outline:5px solid #ffd45f;outline-offset:-5px}</style>
   <style>
@@ -48,19 +48,19 @@
     .reroll-row{margin-top:10px;display:grid;gap:5px}.reroll-row button{height:46px;min-height:46px;border:1px solid #8edbb3;border-radius:9px;background:#0c281f;color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;font-weight:900}.reroll-row button.is-confirming{border-color:#ffd45f;background:#3b3315;box-shadow:0 0 0 2px #ffd45f33}.reroll-row button:disabled{opacity:.48}.reroll-row img{width:24px;height:24px;object-fit:contain}.reroll-row small{display:grid;place-items:center;min-height:36px;color:#ffd45f}
     .modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.modal-actions button{min-height:50px;border-radius:10px;font-weight:900}.modal-actions .secondary{border:1px solid #8edbb3;background:#0c281f;color:#fff}
     .hero-picker{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(86px,1fr);gap:7px;overflow-x:auto;scrollbar-width:none}.hero-option{height:112px;border:1px solid #4f8b70;border-radius:9px;background:#102d24;color:#fff;padding:5px;display:grid;grid-template-rows:48px auto auto;justify-items:center;align-content:center;gap:2px}.hero-option.selected{border:2px solid #ffd45f;background:#194635}.hero-option img{width:48px;height:48px;object-fit:contain}.hero-option b{font-size:11px;line-height:1.1;text-align:center}.hero-option small{display:grid;gap:1px;font-size:8px;line-height:1.15;color:#bfe6d2;text-align:center}
-    #stageView{height:100dvh;min-height:0;overflow:hidden}.stage-rail{min-height:0}
-    .stage-card{padding:8px;gap:4px}.stage-card img{min-height:0}.stage-card span{color:#d9eee4}.stage-card.checkpoint{border:3px solid #ffd45f;box-shadow:0 0 0 2px #8b6424}.stage-card.checkpoint img{object-fit:contain;background:#0b221b}
+    #stageView:not([data-wp-frame-scene]){height:100dvh;min-height:0;overflow:hidden}.legacy-stage-rail{min-height:0}
+    .legacy-stage-card{padding:8px;gap:4px}.legacy-stage-card img{min-height:0}.legacy-stage-card span{color:#d9eee4}.legacy-stage-card.checkpoint{border:3px solid #ffd45f;box-shadow:0 0 0 2px #8b6424}.legacy-stage-card.checkpoint img{object-fit:contain;background:#0b221b}
     body:not([data-game-view="battle"]) .battle-ad{display:none}
     body[data-game-view="stage"] .game-page-info, body[data-game-view="battle"] .game-page-info{display:none!important}
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Pruebas de Héroes","url":"https://weightplay.com/es/games/animal-hero-trials/","image":"https://weightplay.com/assets/animal-hero-trials-cover.png","description":"Elige uno de cuatro héroes y muévete con toques, arrastres o teclado en 30 pruebas de tres salas. Escoge bendiciones gratis, supera seis jefes de control y mejora tu maestría permanente.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"es","isAccessibleForFree":true,"genre":["acción","Roguelita","animales","Browser Game"],"audience":{"@type":"Audience","audienceType":"General action and roguelite players"},"alternateName":"Hero Trials"}</script>
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><link rel="stylesheet" href="/src/stage-selector-standard.css?v=20260918-ui-fix1" data-wp-stage-standard>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Pruebas de Héroes","url":"https://weightplay.com/es/games/animal-hero-trials/","image":"https://weightplay.com/assets/interface7-redrawn/animal-hero-trials.webp","description":"Elige uno de cuatro héroes y muévete con toques, arrastres o teclado en 30 pruebas de tres salas. Escoge bendiciones gratis, supera seis jefes de control y mejora tu maestría permanente.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"es","isAccessibleForFree":true,"genre":["acción","Roguelita","animales","Browser Game"],"audience":{"@type":"Audience","audienceType":"General action and roguelite players"},"alternateName":"Hero Trials"}</script>
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
 <style>
-  body[data-wp-game-id="animal-hero-trials"] #stageView.wp-stage-art-shell .stage-card { grid-template-rows: minmax(0, 1fr); gap: 4px; }
-  body[data-wp-game-id="animal-hero-trials"] #stageView .stage-card [data-wp-item-content] { width: 100%; height: 100%; gap: 4px; }
-  body[data-wp-game-id="animal-hero-trials"] #stageView .stage-card [data-wp-item-content] > img { flex: 1 1 56px; height: auto; min-height: 0; }
-  body[data-wp-game-id="animal-hero-trials"] #stageView .stage-card [data-wp-item-content] > strong { flex: 0 0 30px; }
-  body[data-wp-game-id="animal-hero-trials"] #stageView .stage-card [data-wp-item-content] > span { flex: 0 0 66px; }
+  body[data-wp-game-id="animal-hero-trials"] #stageView:not([data-wp-frame-scene]).wp-stage-art-shell .legacy-stage-card { grid-template-rows: minmax(0, 1fr); gap: 4px; }
+  body[data-wp-game-id="animal-hero-trials"] #stageView:not([data-wp-frame-scene]) .legacy-stage-card [data-wp-item-content] { width: 100%; height: 100%; gap: 4px; }
+  body[data-wp-game-id="animal-hero-trials"] #stageView:not([data-wp-frame-scene]) .legacy-stage-card [data-wp-item-content] > img { flex: 1 1 56px; height: auto; min-height: 0; }
+  body[data-wp-game-id="animal-hero-trials"] #stageView:not([data-wp-frame-scene]) .legacy-stage-card [data-wp-item-content] > strong { flex: 0 0 30px; }
+  body[data-wp-game-id="animal-hero-trials"] #stageView:not([data-wp-frame-scene]) .legacy-stage-card [data-wp-item-content] > span { flex: 0 0 66px; }
 </style>
   <meta name="twitter:title" content="Pruebas de Héroes | WeightPlay" />
     <meta name="twitter:description" content="Elige uno de cuatro héroes y muévete con toques, arrastres o teclado en 30 pruebas de tres salas. Escoge bendiciones gratis, supera seis jefes de control y mejora tu maestría permanente." />
@@ -69,10 +69,10 @@
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
+<link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared1"><link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0"></head>
 <body data-game-view="main" data-screen="main" data-game-id="animal-hero-trials" data-tutorial-auto-show="false" data-wp-battle-settings="visible" data-sound-toggle="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-wp-game-title data-runtime-localize="off">Pruebas de Héroes</strong><span>Cargando</span><div class="loading-track"><i></i></div></div></section>
-  <main id="main" class="app">
+  <main id="main" class="app" data-wp-frame-root>
     <section id="mainView" class="view main-view wp-standard-main-screen" data-screen="main">
       <header class="main-header wp-shell-header wp-main-shell-header">
         <a class="lobby-return" data-wp-return="main" href="/" aria-label="Volver a WeightPlay"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
@@ -90,7 +90,7 @@
         </div>
       </section>
     </section>
-    <section id="stageView" data-wp-frame-play-fill class="view hidden wp-standard-stage-panel wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-stage-art="/assets/animal-hero-trials-cover.png" style="--wp-stage-art:url('/assets/animal-hero-trials-cover.png')">
+    <section id="stageView" data-wp-frame-play-fill class="view hidden wp-standard-stage-panel wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-stage-art="/assets/interface7-redrawn/animal-hero-trials.webp" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-hero-trials.webp')">
       <header class="compact-head wp-standard-stage-heading"><button id="stageBack" class="icon-btn" data-wp-return="stage" type="button" aria-label="Volver">&larr;</button></header>
       <div id="heroPicker" class="hero-picker" aria-label="Elegir héroe"></div>
       <div class="progress-card"><span><img src="../../assets/animal-hero-trials-icon-trial-gate.png" alt="" aria-hidden="true" /><span class="progress-copy"><b data-t="marks">Marcas de prueba</b><strong id="markCount">0</strong></span></span><button id="masteryBtn" type="button"><img src="../../assets/animal-hero-trials-icon-heart-mastery.png" alt="" aria-hidden="true" /><span data-t="mastery">Maestría de vida</span><b id="masteryLevel">Lv.0</b><small id="masteryCost">PV máximos de todos +0 → +12 · Necesitas 5 / Tienes 0 marcas</small></button></div>
@@ -108,7 +108,7 @@
     <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"animal-hero-trials"});</script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/es.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/tutorial.js"></script>
-  <script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="/src/stage-virtualization-standard.js?v=20260809-stage-v6-source-demotion-v8"></script><script src="game.js?v=20261015-hero-v22-assembly1&wp-audio=1.0.0"></script><section class="game-page-info game-page-info-static" aria-label="Información de Pruebas de Héroes">
+  <script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="/src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script><script src="/src/stage-rail-i9.js?v=20261017-shared1"></script><script src="/src/game-play-ui.js?v=20261017-shared1"></script><script src="/src/virtual-joystick.js?v=1.0.0"></script><script src="game.js?v=20261018-hero-reconstruction1&wp-audio=1.0.0"></script><section class="game-page-info game-page-info-static" aria-label="Información de Pruebas de Héroes">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Pruebas de Héroes</h2><p>Pruebas de Héroes es una campaña de acción con 30 pruebas y cuatro héroes distintos en salud, velocidad, alcance y habilidades activas. Toca o arrastra para moverte; cada héroe ataca automáticamente al enemigo más cercano dentro de su alcance. Cada prueba tiene tres salas: supera las dos primeras para elegir gratis una bendición de Potencia, Enfriamiento o Recuperación y luego enfréntate a un capitán de élite o a un jefe de punto de control. Las victorias otorgan Marcas de Prueba, desbloquean la siguiente prueba y mejoran la Maestría del Corazón permanente.</p><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Combate con toque y arrastre</span><span>Pruebas de acción de tres salas</span><span>Habilidades de héroe con tiempo</span></div></div>
@@ -116,6 +116,7 @@
     </div>
 
     <div class="game-info-sections">
+<p class="hero-control-note" data-runtime-localize="off">Muévete con la palanca compartida, pulsa un destino o usa WASD / flechas. Espacio activa la habilidad; Mayús o Esquivar ofrece una evasión protegida con 3,1 s de recarga. Sal de las advertencias ámbar y contraataca durante la apertura verde. Cambia de personaje en Héroes y maestría.</p>
       <div class="game-info-section"><h3>Mundo y misión</h3><p>Se abrieron seis puertas de sombra entre Rootwood y Void Crown. Rootwood envía manadas de persecución, Prism Ravine otorga vuelo y escudos, Ember Forge impulsa cargas advertidas, Moon Range arma a atacantes distantes, Abyss Shell refuerza a los guardias y la Corona final mezcla todas las reglas supervivientes. Una victoria estabiliza un segmento de la carretera y desbloquea la siguiente prueba.</p>
 <p>Boom Mane Leo, Spark Paw Fia, Moon Cap Orla y Moss Shell Taro ingresan como un equipo de héroes rotativo. Cada quinto juicio es un puesto de control regional. Derrotar al Emperador de la Corona del Vacío en la Prueba 30 cierra la puerta final; la campaña no crea ningún Juicio 31 oculto.</p></div>
       <div class="game-info-section"><h3>Sistemas del juego</h3><p>Cuatro héroes: Leo está equilibrado y usa un rugido de área. Fia es rápida y realiza una carrera dañina invulnerable. Orla ataca desde lejos y marca un objetivo para causar daño adicional. Taro tiene la mayor salud y crea una guardia cronometrada que reduce el daño.</p>
@@ -140,7 +141,7 @@
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
-  <script>window.addEventListener("load",()=>document.querySelector("#loadingPanel")?.classList.add("hidden"),{once:true});</script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+
+
 </body>
 </html>

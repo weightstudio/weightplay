@@ -452,8 +452,21 @@ function createDemonEventPreview() {
     const title = document.createElement("span");
     title.className = "demon-event-title";
     title.textContent = event.title;
-    art.append(image, title);
-    card.append(art);
+    const copy = document.createElement("span");
+    copy.className = "demon-event-card-copy";
+    const label = document.createElement("span");
+    label.className = "demon-event-label";
+    label.textContent = ({en:"Daily event","zh-Hant":"每日活動","zh-Hans":"每日活动",ja:"デイリーイベント",ko:"일일 이벤트",es:"Evento diario","pt-BR":"Evento diário",fr:"Événement quotidien",de:"Tägliches Event",it:"Evento giornaliero",ru:"Ежедневное событие",hi:"दैनिक इवेंट",ar:"فعالية يومية"})[locale] || "Daily event";
+    const schedule = document.createElement("span");
+    schedule.className = "demon-event-card-schedule";
+    schedule.textContent = event.details.schedule;
+    const arrow = document.createElement("span");
+    arrow.className = "demon-event-chevron";
+    arrow.textContent = "›";
+    arrow.setAttribute("aria-hidden", "true");
+    copy.append(label, title, schedule);
+    art.append(image);
+    card.append(art, copy, arrow);
     trackElement.append(card);
   }
   const controls = document.createElement("div");

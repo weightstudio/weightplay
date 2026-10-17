@@ -81,9 +81,11 @@
       content.prepend(context);
     }
 
-    // The shared frame owns Battle utility controls. Preserve the authored
-    // utility node and its data marker in the Battle header so the frame can
-    // size and contain it at every logical Canvas viewport.
+    // Expose the original utility directly to the shared title-free header.
+    // Keeping it inside a two-item wrapper lets that wrapper stack and clip
+    // the counter at desktop scales; the shared frame owns final geometry.
+    const utility = $("battleSettingsBtn");
+    if (utility && utility.parentElement !== legacyHeader) legacyHeader.append(utility);
   }
 
   let resultOpen = false;
@@ -118,7 +120,7 @@
 
     const syncResultActions = () => {
       const state = api.getState();
-      const complete = state.completed >= api.maps.length;
+      const complete = state.map === api.maps.length - 1;
       if (stages) {
         stages.hidden = false;
         stages.removeAttribute("aria-hidden");

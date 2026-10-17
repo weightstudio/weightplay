@@ -563,3 +563,35 @@
     Object.assign(t[locale] || {}, { resultGuideTitle, tipsTitle, tagSpatial, tagLogic, tagAnimal });
   }
 })();
+
+// Observatory interaction copy; the original thirteen languages stay complete.
+(() => {
+  const keys = ["rulePass", "ruleFail", "traceClue", "checksLabel", "matchedRules", "observePrompt", "starsEarned", "perfectRead", "skyRestored", "reviewedBoard"];
+  const copy = {
+    en: ["Rule satisfied", "Rule broken", "Tap to trace this relation", "Checks: {count}", "{count} of 2 rules satisfied", "Choose a board to observe", "{count} of 3 stars", "Perfect deduction", "Sky restored", "This board was checked. Compare its marked relations and choose another."],
+    "zh-Hant": ["符合線索", "違反線索", "點選追蹤這條關係", "檢查：{count} 次", "符合 {count}／2 條線索", "選一張星圖，展開觀測", "獲得 {count}／3 顆星", "一次推理成功", "星空修復完成", "這張星圖已驗證。比較標記的關係，再選另一張。"],
+    "zh-Hans": ["符合线索", "违反线索", "点击追踪这条关系", "检查：{count} 次", "符合 {count}／2 条线索", "选择一张星图，展开观测", "获得 {count}／3 颗星", "一次推理成功", "星空修复完成", "这张星图已验证。比较标记的关系，再选另一张。"],
+    ja: ["手がかりに一致", "手がかりに不一致", "タップして関係をたどる", "確認：{count}回", "2つ中{count}つの条件に一致", "星図を選んで観測しよう", "星3つ中{count}つ", "一度で推理成功", "星空を修復", "確認済みの星図です。印のある関係を比べ、別の星図を選びましょう。"],
+    ko: ["조건 충족", "조건 불충족", "눌러서 관계 추적", "확인: {count}회", "조건 2개 중 {count}개 충족", "관측할 별지도를 선택하세요", "별 3개 중 {count}개", "한 번에 추리 성공", "별하늘 복원 완료", "이미 확인한 별지도입니다. 표시된 관계를 비교하고 다른 지도를 선택하세요."],
+    es: ["Pista cumplida", "Pista incumplida", "Toca para seguir esta relación", "Comprobaciones: {count}", "{count} de 2 pistas cumplidas", "Elige un tablero para observar", "{count} de 3 estrellas", "Deducción perfecta", "Cielo restaurado", "Este tablero ya se comprobó. Compara las relaciones marcadas y elige otro."],
+    "pt-BR": ["Pista atendida", "Pista não atendida", "Toque para seguir esta relação", "Verificações: {count}", "{count} de 2 pistas atendidas", "Escolha um tabuleiro para observar", "{count} de 3 estrelas", "Dedução perfeita", "Céu restaurado", "Este tabuleiro já foi verificado. Compare as relações marcadas e escolha outro."],
+    fr: ["Indice respecté", "Indice non respecté", "Touchez pour suivre cette relation", "Vérifications : {count}", "{count} indices sur 2 respectés", "Choisissez une carte à observer", "{count} étoiles sur 3", "Déduction parfaite", "Ciel restauré", "Cette carte a déjà été vérifiée. Comparez les relations indiquées et choisissez-en une autre."],
+    de: ["Hinweis erfüllt", "Hinweis verletzt", "Antippen, um die Beziehung zu verfolgen", "Prüfungen: {count}", "{count} von 2 Hinweisen erfüllt", "Wähle eine Karte zum Beobachten", "{count} von 3 Sternen", "Perfekte Schlussfolgerung", "Sternenhimmel wiederhergestellt", "Diese Karte wurde geprüft. Vergleiche die markierten Beziehungen und wähle eine andere."],
+    it: ["Indizio rispettato", "Indizio violato", "Tocca per seguire questa relazione", "Verifiche: {count}", "{count} indizi su 2 rispettati", "Scegli una mappa da osservare", "{count} stelle su 3", "Deduzione perfetta", "Cielo ripristinato", "Questa mappa è già stata verificata. Confronta le relazioni segnate e scegline un’altra."],
+    ru: ["Условие выполнено", "Условие нарушено", "Нажмите, чтобы проследить связь", "Проверки: {count}", "Выполнено {count} из 2 условий", "Выберите карту для наблюдения", "{count} из 3 звёзд", "Идеальное решение", "Небо восстановлено", "Эта карта уже проверена. Сравните отмеченные связи и выберите другую."],
+    hi: ["संकेत सही है", "संकेत गलत है", "संबंध देखने के लिए दबाएँ", "जाँच: {count}", "2 में से {count} संकेत सही", "देखने के लिए मानचित्र चुनें", "3 में से {count} तारे", "एक बार में सही तर्क", "आकाश बहाल हुआ", "यह मानचित्र जाँचा जा चुका है। चिह्नित संबंधों की तुलना करें और दूसरा चुनें।"],
+    ar: ["الشرط متحقق", "الشرط غير متحقق", "اضغط لتتبع العلاقة", "عمليات التحقق: {count}", "تحقق {count} من شرطين", "اختر خريطة لمراقبتها", "{count} من 3 نجوم", "استنتاج مثالي", "تم إصلاح السماء", "تم التحقق من هذه الخريطة. قارن العلاقات المحددة واختر خريطة أخرى."]
+  };
+  const progress = {
+    en: "Night maps restored: {count} / {total}.",
+    "zh-Hant": "夜空地圖已修復 {count}／{total} 幅。", "zh-Hans": "夜空地图已修复 {count}／{total} 幅。",
+    ja: "修復した星図：{count}／{total}枚。", ko: "복원한 별지도: {count} / {total}개.",
+    es: "Mapas nocturnos restaurados: {count} / {total}.", "pt-BR": "Mapas noturnos restaurados: {count} / {total}.",
+    fr: "Cartes nocturnes restaurées : {count} / {total}.", de: "Wiederhergestellte Sternkarten: {count} / {total}.",
+    it: "Mappe notturne ripristinate: {count} / {total}.", ru: "Восстановлено ночных карт: {count} / {total}.",
+    hi: "बहाल हुए रात्रि मानचित्र: {count} / {total}।", ar: "خرائط ليلية تم إصلاحها: {count} / {total}."
+  };
+  for (const [locale, values] of Object.entries(copy)) {
+    Object.assign(window.ANIMAL_CONSTELLATION_KEEPER_LOCALES[locale], Object.fromEntries(keys.map((key, index) => [key, values[index]])), { resultText: progress[locale] });
+  }
+})();

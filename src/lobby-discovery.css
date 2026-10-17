@@ -1014,58 +1014,64 @@ body.general-lobby-page .demon-event-preview[data-motion="on"] .demon-event-art 
 @media(min-width:1120px){body.general-lobby-page .desktop-filter-rail .demon-event-preview{grid-template-columns:1fr;gap:12px;padding:9px}body.general-lobby-page .desktop-filter-rail .demon-event-art{width:100%;height:auto;aspect-ratio:1}body.general-lobby-page .desktop-filter-rail .demon-event-actions{gap:3px;margin-top:10px}body.general-lobby-page .desktop-filter-rail .demon-event-actions .demon-event-play{width:100%;min-height:44px}body.general-lobby-page .desktop-filter-rail .demon-event-actions .demon-event-details{width:auto;align-self:center}body.general-lobby-page .desktop-filter-rail .demon-event-copy h3{font-size:16px}}
 @media(max-width:360px){body.general-lobby-page .demon-event-preview{grid-template-columns:86px minmax(0,1fr);gap:10px;padding:10px}body.general-lobby-page .demon-event-art{width:86px;height:86px}body.general-lobby-page .demon-event-line{font-size:10px}body.general-lobby-page .demon-event-copy h3{font-size:16px}body.general-lobby-page .demon-event-actions{gap:3px}body.general-lobby-page .demon-event-actions button{padding-inline:8px}body.general-lobby-page .demon-event-dialog{width:calc(100vw - 24px);padding:20px}body.general-lobby-page .demon-event-dialog h2{font-size:23px}}
 
-/* Activity carousel: large poster first, with the activity title as the only card copy. */
-body.general-lobby-page .demon-event-preview { display: block; padding: 10px; overflow: hidden; }
+/* Quiet event bulletin: artwork supports the title without becoming a second hero. */
+body.general-lobby-page .demon-event-preview {
+  display: block; padding: 8px; margin-bottom: 14px;
+  border: 1px solid #536c75; border-radius: 8px;
+  background: linear-gradient(110deg, #26313e, #17313a 65%);
+  box-shadow: inset 3px 0 0 #aa839a, 0 2px 0 #0c2028;
+}
 body.general-lobby-page .demon-event-track { display: flex; width: 100%; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; touch-action: pan-y pinch-zoom; }
 body.general-lobby-page .demon-event-track::-webkit-scrollbar { display: none; }
-body.general-lobby-page .demon-event-card { display: grid; grid-template-rows: minmax(0, 1fr) auto; flex: 0 0 100%; min-width: 0; padding: 0; border: 0; border-radius: 4px; background: transparent; color: #fff4d4; text-align: start; cursor: pointer; scroll-snap-align: center; }
-body.general-lobby-page .demon-event-card:focus-visible { outline: 3px solid #ffe29a; outline-offset: -4px; }
-body.general-lobby-page .demon-event-card .demon-event-art { width: 100%; height: auto; aspect-ratio: 1.25 / 1; border: 1px solid #a68483; border-radius: 3px; }
+body.general-lobby-page .demon-event-card {
+  display: grid; position: relative; grid-template-columns: 84px minmax(0,1fr) 20px;
+  align-items: center; gap: 14px; flex: 0 0 100%; min-width: 0; min-height: 92px;
+  box-sizing: border-box; margin: 0; padding: 4px; border: 0; border-radius: 5px;
+  background: transparent; color: #f4f0e4; box-shadow: none; text-align: start;
+  cursor: pointer; scroll-snap-align: center;
+  transition: background-color 160ms ease;
+}
+body.general-lobby-page .demon-event-card:hover { background: #d4e3e908; }
+body.general-lobby-page .demon-event-card:active { background: #d4e3e914; }
+body.general-lobby-page .demon-event-card:focus-visible { outline: 2px solid #e7d4a3; outline-offset: -2px; }
+body.general-lobby-page .demon-event-card .demon-event-art {
+  position: relative; display: block; width: 84px; height: 84px; aspect-ratio: 1;
+  box-sizing: border-box; overflow: hidden; border: 1px solid #89748766;
+  border-radius: 6px; background: #202938;
+}
 body.general-lobby-page .demon-event-card .demon-event-art img { width: 100%; height: 100%; object-fit: cover; }
-body.general-lobby-page .demon-event-card .demon-event-copy { display: block; min-width: 0; padding: 12px 8px 9px; }
-body.general-lobby-page .demon-event-title { display: block; overflow: hidden; color: #fff0c2; font-size: clamp(19px, 2vw, 24px); font-weight: 900; line-height: 1.15; text-overflow: ellipsis; }
-body.general-lobby-page .demon-event-carousel-controls { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 3px; }
+body.general-lobby-page .demon-event-card-copy { display: grid; align-content: center; gap: 6px; min-width: 0; padding-block: 3px; }
+body.general-lobby-page .demon-event-label {
+  display: flex; align-items: center; gap: 6px; color: #bdaac5;
+  font-size: 10px; font-weight: 650; line-height: 1.3; letter-spacing: .04em;
+}
+body.general-lobby-page .demon-event-label::before { content: ""; flex: 0 0 4px; width: 4px; height: 4px; border-radius: 50%; background: #bea0c2; }
+body.general-lobby-page .demon-event-title {
+  display: block; position: static; width: auto; padding: 0; margin: 0;
+  overflow: visible; background: none; color: #f5efe2;
+  font-size: 19px; font-weight: 800; line-height: 1.2;
+  text-shadow: none; white-space: normal; overflow-wrap: anywhere;
+}
+body.general-lobby-page .demon-event-card-schedule { color: #aebfc5; font-size: 11px; font-weight: 450; line-height: 1.45; overflow-wrap: anywhere; }
+body.general-lobby-page .demon-event-chevron { color: #b7a58d; font-size: 26px; font-weight: 400; line-height: 1; text-align: center; transition: translate 160ms ease; }
+body.general-lobby-page .demon-event-card:hover .demon-event-chevron { translate: 2px 0; }
+html[dir="rtl"] body.general-lobby-page .demon-event-chevron { transform: scaleX(-1); }
+body.general-lobby-page .demon-event-carousel-controls { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 5px; }
 body.general-lobby-page .demon-event-carousel-controls[hidden] { display: none; }
 body.general-lobby-page .demon-event-step { display: inline-grid; width: 44px; height: 44px; place-items: center; border: 1px solid #799198; border-radius: 50%; background: #1d3642; color: #fff2d0; font-size: 25px; line-height: 1; cursor: pointer; }
 body.general-lobby-page .demon-event-step:focus-visible { outline: 3px solid #ffe29a; outline-offset: 2px; }
 body.general-lobby-page .demon-event-position { min-width: 48px; color: #d5e0dd; font-size: 12px; font-variant-numeric: tabular-nums; text-align: center; }
 body.general-lobby-page .demon-event-dialog .demon-event-count { margin: 0; color: #e8d8ad; font-size: 13px; }
+@media (max-width: 360px) {
+  body.general-lobby-page .demon-event-card { grid-template-columns: 72px minmax(0,1fr) 16px; gap: 10px; min-height: 84px; }
+  body.general-lobby-page .demon-event-card .demon-event-art { width: 72px; height: 72px; }
+  body.general-lobby-page .demon-event-title { font-size: 17px; }
+}
 @media (min-width: 1120px) {
-  body.general-lobby-page .desktop-filter-rail .demon-event-preview { padding: 10px; }
-  body.general-lobby-page .desktop-filter-rail .demon-event-card .demon-event-art { aspect-ratio: 1 / 1; }
-  body.general-lobby-page .desktop-filter-rail .demon-event-title { font-size: 20px; }
+  body.general-lobby-page .desktop-filter-rail .demon-event-preview { padding: 8px; }
+  body.general-lobby-page .desktop-filter-rail .demon-event-card .demon-event-art { width: 84px; height: 84px; aspect-ratio: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
   body.general-lobby-page .demon-event-track { scroll-behavior: auto; }
-}
-
-/* Keep the activity name legible over the poster artwork at phone size. */
-body.general-lobby-page .demon-event-card { display: block; position: relative; }
-body.general-lobby-page .demon-event-card .demon-event-art {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1.25 / 1;
-  overflow: hidden;
-}
-body.general-lobby-page .demon-event-card .demon-event-art img { object-fit: cover; }
-body.general-lobby-page .demon-event-title {
-  position: absolute;
-  inset: auto 0 0;
-  z-index: 3;
-  box-sizing: border-box;
-  width: 100%;
-  padding: 18px 16px 15px;
-  overflow: hidden;
-  background: linear-gradient(180deg, transparent 0%, rgb(9 17 25 / 78%) 38%, rgb(9 17 25 / 94%) 100%);
-  color: #fff3d4;
-  font-size: clamp(20px, 5vw, 28px);
-  line-height: 1.2;
-  text-overflow: ellipsis;
-  text-shadow: 0 2px 5px #000;
-  white-space: nowrap;
-}
-@media (min-width: 1120px) {
-  body.general-lobby-page .desktop-filter-rail .demon-event-card .demon-event-art { aspect-ratio: 1 / 1; }
+  body.general-lobby-page .demon-event-card, body.general-lobby-page .demon-event-chevron { transition: none; }
 }

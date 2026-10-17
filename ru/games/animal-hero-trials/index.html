@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
   <link rel="stylesheet" href="../../src/play-viewport.css" />
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-  <link rel="stylesheet" href="style.css?v=20261015-hero-v22-assembly1" />
+  <link rel="stylesheet" href="style.css?v=20261018-hero-reconstruction1" />
   <link rel="stylesheet" href="progress-cards.css" />
   <style>.canvas-wrap canvas:focus-visible{outline:5px solid #ffd45f;outline-offset:-5px}</style>
   <style>
@@ -48,19 +48,19 @@
     .reroll-row{margin-top:10px;display:grid;gap:5px}.reroll-row button{height:46px;min-height:46px;border:1px solid #8edbb3;border-radius:9px;background:#0c281f;color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;font-weight:900}.reroll-row button.is-confirming{border-color:#ffd45f;background:#3b3315;box-shadow:0 0 0 2px #ffd45f33}.reroll-row button:disabled{opacity:.48}.reroll-row img{width:24px;height:24px;object-fit:contain}.reroll-row small{display:grid;place-items:center;min-height:36px;color:#ffd45f}
     .modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.modal-actions button{min-height:50px;border-radius:10px;font-weight:900}.modal-actions .secondary{border:1px solid #8edbb3;background:#0c281f;color:#fff}
     .hero-picker{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(86px,1fr);gap:7px;overflow-x:auto;scrollbar-width:none}.hero-option{height:112px;border:1px solid #4f8b70;border-radius:9px;background:#102d24;color:#fff;padding:5px;display:grid;grid-template-rows:48px auto auto;justify-items:center;align-content:center;gap:2px}.hero-option.selected{border:2px solid #ffd45f;background:#194635}.hero-option img{width:48px;height:48px;object-fit:contain}.hero-option b{font-size:11px;line-height:1.1;text-align:center}.hero-option small{display:grid;gap:1px;font-size:8px;line-height:1.15;color:#bfe6d2;text-align:center}
-    #stageView{height:100dvh;min-height:0;overflow:hidden}.stage-rail{min-height:0}
-    .stage-card{padding:8px;gap:4px}.stage-card img{min-height:0}.stage-card span{color:#d9eee4}.stage-card.checkpoint{border:3px solid #ffd45f;box-shadow:0 0 0 2px #8b6424}.stage-card.checkpoint img{object-fit:contain;background:#0b221b}
+    #stageView:not([data-wp-frame-scene]){height:100dvh;min-height:0;overflow:hidden}.legacy-stage-rail{min-height:0}
+    .legacy-stage-card{padding:8px;gap:4px}.legacy-stage-card img{min-height:0}.legacy-stage-card span{color:#d9eee4}.legacy-stage-card.checkpoint{border:3px solid #ffd45f;box-shadow:0 0 0 2px #8b6424}.legacy-stage-card.checkpoint img{object-fit:contain;background:#0b221b}
     body:not([data-game-view="battle"]) .battle-ad{display:none}
     body[data-game-view="stage"] .game-page-info, body[data-game-view="battle"] .game-page-info{display:none!important}
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Animal Hero Trials","url":"https://weightplay.com/ru/games/animal-hero-trials/","image":"https://weightplay.com/assets/animal-hero-trials-cover.png","description":"Выберите одного из четырёх героев и пройдите 30 трёхкомнатных испытаний с сенсорным управлением или клавиатурой. Берите бесплатные усиления, одолейте шесть боссов рубежей и развивайте постоянное мастерство.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"ru","isAccessibleForFree":true,"genre":["Action","Roguelite","Animal","Browser Game"],"audience":{"@type":"Audience","audienceType":"General action and roguelite players"},"alternateName":"Hero Trials"}</script>
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><link rel="stylesheet" href="/src/stage-selector-standard.css?v=20260918-ui-fix1" data-wp-stage-standard>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Animal Hero Trials","url":"https://weightplay.com/ru/games/animal-hero-trials/","image":"https://weightplay.com/assets/interface7-redrawn/animal-hero-trials.webp","description":"Выберите одного из четырёх героев и пройдите 30 трёхкомнатных испытаний с сенсорным управлением или клавиатурой. Берите бесплатные усиления, одолейте шесть боссов рубежей и развивайте постоянное мастерство.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"ru","isAccessibleForFree":true,"genre":["Action","Roguelite","Animal","Browser Game"],"audience":{"@type":"Audience","audienceType":"General action and roguelite players"},"alternateName":"Hero Trials"}</script>
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
 <style>
-  body[data-wp-game-id="animal-hero-trials"] #stageView.wp-stage-art-shell .stage-card { grid-template-rows: minmax(0, 1fr); gap: 4px; }
-  body[data-wp-game-id="animal-hero-trials"] #stageView .stage-card [data-wp-item-content] { width: 100%; height: 100%; gap: 4px; }
-  body[data-wp-game-id="animal-hero-trials"] #stageView .stage-card [data-wp-item-content] > img { flex: 1 1 56px; height: auto; min-height: 0; }
-  body[data-wp-game-id="animal-hero-trials"] #stageView .stage-card [data-wp-item-content] > strong { flex: 0 0 30px; }
-  body[data-wp-game-id="animal-hero-trials"] #stageView .stage-card [data-wp-item-content] > span { flex: 0 0 66px; }
+  body[data-wp-game-id="animal-hero-trials"] #stageView:not([data-wp-frame-scene]).wp-stage-art-shell .legacy-stage-card { grid-template-rows: minmax(0, 1fr); gap: 4px; }
+  body[data-wp-game-id="animal-hero-trials"] #stageView:not([data-wp-frame-scene]) .legacy-stage-card [data-wp-item-content] { width: 100%; height: 100%; gap: 4px; }
+  body[data-wp-game-id="animal-hero-trials"] #stageView:not([data-wp-frame-scene]) .legacy-stage-card [data-wp-item-content] > img { flex: 1 1 56px; height: auto; min-height: 0; }
+  body[data-wp-game-id="animal-hero-trials"] #stageView:not([data-wp-frame-scene]) .legacy-stage-card [data-wp-item-content] > strong { flex: 0 0 30px; }
+  body[data-wp-game-id="animal-hero-trials"] #stageView:not([data-wp-frame-scene]) .legacy-stage-card [data-wp-item-content] > span { flex: 0 0 66px; }
 </style>
   <meta name="twitter:title" content="Animal Hero Trials | WeightPlay" />
     <meta name="twitter:description" content="Выберите одного из четырёх героев и пройдите 30 трёхкомнатных испытаний с сенсорным управлением или клавиатурой. Берите бесплатные усиления, одолейте шесть боссов рубежей и развивайте постоянное мастерство." />
@@ -69,10 +69,10 @@
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
+<link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared1"><link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0"></head>
 <body data-game-view="main" data-screen="main" data-game-id="animal-hero-trials" data-tutorial-auto-show="false" data-wp-battle-settings="visible" data-sound-toggle="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-wp-game-title data-runtime-localize="off">Animal Hero Trials</strong><span>Загрузка</span><div class="loading-track"><i></i></div></div></section>
-  <main id="main" class="app">
+  <main id="main" class="app" data-wp-frame-root>
     <section id="mainView" class="view main-view wp-standard-main-screen" data-screen="main">
       <header class="main-header wp-shell-header wp-main-shell-header">
         <a class="lobby-return" data-wp-return="main" href="/" aria-label="Вернуться в WeightPlay"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
@@ -90,7 +90,7 @@
         </div>
       </section>
     </section>
-    <section id="stageView" data-wp-frame-play-fill class="view hidden wp-standard-stage-panel wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-stage-art="/assets/animal-hero-trials-cover.png" style="--wp-stage-art:url('/assets/animal-hero-trials-cover.png')">
+    <section id="stageView" data-wp-frame-play-fill class="view hidden wp-standard-stage-panel wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-stage-art="/assets/interface7-redrawn/animal-hero-trials.webp" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-hero-trials.webp')">
       <header class="compact-head wp-standard-stage-heading"><button id="stageBack" class="icon-btn" data-wp-return="stage" type="button" aria-label="Назад">&larr;</button></header>
       <div id="heroPicker" class="hero-picker" aria-label="Выберите героя"></div>
       <div class="progress-card"><span><img src="../../assets/animal-hero-trials-icon-trial-gate.png" alt="" aria-hidden="true" /><span class="progress-copy"><b data-t="marks">Знаки испытаний</b><strong id="markCount">0</strong></span></span><button id="masteryBtn" type="button"><img src="../../assets/animal-hero-trials-icon-heart-mastery.png" alt="" aria-hidden="true" /><span data-t="mastery">Мастерство сердца</span><b id="masteryLevel">Lv.0</b><small id="masteryCost">Макс. здоровье всех героев +0 → +12 · Нужно 5 / Есть 0 знаков</small></button></div>
@@ -108,7 +108,7 @@
     <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"animal-hero-trials"});</script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ru.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/tutorial.js"></script>
-  <script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="/src/stage-virtualization-standard.js?v=20260809-stage-v6-source-demotion-v8"></script><script src="game.js?v=20261015-hero-v22-assembly1&wp-audio=1.0.0"></script><section class="game-page-info game-page-info-static" aria-label="Информация об игре Animal Hero Trials">
+  <script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="/src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script><script src="/src/stage-rail-i9.js?v=20261017-shared1"></script><script src="/src/game-play-ui.js?v=20261017-shared1"></script><script src="/src/virtual-joystick.js?v=1.0.0"></script><script src="game.js?v=20261018-hero-reconstruction1&wp-audio=1.0.0"></script><section class="game-page-info game-page-info-static" aria-label="Информация об игре Animal Hero Trials">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Animal Hero Trials</h2><p>Animal Hero Trials — это экшен-кампания из 30 испытаний с четырьмя героями, у которых различаются здоровье, скорость, дальность атаки и активные навыки. Перемещайтесь касанием или перетаскиванием; герой автоматически атакует ближайшего врага в радиусе. В каждом испытании три комнаты: после первых двух бесплатно выберите усиление Силы, Перезарядки или Восстановления, а затем сразитесь с элитным капитаном или боссом контрольного рубежа. Победы дают знаки испытаний, открывают следующий этап и развивают постоянное Мастерство сердца.</p><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Бой с перемещением касанием и перетаскиванием</span><span>Экшен-испытания из трёх комнат</span><span>Выбор момента для навыка героя</span></div></div>
@@ -116,6 +116,7 @@
     </div>
 
     <div class="game-info-sections">
+<p class="hero-control-note" data-runtime-localize="off">Двигайтесь общим джойстиком, щелчком по цели или WASD / стрелками. Пробел — навык; Shift или Уклонение даёт краткую защиту с восстановлением 3,1 с. Покидайте янтарные зоны и контратакуйте в зелёное окно. Герой меняется в разделе «Герои и мастерство».</p>
       <div class="game-info-section"><h3>Мир и цель</h3><p>Между Корневым лесом и Короной Пустоты открылись шесть теневых врат. Рутвуд посылает преследующие стаи, Призменное ущелье дает возможность полета и щиты, Эмбер Кузница направляет предупрежденные атаки, Лунный хребет вооружает нападающих на расстоянии, Оболочка Бездны усиливает охрану, а последняя Корона смешивает все сохранившиеся правила. Победа стабилизирует один участок дороги и открывает следующее испытание.</p>
 <p>Бум Мане Лео, Искра Лапа Фиа, Лунная Шапка Орла и Мосс Шелл Таро входят в состав сменяющейся команды героев. Каждое пятое судебное разбирательство является региональным контрольно-пропускным пунктом. Победа над Императором Короны Пустоты в Испытании 30 закроет последние врата; кампания не создает скрытого испытания 31.</p></div>
       <div class="game-info-section"><h3>Игровые системы</h3><p>Четыре героя: Лео сбалансирован и использует рев по площади. Фиа быстра и совершает неуязвимый разрушительный рывок. Орла атакует с расстояния и помечает одну цель для дополнительного урона. У Таро больше всего здоровья, и он создает временную защиту, снижающую урон.</p>
@@ -140,7 +141,7 @@
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
-  <script>window.addEventListener("load",()=>document.querySelector("#loadingPanel")?.classList.add("hidden"),{once:true});</script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+
+
 </body>
 </html>

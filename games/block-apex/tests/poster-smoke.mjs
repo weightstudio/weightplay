@@ -36,6 +36,7 @@ try{
   for(const [width,height]of [[390,844],[1280,720]]){
     const context=await browser.newContext({viewport:{width,height},serviceWorkers:'block'});
     await installLocalTestNetworkPolicy(context);
+    await context.addInitScript(()=>localStorage.setItem('weightPlayLocale','zh-Hant'));
     try{
       const page=await context.newPage(),bad=[],errors=[];
       page.on('pageerror',e=>errors.push(e.message));
@@ -48,7 +49,7 @@ try{
       await image.evaluate(i=>i.decode());
       assert.equal(new URL(await image.getAttribute('src'),origin).pathname,'/assets/lobby-thumbs/w480/assets__block-apex-poster.webp');
       await card.screenshot({path:path.join(out,`lobby-${width}.png`)});
-      await page.goto(`${origin}/games/block-apex/?lang=zh-Hant`,{waitUntil:'domcontentloaded'});
+      await page.goto(`${origin}/games/block-apex/`,{waitUntil:'domcontentloaded'});
       await page.waitForFunction(()=>document.body.dataset.apexBooted==='true');
       const poster=page.locator('#poster');await poster.evaluate(i=>i.decode());
       assert.equal(new URL(await poster.getAttribute('src'),origin).pathname,'/assets/block-apex-poster.webp');
@@ -64,7 +65,7 @@ try{
       // Static Main poster must survive a failed controller/engine module load.
       const cold=await context.newPage();
       await cold.route('**/*.mjs',route=>route.abort());
-      await cold.goto(`${origin}/games/block-apex/?lang=zh-Hant`,{waitUntil:'domcontentloaded'});
+      await cold.goto(`${origin}/games/block-apex/`,{waitUntil:'domcontentloaded'});
       await cold.locator('#poster').evaluate(i=>i.decode());
       assert.ok(await cold.locator('#poster').isVisible());
       results.push({width,height,lobby:true,main:true,garageIcons:true,return:true,controllerUnavailablePoster:true});

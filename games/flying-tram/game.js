@@ -24,6 +24,9 @@
   const normAngle = a => Math.atan2(Math.sin(a),Math.cos(a));
   const PAD_ALTITUDE = .14;
   const safeCall = name => { try { window.WeightPlayAudio?.play?.(name); } catch {} };
+  const tramSprite = new Image();
+  tramSprite.decoding = "async";
+  tramSprite.src = "assets/flying-tram-fia-cabin-v2.png";
 
   function applyLocale() {
     document.documentElement.lang = locale;
@@ -180,25 +183,32 @@
     for(let i=0;i<8;i++){const x=((i*175-camX*.22)%1250+1250)%1250-100,y=65+(i%3)*47;ctx.fillStyle="#ffffff44";ctx.fillRect(x,y,86,18);ctx.fillRect(x+17,y-13,46,16);}
     const skyline=[120,205,144,265,180,225,135,250,165,210,155,280,130,220];
     skyline.forEach((bh,i)=>{const x=((i*88-camX*.58)%1320+1320)%1320-140;ctx.fillStyle=i%2?"#264c6b":"#315b78";ctx.fillRect(x,h-bh-74,72,bh);ctx.fillStyle="#bddae155";for(let y=h-bh-58;y<h-96;y+=24)for(let xx=x+10;xx<x+64;xx+=18)ctx.fillRect(xx,y,7,10);});
-    const tramX=135+progress*485;
+    const tramX=220+progress*400;
     const runwayCenter=tramX+(1-progress)*280;
     const runwayX=runwayCenter-r.padWidth/2;
     ctx.fillStyle="#193754";ctx.fillRect(0,h-75,w,75);ctx.fillStyle="#263f56";ctx.fillRect(runwayX,h-105,r.padWidth,30);
     const padInset=Math.max(9,r.padWidth*.13);ctx.fillStyle="#f8d567";ctx.fillRect(runwayX+padInset,h-118,r.padWidth-2*padInset,12);ctx.fillStyle="#fff";ctx.fillRect(runwayX+padInset+10,h-105,9,30);ctx.fillRect(runwayX+r.padWidth-padInset-19,h-105,9,30);
     ctx.fillStyle="#d5f5ff";ctx.font="900 18px system-ui";ctx.textAlign="center";ctx.fillText(t("pad"),runwayCenter,h-128);
     for(let i=0;i<4;i++){const gx=(i*262+80-tsec*36)%(w+60);ctx.strokeStyle="#ffffff55";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(gx,180+i%2*54);ctx.lineTo(gx+55,180+i%2*54);ctx.stroke();}
-    const tramY=h-132-r.altitude*190+(r.altitude>PAD_ALTITUDE+.03?Math.sin(tsec*1.2)*8:0);
+    const tramScale=Math.min(1,h/570);
+    const tramHalfHeight=120*tramScale;
+    const tramY=clamp(h-132-r.altitude*190+(r.altitude>PAD_ALTITUDE+.03?Math.sin(tsec*1.2)*8:0),tramHalfHeight+12,h-tramHalfHeight-12);
     const angle=normAngle(r.angle);
     ctx.save();ctx.translate(tramX,tramY);ctx.rotate(angle);
-    // Original cuboid sky tram, drawn from simple geometric blocks.
-    ctx.fillStyle="#102842";ctx.fillRect(-86,24,172,14);ctx.fillStyle="#69d6db";ctx.fillRect(-74,-26,148,54);ctx.fillStyle="#147f9c";ctx.fillRect(-74,8,148,20);ctx.fillStyle="#ffb955";ctx.fillRect(-70,-52,133,31);ctx.fillStyle="#f4fbff";ctx.fillRect(-55,-43,29,18);ctx.fillRect(-14,-43,29,18);ctx.fillRect(27,-43,28,18);ctx.fillStyle="#ff7549";ctx.fillRect(-82,15,13,10);ctx.fillRect(69,15,13,10);ctx.fillStyle="#ffdf72";ctx.fillRect(72,-3,12,11);
-    ctx.fillStyle="#16253d";ctx.fillRect(-56,36,24,13);ctx.fillRect(32,36,24,13);ctx.fillStyle="#65a9c4";ctx.fillRect(-51,46,13,7);ctx.fillRect(37,46,13,7);
-    // Loose ticket and snack box ride inside the tram, then drift out under hard acceleration.
-    for(const item of r.junk){if(item.lost)continue;ctx.fillStyle=item.kind===0?"#ffe08a":"#f49c59";ctx.fillRect(item.x,item.y,13,9);ctx.fillStyle="#fff6d4";ctx.fillRect(item.x+2,item.y+2,8,2);}
-    // Spark Paw Fia: stepped fox head, lightning motif, and blue scarf.
-    ctx.fillStyle="#e87933";ctx.fillRect(-25,-78,44,35);ctx.fillRect(-34,-73,12,16);ctx.fillRect(19,-73,12,16);ctx.fillStyle="#fff0ce";ctx.fillRect(-17,-64,28,20);ctx.fillStyle="#fff";ctx.fillRect(-14,-70,7,8);ctx.fillRect(2,-70,7,8);ctx.fillStyle="#172d48";ctx.fillRect(-12,-68,3,4);ctx.fillRect(4,-68,3,4);ctx.fillStyle="#1e5f9a";ctx.fillRect(-22,-45,39,7);ctx.fillRect(8,-42,10,10);ctx.fillStyle="#f8cc43";ctx.beginPath();ctx.moveTo(-25,-77);ctx.lineTo(-19,-77);ctx.lineTo(-22,-70);ctx.lineTo(-16,-70);ctx.lineTo(-26,-59);ctx.lineTo(-22,-68);ctx.lineTo(-28,-68);ctx.fill();
-    // One bubble-tea cup, with visible pearls and spill slosh.
-    ctx.fillStyle="#f5f0db";ctx.fillRect(40,-62,18,21);ctx.fillStyle="#e99b5a";ctx.fillRect(42,-55,14,12);ctx.fillStyle="#fff7e8";ctx.fillRect(42,-61,14,4);ctx.strokeStyle="#7ce5f3";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(49,-60);ctx.lineTo(55,-72);ctx.stroke();ctx.fillStyle="#253454";ctx.fillRect(44,-46,4,4);ctx.fillRect(50,-46,4,4);ctx.restore();
+    // Original WeightPlay tram and Fia sprite; retain the hand-drawn fallback
+    // so an optional local art request never blocks the actual flight.
+    if(tramSprite.complete&&tramSprite.naturalWidth){
+      ctx.drawImage(tramSprite,-180*tramScale,-120*tramScale,360*tramScale,240*tramScale);
+    }else{
+      ctx.fillStyle="#102842";ctx.fillRect(-86,24,172,14);ctx.fillStyle="#69d6db";ctx.fillRect(-74,-26,148,54);ctx.fillStyle="#147f9c";ctx.fillRect(-74,8,148,20);ctx.fillStyle="#ffb955";ctx.fillRect(-70,-52,133,31);ctx.fillStyle="#f4fbff";ctx.fillRect(-55,-43,29,18);ctx.fillRect(-14,-43,29,18);ctx.fillRect(27,-43,28,18);ctx.fillStyle="#ff7549";ctx.fillRect(-82,15,13,10);ctx.fillRect(69,15,13,10);ctx.fillStyle="#ffdf72";ctx.fillRect(72,-3,12,11);
+      ctx.fillStyle="#16253d";ctx.fillRect(-56,36,24,13);ctx.fillRect(32,36,24,13);ctx.fillStyle="#65a9c4";ctx.fillRect(-51,46,13,7);ctx.fillRect(37,46,13,7);
+      for(const item of r.junk){if(item.lost)continue;ctx.fillStyle=item.kind===0?"#ffe08a":"#f49c59";ctx.fillRect(item.x,item.y,13,9);ctx.fillStyle="#fff6d4";ctx.fillRect(item.x+2,item.y+2,8,2);}
+      ctx.fillStyle="#e87933";ctx.fillRect(-25,-78,44,35);ctx.fillRect(-34,-73,12,16);ctx.fillRect(19,-73,12,16);ctx.fillStyle="#fff0ce";ctx.fillRect(-17,-64,28,20);ctx.fillStyle="#fff";ctx.fillRect(-14,-70,7,8);ctx.fillRect(2,-70,7,8);ctx.fillStyle="#172d48";ctx.fillRect(-12,-68,3,4);ctx.fillRect(4,-68,3,4);ctx.fillStyle="#1e5f9a";ctx.fillRect(-22,-45,39,7);ctx.fillRect(8,-42,10,10);ctx.fillStyle="#f8cc43";ctx.beginPath();ctx.moveTo(-25,-77);ctx.lineTo(-19,-77);ctx.lineTo(-22,-70);ctx.lineTo(-16,-70);ctx.lineTo(-26,-59);ctx.lineTo(-22,-68);ctx.lineTo(-28,-68);ctx.fill();
+      ctx.fillStyle="#f5f0db";ctx.fillRect(40,-62,18,21);ctx.fillStyle="#e99b5a";ctx.fillRect(42,-55,14,12);ctx.fillStyle="#fff7e8";ctx.fillRect(42,-61,14,4);ctx.strokeStyle="#7ce5f3";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(49,-60);ctx.lineTo(55,-72);ctx.stroke();ctx.fillStyle="#253454";ctx.fillRect(44,-46,4,4);ctx.fillRect(50,-46,4,4);
+    }
+    // Loose cabin effects remain live above the illustrated cabin.
+    for(const item of r.junk){if(item.lost)continue;ctx.save();ctx.translate(item.x+6,item.y+4);ctx.rotate(Math.sin(tsec*2+item.x)*.4);ctx.fillStyle=item.kind===0?"#fff1a5":"#ffc27c";ctx.fillRect(-6,-4,12,8);ctx.fillStyle="#fff";ctx.fillRect(-3,-2,6,2);ctx.restore();}
+    ctx.restore();
     ctx.fillStyle="#eafaff";ctx.textAlign="left";ctx.font="800 14px system-ui";ctx.fillText(`${t("routeKicker",{n:r.index+1})} · ${Math.round(progress*100)}%`,20,26);
     ctx.fillStyle="#102a42aa";ctx.fillRect(20,38,250,10);ctx.fillStyle="#78f0c6";ctx.fillRect(20,38,250*progress,10);
     ctx.fillStyle="#fff";ctx.font="12px system-ui";ctx.fillText(t("balanceHint"),20,67);

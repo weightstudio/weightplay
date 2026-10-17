@@ -28,7 +28,7 @@
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const ASSET_ROOT = "../../assets/";
-  const heroPosterUrl = new URL("/assets/animal-hero-trials-cover.png", location.origin).href;
+  const heroPosterUrl = new URL("/assets/interface7-redrawn/animal-hero-trials.webp", location.origin).href;
   const restoreHeroPosterMetadata = () => {
     document.querySelectorAll('meta[property="og:image"], meta[name="twitter:image"]').forEach((meta) => {
       meta.content = heroPosterUrl;
@@ -39,13 +39,13 @@
   window.addEventListener("weightplay-interface7-poster-registry-ready", () => {
     requestAnimationFrame(restoreHeroPosterMetadata);
   }, { once: true });
-  let WORLD_WIDTH = 460;
+  const WORLD_WIDTH = 460;
   const WORLD_HEIGHT = 560;
   const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
   // Gameplay timers stay identical in reduced motion; only decorative motion changes.
   const reducedMotion = () => motionPreference.matches;
   const LEGACY_WORLD_WIDTH = 390;
-  let WORLD_X_SCALE = WORLD_WIDTH / LEGACY_WORLD_WIDTH;
+  const WORLD_X_SCALE = WORLD_WIDTH / LEGACY_WORLD_WIDTH;
   const worldX = (value) => value * WORLD_X_SCALE;
   const copy = {
     en: {
@@ -499,12 +499,35 @@
   let quitSuspended = false;
   let quitOpener = null;
   const keys = {};
-  const battleControlCodes = new Set(["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyA", "KeyD", "KeyW", "KeyS", "Space"]);
+  const battleControlCodes = new Set(["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyA", "KeyD", "KeyW", "KeyS", "Space", "ShiftLeft", "ShiftRight"]);
   let stick = { x: 0, y: 0 };
+  let joystick = null;
+  let world3d = null;
+  let rendererReady = false;
+  let sharedFrame = null;
+  let sharedStage = null;
+  const controlCopy={
+    en:['Drag the stick or use WASD · Space: skill · Shift: dodge','Dodge','Heroes & Mastery','Choose your hero','Continue'],
+    'zh-Hant':['拖曳搖桿或 WASD 移動 · 空白鍵技能 · Shift 閃避','閃避','英雄與精通','選擇英雄','繼續'],
+    'zh-Hans':['拖动摇杆或 WASD 移动 · 空格键技能 · Shift 闪避','闪避','英雄与精通','选择英雄','继续'],
+    ja:['スティック／WASDで移動 · Space：スキル · Shift：回避','回避','ヒーローと熟練','ヒーローを選択','続ける'],
+    ko:['조이스틱／WASD 이동 · Space 스킬 · Shift 회피','회피','영웅과 숙련','영웅 선택','계속'],
+    es:['Palanca o WASD: mover · Espacio: habilidad · Mayús: esquivar','Esquivar','Héroes y maestría','Elige tu héroe','Continuar'],
+    'pt-BR':['Joystick ou WASD: mover · Espaço: habilidade · Shift: esquiva','Esquiva','Heróis e maestria','Escolha seu herói','Continuar'],
+    fr:['Joystick ou WASD : bouger · Espace : pouvoir · Maj : esquive','Esquive','Héros et maîtrise','Choisissez un héros','Continuer'],
+    de:['Joystick oder WASD: bewegen · Leertaste: Fähigkeit · Umschalt: ausweichen','Ausweichen','Helden und Meisterschaft','Helden wählen','Weiter'],
+    it:['Joystick o WASD: muovi · Spazio: abilità · Maiusc: schiva','Schiva','Eroi e maestria','Scegli un eroe','Continua'],
+    ru:['Джойстик／WASD: движение · Пробел: навык · Shift: уклонение','Уклонение','Герои и мастерство','Выберите героя','Продолжить'],
+    hi:['जॉयस्टिक／WASD: चलें · Space: कौशल · Shift: बचाव','बचाव','नायक और निपुणता','नायक चुनें','जारी रखें'],
+    ar:['العصا أو WASD للحركة · Space للمهارة · Shift للتفادي','تفادَ','الأبطال والإتقان','اختر بطلك','متابعة'],
+  };
+  const controlText=index=>(controlCopy[locale]||controlCopy.en)[index];
+  const mainPitch={en:'Four heroes. 30 trials. One crown.','zh-Hant':'四位英雄 · 30 場 3D 試煉','zh-Hans':'四位英雄 · 30 场 3D 试炼',ja:'4人の英雄。30の試練。',ko:'네 영웅, 30개의 시련.',es:'Cuatro héroes. 30 pruebas.','pt-BR':'Quatro heróis. 30 desafios.',fr:'Quatre héros. 30 épreuves.',de:'Vier Helden. 30 Prüfungen.',it:'Quattro eroi. 30 prove.',ru:'Четыре героя. 30 испытаний.',hi:'चार नायक। 30 परीक्षाएँ।',ar:'أربعة أبطال. 30 تجربة.'};
 
   function clearMovementInput() {
     Object.keys(keys).forEach((key) => { keys[key] = false; });
     stick = { x: 0, y: 0 };
+    joystick?.reset();
     const ownedPointer = pointer;
     pointer = null;
     moveTarget = null;
@@ -514,6 +537,10 @@
   function movementIntent() {
     let dx = (keys.ArrowRight || keys.KeyD ? 1 : 0) - (keys.ArrowLeft || keys.KeyA ? 1 : 0);
     let dy = (keys.ArrowDown || keys.KeyS ? 1 : 0) - (keys.ArrowUp || keys.KeyW ? 1 : 0);
+    if (!dx && !dy && joystick) {
+      const vector = joystick.getVector();
+      dx = vector.x; dy = vector.y;
+    }
     if (!dx && !dy && moveTarget && run) {
       dx = moveTarget.x - run.leo.x;
       dy = moveTarget.y - run.leo.y;
@@ -546,32 +573,17 @@
   function fitBattleWorld() {
     const rect = canvas.parentElement.getBoundingClientRect();
     if (rect.width < 1 || rect.height < 1) return;
-    // Use a wider logical arena in a short, wide Battle envelope. The Canvas
-    // remains uniformly scaled; the existing formation gains room to spread.
-    const width = Math.max(460, Math.round(WORLD_HEIGHT * rect.width / rect.height));
-    if (Math.abs(width - WORLD_WIDTH) < 2) return;
-    const factor = width / WORLD_WIDTH;
-    WORLD_WIDTH = width;
-    WORLD_X_SCALE = WORLD_WIDTH / LEGACY_WORLD_WIDTH;
-    canvas.width = WORLD_WIDTH;
-    canvas.height = WORLD_HEIGHT;
-    if (!run) return;
-    run.leo.x *= factor;
-    run.enemies.forEach((enemy) => { enemy.x *= factor; });
-    run.hazards.forEach((hazard) => {
-      hazard.x *= factor;
-      if (Number.isFinite(hazard.toX)) hazard.toX *= factor;
-    });
-    run.fx.forEach((effect) => {
-      if (Number.isFinite(effect.x)) effect.x *= factor;
-      if (Number.isFinite(effect.fromX)) effect.fromX *= factor;
-      if (effect.hazard) {
-        effect.hazard.x *= factor;
-        if (Number.isFinite(effect.hazard.toX)) effect.hazard.toX *= factor;
-      }
-    });
-    if (moveTarget) moveTarget.x *= factor;
-    if (run.strike) run.strike.fromX *= factor;
+    // Viewport composition distributes the SAME fixed simulation. Resizing
+    // must never move colliders, change ranges, or mutate a committed attack.
+    const ratio = rect.width / rect.height;
+    const width = Math.round(Math.max(460, WORLD_HEIGHT * ratio));
+    const height = Math.round(Math.max(WORLD_HEIGHT, 460 / ratio));
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width; canvas.height = height;
+      world3d?.resize(width, height);
+      joystick?.refresh();
+      if (run) draw();
+    }
   }
 
   const battleWorldObserver = new ResizeObserver(() => {
@@ -604,24 +616,12 @@
     loop(run.last);
     sceneFrame("battle", () => $("#game").focus({ preventScroll: true }));
   }
-  const images = {
-    bg: load("animal-hero-trials-arena.png"),
-    leo: load("animal-hero-trials-leo.png"),
-    fia: load("animal-hero-trials-fia.webp"),
-    orla: load("animal-hero-trials-orla.webp"),
-    taro: load("animal-hero-trials-taro.webp"),
-    enemy: load("animal-hero-trials-shadow-scout.png"),
-    roar: load("animal-hero-trials-fx-roar.webp"),
-    hit: load("animal-hero-trials-fx-hit.webp"),
-    shadow: load("animal-hero-trials-fx-shadow-hit.webp"),
-  };
-  Object.entries(enemyProfiles).forEach(([id,profile])=>{ images[`enemy-${id}`]=load(profile.asset); });
-  bosses.forEach((boss)=>{ images[`boss-${boss.id}`]=load(boss.asset); });
+  const images = {};
   const heroes = {
-    leo: { image: "leo", asset: "animal-hero-trials-leo.png", hp: 100, speed: 125, attack: 10, range: 76, skill: { en: "ROAR", zh: "怒吼", es: "RUGIDO", ar: "زئير" } },
-    fia: { image: "fia", asset: "animal-hero-trials-fia.webp", hp: 86, speed: 145, attack: 11, range: 72, skill: { en: "DASH", zh: "彗星衝刺", es: "CARRERA COMETA", ar: "اندفاعة" } },
-    orla: { image: "orla", asset: "animal-hero-trials-orla.webp", hp: 82, speed: 112, attack: 8, range: 165, skill: { en: "MARK", zh: "月之印記", es: "MARCA LUNAR", ar: "وسم" } },
-    taro: { image: "taro", asset: "animal-hero-trials-taro.webp", hp: 126, speed: 92, attack: 8, range: 76, skill: { en: "GUARD", zh: "庭園守護", es: "GUARDIA DEL JARDÍN", ar: "حراسة" } },
+    leo: { image: "leo", asset: "weightplay-character-boom-mane-lion-block-v1.webp", hp: 100, speed: 125, attack: 10, range: 76, skill: { en: "ROAR", zh: "怒吼", es: "RUGIDO", ar: "زئير" } },
+    fia: { image: "fia", asset: "weightplay-character-spark-paw-fox-block-v1.webp", hp: 86, speed: 145, attack: 11, range: 72, skill: { en: "DASH", zh: "彗星衝刺", es: "CARRERA COMETA", ar: "اندفاعة" } },
+    orla: { image: "orla", asset: "weightplay-character-moon-cap-owl-block-v1.webp", hp: 82, speed: 112, attack: 8, range: 165, skill: { en: "MARK", zh: "月之印記", es: "MARCA LUNAR", ar: "وسم" } },
+    taro: { image: "taro", asset: "weightplay-character-moss-shell-turtle-block-v1.webp", hp: 126, speed: 92, attack: 8, range: 76, skill: { en: "GUARD", zh: "庭園守護", es: "GUARDIA DEL JARDÍN", ar: "حراسة" } },
   };
 
   function load(filename) {
@@ -638,6 +638,7 @@
   }
 
   function t(key) {
+    if(key==='pitch')return mainPitch[locale]||mainPitch.en;
     const owned = copy[locale]?.[key];
     return owned || runtimeTranslate(copy.en[key] || key);
   }
@@ -771,6 +772,7 @@
   function show(name) {
     clearRerollConfirmation();
     clearMovementInput();
+    setHeroPanel(false, false);
     if (name !== activeScene) {
       activeScene = name;
       sceneGeneration += 1;
@@ -799,6 +801,8 @@
       cancelAnimationFrame(frame);
       if (run) run.active = false;
     }
+    joystick?.setEnabled(name === 'battle' && Boolean(run?.active));
+    sharedFrame?.activate(name);
     dispatchEvent(new CustomEvent("weightplay:shell-sync", { detail: { screen: name, generation: sceneGeneration } }));
     dispatchEvent(new CustomEvent("weightplay:stage-sync", { detail: { screen: name, generation: sceneGeneration } }));
     dispatchEvent(new CustomEvent("weightplay:battle-sync", { detail: { screen: name, generation: sceneGeneration } }));
@@ -950,58 +954,26 @@
         selectedHero = id;
         writeStorage("aht-selected-hero", id);
         renderHeroPicker();
+        setHeroPanel(false);
       };
       picker.append(button);
     });
+    if($('#stageSummary'))$('#stageSummary').textContent=`${heroName(selectedHero)} · ${marks} ${t('marks')}`;
     if (focusedHero) sceneFrame("stage", () => {
       picker.querySelector(`.hero-option[data-hero="${focusedHero}"]`)?.focus({ preventScroll: true });
     });
   }
 
-  function bindStageCard(button,index) {
-      const stage=index+1;
-      const definition=trialDefinition(stage);
-      const region=regions[definition.region];
-      const locked=stage>unlocked&&!practiceEnabled;
-      button.className = `stage-card${locked ? " locked" : ""}${definition.checkpoint ? " checkpoint" : ""}`;
-      button.dataset.stage = String(stage);
-      if(stage===Math.min(TRIAL_COUNT,unlocked))button.dataset.wpStageRecommended="true";
-      else delete button.dataset.wpStageRecommended;
-      button.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
-      if(locked)button.setAttribute("aria-disabled","true");
-      else button.removeAttribute("aria-disabled");
-      const detail = locked ? t("locked") : interpolate("roomsAndMarks",{marks:definition.reward});
-      const title=localizedValue(definition.titleEn,definition.titleZh,definition.titleEs,definition.titleAr);
-      const rule=localizedPair(region.rule);
-      const boss=definition.boss?` · ${localizedPair(definition.boss.name)}`:"";
-      button.innerHTML = `<div class="stage-card-content" data-wp-item-content><img src="${ASSET_ROOT}${definition.boss?.asset || "animal-hero-trials-arena.png"}" alt=""><strong>${localizedValue("Trial", "試煉", "Prueba", "التجربة")} ${stage} · ${title}</strong><span>${detail}<br>${rule}${boss}<br>${interpolate("recommended",{hero:localizedPair(heroNames[definition.recommended])})}</span></div>`;
-      button.tabIndex = stage === Math.min(TRIAL_COUNT, unlocked) ? 0 : -1;
+  function renderStages() {
+    sharedStage?.refresh(Math.min(TRIAL_COUNT,unlocked)-1);
   }
 
-  function renderStages() {
-    const rail = $("#stageRail");
-    // The shared virtualizer owns gesture settling. Native smooth scrolling
-    // must not animate its absolute centering a second time on scene entry.
-    rail.style.setProperty("scroll-behavior","auto","important");
-    if(window.WeightPlayStageV6 && !rail.dataset.wpStageVirtualizationInstalled) {
-      rail.replaceChildren();
-      stageRailController=window.WeightPlayStageV6.install(rail,{
-        total:()=>TRIAL_COUNT,poolSize:9,initialIndex:()=>Math.min(TRIAL_COUNT,unlocked)-1,
-        bind:bindStageCard,
-        activate:index=>{if(index+1<=unlocked||practiceEnabled)startTrial(index+1);},
-      });
-      return;
-    }
-    if(stageRailController) {stageRailController.refresh();return;}
-    // Compatibility for an older cached shell until its shared runtime loads.
-    rail.innerHTML="";
-    for(let index=0;index<TRIAL_COUNT;index++) {
-      const button=document.createElement("button");
-      bindStageCard(button,index);
-      button.onclick=()=>{if(index+1<=unlocked||practiceEnabled)startTrial(index+1);};
-      rail.append(button);
-    }
-    scheduleCenteredStageCard();
+  function setHeroPanel(open, restoreFocus=true) {
+    const panel=$('#heroPanel');if(!panel)return;
+    panel.hidden=!open;
+    [$('#stageContent'),views.stage.querySelector('header'),views.stage.querySelector('[data-wp-frame-nav]')].filter(Boolean).forEach(node=>{node.inert=open;});
+    if(open)panel.querySelector('.hero-option')?.focus({preventScroll:true});
+    else if(restoreFocus&&activeScene==='stage')$('#teamBtn')?.focus({preventScroll:true});
   }
 
   function updateCenteredStageCard() {
@@ -1033,6 +1005,7 @@
 
   function setStageTabStop(card, focus = false) {
     if (!card) return;
+    if(sharedStage){sharedStage.select(Number(card.dataset.stage)-1,{focus});return;}
     $$("#stageRail .stage-card").forEach((item) => { item.tabIndex = item === card ? 0 : -1; });
     if (focus) {
       card.scrollIntoView({ block: "nearest", inline: "center" });
@@ -1043,6 +1016,7 @@
 
   function focusStage() {
     sceneFrame("stage", () => {
+      if(sharedStage){sharedStage.select(Math.min(TRIAL_COUNT,unlocked)-1,{focus:true});return;}
       const rail=$("#stageRail");
       stageRailController?.center(Math.min(TRIAL_COUNT,unlocked)-1);
       const card=rail.querySelector(`[data-stage="${Math.min(TRIAL_COUNT,unlocked)}"]`);
@@ -1077,6 +1051,7 @@
   function startTrial(stage, startReason = "stage_select") {
     const ticket=++trialStartTicket;
     const generation=sceneGeneration;
+    if(!rendererReady) return;
     if(practiceIsolation) {
       if(!practiceEnabled || !localPractice)return;
       localPractice.validate().then(valid=>{
@@ -1109,6 +1084,8 @@
       attackCool: 0,
       invulnerable: 0,
       dashSafe: 0,
+      dodgeCool: 0,
+      dodgeMotion: null,
       guard: 0,
       rerollUsed: false,
       rerollPending: false,
@@ -1141,6 +1118,7 @@
       unlocked_trial: unlocked,
       mastery_level: mastery,
     });
+    joystick?.setEnabled(true);
     $("#skillBtn img").src = ASSET_ROOT + hero.asset;
     spawn();
     playSound("game.start");
@@ -1206,7 +1184,7 @@
     hint.hidden = false;
     if (showControls) {
       const skillName = localizedSkillName(heroes[run.heroId].skill);
-      hint.textContent = `${interpolate("controlHint", { skill: skillName })} · ${combatText(0)}`;
+      hint.textContent = `${controlText(0)} · ${combatText(0)}`;
     } else if (showRange) {
       hint.textContent = t("rangeHint");
     } else if (showHit) {
@@ -1428,7 +1406,7 @@
       if (hazard.t>0) { remaining.push(hazard); continue; }
       const hit=hazardContains(hazard,run.leo);
       if (hit && run.dashSafe<=0) hurt(hazard.damage);
-      else if (hazard.threatened) {
+      else if (hazard.threatened && (!hit || run.dashSafe>0)) {
         run.counter=Math.max(run.counter,2.4);
         run.dodges++;
         if (run.build.refuge) run.guard=Math.max(run.guard,1.1);
@@ -1549,6 +1527,18 @@
         run.fx.push({ type: "slash", x: enemy.x, y: enemy.y, fromX: run.leo.x, fromY: run.leo.y, t: 0.2 });
       }
     }
+  }
+
+  function dodge() {
+    if(!run?.active || run.dodgeCool>0 || run.dodgeMotion)return;
+    let {x,y}=movementIntent();
+    if(!x&&!y){x=run.lastMoveX;y=run.lastMoveY||-1;}
+    const length=Math.hypot(x,y)||1;
+    run.dodgeMotion={fromX:run.leo.x,fromY:run.leo.y,x:x/length,y:y/length,t:0};
+    run.dodgeCool=3.1;
+    run.dashSafe=Math.max(run.dashSafe,.24);
+    playSound('movement.dash');
+    beginRangeGuidance();
   }
 
   function hurt(amount) {
@@ -1865,6 +1855,7 @@
       });
       $("#resultNext").onclick = null;
     }
+    $("#resultFx").src=ASSET_ROOT+heroes[run.heroId].asset;
     setResultModal(true, resultPrimary);
     playSound(won ? "result.win" : "result.lose");
 
@@ -1882,8 +1873,14 @@
     const length = Math.hypot(dx, dy) || 1;
     const moving = Boolean(dx || dy);
     const heroSpeed = heroes[run.heroId].speed;
-    run.leo.x = Math.max(worldX(35), Math.min(worldX(355), run.leo.x + (dx / length) * heroSpeed * dt));
-    run.leo.y = Math.max(80, Math.min(520, run.leo.y + (dy / length) * heroSpeed * dt));
+    const dash=run.dodgeMotion;
+    const vx=dash?dash.x*620:dx/length*heroSpeed,vy=dash?dash.y*620:dy/length*heroSpeed;
+    run.leo.x = Math.max(worldX(35), Math.min(worldX(355), run.leo.x + vx * dt));
+    run.leo.y = Math.max(80, Math.min(520, run.leo.y + vy * dt));
+    if(dash){dash.t+=dt;if(dash.t>=.18)run.dodgeMotion=null;}
+    run.dodgeCool=Math.max(0,run.dodgeCool-dt);
+    const dodgeButton=$('#dodgeBtn');
+    if(dodgeButton){dodgeButton.disabled=run.dodgeCool>0;dodgeButton.querySelector('span').textContent=run.dodgeCool>0?`${run.dodgeCool.toFixed(1)}s`:controlText(1);}
     if (moving) {
       run.stepPhase += dt * (heroSpeed / 18);
       run.lastMoveX = dx / length;
@@ -1920,7 +1917,7 @@
         effect.vy = (effect.vy || -30) + 58 * dt;
       }
     });
-    run.fx = run.fx.filter((effect) => effect.t > 0).slice(-48);
+    run.fx = run.fx.filter((effect) => effect.t > 0).slice(-32);
     if (run.hp <= 0) return finish(false);
     if (!run.enemies.length) return run.room >= 3 ? finish(true) : chooseBlessing();
     draw();
@@ -1947,270 +1944,268 @@
       }
     }
   }
-  function draw() {
-    ctx.save();
-    if (run.shake > 0 && !reducedMotion()) {
-      const shake = run.shake * 34;
-      ctx.translate((Math.random() - 0.5) * shake, (Math.random() - 0.5) * shake);
+  // Simulation owns outcomes. This renderer owns only bounded presentation.
+  function createBattle3D(THREE) {
+    const {Scene,Group,Color,Mesh,BoxGeometry,MeshStandardMaterial,MeshBasicMaterial,
+      OrthographicCamera,WebGLRenderer,AmbientLight,DirectionalLight,HemisphereLight,
+      InstancedMesh,Object3D,RingGeometry,SRGBColorSpace,ACESFilmicToneMapping}=THREE;
+    const surface=document.createElement('canvas');
+    surface.className='hero-world-3d'; surface.setAttribute('aria-hidden','true');
+    canvas.before(surface);
+    const renderer=new WebGLRenderer({canvas:surface,antialias:true,alpha:false,powerPreference:'high-performance'});
+    renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
+    renderer.outputColorSpace=SRGBColorSpace;
+    renderer.toneMapping=ACESFilmicToneMapping; renderer.toneMappingExposure=1.18;
+    renderer.shadowMap.enabled=true;
+    const scene=new Scene(); scene.background=new Color('#102b31');
+    const camera=new OrthographicCamera(-230,230,280,-280,1,2400);
+    camera.position.set(0,820,950); camera.lookAt(0,0,0);
+    const elevation=820/Math.hypot(820,950);
+    scene.add(new HemisphereLight('#c9e4ec','#172a42',1.65));
+    scene.add(new AmbientLight('#93b9db',.35));
+    const sun=new DirectionalLight('#ffe4b7',2.7);sun.position.set(-220,600,180);
+    sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);
+    Object.assign(sun.shadow.camera,{left:-850,right:850,top:850,bottom:-850,near:1,far:1600});
+    sun.shadow.bias=-.001;scene.add(sun);
+    const rim=new DirectionalLight('#64e9ed',1.5);rim.position.set(200,160,-300);scene.add(rim);
+    const contour=new THREE.Shape();contour.moveTo(-.47,-.47);contour.lineTo(.47,-.47);contour.lineTo(.47,.47);contour.lineTo(-.47,.47);contour.closePath();
+    const unit=new THREE.ExtrudeGeometry(contour,{depth:.94,bevelEnabled:true,bevelSegments:1,steps:1,bevelSize:.03,bevelThickness:.03});unit.translate(0,0,-.47);
+    const ringGeometry=new RingGeometry(.87,1,48);
+    const materials=new Map();
+    function material(color,glow=0){
+      const key=`${color}/${glow}`;
+      if(!materials.has(key))materials.set(key,new MeshStandardMaterial({color,roughness:.72,metalness:glow?.25:.08,emissive:color,emissiveIntensity:glow}));
+      return materials.get(key);
     }
-    ctx.clearRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-    const bgRatio = images.bg.width / images.bg.height;
-    const worldRatio = WORLD_WIDTH / WORLD_HEIGHT;
-    if (bgRatio > worldRatio) {
-      const sourceWidth = images.bg.height * worldRatio;
-      ctx.drawImage(images.bg, (images.bg.width - sourceWidth) / 2, 0, sourceWidth, images.bg.height, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-    } else {
-      const sourceHeight = images.bg.width / worldRatio;
-      ctx.drawImage(images.bg, 0, (images.bg.height - sourceHeight) / 2, images.bg.width, sourceHeight, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+    function box(parent,x,y,z,w,h,d,color,glow=0){
+      const mesh=new Mesh(unit,material(color,glow));mesh.position.set(x,y,z);mesh.scale.set(w,h,d);
+      mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
     }
-    // Put skill rings beneath fighters so impact stays visible without
-    // masking faces or important silhouettes.
-    for (const effect of run.fx) {
-      if (effect.type !== "roar" && effect.type !== "hit") continue;
-      const size = effect.type === "roar" ? 180 : 74;
-      ctx.globalAlpha = Math.min(effect.type === "roar" ? 0.48 : 0.68, effect.t * 2.4);
-      ctx.drawImage(effect.type === "roar" ? images.roar : images.hit, effect.x - size / 2, effect.y - size / 2, size, size);
-      ctx.globalAlpha = 1;
+    function ring(parent,r,color){
+      const mesh=new Mesh(ringGeometry,new MeshBasicMaterial({color,transparent:true,opacity:.72,depthWrite:false}));
+      mesh.rotation.x=-Math.PI/2;mesh.position.y=2;mesh.scale.setScalar(r);parent.add(mesh);return mesh;
     }
-    for(const hazard of run.hazards) {
-      const progress=1-hazard.t/hazard.duration;
-      hazardPath(hazard);
-      ctx.fillStyle=`rgba(255,176,47,${.12+progress*.15})`;
-      ctx.fill("evenodd");
-      ctx.strokeStyle=progress>.78?"#fff1ad":"#ffc659";
-      ctx.lineWidth=3;
-      ctx.setLineDash(progress>.78?[]:[7,5]);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      const marker=hazard.kind==="ring"?{x:hazard.x,y:hazard.y-hazard.radius*.7}:{x:hazard.x,y:hazard.y};
-      ctx.strokeStyle="#ffe8a2";
-      ctx.lineWidth=4;
-      ctx.beginPath();ctx.arc(marker.x,marker.y,10,-Math.PI/2,-Math.PI/2+Math.PI*2*progress);ctx.stroke();
-    }
-    for(const effect of run.fx) {
-      if(effect.type!=="impact") continue;
-      hazardPath(effect.hazard);
-      ctx.fillStyle=`rgba(255,192,86,${effect.t*.65})`;ctx.fill("evenodd");
-      ctx.strokeStyle=`rgba(255,235,170,${effect.t*3})`;ctx.lineWidth=3;ctx.stroke();
-    }
-
-    if (moveTarget) {
-      const pulse = reducedMotion()?1:1 + Math.sin(run.time * 8) * 0.12;
-      ctx.strokeStyle = "#ffe88a";
-      ctx.lineWidth = 3;
-      ctx.globalAlpha = 0.9;
-      ctx.beginPath();
-      ctx.arc(moveTarget.x, moveTarget.y, 16 * pulse, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.globalAlpha = 0.35;
-      ctx.beginPath();
-      ctx.arc(moveTarget.x, moveTarget.y, 5, 0, Math.PI * 2);
-      ctx.fillStyle = "#ffe88a";
-      ctx.fill();
-      ctx.globalAlpha = 1;
-    }
-
-    if (run.room === 1 && run.guidanceTimer > 0 && (run.guidancePhase === "range" || run.guidancePhase === "hit")) {
-      let target = null;
-      let distance = Infinity;
-      for (const enemy of run.enemies) {
-        const current = Math.hypot(enemy.x - run.leo.x, enemy.y - run.leo.y);
-        if (!target || (enemy.marked && !target.marked) || (Boolean(enemy.marked) === Boolean(target.marked) && current < distance)) {
-          target = enemy;
-          distance = current;
+    const environment=new Group();scene.add(environment);
+    const palette=[['#354d50','#3e5658','#142d37'],['#32495d','#3b5368','#21334f'],['#55423f','#634d44','#382b35'],['#3b4160','#484e6d','#222a49'],['#294b59','#355764','#152e44'],['#403b58','#4f4666','#24223f']];
+    let width=460,height=560,region=-1;
+    function ground(){
+      environment.children.slice().forEach(node=>{environment.remove(node);if(node.isInstancedMesh)node.dispose();});
+      const colors=palette[Math.max(0,region)];
+      const cols=Math.ceil(width/64)+2,rows=Math.ceil(height/elevation/48)+2;
+      const dummy=new Object3D();
+      for(let tone=0;tone<4;tone++){
+        const stone=new Color(colors[tone%2]);stone.multiplyScalar(tone<2?1:.88);
+        const tiles=new InstancedMesh(unit,material('#'+stone.getHexString()),Math.ceil(cols*rows/2)+1);let n=0;
+        for(let x=0;x<cols;x++)for(let z=0;z<rows;z++)if((x*7+z*11)%4===tone){
+          dummy.position.set((x-(cols-1)/2)*64+(z%2)*22,-8,(z-(rows-1)/2)*48);
+          dummy.scale.set(62,12+((x*7+z*3)%3)*.5,46);dummy.updateMatrix();tiles.setMatrixAt(n++,dummy.matrix);
+        }
+        tiles.count=n;tiles.receiveShadow=true;environment.add(tiles);
+      }
+      // Authored gate and stepped garden architecture frame, never cover, combat.
+      for(const side of [-1,1]){
+        const x=side*(width/2-20);
+        for(let i=0;i<5;i++){
+          const z=(i/4-.5)*height/elevation;
+          box(environment,x,7,z,32,24,34,'#284b48');
+          box(environment,x,22,z,25,12,27,'#658579');
+          box(environment,x,31,z,18,8,18,'#397e63');
+          box(environment,x+side*4,40,z,7,13,8,'#84b97a');
+          if(i%2===0){box(environment,x,53,z,8,20,8,'#86e9db',1);box(environment,x,40,z,14,5,14,'#c5b879');}
+        }
+        // Original stepped trees live beyond the reachable combat boundary.
+        for(let i=0;i<3;i++){
+          const tx=side*(width/2-7),tz=(i-1)*height/elevation*.34;
+          box(environment,tx,23,tz,15,50,17,'#5d5544');
+          box(environment,tx,48,tz,62,28,56,'#274f4c');
+          box(environment,tx-side*5,69,tz-3,47,23,43,'#397365');
+          box(environment,tx,86,tz-7,27,16,29,'#699e77');
+          box(environment,tx-side*15,58,tz+22,20,13,17,'#4c8a6d');
         }
       }
-      if (target) {
-        canvas.dataset.guidanceTarget = String(run.enemies.indexOf(target));
-        const pulse = reducedMotion()?1:1 + Math.sin(run.time * 7) * 0.08;
-        const guideColor = run.guidancePhase === "hit" ? "#7be0b1" : "#7cecff";
-        ctx.save();
-        ctx.globalAlpha = run.guidancePhase === "hit" ? 0.85 : 0.72;
-        ctx.strokeStyle = guideColor;
-        ctx.lineWidth = 3;
-        ctx.setLineDash([9, 7]);
-        ctx.beginPath();
-        ctx.arc(run.leo.x, run.leo.y, heroes[run.heroId].range, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.beginPath();
-        ctx.arc(target.x, target.y, 45 * pulse, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.globalAlpha = 0.32;
-        ctx.beginPath();
-        ctx.moveTo(run.leo.x, run.leo.y);
-        ctx.lineTo(target.x, target.y);
-        ctx.stroke();
-        ctx.restore();
+      // Embedded brass masonry makes a readable arena rather than a blank grid.
+      for(let i=-2;i<=2;i++){
+        box(environment,i*35,-.2,0,28,1,4,'#a1aa80');
+        box(environment,i*35,-.2,-180,28,1,4,'#718e83');
+        box(environment,i*35,-.2,180,28,1,4,'#718e83');
       }
-    }
-
-    for (const enemy of run.enemies) {
-      const enemyImage = enemy.boss ? images[`boss-${enemy.bossId}`] : images[`enemy-${enemy.type}`] || images.enemy;
-      const size = enemy.boss ? 126 : enemy.elite ? 82 : 68;
-      const bob = reducedMotion()?0:Math.sin(run.time * (enemy.boss ? 2.1 : 3.5) + (enemy.animSeed || 0)) * (enemy.boss ? 2 : 3);
-      const drawX = enemy.x + (reducedMotion()?0:enemy.hitOffsetX || 0);
-      const drawY = enemy.y + (reducedMotion()?0:enemy.hitOffsetY || 0) + bob;
-      ctx.save();
-      ctx.translate(drawX, drawY);
-      if(!reducedMotion()) ctx.rotate(Math.sin(run.time * 3 + (enemy.animSeed || 0)) * 0.025);
-      ctx.drawImage(enemyImage, -size / 2, -size / 2, size, size);
-      ctx.restore();
-      if ((enemy.hitFlash || 0) > 0) {
-        ctx.globalAlpha = Math.min(0.62, enemy.hitFlash * 4);
-        ctx.fillStyle = "#fff7dc";
-        ctx.beginPath();
-        ctx.arc(drawX, drawY, size * 0.42, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = 1;
+      for(let i=0;i<36;i++){
+        const side=i%2?1:-1,x=side*(width/2-12-(i%3)*5),z=((i*17)%37/37-.5)*height/elevation;
+        box(environment,x,3,z,7,6,10,i%3?'#588473':'#83a57f');
+        if(i%4===0){box(environment,x,10,z,3,12,3,'#accb8e');box(environment,x+2,16,z,6,4,6,'#e5c789');}
       }
-      ctx.fillStyle = "#17231f";
-      const barWidth = enemy.boss ? 100 : 56;
-      const barY = drawY - size / 2 - 9;
-      ctx.fillRect(drawX - barWidth / 2, barY, barWidth, 6);
-      ctx.fillStyle = enemy.open>0?"#7be0b1":"#efd074";
-      ctx.fillRect(drawX - barWidth / 2, barY, (barWidth * enemy.hp) / enemy.max, 6);
-      if(enemy.guard>0){ ctx.strokeStyle="#78e9ff"; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(drawX,drawY,size*.48,0,Math.PI*2); ctx.stroke(); }
-      if(enemy.warning>0){ ctx.strokeStyle="#ffd45f"; ctx.lineWidth=4; ctx.beginPath(); ctx.arc(drawX,drawY,size*.58,0,Math.PI*2); ctx.stroke(); }
-      if(enemy.open>0) {
-        ctx.strokeStyle="#77f0ca";ctx.lineWidth=2;ctx.beginPath();ctx.arc(drawX,drawY,size*.52,0,Math.PI*2);ctx.stroke();
-        ctx.font="bold 12px system-ui";ctx.textAlign="center";ctx.fillStyle="#b6ffe3";ctx.strokeStyle="#08251d";ctx.lineWidth=3;
-        ctx.strokeText(combatText(4),drawX,barY-7);ctx.fillText(combatText(4),drawX,barY-7);
+      const gateZ=-height/elevation/2+86;
+      for(const side of [-1,1]){
+        box(environment,side*83,35,gateZ,27,76,30,'#324f52');
+        box(environment,side*83,77,gateZ,34,12,36,'#a4ac88');
+        box(environment,side*83,95,gateZ,10,23,12,'#9aead6',.6);
       }
-      if (enemy.marked) {
-        ctx.strokeStyle = "#7cecff";
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.arc(drawX, drawY - size / 2 - 18, 9, 0, Math.PI * 2);
-        ctx.stroke();
+      box(environment,0,77,gateZ,150,16,25,'#536f69');
+      box(environment,0,88,gateZ,65,8,28,'#b0b98f');
+      box(environment,0,39,gateZ-7,120,74,4,'#397b85',.35);
+      for(let i=0;i<7;i++)box(environment,(i-3)*16,39,gateZ-3,3,60-(i%3)*9,3,'#75c6c9',.65);
+    }
+    function character(kind,boss=false,variant=''){
+      const root=new Group(),body=new Group();root.add(body);
+      const hero=['leo','fia','orla','taro'].includes(kind);
+      const skin={leo:'#e7b253',fia:'#dc773f',orla:'#b8add6',taro:'#85ac62',scout:'#657c9a',raven:'#7973b6',boar:'#a66c6f',hunter:'#8b89b1',armored:'#6e9b9b'}[kind]||'#7970a7';
+      const dark={leo:'#93542e',fia:'#713c48',orla:'#514875',taro:'#3d6858'}[kind]||'#34344f';
+      const cloth=hero?'#267e7b':'#343d63';
+      box(body,0,20,0,25,25,19,cloth);
+      box(body,0,25,10,17,13,3,hero?'#e4c47a':'#8e79ae');
+      box(body,0,7,0,24,5,20,dark);
+      box(body,0,12,11,23,4,3,dark);box(body,0,12,14,6,6,3,'#d5b671');
+      const legs=[];
+      for(const side of [-1,1]){
+        legs.push(box(body,side*8,5,2,10,12,13,dark));
+        box(body,side*8,1,5,12,5,16,hero?'#334e59':'#252d46');
+        box(body,side*17,20,0,9,20,10,skin);
+        box(body,side*17,12,3,10,7,12,dark);
+        box(body,side*17,30,0,12,6,13,hero?'#b6cfc1':'#606b87');
+        box(body,side*8,6,8,6,6,3,'#819ca0');
       }
-    }
-    const hero = heroes[run.heroId];
-    const heroWidth = run.heroId === "taro" ? 94 : run.heroId === "orla" ? 82 : 78;
-    const heroHeight = run.heroId === "taro" ? 78 : 90;
-    const moving = Boolean(moveTarget || Object.values(keys).some(Boolean));
-    const heroBob = reducedMotion()?0:moving ? Math.sin(run.stepPhase) * 3 : Math.sin(run.time * 2.2) * 1.2;
-    const heroX = run.leo.x - (!reducedMotion()&&run.heroKick > 0 ? run.lastMoveX * 5 : 0);
-    const heroY = run.leo.y + heroBob - (!reducedMotion()&&run.heroKick > 0 ? run.lastMoveY * 3 : 0);
-    ctx.fillStyle = "#06171299";
-    ctx.beginPath();
-    ctx.ellipse(run.leo.x, run.leo.y + heroHeight * 0.42, heroWidth * (moving ? 0.46 : 0.4), 8, 0, 0, Math.PI * 2);
-    ctx.fill();
-    if (run.heroFlash > 0) {
-      ctx.globalAlpha = Math.min(0.55, run.heroFlash * 2.4);
-      ctx.fillStyle = "#ff5e66";
-      ctx.beginPath();
-      ctx.arc(heroX, heroY, 52, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.globalAlpha = 1;
-    }
-    ctx.globalAlpha = run.invulnerable > 0 ? 0.72 : 1;
-    ctx.save();
-    ctx.translate(heroX, heroY);
-    if(!reducedMotion()) {
-      ctx.rotate(Math.max(-0.08, Math.min(0.08, run.lastMoveX * 0.08)));
-      ctx.scale(1 + (moving ? Math.sin(run.stepPhase) * 0.025 : 0), 1 - (moving ? Math.sin(run.stepPhase) * 0.025 : 0));
-    }
-    ctx.drawImage(images[hero.image], -heroWidth / 2, -heroHeight / 2, heroWidth, heroHeight);
-    ctx.restore();
-    ctx.globalAlpha = 1;
-    if(run.counter>0) {
-      ctx.strokeStyle="#9af4dc";ctx.lineWidth=2;ctx.setLineDash([5,5]);ctx.beginPath();ctx.arc(run.leo.x,run.leo.y,42,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
-    }
-    if(run.strike) {
-      const strike=run.strike;
-      const p=reducedMotion()?1:1-strike.t/strike.duration;
-      ctx.strokeStyle="#ffe9a9";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(strike.fromX,strike.fromY);
-      ctx.lineTo(strike.fromX+(strike.target.x-strike.fromX)*p,strike.fromY+(strike.target.y-strike.fromY)*p);ctx.stroke();
-    }
-    if (run.guard > 0) {
-      ctx.strokeStyle = "#55e0b1";
-      ctx.lineWidth = 5;
-      ctx.beginPath();
-      ctx.arc(heroX, heroY, 56, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-    for (const effect of run.fx) {
-      if(effect.type==="impact") continue;
-      if(effect.type==="defeat") {
-        const scale=reducedMotion()?1:.8+effect.t*.625;
-        ctx.globalAlpha=effect.t/.32;
-        ctx.drawImage(effect.image,effect.x-effect.size*scale/2,effect.y-effect.size*scale/2,effect.size*scale,effect.size*scale);
-        ctx.globalAlpha=1;continue;
+      box(body,0,43,0,32,28,26,skin);
+      box(body,0,35,13,22,11,10,hero?'#f1dbaf':'#a6a4bc');
+      box(body,0,39,19,7,5,4,dark);
+      // Deliberately faceted brow, inset expressive eyes and tiny catchlights.
+      for(const side of [-1,1]){
+        box(body,side*8,47,13.8,8,8,2,'#eef7e8');
+        box(body,side*7,46,15.2,4,6,2,'#162635');
+        box(body,side*6,48,16.4,1.6,1.6,1,'#ffffff');
+        const brow=box(body,side*8,53,15,10,3,3,dark);brow.rotation.z=side*.12;
       }
-      if (effect.type === "damage") {
-        ctx.globalAlpha = Math.min(1, effect.t * 3);
-        ctx.fillStyle = effect.source === "hurt" ? "#ff8b8b" : effect.blocked?"#8fe8ff":effect.strong?"#91ffcf":effect.source === "skill" ? "#ffe88a" : "#fff7dc";
-        ctx.font = "900 17px system-ui, sans-serif";
-        ctx.textAlign = "center";
-        ctx.lineWidth = 4;
-        ctx.strokeStyle = "#13211b";
-        ctx.strokeText(`-${effect.value}`, effect.x, effect.y);
-        ctx.fillText(`-${effect.value}`, effect.x, effect.y);
-        ctx.globalAlpha = 1;
-        continue;
+      const accent=hero?'#f6d781':boss?'#f2b370':'#9cb6e4';
+      if(kind==='leo'){
+        for(let i=0;i<11;i++){
+          const a=i/11*Math.PI*2;
+          const mane=box(body,Math.cos(a)*23,44+Math.sin(a)*24,-4,12,13,18,i%2?'#d98432':'#f3be54',.08);
+          mane.rotation.z=a*.16;
+        }
+        box(body,-7,64,0,6,10,7,'#ffe29a',.2);box(body,7,64,0,6,10,7,'#ffe29a',.2);
+        box(body,0,16,-14,22,27,4,'#1f6d70');
+      }else if(kind==='fia'){
+        for(const side of [-1,1]){box(body,side*12,62,0,10,17,10,skin);box(body,side*12,62,5,5,9,2,'#f9d3a3');box(body,side*17,13,7,4,4,2,'#f9dc72',.6);}
+        box(body,0,29,0,31,5,23,'#f7bd58');box(body,18,19,-13,8,23,5,'#eabb65');
+        const tail=box(body,8,14,-22,12,14,28,skin);tail.rotation.x=-.5;box(body,8,20,-36,12,11,10,'#f3e3bc');
+      }else if(kind==='orla'){
+        box(body,0,60,0,40,5,33,'#444b85');box(body,-3,70,-2,25,18,25,'#5c5795');box(body,-7,82,-2,16,8,16,'#7466b0');
+        box(body,5,71,12,7,10,3,'#ffe9a3',.35);box(body,0,38,20,8,8,8,'#ecb95f');
+        for(const side of [-1,1])for(let i=0;i<3;i++)box(body,side*(18+i*3),21-i*4,1,8,16-i*2,13,'#7775a1');
+        box(body,24,25,4,4,44,4,'#ceb477');box(body,24,50,4,9,11,9,'#a5e1fb',.5);
+      }else if(kind==='taro'){
+        box(body,0,24,-12,35,27,19,'#557f64');box(body,0,35,-14,28,10,22,'#9da783');
+        for(let i=-1;i<=1;i++){box(body,i*11,45,-17,8,14,9,'#b7c4a0');box(body,i*11,54,-17,9,5,10,'#75a97a');}
+        box(body,0,53,-8,6,13,7,'#a3ce76');box(body,0,60,-8,13,5,8,'#7db35d');
+        box(body,-20,22,10,6,28,23,'#6aaca0');box(body,-20,24,23,4,9,3,'#e9dc9a');
+      }else{
+        for(const side of [-1,1]){
+          box(body,side*11,60,-3,9,13,10,dark);
+          if(kind==='raven'){const wing=box(body,side*27,27,-4,23,8,24,'#49456e');wing.rotation.z=side*.3;box(body,side*36,23,-8,10,6,20,'#a698d0');}
+          if(kind==='boar')box(body,side*11,34,21,5,12,6,'#efdcb1');
+          if(kind==='armored'||boss){box(body,side*18,30,0,14,12,17,'#94b8b9');box(body,side*18,39,0,5,10,6,accent,.2);}
+        }
+        box(body,20,18,10,5,30,6,accent,.15);
+        if(kind==='boar')box(body,0,35,22,22,13,18,'#a58a89');
+        if(kind==='hunter'){box(body,-24,29,14,3,35,4,'#c5a886');box(body,-22,46,14,9,4,4,'#c5a886');box(body,-22,12,14,9,4,4,'#c5a886');}
+        if(boss){for(let i=-1;i<=1;i++)box(body,i*11,68,-1,7,18-Math.abs(i)*5,8,'#dabb82',.2);box(body,0,59,0,36,5,29,'#c5a471');}
+        if(variant==='basilisk'){for(let i=0;i<4;i++)box(body,(i%2?1:-1)*5,17-i*3,-23-i*11,17-i*2,15-i*2,18,'#577787');box(body,0,62,-8,6,19,9,'#a6e2d9',.4);}
+        if(variant==='archowl'){box(body,0,65,0,47,7,35,'#7664a1');box(body,-6,78,-2,26,21,25,'#7561a6');box(body,3,79,12,6,12,3,'#e7dc9d',.4);}
+        if(variant==='leviathan'){box(body,0,30,-17,49,31,27,'#527f80');for(let i=-1;i<=1;i++)box(body,i*15,52,-17,12,16,17,'#a1b6a4');}
+        if(variant==='emperor'){box(body,0,22,-17,37,46,5,'#703f66');for(let i=-2;i<=2;i++)box(body,i*9,71+Math.abs(i)*2,0,7,21,8,'#efc27c',.2);box(body,0,64,17,8,8,4,'#ee9fa0',.6);}
       }
-      if (effect.type === "slash") {
-        const alpha = Math.min(1, effect.t * 8);
-        const dx = effect.x - effect.fromX;
-        const dy = effect.y - effect.fromY;
-        const distance = Math.hypot(dx, dy) || 1;
-        const px = -dy / distance;
-        const py = dx / distance;
-        ctx.globalAlpha = alpha;
-        ctx.strokeStyle = "#fff2ad";
-        ctx.lineWidth = 7;
-        ctx.lineCap = "round";
-        ctx.beginPath();
-        ctx.moveTo(effect.x - dx * 0.28 + px * 22, effect.y - dy * 0.28 + py * 22);
-        ctx.lineTo(effect.x + px * 22, effect.y + py * 22);
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-        continue;
-      }
-      if (effect.type === "roar" || effect.type === "hit") continue;
-      const image = images.shadow;
-      const size = effect.type === "roar" ? 180 : 74;
-      ctx.globalAlpha = Math.min(1, effect.t * 4);
-      ctx.drawImage(image, effect.x - size / 2, effect.y - size / 2, size, size);
-      ctx.globalAlpha = 1;
+      const aura=ring(root,hero?26:boss?42:25,hero?'#7de7cf':boss?'#e6a4dd':'#aeadd1');
+      root.scale.setScalar(boss?1.85:hero?1.4:1.2);
+      const hit=box(body,0,43,17,4,4,4,'#fff2ae',1);hit.visible=false;
+      root.userData={body,legs,aura,hit,kind};
+      return root;
     }
-    ctx.restore();
+    const actors=new Map();let heroRoot=null,heroKind=null;
+    const effectRoot=new Group();scene.add(effectRoot);
+    const particles=Array.from({length:24},()=>{const mesh=new Mesh(unit,material('#ffe3a1',.5));mesh.visible=false;effectRoot.add(mesh);return mesh;});
+    const floorPoint=(x,y)=>({x:(x/460-.5)*width,z:(y/560-.5)*height/elevation});
+    function actorPose(model,data,time,isHero){
+      const p=floorPoint(data.x,data.y),u=model.userData;
+      model.position.set(p.x,0,p.z);
+      const hit=isHero?run.heroFlash:data.hitFlash||0;
+      const moving=isHero?Math.hypot(run.lastMoveX,run.lastMoveY)>.12:!(data.warning>0||data.open>0);
+      const walk=reducedMotion()?0:Math.sin(time*10+(data.animSeed||0))*(moving?.45:.03);
+      u.legs[0].rotation.x=walk;u.legs[1].rotation.x=-walk;
+      u.body.rotation.z=reducedMotion()?0:isHero?run.lastMoveX*-.045:Math.sin(time*3+(data.animSeed||0))*.018;
+      u.body.position.y=reducedMotion()?0:Math.abs(walk)*2;
+      if(!reducedMotion()&&hit>0)u.body.position.z=-Math.sin(hit*24)*4;else u.body.position.z=0;
+      if(!reducedMotion()&&!isHero&&data.warning>0)u.body.rotation.x=-.1;
+      else u.body.rotation.x=isHero&&run.strike&&!reducedMotion()?-.1:0;
+      u.hit.visible=hit>0;u.hit.scale.setScalar(hit>0?5:1);
+      u.aura.material.color.set(isHero?(run.guard>0?'#89e7ff':run.counter>0?'#ffe28b':'#7de7cf'):data.warning>0?'#ffc874':data.open>0?'#91ffd1':data.guard>0?'#8ad7f4':'#a09cc1');
+    }
+    let contextLost=false;
+    surface.addEventListener('webglcontextlost',event=>{event.preventDefault();contextLost=true;suspendBackgroundBattle();const panel=$('#loadingPanel');panel?.classList.remove('hidden');if(panel)panel.textContent=localizedValue('Graphics interrupted. Reload to recover; saved progress is safe.','畫面暫時中斷，重新載入即可恢復；永久進度已保留。','Gráficos interrumpidos. Recarga; tu progreso está guardado.','توقفت الرسومات. أعد التحميل؛ تقدمك محفوظ.');});
+    surface.addEventListener('webglcontextrestored',()=>location.reload());
+    function resize(w,h){width=w;height=h;camera.left=-w/2;camera.right=w/2;camera.top=h/2;camera.bottom=-h/2;camera.updateProjectionMatrix();renderer.setSize(w,h,false);ground();}
+    function render(state){
+      if(contextLost)return;
+      if(region!==state.definition.region){region=state.definition.region;scene.background.set(palette[region][2]);ground();}
+      if(heroKind!==state.heroId){if(heroRoot){scene.remove(heroRoot);heroRoot.userData.aura.material.dispose();}heroKind=state.heroId;heroRoot=character(heroKind);scene.add(heroRoot);}
+      actorPose(heroRoot,state.leo,state.time,true);
+      for(const [enemy,model] of actors)if(!state.enemies.includes(enemy)){scene.remove(model);model.userData.aura.material.dispose();actors.delete(enemy);}
+      for(const enemy of state.enemies){
+        if(!actors.has(enemy)){const kind=enemy.boss?({prowler:'scout',basilisk:'raven',colossus:'boar',archowl:'raven',leviathan:'armored',emperor:'hunter'}[enemy.bossId]||'scout'):enemy.type;const model=character(kind,enemy.boss,enemy.bossId);scene.add(model);actors.set(enemy,model);}
+        actorPose(actors.get(enemy),enemy,state.time,false);
+      }
+      particles.forEach(mesh=>mesh.visible=false);
+      let n=0;
+      for(const effect of state.fx){
+        if(!['hit','defeat','roar'].includes(effect.type))continue;
+        const count=effect.type==='defeat'?6:effect.type==='roar'?4:3;
+        for(let i=0;i<count&&n<particles.length;i++){
+          const mesh=particles[n++],p=floorPoint(effect.x,effect.y),age=Math.max(0,1-effect.t/.35),a=i/count*Math.PI*2;
+          mesh.visible=true;mesh.position.set(p.x+Math.cos(a)*(10+age*24),12+(reducedMotion()?0:Math.sin(age*Math.PI)*25),p.z+Math.sin(a)*(10+age*24));
+          mesh.scale.setScalar((effect.type==='defeat'?5:3)*Math.min(1,effect.t*7));mesh.rotation.set(age*2,a,age);
+        }
+      }
+      renderer.render(scene,camera);
+      surface.dataset.calls=String(renderer.info.render.calls);surface.dataset.geometries=String(renderer.info.memory.geometries);surface.dataset.textures=String(renderer.info.memory.textures);surface.dataset.triangles=String(renderer.info.render.triangles);
+    }
+    function dispose(){actors.forEach(model=>model.userData.aura.material.dispose());heroRoot?.userData.aura.material.dispose();actors.clear();environment.children.forEach(node=>node.isInstancedMesh&&node.dispose());unit.dispose();ringGeometry.dispose();materials.forEach(m=>m.dispose());renderer.dispose();surface.remove();}
+    resize(canvas.width,canvas.height);
+    return {render,resize,dispose,revision:THREE.REVISION};
   }
 
-  function bindTapMove() {
-    const setTarget = (event) => {
-      const rect = canvas.getBoundingClientRect();
-      moveTarget = {
-        x: Math.max(worldX(35), Math.min(worldX(355), ((event.clientX - rect.left) / rect.width) * canvas.width)),
-        y: Math.max(80, Math.min(520, ((event.clientY - rect.top) / rect.height) * canvas.height)),
-      };
-    };
-    canvas.addEventListener("pointerdown", (event) => {
-      if (event.isPrimary === false) return;
-      if (pointer !== null && pointer !== event.pointerId) return;
-      if (event.button !== undefined && event.button !== 0) return;
-      event.preventDefault();
-      beginRangeGuidance();
-      pointer = event.pointerId;
-      canvas.setPointerCapture?.(pointer);
-      setTarget(event);
-    });
-    canvas.addEventListener("pointermove", (event) => {
-      if (pointer === event.pointerId) setTarget(event);
-    });
-    const release = (event) => {
-      if (pointer !== event.pointerId) return;
-      pointer = null;
-      if (canvas.hasPointerCapture?.(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
-    };
-    canvas.addEventListener("pointerup", release);
-    canvas.addEventListener("pointercancel", (event) => {
-      if (pointer === event.pointerId) clearMovementInput();
-    });
-    canvas.addEventListener("lostpointercapture", (event) => {
-      if (pointer === event.pointerId) clearMovementInput();
-    });
+  function draw() {
+    if(!run)return;
+    world3d?.render(run);
+    const w=canvas.width,h=canvas.height,sx=w/460,sy=h/560;
+    const point=(x,y)=>({x:x*sx,y:y*sy});
+    ctx.clearRect(0,0,w,h);
+    ctx.save();ctx.scale(sx,sy);
+    for(const hazard of run.hazards){
+      const progress=1-hazard.t/hazard.duration;
+      hazardPath(hazard);ctx.fillStyle=`rgba(255,150,57,${.08+progress*.12})`;ctx.fill('evenodd');
+      ctx.strokeStyle=progress>.78?'#fff1be':'#ffc572';ctx.lineWidth=2;ctx.setLineDash(progress>.78?[]:[6,5]);ctx.stroke();ctx.setLineDash([]);
+    }
+    for(const effect of run.fx)if(effect.type==='impact'){
+      hazardPath(effect.hazard);ctx.strokeStyle=`rgba(255,222,159,${effect.t*3})`;ctx.lineWidth=4;ctx.stroke();
+    }
+    if(run.strike){const strike=run.strike,p=1-strike.t/strike.duration;ctx.beginPath();ctx.moveTo(strike.fromX,strike.fromY-14);ctx.lineTo(strike.fromX+(strike.target.x-strike.fromX)*p,strike.fromY+(strike.target.y-strike.fromY)*p-14);ctx.strokeStyle='#fff3be';ctx.lineWidth=3;ctx.stroke();}
+    if(run.dodgeMotion){const d=run.dodgeMotion;ctx.beginPath();ctx.moveTo(d.fromX,d.fromY);ctx.lineTo(run.leo.x,run.leo.y);ctx.strokeStyle='#b1f3ee88';ctx.lineWidth=7;ctx.stroke();}
+    ctx.restore();
+    for(const enemy of run.enemies){
+      const p=point(enemy.x,enemy.y),size=enemy.boss?70:42,bar=enemy.boss?100:42;
+      const y=Math.max(74,p.y-size-8);
+      ctx.fillStyle='#102634dd';ctx.fillRect(p.x-bar/2,y,bar,5);
+      ctx.fillStyle=enemy.open>0?'#99f5cb':enemy.guard>0?'#91dce7':'#e9b780';ctx.fillRect(p.x-bar/2,y,bar*Math.max(0,enemy.hp/enemy.max),5);
+      if(enemy.open>0||enemy.warning>0){ctx.font='800 10px system-ui';ctx.textAlign='center';ctx.fillStyle=enemy.open>0?'#c0ffdf':'#ffe0a2';ctx.strokeStyle='#163139';ctx.lineWidth=3;const word=enemy.open>0?combatText(4):'!';ctx.strokeText(word,p.x,y-6);ctx.fillText(word,p.x,y-6);}
+    }
+    for(const effect of run.fx){
+      if(effect.type!=='damage')continue;
+      const p=point(effect.x,effect.y);ctx.globalAlpha=Math.min(1,effect.t*4);
+      ctx.fillStyle=effect.source==='hurt'?'#ffb6aa':effect.blocked?'#a6e4ff':effect.strong?'#a8ffce':'#ffefbf';
+      ctx.font=`900 ${effect.strong?19:15}px system-ui`;ctx.textAlign='center';ctx.strokeStyle='#142b35';ctx.lineWidth=3;
+      ctx.strokeText(`−${effect.value}`,p.x,p.y-18);ctx.fillText(`−${effect.value}`,p.x,p.y-18);
+    }
+    ctx.globalAlpha=1;
+    const p=point(run.leo.x,run.leo.y);
+    ctx.fillStyle='#142e36';ctx.fillRect(p.x-23,p.y+14,46,5);ctx.fillStyle=run.hp/run.maxHp<.3?'#ff9b86':'#9de4b3';ctx.fillRect(p.x-23,p.y+14,46*Math.max(0,run.hp/run.maxHp),5);
   }
 
   const localeSelect = $("#locale") || $("#localeSelect");
@@ -2245,6 +2240,7 @@
   }
   $("#startBtn").addEventListener("keydown", (event) => { if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault(); });
   $("#stageRail").addEventListener("keydown", (event) => {
+    if(sharedStage)return;
     const card = event.target.closest(".stage-card");
     if (!card) return;
     if (event.repeat && (event.key === "Enter" || event.key === " ")) {
@@ -2376,8 +2372,10 @@
     if (!battleOwnsInput || nativeControl || !battleControlCodes.has(event.code)) return;
     event.preventDefault();
     keys[event.code] = true;
+    moveTarget=null;
     beginRangeGuidance();
     if (event.code === "Space") skill();
+    if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') dodge();
   });
   addEventListener("keyup", (event) => { keys[event.code] = false; });
   addEventListener("blur", () => {
@@ -2408,8 +2406,43 @@
     resumeRerollConfirmation();
     resumeBackgroundBattle();
   });
-  bindTapMove();
-  if (new URLSearchParams(location.search).has("smoke")) window.__heroTrialSmoke = {
+  // One shared input owner; do not install the former tap/drag controller.
+  let gestureMoved=false,gestureActive=false;
+  joystick=window.WeightPlayJoystick.create({surface:canvas,container:canvas.parentElement,
+    mode:'floating',anchor:{left:76,bottom:76},enabled:true,
+    isEnabled:()=>activeScene==='battle'&&Boolean(run?.active)&&!backgroundSuspended,
+    onChange:vector=>{if(vector.active){if(!gestureActive)gestureMoved=false;moveTarget=null;if(vector.strength>.15)gestureMoved=true;}gestureActive=vector.active;}});
+  canvas.addEventListener('click',event=>{
+    if(!run?.active||gestureMoved)return;
+    const rect=canvas.getBoundingClientRect();
+    moveTarget={x:Math.max(worldX(35),Math.min(worldX(355),(event.clientX-rect.left)/rect.width*460)),y:Math.max(80,Math.min(520,(event.clientY-rect.top)/rect.height*560))};
+    beginRangeGuidance();canvas.focus({preventScroll:true});
+  });
+  const dodgeButton=document.createElement('button');dodgeButton.id='dodgeBtn';dodgeButton.type='button';
+  dodgeButton.dataset.wpJoystickIgnore='';dodgeButton.innerHTML='<img src="/assets/animal-hero-trials-icon-comet-dash.webp" alt=""><span></span>';
+  dodgeButton.setAttribute('aria-keyshortcuts','Shift');
+  dodgeButton.setAttribute('aria-label',`${controlText(1)} · Shift`);
+  dodgeButton.onclick=()=>{dodge();canvas.focus({preventScroll:true});};
+  const combatActions=document.createElement('div');combatActions.className='combat-actions';
+  combatActions.append($('#skillBtn'),dodgeButton);canvas.parentElement.append(combatActions);
+  canvas.parentElement.append($('#battleHelp'));
+  const startButton=$('#startBtn');startButton.disabled=true;
+  import('../animal-skyspire-drop/vendor/three/three.module.min.js').then(THREE=>{
+    world3d=createBattle3D(THREE);rendererReady=true;startButton.disabled=false;
+    document.body.dataset.heroRenderer=`three-${THREE.REVISION}`;
+    fitBattleWorld();$('#loadingPanel')?.classList.add('hidden');
+    window.WeightPlayGameEntryLoader?.ready?.();
+  }).catch(error=>{
+    console.error('HERO_TRIALS_3D_INITIALIZATION',error);
+    const panel=$('#loadingPanel');panel?.classList.remove('hidden');
+    if(panel){panel.replaceChildren();const message=document.createElement('p');message.textContent=localizedValue('The 3D arena could not load. Your saved progress is safe.','3D 戰場無法載入，永久進度已保留。','No se pudo cargar la arena 3D. Tu progreso está guardado.','تعذر تحميل الساحة. تقدمك محفوظ.');const retry=document.createElement('button');retry.textContent=localizedValue('Retry','重新載入','Reintentar','إعادة المحاولة');retry.onclick=()=>location.reload();const back=document.createElement('a');back.href=`/${localeRoutePrefixes[locale]||'en'}/`;back.textContent=returnLabels[locale]||returnLabels.en;panel.append(message,retry,back);}
+    window.WeightPlayGameEntryLoader?.fail?.(String(error),()=>location.reload());
+  });
+  addEventListener('pagehide',event=>{if(!event.persisted){joystick?.destroy();world3d?.dispose();world3d=null;}});
+  // Test instrumentation is supplied by a controlled local harness, never a
+  // player-facing URL mode. The normal route always uses the reconstructed UI.
+  if (globalThis.__WP_HERO_TEST__ === true && ['localhost','127.0.0.1','[::1]'].includes(location.hostname)) window.__heroTrialSmoke = {
+    rendererContract:()=>({revision:world3d?.revision,simulation:{width:WORLD_WIDTH,height:WORLD_HEIGHT},canvas:{width:canvas.width,height:canvas.height},dodgeCool:run?.dodgeCool||0,counters:{...document.querySelector('.hero-world-3d')?.dataset}}),
     targetContract:()=>{
       const near={x:30,y:0,hp:10},far={x:150,y:0,hp:10,marked:3};
       const marked={x:80,y:0,hp:10,marked:1},dead={x:5,y:0,hp:0,marked:1};
@@ -2456,6 +2489,69 @@
         hitFlash:enemy.hitFlash||0,hitOffsetX:enemy.hitOffsetX||0,hitOffsetY:enemy.hitOffsetY||0}))||[],
     })
   };
+  {
+    const stageContent=document.createElement('div');stageContent.id='stageContent';
+    stageContent.append($('#stageRail'));views.stage.append(stageContent);
+    const heroPanel=document.createElement('section');heroPanel.id='heroPanel';heroPanel.className='hero-preparation';heroPanel.hidden=true;
+    heroPanel.setAttribute('role','dialog');heroPanel.setAttribute('aria-modal','true');
+    heroPanel.setAttribute('aria-label',controlText(3));
+    const title=document.createElement('h2');title.textContent=heroPanel.getAttribute('aria-label');
+    const close=document.createElement('button');close.type='button';close.textContent=controlText(4);
+    close.onclick=()=>setHeroPanel(false);
+    heroPanel.append(title,$('#heroPicker'),$('.progress-card'),close);views.stage.append(heroPanel);
+    $('#stageTabs').hidden=true;
+    const mainContent=$('.wp-standard-main-composition');
+    for(const view of Object.values(views)){
+      const header=view.querySelector('header');
+      let title=header.querySelector('[data-wp-game-title]');
+      if(!title){title=document.createElement('span');header.append(title);}
+      title.dataset.wpFrameTitle='';
+    }
+    canvas.parentElement.append($('.health'));
+    // Explicit frame slots are the sole layout owner. Keeping the legacy
+    // composition/card classes adds a second padding/420px layout around it.
+    const poster=$('.wp-standard-main-poster');
+    poster.setAttribute('data-wp-frame-poster','');poster.className='hero-main-poster';
+    const posterImage=document.createElement('img');posterImage.src='/assets/interface7-redrawn/animal-hero-trials.webp';
+    posterImage.alt=t('title');posterImage.width=1254;posterImage.height=1254;poster.replaceChildren(posterImage);
+    mainContent.className='hero-main-content';
+    $('.main-copy').classList.remove('wp-standard-main-copy');
+    $('.main-copy').setAttribute('data-wp-frame-copy','');
+    $('.wp-standard-main-summary').setAttribute('data-wp-frame-summary','');
+    $('#mainProgress').setAttribute('data-wp-frame-progress','');
+    $('#startBtn').setAttribute('data-wp-frame-action','primary');
+    $('.main-copy h1').hidden=true;
+    const retained=document.createElement('div');retained.hidden=true;retained.append($('#soundToggle'),$('.locale'));$('#main').append(retained);
+    sharedFrame=window.WeightPlayScreenFrame.mount({root:$('#main'),localeSelect:$('#localeSelect'),playUI:true,
+      scenes:{main:{root:views.main,header:views.main.querySelector('header'),content:mainContent},
+        stage:{root:views.stage,header:views.stage.querySelector('header'),content:stageContent},
+        battle:{root:views.battle,header:views.battle.querySelector('header'),content:$('.canvas-wrap'),headerInfo:$('.health')}}});
+    const summary=document.createElement('span');summary.id='stageSummary';sharedFrame.stageTopUI.add(summary);
+    const teamButton=document.createElement('button');teamButton.id='teamBtn';teamButton.type='button';
+    teamButton.textContent=controlText(2);
+    teamButton.onclick=()=>setHeroPanel(true);
+    sharedFrame.commonDownButton.add(teamButton);
+    addEventListener('keydown',event=>{
+      if(heroPanel.hidden)return;
+      if(event.key==='Escape'){event.preventDefault();setHeroPanel(false);return;}
+      if(event.key==='Tab'){
+        const buttons=[...heroPanel.querySelectorAll('button:not(:disabled)')];
+        if(!heroPanel.contains(document.activeElement)){event.preventDefault();buttons[0]?.focus();}
+        else if(event.shiftKey&&document.activeElement===buttons[0]){event.preventDefault();buttons.at(-1).focus();}
+        else if(!event.shiftKey&&document.activeElement===buttons.at(-1)){event.preventDefault();buttons[0].focus();}
+      }
+    },true);
+    const config={gameId:'animal-hero-trials',count:TRIAL_COUNT,poster:'/assets/interface7-redrawn/animal-hero-trials.webp',
+      stage(index){const d=trials[index],locked=d.stage>unlocked&&!practiceEnabled;
+        return {id:d.stage,kicker:`${localizedValue('Trial','試煉','Prueba','التجربة')} ${d.stage} / ${TRIAL_COUNT}`,
+          title:localizedValue(d.titleEn,d.titleZh,d.titleEs,d.titleAr),subtitle:localizedPair(regions[d.region].name),
+          status:locked?t('locked'):interpolate('roomsAndMarks',{marks:d.reward}),
+          summary:localizedPair(regions[d.region].rule),details:[localizedPair(regions[d.region].rule),d.boss?localizedPair(d.boss.name):interpolate('recommended',{hero:localizedPair(heroNames[d.recommended])})],
+          locked,cleared:d.stage<unlocked};}};
+    sharedStage=window.WeightPlayPlayUI.mountStage({page:stageContent,rail:$('#stageRail'),config,selected:Math.min(TRIAL_COUNT,unlocked)-1,
+      onStart:index=>startTrial(index+1),isActive:()=>activeScene==='stage'});
+    sharedFrame.activate('main');
+  }
   localize();
   if(practiceRequested) import("../../src/game-local-practice.mjs").then(({LocalPractice})=>{
     localPractice=LocalPractice;

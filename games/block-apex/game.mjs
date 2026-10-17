@@ -243,10 +243,6 @@ function clearTutorialWait() {
 function hasSeenSharedTutorial() {
   try{return localStorage.getItem('weightplay_tutorial_seen_block-apex_v1')==='1';}catch{return false;}
 }
-function isTutorialAutomationRun() {
-  const params=new URLSearchParams(location.search);
-  return ['smoke','qa','test'].some(key=>params.has(key));
-}
 function markTutorialSeen() {
   store.data.tutorial=true;store.persist();syncStorage();
 }
@@ -291,7 +287,7 @@ async function startRace(id,{restart=false}={}) {
     if(token!==generation||!renderer)return;
     renderer.render(race,0,1);busy=false;$('errorRetry').disabled=false;
     updateHud();
-    if(!store.data.tutorial&&!hasSeenSharedTutorial()&&!isTutorialAutomationRun()) {
+    if(!store.data.tutorial&&!hasSeenSharedTutorial()) {
       waitingForTutorial=true;tutorialWasOpened=false;hideModal();
       window.dispatchEvent(new Event('weightplay:battle-open'));
       tutorialWaitTimer=window.setTimeout(()=>{
@@ -423,7 +419,6 @@ function boot() {
   listen($('localeSelect'),'change',event=>{
     const chosen=event.target.value;if(!CATALOG[chosen]||screen!=='main')return;
     locale=chosen;try{localStorage.setItem('weightPlayLocale',locale);}catch{/* Session language remains usable. */}
-    const url=new URL(location.href);url.searchParams.set('lang',locale);history.replaceState(null,'',url);
     localize();window.dispatchEvent(new CustomEvent('wonder:locale-change',{detail:{locale}}));
   });
   listen(window,'weightplay:tutorial-open',onSharedTutorialOpen);

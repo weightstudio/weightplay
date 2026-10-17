@@ -1,0 +1,192 @@
+/* Observatory skin: game content only. Shared frame keeps screen ownership. */
+body[data-wp-game-id="animal-constellation-keeper"] {
+  --ck-edge: #658cbd55;
+  --ck-glow: #9be8df;
+}
+body[data-wp-game-id="animal-constellation-keeper"] .battle-canvas {
+  isolation: isolate;
+  background: radial-gradient(ellipse at 52% 46%, #245c6855, transparent 57%), linear-gradient(155deg, #101b35ed, #060e20e8);
+}
+.battle-canvas::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  opacity: .45;
+  background-image: radial-gradient(circle, #b8eaff 1px, transparent 1.4px), radial-gradient(circle, #ffe1ac 1px, transparent 1.5px);
+  background-size: 67px 83px, 113px 127px; background-position: 17px 32px, 48px 9px;
+  mask-image: linear-gradient(#0006, #000, #0004);
+}
+body[data-wp-game-id="animal-constellation-keeper"] .battle-content {
+  position: relative; display: flex; flex-direction: column; gap: 8px;
+  min-height: 0; padding: 8px 14px 12px; overflow: hidden;
+  flex: 1; width: 100%; max-width: none; height: calc(100% - var(--wp-frame-play-header-height, 48px));
+}
+body[data-wp-game-id="animal-constellation-keeper"] .ck-battle-context {
+  flex: 0 0 auto; min-height: 28px !important; padding: 0 2px !important;
+  background: none !important; border: 0; color: #dce8f7;
+}
+.ck-battle-context h2 { font-size: 16px; letter-spacing: .04em; }
+.ck-battle-context .round-label { color: #9cbed0; font-size: 12px; }
+.battle-header-tools { display: flex; align-items: center; justify-content: flex-end; min-width: 0; height: 100%; }
+body[data-wp-game-id="animal-constellation-keeper"] .battle-content > .map-intro {
+  margin: 0; padding: 6px 9px; height: auto; max-height: 52px; overflow-y: auto;
+  font-size: 12px; line-height: 1.45; color: #abc1da; min-height: 30px; flex: 0 0 auto;
+}
+body[data-wp-game-id="animal-constellation-keeper"] .battle-content > .rule-card {
+  flex: 0 0 auto; display: grid; gap: 5px; margin: 0; padding: 10px;
+  border: 1px solid var(--ck-edge); border-radius: 12px;
+  background: linear-gradient(110deg, #182a44d9, #101e33e8); box-shadow: 0 8px 22px #0002;
+  height: auto; min-height: 0;
+}
+.rule-card h3, .choice-card h3 { margin: 0 0 4px; font-size: 11px; letter-spacing: .08em; color: #9db2d0; }
+.ck-clue {
+  display: flex; align-items: center; gap: 9px; width: 100%; min-height: calc(44px * var(--wp-battle-canvas-inverse-scale, 1));
+  padding: 5px 8px; border: 1px solid transparent; border-radius: 8px;
+  text-align: start; background: #07122370; color: #e5edf9;
+  font: inherit; font-size: 13px; line-height: 1.35; cursor: pointer;
+  transition: border-color 160ms, background 160ms, color 160ms;
+}
+.ck-clue[aria-pressed="true"] { background: #244856a0; border-color: #8de3d5; }
+.ck-clue-number {
+  display: grid; place-items: center; flex: 0 0 25px; height: 25px;
+  border: 1px solid #657da160; background: #9cbaff13; color: #b5c6e8;
+  border-radius: 6px; font-weight: 800;
+}
+.ck-clue[data-verdict="pass"] .ck-clue-number { color: #a2f3d3; border-color: #a2f3d380; }
+.ck-clue[data-verdict="fail"] .ck-clue-number { color: #ffc0ab; border-color: #ffa68c; background: #ff987924; }
+.ck-clue:focus-visible, .constellation-choice:focus-visible { outline: 3px solid #ffe0a2 !important; outline-offset: 3px; }
+.ck-observatory {
+  position: relative; flex: 1 1 190px; min-height: 100px; max-height: 340px;
+  display: grid; place-items: center; isolation: isolate;
+  background: radial-gradient(ellipse, hsl(var(--arc-hue, 200) 55% 60% / .13), transparent 66%);
+}
+.ck-hero-board { position: absolute; inset: 8px 16px 24px; display: grid; place-items: center; container-type: size; }
+.ck-observatory .ck-hero-board .star-board { position: absolute; left: 50%; top: 0; transform: translateX(-50%); height: 100%; width: auto; max-width: 100%; aspect-ratio: 1; background: transparent !important; border: 0 !important; }
+.ck-hero-board .ck-animal { width: clamp(18px, 23cqh, 48px); height: clamp(18px, 23cqh, 48px); }
+.ck-hero-board .ck-animal-name { font-size: 11px; }
+.ck-neutral-star { font-size: 105px; font-weight: 200; color: #b8d6ff; text-shadow: 0 0 40px #8ac6ff88; }
+.ck-observatory-label { position: absolute; bottom: 2px; color: #a3bfda; font-size: 11px; letter-spacing: .04em; }
+.ck-orbit { position: absolute; width: 220px; max-width: 80%; height: 85%; max-height: 220px; border: 1px solid #7cbad624; border-radius: 50%; transform: rotate(-22deg); pointer-events: none; z-index: -1; }
+.ck-orbit-two { width: 265px; height: 62%; transform: rotate(27deg); border-color: #c4b2f525; }
+.ck-orbit::after { content: "✦"; position: absolute; top: 15%; left: 10%; font-size: 13px; color: #d4e4fd; text-shadow: 0 0 12px #a4d8f8; }
+.ck-orbit-two::after { color: #f8d59a; left: 87%; top: 48%; }
+body[data-wp-game-id="animal-constellation-keeper"] .battle-content > .choice-card {
+  flex: 0 0 auto; padding: 0; border: 0; background: transparent; margin: 0; height: auto; min-height: 0;
+}
+body[data-wp-game-id="animal-constellation-keeper"] .choice-grid {
+  display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important; min-height: 0; padding: 0; overflow: visible;
+}
+body[data-wp-game-id="animal-constellation-keeper"] .constellation-choice {
+  position: relative; display: flex; flex-direction: column; gap: 4px;
+  min-width: 0; width: 100%; padding: 8px 5px 5px !important; border: 1px solid #7793bd60;
+  border-radius: 10px; background: linear-gradient(150deg, #203553dd, #0a172be8);
+  box-shadow: 0 6px 15px #0003; color: #c6d9f2; overflow: visible;
+  transition: border-color 150ms, background 150ms, box-shadow 180ms;
+}
+body[data-wp-game-id="animal-constellation-keeper"] .battle-content > .choice-card > .choice-grid .constellation-choice {
+  min-height: 0; height: auto; display: flex; gap: 4px;
+}
+body[data-wp-game-id="animal-constellation-keeper"] .battle-content > .choice-card > .choice-grid .star-board {
+  min-height: 0; height: auto;
+}
+.star-board::before, .star-board::after { display: none; }
+.constellation-choice[aria-pressed="true"] { border-color: #b1ecdf !important; box-shadow: 0 0 0 2px #88d5c23b, 0 0 22px #88d5c218 !important; background: linear-gradient(160deg, #2d5362, #11263d) !important; }
+.constellation-choice[data-state="wrong"] { border-color: #d68978 !important; }
+.constellation-choice[data-state="wrong"] .ck-choice-verdict { color: #ffc3ae; }
+.choice-label { width: 100%; font-size: 11px !important; font-weight: 700; }
+body[data-wp-game-id="animal-constellation-keeper"] .star-board {
+  position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr));
+  width: 100%; aspect-ratio: 1; gap: 0 !important; padding: 2px !important; min-height: 0;
+  border: 0; border-radius: 6px; background: #07122675;
+  background-image: linear-gradient(#7397bd12 1px, transparent 1px), linear-gradient(90deg, #7397bd12 1px, transparent 1px);
+  background-size: 33.333% 33.333%;
+}
+body[data-wp-game-id="animal-constellation-keeper"] .star-cell {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 0 !important; min-width: 0; width: auto; aspect-ratio: auto;
+  border: 0 !important; border-radius: 0; background: transparent !important; padding: 0;
+}
+.star-cell:not(.is-star)::before { content: "·"; color: #9ab7df45; font-size: 16px; }
+.ck-animal { width: 27px; height: 27px; max-width: 100%; filter: drop-shadow(0 0 5px color-mix(in srgb, var(--star-color) 40%, transparent)); transition: filter 180ms; }
+.ck-animal-name { max-width: 100%; font-size: 8px; color: #e1e9f7; line-height: 1.15; white-space: nowrap; }
+.star-cell.is-traced .ck-animal { filter: drop-shadow(0 0 7px var(--star-color)); }
+.star-cell.is-traced::after { content: ""; position: absolute; inset: 0; border: 1px solid #b4f0dc70; border-radius: 4px; pointer-events: none; }
+.ck-links { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.ck-link { fill: none; stroke: #98c6e3; stroke-width: 1.6; stroke-dasharray: 3 5; opacity: .3; transition: opacity 180ms, stroke 180ms, stroke-width 180ms; }
+.ck-link.is-traced { stroke: #baf5e3; stroke-width: 3; opacity: .9; stroke-dasharray: 5 4; }
+.ck-link[data-pass="false"] { stroke: #ffaf97; opacity: .9; }
+.ck-link[data-pass="true"] { stroke: #a2f3d3; opacity: .75; }
+.ck-choice-verdict { height: 14px; font-size: 10px; letter-spacing: .12em; color: #8facce; }
+body[data-wp-game-id="animal-constellation-keeper"] .battle-status {
+  flex: 0 0 52px; min-height: 52px; height: 52px; margin: 0; padding: 6px 9px; overflow-y: auto;
+  display: flex; align-items: center; background: #081326b3; border-inline-start: 2px solid #81b0d0;
+  border-radius: 3px; font-size: 12px; line-height: 1.35; color: #bbd2e6;
+}
+.battle-status[data-kind="wrong"] { color: #ffd1b5 !important; border-color: #ffb08d !important; }
+body[data-wp-game-id="animal-constellation-keeper"] .battle-actions { flex: 0 0 auto; display: grid; grid-template-columns: 1.65fr 1fr; gap: 8px; margin: 0; }
+.battle-actions button { min-height: 48px; }
+body[data-wp-game-id="animal-constellation-keeper"] #checkBtn { background: linear-gradient(120deg, #bddbd2, #e9d5a5); color: #172d35; border-color: #d4e5cf; }
+.battle-actions button:disabled { opacity: .4; cursor: default; }
+.ck-particle { position: absolute; left: 50%; top: 50%; z-index: 20; width: 5px; height: 5px; background: var(--spark); box-shadow: 0 0 9px var(--spark); pointer-events: none; }
+#ckResultReward { position: relative; width: 100%; display: grid; justify-items: center; }
+#ckResultReward .star-board { width: 190px; height: 190px; background-color: transparent; }
+#ckResultReward .ck-animal { width: 42px; height: 42px; }
+#ckResultReward .ck-animal-name { font-size: 10px; }
+#ckResultReward[data-milestone="checkpoint"]::before, #ckResultReward[data-milestone="finale"]::before {
+  content: ""; position: absolute; width: 230px; height: 230px; top: -20px; border: 1px solid #ffdc9b55;
+  background: radial-gradient(ellipse, #f9ce7322, transparent 68%); transform: rotate(45deg); pointer-events: none; z-index: -1;
+}
+#ckResultReward[data-milestone="finale"]::before { border-width: 3px; box-shadow: 0 0 50px #adf2dc44, inset 0 0 40px #fddc8f33; }
+.ck-rating { margin: 10px 0 3px; color: #ffe1a0 !important; font-size: 32px; letter-spacing: .24em; text-shadow: 0 0 20px #ffd58266; }
+.ck-result-detail { margin: 4px 0 12px; font-size: 13px; color: #bddecc; }
+.ck-progress { width: min(260px, 80%); height: 5px; border-radius: 4px; background: #334458; overflow: hidden; }
+.ck-progress::before { content: ""; display: block; width: var(--progress); height: 100%; background: linear-gradient(90deg, #88d9c7, #ffe1a0); }
+.ck-stage-rating { color: #ffe1a0; letter-spacing: .14em; }
+html[data-wp-shared-interface] body[data-wp-game-id="animal-constellation-keeper"] #resultScreen .result-card {
+  position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center;
+  min-height: 100%; width: 100%; max-width: 520px; margin: 0 auto !important;
+  border: 0; background: transparent; box-shadow: none; padding: 20px 12px;
+}
+#resultScreen .result-card > span { display: none; }
+#resultScreen .result-actions { width: 100%; margin-top: 18px; }
+#resultScreen h2 { font-size: 23px; margin: 15px 0 6px; }
+#resultScreen #resultText { font-size: 13px; color: #abc4de; }
+@media (hover:hover) {
+  .constellation-choice:hover { border-color: #b2cde1 !important; }
+  .ck-clue:hover { background-color: #24445b9c; }
+}
+@media (min-width: 700px) and (min-height: 600px) {
+  body[data-wp-game-id="animal-constellation-keeper"] .battle-content { padding-inline: 32px; gap: 10px; }
+  body[data-wp-game-id="animal-constellation-keeper"] .battle-content > .rule-card { grid-template-columns: 1fr 1fr; }
+  .rule-card h3 { grid-column: 1 / -1; }
+  .constellation-choice .star-board { max-height: 180px; width: 180px !important; max-width: 100%; align-self: center; }
+  .constellation-choice .ck-animal { width: 40px; height: 40px; }
+  .constellation-choice .ck-animal-name { font-size: 10px; }
+}
+@media (orientation: landscape) and (max-height: 590px) {
+  body[data-wp-game-id="animal-constellation-keeper"] .battle-content {
+    display: grid; grid-template-columns: minmax(190px,.85fr) minmax(290px,1.35fr);
+    grid-template-rows: auto minmax(0,1fr) 48px; gap: 6px 12px; padding: 4px 12px 8px;
+  }
+  .battle-content .ck-battle-context { grid-column: 1; grid-row: 1; }
+  body[data-wp-game-id="animal-constellation-keeper"] .battle-content .map-intro { display: none; }
+  body[data-wp-game-id="animal-constellation-keeper"] .battle-content .rule-card { grid-column: 1; grid-row: 2; align-self: center; padding: 7px; }
+  .battle-content .ck-observatory { display: none; }
+  .battle-content .choice-card { grid-column: 2; grid-row: 1 / 3; align-self: stretch; display: flex; flex-direction: column; justify-content: center; }
+  .battle-content .battle-status { grid-column: 1; grid-row: 3; align-self: stretch; }
+  .battle-content .battle-actions { grid-column: 2; grid-row: 3; }
+  .battle-content .choice-grid { min-height: 0; }
+  .constellation-choice .star-board { max-height: 126px; max-width: 126px; align-self: center; }
+  .ck-clue { font-size: 12px; }
+  #ckResultReward .star-board { width: 105px; height: 105px; }
+  #ckResultReward .ck-animal { width: 26px; height: 26px; }
+  #ckResultReward .ck-animal-name { font-size: 8px; }
+  .ck-rating { margin: 0; font-size: 22px; }
+  .ck-result-detail { margin: 2px 0 5px; }
+  html[data-wp-shared-interface] body[data-wp-game-id="animal-constellation-keeper"] #resultScreen .result-card { padding: 4px 12px; }
+  #resultScreen h2 { margin: 8px 0 3px; font-size: 20px; }
+  #resultScreen .result-actions { margin-top: 8px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .ck-clue, .constellation-choice, .ck-link, .ck-animal { transition-duration: .01ms !important; }
+  .ck-particle { display: none; }
+}

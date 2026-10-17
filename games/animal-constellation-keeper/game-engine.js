@@ -1,3 +1,4 @@
+// Campaign state and accessible controls; spatial rules and effects are separate modules.
 (() => {
   "use strict";
   /* WP-GAME-ANALYTICS-ADAPTER */
@@ -77,12 +78,16 @@
     const options = [0, 1, 2].map((variant) => ({ id: `stage-${number}-option-${variant + 1}`, slot: variant + 1, stars: makeStars(stage.layout, stage.animals, variant) }));
     return { ...stage, number, nameKey: `stage${number}Name`, introKey: `stage${number}Intro`, correctId: options[0].id, options };
   });
-  const maps = window.AnimalConstellationKeeperAnswerSlots.assignBalancedAnswerSlots(authoredMaps);
-  const correctIds = maps.map((map) => map.correctId);
+  const puzzle = window.AnimalConstellationKeeperAnswerSlots;
+  const stellar = window.ConstellationStellar;
+  const maps = puzzle.assignBalancedAnswerSlots(puzzle.refineMaps(authoredMaps));
   const PROGRESS_KEY = "weightplay-animal-constellation-keeper-progress-v5";
   const BEST_KEY = "weightplay-animal-constellation-keeper-best-v5";
   const readProgress = () => { try { const candidates = [localStorage.getItem(PROGRESS_KEY), localStorage.getItem("weightplay-animal-constellation-keeper-progress-v4")].filter((candidate) => candidate !== null); const value = candidates.map(Number).find((candidate) => Number.isFinite(candidate) && candidate >= 0); return Math.min(maps.length, Math.max(0, value ?? 0)); } catch (_) { return 0; } };
-  const state = { locale: "en", map: 0, completed: readProgress(), selected: "", checks: 0, sessionChecks: 0, screen: "main", sound: !window.WeightPlayAudio.isMuted() };
+  const MASTERY_KEY = "weightplay-animal-constellation-keeper-mastery-v10";
+  const readMastery = () => { try { const value = JSON.parse(localStorage.getItem(MASTERY_KEY)); return Array.from({ length: maps.length }, (_, index) => Number.isInteger(value?.[index]) && value[index] > 0 ? value[index] : 0); } catch { return Array(maps.length).fill(0); } };
+  const mastery = readMastery();
+  const state = { locale: "en", map: 0, completed: readProgress(), selected: "", checks: 0, sessionChecks: 0, mapChecks: 0, clue: -1, evaluations: {}, streak: 0, screen: "main", sound: !window.WeightPlayAudio.isMuted() };
   window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
   const $ = (id) => document.getElementById(id);
   const battleRoot = document.querySelector(".battle-canvas");
@@ -91,19 +96,19 @@
   battleRoot?.setAttribute("data-wp-battle-landscape-width", "760");
   battleRoot?.setAttribute("data-wp-battle-landscape-height", "334");
   const t = (key, vars = {}) => { const table = locales[state.locale] || locales.en || {}; let value = table[key] || locales.en?.[key] || key; Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); }); return value; };
-  const track = (event, detail = {}) => { window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v5", interface_version: 6, event, ...detail } })); };
+  const track = (event, detail = {}) => { window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v10", interface_version: 7, event, ...detail } })); };
   const tone = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
-  const show = (screen) => { state.screen = screen; document.querySelectorAll("section[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); document.body.dataset.screen = screen;
+  window.WeightPlayAudio.preload(["feedback.hint", "game.checkpoint", "result.win"]);
+  const show = (screen) => { stellar.settle(); state.screen = screen; document.querySelectorAll("section[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); document.body.dataset.screen = screen;
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
       if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 };
-  const readBest = () => { try { const value = Number(localStorage.getItem(BEST_KEY) || localStorage.getItem("weightplay-animal-constellation-keeper-best-v4")); return Number.isFinite(value) && value > 0 ? value : null; } catch (_) { return null; } };
-  const saveBest = () => { try { const old = readBest(); if (!old || state.sessionChecks < old) localStorage.setItem(BEST_KEY, String(state.sessionChecks)); } catch (_) {} };
+  const readBest = () => { try { const value = Number(localStorage.getItem(BEST_KEY) || localStorage.getItem("weightplay-animal-constellation-keeper-best-v4")); return Number.isFinite(value) && value >= maps.length ? value : null; } catch (_) { return null; } };
+  const saveBest = () => { if (!mastery.every(value => value > 0)) return; try { const total = mastery.reduce((sum, value) => sum + value, 0); const old = readBest(); if (!old || old < maps.length || total < old) localStorage.setItem(BEST_KEY, String(total)); } catch (_) {} };
   const saveProgress = () => { try { localStorage.setItem(PROGRESS_KEY, String(state.completed)); } catch (_) {} };
-  const announce = (key, vars = {}, kind = "") => { const node = $("battleStatus"); node.textContent = t(key, vars); node.dataset.kind = kind; };
-  const animalAtlas = { fox: "fox", owl: "owl", rabbit: "rabbit", deer: "deer", otter: "bear", hare: "rabbit", bear: "bear", mole: "owl" };
+  const announce = (key, vars = {}, kind = "") => { const node = $("battleStatus"); node.textContent = t(key, vars); node.dataset.kind = kind; stellar.enter(node); };
   const describeRelation = ([subject, relation, object]) => t(`relation${relation[0].toUpperCase()}${relation.slice(1)}`, { subject: t(subject), object: t(object) });
   let stageVirtualizer = null;
   const bindStageCard = (button, index) => {
@@ -117,6 +122,12 @@
     button.setAttribute("aria-label", `${t(map.nameKey)} · ${locked ? t("locked") : t("open")}`);
     const status = map.checkpoint ? `${t("checkpoint")}: ${t(map.checkpointKey)}` : (index < state.completed ? t("complete") : (locked ? t("locked") : t("open")));
     button.innerHTML = `<strong>${t("round", { n: index + 1, total: maps.length })}</strong><span>${t(map.nameKey)}</span><small>${status}</small>`;
+    if (mastery[index]) {
+      const rating = document.createElement("span"); rating.className = "ck-stage-rating";
+      const stars = mastery[index] === 1 ? 3 : mastery[index] === 2 ? 2 : 1;
+      rating.textContent = "★".repeat(stars) + "☆".repeat(3 - stars);
+      rating.setAttribute("aria-label", t("starsEarned", { count: stars })); button.append(rating);
+    }
   };
   const renderStages = () => {
     const rail = $("stageList");
@@ -135,16 +146,139 @@
     stageVirtualizer.refresh();
     stageVirtualizer.center(recommended);
   };
-  const renderBoard = (option) => { const board = document.createElement("div"); board.className = "star-board"; for (let row = 0; row < 3; row += 1) for (let col = 0; col < 3; col += 1) { const cell = document.createElement("div"); cell.className = "star-cell"; const star = option.stars.find((item) => item.row === row && item.col === col); if (star) { cell.classList.add("is-star"); const glyph = document.createElement("span"); glyph.className = "star-glyph"; glyph.dataset.animal = animalAtlas[star.animal] || "owl"; glyph.setAttribute("aria-hidden", "true"); cell.append(glyph); } board.append(cell); } return board; };
-  const renderBattle = () => { const current = maps[state.map]; $("mapName").textContent = t(current.nameKey); $("mapLabel").textContent = t("round", { n: state.map + 1, total: maps.length }); $("mapIntro").textContent = `${current.checkpoint ? `${t("checkpoint")}: ${t(current.checkpointKey)} — ` : ""}${t(current.introKey)}`; $("ruleOne").textContent = `1. ${describeRelation(current.clues[0])}`; $("ruleTwo").textContent = `2. ${describeRelation(current.clues[1])}`; $("checkCount").textContent = `${t("best")}: ${state.sessionChecks}`; const grid = $("choiceGrid"); grid.replaceChildren(...current.options.map((option) => { const button = document.createElement("button"); button.type = "button"; button.className = "constellation-choice"; button.dataset.optionId = option.id; button.setAttribute("aria-pressed", String(state.selected === option.id)); const label = document.createElement("span"); label.className = "choice-label"; label.textContent = t("boardOption", { slot: option.slot }); button.setAttribute("aria-label", t("mapOption", { label: label.textContent })); button.append(label, renderBoard(option)); button.addEventListener("click", () => chooseOption(option.id)); if (state.selected === option.id && button.dataset.state !== "wrong") button.dataset.state = "selected"; return button; })); $("checkBtn").disabled = !state.selected; };
-  const renderResult = () => { const complete = state.completed >= maps.length; $("resultTitle").textContent = complete ? t("resultTitle") : t("resultPartial"); $("resultText").textContent = t("resultText", { count: state.completed, total: maps.length, checks: state.sessionChecks }); $("resultPrimaryBtn").textContent = complete ? t("map") : t("next"); $("resultPrimaryBtn").onclick = complete ? () => { show("stage"); renderStages(); } : () => startMap(state.map + 1); (__wpNotifyMeasurement(), $("resultMapBtn").hidden = complete); };
+  const renderBoard = option => stellar.board(option, maps[state.map], t, state.clue, state.evaluations[option.id]);
+  const focusClue = index => {
+    if (state.screen !== "battle") return;
+    state.clue = state.clue === index ? -1 : index;
+    renderBattle(); stellar.trace(observatory); tone("feedback.hint");
+  };
+  // Native clue buttons retain their position and focus across every selection/check.
+  ["ruleOne", "ruleTwo"].forEach((id, index) => {
+    const old = $(id); const button = document.createElement("button");
+    button.id = id; button.type = "button"; button.className = "ck-clue";
+    button.addEventListener("click", () => focusClue(index)); old.replaceWith(button);
+  });
+  const observatory = document.createElement("div"); observatory.className = "ck-observatory";
+  observatory.innerHTML = '<div class="ck-orbit ck-orbit-one"></div><div class="ck-orbit ck-orbit-two"></div><div class="ck-hero-board"></div><span class="ck-observatory-label"></span>';
+  $("choiceGrid").closest(".choice-card").before(observatory);
+  const renderBattle = () => {
+    const current = maps[state.map];
+    $("mapName").textContent = t(current.nameKey);
+    $("mapLabel").textContent = t("round", { n: state.map + 1, total: maps.length });
+    $("mapIntro").textContent = `${current.checkpoint ? `${t("checkpoint")}: ${t(current.checkpointKey)} — ` : ""}${t(current.introKey)}`;
+    const evaluation = state.evaluations[state.selected];
+    ["ruleOne", "ruleTwo"].forEach((id, index) => {
+      const button = $(id); button.replaceChildren();
+      const number = document.createElement("span"); number.className = "ck-clue-number";
+      number.textContent = evaluation ? evaluation[index] ? "✓" : "×" : String(index + 1);
+      const text = document.createElement("span"); text.textContent = describeRelation(current.clues[index]);
+      button.append(number, text); button.setAttribute("aria-pressed", String(state.clue === index));
+      button.dataset.verdict = evaluation ? evaluation[index] ? "pass" : "fail" : "idle";
+      button.setAttribute("aria-label", `${text.textContent} ${evaluation ? evaluation[index] ? t("rulePass") : t("ruleFail") : t("traceClue")}`);
+    });
+    $("checkCount").textContent = t("checksLabel", { count: state.mapChecks });
+    const grid = $("choiceGrid");
+    const renderKey = `${state.map}:${state.locale}`;
+    if (grid.dataset.renderKey !== renderKey) {
+      grid.dataset.renderKey = renderKey;
+      grid.replaceChildren(...current.options.map(option => {
+        const button = document.createElement("button"); button.type = "button";
+        button.className = "constellation-choice"; button.dataset.optionId = option.id;
+        const label = document.createElement("span"); label.className = "choice-label";
+        label.textContent = t("boardOption", { slot: option.slot });
+        const verdict = document.createElement("span"); verdict.className = "ck-choice-verdict";
+        button.append(label, renderBoard(option), verdict);
+        button.addEventListener("click", () => chooseOption(option.id));
+        return button;
+      }));
+      stellar.enter(grid);
+    }
+    current.options.forEach(option => {
+      const button = grid.querySelector(`[data-option-id="${option.id}"]`);
+      const tested = state.evaluations[option.id];
+      button.setAttribute("aria-pressed", String(state.selected === option.id));
+      button.dataset.state = tested && !tested.every(Boolean) ? "wrong" : state.selected === option.id ? "selected" : "idle";
+      button.querySelector(".star-board").replaceWith(renderBoard(option));
+      const verdict = button.querySelector(".ck-choice-verdict");
+      verdict.textContent = tested ? `${tested.filter(Boolean).length} / ${current.clues.length} ✓` : "✦ · ✦";
+      button.setAttribute("aria-label", `${t("boardOption", { slot: option.slot })}: ${option.stars.map(star => `${t(star.animal)} (${star.row + 1}, ${star.col + 1})`).join(", ")}${tested ? `. ${t("matchedRules", { count: tested.filter(Boolean).length })}` : ""}`);
+    });
+    const chosen = current.options.find(option => option.id === state.selected);
+    const hero = observatory.querySelector(".ck-hero-board");
+    observatory.classList.toggle("has-selection", Boolean(chosen));
+    observatory.querySelector(".ck-observatory-label").textContent = chosen ? t("boardOption", { slot: chosen.slot }) : t("observePrompt");
+    if (chosen) hero.replaceChildren(renderBoard(chosen));
+    else {
+      // Neutral sky: no hidden answer preview before the player's first choice.
+      hero.replaceChildren();
+      const neutral = document.createElement("span"); neutral.className = "ck-neutral-star"; neutral.textContent = "✧"; hero.append(neutral);
+    }
+    $("checkBtn").disabled = !state.selected || Boolean(evaluation);
+    $("clearBtn").disabled = !state.selected;
+    battleRoot.style.setProperty("--arc-hue", String(175 + current.arc * 21));
+  };
+  const renderResult = () => {
+    const complete = state.map === maps.length - 1;
+    const current = maps[state.map];
+    $("resultTitle").textContent = complete ? t("resultTitle") : t("resultPartial");
+    $("resultText").textContent = t("resultText", { count: state.completed, total: maps.length, checks: state.sessionChecks });
+    let reward = $("ckResultReward");
+    if (!reward) { reward = document.createElement("div"); reward.id = "ckResultReward"; $("resultTitle").before(reward); }
+    reward.dataset.milestone = complete ? "finale" : current.checkpoint ? "checkpoint" : "map";
+    const stars = state.mapChecks === 1 ? 3 : state.mapChecks === 2 ? 2 : 1;
+    reward.replaceChildren(stellar.board(current.options.find(option => option.id === current.correctId), current, t, -1, [true, true]));
+    const rating = document.createElement("p"); rating.className = "ck-rating";
+    rating.textContent = "★".repeat(stars) + "☆".repeat(3 - stars); rating.setAttribute("aria-label", t("starsEarned", { count: stars }));
+    const detail = document.createElement("p"); detail.className = "ck-result-detail";
+    detail.textContent = `${current.checkpoint ? `${t("checkpoint")}: ${t(current.checkpointKey)} · ` : ""}${t(state.mapChecks === 1 ? "perfectRead" : "skyRestored")} · ${t("checksLabel", { count: state.mapChecks })}`;
+    const progress = document.createElement("div"); progress.className = "ck-progress";
+    progress.setAttribute("role", "progressbar"); progress.setAttribute("aria-label", t("maps")); progress.setAttribute("aria-valuemin", "0"); progress.setAttribute("aria-valuemax", String(maps.length)); progress.setAttribute("aria-valuenow", String(state.completed));
+    progress.style.setProperty("--progress", `${state.completed / maps.length * 100}%`);
+    reward.append(rating, detail, progress);
+    $("resultPrimaryBtn").textContent = complete ? t("map") : t("next");
+    $("resultPrimaryBtn").onclick = complete ? openStage : () => startMap(state.map + 1);
+    $("resultMapBtn").hidden = false;
+    __wpNotifyMeasurement();
+  };
   const openStage = () => { show("stage"); renderStages(); };
-  const startMap = (index) => { if (index > state.completed || index < 0 || index >= maps.length) return; state.map = index; state.selected = ""; if (index === 0) { state.checks = 0; state.sessionChecks = 0; } show("battle"); renderBattle(); announce("waiting"); track("map_start", { map: state.map + 1, arc: maps[state.map].arc });
+  const startMap = (index) => { if (!Number.isInteger(index) || index > state.completed || index < 0 || index >= maps.length) return; state.map = index; state.selected = ""; state.mapChecks = 0; state.clue = -1; state.evaluations = {}; if (index === 0) { state.checks = 0; state.sessionChecks = 0; state.streak = 0; } show("battle"); renderBattle(); stellar.enter(document.querySelector(".battle-content")); announce("waiting"); tone("game.start"); track("map_start", { map: state.map + 1, arc: maps[state.map].arc });
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 };
-  const chooseOption = (id) => { state.selected = id; renderBattle(); announce("selected"); tone("board.move"); track("constellation_select", { map: state.map + 1 }); };
-  const clearChoice = () => { state.selected = ""; renderBattle(); announce("waiting"); track("constellation_clear", { map: state.map + 1 }); };
-  const checkChoice = () => { if (!state.selected) return; state.checks += 1; state.sessionChecks += 1; const current = maps[state.map]; if (state.selected !== correctIds[state.map]) { const hint = describeRelation(current.clues[0]); announce("wrong", { hint }, "wrong"); const wrongButton = document.querySelector(`[data-option-id="${state.selected}"]`); if (wrongButton) wrongButton.dataset.state = "wrong"; tone("feedback.error"); track("map_check", { map: state.map + 1, result: "wrong" }); return; } state.completed = Math.max(state.completed, state.map + 1); saveProgress(); announce("correct", {}, "correct"); tone("feedback.success"); track("map_check", { map: state.map + 1, result: "correct", checkpoint: Boolean(current.checkpoint) }); if (state.completed >= maps.length) { saveBest(); $("bestValue").textContent = readBest() || t("noBest"); } show("result"); renderResult(); };
+  const chooseOption = (id) => {
+    if (state.screen !== "battle" || !maps[state.map].options.some(option => option.id === id)) return;
+    state.selected = id; renderBattle();
+    const previous = state.evaluations[id];
+    announce(previous ? "reviewedBoard" : "selected", {}, previous ? "wrong" : "");
+    stellar.trace(observatory); stellar.burst(observatory); tone("board.move"); track("constellation_select", { map: state.map + 1 });
+  };
+  const clearChoice = () => { if (state.screen !== "battle") return; state.selected = ""; state.clue = -1; renderBattle(); announce("waiting"); track("constellation_clear", { map: state.map + 1 }); };
+  const checkChoice = () => {
+    if (state.screen !== "battle" || !state.selected || state.evaluations[state.selected]) return;
+    const current = maps[state.map]; const option = current.options.find(item => item.id === state.selected);
+    if (!option) return;
+    state.checks++; state.sessionChecks++; state.mapChecks++;
+    const evaluation = puzzle.assess(current, option); state.evaluations[option.id] = evaluation;
+    if (!evaluation.every(Boolean)) {
+      state.clue = evaluation.indexOf(false); state.streak = 0; renderBattle();
+      announce("wrong", { hint: describeRelation(current.clues[state.clue]) }, "wrong");
+      stellar.enter($(state.clue === 0 ? "ruleOne" : "ruleTwo")); tone("feedback.error");
+      track("map_check", { map: state.map + 1, result: "wrong" }); return;
+    }
+    const wasCompleted = state.completed;
+    state.completed = Math.max(state.completed, state.map + 1); saveProgress();
+    mastery[state.map] = mastery[state.map] ? Math.min(mastery[state.map], state.mapChecks) : state.mapChecks;
+    try { localStorage.setItem(MASTERY_KEY, JSON.stringify(mastery)); } catch {}
+    if (state.mapChecks === 1) state.streak++;
+    saveBest(); $("bestValue").textContent = readBest() || t("noBest");
+    track("map_check", { map: state.map + 1, result: "correct", checkpoint: Boolean(current.checkpoint), unlocked: state.completed > wasCompleted });
+    show("result"); renderResult(); stellar.enter($("resultScreen").querySelector(".result-card")); stellar.burst($("ckResultReward"), true);
+    tone(state.map === maps.length - 1 ? "result.win" : current.checkpoint ? "game.checkpoint" : "feedback.success");
+  };
+  document.addEventListener("keydown", event => {
+    if (event.defaultPrevented || event.repeat || event.altKey || event.ctrlKey || event.metaKey || state.screen !== "battle") return;
+    if (event.target.closest("input, select, textarea, [contenteditable], [role='dialog']") || battleRoot.querySelector(".battle-content")?.inert) return;
+    if (/^[123]$/.test(event.key)) { event.preventDefault(); chooseOption(maps[state.map].options[Number(event.key) - 1].id); }
+  });
   const applyLocale = () => {
     document.documentElement.lang = state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";

@@ -74,7 +74,6 @@ export function translate(locale,key,values={}){
  return text.replace(/\{(\w+)\}/g,(_,name)=>String(values[name]??''));
 }
 export function detectLocale(){
- const query=new URLSearchParams(location.search).get('lang');if(CATALOG[query])return query;
  const path=location.pathname.split('/').filter(Boolean)[0];if(ROUTE_LOCALES[path])return ROUTE_LOCALES[path];
  try{const saved=localStorage.getItem('weightPlayLocale');if(CATALOG[saved])return saved;}catch{/* Session locale still works. */}
  return CATALOG[document.documentElement.lang]?document.documentElement.lang:'en';
