@@ -32,6 +32,9 @@ html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-stat] {
 html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-stat] :is(span,small) {font:600 calc(11 * var(--wp-play-unit,1px))/1.2 system-ui!important}
 html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-stat] :is(b,strong) {font:800 calc(14 * var(--wp-play-unit,1px))/1.2 system-ui!important}
 html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="stage"] {
+  position:fixed!important;inset:0 auto auto 50%!important;z-index:40!important;
+  width:min(100vw,920px)!important;max-width:920px!important;margin:0!important;
+  transform:translateX(-50%)!important;
   gap:0!important;padding:0!important;height:100vh!important;height:100dvh!important;
   min-height:100vh!important;min-height:100dvh!important;
   background-image:linear-gradient(#09122099,#091220bb),var(--wp-play-background)!important;

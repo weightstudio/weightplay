@@ -380,6 +380,17 @@
     stageGroup.add(stageStatus);
     screenFrame.stageTopUI.add(stageGroup);
 
+    const stageMapTab = document.createElement("button");
+    stageMapTab.type = "button";
+    stageMapTab.setAttribute("role", "tab");
+    stageMapTab.setAttribute("aria-selected", "true");
+    stageMapTab.setAttribute("aria-current", "page");
+    stageMapTab.tabIndex = 0;
+    stageMapTab.textContent = t("stages");
+    screenFrame.commonDownButton.element.setAttribute("role", "tablist");
+    screenFrame.commonDownButton.element.setAttribute("aria-label", t("stages"));
+    screenFrame.commonDownButton.add(stageMapTab);
+
     const battleGroup = window.WeightPlayScreenFrame.createGroup();
     for (const node of ["holeInfo", "strokeLabel", "acornLabel"].map((id) => document.getElementById(id))) battleGroup.add(node);
     screenFrame.battleTopUI.add(battleGroup);
