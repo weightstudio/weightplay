@@ -51,13 +51,9 @@
     { arc: 6, checkpoint: false, title: "Last moon turn", hint: "A final locked row narrows the valid rescue sequence.", lockedRows: [1], target: ["hareA", "foxA", "badgerB", "foxB", "badgerA", "otterA"], start: ["badgerA", "foxA", "hareA", "otterA", "foxB", "badgerB"] },
     { arc: 6, checkpoint: true, title: "Taro's rescue finale", hint: "Connect every endpoint and open all six shelters.", decoyRows: [1, 4], target: ["foxB", "badgerB", "otterA", "foxA", "hareA", "badgerA"], start: ["badgerA", "foxA", "foxB", "badgerB", "otterA", "hareA"] },
   ];
-  const state = { locale: "en", screen: "main", board: 0, current: [], selected: -1, swaps: 0, completed: [], errorRows: [], sound: !window.WeightPlayAudio.isMuted(), best: {}, statusKey: "ready", statusVars: {}, statusError: false };
-  // A fixed larger pool covers the seven-card maximum at compact landscape
-  // width while keeping at least three prepared nodes beyond either edge.
-  // Pool construction remains independent of campaign length (30, 60, 90…).
-  const STAGE_CARD_POOL_SIZE = 13;
-  let stageRailController = null;
-  let stageResizeFrame = 0;
+  const state = { locale: "en", screen: "main", board: 0, selectedStage: 0, current: [], selected: -1, swaps: 0, completed: [], errorRows: [], best: {}, statusKey: "ready", statusVars: {}, statusError: false };
+  let stageSelector = null;
+  let screenFrame = null;
   const $ = (id) => document.getElementById(id);
   const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
@@ -124,8 +120,9 @@
     }
     $("guideScreen").hidden = activeScreen !== "main";
     if (activeScreen === "main") applyText();
-    if (activeScreen === "stage") renderStages();
+    if (activeScreen === "stage") stageSelector?.refresh(state.selectedStage);
     if (screen === "battle") renderBattle();
+    screenFrame?.activate(activeScreen, { covered: showingResult });
     if (showingResult) {
       if (resultScreen) resultScreen.scrollTop = 0;
       $("resultHeading").focus({ preventScroll: true });
@@ -174,62 +171,28 @@
   const isStageUnlocked = (index) => index === 0 || state.completed.includes(index - 1);
   const highestUnlockedStage = () => Math.min(boards.length - 1,
     state.completed.reduce((highest, completedIndex) => Math.max(highest, completedIndex + 1), 0));
-  const bindStageCard = (button, index) => {
+  const stageRecord = (index) => {
     const board = boards[index];
+    if (!board) return null;
     const done = state.completed.includes(index);
     const unlocked = isStageUnlocked(index);
     const titleKey = "boardTitle" + (index + 1);
     const hintKey = "boardHint" + (index + 1);
     const localizedTitle = copy(titleKey);
     const localizedHint = copy(hintKey);
-    const title = localizedTitle === titleKey ? board.title : localizedTitle;
-    const hint = localizedHint === hintKey ? board.hint : localizedHint;
-    button.type = "button";
-    button.className = `stage-card${done ? " complete" : ""}${board.checkpoint ? " checkpoint" : ""}${unlocked ? "" : " locked"}`;
-    button.dataset.stage = String(index);
-    // Keep locked cards pointer-reachable for rail gestures. The shared
-    // controller blocks activation from this semantic state.
-    button.setAttribute("aria-disabled", String(!unlocked));
-    button.removeAttribute("disabled");
-    button.innerHTML = `<span class="stage-card-content" data-wp-item-content><span class="stage-number">${copy("round", { number: index + 1, total: boards.length })}</span><span class="stage-card-copy"><strong>${copy("arcLabel", { number: board.arc })} · ${title}</strong><small>${hint}</small></span><b>${done ? copy("completed") : unlocked ? copy("readyStage") : "—"}</b></span>`;
+    return {
+      id: index + 1,
+      arc: board.arc,
+      checkpoint: Boolean(board.checkpoint),
+      title: localizedTitle === titleKey ? board.title : localizedTitle,
+      hint: localizedHint === hintKey ? board.hint : localizedHint,
+      kicker: copy("round", { number: index + 1, total: boards.length }),
+      summary: copy("mapIntro"),
+      status: done ? copy("completed") : unlocked ? copy("readyStage") : "—",
+      locked: !unlocked,
+      cleared: done,
+    };
   };
-  const renderStages = () => {
-    const rail = $("stageList");
-    if (!window.WeightPlayStageV6?.install) {
-      rail.replaceChildren();
-      throw new Error("Animal Tangle Rescue requires the shared bounded Stage controller.");
-    }
-    if (stageRailController) {
-      if (!stageRailController.refresh()) throw new Error("Animal Tangle Rescue Stage controller could not refresh.");
-      return;
-    }
-    stageRailController = window.WeightPlayStageV6.install(rail, {
-      total: () => boards.length,
-      poolSize: STAGE_CARD_POOL_SIZE,
-      initialIndex: highestUnlockedStage,
-      bind: bindStageCard,
-      activate: (index) => {
-        if (isStageUnlocked(index)) startBoard(index);
-      },
-    });
-    if (!stageRailController) throw new Error("Animal Tangle Rescue could not install its bounded Stage pool.");
-  };
-  const recenterStageAfterViewportChange = () => {
-    if (state.screen !== "stage" || !stageRailController) return;
-    cancelAnimationFrame(stageResizeFrame);
-    stageResizeFrame = requestAnimationFrame(() => {
-      stageResizeFrame = 0;
-      stageRailController?.center();
-    });
-  };
-  window.addEventListener("resize", recenterStageAfterViewportChange, { passive: true });
-  window.addEventListener("orientationchange", recenterStageAfterViewportChange, { passive: true });
-  window.addEventListener("pagehide", (event) => {
-    if (event.persisted) return;
-    cancelAnimationFrame(stageResizeFrame);
-    stageRailController?.destroy();
-    stageRailController = null;
-  }, { once: true });
   const renderBattle = () => {
     const board = boards[state.board];
     $("battleHeading").textContent = copy("round", { number: state.board + 1, total: boards.length });
@@ -316,59 +279,36 @@
     renderBattle();
   };
   const resetBoard = () => { state.current = boards[state.board].start.slice(); state.selected = -1; state.swaps = 0; state.errorRows = []; state.statusKey = "ready"; state.statusVars = {}; state.statusError = false; analytics("tangle_board_reset", { board: state.board }); renderBattle(); };
-  const startBoard = (index) => { state.board = Math.max(0, Math.min(boards.length - 1, index)); state.current = boards[state.board].start.slice(); state.selected = -1; state.swaps = 0; state.errorRows = []; state.statusKey = "ready"; state.statusVars = {}; state.statusError = false; analytics("tangle_board_started", { board: state.board }); setScreen("battle"); };
-  const syncSoundControls = () => {
-    $("soundBtn").textContent = state.sound ? copy("soundOn") : copy("soundOff");
-    $("soundBtn").setAttribute("aria-pressed", String(state.sound));
-    $("battleSoundBtn").setAttribute("aria-label", state.sound ? copy("soundOn") : copy("soundOff"));
-    $("battleSoundBtn").setAttribute("aria-pressed", String(state.sound));
+  const startBoard = (index) => {
+    const boardIndex = Math.max(0, Math.min(boards.length - 1, Number(index) || 0));
+    if (!isStageUnlocked(boardIndex)) return;
+    state.board = boardIndex;
+    state.selectedStage = boardIndex;
+    state.current = boards[state.board].start.slice();
+    state.selected = -1;
+    state.swaps = 0;
+    state.errorRows = [];
+    state.statusKey = "ready";
+    state.statusVars = {};
+    state.statusError = false;
+    analytics("tangle_board_started", { board: state.board });
+    setScreen("battle");
   };
   const applyText = () => {
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = copy(node.dataset.copy); });
     document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", copy(node.dataset.copyAriaLabel)));
-    syncSoundControls();
     $("mainProgress").textContent = copy("progress", { count: state.completed.length, total: boards.length });
-    if (state.screen === "stage") renderStages();
+    if (state.screen === "stage") stageSelector?.refresh(state.selectedStage);
     if (state.screen === "battle") renderBattle();
-  };
-  window.addEventListener("weightplay:audio-volume-change", () => {
-    state.sound = !window.WeightPlayAudio.isMuted();
-    syncSoundControls();
-  });
-  const ensureGuideContract = () => {
-    const guide = $("guideScreen");
-    if (!guide) return;
-    // The Interface 7 fallback theme is loaded after this game and its
-    // The shared skin supplies --wp-ui-radius after game CSS. Keep the
-    // approved authored Guide radius explicit through that same token so the
-    // visible surface and the shared contract cannot drift apart.
-    guide.style.setProperty("--wp-ui-radius", "24px", "important");
-    guide.style.setProperty("border-radius", "var(--wp-ui-radius)", "important");
-    guide.style.setProperty("border-width", "1px", "important");
-    guide.style.setProperty("background", "rgb(255 253 247 / 96%)", "important");
-    guide.style.setProperty("box-shadow", "0 10px 24px rgb(38 82 71 / 6%)", "important");
   };
   const applyLocale = (locale) => { state.locale = normalizeLocale(locale) || "en"; safeSet("weightplay-locale", state.locale); safeSet("weightPlayLocale", state.locale); document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr"; $("languageSelect").value = state.locale; applyText(); };
   const openLeaveDialog = () => { $("leaveDialog").hidden = false; $("cancelLeaveBtn").focus(); };
   const closeLeaveDialog = () => { $("leaveDialog").hidden = true; $("leaveBtn").focus(); };
-  const settingButtons = () => [...document.querySelectorAll("[data-wp-settings]")];
-  const setSettingsOpen = (open) => {
-    $("settingsPanel").hidden = !open;
-    settingButtons().forEach((button) => button.setAttribute("aria-expanded", String(open)));
-  };
-  const bindSettingsButtons = () => settingButtons().forEach((button) => {
-    if (button.dataset.tangleSettingsBound) return;
-    button.dataset.tangleSettingsBound = "true";
-    button.addEventListener("click", () => setSettingsOpen($("settingsPanel").hidden));
-  });
   const bind = () => {
     $("startBtn").addEventListener("click", () => setScreen("stage"));
     $("guideStartBtn").addEventListener("click", () => setScreen("stage"));
     $("mapBtn").addEventListener("click", () => setScreen("stage"));
-    bindSettingsButtons();
-    $("closeSettingsBtn").addEventListener("click", () => setSettingsOpen(false));
     $("stageBackBtn").addEventListener("click", () => setScreen("main"));
-    $("stageInfoBtn").addEventListener("click", () => { setScreen("main"); $("guideScreen").open = true; $("guideScreen").scrollIntoView({ block: "start" }); });
     $("battleBackBtn").addEventListener("click", () => setScreen("stage"));
     $("checkBtn").addEventListener("click", checkBoard);
     $("resetBtn").addEventListener("click", resetBoard);
@@ -376,22 +316,39 @@
     $("cancelLeaveBtn").addEventListener("click", closeLeaveDialog);
     $("confirmLeaveBtn").addEventListener("click", () => { closeLeaveDialog(); setScreen("stage"); });
     $("resultStagesBtn").addEventListener("click", () => {
+      state.selectedStage = highestUnlockedStage();
       setScreen("stage");
-      stageRailController?.center(highestUnlockedStage());
+      stageSelector?.select(state.selectedStage, { focus: true });
       $("stageList").querySelector('[aria-current="true"]')?.focus({ preventScroll: true });
     });
-    [$('soundBtn'), $('battleSoundBtn')].forEach((button) => button.addEventListener("click", () => { state.sound = window.WeightPlayAudio.setEnabled(window.WeightPlayAudio.isMuted()); applyText(); }));
     $("languageSelect").addEventListener("change", (event) => { const requested = normalizeLocale(event.target.value) || "en"; try { window.WonderI18n?.setLocale?.(requested); } catch (_error) {} applyLocale(requested); });
   };
   const init = () => {
     try { const saved = JSON.parse(safeGet("weightplay-animal-tangle-rescue-completed", "[]")); state.completed = Array.isArray(saved) ? saved.filter((index) => Number.isInteger(index) && index >= 0 && index < boards.length) : []; } catch (_error) { state.completed = []; }
-    state.sound = !window.WeightPlayAudio.isMuted();
+    state.selectedStage = highestUnlockedStage();
     mountResultSubstate();
     bind();
-    ensureGuideContract();
     window.addEventListener("wonder:locale-change", (event) => applyLocale(event.detail?.locale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang));
     applyLocale(initialLocale());
-    window.setTimeout(() => { $("loadingScreen").hidden = true; $("app").hidden = false; setScreen("main"); }, 90);
+    window.setTimeout(() => { $("app").hidden = false; setScreen("main"); }, 90);
   };
+  window.AnimalTangleRescueI9 = Object.freeze({
+    get activeScene() { return state.screen === "result" ? "battle" : state.screen; },
+    get isResult() { return state.screen === "result"; },
+    get selectedStage() { return state.selectedStage; },
+    get stageCount() { return boards.length; },
+    get screen() { return state.screen; },
+    stageRecord,
+    setStageSelector(selector) {
+      stageSelector = selector;
+      stageSelector?.refresh(state.selectedStage);
+    },
+    selectStage(index) { state.selectedStage = Math.max(0, Math.min(boards.length - 1, Number(index) || 0)); },
+    startBoard,
+    setFrame(frame) {
+      screenFrame = frame;
+      frame?.activate(this.activeScene, { covered: this.isResult });
+    },
+  });
   init();
 }());
