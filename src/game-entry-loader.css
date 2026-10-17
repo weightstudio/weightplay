@@ -1,4 +1,11 @@
 .wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
   position: fixed;
   z-index: 2147483000;
   inset: 0;
@@ -104,7 +111,7 @@
   outline-offset: 3px;
 }
 
-html[data-wp-game-entry-loader-active="true"] #loadingPanel {
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
   display: none !important;
 }
 

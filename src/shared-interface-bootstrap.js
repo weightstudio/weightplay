@@ -160,7 +160,7 @@
     if (!document.querySelector('script[src*="game-screen-frame.js"]') && !window.__weightPlayScreenFrameRequested) {
       window.__weightPlayScreenFrameRequested = true;
       const script = document.createElement("script");
-      script.src = assetUrl(`game-screen-frame.js?v=${version}`);
+      script.src = assetUrl('game-screen-frame.js?v=20261017-shared-dark-loader1');
       script.dataset.wpSharedInterface = "7";
       document.body.append(script);
       return;

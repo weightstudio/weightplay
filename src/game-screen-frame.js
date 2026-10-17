@@ -1,6 +1,29 @@
 /* One shared frame. No game IDs, polling or parallel skin implementations. */
 (() => {
   'use strict';
+  function ensureEntryLoader() {
+    if (!/\/games\/[a-z0-9-]+(?:\/|\/index\.html)?$/.test(location.pathname)
+      || window.WeightPlayGameEntryLoader?.isActive
+      || document.querySelector('script[src*="/game-entry-loader.js"]')) return;
+    // Let parser-authored consumers register first; do not race a second copy
+    // against an existing engine integration later in the same document.
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', ensureEntryLoader, {once:true});
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = '/src/game-entry-loader.js?v=20261017-shared-dark-loader1';
+    script.dataset.wpGameEntryLoaderBootstrap = 'true';
+    script.async = false;
+    document.head.append(script);
+  }
+  function bootstrapDeclaredEntryLoader() {
+    const version = document.querySelector('meta[name="weightplay-interface-version"]')?.content
+      || document.body?.dataset.wpInterfaceVersion;
+    if (Number.parseFloat(version) >= 9) ensureEntryLoader();
+  }
+  bootstrapDeclaredEntryLoader();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootstrapDeclaredEntryLoader, {once:true});
   const BLOCK_CUBE_URL = '/assets/weightplay-block-world-cube-v1.svg?v=20260930-publish-path-v2';
   function setItemCollectionStatus(itemRoot, { itemId, state, labels, placement = 'inline' } = {}) {
     const allowedStates = new Set(['collected', 'not-collected', 'unknown']);
@@ -206,7 +229,7 @@
     const entries = {};
     let active = null, activeCovered = false;
     root.dataset.wpFrame = '2';
-    if (playUI) root.dataset.wpPlayUi = '1';
+    if (playUI) { root.dataset.wpPlayUi = '1'; ensureEntryLoader(); }
     const topSlots = {}, bottomSlots = {};
     for (const [name, scene] of Object.entries(scenes)) {
       const header = scene.header;

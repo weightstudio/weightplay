@@ -91,7 +91,7 @@ html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-stage-selector="1"] 
 }
 html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-stage-selector="1"] [data-wp-item-content] {
   display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-end!important;
-  position:absolute!important;inset:auto calc(16 * var(--wp-play-card-scale,1) * var(--wp-play-unit,1px)) calc(16 * var(--wp-play-card-scale,1) * var(--wp-play-unit,1px))!important;
+  position:absolute!important;inset:auto calc(20 * var(--wp-play-card-scale,1) * var(--wp-play-unit,1px)) calc(20 * var(--wp-play-card-scale,1) * var(--wp-play-unit,1px))!important;
   z-index:1!important;gap:calc(6 * var(--wp-play-card-scale,1) * var(--wp-play-unit,1px))!important;min-width:0!important;max-height:90%!important;
   width:auto!important;padding:0!important;background:none!important;border:0!important;pointer-events:none!important;
 }

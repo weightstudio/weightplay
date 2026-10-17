@@ -1,10 +1,12 @@
-/* Shared lobby-to-game loader for the permanently adopted Dungeon Venture entry. */
+/* Shared lobby navigation and I9 game entry; no per-game renderer or theme. */
 (() => {
-  const GAME_ID = "animal-crystal-survivor";
-  const STYLE_URL = "/src/game-entry-loader.css?v=20261016-stage-i9-permanent-2";
-  const ROOT_CLASS = "wp-game-entry-loader";
   const path = window.location.pathname.replace(/\/+$/, "");
-  const gamePath = new RegExp(`(?:^|/)games/${GAME_ID}$`).test(path);
+  const GAME_ID = path.match(/\/games\/([a-z0-9-]+)(?:\/index\.html)?$/)?.[1] || "";
+  const STYLE_URL = "/src/game-entry-loader.css?v=20261017-shared-dark-loader1";
+  const ROOT_CLASS = "wp-game-entry-loader";
+  const gamePath = Boolean(GAME_ID);
+  let selectedGameId = GAME_ID;
+  let selectedAnchor = null;
 
   if (document.documentElement.dataset.wpGameEntryLoaderInstalled === "true") return;
   document.documentElement.dataset.wpGameEntryLoaderInstalled = "true";
@@ -21,20 +23,25 @@
   const copy = () => {
     const locale = (document.documentElement.lang || "en").toLowerCase();
     const bundles = {
-      "zh-hant": ["正在載入勇闖地監…", "遊戲載入失敗", "部分遊戲資源無法載入。請重試或返回大廳。", "重試", "返回大廳", "取消", "正在開啟勇闖地監…", "已載入 {loaded}/{total} 項資源"],
-      "zh-hans": ["正在载入勇闯地牢…", "游戏载入失败", "部分游戏资源无法载入。请重试或返回大厅。", "重试", "返回大厅", "取消", "正在打开勇闯地牢…", "已载入 {loaded}/{total} 项资源"],
-      ja: ["ダンジョン・ベンチャーを読み込み中…", "ゲームを読み込めませんでした", "一部のゲーム素材を読み込めません。再試行するかロビーに戻ってください。", "再試行", "ロビーに戻る", "キャンセル", "ゲームを開いています…", "リソース {loaded}/{total} 件を読み込みました"],
-      ko: ["던전 벤처를 불러오는 중…", "게임을 불러오지 못했습니다", "일부 게임 리소스를 불러오지 못했습니다. 다시 시도하거나 로비로 돌아가세요.", "다시 시도", "로비로 돌아가기", "취소", "게임을 여는 중…", "리소스 {loaded}/{total}개 로드됨"],
-      es: ["Cargando Dungeon Venture…", "No se pudo cargar el juego", "No se pudieron cargar algunos recursos. Inténtalo de nuevo o vuelve al lobby.", "Reintentar", "Volver al lobby", "Cancelar", "Abriendo el juego…", "Recursos cargados: {loaded}/{total}"],
-      "pt-br": ["Carregando Dungeon Venture…", "Não foi possível carregar o jogo", "Alguns recursos não carregaram. Tente novamente ou volte ao lobby.", "Tentar novamente", "Voltar ao lobby", "Cancelar", "Abrindo o jogo…", "Recursos carregados: {loaded}/{total}"],
-      fr: ["Chargement de Dungeon Venture…", "Impossible de charger le jeu", "Certaines ressources n’ont pas pu être chargées. Réessayez ou retournez au lobby.", "Réessayer", "Retour au lobby", "Annuler", "Ouverture du jeu…", "Ressources chargées : {loaded}/{total}"],
-      de: ["Dungeon Venture wird geladen…", "Spiel konnte nicht geladen werden", "Einige Spielressourcen konnten nicht geladen werden. Erneut versuchen oder zur Lobby zurückkehren.", "Erneut versuchen", "Zurück zur Lobby", "Abbrechen", "Spiel wird geöffnet…", "Geladene Ressourcen: {loaded}/{total}"],
-      it: ["Caricamento di Dungeon Venture…", "Impossibile caricare il gioco", "Alcune risorse non sono state caricate. Riprova o torna alla lobby.", "Riprova", "Torna alla lobby", "Annulla", "Apertura del gioco…", "Risorse caricate: {loaded}/{total}"],
-      ru: ["Загрузка Dungeon Venture…", "Не удалось загрузить игру", "Не удалось загрузить некоторые ресурсы. Повторите попытку или вернитесь в лобби.", "Повторить", "В лобби", "Отмена", "Открываем игру…", "Загружено ресурсов: {loaded}/{total}"],
-      hi: ["Dungeon Venture लोड हो रहा है…", "गेम लोड नहीं हो सका", "कुछ गेम संसाधन लोड नहीं हुए। फिर कोशिश करें या लॉबी में लौटें।", "फिर कोशिश करें", "लॉबी में लौटें", "रद्द करें", "गेम खोला जा रहा है…", "लोड किए गए संसाधन: {loaded}/{total}"],
-      ar: ["جارٍ تحميل Dungeon Venture…", "تعذّر تحميل اللعبة", "تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة.", "إعادة المحاولة", "العودة إلى الردهة", "إلغاء", "جارٍ فتح اللعبة…", "الموارد المحمّلة: {loaded}/{total}"],
+      "zh-hant": ["正在載入{game}…", "遊戲載入失敗", "部分遊戲資源無法載入。請重試或返回大廳。", "重試", "返回大廳", "取消", "正在開啟{game}…", "已載入 {loaded}/{total} 項資源"],
+      "zh-hans": ["正在载入{game}…", "游戏载入失败", "部分游戏资源无法载入。请重试或返回大厅。", "重试", "返回大厅", "取消", "正在打开{game}…", "已载入 {loaded}/{total} 项资源"],
+      ja: ["{game}を読み込み中…", "ゲームを読み込めませんでした", "一部のゲーム素材を読み込めません。再試行するかロビーに戻ってください。", "再試行", "ロビーに戻る", "キャンセル", "ゲームを開いています…", "リソース {loaded}/{total} 件を読み込みました"],
+      ko: ["{game}를 불러오는 중…", "게임을 불러오지 못했습니다", "일부 게임 리소스를 불러오지 못했습니다. 다시 시도하거나 로비로 돌아가세요.", "다시 시도", "로비로 돌아가기", "취소", "게임을 여는 중…", "리소스 {loaded}/{total}개 로드됨"],
+      es: ["Cargando {game}…", "No se pudo cargar el juego", "No se pudieron cargar algunos recursos. Inténtalo de nuevo o vuelve al lobby.", "Reintentar", "Volver al lobby", "Cancelar", "Abriendo el juego…", "Recursos cargados: {loaded}/{total}"],
+      "pt-br": ["Carregando {game}…", "Não foi possível carregar o jogo", "Alguns recursos não carregaram. Tente novamente ou volte ao lobby.", "Tentar novamente", "Voltar ao lobby", "Cancelar", "Abrindo o jogo…", "Recursos carregados: {loaded}/{total}"],
+      fr: ["Chargement de {game}…", "Impossible de charger le jeu", "Certaines ressources n’ont pas pu être chargées. Réessayez ou retournez au lobby.", "Réessayer", "Retour au lobby", "Annuler", "Ouverture du jeu…", "Ressources chargées : {loaded}/{total}"],
+      de: ["{game} wird geladen…", "Spiel konnte nicht geladen werden", "Einige Spielressourcen konnten nicht geladen werden. Erneut versuchen oder zur Lobby zurückkehren.", "Erneut versuchen", "Zurück zur Lobby", "Abbrechen", "Spiel wird geöffnet…", "Geladene Ressourcen: {loaded}/{total}"],
+      it: ["Caricamento di {game}…", "Impossibile caricare il gioco", "Alcune risorse non sono state caricate. Riprova o torna alla lobby.", "Riprova", "Torna alla lobby", "Annulla", "Apertura del gioco…", "Risorse caricate: {loaded}/{total}"],
+      ru: ["Загрузка {game}…", "Не удалось загрузить игру", "Не удалось загрузить некоторые ресурсы. Повторите попытку или вернитесь в лобби.", "Повторить", "В лобби", "Отмена", "Открываем игру…", "Загружено ресурсов: {loaded}/{total}"],
+      hi: ["{game} लोड हो रहा है…", "गेम लोड नहीं हो सका", "कुछ गेम संसाधन लोड नहीं हुए। फिर कोशिश करें या लॉबी में लौटें।", "फिर कोशिश करें", "लॉबी में लौटें", "रद्द करें", "गेम खोला जा रहा है…", "लोड किए गए संसाधन: {loaded}/{total}"],
+      ar: ["جارٍ تحميل {game}…", "تعذّر تحميل اللعبة", "تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة.", "إعادة المحاولة", "العودة إلى الردهة", "إلغاء", "جارٍ فتح اللعبة…", "الموارد المحمّلة: {loaded}/{total}"],
     };
-    return bundles[locale] || ["Loading Dungeon Venture…", "Game could not be loaded", "Some game resources could not be loaded. Retry or return to the lobby.", "Retry", "Back to lobby", "Cancel", "Opening game…", "Loaded {loaded}/{total} resources"];
+    const titles = window.WEIGHTPLAY_GAME_TITLES?.[selectedGameId] || {};
+    const name = Object.entries(titles).find(([key]) => key.toLowerCase() === locale)?.[1]
+      || (gamePath ? document.querySelector('[data-wp-game-title]')?.textContent.trim() : selectedAnchor?.querySelector('h2,h3,.game-name,.game-title')?.textContent.trim())
+      || titles.en || ({'zh-hant':'遊戲','zh-hans':'游戏',ja:'ゲーム',ko:'게임',ar:'اللعبة'}[locale] || 'game');
+    return (bundles[locale] || ["Loading {game}…", "Game could not be loaded", "Some game resources could not be loaded. Retry or return to the lobby.", "Retry", "Back to lobby", "Cancel", "Opening {game}…", "Loaded {loaded}/{total} resources"])
+      .map(text => text.replaceAll('{game}', name));
   };
 
   function makeOverlay({ titleText, messageText, mode = "loading", showBack = false, retry, cancel } = {}) {
@@ -76,15 +83,6 @@
     card.className = "wp-game-entry-loader-card";
     card.append(title, status, track, actions);
     overlay.append(card);
-    const applyGameTheme = () => {
-      const gameRoot = document.querySelector("[data-wp-frame-root]");
-      if (!gameRoot) return;
-      const theme = getComputedStyle(gameRoot);
-      for (const property of ["--wp-loading-card", "--wp-loading-text", "--wp-loading-muted", "--wp-loading-track", "--wp-loading-fill-a", "--wp-loading-fill-b"]) {
-        const value = theme.getPropertyValue(property).trim();
-        if (value) overlay.style.setProperty(property, value);
-      }
-    };
     if (mode === "error") {
       button(retryText, retry || (() => window.location.reload()), "is-primary");
       button(backText, cancel || goBack);
@@ -98,7 +96,6 @@
       if (appendController.signal.aborted) return;
       appendController.abort();
       if (document.body && overlay.dataset.state !== "ready") {
-        applyGameTheme();
         document.body.append(overlay);
       }
     };
@@ -120,12 +117,10 @@
   };
 
   if (gamePath) {
-    const state = { root: null, loaded: 0, total: null, retry: null, ready: false, fadeTimer: 0 };
+    const state = { root: null, loaded: 0, total: null, retry: null, ready: false, failed: false, engineOwned: false, fadeTimer: 0 };
     const hideLegacyPanel = () => {
-      const panel = document.getElementById("loadingPanel");
-      if (!panel) return;
-      panel.hidden = true;
-      panel.style.setProperty("display", "none", "important");
+      // CSS hides the old renderer; preserve its attributes as engine-ready signals.
+      document.documentElement.dataset.wpGameEntryLoaderActive = "true";
     };
     const start = () => {
       if (state.ready || state.root?.overlay) return state.root;
@@ -141,6 +136,8 @@
       document.documentElement.removeAttribute("data-wp-game-entry-loader-active");
     };
     const begin = (total) => {
+      state.engineOwned = true;
+      state.failed = false;
       state.loaded = 0;
       state.total = Number.isFinite(total) && total > 0 ? Math.floor(total) : null;
       hideLegacyPanel();
@@ -162,6 +159,7 @@
       }
     };
     const assetProgress = (loaded, total) => {
+      if (state.ready || state.failed) return;
       const ui = start();
       if (!ui || !Number.isFinite(loaded) || !Number.isFinite(total) || total <= 0) return;
       state.loaded = Math.max(0, Math.min(Math.floor(total), Math.floor(loaded)));
@@ -174,6 +172,8 @@
     };
     const fail = (message, retry) => {
       if (state.ready) return;
+      state.failed = true;
+      stopAuto();
       state.retry = typeof retry === "function" ? retry : () => window.location.reload();
       state.root?.appendController?.abort();
       state.root?.overlay?.remove();
@@ -185,8 +185,9 @@
       }, cancel: () => { clearFailure(); goBack(); } });
     };
     const ready = () => {
-      if (state.ready) return;
+      if (state.ready || state.failed) return;
       state.ready = true;
+      stopAuto();
       window.clearTimeout(state.fadeTimer);
       window.removeEventListener("error", onResourceError, true);
       window.removeEventListener("pagehide", onGamePageHide);
@@ -210,6 +211,7 @@
       }
     }
     function onGamePageHide() {
+      stopAuto();
       window.clearTimeout(state.fadeTimer);
       window.removeEventListener("error", onResourceError, true);
       state.root?.appendController?.abort();
@@ -220,6 +222,41 @@
     start();
     window.addEventListener("error", onResourceError, true);
     window.addEventListener("pagehide", onGamePageHide, { once: true });
+    // Existing games keep their readiness logic. The shared bridge observes
+    // the old panel's engine-owned completion flag, never our CSS visibility.
+    let autoFrame = 0;
+    const observer = new MutationObserver(scheduleAuto);
+    const autoTimeout = window.setTimeout(() => {
+      if (!state.ready && !state.engineOwned && !state.failed) fail();
+    }, 20000);
+    function stopAuto() {
+      observer.disconnect();
+      window.clearTimeout(autoTimeout);
+      cancelAnimationFrame(autoFrame);
+      window.removeEventListener('load', scheduleAuto);
+    }
+    function scheduleAuto() {
+      if (!autoFrame && !state.ready && !state.failed && !state.engineOwned) {
+        autoFrame = requestAnimationFrame(checkAuto);
+      }
+    }
+    function checkAuto() {
+      autoFrame = 0;
+      if (state.ready || state.failed || state.engineOwned || document.readyState !== 'complete') return;
+      const panels = [...document.querySelectorAll('#loadingPanel,.loading-panel')];
+      if (panels.some(panel => !(panel.hidden || panel.classList.contains('hidden') || panel.classList.contains('is-hidden') || panel.style.display === 'none' || panel.getAttribute('aria-hidden') === 'true'))) return;
+      const main = document.querySelector('[data-wp-frame-scene="main"]');
+      if (!main?.getClientRects().length) return;
+      const start = main.querySelector('[data-wp-main-start],[data-wp-frame-action="primary"],#startBtn,#startGameBtn,#start');
+      if (!start?.getClientRects().length || start.disabled || start.getAttribute('aria-disabled') === 'true') return;
+      const images = [...main.querySelectorAll('img:not([loading="lazy"])')].filter(img => img.getClientRects().length);
+      if (images.some(img => !img.complete)) return;
+      if (images.some(img => !img.naturalWidth)) { fail(); return; }
+      ready();
+    }
+    observer.observe(document.documentElement, {childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden','style','disabled','aria-disabled','aria-hidden','src']});
+    window.addEventListener('load', scheduleAuto, {once:true});
+    scheduleAuto();
     return;
   }
 
@@ -239,7 +276,7 @@
     overlayState?.overlay.remove();
     overlayState = null;
     document.documentElement.removeAttribute("data-wp-game-entry-loader-active");
-    if (restoreFocus) document.querySelector(`[href*="/games/${GAME_ID}/"]`)?.focus({ preventScroll: true });
+    if (restoreFocus) selectedAnchor?.focus({ preventScroll: true });
   };
   const failNavigation = () => {
     if (!active || !overlayState) return;
@@ -297,9 +334,12 @@
     if (!anchor || anchor.target && anchor.target !== "_self" || anchor.hasAttribute("download")) return;
     let url;
     try { url = new URL(anchor.href, window.location.href); } catch { return; }
-    if (url.origin !== window.location.origin || !new RegExp(`(?:^|/)games/${GAME_ID}/?$`).test(url.pathname)) return;
+    const match = url.pathname.match(/\/games\/([a-z0-9-]+)(?:\/(?:index\.html)?)?$/);
+    if (!['http:', 'https:'].includes(url.protocol) || url.origin !== window.location.origin || !match || anchor.relList.contains('external')) return;
     event.preventDefault();
     if (active) return;
+    selectedGameId = match[1];
+    selectedAnchor = anchor;
     active = true;
     targetUrl = url.href;
     overlayState = makeOverlay({ titleText: copy()[6], cancel: () => reset({ restoreFocus: true }) });

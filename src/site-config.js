@@ -6,7 +6,7 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
 // END generated Castle Block reward exclusions
 
 window.WONDER_SITE = {
-  version: "v0.38.91",
+  version: "v0.38.92",
   localization: {
     defaultLocale: "en",
     fallbackLocale: "en",
@@ -45,7 +45,7 @@ if (typeof document !== "undefined" && /(?:^|\/)games\/[^/]+(?:\/|$)/i.test(loca
   window.__weightPlaySharedInterfaceRequested = true;
   const currentScript = document.currentScript;
   const bootstrap = document.createElement("script");
-  bootstrap.src = new URL("shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2", currentScript?.src || document.baseURI).href;
+  bootstrap.src = new URL("shared-interface-bootstrap.js?v=20261017-shared-dark-loader1", currentScript?.src || document.baseURI).href;
   bootstrap.dataset.wpSharedInterface = "7";
   document.head.append(bootstrap);
 }

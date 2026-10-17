@@ -127,7 +127,9 @@
       // One common physical composition, inverse-scaled into each owning Canvas.
       // Keep the poster's 292:372 ratio even in short landscape.
       const fit=Math.max(.15,Math.min(1,(box.width-64)/292,(box.height-116)/372));
-      const values={'card-width':292*fit,'card-height':372*fit,'card-scale':fit,'gap':18,'briefing-height':68};
+      // Card scale is a unitless ratio; lengths use the inverse Canvas unit.
+      scene.style.setProperty('--wp-play-card-scale',String(fit));
+      const values={'card-width':292*fit,'card-height':372*fit,'gap':18,'briefing-height':68};
       for(const [name,value] of Object.entries(values))scene.style.setProperty(`--wp-play-${name}`,`${value*inverse}px`);
       position(current);
     }

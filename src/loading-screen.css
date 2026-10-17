@@ -1,11 +1,11 @@
 :root {
-  --wp-loading-backdrop: rgba(35, 47, 24, .42);
-  --wp-loading-card: rgba(255, 249, 218, .96);
-  --wp-loading-text: #2d2417;
-  --wp-loading-muted: #5c4a24;
-  --wp-loading-track: rgba(94, 74, 28, .18);
-  --wp-loading-fill-a: #61d66f;
-  --wp-loading-fill-b: #ffe36b;
+  --wp-loading-backdrop: rgba(6, 15, 27, .38);
+  --wp-loading-card: rgba(14, 27, 46, .96);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgba(255, 255, 255, .18);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
 }
 
 .loading-panel {
