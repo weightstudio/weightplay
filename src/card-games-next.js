@@ -2357,7 +2357,16 @@
       resultCloseButton.dataset.cardResultReturn = "main";
     }
     if (loading) { loading.hidden = true; loading.remove(); }
-    let sound = root.WPCardEngine?.SoundEngine ? new root.WPCardEngine.SoundEngine("card_games_next_sound_v1") : null;
+    let sound = id === "casino" ? null : root.WPCardEngine?.SoundEngine ? new root.WPCardEngine.SoundEngine("card_games_next_sound_v1") : null;
+    const playCardGameCue = (name) => {
+      if (id === "casino") {
+        const cue = ({ click: "ui.click", place: "card.place", draw: "card.draw", flip: "card.flip",
+          error: "feedback.error", success: "feedback.success", start: "game.start", win: "result.win", lose: "result.lose" })[name];
+        if (cue) root.WeightPlayAudio?.play?.(cue);
+        return;
+      }
+      sound?.[name]?.();
+    };
     const syncCribbageSoundControls = () => {
       if (id !== "cribbage") return;
       const enabled = sound?.enabled !== false;
@@ -2402,7 +2411,7 @@
     const controller = {
       id,
       isBattleActive() { return !battle.hidden && rootElement.dataset.screen === "battle"; },
-      openBattle() { resultRecorded = false; main.hidden = true; battle.hidden = false; rootElement.dataset.screen = "battle"; render(); window.dispatchEvent(new Event("weightplay:battle-open")); window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:shell-sync"));
+      openBattle() { resultRecorded = false; if (id === "casino") playCardGameCue("start"); main.hidden = true; battle.hidden = false; rootElement.dataset.screen = "battle"; render(); window.dispatchEvent(new Event("weightplay:battle-open")); window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:shell-sync"));
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["battle"] ?? null;
       if (["result"].includes("battle") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (false && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
@@ -2426,11 +2435,12 @@
           resultText.dataset.cribbageResultMastery = message ? "true" : "false";
         }
         (__wpNotifyMeasurement(), result.hidden = false);
-        sound?.[won === null ? "place" : won ? "win" : "reject"]?.();
+        if (id === "casino") { if (won === true) playCardGameCue("win"); else if (won === false) playCardGameCue("lose"); }
+        else sound?.[won === null ? "place" : won ? "win" : "reject"]?.();
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = won === null ? "draw" : won ? "win" : "lose"; __wpNotifyMeasurement();
 },
-      beep(name = "place") { sound?.[name]?.(); },
+      beep(name = "place") { playCardGameCue(name); },
     };
     const render = () => {
       if (!game) return;
@@ -2454,8 +2464,14 @@
     const clickHandler = (event) => {
       const actionNode = event.target.closest("[data-action]");
       const cardNode = event.target.closest("[data-card-index]");
-      if (actionNode) { game.action(actionNode.dataset.action, actionNode.dataset.value); controller.beep(actionNode.dataset.action === "flip" ? "flip" : "place"); render(); return; }
-      if (cardNode && game.card) { game.card(Number(cardNode.dataset.cardIndex)); controller.beep("place"); render(); }
+      if (actionNode) {
+        const action = actionNode.dataset.action;
+        game.action(action, actionNode.dataset.value);
+        if (id === "casino") controller.beep(["capture", "build", "trail"].includes(action) ? "place" : "click");
+        else controller.beep(action === "flip" ? "flip" : "place");
+        render(); return;
+      }
+      if (cardNode && game.card) { game.card(Number(cardNode.dataset.cardIndex)); controller.beep(id === "casino" ? "click" : "place"); render(); }
     };
     battle.addEventListener("click", clickHandler);
     document.querySelector("#battleBackBtn")?.addEventListener("click", (event) => {
@@ -2480,7 +2496,7 @@
     document.querySelector("#newGameBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("new_game", { source: "main" }); game.reset(); controller.openBattle(); });
     document.querySelector("#battleRestartBtn")?.addEventListener("click", () => { __wpReplayStart(() => game.reset()); render(); });
     document.querySelector("#battleNewBtn")?.addEventListener("click", () => { game.reset(); render(); });
-    audioButton?.addEventListener("click", () => {
+    if (id !== "casino") audioButton?.addEventListener("click", () => {
       const next = !sound?.enabled;
       sound?.setEnabled(next);
       if (id === "cribbage") syncCribbageSoundControls();
@@ -2832,7 +2848,7 @@
     const scoreCasino = (cards) => cards.reduce((score, item) => score + (item.suit === "spades" ? 1 : 0) + (item.suit === "diamonds" && item.rank === 10 ? 2 : 0) + (item.suit === "spades" && item.rank === 2 ? 2 : 0), 0) + (cards.length >= 27 ? 3 : 0);
     const resultBreakdown = (cards) => casinoText("resultBreakdown", { cards: cards.length, immediate: immediateBonus(cards), majority: cards.length >= 27 ? "+3" : "—", score: scoreCasino(cards) });
     const finish = () => { const playerScore = scoreCasino(s.captured[0]); const aiScore = scoreCasino(s.captured[1]); controller.result(playerScore === aiScore ? null : playerScore > aiScore, `${t("score")}: ${playerScore} / ${aiScore} · ${resultBreakdown(s.captured[0])}`); };
-    const dealNextHand = () => { for (let i = 0; i < 4 && s.stock.length; i += 1) { s.player.push(s.stock.pop()); if (s.stock.length) s.ai.push(s.stock.pop()); } };
+    const dealNextHand = () => { for (let i = 0; i < 4 && s.stock.length; i += 1) { s.player.push(s.stock.pop()); if (s.stock.length) s.ai.push(s.stock.pop()); } controller.beep("draw"); };
     const aiTurn = () => { if (!s.ai.length) { if (s.stock.length) dealNextHand(); else { finish(); return; } } const aiCard = s.ai.pop(); const same = s.table.map((entry, index) => ({ entry, index })).filter(({ entry }) => tableValue(entry) === value(aiCard)); const combo = combinations(s.table, value(aiCard))[0]; if (same.length || combo) { const indices = same.length ? same.map((entry) => entry.index) : combo; s.captured[1].push(aiCard, ...indices.flatMap((index) => entryCards(s.table[index]))); s.table = s.table.filter((_, index) => !indices.includes(index)); } else s.table.push({ card: aiCard }); if (!s.ai.length && s.stock.length) dealNextHand(); if (!s.stock.length && (!s.ai.length || !s.player.length)) finish(); };
     return {
       reset() {

@@ -331,7 +331,9 @@
         entry.root.style.setProperty('grid-template-columns','minmax(0,1fr)','important');
         entry.root.style.setProperty('grid-template-rows','var(--wp-frame-rows)','important');
         for (const node of [entry.root,entry.header]) {
-          for (const key of ['--wp-frame-control-size','--wp-frame-control-size-physical','--wp-frame-physical-control-size','--wp-frame-lobby-return-width'])node.style.setProperty(key,`${44*inverse}px`,'important');
+          // Leave a small rounding margin so transformed Canvas headers still
+          // expose a physical 44px minimum hit target at fractional scales.
+          for (const key of ['--wp-frame-control-size','--wp-frame-control-size-physical','--wp-frame-physical-control-size','--wp-frame-lobby-return-width'])node.style.setProperty(key,`${44.25*inverse}px`,'important');
           node.style.setProperty('--wp-frame-header-height',`${56*inverse}px`,'important');
           node.style.setProperty('--wp-play-unit',`${inverse}px`);
           node.style.setProperty('--wp-play-control',`${48*inverse}px`);

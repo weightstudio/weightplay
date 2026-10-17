@@ -92,3 +92,66 @@ body[data-screen="stage"] .wp-tutorial-button{display:none}
 }
 .wp-tutorial-backdrop[data-game-id="animal-crownfall"]{grid-template-columns:minmax(0,1fr);overflow:auto;overscroll-behavior:contain}
 .wp-tutorial-backdrop[data-game-id="animal-crownfall"] .wp-tutorial-card{max-width:100%;overscroll-behavior:contain}
+
+/* Keep the Crownfall tutorial steps and primary continuation action together
+   on compact landscape screens without shrinking the instruction copy. */
+@media (min-width: 700px) and (max-height: 560px) and (orientation: landscape) {
+  .wp-tutorial-backdrop[data-game-id="animal-crownfall"] {
+    padding: calc(8px + env(safe-area-inset-top)) calc(10px + env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) calc(10px + env(safe-area-inset-left));
+  }
+
+  .wp-tutorial-backdrop[data-game-id="animal-crownfall"] .wp-tutorial-card {
+    width: min(96vw, 760px);
+    max-height: calc(100svh - 16px);
+    padding: 10px;
+    gap: 8px;
+    border-radius: 16px;
+    overflow: hidden;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+
+  .wp-tutorial-backdrop[data-game-id="animal-crownfall"] .wp-tutorial-head {
+    align-items: center;
+  }
+
+  .wp-tutorial-backdrop[data-game-id="animal-crownfall"] .wp-tutorial-head strong {
+    font-size: clamp(1rem, 2.8vw, 1.35rem);
+  }
+
+  .wp-tutorial-backdrop[data-game-id="animal-crownfall"] .wp-tutorial-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    min-height: 0;
+  }
+
+  .wp-tutorial-backdrop[data-game-id="animal-crownfall"] .wp-tutorial-step {
+    min-height: 0;
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 7px;
+    padding: 8px;
+  }
+
+  .wp-tutorial-backdrop[data-game-id="animal-crownfall"] .wp-tutorial-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+  }
+
+  .wp-tutorial-backdrop[data-game-id="animal-crownfall"] .wp-tutorial-copy {
+    gap: 2px;
+  }
+
+  .wp-tutorial-backdrop[data-game-id="animal-crownfall"] .wp-tutorial-copy b {
+    font-size: .82rem;
+  }
+
+  .wp-tutorial-backdrop[data-game-id="animal-crownfall"] .wp-tutorial-copy span {
+    font-size: .72rem;
+    line-height: 1.2;
+  }
+
+  .wp-tutorial-backdrop[data-game-id="animal-crownfall"] .wp-tutorial-action {
+    min-height: 46px;
+  }
+}

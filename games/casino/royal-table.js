@@ -4,7 +4,7 @@
   const roots=['cardGameHand','cardGameCenter'].map(id=>document.getElementById(id)).filter(Boolean);
   if(roots.length!==2||!window.WPCardTablePresentation)return;
   document.body.classList.add('wp-premium-table','casino-royal-table');
-  document.body.dataset.gameVersion='v26';
+  document.body.dataset.gameVersion='v27';
   document.body.dataset.cardDeck='klondike';
   // Commit the shared logical Canvas envelope before tutorial UI or the first
   // player input can observe the newly opened Battle scene.

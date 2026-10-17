@@ -24,5 +24,9 @@
     mainCopy.insertBefore(progress, mainCopy.querySelector(".main-actions") || null);
   }
 
+  window.WeightPlayAudio?.preload?.([
+    "card.draw", "card.place", "game.start", "result.lose", "result.win", "ui.click",
+  ]);
+
   window.WPCardGamesNext?.mount({ id: "casino" });
 })();

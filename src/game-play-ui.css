@@ -1,7 +1,7 @@
 /* The opted-in Play UI owns all chrome and Stage selector geometry.
    Game styles may supply artwork and content, never these protected tracks. */
 @layer wp-frame-contract {
-html body [data-wp-frame="2"][data-wp-play-ui="1"] :is([data-wp-frame-scene="stage"],[data-wp-frame-scene="battle"]) {
+html body [data-wp-frame="2"][data-wp-play-ui="1"] :is([data-wp-frame-scene="stage"],[data-wp-frame-scene="battle"]):not([data-wp-logical-battle-canvas]) {
   box-sizing:border-box!important;border:0!important;border-radius:0!important;
   height:100vh!important;height:100dvh!important;min-height:100vh!important;min-height:100dvh!important;
 }

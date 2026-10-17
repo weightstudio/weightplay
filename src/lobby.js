@@ -373,6 +373,8 @@ function createDemonEventPreview() {
   const strings = {
     ...localized,
     modal: ({ "zh-Hant": "活動說明", "zh-Hans": "活动说明" })[locale] || localized.open,
+    previous: ({ en: "Previous activity", "zh-Hant": "上一個活動", "zh-Hans": "上一个活动", ja: "前のイベント", ko: "이전 이벤트", es: "Evento anterior", "pt-BR": "Evento anterior", fr: "Événement précédent", de: "Vorheriges Event", it: "Evento precedente", ru: "Предыдущее событие", hi: "पिछला इवेंट", ar: "الفعالية السابقة" })[locale] || "Previous activity",
+    next: ({ en: "Next activity", "zh-Hant": "下一個活動", "zh-Hans": "下一个活动", ja: "次のイベント", ko: "다음 이벤트", es: "Evento siguiente", "pt-BR": "Próximo evento", fr: "Événement suivant", de: "Nächstes Event", it: "Evento successivo", ru: "Следующее событие", hi: "अगला इवेंट", ar: "الفعالية التالية" })[locale] || "Next activity",
     unavailable: ({ en: "Not open yet", "zh-Hant": "尚未開放", "zh-Hans": "尚未开放", ja: "未開催", ko: "아직 열리지 않았어요", es: "Aún no disponible", "pt-BR": "Ainda não disponível", fr: "Pas encore ouvert", de: "Noch nicht geöffnet", it: "Non ancora disponibile", ru: "Пока недоступно", hi: "अभी उपलब्ध नहीं", ar: "غير متاحة بعد" })[locale] || "Not open yet",
     reward: ({ en: "Diamond rewards are not open yet. Nothing is available to claim.", "zh-Hant": "鑽石獎勵尚未開放，目前沒有可領取的獎勵。", "zh-Hans": "钻石奖励尚未开放，目前没有可领取的奖励。", ja: "ダイヤ報酬はまだ受け取れません。", ko: "다이아 보상은 아직 받을 수 없습니다.", es: "Las recompensas de diamantes aún no están disponibles.", "pt-BR": "As recompensas em diamantes ainda não estão disponíveis.", fr: "Les récompenses en diamants ne sont pas encore disponibles.", de: "Diamantbelohnungen sind noch nicht verfügbar.", it: "Le ricompense in diamanti non sono ancora disponibili.", ru: "Алмазные награды пока недоступны.", hi: "हीरे के पुरस्कार अभी उपलब्ध नहीं हैं。", ar: "مكافآت الألماس غير متاحة بعد." })[locale] || "Diamond rewards are not open yet.",
     note: ({ "zh-Hant": "累計已收集方塊數只會決定彈藥上限；方塊與城堡材料都不會被扣除。", "zh-Hans": "累计已收集方块数只会决定弹药上限；方块与城堡材料都不会被扣除。" })[locale] || localized.note,
@@ -394,18 +396,27 @@ function createDemonEventPreview() {
   }[locale] || ["Play now", "One run daily · local midnight", "This version awards no diamonds."];
   strings.reward = daily[2];
   strings.note = ({"zh-Hant": "1 個已收集方塊＝1 點本場彈藥。每次只射一顆：倍率 m 會扣 m 點彈藥，直接命中惡魔扣 m HP；未命中或撞上護盾也消耗 m。永久收藏與城堡材料不扣除。", "zh-Hans": "1 个已收集方块＝1 点本场弹药。每次只射一颗：倍率 m 会扣 m 点弹药，直接命中恶魔扣 m HP；未命中或撞上护盾也消耗 m。永久收藏和城堡材料不扣除。", "en": "Each collected block gives 1 run ammo. A multiplier m fires one projectile, spends m ammo and deals m HP on a direct Boss hit. Misses and dark shields also cost m. Permanent blocks and castle materials are never spent.", "ja": "収集ブロック1個＝今回の弾薬1。倍率mは1発で弾薬mを使い、ボス直撃でm HPのダメージ。外れや暗黒シールドへの命中もmを消費します。永久ブロックと城素材は減りません。", "ko": "수집 블록 1개는 이번 판 탄약 1입니다. 배율 m은 한 발에 탄약 m을 쓰고 보스 직접 명중 시 HP m을 깎습니다. 빗나가거나 암흑 방패에 맞아도 m을 씁니다. 영구 블록과 성 재료는 차감되지 않습니다.", "es": "Cada bloque recogido da 1 de munición. El multiplicador m dispara un proyectil, gasta m y resta m HP al jefe en impacto directo. Los fallos y escudos oscuros también cuestan m. No se gastan bloques permanentes ni materiales.", "pt-BR": "Cada bloco coletado dá 1 munição. O multiplicador m lança um projétil, gasta m e causa m HP no chefe em acerto direto. Erros e escudos sombrios também custam m. Blocos permanentes e materiais não são gastos.", "fr": "Chaque bloc collecté donne 1 munition. Le multiplicateur m tire un projectile, dépense m et inflige m HP au boss en coup direct. Les ratés et boucliers sombres coûtent aussi m. Les blocs permanents et matériaux restent intacts.", "de": "Jeder gesammelte Block gibt 1 Munition. Multiplikator m feuert ein Projektil, verbraucht m und verursacht beim direkten Bosstreffer m HP Schaden. Fehlschüsse und dunkle Schilde kosten ebenfalls m. Dauerhafte Blöcke und Burgmaterial bleiben erhalten.", "it": "Ogni blocco raccolto dà 1 munizione. Il moltiplicatore m lancia un proiettile, spende m e infligge m HP al boss con un colpo diretto. Mancati colpi e scudi oscuri costano m. Blocchi permanenti e materiali restano intatti.", "ru": "Каждый собранный блок даёт 1 боеприпас. Множитель m выпускает один снаряд, расходует m и снимает m HP при прямом попадании в босса. Промахи и тёмные щиты также стоят m. Постоянные блоки и материалы не расходуются.", "hi": "हर एकत्रित ब्लॉक से 1 बारूद मिलता है। गुणक m एक प्रक्षेप्य छोड़ता है, m बारूद खर्च करता है और सीधे बॉस पर m HP घटाता है। चूक और अंधेरे ढाल भी m खर्च करते हैं। स्थायी ब्लॉक और किले की सामग्री नहीं घटती।", "ar": "كل مكعب مجموع يمنح ذخيرة واحدة. المضاعف m يطلق مقذوفاً واحداً ويستهلك m ويخصم m من صحة الزعيم عند إصابته مباشرة. الإخفاق والدروع المظلمة يستهلكان m أيضاً. المكعبات الدائمة ومواد القلعة لا تُستهلك."})[locale] || "Each collected block gives 1 run ammo. A multiplier m fires one projectile, spends m ammo and deals m HP on a direct Boss hit. Misses and dark shields also cost m. Permanent blocks and castle materials are never spent.";
+  const motionPreference = window.matchMedia?.("(prefers-reduced-motion: reduce)");
   const section = document.createElement("section");
   section.className = "demon-event-preview";
   section.hidden = true;
   section.dataset.runtimeLocalize = "off";
   section.setAttribute("aria-label", strings.title);
-  section.innerHTML = `<div class="demon-event-art" aria-hidden="true"><img src="/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1" alt="" width="768" height="768" loading="lazy" decoding="async" /></div><div class="demon-event-copy"><h3>${strings.title}</h3><p class="demon-event-line">${strings.line}</p><p class="demon-event-count"><span>${strings.blocks}</span><strong data-owned-blocks>—</strong></p><div class="demon-event-actions"><button class="demon-event-unavailable demon-event-play" type="button">${daily[0]}</button><button class="demon-event-details" type="button">${strings.open}</button></div></div>`;
+  const events = [{ id: "demon-assault", title: strings.title, image: "/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1" }];
+  // Local-only fixtures let the carousel behavior be exercised without publishing placeholder events.
+  const fixtureCount = location.hostname === "localhost" || location.hostname === "127.0.0.1"
+    ? Math.max(0, Math.min(3, Number(new URLSearchParams(location.search).get("wpActivityFixture")) || 0)) : 0;
+  if (fixtureCount > 1) {
+    while (events.length < fixtureCount) events.push({ ...events[0], id: `local-fixture-${events.length + 1}`, title: `${strings.title} · ${events.length + 1}` });
+  }
+  const slides = events.map((event, index) => `<button class="demon-event-card" type="button" data-event-index="${index}" aria-label="${event.title}"><span class="demon-event-art" aria-hidden="true"><img src="${event.image}" alt="" width="768" height="768" loading="lazy" decoding="async" /></span><span class="demon-event-copy"><span class="demon-event-title">${event.title}</span></span></button>`).join("");
+  section.innerHTML = `<div class="demon-event-track" role="group" aria-label="${strings.title}">${slides}</div><div class="demon-event-carousel-controls"${events.length < 2 ? " hidden" : ""}><button type="button" class="demon-event-step" data-step="-1" aria-label="${strings.previous}">‹</button><span class="demon-event-position" aria-live="polite">1 / ${events.length}</span><button type="button" class="demon-event-step" data-step="1" aria-label="${strings.next}">›</button></div>`;
   const dialog = document.createElement("dialog");
   dialog.className = "demon-event-dialog";
   dialog.setAttribute("aria-labelledby", "demonEventDialogTitle");
-  dialog.innerHTML = `<form method="dialog"><button class="demon-event-close" type="submit" aria-label="${strings.close}">×</button></form><header class="demon-event-dialog-heading"><p class="demon-event-dialog-eyebrow">${strings.open}</p><h2 id="demonEventDialogTitle">${strings.title}</h2></header><div class="demon-event-dialog-body"><p>${strings.note}</p><p class="demon-event-dialog-schedule">${daily[1]}</p><p class="demon-event-dialog-reward">${strings.reward}</p></div><div class="demon-event-dialog-actions"></div>`;
+  dialog.innerHTML = `<form method="dialog"><button class="demon-event-close" type="submit" aria-label="${strings.close}">×</button></form><header class="demon-event-dialog-heading"><p class="demon-event-dialog-eyebrow">${strings.open}</p><h2 id="demonEventDialogTitle">${strings.title}</h2></header><div class="demon-event-dialog-body"><p>${strings.line}</p><p>${strings.note}</p><p class="demon-event-count"><span>${strings.blocks}</span><strong data-owned-blocks>—</strong></p><p class="demon-event-dialog-schedule">${daily[1]}</p><p class="demon-event-dialog-reward">${strings.reward}</p></div><div class="demon-event-dialog-actions"></div>`;
   document.body.append(dialog);
-  const openButton = section.querySelector(".demon-event-details");
+  const openButtons = [...section.querySelectorAll(".demon-event-card")];
   const dialogActions = dialog.querySelector(".demon-event-dialog-actions");
   if (!isKidsLobby) {
     const launch = document.createElement("button");
@@ -419,7 +430,6 @@ function createDemonEventPreview() {
       window.location.href = `/activities/demon-assault/${params}`;
     };
     launch.addEventListener("click", startDailyBattle);
-    section.querySelector(".demon-event-play").addEventListener("click", startDailyBattle);
     dialogActions.append(launch);
   }
   let returnFocus = null;
@@ -428,13 +438,63 @@ function createDemonEventPreview() {
     returnFocus = null;
     if (target?.isConnected && !target.hidden) target.focus({ preventScroll: true });
   }
-  openButton.addEventListener("click", () => {
-    returnFocus = openButton;
+  const track = section.querySelector(".demon-event-track");
+  const position = section.querySelector(".demon-event-position");
+  let activeIndex = 0;
+  let carouselTimer = 0;
+  let carouselPaused = false;
+  let dragStart = null;
+  let suppressCardClick = false;
+  const goTo = index => {
+    activeIndex = (index + events.length) % events.length;
+    const card = openButtons[activeIndex];
+    card.scrollIntoView({ behavior: motionPreference?.matches ? "auto" : "smooth", block: "nearest", inline: "center" });
+    if (position) position.textContent = `${activeIndex + 1} / ${events.length}`;
+  };
+  const stopCarousel = () => { window.clearTimeout(carouselTimer); carouselTimer = 0; };
+  const scheduleCarousel = () => {
+    stopCarousel();
+    if (events.length < 2 || carouselPaused || section.hidden || document.hidden || dialog.open || motionPreference?.matches
+      || section.matches(":hover") || section.contains(document.activeElement)) return;
+    carouselTimer = window.setTimeout(() => { goTo(activeIndex + 1); scheduleCarousel(); }, 5000);
+  };
+  for (const button of openButtons) button.addEventListener("click", event => {
+    if (suppressCardClick) { event.preventDefault(); event.stopPropagation(); suppressCardClick = false; return; }
+    returnFocus = button;
+    stopCarousel();
     if (typeof dialog.showModal === "function") {
       dialog.showModal();
       dialog.querySelector(".demon-event-close")?.focus({ preventScroll: true });
     }
   });
+  section.querySelectorAll(".demon-event-step").forEach(button => button.addEventListener("click", () => { goTo(activeIndex + Number(button.dataset.step)); scheduleCarousel(); }));
+  track.addEventListener("pointerdown", event => { dragStart = { x: event.clientX, y: event.clientY }; carouselPaused = true; stopCarousel(); }, { passive: true });
+  track.addEventListener("pointerup", event => {
+    if (!dragStart) return;
+    const dx = event.clientX - dragStart.x;
+    const dy = event.clientY - dragStart.y;
+    dragStart = null;
+    if (Math.abs(dx) > 38 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+      suppressCardClick = true;
+      goTo(activeIndex + (dx < 0 ? 1 : -1));
+      window.setTimeout(() => { suppressCardClick = false; }, 0);
+    }
+    carouselPaused = false;
+    scheduleCarousel();
+  }, { passive: true });
+  track.addEventListener("pointercancel", () => { dragStart = null; carouselPaused = false; scheduleCarousel(); });
+  section.addEventListener("weightplay:activity-visibility", event => {
+    if (event.detail?.visible) scheduleCarousel();
+    else { stopCarousel(); carouselPaused = false; }
+  });
+  section.addEventListener("focusin", () => { carouselPaused = true; stopCarousel(); });
+  section.addEventListener("focusout", event => { if (!section.contains(event.relatedTarget)) { carouselPaused = false; scheduleCarousel(); } });
+  section.addEventListener("mouseenter", () => { carouselPaused = true; stopCarousel(); });
+  section.addEventListener("mouseleave", () => { carouselPaused = false; scheduleCarousel(); });
+  dialog.addEventListener("close", () => { carouselPaused = false; scheduleCarousel(); });
+  document.addEventListener("visibilitychange", scheduleCarousel);
+  motionPreference?.addEventListener?.("change", scheduleCarousel);
+  scheduleCarousel();
   dialog.addEventListener("keydown", event => {
     if (event.key !== "Tab") return;
     const focusable = [...dialog.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')]
@@ -458,7 +518,7 @@ function createDemonEventPreview() {
   
   dialog.addEventListener("close", restoreFocus);
   dialog.addEventListener("cancel", () => requestAnimationFrame(restoreFocus));
-  const countNode = section.querySelector("[data-owned-blocks]");
+  const countNode = dialog.querySelector("[data-owned-blocks]");
   const updateCount = () => {
     try {
       const count = window.WeightPlayCastle?.ownedBlocks?.();
@@ -469,7 +529,6 @@ function createDemonEventPreview() {
   window.addEventListener("weightplay:castle-updated", updateCount);
   updateCount();
   let inViewport = false;
-  const motionPreference = window.matchMedia?.("(prefers-reduced-motion: reduce)");
   let artSession = null;
   let artLoading = false;
   let artGeneration = 0;
@@ -504,23 +563,28 @@ function createDemonEventPreview() {
     visibilityObserver = new IntersectionObserver(entries => { inViewport = Boolean(entries[0]?.isIntersecting); updateMotion(); }, { threshold: 0.12 });
     visibilityObserver.observe(section.querySelector(".demon-event-art"));
   }
-  const hiddenObserver = new MutationObserver(updateMotion);
+  const hiddenObserver = new MutationObserver(() => { updateMotion(); scheduleCarousel(); });
   hiddenObserver.observe(section, { attributes: true, attributeFilter: ["hidden"] });
   document.addEventListener("visibilitychange", updateMotion);
   motionPreference?.addEventListener?.("change", updateMotion);
   const onPageHide = event => {
     releaseArt();
+    stopCarousel();
     if (event.persisted) return;
     artDisposed = true;
     visibilityObserver?.disconnect();
     hiddenObserver.disconnect();
     document.removeEventListener("visibilitychange", updateMotion);
+    document.removeEventListener("visibilitychange", scheduleCarousel);
     motionPreference?.removeEventListener?.("change", updateMotion);
-    window.removeEventListener("pageshow", updateMotion);
+    motionPreference?.removeEventListener?.("change", scheduleCarousel);
+    stopCarousel();
+    window.removeEventListener("pageshow", onPageShow);
     window.removeEventListener("pagehide", onPageHide);
   };
+  const onPageShow = () => { updateMotion(); scheduleCarousel(); };
   window.addEventListener("pagehide", onPageHide);
-  window.addEventListener("pageshow", updateMotion);
+  window.addEventListener("pageshow", onPageShow);
   return section;
 }
 
@@ -529,12 +593,13 @@ function syncDemonEventPreview() {
   const show = !isKidsLobby && activeHall === "games" && (activeTopic === "all" || activeTopic === "Block")
     && activeFilter === "all" && activeSkill === "all" && activeLibrary === "all"
     && activeAvailability === "all" && activeSearch === "" && activeExploreType === "all";
+  const wasHidden = demonEventPreview.hidden;
   demonEventPreview.hidden = !show;
-  const desktop = window.matchMedia("(min-width: 1120px)").matches;
-  const desktopRail = document.querySelector(".desktop-filter-rail");
-  const mobileAnchor = document.querySelector(".lobby-hero");
-  if (desktop && desktopRail && demonEventPreview.parentElement !== desktopRail) desktopRail.append(demonEventPreview);
-  else if (!desktop && mobileAnchor && demonEventPreview.previousElementSibling !== mobileAnchor) mobileAnchor.after(demonEventPreview);
+  if (wasHidden !== demonEventPreview.hidden) {
+    demonEventPreview.dispatchEvent(new CustomEvent("weightplay:activity-visibility", { detail: { visible: show } }));
+  }
+  const hero = document.querySelector(".lobby-hero");
+  if (hero && demonEventPreview.previousElementSibling !== hero) hero.after(demonEventPreview);
 }
 
 const exploreTypeRules = [
