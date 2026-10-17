@@ -65,7 +65,7 @@
   const firstRound = rounds[0];
   const state = {
     locale: "en", screen: "main", round: 0, positions: { ...firstRound.initial }, moves: 0,
-    completed: [], selected: "a", statusKey: "ready", statusStone: null, sound: true, drag: null,
+    completed: [], selected: "a", statusKey: "ready", statusStone: null, drag: null,
     resultActive: false
   };
   const bestKey = "weightplay-animal-magnet-meadow-best-v9";
@@ -121,6 +121,7 @@
 
   let stageController = null;
   let stageBrowseIndex = 0;
+  let frame = null;
   let battleDirty = false;
   let leaveOpen = false;
   let focusBeforeLeave = null;
@@ -162,42 +163,51 @@
     if (actions && resultStages && resultNext && resultReplay) actions.append(resultStages, resultNext, resultReplay);
   };
 
-  const bindStageCard = (card, index) => {
-    const round = rounds[index];
-    const done = state.completed.includes(index);
-    const unlocked = stageUnlocked(index);
-    card.type = "button";
-    card.className = "stage-card" + (done ? " complete" : "") + (round.checkpoint ? " checkpoint" : "");
-    card.dataset.stage = String(index);
-    card.dataset.wpStageRecommended = index === highestUnlocked() ? "true" : "false";
-    card.setAttribute("aria-disabled", String(!unlocked));
-    card.setAttribute("aria-label", `${copy("round", { number: index + 1, total: rounds.length })}: ${roundTitle(index)}`);
-    card.innerHTML = `<span class="stage-number">${copy("round", { number: index + 1, total: rounds.length })}</span><strong>${copy("arc", { number: round.arc })} · ${roundTitle(index)}</strong><span>${roundHint(index)}</span><b>${done ? copy("completed") : unlocked ? copy("readyStage") : "—"}</b>`;
-  };
-
   const ensureStageController = () => {
     const rail = $("stageList");
-    if (!rail || !window.WeightPlayStageV6?.install) return;
+    const page = $("stageWorkspace");
+    if (!rail || !page || !frame || !window.WeightPlayPlayUI?.mountStage) return null;
     rail.dir = "ltr";
     rail.setAttribute("aria-label", ui("stages"));
     if (!stageController) {
-      stageController = window.WeightPlayStageV6.install(rail, {
-        total: () => rounds.length,
-        poolSize: 9,
-        initialIndex: () => stageBrowseIndex,
-        bind: bindStageCard,
-        activate: (index) => { if (stageUnlocked(index)) startRound(index); },
-        onChange: (index) => { stageBrowseIndex = index; }
+      stageController = window.WeightPlayPlayUI.mountStage({
+        page,
+        rail,
+        config: window.MagnetMeadowStageConfig({
+          rounds,
+          unlocked: stageUnlocked,
+          completed: index => state.completed.includes(index),
+          copy,
+          roundTitle,
+          roundHint,
+          mechanicLabel,
+        }),
+        selected: stageBrowseIndex,
+        isActive: () => state.screen === "stage",
+        onSelect: index => { stageBrowseIndex = index; updateStageProgress(); },
+        onStart: startRound,
       });
-    } else {
-      stageController.refresh?.();
-      stageController.center?.(stageBrowseIndex);
     }
+    return stageController;
   };
 
   const renderStages = () => {
     if (document.body.dataset.screen !== "stage") return;
-    ensureStageController();
+    const controller = ensureStageController();
+    controller?.refresh(stageBrowseIndex);
+    updateStageProgress();
+  };
+
+  const updateStageProgress = () => {
+    const progress = $("sharedStageProgress");
+    if (progress) progress.textContent = copy("progress", { count: state.completed.length }).replaceAll("/3", "/" + rounds.length);
+  };
+
+  const updateBattleHud = () => {
+    const stage = $("sharedBattleStage");
+    const moves = $("sharedBattleMoves");
+    if (stage) stage.textContent = copy("round", { number: state.round + 1, total: rounds.length });
+    if (moves) moves.textContent = copy("move", { count: state.moves });
   };
 
   const setResultCoveredState = () => {
@@ -209,6 +219,7 @@
     if (header) header.inert = active || leaveOpen;
     if (panel) panel.inert = active || leaveOpen;
     if (result) result.inert = leaveOpen;
+    if (state.screen === "battle") frame?.activate("battle", { covered: active || leaveOpen });
   };
 
   const refreshResult = () => {
@@ -282,16 +293,17 @@
   const applyText = () => {
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = copy(node.dataset.copy); });
     document.querySelectorAll("[data-copy-aria-label]").forEach((node) => { node.setAttribute("aria-label", copy(node.dataset.copyAriaLabel)); });
-    if ($("soundBtn")) $("soundBtn").textContent = state.sound ? copy("soundOn") : copy("soundOff");
     if ($("mainProgress")) $("mainProgress").textContent = copy("progress", { count: state.completed.length }).replaceAll("/3", "/" + rounds.length);
     if (state.screen === "stage") renderStages();
     if (state.screen === "battle" && !state.resultActive) renderBattle();
     if (state.screen === "battle" && state.resultActive) refreshResult();
     refreshLeaveCopy();
+    frame?.refresh();
   };
 
   const setScreen = (screen) => {
     if (leaveOpen) closeLeave(false);
+    if (screen !== "stage") stageController?.cancel();
     state.screen = screen;
     document.body.dataset.screen = screen;
     ["main", "stage", "battle"].forEach((name) => {
@@ -302,6 +314,7 @@
     });
     const guide = $("guideScreen");
     if (guide) guide.hidden = screen !== "main";
+    frame?.activate(screen, { covered: screen === "battle" && state.resultActive });
     if (screen === "main") applyText();
     if (screen === "stage") renderStages();
     if (screen === "battle" && !state.resultActive) renderBattle();
@@ -312,8 +325,6 @@
     state.resultActive = false;
     stageBrowseIndex = highestUnlocked();
     setScreen("stage");
-    stageController?.refresh?.();
-    stageController?.center?.(stageBrowseIndex);
   };
 
   const slotLabel = (index) => copy("slot", { number: index + 1 });
@@ -407,6 +418,7 @@
 
   function renderBattle() {
     if (state.resultActive) return;
+    updateBattleHud();
     const round = currentRound();
     const hintKey = "stageHint" + (state.round + 1);
     const localizedHint = copy(hintKey);
@@ -508,11 +520,6 @@
       startRound(state.round + 1);
     });
     $("resultHomeBtn")?.addEventListener("click", () => startRound(state.round));
-    $("soundBtn")?.addEventListener("click", () => {
-      state.sound = !state.sound;
-      safeSet("weightplay-animal-magnet-meadow-sound", state.sound ? "on" : "off");
-      applyText();
-    });
     $("languageSelect")?.addEventListener("change", (event) => applyLocale(event.target.value));
     document.addEventListener("keydown", (event) => {
       if (!leaveOpen || !leaveLayer) return;
@@ -532,51 +539,19 @@
     }, true);
   };
 
-  const ensureStageAssets = () => {
-    const cssHref = "/src/stage-selector-standard.css?v=20260924-interface7";
-    if (![...document.styleSheets].some((sheet) => sheet.href?.includes("stage-selector-standard.css"))) {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = cssHref;
-      link.dataset.wpStageStandard = "7";
-      document.head.append(link);
-    }
-    if (window.WeightPlayStageV6?.install) return Promise.resolve();
-    return new Promise((resolve, reject) => {
-      const existing = document.querySelector('script[src*="stage-virtualization-standard.js"]');
-      if (existing) {
-        existing.addEventListener("load", resolve, { once: true });
-        existing.addEventListener("error", reject, { once: true });
-        return;
-      }
-      const script = document.createElement("script");
-      script.src = "/src/stage-virtualization-standard.js?v=20260924-interface7";
-      script.dataset.wpStageStandard = "7";
-      script.addEventListener("load", resolve, { once: true });
-      script.addEventListener("error", reject, { once: true });
-      document.body.append(script);
-    });
-  };
-
   const init = () => {
     normalizeLegacyChrome();
     createLeaveDialog();
     bind();
+    frame = window.mountMagnetMeadowFrame();
     const routeLocale = document.documentElement.lang;
     const savedLocale = localeList.includes(routeLocale) && localeMap[routeLocale]
       ? routeLocale
       : safeGet("weightplay-locale", "en");
-    state.sound = safeGet("weightplay-animal-magnet-meadow-sound", "on") !== "off";
     applyLocale(savedLocale);
     resetRound();
     setScreen("main");
   };
 
-  ensureStageAssets().then(init).catch(() => {
-    // Keep the game reachable if a shared asset is unavailable, but never
-    // construct the old 30-node Stage list. A reload can recover the asset.
-    normalizeLegacyChrome();
-    const start = $("startBtn");
-    if (start) start.disabled = true;
-  });
+  init();
 }());

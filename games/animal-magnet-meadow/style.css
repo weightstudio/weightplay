@@ -20,9 +20,8 @@ h1,h2,p { margin-top:0; }
 [hidden] { display:none!important; }
 .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 
-/* Interface 7 owns Main/Stage/Battle frame, navigation, header, settings,
-   Canvas sizing, Stage rail geometry and lower-boundary tracks. This file
-   styles only Magnet Meadow content inside those declared slots. */
+/* Interface 9 owns the Main/Stage/Battle frame, settings, Canvas geometry,
+   Stage cards, gestures and lower action row. This file styles game content. */
 #mainScreen .hero-card {
   display:grid;
   grid-template-columns:minmax(300px,420px) minmax(0,1fr);
@@ -49,19 +48,9 @@ h1,h2,p { margin-top:0; }
 #mainScreen .hero-actions { display:grid; gap:12px; margin-top:12px; }
 #mainScreen #startBtn { width:100%; }
 
-/* Old authored duplicate routes/chrome remain in markup only so historical
-   bindings and localized route generation stay stable; they are not UI. */
+/* The Main title is already shown in the shared frame header. */
 #mainScreen .hero-copy > h1,
-#mainScreen #mapBtn,
-#stageScreen .panel-head > h2,
-#stageScreen > .stage-canvas > .panel-intro,
-#battleScreen #battleHeading,
-#battleScreen #battleSoundBtn { display:none!important; }
-
-.game-page-info { margin-top:16px; margin-bottom:52px; }
-.guide-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
-.guide article { padding:16px; border-radius:14px; background:rgba(255,255,255,.045); }
-.guide article p { margin:8px 0 0; color:var(--muted); line-height:1.55; }
+#mainScreen #mapBtn { display:none!important; }
 
 /* Stage cards keep game-specific copy/state appearance. The shared Stage
    selector owns card dimensions, rail spacing, centering, drag and snap. */
@@ -70,12 +59,11 @@ h1,h2,p { margin-top:0; }
 #stageScreen .stage-card span:not(.stage-number) { color:var(--muted); }
 #stageScreen .stage-card b { color:var(--gold); font-size:.8rem; }
 #stageScreen .stage-number { color:var(--teal); font-weight:800; }
-#stageScreen .stage-card.complete { --wp-ui-accent:#6ee7d0; }
+#stageScreen .stage-card.is-cleared { --wp-ui-accent:#6ee7d0; }
 #stageScreen .stage-card[aria-disabled="true"] { opacity:.58; cursor:not-allowed; }
 
-/* Production art is game-owned presentation; shared frame still owns the
-   Canvas envelope and every shared control around it. */
-#stageScreen .stage-canvas,
+/* Battle keeps its authored meadow art inside the common screen frame.
+   Stage uses the shared Play UI background and per-stage poster records. */
 #battleScreen .battle-canvas {
   background-image:
     linear-gradient(rgba(8,22,37,.58),rgba(8,22,37,.76)),
