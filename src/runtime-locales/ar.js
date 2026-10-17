@@ -1,5 +1,6 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ar"] = {
+  "The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. Start Game opens Battle directly from Main. The 3×3 board, dialogs, and Result each keep their own bounded content and return path.": "تستخدم الواجهة الكاملة تخطيطًا منطقيًا واحدًا في المنتصف بحد أقصى يبلغ 920 بكسلًا. تعمل عروض الهاتف والوضع الأفقي وسطح المكتب على تغيير حجم عناصر التحكم ومناطق النقر والرسومات وإحداثيات اللعبة نفسها معًا بدلًا من تمديد العناصر منفردة. لذلك تعمل اللمسة والماوس ولوحة المفاتيح على الحالة القانونية نفسها. عند البدء من Main، تفتح Battle مباشرة. تحافظ لوحة 3×3 والنوافذ الحوارية وResult كلٌ على محتواها المحدود ومسار العودة الخاص بها.",
   "-{value}% DMG / {value} · {value}": "-{value}% ضرر / {value} · {value}",
   "— Sort It 3D and Color Lunchbox both ask players to recognize colors and sort items into matching color groups.": "— Sort It 3D and Color Lunchbox both ask players to recognize colors and sort items into matching color groups.",
   "· defeat the Boss": "· هزيمة بوس",

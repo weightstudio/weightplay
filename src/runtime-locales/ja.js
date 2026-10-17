@@ -1,5 +1,6 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ja"] = {
+  "The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. Start Game opens Battle directly from Main. The 3×3 board, dialogs, and Result each keep their own bounded content and return path.": "完全なインターフェースは、最大幅 920 ピクセルの中央揃えされた一つの論理レイアウトを使用します。スマートフォン、横画面、デスクトップでは、個々の要素を引き伸ばすのではなく、同じ操作部、当たり判定、アート、ゲーム座標をまとめて拡大縮小します。そのためタッチ、マウス、キーボードは同じ合法な状態を操作します。Mainから開始するとBattleへ直接進みます。3×3盤面、ダイアログ、Resultはそれぞれ独自の範囲内コンテンツと戻り道を保ちます。",
   "-{value}% DMG / {value} · {value}": "-{value}% ダメージ / {value} · {value}",
   "— Sort It 3D and Color Lunchbox both ask players to recognize colors and sort items into matching color groups.": "— Sort It 3D と Color Lunchbox は両方とも、プレイヤーに色を認識し、アイテムを一致する色のグループに分類するように求めます。",
   "· defeat the Boss": "・ボスを倒す",

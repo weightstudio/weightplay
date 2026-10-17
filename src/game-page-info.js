@@ -10740,9 +10740,11 @@
     if (!segment) return Promise.resolve();
     const promise = new Promise((resolve) => {
       const script = document.createElement("script");
-      const runtimeLocaleVersion = currentGameId() === "animal-gearpack-expedition"
-        ? "20261003-gearpack-text140-v5"
-        : "20260930-zoo-star-memory-runtime-guide-v4";
+      const runtimeLocaleVersion = currentGameId() === "tic-tac-toe"
+        ? "20261017-ttt-guide-copy-v38"
+        : currentGameId() === "animal-gearpack-expedition"
+          ? "20261003-gearpack-text140-v5"
+          : "20260930-zoo-star-memory-runtime-guide-v4";
       script.src = new URL(`runtime-locales/${segment}.js?v=${runtimeLocaleVersion}`, sharedAssetBase).href;
       script.dataset.wpGamePageInfoRuntimeLocale = activeLocale;
       script.onload = resolve;
@@ -22069,7 +22071,9 @@
   const completeGuideStandard = (id) => {
     const game = games[id];
     if (!game) return;
-    const responsiveNote = "The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.";
+    const responsiveNote = id === "tic-tac-toe"
+      ? "The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. Start Game opens Battle directly from Main. The 3×3 board, dialogs, and Result each keep their own bounded content and return path."
+      : "The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.";
     const saveNote = "You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.";
     const sharedFaq = [
       ["Which controls and screen sizes are supported?", "The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports."],

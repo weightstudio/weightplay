@@ -1,5 +1,6 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ko"] = {
+  "The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. Start Game opens Battle directly from Main. The 3×3 board, dialogs, and Result each keep their own bounded content and return path.": "전체 인터페이스는 최대 920픽셀의 중앙 정렬 단일 논리 레이아웃을 사용합니다. 휴대폰, 가로 화면, 데스크톱에서는 개별 요소를 늘이지 않고 동일한 컨트롤, 적중 영역, 아트와 게임 좌표를 함께 확대·축소합니다. 따라서 터치, 마우스, 키보드는 같은 합법 상태를 조작합니다. Main에서 시작하면 Battle로 바로 이동합니다. 3×3 보드, 대화상자, Result는 각각 자체적으로 제한된 콘텐츠와 돌아갈 경로를 유지합니다.",
   "-{value}% DMG / {value} · {value}": "-{value}% 데미지 / {value} · {value}",
   "— Sort It 3D and Color Lunchbox both ask players to recognize colors and sort items into matching color groups.": "— Sort It 3D와 Color Lunchbox는 모두 플레이어에게 색상을 인식하고 항목을 일치하는 색상 그룹으로 정렬하도록 요청합니다.",
   "· defeat the Boss": "· 보스를 물리치세요",

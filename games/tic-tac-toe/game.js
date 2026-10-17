@@ -3,8 +3,8 @@ window.WPPopularArcade?.mount("tic-tac-toe");
 (() => {
   "use strict";
 
-  document.body.dataset.gameVersion = "v37";
-  document.body.dataset.wpGameVersion = "v37";
+  document.body.dataset.gameVersion = "v38";
+  document.body.dataset.wpGameVersion = "v38";
   document.body.dataset.wpInterfaceVersion = "9";
 
   const labels = {
