@@ -3,8 +3,8 @@ window.WPPopularArcade?.mount("tic-tac-toe");
 (() => {
   "use strict";
 
-  document.body.dataset.gameVersion = "v38";
-  document.body.dataset.wpGameVersion = "v38";
+  document.body.dataset.gameVersion = "v39";
+  document.body.dataset.wpGameVersion = "v39";
   document.body.dataset.wpInterfaceVersion = "9";
 
   const labels = {
@@ -58,6 +58,111 @@ window.WPPopularArcade?.mount("tic-tac-toe");
     hi: "X रखें, O की चाल पढ़ें और तीन को एक पंक्ति में जोड़ें।",
     ar: "ضع X، اقرأ رد O واجمع ثلاث علامات في صف واحد.",
   };
+
+  const hintFeedback = {
+    en: { live: "Try the highlighted empty square. No mark was placed.", suggested: "suggested move" },
+    "zh-Hant": { live: "試試看亮起的空格；這次提示沒有放下棋子。", suggested: "建議落子" },
+    "zh-Hans": { live: "试试亮起的空格；这次提示没有放下棋子。", suggested: "建议落子" },
+    ja: { live: "光っている空きマスを試してください。マークは置いていません。", suggested: "おすすめの手" },
+    ko: { live: "강조된 빈 칸에 놓아 보세요. 이번 힌트로 표시는 놓이지 않았습니다.", suggested: "추천 수" },
+    es: { live: "Prueba la casilla vacía resaltada. No se colocó ninguna marca.", suggested: "jugada sugerida" },
+    "pt-BR": { live: "Tente a casa vazia destacada. Nenhuma marca foi colocada.", suggested: "jogada sugerida" },
+    fr: { live: "Essayez la case vide mise en évidence. Aucun symbole n’a été placé.", suggested: "coup suggéré" },
+    de: { live: "Probiere das hervorgehobene freie Feld aus. Es wurde kein Zeichen gesetzt.", suggested: "empfohlener Zug" },
+    it: { live: "Prova la casella vuota evidenziata. Non è stato posizionato alcun simbolo.", suggested: "mossa suggerita" },
+    ru: { live: "Попробуйте выделенную пустую клетку. Знак не был поставлен.", suggested: "рекомендуемый ход" },
+    hi: { live: "उभरे हुए खाली खाने में चाल चलें। संकेत से कोई निशान नहीं लगाया गया।", suggested: "सुझाई गई चाल" },
+    ar: { live: "جرّب المربع الفارغ المميز. لم توضع أي علامة.", suggested: "الحركة المقترحة" },
+  };
+
+  const board = document.querySelector("#board");
+  const gameMessage = document.querySelector("#gameMessage");
+  const winningLines = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6],
+  ];
+  const hintPriority = [4, 0, 2, 6, 8, 1, 3, 5, 7];
+  let hintTarget = null;
+
+  const clearHint = () => {
+    hintTarget = null;
+    board?.querySelectorAll(".tic-cell[data-hint-target='true']").forEach((cell) => {
+      cell.classList.remove("hint-target");
+      delete cell.dataset.hintTarget;
+      if (cell.dataset.hintBaseLabel !== undefined) {
+        if (cell.dataset.hintBaseLabel) cell.setAttribute("aria-label", cell.dataset.hintBaseLabel);
+        delete cell.dataset.hintBaseLabel;
+      }
+    });
+  };
+
+  const applyHint = () => {
+    if (document.body.dataset.screen !== "battle" || hintTarget === null) return false;
+    const cell = board?.querySelector(`.tic-cell[data-value="${hintTarget}"]`);
+    if (!cell || cell.disabled || cell.textContent.trim()) {
+      clearHint();
+      return false;
+    }
+    if (cell.dataset.hintTarget !== "true") {
+      const locale = document.documentElement.lang || "en";
+      const copy = hintFeedback[locale] || hintFeedback.en;
+      const label = cell.getAttribute("aria-label") || "";
+      cell.dataset.hintBaseLabel = label;
+      cell.setAttribute("aria-label", `${label}, ${copy.suggested}`);
+      cell.dataset.hintTarget = "true";
+      cell.classList.add("hint-target");
+    }
+    return true;
+  };
+
+  const chooseHintTarget = () => {
+    const cells = [...(board?.querySelectorAll(".tic-cell") || [])];
+    const marks = cells.map((cell) => cell.textContent.trim());
+    if (marks.length !== 9) return null;
+    const tacticalCell = (mark) => {
+      for (const line of winningLines) {
+        const occupied = line.filter((index) => marks[index] === mark).length;
+        const empty = line.filter((index) => marks[index] === "");
+        if (occupied === 2 && empty.length === 1) return empty[0];
+      }
+      return null;
+    };
+    const legal = (index) => marks[index] === "" && !cells[index]?.disabled;
+    const winning = tacticalCell("X");
+    if (winning !== null && legal(winning)) return winning;
+    const blocking = tacticalCell("O");
+    if (blocking !== null && legal(blocking)) return blocking;
+    return hintPriority.find(legal) ?? null;
+  };
+
+  const showHint = (event) => {
+    const node = event.target?.closest?.("#hintBtn, [data-action='hint']");
+    if (!node || document.body.dataset.screen !== "battle") return;
+    const target = chooseHintTarget();
+    clearHint();
+    if (target === null) return;
+    hintTarget = target;
+    applyHint();
+    const locale = document.documentElement.lang || "en";
+    gameMessage.textContent = (hintFeedback[locale] || hintFeedback.en).live;
+    gameMessage.dataset.tone = "warn";
+    gameMessage.dataset.messageKey = "ticHintTarget";
+  };
+
+  board?.addEventListener("click", (event) => {
+    if (event.target?.closest?.(".tic-cell[data-action='cell']")) clearHint();
+  }, true);
+  document.addEventListener("click", showHint);
+  document.addEventListener("click", (event) => {
+    if (event.target?.closest?.("#restartBtn, #retryBtn, #homeBtn, .tic-battle-return, .tic-main-return")) clearHint();
+  }, true);
+  const hintBoardObserver = new MutationObserver(applyHint);
+  if (board) hintBoardObserver.observe(board, { childList: true });
+  const hintScreenObserver = new MutationObserver(() => {
+    if (document.body.dataset.screen !== "battle") clearHint();
+  });
+  hintScreenObserver.observe(document.body, { attributes: true, attributeFilter: ["data-screen"] });
 
   const compactGuide = (section) => {
     if (!section) return;

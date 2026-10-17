@@ -53,7 +53,6 @@ export function mountMinefield() {
   const main = el('main'), stageScreen = el('section'), battle = el('section');
   main.id = 'logicMain'; main.dataset.screen = 'main';
   stageScreen.id = 'logicStages'; stageScreen.dataset.screen = 'stage'; stageScreen.hidden = true;
-  stageScreen.dataset.wpStandardStageScreen = '';
   battle.id = 'logicBattle'; battle.dataset.screen = 'battle'; battle.hidden = true;
   battle.setAttribute('aria-label', title);
   // The shared frame owns the Battle viewport. Only the board itself scrolls.
@@ -79,7 +78,7 @@ export function mountMinefield() {
   const stageContent = el('div', 'mf-stage-content');
   const stageProgress = el('p', 'mf-stage-progress'); stageProgress.setAttribute('role', 'status'); stageProgress.setAttribute('aria-live', 'polite');
   const stageIntro = el('p', 'mf-stage-intro', copy.campaign.mapIntro);
-  const stageList = el('div', 'stage-grid stage-rail'); stageList.id = 'minefieldStageRail';
+  const stageList = el('div'); stageList.id = 'minefieldStageRail';
   stageList.setAttribute('role', 'region'); stageList.setAttribute('aria-label', copy.campaign.mapTitle);
   stageContent.append(stageIntro, stageList); stageScreen.append(stageHeader, stageContent);
   const stageNav = el('nav');
@@ -93,7 +92,8 @@ export function mountMinefield() {
   const modeLabel = el('span', '', copy.campaign.mode), modeValue = el('strong', '', copy.campaign.quickButton);
   modeStat.append(modeLabel, modeValue); hudGroup.add(modeStat);
   for (const key of ['time', 'mines', 'safe']) {
-    const group = el('div', 'mf-hud-stat'), label = el('span', '', copy[key]), value = el('strong', '', '0');
+    const compactLabel = ['mines', 'safe'].includes(key) ? copy[key].split(/\s+/u)[0] : copy[key];
+    const group = el('div', 'mf-hud-stat'), label = el('span', '', compactLabel), value = el('strong', '', '0');
     value.dir = 'ltr'; group.append(label, value); hudGroup.add(group); values[key] = value;
   }
   hud.append(hudGroup.element);
@@ -229,9 +229,11 @@ export function mountMinefield() {
     level.value = difficulty; level.hidden = Boolean(authoredStage);
     toolbar.classList.toggle('is-stage', Boolean(authoredStage));
     viewport.classList.toggle('is-stage', Boolean(authoredStage));
-    modeValue.textContent = authoredStage
+    modeLabel.textContent = authoredStage ? copy.campaign.stagesTab : copy.campaign.mode;
+    modeValue.textContent = authoredStage ? `${authoredStage.id}/30` : copy[difficulty];
+    modeStat.setAttribute('aria-label', authoredStage
       ? applyTemplate(copy.campaign.shortBattle, { n: authoredStage.id })
-      : copy[difficulty];
+      : `${copy.campaign.mode}: ${copy[difficulty]}`);
     back.setAttribute('aria-label', authoredStage ? copy.campaign.returnStages : copy.leave);
     play.classList.toggle('is-stage', Boolean(authoredStage));
     Object.assign(measurement, { roundKey: {}, started: false, ended: false, restart, outcome: 'complete', resumed: false, reopenKey: null });

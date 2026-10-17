@@ -20,8 +20,8 @@
 
   const $ = (id) => document.getElementById(id);
   const GAME_ID = "animal-penalty-cup";
-  const GAME_VERSION = 9;
-  const INTERFACE_VERSION = 6;
+  const GAME_VERSION = 10;
+  const INTERFACE_VERSION = 9;
   const LOCALES = ["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const LOCALE_LABELS = {en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"};
   const ROUTE_LOCALE_BY_SEGMENT = {en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
@@ -63,6 +63,8 @@
   const routeLocale = ROUTE_LOCALE_BY_SEGMENT[routeSegment];
   let lang = normalizeLocale(routeLocale || safeStorage.get(LOCALE_KEY,"en"));
   let selectedStage = Math.max(0,save.unlocked-1);
+  let stageSelector = null;
+  let screenFrame = null;
   let match = null;
   let raf = 0;
   let lastFrame = 0;
@@ -90,8 +92,8 @@
   function updateSoundButtons(){const label=t(soundEnabled?"soundOn":"soundOff");["pauseSoundBtn"].forEach(id=>{const node=$(id);if(!node)return;node.textContent=label;node.setAttribute("aria-pressed",String(soundEnabled))})}
 
   function setScreen(screen){
-    $("mainGroup").hidden=screen!=="main";$("stageScreen").hidden=screen!=="stage";$("battleScreen").hidden=screen!=="battle";$("generalReserve").hidden=screen==="main";
-    document.body.dataset.screen=screen;document.body.classList.toggle("wp-active-play",screen!=="main");document.body.classList.toggle("wp-logical-stage-active",screen==="stage");document.body.classList.toggle("wp-logical-battle-active",screen==="battle");
+    $("mainGroup").hidden=screen!=="main";$("stageScreen").hidden=screen!=="stage";$("battleScreen").hidden=screen!=="battle";
+    document.body.dataset.screen=screen;
     if(screen!=="battle")closeAllBattleModals(false);window.dispatchEvent(new Event("weightplay:shell-sync"));window.dispatchEvent(new Event("weightplay:stage-sync"));window.dispatchEvent(new Event("weightplay:battle-sync"));
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
@@ -104,12 +106,11 @@
   window.__animalPenaltyCupNavigateMain=()=>showMain(true);
   window.__animalPenaltyCupNavigateBattle=()=>requestLeave();
   function renderMain(){const done=save.completed.filter(Boolean).length,stars=save.stars.reduce((sum,n)=>sum+n,0);$("mainProgress").textContent=t("progress",{done,stars})}
+  function updateStageProgress(index=selectedStage){const stat=$("stageProgressStat");if(!stat)return;stat.textContent=`${index+1}/30`;stat.setAttribute("aria-label",t("match",{n:index+1}))}
+  function selectStage(index){if(Number.isInteger(index)&&index>=0&&index<LEVELS.length){selectedStage=index;updateStageProgress(index)}}
   function renderStage(){
-    const level=LEVELS[selectedStage],rail=$("stageRail"),done=save.completed.filter(Boolean).length;
-    $("chapterKicker").textContent=t("chapter",{n:level.chapter+1});$("chapterTitle").textContent=localizedCampaign("chapterNames",level.chapter);$("chapterRule").textContent=localizedCampaign("chapterRules",level.chapter);rail.innerHTML="";rail.dataset.wpStageRecommendation="explicit";
-    LEVELS.forEach((item,index)=>{const locked=index>=save.unlocked,selected=index===selectedStage,card=document.createElement("button"),name=opponentName(index);card.type="button";card.className=`stage-card${locked?" locked":""}${selected?" selected is-centered":""}`;card.dataset.stage=String(index);card.dataset.stageIndex=String(index);card.dataset.wpStageRecommended=selected&&!locked?"true":"false";card.setAttribute("aria-disabled",String(locked));card.setAttribute("aria-posinset",String(index+1));card.setAttribute("aria-setsize","30");if(selected)card.setAttribute("aria-current","true");const state=locked?t("locked"):save.completed[index]?t("cleared"):t("opponent",{name});const stars=locked?"":"★".repeat(save.stars[index])+"☆".repeat(3-save.stars[index]);card.innerHTML=`<small>${t("chapter",{n:item.chapter+1})}</small><strong>${t("match",{n:index+1})}</strong><span>${state}</span><span>${name}</span><b class="stars">${stars}</b>`;card.addEventListener("click",event=>{noteInput(event);if(rail.dataset.dragging==="true"||locked)return;selectedStage=index;startMatch(index,"stage")});card.addEventListener("keydown",rejectRepeat);rail.append(card)});
-    if(save.tutorialSeen)rail.querySelectorAll(".stage-card[aria-disabled=\"false\"]").forEach(card=>{card.dataset.wpEnterBattle=""});
-    rail.setAttribute("aria-label",t("stageRailLabel"));$("stageScreen").dataset.completed=String(done);requestAnimationFrame(()=>rail.querySelector(`[data-stage="${selectedStage}"]`)?.scrollIntoView({behavior:"auto",block:"nearest",inline:"center"}));
+    const rail=$("stageRail"),done=save.completed.filter(Boolean).length;
+    stageSelector?.refresh(selectedStage);updateStageProgress();rail.setAttribute("aria-label",t("stageRailLabel"));$("stageScreen").dataset.completed=String(done);
   }
 
   function seeded(...values){let x=values.reduce((sum,n,i)=>sum+((Number(n)||0)+17)*(i+11)*2654435761,2166136261)>>>0;x^=x<<13;x^=x>>>17;x^=x<<5;return(x>>>0)/4294967295}
@@ -184,7 +185,7 @@
 
   function setTutorialCover(covered){document.querySelectorAll("#stageScreen button,#battleScreen button").forEach(button=>{if(covered){if(!button.disabled)button.dataset.tutorialReenable="true";button.disabled=true}else if(button.dataset.tutorialReenable==="true"){button.disabled=false;delete button.dataset.tutorialReenable}})}
   function openTutorial(startsMatch){$("tutorialPanel").dataset.startsMatch=String(Boolean(startsMatch));$("tutorialStartBtn").textContent=t(startsMatch?"tutorialStart":"close");(__wpNotifyMeasurement(), $("tutorialPanel").hidden=false);$("tutorialPanel").inert=false;setTutorialCover(true);if(!$("stageScreen").hidden)$("stageScreen").inert=true;if(!$("battleScreen").hidden){$("battleScreen").inert=true;setPaused(true)}requestAnimationFrame(()=>$("tutorialStartBtn").focus({preventScroll:true}))}
-  function closeTutorial(start){const starts=$("tutorialPanel").dataset.startsMatch==="true";(__wpNotifyMeasurement(), $("tutorialPanel").hidden=true);$("tutorialPanel").inert=true;setTutorialCover(false);$("stageScreen").inert=false;$("battleScreen").inert=false;save.tutorialSeen=true;persist();if(start&&starts)startMatch(0,"tutorial");else{renderStage();setPaused(false);($("stageScreen").hidden?$("helpBtn"):$("stageSettingsBtn"))?.focus({preventScroll:true})}}
+  function closeTutorial(start){const starts=$("tutorialPanel").dataset.startsMatch==="true";(__wpNotifyMeasurement(), $("tutorialPanel").hidden=true);$("tutorialPanel").inert=true;setTutorialCover(false);$("stageScreen").inert=false;$("battleScreen").inert=false;save.tutorialSeen=true;persist();if(start&&starts)startMatch(0,"tutorial");else{renderStage();setPaused(false);($("stageScreen").hidden?$("helpBtn"):$("stageBackBtn"))?.focus({preventScroll:true})}}
   function toggleSettings(name,open){const panel=$(`${name}Settings`),button=$(`${name}SettingsBtn`);panel.hidden=!open;panel.inert=!open;button.setAttribute("aria-expanded",String(open));if(open)requestAnimationFrame(()=>panel.querySelector("button,select")?.focus({preventScroll:true}));else button.focus({preventScroll:true})}
   function applyLocale(){
     document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";document.title=`${t("title")} | WeightPlay`;$("localeSelect").value=lang;
@@ -204,10 +205,9 @@
   $("resultStagesBtn").addEventListener("click",()=>{if(resultClaimed)return;resultClaimed=true;track("result_stages");closeModal("resultPanel",false);showStage(true)});$("nextBtn").addEventListener("click",()=>{if(resultClaimed||$("nextBtn").disabled)return;resultClaimed=true;track("result_next");closeModal("resultPanel",false);startMatch(Math.min(29,match.stage+1),"next")});$("replayBtn").addEventListener("click",()=>{if(resultClaimed)return;resultClaimed=true;track("result_replay");closeModal("resultPanel",false);__wpReplayStart(() => startMatch(match.stage,"replay"))});
   $("tutorialCloseBtn").addEventListener("click",()=>closeTutorial(false));$("tutorialStartBtn").addEventListener("click",()=>closeTutorial(true));
   ["leavePanel","restartPanel","pausePanel","resultPanel","tutorialPanel"].forEach(id=>$(id).addEventListener("keydown",event=>focusTrap($(id),event)));
-  $("stageRail").addEventListener("wonder:stage-snap",event=>{const index=Number(event.detail?.index);if(!Number.isInteger(index)||!LEVELS[index])return;selectedStage=index;const level=LEVELS[index];$("stageRail").querySelectorAll(".stage-card").forEach(card=>{const active=Number(card.dataset.stage)===index;card.classList.toggle("selected",active);card.classList.toggle("is-centered",active);if(active)card.setAttribute("aria-current","true");else card.removeAttribute("aria-current");card.dataset.wpStageRecommended=active&&index<save.unlocked?"true":"false"});$("chapterKicker").textContent=t("chapter",{n:level.chapter+1});$("chapterTitle").textContent=localizedCampaign("chapterNames",level.chapter);$("chapterRule").textContent=localizedCampaign("chapterRules",level.chapter)});
   document.addEventListener("keydown",event=>{if(document.body.dataset.screen==="stage"&&event.key==="Escape"){event.preventDefault();showMain(true);return}if(document.body.dataset.screen!=="battle"||modalOwner||$("tutorialPanel").hidden===false)return;if(event.key.toLowerCase()==="r"){event.preventDefault();requestRestart()}if(event.key==="Escape"){event.preventDefault();requestLeave()}});
   document.addEventListener("visibilitychange",()=>{if(document.hidden)setPaused(true);else if(!modalOwner&&$("tutorialPanel").hidden)setPaused(false)});window.addEventListener("blur",()=>{windowFocused=false;setPaused(true)});window.addEventListener("focus",()=>{windowFocused=true;if(!modalOwner&&$("tutorialPanel").hidden)setPaused(false)});window.addEventListener("pagehide",()=>setPaused(true));
 
-  window.__animalPenaltyCupTest={LEVELS,getState:()=>({lang,selectedStage,save:JSON.parse(JSON.stringify(save)),match:match?{stage:match.stage,phase:match.phase,round:match.round,player:match.player,rival:match.rival,power:match.power,saves:match.saves,perfectShots:match.perfectShots,ended:match.ended,result:match.result}:null,paused,modal:modalOwner?.id||null}),startMatch,commitShot,resolveDefence,finishMatch,showStage,resetSave(){save=defaultSave();persist();showMain()}};
-  setupLocale();applyLocale();updateSoundButtons();const assets=["assets/animal-penalty-cup-cover-v1.webp","assets/animal-penalty-cup-stadium-v1.webp","assets/animal-penalty-cup-fox-v1.webp","assets/animal-penalty-cup-keeper-v1.webp"];let loaded=0;Promise.allSettled(assets.map(src=>new Promise(resolve=>{const image=new Image(),done=()=>{loaded++;$("loadingBar").style.width=`${loaded/assets.length*100}%`;resolve()};image.onload=done;image.onerror=done;image.src=src}))).then(()=>setTimeout(()=>{$("loadingPanel").hidden=true;showMain();track("game_view")},140));
+  window.__animalPenaltyCupTest={LEVELS,getState:()=>({lang,selectedStage,save:JSON.parse(JSON.stringify(save)),match:match?{stage:match.stage,phase:match.phase,round:match.round,player:match.player,rival:match.rival,power:match.power,saves:match.saves,perfectShots:match.perfectShots,ended:match.ended,result:match.result}:null,paused,modal:modalOwner?.id||null}),startMatch,commitShot,resolveDefence,finishMatch,showStage,selectStage,resetSave(){save=defaultSave();persist();showMain()}};
+  setupLocale();screenFrame=window.mountAnimalPenaltyCupFrame?.()||null;stageSelector=screenFrame?.stageSelector||null;applyLocale();updateSoundButtons();const assets=["assets/animal-penalty-cup-cover-v1.webp","assets/animal-penalty-cup-stadium-v1.webp","assets/animal-penalty-cup-fox-v1.webp","assets/animal-penalty-cup-keeper-v1.webp"];let loaded=0;Promise.allSettled(assets.map(src=>new Promise(resolve=>{const image=new Image(),done=()=>{loaded++;$("loadingBar").style.width=`${loaded/assets.length*100}%`;resolve()};image.onload=done;image.onerror=done;image.src=src}))).then(()=>setTimeout(()=>{$("loadingPanel").hidden=true;showMain();track("game_view")},140));
 })();

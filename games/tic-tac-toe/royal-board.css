@@ -17,6 +17,9 @@ html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .tic-cell {
 }
 html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .tic-cell:not(:disabled):hover {background:radial-gradient(ellipse,#356658,#14352d);}
 html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .tic-cell:focus-visible {outline:3px solid #fff0ac;outline-offset:-5px;}
+html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .tic-cell[data-hint-target='true'] {background:radial-gradient(ellipse at 50% 45%,#40634b,#14352d 70%);box-shadow:inset 0 0 20px #f5d47b66,0 0 0 2px #071c18;}
+html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .tic-cell[data-hint-target='true']::before {content:'';position:absolute;inset:15%;border:3px solid #ffe5a0;border-radius:50%;background:radial-gradient(circle,#ffe5a028,transparent 70%);box-shadow:0 0 12px #ffe5a077;pointer-events:none;animation:tic-hint-arrival 420ms ease-out both;}
+@keyframes tic-hint-arrival {from{opacity:.15;transform:scale(.65);}to{opacity:1;transform:scale(1);}}
 body.tic-royal-board .tic-cell[data-piece='X']::before,
 body.tic-royal-board .tic-cell[data-piece='X']::after {
  content:'';position:absolute;left:43%;top:16%;width:14%;height:68%;border-radius:4px;
@@ -38,4 +41,4 @@ body.tic-royal-board #resultScreen .arcade-panel {background:radial-gradient(ell
  html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .tic-battle-settings {grid-column:2;grid-row:1;}
  html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .battle-top .control-row {grid-column:1/-1;grid-row:2;width:100%;min-width:0;}
 }
-@media(prefers-reduced-motion:reduce){body.tic-royal-board .tic-cell::before,body.tic-royal-board .tic-cell::after {animation:none!important;transition:none!important;}}
+@media(prefers-reduced-motion:reduce){body.tic-royal-board .tic-cell::before,body.tic-royal-board .tic-cell::after {animation:none!important;transition:none!important;}html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .tic-cell[data-hint-target='true'] {outline:3px solid #ffe5a0;outline-offset:-5px;background:radial-gradient(ellipse at 50% 45%,#40634b,#14352d 70%);box-shadow:inset 0 0 20px #f5d47b66,0 0 0 2px #071c18;}html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .tic-cell[data-hint-target='true']::before {animation:none!important;opacity:1;transform:none;}}

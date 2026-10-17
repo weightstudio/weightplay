@@ -1,15 +1,10 @@
 (() => {
   "use strict";
 
-  /* WP-GAME-ANALYTICS-ADAPTER
-     Analytics state ownership is preserved byte-for-byte in game-v6-base.js,
-     which is synchronously loaded below and performs the real observeState(
-     lifecycle calls. This loader only changes Interface 7 source ordering. */
-
-  /* Load the bounded Stage controller before the preserved v6 runtime so the
-     Interface 7 adapter can bind a fixed nine-node pool before the generic
-     Stage selector scans. Absolute URLs keep every locale route on one source. */
-  document.write('<script src="/src/stage-virtualization-standard.js?v=20260924-penalty-i7-bounded3"><\/script>');
-  document.write('<script src="/games/animal-penalty-cup/game-v6-base.js?v=20261015-penalty-play-v9&wp-audio=1.0.0"><\/script>');
-  document.write('<script src="/games/animal-penalty-cup/interface-7-compat.js?v=20260924-penalty-i7-bounded3"><\/script>');
+  /* Keep analytics and gameplay state in the established runtime. Shared I9
+     assets are ordered before the game adapter and runtime on every locale. */
+  document.write('<script src="/src/stage-rail-i9.js?v=20261017-shared-play-spacing1"><\/script>');
+  document.write('<script src="/src/game-play-ui.js?v=20261017-shared-play-spacing1"><\/script>');
+  document.write('<script src="/games/animal-penalty-cup/frame.js?v=20261017-penalty-i9"><\/script>');
+  document.write('<script src="/games/animal-penalty-cup/game-v6-base.js?v=20261017-penalty-i9"><\/script>');
 })();
