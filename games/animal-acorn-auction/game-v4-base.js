@@ -63,7 +63,28 @@
     setText(faqSection?.querySelector("dt"), guideCopy.faqQuestion);
     setText(faqSection?.querySelector("dd"), guideCopy.faqAnswer);
   }
-  function show(screen) { phase = screen; const battleVisible = ["battle", "choose", "retry", "complete", "result"].includes(screen); document.querySelectorAll("[data-screen]").forEach((node) => { if (node.id === "battleScreen") node.hidden = !battleVisible; else node.hidden = node.dataset.screen !== screen; }); $("battleContent").hidden = screen === "result"; const guide = guideElement(); if (guide) guide.hidden = screen !== "main"; document.body.dataset.screen = screen; const scene = screen === "main" ? "main" : screen === "stage" ? "stage" : "battle"; window.__ACORN_AUCTION_FRAME__?.frame.activate(scene); stageUI?.refresh(roundIndex); window.dispatchEvent(new Event("weightplay:stage-sync")); if (battleVisible) window.WeightPlayBattleCanvas?.sync?.(); window.dispatchEvent(new Event("weightplay:shell-sync")); }
+  function show(screen) {
+    phase = screen;
+    const battleVisible = ["battle", "choose", "retry", "complete", "result"].includes(screen);
+    document.querySelectorAll("[data-screen]").forEach((node) => {
+      // The body also carries data-screen for locale/runtime context. Only
+      // scene roots belong in the visibility loop; hiding the body blanked
+      // Stage and Battle after the shared I9 frame activated them.
+      if (node === document.body) return;
+      if (node.id === "battleScreen") node.hidden = !battleVisible;
+      else node.hidden = node.dataset.screen !== screen;
+    });
+    $("battleContent").hidden = screen === "result";
+    const guide = guideElement();
+    if (guide) guide.hidden = screen !== "main";
+    document.body.dataset.screen = screen;
+    const scene = screen === "main" ? "main" : screen === "stage" ? "stage" : "battle";
+    window.__ACORN_AUCTION_FRAME__?.frame.activate(scene);
+    stageUI?.refresh(roundIndex);
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
+    if (battleVisible) window.WeightPlayBattleCanvas?.sync?.();
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+  }
   function renderStatic() {
     const guideCopy = guideInfoCopy[locale] || guideInfoCopy.en;
     document.documentElement.lang = locale;

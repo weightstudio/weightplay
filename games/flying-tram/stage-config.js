@@ -1,23 +1,70 @@
 /* The shared I9 Play UI owns cards, geometry, pooling, and gestures. */
-window.FlyingTramStageConfig = ({save, text}) => ({
-  count: 3,
-  poster: "/games/flying-tram/assets/cover-block-v1.webp",
-  stage(index) {
-    const data = save();
-    const route = text("routes")[index];
-    const best = data.best[index];
-    const locked = index > data.unlocked;
-    return {
-      id: index + 1,
-      kicker: text("routeKicker", {n: index + 1}),
-      title: route.name,
-      subtitle: route.subtitle,
-      status: locked ? text("locked") : best ? text("bestPoints", {n: best}) : text("ready"),
-      summary: route.rule,
-      details: [route.rule, text("routeTime", {n: route.time})],
-      locked,
-      cleared: Boolean(best),
-      posterPosition: ["52% 46%", "50% 50%", "50% 54%"][index],
-    };
-  },
-});
+(() => {
+  const arcs = [
+    ["First Light Run", "晨光首航"], ["Crosswind Market", "側風市集"],
+    ["Thermal Gardens", "熱氣流花園"], ["Skyline Service", "天際維修線"],
+    ["Dockside Airlanes", "空港風道"], ["Cloudline Mastery", "雲線大考驗"],
+  ];
+  const rows = [
+    ["Launch Roof", "起飛屋頂", "A calm first flight", "平穩首航", "calm", .16, 45, 164, .71],
+    ["Banner Alley", "旗幟巷", "Read the first crosswind", "讀懂第一道側風", "wind", .28, 43, 158, .72, "pulse"],
+    ["Tea Depot", "珍奶補給站", "Keep the cup quiet", "穩住珍奶杯", "cup", .22, 44, 156, .72, "wave"],
+    ["Skybridge Turn", "空橋轉彎", "Counter-steer before the roof", "在屋頂前反向回正", "wind", .35, 42, 150, .73, "reverse"],
+    ["Sunrise Gate", "日出航標", "Checkpoint · land level after a gust", "檢查點・陣風後回正著陸", "checkpoint", .34, 45, 148, .73, "pulse"],
+    ["Market Awning Run", "市集雨棚線", "Pass between alternating gusts", "穿過交替側風", "wind", .42, 44, 146, .74, "pulse"],
+    ["Paper Kite Row", "紙鳶街", "Let the kite gust pass, then tilt", "等風箏陣風過後再轉向", "wind", .50, 43, 142, .75, "double"],
+    ["Lantern Cross", "燈籠橫巷", "The wind changes direction mid-flight", "飛行中段風向反轉", "wind", .56, 42, 138, .76, "reverse"],
+    ["Market Bell Tower", "市集鐘樓", "Brake your spin in a lull", "趁風停時煞住旋轉", "wind", .60, 41, 134, .77, "lull"],
+    ["Night Market Checkpoint", "夜市檢查點", "Checkpoint · land after two gusts", "檢查點・兩次陣風後著陸", "checkpoint", .62, 45, 132, .77, "double"],
+    ["Warm-Up Courtyard", "暖流庭院", "Ride the first rising air", "乘上第一道上升氣流", "thermal", .32, 44, 130, .77, "wave", [ .30, .43, .20 ]],
+    ["Glasshouse Column", "玻璃溫室氣柱", "BOOST against a sinking pocket", "用 BOOST 抵抗下沉氣袋", "thermal", .40, 43, 128, .78, "wave", [ .26, .38, -.24 ]],
+    ["Orchid Updraft", "蘭花上升流", "Use the lift, release before the pad", "借上升氣流，著陸前放開推進", "thermal", .46, 42, 126, .78, "pulse", [ .48, .65, .25 ]],
+    ["Fountain Downdraft", "噴泉下沉流", "Save BOOST for the falling air", "把推進留給下降氣流", "thermal", .50, 41, 122, .79, "reverse", [ .56, .73, -.28 ]],
+    ["Canopy Thermal Checkpoint", "樹冠熱流檢查點", "Checkpoint · lift then brake", "檢查點・先借氣流再煞降", "checkpoint", .52, 45, 120, .79, "pulse", [ .40, .57, .22 ], [ [ .80, "low" ] ]],
+    ["Signboard Gap", "招牌窄門", "Rise above the hanging sign", "升高越過懸掛招牌", "hazard", .42, 44, 118, .79, "wave", null, [ [ .32, "low" ] ]],
+    ["Cable Car Crossing", "纜車交會線", "Dip under the high cable", "降低高度避開高纜線", "hazard", .48, 43, 116, .80, "pulse", null, [ [ .34, "high" ] ]],
+    ["Balloon Lane", "氣球航道", "Avoid the drifting balloon", "避開漂移氣球", "hazard", .52, 42, 114, .80, "reverse", [ .56, .70, .20 ], [ [ .38, "low" ] ]],
+    ["Crane Hook Passage", "吊臂鉤道", "Choose a height before the hook", "在吊鉤前選好高度", "hazard", .56, 41, 110, .81, "lull", [ .40, .54, -.18 ], [ [ .44, "high" ], [ .74, "low" ] ]],
+    ["Skyline Service Checkpoint", "天際維修檢查點", "Checkpoint · clear two marked gaps", "檢查點・穿越兩個標記空隙", "checkpoint", .58, 45, 108, .81, "double", null, [ [ .30, "low" ], [ .63, "high" ] ]],
+    ["Harbor Wind Gate", "港灣風門", "Time your lift through the gust gate", "抓準時機升越陣風門", "combo", .62, 44, 108, .81, "pulse", [ .28, .44, .18 ], [ [ .56, "low" ] ]],
+    ["Ferry Wake Lift", "渡船尾流升流", "Use the wake, then avoid its drop", "借船尾升流，再避開下沉氣流", "combo", .66, 43, 106, .82, "reverse", [ .30, .44, .24 ], [ [ .70, "high" ] ]],
+    ["Beacon Cable Run", "燈塔纜線道", "Ride low below the beacon cable", "沿低空通道避開燈塔纜線", "combo", .70, 42, 104, .82, "double", [ .62, .78, -.20 ], [ [ .34, "high" ] ]],
+    ["Buoy Balloon Slalom", "浮標氣球迴避線", "Switch altitude between two hazards", "在兩個障礙間切換高度", "combo", .72, 41, 102, .83, "pulse", [ .34, .49, .22 ], [ [ .40, "low" ], [ .69, "high" ] ]],
+    ["Harbor Master Checkpoint", "港灣長檢查點", "Checkpoint · ride lift and clear the cable", "檢查點・乘升流並避開纜線", "checkpoint", .74, 45, 102, .83, "reverse", [ .40, .56, .22 ], [ [ .68, "high" ] ]],
+    ["Cloudline Entry", "雲線入口", "Read the gust before the cloud pocket", "讀懂陣風再穿越雲袋", "combo", .74, 44, 100, .83, "lull", [ .31, .45, -.22 ], [ [ .56, "low" ] ]],
+    ["Twin Thermal Switch", "雙熱流切換", "Take the first lift, skip the second", "乘上第一道熱流，避開第二道", "combo", .78, 43, 98, .84, "double", [ .26, .39, .22 ], [ [ .67, "high" ] ]],
+    ["Cloud Bell Cable", "雲鐘纜線道", "Drop under the bell, rise past the cable", "先降低避鐘，再升高越纜線", "combo", .80, 42, 96, .84, "pulse", [ .58, .74, -.20 ], [ [ .32, "high" ], [ .70, "low" ] ]],
+    ["Last Roof Slalom", "最後屋頂迴避線", "Keep tea steady through the full pattern", "穩住珍奶穿過完整風場", "combo", .84, 41, 94, .85, "reverse", [ .36, .51, .24 ], [ [ .30, "low" ], [ .60, "high" ] ]],
+    ["Cloudline Finale", "雲線終章", "Final checkpoint · combine every flight skill", "最終檢查點・整合所有飛行技巧", "finale", .86, 48, 92, .85, "double", [ .34, .49, .24 ], [ [ .31, "low" ], [ .65, "high" ], [ .80, "low" ] ]],
+  ];
+  const levels = rows.map((r, i) => Object.freeze({
+    id: i + 1, arc: Math.floor(i / 5), nameEn: r[0], nameZh: r[1],
+    subtitleEn: r[2], subtitleZh: r[3], family: r[4], gust: r[5],
+    duration: r[6], padWidth: r[7], approach: r[8], windPattern: r[9] || "wave",
+    thermal: r[10] || null, hazards: (r[11] || []).map(([at, lane]) => ({ at, lane })),
+    checkpoint: (i + 1) % 5 === 0,
+  }));
+  window.FlyingTramLevels = Object.freeze(levels);
+  window.FlyingTramStageConfig = ({save, text}) => ({
+    count: levels.length,
+    poster: "/games/flying-tram/assets/cover-block-v1.webp",
+    stage(index) {
+      const data = save();
+      const route = text("routes")[index];
+      const best = data.best[index];
+      const locked = index > data.unlocked;
+      return {
+        id: index + 1,
+        kicker: text("routeKicker", {n: index + 1}),
+        title: route.name,
+        subtitle: route.subtitle,
+        status: locked ? text("locked") : best ? text("bestPoints", {n: best}) : text("ready"),
+        summary: route.rule,
+        details: [route.rule, text("routeTime", {n: route.time})],
+        locked,
+        cleared: Boolean(best),
+        posterPosition: `${45 + (index % 5) * 3}% ${42 + (index % 3) * 6}%`,
+      };
+    },
+  });
+})();

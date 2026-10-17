@@ -133,7 +133,7 @@
     }, true);
   }
 
-  import("./game-v4-base.js?v=20261017-acorn-auction-i9-candidate1")
+  import("./game-v4-base.js?v=20261018-acorn-auction-i9-candidate3")
     .then(() => {
       window.mountAnimalAcornAuctionFrame();
       installBattleLeaveGuard();

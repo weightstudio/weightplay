@@ -4,7 +4,8 @@
 .guide-art,.result-art{display:block;width:auto;max-width:100%;height:clamp(118px,24vw,172px);object-fit:contain}
 .result-art{height:clamp(132px,28vw,190px)}
 .battle-screen{background-image:linear-gradient(180deg,#061826c9,#061826ee),url("assets/animal-acorn-auction-background.png");background-size:cover;background-position:center;color:var(--wp-ui-text)}
-.request-card{background:#f5e6c2f2}
+.request-card{background:#f5e6c2;color:#34291d;border-color:#ddc38b}
+.request-text{color:#675742}
 .feedback-row{display:flex;align-items:center;gap:10px;min-height:58px}
 .prompt{flex:1}
 .feedback-art{display:block;flex:0 0 56px;width:56px;height:56px;background-image:url("assets/animal-acorn-auction-lot-atlas.png");background-repeat:no-repeat;background-size:400% auto;background-position:100% 100%}
@@ -60,6 +61,9 @@
   background: transparent !important;
   box-shadow: none !important;
 }
+#resultScreen {
+  color: var(--wp-ui-text, #f6f2dd) !important;
+}
 #resultScreen .result-art-wrap {
   margin: 0 auto !important;
 }
@@ -75,6 +79,13 @@
 #resultScreen #resultText {
   margin: 0 !important;
   text-align: center !important;
+}
+#resultScreen .eyebrow {
+  color: var(--wp-ui-gold, #edbd4a) !important;
+}
+#resultScreen h2,
+#resultScreen #resultText {
+  color: var(--wp-ui-text, #f6f2dd) !important;
 }
 #resultScreen h2 {
   font-size: clamp(20px, 3vw, 28px) !important;

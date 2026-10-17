@@ -16,8 +16,9 @@
   };
   let frame, selector, currentScreen = "main", selectedStage = 0, raf = 0, lastFrame = 0, toastTimer = 0;
   const storageKey = "weightplay.flying-tram.v1";
-  const freshSave = () => ({unlocked:0,best:[0,0,0],flips:[0,0,0]});
-  let save = (() => { try { const v = JSON.parse(getStorage(storageKey) || "null"); if (v && Array.isArray(v.best)) return {unlocked:Math.max(0,Math.min(2,Number(v.unlocked)||0)),best:[0,1,2].map(i=>Math.floor(Math.max(0,Number(v.best[i])||0))),flips:[0,1,2].map(i=>Math.max(0,Number(v.flips?.[i])||0))}; } catch {} return freshSave(); })();
+  const LEVEL_COUNT=window.FlyingTramLevels.length;
+  const freshSave = () => ({unlocked:0,best:Array(LEVEL_COUNT).fill(0),flips:Array(LEVEL_COUNT).fill(0)});
+  let save = (() => { try { const v = JSON.parse(getStorage(storageKey) || "null"); if (v && Array.isArray(v.best)) return {unlocked:Math.max(0,Math.min(LEVEL_COUNT-1,Number(v.unlocked)||0)),best:Array.from({length:LEVEL_COUNT},(_,i)=>Math.floor(Math.max(0,Number(v.best[i])||0))),flips:Array.from({length:LEVEL_COUNT},(_,i)=>Math.max(0,Number(v.flips?.[i])||0))}; } catch {} return freshSave(); })();
   const input = {left:false,right:false,boost:false};
   let run = null;
   const clamp = (v,min,max) => Math.max(min,Math.min(max,v));
@@ -90,7 +91,7 @@
     return selector;
   }
   function renderStages(){
-    selectedStage=clamp(Math.max(selectedStage,save.unlocked),0,2);
+    selectedStage=clamp(Math.max(selectedStage,save.unlocked),0,LEVEL_COUNT-1);
     updateStageSummary();mountStage().refresh(selectedStage);
   }
   function showToast(text,ms=1400){
@@ -98,7 +99,8 @@
   }
   function startRun(index){
     if(index>save.unlocked)return;
-    selectedStage=index;run={index,duration:[45,47,49][index],padWidth:[164,128,104][index],approachProgress:[.71,.78,.82][index],elapsed:0,launch:0,launched:false,angle:0,angVel:0,lastTurns:0,flips:0,spill:0,altitude:.42,vy:0,score:0,paused:false,ended:false,perfect:false,wind:0,lostJunk:0,junk:[{x:-37,y:10,vx:0,vy:0,kind:0},{x:8,y:11,vx:0,vy:0,kind:1}]};
+    const level=window.FlyingTramLevels[index];
+    selectedStage=index;run={...level,index,duration:level.duration,padWidth:level.padWidth,approachProgress:level.approach,elapsed:0,launch:0,launched:false,angle:0,angVel:0,lastTurns:0,flips:0,spill:0,altitude:.42,vy:0,score:0,paused:false,ended:false,perfect:false,wind:0,lostJunk:0,hazards:level.hazards.map(h=>({...h,hit:false})),junk:[{x:-37,y:10,vx:0,vy:0,kind:0},{x:8,y:11,vx:0,vy:0,kind:1}]};
     $("resultPanel").hidden=true;$("leavePanel").hidden=true;$("pausePanel").hidden=true;resetInput();
     $("stageLabel").textContent=routeName(index);$("timeValue").textContent=String(run.duration);$("cupFill").style.width="0%";$("teaValue").textContent=t("steady");$("scoreLabel").textContent="0";$("hint").textContent=t("flightHint");
     safeCall("game.start");showScreen("battle");
@@ -107,18 +109,19 @@
   function endRun(success,reason){
     if(!run||run.ended)return;run.ended=true;run.perfect=success;
     const roughLanding=success&&reason==="roughLanding";
-    if(success){run.score=roughLanding?Math.floor(run.score*.7):Math.floor(run.score)+500+Math.round((100-run.spill)*4);save.unlocked=Math.max(save.unlocked,Math.min(2,run.index+1));if(run.score>save.best[run.index])save.best[run.index]=run.score;save.flips[run.index]=Math.max(save.flips[run.index],run.flips);persist();safeCall("result.win");}
+    if(success){run.score=roughLanding?Math.floor(run.score*.7):Math.floor(run.score)+500+Math.round((100-run.spill)*4)+(run.checkpoint?250:0);save.unlocked=Math.max(save.unlocked,Math.min(LEVEL_COUNT-1,run.index+1));if(run.score>save.best[run.index])save.best[run.index]=run.score;save.flips[run.index]=Math.max(save.flips[run.index],run.flips);persist();safeCall("result.win");if(run.checkpoint)showToast(t("checkpointCleared"),1800);}
     else safeCall("result.lose");
     updateProgress();updateStageSummary();
     $("resultTitle").textContent=roughLanding?t("roughTitle"):success?t("winTitle"):t("loseTitle");
     $("resultScore").textContent=String(Math.floor(run.score));$("resultFlips").textContent=String(run.flips);$("resultBest").textContent=String(save.best[run.index]||0);
     $("resultText").textContent=roughLanding?t("roughLanding",{n:routeName(run.index)}):success?t("winCopy",{n:routeName(run.index)}):t(reason||"badLanding");
     $("skillReport").textContent=t("skillReport",{flips:run.flips,spill:Math.round(run.spill)});
-    $("nextBtn").hidden=!success||run.index>=2;$("resultPanel").hidden=false;$("hint").textContent=roughLanding?t("roughLanding",{n:routeName(run.index)}):success?t("landed"):t("tryAgain");resetInput();
+    $("nextBtn").hidden=!success||run.index>=LEVEL_COUNT-1;$("resultPanel").hidden=false;$("hint").textContent=roughLanding?t("roughLanding",{n:routeName(run.index)}):success?t("landed"):t("tryAgain");resetInput();
   }
   function update(dt){
     if(!run||run.ended||run.paused)return;
-    const gustStrength=[.34,.74,1.05][run.index];
+    const gustStrength=run.gust;
+    let thermalActive=false,thermalForce=0;
     if(!run.launched){
       if(input.boost)run.launch+=dt;
       else run.launch=Math.max(0,run.launch-dt*.6);
@@ -129,7 +132,11 @@
       if(run.launch<.75&&run.launch===0)run.elapsed+=dt*.1;
     }else{
       run.elapsed+=dt;
-      run.wind=Math.sin(run.elapsed*.72+run.index*1.1)*gustStrength;
+      const phase=run.elapsed*.72+run.index*1.1;
+      const pulse=Math.sin(run.elapsed*2.15+run.index*.6);
+      const envelope=Math.sin(run.elapsed*.53+run.index*.8);
+      const windShape=run.windPattern==="pulse"?pulse*(envelope>.12?1:.18):run.windPattern==="double"?Math.sin(run.elapsed*1.25)*.56+Math.sin(run.elapsed*2.8+1.3)*.44:run.windPattern==="reverse"?Math.sin(phase)*Math.sin(run.elapsed*.19+1.2):run.windPattern==="lull"?Math.sin(phase)*(.18+.82*Math.abs(envelope)):Math.sin(phase);
+      run.wind=windShape*gustStrength;
       const steering=(input.right?1:0)-(input.left?1:0);
       run.angVel=clamp(run.angVel+steering*3.1*dt+run.wind*.12*dt,-4.2,4.2);
       if(!steering)run.angVel*=Math.pow(.19,dt);
@@ -142,13 +149,23 @@
       // landing window, holding BOOST becomes a stable brake: it can arrest a
       // fast drop but cannot bounce the tram upward out of the landing window.
       const inLandingWindow=run.elapsed/run.duration>=run.approachProgress;
-      run.vy=clamp(run.vy+(input.boost?.5:-.10)*dt,-.5,.5);
+      const progressBefore=clamp(run.elapsed/run.duration,0,1);
+      thermalActive=Boolean(run.thermal&&progressBefore>=run.thermal[0]&&progressBefore<=run.thermal[1]);
+      thermalForce=thermalActive?run.thermal[2]:0;
+      run.vy=clamp(run.vy+(input.boost?.5:-.10+thermalForce)*dt,-.5,.5);
       run.vy*=Math.pow(.7,dt);
       if(input.boost&&inLandingWindow)run.vy=Math.min(0,run.vy);
       const before=run.altitude;run.altitude=clamp(run.altitude+run.vy*dt,PAD_ALTITUDE,.83);
       const touchedPadHeight=before>PAD_ALTITUDE&&run.altitude<=PAD_ALTITUDE&&run.vy<0;
       if(run.altitude===.83)run.vy=0;
       run.score+=dt*(8+run.index*2);for(const item of run.junk){if(item.lost)continue;item.vx=clamp((item.vx-Math.sin(run.angle)*3.4+run.wind*.55)*Math.pow(.82,dt*8),-55,55);item.vy=clamp((item.vy+(input.boost?0.85:-0.45))*Math.pow(.88,dt*8),-45,45);item.x+=item.vx*dt;item.y+=item.vy*dt;if(Math.abs(item.x)>88||item.y<-96||item.y>32){item.lost=true;run.lostJunk++;run.score=Math.max(0,run.score-120);run.spill=clamp(run.spill+14,0,100);safeCall("ui.click");showToast(t("sloshing"));}}
+      for(const obstacle of run.hazards){
+        if(obstacle.hit||progressBefore<obstacle.at||progressBefore-obstacle.at>.02)continue;
+        obstacle.hit=true;
+        const height=clamp((run.altitude-PAD_ALTITUDE)/(.83-PAD_ALTITUDE),0,1);
+        const hit=obstacle.lane==="low"?height<.42:height>.66;
+        if(hit){run.spill=clamp(run.spill+22,0,100);run.score=Math.max(0,run.score-160);run.angVel=clamp(run.angVel+(obstacle.lane==="low"?-.9:.9),-4.2,4.2);safeCall("feedback.miss");showToast(t("obstacleHit"),1250);}
+      }
       if(run.spill>=100){endRun(false,"spilled");return;}
       if(touchedPadHeight){
         const progress=clamp(run.elapsed/run.duration,0,1);
@@ -170,7 +187,9 @@
     $("teaValue").textContent=run.spill>70?t("sloshing"):run.spill>35?t("wobbly"):t("steady");
     const altitudePercent=Math.round(clamp((run.altitude-PAD_ALTITUDE)/(.83-PAD_ALTITUDE),0,1)*100);
     $("readout").textContent=`${Math.round(Math.abs(normAngle(run.angle))*180/Math.PI)}° · ${t("windShort")} ${run.wind>0?"↗":"↙"} · ${t("heightShort")} ${altitudePercent}%`;if(run.lostJunk)$("readout").textContent+=` · 🧾 ${run.lostJunk}`;
-    $("hint").textContent=run.spill>70?t("calmHint"):run.elapsed/run.duration>=run.approachProgress?(run.vy<-.2?(input.boost?t("brakingHint"):t("brakeHint")):t("landingHint")):t("flightHint");
+    const currentProgress=run.elapsed/run.duration;
+    const nextHazard=run.hazards.find(h=>!h.hit&&h.at>=currentProgress&&h.at-currentProgress<.12);
+    $("hint").textContent=run.spill>70?t("calmHint"):nextHazard?t(nextHazard.lane==="low"?"hazardRise":"hazardLower"):thermalActive?t(thermalForce>0?"thermalUp":"thermalDown"):currentProgress>=run.approachProgress?(run.vy<-.2?(input.boost?t("brakingHint"):t("brakeHint")):t("landingHint")):t("flightHint");
   }
   function draw(){
     const canvas=$("gameCanvas"),ctx=canvas.getContext("2d"),w=1000;
@@ -190,6 +209,8 @@
     const padInset=Math.max(9,r.padWidth*.13);ctx.fillStyle="#f8d567";ctx.fillRect(runwayX+padInset,h-118,r.padWidth-2*padInset,12);ctx.fillStyle="#fff";ctx.fillRect(runwayX+padInset+10,h-105,9,30);ctx.fillRect(runwayX+r.padWidth-padInset-19,h-105,9,30);
     ctx.fillStyle="#d5f5ff";ctx.font="900 18px system-ui";ctx.textAlign="center";ctx.fillText(t("pad"),runwayCenter,h-128);
     for(let i=0;i<4;i++){const gx=(i*262+80-tsec*36)%(w+60);ctx.strokeStyle="#ffffff55";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(gx,180+i%2*54);ctx.lineTo(gx+55,180+i%2*54);ctx.stroke();}
+    if(r.thermal){const [start,end,strength]=r.thermal,tx=tramX+(((start+end)/2-progress)*400);ctx.save();ctx.globalAlpha=clamp(.24+Math.sin(tsec*5)*.08,.12,.32);ctx.fillStyle=strength>0?"#72fff0":"#ff9b79";ctx.fillRect(tx-26,h-450,52,260);ctx.globalAlpha=.9;ctx.textAlign="center";ctx.fillStyle="#f4ffff";ctx.font="900 14px system-ui";ctx.fillText(strength>0?"↑ LIFT":"↓ SINK",tx,h-462);ctx.restore();}
+    for(const obstacle of r.hazards){if(obstacle.hit||Math.abs(obstacle.at-progress)>.22)continue;const ox=tramX+(obstacle.at-progress)*400,oy=obstacle.lane==="low"?h-184:h-355;ctx.save();ctx.fillStyle="#ffcf61";ctx.strokeStyle="#633c3a";ctx.lineWidth=5;ctx.fillRect(ox-36,oy-13,72,26);ctx.strokeRect(ox-36,oy-13,72,26);ctx.fillStyle="#273e58";for(let k=-2;k<=2;k++)ctx.fillRect(ox+k*15-4,oy-13,8,26);ctx.fillStyle="#fff7dd";ctx.beginPath();ctx.moveTo(ox,oy-42);ctx.lineTo(ox-12,oy-22);ctx.lineTo(ox+12,oy-22);ctx.closePath();ctx.fill();ctx.restore();}
     const tramScale=Math.min(1,h/570);
     const tramHalfHeight=120*tramScale;
     const tramY=clamp(h-132-r.altitude*190+(r.altitude>PAD_ALTITUDE+.03?Math.sin(tsec*1.2)*8:0),tramHalfHeight+12,h-tramHalfHeight-12);
@@ -240,7 +261,7 @@
     $("pauseStagesBtn").addEventListener("click",()=>{$("pausePanel").hidden=true;run=null;showScreen("stage");});
     $("resultStagesBtn").addEventListener("click",()=>{$("resultPanel").hidden=true;run=null;showScreen("stage");});
     $("retryBtn").addEventListener("click",()=>startRun(selectedStage));
-    $("nextBtn").addEventListener("click",()=>{if(run?.perfect&&run.index<2)startRun(run.index+1);});
+    $("nextBtn").addEventListener("click",()=>{if(run?.perfect&&run.index<LEVEL_COUNT-1)startRun(run.index+1);});
     setHold("leftBtn","left");setHold("rightBtn","right");setHold("boostBtn","boost");
     window.addEventListener("keydown",event=>{if(event.repeat&&["ArrowLeft","ArrowRight","Space"].includes(event.code))return;if(["ArrowLeft","ArrowRight","Space"].includes(event.code))event.preventDefault();if(event.code==="ArrowLeft")input.left=true;if(event.code==="ArrowRight")input.right=true;if(event.code==="Space")input.boost=true;});
     window.addEventListener("keyup",event=>{if(event.code==="ArrowLeft")input.left=false;if(event.code==="ArrowRight")input.right=false;if(event.code==="Space")input.boost=false;});
