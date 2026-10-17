@@ -1,14 +1,14 @@
-/* Minefield v18: authored 30-stage campaign inside the existing Interface 7 owner. */
+/* Minefield v19: authored campaign data in the shared I9 Stage and screen frame. */
 (() => {
   'use strict';
   const root = document.querySelector('#logicApp');
   if (!root || root.dataset.mfBooting) return;
-  root.dataset.mfBooting = '18';
+  root.dataset.mfBooting = '19';
   // Claim declared slots synchronously: the shared bootstrap must not start its
   // legacy DOM-discovery controller while the module graph is loading.
   root.setAttribute('data-wp-frame-root', '');
   const base = new URL('.', document.currentScript.src);
-  const version = '20260926-minefield-v18-board-motion1';
+  const version = '20261017-minefield-v19-i9-shared-stage1';
   const asset = name => new URL(`/src/${name}`, location.origin).href;
   document.querySelectorAll('link[rel="stylesheet"][href*="classic-logic-lab.css"]').forEach(link => link.remove());
   function style(url) {
@@ -37,20 +37,25 @@
     domReady,
     style(`${asset('game-ui-theme.css')}?v=${version}`),
     style(`${asset('game-screen-frame.css')}?v=${version}`),
+    style(`${asset('interface9-shared-screens.css')}?v=${version}`),
+    style(`${asset('game-play-ui.css')}?v=${version}`),
     style(new URL(`game.css?v=${version}`, base).href),
-    script('game-screen-frame.js', () => window.WeightPlayScreenFrame?.version === 7),
-    script('stage-selector-standard.js', () => typeof window.__weightPlayLayoutMetrics?.stageObserverFlushes === 'number'),
-    script('battle-canvas-standard.js', () => typeof window.WeightPlayBattleCanvas?.sync === 'function'),
-  ]).then(() => import(new URL(`interface.mjs?v=${version}`, base).href))
+  ])
+    .then(() => script('game-screen-frame.js', () => window.WeightPlayScreenFrame?.version === 7))
+    .then(() => script('stage-rail-i9.js', () => typeof window.WeightPlayStageRailI9?.attachLogical === 'function'))
+    .then(() => script('game-play-ui.js', () => window.WeightPlayPlayUI?.version === 1))
+    .then(() => import(new URL(`interface.mjs?v=${version}`, base).href))
     .then(module => {
       module.mountMinefield();
       // Cosmetic failure must not replace an otherwise playable game.
       return import(new URL(`presentation.mjs?v=${version}`, base).href)
         .then(presentation => presentation.mountMinefieldPresentation(root))
-        .catch(error => console.warn('Minefield presentation unavailable', error));
+        .catch(error => console.warn('Minefield presentation unavailable', error))
+        .finally(() => window.WeightPlayGameEntryLoader?.ready?.());
     })
     .catch(error => {
       console.error('Minefield startup failed', error);
+      window.WeightPlayGameEntryLoader?.fail?.(error.message);
       const errors = {
         en: 'The game could not load. Please reload the page.',
         'zh-Hant': '遊戲未能載入，請重新整理頁面。', 'zh-Hans': '游戏未能载入，请刷新页面。',

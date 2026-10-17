@@ -3,7 +3,7 @@
 <head><meta charset="utf-8"><base href="/games/minefield-logic/">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow"><meta name="weightplay-audience" content="general">
-<meta name="weightplay-interface-version" content="7"><meta name="weightplay-text-target-version" content="1.3.0">
+<meta name="weightplay-game-version" content="v19"><meta name="weightplay-interface-version" content="9"><meta name="weightplay-text-target-version" content="1.3.0">
 <meta name="description" content="संख्याएँ पढ़ें, माइन से बचें और सभी सुरक्षित खाने खोलें।"><title>माइनफील्ड लॉजिक | WeightPlay</title>
 <link rel="canonical" href="https://weightplay.com/hi/games/minefield-logic/">
 <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/minefield-logic/">
@@ -51,13 +51,13 @@
 <link rel="stylesheet" href="/src/game-page-info.css">
 <script src="/src/weightplay-audio.js?v=1.0.0"></script>
 <script src="/src/game-layout-config.js?v=20260919-banner1"></script>
-<script src="/src/shared-interface-bootstrap.js?v=20261017-shared-dark-loader1" data-wp-shared-interface="7"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head><body data-wp-game-id="minefield-logic" data-game-version="v18">
+<script src="/src/shared-interface-bootstrap.js?v=20260921-interface7-single-frame-v2" data-wp-shared-interface="7"></script>
+<link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261017-minefield-v19-i9-shared-stage1">
+<link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-minefield-v19-i9-shared-stage1">
+</head><body data-wp-game-id="minefield-logic" data-game-version="v19">
 <h1 class="wp-route-heading" data-runtime-localize="off">माइनफील्ड लॉजिक</h1>
-<div id="logicApp"></div>
-<section class="game-page-info game-page-info-static" data-mf-guide-version="18" data-runtime-localize="off" aria-label="कैसे खेलें">
+<div id="logicApp" data-wp-play-ui="1"></div>
+<section class="game-page-info game-page-info-static" data-mf-guide-version="19" data-runtime-localize="off" aria-label="कैसे खेलें">
 <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">कैसे खेलें</span><h2>माइनफील्ड लॉजिक</h2><p>संख्याएँ पढ़ें, माइन से बचें और सभी सुरक्षित खाने खोलें।</p><div class="game-info-tags"><span>तर्क पहेली</span><span>माइनस्वीपर</span><span>एक खिलाड़ी</span></div></div><div class="game-info-facts"><div class="game-info-fact"><span>कठिनाई</span><strong>9×9 / 16×16 / 16×30</strong></div><div class="game-info-fact"><span>बिना झंडे की माइन*</span><strong>10 / 40 / 99</strong></div><div class="game-info-fact"><span>सुरक्षित खाने</span><strong>71 / 216 / 381</strong></div><div class="game-info-fact"><span>सर्वश्रेष्ठ समय</span><strong data-mf-best>—</strong></div></div></div>
 <div class="game-info-sections">
 <section class="game-info-section"><h3>नियम और लक्ष्य</h3><p>सभी सुरक्षित खाने खोलकर जीतें। झंडे वैकल्पिक नोट हैं। हर संख्या तिरछे खानों समेत आठ पड़ोसी खानों की माइन गिनती है। पहली बार खोला गया खाना और उसके पड़ोसी सुरक्षित हैं; खाली क्षेत्र साथ खुलते हैं। माइन खोलने पर दौर समाप्त होता है और परिणाम में माइन दिखाई देती हैं।</p></section>
@@ -72,7 +72,8 @@
 <div><dt>कभी संकेत क्यों नहीं मिलता?</dt><dd>सहायक दिखती संख्याएँ और कुल माइन लेकर सीधे निष्कर्ष तथा समुच्चयों का अंतर जाँचता है। कोई प्रमाण न मिलना यह नहीं बताता कि अनुमान लगाना ही होगा या पहेली असंभव है।</dd></div>
 <div><dt>वापस लेने के बाद सर्वोत्तम समय बन सकता है?</dt><dd>नहीं। संकेत या वापस लेना पूरे राउंड को सहायता वाला बनाता है, शुरुआत तक लौटने पर भी। खेल पूरा कर सकते हैं, लेकिन केवल बिना सहायता की जीत स्थानीय सर्वोत्तम समय बदलती है।</dd></div></dl></section>
 <section class="game-info-section" data-mf-comparison="review-required"><h3>मिलते-जुलते खेल की तुलना</h3><p>Microsoft Minesweeper भी संख्यात्मक संकेत और माइन के निशान इस्तेमाल करता है। Minefield Logic में 30 अपने तय अभियान बोर्ड और स्थानीय अनलॉक/रीप्ले हैं; साथ में यादृच्छिक त्वरित पहेली, दिखती जानकारी पर संकेत और वापस लेना भी है। ये अलग खेल हैं; साझेदारी का दावा नहीं है।</p><a href="https://zone.msn.com/en/games/msminesweeper" rel="external noopener">खेल की आधिकारिक जानकारी — Microsoft Minesweeper</a></section>
-
+<section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>WeightPlay की और पहेलियाँ</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="lights-out" href="/hi/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" data-final-src="/assets/weightplay-logo.png" alt="लाइट्स आउट" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>लाइट्स आउट</strong></span></a>
+<a class="game-info-related-card" data-game-id="peg-solitaire" href="/hi/games/peg-solitaire/"><img src="/assets/interface7-redrawn/peg-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="पेग सॉलिटेयर" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>पेग सॉलिटेयर</strong></span></a></div></section>
 </div></section>
-<script src="/src/game-title-registry.js"></script><script src="game.js?v=20260926-minefield-v18-board-motion1"></script>
+<script src="/src/game-title-registry.js"></script><script src="game.js?v=20261017-minefield-v19-i9-shared-stage1"></script>
 </body></html>

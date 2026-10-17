@@ -1,10 +1,11 @@
-import { Minefield, LEVELS } from './engine.mjs?v=18';
-import { CAMPAIGN_STAGES } from './campaign.mjs?v=18';
-import { COPY, LOCALES, ROUTES, LANGUAGES } from './copy.mjs?v=18';
+import { Minefield, LEVELS } from './engine.mjs?v=19';
+import { CAMPAIGN_STAGES } from './campaign.mjs?v=19';
+import { COPY, LOCALES, ROUTES, LANGUAGES } from './copy.mjs?v=19';
+import { createMinefieldStageConfig } from './stage-config.mjs?v=19';
 
 export function mountMinefield() {
   const root = document.querySelector('#logicApp');
-  if (!root || root.dataset.mfMounted === '18') return;
+  if (!root || root.dataset.mfMounted === '19') return;
   const segment = location.pathname.split('/').filter(Boolean)[0]?.toLowerCase();
   const locale = LOCALES[ROUTES.indexOf(segment)] || (LOCALES.includes(document.documentElement.lang) ? document.documentElement.lang : 'en');
   const copy = COPY[locale];
@@ -41,10 +42,10 @@ export function mountMinefield() {
   const formatTime = seconds => `${Math.floor(seconds / 60).toString().padStart(2, '0')}:${Math.floor(seconds % 60).toString().padStart(2, '0')}`;
   const applyTemplate = (value, data) => value.replace(/\{(\w+)\}/g, (_, key) => String(data[key] ?? ''));
   document.documentElement.lang = locale; document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
-  document.body.dataset.logicGame = 'minefield-logic'; document.body.dataset.gameVersion = 'v18';
+  document.body.dataset.logicGame = 'minefield-logic'; document.body.dataset.gameVersion = 'v19';
   document.body.dataset.runtimeLocalize = 'off';
   document.body.dataset.wpGameId = 'minefield-logic';
-  root.dataset.wpFrameRoot = ''; root.dataset.mfNative = ''; root.dataset.mfMounted = '18';
+  root.dataset.wpFrameRoot = ''; root.dataset.wpPlayUi = '1'; root.dataset.mfNative = ''; root.dataset.mfMounted = '19';
   root.setAttribute('data-runtime-localize', 'off');
   document.body.querySelector(':scope > h1')?.remove();
   root.replaceChildren();
@@ -53,17 +54,9 @@ export function mountMinefield() {
   main.id = 'logicMain'; main.dataset.screen = 'main';
   stageScreen.id = 'logicStages'; stageScreen.dataset.screen = 'stage'; stageScreen.hidden = true;
   stageScreen.dataset.wpStandardStageScreen = '';
-  stageScreen.dataset.wpLogicalStageCanvas = '';
-  stageScreen.dataset.wpCanvasMaxWidth = '920';
-  stageScreen.dataset.wpStageLandscapeWidth = '760';
-  stageScreen.dataset.wpStageLandscapeHeight = '334';
-  stageScreen.style.setProperty('--wp-stage-art', 'url("/assets/interface7-redrawn/minefield-logic.webp")');
   battle.id = 'logicBattle'; battle.dataset.screen = 'battle'; battle.hidden = true;
-  battle.setAttribute('aria-label', title); battle.dataset.wpBattleCanvasRoot = '';
-  battle.dataset.wpLogicalBattleCanvas = '';
-  // All transforms, viewport geometry and restoration remain shared-owned.
-  battle.dataset.wpBattleMinWidth = '390'; battle.dataset.wpBattleMinHeight = '720';
-  battle.dataset.wpBattleLandscapeWidth = '760'; battle.dataset.wpBattleLandscapeHeight = '334';
+  battle.setAttribute('aria-label', title);
+  // The shared frame owns the Battle viewport. Only the board itself scrolls.
   const mainHeader = el('header'), stageHeader = el('header'), battleHeader = el('header');
   const home = el('a'); home.href = '/'; home.dataset.wpReturn = 'main'; home.setAttribute('aria-label', copy.back);
   const stageHome = el('a'); stageHome.href = '/'; stageHome.dataset.wpReturn = 'stage'; stageHome.setAttribute('aria-label', copy.leave);
@@ -86,35 +79,24 @@ export function mountMinefield() {
   const stageContent = el('div', 'mf-stage-content');
   const stageProgress = el('p', 'mf-stage-progress'); stageProgress.setAttribute('role', 'status'); stageProgress.setAttribute('aria-live', 'polite');
   const stageIntro = el('p', 'mf-stage-intro', copy.campaign.mapIntro);
-  const stageList = el('div', 'mf-stage-grid stage-grid stage-rail');
+  const stageList = el('div', 'stage-grid stage-rail'); stageList.id = 'minefieldStageRail';
   stageList.setAttribute('role', 'region'); stageList.setAttribute('aria-label', copy.campaign.mapTitle);
-  stageList.dataset.wpStageCenterObserver = 'manual';
-  stageList.dataset.wpStageRecommendation = 'last';
-  stageContent.append(stageProgress, stageIntro, stageList); stageScreen.append(stageHeader, stageContent);
-  const stageNav = el('nav', 'mf-stage-tabs stage-tabs');
-  stageNav.dataset.wpFrameNav = ''; stageNav.dataset.wpFrameStageNav = '';
+  stageContent.append(stageIntro, stageList); stageScreen.append(stageHeader, stageContent);
+  const stageNav = el('nav');
+  stageNav.dataset.wpFrameNav = '';
   stageNav.setAttribute('aria-label', copy.campaign.mapTitle);
-  const emptyTeamSlot = el('span'); emptyTeamSlot.dataset.wpFrameStageSlot = 'team'; emptyTeamSlot.setAttribute('aria-hidden', 'true');
-  const stagesTab = button(copy.campaign.stagesTab, () => showStages());
-  stagesTab.classList.add('mf-stage-tab', 'stage-tab'); stagesTab.dataset.wpFrameStageSlot = 'stages';
-  stagesTab.dataset.wpFrameAction = 'tab';
-  stagesTab.setAttribute('aria-current', 'page');
-  const emptyEquipmentSlot = el('span'); emptyEquipmentSlot.dataset.wpFrameStageSlot = 'equipment'; emptyEquipmentSlot.setAttribute('aria-hidden', 'true');
-  stageNav.append(emptyTeamSlot, stagesTab, emptyEquipmentSlot); stageScreen.append(stageNav);
-  stageList.addEventListener('wonder:stage-snap', event => {
-    const index = Number(event.detail?.index);
-    if (Number.isInteger(index) && index >= 0 && index < CAMPAIGN_STAGES.length) selectStage(index + 1);
-  });
+  stageScreen.append(stageNav);
 
   const play = el('div', 'mf-play'); play.dataset.wpFrameLogicalActions = 'battle';
-  const hud = el('div', 'mf-hud'), values = {};
+  const hud = el('div', 'mf-hud'), hudGroup = window.WeightPlayScreenFrame.createGroup(), values = {};
   const modeStat = el('div', 'mf-hud-stat');
   const modeLabel = el('span', '', copy.campaign.mode), modeValue = el('strong', '', copy.campaign.quickButton);
-  modeStat.append(modeLabel, modeValue); hud.append(modeStat);
+  modeStat.append(modeLabel, modeValue); hudGroup.add(modeStat);
   for (const key of ['time', 'mines', 'safe']) {
     const group = el('div', 'mf-hud-stat'), label = el('span', '', copy[key]), value = el('strong', '', '0');
-    value.dir = 'ltr'; group.append(label, value); hud.append(group); values[key] = value;
+    value.dir = 'ltr'; group.append(label, value); hudGroup.add(group); values[key] = value;
   }
+  hud.append(hudGroup.element);
   play.append(hud); // The shared frame alone adopts the declared information slot.
   const toolbar = el('div', 'mf-tools'); toolbar.setAttribute('role', 'group'); toolbar.setAttribute('aria-label', copy.controlsTitle);
   const level = el('select', 'mf-difficulty'); level.setAttribute('aria-label', copy.level);
@@ -151,129 +133,52 @@ export function mountMinefield() {
   // comparison, related-link or locale content replacement.
   const guideBest = guide?.querySelector('[data-mf-best]');
   if (guide) guide.setAttribute('data-runtime-localize', 'off');
-  const frame = window.WeightPlayScreenFrame.mount({ root, localeSelect, scenes: {
+  let game = null, screen = 'main', currentStage = null, flagMode = false, cells = [], focused = 0, hintTarget = null;
+  let elapsed = 0, runningSince = null, ticker = null, pageAway = false, cancelDialog = null, returnFocus = null;
+  const measurement = { screen: 'main', roundKey: null, started: false, ended: false, restart: false, outcome: 'complete' };
+  let selectedStageId = records.campaign.unlockedStage;
+  let stageSelector = null;
+  const frame = window.WeightPlayScreenFrame.mount({ root, localeSelect, playUI: true, scenes: {
     main: { root: main, header: mainHeader, content: mainContent },
     stage: { root: stageScreen, header: stageHeader, content: stageContent },
     battle: { root: battle, header: battleHeader, content: play, headerInfo: hud },
   } });
-  let game = null, screen = 'main', currentStage = null, flagMode = false, cells = [], focused = 0, hintTarget = null;
-  let elapsed = 0, runningSince = null, ticker = null, pageAway = false, cancelDialog = null, returnFocus = null;
-  const measurement = { screen: 'main', roundKey: null, started: false, ended: false, restart: false, outcome: 'complete' };
-  const stageCardNodes = new Map();
-  let selectedStageId = records.campaign.unlockedStage;
+  const stageInfoGroup = window.WeightPlayScreenFrame.createGroup();
+  stageInfoGroup.add(stageProgress);
+  frame.stageTopUI.add(stageInfoGroup);
+  const stageConfig = createMinefieldStageConfig({ copy, records });
+  stageSelector = window.WeightPlayPlayUI.mountStage({
+    page: stageContent,
+    rail: stageList,
+    config: stageConfig,
+    selected: selectedStageId - 1,
+    isActive: () => screen === 'stage',
+    onSelect(index) { selectedStageId = index + 1; updateCampaignProgress(); },
+    onStart(index) { startStage(CAMPAIGN_STAGES[index]); },
+  });
+  const stageQuick = button(copy.campaign.quickButton, () => requestChange(() => newRound(records.level), copy.campaign.quickButton), true);
+  frame.commonDownButton.add(stageQuick);
+  frame.battleTopUI.add(hudGroup);
   const readMeasurement = () => ({ ...measurement, screen: measurement.ended ? null : screen, node: battle, paused: runningSince === null, activityMode: 'input', idleSeconds: 300 });
   const notify = () => { try { window.WonderAnalytics?.game?.observeState?.(readMeasurement); } catch { /* Optional telemetry. */ } };
   const nowSeconds = () => Math.floor((elapsed + (runningSince === null ? 0 : performance.now() - runningSince)) / 1000);
   function updateCampaignProgress() {
     const completed = new Set(records.campaign.completedStages);
-    stageProgress.textContent = applyTemplate(copy.campaign.progress, {
-      cleared: completed.size, unlocked: records.campaign.unlockedStage,
-    });
+    const stage = CAMPAIGN_STAGES[selectedStageId - 1];
+    const stageState = completed.has(selectedStageId) ? copy.campaign.cleared
+      : selectedStageId <= records.campaign.unlockedStage ? copy.campaign.unlocked : copy.campaign.locked;
+    stageProgress.textContent = `${applyTemplate(copy.campaign.battle, { n: stage.id, mines: stage.mines.length })} · ${stageState}`;
     mainProgress.textContent = applyTemplate(copy.campaign.mainProgress, {
       cleared: completed.size, unlocked: records.campaign.unlockedStage,
     });
-  }
-  function updateStageCardSelection() {
-    for (const [id, card] of stageCardNodes) {
-      const selected = id === selectedStageId;
-      card.classList.toggle('selected', selected);
-      card.classList.toggle('centered', selected);
-      card.classList.toggle('is-centered', selected);
-      card.classList.toggle('wp-stage-centered', selected);
-      card.setAttribute('aria-current', selected ? 'true' : 'false');
-      card.tabIndex = selected ? 0 : -1;
-      if (selected && id <= records.campaign.unlockedStage) card.dataset.wpStageRecommended = 'true';
-      else delete card.dataset.wpStageRecommended;
-    }
-  }
-  function selectStage(id, center = false, focus = false) {
-    selectedStageId = Math.max(1, Math.min(CAMPAIGN_STAGES.length, id));
-    updateStageCardSelection();
-    const card = stageCardNodes.get(selectedStageId);
-    if (center && card) {
-      const centerWithinRail = () => {
-        if (stageCardNodes.get(selectedStageId) !== card || !stageScreen.getClientRects().length) return;
-        const maximum = Math.max(0, stageList.scrollWidth - stageList.clientWidth);
-        const rtl = getComputedStyle(stageList).direction === 'rtl';
-        const target = card.offsetLeft + card.offsetWidth / 2 - stageList.clientWidth / 2;
-        const bounded = rtl ? Math.max(-maximum, Math.min(0, target)) : Math.max(0, Math.min(maximum, target));
-        const previousBehavior = stageList.style.getPropertyValue('scroll-behavior');
-        const previousBehaviorPriority = stageList.style.getPropertyPriority('scroll-behavior');
-        stageList.style.setProperty('scroll-behavior', 'auto', 'important');
-        stageList.scrollLeft = bounded;
-        if (previousBehavior) stageList.style.setProperty('scroll-behavior', previousBehavior, previousBehaviorPriority);
-        else stageList.style.removeProperty('scroll-behavior');
-      };
-      centerWithinRail();
-      requestAnimationFrame(centerWithinRail);
-    }
-    if (focus) card?.focus({ preventScroll: true });
-  }
-  const recenterStageOnResize = () => {
-    if (screen === 'stage') requestAnimationFrame(() => selectStage(selectedStageId, true));
-  };
-  window.addEventListener('resize', recenterStageOnResize, { passive: true });
-  window.visualViewport?.addEventListener('resize', recenterStageOnResize, { passive: true });
-  function renderStageMap() {
-    updateCampaignProgress();
-    if (!stageCardNodes.size) {
-      for (const stage of CAMPAIGN_STAGES) {
-        const card = button('', () => {
-          if (stage.id > records.campaign.unlockedStage) return;
-          selectStage(stage.id);
-          startStage(stage, false);
-        });
-        card.removeAttribute('data-wp-frame-action');
-        card.classList.add('stage-card', 'mf-stage-card');
-        card.dataset.stageId = String(stage.id);
-        card.dataset.index = String(stage.id - 1);
-        card.dataset.stageIndex = String(stage.id - 1);
-        card.setAttribute('aria-posinset', String(stage.id));
-        card.setAttribute('aria-setsize', String(CAMPAIGN_STAGES.length));
-        const number = el('span', 'mf-stage-number');
-        const arc = el('span', 'mf-stage-arc-label');
-        const mines = el('span', 'mf-stage-mines');
-        const state = el('span', 'mf-stage-state');
-        card.append(number, arc, mines, state);
-        card.addEventListener('keydown', event => {
-          if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-          event.preventDefault(); event.stopPropagation();
-          const rtl = document.documentElement.dir === 'rtl';
-          const next = event.key === 'Home' ? 1 : event.key === 'End' ? records.campaign.unlockedStage
-            : Math.max(1, Math.min(records.campaign.unlockedStage, stage.id + (event.key === 'ArrowRight' ? (rtl ? -1 : 1) : (rtl ? 1 : -1))));
-          selectStage(next, true, true);
-        });
-        stageCardNodes.set(stage.id, card);
-        stageList.append(card);
-      }
-    }
-    const completed = new Set(records.campaign.completedStages);
-    for (const stage of CAMPAIGN_STAGES) {
-      const card = stageCardNodes.get(stage.id);
-      const unlocked = stage.id <= records.campaign.unlockedStage;
-      const cleared = completed.has(stage.id);
-      const stateText = cleared ? copy.campaign.cleared : unlocked ? copy.campaign.unlocked : copy.campaign.locked;
-      const title = applyTemplate(copy.campaign.stage, { n: stage.id });
-      card.disabled = !unlocked;
-      card.dataset.stageState = cleared ? 'cleared' : unlocked ? 'unlocked' : 'locked';
-      card.setAttribute('aria-disabled', String(!unlocked));
-      card.setAttribute('aria-label', [title, applyTemplate(copy.campaign.arc, { n: stage.arc }), `${stage.mines.length} ${copy.mines.toLowerCase()}`, stage.checkpoint ? copy.campaign.checkpoint : '', stateText].filter(Boolean).join(', '));
-      card.querySelector('.mf-stage-number').textContent = title;
-      card.querySelector('.mf-stage-arc-label').textContent = applyTemplate(copy.campaign.arc, { n: stage.arc });
-      card.querySelector('.mf-stage-mines').textContent = `${stage.mines.length} ${copy.mines.toLowerCase()}${stage.checkpoint ? ` · ${copy.campaign.checkpoint}` : ''}`;
-      card.querySelector('.mf-stage-state').textContent = stateText;
-      card.toggleAttribute('data-cleared', cleared);
-      card.toggleAttribute('data-checkpoint', stage.checkpoint);
-    }
-    updateStageCardSelection();
   }
   function showStages() {
     if (measurement.started && !measurement.ended) { measurement.ended = true; measurement.outcome = 'abandon'; }
     overlay.hidden = true; play.inert = false; cancelDialog = null; hintTarget = null;
     overlay.classList.remove('is-result'); dialogActions.classList.remove('is-result');
     selectedStageId = currentStage?.id ?? records.campaign.unlockedStage;
-    renderStageMap(); activate('stage');
-    requestAnimationFrame(() => selectStage(selectedStageId, true, true));
+    updateCampaignProgress(); activate('stage');
+    requestAnimationFrame(() => stageSelector.refresh(selectedStageId - 1));
   }
   function syncClock() {
     const allowed = screen === 'battle' && game?.status === 'playing' && measurement.started && !document.hidden && !pageAway && overlay.hidden && !root.querySelector('.wp-frame-popover:not([hidden])');
@@ -287,7 +192,7 @@ export function mountMinefield() {
     frame.close(); screen = next;
     main.hidden = next !== 'main'; stageScreen.hidden = next !== 'stage'; battle.hidden = next !== 'battle'; if (guide) guide.hidden = next !== 'main';
     frame.activate(next, { covered: next === 'battle' && !overlay.hidden });
-    window.WeightPlayBattleCanvas?.sync?.(); syncClock(); notify();
+    syncClock(); notify();
   }
   function updateBest() {
     const best = records.best[records.level];
@@ -306,6 +211,8 @@ export function mountMinefield() {
     startRound(difficulty, restart, null);
   }
   function startStage(stage, restart = false) {
+    selectedStageId = stage.id;
+    stageSelector.refresh(stage.id - 1);
     startRound('easy', restart, stage);
   }
   function startRound(difficulty, restart, authoredStage) {
