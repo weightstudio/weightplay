@@ -306,12 +306,30 @@
       }
     }
     let playLayoutFrame = 0;
+    const playLayoutProperties = [
+      '--wp-frame-control-size', '--wp-frame-control-size-physical', '--wp-frame-physical-control-size',
+      '--wp-frame-lobby-return-width', '--wp-frame-header-height', '--wp-play-unit', '--wp-play-control',
+      '--wp-frame-header-inset', '--wp-frame-header-gap', '--wp-play-footer', '--wp-frame-rows',
+      '--wp-play-card-scale', '--wp-play-card-width', '--wp-play-card-height', '--wp-play-gap', '--wp-play-briefing-height',
+    ];
+    function clearPlayLayout(name) {
+      const entry=entries[name];
+      if(!entry)return;
+      for(const node of [entry.root,entry.header])for(const property of playLayoutProperties)node.style.removeProperty(property);
+      entry.root.style.removeProperty('grid-template-rows');
+      entry.root.style.removeProperty('grid-template-columns');
+    }
     function syncPlayLayout() {
       playLayoutFrame = 0;
       for (const name of ['stage','battle']) {
         const entry=entries[name];
-        if (!entry?.root.getClientRects().length || !entry.root.offsetWidth) continue;
+        if (active!==name || !entry?.root.getClientRects().length || !entry.root.offsetWidth) {
+          if(active!==name)clearPlayLayout(name);
+          continue;
+        }
         const inverse=entry.root.offsetWidth/entry.root.getBoundingClientRect().width;
+        entry.root.style.setProperty('grid-template-columns','minmax(0,1fr)','important');
+        entry.root.style.setProperty('grid-template-rows','var(--wp-frame-rows)','important');
         for (const node of [entry.root,entry.header]) {
           for (const key of ['--wp-frame-control-size','--wp-frame-control-size-physical','--wp-frame-physical-control-size','--wp-frame-lobby-return-width'])node.style.setProperty(key,`${44*inverse}px`,'important');
           node.style.setProperty('--wp-frame-header-height',`${56*inverse}px`,'important');
@@ -320,7 +338,10 @@
           node.style.setProperty('--wp-frame-header-inset',`${12*inverse}px`);
           node.style.setProperty('--wp-frame-header-gap',`${8*inverse}px`);
         }
-        const footer=name==='stage' && !bottomSlots.stage.element.hidden ? 56*inverse : 0;
+        // The Stage action lane is a fixed part of the shared composition.
+        // Keep its 56px track reserved even when a game has no Stage buttons,
+        // so optional actions cannot change card scale or swipe geometry.
+        const footer=name==='stage' ? 56*inverse : 0;
         entry.root.style.setProperty('--wp-play-footer',`${footer}px`);
         entry.root.style.setProperty('--wp-frame-rows',`${56*inverse}px minmax(0,1fr)${name==='stage' ? ` ${footer}px` : ''}`,'important');
       }
@@ -397,7 +418,9 @@
       commonDownButton: bottomSlots.stage,
       activate(name, { covered = false } = {}) {
         if (!entries[name]) throw new Error(`FRAME_UNKNOWN_SCENE:${name}`);
+        const previous=active;
         if(active!==name||activeCovered!==covered)close();
+        if(playUI&&previous&&previous!==name&&['stage','battle'].includes(previous))clearPlayLayout(previous);
         active = name; activeCovered=covered; root.dataset.wpFrameActive = name;
         syncRootLifecycle(name);
         for (const [key, entry] of Object.entries(entries)) {
@@ -408,6 +431,14 @@
           entry.root.setAttribute('aria-hidden', String(!enabled));
         }
         refresh();
+        if(playUI&&['stage','battle'].includes(name)) {
+          if(playLayoutFrame)cancelAnimationFrame(playLayoutFrame);
+          playLayoutFrame=0;
+          // Install the scene's physical control/canvas geometry before the
+          // transition returns to its caller and before the next paint. Resize
+          // observers continue to schedule later viewport changes.
+          syncPlayLayout();
+        }
         schedulePlayLayout();
         notifyAnalytics();
       },
