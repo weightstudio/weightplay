@@ -87,7 +87,6 @@
   const localeMap = { en: "en", "zh-tw": "zh-tw", "zh-cn": "zh-cn", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-br", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const routeSegment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const routeLocale = localeMap[window.__WEIGHTPLAY_ROUTE_LOCALE__] || localeMap[routeSegment] || "";
-  const queryLocale = localeMap[new URLSearchParams(window.location.search).get("lang")] || "";
   const storedLocale = (() => { try { return localeMap[localStorage.getItem("weightPlayLocale")] || localeMap[localStorage.getItem("weightplayLocale")] || ""; } catch { return ""; } })();
   const localeToLang = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const loadingLabels = { en: "Preparing the trail…", "zh-tw": "正在準備小徑…", "zh-cn": "正在准备小径…", ja: "コースを準備中…", ko: "트레일을 준비하는 중…", es: "Preparando el sendero…", "pt-br": "Preparando a trilha…", fr: "Préparation du sentier…", de: "Pfad wird vorbereitet…", it: "Preparazione del sentiero…", ru: "Подготовка тропы…", hi: "ट्रेल तैयार हो रही है…", ar: "جارٍ تجهيز المسار…" };
@@ -126,11 +125,12 @@
       tint: ["#b5e4a5", "#a6d6be", "#c5d8a5", "#b7d8b1", "#d8c79d", "#b9d4b2"][offset % 6],
     };
   }));
-  const initialLocale = [routeLocale, queryLocale, storedLocale].find((value) => value && copy[value]) || "en";
-  const state = { locale: initialLocale, holeIndex: 0, stagePage: 0, strokes: 0, totalStrokes: 0, totalAcorns: 0, sessionHoles: new Set(), sessionScores: {}, sessionAcorns: {}, ball: { x: 0, y: 0, vx: 0, vy: 0 }, aiming: false, keyboardAim: false, pointer: null, rolling: false, sound: true, progress: loadProgress() };
+  const initialLocale = [routeLocale, storedLocale].find((value) => value && copy[value]) || "en";
+  const state = { locale: initialLocale, holeIndex: 0, strokes: 0, totalStrokes: 0, totalAcorns: 0, sessionHoles: new Set(), sessionScores: {}, sessionAcorns: {}, ball: { x: 0, y: 0, vx: 0, vy: 0 }, aiming: false, keyboardAim: false, pointer: null, rolling: false, progress: loadProgress() };
 
 
-  let stageController = null;
+  let screenFrame = null;
+  let stagePlayUI = null;
   let stageBrowseIndex = 0;
   let leaveOpen = false;
   let leaveFocus = null;
@@ -152,46 +152,33 @@
     ar: ["مغادرة هذه الحفرة؟", "سيتم تجاهل موضع الكرة الحالي و{strokes} ضربة في الحفرة {hole}. ستبقى الحفر المكتملة وأفضل النتائج المحفوظة.", "متابعة اللعب", "العودة إلى المراحل"]
   };
 
-  function stageCardCopy(card, index) {
+  function stageRecord(index) {
     const hole = holes[index];
     const available = index < unlockedHoleCount();
     const checkpoint = (index + 1) % 5 === 0;
-    const marker = index === holes.length - 1 ? " · " + t("finale") + " · " + t("checkpoint") : checkpoint ? " · " + t("checkpoint") : "";
     const names = t("holeNames");
     const tips = t("holeTips");
     const name = Array.isArray(names) && names[index] ? names[index] : t("trail") + " " + (index + 1);
     const tip = Array.isArray(tips) && tips[index] ? tips[index] : t("aim");
     const best = state.progress["hole" + (index + 1)];
-    card.type = "button";
-    card.className = "stage-card" + (available ? "" : " locked");
-    card.dataset.stage = String(index);
-    card.setAttribute("aria-disabled", String(!available));
-    card.setAttribute("aria-label", (index + 1) + ". " + name);
-    card.innerHTML = "<span data-wp-item-content><strong>" + (index + 1) + ". " + name + marker + "</strong><span>" +
-      (available ? t("par") + " " + hole.par + " · " + tip : "🔒 " + t("stages") + " " + (index + 1)) +
-      "</span><span>" + (best ? t("best") + ": " + best : t("best") + ": —") + "</span></span>";
-    if (index === Math.max(0, unlockedHoleCount() - 1)) card.dataset.wpStageRecommended = "true";
-    else delete card.dataset.wpStageRecommended;
+    const marker = index === holes.length - 1 ? ` · ${t("finale")} · ${t("checkpoint")}` : checkpoint ? ` · ${t("checkpoint")}` : "";
+    return {
+      id: index + 1,
+      kicker: `${t("hole")} ${index + 1}`,
+      title: `${name}${marker}`,
+      subtitle: `${t("par")} ${hole.par}`,
+      status: !available ? `🔒 ${t("stages")} ${index + 1}` : best ? `${t("best")}: ${best}` : checkpoint ? t("checkpoint") : t("aim"),
+      summary: tip,
+      details: [tip, t("aim")],
+      poster: "/games/animal-putt-trails/assets/animal-putt-trails-orla-guide-v1.png",
+      locked: !available,
+      cleared: Boolean(best),
+    };
   }
 
-  function ensureStageController(centerRecommended = false) {
-    const rail = document.querySelector("#stageList");
-    if (!rail || !window.WeightPlayStageV6?.install) return null;
-    if (centerRecommended) stageBrowseIndex = Math.max(0, unlockedHoleCount() - 1);
-    if (!stageController) {
-      stageController = window.WeightPlayStageV6.install(rail, {
-        total: () => holes.length,
-        poolSize: 9,
-        initialIndex: () => stageBrowseIndex,
-        bind: stageCardCopy,
-        activate: (index) => { if (index < unlockedHoleCount()) startHole(index); },
-        onChange: (index) => { stageBrowseIndex = index; }
-      });
-    } else {
-      stageController.refresh?.();
-    }
-    if (centerRecommended) stageController?.center?.(stageBrowseIndex);
-    return stageController;
+  function updateStageStatus() {
+    const label = document.querySelector("#stageStatus");
+    if (label) label.textContent = `${Math.min(unlockedHoleCount(), holes.length)} / ${holes.length} · ${t("hole")}`;
   }
 
   function enterStage() {
@@ -200,7 +187,7 @@
     state.suspended = false;
     stageBrowseIndex = Math.max(0, unlockedHoleCount() - 1);
     showScreen("stage");
-    renderStageList(true);
+    renderStageList();
   }
 
   function renderLeaveCopy() {
@@ -218,7 +205,7 @@
     const result = document.querySelector("#resultCard");
     const resultActive = Boolean(result && !result.hidden);
     const live = document.querySelector("#puttBattleLive");
-    const header = document.querySelector("#battleScreen .battle-head");
+    const header = document.querySelector('#battleScreen [data-wp-frame-header="battle"]');
     document.body.classList.toggle("wp-putt-result-active", resultActive);
     if (live) {
       live.hidden = resultActive;
@@ -326,13 +313,6 @@
 
   function t(key) { if (key === "loading") return loadingLabels[state.locale] || loadingLabels.en; return (copy[state.locale] || copy.en)[key] || copy.en[key] || key; }
   function aria(key) { return ariaLabels[state.locale]?.[key] || ariaLabels.en[key] || key; }
-  function syncSoundControls() {
-    [document.querySelector("#soundButton"), document.querySelector("#settingsSoundButton")].forEach((button) => {
-      if (!button) return;
-      button.setAttribute("aria-pressed", String(state.sound));
-      button.textContent = state.sound ? t("soundOn") : t("soundOff");
-    });
-  }
   function loadProgress() { try { const value = JSON.parse(localStorage.getItem(progressKey) || "{}"); return value && typeof value === "object" ? value : {}; } catch { return {}; } }
   function saveProgress() { try { localStorage.setItem(progressKey, JSON.stringify(state.progress)); } catch {} }
   function summarizeSession(sessionScores, sessionAcorns) { return { totalStrokes: Object.values(sessionScores).reduce((total, value) => total + value, 0), totalAcorns: Object.values(sessionAcorns).reduce((total, value) => total + value, 0) }; }
@@ -344,11 +324,14 @@
     if (localeSelect) localeSelect.value = state.locale;
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
     document.querySelectorAll("[data-aria]").forEach((node) => { node.setAttribute("aria-label", aria(node.dataset.aria)); });
-    syncSoundControls();
     document.querySelector("#aimAction")?.setAttribute("aria-label", t("aim"));
     renderStageList(); renderMainProgress(); updateHoleLabels(); updateHelp(); renderLeaveCopy();
   }
   function showScreen(name) { Object.entries(screens).forEach(([key, node]) => { const active = key === name; node.classList.toggle("active", active); node.hidden = !active; }); document.body.dataset.screen = name;
+    screenFrame?.activate(name);
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+    if (name === "stage") window.dispatchEvent(new Event("weightplay:stage-sync"));
+    if (name === "battle") window.dispatchEvent(new Event("weightplay:battle-sync"));
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
       if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
@@ -356,16 +339,72 @@
 }
   function renderMainProgress() { const completed = holes.reduce((count, _, index) => count + (Number.isFinite(Number(state.progress[`hole${index + 1}`])) ? 1 : 0), 0); const best = state.progress.bestTotal || "—"; document.querySelector("#mainProgress").textContent = `${completed}/${holes.length} ${t("hole")} · ${t("best")}: ${best} ${t("strokes")}`; }
   function unlockedHoleCount() { let count = 1; while (count < holes.length && Number.isFinite(Number(state.progress[`hole${count}`]))) count += 1; return count; }
-  function renderStageList(centerRecommended = false) {
-    const tab = document.querySelector("#stagesTab");
-    if (tab) {
-      tab.textContent = t("stages");
-      tab.setAttribute("aria-label", t("stages"));
-    }
-    document.querySelector("#stageList")?.setAttribute("aria-label", t("stages"));
-    ensureStageController(centerRecommended);
+  function renderStageList() {
+    const rail = document.querySelector("#stageList");
+    rail?.setAttribute("aria-label", t("stages"));
+    updateStageStatus();
+    stagePlayUI?.refresh(stageBrowseIndex);
   }
-  function startHole(index) { if (index < 0 || index >= holes.length || index >= unlockedHoleCount()) return; closeLeave(false, false); closeResultState(); state.suspended = false; state.holeIndex = index; state.stagePage = Math.floor(index / 3); state.strokes = 0; state.rolling = false; state.aiming = false; state.keyboardAim = false; state.pointer = null; state.result = null; const hole = holes[index]; state.ball = { x: hole.start[0], y: hole.start[1], vx: 0, vy: 0 }; __wpNotifyMeasurement(); closeResultState(); showScreen("battle"); updateHoleLabels(); updateHelp(); draw();
+  function mountSharedScreens() {
+    const root = document.querySelector(".shell");
+    const main = screens.main;
+    const stage = screens.stage;
+    const battle = screens.battle;
+    const mainHeader = main.querySelector(".main-header");
+    const stageHeader = stage.querySelector(".stage-head");
+    const battleHeader = battle.querySelector(".battle-head");
+    const stageWorkspace = document.querySelector("#puttStageWorkspace");
+    const battleLive = document.querySelector("#puttBattleLive");
+    const localeControl = document.querySelector("#localeSelect");
+    localeControl.hidden = true;
+
+    const stageInfo = document.createElement("div");
+    stageWorkspace.append(stageInfo);
+    const battleInfo = document.createElement("div");
+    battleLive.append(battleInfo);
+
+    screenFrame = window.WeightPlayScreenFrame.mount({
+      root,
+      localeSelect: localeControl,
+      playUI: true,
+      scenes: {
+        main: { root: main, header: mainHeader, content: main.querySelector(".main-card") },
+        stage: { root: stage, header: stageHeader, content: stageWorkspace, headerInfo: stageInfo },
+        battle: { root: battle, header: battleHeader, content: battleLive, headerInfo: battleInfo },
+      },
+    });
+
+    const stageGroup = window.WeightPlayScreenFrame.createGroup();
+    const stageStatus = document.createElement("span");
+    stageStatus.id = "stageStatus";
+    stageGroup.add(stageStatus);
+    screenFrame.stageTopUI.add(stageGroup);
+
+    const battleGroup = window.WeightPlayScreenFrame.createGroup();
+    for (const node of ["holeInfo", "strokeLabel", "acornLabel"].map((id) => document.getElementById(id))) battleGroup.add(node);
+    screenFrame.battleTopUI.add(battleGroup);
+
+    stagePlayUI = window.WeightPlayPlayUI.mountStage({
+      page: stageWorkspace,
+      rail: document.querySelector("#stageList"),
+      config: {
+        gameId: "animal-putt-trails",
+        count: holes.length,
+        poster: "/games/animal-putt-trails/assets/animal-putt-trails-orla-guide-v1.png",
+        background: "/games/animal-putt-trails/assets/animal-putt-trails-course-v2.png",
+        stage: stageRecord,
+      },
+      selected: stageBrowseIndex,
+      isActive: () => screenFrame?.active === "stage",
+      onSelect(index) { stageBrowseIndex = index; updateStageStatus(); },
+      onStart(index) { startHole(index); },
+    });
+    frameActivateMain();
+    renderStageList();
+    window.addEventListener("pagehide", (event) => { if (!event.persisted) screenFrame?.destroy(); }, { once: true });
+  }
+  function frameActivateMain() { screenFrame?.activate("main"); }
+  function startHole(index) { if (index < 0 || index >= holes.length || index >= unlockedHoleCount()) return; closeLeave(false, false); closeResultState(); state.suspended = false; state.holeIndex = index; stageBrowseIndex = index; state.strokes = 0; state.rolling = false; state.aiming = false; state.keyboardAim = false; state.pointer = null; state.result = null; const hole = holes[index]; state.ball = { x: hole.start[0], y: hole.start[1], vx: 0, vy: 0 }; __wpNotifyMeasurement(); closeResultState(); showScreen("battle"); updateHoleLabels(); updateHelp(); draw();
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
   function updateHoleLabels() { const hole = holes[state.holeIndex]; const stage = state.holeIndex + 1; const marker = stage === holes.length ? ` · ${t("finale")} · ${t("checkpoint")}` : stage % 5 === 0 ? ` · ${t("checkpoint")}` : ""; document.querySelector("#holeTitle").textContent = `${t("holeNames")[state.holeIndex]}${marker}`; document.querySelector("#parLabel").textContent = `${t("par")} ${hole.par}`; document.querySelector("#strokeLabel").textContent = `${t("strokes")} ${state.strokes}`; document.querySelector("#acornLabel").textContent = `${t("acorns")} ${Math.max(0, hole.par + 1 - state.strokes)}`; }
@@ -389,15 +428,13 @@
   document.querySelector("#retryButton").addEventListener("click", () => __wpReplayStart(() => startHole(state.holeIndex)));
   document.querySelector("#nextButton").addEventListener("click", () => { if (!document.querySelector("#nextButton").disabled) startHole(state.holeIndex + 1); });
   document.querySelector("#mapButton").addEventListener("click", enterStage);
-  document.querySelector("#settingsButton").addEventListener("click", () => { const button = document.querySelector("#settingsButton"); const popover = document.querySelector("#settingsPopover"); const open = popover.hidden; popover.hidden = !open; button.setAttribute("aria-expanded", String(open)); });
-  document.querySelector("#settingsSoundButton").addEventListener("click", () => { state.sound = !state.sound; syncSoundControls(); });
   document.querySelector("#puttLeaveContinue").addEventListener("click", () => closeLeave(true, true));
   document.querySelector("#puttLeaveStages").addEventListener("click", () => { state.rolling = false; state.aiming = false; state.keyboardAim = false; state.pointer = null; closeLeave(false, false); enterStage(); });
   document.querySelector("#aimAction").addEventListener("click", () => { if (leaveOpen || state.suspended) return; canvas.focus?.({ preventScroll: true }); updateHelp(); });
   localeSelect.addEventListener("change", () => setLocale(localeSelect.value));
   canvas.addEventListener("pointerdown", beginAim); canvas.addEventListener("pointermove", updateAim); canvas.addEventListener("pointerup", releaseAim); canvas.addEventListener("pointercancel", () => { if (leaveOpen) return; state.aiming = false; state.keyboardAim = false; state.pointer = null; updateHelp(); draw(); }); canvas.addEventListener("keydown", handleKeyboardAim);
   window.addEventListener("keydown", handleInterface7Keydown);
-  setLocale(state.locale); renderMainProgress(); draw();
+  setLocale(state.locale); renderMainProgress(); draw(); mountSharedScreens();
   const hideLoading = () => document.querySelector("#loadingPanel")?.remove();
   courseBackdrop.addEventListener("load", () => { draw(); hideLoading(); }, { once: true });
   courseBackdrop.addEventListener("error", hideLoading, { once: true });

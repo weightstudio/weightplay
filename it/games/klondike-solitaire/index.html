@@ -44,12 +44,16 @@
   <link id="metaAlternateDefault" rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/klondike-solitaire/" />
 
   <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261015-klondike-solitaire-i9-guide" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="/games/klondike-solitaire/style.css?v=20260913-klondike-block-v52" />
   <link rel="stylesheet" href="frame-content.css?v=20260913-klondike-block-v52" />
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-shared-frame-v1" />
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<meta name="weightplay-game-version" content="v54">
+<meta name="weightplay-interface-version" content="9">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -79,10 +83,8 @@
   }
 }
     </script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-<body data-screen="main" data-audience="general" data-wp-game-id="klondike-solitaire" data-wp-game-version="v52" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
+  </head>
+<body data-screen="main" data-audience="general" data-wp-game-id="klondike-solitaire" data-wp-game-version="v54" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card">
       <strong data-klocale="ui.title">Klondike Solitaire</strong>
@@ -174,7 +176,7 @@
       <section class="game-info-section"><h3 data-i18n="helpTitle">Se sei bloccato</h3><p data-i18n="help">Suggerimento indica una mossa senza eseguirla. Annulla la ripristina. Il completamento automatico esegue mosse finali sicure. Ricomincia ripete la distribuzione; Nuova partita ne crea un’altra.</p></section>
       <section class="game-info-section"><h3 data-i18n="noteTitle">I tuoi progressi</h3><p data-i18n="note">Ogni distribuzione è un rompicapo completo, senza campagna di livelli. Statistiche e modalità di pesca sono salvate in questo browser.</p></section>
     <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Quante carte si usano?</dt><dd>Si usa un mazzo standard da 52 carte.</dd></div><div><dt>Qual è la condizione di vittoria?</dt><dd>Completa ciascuna delle quattro basi dall’Asso al Re dello stesso seme.</dd></div><div><dt>Che differenza c’è tra pesca 1 e pesca 3?</dt><dd>Pesca 1 scopre una carta per volta; Pesca 3 ne scopre tre a ogni pescata.</dd></div><div><dt>Posso spostare le carte una alla volta?</dt><dd>Sì. Le sequenze valide decrescenti con colori alternati si possono spostare anche in gruppo.</dd></div><div><dt>Come faccio a sapere se una mossa è valida?</dt><dd>Suggerimento evidenzia una destinazione valida. Sposta le carte solo secondo le regole del tableau o delle basi.</dd></div><div><dt>Cosa fa il completamento automatico?</dt><dd>Quando non servono più mosse strategiche nel tableau, esegue solo mosse sicure e valide verso le basi.</dd></div><div><dt>Posso annullare una mossa?</dt><dd>Sì. Annulla si può usare più volte e ripristina completamente lo stato del tavolo.</dd></div><div><dt>E se non c’è una mossa suggerita?</dt><dd>Se non trova mosse valide, Suggerimento indica che non ci sono mosse disponibili.</dd></div></dl></div></div>
-  </section>
+  <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Altri giochi correlati</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="spider-solitaire" href="/it/games/spider-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/spider-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="Spider Solitaire" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Spider Solitaire</strong><span>Spider Solitaire uses two decks in ten tableau columns.</span></span></a><a class="game-info-related-card" data-game-id="freecell-solitaire" href="/it/games/freecell-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="Solitario FreeCell" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Solitario FreeCell</strong><span>FreeCell Solitaire is a classic 52-card puzzle where every card starts face up.</span></span></a></div></div></section>
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
@@ -233,12 +235,12 @@
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine3&wp-audio=1.0.0"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+  <script src="../../src/game-screen-frame.js?v=20261017-interface9-shared-frame-v1"></script>
   <script src="locales.js?v=20260913-klondike-block-v52"></script>
   <script src="frame.js?v=20260913-klondike-block-v52"></script>
-    <script src="game.js?v=20260913-klondike-block-v52&wp-audio=1.0.0"></script>
+    <script src="game.js?v=20261014-guide-i9-v54&wp-audio=1.0.0"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-    <script src="../../src/game-page-info.js?v=20261015-klondike-solitaire-i9-guide"></script>
+    <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
     <script src="analytics-ownership.js?v=20260913-klondike-block-v52"></script>
 </body>
 </html>

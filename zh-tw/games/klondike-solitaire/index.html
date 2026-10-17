@@ -44,12 +44,16 @@
   <link id="metaAlternateDefault" rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/klondike-solitaire/" />
 
   <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261015-klondike-solitaire-i9-guide" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="/games/klondike-solitaire/style.css?v=20260913-klondike-block-v52" />
   <link rel="stylesheet" href="frame-content.css?v=20260913-klondike-block-v52" />
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-shared-frame-v1" />
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<meta name="weightplay-game-version" content="v54">
+<meta name="weightplay-interface-version" content="9">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -79,10 +83,8 @@
   }
 }
     </script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-<body data-screen="main" data-audience="general" data-wp-game-id="klondike-solitaire" data-wp-game-version="v52" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
+  </head>
+<body data-screen="main" data-audience="general" data-wp-game-id="klondike-solitaire" data-wp-game-version="v54" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card">
       <strong data-klocale="ui.title">Klondike Solitaire</strong>
@@ -174,7 +176,7 @@
       <section class="game-info-section"><h3 data-i18n="helpTitle">卡住時</h3><p data-i18n="help">提示只指出合法走法，不會代打；復原可撤回。自動完成處理安全的收尾走法。重新開始重玩同一副牌，新遊戲另發一副。</p></section>
       <section class="game-info-section"><h3 data-i18n="noteTitle">遊玩紀錄</h3><p data-i18n="note">每副牌是一局完整接龍，沒有關卡選單。統計和抽牌偏好儲存在目前瀏覽器。</p></section>
     <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>使用幾張牌？</dt><dd>使用一副標準的 52 張牌。</dd></div><div><dt>勝利條件是什麼？</dt><dd>將四種花色各自依序從 A 收到 K，完成四個牌堆即可獲勝。</dd></div><div><dt>抽一張和抽三張有什麼不同？</dt><dd>抽一張每次從牌庫翻開一張；抽三張則每次翻開三張。</dd></div><div><dt>可以一次移動一張牌嗎？</dt><dd>可以；符合遞減順序且顏色交錯的連續牌組也能一起移動。</dd></div><div><dt>如何判斷走法是否合法？</dt><dd>提示會標出一個合法目的地。只要符合牌列或基礎牌堆的規則即可移動。</dd></div><div><dt>自動完成會做什麼？</dt><dd>在不再有需要策略判斷的牌列走法後，自動完成只會執行安全且合法的收牌走法。</dd></div><div><dt>可以復原嗎？</dt><dd>可以。復原可連續使用，並完整還原牌面狀態。</dd></div><div><dt>沒有提示走法時會怎樣？</dt><dd>找不到合法走法時，提示會顯示目前沒有可用走法。</dd></div></dl></div></div>
-  </section>
+  <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="spider-solitaire" href="/zh-tw/games/spider-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/spider-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="蜘蛛接龍" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">蜘蛛接龍</strong><span>Spider Solitaire uses two decks in ten tableau columns.</span></span></a><a class="game-info-related-card" data-game-id="freecell-solitaire" href="/zh-tw/games/freecell-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="FreeCell 接龍" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">FreeCell 接龍</strong><span>FreeCell Solitaire is a classic 52-card puzzle where every card starts face up.</span></span></a></div></div></section>
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
@@ -233,12 +235,12 @@
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine3&wp-audio=1.0.0"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+  <script src="../../src/game-screen-frame.js?v=20261017-interface9-shared-frame-v1"></script>
   <script src="locales.js?v=20260913-klondike-block-v52"></script>
   <script src="frame.js?v=20260913-klondike-block-v52"></script>
-    <script src="game.js?v=20260913-klondike-block-v52&wp-audio=1.0.0"></script>
+    <script src="game.js?v=20261014-guide-i9-v54&wp-audio=1.0.0"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-    <script src="../../src/game-page-info.js?v=20261015-klondike-solitaire-i9-guide"></script>
+    <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
     <script src="analytics-ownership.js?v=20260913-klondike-block-v52"></script>
 </body>
 </html>
