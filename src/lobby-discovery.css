@@ -1038,3 +1038,34 @@ body.general-lobby-page .demon-event-dialog .demon-event-count { margin: 0; colo
 @media (prefers-reduced-motion: reduce) {
   body.general-lobby-page .demon-event-track { scroll-behavior: auto; }
 }
+
+/* Keep the activity name legible over the poster artwork at phone size. */
+body.general-lobby-page .demon-event-card { display: block; position: relative; }
+body.general-lobby-page .demon-event-card .demon-event-art {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1.25 / 1;
+  overflow: hidden;
+}
+body.general-lobby-page .demon-event-card .demon-event-art img { object-fit: cover; }
+body.general-lobby-page .demon-event-title {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 3;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 18px 16px 15px;
+  overflow: hidden;
+  background: linear-gradient(180deg, transparent 0%, rgb(9 17 25 / 78%) 38%, rgb(9 17 25 / 94%) 100%);
+  color: #fff3d4;
+  font-size: clamp(20px, 5vw, 28px);
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  text-shadow: 0 2px 5px #000;
+  white-space: nowrap;
+}
+@media (min-width: 1120px) {
+  body.general-lobby-page .desktop-filter-rail .demon-event-card .demon-event-art { aspect-ratio: 1 / 1; }
+}

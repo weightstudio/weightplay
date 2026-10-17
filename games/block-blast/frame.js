@@ -1,14 +1,23 @@
-/* Adapt permanent game nodes; navigation and preferences belong to the core. */
+/* Game adapter. Shared code owns Main/Stage/Battle chrome and Stage gestures. */
 (() => {
   'use strict';
+
   const $ = id => document.getElementById(id);
-  const root = $('gameFrame'), main = root.querySelector('.main-canvas');
-  const stage = root.querySelector('.stage-canvas'), battle = $('battleLive');
+  const game = window.__BLOCK_BLAST__;
+  const root = $('gameFrame');
+  const main = root.querySelector('.main-canvas');
+  const stage = root.querySelector('.stage-canvas');
+  const battle = $('battleLive');
+  const mainHeader = main.querySelector('header');
+  const stageHeader = stage.querySelector('header');
+  const battleHeader = battle.querySelector('header');
   const locale = $('localeSelect');
+
   locale.hidden = true;
-  root.append(locale);
+  locale.style.setProperty('display', 'none', 'important');
   main.querySelector('.main-controls').hidden = true;
   $('mainGroup').style.minHeight = '0';
+
   const hero = main.querySelector('.hero');
   hero.classList.remove('hero');
   const copy = hero.querySelector('.hero-copy');
@@ -19,49 +28,87 @@
   copy.querySelector('p').dataset.wpFrameSummary = '';
   hero.querySelector('.poster').dataset.wpFramePoster = '';
   $('mainProgress').dataset.wpFrameProgress = '';
-  for (const id of ['startBtn','nextBtn','enterStage']) $(id).dataset.wpFrameAction = 'primary';
-  for (const id of ['endlessBtn','helpClose','leaveContinue','leaveStage','resultStageBtn','retryBtn','battleHelp']) $(id).dataset.wpFrameAction = 'secondary';
-  main.querySelector('header strong').dataset.wpFrameTitle = '';
+  mainHeader.querySelector('strong').dataset.wpFrameTitle = '';
+
+  for (const id of ['startBtn', 'endlessBtn', 'nextBtn', 'retryBtn', 'helpClose', 'leaveContinue', 'leaveStage', 'resultStageBtn', 'battleHelp']) {
+    $(id).dataset.wpFrameAction = ['startBtn', 'nextBtn'].includes(id) ? 'primary' : 'secondary';
+  }
+
+  const stageSummary = $('stageSummary');
+  const stageRail = $('stageRail');
   const stageContent = document.createElement('div');
   stageContent.className = 'blast-stage-content';
-  stageContent.append($('stageSummary'), $('stageRail'), $('enterStage'));
+  stageContent.append(stageRail);
   stage.append(stageContent);
-  stage.querySelector('header div').remove();
-  stage.querySelector('footer').dataset.wpFrameNav = '';
-  stage.querySelector('footer button').dataset.wpFrameAction = 'secondary';
-  const battleHeader = battle.querySelector('header');
-  const info = document.createElement('div');
-  info.dataset.wpFrameInfo = '';
-  info.append($('stageLabel'), ...battleHeader.querySelector('.battle-stats').children);
+  stageHeader.querySelector(':scope > div')?.remove();
+
+  const battleInfo = document.createElement('div');
+  battleInfo.dataset.wpFrameInfo = '';
+  const battleGroup = window.WeightPlayScreenFrame.createGroup();
+  battleGroup.add($('stageLabel'));
+  for (const stat of [...battleHeader.querySelector('.battle-stats').children]) battleGroup.add(stat);
   battleHeader.querySelector('.battle-stats').remove();
   battleHeader.querySelector('.battle-title').remove();
-  const content = document.createElement('div');
-  content.className = 'blast-battle-content';
-  for (const node of [...battle.children]) if (node !== battleHeader) content.append(node);
-  content.append($('battleHelp'));
-  battle.append(content);
-  content.prepend(info);
-  for (const header of [stage.querySelector('header'), battleHeader]) {
+
+  const battleContent = document.createElement('div');
+  battleContent.className = 'blast-battle-content';
+  for (const node of [...battle.children]) if (node !== battleHeader) battleContent.append(node);
+  battleContent.append($('battleHelp'));
+  battleContent.prepend(battleInfo);
+  battle.append(battleContent);
+
+  for (const header of [stageHeader, battleHeader]) {
     const title = document.createElement('span');
     title.hidden = true;
     title.dataset.wpFrameTitle = '';
     header.append(title);
   }
-  const frame = WeightPlayScreenFrame.mount({root, localeSelect: locale, scenes: {
-    main: {root: main, header: main.querySelector('header'), content: hero},
-    stage: {root: stage, header: stage.querySelector('header'), content: stageContent},
-    battle: {root: battle, header: battleHeader, content, headerInfo: info},
-  }});
-  const modals = ['helpModal','leaveModal','resultModal'].map($);
+
+  const frame = window.WeightPlayScreenFrame.mount({
+    root,
+    localeSelect: locale,
+    playUI: true,
+    scenes: {
+      main: {root: main, header: mainHeader, content: hero},
+      stage: {root: stage, header: stageHeader, content: stageContent},
+      battle: {root: battle, header: battleHeader, content: battleContent, headerInfo: battleInfo},
+    },
+  });
+  frame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup().add(stageSummary));
+  frame.battleTopUI.add(battleGroup);
+
+  const stageSelector = window.WeightPlayPlayUI.mountStage({
+    page: stageContent,
+    rail: stageRail,
+    config: window.BlockBlastStageConfig({
+      stages: game.stages,
+      getState: game.getState,
+      text: game.text,
+      objectiveSummary: game.stageObjectiveSummary,
+    }),
+    selected: game.getState().selectedStage - 1,
+    onSelect: index => game.selectStage(index + 1),
+    onStart: index => game.start(index + 1, false),
+    isActive: () => document.body.dataset.activeScreen === 'stage',
+  });
+  game.attachStageSelector(stageSelector);
+
+  const modals = ['helpModal', 'leaveModal', 'resultModal'].map($);
   const sync = () => {
     const scene = document.body.dataset.activeScreen || 'main';
     const covered = scene === 'battle' && modals.some(node => !node.hidden);
-    content.inert = scene !== 'battle' || covered;
+    battleContent.inert = scene !== 'battle' || covered;
     frame.activate(scene, {covered});
   };
   const observer = new MutationObserver(sync);
   observer.observe(document.body, {attributes: true, attributeFilter: ['data-active-screen']});
-  modals.forEach(node => observer.observe(node, {attributes:true, attributeFilter:['hidden']}));
-  window.addEventListener('pagehide', event => {if (!event.persisted) {observer.disconnect();frame.destroy();}});
+  modals.forEach(node => observer.observe(node, {attributes: true, attributeFilter: ['hidden']}));
+  window.addEventListener('pagehide', event => {
+    if (!event.persisted) {
+      observer.disconnect();
+      stageSelector.destroy();
+      frame.destroy();
+    }
+  });
   sync();
 })();

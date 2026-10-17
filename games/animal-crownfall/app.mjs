@@ -71,7 +71,7 @@ function changeScreen(next){const previousScreen=screen;if(next!=='stage')stageC
 function renderStages({reset=true}={}){
  const rail=$('stageRail');$('stageSummary').textContent=`${t('clearBadge')} ${Object.values(save.badges).filter(v=>v[0]).length} / ${LEVELS.length}`;
  const highest=save.unlocked-1;
- selectedStageIndex=reset||!Number.isInteger(selectedStageIndex)?highest:Math.max(selectedStageIndex,highest);
+ selectedStageIndex=reset||!Number.isInteger(selectedStageIndex)?highest:Math.max(0,Math.min(selectedStageIndex,highest));
  if(!stageController){
   if(!window.WeightPlayPlayUI)throw new Error('SHARED_PLAY_UI_MISSING');
   stageController=window.WeightPlayPlayUI.mountStage({page:$('stageContent'),rail,config:stageConfig,selected:selectedStageIndex,onSelect:index=>{selectedStageIndex=index;},onStart:index=>startLevel(index+1,null,practiceMode),isActive:()=>screen==='stage'});

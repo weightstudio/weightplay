@@ -397,40 +397,96 @@ function createDemonEventPreview() {
   strings.reward = daily[2];
   strings.note = ({"zh-Hant": "1 個已收集方塊＝1 點本場彈藥。每次只射一顆：倍率 m 會扣 m 點彈藥，直接命中惡魔扣 m HP；未命中或撞上護盾也消耗 m。永久收藏與城堡材料不扣除。", "zh-Hans": "1 个已收集方块＝1 点本场弹药。每次只射一颗：倍率 m 会扣 m 点弹药，直接命中恶魔扣 m HP；未命中或撞上护盾也消耗 m。永久收藏和城堡材料不扣除。", "en": "Each collected block gives 1 run ammo. A multiplier m fires one projectile, spends m ammo and deals m HP on a direct Boss hit. Misses and dark shields also cost m. Permanent blocks and castle materials are never spent.", "ja": "収集ブロック1個＝今回の弾薬1。倍率mは1発で弾薬mを使い、ボス直撃でm HPのダメージ。外れや暗黒シールドへの命中もmを消費します。永久ブロックと城素材は減りません。", "ko": "수집 블록 1개는 이번 판 탄약 1입니다. 배율 m은 한 발에 탄약 m을 쓰고 보스 직접 명중 시 HP m을 깎습니다. 빗나가거나 암흑 방패에 맞아도 m을 씁니다. 영구 블록과 성 재료는 차감되지 않습니다.", "es": "Cada bloque recogido da 1 de munición. El multiplicador m dispara un proyectil, gasta m y resta m HP al jefe en impacto directo. Los fallos y escudos oscuros también cuestan m. No se gastan bloques permanentes ni materiales.", "pt-BR": "Cada bloco coletado dá 1 munição. O multiplicador m lança um projétil, gasta m e causa m HP no chefe em acerto direto. Erros e escudos sombrios também custam m. Blocos permanentes e materiais não são gastos.", "fr": "Chaque bloc collecté donne 1 munition. Le multiplicateur m tire un projectile, dépense m et inflige m HP au boss en coup direct. Les ratés et boucliers sombres coûtent aussi m. Les blocs permanents et matériaux restent intacts.", "de": "Jeder gesammelte Block gibt 1 Munition. Multiplikator m feuert ein Projektil, verbraucht m und verursacht beim direkten Bosstreffer m HP Schaden. Fehlschüsse und dunkle Schilde kosten ebenfalls m. Dauerhafte Blöcke und Burgmaterial bleiben erhalten.", "it": "Ogni blocco raccolto dà 1 munizione. Il moltiplicatore m lancia un proiettile, spende m e infligge m HP al boss con un colpo diretto. Mancati colpi e scudi oscuri costano m. Blocchi permanenti e materiali restano intatti.", "ru": "Каждый собранный блок даёт 1 боеприпас. Множитель m выпускает один снаряд, расходует m и снимает m HP при прямом попадании в босса. Промахи и тёмные щиты также стоят m. Постоянные блоки и материалы не расходуются.", "hi": "हर एकत्रित ब्लॉक से 1 बारूद मिलता है। गुणक m एक प्रक्षेप्य छोड़ता है, m बारूद खर्च करता है और सीधे बॉस पर m HP घटाता है। चूक और अंधेरे ढाल भी m खर्च करते हैं। स्थायी ब्लॉक और किले की सामग्री नहीं घटती।", "ar": "كل مكعب مجموع يمنح ذخيرة واحدة. المضاعف m يطلق مقذوفاً واحداً ويستهلك m ويخصم m من صحة الزعيم عند إصابته مباشرة. الإخفاق والدروع المظلمة يستهلكان m أيضاً. المكعبات الدائمة ومواد القلعة لا تُستهلك."})[locale] || "Each collected block gives 1 run ammo. A multiplier m fires one projectile, spends m ammo and deals m HP on a direct Boss hit. Misses and dark shields also cost m. Permanent blocks and castle materials are never spent.";
   const motionPreference = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+  const hoverPreference = window.matchMedia?.("(hover: hover) and (pointer: fine)");
   const section = document.createElement("section");
   section.className = "demon-event-preview";
   section.hidden = true;
   section.dataset.runtimeLocalize = "off";
   section.setAttribute("aria-label", strings.title);
-  const events = [{ id: "demon-assault", title: strings.title, image: "/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1" }];
+  const events = [{
+    id: "demon-assault", title: strings.title,
+    image: "/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1",
+    details: { line: strings.line, body: strings.note, blocks: strings.blocks, schedule: daily[1], reward: strings.reward },
+    entry: { kind: "activity", path: "/activities/demon-assault/", label: daily[0] },
+    renderer: "demon-assault",
+  }];
   // Local-only fixtures let the carousel behavior be exercised without publishing placeholder events.
   const fixtureCount = location.hostname === "localhost" || location.hostname === "127.0.0.1"
     ? Math.max(0, Math.min(3, Number(new URLSearchParams(location.search).get("wpActivityFixture")) || 0)) : 0;
   if (fixtureCount > 1) {
-    while (events.length < fixtureCount) events.push({ ...events[0], id: `local-fixture-${events.length + 1}`, title: `${strings.title} · ${events.length + 1}` });
+    while (events.length < fixtureCount) {
+      const number = events.length + 1;
+      events.push({
+        id: `local-fixture-${number}`, title: `Local event fixture ${number}`,
+        image: events[0].image,
+        details: {
+          line: `Fixture ${number}: isolated local event detail.`,
+          body: `This test event has its own detail and safe local route. It never opens the Demon Assault activity.`,
+          blocks: "Local fixture", schedule: `Local schedule ${number}`, reward: `Local reward placeholder ${number}`,
+        },
+        entry: { kind: "local-fixture", label: `Open local fixture ${number}` },
+        renderer: null,
+      });
+    }
   }
-  const slides = events.map((event, index) => `<button class="demon-event-card" type="button" data-event-index="${index}" aria-label="${event.title}"><span class="demon-event-art" aria-hidden="true"><img src="${event.image}" alt="" width="768" height="768" loading="lazy" decoding="async" /></span><span class="demon-event-copy"><span class="demon-event-title">${event.title}</span></span></button>`).join("");
-  section.innerHTML = `<div class="demon-event-track" role="group" aria-label="${strings.title}">${slides}</div><div class="demon-event-carousel-controls"${events.length < 2 ? " hidden" : ""}><button type="button" class="demon-event-step" data-step="-1" aria-label="${strings.previous}">‹</button><span class="demon-event-position" aria-live="polite">1 / ${events.length}</span><button type="button" class="demon-event-step" data-step="1" aria-label="${strings.next}">›</button></div>`;
+  const trackElement = document.createElement("div");
+  trackElement.className = "demon-event-track";
+  trackElement.setAttribute("role", "group");
+  trackElement.setAttribute("aria-label", strings.title);
+  for (const [index, event] of events.entries()) {
+    const card = document.createElement("button");
+    card.className = "demon-event-card";
+    card.type = "button";
+    card.dataset.eventIndex = String(index);
+    card.setAttribute("aria-label", event.title);
+    const art = document.createElement("span");
+    art.className = "demon-event-art";
+    art.setAttribute("aria-hidden", "true");
+    const image = document.createElement("img");
+    image.src = event.image;
+    image.alt = "";
+    image.width = 768;
+    image.height = 768;
+    image.loading = "lazy";
+    image.decoding = "async";
+    const title = document.createElement("span");
+    title.className = "demon-event-title";
+    title.textContent = event.title;
+    art.append(image, title);
+    card.append(art);
+    trackElement.append(card);
+  }
+  const controls = document.createElement("div");
+  controls.className = "demon-event-carousel-controls";
+  controls.hidden = events.length < 2;
+  controls.innerHTML = `<button type="button" class="demon-event-step" data-step="-1" aria-label="${strings.previous}">‹</button><span class="demon-event-position" aria-live="polite">1 / ${events.length}</span><button type="button" class="demon-event-step" data-step="1" aria-label="${strings.next}">›</button>`;
+  section.append(trackElement, controls);
   const dialog = document.createElement("dialog");
   dialog.className = "demon-event-dialog";
   dialog.setAttribute("aria-labelledby", "demonEventDialogTitle");
-  dialog.innerHTML = `<form method="dialog"><button class="demon-event-close" type="submit" aria-label="${strings.close}">×</button></form><header class="demon-event-dialog-heading"><p class="demon-event-dialog-eyebrow">${strings.open}</p><h2 id="demonEventDialogTitle">${strings.title}</h2></header><div class="demon-event-dialog-body"><p>${strings.line}</p><p>${strings.note}</p><p class="demon-event-count"><span>${strings.blocks}</span><strong data-owned-blocks>—</strong></p><p class="demon-event-dialog-schedule">${daily[1]}</p><p class="demon-event-dialog-reward">${strings.reward}</p></div><div class="demon-event-dialog-actions"></div>`;
+  dialog.innerHTML = `<form method="dialog"><button class="demon-event-close" type="submit" aria-label="${strings.close}">×</button></form><header class="demon-event-dialog-heading"><p class="demon-event-dialog-eyebrow">${strings.open}</p><h2 id="demonEventDialogTitle"></h2></header><div class="demon-event-dialog-body"><p data-event-line></p><p data-event-body></p><p class="demon-event-count"><span data-event-blocks></span><strong data-owned-blocks>—</strong></p><p class="demon-event-dialog-schedule"></p><p class="demon-event-dialog-reward"></p></div><div class="demon-event-dialog-actions"></div>`;
   document.body.append(dialog);
   const openButtons = [...section.querySelectorAll(".demon-event-card")];
   const dialogActions = dialog.querySelector(".demon-event-dialog-actions");
+  let launchButton = null;
   if (!isKidsLobby) {
-    const launch = document.createElement("button");
-    launch.type = "button";
-    launch.className = "demon-event-dialog-done demon-event-dialog-play";
-    launch.textContent = daily[0];
-    const startDailyBattle = () => {
+    launchButton = document.createElement("button");
+    launchButton.type = "button";
+    launchButton.className = "demon-event-dialog-done demon-event-dialog-play";
+    launchButton.addEventListener("click", () => {
+      const selected = events[activeIndex];
+      if (selected.entry.kind === "local-fixture" && fixtureCount > 0) {
+        const destination = new URL(window.location.href);
+        destination.searchParams.set("wpActivityFixture", String(fixtureCount));
+        destination.searchParams.set("fixtureLaunch", selected.id);
+        window.location.assign(destination.href);
+        return;
+      }
       let blocks = "";
       try { const count = window.WeightPlayCastle?.ownedBlocks?.(); if (Number.isFinite(Number(count)) && Number(count) >= 0) blocks = `&blocks=${encodeURIComponent(Math.floor(Number(count)))}`; } catch {}
-      const params = `?locale=${encodeURIComponent(locale)}${blocks}`;
-      window.location.href = `/activities/demon-assault/${params}`;
-    };
-    launch.addEventListener("click", startDailyBattle);
-    dialogActions.append(launch);
+      window.location.href = `${selected.entry.path}?locale=${encodeURIComponent(locale)}${blocks}`;
+    });
+    dialogActions.append(launchButton);
   }
   let returnFocus = null;
   function restoreFocus() {
@@ -442,24 +498,47 @@ function createDemonEventPreview() {
   const position = section.querySelector(".demon-event-position");
   let activeIndex = 0;
   let carouselTimer = 0;
-  let carouselPaused = false;
   let dragStart = null;
   let suppressCardClick = false;
+  let lastPointerType = null;
+  const isKeyboardFocused = () => Boolean(section.querySelector(":focus-visible"));
+  const isHoverPaused = () => Boolean(lastPointerType !== "touch" && hoverPreference?.matches && section.matches(":hover"));
+  const isPaused = () => Boolean(dragStart || isKeyboardFocused() || isHoverPaused());
+  const updateDialog = () => {
+    const selected = events[activeIndex];
+    dialog.querySelector("#demonEventDialogTitle").textContent = selected.title;
+    dialog.querySelector("[data-event-line]").textContent = selected.details.line;
+    dialog.querySelector("[data-event-body]").textContent = selected.details.body;
+    dialog.querySelector("[data-event-blocks]").textContent = selected.details.blocks;
+    dialog.querySelector(".demon-event-dialog-schedule").textContent = selected.details.schedule;
+    dialog.querySelector(".demon-event-dialog-reward").textContent = selected.details.reward;
+    if (launchButton) launchButton.textContent = selected.entry.label;
+    dialog.querySelector(".demon-event-count").hidden = selected.id !== "demon-assault";
+  };
   const goTo = index => {
+    const previousArt = openButtons[activeIndex]?.querySelector(".demon-event-art");
     activeIndex = (index + events.length) % events.length;
     const card = openButtons[activeIndex];
+    const nextArt = card?.querySelector(".demon-event-art");
     card.scrollIntoView({ behavior: motionPreference?.matches ? "auto" : "smooth", block: "nearest", inline: "center" });
     if (position) position.textContent = `${activeIndex + 1} / ${events.length}`;
+    if (previousArt !== nextArt) {
+      if (previousArt) visibilityObserver?.unobserve(previousArt);
+      inViewport = !visibilityObserver;
+      if (nextArt) visibilityObserver?.observe(nextArt);
+      updateMotion();
+    }
   };
   const stopCarousel = () => { window.clearTimeout(carouselTimer); carouselTimer = 0; };
   const scheduleCarousel = () => {
     stopCarousel();
-    if (events.length < 2 || carouselPaused || section.hidden || document.hidden || dialog.open || motionPreference?.matches
-      || section.matches(":hover") || section.contains(document.activeElement)) return;
+    if (events.length < 2 || isPaused() || section.hidden || document.hidden || dialog.open || motionPreference?.matches) return;
     carouselTimer = window.setTimeout(() => { goTo(activeIndex + 1); scheduleCarousel(); }, 5000);
   };
   for (const button of openButtons) button.addEventListener("click", event => {
     if (suppressCardClick) { event.preventDefault(); event.stopPropagation(); suppressCardClick = false; return; }
+    goTo(Number(button.dataset.eventIndex));
+    updateDialog();
     returnFocus = button;
     stopCarousel();
     if (typeof dialog.showModal === "function") {
@@ -468,30 +547,42 @@ function createDemonEventPreview() {
     }
   });
   section.querySelectorAll(".demon-event-step").forEach(button => button.addEventListener("click", () => { goTo(activeIndex + Number(button.dataset.step)); scheduleCarousel(); }));
-  track.addEventListener("pointerdown", event => { dragStart = { x: event.clientX, y: event.clientY }; carouselPaused = true; stopCarousel(); }, { passive: true });
-  track.addEventListener("pointerup", event => {
-    if (!dragStart) return;
+  track.addEventListener("pointerdown", event => {
+    lastPointerType = event.pointerType || "mouse";
+    dragStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
+    stopCarousel();
+  }, { passive: true });
+  const endPointer = event => {
+    if (!dragStart || (Number.isFinite(event.pointerId) && dragStart.id !== event.pointerId)) return;
     const dx = event.clientX - dragStart.x;
     const dy = event.clientY - dragStart.y;
     dragStart = null;
     if (Math.abs(dx) > 38 && Math.abs(dx) > Math.abs(dy) * 1.2) {
       suppressCardClick = true;
       goTo(activeIndex + (dx < 0 ? 1 : -1));
-      window.setTimeout(() => { suppressCardClick = false; }, 0);
+      window.setTimeout(() => { suppressCardClick = false; }, 350);
     }
-    carouselPaused = false;
     scheduleCarousel();
-  }, { passive: true });
-  track.addEventListener("pointercancel", () => { dragStart = null; carouselPaused = false; scheduleCarousel(); });
+  };
+  window.addEventListener("pointerup", endPointer, { passive: true });
+  window.addEventListener("pointercancel", () => { dragStart = null; scheduleCarousel(); }, { passive: true });
+  window.addEventListener("blur", () => { dragStart = null; scheduleCarousel(); });
+  const onPointerMove = event => {
+    if (event.pointerType !== "mouse") return;
+    lastPointerType = "mouse";
+    if (isHoverPaused()) stopCarousel();
+    else scheduleCarousel();
+  };
+  document.addEventListener("pointermove", onPointerMove, { passive: true });
   section.addEventListener("weightplay:activity-visibility", event => {
     if (event.detail?.visible) scheduleCarousel();
-    else { stopCarousel(); carouselPaused = false; }
+    else { stopCarousel(); dragStart = null; }
   });
-  section.addEventListener("focusin", () => { carouselPaused = true; stopCarousel(); });
-  section.addEventListener("focusout", event => { if (!section.contains(event.relatedTarget)) { carouselPaused = false; scheduleCarousel(); } });
-  section.addEventListener("mouseenter", () => { carouselPaused = true; stopCarousel(); });
-  section.addEventListener("mouseleave", () => { carouselPaused = false; scheduleCarousel(); });
-  dialog.addEventListener("close", () => { carouselPaused = false; scheduleCarousel(); });
+  section.addEventListener("focusin", () => { if (isKeyboardFocused()) stopCarousel(); else scheduleCarousel(); });
+  section.addEventListener("focusout", () => requestAnimationFrame(scheduleCarousel));
+  section.addEventListener("mouseenter", () => { if (hoverPreference?.matches) stopCarousel(); });
+  section.addEventListener("mouseleave", () => { if (hoverPreference?.matches) scheduleCarousel(); });
+  dialog.addEventListener("close", scheduleCarousel);
   document.addEventListener("visibilitychange", scheduleCarousel);
   motionPreference?.addEventListener?.("change", scheduleCarousel);
   scheduleCarousel();
@@ -543,7 +634,8 @@ function createDemonEventPreview() {
     artSession = null;
   };
   const updateMotion = () => {
-    const play = !artDisposed && !section.hidden && inViewport && !document.hidden && !motionPreference?.matches;
+    const play = !artDisposed && !section.hidden && inViewport && !document.hidden && !motionPreference?.matches
+      && events[activeIndex]?.renderer === "demon-assault";
     section.dataset.motion = play ? "on" : "off";
     if (!play) { releaseArt(); return; }
     if (artLoading || artSession || artFailed) return;
@@ -553,7 +645,12 @@ function createDemonEventPreview() {
     artAbort = controller;
     const isCurrent = () => generation === artGeneration && !artDisposed && section.dataset.motion === "on" && !section.hidden && !document.hidden;
     import("/src/demon-event-pixi.mjs")
-      .then(module => isCurrent() ? module.mountDemonEventArt(section.querySelector(".demon-event-art"), { isCurrent, signal: controller.signal }) : null)
+    .then(module => {
+      const selected = events[activeIndex];
+      const art = openButtons[activeIndex]?.querySelector(".demon-event-art");
+      return isCurrent() && selected.renderer === "demon-assault" && art
+        ? module.mountDemonEventArt(art, { isCurrent, signal: controller.signal }) : null;
+    })
       .then(session => { if (isCurrent()) artSession = session; else session?.destroy(); })
       .catch(() => { if (isCurrent()) artFailed = true; })
       .finally(() => { artLoading = false; if (!artFailed && !artDisposed && section.dataset.motion === "on" && !artSession) updateMotion(); });
@@ -561,8 +658,8 @@ function createDemonEventPreview() {
   let visibilityObserver;
   if ("IntersectionObserver" in window) {
     visibilityObserver = new IntersectionObserver(entries => { inViewport = Boolean(entries[0]?.isIntersecting); updateMotion(); }, { threshold: 0.12 });
-    visibilityObserver.observe(section.querySelector(".demon-event-art"));
-  }
+    visibilityObserver.observe(openButtons[activeIndex]?.querySelector(".demon-event-art"));
+  } else inViewport = true;
   const hiddenObserver = new MutationObserver(() => { updateMotion(); scheduleCarousel(); });
   hiddenObserver.observe(section, { attributes: true, attributeFilter: ["hidden"] });
   document.addEventListener("visibilitychange", updateMotion);
@@ -576,6 +673,7 @@ function createDemonEventPreview() {
     hiddenObserver.disconnect();
     document.removeEventListener("visibilitychange", updateMotion);
     document.removeEventListener("visibilitychange", scheduleCarousel);
+    document.removeEventListener("pointermove", onPointerMove);
     motionPreference?.removeEventListener?.("change", updateMotion);
     motionPreference?.removeEventListener?.("change", scheduleCarousel);
     stopCarousel();

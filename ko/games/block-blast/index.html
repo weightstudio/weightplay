@@ -12,6 +12,8 @@
     />
     <meta name="robots" content="index,follow" />
     <meta name="weightplay-audience" content="general" />
+    <meta name="weightplay-game-version" content="v41" />
+    <meta name="weightplay-interface-version" content="9" />
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="theme-color" content="#17243d" />
     <title>블록 블라스트 | WeightPlay</title>
@@ -45,19 +47,14 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link
       rel="stylesheet"
-      href="../../src/stage-selector-standard.css"
-      data-wp-stage-standard
-    />
-    <link
-      rel="stylesheet"
       href="../../src/battle-canvas-standard.css"
       data-wp-battle-standard
     />
-    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260913-block-frame-v37" />
-    <link rel="stylesheet" href="style.css?v=20260913-block-frame-v37" />
+    <link rel="stylesheet" href="../arrow-escape/style.css?v=20261017-block-blast-v41-i9" />
+    <link rel="stylesheet" href="style.css?v=20261017-block-blast-v41-i9" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36" data-wp-tutorial-style />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
-    <link rel="stylesheet" href="frame-content.css?v=20261002-block-board-inset-v40" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" />
+    <link rel="stylesheet" href="frame-content.css?v=20261017-block-blast-v41-i9" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -91,9 +88,12 @@
     </script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play-spacing1">
 </head>
   <body data-wp-game-owned-guide="true"
     data-wp-game-id="block-blast"
+    data-wp-game-version="v41"
+    data-wp-interface-version="9"
     data-wp-audience="general"
   >
     <section id="loadingPanel" class="loading-panel" aria-live="polite">
@@ -147,16 +147,11 @@
           </div>
         </section>
       </main>
-      <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" data-wp-text-growth="1.4.0" data-runtime-localize="off" aria-labelledby="block-blast-text-guide-title"><div class="game-info-hero"><div class="game-info-title"><h2 data-i18n="title" id="block-blast-text-guide-title">블록 블라스트</h2><p data-i18n="pitch">세 모양을 모두 놓고 완성된 행이나 열을 지우세요.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-i18n="tgTag1">블록 퍼즐</span><span data-i18n="tgTag2">행과 열 지우기</span><span data-i18n="tgTag3">세 모양 배치 계획</span></div></div><div class="game-info-sections"><div class="game-info-section"><h3 data-i18n="howTitle">플레이 방법</h3><ol><li data-i18n="how1">고정된 세 모양을 모두 확인한 뒤 하나를 8×8 보드에 놓으세요.</li><li data-i18n="how2">떠오르는 미리보기로 착지 위치를 확인하고 큰 모양을 위해 긴 길이나 넓은 빈 공간을 남기세요.</li><li data-i18n="how3">행이나 열을 완성하면 지워집니다. 세 모양을 모두 쓰면 계속할 수 있을 때 새 세트가 나옵니다.</li></ol><p data-i18n="helpText">첫 배치 전에 세 모양 전체의 자리를 계획하세요. 고정 모양은 회전할 수 없으며, 사용하지 않은 모양이 모두 놓일 곳이 없으면 그 판이 끝납니다.</p></div><div class="game-info-section"><h3 data-i18n="tgProgressTitle">스테이지와 진행</h3><p data-i18n="tgProgress">30개 미션의 캠페인이나 무한 점수 모드를 선택하세요. 캠페인 목표는 줄, 흙, 얼음과 돌, 지정 색, 보석과 잠금, 혼합 목표로 달라집니다. 일부 미션은 세 모양 세트의 사용 횟수를 제한합니다. 보석을 덮으면 잠금 하나가 열리고 얼음과 흙은 줄과 함께 지워지며 돌 위에는 놓을 수 없습니다.</p></div><div class="game-info-section"><h3 data-i18n="tgTipsTitle">다음 수 고르기</h3><p data-i18n="tgTips">작은 모양을 놓기 전에 남은 큰 모양이 그 공간을 필요로 하는지 확인하세요. 줄을 지우면 공간이 생기지만 고립된 틈은 채우기 어렵습니다. 무한 모드에는 넓은 모양과 3×3 정사각형도 나오므로 큰 빈 공간을 모두 좁게 나누지 마세요.</p></div><div class="game-info-section"><h3 data-i18n="tgDesignTitle">퍼즐의 원리</h3><p data-i18n="tgDesign">모양의 방향은 고정되어 있고 자동으로 떨어지지 않습니다. 행이나 열을 지우면 트레이의 다른 모양을 놓을 자리도 달라집니다. 배치만으로는 점수를 얻지 못하고 줄을 완성해야 합니다. 여러 줄을 동시에 지우거나 연속으로 줄을 지우면 점수가 높아집니다.</p></div><div class="game-info-section"><h3 data-i18n="tgSaveTitle">플레이어 및 저장 정보</h3><p data-i18n="tgSave">모양을 드래그하거나 먼저 모양을 선택한 뒤 보드 칸을 고르세요. 계정은 필요하지 않습니다. 캠페인 해금, 설정, 무한 모드 최고 점수는 이 브라우저에 저장됩니다. 다시 시작은 미완성 보드를 복원하지 않고 새 시도를 시작합니다. 브라우저 데이터를 지우면 기록이 없어질 수 있으며 다른 기기의 진행 상황과 자동으로 공유되지 않습니다.</p></div><div class="game-info-section"><h3 data-i18n="tgFaqTitle">자주 묻는 질문</h3><dl><div><dt data-i18n="tgFaqQ1">모양을 회전할 수 있나요?</dt><dd data-i18n="tgFaqA1">아니요. 모든 모양은 트레이에 표시된 방향 그대로 사용합니다.</dd></div><div><dt data-i18n="tgFaqQ2">언제 점수가 오르나요?</dt><dd data-i18n="tgFaqA2">행이나 열을 완성해 지울 때 점수를 얻습니다. 줄을 지우지 않고 모양만 놓으면 점수가 오르지 않습니다.</dd></div><div><dt data-i18n="tgFaqQ3">스테이지는 몇 개인가요?</dt><dd data-i18n="tgFaqA3">캠페인은 30개 미션입니다. 무한 모드는 남은 모양을 놓을 수 있는 자리가 없어질 때까지 계속됩니다.</dd></div><div><dt data-i18n="tgFaqQ4">얼음과 돌은 어떻게 다른가요?</dt><dd data-i18n="tgFaqA4">얼음 위에는 블록을 놓을 수 있지만 해당 행이나 열을 지울 때까지 얼음이 남습니다. 돌이 있는 칸에는 놓을 수 없습니다.</dd></div><div><dt data-i18n="tgFaqQ5">왜 이번 시도가 끝났나요?</dt><dd data-i18n="tgFaqA5">사용하지 않은 모양을 하나도 놓을 수 없으면 끝납니다. 캠페인에서는 목표를 이루기 전에 세트 한도에 도달해도 끝날 수 있습니다.</dd></div><div><dt data-i18n="tgFaqQ6">무엇이 저장되나요?</dt><dd data-i18n="tgFaqA6">캠페인 해금, 설정, 무한 모드 최고 점수가 이 브라우저에 저장됩니다. 브라우저 데이터를 지우면 사라질 수 있으며 다른 기기로 자동 이전되지 않습니다.</dd></div></dl></div><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>더 많은 관련 게임</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="hexa-sort" href="/ko/games/hexa-sort/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/hexa-sort.webp" data-final-src="/assets/weightplay-logo.png" alt="헥사 소트" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">헥사 소트</strong><span data-i18n="tgRelatedWhy1">색깔 육각형을 정리해 같은 색끼리 쌓으세요.</span></span></a><a class="game-info-related-card" data-game-id="animal-unblock" href="/ko/games/animal-unblock/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-unblock.webp" data-final-src="/assets/weightplay-logo.png" alt="언블록 트레일" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">언블록 트레일</strong><span data-i18n="tgRelatedWhy2">블록을 밀어 출구로 가는 길을 여세요.</span></span></a></div></div></div></section>
+      <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" data-wp-text-growth="1.4.0" data-runtime-localize="off" aria-labelledby="block-blast-text-guide-title"><div class="game-info-hero"><div class="game-info-title"><h2 data-i18n="title" id="block-blast-text-guide-title">블록 블라스트</h2><p data-i18n="pitch">세 모양을 모두 놓고 완성된 행이나 열을 지우세요.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-i18n="tgTag1">블록 퍼즐</span><span data-i18n="tgTag2">행과 열 지우기</span><span data-i18n="tgTag3">세 모양 배치 계획</span></div></div><div class="game-info-sections"><div class="game-info-section"><h3 data-i18n="howTitle">플레이 방법</h3><ol><li data-i18n="how1">고정된 세 모양을 모두 확인한 뒤 하나를 8×8 보드에 놓으세요.</li><li data-i18n="how2">떠오르는 미리보기로 착지 위치를 확인하고 큰 모양을 위해 긴 길이나 넓은 빈 공간을 남기세요.</li><li data-i18n="how3">행이나 열을 완성하면 지워집니다. 세 모양을 모두 쓰면 계속할 수 있을 때 새 세트가 나옵니다.</li></ol><p data-i18n="helpText">첫 배치 전에 세 모양 전체의 자리를 계획하세요. 고정 모양은 회전할 수 없으며, 사용하지 않은 모양이 모두 놓일 곳이 없으면 그 판이 끝납니다.</p></div><div class="game-info-section"><h3 data-i18n="tgProgressTitle">스테이지와 진행</h3><p data-i18n="tgProgress">30개 미션의 캠페인이나 무한 점수 모드를 선택하세요. 캠페인 목표는 줄, 흙, 얼음과 돌, 지정 색, 보석과 잠금, 혼합 목표로 달라집니다. 일부 미션은 세 모양 세트의 사용 횟수를 제한합니다. 보석을 덮으면 잠금 하나가 열리고 얼음과 흙은 줄과 함께 지워지며 돌 위에는 놓을 수 없습니다.</p></div><div class="game-info-section"><h3 data-i18n="tgTipsTitle">다음 수 고르기</h3><p data-i18n="tgTips">작은 모양을 놓기 전에 남은 큰 모양이 그 공간을 필요로 하는지 확인하세요. 줄을 지우면 공간이 생기지만 고립된 틈은 채우기 어렵습니다. 무한 모드에는 넓은 모양과 3×3 정사각형도 나오므로 큰 빈 공간을 모두 좁게 나누지 마세요.</p></div><div class="game-info-section"><h3 data-i18n="tgDesignTitle">퍼즐의 원리</h3><p data-i18n="tgDesign">모양의 방향은 고정되어 있고 자동으로 떨어지지 않습니다. 행이나 열을 지우면 트레이의 다른 모양을 놓을 자리도 달라집니다. 배치만으로는 점수를 얻지 못하고 줄을 완성해야 합니다. 여러 줄을 동시에 지우거나 연속으로 줄을 지우면 점수가 높아집니다.</p></div><div class="game-info-section"><h3 data-i18n="tgSaveTitle">플레이어 및 저장 정보</h3><p data-i18n="tgSave">모양을 드래그하거나 먼저 모양을 선택한 뒤 보드 칸을 고르세요. 계정은 필요하지 않습니다. 캠페인 해금, 설정, 무한 모드 최고 점수는 이 브라우저에 저장됩니다. 다시 시작은 미완성 보드를 복원하지 않고 새 시도를 시작합니다. 브라우저 데이터를 지우면 기록이 없어질 수 있으며 다른 기기의 진행 상황과 자동으로 공유되지 않습니다.</p></div><div class="game-info-section"><h3 data-i18n="tgFaqTitle">자주 묻는 질문</h3><dl><div><dt data-i18n="tgFaqQ1">모양을 회전할 수 있나요?</dt><dd data-i18n="tgFaqA1">아니요. 모든 모양은 트레이에 표시된 방향 그대로 사용합니다.</dd></div><div><dt data-i18n="tgFaqQ2">언제 점수가 오르나요?</dt><dd data-i18n="tgFaqA2">행이나 열을 완성해 지울 때 점수를 얻습니다. 줄을 지우지 않고 모양만 놓으면 점수가 오르지 않습니다.</dd></div><div><dt data-i18n="tgFaqQ3">스테이지는 몇 개인가요?</dt><dd data-i18n="tgFaqA3">캠페인은 30개 미션입니다. 무한 모드는 남은 모양을 놓을 수 있는 자리가 없어질 때까지 계속됩니다.</dd></div><div><dt data-i18n="tgFaqQ4">얼음과 돌은 어떻게 다른가요?</dt><dd data-i18n="tgFaqA4">얼음 위에는 블록을 놓을 수 있지만 해당 행이나 열을 지울 때까지 얼음이 남습니다. 돌이 있는 칸에는 놓을 수 없습니다.</dd></div><div><dt data-i18n="tgFaqQ5">왜 이번 시도가 끝났나요?</dt><dd data-i18n="tgFaqA5">사용하지 않은 모양을 하나도 놓을 수 없으면 끝납니다. 캠페인에서는 목표를 이루기 전에 세트 한도에 도달해도 끝날 수 있습니다.</dd></div><div><dt data-i18n="tgFaqQ6">무엇이 저장되나요?</dt><dd data-i18n="tgFaqA6">캠페인 해금, 설정, 무한 모드 최고 점수가 이 브라우저에 저장됩니다. 브라우저 데이터를 지우면 사라질 수 있으며 다른 기기로 자동 이전되지 않습니다.</dd></div></dl></div><div class="game-info-section"><h3 data-i18n="tgRelatedTitle">관련 게임</h3><div class="game-info-related"><a class="game-info-related-card" data-wp-text-related="hexa-sort" href="/ko/games/hexa-sort/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName1">헥사 소트</strong><span data-i18n="tgRelatedWhy1">색깔 육각형을 정리해 같은 색끼리 쌓으세요.</span></span></a><a class="game-info-related-card" data-wp-text-related="animal-unblock" href="/ko/games/animal-unblock/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName2">언블록 트레일</strong><span data-i18n="tgRelatedWhy2">블록을 밀어 출구로 가는 길을 여세요.</span></span></a></div></div></div></section>
     </div>
     <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
-        <div
-          class="stage-canvas"
-          data-wp-standard-stage-screen
-          data-wp-logical-stage-canvas
-          data-wp-canvas-max-width="920"
-        >
+        <div class="stage-canvas">
           <header class="stage-header">
             <button
               id="stageBack"
@@ -175,21 +170,7 @@
             </button>
           </header>
           <div id="stageRail" class="stage-rail" data-wp-stage-rail aria-label="스테이지 선택" data-wp-text-aria="chooseStage"></div>
-          <footer class="stage-footer">
-            <p class="stage-hint" data-i18n="stageHint">열린 미션을 선택하세요.</p>
-            <nav class="stage-tabs" aria-label="스테이지 맵">
-              <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">스테이지 맵</button>
-            </nav>
-          </footer>
-          <button
-            id="enterStage"
-            class="primary stage-enter"
-            type="button"
-            data-wp-enter-battle
-            data-i18n="enter"
-          >입장</button>
         </div>
-        <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
       </div>
     </section>
     <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
@@ -304,25 +285,20 @@
       </div>
     </section>
     </div>
-    <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+    <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script>window.WonderAnalytics?.track("game_view",{game_id:"block-blast"});</script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script>
-    <script src="/src/runtime-locales/ko.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260802-block-blast1"></script>
     <script src="../../src/edge-guard.js"></script>
-    <script
-       src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
-      data-wp-stage-virtualization-standard
-    ></script>
-    <script src="game.js?v=20260926-block-blast-v39-semantic-audio&amp;wp-text=1.4.0"></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-    <script src="frame.js?v=20260913-block-frame-v37"></script>
-    <script
-      src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
-      data-wp-stage-standard
-    ></script>
+    <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
+    <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
+    <script src="game.js?v=20261017-block-blast-v41-i9&amp;wp-text=1.4.0"></script>
+    <script src="stage-config.js?v=20261017-block-blast-v41-i9"></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+    <script src="frame.js?v=20261017-block-blast-v41-i9"></script>
     <script
       src="../../src/battle-canvas-standard.js"
       data-wp-battle-standard

@@ -1,9 +1,5 @@
 /* Only game-content layout. Shared core owns all headers and preferences. */
-.blast-stage-content,.blast-battle-content {background:linear-gradient(#09203955,#09203977),url('/assets/block-blast/workshop-block-v37.webp') center/cover}
-.blast-stage-content {display:flex;flex-direction:column;min-height:0;overflow:hidden}
-.blast-stage-content #stageRail {flex:1;min-height:0}
-.blast-stage-content #enterStage {position:static;flex:none}
-.blast-battle-content {display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto auto;min-height:0;gap:6px}
+.blast-battle-content {background:linear-gradient(#09203955,#09203977),url('/assets/block-blast/workshop-block-v37.webp') center/cover;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto auto;min-height:0;gap:6px}
 #battleLive>.blast-battle-content>.objective-row {grid-row:1!important;grid-column:1!important}
 #battleLive>.blast-battle-content>.block-play {grid-row:2!important;grid-column:1!important;min-height:0}
 #battleLive>.blast-battle-content>#feedback {grid-row:3!important;grid-column:1!important}

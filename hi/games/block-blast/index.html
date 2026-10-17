@@ -12,6 +12,8 @@
     />
     <meta name="robots" content="index,follow" />
     <meta name="weightplay-audience" content="general" />
+    <meta name="weightplay-game-version" content="v41" />
+    <meta name="weightplay-interface-version" content="9" />
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="theme-color" content="#17243d" />
     <title>ब्लॉक ब्लास्ट | WeightPlay</title>
@@ -45,19 +47,14 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link
       rel="stylesheet"
-      href="../../src/stage-selector-standard.css"
-      data-wp-stage-standard
-    />
-    <link
-      rel="stylesheet"
       href="../../src/battle-canvas-standard.css"
       data-wp-battle-standard
     />
-    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260913-block-frame-v37" />
-    <link rel="stylesheet" href="style.css?v=20260913-block-frame-v37" />
+    <link rel="stylesheet" href="../arrow-escape/style.css?v=20261017-block-blast-v41-i9" />
+    <link rel="stylesheet" href="style.css?v=20261017-block-blast-v41-i9" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36" data-wp-tutorial-style />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
-    <link rel="stylesheet" href="frame-content.css?v=20261002-block-board-inset-v40" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" />
+    <link rel="stylesheet" href="frame-content.css?v=20261017-block-blast-v41-i9" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -91,9 +88,12 @@
     </script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play-spacing1">
 </head>
   <body data-wp-game-owned-guide="true"
     data-wp-game-id="block-blast"
+    data-wp-game-version="v41"
+    data-wp-interface-version="9"
     data-wp-audience="general"
   >
     <section id="loadingPanel" class="loading-panel" aria-live="polite">
@@ -147,16 +147,11 @@
           </div>
         </section>
       </main>
-      <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" data-wp-text-growth="1.4.0" data-runtime-localize="off" aria-labelledby="block-blast-text-guide-title"><div class="game-info-hero"><div class="game-info-title"><h2 data-i18n="title" id="block-blast-text-guide-title">ब्लॉक ब्लास्ट</h2><p data-i18n="pitch">तीनों आकार रखें और पूरी पंक्ति या स्तंभ मिटाएँ।</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-i18n="tgTag1">ब्लॉक पहेली</span><span data-i18n="tgTag2">पंक्ति और स्तंभ मिटाना</span><span data-i18n="tgTag3">तीन आकारों की योजना</span></div></div><div class="game-info-sections"><div class="game-info-section"><h3 data-i18n="howTitle">कैसे खेलें</h3><ol><li data-i18n="how1">8×8 बोर्ड पर कोई आकार रखने से पहले तीनों स्थिर आकार देख लें।</li><li data-i18n="how2">ऊपर उठे पूर्वावलोकन से जगह पक्की करें और बड़े आकारों के लिए लंबी पंक्तियाँ या चौड़ी खाली जगह बचाएँ।</li><li data-i18n="how3">पूरी पंक्ति या स्तंभ बनाकर उसे मिटाएँ। तीनों आकार इस्तेमाल होने के बाद, खेल जारी रह सके तो नया समूह आता है।</li></ol><p data-i18n="helpText">पहला आकार रखने से पहले पूरे तीन-आकार समूह की योजना बनाएँ। स्थिर आकार घूम नहीं सकते; यदि कोई भी बचा हुआ आकार वैध जगह पर न बैठ सके तो खेल समाप्त हो जाता है।</p></div><div class="game-info-section"><h3 data-i18n="tgProgressTitle">चरण और प्रगति</h3><p data-i18n="tgProgress">30 मिशन वाली कैंपेन या स्कोर के लिए अनंत मोड चुनें। लक्ष्य बदलते हैं: लाइनें, मिट्टी, बर्फ और पत्थर, खास रंग, रत्न और ताले, फिर मिले-जुले लक्ष्य। कुछ मिशनों में तीन-आकार समूहों की सीमा होती है। रत्न ढकने से एक ताला खुलता है; बर्फ और मिट्टी पूरी लाइन के साथ मिटते हैं, लेकिन पत्थर पर आकार नहीं रखा जा सकता।</p></div><div class="game-info-section"><h3 data-i18n="tgTipsTitle">अगली चाल की योजना</h3><p data-i18n="tgTips">छोटा आकार रखने से पहले जाँचें कि बचे हुए बड़े आकार को उस जगह की ज़रूरत तो नहीं है। लाइन मिटने से जगह खुलती है, लेकिन अलग-अलग छोटे खाली खाने भरना कठिन होता है। अनंत मोड में चौड़े आकार और 3×3 वर्ग भी आ सकते हैं, इसलिए हर बड़े खाली हिस्से को सँकरी जगहों में न बाँटें।</p></div><div class="game-info-section"><h3 data-i18n="tgDesignTitle">पहेली कैसे काम करती है</h3><p data-i18n="tgDesign">आकार अपनी दिशा बनाए रखते हैं और अपने आप नीचे नहीं गिरते। पंक्ति या स्तंभ मिटने से ट्रे के अन्य आकारों के लिए जगह बदलती है। केवल आकार रखने से अंक नहीं मिलते; पूरी लाइन बनाने से मिलते हैं। एक साथ कई लाइनें मिटाने और लगातार चालों में लाइन मिटाने से स्कोर बढ़ता है।</p></div><div class="game-info-section"><h3 data-i18n="tgSaveTitle">खिलाड़ी और सेव की जानकारी</h3><p data-i18n="tgSave">आकार खींचकर रखें या पहले आकार चुनें और फिर बोर्ड का खाना। खाते की ज़रूरत नहीं है। कैंपेन की प्रगति, पसंद और अनंत मोड का सर्वोच्च स्कोर इसी ब्राउज़र में रहते हैं। फिर शुरू करने पर नया प्रयास होता है, अधूरा बोर्ड वापस नहीं आता। ब्राउज़र डेटा मिटाने पर रिकॉर्ड खो सकते हैं; दूसरे उपकरण की प्रगति अलग रहती है।</p></div><div class="game-info-section"><h3 data-i18n="tgFaqTitle">अक्सर पूछे जाने वाले प्रश्न</h3><dl><div><dt data-i18n="tgFaqQ1">क्या आकार घुमा सकते हैं?</dt><dd data-i18n="tgFaqA1">नहीं। हर आकार ट्रे में दिखाई गई दिशा में ही रहता है।</dd></div><div><dt data-i18n="tgFaqQ2">अंक कब बढ़ते हैं?</dt><dd data-i18n="tgFaqA2">पूरी पंक्ति या स्तंभ बनाकर मिटाने पर। लाइन मिटाए बिना केवल आकार रखने से अंक नहीं मिलते।</dd></div><div><dt data-i18n="tgFaqQ3">कितने चरण हैं?</dt><dd data-i18n="tgFaqA3">कैंपेन में 30 मिशन हैं। अनंत मोड तब तक चलता है जब तक बचे हुए किसी आकार को नियमों के अनुसार रखा जा सके।</dd></div><div><dt data-i18n="tgFaqQ4">बर्फ और पत्थर क्या करते हैं?</dt><dd data-i18n="tgFaqA4">बर्फ पर ब्लॉक रख सकते हैं, लेकिन वह अपनी पंक्ति या स्तंभ मिटने तक रहती है। पत्थर वाले खाने में आकार नहीं रख सकते।</dd></div><div><dt data-i18n="tgFaqQ5">प्रयास क्यों खत्म हुआ?</dt><dd data-i18n="tgFaqA5">जब बचा हुआ कोई आकार नहीं रखा जा सकता, प्रयास खत्म होता है। मिशन का लक्ष्य पूरा होने से पहले समूहों की सीमा खत्म होने पर भी वह समाप्त हो सकता है।</dd></div><div><dt data-i18n="tgFaqQ6">क्या सेव होता है?</dt><dd data-i18n="tgFaqA6">खुले मिशन, पसंद और अनंत मोड का सर्वोच्च स्कोर इसी ब्राउज़र में रहते हैं। उसका डेटा मिटाने पर रिकॉर्ड खो सकते हैं; वे दूसरे उपकरण पर अपने आप नहीं जाते।</dd></div></dl></div><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>और संबंधित गेम</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="hexa-sort" href="/hi/games/hexa-sort/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/hexa-sort.webp" data-final-src="/assets/weightplay-logo.png" alt="हेक्सा सॉर्ट" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">हेक्सा सॉर्ट</strong><span data-i18n="tgRelatedWhy1">रंगीन षट्भुजों को समान रंग के ढेरों में सजाएँ।</span></span></a><a class="game-info-related-card" data-game-id="animal-unblock" href="/hi/games/animal-unblock/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-unblock.webp" data-final-src="/assets/weightplay-logo.png" alt="अनब्लॉक ट्रेल" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">अनब्लॉक ट्रेल</strong><span data-i18n="tgRelatedWhy2">ब्लॉक खिसकाकर बाहर जाने का रास्ता खोलें।</span></span></a></div></div></div></section>
+      <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" data-wp-text-growth="1.4.0" data-runtime-localize="off" aria-labelledby="block-blast-text-guide-title"><div class="game-info-hero"><div class="game-info-title"><h2 data-i18n="title" id="block-blast-text-guide-title">ब्लॉक ब्लास्ट</h2><p data-i18n="pitch">तीनों आकार रखें और पूरी पंक्ति या स्तंभ मिटाएँ।</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-i18n="tgTag1">ब्लॉक पहेली</span><span data-i18n="tgTag2">पंक्ति और स्तंभ मिटाना</span><span data-i18n="tgTag3">तीन आकारों की योजना</span></div></div><div class="game-info-sections"><div class="game-info-section"><h3 data-i18n="howTitle">कैसे खेलें</h3><ol><li data-i18n="how1">8×8 बोर्ड पर कोई आकार रखने से पहले तीनों स्थिर आकार देख लें।</li><li data-i18n="how2">ऊपर उठे पूर्वावलोकन से जगह पक्की करें और बड़े आकारों के लिए लंबी पंक्तियाँ या चौड़ी खाली जगह बचाएँ।</li><li data-i18n="how3">पूरी पंक्ति या स्तंभ बनाकर उसे मिटाएँ। तीनों आकार इस्तेमाल होने के बाद, खेल जारी रह सके तो नया समूह आता है।</li></ol><p data-i18n="helpText">पहला आकार रखने से पहले पूरे तीन-आकार समूह की योजना बनाएँ। स्थिर आकार घूम नहीं सकते; यदि कोई भी बचा हुआ आकार वैध जगह पर न बैठ सके तो खेल समाप्त हो जाता है।</p></div><div class="game-info-section"><h3 data-i18n="tgProgressTitle">चरण और प्रगति</h3><p data-i18n="tgProgress">30 मिशन वाली कैंपेन या स्कोर के लिए अनंत मोड चुनें। लक्ष्य बदलते हैं: लाइनें, मिट्टी, बर्फ और पत्थर, खास रंग, रत्न और ताले, फिर मिले-जुले लक्ष्य। कुछ मिशनों में तीन-आकार समूहों की सीमा होती है। रत्न ढकने से एक ताला खुलता है; बर्फ और मिट्टी पूरी लाइन के साथ मिटते हैं, लेकिन पत्थर पर आकार नहीं रखा जा सकता।</p></div><div class="game-info-section"><h3 data-i18n="tgTipsTitle">अगली चाल की योजना</h3><p data-i18n="tgTips">छोटा आकार रखने से पहले जाँचें कि बचे हुए बड़े आकार को उस जगह की ज़रूरत तो नहीं है। लाइन मिटने से जगह खुलती है, लेकिन अलग-अलग छोटे खाली खाने भरना कठिन होता है। अनंत मोड में चौड़े आकार और 3×3 वर्ग भी आ सकते हैं, इसलिए हर बड़े खाली हिस्से को सँकरी जगहों में न बाँटें।</p></div><div class="game-info-section"><h3 data-i18n="tgDesignTitle">पहेली कैसे काम करती है</h3><p data-i18n="tgDesign">आकार अपनी दिशा बनाए रखते हैं और अपने आप नीचे नहीं गिरते। पंक्ति या स्तंभ मिटने से ट्रे के अन्य आकारों के लिए जगह बदलती है। केवल आकार रखने से अंक नहीं मिलते; पूरी लाइन बनाने से मिलते हैं। एक साथ कई लाइनें मिटाने और लगातार चालों में लाइन मिटाने से स्कोर बढ़ता है।</p></div><div class="game-info-section"><h3 data-i18n="tgSaveTitle">खिलाड़ी और सेव की जानकारी</h3><p data-i18n="tgSave">आकार खींचकर रखें या पहले आकार चुनें और फिर बोर्ड का खाना। खाते की ज़रूरत नहीं है। कैंपेन की प्रगति, पसंद और अनंत मोड का सर्वोच्च स्कोर इसी ब्राउज़र में रहते हैं। फिर शुरू करने पर नया प्रयास होता है, अधूरा बोर्ड वापस नहीं आता। ब्राउज़र डेटा मिटाने पर रिकॉर्ड खो सकते हैं; दूसरे उपकरण की प्रगति अलग रहती है।</p></div><div class="game-info-section"><h3 data-i18n="tgFaqTitle">अक्सर पूछे जाने वाले प्रश्न</h3><dl><div><dt data-i18n="tgFaqQ1">क्या आकार घुमा सकते हैं?</dt><dd data-i18n="tgFaqA1">नहीं। हर आकार ट्रे में दिखाई गई दिशा में ही रहता है।</dd></div><div><dt data-i18n="tgFaqQ2">अंक कब बढ़ते हैं?</dt><dd data-i18n="tgFaqA2">पूरी पंक्ति या स्तंभ बनाकर मिटाने पर। लाइन मिटाए बिना केवल आकार रखने से अंक नहीं मिलते।</dd></div><div><dt data-i18n="tgFaqQ3">कितने चरण हैं?</dt><dd data-i18n="tgFaqA3">कैंपेन में 30 मिशन हैं। अनंत मोड तब तक चलता है जब तक बचे हुए किसी आकार को नियमों के अनुसार रखा जा सके।</dd></div><div><dt data-i18n="tgFaqQ4">बर्फ और पत्थर क्या करते हैं?</dt><dd data-i18n="tgFaqA4">बर्फ पर ब्लॉक रख सकते हैं, लेकिन वह अपनी पंक्ति या स्तंभ मिटने तक रहती है। पत्थर वाले खाने में आकार नहीं रख सकते।</dd></div><div><dt data-i18n="tgFaqQ5">प्रयास क्यों खत्म हुआ?</dt><dd data-i18n="tgFaqA5">जब बचा हुआ कोई आकार नहीं रखा जा सकता, प्रयास खत्म होता है। मिशन का लक्ष्य पूरा होने से पहले समूहों की सीमा खत्म होने पर भी वह समाप्त हो सकता है।</dd></div><div><dt data-i18n="tgFaqQ6">क्या सेव होता है?</dt><dd data-i18n="tgFaqA6">खुले मिशन, पसंद और अनंत मोड का सर्वोच्च स्कोर इसी ब्राउज़र में रहते हैं। उसका डेटा मिटाने पर रिकॉर्ड खो सकते हैं; वे दूसरे उपकरण पर अपने आप नहीं जाते।</dd></div></dl></div><div class="game-info-section"><h3 data-i18n="tgRelatedTitle">संबंधित गेम</h3><div class="game-info-related"><a class="game-info-related-card" data-wp-text-related="hexa-sort" href="/hi/games/hexa-sort/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName1">हेक्सा सॉर्ट</strong><span data-i18n="tgRelatedWhy1">रंगीन षट्भुजों को समान रंग के ढेरों में सजाएँ।</span></span></a><a class="game-info-related-card" data-wp-text-related="animal-unblock" href="/hi/games/animal-unblock/"><span class="game-info-related-copy"><strong data-i18n="tgRelatedName2">अनब्लॉक ट्रेल</strong><span data-i18n="tgRelatedWhy2">ब्लॉक खिसकाकर बाहर जाने का रास्ता खोलें।</span></span></a></div></div></div></section>
     </div>
     <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
-        <div
-          class="stage-canvas"
-          data-wp-standard-stage-screen
-          data-wp-logical-stage-canvas
-          data-wp-canvas-max-width="920"
-        >
+        <div class="stage-canvas">
           <header class="stage-header">
             <button
               id="stageBack"
@@ -175,21 +170,7 @@
             </button>
           </header>
           <div id="stageRail" class="stage-rail" data-wp-stage-rail aria-label="चरण चुनें" data-wp-text-aria="chooseStage"></div>
-          <footer class="stage-footer">
-            <p class="stage-hint" data-i18n="stageHint">खुला मिशन चुनें।</p>
-            <nav class="stage-tabs" aria-label="चरण नक्शा">
-              <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">चरण नक्शा</button>
-            </nav>
-          </footer>
-          <button
-            id="enterStage"
-            class="primary stage-enter"
-            type="button"
-            data-wp-enter-battle
-            data-i18n="enter"
-          >प्रवेश</button>
         </div>
-        <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
       </div>
     </section>
     <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
@@ -304,25 +285,20 @@
       </div>
     </section>
     </div>
-    <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+    <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script>window.WonderAnalytics?.track("game_view",{game_id:"block-blast"});</script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script>
-    <script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/runtime-locales/hi.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260802-block-blast1"></script>
     <script src="../../src/edge-guard.js"></script>
-    <script
-       src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
-      data-wp-stage-virtualization-standard
-    ></script>
-    <script src="game.js?v=20260926-block-blast-v39-semantic-audio&amp;wp-text=1.4.0"></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-    <script src="frame.js?v=20260913-block-frame-v37"></script>
-    <script
-      src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
-      data-wp-stage-standard
-    ></script>
+    <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
+    <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
+    <script src="game.js?v=20261017-block-blast-v41-i9&amp;wp-text=1.4.0"></script>
+    <script src="stage-config.js?v=20261017-block-blast-v41-i9"></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+    <script src="frame.js?v=20261017-block-blast-v41-i9"></script>
     <script
       src="../../src/battle-canvas-standard.js"
       data-wp-battle-standard
