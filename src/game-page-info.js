@@ -12024,12 +12024,6 @@
       // multi-section radius at every governed viewport.
       section.style.setProperty("--wp-ui-radius", "16px", "important");
     }
-    if (id === "animal-meadow-difference") {
-      // Interface 7 exposes a compact 3px block radius by default. The
-      // General Guide is a framed reading surface, so keep its larger radius
-      // local to the generated Guide without changing Battle controls.
-      section.style.setProperty("--wp-ui-radius", "16px", "important");
-    }
     if (id === "animal-mosaic-clues") {
       // Mosaic Clues keeps its Guide as a framed reading surface under the
       // shared Interface 7 skin. Scope the readable radius to this generated

@@ -1,8 +1,6 @@
 (function () {
   "use strict";
 
-  document.body.dataset.wpBattleSettings = "visible";
-
   const locales = window.MEADOW_FIND_LOCALES;
   const rounds = [
     { base: ["leaf", "droplet", "circle", "triangle", "star", "wave", "diamond", "dot", "crescent"], changedIndex: 4, changedTo: "sun" },
@@ -38,11 +36,11 @@
   let focusBeforeLeave = null;
 
   function queryLocale() {
-    const value = new URLSearchParams(window.location.search).get("lang");
     const routeSegment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
     const routeMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
     const persisted = safeStorage.get("weightPlayLocale") || safeStorage.get("weightplayLocale") || safeStorage.get("wp-locale") || safeStorage.get("weightplay-meadow-locale");
-    return value && locales[value] ? value : (routeMap[routeSegment] || persisted || "en");
+    const candidate = routeMap[routeSegment] || persisted || "en";
+    return locales[candidate] ? candidate : "en";
   }
 
   function t(key, vars = {}) {
@@ -55,7 +53,12 @@
     const copy = locales[state.locale] || locales.en;
     document.documentElement.lang = state.locale === "zh-Hant" ? "zh-TW" : state.locale === "zh-Hans" ? "zh-CN" : state.locale;
     document.documentElement.dir = copy.direction || "ltr";
+    document.title = `${t("title")} | WeightPlay`;
+    const description = document.querySelector('meta[name="description"]');
+    if (description) description.content = t("subtitle");
+    $("localeSelect").value = state.locale;
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
+    $("startButton").textContent = t("start");
     const mainReturn = document.querySelector(".main-return[data-wp-return='main']");
     if (mainReturn) mainReturn.setAttribute("aria-label", t("backToLobby"));
     $("homeFromBattle").setAttribute("aria-label", t("home"));
@@ -65,7 +68,30 @@
     $("leaveBody").textContent = leave[1];
     $("continuePlaying").textContent = leave[2];
     $("leaveBattle").textContent = leave[3];
-    if (!$("battleView").hidden && $("resultView").hidden && !state.leaveOpen) renderRound();
+    refreshBestCount();
+    if (document.body.dataset.screen === "battle" && $("resultView").hidden && !state.leaveOpen) renderRound();
+  }
+
+  function refreshBestCount() {
+    const best = safeStorage.get("weightplay-meadow-best-checks");
+    $("mainBestCount").textContent = best || "—";
+  }
+
+  function updateLocaleRoute(locale) {
+    const segment = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" }[locale] || "en";
+    const path = `/${segment}/games/animal-meadow-difference/`;
+    window.history.replaceState(window.history.state, "", path);
+  }
+
+  function changeLocale() {
+    const nextLocale = $("localeSelect").value;
+    if (!locales[nextLocale] || nextLocale === state.locale) return;
+    state.locale = nextLocale;
+    window.WonderI18n?.setLocale?.(nextLocale, { navigate: false, dispatch: false });
+    safeStorage.set("weightPlayLocale", nextLocale);
+    updateLocaleRoute(nextLocale);
+    applyLocale();
+    window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale: nextLocale } }));
   }
 
   function playTone(cue = "ui.click") {
@@ -75,14 +101,12 @@
   function showView(mode) {
     const mainActive = mode === "main";
     const resultActive = mode === "result";
-    $("mainScreen").hidden = !mainActive;
-    $("battleView").hidden = mainActive;
+    $("roundContent").hidden = resultActive;
     $("resultView").hidden = !resultActive;
-    $("mainScreen").classList.toggle("is-active", mainActive);
-    $("battleView").classList.toggle("is-active", !mainActive);
     $("battleView").classList.toggle("is-result", resultActive);
-    $("resultView").classList.toggle("is-active", resultActive);
-    document.body.dataset.screen = mainActive ? "main" : "battle";
+    document.body.dataset.screen = mainActive ? "main" : resultActive ? "result" : "battle";
+    const frame = window.MeadowDifferenceFrame?.frame;
+    if (frame) frame.activate(mainActive ? "main" : "battle", { covered: !mainActive && (resultActive || state.leaveOpen) });
     window.scrollTo(0, 0);
   }
 
@@ -183,6 +207,7 @@
     }
     setBattleLayerInert(true);
     $("leaveConfirm").hidden = false;
+    window.MeadowDifferenceFrame?.frame.activate("battle", { covered: true });
     $("continuePlaying").focus();
   }
 
@@ -191,6 +216,9 @@
     state.leaveOpen = false;
     $("leaveConfirm").hidden = true;
     setBattleLayerInert(false);
+    if (document.body.dataset.screen === "battle") {
+      window.MeadowDifferenceFrame?.frame.activate("battle", { covered: !$("resultView").hidden });
+    }
     if (resumePending && pendingAdvance) roundAdvanceTimer = window.setTimeout(runPendingAdvance, 120);
     if (focusBeforeLeave && document.contains(focusBeforeLeave)) focusBeforeLeave.focus();
     focusBeforeLeave = null;
@@ -247,12 +275,16 @@
     if (!prior || state.checks < prior) safeStorage.set(key, String(state.checks));
     $("resultSummary").textContent = t("summary");
     $("bestCount").textContent = safeStorage.get(key) || String(state.checks);
+    refreshBestCount();
     showView("result");
   }
 
   state.locale = queryLocale();
+  $("localeSelect").value = state.locale;
+  updateLocaleRoute(state.locale);
   document.addEventListener("DOMContentLoaded", () => {
     applyLocale();
+    $("localeSelect").addEventListener("change", changeLocale);
     $("startButton").addEventListener("click", start);
     $("replayButton").addEventListener("click", start);
     $("homeFromBattle").addEventListener("click", () => returnToMain(false));
@@ -260,7 +292,9 @@
     $("continuePlaying").addEventListener("click", () => closeLeaveConfirm(true));
     $("leaveBattle").addEventListener("click", confirmLeave);
     $("leaveConfirm").addEventListener("keydown", trapLeaveKeys);
+    showView("main");
+    window.WeightPlayGameEntryLoader?.ready?.();
   });
 
-  window.MEADOW_FIND_TEST = { rounds, symbols, start, renderRound };
+  window.MEADOW_FIND_TEST = { rounds, symbols, start, renderRound, changeLocale };
 })();

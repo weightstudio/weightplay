@@ -1,6 +1,6 @@
-/* Firefly Folio Interface 7 game-owned Battle substates only.
-   Shared Interface 7 owns Main/Stage/Battle frame geometry, headers,
-   Stage rail/navigation, logical Canvas sizing and reserve behavior. */
+/* Firefly Folio keeps Result and its leave-confirmation overlay game-owned.
+   Shared I9 owns Main/Stage/Battle frame geometry, Stage rail interactions,
+   headers, logical Canvas sizing, and shared action placement. */
 
 body[data-wp-game-id="animal-firefly-folio"] #resultScreen[data-wp-battle-substate="result"]{
   position:absolute!important;

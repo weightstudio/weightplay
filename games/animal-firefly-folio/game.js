@@ -68,7 +68,9 @@
   };
   const progress = loadProgress();
   const state = { locale: initialLocale, page: 0, route: [], turns: 0, sessionTurns: 0, screen: "main", statusKey: "waiting", cleared: progress.cleared, unlocked: progress.unlocked };
+  let frame = null;
   let stageController = null;
+  let syncStageInfo = () => {};
   let stageBrowseIndex = Math.max(0, state.unlocked - 1);
   let leaveOpen = false;
   const startLabels = {
@@ -146,7 +148,7 @@
     if (page.mechanic === "no-backtrack") return `Trail rule: never reverse the last turn. Route: ${route}.`;
     return `Trace the lantern route: ${route}.`;
   };
-  const normalizeInterface7 = () => {
+  const normalizeBattleSubstate = () => {
     const battle = $("battleScreen");
     const result = $("resultScreen");
     if (battle && result && !battle.contains(result)) {
@@ -243,6 +245,7 @@
     const header = battle?.querySelector(".battle-header, [data-wp-frame-header='battle'], .wp-frame-header");
     if (live && live !== result) { live.hidden = screen === "result"; live.inert = screen === "result"; }
     if (header) { header.hidden = screen === "result"; header.inert = screen === "result"; }
+    frame?.activate(owner, { covered: screen === "result" });
     const guide = document.querySelector("[data-wp-game-guide]");
     if (guide) guide.hidden = owner !== "main";
     document.body.dataset.screen = owner;
@@ -264,48 +267,12 @@
     if (state.screen === "battle") { renderBattle(); announce(state.statusKey); }
     if (state.screen === "result") renderResult();
   };
-  const bindStage = (button, index) => {
-    const page = pages[index];
-    const isLocked = index >= state.unlocked;
-    button.type = "button";
-    button.className = `stage-card${isLocked ? " is-locked" : ""}${page.checkpoint ? " is-checkpoint" : ""}`;
-    button.disabled = false;
-    button.setAttribute("aria-disabled", String(isLocked));
-    button.dataset.stageIndex = String(index);
-    button.replaceChildren();
-    const title = document.createElement("strong");
-    const name = document.createElement("span");
-    const status = document.createElement("small");
-    title.textContent = t("round", { n: index + 1, total: pages.length });
-    name.textContent = pageTitle(page, index);
-    status.textContent = `${state.cleared.includes(index) ? t("complete") : isLocked ? t("locked") : t("open")}${page.checkpoint ? ` · ${t("checkpoint")}` : ""}`;
-    button.append(title, name, status);
-    if (index === Math.max(0, state.unlocked - 1)) button.dataset.wpStageRecommended = "true";
-    else delete button.dataset.wpStageRecommended;
-  };
   const highestUnlockedIndex = () => Math.max(0, Math.min(pages.length - 1, state.unlocked - 1));
   const renderStages = ({ selectHighest = false } = {}) => {
     if (selectHighest) stageBrowseIndex = highestUnlockedIndex();
-    if (!stageController) {
-      stageController = window.WeightPlayStageV6?.install?.($("stageList"), {
-        total: pages.length,
-        poolSize: 9,
-        bind: bindStage,
-        initialIndex: () => stageBrowseIndex,
-        onFocus: (index) => { stageBrowseIndex = index; },
-        onSettle: (index) => { stageBrowseIndex = index; },
-        activate: (index) => {
-          stageBrowseIndex = index;
-          if (index >= state.unlocked) return false;
-          startPage(index);
-          return true;
-        },
-      }) || null;
-      if (!stageController) throw new Error("Stage controller unavailable");
-    } else {
-      stageController.refresh();
-    }
-    stageController.center(stageBrowseIndex);
+    if (!stageController) throw new Error("Shared Stage UI unavailable");
+    stageController.refresh(stageBrowseIndex);
+    syncStageInfo();
   };
   const renderBattle = () => {
     const page = pages[state.page];
@@ -441,12 +408,24 @@
     }
   });
 
-  window.addEventListener("pagehide", () => {
-    stageController?.destroy();
-    stageController = null;
-  }, { once: true });
-
-  normalizeInterface7();
+  normalizeBattleSubstate();
+  const mountedFrame = window.mountAnimalFireflyFolioFrame({
+    pages,
+    state,
+    t,
+    pageTitle,
+    pageNote,
+    getSelectedStage: () => stageBrowseIndex,
+    setSelectedStage: (index) => { stageBrowseIndex = index; },
+    getStageInfo: () => ({
+      label: t("stages"),
+      progress: `${stageBrowseIndex + 1} / ${pages.length}`,
+    }),
+    startPage,
+    attachStageUI: (stageUI) => { stageController = stageUI; },
+  });
+  frame = mountedFrame.frame;
+  syncStageInfo = mountedFrame.syncStageInfo;
   applyLocale();
   show("main");
   window.__ANIMAL_FIREFLY_FOLIO_TEST__ = { pages, startPage, chooseDirection, checkRoute, getState: () => ({ ...state, route: [...state.route], cleared: [...state.cleared] }) };

@@ -12,28 +12,12 @@
 html,body{
   margin:0;
   min-height:100%;
-  background:radial-gradient(circle at 30% 0,#173b5c,#071426 58%);
   color:var(--ink);
 }
 button,a,select{font:inherit}
 [hidden]{display:none!important}
 
-/* Game-owned Stage card presentation only. Shared Interface 7 owns the
-   Stage frame, header, rail geometry, bottom navigation and controls. */
-#stageScreen .stage-card{
-  border-color:var(--mint);
-  background:linear-gradient(155deg,#132f4e,#10223c);
-  color:var(--ink);
-  box-shadow:0 12px 24px #0008;
-}
-#stageScreen .stage-card small{color:var(--muted)}
-#stageScreen .stage-card:focus-visible{
-  outline:3px solid var(--gold);
-  outline-offset:2px;
-}
-
-/* Battle owns only playable content. The shared frame owns the outer Canvas,
-   header, return/settings controls and responsive envelope. */
+/* Battle owns its playable content; the shared frame owns its scene shell. */
 #battleScreen{
   background:
     linear-gradient(180deg,rgba(5,15,31,.65),rgba(5,15,31,.92)),
@@ -44,6 +28,34 @@ button,a,select{font:inherit}
   margin:2px 0 0;
   color:var(--muted);
   font-size:.86rem;
+}
+body[data-wp-game-id="animal-firefly-folio"] #battleScreen [data-wp-frame-info] #roundName{
+  min-width:0;
+  margin:0;
+  overflow:hidden;
+  color:var(--ink);
+  font-size:clamp(.68rem,2.5vw,.92rem);
+  line-height:1.15;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+body[data-wp-game-id="animal-firefly-folio"] #battleScreen [data-wp-frame-info] #roundLabel{
+  min-width:0;
+  margin:0;
+  overflow:hidden;
+  color:var(--muted);
+  font-size:clamp(.58rem,2vw,.74rem);
+  line-height:1.1;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+body[data-wp-game-id="animal-firefly-folio"] #battleScreen [data-wp-frame-info] #turnCount{
+  min-width:0;
+  overflow:hidden;
+  color:var(--gold);
+  font-size:.78rem;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 #battleScreen .battle-content{
   min-height:0;
