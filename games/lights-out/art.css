@@ -130,10 +130,10 @@
 @media (min-width: 700px) and (orientation: landscape) {
   #logicBattle .logic-battle-wrap {
     grid-template-columns: minmax(0, 1fr) 260px;
-    grid-template-rows: 44px 52px minmax(0, 1fr);
+    grid-template-rows: 56px 52px minmax(0, 1fr);
   }
   #logicBattle .logic-board-panel { grid-column: 1; grid-row: 1 / -1; }
-  #logicBattle .logic-tutorial { grid-column: 2; grid-row: 1; }
+  #logicBattle .logic-tutorial { grid-column: 2; grid-row: 1; font-size: 13px; line-height: 18px; }
   #logicBattle .logic-status-line { grid-column: 2; grid-row: 2; height: 52px; min-height: 52px; }
   #logicBattle .logic-action-row { grid-column: 2; grid-row: 3; grid-template-columns: minmax(0, 1fr); grid-template-rows: repeat(3, 44px); align-content: end; padding: 0; }
 }

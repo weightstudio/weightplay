@@ -50,14 +50,10 @@
     const targetStage = window.__blockTrilogyTest?.getState?.().unlocked;
     if (!targetStage) return;
     requestAnimationFrame(() => requestAnimationFrame(() => {
-      const target = document.querySelector(`.stage-card[data-stage="${targetStage}"]`);
-      if (!target || document.body.dataset.screen !== "stage") return;
-      if (!target.classList.contains("centered")) target.click();
-      target.focus({ preventScroll: true });
+      if (document.body.dataset.screen !== "stage") return;
+      window.AnimalMosaicSharedStage?.select(targetStage);
       setTimeout(() => {
-        if (document.body.dataset.screen === "stage") {
-          document.querySelector(`.stage-card[data-stage="${targetStage}"]`)?.focus({ preventScroll: true });
-        }
+        if (document.body.dataset.screen === "stage") window.AnimalMosaicSharedStage?.select(targetStage);
       }, 320);
     }));
   });

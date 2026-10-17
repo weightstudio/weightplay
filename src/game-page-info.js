@@ -17663,6 +17663,7 @@
   }
   games["animal-mosaic-clues"] = {
     title: "Animal Mosaic Clues", difficulty: "Easy to Challenging", time: "2-10 minutes per mosaic", gameplay: "Nonogram Mosaic Logic", genre: ["Puzzle", "Strategy", "Animal"], skills: ["Logic", "Focus", "Deduction"],
+    relatedIds: ["animal-one-line", "animal-bamboo-pipes"],
     guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,
     intro: "Read every row and column clue to uncover a hidden animal portrait.",
     story: ["Every number describes a continuous run. Complete the intersecting clues to restore each hidden animal mosaic."],

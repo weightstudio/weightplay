@@ -1,9 +1,18 @@
 (() => {
   "use strict";
 
+  const loadingPanel = document.querySelector("#loadingPanel");
+  const loadingStatus = loadingPanel?.querySelector("#lightsOutLoadStatus");
+  const loadingCopy = {
+    en: "Loading…", "zh-Hant": "載入中…", "zh-Hans": "加载中…", ja: "読み込み中…", ko: "불러오는 중…",
+    es: "Cargando…", "pt-BR": "Carregando…", fr: "Chargement…", de: "Lädt…", it: "Caricamento…",
+    ru: "Загрузка…", hi: "लोड हो रहा है…", ar: "جارٍ التحميل…",
+  };
+  if (loadingStatus) loadingStatus.textContent = loadingCopy[document.documentElement.lang] || loadingCopy.en;
+
   const art = document.createElement("link");
   art.rel = "stylesheet";
-  art.href = new URL("art.css?v=20260930-lights-out-v13-i8", document.currentScript.src).href;
+  art.href = new URL("art.css?v=20261017-lights-out-v16", document.currentScript.src).href;
   document.head.append(art);
 
   const app = window.WPClassicLogic.mount("lights-out");
@@ -140,13 +149,21 @@
     if (scene === "battle" && covered === null && focusIndex !== null) cells[focusIndex]?.focus({ preventScroll: true });
   }
 
+  function dismissRewardNotice() {
+    window.WeightPlayCastle?.dismissRewardNotice?.("lights-out");
+  }
+
   function startBattle(restarting = false) {
     motion?.cancel();
+    dismissRewardNotice();
     window.ShowResultGet("lights-out", false);
     covered = null;
     scene = "battle";
-    if (restarting) app.replay();
-    else app.startGame();
+    if (restarting) {
+      app.replay();
+      app.status.textContent = turnLabel;
+      app.status.className = "logic-status-line";
+    } else app.startGame();
     activate();
     refreshBoard(0);
     enter(content);
@@ -154,6 +171,7 @@
 
   function showMain() {
     motion?.cancel();
+    dismissRewardNotice();
     window.ShowResultGet("lights-out", false);
     covered = null;
     scene = "main";
@@ -181,6 +199,7 @@
   }
 
   function closeResult() {
+    dismissRewardNotice();
     window.ShowResultGet("lights-out", false);
     covered = null;
     activate();
@@ -270,4 +289,9 @@
     if (!event.persisted) { abort.abort(); frame.destroy(); }
   });
   activate();
+  if (loadingPanel) {
+    loadingPanel.classList.add("hidden");
+    loadingPanel.hidden = true;
+    loadingPanel.setAttribute("aria-busy", "false");
+  }
 })();
