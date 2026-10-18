@@ -117,14 +117,16 @@
     $("mainScreen").querySelector('[data-wp-return="main"]')?.setAttribute("aria-label", t("mainBack"));
     $("mainScreen").querySelector(".main-cover")?.setAttribute("alt", t("mainCoverAlt"));
 
-    $("gameGuide").setAttribute("aria-label", t("guideLabel"));
-    $("guide-kicker").textContent = t("guideKicker");
-    $("guide-title").textContent = t("guideTitle");
-    $("guide-intro").textContent = t("guideIntro");
-    $("guide-steps-title").textContent = t("guideStepsTitle");
-    $("guide-one").textContent = t("guideOne");
-    $("guide-two").textContent = t("guideTwo");
-    $("guide-three").textContent = t("guideThree");
+    $("gameGuide")?.setAttribute("aria-label", t("guideLabel"));
+    const guideCopyNodes = [
+      ["guide-kicker", "guideKicker"], ["guide-title", "guideTitle"], ["guide-intro", "guideIntro"],
+      ["guide-steps-title", "guideStepsTitle"], ["guide-one", "guideOne"],
+      ["guide-two", "guideTwo"], ["guide-three", "guideThree"],
+    ];
+    guideCopyNodes.forEach(([id, key]) => {
+      const node = $(id);
+      if (node) node.textContent = t(key);
+    });
 
     $("stage-back").setAttribute("aria-label", t("back"));
     $("stage-header-title").textContent = t("stageTitle");

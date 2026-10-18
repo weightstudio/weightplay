@@ -7,10 +7,21 @@
   const byId = (id) => document.getElementById(id);
   let frame = null;
   let stageUI = null;
+  let stageTab = null;
   let stageName = null;
   let stageIndex = null;
   let battleName = null;
   let battleTurns = null;
+
+  function syncStageTab() {
+    if (!stageTab || !frame) return;
+    const localeKey = document.documentElement.lang || "en";
+    const copy = window.RING_GARDEN_COPY || {};
+    const label = copy[localeKey]?.stages || copy.en?.stages || "Stages";
+    stageTab.textContent = label;
+    stageTab.setAttribute("aria-label", label);
+    frame.commonDownButton.element.setAttribute("aria-label", label);
+  }
 
   function syncHeaderCopy() {
     const game = window.AnimalRingGardenGame;
@@ -20,6 +31,7 @@
     if (stageIndex) stageIndex.textContent = state.stageIndex;
     if (battleName) battleName.textContent = state.battleName;
     if (battleTurns) battleTurns.textContent = state.turns;
+    syncStageTab();
   }
 
   function refreshStage(index) {
@@ -94,6 +106,17 @@
         game.startGarden(index);
       },
     });
+
+    stageTab = document.createElement("button");
+    stageTab.type = "button";
+    stageTab.setAttribute("role", "tab");
+    stageTab.setAttribute("aria-selected", "true");
+    stageTab.setAttribute("aria-controls", "stageWorkspace");
+    stageTab.tabIndex = 0;
+    frame.commonDownButton.element.setAttribute("role", "tablist");
+    frame.commonDownButton.add(stageTab);
+    stageTab.addEventListener("click", () => refreshStage());
+    syncStageTab();
 
     const syncScene = () => {
       const scene = body.dataset.screen || "main";

@@ -60,7 +60,14 @@
     if(engine.gate)devices.push(`${engine.gate.open?copy.gateOpen:copy.gateClosed} ${point(engine.gate)}`);
     if(engine.belts.length)devices.push(`${copy.belts} ${engine.belts.map(belt=>`${point(belt)}${belt.dx>0?"→":belt.dx<0?"←":belt.dy>0?"↓":"↑"}`).join("; ")}`);
     const docked=engine.goals.filter(goal=>engine.boxes.some(box=>box.x===goal.x&&box.y===goal.y)).length;
-    boardDescription.textContent=`${engine.size}×${engine.size}. ${copy.coordinates}. ${copy.rux} ${point(engine.player)}. ${copy.cargo}: ${cargo}. ${copy.docks}: ${list(engine.goals)}. ${copy.rubble}: ${list(engine.walls)}. ${copy.devices}: ${devices.join("; ")||copy.none}. ${copy.docked} ${docked}/${engine.goals.length}. ${copy.moves} ${engine.moves}. ${copy.pulls} ${engine.pulls}.`;
+    const width=engine.width||engine.size,height=engine.height||engine.size;
+    const floorRows=engine.floor?Array.from({length:height},(_,y)=>{
+      const columns=engine.floor.filter(p=>p.y===y).map(p=>p.x+1).sort((a,b)=>a-b),ranges=[];
+      for(let i=0;i<columns.length;i++){const start=columns[i];let end=start;while(columns[i+1]===end+1){i++;end=columns[i]}ranges.push(start===end?`${start}`:`${start}–${end}`)}
+      return columns.length?`${y+1}: ${ranges.join(', ')}`:null;
+    }).filter(Boolean).join('; '):'';
+    const floorLabel=({en:'Walkable columns by row','zh-Hant':'各列可走的欄位','zh-Hans':'各行可走的列',ja:'行ごとの移動可能な列',ko:'행별 이동 가능한 열',es:'Columnas transitables por fila','pt-BR':'Colunas acessíveis por linha',fr:'Colonnes praticables par ligne',de:'Begehbare Spalten je Reihe',it:'Colonne percorribili per riga',ru:'Доступные столбцы по строкам',hi:'हर पंक्ति के चलने योग्य स्तंभ',ar:'الأعمدة المتاحة حسب الصف'})[activeLocale()]||'Walkable columns by row';
+    boardDescription.textContent=`${width}×${height}. ${copy.coordinates}. ${floorRows?`${floorLabel}: ${floorRows}. `:''}${copy.rux} ${point(engine.player)}. ${copy.cargo}: ${cargo}. ${copy.docks}: ${list(engine.goals)}. ${copy.rubble}: ${list(engine.walls)}. ${copy.devices}: ${devices.join("; ")||copy.none}. ${copy.docked} ${docked}/${engine.goals.length}. ${copy.moves} ${engine.moves}. ${copy.pulls} ${engine.pulls}.`;
   }
 
   function scheduleBoardDescription(){

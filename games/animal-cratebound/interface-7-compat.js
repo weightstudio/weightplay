@@ -10,14 +10,14 @@
   if(!document.querySelector('link[data-wp-cratebound-interface7-corrections]')){
     const corrections=document.createElement('link');
     corrections.rel='stylesheet';
-    corrections.href=new URL('interface-7-corrections.css?v=20261013-sky-ark1',currentScript?.src||document.baseURI).href;
+    corrections.href=new URL('interface-7-corrections.css?v=20261018-cratebound-variety-v17',currentScript?.src||document.baseURI).href;
     corrections.dataset.wpCrateboundInterface7Corrections='true';
     document.head.append(corrections);
   }
   if(!document.querySelector('link[data-wp-cratebound-interface7]')){
     const link=document.createElement("link");
     link.rel="stylesheet";
-    link.href=new URL("interface-7-cleanup.css?v=20260923-cratebound-interface7-cleanup1",currentScript?.src||location.href).href;
+    link.href=new URL("interface-7-cleanup.css?v=20261018-cratebound-variety-v17",currentScript?.src||location.href).href;
     link.dataset.wpCrateboundInterface7="true";
     document.head.append(link);
   }
@@ -109,6 +109,18 @@
   else window.addEventListener("load",remountSharedFrame,{once:true});
 })();
 
+/* The same overview control also works when WebGL falls back to Canvas. */
+(()=>{
+  const battle=document.getElementById('battleScreen'),wrap=document.getElementById('arenaWrap');
+  if(!battle||!wrap||document.getElementById('crateOverview'))return;
+  const labels={en:['Map','Follow'],'zh-Hant':['全圖','跟隨'],'zh-Hans':['全图','跟随'],ja:['全体図','追従'],ko:['전체 지도','따라가기'],es:['Mapa','Seguir'],'pt-BR':['Mapa','Seguir'],fr:['Carte','Suivre'],de:['Karte','Folgen'],it:['Mappa','Segui'],ru:['Карта','Следить'],hi:['नक्शा','साथ चलें'],ar:['الخريطة','تتبّع']};
+  const button=document.createElement('button');button.id='crateOverview';button.type='button';wrap.append(button);
+  function sync(){const e=window.__blockTrilogyTest?.getState?.().engine,raw=window.WonderI18n?.actualLocale?.()||document.documentElement.lang,locale=/^zh-(tw|hant)/i.test(raw)?'zh-Hant':/^zh/i.test(raw)?'zh-Hans':/^pt/i.test(raw)?'pt-BR':raw?.split('-')[0];const copy=labels[locale]||labels.en;button.textContent=copy[e?.overview?1:0];button.setAttribute('aria-label',button.textContent);button.setAttribute('aria-pressed',String(Boolean(e?.overview)));wrap.dataset.crateCamera=e?.overview?'overview':'follow';}
+  button.addEventListener('click',()=>{if(['helpModal','leaveModal','resultModal'].some(id=>!document.getElementById(id)?.hidden))return;const e=window.__blockTrilogyTest?.getState?.().engine;if(e?.kind==='crate'){e.overview=!e.overview;sync();}});
+  const observer=new MutationObserver(sync);observer.observe(document.getElementById('statA'),{childList:true,characterData:true,subtree:true});observer.observe(battle,{attributes:true,attributeFilter:['hidden']});
+  window.WeightPlayCrateboundOverview=Object.freeze({sync});
+  window.addEventListener('wonder:locale-change',sync);window.addEventListener('pagehide',()=>{observer.disconnect();window.removeEventListener('wonder:locale-change',sync)},{once:true});sync();
+})();
 /* Sky-ark presentation. The trilogy engine remains the only rules/save owner. */
 (async () => {
   'use strict';
@@ -174,7 +186,7 @@
   const raycaster = new THREE.Raycaster(), ndc = new THREE.Vector2(), hit = new THREE.Vector3();
   const groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
   const palette = [0x4d91aa, 0x71becb, 0x557eaa, 0x657fba, 0x8773a9, 0x547fa5];
-  const point = (p, size) => [p.x - (size - 1) / 2, p.y - (size - 1) / 2];
+  const point = (p, size) => [p.x - ((currentEngine?.width||size) - 1) / 2, p.y - ((currentEngine?.height||size) - 1) / 2];
   const snapshotPose = e => ({ player: { ...e.player }, boxes: e.boxes.map(b => ({ ...b })) });
   const place = (node, p, size, y = 0) => { const [x, z] = point(p, size); node.position.set(x, y, z); };
   function makeRux() {
@@ -282,55 +294,25 @@
   function build(e, stage) {
     clearStage(); currentEngine = e; previousMoves = e.moves; previousPulls=e.pulls;
     poseFrom = poseTo = snapshotPose(e); world = new THREE.Group(); scene.add(world);
-    const size = e.size, half = (size - 1) / 2, chapter = Math.floor((stage - 1) / 5);
-    wrap.dataset.arkChapter = String(chapter);
-    block(world, [size + .45, .42, size + .45], [0, -.35, 0], 0x18394d, .4);
-    block(world, [size + .18, .08, size + .18], [0, -.1, 0], 0xba9053, .5);
-    // Structural keel and brass trim make the playfield an airborne cargo deck.
-    block(world, [size - .5, .28, size - .5], [0, -.7, 0], 0x315568, .4);
-    // Small distant freight craft establish the ark's setting, away from the puzzle.
-    for(const [x,z,scale] of [[-2.5,-size-.2,.65],[3.1,-size+1,.4]]){
-      const ship=new THREE.Group();ship.position.set(x,-.8,z);ship.scale.setScalar(scale);world.add(ship);
-      block(ship,[1.5,.25,.55],[0,0,0],0x5b7380,.1);
-      block(ship,[1.05,.19,.65],[0,.2,0],0x9b885f,.1);
-      block(ship,[.055,1.15,.055],[0,.8,0],0xab986d,.1);
-      block(ship,[.82,.75,.035],[.2,1,0],0xc0d5ce);
-      block(ship,[.1,.75,.042],[.1,1,.01],0x6a9baa);
-      block(ship,[.28,.3,.32],[-.4,.4,0],0x698c91);
-    }
-    for(const [x,z] of [[-3.3,-5.1],[3.7,5.1]]){
-      const cloud=new THREE.Group();cloud.position.set(x,-1.7,z);world.add(cloud);
-      for(let i=0;i<4;i++)block(cloud,[.9+i%2*.5,.2+i%2*.15,.5],[(i-1.5)*.65,i%2*.06,i%2*.12],0xc3d7d3);
-    }
-    // Stern machinery and mooring posts sit outside the traversable squares.
-    for (const side of [-1,1]) {
-      const mast = new THREE.Group(); mast.position.set(side*(half+.05),0,-half); world.add(mast);
-      block(mast,[.12,1.25,.12],[0,.66,0],0x8d744f,.65);
-      block(mast,[.23,.12,.23],[0,1.31,0],0xefc777,.55);
-      block(mast,[.13,.15,.13],[0,1.44,0],0x9deee6,.2,true);
-      block(mast,[.38,.5,.045],[-side*.2,1.05,.03],0x246f85);
-      block(mast,[.06,.5,.052],[-side*.12,1.05,.033],0xc9b885,.2);
-      block(world,[.12,.12,size-1],[side*(half+.42),.06,0],0xc09350,.6);
-      for(const z of [-half+1,half-1])block(world,[.12,.47,.12],[side*(half+.42),-.08,z],0x775f47,.5);
-    }
-    for (const x of [-1, 1]) for (const z of [-1, 1]) {
-      block(world, [.6, .5, .7], [x * (half + .1), -.8, z * (half - .3)], 0x866642, .6);
-      block(world, [.38, .12, .43], [x * (half + .1), -1.09, z * (half - .3)], 0x59dedb, .3, true);
-    }
-    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
-      const edge = x === 0 || y === 0 || x === size - 1 || y === size - 1;
-      const wall = e.walls.some(w => w.x === x && w.y === y);
-      block(world, [.965, .12, .965], [x - half, -.015, y - half], edge ? 0x46697a : (x + y) % 2 ? 0x896f50 : 0xa38960, .12);
-      if (edge || wall) {
-        const height = wall ? .4 : .19;
-        block(world, [.89, height, .89], [x - half, height / 2 + .06, y - half], wall ? 0x54758a : 0x294f62, .35);
-        block(world, [.9, .045, .9], [x - half, height + .08, y - half], wall ? 0x94b5bd : 0x71969d, .35);
-        if (edge && (x + y) % 2 === 0) block(world, [.36, .03, .035], [x - half, height + .11, y - half + .35], 0xe2b65d, .5);
-      } else {
-        block(world,[.012,.012,.86],[x-half+.2,.055,y-half],0x665844);
-        for (const s of [-1, 1]) block(world, [.035, .012, .07], [x - half + s * .36, .055, y - half + .35], 0x617d86, .5);
+    const size=e.size,width=e.width||size,height=e.height||size,hx=(width-1)/2,hz=(height-1)/2,chapter=Math.floor((stage-1)/5);
+    wrap.dataset.arkChapter=String(chapter);
+    const cells=e.floor||Array.from({length:size},(_,y)=>Array.from({length:size},(_,x)=>({x,y}))).flat();
+    const occupied=new Set(cells.map(p=>`${p.x},${p.y}`));
+    for(const {x,y} of cells){
+      const wx=x-hx,wz=y-hz,wall=e.walls.some(p=>p.x===x&&p.y===y);
+      block(world,[.995,.3,.995],[wx,-.23,wz],0x18394d,.35);
+      block(world,[.965,.12,.965],[wx,-.015,wz],(x+y)%2?0x896f50:0xa38960,.12);
+      block(world,[.012,.012,.86],[wx+.2,.055,wz],0x665844);
+      for(const sign of [-1,1])block(world,[.035,.012,.07],[wx+sign*.36,.055,wz+.35],0x617d86,.5);
+      if(wall){block(world,[.89,.4,.89],[wx,.26,wz],0x54758a,.35);block(world,[.9,.045,.9],[wx,.48,wz],0x94b5bd,.35);}
+      for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]])if(!occupied.has(`${x+dx},${y+dy}`)){
+        block(world,[dx?.065:.99,.08,dy?.065:.99],[wx+dx*.47,.09,wz+dy*.47],0xc09350,.6);
+        block(world,[dx?.09:.96,.22,dy?.09:.96],[wx+dx*.49,-.13,wz+dy*.49],0x315568,.4);
       }
     }
+    const anchors=[cells[0],cells.at(-1)];
+    for(const p of anchors){const mast=new THREE.Group();place(mast,p,size);world.add(mast);block(mast,[.12,.85,.12],[-.38,.46,-.38],0xc09350,.5);block(mast,[.24,.12,.24],[-.38,.93,-.38],0x9deee6,.2,true);}
+    const bound=Math.max(width,height);Object.assign(sun.shadow.camera,{left:-bound/2,right:bound/2,top:bound/2,bottom:-bound/2});sun.shadow.camera.updateProjectionMatrix();
     e.goals.forEach(p => {
       const d = new THREE.Group(); place(d, p, size); world.add(d);
       block(d, [.88, .065, .88], [0, .09, 0], 0x187f84, .55);
@@ -377,14 +359,26 @@
     lastSize = ''; fit(); effectTime = 0;
     if (!reduced.matches) renderer.domElement.animate([{ opacity: .15 }, { opacity: 1 }], { duration: 260 });
   }
+  let cameraX=0,cameraZ=0,cameraInitialized=false;
   function fit() {
-    const r = wrap.getBoundingClientRect(), key = `${r.width}/${r.height}`;
-    if (key === lastSize || r.width < 1 || r.height < 1) return;
-    lastSize = key; renderer.setSize(Math.round(r.width), Math.round(r.height), false);
-    const aspect = r.width / r.height, size = currentEngine?.size || 7;
-    const height = Math.max(size * .96 + 1.1, (size + 1.2) / aspect);
-    camera.left = -height * aspect / 2; camera.right = height * aspect / 2;
-    camera.top = height / 2; camera.bottom = -height / 2; camera.updateProjectionMatrix();
+    const r=renderer.domElement.getBoundingClientRect(),e=currentEngine;
+    if(!e||r.width<1||r.height<1)return;
+    const key=`${r.width}/${r.height}/${e.overview}/${e.width}/${e.height}`;
+    if(key===lastSize)return;
+    lastSize=key;renderer.setSize(Math.round(r.width),Math.round(r.height),false);
+    const aspect=r.width/r.height,w=e.width||e.size,h=e.height||e.size;
+    const follow=!e.overview&&(w>11||h>11);
+    const height=follow?Math.max(9.5,9.5/aspect):Math.max(h*.78+1.8,(w+1.2)/aspect);
+    camera.left=-height*aspect/2;camera.right=height*aspect/2;camera.top=height/2;camera.bottom=-height/2;camera.updateProjectionMatrix();
+    wrap.dataset.crateCamera=follow?'follow':e.overview?'overview':'fit';
+    cameraInitialized=false;
+  }
+  function followCamera(shown,dt){
+    const e=currentEngine,w=e.width||e.size,h=e.height||e.size,follow=!e.overview&&(w>11||h>11);
+    const x=follow?shown.x-(w-1)/2:0,z=follow?shown.y-(h-1)/2:0;
+    const amount=reduced.matches||!cameraInitialized?1:Math.min(1,dt*12);
+    cameraX+=(x-cameraX)*amount;cameraZ+=(z-cameraZ)*amount;cameraInitialized=true;
+    camera.position.set(cameraX,12,cameraZ+11);camera.lookAt(cameraX,0,cameraZ);
   }
   function burst(p, color, count = 14) {
     if (reduced.matches) return;
@@ -410,7 +404,7 @@
       if (p.x === routeTarget.x && p.y === routeTarget.y) { path = p.path; break; }
       for (const [dir, dx, dy] of [['up',0,-1],['right',1,0],['down',0,1],['left',-1,0]]) {
         const x=p.x+dx, y=p.y+dy, k=`${x},${y}`;
-        if (seen.has(k) || x<=0 || y<=0 || x>=e.size-1 || y>=e.size-1 || e.walls.some(w=>w.x===x&&w.y===y) || e.boxes.some(b=>b.x===x&&b.y===y) || e.gate && !e.gate.open && e.gate.x===x && e.gate.y===y) continue;
+        if (seen.has(k) || (e.floorKeys?!e.floorKeys.has(k):x<=0||y<=0||x>=e.size-1||y>=e.size-1) || e.walls.some(w=>w.x===x&&w.y===y) || e.boxes.some(b=>b.x===x&&b.y===y) || e.gate && !e.gate.open && e.gate.x===x && e.gate.y===y) continue;
         seen.add(k); queue.push({x,y,path:[...p.path,dir]});
       }
     }
@@ -449,6 +443,7 @@
     const eased=t*t*(3-2*t), hop=reduced.matches ? 0 : Math.abs(Math.sin(t*Math.PI*2))*(working?.025:.055);
     const mix=(a,b)=>a+(b-a)*eased;
     const shown={x:mix(poseFrom.player.x,poseTo.player.x),y:mix(poseFrom.player.y,poseTo.player.y)};
+    followCamera(shown,dt);
     place(hero,shown,e.size,.065+hop);
     if (!paused) turn=Math.min(1,turn+dt*13);
     const delta=Math.atan2(Math.sin(facing-lastFacing),Math.cos(facing-lastFacing));
@@ -536,7 +531,9 @@
     const picked=raycaster.intersectObjects(cargo,true)[0];
     let boxIndex=-1;
     if(picked){let node=picked.object;while(node.parent&&node.parent!==world)node=node.parent;boxIndex=cargo.indexOf(node);}
-    const x=boxIndex>=0?e.boxes[boxIndex].x:Math.round(hit.x+(e.size-1)/2),y=boxIndex>=0?e.boxes[boxIndex].y:Math.round(hit.z+(e.size-1)/2);
+    const x=boxIndex>=0?e.boxes[boxIndex].x:Math.round(hit.x+((e.width||e.size)-1)/2),y=boxIndex>=0?e.boxes[boxIndex].y:Math.round(hit.z+((e.height||e.size)-1)/2);
+    if(e.floorKeys&&!e.floorKeys.has(`${x},${y}`)){inputFeedback(false);return;}
+    if(e.overview){document.getElementById('crateOverview')?.click();lastSize='';return;}
     const tx=x-e.player.x,ty=y-e.player.y;
     if(Math.abs(tx)+Math.abs(ty)===1){clickDirection(tx,ty);return;}
     routeTarget={x,y};routeSteps=0;
@@ -553,8 +550,8 @@
   feedbackObserver.observe(document.getElementById('feedback'),{childList:true,subtree:true,characterData:true});
   const sizeObserver=new ResizeObserver(()=>{lastSize='';sync();});sizeObserver.observe(wrap);
   window.WeightPlayCrateboundPresentation=Object.freeze({
-    diagnostics:()=>({renderer:wrap.dataset.arkRenderer,drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,effects:particles.length,loopActive:Boolean(frame),routeActive:Boolean(routeTarget),materials:materials.size,engineRevision:THREE.REVISION,motion:moveKind,bodyLean:hero?.userData.body.rotation.x||0,leftLeg:hero?.userData.leftLeg.rotation.x||0,leftArm:hero?.userData.leftArm.rotation.x||0}),
-    projectCell:(x,y)=>{const r=renderer.domElement.getBoundingClientRect(),v=new THREE.Vector3(x-((currentEngine?.size||7)-1)/2,.1,y-((currentEngine?.size||7)-1)/2).project(camera);return{x:r.left+(v.x+1)*r.width/2,y:r.top+(1-v.y)*r.height/2};}
+    diagnostics:()=>({renderer:wrap.dataset.arkRenderer,cameraMode:wrap.dataset.crateCamera,cameraTarget:{x:cameraX,z:cameraZ},drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,effects:particles.length,loopActive:Boolean(frame),routeActive:Boolean(routeTarget),materials:materials.size,engineRevision:THREE.REVISION,motion:moveKind,bodyLean:hero?.userData.body.rotation.x||0,leftLeg:hero?.userData.leftLeg.rotation.x||0,leftArm:hero?.userData.leftArm.rotation.x||0}),
+    projectCell:(x,y)=>{const r=renderer.domElement.getBoundingClientRect(),v=new THREE.Vector3(x-((currentEngine?.width||currentEngine?.size||7)-1)/2,.1,y-((currentEngine?.height||currentEngine?.size||7)-1)/2).project(camera);return{x:r.left+(v.x+1)*r.width/2,y:r.top+(1-v.y)*r.height/2};}
   });
   on(renderer.domElement,'webglcontextlost',ev=>{ev.preventDefault();wrap.dataset.arkRenderer='fallback';cancelAnimationFrame(frame);frame=0;routeTarget=null;});
   on(renderer.domElement,'webglcontextrestored',()=>{wrap.dataset.arkRenderer='three';currentEngine=null;sync();});
