@@ -138,7 +138,20 @@
     listen(window,'resize',scheduleLayout);listen(window,'weightplay:stage-sync',scheduleLayout);
     listen(window,'weightplay:play-actions-change',scheduleLayout);
     const api=Object.freeze({
-      select, refresh(index=current){drag.cancel();select(index,{notify:false});scheduleLayout();},cancel:drag.cancel,
+      select, refresh(index=current){
+        drag.cancel();
+        current=clamp(Math.round(index),config.count-1);
+        moveWindow(current);
+        sync();
+        // Scene activation can reveal a Stage whose first layout is still the
+        // browser's default card size. Fit it before the first visible frame;
+        // the ResizeObserver remains the shared fallback for hidden scenes.
+        if(page.getClientRects().length&&page.offsetWidth){
+          if(resizeFrame)cancelAnimationFrame(resizeFrame);
+          resizeFrame=0;
+          layout();
+        }else scheduleLayout();
+      },cancel:drag.cancel,
       get selected(){return current;},get pool(){return cards;},
       destroy(){if(closed)return;closed=true;drag.dispose();resize.disconnect();abort.abort();cancelAnimationFrame(resizeFrame);mounted.delete(rail);},
     });
