@@ -84,6 +84,7 @@ h2 { margin-bottom:10px; font-size:clamp(1.5rem,4vw,2.5rem); letter-spacing:-.04
 .best-line { margin:22px 0; color:var(--deep-leaf); }
 .result-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; }
 .general-reserve { width:min(920px,100%); height:56px; margin:0 auto; pointer-events:none; }
+.battle-screen { --wp-pattern-action-target:var(--wp-frame-control-size-physical,48px); }
 footer { margin-top:22px; color:#728072; font-size:12px; text-align:center; }
 .sr-only { position:absolute !important; width:1px !important; height:1px !important; padding:0 !important; margin:-1px !important; overflow:hidden !important; clip:rect(0,0,0,0) !important; white-space:nowrap !important; border:0 !important; }
 @keyframes nudge { 0%,100% { transform:translateX(0); } 35% { transform:translateX(-3px); } 70% { transform:translateX(3px); } }
@@ -172,11 +173,31 @@ body[data-screen="result"] footer { display:none; }
   .pattern-grid { width:120px; margin-inline:auto; gap:3px; }
   .token { min-height:0; border-radius:7px; font-size:1.15rem; }
   .options-heading { margin-top:3px; font-size:.7rem; }
-  .option-grid { max-width:180px; gap:4px; margin-top:3px; }
+  .option-grid {
+    width:max(180px,calc(var(--wp-pattern-action-target) + var(--wp-pattern-action-target) + var(--wp-pattern-action-target) + 8px));
+    max-width:100%;
+    grid-template-columns:repeat(3,minmax(var(--wp-pattern-action-target),1fr));
+    gap:4px;
+    margin-top:3px;
+  }
   .option-token { min-height:0; height:48px; aspect-ratio:auto; font-size:1.15rem; border-radius:8px; }
   .feedback { min-height:16px; height:16px; margin-top:2px; font-size:.65rem; }
   .progress-line { font-size:.65rem; }
   .battle-content > #leaveBtn { position:absolute; left:50%; bottom:2px; transform:translateX(-50%); margin:0; min-height:32px; height:32px; padding:4px 10px; font-size:.7rem; }
+}
+
+/* Keep game actions at the common physical control size inside the scaled Battle canvas. */
+body.wp-logical-battle-active .battle-screen :is(
+  #optionGrid .option-token,
+  #leaveBtn,
+  #leaveDialog .result-actions > button,
+  #resultView .result-actions > button
+) {
+  box-sizing:border-box!important;
+  min-width:var(--wp-pattern-action-target)!important;
+  min-height:var(--wp-pattern-action-target)!important;
+  height:var(--wp-pattern-action-target)!important;
+  max-height:var(--wp-pattern-action-target)!important;
 }
 
 @media (max-width:420px) and (min-height:501px) {

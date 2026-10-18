@@ -346,8 +346,8 @@ export function applyHoneyShieldText(html,locale,dictionary,{canonical=false}={}
       const attr=new RegExp(`(\\s)${attribute}=["'][^"']*["']`,'i');
       tag=attr.test(tag)?tag.replace(attr,`$1${attribute}="${escapeHtml(copy[key])}"`):tag.replace(/\s*\/?>$/,match=>` ${attribute}="${escapeHtml(copy[key])}"${match}`);
     }
-    const related=tag.match(/data-wp-related-id=["']([^"']+)["']/)?.[1];
-    if(related && ['animal-prism-battalion','beast-tactician'].includes(related))tag=tag.replace(/(\s)href=["'][^"']*["']/i,`$1href="/${HONEY_ROUTES[locale]}/games/${related}/"`);
+    const related=tag.match(/data-game-id=["']([^"']+)["']/)?.[1];
+    if(related==='beast-tactician')tag=tag.replace(/(\s)href=["'][^"']*["']/i,`$1href="/${HONEY_ROUTES[locale]}/games/${related}/"`);
     if(/^<script\b/i.test(tag))tag=tag.replace(/(\ssrc=["'])([^"']*(?:locales|game)\.js)([^"']*)(["'])/i,(_,prefix,base,query,quote)=>{
       query=query.replace(/(?:&amp;|&)wp-text=[^&"']*/g,'');
       return `${prefix}${base}${query}${query?'&amp;':'?'}wp-text=20260929-honey140-final${quote}`;
@@ -397,10 +397,11 @@ export function auditHoneyShieldText(root=process.cwd()) {
       assert.equal((html.match(new RegExp(`data-i18n=["']faq${i}q["']`,'g'))||[]).length,1,`${file}: FAQ ${i}`);
       assert(copy[`faq${i}q`] && copy[`faq${i}a`],`${file}: FAQ source ${i}`);
     }
-    const related=[...html.matchAll(/<a\b[^>]*data-wp-related-id=["']([^"']+)["'][^>]*>/g)];
-    assert.equal(related.length,2,`${file}: related count`);
+    const related=[...html.matchAll(/<a\b(?=[^>]*\bclass=["'][^"']*\bgame-info-related-card\b)[^>]*\bdata-game-id=["']([^"']+)["'][^>]*>/g)];
+    assert.equal(related.length,1,`${file}: shared related-card count`);
     for(const match of related) {
       const id=match[1],href=match[0].match(/\shref=["']([^"']+)/)?.[1];
+      assert.equal(id,'beast-tactician',`${file}: shared related-game owner`);
       assert.equal(href,`/${HONEY_ROUTES[locale]}/games/${id}/`,`${file}: related route`);
       const target=routeFile(root,HONEY_ROUTES[locale],id);
       assert(fs.existsSync(target),`${file}: missing related target`);
@@ -408,7 +409,7 @@ export function auditHoneyShieldText(root=process.cwd()) {
     }
     const leaf=/(<([a-z][\w-]*)\b[^>]*\bdata-i18n=["']([^"']+)["'][^>]*>)([^<]*)(<\/\2>)/gi;
     for(const match of html.matchAll(leaf))if(typeof copy[match[3]]==='string')assert.equal(plain(match[4]),plain(copy[match[3]]),`${file}: ${match[3]} initial/runtime text`);
-    reports.push({locale:segment?locale:'canonical-en',keys:baseKeys.length,faq:5,tags:3,related:2,result:'PASS'});
+    reports.push({locale:segment?locale:'canonical-en',keys:baseKeys.length,faq:5,tags:3,related:1,result:'PASS'});
   }
   return reports;
 }

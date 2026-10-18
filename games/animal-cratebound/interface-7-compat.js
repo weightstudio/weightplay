@@ -377,7 +377,12 @@
   }
   function followCamera(shown,dt){
     const e=currentEngine,w=e.width||e.size,h=e.height||e.size,follow=!e.overview;
-    const x=follow?shown.x-(w-1)/2:0,z=follow?shown.y-(h-1)/2:0;
+    // Keep a small puzzle completely visible at the same close scale. Only an
+    // axis that exceeds the viewport scrolls; never zoom out to fit it.
+    const floor=e.floor||[{x:0,y:0},{x:w-1,y:h-1}];
+    const anchor=(p,min,max,span)=>{const lo=min-.65+span/2,hi=max+.65-span/2;return lo>=hi?(min+max)/2:Math.max(lo,Math.min(hi,p));};
+    const x=follow?anchor(shown.x,Math.min(...floor.map(p=>p.x)),Math.max(...floor.map(p=>p.x)),camera.right-camera.left)-(w-1)/2:0;
+    const z=follow?anchor(shown.y,Math.min(...floor.map(p=>p.y)),Math.max(...floor.map(p=>p.y)),(camera.top-camera.bottom)*Math.hypot(12,11)/12)-(h-1)/2:0;
     const amount=reduced.matches||!cameraInitialized?1:Math.min(1,dt*12);
     cameraX+=(x-cameraX)*amount;cameraZ+=(z-cameraZ)*amount;cameraInitialized=true;
     camera.position.set(cameraX,12,cameraZ+11);camera.lookAt(cameraX,0,cameraZ);
