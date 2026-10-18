@@ -38,6 +38,14 @@
     hi:["वन लोमड़ी","नदी ऊदबिलाव","चाँदनी खरगोश","मूँगा कछुआ","आकाश बगुला","बड़ा भालू"],
     ar:["ثعلب الغابة","قندس النهر","أرنب القمر","سلحفاة المرجان","مالك الحزين السماوي","الدب الكبير"]
   }[locale]||["the Forest Fox","the River Otter","the Moon Hare","the Coral Turtle","the Sky Heron","the Grand Bear"];
+  const revealPortraits = [
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><circle cx="48" cy="48" r="44" fill="#0d304f" stroke="#63f6d3" stroke-width="2"/><path d="M19 39 15 13 37 28Q48 24 59 28L81 13 77 40Q83 58 70 72 60 82 48 84 36 82 26 72 13 58 19 39Z" fill="#ed8b37"/><path d="m21 34-2-14 13 11m43 3 2-14-13 11" fill="#ffe3aa"/><path d="M23 57Q27 43 39 45L48 51 57 45Q69 43 73 57 65 73 48 75 31 73 23 57Z" fill="#fff1d2"/><ellipse cx="37" cy="48" rx="3.4" ry="4.4" fill="#10243b"/><ellipse cx="59" cy="48" rx="3.4" ry="4.4" fill="#10243b"/><path d="m43 58 5-3 5 3-5 4Z" fill="#472a24"/><path d="M43 64q5 4 10 0" fill="none" stroke="#8d4a35" stroke-width="2" stroke-linecap="round"/></svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><circle cx="48" cy="48" r="44" fill="#0d304f" stroke="#63f6d3" stroke-width="2"/><circle cx="28" cy="33" r="10" fill="#805332"/><circle cx="68" cy="33" r="10" fill="#805332"/><ellipse cx="48" cy="51" rx="30" ry="32" fill="#a96f40"/><ellipse cx="36" cy="60" rx="13" ry="12" fill="#f4ddb7"/><ellipse cx="60" cy="60" rx="13" ry="12" fill="#f4ddb7"/><ellipse cx="38" cy="47" rx="3" ry="4" fill="#172b39"/><ellipse cx="58" cy="47" rx="3" ry="4" fill="#172b39"/><ellipse cx="48" cy="58" rx="7" ry="5" fill="#26384a"/><path d="M45 64q3 3 6 0m-24-2-9-2m10 7-9 1m67-6-9 2m8 5-9-1" fill="none" stroke="#f4ddb7" stroke-width="2" stroke-linecap="round"/></svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><circle cx="48" cy="48" r="44" fill="#0d304f" stroke="#63f6d3" stroke-width="2"/><path d="M31 46Q19 27 25 9q16 3 21 30m5 7Q49 24 66 8q14 18 2 39" fill="#e8d9f5" stroke="#a98cd1" stroke-width="2"/><path d="M34 31q-4-12-7-16m34 15q5-12 10-15" fill="none" stroke="#f59ab9" stroke-width="4" stroke-linecap="round"/><ellipse cx="48" cy="58" rx="26" ry="25" fill="#efe2f6"/><ellipse cx="39" cy="56" rx="2.8" ry="4" fill="#24374a"/><ellipse cx="57" cy="56" rx="2.8" ry="4" fill="#24374a"/><path d="m45 65 3-2 3 2-3 3Z" fill="#ee8bac"/><path d="M43 71q5 4 10 0" fill="none" stroke="#967293" stroke-width="2" stroke-linecap="round"/><path d="M72 24a8 8 0 1 0 7 12 9 9 0 0 1-7-12Z" fill="#ffe37a"/></svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><circle cx="48" cy="48" r="44" fill="#0d304f" stroke="#63f6d3" stroke-width="2"/><path d="M20 50Q19 28 48 25q29 3 28 25-2 23-28 26Q22 73 20 50Z" fill="#3c8b59" stroke="#b6e17a" stroke-width="3"/><path d="M28 42q20-20 40 0v20q-20 20-40 0Z" fill="#73b969" stroke="#d5ee91" stroke-width="2"/><path d="M34 47q14-12 28 0m-28 9q14-12 28 0m-28 9q14-12 28 0" fill="none" stroke="#468c57" stroke-width="3"/><ellipse cx="48" cy="63" rx="18" ry="15" fill="#9fd36d"/><circle cx="41" cy="60" r="3" fill="#183a3f"/><circle cx="55" cy="60" r="3" fill="#183a3f"/><path d="M43 69q5 4 10 0" fill="none" stroke="#39704d" stroke-width="2" stroke-linecap="round"/></svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><circle cx="48" cy="48" r="44" fill="#0d304f" stroke="#63f6d3" stroke-width="2"/><path d="M34 74q-7-25 4-43 8-12 20-5 11 7 7 24l-5 24Z" fill="#b9e9e6"/><path d="M56 44 84 48 58 54Z" fill="#ffd46c" stroke="#ebaa43" stroke-width="2"/><path d="M39 30 33 14l14 12m8 0 6-17 8 19" fill="#d6f7f0" stroke="#92d4cd" stroke-width="2"/><circle cx="52" cy="39" r="3" fill="#19384d"/><path d="M43 68q7 7 15 1" fill="none" stroke="#4b8995" stroke-width="2" stroke-linecap="round"/><path d="M31 77h37" stroke="#63f6d3" stroke-width="3" stroke-linecap="round"/></svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><circle cx="48" cy="48" r="44" fill="#0d304f" stroke="#63f6d3" stroke-width="2"/><circle cx="28" cy="34" r="13" fill="#815339"/><circle cx="68" cy="34" r="13" fill="#815339"/><circle cx="28" cy="34" r="6" fill="#d7a774"/><circle cx="68" cy="34" r="6" fill="#d7a774"/><ellipse cx="48" cy="52" rx="31" ry="30" fill="#9a6847"/><ellipse cx="48" cy="63" rx="19" ry="13" fill="#f1d9b7"/><ellipse cx="38" cy="49" rx="3" ry="4" fill="#17293a"/><ellipse cx="58" cy="49" rx="3" ry="4" fill="#17293a"/><ellipse cx="48" cy="60" rx="7" ry="5" fill="#382b2c"/><path d="M43 68q5 4 10 0" fill="none" stroke="#925c48" stroke-width="2" stroke-linecap="round"/></svg>`
+  ];
   const result=document.querySelector("#resultModal"),feedback=document.querySelector("#feedback"),records=new WeakMap();
   let active=null,last=performance.now();
   const state=()=>window.__blockTrilogyTest?.getState?.();
@@ -73,8 +81,21 @@
     for(let y=0;y<engine.size;y++)for(let x=0;x<engine.size;x++){context.fillStyle=engine.solution[y][x]?palette[(x+y)%palette.length]:"#102e45";context.fillRect(x*cell+1,y*cell+1,cell-2,cell-2)}return canvas.toDataURL("image/png");
   }
   function updateResult(){
-    if(result.hidden)return;const current=state(),engine=current?.engine;if(engine?.kind!=="mosaic"||!engine.cells.every((row,y)=>row.every((value,x)=>(value===1)===engine.solution[y][x])))return;
-    const record=recordFor(engine),image=result.querySelector(".result-art"),labels=result.querySelectorAll(".result-stats b"),stage=current.selected||1,animalIndex=Math.min(revealAnimals.length-1,Math.max(0,stage-1));image.src=resultImage(engine);image.alt=t.alt;image.dataset.completedMosaic="true";image.dataset.revealedAnimal=revealAnimals[animalIndex];[t.time,t.mistakes,t.hints].forEach((value,index)=>labels[index].textContent=value);document.querySelector("#resultText").textContent=format(revealCopy.line,{animal:revealAnimals[animalIndex]});document.querySelector("#resultA").textContent=`${Math.floor(record.elapsed/60)}:${String(Math.floor(record.elapsed%60)).padStart(2,"0")}`;document.querySelector("#resultB").textContent=String(engine.mistakes);document.querySelector("#resultC").textContent=String(record.hints);
+    if(result.hidden)return;
+    const current=state(),engine=current?.engine;
+    if(engine?.kind!=="mosaic"||!engine.cells.every((row,y)=>row.every((value,x)=>(value===1)===engine.solution[y][x])))return;
+    const record=recordFor(engine),image=result.querySelector(".result-art"),portrait=result.querySelector("#resultPortrait"),labels=result.querySelectorAll(".result-stats b"),stage=current.selected||1,animalIndex=Math.min(revealAnimals.length-1,Math.max(0,stage-1)),animal=revealAnimals[animalIndex];
+    image.src=resultImage(engine);
+    image.alt=t.alt;
+    image.dataset.completedMosaic="true";
+    image.dataset.revealedAnimal=animal;
+    portrait.innerHTML=revealPortraits[animalIndex];
+    portrait.dataset.revealedAnimal=animal;
+    [t.time,t.mistakes,t.hints].forEach((value,index)=>labels[index].textContent=value);
+    document.querySelector("#resultText").textContent=format(revealCopy.line,{animal});
+    document.querySelector("#resultA").textContent=`${Math.floor(record.elapsed/60)}:${String(Math.floor(record.elapsed%60)).padStart(2,"0")}`;
+    document.querySelector("#resultB").textContent=String(engine.mistakes);
+    document.querySelector("#resultC").textContent=String(record.hints);
   }
   const canvas=document.querySelector("#arena"),arenaWrap=document.querySelector("#arenaWrap"),keyboardCursor=document.createElement("div"),boardDescription=document.createElement("p");
   let keyboardEngine=null,keyboardActive=false,boardDescriptionSignature="";

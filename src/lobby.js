@@ -48,6 +48,17 @@ if (!isKidsLobby && topicGameIds.size && gameHallSwitch && !gameHallSwitch.query
   gameHallSwitch.append(topicsButton);
 }
 const hallButtons = document.querySelectorAll("[data-hall-tab]");
+if (!isKidsLobby) {
+  document.querySelectorAll('.topic-filter, .vibe-options').forEach(group => {
+    if (group.querySelector('[data-topic-filter="Action"]')) return;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.dataset.topicFilter = 'Action';
+    button.dataset.hallOnly = 'games';
+    button.dataset.i18n = 'category.Action';
+    group.insertBefore(button, group.querySelector('[data-topic-filter="Strategy"]'));
+  });
+}
 const topicHallCategories = new Set(catalogGames
   .filter(game => topicGameIds.has(game.id))
   .flatMap(game => game.categories || [])

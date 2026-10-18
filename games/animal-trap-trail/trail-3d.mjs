@@ -1,5 +1,5 @@
 import * as T from './vendor/three/three.module.min.js';
-import {createOrla} from './trail-owl.mjs';
+import {createOrla} from './trail-owl.mjs?v=20261018-variety-v20';
 
 export async function createTrailRenderer(canvas, lifecycle) {
   const renderer=new T.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'low-power'});
@@ -10,7 +10,7 @@ export async function createTrailRenderer(canvas, lifecycle) {
   renderer.setClearColor(0x081426,0);
   const scene=new T.Scene();scene.fog=new T.Fog('#172c45',18,45);
   const camera=new T.OrthographicCamera(-6,6,6,-6,.1,70);
-  scene.add(new T.HemisphereLight('#c5e9ff','#1b243a',1.35));
+  const ambient=new T.HemisphereLight('#c5e9ff','#1b243a',1.35);scene.add(ambient);
   const key=new T.DirectionalLight('#ffe0ab',3.5);key.position.set(7,12,10);key.target.position.set(8,0,0);scene.add(key,key.target);
   key.castShadow=true;key.shadow.mapSize.set(1024,1024);
   Object.assign(key.shadow.camera,{left:-14,right:14,top:10,bottom:-6,near:.5,far:40});key.shadow.bias=-.001;key.shadow.normalBias=.025;
@@ -28,7 +28,7 @@ export async function createTrailRenderer(canvas, lifecycle) {
     const mesh=new T.Mesh(geometry,mat);mesh.scale.set(...size);mesh.position.set(...at);mesh.receiveShadow=true;parent.add(mesh);return mesh;
   };
   const owl=createOrla((parent,size,at,mat)=>{const mesh=block(parent,size,at,mat,heroBox);mesh.castShadow=size[0]*size[1]*size[2]>.015;return mesh;},material);scene.add(owl.root);
-  let level=null, currentStage=0, gapParts=[], gapMarkers=[], spike, falseFloor, gateGlow, ceiling;
+  let level=null, currentStage=0, gapParts=[], gapMarkers=[], spikes=[], falseFloors=[], gateGlow;
   const staged=[], dummy=new T.Object3D();
   let batches=new Map();
   const stone=material('#435c71'), cap=material('#92b4b5'), dark=material('#253d55');
@@ -51,7 +51,7 @@ export async function createTrailRenderer(canvas, lifecycle) {
     if(level)scene.remove(level);
     // InstancedMesh owns its GPU instance attributes; shared geometry/materials live on.
     staged.splice(0).forEach(m=>m.dispose());
-    level=new T.Group();scene.add(level);gapParts=[];gapMarkers=[];
+    level=new T.Group();scene.add(level);gapParts=[];gapMarkers=[];spikes=[];falseFloors=[];
   }
   function terrain(start,end,index) {
     const g=new T.Group();level.add(g);gapParts.push({g,start,end,index});
@@ -76,8 +76,9 @@ export async function createTrailRenderer(canvas, lifecycle) {
   }
   function build(t) {
     clearLevel();currentStage=t.id;
-    // Live gap drift adjusts all adjacent physical terrain boundaries every frame.
-    const holes=[{x:t.gap/50,w:74/50}];if(t.secondGap)holes.push({x:t.gap2/50,w:74/50});holes.sort((a,b)=>a.x-b.x);
+    key.intensity=t.dark?2.2:3.5;ambient.intensity=t.dark?.9:1.35;
+    scene.fog.color.set(t.dark?'#102238':'#172c45');canvas.dataset.weather=t.dark?'storm':'moon';
+    const holes=t.gaps.map(([x,w])=>({x:x/50,w:w/50}));
     let start=-1;holes.forEach((h,i)=>{terrain(start,h.x,i);start=h.x+h.w;});terrain(start,20,holes.length);
     const archAccent=['#6caaad','#7d9bc5','#918ac1','#5aa4ac','#a48da4','#aa9b72'][Math.floor((t.id-1)/5)];
     const accent=material(archAccent);
@@ -107,30 +108,41 @@ export async function createTrailRenderer(canvas, lifecycle) {
     }
     // Decorative front-edge rune studs, kept clear of actual traps and gaps.
     for(let x=.5;x<18;x+=1.5) {
-      if(holes.some(h=>x>h.x-.2&&x<h.x+h.w+.2)||Math.abs(x-t.fake/50)<1)continue;
+      if(holes.some(h=>x>h.x-.2&&x<h.x+h.w+.2)||t.fakes.some(([f,w])=>x>(f-30)/50&&x<(f+w+30)/50))continue;
       batch([.13,.045,.15],[x,.035,.58],gold);
     }
     // Danger geometry has the exact production collider's full horizontal span.
-    spike=new T.Group();level.add(spike);
-    block(spike,[.84,.08,1.3],[.42,.04,0],black);
-    for(let i=0;i<3;i++) {
-      block(spike,[.23,.18,.7],[i*.28+.14,.17,0],red);
-      block(spike,[.15,.16,.5],[i*.28+.14,.34,0],red);
-      block(spike,[.07,.08,.24],[i*.28+.14,.46,0],lamp);
+    for(const [x,w,a=0] of t.spikes) {
+      const spike=new T.Group();level.add(spike);spikes.push(spike);spike.position.x=x/50;
+      const width=w/50,count=Math.ceil(width/.28),cell=width/count;
+      block(spike,[width,.08,1.3],[width/2,.04,0],black);
+      for(let i=0;i<count;i++) {
+        block(spike,[cell*.82,.18,.7],[(i+.5)*cell,.17,0],red);
+        block(spike,[cell*.54,.16,.5],[(i+.5)*cell,.34,0],red);
+        block(spike,[cell*.25,.08,.24],[(i+.5)*cell,.46,0],lamp);
+      }
+      // A visible ground rail explains the bounded sweep before contact.
+      if(a)batch([(w+a*2)/50,.035,.09],[(x+w/2)/50,.022,.72],red);
     }
-    falseFloor=new T.Group();falseFloor.position.x=t.fake/50;level.add(falseFloor);
-    block(falseFloor,[.76,.24,1.55],[.38,.12,0],purple);
-    for(let i=0;i<3;i++)block(falseFloor,[.08,.025,.56],[.16+i*.21,.252,(i%2?-.28:.25)],black);
-    block(falseFloor,[.76,.04,.07],[.38,.27,.79],purple);
+    for(const [x,w] of t.fakes) {
+      const floor=new T.Group();floor.position.x=x/50;level.add(floor);falseFloors.push(floor);
+      const width=w/50;
+      block(floor,[width,.24,1.55],[width/2,.12,0],purple);
+      for(let i=0;i<3;i++)block(floor,[.06,.025,.56],[width*(i+.5)/3,.252,(i%2?-.28:.25)],black);
+      block(floor,[width,.04,.07],[width/2,.27,.79],purple);
+    }
     // Gap edge lamps are low markers, distinct from the tall gold destination.
     for(let i=0;i<holes.length;i++)for(const side of [-1,1]) {
       const marker=new T.Group();level.add(marker);gapMarkers.push({marker,i,side});
       block(marker,[.11,.18,.11],[0,.09,-.55],trim);
       block(marker,[.14,.06,.14],[0,.21,-.55],cyan);
     }
-    ceiling=new T.Group();ceiling.visible=Boolean(t.ceiling);level.add(ceiling);
-    block(ceiling,[3,.32,1.5],[13.7,4.6,0],stone);
-    for(let i=0;i<10;i++)block(ceiling,[.12,.05,.6],[12.28+i*.28,4.42,.35],red);
+    for(const [x,w] of t.ceilings) {
+      const center=(x+w/2)/50,width=w/50;
+      block(level,[width,.32,1.5],[center,2.8,0],stone);
+      block(level,[width,.06,.08],[center,2.61,.79],red);
+      for(const side of [-1,1])batch([.14,2.65,.16],[center+side*(width/2-.08),1.32,-.9],dark);
+    }
     // Stepped moon archive gate, open physical threshold at x=870.
     const gate=new T.Group();gate.position.set(17.62,0,-.18);level.add(gate);
     for(const side of [-1,1]) {
@@ -153,7 +165,7 @@ export async function createTrailRenderer(canvas, lifecycle) {
   const dust=new T.InstancedMesh(box,dustMaterial,12);scene.add(dust);
   const destination=new T.Mesh(ring,new T.MeshBasicMaterial({color:'#ffe0a0',transparent:true,opacity:.35,side:T.DoubleSide,depthWrite:false}));scene.add(destination);
   const revealMaterial=new T.LineBasicMaterial({color:'#c2fff0',transparent:true,opacity:.85});
-  const reveals=Array.from({length:4},()=>{const line=new T.LineSegments(edges,revealMaterial);scene.add(line);return line;});
+  const reveals=Array.from({length:12},()=>{const line=new T.LineSegments(edges,revealMaterial);scene.add(line);return line;});
   const wind=new T.InstancedMesh(box,new T.MeshBasicMaterial({color:'#91d5e2',transparent:true,opacity:.35}),8);scene.add(wind);
   let disposed=false,lost=false,width=0,height=0,lastInfo=0, cameraX=6,previousElapsed=0;
   function contextLost(e){e.preventDefault();lost=true;lifecycle.lost();}
@@ -179,27 +191,26 @@ export async function createTrailRenderer(canvas, lifecycle) {
       const targetY=viewH*(.5-groundFraction);
       camera.left=-viewW/2;camera.right=viewW/2;camera.top=viewH/2;camera.bottom=-viewH/2;
       camera.position.set(cameraX,targetY+4.5,20);camera.lookAt(cameraX,targetY,0);camera.updateProjectionMatrix();
-      const drift=t.moving?Math.sin(s.elapsed/240)*.2:0;
-      const holes=[{x:t.gap/50+drift,w:1.48}];if(t.secondGap)holes.push({x:t.gap2/50,w:1.48});holes.sort((a,b)=>a.x-b.x);
+      const holes=t.gaps.map(([x,w])=>({x:x/50,w:w/50}));
       let start=-1;
       gapMarkers.forEach(({marker,i,side})=>{marker.position.x=holes[i].x+(side<0?-.18:holes[i].w+.18);});
       gapParts.forEach(({g},i)=>{const end=holes[i]?.x??20;g.position.x=(start+end)/2;g.scale.x=Math.max(.01,end-start);start=(holes[i]?.x??20)+(holes[i]?.w??0);});
       // Instanced facade details remain behind the shifting solid edges, never
       // bridge a moving hole: their small translation follows the same drift.
-      spike.position.x=t.spike/50+(t.moving?Math.sin(s.elapsed/230)*.52:0);
-      falseFloor.children[0].material= s.pulse>0 ? lamp : purple;
+      spikes.forEach((spike,i)=>{const [x,,a=0,period=230]=t.spikes[i];spike.position.x=(x+Math.sin(s.elapsed/period)*a)/50;});
+      falseFloors.forEach(floor=>{floor.children[0].material=s.pulse>0?lamp:purple;});
       owl.animate(s,reduced);
+      canvas.dataset.facing=String(s.player.facing||1);canvas.dataset.owlYaw=owl.root.rotation.y.toFixed(3);
+      canvas.dataset.stageLayout=JSON.stringify({stage:t.id,gaps:t.gaps.length,spikes:t.spikes.length,fakes:t.fakes.length,ceilings:t.ceilings.length});
       gateGlow.material=lamp;
       pulseRing.visible=s.pulse>0;
       pulseRing.position.set(s.player.x/50,(390-s.player.y)/50+.7,.65);
       const radius=reduced?1.1:1+(54-s.pulse)*.09;pulseRing.scale.setScalar(radius);
       pulseMaterial.opacity=reduced?.38:s.pulse/110;
-      const revealBoxes=[
-        [holes[0].x+.74,.09,1.55,.12,1.7],
-        [spike.position.x+.42,.27,.9,.58,1.4],
-        [t.fake/50+.38,.15,.82,.36,1.65],
-        t.secondGap?[t.gap2/50+.74,.09,1.55,.12,1.7]:t.ceiling?[13.7,4.6,3.1,.4,1.6]:null
-      ];
+      const revealBoxes=[...holes.map(h=>[h.x+h.w/2,.09,h.w+.06,.12,1.7]),
+        ...spikes.map((spike,i)=>[spike.position.x+t.spikes[i][1]/100,.27,t.spikes[i][1]/50+.06,.58,1.4]),
+        ...t.fakes.map(([x,w])=>[(x+w/2)/50,.15,w/50+.06,.36,1.65]),
+        ...t.ceilings.map(([x,w])=>[(x+w/2)/50,2.8,w/50+.06,.4,1.6])];
       reveals.forEach((line,i)=>{const r=revealBoxes[i];line.visible=Boolean(s.pulse&&r);if(r){line.position.set(r[0],r[1],0);line.scale.set(r[2],r[3],r[4]);}});
       wind.visible=Boolean(t.wind);
       for(let i=0;i<8;i++) {

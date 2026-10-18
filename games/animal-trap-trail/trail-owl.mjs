@@ -67,9 +67,14 @@ export function createOrla(block, material) {
   part(lamp,[.16,.23,.16],[0,.02,0],light);
   for(const x of [-.1,.1]) for(const z of [-.1,.1])part(lamp,[.025,.29,.025],[x,.02,z],gold);
   part(lamp,[.12,.04,.04],[0,.24,0],gold);
-  root.rotation.y=-.34;
+  root.rotation.y=1.05;
+  let previousElapsed=0;
   return {root,animate(s,reduced) {
-    const p=s.player, moving=p.grounded && (s.keys.has('ArrowLeft')||s.keys.has('ArrowRight')||s.keys.has('KeyA')||s.keys.has('KeyD'));
+    const p=s.player, moving=p.grounded && Math.abs(p.vx||0)>.1;
+    const targetYaw=(p.facing||1)*1.05;
+    const delta=Math.max(0,Math.min(50,s.elapsed-previousElapsed));
+    root.rotation.y=reduced||s.elapsed<previousElapsed?targetYaw:T.MathUtils.lerp(root.rotation.y,targetYaw,1-Math.exp(-delta/40));
+    previousElapsed=s.elapsed;
     const gait=reduced?0:Math.sin(s.elapsed*.024)*(moving?1:0);
     feet.forEach((f,i)=>{f.rotation.x=gait*(i?-.45:.45);f.position.y=.12+Math.max(0,gait*(i?-1:1))*.07;});
     wings.forEach((w,i)=>{w.rotation.z=(i?1:-1)*(!p.grounded?.38:.12)+gait*.12;});

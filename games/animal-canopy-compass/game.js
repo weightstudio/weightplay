@@ -78,6 +78,7 @@
   const savedCampaign = loadCampaign();
   const state = { locale: normalizeLocale(routeLocale || window.WonderI18n?.localeFromPath?.() || savedLocale || document.documentElement.lang), screen: "main", round: 0, phase: 0, direction: 0, turns: 0, completed: savedCampaign.completed, bests: savedCampaign.bests, badges: savedCampaign.badges, mistakes: 0, sound: true };
   let stageRailController = null;
+  let stageSelectionIndex = 0;
   let leaveDialogOpen = false;
   let leaveDialog = null;
   let leaveKeep = null;
@@ -148,7 +149,7 @@
       result.classList.toggle("hidden", !active);
     }
     setBattleCovered(active, true, active);
-    sharedFrame?.activate("battle", { covered: active });
+    sharedFrame?.activate("battle");
   };
 
   const ensureLeaveDialog = () => {
@@ -232,7 +233,12 @@
       const action = next?.disabled ? $("resultHome") : next;
       if (!action || $("result").hidden) return;
       action.focus({ preventScroll: true });
-      action.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "auto" });
+      const panel = $("result");
+      const panelRect = panel.getBoundingClientRect();
+      const actionRect = action.getBoundingClientRect();
+      const inset = 12;
+      if (actionRect.bottom > panelRect.bottom - inset) panel.scrollTop += actionRect.bottom - panelRect.bottom + inset;
+      else if (actionRect.top < panelRect.top + inset) panel.scrollTop -= panelRect.top + inset - actionRect.top;
     });
   };
   const setScreen = (name) => {
@@ -283,35 +289,41 @@
     return count;
   };
   const highestUnlockedIndex = () => Math.min(rounds.length - 1, unlockedCount() - 1);
-  const updateProgress = () => { $("progress").textContent = t("progress", { count: state.completed.length, unlocked: unlockedCount() }); };
+  const updateProgress = () => {
+    $("progress").textContent = t("progress", { count: state.completed.length, unlocked: unlockedCount() });
+    updateStageHeader();
+  };
   const saveCampaign = () => set(campaignKey, JSON.stringify({ schema: 1, completed: state.completed, bests: state.bests, badges: state.badges }));
-  const renderStageCard = (card, index) => {
+  const updateStageHeader = () => {
+    const selected = $("stageSelectionValue");
+    const progress = $("stageCompletionValue");
+    if (selected) selected.textContent = t("round", { number: stageSelectionIndex + 1, total: rounds.length });
+    if (progress) progress.textContent = `${state.completed.length}/${rounds.length}`;
+  };
+  const stageRecord = (index) => {
     const round = rounds[index];
     const unlocked = index <= highestUnlockedIndex();
     const complete = state.completed.includes(round.id);
-    const content = document.createElement("div");
-    content.dataset.wpItemContent = "";
-    const title = document.createElement("span");
-    title.className = "stage-number";
-    title.textContent = t("round", { number: round.id, total: rounds.length });
-    const arc = document.createElement("h3");
-    arc.textContent = t("arc" + round.arc);
-    const objective = document.createElement("p");
-    objective.textContent = t("stageObjective", { count: round.phases.length });
-    const status = document.createElement("span");
-    status.className = "stage-chip";
-    status.textContent = complete ? t("complete") : !unlocked ? t("lockedStage") : round.checkpoint ? t("checkpoint") : t("readyStage");
-    content.append(title, arc, objective, status);
-    card.className = "stage-card" + (complete ? " done" : "") + (!unlocked ? " locked" : "") + (round.checkpoint ? " checkpoint" : "");
-    card.dataset.stage = String(round.id);
-    card.setAttribute("role", "listitem");
-    card.setAttribute("aria-disabled", String(!unlocked));
-    card.setAttribute("aria-label", [title.textContent, arc.textContent, objective.textContent, status.textContent].join(". "));
-    card.replaceChildren(content);
+    const objective = t("stageObjective", { count: round.phases.length });
+    const status = complete ? t("complete") : !unlocked ? t("lockedStage") : round.checkpoint ? t("checkpoint") : t("readyStage");
+    const arc = t("arc" + round.arc);
+    return {
+      id: round.id,
+      kicker: t("round", { number: round.id, total: rounds.length }),
+      title: arc,
+      subtitle: objective,
+      status,
+      summary: [arc, objective, status].join(" · "),
+      details: [objective, round.checkpoint ? t("checkpoint") : "", status],
+      poster: "/games/animal-canopy-compass/assets/animal-canopy-compass-cover.png",
+      posterPosition: "center",
+      locked: !unlocked,
+      cleared: complete,
+    };
   };
   const renderStages = () => {
     const rail = $("stageList");
-    if (!window.WeightPlayStageV6?.install) {
+    if (!window.WeightPlayPlayUI?.mountStage || !sharedFrame?.stageTopUI) {
       rail.replaceChildren();
       const unavailable = document.createElement("p");
       unavailable.className = "stage-rail-error";
@@ -320,15 +332,22 @@
       return;
     }
     if (!stageRailController) {
-      stageRailController = window.WeightPlayStageV6.install(rail, {
-        total: rounds.length,
-        poolSize: 9,
-        initialIndex: highestUnlockedIndex,
-        bind: renderStageCard,
-        activate: (index) => {
-          if (index > highestUnlockedIndex()) return;
-          startRound(index);
+      stageRailController = window.WeightPlayPlayUI.mountStage({
+        page: $("stageContent"),
+        rail,
+        selected: stageSelectionIndex,
+        config: {
+          count: rounds.length,
+          poster: "/games/animal-canopy-compass/assets/animal-canopy-compass-cover.png",
+          background: "/games/animal-canopy-compass/assets/animal-canopy-compass-background.png",
+          stage: stageRecord,
         },
+        onSelect: (index) => {
+          stageSelectionIndex = index;
+          updateStageHeader();
+        },
+        onStart: (index) => startRound(index),
+        isActive: () => state.screen === "stage" && !$("stageScreen").hidden,
       });
       if (!stageRailController) {
         const unavailable = document.createElement("p");
@@ -338,9 +357,9 @@
         return;
       }
     } else {
-      stageRailController.refresh();
+      stageRailController.refresh(stageSelectionIndex);
     }
-    stageRailController.center(highestUnlockedIndex());
+    updateStageHeader();
   };
   const renderDirectionButtons = () => {
     const rack = $("directionRack");
@@ -381,6 +400,7 @@
   const startRound = (index) => {
     const selected = Math.max(0, Math.min(rounds.length - 1, index));
     if (selected > highestUnlockedIndex()) { showToast(t("lockedStage")); return; }
+    stageSelectionIndex = selected;
     state.round = selected;
     state.phase = 0;
     state.direction = 0;
@@ -389,7 +409,7 @@
     setScreen("battle");
     $("status").textContent = t("ready");
   };
-  const startSession = () => { setScreen("stage"); };
+  const startSession = () => { stageSelectionIndex = highestUnlockedIndex(); setScreen("stage"); };
   const check = () => {
     const round = rounds[state.round];
     const phase = round.phases[state.phase];
@@ -425,7 +445,9 @@
     saveCampaign();
     updateProgress();
     $("badge").textContent = `${state.completed.length}/${rounds.length}`;
-    stageRailController?.refresh();
+    stageSelectionIndex = highestUnlockedIndex();
+    stageRailController?.refresh(stageSelectionIndex);
+    updateStageHeader();
     $("status").textContent = t("correct");
     $("checkBtn").disabled = true;
     $("resetBtn").disabled = true;
@@ -501,6 +523,35 @@
       stage: { root: $("stageScreen"), header: $("stageHeader"), content: $("stageContent") },
       battle: { root: $("battleScreen"), header: $("battleHeader"), content: $("battleContent"), headerInfo: $("battleHeaderInfo") },
     },
+    playUI: true,
   }) || null;
+  document.documentElement.dataset.wpSharedInterface = "9";
+  if (sharedFrame?.stageTopUI && sharedFrame?.battleTopUI && sharedFrame?.commonDownButton) {
+    const createFrameStat = (labelKey, id) => {
+      const node = document.createElement("div");
+      const caption = document.createElement("small");
+      caption.dataset.copy = labelKey;
+      caption.textContent = t(labelKey);
+      const value = document.createElement("strong");
+      value.id = id;
+      node.append(caption, value);
+      return node;
+    };
+    const stageGroup = window.WeightPlayScreenFrame.createGroup()
+      .add(createFrameStat("stageSections", "stageSelectionValue"))
+      .add(createFrameStat("complete", "stageCompletionValue"));
+    sharedFrame.stageTopUI.add(stageGroup);
+    const battleGroup = window.WeightPlayScreenFrame.createGroup();
+    [...$("battleHeaderInfo").children].forEach((field) => battleGroup.add(field));
+    $("battleHeaderInfo").replaceChildren();
+    sharedFrame.battleTopUI.add(battleGroup);
+    const stageTab = document.querySelector(".stage-tabs button");
+    if (stageTab) {
+      stageTab.dataset.wpFrameAction = "tab";
+      stageTab.setAttribute("aria-pressed", "true");
+      sharedFrame.commonDownButton.clear().add(stageTab);
+    }
+    sharedFrame.activate("main");
+  }
   setTimeout(() => { $("loadingPanel").hidden = true; setScreen("main"); applyLocale(); }, 120);
 }());

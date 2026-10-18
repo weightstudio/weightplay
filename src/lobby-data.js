@@ -1295,7 +1295,7 @@ window.WONDER_LOBBY = {
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
       type: { en: "Roguelike Deckbuilder", "zh-Hant": "Roguelike 牌組構築" },
-      categories: ["Featured", "Animal Games", "Puzzle", "Strategy"],
+      categories: ["Featured", "Animal Games", "Card", "Strategy"],
       skills: ["Logic", "Problem Solving", "Focus"],
       href: "games/beast-deck/",
       description: {
@@ -1312,7 +1312,7 @@ window.WONDER_LOBBY = {
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
       type: { en: "Room Action Roguelite", "zh-Hant": "房間動作 Roguelite" },
-      categories: ["Featured", "Animal Games", "Puzzle", "Strategy"],
+      categories: ["Featured", "Animal Games", "Action", "Adventure", "Arcade"],
       skills: ["Logic", "Problem Solving", "Focus"],
       href: "games/animal-relic-hunters/",
       description: {
@@ -1329,7 +1329,7 @@ window.WONDER_LOBBY = {
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
       type: { en: "Turn-Based Squad Tactics", "zh-Hant": "回合制小隊戰棋" },
-      categories: ["Featured", "Animal Games", "Puzzle", "Strategy"],
+      categories: ["Featured", "Animal Games", "Strategy"],
       skills: ["Logic", "Problem Solving", "Focus"],
       href: "games/animal-rune-tactics/",
       description: {
@@ -1363,7 +1363,7 @@ window.WONDER_LOBBY = {
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
       type: { en: "Auto-Battler", "zh-Hant": "自走棋策略" },
-      categories: ["Featured", "Animal Games", "Puzzle", "Strategy"],
+      categories: ["Featured", "Animal Games", "Strategy"],
       skills: ["Logic", "Problem Solving", "Focus"],
       href: "games/animal-auto-squad/",
       description: {
@@ -1380,7 +1380,7 @@ window.WONDER_LOBBY = {
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
       type: { en: "Hero Tower Defense", "zh-Hant": "英雄塔防" },
-      categories: ["Featured", "Animal Games", "Puzzle", "Strategy"],
+      categories: ["Featured", "Animal Games", "Strategy", "Tower Defense"],
       skills: ["Logic", "Problem Solving", "Focus"],
       href: "games/beast-tactician/",
       description: {
@@ -1397,7 +1397,7 @@ window.WONDER_LOBBY = {
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
       type: { en: "2D Action Platformer RPG", "zh-Hant": "2D 動作平台 RPG" },
-      categories: ["Featured", "Animal Games"],
+      categories: ["Featured", "Animal Games", "Action"],
       skills: ["Logic", "Problem Solving", "Focus"],
       href: "games/shadow-wolf/",
       description: {
@@ -2516,7 +2516,7 @@ window.WONDER_LOBBY.games.push({
   status: "playable",
   statusText: { en: "Playable", "zh-Hant": "可遊玩" },
   type: { en: "Spatial Inventory Roguelite", "zh-Hant": "空間行囊策略遠征" },
-  categories: ["Featured", "Animal Games"],
+  categories: ["Featured", "Animal Games", "Strategy"],
   skills: ["Logic", "Problem Solving", "Focus"],
   href: "games/animal-gearpack-expedition/",
   description: {

@@ -14,7 +14,7 @@
   __wpNotifyMeasurement();
 
   const $ = (id) => document.getElementById(id);
-  const GAME_VERSION = 19;
+  const GAME_VERSION = 20;
   const loadingPanel = $("loadingPanel");
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
   const canvas = $("arena");
@@ -139,42 +139,43 @@
     ar: "اعثر على المصباح. تعيد الفخاخ ضبط المرحلة الحالية فقط."
   };
   const campaignStages = [
-    { name: "Moonlit Arrival", nameZh: "月影初行", objective: "Read the first lit landing window.", objectiveZh: "讀懂第一個發光落點。", mechanics: ["gap", "pulse"], gap: 320, spike: 520, fake: 690 },
-    { name: "Lantern Footbridge", nameZh: "燈籠木橋", objective: "Clear a narrow gap, then commit to the jump cue.", objectiveZh: "越過窄裂縫，再依線索果斷跳躍。", mechanics: ["gap", "hidden"], gap: 342, spike: 552, fake: 716 },
-    { name: "False Floor", nameZh: "假地板", objective: "Use Pulse to confirm the safe tile before the lantern.", objectiveZh: "在燈籠前用脈衝確認安全地板。", mechanics: ["gap", "pulse", "hidden"], gap: 364, spike: 574, fake: 702 },
-    { name: "Quiet Switchback", nameZh: "靜默折返", objective: "Keep your rhythm through a longer landing window.", objectiveZh: "維持節奏，穿過較長的落點窗口。", mechanics: ["gap", "hidden"], gap: 386, spike: 590, fake: 728 },
-    { name: "Lantern Keeper Check", nameZh: "燈籠守望檢查", objective: "Checkpoint: combine the first arc's gap and trap reads.", objectiveZh: "檢查點：整合第一弧的裂縫與陷阱判讀。", mechanics: ["gap", "pulse", "hidden"], gap: 350, spike: 610, fake: 742 },
-    { name: "Tidal Footfall", nameZh: "潮汐踏步", objective: "Watch a platform drift while you cross.", objectiveZh: "留意平台移動，再完成穿越。", mechanics: ["gap", "moving"], gap: 330, spike: 530, fake: 690, moving: true },
-    { name: "Delayed Spike", nameZh: "延遲尖刺", objective: "Read the spike's delayed sweep instead of rushing.", objectiveZh: "讀懂尖刺延遲掃動，不要急著衝刺。", mechanics: ["moving", "delay"], gap: 356, spike: 552, fake: 720, moving: true },
-    { name: "Windward Ledger", nameZh: "迎風航記", objective: "Counter a soft crosswind with small corrections.", objectiveZh: "用小幅修正抵抗輕微側風。", mechanics: ["moving", "wind"], gap: 374, spike: 574, fake: 704, moving: true, wind: true },
-    { name: "Tideglass Route", nameZh: "潮鏡路線", objective: "Pulse once, then trust the moving landing window.", objectiveZh: "使用一次脈衝，再相信移動中的落點窗口。", mechanics: ["moving", "wind", "pulse"], gap: 398, spike: 596, fake: 736, moving: true, wind: true },
-    { name: "Tide Bell Check", nameZh: "潮鐘檢查", objective: "Checkpoint: cross the tidal arc without losing momentum.", objectiveZh: "檢查點：保持動能穿越潮汐弧段。", mechanics: ["moving", "wind", "hidden"], gap: 344, spike: 620, fake: 748, moving: true, wind: true },
-    { name: "Mirror Step", nameZh: "鏡面步", objective: "Notice the first reversed input before the gap.", objectiveZh: "在裂縫前察覺第一次反轉操作。", mechanics: ["reverse", "gap"], gap: 326, spike: 528, fake: 694, reverse: true },
-    { name: "Echo Route", nameZh: "回聲路線", objective: "Use the same landmark reads with reversed movement.", objectiveZh: "在移動反轉下使用相同地標判讀。", mechanics: ["reverse", "hidden"], gap: 352, spike: 556, fake: 714, reverse: true },
-    { name: "Glass Decoy", nameZh: "玻璃誘餌", objective: "Read a false floor while the controls stay reversed.", objectiveZh: "在操作反轉時讀出假地板。", mechanics: ["reverse", "hidden", "pulse"], gap: 378, spike: 578, fake: 700, reverse: true },
-    { name: "Mirror Current", nameZh: "鏡潮", objective: "Correct direction and timing together.", objectiveZh: "同時修正方向與跳躍時機。", mechanics: ["reverse", "wind"], gap: 402, spike: 602, fake: 734, reverse: true, wind: true },
-    { name: "Mirror Warden Check", nameZh: "鏡衛檢查", objective: "Checkpoint: master the reversal before the vault arc.", objectiveZh: "檢查點：在進入穹頂弧段前掌握反轉。", mechanics: ["reverse", "hidden", "pulse"], gap: 348, spike: 624, fake: 750, reverse: true },
-    { name: "Low Vault", nameZh: "低穹頂", objective: "Jump the floor trap without touching the low ceiling.", objectiveZh: "跳過地面陷阱，同時避開低穹頂。", mechanics: ["ceiling", "gap"], gap: 334, spike: 536, fake: 688, ceiling: true },
-    { name: "Vault Split", nameZh: "穹頂分流", objective: "Choose a clean line through the first double hazard.", objectiveZh: "選擇乾淨路線穿過第一組雙重危險。", mechanics: ["ceiling", "second-gap"], gap: 360, gap2: 748, spike: 560, fake: 706, ceiling: true, secondGap: true },
-    { name: "Stone Breath", nameZh: "石窟吐息", objective: "Time a jump while the ceiling cue narrows the route.", objectiveZh: "在穹頂線索收窄路線時掌握跳躍。", mechanics: ["ceiling", "moving", "second-gap"], gap: 382, gap2: 730, spike: 584, fake: 718, ceiling: true, moving: true, secondGap: true },
-    { name: "Vault Lantern", nameZh: "穹頂燈火", objective: "Keep a low line, then climb only after the final gap.", objectiveZh: "保持低位，越過最後裂縫後才上跳。", mechanics: ["ceiling", "wind", "second-gap"], gap: 404, gap2: 758, spike: 608, fake: 742, ceiling: true, wind: true, secondGap: true },
-    { name: "Vault Seal Check", nameZh: "穹頂封印檢查", objective: "Checkpoint: blend low clearance and double-gap reads.", objectiveZh: "檢查點：整合低空間與雙裂縫判讀。", mechanics: ["ceiling", "wind", "second-gap"], gap: 350, gap2: 742, spike: 626, fake: 754, ceiling: true, wind: true, secondGap: true },
-    { name: "Storm Lantern", nameZh: "風暴燈", objective: "Read the route while wind and darkness hide its edges.", objectiveZh: "在風與黑暗遮住邊緣時讀懂路線。", mechanics: ["wind", "dark", "gap"], gap: 328, spike: 538, fake: 696, wind: true, dark: true },
-    { name: "Rainline", nameZh: "雨線", objective: "Use the pulse reveal to hold a steady landing.", objectiveZh: "使用脈衝揭示，穩定落在安全區。", mechanics: ["wind", "dark", "pulse"], gap: 354, spike: 562, fake: 714, wind: true, dark: true },
-    { name: "Storm Split", nameZh: "風暴分流", objective: "Cross two gaps while the wind changes your drift.", objectiveZh: "在風向改變漂移時越過兩道裂縫。", mechanics: ["wind", "dark", "second-gap"], gap: 376, gap2: 726, spike: 586, fake: 708, wind: true, dark: true, secondGap: true },
-    { name: "Thunder Decoy", nameZh: "雷鳴誘餌", objective: "Ignore the false floor and follow the brief pulse cue.", objectiveZh: "忽略假地板，跟隨短暫脈衝線索。", mechanics: ["wind", "dark", "hidden", "second-gap"], gap: 400, gap2: 748, spike: 610, fake: 738, wind: true, dark: true, secondGap: true },
-    { name: "Storm Lantern Check", nameZh: "風暴燈檢查", objective: "Checkpoint: finish the storm arc with a clean route read.", objectiveZh: "檢查點：以清楚路線判讀完成風暴弧段。", mechanics: ["wind", "dark", "pulse", "second-gap"], gap: 346, gap2: 738, spike: 628, fake: 756, wind: true, dark: true, secondGap: true },
-    { name: "Moon Gate Approach", nameZh: "月門前路", objective: "Combine the gap, reversal, and ceiling lessons.", objectiveZh: "整合裂縫、反轉與穹頂教學。", mechanics: ["gap", "reverse", "ceiling"], gap: 332, spike: 548, fake: 698, reverse: true, ceiling: true },
-    { name: "Moon Gate Crosswind", nameZh: "月門側風", objective: "Hold your line through wind, reversal, and a second gap.", objectiveZh: "在風、反轉與第二道裂縫中維持路線。", mechanics: ["wind", "reverse", "second-gap"], gap: 358, gap2: 730, spike: 574, fake: 718, wind: true, reverse: true, secondGap: true },
-    { name: "Moon Gate Shadow", nameZh: "月門暗影", objective: "Pulse through darkness, then clear the low ceiling.", objectiveZh: "穿過黑暗脈衝，再避開低穹頂。", mechanics: ["dark", "ceiling", "pulse"], gap: 384, spike: 600, fake: 730, dark: true, ceiling: true },
-    { name: "Moon Gate Trial", nameZh: "月門試煉", objective: "Choose deliberate jumps across every mixed-rule cue.", objectiveZh: "依每個混合規則線索做出精準跳躍。", mechanics: ["wind", "reverse", "dark", "second-gap"], gap: 406, gap2: 754, spike: 622, fake: 744, wind: true, reverse: true, dark: true, secondGap: true },
-    { name: "Moon Gate Finale", nameZh: "月門終章", objective: "Final checkpoint: read every rule and reach the moon gate.", objectiveZh: "最終檢查點：讀懂全部規則並抵達月門。", mechanics: ["wind", "reverse", "dark", "ceiling", "second-gap"], gap: 350, gap2: 742, spike: 636, fake: 758, wind: true, reverse: true, dark: true, ceiling: true, secondGap: true },
-  ].map((stage, index) => ({ ...stage, id: index + 1, arc: Math.floor(index / 5) + 1, room: (index % 5) + 1, checkpoint: (index + 1) % 5 === 0 }));
+
+    { name: "First Chasm", nameZh: "初越月峽", objective: "One chasm. Jump near its edge and land on the far bridge.", objectiveZh: "只有一道深谷：靠近邊緣起跳，落到對岸。", gaps:[[350,96]] },
+    { name: "Crystal Rhythm", nameZh: "晶刺節拍", objective: "Solid ground, three crystal beds. Land and release JUMP between them.", objectiveZh: "整條路都是實地，分三次跳過晶刺，每次落地後放開跳躍鍵。", spikes:[[268,36],[476,56],[704,32]] },
+    { name: "Twin Islands", nameZh: "雙峽跳島", objective: "Cross two chasms. Pause on the wide island before your second jump.", objectiveZh: "越過兩道深谷，在中間的寬島站穩，再跳第二次。", gaps:[[278,70],[530,94]] },
+    { name: "Cursed Tiles", nameZh: "咒文石板", objective: "No chasms: jump over the two purple slabs. Pulse reveals their full edges.", objectiveZh: "這關沒有深谷；跳過兩塊紫色咒文板，脈衝會標出完整邊界。", fakes:[[320,58],[616,82]] },
+    { name: "Keeper's Pendulum", nameZh: "守門者的擺鐘", objective: "Checkpoint: watch the sweeping crystal, then cross the broad chasm.", objectiveZh: "檢查點：先看清擺動晶刺，再越過寬闊深谷。", spikes:[[286,46,34,290]], gaps:[[580,100]] },
+    { name: "Dancing Crystals", nameZh: "雙晶之舞", objective: "Two crystals sweep at different rhythms. Wait for a clear takeoff.", objectiveZh: "兩床晶刺以不同節奏擺動，等待安全起跳時機。", spikes:[[280,52,38,270],[610,68,24,370]] },
+    { name: "Broken Causeway", nameZh: "斷橋擺渡", objective: "Land after the early chasm, then read the moving crystal.", objectiveZh: "先越過前段斷橋，落地後再觀察移動晶刺。", gaps:[[240,90]], spikes:[[564,66,40,310]] },
+    { name: "Wind Islands", nameZh: "風中三島", objective: "Three narrow chasms; correct your landings against the wind.", objectiveZh: "連過三道窄谷，逆著風修正每次落點。", gaps:[[230,54],[440,66],[666,76]], wind:true },
+    { name: "Cursed Cadence", nameZh: "咒晶交響", objective: "Purple, red, purple. Change your jump timing for each bed.", objectiveZh: "紫板、紅晶、紫板，依不同寬度調整起跳點。", fakes:[[228,40],[716,60]], spikes:[[466,50,24,340]] },
+    { name: "Tide Bell Trial", nameZh: "潮鐘試煉", objective: "Checkpoint: two sweeping crystal beds followed by one wide chasm.", objectiveZh: "檢查點：連過兩床擺動晶刺，最後跳過寬谷。", spikes:[[218,42,22,260],[442,56,32,330]], gaps:[[700,92]] },
+    { name: "Mirror March", nameZh: "鏡面行軍", objective: "Controls reverse: hold LEFT to go right and jump the two beds.", objectiveZh: "操作反轉：按左向右走，跳過兩床晶刺。", spikes:[[308,48],[644,72]], reverse:true },
+    { name: "Reflected Islands", nameZh: "倒映雙島", objective: "Hold LEFT to cross two broken spans, landing between them.", objectiveZh: "按左向右，越過兩段斷橋，中間落地再起跳。", gaps:[[260,82],[576,102]], reverse:true },
+    { name: "Mirror Script", nameZh: "鏡中文字", objective: "Three cursed slabs with reversed movement. Release JUMP after each landing.", objectiveZh: "反向操作穿越三塊咒文板，每次落地後放開跳躍鍵。", fakes:[[230,32],[450,62],[704,48]], reverse:true },
+    { name: "Mirror Gale", nameZh: "鏡中長風", objective: "One broad chasm in a crosswind. Reversed input changes steering, not jumping.", objectiveZh: "側風中的寬谷：左右操作反轉，跳躍方式不變。", gaps:[[440,112]], reverse:true,wind:true },
+    { name: "Mirror Warden", nameZh: "鏡衛試煉", objective: "Checkpoint: reversed steering, an early sweeping bed and two island jumps.", objectiveZh: "檢查點：反向操作，先越擺動晶刺，再連過兩道裂谷。", spikes:[[210,38,20,300]], gaps:[[450,64],[680,84]], reverse:true },
+    { name: "Low Archive", nameZh: "低梁書庫", objective: "Walk under the red-edged beam. Jump the crystals only after leaving it.", objectiveZh: "走過紅邊低梁，離開梁底後才跳過晶刺。", ceilings:[[200,184]], spikes:[[568,70]] },
+    { name: "Sheltered Island", nameZh: "梁下孤島", objective: "Jump onto the island, walk beneath its beam, then jump the far chasm.", objectiveZh: "跳上中島，步行穿過低梁，再起跳越過遠端深谷。", gaps:[[230,70],[666,80]], ceilings:[[420,100]] },
+    { name: "Stone Breath", nameZh: "石窟吐息", objective: "Sweep, shelter, curse: land before walking through the low corridor.", objectiveZh: "擺動晶刺、低梁、咒文板：先落地，再走過低矮通道。", spikes:[[220,42,22,330]], ceilings:[[410,110]], fakes:[[690,62]] },
+    { name: "Wind Vault", nameZh: "風拱迴廊", objective: "The wind crosses both chasms. Stay grounded beneath the central beam.", objectiveZh: "風穿過兩道深谷，中間低梁下要保持步行。", gaps:[[244,88],[690,74]], ceilings:[[464,92]], wind:true },
+    { name: "Vault Seal", nameZh: "三梁封印", objective: "Checkpoint: walk three low corridors; jump only in the open pockets.", objectiveZh: "檢查點：步行穿過三段低梁，只在露天缺口跳過地面陷阱。", ceilings:[[150,92],[430,70],[714,90]], spikes:[[300,36]], fakes:[[568,42]] },
+    { name: "Storm Chasm", nameZh: "風暴長峽", objective: "A broad dark chasm. Use the cyan edge lamps and Pulse to judge takeoff.", objectiveZh: "黑暗中的寬谷，用青色邊燈與脈衝判斷起跳點。", gaps:[[388,108]], wind:true,dark:true },
+    { name: "Rain Script", nameZh: "雨中咒晶", objective: "Alternate red crystals and purple slabs through the rain.", objectiveZh: "雨中交替跨越紅晶與紫板，落地後再準備下一跳。", spikes:[[240,44],[718,48]], fakes:[[478,66]], wind:true,dark:true },
+    { name: "Storm Islands", nameZh: "暴風列島", objective: "Three islands, three different spans. Pulse outlines every gap.", objectiveZh: "三道不同寬度的裂谷，脈衝能標出每一道邊界。", gaps:[[220,62],[434,88],[698,54]], wind:true,dark:true },
+    { name: "Thunder Decoy", nameZh: "雷鳴誘餌", objective: "Two moving crystal beds surround a cursed slab. Wait when the route closes.", objectiveZh: "兩床移動晶刺包圍咒文板，路線收窄時先等待。", spikes:[[248,48,32,280],[724,42,24,390]], fakes:[[486,54]], wind:true,dark:true },
+    { name: "Storm Lantern", nameZh: "風暴燈試煉", objective: "Checkpoint: gap, curse, gap, crystal. Read the changing obstacle order.", objectiveZh: "檢查點：深谷、咒板、深谷、晶刺，依順序逐一判讀。", gaps:[[200,66],[562,60]], fakes:[[386,36]], spikes:[[752,38]], wind:true,dark:true },
+    { name: "Moon Gate Approach", nameZh: "月門前路", objective: "Reversed steering: walk under the beam, then clear the gap and crystal.", objectiveZh: "反向操作：先走過低梁，再越深谷與晶刺。", ceilings:[[170,134]], gaps:[[428,86]], spikes:[[706,64]], reverse:true },
+    { name: "Moon Gate Crosswind", nameZh: "月門側風", objective: "Wind and reversal: curse, broad chasm, then a sweeping crystal.", objectiveZh: "側風加反向操作：咒板、寬谷、擺動晶刺依序出現。", fakes:[[226,46]], gaps:[[446,98]], spikes:[[726,42,26,340]], wind:true,reverse:true },
+    { name: "Moon Gate Shadow", nameZh: "月門暗影", objective: "Jump the first curse, walk through the dark beam, then jump the final curse.", objectiveZh: "先跳咒板，在暗處步行穿過低梁，再跳最後一塊咒板。", fakes:[[252,58],[690,84]], ceilings:[[444,114]], dark:true },
+    { name: "Moon Gate Trial", nameZh: "月門試煉", objective: "Reversed wind in darkness: broad chasm, sweeping crystals, final narrow gap.", objectiveZh: "黑暗風中反向操作：寬谷、擺動晶刺、最後窄谷。", gaps:[[240,100],[728,64]], spikes:[[510,58,30,350]], wind:true,reverse:true,dark:true },
+    { name: "Moon Gate Finale", nameZh: "月門終章", objective: "Finale: two island jumps, a low beam, a curse and a sweeping crystal. Read each before acting.", objectiveZh: "終章：連跳雙谷、步行穿梁、越過咒板與擺動晶刺。看清下一步再行動。", gaps:[[188,58],[354,56]], ceilings:[[506,60]], fakes:[[636,30]], spikes:[[784,32,14,320]], wind:true,reverse:true,dark:true },
+  ].map((stage, index) => ({ gaps:[], spikes:[], fakes:[], ceilings:[], ...stage, id: index + 1, arc: Math.floor(index / 5) + 1, room: (index % 5) + 1, checkpoint: (index + 1) % 5 === 0 }));
   const nextStageCopy = { en: "Next Stage", "zh-Hant": "下一關", "zh-Hans": "下一关", ja: "次のステージ", ko: "다음 스테이지", es: "Siguiente fase", "pt-BR": "Próxima fase", fr: "Étape suivante", de: "Nächster Abschnitt", it: "Fase successiva", ru: "Следующий этап", hi: "अगला चरण", ar: "المرحلة التالية" };
   const retryStageCopy = { en: "Retry Stage", "zh-Hant": "重試關卡", "zh-Hans": "重试关卡", ja: "ステージを再挑戦", ko: "스테이지 다시 시도", es: "Reintentar fase", "pt-BR": "Tentar fase novamente", fr: "Réessayer l’étape", de: "Abschnitt erneut", it: "Riprova la fase", ru: "Повторить этап", hi: "चरण फिर आज़माएँ", ar: "إعادة محاولة المرحلة" };
   const landingCueCopy = {
-    en: "Moon pulse: land in the lit window after the gap, then jump the spike.",
-    "zh-Hant": "月光脈衝：在裂縫後的發光區落地，再跳過尖刺。",
+    en: "Moon pulse: read the outlined trap edges before your next jump.",
+    "zh-Hant": "月光脈衝：看清標出的陷阱邊界，再決定下一跳。",
     "zh-Hans": "月光脉冲：在裂缝后的发光区落地，再跳过尖刺。",
     ja: "ムーンパルス：裂け目の先の光る範囲に着地してから、トゲを跳び越えよう。",
     ko: "달빛 펄스: 틈 뒤의 빛나는 구간에 착지한 뒤 가시를 뛰어넘으세요.",
@@ -203,21 +204,31 @@
     ar: "هبوط آمن",
   };
   const timingCueCopy = {
-    gap: {
-      en: "Jump before the dark edge, then land in the lit window.",
-      "zh-Hant": "在暗邊前跳起，落在發光區，再跳過尖刺。",
-      "zh-Hans": "在暗边前起跳，落在发光区，再跳过尖刺。",
-      ja: "暗い端の前で跳び、光る範囲に着地してからトゲを越えよう。",
-      ko: "어두운 가장자리 전에 점프해 빛나는 구간에 착지한 뒤 가시를 넘으세요.",
-      es: "Salta antes del borde oscuro, aterriza en la zona iluminada y supera las púas.",
-      "pt-BR": "Pule antes da borda escura, pouse na faixa iluminada e passe pelos espinhos.",
-      fr: "Saute avant le bord sombre, atterris dans la zone éclairée, puis franchis les piques.",
-      de: "Springe vor dem dunklen Rand, lande im Lichtfenster und überspringe dann die Spitzen.",
-      it: "Salta prima del bordo scuro, atterra nella zona illuminata e supera gli spuntoni.",
-      ru: "Прыгните перед тёмным краем, приземлитесь в светлом окне и перепрыгните шипы.",
-      hi: "गहरे किनारे से पहले कूदें, चमकते हिस्से में उतरें और फिर काँटों को पार करें।",
-      ar: "اقفز قبل الحافة المعتمة، واهبط في النافذة المضيئة، ثم تجاوز الأشواك.",
+    ceiling: {
+      en:"Low beam — walk underneath. Jump only after leaving it.",
+      "zh-Hant":"低梁下保持步行，離開後才起跳。", "zh-Hans":"低梁下保持步行，离开后才起跳。",
+      ja:"低い梁の下は歩き、抜けてからジャンプ。", ko:"낮은 들보 아래는 걷고 빠져나온 뒤 점프하세요.",
+      es:"Camina bajo la viga. Salta después de salir.", "pt-BR":"Ande sob a viga. Pule depois de sair.",
+      fr:"Marche sous la poutre. Saute après être sorti.", de:"Gehe unter dem Balken. Springe erst dahinter.",
+      it:"Cammina sotto la trave. Salta dopo essere uscito.", ru:"Пройдите под балкой. Прыгайте после неё.",
+      hi:"नीची बीम के नीचे चलें। बाहर निकलकर कूदें।", ar:"امشِ تحت العارضة المنخفضة، ثم اقفز بعد الخروج."
     },
+
+    gap: {
+      "en": "Jump near the chasm edge. Land on solid ground before the next jump.",
+      "zh-Hant": "靠近深谷邊緣起跳，先在實地落穩，再準備下一跳。",
+      "zh-Hans": "靠近深谷边缘起跳，先在实地落稳，再准备下一跳。",
+      "ja": "谷の端の近くでジャンプ。地面に着地してから次を跳ぼう。",
+      "ko": "틈 가장자리 가까이에서 점프하고 땅에 착지한 뒤 다시 뛰세요.",
+      "es": "Salta cerca del borde y aterriza en suelo firme antes del siguiente salto.",
+      "pt-BR": "Pule perto da borda e pouse em chão firme antes do próximo salto.",
+      "fr": "Saute près du bord et atterris sur le sol avant le prochain saut.",
+      "de": "Springe nahe am Rand und lande vor dem nächsten Sprung auf festem Boden.",
+      "it": "Salta vicino al bordo e atterra sul terreno prima del salto successivo.",
+      "ru": "Прыгайте у края и приземляйтесь на твёрдую землю перед следующим прыжком.",
+      "hi": "खाई के किनारे के पास कूदें। अगली छलाँग से पहले ठोस जमीन पर उतरें।",
+      "ar": "اقفز قرب حافة الهوة، واهبط على أرض ثابتة قبل القفزة التالية."
+},
     landing: {
       en: "Safe landing — press JUMP now to clear the spike.",
       "zh-Hant": "安全落點——現在按下跳躍，越過尖刺。",
@@ -234,35 +245,35 @@
       ar: "هبوط آمن — اضغط قفز الآن لتجاوز الأشواك.",
     },
     spike: {
-      en: "Jump now — clear the spike, then keep moving right.",
-      "zh-Hant": "現在跳躍——越過尖刺後繼續向右。",
-      "zh-Hans": "现在跳跃——越过尖刺后继续向右。",
-      ja: "今ジャンプ——トゲを越えて右へ進もう。",
-      ko: "지금 점프하세요. 가시를 넘고 오른쪽으로 계속 가세요.",
-      es: "Salta ahora: supera las púas y sigue a la derecha.",
-      "pt-BR": "Pule agora: passe pelos espinhos e continue à direita.",
-      fr: "Saute maintenant : franchis les piques, puis continue à droite.",
-      de: "Jetzt springen: Spitzen überwinden und weiter nach rechts.",
-      it: "Salta ora: supera gli spuntoni e continua a destra.",
-      ru: "Прыгайте сейчас: преодолейте шипы и двигайтесь вправо.",
-      hi: "अभी कूदें — काँटों को पार करके दाईं ओर बढ़ें।",
-      ar: "اقفز الآن — تجاوز الأشواك ثم واصل إلى اليمين.",
-    },
+      "en": "Jump over the red crystals. Land before the next obstacle.",
+      "zh-Hant": "跳過紅色晶刺，落地後再準備下一個障礙。",
+      "zh-Hans": "跳过红色晶刺，落地后再准备下一个障碍。",
+      "ja": "赤い結晶を跳び越え、次の障害の前に着地しよう。",
+      "ko": "빨간 수정을 뛰어넘고 다음 장애물 전에 착지하세요.",
+      "es": "Salta los cristales rojos y aterriza antes del siguiente obstáculo.",
+      "pt-BR": "Pule os cristais vermelhos e pouse antes do próximo obstáculo.",
+      "fr": "Saute les cristaux rouges et atterris avant le prochain obstacle.",
+      "de": "Springe über die roten Kristalle und lande vor dem nächsten Hindernis.",
+      "it": "Salta i cristalli rossi e atterra prima del prossimo ostacolo.",
+      "ru": "Перепрыгните красные кристаллы и приземлитесь до следующего препятствия.",
+      "hi": "लाल क्रिस्टल पर कूदें और अगली बाधा से पहले उतरें।",
+      "ar": "اقفز فوق البلورات الحمراء واهبط قبل العائق التالي."
+},
     clear: {
-      en: "Past the spike — keep moving to the lantern.",
-      "zh-Hant": "通過尖刺——繼續前往燈籠。",
-      "zh-Hans": "通过尖刺——继续前往灯笼。",
-      ja: "トゲを越えた。ランタンまで進もう。",
-      ko: "가시를 넘었습니다. 랜턴까지 계속 가세요.",
-      es: "Pasadas las púas: sigue hacia el farol.",
-      "pt-BR": "Depois dos espinhos: continue até a lanterna.",
-      fr: "Après les piques : continue vers la lanterne.",
-      de: "Hinter den Spitzen: weiter zur Laterne.",
-      it: "Oltre gli spuntoni: continua verso la lanterna.",
-      ru: "Шипы позади: двигайтесь к фонарю.",
-      hi: "काँटे पीछे हैं — लालटेन की ओर बढ़ें।",
-      ar: "تجاوزت الأشواك — واصل إلى المصباح.",
-    },
+      "en": "The path is clear. Reach the golden moon gate.",
+      "zh-Hant": "前方已安全，前往金色月門。",
+      "zh-Hans": "前方已安全，前往金色月门。",
+      "ja": "この先は安全。金色の月の門を目指そう。",
+      "ko": "앞길은 안전합니다. 황금 달의 문으로 가세요.",
+      "es": "El camino está libre. Llega a la puerta lunar dorada.",
+      "pt-BR": "O caminho está livre. Chegue ao portal lunar dourado.",
+      "fr": "La voie est libre. Rejoins la porte lunaire dorée.",
+      "de": "Der Weg ist frei. Erreiche das goldene Mondtor.",
+      "it": "La strada è libera. Raggiungi il portale lunare dorato.",
+      "ru": "Путь свободен. Дойдите до золотых лунных ворот.",
+      "hi": "रास्ता साफ है। सुनहरे चाँद द्वार तक पहुँचें।",
+      "ar": "الطريق آمن. اتجه إلى بوابة القمر الذهبية."
+},
     hidden: {
       en: "Hidden floor ahead — press JUMP before the lantern.",
       "zh-Hant": "前方有隱藏地板——在燈籠前按下跳躍。",
@@ -302,22 +313,22 @@
   function updateMainProgress() { setText("main-progress", format(copy().progress, { bestRoom: state.bestRoom, deaths: state.deaths })); }
   function guidedTimingKey() {
     const p=state.player,t=trapData();
-    if(!p || p.x < t.gap - 65) return "approach";
-    if(p.x < t.gap + 74) return "gap";
-    if(p.x < t.spike - 60) return "landing";
-    if(p.x < t.spike + 54) return "spike";
-    if(p.x < t.fake + 54) return "hidden";
-    return "clear";
+    if(!p) return "approach";
+    const upcoming=[...t.gaps.map(([x,w])=>({x,w,key:"gap"})),
+      ...t.spikes.map(([x,w,a=0,period=230])=>({x:x+Math.sin(state.elapsed/period)*a,w,key:"spike"})),
+      ...t.fakes.map(([x,w])=>({x,w,key:"hidden"})),
+      ...t.ceilings.map(([x,w])=>({x,w,key:"ceiling"}))]
+      .filter(h=>p.x<h.x+h.w+14).sort((a,b)=>a.x-b.x);
+    return !upcoming.length?"clear":p.x<upcoming[0].x-100?"approach":upcoming[0].key;
   }
   function currentBattleStatus() {
     const c = copy();
     if (state.statusKey === "gap") return c.gapDeath;
     if (state.statusKey === "hazard") return c.hazardDeath;
-    if (state.player?.x > trapData().spike + 52 && state.player.x < trapData().fake + 52) return trailWords()[7];
     const guidedRoom = true;
     if (state.statusKey === "pulse") return guidedRoom && state.timingCue && state.timingCue !== "approach" ? timingCueCopy[state.timingCue][currentLocale()] : c.pulseFeedback;
     if (guidedRoom && state.timingCue && state.timingCue !== "approach") return timingCueCopy[state.timingCue][currentLocale()];
-    if (guidedRoom) return trailWords()[0];
+    if (guidedRoom) return stageObjective();
     return c.battleStatus;
   }
   function updateBattleText() {
@@ -409,7 +420,7 @@
   }
   window.addEventListener("pagehide", () => stageRail?.destroy(), { once: true });
   function resetRoom() {
-    state.player = { x: 76, y: 390, vy: 0, grounded: false };
+    state.player = { x: 76, y: 390, vy: 0, vx: 0, facing: 1, grounded: false };
     state.keys.clear(); state.tap = null;
     state.pulse = 0; state.jumpBuffer = 0; state.timingCue = guidedTimingKey();
     state.coyote = 0; state.elapsed = 0; state.recovery = 0; state.camera = 0; state.accumulator = 0;
@@ -429,17 +440,14 @@
   }
   function solidAt(x) {
     const t = trapData();
-    const drift = t.moving ? Math.sin(state.elapsed / 240) * 10 : 0;
-    return !((x > t.gap + drift && x < t.gap + 74 + drift) ||
-      (t.secondGap && x > t.gap2 && x < t.gap2 + 74));
+    return !t.gaps.some(([left,width])=>x>left && x<left+width);
   }
   function hazardAt(x, y) {
     const t = trapData();
-    const shift = t.moving ? Math.sin(state.elapsed / 230) * 26 : 0;
-    const overlap = (left, right, top, bottom) => x + 12 > left && x - 12 < right && y + 28 > top && y - 24 < bottom;
-    return overlap(t.spike + shift, t.spike + 42 + shift, 394, 418) ||
-      overlap(t.fake, t.fake + 38, 406, 418) ||
-      (t.ceiling && overlap(610, 760, 180, 196));
+    const overlap = (left, right, top, bottom) => x + 12 > left && x - 12 < right && y + 28 > top && y - 52 < bottom;
+    return t.spikes.some(([x,w,a=0,period=230])=>{const left=x+Math.sin(state.elapsed/period)*a;return overlap(left,left+w,394,418);}) ||
+      t.fakes.some(([x,w])=>overlap(x,x+w,406,418)) ||
+      t.ceilings.some(([x,w])=>overlap(x,x+w,270,286));
   }
   function die(reason) {
     if (state.recovery) return;
@@ -483,8 +491,11 @@
     }
     state.jumpBuffer = Math.max(0, state.jumpBuffer - dt);
     const oldY = p.y;
+    const oldX = p.x;
     p.x = Math.max(30, Math.min(920, p.x + direction * (t.reverse ? -1 : 1) * 3.2 * dt +
       (t.wind ? Math.sin(state.elapsed / 320) * .55 * dt : 0)));
+    p.vx = (p.x-oldX)/dt;
+    if (Math.abs(p.vx) > .02) p.facing = Math.sign(p.vx);
     p.vy += .46 * dt; p.y += p.vy * dt;
     p.grounded = false;
     // A fallen player cannot be snapped back up through the side of a platform.
@@ -546,7 +557,7 @@
     // Let the shared physical shell settle before WebGL construction/shader
     // warmup can occupy the main thread. Loading still blocks input immediately.
     rendererPromise=new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))
-      .then(()=>{if(renderClosed)throw new Error("SCENE_DISPOSED");return import(new URL("trail-3d.mjs?v=20261018-visual-v19",rendererScript).href);})
+      .then(()=>{if(renderClosed)throw new Error("SCENE_DISPOSED");return import(new URL("trail-3d.mjs?v=20261018-variety-v20",rendererScript).href);})
       .then(module=>module.createTrailRenderer(canvas,{
       lost(){canvas.dataset.renderState="lost";renderMessage();renderTimer=window.setTimeout(()=>renderMessage(true),5000);},
       restored(){window.clearTimeout(renderTimer);state.renderPaused=false;state.last=performance.now();renderPanel.hidden=true;canvas.dataset.renderState="ready";}

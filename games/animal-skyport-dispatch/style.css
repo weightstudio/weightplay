@@ -216,7 +216,7 @@
 #battleShell .result-next-preview{height:66px;margin:0;overflow:auto}
 #battleShell .result-actions{height:48px;width:100%}
 @media(max-height:500px){
- #battleShell .result{grid-template-rows:30px 36px 74px 46px 48px;gap:5px;padding:8px}
+ #battleShell .result{grid-template-rows:30px 58px 74px 46px 48px;gap:5px;padding:8px}
  #battleShell .result-rewards{height:74px}
  #battleShell .result-next-preview{height:46px;padding:5px 8px;font-size:12px}
 }
