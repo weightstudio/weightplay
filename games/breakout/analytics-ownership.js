@@ -5,8 +5,8 @@
   window.__weightplayBreakoutAnalyticsInstalled = true;
 
   const GAME_ID = "breakout";
-  const GAME_VERSION = "v15";
-  const INTERFACE_VERSION = "6";
+  const GAME_VERSION = "v20";
+  const INTERFACE_VERSION = "9";
   const LOCALE_MAP = {
     en: "en",
     "zh-tw": "zh-Hant",

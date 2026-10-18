@@ -109,7 +109,7 @@
     hi: "मालिक का प्रीव्यू: 30 ब्रेकआउट चरणों में से चुनें और नियंत्रित शॉट से हर लेन साफ़ करें। गेम अभी सार्वजनिक नहीं है।",
     ar: "معاينة للمالك: اختر من 30 مرحلة لكسر الطوب ونظّف كل مسار بتسديدات متحكم بها. لم تُنشر اللعبة للعامة بعد.",
   };
-  const BREAKOUT_GAME_VERSION = "v15";
+  const BREAKOUT_GAME_VERSION = "v20";
   const TETRIS_GAME_VERSION = "v23";
   const SNAKE_GAME_VERSION = "v34";
   const WORDLE_GAME_VERSION = "v16";
@@ -1122,8 +1122,10 @@
         screen.append(adReserve);
       }
     };
-    upgradeBattle(root.querySelector("#battleScreen"));
-    upgradeBattle(root.querySelector("#resultScreen"));
+    if (game.type !== "breakout") {
+      upgradeBattle(root.querySelector("#battleScreen"));
+      upgradeBattle(root.querySelector("#resultScreen"));
+    }
     const settingsButton = root.querySelector("#audioMenuBtn");
     const settingsPopover = root.querySelector("#audioPopover");
     if (settingsButton && settingsPopover && !settingsButton.dataset.wpBound) {
@@ -1330,7 +1332,7 @@
     const snakeLeave = createSnakeLeaveDialog();
     const els = {
       title: document.querySelector("#gameTitle"), tagline: document.querySelector("#gameTagline"), eyebrow: document.querySelector("#eyebrow"), locale: document.querySelector("#localeSelect"),
-      main: document.querySelector("#mainScreen"), stage: document.querySelector("#stageScreen"), stageRail: document.querySelector("#stageRail"), stageBack: document.querySelector("#stageBackBtn"), stageTitle: document.querySelector("#stageTitle"), stageHint: document.querySelector("#stageScreen .stage-browse-hint"), stageProgress: document.querySelector("#stageProgressText"), battle: document.querySelector("#battleScreen"), battlePanel: document.querySelector("#battleScreen .battle-panel"), result: document.querySelector("#resultScreen"), board: document.querySelector("#board"), controls: document.querySelector("#controls"),
+      main: document.querySelector("#mainScreen"), stage: document.querySelector("#stageScreen"), stageRail: document.querySelector("#stageRail"), stageTab: document.querySelector("#stageTabButton"), stageBack: document.querySelector("#stageBackBtn"), stageTitle: document.querySelector("#stageTitle"), stageHint: document.querySelector("#stageScreen .stage-browse-hint"), stageProgress: document.querySelector("#stageProgressText"), battle: document.querySelector("#battleScreen"), battlePanel: document.querySelector("#battleScreen .battle-panel"), result: document.querySelector("#resultScreen"), board: document.querySelector("#board"), controls: document.querySelector("#controls"),
       message: document.querySelector("#gameMessage"), objective: document.querySelector("#objective"), instruction: document.querySelector("#mainInstruction"), resultTitle: document.querySelector("#resultTitle"), resultCopy: document.querySelector("#resultCopy"), resultStats: document.querySelector("#resultStats"), resultGoal: document.querySelector("#resultGoal"), resultStages: document.querySelector("#resultStagesBtn"), nextStage: document.querySelector("#nextStageBtn"), breakoutLeaveDialog: document.querySelector("#breakoutLeaveDialog"), breakoutLeaveTitle: document.querySelector("#breakoutLeaveTitle"), breakoutLeaveText: document.querySelector("#breakoutLeaveText"), breakoutLeaveContinue: document.querySelector("#breakoutLeaveContinue"), breakoutLeaveStages: document.querySelector("#breakoutLeaveStages"), leaveModal: document.querySelector("#leaveModal"), leaveTitle: document.querySelector("#leaveTitle"), leaveText: document.querySelector("#leaveText"), leaveContinue: document.querySelector("#leaveContinue"), leaveMain: document.querySelector("#leaveMain"), snakeLeave,
       round: document.querySelector("#roundLabel"), start: document.querySelector("#startBtn"), retry: document.querySelector("#retryBtn"), mastery: document.querySelector("#masteryBtn"), home: document.querySelector("#homeBtn"), hint: document.querySelector("#hintBtn"), restart: document.querySelector("#restartBtn"),
     };
@@ -1873,7 +1875,7 @@
         if (els.battlePanel) els.battlePanel.hidden = breakoutResult;
         document.body.toggleAttribute("data-wp-result-active", breakoutResult);
         if (breakoutResult && state.success) saveBreakoutClear(state.stage);
-        if (breakoutResult) renderBreakoutResult();
+        if (breakoutResult) renderBreakoutResult(); if (breakoutResult) window.WPBreakoutI9Frame?.animateResult();
       }
       if (game.type === "checkers") {
         els.result?.setAttribute("data-wp-battle-substate", "result");
@@ -1884,6 +1886,11 @@
         document.body.toggleAttribute("data-wp-result-active", checkersResult);
       }
       document.body.dataset.screen = battleResult ? "battle" : screen;
+      if (game.type === "breakout") {
+        window.dispatchEvent(new CustomEvent("weightplay:breakout-screen", {
+          detail: { screen: battleResult ? "battle" : screen },
+        }));
+      }
       if (game.type === "snake") document.querySelectorAll(".game-page-info").forEach((guide) => { guide.hidden = screen !== "main"; });
       document.documentElement.classList.toggle("popular-checkers-active", game.type === "checkers" && screen !== "main");
       document.documentElement.classList.toggle("popular-tic-tac-toe-active", game.type === "tic" && screen !== "main");
@@ -1989,7 +1996,7 @@
       if (els.breakoutLeaveStages) els.breakoutLeaveStages.textContent = ui.returnStages;
       breakoutLeaveReturnFocus = document.activeElement;
       if (els.battlePanel) els.battlePanel.inert = true;
-      els.breakoutLeaveDialog.showModal();
+      els.breakoutLeaveDialog.showModal(); window.WPBreakoutI9Frame?.animateOverlay(els.breakoutLeaveDialog);
       els.breakoutLeaveContinue?.focus({ preventScroll: true });
     };
     const startBreakoutStage = (stage = 1) => {
@@ -2028,7 +2035,7 @@
       renderGenericResult();
       if (game.type === "snake") window.WPSnakeFeedback?.render(els, state.snakeCollision, locale);
     };
-    const finish = (success) => { if (state.done) return; stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer(); state.done = true; state.success = success; state.score = success ? Math.max(state.score, state.moves * 10 + 100) : state.score; const best = Number(localStorage.getItem(key(gameId)) || 0); if ((game.type === "snake" || success) && state.score > best) { try { localStorage.setItem(key(gameId), String(state.score)); } catch {} } if (game.type === "checkers") trackCheckers("match_result", { outcome: state.outcome, score: state.score }); if (game.type === "tic" && state.winningCells?.length === 3) { show("battle"); ticResultTimer = (ticUiClock || window).setTimeout(() => { ticResultTimer = null; if (!state.done) return; renderResult(); show("result"); }, 520); return; } renderResult(); show("result");
+    const finish = (success) => { if (state.done) return; stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer(); state.done = true; state.success = success; state.score = success ? Math.max(state.score, state.moves * 10 + 100) : state.score; const best = Number(localStorage.getItem(key(gameId)) || 0); if ((game.type === "snake" || success) && state.score > best) { try { localStorage.setItem(key(gameId), String(state.score)); } catch {} } if (game.type === "breakout" && success) { const completedState = state; render(); window.setTimeout(() => { if (state !== completedState || !completedState.done || document.body.dataset.screen !== "battle") return; renderResult(); show("result"); }, 230); __wpMeasurement.ended = true; __wpMeasurement.outcome = "win"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement(); return; } if (game.type === "checkers") trackCheckers("match_result", { outcome: state.outcome, score: state.score }); if (game.type === "tic" && state.winningCells?.length === 3) { show("battle"); ticResultTimer = (ticUiClock || window).setTimeout(() => { ticResultTimer = null; if (!state.done) return; renderResult(); show("result"); }, 520); return; } renderResult(); show("result");
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (success ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 };
     const moveSnake = () => {
@@ -2300,7 +2307,7 @@
       } else if (game.type === "mahjong") { if (name === "tile" && state.tiles[value]) { const response = window.WPMahjong.select(state, value, locale); announce(response.text, response.tone || "", response.key || ""); if (state.matched >= state.targetPairs) { state.focusTile = -1; finish(true); } }
       } else if (game.type === "wordle") { if (name === "submit") { const inputNode = document.querySelector("#wordInput"); const input = String(state.draft || inputNode?.value || "").trim().toUpperCase(); if (!/^[A-Z]{5}$/.test(input)) { state.moves -= 1; announce(window.WPWordleUI.copy(locale)[8], "warn"); inputNode?.focus(); return; } state.guesses.push(input); state.draft = ""; state.score += input === state.target ? 100 : 10; if (input === state.target) finish(true); else if (state.guesses.length >= 6) finish(false); else announce(window.WPWordleUI.copy(locale)[9], ""); }
       } else if (game.type === "hangman") { if (name === "letter") { state.letters.push(value); state.focusLetter = value; state.lastLetter = value; if (!state.target.includes(value)) { state.misses += 1; if (state.misses < 6) announce(hangmanMiss(locale, value, state.misses), "warn", "hangmanMiss"); } else state.score += 15; if ([...state.target].every((letter) => state.letters.includes(letter))) finish(true); else if (state.misses >= 6) finish(false); }
-      } else if (game.type === "breakout") { if (name === "left") state.paddle = Math.max(0, state.paddle - 1); if (name === "right") state.paddle = Math.min(5, state.paddle + 1); if (["left", "right"].includes(name)) { state.message = ""; state.messageKey = ""; state.tone = ""; } if (name === "fire") { state.shots += 1; const index = breakoutTargetIndex(state); if (index >= 0) { state.bricks[index] = false; state.score += 20; state.message = ""; state.messageKey = ""; state.tone = ""; if (state.bricks.every((brick) => !brick)) finish(true); } else announce(breakoutMissStateCopy(locale, state), "warn", "breakoutMiss"); }
+      } else if (game.type === "breakout") { if (name === "left") state.paddle = Math.max(0, state.paddle - 1); if (name === "right") state.paddle = Math.min(5, state.paddle + 1); if (["left", "right"].includes(name)) { state.message = ""; state.messageKey = ""; state.tone = ""; } if (name === "fire") { state.shots += 1; const index = breakoutTargetIndex(state); state.lastShotOutcome = index >= 0 ? "hit" : "miss"; if (index >= 0) { state.bricks[index] = false; state.score += 20; state.message = ""; state.messageKey = ""; state.tone = ""; if (state.bricks.every((brick) => !brick)) finish(true); } else announce(breakoutMissStateCopy(locale, state), "warn", "breakoutMiss"); }
       } else if (game.type === "pong") {
         if (name === "left") state.paddle = Math.max(0, state.paddle - 1);
         if (name === "right") state.paddle = Math.min(5, state.paddle + 1);
@@ -2335,30 +2342,92 @@
       } else if (game.type === "mahjong") { els.board.innerHTML = window.WPMahjong.render(state, locale); els.controls.innerHTML = `<div class="control-row"><span class="round-label" role="status" aria-live="polite" aria-atomic="true">${copy(locale, "remaining")}: ${state.targetPairs - state.matched}</span></div>`;
       } else if (game.type === "wordle") { window.WPWordleUI.render({state, locale, board: els.board, controls: els.controls, submit: () => action("submit")});
       } else if (game.type === "hangman") { const word = [...state.target].map((letter) => state.letters.includes(letter) ? letter : "_ ").join(""); els.board.innerHTML = `<div class="hangman-word" data-word-key="${state.theme}" style="font-size:clamp(2rem,8vw,4rem);letter-spacing:.2em;text-align:center">${word}</div><p class="round-label">${copy(locale, "misses")}: ${state.misses}/6</p>`; els.controls.innerHTML = `<div class="letters">${"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((letter) => { const used = state.letters.includes(letter); return `<button class="letter ${used ? "used" : ""}" data-action="letter" data-value="${letter}" aria-pressed="${used}" aria-label="${used ? `${letter}, ${hangmanAlreadyUsed(locale)}` : letter}">${letter}</button>`; }).join("")}</div>`;
-      } else if (game.type === "breakout") { const targetIndex = breakoutTargetIndex(state); const targetColumn = state.paddle; const aimCopy = targetIndex >= 0 ? breakoutAimCopy(locale, targetColumn + 1) : breakoutStateCopy(locale, state); const routeIndex = targetIndex >= 0 ? -1 : breakoutRouteTargetIndex(state); const brickCount = state.brickCount || breakoutBrickCountForStage(state.stage); els.board.innerHTML = `<div class="brick-board" data-stage="${state.stage || 1}" data-stage-total="${BREAKOUT_STAGE_TOTAL}" data-stage-pattern="${state.pattern || breakoutPatternForStage(state.stage)}" data-brick-count="${brickCount}" data-shot-column="${targetColumn + 1}" data-shot-count="${state.shots}" data-lane-state="${targetIndex >= 0 ? "armed" : "clear"}" data-route-target-column="${routeIndex >= 0 ? (routeIndex % 6) + 1 : ""}">${state.bricks.map((brick, index) => `<span class="brick ${brick ? "" : "cleared"} ${index === targetIndex ? "target" : ""}" data-index="${index}"${index === targetIndex ? ` data-shot-target="true" aria-label="${aimCopy}"` : ""}></span>`).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "right"), "right")}${button(copy(locale, "serve"), "fire", "primary")}</div>`;
+      } else if (game.type === "breakout") {
+        const targetIndex = breakoutTargetIndex(state);
+        const targetColumn = state.paddle;
+        const aimCopy = targetIndex >= 0 ? breakoutAimCopy(locale, targetColumn + 1) : breakoutStateCopy(locale, state);
+        const routeIndex = targetIndex >= 0 ? -1 : breakoutRouteTargetIndex(state);
+        const brickCount = state.brickCount || breakoutBrickCountForStage(state.stage);
+        const existingBoard = els.board.querySelector(".brick-board");
+        const reuseBoard = existingBoard?._wpBreakoutState === state && existingBoard.children.length === state.bricks.length;
+        const board = reuseBoard ? existingBoard : document.createElement("div");
+        if (!reuseBoard) {
+          board.className = "brick-board wp-breakout-board-entering";
+          board._wpBreakoutState = state;
+          board.replaceChildren(...state.bricks.map((brick, index) => {
+            const node = document.createElement("span");
+            node.className = "brick" + (brick ? "" : " cleared") + (index === targetIndex ? " target" : "");
+            node.dataset.index = String(index);
+            return node;
+          }));
+          els.board.replaceChildren(board);
+          window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+            if (board.isConnected) board.classList.remove("wp-breakout-board-entering");
+          }));
+        }
+        Object.assign(board.dataset, {
+          stage: String(state.stage || 1),
+          stageTotal: String(BREAKOUT_STAGE_TOTAL),
+          stagePattern: String(state.pattern || breakoutPatternForStage(state.stage)),
+          brickCount: String(brickCount),
+          shotColumn: String(targetColumn + 1),
+          shotCount: String(state.shots),
+          laneState: targetIndex >= 0 ? "armed" : "clear",
+          routeTargetColumn: routeIndex >= 0 ? String((routeIndex % 6) + 1) : "",
+          shotOutcome: state.lastShotOutcome || "none",
+        });
+        state.bricks.forEach((remaining, index) => {
+          const node = board.children[index];
+          const wasCleared = node.classList.contains("cleared");
+          if (!remaining && !wasCleared) {
+            node.classList.add("cleared", "is-clearing");
+            const settleClear = (event) => {
+              if (event && (event.target !== node || event.propertyName !== "opacity")) return;
+              if (node.isConnected) node.classList.remove("is-clearing");
+              node.removeEventListener("transitionend", settleClear);
+            };
+            node.addEventListener("transitionend", settleClear);
+            window.setTimeout(() => settleClear(), 260);
+          } else if (remaining && wasCleared) {
+            node.classList.remove("cleared", "is-clearing");
+          }
+          const isTarget = index === targetIndex;
+          node.classList.toggle("target", isTarget);
+          if (isTarget) {
+            node.dataset.shotTarget = "true";
+            node.setAttribute("aria-label", aimCopy);
+          } else {
+            delete node.dataset.shotTarget;
+            node.removeAttribute("aria-label");
+          }
+        });
+        if (state.lastShotOutcome === "miss" && board._wpBreakoutLastMissShot !== state.shots) {
+          board._wpBreakoutLastMissShot = state.shots;
+          board._wpBreakoutMissAnimation?.cancel();
+          const reduce = Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
+          const animation = board.animate?.(
+            reduce
+              ? [{ opacity: 0.86 }, { opacity: 1 }]
+              : [{ filter: "brightness(1)" }, { filter: "brightness(1.22)" }, { filter: "brightness(1)" }],
+            { duration: reduce ? 90 : 180, easing: "ease-out" },
+          );
+          if (animation) {
+            board._wpBreakoutMissAnimation = animation;
+            animation.onfinish = () => {
+              if (board._wpBreakoutMissAnimation === animation) board._wpBreakoutMissAnimation = null;
+            };
+          }
+        }
+        els.controls.innerHTML = "<div class=\"control-row\">" +
+          button(copy(locale, "left"), "left") + button(copy(locale, "right"), "right") +
+          button(copy(locale, "serve"), "fire", "primary") + "</div>";
+        if (state.done) els.controls.querySelectorAll("button").forEach((control) => { control.disabled = true; });
+
       } else if (game.type === "pong") { const targetPosition = pongLanePosition(state.pongTarget); const settledRally = ["pongHit", "pongMiss"].includes(state.messageKey); const visibleRally = settledRally ? state.rallies : Math.min(state.rallies + 1, 5); els.board.innerHTML = `<div class="pong-board" data-pong-rally="${visibleRally}" data-pong-target-lane="${state.pongTarget}" data-pong-paddle-lane="${state.paddle}"><span class="pong-ball" style="left:${targetPosition}%" aria-hidden="true"></span><span class="pong-paddle" style="left:${pongLanePosition(state.paddle)}%" aria-hidden="true"></span></div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "serve"), "serve", "primary")}${button(copy(locale, "right"), "right")}</div>`; }
     };
     let breakoutStageController = null;
+    let breakoutStageConfig = null;
     const breakoutStageContext = { ui: null, flow: null, progress: null, selected: 1 };
-    const bindBreakoutStageCard = (card, index) => {
-      const { ui, flow, progress, selected } = breakoutStageContext;
-      const stage = index + 1;
-      const unlocked = stage <= progress.highestUnlocked;
-      const cleared = progress.cleared.includes(stage);
-      const selectedCard = stage === selected;
-      const rows = breakoutRowsForStage(stage);
-      const pattern = breakoutPatternForStage(stage);
-      const bricks = breakoutBrickCountForStage(stage);
-      const status = cleared ? flow.cleared : unlocked ? flow.ready : flow.locked;
-      const facts = `${rows} × 6 · ${bricks} ${breakoutBrickLabel(locale)}`;
-      card.type = "button";
-      card.className = `stage-card${selectedCard ? " is-selected" : ""}${!unlocked ? " is-locked" : ""}${cleared ? " is-cleared" : ""}`;
-      Object.assign(card.dataset, { action: "stage", stageIndex: String(stage), stage: String(stage), stagePattern: pattern, brickCount: String(bricks), wpStageCard: "true", stageAvailability: cleared ? "cleared" : unlocked ? "ready" : "locked" });
-      card.setAttribute("aria-current", selectedCard ? "page" : "false");
-      card.setAttribute("aria-disabled", String(!unlocked));
-      card.setAttribute("aria-label", `${ui.stageLabel(stage)}, ${status}, ${facts}${unlocked ? "" : `, ${flow.lockedHint}`}`);
-      card.innerHTML = `<span class="stage-card-content" data-wp-item-content><span class="stage-card-number">${stage}</span><strong>${ui.stageLabel(stage)}</strong><span class="stage-card-status" data-stage-status="${cleared ? "cleared" : unlocked ? "ready" : "locked"}">${status}</span><small>${facts}</small></span>`;
-    };
     const renderStage = () => {
       if (game.type !== "breakout" || !els.stageRail) return;
       const ui = breakoutMainCopy(locale);
@@ -2370,38 +2439,48 @@
       if (els.stageTitle) els.stageTitle.textContent = ui.stageTitle;
       if (els.stageHint) els.stageHint.textContent = ui.stageHint;
       if (els.stageProgress) els.stageProgress.textContent = flow.progress(selected, progress.highestUnlocked);
+      if (els.stageTab) els.stageTab.textContent = ui.stages;
       els.stageRail.setAttribute("aria-label", ui.stages);
-      els.stageRail.removeAttribute("data-wp-stage-v6-auto");
-      if (!breakoutStageController) {
-        if (!window.WeightPlayStageV6?.install) throw new Error("Breakout requires the shared Stage V6 runtime.");
-        breakoutStageController = window.WeightPlayStageV6.install(els.stageRail, {
-          total: BREAKOUT_STAGE_TOTAL,
-          poolSize: 9,
-          initialIndex: () => breakoutStageContext.selected - 1,
-          bind: bindBreakoutStageCard,
-          activate: (index) => {
-            const stage = index + 1;
-            if (stage <= readBreakoutProgress().highestUnlocked) startBreakoutStage(stage);
-          },
-          onChange: (index, detail) => {
-            if (document.body.dataset.screen !== "stage") return;
-            breakoutStageContext.selected = index + 1;
-            state.stage = index + 1;
-            if (els.stageProgress) els.stageProgress.textContent = breakoutStageContext.flow.progress(index + 1, readBreakoutProgress().highestUnlocked);
-            detail.pool.forEach((card) => {
-              const current = Number(card.dataset.wpStageVirtualIndex) === index;
-              card.classList.toggle("is-selected", current);
-              card.setAttribute("aria-current", current ? "page" : "false");
-            });
-          },
+      if (!breakoutStageConfig) {
+        if (!window.WPBreakoutStageConfig?.create) throw new Error("Breakout requires its localized I9 stage records.");
+        breakoutStageConfig = window.WPBreakoutStageConfig.create({
+          context: breakoutStageContext,
+          readProgress: readBreakoutProgress,
+          rowsForStage: breakoutRowsForStage,
+          bricksForStage: breakoutBrickCountForStage,
+          brickLabel: () => breakoutBrickLabel(locale),
         });
-      } else breakoutStageController.refresh();
-      breakoutStageController?.center(selected - 1);
+      }
+      if (!breakoutStageController) {
+        if (!window.WPBreakoutI9Frame?.stageUI?.mount) throw new Error("Breakout requires the shared I9 Stage frame.");
+        breakoutStageController = window.WPBreakoutI9Frame.stageUI.mount({
+          config: breakoutStageConfig,
+          selected: selected - 1,
+          onSelect: (index) => {
+            const next = index + 1;
+            breakoutStageContext.selected = next;
+            state.stage = next;
+            if (els.stageProgress) els.stageProgress.textContent = breakoutStageContext.flow.progress(next, readBreakoutProgress().highestUnlocked);
+          },
+          onStart: (index) => startBreakoutStage(index + 1),
+        });
+      } else breakoutStageController.refresh(selected - 1);
     };
     let snakePointerActionUntil = 0;
     const runActionNode = (node) => { if (!node || node.disabled) return; if (node.dataset.action === "hint") { hint(); return; } const value = node.dataset.action === "letter" ? node.dataset.value : node.dataset.value === undefined ? undefined : Number(node.dataset.value); action(node.dataset.action, value); };
     const handleActionClick = (event) => { const node = event.target?.closest?.("[data-action]"); if (!node || (!els.controls.contains(node) && !els.board.contains(node)) || node.disabled) return; if (game.type === "snake" && performance.now() < snakePointerActionUntil) return; runActionNode(node); };
-    const render = () => { els.round.textContent = game.type === "snake" ? `${snakeCopy(locale, "run", state.runNumber)} · ${snakeModeLabel(locale, state.modeKey)} · ${snakeGoalLabel()} · ${copy(locale, "score")}: ${state.score} · ${copy(locale, "moves")}: ${state.moves}` : `${copy(locale, "round")} · ${copy(locale, "score")}: ${state.score} · ${copy(locale, "moves")}: ${state.moves}`; if (game.type === "tetris") { const progress = document.querySelector("[data-wp-main-progress]"); if (progress) { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = tetrisProgressCopy(locale, state.lines); } } renderBoard(); const defaultMessage = game.type === "checkers" ? checkersStatusCopy(locale, state) : game.type === "snake" ? (state.started ? snakeInstruction(locale) : (SNAKE_READY[locale] || SNAKE_READY.en)) : game.type === "breakout" ? breakoutStateCopy(locale, state) : copy(locale, "ready"); const liveMessage = game.type === "tic" && state.messageKey === "ticRivalReply" && state.rivalCell >= 0 ? ticRivalReplyCopy(locale, state.rivalCell) : state.message; els.message.textContent = liveMessage || defaultMessage; els.message.dataset.tone = state.tone; els.message.dataset.messageKey = state.messageKey || ""; if (game.type === "mahjong") { if (state.messageKey === "mahjongMismatch") els.message.dataset.mahjongMismatch = "true"; else delete els.message.dataset.mahjongMismatch; } if (game.type === "mahjong" && document.body.dataset.screen === "battle" && state.focusTile >= 0) { const focusTarget = els.board.querySelector(`[data-action="tile"][data-value="${state.focusTile}"]`); if (focusTarget) focusTarget.focus(); state.focusTile = -1; } if (game.type === "hangman" && document.body.dataset.screen === "battle" && state.focusLetter) { const focusTarget = els.controls.querySelector(`[data-action="letter"][data-value="${state.focusLetter}"]`); if (focusTarget) focusTarget.focus(); state.focusLetter = ""; } };
+    const render = () => {
+      if (game.type === "breakout") {
+        const ui = breakoutMainCopy(locale);
+        window.WPBreakoutI9Frame?.updateBattleStats({
+          stage: ui.stageLabel(state.stage || 1),
+          score: `${copy(locale, "score")}: ${state.score}`,
+          moves: `${copy(locale, "moves")}: ${state.moves}`,
+        });
+      } else if (els.round) {
+        els.round.textContent = game.type === "snake" ? `${snakeCopy(locale, "run", state.runNumber)} · ${snakeModeLabel(locale, state.modeKey)} · ${snakeGoalLabel()} · ${copy(locale, "score")}: ${state.score} · ${copy(locale, "moves")}: ${state.moves}` : `${copy(locale, "round")} · ${copy(locale, "score")}: ${state.score} · ${copy(locale, "moves")}: ${state.moves}`;
+      }
+      renderBoard(); const defaultMessage = game.type === "checkers" ? checkersStatusCopy(locale, state) : game.type === "snake" ? (state.started ? snakeInstruction(locale) : (SNAKE_READY[locale] || SNAKE_READY.en)) : game.type === "breakout" ? breakoutStateCopy(locale, state) : copy(locale, "ready"); const liveMessage = game.type === "tic" && state.messageKey === "ticRivalReply" && state.rivalCell >= 0 ? ticRivalReplyCopy(locale, state.rivalCell) : state.message; els.message.textContent = liveMessage || defaultMessage; els.message.dataset.tone = state.tone; els.message.dataset.messageKey = state.messageKey || ""; if (game.type === "mahjong") { if (state.messageKey === "mahjongMismatch") els.message.dataset.mahjongMismatch = "true"; else delete els.message.dataset.mahjongMismatch; } if (game.type === "mahjong" && document.body.dataset.screen === "battle" && state.focusTile >= 0) { const focusTarget = els.board.querySelector(`[data-action="tile"][data-value="${state.focusTile}"]`); if (focusTarget) focusTarget.focus(); state.focusTile = -1; } if (game.type === "hangman" && document.body.dataset.screen === "battle" && state.focusLetter) { const focusTarget = els.controls.querySelector(`[data-action="letter"][data-value="${state.focusLetter}"]`); if (focusTarget) focusTarget.focus(); state.focusLetter = ""; } };
     let snakePointerStart = null;
     els.board.addEventListener("pointerdown", (event) => { if (game.type === "snake" && document.body.dataset.screen === "battle") snakePointerStart = { x: event.clientX, y: event.clientY }; });
     els.board.addEventListener("pointerup", (event) => { if (game.type !== "snake" || document.body.dataset.screen !== "battle") return; const startPoint = snakePointerStart; snakePointerStart = null; if (!startPoint) return; const deltaX = event.clientX - startPoint.x; const deltaY = event.clientY - startPoint.y; if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 18) { beginSnake(); return; } action(Math.abs(deltaX) > Math.abs(deltaY) ? (deltaX > 0 ? "right" : "left") : (deltaY > 0 ? "down" : "up")); });
@@ -2471,8 +2550,8 @@
       render();
       els.start?.focus({ preventScroll: true });
     };
-    const renderShell = () => { shell(); if (game.type === "wordle") { const c = window.WPWordleUI.copy(locale); els.objective.textContent = c[0]; els.instruction.textContent = c[1]; els.objective.dataset.runtimeLocalize = "off"; els.instruction.dataset.runtimeLocalize = "off"; syncWordleLeaveDialog(); } syncSnakeLeaveDialog(); syncTetrisShellChrome(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; const progress = document.querySelector("[data-wp-main-progress]"); if (progress && game.type === "mahjong") { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = copy(locale, game.objective); } if (game.type === "breakout") { const ui = breakoutMainCopy(locale); const value = progress?.querySelector("span"); if (value) value.textContent = ui.progress; } if (game.type === "mahjong") window.WPMahjong.decorate(els, locale); };
-    els.start.addEventListener("click", () => game.type === "breakout" ? openBreakoutStages() : start("start")); els.retry.addEventListener("click", () => { trackCheckers("replay", { from: "result" }); if (game.type === "breakout") startBreakoutStage(state.stage || 1); else __wpReplayStart(() => start("retry")); }); if (els.mastery) els.mastery.addEventListener("click", () => start("mastery")); els.home.addEventListener("click", () => { trackCheckers("main_return", { from: "result" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); if (game.type === "breakout") { show("stage"); renderStage(); render(); } else { show("main"); state = makeState(game.type); render(); } }); els.hint.addEventListener("click", hint); els.restart.addEventListener("click", () => game.type === "breakout" ? startBreakoutStage(state.stage || 1) : __wpReplayStart(() => start("restart")));
+    const renderShell = () => { shell(); if (game.type === "wordle") { const c = window.WPWordleUI.copy(locale); els.objective.textContent = c[0]; els.instruction.textContent = c[1]; els.objective.dataset.runtimeLocalize = "off"; els.instruction.dataset.runtimeLocalize = "off"; syncWordleLeaveDialog(); } syncSnakeLeaveDialog(); syncTetrisShellChrome(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); if (els.home) els.home.textContent = copy(locale, "home"); if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; const progress = document.querySelector("[data-wp-main-progress]"); if (progress && game.type === "mahjong") { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = copy(locale, game.objective); } if (game.type === "breakout") { const ui = breakoutMainCopy(locale); const value = progress?.querySelector("span"); if (value) value.textContent = ui.progress; } if (game.type === "mahjong") window.WPMahjong.decorate(els, locale); };
+    els.start.addEventListener("click", () => game.type === "breakout" ? openBreakoutStages() : start("start")); els.retry.addEventListener("click", () => { trackCheckers("replay", { from: "result" }); if (game.type === "breakout") startBreakoutStage(state.stage || 1); else __wpReplayStart(() => start("retry")); }); if (els.mastery) els.mastery.addEventListener("click", () => start("mastery")); els.home?.addEventListener("click", () => { trackCheckers("main_return", { from: "result" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); if (game.type === "breakout") { show("stage"); renderStage(); render(); } else { show("main"); state = makeState(game.type); render(); } }); els.hint.addEventListener("click", hint); els.restart.addEventListener("click", () => game.type === "breakout" ? startBreakoutStage(state.stage || 1) : __wpReplayStart(() => start("restart")));
     els.breakoutLeaveDialog?.addEventListener("cancel", (event) => { event.preventDefault(); closeBreakoutLeaveDialog(); });
     els.breakoutLeaveContinue?.addEventListener("click", () => closeBreakoutLeaveDialog());
     els.breakoutLeaveStages?.addEventListener("click", () => {
@@ -2558,6 +2637,9 @@
         if (["p","P","Escape"].includes(event.key)) { event.preventDefault(); openTetrisDialog(); }
       });
     }
+    window.addEventListener("weightplay:breakout-frame-ready", () => {
+      if (game.type === "breakout") render();
+    });
     renderShell(); show("main"); render();
 
   if (__wpMeasurement.screen === null && !__wpMeasurement.started) { __wpMeasurement.screen = "main"; __wpNotifyMeasurement(); }

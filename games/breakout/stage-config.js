@@ -1,0 +1,50 @@
+/* Breakout stage records for the shared Interface 9 Stage selector. */
+(() => {
+  "use strict";
+
+  const poster = "/assets/breakout-cover-v1.webp";
+
+  function createBreakoutStageConfig({
+    context,
+    readProgress,
+    rowsForStage,
+    bricksForStage,
+    brickLabel,
+  }) {
+    if (!context || typeof readProgress !== "function"
+        || typeof rowsForStage !== "function"
+        || typeof bricksForStage !== "function"
+        || typeof brickLabel !== "function") {
+      throw new TypeError("BREAKOUT_STAGE_CONFIG_REQUIRED");
+    }
+
+    return Object.freeze({
+      count: 30,
+      poster,
+      background: poster,
+      stage(index) {
+        const stage = Math.max(1, Math.min(30, Number(index) + 1));
+        const progress = readProgress();
+        const { ui, flow } = context;
+        const locked = stage > progress.highestUnlocked;
+        const cleared = progress.cleared.includes(stage);
+        const facts = `${rowsForStage(stage)} × 6 · ${bricksForStage(stage)} ${brickLabel()}`;
+        return {
+          id: stage,
+          kicker: ui.stageKicker,
+          title: ui.stageLabel(stage),
+          subtitle: facts,
+          status: cleared ? flow.cleared : locked ? flow.locked : flow.ready,
+          summary: locked ? flow.lockedHint : ui.stageHint,
+          details: [facts],
+          locked,
+          cleared,
+          poster,
+          posterPosition: "center",
+        };
+      },
+    });
+  }
+
+  window.WPBreakoutStageConfig = Object.freeze({ create: createBreakoutStageConfig });
+})();

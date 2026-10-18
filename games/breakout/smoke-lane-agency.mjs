@@ -45,10 +45,12 @@ const clearRemainingFromColumnThree = async (page) => {
 };
 const state = (page) => page.evaluate(() => ({
   version: document.body.dataset.gameVersion,
+  interfaceVersion: document.querySelector('meta[name="weightplay-interface-version"]')?.content,
   screen: document.body.dataset.screen,
   lane: document.querySelector(".brick-board")?.dataset.shotColumn,
   laneState: document.querySelector(".brick-board")?.dataset.laneState,
   shots: Number(document.querySelector(".brick-board")?.dataset.shotCount),
+  score: Number([...document.querySelectorAll('[data-wp-frame-header="battle"] [data-wp-frame-stat]')].find((node) => /(?:Score|分數|得点|점수|Puntuación|Pontuação|Score|Punkte|Punteggio|Счёт|स्कोर|النقاط)/iu.test(node.textContent))?.textContent.match(/\d+/u)?.[0] || 0),
   target: document.querySelector('[data-shot-target="true"]')?.getAttribute("data-index") ?? null,
   bricks: document.querySelectorAll(".brick:not(.cleared)").length,
   message: document.querySelector("#gameMessage")?.textContent,
@@ -60,6 +62,10 @@ const state = (page) => page.evaluate(() => ({
 }));
 
 const evidence = [];
+const capture = async (page, name) => {
+  if (process.env.BREAKOUT_MOTION_CAPTURE !== "1") return;
+  await page.screenshot({ path: path.join(process.env.TMPDIR || "/tmp", `weightplay-breakout-motion-${name}.png`) });
+};
 try {
   for (const viewport of viewports) {
     const context = await browser.newContext({ viewport, hasTouch: viewport.width <= 612 });
@@ -67,21 +73,60 @@ try {
     const errors = [];
     page.on("pageerror", (error) => errors.push(error.message));
     page.on("console", (message) => { if (message.type() === "error" && !/favicon|Failed to load resource/iu.test(message.text())) errors.push(message.text()); });
-    await page.goto(`${origin}/games/breakout/?preview=1`, { waitUntil: "networkidle" });
+    await page.goto(`${origin}/games/breakout/`, { waitUntil: "networkidle" });
+    assert(new URL(page.url()).search === "", "Breakout uses the ordinary route without preview or test parameters", { url: page.url() });
     await page.waitForFunction(() => window.__weightplayBreakoutAnalyticsInstalled === true);
     await page.evaluate(() => {
       window.__BREAKOUT_FUNNEL_EVENTS__ = [];
+      window.__BREAKOUT_RESULT_MOTION__ = [];
       window.WonderAnalytics = { track: (name, data) => window.__BREAKOUT_FUNNEL_EVENTS__.push({ name, data }) };
+      window.addEventListener("weightplay:breakout-screen", () => {
+        if (!document.body.hasAttribute("data-wp-result-active")) return;
+        const card = document.querySelector("#resultScreen .result-card");
+        window.__BREAKOUT_RESULT_MOTION__.push((card?.getAnimations() || []).map((animation) => ({
+          duration: animation.effect?.getTiming().duration,
+          keyframes: animation.effect?.getKeyframes().map((frame) => ({ opacity: frame.opacity, transform: frame.transform })),
+        })));
+      });
     });
+    await capture(page, `${viewport.width}x${viewport.height}-main`);
     await page.locator("#startBtn").click();
+    await capture(page, `${viewport.width}x${viewport.height}-stage`);
+    await page.locator('#stageRail [aria-current="true"]').click();
+    await capture(page, `${viewport.width}x${viewport.height}-battle`);
     const initial = await state(page);
-    assert(initial.version === "v11" && initial.lane === "3" && initial.laneState === "armed" && initial.target === "2", "Initial lane target or v11 identity failed", { viewport, initial });
-    await fireTwice(page);
+    assert(initial.version === "v20" && initial.interfaceVersion === "9" && initial.screen === "battle" && initial.lane === "3" && initial.laneState === "armed" && initial.target === "2", "Initial lane target or v20/I9 identity failed", { viewport, initial });
+    await page.evaluate(() => { window.__BREAKOUT_MOTION_PROBE__ = { board: document.querySelector(".brick-board"), target: document.querySelector('[data-shot-target="true"]') }; });
+    await click(page, "fire");
+    const hitMotion = await page.evaluate(() => {
+      const probe = window.__BREAKOUT_MOTION_PROBE__;
+      return {
+        sameBoard: probe.board === document.querySelector(".brick-board"),
+        sameBrick: probe.board.contains(probe.target),
+        clearing: probe.target.classList.contains("cleared") && probe.target.classList.contains("is-clearing"),
+        visibleDuringClear: getComputedStyle(probe.target).visibility,
+        transition: getComputedStyle(probe.target).transitionDuration,
+        nextTarget: document.querySelector('[data-shot-target="true"]')?.dataset.index,
+      };
+    });
+    assert(hitMotion.sameBoard && hitMotion.sameBrick && hitMotion.clearing && hitMotion.visibleDuringClear === "visible" && /0\.19s/.test(hitMotion.transition) && hitMotion.nextTarget === "8",
+      "Hit did not preserve the board and animate clear/retarget without layout changes", { viewport, hitMotion });
+    await capture(page, `${viewport.width}x${viewport.height}-hit`);
+    await click(page, "fire");
     const clearedLane = await state(page);
     assert(clearedLane.bricks === 10 && clearedLane.laneState === "clear" && clearedLane.target === null && clearedLane.shots === 2, "Cleared lane still auto-targeted another column", { viewport, clearedLane });
     await click(page, "fire");
     const missed = await state(page);
-    assert(missed.bricks === 10 && missed.shots === 3 && missed.numbers[0] === 40 && missed.messageKey === "breakoutMiss", "Empty-lane Serve was not a scoreless miss", { viewport, missed });
+    assert(missed.bricks === 10 && missed.shots === 3 && missed.score === 40 && missed.messageKey === "breakoutMiss", "Empty-lane Serve was not a scoreless miss", { viewport, missed });
+    const missMotion = await page.evaluate(() => {
+      const board = document.querySelector(".brick-board");
+      return {
+        outcome: board?.dataset.shotOutcome,
+        boardAnimation: board?.getAnimations().some((animation) => animation.effect?.target === board),
+      };
+    });
+    assert(missMotion.outcome === "miss" && missMotion.boardAnimation, "Missed Serve lacks an immediate bounded visual cue", { viewport, missMotion });
+    await capture(page, `${viewport.width}x${viewport.height}-miss`);
     if (viewport.width === 390) {
       for (const [locale, expected] of Object.entries(missCopy)) {
         await page.evaluate((nextLocale) => { const select = document.querySelector("#localeSelect"); select.value = nextLocale; select.dispatchEvent(new Event("change", { bubbles: true })); }, locale);
@@ -97,18 +142,53 @@ try {
     await clearRemainingFromColumnThree(page);
     const clean = await state(page);
     assert(clean.shots === 12 && /12/.test(clean.goal) && /shot/iu.test(clean.goal), "Clean lane route did not preserve the 12-shot Result goal", { viewport, clean });
+    const resultMotion = await page.evaluate(() => window.__BREAKOUT_RESULT_MOTION__ || []);
+    assert(resultMotion.length === 2 && resultMotion.every((animations) => animations.some((animation) => animation.duration === 190 && animation.keyframes.some((frame) => frame.transform))),
+      "Reused Result card did not receive a finite entrance on both rounds", { viewport, resultMotion });
+    await capture(page, `${viewport.width}x${viewport.height}-result`);
     const funnelEvents = await page.evaluate(() => window.__BREAKOUT_FUNNEL_EVENTS__ || []);
     const count = (name) => funnelEvents.filter((event) => event.name === name).length;
     const requiredCounts = { breakout_game_start: 2, breakout_first_serve: 2, breakout_first_brick_clear: 2, breakout_result: 2, breakout_play_again: 1 };
     assert(Object.entries(requiredCounts).every(([name, expected]) => count(name) === expected), "Breakout funnel milestones were not exactly once per round", { viewport, requiredCounts, counts: Object.fromEntries(Object.keys(requiredCounts).map((name) => [name, count(name)])), funnelEvents });
     const ownedEvents = funnelEvents.filter((event) => event.name.startsWith("breakout_"));
-    assert(ownedEvents.every((event) => event.data?.game_id === "breakout" && event.data?.game_version === "v11" && event.data?.interface_version === "6" && event.data?.locale === "en" && event.data?.viewport_bucket === viewportBucket(viewport)), "Breakout funnel event identity or coarse viewport context drifted", { viewport, ownedEvents });
+    assert(ownedEvents.every((event) => event.data?.game_id === "breakout" && event.data?.game_version === "v20" && event.data?.interface_version === "9" && event.data?.locale === "en" && event.data?.viewport_bucket === viewportBucket(viewport)), "Breakout funnel event identity or coarse viewport context drifted", { viewport, ownedEvents });
     assert(ownedEvents.every((event) => !["user_id", "email", "name", "row", "column", "x", "y", "url", "path", "text", "message"].some((field) => field in event.data)), "Breakout funnel emitted a prohibited personal or free-form field", { viewport, ownedEvents });
-    assert(clean.scroll.width <= clean.viewport.width + 1 && clean.scroll.height <= clean.viewport.height + 1 && errors.length === 0, "Breakout v11 escaped viewport or emitted diagnostics", { viewport, clean, errors });
+    assert(clean.scroll.width <= clean.viewport.width + 1 && clean.scroll.height <= clean.viewport.height + 1 && errors.length === 0, "Breakout v20/I9 escaped viewport or emitted diagnostics", { viewport, clean, errors });
     evidence.push({ viewport: `${viewport.width}x${viewport.height}`, missShots: inefficient.shots, cleanShots: clean.shots, localizedMiss: viewport.width === 390 ? Object.keys(missCopy).length : 0, funnel: Object.fromEntries(Object.keys(requiredCounts).map((name) => [name, count(name)])) });
     await context.close();
   }
-  console.log(JSON.stringify({ status: "PASS", gameVersion: "v11", evidence }, null, 2));
+  const reducedContext = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: "reduce" });
+  const reducedPage = await reducedContext.newPage();
+  await reducedPage.goto(`${origin}/games/breakout/`, { waitUntil: "networkidle" });
+  await reducedPage.locator("#startBtn").click();
+  await reducedPage.locator('#stageRail [aria-current="true"]').click();
+  await click(reducedPage, "fire");
+  const reducedHit = await reducedPage.evaluate(() => ({
+    transition: getComputedStyle(document.querySelector(".brick-board .brick.cleared.is-clearing")).transitionDuration,
+    visibleDuringClear: getComputedStyle(document.querySelector(".brick-board .brick.cleared.is-clearing")).visibility,
+    transform: getComputedStyle(document.querySelector(".brick-board .brick.cleared.is-clearing")).transform,
+  }));
+  assert(/0\.08s/.test(reducedHit.transition) && reducedHit.visibleDuringClear === "visible" && reducedHit.transform === "none",
+    "Reduced-motion hit feedback retains emphasis without travel", reducedHit);
+  await click(reducedPage, "fire");
+  await reducedPage.evaluate(() => {
+    window.__BREAKOUT_REDUCED_RESULT_MOTION__ = [];
+    window.addEventListener("weightplay:breakout-screen", () => {
+      if (!document.body.hasAttribute("data-wp-result-active")) return;
+      const card = document.querySelector("#resultScreen .result-card");
+      window.__BREAKOUT_REDUCED_RESULT_MOTION__.push((card?.getAnimations() || []).map((animation) => ({
+        duration: animation.effect?.getTiming().duration,
+        keyframes: animation.effect?.getKeyframes().map((frame) => ({ opacity: frame.opacity, transform: frame.transform })),
+      })));
+    });
+  });
+  await clearRemainingFromColumnThree(reducedPage);
+  const reducedResultMotion = await reducedPage.evaluate(() => window.__BREAKOUT_REDUCED_RESULT_MOTION__ || []);
+  assert(reducedResultMotion.length === 1 && reducedResultMotion[0].some((animation) =>
+    animation.duration === 90 && animation.keyframes.length === 2 && animation.keyframes.every((frame) => !frame.transform)),
+  "Reduced-motion Result uses a short fade without movement", reducedResultMotion);
+  await reducedContext.close();
+  console.log(JSON.stringify({ status: "PASS", gameVersion: "v20", interfaceVersion: 9, evidence }, null, 2));
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));
