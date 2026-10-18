@@ -21,15 +21,17 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-flip-foundry/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-flip-foundry/" />
     <meta charset="utf-8" />
+    <meta name="weightplay-game-version" content="v17" />
+    <meta name="weightplay-interface-version" content="6" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-flip-foundry" /><meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="用一次滑动发射水晶罐，调整力度，在六个短章节的 24 个工坊平台上精准落地。" />
     <title>翻转工坊 | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260903-animal-flip-foundry-stage-hit-target-v14" />
+    <link rel="stylesheet" href="style.css?v=20261018-animal-flip-foundry-clarity-v17" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(27,38,58,.20),rgba(27,38,58,.68)),url("assets/animal-flip-foundry-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
-    <script defer src="game.js?v=20260903-animal-flip-foundry-stage-hit-target-v14"></script>
+    <script defer src="game.js?v=20261018-animal-flip-foundry-clarity-v17"></script>
     <meta property="og:description" content="用一次滑动发射水晶罐，调整力度，在六个短章节的 24 个工坊平台上精准落地。" />
     <meta name="twitter:description" content="用一次滑动发射水晶罐，调整力度，在六个短章节的 24 个工坊平台上精准落地。" />
     <meta property="og:site_name" content="WeightPlay" />
@@ -44,12 +46,12 @@
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-  <body data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
+  <body data-wp-game-version="v17" data-wp-interface-version="6" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>翻转工坊</strong><span>Preparing the foundry…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-flip-foundry" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
         <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">翻转工坊</h1><label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header><img class="five-game-cover main-cover" src="assets/animal-flip-foundry-cover.png" alt="" aria-hidden="true" />
-        <p class="lede main-summary" data-five-copy="lede">用一次滑动发射水晶罐，调整力度，在六个短章节的 24 个工坊平台上精准落地。</p>
+        <p class="lede main-summary">按住画面向上拖，让虚线落在发光平台，再松手翻转。</p>
         <p id="main-progress" class="progress main-progress" data-wp-main-progress>Best streak: 0</p><button id="start-game" class="primary" data-wp-main-start data-five-copy="start">Start Game</button>
       </section>
       <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('/games/animal-flip-foundry/assets/animal-flip-foundry-cover.png')" hidden><header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Foundry Chapters</h2></header><div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav></section>
@@ -75,12 +77,12 @@
 <p>挑战在于让松开时的滑动力度落在平台允许的范围内。失误后会回到该平台，让你调整后再试。</p></div>
       <div class="game-info-section"><h3>游戏系统</h3><p>按住水晶罐并连续向上拖动。滑动长度会改变发射力度和飞行；松开时会根据当前平台允许的力度范围判断是否成功。</p>
 <p>成功落地会前进到下一平台并延续连胜。失误后可选“重试”再玩该平台，或选“章节”返回地图。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从工坊地图选择章节，等待准备提示。</li><li>按住水晶罐，以一个连续手势向上拖动；滑动长度会改变发射力度。</li><li>松开发射。是否成功取决于松开时的力度是否落在当前平台允许的范围内。</li><li>失误后选择“重试”并调整力度。成功落地四个平台即可完成章节。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>先用稳定的向上滑动开始，并从落地结果了解当前平台的力度范围。</li><li>失误后稍微调整滑动长度，再比较结果；平台距离不会决定成功与否。</li><li>手势尽量保持垂直，再根据平台反馈微调力度。</li></ul></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从工坊地图选择章节，等待准备提示。</li><li>向上拖动，预览落点</li><li>按住画面向上拖，让虚线落在发光平台，再松手翻转。</li><li>失误后选择“重试”并调整力度。成功落地四个平台即可完成章节。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>按住画面向上拖，让虚线落在发光平台，再松手翻转。</li><li>再向上拖长一些，就能到达平台。</li><li>稍微往回收，落点已超过平台。</li></ul></div>
       <div class="game-info-section"><h3>关卡与难度成长</h3><p>工坊共有六个章节，每章四个平台。成功落地会前进到下一平台并延续连胜；失误后可重试同一平台或返回章节地图。</p></div>
       <div class="game-info-section"><h3>开发设计理念</h3><p>绘轮竞速让玩家绘制会影响赛道表现的车轮；翻转工坊则专注于调整一次向上滑动，使松开时的发射力度落在当前平台的范围内。触屏和鼠标使用相同手势，落地结果会立即反馈，方便玩家在同一平台调整下一次尝试。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>翻转工坊是一款短篇一般受众浏览器游戏，无需账号或购买。只有最佳落地连胜会保存在此浏览器；当前连胜只在本次游玩期间存在，清除网站数据可能会删除最佳记录。WeightPlay 可能依照隐私政策使用页面与游戏分析数据。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>如何发射水晶罐？</dt><dd>按住水晶罐并向上拖动；滑动长度会改变发射力度。</dd></div><div><dt>落地成功如何判定？</dt><dd>松开时的力度必须落在当前平台允许的范围内。旋转是视觉反馈，不会另外检查角度。</dd></div><div><dt>可以使用鼠标吗？</dt><dd>可以。鼠标拖动和触控滑动使用相同手势。</dd></div><div><dt>进度会保存吗？</dt><dd>只有最佳落地连胜会保存在此浏览器；当前连胜仅限本次游玩。</dd></div><div><dt>每章有几个平台？</dt><dd>六个章节各有四个工坊平台。成功落地会前进到下一个平台；失误后可以重试。</dd></div><div><dt>失误后该调整什么？</dt><dd>稍微改变滑动长度来调整松开时的力度，再在同一平台比较结果。</dd></div><div><dt>可以重试同一个平台吗？</dt><dd>可以。失误后选择“重试”可再玩该平台，或选择“章节”返回章节地图。</dd></div><div><dt>连胜数会计算什么？</dt><dd>它会计算本次游玩中连续成功直立落地的次数。最佳连胜会保存在此浏览器。</dd></div></dl></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>如何发射水晶罐？</dt><dd>按住画面向上拖，让虚线落在发光平台，再松手翻转。</dd></div><div><dt>落地成功如何判定？</dt><dd>按住画面向上拖，让虚线落在发光平台，再松手翻转。</dd></div><div><dt>可以使用鼠标吗？</dt><dd>可以。鼠标拖动和触控滑动使用相同手势。</dd></div><div><dt>进度会保存吗？</dt><dd>只有最佳落地连胜会保存在此浏览器；当前连胜仅限本次游玩。</dd></div><div><dt>每章有几个平台？</dt><dd>六个章节各有四个工坊平台。成功落地会前进到下一个平台；失误后可以重试。</dd></div><div><dt>失误后该调整什么？</dt><dd>再向上拖长一些，就能到达平台。 稍微往回收，落点已超过平台。</dd></div><div><dt>可以重试同一个平台吗？</dt><dd>可以。失误后选择“重试”可再玩该平台，或选择“章节”返回章节地图。</dd></div><div><dt>连胜数会计算什么？</dt><dd>它会计算本次游玩中连续成功直立落地的次数。最佳连胜会保存在此浏览器。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-bounce-brawl" href="/zh-cn/games/animal-bounce-brawl/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" data-final-src="/assets/weightplay-logo.png" alt="弹跳斗场" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">弹跳斗场</strong><span>掌握弹跳时机，选择泡棉工具，在欢乐的物理竞技场中让对手失去平衡。</span></span></a></div></div>
     </div>
   </section>

@@ -91,7 +91,7 @@ export class SnakeBoard3D {
     const material = (color, extra = {}) => this.own(new THREE.MeshStandardMaterial({ color, roughness: .35, metalness: .15, ...extra }));
     const emerald = this.own(new THREE.MeshPhysicalMaterial({ color: 0x12a45a, roughness: .22, metalness: .2, clearcoat: 1, clearcoatRoughness: .18 }));
     const gold = material(0xe7b343, { metalness: .65, roughness: .25 });
-    const stone = material(0x36455d, { roughness: .66 });
+    const stone = material(0x687d97, { roughness: .66 });
     const dark = material(0x111e31, { roughness: .65 });
     const sapphire = material(0x315ce3, { metalness: .3, roughness: .2 });
     const pupil = material(0x10201b, { metalness: 0 });
@@ -240,6 +240,14 @@ export class SnakeBoard3D {
       width: this.width || 0, height: this.height || 0,
       calls: this.renderer?.info.render.calls || 0, triangles: this.renderer?.info.render.triangles || 0,
       geometries: this.renderer?.info.memory.geometries || 0, textures: this.renderer?.info.memory.textures || 0 };
+  }
+
+  cellPoint(cell) {
+    if (!this.camera || !this.active) return null;
+    const projected = point(cell); projected.y = .5; projected.project(this.camera);
+    const rect = this.layer.getBoundingClientRect();
+    return { x: rect.left + (projected.x + 1) * rect.width / 2,
+      y: rect.top + (1 - projected.y) * rect.height / 2 };
   }
 
   dispose() {

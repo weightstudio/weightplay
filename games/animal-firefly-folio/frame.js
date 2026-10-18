@@ -36,6 +36,10 @@
     const stageWorkspace = $("stageWorkspace");
 
     const battleBack = battleHeader.querySelector('[data-wp-return="battle"]');
+    const battleInfoNodes = ["roundName", "roundLabel", "turnCount"].map($);
+    if (battleInfoNodes.some((node) => !node)) {
+      throw new Error("FIREFLY_FOLIO_BATTLE_STATS_MISSING");
+    }
     const battleFrameTitle = document.createElement("strong");
     battleFrameTitle.hidden = true;
     battleFrameTitle.dataset.wpFrameTitle = "";
@@ -63,9 +67,9 @@
     frame.stageTopUI.add(stageInfo);
 
     const battleInfo = window.WeightPlayScreenFrame.createGroup()
-      .add($("roundName"))
-      .add($("roundLabel"))
-      .add($("turnCount"));
+      .add(battleInfoNodes[0])
+      .add(battleInfoNodes[1])
+      .add(battleInfoNodes[2]);
     frame.battleTopUI.add(battleInfo);
 
     const stageUI = window.WeightPlayPlayUI.mountStage({

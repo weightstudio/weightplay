@@ -5,7 +5,7 @@
   window.__weightplayAnimalHabitatBuilderAnalyticsInstalled = true;
 
   const GAME_ID = "animal-habitat-builder";
-  const GAME_VERSION = "v14";
+  const GAME_VERSION = "v16";
   const INTERFACE_VERSION = "6";
   const LOCALE_MAP = {
     en: "en",
@@ -24,7 +24,7 @@
   };
   const LOCALES = new Set(Object.values(LOCALE_MAP));
   const SCREENS = new Set(["main", "stage", "battle", "result"]);
-  const ACTIONS = new Set(["tile-0", "tile-1", "tile-2", "tile-3", "reset"]);
+  const ACTIONS = new Set(["tile-0", "tile-1", "tile-2", "tile-3", "reset", "undo", "hint"]);
   let inputType = "unknown";
   let lastStage = 1;
   let selectedTile = 0;
@@ -59,7 +59,7 @@
     return bounded(match?.[1] || lastStage, 30) || 1;
   };
   const moveCount = () => {
-    const match = document.querySelector("#score-label")?.textContent?.match(/(\d+)\//);
+    const match = [null, document.querySelector("#score-label")?.dataset.moves];
     return bounded(match?.[1], 99);
   };
   const resultOutcome = () => {

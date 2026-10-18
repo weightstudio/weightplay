@@ -1,0 +1,56 @@
+/* The shared frame owns the one uniform scene scale. These are logical units. */
+html body[data-wp-market-game="animal-habitat-builder"] #battle-screen{background:linear-gradient(160deg,#102d26ee,#0b201eee),url('assets/animal-habitat-builder-background.png') center/cover!important}
+html body[data-wp-market-game="animal-habitat-builder"] #arena{visibility:hidden!important;pointer-events:none!important}
+html body[data-wp-market-game="animal-habitat-builder"] .m5-hint{display:none!important}
+html body[data-wp-market-game="animal-habitat-builder"] .m5-battle-header{top:0!important;left:0!important;right:0!important;height:48px!important;min-height:48px!important;padding:0 4px!important;display:grid!important;grid-template-columns:48px minmax(0,1fr) 118px 48px!important;gap:4px!important;border-radius:0!important;border:0!important;background:#0a211fea!important;pointer-events:auto!important}
+html body[data-wp-market-game="animal-habitat-builder"] #stage-label{position:static!important;font-size:14px!important;text-align:start!important;line-height:20px!important;overflow:hidden!important}
+html body[data-wp-market-game="animal-habitat-builder"] #score-label{position:static!important;font-size:12px!important;text-align:end!important;line-height:16px!important;white-space:normal!important;color:#e4d6a1!important}
+html body[data-wp-market-game="animal-habitat-builder"] #battle-utility{width:48px!important;height:48px!important}
+#habitat-workspace{position:absolute;inset:48px 0 0;z-index:2;color:#edf5dc;direction:ltr}
+#habitat-workspace>section,#habitat-workspace>div{position:absolute;box-sizing:border-box}
+.habitat-coach{top:10px;left:18px;right:18px;height:64px;display:flex;gap:12px;align-items:center}
+.habitat-coach img{width:54px;height:60px;object-fit:contain;filter:drop-shadow(0 4px 3px #0006)}
+.habitat-coach strong{font-size:20px;color:#ffde96;line-height:1.2}.habitat-coach p{font-size:12px;line-height:1.4;margin:6px 0 0;color:#c0d2bc}
+.habitat-needs{top:88px;left:18px;right:18px;height:66px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.habitat-need{background:#25443a;border:1px solid #597b5d;border-radius:4px;padding:6px;display:grid;grid-template-columns:24px 1fr;grid-template-rows:20px 18px 5px;gap:3px;color:#dbe4c8;transition:background .18s,border-color .18s}
+.habitat-need>span{font-size:18px;grid-row:1/3;align-self:center}.habitat-need strong{font-size:11px;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.habitat-need b{font-size:15px;font-variant-numeric:tabular-nums}.habitat-need progress{grid-column:1/-1;width:100%;height:5px;accent-color:#b8de83;border:0}.habitat-need[data-complete="true"]{background:#3b5838;border-color:#a5d67d}
+.habitat-board-area{top:166px;left:50%;width:350px;height:310px;transform:translateX(-50%)}
+.habitat-board-surface{position:relative;width:350px;height:280px;background:#496748;border:5px solid #b1ba83;box-shadow:0 8px 0 #344b32,0 15px 28px #0006;box-sizing:border-box}
+#habitat-terrain{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+.habitat-grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,1fr);direction:ltr;touch-action:manipulation}
+.habitat-grid button{padding:0;min-width:0;min-height:0;border:1px solid #d8e3a83b;background:transparent;color:#e4ebc6;font-size:20px;border-radius:0;position:relative;transition:background .12s;touch-action:manipulation;box-shadow:none!important}
+.habitat-grid button>span{position:absolute;right:3px;bottom:1px;line-height:18px;font-size:13px;text-shadow:0 1px 2px #172c22}
+.habitat-grid button[data-terrain="-1"]>span{inset:0;display:grid;place-items:center;font-size:22px;color:#d9e4bf8c}
+.habitat-grid button[data-blocked="true"]>span{font-size:24px;inset:0;display:grid;place-items:center;color:#f3e5b7}
+.habitat-grid button:hover,.habitat-grid button.preview{background:#f1e8a127;outline:3px dashed #fbe0a2;outline-offset:-4px;z-index:1}
+.habitat-grid button:focus-visible{outline:3px solid #fff4b4;outline-offset:-4px;z-index:2}
+#habitat-preview{position:absolute;top:456px;left:18px;right:18px;height:18px;margin:0;text-align:center;line-height:18px;font-size:12px;color:#dddcb2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.habitat-rules{top:480px;left:22px;right:22px;height:108px;overflow:auto;scrollbar-width:thin;background:#102d25a8;border-inline-start:3px solid #7d9e66;padding:5px 10px}
+.habitat-rules p{font-size:12px;line-height:18px;color:#c5d4ba;margin:0}.habitat-rules p[data-pass="true"]{color:#b7ed8f}
+html body[data-wp-market-game="animal-habitat-builder"] #battle-controls{position:absolute!important;top:auto!important;bottom:80px!important;left:18px!important;right:18px!important;width:auto!important;height:64px!important;min-height:64px!important;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px!important;pointer-events:auto!important}
+html body[data-wp-market-game="animal-habitat-builder"] #battle-controls button{min-width:0!important;min-height:64px!important;height:64px!important;background:#284939;border:2px solid #668263;border-radius:5px!important;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;padding:3px;color:#e3edd0;font-size:13px;transition:background .12s,border-color .12s}
+#battle-controls button>span{font-size:22px}html body[data-wp-market-game="animal-habitat-builder"] #battle-controls button.selected{border-color:#ffdc8b;background:#5d5831;color:#ffedbe}
+.habitat-tools{left:18px;right:18px;bottom:14px;height:48px;display:grid;grid-template-columns:1fr 1.25fr 1.25fr;gap:7px}
+.habitat-tools button{height:48px;padding:4px;font-size:11px;line-height:15px;border:1px solid #698267;background:#1c392e;border-radius:4px;color:#dce9cd;touch-action:manipulation}.habitat-tools button:disabled{opacity:.4;cursor:default}
+/* The live region mirrors the single visible caption below the board. */
+html body[data-wp-market-game="animal-habitat-builder"] #battle-status{position:absolute!important;left:0!important;right:auto!important;top:0!important;bottom:auto!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%)!important;pointer-events:none!important}
+#habitat-leave{position:absolute;inset:48px 0 0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px;background:#0a211ff5;text-align:center}
+#habitat-leave[hidden]{display:none}#habitat-leave p{max-width:34ch;line-height:1.6}#habitat-leave button{height:48px;min-width:200px;border:1px solid #8da775;background:#25493a;color:#f0edc7;border-radius:4px}
+html body[data-wp-market-game="animal-habitat-builder"] #result-screen{z-index:20;inset:48px 12px 12px;background:#102e27f5;border:1px solid #93ab73;border-radius:6px;direction:inherit}
+html body[data-wp-market-game="animal-habitat-builder"] #result-title{color:#ffdc8b}html body[data-wp-market-game="animal-habitat-builder"] #result-copy{white-space:pre-line;line-height:1.7;color:#dfebcf}
+html body[data-wp-market-game="animal-habitat-builder"] #result-screen button{border-radius:4px;background:#294c3c;border-color:#7a9467}html body[data-wp-market-game="animal-habitat-builder"] #result-screen button.primary{background:#e9ca83;color:#23382a}
+.terrain-fallback .habitat-grid button[data-terrain="0"]{background:#2994a6}.terrain-fallback .habitat-grid button[data-terrain="1"]{background:#85a94e}.terrain-fallback .habitat-grid button[data-terrain="2"]{background:#316847}.terrain-fallback .habitat-grid button[data-terrain="3"]{background:#ac9060}.terrain-fallback .habitat-grid button[data-blocked="true"]{background:#52625a}.terrain-fallback .habitat-grid button[data-terrain]:not([data-terrain="-1"])>span{inset:0;display:grid;place-items:center;font-size:30px}
+[dir="rtl"] .habitat-coach,[dir="rtl"] .habitat-rules,[dir="rtl"] .habitat-tools{direction:rtl}
+/* Wide logical envelope: fixed play and action rectangles; flexible side gutters. */
+[data-habitat-layout="wide"] .habitat-coach{left:14px;right:auto;top:10px;width:190px;height:64px;gap:5px}
+[data-habitat-layout="wide"] .habitat-coach img{width:38px;height:50px}[data-habitat-layout="wide"] .habitat-coach strong{font-size:16px}[data-habitat-layout="wide"] .habitat-coach p{font-size:11px}
+[data-habitat-layout="wide"] .habitat-needs{top:86px;left:14px;right:auto;width:190px;height:124px;grid-template-columns:repeat(2,1fr)}
+[data-habitat-layout="wide"] .habitat-board-area{top:8px;width:280px;height:250px}
+[data-habitat-layout="wide"] .habitat-board-surface{width:280px;height:224px}
+[data-habitat-layout="wide"] #habitat-preview{top:216px;left:14px;right:auto;width:190px;font-size:10px}
+[data-habitat-layout="wide"] .habitat-rules{top:10px;left:auto;right:14px;width:194px;height:126px;padding:4px 7px}
+[data-habitat-layout="wide"] .habitat-rules p{font-size:11px;line-height:18px}
+html body[data-wp-market-game="animal-habitat-builder"] [data-habitat-layout="wide"] #battle-controls{left:auto!important;right:14px!important;top:144px!important;bottom:auto!important;width:194px!important;height:64px!important;gap:5px!important}
+html body[data-wp-market-game="animal-habitat-builder"] [data-habitat-layout="wide"] #battle-controls button{font-size:10px!important;overflow:hidden!important}
+[data-habitat-layout="wide"] .habitat-tools{left:14px;right:14px;bottom:8px;grid-template-columns:1fr 1fr 1fr}
+@media(prefers-reduced-motion:reduce){#habitat-workspace *{transition:none!important;scroll-behavior:auto!important}}

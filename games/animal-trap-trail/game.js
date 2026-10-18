@@ -14,16 +14,104 @@
   __wpNotifyMeasurement();
 
   const $ = (id) => document.getElementById(id);
-  const GAME_VERSION = 15;
+  const GAME_VERSION = 18;
   const loadingPanel = $("loadingPanel");
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
   const canvas = $("arena");
   const ctx = canvas.getContext("2d");
   const heroArt = new Image();
+  const sceneryArt = new Image();
+  sceneryArt.src = "assets/animal-trap-trail-background.png";
   heroArt.src = "assets/animal-trap-trail-original-assets-v1.png";
   const propArt = new Image();
   propArt.src = "assets/animal-trap-trail-props.png";
-  const state = { stage: 1, chapter: 1, room: 1, screen: "main", deaths: 0, bestRoom: Number(localStorage.getItem("wp-trail-best-stage") || localStorage.getItem("wp-trail-best-room") || 0), keys: new Set(), tap: null, player: null, raf: 0, last: 0, pulse: 0, jumpBuffer: 0, firstRoomJumpIntent: 0, firstRoomJumpQueued: false, firstRoomLandingSeen: false, roomTwoLandingSeen: false, timingCue: "", statusKey: "", resultKind: "room" };
+  const state = { stage: 1, chapter: 1, room: 1, screen: "main", deaths: 0, bestRoom: Number(localStorage.getItem("wp-trail-best-stage") || localStorage.getItem("wp-trail-best-room") || 0), keys: new Set(), tap: null, player: null, raf: 0, last: 0, pulse: 0, jumpBuffer: 0, timingCue: "", statusKey: "", resultKind: "room" };
+  // One simulation/input owner; the camera never changes collision coordinates.
+  Object.assign(state, { coyote: 0, elapsed: 0, recovery: 0,
+    failureX: 0, failureY: 0, pulseTime: 0, feedbackTime: 0, camera: 0, accumulator: 0 });
+  const clarityCopy = {
+    en: ["Move, jump over traps, reach the gold lantern. Mistakes restart this stage.", "YOU", "GOAL", "GAP", "SPIKES", "FALSE FLOOR", "Hold ← → to move · tap Jump for each leap", "Jump the purple tile — it is a trap.", "Route", "Jump before the edge — do not walk into the gap."],
+    "zh-Hant": ["左右移動、跳過陷阱，抵達金色燈籠。失誤只重來這一關。", "你", "終點", "裂縫", "尖刺", "假地板", "按住左右移動 · 每次跳躍都要重新按下", "跳過紫色地板，那是陷阱。", "路程", "到裂縫邊緣前跳起，不要直接走下去。"],
+    "zh-Hans": ["左右移动、跳过陷阱，抵达金色灯笼。失误只重来这一关。", "你", "终点", "裂缝", "尖刺", "假地板", "按住左右移动 · 每次跳跃都要重新按下", "跳过紫色地板，那是陷阱。", "路程", "到裂缝边缘前起跳，不要直接走下去。"],
+    ja: ["移動して罠を跳び越え、金色のランタンへ。失敗してもこのステージから再開。", "自分", "ゴール", "穴", "トゲ", "偽の床", "← →で移動・ジャンプは毎回押す", "紫の床は罠。跳び越えよう。", "進行", "穴の手前でジャンプ。歩いて落ちないように。"],
+    ko: ["이동하고 함정을 뛰어넘어 금빛 랜턴에 도착하세요. 실패하면 현재 스테이지만 재시작합니다.", "나", "목표", "틈", "가시", "가짜 바닥", "← → 이동 · 점프할 때마다 다시 누르세요", "보라색 바닥은 함정입니다. 뛰어넘으세요.", "진행", "틈의 가장자리 전에 점프하세요."],
+    es: ["Muévete, salta las trampas y llega al farol dorado. Cada error reinicia esta fase.", "TÚ", "META", "HUECO", "PÚAS", "SUELO FALSO", "Mantén ← → · pulsa Saltar en cada salto", "Salta la baldosa morada: es una trampa.", "Ruta", "Salta antes del borde; no camines por el hueco."],
+    "pt-BR": ["Mova-se, pule as armadilhas e alcance a lanterna dourada. Erros reiniciam esta fase.", "VOCÊ", "META", "VÃO", "ESPINHOS", "PISO FALSO", "Segure ← → · pressione Pular a cada salto", "Pule o piso roxo: é uma armadilha.", "Rota", "Pule antes da borda; não caminhe pelo vão."],
+    fr: ["Avance, saute les pièges et rejoins la lanterne dorée. Une erreur relance cette étape.", "TOI", "BUT", "TROU", "PIQUES", "FAUX SOL", "Maintiens ← → · appuie pour chaque saut", "Saute la dalle violette : c’est un piège.", "Trajet", "Saute avant le bord, ne marche pas dans le trou."],
+    de: ["Bewege dich, springe über Fallen und erreiche die goldene Laterne. Fehler starten nur diesen Abschnitt neu.", "DU", "ZIEL", "LÜCKE", "SPITZEN", "FALSCHE FLIESE", "← → halten · für jeden Sprung neu drücken", "Springe über die violette Falle.", "Weg", "Springe vor der Kante, laufe nicht in die Lücke."],
+    it: ["Muoviti, salta le trappole e raggiungi la lanterna dorata. Un errore riavvia solo questa fase.", "TU", "META", "VARCO", "SPUNTONI", "FALSO SUOLO", "Tieni ← → · premi per ogni salto", "Salta la mattonella viola: è una trappola.", "Percorso", "Salta prima del bordo, non camminare nel varco."],
+    ru: ["Двигайтесь, перепрыгивайте ловушки и дойдите до золотого фонаря. Ошибка перезапускает только этот этап.", "ВЫ", "ЦЕЛЬ", "ПРОВАЛ", "ШИПЫ", "ЛОЖНЫЙ ПОЛ", "Удерживайте ← → · нажимайте для каждого прыжка", "Перепрыгните фиолетовую плитку: это ловушка.", "Путь", "Прыгайте перед краем, не идите в провал."],
+    hi: ["चलें, जालों पर कूदें और सुनहरी लालटेन तक पहुँचें। गलती पर केवल यही चरण दोबारा शुरू होगा।", "आप", "लक्ष्य", "दरार", "काँटे", "नकली फ़र्श", "← → दबाकर चलें · हर छलाँग के लिए फिर दबाएँ", "बैंगनी फ़र्श जाल है। उसे कूदकर पार करें।", "रास्ता", "किनारे से पहले कूदें, दरार में न चलें।"],
+    ar: ["تحرك واقفز فوق الفخاخ لتصل إلى المصباح الذهبي. الخطأ يعيد هذه المرحلة فقط.", "أنت", "الهدف", "فجوة", "أشواك", "أرضية زائفة", "اضغط ← → للحركة · اضغط من جديد لكل قفزة", "اقفز فوق البلاطة البنفسجية، إنها فخ.", "المسار", "اقفز قبل الحافة ولا تمش داخل الفجوة."]
+  };
+  const trailWords = () => clarityCopy[currentLocale()] || clarityCopy.en;
+  const motionPreference = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+  let reduceMotion = Boolean(motionPreference?.matches);
+  motionPreference?.addEventListener("change", event => { reduceMotion = event.matches; });
+  const trailHud = document.createElement("div");
+  trailHud.className = "trail-hud";
+  $("room-label").before(trailHud);
+  trailHud.append($("room-label"), $("death-label"));
+  const trailGuide = document.createElement("div");
+  trailGuide.className = "trail-guide";
+  trailGuide.innerHTML = '<div id="trailLegend"></div><div class="trail-progress"><span id="trail-route-label"></span><progress id="trail-route" max="100" value="0"></progress><span id="trail-distance">0%</span></div>';
+  canvas.insertAdjacentElement("afterend", trailGuide);
+  $("battle-status").classList.add("trailFeedback");
+  function trailFeedback() {
+    const words = trailWords();
+    const summary = document.querySelector("#main-screen .main-summary");
+    if (summary) { summary.removeAttribute("data-five-copy"); summary.textContent = words[0]; }
+    $("trailLegend").textContent = `◇ ${words[3]}   ▲ ${words[4]}   ▰ ${words[5]}`;
+    $("trail-route-label").textContent = words[8];
+    document.querySelector(".touch-hint").textContent = words[6];
+    $("room-label").textContent = `${state.stage} / 30`;
+    $("room-label").setAttribute("aria-label", `${stageName()} · ${state.stage} / 30`);
+  }
+  function effect(id) { window.WeightPlayAudio?.play(id); }
+  window.WeightPlayAudio?.preload(["movement.jump","movement.land","player.hurt","magic.cast","result.win"]);
+  function clearInput() { state.keys.clear(); state.tap = null; state.jumpBuffer = 0; document.querySelectorAll(".is-held").forEach(el => el.classList.remove("is-held")); }
+  const leaveCopy = {
+    en:["Leave this stage? This attempt restarts; cleared stages stay saved.","Keep playing"],
+    "zh-Hant":["要離開這一關嗎？本次路程會重來，已通關進度仍會保留。","繼續遊玩"],
+    "zh-Hans":["要离开这一关吗？本次路程会重来，已通关进度仍会保留。","继续游玩"],
+    ja:["この挑戦をやり直しますか？クリア済みの進行は保存されます。","続ける"],
+    ko:["이번 시도를 나갈까요? 완료한 스테이지는 저장됩니다.","계속 플레이"],
+    es:["¿Salir? Este intento se reinicia; las fases completadas se guardan.","Seguir jugando"],
+    "pt-BR":["Sair? Esta tentativa reinicia; as fases concluídas ficam salvas.","Continuar jogando"],
+    fr:["Quitter ? Cet essai recommencera ; les étapes terminées restent sauvegardées.","Continuer"],
+    de:["Verlassen? Dieser Versuch startet neu; geschaffte Abschnitte bleiben gespeichert.","Weiterspielen"],
+    it:["Uscire? Questo tentativo ricomincia; le fasi completate restano salvate.","Continua"],
+    ru:["Выйти? Попытка начнётся заново; пройденные этапы сохранятся.","Продолжить"],
+    hi:["बाहर जाएँ? यह प्रयास फिर शुरू होगा; पूरे किए चरण सुरक्षित रहेंगे।","खेल जारी रखें"],
+    ar:["مغادرة المرحلة؟ ستبدأ هذه المحاولة من جديد وتبقى المراحل المكتملة محفوظة.","متابعة اللعب"]
+  };
+  const leavePanel = document.createElement("section");
+  leavePanel.id="trail-leave"; leavePanel.hidden=true;
+  leavePanel.setAttribute("role","dialog");leavePanel.setAttribute("aria-modal","true");leavePanel.setAttribute("aria-labelledby","trail-leave-copy");
+  leavePanel.innerHTML='<p id="trail-leave-copy"></p><button id="trail-continue" class="primary"></button><button id="trail-exit"></button>';
+  $("battle-screen").append(leavePanel);
+  function openLeave() {
+    state.paused=true;clearInput();
+    const words=leaveCopy[currentLocale()]||leaveCopy.en;
+    $("trail-leave-copy").textContent=words[0];$("trail-continue").textContent=words[1];$("trail-exit").textContent=copy().backStages;
+    leavePanel.hidden=false;
+    [...$("battle-screen").children].forEach(el=>{if(el!==leavePanel)el.inert=true;});
+    $("trail-continue").focus();
+  }
+  function closeLeave() {
+    leavePanel.hidden=true;state.paused=false;
+    [...$("battle-screen").children].forEach(el=>el.inert=false);
+    state.last=performance.now();state.accumulator=0;
+    document.querySelector('#battle-screen [data-wp-return="battle"]')?.focus();
+  }
+  $("trail-continue").addEventListener("click",closeLeave);
+  $("trail-exit").addEventListener("click",()=>{closeLeave();state.confirmedExit=true;show("stage");stageCards();state.confirmedExit=false;});
+  leavePanel.addEventListener("keydown",e=>{
+    if(e.key==="Escape"){e.preventDefault();closeLeave();}
+    if(e.key==="Tab"){e.preventDefault();(document.activeElement===$("trail-continue")?$("trail-exit"):$("trail-continue")).focus();}
+  });
+  window.addEventListener("blur", clearInput);
+  document.addEventListener("visibilitychange", () => { clearInput(); state.last = performance.now(); state.accumulator = 0; });
   const localeAliases = { "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" };
   const localeCopy = {
     en: { stageTitle: "Trap Chapters", stageSections: "Stages", backMain: "Back to Main", backStages: "Back to Stages", chapter: "Chapter {n}", room: "Room {n}", deaths: "Deaths {n}", battleStatus: "Arrow keys move · Space jumps · E reveals a brief clue.", touchControls: "Touch controls", jump: "JUMP", pulse: "PULSE", touchHint: "Find the lantern. Traps reset only the current room.", canvasAria: "Moonlit Trap Trail play area", chapters: "Chapters", nextRoom: "Next Room", nextChapter: "Next Chapter", replayChapter: "Replay Chapter", retryRoom: "Retry Room", trailClear: "Trail clear", chapterClear: "Chapter clear", roomClear: "Room clear", resultCopy: "Chapter {chapter}, room {room} complete · Deaths {deaths}", gapDeath: "A gap opened — the path resets.", hazardDeath: "A hidden trap sprang — read the cue and retry.", pulseFeedback: "Moon pulse: the next trap cue is highlighted.", readPath: "READ THE PATH", moveLeft: "Move left", moveRight: "Move right", backToWeight: "Back to WeightPlay", loading: "Preparing the moonlit route…", progress: "Best room: {bestRoom} · Deaths: {deaths}", descriptions: ["learn the tells", "watch the delay", "read the reversal", "mixed rule finale"] },
@@ -215,57 +303,44 @@
   function chapterLabel(number) { return format(copy().chapter, { n: number }); }
   function roomLabel(number) { return format(copy().room, { n: number }); }
   function deathLabel(number) { return format(copy().deaths, { n: number }); }
-  function setText(id, value) { const element = $(id); if (element) element.textContent = value; }
+  function setText(id, value) { const element = $(id); if (element && element.textContent !== value) element.textContent = value; }
   function updateMainProgress() { setText("main-progress", format(copy().progress, { bestRoom: state.bestRoom, deaths: state.deaths })); }
-  function firstRoomTimingKey() {
-    if (state.chapter !== 1 || state.room !== 1 || !state.player) return "";
-    const t = trapData();
-    const p = state.player;
-    if (p.x < t.gap - 42) return "approach";
-    if (p.x < t.gap + 70) return "gap";
-    if (p.x < t.spike - 42) return state.firstRoomLandingSeen ? (p.grounded ? "landing" : "spike") : "gap";
-    if (p.x < t.spike + 52) return "spike";
-    if (p.x < t.fake + 52) return "hidden";
-    return "clear";
-  }
-  function roomTwoTimingKey() {
-    if (state.chapter !== 1 || state.room < 2 || state.room > 3 || !state.player) return "";
-    const t = trapData();
-    const p = state.player;
-    if (p.x < t.gap - 42) return "approach";
-    if (p.x < t.gap + 70) return "gap";
-    if (p.x < t.spike - 42) return state.roomTwoLandingSeen ? (p.grounded ? "landing" : "spike") : "gap";
-    if (p.x < t.spike + 52) return "spike";
-    if (p.x < t.fake + 52) return "hidden";
-    return "clear";
-  }
   function guidedTimingKey() {
-    return state.chapter === 1 && state.room === 1 ? firstRoomTimingKey() : roomTwoTimingKey();
+    const p=state.player,t=trapData();
+    if(!p || p.x < t.gap - 65) return "approach";
+    if(p.x < t.gap + 74) return "gap";
+    if(p.x < t.spike - 60) return "landing";
+    if(p.x < t.spike + 54) return "spike";
+    if(p.x < t.fake + 54) return "hidden";
+    return "clear";
   }
   function currentBattleStatus() {
     const c = copy();
     if (state.statusKey === "gap") return c.gapDeath;
     if (state.statusKey === "hazard") return c.hazardDeath;
-    const guidedRoom = state.chapter === 1 && state.room <= 3;
+    if (state.player?.x > trapData().spike + 52 && state.player.x < trapData().fake + 52) return trailWords()[7];
+    const guidedRoom = true;
     if (state.statusKey === "pulse") return guidedRoom && state.timingCue && state.timingCue !== "approach" ? timingCueCopy[state.timingCue][currentLocale()] : c.pulseFeedback;
     if (guidedRoom && state.timingCue && state.timingCue !== "approach") return timingCueCopy[state.timingCue][currentLocale()];
-    if (guidedRoom) return landingCueCopy[currentLocale()];
+    if (guidedRoom) return trailWords()[0];
     return c.battleStatus;
   }
   function updateBattleText() {
     const c = copy();
-    setText("room-label", `${chapterLabel(state.chapter)} · ${roomLabel(state.room)} · ${stageName(state.stage)} (${state.stage}/30)`);
+    setText("room-label", `${state.stage} / 30`);
     setText("death-label", deathLabel(state.deaths));
     setText("battle-status", currentBattleStatus());
   }
   function renderResult() {
     const c = copy();
     const stage = stageFor();
+    $("next").disabled = state.stage >= campaignStages.length;
     setText("result-title", state.resultKind === "chapter" ? c.chapterClear : c.roomClear);
     setText("result-copy", format(c.resultCopy, { chapter: state.chapter, room: state.room, deaths: state.deaths }));
     setText("to-stages", c.chapters);
     setText("next", state.stage >= campaignStages.length ? c.replayChapter : stage.checkpoint ? c.nextChapter : nextStageCopy[currentLocale()]);
     setText("retry", retryStageCopy[currentLocale()]);
+    if (state.stage >= campaignStages.length) setText("result-title", c.trailClear);
   }
   function applyCopy() {
     const c = copy();
@@ -280,18 +355,20 @@
     const touchControls = document.querySelector(".touch-controls"); if (touchControls) touchControls.setAttribute("aria-label", c.touchControls);
     const jumpButton = document.querySelector('[data-key="Space"]'); if (jumpButton) { jumpButton.textContent = c.jump; jumpButton.setAttribute("aria-label", c.jump); }
     const pulseButton = document.querySelector('[data-key="Pulse"]'); if (pulseButton) { pulseButton.textContent = c.pulse; pulseButton.setAttribute("aria-label", c.pulse); }
-    const headerPulse = $("battle-pulse"); if (headerPulse) { headerPulse.textContent = c.pulse; headerPulse.setAttribute("aria-label", c.pulse); }
+    const headerPulse = $("battle-pulse"); if (headerPulse) { headerPulse.textContent = "◉"; headerPulse.title = c.pulse; headerPulse.setAttribute("aria-label", c.pulse); }
     const leftButton = document.querySelector('[data-key="ArrowLeft"]'); if (leftButton) leftButton.setAttribute("aria-label", c.moveLeft);
     const rightButton = document.querySelector('[data-key="ArrowRight"]'); if (rightButton) rightButton.setAttribute("aria-label", c.moveRight);
     const touchHint = document.querySelector(".touch-hint"); if (touchHint) touchHint.textContent = stageTouchHintCopy[currentLocale()] || c.touchHint;
     const battleStatus = $("battle-status"); if (battleStatus) battleStatus.setAttribute("aria-live", "polite");
-    updateMainProgress(); updateBattleText();
+    updateMainProgress(); updateBattleText(); trailFeedback();
     if (state.screen === "stage") stageCards();
     renderResult();
   }
 
   function show(name) {
-    state.screen = name;
+    if(name === "stage" && state.screen === "battle" && !state.confirmedExit) {openLeave();return;}
+    clearInput(); state.screen = name;
+    stageRail?.center(maxUnlockedStage() - 1);
     document.body.dataset.screen = name === "result" ? "battle" : name;
     const guide = document.querySelector(".game-page-info-static");
     if (guide) guide.hidden = name !== "main";
@@ -304,6 +381,7 @@
       el.hidden = !on;
       el.classList.toggle("active", on);
     });
+    if (name === "stage") window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
     if (name === "battle") (__wpNotifyMeasurement(), result?.setAttribute("hidden", ""));
     if (name === "battle") { state.last = performance.now(); state.raf = requestAnimationFrame(frame); }
 
@@ -312,40 +390,35 @@
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
-  function syncStageCardVisibility() {
-    const rail = $("stage-list");
-    if (!rail || state.screen !== "stage") return;
-    const railRect = rail.getBoundingClientRect();
-    rail.querySelectorAll(".stage-card").forEach((card) => {
-      const rect = card.getBoundingClientRect();
-      const center = rect.left + rect.width / 2;
-      const insideRail = rect.width > 1 && rect.height > 1
-        && center >= railRect.left - 1 && center <= railRect.right + 1
-        && rect.bottom >= railRect.top - 1 && rect.top <= railRect.bottom + 1;
-      card.classList.toggle("wp-stage-card-clipped", !insideRail);
-    });
-  }
+  let stageRail = null;
   function stageCards() {
-    const c = copy();
-    const unlocked = maxUnlockedStage();
-    $("stage-list").innerHTML = campaignStages.map((stage) => {
-      const isLocked = stage.id > unlocked;
-      const arcDescription = c.descriptions[(stage.arc - 1) % c.descriptions.length];
-      const checkpoint = stage.checkpoint ? " · ★" : "";
-      return `<button type="button" class="stage-card${isLocked ? " locked" : ""}" data-stage="${stage.id}" data-chapter="${stage.arc}" data-wp-stage-card="${stage.id}" data-wp-enter-battle aria-label="${stageName(stage.id)}: ${stageObjective(stage.id)}"${isLocked ? " disabled aria-disabled=\"true\"" : ""}><strong>${stage.id}. ${stageName(stage.id)}${checkpoint}</strong><small>${stageObjective(stage.id)}</small><em>${chapterLabel(stage.arc)} · ${arcDescription}</em></button>`;
-    }).join("");
-    $("stage-list").querySelectorAll("button:not([disabled])").forEach((b) => b.addEventListener("click", () => startStage(Number(b.dataset.stage))));
-    syncStageCardVisibility();
-    window.requestAnimationFrame(() => {
-      syncStageCardVisibility();
-      document.querySelector(`[data-stage="${Math.min(unlocked, campaignStages.length)}"]`)?.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" });
-    });
+    const rail = $("stage-list");
+    if (!stageRail && window.WeightPlayStageV6) {
+      stageRail = window.WeightPlayStageV6.install(rail, {
+        total: campaignStages.length, poolSize: 9,
+        initialIndex: () => maxUnlockedStage() - 1,
+        bind(card, index) {
+          const stage = stageFor(index + 1), locked = stage.id > maxUnlockedStage();
+          card.className = `stage-card${locked ? " locked" : ""}`;
+          card.dataset.stage = String(stage.id);
+          card.dataset.wpEnterBattle = "";
+          card.setAttribute("aria-disabled", String(locked));
+          card.setAttribute("aria-label", `${stage.id}. ${stageName(stage.id)}: ${stageObjective(stage.id)}`);
+          card.innerHTML = `<strong>${stage.id}. ${stageName(stage.id)}${stage.checkpoint ? " · ★" : ""}</strong><small>${stageObjective(stage.id)}</small><em>${locked ? "◇" : stage.id <= state.bestRoom ? "✓" : "→"} ${chapterLabel(stage.arc)}</em>`;
+        },
+        activate: index => startStage(index + 1),
+      });
+    }
+    stageRail?.refresh();
+    if (state.screen === "stage") stageRail?.center(maxUnlockedStage() - 1);
   }
+  window.addEventListener("pagehide", () => stageRail?.destroy(), { once: true });
   function resetRoom() {
     state.player = { x: 76, y: 390, vy: 0, grounded: false };
     state.keys.clear(); state.tap = null;
-    state.pulse = 0; state.jumpBuffer = 0; state.firstRoomJumpIntent = 0; state.firstRoomJumpQueued = false; state.firstRoomLandingSeen = false; state.roomTwoLandingSeen = false; state.timingCue = guidedTimingKey();
-    updateBattleText();
+    state.pulse = 0; state.jumpBuffer = 0; state.timingCue = guidedTimingKey();
+    state.coyote = 0; state.elapsed = 0; state.recovery = 0; state.camera = 0; state.accumulator = 0;
+    updateBattleText(); trailFeedback();
   }
   function startStage(stageId = 1) {
     const stage = stageFor(stageId);
@@ -360,27 +433,32 @@
   }
   function solidAt(x) {
     const t = trapData();
-    const drift = t.moving ? Math.sin(performance.now() / 240) * 10 : 0;
-    const gapOpen = (x > t.gap + drift && x < t.gap + 66 + drift) || (t.secondGap && x > t.gap2 && x < t.gap2 + 66);
-    return !gapOpen && x < 900;
+    const drift = t.moving ? Math.sin(state.elapsed / 240) * 10 : 0;
+    return !((x > t.gap + drift && x < t.gap + 74 + drift) ||
+      (t.secondGap && x > t.gap2 && x < t.gap2 + 74));
   }
   function hazardAt(x, y) {
     const t = trapData();
-    const spikeShift = t.moving ? Math.sin(performance.now() / 230) * 26 : 0;
-    const spike = x > t.spike - 20 + spikeShift && x < t.spike + 38 + spikeShift;
-    const secondSpike = t.secondGap && x > t.gap2 - 52 && x < t.gap2 - 12;
-    const fake = x > t.fake - 18 && x < t.fake + 34 && y > 360;
-    const ceiling = t.ceiling && y < 210 && x > 610 && x < 760;
-    return spike || secondSpike || fake || ceiling;
+    const shift = t.moving ? Math.sin(state.elapsed / 230) * 26 : 0;
+    const overlap = (left, right, top, bottom) => x + 12 > left && x - 12 < right && y + 28 > top && y - 24 < bottom;
+    return overlap(t.spike + shift, t.spike + 42 + shift, 394, 418) ||
+      overlap(t.fake, t.fake + 38, 406, 418) ||
+      (t.ceiling && overlap(610, 760, 180, 196));
   }
-  function die(reason) { state.deaths += 1; state.statusKey = reason === "gap" ? "gap" : "hazard"; resetRoom(); }
-  function pulse() { if (state.screen !== "battle") return; state.pulse = 60; state.statusKey = "pulse"; updateBattleText(); }
-  function armFirstRoomJumpIntent() {
-    if (state.chapter !== 1 || state.room !== 1 || !state.player) return;
-    const t = trapData();
-    if (state.player.x >= t.gap - 54 && state.player.x < t.fake + 34) { state.firstRoomJumpIntent = 360; state.firstRoomJumpQueued = true; }
+  function die(reason) {
+    if (state.recovery) return;
+    state.deaths += 1; state.statusKey = reason === "gap" ? "gap" : "hazard";
+    state.failureX = state.player.x; state.failureY = state.player.y;
+    state.recovery = 24; state.feedbackTime = 150; clearInput();
+    effect("player.hurt"); updateBattleText();
+  }
+  function pulse() {
+    if (state.screen !== "battle" || state.recovery || state.pulse > 25) return;
+    state.pulse = 54; state.pulseTime = state.elapsed; state.statusKey = "pulse";
+    state.feedbackTime = 90; effect("magic.cast"); updateBattleText();
   }
   function finish() {
+    clearInput(); effect("result.win");
     state.bestRoom = Math.max(state.bestRoom, state.stage);
     localStorage.setItem("wp-trail-best-room", String(state.bestRoom));
     localStorage.setItem("wp-trail-best-stage", String(state.bestRoom));
@@ -391,61 +469,75 @@
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
   function update(dt) {
-    const p = state.player; const t = trapData(); const reversed = t.reverse;
-    const right = reversed ? (state.keys.has("ArrowLeft") || state.keys.has("KeyA")) : (state.keys.has("ArrowRight") || state.keys.has("KeyD"));
-    const left = reversed ? (state.keys.has("ArrowRight") || state.keys.has("KeyD")) : (state.keys.has("ArrowLeft") || state.keys.has("KeyA"));
-    const jumpHeld = state.keys.has("Space") || state.keys.has("ArrowUp") || state.keys.has("KeyW");
-    const inputStarted = Boolean(state.tap || right || left || jumpHeld);
-    const firstRoom = state.chapter === 1 && state.room === 1;
-    const roomTwo = state.chapter === 1 && state.room >= 2 && state.room <= 3;
-    const guidedRoom = firstRoom || roomTwo;
-    const jumpTap = state.tap === "Space" || state.tap === "ArrowUp" || state.tap === "KeyW";
-    const jumpRequested = jumpHeld || jumpTap;
-    if (firstRoom && jumpRequested) armFirstRoomJumpIntent();
-    if (inputStarted && state.statusKey) state.statusKey = "";
-    if (state.tap) {
-      if (state.tap === "Space" || state.tap === "ArrowUp" || state.tap === "KeyW") {
-        state.jumpBuffer = guidedRoom ? 30 : 12;
-      } else {
-        const tapRight = state.tap === "ArrowRight" || state.tap === "KeyD";
-        if (reversed ? !tapRight : tapRight) p.x += 24; else p.x -= 24;
-      }
-      state.tap = null;
+    if (document.hidden || state.paused) return;
+    if (state.recovery > 0) {
+      state.recovery -= dt;
+      if (state.recovery <= 0) { const reason = state.statusKey; resetRoom(); state.statusKey = reason; state.feedbackTime = 150; updateBattleText(); }
+      return;
     }
-    if (right) p.x += 3.2 * dt; if (left) p.x -= 3.2 * dt;
-    if (t.wind) p.x += Math.sin(performance.now() / 320) * 0.55 * dt;
-    if (jumpHeld) state.jumpBuffer = guidedRoom ? 30 : 12;
-    if (state.jumpBuffer > 0) state.jumpBuffer = Math.max(0, state.jumpBuffer - dt);
-    if (state.firstRoomJumpIntent > 0) state.firstRoomJumpIntent = Math.max(0, state.firstRoomJumpIntent - dt);
-    p.vy += .46 * dt; p.y += p.vy * dt; p.x = Math.max(30, Math.min(920, p.x));
-    const floor = solidAt(p.x) ? 418 : 540;
-    if (p.y >= floor - 28) { p.y = floor - 28; p.vy = 0; p.grounded = true; } else p.grounded = false;
-    if (state.chapter === 1 && state.room === 1 && p.grounded && p.x >= t.gap + 70 && p.x < t.spike - 42) { state.firstRoomLandingSeen = true; state.firstRoomJumpQueued = true; }
-    if (roomTwo && p.grounded && p.x >= t.gap + 70 && p.x < t.spike - 42) state.roomTwoLandingSeen = true;
-    const firstRoomAssistReady = firstRoom && p.grounded && (state.firstRoomJumpIntent > 0 || state.firstRoomJumpQueued || state.firstRoomLandingSeen) && p.x >= t.gap + 64 && p.x < t.fake + 34;
-    if ((state.jumpBuffer > 0 || firstRoomAssistReady) && p.grounded) {
-      p.vy = guidedRoom ? -11.5 : -10.5;
-      p.grounded = false;
-      state.jumpBuffer = 0;
-      if (firstRoomAssistReady && p.x >= t.fake - 42) { state.firstRoomJumpIntent = 0; state.firstRoomJumpQueued = false; }
+    state.elapsed += dt * 16.67;
+    const p = state.player, t = trapData();
+    const direction = (state.keys.has("ArrowRight") || state.keys.has("KeyD") ? 1 : 0) -
+      (state.keys.has("ArrowLeft") || state.keys.has("KeyA") ? 1 : 0);
+    const wasGrounded = p.grounded;
+    state.coyote = wasGrounded ? 6 : Math.max(0, state.coyote - dt);
+    if (state.jumpBuffer > 0 && state.coyote > 0) {
+      p.vy = -12.2; p.grounded = false; state.coyote = 0; state.jumpBuffer = 0;
+      effect("movement.jump");
     }
-    if (p.y > 560) return die("gap");
-    if (hazardAt(p.x, p.y) && (p.grounded || (t.ceiling && p.y < 210))) return die("hazard");
-    if (p.x > 870 && p.grounded) finish();
-    if (state.pulse > 0) state.pulse -= dt;
+    state.jumpBuffer = Math.max(0, state.jumpBuffer - dt);
+    const oldY = p.y;
+    p.x = Math.max(30, Math.min(920, p.x + direction * (t.reverse ? -1 : 1) * 3.2 * dt +
+      (t.wind ? Math.sin(state.elapsed / 320) * .55 * dt : 0)));
+    p.vy += .46 * dt; p.y += p.vy * dt;
+    p.grounded = false;
+    // A fallen player cannot be snapped back up through the side of a platform.
+    if (p.vy >= 0 && oldY <= 390 && p.y >= 390 && solidAt(p.x)) {
+      p.y = 390; p.vy = 0; p.grounded = true;
+      if (!wasGrounded) { state.landingTime = 12; effect("movement.land"); }
+    }
+    if (p.y > 510) return die("gap");
+    if (hazardAt(p.x, p.y)) return die("hazard");
+    if (p.x > 870 && p.grounded) return finish();
+    state.pulse = Math.max(0, state.pulse - dt);
+    state.landingTime = Math.max(0, (state.landingTime || 0) - dt);
+    state.feedbackTime = Math.max(0, state.feedbackTime - dt);
+    if (state.feedbackTime === 0) state.statusKey = "";
     const timingCue = guidedTimingKey();
-    if (timingCue !== state.timingCue) { state.timingCue = timingCue; updateBattleText(); }
+    if (timingCue !== state.timingCue || state.feedbackTime === 0) { state.timingCue = timingCue; updateBattleText(); }
+    const progress = Math.round(Math.max(0, Math.min(100, (p.x - 76) / 794 * 100)));
+    if ($("trail-route").value !== progress) $("trail-route").value = progress;
+    setText("trail-distance", `${progress}%`);
   }
   function draw() {
-    const t = trapData(); ctx.clearRect(0,0,960,540); const g = ctx.createLinearGradient(0,0,0,540); g.addColorStop(0,"#101933"); g.addColorStop(1,"#070b16"); ctx.fillStyle = g; ctx.fillRect(0,0,960,540);
+    const box = canvas.getBoundingClientRect();
+    const desiredHeight = Math.max(320, Math.round(960 * box.height / Math.max(1, box.width)));
+    if (canvas.height !== desiredHeight) canvas.height = desiredHeight;
+    const height = canvas.height;
+    ctx.clearRect(0, 0, 960, height);
+    ctx.fillStyle = "#0c162b"; ctx.fillRect(0, 0, 960, height);
+    if (sceneryArt.complete && sceneryArt.naturalWidth) {
+      const scale = Math.max(960 / sceneryArt.naturalWidth, height / sceneryArt.naturalHeight);
+      ctx.drawImage(sceneryArt, (960 - sceneryArt.naturalWidth * scale) / 2, (height - sceneryArt.naturalHeight * scale) / 2, sceneryArt.naturalWidth * scale, sceneryArt.naturalHeight * scale);
+      ctx.fillStyle = "#08112666"; ctx.fillRect(0,0,960,height);
+    }
+    const t = trapData();
+    const cameraTarget = Math.max(0, Math.min(360, state.player.x - 180));
+    state.camera = reduceMotion ? cameraTarget : state.camera + (cameraTarget - state.camera) * .16;
+    const worldTop = height * .74 - 418 * 1.6;
+    // Stars and block silhouettes occupy flexible sky without changing play visibility.
+    ctx.fillStyle = "#8fb9d5";
+    for (let i=0; i<32; i++) ctx.fillRect((i*137+61)%960, (i*71+28)%Math.max(80,height-220), 2, 2);
+    ctx.save(); ctx.translate(-state.camera * 1.6, worldTop); ctx.scale(1.6, 1.6);
+    // Transparent world sky preserves the approved art behind the real collision floor.
     if (t.dark) { ctx.fillStyle = "#050810aa"; ctx.fillRect(0,0,960,540); }
-    const gapShift = t.moving ? Math.sin(performance.now() / 240) * 10 : 0; const gapX = t.gap + gapShift;
+    const gapShift = t.moving ? Math.sin(state.elapsed / 240) * 10 : 0; const gapX = t.gap + gapShift;
     ctx.fillStyle="#172b43"; ctx.fillRect(0,418,960,122); ctx.fillStyle="#263f5c"; ctx.fillRect(gapX,418,74,122); ctx.fillStyle="#0a0e1a"; ctx.fillRect(gapX,418,74,8); if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,930,70,420,560,gapX-8,410,90,118);
     if (t.secondGap) { ctx.fillStyle="#263f5c"; ctx.fillRect(t.gap2,418,74,122); ctx.fillStyle="#0a0e1a"; ctx.fillRect(t.gap2,418,74,8); }
-    const spikeShift = t.moving ? Math.sin(performance.now() / 230) * 26 : 0; ctx.fillStyle="#e26b75"; for(let x=t.spike+spikeShift;x<t.spike+42+spikeShift;x+=14){ctx.beginPath();ctx.moveTo(x,418);ctx.lineTo(x+7,392);ctx.lineTo(x+14,418);ctx.fill();} if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,540,80,400,560,t.spike-18+spikeShift,370,74,84);
-    if (t.secondGap) { ctx.fillStyle="#e26b75"; for(let x=t.gap2-52;x<t.gap2-12;x+=14){ctx.beginPath();ctx.moveTo(x,418);ctx.lineTo(x+7,392);ctx.lineTo(x+14,418);ctx.fill();} }
+    const spikeShift = t.moving ? Math.sin(state.elapsed / 230) * 26 : 0; ctx.fillStyle="#e26b75"; for(let x=t.spike+spikeShift;x<t.spike+42+spikeShift;x+=14){ctx.beginPath();ctx.moveTo(x,418);ctx.lineTo(x+7,392);ctx.lineTo(x+14,418);ctx.fill();} if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,540,80,400,560,t.spike-18+spikeShift,370,74,84);
+
     ctx.fillStyle="#72597d";ctx.fillRect(t.fake,406,38,12); if (t.ceiling) { ctx.fillStyle="#d67b8f"; ctx.fillRect(610,180,150,16); }
-    if (t.wind) { ctx.strokeStyle="#8ac7e866"; ctx.lineWidth=3; for (let x = 90; x < 880; x += 150) { const y = 150 + ((x / 10 + performance.now() / 14) % 120); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 62, y - 12); ctx.stroke(); } }
+    if (t.wind) { ctx.strokeStyle="#8ac7e866"; ctx.lineWidth=3; for (let x = 90; x < 880; x += 150) { const y = 150 + ((x / 10 + state.elapsed / 14) % 120); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 62, y - 12); ctx.stroke(); } }
     ctx.fillStyle="#ffd36b";ctx.fillRect(875,345,12,73);ctx.beginPath();ctx.arc(881,336,25,0,Math.PI*2);ctx.fill();ctx.fillStyle="#fff1a1";ctx.beginPath();ctx.arc(881,336,9,0,Math.PI*2);ctx.fill(); if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,20,20,500,650,830,300,105,136);
     if (state.chapter === 1 && state.room <= 3) {
       const landingStart = t.gap + 78;
@@ -481,27 +573,70 @@
       ctx.strokeStyle="#fff1a1"; ctx.lineWidth=6; ctx.strokeRect(t.gap-10,394,94,42); ctx.strokeRect(t.spike-28,382,92,44);
       if (propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,1360,60,430,600,t.gap-22,350,124,124);
     }
+    const words = trailWords();
+    const label = (text, x, y, color) => { ctx.font = "700 16px system-ui"; const w=ctx.measureText(text).width+16; ctx.fillStyle="#0a142aee"; ctx.fillRect(x-w/2,y-20,w,28); ctx.fillStyle=color; ctx.textAlign="center"; ctx.fillText(text,x,y); ctx.textAlign="start"; };
+    label(words[1], state.player.x, state.player.y - 122, "#a4ead5");
+    label(words[2], 881, 270, "#ffd36b");
+    if (state.stage <= 3 || state.pulse > 0) {
+      label("1 · " + words[3], gapX+37, 460, "#b9d9ef");
+      label("2 · " + words[4], t.spike+21, 320, "#ff9ea8");
+      label("3 · " + words[5], t.fake+19, 460, "#dfbaff");
+      ctx.strokeStyle="#dfbaff"; ctx.lineWidth=3; ctx.strokeRect(t.fake-4,400,46,22);
+    }
+    if (state.pulse > 0 && !reduceMotion) { ctx.strokeStyle="#a4ead5aa"; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(state.player.x,state.player.y, (54-state.pulse)*5,0,Math.PI*2); ctx.stroke(); }
     const p=state.player;
+    ctx.fillStyle="#02091699"; ctx.beginPath(); ctx.ellipse(p.x,416,25,5,0,0,Math.PI*2);ctx.fill();
+    if (state.landingTime > 0) { ctx.strokeStyle="#a4ead5";ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(p.x,416,35-state.landingTime,7,0,0,Math.PI*2);ctx.stroke(); }
+    if (state.recovery) ctx.globalAlpha=.45 + state.recovery/48;
+
     if (heroArt.complete && heroArt.naturalWidth) {
       ctx.save(); ctx.translate(p.x, p.y - 42); ctx.rotate(Math.max(-0.12, Math.min(0.12, p.vy * 0.012)));
       ctx.drawImage(heroArt, 10, 12, 485, 705, -42, -62, 84, 122); ctx.restore();
     } else {
       ctx.save();ctx.translate(p.x,p.y);ctx.fillStyle="#a4ead5";ctx.beginPath();ctx.arc(0,0,22,0,Math.PI*2);ctx.fill();ctx.fillStyle="#162841";ctx.fillRect(-13,-5,26,7);ctx.fillStyle="#ffd36b";ctx.fillRect(-11,7,22,6);ctx.restore();
     }
-    const c = copy(); ctx.fillStyle="#cbd8e8";ctx.font="bold 18px system-ui";ctx.fillText(c.readPath,24,34);ctx.font="15px system-ui";ctx.fillText(`${stageName(state.stage)} · ${state.stage}/30`,24,60);
+    ctx.restore();
+    if (state.recovery) { ctx.fillStyle="#ef60752a"; ctx.fillRect(0,0,960,height); }
+    ctx.fillStyle="#ffd36b";ctx.font="700 26px system-ui";
+    ctx.textAlign="right";ctx.fillText(`${trailWords()[2]} →`,930,42);ctx.textAlign="start";
+
   }
-  function frame(now) { if (state.screen !== "battle") return; const dt = Math.min((now - state.last) / 16.67, 2); state.last = now; update(dt); if (state.screen === "battle") { draw(); state.raf = requestAnimationFrame(frame); } }
+  function frame(now) {
+    if (state.screen !== "battle") return;
+    if (!document.hidden) {
+      state.accumulator += Math.min(now - state.last, 80);
+      while (state.accumulator >= 1000 / 60 && state.screen === "battle") { update(1); state.accumulator -= 1000 / 60; }
+      if (state.screen === "battle") draw();
+    }
+    state.last = now;
+    if (state.screen === "battle") state.raf = requestAnimationFrame(frame);
+  }
   function pressKey(key, active) {
+    if (state.screen !== "battle" || state.recovery) return;
     if (active) {
+      if (!state.keys.has(key) && ["Space","ArrowUp","KeyW"].includes(key)) state.jumpBuffer = 7;
       state.keys.add(key);
-      if (key === "Space" || key === "ArrowUp" || key === "KeyW") armFirstRoomJumpIntent();
     } else state.keys.delete(key);
+    document.querySelectorAll(`[data-key="${key}"]`).forEach(button => button.classList.toggle("is-held",active));
   }
-  window.addEventListener("keydown", (e) => { const key = e.code === "Space" ? "Space" : e.code; if (["ArrowLeft","ArrowRight","ArrowUp","Space","KeyA","KeyD","KeyW","KeyE"].includes(key)) { e.preventDefault(); if (key === "KeyE") pulse(); else pressKey(key,true); } });
-  window.addEventListener("keyup", (e) => pressKey(e.code === "Space" ? "Space" : e.code,false));
-  document.querySelectorAll("[data-key]").forEach((button) => { const key = button.dataset.key; if (key === "Pulse") { button.addEventListener("pointerdown", (e) => { e.preventDefault(); pulse(); }); return; } const start = (e) => { e.preventDefault(); if (e.pointerId !== undefined && button.setPointerCapture) { try { button.setPointerCapture(e.pointerId); } catch (_) {} } pressKey(key,true); }; const stop = () => pressKey(key,false); button.addEventListener("pointerdown", start); button.addEventListener("touchstart", start, { passive: false }); ["pointerup","pointercancel","pointerleave","lostpointercapture","touchend","touchcancel"].forEach((event) => button.addEventListener(event, stop)); button.addEventListener("click", () => { state.tap = key; }); });
+  window.addEventListener("keydown", (e) => {
+    if (state.screen !== "battle" || state.paused) return;
+    if (["ArrowLeft","ArrowRight","ArrowUp","Space","KeyA","KeyD","KeyW","KeyE"].includes(e.code)) {
+      e.preventDefault(); if (e.code === "KeyE") { if (!e.repeat) pulse(); } else pressKey(e.code,true);
+    }
+  });
+  window.addEventListener("keyup", e => pressKey(e.code,false));
+  document.querySelectorAll("[data-key]").forEach(button => {
+    const key=button.dataset.key;
+    button.addEventListener("pointerdown", e => {
+      e.preventDefault(); button.setPointerCapture?.(e.pointerId);
+      if (key === "Pulse") pulse(); else pressKey(key,true);
+    });
+    ["pointerup","pointercancel","lostpointercapture"].forEach(event => button.addEventListener(event,() => pressKey(key,false)));
+    // Keyboard/assistive activation has no pointerdown. Do not double-fire touch clicks.
+    button.addEventListener("click", e => { if (e.detail === 0) { if (key === "Pulse") pulse(); else { pressKey(key,true); pressKey(key,false); } } });
+  });
   $("battle-pulse")?.addEventListener("click", pulse);
-  $("stage-list").addEventListener("scroll", syncStageCardVisibility, { passive: true });
   $("start-game").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", () => show(b.dataset.back))); $("retry").addEventListener("click", () => { state.statusKey = ""; resetRoom(); show("battle");
       __wpMeasurement.roundKey = {}; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.restart = true; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }); $("next").addEventListener("click", () => startStage(state.stage >= campaignStages.length ? campaignStages.length : state.stage + 1)); $("to-stages").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("#localeSelect").forEach((select) => select.addEventListener("change", () => window.setTimeout(applyCopy, 0))); stageCards(); resetRoom(); applyCopy(); show("main");

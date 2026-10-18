@@ -27,6 +27,13 @@
 #mainScreen .main-actions { width: 100%; margin: 0; }
 #mainScreen .main-actions #startBtn { width: 100%; }
 
+/* Acorn's wide Main keeps the shared 420px poster even in compact landscape. */
+@media (min-width: 700px) {
+  html body[data-wp-game-id="animal-acorn-auction"] [data-wp-frame="2"] [data-wp-frame-content="main"] {
+    --wp-main-poster-size: 420px !important;
+  }
+}
+
 .battle-workspace { position: relative; min-width: 0; min-height: 0; }
 #battleContent { min-width: 0; min-height: 0; }
 .request-card {

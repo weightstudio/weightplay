@@ -39,7 +39,7 @@
   let locale = normalizeLocale(pathLocale || window.WonderI18n?.localeFromPath?.() || window.WonderI18n?.actualLocale?.() || storage.getItem("weightplay-acorn-auction-locale") || "en");
   if (!locales[locale]) locale = "en";
   let stageUI = null;
-  let roundIndex = 0; let phase = "main"; let picks = 0; let sessionPicks = 0; let solved = new Set(); let feedback = ""; let timer = null; let timerDue = 0; let timerCallback = null;
+  let roundIndex = 0; let phase = "main"; let picks = 0; let sessionPicks = 0; let solved = new Set(); let runSolved = new Set(); let feedback = ""; let timer = null; let timerDue = 0; let timerCallback = null;
   const copy = (key, vars = {}) => Object.entries(vars).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, String(value)), (locales[locale] || locales.en)[key] || locales.en[key] || key);
   const bestValue = () => Number(storage.getItem("weightplay-acorn-auction-best-v1") || 0) || "—";
   const announce = (name, data = {}) => { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `acorn_auction_${name}`, round: roundIndex + 1, picks, ...data }); };
@@ -92,6 +92,8 @@
     document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = copy(node.dataset.i18n); });
     document.querySelectorAll("[data-wp-return]").forEach((node) => node.setAttribute("aria-label", returnLabels[node.dataset.wpReturn === "main" ? "lobby" : "back"][locale] || returnLabels[node.dataset.wpReturn === "main" ? "lobby" : "back"].en));
     document.querySelectorAll("[data-wp-settings]").forEach((node) => node.setAttribute("aria-label", copy("settings")));
+    const stageNavigation = $("stageScreen")?.querySelector("[data-wp-frame-stage-nav]");
+    if (stageNavigation) stageNavigation.setAttribute("aria-label", copy("rounds"));
     $("localeSelect").setAttribute("aria-label", copy("language"));
     $("best").textContent = copy("best", { best: bestValue() });
     updateStageProgress();
@@ -108,15 +110,26 @@
   function scheduleTimer(callback, delay) { clearTimer(); timerCallback = callback; timerDue = performance.now() + delay; timer = setTimeout(() => { const run = timerCallback; timer = null; timerDue = 0; timerCallback = null; run?.(); }, delay); }
   function pauseTimer() { if (!timer || !timerCallback) return null; const paused = { callback: timerCallback, remaining: Math.max(0, timerDue - performance.now()) }; clearTimeout(timer); timer = null; timerDue = 0; timerCallback = null; return paused; }
   function resumeTimer(paused) { if (paused?.callback) scheduleTimer(paused.callback, paused.remaining); }
-  function startRound(index, fromStage = false) { clearTimer(); roundIndex = index; picks = 0; feedback = ""; if (index === 0 || fromStage) sessionPicks = 0; show("battle"); phase = "choose"; renderBattle(); window.WeightPlayAudio?.play?.("game.start"); announce("start"); }
+  function startRound(index, fromStage = false) {
+    clearTimer();
+    roundIndex = index;
+    picks = 0;
+    feedback = "";
+    if (index === 0 || fromStage) { sessionPicks = 0; runSolved = new Set(); }
+    show("battle");
+    phase = "choose";
+    renderBattle();
+    window.WeightPlayAudio?.play?.("game.start");
+    announce("start");
+  }
   function replayRound() { phase = "choose"; feedback = ""; renderBattle(); }
   function renderBattle() { if (!$("lotCards") || phase === "main" || phase === "stage" || phase === "result") return; const round = rounds[roundIndex]; $("roundTitle").textContent = copy(round.name); $("progressPill").textContent = `${roundIndex + 1} / ${rounds.length}`; $("requestTitle").textContent = `${copy("request")} · ${copy(round.animal)}`; $("requestText").textContent = copy(round.request); $("prompt").textContent = feedback === "wrong" ? copy("wrong") : feedback === "correct" ? copy("correct") : copy("prompt"); const feedbackArt = $("feedbackArt"); if (feedbackArt) { feedbackArt.hidden = feedback !== "correct"; feedbackArt.className = `feedback-art ${feedback ? `feedback-art--${feedback}` : ""}`; } const root = $("lotCards"); root.setAttribute("aria-label", copy("lotLabel", { count: round.lots.length })); root.replaceChildren(); round.lots.forEach(([count, cost], index) => { const button = document.createElement("button"); button.type = "button"; button.className = `lot-card ${feedback === "correct" && index === round.answer ? "is-correct" : ""}`; button.disabled = phase !== "choose"; button.setAttribute("data-wp-primary-action", "true"); button.setAttribute("aria-label", copy("lotLabel", { count: index + 1 }) + ": " + copy("lot", { count, cost })); button.innerHTML = `<span class="lot-icon lot-icon--${index + 1}" aria-hidden="true"></span><strong>${copy("lotLabel", { count: index + 1 })}</strong><span>${copy("lot", { count, cost })}</span>`; button.addEventListener("click", () => chooseLot(index)); root.appendChild(button); }); $("resetBtn").disabled = phase === "complete"; $("status").textContent = copy("selected", { count: picks }); $("status").className = feedback === "correct" ? "status good" : feedback === "wrong" ? "status try" : "status"; }
-  function chooseLot(index) { if (phase !== "choose") return; const round = rounds[roundIndex]; picks += 1; sessionPicks += 1; if (index !== round.answer) { feedback = "wrong"; phase = "retry"; announce("wrong", { lot: index + 1 }); renderBattle(); scheduleTimer(replayRound, 760); return; } solved.add(roundIndex); feedback = "correct"; phase = "complete"; announce("complete", { lot: index + 1 }); renderBattle(); scheduleTimer(() => { show("result"); renderResult(); }, 420); }
+  function chooseLot(index) { if (phase !== "choose") return; const round = rounds[roundIndex]; picks += 1; sessionPicks += 1; if (index !== round.answer) { feedback = "wrong"; phase = "retry"; announce("wrong", { lot: index + 1 }); renderBattle(); scheduleTimer(replayRound, 760); return; } solved.add(roundIndex); runSolved.add(roundIndex); feedback = "correct"; phase = "complete"; announce("complete", { lot: index + 1 }); renderBattle(); scheduleTimer(() => { show("result"); renderResult(); }, 420); }
   function renderResult() {
     if (!$("resultText")) return;
-    const complete = solved.size === rounds.length;
+    const complete = runSolved.size === rounds.length;
     $("resultTitle").textContent = complete ? copy("resultTitle") : copy("resultRound");
-    $("resultText").textContent = complete ? copy("resultAll", { best: bestValue() }) : copy("resultText", { count: solved.size, picks });
+    $("resultText").textContent = complete ? copy("resultAll", { best: bestValue() }) : copy("resultText", { count: runSolved.size, picks });
     $("resultMapBtn").hidden = false;
     $("nextBtn").hidden = false;
     $("nextBtn").disabled = complete;
@@ -131,7 +144,7 @@
   function goBack() { clearTimer(); if (phase === "main") { const routePrefix = Object.keys(routeLocales).find((prefix) => routeLocales[prefix] === locale) || "en"; window.location.assign(`/${routePrefix}/`); return; } if (["battle", "choose", "retry", "complete", "result"].includes(phase)) { show("stage"); renderStages(); } else if (phase === "stage") show("main"); }
   function bind() { $("startBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("nextBtn").addEventListener("click", nextRound); $("resetBtn").addEventListener("click", () => startRound(roundIndex)); $("backBtn").addEventListener("click", goBack); $("stageBackBtn").addEventListener("click", () => { show("main"); renderStatic(); }); $("battleBackBtn").addEventListener("click", goBack); $("localeSelect").addEventListener("change", (event) => { locale = normalizeLocale(event.target.value); storage.setItem("weightplay-acorn-auction-locale", locale); renderStatic(); }); }
   function boot() { bind(); $("resultReplayBtn").addEventListener("click", () => startRound(roundIndex, true)); $("localeSelect").value = locale; $("loading").hidden = true; $("app").hidden = false; show("main"); renderStatic(); announce("loaded"); }
-  window.__ACORN_AUCTION_INTERFACE_BRIDGE__ = { pausePending: pauseTimer, resumePending: resumeTimer, getState: () => ({ roundIndex, phase, solved: [...solved], picks }), getStageConfig: stageConfig, selectStage, startRound, attachStageUI: (api) => { stageUI = api; renderStages(); }, refreshStage: renderStages };
+  window.__ACORN_AUCTION_INTERFACE_BRIDGE__ = { pausePending: pauseTimer, resumePending: resumeTimer, getState: () => ({ roundIndex, phase, solved: [...solved], picks }), getStageTabLabel: () => copy("rounds"), getStageConfig: stageConfig, selectStage, startRound, attachStageUI: (api) => { stageUI = api; renderStages(); }, refreshStage: renderStages };
   window.__ACORN_AUCTION_TEST__ = { rounds, startRound, chooseLot, getState: () => ({ roundIndex, phase, solved: [...solved], picks, screen: phase }) };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();
 }());

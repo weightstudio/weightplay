@@ -1,25 +1,113 @@
-(() => {
-  const script = document.createElement("script");
-  script.src = "../../src/market-five-games.js?v=20260910-habitat-builder-result-v14";
-  script.addEventListener("load", () => {
-    const utility = document.querySelector("#battle-utility");
-    if (utility) {
-      utility.dataset.m5Aria = "battleUtility";
-      utility.setAttribute("aria-label", window.wpMarketCommon?.(22) || "Game controls");
-    }
-
-    const controls = document.querySelector("#battle-controls");
-    const result = document.querySelector("#result-screen");
-    if (!controls || !result) return;
-    const syncResultControls = () => {
-      const resultVisible = !result.hidden;
-      if (resultVisible) controls.style.setProperty("display", "none", "important");
-      else controls.style.removeProperty("display");
-      controls.toggleAttribute("inert", resultVisible);
-      controls.setAttribute("aria-hidden", String(resultVisible));
-    };
-    new MutationObserver(syncResultControls).observe(result, { attributes: true, attributeFilter: ["hidden"] });
-    syncResultControls();
+/* Game-owned simulation and input; shared screen frame, audio and measurement. */
+(async () => {
+  'use strict';
+  const {profiles,createRun,checks,counts,place,undoPlacement,placementPreview}=await import('./habitat-rules.mjs?v=16');
+  const $=id=>document.getElementById(id), text=()=>window.HabitatCopy(), words=()=>window.WeightPlayMarketFiveLocale.game();
+  const common=i=>window.wpMarketCommon(i), icons=['💧','🌿','🌲','⌂'],storageKey='weightplay-habitat-builder-best-stage';
+  let best=0;try{best=Math.min(30,Math.max(0,Math.floor(Number(localStorage.getItem(storageKey))||0)));}catch{}
+  let run=createRun(1),screen='main',ended=false,won=false,roundKey=null,restart=false,preview=-1,terrain=null,closed=false;
+  const audio=window.WeightPlayAudio?.createScope(),sfx=id=>audio?.play(id);
+  window.WeightPlayAudio?.preload(['game.start','board.move','board.undo','feedback.error','feedback.hint','result.win','result.lose']);
+  const battle=$('battle-screen'),controls=$('battle-controls'),result=$('result-screen');
+  // Result belongs directly to Battle, above both the terrain and native workspace.
+  battle.append(result);
+  document.body.dataset.wpGameVersion='v16';document.body.dataset.wpInterfaceVersion='6';
+  const workspace=document.createElement('div');workspace.id='habitat-workspace';
+  workspace.innerHTML=`<section id="habitatCoach" class="habitat-coach first-steps"><img src="../../assets/weightplay-character-moss-shell-turtle-cutout.webp" alt="" aria-hidden="true"><div><strong id="habitat-goal"></strong><p id="habitat-instruction"></p></div></section><div id="habitat-needs" class="habitat-needs"></div><section class="habitat-board-area"><div class="habitat-board-surface"><canvas id="habitat-terrain" aria-hidden="true"></canvas><div id="habitat-grid" class="habitat-grid" role="group"></div></div><p id="habitat-preview" aria-live="polite"></p></section><section id="habitat-rules" class="habitat-rules"></section><div class="habitat-tools"><button type="button" data-action="undo" id="habitat-undo"></button><button type="button" data-action="hint" id="habitat-hint"></button><button type="button" data-action="reset" id="habitat-reset"></button></div>`;
+  battle.append(workspace);workspace.append(controls,$('habitat-preview'));
+  const grid=$('habitat-grid'),needs=$('habitat-needs');
+  for(let i=0;i<20;i++){const b=document.createElement('button');b.type='button';b.dataset.cell=i;b.dataset.wpPrimaryAction='';grid.append(b);}
+  for(let t=0;t<4;t++){const c=document.createElement('div');c.className='habitat-need';c.innerHTML=`<span aria-hidden="true">${icons[t]}</span><strong></strong><b></b><progress max="1" value="0"></progress>`;needs.append(c);}
+  for(let t=0;t<4;t++){const b=document.createElement('button');b.type='button';b.dataset.action=`tile-${t}`;b.dataset.wpPrimaryAction='';b.innerHTML=`<span aria-hidden="true">${icons[t]}</span><b></b>`;controls.append(b);}
+  const leave=document.createElement('section');leave.id='habitat-leave';leave.hidden=true;leave.setAttribute('role','dialog');leave.setAttribute('aria-modal','true');leave.setAttribute('aria-labelledby','habitat-leave-copy');leave.innerHTML='<p id="habitat-leave-copy"></p><button id="habitat-resume" type="button"></button><button id="habitat-exit" type="button"></button>';battle.append(leave);
+  const notify=()=>{try{window.WonderAnalytics?.game?.observeState(()=>({screen:screen==='result'?null:screen,roundKey,started:roundKey!==null,ended,outcome:ended?(won?'win':'lose'):'complete',restart,paused:!leave.hidden||document.hidden,node:document.body,activityMode:'input',idleSeconds:300,keyboardKeys:[]}));}catch{}};
+  window.addEventListener('weightplay:analytics-ready',notify);
+  function animate(node,reject=false){
+    node.getAnimations().forEach(a=>a.cancel());const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    node.animate(reject?[{outline:'3px solid #ffb88d'},{outline:'3px solid transparent'}]:[{opacity:.65,filter:reduced?'none':'brightness(1.5)'},{opacity:1,filter:'brightness(1)'}],{duration:reduced?60:220,easing:'ease-out'});
+  }
+  function updateMain(){
+    $('main-progress').textContent=`${common(8)}: ${best} / 30`;
+    const lede=document.querySelector('[data-m5-lede]');if(lede)lede.textContent=`${text().choose.replace(/^.*?·\s*/,'')} → ${text().tap.replace(/^.*?·\s*/,'')} · ${text().quantity}`;
+  }
+  function stageCards(){
+    const host=$('stage-list');host.replaceChildren();profiles.forEach((p,i)=>{
+      const b=document.createElement('button');b.className=`m5-stage-card stage-card${i===Math.min(best,29)?' recommended':''}`;b.dataset.stage=i+1;b.disabled=i>best;b.setAttribute('aria-disabled',String(b.disabled));if(!b.disabled)b.dataset.wpEnterBattle='';
+      const title=document.createElement('span');title.textContent=`${i<best?'✓ ':''}${common(9)} ${i+1}`;
+      const detail=document.createElement('small');detail.textContent=b.disabled?'🔒':`${p.badge} · ${p.need.reduce((a,b)=>a+b,0)} / ${p.limit} · ${text().moves}`;
+      b.append(title,detail);b.addEventListener('click',()=>start(i+1));host.append(b);
+    });requestAnimationFrame(()=>host.querySelector('.recommended')?.scrollIntoView({inline:'center',block:'nearest'}));
+  }
+  function fit(){battle.dataset.habitatLayout=battle.clientWidth>=700?'wide':'tall';}
+  new ResizeObserver(fit).observe(battle);
+  function show(next){
+    screen=next;preview=-1;leave.hidden=true;
+    if(next!=='result')window.WeightPlayCastle?.dismissRewardNotice('animal-habitat-builder');
+    for(const n of document.querySelectorAll('.screen')){const on=n.id==='battle-screen'?next==='battle'||next==='result':n.dataset.screen===next;n.hidden=!on;n.classList.toggle('active',on);}
+    result.hidden=next!=='result';document.body.dataset.screen=next==='result'?'battle':next;
+    const modal=next==='result';workspace.inert=modal;workspace.setAttribute('aria-hidden',String(modal));controls.inert=modal;controls.setAttribute('aria-hidden',String(modal));controls.style.setProperty('display',modal?'none':'grid','important');
+    if(next!=='battle')audio?.stop();
+    document.querySelectorAll('#habitat-workspace *,#result-screen,#habitat-leave').forEach(n=>n.getAnimations().forEach(a=>a.cancel()));
+    window.dispatchEvent(new CustomEvent(next==='battle'?'weightplay:battle-open':'weightplay:shell-sync'));notify();
+    requestAnimationFrame(()=>{fit();if(next==='battle')terrain?.resize();});animate(next==='result'?result:next==='battle'?workspace:$(next+'-screen'));
+  }
+  const ruleLabel=c=>text()[c.key].replace('{n}',String(c.n||''));
+  function render(message){
+    const p=profiles[run.stage-1],current=counts(run.grid),rules=checks(p,run.grid),copy=text();
+    $('stage-label').textContent=`${common(9)} ${run.stage} / 30`;$('score-label').textContent=`${copy.moves} ${p.limit-run.moves}`;$('score-label').dataset.moves=run.moves;
+    $('habitat-goal').textContent=copy.goal;$('habitat-instruction').textContent=`${copy.choose} → ${copy.tap}`;grid.setAttribute('aria-label',`${words().title} · ${copy.tap}`);
+    [...needs.children].forEach((c,t)=>{c.querySelector('strong').textContent=words().tiles[t];c.querySelector('b').textContent=`${current[t]} / ${p.need[t]}`;c.querySelector('progress').max=p.need[t];c.querySelector('progress').value=Math.min(p.need[t],current[t]);c.dataset.complete=String(current[t]>=p.need[t]);c.setAttribute('aria-label',`${words().tiles[t]} ${current[t]} / ${p.need[t]}`);});
+    [...controls.children].forEach((b,t)=>{b.querySelector('b').textContent=words().tiles[t];b.setAttribute('aria-label',words().tiles[t]);b.classList.toggle('selected',run.selected===t);b.setAttribute('aria-pressed',String(run.selected===t));});
+    [...grid.children].forEach((b,i)=>{const blocked=p.blocked?.includes(i);b.dataset.terrain=run.grid[i];b.dataset.blocked=String(!!blocked);b.setAttribute('aria-disabled',String(!!blocked));b.setAttribute('aria-label',`${Math.floor(i/5)+1}, ${i%5+1} · ${blocked?copy.blocked:run.grid[i]<0?copy.tap:words().tiles[run.grid[i]]}`);b.innerHTML=blocked?'<span aria-hidden="true">×</span>':run.grid[i]<0?'<span aria-hidden="true">＋</span>':`<span aria-hidden="true">${icons[run.grid[i]]}</span>`;});
+    const host=$('habitat-rules');if(host.children.length!==rules.length)host.replaceChildren(...rules.map(()=>document.createElement('p')));
+    rules.forEach((c,i)=>{const n=host.children[i],old=n.dataset.pass;n.dataset.pass=String(c.pass);n.textContent=`${c.pass?'✓':'○'} ${ruleLabel(c)}`;if(old!==undefined&&old!==n.dataset.pass)animate(n);});
+    $('habitat-undo').textContent=`↶ ${copy.undo}`;$('habitat-undo').disabled=!run.history.length;$('habitat-hint').textContent=`✦ ${copy.hint}`;$('habitat-reset').textContent=`↺ ${common(21)}`;
+    $('habitat-leave-copy').textContent=copy.leave;$('habitat-resume').textContent=copy.resume;$('habitat-exit').textContent=copy.return;
+    const missing=current.findIndex((n,t)=>n<p.need[t]),failed=rules.find(c=>!c.pass);
+    $('battle-status').textContent=message||(missing>=0?`${copy.remaining}: ${words().tiles[missing]} × ${p.need[missing]-current[missing]}`:failed?ruleLabel(failed):copy.quantity);
+    terrain?.build(run.grid,p.blocked);previewText();
+  }
+  function previewText(){const p=placementPreview(run,preview),target=profiles[run.stage-1];$('habitat-preview').textContent=p?`${text().preview} · ${words().tiles[run.selected]} ${p.counts[run.selected]} / ${target.need[run.selected]}`:$('battle-status').textContent;for(const b of grid.children)b.classList.toggle('preview',Number(b.dataset.cell)===preview);}
+  function start(stage,isReplay=false){run=createRun(stage);ended=false;won=false;restart=isReplay;roundKey={};render();show('battle');sfx('game.start');}
+  function finish(win){
+    ended=true;won=win;if(win){best=Math.max(best,run.stage);try{localStorage.setItem(storageKey,String(best));}catch{}}
+    const r=checks(profiles[run.stage-1],run.grid),passed=r.filter(c=>c.pass).length;
+    $('result-title').textContent=win?common(10):common(11);$('result-copy').textContent=win?`${text().quantity} ✓\n${text().moves}: ${profiles[run.stage-1].limit-run.moves} · ${passed}/${r.length} ✓`:`${text().moves}: 0 · ${passed}/${r.length} ✓\n${r.filter(c=>!c.pass).map(ruleLabel).join('\n')}`;
+    $('next').disabled=!win||run.stage===30;$('next').setAttribute('aria-disabled',String($('next').disabled));updateMain();show('result');sfx(win?'result.win':'result.lose');$('retry').focus({preventScroll:true});
+  }
+  function acceptCell(index){
+    if(screen!=='battle'||!leave.hidden)return;const outcome=place(run,index);preview=-1;render(outcome==='blocked'?text().blocked:outcome==='same'?text().same:null);
+    if(outcome==='blocked'||outcome==='same'){if(outcome==='blocked')sfx('feedback.error');animate(grid.children[index],true);return;}sfx('board.move');animate(grid.children[index]);if(outcome==='win'||outcome==='lose')finish(outcome==='win');
+  }
+  function hint(){
+    let suggestion=-1,bestScore=-Infinity;const p=profiles[run.stage-1],current=counts(run.grid),before=checks(p,run.grid).filter(c=>c.pass).length;
+    // A local heuristic highlights one choice, never places it or promises a solution.
+    for(let i=0;i<20;i++){if(p.blocked?.includes(i)||run.grid[i]===run.selected)continue;const sim=placementPreview(run,i),score=(sim.checks.filter(c=>c.pass).length-before)*20+(current[run.selected]<p.need[run.selected]?5:0)+(run.grid[i]<0?2:-5);if(score>bestScore){suggestion=i;bestScore=score;}}
+    preview=suggestion;previewText();if(suggestion>=0){grid.children[suggestion].focus({preventScroll:true});animate(grid.children[suggestion]);}sfx('feedback.hint');
+  }
+  grid.addEventListener('click',e=>{const b=e.target.closest('[data-cell]');if(b)acceptCell(Number(b.dataset.cell));});
+  grid.addEventListener('pointerover',e=>{if(e.pointerType==='touch')return;const b=e.target.closest('[data-cell]');if(b){preview=Number(b.dataset.cell);previewText();}});
+  grid.addEventListener('pointerleave',()=>{preview=-1;previewText();});grid.addEventListener('focusin',e=>{preview=Number(e.target.dataset.cell);previewText();});
+  grid.addEventListener('keydown',e=>{const i=Number(e.target.dataset.cell),d={ArrowRight:1,ArrowLeft:-1,ArrowDown:5,ArrowUp:-5}[e.key];if(d){e.preventDefault();const n=i+d;if(n>=0&&n<20&&(Math.abs(d)===5||Math.floor(i/5)===Math.floor(n/5)))grid.children[n].focus();}});
+  workspace.addEventListener('click',e=>{if(screen!=='battle'||!leave.hidden)return;const b=e.target.closest('[data-action]');if(!b)return;const a=b.dataset.action;
+    if(a.startsWith('tile-')){run.selected=Number(a.slice(-1));preview=-1;render();animate(b);}
+    if(a==='undo'){if(undoPlacement(run)){preview=-1;render();sfx('board.undo');}else render(text().emptyUndo);}
+    if(a==='reset'){const selected=run.selected;run=createRun(run.stage);run.selected=selected;preview=-1;render();animate(grid);}
+    if(a==='hint')hint();
   });
-  document.currentScript.after(script);
-})();
+  $('start-game').addEventListener('click',()=>{stageCards();show('stage');});$('stage-back').addEventListener('click',()=>show('main'));
+  $('battle-back').addEventListener('click',()=>{if(screen==='result'){stageCards();show('stage');return;}leave.hidden=false;workspace.inert=true;notify();animate(leave);$('habitat-resume').focus({preventScroll:true});});
+  function resume(){leave.hidden=true;workspace.inert=false;notify();$('battle-back').focus({preventScroll:true});}
+  $('habitat-resume').addEventListener('click',resume);$('habitat-exit').addEventListener('click',()=>{workspace.inert=false;stageCards();show('stage');});
+  leave.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();resume();}if(e.key==='Tab'){e.preventDefault();(document.activeElement===$('habitat-resume')?$('habitat-exit'):$('habitat-resume')).focus();}});
+  $('battle-utility').addEventListener('click',()=>controls.querySelector('button').focus());$('retry').addEventListener('click',()=>start(run.stage,true));$('next').addEventListener('click',()=>{if(won&&run.stage<30)start(run.stage+1);});$('to-stages').addEventListener('click',()=>{stageCards();show('stage');});
+  result.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const buttons=[...result.querySelectorAll('button:not(:disabled)')],at=buttons.indexOf(document.activeElement);e.preventDefault();buttons[(at+(e.shiftKey?-1:1)+buttons.length)%buttons.length]?.focus();});
+  window.addEventListener('weightplay:market-locale-change',()=>{updateMain();stageCards();render();});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){audio?.stop();preview=-1;previewText();workspace.querySelectorAll('*').forEach(n=>n.getAnimations().forEach(a=>a.cancel()));}notify();});
+  $('habitat-terrain').addEventListener('terrain-unavailable',()=>{workspace.classList.add('terrain-fallback');grid.setAttribute('aria-description',text().fallback);});
+  window.addEventListener('pagehide',e=>{audio?.stop();if(!e.persisted){closed=true;terrain?.dispose();audio?.dispose();}});
+  try{const {createTerrain}=await import('./terrain-3d.mjs?v=16');if(!closed){terrain=createTerrain($('habitat-terrain'));terrain.build(run.grid,profiles[run.stage-1].blocked);}}catch{workspace.classList.add('terrain-fallback');$('habitat-terrain').hidden=true;}
+  // Read-only renderer counters, never a gameplay input or state hook.
+  window.HabitatRenderStats=()=>terrain?.stats()||{fallback:true};
+  updateMain();stageCards();render();show('main');$('loadingPanel')?.classList.add('hidden');$('loadingPanel')?.setAttribute('hidden','');
+})().catch(error=>{console.error('Habitat Builder initialization failed',error);const panel=document.getElementById('loadingPanel');panel?.classList.add('hidden');panel?.setAttribute('hidden','');});

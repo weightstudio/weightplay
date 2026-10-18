@@ -1,5 +1,52 @@
 (() => {
   "use strict";
+
+  // All locale shells load this one game module. Upgrade their legacy workspace
+  // in place so canvas identity, shared frame ownership and route locales survive.
+  const workspaceStyle = document.createElement("style");
+  workspaceStyle.dataset.puttWorkspace = "clarity";
+  workspaceStyle.textContent = `    /* Only the game workspace is composed here; shared frame/Stage geometry stays shared. */
+    #puttBattleLive { background:#123b36; }
+    #puttBattleLive .putt-workspace { display:grid; grid-template-rows:auto minmax(0,1fr) auto auto; gap:calc(8px * var(--wp-battle-canvas-inverse-scale, 1)); padding:calc(10px * var(--wp-battle-canvas-inverse-scale, 1)); height:100%; flex:1; min-height:0; }
+    #puttBattleLive[hidden] { display:none!important; }
+    .putt-mission { display:grid; gap:calc(3px * var(--wp-battle-canvas-inverse-scale, 1)); color:#fff7d4; padding:calc(4px * var(--wp-battle-canvas-inverse-scale, 1)) calc(8px * var(--wp-battle-canvas-inverse-scale, 1)); }
+    .putt-mission strong { font-size:calc(18px * var(--wp-battle-canvas-inverse-scale, 1)); }
+    .putt-mission span { font-size:calc(13px * var(--wp-battle-canvas-inverse-scale, 1)); color:#c2e0d1; line-height:1.35; }
+    #puttBattleLive .canvas-wrap { width:100%; height:100%; min-height:0; border:calc(2px * var(--wp-battle-canvas-inverse-scale, 1)) solid #6e9b77; border-radius:calc(12px * var(--wp-battle-canvas-inverse-scale, 1)); background:#164d3d; }
+    #puttBattleLive canvas { width:100%; height:100%; aspect-ratio:auto; cursor:crosshair; }
+    .putt-controls { display:grid; grid-template-columns:minmax(0,1fr) calc(150px * var(--wp-battle-canvas-inverse-scale, 1)); gap:calc(4px * var(--wp-battle-canvas-inverse-scale, 1)) calc(16px * var(--wp-battle-canvas-inverse-scale, 1)); align-items:center; padding:calc(8px * var(--wp-battle-canvas-inverse-scale, 1)) calc(10px * var(--wp-battle-canvas-inverse-scale, 1)); border:calc(1px * var(--wp-battle-canvas-inverse-scale, 1)) solid #547d66; border-radius:calc(12px * var(--wp-battle-canvas-inverse-scale, 1)); background:#0d2d2b; color:#f9f2d6; }
+    .putt-controls label { display:flex; justify-content:space-between; font-size:calc(14px * var(--wp-battle-canvas-inverse-scale, 1)); font-weight:800; }
+    #puttPower { grid-column:1; width:100%; min-height:calc(32px * var(--wp-battle-canvas-inverse-scale, 1)); margin:0; accent-color:#f6cb65; cursor:pointer; }
+    #puttPowerValue { font-variant-numeric:tabular-nums; color:#ffda79; }
+    #puttBattleLive #aimAction { position:static; grid-column:2; grid-row:1/3; width:100%; min-height:calc(48px * var(--wp-battle-canvas-inverse-scale, 1)); font-size:calc(16px * var(--wp-battle-canvas-inverse-scale, 1)); margin:0; padding:calc(10px * var(--wp-battle-canvas-inverse-scale, 1)); background:#f6cb65; color:#153e33; box-shadow:0 calc(3px * var(--wp-battle-canvas-inverse-scale, 1)) 0 #b18a3f; }
+    #puttBattleLive #aimAction:disabled { opacity:.5; cursor:default; }
+    #puttBattleLive .battle-help { margin:0; min-height:calc(38px * var(--wp-battle-canvas-inverse-scale, 1)); padding:0 calc(6px * var(--wp-battle-canvas-inverse-scale, 1)); font-size:calc(14px * var(--wp-battle-canvas-inverse-scale, 1)); line-height:1.35; display:grid; align-items:center; }
+    .putt-mission, .putt-controls { animation:putt-enter 220ms ease-out both; }
+    #resultCard > div { animation:putt-enter 240ms ease-out both; }
+    @keyframes putt-enter { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+    @media (max-height:500px) and (orientation:landscape) {
+      #puttBattleLive .putt-workspace { grid-template-columns:minmax(0,1fr) calc(210px * var(--wp-battle-canvas-inverse-scale, 1)); grid-template-rows:auto minmax(0,1fr) auto; gap:calc(6px * var(--wp-battle-canvas-inverse-scale, 1)) calc(10px * var(--wp-battle-canvas-inverse-scale, 1)); padding:calc(8px * var(--wp-battle-canvas-inverse-scale, 1)); }
+      #puttBattleLive .canvas-wrap { grid-column:1; grid-row:1/4; }
+      .putt-mission { grid-column:2; }
+      .putt-controls { grid-column:2; grid-template-columns:1fr; gap:calc(4px * var(--wp-battle-canvas-inverse-scale, 1)); align-self:end; }
+      #puttBattleLive #aimAction { grid-column:1; grid-row:3; }
+      #puttBattleLive .battle-help { grid-column:2; font-size:calc(12px * var(--wp-battle-canvas-inverse-scale, 1)); }
+    }
+
+  @media (prefers-reduced-motion:reduce) { .putt-mission,.putt-controls,#resultCard>div { animation:none!important; } }  `;
+  document.head.append(workspaceStyle);
+  if (!document.querySelector(".putt-workspace")) {
+    const live = document.querySelector("#puttBattleLive");
+    const workspace = document.createElement("div"); workspace.className = "putt-workspace";
+    const mission = document.createElement("div"); mission.className = "putt-mission";
+    mission.innerHTML = '<strong id="puttObjective"></strong><span id="puttLesson"></span>';
+    const controls = document.createElement("div"); controls.className = "putt-controls";
+    controls.innerHTML = '<label for="puttPower"><span id="puttPowerLabel"></span><output id="puttPowerValue" for="puttPower">50%</output></label><input id="puttPower" type="range" min="8" max="100" value="50" step="1">';
+    controls.append(document.querySelector("#aimAction"));
+    workspace.append(mission, live.querySelector(".canvas-wrap"), controls, document.querySelector("#battleHelp"));
+    live.append(workspace);
+  }
+
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -100,8 +147,36 @@
   courseBackdrop.decoding = "async";
   courseBackdrop.src = "assets/animal-putt-trails-course-v2.png";
   const progressKey = "weightplayAnimalPuttTrailsProgress";
+  // One vocabulary for the live objective, controls and prediction, in every supported locale.
+  const coachCopy = {
+    en: ["Get the white ball into the gold cup", "Tap a direction · set power · putt", "Try a straight shot. The dots show where it will stop.", "Putt", "Power", "Your ball", "Goal", "Water — ball returned to your last position. Try a safer line.", "Water ahead — reduce power or change direction.", "Ready — tap the course to choose a direction.", "Predicted stop", "Bank shot", "Tap a direction first", "Rolling… watch your line!"],
+    "zh-tw": ["把白球打進金色球洞", "點方向 · 調力道 · 按推桿", "先練習直線推桿，圓點會預告球停在哪裡。", "推桿", "力道", "你的球", "球洞", "落水了，球已回到出桿前的位置。換條安全路線吧！", "這一桿會落水，請減輕力道或改方向。", "點一下球場，選擇白球前進的方向。", "預計落點", "反彈路線", "請先點選方向", "球正在滾動，看看你的路線！"],
+    "zh-cn": ["把白球打进金色球洞", "点方向 · 调力度 · 按推杆", "先练习直线推杆，圆点会预告球停在哪里。", "推杆", "力度", "你的球", "球洞", "落水了，球已回到出杆前的位置。换条安全路线吧！", "这一杆会落水，请减轻力度或改方向。", "点一下球场，选择白球前进的方向。", "预计落点", "反弹路线", "请先点选方向", "球正在滚动，看看你的路线！"],
+    ja: ["白いボールを金色のカップへ", "方向をタップ · 強さを調整 · パット", "まずは直線。点線で止まる場所を確認。", "パット", "強さ", "ボール", "ゴール", "水に入りました。打つ前の位置から別のルートへ。", "水に入ります。強さや方向を変えましょう。", "コースをタップして方向を選びましょう。", "停止予測", "バンクショット", "まず方向を選択", "ボールの行方を見よう！"],
+    ko: ["흰 공을 금색 홀에 넣으세요", "방향 터치 · 세기 조절 · 퍼팅", "직선부터 연습해요. 점선은 멈출 위치를 보여줘요.", "퍼팅", "세기", "내 공", "목표", "물에 빠졌어요. 이전 위치에서 안전한 길로 다시 쳐요.", "물에 빠져요. 세기나 방향을 바꿔요.", "코스를 터치해 방향을 정하세요.", "예상 도착점", "반사 경로", "방향을 먼저 선택", "공의 경로를 지켜봐요!"],
+    es: ["Lleva la bola blanca al hoyo dorado", "Toca una dirección · ajusta fuerza · golpea", "Empieza recto. Los puntos predicen dónde se detendrá.", "Golpear", "Fuerza", "Tu bola", "Meta", "Agua: vuelves a la posición anterior. Prueba otra ruta.", "Agua delante: reduce fuerza o cambia de dirección.", "Toca el campo para elegir dirección.", "Parada prevista", "Rebote", "Elige dirección primero", "¡Mira la trayectoria!"],
+    "pt-br": ["Leve a bola branca ao buraco dourado", "Toque a direção · ajuste a força · bata", "Comece em linha reta. Os pontos preveem a parada.", "Bater", "Força", "Sua bola", "Meta", "Água: a bola voltou à posição anterior. Tente outra rota.", "Água à frente: reduza a força ou mude a direção.", "Toque no campo para escolher a direção.", "Parada prevista", "Rebote", "Escolha a direção", "Veja a trajetória!"],
+    fr: ["Mettez la balle blanche dans le trou doré", "Touchez une direction · réglez la force · frappez", "Commencez tout droit. Les points prédisent l’arrêt.", "Frapper", "Force", "Votre balle", "But", "Dans l’eau : retour à la position précédente. Changez de trajet.", "Eau devant : réduisez la force ou changez de direction.", "Touchez le terrain pour choisir la direction.", "Arrêt prévu", "Rebond", "Choisissez une direction", "Observez la trajectoire !"],
+    de: ["Spiele den weißen Ball ins goldene Loch", "Richtung antippen · Stärke wählen · putten", "Beginne geradeaus. Die Punkte zeigen den Haltepunkt.", "Putten", "Stärke", "Dein Ball", "Ziel", "Wasser: zurück zur letzten Position. Wähle einen sicheren Weg.", "Wasser voraus: weniger Stärke oder andere Richtung.", "Tippe auf das Feld, um die Richtung zu wählen.", "Erwarteter Halt", "Abpraller", "Erst Richtung wählen", "Beobachte deinen Ball!"],
+    it: ["Porta la pallina bianca nella buca dorata", "Tocca la direzione · regola la forza · colpisci", "Inizia dritto. I punti prevedono dove si fermerà.", "Colpisci", "Forza", "La tua palla", "Meta", "In acqua: ritorno alla posizione precedente. Cambia percorso.", "Acqua davanti: riduci la forza o cambia direzione.", "Tocca il campo per scegliere la direzione.", "Arresto previsto", "Rimbalzo", "Scegli una direzione", "Guarda la traiettoria!"],
+    ru: ["Попадите белым мячом в золотую лунку", "Выберите направление · силу · ударьте", "Начните прямо. Точки показывают место остановки.", "Ударить", "Сила", "Ваш мяч", "Цель", "Вода: мяч вернулся на прежнее место. Выберите другой путь.", "Впереди вода: уменьшите силу или измените направление.", "Нажмите на поле, чтобы выбрать направление.", "Место остановки", "Отскок", "Сначала направление", "Следите за мячом!"],
+    hi: ["सफेद गेंद को सुनहरे होल में डालें", "दिशा चुनें · ताकत तय करें · पुट करें", "सीधा शॉट आज़माएँ। बिंदु रुकने की जगह बताते हैं।", "पुट करें", "ताकत", "आपकी गेंद", "लक्ष्य", "पानी! गेंद पिछली जगह लौट गई। सुरक्षित रास्ता चुनें।", "आगे पानी है। ताकत घटाएँ या दिशा बदलें।", "दिशा चुनने के लिए मैदान पर टैप करें।", "अनुमानित ठहराव", "उछाल", "पहले दिशा चुनें", "गेंद का रास्ता देखें!"],
+    ar: ["أدخل الكرة البيضاء في الحفرة الذهبية", "اختر الاتجاه · اضبط القوة · اضرب", "ابدأ بخط مستقيم. النقاط تتوقع موضع التوقف.", "اضرب", "القوة", "كرتك", "الهدف", "سقطت في الماء! عادت الكرة لموضعها السابق. اختر مساراً آمناً.", "ماء أمامك: قلل القوة أو غير الاتجاه.", "المس الملعب لاختيار الاتجاه.", "التوقف المتوقع", "ارتداد", "اختر الاتجاه أولاً", "راقب مسار الكرة!"]
+  };
+  const coach = (index) => (coachCopy[state.locale] || coachCopy.en)[index];
+  const aimCupLabels = { en:"Aim at cup", "zh-tw":"瞄準球洞", "zh-cn":"瞄准球洞", ja:"カップを狙う", ko:"홀 조준", es:"Apuntar al hoyo", "pt-br":"Mirar no buraco", fr:"Viser le trou", de:"Loch anvisieren", it:"Mira la buca", ru:"Нацелиться", hi:"होल पर निशाना", ar:"صوّب للحفرة" };
+  for (const [locale, pack] of Object.entries(coachCopy)) {
+    copy[locale].lede = `${pack[0]}. ${pack[1]}.`;
+    copy[locale].aim = pack[1];
+    copy[locale].holeTips[0] = pack[2];
+  }
+  const COURSE_W = 960, COURSE_H = 720;
+  const camera = { scale: 1, x: 0, y: 0, rotated: false };
+  let selectedAngle = null, selectedPower = 50, dragStart = null, activePointer = null;
+  let shotOrigin = null, trail = [], impact = null, physicsTime = 0, physicsFrame = 0;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const holes = [
-    { par: 3, start: [150, 520], cup: [800, 170], water: null, walls: [[250, 330, 430, 22], [520, 260, 720, 22]], tint: "#b5e4a5" },
+    { par: 2, start: [250, 500], cup: [650, 280], water: null, walls: [], tint: "#b5e4a5" },
     { par: 4, start: [145, 180], cup: [825, 530], water: [470, 365, 115, 72], walls: [[255, 120, 22, 250], [680, 340, 22, 260]], tint: "#a6d6be" },
     { par: 4, start: [160, 520], cup: [820, 185], water: [380, 275, 145, 72], walls: [[250, 420, 260, 20], [550, 250, 250, 20]], tint: "#c5d8a5" },
     { par: 5, start: [150, 190], cup: [810, 520], water: [390, 320, 180, 90], walls: [[240, 230, 300, 22], [520, 430, 280, 22], [690, 150, 22, 210]], tint: "#b7d8b1" },
@@ -243,6 +318,7 @@
     leaveOpen = true;
     leaveWasRolling = state.rolling;
     state.suspended = true;
+    cancelAnimationFrame(physicsFrame); physicsTime = 0; activePointer = null; dragStart = null; state.aiming = false;
     state.rolling = false;
     layer.hidden = false;
     syncBattleCoverage();
@@ -259,7 +335,7 @@
     leaveWasRolling = false;
     if (shouldResume) {
       state.rolling = true;
-      requestAnimationFrame(step);
+      physicsTime = 0; physicsFrame = requestAnimationFrame(step);
     }
     syncBattleCoverage();
     if (restoreFocus) document.querySelector("#battleBack")?.focus({ preventScroll: true });
@@ -324,8 +400,14 @@
     if (localeSelect) localeSelect.value = state.locale;
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
     document.querySelectorAll("[data-aria]").forEach((node) => { node.setAttribute("aria-label", aria(node.dataset.aria)); });
-    document.querySelector("#aimAction")?.setAttribute("aria-label", t("aim"));
+
     renderStageList(); renderMainProgress(); updateHoleLabels(); updateHelp(); renderLeaveCopy();
+    const guideSteps = document.querySelectorAll(".game-page-info .game-info-section ol li");
+    if (guideSteps.length >= 3) { guideSteps[0].textContent = coach(0); guideSteps[1].textContent = coach(1); guideSteps[2].textContent = coach(2); }
+    const faq = document.querySelectorAll(".game-page-info dl dd");
+    if (faq.length >= 2) { faq[0].textContent = coach(1); faq[1].textContent = coach(7); }
+    document.querySelector("#puttPower").setAttribute("aria-label", coach(4));
+    draw();
   }
   function showScreen(name) { Object.entries(screens).forEach(([key, node]) => { const active = key === name; node.classList.toggle("active", active); node.hidden = !active; }); document.body.dataset.screen = name;
     screenFrame?.activate(name);
@@ -415,23 +497,273 @@
     window.addEventListener("pagehide", (event) => { if (!event.persisted) screenFrame?.destroy(); }, { once: true });
   }
   function frameActivateMain() { screenFrame?.activate("main"); }
-  function startHole(index) { if (index < 0 || index >= holes.length || index >= unlockedHoleCount()) return; closeLeave(false, false); closeResultState(); state.suspended = false; state.holeIndex = index; stageBrowseIndex = index; state.strokes = 0; state.rolling = false; state.aiming = false; state.keyboardAim = false; state.pointer = null; state.result = null; const hole = holes[index]; state.ball = { x: hole.start[0], y: hole.start[1], vx: 0, vy: 0 }; __wpNotifyMeasurement(); closeResultState(); showScreen("battle"); updateHoleLabels(); updateHelp(); draw();
+  function startHole(index) { cancelAnimationFrame(physicsFrame); physicsTime = 0; selectedAngle = null; selectedPower = 50; activePointer = null; dragStart = null; trail = []; impact = null; if (index < 0 || index >= holes.length || index >= unlockedHoleCount()) return; closeLeave(false, false); closeResultState(); state.suspended = false; state.holeIndex = index; stageBrowseIndex = index; state.strokes = 0; state.rolling = false; state.aiming = false; state.keyboardAim = false; state.pointer = null; state.result = null; const hole = holes[index]; state.ball = { x: hole.start[0], y: hole.start[1], vx: 0, vy: 0 }; __wpNotifyMeasurement(); closeResultState(); showScreen("battle"); updateHoleLabels(); updateHelp(); requestAnimationFrame(fitCourse); draw();
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
   function updateHoleLabels() { const hole = holes[state.holeIndex]; const stage = state.holeIndex + 1; const marker = stage === holes.length ? ` · ${t("finale")} · ${t("checkpoint")}` : stage % 5 === 0 ? ` · ${t("checkpoint")}` : ""; document.querySelector("#holeTitle").textContent = `${t("holeNames")[state.holeIndex]}${marker}`; document.querySelector("#parLabel").textContent = `${t("par")} ${hole.par}`; document.querySelector("#strokeLabel").textContent = `${t("strokes")} ${state.strokes}`; document.querySelector("#acornLabel").textContent = `${t("acorns")} ${Math.max(0, hole.par + 1 - state.strokes)}`; }
-  function updateHelp() { const help = document.querySelector("#battleHelp"); help.textContent = state.result === "clear" ? t("clear") : state.rolling ? t("rolling") : state.keyboardAim ? (keyboardAimLabels[state.locale] || keyboardAimLabels.en) : t("aim"); }
-  function pointerPosition(event) { const rect = canvas.getBoundingClientRect(); return { x: (event.clientX - rect.left) * canvas.width / rect.width, y: (event.clientY - rect.top) * canvas.height / rect.height }; }
-  function beginAim(event) { if (state.rolling || state.suspended || leaveOpen || !document.querySelector("#resultCard").hidden) return; const p = pointerPosition(event); if (Math.hypot(p.x - state.ball.x, p.y - state.ball.y) > 48) return; state.aiming = true; state.keyboardAim = false; state.pointer = p; canvas.setPointerCapture?.(event.pointerId); updateHelp(); draw(); }
-  function updateAim(event) { if (!state.aiming) return; state.pointer = pointerPosition(event); draw(); }
-  function launchAim(pointer) { if (!state.aiming) return; state.pointer = pointer; const dx = state.ball.x - state.pointer.x; const dy = state.ball.y - state.pointer.y; const distance = Math.min(210, Math.hypot(dx, dy)); if (distance < 12) { state.aiming = false; state.keyboardAim = false; updateHelp(); draw(); return; } const angle = Math.atan2(dy, dx); const power = Math.min(9.2, distance / 21); state.ball.vx = Math.cos(angle) * power; state.ball.vy = Math.sin(angle) * power; state.aiming = false; state.keyboardAim = false; state.rolling = true; state.strokes += 1; state.totalStrokes += 1; updateHoleLabels(); updateHelp(); window.WonderAnalytics?.track?.("putt_shot", { game_id: "animal-putt-trails", hole: state.holeIndex + 1, stroke: state.strokes, power: Math.round(power * 10) / 10 }); requestAnimationFrame(step); }
-  function releaseAim(event) { if (!state.aiming) return; launchAim(pointerPosition(event)); }
-  function handleKeyboardAim(event) { if (state.rolling || state.suspended || leaveOpen || !document.querySelector("#resultCard").hidden) return; const directionKeys = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]; if (directionKeys.includes(event.key)) { event.preventDefault(); event.stopPropagation(); if (!state.aiming) { state.aiming = true; state.keyboardAim = true; state.pointer = { x: state.ball.x, y: state.ball.y }; } const step = 24; const next = { ...state.pointer }; if (event.key === "ArrowLeft") next.x -= step; if (event.key === "ArrowRight") next.x += step; if (event.key === "ArrowUp") next.y -= step; if (event.key === "ArrowDown") next.y += step; const dx = next.x - state.ball.x; const dy = next.y - state.ball.y; const distance = Math.hypot(dx, dy); if (distance > 210) { next.x = state.ball.x + dx * 210 / distance; next.y = state.ball.y + dy * 210 / distance; } state.pointer = next; updateHelp(); draw(); return; } if ((event.key === "Enter" || event.key === " ") && state.aiming) { event.preventDefault(); event.stopPropagation(); launchAim(state.pointer); return; } if (event.key === "Escape" && state.aiming) { event.preventDefault(); event.stopPropagation(); state.aiming = false; state.keyboardAim = false; state.pointer = null; updateHelp(); draw(); } }
+  function updateHelp() {
+    const help = document.querySelector("#battleHelp");
+    const ready = selectedAngle !== null;
+    const prediction = ready && !state.rolling ? predictShot() : null;
+    help.textContent = state.result === "clear" ? t("clear") : state.rolling ? coach(13) : state.result === "water" ? coach(7) : prediction?.outcome === "water" ? coach(8) : state.keyboardAim ? `← → ${aimCupLabels[state.locale]} · ↑ ↓ ${coach(4)} · Enter ${coach(3)}` : coach(9);
+    document.querySelector("#puttObjective").textContent = coach(0);
+    document.querySelector("#puttLesson").textContent = state.holeIndex === 0 ? coach(2) : coach(1);
+    document.querySelector("#puttPowerLabel").textContent = coach(4);
+    document.querySelector("#puttPowerValue").textContent = `${selectedPower}%`;
+    const power = document.querySelector("#puttPower");
+    power.value = selectedPower;
+    power.disabled = state.rolling || state.suspended;
+    const action = document.querySelector("#aimAction");
+    action.textContent = state.rolling ? t("rolling") : ready ? coach(3) : aimCupLabels[state.locale];
+    action.setAttribute("aria-label", ready ? coach(3) : aimCupLabels[state.locale]);
+    action.disabled = state.rolling || state.suspended;
+  }
+
+  function pointerPosition(event) {
+    const rect = canvas.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) * canvas.width / rect.width - camera.x) / camera.scale;
+    const y = ((event.clientY - rect.top) * canvas.height / rect.height - camera.y) / camera.scale;
+    return camera.rotated ? { x: y, y: COURSE_H - x } : { x, y };
+  }
+  function canAim() { return document.body.dataset.screen === "battle" && !state.rolling && !state.suspended && !leaveOpen && document.querySelector("#resultCard").hidden; }
+  function selectTarget(p) {
+    const dx = p.x - state.ball.x, dy = p.y - state.ball.y;
+    if (Math.hypot(dx, dy) < 16) return;
+    selectedAngle = Math.atan2(dy, dx);
+    state.result = null;
+    updateHelp(); draw();
+  }
+
+  function beginAim(event) {
+    if (!canAim() || activePointer !== null || (event.pointerType === "mouse" && event.button !== 0)) return;
+    canvas.focus({ preventScroll: true });
+    window.WeightPlayAudio?.unlock();
+    const p = pointerPosition(event);
+    activePointer = event.pointerId;
+    dragStart = { ...p, fromBall: Math.hypot(p.x - state.ball.x, p.y - state.ball.y) <= 64 };
+    state.keyboardAim = false;
+    state.aiming = dragStart.fromBall;
+    if (!dragStart.fromBall) selectTarget(p);
+    canvas.setPointerCapture?.(event.pointerId);
+    draw();
+  }
+
+  function updateAim(event) {
+    if (activePointer !== event.pointerId || !canAim() || !dragStart) return;
+    const p = pointerPosition(event);
+    if (!dragStart.fromBall) { selectTarget(p); return; }
+    const dx = dragStart.x - p.x, dy = dragStart.y - p.y;
+    const distance = Math.hypot(dx, dy);
+    state.pointer = p;
+    if (distance >= 12) {
+      selectedAngle = Math.atan2(dy, dx);
+      selectedPower = Math.max(8, Math.min(100, Math.round(distance / 2.1)));
+      state.result = null;
+    }
+    updateHelp(); draw();
+  }
+
+  function launchAim() {
+    if (!canAim()) return;
+    if (selectedAngle === null) {
+      const hole = holes[state.holeIndex];
+      selectTarget({ x: hole.cup[0], y: hole.cup[1] });
+      return;
+    }
+    cancelAnimationFrame(physicsFrame);
+    shotOrigin = { x: state.ball.x, y: state.ball.y };
+    const power = selectedPower / 100 * 16;
+    state.ball.vx = Math.cos(selectedAngle) * power;
+    state.ball.vy = Math.sin(selectedAngle) * power;
+    state.aiming = false; state.keyboardAim = false; state.pointer = null;
+    activePointer = null; dragStart = null; trail = []; state.result = null;
+    state.rolling = true; state.strokes += 1;
+    window.WeightPlayAudio?.play("sport.bounce");
+    updateHoleLabels(); updateHelp();
+    window.WonderAnalytics?.track?.("putt_shot", { game_id: "animal-putt-trails", hole: state.holeIndex + 1, stroke: state.strokes, power: selectedPower });
+    physicsTime = 0;
+    physicsFrame = requestAnimationFrame(step);
+  }
+
+  function releaseAim(event) {
+    if (event.pointerId !== activePointer) return;
+    const pulled = dragStart?.fromBall && state.pointer && Math.hypot(state.pointer.x - dragStart.x, state.pointer.y - dragStart.y) >= 12;
+    activePointer = null; dragStart = null; state.aiming = false;
+    if (pulled) launchAim();
+    else { updateHelp(); draw(); }
+  }
+
+  function handleKeyboardAim(event) {
+    if (!canAim()) return;
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) {
+      event.preventDefault(); event.stopPropagation();
+      const hole = holes[state.holeIndex];
+      if (selectedAngle === null) selectedAngle = Math.atan2(hole.cup[1] - state.ball.y, hole.cup[0] - state.ball.x);
+      if (event.key === "ArrowLeft") selectedAngle -= Math.PI / 36;
+      if (event.key === "ArrowRight") selectedAngle += Math.PI / 36;
+      if (event.key === "ArrowUp") selectedPower = Math.min(100, selectedPower + 2);
+      if (event.key === "ArrowDown") selectedPower = Math.max(8, selectedPower - 2);
+      state.keyboardAim = true; state.result = null;
+      updateHelp(); draw();
+    } else if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault(); event.stopPropagation(); launchAim();
+    } else if (event.key === "Escape" && selectedAngle !== null) {
+      event.preventDefault(); event.stopPropagation();
+      selectedAngle = null; state.aiming = false; state.keyboardAim = false;
+      updateHelp(); draw();
+    }
+  }
+
   function insideRect(x, y, rect, radius = 12) { return x > rect[0] - radius && x < rect[0] + rect[2] + radius && y > rect[1] - radius && y < rect[1] + rect[3] + radius; }
-  function step() { if (!state.rolling || state.suspended) return; const hole = holes[state.holeIndex]; let nx = state.ball.x + state.ball.vx; let ny = state.ball.y + state.ball.vy; if (nx < 34 || nx > canvas.width - 34) { state.ball.vx *= -0.72; nx = Math.max(34, Math.min(canvas.width - 34, nx)); } if (ny < 34 || ny > canvas.height - 34) { state.ball.vy *= -0.72; ny = Math.max(34, Math.min(canvas.height - 34, ny)); } for (const wall of hole.walls) { if (insideRect(nx, ny, wall)) { const horizontal = wall[2] > wall[3]; if (horizontal) state.ball.vy *= -0.72; else state.ball.vx *= -0.72; nx = state.ball.x; ny = state.ball.y; } } state.ball.x = nx; state.ball.y = ny; if (hole.water && insideRect(state.ball.x, state.ball.y, hole.water, 9)) { state.ball.x = hole.start[0]; state.ball.y = hole.start[1]; state.ball.vx = 0; state.ball.vy = 0; state.rolling = false; state.result = "water"; updateHelp(); document.querySelector("#battleHelp").textContent = `${t("water")} — ${t("retry")}`; draw(); return; } const cupDistance = Math.hypot(state.ball.x - hole.cup[0], state.ball.y - hole.cup[1]); if (cupDistance < 23 && Math.hypot(state.ball.vx, state.ball.vy) < 3.5) { state.ball.x = hole.cup[0]; state.ball.y = hole.cup[1]; state.ball.vx = 0; state.ball.vy = 0; state.rolling = false; finishHole(); return; } state.ball.vx *= 0.972; state.ball.vy *= 0.972; if (Math.hypot(state.ball.vx, state.ball.vy) < 0.08) { state.ball.vx = 0; state.ball.vy = 0; state.rolling = false; state.result = "stopped"; updateHelp(); draw(); return; } draw(); requestAnimationFrame(step); }
+  // The predictor and live ball share this exact fixed-time simulation.
+  function simulateBall(ball, hole) {
+    let bounce = false;
+    let nx = ball.x + ball.vx, ny = ball.y + ball.vy;
+    if (nx < 42 || nx > COURSE_W - 42) { ball.vx *= -0.72; nx = Math.max(42, Math.min(COURSE_W - 42, nx)); bounce = true; }
+    if (ny < 42 || ny > COURSE_H - 42) { ball.vy *= -0.72; ny = Math.max(42, Math.min(COURSE_H - 42, ny)); bounce = true; }
+    for (const wall of hole.walls) {
+      if (!insideRect(nx, ny, wall, 14)) continue;
+      // Resolve from the previous side, including short end faces of long walls.
+      if (ball.x <= wall[0] - 14 || ball.x >= wall[0] + wall[2] + 14) { ball.vx *= -0.72; nx = ball.x; }
+      else { ball.vy *= -0.72; ny = ball.y; }
+      bounce = true;
+    }
+    ball.x = nx; ball.y = ny;
+    if (hole.water && insideRect(nx, ny, hole.water, 9)) return { outcome: "water", bounce };
+    const speed = Math.hypot(ball.vx, ball.vy);
+    if (Math.hypot(nx - hole.cup[0], ny - hole.cup[1]) < 25 && speed < 4) return { outcome: "cup", bounce };
+    ball.vx *= 0.972; ball.vy *= 0.972;
+    return { outcome: speed < 0.08 ? "stop" : null, bounce };
+  }
+  function predictShot() {
+    const speed = selectedPower / 100 * 16;
+    const ball = { x: state.ball.x, y: state.ball.y, vx: Math.cos(selectedAngle) * speed, vy: Math.sin(selectedAngle) * speed };
+    const points = [{ x: ball.x, y: ball.y }];
+    let result = {}, banks = 0;
+    for (let i = 0; i < 360; i += 1) {
+      result = simulateBall(ball, holes[state.holeIndex]);
+      if (result.bounce) banks += 1;
+      if (i % 4 === 0 || result.outcome) points.push({ x: ball.x, y: ball.y });
+      if (result.outcome) break;
+    }
+    return { points, outcome: result.outcome, banks, x: ball.x, y: ball.y };
+  }
+  function step(now) {
+    if (!state.rolling || state.suspended) { physicsTime = 0; return; }
+    const count = physicsTime ? Math.min(6, Math.floor((now - physicsTime) / (1000 / 60))) : 1;
+    if (!physicsTime) physicsTime = now - 1000 / 60;
+    const hole = holes[state.holeIndex];
+    for (let i = 0; i < count && state.rolling; i += 1) {
+      physicsTime += 1000 / 60;
+      const result = simulateBall(state.ball, hole);
+      trail.push({ x: state.ball.x, y: state.ball.y });
+      if (trail.length > 20) trail.shift();
+      if (result.bounce) { impact = { x: state.ball.x, y: state.ball.y, at: performance.now() }; window.WeightPlayAudio?.play("sport.bounce", { cooldown: 90 }); }
+      if (result.outcome === "water") {
+        impact = { x: state.ball.x, y: state.ball.y, at: performance.now(), water: true };
+        state.ball = { ...shotOrigin, vx: 0, vy: 0 }; state.rolling = false; state.result = "water";
+        window.WeightPlayAudio?.play("water.splash");
+      } else if (result.outcome === "cup") {
+        state.ball = { x: hole.cup[0], y: hole.cup[1], vx: 0, vy: 0 }; state.rolling = false;
+        selectedAngle = null; window.WeightPlayAudio?.play("sport.goal"); finishHole();
+      } else if (result.outcome === "stop") {
+        state.ball.vx = 0; state.ball.vy = 0; state.rolling = false; state.result = "stopped";
+      }
+    }
+    if (!state.rolling) { selectedAngle = null; trail = []; physicsTime = 0; updateHelp(); }
+    draw();
+    if (state.rolling || impact) physicsFrame = requestAnimationFrame(state.rolling ? step : animateImpact);
+  }
+  function animateImpact() { draw(); if (impact && document.body.dataset.screen === "battle" && !state.suspended) physicsFrame = requestAnimationFrame(animateImpact); }
+  function fitCourse() {
+    const box = canvas.getBoundingClientRect();
+    if (!box.width || !box.height) return;
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(box.width * ratio); canvas.height = Math.round(box.height * ratio);
+    camera.rotated = box.height > box.width * 1.1;
+    const w = camera.rotated ? COURSE_H : COURSE_W, h = camera.rotated ? COURSE_W : COURSE_H;
+    camera.scale = Math.min(canvas.width / w, canvas.height / h);
+    camera.x = (canvas.width - w * camera.scale) / 2;
+    camera.y = (canvas.height - h * camera.scale) / 2;
+    draw();
+  }
+
   function finishHole() { const hole = holes[state.holeIndex]; const score = state.strokes; const acorns = Math.max(0, hole.par + 1 - score); state.sessionHoles.add(state.holeIndex); const previousSessionScore = state.sessionScores[state.holeIndex]; const sessionScore = Number.isFinite(previousSessionScore) ? Math.min(previousSessionScore, score) : score; state.sessionScores[state.holeIndex] = sessionScore; state.sessionAcorns[state.holeIndex] = Math.max(0, hole.par + 1 - sessionScore); const totals = summarizeSession(state.sessionScores, state.sessionAcorns); state.totalStrokes = totals.totalStrokes; state.totalAcorns = totals.totalAcorns; state.progress[`hole${state.holeIndex + 1}`] = state.progress[`hole${state.holeIndex + 1}`] ? Math.min(state.progress[`hole${state.holeIndex + 1}`], score) : score; saveProgress(); const resultCopy = score < hole.par ? `${score - hole.par} ${t("under")}` : score > hole.par ? `${score - hole.par} ${t("over")}` : t("even"); const isCampaignComplete = state.sessionHoles.size === holes.length; document.querySelector("#resultTitle").textContent = isCampaignComplete ? t("complete") : t("clear"); document.querySelector("#resultCopy").textContent = isCampaignComplete ? format(t("completeCopy"), { acorns: state.totalAcorns }) : `${t("strokes")} ${score} · ${resultCopy}`; state.result = "clear"; updateHelp(); const nextButton = document.querySelector("#nextButton"); const terminal = state.holeIndex === holes.length - 1; nextButton.hidden = false; nextButton.disabled = terminal; nextButton.setAttribute("aria-disabled", String(terminal)); __wpNotifyMeasurement(); openResultState(); window.WonderAnalytics?.track?.("putt_hole_complete", { game_id: "animal-putt-trails", hole: state.holeIndex + 1, strokes: score, acorns }); if (isCampaignComplete) { state.progress.bestTotal = state.progress.bestTotal ? Math.min(state.progress.bestTotal, state.totalStrokes) : state.totalStrokes; saveProgress(); window.WonderAnalytics?.track?.("putt_campaign_complete", { game_id: "animal-putt-trails", strokes: state.totalStrokes, acorns: state.totalAcorns }); } draw();
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
-  function draw() { const hole = holes[state.holeIndex]; ctx.clearRect(0, 0, canvas.width, canvas.height); if (courseBackdrop.complete && courseBackdrop.naturalWidth) { ctx.drawImage(courseBackdrop, 0, 0, canvas.width, canvas.height); } else { ctx.fillStyle = hole.tint; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = "rgba(255,255,255,.16)"; for (let i = 0; i < 8; i += 1) { ctx.beginPath(); ctx.arc(90 + i * 125, 90 + (i % 2) * 70, 28, 0, Math.PI * 2); ctx.fill(); } ctx.fillStyle = "#8bbf90"; ctx.fillRect(24, 24, canvas.width - 48, canvas.height - 48); } ctx.strokeStyle = "rgba(233,244,210,.8)"; ctx.lineWidth = 6; ctx.strokeRect(26, 26, canvas.width - 52, canvas.height - 52); if (hole.water) { ctx.fillStyle = "rgba(99,185,203,.78)"; ctx.beginPath(); ctx.roundRect(hole.water[0], hole.water[1], hole.water[2], hole.water[3], 24); ctx.fill(); ctx.fillStyle = "rgba(255,255,255,.52)"; ctx.fillRect(hole.water[0] + 18, hole.water[1] + 22, hole.water[2] - 36, 5); } for (const wall of hole.walls) { ctx.fillStyle = "#54785d"; ctx.beginPath(); ctx.roundRect(...wall, 10); ctx.fill(); ctx.fillStyle = "rgba(255,255,255,.28)"; ctx.fillRect(wall[0] + 8, wall[1] + 5, Math.max(8, wall[2] - 16), 4); } ctx.strokeStyle = "#f6d47a"; ctx.lineWidth = 7; ctx.beginPath(); ctx.moveTo(hole.cup[0], hole.cup[1]); ctx.lineTo(hole.cup[0], hole.cup[1] - 72); ctx.stroke(); ctx.fillStyle = "#e8755d"; ctx.beginPath(); ctx.moveTo(hole.cup[0], hole.cup[1] - 70); ctx.lineTo(hole.cup[0] + 52, hole.cup[1] - 52); ctx.lineTo(hole.cup[0], hole.cup[1] - 34); ctx.closePath(); ctx.fill(); ctx.fillStyle = "#2b5445"; ctx.beginPath(); ctx.arc(hole.cup[0], hole.cup[1], 18, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#172c2a"; ctx.beginPath(); ctx.arc(state.ball.x, state.ball.y + 8, 15, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#fffdf3"; ctx.beginPath(); ctx.arc(state.ball.x, state.ball.y, 14, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#c8d7d0"; ctx.beginPath(); ctx.arc(state.ball.x - 4, state.ball.y - 5, 4, 0, Math.PI * 2); ctx.fill(); if (state.aiming && state.pointer) { const dx = state.ball.x - state.pointer.x; const dy = state.ball.y - state.pointer.y; const distance = Math.min(210, Math.hypot(dx, dy)); const angle = Math.atan2(dy, dx); ctx.strokeStyle = "#fff1ae"; ctx.lineWidth = 7; ctx.setLineDash([14, 10]); ctx.beginPath(); ctx.moveTo(state.ball.x, state.ball.y); ctx.lineTo(state.ball.x + Math.cos(angle) * distance, state.ball.y + Math.sin(angle) * distance); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = "#fff1ae"; ctx.font = "700 22px system-ui"; ctx.fillText(`${Math.round(distance / 21)}`, state.ball.x + 18, state.ball.y - 18); } }
+  function draw() {
+    const hole = holes[state.holeIndex];
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.fillStyle = "#164d3d"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.save(); ctx.translate(camera.x, camera.y); ctx.scale(camera.scale, camera.scale);
+    if (camera.rotated) { ctx.translate(COURSE_H, 0); ctx.rotate(Math.PI / 2); }
+    // A literal playable green: scenery can no longer masquerade as a water hazard.
+    ctx.fillStyle = "#245b41"; ctx.fillRect(0, 0, COURSE_W, COURSE_H);
+    ctx.fillStyle = hole.tint; ctx.fillRect(28, 28, COURSE_W - 56, COURSE_H - 56);
+    for (let x = 30; x < COURSE_W - 30; x += 80) { ctx.fillStyle = "rgba(30,100,55,.045)"; ctx.fillRect(x, 30, 40, COURSE_H - 60); }
+    ctx.strokeStyle = "#f4e8ab"; ctx.lineWidth = 8; ctx.strokeRect(28, 28, COURSE_W - 56, COURSE_H - 56);
+    if (hole.water) {
+      const [x,y,w,h] = hole.water;
+      ctx.fillStyle = "#2a769a"; ctx.fillRect(x - 5, y - 5, w + 10, h + 10);
+      ctx.fillStyle = "#5ac5d7"; ctx.fillRect(x, y, w, h);
+      ctx.strokeStyle = "#b2edf0"; ctx.lineWidth = 3;
+      for (let row = y + 16; row < y + h; row += 23) { ctx.beginPath(); ctx.moveTo(x + 12, row); ctx.lineTo(x + w - 12, row); ctx.stroke(); }
+    }
+    for (const [x,y,w,h] of hole.walls) {
+      ctx.fillStyle = "#294b39"; ctx.fillRect(x + 3, y + 7, w, h);
+      ctx.fillStyle = "#6b6651"; ctx.fillRect(x, y, w, h);
+      ctx.fillStyle = "#b7b184"; ctx.fillRect(x, y, w, Math.min(h / 2, 8));
+    }
+    ctx.strokeStyle = "#fcda78"; ctx.lineWidth = 7;
+    ctx.beginPath(); ctx.arc(...hole.cup, 29, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = "#15352d"; ctx.beginPath(); ctx.arc(...hole.cup, 20, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = "#fff5cd"; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(...hole.cup); ctx.lineTo(hole.cup[0], hole.cup[1] - 70); ctx.stroke();
+    ctx.fillStyle = "#ef8559"; ctx.fillRect(hole.cup[0] + 2, hole.cup[1] - 70, 43, 28);
+    if (selectedAngle !== null && !state.rolling && state.result !== "clear") {
+      const prediction = predictShot();
+      const color = prediction.outcome === "water" ? "#ad3436" : prediction.outcome === "cup" ? "#155c41" : "#255e49";
+      ctx.strokeStyle = color; ctx.lineWidth = 5; ctx.setLineDash([9, 12]);
+      ctx.beginPath(); prediction.points.forEach((p,i) => i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y)); ctx.stroke(); ctx.setLineDash([]);
+      ctx.beginPath(); ctx.arc(prediction.x, prediction.y, 20, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(prediction.x - 8, prediction.y); ctx.lineTo(prediction.x + 8, prediction.y); ctx.moveTo(prediction.x, prediction.y - 8); ctx.lineTo(prediction.x, prediction.y + 8); ctx.stroke();
+      drawLabel(prediction.outcome === "water" ? t("water") : prediction.outcome === "cup" ? coach(6) : coach(10), prediction.x, prediction.y + 48, color);
+    }
+    if (!reducedMotion.matches) {
+      trail.forEach((p,i) => { ctx.fillStyle = `rgba(255,255,235,${i / trail.length * .3})`; ctx.beginPath(); ctx.arc(p.x,p.y,5+i/4,0,Math.PI*2); ctx.fill(); });
+    }
+    ctx.fillStyle = "rgba(19,48,32,.28)"; ctx.beginPath(); ctx.ellipse(state.ball.x+4,state.ball.y+9,19,12,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = "#fffdf0"; ctx.strokeStyle = "#284e3d"; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(state.ball.x,state.ball.y,16,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = "#c8d7c1"; ctx.fillRect(state.ball.x-7,state.ball.y-7,5,5);
+    if (!state.rolling && selectedAngle === null && state.result !== "clear") {
+      ctx.strokeStyle = "#fffdf0"; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(state.ball.x,state.ball.y,27,0,Math.PI*2); ctx.stroke();
+      drawLabel(coach(5),state.ball.x,state.ball.y+53,"#214e3c");
+    }
+    drawLabel(coach(6), hole.cup[0], hole.cup[1]-92, "#775727");
+    if (impact) {
+      const age = performance.now() - impact.at;
+      if (age > 360) impact = null;
+      else { ctx.strokeStyle = impact.water ? "#d9fcff" : "#fff5ba"; ctx.globalAlpha = 1-age/360; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(impact.x,impact.y,reducedMotion.matches ? 28 : 18+age/12,0,Math.PI*2); ctx.stroke(); ctx.globalAlpha = 1; }
+    }
+    ctx.restore();
+  }
+  function drawLabel(text, x, y, color) {
+    // Keep typography upright even when the portrait course rotates.
+    ctx.save(); ctx.font = "700 24px system-ui";
+    const w = ctx.measureText(text).width + 24;
+    if (camera.rotated) {
+      x = Math.max(24, Math.min(COURSE_W - 24, x));
+      y = Math.max(w/2 + 8, Math.min(COURSE_H - w/2 - 8, y));
+    } else {
+      x = Math.max(w/2 + 8, Math.min(COURSE_W - w/2 - 8, x));
+      y = Math.max(24, Math.min(COURSE_H - 24, y));
+    }
+    ctx.translate(x,y); if (camera.rotated) ctx.rotate(-Math.PI/2);
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillStyle = color; ctx.beginPath(); ctx.roundRect(-w/2,-20,w,40,8); ctx.fill();
+    ctx.fillStyle = "#fff9dd"; ctx.fillText(text,0,0); ctx.restore();
+  }
+
 
   document.querySelector("#startButton").addEventListener("click", () => { state.totalStrokes = 0; state.totalAcorns = 0; state.sessionHoles.clear(); state.sessionScores = {}; state.sessionAcorns = {}; enterStage(); window.WonderAnalytics?.track?.("putt_start", { game_id: "animal-putt-trails" }); });
   document.querySelector("#stageBack").addEventListener("click", () => { renderMainProgress(); showScreen("main"); });
@@ -441,9 +773,13 @@
   document.querySelector("#mapButton").addEventListener("click", enterStage);
   document.querySelector("#puttLeaveContinue").addEventListener("click", () => closeLeave(true, true));
   document.querySelector("#puttLeaveStages").addEventListener("click", () => { state.rolling = false; state.aiming = false; state.keyboardAim = false; state.pointer = null; closeLeave(false, false); enterStage(); });
-  document.querySelector("#aimAction").addEventListener("click", () => { if (leaveOpen || state.suspended) return; canvas.focus?.({ preventScroll: true }); updateHelp(); });
+  document.querySelector("#aimAction").addEventListener("click", launchAim);
+  document.querySelector("#puttPower").addEventListener("input", (event) => { if (!canAim()) return; selectedPower = Number(event.target.value); state.result = null; updateHelp(); draw(); });
+  const courseResize = new ResizeObserver(fitCourse); courseResize.observe(canvas);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) { cancelAnimationFrame(physicsFrame); physicsTime = 0; activePointer = null; dragStart = null; state.aiming = false; } else if (state.rolling && !state.suspended) { physicsTime = 0; physicsFrame = requestAnimationFrame(step); } });
+  window.addEventListener("pagehide", () => { cancelAnimationFrame(physicsFrame); courseResize.disconnect(); });
   localeSelect.addEventListener("change", () => setLocale(localeSelect.value));
-  canvas.addEventListener("pointerdown", beginAim); canvas.addEventListener("pointermove", updateAim); canvas.addEventListener("pointerup", releaseAim); canvas.addEventListener("pointercancel", () => { if (leaveOpen) return; state.aiming = false; state.keyboardAim = false; state.pointer = null; updateHelp(); draw(); }); canvas.addEventListener("keydown", handleKeyboardAim);
+  canvas.addEventListener("pointerdown", beginAim); canvas.addEventListener("pointermove", updateAim); canvas.addEventListener("pointerup", releaseAim); canvas.addEventListener("pointercancel", () => { if (leaveOpen) return; activePointer = null; dragStart = null; state.aiming = false; state.keyboardAim = false; state.pointer = null; updateHelp(); draw(); }); canvas.addEventListener("keydown", handleKeyboardAim);
   window.addEventListener("keydown", handleInterface7Keydown);
   setLocale(state.locale); renderMainProgress(); draw(); mountSharedScreens();
   const hideLoading = () => document.querySelector("#loadingPanel")?.remove();

@@ -27,12 +27,12 @@
     <meta name="twitter:description" content="Рассчитывайте свои отскоки, выбирайте пенопластовые инструменты и выбивайте соперника из равновесия на игровой арене, основанной на физике." />
     <meta property="og:description" content="Рассчитывайте свои отскоки, выбирайте пенопластовые инструменты и выбивайте соперника из равновесия на игровой арене, основанной на физике." />
     <title>Прыгучая схватка | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260927-bounce-brawl-v21-return-and-stage-guard" />
-    <style>.battle{background-image:linear-gradient(180deg,rgba(26,18,42,.22),rgba(26,18,42,.70)),url("assets/animal-bounce-brawl-background.png");background-size:cover;background-position:center}</style>
-    <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
-    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
-    <script defer src="tutorial.js?v=20260927-bounce-brawl-v20-practice"></script>
-    <script defer src="game.js?v=20260927-bounce-brawl-v21-return-and-stage-guard"></script>
+    <link rel="stylesheet" href="style.css?v=20261018-owner-3d-rebuild" />
+
+
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
+
+
       <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Прыгучая схватка","url":"https://weightplay.com/ru/games/animal-bounce-brawl/","image":"https://weightplay.com/assets/interface7-redrawn/animal-bounce-brawl.webp","description":"Рассчитывайте свои отскоки, выбирайте пенопластовые инструменты и выбивайте соперника из равновесия на игровой арене, основанной на физике.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ru","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Тайминг прыжков","Выбор пенных инструментов","Отбрасывание на арене"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9},"alternateName":"Bounce Brawl"}</script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -44,80 +44,64 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-bounce-brawl.webp" />
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
+<link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play-spacing1"><link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0"></head>
   <body data-wp-five-game="animal-bounce-brawl" data-wp-game-id="animal-bounce-brawl" data-runtime-localize="off" data-screen="main">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Прыгучая схватка</strong><span>Preparing the foam arena…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
-    <main id="app" data-game="animal-bounce-brawl" data-audience="general">
-      <section id="main-screen" class="screen main-screen active" data-screen="main">
-        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">Прыгучая схватка</h1>
-        <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
-        </header><img class="five-game-cover main-poster" src="assets/animal-bounce-brawl-cover.png" alt="" aria-hidden="true" />
-        <p class="lede" data-five-copy="lede">A toy arena about timing, ricochets, and sending a foam challenger off balance.</p>
-        <p id="main-progress" class="progress main-progress" data-wp-main-progress role="status" aria-live="polite">Best wins: 0</p>
-        <button id="start-game" class="primary" data-five-copy="start" data-wp-main-start>Start Game</button>
+    <main id="app" data-wp-frame-root data-wp-play-ui="1" data-game="animal-bounce-brawl" data-audience="general">
+      <section id="main-screen" class="main-screen">
+        <header><a data-wp-return="main" class="main-return" href="/" aria-label="Back to WeightPlay">←</a><h1 data-wp-frame-title>Прыгучая схватка</h1><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></header>
+        <section id="main-content"><img class="main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-bounce-brawl.webp" alt=""><div data-wp-frame-copy><p id="main-summary" data-wp-frame-summary>Уклоняйтесь от красного рывка. Подойдите и сбейте энергию соперника до нуля.</p><p id="main-progress" data-wp-frame-progress role="status"></p><button id="start-game" data-wp-frame-action="primary">Играть</button></div></section>
       </section>
-      <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" hidden>
-        <header class="stage-header"><button id="stage-back" class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2 id="stage-title">Foam Arenas</h2></header><p id="stage-status" class="stage-status">Choose one of six foam arenas.</p>
-        <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-recommendation="first"></div><nav class="stage-tabs" aria-label="Stage sections"><button id="stage-tab" type="button" aria-current="page">Stages</button></nav>
-        <button id="practice-start" type="button" data-wp-guided-practice>Guided Practice</button>
+      <section id="stage-screen" class="stage-screen" data-wp-logical-stage-canvas hidden>
+        <header><button id="stage-back" data-wp-return="stage" type="button" aria-label="Back to Main">←</button><h2 data-wp-frame-title hidden></h2></header>
+        <section id="stage-content"><div id="stage-list"></div></section>
       </section>
-      <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
-        <header class="battle-header"><button id="battle-back" class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Arenas">←</button><div class="battle-readout"><strong id="arena-label">Arena 1 / 6</strong><span id="health-label">You 100 · Rival 100</span></div><button id="battle-help" class="utility-button battle-utility" type="button" data-wp-battle-utility aria-label="Battle help" title="Battle help" aria-expanded="false" aria-controls="battle-help-popover">?</button></header>
-        <p id="battle-help-popover" class="battle-help-popover" role="note" hidden></p>
-        <p id="battle-status" class="battle-status"><span id="battle-status-copy">Move with arrows. Press SPACE to bounce-strike.</span><span id="selected-tool-label" class="selected-tool-label"></span><span id="approach-cue" class="approach-cue" role="status" aria-live="polite"></span><span id="tutorialPanel" class="tutorial-panel" role="status" aria-live="polite" hidden></span></p>
-        <div class="arena-frame"><canvas id="arena" width="960" height="540" aria-label="Bounce Brawl play area"></canvas></div>
-        <div class="touch-controls"><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="ArrowUp" class="hop">HOP</button><button data-key="Space" class="jump" data-wp-primary-action>BOUNCE</button></div>
-        <div class="tool-controls" aria-label="Foam tools"><button data-tool="0" class="selected">BUMP</button><button data-tool="1">SPRING</button><button data-tool="2">PAD</button></div>
-        <div class="touch-hint">Hold ◀/▶ to move closer, then BOUNCE.</div>
-        <div id="battle-leave-dialog" class="battle-leave-dialog" role="dialog" aria-modal="true" aria-labelledby="battle-leave-title" aria-describedby="battle-leave-description" hidden>
-          <div class="battle-leave-card">
-            <h2 id="battle-leave-title">Leave this arena?</h2>
-            <p id="battle-leave-description">Leaving will discard this round. Current state:</p>
-            <p id="battle-leave-progress" class="battle-leave-progress"></p>
-            <div class="battle-leave-actions"><button id="battle-leave-continue" class="primary" type="button">Continue battle</button><button id="battle-leave-confirm" type="button">Leave arena</button></div>
-          </div>
-        </div>
-        <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
-          <h2 id="result-title">Arena clear</h2><p id="result-copy"></p>
-          <div class="result-actions"><button id="to-stages">Arenas</button><button id="next">Next Arena</button><button id="retry" class="primary">Retry Arena</button></div>
+      <section id="battle-screen" class="battle-screen" data-wp-logical-battle-canvas hidden>
+        <header><button id="battle-back" data-wp-return="battle" type="button" aria-label="Back to Arenas">←</button><h2 data-wp-frame-title hidden></h2></header>
+        <section id="battle-content"><div id="battle-info"><strong id="arena-label"></strong><span id="round-time" aria-live="off"></span></div>
+          <div class="energy-hud"><div class="energy-cell player-energy"><span id="player-name"></span><strong id="player-hp">100</strong><div class="energy-track"><i id="player-bar"></i></div></div><span class="versus" aria-hidden="true">VS</span><div class="energy-cell rival-energy"><span id="rival-name"></span><strong id="rival-hp">100</strong><div class="energy-track"><i id="rival-bar"></i></div></div></div>
+          <span id="health-label" class="sr-only" aria-live="off"></span>
+          <p id="battle-status-copy" class="battle-objective"></p>
+          <div id="arena-frame" class="arena-frame"><canvas id="arena" tabindex="0" aria-label="3D foam arena"></canvas><div id="floating-labels" aria-hidden="true"><span id="hero-tag" class="actor-tag hero-tag"></span><span id="rival-tag" class="actor-tag rival-tag"></span></div><div id="hit-numbers" aria-hidden="true"></div><div class="coach" id="tutorialPanel" role="status" aria-live="polite"></div><div class="arena-bottom"><span id="approach-cue" role="status" aria-live="polite"></span><span id="combo-cue"></span></div><div id="render-error" role="alert" hidden><p id="render-error-copy"></p><button id="render-retry"></button><button id="render-back"></button></div></div>
+          <div class="combat-deck"><div class="tool-controls" role="group" id="tool-controls"></div><div class="touch-controls"><div class="direction-controls" role="group"><button data-key="ArrowLeft" type="button">◀</button><button data-key="ArrowUp" type="button">▲</button><button data-key="ArrowDown" type="button">▼</button><button data-key="ArrowRight" type="button">▶</button></div><button id="dodge-button" data-key="ShiftLeft" type="button"><span id="dodge-copy"></span><kbd>⇧</kbd><i class="cooldown" id="dodge-cooldown"></i></button><button id="strike-button" data-key="Space" data-wp-primary-action type="button"><span id="strike-copy"></span><kbd>SPACE</kbd><i class="cooldown" id="strike-cooldown"></i></button></div></div>
         </section>
+        <div id="battle-leave-dialog" class="battle-overlay" role="dialog" aria-modal="true" aria-labelledby="battle-leave-title" hidden><section class="battle-card"><span class="pause-mark" aria-hidden="true">Ⅱ</span><h2 id="battle-leave-title"></h2><p id="battle-leave-description"></p><p id="battle-leave-progress"></p><div class="leave-actions"><button id="battle-leave-continue" data-wp-frame-action="primary"></button><button id="battle-leave-confirm"></button></div></section></div>
+        <section id="result-screen" class="battle-overlay" data-wp-battle-substate="result" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="result-title" hidden><div class="battle-card result-card"><span id="result-emblem" aria-hidden="true">★</span><h2 id="result-title"></h2><p id="result-copy"></p><div id="result-stats"></div><p id="result-tip"></p><div class="result-actions"><button id="to-stages"></button><button id="next" data-wp-frame-action="primary"></button><button id="retry"></button></div></div></section>
       </section>
-      <div class="battle-ad-reserve" aria-hidden="true"></div>
     </main>
     <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
     <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
     <script src="/src/runtime-locales/ru.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-    <script src="../../src/five-new-games-locale.js?v=20260927-bounce-locale-observer-v18"></script>
+
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
-    <script src="analytics-ownership.js?v=20260831-privacy-safe-v16"></script>
+
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <section class="game-page-info game-page-info-static" aria-label="Информация об игре Прыгучая схватка">
+  <section class="game-page-info game-page-info-static" data-wp-preserve-static-guide aria-label="Информация об игре Прыгучая схватка">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Прыгучая схватка</h2><p data-five-copy="guideSummary">Рассчитывайте свои отскоки, выбирайте пенопластовые инструменты и выбивайте соперника из равновесия на игровой арене, основанной на физике.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Прыгучая схватка</h2><p data-five-copy="guideSummary">Уклоняйтесь от красного рывка. Подойдите и сбейте энергию соперника до нуля.</p></div>
       <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Тайминг прыжков</span><span>Выбор пенных инструментов</span><span>Отбрасывание на арене</span></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Арена мягкой физики с отбрасыванием</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Action · Arcade · Animal</strong></div><div class="game-info-fact"><span>Сложность</span><strong>От простого к сложному</strong></div><div class="game-info-fact"><span>Примерное время</span><strong>2–5 минут на арену</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Арена мягкой физики с отбрасыванием</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Action · Arcade · Animal</strong></div><div class="game-info-fact"><span>Сложность</span><strong>От простого к сложному</strong></div><div class="game-info-fact"><span>Примерное время</span><strong>≤ 75 s</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Мир и цель</h3><p>Дружелюбный соперник из пенопласта встречается с соперником на шести игрушечных аренах. На каждой арене меняется пространство, платформы или ритм соперника, сохраняя при этом цель читабельной: создавайте контакт на своих условиях.</p></div>
-      <div class="game-info-section"><h3>Игровые системы</h3><p>Клавиши со стрелками или видимые элементы управления перемещают вашего персонажа. Пробел выполняет отскок-удар, а кнопки инструментов меняют активный инструмент пены.</p>
-<p>Удары вызывают видимый отбрасывание и кратковременный эффект удара. Победить, уменьшив энергию соперника; проиграть, исчерпав собственную энергию или позволив истечь таймеру арены.</p></div>
-      <div class="game-info-section"><h3>Как играть</h3><ol><li>Выбирайте арену и наблюдайте за приближением соперника.</li><li>Двигайтесь, чтобы освободить место, затем нажмите пробел или BOUNCE, когда время будет подходящим.</li><li>Меняйте пенопластовые инструменты, когда текущее расстояние или планировка платформы требуют другого подхода.</li><li>После получения результата повторите попытку прохождения арены или перейдите к следующей.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Советы</h3><ul><li>Не держите контакт навсегда; Выйдите, прочтите отскок и нанесите удар во время следующего открытия.</li><li>Используйте платформы и края арены, чтобы контролировать, где соперник может восстановиться.</li><li>Сохраните смену инструмента для устранения проблемы с расстоянием, а не переключайтесь после каждого отскока.</li></ul></div>
-      <div class="game-info-section"><h3>Прогресс и сложность</h3><p>Шесть арен переходят от разминки к весенним дорожкам, подвижным площадкам, крутым поворотам, более быстрому сопернику и финальному ритму, проверяющему продуманное расстояние.</p></div>
-      <div class="game-info-section"><h3>Заметка разработчика</h3><p>В Bounce Brawl используется оригинальная графика с мягким телом, читаемая отдача, три различных пенопластовых инструмента и компактная петля арены, поэтому каждый удар имеет видимые последствия без резкого представления.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Информация об игроке и сохранении</h3><p>В этой обычной браузерной игре нет учетной записи, покупок, чата, таблицы лидеров или рекламного потока. Победы на арене и лучший прогресс остаются в этом браузере.</p></div>
-      <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Как попасть по сопернику?</dt><dd>Подойдите достаточно близко для контакта и нажмите пробел или видимую кнопку «ОТСКОК» в нужный момент.</dd></div><div><dt>Что делают инструменты?</dt><dd>Они меняют реакцию активной пены и дают другой вариант для тайминга или расстояния.</dd></div><div><dt>Как проиграть?</dt><dd>Энергия может закончиться, либо время арены истечёт до победы над соперником.</dd></div><div><dt>Сколько здесь арен?</dt><dd>Здесь шесть игрушечных арен; в каждой меняются расстояния, платформы или ритм соперника.</dd></div><div><dt>Сохраняется ли прогресс?</dt><dd>Да, только в этом браузере.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Мир и цель</h3><p>Уклоняйтесь от красного рывка. Подойдите и сбейте энергию соперника до нуля. Следите за красным и контратакуйте.</p></div>
+      <div class="game-info-section"><h3>Игровые системы</h3><p>Стрелки/WASD: движение · Пробел: толчок · Shift: уклон · 1–3: инструменты</p><ul><li>УДАР · Быстрый сбалансированный толчок.</li><li>ПРУЖИНА · Сильнее отбрасывает к стенам.</li><li>ПОДУШКА · Более сильный, но медленный удар.</li></ul></div>
+      <div class="game-info-section"><h3>Как играть</h3><ol><li>Стрелки/WASD или ведите пальцем по арене.</li><li>Подойдите к оранжевому сопернику и нажмите ТОЛЧОК/Пробел.</li><li>Красный цвет — предупреждение. УКЛОН/Shift поможет избежать рывка.</li><li>★ Пройти · +★ энергия ≥65 · +★ за 35 с.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Советы</h3><ul><li>Следите за красным и контратакуйте.</li><li>Обходите движущиеся препятствия.</li><li>Два рывка, затем длинное окно для атаки.</li></ul></div>
+      <div class="game-info-section"><h3>Прогресс и сложность</h3><p>30 · Следите за красным и контратакуйте. Бирюзовые плитки усиливают следующий толчок. Обходите движущиеся препятствия. Используйте укрытия и отскоки от стен. Два рывка, затем длинное окно для атаки. Броня раскрывается после рывка. Ядро заряжено Идёт волна! Уклонитесь сквозь неё или выйдите из радиуса. Магнит тянет! Уклонитесь наружу перед рывком. Линия предсказывает движение. Смените направление после фиксации. Зарядите ядро на бирюзовой плитке и ударьте синий щит.</p></div>
+      <div class="game-info-section"><h3>Заметка разработчика</h3><p>Уклоняйтесь от красного рывка. Подойдите и сбейте энергию соперника до нуля. Стрелки/WASD: движение · Пробел: толчок · Shift: уклон · 1–3: инструменты</p></div>
+      <div class="game-info-section game-info-parent"><h3>Информация об игроке и сохранении</h3><p>Прогресс сохранён в этом браузере. ★ Пройти · +★ энергия ≥65 · +★ за 35 с.</p></div>
+      <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Как попасть по сопернику?</dt><dd>2 · Подойдите к оранжевому сопернику и нажмите ТОЛЧОК/Пробел.</dd></div><div><dt>Что делают инструменты?</dt><dd>Быстрый сбалансированный толчок. Сильнее отбрасывает к стенам. Более сильный, но медленный удар.</dd></div><div><dt>Как проиграть?</dt><dd>Вы проиграете при энергии 0 или если не победите за 75 секунд.</dd></div><div><dt>Сколько здесь арен?</dt><dd>Прогресс сохранён в этом браузере. ★ Пройти · +★ энергия ≥65 · +★ за 35 с.</dd></div><div><dt>Сохраняется ли прогресс?</dt><dd>30 · 30 · Следите за красным и контратакуйте. Бирюзовые плитки усиливают следующий толчок. Обходите движущиеся препятствия. Используйте укрытия и отскоки от стен. Два рывка, затем длинное окно для атаки. Броня раскрывается после рывка. Ядро заряжено Идёт волна! Уклонитесь сквозь неё или выйдите из радиуса. Магнит тянет! Уклонитесь наружу перед рывком. Линия предсказывает движение. Смените направление после фиксации. Зарядите ядро на бирюзовой плитке и ударьте синий щит.</dd></div></dl></div>
 
     </div>
   </section>
 <script src="/src/game-page-info.js?v=20261002-bounce-brawl-text140-v1"></script>
   <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-    <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
 
 
-  </body>
+
+  <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script><script src="/src/game-play-ui.js?v=20261017-shared-play-spacing1"></script><script src="/src/virtual-joystick.js?v=1.0.0"></script><script type="module" src="/games/animal-bounce-brawl/game.js?v=20261018-owner-3d-rebuild"></script></body>
 </html>

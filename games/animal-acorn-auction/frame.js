@@ -57,7 +57,23 @@
       .add($("roundTitle"))
       .add($("progressPill"));
     frame.battleTopUI.add(battleGroup);
-    frame.commonDownButton.clear();
+
+    const stageNavigation = frame.commonDownButton.element;
+    stageNavigation.dataset.wpFrameStageNav = "";
+    stageNavigation.setAttribute("role", "tablist");
+    stageNavigation.setAttribute("aria-label", bridge.getStageTabLabel());
+    const stagesTab = document.createElement("button");
+    stagesTab.type = "button";
+    stagesTab.id = "stageNavigationTab";
+    stagesTab.dataset.wpFrameAction = "tab";
+    stagesTab.dataset.wpFrameStageSlot = "stages";
+    stagesTab.dataset.i18n = "rounds";
+    stagesTab.setAttribute("role", "tab");
+    stagesTab.setAttribute("aria-selected", "true");
+    stagesTab.setAttribute("aria-current", "page");
+    stagesTab.setAttribute("aria-controls", "stageWorkspace");
+    stagesTab.textContent = bridge.getStageTabLabel();
+    frame.commonDownButton.clear().add(stagesTab);
 
     const poster = new URL("assets/animal-acorn-auction-cover.webp", location.href).href;
     const background = new URL("assets/animal-acorn-auction-background.png", location.href).href;

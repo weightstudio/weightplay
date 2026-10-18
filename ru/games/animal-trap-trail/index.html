@@ -32,7 +32,7 @@
     <style>.battle{background-image:linear-gradient(180deg,rgba(7,11,22,.32),rgba(7,11,22,.78)),url("assets/animal-trap-trail-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
-    <script defer src="game.js?v=20260927-trap-suggestion-repair-wip1"></script><meta property="og:description" content="Читайте сигналы ловушек, используйте необязательный Импульс как подсказку и доберитесь до фонаря на 30 продуманных этапах. Ошибка сбрасывает только текущую комнату." />
+    <script defer src="/src/stage-virtualization-standard.js"></script><script defer src="/src/stage-selector-standard.js"></script><script defer src="game.js?v=20261018-clarity-v18"></script><meta property="og:description" content="Читайте сигналы ловушек, используйте необязательный Импульс как подсказку и доберитесь до фонаря на 30 продуманных этапах. Ошибка сбрасывает только текущую комнату." />
     <meta name="twitter:description" content="Читайте сигналы ловушек, используйте необязательный Импульс как подсказку и доберитесь до фонаря на 30 продуманных этапах. Ошибка сбрасывает только текущую комнату." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -47,6 +47,7 @@
 <script src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<link rel="stylesheet" href="/games/animal-trap-trail/clarity.css?v=20261018-clarity-v18">
 </head>
   <body data-wp-game-owned-guide data-wp-five-game="animal-trap-trail" data-wp-game-id="animal-trap-trail" data-runtime-localize="off" data-screen="main">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-wp-game-title data-runtime-localize="off">Лунная тропа ловушек</strong><span>Preparing the moonlit route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
@@ -59,13 +60,13 @@
         <p id="main-progress" class="progress main-progress" data-wp-main-progress>Best room: 0 · Deaths: 0</p>
         <button id="start-game" class="primary" data-wp-main-start data-five-copy="start">Start Game</button>
       </section>
-      <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="assets/animal-trap-trail-background.png" style="--wp-stage-art:url('assets/animal-trap-trail-background.png')" hidden>
+      <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="assets/animal-trap-trail-background.png" style="--wp-stage-art:url('assets/animal-trap-trail-background.png')" hidden>
         <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Trap Chapters</h2></header>
-        <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-recommendation="first"></div><nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav>
+        <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-recommendation="frontier"></div><nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav>
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
         <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Stages">←</button><strong id="room-label">Chapter 1 · Room 1</strong><span id="death-label">Deaths 0</span><button id="battle-pulse" class="utility-button" type="button" data-wp-battle-utility data-wp-primary-action aria-label="Pulse">PULSE</button></header>
-        <p id="battle-status" class="battle-status">Arrow keys move · Space jumps.</p>
+        <p id="battle-status" class="battle-status first-steps">Arrow keys move · Space jumps.</p>
         <canvas id="arena" width="960" height="540" aria-label="Moonlit Trap Trail play area"></canvas>
         <div class="touch-controls" aria-label="Touch controls"><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="Space" class="jump">JUMP</button><button data-key="Pulse" class="pulse">PULSE</button></div>
         <div class="touch-hint">Find the lantern. Traps reset only the current stage.</div>

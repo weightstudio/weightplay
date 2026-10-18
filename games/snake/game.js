@@ -1,4 +1,5 @@
-import { SnakeBoard3D } from "./board-3d.js?v=20261015-snake-v33-board-feedback";
+import { SnakeBoard3D } from "./board-3d.js?v=20261018-snake-v34";
+import { updateExperience } from "./experience.js?v=20261018-snake-v34";
 
 (() => {
   "use strict";
@@ -85,6 +86,7 @@ import { SnakeBoard3D } from "./board-3d.js?v=20261015-snake-v33-board-feedback"
   let visual = null;
   window.WPSnakeVisual = Object.freeze({
     render(state, locale) {
+      updateExperience(state, locale);
       if (document.body.dataset.screen !== "battle") { visual?.setActive(); return; }
       const host = document.querySelector("#battleScreen .board-wrap");
       if (!host) return;
@@ -92,6 +94,7 @@ import { SnakeBoard3D } from "./board-3d.js?v=20261015-snake-v33-board-feedback"
       visual.update(state, locale);
     },
     diagnostics: () => visual?.diagnostics() || { initialized: false },
+    cellPoint: (cell) => visual?.cellPoint(cell),
   });
   window.WPPopularArcade?.mount("snake");
 })();

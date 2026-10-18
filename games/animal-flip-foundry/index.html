@@ -20,26 +20,28 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-flip-foundry/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-flip-foundry/" />
     <meta charset="utf-8" />
+    <meta name="weightplay-game-version" content="v17" />
+    <meta name="weightplay-interface-version" content="6" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-flip-foundry" /><meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="Launch a crystal canister with one swipe, then tune your force to land across 24 workshop platforms in six short chapters." />
     <title>Flip Foundry | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260903-animal-flip-foundry-stage-hit-target-v14" />
+    <link rel="stylesheet" href="style.css?v=20261018-animal-flip-foundry-clarity-v17" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(27,38,58,.20),rgba(27,38,58,.68)),url("assets/animal-flip-foundry-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
-    <script defer src="game.js?v=20260903-animal-flip-foundry-stage-hit-target-v14"></script>
+    <script defer src="game.js?v=20261018-animal-flip-foundry-clarity-v17"></script>
     <meta property="og:description" content="Launch a crystal canister with one swipe, then tune your force to land across 24 workshop platforms in six short chapters." />
     <meta name="twitter:description" content="Launch a crystal canister with one swipe, then tune your force to land across 24 workshop platforms in six short chapters." />
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-  <body data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-runtime-localize="off" data-wp-game-owned-guide data-screen="main">
+  <body data-wp-game-version="v17" data-wp-interface-version="6" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-runtime-localize="off" data-wp-game-owned-guide data-screen="main">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Flip Foundry</strong><span>Preparing the foundry…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-flip-foundry" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
         <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">Flip Foundry</h1><label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header><img class="five-game-cover main-cover" src="assets/animal-flip-foundry-cover.png" alt="" aria-hidden="true" />
-        <p class="lede main-summary" data-five-copy="lede">Launch a crystal canister with one swipe, then tune your force to land across 24 workshop platforms in six short chapters.</p>
+        <p class="lede main-summary">Drag UP anywhere. Follow the dotted arc, then release on the glowing platform.</p>
         <p id="main-progress" class="progress main-progress" data-wp-main-progress>Best streak: 0</p><button id="start-game" class="primary" data-wp-main-start data-five-copy="start">Start Game</button>
       </section>
       <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('/games/animal-flip-foundry/assets/animal-flip-foundry-cover.png')" hidden><header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Foundry Chapters</h2></header><div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav></section>
@@ -65,19 +67,19 @@
       <div class="game-info-sections">
         <div class="game-info-section game-info-story">
           <h3>World and Mission</h3>
-          <p>Each chapter contains four workshop platforms. A successful landing advances the canister and extends the streak.</p><p>The challenge is matching each released swipe to the platform's allowed force range. A miss returns you to that platform so you can adjust and retry.</p>
+          <p>Each chapter contains four workshop platforms. A successful landing advances the canister and extends the streak.</p><p>Four landings complete the chapter.</p>
         </div>
         <div class="game-info-section game-info-systems">
           <h3>How the Systems Work</h3>
-          <ul><li>Press the canister and drag upward in one continuous gesture. Swipe length changes launch force and flight; the visible rotation makes the flight readable, but landing success is checked against the current platform's allowed force range when you release.</li><li>A successful landing advances to the next platform and extends the current streak. A miss offers Retry for the same platform or Stages to choose a chapter. Each chapter has four platforms, and clearing all six makes a 24-platform route.</li><li>Only the best streak is saved in this browser. The current streak lasts only for the active run; no account is needed.</li></ul>
+          <ul><li>Drag UP anywhere. Follow the dotted arc, then release on the glowing platform.</li><li>A successful landing advances to the next platform and extends the current streak. A miss offers Retry for the same platform or Stages to choose a chapter. Each chapter has four platforms, and clearing all six makes a 24-platform route.</li><li>Only the best streak is saved in this browser. The current streak lasts only for the active run; no account is needed.</li></ul>
         </div>
         <div class="game-info-section">
           <h3>How to Play</h3>
-          <ol><li>Choose any chapter from the foundry map and wait for the ready cue.</li><li>Press on the canister and drag upward in one smooth gesture; swipe length changes the launch force and flight.</li><li>Release to launch. Watch the rotation for feedback; success depends on whether the released swipe's force fits the current platform's allowed range.</li><li>On a miss, use Retry to repeat that platform and adjust your swipe force. Clear all four platforms to finish the chapter; choose the next chapter or replay from the result.</li></ol>
+          <ol><li>Choose any chapter from the foundry map and wait for the ready cue.</li><li>Drag up to aim</li><li>Drag UP anywhere. Follow the dotted arc, then release on the glowing platform.</li><li>On a miss, use Retry to repeat that platform and adjust your swipe force. Clear all four platforms to finish the chapter; choose the next chapter or replay from the result.</li></ol>
         </div>
         <div class="game-info-section game-info-strategy">
           <h3>Strategy Tips</h3>
-          <ul><li>Start with a controlled upward swipe and use the landing result to learn the current platform's force range.</li><li>After a miss, change the swipe length a little and compare the next result; distance does not set the success rule.</li><li>Keep the gesture mostly vertical, then tune force from the platform's feedback.</li></ul>
+          <ul><li>Drag UP anywhere. Follow the dotted arc, then release on the glowing platform.</li><li>Drag farther to reach the platform.</li><li>Ease back: your arc passes the platform.</li></ul>
         </div>
         <div class="game-info-section game-info-campaign">
           <h3>Campaign and Difficulty Growth</h3>
@@ -93,7 +95,7 @@
         </div>
         <div class="game-info-section">
           <h3>Frequently Asked Questions</h3>
-          <dl><div><dt>How do I launch the canister?</dt><dd>Press the canister and drag upward in one continuous gesture; swipe length changes launch force.</dd></div><div><dt>What determines a successful landing?</dt><dd>When you release, the swipe's force must fall within the current platform's allowed range. Rotation is visual feedback, not a separate angle check.</dd></div><div><dt>Can I use a mouse?</dt><dd>Yes. Mouse dragging and touch swiping use the same launch gesture.</dd></div><div><dt>Is progress saved?</dt><dd>Only your best landing streak is saved in this browser. The current streak lasts only for the active run.</dd></div><div><dt>How many surfaces are in a chapter?</dt><dd>Each of the six chapters has four workshop platforms; a successful landing advances to the next and a miss can be retried.</dd></div><div><dt>What should I adjust after a miss?</dt><dd>Change the swipe length slightly to tune the released force, then compare the result on that same platform.</dd></div><div><dt>Can I retry the same platform?</dt><dd>Yes. Choose Retry after a miss to replay that platform, or choose Stages to return to the chapter map.</dd></div><div><dt>What does the streak count?</dt><dd>It counts consecutive successful upright landings in the current run. Only the best streak is saved in this browser.</dd></div></dl>
+          <dl><div><dt>How do I launch the canister?</dt><dd>Drag UP anywhere. Follow the dotted arc, then release on the glowing platform.</dd></div><div><dt>What determines a successful landing?</dt><dd>Drag UP anywhere. Follow the dotted arc, then release on the glowing platform.</dd></div><div><dt>Can I use a mouse?</dt><dd>Yes. Mouse dragging and touch swiping use the same launch gesture.</dd></div><div><dt>Is progress saved?</dt><dd>Only your best landing streak is saved in this browser. The current streak lasts only for the active run.</dd></div><div><dt>How many surfaces are in a chapter?</dt><dd>Each of the six chapters has four workshop platforms; a successful landing advances to the next and a miss can be retried.</dd></div><div><dt>What should I adjust after a miss?</dt><dd>Drag farther to reach the platform. Ease back: your arc passes the platform.</dd></div><div><dt>Can I retry the same platform?</dt><dd>Yes. Choose Retry after a miss to replay that platform, or choose Stages to return to the chapter map.</dd></div><div><dt>What does the streak count?</dt><dd>It counts consecutive successful upright landings in the current run. Only the best streak is saved in this browser.</dd></div></dl>
         </div>
       </div>
     <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>More Related Games</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-bounce-brawl" href="/en/games/animal-bounce-brawl/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" data-final-src="/assets/weightplay-logo.png" alt="Bounce Brawl" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Bounce Brawl</strong><span>Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena.</span></span></a></div></div></section>

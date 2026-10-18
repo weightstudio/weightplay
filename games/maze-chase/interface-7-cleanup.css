@@ -9,7 +9,7 @@ body[data-game-id="maze-chase"] #soundBtn {
   display: none !important;
 }
 
-body[data-game-id="maze-chase"] .battle-actions {
+body[data-game-id="maze-chase"].is-game-playing #battleScreen .battle-actions {
   flex: 0 0 auto;
   display: flex;
   justify-content: flex-end;
@@ -48,4 +48,288 @@ body[data-game-id="maze-chase"] [data-wp-interface-covered="true"] {
   body[data-game-id="maze-chase"] #resultScreen[data-wp-battle-substate="result"] .result-actions {
     grid-template-columns: 1fr;
   }
+}
+
+/* Owner rebuild: one quiet instrument panel, a fully opaque board, and a
+   stable thumb deck. Geometry uses the shared logical envelope and scale. */
+body[data-game-id="maze-chase"] {
+  --maze-gold: #ffe2a1;
+  --maze-ice: #8ce9ed;
+}
+body[data-game-id="maze-chase"].is-game-playing #battleScreen {
+  background: #080f22;
+}
+body[data-game-id="maze-chase"].is-game-playing .battle-panel {
+  width: 100%;
+  max-width: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 48px 68px minmax(0, 1fr) 32px 138px 44px;
+  gap: 6px;
+  padding: 0 16px 12px;
+  border: 0;
+  background: radial-gradient(ellipse at 50% 30%, #172b46 0, #0b172d 60%, #090f21 100%);
+  box-shadow: none;
+}
+body[data-game-id="maze-chase"] .battle-topline {
+  grid-row: 1;
+  min-height: 48px;
+  padding: 0 112px 0 52px !important;
+}
+body[data-game-id="maze-chase"] .round-label {
+  color: var(--maze-gold);
+  letter-spacing: .04em;
+  font-size: 14px;
+}
+body[data-game-id="maze-chase"] .hud {
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: .85fr 1.15fr .85fr 1.4fr;
+  gap: 8px;
+  padding: 0;
+  align-items: stretch;
+}
+body[data-game-id="maze-chase"] .hud-item {
+  min-width: 0;
+  gap: 1px;
+  align-content: center;
+  padding: 8px;
+  border: 1px solid #294057;
+  border-radius: 12px;
+  background: #102138;
+}
+body[data-game-id="maze-chase"] .hud-item:has(#bestValue),
+body[data-game-id="maze-chase"] .hud-item:has(#levelValue) { display: none; }
+body[data-game-id="maze-chase"] #powerValue { font-size: 13px; overflow-wrap: anywhere; color: var(--maze-ice); }
+body[data-game-id="maze-chase"] .hud-label {
+  color: #b2c7d8;
+  font-size: 11px;
+  letter-spacing: .02em;
+  line-height: 1.25;
+}
+body[data-game-id="maze-chase"] .hud-value {
+  font-size: 22px;
+  line-height: 1.15;
+  color: #f4f8ff;
+}
+body[data-game-id="maze-chase"] #livesValue { color: #ffb7bb; }
+body[data-game-id="maze-chase"] #progressValue { color: var(--maze-gold); }
+body[data-game-id="maze-chase"] .maze-progress-meter {
+  height: 4px;
+  margin-top: 4px;
+  background: #30445b;
+  border-radius: 4px;
+  overflow: hidden;
+}
+body[data-game-id="maze-chase"] .maze-progress-meter > span {
+  display: block;
+  height: 100%;
+  background: var(--maze-gold);
+  transform-origin: left;
+  transition: transform 160ms ease-out;
+}
+body[data-game-id="maze-chase"].is-game-playing #battleScreen .battle-actions {
+  grid-area: 1 / 1 / 2 / -1 !important;
+  position: absolute;
+  right: 10px;
+  left: auto;
+  top: 0;
+  height: 48px;
+  min-height: 48px;
+  gap: 6px;
+  padding: 0;
+}
+body[data-game-id="maze-chase"] .battle-actions #restartBtn {
+  min-width: 0;
+  width: 48px;
+  height: 44px;
+  font-size: 0;
+  padding: 0;
+  border-color: #365168;
+}
+body[data-game-id="maze-chase"] #restartBtn::after { content: '↻'; font-size: 26px; }
+body[data-game-id="maze-chase"] .maze-pause {
+  width: 48px;
+  height: 44px;
+  padding: 0;
+  font-size: 0;
+  border-color: #365168;
+}
+body[data-game-id="maze-chase"] .maze-pause::after { content: 'Ⅱ'; font-size: 22px; }
+body[data-game-id="maze-chase"] .canvas-wrap.maze {
+  grid-row: 3;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+  background: none !important;
+  border-radius: 0;
+  overflow: hidden;
+}
+body[data-game-id="maze-chase"] .canvas-wrap #gameCanvas {
+  opacity: 1;
+  border: 1px solid #467397;
+  border-radius: 12px;
+  box-shadow: 0 12px 36px #0005;
+  touch-action: none;
+}
+body[data-game-id="maze-chase"] #gameMessage {
+  grid-row: 4;
+  align-self: center;
+  min-height: 0;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.3;
+}
+body[data-game-id="maze-chase"] #touchControls {
+  grid-row: 5;
+  display: grid;
+  grid-template-columns: repeat(3, 72px);
+  grid-template-rows: 56px 56px 18px;
+  align-content: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0;
+  direction: ltr;
+  touch-action: none;
+}
+body[data-game-id="maze-chase"] #touchControls .control-button {
+  width: 72px;
+  min-height: 56px;
+  height: 56px;
+  padding: 0;
+  border: 1px solid #45647e;
+  border-bottom-width: 4px;
+  border-radius: 14px;
+  color: #d3ffff;
+  background: linear-gradient(#213c53, #142b40);
+  font-size: 22px;
+  transition: background 100ms, border-color 100ms, box-shadow 100ms;
+}
+body[data-game-id="maze-chase"] #touchControls .control-button:nth-child(1) { grid-area: 1 / 2; }
+body[data-game-id="maze-chase"] #touchControls .control-button:nth-child(2) { grid-area: 2 / 1; }
+body[data-game-id="maze-chase"] #touchControls .control-button:nth-child(3) { grid-area: 2 / 2; }
+body[data-game-id="maze-chase"] #touchControls .control-button:nth-child(4) { grid-area: 2 / 3; }
+body[data-game-id="maze-chase"] #touchControls .control-button.is-selected {
+  background: #375c5e;
+  color: #fff1b9;
+  border-color: #dac780;
+  box-shadow: inset 0 0 0 1px #dac78055;
+}
+body[data-game-id="maze-chase"] .maze-turn-cue {
+  grid-area: 3 / 1 / 4 / 4;
+  text-align: center;
+  color: var(--maze-gold);
+  font-size: 12px;
+  line-height: 18px;
+}
+body[data-game-id="maze-chase"] #controlHint {
+  grid-row: 6;
+  display: block;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 0;
+  color: #b2c7d8;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+body[data-game-id="maze-chase"] .maze-restart-dialog {
+  width: min(440px, calc(100% - 32px));
+  margin: auto;
+  padding: 24px;
+  border: 1px solid #547389;
+  border-radius: 20px;
+  background: #102138;
+  color: #f4f8ff;
+  box-shadow: 0 24px 90px #0009;
+}
+body[data-game-id="maze-chase"] .maze-restart-dialog::backdrop { background: #030917cc; }
+body[data-game-id="maze-chase"] .maze-restart-dialog h2 { font-size: 22px; }
+body[data-game-id="maze-chase"] .maze-restart-dialog p { margin: 12px 0 22px; line-height: 1.6; color: #b2c7d8; }
+body[data-game-id="maze-chase"] .maze-restart-dialog > div { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+body[data-game-id="maze-chase"] .maze-restart-dialog button { min-height: 48px; }
+body[data-game-id="maze-chase"] #backConfirm {
+  padding: 24px;
+  border: 1px solid #547389;
+  border-radius: 20px;
+  background: #102138;
+  color: #e9f4ff;
+  box-shadow: 0 24px 90px #0009;
+}
+body[data-game-id="maze-chase"] #backConfirm p { line-height: 1.6; }
+body[data-game-id="maze-chase"] #backConfirm .control-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+body[data-game-id="maze-chase"] #backConfirm button { min-height: 48px; width: 100%; }
+body[data-game-id="maze-chase"] .maze-restart-dialog[open] { animation: maze-panel-in 160ms ease-out; }
+body[data-game-id="maze-chase"].is-game-playing #battleScreen.has-result #resultScreen {
+  padding: 64px 20px 24px;
+  background: radial-gradient(ellipse at 50% 20%, #213955, #0b1529 75%);
+}
+body[data-game-id="maze-chase"].is-game-playing #battleScreen.has-result #resultScreen .result-panel {
+  position: relative !important;
+  inset: auto !important;
+  width: min(100%, 560px) !important;
+  height: auto !important;
+  max-height: 100% !important;
+  margin: auto !important;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'title' 'copy' 'stats' 'actions';
+  gap: 16px;
+  padding: 24px;
+  border-radius: 22px;
+  background: #102138;
+  animation: maze-panel-in 180ms ease-out;
+}
+body[data-game-id="maze-chase"] #resultScreen #resultTitle { grid-area: title; margin: 0; font-size: 30px; line-height: 1.15; }
+body[data-game-id="maze-chase"] #resultScreen #resultCopy { grid-area: copy; width: 100%; max-width: 100%; min-width: 0; margin: 0; font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
+body[data-game-id="maze-chase"] #resultScreen #resultStats { grid-area: stats; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0; }
+body[data-game-id="maze-chase"] #resultScreen .stat { min-width: 0; min-height: 64px; padding: 10px 12px; }
+body[data-game-id="maze-chase"] #resultScreen .stat span { font-size: 12px; }
+body[data-game-id="maze-chase"] #resultScreen .stat strong { font-size: 24px; margin-top: 4px; }
+body[data-game-id="maze-chase"] #resultScreen .result-actions { grid-area: actions; display: grid; gap: 10px; margin: 0; transform: none !important; }
+body[data-game-id="maze-chase"] #resultScreen .result-actions > button {
+  width: 100% !important;
+  height: 52px;
+  min-height: 52px;
+  max-width: none !important;
+  transform: none !important;
+}
+body[data-game-id="maze-chase"] #battleScreen.has-result .battle-actions { visibility: hidden; pointer-events: none; }
+@keyframes maze-panel-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Short screens use the same board and actions, anchored beside each other. */
+@media (min-aspect-ratio: 3 / 2) {
+  body[data-game-id="maze-chase"].is-game-playing .battle-panel {
+    grid-template-columns: minmax(0, 1fr) 244px;
+    grid-template-rows: 48px 80px minmax(0, 1fr) 32px;
+    gap: 6px 16px;
+    padding: 0 16px 10px;
+  }
+  body[data-game-id="maze-chase"] .battle-topline { grid-column: 1 / -1; }
+  body[data-game-id="maze-chase"] .canvas-wrap.maze { grid-area: 2 / 1 / 5 / 2; }
+  body[data-game-id="maze-chase"] .hud { grid-area: 2 / 2; grid-template-columns: 1fr 1fr; gap: 5px; }
+  body[data-game-id="maze-chase"] .hud-item { padding: 6px 8px; grid-template-columns: 1fr auto; align-items: center; }
+  body[data-game-id="maze-chase"] .maze-progress-meter { grid-column: 1 / -1; margin-top: 0; }
+  body[data-game-id="maze-chase"] #touchControls { grid-area: 3 / 2; }
+  body[data-game-id="maze-chase"] #gameMessage { grid-area: 4 / 2; font-size: 12px; }
+  body[data-game-id="maze-chase"] #controlHint { display: none; }
+  body[data-game-id="maze-chase"].is-game-playing #battleScreen.has-result #resultScreen { padding: 56px 20px 12px; }
+  body[data-game-id="maze-chase"].is-game-playing #battleScreen.has-result #resultScreen .result-panel {
+    width: min(100%, 760px) !important;
+    grid-template-columns: minmax(0, 1fr) 200px !important;
+    grid-template-areas: 'title actions' 'copy actions' 'stats actions';
+    gap: 8px 20px;
+    padding: 16px 20px;
+  }
+  body[data-game-id="maze-chase"] #resultScreen .result-actions { grid-template-columns: 1fr; }
+  body[data-game-id="maze-chase"] #resultScreen #resultTitle { font-size: 28px !important; }
+  body[data-game-id="maze-chase"] #resultScreen #resultCopy { font-size: 14px !important; line-height: 1.4 !important; width: 100% !important; }
+  body[data-game-id="maze-chase"] #resultScreen #resultStats { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; width: 100%; }
+  body[data-game-id="maze-chase"] #resultScreen .stat span { font-size: 11px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-game-id="maze-chase"] .maze-progress-meter > span { transition: none; }
+  body[data-game-id="maze-chase"] .maze-restart-dialog[open],
+  body[data-game-id="maze-chase"] #resultScreen .result-panel { animation: none !important; }
 }

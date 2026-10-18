@@ -43,6 +43,8 @@
       dictionary.guideTwo = dictionary.ready;
       dictionary.guideThree = dictionary.moveHint;
       dictionary.tips = dictionary.moveHint;
+      dictionary.guideSummary = dictionary.mission + ' ' + dictionary.moveHint;
+      dictionary.mapIntro = dictionary.ready + ' ' + dictionary.moveHint;
     }
   }
   const localeList = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
@@ -161,8 +163,11 @@
     const guide = $('gameGuide');
     if (guide) {
       const sections = guide.querySelectorAll('.game-info-section');
+      if (sections[3]?.querySelector('p')) sections[3].querySelector('p').textContent = copy('mission') + ' ' + copy('moveHint');
       if (sections[6]) { const text = sections[6].querySelector('p'); if (text) text.textContent = copy('mismatch') + ' ' + copy('moveHint'); }
-      for (const term of guide.querySelectorAll('dt')) {
+      const questions = guide.querySelectorAll('dt');
+      if (questions[2]?.nextElementSibling) questions[2].nextElementSibling.textContent = copy('mismatch');
+      for (const term of questions) {
         if (/wrong check/i.test(term.textContent)) term.nextElementSibling.textContent = copy('mismatch');
       }
     }
@@ -194,7 +199,7 @@
   const setScreen = (screen) => {
     if ($('leaveDialog')?.open) $('leaveDialog').close();
     $('battleScreen').getAnimations({subtree:true}).forEach(animation => animation.cancel());
-    state.screen = screen; document.body.dataset.screen = screen; ["main", "stage", "battle"].forEach((name) => { const element = $(name + "Screen"); element.hidden = name !== screen; element.classList.toggle("active", name === screen); }); const guide = $("gameGuide"); if (guide) guide.hidden = screen !== "main"; const stageReserve = document.querySelector(".stage-ad-reserve"); if (stageReserve) stageReserve.hidden = screen !== "stage"; const battleReserve = document.querySelector(".battle-ad-reserve"); if (battleReserve) battleReserve.hidden = screen !== "battle"; if (screen === "main") applyText(); if (screen === "stage") renderStages(); if (screen === "battle") renderBattle(); window.scrollTo(0, 0);
+    state.screen = screen; document.body.dataset.screen = screen; ["main", "stage", "battle"].forEach((name) => { const element = $(name + "Screen"); element.hidden = name !== screen; element.inert = name !== screen; element.classList.toggle("active", name === screen); }); const guide = $("gameGuide"); if (guide) guide.hidden = screen !== "main"; const stageReserve = document.querySelector(".stage-ad-reserve"); if (stageReserve) stageReserve.hidden = screen !== "stage"; const battleReserve = document.querySelector(".battle-ad-reserve"); if (battleReserve) battleReserve.hidden = screen !== "battle"; if (screen === "main") applyText(); if (screen === "stage") renderStages(); if (screen === "battle") renderBattle(); window.scrollTo(0, 0);
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
       if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
@@ -364,7 +369,7 @@
     const links = linksFor(state.round);
     $('targetBars').innerHTML = `<span class="link-caption">${copy(links.length ? 'linked' : 'independent')}</span><span class="link-diagram" dir="ltr">${links.map(([a,b]) => `${a+1} → ${b+1}`).join(' · ') || '1 · 2 · 3'}</span>`;
     // Preserve the three button identities and keyboard focus through every move.
-    if (!$('shutterBoard').children.length) $('shutterBoard').innerHTML = state.values.map((_,index) => `<button type="button" class="shutter-card" data-shutter="${index}"><span class="window-target"></span><span class="shutter-window"><span class="window-sky"></span><span class="window-slats"><i></i><i></i><i></i><i></i></span><span class="window-light"></span><span class="window-number">${index+1}</span></span><strong></strong><span class="state-dots" aria-hidden="true"><i></i><i></i><i></i></span><small></small><span class="match-state"></span></button>`).join('');
+    if (!$('shutterBoard').children.length) $('shutterBoard').innerHTML = state.values.map((_,index) => `<button type="button" class="shutter-card" data-shutter="${index}"><span class="window-target" dir="auto"></span><span class="shutter-window"><span class="window-sky"></span><span class="window-slats"><i></i><i></i><i></i><i></i></span><span class="window-light"></span><span class="window-number">${index+1}</span></span><strong></strong><span class="state-dots" aria-hidden="true"><i></i><i></i><i></i></span><small></small><span class="match-state"></span></button>`).join('');
     state.values.forEach((value,index) => {
       const button = $('shutterBoard').children[index], matched = value === round.target[index];
       button.className = `shutter-card level-${value}${matched ? ' matched' : ''}${state.hinted === index ? ' suggested' : ''}`;
@@ -380,7 +385,7 @@
     $('battlePanel').querySelector('.move-hint').textContent = copy(links.length ? 'moveHint' : 'ready');
     $('checkBtn').classList.toggle('all-matched', count === 3);
     if (count === 3) $('battleStatus').textContent = copy('allMatched');
-    $('resultPanel').hidden = true; $('battlePanel').hidden = false;
+    $('resultPanel').hidden = true; $('resultPanel').inert = true; $('battlePanel').hidden = false; $('battlePanel').inert = false;
     __wpNotifyMeasurement();
   };
   const resetRound = () => {
@@ -395,9 +400,9 @@
     if (!Number.isInteger(state.bestRooms[state.round]) || total < state.bestRooms[state.round]) state.bestRooms[state.round] = total;
     safeSet('weightplay-animal-dawn-shutters-room-bests',JSON.stringify(state.bestRooms));
     if (!state.completed.includes(state.round)) { state.completed.push(state.round); saveCompleted(); }
-    $('battlePanel').hidden = true; $('resultPanel').hidden = false;
+    $('battlePanel').hidden = true; $('battlePanel').inert = true; $('resultPanel').hidden = false; $('resultPanel').inert = false;
     $('resultHeading').textContent = copy(final ? 'finishTitle' : 'resultTitle');
-    $('resultText').textContent = copy('roomCleared',{number:state.round+1});
+    $('resultText').textContent = copy(final ? 'finishText' : 'roomCleared',{number:state.round+1});
     const stars = starsFor(total,state.round);
     $('resultStats').innerHTML = `<div class="result-stars" aria-label="${stars}/3">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div><strong>${copy('moves',{count:total})}</strong><span>${copy('par',{count:solve([0,0,0],state.round).length})}</span>`;
     $('resultPrimaryBtn').textContent = copy('next'); $('resultPrimaryBtn').disabled = final;
@@ -406,7 +411,7 @@
     $('resultHomeBtn').textContent = copy('replay');
     $('resultHomeBtn').onclick = () => startRound(state.round);
     $('mainProgress').textContent = copy('progress',{count:state.completed.length});
-    $('resultPrimaryBtn').focus({preventScroll:true});
+    $(final ? 'resultMapBtn' : 'resultPrimaryBtn').focus({preventScroll:true});
     __wpMeasurement.ended = true; __wpMeasurement.outcome = 'complete'; __wpMeasurement.screen = null; __wpNotifyMeasurement();
   };
   const checkRound = () => {

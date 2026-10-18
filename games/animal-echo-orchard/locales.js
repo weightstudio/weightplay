@@ -42,3 +42,24 @@
     }
   };
 }());
+
+/* Action-first instructions, shared keys across all thirteen supported locales. */
+(() => {
+  const keys = ['readyTitle','readyHelp','watchAction','watchCount','repeatHelp','retryHelp','keyboardHelp','pauseHelp'];
+  const text = {
+    en: ['Watch. Remember. Repeat.', 'First watch the fruits light up. Then tap the same fruits in the same order.', 'Show the sequence', 'Watching {count} / {total} · remember the order', 'Your turn. Tap the fruits in the order you just saw.', 'No rush. Tap Replay glow to watch the sequence again.', 'Tap a fruit · keyboard 1–4 · R to replay', 'Welcome back. Watch the sequence again when you are ready.'],
+    'zh-Hant': ['先看順序，再照著點', '先看哪些果實依序發光；輪到你時，照同樣的順序點果實。', '準備好了，看示範', '正在示範 {count} / {total} · 記住順序', '輪到你！按照剛才發光的順序，點下方果實。', '沒關係，按「重播光序」再看一次，準備好再試。', '點果實作答 · 鍵盤 1–4 · R 重播', '歡迎回來，準備好後重新看一次示範。'],
+    'zh-Hans': ['先看顺序，再照着点', '先看哪些果实依次发光；轮到你时，照同样的顺序点果实。', '准备好了，看示范', '正在示范 {count} / {total} · 记住顺序', '轮到你！按照刚才发光的顺序，点下方果实。', '没关系，按「重播光序」再看一次，准备好再试。', '点果实作答 · 键盘 1–4 · R 重播', '欢迎回来，准备好后重新看一次示范。'],
+    ja: ['見て、覚えて、同じ順番に', '果実が光る順番を見てから、同じ順番でタップしましょう。', '光る順番を見る', '{count} / {total} · 順番を覚えよう', 'あなたの番。同じ順番で果実をタップ。', '焦らずに。もう一度光を見てから挑戦しましょう。', '果実をタップ · キー 1–4 · R で再生', 'おかえりなさい。準備ができたら順番をもう一度見ましょう。'],
+    ko: ['보고, 기억하고, 따라 누르세요', '열매가 빛나는 순서를 본 다음 같은 순서로 누르세요.', '빛 순서 보기', '{count} / {total} · 순서를 기억하세요', '당신 차례! 방금 본 순서대로 열매를 누르세요.', '천천히 해도 돼요. 다시 보고 도전하세요.', '열매 누르기 · 키 1–4 · R 다시 보기', '돌아왔군요. 준비되면 순서를 다시 보세요.'],
+    es: ['Mira, recuerda y repite', 'Observa el orden de las frutas iluminadas y después tócalas en ese mismo orden.', 'Mostrar la secuencia', 'Observando {count} / {total} · recuerda el orden', 'Tu turno. Toca las frutas en el orden que viste.', 'Sin prisa. Repite el brillo para mirar otra vez.', 'Toca una fruta · teclas 1–4 · R para repetir', 'De vuelta. Mira la secuencia de nuevo cuando quieras.'],
+    'pt-BR': ['Observe, memorize e repita', 'Veja a ordem dos frutos iluminados. Depois toque neles na mesma ordem.', 'Mostrar a sequência', 'Observando {count} / {total} · memorize a ordem', 'Sua vez. Toque nos frutos na ordem que viu.', 'Sem pressa. Repita o brilho para observar novamente.', 'Toque num fruto · teclas 1–4 · R para repetir', 'Bem-vindo de volta. Veja a sequência quando estiver pronto.'],
+    fr: ['Regarde, retiens et répète', 'Regarde les fruits s’allumer, puis touche-les dans le même ordre.', 'Voir la séquence', 'Observation {count} / {total} · retiens l’ordre', 'À toi. Touche les fruits dans l’ordre observé.', 'Prends ton temps. Rejoue la lumière pour revoir la séquence.', 'Touche un fruit · touches 1–4 · R pour revoir', 'Bon retour. Revois la séquence quand tu es prêt.'],
+    de: ['Ansehen, merken, wiederholen', 'Merke dir die leuchtenden Früchte und tippe sie dann in derselben Reihenfolge an.', 'Reihenfolge zeigen', 'Ansehen {count} / {total} · Reihenfolge merken', 'Du bist dran. Tippe die Früchte in derselben Reihenfolge.', 'Keine Eile. Spiele das Leuchten noch einmal ab.', 'Frucht antippen · Tasten 1–4 · R wiederholt', 'Willkommen zurück. Sieh dir die Reihenfolge erneut an.'],
+    it: ['Guarda, ricorda e ripeti', 'Osserva l’ordine dei frutti illuminati, poi toccali nello stesso ordine.', 'Mostra la sequenza', 'Osserva {count} / {total} · ricorda l’ordine', 'Tocca a te. Tocca i frutti nell’ordine appena visto.', 'Senza fretta. Rivedi la luce e riprova.', 'Tocca un frutto · tasti 1–4 · R per rivedere', 'Bentornato. Rivedi la sequenza quando sei pronto.'],
+    ru: ['Смотри, запоминай, повторяй', 'Запомни порядок светящихся фруктов, затем нажми их в том же порядке.', 'Показать последовательность', 'Показ {count} / {total} · запомни порядок', 'Твой ход. Нажми фрукты в том же порядке.', 'Не спеши. Посмотри последовательность ещё раз.', 'Нажми фрукт · клавиши 1–4 · R повтор', 'С возвращением. Посмотри последовательность, когда будешь готов.'],
+    hi: ['देखें, याद रखें, दोहराएँ', 'फलों के चमकने का क्रम देखें, फिर उसी क्रम में उन्हें दबाएँ।', 'क्रम दिखाएँ', '{count} / {total} दिख रहे हैं · क्रम याद रखें', 'आपकी बारी। फलों को उसी क्रम में दबाएँ।', 'जल्दी नहीं है। क्रम फिर से देखें और कोशिश करें।', 'फल दबाएँ · कुंजी 1–4 · R फिर देखें', 'वापस स्वागत है। तैयार होने पर क्रम फिर देखें।'],
+    ar: ['شاهد وتذكّر ثم كرّر', 'شاهد ترتيب إضاءة الثمار، ثم انقر عليها بالترتيب نفسه.', 'اعرض التسلسل', 'مشاهدة {count} / {total} · تذكّر الترتيب', 'دورك. انقر الثمار بالترتيب الذي شاهدته.', 'لا تتعجل. أعد عرض الإضاءة ثم حاول مجددًا.', 'انقر ثمرة · المفاتيح 1–4 · R للإعادة', 'مرحبًا بعودتك. شاهد التسلسل مجددًا عندما تستعد.']
+  };
+  for (const [locale, values] of Object.entries(text)) keys.forEach((key, index) => { window.ECHO_ORCHARD_LOCALES[locale][key] = values[index]; });
+})();

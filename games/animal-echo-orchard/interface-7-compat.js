@@ -208,13 +208,15 @@
     const map = $("resultMapBtn");
     const next = $("nextBtn");
     const replay = $("resultReplayBtn");
-    if (map) { map.hidden = false; map.disabled = false; map.removeAttribute("aria-disabled"); }
+    // The observer watches these attributes: writing an unchanged value creates
+    // another mutation and can starve the page after the first result.
+    if (map) { if (map.hidden) map.hidden = false; if (map.disabled) map.disabled = false; if (map.hasAttribute("aria-disabled")) map.removeAttribute("aria-disabled"); }
     if (next) {
-      next.hidden = false;
-      next.disabled = isFinal;
-      next.setAttribute("aria-disabled", String(isFinal));
+      if (next.hidden) next.hidden = false;
+      if (next.disabled !== isFinal) next.disabled = isFinal;
+      if (next.getAttribute("aria-disabled") !== String(isFinal)) next.setAttribute("aria-disabled", String(isFinal));
     }
-    if (replay) { replay.hidden = false; replay.disabled = false; }
+    if (replay) { if (replay.hidden) replay.hidden = false; if (replay.disabled) replay.disabled = false; }
     normalizeCopy();
     normalizingResult = false;
   }
@@ -224,8 +226,12 @@
     const battle = $("battleScreen");
     const result = $("resultScreen");
     if (!battle || !result) return;
-    if (scene === "result") {
+    // The shared frame represents Result as Battle. Keep the game's settled
+    // phase authoritative when the frame normalizes the body's screen marker.
+    if (scene === "result" || window.__ECHO_ORCHARD_TEST__?.getState?.().phase === "result") {
+      const enteringResult = !resultActive;
       resultActive = true;
+      if (result.parentElement !== battle) battle.appendChild(result);
       battle.hidden = false;
       battle.classList.add("echo-result-active");
       battle.dataset.wpBattleSubstate = "result";
@@ -234,6 +240,7 @@
       queueMicrotask(normalizeResult);
       frameSlots?.sync?.();
       try {
+        if (!enteringResult) return;
         window.dispatchEvent(new CustomEvent("weightplay:screen-change", { detail: { screen: "battle", node: battle, owner: battle.parentElement } }));
       } catch { /* optional frame/analytics notice */ }
       return;

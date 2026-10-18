@@ -36,17 +36,42 @@
     ar:["مغادرة هذا التنبؤ؟","سيتم تجاهل الإجابة الحالية ومرات التحقق في {name}. ستبقى التنبؤات المكتملة محفوظة.","متابعة اللعب","العودة إلى المراحل"]
   };
   const signArtClass = (type) => `weather-art weather-${type}`;
-  const plans = [
-    { id: 1, name: "plan1", hint: "hint1", sequence: ["sun", "cloud", "sun"], answer: "cloud", shelter: "shelter1", rule: "rule1" },
-    { id: 2, name: "plan2", hint: "hint2", sequence: ["rain", "cloud", "cloud"], answer: "rain", shelter: "shelter2", rule: "rule2" },
-    { id: 3, name: "plan3", hint: "hint3", sequence: ["sun", "rain", "cloud"], answer: "sun", shelter: "shelter3", rule: "rule3" }
+  // Authored observations: pattern, number of readings, editable positions.
+  // Positions are stable save identities; no random templates masquerade as stages.
+  const rows = [
+    ["sc",4,[3]], ["rs",6,[5]], ["cr",6,[4]], ["sr",6,[1,5]], ["sccs",8,[2,7]],
+    ["src",6,[5]], ["crs",6,[3]], ["rcs",6,[1,4]], ["scr",8,[6,7]], ["srcc",8,[3,5,7]],
+    ["sscc",8,[6,7]], ["rrss",8,[4,5]], ["ccrr",8,[1,6]], ["ssrc",8,[5,7]], ["srrc",8,[2,4,7]],
+    ["sc",6,[2]], ["src",6,[1]], ["scc",8,[2,5]], ["rrsc",8,[0,6]], ["scrr",8,[1,3,6]],
+    ["sc",6,[3]], ["src",6,[4]], ["sscc",8,[2,6]], ["rrsc",8,[1,5]], ["scrr",8,[0,3,6]],
+    ["sc",8,[1,4,7]], ["src",8,[0,4,7]], ["sscr",8,[2,5,7]], ["rrcs",8,[0,3,6]], ["scrs",8,[0,3,5,6]]
   ];
-  const storedLocale = localStorage.getItem("weightplay-animal-weather-watch-locale");
+  const symbols = { s:"sun", c:"cloud", r:"rain" };
+  const plans = rows.map(([pattern, length, slots], index) => ({
+    id:index + 1, arc:Math.floor(index / 5), checkpoint:index % 5 === 4,
+    pattern:[...pattern].map(s => symbols[s]), slots,
+    sequence:Array.from({length}, (_, i) => symbols[pattern[i % pattern.length]]),
+    repair:index >= 20 && index < 25
+  }));
+  const SAVE_KEY = "weightplay-animal-weather-watch-campaign-v2";
+  const readStorage = (key) => { try { return localStorage.getItem(key); } catch { return null; } };
+  const writeStorage = (key, value) => { try { localStorage.setItem(key, value); } catch { /* Session remains playable. */ } };
+  let progress = { cleared:[], best:{} };
+  try { const value = JSON.parse(readStorage(SAVE_KEY)); if (value && Array.isArray(value.cleared)) {
+    progress.cleared = [...new Set(value.cleared.filter(n => Number.isInteger(n) && n >= 0 && n < plans.length))];
+    for (const [key, best] of Object.entries(value.best || {})) if (/^\d+$/.test(key) && Number(key) < plans.length && Number.isInteger(best) && best > 0) progress.best[key] = best;
+  } } catch { /* Ignore malformed data, preserve legacy keys. */ }
+  const unlocked = () => Math.min(plans.length - 1, Math.max(readStorage("weightplay-animal-weather-watch-best-v1") ? 2 : 0, ...progress.cleared.map(n => n + 1)));
+  const campaignCopy = (key, vars = {}) => Object.entries(vars).reduce((s,[k,v]) => s.replaceAll(`{${k}}`,String(v)), (window.WEATHER_WATCH_REBUILD[locale] || window.WEATHER_WATCH_REBUILD.en)[key]);
+  const planName = (plan) => `${String(plan.id).padStart(2,"0")} · ${campaignCopy("arcs")[plan.arc]}${plan.checkpoint ? " ◆" : ""}`;
+  const storedLocale = readStorage("weightplay-animal-weather-watch-locale");
   let locale = (routeLocaleMap[routeSegment] && locales[routeLocaleMap[routeSegment]]) ? routeLocaleMap[routeSegment] : storedLocale || "en";
   if (!locales[locale]) locale = "en";
-  let sound = localStorage.getItem("weightplay-animal-weather-watch-sound") !== "off";
+  let sound = readStorage("weightplay-animal-weather-watch-sound") !== "off";
   let planIndex = 0; let selected = ""; let checks = 0; let sessionChecks = 0; let solved = new Set(); let feedback = ""; let currentScreen = "main";
   let frame = null; let pendingSettlement = null; let leaveOpen = false;
+  let answers = {}; let activeSlot = 0; let hintOpen = false; let settled = false;
+  solved = new Set(progress.cleared);
   const copy = (key, vars = {}) => Object.entries(vars).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, String(value)), (locales[locale] || locales.en)[key] || locales.en[key] || key);
   const signName = (type) => copy(`sign${type[0].toUpperCase()}${type.slice(1)}`);
   const bestValue = () => Number(localStorage.getItem("weightplay-animal-weather-watch-best-v1") || 0) || "—";
@@ -120,55 +145,80 @@
     const resultMap = $("resultMapBtn"); if (resultMap) resultMap.textContent = STAGES_LABELS[locale] || STAGES_LABELS.en;
     const replay = $("replayBtn"); if (replay) replay.textContent = REPLAY_LABELS[locale] || REPLAY_LABELS.en;
     renderLeaveCopy(); renderStages(); renderBattle(); renderResult(); frame?.refresh();
+    document.querySelector(".main-summary").textContent = campaignCopy("intro");
+    $("mainProgress").textContent = campaignCopy("progress", {count:solved.size});
   }
   function renderStages() {
     const root = $("stageList"); if (!root) return;
     root.replaceChildren();
     plans.forEach((plan, index) => {
       const button = document.createElement("button");
-      button.type = "button"; button.className = "stage-card"; button.setAttribute("aria-label", copy("enterForecast", { name: copy(plan.name) })); if (index === plans.length - 1) button.dataset.wpStageRecommended = "true";
-      button.innerHTML = `<span><strong>${copy(plan.name)}</strong><small>${copy(plan.hint)}</small></span><span class="arrow" aria-hidden="true">${solved.has(index) ? "✓" : "→"}</span>`;
+      const locked = index > unlocked();
+      button.type = "button"; button.className = "stage-card"; button.disabled = locked;
+      button.dataset.stage = index; button.dataset.wpStageLocked = String(locked);
+      button.setAttribute("aria-label", planName(plan)); if (index === unlocked()) button.dataset.wpStageRecommended = "true";
+      button.innerHTML = `<span><small>${plan.checkpoint ? campaignCopy("checkpoint") : campaignCopy("case")}</small><strong>${planName(plan)}</strong><small>${campaignCopy("tasks")[plan.repair ? 2 : plan.arc >= 3 ? 1 : 0]}</small><small>${locked ? campaignCopy("locked") : solved.has(index) ? campaignCopy("cleared") + " · " + campaignCopy("best",{count:progress.best[index] || "—"}) : campaignCopy("ready")}</small></span><span class="arrow" aria-hidden="true">${locked ? "·" : solved.has(index) ? "✓" : "→"}</span>`;
       button.addEventListener("click", () => startPlan(index, true)); root.appendChild(button);
     });
   }
-  function startPlan(index, fromStage = false) { planIndex = index; selected = ""; checks = 0; feedback = ""; if (index === 0 || fromStage) sessionChecks = 0; show("battle"); renderBattle(); announce("start");
+  function startPlan(index, fromStage = false) { if (!plans[index] || index > unlocked()) return; cancelPendingSettlement(); planIndex = index; selected = ""; checks = 0; feedback = ""; answers = {}; activeSlot = plans[index].slots[0]; hintOpen = false; settled = false;
+    if (plans[index].repair) plans[index].slots.forEach(slot => { const types = ["sun","cloud","rain"]; answers[slot] = types[(types.indexOf(plans[index].sequence[slot]) + 1) % 3]; });
+    if (index === 0 || fromStage) sessionChecks = 0; show("battle"); renderBattle(); announce("start");
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
   function renderBattle() {
     if (!$("choiceGrid") || currentScreen !== "battle") return;
-    const plan = plans[planIndex]; $("progressPill").textContent = `${planIndex + 1} / ${plans.length}`; $("prompt").textContent = copy("prompt"); $("rule").textContent = copy(plan.rule);
+    const plan = plans[planIndex]; $("progressPill").textContent = `${planName(plan)} / 30`;
+    $("prompt").textContent = campaignCopy("tasks")[plan.repair ? 2 : plan.arc >= 3 ? 1 : 0];
+    $("rule").textContent = hintOpen ? campaignCopy("rules")[plan.arc] + " (" + plan.pattern.map(signName).join(" → ") + ")" : campaignCopy("instruction");
+    $("hintBtn").textContent = campaignCopy(hintOpen ? "hideHint" : "hint"); $("hintBtn").setAttribute("aria-pressed", String(hintOpen));
+    $("checkBtn").textContent = campaignCopy("check"); $("resetBtn").textContent = campaignCopy("reset");
     const sequence = $("sequence"); sequence.replaceChildren();
-    plan.sequence.forEach((type) => { const item = document.createElement("div"); item.className = "sign"; item.setAttribute("role", "listitem"); item.innerHTML = `<span class="sign-icon ${signArtClass(type)}" aria-hidden="true">${signs[type]}</span><strong>${signName(type)}</strong>`; sequence.appendChild(item); });
-    const next = document.createElement("div"); next.className = "sign next"; next.setAttribute("role", "listitem"); next.innerHTML = `<span class="sign-icon" aria-hidden="true">?</span><small aria-hidden="true">?</small>`; sequence.appendChild(next);
-    $("selection").textContent = selected ? copy("selected", { name: signName(selected) }) : copy("selectPrompt");
+    sequence.dataset.feedback = feedback; sequence.classList.toggle("show-groups", hintOpen);
+    plan.sequence.forEach((expected, i) => {
+      const editable = plan.slots.includes(i), type = editable ? answers[i] : expected;
+      const item = document.createElement(editable ? "button" : "div");
+      item.className = `sign${editable ? " editable" : ""}${editable && i === activeSlot ? " active-slot" : ""}${feedback === "wrong" && editable && type !== expected ? " mismatch" : ""}`;
+      item.style.setProperty("--group", i % plan.pattern.length); item.dataset.position = i;
+      if (editable) { item.type = "button"; item.disabled = settled; item.setAttribute("aria-pressed",String(i === activeSlot)); item.setAttribute("aria-label",campaignCopy("slot",{count:i+1}) + ": " + (type ? signName(type) : "?")); item.addEventListener("click",()=> { activeSlot=i; renderBattle(); }); }
+      else item.setAttribute("role","listitem");
+      item.innerHTML = `<small class="reading-number">${String(i + 1).padStart(2,"0")}</small><span class="sign-icon ${type ? signArtClass(type) : "unknown"}" aria-hidden="true">${type ? signs[type] : "?"}</span><strong>${type ? signName(type) : "?"}</strong><span class="cycle-mark" aria-hidden="true">${i % plan.pattern.length + 1}</span>`;
+      sequence.appendChild(item);
+    });
+    $("selection").textContent = campaignCopy("slot",{count:activeSlot+1}) + " · " + campaignCopy("choose");
     const root = $("choiceGrid"); root.replaceChildren();
-    ["sun", "cloud", "rain"].forEach((type) => { const button = document.createElement("button"); button.type = "button"; button.className = "choice"; button.setAttribute("aria-label", signName(type)); button.setAttribute("aria-pressed", String(selected === type)); button.innerHTML = `<span class="sign-icon ${signArtClass(type)}" aria-hidden="true">${signs[type]}</span><strong>${signName(type)}</strong>`; button.addEventListener("click", () => { selected = type; feedback = ""; renderBattle(); }); root.appendChild(button); });
-    $("checkBtn").disabled = !selected; $("status").textContent = feedback ? copy(feedback) : ""; $("status").className = feedback === "correct" ? "status good" : feedback === "wrong" ? "status try" : "status";
+    ["sun", "cloud", "rain"].forEach((type) => { const button = document.createElement("button"); button.type = "button"; button.className = "choice"; button.disabled = settled; button.setAttribute("aria-label", signName(type)); button.setAttribute("aria-pressed", String(answers[activeSlot] === type)); button.innerHTML = `<span class="sign-icon ${signArtClass(type)}" aria-hidden="true">${signs[type]}</span><strong>${signName(type)}</strong>`; button.addEventListener("click", () => placeSign(type)); root.appendChild(button); });
+    $("checkBtn").disabled = settled || plan.slots.some(slot => !answers[slot]); $("resetBtn").disabled = settled; $("hintBtn").disabled = settled;
+    $("status").textContent = feedback ? campaignCopy(feedback === "wrong" ? "wrong" : "correct") : campaignCopy("checks",{count:checks}); $("status").className = feedback === "correct" ? "status good" : feedback === "wrong" ? "status try" : "status";
   }
+  function placeSign(type) { if (settled || leaveOpen || currentScreen !== "battle") return; answers[activeSlot] = type; selected = type; feedback = ""; window.WeightPlayAudio?.play("card.place"); const empty = plans[planIndex].slots.find(slot => !answers[slot]); if (empty !== undefined) activeSlot = empty; renderBattle(); }
   function cancelPendingSettlement() { if (!pendingSettlement) return; clearTimeout(pendingSettlement.timer); pendingSettlement = null; }
   function scheduleResult() {
-    cancelPendingSettlement(); const pending = { remaining:280, started:performance.now(), timer:0, fire:null };
+    cancelPendingSettlement(); const pending = { remaining:650, started:performance.now(), timer:0, fire:null };
     pending.fire = () => { if (pendingSettlement !== pending) return; pendingSettlement = null; show("result"); renderResult(); };
     pending.timer = setTimeout(pending.fire, pending.remaining); pendingSettlement = pending;
   }
   function pausePendingSettlement() { const pending = pendingSettlement; if (!pending?.timer) return; clearTimeout(pending.timer); pending.remaining = Math.max(0, pending.remaining - (performance.now() - pending.started)); pending.timer = 0; }
   function resumePendingSettlement() { const pending = pendingSettlement; if (!pending || pending.timer) return; pending.started = performance.now(); pending.timer = setTimeout(pending.fire, pending.remaining); }
   function checkForecast() {
-    if (!selected) return; checks += 1; sessionChecks += 1; const correct = selected === plans[planIndex].answer; feedback = correct ? "correct" : "wrong"; announce("check", { selected, correct });
-    if (correct) { solved.add(planIndex); renderBattle(); scheduleResult(); } else renderBattle();
+    const plan = plans[planIndex]; if (settled || leaveOpen || plan.slots.some(slot=>!answers[slot])) return;
+    checks += 1; sessionChecks += 1; const correct = plan.slots.every(slot => answers[slot] === plan.sequence[slot]); feedback = correct ? "correct" : "wrong"; announce("check", { selected, correct });
+    window.WeightPlayAudio?.play(correct ? "feedback.success" : "feedback.error");
+    if (correct) { settled = true; solved.add(planIndex); progress.cleared = [...solved]; progress.best[planIndex] = Math.min(progress.best[planIndex] || Infinity, checks); writeStorage(SAVE_KEY,JSON.stringify(progress)); renderBattle(); scheduleResult(); } else { hintOpen = true; activeSlot = plan.slots.find(slot=>answers[slot] !== plan.sequence[slot]); renderBattle(); }
   }
   function renderResult() {
     if (!$("resultText")) return; const complete = solved.size === plans.length;
-    if (complete) { const old = Number(localStorage.getItem("weightplay-animal-weather-watch-best-v1") || 0); if (!old || sessionChecks < old) localStorage.setItem("weightplay-animal-weather-watch-best-v1", String(sessionChecks)); }
-    $("resultTitle").textContent = complete ? copy("resultTitle") : copy("resultLevel");
-    $("resultText").textContent = copy("resultText", { count: solved.size, checks: sessionChecks, best: bestValue() });
-    $("resultMapBtn").hidden = false; $("nextBtn").hidden = false; $("nextBtn").disabled = complete; $("replayBtn").hidden = false;
+    $("resultTitle").textContent = campaignCopy(complete ? "final" : "success");
+    $("resultText").textContent = `${planName(plans[planIndex])} · ${campaignCopy("checks",{count:checks})} · ${campaignCopy("best",{count:progress.best[planIndex] || "—"})}`;
+    $("resultReason").textContent = campaignCopy("rules")[plans[planIndex].arc];
+    $("resultProgress").textContent = campaignCopy("progress",{count:solved.size});
+    $("resultMapBtn").hidden = false; $("nextBtn").hidden = false; $("nextBtn").disabled = planIndex >= plans.length - 1; $("replayBtn").hidden = false;
   }
   function nextPlan() { const nextIndex = planIndex + 1; if (nextIndex < plans.length) startPlan(nextIndex); else show("stage"); }
   function replayPlan() { startPlan(planIndex, false); }
   function renderLeaveCopy() {
     if (!$("leaveDialog")) return; const c = LEAVE_COPY[locale] || LEAVE_COPY.en;
-    $("leaveDialogTitle").textContent = c[0]; $("leaveDialogText").textContent = c[1].replace("{name}", copy(plans[planIndex].name)); $("continueBtn").textContent = c[2]; $("leaveBtn").textContent = c[3];
+    $("leaveDialogTitle").textContent = c[0]; $("leaveDialogText").textContent = c[1].replace("{name}", planName(plans[planIndex])); $("continueBtn").textContent = c[2]; $("leaveBtn").textContent = c[3];
   }
   function openLeave() {
     if (currentScreen !== "battle" || leaveOpen) return; leaveOpen = true; pausePendingSettlement(); renderLeaveCopy();
@@ -189,12 +239,13 @@
     $("startBtn").addEventListener("click", () => { show("stage"); renderStages(); announce("start"); });
     $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("nextBtn").addEventListener("click", nextPlan); $("replayBtn").addEventListener("click", replayPlan);
     $("checkBtn").addEventListener("click", checkForecast);
-    $("resetBtn").addEventListener("click", () => { selected = ""; checks = 0; feedback = ""; renderBattle(); announce("reset");
+    $("hintBtn").addEventListener("click", () => { hintOpen = !hintOpen; renderBattle(); });
+    $("resetBtn").addEventListener("click", () => { if (settled) return; selected = ""; answers = {}; activeSlot = plans[planIndex].slots[0]; feedback = ""; renderBattle(); announce("reset");
       __wpMeasurement.roundKey = {}; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.restart = true; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); });
     $("backBtn").addEventListener("click", goBack); $("stageBackBtn").addEventListener("click", goBack); $("continueBtn").addEventListener("click", closeLeave); $("leaveBtn").addEventListener("click", confirmLeave);
-    $("localeSelect").addEventListener("change", (event) => { locale = event.target.value; localStorage.setItem("weightplay-animal-weather-watch-locale", locale); renderStatic(); });
+    $("localeSelect").addEventListener("change", (event) => { locale = event.target.value; writeStorage("weightplay-animal-weather-watch-locale", locale); renderStatic(); });
     document.addEventListener("keydown", (event) => {
-      if (!leaveOpen) return; if (event.key === "Escape") { event.preventDefault(); closeLeave(); return; } if (event.key !== "Tab") return;
+      if (!leaveOpen) { if (currentScreen !== "battle" || settled || event.target.closest("button,select,input")) return; if (["1","2","3"].includes(event.key)) { event.preventDefault(); placeSign(["sun","cloud","rain"][Number(event.key)-1]); } else if (event.key === "Enter") { event.preventDefault(); checkForecast(); } else if (["ArrowLeft","ArrowRight"].includes(event.key)) { event.preventDefault(); const slots=plans[planIndex].slots, direction=event.key === "ArrowRight" ? 1 : -1; activeSlot=slots[(slots.indexOf(activeSlot)+direction+slots.length)%slots.length]; renderBattle(); } return; } if (event.key === "Escape") { event.preventDefault(); closeLeave(); return; } if (event.key !== "Tab") return;
       const actions = [$("continueBtn"), $("leaveBtn")].filter((node) => !node.disabled && !node.hidden), first = actions[0], last = actions[actions.length - 1];
       if (!actions.includes(document.activeElement)) { event.preventDefault(); first?.focus(); }
       else if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }

@@ -17,11 +17,11 @@
     if (startButton) startButton.textContent = START_COPY[locale] || START_COPY.en;
   }
   syncStart();
-  if (!document.querySelector("link[data-wordle-v18-style]")) {
+  if (!document.querySelector("link[data-wordle-v20-style]")) {
     const style = document.createElement("link");
     style.rel = "stylesheet";
-    style.href = "/games/wordle/wordle-v18.css?v=20260923-owner-v18";
-    style.dataset.wordleV18Style = "";
+    style.href = "/games/wordle/wordle-v20.css?v=20261018-guided-v20";
+    style.dataset.wordleV20Style = "";
     document.head.append(style);
   }
   const battleActions = battle?.querySelector(".battle-top > .control-row");
@@ -78,8 +78,8 @@
   }, true);
   window.WPPopularArcade?.mount("wordle");
   // v17 is already assigned to the shared-audio migration in the version record.
-  document.body.dataset.gameVersion = "v19";
-  document.body.dataset.wordleReview = "owner-20260923";
+  document.body.dataset.gameVersion = "v20";
+  document.body.dataset.wordleReview = "owner-20261018";
   syncBattleSubstate();
   const focusableLeaveActions = () => [...(leaveModal?.querySelectorAll("button:not([disabled])") || [])]
     .filter(node => !node.hidden && node.getAttribute("aria-hidden") !== "true");

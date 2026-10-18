@@ -417,7 +417,7 @@ body[data-wp-game-id="animal-dewline"] #battleScreen .battle-content.dewline-gar
 #gardenRound { font-size:12px; font-weight:700; color:#c5d6bc; }
 #targetValues { color:#d6ef8c; font-size:12px; }
 .dewline-garden #battleHint { grid-column:1/-1; margin:0; color:#fff; font-size:14px; line-height:1.4; font-weight:600; }
-.garden-flowers,.garden-valves { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+.garden-flowers,.garden-valves { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; direction:ltr; }
 .garden-flower { display:grid; justify-items:center; align-content:start; gap:4px; border:1px solid #accab766; border-radius:14px; padding:8px 4px; background:#153938; text-align:center; transition:background .24s,border-color .24s; }
 .flower-title { font-size:12px; color:#fff; }
 .flower-art { display:block; width:84px; height:66px; background:url("assets/animal-dewline-valve-atlas.png") 0 0 / 300% 300%; border-radius:10px; transition:filter .24s,transform .24s; }
@@ -458,6 +458,11 @@ body[data-wp-game-id="animal-dewline"] #battleScreen .battle-content.dewline-gar
 .dewline-garden .garden-check { width:100%; height:52px; min-height:52px; margin:0; padding:8px; background:#c1d4ca; color:#193e3b; box-shadow:none; }
 .dewline-garden .garden-check.is-ready { background:#f5c84c; color:#1f2937; box-shadow:0 0 20px #f5c84c33; }
 .dewline-garden button:focus-visible { outline:3px solid #ffcc54; outline-offset:2px; }
+body[data-wp-game-id="animal-dewline"] #resultScreen .result-card h2 { color:#173c38 !important; }
+body[data-wp-game-id="animal-dewline"] #resultScreen .result-actions button:disabled { opacity:.35; cursor:default; box-shadow:none; }
+#battleScreen:not([hidden]) .dewline-garden,
+#resultScreen:not([hidden]) .result-card { animation:garden-enter .22s ease-out both; }
+@keyframes garden-enter { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
 @media (min-width:700px) and (max-height:560px) {
  body[data-wp-game-id="animal-dewline"] #battleScreen .battle-content.dewline-garden { grid-template-columns:minmax(0,1fr) 200px !important; grid-template-rows:42px minmax(0,1fr) 44px 52px !important; gap:4px 12px !important; padding:4px 8px !important; }
  .garden-mission { grid-column:1/-1; padding:4px 8px; }

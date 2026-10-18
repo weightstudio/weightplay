@@ -3,8 +3,6 @@
 <head>
 
     <base href="/games/space-rocks/" />
-    <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/zh-tw/games/space-rocks/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/space-rocks/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/space-rocks/" />
@@ -25,27 +23,12 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <title>星礦漂流 | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/classic-chase-rocks.css?v=20260905-space-score-reserve-v19">
-  <link rel="stylesheet" href="art.css?v=20260921-space-rocks-block-scene-v1">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260905-space-score-reserve-v19">
-  <style data-space-rocks-result-occlusion-fix>
-    /* Keep the generated return control at its physical target size even when
-       the owning logical Battle Canvas is uniformly scaled. */
-    body.is-game-playing #battleScreen:has(#resultScreen:not([hidden])) .wp-generated-battle-header { display: none !important; }
-    @media (min-width: 650px) {
-      body.is-game-playing #battleScreen:not(:has(#resultScreen:not([hidden]))) .wp-generated-battle-header {
-        transform: scale(calc(1 / var(--wp-battle-canvas-scale, 1))) !important;
-        transform-origin: top left !important;
-      }
-    }
-  </style>
-  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="../../src/analytics.js?v=20260905-space-score-reserve-v19"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0">
+  <link rel="stylesheet" href="/games/space-rocks/art.css?v=20261018-campaign-v23">
+<link rel="stylesheet" href="/src/game-play-ui.css?v=20261018-space-campaign">
+<link rel="stylesheet" href="/src/loading-screen.css">
+<link rel="stylesheet" href="/src/game-page-info.css?v=20260905-space-score-reserve-v19">
   <meta name="description" content="駕駛魯克穿越三波漂移礦群，讓晶礦由大分裂到小，並把護盾留給守護核心。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -86,34 +69,27 @@
 }
     </script>
   </head>
-<body data-game-id="space-rocks">
-  <main id="classicArcade" class="classic-arcade" data-runtime-localize="off">
-    <header class="arcade-header">
-      <div><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">星礦漂流</h1><p id="gameTagline" class="tagline"></p></div>
-      <label class="locale-picker"><span id="languageLabel"></span><select id="localeSelect"></select></label>
-    </header>
-    <section id="mainScreen" class="screen">
-      <div class="arcade-panel main-panel">
-        <div class="main-copy"><p id="objective" class="objective"></p><p id="mainProgress" class="main-progress" data-wp-main-progress></p><p id="guideCopy" class="guide-copy"></p><section id="wavePlan" class="wave-plan" aria-labelledby="wavePlanTitle"><div class="wave-plan-header"><span id="wavePlanKicker" class="wave-plan-kicker"></span><h2 id="wavePlanTitle"></h2></div><p id="wavePlanIntro" class="wave-plan-intro"></p><ol id="wavePlanList" class="wave-plan-list"></ol></section><button id="startBtn" class="primary"></button></div>
-        <div class="preview-art"><img id="coverArt" class="main-poster" alt=""></div>
-      </div>
-    </section>
-    <section id="battleScreen" class="screen battle-screen" data-wp-logical-battle-canvas hidden>
-      <div class="arcade-panel battle-panel">
-        <div class="battle-topline"><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="backBtn" class="secondary icon-button" data-wp-return="battle"></button><button id="soundBtn" class="secondary icon-button" data-wp-battle-utility></button><button id="restartBtn" class="secondary"></button></div></div>
-        <div class="hud"><div class="hud-item"><span id="scoreLabel" class="hud-label"></span><strong id="scoreValue" class="hud-value">0</strong></div><div class="hud-item"><span id="bestLabel" class="hud-label"></span><strong id="bestValue" class="hud-value">0</strong></div><div class="hud-item"><span id="levelLabel" class="hud-label"></span><strong id="levelValue" class="hud-value">1</strong></div><div class="hud-item"><span id="powerLabel" class="hud-label"></span><strong id="powerValue" class="hud-value">—</strong></div></div>
-        <div id="backConfirm" class="confirm-back" hidden><p id="backConfirmCopy"></p><div class="control-row"><button id="backStayBtn" class="secondary"></button><button id="backLeaveBtn" class="primary"></button></div></div>
-        <div class="canvas-wrap space"><canvas id="gameCanvas" tabindex="0"></canvas></div><p id="gameMessage" class="game-message" aria-live="polite"></p>
-        <div id="touchControls" class="touch-controls space-controls" aria-label=""></div><p id="controlHint" class="control-hint"></p>
-        <section id="resultScreen" class="screen" hidden><div class="arcade-panel result-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline result-copy"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></section>
-      </div>
-    </section>
-    <div class="general-reserve battle-ad-reserve" aria-hidden="true"></div><footer id="footerText" class="arcade-footer"></footer>
-  </main>
-    <script src="../../src/battle-canvas-standard.js?v=20260808-play-lock1" data-wp-battle-standard></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-  <section class="game-page-info game-page-info-static" aria-label="星礦漂流 遊戲資訊">
+<body data-game-id="space-rocks" data-wp-game-id="space-rocks" data-wp-game-version="v23" data-wp-interface-version="7" data-wp-game-owned-guide="true" data-sound-toggle="off">
+<div id="loadingPanel" class="loading-panel" role="status"></div>
+<main data-space-campaign data-wp-frame-root data-runtime-localize="off"></main>
+<details id="spaceRocksStaticGuide" class="game-page-info game-page-info-static" data-wp-space-rocks-guide><summary>飛行手冊</summary><h1>星礦漂流</h1><p>使用 WASD、方向鍵或搖桿飛行，武器會自動瞄準射擊。靠近晶礦即可收集；救援艙須運回中央信標。護盾抵擋兩秒傷害，脈衝清除附近威脅，兩者皆會充能。通關解鎖下一關。完成任務得一星、船體完整再得一星、剩餘一半時間且船體完整再得一星。進度儲存在此瀏覽器。</p></details>
+<script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
+<script src="/src/game-layout-config.js?v=20260919-banner1"></script>
+<script src="/src/weightplay-audio.js?v=1.0.0"></script>
+<script src="/src/virtual-joystick.js?v=1.0.0"></script>
+<script src="/src/stage-rail-i9.js?v=20261018-campaign-v23"></script>
+<script src="/src/edge-guard.js"></script>
+<script src="/src/analytics.js?v=20260929-block-world-v3"></script>
+<script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="/src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+<script src="/src/game-play-ui.js?v=20261018-space-campaign"></script>
+<script src="/games/space-rocks/analytics-ownership.js?v=20261018-campaign-v23"></script>
+<script src="/games/space-rocks/locales.js?v=20261018-campaign-v23"></script>
+<script src="/games/space-rocks/game.js?v=20261018-campaign-v23"></script>
+<script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+<section class="game-page-info game-page-info-static" aria-label="星礦漂流 遊戲資訊">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>星礦漂流</h2><p>駕駛魯克穿越三波漂移礦群，讓晶礦由大分裂到小，並把護盾留給守護核心。</p></div>
@@ -139,7 +115,4 @@
       <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/snake/"><img src="/assets/interface7-redrawn/snake.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>貪食蛇</strong><span>在格線上引導逐漸變長的蛇收集食物，並繞開蛇身與 Gate、Orbit 障礙。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/maze-chase/"><img src="/assets/interface7-redrawn/maze-chase.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>星徑迷宮</strong><span>在固定迷宮中引導奧拉收集星塵，讀懂四種光靈追逐模式，並用信標把危險走廊變成短暫的反擊窗口。</span></span></a></div></div>
     </div>
   </section>
-<script src="../../src/game-page-info.js?v=20261013-space-related-public-140-v2" data-wp-game-info-static></script>
-  <script src="/games/space-rocks/analytics-ownership.js?v=20260905-space-score-reserve-v19"></script><script src="../../src/classic-chase-rocks.js?v=20260905-space-score-reserve-v19"></script>
-</body>
-</html>
+</body></html>

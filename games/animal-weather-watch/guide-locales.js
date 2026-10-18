@@ -248,3 +248,27 @@
     },
   };
 }());
+
+// Current campaign replaces the former three-question demonstration.
+for (const [locale, guide] of Object.entries(window.WEATHER_WATCH_GUIDE_LOCALES)) {
+  const r = window.WEATHER_WATCH_REBUILD[locale];
+  guide.intro = r.intro;
+  guide.seoDescription = r.intro + " " + r.progress.replace("{count}", "0");
+  guide.facts[2][1] = "30";
+  guide.facts[3][1] = r.progress.split("·")[1].trim();
+  const old = guide.sections;
+  guide.sections = [
+    [old[2][0], [r.intro, r.instruction, r.check + " → " + r.success]],
+    [old[1][0], r.rules],
+    [old[4][0], [r.progress.replace("{count}", "0"), r.locked + ". " + r.cleared + " → " + r.ready]],
+    [old[3][0], [r.wrong, r.hint + ": " + r.rules[3], r.best.replace("{count}", "1")]],
+    old[6]
+  ];
+  guide.faq = [
+    [r.tasks[0], r.rules[0] + " " + r.rules[1]],
+    [r.tasks[1], r.instruction],
+    [r.tasks[2], r.rules[4]],
+    [r.hint, r.wrong],
+    [guide.facts[2][0], "30 · " + r.arcs.join(" / ")]
+  ];
+}

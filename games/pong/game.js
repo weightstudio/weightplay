@@ -1,6 +1,7 @@
 /* Independent real-time Pong. The legacy target-alignment batch is not mounted. */
 (async () => {
   'use strict';
+  window.WeightPlayGameEntryLoader?.begin();
   // Keep the authored, locale-owned public Guide when mounting the native court.
   const initialGuide = document.querySelector('.game-page-info-static');
   document.querySelector('main')?.setAttribute('data-wp-frame-root','');
@@ -43,15 +44,15 @@
     });
   };
   const [{ Match, WIDTH, HEIGHT }, { COPY, ROUTES, COACH }] = await Promise.all([
-    import(new URL('engine.mjs',base)),
-    import(new URL('locale.mjs',base)),
+    import(new URL('engine.mjs?v=20261018-pong-clarity-v13',base)),
+    import(new URL('locale.mjs?v=20261018-pong-clarity-v13',base)),
     ensureFrameRuntime()
   ]);
   const asset = name => new URL('../../assets/'+name,base).href;
   if (!document.querySelector('link[href*="/games/pong/pong.css"]')) {
-    const style=document.createElement('link'); style.rel='stylesheet'; style.href=new URL('pong.css?v=20260927-pong-compact-landscape-scaler-wip1',base); document.head.append(style);
+    const style=document.createElement('link'); style.rel='stylesheet'; style.href=new URL('pong.css?v=20261018-pong-clarity-v13',base); document.head.append(style);
   }
-  const artStyle=document.createElement('link'); artStyle.rel='stylesheet'; artStyle.href=new URL('art.css?v=20260921-pong-block-scene-v1',base); document.head.append(artStyle);
+  const artStyle=document.createElement('link'); artStyle.rel='stylesheet'; artStyle.href=new URL('art.css?v=20261018-pong-clarity-v13',base); document.head.append(artStyle);
   let locale=Object.keys(ROUTES).find(key=>location.pathname.startsWith('/'+ROUTES[key]+'/'))||document.documentElement.lang;
   if(!COPY[locale]) locale='en';
   let t=COPY[locale], difficulty=0, wins=[0,0,0];
@@ -78,19 +79,20 @@
   const held=new Set();
   document.body.classList.add('pong-realtime');
   Object.assign(document.body.dataset,{gameId:'pong',wpGameId:'pong',gameVersion:'v13',screen:'main',audience:'general',runtimeLocalize:'off'});
-  document.body.innerHTML=`<main id="pongApp" data-wp-frame-root>
+  const appHost=document.createElement('div');
+  appHost.innerHTML=`<main id="pongApp" data-wp-frame-root>
   <section id="mainScreen" class="pw-main" data-wp-scene="main">
     <header class="pw-header"><a class="pw-return" data-wp-return="main" href="/${ROUTES[locale]}/"><span>←</span><img src="${asset('weightplay-logo.png')}" alt=""></a><h1 data-wp-frame-title></h1></header>
     <div id="mainContent" class="pw-main-content" data-wp-frame-content="main"><div class="pw-intro"><img class="pw-poster main-poster" data-wp-frame-poster src="${asset('pong-cover-v1.webp')}" width="1254" height="1254" alt=""><div class="pw-copy" data-wp-frame-copy><p id="summary" class="main-summary" data-wp-frame-summary></p><p id="record" data-wp-frame-progress></p><button id="startBtn" class="pw-primary" data-wp-main-start data-wp-frame-action="primary"></button></div></div></div>
   </section>
   <section id="publicGuide" class="pw-main pw-guide game-page-info" data-wp-game-guide></section>
   <section id="battleScreen" class="pw-battle" data-wp-scene="battle" hidden>
-    <div class="pw-canvas" data-wp-logical-battle-canvas data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
+    <div class="pw-canvas" data-wp-battle-canvas-root data-wp-logical-battle-canvas data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
       <header class="pw-hud"><button id="battleBackBtn" data-wp-return="battle">←</button><strong data-wp-frame-title aria-hidden="true"></strong></header>
       <div id="livePanel" data-wp-frame-content="battle">
         <div id="score" class="pw-score" data-wp-frame-info dir="ltr"></div>
         <div id="matchMeta"><span id="matchGoal"></span><span id="rallyStatus" dir="auto"></span></div>
-        <div id="courtWrap"><canvas id="court" width="600" height="600" tabindex="0"></canvas><div id="courtCue" class="pw-court-cue"></div></div>
+        <div id="courtWrap"><canvas id="court" width="600" height="600" tabindex="0"></canvas><div id="courtCue" class="pw-court-cue first-steps"></div></div>
         <div class="pw-mode-row"><label id="difficultyLabel" for="difficulty"></label><select id="difficulty"></select></div>
         <p id="gameMessage" role="status" aria-live="polite"></p>
         <div id="controlRail" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100"><span id="railLabel"></span><i id="railThumb" aria-hidden="true"></i></div>
@@ -102,6 +104,8 @@
   </section>
   <div class="pw-compat" hidden aria-hidden="true"><select id="localeSelect" tabindex="-1"></select></div>
 </main>`;
+  document.querySelector('main')?.remove();
+  document.body.append(...appHost.children);
   if (initialGuide) {
     initialGuide.id = 'publicGuide';
     initialGuide.classList.add('pw-main');
@@ -131,7 +135,7 @@
   }
   function unlockSound() { return window.WeightPlayAudio?.unlock(); }
   function beep(cue = "sport.bounce") { return window.WeightPlayAudio?.play(cue); }
-  function stop(){cancelAnimationFrame(frame);frame=0;previous=0;held.clear();effects=[];trail=[];}
+  function stop(){cancelAnimationFrame(frame);frame=0;previous=0;held.clear();effects=[];trail=[];for(const id of ['leftBtn','rightBtn','controlRail','court'])$(id)?.classList.remove('is-held','is-dragging');}
   function pause(){match.pause();stop();hud();draw();
     __wpNotifyMeasurement();
 }
@@ -168,9 +172,14 @@
     const b=match.ball;ctx.shadowColor='#ffe199';ctx.shadowBlur=15;ctx.fillStyle='#ffe199';ctx.beginPath();ctx.arc(b.x,b.y,9,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
     effects=effects.filter(effect=>now-effect.at<220);
     for(const effect of effects){const p=(now-effect.at)/220;ctx.globalAlpha=1-p;ctx.strokeStyle=effect.side==='you'?'#a4ffe3':'#ffbda8';ctx.lineWidth=3;ctx.beginPath();ctx.arc(effect.x,effect.y,reducedMotion.matches?19:12+p*35,0,Math.PI*2);ctx.stroke();if(!reducedMotion.matches){ctx.fillStyle=ctx.strokeStyle;for(let i=0;i<6;i++){const angle=i*Math.PI/3;ctx.fillRect(effect.x+Math.cos(angle)*p*48-3,effect.y+Math.sin(angle)*p*30-3,6,6);}}ctx.globalAlpha=1;}
-    $('railThumb').style.left=`${match.player/WIDTH*100}%`;
-    $('controlRail').setAttribute('aria-valuenow',String(Math.round(match.player/WIDTH*100)));
-    canvas.dataset.phase=match.phase;
+    const position=`${(match.player/WIDTH*100).toFixed(2)}%`,value=String(Math.round(match.player/WIDTH*100));
+    if($('railThumb').style.left!==position)$('railThumb').style.left=position;
+    if($('controlRail').getAttribute('aria-valuenow')!==value)$('controlRail').setAttribute('aria-valuenow',value);
+    if(canvas.dataset.phase!==match.phase)canvas.dataset.phase=match.phase;
+    if(match.phase==='ready'){
+      const instruction=Math.abs(match.player-300)>24?t.ready:COACH[locale].drag;
+      if($('courtCue').textContent!==instruction)set('courtCue',instruction);
+    }
   }
   function finish(){
     stop();if(match.you===7){wins[difficulty]=Math.min(1000000,wins[difficulty]+1);persist();}
@@ -253,8 +262,11 @@
     target.onpointermove=e=>{if((target===canvas&&e.pointerType==='mouse')||target.hasPointerCapture(e.pointerId))aim(e);};
     for(const event of ['pointerup','pointercancel','lostpointercapture'])target.addEventListener(event,()=>target.classList.remove('is-dragging'));
   }
-  window.addEventListener('keydown',e=>{if(screen!=='battle'||!$('leavePanel').hidden||match.phase==='finished'||e.target.matches('select,input'))return;const direction=['ArrowLeft','a','A'].includes(e.key)?'left':['ArrowRight','d','D'].includes(e.key)?'right':null;if(direction){e.preventDefault();held.add(direction);nudge(direction);}else if(e.code==='Space'&&!e.repeat){e.preventDefault();launch();}else if(e.key==='Escape'){e.preventDefault();pause();}});
+  window.addEventListener('keydown',e=>{if(screen!=='battle'||!$('leavePanel').hidden||match.phase==='finished'||e.target.matches('select,input')||e.target.closest('.wp-frame-popover'))return;const direction=['ArrowLeft','a','A'].includes(e.key)?'left':['ArrowRight','d','D'].includes(e.key)?'right':null;if(direction){e.preventDefault();held.add(direction);nudge(direction);}else if(e.code==='Space'&&!e.repeat){e.preventDefault();launch();}else if(e.key==='Escape'){e.preventDefault();pause();}});
   window.addEventListener('keyup',e=>{if(['ArrowLeft','a','A'].includes(e.key))held.delete('left');if(['ArrowRight','d','D'].includes(e.key))held.delete('right');});
+  window.addEventListener('weightplay:interaction-state',()=>{
+    if(screen==='battle'&&match.phase==='playing'&&$('battleScreen').querySelector('[data-wp-settings][aria-expanded="true"]'))pause();
+  });
   window.addEventListener('blur',pause);document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});window.addEventListener('pagehide',stop);window.addEventListener('resize',()=>{if(screen==='battle')pause();});
   localize();
   frameApi=window.WeightPlayScreenFrame?.mount?.({
@@ -267,5 +279,10 @@
   })||null;
   frameApi?.activate?.('main');frameApi?.refresh?.();
 
+  await Promise.all([...$('mainScreen').querySelectorAll('img')].map(image=>
+    image.complete ? (image.naturalWidth ? Promise.resolve() : Promise.reject(new Error('Pong image unavailable')))
+      : new Promise((resolve,reject)=>{image.addEventListener('load',resolve,{once:true});image.addEventListener('error',reject,{once:true});})));
+  window.WeightPlayGameEntryLoader?.ready();
+
   if (__wpMeasurement.screen === null && !__wpMeasurement.started) { __wpMeasurement.screen = "main"; __wpNotifyMeasurement(); }
-})().catch(error=>console.error('Pong startup failed',error));
+})().catch(error=>{window.WeightPlayGameEntryLoader?.fail(undefined,()=>location.reload());console.error('Pong startup failed',error);});

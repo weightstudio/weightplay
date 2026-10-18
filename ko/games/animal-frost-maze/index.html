@@ -30,7 +30,7 @@
     <meta name="description" content="30개 얼음 미로 방을 풀어 보세요. 벽을 깨고 세워 길을 만들고, 떠도는 추적자를 피하며, 마지막 방들에서는 출발점으로 돌아오세요." />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"얼음 미로 구조","description":"30개 얼음 미로 방을 풀어 보세요. 벽을 깨고 세워 길을 만들고, 떠도는 추적자를 피하며, 마지막 방들에서는 출발점으로 돌아오세요.","url":"https://weightplay.com/ko/games/animal-frost-maze/","image":"https://weightplay.com/assets/animal-frost-maze-cover.webp","genre":["얼음벽 미로","격자 경로 퍼즐","추격 전략"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"ko","isAccessibleForFree":true,"audience":{"@type":"Audience","audienceType":"General"},"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"},"alternateName":"Frost Maze Rescue"}</script>
     <title>얼음 미로 구조 | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260908-mastery-v15" />
+    <link rel="stylesheet" href="style.css?v=20261018-rescue-coach1" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(6,27,44,.20),rgba(6,27,44,.70)),url("assets/animal-frost-maze-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen />
@@ -40,7 +40,7 @@
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
     <script defer src="mastery.js?v=20260908-mastery-v15"></script>
-    <script defer src="game.js?v=20260927-issue1614-v17"></script><meta property="og:site_name" content="WeightPlay" />
+    <script defer src="game.js?v=20261018-rescue-coach1"></script><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="얼음 미로 구조 | WeightPlay" />
     <meta property="og:description" content="30개 얼음 미로 방을 풀어 보세요. 벽을 깨고 세워 길을 만들고, 떠도는 추적자를 피하며, 마지막 방들에서는 출발점으로 돌아오세요." />
@@ -62,7 +62,7 @@
         <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="WeightPlay로 돌아가기"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title" data-wp-game-title>얼음 미로 구조</h1>
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
         <img class="five-game-cover main-cover" src="assets/animal-frost-maze-cover.png" alt="" aria-hidden="true" />
-        <p class="lede main-summary" data-five-copy="lede">Open the frozen route, collect every berry, and keep one step ahead of the snow drifter.</p>
+        <p class="lede main-summary">분홍 보급품을 모으고 얼음을 깨서 길을 여세요. 벽으로 추적자를 막을 수 있어요. 시간 제한 없이 한 수씩 생각하세요.</p>
         <p id="main-progress" class="progress main-progress" data-wp-main-progress>Best rooms: 0</p>
         <button id="start-game" class="primary" data-wp-main-start data-five-copy="start">Start Game</button>
       </section>
@@ -73,8 +73,14 @@
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
         <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="스테이지로 돌아가기">←</button><strong id="room-label">Chapter 1 · Room 1</strong><span id="fruit-label">Berries 0</span></header>
-        <p id="battle-status" class="battle-status">Arrows move. Press SPACE to break the ice ahead.</p>
-        <canvas id="arena" width="960" height="560" aria-label="Frostline Rescue play area"></canvas>
+        <section id="rescue-coach" class="rescue-coach" aria-label="빙원 구조 임무">
+          <div class="rescue-mission"><span id="rescue-kicker">빙원 구조 임무</span><strong id="rescue-objective">분홍 열매를 모두 모으세요.</strong><div class="rescue-progress"><progress id="rescue-meter" value="0" max="1" aria-label="분홍 열매를 모두 모으세요."></progress><b id="rescue-count">0 / 0</b></div></div>
+          <div class="rescue-situation"><strong id="rescue-threat"></strong><span id="rescue-facing"></span><small id="rescue-rules"></small></div>
+          <div class="rescue-tools"><button id="rescue-route" type="button" aria-pressed="false">경로 보기</button><button id="rescue-undo" type="button" disabled>한 수 취소</button></div>
+          <p id="rescue-advice" aria-live="polite">금색 화살표가 가리키는 칸의 얼음을 바꾸세요.</p><small id="rescue-legend">금색: 나 · 분홍: 보급품 · 빨강: 위험</small>
+        </section>
+        <p id="battle-status" class="battle-status" role="status" aria-live="polite" aria-atomic="true">Arrows move. Press SPACE to break the ice ahead.</p>
+        <canvas id="arena" width="864" height="504" aria-label="Frostline Rescue play area"></canvas>
         <div class="touch-controls"><button data-action="up">▲</button><button data-action="left">◀</button><button id="break-ice" data-action="break" data-wp-primary-action class="break">BREAK ICE</button><button data-action="build" class="build">BUILD ICE</button><button data-action="right">▶</button><button data-action="down">▼</button></div>
         <div id="frost-touch-hint" class="touch-hint">The blue blocks are breakable. Collect all berries before the drifter reaches you.</div>
         <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>

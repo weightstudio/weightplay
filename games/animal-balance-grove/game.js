@@ -551,6 +551,7 @@
     const stage = stages[state.stage], values = state.selected.map(index => stage.pieces[index][1]);
     const outcome = window.BalanceGroveRules.evaluate(values, stage.target, stage);
     state.checks++; state.sessionChecks++;
+    $("sessionChecks").textContent = String(state.checks);
     track("balance_check", { stage: state.stage + 1, checks: state.checks, correct: outcome.valid });
     if (!outcome.valid) {
       beep("feedback.error"); renderBattle();

@@ -151,3 +151,29 @@
 /* Result shares Battle's envelope and starts below its permanent return track. */
 body.wp-logical-battle-active #battleScreen #resultPanel{inset:48px 0 0!important;top:48px!important;height:calc(100% - 48px)!important;min-height:0!important}
 #battleScreen:has(#resultPanel:not([hidden]))>.battle-canvas>.panel-head{z-index:5}
+@media(orientation:landscape) and (max-height:560px){
+ #battleScreen #resultPanel{padding:12px 20px;grid-template-rows:20px 44px 38px minmax(140px,1fr);gap:4px 24px}
+ #battleScreen #resultHeading{font-size:20px;line-height:1.1}
+ #battleScreen #resultStats{height:38px;padding:2px}
+ #battleScreen #resultText{max-height:80px;overflow:auto;font-size:12px}
+ #battleScreen .result-actions{grid-template-rows:44px 44px 44px;gap:4px;height:140px}
+}
+/* Discrete display transitions retain a noninteractive outgoing visual frame;
+   the live scene state and hidden/inert ownership change immediately. */
+@supports(transition-behavior:allow-discrete){
+ #mainScreen,#stageScreen,#battleScreen,
+ #battleScreen #battlePanel,#battleScreen #resultPanel{
+  opacity:1;transition:opacity 160ms ease,display 160ms allow-discrete;
+ }
+ #mainScreen[hidden],#stageScreen[hidden],#battleScreen[hidden],
+ #battleScreen #battlePanel[hidden],#battleScreen #resultPanel[hidden]{opacity:0;pointer-events:none}
+ #battleScreen #leaveDialog{opacity:0;transition:opacity 100ms ease,display 100ms allow-discrete,overlay 100ms allow-discrete}
+ #battleScreen #leaveDialog[open]{opacity:1}
+ @starting-style{
+  #mainScreen.active:not([hidden]),#stageScreen.active:not([hidden]),#battleScreen.active:not([hidden]),
+  #battleScreen #battlePanel:not([hidden]),#battleScreen #resultPanel:not([hidden]),#battleScreen #leaveDialog[open]{opacity:0}
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ #mainScreen,#stageScreen,#battleScreen,#battleScreen #battlePanel,#battleScreen #resultPanel,#battleScreen #leaveDialog{transition-duration:1ms!important}
+}

@@ -28,6 +28,7 @@
   }
   const canvas = $("arena");
   const ctx = canvas.getContext("2d");
+  canvas.tabIndex=0;
   const cols = 12, rows = 7, cell = 72;
   const heroArt = new Image(); heroArt.src = "assets/animal-frost-maze-original-assets-v1.png";
   const drifterArt = heroArt;
@@ -166,12 +167,473 @@
   }
   function syncMastery() {
     $("frost-touch-hint").textContent = masteryHint();
+    syncCoach();
     document.querySelectorAll("[data-stage-index]").forEach(card => {
       let badge = card.querySelector(".mastery-badge");
       if (!badge) { badge = document.createElement("small"); badge.className = "mastery-badge"; card.append(badge); }
       badge.textContent = `${masteryCopy()[6]} ${starsText(bestGrades[card.dataset.stageIndex] || 0)}`;
     });
   }
+
+  /* FROST_COACH_MODEL_START */
+  function planRescueRoute({grid,start,targets,enemy}) {
+    if (!grid.length || !targets.length) return null;
+    const id = p => `${p.x},${p.y}`;
+    const goals = new Set(targets.map(id));
+    const queue = [{p:start,path:[]}], seen = new Set([id(start)]);
+    for(let i=0;i<queue.length;i++) {
+      const {p,path}=queue[i];
+      if(goals.has(id(p))) return path;
+      for(const [dx,dy] of [[0,-1],[1,0],[0,1],[-1,0]]) {
+        const n={x:p.x+dx,y:p.y+dy}, k=id(n);
+        if(grid[n.y]?.[n.x]!=='.' || seen.has(k) || (enemy && id(enemy)===k))continue;
+        seen.add(k);queue.push({p:n,path:[...path,n]});
+      }
+    }
+    return null;
+  }
+  /* FROST_COACH_MODEL_END */
+  const FROST_COACH_COPY = {
+  "en": {
+    "objective": "RESCUE MISSION",
+    "home": "Bring the supplies back to the gold camp.",
+    "collect": "Collect every pink berry.",
+    "threat": "Drifter moves in",
+    "echo": "Ice edits also move the drifter.",
+    "hint": "Show route",
+    "hide": "Hide route",
+    "undo": "Undo",
+    "legend": "Gold: you · Pink: supplies · Red: danger",
+    "blocked": "No open route. Face a blue ice block and break it.",
+    "route": "Next berry",
+    "warning": "Route avoids its current cell. Watch the pursuit counter.",
+    "hit": "You walked into the drifter. Choose a different lane.",
+    "caught": "The drifter caught you. Watch the counter and block its route.",
+    "edge": "Edge of the icefield. Choose another direction.",
+    "optional": "Star targets are optional; there is no time limit.",
+    "help": "Move one square. Face an ice block, then break it with Space; F builds a wall. H: route · U: undo.",
+    "restored": "Last action restored.",
+    "up": "Up",
+    "down": "Down",
+    "left": "Left",
+    "right": "Right",
+    "facing": "Facing",
+    "turn": "Turn the gold arrow toward the block you want to edit.",
+    "hitTitle": "You entered danger",
+    "caughtTitle": "The drifter caught you",
+    "main": "Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit."
+  },
+  "zh-tw": {
+    "objective": "冰原救援任務",
+    "home": "補給收齊了！回到金色營地。",
+    "collect": "收集地圖上所有粉紅莓果。",
+    "threat": "漂行者行動倒數：",
+    "echo": "改動冰牆也會讓漂行者移動。",
+    "hint": "顯示路線",
+    "hide": "隱藏路線",
+    "undo": "退回一步",
+    "legend": "金色：你 · 粉紅：補給 · 紅色：危險",
+    "blocked": "沒有暢通路線。面向藍色冰牆，再按破冰。",
+    "route": "下一顆莓果",
+    "warning": "路線避開敵人目前位置；仍須留意追蹤步數。",
+    "hit": "你走進了漂行者的位置。重試時改走其他路。",
+    "caught": "漂行者追上你了。留意步數，或造牆阻擋。",
+    "edge": "已到冰原邊界，請換個方向。",
+    "optional": "星星目標是額外挑戰，沒有時間限制。",
+    "help": "方向鍵逐格移動；先面向冰牆，再按破冰／Space。F 造牆；H 路線；U 退一步。",
+    "restored": "已退回上一步。",
+    "up": "向上",
+    "down": "向下",
+    "left": "向左",
+    "right": "向右",
+    "facing": "面向",
+    "turn": "金色箭頭指向哪一格，破冰和造牆就作用在哪一格。",
+    "hitTitle": "走進危險格了",
+    "caughtTitle": "被漂行者追上了",
+    "main": "收集粉紅補給，用破冰開路、造牆擋住漂行者。沒有倒數計時，想好再走下一步。"
+  },
+  "zh-cn": {
+    "objective": "冰原救援任务",
+    "home": "补给收齐了！回到金色营地。",
+    "collect": "收集地图上所有粉红莓果。",
+    "threat": "漂行者行动倒数：",
+    "echo": "改动冰墙也会让漂行者移动。",
+    "hint": "显示路线",
+    "hide": "隐藏路线",
+    "undo": "退回一步",
+    "legend": "金色：你 · 粉红：补给 · 红色：危险",
+    "blocked": "没有畅通路线。面向蓝色冰墙，再按破冰。",
+    "route": "下一颗莓果",
+    "warning": "路线避开敌人当前位置；仍须留意追踪步数。",
+    "hit": "你走进了漂行者的位置。重试时改走其他路。",
+    "caught": "漂行者追上你了。留意步数，或造墙阻挡。",
+    "edge": "已到冰原边界，请换个方向。",
+    "optional": "星星目标是额外挑战，没有时间限制。",
+    "help": "方向键逐格移动；先面向冰墙，再按破冰／Space。F 造墙；H 路线；U 退一步。",
+    "restored": "已退回上一步。",
+    "up": "向上",
+    "down": "向下",
+    "left": "向左",
+    "right": "向右",
+    "facing": "面向",
+    "turn": "金色箭头指向哪一格，破冰和造墙就作用在哪一格。",
+    "hitTitle": "走进危险格了",
+    "caughtTitle": "被漂行者追上了",
+    "main": "收集粉红补给，用破冰开路、造墙挡住漂行者。没有倒数计时，想好再走下一步。"
+  },
+  "ja": {
+    "objective": "氷原の救援任務",
+    "home": "物資が揃いました。金色のキャンプへ戻ろう。",
+    "collect": "ピンクのベリーをすべて集めよう。",
+    "threat": "追跡者が動くまで",
+    "echo": "氷の変更でも追跡者が動きます。",
+    "hint": "ルート表示",
+    "hide": "ルート非表示",
+    "undo": "一手戻す",
+    "legend": "金：自分 · ピンク：物資 · 赤：危険",
+    "blocked": "道が塞がれています。青い氷に向いて壊そう。",
+    "route": "次のベリー",
+    "warning": "敵の現在地を避けるルートです。移動カウントに注意。",
+    "hit": "追跡者のいるマスに入りました。別の道を選ぼう。",
+    "caught": "追跡者に捕まりました。カウントを見て壁で防ごう。",
+    "edge": "氷原の端です。別の方向へ進もう。",
+    "optional": "星は追加の目標です。制限時間はありません。",
+    "help": "矢印で一マス移動。氷に向いてSpaceで破壊、Fで壁。H：ルート、U：一手戻す。",
+    "restored": "一手戻しました。",
+    "up": "上",
+    "down": "下",
+    "left": "左",
+    "right": "右",
+    "facing": "向き",
+    "turn": "金色の矢印が指すマスの氷を壊すか壁を作ります。",
+    "hitTitle": "危険なマスに入りました",
+    "caughtTitle": "追跡者に捕まりました",
+    "main": "ピンクの物資を集め、氷を壊して道を開き、壁で追跡者を防ごう。制限時間はないので、一手ずつ考えよう。"
+  },
+  "ko": {
+    "objective": "빙원 구조 임무",
+    "home": "보급품을 모았어요. 금색 야영지로 돌아가세요.",
+    "collect": "분홍 열매를 모두 모으세요.",
+    "threat": "추적자 이동까지",
+    "echo": "얼음을 바꿔도 추적자가 움직입니다.",
+    "hint": "경로 보기",
+    "hide": "경로 숨기기",
+    "undo": "한 수 취소",
+    "legend": "금색: 나 · 분홍: 보급품 · 빨강: 위험",
+    "blocked": "길이 막혔어요. 파란 얼음을 향한 뒤 깨세요.",
+    "route": "다음 열매",
+    "warning": "적의 현재 위치를 피하는 경로입니다. 이동 수를 확인하세요.",
+    "hit": "추적자가 있는 칸으로 들어갔어요. 다른 길을 고르세요.",
+    "caught": "추적자에게 잡혔어요. 이동 수를 보고 벽으로 막으세요.",
+    "edge": "빙원 끝입니다. 다른 방향을 고르세요.",
+    "optional": "별은 추가 목표이며 시간 제한은 없습니다.",
+    "help": "화살표로 한 칸 이동. 얼음을 향해 Space로 깨고 F로 벽을 만드세요. H: 경로, U: 취소.",
+    "restored": "이전 행동을 되돌렸어요.",
+    "up": "위",
+    "down": "아래",
+    "left": "왼쪽",
+    "right": "오른쪽",
+    "facing": "방향",
+    "turn": "금색 화살표가 가리키는 칸의 얼음을 바꾸세요.",
+    "hitTitle": "위험한 칸에 들어갔어요",
+    "caughtTitle": "추적자에게 잡혔어요",
+    "main": "분홍 보급품을 모으고 얼음을 깨서 길을 여세요. 벽으로 추적자를 막을 수 있어요. 시간 제한 없이 한 수씩 생각하세요."
+  },
+  "es": {
+    "objective": "MISIÓN DE RESCATE",
+    "home": "Vuelve al campamento dorado con los suministros.",
+    "collect": "Recoge todas las bayas rosas.",
+    "threat": "El errante se mueve en",
+    "echo": "Cambiar hielo también mueve al errante.",
+    "hint": "Ver ruta",
+    "hide": "Ocultar ruta",
+    "undo": "Deshacer",
+    "legend": "Oro: tú · Rosa: suministros · Rojo: peligro",
+    "blocked": "No hay paso. Mira hacia el hielo azul y rómpelo.",
+    "route": "Siguiente baya",
+    "warning": "Evita la posición actual del rival. Vigila el contador.",
+    "hit": "Entraste en la casilla del errante. Prueba otro camino.",
+    "caught": "El errante te alcanzó. Vigila el contador y bloquea su ruta.",
+    "edge": "Borde del campo. Elige otra dirección.",
+    "optional": "Las estrellas son opcionales; no hay límite de tiempo.",
+    "help": "Flechas: un paso. Mira al hielo y pulsa Espacio para romper; F construye. H: ruta · U: deshacer.",
+    "restored": "Última acción restaurada.",
+    "up": "Arriba",
+    "down": "Abajo",
+    "left": "Izquierda",
+    "right": "Derecha",
+    "facing": "Dirección",
+    "turn": "La flecha dorada señala la casilla que vas a modificar.",
+    "hitTitle": "Entraste en peligro",
+    "caughtTitle": "El errante te alcanzó",
+    "main": "Recoge los suministros rosas, rompe hielo para abrir caminos y construye muros para frenar al errante. Piensa sin límite de tiempo."
+  },
+  "pt-br": {
+    "objective": "MISSÃO DE RESGATE",
+    "home": "Volte ao acampamento dourado com os suprimentos.",
+    "collect": "Colete todas as frutas rosas.",
+    "threat": "O andarilho se move em",
+    "echo": "Mudar o gelo também move o andarilho.",
+    "hint": "Ver rota",
+    "hide": "Ocultar rota",
+    "undo": "Desfazer",
+    "legend": "Dourado: você · Rosa: suprimentos · Vermelho: perigo",
+    "blocked": "Sem passagem. Vire para o gelo azul e quebre-o.",
+    "route": "Próxima fruta",
+    "warning": "Evita a posição atual do rival. Observe o contador.",
+    "hit": "Você entrou na casa do andarilho. Tente outro caminho.",
+    "caught": "O andarilho alcançou você. Observe o contador e bloqueie a rota.",
+    "edge": "Limite do campo. Escolha outra direção.",
+    "optional": "As estrelas são opcionais; não há limite de tempo.",
+    "help": "Setas: um passo. Vire para o gelo e use Espaço para quebrar; F constrói. H: rota · U: desfazer.",
+    "restored": "Última ação restaurada.",
+    "up": "Cima",
+    "down": "Baixo",
+    "left": "Esquerda",
+    "right": "Direita",
+    "facing": "Direção",
+    "turn": "A seta dourada aponta a casa que será modificada.",
+    "hitTitle": "Você entrou em perigo",
+    "caughtTitle": "O andarilho alcançou você",
+    "main": "Colete os suprimentos rosas, quebre gelo para abrir caminhos e faça paredes contra o andarilho. Pense sem limite de tempo."
+  },
+  "fr": {
+    "objective": "MISSION DE SECOURS",
+    "home": "Rapportez les provisions au camp doré.",
+    "collect": "Ramassez toutes les baies roses.",
+    "threat": "Déplacement du rôdeur dans",
+    "echo": "Modifier la glace fait aussi avancer le rôdeur.",
+    "hint": "Voir le trajet",
+    "hide": "Masquer le trajet",
+    "undo": "Annuler",
+    "legend": "Or : vous · Rose : provisions · Rouge : danger",
+    "blocked": "Passage fermé. Regardez la glace bleue puis brisez-la.",
+    "route": "Prochaine baie",
+    "warning": "Évite la position actuelle du rôdeur. Surveillez le compteur.",
+    "hit": "Vous êtes entré sur la case du rôdeur. Changez de chemin.",
+    "caught": "Le rôdeur vous a rattrapé. Surveillez le compteur et bloquez-le.",
+    "edge": "Bord du terrain. Choisissez une autre direction.",
+    "optional": "Les étoiles sont facultatives ; aucun temps limité.",
+    "help": "Flèches : une case. Regardez la glace, Espace la brise ; F construit. H : trajet · U : annuler.",
+    "restored": "Dernière action annulée.",
+    "up": "Haut",
+    "down": "Bas",
+    "left": "Gauche",
+    "right": "Droite",
+    "facing": "Direction",
+    "turn": "La flèche dorée indique la case à modifier.",
+    "hitTitle": "Vous êtes entré dans le danger",
+    "caughtTitle": "Le rôdeur vous a rattrapé",
+    "main": "Ramassez les provisions roses, brisez la glace pour ouvrir un chemin et bloquez le rôdeur avec des murs. Prenez votre temps."
+  },
+  "de": {
+    "objective": "RETTUNGSMISSION",
+    "home": "Bringe die Vorräte zum goldenen Lager zurück.",
+    "collect": "Sammle alle rosa Beeren.",
+    "threat": "Wanderer bewegt sich in",
+    "echo": "Eisänderungen bewegen auch den Wanderer.",
+    "hint": "Route zeigen",
+    "hide": "Route ausblenden",
+    "undo": "Rückgängig",
+    "legend": "Gold: du · Rosa: Vorräte · Rot: Gefahr",
+    "blocked": "Kein freier Weg. Schau zum blauen Eis und brich es.",
+    "route": "Nächste Beere",
+    "warning": "Meidet die aktuelle Gegnerposition. Beachte den Zähler.",
+    "hit": "Du bist auf das Feld des Wanderers gegangen. Wähle einen anderen Weg.",
+    "caught": "Der Wanderer hat dich erwischt. Beachte den Zähler und blockiere ihn.",
+    "edge": "Rand des Feldes. Wähle eine andere Richtung.",
+    "optional": "Sterne sind freiwillig; es gibt kein Zeitlimit.",
+    "help": "Pfeile: ein Feld. Zum Eis schauen, Leertaste bricht es; F baut. H: Route · U: zurück.",
+    "restored": "Letzte Aktion zurückgenommen.",
+    "up": "Oben",
+    "down": "Unten",
+    "left": "Links",
+    "right": "Rechts",
+    "facing": "Blickrichtung",
+    "turn": "Der goldene Pfeil zeigt auf das Feld für die Eisänderung.",
+    "hitTitle": "Du bist in die Gefahr gelaufen",
+    "caughtTitle": "Der Wanderer hat dich erwischt",
+    "main": "Sammle rosa Vorräte, öffne Wege durch Eis und halte den Wanderer mit Wänden auf. Überlege in Ruhe, ohne Zeitlimit."
+  },
+  "it": {
+    "objective": "MISSIONE DI SOCCORSO",
+    "home": "Riporta le provviste al campo dorato.",
+    "collect": "Raccogli tutte le bacche rosa.",
+    "threat": "Il vagabondo si muove tra",
+    "echo": "Modificare il ghiaccio muove anche il vagabondo.",
+    "hint": "Mostra percorso",
+    "hide": "Nascondi percorso",
+    "undo": "Annulla",
+    "legend": "Oro: tu · Rosa: provviste · Rosso: pericolo",
+    "blocked": "Nessun passaggio. Guarda il ghiaccio blu e rompilo.",
+    "route": "Prossima bacca",
+    "warning": "Evita la posizione attuale del rivale. Controlla il contatore.",
+    "hit": "Sei entrato nella casella del vagabondo. Cambia strada.",
+    "caught": "Il vagabondo ti ha raggiunto. Controlla il contatore e bloccalo.",
+    "edge": "Bordo del campo. Scegli un’altra direzione.",
+    "optional": "Le stelle sono facoltative; nessun limite di tempo.",
+    "help": "Frecce: una casella. Guarda il ghiaccio, Spazio lo rompe; F costruisce. H: percorso · U: annulla.",
+    "restored": "Ultima azione annullata.",
+    "up": "Su",
+    "down": "Giù",
+    "left": "Sinistra",
+    "right": "Destra",
+    "facing": "Direzione",
+    "turn": "La freccia dorata indica la casella da modificare.",
+    "hitTitle": "Sei entrato nel pericolo",
+    "caughtTitle": "Il vagabondo ti ha raggiunto",
+    "main": "Raccogli le provviste rosa, rompi il ghiaccio e costruisci muri per fermare il vagabondo. Ragiona senza limiti di tempo."
+  },
+  "ru": {
+    "objective": "СПАСАТЕЛЬНАЯ МИССИЯ",
+    "home": "Верните припасы в золотой лагерь.",
+    "collect": "Соберите все розовые ягоды.",
+    "threat": "Странник двинется через",
+    "echo": "Изменение льда тоже двигает странника.",
+    "hint": "Показать путь",
+    "hide": "Скрыть путь",
+    "undo": "Отменить ход",
+    "legend": "Золото: вы · Розовый: припасы · Красный: опасность",
+    "blocked": "Путь закрыт. Повернитесь к синему льду и сломайте его.",
+    "route": "Следующая ягода",
+    "warning": "Обходит текущую клетку врага. Следите за счётчиком.",
+    "hit": "Вы вошли на клетку странника. Выберите другой путь.",
+    "caught": "Странник догнал вас. Следите за счётчиком и стройте преграды.",
+    "edge": "Край поля. Выберите другое направление.",
+    "optional": "Звёзды необязательны; ограничения времени нет.",
+    "help": "Стрелки: шаг. Повернитесь ко льду, Пробел ломает его; F строит. H: путь · U: отмена.",
+    "restored": "Последний ход отменён.",
+    "up": "Вверх",
+    "down": "Вниз",
+    "left": "Влево",
+    "right": "Вправо",
+    "facing": "Направление",
+    "turn": "Золотая стрелка указывает клетку для изменения льда.",
+    "hitTitle": "Вы вошли в опасную клетку",
+    "caughtTitle": "Странник вас догнал",
+    "main": "Собирайте розовые припасы, ломайте лёд и преграждайте путь страннику стенами. Обдумывайте каждый шаг без ограничения времени."
+  },
+  "hi": {
+    "objective": "बर्फ़ीला बचाव अभियान",
+    "home": "सामान लेकर सुनहरे शिविर में लौटें।",
+    "collect": "सभी गुलाबी बेरियाँ इकट्ठी करें।",
+    "threat": "पीछा करने वाला चलेगा",
+    "echo": "बर्फ बदलने से भी पीछा करने वाला चलता है।",
+    "hint": "रास्ता दिखाएँ",
+    "hide": "रास्ता छिपाएँ",
+    "undo": "एक चाल वापस",
+    "legend": "सुनहरा: आप · गुलाबी: सामान · लाल: खतरा",
+    "blocked": "रास्ता बंद है। नीली बर्फ की ओर मुड़कर उसे तोड़ें।",
+    "route": "अगली बेरी",
+    "warning": "दुश्मन की मौजूदा जगह से बचता है। चाल गिनती देखें।",
+    "hit": "आप दुश्मन की जगह पर चले गए। दूसरा रास्ता चुनें।",
+    "caught": "दुश्मन ने पकड़ लिया। गिनती देखें और दीवार बनाएँ।",
+    "edge": "मैदान का किनारा। दूसरी दिशा चुनें।",
+    "optional": "तारे वैकल्पिक हैं; समय सीमा नहीं है।",
+    "help": "तीर: एक कदम। बर्फ की ओर मुड़ें, Space तोड़ेगा; F दीवार बनाएगा। H: रास्ता · U: वापस।",
+    "restored": "पिछली चाल वापस हुई।",
+    "up": "ऊपर",
+    "down": "नीचे",
+    "left": "बाएँ",
+    "right": "दाएँ",
+    "facing": "दिशा",
+    "turn": "सुनहरा तीर उस खाने को दिखाता है जिसकी बर्फ बदलेगी।",
+    "hitTitle": "आप खतरे वाले खाने में गए",
+    "caughtTitle": "दुश्मन ने आपको पकड़ लिया",
+    "main": "गुलाबी सामान इकट्ठा करें, बर्फ तोड़कर रास्ता खोलें और दीवार से दुश्मन को रोकें। बिना समय सीमा हर चाल सोचें।"
+  },
+  "ar": {
+    "objective": "مهمة الإنقاذ",
+    "home": "أعد المؤن إلى المخيم الذهبي.",
+    "collect": "اجمع كل التوت الوردي.",
+    "threat": "يتحرك المتجول بعد",
+    "echo": "تغيير الجليد يحرك المتجول أيضاً.",
+    "hint": "إظهار المسار",
+    "hide": "إخفاء المسار",
+    "undo": "تراجع",
+    "legend": "ذهبي: أنت · وردي: مؤن · أحمر: خطر",
+    "blocked": "الطريق مغلق. واجه الجليد الأزرق ثم اكسره.",
+    "route": "التوت التالي",
+    "warning": "يتجنب موقع العدو الحالي. راقب عداد الحركة.",
+    "hit": "دخلت مربع المتجول. اختر طريقاً آخر.",
+    "caught": "أمسك بك المتجول. راقب العداد واسد طريقه.",
+    "edge": "حافة الحقل. اختر اتجاهاً آخر.",
+    "optional": "النجوم اختيارية؛ لا يوجد حد زمني.",
+    "help": "الأسهم: خطوة. واجه الجليد واكسره بمفتاح Space؛ F يبني. H: مسار · U: تراجع.",
+    "restored": "تم التراجع عن الحركة الأخيرة.",
+    "up": "أعلى",
+    "down": "أسفل",
+    "left": "يسار",
+    "right": "يمين",
+    "facing": "الاتجاه",
+    "turn": "يشير السهم الذهبي إلى المربع الذي ستغير جليده.",
+    "hitTitle": "دخلت مربع الخطر",
+    "caughtTitle": "أمسك بك المتجول",
+    "main": "اجمع المؤن الوردية، واكسر الجليد لفتح الطريق، وابن جدراناً لصد المتجول. فكر بكل خطوة دون حد زمني."
+  }
+};
+  /* FROST_COACH_COPY_END */
+
+  const coachText = k => (FROST_COACH_COPY[frostLocale()] || FROST_COACH_COPY.en)[k];
+  let history=[], routeShown=false, advicePath=null, lossReason='caught';
+  let visualPlayer=null, visualEnemy=null, effects=[];
+  const reducedMotion=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function snapshot() {
+    return {player:{...state.player},enemy:{...state.enemy},facing:{...state.facing},walls:new Set(state.walls),fruits:new Set(state.fruits),moves:state.moves,edits:state.edits};
+  }
+  function remember() { history.push(snapshot());if(history.length>48)history.shift(); }
+  function undoRescue() {
+    if(state.screen!=='battle'||state.resolving||!history.length)return;
+    Object.assign(state,history.pop());effects=[];visualPlayer=null;visualEnemy=null;
+    updateLabels();syncMastery();syncCoach();coachStatus(coachText('restored'));
+  }
+  function coachStatus(value) {
+    const node=$('battle-status');node.textContent=value;
+    node.classList.remove('frost-beat');void node.offsetWidth;node.classList.add('frost-beat');
+  }
+  function syncCoach() {
+    const host=$('rescue-coach');if(!host || !state.player)return;
+    document.querySelector(".main-summary").textContent=coachText("main");
+    const home=mastery.rules(stageNumber()).home && !state.fruits.size;
+    $('rescue-objective').textContent=home?coachText('home'):coachText('collect');
+    $('rescue-kicker').textContent=coachText('objective');
+    $('rescue-count').textContent=`${state.initialFruitCount-state.fruits.size} / ${state.initialFruitCount}`;
+    $('rescue-meter').max=state.initialFruitCount||1;$('rescue-meter').value=state.initialFruitCount-state.fruits.size;
+    $('rescue-threat').textContent=`${coachText('threat')} ${8-state.moves%8}`;
+    host.dataset.danger=String(8-state.moves%8<=2);
+    host.dataset.echo=String(mastery.rules(stageNumber()).echo);
+    const f=state.facing, name=f.y<0?'up':f.y>0?'down':f.x<0?'left':'right';
+    $('rescue-facing').textContent=`${coachText('facing')} ${coachText(name)}`;
+    $('rescue-route').textContent=coachText(routeShown?'hide':'hint');
+    $('rescue-route').setAttribute('aria-pressed',String(routeShown));
+    $('rescue-undo').textContent=coachText('undo');$('rescue-undo').disabled=!history.length||state.resolving;
+    $('rescue-legend').textContent=coachText('legend');
+    $('rescue-rules').textContent=mastery.rules(stageNumber()).echo?coachText('echo'):coachText('optional');
+    const grid=Array.from({length:rows},(_,y)=>Array.from({length:cols},(_,x)=>state.walls.has(key(x,y))?'I':'.').join(''));
+    const targets=home?[{x:1,y:5}]:[...state.fruits].map(k=>{const [x,y]=k.split(',').map(Number);return{x,y};});
+    advicePath=routeShown?planRescueRoute({grid,start:state.player,targets,enemy:state.enemy}):null;
+    $('rescue-advice').textContent=!state.fruits.size&&!home?frostResultText('winTitle'):routeShown?(advicePath?`${home?coachText('home'):coachText('route')} · ${advicePath.length} → ${coachText('warning')}`:coachText('blocked')):coachText('turn');
+    for(const name of ['up','down','left','right'])document.querySelector(`[data-action="${name}"]`)?.setAttribute('aria-label',coachText(name));
+    $('frost-touch-hint').textContent=coachText('help');
+  }
+  function resetCoach() {history=[];routeShown=false;advicePath=null;effects=[];visualPlayer=null;visualEnemy=null;state.initialFruitCount=state.fruits.size;syncCoach();}
+  function drawRescueOverlay() {
+    if(!state.player)return;
+    ctx.save();
+    if(routeShown&&advicePath?.length){
+      ctx.strokeStyle='#70f5d1';ctx.lineWidth=5;ctx.setLineDash([6,10]);ctx.beginPath();
+      ctx.moveTo(state.player.x*cell+36,state.player.y*cell+36);
+      for(const p of advicePath)ctx.lineTo(p.x*cell+36,p.y*cell+36);ctx.stroke();ctx.setLineDash([]);
+      const target=advicePath.at(-1);ctx.strokeStyle='#70f5d1';ctx.lineWidth=3;ctx.strokeRect(target.x*cell+9,target.y*cell+9,54,54);
+    }
+    const p=state.player,f=state.facing,x=(p.x+f.x)*cell+36,y=(p.y+f.y)*cell+36;
+    if(x>0&&x<cols*cell&&y>0&&y<rows*cell){ctx.fillStyle='#ffd36b24';ctx.fillRect(x-33,y-33,66,66);ctx.strokeStyle='#ffd36b';ctx.lineWidth=3;ctx.strokeRect(x-31,y-31,62,62);}
+    ctx.translate(p.x*cell+36,p.y*cell+36);ctx.rotate(Math.atan2(f.y,f.x));
+    ctx.fillStyle='#ffd36b';ctx.beginPath();ctx.moveTo(37,0);ctx.lineTo(25,-9);ctx.lineTo(25,9);ctx.closePath();ctx.fill();ctx.restore();
+    const now=performance.now();effects=effects.filter(e=>now-e.at<420).slice(-16);
+    for(const e of effects){const t=(now-e.at)/420;ctx.save();ctx.globalAlpha=1-t;ctx.strokeStyle=e.color;ctx.lineWidth=5*(1-t);ctx.beginPath();ctx.arc(e.x*cell+36,e.y*cell+36,16+(reducedMotion()?0:t*40),0,Math.PI*2);ctx.stroke();ctx.restore();}
+  }
+
   let battleStatusKey = "controls";
   const setBattleStatus = (key) => {
     battleStatusKey = key;
@@ -256,43 +718,51 @@
 }
   function stageCards(){const copy=frostStageText();const stageLabel=frostStageLabel();const roomLabel=frostRoomLabel();const cards=Array.from({length:TOTAL_STAGES},(_,index)=>{const stage=index+1;const chapter=Math.floor(index/ROOMS_PER_CHAPTER)+1;const room=index%ROOMS_PER_CHAPTER+1;const chapterName=frostChapterName(chapter,copy);const label=`${stageLabel} ${stage}: ${copy.chapter} ${chapter}${copy.chapterSuffix || ""}, ${roomLabel} ${room}`;return `<button type="button" class="stage-card" data-wp-stage-card data-wp-enter-battle data-stage-index="${stage}" data-chapter="${chapter}" data-room="${room}" aria-label="${label}"><strong>${stageLabel} ${stage}</strong><span>${chapterName} · ${roomLabel} ${room}</span><small>${copy.chapter} ${chapter}${copy.chapterSuffix || ""}</small></button>`;}).join("");$("stage-list").innerHTML=cards;$("stage-list").querySelectorAll("button").forEach((b)=>b.addEventListener("click",()=>startRoom(Number(b.dataset.chapter),Number(b.dataset.room))));syncFrostStageAvailability();syncMastery();}
   function layoutFor(chapter, room) { const variant=(chapter-1)*ROOMS_PER_CHAPTER+room-1; const walls=new Set([key(3,1),key(3,2),key(3,3),key(5,3),key(6,3),key(8,2),key(8,3),key(8,4),key(4,5),key(5,5),key(7,5)]); const variants=[[2,2],[4,1],[6,4],[9,5],[2,5],[7,1],[9,2],[5,1]]; const extra=variants[variant%variants.length]; walls.add(key(extra[0],extra[1])); if(chapter>=2)walls.add(key(6,1)); if(chapter>=3)walls.add(key(9,4)); if(chapter>=4)walls.add(key(1,2)); const candidates=[[2,1],[5,1],[7,2],[10,4],[2,4],[6,6],[9,6],[10,1],[1,1]]; const fruits=new Set(); candidates.forEach(([x,y],i)=>{if(!walls.has(key(x,y))&&i<5+(variant%3))fruits.add(key(x,y));}); return {walls,fruits,enemy:{x:10-(variant%3),y:1+(variant%2)}}; }
-  function buildRoom(){window.clearTimeout(state.finishTimer);state.finishTimer=0;const layout=layoutFor(state.chapter,state.room);state.player={x:1,y:5};state.enemy=layout.enemy;state.facing={x:1,y:0};state.moves=0;state.edits=0;state.resolving=false;state.won=false;state.ticks=0;state.walls=layout.walls;state.fruits=layout.fruits;$(`room-label`).textContent=`${frostStageText().chapter} ${state.chapter} · ${frostRoomLabel()} ${state.room} / ${ROOMS_PER_CHAPTER}`;setBattleStatus("controls");updateLabels();syncMastery();}
+  function buildRoom(){window.clearTimeout(state.finishTimer);state.finishTimer=0;const layout=layoutFor(state.chapter,state.room);state.player={x:1,y:5};state.enemy=layout.enemy;state.facing={x:1,y:0};state.moves=0;state.edits=0;state.resolving=false;state.won=false;state.ticks=0;state.walls=layout.walls;state.fruits=layout.fruits;$(`room-label`).textContent=`${frostStageText().chapter} ${state.chapter} · ${frostRoomLabel()} ${state.room} / ${ROOMS_PER_CHAPTER}`;resetCoach();setBattleStatus("controls");updateLabels();syncMastery();coachStatus(coachText("help"));}
   function startRoom(chapter=1,room=1){state.chapter=chapter;state.room=room;buildRoom();show("battle");window.WeightPlayAudio?.play?.("game.start");
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
-  function updateLabels(){$("fruit-label").textContent=`Berries ${state.fruits.size}`;}
+  function updateLabels(){$("fruit-label").textContent=`◆ ${state.fruits.size}`;}
   function updateProgress(){const value=`Best rooms: ${state.best}`;$("main-progress").textContent=window.wpFiveText?window.wpFiveText(value):value;}
   function canMove(x,y){return x>=0&&x<cols&&y>=0&&y<rows&&!state.walls.has(key(x,y));}
   function move(dx,dy) {
     if(state.screen!=="battle" || state.resolving) return;
+    const previousFacing={...state.facing};
     state.facing={x:dx,y:dy};
     const nx=state.player.x+dx, ny=state.player.y+dy;
-    if(!canMove(nx,ny)){setBattleStatus("wallAhead");return;}
+    if(!canMove(nx,ny)){syncCoach();if(nx<0||ny<0||nx>=cols||ny>=rows)coachStatus(coachText("edge"));else setBattleStatus("wallAhead");return;}
+    const newFacing=state.facing;state.facing=previousFacing;remember();state.facing=newFacing;
     state.player={x:nx,y:ny}; state.moves+=1;
-    if(nx===state.enemy.x && ny===state.enemy.y){finish(false);return;}
+    if(nx===state.enemy.x && ny===state.enemy.y){lossReason="hit";finish(false);return;}
     const collected=state.fruits.delete(key(nx,ny));
-    if(collected){notifyAnalytics("berry_collected",{remaining_berries:state.fruits.size});setBattleStatus(state.fruits.size===0?"berryClear":"berry");}
+    if(collected){effects.push({x:nx,y:ny,at:performance.now(),color:"#ff8198"});notifyAnalytics("berry_collected",{remaining_berries:state.fruits.size});setBattleStatus(state.fruits.size===0?"berryClear":"berry");}
     notifyAnalytics("first_move",{action:`move_${dx}_${dy}`});updateLabels();syncMastery();
     if(state.fruits.size===0 && (!mastery.rules(stageNumber()).home || (nx===1 && ny===5))){
-      state.resolving=true;draw();
+      state.resolving=true;syncCoach();draw();
       const delay=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches?0:360;
       state.finishTimer=window.setTimeout(()=>finish(true),delay);return;
     }
     if(state.moves%8===0)enemyStep();
+    syncCoach();
   }
-  function breakIce(){if(state.screen!=="battle"||state.resolving)return;const p=state.player,nx=p.x+state.facing.x,ny=p.y+state.facing.y;if(state.walls.delete(key(nx,ny))){setBattleStatus("cracked");notifyAnalytics("first_edit",{action:"break"});afterEdit();}else setBattleStatus("noBreak");}
-  function buildIce(){if(state.screen!=="battle"||state.resolving)return;const p=state.player,nx=p.x+state.facing.x,ny=p.y+state.facing.y;if(nx>0&&nx<cols-1&&ny>0&&ny<rows-1&&!state.walls.has(key(nx,ny))&&!state.fruits.has(key(nx,ny))&&!(state.enemy.x===nx&&state.enemy.y===ny)){setBattleStatus("built");state.walls.add(key(nx,ny));notifyAnalytics("first_edit",{action:"build"});afterEdit();}else setBattleStatus("noBuild");}
-  function enemyStep(){const e=state.enemy,p=state.player;const options=[];if(Math.abs(p.x-e.x)>=Math.abs(p.y-e.y))options.push([Math.sign(p.x-e.x),0],[0,Math.sign(p.y-e.y)]);else options.push([0,Math.sign(p.y-e.y)],[Math.sign(p.x-e.x),0]);for(const [dx,dy] of options){if(canMove(e.x+dx,e.y+dy)){e.x+=dx;e.y+=dy;break;}}if(e.x===p.x&&e.y===p.y)finish(false);}
+  function breakIce(){if(state.screen!=="battle"||state.resolving)return;const p=state.player,nx=p.x+state.facing.x,ny=p.y+state.facing.y;if(state.walls.has(key(nx,ny))){remember();state.walls.delete(key(nx,ny));effects.push({x:nx,y:ny,at:performance.now(),color:"#8ee7ff"});setBattleStatus("cracked");notifyAnalytics("first_edit",{action:"break"});afterEdit();}else setBattleStatus("noBreak");}
+  function buildIce(){if(state.screen!=="battle"||state.resolving)return;const p=state.player,nx=p.x+state.facing.x,ny=p.y+state.facing.y;if(nx>0&&nx<cols-1&&ny>0&&ny<rows-1&&!state.walls.has(key(nx,ny))&&!state.fruits.has(key(nx,ny))&&!(state.enemy.x===nx&&state.enemy.y===ny)){remember();effects.push({x:nx,y:ny,at:performance.now(),color:"#8ee7ff"});setBattleStatus("built");state.walls.add(key(nx,ny));notifyAnalytics("first_edit",{action:"build"});afterEdit();}else setBattleStatus("noBuild");}
+  function enemyStep(){const e=state.enemy,p=state.player;const options=[];if(Math.abs(p.x-e.x)>=Math.abs(p.y-e.y))options.push([Math.sign(p.x-e.x),0],[0,Math.sign(p.y-e.y)]);else options.push([0,Math.sign(p.y-e.y)],[Math.sign(p.x-e.x),0]);for(const [dx,dy] of options){if(canMove(e.x+dx,e.y+dy)){e.x+=dx;e.y+=dy;break;}}if(e.x===p.x&&e.y===p.y){lossReason="caught";finish(false);}}
   function drawAtlas(art,crop,x,y,width,height){const scale=Math.min(width/crop[2],height/crop[3]);const w=crop[2]*scale,h=crop[3]*scale;ctx.drawImage(art,...crop,x+(width-w)/2,y+(height-h)/2,w,h);}
-  function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="#061b2c";ctx.fillRect(0,0,canvas.width,canvas.height);for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){ctx.strokeStyle="#174c68";ctx.strokeRect(x*cell,y*cell,cell,cell);if(state.walls.has(key(x,y))){ctx.fillStyle="#6dd4e8";ctx.fillRect(x*cell+6,y*cell+6,cell-12,cell-12);ctx.fillStyle="#c8f7ff";ctx.fillRect(x*cell+18,y*cell+18,cell-36,5);if(propArt.complete&&propArt.naturalWidth)drawAtlas(propArt,[0,0,500,650],x*cell+7,y*cell+5,cell-14,cell-10);}}if(mastery.rules(stageNumber()).home){ctx.save();ctx.strokeStyle="#ffd36b";ctx.lineWidth=5;ctx.strokeRect(cell+8,5*cell+8,cell-16,cell-16);ctx.font="bold 24px system-ui";ctx.textAlign="center";ctx.fillStyle="#ffd36b";ctx.fillText("⌂",cell+36,5*cell+44);ctx.restore();}state.fruits.forEach((v)=>{const [x,y]=v.split(",").map(Number);if(propArt.complete&&propArt.naturalWidth)drawAtlas(propArt,[480,0,350,600],x*cell+12,y*cell+12,48,48);else if(berryArt.complete&&berryArt.naturalWidth)drawAtlas(berryArt,[625,5,310,340],x*cell+12,y*cell+12,48,48);else{ctx.fillStyle="#ff8198";ctx.beginPath();ctx.arc(x*cell+36,y*cell+36,15,0,Math.PI*2);ctx.fill();ctx.fillStyle="#ffd36b";ctx.fillRect(x*cell+30,y*cell+17,12,7);}});actor(state.enemy,drifterArt,"#d8f2ff","#176079",[70,760,650,480]);actor(state.player,heroArt,"#ffd36b","#24465b",[0,0,625,775]);const rtl=frostLocale()==="ar";ctx.direction=rtl?"rtl":"ltr";ctx.textAlign=rtl?"right":"left";ctx.fillStyle="#c5e0ea";ctx.font="bold 32px system-ui";ctx.fillText(text("BREAK THE ICE"),rtl?canvas.width-18:18,28);}
-  function actor(o,art,body,ink,crop){ctx.save();ctx.translate(o.x*cell+36,o.y*cell+36);if(art.complete&&art.naturalWidth)drawAtlas(art,crop,-28,-28,56,56);else{ctx.fillStyle=body;ctx.beginPath();ctx.arc(0,0,22,0,Math.PI*2);ctx.fill();ctx.fillStyle=ink;ctx.fillRect(-13,-5,26,8);ctx.fillRect(-9,10,18,7);}ctx.restore();}
+  function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="#0b3048";ctx.fillRect(0,0,canvas.width,canvas.height);for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){ctx.fillStyle=(x+y)%2?"#123e56":"#10394f";ctx.fillRect(x*cell,y*cell,cell,cell);ctx.strokeStyle="#286078";ctx.strokeRect(x*cell,y*cell,cell,cell);if(state.walls.has(key(x,y))){ctx.fillStyle="#6dd4e8";ctx.fillRect(x*cell+6,y*cell+6,cell-12,cell-12);ctx.fillStyle="#c8f7ff";ctx.fillRect(x*cell+18,y*cell+18,cell-36,5);if(propArt.complete&&propArt.naturalWidth)drawAtlas(propArt,[0,0,500,650],x*cell+7,y*cell+5,cell-14,cell-10);}}if(mastery.rules(stageNumber()).home){ctx.save();ctx.strokeStyle="#ffd36b";ctx.lineWidth=5;ctx.strokeRect(cell+8,5*cell+8,cell-16,cell-16);ctx.font="bold 24px system-ui";ctx.textAlign="center";ctx.fillStyle="#ffd36b";ctx.fillText("⌂",cell+36,5*cell+44);ctx.restore();}state.fruits.forEach((v)=>{const [x,y]=v.split(",").map(Number);if(propArt.complete&&propArt.naturalWidth)drawAtlas(propArt,[480,0,350,600],x*cell+12,y*cell+12,48,48);else if(berryArt.complete&&berryArt.naturalWidth)drawAtlas(berryArt,[625,5,310,340],x*cell+12,y*cell+12,48,48);else{ctx.fillStyle="#ff8198";ctx.beginPath();ctx.arc(x*cell+36,y*cell+36,15,0,Math.PI*2);ctx.fill();ctx.fillStyle="#ffd36b";ctx.fillRect(x*cell+30,y*cell+17,12,7);}});actor(state.enemy,drifterArt,"#d8f2ff","#176079",[70,760,650,480]);actor(state.player,heroArt,"#ffd36b","#24465b",[0,0,625,775]);drawRescueOverlay();}
+  function actor(o,art,body,ink,crop){ctx.save();const isPlayer=o===state.player;let visual=isPlayer?visualPlayer:visualEnemy;
+    if(!visual||reducedMotion())visual={x:o.x,y:o.y};else {visual.x+=(o.x-visual.x)*.42;visual.y+=(o.y-visual.y)*.42;}
+    if(isPlayer)visualPlayer=visual;else visualEnemy=visual;
+    ctx.translate(visual.x*cell+36,visual.y*cell+36);
+    ctx.strokeStyle=isPlayer?'#ffd36b':'#ff657f';ctx.lineWidth=4;ctx.strokeRect(-30,-30,60,60);
+    if(art.complete&&art.naturalWidth)drawAtlas(art,crop,-28,-28,56,56);else{ctx.fillStyle=body;ctx.beginPath();ctx.arc(0,0,22,0,Math.PI*2);ctx.fill();ctx.fillStyle=ink;ctx.fillRect(-13,-5,26,8);ctx.fillRect(-9,10,18,7);}ctx.restore();}
   // Localized Result transaction overrides the prototype fallback above while
   // preserving the existing finish/show flow.
-  function afterEdit(){state.edits+=1;syncMastery();if(mastery.rules(stageNumber()).echo)enemyStep();}
+  function afterEdit(){state.edits+=1;syncMastery();if(mastery.rules(stageNumber()).echo)enemyStep();syncCoach();}
   function renderResult(win) {
     const c=masteryCopy(), stage=stageNumber(), rule=mastery.rules(stage);
-    $("result-title").textContent=win&&stage===30?c[7]:frostResultText(win?"winTitle":"loseTitle");
-    $("result-copy").textContent=[frostResultText(win?"winCopy":"loseCopy"), win?starsText(mastery.grade(stage,state.edits,state.moves)):"",
+    $("result-title").textContent=win&&stage===30?c[7]:(win?frostResultText("winTitle"):coachText(lossReason+"Title"));
+    $("result-copy").textContent=[win?frostResultText("winCopy"):coachText(lossReason), win?starsText(mastery.grade(stage,state.edits,state.moves)):"",
       `${c[2]}: ${state.edits} / ${rule.edits} · ${c[3]}: ${state.moves} / ${rule.steps}`, c[8]].filter(Boolean).join("\n");
     $("to-stages").textContent=frostResultText("stages");$("next").textContent=frostResultText("next");
     $("next").disabled=!win||stage===30;$("retry").textContent=frostResultText("retry");
@@ -319,6 +789,13 @@
     const locale=aliases[event.target.value]||event.target.value.toLowerCase();
     if(mastery.copy[locale])location.assign(`/${locale}/games/animal-frost-maze/${location.search}`);
   });
-  window.addEventListener("keydown",(e)=>{const k=e.code;if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","KeyW","KeyA","KeyS","KeyD","Space","KeyF"].includes(k)){e.preventDefault();if(k==="Space")breakIce();else if(k==="KeyF")buildIce();else if(k==="ArrowUp"||k==="KeyW")move(0,-1);else if(k==="ArrowDown"||k==="KeyS")move(0,1);else if(k==="ArrowLeft"||k==="KeyA")move(-1,0);else move(1,0)}});document.querySelectorAll("[data-action]").forEach((b)=>b.addEventListener("pointerdown",()=>actions[b.dataset.action]()));
+  $('rescue-route').addEventListener('click',()=>{if(state.screen!=='battle'||state.resolving)return;routeShown=!routeShown;syncCoach();canvas.focus({preventScroll:true});});
+  $('rescue-undo').addEventListener('click',()=>{undoRescue();canvas.focus({preventScroll:true});});
+  window.addEventListener('keydown',event=>{
+    if(state.screen!=='battle'||[...document.querySelectorAll('.wp-shell-settings-popover')].some(n=>getComputedStyle(n).display!=='none'&&n.getClientRects().length)||/^(INPUT|SELECT|TEXTAREA)$/.test(event.target.tagName))return;
+    if(event.code==='KeyU'){event.preventDefault();undoRescue();}
+    if(event.code==='KeyH'){event.preventDefault();routeShown=!routeShown;syncCoach();}
+  });
+  window.addEventListener("keydown",(e)=>{if(state.screen!=="battle"||[...document.querySelectorAll('.wp-shell-settings-popover')].some(n=>getComputedStyle(n).display!=='none'&&n.getClientRects().length)||/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName))return;const k=e.code;if(k==="Space"&&/^(BUTTON|A)$/.test(e.target.tagName))return;if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","KeyW","KeyA","KeyS","KeyD","Space","KeyF"].includes(k)){e.preventDefault();if(k==="Space")breakIce();else if(k==="KeyF")buildIce();else if(k==="ArrowUp"||k==="KeyW")move(0,-1);else if(k==="ArrowDown"||k==="KeyS")move(0,1);else if(k==="ArrowLeft"||k==="KeyA")move(-1,0);else move(1,0)}});document.querySelectorAll("[data-action]").forEach((b)=>b.addEventListener("click",()=>{actions[b.dataset.action]();canvas.focus({preventScroll:true});}));
   $("start-game").addEventListener("click",()=>{show("stage");stageCards()});document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>show(b.dataset.back)));$("retry").addEventListener("click",()=>__wpReplayStart(() => startRoom(state.chapter,state.room)));$("next").addEventListener("click",()=>{const currentStage=(state.chapter-1)*ROOMS_PER_CHAPTER+state.room;if(!state.won||currentStage>=TOTAL_STAGES)return;const nextStage=currentStage+1;startRoom(Math.floor((nextStage-1)/ROOMS_PER_CHAPTER)+1,((nextStage-1)%ROOMS_PER_CHAPTER)+1);});$("to-stages").addEventListener("click",()=>{show("stage");stageCards()});$("stage-list").addEventListener("scroll",()=>window.requestAnimationFrame(syncFrostStageAvailability),{passive:true});window.addEventListener("resize",()=>window.requestAnimationFrame(syncFrostStageAvailability));updateProgress();stageCards();buildRoom();draw();
 })();

@@ -62,6 +62,7 @@
   let progress = {};
   try { const saved = JSON.parse(localStorage.getItem(progressKey)); if (saved && typeof saved === 'object' && !Array.isArray(saved)) progress = Object.fromEntries(Object.entries(saved).filter(([key, value]) => /^\d+$/.test(key) && +key < meadows.length && Number.isInteger(value) && value >= 1 && value <= 3)); } catch (_) {}
   const sound = (event) => window.WeightPlayAudio?.play?.(event);
+  window.WeightPlayAudio?.preload?.(['ui.tick', 'board.undo', 'feedback.hint', 'feedback.error', 'result.win']);
   const $ = (id) => document.getElementById(id);
   const t = (key, vars = {}) => {
     const table = copy[state.locale] || copy.en || {};
@@ -93,7 +94,7 @@
     $('startBtn')?.classList.add('wp-standard-main-start');
     $('stageList')?.setAttribute('role', 'group');
     if ($('stageBackBtn')) { $('stageBackBtn').removeAttribute('data-copy'); $('stageBackBtn').textContent = '←'; $('stageBackBtn').setAttribute('aria-label', t('back')); }
-    if ($('battleBackBtn')) { $('battleBackBtn').removeAttribute('data-copy'); $('battleBackBtn').textContent = '←'; $('battleBackBtn').setAttribute('aria-label', t('back')); }
+    if ($('battleBackBtn')) { $('battleBackBtn').removeAttribute('data-copy'); $('battleBackBtn').textContent = '←'; $('battleBackBtn').setAttribute('aria-label', t('returnStage')); }
     $('battleHeading').hidden = true;
     if ($('battleSettingsBtn')) { $('battleSettingsBtn').hidden = true; $('battleSettingsBtn').tabIndex = -1; }
 
@@ -189,7 +190,7 @@
     $("soundBtn").textContent = state.sound ? t("soundOn") : t("soundOff");
     $("bestValue").textContent = readBest() || t("noBest");
     if ($('stageBackBtn')) $('stageBackBtn').setAttribute('aria-label', t('back'));
-    if ($('battleBackBtn')) $('battleBackBtn').setAttribute('aria-label', t('back'));
+    if ($('battleBackBtn')) $('battleBackBtn').setAttribute('aria-label', t('returnStage'));
     if ($('dewlineLeaveTitle')) $('dewlineLeaveTitle').textContent = t('leaveTitle');
     if ($('dewlineLeaveText')) $('dewlineLeaveText').textContent = t('leaveText');
     if ($('dewlineLeaveContinue')) $('dewlineLeaveContinue').textContent = t('continue');
