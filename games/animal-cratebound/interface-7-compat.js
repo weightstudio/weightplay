@@ -10,14 +10,14 @@
   if(!document.querySelector('link[data-wp-cratebound-interface7-corrections]')){
     const corrections=document.createElement('link');
     corrections.rel='stylesheet';
-    corrections.href=new URL('interface-7-corrections.css?v=20261018-cratebound-variety-v17',currentScript?.src||document.baseURI).href;
+    corrections.href=new URL('interface-7-corrections.css?v=20261018-cratebound-dark-follow-v18',currentScript?.src||document.baseURI).href;
     corrections.dataset.wpCrateboundInterface7Corrections='true';
     document.head.append(corrections);
   }
   if(!document.querySelector('link[data-wp-cratebound-interface7]')){
     const link=document.createElement("link");
     link.rel="stylesheet";
-    link.href=new URL("interface-7-cleanup.css?v=20261018-cratebound-variety-v17",currentScript?.src||location.href).href;
+    link.href=new URL("interface-7-cleanup.css?v=20261018-cratebound-dark-follow-v18",currentScript?.src||location.href).href;
     link.dataset.wpCrateboundInterface7="true";
     document.head.append(link);
   }
@@ -363,18 +363,20 @@
   function fit() {
     const r=renderer.domElement.getBoundingClientRect(),e=currentEngine;
     if(!e||r.width<1||r.height<1)return;
-    const key=`${r.width}/${r.height}/${e.overview}/${e.width}/${e.height}`;
+    const logicalScale=renderer.domElement.clientWidth>0?r.width/renderer.domElement.clientWidth:1;
+    const key=`${r.width}/${r.height}/${logicalScale}/${e.overview}/${e.width}/${e.height}`;
     if(key===lastSize)return;
     lastSize=key;renderer.setSize(Math.round(r.width),Math.round(r.height),false);
     const aspect=r.width/r.height,w=e.width||e.size,h=e.height||e.size;
-    const follow=!e.overview&&(w>11||h>11);
-    const height=follow?Math.max(9.5,9.5/aspect):Math.max(h*.78+1.8,(w+1.2)/aspect);
+    const follow=!e.overview;
+    // One world cell is 52 logical UI units, independent of map/aspect ratio.
+    const height=follow?r.height/(52*logicalScale):Math.max(h*.78+1.8,(w+1.2)/aspect);
     camera.left=-height*aspect/2;camera.right=height*aspect/2;camera.top=height/2;camera.bottom=-height/2;camera.updateProjectionMatrix();
     wrap.dataset.crateCamera=follow?'follow':e.overview?'overview':'fit';
     cameraInitialized=false;
   }
   function followCamera(shown,dt){
-    const e=currentEngine,w=e.width||e.size,h=e.height||e.size,follow=!e.overview&&(w>11||h>11);
+    const e=currentEngine,w=e.width||e.size,h=e.height||e.size,follow=!e.overview;
     const x=follow?shown.x-(w-1)/2:0,z=follow?shown.y-(h-1)/2:0;
     const amount=reduced.matches||!cameraInitialized?1:Math.min(1,dt*12);
     cameraX+=(x-cameraX)*amount;cameraZ+=(z-cameraZ)*amount;cameraInitialized=true;

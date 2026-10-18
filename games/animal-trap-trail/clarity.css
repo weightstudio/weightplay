@@ -41,7 +41,12 @@
   max-width: none !important; aspect-ratio: auto !important;
   align-self: stretch !important; justify-self: stretch !important;
   border: 1px solid #456a92; border-radius: 12px;
+  background: #0b1c34 url("assets/animal-trap-trail-moon-archive-v19.png") 20% center / cover no-repeat;
+  image-rendering: auto;
 }
+.trail-render-state[hidden] { display: none !important; }
+.trail-render-state { position: absolute; inset: 112px 8px 184px; z-index: 7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 20px; border-radius: 12px; background: #10243aee; color: #f4edda; text-align: center; }
+.trail-render-state button { min-height: 48px; width: min(100%,280px); }
 #battle-screen > .trail-guide {
   grid-area: 4 / 1; height: 56px; overflow: hidden;
   display: grid; grid-template-rows: 24px 24px; gap: 4px;
@@ -73,6 +78,7 @@
 }
 #battle-screen #result-screen { background: #0c1728f5; }
 #battle-screen #result-screen:not([hidden]) { animation: trail-enter 180ms ease-out; }
+.screen.active:not([hidden]) { animation: trail-enter 180ms ease-out; }
 #battle-screen:has(#result-screen:not([hidden])) > :not(#result-screen) { visibility: hidden; pointer-events: none; }
 #battle-screen #result-screen #next:disabled { opacity: .45; cursor: default; }
 @keyframes trail-enter { from { opacity: 0; } to { opacity: 1; } }
@@ -89,6 +95,7 @@
   #battle-screen > .touch-hint { grid-area: 4 / 2 !important; height: 32px; font-size: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .screen.active:not([hidden]) { animation-duration: 1ms; }
   #battle-screen .touch-controls > button, #battle-screen .touch-controls > button.is-held { transition: none; transform: none; }
   #battle-screen #result-screen:not([hidden]) { animation-duration: 1ms; }
 }

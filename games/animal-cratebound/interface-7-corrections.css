@@ -1,5 +1,36 @@
 /* Animal Cratebound — Interface 7 corrections that must be present before the
    legacy responsive rules can collapse Result actions. */
+/* Battle owns its dark palette, including the Battle-owned dialogs. */
+body[data-wp-game-id="animal-cratebound"] #battleScreen {
+  color-scheme: dark;
+  --wp-ui-control:#173248;
+  --wp-ui-control-text:#f1f7fc;
+  --wp-ui-border:#59768c;
+  --wp-ui-primary:#244f61;
+  --wp-ui-primary-text:#f1fffb;
+  --wp-ui-accent:#83e5c3;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen button {
+  background:var(--wp-ui-control)!important;
+  color:var(--wp-ui-control-text)!important;
+  border-color:var(--wp-ui-border)!important;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen button:active {
+  background:#254c66!important;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen button:focus-visible {
+  outline:2px solid var(--wp-ui-accent);outline-offset:2px;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen button:disabled {
+  opacity:.55;cursor:not-allowed;
+}
+body[data-wp-game-id="animal-cratebound"] #battleScreen #pullMode.mode-active,
+body[data-wp-game-id="animal-cratebound"] #battleScreen #crateOverview[aria-pressed="true"] {
+  background:var(--wp-ui-primary)!important;
+  color:var(--wp-ui-primary-text)!important;
+  border-color:var(--wp-ui-accent)!important;
+  box-shadow:inset 0 0 0 1px var(--wp-ui-accent);
+}
 body[data-wp-game-id="animal-cratebound"] #resultModal .modal-actions{
   display:grid!important;
   grid-template-columns:repeat(3,minmax(0,1fr))!important;

@@ -167,7 +167,7 @@
     const rail = $("stageList");
     const page = $("stageWorkspace");
     if (!rail || !page || !frame || !window.WeightPlayPlayUI?.mountStage) return null;
-    rail.dir = "ltr";
+    rail.dir = document.documentElement.dir === "rtl" ? "rtl" : "ltr";
     rail.setAttribute("aria-label", ui("stages"));
     if (!stageController) {
       stageController = window.WeightPlayPlayUI.mountStage({

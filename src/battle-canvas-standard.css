@@ -49,11 +49,11 @@ body.wp-logical-battle-active :is(
 }
 
 body.wp-logical-battle-active [data-wp-logical-battle-canvas] :is(
-  .result-panel:not(.hidden):not(.is-hidden),
-  .result-overlay:not(.hidden):not(.is-hidden),
-  .result-screen.is-active,
-  .result-canvas:not(.hidden),
-  [data-wp-result-audit]
+  .result-panel:not([hidden]):not(.hidden):not(.is-hidden),
+  .result-overlay:not([hidden]):not(.hidden):not(.is-hidden),
+  .result-screen:not([hidden]).is-active,
+  .result-canvas:not([hidden]):not(.hidden),
+  [data-wp-result-audit]:not([hidden])
 ) {
   position: absolute !important;
   inset: 0 !important;
@@ -462,8 +462,8 @@ body.wp-logical-battle-active.is-bakery-playing #playPanel.play-panel[data-wp-lo
 
 /* Short-landscape Result content may scroll inside the screen's responsive Canvas. */
 @media (orientation: landscape) and (max-height: 460px) {
-  body .result-panel:not(.hidden):not(.is-hidden),
-  body .result-screen:not(.hidden):not(.is-hidden) {
+  body .result-panel:not([hidden]):not(.hidden):not(.is-hidden),
+  body .result-screen:not([hidden]):not(.hidden):not(.is-hidden) {
     align-content: start !important;
     align-items: start !important;
     justify-content: center !important;
@@ -473,13 +473,13 @@ body.wp-logical-battle-active.is-bakery-playing #playPanel.play-panel[data-wp-lo
     overscroll-behavior: contain !important;
     touch-action: pan-y !important;
   }
-  body .result-panel:not(.hidden):not(.is-hidden) {
+  body .result-panel:not([hidden]):not(.hidden):not(.is-hidden) {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) !important;
     justify-items: center !important;
   }
-  body .result-panel:not(.hidden):not(.is-hidden) > .result-card,
-  body .result-screen:not(.hidden):not(.is-hidden) > .result-card {
+  body .result-panel:not([hidden]):not(.hidden):not(.is-hidden) > .result-card,
+  body .result-screen:not([hidden]):not(.hidden):not(.is-hidden) > .result-card {
     flex: 0 0 auto !important;
     margin-right: auto !important;
     margin-left: auto !important;

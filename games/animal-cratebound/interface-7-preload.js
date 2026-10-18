@@ -59,14 +59,14 @@
   if (!document.querySelector('link[data-wp-cratebound-interface7]')) {
     const cleanup = document.createElement("link");
     cleanup.rel = "stylesheet";
-    cleanup.href = new URL("interface-7-cleanup.css?v=20261018-cratebound-variety-v17", preloadScript?.src || document.baseURI).href;
+    cleanup.href = new URL("interface-7-cleanup.css?v=20261018-cratebound-dark-follow-v18", preloadScript?.src || document.baseURI).href;
     cleanup.dataset.wpCrateboundInterface7 = "true";
     document.head.append(cleanup);
   }
   if (!document.querySelector('link[data-wp-cratebound-interface7-corrections]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = new URL("interface-7-corrections.css?v=20261018-cratebound-variety-v17", preloadScript?.src || document.baseURI).href;
+    link.href = new URL("interface-7-corrections.css?v=20261018-cratebound-dark-follow-v18", preloadScript?.src || document.baseURI).href;
     link.dataset.wpCrateboundInterface7Corrections = "true";
     document.head.append(link);
   }

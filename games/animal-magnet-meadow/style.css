@@ -205,7 +205,15 @@ h1,h2,p { margin-top:0; }
 #resultPanel p:not(.eyebrow) { color:var(--muted); line-height:1.5; }
 #resultPanel .result-stats { display:inline-block; padding:10px 14px; color:var(--gold); border-radius:999px; background:rgba(255,212,119,.1); }
 #resultPanel .result-actions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-top:16px; }
-#resultPanel .result-actions > button { min-width:0; min-height:44px; white-space:nowrap; }
+#resultPanel .result-actions > button {
+  min-width:0;
+  min-height:48px;
+  padding:8px 5px;
+  font-size:clamp(.78rem,3.2vw,.95rem);
+  line-height:1.12;
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
 #resultPanel .result-actions > button:disabled { opacity:.45; cursor:not-allowed; }
 
 /* Battle-owned leave confirmation. It overlays only the shared Battle Canvas;

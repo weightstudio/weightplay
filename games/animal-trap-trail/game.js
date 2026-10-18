@@ -1,4 +1,4 @@
-/* Internal prototype only. Geometry is temporary until the art gate. */
+/* Owner visual candidate: authored WeightPlay Block Animals / realtime 3D. */
 (() => {
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
@@ -14,17 +14,12 @@
   __wpNotifyMeasurement();
 
   const $ = (id) => document.getElementById(id);
-  const GAME_VERSION = 18;
+  const GAME_VERSION = 19;
   const loadingPanel = $("loadingPanel");
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
   const canvas = $("arena");
-  const ctx = canvas.getContext("2d");
-  const heroArt = new Image();
-  const sceneryArt = new Image();
-  sceneryArt.src = "assets/animal-trap-trail-background.png";
-  heroArt.src = "assets/animal-trap-trail-original-assets-v1.png";
-  const propArt = new Image();
-  propArt.src = "assets/animal-trap-trail-props.png";
+  let trailRenderer = null, rendererPromise = null;
+  const rendererScript = document.currentScript?.src || document.baseURI;
   const state = { stage: 1, chapter: 1, room: 1, screen: "main", deaths: 0, bestRoom: Number(localStorage.getItem("wp-trail-best-stage") || localStorage.getItem("wp-trail-best-room") || 0), keys: new Set(), tap: null, player: null, raf: 0, last: 0, pulse: 0, jumpBuffer: 0, timingCue: "", statusKey: "", resultKind: "room" };
   // One simulation/input owner; the camera never changes collision coordinates.
   Object.assign(state, { coyote: 0, elapsed: 0, recovery: 0,
@@ -383,7 +378,7 @@
     });
     if (name === "stage") window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
     if (name === "battle") (__wpNotifyMeasurement(), result?.setAttribute("hidden", ""));
-    if (name === "battle") { state.last = performance.now(); state.raf = requestAnimationFrame(frame); }
+    if (name === "battle") { ensureRenderer(); state.last = performance.now(); state.raf = requestAnimationFrame(frame); }
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
       if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -509,101 +504,56 @@
     if ($("trail-route").value !== progress) $("trail-route").value = progress;
     setText("trail-distance", `${progress}%`);
   }
-  function draw() {
-    const box = canvas.getBoundingClientRect();
-    const desiredHeight = Math.max(320, Math.round(960 * box.height / Math.max(1, box.width)));
-    if (canvas.height !== desiredHeight) canvas.height = desiredHeight;
-    const height = canvas.height;
-    ctx.clearRect(0, 0, 960, height);
-    ctx.fillStyle = "#0c162b"; ctx.fillRect(0, 0, 960, height);
-    if (sceneryArt.complete && sceneryArt.naturalWidth) {
-      const scale = Math.max(960 / sceneryArt.naturalWidth, height / sceneryArt.naturalHeight);
-      ctx.drawImage(sceneryArt, (960 - sceneryArt.naturalWidth * scale) / 2, (height - sceneryArt.naturalHeight * scale) / 2, sceneryArt.naturalWidth * scale, sceneryArt.naturalHeight * scale);
-      ctx.fillStyle = "#08112666"; ctx.fillRect(0,0,960,height);
+  // Rendering reads simulation snapshots; it cannot unlock, finish or move Orla.
+  const renderCopy = {
+    en:["Lighting the moon archive…","The scene could not start. Your cleared stages are saved.","Reload scene"],
+    "zh-Hant":["正在點亮月夜書庫…","場景暫時無法啟動，已通關進度仍會保留。","重新載入場景"],
+    "zh-Hans":["正在点亮月夜书库…","场景暂时无法启动，已通关进度仍会保留。","重新载入场景"],
+    ja:["月夜の書庫を準備中…","シーンを開始できません。進行は保存されています。","再読み込み"],
+    ko:["달빛 서고를 준비하는 중…","장면을 시작할 수 없습니다. 진행은 저장됩니다.","다시 불러오기"],
+    es:["Iluminando el archivo lunar…","No se pudo iniciar la escena. Tu progreso está guardado.","Recargar"],
+    "pt-BR":["Iluminando o arquivo lunar…","A cena não iniciou. Seu progresso está salvo.","Recarregar"],
+    fr:["Éclairage des archives lunaires…","La scène ne démarre pas. La progression est sauvegardée.","Recharger"],
+    de:["Mondarchiv wird beleuchtet…","Die Szene startet nicht. Dein Fortschritt ist gespeichert.","Neu laden"],
+    it:["Illuminazione dell’archivio lunare…","La scena non parte. I progressi sono salvati.","Ricarica"],
+    ru:["Освещаем лунный архив…","Сцена не запустилась. Прогресс сохранён.","Перезагрузить"],
+    hi:["चाँदनी संग्रह तैयार हो रहा है…","दृश्य शुरू नहीं हुआ। प्रगति सुरक्षित है।","फिर लोड करें"],
+    ar:["جارٍ إضاءة أرشيف القمر…","تعذر بدء المشهد. تقدمك محفوظ.","إعادة التحميل"]
+  };
+  let renderPanel = null, renderTimer = 0;
+  function renderMessage(failed = false) {
+    clearInput(); state.renderPaused = true;
+    if (!renderPanel) { renderPanel=document.createElement("div"); renderPanel.className="trail-render-state"; $("battle-screen").append(renderPanel); }
+    renderPanel.hidden=false; renderPanel.replaceChildren();
+    const words=renderCopy[currentLocale()]||renderCopy.en;
+    const text=document.createElement("p");text.textContent=words[failed?1:0];text.setAttribute("role","status");renderPanel.append(text);
+    if (failed) {
+      const retry=document.createElement("button");retry.textContent=words[2];retry.onclick=()=>window.location.reload();
+      const back=document.createElement("button");back.textContent=copy().chapters;back.onclick=()=>{state.confirmedExit=true;show("stage");state.confirmedExit=false;renderPanel.hidden=true;};
+      renderPanel.append(retry,back);
     }
-    const t = trapData();
-    const cameraTarget = Math.max(0, Math.min(360, state.player.x - 180));
-    state.camera = reduceMotion ? cameraTarget : state.camera + (cameraTarget - state.camera) * .16;
-    const worldTop = height * .74 - 418 * 1.6;
-    // Stars and block silhouettes occupy flexible sky without changing play visibility.
-    ctx.fillStyle = "#8fb9d5";
-    for (let i=0; i<32; i++) ctx.fillRect((i*137+61)%960, (i*71+28)%Math.max(80,height-220), 2, 2);
-    ctx.save(); ctx.translate(-state.camera * 1.6, worldTop); ctx.scale(1.6, 1.6);
-    // Transparent world sky preserves the approved art behind the real collision floor.
-    if (t.dark) { ctx.fillStyle = "#050810aa"; ctx.fillRect(0,0,960,540); }
-    const gapShift = t.moving ? Math.sin(state.elapsed / 240) * 10 : 0; const gapX = t.gap + gapShift;
-    ctx.fillStyle="#172b43"; ctx.fillRect(0,418,960,122); ctx.fillStyle="#263f5c"; ctx.fillRect(gapX,418,74,122); ctx.fillStyle="#0a0e1a"; ctx.fillRect(gapX,418,74,8); if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,930,70,420,560,gapX-8,410,90,118);
-    if (t.secondGap) { ctx.fillStyle="#263f5c"; ctx.fillRect(t.gap2,418,74,122); ctx.fillStyle="#0a0e1a"; ctx.fillRect(t.gap2,418,74,8); }
-    const spikeShift = t.moving ? Math.sin(state.elapsed / 230) * 26 : 0; ctx.fillStyle="#e26b75"; for(let x=t.spike+spikeShift;x<t.spike+42+spikeShift;x+=14){ctx.beginPath();ctx.moveTo(x,418);ctx.lineTo(x+7,392);ctx.lineTo(x+14,418);ctx.fill();} if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,540,80,400,560,t.spike-18+spikeShift,370,74,84);
-
-    ctx.fillStyle="#72597d";ctx.fillRect(t.fake,406,38,12); if (t.ceiling) { ctx.fillStyle="#d67b8f"; ctx.fillRect(610,180,150,16); }
-    if (t.wind) { ctx.strokeStyle="#8ac7e866"; ctx.lineWidth=3; for (let x = 90; x < 880; x += 150) { const y = 150 + ((x / 10 + state.elapsed / 14) % 120); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 62, y - 12); ctx.stroke(); } }
-    ctx.fillStyle="#ffd36b";ctx.fillRect(875,345,12,73);ctx.beginPath();ctx.arc(881,336,25,0,Math.PI*2);ctx.fill();ctx.fillStyle="#fff1a1";ctx.beginPath();ctx.arc(881,336,9,0,Math.PI*2);ctx.fill(); if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,20,20,500,650,830,300,105,136);
-    if (state.chapter === 1 && state.room <= 3) {
-      const landingStart = t.gap + 78;
-      const landingWidth = Math.max(48, Math.min(96, t.spike - 34 - landingStart));
-      const landingEnd = landingStart + landingWidth;
-      ctx.save();
-      ctx.fillStyle = state.timingCue === "landing" || state.pulse > 0 ? "#a4ead566" : "#a4ead533";
-      ctx.fillRect(landingStart, 394, landingWidth, 42);
-      ctx.strokeStyle = state.timingCue === "landing" || state.pulse > 0 ? "#a4ead5" : "#83cdb8";
-      ctx.lineWidth = state.timingCue === "landing" || state.pulse > 0 ? 4 : 2;
-      ctx.setLineDash(state.pulse > 0 ? [10, 7] : [6, 8]);
-      ctx.strokeRect(landingStart, 394, landingWidth, 42);
-      ctx.setLineDash([]);
-      ctx.fillStyle = "#dfffee";
-      ctx.font = "bold 13px system-ui";
-      ctx.fillText(landingWindowCopy[currentLocale()], landingStart + 4, 389);
-      ctx.strokeStyle = "#ffd36b";
-      ctx.lineWidth = state.timingCue === "spike" ? 5 : 2;
-      ctx.beginPath(); ctx.moveTo(landingEnd + 8, 430); ctx.lineTo(t.spike - 30, 430); ctx.lineTo(t.spike - 42, 423); ctx.moveTo(t.spike - 30, 430); ctx.lineTo(t.spike - 42, 437); ctx.stroke();
-      ctx.fillStyle = state.timingCue === "spike" ? "#fff1a1" : "#ffe4a3";
-      ctx.font = "bold 15px system-ui";
-      ctx.fillText(copy().jump, t.spike - 18, 365);
-      if (state.timingCue === "hidden") {
-        ctx.strokeStyle = "#ffcf73";
-        ctx.lineWidth = 4;
-        ctx.strokeRect(t.fake - 36, 382, 82, 54);
-        ctx.fillStyle = "#fff1a1";
-        ctx.fillText(copy().jump, t.fake - 18, 365);
-      }
-      ctx.restore();
-    }
-    if (state.pulse > 0) {
-      ctx.strokeStyle="#fff1a1"; ctx.lineWidth=6; ctx.strokeRect(t.gap-10,394,94,42); ctx.strokeRect(t.spike-28,382,92,44);
-      if (propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,1360,60,430,600,t.gap-22,350,124,124);
-    }
-    const words = trailWords();
-    const label = (text, x, y, color) => { ctx.font = "700 16px system-ui"; const w=ctx.measureText(text).width+16; ctx.fillStyle="#0a142aee"; ctx.fillRect(x-w/2,y-20,w,28); ctx.fillStyle=color; ctx.textAlign="center"; ctx.fillText(text,x,y); ctx.textAlign="start"; };
-    label(words[1], state.player.x, state.player.y - 122, "#a4ead5");
-    label(words[2], 881, 270, "#ffd36b");
-    if (state.stage <= 3 || state.pulse > 0) {
-      label("1 · " + words[3], gapX+37, 460, "#b9d9ef");
-      label("2 · " + words[4], t.spike+21, 320, "#ff9ea8");
-      label("3 · " + words[5], t.fake+19, 460, "#dfbaff");
-      ctx.strokeStyle="#dfbaff"; ctx.lineWidth=3; ctx.strokeRect(t.fake-4,400,46,22);
-    }
-    if (state.pulse > 0 && !reduceMotion) { ctx.strokeStyle="#a4ead5aa"; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(state.player.x,state.player.y, (54-state.pulse)*5,0,Math.PI*2); ctx.stroke(); }
-    const p=state.player;
-    ctx.fillStyle="#02091699"; ctx.beginPath(); ctx.ellipse(p.x,416,25,5,0,0,Math.PI*2);ctx.fill();
-    if (state.landingTime > 0) { ctx.strokeStyle="#a4ead5";ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(p.x,416,35-state.landingTime,7,0,0,Math.PI*2);ctx.stroke(); }
-    if (state.recovery) ctx.globalAlpha=.45 + state.recovery/48;
-
-    if (heroArt.complete && heroArt.naturalWidth) {
-      ctx.save(); ctx.translate(p.x, p.y - 42); ctx.rotate(Math.max(-0.12, Math.min(0.12, p.vy * 0.012)));
-      ctx.drawImage(heroArt, 10, 12, 485, 705, -42, -62, 84, 122); ctx.restore();
-    } else {
-      ctx.save();ctx.translate(p.x,p.y);ctx.fillStyle="#a4ead5";ctx.beginPath();ctx.arc(0,0,22,0,Math.PI*2);ctx.fill();ctx.fillStyle="#162841";ctx.fillRect(-13,-5,26,7);ctx.fillStyle="#ffd36b";ctx.fillRect(-11,7,22,6);ctx.restore();
-    }
-    ctx.restore();
-    if (state.recovery) { ctx.fillStyle="#ef60752a"; ctx.fillRect(0,0,960,height); }
-    ctx.fillStyle="#ffd36b";ctx.font="700 26px system-ui";
-    ctx.textAlign="right";ctx.fillText(`${trailWords()[2]} →`,930,42);ctx.textAlign="start";
-
   }
+  function ensureRenderer() {
+    if (rendererPromise) {
+      if (["error","lost"].includes(canvas.dataset.renderState)) renderMessage(true);
+      else if (!trailRenderer && renderPanel) renderPanel.hidden=false;
+      return;
+    }
+    renderMessage();
+    renderTimer=window.setTimeout(()=>renderMessage(true),12000);
+    rendererPromise=import(new URL("trail-3d.mjs?v=20261018-visual-v19",rendererScript).href).then(module=>module.createTrailRenderer(canvas,{
+      lost(){canvas.dataset.renderState="lost";renderMessage();renderTimer=window.setTimeout(()=>renderMessage(true),5000);},
+      restored(){window.clearTimeout(renderTimer);state.renderPaused=false;state.last=performance.now();renderPanel.hidden=true;canvas.dataset.renderState="ready";}
+    })).then(renderer=>{
+      trailRenderer=renderer;window.clearTimeout(renderTimer);state.renderPaused=false;state.last=performance.now();
+      renderPanel.hidden=true;canvas.dataset.renderState="ready";
+    }).catch(()=>{window.clearTimeout(renderTimer);canvas.dataset.renderState="error";renderMessage(true);});
+  }
+  window.addEventListener("pagehide",()=>{window.clearTimeout(renderTimer);trailRenderer?.dispose();},{once:true});
+  function draw() { if (trailRenderer) trailRenderer.render(state,trapData(),reduceMotion); }
   function frame(now) {
     if (state.screen !== "battle") return;
-    if (!document.hidden) {
+    if (!document.hidden && !state.renderPaused) {
       state.accumulator += Math.min(now - state.last, 80);
       while (state.accumulator >= 1000 / 60 && state.screen === "battle") { update(1); state.accumulator -= 1000 / 60; }
       if (state.screen === "battle") draw();
@@ -612,7 +562,7 @@
     if (state.screen === "battle") state.raf = requestAnimationFrame(frame);
   }
   function pressKey(key, active) {
-    if (state.screen !== "battle" || state.recovery) return;
+    if (state.screen !== "battle" || state.recovery || state.renderPaused) return;
     if (active) {
       if (!state.keys.has(key) && ["Space","ArrowUp","KeyW"].includes(key)) state.jumpBuffer = 7;
       state.keys.add(key);
