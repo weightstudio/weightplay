@@ -42,12 +42,26 @@
     copy[locale].replay = labels.replay;
   });
 
-  const meadows = [
-    { titleKey: "meadow1", targets: [2, 3, 1] },
-    { titleKey: "meadow2", targets: [4, 1, 3] },
-    { titleKey: "meadow3", targets: [3, 5, 2] },
+  // Rows are flower beds; columns are valves A/B/C. Later chapters introduce
+  // real branching water lines rather than three unrelated number counters.
+  const networks = [
+    [[1,0,0],[0,1,0],[0,0,1]],
+    [[1,0,0],[1,1,0],[0,0,1]],
+    [[1,0,0],[1,1,0],[0,1,1]],
+    [[1,1,0],[0,1,1],[1,0,1]],
   ];
-  const state = { locale: "en", meadow: 0, values: [0, 0, 0], tries: 0, sessionTries: 0, sound: true, screen: "main", resultOpen: false, leaveOpen: false };
+  const solutions = [[1,1,1],[1,2,1],[2,3,1],[2,1,2],[1,3,2],[3,2,1],[2,1,3],[1,4,2],[4,2,3],[2,3,1],[4,1,3],[3,5,2]];
+  const meadows = solutions.map((solution, index) => {
+    const chapter = Math.floor(index / 3), network = networks[chapter];
+    return { titleKey: `gardenStage${chapter}`, chapter, network,
+      targets: network.map((row) => row.reduce((sum, weight, valve) => sum + weight * solution[valve], 0)) };
+  });
+  const flowFor = (values, meadow = meadows[state.meadow]) => meadow.network.map((row) => row.reduce((sum, weight, index) => sum + weight * values[index], 0));
+  const state = { locale: "en", meadow: 0, values: [0, 0, 0], tries: 0, sessionTries: 0, sound: true, screen: "main", resultOpen: false, leaveOpen: false, moves: 0, history: [], hintUsed: false, hintedValve: -1, sessionCleared: new Set() };
+  const progressKey = 'weightplay-animal-dewline-garden-v2';
+  let progress = {};
+  try { const saved = JSON.parse(localStorage.getItem(progressKey)); if (saved && typeof saved === 'object' && !Array.isArray(saved)) progress = Object.fromEntries(Object.entries(saved).filter(([key, value]) => /^\d+$/.test(key) && +key < meadows.length && Number.isInteger(value) && value >= 1 && value <= 3)); } catch (_) {}
+  const sound = (event) => window.WeightPlayAudio?.play?.(event);
   const $ = (id) => document.getElementById(id);
   const t = (key, vars = {}) => {
     const table = copy[state.locale] || copy.en || {};
@@ -65,7 +79,7 @@
   };
   const readBest = () => { try { const value = Number(localStorage.getItem("weightplay-animal-dewline-best-v1")); return Number.isFinite(value) && value > 0 ? value : null; } catch (_) { return null; } };
   const writeBest = (value) => { try { const old = readBest(); if (!old || value < old) localStorage.setItem("weightplay-animal-dewline-best-v1", String(value)); } catch (_) {} };
-  const refreshMainBest = () => { const node = $("bestValue"); if (node) node.textContent = readBest() || t("noBest"); };
+  const refreshMainBest = () => { const node = $("bestValue"); if (node) node.textContent = readBest() || t("noBest"); document.querySelectorAll('[data-copy="progress"]').forEach((item) => item.textContent = `★ ${Object.keys(progress).length} / ${meadows.length}`); };
 
   const installInterface7Cleanup = () => {
     if (!document.querySelector('link[data-dewline-interface7]')) {
@@ -78,8 +92,9 @@
     [document.querySelector('.nori-guide'), document.querySelector('.hero-copy > .kicker'), document.querySelector('.hero-copy > h1[data-wp-game-title]'), document.querySelector('.best-line'), $('mapBtn')].filter(Boolean).forEach((node) => { node.hidden = true; });
     $('startBtn')?.classList.add('wp-standard-main-start');
     $('stageList')?.setAttribute('role', 'group');
-    if ($('stageBackBtn')) { $('stageBackBtn').textContent = '←'; $('stageBackBtn').setAttribute('aria-label', t('back')); }
-    if ($('battleBackBtn')) { $('battleBackBtn').textContent = '←'; $('battleBackBtn').setAttribute('aria-label', t('back')); }
+    if ($('stageBackBtn')) { $('stageBackBtn').removeAttribute('data-copy'); $('stageBackBtn').textContent = '←'; $('stageBackBtn').setAttribute('aria-label', t('back')); }
+    if ($('battleBackBtn')) { $('battleBackBtn').removeAttribute('data-copy'); $('battleBackBtn').textContent = '←'; $('battleBackBtn').setAttribute('aria-label', t('back')); }
+    $('battleHeading').hidden = true;
     if ($('battleSettingsBtn')) { $('battleSettingsBtn').hidden = true; $('battleSettingsBtn').tabIndex = -1; }
 
     const result = $('resultScreen'), battle = $('battleScreen');
@@ -182,6 +197,7 @@
     if (state.screen === "stage") renderStages();
     if (state.screen === "battle" && !state.resultOpen) renderBattle();
     if (state.resultOpen) renderResult();
+    refreshMainBest();
   };
 
   const renderStages = () => {
@@ -189,7 +205,7 @@
       const button = document.createElement("button");
       button.type = "button"; button.className = "stage-card"; button.dataset.meadow = index; button.dataset.wpStageCard = '';
       if (index === state.meadow) button.dataset.wpStageRecommended = 'true';
-      button.innerHTML = `<span data-wp-item-content><strong>${t("round", { n: index + 1, total: meadows.length })}</strong><span>${t(meadow.titleKey)}</span><small>${meadow.targets.join(" · ")}</small></span>`;
+      button.innerHTML = `<span data-wp-item-content><strong>${t("round", { n: index + 1, total: meadows.length })}</strong><span>${t(meadow.titleKey)}</span><small>${progress[index] ? '★'.repeat(progress[index]) + '☆'.repeat(3-progress[index]) : t('gardenGoal')}</small></span>`;
       button.addEventListener("click", () => startMeadow(index));
       return button;
     }));
@@ -198,54 +214,95 @@
 
   const renderBattle = () => {
     const meadow = meadows[state.meadow];
+    const flows = flowFor(state.values), ready = flows.filter((value, index) => value === meadow.targets[index]).length;
     $("battleHeading").textContent = t(meadow.titleKey);
-    $("roundLabel").textContent = t("round", { n: state.meadow + 1, total: meadows.length });
-    $("battleHint").textContent = t("battleHint");
-    $("targetValues").textContent = `${t("target")}: ${meadow.targets.join(" · ")}`;
+    $("roundLabel").textContent = `${state.meadow + 1} / ${meadows.length}`;
+    $("gardenRound").textContent = `${String(state.meadow + 1).padStart(2, '0')} / ${meadows.length} · ${t(meadow.titleKey)}`;
+    $("battleHint").textContent = t(meadow.chapter ? 'gardenLink' : 'gardenGoal');
+    $("targetValues").textContent = t('gardenProgress', { n: ready });
     $("sessionTries").textContent = String(state.sessionTries);
-    $("currentTotal").textContent = String(state.values.reduce((sum, value) => sum + value, 0));
-    $("targetTotal").textContent = String(meadow.targets.reduce((sum, value) => sum + value, 0));
-    $("valveGrid").replaceChildren(...state.values.map((value, index) => {
-      const card = document.createElement("article"); card.className = `valve-card valve-slot-${index + 1}`;
-      const art = document.createElement("span"); art.className = `valve-art valve-art-${index + 1}`; art.setAttribute("aria-hidden", "true");
-      const label = document.createElement("strong"); label.textContent = t("valve", { n: index + 1 });
-      const current = document.createElement("span"); current.className = "valve-value"; current.textContent = `${t("current")}: ${value}`;
-      const controls = document.createElement("div"); controls.className = "valve-controls";
-      const down = document.createElement("button"); down.type = "button"; down.textContent = "−"; down.setAttribute("aria-label", t("decrease", { n: index + 1 })); down.disabled = value === 0;
-      const up = document.createElement("button"); up.type = "button"; up.textContent = "+"; up.setAttribute("aria-label", t("increase", { n: index + 1 })); up.disabled = value === 6;
-      down.addEventListener("click", () => changeValve(index, -1)); up.addEventListener("click", () => changeValve(index, 1));
-      controls.append(down, up); card.append(art, label, current, controls); return card;
-    }));
+    $('gardenMoves').textContent = `${t('gardenMoves')} ${state.moves}`;
+    $('checkBtn').textContent = ready === 3 ? t('gardenCheck') : t('gardenInspect');
+    $('checkBtn').classList.toggle('is-ready', ready === 3);
+    $('undoBtn').textContent = t('gardenUndo'); $('undoBtn').disabled = !state.history.length;
+    $('hintBtn').textContent = t('gardenHint'); $('resetBtn').textContent = t('reset');
+    flows.forEach((value, index) => {
+      const plant = $(`flower${index}`), target = meadow.targets[index], difference = target - value;
+      plant.dataset.condition = difference === 0 ? 'ready' : difference > 0 ? 'dry' : 'overflow';
+      plant.querySelector('.flower-title').textContent = `${t('gardenBed')} ${index+1}`;
+      plant.querySelector('.flower-value').textContent = `${value} / ${target}`;
+      plant.querySelector('.flower-state').textContent = difference === 0 ? t('gardenReady') : t(difference > 0 ? 'gardenLess' : 'gardenMore', { n: Math.abs(difference) });
+      plant.querySelector('.flower-formula').textContent = meadow.network[index].flatMap((weight, valve) => weight ? ['ABC'[valve]] : []).join(' + ');
+      plant.querySelector('.flower-fill').style.width = `${Math.min(100, target ? value / target * 100 : value ? 100 : 0)}%`;
+    });
+    state.values.forEach((value, index) => {
+      const card = $(`valve${index}`);
+      card.querySelector('.garden-valve-label').textContent = `${t('valve', { n: '' }).trim()} ${'ABC'[index]}`;
+      card.querySelector('output').textContent = value;
+      card.querySelector('output').setAttribute('aria-label', `${'ABC'[index]}: ${value}`);
+      card.querySelector('[data-delta="-1"]').disabled = value === 0;
+      card.querySelector('[data-delta="1"]').disabled = value === 6;
+      card.querySelectorAll('button').forEach((button) => button.setAttribute('aria-label', `${t(+button.dataset.delta > 0 ? 'increase' : 'decrease', { n: 'ABC'[index] })}`));
+      card.dataset.hint = String(state.hintedValve === index);
+    });
+    $('gardenPipes').innerHTML = meadow.network.flatMap((row, flower) => row.flatMap((weight, valve) => weight ? [`<path class="pipe-shadow" d="M${50+valve*100} 100 C${50+valve*100} 52 ${50+flower*100} 48 ${50+flower*100} 0"/><path class="pipe-water ${state.values[valve] ? 'flowing' : ''}" data-valve="${valve}" d="M${50+valve*100} 100 C${50+valve*100} 52 ${50+flower*100} 48 ${50+flower*100} 0"/>`] : [])).join('');
+    if (state.hintedValve < 0) $('battleStatus').textContent = ready === 3 ? t('gardenAllReady') : t('gardenTip');
   };
 
   const renderResult = () => {
     const complete = state.meadow >= meadows.length - 1;
     $("resultHeading").textContent = complete ? t("finishTitle") : t("correct");
-    $("resultText").textContent = complete ? t("finishText", { n: state.sessionTries, best: readBest() || state.sessionTries }) : t("correct");
-    $("resultMapBtn").hidden = false; $("resultMapBtn").textContent = t('stages'); $("resultMapBtn").onclick = () => { state.meadow = meadows.length - 1; show('stage'); renderStages(); };
+    $("resultText").textContent = `${'★'.repeat(state.earnedStars || 1)}${'☆'.repeat(3-(state.earnedStars || 1))} · ${t('gardenMoves')} ${state.moves}. ${t('gardenSave')}`;
+    $("resultMapBtn").hidden = false; $("resultMapBtn").textContent = t('stages'); $("resultMapBtn").onclick = () => { show('stage'); renderStages(); };
     $("resultPrimaryBtn").hidden = false; $("resultPrimaryBtn").textContent = t("next"); $("resultPrimaryBtn").disabled = complete; $("resultPrimaryBtn").onclick = complete ? () => {} : () => startMeadow(state.meadow + 1);
     $("resultHomeBtn").hidden = false; $("resultHomeBtn").textContent = t('replay'); $("resultHomeBtn").onclick = () => startMeadow(state.meadow);
     __wpNotifyMeasurement();
   };
 
-  const startSession = () => { state.sessionTries = 0; show("stage"); renderStages(); track("session_start"); };
+  const startSession = () => { state.sessionTries = 0; state.sessionCleared.clear(); state.meadow = meadows.findIndex((_, index) => !progress[index]); if (state.meadow < 0) state.meadow = 0; show("stage"); renderStages(); track("session_start"); };
   const startMeadow = (index) => {
     closeLeaveDialog(false); setResultOpen(false);
-    state.meadow = Math.max(0, Math.min(meadows.length - 1, index)); state.values = [0, 0, 0]; state.tries = 0; $("battleStatus").textContent = ""; show("battle"); renderBattle(); track("meadow_start", { meadow: state.meadow + 1 });
+    state.meadow = Math.max(0, Math.min(meadows.length - 1, index)); state.values = [0, 0, 0]; state.tries = 0; state.moves = 0; state.history = []; state.hintUsed = false; state.hintedValve = -1; $("battleStatus").textContent = ""; show("battle"); renderBattle(); track("meadow_start", { meadow: state.meadow + 1 });
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
   };
-  const changeValve = (index, delta) => { if (state.resultOpen || state.leaveOpen) return; state.values[index] = Math.max(0, Math.min(6, state.values[index] + delta)); renderBattle(); track("valve_adjust", { meadow: state.meadow + 1, valve: index + 1, value: state.values[index] }); };
-  const resetValves = () => { if (state.resultOpen || state.leaveOpen) return; state.values = [0, 0, 0]; renderBattle(); $("battleStatus").textContent = t("ready"); track("reset", { meadow: state.meadow + 1 });
+  const changeValve = (index, delta) => {
+    if (state.screen !== 'battle' || state.resultOpen || state.leaveOpen || !Number.isInteger(index) || index < 0 || index > 2 || ![-1,1].includes(delta)) return;
+    const next = Math.max(0, Math.min(6, state.values[index] + delta)); if (next === state.values[index]) return;
+    state.history.push([...state.values]); if (state.history.length > 200) state.history.shift();
+    state.values[index] = next; state.moves++; state.hintedValve = -1; renderBattle(); sound('ui.tick');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) $(`valve${index}`).animate?.([{filter:'brightness(1.3)'},{filter:'brightness(1)'}], {duration:180});
+    track("valve_adjust", { meadow: state.meadow + 1, valve: index + 1, value: state.values[index] });
+  };
+  const undoValve = () => { if (state.resultOpen || state.leaveOpen || !state.history.length) return; state.values = state.history.pop(); state.moves++; state.hintedValve = -1; renderBattle(); sound('board.undo'); };
+  const hintValve = () => {
+    if (state.resultOpen || state.leaveOpen) return;
+    const meadow = meadows[state.meadow]; let nearest = null, distance = Infinity;
+    for (let a=0;a<=6;a++) for (let b=0;b<=6;b++) for (let c=0;c<=6;c++) {
+      const values = [a,b,c]; if (!flowFor(values).every((value,index) => value === meadow.targets[index])) continue;
+      const cost = values.reduce((sum,value,index) => sum+Math.abs(value-state.values[index]),0);
+      if (cost < distance) { distance = cost; nearest = values; }
+    }
+    if (!nearest || distance === 0) { $('battleStatus').textContent = t('gardenAllReady'); return; }
+    state.hintUsed = true; state.hintedValve = nearest.findIndex((value,index) => value !== state.values[index]);
+    renderBattle(); $('battleStatus').textContent = t('gardenHintMove', { valve:'ABC'[state.hintedValve], sign:nearest[state.hintedValve] > state.values[state.hintedValve] ? '+' : '−' }); sound('feedback.hint');
+  };
+  const resetValves = () => { if (state.resultOpen || state.leaveOpen) return; state.values = [0, 0, 0]; state.moves = 0; state.history = []; state.hintUsed = false; state.hintedValve = -1; renderBattle(); track("reset", { meadow: state.meadow + 1 });
     if (state.screen === "battle") { __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
   };
   const checkFlow = () => {
     if (state.resultOpen || state.leaveOpen) return;
     const meadow = meadows[state.meadow]; state.tries += 1; state.sessionTries += 1;
-    const firstMismatch = meadow.targets.findIndex((target, index) => target !== state.values[index]);
+    const firstMismatch = meadow.targets.findIndex((target, index) => target !== flowFor(state.values)[index]);
     track("check", { meadow: state.meadow + 1, tries: state.sessionTries, correct: firstMismatch < 0 });
-    if (firstMismatch >= 0) { $("battleStatus").textContent = t("wrong", { n: firstMismatch + 1 }); renderBattle(); return; }
+    if (firstMismatch >= 0) { state.hintedValve = -1; renderBattle(); $('battleStatus').textContent = t('gardenInspectBed', { n: firstMismatch + 1 }); sound('feedback.error'); return; }
     $("battleStatus").textContent = t("correct");
-    if (state.meadow >= meadows.length - 1) { writeBest(state.sessionTries); track("session_complete", { tries: state.sessionTries }); }
+    const minimum = solutions[state.meadow].reduce((sum,value) => sum+value,0);
+    state.earnedStars = state.moves <= minimum && !state.hintUsed ? 3 : state.moves <= minimum+6 ? 2 : 1;
+    progress[state.meadow] = Math.max(progress[state.meadow] || 0, state.earnedStars);
+    try { localStorage.setItem(progressKey, JSON.stringify(progress)); } catch (_) {}
+    state.sessionCleared.add(state.meadow);
+    if (state.sessionCleared.size === meadows.length) { writeBest(state.sessionTries); track("session_complete", { tries: state.sessionTries }); }
+    sound('result.win');
     __wpMeasurement.ended = true; __wpMeasurement.outcome = 'complete'; setResultOpen(true); renderResult(); __wpNotifyMeasurement();
   };
 
@@ -268,6 +325,18 @@
   function continueBattle() { closeLeaveDialog(true); }
   function confirmBattleLeave() { closeLeaveDialog(false); state.values = [0, 0, 0]; state.tries = 0; show('stage'); renderStages(); }
 
+  // One stable play surface: value updates never replace focused controls.
+  const garden = $('battleScreen').querySelector('.battle-content');
+  garden.classList.add('dewline-garden');
+  garden.innerHTML = `<div class="garden-mission"><span id="gardenRound"></span><strong id="targetValues"></strong><p id="battleHint"></p></div>
+    <div id="flowerGrid" class="garden-flowers">${[0,1,2].map((index) => `<article id="flower${index}" class="garden-flower"><strong class="flower-title"></strong><span class="flower-art" aria-hidden="true"></span><span class="flower-formula"></span><strong class="flower-value"></strong><div class="flower-meter" aria-hidden="true"><i class="flower-fill"></i></div><span class="flower-state"></span></article>`).join('')}</div>
+    <svg id="gardenPipes" class="garden-pipes" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+    <div id="valveGrid" class="garden-valves">${[0,1,2].map((index) => `<article id="valve${index}" class="garden-valve"><strong class="garden-valve-label"></strong><div class="garden-dial" aria-hidden="true">${'ABC'[index]}</div><output>0</output><div class="garden-controls"><button type="button" data-index="${index}" data-delta="-1">−</button><button type="button" data-index="${index}" data-delta="1">+</button></div></article>`).join('')}</div>
+    <div class="garden-feedback"><span id="gardenMoves"></span><p id="battleStatus" role="status" aria-live="polite" aria-atomic="true"></p></div>
+    <div class="garden-tools"><button id="undoBtn" type="button"></button><button id="hintBtn" type="button"></button><button id="resetBtn" type="button"></button></div>
+    <button id="checkBtn" class="primary-btn garden-check" type="button"></button>`;
+  garden.querySelectorAll('[data-delta]').forEach((button) => button.addEventListener('click', () => changeValve(+button.dataset.index, +button.dataset.delta)));
+  $('undoBtn').addEventListener('click', undoValve); $('hintBtn').addEventListener('click', hintValve);
   $("startBtn").addEventListener("click", startSession);
   $("mapBtn").addEventListener("click", () => { show("stage"); renderStages(); track("meadow_map"); });
   $("stageBackBtn").addEventListener("click", () => show("main"));
@@ -284,5 +353,5 @@
   if (copy[routeLocale]) state.locale = routeLocale;
   installInterface7Cleanup();
   window.setTimeout(() => { $("loadingPanel").hidden = true; show("main"); applyLocale(); track("main_ready"); }, 260);
-  window.__ANIMAL_DEWLINE_TEST__ = { meadows, startSession, startMeadow, changeValve, checkFlow, getState: () => ({ ...state, values: [...state.values] }) };
+  window.__ANIMAL_DEWLINE_TEST__ = { meadows, flowFor, startSession, startMeadow, changeValve, checkFlow, getState: () => ({ ...state, values: [...state.values] }) };
 })();

@@ -1,4 +1,4 @@
-/* Wordle v19. Game-owned, count-aware deduction and finite motion.
+/* Wordle v20. Guided first play, count-aware deduction and finite motion.
    The shared arcade remains the only round/scene/analytics owner. */
 (() => {
   "use strict";
@@ -65,11 +65,12 @@
   };
   const STORE = "weightplay_wordle_v18_mastery";
   function readProfile() {
-    const profile = {lock:false, best:0, stars:Object.create(null)};
+    const profile = {lock:false, best:0, stars:Object.create(null), tutorialSeen:false};
     try {
       const raw = JSON.parse(localStorage.getItem(STORE) || "null");
       if (!raw || typeof raw !== "object") return profile;
       profile.lock = raw.lock === true;
+      profile.tutorialSeen = raw.tutorialSeen === true;
       profile.best = Math.max(0, Math.min(1100, Number(raw.best) || 0));
       if (raw.stars && typeof raw.stars === "object") Object.entries(raw.stars).slice(0,12).forEach(([key,value]) => {
         if (/^[a-z\d_-]{1,40}:(free|lock)$/i.test(key) && Number.isInteger(value) && value >= 0 && value <= 3) profile.stars[key] = value;
@@ -78,6 +79,8 @@
     return profile;
   }
   const profile = readProfile();
+  const puzzleKeys = ["brave","ocean","plant","music","tiger","cloud"];
+  const coach = locale => window.WPWordleCoachCopy?.[normalize(locale)] || window.WPWordleCoachCopy?.en;
   const saveProfile = () => { try { localStorage.setItem(STORE, JSON.stringify(profile)); } catch { /* Session-only progress remains playable. */ } };
   const collectionTotal = () => Math.min(36, Object.values(profile.stars).reduce((sum, n) => sum+n, 0));
   let active = null, view = null, pending = null, generation = 0, resultPresented = null, lastScene = "";

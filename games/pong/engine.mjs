@@ -15,7 +15,19 @@ export class Match {
     this.phase = 'ready'; this.lastPoint = null; this.aiClock = 0; this.aiAim = 300;
     this.ball = { x: 300, y: 300, vx: 0, vy: 0, radius: 9 };
   }
-  move(x) { if (Number.isFinite(x)) this.aim = clamp(x, this.config.playerWidth / 2 + 8, WIDTH - this.config.playerWidth / 2 - 8); }
+  move(x) {
+    if (!Number.isFinite(x) || ['paused', 'finished'].includes(this.phase)) return;
+    this.aim = clamp(x, this.config.playerWidth / 2 + 8, WIDTH - this.config.playerWidth / 2 - 8);
+    if (['ready', 'point'].includes(this.phase)) this.player = this.aim;
+  }
+  landingX() {
+    const b = this.ball;
+    if (b.vy <= 0 || b.y > 544) return null;
+    const span = WIDTH - b.radius * 2;
+    const travel = b.x - b.radius + b.vx * (544 - b.y) / b.vy;
+    const folded = ((travel % (span * 2)) + span * 2) % (span * 2);
+    return b.radius + (folded <= span ? folded : span * 2 - folded);
+  }
   serve() {
     if (!['ready', 'point'].includes(this.phase)) return false;
     const speed = this.config.speed;
@@ -47,6 +59,7 @@ export class Match {
         b.x = clamp(b.x, b.radius, WIDTH - b.radius); b.y = y;
         b.vx = Math.sin(offset * 1.08) * speed;
         b.vy = direction * Math.max(110, Math.cos(offset * 1.08) * speed);
+        this.lastHit = { x: b.x, y, side: direction < 0 ? 'you' : 'cpu', offset };
         this.rally++; this.bestRally = Math.max(this.bestRally, this.rally); events.push('hit');
       };
       if (b.vy > 0 && previousY <= 544 && b.y >= 544 && Math.abs(b.x - this.player) <= this.config.playerWidth / 2 + b.radius) hit(this.player, this.config.playerWidth, 544, -1);

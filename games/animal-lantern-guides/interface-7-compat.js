@@ -104,9 +104,11 @@
     if (!result || result.hidden || battle?.dataset.wpBattleSubstate !== "result") return;
     const state = runtime()?.getState?.() || window.__LANTERN_TEST__?.getState?.();
     const unavailable = !state || Number(state.stageIndex) >= 29 || Number(state.light) <= 0;
-    nextButton.hidden = false;
-    nextButton.disabled = unavailable;
-    nextButton.setAttribute("aria-disabled", String(unavailable));
+    // These attributes are observed below. Same-value writes still enqueue
+    // mutations, so normalization must be idempotent.
+    if (nextButton.hidden) nextButton.hidden = false;
+    if (nextButton.disabled !== unavailable) nextButton.disabled = unavailable;
+    if (nextButton.getAttribute("aria-disabled") !== String(unavailable)) nextButton.setAttribute("aria-disabled", String(unavailable));
   };
   let normalizingNext = false;
   if (nextButton) {
@@ -219,7 +221,7 @@
     if (resultActive) {
       closeLeave({ resume: false, restoreFocus: false });
       setBattleCovered(true);
-      document.body.dataset.screen = "battle";
+      if (document.body.dataset.screen !== "battle") document.body.dataset.screen = "battle";
       normalizeResultActions();
       return;
     }

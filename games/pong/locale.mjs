@@ -16,3 +16,22 @@ ar: ['بونغ','ابدأ اللعبة','حرّك المضرب وأعد الكر
 };
 export const COPY = Object.fromEntries(Object.entries(rows).map(([locale, values]) => [locale, Object.fromEntries(keys.map((key, index) => [key, values[index]]))]));
 export const ROUTES = { en:'en', 'zh-Hant':'zh-tw', 'zh-Hans':'zh-cn', ja:'ja', ko:'ko', es:'es', 'pt-BR':'pt-br', fr:'fr', de:'de', it:'it', ru:'ru', hi:'hi', ar:'ar' };
+
+// Short, persistent court coaching; separate from the full public Guide.
+const coachRows = {
+ en:['FIRST TO 7','← Drag here to move your paddle →','Incoming ball · cover the marked landing','Aim with the paddle edge to change direction','Best rally'],
+ 'zh-Hant':['先得 7 分獲勝','← 在這裡左右拖曳球拍 →','球來了！移到落點下方接球','用球拍邊緣接球，打出斜線','最佳連續接球'],
+ 'zh-Hans':['先得 7 分获胜','← 在这里左右拖动球拍 →','球来了！移到落点下方接球','用球拍边缘接球，打出斜线','最佳连续接球'],
+ ja:['先に7点で勝利','← ここをドラッグして移動 →','ボールが来ます・着地点をカバー','端で受けて角度をつけよう','最長ラリー'],
+ ko:['먼저 7점이면 승리','← 여기를 드래그해 패들 이동 →','공이 와요 · 착지 표시를 지키세요','패들 가장자리로 각도를 바꾸세요','최고 랠리'],
+ es:['GANA CON 7 PUNTOS','← Arrastra aquí para mover la pala →','Llega la pelota · cubre la marca','Usa el borde para cambiar el ángulo','Mejor intercambio'],
+ 'pt-BR':['PRIMEIRO A 7 VENCE','← Arraste aqui para mover a raquete →','Bola chegando · cubra a marca','Use a borda para mudar o ângulo','Melhor rali'],
+ fr:['LE PREMIER À 7 GAGNE','← Glissez ici pour déplacer la raquette →','La balle arrive · couvrez le repère','Utilisez le bord pour changer l’angle','Meilleur échange'],
+ de:['WER ZUERST 7 HAT, GEWINNT','← Hier ziehen, um den Schläger zu bewegen →','Ball kommt · decke die Markierung ab','Mit der Kante den Winkel ändern','Längster Ballwechsel'],
+ it:['VINCE CHI ARRIVA A 7','← Trascina qui per muovere la racchetta →','Arriva la palla · copri il segno','Usa il bordo per cambiare angolo','Scambio migliore'],
+ ru:['ПОБЕЖДАЕТ ПЕРВЫЙ ДО 7','← Ведите здесь, чтобы двигать ракетку →','Мяч летит · закройте отметку','Край ракетки меняет угол','Лучший обмен'],
+ hi:['पहले 7 अंक पर जीत','← पैडल चलाने के लिए यहाँ खींचें →','गेंद आ रही है · निशान को ढकें','किनारे से गेंद का कोण बदलें','सर्वश्रेष्ठ रैली'],
+ ar:['أول من يصل إلى 7 يفوز','← اسحب هنا لتحريك المضرب →','الكرة قادمة · غطِّ علامة الوصول','استخدم حافة المضرب لتغيير الزاوية','أفضل تبادل'],
+};
+export const COACH = Object.fromEntries(Object.entries(coachRows).map(([locale, row]) =>
+ [locale, Object.fromEntries(['goal','drag','incoming','angle','best'].map((key, i) => [key, row[i]]))]));

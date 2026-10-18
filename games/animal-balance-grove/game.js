@@ -58,6 +58,21 @@
       if (!sourceCopy) return;
       const copy = { ...sourceCopy, runtimeLabels: routeTextGrowthCopy?.runtimeLabels?.[state.locale] };
       const set = (node, value) => { if (node && typeof value === "string" && node.textContent !== value) node.textContent = value; };
+      copy.intro = t("intro");
+      const help = [
+        [t("guideOneTitle"), t("intro")],
+        [t("guideTwoTitle"), `${t("tapInstruction")} ${t("tooLight",{n:1})} ${t("tooHeavy",{n:1})} ${t("readyCheck")}`],
+        [t("stages"), `${t("summary")} ${t("locked")}. ${t("arc0")} → ${t("arc1")} → ${t("arc2")} → ${t("arc3")} → ${t("arc4")} → ${t("arc5")}.`],
+        [t("guideThreeTitle"), `${t("hint")} · ${t("starRule")}`],
+        [t("chooseStone"), `${t("exactCount",{n:3})} · ${t("anchorRule",{n:2})} · ${t("avoidRule",{n:5})}. ${t("checkRule")}`],
+        [t("faqQuestion") === "faqQuestion" ? guideInfoCopy[state.locale].faqQuestion : t("faqQuestion"), guideInfoCopy[state.locale].faqAnswer]
+      ];
+      copy.guide = help.map(([heading,body]) => ({heading,body}));
+      copy.faq = [
+        [t("goalLabel"), t("intro")], [t("chooseStone"), t("tapInstruction")],
+        [t("hint"), t("starRule")], [t("stages"), `${t("summary")} ${t("locked")}.`],
+        [guideInfoCopy[state.locale].faqQuestion, guideInfoCopy[state.locale].faqAnswer]
+      ];
       if (guideInfoCopy[state.locale]?.guideAria) guide.setAttribute("aria-label", guideInfoCopy[state.locale].guideAria);
       set(guide.querySelector(".game-info-kicker"), guideInfoCopy[state.locale]?.kicker || guideInfoCopy.en.kicker);
       set(guide.querySelector(".game-info-title h2"), copy.title);
@@ -251,19 +266,66 @@
     const short = value?.split?.("-")?.[0];
     return supportedLocales.includes(short) ? short : "en";
   };
-  const stages = [
+  const originalStages = [
     { title: "stageTitle1", hint: "stageHint1", target: 5, pieces: [["stoneAcorn", 1, "●"], ["stonePebble", 2, "◆"], ["stoneTwig", 3, "▲"], ["stoneBerry", 4, "✦"]] },
     { title: "stageTitle2", hint: "stageHint2", target: 7, pieces: [["stoneAcorn", 1, "●"], ["stonePebble", 2, "◆"], ["stoneTwig", 3, "▲"], ["stoneBerry", 4, "✦"], ["stoneShell", 5, "⬟"]] },
     { title: "stageTitle3", hint: "stageHint3", target: 9, pieces: [["stoneAcorn", 1, "●"], ["stonePebble", 2, "◆"], ["stoneTwig", 3, "▲"], ["stoneBerry", 4, "✦"], ["stoneShell", 5, "⬟"], ["stoneFirefly", 6, "✿"]] }
   ];
+  /* balance-rules:start */
+  window.BalanceGroveRules = Object.freeze({
+    evaluate(values, target, rule = {}) {
+      const total = values.reduce((sum, value) => sum + value, 0);
+      const countOK = !rule.count || values.length === rule.count;
+      const anchorOK = !rule.anchor || values.includes(rule.anchor);
+      const avoidOK = !rule.avoid || !values.includes(rule.avoid);
+      const valid = values.length > 0 && total === target && countOK && anchorOK && avoidOK;
+      return { total, remaining: target - total, valid, countOK, anchorOK, avoidOK,
+        state: !values.length ? "empty" : total > target ? "heavy" : total < target ? "light" : valid ? "balanced" : "rule" };
+    },
+    solutions(stage) {
+      const results = [];
+      for (let mask = 1; mask < (1 << stage.pieces.length); mask++) {
+        const indices = stage.pieces.map((_, i) => i).filter(i => mask & (1 << i));
+        if (this.evaluate(indices.map(i => stage.pieces[i][1]), stage.target, stage).valid) results.push(indices);
+      }
+      return results;
+    }
+  });
+  /* balance-rules:end */
+  // Six authored arcs: open sums, exact counts, anchor stones, fragile stones,
+  // anchor/count combinations, and mixed mastery. The original three IDs stay stable.
+  const campaign = [
+    [5,0,0,0,4],[7,0,0,0,5],[9,0,0,0,6],[6,0,0,0,5],[10,3,0,0,6],
+    [7,2,0,0,6],[6,3,0,0,5],[10,2,0,0,6],[10,4,0,0,6],[12,3,0,0,6],
+    [8,0,2,0,6],[9,0,1,0,6],[10,0,3,0,6],[11,0,4,0,6],[13,3,6,0,6],
+    [7,0,0,1,6],[8,0,0,3,6],[9,0,0,4,6],[10,0,0,6,6],[12,3,0,5,6],
+    [9,2,3,0,6],[10,3,1,0,6],[11,3,2,0,6],[14,3,6,0,6],[15,4,3,0,6],
+    [8,2,0,6,6],[11,3,0,1,6],[12,3,4,2,6],[13,4,2,5,6],[15,4,6,4,6]
+  ];
+  const stages = campaign.map(([target, count, anchor, avoid, size], index) => ({
+    title: originalStages[index % 3].title, hint: originalStages[index % 3].hint,
+    target, count, anchor, avoid, arc: Math.floor(index / 5), checkpoint: index % 5 === 4,
+    pieces: originalStages[2].pieces.slice(0, size)
+  }));
+  let progress = { cleared: [], stars: {} };
+  try {
+    const saved = JSON.parse(localStorage.getItem("weightplay-balance-grove-campaign-v1") || "null");
+    if (saved && Array.isArray(saved.cleared)) {
+      progress.cleared = [...new Set(saved.cleared.filter(n => Number.isInteger(n) && n >= 0 && n < stages.length))];
+      for (const index of progress.cleared) progress.stars[index] = Math.max(1, Math.min(3, Number(saved.stars?.[index]) || 1));
+    }
+  } catch { /* Corrupt/blocked storage starts a safe in-memory visit. */ }
+  const unlocked = () => Math.min(stages.length - 1, Math.max(2, ...progress.cleared.map(n => n + 1)));
   const routedLocale = window.WonderI18n?.localeFromPath?.();
   const savedLocale = (() => { try { return localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale"); } catch (error) { return null; } })();
-  const state = { locale: normalizeLocale(routedLocale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang || savedLocale), stage: 0, selected: [], checks: 0, sessionChecks: 0, sound: !Boolean(window.WeightPlayAudio?.isMuted?.()), storage: true };
+  const state = { locale: normalizeLocale(routedLocale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang || savedLocale), stage: 0, selected: [], checks: 0, sessionChecks: 0, sessionClears: [], hints: 0, lastEquation: "", lastStars: 0, sound: !Boolean(window.WeightPlayAudio?.isMuted?.()), storage: true };
   const syncSoundState = () => {
     if (typeof window.WeightPlayAudio?.isMuted === "function") state.sound = !window.WeightPlayAudio.isMuted();
   };
   const $ = (id) => document.getElementById(id);
   const screens = { main: $("mainScreen"), stages: $("stageScreen"), battle: $("battleScreen"), result: $("resultScreen") };
+  // Mount settlement once inside the permanent Battle Canvas.
+  document.querySelector("#battleScreen .battle-canvas").append(screens.result);
   const t = (key, vars) => {
     const table = copy[state.locale] || copy.en || {};
     let value = table[key] || (copy.en && copy.en[key]) || key;
@@ -278,8 +340,9 @@
   const readBest = () => { try { const value = Number(localStorage.getItem("weightplay-animal-balance-grove-best-v1")); return Number.isFinite(value) && value > 0 ? value : null; } catch (error) { state.storage = false; return null; } };
   const writeBest = (value) => { try { const current = readBest(); if (!current || value < current) localStorage.setItem("weightplay-animal-balance-grove-best-v1", String(value)); } catch (error) { state.storage = false; } };
   const show = (name) => {
-    Object.keys(screens).forEach((key) => { screens[key].hidden = key !== name; });
-    const scene = name === "stages" ? "stage" : name;
+    Object.keys(screens).forEach((key) => { screens[key].hidden = key === "battle" ? !["battle", "result"].includes(name) : key !== name; });
+    document.querySelector("#battleScreen .battle-content").hidden = name === "result";
+    const scene = name === "stages" ? "stage" : name === "result" ? "battle" : name;
     const activePlay = scene === "stage" || scene === "battle";
     document.body.dataset.screen = scene;
     document.documentElement.classList.toggle("wp-active-play", activePlay);
@@ -311,6 +374,7 @@
     $("tokenTray").setAttribute("aria-label", t("chooseStone"));
     document.querySelector(".scale").setAttribute("aria-label", t("scaleLabel"));
     $("bestValue").textContent = readBest() || t("noBest");
+    $("mainProgress").textContent = t("campaignProgress", { n: progress.cleared.length });
     if (document.querySelector(".game-page-info[data-wp-balance-grove-guide]")) applyTextGrowthGuide();
     else applyGuideLocale(guideCopy);
     if (!screens.stages.hidden) renderStages();
@@ -374,30 +438,136 @@
   };
   const setLocale = (locale) => { state.locale = normalizeLocale(locale); try { localStorage.setItem("weightPlayLocale", state.locale); localStorage.setItem("weightplayLocale", state.locale); } catch (error) { state.storage = false; } applyLocale(); track("locale", { locale: state.locale }); };
   const beep = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
-  const renderStages = () => { $("stageList").innerHTML = stages.map((stage, index) => `<button class="stage-card" type="button" data-stage="${index}"><span class="stage-number">${t("round", { n: index + 1, total: stages.length })}</span><h3>${t(stage.title)}</h3><p>${t(stage.hint)}</p><span class="stage-chip">${t("target", { n: stage.target })}</span></button>`).join(""); $("stageList").querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", () => startStage(Number(button.dataset.stage)))); };
-  const renderBattle = () => {
-    const stage = stages[state.stage];
-    $("battleHeading").textContent = t(stage.title);
-    $("roundLabel").textContent = t("round", { n: state.stage + 1, total: stages.length });
-    $("battleHint").textContent = t("stageReady");
-    $("leftGoal").textContent = t("leftPan", { n: 3 + state.stage });
-    $("rightGoal").textContent = t("target", { n: stage.target });
-    $("leftPanLabel").textContent = t("leftPan", { n: 3 + state.stage });
-    $("rightPanLabel").textContent = t("rightPan", { n: state.selected.reduce((sum, index) => sum + stage.pieces[index][1], 0) });
-    $("sessionChecks").textContent = String(state.sessionChecks);
-    $("selectionCount").textContent = t("selected", { n: state.selected.length });
-    $("selectedItems").innerHTML = state.selected.map((index) => `<span class="placed-token placed-token-${index}" aria-label="${t(stage.pieces[index][0])}"></span>`).join("");
-    $("tokenTray").innerHTML = stage.pieces.map((piece, index) => `<button class="token-btn" type="button" data-token="${index}" aria-pressed="${state.selected.includes(index)}"><span class="token-icon token-icon-${index}" aria-hidden="true"></span><span><span class="token-name">${t(piece[0])}</span><br><span class="token-value">${piece[1]}</span></span></button>`).join("");
-    $("tokenTray").querySelectorAll("[data-token]").forEach((button) => button.addEventListener("click", () => toggleToken(Number(button.dataset.token))));
+  const stageName = index => `${t("arc" + stages[index].arc)} · ${index + 1}`;
+  const ruleText = stage => [
+    t("target", { n: stage.target }),
+    stage.count ? t("exactCount", { n: stage.count }) : t("anyCount"),
+    stage.anchor ? t("anchorRule", { n: stage.anchor }) : "",
+    stage.avoid ? t("avoidRule", { n: stage.avoid }) : ""
+  ].filter(Boolean).join(" · ");
+  const renderStages = () => {
+    $("stageList").innerHTML = stages.map((stage, index) => `<button class="stage-card" type="button" data-stage="${index}" ${index > unlocked() ? "disabled" : ""}><span class="stage-number">${t("round", { n: index + 1, total: stages.length })}</span><h3>${stageName(index)}</h3><p>${ruleText(stage)}</p><span class="stage-chip">${progress.cleared.includes(index) ? "★".repeat(progress.stars[index]) : index > unlocked() ? t("locked") : stage.checkpoint ? t("checkpoint") : t("stageReady")}</span></button>`).join("");
+    $("stageList").querySelectorAll("[data-stage]").forEach(button => button.addEventListener("click", () => startStage(Number(button.dataset.stage))));
   };
-  const renderResult = () => { const final = state.stage >= stages.length - 1 && state.selected.length === 0; $("resultHeading").textContent = final ? t("finishTitle") : t("balanced"); $("resultText").textContent = final ? t("finishText", { n: state.sessionChecks }) : t("balanced"); $("resultPrimaryBtn").textContent = final ? t("stageMap") : t("next"); (__wpNotifyMeasurement(), $("resultMapBtn").hidden = final); $("resultPrimaryBtn").onclick = final ? () => { show("stages"); renderStages(); } : () => startStage(state.stage + 1); };
-  const startSession = () => { state.sessionChecks = 0; track("session_start"); show("stages"); renderStages(); track("stage_map", { source: "start" }); };
-  const startStage = (index) => { state.stage = Math.max(0, Math.min(stages.length - 1, index)); state.selected = []; state.checks = 0; $("battleStatus").textContent = ""; show("battle"); renderBattle(); track("stage_start", { stage: state.stage + 1 });
+  const ensureBattleUI = () => {
+    if ($("hintBtn")) return;
+    const hint = document.createElement("button");
+    hint.id = "hintBtn"; hint.className = "text-btn"; hint.type = "button";
+    $("battleStatus").setAttribute("aria-live", "polite");
+    $("battleStatus").insertAdjacentElement("afterend", hint);
+    hint.addEventListener("click", () => {
+      const stage = stages[state.stage];
+      const solution = window.BalanceGroveRules.solutions(stage).sort((a,b) =>
+        a.filter(i => !state.selected.includes(i)).length + state.selected.filter(i => !a.includes(i)).length -
+        b.filter(i => !state.selected.includes(i)).length - state.selected.filter(i => !b.includes(i)).length)[0];
+      if (!solution) return;
+      const remove = state.selected.find(i => !solution.includes(i));
+      const index = remove ?? solution.find(i => !state.selected.includes(i));
+      if (index === undefined) { $("battleStatus").textContent = t("readyCheck"); return; }
+      state.hints += 1;
+      $("tokenTray").querySelectorAll(".hinted").forEach(node => node.classList.remove("hinted"));
+      $("tokenTray").querySelector(`[data-token="${index}"]`).classList.add("hinted");
+      $("battleStatus").textContent = t(remove === undefined ? "hintAdd" : "hintRemove", { n: stage.pieces[index][1] });
+    });
+  };
+  const renderBattle = () => {
+    ensureBattleUI();
+    const stage = stages[state.stage];
+    const values = state.selected.map(index => stage.pieces[index][1]);
+    const outcome = window.BalanceGroveRules.evaluate(values, stage.target, stage);
+    $("battleHeading").textContent = stageName(state.stage);
+    $("roundLabel").textContent = t("round", { n: state.stage + 1, total: stages.length });
+    $("battleHint").textContent = ruleText(stage);
+    $("leftGoal").textContent = t("target", { n: stage.target });
+    $("rightGoal").textContent = values.length ? `${values.join(" + ")} = ${outcome.total}` : t("tapInstruction");
+    $("leftPanLabel").textContent = t("goalLabel");
+    $("rightPanLabel").textContent = t("yourWeight");
+    document.querySelector(".fixed-weight").textContent = stage.target;
+    const scale = document.querySelector(".scale");
+    scale.dataset.balance = outcome.state;
+    scale.style.setProperty("--tilt", `${Math.max(-12, Math.min(12, (outcome.total - stage.target) * 2))}deg`);
+    scale.style.setProperty("--pan-shift", `${Math.max(-24, Math.min(24, (outcome.total - stage.target) * 4))}px`);
+    $("sessionChecks").textContent = String(state.checks);
+    $("sessionChecks").previousElementSibling.textContent = t("checksLabel");
+    $("selectionCount").textContent = stage.count ? `${state.selected.length} / ${stage.count}` : t("selected", { n: state.selected.length });
+    $("selectedItems").innerHTML = `<strong class="pan-total">${outcome.total}</strong><div class="pan-stones">${state.selected.map(index => `<span class="placed-token placed-token-${index}" aria-label="${t(stage.pieces[index][0])}"></span>`).join("")}</div>`;
+    const tray = $("tokenTray");
+    // Keep buttons and keyboard focus mounted while the selected set changes.
+    if (tray.dataset.renderedStage !== String(state.stage) || !tray.children.length) {
+      tray.dataset.renderedStage = String(state.stage);
+      tray.innerHTML = stage.pieces.map((piece,index) => `<button class="token-btn" type="button" data-token="${index}"><span class="token-icon token-icon-${index}" aria-hidden="true"></span><span><span class="token-name">${t(piece[0])}</span><span class="token-value">${piece[1]}</span></span><span class="stone-state" aria-hidden="true"></span></button>`).join("");
+      tray.querySelectorAll("[data-token]").forEach(button => button.addEventListener("click", () => toggleToken(Number(button.dataset.token))));
+    }
+    tray.querySelectorAll("[data-token]").forEach((button,index) => {
+      const selected = state.selected.includes(index), value = stage.pieces[index][1];
+      button.setAttribute("aria-pressed", String(selected));
+      button.querySelector(".token-name").textContent = t(stage.pieces[index][0]);
+      button.querySelector(".stone-state").textContent = selected ? "✓" : "+";
+      button.classList.toggle("anchor-stone", value === stage.anchor);
+      button.classList.toggle("avoid-stone", value === stage.avoid);
+      button.classList.remove("hinted");
+      button.setAttribute("aria-label", `${t(stage.pieces[index][0])} · ${value}${value === stage.anchor ? " · " + t("anchorRule",{n:value}) : ""}${value === stage.avoid ? " · " + t("avoidRule",{n:value}) : ""}`);
+    });
+    $("checkBtn").disabled = !values.length;
+    $("clearBtn").disabled = !values.length;
+    $("hintBtn").textContent = t("hint");
+    $("battleStatus").dataset.state = outcome.state;
+    const statusMessage = outcome.state === "empty" ? t(state.stage === 0 ? "firstLesson" : "tapInstruction") :
+      outcome.state === "balanced" ? t("readyCheck") : outcome.state === "rule" ? t("checkRule") :
+      t(outcome.remaining > 0 ? "tooLight" : "tooHeavy", { n: Math.abs(outcome.remaining) });
+    if (state.stage === 0 && outcome.state === "empty") {
+      $("battleStatus").innerHTML = '<span class="first-steps"></span>';
+      $("battleStatus").firstElementChild.textContent = statusMessage;
+    } else $("battleStatus").textContent = statusMessage;
+  };
+  const renderResult = () => {
+    const final = state.stage === stages.length - 1;
+    $("resultHeading").textContent = final ? t("finishTitle") : t("balanced");
+    $("resultText").textContent = `${"★".repeat(state.lastStars)}${"☆".repeat(3-state.lastStars)}  ${state.lastEquation} · ${t("solvedChecks",{n:state.checks})}\n${t("starRule")}`;
+    $("resultPrimaryBtn").textContent = final ? t("stageMap") : t("next");
+    $("resultMapBtn").hidden = false;
+    if (!$("resultReplayBtn")) {
+      const replay = document.createElement("button"); replay.id = "resultReplayBtn"; replay.className = "secondary-btn"; replay.type = "button";
+      $("resultMapBtn").insertAdjacentElement("afterend", replay);
+      replay.addEventListener("click", () => startStage(state.stage));
+    }
+    $("resultReplayBtn").textContent = t("replay");
+    $("resultPrimaryBtn").onclick = final ? () => { show("stages"); renderStages(); } : () => startStage(state.stage + 1);
+  };
+  const startSession = () => { state.sessionChecks = 0; state.sessionClears = []; track("session_start"); show("stages"); renderStages(); track("stage_map", { source: "start" }); };
+  const startStage = index => {
+    if (!Number.isInteger(index) || index < 0 || index > unlocked()) return;
+    state.stage = index; state.selected = []; state.checks = 0; state.hints = 0;
+    show("battle"); renderBattle(); track("stage_start", { stage: index + 1 });
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
-};
-  const toggleToken = (index) => { state.selected = state.selected.includes(index) ? state.selected.filter((item) => item !== index) : state.selected.concat(index); beep("board.move"); renderBattle(); track("stone_select", { stage: state.stage + 1, value: stages[state.stage].pieces[index][1] }); };
-  const clearTokens = () => { state.selected = []; $("battleStatus").textContent = ""; renderBattle(); track("stone_clear", { stage: state.stage + 1 }); };
-  const checkBalance = () => { const stage = stages[state.stage]; const total = state.selected.reduce((sum, index) => sum + stage.pieces[index][1], 0); const correct = state.selected.length > 0 && total === stage.target; state.checks += 1; state.sessionChecks += 1; track("balance_check", { stage: state.stage + 1, checks: state.checks, correct }); if (correct) { $("battleStatus").textContent = t("balanced"); beep("feedback.success"); state.selected = []; if (state.stage >= stages.length - 1) { writeBest(state.sessionChecks); track("session_complete", { checks: state.sessionChecks }); show("result"); renderResult(); } else { show("result"); renderResult(); } } else { $("battleStatus").textContent = t("notBalanced"); beep("feedback.error"); state.selected = []; renderBattle(); } };
+  };
+  const toggleToken = index => {
+    state.selected = state.selected.includes(index) ? state.selected.filter(item => item !== index) : [...state.selected,index];
+    beep("board.move"); renderBattle(); track("stone_select", { stage: state.stage + 1, value: stages[state.stage].pieces[index][1] });
+  };
+  const clearTokens = () => { state.selected = []; renderBattle(); track("stone_clear", { stage: state.stage + 1 }); };
+  const checkBalance = () => {
+    if (!state.selected.length || screens.battle.hidden) return;
+    const stage = stages[state.stage], values = state.selected.map(index => stage.pieces[index][1]);
+    const outcome = window.BalanceGroveRules.evaluate(values, stage.target, stage);
+    state.checks++; state.sessionChecks++;
+    track("balance_check", { stage: state.stage + 1, checks: state.checks, correct: outcome.valid });
+    if (!outcome.valid) {
+      beep("feedback.error"); renderBattle();
+      $("battleStatus").classList.remove("rejected");
+      void $("battleStatus").offsetWidth; $("battleStatus").classList.add("rejected");
+      return;
+    }
+    beep("feedback.success"); state.lastEquation = `${values.join(" + ")} = ${stage.target}`;
+    state.lastStars = state.hints ? 1 : state.checks === 1 ? 3 : 2;
+    if (!progress.cleared.includes(state.stage)) progress.cleared.push(state.stage);
+    progress.stars[state.stage] = Math.max(progress.stars[state.stage] || 0, state.lastStars);
+    try { localStorage.setItem("weightplay-balance-grove-campaign-v1", JSON.stringify(progress)); } catch { state.storage = false; }
+    if (!state.sessionClears.includes(state.stage)) state.sessionClears.push(state.stage);
+    if (state.stage === 2 && [0,1,2].every(index => state.sessionClears.includes(index))) writeBest(state.sessionChecks);
+    if (state.stage === stages.length - 1) track("session_complete", { checks: state.sessionChecks });
+    state.selected = []; show("result"); renderResult();
+  };
   $("startBtn").addEventListener("click", startSession); $("mapBtn").addEventListener("click", () => { show("stages"); renderStages(); track("stage_map"); }); $("stageBackBtn").addEventListener("click", () => { show("main"); applyLocale(); }); $("battleBackBtn").addEventListener("click", () => { show("stages"); renderStages(); }); $("resultMapBtn").addEventListener("click", () => { show("stages"); renderStages(); }); $("resultHomeBtn").addEventListener("click", () => { show("main"); applyLocale(); }); $("checkBtn").addEventListener("click", checkBalance); $("clearBtn").addEventListener("click", clearTokens); $("settingsBtn").addEventListener("click", () => { const panel = $("settingsPanel"); panel.hidden = !panel.hidden; $("settingsBtn").setAttribute("aria-expanded", String(!panel.hidden)); }); $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; applyLocale(); track("sound", { enabled: state.sound }); }); $("localeSelect").addEventListener("change", (event) => { const next = normalizeLocale(event.target.value); if (window.WonderI18n?.setLocale) { window.WonderI18n.setLocale(next); return; } setLocale(next); });
   window.addEventListener?.("wonder:locale-change", (event) => setLocale(event.detail?.locale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang));
   window.addEventListener?.("weightplay:audio-volume-change", () => { syncSoundState(); applyLocale(); });

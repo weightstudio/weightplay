@@ -541,3 +541,89 @@ body[data-screen="main"] #gameGuide { display: block; }
     }
   }
 }
+
+/* Game-owned puzzle content; shared frame and uniform Canvas scaler retain ownership. */
+#battleScreen #battleContent {
+  display: flex; flex-direction: column; gap: 12px; margin: 0 auto;
+  padding: 8px 0; width: 100%; max-width: 780px; overflow-y: auto;
+}
+#battleScreen .goal-card { margin:0; padding:12px 16px; min-height:68px; border-radius:16px; background:#173c35; color:#fff8d9; border:1px solid #6a9c7a; }
+#battleScreen .goal-card .eyebrow { display:none; }
+#battleScreen .goal-card h3 { font-size:22px; color:#fff8d9; margin:0; }
+#battleScreen .goal-card p { color:#d0e7d9; font-size:13px; }
+#battleScreen .field-coach { box-sizing:border-box; flex:0 0 64px; height:64px; margin:0; padding:10px 14px; display:flex; align-items:center; background:#fff4cc; color:#3f432c; border:1px solid #decb85; border-inline-start:4px solid #c58b24; border-radius:12px; font-size:14px; line-height:1.45; overflow:hidden; }
+#battleScreen .field-coach.is-tutorial { background:#fff0b5; border-color:#d29b2c; }
+#battleScreen .pattern-summary:not(.current-summary) { display:none; }
+#battleScreen .current-summary { display:flex; flex-direction:column; gap:8px; margin:0; border:0; padding:0; align-items:stretch; }
+#battleScreen .current-summary > span { display:none; }
+#battleScreen #currentPattern { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); grid-auto-rows:130px; gap:12px; width:100%; direction:ltr; }
+#battleScreen .pattern-cell { position:relative; display:grid; grid-template-rows:20px 42px 18px 24px; align-items:center; justify-items:center; box-sizing:border-box; min-width:0; min-height:130px; padding:10px 8px; border:2px solid #c2a469; border-radius:16px; background:#f3e8c6; color:#665027; box-shadow:0 4px 0 #bca777; transition:background .16s,border-color .16s,box-shadow .16s; }
+#battleScreen .pattern-cell::before { display:none; }
+#battleScreen .pattern-cell.is-lifted { background:#d3ecdd; color:#215a45; border-color:#79a88b; box-shadow:0 4px 0 #799b79; }
+#battleScreen .pattern-cell.is-match { border-color:#267a55; box-shadow:0 4px 0 #267a55; }
+#battleScreen .cell-number { justify-self:start; color:#354d40; font-size:14px; line-height:20px; }
+#battleScreen .cell-leaf { display:grid; place-items:center; font-size:34px; font-weight:900; line-height:42px; width:42px; }
+#battleScreen .pattern-cell small { font-size:12px; line-height:18px; }
+#battleScreen .cell-target { color:#254536; font-size:12px; line-height:24px; font-weight:800; white-space:nowrap; }
+#battleScreen .pattern-cell.is-preview { border-color:#dc900c; outline:3px solid #f7be48; outline-offset:2px; }
+#battleScreen .aligned-count { min-height:22px; text-align:center; color:#274d3b; font-size:14px; }
+#battleScreen #flapBoard { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); grid-template-rows:64px 64px; gap:10px; margin:0; width:100%; }
+#battleScreen #flapBoard .flap-btn { height:64px; min-height:64px; padding:6px; gap:2px; border:2px solid #c7d7cc; border-radius:12px; background:#fafff7; color:#234f40; box-shadow:0 3px 0 #7a9b83; transform:none; }
+#battleScreen #flapBoard .flap-btn strong { font-size:20px; line-height:24px; direction:ltr; }
+#battleScreen #flapBoard .flap-btn small { font-size:11px; line-height:16px; color:#496553; }
+#battleScreen #flapBoard .flap-btn:is(:hover,:focus-visible), #battleScreen #flapBoard .flap-btn.is-hint { border-color:#e4a02e; background:#fff2c4; outline:2px solid #e4a02e; outline-offset:1px; }
+#battleScreen #flapBoard .flap-btn:active { box-shadow:inset 0 0 0 3px #e4a02e; }
+#battleScreen #flapBoard .fold-empty { pointer-events:none; visibility:hidden; }
+#battleScreen .battle-status { flex:0 0 44px; height:44px; min-height:44px; margin:0; padding:2px 8px; overflow:hidden; white-space:normal; line-height:20px; font-size:13px; color:#2a593f; text-align:center; }
+#battleScreen .move-hint { display:none; }
+#battleScreen .battle-canvas > .battle-actions { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; width:100%; }
+#battleScreen .battle-canvas > .battle-actions button { min-width:0; padding:4px; font-size:13px; overflow-wrap:anywhere; }
+#battleScreen #checkBtn { display:none; }
+#battleScreen .battle-canvas > .battle-actions { grid-template-columns:repeat(3,minmax(0,1fr)); }
+#battleScreen .battle-canvas > .battle-actions button:disabled { opacity:.55; cursor:default; }
+#battleScreen .just-folded .cell-leaf { animation:field-flip .26s ease-out; }
+#battleScreen[data-battle-state="result"] .result-card { animation:field-appear .28s ease-out; }
+#battleScreen .field-stars { color:#946100; font-size:36px; letter-spacing:6px; }
+#stageScreen .stage-card[aria-disabled="true"] { opacity:.65; }
+#stageScreen .stage-card.is-cleared .stage-chip { color:#ffe4a0; }
+@keyframes field-flip { 0%{transform:scaleY(.15);opacity:.4} 100%{transform:scaleY(1);opacity:1} }
+@keyframes field-appear { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+/* The landscape reference is an existing shared 760x334 Canvas. Only game
+   content tracks re-anchor inside that envelope; each control keeps its units. */
+@media (min-aspect-ratio:5/4) {
+  #battleScreen #battleContent { display:grid; grid-template-columns:minmax(240px,1fr) minmax(320px,1fr); grid-template-rows:68px 64px 128px 44px; gap:8px 16px; align-content:center; }
+  #battleScreen .goal-card { grid-column:1; grid-row:1; }
+  #battleScreen .field-coach { grid-column:1; grid-row:2; }
+  #battleScreen .current-summary { grid-column:2; grid-row:1/5; justify-content:center; }
+  #battleScreen #flapBoard { grid-column:1; grid-row:3; }
+  #battleScreen .battle-status { grid-column:1; grid-row:4; }
+}
+@media (prefers-reduced-motion:reduce) {
+  #battleScreen .just-folded .cell-leaf,#battleScreen[data-battle-state="result"] .result-card { animation:none; }
+  #battleScreen .pattern-cell { transition:none; }
+  #battleScreen .just-folded { outline:3px solid #dfaa35; }
+}
+/* A consistent board height makes both the introductory trio and later
+   six-leaf fields readable without moving the move/tool controls. */
+#battleScreen #currentPattern { grid-template-rows:repeat(2,120px); grid-auto-rows:120px; gap:10px; }
+#battleScreen #currentPattern:has(.pattern-cell:nth-child(3):last-child) > .pattern-cell { grid-row:1 / 3; grid-template-rows:24px 1fr 20px 28px; }
+#battleScreen #currentPattern:has(.pattern-cell:nth-child(3):last-child) .cell-leaf { font-size:52px; line-height:64px; }
+#battleScreen .pattern-cell { min-height:120px; grid-template-rows:18px 32px 18px 24px; padding:8px; }
+#battleScreen .goal-card { height:60px; min-height:60px; overflow:hidden; padding:8px 12px; flex-direction:row; align-items:center; }
+#battleScreen .goal-card h3 { font-size:18px; }
+#battleScreen .goal-card p { margin:0; font-size:12px; }
+#battleScreen .field-coach { height:56px; flex-basis:56px; font-size:13px; padding:8px 12px; }
+#battleScreen #flapBoard { grid-template-rows:54px 54px; gap:8px; }
+#battleScreen #flapBoard .flap-btn { height:54px; min-height:54px; padding:4px; }
+#battleScreen .battle-status { height:40px; min-height:40px; flex-basis:40px; }
+#battleScreen #battleContent { gap:8px; }
+@media (min-aspect-ratio:5/4) {
+  #battleScreen #battleContent { grid-template-rows:60px 56px 116px 40px; }
+}
+#battleScreen #resultScreen .result-card h2 { color:#254536 !important; }
+#battleScreen #resultScreen .result-card > p { color:#355e4b; }
+#battleScreen #resultScreen .result-card .kicker { color:#376b4d; }
+#battleScreen #flapBoard .flap-btn strong { white-space:nowrap; }
+#battleScreen #flapBoard .flap-btn[data-link-size="3"] strong { font-size:18px; }
+/* The shared Main header already supplies the visible game title. */
+#mainScreen .wp-shell-main-title { visibility:hidden; }

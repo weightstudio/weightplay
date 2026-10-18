@@ -77,6 +77,16 @@ body[data-wp-game-id="traffic-jam-diner"] #result-panel[hidden]{display:none!imp
 .result-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;min-width:0}
 .result-actions button{width:100%;height:100%;min-width:0;min-height:0;padding:6px;font-size:.8rem;line-height:1.15;overflow-wrap:anywhere}
 
+/* Keep all three Result routes inside the short-landscape viewport. */
+@media(orientation:landscape) and (max-height:520px){
+  .result-card{box-sizing:border-box;max-height:100%;grid-template-rows:44px 42px 36px 42px max(48px,calc(46px * var(--wp-battle-canvas-inverse-scale,1)));gap:5px;padding:12px 16px}
+  .result-card h2{font-size:1.1rem;line-height:1.15}
+  .result-card p{font-size:.92rem;line-height:1.15}
+  .result-stars{min-height:0;font-size:1.35rem;line-height:1}
+  .result-actions{gap:6px}
+  .result-actions button{min-height:calc(46px * var(--wp-battle-canvas-inverse-scale,1));padding-block:4px;font-size:.72rem;line-height:1.1}
+}
+
 /* The shared data-backed controller is the only scroll/snap owner. */
 #stage-list{scroll-snap-type:none!important;scroll-behavior:auto!important}
 /* Leave confirmation stays inside the existing Battle Canvas. */
