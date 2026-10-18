@@ -7467,3 +7467,19 @@ window.WONDER_LOBBY.games.push({
   },
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("flying-tram");
+
+// Owner-requested dog-care production. Visible only in the internal preview lobby.
+window.WONDER_LOBBY.games.push({
+  id: "puppy-haven", audience: "general", status: "planned", internalOnly: true,
+  internalTrial: "/games/puppy-haven/index.html?preview=1",
+  title: { __localizedExact: true, en: "Puppy Haven", "zh-Hant": "汪汪小院", "zh-Hans": "汪汪小院", ja: "わんこの庭", ko: "강아지 마당", es: "Hogar de Cachorros", "pt-BR": "Lar dos Filhotes", fr: "Le Jardin des Chiots", de: "Welpenhof", it: "Il Giardino dei Cuccioli", ru: "Щенячий дворик", hi: "पिल्लों का आँगन", ar: "حديقة الجراء" },
+  type: { en: "Dog Care & Family", "zh-Hant": "養狗與家庭經營" },
+  description: { en: "Care for six dog breeds, choose nutritious food, clean the yard and welcome a new generation of puppies.", "zh-Hant": "照顧六種狗狗、挑選分級飼料、清理便便，讓健康的公母狗迎接可愛小狗。" },
+  statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+  categories: ["Simulation", "Management", "Animal Games"],
+  skills: ["Planning", "Resource Balance"], ages: ["general"],
+  href: "games/puppy-haven/",
+  art: { kind: "image", background: "games/puppy-haven/assets/cover-block-v1.png", hideHero: true },
+  meta: { en: ["6 Breeds", "Food & Care", "Puppy Families"], "zh-Hant": ["六種狗狗", "餵食清潔", "幼犬家庭"] },
+});
+window.WONDER_LOBBY.audiences.generalGameIds.push("puppy-haven");

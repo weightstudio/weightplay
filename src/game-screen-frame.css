@@ -197,7 +197,7 @@ html body [data-wp-frame="2"] [data-wp-frame-content="stage"],html body [data-wp
 html body [data-wp-frame="2"] [data-wp-frame-nav] {grid-row:3!important;display:flex!important;align-items:center!important;gap:12px!important;padding:4px!important;margin:0!important;border:0!important;background:var(--wp-ui-surface)!important}
 html body [data-wp-frame="2"] [data-wp-frame-nav] > * {flex:1!important}
 html body [data-wp-frame="2"] [data-wp-frame-scene].hidden {display:none!important}
-@media(min-width:700px) {html body [data-wp-frame="2"] [data-wp-frame-content="main"] {grid-template-columns:var(--wp-main-poster-size) minmax(0,1fr)}}
+@media(min-width:700px) {html body [data-wp-frame="2"] [data-wp-frame-content="main"] {grid-template-columns:var(--wp-main-poster-size) minmax(0,1fr)!important}}
 /* Full-Canvas play consumers reclaim the former title gap. The shared frame,
    rather than a game-local header override, owns this declared composition. */
 html body [data-wp-frame="2"] [data-wp-frame-scene][data-wp-frame-play-fill] {gap:0!important;padding:0!important}
@@ -218,13 +218,12 @@ html body [data-wp-frame="2"] .wp-frame-play-content {display:flex!important;fle
 html body [data-wp-frame="2"] .wp-frame-play-content > :is(.battle-layout,.prep-area,.combat-area) {flex:1;min-height:0}
 html body [data-wp-frame="2"] [data-wp-frame-action="tab"][aria-selected="true"] {background:var(--wp-ui-active)!important}
 }
-/* Compact-landscape Main has a shared height budget. Keep the poster column
-   and its art on the same responsive size even when an older game stylesheet
-   still carries a fixed 420px Main rule. */
+/* Frame v2 keeps one canonical wide-layout Main poster size at every viewport.
+   The shared content track wins over unlayered legacy game layouts, and the
+   square poster follows that same track in compact landscape. */
 @media (min-width:700px) and (max-height:560px) {
   html body [data-wp-play-ui="1"][data-wp-frame="2"] [data-wp-frame-content="main"] {
-    --wp-main-poster-size:clamp(220px,calc(100vh - 170px),420px)!important;
-    --wp-main-poster-size:clamp(220px,calc(100svh - 170px),420px)!important;
+    --wp-main-poster-size:420px!important;
     grid-template-columns:var(--wp-main-poster-size) minmax(0,1fr)!important;
   }
   html body [data-wp-play-ui="1"][data-wp-frame="2"] [data-wp-frame-content="main"] [data-wp-frame-poster] {

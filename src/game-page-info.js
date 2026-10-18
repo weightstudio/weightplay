@@ -11956,7 +11956,8 @@
       'section.game-page-info-static[data-wp-preserve-static-guide], section.game-page-info-static[data-wp-game-owned-guide="true"]',
     );
     if (preservedStaticGuide) {
-      preservedStaticGuide.setAttribute("aria-label", uiLabel("guideLabel", { title: game.title }));
+      const displayedGuideTitle = preservedStaticGuide.querySelector("[data-wp-game-title]")?.textContent.trim() || game.title;
+      preservedStaticGuide.setAttribute("aria-label", uiLabel("guideLabel", { title: displayedGuideTitle }));
       document.documentElement.classList.add("has-game-page-info");
       document.body.classList.add("has-game-page-info");
       return;

@@ -29,4 +29,23 @@
 
 @media (max-height: 500px) and (min-aspect-ratio: 3 / 2) {
   #battleLive { grid-template-rows: 28px minmax(0, 1fr) 20px; }
+
+  #resultModal .result-card {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 1px 8px;
+    padding: 4px 8px;
+  }
+
+  #resultModal .result-card > img {
+    grid-row: 1 / 5;
+    width: 60px;
+    height: 60px;
+  }
+
+  #resultModal .result-card h2 { margin: 2px; font-size: 21px; line-height: 1.05; }
+  #resultModal .result-card p { margin: 2px 0; font-size: 12px; line-height: 1.15; }
+  #resultModal .result-stats { gap: 4px; }
+  #resultModal .result-stats span { padding: 4px; }
+  #resultModal .modal-actions { grid-column: 1 / -1; gap: 4px; margin-top: 2px; }
+  #resultModal .modal-actions button { min-height: 44px; }
 }
