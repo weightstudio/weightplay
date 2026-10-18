@@ -65,10 +65,11 @@ h1 { margin: 0; color: var(--ink); font-size: clamp(2.1rem, 6vw, 4.4rem); line-h
 .intro { max-width: 36rem; margin: 18px 0 10px; font-size: clamp(1rem, 2.2vw, 1.25rem); }
 .progress { min-height: 40px; display: flex; align-items: center; margin: 0 0 22px; color: var(--muted); font-weight: 800; }
 .hero-actions, .battle-actions, .result-actions, .dialog-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-.primary-btn, .secondary-btn { min-height: 48px; border-radius: 15px; padding: 12px 18px; font-weight: 900; border: 1px solid transparent; }
+.primary-btn, .secondary-btn { min-height: 48px; border-radius: 15px; padding: 12px 18px; font-weight: 900; border: 1px solid transparent; transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease, filter 120ms ease; }
 .primary-btn { min-height: 52px; }
 .primary-btn { color: white; background: var(--mint-strong); box-shadow: 0 8px 18px rgb(74 156 120 / 20%); }
-.primary-btn:hover, .primary-btn:focus-visible { background: #378464; transform: translateY(-1px); }
+.primary-btn:hover, .primary-btn:focus-visible { background: #378464; filter: brightness(1.04); }
+.primary-btn:active, .secondary-btn:active { filter: brightness(.94); }
 .secondary-btn { color: var(--ink); background: #fff; border-color: var(--line); }
 .secondary-btn:hover, .secondary-btn:focus-visible { border-color: var(--mint-strong); background: #f6fbf6; }
 button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid #f0b84a; outline-offset: 3px; }
@@ -80,8 +81,32 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 select { min-height: 44px; max-width: 62%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); background: #fff; }
 .setting-sound { margin-top: 12px; }
 
-.guide-screen, .battle-canvas, .result-canvas { animation: appear .2s ease-out; }
-@keyframes appear { from { opacity: .2; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+.screen:not([hidden]), #guideScreen:not([hidden]), .battle-play-layer:not([hidden]) { animation: tangle-scene-enter 150ms ease-out both; }
+.guide-card[open] .guide-canvas, #resultScreen:not([hidden]) .result-canvas { animation: tangle-scene-enter 170ms ease-out both; }
+.guide-card[open] .guide-canvas.guide-exiting { pointer-events: none; animation: tangle-scene-exit 170ms ease-in both; }
+.scene-exiting { pointer-events: none; animation: tangle-scene-exit 110ms ease-in both; }
+.screen.scene-exiting, .guide-card.scene-exiting, .battle-play-layer.scene-exiting, .result-state.scene-exiting { animation: tangle-scene-exit 110ms ease-in both; }
+@keyframes tangle-scene-enter { from { opacity: .4; } to { opacity: 1; } }
+@keyframes tangle-scene-exit { from { opacity: 1; } to { opacity: .12; } }
+@keyframes tangle-chip-ack { 0% { opacity: .55; transform: scale(.82); } 70% { opacity: 1; transform: scale(1.08); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes tangle-chip-release { from { opacity: .55; } to { opacity: 1; } }
+@keyframes tangle-route-refresh { from { opacity: .16; stroke-width: 3; } to { opacity: .72; stroke-width: 6; } }
+@keyframes tangle-mismatch-outline { 0% { outline-color: transparent; outline-offset: 0; } 65% { outline-color: #a84245; outline-offset: 2px; } 100% { outline-color: #a84245; outline-offset: 1px; } }
+@keyframes tangle-warning-enter { from { opacity: .35; transform: scale(.72); } to { opacity: 1; transform: scale(1); } }
+@keyframes tangle-status-enter { from { opacity: .45; } to { opacity: 1; } }
+.endpoint-card { transition: border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease, filter 120ms ease; }
+.endpoint-card:active { filter: brightness(.94); }
+.endpoint-card.selection-ack .paw-chip,
+.endpoint-card.swap-ack .paw-chip,
+.endpoint-card.reset-ack .paw-chip { animation: tangle-chip-ack 170ms ease-out both; }
+.endpoint-card.release-ack .paw-chip { animation: tangle-chip-release 130ms ease-out both; }
+.route-svg path.swap-ack { animation: tangle-route-refresh 180ms ease-out both; }
+.board-row.needs-recheck .endpoint-card,
+.board-row.needs-recheck .shelter-card { animation: tangle-mismatch-outline 190ms ease-out both; }
+.board-row.needs-recheck .board-dot::after { animation: tangle-warning-enter 160ms ease-out both; }
+.feedback.error { animation: tangle-status-enter 150ms ease-out both; }
+.dialog-backdrop:not([hidden]) { animation: tangle-scene-enter 150ms ease-out both; }
+.dialog-backdrop.dialog-exiting { pointer-events: none; animation: tangle-scene-exit 110ms ease-in both; }
 .guide-card { width: min(100%, 920px); margin: 14px auto 0; padding: 16px clamp(16px, 3vw, 26px) 22px; border: 1px solid var(--line); border-radius: 24px; background: rgb(255 253 247 / 96%); box-shadow: 0 10px 24px rgb(38 82 71 / 6%); }
 .guide-card summary { min-height: 44px; padding: 10px 0; color: var(--ink); cursor: pointer; font-size: 1.15rem; font-weight: 900; }
 .guide-canvas { padding: 8px 0 0; }
@@ -248,22 +273,8 @@ body:not([data-screen="main"]) #guideScreen { display: none; }
   html[dir="rtl"] #battleScreen .tangle-board { right: 16px; left: 278px; }
 }
 
-/* Interface 7's compatibility skin supplies the shared block tokens after
-   game CSS. Keep Tangle Rescue's approved Interface 6 Guide surface and its
-   governed 420px wide-layout poster explicit with game-owned, ID-scoped
-   contracts so the universal fallback cannot collapse them. The authored
-   radius is exposed through the same shared token consumed by the validator. */
-#guideScreen {
-  --wp-ui-radius: 24px !important;
-  --wp-ui-text: #173844 !important;
-  --wp-ui-muted: #5b747a !important;
-  padding: 16px clamp(16px, 3vw, 26px) 22px !important;
-  border: 1px solid var(--line) !important;
-  border-radius: var(--wp-ui-radius) !important;
-  background: rgb(255 253 247 / 96%) !important;
-  color: var(--ink) !important;
-  box-shadow: 0 10px 24px rgb(38 82 71 / 6%) !important;
-}
+/* The shared I9 layer owns the Guide shell. This route contributes only its
+   authored instructional content inside the common reading surface. */
 
 @media (min-width: 700px) {
   #mainScreen .wp-standard-main-composition {
@@ -288,5 +299,6 @@ body:not([data-screen="main"]) #guideScreen { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  .loading-mark { animation: none !important; }
 }

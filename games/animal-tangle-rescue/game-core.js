@@ -54,6 +54,11 @@
   const state = { locale: "en", screen: "main", board: 0, selectedStage: 0, current: [], selected: -1, swaps: 0, completed: [], errorRows: [], best: {}, statusKey: "ready", statusVars: {}, statusError: false };
   let stageSelector = null;
   let screenFrame = null;
+  let screenTransitionTimer = 0;
+  let screenTransitionGeneration = 0;
+  let dialogTransitionTimer = 0;
+  let guideTransitionTimer = 0;
+  let hasRenderedScreen = false;
   const $ = (id) => document.getElementById(id);
   const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
@@ -96,7 +101,7 @@
     });
     battleCanvas.prepend(playLayer);
   };
-  const setScreen = (screen) => {
+  const applyScreen = (screen) => {
     state.screen = screen;
     const activeScreen = screen === "result" ? "battle" : screen;
     const showingResult = screen === "result";
@@ -128,7 +133,75 @@
       $("resultHeading").focus({ preventScroll: true });
     }
     window.scrollTo(0, 0);
+    hasRenderedScreen = true;
   };
+  const outgoingLayers = (screen) => {
+    if (state.screen === "result") return [$("resultScreen")];
+    if (state.screen === "battle" && screen === "result") return [$("battlePlayLayer")];
+    if (state.screen === "main") return [$("mainScreen"), $("guideScreen")].filter((node) => node && !node.hidden);
+    return [$(state.screen + "Screen")].filter(Boolean);
+  };
+  const setScreen = (screen) => {
+    if (screenTransitionTimer) {
+      window.clearTimeout(screenTransitionTimer);
+      screenTransitionTimer = 0;
+      screenTransitionGeneration += 1;
+      document.querySelectorAll(".scene-exiting").forEach((node) => {
+        node.classList.remove("scene-exiting");
+        node.inert = false;
+        node.removeAttribute("aria-hidden");
+      });
+      $("app").inert = false;
+    }
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (!hasRenderedScreen || state.screen === screen || reducedMotion) {
+      applyScreen(screen);
+      return;
+    }
+    const generation = ++screenTransitionGeneration;
+    const app = $("app");
+    const exiting = outgoingLayers(screen);
+    app.inert = true;
+    exiting.forEach((node) => {
+      node.classList.add("scene-exiting");
+      node.inert = true;
+      node.setAttribute("aria-hidden", "true");
+    });
+    screenTransitionTimer = window.setTimeout(() => {
+      if (generation !== screenTransitionGeneration) return;
+      screenTransitionTimer = 0;
+      exiting.forEach((node) => {
+        node.classList.remove("scene-exiting");
+        node.inert = false;
+        node.removeAttribute("aria-hidden");
+      });
+      app.inert = false;
+      applyScreen(screen);
+    }, 110);
+  };
+  window.addEventListener("pagehide", () => {
+    window.clearTimeout(screenTransitionTimer);
+    window.clearTimeout(dialogTransitionTimer);
+    window.clearTimeout(guideTransitionTimer);
+    screenTransitionTimer = 0;
+    dialogTransitionTimer = 0;
+    guideTransitionTimer = 0;
+    screenTransitionGeneration += 1;
+    document.querySelectorAll(".scene-exiting").forEach((node) => {
+      node.classList.remove("scene-exiting");
+      node.inert = false;
+      node.removeAttribute("aria-hidden");
+    });
+    $("app").inert = false;
+    const dialog = $("leaveDialog");
+    dialog.classList.remove("dialog-exiting");
+    dialog.inert = false;
+    const guide = $("guideScreen");
+    const guideCanvas = guide.querySelector(".guide-canvas");
+    guideCanvas.classList.remove("guide-exiting");
+    guideCanvas.inert = false;
+    guideCanvas.removeAttribute("aria-hidden");
+  }, { once: true });
   const routeColor = (animalKey) => tokenMeta[animalKey]?.color || "#5c9ccc";
   const routePath = (fromRow, toRow, width, height) => {
     const left = 112;
@@ -138,7 +211,7 @@
     const bend = Math.max(36, (right - left) * 0.28);
     return `M ${left} ${startY} C ${left + bend} ${startY}, ${right - bend} ${endY}, ${right} ${endY}`;
   };
-  const renderBoard = () => {
+  const renderBoard = ({ selectedRow = -1, releasedRow = -1, swappedRows = [], reset = false } = {}) => {
     const board = boards[state.board];
     const diagram = $("boardDiagram");
     const height = Math.max(292, state.current.length * 62 + 16);
@@ -147,7 +220,8 @@
     const paths = state.current.map((animalKey, row) => {
       const targetRow = board.target.indexOf(animalKey);
       const dash = tokenMeta[animalKey]?.dash;
-      return `<path d="${routePath(row, targetRow, width, height)}" stroke="${routeColor(animalKey)}"${dash ? ` stroke-dasharray="${dash}"` : ""}></path>`;
+      const motion = swappedRows.includes(row) ? ' class="swap-ack"' : "";
+      return `<path${motion} d="${routePath(row, targetRow, width, height)}" stroke="${routeColor(animalKey)}"${dash ? ` stroke-dasharray="${dash}"` : ""}></path>`;
     }).join("");
     const rows = state.current.map((animalKey, row) => {
       const animalIndex = Math.max(0, indexForAnimal(animalKey));
@@ -158,12 +232,16 @@
       const locked = lockedRows(board).includes(row);
       const decoy = decoyRows(board).includes(row);
       const needsRecheck = state.errorRows.includes(row);
+      const motion = selectedRow === row ? " selection-ack"
+        : releasedRow === row ? " release-ack"
+          : swappedRows.includes(row) ? " swap-ack"
+            : reset ? " reset-ack" : "";
       const shelter = decoy
         ? `<span><strong>?</strong><small>${copy("shelter", { number: row + 1 })}</small></span><span class="shelter-route-cue" role="img" aria-label="${copy("decoyTrailCue", { number: row + 1 })}" style="--tangle-route-color:${routeColor(targetKey)}">${targetMarker}</span>`
         : `<span><strong>${titleForAnimal(targetKey)}</strong><small>${copy("shelter", { number: row + 1 })}</small></span><span class="shelter-icon" aria-hidden="true">⌂</span>`;
       const rowClass = `board-row${locked ? " locked-row" : ""}${needsRecheck ? " needs-recheck" : ""}`;
       const invalidAttrs = needsRecheck ? ' aria-invalid="true" aria-describedby="battleStatus"' : "";
-      return `<div class="${rowClass}"><button class="endpoint-card${selected ? " selected" : ""}${locked ? " locked" : ""}" type="button" data-endpoint="${row}" aria-pressed="${selected}" aria-label="${copy("swapName", { number: row + 1 })}: ${titleForAnimal(animalKey)}${locked ? " — locked" : ""}${selected ? " — " + copy("selected") : ""}"${invalidAttrs}${locked ? " disabled aria-disabled=\"true\"" : ""}><span class="paw-chip paw-${animalIndex}">${animalMarker}</span><span><strong>${titleForAnimal(animalKey)}</strong><small>${locked ? "LOCKED" : copy("current")}</small></span></button><span class="board-dot" aria-hidden="true"></span><div class="shelter-card${decoy ? " decoy" : ""}">${shelter}</div></div>`;
+      return `<div class="${rowClass}"><button class="endpoint-card${selected ? " selected" : ""}${motion}${locked ? " locked" : ""}" type="button" data-endpoint="${row}" aria-pressed="${selected}" aria-label="${copy("swapName", { number: row + 1 })}: ${titleForAnimal(animalKey)}${locked ? " — locked" : ""}${selected ? " — " + copy("selected") : ""}"${invalidAttrs}${locked ? " disabled aria-disabled=\"true\"" : ""}><span class="paw-chip paw-${animalIndex}">${animalMarker}</span><span><strong>${titleForAnimal(animalKey)}</strong><small>${locked ? "LOCKED" : copy("current")}</small></span></button><span class="board-dot" aria-hidden="true"></span><div class="shelter-card${decoy ? " decoy" : ""}">${shelter}</div></div>`;
     }).join("");
     diagram.innerHTML = `<svg class="route-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" aria-hidden="true">${paths}</svg>${rows}`;
     diagram.querySelectorAll("[data-endpoint]").forEach((button) => button.addEventListener("click", () => selectEndpoint(Number(button.dataset.endpoint))));
@@ -193,7 +271,7 @@
       cleared: done,
     };
   };
-  const renderBattle = () => {
+  const renderBattle = (motion = {}) => {
     const board = boards[state.board];
     $("battleHeading").textContent = copy("round", { number: state.board + 1, total: boards.length });
     const titleKey = "boardTitle" + (state.board + 1);
@@ -204,7 +282,7 @@
     $("progressBadge").textContent = copy("progressBadge", { count: state.completed.length, total: boards.length });
     $("battleStatus").textContent = copy(state.statusKey, state.statusVars);
     $("battleStatus").classList.toggle("error", state.statusError);
-    renderBoard();
+    renderBoard(motion);
   };
   const renderResult = (moves) => {
     const final = state.completed.length === boards.length;
@@ -231,7 +309,7 @@
       state.statusVars = {};
       state.statusError = false;
       analytics("tangle_endpoint_selected", { row });
-      renderBattle();
+      renderBattle({ selectedRow: row });
       return;
     }
     if (state.selected === row) {
@@ -239,7 +317,7 @@
       state.statusKey = "ready";
       state.statusVars = {};
       state.statusError = false;
-      renderBattle();
+      renderBattle({ releasedRow: row });
       return;
     }
     const first = state.selected;
@@ -255,7 +333,7 @@
     analytics("tangle_endpoint_swapped", { first, second: row, swaps: state.swaps });
     playTone("board.move");
     $("battleStatus").textContent = copy(state.statusKey, state.statusVars);
-    renderBoard();
+    renderBoard({ swappedRows: [first, row] });
     $("battleStatus").classList.remove("error");
   };
   const checkBoard = () => {
@@ -278,7 +356,7 @@
     state.statusError = true;
     renderBattle();
   };
-  const resetBoard = () => { state.current = boards[state.board].start.slice(); state.selected = -1; state.swaps = 0; state.errorRows = []; state.statusKey = "ready"; state.statusVars = {}; state.statusError = false; analytics("tangle_board_reset", { board: state.board }); renderBattle(); };
+  const resetBoard = () => { state.current = boards[state.board].start.slice(); state.selected = -1; state.swaps = 0; state.errorRows = []; state.statusKey = "ready"; state.statusVars = {}; state.statusError = false; analytics("tangle_board_reset", { board: state.board }); renderBattle({ reset: true }); };
   const startBoard = (index) => {
     const boardIndex = Math.max(0, Math.min(boards.length - 1, Number(index) || 0));
     if (!isStageUnlocked(boardIndex)) return;
@@ -302,19 +380,38 @@
     if (state.screen === "battle") renderBattle();
   };
   const applyLocale = (locale) => { state.locale = normalizeLocale(locale) || "en"; safeSet("weightplay-locale", state.locale); safeSet("weightPlayLocale", state.locale); document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr"; $("languageSelect").value = state.locale; applyText(); };
-  const openLeaveDialog = () => { $("leaveDialog").hidden = false; $("cancelLeaveBtn").focus(); };
-  const closeLeaveDialog = () => { $("leaveDialog").hidden = true; $("leaveBtn").focus(); };
+  const openLeaveDialog = () => { const dialog = $("leaveDialog"); window.clearTimeout(dialogTransitionTimer); dialog.classList.remove("dialog-exiting"); dialog.inert = false; dialog.hidden = false; $("cancelLeaveBtn").focus(); };
+  const closeLeaveDialog = (after = () => $("leaveBtn").focus()) => {
+    const dialog = $("leaveDialog");
+    if (dialog.hidden) { after(); return; }
+    window.clearTimeout(dialogTransitionTimer);
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      dialog.classList.remove("dialog-exiting");
+      dialog.hidden = true;
+      dialog.inert = false;
+      after();
+      return;
+    }
+    dialog.classList.add("dialog-exiting");
+    dialog.inert = true;
+    dialogTransitionTimer = window.setTimeout(() => {
+      dialogTransitionTimer = 0;
+      dialog.classList.remove("dialog-exiting");
+      dialog.hidden = true;
+      dialog.inert = false;
+      after();
+    }, 110);
+  };
   const bind = () => {
     $("startBtn").addEventListener("click", () => setScreen("stage"));
     $("guideStartBtn").addEventListener("click", () => setScreen("stage"));
-    $("mapBtn").addEventListener("click", () => setScreen("stage"));
     $("stageBackBtn").addEventListener("click", () => setScreen("main"));
     $("battleBackBtn").addEventListener("click", () => setScreen("stage"));
     $("checkBtn").addEventListener("click", checkBoard);
     $("resetBtn").addEventListener("click", resetBoard);
     $("leaveBtn").addEventListener("click", openLeaveDialog);
-    $("cancelLeaveBtn").addEventListener("click", closeLeaveDialog);
-    $("confirmLeaveBtn").addEventListener("click", () => { closeLeaveDialog(); setScreen("stage"); });
+    $("cancelLeaveBtn").addEventListener("click", () => closeLeaveDialog());
+    $("confirmLeaveBtn").addEventListener("click", () => closeLeaveDialog(() => setScreen("stage")));
     $("resultStagesBtn").addEventListener("click", () => {
       state.selectedStage = highestUnlockedStage();
       setScreen("stage");
@@ -322,6 +419,27 @@
       $("stageList").querySelector('[aria-current="true"]')?.focus({ preventScroll: true });
     });
     $("languageSelect").addEventListener("change", (event) => { const requested = normalizeLocale(event.target.value) || "en"; try { window.WonderI18n?.setLocale?.(requested); } catch (_error) {} applyLocale(requested); });
+    const guide = $("guideScreen");
+    const guideCanvas = guide.querySelector(".guide-canvas");
+    guide.querySelector("summary").addEventListener("click", (event) => {
+      if (!guide.open) return;
+      event.preventDefault();
+      if (guideTransitionTimer) return;
+      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+        guide.open = false;
+        return;
+      }
+      guideCanvas.classList.add("guide-exiting");
+      guideCanvas.inert = true;
+      guideCanvas.setAttribute("aria-hidden", "true");
+      guideTransitionTimer = window.setTimeout(() => {
+        guideTransitionTimer = 0;
+        guide.open = false;
+        guideCanvas.classList.remove("guide-exiting");
+        guideCanvas.inert = false;
+        guideCanvas.removeAttribute("aria-hidden");
+      }, 170);
+    });
   };
   const init = () => {
     try { const saved = JSON.parse(safeGet("weightplay-animal-tangle-rescue-completed", "[]")); state.completed = Array.isArray(saved) ? saved.filter((index) => Number.isInteger(index) && index >= 0 && index < boards.length) : []; } catch (_error) { state.completed = []; }

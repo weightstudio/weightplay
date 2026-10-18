@@ -21,9 +21,12 @@
     document.head.append(script);
   }
   function bootstrapDeclaredEntryLoader() {
-    const version = document.querySelector('meta[name="weightplay-interface-version"]')?.content
-      || document.body?.dataset.wpInterfaceVersion;
-    if (Number.parseFloat(version) >= 9) ensureEntryLoader();
+    const versions = [
+      document.querySelector('meta[name="weightplay-interface-version"]')?.content,
+      document.body?.dataset.wpInterfaceVersion,
+      document.body?.dataset.wpInterfaceCandidate,
+    ];
+    if (versions.some((version) => Number.isFinite(Number(version)) && Number(version) >= 9)) ensureEntryLoader();
   }
   bootstrapDeclaredEntryLoader();
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootstrapDeclaredEntryLoader, {once:true});
