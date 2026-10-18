@@ -41,8 +41,12 @@ export class RiftWorld {
     this.buildStation();this.buildModels();this.buildPlayer();
     this.effectMesh = new T.InstancedMesh(this.geo(new T.BoxGeometry(1,1,1)),this.glow,96);
     this.effectMesh.count=0;this.effectMesh.frustumCulled=false;this.scene.add(this.effectMesh);
-    this.shotMesh = new T.InstancedMesh(this.geo(new T.BoxGeometry(13,13,24)),this.mat({color:0xffd788,emissive:0xff4b38,emissiveIntensity:2}),48);
-    this.shotMesh.count=0;this.shotMesh.frustumCulled=false;this.scene.add(this.shotMesh);
+    this.shotMesh = new T.InstancedMesh(this.geo(new T.BoxGeometry(13,13,24)),this.mat({color:0xffe4a1,toneMapped:false,depthTest:false},T.MeshBasicMaterial),48);
+    this.shotMesh.count=0;this.shotMesh.frustumCulled=false;this.shotMesh.renderOrder=5;this.scene.add(this.shotMesh);
+    this.shotOutline=new T.InstancedMesh(this.geo(new T.BoxGeometry(21,19,32)),this.mat({color:0xa63647,toneMapped:false,depthTest:false},T.MeshBasicMaterial),48);
+    this.shotOutline.count=0;this.shotOutline.frustumCulled=false;this.shotOutline.renderOrder=4;this.scene.add(this.shotOutline);
+    this.aimMesh=new T.InstancedMesh(this.geo(new T.BoxGeometry(1,1,1)),this.mat({color:0xffb55c,toneMapped:false,transparent:true,opacity:.7,depthTest:false,depthWrite:false},T.MeshBasicMaterial),192);
+    this.aimMesh.count=0;this.aimMesh.frustumCulled=false;this.aimMesh.renderOrder=3;this.scene.add(this.aimMesh);
     this.markerGeo = this.geo(new T.RingGeometry(.88,1,8));this.markerGeo.rotateX(-Math.PI/2);
     this.markers = Object.fromEntries(Object.entries(COLORS).map(([state,color])=>{
       const mesh=new T.InstancedMesh(this.markerGeo,this.mat({color,side:T.DoubleSide,toneMapped:false},T.MeshBasicMaterial),90);
@@ -176,7 +180,7 @@ export class RiftWorld {
   clearRun(){
     for(const m of this.rivals||[]){m.material.dispose();this.materials.delete(m.material);}
     this.dynamic.clear();this.objects.clear();this.proxies=[];this.particles=[];this.run=null;
-    if(this.effectMesh)this.effectMesh.count=0;if(this.shotMesh)this.shotMesh.count=0;
+    if(this.effectMesh)this.effectMesh.count=0;if(this.shotMesh)this.shotMesh.count=0;if(this.shotOutline)this.shotOutline.count=0;if(this.aimMesh)this.aimMesh.count=0;
   }
   collect(o,run){
     const obj=this.objects.get(o.id);if(!obj)return;
@@ -224,7 +228,19 @@ export class RiftWorld {
     this.particles=this.particles.filter(p=>(p.life-=dt)>0);
     this.particles.forEach((p,i)=>{p.x+=p.vx*dt;p.z+=p.vz*dt;p.y+=p.vy*dt;p.vy-=230*dt;this.matrix.position.set(p.x,p.y,p.z);this.matrix.scale.setScalar(5*p.life/p.max);this.matrix.rotation.set(p.life*4,0,p.life*3);this.matrix.updateMatrix();this.effectMesh.setMatrixAt(i,this.matrix.matrix);});
     this.effectMesh.count=this.particles.length;this.effectMesh.instanceMatrix.needsUpdate=true;
-    const shots=run.bullets.slice(0,48);shots.forEach((b,i)=>{this.matrix.position.set(b.x-500,17,b.y-500);this.matrix.rotation.set(0,Math.atan2(b.vx,b.vy),0);this.matrix.scale.set(1,1,1);this.matrix.updateMatrix();this.shotMesh.setMatrixAt(i,this.matrix.matrix);});this.shotMesh.count=shots.length;this.shotMesh.instanceMatrix.needsUpdate=true;
+    const shots=run.bullets.slice(0,48);shots.forEach((b,i)=>{this.matrix.position.set(b.x-500,17,b.y-500);this.matrix.rotation.set(0,Math.atan2(b.vx,b.vy),0);this.matrix.scale.set(1,1,1);this.matrix.updateMatrix();this.shotMesh.setMatrixAt(i,this.matrix.matrix);this.shotOutline.setMatrixAt(i,this.matrix.matrix);});this.shotMesh.count=shots.length;this.shotMesh.instanceMatrix.needsUpdate=true;this.shotOutline.count=shots.length;this.shotOutline.instanceMatrix.needsUpdate=true;
+    let aimCount=0;
+    for(const turret of run.zone.turrets){
+      if(!turret.warning)continue;
+      for(const offset of turret.pattern==='crossfire'?[-.18,.18]:[0]){
+        const angle=turret.angle+offset,dx=Math.cos(angle),dy=Math.sin(angle);
+        for(let d=42;d<880&&aimCount<192;d+=44){
+          const x=turret.x+dx*d,y=turret.y+dy*d;if(Math.hypot(x-500,y-500)>442)break;
+          this.matrix.position.set(x-500,3,y-500);this.matrix.rotation.set(0,Math.PI/2-angle,0);this.matrix.scale.set(5,1,23);this.matrix.updateMatrix();this.aimMesh.setMatrixAt(aimCount++,this.matrix.matrix);
+        }
+      }
+    }
+    this.aimMesh.count=aimCount;this.aimMesh.instanceMatrix.needsUpdate=true;
     run.zone.turrets.forEach((o,i)=>{this.turrets[i].position.set(o.x-500,2,o.y-500);this.turrets[i].rotation.y=Math.PI/2-o.angle;});
     run.zone.rivals.forEach((o,i)=>{this.rivals[i].position.set(o.x-500,8,o.y-500);this.rivals[i].rotation.y=time*.4;this.rivals[i].scale.setScalar(o.threshold*1.1);});
     this.size+=(Math.min(1.8,1.05+(radius-34)*.018)-this.size)*(reduced?1:Math.min(1,dt*12));
@@ -234,7 +250,7 @@ export class RiftWorld {
     this.player.rotation.z=reduced?0:-run.vx*.00023;this.player.rotation.x=reduced?0:run.vy*.00016;
     this.wings.forEach((w,i)=>w.rotation.z=reduced?0:(i?1:-1)*(.1+Math.sin(time*5)*.06));
     this.pulse=Math.max(0,(this.pulse||0)-dt*4);this.playerGlow.scale.setScalar(1+(reduced?0:this.pulse*.25));
-    this.playerGlow.material.color.set(run.knockCooldown>.5||run.dying>0?0xff7d8c:CHAPTER_COLORS[run.zone.chapter]);
+    this.playerGlow.material.color.set(run.knockCooldown>0||run.dying>0?0xff7d8c:CHAPTER_COLORS[run.zone.chapter]);
     const limit=run.zone.storm?Math.max(285,442-run.elapsed/run.zone.timer*155):442;
     this.boundary.scale.setScalar(limit/442);this.boundary.material.color.set(run.zone.storm?0xd293f5:0x4d929e);
     this.target.visible=Boolean(run.target);if(run.target)this.target.position.set(run.target.x-500,3,run.target.y-500);

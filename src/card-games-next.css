@@ -17,7 +17,7 @@ body[data-wp-card-game] { margin: 0; background: #0a1f3a; }
 .card-table-ui { width: 100%; height: 100%; margin: 0 auto; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 10px; padding: 12px; box-sizing: border-box; }
 .card-game-topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; }
 .card-game-topbar .battle-back { flex: 0 0 44px; }
-.card-game-topbar-group { display: flex; min-width: 0; flex: 1 1 auto; align-items: center; justify-content: center; gap: 8px; }
+.card-game-topbar-group { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, auto); min-width: 0; flex: 1 1 auto; align-items: center; justify-content: center; gap: 8px; }
 .battle-utility { box-sizing: border-box; flex: 0 0 44px; width: 44px; min-width: 44px; min-height: 44px; border: 1px solid rgba(255,255,255,.28); border-radius: 12px; color: #f8fafc; background: rgba(9, 29, 47, .75); cursor: pointer; font-size: 20px; }
 .battle-utility:focus-visible { outline: 3px solid #ffefa7; outline-offset: 2px; }
 .card-game-stats { display: flex; min-width: 0; justify-content: center; gap: 8px; flex: 1 1 auto; flex-wrap: wrap; }
@@ -25,7 +25,25 @@ body[data-wp-card-game] { margin: 0; background: #0a1f3a; }
 .card-stat small { display: block; color: #b9d8d3; font-size: 11px; }
 .card-stat strong { font-size: 15px; }
 .card-stat-history strong { font-size: 11px; white-space: nowrap; }
-.card-game-status { min-width: 0; flex: 0 1 auto; text-align: right; color: #d7f9e7; font-size: 13px; overflow-wrap: anywhere; }
+.card-game-status { box-sizing: border-box; min-width: 0; max-width: 12ch; flex: 0 1 auto; text-align: center; color: #d7f9e7; font-size: 13px; line-height: 1.2; overflow-wrap: anywhere; }
+.card-game-return-dialog { position: fixed; z-index: 2000; inset: 0; display: grid; place-items: center; box-sizing: border-box; padding: 20px; background: rgba(3, 14, 27, .78); }
+.card-game-return-dialog[hidden] { display: none !important; }
+.card-game-return-dialog-card { box-sizing: border-box; width: min(420px, 100%); padding: 22px; border: 2px solid #7cebdd; border-radius: 16px; background: #0b2639; color: #f8fafc; box-shadow: 0 8px 0 rgba(0, 0, 0, .38); }
+.card-game-return-dialog-card h2 { margin: 0 0 10px; font-size: 20px; line-height: 1.25; }
+.card-game-return-dialog-card p { margin: 0; color: #d1e3e8; font-size: 15px; line-height: 1.55; }
+.card-game-return-dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.card-game-return-dialog-actions button { min-width: 120px; min-height: 48px; }
+.card-game-return-dialog :focus-visible { outline: 3px solid #ffefa7; outline-offset: 3px; }
+@media (max-width: 500px) {
+  .card-game-topbar-group { grid-template-columns: minmax(0, 1fr) minmax(64px, auto); gap: 4px; }
+  .card-game-topbar-group .card-game-stats { min-width: 0; flex-wrap: nowrap; gap: 4px; }
+  .card-game-topbar-group .card-stat { min-width: 0; padding-inline: 4px; }
+  .card-game-topbar-group .card-stat-history strong { white-space: normal; overflow-wrap: anywhere; }
+  .card-game-topbar-group .card-game-status { max-width: 9ch; font-size: 11px; }
+  .card-game-return-dialog-card { padding: 18px; }
+  .card-game-return-dialog-actions { flex-direction: column-reverse; }
+  .card-game-return-dialog-actions button { width: 100%; }
+}
 .card-game-board { min-height: 0; display: grid; grid-template-rows: auto minmax(150px, 1fr) auto; gap: 10px; overflow: auto; padding: 2px 0 4px; }
 .card-opponents { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .opponent-card { min-height: 50px; padding: 8px; border-radius: 12px; background: rgba(7, 28, 43, .58); border: 1px solid rgba(255,255,255,.14); }

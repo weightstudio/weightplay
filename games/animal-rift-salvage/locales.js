@@ -148,6 +148,92 @@ for(const [code,copy] of Object.entries(publicCopy)){
 }
 publicCopy.de.guideRelatedSpectrum="Tierischer Spektrumpuls";
 dictionaries.de.guideRelatedSpectrum="Tierischer Spektrumpuls";
+
+const mobileControlCopy={
+  "en": [
+    "Left stick · Release to stop",
+    "Use the lower-left stick on touchscreens; release to stop. On desktop, use arrows/WASD or click a destination.",
+    "Amber dashed lines warn for 0.7 seconds and lock the firing direction. Move sideways to dodge. A hit costs 1 stability, with 1 second of protection.",
+    "Hit · −1 stability · Brief protection"
+  ],
+  "zh-Hant": [
+    "左下搖桿移動 · 放開停下",
+    "手機使用左下方搖桿，放開即可停下。電腦可用方向鍵／WASD，或滑鼠點選目的地。",
+    "琥珀色虛線會提前 0.7 秒鎖定彈道；橫向移動即可閃避。中彈扣 1 點穩定值，並獲得 1 秒保護。",
+    "中彈 · 穩定 −1 · 短暫保護中"
+  ],
+  "zh-Hans": [
+    "左下摇杆移动 · 松开停下",
+    "手机使用左下方摇杆，松开即可停下。电脑可用方向键／WASD，或鼠标点击目的地。",
+    "琥珀色虚线会提前 0.7 秒锁定弹道；横向移动即可闪避。中弹扣 1 点稳定值，并获得 1 秒保护。",
+    "中弹 · 稳定 −1 · 短暂保护中"
+  ],
+  "ja": [
+    "左下スティック · 離すと停止",
+    "タッチ操作は左下のスティックを使い、離すと停止します。PCでは矢印／WASD、または目的地をクリック。",
+    "琥珀色の破線は発射の0.7秒前に方向を固定します。横に避けましょう。被弾で安定度−1、1秒間保護されます。",
+    "被弾 · 安定度−1 · 一時保護"
+  ],
+  "ko": [
+    "왼쪽 스틱 · 놓으면 정지",
+    "터치 화면에서는 왼쪽 아래 스틱을 사용하고 놓으면 멈춥니다. PC에서는 방향키/WASD 또는 목적지 클릭.",
+    "주황 점선은 발사 0.7초 전에 방향을 고정합니다. 옆으로 피하세요. 피격 시 안정도 1 감소, 1초 보호.",
+    "피격 · 안정도 −1 · 잠시 보호"
+  ],
+  "es": [
+    "Palanca izquierda · Suelta para parar",
+    "En pantallas táctiles, usa la palanca inferior izquierda y suelta para parar. En PC, usa flechas/WASD o pulsa el destino.",
+    "Las líneas ámbar fijan la dirección 0,7 s antes del disparo. Esquiva de lado. Cada impacto resta 1 de estabilidad y da 1 s de protección.",
+    "Impacto · Estabilidad −1 · Protección breve"
+  ],
+  "pt-BR": [
+    "Controle esquerdo · Solte para parar",
+    "No toque, use o controle inferior esquerdo e solte para parar. No PC, use setas/WASD ou clique no destino.",
+    "As linhas âmbar fixam a direção 0,7 s antes do disparo. Desvie para o lado. Cada acerto tira 1 de estabilidade e dá 1 s de proteção.",
+    "Acerto · Estabilidade −1 · Proteção breve"
+  ],
+  "fr": [
+    "Stick gauche · Relâchez pour arrêter",
+    "Sur écran tactile, utilisez le stick en bas à gauche et relâchez pour arrêter. Sur PC, utilisez les flèches/WASD ou cliquez sur la destination.",
+    "Les pointillés ambrés fixent le tir 0,7 s avant le départ. Esquivez sur le côté. Un impact coûte 1 stabilité et donne 1 s de protection.",
+    "Impact · Stabilité −1 · Protection brève"
+  ],
+  "de": [
+    "Linker Stick · Loslassen stoppt",
+    "Nutze am Touchscreen den Stick unten links; loslassen stoppt. Am PC: Pfeile/WASD oder Ziel anklicken.",
+    "Bernsteinfarbene Striche fixieren die Schussrichtung 0,7 s vorher. Weiche seitlich aus. Treffer kosten 1 Stabilität und geben 1 s Schutz.",
+    "Treffer · Stabilität −1 · Kurz geschützt"
+  ],
+  "it": [
+    "Stick sinistro · Rilascia per fermarti",
+    "Sul touch usa lo stick in basso a sinistra e rilascialo per fermarti. Su PC usa frecce/WASD o fai clic sulla destinazione.",
+    "Le linee ambra bloccano la mira 0,7 s prima del colpo. Schiva di lato. Ogni colpo toglie 1 stabilità e dà 1 s di protezione.",
+    "Colpito · Stabilità −1 · Protezione breve"
+  ],
+  "ru": [
+    "Левый стик · Отпусти для остановки",
+    "На сенсорном экране используй стик слева внизу; отпусти, чтобы остановиться. На ПК: стрелки/WASD или щелчок по цели.",
+    "Янтарный пунктир фиксирует направление за 0,7 с до выстрела. Уклоняйся вбок. Попадание отнимает 1 устойчивость и даёт 1 с защиты.",
+    "Попадание · Устойчивость −1 · Краткая защита"
+  ],
+  "hi": [
+    "बायाँ स्टिक · छोड़ने पर रुकें",
+    "टच स्क्रीन पर नीचे बाएँ स्टिक का उपयोग करें; छोड़ने पर रुकेंगे। कंप्यूटर पर तीर/WASD या गंतव्य पर क्लिक करें।",
+    "पीली बिंदीदार रेखा गोली चलने से 0.7 सेकंड पहले दिशा तय करती है। बगल में हटें। लगने पर स्थिरता 1 घटती है और 1 सेकंड सुरक्षा मिलती है।",
+    "गोली लगी · स्थिरता −1 · थोड़ी सुरक्षा"
+  ],
+  "ar": [
+    "العصا اليسرى · اتركها للتوقف",
+    "على شاشة اللمس استخدم العصا أسفل اليسار واتركها للتوقف. على الحاسوب استخدم الأسهم/WASD أو انقر على الوجهة.",
+    "الخطوط الكهرمانية تثبّت اتجاه الطلقة قبل 0.7 ثانية. تفادَها جانبياً. الإصابة تخصم نقطة ثبات وتمنح حماية لثانية.",
+    "إصابة · الثبات −1 · حماية قصيرة"
+  ]
+};
+for(const [code,[controlCue,help1,gunHelp,gunHit]] of Object.entries(mobileControlCopy)){
+  Object.assign(dictionaries[code],{controlCue,help1,gunHelp,gunHit});
+  const guidePlayer=publicCopy[code].guidePlayer.replace(/^.*?[。.!?।]\s*/,help1+" ");
+  dictionaries[code].guidePlayer=guidePlayer;publicCopy[code].guidePlayer=guidePlayer;
+}
 window.RIFT_SALVAGE_PUBLIC_COPY=publicCopy;
 window.RIFT_SALVAGE_LOCALES=dictionaries;
 })();

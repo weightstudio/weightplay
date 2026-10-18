@@ -1627,6 +1627,21 @@
     hi: { pending: "तय करें कि {opponent} से कौन-सी रैंक पूछनी है", ready: "{opponent} से {rank} पूछें", book: "{rank} का सेट पूरा · प्रगति {books}/13", result: "सेट: {books} · पूरी हुई रैंक: {completed}", target: "अगले खेल का लक्ष्य: {rank} का चार-पत्तों वाला सेट पूरा करें ({count}/4)।", fullTarget: "अगले खेल का लक्ष्य: फिर से सभी सेट पूरे करें।" },
     ar: { pending: "اختر الرتبة التي ستسأل عنها {opponent}", ready: "اسأل {opponent} عن {rank}", book: "اكتملت مجموعة {rank} · التقدم {books}/13", result: "المجموعات: {books} · الرتب المكتملة: {completed}", target: "هدف الجولة التالية: أكمل مجموعة {rank} من أربع بطاقات (الآن {count}/4).", fullTarget: "هدف الجولة التالية: حاول إكمال كل المجموعات مرة أخرى." },
   };
+  const GO_FISH_RETURN_COPY = {
+    en: { title: "Leave this game?", body: "This unfinished hand will not be saved. Your local record and next-game goal will remain.", stay: "Continue game", leave: "Return to Main" },
+    "zh-Hant": { title: "要離開這局嗎？", body: "未完成的牌局不會保存；個人紀錄與下一局目標會保留。", stay: "繼續遊戲", leave: "返回主畫面" },
+    "zh-Hans": { title: "要离开这局吗？", body: "未完成的牌局不会保存；个人记录和下一局目标会保留。", stay: "继续游戏", leave: "返回主画面" },
+    ja: { title: "ゲームを終了しますか？", body: "この途中の対局は保存されません。ローカル記録と次の目標は保持されます。", stay: "ゲームを続ける", leave: "メインへ戻る" },
+    ko: { title: "게임을 나갈까요?", body: "진행 중인 게임은 저장되지 않습니다. 로컬 기록과 다음 게임 목표는 유지됩니다.", stay: "게임 계속하기", leave: "메인으로 돌아가기" },
+    es: { title: "¿Salir de esta partida?", body: "Esta mano sin terminar no se guardará. Tu récord local y el objetivo de la próxima partida se conservarán.", stay: "Continuar la partida", leave: "Volver al inicio" },
+    "pt-BR": { title: "Sair desta partida?", body: "Esta mão inacabada não será salva. Seu recorde local e a meta da próxima partida serão mantidos.", stay: "Continuar partida", leave: "Voltar ao início" },
+    fr: { title: "Quitter cette partie ?", body: "Cette manche inachevée ne sera pas enregistrée. Votre record local et le prochain objectif seront conservés.", stay: "Continuer la partie", leave: "Retour à l’accueil" },
+    de: { title: "Dieses Spiel verlassen?", body: "Dieses unvollendete Spiel wird nicht gespeichert. Dein lokaler Rekord und das nächste Spielziel bleiben erhalten.", stay: "Weiterspielen", leave: "Zur Startseite" },
+    it: { title: "Vuoi uscire da questa partita?", body: "Questa mano incompleta non verrà salvata. Il record locale e l'obiettivo della prossima partita resteranno.", stay: "Continua la partita", leave: "Torna alla schermata iniziale" },
+    ru: { title: "Выйти из этой партии?", body: "Незавершённая партия не сохранится. Личный рекорд и цель следующей игры останутся.", stay: "Продолжить игру", leave: "На главную" },
+    hi: { title: "क्या इस खेल से बाहर जाएँ?", body: "यह अधूरा खेल सहेजा नहीं जाएगा। आपका स्थानीय रिकॉर्ड और अगले खेल का लक्ष्य बना रहेगा।", stay: "खेल जारी रखें", leave: "मुख्य स्क्रीन पर लौटें" },
+    ar: { title: "هل تريد مغادرة هذه اللعبة؟", body: "لن تُحفظ هذه الجولة غير المكتملة. سيبقى سجلك المحلي وهدف اللعبة التالية.", stay: "متابعة اللعبة", leave: "العودة إلى الرئيسية" },
+  };
   const GO_FISH_PROGRESS_COPY = {
     en: { label: "Book progress", copy: "Complete four-of-a-kind books." },
     "zh-Hant": { label: "組牌進度", copy: "完成四張同點數牌的組牌。" },
@@ -2440,6 +2455,7 @@
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = won === null ? "draw" : won ? "win" : "lose"; __wpNotifyMeasurement();
 },
+      refresh() { render(); },
       beep(name = "place") { playCardGameCue(name); },
     };
     const render = () => {
@@ -2461,6 +2477,75 @@
       if (view.cssClass) table.className = `card-table-center ${view.cssClass}`;
       if (view.refreshTimer) clearTimeout(view.refreshTimer);
     };
+    const showCardGameReturnDialog = () => {
+      const copy = GO_FISH_RETURN_COPY[currentLocale()] || GO_FISH_RETURN_COPY.en;
+      const trigger = document.querySelector("#battleBackBtn");
+      const tableUi = battle.querySelector(".card-table-ui");
+      const wasInert = Boolean(tableUi?.inert);
+      const dialog = document.createElement("div");
+      const card = document.createElement("section");
+      const heading = document.createElement("h2");
+      const message = document.createElement("p");
+      const controls = document.createElement("div");
+      const stay = document.createElement("button");
+      const leave = document.createElement("button");
+      let closed = false;
+      dialog.className = "card-game-return-dialog";
+      dialog.dataset.cardGameReturnConfirm = "true";
+      dialog.setAttribute("role", "dialog");
+      dialog.setAttribute("aria-modal", "true");
+      dialog.setAttribute("aria-labelledby", "cardGameReturnDialogTitle");
+      dialog.setAttribute("aria-describedby", "cardGameReturnDialogMessage");
+      card.className = "card-game-return-dialog-card";
+      heading.id = "cardGameReturnDialogTitle";
+      heading.textContent = copy.title;
+      message.id = "cardGameReturnDialogMessage";
+      message.textContent = copy.body;
+      controls.className = "card-game-return-dialog-actions";
+      stay.type = leave.type = "button";
+      stay.className = "secondary-btn";
+      leave.className = "primary-btn";
+      stay.textContent = copy.stay;
+      leave.textContent = copy.leave;
+      controls.append(stay, leave);
+      card.append(heading, message, controls);
+      dialog.append(card);
+      game.pause?.();
+      if (tableUi) tableUi.inert = true;
+      battle.append(dialog);
+      const close = (shouldLeave) => {
+        if (closed) return;
+        closed = true;
+        dialog.removeEventListener("keydown", onKeyDown);
+        dialog.remove();
+        if (tableUi) tableUi.inert = wasInert;
+        if (shouldLeave) {
+          game.stop?.();
+          controller.openMain();
+          document.querySelector("#startBtn")?.focus({ preventScroll: true });
+          return;
+        }
+        game.resume?.();
+        render();
+        trigger?.focus({ preventScroll: true });
+      };
+      const onKeyDown = (event) => {
+        if (event.key === "Escape") {
+          event.preventDefault();
+          close(false);
+          return;
+        }
+        if (event.key !== "Tab") return;
+        const buttons = [stay, leave].filter((button) => !button.disabled);
+        const first = buttons[0], last = buttons.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+      };
+      stay.addEventListener("click", () => close(false));
+      leave.addEventListener("click", () => close(true));
+      dialog.addEventListener("keydown", onKeyDown);
+      stay.focus({ preventScroll: true });
+    };
     const clickHandler = (event) => {
       const actionNode = event.target.closest("[data-action]");
       const cardNode = event.target.closest("[data-card-index]");
@@ -2475,6 +2560,12 @@
     };
     battle.addEventListener("click", clickHandler);
     document.querySelector("#battleBackBtn")?.addEventListener("click", (event) => {
+      if (id === "go-fish" && result.hidden) {
+        event.stopImmediatePropagation();
+        event.stopPropagation();
+        showCardGameReturnDialog();
+        return;
+      }
       if (id === "old-maid" && requestReturn && result.hidden) {
         event.stopImmediatePropagation();
         event.stopPropagation();
@@ -2570,7 +2661,7 @@
     // row on a timer replaces the visible Flip button while a click is being
     // dispatched, so keep the polling loop only for games with delayed AI or
     // other asynchronous state transitions.
-    const battleRenderTimer = id === "war" ? null : window.setInterval(() => {
+    const battleRenderTimer = id === "war" || id === "go-fish" ? null : window.setInterval(() => {
       if (!battle.hidden) render();
     }, 180);
     window.addEventListener("beforeunload", () => {
@@ -3178,7 +3269,10 @@
 
   function makeGoFishFixed(controller) {
     const s = { players: [[], [], [], []], stock: [], turn: 0, selectedOpponent: 1, selectedRank: null, books: [0, 0, 0, 0], bookRanks: [[], [], [], []], bookCue: "", playerCount: 4 };
+    let aiTimer = 0, paused = false, stopped = false;
     const names = ["You", "Otter", "Fox", "Panda"];
+    const clearAiTimer = () => { if (aiTimer) { clearTimeout(aiTimer); aiTimer = 0; } };
+    const scheduleAi = () => { clearAiTimer(); if (!paused && !stopped && s.turn !== 0) aiTimer = setTimeout(() => { aiTimer = 0; aiTurn(); controller.refresh?.(); }, 300); };
     const removeBooks = (player) => { const completedRanks = []; for (let rank = 1; rank <= 13; rank += 1) { if (s.players[player].filter((item) => item.rank === rank).length === 4) { s.players[player] = s.players[player].filter((item) => item.rank !== rank); s.books[player] += 1; if (!s.bookRanks[player].includes(rank)) { s.bookRanks[player].push(rank); completedRanks.push(rank); } } } if (player === 0 && completedRanks.length) s.bookCue = completedRanks.map(rankText).join(" · "); };
     const refillEmptyHand = (player) => {
       const handSize = s.playerCount === 2 ? 7 : 5;
@@ -3189,24 +3283,28 @@
     };
     const resultTargetText = () => { const missing = Array.from({ length: 13 }, (_, index) => index + 1).filter((rank) => !s.bookRanks[0].includes(rank)); if (!missing.length) return goFishText("fullTarget"); const counts = new Map(); s.players[0].forEach((item) => counts.set(item.rank, (counts.get(item.rank) || 0) + 1)); const [rank, count] = missing.map((value) => [value, counts.get(value) || 0]).sort((a, b) => b[1] - a[1] || a[0] - b[0])[0]; return goFishText("target", { rank: rankText(rank), count }); };
     const finish = () => { for (let player = 0; player < s.playerCount; player += 1) removeBooks(player); const winner = s.books.slice(0, s.playerCount).indexOf(Math.max(...s.books.slice(0, s.playerCount))); const completed = s.bookRanks[0].length ? s.bookRanks[0].map(rankText).join(" · ") : "—"; const resultSummary = goFishText("result", { books: s.books.slice(0, s.playerCount).join(" / "), completed }); controller.result(winner === 0, `${resultSummary} · ${resultTargetText()}`); };
-    const deal = () => { s.players = [[], [], [], []]; s.stock = deck(); s.turn = 0; s.selectedOpponent = s.playerCount === 2 ? 1 : Math.min(s.selectedOpponent, s.playerCount - 1); s.selectedRank = null; s.books = [0, 0, 0, 0]; s.bookRanks = [[], [], [], []]; s.bookCue = ""; const handSize = s.playerCount === 2 ? 7 : 5; for (let i = 0; i < handSize; i += 1) for (let player = 0; player < s.playerCount; player += 1) s.players[player].push(s.stock.pop()); for (let player = 0; player < s.playerCount; player += 1) { removeBooks(player); refillEmptyHand(player); } s.bookCue = ""; };
+    const deal = () => { clearAiTimer(); paused = false; stopped = false; s.players = [[], [], [], []]; s.stock = deck(); s.turn = 0; s.selectedOpponent = s.playerCount === 2 ? 1 : Math.min(s.selectedOpponent, s.playerCount - 1); s.selectedRank = null; s.books = [0, 0, 0, 0]; s.bookRanks = [[], [], [], []]; s.bookCue = ""; const handSize = s.playerCount === 2 ? 7 : 5; for (let i = 0; i < handSize; i += 1) for (let player = 0; player < s.playerCount; player += 1) s.players[player].push(s.stock.pop()); for (let player = 0; player < s.playerCount; player += 1) { removeBooks(player); refillEmptyHand(player); } s.bookCue = ""; };
     const next = () => {
+      if (paused || stopped) return;
       // A player with no cards and no stock is finished, not the whole match.
       for (let checked = 0; checked < s.playerCount; checked += 1) {
         s.turn = (s.turn + 1) % s.playerCount;
         refillEmptyHand(s.turn);
         if (s.players[s.turn].length) break;
       }
-      if (terminal()) { finish(); return; }
-      if (s.turn !== 0) setTimeout(aiTurn, 300);
+      if (terminal()) { clearAiTimer(); finish(); return; }
+      if (s.turn !== 0) scheduleAi();
     };
     const terminal = () => !s.stock.length && s.players.slice(0, s.playerCount).every((cards) => !cards.length);
-    const ask = (target, rank) => { s.bookCue = ""; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[target] = s.players[target].filter((item) => item.rank !== rank); s.players[0].push(...matching); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } else { if (s.stock.length) s.players[0].push(s.stock.pop()); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } if (terminal()) finish(); else if (!matching.length || !s.players[0].length) next(); };
-    const aiTurn = () => { if (!controller.isBattleActive() || s.turn === 0) return; refillEmptyHand(s.turn); const ranks = [...new Set(s.players[s.turn].map((item) => item.rank))]; if (!ranks.length) { if (terminal()) finish(); else next(); return; } const targets = Array.from({ length: s.playerCount }, (_, index) => index).filter((index) => index !== s.turn && (s.stock.length || s.players[index].length)); const target = targets[Math.floor(Math.random() * targets.length)]; const rank = ranks[Math.floor(Math.random() * ranks.length)]; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[s.turn].push(...matching); s.players[target] = s.players[target].filter((item) => item.rank !== rank); removeBooks(s.turn); refillEmptyHand(s.turn); } else if (s.stock.length) s.players[s.turn].push(s.stock.pop()); removeBooks(s.turn); if (terminal()) finish(); else if (matching.length) setTimeout(aiTurn, 300); else next(); };
+    const ask = (target, rank) => { if (paused || stopped) return; s.bookCue = ""; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[target] = s.players[target].filter((item) => item.rank !== rank); s.players[0].push(...matching); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } else { if (s.stock.length) s.players[0].push(s.stock.pop()); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } if (terminal()) { clearAiTimer(); finish(); } else if (!matching.length || !s.players[0].length) next(); };
+    const aiTurn = () => { if (paused || stopped || !controller.isBattleActive() || s.turn === 0) return; refillEmptyHand(s.turn); const ranks = [...new Set(s.players[s.turn].map((item) => item.rank))]; if (!ranks.length) { if (terminal()) { clearAiTimer(); finish(); } else next(); return; } const targets = Array.from({ length: s.playerCount }, (_, index) => index).filter((index) => index !== s.turn && (s.stock.length || s.players[index].length)); const target = targets[Math.floor(Math.random() * targets.length)]; const rank = ranks[Math.floor(Math.random() * ranks.length)]; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[s.turn].push(...matching); s.players[target] = s.players[target].filter((item) => item.rank !== rank); removeBooks(s.turn); refillEmptyHand(s.turn); } else if (s.stock.length) s.players[s.turn].push(s.stock.pop()); removeBooks(s.turn); if (terminal()) { clearAiTimer(); finish(); } else if (matching.length) scheduleAi(); else next(); };
     return {
       reset() { deal(); },
-      card(index) { if (s.turn === 0 && s.players[0][index]) s.selectedRank = s.players[0][index].rank; },
-      action(action, valueArg) { if (action === "players") { const count = Number(valueArg); if (count >= 2 && count <= 4) { s.playerCount = count; deal(); } return; } if (s.turn !== 0) return; if (action === "opponent") s.selectedOpponent = Math.min(Number(valueArg), s.playerCount - 1); if (action === "rank") { const rank = Number(valueArg); if (s.players[0].some((item) => item.rank === rank)) s.selectedRank = rank; } if (action === "ask" && s.selectedRank && s.players[0].some((item) => item.rank === s.selectedRank)) ask(s.selectedOpponent, s.selectedRank); },
+      pause() { paused = true; clearAiTimer(); },
+      resume() { if (stopped) return; paused = false; if (s.turn !== 0) scheduleAi(); },
+      stop() { paused = true; stopped = true; clearAiTimer(); },
+      card(index) { if (!paused && !stopped && s.turn === 0 && s.players[0][index]) s.selectedRank = s.players[0][index].rank; },
+      action(action, valueArg) { if (paused || stopped) return; if (action === "players") { const count = Number(valueArg); if (count >= 2 && count <= 4) { s.playerCount = count; deal(); } return; } if (s.turn !== 0) return; if (action === "opponent") s.selectedOpponent = Math.min(Number(valueArg), s.playerCount - 1); if (action === "rank") { const rank = Number(valueArg); if (s.players[0].some((item) => item.rank === rank)) s.selectedRank = rank; } if (action === "ask" && s.selectedRank && s.players[0].some((item) => item.rank === s.selectedRank)) ask(s.selectedOpponent, s.selectedRank); },
       view() { const rankCounts = s.players[0].reduce((counts, item) => counts.set(item.rank, (counts.get(item.rank) || 0) + 1), new Map()); if (s.selectedRank && !rankCounts.has(s.selectedRank)) s.selectedRank = null; const target = [...rankCounts.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0] || [null, 0]; const heldRanks = new Set(rankCounts.keys()); const rankControls = RANKS.map((rank, index) => { const value = index + 1; const held = heldRanks.has(value); return `<button class="secondary-btn ${s.selectedRank === value ? "is-selected" : ""}" data-action="rank" data-value="${value}" aria-pressed="${s.selectedRank === value}" ${held ? "" : "disabled"}>${rank}</button>`; }).join(""); const playerControls = [2, 3, 4].map((count) => `<button class="secondary-btn ${s.playerCount === count ? "is-selected" : ""}" data-action="players" data-value="${count}" aria-label="${count} players">${count}</button>`).join(""); const completed = s.bookRanks[0].length ? s.bookRanks[0].map(rankText).join(" · ") : "—"; const targetText = target[0] ? `${rankText(target[0])} ${target[1]}/4` : "—"; const targetAttrs = target[0] ? ` data-go-fish-target-rank="${target[0]}" data-go-fish-target-label="${rankText(target[0])}" data-go-fish-target-count="${target[1]}"` : ` data-go-fish-target-full="true"`; const stateAttrs = ` data-go-fish-player-count="${s.playerCount}" data-go-fish-book-ranks="${s.bookRanks[0].join(",")}"`; const requestSummary = goFishText(s.selectedRank ? "ready" : "pending", { rank: s.selectedRank ? rankText(s.selectedRank) : "", opponent: names[s.selectedOpponent] }); const bookCue = s.bookCue ? `<p class="card-choice-summary card-go-fish-book-cue" data-go-fish-book-cue data-runtime-localize="off" role="status" aria-live="polite">${goFishText("book", { rank: s.bookCue, books: s.books[0] })}</p>` : ""; return { phase: `${t("ask")} ${s.playerCount}P`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: `${t("ask")}: ${names[s.selectedOpponent]} — ${t("chooseRank")}`, score: s.books[0], opponents: names.slice(1, s.playerCount).map((name, index) => `<button class="opponent-card" data-action="opponent" data-value="${index + 1}"><strong>${name}</strong><span>${s.players[index + 1].length} ${t("cards")} — ${s.books[index + 1]} ${t("books")}</span></button>`).join(""), center: `<div class="card-table-label">${t("stock")}: ${s.stock.length}</div><div class="table-row"><button class="playing-card is-face-down" data-action="draw" aria-label="${t("stock")}"></button><div class="card-book-progress" aria-live="polite"${stateAttrs}><strong>${t("books")}: ${s.books[0]}/13</strong><span>${completed}</span><span${targetAttrs}>${t("target")}: ${targetText}</span></div></div>${bookCue}<p class="card-choice-summary" data-go-fish-request-summary role="status" aria-live="polite">${requestSummary}</p><div class="card-choice-panel">${rankControls}</div>`, hand: cardsMarkup(s.players[0]), actions: `<div class="card-choice-panel">${playerControls}</div><button class="primary-btn" data-action="ask" ${!s.selectedRank || s.selectedOpponent >= s.playerCount || !heldRanks.has(s.selectedRank) ? "disabled" : ""}>${t("ask")}</button>` }; }
     };
   }

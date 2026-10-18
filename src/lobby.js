@@ -15,10 +15,6 @@ const tabletopGameIds = new Set(lobby.audiences?.tabletopGameIds || []);
 const topicGameIds = new Set(lobby.audiences?.topicGameIds || []);
 const isKidsLobby = audienceMode === "kids";
 const allLobbyGames = [...lobby.games];
-// GENERATED GAMEPLAY REVIEW PASSES START
-// Derived from review/database/GAMEPLAY_REVIEW_STATUS.md. Do not edit by hand.
-const verifiedGameplayReviewPasses = Object.freeze({});
-// GENERATED GAMEPLAY REVIEW PASSES END
 const catalogGames = allLobbyGames.filter((game) =>
   (game.status === "playable"
     || (!isKidsLobby && topicGameIds.has(game.id))
@@ -2400,7 +2396,6 @@ function renderUpcomingGames() {
     const type = text(game.type);
     const ageLabel = text(game.ageLabel);
     const description = text(game.description);
-    const reviewPass = verifiedGameplayReviewPasses[game.id] || null;
     const card = document.createElement("button");
     card.className = "upcoming-game-card";
     card.type = "button";
@@ -2423,12 +2418,10 @@ function renderUpcomingGames() {
     card.dataset.recent = isRecent(game.id) ? "true" : "false";
     card.dataset.recentIndex = String(recentGameIds.indexOf(game.id));
     card.dataset.internalTrial = internalTrialPath(game) ? "true" : "false";
-    card.dataset.reviewPass = reviewPass ? "true" : "false";
     card.addEventListener("click", () => showPlannedGame(game));
     card.innerHTML = `
       <div class="upcoming-game-art">
         <img ${lobbyImageAttributes(game.art?.background || primaryArt(game))} alt="" />
-        ${reviewPass ? `<div class="review-pass-art-badge" aria-label="${stateCopy("reviewPassLabel")} ${reviewPass.gameVersion}" title="${reviewPass.gameVersion}">✓ ${stateCopy("reviewPassLabel")}</div>` : ""}
         <span>${i18n.t("action.coming_soon")}</span>
       </div>
       <div class="upcoming-game-copy">
@@ -3053,19 +3046,14 @@ function showToast(message) {
 }
 
 function showPlannedGame(game) {
-  const reviewerTopicsPreview = reviewerTopicsPreviewAllowed(game);
   const trialPath = internalTrialPath(game);
   if (ownerPreviewMode && trialPath) {
-    if (!reviewerTopicsPreview) {
-      try {
-        sessionStorage.setItem(hiddenTrialStorageKey(game), "true");
-      } catch (error) {
-        // The explicit preview route can still open when storage is unavailable.
-      }
+    try {
+      sessionStorage.setItem(hiddenTrialStorageKey(game), "true");
+    } catch (error) {
+      // The explicit preview route can still open when storage is unavailable.
     }
-    window.location.href = reviewerTopicsPreview
-      ? new URL(`/games/${encodeURIComponent(game.id)}/index.html?preview=1`, window.location.origin).href
-      : hiddenTrialUrl(game, trialPath);
+    window.location.href = hiddenTrialUrl(game, trialPath);
     return;
   }
   if (handleHiddenTrialGate(game)) return;
@@ -3082,31 +3070,11 @@ function showPlannedGame(game) {
 
 function internalTrialPath(game) {
   if (topicGameIds.has(game?.id)) {
-    return reviewerTopicsPreviewAllowed(game) ? "index.html?preview=1" : "";
+    return "";
   }
   if (!game.internalTrial) return "";
   if (typeof game.internalTrial === "string") return game.internalTrial;
   return "internal-test.html?trial=1";
-}
-
-function reviewerTopicsPreviewAllowed(game) {
-  const grant = window.__weightplayReviewerTopicsPreview;
-  const taskId = typeof grant?.taskId === "string" ? grant.taskId : "";
-  const sourceFingerprint = typeof grant?.sourceFingerprint === "string" ? grant.sourceFingerprint : "";
-  const host = window.location.hostname;
-  const loopback = window.location.protocol === "http:"
-    && (host === "localhost" || host === "127.0.0.1" || host === "[::1]");
-  return Boolean(ownerPreviewMode && !isKidsLobby && loopback
-    && topicGameIds.has(game?.id) && game?.status === "planned" && game?.internalOnly === true
-    && grant?.schemaVersion === 1 && grant?.role === "reviewer"
-    && grant?.reviewMode === "MANUAL_STRUCTURED" && grant?.gameId === game.id
-    && grant?.workerId === `reviewer-manual-${taskId}`
-    && /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(taskId)
-    && /^RCLM-[0-9]{8}T[0-9]{6}Z-[0-9a-f]{12}$/i.test(grant?.claimId || "")
-    && /^v?\d+(?:\.\d+)*$/i.test(String(grant?.gameVersion || ""))
-    && /^\d+(?:\.\d+)*$/.test(String(grant?.interfaceVersion || ""))
-    && /^sha256:[0-9a-f]{20,64}$/i.test(sourceFingerprint)
-    && typeof grant?.sessionId === "string" && grant.sessionId.length >= 16);
 }
 
 function hiddenTrialStorageKey(game) {

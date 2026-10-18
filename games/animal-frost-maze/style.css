@@ -168,7 +168,9 @@ body[data-wp-five-game="animal-frost-maze"] #stage-screen{
  display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:var(--wp-frame-control-size-physical,48px) minmax(0,1fr) 56px;
  align-items:stretch;justify-content:stretch;padding:0;gap:0;
 }
-body[data-wp-five-game="animal-frost-maze"] #stage-list{grid-row:2;height:100%;align-self:stretch;min-height:0!important}
+/* Shared rail code owns drag settlement; native smooth scrolling must not
+   animate its synchronous restoration a second time on scene re-entry. */
+body[data-wp-five-game="animal-frost-maze"] #stage-list{grid-row:2;height:100%;align-self:stretch;min-height:0!important;scroll-behavior:auto!important}
 /* Reserve fixed information tracks: facing, counter and optional targets never move controls. */
 body[data-wp-five-game="animal-frost-maze"] .rescue-coach{grid-template-rows:80px 48px 30px 14px}
 body[data-wp-five-game="animal-frost-maze"] .rescue-mission,body[data-wp-five-game="animal-frost-maze"] .rescue-situation{height:80px;overflow:hidden}

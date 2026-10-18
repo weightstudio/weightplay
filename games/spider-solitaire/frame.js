@@ -39,6 +39,7 @@
     label.replaceWith(span);
   });
   const board = byId('boardShell');
+  battle.querySelector('.control-row').dataset.wpFrameLogicalActions = 'battle';
   board.prepend(byId('scoreValue').parentElement, info);
   for (const id of ['startBtn','stageStartBtn','resultNewGame','tutorialDone','confirmYes']) byId(id).dataset.wpFrameAction = 'primary';
   for (const id of ['restartBtn','newGameBtn','resultRestart','resultClose','tutorialSkip','confirmNo','undoBtn','hintBtn','copyReplayLinkBtn','helpBtn']) byId(id).dataset.wpFrameAction = 'secondary';

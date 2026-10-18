@@ -80,17 +80,16 @@
     ar:["مغادرة هذه المرحلة؟","سيتم تجاهل خطة الرفوف الحالية وتقدم الجولة في المرحلة {stage}. ستبقى المراحل المكتملة المحفوظة كما هي.","متابعة اللعب","العودة إلى المراحل"]
   };
 
-  $("#stageScreen").setAttribute("data-wp-logical-stage-canvas","");
   $("#stageBack").setAttribute("data-wp-return","stage");
   $("#battleBack").setAttribute("data-wp-return","battle");
   $("#startButton").setAttribute("data-runtime-localize","off");
 
   const backgroundImage=new Image();backgroundImage.addEventListener("load",draw);backgroundImage.src="assets/animal-moon-market-night-market-v1.png";
-  const queryLocale=new URLSearchParams(location.search).get("lang"),routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase(),routeLocale=window.__WEIGHTPLAY_ROUTE_LOCALE__||ROUTE_LOCALE_MAP[routeSegment]||"en",initialLocale=LOCALES.includes(queryLocale)?queryLocale:(LOCALES.includes(routeLocale)?routeLocale:"en");
+  const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase(),routeLocale=window.__WEIGHTPLAY_ROUTE_LOCALE__||ROUTE_LOCALE_MAP[routeSegment],savedLocale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en",initialLocale=LOCALES.includes(routeLocale)?routeLocale:(LOCALES.includes(savedLocale)?savedLocale:"en");
   const readNumber=(key,fallback)=>{const value=Number(localStorage.getItem(key));return Number.isFinite(value)?value:fallback;};
   const readCleared=()=>{try{return new Set(JSON.parse(localStorage.getItem("weightplay-moon-market-cleared-v15")||"[]").filter(n=>Number.isInteger(n)&&n>=0&&n<30));}catch{return new Set();}};
   const state={locale:initialLocale,stage:0,round:0,shelf:["berries","acorns"],jobs:{orla:"stock",rux:"checkout"},sound:!window.WeightPlayAudio.isMuted(),unlocked:Math.max(1,Math.min(30,readNumber("weightplay-moon-market-unlocked-v15",1))),cleared:readCleared()};
-  let stageRail=null,resultMode="none",lastBattleFocus=null;
+  let stageUI=null,sharedFrame=null,resultMode="none",lastBattleFocus=null;
   window.addEventListener("weightplay:audio-volume-change",()=>{state.sound=!window.WeightPlayAudio.isMuted();applyCopy();});
   const t=k=>COPY[state.locale][k]||COPY.en[k]||k,currentRound=()=>STAGES[state.stage].rounds[state.round],fill=(text,values)=>Object.entries(values).reduce((out,[key,value])=>out.replaceAll(`{${key}}`,String(value)),text);
   const track=(name,payload)=>window.WonderAnalytics?.track?.(name,{game_id:"animal-moon-market",game_version:"v15",interface_version:6,...payload});
@@ -100,55 +99,26 @@
   function closeBattleOverlays(){resultMode="none";$("#resultCard").hidden=true;$("#leaveModal").hidden=true;setCovered(false);}
   function setScreen(name){
     for(const scene of ["main","stage","battle"]){const root=$("#"+scene+"Screen"),active=name===scene;root.classList.toggle("active",active);root.hidden=!active;root.inert=!active;}
-    const guide=$("[data-wp-game-guide]");if(guide)guide.hidden=name!=="main";
-    document.body.dataset.screen=name;if(name!=="battle"){closeBattleOverlays();window.scrollTo(0,0);}if(name==="stage")renderStages({center:true});
-    window.WeightPlayScreenFrame?.autoMountDocument?.();window.WeightPlayBattleCanvas?.sync?.();draw();
+    document.body.dataset.screen=name;
+    if(name!=="battle"){closeBattleOverlays();window.scrollTo(0,0);}
+    sharedFrame?.frame.activate(name);
+    if(name==="stage")renderStages({center:true});
+    window.WeightPlayBattleCanvas?.sync?.();draw();
   }
 
-  function bindStageCard(button,index){
-    const stage=STAGES[index],locked=index>=state.unlocked,cleared=state.cleared.has(index);
-    if(!button.children.length) button.innerHTML="<strong></strong><small></small>";
-    button.className="stage-button";
-    button.dataset.index=String(index);
-    button.classList.toggle("locked",locked);
-    button.classList.toggle("cleared",cleared);
-    button.setAttribute("aria-selected",String(index===state.stage));
-    button.setAttribute("aria-disabled",String(locked));
-    button.querySelector("strong").textContent=`${t("stage")} ${index+1}`;
-    button.querySelector("small").textContent=locked?t("locked"):(cleared?"✓ "+t("cleared"):`${stage.rounds.length} ${t("round")}`);
-  }
-  function ensureStageRail(){
-    const grid=$("#stageGrid");
-    if(stageRail) return stageRail;
-    if(!window.WeightPlayStageV6) throw new Error("STAGE_V6_REQUIRED");
-    stageRail=window.WeightPlayStageV6.install(grid,{
-      total:STAGES.length,
-      poolSize:STAGE_POOL_SIZE,
-      initialIndex:()=>Math.max(0,Math.min(STAGES.length-1,state.stage)),
-      bind:bindStageCard,
-      onChange:index=>{
-        state.stage=index;
-        const chapter=Math.floor(index/5);
-        $("#chapterLabel").textContent=`${t("chapter")} ${chapter+1} · ${t("chapterNames")[chapter]}`;
-        $("#stageProgress").textContent=fill(t("ready"),{cleared:state.cleared.size,unlocked:state.unlocked});
-      },
-      activate:index=>{
-        state.stage=index;
-        renderStages({center:true});
-        if(index<state.unlocked) startStage(index);
-      }
-    });
-    return stageRail;
-  }
   function renderStages({center=false}={}){
-    const rail=ensureStageRail();
-    rail.refresh();
-    if(center&&$("#stageScreen").classList.contains("active")) rail.center(state.stage);
+    if(!stageUI)return;
+    if(center)stageUI.select(state.stage,{center:true,notify:false});
+    else stageUI.refresh(state.stage);
+    sharedFrame?.syncStageInfo();
   }
-  function enterStageSelection(){state.stage=Math.max(0,state.unlocked-1);setScreen("stage");renderStages({center:true});}
+  function enterStageSelection({preserve=false}={}){
+    if(!preserve)state.stage=Math.max(0,state.unlocked-1);
+    setScreen("stage");renderStages({center:true});
+  }
 
   function applyCopy(){
-    const shell=SHELL_COPY[state.locale]||SHELL_COPY.en;document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==="ar"?"rtl":"ltr";$("#locale").value=state.locale;document.querySelectorAll("[data-copy]").forEach(n=>n.textContent=t(n.dataset.copy));$("#startButton").textContent=START_LABELS[state.locale]||START_LABELS.en;$("#mainProgress").textContent=fill(t("ready"),{cleared:state.cleared.size,unlocked:state.unlocked});$("#soundButton").textContent=state.sound?t("soundOn").split(":").pop().trim():t("soundOff").split(":").pop().trim();$("#soundButton").setAttribute("aria-pressed",String(state.sound));$(".wp-shell-return").setAttribute("aria-label",shell.mainBack);$("#settingsButton").setAttribute("aria-label",shell.settings);$("#settingsPopover").setAttribute("aria-label",shell.settings);$("#settingsTitle").textContent=shell.settings;$("#languageLabel").textContent=shell.language;$("#soundLabel").textContent=t("soundOn").split(":")[0];$("#locale").setAttribute("aria-label",shell.language);$("#posterImage").alt=t("artAlt");$("#orlaGuide").alt=t("orlaAlt");$("#propsAtlas").alt=t("propsAlt");$("#stageBack").setAttribute("aria-label",t("back"));$("#battleBack").setAttribute("aria-label",t("stages"));$("#shelfOneChoices").setAttribute("aria-label",t("shelfOne"));$("#shelfTwoChoices").setAttribute("aria-label",t("shelfTwo"));$("#helperGrid").setAttribute("aria-label",t("helpers"));$("#marketCanvas").setAttribute("aria-label",shell.canvas);renderStages({center:$("#stageScreen").classList.contains("active")});render();syncLeaveCopy();syncResultActions();window.dispatchEvent(new Event("wonder:locale-change"));
+    const shell=SHELL_COPY[state.locale]||SHELL_COPY.en;document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==="ar"?"rtl":"ltr";$("#locale").value=state.locale;document.querySelectorAll("[data-copy]").forEach(n=>n.textContent=t(n.dataset.copy));$("#startButton").textContent=START_LABELS[state.locale]||START_LABELS.en;$("#mainProgress").textContent=fill(t("ready"),{cleared:state.cleared.size,unlocked:state.unlocked});$("#mainScreen [data-wp-return=main]").setAttribute("aria-label",shell.mainBack);$("#locale").setAttribute("aria-label",shell.language);$("#posterImage").alt=t("artAlt");$("#orlaGuide").alt=t("orlaAlt");$("#propsAtlas").alt=t("propsAlt");$("#stageBack").setAttribute("aria-label",t("back"));$("#battleBack").setAttribute("aria-label",t("stages"));$("#stageGrid").setAttribute("aria-label",t("stages"));$("#shelfOneChoices").setAttribute("aria-label",t("shelfOne"));$("#shelfTwoChoices").setAttribute("aria-label",t("shelfTwo"));$("#helperGrid").setAttribute("aria-label",t("helpers"));$("#marketCanvas").setAttribute("aria-label",shell.canvas);renderStages({center:$("#stageScreen").classList.contains("active")});render();syncLeaveCopy();syncResultActions();sharedFrame?.syncStageInfo();window.dispatchEvent(new Event("wonder:locale-change"));
   }
 
   function ruleText(round){const helper=round.jobs?Object.keys(round.jobs)[0]:"",key=round.ordered?(round.jobs?"ruleBoth":"ruleOrder"):(round.jobs?"ruleJobs":"ruleAny");return fill(t(key),{helper:helper?t(helper==="orla"?"helperOrla":"helperRux"):"",task:helper?t(round.jobs[helper]):""});}
@@ -158,7 +128,7 @@
   function renderChoices(selector,index){const holder=$(selector);holder.innerHTML="";GOODS.forEach(g=>{const b=document.createElement("button");b.type="button";b.className="choice";b.dataset.product=g;b.textContent=t(g);const selected=state.shelf[index]===g;b.classList.toggle("selected",selected);b.setAttribute("aria-pressed",String(selected));b.addEventListener("click",()=>{state.shelf[index]=g;render();});holder.appendChild(b);});}
   function draw(){if(!ctx||!$("#battleScreen").classList.contains("active"))return;const current=currentRound();ctx.clearRect(0,0,900,700);if(backgroundImage.complete&&backgroundImage.naturalWidth)ctx.drawImage(backgroundImage,0,0,900,700);else{ctx.fillStyle="#132944";ctx.fillRect(0,0,900,700);}ctx.fillStyle="#091426aa";ctx.fillRect(0,0,900,700);ctx.fillStyle="#fff7e8";ctx.font="800 34px system-ui";ctx.textAlign="center";ctx.fillText(`${t("stage")} ${state.stage+1} · ${t("round")} ${state.round+1}`,450,118);ctx.font="700 24px system-ui";ctx.fillText(current.demand.map(g=>t(g)).join(" · "),450,174);ctx.fillStyle="#d19b61dd";ctx.fillRect(170,360,560,170);ctx.strokeStyle="#f0c878";ctx.lineWidth=12;ctx.strokeRect(170,360,560,170);ctx.fillStyle="#fff7e8";ctx.font="800 25px system-ui";ctx.fillText(t(state.shelf[0]),310,445);ctx.fillText(t(state.shelf[1]),590,445);ctx.fillStyle="#78d0b0";ctx.fillRect(0,560,900,12);}
   function resetPlan(){const current=currentRound();state.shelf=[current.demand[0],GOODS.find(g=>!current.demand.includes(g))||current.demand[1]];state.jobs={orla:"stock",rux:"checkout"};resultMode="none";$("#resultCard").hidden=true;setCovered(false);render();}
-  function startStage(index){if(index>=state.unlocked)return;state.stage=index;state.round=0;closeBattleOverlays();resetPlan();setScreen("battle");window.WeightPlayAudio?.play?.("game.start");$("#battleBack").focus({preventScroll:true});track("market_stage_start",{stage:index+1});}
+  function startStage(index){if(index>=state.unlocked)return;state.stage=index;stageUI?.select(index,{center:false,notify:false});state.round=0;closeBattleOverlays();resetPlan();setScreen("battle");window.WeightPlayAudio?.play?.("game.start");$("#battleBack").focus({preventScroll:true});track("market_stage_start",{stage:index+1});}
   function saveProgress(){localStorage.setItem("weightplay-moon-market-unlocked-v15",String(state.unlocked));localStorage.setItem("weightplay-moon-market-cleared-v15",JSON.stringify([...state.cleared].sort((a,b)=>a-b)));}
 
   function syncResultActions(){if($("#resultCard").hidden)return;$("#stagesButton").hidden=false;$("#nextButton").hidden=false;$("#replayButton").hidden=false;$("#stagesButton").textContent=t("stages");$("#nextButton").textContent=t("nextStage");$("#replayButton").textContent=t("replay");$("#nextButton").disabled=!(resultMode==="stage"&&state.stage<29&&state.stage+1<state.unlocked);}
@@ -177,16 +147,19 @@
   function syncLeaveCopy(){const copy=LEAVE_COPY[state.locale]||LEAVE_COPY.en;$("#leaveTitle").textContent=copy[0];$("#leaveCopy").textContent=copy[1].replace("{stage}",String(state.stage+1));$("#leaveContinue").textContent=copy[2];$("#leaveStages").textContent=copy[3];}
   function openLeave(){if(!$("#battleScreen").classList.contains("active")||!$("#leaveModal").hidden||!$("#resultCard").hidden)return;lastBattleFocus=document.activeElement;syncLeaveCopy();setCovered(true);$("#leaveModal").hidden=false;$("#leaveContinue").focus({preventScroll:true});}
   function continueBattle(){if($("#leaveModal").hidden)return;$("#leaveModal").hidden=true;setCovered(false);(lastBattleFocus?.isConnected?lastBattleFocus:$("#battleBack")).focus({preventScroll:true});}
-  function leaveToStages(){if($("#leaveModal").hidden)return;$("#leaveModal").hidden=true;setCovered(false);enterStageSelection();}
+  function leaveToStages(){if($("#leaveModal").hidden)return;$("#leaveModal").hidden=true;setCovered(false);enterStageSelection({preserve:true});}
   function trapDialogFocus(dialog,event){if(event.key!=="Tab")return;const items=[...dialog.querySelectorAll("button:not([hidden]):not([disabled])")];if(!items.length)return;const first=items[0],last=items.at(-1),active=document.activeElement;if(event.shiftKey&&(active===first||!dialog.contains(active))){event.preventDefault();last.focus();}else if(!event.shiftKey&&active===last){event.preventDefault();first.focus();}}
 
-  installPlanReadiness();ensureStageRail();
-$("#startButton").addEventListener("click",enterStageSelection);$("#settingsButton").addEventListener("click",()=>{const p=$("#settingsPopover"),open=p.hidden;p.hidden=!open;$("#settingsButton").setAttribute("aria-expanded",String(open));});$("#soundButton").addEventListener("click",()=>{state.sound=window.WeightPlayAudio.setEnabled(!state.sound);applyCopy();});
-  $("#stageBack").addEventListener("click",()=>setScreen("main"));$("#battleBack").addEventListener("click",openLeave);$("#openButton").addEventListener("click",evaluate);$("#resetButton").addEventListener("click",resetPlan);$("#nextButton").addEventListener("click",advanceResult);$("#replayButton").addEventListener("click",replay);$("#stagesButton").addEventListener("click",enterStageSelection);$("#leaveContinue").addEventListener("click",continueBattle);$("#leaveStages").addEventListener("click",leaveToStages);
+  installPlanReadiness();
+  $("#startButton").addEventListener("click",enterStageSelection);
+  $("#stageBack").addEventListener("click",()=>setScreen("main"));$("#battleBack").addEventListener("click",openLeave);$("#openButton").addEventListener("click",evaluate);$("#resetButton").addEventListener("click",resetPlan);$("#nextButton").addEventListener("click",advanceResult);$("#replayButton").addEventListener("click",replay);$("#stagesButton").addEventListener("click",()=>enterStageSelection({preserve:true}));$("#leaveContinue").addEventListener("click",continueBattle);$("#leaveStages").addEventListener("click",leaveToStages);
   for(const dialog of [$("#leaveModal"),$("#resultCard")])dialog.addEventListener("keydown",event=>trapDialogFocus(dialog,event));
   window.addEventListener("keydown",event=>{if(event.key!=="Escape"||!$("#battleScreen").classList.contains("active"))return;if(!$("#leaveModal").hidden){event.preventDefault();continueBattle();}else if($("#resultCard").hidden){event.preventDefault();openLeave();}});
-  $("#locale").addEventListener("change",e=>{state.locale=e.target.value;localStorage.setItem("weightPlayLocale",state.locale);applyCopy();});
+  $("#locale").addEventListener("change",e=>{const next=e.target.value;if(window.WonderI18n?.setLocale){window.WonderI18n.setLocale(next,{navigate:false});return;}state.locale=next;localStorage.setItem("weightPlayLocale",state.locale);applyCopy();});window.addEventListener("wonder:locale-change",event=>{const next=event.detail?.locale;if(LOCALES.includes(next)&&next!==state.locale){state.locale=next;localStorage.setItem("weightPlayLocale",state.locale);applyCopy();}});
   document.addEventListener("DOMContentLoaded",()=>{document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==="ar"?"rtl":"ltr";window.dispatchEvent(new Event("wonder:locale-change"));},{once:true});
+  const stageConfig=window.createAnimalMoonMarketStageConfig({stages:STAGES,state,t,ruleText});
+  sharedFrame=window.mountAnimalMoonMarketFrame({stageConfig,getSelectedStage:()=>state.stage,setSelectedStage:index=>{state.stage=index;},startStage,getStageInfo:()=>({label:t("stage")+" "+(state.stage+1),progress:state.cleared.size+"/"+STAGES.length+" · "+state.unlocked+"/"+STAGES.length})});
+  stageUI=sharedFrame.stageUI;
   applyCopy();setScreen("main");
 })();
 document.querySelector(".lede")?.classList.add("main-summary");

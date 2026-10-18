@@ -30,8 +30,9 @@
   <meta name="weightplay-scene-controls" content="immutable">
   <title>فريق إنقاذ الصدع | WeightPlay</title>
   <link rel="icon" href="../../assets/weightplay-logo.png">
+  <link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <link rel="stylesheet" href="style.css?v=20261013-rift-v17">
+  <link rel="stylesheet" href="/games/animal-rift-salvage/style.css?v=20261018-rift-mobile-control-1">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><meta name="description" content="وجّه حلقة أورلا القمرية عبر 30 منطقة: اجمع الحطام الأصغر وأنقذ النوى العالقة وغادر قبل انغلاق العاصفة." />
     <meta property="og:description" content="وجّه حلقة أورلا القمرية عبر 30 منطقة: اجمع الحطام الأصغر وأنقذ النوى العالقة وغادر قبل انغلاق العاصفة." />
     <meta name="twitter:description" content="وجّه حلقة أورلا القمرية عبر 30 منطقة: اجمع الحطام الأصغر وأنقذ النوى العالقة وغادر قبل انغلاق العاصفة." />
@@ -106,11 +107,11 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header"><button id="battleBack" type="button" aria-label="رجوع" data-t-aria="back" data-wp-return="battle">←</button><div class="zone-block"><small id="zoneLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="salvage">الإنقاذ</b><strong id="scoreValue">0/0</strong></span><span><b data-t="size">الحجم</b><strong id="sizeValue">1</strong></span><span><b data-t="stability">الثبات</b><strong id="stabilityValue">3</strong></span></div><button id="battleHelp" type="button" aria-label="طريقة اللعب" data-t-aria="help" data-wp-battle-utility>?</button></header>
         <p id="objective" class="objective-row"></p>
-        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="900" height="900" tabindex="0" aria-label="ساحة الإنقاذ النجمية" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown w a s d" data-t-aria="arenaLabel"></canvas><div id="salvageProgress" class="salvage-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-t="salvage">الإنقاذ</span><b id="salvageProgressValue">0 / 0</b><i aria-hidden="true"><em id="salvageProgressFill"></em></i></div><div id="chainBadge" class="chain-badge" role="status" aria-live="polite" aria-atomic="true"><span data-t="moonChain">سلسلة القمر</span><strong id="chainValue">×1</strong></div><div class="control-cue" data-t="controlCue">اضغط واسحب لتوجيه الحلقة · الأسهم/WASD</div></div>
+        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="900" height="900" tabindex="0" aria-label="ساحة الإنقاذ النجمية" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown w a s d" data-t-aria="arenaLabel"></canvas><div id="salvageProgress" class="salvage-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-t="salvage">الإنقاذ</span><b id="salvageProgressValue">0 / 0</b><i aria-hidden="true"><em id="salvageProgressFill"></em></i></div><div id="chainBadge" class="chain-badge" role="status" aria-live="polite" aria-atomic="true"><span data-t="moonChain">سلسلة القمر</span><strong id="chainValue">×1</strong></div><div class="control-cue" data-t="controlCue">العصا اليسرى · اتركها للتوقف</div></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
       </div>
 
-      <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">قد الحلقة القمرية</h2><ol><li data-t="help1">اضغط واسحب نحو نقطة للتحرك باستمرار.</li><li data-t="help2">الفيروزي أولًا؛ الكهرماني قريب، والأحمر كبير جدًا.</li><li data-t="gunHelp">يطلق الحراس الحمر مقذوفات قاتلة. واصل الحركة وتجنب المسارات المضيئة.</li><li data-t="help3">أكمل الحصة وكل هدف إنقاذ أو منافسة قبل انتهاء الوقت.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">متابعة</button></div></div></section>
+      <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">قد الحلقة القمرية</h2><ol><li data-t="help1">على شاشة اللمس استخدم العصا أسفل اليسار واتركها للتوقف. على الحاسوب استخدم الأسهم/WASD أو انقر على الوجهة.</li><li data-t="help2">الفيروزي أولًا؛ الكهرماني قريب، والأحمر كبير جدًا.</li><li data-t="gunHelp">الخطوط الكهرمانية تثبّت اتجاه الطلقة قبل 0.7 ثانية. تفادَها جانبياً. الإصابة تخصم نقطة ثبات وتمنح حماية لثانية.</li><li data-t="help3">أكمل الحصة وكل هدف إنقاذ أو منافسة قبل انتهاء الوقت.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">متابعة</button></div></div></section>
       <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">هل تحتفظ بمحاولة الإنقاذ هذه؟</h2><p data-t="leaveText">تستأنف المتابعة الموضع والوقت نفسيهما. والعودة إلى المناطق تنهي المحاولة.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">متابعة</button><button id="leaveStage" type="button" data-t="returnZones">العودة إلى المناطق</button></div></div></section>
       <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">الوقت</b><strong id="resultTime"></strong></span><span><b data-t="bestChain">أفضل سلسلة</b><strong id="resultChain"></strong></span><span><b data-t="medal">الميدالية</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultZones" type="button" data-t="zones">المناطق</button><button id="next" class="primary" type="button" data-t="nextZone">المنطقة التالية</button><button id="retry" type="button" data-t="retry">إعادة المحاولة</button></div></div></section>
     </div>
@@ -119,8 +120,9 @@
 
   <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ar.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script src="locales.js?v=20261002-rift-salvage-text140-v1"></script>
-  <script src="game.js?v=20261013-rift-v17"></script>
+  <script src="/games/animal-rift-salvage/locales.js?v=20261018-rift-mobile-control-1"></script>
+  <script src="/src/virtual-joystick.js?v=1.0.0"></script>
+  <script src="/games/animal-rift-salvage/game.js?v=20261018-rift-mobile-control-1"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>

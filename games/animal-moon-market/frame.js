@@ -29,7 +29,7 @@
     battleTitle.hidden = true;
     battleTitle.dataset.wpFrameTitle = "";
     battleHeader.replaceChildren(battleBack, battleTitle);
-    const battleStats = ["shiftLabel", "roundLabel", "forecast"].map($);
+    const battleStats = ["shiftLabel", "roundLabel"].map($);
 
     const frame = window.WeightPlayScreenFrame.mount({
       root,
