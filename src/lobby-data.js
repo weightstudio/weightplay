@@ -7473,13 +7473,107 @@ window.WONDER_LOBBY.games.push({
   id: "puppy-haven", audience: "general", status: "planned", internalOnly: true,
   internalTrial: "/games/puppy-haven/index.html?preview=1",
   title: { __localizedExact: true, en: "Puppy Haven", "zh-Hant": "汪汪小院", "zh-Hans": "汪汪小院", ja: "わんこの庭", ko: "강아지 마당", es: "Hogar de Cachorros", "pt-BR": "Lar dos Filhotes", fr: "Le Jardin des Chiots", de: "Welpenhof", it: "Il Giardino dei Cuccioli", ru: "Щенячий дворик", hi: "पिल्लों का आँगन", ar: "حديقة الجراء" },
-  type: { en: "Dog Care & Family", "zh-Hant": "養狗與家庭經營" },
-  description: { en: "Care for six dog breeds, choose nutritious food, clean the yard and welcome a new generation of puppies.", "zh-Hant": "照顧六種狗狗、挑選分級飼料、清理便便，讓健康的公母狗迎接可愛小狗。" },
+  type: {
+    "en": "Dog Care & Family",
+    "zh-Hant": "養狗與家庭經營",
+    "zh-Hans": "养狗与家庭经营",
+    "ja": "犬のお世話と家族",
+    "ko": "강아지 돌봄과 가족",
+    "es": "Cuidado y familias caninas",
+    "pt-BR": "Cuidado e famílias caninas",
+    "fr": "Soins et familles de chiens",
+    "de": "Hundepflege und Familien",
+    "it": "Cura e famiglie di cani",
+    "ru": "Уход за собаками и семья",
+    "hi": "कुत्तों की देखभाल और परिवार",
+    "ar": "رعاية الكلاب والعائلات"
+  },
+  description: {
+    "en": "A little yard. A growing family. Feed, care for and raise your very own dogs.",
+    "zh-Hant": "一個小院，一家狗狗。餵食、清潔、陪伴，迎接新生小狗。",
+    "zh-Hans": "一个小院，一家狗狗。喂食、清洁、陪伴，迎接新生小狗。",
+    "ja": "小さな庭で育つ犬の家族。ごはん、お掃除、ふれあいで子犬を迎えよう。",
+    "ko": "작은 마당에서 자라는 강아지 가족. 먹이고, 청소하고, 함께 놀며 새끼를 맞이하세요.",
+    "es": "Un pequeño jardín, una familia que crece. Alimenta, cuida y cría a tus perros.",
+    "pt-BR": "Um pequeno quintal, uma família que cresce. Alimente, cuide e crie seus cães.",
+    "fr": "Un petit jardin, une famille qui grandit. Nourrissez, choyez et élevez vos chiens.",
+    "de": "Ein kleiner Garten, eine wachsende Familie. Füttere, pflege und begleite deine Hunde.",
+    "it": "Un piccolo giardino, una famiglia che cresce. Nutri, accudisci e alleva i tuoi cani.",
+    "ru": "Маленький двор и растущая семья. Кормите собак, ухаживайте за ними и растите щенков.",
+    "hi": "छोटा आँगन, बढ़ता परिवार। अपने कुत्तों को खिलाएँ, उनकी देखभाल करें और पिल्ले पालें।",
+    "ar": "حديقة صغيرة وعائلة تكبر. أطعم كلابك واعتن بها وربِّ جراءها."
+  },
   statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
   categories: ["Simulation", "Management", "Animal Games"],
   skills: ["Planning", "Resource Balance"], ages: ["general"],
   href: "games/puppy-haven/",
-  art: { kind: "image", background: "games/puppy-haven/assets/cover-block-v1.png", hideHero: true },
-  meta: { en: ["6 Breeds", "Food & Care", "Puppy Families"], "zh-Hant": ["六種狗狗", "餵食清潔", "幼犬家庭"] },
+  art: { kind: "image", background: "games/puppy-haven/assets/cover-block-v1.webp", hideHero: true },
+  meta: {
+    "en": [
+      "6 Breeds",
+      "Food & Care",
+      "Puppy Families"
+    ],
+    "zh-Hant": [
+      "六種狗狗",
+      "餵食清潔",
+      "幼犬家庭"
+    ],
+    "zh-Hans": [
+      "六种狗狗",
+      "喂食清洁",
+      "幼犬家庭"
+    ],
+    "ja": [
+      "犬種6種類",
+      "ごはんとお世話",
+      "子犬の家族"
+    ],
+    "ko": [
+      "6가지 견종",
+      "먹이와 돌봄",
+      "강아지 가족"
+    ],
+    "es": [
+      "6 razas",
+      "Alimentación y cuidados",
+      "Familias con cachorros"
+    ],
+    "pt-BR": [
+      "6 raças",
+      "Alimentação e cuidados",
+      "Famílias de filhotes"
+    ],
+    "fr": [
+      "6 races",
+      "Repas et soins",
+      "Familles de chiots"
+    ],
+    "de": [
+      "6 Rassen",
+      "Futter und Pflege",
+      "Welpenfamilien"
+    ],
+    "it": [
+      "6 razze",
+      "Cibo e cure",
+      "Famiglie di cuccioli"
+    ],
+    "ru": [
+      "6 пород",
+      "Корм и уход",
+      "Семьи щенков"
+    ],
+    "hi": [
+      "6 नस्लें",
+      "भोजन और देखभाल",
+      "पिल्लों का परिवार"
+    ],
+    "ar": [
+      "6 سلالات",
+      "الطعام والرعاية",
+      "عائلات الجراء"
+    ]
+  },
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("puppy-haven");

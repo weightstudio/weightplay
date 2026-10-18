@@ -21,7 +21,7 @@ export function renderPuppyHavenRoute(locale,source=fs.readFileSync(new URL('./i
   })
   .replace(/<h1>[\s\S]*?<\/h1>/,`<h1 data-runtime-localize="off">${escape(c.title)}</h1>`)
   .replace(/(<section id="comingSoon"[\s\S]*?<p>)[\s\S]*?(<\/p>)/,`$1${escape(c.preview.split(' · ')[0])}$2`)
-  .replace(/(<img\b[^>]*src="[^"]*cover-block-v1.png"[^>]*alt=")[^"]*/g,`$1${escape(alt)}`)
+  .replace(/(<img\b[^>]*src="[^"]*cover-block-v1.webp"[^>]*alt=")[^"]*/g,`$1${escape(alt)}`)
   .replace(/(<select id="localeSelect" aria-label=")[^"]*/,`$1${escape(LANGUAGE_LABELS[locale])}`)
   .replace(/(<button id="closePanel" aria-label=")[^"]*/,`$1${escape(c.close)}`)
   .replace(/(<div id="dogRail"[^>]*aria-label=")[^"]*/,`$1${escape(c.dogs.replace('{n}','2'))}`)
