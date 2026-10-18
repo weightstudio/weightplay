@@ -1,3 +1,204 @@
+/* Game-owned first-clear teaching. Classic play still has one canonical rules
+   engine, one shared arcade lifecycle, and one shared Interface 9 shell. */
+(() => {
+  'use strict';
+  const engine = window.WPTetrisEngine;
+  const create = engine.create, step = engine.step, interval = engine.interval;
+  const lessonKey = 'weightplay_tetris_first_clear_v1';
+  const bestKey = 'weightplay_tetris_classic_v16_best';
+  let current, learned = false, skipRequested = false, pending = 0, lastClear = 0, clearTimer = 0;
+  let rejectedUntil = 0, rejectionTimer = 0;
+  let observer;
+  const read = (key) => { try { return localStorage.getItem(key); } catch { return null; } };
+  const write = (key, value) => { try { localStorage.setItem(key, value); } catch { /* Private browsing still plays. */ } };
+  const locale = () => document.documentElement.lang || 'en';
+  const text = (node, value) => { if (node && node.textContent !== String(value)) node.textContent = String(value); };
+  const cue = (name) => window.WeightPlayAudio?.play(name);
+  const resetEffects = () => {
+    clearTimeout(clearTimer); lastClear = 0;
+    clearTimeout(rejectionTimer); rejectedUntil = 0;
+    document.querySelector('.tetris-grid')?.classList.remove('is-celebrating');
+  };
+  engine.create = function (random) {
+    resetEffects();
+    skipRequested = false;
+    const state = create(random);
+    if (!learned && read(lessonKey) !== 'done') {
+      Object.assign(state, { pieceIndex: 0, active: 3, activeY: 0, rotation: 0, training: 1 });
+      // Explicitly authored, unscored teaching board. Nine occupied columns
+      // in four rows explain exactly why filling the last column clears them.
+      state.blocks = Array.from({ length: 40 }, (_, i) => ({ x: i % 10, y: 16 + Math.floor(i / 10), pieceIndex: 4 }))
+        .filter((cell) => cell.x !== 8);
+    } else state.training = 0;
+    current = state;
+    queueSync();
+    return state;
+  };
+  engine.interval = (state) => state.training ? 60000 : interval(state);
+  engine.step = function (state, command) {
+    current = state;
+    if (state.paused || state.over) return false;
+    if (state.training) {
+      if (skipRequested || (state.training === 4 && command === 'drop')) {
+        skipRequested = false;
+        learned = true;
+        write(lessonKey, 'done');
+        Object.assign(state, create(state.random), { training: 0 });
+        resetEffects(); cue('game.start'); queueSync();
+        return true;
+      }
+      const allowed = state.training === 1 ? ['right'] : state.training === 2 ? ['rotate', 'up'] : state.training === 3 ? ['drop'] : [];
+      if (!allowed.includes(command)) return false;
+      const accepted = step(state, command);
+      if (state.training === 1 && state.active === 6) state.training = 2;
+      else if (state.training === 2 && state.rotation === 1) state.training = 3;
+      else if (state.training === 3 && state.cleared === 4) { state.training = 4; cue('game.checkpoint'); }
+      queueSync(); return accepted;
+    }
+    const before = state.lines, previousLevel = state.level;
+    const accepted = step(state, command);
+    if (command !== 'tick') {
+      clearTimeout(rejectionTimer);
+      rejectedUntil = accepted ? 0 : performance.now() + 700;
+      if (!accepted) rejectionTimer = setTimeout(queueSync, 720);
+    }
+    if (state.lines > before) {
+      lastClear = state.lines - before;
+      clearTimeout(clearTimer);
+      clearTimer = setTimeout(() => { lastClear = 0; queueSync(); }, 1700);
+      if (state.level > previousLevel) cue('reward.upgrade');
+    }
+    queueSync(); return accepted;
+  };
+  const content = document.querySelector('#battleScreen .battle-content');
+  const controls = document.querySelector('#controls');
+  const mission = document.createElement('div');
+  mission.className = 'tetris-mission';
+  mission.innerHTML = '<div><strong></strong><span></span></div><div class="tetris-level-meter" role="progressbar" aria-valuemin="0" aria-valuemax="10"><i></i></div>';
+  content.prepend(mission);
+  const coach = document.createElement('div');
+  coach.className = 'tetris-coach';
+  coach.setAttribute('role', 'status'); coach.setAttribute('aria-live', 'polite');
+  coach.innerHTML = '<span class="tetris-step"></span><p class="first-steps"></p><button type="button" class="tetris-skip" data-action="drop" data-tetris-skip></button>';
+  // Keep teaching actions inside the shared arcade action delegate. Controls
+  // retain the same rectangles through each lesson and during classic play.
+  function mountCoach() { if (controls.firstElementChild && !coach.isConnected) controls.prepend(coach); }
+  document.addEventListener('click', (event) => {
+    if (event.target.closest?.('[data-tetris-skip]')) skipRequested = true;
+  }, true);
+  function queueSync() { if (!pending) pending = requestAnimationFrame(sync); }
+  function sync() {
+    pending = 0; mountCoach();
+    const state = current;
+    if (!state) return;
+    const ui = window.WPTetrisExperienceCopy(locale()), base = window.WPTetrisCopy(locale());
+    const training = Number(state.training || 0), phase = Math.min(training, 3);
+    const grid = document.querySelector('.tetris-grid');
+    document.body.dataset.tetrisTraining = String(training);
+    const hint = document.querySelector('#mainInstruction');
+    text(hint, ui.ready);
+    text(mission.querySelector('strong'), training ? ui.practice : `${ui.goal} · ${base.level} ${state.level + 1}`);
+    text(mission.querySelector('span'), training ? `${phase} / 3` : `${state.lines % 10} / 10 ${base.lines}`);
+    const progress = mission.querySelector('[role=progressbar]');
+    const value = training ? (training === 4 ? 10 : (training - 1) * 3) : state.lines % 10;
+    progress.setAttribute('aria-label', training ? ui.practice : ui.goal);
+    progress.setAttribute('aria-valuenow', String(value));
+    progress.querySelector('i').style.width = `${value * 10}%`;
+    const high = !training && state.blocks.some((cell) => cell.y < 6);
+    const rejected = !training && performance.now() < rejectedUntil;
+    text(coach.querySelector('.tetris-step'), training === 4 ? '✓' : training ? `0${training}` : lastClear ? `+${lastClear}` : high ? '!' : '◇');
+    text(coach.querySelector('p'), training ? [null, ui.move, ui.turn, ui.drop, ui.complete][training] : rejected ? document.querySelector('#gameMessage').textContent : lastClear ? `${ui.clear} × ${lastClear}` : high ? ui.danger : ui.tip);
+    coach.dataset.tone = rejected ? 'warning' : training === 4 || lastClear ? 'good' : high ? 'warning' : '';
+    coach.querySelector('button').hidden = !training || training === 4;
+    text(coach.querySelector('button'), ui.skip);
+    coach.querySelector('button').setAttribute('aria-label', ui.skip);
+    coach.querySelector('button').title = ui.skip;
+    const labels = { left: ui.left, rotate: ui.rotate, right: ui.right, down: base.soft, drop: training === 4 ? ui.begin : base.hard };
+    const symbols = { left: '←', rotate: '↻', right: '→', down: '↓', drop: training === 4 ? '▶' : '⤓' };
+    const allowed = training === 1 ? ['right'] : training === 2 ? ['rotate'] : training >= 3 ? ['drop'] : [];
+    controls.querySelectorAll('.control-row button[data-action]').forEach((button) => {
+      const action = button.dataset.action;
+      if (!button.querySelector('.tetris-control-label')) button.innerHTML = '<span class="tetris-control-icon" aria-hidden="true"></span><span class="tetris-control-label"></span>';
+      text(button.querySelector('.tetris-control-icon'), symbols[action]);
+      text(button.querySelector('.tetris-control-label'), labels[action]);
+      button.setAttribute('aria-label', labels[action]); button.title = labels[action];
+      button.disabled = Boolean(training && !allowed.includes(action));
+      button.classList.toggle('is-taught', Boolean(training && allowed.includes(action)));
+    });
+    const utility = content.querySelector(':scope > .control-row');
+    if (utility) {
+      const titles = { hintBtn: ui.help, restartBtn: base.restart, pauseBtn: base.pause };
+      for (const button of utility.querySelectorAll('button')) {
+        text(button, ({ hintBtn: '?', restartBtn: '↺', pauseBtn: 'Ⅱ' })[button.id]);
+        button.setAttribute('aria-label', titles[button.id]); button.title = titles[button.id];
+      }
+    }
+    if (grid) {
+      grid.dataset.training = String(training);
+      grid.classList.toggle('is-danger', high);
+      grid.classList.toggle('is-celebrating', Boolean(lastClear || training === 4));
+      // Live scoring stays truthful; teaching scores never enter real results.
+      let stats = document.querySelector('.tetris-pocket-stats');
+      const next = document.querySelector('.tetris-next');
+      if (next && !stats) {
+        stats = document.createElement('div'); stats.className = 'tetris-pocket-stats';
+        stats.innerHTML = '<div><span></span><strong></strong></div><div><span></span><strong></strong></div><div><span></span><strong></strong></div><p class="tetris-landing-key"></p>';
+        next.append(stats);
+      }
+      if (stats) {
+        const values = [[ui.score, training ? '—' : state.score], [base.lines, training ? '—' : state.lines], [base.level, training ? '—' : state.level]];
+        stats.querySelectorAll(':scope > div').forEach((node, i) => { text(node.querySelector('span'), values[i][0]); text(node.querySelector('strong'), values[i][1]); });
+        text(stats.querySelector('p'), ui.landing);
+      }
+      if (next) {
+        next.dataset.piece = String(state.queue[0]);
+        const name = next.querySelector(':scope > span');
+        text(name, base.next);
+      }
+      text(document.querySelector('#roundLabel'), `${ui.best} ${Number(read(bestKey)) || 0}`);
+      // The visual Outline is distinct from the solid live piece even when
+      // they overlap at landing. Cyan guide cells point to the teaching gap.
+      grid.querySelectorAll('.grid-cell').forEach((cell, i) => cell.classList.toggle('lesson-gap', training > 0 && training < 4 && i % 10 === 8 && i >= 160));
+    }
+  }
+  observer = new MutationObserver(queueSync);
+  observer.observe(document.querySelector('#board'), { childList: true, subtree: true, attributes: true,
+    attributeFilter: ['data-lines', 'data-active-cells', 'data-settled-cells'] });
+  // The existing pause modal owns simulation freeze, focus trapping, Escape
+  // and resume. Help adds a visual rule example to that same lifecycle.
+  document.querySelector('#hintBtn').addEventListener('click', (event) => {
+    event.preventDefault(); event.stopImmediatePropagation();
+    document.querySelector('#pauseBtn').click();
+    const dialog = document.querySelector('.tetris-dialog[open]');
+    if (!dialog) return;
+    const ui = window.WPTetrisExperienceCopy(locale()), base = window.WPTetrisCopy(locale());
+    text(dialog.querySelector('h2'), ui.help);
+    text(dialog.querySelector('p'), `${ui.tip} ${ui.landing}. ${base.instructions}`);
+    const demo = document.createElement('div'); demo.className = 'tetris-rule-demo'; demo.setAttribute('aria-hidden', 'true');
+    demo.innerHTML = `${'<i></i>'.repeat(10)}<span>→ ✓</span>`;
+    dialog.querySelector('p').before(demo);
+  }, true);
+  const result = document.querySelector('#resultScreen');
+  const battle = document.querySelector('#battleScreen');
+  const panel = battle.querySelector('.battle-panel');
+  // Keep the established Result nodes/listeners, but make Result an actual
+  // substate of this same responsive Battle canvas rather than a second scene.
+  battle.querySelector('.battle-canvas').append(result);
+  result.dataset.wpBattleSubstate = 'result';
+  window.addEventListener('weightplay:shell-sync', () => {
+    const settled = document.body.dataset.screen === 'result';
+    if (settled) battle.hidden = false;
+    panel.hidden = settled;
+    panel.inert = settled;
+    document.body.toggleAttribute('data-wp-result-active', settled);
+    resetEffects(); queueSync();
+  });
+  document.querySelector('#localeSelect')?.addEventListener('change', queueSync);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) resetEffects(); queueSync(); });
+  window.addEventListener('pagehide', () => { cancelAnimationFrame(pending); pending = 0; resetEffects(); observer.disconnect(); });
+  window.addEventListener('pageshow', () => { observer.observe(document.querySelector('#board'), { childList: true, subtree: true, attributes: true, attributeFilter: ['data-lines', 'data-active-cells', 'data-settled-cells'] }); queueSync(); });
+})();
+
 window.WPPopularArcade?.mount("tetris");
 // This game-owned identity supersedes the shared legacy mount default.
 document.body.dataset.gameVersion = "v23";

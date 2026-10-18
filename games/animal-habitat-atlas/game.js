@@ -727,18 +727,183 @@
         entry && habitats.some((h) => h.id === pick) && entry.answer === pick,
       ),
   });
+  // Original rescue strategy: six existing expedition IDs; no chapter expansion.
+  const rescuePlans = [
+    {
+      animals: [1, 5, 7],
+      caches: [6, 11],
+      rough: [],
+      wet: [2, 6],
+      turns: 13,
+      goal: 4,
+      storm: 0,
+    },
+    {
+      animals: [0, 4, 7],
+      caches: [6, 3],
+      rough: [0, 4],
+      wet: [1, 5, 9],
+      turns: 15,
+      goal: 5,
+      storm: 5,
+    },
+    {
+      animals: [1, 3, 8],
+      caches: [6, 2],
+      rough: [1, 3, 8],
+      wet: [4, 9],
+      turns: 16,
+      goal: 5,
+      storm: 4,
+    },
+    {
+      animals: [0, 3, 5, 8],
+      caches: [6, 2],
+      rough: [3, 7],
+      wet: [1, 5, 9],
+      turns: 18,
+      goal: 6,
+      storm: 5,
+    },
+    {
+      animals: [0, 2, 4, 7],
+      caches: [11, 1],
+      rough: [2, 4, 6],
+      wet: [3, 7, 11],
+      turns: 18,
+      goal: 6,
+      storm: 5,
+    },
+    {
+      animals: [0, 3, 4, 7],
+      caches: [9, 2],
+      rough: [0, 3, 4, 6],
+      wet: [1, 5, 9],
+      turns: 19,
+      goal: 7,
+      storm: 6,
+    },
+  ];
+  function rescueCreate(stage) {
+    if (!Number.isInteger(stage) || stage < 1 || stage > 6)
+      throw new RangeError("expedition");
+    const p = rescuePlans[stage - 1];
+    return {
+      stage,
+      turn: 0,
+      kits: 3,
+      saved: 0,
+      welfare: 0,
+      ended: false,
+      cells: Array.from({ length: 12 }, (_, id) => ({
+        id,
+        restored: id === 10,
+        animal: p.animals.includes(id),
+        rescued: false,
+        shelter: false,
+        health: 2,
+        cache: p.caches.includes(id),
+        rough: p.rough.includes(id),
+        wet: p.wet.includes(id),
+      })),
+    };
+  }
+  const neighbours = (id) =>
+    [
+      id - 4,
+      id + 4,
+      ...(id % 4 ? [id - 1] : []),
+      ...(id % 4 < 3 ? [id + 1] : []),
+    ].filter((i) => i >= 0 && i < 12);
+  const accessible = (s, id) =>
+    !!s.cells[id] &&
+    (id === 10 ||
+      s.cells[id].restored ||
+      neighbours(id).some((i) => s.cells[i].restored));
+  const eco = (s) => s.cells.filter((c) => c.id !== 10 && c.restored).length;
+  const rescueCost = (s, id) =>
+    s.cells[id]?.rough &&
+    !neighbours(id).some((i) => s.cells[i].restored && s.cells[i].wet)
+      ? 2
+      : 1;
+  function rescueAction(s, action, id) {
+    if (s.ended) return { state: s, error: "done" };
+    const c = s.cells[id],
+      p = rescuePlans[s.stage - 1];
+    let cost = 0,
+      error = null;
+    if (action === "supply") {
+      if (s.kits >= 9) error = "full";
+    } else if (!c || !accessible(s, id)) error = "needRoute";
+    else if (action === "restore") {
+      cost = rescueCost(s, id);
+      if (c.restored) error = "done";
+    } else if (action === "rescue") {
+      cost = c.restored ? 1 : 2;
+      if (!c.animal || c.rescued) error = "done";
+    } else if (action === "shelter") {
+      cost = 1;
+      if (!c.animal || c.rescued || c.shelter || c.restored) error = "done";
+    } else error = "invalid";
+    if (!error && s.kits < cost) error = "noKits";
+    if (error) return { state: s, error };
+    const n = JSON.parse(JSON.stringify(s)),
+      tile = n.cells[id];
+    n.kits -= cost;
+    n.turn++;
+    if (action === "supply") n.kits = Math.min(9, n.kits + 3);
+    if (action === "restore") {
+      tile.restored = true;
+      if (tile.cache) {
+        n.kits = Math.min(9, n.kits + 3);
+        tile.cache = false;
+      }
+    }
+    if (action === "rescue") {
+      tile.rescued = true;
+      n.saved++;
+      n.welfare += Number(tile.restored && tile.health > 0);
+    }
+    if (action === "shelter") tile.shelter = true;
+    const storm = Boolean(p.storm && n.turn % p.storm === 0);
+    if (storm)
+      n.cells.forEach((c) => {
+        if (c.animal && !c.rescued && !c.restored && !c.shelter)
+          c.health = Math.max(0, c.health - 1);
+      });
+    const win = n.saved === p.animals.length && eco(n) >= p.goal;
+    n.ended = win || n.turn >= p.turns;
+    return { state: n, error: null, storm, win, action };
+  }
+  const rescueStars = (s) =>
+    s.saved === rescuePlans[s.stage - 1].animals.length &&
+    eco(s) >= rescuePlans[s.stage - 1].goal
+      ? 2 +
+        Number(
+          s.welfare === s.saved && rescuePlans[s.stage - 1].turns - s.turn >= 2,
+        )
+      : 0;
+  globalThis.HabitatRescueRules = Object.freeze({
+    plans: rescuePlans,
+    create: rescueCreate,
+    act: rescueAction,
+    accessible,
+    cost: rescueCost,
+    eco,
+    stars: rescueStars,
+  });
   if (typeof document === "undefined") return;
   const assetBase = new URL(".", document.currentScript.src);
   const stylesheet = document.createElement("link");
   stylesheet.rel = "stylesheet";
   stylesheet.href = new URL(
-    "interface-7-cleanup.css?v=20261018-field-notebook",
+    "interface-7-cleanup.css?v=20261018-rescue-valley-v11",
     assetBase,
   ).href;
   document.head.append(stylesheet);
   const compat = document.createElement("script");
   compat.src = new URL(
-    "interface-7-compat.js?v=20261018-field-notebook",
+    "interface-7-compat.js?v=20261018-rescue-valley-v11",
     assetBase,
   ).href;
   compat.onload = boot;
@@ -749,44 +914,89 @@
   document.head.append(compat);
   function boot() {
     const $ = (id) => document.getElementById(id),
-      rules = globalThis.HabitatAtlasRules;
-    // Use the shared scaler's authored wide envelope, as Battle already does.
-    // This keeps Stage controls usable on short landscape screens.
+      R = globalThis.HabitatRescueRules;
     $("stage-screen").dataset.wpStageLandscapeWidth = "760";
     $("stage-screen").dataset.wpStageLandscapeHeight = "334";
-    const storageKey = "weightplay-habitat-atlas-best-stage",
-      journalKey = "weightplay-habitat-atlas-field-notebook-v1";
-    let storageAvailable = true;
-    function read(key, fallback) {
-      try {
-        return localStorage.getItem(key) ?? fallback;
-      } catch {
-        storageAvailable = false;
-        return fallback;
-      }
-    }
-    let best = Math.max(0, Math.min(6, Number(read(storageKey, "0")) || 0)),
+    const lang = () =>
+      ({ "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", "pt-BR": "pt-br" })[
+        window.WeightPlayMarketFiveLocale?.locale ||
+          document.documentElement.lang
+      ] ||
+      window.WeightPlayMarketFiveLocale?.locale ||
+      document.documentElement.lang ||
+      "en";
+    const labels = {
+      en: "Restore|Rescue|Shelter|Supplies|Undo|Evacuate|Actions|Saved|Restored|Storm in|Base|Exposed|Protected|Connect a restored neighbour first.|Not enough supplies.|Completed|Otter,Fox,Turtle,Owl|Restore C2 to collect supplies and open rescue routes.|Habitat restored. New route open.|Wildlife is safe.|Supplies +3.|Shelter built.|Storm: exposed wildlife loses 1 health.|Rescue incomplete|The valley lives again|Choose a tile, then an action.|Calm weather",
+      "zh-tw":
+        "復育|救援|庇護所|補給|撤銷|撤離結算|剩餘行動|已救援|已復育|風暴倒數|營地|暴露中|已保護|先復育相鄰地塊，連通救援路線。|補給不足，先按補給。|已完成|水獺,狐狸,陸龜,貓頭鷹|先復育 C2 補給箱，取得補給並打開救援路線。|棲地恢復了，新的救援路線已連通。|動物平安回家了。|補給送達：+3。|庇護所完成，動物受到保護。|風暴來襲：未保護動物失去 1 體力。|救援尚未完成|這片土地，再次有了生命|點選地塊，再選擇行動。|天氣穩定",
+      "zh-cn":
+        "复育|救援|庇护所|补给|撤销|撤离结算|剩余行动|已救援|已复育|风暴倒数|营地|暴露中|已保护|先复育相邻地块，连通救援路线。|补给不足，先按补给。|已完成|水獭,狐狸,陆龟,猫头鹰|先复育 C2 补给箱，取得补给并打开救援路线。|栖地恢复，新路线已连通。|动物平安回家。|补给送达：+3。|庇护所完成。|风暴：未保护动物失去 1 体力。|救援尚未完成|这片土地，再次有了生命|点选地块，再选择行动。|天气稳定",
+      ja: "再生|救助|避難所|物資|戻す|撤収|残り行動|救助|再生|嵐まで|基地|危険|保護|隣のマスを再生して道をつなごう。|物資不足。補給しよう。|完了|カワウソ,キツネ,カメ,フクロウ|まず C2 の補給箱を再生しよう。|生息地と道が復活！|動物を救助！|物資 +3。|避難所が完成。|嵐：保護されていない動物の体力−1。|救助未完了|谷に命が戻った|マスを選び、行動を選ぼう。|穏やかな天気",
+      ko: "복원|구조|보호소|보급품|되돌리기|철수|남은 행동|구조|복원|폭풍까지|기지|노출|보호|인접 타일을 먼저 복원하세요.|보급품 부족. 보급하세요.|완료|수달,여우,거북,부엉이|먼저 C2 보급 상자를 복원하세요.|서식지와 길 복원!|구조 성공!|보급품 +3.|보호소 완성.|폭풍: 노출 동물 체력−1.|구조 미완료|계곡에 돌아온 생명|타일을 고르고 행동하세요.|맑음",
+      es: "Restaurar|Rescatar|Refugio|Suministros|Deshacer|Evacuar|Acciones|Rescatados|Restauradas|Tormenta en|Base|Expuesto|Protegido|Restaura una casilla vecina primero.|Faltan suministros.|Completado|Nutria,Zorro,Tortuga,Búho|Restaura la caja C2 para abrir rutas.|Hábitat y ruta restaurados.|Animal a salvo.|Suministros +3.|Refugio listo.|Tormenta: fauna expuesta pierde 1 salud.|Rescate incompleto|El valle vuelve a vivir|Elige casilla y acción.|Tiempo tranquilo",
+      "pt-br":
+        "Restaurar|Resgatar|Abrigo|Suprimentos|Desfazer|Evacuar|Ações|Resgatados|Restaurados|Tempestade em|Base|Exposto|Protegido|Restaure um terreno vizinho primeiro.|Faltam suprimentos.|Concluído|Lontra,Raposa,Tartaruga,Coruja|Restaure a caixa C2 para abrir rotas.|Habitat e rota restaurados.|Animal a salvo.|Suprimentos +3.|Abrigo pronto.|Tempestade: animais expostos perdem 1 saúde.|Resgate incompleto|O vale vive de novo|Escolha terreno e ação.|Tempo calmo",
+      fr: "Restaurer|Sauver|Abri|Provisions|Annuler|Évacuer|Actions|Sauvés|Restaurées|Orage dans|Camp|Exposé|Protégé|Restaure d’abord une case voisine.|Provisions insuffisantes.|Terminé|Loutre,Renard,Tortue,Hibou|Restaure la caisse C2 pour ouvrir les routes.|Habitat et route restaurés.|Animal en sécurité.|Provisions +3.|Abri construit.|Orage : les animaux exposés perdent 1 santé.|Sauvetage incomplet|La vallée revit|Choisis une case et une action.|Temps calme",
+      de: "Renaturieren|Retten|Schutz|Vorräte|Zurück|Evakuieren|Aktionen|Gerettet|Erneuert|Sturm in|Basis|Ungeschützt|Geschützt|Erneuere zuerst ein Nachbarfeld.|Zu wenig Vorräte.|Erledigt|Otter,Fuchs,Schildkröte,Eule|Erneuere Kiste C2 für neue Wege.|Lebensraum und Weg erneuert.|Tier in Sicherheit.|Vorräte +3.|Schutz errichtet.|Sturm: ungeschützte Tiere verlieren 1 Gesundheit.|Rettung unvollständig|Das Tal lebt wieder|Feld und Aktion wählen.|Ruhiges Wetter",
+      it: "Ripristina|Salva|Riparo|Scorte|Annulla|Evacua|Azioni|Salvati|Ripristinate|Tempesta tra|Campo|Esposto|Protetto|Ripristina prima una casella vicina.|Scorte insufficienti.|Completato|Lontra,Volpe,Tartaruga,Gufo|Ripristina la cassa C2 per aprire sentieri.|Habitat e sentiero ripristinati.|Animale al sicuro.|Scorte +3.|Riparo costruito.|Tempesta: animali esposti perdono 1 salute.|Salvataggio incompleto|La valle torna a vivere|Scegli casella e azione.|Tempo calmo",
+      ru: "Восстановить|Спасти|Укрытие|Припасы|Отменить|Эвакуация|Ходы|Спасено|Восстановлено|Буря через|Лагерь|Без защиты|Защищено|Сначала восстанови соседнюю клетку.|Мало припасов.|Готово|Выдра,Лиса,Черепаха,Сова|Начни с ящика C2, чтобы открыть пути.|Среда и путь восстановлены.|Животное в безопасности.|Припасы +3.|Укрытие готово.|Буря: незащищённые животные теряют 1 здоровье.|Спасение не завершено|Долина снова жива|Выбери клетку и действие.|Тихая погода",
+      hi: "बहाली|बचाव|आश्रय|सामग्री|वापस|निकासी|शेष चाल|बचाए|बहाल|तूफान|शिविर|असुरक्षित|सुरक्षित|पहले पास का खाना बहाल करें।|सामग्री कम है।|पूरा|ऊदबिलाव,लोमड़ी,कछुआ,उल्लू|पहले C2 की पेटी बहाल करें।|आवास और रास्ता बहाल।|जीव सुरक्षित।|सामग्री +3।|आश्रय तैयार।|तूफान: असुरक्षित जीवों का स्वास्थ्य−1।|बचाव अधूरा|घाटी में जीवन लौटा|खाना और कार्य चुनें।|शांत मौसम",
+      ar: "ترميم|إنقاذ|مأوى|المؤن|تراجع|إخلاء|الإجراءات|تم إنقاذ|تم ترميم|العاصفة بعد|المخيم|مكشوف|محمي|رمم مربعاً مجاوراً أولاً.|المؤن غير كافية.|مكتمل|قضاعة,ثعلب,سلحفاة,بومة|ابدأ بترميم صندوق C2 لفتح المسارات.|تم ترميم الموطن وفتح المسار.|الحيوان بأمان.|المؤن +3.|المأوى جاهز.|عاصفة: يفقد الحيوان المكشوف صحة واحدة.|الإنقاذ غير مكتمل|عادت الحياة للوادي|اختر مربعاً ثم إجراء.|طقس هادئ",
+    };
+    const tx = (i) => (labels[lang()] || labels.en).split("|")[i];
+    const guide = {
+      en: "Restore neighbouring tiles to open routes. Rescue costs 1 supply on restored land, 2 otherwise. Shelters protect animals from storms. Refill: +3 supplies for 1 action. Rescue all animals and meet the restoration goal. Three stars: all safe rescues and at least 2 actions left.",
+      "zh-tw":
+        "復育相鄰地塊可開路。復育地救援花 1 補給，緊急救援花 2。庇護所可擋風暴。補給花 1 行動獲得 3 補給。救回全部動物並完成復育目標即過關。全數安全救援、剩至少 2 行動可獲三星。粗糙地塊花 2 補給，先復育相鄰水源可減為 1。",
+      "zh-cn":
+        "复育相邻地块可开路。复育地救援花 1 补给，紧急救援花 2。庇护所可挡风暴。补给花 1 行动获得 3 补给。救回全部动物并完成复育目标即过关。全数安全救援、剩至少 2 行动可获三星。粗糙地块花 2 补给，相邻复育水源可减为 1。",
+    };
+    Object.assign(guide, {
+      ja: "隣接マスを再生して道を開く。再生済みの救助は物資1、緊急救助は2。避難所は嵐を防ぐ。補給は1行動で物資3。全員救助と再生目標でクリア。安全な全員救助と残り2行動で星3。水源の隣では再生費用が減る。",
+      ko: "인접 타일을 복원해 길을 만드세요. 복원된 곳 구조는 보급품1, 긴급 구조는2. 보호소는 폭풍을 막습니다. 보급은 행동1로 보급품3. 모든 동물과 복원 목표를 달성하세요. 안전 구조와 남은 행동2로 별3. 복원된 물 옆은 복원 비용이 줄어듭니다.",
+      es: "Restaura casillas vecinas para abrir rutas. Rescatar cuesta 1 en terreno restaurado, 2 en emergencia. Refugios protegen de tormentas. Abastecer: 1 acción por 3 suministros. Rescata a todos y cumple la restauración. Tres estrellas: rescate seguro y 2 acciones restantes. El agua restaurada reduce el coste vecino.",
+      "pt-br":
+        "Restaure terrenos vizinhos para abrir rotas. Resgate custa 1 em terreno restaurado, 2 na emergência. Abrigos protegem da tempestade. Abastecer: 1 ação por 3 suprimentos. Resgate todos e restaure a meta. Três estrelas: todos seguros e 2 ações restantes. Água restaurada reduz o custo vizinho.",
+      fr: "Restaure les cases voisines pour ouvrir des routes. Sauver coûte 1 sur terrain restauré, 2 en urgence. Un abri protège de l’orage. Ravitailler : 1 action pour 3 provisions. Sauve tous les animaux et atteins l’objectif. Trois étoiles : sauvetages sûrs et 2 actions restantes. L’eau restaurée réduit le coût voisin.",
+      de: "Erneuere Nachbarfelder für neue Wege. Rettung kostet 1 auf erneuertem Boden, im Notfall 2 Vorräte. Schutz hält Stürme ab. Nachschub: 1 Aktion für 3 Vorräte. Rette alle Tiere und erfülle das Bodenziel. Drei Sterne: sichere Rettungen und 2 Aktionen übrig. Erneuertes Wasser senkt benachbarte Kosten.",
+      it: "Ripristina caselle vicine per aprire sentieri. Salvare costa 1 su terreno ripristinato, 2 in emergenza. I ripari proteggono dalla tempesta. Rifornire: 1 azione per 3 scorte. Salva tutti e raggiungi l’obiettivo. Tre stelle: salvataggi sicuri e 2 azioni rimaste. L’acqua ripristinata riduce il costo vicino.",
+      ru: "Восстанавливай соседние клетки для новых путей. Спасение стоит 1 на восстановленной земле, 2 в экстренном случае. Укрытия защищают от бури. Припасы: 1 ход за 3 единицы. Спаси всех и выполни цель. Три звезды: безопасное спасение и 2 хода в запасе. Вода снижает цену соседней клетки.",
+      hi: "पास के खाने बहाल कर रास्ते खोलें। बहाल जगह बचाव की लागत1, आपात बचाव2। आश्रय तूफान से बचाता है। आपूर्ति में 1 चाल से 3 सामग्री मिलती है। सभी जीव और बहाली लक्ष्य पूरा करें। तीन तारे: सुरक्षित बचाव और 2 चाल शेष। बहाल जल के पास लागत घटती है।",
+      ar: "رمم المربعات المجاورة لفتح المسارات. الإنقاذ يكلف مؤنة على أرض مرممة واثنتين للطوارئ. المأوى يحمي من العاصفة. التموين يكلف إجراء ويمنح3 مؤن. أنقذ الجميع وحقق هدف الترميم. ثلاث نجوم: إنقاذ آمن وإجراءان متبقيان. المياه المرممة تقلل تكلفة المربع المجاور.",
+    });
+    const chapter = (i) => chapterRows[i][Math.max(0, locales.indexOf(lang()))];
+    const common = (i) =>
+      window.wpMarketCommon?.(i) ||
+      [
+        "Language",
+        "Start Game",
+        "Stages",
+        "Back",
+        "Back",
+        "Retry",
+        "Next Stage",
+        "",
+        "Best",
+        "Stage",
+      ][i];
+    const store = "weightplay-habitat-atlas-best-stage",
+      journalKey = "weightplay-habitat-atlas-rescue-v1";
+    let storageOK = true,
+      best = 0,
       journal = {};
     try {
-      journal = JSON.parse(read(journalKey, "{}"));
-      if (!journal || Array.isArray(journal) || typeof journal !== "object")
-        journal = {};
+      best = Math.max(0, Math.min(6, Number(localStorage.getItem(store)) || 0));
+      journal = JSON.parse(localStorage.getItem(journalKey) || "{}") || {};
     } catch {
-      journal = {};
+      storageOK = false;
     }
-    const state = {
-      screen: "main",
-      stage: 1,
-      question: 0,
-      stars: 0,
-      penalty: 0,
-      hint: false,
-      solved: false,
-      wrong: new Set(),
-      lastWrong: null,
-      lastPenaltyApplied: false,
-      resultWin: null,
-    };
+    if (typeof journal !== "object" || Array.isArray(journal)) journal = {};
+    let screen = "main",
+      game = null,
+      selected = 6,
+      history = [],
+      message = "",
+      resultWin = false;
     const measurement = {
       screen: "main",
       roundKey: null,
@@ -804,95 +1014,70 @@
           idleSeconds: 300,
           keyboardKeys: [],
           paused:
-            !!document.hidden || $("habitatAtlasLeaveDialog")?.hidden === false,
+            document.hidden || $("habitatAtlasLeaveDialog")?.hidden === false,
         }));
-      } catch {
-        /* Optional shared telemetry. */
-      }
+      } catch {}
     }
     window.addEventListener("weightplay:analytics-ready", observe);
-    function lang() {
-      const raw =
-        window.WeightPlayMarketFiveLocale?.locale ||
-        document.documentElement.lang;
-      return (
-        { "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", "pt-BR": "pt-br" }[raw] ||
-        (locales.includes(raw) ? raw : "en")
-      );
-    }
-    const li = () => locales.indexOf(lang()),
-      t = (key) => copy[lang()][key],
-      common = (i) =>
-        window.wpMarketCommon?.(i) ||
-        [
-          "Language",
-          "Start Game",
-          "Stages",
-          "Back",
-          "Back",
-          "Retry",
-          "Next Stage",
-          "",
-          "Best",
-          "Stage",
-          "Goal reached",
-          "Try again",
-        ][i];
-    const region = (i) => window.WeightPlayMarketFiveLocale.game().regions[i],
-      trait = (i) =>
-        i >= 16
-          ? faunaRows[i - 16][li()]
-          : i >= 8
-            ? inferenceRows[i - 8][li()]
-            : traitRows[i][li()],
-      wildlife = (i) => faunaRows[i][li()],
-      chapter = (i) => chapterRows[i][li()],
-      currentCase = () => expeditions[state.stage - 1].cases[state.question];
     const board = document.createElement("section");
     board.id = "atlas-fieldwork";
-    board.setAttribute(
-      "aria-label",
-      window.WeightPlayMarketFiveLocale.game().canvas,
-    );
+    board.className = "rescue-field";
     board.innerHTML =
-      '<div class="atlas-notes first-steps"><span class="atlas-eyebrow" id="atlas-notes-label"></span><div id="atlas-clues"></div><p id="atlas-wildlife"></p></div><div id="atlas-habitats" class="atlas-habitats"></div><div id="atlas-feedback" class="atlas-feedback" role="status" aria-live="polite" aria-atomic="true"><strong id="atlas-feedback-title"></strong><p id="atlas-feedback-copy"></p></div>';
+      '<div class="rescue-mission"><div id="rescue-meters"></div><div id="rescue-weather"></div></div><div id="rescue-map" role="group"></div><div class="rescue-inspector"><div><strong id="rescue-tile-title"></strong><p id="rescue-tile-copy"></p></div><div id="rescue-actions"></div></div><p id="rescue-feed" class="first-steps" role="status" aria-live="polite"></p>';
     const canvas = $("arena");
     canvas.hidden = true;
     canvas.setAttribute("aria-hidden", "true");
-    canvas.tabIndex = -1;
     canvas.before(board);
     const result = $("result-screen");
     result.classList.remove("screen");
     result.removeAttribute("data-screen");
-    // Settlement owns the entire Battle workspace, including the landscape
-    // action column. Mount it once, before the first interactive paint.
     $("battle-screen").append(result);
+    const vignette = document.createElement("div");
+    vignette.className = "rescue-vignette";
+    vignette.setAttribute("aria-hidden", "true");
+    result.prepend(vignette);
     $("battle-controls").innerHTML =
-      '<button type="button" id="atlas-hint" data-action="clue"></button><button type="button" id="atlas-next" class="m5-primary" disabled></button>';
+      '<button type="button" id="rescue-supply"></button><button type="button" id="rescue-undo"></button><button type="button" id="rescue-exit"></button>';
     document.querySelector(".m5-hint").hidden = true;
     const lede = $("main-screen").querySelector(".m5-lede");
     lede.removeAttribute("data-m5-lede");
     function mainCopy() {
-      lede.textContent = t("summary");
+      lede.textContent = (guide[lang()] || guide.en)
+        .split(/(?<=[。.!])\s*/)
+        .slice(0, 2)
+        .join(" ");
       $("main-progress").textContent = `${common(8)}: ${best} / 6`;
+      document
+        .querySelectorAll("[data-wp-habitat-extra]")
+        .forEach((n) => (n.textContent = guide[lang()] || guide.en));
+      document.querySelectorAll("[data-wp-habitat-faq]").forEach((n) => {
+        n.textContent = n.dataset.wpHabitatFaq.endsWith(":a")
+          ? guide[lang()] || guide.en
+          : tx([0, 3, 9, 7][Number(n.dataset.wpHabitatFaq.split(":")[0])] || 0);
+      });
+      document
+        .querySelectorAll("[data-wp-habitat-tag]")
+        .forEach((n, i) => (n.textContent = tx([7, 8, 12][i % 3])));
     }
-    function show(screen) {
-      state.screen = screen;
-      document.body.dataset.screen = screen;
+    function show(next) {
+      board.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+      board.querySelectorAll(".rescue-transfer").forEach((n) => n.remove());
+      screen = next;
+      document.body.dataset.screen = next;
       for (const id of ["main", "stage", "battle"]) {
-        const node = $(id + "-screen");
-        node.hidden = id !== screen;
-        node.classList.toggle("active", id === screen);
+        const n = $(id + "-screen");
+        n.hidden = id !== next;
+        n.classList.toggle("active", id === next);
       }
       result.hidden = true;
       board.inert = false;
       $("battle-controls").inert = false;
       document.body.dataset.atlasResult = "false";
-      measurement.screen = screen;
+      measurement.screen = next;
       observe();
       window.dispatchEvent(
         new CustomEvent(
-          screen === "battle"
+          next === "battle"
             ? "weightplay:battle-open"
             : "weightplay:shell-sync",
         ),
@@ -901,36 +1086,35 @@
     function stages() {
       const rail = $("stage-list");
       rail.replaceChildren();
-      expeditions.forEach((e, i) => {
-        const available = i <= best,
-          b = document.createElement("button");
+      rescuePlans.forEach((p, i) => {
+        const b = document.createElement("button");
         b.type = "button";
         b.className = `m5-stage-card stage-card${i === Math.min(5, best) ? " recommended" : ""}`;
-        b.dataset.stage = String(i + 1);
-        b.disabled = !available;
-        b.setAttribute("aria-disabled", String(!available));
-        if (available) b.setAttribute("data-wp-enter-battle", "");
+        b.dataset.stage = i + 1;
+        b.disabled = i > best;
+        b.setAttribute("aria-disabled", String(b.disabled));
+        if (!b.disabled) b.setAttribute("data-wp-enter-battle", "");
         const n = document.createElement("span"),
           title = document.createElement("strong"),
           detail = document.createElement("small");
-        n.textContent = `${best > i ? "✓" : "◈"} ${common(9)} ${i + 1} / 6`;
+        n.textContent = `${i < best ? "✓" : "◈"} ${common(9)} ${i + 1} / 6`;
         title.textContent = chapter(i);
-        detail.textContent = available
-          ? `${e.cases.length} ${t("case")} · ${t("target")} ${e.pass} ★${journal[i + 1] ? ` · ${common(8)} ${journal[i + 1]} ★` : ""}`
-          : "🔒";
+        detail.textContent =
+          i <= best
+            ? `${tx(7)} ${p.animals.length} · ${tx(8)} ${p.goal}${journal[i + 1] ? ` · ${"★".repeat(journal[i + 1])}` : ""}`
+            : "🔒";
         b.append(n, title, detail);
         b.addEventListener("click", () => start(i + 1));
         rail.append(b);
       });
     }
     function start(stage, restart = false) {
-      if (
-        !Number.isInteger(stage) ||
-        stage < 1 ||
-        stage > Math.min(6, best + 1)
-      )
-        return;
-      Object.assign(state, { stage, question: 0, stars: 0, resultWin: null });
+      if (stage < 1 || stage > Math.min(6, best + 1)) return;
+      game = R.create(stage);
+      selected = 6;
+      history = [];
+      message = stage === 1 ? tx(17) : tx(25);
+      resultWin = false;
       Object.assign(measurement, {
         roundKey: {},
         started: true,
@@ -938,211 +1122,279 @@
         outcome: "complete",
         restart,
       });
-      resetCase();
       show("battle");
       render();
       window.WeightPlayAudio?.play("game.start");
     }
-    function resetCase() {
-      Object.assign(state, {
-        penalty: 0,
-        hint: false,
-        solved: false,
-        lastWrong: null,
-        lastPenaltyApplied: false,
-        wrong: new Set(),
-      });
-    }
-    function makeCards() {
-      const host = $("atlas-habitats");
-      host.replaceChildren();
-      habitats.forEach((h) => {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = "atlas-habitat";
-        b.dataset.action = `region-${h.index}`;
-        b.dataset.habitat = h.id;
-        b.innerHTML =
-          '<span class="atlas-card-art" aria-hidden="true"></span><span class="atlas-card-name"></span><span class="atlas-card-traits"></span><span class="atlas-card-mark" aria-hidden="true"></span>';
-        b.querySelector(".atlas-card-art").style.setProperty(
-          "--atlas-sprite",
-          String(h.index),
-        );
-        b.addEventListener("click", () => choose(h));
-        host.append(b);
-      });
-    }
-    function render() {
-      const entry = currentCase(),
-        profile = expeditions[state.stage - 1];
-      board.querySelector(".atlas-notes").classList.toggle("first-steps", state.stage === 1 && state.question === 0 && !state.solved);
-      $("stage-label").textContent = `${common(9)} ${state.stage} / 6`;
-      $("score-label").textContent =
-        `${state.question + 1}/${profile.cases.length} · ${state.stars}/${profile.pass} ★`;
-      $("battle-status").textContent = t("goal");
-      $("atlas-notes-label").textContent = t("evidence");
-      $("atlas-clues").replaceChildren(
-        ...entry.clues.map((id, i) => {
-          const node = document.createElement("div");
-          node.className = "atlas-clue";
-          const n = document.createElement("span");
-          n.textContent = String(i + 1).padStart(2, "0");
-          const text = document.createElement("strong");
-          text.textContent = trait(id);
-          node.append(n, text);
-          return node;
-        }),
+    const coord = (id) => "ABCD"[id % 4] + (Math.floor(id / 4) + 1);
+    const animalName = (c) =>
+      tx(16).split(",")[
+        Math.max(0, rescuePlans[game.stage - 1].animals.indexOf(c.id))
+      ];
+    function sprite(name, className) {
+      const url = new URL("assets/rescue-v11/" + name + ".png", assetBase).href;
+      return (
+        '<img class="' +
+        className +
+        '" src="' +
+        url +
+        '" alt="" aria-hidden="true" draggable="false">'
       );
-      $("atlas-wildlife").textContent = state.hint
-        ? `◈ ${wildlife(entry.wildlife)}`
-        : `${t("target")} ${profile.pass} ★ · ${Math.max(1, 3 - state.penalty)} ★`;
-      for (const h of habitats) {
-        const card = $("atlas-habitats").querySelector(
-            `[data-habitat="${h.id}"]`,
-          ),
-          solved = state.solved && entry.answer === h.id,
-          rejected = state.wrong.has(h.id);
-        card.disabled = state.solved || rejected;
-        card.classList.toggle("is-discovered", solved);
-        card.classList.toggle("is-rejected", rejected);
-        card.querySelector(".atlas-card-name").textContent = region(h.index);
-        card.querySelector(".atlas-card-traits").textContent = h.traits
-          .map(trait)
-          .join(" · ");
-        card.querySelector(".atlas-card-mark").textContent = solved
-          ? "✓"
-          : rejected
-            ? "×"
-            : "";
-        card.setAttribute(
-          "aria-label",
-          `${region(h.index)}: ${h.traits.map(trait).join(", ")}`,
-        );
-      }
-      $("atlas-feedback").dataset.state = state.solved
-        ? "correct"
-        : state.lastWrong
-          ? "wrong"
-          : "ready";
-      $("atlas-feedback-title").textContent = state.solved
-        ? `${t("correct")} +${Math.max(1, 3 - state.penalty)} ★`
-        : state.lastWrong
-          ? t("wrong").replace(
-              " · −1 ★",
-              state.lastPenaltyApplied ? " · −1 ★" : "",
-            )
-          : `${state.stage === 1 && state.question === 0 ? "03 · " : ""}${t("choose")}`;
-      $("atlas-feedback-copy").textContent = state.solved
-        ? `${t("match")}: ${entry.clues.map(trait).join(" + ")} → ${wildlife(entry.wildlife)}`
-        : state.lastWrong
-          ? `${region(state.lastWrong.index)}: ${state.lastWrong.traits.map(trait).join(" · ")}`
-          : t("retryCue");
-      $("atlas-hint").textContent = t("hint").replace(
-        " · −1 ★",
-        state.penalty < 2 ? " · −1 ★" : "",
-      );
-      $("atlas-hint").disabled = state.hint || state.solved;
-      $("atlas-next").textContent =
-        state.question === profile.cases.length - 1 ? t("finish") : t("next");
-      $("atlas-next").disabled = !state.solved;
-      $("atlas-next").setAttribute("aria-disabled", String(!state.solved));
-      mainCopy();
     }
-    function choose(h) {
-      if (
-        state.screen !== "battle" ||
-        state.solved ||
-        state.wrong.has(h.id) ||
+    function art(c) {
+      const species = Math.max(
+        0,
+        rescuePlans[game.stage - 1].animals.indexOf(c.id),
+      );
+      return sprite(
+        ["otter", "fox", "tortoise", "owl"][species],
+        "rescue-animal",
+      );
+    }
+    function terrain(c) {
+      const biome = c.wet
+        ? "wetland"
+        : ["forest", "arctic", "desert", "forest", "wetland", "forest"][
+            game.stage - 1
+          ];
+      return sprite(
+        biome + (c.restored ? "-restored" : "-damaged"),
+        "rescue-land",
+      );
+    }
+    function blocked() {
+      return (
+        screen !== "battle" ||
         !result.hidden ||
         $("habitatAtlasLeaveDialog")?.hidden === false
-      )
-        return;
-      if (rules.judge(currentCase(), h.id)) {
-        state.solved = true;
-        state.stars += Math.max(1, 3 - state.penalty);
-        state.lastWrong = null;
-        window.WeightPlayAudio?.play("feedback.success");
-        render();
-        $("atlas-next").focus({ preventScroll: true });
-      } else {
-        state.wrong.add(h.id);
-        state.lastPenaltyApplied = state.penalty < 2;
-        state.penalty = Math.min(2, state.penalty + 1);
-        state.lastWrong = h;
-        window.WeightPlayAudio?.play("feedback.error");
-        render();
-        $("atlas-habitats")
-          .querySelector("button:not(:disabled)")
-          ?.focus({ preventScroll: true });
+      );
+    }
+    function render() {
+      if (!game) return;
+      const p = rescuePlans[game.stage - 1],
+        c = game.cells[selected];
+      $("stage-label").textContent = `${common(9)} ${game.stage}/6`;
+      $("score-label").textContent = `${tx(6)} ${p.turns - game.turn}`;
+      $("battle-status").textContent =
+        `${(copy[lang()] || copy.en).target}: ${tx(7)} ${p.animals.length} · ${tx(8)} ${p.goal}`;
+      $("rescue-meters").innerHTML =
+        `<span>${tx(3)} <b>${game.kits}</b></span><span>${tx(7)} <b>${game.saved}/${p.animals.length}</b></span><span>${tx(8)} <b>${R.eco(game)}/${p.goal}</b></span>`;
+      $("rescue-weather").textContent = p.storm
+        ? `${tx(9)} ${p.storm - (game.turn % p.storm)} · ${tx(11)} ${game.cells.filter((c) => c.animal && !c.rescued && !c.restored && !c.shelter).length}`
+        : tx(26);
+      $("rescue-map").setAttribute("aria-label", tx(25));
+      game.cells.forEach((tile) => {
+        const b = $("rescue-map").children[tile.id],
+          safe = tile.restored || tile.shelter,
+          has = tile.animal && !tile.rescued;
+        b.className = `rescue-tile ${tile.restored ? "is-restored" : ""} ${R.accessible(game, tile.id) ? "is-reachable" : ""} ${selected === tile.id ? "is-selected" : ""}`;
+        b.setAttribute("aria-pressed", String(selected === tile.id));
+        b.setAttribute(
+          "aria-label",
+          `${coord(tile.id)} · ${tile.id === 10 ? tx(10) : has ? animalName(tile) : tile.cache ? tx(3) : tx(0)} · ${safe ? tx(12) : tx(11)}`,
+        );
+        b.innerHTML = `${terrain(tile)}<small class="rescue-coordinate">${coord(tile.id)}</small>${tile.id === 10 ? sprite("camp", "rescue-prop") : has ? art(tile) : tile.cache ? sprite("crate", "rescue-prop") : tile.rescued ? '<span class="rescue-saved-mark">✓</span>' : ""}<span class="rescue-tile-label">${tile.id === 10 ? tx(10) : has ? animalName(tile) : tile.cache ? `${tx(3)} +3` : tile.restored ? tx(15) : tile.rough ? "◆ 2" : "◆ 1"}</span>${has ? `<span class="rescue-health">${safe ? "⌂" : ""}${"♥".repeat(tile.health)}${"♡".repeat(2 - tile.health)}</span>` : ""}`;
+      });
+      $("rescue-tile-title").textContent =
+        `${coord(selected)} · ${c.id === 10 ? tx(10) : c.animal ? (c.rescued ? tx(7) : animalName(c)) : c.cache ? `${tx(3)} +3` : tx(8)}`;
+      $("rescue-tile-copy").textContent = !R.accessible(game, selected)
+        ? tx(13)
+        : c.animal && !c.rescued
+          ? `${c.restored || c.shelter ? tx(12) : tx(11)} · ${tx(1)} ◆${c.restored ? 1 : 2}`
+          : tx(25);
+      for (const [action, index] of [
+        ["restore", 0],
+        ["rescue", 1],
+        ["shelter", 2],
+      ]) {
+        const b = $("rescue-" + action),
+          check = R.act(game, action, selected);
+        b.textContent = `${tx(index)} ◆${action === "restore" ? R.cost(game, selected) : action === "rescue" ? (c.restored ? 1 : 2) : 1}`;
+        b.innerHTML =
+          sprite(
+            { restore: "water", rescue: "crate", shelter: "shelter" }[action],
+            "rescue-tool",
+          ) +
+          "<span>" +
+          b.textContent +
+          "</span>";
+        b.disabled = !!check.error;
+        b.title = check.error
+          ? tx({ needRoute: 13, noKits: 14, done: 15 }[check.error] || 15)
+          : tx(index);
       }
+      $("rescue-feed").classList.toggle(
+        "first-steps",
+        game.stage === 1 && game.turn === 0,
+      );
+      $("rescue-feed").textContent = message;
+      $("rescue-supply").textContent = `${tx(3)} +3`;
+      $("rescue-supply").disabled = game.kits >= 9;
+      $("rescue-undo").textContent = tx(4);
+      $("rescue-undo").disabled = !history.length;
+      $("rescue-exit").textContent = tx(5);
+      mainCopy();
+    }
+    for (let id = 0; id < 12; id++) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.dataset.tile = id;
+      b.addEventListener("click", () => {
+        if (blocked()) return;
+        selected = id;
+        render();
+      });
+      $("rescue-map").append(b);
+    }
+    for (const [action, index] of [
+      ["restore", 0],
+      ["rescue", 1],
+      ["shelter", 2],
+    ]) {
+      const b = document.createElement("button");
+      b.id = "rescue-" + action;
+      b.type = "button";
+      b.addEventListener("click", () => act(action));
+      $("rescue-actions").append(b);
+    }
+    function act(action) {
+      if (blocked()) return;
+      const out = R.act(game, action, selected);
+      if (out.error) {
+        message = tx(out.error === "noKits" ? 14 : 13);
+        render();
+        window.WeightPlayAudio?.play("feedback.error");
+        return;
+      }
+      history.push(game);
+      if (history.length > 30) history.shift();
+      game = out.state;
+      message =
+        tx({ restore: 18, rescue: 19, supply: 20, shelter: 21 }[action]) +
+        (out.storm ? " " + tx(22) : "");
+      render();
+      transfer(action);
+      if (
+        action !== "supply" &&
+        !matchMedia("(prefers-reduced-motion: reduce)").matches
+      )
+        $("rescue-map").children[selected].animate(
+          [{ filter: "brightness(1.6)" }, { filter: "brightness(1)" }],
+          { duration: 420, easing: "ease-out" },
+        );
+      window.WeightPlayAudio?.play(
+        action === "rescue"
+          ? "feedback.success"
+          : action === "supply"
+            ? "reward.collect"
+            : "board.move",
+      );
+      if (game.ended) finish();
+    }
+    function transfer(action) {
+      const source =
+        $("rescue-map").children[action === "supply" ? 10 : selected];
+      const destination =
+        $("rescue-meters").querySelectorAll("b")[
+          action === "rescue" ? 1 : action === "restore" ? 2 : 0
+        ];
+      if (action === "shelter" || !source || !destination) return;
+      const origin = board.getBoundingClientRect(),
+        a = source.getBoundingClientRect(),
+        b = destination.getBoundingClientRect(),
+        scale = origin.width / board.offsetWidth;
+      board.querySelectorAll(".rescue-transfer").forEach((n) => n.remove());
+      const node = document.createElement("span");
+      node.className = "rescue-transfer";
+      node.textContent = action === "supply" ? "+3" : "+1";
+      node.setAttribute("aria-hidden", "true");
+      node.style.left = (a.x + a.width / 2 - origin.x) / scale + "px";
+      node.style.top = (a.y + a.height / 2 - origin.y) / scale + "px";
+      board.append(node);
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const animation = node.animate(
+        reduced
+          ? [{ opacity: 1 }, { opacity: 0 }]
+          : [
+              { transform: "translate(0,0)", opacity: 1 },
+              {
+                transform: `translate(${(b.x + b.width / 2 - a.x - a.width / 2) / scale}px,${(b.y + b.height / 2 - a.y - a.height / 2) / scale}px)`,
+                opacity: 0,
+              },
+            ],
+        { duration: reduced ? 100 : 420, easing: "ease-out" },
+      );
+      animation.finished.then(
+        () => node.remove(),
+        () => node.remove(),
+      );
     }
     function persist() {
       try {
         best = Math.max(
           best,
-          Math.min(6, Number(localStorage.getItem(storageKey)) || 0),
+          Math.min(6, Number(localStorage.getItem(store)) || 0),
         );
-        localStorage.setItem(storageKey, String(best));
-        let other = {};
-        try {
-          other = JSON.parse(localStorage.getItem(journalKey) || "{}") || {};
-        } catch {}
-        if (Array.isArray(other) || typeof other !== "object") other = {};
-        for (const [key, value] of Object.entries(journal))
-          other[key] = Math.max(Number(other[key]) || 0, value);
+        localStorage.setItem(store, String(best));
+        let other = JSON.parse(localStorage.getItem(journalKey) || "{}");
+        if (!other || typeof other !== "object" || Array.isArray(other))
+          other = {};
+        Object.keys(journal).forEach(
+          (k) =>
+            (other[k] = Math.max(
+              Number(other[k]) || 0,
+              Number(journal[k]) || 0,
+            )),
+        );
         journal = other;
         localStorage.setItem(journalKey, JSON.stringify(journal));
       } catch {
-        storageAvailable = false;
+        storageOK = false;
       }
     }
     function finish() {
-      const profile = expeditions[state.stage - 1],
-        win = state.stars >= profile.pass;
-      state.resultWin = win;
-      if (win) {
-        best = Math.max(best, state.stage);
-        journal[state.stage] = Math.max(
-          Number(journal[state.stage]) || 0,
-          state.stars,
-        );
+      if (!result.hidden) return;
+      vignette.innerHTML = game.cells
+        .map(
+          (c) =>
+            `<div class="${c.restored ? "alive" : ""}">${terrain(c)}${c.animal ? art(c) : ""}${c.rescued ? '<span class="rescue-saved-mark">✓</span>' : ""}</div>`,
+        )
+        .join("");
+      const stars = R.stars(game);
+      resultWin = stars > 0;
+      game.ended = true;
+      if (resultWin) {
+        best = Math.max(best, game.stage);
+        journal[game.stage] = Math.max(Number(journal[game.stage]) || 0, stars);
         persist();
       }
       measurement.ended = true;
-      measurement.outcome = win ? "win" : "lose";
+      measurement.outcome = resultWin ? "win" : "lose";
       measurement.screen = null;
       observe();
-      $("result-title").textContent = common(win ? 10 : 11);
+      $("result-title").textContent = tx(resultWin ? 24 : 23);
       $("result-copy").textContent =
-        `${state.stars} / ${profile.cases.length * 3} ★ · ${t("target")} ${profile.pass} ★. ${win ? t(storageAvailable ? "saved" : "unsaved") : t("retryCue")}`;
-      $("next").disabled = !win || state.stage === 6;
+        `${stars ? "★".repeat(stars) : "☆☆☆"} · ${tx(7)} ${game.saved}/${rescuePlans[game.stage - 1].animals.length} · ${tx(8)} ${R.eco(game)}/${rescuePlans[game.stage - 1].goal}${!storageOK ? " · " + (copy[lang()] || copy.en).unsaved : ""}`;
+      $("next").disabled = !resultWin || game.stage === 6;
       $("next").setAttribute("aria-disabled", String($("next").disabled));
       result.hidden = false;
       board.inert = true;
+      $("battle-controls").inert = true;
       document.body.dataset.atlasResult = "true";
       $("retry").focus({ preventScroll: true });
+      window.WeightPlayAudio?.play(resultWin ? "result.win" : "result.lose");
       mainCopy();
-      window.WeightPlayAudio?.play(win ? "result.win" : "result.lose");
     }
-    $("atlas-hint").addEventListener("click", () => {
-      if (state.solved || state.hint || state.screen !== "battle") return;
-      state.hint = true;
-      state.penalty = Math.min(2, state.penalty + 1);
-      window.WeightPlayAudio?.play("feedback.hint");
+    $("rescue-supply").addEventListener("click", () => act("supply"));
+    $("rescue-undo").addEventListener("click", () => {
+      if (blocked() || !history.length) return;
+      game = history.pop();
+      message = tx(4);
       render();
+      window.WeightPlayAudio?.play("board.undo");
     });
-    $("atlas-next").addEventListener("click", () => {
-      if (!state.solved || state.screen !== "battle" || !result.hidden) return;
-      if (state.question === expeditions[state.stage - 1].cases.length - 1) {
-        finish();
-        return;
-      }
-      state.question++;
-      resetCase();
-      render();
-      $("atlas-habitats")
-        .querySelector("button")
-        ?.focus({ preventScroll: true });
+    $("rescue-exit").addEventListener("click", () => {
+      if (!blocked()) finish();
     });
     function toStages() {
       if (measurement.started && !measurement.ended) {
@@ -1158,37 +1410,30 @@
       show("main");
     });
     $("to-stages").addEventListener("click", toStages);
-    $("retry").addEventListener("click", () => start(state.stage, true));
-    $("next").addEventListener("click", () => {
-      if (state.resultWin && state.stage < 6) start(state.stage + 1);
-    });
     $("battle-back").addEventListener("click", toStages);
-    $("battle-utility").addEventListener("click", () => {
-      $("atlas-habitats")
-        .querySelector("button:not(:disabled)")
-        ?.focus({ preventScroll: true });
+    $("retry").addEventListener("click", () => start(game.stage, true));
+    $("next").addEventListener("click", () => {
+      if (resultWin && game.stage < 6) start(game.stage + 1);
     });
+    $("battle-utility").addEventListener("click", () =>
+      $("rescue-supply").focus({ preventScroll: true }),
+    );
     window.addEventListener("weightplay:market-locale-change", () => {
       mainCopy();
       stages();
-      if (state.screen === "battle" && result.hidden) render();
+      if (screen === "battle" && result.hidden) render();
     });
-    window.addEventListener("storage", (event) => {
-      if (event.key === storageKey) {
-        best = Math.max(best, Math.min(6, Number(event.newValue) || 0));
+    window.addEventListener("storage", (e) => {
+      if (e.key === store) {
+        best = Math.max(best, Math.min(6, Number(e.newValue) || 0));
         mainCopy();
-        if (state.screen === "stage") stages();
+        if (screen === "stage") stages();
       }
     });
-    makeCards();
-    mainCopy();
     stages();
+    mainCopy();
     show("main");
-    function ready() {
-      $("loadingPanel")?.classList.add("hidden");
-      $("loadingPanel")?.setAttribute("hidden", "");
-    }
-    if (document.readyState === "complete") ready();
-    else window.addEventListener("load", ready, { once: true });
+    $("loadingPanel")?.classList.add("hidden");
+    $("loadingPanel")?.setAttribute("hidden", "");
   }
 })();

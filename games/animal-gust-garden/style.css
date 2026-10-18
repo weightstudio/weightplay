@@ -76,6 +76,75 @@ h2 { font-size: clamp(1.45rem, 5vw, 2rem); }
 .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(75, 136, 129, .35); color: var(--muted); font-weight: 750; }
 .setting-row select { min-height: 44px; border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; background: #20474b; color: var(--text); }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+/* The garden is content inside the shared frame. Its two declared logical
+   compositions keep fixed controls and a square-cell board at every size. */
+html[data-wp-shared-interface] body[data-wp-game-id="animal-gust-garden"] #battleScreen .battle-canvas[data-garden-layout] {
+  display: grid !important; grid-template-columns: minmax(0, 1fr) !important; grid-template-rows: 48px minmax(0, 1fr) !important;
+  gap: 8px !important; padding: 12px !important; overflow: hidden !important;
+  background: linear-gradient(160deg, #102b30e8, #101f2af2), url('assets/animal-gust-garden-background.webp') center/cover !important;
+}
+.garden-workspace { min-height: 0; min-width: 0; width: 100%; grid-column: 1 / -1; grid-row: 2; display: grid; grid-template-rows: minmax(0, 1fr) 330px; gap: 8px; }
+.garden-board { min-height: 0; display: grid; grid-template-rows: 66px minmax(0, 1fr) 20px; gap: 8px; }
+.garden-coach { padding: 4px 6px; }
+.garden-objective { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 24px; }
+.garden-objective strong { font-size: 15px; color: #f3f6e7; }
+#gardenMoves { color: #c1d7cb; font-size: 12px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.bloom-meter { display: flex; gap: 5px; margin: 7px 0; }
+.bloom-meter i { flex: 1; height: 5px; border-radius: 3px; background: #395652; transition: background-color 180ms; }
+.bloom-meter i.is-bloomed { background: #b5ec9a; box-shadow: 0 0 12px #b5ec9a44; }
+#gardenOrder { margin: 0; height: 18px; color: #c8dbb1; font-size: 12px; line-height: 18px; overflow: hidden; }
+html body[data-wp-game-id="animal-gust-garden"] #battleScreen .garden-board #grid {
+  width: min(100%, 350px) !important; height: auto !important; max-height: 100%; aspect-ratio: 5/4;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important; grid-template-rows: repeat(4, minmax(0, 1fr));
+  align-self: center; margin: 0 auto !important; gap: 6px !important; padding: 8px;
+  border: 1px solid #648777; border-radius: 16px; background: #0d2529;
+  box-shadow: 0 14px 36px #0004, inset 0 1px 0 #b7e7b822;
+}
+.garden-board .grid-cell { position: relative; min-width: 0; min-height: 0; width: 100%; height: 100%; border-radius: 9px; aspect-ratio: auto; transition: border-color 140ms, box-shadow 140ms, background-color 140ms; }
+.garden-board .grid-cell.open { background: #244740; color: #94b49155; }
+.garden-board .grid-cell.seed::after { content: attr(data-badge); position: absolute; inset-inline-start: 3px; top: 3px; display: grid; place-items: center; width: 19px; height: 19px; border-radius: 5px; background: #112c30; border: 1px solid #e7ce83; color: #fff2bf; font: 800 12px/1 system-ui; }
+.garden-board .grid-cell.seed.locked::after { background: #b5ec9a; color: #123329; border-color: #b5ec9a; }
+.garden-board .grid-cell.empty-bed { border: 2px dashed #e6d697; background: #5b5135; color: #f2e6b1; font-size: 32px; text-shadow: 0 2px 8px #0005; }
+.garden-board .grid-cell.seed[aria-pressed="true"] { outline: 2px solid #ffdf8c; outline-offset: 1px; box-shadow: 0 0 18px #ffdc8a66; }
+.garden-board .grid-cell.forecast-path { background-color: #376c59; }
+.garden-board .grid-cell.forecast-landing::before { content: '↓'; position: absolute; z-index: 1; inset: 4px; display: grid; place-items: center; border: 2px solid #d5ffbc; border-radius: 6px; color: #f2ffe5; background: #326749c9; font-size: 30px; box-shadow: 0 0 12px #9effa577; }
+.garden-board .grid-cell.forecast-blocked { outline: 2px solid #ffba93; outline-offset: 1px; }
+.garden-board .grid-cell.portal { color: #dbc0ff; border-color: #ad8ac9; background: #443e60; }
+.garden-board .grid-cell.draft, .garden-board .grid-cell.gate { color: #b4e9f1; background: #214e60; }
+.garden-board .legend { font-size: 11px; gap: 12px; line-height: 20px; }
+.garden-controls { min-height: 0; display: grid; grid-template-rows: 36px 44px 66px 42px 48px 44px 32px; gap: 3px; }
+html body[data-wp-game-id="animal-gust-garden"] #battleScreen .garden-controls .prompt { height: 36px !important; min-height: 0 !important; margin: 0 !important; font-size: 13px !important; line-height: 18px; color: #d7e3d9; overflow: hidden; }
+.garden-seeds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.garden-seed-choice { border: 1px solid #617b6f; border-radius: 9px; color: #fbe6a5; background-color: #29443c; font-size: 19px; font-weight: 800; min-height: 44px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.garden-seed-choice::before { content: ''; flex: 0 0 32px; width: 32px; height: 32px; background: url('assets/animal-gust-garden-garden-atlas.png') 0 0 / 400% 200% no-repeat; }
+.garden-seed-choice.asset-seed-2::before { background-position: 33.333% 0; }
+.garden-seed-choice.asset-seed-3::before { background-position: 66.667% 0; }
+.garden-seed-choice[aria-pressed="true"] { border-color: #f6cd72; background-color: #5a5131; box-shadow: inset 0 0 0 1px #f6cd72; }
+.garden-seed-choice:disabled { opacity: .65; color: #b5ec9a; }
+html body[data-wp-game-id="animal-gust-garden"] #battleScreen .garden-controls .direction-panel { width: 100% !important; margin: 0 !important; }
+.garden-controls .direction-panel > .eyebrow { display: none; }
+.garden-controls .direction-buttons { height: 66px; gap: 6px; }
+.garden-controls .direction-button { padding: 2px 4px; min-height: 44px; display: grid; align-content: center; gap: 2px; font-size: 24px; }
+.garden-controls .direction-button span { font-size: 10px; line-height: 14px; overflow: hidden; white-space: nowrap; }
+.garden-controls .direction-button b { font-size: 26px; line-height: 28px; }
+.garden-controls .direction-button.is-unavailable:not([aria-pressed="true"]) { border-style: dashed; background: #243a3c; color: #adbbb1; }
+.gust-forecast { margin: 0; height: 42px; padding: 4px 8px; border-inline-start: 3px solid #b5ec9a; background: #223f35; border-radius: 4px; color: #dbf0cc; font-size: 12px; line-height: 16px; overflow: hidden; }
+.gust-forecast.is-blocked { border-color: #ffba93; color: #ffdfc6; background: #503b32; }
+html body[data-wp-game-id="animal-gust-garden"] #battleScreen .garden-controls .battle-actions { display: grid !important; grid-template-columns: 1.25fr 1fr; height: 48px; margin: 0 !important; gap: 6px; }
+.garden-controls .battle-actions button { min-width: 0; padding: 4px 8px; font-size: 13px; }
+.garden-utilities { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.garden-utilities button { height: 44px; min-height: 44px; padding: 4px 8px; font-size: 13px; }
+html body[data-wp-game-id="animal-gust-garden"] #battleScreen .garden-controls .status { min-height: 0 !important; height: 32px !important; margin: 0 !important; font-size: 12px !important; line-height: 16px; overflow: hidden; text-align: start; }
+@media (orientation: landscape) and (min-aspect-ratio: 13/10) {
+  .garden-workspace { grid-template-columns: minmax(0, 1fr) 310px; grid-template-rows: minmax(0, 1fr); gap: 20px; }
+  .garden-controls { align-self: center; }
+  .garden-board { grid-template-rows: 66px minmax(0,1fr) 20px; }
+  html body[data-wp-game-id="animal-gust-garden"] #battleScreen .garden-board #grid { width: min(100%, 300px) !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation: none; }
+  .garden-workspace *, .bloom-meter i { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+}
 @media (min-width: 720px) { .screen { padding: 24px 32px 34px; } #mainScreen { margin-top: 18px; } }
 
 /* Interface 6 shell contract: Main owns its centered header and guide, while

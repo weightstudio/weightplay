@@ -160,10 +160,13 @@
     const textNode = document.getElementById("gustGardenLeaveText");
     const keepNode = document.getElementById("gustGardenLeaveContinue");
     const stagesNode = document.getElementById("gustGardenLeaveStages");
-    if (titleNode) titleNode.textContent = title;
-    if (textNode) textNode.textContent = text.replaceAll("{stage}", stage);
-    if (keepNode) keepNode.textContent = keep;
-    if (stagesNode) stagesNode.textContent = stages;
+    // This is also called from the subtree observer below. Equal text must
+    // never produce another childList mutation and schedule itself forever.
+    const setText = (node, value) => { if (node && node.textContent !== value) node.textContent = value; };
+    setText(titleNode, title);
+    setText(textNode, text.replaceAll("{stage}", stage));
+    setText(keepNode, keep);
+    setText(stagesNode, stages);
   }
 
   function installPostBootFixes() {
