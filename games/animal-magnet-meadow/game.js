@@ -275,12 +275,15 @@
 
   const createLeaveDialog = () => {
     const canvas = $("battlePanel");
-    if (!canvas || leaveLayer) return;
+    const content = canvas?.parentElement;
+    if (!canvas || !content || leaveLayer) return;
     leaveLayer = document.createElement("div");
     leaveLayer.className = "magnet-leave-layer";
     leaveLayer.hidden = true;
     leaveLayer.innerHTML = `<section class="magnet-leave-dialog" role="dialog" aria-modal="true" aria-labelledby="magnetLeaveTitle" aria-describedby="magnetLeaveText"><h2 id="magnetLeaveTitle"></h2><p id="magnetLeaveText"></p><div class="magnet-leave-actions"><button id="magnetLeaveContinue" class="primary-btn" type="button"></button><button id="magnetLeaveReturn" class="secondary-btn" type="button"></button></div></section>`;
-    canvas.append(leaveLayer);
+    // The gameplay panel becomes inert while this confirmation is open, so
+    // keep the dialog as its sibling inside the shared Battle content slot.
+    content.append(leaveLayer);
     leaveLayer.querySelector("#magnetLeaveContinue")?.addEventListener("click", () => closeLeave(true));
     leaveLayer.querySelector("#magnetLeaveReturn")?.addEventListener("click", () => {
       closeLeave(false);

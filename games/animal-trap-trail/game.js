@@ -18,7 +18,7 @@
   const loadingPanel = $("loadingPanel");
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
   const canvas = $("arena");
-  let trailRenderer = null, rendererPromise = null;
+  let trailRenderer = null, rendererPromise = null, renderClosed = false;
   const rendererScript = document.currentScript?.src || document.baseURI;
   const state = { stage: 1, chapter: 1, room: 1, screen: "main", deaths: 0, bestRoom: Number(localStorage.getItem("wp-trail-best-stage") || localStorage.getItem("wp-trail-best-room") || 0), keys: new Set(), tap: null, player: null, raf: 0, last: 0, pulse: 0, jumpBuffer: 0, timingCue: "", statusKey: "", resultKind: "room" };
   // One simulation/input owner; the camera never changes collision coordinates.
@@ -413,6 +413,7 @@
     state.keys.clear(); state.tap = null;
     state.pulse = 0; state.jumpBuffer = 0; state.timingCue = guidedTimingKey();
     state.coyote = 0; state.elapsed = 0; state.recovery = 0; state.camera = 0; state.accumulator = 0;
+    $("trail-route").value=0;setText("trail-distance","0%");
     updateBattleText(); trailFeedback();
   }
   function startStage(stageId = 1) {
@@ -448,7 +449,7 @@
     effect("player.hurt"); updateBattleText();
   }
   function pulse() {
-    if (state.screen !== "battle" || state.recovery || state.pulse > 25) return;
+    if (state.screen !== "battle" || state.recovery || state.renderPaused || state.pulse > 25) return;
     state.pulse = 54; state.pulseTime = state.elapsed; state.statusKey = "pulse";
     state.feedbackTime = 90; effect("magic.cast"); updateBattleText();
   }
@@ -522,6 +523,7 @@
   };
   let renderPanel = null, renderTimer = 0;
   function renderMessage(failed = false) {
+    if (renderClosed) return;
     clearInput(); state.renderPaused = true;
     if (!renderPanel) { renderPanel=document.createElement("div"); renderPanel.className="trail-render-state"; $("battle-screen").append(renderPanel); }
     renderPanel.hidden=false; renderPanel.replaceChildren();
@@ -541,15 +543,20 @@
     }
     renderMessage();
     renderTimer=window.setTimeout(()=>renderMessage(true),12000);
-    rendererPromise=import(new URL("trail-3d.mjs?v=20261018-visual-v19",rendererScript).href).then(module=>module.createTrailRenderer(canvas,{
+    // Let the shared physical shell settle before WebGL construction/shader
+    // warmup can occupy the main thread. Loading still blocks input immediately.
+    rendererPromise=new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))
+      .then(()=>{if(renderClosed)throw new Error("SCENE_DISPOSED");return import(new URL("trail-3d.mjs?v=20261018-visual-v19",rendererScript).href);})
+      .then(module=>module.createTrailRenderer(canvas,{
       lost(){canvas.dataset.renderState="lost";renderMessage();renderTimer=window.setTimeout(()=>renderMessage(true),5000);},
       restored(){window.clearTimeout(renderTimer);state.renderPaused=false;state.last=performance.now();renderPanel.hidden=true;canvas.dataset.renderState="ready";}
     })).then(renderer=>{
+      if (renderClosed) { renderer.dispose(); return; }
       trailRenderer=renderer;window.clearTimeout(renderTimer);state.renderPaused=false;state.last=performance.now();
       renderPanel.hidden=true;canvas.dataset.renderState="ready";
-    }).catch(()=>{window.clearTimeout(renderTimer);canvas.dataset.renderState="error";renderMessage(true);});
+    }).catch(()=>{window.clearTimeout(renderTimer);if(!renderClosed){canvas.dataset.renderState="error";renderMessage(true);}});
   }
-  window.addEventListener("pagehide",()=>{window.clearTimeout(renderTimer);trailRenderer?.dispose();},{once:true});
+  window.addEventListener("pagehide",()=>{renderClosed=true;cancelAnimationFrame(state.raf);clearInput();window.clearTimeout(renderTimer);trailRenderer?.dispose();},{once:true});
   function draw() { if (trailRenderer) trailRenderer.render(state,trapData(),reduceMotion); }
   function frame(now) {
     if (state.screen !== "battle") return;
@@ -570,7 +577,7 @@
     document.querySelectorAll(`[data-key="${key}"]`).forEach(button => button.classList.toggle("is-held",active));
   }
   window.addEventListener("keydown", (e) => {
-    if (state.screen !== "battle" || state.paused) return;
+    if (state.screen !== "battle" || state.paused || state.renderPaused) return;
     if (["ArrowLeft","ArrowRight","ArrowUp","Space","KeyA","KeyD","KeyW","KeyE"].includes(e.code)) {
       e.preventDefault(); if (e.code === "KeyE") { if (!e.repeat) pulse(); } else pressKey(e.code,true);
     }

@@ -26,12 +26,14 @@
     <meta name="robots" content="index,follow" />
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-id" content="animal-frost-maze" />
+    <meta name="weightplay-game-version" content="v18" />
+    <meta name="weightplay-interface-version" content="6" />
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="Résolvez 30 salles de labyrinthe glacé : brisez et posez des murs pour atteindre chaque baie, évitez le rôdeur et revenez au départ dans les dernières salles." />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Sauvetage du labyrinthe gelé","description":"Résolvez 30 salles de labyrinthe glacé : brisez et posez des murs pour atteindre chaque baie, évitez le rôdeur et revenez au départ dans les dernières salles.","url":"https://weightplay.com/fr/games/animal-frost-maze/","image":"https://weightplay.com/assets/animal-frost-maze-cover.webp","genre":["Labyrinthe de glace","Parcours sur grille","Stratégie de poursuite"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"fr","isAccessibleForFree":true,"audience":{"@type":"Audience","audienceType":"General"},"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"},"alternateName":"Frost Maze Rescue"}</script>
     <title>Sauvetage du labyrinthe gelé | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20261018-rescue-coach1" />
-    <style>.battle{background-image:linear-gradient(180deg,rgba(6,27,44,.20),rgba(6,27,44,.70)),url("assets/animal-frost-maze-background.png");background-size:cover;background-position:center}</style>
+    <link rel="stylesheet" href="style.css?v=20261018-frost-voxel18" />
+
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen />
     <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide />
@@ -40,7 +42,7 @@
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
     <script defer src="mastery.js?v=20260908-mastery-v15"></script>
-    <script defer src="game.js?v=20261018-rescue-coach1"></script><meta property="og:site_name" content="WeightPlay" />
+    <script defer src="game.js?v=20261018-frost-voxel18"></script><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Sauvetage du labyrinthe gelé | WeightPlay" />
     <meta property="og:description" content="Résolvez 30 salles de labyrinthe glacé : brisez et posez des murs pour atteindre chaque baie, évitez le rôdeur et revenez au départ dans les dernières salles." />
@@ -55,7 +57,7 @@
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-  <body data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-wp-battle-settings="visible" data-screen="main" data-wp-game-owned-guide data-runtime-localize="off">
+  <body data-wp-game-version="v18" data-wp-interface-version="6" data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-wp-battle-settings="visible" data-screen="main" data-wp-game-owned-guide data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-wp-game-title>Sauvetage du labyrinthe gelé</strong><span>Preparing the ice route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-frost-maze" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
@@ -66,7 +68,7 @@
         <p id="main-progress" class="progress main-progress" data-wp-main-progress>Best rooms: 0</p>
         <button id="start-game" class="primary" data-wp-main-start data-five-copy="start">Start Game</button>
       </section>
-      <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
+      <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
         <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Retour à l&#39;accueil">←</button><h2>Ice Chapters</h2></header>
         <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div>
         <nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav>
@@ -80,7 +82,7 @@
           <p id="rescue-advice" aria-live="polite">La flèche dorée indique la case à modifier.</p><small id="rescue-legend">Or : vous · Rose : provisions · Rouge : danger</small>
         </section>
         <p id="battle-status" class="battle-status" role="status" aria-live="polite" aria-atomic="true">Arrows move. Press SPACE to break the ice ahead.</p>
-        <canvas id="arena" width="864" height="504" aria-label="Frostline Rescue play area"></canvas>
+        <canvas id="arena" aria-describedby="rescue-objective battle-status" width="864" height="504" aria-label="Frostline Rescue play area"></canvas>
         <div class="touch-controls"><button data-action="up">▲</button><button data-action="left">◀</button><button id="break-ice" data-action="break" data-wp-primary-action class="break">BREAK ICE</button><button data-action="build" class="build">BUILD ICE</button><button data-action="right">▶</button><button data-action="down">▼</button></div>
         <div id="frost-touch-hint" class="touch-hint">The blue blocks are breakable. Collect all berries before the drifter reaches you.</div>
         <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
@@ -91,6 +93,7 @@
       <div class="battle-ad-reserve" aria-hidden="true"></div>
     </main>
     <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+    <script src="../../src/weightplay-castle.js?v=20261018-frost-toast-api1"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script src="analytics-ownership.js?v=20260908-mastery-v15"></script>
     <!-- Frost owns all 13 runtime locales; no shared DOM retranslation loop. -->

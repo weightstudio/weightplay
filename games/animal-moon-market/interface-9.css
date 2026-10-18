@@ -1,0 +1,401 @@
+/* Game-owned Battle content only; shared I9 frame owns scene geometry. */
+html,
+body {
+  box-sizing: border-box;
+  margin: 0;
+  min-height: 100%;
+  font-family: ui-rounded, system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+button,
+select {
+  font: inherit;
+}
+
+button {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 2px solid var(--wp-ui-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--wp-ui-button-image);
+  color: var(--wp-ui-text);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+button:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--wp-ui-gold);
+  outline-offset: 2px;
+}
+
+.screen {
+  width: 100%;
+}
+
+#mainScreen .main-content {
+  align-items: start;
+}
+
+#mainScreen .main-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+#mainScreen .main-summary {
+  margin: 0;
+  line-height: 1.5;
+}
+
+#mainScreen #gameGuide {
+  grid-column: 1 / -1;
+}
+
+#mainScreen #gameGuide .game-info-hero {
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+}
+
+#mainScreen #gameGuide .game-info-hero > img {
+  display: block;
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+#stageScreen [data-wp-stage-rail] {
+  direction: inherit;
+}
+
+#battleScreen .battle-workspace {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#battleScreen .battle-live {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+#battleScreen .battle-live[aria-hidden="true"] {
+  pointer-events: none;
+}
+
+#battleScreen .rule-card {
+  min-width: 0;
+  margin: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--wp-ui-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--wp-ui-background);
+  color: var(--wp-ui-muted);
+  line-height: 1.4;
+}
+
+#battleScreen .workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+}
+
+#battleScreen .workspace > * {
+  min-width: 0;
+}
+
+#battleScreen .canvas-wrap {
+  overflow: hidden;
+  border: 1px solid var(--wp-ui-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--wp-ui-background);
+}
+
+#battleScreen #marketCanvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1.28;
+  touch-action: none;
+}
+
+#battleScreen .props-atlas {
+  display: block;
+  width: 100%;
+  max-height: 100px;
+  margin-top: 8px;
+  border: 1px solid var(--wp-ui-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--wp-ui-background);
+  object-fit: contain;
+}
+
+#battleScreen .choice-group {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+#battleScreen .choice-group + .choice-group {
+  margin-top: 8px;
+}
+
+#battleScreen .choice-label {
+  color: var(--wp-ui-muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+#battleScreen .choices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+#battleScreen .choice.selected,
+#battleScreen .helper-actions button.selected {
+  border-color: var(--wp-ui-gold);
+  box-shadow: inset 0 0 0 1px var(--wp-ui-gold);
+  color: var(--wp-ui-gold);
+}
+
+#battleScreen .helper-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+#battleScreen .helper-card {
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--wp-ui-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--wp-ui-background);
+}
+
+#battleScreen .helper-art {
+  display: block;
+  width: 100%;
+  height: 64px;
+  margin-bottom: 5px;
+  border-radius: var(--wp-ui-radius);
+  object-fit: contain;
+}
+
+#battleScreen .helper-name {
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+#battleScreen .helper-actions {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+#battleScreen .helper-actions button {
+  flex: 1;
+  min-width: 0;
+  min-height: 40px;
+  padding: 4px;
+  font-size: 12px;
+}
+
+#battleScreen .actions,
+#battleScreen .result-actions,
+#battleScreen .leave-actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+#battleScreen .actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#battleScreen .result-actions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+#battleScreen .leave-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#battleScreen .actions button,
+#battleScreen .result-actions button,
+#battleScreen .leave-actions button {
+  min-width: 0;
+  min-height: 44px;
+  padding: 6px;
+  font-size: 13px;
+}
+
+#battleScreen .primary {
+  border-color: var(--wp-ui-gold);
+  background: var(--wp-ui-gold);
+  color: #302717;
+}
+
+#battleScreen .moon-battle-modal,
+#battleScreen #resultCard {
+  position: absolute;
+  z-index: 30;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: auto;
+  padding: 18px;
+  background: rgba(7, 20, 38, 0.92);
+}
+
+#battleScreen .moon-battle-modal[hidden],
+#battleScreen #resultCard[hidden] {
+  display: none !important;
+}
+
+#battleScreen .moon-dialog-card,
+#battleScreen #resultCard {
+  width: min(100%, 520px);
+  max-height: 100%;
+  overflow: auto;
+  padding: 18px;
+  border: 2px solid var(--wp-ui-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--wp-ui-surface);
+  color: var(--wp-ui-text);
+}
+
+#battleScreen .result-card.success {
+  border-color: #4ebd98;
+}
+
+#battleScreen .result-card.fail {
+  border-color: #d26d67;
+}
+
+#battleScreen #resultCard p,
+#battleScreen .moon-dialog-card p {
+  margin-top: 8px;
+  color: var(--wp-ui-muted);
+  line-height: 1.45;
+}
+
+@media (min-width: 700px) {
+  #battleScreen .workspace {
+    grid-template-columns: minmax(0, 1.15fr) minmax(250px, 0.85fr);
+    gap: 14px;
+  }
+}
+
+@media (max-width: 699px) {
+  #battleScreen .canvas-wrap {
+    height: 160px;
+  }
+
+  #battleScreen #marketCanvas {
+    height: 160px;
+    aspect-ratio: auto;
+  }
+
+  #battleScreen .props-atlas {
+    display: none;
+  }
+
+  #battleScreen .choices {
+    gap: 4px;
+  }
+
+  #battleScreen .choices button {
+    min-height: 38px;
+    padding: 4px;
+    font-size: 12px;
+  }
+
+  #battleScreen .helper-grid {
+    gap: 4px;
+  }
+
+  #battleScreen .helper-card {
+    padding: 5px;
+  }
+
+  #battleScreen .helper-art {
+    height: 34px;
+    margin-bottom: 3px;
+  }
+
+  #battleScreen .helper-name {
+    font-size: 11px;
+  }
+
+  #battleScreen .helper-actions {
+    gap: 3px;
+    margin-top: 3px;
+  }
+
+  #battleScreen .helper-actions button {
+    min-height: 32px;
+    padding: 3px;
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 700px) and (max-height: 700px) and (orientation: landscape) {
+  #battleScreen .canvas-wrap {
+    height: 160px;
+  }
+
+  #battleScreen #marketCanvas {
+    height: 160px;
+    aspect-ratio: auto;
+  }
+
+  #battleScreen .props-atlas,
+  #battleScreen .helper-art {
+    display: none;
+  }
+
+  #battleScreen .helper-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 3px;
+    padding: 3px;
+  }
+
+  #battleScreen .helper-actions {
+    gap: 2px;
+    margin-top: 0;
+  }
+
+  #battleScreen .helper-actions button {
+    min-height: 28px;
+    padding: 3px;
+    font-size: 10px;
+  }
+}

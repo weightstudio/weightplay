@@ -2,6 +2,14 @@
 #main-screen[hidden], #stage-screen[hidden], #battle-screen[hidden] { display: none !important; }
 #stage-screen { display: grid !important; grid-template-rows: 48px minmax(0,1fr) 56px !important; align-items: stretch !important; justify-content: stretch !important; padding: 8px !important; }
 #stage-screen > .stage-header { grid-row: 1; align-self: start; width: 100%; }
+#stage-screen > .stage-header :is([data-wp-return="stage"],.wp-shell-settings-button) {
+  width: max(48px, calc(48px * var(--wp-stage-canvas-inverse-scale, 1))) !important;
+  min-width: max(48px, calc(48px * var(--wp-stage-canvas-inverse-scale, 1))) !important;
+  max-width: max(48px, calc(48px * var(--wp-stage-canvas-inverse-scale, 1))) !important;
+  height: max(48px, calc(48px * var(--wp-stage-canvas-inverse-scale, 1))) !important;
+  min-height: max(48px, calc(48px * var(--wp-stage-canvas-inverse-scale, 1))) !important;
+  max-height: max(48px, calc(48px * var(--wp-stage-canvas-inverse-scale, 1))) !important;
+}
 #stage-screen > .stage-header h2 { display: none !important; }
 #stage-screen #stage-list { position: absolute; inset-inline: 0; top: clamp(151px, calc(48px + (100% - 104px) * .38), calc(100% - 159px)); transform: translateY(-50%); width: 100%; max-width: none; padding-inline: max(24px, calc((100% - 264px) / 2)) !important; }
 #stage-screen .stage-tabs { grid-row: 3; align-self: end; }
@@ -41,11 +49,11 @@
   max-width: none !important; aspect-ratio: auto !important;
   align-self: stretch !important; justify-self: stretch !important;
   border: 1px solid #456a92; border-radius: 12px;
-  background: #0b1c34 url("assets/animal-trap-trail-moon-archive-v19.png") 20% center / cover no-repeat;
+  background: #0b1c34 url("assets/visual-v19/moon-archive.webp") 20% center / cover no-repeat;
   image-rendering: auto;
 }
 .trail-render-state[hidden] { display: none !important; }
-.trail-render-state { position: absolute; inset: 112px 8px 184px; z-index: 7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 20px; border-radius: 12px; background: #10243aee; color: #f4edda; text-align: center; }
+.trail-render-state { position: absolute; inset: 8px; z-index: 7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 20px; border-radius: 12px; background: #10243aee; color: #f4edda; text-align: center; }
 .trail-render-state button { min-height: 48px; width: min(100%,280px); }
 #battle-screen > .trail-guide {
   grid-area: 4 / 1; height: 56px; overflow: hidden;
@@ -76,10 +84,14 @@
   height: 40px; padding: 4px !important; margin: 0;
   font-size: 12px; line-height: 1.3; color: #cbd8e8;
 }
-#battle-screen #result-screen { background: #0c1728f5; }
+#battle-screen #result-screen { background: #071426d9; text-shadow: 0 2px 8px #071426; }
+#battle-screen #result-screen #result-title { color: #ffe0a0; }
 #battle-screen #result-screen:not([hidden]) { animation: trail-enter 180ms ease-out; }
-.screen.active:not([hidden]) { animation: trail-enter 180ms ease-out; }
+#main-screen.active:not([hidden]) :is(.main-poster,.main-summary),
+#stage-screen.active:not([hidden]) #stage-list,
+#battle-screen.active:not([hidden]) > #arena { animation: trail-enter 180ms ease-out; }
 #battle-screen:has(#result-screen:not([hidden])) > :not(#result-screen) { visibility: hidden; pointer-events: none; }
+#battle-screen:has(#result-screen:not([hidden])) > #arena { visibility: visible; opacity: .45; }
 #battle-screen #result-screen #next:disabled { opacity: .45; cursor: default; }
 @keyframes trail-enter { from { opacity: 0; } to { opacity: 1; } }
 @media (max-height: 560px) and (orientation: landscape) {
@@ -95,7 +107,9 @@
   #battle-screen > .touch-hint { grid-area: 4 / 2 !important; height: 32px; font-size: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .screen.active:not([hidden]) { animation-duration: 1ms; }
+  #main-screen.active:not([hidden]) :is(.main-poster,.main-summary),
+  #stage-screen.active:not([hidden]) #stage-list,
+  #battle-screen.active:not([hidden]) > #arena { animation-duration: 1ms; }
   #battle-screen .touch-controls > button, #battle-screen .touch-controls > button.is-held { transition: none; transform: none; }
   #battle-screen #result-screen:not([hidden]) { animation-duration: 1ms; }
 }

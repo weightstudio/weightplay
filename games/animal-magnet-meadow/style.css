@@ -216,8 +216,9 @@ h1,h2,p { margin-top:0; }
 }
 #resultPanel .result-actions > button:disabled { opacity:.45; cursor:not-allowed; }
 
-/* Battle-owned leave confirmation. It overlays only the shared Battle Canvas;
-   covered gameplay is made inert by game.js. */
+/* Battle-owned leave confirmation. It overlays the shared Battle content slot;
+   the covered gameplay panel itself is inert while this is open. */
+.battle-content { position:relative; }
 .magnet-leave-layer {
   position:absolute;
   inset:0;

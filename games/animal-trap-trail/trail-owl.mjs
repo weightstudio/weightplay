@@ -6,15 +6,18 @@ export function createOrla(block, material) {
   const root = new T.Group(), body = new T.Group(); root.add(body);
   const part = (parent, size, at, color) => block(parent, size, at, color);
   const navy = material('#253957'), ink = material('#101f37');
-  const cream = material('#fff1c4'), feather = material('#c8ac7b');
+  const cream = material('#fff1c4'), feather = material('#b18b63'), cobalt=material('#344c85');
   const gold = material('#f5bb54'), light = material('#ffdc8b', .25);
   const eye = material('#101b2e'), white = material('#fffbe9');
   // Cape, tailored jacket, squared breast and a separate satchel.
   part(body,[.64,.63,.35],[0,.53,-.13],navy);
-  part(body,[.47,.56,.25],[0,.54,.12],cream);
+  part(body,[.47,.47,.25],[0,.58,.12],cobalt);
+  part(body,[.45,.12,.28],[0,.27,.12],cream);
+  part(body,[.45,.035,.04],[0,.75,.27],gold);
+  part(body,[.035,.32,.04],[0,.54,.27],gold);
   part(body,[.56,.10,.42],[0,.25,0],ink);
   part(body,[.13,.13,.05],[0,.51,.275],gold);
-  part(body,[.17,.27,.18],[-.34,.42,.03],feather);
+  part(body,[.21,.30,.20],[-.34,.42,.03],feather);
   part(body,[.08,.31,.03],[-.34,.43,.135],gold);
   const head = new T.Group(); head.position.y=.98; body.add(head);
   part(head,[.78,.59,.43],[0,0,0],feather);
@@ -35,21 +38,24 @@ export function createOrla(block, material) {
   const lids=[];
   for(const x of [-.185,.185]) lids.push(part(head,[.23,.21,.045],[x,.025,.386],cream));
   lids.forEach(l=>l.visible=false);
-  // Stepped midnight scholar cap with an asymmetrical tip and moon badge.
-  part(head,[.86,.09,.51],[0,.33,-.015],ink);
-  part(head,[.64,.18,.40],[0,.46,-.03],navy);
-  part(head,[.44,.17,.32],[-.055,.63,-.03],navy);
-  part(head,[.25,.14,.25],[-.13,.78,-.02],navy);
-  part(head,[.18,.13,.18],[-.235,.84,.01],navy);
-  part(head,[.10,.10,.10],[-.32,.81,.01],light);
-  part(head,[.15,.16,.025],[.15,.48,.185],gold);
-  part(head,[.075,.12,.03],[.19,.51,.205],navy);
-  part(head,[.04,.04,.025],[-.19,.66,.14],light);
+  // The core cast's broad cubic scholar cap, stepped crescent and star tiles.
+  part(head,[.78,.12,.48],[0,.33,-.015],ink);
+  part(head,[1.06,.09,.68],[0,.44,-.015],cobalt);
+  part(head,[.90,.08,.58],[0,.525,-.015],navy);
+  for(const [x,y,w,h] of [[-.10,.40,.07,.23],[0,.29,.20,.07],[.10,.33,.07,.09],[-.05,.52,.12,.07]])part(head,[w,h,.04],[x,y,.345],gold);
+  for(const x of [-.38,.33])part(head,[.04,.045,.04],[x,.46,.35],light);
+  part(head,[.035,.28,.035],[.52,.32,.05],gold);
+  part(head,[.13,.16,.13],[.52,.12,.05],cobalt);
+  part(head,[.15,.05,.15],[.52,.22,.05],gold);
   const wings=[],feet=[];
   for(const side of [-1,1]) {
     const wing=new T.Group(); wing.position.set(side*.33,.73,0); body.add(wing);
-    part(wing,[.19,.38,.29],[side*.055,-.16,0],navy);
-    part(wing,[.15,.10,.27],[side*.065,-.35,.01],gold); wings.push(wing);
+    part(wing,[.25,.38,.29],[side*.075,-.16,0],cobalt);
+    part(wing,[.22,.17,.27],[side*.12,-.40,.01],feather);
+    part(wing,[.12,.12,.24],[side*.19,-.50,.01],feather);
+    part(wing,[.20,.035,.035],[side*.08,-.12,.163],gold);
+    part(wing,[.035,.20,.035],[side*.08,-.12,.163],gold);
+    part(wing,[.055,.055,.035],[side*.10,-.29,.163],light);wings.push(wing);
     const foot=new T.Group();foot.position.set(side*.17,.12,.08);root.add(foot);
     part(foot,[.19,.14,.35],[0,0,.02],gold);
     part(foot,[.19,.05,.14],[0,-.025,.15],light);feet.push(foot);

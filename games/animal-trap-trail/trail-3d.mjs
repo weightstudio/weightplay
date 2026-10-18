@@ -5,16 +5,16 @@ export async function createTrailRenderer(canvas, lifecycle) {
   const renderer=new T.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'low-power'});
   renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
   renderer.outputColorSpace=T.SRGBColorSpace;
-  renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.3;
+  renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
   renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;
   renderer.setClearColor(0x081426,0);
   const scene=new T.Scene();scene.fog=new T.Fog('#172c45',18,45);
   const camera=new T.OrthographicCamera(-6,6,6,-6,.1,70);
-  scene.add(new T.HemisphereLight('#d3efff','#243347',2.6));
-  const key=new T.DirectionalLight('#ffe0ab',3.1);key.position.set(7,12,10);key.target.position.set(8,0,0);scene.add(key,key.target);
+  scene.add(new T.HemisphereLight('#c5e9ff','#1b243a',1.35));
+  const key=new T.DirectionalLight('#ffe0ab',3.5);key.position.set(7,12,10);key.target.position.set(8,0,0);scene.add(key,key.target);
   key.castShadow=true;key.shadow.mapSize.set(1024,1024);
   Object.assign(key.shadow.camera,{left:-14,right:14,top:10,bottom:-6,near:.5,far:40});key.shadow.bias=-.001;key.shadow.normalBias=.025;
-  const rim=new T.DirectionalLight('#6cbce6',2);rim.position.set(5,5,-6);scene.add(rim);
+  const rim=new T.DirectionalLight('#6cbce6',1.5);rim.position.set(5,5,-6);scene.add(rim);
   const box=new T.BoxGeometry(1,1,1), ring=new T.RingGeometry(.86,1,32), edges=new T.EdgesGeometry(box);
   const shape=new T.Shape();shape.moveTo(-.475,-.475);shape.lineTo(.475,-.475);shape.lineTo(.475,.475);shape.lineTo(-.475,.475);shape.closePath();
   const heroBox=new T.ExtrudeGeometry(shape,{depth:.95,bevelEnabled:true,bevelThickness:.025,bevelSize:.025,bevelSegments:1,steps:1});heroBox.translate(0,0,-.475);
@@ -27,15 +27,15 @@ export async function createTrailRenderer(canvas, lifecycle) {
   const block=(parent,size,at,mat,geometry=box)=>{
     const mesh=new T.Mesh(geometry,mat);mesh.scale.set(...size);mesh.position.set(...at);mesh.receiveShadow=true;parent.add(mesh);return mesh;
   };
-  const owl=createOrla((parent,size,at,mat)=>{const mesh=block(parent,size,at,mat,heroBox);mesh.castShadow=true;return mesh;},material);scene.add(owl.root);
-  let level=null, currentStage=0, gapParts=[], spike, falseFloor, gateGlow, ceiling;
+  const owl=createOrla((parent,size,at,mat)=>{const mesh=block(parent,size,at,mat,heroBox);mesh.castShadow=size[0]*size[1]*size[2]>.015;return mesh;},material);scene.add(owl.root);
+  let level=null, currentStage=0, gapParts=[], gapMarkers=[], spike, falseFloor, gateGlow, ceiling;
   const staged=[], dummy=new T.Object3D();
   let batches=new Map();
   const stone=material('#435c71'), cap=material('#92b4b5'), dark=material('#253d55');
   const stoneAlt=material('#354d66'), inset=material('#1d344c');
   const trim=material('#5b7e89'), gold=material('#eab55e'), cyan=material('#8ce7d7',.3);
   const red=material('#ed6979',.18), purple=material('#ae83c4',.2), black=material('#182942');
-  const lamp=material('#ffe0a0',.8), tree=material('#243e51'), bark=material('#324455');
+  const lamp=material('#ffe0a0',.8), tree=material('#142c43'), treeTop=material('#254758'), bark=material('#1f3144');
   function batch(size,at,mat) {
     if(!batches.has(mat))batches.set(mat,[]);batches.get(mat).push({size,at});
   }
@@ -51,7 +51,7 @@ export async function createTrailRenderer(canvas, lifecycle) {
     if(level)scene.remove(level);
     // InstancedMesh owns its GPU instance attributes; shared geometry/materials live on.
     staged.splice(0).forEach(m=>m.dispose());
-    level=new T.Group();scene.add(level);gapParts=[];
+    level=new T.Group();scene.add(level);gapParts=[];gapMarkers=[];
   }
   function terrain(start,end,index) {
     const g=new T.Group();level.add(g);gapParts.push({g,start,end,index});
@@ -84,19 +84,26 @@ export async function createTrailRenderer(canvas, lifecycle) {
     // Mid-distance geometry is below/behind play: dark trees and ruined archive.
     for(let i=0;i<12;i++) {
       const x=i*2.1-2,z=-3.5-(i%3)*1.4,h=2.4+(i*7%5)*.42;
-      batch([.18,h,.2],[x,h/2-.8,z],bark);
-      for(let j=0;j<5;j++)batch([.28+j*.26,.42,.24+j*.20],[x,h-.8-j*.36,z],tree);
+      // Extend trunks below the visible cliff, so elevated projection cannot
+      // make distant scenery appear to float above the physical walkway.
+      batch([.18,h+9,.2],[x,(h-9)/2-.8,z],bark);
+      for(let j=0;j<5;j++) {
+        batch([.28+j*.26,.42,.24+j*.20],[x,h-.8-j*.36,z],tree);
+        batch([.28+j*.26,.035,.24+j*.20],[x,h-.58-j*.36,z],treeTop);
+      }
     }
     for(const x of [-1,7,15,21]) {
       for(const side of [-1,1]) {
-        batch([.35,3.5,.55],[x+side*.9,.9,-5],dark);
+        batch([.35,12,.55],[x+side*.9,-3.35,-5],dark);
         batch([.58,.25,.72],[x+side*.9,-.67,-5],stone);
         batch([.62,.2,.8],[x+side*.9,2.7,-5],stone);
         batch([.12,1.7,.1],[x+side*.9,1.3,-4.69],accent);
+        for(let row=0;row<5;row++)batch([.37,.045,.57],[x+side*.9,-.25+row*.53,-4.99],trim);
       }
-      batch([2.4,.35,.65],[x,2.96,-5],dark);
-      batch([1.7,.25,.55],[x,3.25,-5],stone);
-      batch([.8,.18,.5],[x,3.46,-5],accent);
+      // Broken capitals have no connecting span that could suggest a second
+      // playable platform over a real gap.
+      batch([.65,.22,.55],[x-.9,2.95,-5],stone);
+      batch([.28,.16,.5],[x+.9,2.92,-5],accent);
     }
     // Decorative front-edge rune studs, kept clear of actual traps and gaps.
     for(let x=.5;x<18;x+=1.5) {
@@ -116,9 +123,10 @@ export async function createTrailRenderer(canvas, lifecycle) {
     for(let i=0;i<3;i++)block(falseFloor,[.08,.025,.56],[.16+i*.21,.252,(i%2?-.28:.25)],black);
     block(falseFloor,[.76,.04,.07],[.38,.27,.79],purple);
     // Gap edge lamps are low markers, distinct from the tall gold destination.
-    for(const h of holes)for(const x of [h.x-.18,h.x+h.w+.18]) {
-      batch([.11,.18,.11],[x,.09,-.55],trim);
-      batch([.14,.06,.14],[x,.21,-.55],cyan);
+    for(let i=0;i<holes.length;i++)for(const side of [-1,1]) {
+      const marker=new T.Group();level.add(marker);gapMarkers.push({marker,i,side});
+      block(marker,[.11,.18,.11],[0,.09,-.55],trim);
+      block(marker,[.14,.06,.14],[0,.21,-.55],cyan);
     }
     ceiling=new T.Group();ceiling.visible=Boolean(t.ceiling);level.add(ceiling);
     block(ceiling,[3,.32,1.5],[13.7,4.6,0],stone);
@@ -170,10 +178,11 @@ export async function createTrailRenderer(canvas, lifecycle) {
       const groundFraction=viewH<6?.1:.36;
       const targetY=viewH*(.5-groundFraction);
       camera.left=-viewW/2;camera.right=viewW/2;camera.top=viewH/2;camera.bottom=-viewH/2;
-      camera.position.set(cameraX,targetY+2.4,20);camera.lookAt(cameraX,targetY,0);camera.updateProjectionMatrix();
+      camera.position.set(cameraX,targetY+4.5,20);camera.lookAt(cameraX,targetY,0);camera.updateProjectionMatrix();
       const drift=t.moving?Math.sin(s.elapsed/240)*.2:0;
       const holes=[{x:t.gap/50+drift,w:1.48}];if(t.secondGap)holes.push({x:t.gap2/50,w:1.48});holes.sort((a,b)=>a.x-b.x);
       let start=-1;
+      gapMarkers.forEach(({marker,i,side})=>{marker.position.x=holes[i].x+(side<0?-.18:holes[i].w+.18);});
       gapParts.forEach(({g},i)=>{const end=holes[i]?.x??20;g.position.x=(start+end)/2;g.scale.x=Math.max(.01,end-start);start=(holes[i]?.x??20)+(holes[i]?.w??0);});
       // Instanced facade details remain behind the shifting solid edges, never
       // bridge a moving hole: their small translation follows the same drift.
@@ -202,6 +211,7 @@ export async function createTrailRenderer(canvas, lifecycle) {
       destination.rotation.z=reduced?0:s.elapsed*.00018;
       destination.material.opacity=reduced?.2:.2+Math.sin(s.elapsed*.003)*.08;
       dust.visible=!reduced&&(s.landingTime>0||s.recovery>0);
+      dustMaterial.color.set(s.recovery?'#ff94a2':'#c8fff0');
       const age=s.recovery?(24-s.recovery)/24:(12-s.landingTime)/12;
       for(let i=0;i<12;i++) {
         const a=i/12*Math.PI*2;
