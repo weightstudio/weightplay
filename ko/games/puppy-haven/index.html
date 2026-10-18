@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko" dir="ltr" data-wp-official-name>
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+ <meta name="robots" content="noindex,nofollow,noarchive"><meta name="weightplay-audience" content="general"><meta name="weightplay-game-id" content="puppy-haven"><meta name="weightplay-game-version" content="v3"><meta name="weightplay-interface-version" content="9">
+ <script src="/src/weightplay-audio.js"></script>
+ <title>강아지 마당 | WeightPlay</title>
+ <meta name="description" content="작은 마당에서 자라는 강아지 가족. 먹이고, 청소하고, 함께 놀며 새끼를 맞이하세요.">
+ <link rel="canonical" href="https://weightplay.com/ko/games/puppy-haven/">
+ <script>if(new URLSearchParams(location.search).get('preview')!=='1')document.querySelector('meta[name="weightplay-interface-version"]').remove();</script>
+ <link rel="stylesheet" href="/src/game-screen-frame.css"><link rel="stylesheet" href="/src/interface9-shared-screens.css"><link rel="stylesheet" href="/src/game-play-ui.css"><link rel="stylesheet" href="/src/game-page-info.css"><link rel="stylesheet" href="/games/puppy-haven/style.css">
+</head>
+<body data-screen="main" data-game-id="puppy-haven" data-wp-combined-sound="true">
+ <section id="comingSoon" data-runtime-localize="off" hidden><img src="/games/puppy-haven/assets/cover-block-v1.png" alt="강아지 마당 · 시바견 / 코기 / 허스키 · 새끼"><h1 data-runtime-localize="off">Puppy Haven</h1><p>출시 예정</p><a href="/">← WeightPlay</a></section>
+ <div id="gameFrame" data-runtime-localize="off" data-wp-frame-root>
+  <main id="mainScreen"><header><a href="/?preview=1" data-wp-return="main">← W</a><strong data-wp-frame-title data-copy="title" data-runtime-localize="off">강아지 마당</strong></header>
+   <section class="main-hero"><img data-wp-frame-poster src="/games/puppy-haven/assets/cover-block-v1.png" width="1254" height="1254" alt="강아지 마당 · 시바견 / 코기 / 허스키 · 새끼">
+    <div data-wp-frame-copy><p data-wp-frame-summary data-copy="summary" data-runtime-localize="off">작은 마당에서 자라는 강아지 가족. 먹이고, 청소하고, 함께 놀며 새끼를 맞이하세요.</p><p data-wp-frame-progress data-copy="preview" data-runtime-localize="off">출시 예정 · 내부 미리보기</p><button id="startBtn" data-wp-frame-start data-copy="start" data-runtime-localize="off">게임 시작</button></div>
+   </section>
+  </main>
+  <section id="stageScreen" hidden><header><button id="stageBack" data-wp-return="stage">←</button><strong data-wp-frame-title hidden></strong></header><div id="stageWorkspace"><div id="stageRail"></div></div><nav data-wp-frame-nav><button id="missionTab" data-copy="missions" data-runtime-localize="off">돌봄 미션</button><button id="yardBtn" data-copy="freeYard" data-runtime-localize="off">자유 마당</button></nav></section>
+  <section id="battleScreen" hidden><header><button id="battleBack" data-wp-return="battle">←</button><strong data-wp-frame-title hidden></strong></header>
+   <div id="battleLive">
+    <div id="objective" class="objective" aria-live="polite"></div>
+    <div id="yard" class="yard"><div id="worldFallback" hidden><p data-copy="webgl" data-runtime-localize="off">3D 마당을 불러오지 못했습니다. 강아지 정보는 보존됩니다. 새로고침해 주세요.</p><button id="reloadBtn" data-copy="reload" data-runtime-localize="off">새로고침</button></div><div id="worldCue" aria-live="polite"></div></div>
+    <div id="dogRail" class="dog-rail" aria-label="강아지 2/12"></div>
+    <section id="carePanel" class="care-panel"><div class="dog-identity"><strong id="dogName"></strong><span id="dogAge"></span><span id="dogFamily"></span></div>
+     <div class="needs"><label><span data-copy="hunger" data-runtime-localize="off">포만감</span><meter id="hunger" min="0" max="100"></meter><output id="hungerValue"></output></label><label><span data-copy="happy" data-runtime-localize="off">기분</span><meter id="happy" min="0" max="100"></meter><output id="happyValue"></output></label><label><span data-copy="cleanliness" data-runtime-localize="off">청결</span><meter id="clean" min="0" max="100"></meter><output id="cleanValue"></output></label></div>
+     <div class="care-buttons"><button id="feedBtn" data-copy="feed" data-runtime-localize="off">먹이 주기</button><button id="petBtn" data-copy="pet" data-runtime-localize="off">쓰다듬기</button><button id="cleanBtn" data-copy="clean" data-runtime-localize="off">배변 치우기</button></div>
+    </section>
+    <p id="feedback" class="feedback" aria-live="polite"></p>
+    <nav class="yard-tools"><button id="foodBtn" data-copy="pantry" data-runtime-localize="off">먹이</button><button id="adoptBtn" data-copy="adopt" data-runtime-localize="off">입양</button><button id="pairBtn" data-copy="pair" data-runtime-localize="off">가족</button><button id="helpBtn" data-copy="help" data-runtime-localize="off">도움말</button></nav>
+   </div>
+   <div id="resultPanel" class="modal-layer" hidden><section class="result-card" role="dialog" aria-modal="true" aria-labelledby="resultTitle"><small data-copy="wellDone" data-runtime-localize="off">마당의 행복한 하루</small><h2 id="resultTitle"></h2><div class="result-reward"><img src="/assets/wonder-prop-coin-block-v1.png" width="40" height="40" alt=""><p id="resultReward"></p></div><button id="nextBtn" data-copy="next" data-runtime-localize="off">다음 미션</button><button id="retryBtn" data-copy="retry" data-runtime-localize="off">다시 도전</button><button id="resultYard" data-copy="freeYard" data-runtime-localize="off">자유 마당</button><button id="resultStages" data-copy="missions" data-runtime-localize="off">돌봄 미션</button></section></div>
+   <div id="panel" class="modal-layer" hidden><section class="panel-card" role="dialog" aria-modal="true" aria-labelledby="panelTitle"><header><h2 id="panelTitle"></h2><button id="closePanel" aria-label="닫기">×</button></header><div id="panelContent"></div><p id="panelFeedback" class="feedback" aria-live="polite"></p></section></div>
+  </section>
+ </div>
+ <section id="mainGuide" data-runtime-localize="off" class="game-page-info" data-wp-main-guide><h2 data-copy="help" data-runtime-localize="off">도움말</h2><p data-copy="guide" data-runtime-localize="off">마당이나 목록에서 강아지를 고르세요. 먹이를 주고 쓰다듬으며 배변을 치웁니다. 먹이는 세 등급이며 여섯 견종의 수컷과 암컷을 입양할 수 있습니다. 혈연관계가 없는 건강한 성견을 짝지으면 실제 플레이 45초 후 새끼가 태어납니다. 새끼에게 먹이를 주고 돌봐 성장시키세요. 진행 상황은 이 기기에 저장되며 접속하지 않을 때는 상태가 나빠지지 않습니다. 마당이 차면 가족이나 입양 화면의 방 관리에서 쉼터로 보내고 다시 데려올 수 있습니다.</p><div class="game-info-facts"></div><div class="game-info-sections"></div><div class="game-info-faq"></div><div class="game-info-related"></div></section>
+ <label hidden><select id="localeSelect" aria-label="언어"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
+ <p id="saveWarning" role="status" hidden></p>
+ <script src="/src/site-config.js"></script><script src="/src/game-title-registry.js"></script><script src="/src/i18n.js"></script><script src="/src/game-screen-frame.js"></script><script src="/src/stage-rail-i9.js"></script><script src="/src/game-play-ui.js"></script><script type="module" src="/games/puppy-haven/game.mjs"></script>
+</body></html>

@@ -331,7 +331,7 @@
     const playLayoutProperties = [
       '--wp-frame-control-size', '--wp-frame-control-size-physical', '--wp-frame-physical-control-size',
       '--wp-frame-lobby-return-width', '--wp-frame-header-height', '--wp-play-unit', '--wp-play-control',
-      '--wp-frame-header-inset', '--wp-frame-header-gap', '--wp-play-footer', '--wp-frame-rows',
+      '--wp-frame-header-inset', '--wp-frame-header-gap', '--wp-frame-popover-scale', '--wp-frame-popover-top', '--wp-play-footer', '--wp-frame-rows',
       '--wp-play-card-scale', '--wp-play-card-width', '--wp-play-card-height', '--wp-play-gap', '--wp-play-briefing-height',
     ];
     function clearPlayLayout(name) {
@@ -352,6 +352,8 @@
         const inverse=entry.root.offsetWidth/entry.root.getBoundingClientRect().width;
         entry.root.style.setProperty('grid-template-columns','minmax(0,1fr)','important');
         entry.root.style.setProperty('grid-template-rows','var(--wp-frame-rows)','important');
+        entry.root.style.setProperty('--wp-frame-popover-scale',String(inverse));
+        entry.root.style.setProperty('--wp-frame-popover-top',`${56*inverse}px`);
         for (const node of [entry.root,entry.header]) {
           // Leave a small rounding margin so transformed Canvas headers still
           // expose a physical 44px minimum hit target at fractional scales.

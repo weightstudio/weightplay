@@ -2910,5 +2910,21 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Летающий трамвай",
     "hi": "उड़ती ट्राम",
     "ar": "الترام الطائر"
+  },
+  "puppy-haven": {
+    "__localizedExact": true,
+    "en": "Puppy Haven",
+    "zh-Hant": "汪汪小院",
+    "zh-Hans": "汪汪小院",
+    "ja": "わんこの庭",
+    "ko": "강아지 마당",
+    "es": "Hogar de Cachorros",
+    "pt-BR": "Lar dos Filhotes",
+    "fr": "Le Jardin des Chiots",
+    "de": "Welpenhof",
+    "it": "Il Giardino dei Cuccioli",
+    "ru": "Щенячий дворик",
+    "hi": "पिल्लों का आँगन",
+    "ar": "حديقة الجراء"
   }
 };

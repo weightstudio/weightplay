@@ -120,7 +120,7 @@
       if(meta){if(lang!=="en")meta.setAttribute("data-runtime-localize","off");meta.content=document.title}
     }
     const guide=document.querySelector(".game-page-info");
-    if(guide)guide.setAttribute("aria-label",lang==="ar"?`دليل لعبة ${t("title")}`:t("guideLabel"));
+    if(guide){const guideTitle=guide.querySelector("[data-wp-game-title]")?.textContent.trim()||t("title");guide.setAttribute("aria-label",lang==="ar"?`دليل لعبة ${guideTitle}`:t("guideLabel"))}
     document.querySelectorAll("[data-t]").forEach(node=>{node.textContent=t(node.dataset.t)});
     document.querySelectorAll("[data-t-aria]").forEach(node=>node.setAttribute("aria-label",t(node.dataset.tAria)));
     document.querySelectorAll("[data-t-alt]").forEach(node=>node.setAttribute("alt",t(node.dataset.tAlt)));

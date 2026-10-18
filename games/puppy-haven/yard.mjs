@@ -16,7 +16,9 @@ export class Yard {
   this.box=new THREE.BoxGeometry(1,1,1);this.ray=new THREE.Raycaster();this.point=new THREE.Vector2();
   this.scene.add(new THREE.HemisphereLight(0xfff8df,0x527863,2.8));const sun=new THREE.DirectionalLight(0xffe7ba,3);sun.position.set(-5,12,8);this.scene.add(sun);
   this.buildGarden();
-  this.marker=this.cube(this.scene,0xeabf59,[.9,.035,.9],[0,.025,0]);this.marker.rotation.y=Math.PI/4;
+  this.marker=new THREE.Group();this.scene.add(this.marker);this.marker.position.y=-.055;this.marker.rotation.y=.15;
+  for(const z of [-.46,.46])this.cube(this.marker,0xeabf59,[.96,.008,.045],[0,0,z]);
+  for(const x of [-.46,.46])this.cube(this.marker,0xeabf59,[.045,.008,.96],[x,0,0]);
   this.renderer.domElement.addEventListener('click',e=>this.pick(e),{signal:this.abort.signal});
   this.renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();onLoss();},{signal:this.abort.signal});
   this.resize=new ResizeObserver(()=>this.fit());this.resize.observe(host);this.fit();
@@ -44,8 +46,8 @@ export class Yard {
   const low=b.long?.16:.29,bodyLength=b.long?1.02:.78;
   this.cube(body,b.coat,[.57,.48,bodyLength],[0,low+.32,0]);
   this.cube(body,b.spots?0xfaf3e3:b.cream,[.38,.35,.15],[0,low+.28,.43]);
-  const legs=[];for(const x of [-.2,.2])for(const z of [-bodyLength*.32,bodyLength*.32]){
-   const joint=new THREE.Group();joint.position.set(x,low,z);body.add(joint);this.cube(joint,b.coat,[.17,low+.15,.19],[0,0,0]);this.cube(joint,0xffefdb,[.18,.11,.22],[0,-low/2,.035]);legs.push(joint);
+  const legs=[],paws=[];for(const x of [-.2,.2])for(const z of [-bodyLength*.32,bodyLength*.32]){
+   const joint=new THREE.Group();joint.position.set(x,low,z);body.add(joint);this.cube(joint,b.coat,[.17,low+.15,.19],[0,0,0]);paws.push(this.cube(joint,0xffefdb,[.18,.11,.22],[0,-low/2,.035]));legs.push(joint);
   }
   head.position.set(0,low+.7,.35);
   this.cube(head,b.coat,[.65,.57,.55],[0,0,0]);
@@ -62,12 +64,26 @@ export class Yard {
   const tail=new THREE.Group();tail.position.set(0,low+.48,-bodyLength*.54);body.add(tail);this.cube(tail,b.coat,[.16,.28,.25],[0,.08,-.06],-.1);this.cube(tail,b.cream,[.17,.13,.2],[0,.25,-.12]);
   if(b.spots)for(const [x,y,z] of [[.29,.55,0],[-.29,.55,-.2],[.1,.74,-.2],[-.2,.76,.2]])this.cube(body,0x41494a,[.08,.14,.18],[x,y,z]);
   if(b.saddle)this.cube(body,0x4c5147,[.58,.12,.48],[0,low+.58,-.15]);
-  const occupied=new Set([...this.dogs.values()].map(o=>o.slot));const slot=Math.max(0,SPAWNS.findIndex((_,i)=>!occupied.has(i))),home=SPAWNS[slot];g.position.set(home[0],0,home[1]);g.rotation.y=.15;this.scene.add(g);
-  const obj={g,body,head,tail,legs,id:d.id,slot,home,phase:d.id*1.9,effect:0};g.traverse(o=>{o.userData.dog=d.id;});this.dogs.set(d.id,obj);return obj;
+  const occupied=new Set([...this.dogs.values()].map(o=>o.slot));const slot=Math.max(0,SPAWNS.findIndex((_,i)=>!occupied.has(i))),home=SPAWNS[slot],baseY=.055-low/2;g.position.set(home[0],-.06,home[1]);body.position.y=baseY;g.rotation.y=.15;this.scene.add(g);
+  const obj={g,body,head,tail,legs,paws,id:d.id,slot,home,baseY,phase:d.id*1.9,effect:0,enterT:0,visualScale:d.age==='puppy'?.68+d.growth*.0067:1.35};g.traverse(o=>{o.userData.dog=d.id;});this.dogs.set(d.id,obj);return obj;
  }
  fit(){if(this.disposed)return;const {width:w,height:h}=this.host.getBoundingClientRect();if(w<1||h<1)return;this.renderer.setSize(w,h,false);const aspect=w/h,half=Math.max(4.7,5.9/aspect);this.camera.left=-half*aspect;this.camera.right=half*aspect;this.camera.top=half;this.camera.bottom=-half;this.camera.updateProjectionMatrix();}
  pick(e){const rect=this.renderer.domElement.getBoundingClientRect();this.point.set((e.clientX-rect.left)/rect.width*2-1,-(e.clientY-rect.top)/rect.height*2+1);this.ray.setFromCamera(this.point,this.camera);const hits=this.ray.intersectObjects([...this.dogs.values()].map(d=>d.g).concat([...this.poops.values()]),true);for(const hit of hits){if(hit.object.userData.dog){this.onPick('dog',hit.object.userData.dog);return;}if(hit.object.userData.poop){this.onPick('poop',hit.object.userData.poop);return;}}}
  effect(id){const dog=this.dogs.get(id);if(dog)dog.effect=.7;}
+ foodPortrait(grade){
+  const key=`food-${grade}`;if(this.portraits.has(key))return this.portraits.get(key);
+  const scene=new THREE.Scene();scene.background=new THREE.Color(0xd2e4d5);
+  scene.add(new THREE.HemisphereLight(0xfff8df,0x527863,3));const light=new THREE.DirectionalLight(0xffe7ba,3);light.position.set(-3,5,4);scene.add(light);
+  const bowl=new THREE.Group();scene.add(bowl);const color=[0x759999,0xc99b5d,0xa36e62][grade];
+  this.cube(bowl,color,[1.2,.16,.9],[0,.08,0]);this.cube(bowl,0x526b5b,[.94,.04,.64],[0,.18,0]);
+  for(const z of [-.4,.4])this.cube(bowl,color,[1.2,.25,.1],[0,.25,z]);for(const x of [-.55,.55])this.cube(bowl,color,[.1,.25,.72],[x,.25,0]);
+  // Three grades have visibly different contents, not just recoloured bowls.
+  for(let x=0;x<4;x++)for(let z=0;z<3;z++)this.cube(bowl,grade===0?0x8d5b36:grade===1?(z%2?0xd0a36b:0x865031):((x+z)%3===0?0x70934e:(x+z)%3===1?0xd68e63:0xe3c595),[.17,.12+((x+z)%2)*.035,.15],[-.32+x*.21,.24,-.23+z*.21],(x-z)*.12);
+  if(grade===1)for(const x of [-.25,.22])this.cube(bowl,0xe8cf93,[.17,.08,.23],[x,.36,.04],.2);
+  if(grade===2)for(const x of [-.3,.08,.32])this.cube(bowl,0x527c45,[.14,.08,.16],[x,.35,-.15],-.15);
+  const camera=new THREE.OrthographicCamera(-.85,.85,.85,-.85,.1,20);camera.position.set(1.6,2.2,2.8);camera.lookAt(0,.15,0);camera.updateProjectionMatrix();
+  this.renderer.setSize(128,128,false);this.renderer.render(scene,camera);const url=this.renderer.domElement.toDataURL('image/png');this.portraits.set(key,url);scene.clear();this.fit();return url;
+ }
  portrait(breed){
   if(this.portraits.has(breed))return this.portraits.get(breed);
   const id=-1,obj=this.makeDog({id,breed,sex:'F'});this.scene.remove(obj.g);this.dogs.delete(id);obj.g.position.set(0,0,0);
@@ -81,18 +97,19 @@ export class Yard {
   for(const [id,o]of this.dogs)if(!active.has(id)){this.dogs.delete(id);for(const prior of this.departures)this.scene.remove(prior.g);this.departures.length=0;this.departures.push({g:o.g,left:.22});}
   for(let i=this.departures.length-1;i>=0;i--){const o=this.departures[i];o.left-=visualDt;o.g.scale.multiplyScalar(this.reduced?.2:Math.max(.1,1-visualDt*12));if(o.left<=0){this.scene.remove(o.g);this.departures.splice(i,1);}}
   for(const d of s.dogs){const o=this.dogs.get(d.id)||this.makeDog(d);o.effect=Math.max(0,o.effect-visualDt);const t=s.clock+o.phase;
-   const scale=d.age==='puppy'?.68+d.growth*.002:1.35;o.g.scale.setScalar(scale);
+   o.enterT=Math.min(.22,o.enterT+visualDt);const scale=d.age==='puppy'?.68+d.growth*.0067:1.35;o.visualScale=this.reduced?scale:o.visualScale+(scale-o.visualScale)*Math.min(1,visualDt/.15);o.g.scale.setScalar(o.visualScale*(this.reduced?1:Math.sin(o.enterT/.22*Math.PI/2)));
    const moving=!this.reduced&&!o.effect;
    // Idle strolls stay inside the same full visible yard; visual positions do not own care state.
    if(moving){o.g.position.x=o.home[0]+Math.sin(t*.35)*.09;o.g.position.z=THREE.MathUtils.clamp(o.home[1]+Math.cos(t*.42)*.06,-1.2,2);}
-   o.tail.rotation.z=this.reduced?0:Math.sin(t*8)*(o.effect?.6:.22);o.head.rotation.z=this.reduced?0:Math.sin(t*1.2)*.035;o.body.position.y=this.reduced?0:Math.sin(t*3)*.012+(o.effect?Math.sin(o.effect/.7*Math.PI)*.16:0);
+   o.tail.rotation.z=this.reduced?0:Math.sin(t*8)*(o.effect?.6:.22);o.head.rotation.z=this.reduced?0:Math.sin(t*1.2)*.035;o.body.position.y=o.baseY+(this.reduced?0:Math.sin(t*3)*.012+(o.effect?Math.sin(o.effect/.7*Math.PI)*.16:0));
    for(let i=0;i<o.legs.length;i++)o.legs[i].rotation.x=moving?Math.sin(t*3+i*Math.PI)*.07:0;
   }
-  const live=new Set(s.poops.map(p=>p.id));for(const [id,g]of this.poops)if(!live.has(id)){g.scale.multiplyScalar(this.reduced?.1:.7);if(g.scale.x<.04){this.scene.remove(g);this.poops.delete(id);}}
-  for(const p of s.poops)if(!this.poops.has(p.id)){const g=new THREE.Group();g.position.set(p.x,.02,p.z);this.cube(g,0x79604a,[.32,.13,.28],[0,.06,0]);this.cube(g,0x896b50,[.23,.12,.2],[.01,.16,0]);g.traverse(o=>{o.userData.poop=p.id;});this.scene.add(g);this.poops.set(p.id,g);}
-  const selected=this.dogs.get(s.selected);if(selected){this.marker.position.x=selected.g.position.x;this.marker.position.z=selected.g.position.z;}
+  const live=new Set(s.poops.map(p=>p.id));for(const [id,g]of this.poops)if(!live.has(id)){g.userData.exit=(g.userData.exit||0)+visualDt;g.scale.setScalar(Math.max(.001,1-g.userData.exit/(this.reduced?.1:.22)));if(g.userData.exit>=(this.reduced?.1:.22)){this.scene.remove(g);this.poops.delete(id);}}
+  for(const p of s.poops)if(!this.poops.has(p.id)){const g=new THREE.Group();g.position.set(p.x,.02,p.z);this.cube(g,0x79604a,[.32,.13,.28],[0,.06,0]);this.cube(g,0x896b50,[.23,.12,.2],[.01,.16,0]);g.userData.enter=0;g.scale.setScalar(.001);g.traverse(o=>{o.userData.poop=p.id;});this.scene.add(g);this.poops.set(p.id,g);}
+  for(const [id,g]of this.poops)if(live.has(id)){g.userData.enter=Math.min(.18,g.userData.enter+visualDt);g.scale.setScalar(this.reduced?1:Math.max(.001,Math.sin(g.userData.enter/.18*Math.PI/2)));}
+  const selected=this.dogs.get(s.selected);if(selected){const k=this.reduced?1:Math.min(1,visualDt/.09);this.marker.position.x+=(selected.g.position.x-this.marker.position.x)*k;this.marker.position.z+=(selected.g.position.z-this.marker.position.z)*k;}
   this.renderer.render(this.scene,this.camera);
  }
- stats(){const r=this.renderer.info;return {revision:THREE.REVISION,calls:r.render.calls,triangles:r.render.triangles,geometries:r.memory.geometries,textures:r.memory.textures,dogs:this.dogs.size,slots:[...this.dogs.values()].map(d=>({id:d.id,slot:d.slot}))};}
+ stats(){const r=this.renderer.info;return {revision:THREE.REVISION,calls:r.render.calls,triangles:r.render.triangles,geometries:r.memory.geometries,textures:r.memory.textures,portraitCache:this.portraits.size,departures:this.departures.length,droppings:this.poops.size,dogs:this.dogs.size,slots:[...this.dogs.values()].map(d=>({id:d.id,slot:d.slot})),pawClearance:[...this.dogs.values()].map(d=>Math.max(...d.paws.map(p=>Math.abs(new THREE.Box3().setFromObject(p).min.y+.06))))};}
  dispose(){if(this.disposed)return;this.disposed=true;this.abort.abort();this.resize.disconnect();this.renderer.setAnimationLoop(null);this.box.dispose();for(const m of this.materials.values())m.dispose();this.renderer.dispose();this.renderer.forceContextLoss();this.renderer.domElement.remove();this.dogs.clear();this.departures.length=0;this.poops.clear();this.materials.clear();this.portraits.clear();}
 }

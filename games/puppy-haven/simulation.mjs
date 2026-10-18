@@ -46,7 +46,7 @@ export const MISSIONS = [
 
 const clamp=(n,a=0,b=100)=>Math.min(b,Math.max(a,Number.isFinite(Number(n))?Number(n):a));
 export const YARD_CAPACITY=12, REST_CAPACITY=500;
-const blankRun=()=>({feeds:[],pets:[],clean:0,bought:[],adopted:[],welcomed:[],pairs:0,births:0,matured:0,puppyFed:false,adultFed:false,sequence:[],complete:false});
+const blankRun=()=>({feeds:[],pets:[],clean:0,bought:[],adopted:[],welcomed:[],welcomePetted:false,pairs:0,births:0,matured:0,puppyFed:false,adultFed:false,sequence:[],complete:false});
 function makeDog(id,breed,sex,parents=[],puppy=false){return {id,breed,sex,parents,age:puppy?'puppy':'adult',growth:puppy?0:100,activeAge:0,hunger:puppy?65:72,happy:72,clean:85,cooldown:0,pregnancy:null,poopIn:18+id%4*6,petIn:0};}
 export function freshState(){return {schema:1,coins:360,food:[12,3,1],dogs:[makeDog(1,'shiba','M'),makeDog(2,'shiba','F')],restDogs:[],poops:[],nextId:3,clock:0,births:0,unlocked:1,cleared:[],selected:1,stage:0,run:blankRun()};}
 export function normalizeState(raw){
@@ -98,7 +98,7 @@ export class Haven {
    if(d.age==='puppy'){d.growth=clamp(d.growth+FOOD[grade].growth);r.puppyFed=true;}else r.adultFed=true;
    if(!r.feeds.some(f=>f.id===d.id&&f.grade===grade))r.feeds.push({id:d.id,grade});this.sequence(grade===1?'premium':'feed');result={dog:d.id,grade};
   }else if(type==='pet'){
-   if(d.petIn>0)return this.reject('rest');d.happy=clamp(d.happy+22);d.petIn=8;s.coins+=3;if(!r.pets.includes(d.id))r.pets.push(d.id);this.sequence('pet');result={dog:d.id,coins:3};
+   if(d.petIn>0)return this.reject('rest');d.happy=clamp(d.happy+22);d.petIn=8;s.coins+=3;if(!r.pets.includes(d.id))r.pets.push(d.id);if(r.welcomed.includes(d.id))r.welcomePetted=true;this.sequence('pet');result={dog:d.id,coins:3};
   }else if(type==='clean'){
    const index=data.id===undefined?0:s.poops.findIndex(p=>p.id===data.id);if(index<0||!s.poops.length)return this.reject('alreadyClean');
    const [poop]=s.poops.splice(index,1);s.coins+=5;r.clean++;for(const dog of s.dogs)dog.clean=clamp(dog.clean+18);this.sequence('clean');result={poop,coins:5};
@@ -151,7 +151,7 @@ export class Haven {
   const healthy=(min,count=0)=>s.dogs.length>=count&&s.poops.length===0&&all.every(d=>Math.min(d.hunger,d.happy,d.clean)>=min);
   const adopted=breed=>r.adopted.concat(r.pets).some(id=>all.find(d=>d.id===id)?.breed===breed);
   const seq=r.sequence.join(','),cared=r.feeds.length+r.pets.length+r.clean>0;
-  return [false,r.feeds.length>0,r.sequence.slice(-2).join(',')==='clean,pet',pets.size>=2,r.bought.includes(1)&&grades.has(1),feeds.size>=2&&healthy(60),adopted('corgi'),feeds.size>=3,r.bought.includes(2)&&grades.has(2),seq==='pet,clean,feed'||seq==='pet,clean,premium',healthy(65,3)&&cared,r.pairs>0,r.births>0,r.puppyFed,r.matured>0,all.some(d=>feeds.has(d.id)&&d.parents.some(id=>feeds.has(id))),adopted('husky'),r.welcomed.some(id=>pets.has(id)),adopted('dalmatian'),grades.size===3,breeds.size>=4&&healthy(65)&&cared,adopted('labrador'),adopted('beagle'),r.pairs>0,pets.size>=6,s.births>=2&&r.puppyFed&&s.poops.length===0,new Set(r.bought).size===3&&s.food.every(v=>v>0),seq==='clean,pet,premium',r.adultFed&&r.puppyFed,breeds.size===6&&healthy(65)&&cared,breeds.size===6&&all.some(d=>d.parents.length===2)&&healthy(70)&&grades.size===3][n]||false;
+  return [false,r.feeds.length>0,r.sequence.slice(-2).join(',')==='clean,pet',pets.size>=2,r.bought.includes(1)&&grades.has(1),feeds.size>=2&&healthy(60),adopted('corgi'),feeds.size>=3,r.bought.includes(2)&&grades.has(2),seq==='pet,clean,feed'||seq==='pet,clean,premium',healthy(65,3)&&cared,r.pairs>0,r.births>0,r.puppyFed,r.matured>0,all.some(d=>feeds.has(d.id)&&d.parents.some(id=>feeds.has(id))),adopted('husky'),r.welcomePetted,adopted('dalmatian'),grades.size===3,breeds.size>=4&&healthy(65)&&cared,adopted('labrador'),adopted('beagle'),r.pairs>0,pets.size>=6,s.births>=2&&r.puppyFed&&s.poops.length===0,new Set(r.bought).size===3&&s.food.every(v=>v>0),seq==='clean,pet,premium',r.adultFed&&r.puppyFed,breeds.size===6&&healthy(65)&&cared,breeds.size===6&&all.some(d=>d.parents.length===2)&&healthy(70)&&grades.size===3][n]||false;
  }
  check(){const s=this.s;if(s.stage&& !s.run.complete&&this.objective()){
   s.run.complete=true;const first=!s.cleared.includes(s.stage);if(first){s.cleared.push(s.stage);s.coins+=MISSIONS[s.stage-1].reward;}s.unlocked=Math.max(s.unlocked,Math.min(30,s.stage+1));this.emit('complete',{stage:s.stage,reward:first?MISSIONS[s.stage-1].reward:0});
