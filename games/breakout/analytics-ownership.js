@@ -125,9 +125,9 @@
       track("breakout_game_start", { from: "battle", entry: "restart", input_type });
       return;
     }
-    if (target.matches("#homeBtn, #battleBackBtn")) {
+    if (target.matches("#homeBtn")) {
       roundActive = false;
-      track("breakout_return_main", { from: target.id === "homeBtn" ? "result" : "battle", input_type });
+      track("breakout_return_main", { from: "result", input_type });
       return;
     }
     if (!target.matches('[data-action="fire"]') || !roundActive) return;

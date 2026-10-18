@@ -312,19 +312,19 @@
   };
   const breakoutBrickCountForStage = (stage) => breakoutBricksForStage(stage).filter(Boolean).length;
   const BREAKOUT_MAIN_COPY = {
-    en: { summary: "Read the target lane, move the paddle, and serve.", progress: "30 stages · 6 lanes.", stageKicker: "Stage selection", stageTitle: "Choose a stage", stageHint: "Select a stage to begin the campaign.", stageLabel: (n) => `Stage ${n}`, stageProgress: (n) => `Stage ${n} of 30`, stages: "Stages", back: "Back to main" },
-    "zh-Hant": { summary: "讀取目標路線、移動球板並發球。", progress: "30 關卡・6 路線。", stageKicker: "關卡選擇", stageTitle: "選擇關卡", stageHint: "選擇關卡開始這段路線。", stageLabel: (n) => `第 ${n} 關`, stageProgress: (n) => `第 ${n} / 30 關`, stages: "關卡", back: "返回主頁" },
-    "zh-Hans": { summary: "读取目标路线、移动球板并发球。", progress: "30 关卡・6 路线。", stageKicker: "关卡选择", stageTitle: "选择关卡", stageHint: "选择关卡开始这段路线。", stageLabel: (n) => `第 ${n} 关`, stageProgress: (n) => `第 ${n} / 30 关`, stages: "关卡", back: "返回主页" },
-    ja: { summary: "目標レーンを読み、パドルを動かしてサーブします。", progress: "30ステージ・6レーン。", stageKicker: "ステージ選択", stageTitle: "ステージを選択", stageHint: "ステージを選んでキャンペーンを開始します。", stageLabel: (n) => `ステージ ${n}`, stageProgress: (n) => `ステージ ${n} / 30`, stages: "ステージ", back: "メインへ戻る" },
-    ko: { summary: "목표 레인을 읽고 패들을 움직여 서브하세요.", progress: "30 스테이지 · 6 레인.", stageKicker: "스테이지 선택", stageTitle: "스테이지 선택", stageHint: "스테이지를 선택해 캠페인을 시작하세요.", stageLabel: (n) => `스테이지 ${n}`, stageProgress: (n) => `스테이지 ${n} / 30`, stages: "스테이지", back: "메인으로" },
-    es: { summary: "Lee el carril objetivo, mueve la pala y saca.", progress: "30 fases · 6 carriles.", stageKicker: "Selección de fase", stageTitle: "Elige una fase", stageHint: "Selecciona una fase para comenzar la campaña.", stageLabel: (n) => `Fase ${n}`, stageProgress: (n) => `Fase ${n} de 30`, stages: "Fases", back: "Volver al inicio" },
-    "pt-BR": { summary: "Leia a faixa-alvo, mova a raquete e saque.", progress: "30 fases · 6 faixas.", stageKicker: "Seleção de fase", stageTitle: "Escolha uma fase", stageHint: "Selecione uma fase para iniciar a campanha.", stageLabel: (n) => `Fase ${n}`, stageProgress: (n) => `Fase ${n} de 30`, stages: "Fases", back: "Voltar ao início" },
-    fr: { summary: "Lisez la voie cible, déplacez la raquette et servez.", progress: "30 stages · 6 voies.", stageKicker: "Sélection de stage", stageTitle: "Choisir un stage", stageHint: "Sélectionnez un stage pour commencer la campagne.", stageLabel: (n) => `Stage ${n}`, stageProgress: (n) => `Stage ${n} sur 30`, stages: "Stages", back: "Retour à l’accueil" },
-    de: { summary: "Lies die Zielspalte, bewege das Paddle und schlage auf.", progress: "30 Stufen · 6 Spalten.", stageKicker: "Stufenauswahl", stageTitle: "Stufe wählen", stageHint: "Wähle eine Stufe für den Kampagnenstart.", stageLabel: (n) => `Stufe ${n}`, stageProgress: (n) => `Stufe ${n} von 30`, stages: "Stufen", back: "Zurück zum Start" },
-    it: { summary: "Leggi la corsia bersaglio, muovi la racchetta e servi.", progress: "30 livelli · 6 corsie.", stageKicker: "Selezione livello", stageTitle: "Scegli un livello", stageHint: "Seleziona un livello per iniziare la campagna.", stageLabel: (n) => `Livello ${n}`, stageProgress: (n) => `Livello ${n} di 30`, stages: "Livelli", back: "Torna alla schermata principale" },
-    ru: { summary: "Прочитайте цель, переместите ракетку и подайте.", progress: "30 этапов · 6 линий.", stageKicker: "Выбор этапа", stageTitle: "Выберите этап", stageHint: "Выберите этап, чтобы начать кампанию.", stageLabel: (n) => `Этап ${n}`, stageProgress: (n) => `Этап ${n} из 30`, stages: "Этапы", back: "На главную" },
-    hi: { summary: "लक्ष्य लेन पढ़ें, पैडल चलाएँ और सर्व करें।", progress: "30 चरण · 6 लेन।", stageKicker: "चरण चयन", stageTitle: "चरण चुनें", stageHint: "अभियान शुरू करने के लिए चरण चुनें।", stageLabel: (n) => `चरण ${n}`, stageProgress: (n) => `चरण ${n} / 30`, stages: "चरण", back: "मुख्य पृष्ठ पर लौटें" },
-    ar: { summary: "اقرأ المسار المستهدف، حرّك المضرب ثم أرسل.", progress: "30 مرحلة · 6 مسارات.", stageKicker: "اختيار المرحلة", stageTitle: "اختر مرحلة", stageHint: "اختر مرحلة لبدء الحملة.", stageLabel: (n) => `المرحلة ${n}`, stageProgress: (n) => `المرحلة ${n} من 30`, stages: "المراحل", back: "العودة إلى الرئيسية" },
+    en: { summary: "Read the target lane, move the paddle, and serve.", progressLabel: "Progress", progress: "30 stages · 6 lanes.", stageKicker: "Stage selection", stageTitle: "Choose a stage", stageHint: "Select a stage to begin the campaign.", stageLabel: (n) => `Stage ${n}`, stageProgress: (n) => `Stage ${n} of 30`, stages: "Stages", back: "Back to main" },
+    "zh-Hant": { summary: "讀取目標路線、移動球板並發球。", progressLabel: "進度", progress: "30 關卡・6 路線。", stageKicker: "關卡選擇", stageTitle: "選擇關卡", stageHint: "選擇關卡開始這段路線。", stageLabel: (n) => `第 ${n} 關`, stageProgress: (n) => `第 ${n} / 30 關`, stages: "關卡", back: "返回主頁" },
+    "zh-Hans": { summary: "读取目标路线、移动球板并发球。", progressLabel: "进度", progress: "30 关卡・6 路线。", stageKicker: "关卡选择", stageTitle: "选择关卡", stageHint: "选择关卡开始这段路线。", stageLabel: (n) => `第 ${n} 关`, stageProgress: (n) => `第 ${n} / 30 关`, stages: "关卡", back: "返回主页" },
+    ja: { summary: "目標レーンを読み、パドルを動かしてサーブします。", progressLabel: "進捗", progress: "30ステージ・6レーン。", stageKicker: "ステージ選択", stageTitle: "ステージを選択", stageHint: "ステージを選んでキャンペーンを開始します。", stageLabel: (n) => `ステージ ${n}`, stageProgress: (n) => `ステージ ${n} / 30`, stages: "ステージ", back: "メインへ戻る" },
+    ko: { summary: "목표 레인을 읽고 패들을 움직여 서브하세요.", progressLabel: "진행", progress: "30 스테이지 · 6 레인.", stageKicker: "스테이지 선택", stageTitle: "스테이지 선택", stageHint: "스테이지를 선택해 캠페인을 시작하세요.", stageLabel: (n) => `스테이지 ${n}`, stageProgress: (n) => `스테이지 ${n} / 30`, stages: "스테이지", back: "메인으로" },
+    es: { summary: "Lee el carril objetivo, mueve la pala y saca.", progressLabel: "Progreso", progress: "30 fases · 6 carriles.", stageKicker: "Selección de fase", stageTitle: "Elige una fase", stageHint: "Selecciona una fase para comenzar la campaña.", stageLabel: (n) => `Fase ${n}`, stageProgress: (n) => `Fase ${n} de 30`, stages: "Fases", back: "Volver al inicio" },
+    "pt-BR": { summary: "Leia a faixa-alvo, mova a raquete e saque.", progressLabel: "Progresso", progress: "30 fases · 6 faixas.", stageKicker: "Seleção de fase", stageTitle: "Escolha uma fase", stageHint: "Selecione uma fase para iniciar a campanha.", stageLabel: (n) => `Fase ${n}`, stageProgress: (n) => `Fase ${n} de 30`, stages: "Fases", back: "Voltar ao início" },
+    fr: { summary: "Lisez la voie cible, déplacez la raquette et servez.", progressLabel: "Progression", progress: "30 stages · 6 voies.", stageKicker: "Sélection de stage", stageTitle: "Choisir un stage", stageHint: "Sélectionnez un stage pour commencer la campagne.", stageLabel: (n) => `Stage ${n}`, stageProgress: (n) => `Stage ${n} sur 30`, stages: "Stages", back: "Retour à l’accueil" },
+    de: { summary: "Lies die Zielspalte, bewege das Paddle und schlage auf.", progressLabel: "Fortschritt", progress: "30 Stufen · 6 Spalten.", stageKicker: "Stufenauswahl", stageTitle: "Stufe wählen", stageHint: "Wähle eine Stufe für den Kampagnenstart.", stageLabel: (n) => `Stufe ${n}`, stageProgress: (n) => `Stufe ${n} von 30`, stages: "Stufen", back: "Zurück zum Start" },
+    it: { summary: "Leggi la corsia bersaglio, muovi la racchetta e servi.", progressLabel: "Progressi", progress: "30 livelli · 6 corsie.", stageKicker: "Selezione livello", stageTitle: "Scegli un livello", stageHint: "Seleziona un livello per iniziare la campagna.", stageLabel: (n) => `Livello ${n}`, stageProgress: (n) => `Livello ${n} di 30`, stages: "Livelli", back: "Torna alla schermata principale" },
+    ru: { summary: "Прочитайте цель, переместите ракетку и подайте.", progressLabel: "Прогресс", progress: "30 этапов · 6 линий.", stageKicker: "Выбор этапа", stageTitle: "Выберите этап", stageHint: "Выберите этап, чтобы начать кампанию.", stageLabel: (n) => `Этап ${n}`, stageProgress: (n) => `Этап ${n} из 30`, stages: "Этапы", back: "На главную" },
+    hi: { summary: "लक्ष्य लेन पढ़ें, पैडल चलाएँ और सर्व करें।", progressLabel: "प्रगति", progress: "30 चरण · 6 लेन।", stageKicker: "चरण चयन", stageTitle: "चरण चुनें", stageHint: "अभियान शुरू करने के लिए चरण चुनें।", stageLabel: (n) => `चरण ${n}`, stageProgress: (n) => `चरण ${n} / 30`, stages: "चरण", back: "मुख्य पृष्ठ पर लौटें" },
+    ar: { summary: "اقرأ المسار المستهدف، حرّك المضرب ثم أرسل.", progressLabel: "التقدم", progress: "30 مرحلة · 6 مسارات.", stageKicker: "اختيار المرحلة", stageTitle: "اختر مرحلة", stageHint: "اختر مرحلة لبدء الحملة.", stageLabel: (n) => `المرحلة ${n}`, stageProgress: (n) => `المرحلة ${n} من 30`, stages: "المراحل", back: "العودة إلى الرئيسية" },
   };
   const breakoutMainCopy = (locale) => BREAKOUT_MAIN_COPY[locale] || BREAKOUT_MAIN_COPY.en;
   const BREAKOUT_CAMPAIGN_KEY = "weightplay_breakout_campaign_v18";
@@ -1867,15 +1867,62 @@
       const breakoutResult = game.type === "breakout" && screen === "result";
       const checkersResult = game.type === "checkers" && screen === "result";
       const battleResult = breakoutResult || checkersResult;
-      els.main.hidden = screen !== "main";
-      if (els.stage) els.stage.hidden = screen !== "stage";
-      els.battle.hidden = screen !== "battle" && !battleResult;
-      (__wpNotifyMeasurement(), els.result.hidden = screen !== "result");
+      const targetScene = screen === "result" ? "battle" : screen;
+      const previousScene = document.body.dataset.screen;
+      const sceneRoots = { main: els.main, stage: els.stage, battle: els.battle };
+      const targetSceneRoot = game.type === "breakout" ? sceneRoots[targetScene] : null;
+      const outgoingScene = game.type === "breakout" && sceneRoots[previousScene] && previousScene !== targetScene ? sceneRoots[previousScene] : null;
+      const leavingBreakoutResult = game.type === "breakout" && document.body.hasAttribute("data-wp-result-active") && screen !== "result";
+      if (targetSceneRoot) {
+        window.clearTimeout(targetSceneRoot._wpBreakoutExitTimer);
+        delete targetSceneRoot._wpBreakoutExitTimer;
+        delete targetSceneRoot.dataset.wpBreakoutLeaving;
+        targetSceneRoot.style.removeProperty("z-index");
+      }
+      if (outgoingScene) {
+        window.clearTimeout(outgoingScene._wpBreakoutExitTimer);
+        outgoingScene.dataset.wpBreakoutLeaving = "";
+        outgoingScene.inert = true;
+        outgoingScene.setAttribute("aria-hidden", "true");
+        outgoingScene.style.setProperty("z-index", "60", "important");
+        outgoingScene._wpBreakoutExitTimer = window.setTimeout(() => {
+          if (document.body.dataset.screen === previousScene) return;
+          outgoingScene.hidden = true;
+          delete outgoingScene.dataset.wpBreakoutLeaving;
+          outgoingScene.style.removeProperty("z-index");
+          delete outgoingScene._wpBreakoutExitTimer;
+        }, 170);
+      }
+      if (leavingBreakoutResult) {
+        window.clearTimeout(els.result._wpBreakoutExitTimer);
+        els.result.inert = true;
+        els.result.dataset.wpBreakoutLeaving = "";
+        window.WPBreakoutI9Frame?.animateResultExit();
+        els.result._wpBreakoutExitTimer = window.setTimeout(() => {
+          if (!els.result.hasAttribute("data-wp-breakout-leaving")) return;
+          els.result.hidden = true;
+          els.result.inert = false;
+          delete els.result.dataset.wpBreakoutLeaving;
+          document.body.removeAttribute("data-wp-result-active");
+          if (els.battlePanel) els.battlePanel.hidden = false;
+          delete els.result._wpBreakoutExitTimer;
+        }, 170);
+      } else if (game.type === "breakout" && els.result) {
+        window.clearTimeout(els.result._wpBreakoutExitTimer);
+        delete els.result._wpBreakoutExitTimer;
+        delete els.result.dataset.wpBreakoutLeaving;
+      }
+      els.main.hidden = screen !== "main" && outgoingScene !== els.main;
+      if (els.stage) els.stage.hidden = screen !== "stage" && outgoingScene !== els.stage;
+      els.battle.hidden = screen !== "battle" && !battleResult && outgoingScene !== els.battle;
+      (__wpNotifyMeasurement(), els.result.hidden = screen !== "result" && !leavingBreakoutResult);
       if (game.type === "breakout") {
-        if (els.battlePanel) els.battlePanel.hidden = breakoutResult;
-        document.body.toggleAttribute("data-wp-result-active", breakoutResult);
+        if (els.battlePanel) els.battlePanel.hidden = breakoutResult || leavingBreakoutResult;
+        els.result.inert = leavingBreakoutResult;
+        if (!leavingBreakoutResult) document.body.toggleAttribute("data-wp-result-active", breakoutResult);
         if (breakoutResult && state.success) saveBreakoutClear(state.stage);
-        if (breakoutResult) renderBreakoutResult(); if (breakoutResult) window.WPBreakoutI9Frame?.animateResult();
+        if (breakoutResult) renderBreakoutResult();
+        if (breakoutResult) window.WPBreakoutI9Frame?.animateResult();
       }
       if (game.type === "checkers") {
         els.result?.setAttribute("data-wp-battle-substate", "result");
@@ -1888,7 +1935,7 @@
       document.body.dataset.screen = battleResult ? "battle" : screen;
       if (game.type === "breakout") {
         window.dispatchEvent(new CustomEvent("weightplay:breakout-screen", {
-          detail: { screen: battleResult ? "battle" : screen },
+          detail: { screen: battleResult ? "battle" : screen, exiting: outgoingScene ? previousScene : null },
         }));
       }
       if (game.type === "snake") document.querySelectorAll(".game-page-info").forEach((guide) => { guide.hidden = screen !== "main"; });
@@ -2550,7 +2597,7 @@
       render();
       els.start?.focus({ preventScroll: true });
     };
-    const renderShell = () => { shell(); if (game.type === "wordle") { const c = window.WPWordleUI.copy(locale); els.objective.textContent = c[0]; els.instruction.textContent = c[1]; els.objective.dataset.runtimeLocalize = "off"; els.instruction.dataset.runtimeLocalize = "off"; syncWordleLeaveDialog(); } syncSnakeLeaveDialog(); syncTetrisShellChrome(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); if (els.home) els.home.textContent = copy(locale, "home"); if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; const progress = document.querySelector("[data-wp-main-progress]"); if (progress && game.type === "mahjong") { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = copy(locale, game.objective); } if (game.type === "breakout") { const ui = breakoutMainCopy(locale); const value = progress?.querySelector("span"); if (value) value.textContent = ui.progress; } if (game.type === "mahjong") window.WPMahjong.decorate(els, locale); };
+    const renderShell = () => { shell(); if (game.type === "wordle") { const c = window.WPWordleUI.copy(locale); els.objective.textContent = c[0]; els.instruction.textContent = c[1]; els.objective.dataset.runtimeLocalize = "off"; els.instruction.dataset.runtimeLocalize = "off"; syncWordleLeaveDialog(); } syncSnakeLeaveDialog(); syncTetrisShellChrome(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); if (els.home) els.home.textContent = copy(locale, "home"); if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; const progress = document.querySelector("[data-wp-main-progress]"); if (progress && game.type === "mahjong") { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = copy(locale, game.objective); } if (game.type === "breakout") { const ui = breakoutMainCopy(locale); const label = progress?.querySelector("strong"); const value = progress?.querySelector("span"); if (label) label.textContent = ui.progressLabel; if (value) value.textContent = ui.progress; } if (game.type === "mahjong") window.WPMahjong.decorate(els, locale); };
     els.start.addEventListener("click", () => game.type === "breakout" ? openBreakoutStages() : start("start")); els.retry.addEventListener("click", () => { trackCheckers("replay", { from: "result" }); if (game.type === "breakout") startBreakoutStage(state.stage || 1); else __wpReplayStart(() => start("retry")); }); if (els.mastery) els.mastery.addEventListener("click", () => start("mastery")); els.home?.addEventListener("click", () => { trackCheckers("main_return", { from: "result" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); if (game.type === "breakout") { show("stage"); renderStage(); render(); } else { show("main"); state = makeState(game.type); render(); } }); els.hint.addEventListener("click", hint); els.restart.addEventListener("click", () => game.type === "breakout" ? startBreakoutStage(state.stage || 1) : __wpReplayStart(() => start("restart")));
     els.breakoutLeaveDialog?.addEventListener("cancel", (event) => { event.preventDefault(); closeBreakoutLeaveDialog(); });
     els.breakoutLeaveContinue?.addEventListener("click", () => closeBreakoutLeaveDialog());

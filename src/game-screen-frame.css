@@ -17,6 +17,15 @@
     --wp-frame-control-size:var(--wp-frame-physical-control-size,48px) !important;
     --wp-frame-lobby-return-width:var(--wp-frame-physical-control-size,48px) !important;
   }
+  /* Explicit Interface 9 consumers mark the header itself. Keep its control
+     and header tracks on the same physical-pixel sizing used by logical Canvas. */
+  html body [data-wp-frame="2"] [data-wp-frame-header="battle"] {
+    --wp-frame-physical-control-size:var(--wp-frame-control-size-physical,48px) !important;
+    --wp-frame-play-header-height:var(--wp-frame-physical-control-size) !important;
+    --wp-frame-header-height:var(--wp-frame-physical-control-size) !important;
+    --wp-frame-control-size:var(--wp-frame-physical-control-size) !important;
+    --wp-frame-lobby-return-width:var(--wp-frame-physical-control-size) !important;
+  }
 }
 @layer wp-frame-contract {
 /* Main is normal document flow. Only Stage/Battle may own the fixed browser

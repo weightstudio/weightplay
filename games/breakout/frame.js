@@ -130,9 +130,15 @@
   });
   window.addEventListener("weightplay:breakout-screen", (event) => {
     const screen = event.detail?.screen;
+    const exiting = event.detail?.exiting;
+    const sceneRoots = { main, stage, battle };
+    if (exiting && sceneRoots[exiting]) {
+      entranceAnimations.get(sceneRoots[exiting])?.cancel();
+      entranceAnimations.delete(sceneRoots[exiting]);
+    }
     if (["main", "stage", "battle"].includes(screen)) {
       frame.activate(screen);
-      animateEntrance({ main, stage, battle }[screen]);
+      animateEntrance(sceneRoots[screen]);
     }
   });
   window.addEventListener("pagehide", (event) => {
@@ -151,6 +157,11 @@
     },
     animateResult() {
       animateEntrance(battle.querySelector("#resultScreen .result-card"), "result");
+    },
+    animateResultExit() {
+      const card = battle.querySelector("#resultScreen .result-card");
+      entranceAnimations.get(card)?.cancel();
+      entranceAnimations.delete(card);
     },
     animateOverlay(element) {
       animateEntrance(element);

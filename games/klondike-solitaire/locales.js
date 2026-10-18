@@ -16,5 +16,25 @@ window.KLONDikeGuideLocales = (() => {
     hi: ['रंग बदलते क्रम बनाएँ, छिपे कार्ड खोलें और हर सूट को इक्के से बादशाह तक पूरा करें।','कैसे खेलें','खुला कार्ड चुनें, फिर खींचें या हाइलाइट किया लक्ष्य टैप करें। रंग बदलते हुए घटते क्रम में रखें। खाली कॉलम में केवल बादशाह या उससे शुरू होने वाला क्रम रखें।','हर सूट को इक्के से बादशाह तक उसकी नींव में पहुँचाएँ। ऊपर के कार्ड हटाने पर छिपे कार्ड खुलते हैं।','कार्ड लेने के लिए डेक टैप करें। तीन कार्ड लेने पर भी फेंके गए ढेर का केवल सबसे ऊपर वाला कार्ड चल सकता है।','अटकने पर','संकेत केवल वैध चाल दिखाता है। पूर्ववत चाल वापस करता है। स्वतः पूरा सुरक्षित अंतिम चालें करता है। पुनः शुरू वही बँटवारा दोहराता है; नया खेल दूसरा देता है।','आपकी प्रगति','हर बँटवारा एक पूरी कार्ड पहेली है, स्तरों की मुहिम नहीं। आँकड़े और कार्ड लेने की पसंद इसी ब्राउज़र में रहते हैं।'],
     ar: ['بدّل الألوان، واكشف البطاقات المخفية، وأكمل كل نوع من الآس إلى الملك.','طريقة اللعب','اختر بطاقة مكشوفة ثم اسحبها أو اضغط وجهة مميزة. رتّب الأعمدة تنازليًا مع تبديل الألوان؛ العمود الفارغ يقبل الملك أو تسلسلاً يبدأ به فقط.','أكمل كل أساس من الآس إلى الملك من النوع نفسه. أزل البطاقات العلوية لكشف المخفية.','اضغط الرزمة للسحب. عند سحب ثلاث بطاقات، لا يمكنك تحريك إلا البطاقة العليا في كومة المكشوفات.','عندما تتعثر','التلميح يوضح نقلة ولا ينفذها. التراجع يعكس نقلة. الإكمال التلقائي ينفذ نقلات النهاية الآمنة. إعادة البدء تكرر التوزيع نفسه؛ لعبة جديدة توزع غيره.','تقدمك','كل توزيع لغز بطاقات كامل، دون حملة مراحل. تُحفظ الإحصاءات وتفضيلات السحب في هذا المتصفح.'],
   };
-  return Object.fromEntries(Object.entries(packs).map(([code, values]) => [code, Object.fromEntries(keys.map((key,i) => [key, values[i]]))]));
+  const locales = Object.fromEntries(Object.entries(packs).map(([code, values]) => [code, Object.fromEntries(keys.map((key,i) => [key, values[i]]))]));
+  const relatedCopy = {
+    en: ["Spider Solitaire uses two decks in ten tableau columns.", "FreeCell Solitaire is a classic 52-card puzzle where every card starts face up."],
+    "zh-Hant": ["蜘蛛接龍使用兩副牌，分成十個牌列。", "FreeCell 接龍是經典的 52 張牌謎題，所有牌一開始都正面朝上。"],
+    "zh-Hans": ["蜘蛛纸牌使用两副牌，分为十列。", "FreeCell 是经典的 52 张牌谜题，所有牌一开始都正面朝上。"],
+    ja: ["スパイダーソリティアは2組のカードを使い、場札を10列に並べます。", "フリーセルは52枚すべて表向きで始まる定番のカードパズルです。"],
+    ko: ["스파이더 솔리테어는 두 벌의 카드를 열 개의 tableau 열에 놓고 플레이합니다.", "프리셀은 모든 카드가 앞면으로 시작하는 고전적인 52장 카드 퍼즐입니다."],
+    es: ["Spider Solitaire usa dos barajas en diez columnas del tablero.", "FreeCell es un clásico rompecabezas de 52 cartas en el que todas empiezan boca arriba."],
+    "pt-BR": ["Spider Solitaire usa dois baralhos em dez colunas do tableau.", "FreeCell é um clássico quebra-cabeça de 52 cartas em que todas começam viradas para cima."],
+    fr: ["Spider Solitaire utilise deux jeux de cartes répartis en dix colonnes du tableau.", "FreeCell est un grand classique de 52 cartes où toutes les cartes commencent face visible."],
+    de: ["Spider Solitaire verwendet zwei Kartenspiele in zehn Tableau-Spalten.", "FreeCell ist ein klassisches Kartenrätsel mit 52 Karten, die alle offen ausgeteilt werden."],
+    it: ["Spider Solitaire usa due mazzi distribuiti in dieci colonne del tableau.", "FreeCell è un classico rompicapo con 52 carte, tutte scoperte fin dall’inizio."],
+    ru: ["В пасьянсе «Паук» используются две колоды и десять столбцов расклада.", "«Свободная ячейка» — классический пасьянс на 52 карты, которые в начале все открыты."],
+    hi: ["स्पाइडर सॉलिटेयर में दस tableau स्तंभों के लिए दो गड्डियाँ इस्तेमाल होती हैं।", "फ्रीसेल 52 पत्तों की क्लासिक पहेली है, जिसमें सभी पत्ते शुरुआत से खुले रहते हैं।"],
+    ar: ["يستخدم سوليتير العنكبوت مجموعتي أوراق في عشرة أعمدة للّعب.", "فري سيل لغز كلاسيكي من 52 بطاقة، تبدأ فيه كل البطاقات مكشوفة."],
+  };
+  Object.entries(relatedCopy).forEach(([code, [spider, freecell]]) => {
+    locales[code].relatedSpiderDescription = spider;
+    locales[code].relatedFreecellDescription = freecell;
+  });
+  return locales;
 })();

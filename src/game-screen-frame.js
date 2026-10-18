@@ -5,14 +5,15 @@
     if (!/\/games\/[a-z0-9-]+(?:\/|\/index\.html)?$/.test(location.pathname)
       || window.WeightPlayGameEntryLoader?.isActive
       || document.querySelector('script[src*="/game-entry-loader.js"]')) return;
-    // Let parser-authored consumers register first; do not race a second copy
-    // against an existing engine integration later in the same document.
-    if (document.readyState === 'loading') {
+    // If the parser is still loading, wait only until a body exists. Deferring
+    // to DOMContentLoaded lets a slow parser-blocking game script hide the
+    // shared loader behind the legacy game panel.
+    if (!document.body) {
       document.addEventListener('DOMContentLoaded', ensureEntryLoader, {once:true});
       return;
     }
     const script = document.createElement('script');
-    script.src = '/src/game-entry-loader.js?v=20261018-entry-readiness-bridge2';
+    script.src = '/src/game-entry-loader.js?v=20261019-entry-readiness-bridge3';
     script.dataset.wpGameEntryLoaderBootstrap = 'true';
     // This bootstrap has no dependency on the game modules. Let it execute
     // independently of their ordered dynamic-script queue so a slow or failed

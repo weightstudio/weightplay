@@ -134,7 +134,7 @@ html.popular-tic-tac-toe-active body.has-game-page-info {
   transition: transform .15s ease, background .15s ease, border-color .15s ease;
 }
 .primary { color: #06151a; background: var(--arcade-accent); border-color: transparent; font-weight: 800; }
-.secondary, .control { background: rgba(255,255,255,.07); }
+.secondary, .control:not(.primary) { background: rgba(255,255,255,.07); }
 .primary:hover, .secondary:hover, .control:hover { transform: translateY(-1px); border-color: var(--arcade-accent); }
 .battle-panel { gap: 14px; align-content: start; }
 .battle-top, .result-actions, .control-row, .stats { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }

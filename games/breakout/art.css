@@ -192,6 +192,18 @@ body[data-wp-game-id="breakout"] .brick-board.wp-breakout-board-entering .brick 
   transform: translateY(5px) scale(.96);
 }
 
+body[data-wp-game-id="breakout"] [data-wp-frame-scene][data-wp-breakout-leaving] {
+  z-index: 60 !important;
+  opacity: 0;
+  pointer-events: none !important;
+  transition: opacity 170ms ease-out;
+}
+
+body[data-wp-game-id="breakout"] #resultScreen[data-wp-breakout-leaving] .result-card {
+  opacity: 0;
+  transition: opacity 170ms ease-out;
+}
+
 body[data-wp-game-id="breakout"] #resultScreen .result-card,
 body[data-wp-game-id="breakout"] .breakout-leave-dialog {
   will-change: opacity, transform;
@@ -201,6 +213,15 @@ body[data-wp-game-id="breakout"] .breakout-leave-dialog {
   body[data-wp-game-id="breakout"] .brick-board .brick {
     transition-duration: 80ms !important;
     transition-property: opacity, filter !important;
+  }
+
+  body[data-wp-game-id="breakout"] [data-wp-frame-scene][data-wp-breakout-leaving] {
+    transition-duration: 80ms !important;
+    transition-property: opacity !important;
+  }
+
+  body[data-wp-game-id="breakout"] #resultScreen[data-wp-breakout-leaving] .result-card {
+    transition-duration: 80ms !important;
   }
 
   body[data-wp-game-id="breakout"] .brick-board .brick.target,

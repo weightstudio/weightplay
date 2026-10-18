@@ -17,7 +17,10 @@ const server = http.createServer((request, response) => {
   let file = path.join(root, decodeURIComponent(url.pathname));
   if (file.endsWith(path.sep)) file = path.join(file, "index.html");
   if (!file.startsWith(root) || !fs.existsSync(file) || !fs.statSync(file).isFile()) return response.writeHead(404).end();
-  response.writeHead(200, { "content-type": { ".css": "text/css", ".html": "text/html", ".js": "text/javascript" }[path.extname(file)] || "application/octet-stream", "cache-control": "no-store" });
+  response.writeHead(200, { "content-type": {
+    ".css": "text/css", ".html": "text/html", ".js": "text/javascript", ".json": "application/json",
+    ".svg": "image/svg+xml", ".webp": "image/webp", ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".avif": "image/avif",
+  }[path.extname(file).toLowerCase()] || "application/octet-stream", "cache-control": "no-store" });
   fs.createReadStream(file).pipe(response);
 });
 await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
@@ -64,6 +67,7 @@ const state = (page) => page.evaluate(() => ({
 const evidence = [];
 const capture = async (page, name) => {
   if (process.env.BREAKOUT_MOTION_CAPTURE !== "1") return;
+  await page.waitForTimeout(240);
   await page.screenshot({ path: path.join(process.env.TMPDIR || "/tmp", `weightplay-breakout-motion-${name}.png`) });
 };
 try {
@@ -91,9 +95,52 @@ try {
     });
     await capture(page, `${viewport.width}x${viewport.height}-main`);
     await page.locator("#startBtn").click();
+    const mainExit = await page.evaluate(() => {
+      const node = document.querySelector('[data-wp-frame-scene="main"]');
+      return { hidden: node.hidden, inert: node.inert, ariaHidden: node.getAttribute("aria-hidden"), leaving: node.hasAttribute("data-wp-breakout-leaving"), duration: getComputedStyle(node).transitionDuration };
+    });
+    assert(!mainExit.hidden && mainExit.inert && mainExit.ariaHidden === "true" && mainExit.leaving && /0\.17s/.test(mainExit.duration),
+      "Main exit does not retain a brief inert visual transition", { viewport, mainExit });
+    await page.waitForTimeout(190);
+    assert(await page.locator('[data-wp-frame-scene="main"]').evaluate(node => node.hidden && !node.hasAttribute("data-wp-breakout-leaving")),
+      "Main exit did not settle cleanly after its finite transition", { viewport });
     await capture(page, `${viewport.width}x${viewport.height}-stage`);
     await page.locator('#stageRail [aria-current="true"]').click();
+    const stageExit = await page.evaluate(() => {
+      const node = document.querySelector('[data-wp-frame-scene="stage"]');
+      return { hidden: node.hidden, inert: node.inert, ariaHidden: node.getAttribute("aria-hidden"), leaving: node.hasAttribute("data-wp-breakout-leaving") };
+    });
+    assert(!stageExit.hidden && stageExit.inert && stageExit.ariaHidden === "true" && stageExit.leaving,
+      "Stage exit remains interactive or skips its finite visual transition", { viewport, stageExit });
+    await page.waitForTimeout(190);
+    assert(await page.locator('[data-wp-frame-scene="stage"]').evaluate(node => node.hidden && !node.hasAttribute("data-wp-breakout-leaving")),
+      "Stage exit did not settle cleanly after its finite transition", { viewport });
     await capture(page, `${viewport.width}x${viewport.height}-battle`);
+    const serveStyle = await page.locator('#controls [data-action="fire"]').evaluate((button) => ({
+      background: getComputedStyle(button).backgroundColor,
+      color: getComputedStyle(button).color,
+      primary: button.classList.contains("primary"),
+    }));
+    assert(serveStyle.primary && serveStyle.background === "rgb(126, 231, 201)" && serveStyle.color === "rgb(6, 21, 26)",
+      "Primary Serve control lost its shared accent treatment", { viewport, serveStyle });
+    await page.locator("#battleBackBtn").click();
+    const leaveOverlay = await page.evaluate(() => {
+      const dialog = document.querySelector("#breakoutLeaveDialog");
+      const panel = document.querySelector("#battleScreen .battle-panel");
+      return {
+        open: dialog.open,
+        modal: dialog.matches(":modal"),
+        battleInert: panel.inert,
+        animations: dialog.getAnimations().map((animation) => animation.effect?.getTiming().duration),
+      };
+    });
+    assert(leaveOverlay.open && leaveOverlay.modal && leaveOverlay.battleInert && leaveOverlay.animations.includes(170),
+      "Battle leave overlay must be modal, finite, and block background input", { viewport, leaveOverlay });
+    await capture(page, `${viewport.width}x${viewport.height}-leave`);
+    await page.locator("#breakoutLeaveContinue").click();
+    await page.locator("#breakoutLeaveDialog").waitFor({ state: "hidden" });
+    assert(await page.locator("#battleScreen .battle-panel").evaluate((panel) => !panel.inert),
+      "Continuing from the leave overlay did not restore Battle input", { viewport });
     const initial = await state(page);
     assert(initial.version === "v20" && initial.interfaceVersion === "9" && initial.screen === "battle" && initial.lane === "3" && initial.laneState === "armed" && initial.target === "2", "Initial lane target or v20/I9 identity failed", { viewport, initial });
     await page.evaluate(() => { window.__BREAKOUT_MOTION_PROBE__ = { board: document.querySelector(".brick-board"), target: document.querySelector('[data-shot-target="true"]') }; });
@@ -143,18 +190,72 @@ try {
     const clean = await state(page);
     assert(clean.shots === 12 && /12/.test(clean.goal) && /shot/iu.test(clean.goal), "Clean lane route did not preserve the 12-shot Result goal", { viewport, clean });
     const resultMotion = await page.evaluate(() => window.__BREAKOUT_RESULT_MOTION__ || []);
-    assert(resultMotion.length === 2 && resultMotion.every((animations) => animations.some((animation) => animation.duration === 190 && animation.keyframes.some((frame) => frame.transform))),
-      "Reused Result card did not receive a finite entrance on both rounds", { viewport, resultMotion });
+    const resultAnimations = resultMotion.flat();
+    const resultEntrances = resultAnimations.filter((animation) => animation.duration === 190 && animation.keyframes.some((frame) => frame.transform));
+    const resultExits = resultAnimations.filter((animation) => animation.duration === 170 && animation.keyframes.some((frame) => frame.opacity === "1") && animation.keyframes.some((frame) => frame.opacity === "0"));
+    assert(resultEntrances.length === 2 && resultExits.length === 1,
+      "Reused Result card must receive two finite entrances and one finite exit", { viewport, resultEntrances, resultExits, resultMotion });
     await capture(page, `${viewport.width}x${viewport.height}-result`);
     const funnelEvents = await page.evaluate(() => window.__BREAKOUT_FUNNEL_EVENTS__ || []);
     const count = (name) => funnelEvents.filter((event) => event.name === name).length;
-    const requiredCounts = { breakout_game_start: 2, breakout_first_serve: 2, breakout_first_brick_clear: 2, breakout_result: 2, breakout_play_again: 1 };
+    const requiredCounts = { breakout_game_start: 2, breakout_first_serve: 2, breakout_first_brick_clear: 2, breakout_result: 2, breakout_play_again: 1, breakout_return_main: 0 };
     assert(Object.entries(requiredCounts).every(([name, expected]) => count(name) === expected), "Breakout funnel milestones were not exactly once per round", { viewport, requiredCounts, counts: Object.fromEntries(Object.keys(requiredCounts).map((name) => [name, count(name)])), funnelEvents });
     const ownedEvents = funnelEvents.filter((event) => event.name.startsWith("breakout_"));
     assert(ownedEvents.every((event) => event.data?.game_id === "breakout" && event.data?.game_version === "v20" && event.data?.interface_version === "9" && event.data?.locale === "en" && event.data?.viewport_bucket === viewportBucket(viewport)), "Breakout funnel event identity or coarse viewport context drifted", { viewport, ownedEvents });
     assert(ownedEvents.every((event) => !["user_id", "email", "name", "row", "column", "x", "y", "url", "path", "text", "message"].some((field) => field in event.data)), "Breakout funnel emitted a prohibited personal or free-form field", { viewport, ownedEvents });
     assert(clean.scroll.width <= clean.viewport.width + 1 && clean.scroll.height <= clean.viewport.height + 1 && errors.length === 0, "Breakout v20/I9 escaped viewport or emitted diagnostics", { viewport, clean, errors });
     evidence.push({ viewport: `${viewport.width}x${viewport.height}`, missShots: inefficient.shots, cleanShots: clean.shots, localizedMiss: viewport.width === 390 ? Object.keys(missCopy).length : 0, funnel: Object.fromEntries(Object.keys(requiredCounts).map((name) => [name, count(name)])) });
+    await page.locator("#resultStagesBtn").click();
+    const resultExit = await page.evaluate(() => ({
+      visible: !document.querySelector("#resultScreen").hidden,
+      inert: document.querySelector("#resultScreen").inert,
+      leaving: document.querySelector("#resultScreen").hasAttribute("data-wp-breakout-leaving"),
+      resultActive: document.body.hasAttribute("data-wp-result-active"),
+      battleHidden: document.querySelector('[data-wp-frame-scene="battle"]').hidden,
+    }));
+    assert(resultExit.visible && resultExit.inert && resultExit.leaving && resultExit.resultActive && !resultExit.battleHidden,
+      "Result exit is not retained as an inert visual layer during the Stage transition", { viewport, resultExit });
+    await page.waitForTimeout(190);
+    assert(await page.evaluate(() => document.querySelector("#resultScreen").hidden
+      && !document.body.hasAttribute("data-wp-result-active")
+      && document.querySelector('[data-wp-frame-scene="battle"]').hidden
+      && document.body.dataset.screen === "stage"),
+    "Result exit did not clear its Battle overlay and return cleanly to Stage", { viewport });
+    const selectedStage = await page.locator('#stageRail .stage-card[aria-current="true"]').getAttribute("data-stage-index");
+    await page.locator('#stageRail .stage-card[aria-current="true"]').click();
+    await page.waitForTimeout(190);
+    const secondJourneyStart = await page.evaluate(() => ({
+      mainHidden: document.querySelector('[data-wp-frame-scene="main"]').hidden,
+      stageHidden: document.querySelector('[data-wp-frame-scene="stage"]').hidden,
+      battleVisible: !document.querySelector('[data-wp-frame-scene="battle"]').hidden,
+      lane: document.querySelector(".brick-board")?.dataset.shotColumn,
+      selectedStage: document.querySelector('#stageRail .stage-card[aria-current="true"]')?.dataset.stageIndex,
+    }));
+    assert(secondJourneyStart.mainHidden && secondJourneyStart.stageHidden && secondJourneyStart.battleVisible
+      && secondJourneyStart.lane === "3" && secondJourneyStart.selectedStage === selectedStage,
+    "Second reload-free Stage-to-Battle journey lost its scene or selection", { viewport, selectedStage, secondJourneyStart });
+    await fireTwice(page);
+    await clearRemainingFromColumnThree(page);
+    const secondJourneyResult = await state(page);
+    assert(secondJourneyResult.shots === 12 && await page.locator("#resultScreen:not([hidden])").isVisible(),
+      "Second reload-free journey did not reach its natural Result", { viewport, secondJourneyResult });
+    await page.locator("#resultStagesBtn").click();
+    await page.waitForTimeout(190);
+    const nextStageCatalog = await page.evaluate(() => {
+      const selected = document.querySelector('#stageRail .stage-card[aria-current="true"]');
+      return {
+        active: document.body.dataset.screen === "stage"
+          && document.querySelector("#resultScreen").hidden
+          && !document.querySelector('[data-wp-frame-scene="stage"]').hidden,
+        index: selected?.dataset.stageIndex ?? null,
+        poster: selected && getComputedStyle(selected.querySelector(".wp-stage-i9-card-art")).backgroundImage,
+      };
+    });
+    assert(nextStageCatalog.active && nextStageCatalog.index !== null && nextStageCatalog.poster.includes("breakout-cover-v1.webp"),
+      "Second reload-free journey did not return to Stage with the newly selected poster", { viewport, selectedStage, nextStageCatalog });
+    evidence.at(-1).reloadFreeJourneys = 2;
+    evidence.at(-1).secondJourneySelectedStage = nextStageCatalog.index;
+    await capture(page, `${viewport.width}x${viewport.height}-second-stage-return`);
     await context.close();
   }
   const reducedContext = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: "reduce" });
