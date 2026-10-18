@@ -18,7 +18,7 @@
   __wpNotifyMeasurement();
 
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v45";
+  const GAME_VERSION = "v49";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -1456,6 +1456,7 @@
       orbs: [],
       sparks: [],
       lastShotFeedback: null,
+      impactCue: null,
       firstShotPending: false,
       firstShotCueUntil: 0,
       companionDamage: companionDamage(denLevel),
@@ -2052,6 +2053,7 @@
     state = makeState();
     keyboardAimDeg = -90;
     state.mode = "running";
+    nodes.hintText.setAttribute("data-first-target-cue", "");
     save.playCount += 1;
     persist();
     spawnWave();
@@ -2410,7 +2412,10 @@
     const angle = Math.round(keyboardAimDeg + 90);
     state.preview = previewPath(target.x, target.y);
     const priority = state.mode === "running" && state.wave === 1 && state.shotCount === 0 ? ` ${firstWavePriorityText()}` : "";
-    nodes.hintText.textContent = `${t("keyboardAim", { angle })}${priority}`;
+    const firstTargetCueActive = priority && nodes.hintText.hasAttribute("data-first-target-cue");
+    nodes.hintText.textContent = firstTargetCueActive
+      ? firstWavePriorityText()
+      : `${t("keyboardAim", { angle })}${priority}`;
     updateArenaControlLabel(true);
   }
 
@@ -2467,6 +2472,7 @@
     y = assisted.y;
     const firstShot = state.shotCount === 0;
     if (firstShot) {
+      nodes.hintText.removeAttribute("data-first-target-cue");
       state.firstShotPending = true;
       state.firstShotCueUntil = 0;
     }
@@ -2630,6 +2636,10 @@
     else if (state.enemies.length === 0) {
       if (state.wave >= state.waveTotal) finishRaid(true);
       else showUpgrade();
+    } else if (state.impactCue && state.impactCue.expiresAt > performance.now()) {
+      nodes.hintText.textContent = state.lastShotFeedback?.label || nodes.hintText.textContent;
+    } else if (state.impactCue) {
+      state.impactCue = null;
     } else if (canFireOrb() && state.preview.length === 0 && performance.now() >= state.firstShotCueUntil) {
       const firstWavePriority = state.wave === 1 && state.shotCount === 0 ? firstWavePriorityText() : "";
       nodes.hintText.textContent = activeEncounterCue() || firstWavePriority || t("orbReady");
@@ -2974,13 +2984,28 @@
           : `${copy[kind]}${amount ? ` −${amount}` : ""}`;
         const popLabel = critical ? `${t("crit")} ${label}` : chainTarget ? `${t("chain")} ${label}` : label;
         const shortLabel = critical ? t("crit") : chainTarget ? t("chain") : blocked ? t("blocked") : "";
-        state.lastShotFeedback = { kind, bounces: orb.bounces, damage, shieldDamage, chainDamage, critical, label: popLabel, shortLabel };
+        const badgeLines = kind === "bank"
+          ? [`${copy.bank} ×${orb.bounces}`, `${actualLocale === "ar" ? "←" : "→"} ${copy.target} −${amount}`]
+          : null;
+        state.lastShotFeedback = { kind, bounces: orb.bounces, damage, shieldDamage, chainDamage, critical, label: popLabel, shortLabel, badgeLines };
+        state.impactCue = kind === "bank" ? {
+          target: enemy,
+          x: enemy.x,
+          y: enemy.y,
+          targetRadius: enemy.kind === "boss" ? 82 : Math.max(24, enemy.size * 1.12),
+          lines: badgeLines,
+          critical,
+          chain: Boolean(chainTarget),
+          createdAt: performance.now(),
+          expiresAt: performance.now() + 1250,
+          placement: null,
+        } : null;
         const isFirstShot = Boolean(orb.firstShot);
         if (state.firstShotPending && isFirstShot) {
           state.firstShotPending = false;
           state.firstShotCueUntil = performance.now() + 900;
         }
-        nodes.hintText.textContent = shortLabel || (blocked ? t("blocked") : t("hit"));
+        nodes.hintText.textContent = kind === "bank" ? popLabel : shortLabel || (blocked ? t("blocked") : t("hit"));
         track("hit_result", { result: kind, first_shot: isFirstShot, wave: state.wave, bounces: orb.bounces, damage, shield_damage: shieldDamage, critical, chain_damage: chainDamage });
         trackGrowth("hit_result", { result: kind, first_shot: isFirstShot, wave: state.wave, bounces: orb.bounces, damage, shield_damage: shieldDamage, critical, chain_damage: chainDamage });
         enemy.hitTimer = 0.16;
@@ -3262,6 +3287,107 @@
     ctx.drawImage(img, sw * index, 0, sw, sh, x - size / 2, y - size / 2, size, size);
   }
 
+  function drawImpactCue() {
+    const cue = state.impactCue;
+    if (!cue) return;
+    const now = performance.now();
+    const remaining = cue.expiresAt - now;
+    if (remaining <= 0) {
+      state.impactCue = null;
+      return;
+    }
+
+    const fontSize = Math.min(30, Math.max(20, W * 0.028));
+    ctx.save();
+    ctx.font = `800 ${fontSize}px system-ui, sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const textWidth = Math.max(...cue.lines.map((line) => ctx.measureText(line).width));
+    const width = Math.min(W - 24, Math.max(176, textWidth + 28));
+    const lineHeight = fontSize * 1.14;
+    const height = lineHeight * cue.lines.length + 16;
+    const pad = 12;
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+    const maxLeft = Math.max(pad, W - width - pad);
+    const maxTop = Math.max(66, H - height - 86);
+    const candidates = [
+      { side: "right", left: cue.x + cue.targetRadius + 10, top: cue.y - height / 2 },
+      { side: "left", left: cue.x - cue.targetRadius - width - 10, top: cue.y - height / 2 },
+      { side: "above", left: cue.x - width / 2, top: cue.y - cue.targetRadius - height - 9 },
+      { side: "below", left: cue.x - width / 2, top: cue.y + cue.targetRadius + 9 },
+    ].map((candidate) => ({
+      ...candidate,
+      left: clamp(candidate.left, pad, maxLeft),
+      top: clamp(candidate.top, 66, maxTop),
+    }));
+    const targetRect = {
+      left: cue.x - cue.targetRadius,
+      right: cue.x + cue.targetRadius,
+      top: cue.y - cue.targetRadius,
+      bottom: cue.y + cue.targetRadius,
+    };
+    const overlapArea = (rect, other) => Math.max(0, Math.min(rect.right, other.right) - Math.max(rect.left, other.left))
+      * Math.max(0, Math.min(rect.bottom, other.bottom) - Math.max(rect.top, other.top));
+    const placement = candidates.map((candidate) => {
+      const rect = { left: candidate.left, right: candidate.left + width, top: candidate.top, bottom: candidate.top + height };
+      let score = overlapArea(rect, targetRect) * 100000;
+      state.enemies.forEach((enemy) => {
+        if (enemy === cue.target) return;
+        const radius = enemy.kind === "boss" ? 84 : Math.max(24, enemy.size * 1.12);
+        score += overlapArea(rect, { left: enemy.x - radius, right: enemy.x + radius, top: enemy.y - radius, bottom: enemy.y + radius }) * 100;
+      });
+      state.pylons.forEach((pylon) => {
+        const x = clamp(pylon.x, rect.left, rect.right);
+        const y = clamp(pylon.y, rect.top, rect.bottom);
+        if (Math.hypot(pylon.x - x, pylon.y - y) < pylon.r + 8) score += 100000;
+      });
+      const launcherRect = { left: state.launcher.x - 66, right: state.launcher.x + 66, top: state.launcher.y - 46, bottom: H };
+      score += overlapArea(rect, launcherRect) * 10000;
+      if (rect.top < 66) score += (66 - rect.top) * width * 100;
+      if (rect.bottom > H - 70) score += (rect.bottom - (H - 70)) * width * 100;
+      score += Math.hypot(rect.left + width / 2 - cue.x, rect.top + height / 2 - cue.y) * 0.02;
+      return { ...candidate, width, height, score };
+    }).sort((left, right) => left.score - right.score)[0];
+    cue.placement = { side: placement.side, left: placement.left, top: placement.top, width, height };
+
+    const age = Math.max(0, now - cue.createdAt);
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const fadeIn = reducedMotion ? 60 : 100;
+    const fadeOut = reducedMotion ? 90 : 180;
+    const alpha = Math.min(1, age / fadeIn, remaining / fadeOut);
+    const accent = cue.critical ? "#ffe56f" : cue.chain ? "#d79bff" : "#72efff";
+    const centerX = placement.left + width / 2;
+    const centerY = placement.top + height / 2;
+    const dx = cue.x - centerX;
+    const dy = cue.y - centerY;
+    const horizontalScale = Math.abs(dx) > 0 ? (width / 2) / Math.abs(dx) : Infinity;
+    const verticalScale = Math.abs(dy) > 0 ? (height / 2) / Math.abs(dy) : Infinity;
+    const edgeScale = Math.min(horizontalScale, verticalScale);
+
+    ctx.globalAlpha = alpha * 0.78;
+    ctx.strokeStyle = accent;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cue.x, cue.y);
+    ctx.lineTo(centerX + dx * edgeScale, centerY + dy * edgeScale);
+    ctx.stroke();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = "rgba(4, 19, 36, 0.96)";
+    ctx.strokeStyle = accent;
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = accent;
+    ctx.shadowBlur = 12;
+    ctx.fillRect(placement.left, placement.top, width, height);
+    ctx.shadowBlur = 0;
+    ctx.strokeRect(placement.left, placement.top, width, height);
+    ctx.fillStyle = "#f5fbff";
+    cue.lines.forEach((line, index) => {
+      const y = placement.top + 8 + lineHeight * (index + 0.5);
+      ctx.fillText(line, centerX, y, width - 16);
+    });
+    ctx.restore();
+  }
+
   function draw() {
     ctx.clearRect(0, 0, W, H);
     ctx.save();
@@ -3397,6 +3523,8 @@
       }
       ctx.globalAlpha = 1;
     });
+
+    drawImpactCue();
 
     drawCore();
     drawAtlas(images.lion, 0, 1, state.launcher.x, state.launcher.y + 8, 82);
@@ -4081,6 +4209,7 @@
     },
     snapshot: () => ({
       mode: state.mode,
+      arena: { width: W, height: H, launcher: { x: state.launcher.x, y: state.launcher.y } },
       wave: state.wave,
       waveTotal: state.waveTotal,
       raidTier: state.raidTier,
@@ -4101,6 +4230,14 @@
       spawnedShards: state.spawnedShards,
       mechanicEvents: [...state.mechanicEvents],
       lastShotFeedback: state.lastShotFeedback,
+      impactCue: state.impactCue ? {
+        x: state.impactCue.x,
+        y: state.impactCue.y,
+        lines: [...state.impactCue.lines],
+        createdAt: state.impactCue.createdAt,
+        expiresAt: state.impactCue.expiresAt,
+        placement: state.impactCue.placement ? { ...state.impactCue.placement } : null,
+      } : null,
       orbs: state.orbs.length,
       activeOrbLimit: activeOrbLimit(),
       maxBounces: maxBounceLimit(),

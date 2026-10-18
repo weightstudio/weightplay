@@ -50,8 +50,15 @@
     const hpLabel = document.querySelector('[data-ui="hudHp"]');
     stat(hpLabel, document.getElementById('hpText')).append(document.getElementById('hpFill').parentElement);
     const levelLabel = document.createElement('span');
+    levelLabel.className = 'relic-level-label';
     levelLabel.textContent = 'Lv.';
-    stat(levelLabel, document.getElementById('levelVal')).append(document.getElementById('expFill').parentElement);
+    const levelStat = document.createElement('div');
+    levelStat.setAttribute('data-wp-frame-stat', '');
+    const levelSummary = document.createElement('div');
+    levelSummary.className = 'relic-level-inline';
+    levelSummary.append(levelLabel, document.getElementById('levelVal'), document.getElementById('expText'));
+    levelStat.append(levelSummary, document.getElementById('expFill').parentElement);
+    hud.append(levelStat);
     stat(document.querySelector('[data-ui="roomLabel"]'), document.getElementById('roomText'));
     stat(document.getElementById('keyText'), document.getElementById('goldText'));
     battleTitle.hidden = true;

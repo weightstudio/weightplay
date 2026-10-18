@@ -2187,6 +2187,46 @@ body.relic-playing .player-exp .exp-meta { justify-content:flex-start; gap:8px; 
 body.relic-playing .player-exp .bar-bg { width:54px; }
 body.relic-playing .health-meta,
 body.relic-playing .exp-meta { min-width:0; font-size:11px; line-height:13px; }
+body.relic-playing [data-wp-frame-stat] .relic-level-inline {
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:baseline!important;
+  justify-content:center!important;
+  gap:2px!important;
+  min-width:0!important;
+  width:100%!important;
+  white-space:nowrap!important;
+}
+body.relic-playing [data-wp-frame-stat] .relic-level-inline > .relic-level-label {
+  display:inline!important;
+  flex:0 0 auto!important;
+  width:auto!important;
+  max-width:none!important;
+  overflow:visible!important;
+  font:600 10px/1.2 system-ui!important;
+  color:var(--wp-ui-muted)!important;
+}
+body.relic-playing [data-wp-frame-stat] .relic-level-inline > #levelVal {
+  display:inline!important;
+  flex:0 0 auto!important;
+  width:auto!important;
+  max-width:none!important;
+  overflow:visible!important;
+  font:800 14px/1.2 system-ui!important;
+  color:var(--wp-ui-text)!important;
+}
+body.relic-playing [data-wp-frame-stat] .relic-level-inline > #expText {
+  display:inline!important;
+  flex:0 1 auto!important;
+  width:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  overflow:visible!important;
+  font:600 10px/1.2 system-ui!important;
+  font-variant-numeric:tabular-nums!important;
+  color:var(--wp-ui-muted)!important;
+}
+body.relic-playing [data-wp-frame-stat] .relic-level-inline + .bar-bg { width:100%; margin-inline:auto; }
 body.relic-playing .bar-bg { height:6px; min-height:6px; }
 body.relic-playing .hud-meta-row {
   grid-column:2;

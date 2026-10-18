@@ -2169,7 +2169,22 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battle
 }
 
 body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hint {
-  display: none !important;
+  display: block !important;
+  left: 1px !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: 1px !important;
+  width: 1px !important;
+  height: 1px !important;
+  min-height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  pointer-events: none !important;
 }
 
 .upgrade-card[data-upgrade="damage"] { border-color: #ffc962; }
@@ -2387,6 +2402,62 @@ html body.orb-fortress-playing #resultPanel .result-actions button {
 }
 @media (prefers-reduced-motion: reduce) {
   .modal-panel.is-revealing > *, .result-panel.is-revealing > * { animation: none; }
+}
+
+/* v48: keep the settled hit copy available to assistive technology without
+   retaining the legacy full-height visual hint row in the Battle canvas. */
+html body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hint {
+  position: absolute !important;
+  left: 1px !important;
+  right: auto !important;
+  top: 1px !important;
+  bottom: auto !important;
+  width: 1px !important;
+  height: 1px !important;
+  min-width: 1px !important;
+  min-height: 1px !important;
+  max-width: 1px !important;
+  max-height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Keep the first-target guidance visible until the player releases their first orb.
+   The same live region returns to its compact assistive-only state afterward. */
+html body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hint[data-first-target-cue] {
+  display: block !important;
+  left: 8px !important;
+  right: 72px !important;
+  top: 60px !important;
+  bottom: auto !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 420px !important;
+  max-height: 72px !important;
+  margin: 0 auto !important;
+  padding: 7px 10px !important;
+  overflow: hidden !important;
+  clip: auto !important;
+  clip-path: none !important;
+  white-space: normal !important;
+  border: 1px solid rgba(185, 241, 255, 0.78) !important;
+  border-radius: 8px !important;
+  color: #f4fbff !important;
+  background: rgba(6, 31, 48, 0.94) !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.38) !important;
+  font-size: clamp(11px, 3vw, 14px) !important;
+  line-height: 1.25 !important;
+  text-align: center !important;
+  pointer-events: none !important;
+  z-index: 4 !important;
 }
 
 /* v47: the shared Stage frame reparents the profile summary into its header.
