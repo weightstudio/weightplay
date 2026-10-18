@@ -5,7 +5,7 @@
   slidingArtLink.href = "art.css?v=20260921-sliding-15-block-scene-v1";
   document.head.appendChild(slidingArtLink);
 
-  const GAME_VERSION = "v16";
+  const GAME_VERSION = "v18";
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const HINT_EXPLANATION = {
     en: "Tile {tile} touches the empty space, so sliding it is a legal move. You still choose whether to move it.",

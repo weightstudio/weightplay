@@ -541,13 +541,17 @@ body[data-logic-game="sliding-15"] .logic-status-line {
     line-height: 1;
   }
 
-  /* The shared wide Canvas renders at up to 0.91× on an 844×390 viewport.
-     Keep every Sliding 15 tile and direct Battle control above 44 physical
-     pixels after that transform, without changing other Logic Lab games. */
+  /* The tutorial and live move/goal line already provide this localized
+     stage context. The duplicate metadata card auto-places beneath the board
+     in this one-row canvas, so hide it and keep the 4×4 grid centered. */
+  body[data-logic-game="sliding-15"] .logic-board-area .logic-sliding-stage-meta { display: none; }
+
+  /* With the duplicate metadata row removed, keep the 4×4 board centered
+     inside the shared panel while preserving the 44px target floor. */
   body[data-logic-game="sliding-15"] .logic-sliding-board {
     width: min(100%, 220px);
     grid-template-columns: repeat(4, minmax(50px, 1fr));
-    transform: translateY(28px);
+    transform: none;
   }
   body[data-logic-game="sliding-15"] .logic-sliding-board .logic-cell {
     min-width: 50px;
