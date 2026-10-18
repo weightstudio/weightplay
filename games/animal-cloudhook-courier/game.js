@@ -4,8 +4,8 @@
   const COPY = window.WPCloudhookLocales.locales;
   const LOCALE_ORDER = window.WPCloudhookLocales.order;
   const GAME_ID = "animal-cloudhook-courier";
-  const GAME_VERSION = "v21";
-  const INTERFACE_VERSION = 7;
+  const GAME_VERSION = "v22";
+  const INTERFACE_VERSION = 9;
   const LEAVE_COPY = {
     en: { title: "Keep this flight?", body: "Continue keeps the current flight. Returning to Stages ends this attempt.", continue: "Continue flight", leave: "Stages" },
     "zh-Hant": { title: "要保留這次飛行嗎？", body: "繼續會保留目前飛行；返回關卡會結束這次嘗試。", continue: "繼續飛行", leave: "返回關卡" },
@@ -45,13 +45,13 @@
   const H = canvas.height;
   const battleBackground = new Image();
   battleBackground.decoding = "async";
-  battleBackground.src = "battle-bg-block-v1.webp";
+  battleBackground.src = "/games/animal-cloudhook-courier/battle-bg-block-v1.webp";
   const courierSprites = new Image();
   courierSprites.decoding = "async";
-  courierSprites.src = "courier-sprites-block-v1.webp";
+  courierSprites.src = "/games/animal-cloudhook-courier/courier-sprites-block-v1.webp";
   const cloudhookProps = new Image();
   cloudhookProps.decoding = "async";
-  cloudhookProps.src = "cloudhook-props-block-v1.webp";
+  cloudhookProps.src = "/games/animal-cloudhook-courier/cloudhook-props-block-v1.webp";
   const authoredStages = [
     { arc: 0, wind: 0, anchors: [[210,300],[370,230],[530,330],[690,210]], parcels: [[300,410],[600,290]], spikes: [] },
     { arc: 0, wind: 8, anchors: [[205,290],[360,190],[500,315],[665,180],[790,300]], parcels: [[300,150],[575,190],[735,130]], spikes: [] },
@@ -193,7 +193,7 @@
   ];
   let locale = "en";
   let soundEnabled = !window.WeightPlayAudio.isMuted();
-  window.addEventListener("weightplay:audio-volume-change", () => { soundEnabled = !window.WeightPlayAudio.isMuted(); });
+  window.addEventListener("weightplay:audio-volume-change", () => { soundEnabled = !window.WeightPlayAudio.isMuted(); safeSet("weightplay_sound", soundEnabled ? "on" : "off"); });
 
   let currentStage = 0;
   let state = null;
@@ -204,6 +204,8 @@
   let resultOpen = false;
   let leaveOpen = false;
   let lastInputType = "system";
+  let sharedFrame = null;
+  let stageUI = null;
 
   const text = (key) => (COPY[locale] && COPY[locale][key]) || COPY.en[key] || key;
   const parcelObjectiveCopy = { en: "Parcels {collected}/{total} · Reach the lantern", "zh-Hant": "包裹 {collected}/{total} · 抵達燈籠", "zh-Hans": "包裹 {collected}/{total} · 抵达灯笼", ja: "荷物 {collected}/{total} · ランタンへ", ko: "소포 {collected}/{total} · 랜턴에 도착", es: "Paquetes {collected}/{total} · Llega al farol", "pt-BR": "Pacotes {collected}/{total} · Chegue à lanterna", fr: "Colis {collected}/{total} · Atteignez la lanterne", de: "Pakete {collected}/{total} · Erreiche die Laterne", it: "Pacchi {collected}/{total} · Raggiungi la lanterna", ru: "Посылки {collected}/{total} · Долетите до фонаря", hi: "पैकेट {collected}/{total} · लालटेन तक पहुँचें", ar: "الطرود {collected}/{total} · أصل إلى الفانوس" };
@@ -251,7 +253,7 @@
   };
   const holdBucket = (seconds) => seconds < 1 ? "under_1s" : seconds < 3 ? "1_to_3s" : "over_3s";
   const setScreen = (screen) => {
-    ["main", "stage", "battle"].forEach((name) => { $(`#${name}Screen`).hidden = screen !== name; });
+    ["main", "stage", "battle"].forEach((name) => { $("#" + name + "Screen").hidden = screen !== name; });
     if (screen !== "battle") {
       resultOpen = false;
       leaveOpen = false;
@@ -260,6 +262,9 @@
       battleScreen.classList.remove("result-open", "leave-open");
     }
     document.body.dataset.screen = screen;
+    sharedFrame?.frame.activate(screen);
+    if (screen === "stage") stageUI?.refresh(currentStage);
+    sharedFrame?.syncStageInfo();
     window.dispatchEvent(new Event("weightplay:shell-sync"));
   };
   const isBattleActive = () => document.body.dataset.screen === "battle" && !resultOpen && !leaveOpen;
@@ -418,12 +423,39 @@
   const applyLeaveCopy = () => { const copy = LEAVE_COPY[locale] || LEAVE_COPY.en; $("#leaveEyebrow").textContent = text("battle"); $("#leaveTitle").textContent = copy.title; $("#leaveCopy").textContent = copy.body; $("#continueBattle").textContent = copy.continue; $("#leaveBattle").textContent = copy.leave; };
   const setResultOpen = (open) => { resultOpen = Boolean(open); if (resultOpen) { leaveOpen = false; leaveOverlay.hidden = true; } resultScreen.hidden = !resultOpen; battleScreen.classList.toggle("result-open", resultOpen); battleScreen.classList.remove("leave-open"); syncBattleOverlayState(); if (resultOpen) { resultScreen.scrollTop = 0; const focusTarget = $("#nextBtn").disabled ? $("#retryBtn") : $("#nextBtn"); focusTarget?.focus(); } };
   const setLeaveOpen = (open, restoreFocus = true) => { if (open && resultOpen) return; leaveOpen = Boolean(open); leaveOverlay.hidden = !leaveOpen; battleScreen.classList.toggle("leave-open", leaveOpen); syncBattleOverlayState(); if (leaveOpen) $("#continueBattle").focus(); else if (restoreFocus && !battleScreen.hidden) $("#battleBack")?.focus(); };
-  const renderStages = () => { const count = unlocked(); $("#stageGrid").innerHTML = stageConfigs.map((_, index) => { const open = index < count; const best = Number(safeGet(bestKey(index), 0)); const meta = stageMeta(index); const status = open ? (best ? `${text("stageDone")}: ${formatTime(best)}` : text("choose")) : text("stageLocked"); return `<button type="button" class="stage-card${open ? "" : " locked"}" data-stage="${index}" data-arc="${meta.arc}" aria-posinset="${index + 1}" aria-setsize="${stageConfigs.length}" aria-label="${formatStage(index)} · ${meta.title}" ${open ? "" : "disabled"}><strong>${formatStage(index)} · ${meta.title}</strong><small>${meta.arc} · ${meta.objective} · ${status}</small><span aria-hidden="true">${open ? "✦" : "◌"}</span></button>`; }).join(""); $("#stageGrid").dataset.wpStageTotal = String(stageConfigs.length); $("#stageTitle").textContent = text("stages"); $("#stageTab").textContent = text("stages"); $("#stageEyebrow").textContent = text("eyebrow"); $("#stageHelp").textContent = text("stageHelp"); $("#stageGrid").querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", (event) => { noteInput(event); startStage(Number(button.dataset.stage), "stage_card"); })); };
-  const startStage = (index, source = "stage_card") => { setResultOpen(false); setLeaveOpen(false, false); currentStage = Math.max(0, Math.min(stageConfigs.length - 1, index)); resetState(); track("stage_start", { source, stage: currentStage + 1 }); $("#battleEyebrow").textContent = text("battle"); $("#battleTitle").textContent = `${formatStage(currentStage)} · ${stageMeta().title}`; $("#battleStatus").textContent = stageMeta().objective; canvas.setAttribute("aria-label", text("ariaCanvas")); $("#nudgeLeft").setAttribute("aria-label", text("ariaLeft")); $("#nudgeRight").setAttribute("aria-label", text("ariaRight")); setScreen("battle"); window.dispatchEvent(new Event("weightplay:battle-open")); window.WeightPlayBattleCanvas?.sync?.(); window.setTimeout(() => window.WeightPlayBattleCanvas?.sync?.(), 0); beep("game.start"); };
-  const refreshShell = () => { document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.title = `Cloudhook Courier | WeightPlay`; $("#eyebrow").textContent = text("eyebrow"); $("#coming").textContent = text("coming"); $("#languageLabel").textContent = text("language"); $("#tagline").textContent = text("objective"); $("#objective").textContent = text("objective"); $("#guideTitle").textContent = text("guideTitle"); $("#guideBody").textContent = text("guideBody"); $("#guideControls").textContent = text("guideControls"); $("#startBtn").textContent = text("start"); $("#soundBtn").textContent = soundEnabled ? text("soundOn") : text("soundOff"); $("#soundBtn").setAttribute("aria-pressed", String(soundEnabled)); $("#stageSoundBtn").textContent = soundEnabled ? text("soundOn") : text("soundOff"); $("#stageSoundBtn").setAttribute("aria-pressed", String(soundEnabled)); $("#battleSoundBtn").textContent = soundEnabled ? text("soundOn") : text("soundOff"); $("#battleSoundBtn").setAttribute("aria-label", soundEnabled ? text("soundOn") : text("soundOff")); $("#battleSoundBtn").setAttribute("aria-pressed", String(soundEnabled)); $("#stageBack").setAttribute("aria-label", text("backMain")); $("#battleBack").setAttribute("aria-label", text("backStages")); $("#battleBack").setAttribute("data-wp-return", "battle"); $("#restartBtn").textContent = text("restart"); $("#stageTitle").textContent = text("stages"); $("#stageEyebrow").textContent = text("eyebrow"); $("#stageHelp").textContent = text("stageHelp"); applyLeaveCopy(); renderStages(); if (state && document.body.dataset.screen === "battle") { $("#battleEyebrow").textContent = text("battle"); $("#battleTitle").textContent = formatStage(currentStage); $("#battleStatus").textContent = text(state.messageKey || "ready"); updateHud(); } if (state && resultOpen) renderResult(); updateTetherLabel(); };
-  const toggleSound = () => { soundEnabled = window.WeightPlayAudio.setEnabled(!soundEnabled); safeSet("weightplay_sound", soundEnabled ? "on" : "off"); refreshShell(); if (soundEnabled) beep("ui.click"); };
+  const renderStages = () => {
+    $("#stageTitle").textContent = text("stages");
+    $("#stageTab").textContent = text("stages");
+    stageUI?.refresh(currentStage);
+    sharedFrame?.syncStageInfo();
+  };
+  const startStage = (index, source = "stage_card") => { setResultOpen(false); setLeaveOpen(false, false); currentStage = Math.max(0, Math.min(stageConfigs.length - 1, index)); resetState(); track("stage_start", { source, stage: currentStage + 1 }); $("#battleTitle").textContent = `${formatStage(currentStage)} · ${stageMeta().title}`; $("#battleStatus").textContent = stageMeta().objective; canvas.setAttribute("aria-label", text("ariaCanvas")); $("#nudgeLeft").setAttribute("aria-label", text("ariaLeft")); $("#nudgeRight").setAttribute("aria-label", text("ariaRight")); setScreen("battle"); window.dispatchEvent(new Event("weightplay:battle-open")); window.WeightPlayBattleCanvas?.sync?.(); window.setTimeout(() => window.WeightPlayBattleCanvas?.sync?.(), 0); beep("game.start"); };
+  const refreshShell = () => {
+    document.documentElement.lang = locale;
+    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+    document.title = "Cloudhook Courier | WeightPlay";
+    $("#eyebrow").textContent = text("eyebrow");
+    $("#coming").textContent = text("coming");
+    $("#languageLabel").textContent = text("language");
+    $("#tagline").textContent = text("objective");
+    $("#objective").textContent = text("objective");
+    $("#startBtn").textContent = text("start");
+    $("#stageBack").setAttribute("aria-label", text("backMain"));
+    $("#battleBack").setAttribute("aria-label", text("backStages"));
+    $("#battleBack").setAttribute("data-wp-return", "battle");
+    $("#restartBtn").textContent = text("restart");
+    applyLeaveCopy();
+    renderStages();
+    if (state && document.body.dataset.screen === "battle") {
+      $("#battleTitle").textContent = formatStage(currentStage) + " · " + stageMeta().title;
+      $("#battleStatus").textContent = text(state.messageKey || "ready");
+      updateHud();
+    }
+    if (state && resultOpen) renderResult();
+    updateTetherLabel();
+  };
   const goStage = () => { if (document.body.dataset.screen === "main") track("game_start", { stage: 1, source: "main_start" }); setResultOpen(false); setLeaveOpen(false, false); renderStages(); setScreen("stage"); };
-  $("#startBtn").addEventListener("click", (event) => { noteInput(event); goStage(); }); $("#stageBack").addEventListener("click", () => setScreen("main")); $("#soundBtn").addEventListener("click", toggleSound); $("#stageSoundBtn").addEventListener("click", toggleSound); $("#battleSoundBtn").addEventListener("click", toggleSound); $("#restartBtn").addEventListener("click", (event) => { noteInput(event); startStage(currentStage, "stage_card"); }); $("#retryBtn").addEventListener("click", (event) => { noteInput(event); track("result_retry", { action: "retry", source: "result" }); startStage(currentStage, "retry"); }); $("#nextBtn").addEventListener("click", (event) => { if (!$("#nextBtn").disabled) { noteInput(event); track("result_next", { action: "next", source: "result" }); startStage(currentStage + 1, "next"); } }); $("#resultStagesBtn").addEventListener("click", (event) => { noteInput(event); track("result_stages", { action: "stages", source: "result" }); goStage(); });
+  $("#startBtn").addEventListener("click", (event) => { noteInput(event); goStage(); }); $("#stageBack").addEventListener("click", () => setScreen("main")); $("#restartBtn").addEventListener("click", (event) => { noteInput(event); startStage(currentStage, "stage_card"); }); $("#retryBtn").addEventListener("click", (event) => { noteInput(event); track("result_retry", { action: "retry", source: "result" }); startStage(currentStage, "retry"); }); $("#nextBtn").addEventListener("click", (event) => { if (!$("#nextBtn").disabled) { noteInput(event); track("result_next", { action: "next", source: "result" }); startStage(currentStage + 1, "next"); } }); $("#resultStagesBtn").addEventListener("click", (event) => { noteInput(event); track("result_stages", { action: "stages", source: "result" }); goStage(); });
   document.addEventListener("click", (event) => { const control = event.target?.closest?.('#battleScreen [data-wp-return="battle"]'); if (!control || battleScreen.hidden || resultOpen) return; event.preventDefault(); event.stopImmediatePropagation(); setLeaveOpen(true); }, true);
   $("#continueBattle").addEventListener("click", () => setLeaveOpen(false));
   $("#leaveBattle").addEventListener("click", () => goStage());
@@ -441,13 +473,44 @@
   document.addEventListener("keydown", (event) => { if (document.body.dataset.screen !== "battle") return; noteInput(event); if (["ArrowLeft","ArrowRight"," ","Spacebar","r","R"].includes(event.key)) event.preventDefault(); if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") setInputAxis(-1); if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") setInputAxis(1); if (event.key === " " || event.key === "Spacebar") setTether(true); if (event.key.toLowerCase() === "r") startStage(currentStage, "stage_card"); });
   document.addEventListener("keyup", (event) => { noteInput(event); if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") { if (inputAxis < 0) setInputAxis(0); } if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") { if (inputAxis > 0) setInputAxis(0); } if (event.key === " " || event.key === "Spacebar") setTether(false); });
   document.addEventListener("visibilitychange", () => { hidden = document.hidden; lastTime = performance.now(); if (hidden && state?.attached) release(); });
-  const initialLocale = (() => { const routeLocale = document.documentElement.lang; const saved = safeGet("weightPlayLocale", "en"); return COPY[routeLocale] ? routeLocale : COPY[saved] ? saved : "en"; })(); locale = initialLocale; $("#localeSelect").innerHTML = LOCALE_ORDER.map((code) => `<option value="${code}">${code}</option>`).join(""); $("#localeSelect").value = locale; $("#localeSelect").addEventListener("change", (event) => { locale = event.target.value; safeSet("weightPlayLocale", locale); refreshShell(); }); soundEnabled = window.WeightPlayAudio.setEnabled(safeGet("weightplay_sound", "on") !== "off"); resetState(); refreshShell(); setScreen("main"); lastTime = performance.now(); frame = window.requestAnimationFrame(tick);
-  $("#stageBack").setAttribute("data-wp-return", "stage");
-  $("#stageScreen").setAttribute("data-wp-standard-stage-screen", "");
-  $("#stageGrid").setAttribute("data-wp-stage-rail", "");
-  $("#battleScreen").setAttribute("data-wp-logical-battle-canvas", "");
-  $("#stageScreen .section-head")?.classList.add("stage-header");
-  $("#battleScreen .section-head")?.classList.add("battle-header");
-  const inlineGuide = document.querySelector(".guide[data-wp-game-guide]");
-  inlineGuide?.classList.add("main-howto");
+  const initialLocale = (() => { const routeLocale = document.documentElement.lang; const saved = safeGet("weightPlayLocale", "en"); return COPY[routeLocale] ? routeLocale : COPY[saved] ? saved : "en"; })();
+  locale = initialLocale;
+  $("#localeSelect").innerHTML = LOCALE_ORDER.map((code) => '<option value="' + code + '">' + code + '</option>').join("");
+  $("#localeSelect").value = locale;
+  $("#localeSelect").addEventListener("change", (event) => {
+    const next = event.target.value;
+    if (!COPY[next]) return;
+    locale = next;
+    safeSet("weightPlayLocale", locale);
+    window.WonderI18n?.setLocale?.(locale, { navigate: false });
+    refreshShell();
+  });
+  window.addEventListener("wonder:locale-change", () => {
+    const next = window.WonderI18n?.locale?.();
+    if (!COPY[next] || next === locale) return;
+    locale = next;
+    $("#localeSelect").value = locale;
+    safeSet("weightPlayLocale", locale);
+    refreshShell();
+  });
+  soundEnabled = window.WeightPlayAudio.setEnabled(safeGet("weightplay_sound", "on") !== "off");
+  resetState();
+  refreshShell();
+  sharedFrame = window.mountAnimalCloudhookCourierFrame({
+    count: stageConfigs.length,
+    getSelectedStage: () => currentStage,
+    unlocked,
+    stageMeta,
+    bestTime: (index) => Number(safeGet(bestKey(index), 0)) || 0,
+    text,
+    formatTime,
+    selectStage: (index) => { currentStage = index; },
+    startStage,
+  });
+  stageUI = sharedFrame.stageUI;
+  setScreen("main");
+  lastTime = performance.now();
+  frame = window.requestAnimationFrame(tick);
+  $("#stageGrid").addEventListener("pointerdown", noteInput, true);
+  $("#stageGrid").addEventListener("click", noteInput, true);
 })();

@@ -1,0 +1,41 @@
+/* Locale-only copy formerly bundled with the I7 Stage compatibility layer. */
+(() => {
+  "use strict";
+  const locales = window.WPCloudhookLocales && window.WPCloudhookLocales.locales;
+  if (!locales) throw new Error("CLOUDHOOK_LOCALES_REQUIRED");
+  const retryCue = {
+    en: "On Retry, watch the next ring: hold Tether when it is in range, build your swing, then release toward the next ring.",
+    "zh-Hant": "再試一次時先看下一個光環：進入範圍後按住繫繩，累積擺盪，再朝下一個光環放手。",
+    "zh-Hans": "再试一次时先看下一个光环：进入范围后按住系绳，积累摆荡，再朝下一个光环放手。",
+    ja: "再挑戦では次のリングを見ましょう。近づいたらテザーを長押しし、揺れを作ってから次のリングへ放します。",
+    ko: "다시 할 때는 다음 링을 보세요. 범위에 들어오면 테더를 누르고 흔들림을 만든 뒤 다음 링을 향해 놓으세요.",
+    es: "Al reintentar, mira el siguiente anillo: mantén el lazo cuando esté al alcance, gana impulso y suéltalo hacia el siguiente.",
+    "pt-BR": "Ao tentar de novo, observe o próximo anel: segure a corda quando ele estiver ao alcance, ganhe impulso e solte rumo ao seguinte.",
+    fr: "À la prochaine tentative, regardez l’anneau suivant : maintenez le lien à portée, prenez de l’élan, puis lâchez vers le suivant.",
+    de: "Beim nächsten Versuch auf den nächsten Ring achten: Halte das Seil in Reichweite, baue Schwung auf und löse zum nächsten Ring.",
+    it: "Al prossimo tentativo guarda l’anello successivo: tieni il laccio quando è a portata, accumula slancio e lascia verso il prossimo.",
+    ru: "В следующей попытке смотрите на следующее кольцо: удерживайте трос в зоне захвата, наберите раскачку и отпустите к следующему.",
+    hi: "फिर प्रयास में अगले रिंग को देखें: पास आने पर टेथर दबाएँ, झूले की गति बनाएँ और अगले रिंग की ओर छोड़ें।",
+    ar: "عند المحاولة مجددًا راقب الحلقة التالية: اضغط الحبل عندما تصبح في المدى، واجمع التأرجح، ثم اتركه نحو الحلقة التالية.",
+  };
+  const a11y = {
+    en: ["Back to WeightPlay", "Cloudhook Courier cover", "Game controls"],
+    "zh-Hant": ["返回 WeightPlay", "雲鉤快遞封面", "遊戲控制項"],
+    "zh-Hans": ["返回 WeightPlay", "云钩快递封面", "游戏控制"],
+    ja: ["WeightPlay に戻る", "雲鉤配達のカバー", "ゲーム操作"],
+    ko: ["WeightPlay로 돌아가기", "클라우드훅 배달 표지", "게임 조작"],
+    es: ["Volver a WeightPlay", "Portada de Cloudhook Courier", "Controles del juego"],
+    "pt-BR": ["Voltar ao WeightPlay", "Capa de Cloudhook Courier", "Controles do jogo"],
+    fr: ["Retour à WeightPlay", "Illustration de couverture de Cloudhook Courier", "Commandes du jeu"],
+    de: ["Zurück zu WeightPlay", "Cloudhook-Courier-Cover", "Spielsteuerung"],
+    it: ["Torna a WeightPlay", "Copertina Cloudhook Courier", "Controlli di gioco"],
+    ru: ["Вернуться в WeightPlay", "Обложка Cloudhook Courier", "Управление игрой"],
+    hi: ["WeightPlay पर लौटें", "क्लाउडहुक कवर", "गेम नियंत्रण"],
+    ar: ["العودة إلى WeightPlay", "غلاف ساعي السحاب", "عناصر تحكم اللعبة"],
+  };
+  for (const [code, locale] of Object.entries(locales)) {
+    if (retryCue[code]) locale.retryCue = retryCue[code];
+    const values = a11y[code];
+    if (values) Object.assign(locale, { backLobby: values[0], cover: values[1], ariaControls: values[2] });
+  }
+})();
