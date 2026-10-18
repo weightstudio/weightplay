@@ -2698,6 +2698,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
 
   function renderSelectedInfo() {
     const cue = firstPlacementCueText();
+    nodes.selectedInfo.classList.toggle("has-route-placement-cue", Boolean(cue));
     const cueMarkup = cue ? `<strong class="route-placement-cue">${cue}</strong>` : "";
     if (state.selectedDefender) {
       const d = state.selectedDefender;
@@ -3135,7 +3136,10 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     const currentPath = findPath(false);
     if (state.currentStage === 1 && state.wave === 0 && state.defenders.length === 1) {
       state.firstPlacementCue = {
-        routeChanged: Boolean(previousPath && currentPath && currentPath.length > previousPath.length),
+        routeChanged: Boolean(previousPath && currentPath && (
+          previousPath.length !== currentPath.length
+          || previousPath.some((tile, index) => !sameTile(tile, currentPath[index]))
+        )),
         routeOpen: Boolean(currentPath),
         coreProtected: state.coreHp > 0,
         nextWave: 1,

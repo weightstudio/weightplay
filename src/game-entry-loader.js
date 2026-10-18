@@ -242,11 +242,21 @@
         autoFrame = requestAnimationFrame(checkAuto);
       }
     }
+    function legacyPanelFinished(panel) {
+      for (let node = panel; node && node !== document.body && node !== document.documentElement; node = node.parentElement) {
+        if (node.hidden || node.classList.contains('hidden') || node.classList.contains('is-hidden') || node.style.display === 'none' || node.getAttribute('aria-hidden') === 'true') return true;
+        // A game may complete loading by hiding the containing scene. Do not
+        // read our own CSS suppression of a legacy panel as an engine signal.
+        if (node !== panel && !node.matches('#loadingPanel,.loading-panel') && getComputedStyle(node).display === 'none') return true;
+      }
+      return false;
+    }
     function checkAuto() {
       autoFrame = 0;
       if (state.ready || state.failed || state.engineOwned || document.readyState !== 'complete') return;
       const panels = [...document.querySelectorAll('#loadingPanel,.loading-panel')];
-      if (panels.some(panel => !(panel.hidden || panel.classList.contains('hidden') || panel.classList.contains('is-hidden') || panel.style.display === 'none' || panel.getAttribute('aria-hidden') === 'true'))) return;
+      if (panels.some(panel => panel.classList.contains('has-error'))) { fail(); return; }
+      if (panels.some(panel => !legacyPanelFinished(panel))) return;
       const visible = node => Boolean(node && !node.closest('[hidden]') && node.getClientRects().length
         && getComputedStyle(node).visibility !== 'hidden' && getComputedStyle(node).visibility !== 'collapse');
       // autoMountDocument supports legacy game-owned Main roots as well as

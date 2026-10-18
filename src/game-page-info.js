@@ -11953,7 +11953,7 @@
     // locale owns complete localized copy. Honor that shared contract before
     // the generic renderer removes and rebuilds Guide nodes from fallback data.
     const preservedStaticGuide = document.querySelector(
-      "section.game-page-info-static[data-wp-preserve-static-guide]",
+      'section.game-page-info-static[data-wp-preserve-static-guide], section.game-page-info-static[data-wp-game-owned-guide="true"]',
     );
     if (preservedStaticGuide) {
       preservedStaticGuide.setAttribute("aria-label", uiLabel("guideLabel", { title: game.title }));

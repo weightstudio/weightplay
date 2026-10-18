@@ -1225,7 +1225,7 @@ body.wp-shell-battle-active .play-reserve {
   max-height: var(--wp-ad-reserve-height, 0px) !important;
 }
 
-body:is(.wp-shell-stage-active, .wp-shell-battle-active)
+body:is(.wp-shell-stage-active, .wp-shell-battle-active, .wp-frame-stage-active, .wp-frame-battle-active)
   :is(.game-page-info, .public-guide, .game-guide, .guide) {
   display: none !important;
 }

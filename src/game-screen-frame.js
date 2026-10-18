@@ -14,7 +14,10 @@
     const script = document.createElement('script');
     script.src = '/src/game-entry-loader.js?v=20261018-entry-readiness-bridge2';
     script.dataset.wpGameEntryLoaderBootstrap = 'true';
-    script.async = false;
+    // This bootstrap has no dependency on the game modules. Let it execute
+    // independently of their ordered dynamic-script queue so a slow or failed
+    // game engine cannot postpone the shared loading and recovery UI.
+    script.async = true;
     document.head.append(script);
   }
   function bootstrapDeclaredEntryLoader() {

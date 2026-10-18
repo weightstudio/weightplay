@@ -3387,3 +3387,137 @@ html body[data-game-id="beast-tactician"] #gamePanel .build-card {
     grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
   }
 }
+
+/* v21: keep the first-placement route and Core summary visible in the compact
+   Battle readout. The cue owns this short pre-wave space so it stays readable
+   without pushing the board, build cards, or command row. */
+html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info.has-route-placement-cue > :not(.route-placement-cue) {
+  display: none !important;
+}
+
+html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info.has-route-placement-cue .route-placement-cue {
+  display: block !important;
+  grid-column: 1 / -1 !important;
+  grid-row: 1 / -1 !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  color: #d9f99d !important;
+  font-size: clamp(8px, 2.6vw, 12px) !important;
+  line-height: 1.08 !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+@media (min-width: 700px) and (max-height: 560px) {
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel > [data-wp-frame-content="battle"] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: 38px minmax(0, 1fr) 48px !important;
+    gap: 4px !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel > [data-wp-frame-content="battle"] > .wave-intel-panel {
+    grid-row: 1 !important;
+    min-height: 0 !important;
+    height: 38px !important;
+    max-height: 38px !important;
+    margin: 0 !important;
+    padding: 3px 8px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel > [data-wp-frame-content="battle"] > .battle-layout {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    grid-template-columns: minmax(0, 1fr) 248px !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    gap: 5px !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .battle-layout > .canvas-shell {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow: auto !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel #gameCanvas {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: none !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: 3 / 2 !important;
+    flex: 0 0 auto !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-panel {
+    grid-template-rows: 20px minmax(0, 1fr) 30px !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-cards {
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card {
+    grid-template-columns: 1fr !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 2px !important;
+    place-items: center !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card img {
+    width: 24px !important;
+    height: 26px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .build-card > div {
+    display: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .selected-info {
+    display: flex !important;
+    align-items: center !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    height: 30px !important;
+    margin: 0 !important;
+    padding: 3px 5px !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel > [data-wp-frame-content="battle"] > .command-row {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+    justify-self: center !important;
+    width: 366px !important;
+    max-width: 100% !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+    padding: 3px !important;
+    overflow: hidden !important;
+  }
+}
