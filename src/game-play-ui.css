@@ -155,3 +155,14 @@ html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-play-actions] > [dat
 }
 html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-play-actions] :is(button,a):is([aria-pressed="true"],[role="tab"][aria-selected="true"]) {background:var(--wp-ui-active)!important}
 }
+
+@layer wp-frame-contract {
+  @media (prefers-reduced-motion: reduce) {
+    /* Keep shared I9 selection emphasis without card travel or scale. */
+    html:root body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-stage-selector="1"] .stage-card,
+    html:root body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-stage-selector="1"] .stage-card[aria-current="true"] {
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+}

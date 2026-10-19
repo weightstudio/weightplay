@@ -171,7 +171,7 @@
       ui.status.textContent = copy()[7].replace("{loaded}", String(state.loaded)).replace("{total}", String(state.total));
     };
     const fail = (message, retry) => {
-      if (state.ready) return;
+      if (state.ready || state.failed) return;
       state.failed = true;
       stopAuto();
       state.retry = typeof retry === "function" ? retry : () => window.location.reload();
@@ -282,6 +282,10 @@
     document.addEventListener('load', onMainImageSettled, true);
     document.addEventListener('error', onMainImageSettled, true);
     scheduleAuto();
+    if (window.__weightPlayGameEntryPendingFailure === GAME_ID) {
+      delete window.__weightPlayGameEntryPendingFailure;
+      fail();
+    }
     return;
   }
 

@@ -73,6 +73,41 @@
   const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
   const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
+  const transitionVisualUpdate = (update) => {
+    const app = $("app");
+    const startTransition = document.startViewTransition;
+    if (typeof startTransition !== "function") {
+      update();
+      return;
+    }
+    if (visualTransition?.skipTransition) {
+      try { visualTransition.skipTransition(); } catch (_error) {}
+    }
+    const generation = ++visualTransitionGeneration;
+    const previousInert = visualTransition ? visualTransitionPreviousInert : Boolean(app?.inert);
+    visualTransitionPreviousInert = previousInert;
+    if (app) app.inert = true;
+    let committed = false;
+    const commit = () => {
+      if (committed || generation !== visualTransitionGeneration) return;
+      committed = true;
+      if (app) app.inert = previousInert;
+      update();
+    };
+    try {
+      const transition = startTransition.call(document, commit);
+      visualTransition = transition;
+      Promise.resolve(transition.finished).catch(() => {}).finally(() => {
+        if (generation !== visualTransitionGeneration) return;
+        if (!committed) commit();
+        if (app) app.inert = previousInert;
+        visualTransition = null;
+        visualTransitionPreviousInert = null;
+      });
+    } catch (_error) {
+      commit();
+    }
+  };
 
   const copy = (key, vars = {}) => {
     const dictionary = localeMap[state.locale] || localeMap.en || {};
@@ -122,6 +157,10 @@
   let stageController = null;
   let stageBrowseIndex = 0;
   let frame = null;
+  let visualTransition = null;
+  let visualTransitionGeneration = 0;
+  let visualTransitionPreviousInert = null;
+  let battleStatusMotion = null;
   let battleDirty = false;
   let leaveOpen = false;
   let focusBeforeLeave = null;
@@ -133,7 +172,16 @@
   const setBattleStatus = (key, stoneId = null) => {
     state.statusKey = key;
     state.statusStone = stoneId;
-    $("battleStatus").textContent = battleStatusText();
+    const status = $("battleStatus");
+    if (!status) return;
+    status.textContent = battleStatusText();
+    battleStatusMotion?.cancel();
+    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    battleStatusMotion = status.animate(
+      [{ opacity: 0.55 }, { opacity: 1 }],
+      { duration: reduceMotion ? 90 : 140, easing: "ease-out" },
+    );
+    battleStatusMotion.onfinish = () => { battleStatusMotion = null; };
   };
 
   const normalizeLegacyChrome = () => {
@@ -249,15 +297,19 @@
     if (leave) leave.textContent = ui("returnStages");
   };
 
-  const closeLeave = (restoreFocus = true) => {
+  const closeLeave = (restoreFocus = true, animate = true) => {
     if (!leaveOpen || !leaveLayer) return;
-    leaveOpen = false;
-    leaveLayer.hidden = true;
-    document.body.classList.remove("wp-magnet-leave-open");
-    setResultCoveredState();
-    if (restoreFocus) $("battleBackBtn")?.focus({ preventScroll: true });
-    else if (focusBeforeLeave instanceof HTMLElement && focusBeforeLeave.isConnected) focusBeforeLeave.blur();
-    focusBeforeLeave = null;
+    const update = () => {
+      leaveOpen = false;
+      leaveLayer.hidden = true;
+      document.body.classList.remove("wp-magnet-leave-open");
+      setResultCoveredState();
+      if (restoreFocus) $("battleBackBtn")?.focus({ preventScroll: true });
+      else if (focusBeforeLeave instanceof HTMLElement && focusBeforeLeave.isConnected) focusBeforeLeave.blur();
+      focusBeforeLeave = null;
+    };
+    if (animate) transitionVisualUpdate(update);
+    else update();
   };
 
   const openLeave = () => {
@@ -266,11 +318,13 @@
     renderStones();
     refreshLeaveCopy();
     focusBeforeLeave = document.activeElement;
-    leaveOpen = true;
-    document.body.classList.add("wp-magnet-leave-open");
-    leaveLayer.hidden = false;
-    setResultCoveredState();
-    leaveLayer.querySelector("#magnetLeaveContinue")?.focus({ preventScroll: true });
+    transitionVisualUpdate(() => {
+      leaveOpen = true;
+      document.body.classList.add("wp-magnet-leave-open");
+      leaveLayer.hidden = false;
+      setResultCoveredState();
+      leaveLayer.querySelector("#magnetLeaveContinue")?.focus({ preventScroll: true });
+    });
   };
 
   const createLeaveDialog = () => {
@@ -304,24 +358,33 @@
     frame?.refresh();
   };
 
-  const setScreen = (screen) => {
-    if (leaveOpen) closeLeave(false);
-    if (screen !== "stage") stageController?.cancel();
-    state.screen = screen;
-    document.body.dataset.screen = screen;
-    ["main", "stage", "battle"].forEach((name) => {
-      const element = $(name + "Screen");
-      if (!element) return;
-      element.hidden = name !== screen;
-      element.classList.toggle("active", name === screen);
-    });
-    const guide = $("guideScreen");
-    if (guide) guide.hidden = screen !== "main";
-    frame?.activate(screen, { covered: screen === "battle" && state.resultActive });
-    if (screen === "main") applyText();
-    if (screen === "stage") renderStages();
-    if (screen === "battle" && !state.resultActive) renderBattle();
-    window.scrollTo(0, 0);
+  const setScreen = (screen, { forceTransition = false } = {}) => {
+    const previousScreen = state.screen;
+    const update = () => {
+      if (leaveOpen) closeLeave(false, false);
+      if (screen !== "stage") stageController?.cancel();
+      if (screen !== "battle") {
+        battleStatusMotion?.cancel();
+        battleStatusMotion = null;
+      }
+      state.screen = screen;
+      document.body.dataset.screen = screen;
+      ["main", "stage", "battle"].forEach((name) => {
+        const element = $(name + "Screen");
+        if (!element) return;
+        element.hidden = name !== screen;
+        element.classList.toggle("active", name === screen);
+      });
+      const guide = $("guideScreen");
+      if (guide) guide.hidden = screen !== "main";
+      frame?.activate(screen, { covered: screen === "battle" && state.resultActive });
+      if (screen === "main") applyText();
+      if (screen === "stage") renderStages();
+      if (screen === "battle" && !state.resultActive) renderBattle();
+      window.scrollTo(0, 0);
+    };
+    if (previousScreen === screen && !forceTransition) update();
+    else transitionVisualUpdate(update);
   };
 
   const enterStage = () => {
@@ -464,13 +527,15 @@
     if (!state.completed.includes(state.round)) state.completed.push(state.round);
     state.resultActive = true;
     battleDirty = false;
-    $("battlePanel").hidden = true;
-    $("resultPanel").hidden = false;
-    $("resultHeading").textContent = copy(final ? "finishTitle" : "resultTitle");
-    $("resultText").textContent = copy("resultText");
-    $("resultStats").textContent = copy("stats", { moves: total, best: copy("best", { count: final ? Math.min(total, previousBest || total) : bestTotal() || copy("noBest") }) });
-    $("mainProgress").textContent = copy("progress", { count: state.completed.length }).replaceAll("/3", "/" + rounds.length);
-    refreshResult();
+    transitionVisualUpdate(() => {
+      $("battlePanel").hidden = true;
+      $("resultPanel").hidden = false;
+      $("resultHeading").textContent = copy(final ? "finishTitle" : "resultTitle");
+      $("resultText").textContent = copy("resultText");
+      $("resultStats").textContent = copy("stats", { moves: total, best: copy("best", { count: final ? Math.min(total, previousBest || total) : bestTotal() || copy("noBest") }) });
+      $("mainProgress").textContent = copy("progress", { count: state.completed.length }).replaceAll("/3", "/" + rounds.length);
+      refreshResult();
+    });
   };
 
   const checkRound = () => {
@@ -486,6 +551,7 @@
 
   function startRound(index) {
     if (!stageUnlocked(index) && index !== state.round) return;
+    const leavingResult = state.resultActive;
     state.round = clamp(index, 0, rounds.length - 1);
     state.positions = { ...rounds[state.round].initial };
     state.moves = 0;
@@ -494,16 +560,20 @@
     state.resultActive = false;
     battleDirty = false;
     setBattleStatus("ready");
-    setScreen("battle");
+    setScreen("battle", { forceTransition: leavingResult });
   }
 
-  const applyLocale = (locale) => {
-    state.locale = localeList.includes(locale) && localeMap[locale] ? locale : "en";
-    safeSet("weightplay-locale", state.locale);
-    document.documentElement.lang = state.locale;
-    document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
-    if ($("languageSelect")) $("languageSelect").value = state.locale;
-    applyText();
+  const applyLocale = (locale, animate = true) => {
+    const update = () => {
+      state.locale = localeList.includes(locale) && localeMap[locale] ? locale : "en";
+      safeSet("weightplay-locale", state.locale);
+      document.documentElement.lang = state.locale;
+      document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
+      if ($("languageSelect")) $("languageSelect").value = state.locale;
+      applyText();
+    };
+    if (animate && frame) transitionVisualUpdate(update);
+    else update();
   };
 
   const bind = () => {
@@ -551,7 +621,7 @@
     const savedLocale = localeList.includes(routeLocale) && localeMap[routeLocale]
       ? routeLocale
       : safeGet("weightplay-locale", "en");
-    applyLocale(savedLocale);
+    applyLocale(savedLocale, false);
     resetRound();
     setScreen("main");
   };

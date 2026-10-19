@@ -1,6 +1,20 @@
 /* One shared frame. No game IDs, polling or parallel skin implementations. */
 (() => {
   'use strict';
+  function installEarlyGameScriptFailureBridge() {
+    const gameId = location.pathname.match(/\/games\/([a-z0-9-]+)(?:\/|\/index\.html)?$/i)?.[1]?.toLowerCase();
+    if (!gameId || window.__weightPlayGameEntryFailureCaptureInstalled) return;
+    window.__weightPlayGameEntryFailureCaptureInstalled = true;
+    window.addEventListener('error', event => {
+      const failed = event.target;
+      if (!(failed instanceof HTMLScriptElement) || !(failed.src || '').includes('/games/' + gameId + '/')) return;
+      const loader = window.WeightPlayGameEntryLoader;
+      if (loader?.isActive && typeof loader.fail === 'function') loader.fail();
+      else window.__weightPlayGameEntryPendingFailure = gameId;
+    }, true);
+  }
+  installEarlyGameScriptFailureBridge();
+
   function ensureEntryLoader() {
     if (!/\/games\/[a-z0-9-]+(?:\/|\/index\.html)?$/.test(location.pathname)
       || window.WeightPlayGameEntryLoader?.isActive
@@ -13,7 +27,7 @@
       return;
     }
     const script = document.createElement('script');
-    script.src = '/src/game-entry-loader.js?v=20261019-entry-readiness-bridge3';
+    script.src = '/src/game-entry-loader.js?v=20261019-entry-early-script-failure-v1';
     script.dataset.wpGameEntryLoaderBootstrap = 'true';
     // This bootstrap has no dependency on the game modules. Let it execute
     // independently of their ordered dynamic-script queue so a slow or failed

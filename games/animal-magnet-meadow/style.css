@@ -280,3 +280,32 @@ h1,h2,p { margin-top:0; }
   #battlePanel .moonstone.selected { top:0; transform:translate(-50%,-100%); }
   #resultPanel { margin-top:4px; }
 }
+
+
+/* Scene, Result, and leave-confirmation changes use a fixed, opacity-only
+   crossfade. View Transition snapshots keep the shared frame geometry steady. */
+#app { view-transition-name: magnet-meadow-app; }
+::view-transition-group(magnet-meadow-app) { animation: none; }
+::view-transition-old(magnet-meadow-app),
+::view-transition-new(magnet-meadow-app) {
+  animation-duration: 180ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+::view-transition-old(magnet-meadow-app) { animation-name: magnet-meadow-fade-out; }
+::view-transition-new(magnet-meadow-app) { animation-name: magnet-meadow-fade-in; }
+@keyframes magnet-meadow-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes magnet-meadow-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  #battlePanel .moonstone { transition: none; }
+  #battlePanel .moonstone.selected {
+    transform:translate(-50%,-50%);
+    box-shadow:0 0 0 8px rgba(255,212,119,.3),0 8px 24px rgba(0,0,0,.35);
+  }
+  ::view-transition-old(magnet-meadow-app),
+  ::view-transition-new(magnet-meadow-app) {
+    animation-duration: 90ms;
+    animation-timing-function: linear;
+  }
+}

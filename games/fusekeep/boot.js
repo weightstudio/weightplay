@@ -7,7 +7,7 @@
  const timer=setTimeout(fail,15000);
  window.addEventListener('pagehide',event=>{if(!event.persisted){abandoned=true;clearTimeout(timer);}},{once:true});
  import(new URL('./screens.mjs?v=9',src).href).then(module=>{
-  if(abandoned)return;module.mountPlayScreens();return import(new URL('./app.mjs?v=9',src).href);
+  if(abandoned)return;module.mountPlayScreens();return import(new URL('./app.mjs?v=20261019-stage-tab-sync-v1',src).href);
  }).then(()=>{
   clearTimeout(timer);if(abandoned)return;
   document.getElementById('start').disabled=false;document.getElementById('bootError').hidden=true;

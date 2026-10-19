@@ -64,6 +64,7 @@ listen(localeSelect,'change',()=>{
 function refreshStage(){stageController?.refresh(selectedStage);renderProgress();renderDeck();}
 function setTab(deck){
  $('deckPane').hidden=!deck;$('deckPane').inert=!deck;$('missionPane').hidden=deck;$('missionPane').inert=deck;
+ $('missionPane').classList.toggle('hidden',deck);
  $('deckTab').setAttribute('aria-selected',String(deck));$('missionTab').setAttribute('aria-selected',String(!deck));
  $('deckTab').tabIndex=deck?0:-1;$('missionTab').tabIndex=deck?-1:0;
  if(!deck&&scene==='stage')deferScene(()=>stageController?.refresh(selectedStage));
