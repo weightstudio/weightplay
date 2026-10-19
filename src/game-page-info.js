@@ -11515,6 +11515,9 @@
 
   function relatedAudience(gameId, entry) {
     if (entry?.audience) return entry.audience;
+    if (gameId === currentGameId() && document.body?.dataset.audience) {
+      return document.body.dataset.audience;
+    }
     const audiences = window.WONDER_LOBBY?.audiences || {};
     if (audiences.generalGameIds?.includes(gameId)) return "general";
     if (audiences.kidsGameIds?.includes(gameId)) return "kids";
@@ -11522,10 +11525,13 @@
     return "";
   }
 
-  function relatedAgeTags(entry) {
-    return Array.isArray(entry?.ages)
-      ? entry.ages.map((age) => String(age).toLowerCase().replace(/\+$/u, "")).filter((age) => age && age !== "general")
-      : [];
+  function relatedAgeTags(entry, gameId) {
+    const ages = Array.isArray(entry?.ages)
+      ? entry.ages
+      : gameId === currentGameId()
+        ? String(document.body?.dataset.wpGameAgeTags || "").split(",").map((age) => age.trim()).filter(Boolean)
+        : [];
+    return ages.map((age) => String(age).toLowerCase().replace(/\+$/u, "")).filter((age) => age && age !== "general");
   }
 
   function isPublicRelatedGame(gameId, activeId) {
@@ -11536,8 +11542,8 @@
     const targetAudience = relatedAudience(gameId, target);
     const activeAudience = relatedAudience(activeId, active);
     if (!targetAudience || targetAudience !== activeAudience) return false;
-    const activeAges = relatedAgeTags(active);
-    const targetAges = relatedAgeTags(target);
+    const activeAges = relatedAgeTags(active, activeId);
+    const targetAges = relatedAgeTags(target, gameId);
     if (activeAges.length && targetAges.length && !activeAges.some((age) => targetAges.includes(age))) return false;
     if (!target.href || !/^games\/[a-z0-9-]+\/$/u.test(target.href)) return false;
     const officialTitle = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale()];

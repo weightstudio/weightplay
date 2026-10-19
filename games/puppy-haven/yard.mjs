@@ -62,6 +62,7 @@ export class Yard {
   const transform=new THREE.Object3D(),color=new THREE.Color();for(let i=0;i<shapes.length;i++){const part=shapes[i];transform.position.set(...part.pos);transform.scale.set(...part.size);transform.updateMatrix();this.gardenDetails.setMatrixAt(i,transform.matrix);this.gardenDetails.setColorAt(i,color.set(part.color));}this.scene.add(this.gardenDetails);
  }
 
+ mealPoint(spot){const [x,z]=MEAL_SPOTS[spot],v=new THREE.Vector3(x,.3,z).project(this.camera),r=this.host.getBoundingClientRect();return {x:(v.x+1)*r.width/2,y:(1-v.y)*r.height/2};}
  makeDog(d){
   const b=BREEDS.find(b=>b.id===d.breed),g=new THREE.Group(),body=new THREE.Group(),head=new THREE.Group();g.add(body);body.add(head);
   const low=b.long?.16:.29,bodyLength=b.long?1.02:.78,detailParts=[];const detail=(anchor,color,size,pos,rot=0)=>{const node=new THREE.Object3D();node.position.set(...pos);node.scale.set(...size);node.rotation.z=rot;anchor.add(node);detailParts.push({node,color});};
@@ -72,9 +73,13 @@ export class Yard {
   }
   head.position.set(0,low+.7,.35);
   const skull=this.cube(head,b.coat,[.65,.57,.55],[0,0,0]);
-  const muzzle=['husky','labrador'].includes(b.id)?.31:b.id==='beagle'?.28:.25,reach=muzzle-.25;this.cube(head,b.spots?0xfaf3e3:b.cream,[.54,.24,muzzle],[0,-.16,.29+reach/2]);
+  const muzzle=['husky','labrador'].includes(b.id)?.31:b.id==='beagle'?.28:.25,reach=muzzle-.25;this.cube(head,b.spots?0xfaf3e3:b.cream,[.54,.17,muzzle],[0,-.125,.29+reach/2]);
   this.cube(head,0x303b36,[.2,.12,.1],[0,-.09,.46+reach]);
-  this.cube(head,0x623b37,[.16,.035,.035],[0,-.24,.425+reach]);this.cube(head,0xe4a09a,[.1,.1,.035],[0,-.27,.43+reach]);
+  // Rear hinge opens the entire lower muzzle, rather than scaling the face.
+  const jaw=new THREE.Group();jaw.position.set(0,-.215,.12);head.add(jaw);
+  this.cube(jaw,b.spots?0xfaf3e3:b.cream,[.47,.1,muzzle+.015],[0,-.065,.17+reach/2]);
+  this.cube(jaw,0x623b37,[.39,.025,muzzle*.85],[0,-.004,.17+reach/2]);
+  this.cube(jaw,0xfff2d8,[.4,.04,.045],[0,.012,.29+reach]);
   for(const x of [-.2,.2]){
    if(b.id==='husky')detail(head,b.cream,[.24,.25,.035],[x,.03,.29]);
    this.cube(head,b.id==='husky'?0x508eae:0x333c35,[.1,.12,.04],[x,.035,.32]);this.cube(head,0xffffff,[.035,.04,.025],[x-.012,.062,.347]);
@@ -89,10 +94,10 @@ export class Yard {
   if(b.spots)for(const [x,y,z] of [[.29,.55,0],[-.29,.55,-.2],[.1,.74,-.2],[-.2,.76,.2]].slice(0,b.saddle?3:4))detail(body,0x41494a,[.08,.14,.18],[x,y,z]);
   if(b.saddle)detail(body,0x4c5147,[.58,.12,.48],[0,low+.58,-.15]);
   const occupied=new Set([...this.dogs.values()].map(o=>o.slot));const slot=Math.max(0,SPAWNS.findIndex((_,i)=>!occupied.has(i))),home=SPAWNS[slot],baseY=.055-low/2;g.position.set(home[0],-.06,home[1]);body.position.y=baseY;g.rotation.y=.15;this.scene.add(g);
-  const obj={g,body,head,tail,legs,paws,shadowParts:[torso,skull,...paws],detailParts,id:d.id,slot,home,baseY,phase:d.id*1.9,effect:0,enterT:0,visualScale:d.age==='puppy'?.68+d.growth*.0067:1.35};g.traverse(o=>{o.userData.dog=d.id;});this.dogs.set(d.id,obj);return obj;
+  const obj={g,body,head,jaw,tail,legs,paws,shadowParts:[torso,skull,...paws],detailParts,breed:d.breed,id:d.id,slot,home,baseY,phase:d.id*1.9,effect:0,enterT:0,visualScale:d.age==='puppy'?.68+d.growth*.0067:1.35};g.traverse(o=>{o.userData.dog=d.id;});this.dogs.set(d.id,obj);return obj;
  }
  fillDetails(mesh,objects){
-  const signature=objects.map(o=>o.id??'departure').join(','),recolor=mesh.userData.signature!==signature;let count=0;const color=new THREE.Color();
+  const signature=objects.map(o=>`${o.id??'departure'}:${o.breed??''}`).join(','),recolor=mesh.userData.signature!==signature;let count=0;const color=new THREE.Color();
   for(const object of objects)for(const part of object.detailParts){if(count>=156)throw new Error('Dog detail instance bound exceeded');mesh.setMatrixAt(count,part.node.matrixWorld);if(recolor)mesh.setColorAt(count,color.set(part.color));count++;}
   mesh.count=count;mesh.instanceMatrix.needsUpdate=true;if(recolor&&mesh.instanceColor)mesh.instanceColor.needsUpdate=true;mesh.userData.signature=signature;
  }
@@ -124,6 +129,7 @@ export class Yard {
  }
  render(s,dt,visualDt=dt,renderFrame=true){
   const active=new Set(s.dogs.map(d=>d.id));
+  for(const d of s.dogs){const old=this.dogs.get(d.id);if(old&&old.breed!==d.breed){this.scene.remove(old.g);this.dogs.delete(d.id);}}
   for(const [id,o]of this.dogs)if(!active.has(id)){this.dogs.delete(id);for(const prior of this.departures)this.scene.remove(prior.g);this.departures.length=0;this.departures.push({g:o.g,shadowParts:o.shadowParts,detailParts:o.detailParts,left:.22});}
   for(let i=this.departures.length-1;i>=0;i--){const o=this.departures[i];o.left-=visualDt;o.g.scale.multiplyScalar(this.reduced?.2:Math.max(.1,1-visualDt*12));if(o.left<=0){this.scene.remove(o.g);this.departures.splice(i,1);}}
   for(const d of s.dogs){const o=this.dogs.get(d.id)||this.makeDog(d);o.effect=Math.max(0,o.effect-visualDt);const t=s.clock+o.phase;
@@ -133,6 +139,7 @@ export class Yard {
    // motion; decorative bounce/wag is optional. No render callback feeds dogs.
    const follow=Math.min(1,visualDt*14);o.g.position.x+=(d.x-o.g.position.x)*follow;o.g.position.z+=(d.z-o.g.position.z)*follow;
    let turn=d.heading-o.g.rotation.y;turn=Math.atan2(Math.sin(turn),Math.cos(turn));o.g.rotation.y+=turn*Math.min(1,visualDt*7);
+   o.jaw.rotation.x=0;o.body.rotation.x=0;o.head.position.z=.35;
    o.head.rotation.x=d.activity==='eat'?.35+(this.reduced?0:Math.sin(t*9)*.06):this.reduced?0:o.action==='feed'&&o.effect?Math.sin(o.effect/.7*Math.PI)*.28:0;
    o.tail.rotation.z=this.reduced?0:Math.sin(t*8)*(o.effect?.6:.22);o.head.rotation.z=this.reduced?0:Math.sin(t*1.2)*.035;o.body.position.y=o.baseY+(this.reduced?0:Math.sin(t*3)*.012+(o.effect?Math.sin(o.effect/.7*Math.PI)*.16:0));
    for(let i=0;i<o.legs.length;i++)o.legs[i].rotation.x=moving&&!this.reduced?Math.sin(t*7+(i%2)*Math.PI)*.22:0;
@@ -148,6 +155,6 @@ export class Yard {
   this.scene.updateMatrixWorld(true);let shadowCount=0;for(const dog of [...this.dogs.values(),...this.departures])for(const part of dog.shadowParts)this.shadowProxy.setMatrixAt(shadowCount++,part.matrixWorld);this.shadowProxy.count=shadowCount;this.shadowProxy.instanceMatrix.needsUpdate=true;this.fillDetails(this.dogDetails,[...this.dogs.values(),...this.departures]);
   if(renderFrame){this.renderer.info.reset();this.renderer.render(this.scene,this.camera);this.lastFrame={calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles};}
  }
- stats(){const r=this.renderer.info;return {revision:THREE.REVISION,calls:this.lastFrame?.calls||0,triangles:this.lastFrame?.triangles||0,geometries:r.memory.geometries,textures:r.memory.textures,shadowInstances:this.shadowProxy.count,detailInstances:this.dogDetails.count,shadowMapSize:this.sun.shadow.mapSize.x,portraitCache:this.portraits.size,bowls:this.bowlAges.size,bowlInstances:this.bowls.count,departures:this.departures.length,droppings:this.poops.size,dogs:this.dogs.size,slots:[...this.dogs.values()].map(d=>({id:d.id,slot:d.slot})),pawClearance:[...this.dogs.values()].map(d=>Math.max(...d.paws.map(p=>Math.abs(new THREE.Box3().setFromObject(p).min.y+.06))))};}
+ stats(){const r=this.renderer.info;return {revision:THREE.REVISION,calls:this.lastFrame?.calls||0,triangles:this.lastFrame?.triangles||0,geometries:r.memory.geometries,textures:r.memory.textures,shadowInstances:this.shadowProxy.count,detailInstances:this.dogDetails.count,shadowMapSize:this.sun.shadow.mapSize.x,portraitCache:this.portraits.size,bowls:this.bowlAges.size,bowlInstances:this.bowls.count,departures:this.departures.length,droppings:this.poops.size,dogs:this.dogs.size,breedIds:[...this.dogs.values()].map(d=>({id:d.id,breed:d.breed})),slots:[...this.dogs.values()].map(d=>({id:d.id,slot:d.slot})),pawClearance:[...this.dogs.values()].map(d=>Math.max(...d.paws.map(p=>Math.abs(new THREE.Box3().setFromObject(p).min.y+.06))))};}
  dispose(){if(this.disposed)return;this.disposed=true;this.abort.abort();this.resize.disconnect();this.renderer.setAnimationLoop(null);this.sun.shadow.dispose();this.bowls.dispose();this.bowlAges.clear();this.shadowProxy.dispose();this.shadowProxyMaterial.dispose();this.dogDetails.dispose();this.detailMaterial.dispose();this.gardenDetails.dispose();this.gardenDetailMaterial.dispose();this.box.dispose();for(const m of this.materials.values())m.dispose();this.renderer.dispose();this.renderer.forceContextLoss();this.renderer.domElement.remove();this.dogs.clear();this.departures.length=0;this.poops.clear();this.materials.clear();this.portraits.clear();}
 }

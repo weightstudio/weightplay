@@ -225,6 +225,25 @@
     if (window.MAGNET_MEADOW_LOCALES[locale]) Object.assign(window.MAGNET_MEADOW_LOCALES[locale], copy);
   });
 
+  const relatedGuideCopy = {
+    en: { guideRelatedTitle: "More Related Games", guideRelatedIntro: "Try another route puzzle built around one continuous line and careful planning.", guideRelatedGameTitle: "One Line", guideRelatedGameAlt: "One Line game poster", guideRelatedGameIntro: "Follow one continuous line through 30 original trails, avoid walls and moving shadows, and reach the paw portal." },
+    "zh-Hant": { guideRelatedTitle: "更多相關遊戲", guideRelatedIntro: "想繼續挑戰路線規劃，也可以試試這款一筆畫解謎。", guideRelatedGameTitle: "One Line 一筆到底", guideRelatedGameAlt: "One Line 一筆到底遊戲海報", guideRelatedGameIntro: "按住畫出一條連續路線，避開牆壁與移動影子，帶米米抵達腳印門，挑戰 30 條路線。" },
+    "zh-Hans": { guideRelatedTitle: "更多相关游戏", guideRelatedIntro: "想继续挑战路线规划，也可以试试这款一笔画解谜。", guideRelatedGameTitle: "One Line 一笔到底", guideRelatedGameAlt: "One Line 一笔到底游戏海报", guideRelatedGameIntro: "按住画出一条连续路线，避开墙壁与移动影子，带米米抵达脚印门，挑战 30 条路线。" },
+    ja: { guideRelatedTitle: "関連ゲームをもっと見る", guideRelatedIntro: "ルート計画を続けるなら、一本線のパズルもどうぞ。", guideRelatedGameTitle: "One Line", guideRelatedGameAlt: "One Line のゲームポスター", guideRelatedGameIntro: "一本の線で30のコースを進み、壁や動く影を避けてミミを肉球のポータルへ導きます。" },
+    ko: { guideRelatedTitle: "더 많은 관련 게임", guideRelatedIntro: "경로 계획을 더 연습하고 싶다면 한 줄 퍼즐도 즐겨 보세요.", guideRelatedGameTitle: "One Line", guideRelatedGameAlt: "One Line 게임 포스터", guideRelatedGameIntro: "하나의 선으로 30개 코스를 이어 가며 벽과 움직이는 그림자를 피해 미미를 발바닥 포털까지 이끄세요." },
+    es: { guideRelatedTitle: "Más juegos relacionados", guideRelatedIntro: "Si quieres seguir planificando rutas, prueba este rompecabezas de un solo trazo.", guideRelatedGameTitle: "One Line", guideRelatedGameAlt: "Póster del juego One Line", guideRelatedGameIntro: "Traza una línea continua por 30 rutas, evita paredes y sombras móviles, y lleva a Mimi al portal de la huella." },
+    "pt-BR": { guideRelatedTitle: "Mais jogos relacionados", guideRelatedIntro: "Para continuar planejando rotas, experimente este quebra-cabeça de traço único.", guideRelatedGameTitle: "One Line", guideRelatedGameAlt: "Pôster do jogo One Line", guideRelatedGameIntro: "Trace uma linha contínua por 30 trilhas, desvie das paredes e sombras móveis e leve Mimi ao portal da pata." },
+    fr: { guideRelatedTitle: "Plus de jeux associés", guideRelatedIntro: "Pour continuer à planifier des itinéraires, essayez ce casse-tête en un seul trait.", guideRelatedGameTitle: "One Line", guideRelatedGameAlt: "Affiche du jeu One Line", guideRelatedGameIntro: "Tracez une ligne continue sur 30 parcours, évitez les murs et les ombres mobiles, et guidez Mimi jusqu’au portail patte." },
+    de: { guideRelatedTitle: "Weitere ähnliche Spiele", guideRelatedIntro: "Wer weiter Routen planen möchte, kann dieses Ein-Linien-Rätsel ausprobieren.", guideRelatedGameTitle: "One Line", guideRelatedGameAlt: "One-Line-Spielposter", guideRelatedGameIntro: "Ziehe eine durchgehende Linie über 30 Wege, weiche Mauern und beweglichen Schatten aus und führe Mimi zum Pfotenportal." },
+    it: { guideRelatedTitle: "Altri giochi correlati", guideRelatedIntro: "Se vuoi continuare a pianificare percorsi, prova questo rompicapo a linea unica.", guideRelatedGameTitle: "One Line", guideRelatedGameAlt: "Poster del gioco One Line", guideRelatedGameIntro: "Traccia una linea continua su 30 percorsi, evita muri e ombre in movimento e guida Mimi al portale a zampa." },
+    ru: { guideRelatedTitle: "Больше похожих игр", guideRelatedIntro: "Продолжите планировать маршруты в головоломке с одной линией.", guideRelatedGameTitle: "Одна линия", guideRelatedGameAlt: "Постер игры «Одна линия»", guideRelatedGameIntro: "Проведите одну непрерывную линию через 30 трасс, обходите стены и движущиеся тени и доведите Мими до портала-лапки." },
+    hi: { guideRelatedTitle: "और संबंधित गेम", guideRelatedIntro: "रास्तों की योजना का अभ्यास जारी रखने के लिए यह एक-रेखा पहेली आज़माएँ।", guideRelatedGameTitle: "एक पंक्ति", guideRelatedGameAlt: "एक पंक्ति गेम का पोस्टर", guideRelatedGameIntro: "30 रास्तों पर एक ही रेखा खींचें, दीवारों और चलती परछाइयों से बचें और मीमी को पंजे वाले पोर्टल तक पहुँचाएँ।" },
+    ar: { guideRelatedTitle: "المزيد من الألعاب ذات الصلة", guideRelatedIntro: "لمواصلة التخطيط للمسارات، جرّبوا هذا اللغز بخط واحد.", guideRelatedGameTitle: "خط واحد", guideRelatedGameAlt: "ملصق لعبة خط واحد", guideRelatedGameIntro: "ارسم خطًا متصلًا واحدًا عبر 30 مسارًا، وتجنب الجدران والظلال المتحركة، وأوصل ميمي إلى بوابة الكف." }
+  };
+  Object.entries(relatedGuideCopy).forEach(([locale, copy]) => {
+    if (window.MAGNET_MEADOW_LOCALES[locale]) Object.assign(window.MAGNET_MEADOW_LOCALES[locale], copy);
+  });
+
   // Interface 7 Main uses one catalog-wide Start Game label rather than a
   // game-specific destination label. Keep the locale source authoritative so
   // canonical and generated locale routes share the same first action copy.

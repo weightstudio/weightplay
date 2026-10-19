@@ -1,5 +1,6 @@
 import * as THREE from './vendor/three/three.module.min.js';
 import {Yard} from './yard.mjs';import {CELLS} from './hunt.mjs';
+import {bitePose} from './bite-pose.mjs';
 export class HuntYard extends Yard{
  constructor(...args){super(...args);this.enemies=new Map();this.deathAges=new Map();this.bars=new THREE.InstancedMesh(this.box,new THREE.MeshBasicMaterial({color:0xffffff,depthTest:false,depthWrite:false}),64);this.bars.count=0;this.bars.renderOrder=99;this.bars.frustumCulled=false;this.scene.add(this.bars);this.barObject=new THREE.Object3D();this.barColor=new THREE.Color();this.barRight=new THREE.Vector3(1,0,0).applyQuaternion(this.camera.quaternion);this.marker.visible=false;}
  buildGarden(){
@@ -16,8 +17,12 @@ export class HuntYard extends Yard{
  renderHunt(h,dt){
   super.render({dogs:h.allies,poops:[],bowls:[],selected:h.allies[0]?.id,clock:h.clock},0,dt,false);const live=new Set(h.enemies.map(u=>u.id));for(const [id,o]of this.enemies)if(!live.has(id)){this.scene.remove(o.g);this.enemies.delete(id);this.deathAges.delete(id);}
   let count=0;for(const u of h.units){const o=u.team?(this.enemies.get(u.id)||this.makeEnemy(u)):this.dogs.get(u.id);if(!o)continue;const g=o.g,k=u.windup>0?(1-u.windup/.18)*.17:0,hurt=u.hurt/.2*.1,rx=u.recoilX||0,rz=u.recoilZ||0,l=Math.hypot(rx,rz)||1;
-   g.position.set(u.x+Math.sin(u.heading)*k+rx/l*hurt,-.06,u.z+Math.cos(u.heading)*k+rz/l*hurt);g.rotation.y=u.heading;
-   const base=u.team?o.scale:1.35;if(u.hp<=0){const age=(this.deathAges.get(u.id)||0)+dt;this.deathAges.set(u.id,age);g.scale.setScalar(base*Math.max(.001,1-age/(this.reduced?.1:.3)));g.visible=age<.3;g.rotation.z=this.reduced?0:Math.min(1,age/.3)*.8;}else{g.visible=true;g.scale.setScalar(base);g.rotation.z=0;if(!u.team)o.head.rotation.x=this.reduced?0:-u.windup/.18*.15;}
+   const visualClock=h.clock+h.acc,pose=u.team?null:bitePose({...u,windup:u.windup>0?Math.max(.001,u.windup-h.acc):0},visualClock,this.reduced),reach=pose?pose.reach:k;
+   g.position.set(u.x+Math.sin(u.heading)*reach+rx/l*hurt,-.06,u.z+Math.cos(u.heading)*reach+rz/l*hurt);g.rotation.y=u.heading;
+   const base=u.team?o.scale:1.35;if(u.hp<=0){const age=(this.deathAges.get(u.id)||0)+dt;this.deathAges.set(u.id,age);g.scale.setScalar(base*Math.max(.001,1-age/(this.reduced?.1:.3)));g.visible=age<.3;g.rotation.z=this.reduced?0:Math.min(1,age/.3)*.8;if(!u.team)o.jaw.rotation.x=0;}else{g.visible=true;g.scale.setScalar(base);g.rotation.z=0;if(!u.team){
+    o.bitePhase=pose.phase;o.jaw.rotation.x=pose.jaw;o.body.position.y=o.baseY+pose.crouch;o.body.rotation.x=pose.pitch;o.head.rotation.x=pose.head;o.head.rotation.z=0;o.head.position.z=.35+pose.reach*.18;
+    if(pose.phase!=='idle'){for(let i=0;i<o.legs.length;i++)o.legs[i].rotation.x=i%2?pose.front:pose.hind;o.tail.rotation.x=pose.tail;}else o.tail.rotation.x=0;
+   }}
    if(u.team)o.body.rotation.z=this.reduced?0:(u.activity==='walk'?Math.sin(h.clock*7+u.id)*.035:0);
    if(u.hp<=0)continue;
    for(const [barIndex,[ratio,color,y]]of [[1,0x263c32,2.2],[u.hp/u.maxHp,u.team?0xe17d61:0x65b66b,2.2],[Math.min(1,u.shield/30),0x8cd4db,2.35]].entries()){if(ratio<=0)continue;this.barObject.position.set(u.x,y,u.z).addScaledVector(this.barRight,-(1-ratio)*.4);this.barObject.quaternion.copy(this.camera.quaternion);this.barObject.scale.set((barIndex===0?.86:.8)*ratio,barIndex===0?.16:.1,.018);this.barObject.updateMatrix();this.bars.setMatrixAt(count,this.barObject.matrix);this.bars.setColorAt(count++,this.barColor.set(color));}
@@ -26,6 +31,6 @@ export class HuntYard extends Yard{
   this.scene.updateMatrixWorld(true);let n=0;for(const o of this.dogs.values())for(const part of o.shadowParts)this.shadowProxy.setMatrixAt(n++,part.matrixWorld);this.shadowProxy.count=n;this.shadowProxy.instanceMatrix.needsUpdate=true;this.fillDetails(this.dogDetails,[...this.dogs.values()]);
   this.renderer.info.reset();this.renderer.render(this.scene,this.camera);this.lastFrame={calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles};
  }
- stats(){return {...super.stats(),enemies:this.enemies.size,healthInstances:this.bars.count};}
+ stats(){return {...super.stats(),enemies:this.enemies.size,healthInstances:this.bars.count,bites:[...this.dogs.values()].map(o=>({id:o.id,phase:o.bitePhase||'idle',jaw:o.jaw.rotation.x,bodyPitch:o.body.rotation.x,bodyY:o.body.position.y,front:o.legs[1].rotation.x,hind:o.legs[0].rotation.x,reach:o.head.position.z-.35}))};}
  dispose(){if(this.disposed)return;this.bars?.material.dispose();this.bars?.dispose();this.enemies?.clear();this.deathAges?.clear();super.dispose();}
 }

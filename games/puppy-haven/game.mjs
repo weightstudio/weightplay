@@ -1,4 +1,5 @@
-import {Haven,normalizeState,BREEDS,BASE_BREEDS,RECIPES,offspringOdds,MEAL_SPOTS,FOOD,YARD_CAPACITY} from './simulation.mjs';
+import {CULTIVATION,cultivationGoals,mealRemaining} from './cultivation.mjs';
+import {Haven,normalizeState,BREEDS,RECIPES,offspringOdds,MEAL_SPOTS,FOOD,YARD_CAPACITY} from './simulation.mjs';
 import {COPY,SUPPORTED,LANGUAGE_LABELS} from './locales.mjs';
 import {Yard} from './yard.mjs';
 import {Motion} from './motion.mjs';
@@ -23,7 +24,7 @@ const audio=window.WeightPlayAudio?.createScope(),motion=new Motion();let hasSce
 const sound=id=>audio?.play(id);
 const make=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
 function save(){try{localStorage.setItem(STORE,JSON.stringify(haven.s));$('saveWarning').hidden=true;}catch{$('saveWarning').textContent=t('saveError');$('saveWarning').hidden=false;}}
-function copy(){document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';$('localeSelect').value=locale;$('localeSelect').ariaLabel=LANGUAGE_LABELS[locale];document.title=`${t('title')} | WeightPlay`;document.querySelectorAll('[data-copy]').forEach(n=>n.textContent=t(n.dataset.copy));$('closePanel').ariaLabel=t('close');$('dogRail').ariaLabel=t('dogs',{n:haven.s.dogs.length});const alt=`${t('title')} · ${[0,1,3].map(i=>COPY[locale].breedNames[i]).join(' / ')} · ${t('puppy')}`;document.querySelectorAll('img[src*="cover-block-v1"]').forEach(n=>n.alt=alt);$('comingSoon').querySelector('h1').textContent=t('title');$('comingSoon').querySelector('p').textContent=t('preview').split(' · ')[0];const canvas=$('yard').querySelector('canvas');if(canvas)canvas.ariaLabel=t(hunt?'hunt':'freeYard');frame?.refresh();selector?.refresh(selectedStage);dogSignature='';update();}
+function copy(){document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';$('localeSelect').value=locale;$('localeSelect').ariaLabel=LANGUAGE_LABELS[locale];document.title=`${t('title')} | WeightPlay`;document.querySelectorAll('[data-copy]').forEach(n=>n.textContent=t(n.dataset.copy));$('closePanel').ariaLabel=t('close');$('dogRail').ariaLabel=t('dogs',{n:haven.s.dogs.length});const alt=`${t('title')} · ${[0,1,3].map(i=>COPY[locale].breedNames[i]).join(' / ')} · ${t('puppy')}`;document.querySelectorAll('img[src*="cover-block-v1"]').forEach(n=>n.alt=alt);$('comingSoon').querySelector('h1').textContent=t('title');$('comingSoon').querySelector('p').textContent=t('preview').split(' · ')[0];const canvas=$('yard').querySelector('canvas');if(canvas)canvas.ariaLabel=t(hunt?'hunt':'freeYard');frame?.refresh();selector?.refresh(selectedStage);dogSignature='';$('foodStock')?.remove();update();}
 function visible(next){
  motion.clear();if(yard&&!lost)renderWorld(0);if(hasScene)motion.exit($(screen+'Screen'));hasScene=true;
  if(screen==='battle'&&next!=='battle'){cancelAnimationFrame(raf);yard?.dispose();yard=null;audio?.stop();save();}
@@ -43,7 +44,7 @@ function start(stage){
  if(hunt)renderHuntControls();update();last=performance.now();raf=requestAnimationFrame(loop);
  if(!hunt&&!read('weightplay.puppy-haven.observation-intro'))showPanel('help');
 }
-function renderWorld(dt){if(hunt)yard.renderHunt(hunt,dt);else yard.render(haven.s,blocked()?0:dt,dt);}
+function renderWorld(dt){if(hunt)yard.renderHunt(hunt,dt);else yard.render(haven.s,blocked()?0:dt,dt);renderMealAmounts();}
 
 function settingsOpen(){return Boolean(document.querySelector('[data-wp-preferences] .wp-frame-popover:not([hidden])'));}
 function blocked(){return screen!=='battle'||Boolean(panelType)||!$('resultPanel').hidden||document.hidden||lost||settingsOpen();}
@@ -63,15 +64,15 @@ function processEvents(){for(const event of haven.events.splice(0)){
  if(event.type==='error'){feedback(COPY[locale].errors[event.reason]||COPY.en.errors[event.reason],true);continue;}
  if(event.type==='poop')continue;
  if(event.type==='complete'){save();showResult(event);continue;}
- const key={placeFood:'placed',feed:'feedDone',pet:'petDone',clean:'cleanDone',buy:'buyDone',adopt:'adoptDone',pair:'pairDone',birth:'birthDone',growth:'growthDone',restDog:'restDone',recallDog:'recallDone'}[event.type];
+ const key={placeFood:'placed',feed:'feedDone',pet:'petDone',clean:'cleanDone',buy:'buyDone',cultivate:'planSaved',pair:'pairDone',birth:'birthDone',growth:'growthDone',restDog:'restDone',recallDog:'recallDone'}[event.type];
  if(key){feedback(t(key));cue(t(key));}
  if(event.dog)yard?.effect(event.dog,event.type);if(['feed','pair','birth','growth'].includes(event.type))save();
- if(event.type==='buy'||event.type==='adopt')sound('shop.purchase');
+ if(event.type==='buy')sound('shop.purchase');
  else if(event.type==='clean'||event.type==='pet'){sound('reward.coin');rewardFly(event.coins,$(event.type==='clean'?'cleanBtn':'petBtn'));}
  else if(event.type==='birth'||event.type==='growth')sound('reward.unlock');else if(event.type==='restDog'||event.type==='recallDog')sound('ui.click');else sound('feedback.success');
  }update();}
 function act(type,data){if(screen!=='battle'||lost||hunt||!$('resultPanel').hidden)return;const result=haven.action(type,data);processEvents();save();if(result.ok){
-  if((type==='adopt'||type==='placeFood')&&$('resultPanel').hidden){closePanel();}
+  if((type==='cultivate'||type==='placeFood')&&$('resultPanel').hidden){closePanel();}
   else if(panelType==='food')renderFood();
   else if(panelType==='house'){renderHouse();$('closePanel').focus({preventScroll:true});}
  }return result;}
@@ -79,19 +80,19 @@ function decorateStageReward(){const row=$('stageRail-shared-details')?.lastElem
 function update(){if(!frame)return;decorateStageReward();const s=haven.s,d=haven.selected;const priorCoins=$('coinStat').textContent,priorObjective=$('objective').textContent;
  $('coinStat').textContent=t('coins',{n:Math.floor(s.coins)});$('dogStat').textContent=t('dogs',{n:s.dogs.length});$('stageStat').textContent=t('stage',{n:selectedStage+1});
  if(hunt){updateHunt();return;}
- if(priorCoins&&priorCoins!==$('coinStat').textContent)motion.emphasize($('coinStat'));$('objective').textContent=s.stage?`${t('stage',{n:s.stage})} · ${mission(MISSIONS[s.stage-1],'goal')}`:t('freeYard');if(priorObjective&&priorObjective!==$('objective').textContent)motion.enter($('objective'));
+ if(priorCoins&&priorCoins!==$('coinStat').textContent)motion.emphasize($('coinStat'));if(!$('foodStock')){$('objective').textContent=t('freeYard');if(priorObjective)motion.enter($('objective'));}renderFoodStock();
  $('dogName').textContent=dogName(d);$('dogAge').textContent=d.pregnancy?t('pregnancy',{n:Math.ceil(d.pregnancy.remaining)}):d.age==='puppy'?t('growth',{n:Math.floor(d.growth)}):t('adult');
- $('dogAge').textContent+=' · '+t(d.activity);
+ $('dogAge').textContent+=' · '+t(d.activity)+(d.age==='puppy'?' · '+t('puppyBattle'):'');
  $('dogFamily').textContent=d.parents.length?`${t('parents')} #${d.parents.join(' / #')}`:t('noParents');
  for(const k of ['hunger','happy','clean']){needTargets[k]=d[k];$(k).setAttribute('aria-valuenow',String(Math.floor(d[k])));if(motion.reduced)$(k).value=d[k];$(k+'Value').textContent=Math.floor(d[k]);}
  $('petBtn').textContent=d.petIn>0?t('restPet',{n:Math.ceil(d.petIn)}):t('pet');$('cleanBtn').textContent=t('cleanCount',{n:s.poops.length});
- const signature=JSON.stringify(s.dogs.map(d=>[d.id,d.age,Boolean(d.pregnancy),s.selected===d.id]));
+ const signature=JSON.stringify(s.dogs.map(d=>[d.id,d.breed,d.age,Boolean(d.pregnancy),s.selected===d.id]));
  if(signature!==dogSignature){dogSignature=signature;motion.exit($('dogRail'));const fragment=document.createDocumentFragment();for(const dog of s.dogs){const button=make('button');button.type='button';button.dataset.dogId=dog.id;button.setAttribute('aria-pressed',String(s.selected===dog.id));button.append(make('span',`${breedName(dog.breed)} #${dog.id} ${dog.sex==='F'?'♀':'♂'}`),make('small',dog.pregnancy?t('expecting'):t(dog.age==='puppy'?'puppy':'adult')));fragment.append(button);}$('dogRail').replaceChildren(fragment);motion.enter($('dogRail'));}
 }
 function showPanel(type){if(panelType)motion.exit($('panel').querySelector('.panel-card'));panelAbort.abort();panelAbort=new AbortController();if(!panelType)focusReturn=document.activeElement;panelType=type;$('panel').hidden=false;$('battleLive').inert=true;frame.activate('battle',{covered:true});$('panelFeedback').textContent='';$('panelContent').replaceChildren();
- $('panelTitle').textContent=t({food:'pantry',adopt:'adopt',pair:'pair',house:'restHouse',help:'helpTitle',leave:'leaveTitle',codex:'codex',huntHelp:'hunt'}[type]);
+ $('panelTitle').textContent=t({food:'pantry',cultivate:'cultivate',pair:'pair',house:'restHouse',help:'helpTitle',leave:'leaveTitle',codex:'codex',huntHelp:'hunt'}[type]);
  if(type==='huntHelp'){const c=$('panelContent');c.append(make('p',t('huntGuide'),'panel-copy'));for(const text of COPY[locale].roleNames)c.append(make('p',text,'panel-copy'));for(const enemy of hunt.enemies)c.append(make('p',enemyName(enemy.kind)+' · '+t('combatStats',{hp:enemy.maxHp,atk:enemy.atk,armor:enemy.armor}),'panel-copy'));}
- if(type==='codex')renderCodex();if(type==='food')renderFood();if(type==='adopt')renderAdopt();if(type==='pair')renderPair();if(type==='house'){houseMode='yard';housePage=0;renderHouse();}
+ if(type==='codex')renderCodex();if(type==='food')renderFood();if(type==='cultivate')renderCultivate();if(type==='pair')renderPair();if(type==='house'){houseMode='yard';housePage=0;renderHouse();}
  if(type==='help'){const taro=make('img');taro.src='/assets/weightplay-character-moss-shell-turtle-block-v1.webp';taro.alt='';taro.width=112;taro.height=112;taro.className='guide-taro';$('panelContent').append(taro,make('p',t('guide'),'panel-copy'));const b=make('button',t('startCaring'));listenPanel(b,'click',()=>{try{localStorage.setItem('weightplay.puppy-haven.observation-intro','1');}catch{}closePanel();});$('panelContent').append(b);}
  if(type==='leave'){$('panelContent').append(make('p',t('saved'),'panel-copy'));for(const [label,fn]of [['continue',closePanel],['leave',()=>{closePanel();visible('stage');}]]){const b=make('button',t(label));listenPanel(b,'click',fn);$('panelContent').append(b);}}
  motion.enter($('panel').querySelector('.panel-card'));$('closePanel').focus({preventScroll:true});
@@ -110,22 +111,40 @@ function renderHouse(){
 }
 function renderFood(){
  const content=$('panelContent'),active=document.activeElement,grade=active?.dataset.buyGrade,scroll=$('panel').querySelector('.panel-card').scrollTop;
- content.replaceChildren();content.append(make('p',t('foodGuide'),'panel-copy'));
+ content.replaceChildren();content.append(make('p',t('foodGuide'),'panel-copy'));for(const bowl of haven.s.bowls)content.append(make('p',COPY[locale].foodNames[bowl.grade]+' · '+t('bowlLeft',{spot:bowl.spot+1,n:mealRemaining(haven.s,bowl)}),'panel-copy'));
  const label=make('label',t('mealSpot'),'pair-field'),spots=make('select');spots.id='mealSpot';
  MEAL_SPOTS.forEach((_,i)=>{const occupied=haven.s.bowls.some(b=>b.spot===i),option=new Option(t('spot',{n:i+1})+(occupied?' · '+t('occupied'):''),i);option.disabled=occupied;spots.append(option);});
  const first=MEAL_SPOTS.findIndex((_,i)=>!haven.s.bowls.some(b=>b.spot===i));spots.value=first;label.append(spots);content.append(label);
- FOOD.forEach((f,i)=>{const row=make('section',undefined,'food-row');if(yard){const img=make('img');img.src=yard.foodPortrait(i);img.alt=COPY[locale].foodNames[i];img.width=72;img.height=72;img.className='food-portrait';row.append(img);}row.append(make('strong',COPY[locale].foodNames[i]),make('small',t('nutrition',{n:f.nutrition,g:f.growth})));
+ FOOD.forEach((f,i)=>{const row=make('section',undefined,'food-row');if(yard){const img=make('img');img.src=yard.foodPortrait(i);img.alt=COPY[locale].foodNames[i];img.width=72;img.height=72;img.className='food-portrait';row.append(img);}row.append(make('strong',COPY[locale].foodNames[i]+' · '+t('portions',{n:haven.s.food[i]})),make('small',t('nutrition',{n:f.nutrition,g:f.growth})));
  const actions=make('div',undefined,'food-actions'),buy=make('button',t('buy',{n:f.price})),use=make('button',t('use',{n:haven.s.food[i]}));buy.dataset.buyGrade=i;use.dataset.placeGrade=i;use.disabled=first<0||haven.s.food[i]===0;actions.append(buy,use);row.append(actions);content.append(row);});
  motion.enter(content);if(grade!==undefined){content.querySelector(`[data-buy-grade="${grade}"]`)?.focus({preventScroll:true});$('panel').querySelector('.panel-card').scrollTop=scroll;}
 }
-function renderAdopt(){const content=$('panelContent');content.replaceChildren();content.append(houseLink());BASE_BREEDS.forEach((b,i)=>{const row=make('section',undefined,'adopt-row');if(yard){const img=make('img');img.src=yard.portrait(b.id);img.alt=COPY[locale].breedNames[i];img.width=72;img.height=72;img.className='breed-portrait';row.append(img);}row.append(make('strong',COPY[locale].breedNames[i]),make('small',t('adoptPrice',{n:b.price})));const actions=make('div',undefined,'food-actions');for(const sex of ['M','F']){const button=make('button',`${sex==='F'?'♀':'♂'} ${t(sex==='F'?'female':'male')} · ${b.price}`);button.dataset.adoptBreed=b.id;button.dataset.sex=sex;actions.append(button);}row.append(actions);content.append(row);});}
+function goalText(goal,recipe=false){const key={meal:'mealGoal',pets:'petGoal',walk:'walkGoal',clean:'cleanGoal'}[goal.kind];const have=Math.floor(Math.min(goal.have,goal.need)),text=t(key,{name:COPY[locale].foodNames[goal.grade]||'',have,need:goal.need});return recipe?text.replace(`${have}/${goal.need}`,String(goal.need)):text;}
+function routeGoals(plan){return cultivationGoals({cultivation:plan.breed,care:{meals:[0,0,0],pets:0,walk:0},clean:0});}
+function renderCultivate(){
+ const content=$('panelContent');content.replaceChildren();content.append(make('p',t('cultivateGuide'),'panel-copy'),make('p',t('starterPups'),'panel-copy'));
+ const puppy=haven.selected,valid=puppy.age==='puppy'&&!BREEDS.find(b=>b.id===puppy.breed)?.offspringOnly;
+ if(valid){content.append(make('strong',dogName(puppy)),make('p',t('growthGoal',{n:Math.floor(puppy.growth)}),'panel-copy'));const label=make('label',t('plan'),'pair-field'),select=make('select');select.id='cultivationPlan';select.append(new Option(t('natural'),''));for(const plan of CULTIVATION)select.append(new Option(breedName(plan.breed),plan.breed));select.value=puppy.cultivation||'';label.append(select);const chosen=make('button',t('choosePlan'));chosen.id='chooseCultivation';listenPanel(chosen,'click',()=>{act('cultivate',{breed:select.value});feedback(t('planSaved'));});content.append(label,chosen);for(const goal of cultivationGoals(puppy))content.append(make('p',goalText(goal),'panel-copy'));
+ }else content.append(make('p',t('noPuppy'),'panel-copy'));
+ const codex=make('button',t('codex'));codex.dataset.openPanel='codex';content.append(codex,houseLink());
+}
+function renderFoodStock(){
+ if(!$('foodStock')){$('objective').replaceChildren(make('span',t('freeYard')));const strip=make('div');strip.id='foodStock';FOOD.forEach((_,i)=>{const cell=make('span'),name=make('span',COPY[locale].foodNames[i]),count=make('strong');count.dataset.stockGrade=i;cell.append(name,count);strip.append(cell);});$('objective').append(strip);}
+ FOOD.forEach((_,i)=>{const count=$('foodStock').querySelector(`[data-stock-grade="${i}"]`),value=t('portions',{n:haven.s.food[i]});if(count.textContent!==value){if(count.textContent)motion.emphasize(count);count.textContent=value;}count.parentNode.setAttribute('aria-label',COPY[locale].foodNames[i]+' '+value);});
+}
+function renderMealAmounts(){
+ const root=$('mealAmounts');if(!root)return;root.hidden=!!hunt;if(hunt){root.replaceChildren();return;}const live=new Set(haven.s.bowls.map(b=>String(b.id)));for(const node of root.children)if(!live.has(node.dataset.bowlId))node.remove();
+ for(const bowl of haven.s.bowls){let node=root.querySelector(`[data-bowl-id="${bowl.id}"]`);if(!node){node=make('span');node.dataset.bowlId=bowl.id;root.append(node);motion.enter(node);}const value=mealRemaining(haven.s,bowl),point=yard?.mealPoint(bowl.spot);node.textContent=value+'%';node.setAttribute('aria-label',t('bowlLeft',{spot:bowl.spot+1,n:value}));if(point){node.style.left=point.x+'px';node.style.top=point.y+'px';}}
+}
+
 function renderPair(){
  const content=$('panelContent');content.append(houseLink(),make('p',t('pairGuide'),'panel-copy'));
  const guide=make('button',t('codex'));guide.dataset.openPanel='codex';content.append(guide);
  for(const dog of haven.s.dogs){const row=make('section',undefined,'family-dog');row.append(make('strong',dogName(dog)),make('p',dog.pregnancy?t('pregnancy',{n:Math.ceil(dog.pregnancy.remaining)}):dog.age==='puppy'?t('puppy'):dog.cooldown>0?t('resting',{n:Math.ceil(dog.cooldown)}):t('naturalReady'),'panel-copy'));content.append(row);}
 }
 function renderCodex(){
- const content=$('panelContent');content.append(make('p',t('codexGuide'),'panel-copy'),make('p',t('discovered',{n:haven.s.discovered.length,max:BREEDS.length}),'panel-copy'));
+ const content=$('panelContent');content.append(make('p',t('cultivateGuide'),'panel-copy'),make('p',t('codexGuide'),'panel-copy'),make('p',t('discovered',{n:haven.s.discovered.length,max:BREEDS.length}),'panel-copy'));
+ for(const plan of CULTIVATION){const row=make('section',undefined,'cultivation-recipe');row.append(make('strong',breedName(plan.breed)));for(const goal of routeGoals(plan))row.append(make('p',goalText(goal,true),'panel-copy'));row.append(make('p',t('growthGoal',{n:100}),'panel-copy'));content.append(row);}
  for(const [id,key]of [['codexFather','father'],['codexMother','mother']]){const label=make('label',t(key),'pair-field'),select=make('select');select.id=id;for(const breed of BREEDS)select.append(new Option(breedName(breed.id),breed.id));label.append(select);content.append(label);}
  $('codexMother').value='corgi';const result=make('p',undefined,'recipe-result');result.id='recipeOdds';content.append(result);
  const refresh=()=>{result.textContent=offspringOdds($('codexFather').value,$('codexMother').value).map(o=>`${breedName(o.breed)} ${Math.round(o.chance*100)}%`).join(' · ');motion.emphasize(result);};listenPanel($('codexFather'),'change',refresh);listenPanel($('codexMother'),'change',refresh);refresh();
@@ -160,7 +179,7 @@ function huntEvents(){const queue=hunt.events.splice(0);if(!queue.length)return;
  }updateHunt();}
 function bind(){
  listen($('startBtn'),'click',()=>start(0));listen($('huntBtn'),'click',()=>visible('stage'));listen($('stageBack'),'click',()=>visible('main'));listen($('missionTab'),'click',()=>selector.refresh(selectedStage));listen($('yardBtn'),'click',()=>start(0));listen($('battleBack'),'click',()=>{if($('resultPanel').hidden)showPanel('leave');else visible('stage');});
- for(const [id,type]of [['foodBtn','food'],['feedBtn','food'],['adoptBtn','adopt'],['pairBtn','pair'],['helpBtn','help']])listen($(id),'click',()=>showPanel(type));
+ for(const [id,type]of [['foodBtn','food'],['feedBtn','food'],['cultivateBtn','cultivate'],['pairBtn','pair'],['helpBtn','help']])listen($(id),'click',()=>showPanel(type));
  listen($('launchHunt'),'click',()=>{if(!blocked()&&hunt?.begin()){sound('game.start');updateHunt();}});listen($('clearHunt'),'click',()=>{if(hunt?.phase==='prep'){haven.s.hunt.formation=Array(6).fill(null);hunt=new Hunt(hunt.stage.id,haven.allDogs,haven.s.hunt.formation);renderHuntControls();save();}});listen($('huntInfo'),'click',()=>showPanel('huntHelp'));listen($('huntRoster'),'change',showSelectedHuntDog);listen($('huntCells'),'click',e=>{const b=e.target.closest('[data-hunt-cell]');if(b)deploy(Number(b.dataset.huntCell));});
  listen($('petBtn'),'click',()=>{if(!blocked())act('pet');});listen($('cleanBtn'),'click',()=>{if(!blocked())act('clean');});
  listen($('dogRail'),'click',e=>{const b=e.target.closest('[data-dog-id]');if(b&&!blocked()){haven.select(Number(b.dataset.dogId));update();save();}});
@@ -169,7 +188,7 @@ function bind(){
   if(b.dataset.houseMode){houseMode=b.dataset.houseMode;housePage=0;renderHouse();$('panelContent').querySelector(`[data-house-mode="${houseMode}"]`).focus();return;}
   if(b.dataset.housePage){housePage+=Number(b.dataset.housePage);renderHouse();$('closePanel').focus();return;}
   if(b.dataset.roomAction){const id=Number(b.dataset.roomDogId);if(b.dataset.roomAction==='restDog')haven.select(id);act(b.dataset.roomAction,{id});return;}
-  if(b.dataset.buyGrade!==undefined)act('buy',{grade:Number(b.dataset.buyGrade)});if(b.dataset.placeGrade!==undefined)act('placeFood',{grade:Number(b.dataset.placeGrade),spot:Number($('mealSpot').value)});if(b.dataset.adoptBreed)act('adopt',{breed:b.dataset.adoptBreed,sex:b.dataset.sex});});
+  if(b.dataset.buyGrade!==undefined)act('buy',{grade:Number(b.dataset.buyGrade)});if(b.dataset.placeGrade!==undefined)act('placeFood',{grade:Number(b.dataset.placeGrade),spot:Number($('mealSpot').value)});});
  listen($('closePanel'),'click',()=>{if(panelType==='help')try{localStorage.setItem('weightplay.puppy-haven.observation-intro','1');}catch{}closePanel();});
  listen($('reloadBtn'),'click',()=>{save();location.reload();});
  listen($('nextBtn'),'click',()=>start(Math.min(30,haven.s.stage+1)));listen($('retryBtn'),'click',()=>start(haven.s.stage));listen($('resultYard'),'click',()=>start(0));listen($('resultStages'),'click',()=>visible('stage'));
