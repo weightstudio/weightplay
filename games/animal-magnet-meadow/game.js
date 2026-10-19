@@ -97,6 +97,8 @@
     try {
       const transition = startTransition.call(document, commit);
       visualTransition = transition;
+      Promise.resolve(transition.updateCallbackDone).catch(() => {});
+      Promise.resolve(transition.ready).catch(() => {});
       Promise.resolve(transition.finished).catch(() => {}).finally(() => {
         if (generation !== visualTransitionGeneration) return;
         if (!committed) commit();

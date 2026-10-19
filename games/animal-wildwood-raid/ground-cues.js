@@ -1,4 +1,5 @@
 import * as THREE from './vendor/three/three.module.min.js';
+import{rootSpikeSites}from'./simulation.js?v=20261019-wildwood-stumpback-dodge-v47';
 const TAU=Math.PI*2;
 const colors=Object.fromEntries(Object.entries({amber:0xffd681,danger:0xff896f,root:0xd5a2e8,heal:0x9ef1c9,mud:0xd6bb8d,thorn:0xb891c8,current:0x78d9c5,snare:0x70d8be}).map(([k,v])=>[k,new THREE.Color(v)]));
 // One reusable, unlit, shadow-free batch. Outlines leave the forest floor visible.
@@ -49,7 +50,10 @@ export class GroundCues {
    else if(w.kind==='burst'){
     const count=e.phase>=2?12:8,offset=e.phase===3?.25:0;
     this.ring(e.x,e.z,1.25,color);for(let i=0;i<count;i++)this.arrow(e.x,e.z,i*TAU/count+offset,2.5,color);
-   }else if(w.kind==='roots'||w.kind==='summon'||w.kind==='heal'){
+   }else if(w.kind==='roots'){
+    const tint=p>.72?'danger':'amber';this.kinds.push('root-impact-warning');
+    for(const site of rootSpikeSites(w)){this.ring(site.x,site.z,1.12,tint,0,TAU,.09);this.ring(site.x,site.z,.88,tint,-Math.PI/2,Math.max(.08,p*TAU),.065);}
+   }else if(w.kind==='summon'||w.kind==='heal'){
     const tint=w.kind==='heal'?'heal':'root';this.ring(e.x,e.z,1.05,tint);this.ring(e.x,e.z,.87,tint,-Math.PI,p*TAU,.08);
    }else{
     // Melee checks radial distance, so show its complete boundary, not a false cone.

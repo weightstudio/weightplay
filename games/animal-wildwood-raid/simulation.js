@@ -2,6 +2,10 @@ import {STAGES,TOOLS,ENEMIES,BOSS,guardianFor} from './game-data.js';
 export const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const dist=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
 const hostile=e=>e.kind==='enemy'||e.kind==='boss';
+export function rootSpikeSites(w,phase=w?.phase??1){
+ const offsets=[[0,0],[-2,0],[2,0],...(phase>=2?[[0,-2],[0,2]]:[])],seen=new Set();
+ return offsets.flatMap(([dx,dz])=>{const x=clamp(w.x+dx,-6,6),z=clamp(w.z+dz,-7,7),key=`${x.toFixed(3)}:${z.toFixed(3)}`;if(seen.has(key))return[];seen.add(key);return[{x,z,r:1}];});
+}
 // Stage one teaches the rhythm; stage two introduces the first guardian with
 // a clear step-up. Stages three and four ease in the first mixed objectives;
 // the original guardian and late-campaign pressure resumes at Stage five.
@@ -79,7 +83,7 @@ export class Simulation {
  clearLine(a,b){return !this.obstacles.some(o=>o.hp>0&&Array.from({length:12},(_,i)=>{const t=(i+1)/13;return Math.abs(a.x+(b.x-a.x)*t-o.x)<o.w&&Math.abs(a.z+(b.z-a.z)*t-o.z)<o.h;}).some(Boolean));}
  use(id){
   if(this.won||this.lost||this.cool[id]>0)return false;
-  if(id==='dash'){this.cool.dash=3;this.hero.dash=.2;this.hero.invulnerable=.25;this.log('dash',{x:this.hero.x,z:this.hero.z});return true;}
+  if(id==='dash'){const h=this.hero,sweep=!h.moving?this.alive().filter(e=>e.boss==='stumpback'&&e.wind?.kind==='sweep'&&dist(e,h)<=2.5).sort((a,b)=>dist(a,h)-dist(b,h))[0]:null;if(sweep){const dx=h.x-sweep.x,dz=h.z-sweep.z,d=Math.hypot(dx,dz);h.angle=d>1e-6?Math.atan2(dx,dz):h.angle+Math.PI;}this.cool.dash=3;h.dash=.2;h.invulnerable=.25;this.log('dash',{x:h.x,z:h.z});return true;}
   if(!this.loadout.includes(id))return false;const tool=TOOLS.find(t=>t.id===id);if(!tool)return false;
   const h=this.hero;
   if(id==='bow'){const target=this.target(5.8,'bow');if(!target)return false;this.projectile(h,target,h.power*1.5,false,10);}
@@ -122,7 +126,7 @@ export class Simulation {
    if(Math.abs(old.x-wall.x)>=wall.w+r)o.x=old.x;else if(Math.abs(old.z-wall.z)>=wall.h+r)o.z=old.z;else {o.x=old.x;o.z=old.z;}
   }
  }
- prepare(e,target,kind,wind=.75){const d=dist(e,target)||1;e.wind={kind,left:wind,total:wind,x:target.x,z:target.z,dx:(target.x-e.x)/d,dz:(target.z-e.z)/d,target:target.uid||0};e.angle=Math.atan2(e.wind.dx,e.wind.dz);this.log('tell',{uid:e.uid,kind});}
+ prepare(e,target,kind,wind=.75){const d=dist(e,target)||1;e.wind={kind,left:wind,total:wind,x:target.x,z:target.z,dx:(target.x-e.x)/d,dz:(target.z-e.z)/d,target:target.uid||0,phase:kind==='roots'?e.phase:undefined};e.angle=Math.atan2(e.wind.dx,e.wind.dz);this.log('tell',{uid:e.uid,kind});}
  actEnemy(e,dt){
   e.swing=Math.max(0,(e.swing||0)-dt);e.recoil=Math.max(0,e.recoil-dt);if(e.boss&&!e.awake){if(!this.objectivesReady())return;if(dist(e,this.hero)<5.5||e.hp<e.maxHp)e.awake=true;else return;}e.exposed=Math.max(0,(e.exposed||0)-dt);e.slow=Math.max(0,e.slow-dt);
   for(const f of this.fields)if(dist(e,f)<f.r)e.slow=.2;
@@ -133,7 +137,7 @@ export class Simulation {
    if(w.kind==='charge') {e.charge={left:.42,dx:w.dx,dz:w.dz};e.exposed=2;}
    else if(w.kind==='shot')this.projectile(e,{x:w.x,z:w.z},e.damage,true,e.boss?4.2:3.5,{uid:e.uid,kind:e.kind,actor:e.boss||e.type,attack:'shot'});
    else if(w.kind==='burst'){const count=e.phase>=2?12:8;for(let i=0;i<count;i++){const angle=i*Math.PI*2/count+(e.phase===3?.25:0);this.projectile(e,{x:e.x+Math.sin(angle),z:e.z+Math.cos(angle)},e.damage,true,3.3,{uid:e.uid,kind:e.kind,actor:e.boss||e.type,attack:'burst'});}this.log('burst',{uid:e.uid});}
-   else if(w.kind==='roots'){for(const [x,z] of [[w.x,w.z],[w.x-2,w.z],[w.x+2,w.z],...(e.phase>=2?[[w.x,w.z-2],[w.x,w.z+2]]:[])])this.hazards.push({x:clamp(x,-6,6),z:clamp(z,-7,7),r:1,delay:.9,life:2.8,power:e.damage,hit:false,sourceUid:e.uid,sourceKind:e.kind,sourceActor:e.boss||e.type,attack:'roots'});}
+   else if(w.kind==='roots'){for(const site of rootSpikeSites(w))this.hazards.push({...site,delay:1.1,life:2.7,power:e.damage,hit:false,sourceUid:e.uid,sourceKind:e.kind,sourceActor:e.boss||e.type,attack:'roots'});}
    else if(w.kind==='heal'){const targets=this.alive().filter(x=>x!==e&&hostile(x)&&dist(e,x)<4);targets.forEach(x=>x.hp=Math.min(x.maxHp,x.hp+Math.max(12,x.maxHp*.07)));this.log('heal',{x:e.x,z:e.z});}
    else if(w.kind==='summon'){if(this.alive().filter(hostile).length<9){this.enemy('thornling',e.x+1,e.z+1,{summon:true});this.enemy('caster',e.x-1,e.z+1,{summon:true});}this.log('summon');}
    else{const locked=w.target?this.ents.find(x=>x.uid===w.target):this.hero;if(locked&&locked.hp>0&&dist(e,locked)<(w.kind==='sweep'?2.5:1.65))this.hurt(e.damage,locked,{uid:e.uid,kind:e.kind,actor:e.boss||e.type,attack:w.kind});e.exposed=e.boss==='stumpback'?2.4:e.boss?1.6:.4;this.log('swing',{uid:e.uid,x:e.x,z:e.z});}
@@ -151,7 +155,7 @@ export class Simulation {
   const healer=e.type==='shaman'||e.role==='healer';
   if(e.cd<=0){
    if(e.boss==='stormowl'&&d<7){this.prepare(e,target,'burst',1.15);return;}
-   if(e.boss==='rootweaver'&&d<7){this.prepare(e,target,'roots',.85);return;}
+   if(e.boss==='rootweaver'&&d<7){this.prepare(e,target,'roots',1.2);return;}
    if(healer&&this.alive().some(x=>hostile(x)&&x!==e&&x.hp<x.maxHp&&dist(x,e)<4)){this.prepare(e,target,'heal',1);return;}
    if((e.boss==='mosswitch'||e.boss==='heartwood'&&e.phase>=2)&&this.time>(e.summonCd||0)){e.summonCd=this.time+9;this.prepare(e,target,'summon',1.2);return;}
    if((e.type==='ram'||e.boss==='hornroot'||e.boss==='heartwood'&&e.phase===3)&&d<4.2){this.prepare(e,target,'charge',e.boss?1.05:.9);return;}

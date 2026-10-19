@@ -1,5 +1,5 @@
 import * as THREE from './vendor/three/three.module.min.js';
-import {GroundCues} from './ground-cues.js';
+import {GroundCues} from './ground-cues.js?v=20261019-wildwood-stumpback-dodge-v47';
 import {axePose,chopBody,ease,enemyWind,enemyStroke} from './combat-pose.js?v=20261003-wildwood-axe-v12a';
 const palette={wood:0x765139,dark:0x302a2c,orange:0xc9763e,cream:0xffdfae,teal:0x258f85,gold:0xf4be58,leaf:0x397a50,moss:0x69905b,stone:0x738782,steel:0x617781,edge:0xe6edf2,white:0xd9f3e4,cyan:0x79f4d3,purple:0x875b99,red:0xf2745e,ground:0x537555,treeBark:0x624b39,treeBarkLight:0x87694b,canopyShade:0x315b3b,canopyMid:0x4d7749,canopyTop:0x769354,canopyShadeFern:0x375b40,canopyMidFern:0x58784c,canopyTopFern:0x84995d,canopyShadeCool:0x315743,canopyMidCool:0x4c7558,canopyTopCool:0x77947a};
 export function createBlockGeometry(){
