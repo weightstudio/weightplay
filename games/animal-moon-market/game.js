@@ -92,7 +92,7 @@
   let stageUI=null,sharedFrame=null,resultMode="none",lastBattleFocus=null;
   window.addEventListener("weightplay:audio-volume-change",()=>{state.sound=!window.WeightPlayAudio.isMuted();applyCopy();});
   const t=k=>COPY[state.locale][k]||COPY.en[k]||k,currentRound=()=>STAGES[state.stage].rounds[state.round],fill=(text,values)=>Object.entries(values).reduce((out,[key,value])=>out.replaceAll(`{${key}}`,String(value)),text);
-  const track=(name,payload)=>window.WonderAnalytics?.track?.(name,{game_id:"animal-moon-market",game_version:"v15",interface_version:6,...payload});
+  const track=(name,payload)=>window.WonderAnalytics?.track?.(name,{game_id:"animal-moon-market",game_version:"v16",interface_version:9,...payload});
 
   function installPlanReadiness(){const forecast=$("#forecast");if(!forecast||$("#planStatus"))return;const status=document.createElement("p");status.id="planStatus";status.className="status";status.setAttribute("aria-live","polite");forecast.insertAdjacentElement("afterend",status);}
   function setCovered(covered){const live=$("#battleLive");live.inert=Boolean(covered);if(covered)live.setAttribute("aria-hidden","true");else live.removeAttribute("aria-hidden");}

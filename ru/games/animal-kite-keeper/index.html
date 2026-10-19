@@ -23,12 +23,17 @@
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow" />
-  <meta name="weightplay-game-version" content="v16">
-  <meta name="weightplay-interface-version" content="6">
+  <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-version" content="v17">
+  <meta name="weightplay-interface-version" content="9">
   <title>Хранитель воздушных змеев | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260929-kite-keeper-v16-motion-feedback">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260911-kite-keeper-v6-interface-repair">
-  <script src="/src/shared-interface-bootstrap.js?v=20261017-shared-dark-loader1" data-wp-shared-interface="7"></script>
+  <link rel="stylesheet" href="style.css?v=20261019-animal-kite-keeper-i9">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
+  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261018-interface9-locale-guide-refresh1">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1">
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20261017-shared-dark-loader1">
   <meta name="description" content="Выбирайте каждый порыв и проведите змея Таро через три небесных окна к фонарному причалу." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -71,88 +76,119 @@
   }
 }
     </script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-<body data-runtime-localize="off" data-wp-battle-settings="visible" data-wp-game-id="animal-kite-keeper" data-wp-game-version="v16" data-wp-audience="general" data-wp-battle-settings="visible">
-  <div id="loading" class="loading" role="status">Loading Kite Keeper…</div>
-  <main id="app" hidden>
-    <section id="mainScreen" data-screen="main" class="screen main-screen">
-      <header class="topbar wp-main-shell-header">
-        <button id="backBtn" class="icon-btn wp-shell-return" data-wp-return="main" type="button" aria-label="Back to General lobby"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="Изображение игры «Хранитель воздушных змеев»" width="24" height="24"></button>
-        <div class="brand"><span class="eyebrow">WEIGHTPLAY · GENERAL</span><strong class="wp-shell-main-title" data-runtime-localize="off">Хранитель воздушных змеев</strong></div>
+  </head>
+<body data-runtime-localize="off" data-wp-game-id="animal-kite-keeper" data-wp-game-version="v17" data-wp-interface-version="9" data-wp-audience="general" data-wp-combined-sound="true" aria-busy="true">
+  <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
+    <main id="mainScreen" class="screen main-screen" data-screen="main">
+      <header class="main-header">
+        <a id="backBtn" class="return" href="/" data-wp-return="main" aria-label="Back to General lobby">←</a>
+        <h1 id="mainTitle" data-wp-frame-title data-runtime-localize="off">Хранитель воздушных змеев</h1>
       </header>
-      <div class="cover-wrap main-hero"><img class="cover main-poster" src="assets/animal-kite-keeper-cover-block-v1.webp" alt="Kite Keeper game artwork" width="1536" height="1024"></div>
-      <p class="kicker">6+ · FAMILY · ORIGINAL PROTOTYPE</p>
-      <h1 data-runtime-localize="off">Хранитель воздушных змеев</h1>
-      <p class="subtitle main-summary" data-i18n="subtitle">Choose the wind. Find the lantern dock.</p>
-      <p id="mainProgress" class="main-progress" data-wp-main-progress>30 sky routes · 3 gusts each</p>
-      <div class="main-actions"><button id="startBtn" class="primary" type="button" data-i18n="start">Start Game</button><button id="mapBtn" class="secondary" type="button" data-i18n="map">Sky routes</button></div>
-      <p id="best" class="best" data-i18n="best" data-i18n-vars="count">Best checks: —</p>
-    </section>
-
-    <section id="gameGuide" class="guide-card game-page-info game-page-info-static" data-wp-game-guide aria-label="Руководство по игре «Хранитель воздушного змея»">
+      <div id="mainContent" class="main-content">
+        <section id="mainHero" class="main-hero">
+          <img class="main-poster" data-wp-frame-poster src="assets/animal-kite-keeper-cover-block-v1.webp" alt="Изображение игры «Хранитель воздушных змеев»" width="1536" height="1024">
+          <div class="main-copy" data-wp-frame-copy>
+            <p class="eyebrow" data-runtime-localize="off">Kite Keeper</p>
+            <p class="subtitle" data-wp-frame-summary data-i18n="subtitle">Choose the wind. Find the lantern dock.</p>
+            <p id="mainProgress" class="main-progress" data-wp-frame-progress>30 sky routes · 3 gusts each</p>
+            <button id="startBtn" class="primary" data-wp-main-start data-wp-frame-action="primary" type="button" data-i18n="start">Start Game</button>
+            <p id="best" class="best" data-i18n="best" data-i18n-vars="count">Best checks: —</p>
+          </div>
+        </section>
+            <section id="gameGuide" class="guide-card game-page-info game-page-info-static" data-wp-game-guide aria-label="Руководство по игре «Хранитель воздушного змея»">
       <div class="guide-layout"><img class="guide-character" src="assets/animal-kite-keeper-taro-block-v1.webp" alt="Моховой панцирь Таро с катушкой для воздушного змея" width="1024" height="1536"><div><h2 data-i18n="guideTitle" data-runtime-localize="off">Как играть</h2><p data-i18n="guide" data-runtime-localize="off">Выбирайте по одной карте ветра и доберитесь до маячного причала ровно за три порыва.</p></div></div>
       <div id="guideSections" class="game-info-sections">
         <div class="game-info-section"><h3>Изучите план полёта</h3><p>На каждом из тридцати маршрутов отмечены стартовая клетка змея и маячный причал на другой клетке. На карточке маршрута указаны три направления ветра, ведущие к причалу. Перед ходом проверьте старт, цель и направления. Каждый порыв перемещает змея на одну клетку: север — вверх, восток — вправо, юг — вниз, запад — влево. Следите за обеими координатами и попадите на причал третьим ходом.</p></div>
         <div class="game-info-section"><h3>Выбирайте по одному порыву</h3><p>Откройте «Небесные маршруты», выберите маршрут с номером и в бою нажмите одну из четырёх карт ветра. После каждого выбора змей перемещается, а строка позиции показывает новые координаты. Сравните их с причалом, прежде чем продолжить. Индикатор прогресса показывает маршрут, а счётчик порывов — сколько из трёх ходов уже использовано. Направление выбираете вы; игра не исправляет ход автоматически.</p></div>
         <div class="game-info-section"><h3>Начните заново после сноса ветром</h3><p>Если змей покинет поле или третий порыв не приведёт к причалу, текущая попытка блокируется. Нажмите «Сбросить маршрут», чтобы вернуть змея на стартовую клетку маршрута и очистить историю порывов этой попытки. Пройденные маршруты остаются отмеченными, если браузер может их сохранить. Таймера и жизней нет. Посмотрите на последнюю позицию, выясните, какая координата изменилась не в ту сторону, и попробуйте ещё раз.</p></div>
-        <div class="game-info-section"><h3>Пройдите тридцать маршрутов</h3><p>В кампании тридцать выбираемых этапов: три визуальные группы по десять полётов. У каждого маршрута свои стартовая клетка, причал и последовательность из трёх направлений ветра; сначала прочитайте координаты. После полёта экран результата предлагает следующий маршрут, небесные маршруты и возврат в главное меню. После всех тридцати меняется заголовок результата.</p></div>
+        <div class="game-info-section"><h3>Пройдите тридцать маршрутов</h3><p>В кампании тридцать выбираемых этапов: по десять маршрутов в каждой из трёх визуальных групп. У каждого маршрута свои начальная клетка, фонарный причал и последовательность из трёх направлений ветра; перед выбором проверьте координаты. После маршрута на экране результата доступны этапы, следующий маршрут (если он есть) и повтор. После прохождения всех тридцати маршрутов заголовок результата изменится.</p></div>
         <div class="game-info-section"><h3>Используйте поле и управление</h3><p>Главные ориентиры — змей и маяк; координаты видны и во время перемещения. Картами ветра можно управлять мышью, касанием и клавиатурой. В списке этапов используются вкладки; доступны стрелки, Home и End. В настройках есть тринадцать языков и выбор звука. Звук лишь дополняет обратную связь: поле, статус и результат показывают, что произошло, и без него.</p></div>
         <div class="game-info-section"><h3>Стратегия и сохранение прогресса</h3><p>Перед ходом представьте, как изменятся координаты, а после проверьте маркер. При движении на восток первая координата растёт; на север — уменьшается вторая. Пройденные маршруты сохраняются в этом браузере, если хранилище доступно. Когда завершены все тридцать маршрутов, игра сохраняет число выбранных с момента открытия этой страницы карт ветра; карты из сброшенных попыток тоже учитываются. Выборы в предыдущие визиты не входят в число. Очистка данных браузера может удалить записи, а приватный режим может хранить их только в течение визита. «Хранитель воздушного змея» — спокойная пространственная головоломка с тридцатью фиксированными маршрутами по три порыва.</p></div>
         <div class="game-info-section"><h3>Частые вопросы</h3><dl><dt>Сколько всего маршрутов?</dt><dd>Можно выбрать тридцать маршрутов, разделённых на три визуальные группы по десять.</dd><dt>Что будет, если выбрать неверное направление?</dt><dd>Если змей покинет поле или третий порыв не приведёт к причалу, попытка блокируется. Сброс маршрута возвращает змея на текущий старт, не удаляя пройденные маршруты.</dd><dt>Сохраняется ли прогресс?</dt><dd>Пройденные маршруты сохраняются в этом браузере, если хранилище доступно. Когда завершены все тридцать маршрутов, игра сохраняет число выбранных с момента открытия этой страницы карт ветра; карты из сброшенных попыток тоже учитываются. Выборы в предыдущие визиты не входят в число. Очистка данных может удалить записи; в приватном режиме они могут храниться только во время визита.</dd><dt>Есть ли ограничение по времени или числу жизней?</dt><dd>Нет. Неудачный маршрут можно сбросить и пройти заново без таймера и счётчика жизней.</dd></dl></div>
       </div>
     </section>
+      </div>
+    </main>
 
-    <section id="stageScreen" data-screen="stage" class="screen stage-screen stage-canvas" hidden>
-      <header class="screen-heading stage-heading"><button id="stageBack" class="icon-btn" data-wp-return="stage" type="button" aria-label="Back to main">←</button><div><p class="eyebrow">STAGE MAP</p><h1 data-i18n="map">Sky routes</h1></div></header>
-      <p class="subtitle" data-i18n="guide">Choose one wind card at a time. Reach the lantern dock in exactly three gusts.</p>
-      <nav id="routeFamilyNav" class="route-family-nav" data-wp-stage-management-nav aria-label="Sky route families">
+    <section id="stageScreen" data-screen="stage" class="screen stage-screen" hidden>
+      <header class="screen-heading stage-heading">
+        <button id="stageBack" class="icon-btn" data-wp-return="stage" type="button" aria-label="Back to Main">←</button>
+        <strong data-wp-frame-title data-i18n="map" hidden>Sky routes</strong>
+      </header>
+      <div id="stageWorkspace" class="stage-workspace">
+        <div id="stageList" class="stage-list" role="tablist" aria-label="Sky routes"></div>
+      </div>
+      <nav id="routeFamilyNav" data-wp-frame-nav aria-label="Sky route families">
         <button type="button" data-route-family="0" data-i18n="route1">Meadow Lift</button>
         <button type="button" data-route-family="1" data-i18n="route2">Reef Breeze</button>
         <button type="button" data-route-family="2" data-i18n="route3">Snow Lantern</button>
       </nav>
-      <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail role="tablist" aria-label="Sky routes"></div>
     </section>
 
-    <section id="battleScreen" data-screen="battle" class="screen battle-screen battle-canvas" hidden>
-      <header class="screen-heading battle-heading"><button id="battleBack" class="icon-btn" data-wp-return="battle" type="button" aria-label="Back to sky routes">←</button><div><p class="eyebrow" id="routeEyebrow">BATTLE</p><h1 id="routeTitle">Meadow Lift</h1></div><span id="progressPill" class="pill">1 / 3</span></header>
-      <p id="prompt" class="prompt" aria-live="polite"></p>
-      <div class="flight-card">
-        <div class="flight-head"><span id="dockLabel" data-i18n="dock">Lantern dock</span><strong id="dockTarget">3, 2</strong></div>
-        <div id="flightBoard" class="flight-board" role="img" aria-label="Kite flight board">
-          <div class="wind-line line-a"></div><div class="wind-line line-b"></div><span id="gustMarker" class="atlas-prop atlas-gust" aria-hidden="true"></span><span id="routeCompass" class="atlas-prop atlas-compass" aria-hidden="true"></span><div id="dockMarker" class="dock-marker" aria-hidden="true"><span class="atlas-prop atlas-dock"></span></div><div id="kiteMarker" class="kite-marker" aria-hidden="true"><span class="atlas-prop atlas-kite"></span></div>
+    <section id="battleScreen" data-screen="battle" class="screen battle-screen" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+      <header class="screen-heading battle-heading">
+        <button id="battleBack" class="icon-btn" data-wp-return="battle" type="button" aria-label="Back to Sky routes">←</button>
+        <strong data-wp-frame-title hidden>Kite Keeper</strong>
+      </header>
+      <div id="battleContent" class="battle-content">
+        <p id="prompt" class="prompt" aria-live="polite"></p>
+        <div class="flight-card">
+          <div class="flight-head"><span id="dockLabel" data-i18n="dock">Lantern dock</span><strong id="dockTarget">3, 2</strong></div>
+          <div id="flightBoard" class="flight-board" role="img" aria-label="Kite flight board">
+            <div class="wind-line line-a"></div><div class="wind-line line-b"></div>
+            <span id="gustMarker" class="atlas-prop atlas-gust" aria-hidden="true"></span>
+            <span id="routeCompass" class="atlas-prop atlas-compass" aria-hidden="true"></span>
+            <div id="dockMarker" class="dock-marker" aria-hidden="true"><span class="atlas-prop atlas-dock"></span></div>
+            <div id="kiteMarker" class="kite-marker" aria-hidden="true"><span class="atlas-prop atlas-kite"></span></div>
+          </div>
+          <p id="position" class="position" aria-live="polite"></p>
+          <p id="gusts" class="gusts"></p>
         </div>
-        <p id="position" class="position" aria-live="polite"></p>
-        <p id="gusts" class="gusts"></p>
+        <div class="choice-card">
+          <h2 id="windHeading" data-i18n="wind">Wind cards</h2>
+          <p id="choose" class="choice-help" data-i18n="choose">Choose a wind card</p>
+          <div id="windGrid" class="wind-grid" role="group" aria-labelledby="windHeading"></div>
+          <p id="selection" class="selection" aria-live="polite"></p>
+        </div>
+        <div class="battle-actions"><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Reset route</button></div>
+        <p id="status" class="status" role="status" aria-live="polite"></p>
       </div>
-      <div class="choice-card"><h2 id="windHeading" data-i18n="wind">Wind cards</h2><p id="choose" class="choice-help" data-i18n="choose">Choose a wind card</p><div id="windGrid" class="wind-grid" role="group" aria-labelledby="windHeading"></div><p id="selection" class="selection" aria-live="polite"></p></div>
-      <div class="battle-actions"><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Reset route</button></div>
-      <p id="status" class="status" role="status" aria-live="polite"></p>
+      <section id="resultScreen" class="result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
+        <div id="resultCard" class="result-card">
+          <p id="resultLabel" class="eyebrow">RESULT</p>
+          <img class="result-character" src="assets/animal-kite-keeper-taro-block-v1.webp" alt="" aria-hidden="true" width="1024" height="1536">
+          <h2 id="resultTitle">Route complete</h2>
+          <p id="resultText" class="result-text"></p>
+          <div class="result-actions">
+            <button id="resultStagesBtn" class="secondary" type="button" data-i18n="stages">Stages</button>
+            <button id="nextBtn" class="primary" type="button" data-i18n="next">Next route</button>
+            <button id="replayBtn" class="secondary" type="button" data-i18n="replay">Replay</button>
+          </div>
+        </div>
+      </section>
     </section>
+  </div>
 
-    <section id="resultScreen" data-screen="result" class="screen result-screen" hidden>
-      <p class="eyebrow">RESULT</p><img class="result-character" src="assets/animal-kite-keeper-taro-block-v1.webp" alt="Moss Shell Taro celebrating with his kite" width="1024" height="1536"><h1 id="resultTitle" data-i18n="resultTitle">Route complete</h1><p id="resultText" class="result-text"></p>
-      <div class="result-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next route</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="map">Sky routes</button><button id="homeBtn" class="secondary" type="button" data-i18n="back">Back to General lobby</button></div>
-    </section>
+  <div hidden aria-hidden="true">
+    <label><span>Language</span><select id="localeSelect" aria-label="Language">
+      <option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option>
+      <option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option>
+      <option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option>
+      <option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option>
+    </select></label>
+  </div>
 
-    <aside id="settingsPanel" class="settings" role="dialog" aria-modal="true" hidden aria-labelledby="settingsTitle"><div class="settings-inner"><button id="closeSettings" class="close-btn" type="button" aria-label="Close settings">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label for="localeSelect" data-i18n="language">Language</label><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select><button id="soundBtn" class="secondary wp-shell-sound-row" type="button" aria-pressed="true"><span data-i18n="sound">Sound</span>: <span id="soundState">On</span></button></div></aside>
-    <div id="battleAdReserve" class="battle-ad-reserve" data-wp-ad-reserve hidden aria-hidden="true"></div>
-  </main>
-  <script src="/src/stage-virtualization-standard.js?v=20260929-kite-keeper-v16-motion-feedback"></script>
-  <script src="locales.js?v=20261007-kite-keeper-v16-layout-error-copy-r2"></script><script src="game.js?v=20261007-kite-keeper-v16-layout-error-copy-r2"></script>
-  <script id="kite-keeper-block-asset-upgrade-v1">
-    (() => {
-      const poster = document.querySelector('.main-poster');
-      if (poster) poster.src = 'assets/animal-kite-keeper-cover-block-v1.webp';
-      document.querySelectorAll('.guide-character, .result-character').forEach((image) => {
-        image.src = 'assets/animal-kite-keeper-taro-block-v1.webp';
-      });
-      document.documentElement.dataset.wpVoxelAssetSet = 'kite-keeper-block-v1';
-    })();
-  </script>
-<script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
+  <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+  <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1"></script>
+  <script src="../../src/battle-canvas-standard.js?v=20261017-shared-dark-loader1"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-screen-frame.js?v=20261018-interface9-locale-guide-refresh1"></script>
+  <script src="locales.js?v=20261019-animal-kite-keeper-i9"></script>
+  <script src="frame.js?v=20261019-animal-kite-keeper-i9"></script>
+  <script src="game.js?v=20261019-animal-kite-keeper-i9"></script>
+<script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <script src="/src/runtime-locales/ru.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>

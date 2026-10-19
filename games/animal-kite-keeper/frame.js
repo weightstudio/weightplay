@@ -1,0 +1,54 @@
+/* Game data plugs into the shared I9 screen frame and Play UI. */
+(() => {
+  "use strict";
+
+  window.mountKiteKeeperFrame = function mountKiteKeeperFrame() {
+    const root = document.getElementById("gameFrame");
+    const main = document.getElementById("mainScreen");
+    const stage = document.getElementById("stageScreen");
+    const battle = document.getElementById("battleScreen");
+    const mainHeader = main.querySelector(".main-header");
+    const stageHeader = stage.querySelector(".stage-heading");
+    const battleHeader = battle.querySelector(".battle-heading");
+    const sourceLocale = document.getElementById("localeSelect");
+
+    const routeSegment = location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
+    const routeLocale = { "zh-tw":"zh-Hant", "zh-cn":"zh-Hans", "pt-br":"pt-BR" }[routeSegment] || routeSegment;
+    if (sourceLocale && [...sourceLocale.options].some(option => option.value === routeLocale)) {
+      sourceLocale.value = routeLocale;
+    }
+
+    const frame = window.WeightPlayScreenFrame.mount({
+      root,
+      localeSelect: sourceLocale,
+      playUI: true,
+      scenes: {
+        main: { root: main, header: mainHeader, content: document.getElementById("mainContent") },
+        stage: { root: stage, header: stageHeader, content: document.getElementById("stageWorkspace") },
+        battle: { root: battle, header: battleHeader, content: document.getElementById("battleContent") },
+      },
+    });
+
+    const stageProgress = document.createElement("span");
+    stageProgress.id = "stageProgress";
+    frame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup().add(stageProgress));
+
+    const routeTitle = document.createElement("strong");
+    routeTitle.id = "routeTitle";
+    const progressPill = document.createElement("span");
+    progressPill.id = "progressPill";
+    frame.battleTopUI.add(window.WeightPlayScreenFrame.createGroup().add(routeTitle).add(progressPill));
+
+    const familyNav = document.getElementById("routeFamilyNav");
+    const familyButtons = [...familyNav.querySelectorAll("[data-route-family]")];
+    familyNav.setAttribute("aria-label", "Sky route families");
+    frame.commonDownButton.clear();
+    familyButtons.forEach(button => {
+      button.dataset.wpFrameAction = "tab";
+      frame.commonDownButton.add(button);
+    });
+
+    frame.activate("main");
+    return Object.freeze({ frame, stageProgress, routeTitle, progressPill, familyButtons });
+  };
+})();

@@ -237,6 +237,27 @@ export const kiteKeeperGuideLocales = {
   },
 };
 
+const resultActionsByLocale = {
+  en: "The campaign has thirty selectable stages: ten flights in each of three visual route families. Each route has its own starting square, lantern dock, and three-wind sequence, so read the coordinates before choosing. After a route, Result keeps Stages, Next route (when available), and Replay together. Completing all thirty updates the Result heading.",
+  "zh-Hant": "活動共有三十個可選關卡，分成三組視覺路線，每組十條。每條路線都有自己的起點、燈塔碼頭與三陣風順序，選擇前先讀座標。每條路線結束後，結果畫面會一起提供「關卡」、「下一關」（有下一關時）與「重玩」。完成全部三十關後，結果標題會更新。",
+  "zh-Hans": "活动共有三十个可选关卡，分成三组视觉路线，每组十条。每条路线都有自己的起点、灯塔码头与三阵风顺序，选择前先读坐标。每条路线结束后，结果画面会一起提供“关卡”“下一关”（有下一关时）和“重玩”。完成全部三十关后，结果标题会更新。",
+  ja: "キャンペーンには選択可能なステージが30個あり、見た目の異なる3つのルート群に10個ずつ分かれています。各ルートの出発地点、灯台の桟橋、3つの風向きは異なるので、選ぶ前に座標を確認しましょう。ルート終了後の結果画面には「ステージ」「次のルート（ある場合）」「再プレイ」がまとまって表示されます。30ルートをすべて終えると結果の見出しが変わります。",
+  ko: "캠페인에는 선택 가능한 스테이지 서른 개가 있으며, 모양이 다른 경로 세 그룹에 열 개씩 배치되어 있습니다. 각 경로의 출발점과 등대 부두, 세 번의 바람 방향은 다르니 선택하기 전에 좌표를 읽으세요. 경로를 마치면 결과 화면에서 스테이지, 다음 경로(있는 경우), 다시 플레이를 함께 선택할 수 있습니다. 서른 개 경로를 모두 완료하면 결과 제목이 바뀝니다.",
+  es: "La campaña tiene treinta etapas seleccionables, repartidas en tres familias visuales de diez vuelos. Cada ruta tiene su propia casilla inicial, muelle del farol y secuencia de tres vientos; lee las coordenadas antes de elegir. Al terminar una ruta, Resultado reúne Etapas, Siguiente ruta (si está disponible) y Repetir. Al completar las treinta rutas, cambia el título de Resultado.",
+  "pt-BR": "A campanha tem trinta fases selecionáveis, divididas em três famílias visuais de dez voos. Cada rota tem sua própria casa inicial, cais do farol e sequência de três ventos; confira as coordenadas antes de escolher. Ao concluir uma rota, Resultado reúne Fases, Próxima rota (quando disponível) e Jogar novamente. Ao concluir as trinta rotas, o título de Resultado muda.",
+  fr: "La campagne compte trente étapes sélectionnables, réparties en trois familles visuelles de dix vols. Chaque itinéraire a sa case de départ, son quai de phare et sa suite de trois vents ; lisez les coordonnées avant de choisir. Après un itinéraire, Résultat réunit Étapes, Itinéraire suivant (si disponible) et Rejouer. Le titre change lorsque les trente itinéraires sont terminés.",
+  de: "Die Kampagne umfasst dreißig auswählbare Stufen, je zehn Flüge in drei optisch unterschiedlichen Routenfamilien. Jede Route hat ein eigenes Startfeld, einen Leuchtturmsteg und eine Folge aus drei Windrichtungen. Lies die Koordinaten, bevor du wählst. Nach einer Route zeigt Ergebnis die Aktionen Stufen, Nächste Route (falls verfügbar) und Wiederholen zusammen an. Nach allen dreißig Routen ändert sich die Ergebnisüberschrift.",
+  it: "La campagna ha trenta livelli selezionabili, divisi in tre famiglie visive da dieci voli. Ogni percorso ha la propria casella di partenza, il molo del faro e una sequenza di tre venti; leggi le coordinate prima di scegliere. Al termine di un percorso, Risultato riunisce Livelli, Percorso successivo (se disponibile) e Rigioca. Dopo aver completato tutti e trenta i percorsi, il titolo cambia.",
+  ru: "В кампании тридцать выбираемых этапов: по десять маршрутов в каждой из трёх визуальных групп. У каждого маршрута свои начальная клетка, фонарный причал и последовательность из трёх направлений ветра; перед выбором проверьте координаты. После маршрута на экране результата доступны этапы, следующий маршрут (если он есть) и повтор. После прохождения всех тридцати маршрутов заголовок результата изменится.",
+  hi: "अभियान में तीस चुने जा सकने वाले चरण हैं, हर दृश्य मार्ग-समूह में दस उड़ानें। हर मार्ग का अपना शुरुआती खांचा, लालटेन घाट और तीन हवाओं का क्रम है; चुनने से पहले निर्देशांक पढ़ें। मार्ग पूरा होने पर परिणाम स्क्रीन पर स्तर, अगला मार्ग (उपलब्ध होने पर) और फिर से खेलें साथ मिलते हैं। सभी तीस मार्ग पूरे करने पर परिणाम शीर्षक बदल जाता है।",
+  ar: "تضم الحملة ثلاثين مرحلة قابلة للاختيار، موزعة على ثلاث مجموعات مرئية من عشرة مسارات. لكل مسار مربع بداية ورصيف فوانيس وتسلسل رياح خاص من ثلاث هبّات؛ اقرأ الإحداثيات قبل الاختيار. بعد كل مسار، تعرض النتيجة خيارات المراحل والمسار التالي (إن توفر) وإعادة اللعب معًا. يتغير عنوان النتيجة بعد إكمال المسارات الثلاثين.",
+};
+for (const [locale, guide] of Object.entries(kiteKeeperGuideLocales)) {
+  const resultCopy = resultActionsByLocale[locale];
+  if (!resultCopy || guide.sections.length !== 6) throw new Error(`Missing Kite Keeper I9 Guide result copy: ${locale}`);
+  guide.sections[3][1] = resultCopy;
+}
+
 export function renderKiteKeeperGuide(copy) {
   if (!copy || !Array.isArray(copy.sections) || copy.sections.length !== 6 || !Array.isArray(copy.faq) || copy.faq.length !== 4) {
     throw new Error("Kite Keeper Guide locale must contain six sections and four FAQ entries");

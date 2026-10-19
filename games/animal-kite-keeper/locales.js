@@ -22,4 +22,16 @@
     ar: ["حارس الطائرات الورقية", "اختر الريح وابحث عن رصيف الفوانيس.", "طريقة اللعب", "اختر بطاقة ريح واحدة كل مرة، واصل إلى الرصيف بثلاث هبات.", "ابدأ مساراً سماوياً", "المسارات السماوية", "الإعدادات", "إغلاق الإعدادات", "اللغة", "الصوت", "تشغيل", "إيقاف", "أفضل عدد للفحوص: {count}", "صعود المرج", "نسيم الشعاب", "فانوس الثلج", "شرق، شمال، شرق", "شمال، غرب، شمال", "شرق، جنوب، شرق", "اقرأ علامة الرصيف ثم اختر الريح التالية.", "رصيف الفوانيس", "بطاقات الريح", "شمال", "شرق", "جنوب", "غرب", "موضع الطائرة: {x}، {y}", "الهبات: {count} / 3", "اختر بطاقة ريح", "الريح المختارة: {name}", "أبعدت الهبة الطائرة عن الرصيف. أعد تجربة المسار.", "تحليق مثالي! وصلت الطائرة إلى رصيف الفوانيس.", "إعادة ضبط المسار", "اكتمل المسار", "قدت الطائرة عبر {checks} فحوص.", "المسار التالي", "اكتملت كل المسارات السماوية", "العودة إلى الردهة العامة", "لوحة تحليق الطائرة", "تعذّر التحميل. أعد تحميل الصفحة."],
   };
   window.KITE_KEEPER_LOCALES = Object.fromEntries(Object.entries(table).map(([locale, values]) => [locale, make(values)]));
+  const replay = {
+    en: "Replay", "zh-Hant": "重玩", "zh-Hans": "重玩", ja: "再プレイ", ko: "다시 플레이",
+    es: "Repetir", "pt-BR": "Jogar novamente", fr: "Rejouer", de: "Wiederholen", it: "Rigioca",
+    ru: "Повторить", hi: "फिर से खेलें", ar: "إعادة اللعب",
+  };
+  const stages = {
+    en: "Stages", "zh-Hant": "關卡", "zh-Hans": "关卡", ja: "ステージ", ko: "스테이지",
+    es: "Etapas", "pt-BR": "Fases", fr: "Étapes", de: "Stufen", it: "Livelli",
+    ru: "Этапы", hi: "स्तर", ar: "المراحل",
+  };
+  for (const [locale, label] of Object.entries(replay)) window.KITE_KEEPER_LOCALES[locale].replay = label;
+  for (const [locale, label] of Object.entries(stages)) window.KITE_KEEPER_LOCALES[locale].stages = label;
 })();
