@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" dir="ltr">
 <head>
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-cairn-courier/"+location.search+location.hash)}catch{location.replace("/en/games/animal-cairn-courier/"+location.search+location.hash)}})();</script>
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-cairn-courier/"+(new URLSearchParams(location.search).get("preview")==="1"?"?preview=1":""))}catch{location.replace("/en/games/animal-cairn-courier/"+(new URLSearchParams(location.search).get("preview")==="1"?"?preview=1":""))}})();</script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
   <link rel="canonical" href="https://weightplay.com/en/games/animal-cairn-courier/" />
@@ -25,6 +25,7 @@
   <script src="/src/shared-interface-bootstrap.js?v=20261020-cairn-courier-i9" data-wp-shared-interface="7"></script>
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261020-cairn-courier-i9" data-wp-frame-style>
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261020-cairn-courier-i9">
+  <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261016-shared-play1">
   <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1">
 </head>
 <body data-audience="general" data-wp-game-id="animal-cairn-courier" data-wp-game-version="v8" data-wp-interface-version="9" data-wp-game-owned-guide="true">
@@ -33,7 +34,7 @@
     <main id="mainScreen" class="screen wp-standard-main-screen" data-screen="main" hidden>
       <header class="main-header">
         <a class="return-link" href="/" data-copy="back" data-wp-return="main" data-aria-copy="returnMain" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"></a>
-        <strong data-copy="title">Cairn Courier</strong>
+        <strong data-wp-frame-title data-copy="title">Cairn Courier</strong>
         <label class="locale"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
       <section class="wp-standard-main-composition">
@@ -80,6 +81,7 @@
     <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
   </div>
   <script src="../../src/game-screen-frame.js?v=20261020-cairn-courier-i9" data-wp-frame-script></script>
+  <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="locales.js?v=20261020-cairn-courier-i9"></script>
   <script src="i9-copy.js?v=20261020-cairn-courier-i9"></script>

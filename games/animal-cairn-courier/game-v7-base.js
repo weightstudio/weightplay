@@ -164,7 +164,7 @@
     document.documentElement.lang = state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => {
-      if (!node.matches("[data-wp-return='main']")) node.textContent = copy(node.dataset.copy);
+      if (!node.matches("[data-wp-return]")) node.textContent = copy(node.dataset.copy);
     });
     if ($("localeSelect")) $("localeSelect").value = state.locale;
     $("stageBackBtn")?.setAttribute("aria-label", copy("backToMain"));
@@ -178,9 +178,10 @@
   };
   const show = (screen) => {
     state.screen = screen;
+    if (screen !== "stage") stageSelector?.cancel();
     document.body.dataset.screen = screen;
     const activeScene = screen === "result" ? "battle" : screen;
-    document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== activeScene; });
+    document.querySelectorAll("[data-screen]").forEach((node) => { if (node !== document.body) node.hidden = node.dataset.screen !== activeScene; });
     $("resultScreen").hidden = screen !== "result";
     $("leaveConfirm").hidden = true;
     frame?.activate(activeScene, { covered: screen === "result" });
@@ -200,8 +201,28 @@
   const writeProgress = () => storage.set(STORE_KEY, JSON.stringify({ solved: [...solved].sort((a, b) => a - b), updatedAt: new Date().toISOString() }));
   const checkStack = () => { const plan = STAGES[state.round]; const valid = validate(plan, state.stack); track("stack_check", { valid, picks: state.picks, mechanic: plan.mechanic }); if (valid) { solved.add(plan.id); writeProgress(); state.status = "correct"; if (solved.size === STAGES.length) { state.completed = true; const old = Number(storage.get(BEST_KEY, "0")); if (!old || state.sessionPicks < old) storage.set(BEST_KEY, String(state.sessionPicks)); track("campaign_complete", { picks: state.sessionPicks }); } show("result"); renderResult(); } else { state.status = "wrong"; state.stack = []; renderBattle(); } };
   const clearStack = () => { state.stack = []; state.status = "waiting"; renderBattle(); track("stack_clear"); };
+  const guardBattleReturn = () => {
+    if (!state.stack.length) return false;
+    $("leaveTitle").textContent = copy("leaveTitle");
+    $("leaveBody").textContent = copy("leaveBody");
+    $("leaveContinueBtn").textContent = copy("keepBuilding");
+    $("leaveStagesBtn").textContent = copy("returnToStages");
+    $("leaveConfirm").hidden = false;
+    $("leaveContinueBtn").focus({ preventScroll: true });
+    return true;
+  };
+  window.__ANIMAL_CAIRN_COURIER_BATTLE_BACK_GUARD__ = guardBattleReturn;
   const showSettings = () => { if ($("settingsPanel")) $("settingsPanel").hidden = !$("settingsPanel").hidden; };
   $("startBtn")?.addEventListener("click", () => { show("stage"); renderStages(); track("map_open", { source: "primary" }); }); $("mapBtn")?.addEventListener("click", () => { show("stage"); renderStages(); track("map_open"); }); $("stageBackBtn")?.addEventListener("click", () => { show("main"); applyLocale(); }); $("battleBackBtn")?.addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn")?.addEventListener("click", () => { show("stage"); renderStages(); }); $("resultHomeBtn")?.addEventListener("click", () => { show("main"); applyLocale(); }); $("checkBtn")?.addEventListener("click", checkStack); $("clearBtn")?.addEventListener("click", clearStack); $("undoBtn")?.addEventListener("click", () => { state.stack.pop(); state.status = "waiting"; renderBattle(); }); ["settingsBtn", "stageSettingsBtn", "battleSettingsBtn"].forEach((id) => $(id)?.addEventListener("click", showSettings)); $("soundBtn")?.addEventListener("click", () => { state.sound = !state.sound; applyLocale(); track("sound", { enabled: state.sound }); }); $("localeSelect")?.addEventListener("change", (event) => { state.locale = locales[event.target.value] ? event.target.value : "en"; storage.set("weightplayLocale", state.locale); applyLocale(); track("locale", { locale: state.locale }); });
+  $("leaveContinueBtn")?.addEventListener("click", () => { $("leaveConfirm").hidden = true; $("battleBackBtn").focus({ preventScroll: true }); });
+  $("leaveStagesBtn")?.addEventListener("click", () => { state.stack = []; state.status = "waiting"; show("stage"); renderStages(); });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && $("leaveConfirm") && !$("leaveConfirm").hidden) {
+      event.preventDefault();
+      $("leaveConfirm").hidden = true;
+      $("battleBackBtn").focus({ preventScroll: true });
+    }
+  });
   try { const saved = storage.get("weightplayLocale", ""); if (!window.__WEIGHTPLAY_ROUTE_LOCALE__ && saved && locales[saved]) state.locale = saved; } catch {}
   const boot = () => { if ($("loadingPanel")) $("loadingPanel").hidden = true; if ($("mainScreen")) $("mainScreen").hidden = false; applyLocale(); track("main_ready"); };
   window.__ANIMAL_CAIRN_COURIER_TEST__ = { stages: STAGES, validate, startRound, pickStone, checkStack, getState: () => ({ ...state, stack: [...state.stack], solved: [...solved] }) };

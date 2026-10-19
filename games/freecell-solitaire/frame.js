@@ -62,6 +62,7 @@
       label.replaceWith(span);
     });
     const board = $('classicBoard');
+    board.querySelector('.battle-actions').dataset.wpFrameLogicalActions = 'battle';
     board.prepend(info);
     for (const id of ['startBtn','resultNewGame']) $(id).dataset.wpFrameAction = 'primary';
     for (const id of ['restartBtn','newGameBtn','undoBtn','hintBtn','battleRestartBtn','battleNewBtn','resultRestart','resultClose']) $(id).dataset.wpFrameAction = 'secondary';

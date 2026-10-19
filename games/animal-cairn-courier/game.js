@@ -24,6 +24,13 @@
   if (stageRail.parentElement !== stageWorkspace) stageWorkspace.append(stageRail);
 
   const battleBack = battleHeader.querySelector('[data-wp-return="battle"]');
+  battleBack.addEventListener("click", (event) => {
+    const guard = window.__ANIMAL_CAIRN_COURIER_BATTLE_BACK_GUARD__;
+    if (typeof guard === "function" && guard()) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }, true);
   const battleName = document.getElementById("roundName");
   const battleLabel = document.getElementById("roundLabel");
   const battleTitle = document.createElement("strong");
@@ -42,9 +49,8 @@
     },
   });
 
-  const battleInfo = document.createElement("div");
-  battleInfo.append(battleName, battleLabel);
-  frame.battleTopUI.add(window.WeightPlayScreenFrame.createGroup().add(battleInfo));
+  const battleInfo = window.WeightPlayScreenFrame.createGroup().add(battleName).add(battleLabel);
+  frame.battleTopUI.add(battleInfo);
   frame.commonDownButton.clear();
   frame.activate("main");
   window.__ANIMAL_CAIRN_COURIER_FRAME__ = frame;
