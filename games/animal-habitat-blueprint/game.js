@@ -33,10 +33,8 @@
     get(key, fallback = "") { try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; } },
     set(key, value) { try { localStorage.setItem(key, value); } catch {} }
   };
-  const queryParams = new URLSearchParams(window.location.search);
-  const queryLocale = queryParams.get("route-locale") || queryParams.get("locale") || queryParams.get("lang");
   const pathLocale = window.location.pathname.split("/").filter(Boolean).map((value) => localeMap[value] || "").find(Boolean);
-  const routeLocale = queryLocale && locales[normalizeLocale(queryLocale)] ? normalizeLocale(queryLocale) : (pathLocale && locales[pathLocale] ? pathLocale : "");
+  const routeLocale = pathLocale && locales[pathLocale] ? pathLocale : "";
 
   Object.entries(sharedCopy).forEach(([localeKey, values]) => {
     if (!locales[localeKey]) return;
@@ -97,7 +95,9 @@
   let solved = new Set(savedSolved);
   let feedback = "";
   let currentScreen = "main";
-  let stageVirtual = null;
+  let stageController = null;
+  let selectedStageIndex = 0;
+  let frame = null;
   let leaveModal = null;
   let leaveCovered = [];
   let settlementTimer = 0;
@@ -111,99 +111,14 @@
   const bestValue = () => Number(localStorage.getItem("weightplay-habitat-blueprint-best-v1") || 0) || "—";
   const solvedPlan = () => tiles.every((tile, index) => tile === plans[planIndex].solution[index]);
   const highestUnlockedIndex = () => Math.min(plans.length - 1, Math.max(0, solved.size ? Math.max(...solved) + 1 : 0));
-
-  function ensureMeta(name, content) {
-    let meta = document.querySelector(`meta[name="${name}"]`);
-    if (!meta) { meta = document.createElement("meta"); meta.name = name; document.head.appendChild(meta); }
-    meta.content = content;
-  }
-  function ensureStylesheet(href, marker) {
-    const url = new URL(href, document.baseURI).href;
-    if ([...document.querySelectorAll('link[rel="stylesheet"]')].some((link) => link.href.replace(/\?.*$/, "") === url.replace(/\?.*$/, ""))) return;
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = url;
-    if (marker) link.setAttribute(marker, "");
-    document.head.appendChild(link);
-  }
-  function ensureScript(src, marker, callback) {
-    const url = new URL(src, document.baseURI).href;
-    const existing = [...document.scripts].find((script) => script.src.replace(/\?.*$/, "") === url.replace(/\?.*$/, ""));
-    if (existing) {
-      if (callback) {
-        if (existing.dataset.wpLoaded === "true" || (src.includes("stage-virtualization-standard") && window.WeightPlayStageV6)) callback();
-        else existing.addEventListener("load", callback, { once: true });
-      }
-      return existing;
-    }
-    const script = document.createElement("script");
-    script.src = url;
-    if (marker) script.setAttribute(marker, "");
-    script.addEventListener("load", () => { script.dataset.wpLoaded = "true"; callback?.(); }, { once: true });
-    document.head.appendChild(script);
-    return script;
-  }
-
-  function installInterfaceAssets() {
-    ensureMeta("weightplay-scene-controls", "immutable");
-    ensureStylesheet("../../src/stage-selector-standard.css", "data-wp-stage-standard");
-    ensureStylesheet("../../src/battle-canvas-standard.css", "data-wp-battle-standard");
-    ensureStylesheet("interface-7-cleanup.css?v=20260923-habitat-blueprint-interface7-cleanup2");
-    ensureScript("../../src/stage-selector-standard.js?v=20260923-habitat-blueprint-interface7-cleanup2", "data-wp-stage-standard");
-    ensureScript("../../src/battle-canvas-standard.js?v=20260923-habitat-blueprint-interface7-cleanup2", "data-wp-battle-standard");
-    ensureScript("../../src/stage-virtualization-standard.js?v=20260923-habitat-blueprint-interface7-cleanup2", null, () => renderStages());
-  }
-
-  function makePlayHeader(screen, type, id) {
-    let header = screen.querySelector(`:scope > [data-wp-shell-header="${type}"]`);
-    if (header) return header;
-    header = document.createElement("header");
-    header.className = `topbar habitat-${type}-header`;
-    header.dataset.wpShellHeader = type;
-    const button = document.createElement("button");
-    button.id = id;
-    button.className = "icon-btn";
-    button.type = "button";
-    button.dataset.wpReturn = type;
-    button.setAttribute("aria-label", copy("back") || "Back");
-    button.innerHTML = '<span aria-hidden="true">←</span>';
-    header.appendChild(button);
-    screen.prepend(header);
-    return header;
-  }
-
-  function ensurePermanentSceneChrome() {
-    document.body.dataset.screen ||= "main";
-    const mainHeader = $("topbar");
-    if (mainHeader) {
-      mainHeader.dataset.wpShellHeader = "main";
-      const mainBack = $("backBtn");
-      if (mainBack) mainBack.dataset.wpReturn = "main";
-    }
-    const stage = $("stageScreen");
-    const battle = $("battleScreen");
-    if (stage) {
-      makePlayHeader(stage, "stage", "stageBackBtn");
-      const rail = $("stageList");
-      if (rail) {
-        rail.classList.add("stage-rail");
-        rail.dataset.wpStageRail = "";
-        rail.removeAttribute("data-wp-stage-v6-auto");
-        rail.removeAttribute("data-wp-stage-v6-total");
-        rail.removeAttribute("data-wp-stage-v6-pool-size");
-        if (!rail.parentElement?.hasAttribute("data-wp-stage-workspace")) {
-          const workspace = document.createElement("div");
-          workspace.className = "habitat-stage-workspace";
-          workspace.dataset.wpStageWorkspace = "";
-          rail.before(workspace);
-          workspace.appendChild(rail);
-        }
-      }
-      const tab = stage.querySelector(".stage-tab");
-      if (tab) tab.dataset.i18n = "stages";
-    }
-    if (battle) makePlayHeader(battle, "battle", "battleBackBtn");
-  }
+  const stageConfig = window.HabitatBlueprintStageConfig({
+    plans,
+    solved,
+    highestUnlockedIndex,
+    copy,
+    tileName,
+    getLocale: () => locale,
+  });
 
   function clearSettlement() {
     if (settlementTimer) clearTimeout(settlementTimer);
@@ -283,7 +198,7 @@
       leaveModal.setAttribute("aria-modal", "true");
       leaveModal.setAttribute("aria-labelledby", "habitatLeaveTitle");
       leaveModal.setAttribute("aria-describedby", "habitatLeaveText");
-      leaveModal.innerHTML = '<div class="habitat-leave-dialog"><h2 id="habitatLeaveTitle"></h2><p id="habitatLeaveText"></p><div class="habitat-leave-actions"><button id="habitatLeaveContinue" class="primary" type="button"></button><button id="habitatLeaveStage" class="secondary" type="button"></button></div></div>';
+      leaveModal.innerHTML = '<div class="habitat-leave-dialog"><h2 id="habitatLeaveTitle"></h2><p id="habitatLeaveText"></p><div class="habitat-leave-actions"><button id="habitatLeaveContinue" class="primary" data-wp-frame-action="primary" type="button"></button><button id="habitatLeaveStage" class="secondary" data-wp-frame-action="secondary" type="button"></button></div></div>';
       battle.appendChild(leaveModal);
     }
     const continueButton = leaveModal.querySelector("#habitatLeaveContinue");
@@ -311,43 +226,36 @@
     });
   }
 
-  function bindStageCard(card, index) {
-    const plan = plans[index];
-    if (!plan) { card.hidden = true; return; }
-    const unlocked = index === 0 || solved.has(index - 1);
-    card.hidden = false;
-    card.type = "button";
-    card.className = `stage-card${plan.checkpoint ? " checkpoint" : ""}${unlocked ? "" : " locked"}`;
-    card.dataset.planIndex = String(index);
-    card.setAttribute("aria-disabled", String(!unlocked));
-    card.setAttribute("aria-label", `${copy(plan.name)} ${index + 1} / ${plans.length}`);
-    card.innerHTML = `<span><strong>${plan.checkpoint ? "★ " : ""}${index + 1}. ${copy(plan.name)}</strong><small>${copy(plan.hint)} · ${plan.chapter}/6</small></span><span class="arrow">${solved.has(index) ? "✓" : unlocked ? "→" : "•"}</span>`;
-  }
-  function ensureStageVirtual() {
-    const rail = $("stageList");
-    if (!rail || !window.WeightPlayStageV6?.install) return null;
-    if (!stageVirtual) {
-      stageVirtual = window.WeightPlayStageV6.install(rail, {
-        total: () => plans.length,
-        poolSize: 9,
-        initialIndex: highestUnlockedIndex,
-        bind: bindStageCard,
-        activate: (index, _source, card) => {
-          if (card?.getAttribute("aria-disabled") === "true") return;
-          startPlan(index, true);
-        }
-      });
-    }
-    return stageVirtual;
+  function syncStageAction() {
+    const start = $("stageStartBtn");
+    if (!start) return;
+    const plan = stageConfig.stage(selectedStageIndex);
+    start.disabled = plan.locked;
+    start.textContent = `${copy("start")} · ${selectedStageIndex + 1}`;
+    $("stageSummary").textContent = `${copy("chapter")} · ${solved.size}/${plans.length}`;
   }
   function renderStages() {
-    const virtual = ensureStageVirtual();
-    if (!virtual) return;
-    virtual.refresh();
-    virtual.center(highestUnlockedIndex());
+    if (!Number.isInteger(selectedStageIndex)) selectedStageIndex = highestUnlockedIndex();
+    if (currentScreen === "stage" && !stageController) {
+      if (!window.WeightPlayPlayUI?.mountStage) throw new Error("SHARED_PLAY_UI_MISSING");
+      stageController = window.WeightPlayPlayUI.mountStage({
+        page: $("stageContent"),
+        rail: $("stageList"),
+        config: stageConfig,
+        selected: selectedStageIndex,
+        onSelect: (index) => { selectedStageIndex = index; syncStageAction(); },
+        onStart: (index) => startPlan(index, true),
+        isActive: () => currentScreen === "stage",
+      });
+    } else if (stageController) {
+      stageController.refresh(selectedStageIndex);
+    }
+    syncStageAction();
   }
 
   function show(screen) {
+    const previous = currentScreen;
+    if (screen === "stage" && previous === "main") selectedStageIndex = highestUnlockedIndex();
     currentScreen = screen;
     const inBattle = screen === "battle" || screen === "result";
     document.querySelectorAll("[data-screen]").forEach((node) => {
@@ -356,19 +264,13 @@
       else if (node.id === "resultScreen") node.hidden = screen !== "result";
       else node.hidden = node.dataset.screen !== screen;
     });
-    const battleHead = document.querySelector("#battleScreen > .battle-head");
-    const battlePrompt = $("prompt");
-    const rules = $("rules");
-    const selection = $("selection");
-    const grid = $("habitatGrid");
-    const battleActions = document.querySelector("#battleScreen > .battle-actions");
-    const status = $("status");
-    [battleHead, battlePrompt, rules, selection, grid, battleActions, status].forEach((node) => { if (node) node.hidden = screen !== "battle"; });
+    const battleLive = $("battleLive");
+    if (battleLive) { battleLive.hidden = screen !== "battle"; battleLive.inert = screen !== "battle"; }
     if ($("resultScreen")) $("resultScreen").hidden = screen !== "result";
     if ($("battleScreen")) $("battleScreen").dataset.battleState = inBattle ? screen : "";
     document.body.dataset.screen = screen === "result" ? "battle" : screen;
     document.body.dataset.battleSubstate = screen === "result" ? "result" : "";
-    $("settingsPanel") && ($("settingsPanel").hidden = true);
+    frame?.activate(inBattle ? "battle" : screen, { covered: screen === "result" });
     const guide = $("gameGuide") || document.querySelector("[data-wp-game-guide],.game-page-info,.game-page-info-static");
     if (guide) guide.hidden = screen !== "main";
     if (screen === "stage") renderStages();
@@ -404,6 +306,8 @@
     clearSettlement();
     restoreBattleCoverage();
     planIndex = index;
+    selectedStageIndex = index;
+    syncStageAction();
     tiles = [...plans[index].tiles];
     selected = [];
     swaps = 0;
@@ -516,9 +420,10 @@
   }
 
   function bind() {
-    $("startBtn")?.addEventListener("click", () => { show("stage"); renderStages(); });
-    $("mapBtn")?.addEventListener("click", () => { show("stage"); renderStages(); });
-    $("resultMapBtn")?.addEventListener("click", () => { clearSettlement(); show("stage"); renderStages(); });
+    $("startBtn")?.addEventListener("click", () => show("stage"));
+    $("mapBtn")?.addEventListener("click", () => show("stage"));
+    $("stageStartBtn")?.addEventListener("click", () => { if (!stageConfig.stage(selectedStageIndex).locked) startPlan(selectedStageIndex, true); });
+    $("resultMapBtn")?.addEventListener("click", () => { clearSettlement(); show("stage"); });
     $("nextBtn")?.addEventListener("click", nextPlan);
     $("replayBtn")?.addEventListener("click", () => startPlan(planIndex));
     $("swapBtn")?.addEventListener("click", swapSelected);
@@ -538,13 +443,6 @@
       if (swaps > 0 || settlementCallback) openLeave();
       else { clearSettlement(); show("stage"); renderStages(); }
     });
-    $("settingsBtn")?.addEventListener("click", () => { $("settingsPanel").hidden = false; });
-    $("closeSettings")?.addEventListener("click", () => { $("settingsPanel").hidden = true; });
-    $("soundBtn")?.addEventListener("click", () => {
-      window.WeightPlayAudio?.setMuted?.(!Boolean(window.WeightPlayAudio?.isMuted?.()));
-      renderStatic();
-    });
-    window.addEventListener("weightplay:audio-volume-change", renderStatic);
     $("localeSelect")?.addEventListener("change", (event) => {
       locale = normalizeLocale(event.target.value);
       safeStorage.set("weightPlayLocale", locale);
@@ -556,25 +454,34 @@
   function enforceRouteLocale() {
     if (routeLocale && routeLocale !== locale) { locale = routeLocale; renderStatic(); }
   }
+  function markSharedEntryReady() {
+    const ready = () => window.WeightPlayGameEntryLoader?.ready?.();
+    if (window.WeightPlayGameEntryLoader) {
+      requestAnimationFrame(ready);
+      return;
+    }
+    const script = document.querySelector('script[src*="/src/game-entry-loader.js"]');
+    if (script) script.addEventListener("load", () => requestAnimationFrame(ready), { once: true });
+  }
   function boot() {
-    ensurePermanentSceneChrome();
+    $("app").hidden = false;
+    frame = window.mountHabitatBlueprintFrame();
     ensureLeaveDialog();
     bind();
     if ($("localeSelect")) $("localeSelect").value = locale;
     $("loading").hidden = true;
-    $("app").hidden = false;
     show("main");
     renderStatic();
     enforceRouteLocale();
+    markSharedEntryReady();
     announce("loaded");
   }
 
-  installInterfaceAssets();
   window.__HABITAT_BLUEPRINT_TEST__ = {
     plans,
     startPlan,
     allowedPair,
-    getState: () => ({ planIndex, tiles: [...tiles], solved: [...solved], swaps, screen: currentScreen, stagePoolSize: $("stageList")?.querySelectorAll(":scope > [data-wp-stage-pool-node]").length || 0 })
+    getState: () => ({ planIndex, tiles: [...tiles], solved: [...solved], swaps, screen: currentScreen, stagePoolSize: $("stageList")?.querySelectorAll(":scope > [data-wp-stage-pool-node]").length || 0 }),
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true });
   else boot();

@@ -3872,7 +3872,7 @@ for (const [id, titles, categories, skills] of classicOwnerPreviewGames) {
       ages: ["9", "family"],
       ageLabel: classicOwnerPreviewLocalized(Array(13).fill("9+")),
       href: `games/${id}/`,
-      internalTrial: "index.html?trial=1",
+      internalTrial: id === "breakout" ? "index.html?preview=1" : "index.html?trial=1",
       art: { kind: "image", background: id === "chess" ? "assets/chess-cover-v1.webp" : id === "reversi" ? "assets/reversi-cover-v1.webp" : id === "tower-of-hanoi" ? "assets/tower-of-hanoi-cover-v1.webp" : id === "tetris" ? "assets/tetris-cover.webp" : id === "breakout" ? "assets/breakout-cover-v1.webp" : id === "hangman" ? "assets/hangman-cover-v1.webp" : id === "wordle" ? "assets/wordle-cover-v1.webp" : id === "pong" ? "assets/pong-cover-v1.webp" : id === "lights-out" ? "assets/lights-out-cover-v2.webp" : id === "mahjong-solitaire" ? "assets/mahjong-solitaire-cover-v1.webp" : "assets/classic-logic-lab-cover.webp", hideHero: true },
     });
   }

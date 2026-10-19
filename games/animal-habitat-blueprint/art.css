@@ -26,23 +26,6 @@
   }
 }
 
-/* v4 production art integration: preserve the quiet centre for the native grid. */
-.cover-wrap {
-  background: #d7ece0;
-  box-shadow: inset 0 0 0 1px #ffffff66;
-}
-
-.cover-wrap img {
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
-}
-
-#battleScreen {
-  background-image: linear-gradient(180deg, #fffdf5dd 0%, #fffdf5e8 72%, #fffdf5f2 100%), url("assets/animal-habitat-blueprint-background-v1.webp");
-  background-size: cover;
-  background-position: center;
-}
-
 .guide-art {
   filter: drop-shadow(0 12px 12px #294a5526);
 }
