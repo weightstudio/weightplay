@@ -4509,7 +4509,7 @@ const animalHabitatBlueprintPlanned = {
   ages: ["9", "family"],
   ageLabel: marketFiveLocalized(Array(13).fill("9+")),
   href: "games/animal-habitat-blueprint/",
-  internalTrial: "index.html?trial=1",
+  internalTrial: "index.html?preview=1",
   art: { kind: "image", background: "assets/lobby-posters/animal-habitat-blueprint-square-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalHabitatBlueprintPlanned[field], "__localizedExact", { value: true, enumerable: false });
@@ -4553,7 +4553,7 @@ const animalRiverGatesPlanned = {
   ages: ["6", "family"],
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-river-gates/",
-  internalTrial: "index.html?trial=1",
+  internalTrial: "index.html?preview=1",
   art: { kind: "image", background: "assets/lobby-posters/animal-river-gates-square-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalRiverGatesPlanned[field], "__localizedExact", { value: true, enumerable: false });

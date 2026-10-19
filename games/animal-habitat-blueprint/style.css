@@ -167,3 +167,32 @@ html[dir="rtl"] .rules { padding-inline-start: 30px; }
   .tile-icon { width: 42px; height: 42px; }
   .result-actions { gap: 5px; }
 }
+
+/* Keep the four selectable habitats and the 44px shared actions usable on a
+   short landscape screen. The clues get their own scrollable column instead
+   of forcing the board rows underneath the action buttons. */
+@media (orientation: landscape) and (max-height: 450px) and (min-width: 600px) {
+  #battleContent { padding: 6px; }
+  #battleLive {
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    grid-template-rows: auto auto minmax(0, 1fr) minmax(44px, auto) auto;
+    grid-template-areas:
+      "eyebrow board"
+      "prompt board"
+      "rules board"
+      "selection actions"
+      "status actions";
+    gap: 4px 8px;
+  }
+  #battleLive > .eyebrow { grid-area: eyebrow; }
+  #battleLive > .prompt { grid-area: prompt; min-width: 0; font-size: .9rem; line-height: 1.2; }
+  #battleLive > .rules { grid-area: rules; padding: 6px 8px; font-size: .82rem; line-height: 1.15; }
+  #battleLive > .selection { grid-area: selection; min-width: 0; font-size: .82rem; }
+  #battleLive > .habitat-grid { grid-area: board; }
+  #battleLive > .battle-actions { grid-area: actions; align-self: center; gap: 6px; }
+  #battleLive > .status { grid-area: status; min-width: 0; font-size: .82rem; }
+  .habitat-tile { column-gap: 5px; padding: 5px; font-size: .8rem; }
+  .tile-icon { width: 34px; height: 34px; }
+  .habitat-tile small { margin-top: 2px; }
+  html[dir="rtl"] #battleLive > .rules { padding-inline-start: 20px; }
+}

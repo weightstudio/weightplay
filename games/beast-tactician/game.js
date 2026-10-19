@@ -2134,6 +2134,9 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     if (nodes.stageTitle) nodes.stageTitle.textContent = t(equipment ? "equipmentTab" : "stagesTab");
     syncStageHeaderContext();
     nodes.stagePage?.classList.toggle("is-hidden", equipment);
+    // The shared Stage selector contract forces [data-wp-stage-selector]
+    // visible unless it also carries the shared `.hidden` state class.
+    nodes.stagePage?.classList.toggle("hidden", equipment);
     nodes.techPanel?.classList.toggle("is-hidden", !equipment);
     nodes.stageTabBtn?.classList.toggle("is-active", !equipment);
     nodes.equipmentTabBtn?.classList.toggle("is-active", equipment);

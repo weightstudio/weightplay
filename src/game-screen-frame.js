@@ -468,7 +468,10 @@
           if(active!==name)clearPlayLayout(name);
           continue;
         }
-        const inverse=entry.root.offsetWidth/entry.root.getBoundingClientRect().width;
+        const sharedStageInverse=Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--wp-stage-canvas-inverse-scale'));
+        const inverse=name==='stage'&&entry.root.hasAttribute('data-wp-logical-stage-canvas')&&Number.isFinite(sharedStageInverse)&&sharedStageInverse>0
+          ? sharedStageInverse
+          : entry.root.offsetWidth/entry.root.getBoundingClientRect().width;
         entry.root.style.setProperty('grid-template-columns','minmax(0,1fr)','important');
         entry.root.style.setProperty('grid-template-rows','var(--wp-frame-rows)','important');
         entry.root.style.setProperty('--wp-frame-popover-scale',String(inverse));
