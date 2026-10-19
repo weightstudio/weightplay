@@ -12,7 +12,7 @@
     return {
       gameId: "animal-moon-market",
       poster,
-      background: "/games/animal-moon-market/assets/animal-moon-market-night-market-v1.png",
+      background: "/assets/lobby-block-atmosphere.svg",
       count: stages.length,
       stage(index) {
         const stage = stages[index];
