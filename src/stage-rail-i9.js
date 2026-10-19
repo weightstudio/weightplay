@@ -74,6 +74,14 @@
 
     function onDown(event) {
       if (closed || event.isPrimary === false || (event.button ?? 0) !== 0) return;
+      // A new physical gesture is always intentional. If the previous drag
+      // did not produce a compatibility click, do not let its suppression
+      // window eat this new tap when the user acts quickly.
+      if (suppressClick) {
+        window.clearTimeout(suppressTimer);
+        suppressTimer = 0;
+        suppressClick = false;
+      }
       cancelSettle();
       if (config.onStart?.(event) === false) return;
       pointerId = event.pointerId;
@@ -110,7 +118,13 @@
       if (suppressTap) {
         suppressClick = true;
         window.clearTimeout(suppressTimer);
-        suppressTimer = window.setTimeout(() => { suppressClick = false; }, 0);
+        // Touch browsers can dispatch their compatibility click after the
+        // pointerup task has yielded. A zero-delay timeout races that click
+        // and can turn a swipe over an unlocked card into Battle activation.
+        suppressTimer = window.setTimeout(() => {
+          suppressClick = false;
+          suppressTimer = 0;
+        }, 500);
       }
       const from = dragPosition;
       const startedAt = performance.now();
@@ -169,6 +183,7 @@
       if (!suppressClick) return;
       suppressClick = false;
       window.clearTimeout(suppressTimer);
+      suppressTimer = 0;
       event.preventDefault();
       event.stopImmediatePropagation();
     }, { capture: true, signal: abort.signal });

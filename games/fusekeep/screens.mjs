@@ -10,11 +10,11 @@ export function mountPlayScreens(){
  const fragment=document.createElement('template');
  fragment.innerHTML=`
  <section id="stageScreen" data-wp-stage-workspace hidden>
-  <div id="stageCanvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="/games/fusekeep/assets/poster.webp" style="--wp-stage-art:url('/games/fusekeep/assets/poster.webp')">
+ <div id="stageCanvas">
    <header id="stageHeader"><button type="button" data-wp-return="stage" data-t-aria="back"></button><h2 data-wp-frame-title hidden></h2></header>
    <div id="stageContent">
     <div id="stageHud" data-wp-frame-info><div><span data-t="campaign"></span><strong id="stageProgress"></strong></div><div><span data-t="deck"></span><strong id="stageDeckCount"></strong></div></div>
-    <section id="missionPane" role="tabpanel" aria-labelledby="missionTab"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="340"></div></section>
+    <section id="missionPane" role="tabpanel" aria-labelledby="missionTab"><div id="stageRail" data-wp-stage-rail></div></section>
     <section id="deckPane" role="tabpanel" aria-labelledby="deckTab" hidden inert><p data-t="deckHint"></p><p data-t="collectionHint"></p><p id="deckCount"></p><div id="deckGrid"></div><p id="deckMessage" class="bounded-message" role="status" aria-live="polite"></p></section>
    </div>
    <nav id="stageNav" data-wp-frame-stage-nav role="tablist"><button id="deckTab" type="button" role="tab" aria-controls="deckPane" aria-selected="false" tabindex="-1" data-wp-frame-stage-slot="team" data-wp-frame-action="tab" data-t="deck"></button><button id="missionTab" type="button" role="tab" aria-controls="missionPane" aria-selected="true" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" data-t="campaign"></button></nav>

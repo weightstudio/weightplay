@@ -6,6 +6,7 @@ import {PROGRESSION_COPY} from './progression-copy.mjs';
 import {LOCALES,LABELS,DICT,translator} from './locales.mjs?v=8';
 import {COPY,ROUTES,interpolate} from './copy.mjs';
 import {cue,combatAudio,resetAudio} from './audio.mjs';
+import {createFusekeepStageConfig} from './stage-config.mjs?v=9';
 const rootURL=new URL('../../',import.meta.url),assetURL=new URL('./assets/',import.meta.url);
 const preview=new URL(location.href).searchParams.get('preview')==='1';
 const previewURL=path=>{const url=new URL(path,rootURL);if(preview)url.searchParams.set('preview','1');return url.href;};
@@ -17,17 +18,19 @@ const d=DICT[locale],copy={...COPY[locale],...PROGRESSION_COPY[locale]},baseT=tr
 const t=(key,values={})=>Object.hasOwn(copy,key)?interpolate(copy[key],values):baseT(key,values);
 let storage;try{storage=window.localStorage;}catch{/* Session-only operation remains available. */}
 const store=createStore(storage);let saved=store.value,draft=[...saved.deck];
+let selectedStage=Math.max(0,Math.min(STAGES.length-1,saved.unlocked-1));
 const lifecycle=new AbortController();
 const listen=(node,type,fn,options={})=>node.addEventListener(type,fn,{...options,signal:lifecycle.signal});
 let scene='main',sceneEpoch=0,runEpoch=0,battle=null,arena=null,raf=0,deferred=0,lastTime=0,accumulator=0,speed=1;
 let modal=null,modalActions=[],previousFocus=null,selected=-1,focused=-1,gesture=null,suppressPointerClickUntil=0;
 let settingsPaused=false,disposed=false,feedbackText='',feedbackExpiry=0,loadTimer=0;
 let rendererPromise=null,rendererAttempts=0,portraitReady=false,portraitBusy=false,stageController=null;
-let lastResources=null,cardViews=new WeakMap(),savedPortraits={};
+let lastResources=null,savedPortraits={};
 const padNodes=[],deckNodes=[],damageNodes=[];
 const formatTime=seconds=>`${Math.floor(seconds/60)}:${String(Math.floor(seconds%60)).padStart(2,'0')}`;
 const troopName=type=>d.troops[TYPES.indexOf(type)];
 const unitLabel=unit=>t('unitHint',{name:troopName(unit.type),rank:unit.rank});
+const stageConfig=createFusekeepStageConfig({locale,save:()=>saved,text:t,formatTime,troopName});
 function feedback(key,values={}){
  if(key==='upgrade'){
   const level=battle?.upgrades||0;
@@ -58,26 +61,12 @@ listen(localeSelect,'change',()=>{
  try{storage?.setItem('weightPlayLocale',next);}catch{/* The destination URL still owns the selected locale. */}
  location.assign(previewURL(`${ROUTES[next]}/games/fusekeep/`));
 });
-function bindStage(card,index){
- const stage=STAGES[index];let nodes=cardViews.get(card);
- if(!nodes){
-  const group=create('div');group.dataset.wpItemContent='';
-  nodes={number:create('strong','mission-number'),name:create('strong','mission-name'),arc:create('span','mission-arc'),rule:create('span','mission-rule'),record:create('span','mission-record')};
-  group.append(nodes.number,nodes.name,nodes.arc,nodes.rule,nodes.record);card.append(group);cardViews.set(card,nodes);
- }
- card.type='button';card.classList.add('stage-card');card.disabled=false;card.dataset.stageIndex=String(index);
- const locked=stage.id>saved.unlocked;card.setAttribute('aria-disabled',String(locked));card.dataset.wpStageRecommended=String(stage.id===saved.unlocked);
- text(nodes.number,stage.id);text(nodes.name,copy.missions[index]);text(nodes.arc,t('reward',{name:troopName(rewardType(stage.id)),n:clearCount(saved.collection,stage.id)?4:8}));
- text(nodes.rule,stage.boss?`${d.bosses[BOSSES.indexOf(stage.boss)]} · ${t('bossRule')}`:copy.patterns[stage.pattern]);
- text(nodes.record,locked?t('locked'):`${t('stars')} ${saved.stars[index]}/3${saved.best[index]?` · ${t('best')} ${formatTime(saved.best[index])}`:''}`);
- card.setAttribute('aria-label',`${t('level',{n:stage.id})}: ${copy.missions[index]}. ${nodes.rule.textContent}. ${nodes.arc.textContent}. ${nodes.record.textContent}`);
-}
-function refreshStage(){stageController?.refresh();renderProgress();renderDeck();}
+function refreshStage(){stageController?.refresh(selectedStage);renderProgress();renderDeck();}
 function setTab(deck){
  $('deckPane').hidden=!deck;$('deckPane').inert=!deck;$('missionPane').hidden=deck;$('missionPane').inert=deck;
  $('deckTab').setAttribute('aria-selected',String(deck));$('missionTab').setAttribute('aria-selected',String(!deck));
  $('deckTab').tabIndex=deck?0:-1;$('missionTab').tabIndex=deck?-1:0;
- if(!deck&&scene==='stage')deferScene(()=>stageController?.center());
+ if(!deck&&scene==='stage')deferScene(()=>stageController?.refresh(selectedStage));
  if(deck&&scene==='stage')void loadPortraits();
 }
 function renderDeck(){
@@ -152,13 +141,25 @@ function deferScene(fn){
  cancelAnimationFrame(deferred);const epoch=sceneEpoch;
  deferred=requestAnimationFrame(()=>{deferred=0;if(!disposed&&epoch===sceneEpoch)fn();});
 }
-const frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect,scenes:{
+const stageHud=$('stageHud'),battleHud=$('battleHud');
+const frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect,playUI:true,scenes:{
  main:{root:$('mainScreen'),header:$('mainHeader'),content:$('mainContent')},
- stage:{root:$('stageCanvas'),header:$('stageHeader'),content:$('stageContent'),headerInfo:$('stageHud')},
- battle:{root:$('battleCanvas'),header:$('battleHeader'),content:$('battleContent'),headerInfo:$('battleHud')},
+ stage:{root:$('stageCanvas'),header:$('stageHeader'),content:$('stageContent')},
+ battle:{root:$('battleCanvas'),header:$('battleHeader'),content:$('battleContent')},
 }});
-stageController=window.WeightPlayStageV6.install($('stageRail'),{total:STAGES.length,poolSize:9,bind:bindStage,initialIndex:()=>saved.unlocked-1,activate:index=>void startBattle(index+1)});
-if(!stageController)throw Error('SHARED_STAGE_NOT_MOUNTED');
+const stageInfoGroup=window.WeightPlayScreenFrame.createGroup();
+for(const node of [...stageHud.children])stageInfoGroup.add(node);
+stageHud.remove();frame.stageTopUI.add(stageInfoGroup);
+const battleInfoGroup=window.WeightPlayScreenFrame.createGroup();
+for(const node of [...battleHud.children])battleInfoGroup.add(node);
+battleHud.remove();frame.battleTopUI.add(battleInfoGroup);
+frame.commonDownButton.clear().add($('deckTab')).add($('missionTab'));
+stageController=window.WeightPlayPlayUI.mountStage({
+ page:$('missionPane'),rail:$('stageRail'),config:stageConfig,selected:selectedStage,
+ isActive:()=>scene==='stage'&&!$('missionPane').hidden,
+ onSelect(index){selectedStage=index;},
+ onStart(index){selectedStage=index;void startBattle(index+1);},
+});
 function cancelGesture(){
  const active=gesture;gesture=null;arena?.clearDrag();
  if(active&&$('arenaFrame').hasPointerCapture?.(active.id))try{$('arenaFrame').releasePointerCapture(active.id);}catch{/* The browser may already have cancelled capture. */}
@@ -172,7 +173,7 @@ function activate(next){
  document.body.dataset.screen=next;frame.activate(next);window.dispatchEvent(new Event('resize'));
  deferScene(()=>{
   if(next==='main')$('start').focus({preventScroll:true});
-  if(next==='stage'){stageController.center(saved.unlocked-1);$('stageRail').querySelector('[tabindex="0"]')?.focus({preventScroll:true});}
+  if(next==='stage'){stageController.refresh(selectedStage);$('stageRail').querySelector('[aria-current="true"]')?.focus({preventScroll:true});}
   if(next==='battle')arena?.resize();
  });
 }
@@ -248,6 +249,7 @@ function seed(){try{return crypto.getRandomValues(new Uint32Array(1))[0];}catch{
 async function startBattle(id){
  if(disposed||!Number.isInteger(id)||id<1||id>saved.unlocked||id>STAGES.length)return;
  if(draft.length!==5){setTab(true);text($('deckMessage'),t('deckMin'));return;}
+ selectedStage=id-1;stageController.refresh(selectedStage);
  disposeRun();const stored=await save(current=>({...current,deck:[...draft]}));if(!stored.ok)return;draft=[...saved.deck];battle=new Battle(id,draft,seed(),saved.collection.levels);battle.pause(true);speed=1;feedbackText='';
  activate('battle');await restoreArena();
 }
@@ -266,7 +268,7 @@ async function showResult(){
  const currency=won?(completed.economySaveError?t('transactionUnavailable'):firstClear?t('firstClearCurrency'):replay?.replayGold?t('replayGoldResult',{n:replay.replayGold}):t('replayGoldCapped')):'';
  const reward=won&&completed.shardReward?`${t('reward',{name:troopName(completed.shardReward.type),n:completed.shardReward.amount})} · ${currency}`:currency;
  showModal('result',t(won?'victory':'defeat'),reward,[
-  {label:t('back'),run:toStage},
+  {label:t('campaign'),run:toStage},
   {label:t('next'),run:()=>void startBattle(id+1),disabled:!won||id>=STAGES.length},
   {label:t('retry'),run:()=>void startBattle(id)},
  ]);
@@ -402,7 +404,7 @@ const resizeObserver=new ResizeObserver(()=>{
  const content=$('battleContent');content.dataset.wide=String(content.clientWidth>=720);
  if(scene==='battle')deferScene(()=>{arena?.resize();if(arena)placePads(arena.padScreens());});
 });resizeObserver.observe($('battleContent'));
-listen(window,'resize',()=>{cancelGesture();if(scene==='stage')deferScene(()=>stageController?.center());});
+listen(window,'resize',()=>{cancelGesture();if(scene==='stage')deferScene(()=>stageController?.refresh(selectedStage));});
 listen(window,'weightplay:interaction-state',()=>{
  if(scene!=='battle'||!battle)return;
  const open=Boolean($('battleHeader').querySelector('.wp-frame-popover:not([hidden])'));
@@ -438,11 +440,11 @@ listen(window,'pagehide',event=>{
 });
 listen(window,'pageshow',event=>{
  if(!event.persisted||disposed)return;
- if(battle&&scene==='battle'){modal=null;failure();}else{frame.activate(scene);refreshStage();if(scene==='stage')deferScene(()=>stageController.center());}
+ if(battle&&scene==='battle'){modal=null;failure();}else{frame.activate(scene);refreshStage();if(scene==='stage')deferScene(()=>stageController.refresh(selectedStage));}
 });
 // Observability for the next AI; no cheat setters, release flags, or test acceptance.
 window.FusekeepDiagnostics=Object.freeze({
- snapshot:()=>({scene,version:8,locale,modal,speed,loopActive:Boolean(raf),selected,
+ snapshot:()=>({scene,version:9,interfaceVersion:9,locale,modal,speed,loopActive:Boolean(raf),selected,selectedStage,
   battle:battle?{stage:battle.stage.id,wave:battle.wave,status:battle.status,hp:battle.hp,gold:battle.gold,
    board:battle.board.map(unit=>unit?{id:unit.id,type:unit.type,rank:unit.rank}:null),enemies:battle.enemies.length,
    pending:battle.pending.length,shots:battle.shots.length,time:battle.time}:null,

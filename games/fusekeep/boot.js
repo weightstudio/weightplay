@@ -6,8 +6,16 @@
  const fail=()=>{if(abandoned||document.documentElement.dataset.fusekeepReady==='true')return;document.getElementById('bootError').hidden=false;};
  const timer=setTimeout(fail,15000);
  window.addEventListener('pagehide',event=>{if(!event.persisted){abandoned=true;clearTimeout(timer);}},{once:true});
- import(new URL('./screens.mjs?v=7',src).href).then(module=>{
-  if(abandoned)return;module.mountPlayScreens();return import(new URL('./app.mjs?v=7',src).href);
- }).then(()=>{clearTimeout(timer);if(abandoned)return;document.getElementById('start').disabled=false;document.getElementById('bootError').hidden=true;})
- .catch(error=>{clearTimeout(timer);console.warn('Fusekeep startup:',error?.message);fail();});
+ import(new URL('./screens.mjs?v=9',src).href).then(module=>{
+  if(abandoned)return;module.mountPlayScreens();return import(new URL('./app.mjs?v=9',src).href);
+ }).then(()=>{
+  clearTimeout(timer);if(abandoned)return;
+  document.getElementById('start').disabled=false;document.getElementById('bootError').hidden=true;
+  window.WeightPlayGameEntryLoader?.ready();
+ })
+ .catch(error=>{
+  clearTimeout(timer);console.warn('Fusekeep startup:',error?.message);fail();
+  const message=document.querySelector('#bootError p')?.textContent;
+  window.WeightPlayGameEntryLoader?.fail(message,()=>window.location.reload());
+ });
 })();

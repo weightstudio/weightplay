@@ -6,8 +6,10 @@
  const root=new URL('../../',document.currentScript.src);
  const relative=location.pathname.slice(root.pathname.length);
  if(!/^games\/fusekeep\/(?:index\.html)?$/.test(relative))return;
- let locale=new URL(location.href).searchParams.get('lang');
- if(!locale)try{locale=localStorage.getItem('weightPlayLocale');}catch{/* Default route still works. */}
+ let locale;
+ try{locale=localStorage.getItem('weightPlayLocale');}catch{/* Default route still works. */}
  if(!Object.hasOwn(routes,locale))locale='en';
- const destination=new URL(`${routes[locale]}/games/fusekeep/`,root);destination.search=location.search;destination.searchParams.delete('lang');destination.hash=location.hash;location.replace(destination.href);
+ const destination=new URL(`${routes[locale]}/games/fusekeep/`,root);
+ if(new URL(location.href).searchParams.get('preview')==='1')destination.searchParams.set('preview','1');
+ destination.hash=location.hash;location.replace(destination.href);
 })();
