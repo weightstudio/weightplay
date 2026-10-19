@@ -167,7 +167,7 @@ select:focus-visible {
 
 #battleScreen .choice-label {
   color: var(--wp-ui-muted);
-  font-size: calc(14 * var(--wp-play-unit, 1px));
+  font-size: calc(14.5 * var(--wp-play-unit, 1px));
   font-weight: 800;
 }
 
@@ -175,6 +175,12 @@ select:focus-visible {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
+}
+
+#battleScreen .choices button {
+  min-height: calc(44 * var(--wp-play-unit, 1px));
+  padding: calc(6 * var(--wp-play-unit, 1px)) calc(4 * var(--wp-play-unit, 1px));
+  font-size: calc(14.5 * var(--wp-play-unit, 1px));
 }
 
 #battleScreen .choice.selected,
@@ -209,7 +215,7 @@ select:focus-visible {
 
 #battleScreen .helper-name {
   overflow-wrap: anywhere;
-  font-size: calc(14 * var(--wp-play-unit, 1px));
+  font-size: calc(14.5 * var(--wp-play-unit, 1px));
   font-weight: 900;
 }
 
@@ -224,7 +230,7 @@ select:focus-visible {
   min-width: 0;
   min-height: calc(44 * var(--wp-play-unit, 1px));
   padding: calc(6 * var(--wp-play-unit, 1px)) calc(4 * var(--wp-play-unit, 1px));
-  font-size: calc(14 * var(--wp-play-unit, 1px));
+  font-size: calc(14.5 * var(--wp-play-unit, 1px));
 }
 
 #battleScreen .actions,
@@ -253,7 +259,7 @@ select:focus-visible {
   min-width: 0;
   min-height: calc(44 * var(--wp-play-unit, 1px));
   padding: calc(6 * var(--wp-play-unit, 1px));
-  font-size: calc(14 * var(--wp-play-unit, 1px));
+  font-size: calc(14.5 * var(--wp-play-unit, 1px));
 }
 
 #battleScreen .primary {
@@ -331,12 +337,6 @@ select:focus-visible {
     gap: 4px;
   }
 
-  #battleScreen .choices button {
-    min-height: calc(44 * var(--wp-play-unit, 1px));
-    padding: calc(6 * var(--wp-play-unit, 1px)) calc(4 * var(--wp-play-unit, 1px));
-    font-size: calc(14 * var(--wp-play-unit, 1px));
-  }
-
   #battleScreen .helper-grid {
     gap: 4px;
   }
@@ -351,7 +351,7 @@ select:focus-visible {
   }
 
   #battleScreen .helper-name {
-    font-size: calc(14 * var(--wp-play-unit, 1px));
+    font-size: calc(14.5 * var(--wp-play-unit, 1px));
   }
 
   #battleScreen .helper-actions {
@@ -362,7 +362,7 @@ select:focus-visible {
   #battleScreen .helper-actions button {
     min-height: calc(44 * var(--wp-play-unit, 1px));
     padding: calc(6 * var(--wp-play-unit, 1px)) calc(4 * var(--wp-play-unit, 1px));
-    font-size: calc(14 * var(--wp-play-unit, 1px));
+    font-size: calc(14.5 * var(--wp-play-unit, 1px));
   }
 }
 
@@ -397,6 +397,6 @@ select:focus-visible {
   #battleScreen .helper-actions button {
     min-height: calc(44 * var(--wp-play-unit, 1px));
     padding: calc(6 * var(--wp-play-unit, 1px)) calc(4 * var(--wp-play-unit, 1px));
-    font-size: calc(14 * var(--wp-play-unit, 1px));
+    font-size: calc(14.5 * var(--wp-play-unit, 1px));
   }
 }
