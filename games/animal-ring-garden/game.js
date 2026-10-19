@@ -74,7 +74,7 @@
       subtitle: clue,
       status: state.completedGardens.has(index) ? t("complete") : "",
       summary: clue,
-      details: [],
+      details: [clue],
       locked: false,
       cleared: state.completedGardens.has(index),
       poster,
