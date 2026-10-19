@@ -38,10 +38,14 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260927-spider-solitaire-battle-control-scaler-wip1" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20261018-spider-battle-controls-v42" />
+  <link rel="stylesheet" href="style.css?v=20261019-spider-main-poster-v43" />
   <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-shared-frame-v1" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" />
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<meta name="weightplay-game-version" content="v43">
+<meta name="weightplay-interface-version" content="9">
   <meta name="description" content="سوليتير العنكبوت الكلاسيكي بنوع واحد أو نوعين أو أربعة أنواع مع سحب سلس وتلميحات وتراجع غير محدود." />
     <meta property="og:title" content="سوليتير العنكبوت | WeightPlay" />
     <meta property="og:description" content="سوليتير العنكبوت الكلاسيكي بنوع واحد أو نوعين أو أربعة أنواع مع سحب سلس وتلميحات وتراجع غير محدود." />
@@ -78,10 +82,8 @@
   }
 }
     </script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-<meta name="weightplay-game-version" content="v42">\n<meta name="weightplay-interface-version" content="9">\n</head>
-<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-game-version="v42" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
+  </head>
+<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-game-version="v43" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-sl="title">سوليتير العنكبوت</strong><span id="loadingText" data-sl="loading">جارٍ تجهيز الطاولة</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
@@ -187,7 +189,7 @@
 
 
 
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>المزيد من الألعاب ذات الصلة</h3><p>جرّب ترتيب سوليتير آخر: ابنِ الأعمدة في كلوندايك أو خطّط باستخدام الخلايا المفتوحة في فري سيل.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="klondike-solitaire" href="/ar/games/klondike-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="سوليتير كلوندايك" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">سوليتير كلوندايك</strong><span>رتّب الأوراق باستخدام الرزمة كاملة واختر سحب ورقة أو ثلاث؛ تتوفر الإكمالات التلقائية والتراجع.</span></span></a><a class="game-info-related-card" data-game-id="freecell-solitaire" href="/ar/games/freecell-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="سوليتير فري سيل" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">سوليتير فري سيل</strong><span>رتّب ثمانية أعمدة وأربع خلايا مؤقتة وأربع خانات أساس؛ يتوفر التلميح والتراجع.</span></span></a></div></div><div class="game-info-section" data-spider-static-faq="1.4.0"><h3>الأسئلة الشائعة</h3><dl><dt>كم عدد الأوراق المستخدمة؟</dt><dd>يستخدم سوليتير العنكبوت مجموعتين قياسيتين، أي 104 أوراق: 54 في ترتيب البداية و50 في المخزون.</dd><dt>كم عموداً في الترتيب؟</dt><dd>يتكون الترتيب من 10 أعمدة. تبدأ الأعمدة الأربعة الأولى بست أوراق لكل منها، وتبدأ الأعمدة الستة الأخرى بخمس.</dd><dt>هل يمكن تكديس أوراق من أنواع مختلفة؟</dt><dd>يمكن ترتيب القيم تنازلياً بين الأنواع، لكن لا يمكن نقل أو جمع سلسلة معاً إلا إذا كانت تنازلية ومن النوع نفسه.</dd><dt>لماذا لا يمكن التوزيع من المخزون؟</dt><dd>في سوليتير العنكبوت الكلاسيكي، يجب أن يحتوي كل عمود من الأعمدة العشرة على ورقة واحدة على الأقل قبل توزيع صف جديد.</dd><dt>كم سلسلة أحتاج للفوز؟</dt><dd>اجمع السلاسل الثماني الكاملة من النوع نفسه، وتمتد كل واحدة من الملك إلى الآس.</dd><dt>ما الذي يتغير بين مستويات الصعوبة؟</dt><dd>تغيّر أوضاع النوع الواحد أو النوعين أو الأنواع الأربعة مزيج الأنواع؛ وتبقى قواعد الأعمدة العشرة كما هي.</dd><dt>هل يمكن إعادة التوزيعة نفسها؟</dt><dd>تستخدم إعادة تشغيل اللعبة الحالية البذرة نفسها. أما اللعبة الجديدة فتنشئ توزيعة مختلفة.</dd><dt>هل يعيد التراجع سلسلة مكتملة؟</dt><dd>نعم. يعيد التراجع ترتيب الأوراق السابق وعدد السلاسل المكتملة.</dd></dl></div>
+      <div class="game-info-section" data-spider-growth-related="1.4.0" data-runtime-localize="off"><h3>ألعاب ذات صلة</h3><p>جرّب ترتيب سوليتير آخر: ابنِ الأعمدة في كلوندايك أو خطّط باستخدام الخلايا المفتوحة في فري سيل.</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/ar/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="Klondike Solitaire" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>سوليتير كلوندايك</strong><span>رتّب الأوراق باستخدام الرزمة كاملة واختر سحب ورقة أو ثلاث؛ تتوفر الإكمالات التلقائية والتراجع.</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/ar/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="FreeCell Solitaire" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>سوليتير فري سيل</strong><span>رتّب ثمانية أعمدة وأربع خلايا مؤقتة وأربع خانات أساس؛ يتوفر التلميح والتراجع.</span></span></a></div></div><div class="game-info-section" data-spider-static-faq="1.4.0"><h3>الأسئلة الشائعة</h3><dl><dt>كم عدد الأوراق المستخدمة؟</dt><dd>يستخدم سوليتير العنكبوت مجموعتين قياسيتين، أي 104 أوراق: 54 في ترتيب البداية و50 في المخزون.</dd><dt>كم عموداً في الترتيب؟</dt><dd>يتكون الترتيب من 10 أعمدة. تبدأ الأعمدة الأربعة الأولى بست أوراق لكل منها، وتبدأ الأعمدة الستة الأخرى بخمس.</dd><dt>هل يمكن تكديس أوراق من أنواع مختلفة؟</dt><dd>يمكن ترتيب القيم تنازلياً بين الأنواع، لكن لا يمكن نقل أو جمع سلسلة معاً إلا إذا كانت تنازلية ومن النوع نفسه.</dd><dt>لماذا لا يمكن التوزيع من المخزون؟</dt><dd>في سوليتير العنكبوت الكلاسيكي، يجب أن يحتوي كل عمود من الأعمدة العشرة على ورقة واحدة على الأقل قبل توزيع صف جديد.</dd><dt>كم سلسلة أحتاج للفوز؟</dt><dd>اجمع السلاسل الثماني الكاملة من النوع نفسه، وتمتد كل واحدة من الملك إلى الآس.</dd><dt>ما الذي يتغير بين مستويات الصعوبة؟</dt><dd>تغيّر أوضاع النوع الواحد أو النوعين أو الأنواع الأربعة مزيج الأنواع؛ وتبقى قواعد الأعمدة العشرة كما هي.</dd><dt>هل يمكن إعادة التوزيعة نفسها؟</dt><dd>تستخدم إعادة تشغيل اللعبة الحالية البذرة نفسها. أما اللعبة الجديدة فتنشئ توزيعة مختلفة.</dd><dt>هل يعيد التراجع سلسلة مكتملة؟</dt><dd>نعم. يعيد التراجع ترتيب الأوراق السابق وعدد السلاسل المكتملة.</dd></dl></div>
 
 
 </section>
@@ -200,9 +202,9 @@
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1&wp-audio=1.0.0"></script>
   <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
   <script src="frame.js?v=20261018-spider-battle-controls-v42"></script>
-  <script src="game.js?v=20260913-spider-block-v40&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261019-spider-test-harness-v43&wp-audio=1.0.0"></script>
   <script src="analytics-ownership.js?v=20260913-spider-block-v40"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260927-spider-solitaire-battle-control-scaler-wip1" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>

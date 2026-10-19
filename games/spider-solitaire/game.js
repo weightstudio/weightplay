@@ -1448,8 +1448,7 @@
   }
 
   function installSmokeHook() {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("trial") !== "1" || params.get("smoke") !== "1") return;
+    if (window.__WP_SPIDER_SOLITAIRE_TEST_HARNESS__ !== true) return;
     window.__spiderSolitaireSmoke = {
       loadVictoryFixture(difficulty = 1) {
         const Card = window.WPCardEngine.Card;

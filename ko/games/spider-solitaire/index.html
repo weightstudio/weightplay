@@ -38,10 +38,14 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260927-spider-solitaire-battle-control-scaler-wip1" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20261018-spider-battle-controls-v42" />
+  <link rel="stylesheet" href="style.css?v=20261019-spider-main-poster-v43" />
   <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-shared-frame-v1" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" />
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<meta name="weightplay-game-version" content="v43">
+<meta name="weightplay-interface-version" content="9">
   <meta name="description" content="1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어." />
     <meta property="og:title" content="스파이더 솔리테어 | WeightPlay" />
     <meta property="og:description" content="1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어." />
@@ -78,10 +82,8 @@
   }
 }
     </script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-<meta name="weightplay-game-version" content="v42">\n<meta name="weightplay-interface-version" content="9">\n</head>
-<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-game-version="v42" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
+  </head>
+<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-game-version="v43" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-sl="title">스파이더 솔리테어</strong><span id="loadingText" data-sl="loading">테이블을 준비하는 중</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
@@ -187,7 +189,7 @@
 
 
 
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>더 많은 관련 게임</h3><p>다른 솔리테어도 해보고 싶다면 클론다이크의 카드 열 정리나 프리셀의 빈칸 활용을 살펴보세요.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="klondike-solitaire" href="/ko/games/klondike-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="클론다이크 솔리테어" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">클론다이크 솔리테어</strong><span>전체 카드 덱으로 열을 정리하며 한 장 또는 세 장 뽑기, 자동 마무리, 실행 취소를 사용할 수 있습니다.</span></span></a><a class="game-info-related-card" data-game-id="freecell-solitaire" href="/ko/games/freecell-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="프리셀 솔리테어" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">프리셀 솔리테어</strong><span>여덟 카드 열과 네 임시 칸, 네 기초 더미를 활용하며 힌트와 실행 취소도 지원합니다.</span></span></a></div></div><div class="game-info-section" data-spider-static-faq="1.4.0"><h3>자주 묻는 질문</h3><dl><dt>카드는 몇 장을 사용하나요?</dt><dd>스파이더 솔리테어는 표준 카드 두 벌, 총 104장을 사용합니다. 시작 tableau에 54장, Stock에 50장이 있습니다.</dd><dt>열은 몇 개 있나요?</dt><dd>tableau는 10열입니다. 처음 네 열에는 각각 6장, 나머지 여섯 열에는 각각 5장이 놓입니다.</dd><dt>무늬가 다른 카드도 쌓을 수 있나요?</dt><dd>무늬가 달라도 숫자를 내림차순으로 쌓을 수 있지만, 같은 무늬의 내림차순 묶음만 함께 이동하거나 회수할 수 있습니다.</dd><dt>왜 Stock에서 카드를 나눌 수 없나요?</dt><dd>클래식 스파이더에서는 새 줄을 나누기 전에 10개 열마다 카드가 한 장 이상 있어야 합니다.</dd><dt>이기려면 몇 묶음을 완성해야 하나요?</dt><dd>같은 무늬의 K부터 A까지 이어지는 완성 묶음 8개를 모두 회수해야 합니다.</dd><dt>난이도마다 무엇이 달라지나요?</dt><dd>1·2·4무늬 모드는 무늬 구성만 바꾸며, 10열 규칙은 그대로입니다.</dd><dt>같은 패를 다시 시작할 수 있나요?</dt><dd>현재 게임 다시 시작은 같은 시드를 사용합니다. 새 게임은 다른 패를 만듭니다.</dd><dt>실행 취소로 완성한 묶음도 복원되나요?</dt><dd>네. 실행 취소는 이전 tableau와 완성한 묶음 수를 복원합니다.</dd></dl></div>
+      <div class="game-info-section" data-spider-growth-related="1.4.0" data-runtime-localize="off"><h3>관련 게임</h3><p>다른 솔리테어도 해보고 싶다면 클론다이크의 카드 열 정리나 프리셀의 빈칸 활용을 살펴보세요.</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/ko/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="Klondike Solitaire" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>클론다이크 솔리테어</strong><span>전체 카드 덱으로 열을 정리하며 한 장 또는 세 장 뽑기, 자동 마무리, 실행 취소를 사용할 수 있습니다.</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/ko/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="FreeCell Solitaire" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>프리셀 솔리테어</strong><span>여덟 카드 열과 네 임시 칸, 네 기초 더미를 활용하며 힌트와 실행 취소도 지원합니다.</span></span></a></div></div><div class="game-info-section" data-spider-static-faq="1.4.0"><h3>자주 묻는 질문</h3><dl><dt>카드는 몇 장을 사용하나요?</dt><dd>스파이더 솔리테어는 표준 카드 두 벌, 총 104장을 사용합니다. 시작 tableau에 54장, Stock에 50장이 있습니다.</dd><dt>열은 몇 개 있나요?</dt><dd>tableau는 10열입니다. 처음 네 열에는 각각 6장, 나머지 여섯 열에는 각각 5장이 놓입니다.</dd><dt>무늬가 다른 카드도 쌓을 수 있나요?</dt><dd>무늬가 달라도 숫자를 내림차순으로 쌓을 수 있지만, 같은 무늬의 내림차순 묶음만 함께 이동하거나 회수할 수 있습니다.</dd><dt>왜 Stock에서 카드를 나눌 수 없나요?</dt><dd>클래식 스파이더에서는 새 줄을 나누기 전에 10개 열마다 카드가 한 장 이상 있어야 합니다.</dd><dt>이기려면 몇 묶음을 완성해야 하나요?</dt><dd>같은 무늬의 K부터 A까지 이어지는 완성 묶음 8개를 모두 회수해야 합니다.</dd><dt>난이도마다 무엇이 달라지나요?</dt><dd>1·2·4무늬 모드는 무늬 구성만 바꾸며, 10열 규칙은 그대로입니다.</dd><dt>같은 패를 다시 시작할 수 있나요?</dt><dd>현재 게임 다시 시작은 같은 시드를 사용합니다. 새 게임은 다른 패를 만듭니다.</dd><dt>실행 취소로 완성한 묶음도 복원되나요?</dt><dd>네. 실행 취소는 이전 tableau와 완성한 묶음 수를 복원합니다.</dd></dl></div>
 
 
 </section>
@@ -200,9 +202,9 @@
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1&wp-audio=1.0.0"></script>
   <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
   <script src="frame.js?v=20261018-spider-battle-controls-v42"></script>
-  <script src="game.js?v=20260913-spider-block-v40&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261019-spider-test-harness-v43&wp-audio=1.0.0"></script>
   <script src="analytics-ownership.js?v=20260913-spider-block-v40"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260927-spider-solitaire-battle-control-scaler-wip1" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>

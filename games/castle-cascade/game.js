@@ -305,7 +305,9 @@ function renderBattleHud(board = gameState?.board, siege = renderer?.siege ?? ga
   document.querySelector("#instructions").textContent = siege ? text("siegeInstructions") : text("instructions");
   const goalLabel = document.querySelector("#goalLabel");
   const goalDescription = `${text("goal")}: ${goals.length ? goals.join(copy?.objectiveJoin || " · ") : text("objectiveEmpty")}`;
-  goalLabel.textContent = siege ? `${number(siege.wave + 1)}/${number(siege.totalWaves)}` : goals.length ? goals.join(copy?.objectiveJoin || " · ") : text("objectiveEmpty");
+  goalLabel.textContent = siege ? `${number(siege.wave + 1)}/${number(siege.totalWaves)}`
+    : gameState.status === "won" && !goals.length ? "✓"
+      : goals.length ? goals.join(copy?.objectiveJoin || " · ") : text("objectiveEmpty");
   goalLabel.setAttribute("aria-label", goalDescription);
   goalLabel.title = goalDescription;
   if (siege) {

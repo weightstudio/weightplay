@@ -38,10 +38,14 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260927-spider-solitaire-battle-control-scaler-wip1" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20261018-spider-battle-controls-v42" />
+  <link rel="stylesheet" href="style.css?v=20261019-spider-main-poster-v43" />
   <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-shared-frame-v1" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" />
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<meta name="weightplay-game-version" content="v43">
+<meta name="weightplay-interface-version" content="9">
   <meta name="description" content="經典蜘蛛接龍，提供 1、2、4 花色、順暢拖曳、提示與不限次數回退。" />
     <meta property="og:title" content="蜘蛛接龍 | WeightPlay" />
     <meta property="og:description" content="經典蜘蛛接龍，提供 1、2、4 花色、順暢拖曳、提示與不限次數回退。" />
@@ -78,10 +82,8 @@
   }
 }
     </script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-<meta name="weightplay-game-version" content="v42">\n<meta name="weightplay-interface-version" content="9">\n</head>
-<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-game-version="v42" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
+  </head>
+<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-game-version="v43" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-sl="title">蜘蛛接龍</strong><span id="loadingText" data-sl="loading">正在準備牌桌</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
@@ -187,7 +189,7 @@
 
 
 
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相關遊戲</h3><p>想換個接龍牌陣，可以試試克朗代克的逐列整理，或空當接龍的空格規劃。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="klondike-solitaire" href="/zh-tw/games/klondike-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="克朗代克接龍" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">克朗代克接龍</strong><span>用完整牌堆整理牌列，可選抽一張或三張，並使用自動收牌與復原。</span></span></a><a class="game-info-related-card" data-game-id="freecell-solitaire" href="/zh-tw/games/freecell-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="FreeCell 接龍" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">FreeCell 接龍</strong><span>整理八個牌列、四個暫存空格與四個收牌區，也可使用提示與復原。</span></span></a></div></div><div class="game-info-section" data-spider-static-faq="1.4.0"><h3>常見問題</h3><dl><dt>遊戲使用幾張牌？</dt><dd>蜘蛛接龍使用兩副標準撲克牌，共 104 張；起始牌面有 54 張，牌庫有 50 張。</dd><dt>牌面有幾列？</dt><dd>牌面共有 10 列。前四列起始各有 6 張，其餘六列各有 5 張。</dd><dt>可以疊放不同花色的牌嗎？</dt><dd>可以跨花色按點數遞減疊牌，但只有同花色的遞減牌序能一起移動或收回。</dd><dt>為什麼不能從牌庫發牌？</dt><dd>經典蜘蛛接龍要求 10 列都至少有一張牌，才能再發下一列。</dd><dt>獲勝需要收回幾組牌序？</dt><dd>必須收回八組完整的同花色牌序，每組從 K 依序排到 A。</dd><dt>不同難度有什麼變化？</dt><dd>單花色、雙花色與四花色模式會改變花色組合；十列規則維持不變。</dd><dt>可以重新開始同一副牌嗎？</dt><dd>選擇「重新開始目前遊戲」會沿用同一個種子；「新遊戲」會建立另一副牌。</dd><dt>復原會還原已收回的完整牌序嗎？</dt><dd>會。復原可還原前一個牌面，以及已收回的完整牌序數量。</dd></dl></div>
+      <div class="game-info-section" data-spider-growth-related="1.4.0" data-runtime-localize="off"><h3>相關遊戲</h3><p>想換個接龍牌陣，可以試試克朗代克的逐列整理，或空當接龍的空格規劃。</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/zh-tw/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="Klondike Solitaire" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>克朗代克接龍</strong><span>用完整牌堆整理牌列，可選抽一張或三張，並使用自動收牌與復原。</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/zh-tw/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="FreeCell Solitaire" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>FreeCell 接龍</strong><span>整理八個牌列、四個暫存空格與四個收牌區，也可使用提示與復原。</span></span></a></div></div><div class="game-info-section" data-spider-static-faq="1.4.0"><h3>常見問題</h3><dl><dt>遊戲使用幾張牌？</dt><dd>蜘蛛接龍使用兩副標準撲克牌，共 104 張；起始牌面有 54 張，牌庫有 50 張。</dd><dt>牌面有幾列？</dt><dd>牌面共有 10 列。前四列起始各有 6 張，其餘六列各有 5 張。</dd><dt>可以疊放不同花色的牌嗎？</dt><dd>可以跨花色按點數遞減疊牌，但只有同花色的遞減牌序能一起移動或收回。</dd><dt>為什麼不能從牌庫發牌？</dt><dd>經典蜘蛛接龍要求 10 列都至少有一張牌，才能再發下一列。</dd><dt>獲勝需要收回幾組牌序？</dt><dd>必須收回八組完整的同花色牌序，每組從 K 依序排到 A。</dd><dt>不同難度有什麼變化？</dt><dd>單花色、雙花色與四花色模式會改變花色組合；十列規則維持不變。</dd><dt>可以重新開始同一副牌嗎？</dt><dd>選擇「重新開始目前遊戲」會沿用同一個種子；「新遊戲」會建立另一副牌。</dd><dt>復原會還原已收回的完整牌序嗎？</dt><dd>會。復原可還原前一個牌面，以及已收回的完整牌序數量。</dd></dl></div>
 
 
 </section>
@@ -200,9 +202,9 @@
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1&wp-audio=1.0.0"></script>
   <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
   <script src="frame.js?v=20261018-spider-battle-controls-v42"></script>
-  <script src="game.js?v=20260913-spider-block-v40&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261019-spider-test-harness-v43&wp-audio=1.0.0"></script>
   <script src="analytics-ownership.js?v=20260913-spider-block-v40"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260927-spider-solitaire-battle-control-scaler-wip1" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>

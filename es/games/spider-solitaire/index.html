@@ -38,10 +38,14 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260927-spider-solitaire-battle-control-scaler-wip1" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20261018-spider-battle-controls-v42" />
+  <link rel="stylesheet" href="style.css?v=20261019-spider-main-poster-v43" />
   <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-shared-frame-v1" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" />
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<meta name="weightplay-game-version" content="v43">
+<meta name="weightplay-interface-version" content="9">
   <meta name="description" content="Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado." />
     <meta property="og:title" content="Solitario Spider | WeightPlay" />
     <meta property="og:description" content="Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado." />
@@ -77,10 +81,8 @@
   }
 }
     </script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-<meta name="weightplay-game-version" content="v42">\n<meta name="weightplay-interface-version" content="9">\n</head>
-<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-game-version="v42" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
+  </head>
+<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-game-version="v43" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-sl="title">Solitario Spider</strong><span id="loadingText" data-sl="loading">Preparando la mesa</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
@@ -186,7 +188,7 @@
 
 
 
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Más juegos relacionados</h3><p>Prueba otro tablero de solitario: ordena columnas en Klondike o planifica con las celdas libres de FreeCell.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="klondike-solitaire" href="/es/games/klondike-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="Solitario Klondike" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Solitario Klondike</strong><span>Organiza un tablero con la baraja completa y elige robar una o tres cartas; también incluye finalización automática y Deshacer.</span></span></a><a class="game-info-related-card" data-game-id="freecell-solitaire" href="/es/games/freecell-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="Solitario FreeCell" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Solitario FreeCell</strong><span>Organiza ocho columnas, cuatro celdas temporales y cuatro bases; puedes usar Pista y Deshacer.</span></span></a></div></div><div class="game-info-section" data-spider-static-faq="1.4.0"><h3>Preguntas frecuentes</h3><dl><dt>¿Cuántas cartas se usan?</dt><dd>Solitario Spider usa dos barajas estándar: 104 cartas en total, con 54 en el tablero inicial y 50 en el mazo.</dd><dt>¿Cuántas columnas hay?</dt><dd>El tablero tiene 10 columnas. Las cuatro primeras empiezan con seis cartas y las otras seis con cinco.</dd><dt>¿Puedo apilar cartas de palos distintos?</dt><dd>Puedes ordenar valores de forma descendente aunque cambie el palo, pero solo se mueve o recoge junta una secuencia descendente del mismo palo.</dd><dt>¿Por qué no puedo repartir del mazo?</dt><dd>En Spider clásico, las 10 columnas deben tener al menos una carta antes de repartir otra fila.</dd><dt>¿Cuántas secuencias necesito para ganar?</dt><dd>Debes recoger las ocho secuencias completas del mismo palo, cada una de Rey a As.</dd><dt>¿Qué cambia entre las dificultades?</dt><dd>Los modos de uno, dos y cuatro palos cambian la mezcla de palos; las reglas de las 10 columnas no cambian.</dd><dt>¿Puedo reiniciar la misma partida?</dt><dd>Reiniciar la partida actual reutiliza la misma semilla. Nueva partida crea un reparto distinto.</dd><dt>¿Deshacer restaura una secuencia completada?</dt><dd>Sí. Deshacer restaura el tablero anterior y el número de secuencias completadas.</dd></dl></div>
+      <div class="game-info-section" data-spider-growth-related="1.4.0" data-runtime-localize="off"><h3>Juegos relacionados</h3><p>Prueba otro tablero de solitario: ordena columnas en Klondike o planifica con las celdas libres de FreeCell.</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/es/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="Klondike Solitaire" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Solitario Klondike</strong><span>Organiza un tablero con la baraja completa y elige robar una o tres cartas; también incluye finalización automática y Deshacer.</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/es/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="FreeCell Solitaire" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>Solitario FreeCell</strong><span>Organiza ocho columnas, cuatro celdas temporales y cuatro bases; puedes usar Pista y Deshacer.</span></span></a></div></div><div class="game-info-section" data-spider-static-faq="1.4.0"><h3>Preguntas frecuentes</h3><dl><dt>¿Cuántas cartas se usan?</dt><dd>Solitario Spider usa dos barajas estándar: 104 cartas en total, con 54 en el tablero inicial y 50 en el mazo.</dd><dt>¿Cuántas columnas hay?</dt><dd>El tablero tiene 10 columnas. Las cuatro primeras empiezan con seis cartas y las otras seis con cinco.</dd><dt>¿Puedo apilar cartas de palos distintos?</dt><dd>Puedes ordenar valores de forma descendente aunque cambie el palo, pero solo se mueve o recoge junta una secuencia descendente del mismo palo.</dd><dt>¿Por qué no puedo repartir del mazo?</dt><dd>En Spider clásico, las 10 columnas deben tener al menos una carta antes de repartir otra fila.</dd><dt>¿Cuántas secuencias necesito para ganar?</dt><dd>Debes recoger las ocho secuencias completas del mismo palo, cada una de Rey a As.</dd><dt>¿Qué cambia entre las dificultades?</dt><dd>Los modos de uno, dos y cuatro palos cambian la mezcla de palos; las reglas de las 10 columnas no cambian.</dd><dt>¿Puedo reiniciar la misma partida?</dt><dd>Reiniciar la partida actual reutiliza la misma semilla. Nueva partida crea un reparto distinto.</dd><dt>¿Deshacer restaura una secuencia completada?</dt><dd>Sí. Deshacer restaura el tablero anterior y el número de secuencias completadas.</dd></dl></div>
 
 
 </section>
@@ -199,9 +201,9 @@
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1&wp-audio=1.0.0"></script>
   <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
   <script src="frame.js?v=20261018-spider-battle-controls-v42"></script>
-  <script src="game.js?v=20260913-spider-block-v40&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261019-spider-test-harness-v43&wp-audio=1.0.0"></script>
   <script src="analytics-ownership.js?v=20260913-spider-block-v40"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260927-spider-solitaire-battle-control-scaler-wip1" data-wp-battle-standard></script>
   <script src="/src/game-page-info-es.js?v=20260816-spider-v32-es-guide"></script>

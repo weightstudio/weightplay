@@ -38,10 +38,14 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260927-spider-solitaire-battle-control-scaler-wip1" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20261018-spider-battle-controls-v42" />
+  <link rel="stylesheet" href="style.css?v=20261019-spider-main-poster-v43" />
   <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
   <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-shared-frame-v1" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" />
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<meta name="weightplay-game-version" content="v43">
+<meta name="weightplay-interface-version" content="9">
   <meta name="description" content="1, 2 और 4 सूट, सहज ड्रैग, संकेत और असीमित वापस लेने के साथ क्लासिक स्पाइडर सॉलिटेयर।" />
     <meta property="og:title" content="स्पाइडर सॉलिटेयर | WeightPlay" />
     <meta property="og:description" content="1, 2 और 4 सूट, सहज ड्रैग, संकेत और असीमित वापस लेने के साथ क्लासिक स्पाइडर सॉलिटेयर।" />
@@ -78,10 +82,8 @@
   }
 }
     </script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-<meta name="weightplay-game-version" content="v42">\n<meta name="weightplay-interface-version" content="9">\n</head>
-<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-game-version="v42" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
+  </head>
+<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-game-version="v43" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-sl="title">स्पाइडर सॉलिटेयर</strong><span id="loadingText" data-sl="loading">टेबल तैयार हो रही है</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
@@ -187,7 +189,7 @@
 
 
 
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>और संबंधित गेम</h3><p>एक और सॉलिटेयर लेआउट आज़माएँ: क्लोंडाइक में कॉलम बनाएँ या फ्रीसेल में खाली सेल की योजना बनाएँ।</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="klondike-solitaire" href="/hi/games/klondike-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="क्लोंडाइक सोलिटेयर" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">क्लोंडाइक सोलिटेयर</strong><span>पूरे ताश के डेक से कॉलम सजाएँ, एक या तीन पत्ते खींचें, और स्वतः पूरा करने तथा पूर्ववत करने का उपयोग करें।</span></span></a><a class="game-info-related-card" data-game-id="freecell-solitaire" href="/hi/games/freecell-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="फ्रीसेल सॉलिटेयर" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">फ्रीसेल सॉलिटेयर</strong><span>आठ कॉलम, चार अस्थायी सेल और चार फाउंडेशन सजाएँ; संकेत और पूर्ववत भी उपलब्ध हैं।</span></span></a></div></div><div class="game-info-section" data-spider-static-faq="1.4.0"><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><dt>कुल कितने कार्ड इस्तेमाल होते हैं?</dt><dd>स्पाइडर सॉलिटेयर में दो मानक डेक, कुल 104 कार्ड होते हैं: शुरुआत के tableau में 54 और Stock में 50।</dd><dt>कितने कॉलम होते हैं?</dt><dd>tableau में 10 कॉलम हैं। पहले चार में शुरुआत में छह-छह कार्ड और बाकी छह में पाँच-पाँच कार्ड होते हैं।</dd><dt>क्या अलग-अलग सूट के कार्ड एक साथ रख सकते हैं?</dt><dd>आप सूट बदलते हुए भी घटते क्रम में कार्ड रख सकते हैं, लेकिन केवल एक ही सूट की घटती शृंखला साथ चलती या हटती है।</dd><dt>Stock से कार्ड क्यों नहीं बाँट सकते?</dt><dd>क्लासिक स्पाइडर में अगली पंक्ति बाँटने से पहले सभी 10 कॉलम में कम-से-कम एक कार्ड होना चाहिए।</dd><dt>जीतने के लिए कितनी शृंखलाएँ हटानी होती हैं?</dt><dd>राजा से इक्का तक की एक ही सूट वाली सभी आठ पूरी शृंखलाएँ हटाएँ।</dd><dt>कठिनाई स्तरों में क्या बदलता है?</dt><dd>एक, दो और चार-सूट मोड में सूटों का मिश्रण बदलता है; 10 कॉलम के नियम समान रहते हैं।</dd><dt>क्या उसी बाँट को फिर से शुरू कर सकते हैं?</dt><dd>वर्तमान गेम फिर शुरू करें वही seed उपयोग करता है। नया गेम अलग बाँट बनाता है।</dd><dt>क्या Undo पूरी हुई शृंखला को वापस लाता है?</dt><dd>हाँ। Undo पिछला tableau और पूरी हुई शृंखलाओं की संख्या बहाल करता है।</dd></dl></div>
+      <div class="game-info-section" data-spider-growth-related="1.4.0" data-runtime-localize="off"><h3>संबंधित गेम</h3><p>एक और सॉलिटेयर लेआउट आज़माएँ: क्लोंडाइक में कॉलम बनाएँ या फ्रीसेल में खाली सेल की योजना बनाएँ।</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="klondike-solitaire" href="/hi/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="Klondike Solitaire" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>क्लोंडाइक सोलिटेयर</strong><span>पूरे ताश के डेक से कॉलम सजाएँ, एक या तीन पत्ते खींचें, और स्वतः पूरा करने तथा पूर्ववत करने का उपयोग करें।</span></span></a><a class="game-info-related-card" data-wp-related-id="freecell-solitaire" href="/hi/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="FreeCell Solitaire" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>फ्रीसेल सॉलिटेयर</strong><span>आठ कॉलम, चार अस्थायी सेल और चार फाउंडेशन सजाएँ; संकेत और पूर्ववत भी उपलब्ध हैं।</span></span></a></div></div><div class="game-info-section" data-spider-static-faq="1.4.0"><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><dt>कुल कितने कार्ड इस्तेमाल होते हैं?</dt><dd>स्पाइडर सॉलिटेयर में दो मानक डेक, कुल 104 कार्ड होते हैं: शुरुआत के tableau में 54 और Stock में 50।</dd><dt>कितने कॉलम होते हैं?</dt><dd>tableau में 10 कॉलम हैं। पहले चार में शुरुआत में छह-छह कार्ड और बाकी छह में पाँच-पाँच कार्ड होते हैं।</dd><dt>क्या अलग-अलग सूट के कार्ड एक साथ रख सकते हैं?</dt><dd>आप सूट बदलते हुए भी घटते क्रम में कार्ड रख सकते हैं, लेकिन केवल एक ही सूट की घटती शृंखला साथ चलती या हटती है।</dd><dt>Stock से कार्ड क्यों नहीं बाँट सकते?</dt><dd>क्लासिक स्पाइडर में अगली पंक्ति बाँटने से पहले सभी 10 कॉलम में कम-से-कम एक कार्ड होना चाहिए।</dd><dt>जीतने के लिए कितनी शृंखलाएँ हटानी होती हैं?</dt><dd>राजा से इक्का तक की एक ही सूट वाली सभी आठ पूरी शृंखलाएँ हटाएँ।</dd><dt>कठिनाई स्तरों में क्या बदलता है?</dt><dd>एक, दो और चार-सूट मोड में सूटों का मिश्रण बदलता है; 10 कॉलम के नियम समान रहते हैं।</dd><dt>क्या उसी बाँट को फिर से शुरू कर सकते हैं?</dt><dd>वर्तमान गेम फिर शुरू करें वही seed उपयोग करता है। नया गेम अलग बाँट बनाता है।</dd><dt>क्या Undo पूरी हुई शृंखला को वापस लाता है?</dt><dd>हाँ। Undo पिछला tableau और पूरी हुई शृंखलाओं की संख्या बहाल करता है।</dd></dl></div>
 
 
 </section>
@@ -200,9 +202,9 @@
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1&wp-audio=1.0.0"></script>
   <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
   <script src="frame.js?v=20261018-spider-battle-controls-v42"></script>
-  <script src="game.js?v=20260913-spider-block-v40&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261019-spider-test-harness-v43&wp-audio=1.0.0"></script>
   <script src="analytics-ownership.js?v=20260913-spider-block-v40"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260927-spider-solitaire-battle-control-scaler-wip1" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>

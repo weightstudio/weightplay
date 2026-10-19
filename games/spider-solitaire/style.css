@@ -68,8 +68,8 @@ body[data-wp-game-id="spider-solitaire"] select { font: inherit; }
 .settings-locale-row option { color: #12213a; }
 
 .main-hero { display: grid; grid-template-columns: 200px minmax(0,1fr); gap: 1rem; padding: 0 1rem 1.4rem; animation: sp-fade-in 420ms ease both; }
-.poster-frame { display: flex; align-items: flex-start; justify-content: center; }
-.poster-frame .cover { width: 100%; max-width: 200px; aspect-ratio: 1; object-fit: cover; border: 1px solid rgba(255,255,255,.15); border-radius: 18px; box-shadow: 0 14px 28px rgba(0,0,0,.32); }
+.poster-frame { display: flex; align-items: stretch; justify-content: center; }
+.poster-frame .cover { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border: 1px solid rgba(255,255,255,.15); border-radius: 18px; box-shadow: 0 14px 28px rgba(0,0,0,.32); }
 .eyebrow, .feature-list strong { color: var(--sp-gold); font-size: .85rem; }
 .main-copy h1 { margin: .35rem 0 .5rem; }
 .menu-hint, .main-copy p { color: var(--sp-muted); line-height: 1.5; }
@@ -218,7 +218,6 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
 
 @media (max-width: 768px) {
   .main-hero { grid-template-columns: 1fr; }
-  .poster-frame .cover { max-width: 150px; }
   .feature-list { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: .55rem; }
   .feature-list p { font-size: .76rem; }
   .stage-canvas { padding-inline: .65rem; }
@@ -311,17 +310,6 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
   .stock-row .control-row { margin-left: 0; }
   .mini-btn { min-height: 36px !important; }
   .card { border-radius: 6px; }
-  body[data-wp-game-id="spider-solitaire"] .wp-standard-main-poster,
-  body[data-wp-game-id="spider-solitaire"] .wp-standard-main-poster-media,
-  body[data-wp-game-id="spider-solitaire"] .wp-standard-main-poster-media > img {
-    width: min(100%, 320px) !important;
-    min-width: 0 !important;
-    max-width: 320px !important;
-    height: min(100%, 320px) !important;
-    min-height: 0 !important;
-    max-height: 320px !important;
-    margin-inline: auto !important;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
