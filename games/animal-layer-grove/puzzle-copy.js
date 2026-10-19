@@ -3,7 +3,7 @@
 "use strict";
 const copy = {
   "en": {
-    "intro": "Reorder cutout layers and rotate marked pieces. Deduce the hidden arrangement from partial clues, not a model answer.",
+    "intro": "Reorder cutout layers and rotate marked pieces. The cuboid owl guides the grove; the keeper restores its habitats. Deduce the hidden arrangement from partial clues, not a model answer.",
     "start": "Start Game",
     "stage": "Stage {n} / {total}",
     "moves": "Moves {n}",
@@ -67,7 +67,7 @@ const copy = {
     ]
   },
   "zh-Hant": {
-    "intro": "調整鏤空圖層的前後，旋轉指定圖層。根據局部線索推理遮擋關係，不再照著答案排序。",
+    "intro": "調整鏤空圖層的前後，旋轉指定圖層。方塊貓頭鷹引領森林，守護員修復棲地。根據局部線索推理遮擋關係，不必照著答案排序。",
     "start": "開始遊戲",
     "stage": "關卡 {n} / {total}",
     "moves": "步數 {n}",
@@ -131,7 +131,7 @@ const copy = {
     ]
   },
   "zh-Hans": {
-    "intro": "调整镂空图层的前后，旋转指定图层。根据局部线索推理遮挡关系，不再照着答案排序。",
+    "intro": "调整镂空图层的前后，旋转指定图层。方块猫头鹰引领森林，守护员修复栖地。根据局部线索推理遮挡关系，不必照着答案排序。",
     "start": "开始游戏",
     "stage": "关卡 {n} / {total}",
     "moves": "步数 {n}",
@@ -195,7 +195,7 @@ const copy = {
     ]
   },
   "ja": {
-    "intro": "切り抜きレイヤーを並べ替え、指定のピースを回転。部分的な手掛かりから重なりを推理しよう。",
+    "intro": "切り抜きレイヤーを並べ替え、指定のピースを回転。立方体のフクロウが森を案内し、森の番人が生息地を整えます。部分的な手掛かりから重なりを推理しましょう。",
     "start": "ゲーム開始",
     "stage": "ステージ {n} / {total}",
     "moves": "手数 {n}",
@@ -259,7 +259,7 @@ const copy = {
     ]
   },
   "ko": {
-    "intro": "뚫린 레이어의 순서를 바꾸고 지정된 조각을 회전하세요. 부분 단서로 가려진 관계를 추리하세요.",
+    "intro": "뚫린 레이어의 순서를 바꾸고 지정된 조각을 회전하세요. 정육면체 부엉이가 숲을 안내하고 숲지기가 서식지를 복원합니다. 부분 단서로 가려진 관계를 추리하세요.",
     "start": "게임 시작",
     "stage": "스테이지 {n} / {total}",
     "moves": "이동 {n}",
@@ -323,7 +323,7 @@ const copy = {
     ]
   },
   "es": {
-    "intro": "Reordena capas recortadas y gira las piezas indicadas. Deduce la superposición con pistas parciales, sin copiar una solución.",
+    "intro": "Reordena capas recortadas y gira las piezas indicadas. El búho cúbico guía el bosque, y quien lo cuida restaura sus hábitats. Deduce la superposición con pistas parciales, sin copiar una solución.",
     "start": "Iniciar juego",
     "stage": "Nivel {n} / {total}",
     "moves": "Movimientos {n}",
@@ -387,7 +387,7 @@ const copy = {
     ]
   },
   "pt-BR": {
-    "intro": "Reordene camadas recortadas e gire as peças indicadas. Deduza as sobreposições pelas pistas parciais, sem copiar uma resposta.",
+    "intro": "Reordene camadas recortadas e gire as peças indicadas. A coruja cúbica guia o bosque, e quem cuida dele restaura seus habitats. Deduza as sobreposições pelas pistas parciais, sem copiar uma resposta.",
     "start": "Iniciar jogo",
     "stage": "Fase {n} / {total}",
     "moves": "Movimentos {n}",
@@ -451,7 +451,7 @@ const copy = {
     ]
   },
   "fr": {
-    "intro": "Réordonnez les calques découpés et faites pivoter les pièces indiquées. Déduisez leurs superpositions à partir d’indices partiels.",
+    "intro": "Réordonnez les calques découpés et faites pivoter les pièces indiquées. La chouette cubique guide le bosquet, tandis que la personne qui le protège restaure ses habitats. Déduisez leurs superpositions à partir d’indices partiels.",
     "start": "Commencer",
     "stage": "Niveau {n} / {total}",
     "moves": "Coups {n}",
@@ -515,7 +515,7 @@ const copy = {
     ]
   },
   "de": {
-    "intro": "Ordne ausgeschnittene Ebenen und drehe markierte Teile. Leite ihre Überdeckung aus Teilhinweisen ab, statt eine Lösung nachzubauen.",
+    "intro": "Ordne ausgeschnittene Ebenen und drehe markierte Teile. Die würfelförmige Eule führt durch den Hain; die Person, die ihn hütet, stellt seine Lebensräume wieder her. Leite die Überdeckung aus Teilhinweisen ab, statt eine Lösung nachzubauen.",
     "start": "Spiel starten",
     "stage": "Level {n} / {total}",
     "moves": "Züge {n}",
@@ -579,7 +579,7 @@ const copy = {
     ]
   },
   "it": {
-    "intro": "Riordina gli strati ritagliati e ruota i pezzi indicati. Deduci le sovrapposizioni da indizi parziali, senza copiare una soluzione.",
+    "intro": "Riordina gli strati ritagliati e ruota i pezzi indicati. Il gufo cubico guida il bosco; chi se ne prende cura ripristina i suoi habitat. Deduci le sovrapposizioni da indizi parziali, senza copiare una soluzione.",
     "start": "Inizia gioco",
     "stage": "Livello {n} / {total}",
     "moves": "Mosse {n}",
@@ -643,7 +643,7 @@ const copy = {
     ]
   },
   "ru": {
-    "intro": "Меняйте порядок вырезанных слоёв и поворачивайте отмеченные детали. Выводите перекрытия из частичных условий, не копируя готовый ответ.",
+    "intro": "Меняйте порядок вырезанных слоёв и поворачивайте отмеченные детали. Кубическая сова ведёт по роще, а её хранитель восстанавливает места обитания. Выводите перекрытия из частичных условий, не копируя готовый ответ.",
     "start": "Начать игру",
     "stage": "Уровень {n} / {total}",
     "moves": "Ходы {n}",
@@ -707,7 +707,7 @@ const copy = {
     ]
   },
   "hi": {
-    "intro": "कटी हुई परतों का क्रम बदलें और चिह्नित टुकड़े घुमाएँ। पूरा उत्तर देखने के बजाय आंशिक संकेतों से ढकने का संबंध समझें।",
+    "intro": "कटी हुई परतों का क्रम बदलें और चिह्नित टुकड़े घुमाएँ। घनाकार उल्लू उपवन का रास्ता दिखाता है और वन-रक्षक उसके आवासों को फिर से सँवारता है। पूरा उत्तर देखने के बजाय आंशिक संकेतों से ढकने का संबंध समझें।",
     "start": "खेल शुरू करें",
     "stage": "स्तर {n} / {total}",
     "moves": "चालें {n}",
@@ -771,7 +771,7 @@ const copy = {
     ]
   },
   "ar": {
-    "intro": "أعد ترتيب الطبقات المفرغة ودوّر القطع المحددة. استنتج التداخل من قرائن جزئية بدلاً من نسخ إجابة جاهزة.",
+    "intro": "أعد ترتيب الطبقات المفرغة ودوّر القطع المحددة. ترشدك البومة ذات الشكل المكعب في البستان، ويحافظ حارس البستان على مواطن الحيوانات. استنتج التداخل من قرائن جزئية بدلاً من نسخ إجابة جاهزة.",
     "start": "ابدأ اللعب",
     "stage": "المرحلة {n} / {total}",
     "moves": "الحركات {n}",

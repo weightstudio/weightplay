@@ -303,7 +303,7 @@
       const owner = screen === 'result' ? 'battle' : screen;
       for (const [name, node] of Object.entries({ main, stage, battle })) { node.hidden = name !== owner; node.inert = name !== owner; node.setAttribute('aria-hidden', String(name !== owner)); }
       root.dataset.screen = owner; canvas.dataset.substate = screen === 'result' ? 'result' : 'play';
-      const settled = screen === 'result'; result.hidden = !settled; result.inert = !settled; content.hidden = settled; content.inert = settled; header.hidden = settled; header.inert = settled;
+      const settled = screen === 'result'; result.hidden = !settled; result.inert = !settled; if (settled) result.scrollTop = 0; content.hidden = settled; content.inert = settled; header.hidden = settled; header.inert = settled;
       if (guide) { guide.hidden = owner !== 'main'; guide.inert = owner !== 'main'; }
       if (owner === 'main') renderMain();
       syncShared();

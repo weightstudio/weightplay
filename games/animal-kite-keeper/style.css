@@ -150,8 +150,8 @@ button { cursor: pointer; }
   .flight-board { min-height: 80px; margin: 4px 0; }
   .choice-card { padding: 6px 8px; }
   .choice-help { margin-bottom: 3px; font-size: .76rem; }
-  .wind-card { min-height: 38px; padding: 2px; font-size: .8rem; }
-  .battle-actions .secondary { min-height: 38px; }
+  .wind-card { min-height: 44px; padding: 2px; font-size: .875rem; }
+  .battle-actions .secondary { min-height: 44px; }
   .result-layer { padding: 8px; }
   .result-card { gap: 4px; padding: 8px; }
   .result-character { width: 52px; height: 58px; }

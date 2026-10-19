@@ -11,6 +11,9 @@
     // short-landscape envelope so Battle controls retain their physical
     // touch target size instead of inheriting the portrait scaler.
     "animal-nest-weigh": [".battle-canvas", 390, 788, 760, 334],
+    // Kite Keeper's two-column Battle keeps the authored wind controls and
+    // Result actions at their physical touch sizes in compact landscape.
+    "animal-kite-keeper": ["#battleScreen", 390, 788, 760, 334],
     // The five new General prototypes own native Battle shells. In compact
     // landscape, use their wide logical envelope instead of shrinking the
     // portrait shell until touch controls become non-interactive.
@@ -202,6 +205,9 @@
   // lower it only for this game so its physical controls stay >=44px.
   const landscapeRatioThresholdByGame = {
     "animal-nest-weigh": 1.25,
+    // Kite Keeper also uses the wide envelope at 1280x720, where the capped
+    // safe-area ratio falls below the shared 1.5 threshold.
+    "animal-kite-keeper": 1.25,
     "animal-habitat-builder": 1.25,
     "animal-folded-field": 1.25,
     "animal-gust-garden": 1.25,
