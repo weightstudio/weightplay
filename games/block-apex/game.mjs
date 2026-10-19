@@ -469,7 +469,9 @@ function boot() {
   listen(window,'pageshow',event=>{if(event.persisted&&!disposed)frame.activate(screen,{covered:!!modalKind});});
   activate('main');syncAnalytics();renderManagement();document.body.dataset.apexBooted='true';document.body.dataset.apexVersion=GAME_VERSION;document.body.dataset.apexRelease=GAME_RELEASE_VERSION;
   window.BlockApex=Object.freeze({snapshot:()=>({version:GAME_VERSION,gameVersion:GAME_RELEASE_VERSION,interfaceVersion:INTERFACE_VERSION,screen,modal:modalKind,stage:race?.stage.id,status:race?.status,time:race?.time,unlocked:store.data.unlocked,
-    player:race?{x:race.player.x,z:race.player.z,speed:race.player.speed,gates:race.player.gates,lap:race.player.completedLaps,
+    player:race?{x:race.player.x,z:race.player.z,yaw:race.player.yaw,motion:race.player.motion,
+      speed:race.player.speed,trackS:race.player.near.s,lateral:race.player.near.lateral,trackHeading:race.player.near.heading,
+      gates:race.player.gates,lap:race.player.completedLaps,
       driftLevel:race.player.driftLevel,driftBank:race.player.driftBank,miniBoost:race.player.miniBoost,draftCharge:race.player.draftCharge,draftBoost:race.player.draftBoost,contacts:race.player.contacts}:null,
     resources:renderer?.metrics()||{renderer:false},raf:!!raf,pool:$('stageRail').children.length})});
   void prepareArt();

@@ -3,6 +3,7 @@
   "use strict";
 
   const poster = "/assets/breakout-cover-v1.webp";
+  const background = "/assets/lobby-block-atmosphere.svg";
 
   function createBreakoutStageConfig({
     context,
@@ -21,7 +22,7 @@
     return Object.freeze({
       count: 30,
       poster,
-      background: poster,
+      background,
       stage(index) {
         const stage = Math.max(1, Math.min(30, Number(index) + 1));
         const progress = readProgress();

@@ -9,9 +9,9 @@
     script.onerror = next;
     document.head.append(script);
   };
-  load("/src/site-config.js?v=20261019-breakout-v20-i9", () => {
-    load("/src/analytics.js?v=20261019-breakout-v20-i9", () => {
-      load("/games/breakout/analytics-ownership.js?v=20261019-breakout-v20-i9-motion2");
+  load("/src/site-config.js?v=20261020-breakout-v21-i9-shared-background1", () => {
+    load("/src/analytics.js?v=20261020-breakout-v21-i9-shared-background1", () => {
+      load("/games/breakout/analytics-ownership.js?v=20261020-breakout-v21-i9-shared-background1");
     });
   });
 })();

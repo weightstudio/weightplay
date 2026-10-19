@@ -1,8 +1,11 @@
-/* Breakout artwork stays inside the content canvas; the shared I9 frame owns
-   Stage/Battle geometry, navigation, cards, and touch gestures. */
+/* The shared I9 frame owns Stage/Battle surfaces and controls. Breakout art
+   stays inside the game-owned board playfield. */
 body[data-wp-game-id="breakout"] #battleScreen .battle-canvas {
   position: relative;
   isolation: isolate;
+}
+
+body[data-wp-game-id="breakout"] #battleScreen .board-wrap {
   background:
     linear-gradient(145deg, rgba(9, 22, 38, .18), rgba(4, 12, 27, .34)),
     url("assets/breakout-board-block-v1.png") center / cover no-repeat;

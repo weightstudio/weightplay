@@ -7124,10 +7124,9 @@ const blockApexPlayerNote = {
 Object.defineProperty(blockApexSeoDescription, "__localizedExact", { value: true, enumerable: false });
 Object.defineProperty(blockApexPlayerNote, "__localizedExact", { value: true, enumerable: false });
 
-// Owner-requested Block Apex planned identity. Keep it internal until its release gates pass.
+// Owner-approved Block Apex public release.
 window.WONDER_LOBBY.games.push({
-  id: "block-apex", audience: "general", status: "planned", internalOnly: true,
-  internalTrial: "/games/block-apex/index.html?trial=1",
+  id: "block-apex", audience: "general", status: "playable",
   title: { __localizedExact: true, en: "Block Apex", "zh-Hant": "方塊極速", "zh-Hans": "方块极速", ja: "ブロック・アペックス", ko: "블록 에이펙스", es: "Apex de Bloques", "pt-BR": "Apex de Blocos", fr: "Apex des Blocs", de: "Block-Apex", it: "Apex a Blocchi", ru: "Блочный апекс", hi: "ब्लॉक एपेक्स", ar: "قمة المكعبات" },
   type: { __localizedExact: true, en: "3D Kart Racing", "zh-Hant": "3D 方塊賽車", "zh-Hans": "3D 方块赛车", ja: "3Dカートレース", ko: "3D 카트 레이싱", es: "Carreras de karts 3D", "pt-BR": "Corrida de kart 3D", fr: "Course de kart 3D", de: "3D-Kart-Rennen", it: "Corse di kart 3D", ru: "3D-гонки на картах", hi: "3D कार्ट रेसिंग", ar: "سباق عربات ثلاثي الأبعاد" },
   description: { __localizedExact: true, en: "Drift, boost, and race across 30 authored 3D kart challenges with the WeightPlay block-animal cast.", "zh-Hant": "駕駛方塊賽車挑戰 30 場 3D 賽事，抓準甩尾與加速時機，和方塊動物夥伴一較高下。", "zh-Hans": "驾驶方块赛车挑战 30 场 3D 赛事，抓准甩尾与加速时机，和方块动物伙伴一较高下。", ja: "ドリフトとブーストを使いこなし、ブロック動物たちと30の3Dカートレースに挑もう。", ko: "드리프트와 부스트를 활용해 블록 동물들과 30개의 3D 카트 레이스에 도전하세요.", es: "Derrapa, acelera con nitro y compite en 30 desafíos de kart 3D con animales de bloques.", "pt-BR": "Derrape, use o nitro e dispute 30 desafios de kart 3D com animais em blocos.", fr: "Driffez, déclenchez le turbo et disputez 30 courses de kart 3D avec des animaux cubiques.", de: "Drifte, zünde den Turbo und fahre 30 3D-Kart-Herausforderungen mit Blocktieren.", it: "Derapa, usa il turbo e affronta 30 sfide di kart 3D con animali a blocchi.", ru: "Дрифтуйте, ускоряйтесь и проходите 30 гоночных испытаний в 3D с кубическими зверятами.", hi: "ब्लॉक जानवरों के साथ 30 3D कार्ट रेस में ड्रिफ्ट करें और नाइट्रो बूस्ट चलाएँ.", ar: "انجرف واستخدم تعزيز النيترو لخوض 30 تحديًا لسباقات عربات ثلاثية الأبعاد مع حيوانات مكعبة." },
@@ -7140,6 +7139,7 @@ window.WONDER_LOBBY.games.push({
   href: "games/block-apex/",
   meta: { en: ["30 Stages", "Drift & Boost"], "zh-Hant": ["30 場賽事", "甩尾加速"], "zh-Hans": ["30 场赛事", "甩尾加速"], ja: ["全30レース", "ドリフト＆ブースト"], ko: ["30개 레이스", "드리프트와 부스트"], es: ["30 carreras", "Derrape y nitro"], "pt-BR": ["30 corridas", "Derrapagem e nitro"], fr: ["30 courses", "Drift et turbo"], de: ["30 Rennen", "Drift und Turbo"], it: ["30 gare", "Derapata e turbo"], ru: ["30 гонок", "Дрифт и ускорение"], hi: ["30 रेस", "ड्रिफ्ट और नाइट्रो"], ar: ["30 سباقًا", "انجراف وتعزيز"] },
   art: { kind: "image", background: "assets/block-apex-poster.webp", hideHero: true },
+  previewVideo: "assets/previews/block-apex-battle.webm",
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("block-apex");
 

@@ -7,7 +7,7 @@
     return {
       count: bridge.count,
       poster: "/games/animal-cloudhook-courier/cover-block-v1.webp",
-      background: "/games/animal-cloudhook-courier/battle-bg-block-v1.webp",
+      background: "/assets/lobby-block-atmosphere.svg",
       stage(index) {
         const meta = bridge.stageMeta(index);
         const best = bridge.bestTime(index);

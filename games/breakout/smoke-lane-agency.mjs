@@ -78,6 +78,8 @@ try {
     page.on("pageerror", (error) => errors.push(error.message));
     page.on("console", (message) => { if (message.type() === "error" && !/favicon|Failed to load resource/iu.test(message.text())) errors.push(message.text()); });
     await page.goto(`${origin}/games/breakout/`, { waitUntil: "networkidle" });
+    const loadedVersion = await page.locator("body").getAttribute("data-wp-game-version");
+    if (loadedVersion !== "v21") throw new Error(`Expected the local v21/I9 candidate, received ${loadedVersion}`);
     assert(new URL(page.url()).search === "", "Breakout uses the ordinary route without preview or test parameters", { url: page.url() });
     await page.waitForFunction(() => window.__weightplayBreakoutAnalyticsInstalled === true);
     await page.evaluate(() => {
@@ -289,7 +291,7 @@ try {
     animation.duration === 90 && animation.keyframes.length === 2 && animation.keyframes.every((frame) => !frame.transform)),
   "Reduced-motion Result uses a short fade without movement", reducedResultMotion);
   await reducedContext.close();
-  console.log(JSON.stringify({ status: "PASS", gameVersion: "v20", interfaceVersion: 9, evidence }, null, 2));
+  console.log(JSON.stringify({ status: "PASS", gameVersion: "v21", interfaceVersion: 9, evidence }, null, 2));
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));
