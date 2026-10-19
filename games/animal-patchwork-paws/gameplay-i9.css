@@ -1,0 +1,194 @@
+/* Patchwork rules are game-owned; Main, Stage, Battle shell and all screen
+   geometry come from the shared I9 Frame and Play UI. */
+#mainScreen[hidden],
+#gameGuide[hidden],
+#stageScreen[hidden],
+#battleScreen[hidden],
+.game-page-info-static[hidden] { display: none !important; }
+
+#battleScreen[data-wp-logical-battle-canvas] .patchwork-battle-content {
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  gap: clamp(6px, 1.4vh, 14px);
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: clamp(8px, 1.8vw, 18px);
+  color: var(--wp-ui-text, #f8fafc);
+}
+
+.patchwork-battle-content .prompt,
+.patchwork-battle-content .rule,
+.patchwork-battle-content .status {
+  margin: 0;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.patchwork-battle-content .prompt {
+  font-weight: 750;
+  color: var(--wp-ui-text, #f8fafc);
+}
+
+.patchwork-battle-content .weave-card {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-self: center;
+  justify-self: center;
+  gap: clamp(6px, 1vh, 10px);
+  width: min(100%, 560px);
+  min-width: 0;
+  min-height: 0;
+  max-height: 100%;
+  padding: clamp(8px, 1.5vw, 16px);
+  border: 1px solid var(--wp-ui-line, #5b7d87);
+  border-radius: var(--wp-ui-radius, 12px);
+  background: var(--wp-ui-surface, #102d3a);
+  box-shadow: inset 0 1px 0 var(--wp-ui-highlight, #ffffff24), 0 5px 0 var(--wp-ui-shadow, #061c24);
+}
+
+.patchwork-battle-content .board {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(6px, 1vw, 10px);
+  width: min(100%, 440px);
+  aspect-ratio: 1;
+  margin: auto;
+}
+
+.patchwork-battle-content .tile {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 3px solid #d9b66f;
+  border-radius: 14px;
+  background: #fffaf0;
+  box-shadow: 0 4px 12px #071c2a55;
+  cursor: pointer;
+}
+
+.patchwork-battle-content .tile:focus-visible {
+  outline: 3px solid var(--wp-i9-focus, #9ff3d6);
+  outline-offset: 2px;
+}
+
+.patchwork-battle-content .tile-label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #233847;
+  font-size: clamp(1.5rem, 7vw, 2.8rem);
+  pointer-events: none;
+  text-shadow: 0 2px #fff;
+}
+
+.patchwork-battle-content .edge {
+  position: absolute;
+  z-index: 1;
+  border-radius: 999px;
+  background: var(--edge);
+  box-shadow: 0 0 0 3px #fff9;
+}
+
+.patchwork-battle-content .edge-n,
+.patchwork-battle-content .edge-s { left: 27%; right: 27%; height: 10px; }
+.patchwork-battle-content .edge-n { top: 7px; }
+.patchwork-battle-content .edge-s { bottom: 7px; }
+.patchwork-battle-content .edge-e,
+.patchwork-battle-content .edge-w { top: 27%; bottom: 27%; width: 10px; }
+.patchwork-battle-content .edge-e { right: 7px; }
+.patchwork-battle-content .edge-w { left: 7px; }
+.patchwork-battle-content .edge-sun { --edge: #e9b34d; }
+.patchwork-battle-content .edge-leaf { --edge: #6da66c; }
+.patchwork-battle-content .edge-water { --edge: #5b9dc0; }
+.patchwork-battle-content .edge-stone { --edge: #9c8b7c; }
+.patchwork-battle-content .edge-moon { --edge: #947fb5; }
+
+.patchwork-battle-content .rule,
+.patchwork-battle-content .status { color: var(--wp-ui-muted, #d2e0e4); }
+.patchwork-battle-content .status { min-height: 1.4em; font-weight: 750; }
+.patchwork-battle-content .status.good { color: #8ce4a9; }
+.patchwork-battle-content .status.try { color: #ffd48a; }
+
+.patchwork-battle-content .battle-actions,
+.patchwork-result .result-actions,
+.patchwork-leave .leave-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.patchwork-battle-content .battle-actions > button,
+.patchwork-result .result-actions > button,
+.patchwork-leave .leave-actions > button {
+  min-width: min(46%, 168px);
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 2px solid var(--wp-ui-line, #5b7d87);
+  border-radius: 4px;
+  color: var(--wp-ui-text, #f8fafc);
+  background: var(--wp-ui-button-image, #173c4b);
+  box-shadow: inset 0 2px 0 var(--wp-ui-highlight, #ffffff24), 0 3px 0 var(--wp-ui-shadow, #061c24);
+  font: 700 15px/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.patchwork-battle-content .battle-actions > .primary,
+.patchwork-result .result-actions > .primary { background: var(--wp-ui-active, #247663); }
+
+.patchwork-result,
+.patchwork-leave {
+  position: absolute;
+  z-index: 30;
+  inset: 50% auto auto 50%;
+  box-sizing: border-box;
+  width: min(460px, calc(100% - 32px));
+  max-height: calc(100% - 32px);
+  overflow: auto;
+  padding: clamp(20px, 5vw, 32px);
+  border: 2px solid var(--wp-ui-line, #5b7d87);
+  border-radius: var(--wp-ui-radius, 12px);
+  color: var(--wp-ui-text, #f8fafc);
+  background: var(--wp-ui-surface, #102d3a);
+  box-shadow: 0 10px 0 var(--wp-ui-shadow, #061c24), 0 18px 48px #0009;
+  transform: translate(-50%, -50%);
+}
+
+.patchwork-result[hidden],
+.patchwork-leave[hidden] { display: none; }
+.patchwork-result .result-guide { display: block; width: min(100%, 120px); margin: 0 auto 12px; border-radius: 50%; }
+.patchwork-result .eyebrow,
+.patchwork-result h2,
+.patchwork-result .intro,
+.patchwork-leave h2,
+.patchwork-leave p { text-align: center; color: inherit; }
+.patchwork-result .intro,
+.patchwork-leave p { line-height: 1.55; }
+.patchwork-result .result-actions,
+.patchwork-leave .leave-actions { margin-top: 18px; }
+
+@media (max-height: 500px) and (min-width: 700px) {
+  #battleScreen[data-wp-logical-battle-canvas] .patchwork-battle-content {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto auto;
+    gap: 6px;
+    padding: 8px 14px;
+  }
+  .patchwork-battle-content .prompt { grid-column: 1; }
+  .patchwork-battle-content .weave-card {
+    grid-column: 1;
+    grid-row: 2;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    width: min(100%, 560px);
+  }
+  .patchwork-battle-content .board { grid-column: 1; width: min(100%, 168px); }
+  .patchwork-battle-content .rule { grid-column: 2; grid-row: 1; align-self: center; }
+  .patchwork-battle-content .status { grid-column: 1; grid-row: 3; }
+  .patchwork-battle-content .battle-actions { grid-column: 1; grid-row: 4; }
+}

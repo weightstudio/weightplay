@@ -1,0 +1,19 @@
+/* Localized wording for the game-owned Battle leave confirmation. */
+(() => {
+  "use strict";
+  window.ANIMAL_PATCHWORK_PAWS_LEAVE_COPY = Object.freeze({
+    en: { title: "Leave this stage?", body: "{stage}: current tile rotations and this run’s turns will be discarded. Cleared stages stay saved.", continue: "Continue playing", leave: "Return to Stages" },
+    "zh-Hant": { title: "要離開這一關嗎？", body: "{stage}：目前拼片方向與本次轉動次數會捨棄；已完成的關卡仍會保留。", continue: "繼續遊戲", leave: "返回關卡" },
+    "zh-Hans": { title: "要离开这一关吗？", body: "{stage}：当前拼片方向与本次转动次数会丢失；已完成的关卡仍会保留。", continue: "继续游戏", leave: "返回关卡" },
+    ja: { title: "このステージを離れますか？", body: "{stage}：現在のタイル向きと今回の回転数は失われます。クリア済みステージは保存されます。", continue: "プレイを続ける", leave: "ステージへ戻る" },
+    ko: { title: "이 스테이지를 나갈까요?", body: "{stage}: 현재 타일 방향과 이번 플레이의 회전 수는 사라집니다. 완료한 스테이지는 저장됩니다.", continue: "계속 플레이", leave: "스테이지로 돌아가기" },
+    es: { title: "¿Salir de este nivel?", body: "{stage}: se perderán las orientaciones actuales y los giros de esta partida. Los niveles completados seguirán guardados.", continue: "Seguir jugando", leave: "Volver a Niveles" },
+    "pt-BR": { title: "Sair desta fase?", body: "{stage}: as orientações atuais e os giros desta partida serão descartados. As fases concluídas continuam salvas.", continue: "Continuar jogando", leave: "Voltar às Fases" },
+    fr: { title: "Quitter ce niveau ?", body: "{stage} : les orientations actuelles et les rotations de cette partie seront perdues. Les niveaux terminés restent enregistrés.", continue: "Continuer à jouer", leave: "Retour aux Niveaux" },
+    de: { title: "Dieses Level verlassen?", body: "{stage}: Die aktuellen Ausrichtungen und Drehungen dieses Laufs gehen verloren. Abgeschlossene Level bleiben gespeichert.", continue: "Weiterspielen", leave: "Zurück zu Level" },
+    it: { title: "Uscire da questo livello?", body: "{stage}: gli orientamenti attuali e le rotazioni di questa partita andranno persi. I livelli completati restano salvati.", continue: "Continua a giocare", leave: "Torna ai Livelli" },
+    ru: { title: "Выйти из этого уровня?", body: "{stage}: текущие повороты плиток и ходы этой попытки будут потеряны. Пройденные уровни останутся сохранены.", continue: "Продолжить игру", leave: "К уровням" },
+    hi: { title: "इस स्तर से बाहर जाएँ?", body: "{stage}: टाइलों की मौजूदा दिशा और इस प्रयास के घुमाव हट जाएँगे। पूरे किए गए स्तर सुरक्षित रहेंगे।", continue: "खेलते रहें", leave: "स्तरों पर लौटें" },
+    ar: { title: "هل تريد مغادرة هذه المرحلة؟", body: "{stage}: ستُفقد اتجاهات القطع الحالية وعدد اللفات في هذه المحاولة، بينما تبقى المراحل المكتملة محفوظة.", continue: "متابعة اللعب", leave: "العودة إلى المراحل" },
+  });
+})();

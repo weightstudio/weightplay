@@ -60,15 +60,14 @@
   });
   Object.entries(locales).forEach(([locale,dictionary])=>{
     Object.assign(dictionary,campaignCopy[locale]||campaignCopy.en);
+    dictionary.openStage=({en:"Open selected stage","zh-Hant":"開啟所選關卡","zh-Hans":"开启所选关卡",ja:"選択したステージを開始",ko:"선택한 스테이지 시작",es:"Abrir nivel seleccionado","pt-BR":"Abrir fase selecionada",fr:"Ouvrir le niveau sélectionné",de:"Ausgewähltes Level öffnen",it:"Apri il livello selezionato",ru:"Открыть выбранный уровень",hi:"चुना हुआ स्तर खोलें",ar:"ابدأ المرحلة المحددة"})[locale]||"Open selected stage";
     (stageNames[locale]||stageNames.en).forEach((name,index)=>{dictionary[`stage${index+1}`]=name});
     genericAnimals.forEach((animal,index)=>{dictionary[`animal${index+1}`]=locale==="zh-Hant"?genericAnimalCopy[animal][1]:genericAnimalCopy[animal][0]});
     // Explicit game-owned campaign translations must win over legacy fallbacks.
     Object.assign(dictionary,window.ANIMAL_PATCHWORK_PAWS_CAMPAIGN_LOCALES?.[locale]||{});
   });
   const routeLocale=document.documentElement.lang;let locale=locales[routeLocale]?routeLocale:storage.get("weightplay-animal-patchwork-paws-locale")||"en";if(!locales[locale])locale="en";
-  let sound=window.WeightPlayAudio.setEnabled(storage.get("weightplay-animal-patchwork-paws-sound")!=="off");
-  window.addEventListener("weightplay:audio-volume-change",()=>{sound=!window.WeightPlayAudio.isMuted()});
-  let patchIndex=0,rotations=[],solved=new Set(),cleared=new Set(),unlockedStage=1,turns=0,sessionTurns=0,feedback="",currentScreen="main";
+  let patchIndex=0,selectedStage=0,rotations=[],solved=new Set(),cleared=new Set(),unlockedStage=1,turns=0,sessionTurns=0,feedback="",currentScreen="main",frameUI=null;
   try{const saved=JSON.parse(storage.get("weightplay-animal-patchwork-paws-cleared-v3")||"[]");if(Array.isArray(saved))saved.filter(index=>Number.isInteger(index)&&index>=0&&index<patches.length).forEach(index=>cleared.add(index));}catch(_){/* malformed saves are normalized below */}
   unlockedStage=Math.min(patches.length,Math.max(1,Number(storage.get("weightplay-animal-patchwork-paws-unlocked-v3")||1)||1,cleared.size?Math.max(...cleared)+2:1));
   const saveProgress=()=>{storage.set("weightplay-animal-patchwork-paws-cleared-v3",JSON.stringify([...cleared].sort((a,b)=>a-b)));storage.set("weightplay-animal-patchwork-paws-unlocked-v3",String(unlockedStage))};
@@ -76,32 +75,97 @@
   const copy=(key,vars={})=>Object.entries(vars).reduce((out,[name,value])=>out.replaceAll(`{${name}}`,String(value)),(locales[locale]||locales.en)[key]||locales.en[key]||key);
   const announce=(name,data={})=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:`animal_patchwork_paws_${name}`,stage:patchIndex+1,turns,...data})};
   const bestValue=()=>Number(storage.get("weightplay-animal-patchwork-paws-best-v3")||0)||"—";
-  function repairShellGeometry(){
-    if(window.matchMedia("(min-width:700px) and (max-height:500px) and (min-aspect-ratio:3/2)").matches){
-      // Keep the canonical 420px wide-layout poster while compacting the
-      // adjacent copy column so its entry action remains inside the viewport.
-      document.querySelectorAll("#mainScreen .cover-wrap,.wp-standard-main-poster").forEach(cover=>{cover.style.setProperty("width","420px","important");cover.style.setProperty("height","420px","important");cover.style.setProperty("min-height","420px","important");cover.style.setProperty("max-width","420px","important");cover.style.setProperty("max-height","420px","important");});
-      document.querySelectorAll("#mainScreen .main-poster,.wp-standard-main-poster img").forEach(poster=>{poster.style.setProperty("width","420px","important");poster.style.setProperty("height","420px","important");poster.style.setProperty("min-width","420px","important");poster.style.setProperty("min-height","420px","important");poster.style.setProperty("max-width","420px","important");poster.style.setProperty("max-height","420px","important");poster.style.setProperty("object-fit","cover","important");});
-    }
-    document.querySelectorAll(".game-page-info-static").forEach(node=>node.style.setProperty("border-radius","24px","important"));
+  function show(screen){
+    currentScreen=screen;
+    const scene=screen==="result"?"battle":screen;
+    $("mainScreen").hidden=scene!=="main";
+    const guide=document.querySelector("#gameGuide, [data-wp-game-guide], .game-page-info-static");
+    if(guide)guide.hidden=scene!=="main";
+    $("stageScreen").hidden=scene!=="stage";
+    $("battleScreen").hidden=scene!=="battle";
+    $("resultScreen").hidden=screen!=="result";
+    $("leaveConfirm").hidden=true;
+    document.body.hidden=false;
+    document.body.removeAttribute("hidden");
+    document.body.dataset.screen=scene;
+    if(frameUI){frameUI.frame.activate(scene);if(scene==="stage")frameUI.refreshStage(selectedStage)}
+    window.dispatchEvent(new CustomEvent("weightplay:game-view-change",{detail:{screen:scene}}));
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
   }
-  function show(screen){currentScreen=screen;document.querySelectorAll("[data-screen]:not(body),.game-page-info-static").forEach(node=>{node.hidden=(node.dataset.screen||"main")!==screen});document.body.hidden=false;document.body.removeAttribute("hidden");$("settingsPanel").hidden=true;$("mainReturn").hidden=screen!=="main";$("backBtn").hidden=true;$("settingsBtn").hidden=screen!=="main";["stageBackBtn","stageSettingsBtn"].forEach(id=>{if($(id))$(id).hidden=screen!=="stage"});["battleBackBtn","battleSettingsBtn"].forEach(id=>{if($(id))$(id).hidden=screen!=="battle"});document.body.dataset.screen=screen;window.dispatchEvent(new Event("weightplay:shell-sync"));}
-  function oriented(tile,index){const shift=rotations[index]||0;return tile.edges.map((_,edgeIndex)=>tile.edges[(edgeIndex-shift+4)%4])}
   function renderBest(){$("best").textContent=copy("best",{best:bestValue(),unlocked:unlockedStage})}
-  function renderStatic(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.querySelectorAll("[data-i18n]").forEach(node=>{node.textContent=copy(node.dataset.i18n)});["backBtn","stageBackBtn","battleBackBtn"].forEach(id=>{if($(id))$(id).setAttribute("aria-label",copy("back"))});["settingsBtn","stageSettingsBtn","battleSettingsBtn"].forEach(id=>{if($(id))$(id).setAttribute("aria-label",copy("settings"))});$("closeSettings").setAttribute("aria-label",copy("close"));$("localeSelect").setAttribute("aria-label",copy("language"));$("soundBtn").textContent=sound?copy("on"):copy("off");$("soundBtn").setAttribute("aria-pressed",String(sound));renderBest();renderStages();renderBattle();renderResult()}
-  function renderStages(){const root=$("stageList");if(!root)return;root.replaceChildren();patches.forEach((patch,index)=>{const button=document.createElement("button");const isOpen=index<unlockedStage;button.type="button";button.className="stage-card";button.disabled=!isOpen;const status=cleared.has(index)?copy("patchDone"):isOpen?copy("patchOpen"):copy("locked");const title=patch.checkpoint?copy("checkpoint",{name:copy(patch.name)}):copy(patch.objective);button.innerHTML=`<span><strong>${index+1}. ${copy(patch.name)}</strong><small>${status} · ${copy(patch.arc)} · ${title}</small></span><span class="arrow">${cleared.has(index)?"✓":isOpen?"→":"•"}</span>`;if(isOpen)button.addEventListener("click",()=>startPatch(index,true));root.appendChild(button)});const focusIndex=Math.min(unlockedStage-1,patches.length-1);requestAnimationFrame(()=>root.children[focusIndex]?.scrollIntoView({block:"center",inline:"nearest"}))}
-  function startPatch(index,fromStage=false){if(index<0||index>=unlockedStage||index>=patches.length)return;patchIndex=index;rotations=[...patches[index].initial];turns=0;feedback="";if(index===0||fromStage)sessionTurns=0;show("battle");renderBattle();announce("start")}
-  function specialSolved(patch,board){if(patch.mode==="wind")return rotations[patch.windTile]===0;if(patch.mode==="echo")return board[0][0]===board[3][2];if(patch.mode==="compass")return board[patch.compassTile][0]===patch.compassColor;if(patch.mode==="braid")return board[0][3]===board[3][1];if(patch.mode==="guardian")return rotations.every(rotation=>rotation===0);return true}
+  function renderStatic(){
+    document.documentElement.lang=locale;
+    document.documentElement.dir=locale==="ar"?"rtl":"ltr";
+    $("localeSelect").value=locale;
+    document.querySelectorAll("[data-i18n]").forEach(node=>{node.textContent=copy(node.dataset.i18n)});
+    ["mainReturn","stageBackBtn","battleBackBtn"].forEach(id=>{if($(id))$(id).setAttribute("aria-label",copy("back"))});
+    $("stageTitle").textContent=copy("choose");
+    $("battleTitle").textContent=copy("round");
+    renderBest();
+    renderStages();
+    renderBattle();
+    renderResult();
+    renderLeaveConfirm();
+    frameUI?.frame.refresh();
+    window.dispatchEvent(new Event("wonder:locale-change"));
+  }
+  function renderStages(){if(frameUI)frameUI.refreshStage(selectedStage)}
+  function startPatch(index,fromStage=false){if(index<0||index>=unlockedStage||index>=patches.length)return;patchIndex=index;selectedStage=index;rotations=[...patches[index].initial];turns=0;feedback="";if(index===0||fromStage)sessionTurns=0;show("battle");renderBattle();announce("start")}
+  function edgeNode(color,position){const node=document.createElement("span");node.className=`edge edge-${position} edge-${color}`;node.setAttribute("aria-hidden","true");return node}
+  function oriented(tile,index){const shift=rotations[index]||0;return tile.edges.map((_,edgeIndex)=>tile.edges[(edgeIndex-shift+4)%4])}
+  function specialSolved(patch,board){
+    if(patch.mode==="wind")return rotations[patch.windTile]===0;
+    if(patch.mode==="echo")return board[0][0]===board[3][2];
+    if(patch.mode==="compass")return board[patch.compassTile][0]===patch.compassColor;
+    if(patch.mode==="braid")return board[0][3]===board[3][1];
+    if(patch.mode==="guardian")return rotations.every(rotation=>rotation===0);
+    return true;
+  }
   function boardSolved(){const patch=patches[patchIndex];const board=patch.tiles.map((tile,index)=>oriented(tile,index));for(let index=0;index<board.length;index+=1){if(index%2===0&&board[index][1]!==board[index+1][3])return false;if(index<2&&board[index][2]!==board[index+2][0])return false}return specialSolved(patch,board)}
-  function edgeNode(edge,position){const span=document.createElement("span");span.className=`edge edge-${position} edge-${edge}`;span.setAttribute("aria-hidden","true");return span}
-  function renderBattle(){if(!$("board")||currentScreen!=="battle")return;const patch=patches[patchIndex];$("patchTitle").textContent=copy(patch.name);$("progressPill").textContent=`${patchIndex+1} / ${patches.length}`;$("prompt").textContent=copy(patch.objective);$("ruleText").textContent=copy(patch.rule);const root=$("board");root.replaceChildren();patch.tiles.forEach((tile,index)=>{const button=document.createElement("button");button.type="button";button.className="tile";button.setAttribute("role","gridcell");button.setAttribute("aria-label",copy("rotate",{number:index+1}));const edges=oriented(tile,index);["n","e","s","w"].forEach((position,edgeIndex)=>button.appendChild(edgeNode(edges[edgeIndex],position)));const label=document.createElement("span");label.className="tile-label";label.textContent=index===3?"✣":index===0?"❧":index===1?"≈":"◆";label.setAttribute("aria-hidden","true");button.appendChild(label);button.addEventListener("click",()=>rotateTile(index));root.appendChild(button)});$("status").textContent=feedback?copy(feedback,{animal:copy(patch.animal),name:copy(patch.name)}):"";$("status").className=feedback==="correct"?"status good":feedback==="wrong"?"status try":"status"}
+  function renderBattle(){
+    if(!$("board")||! ["battle","result"].includes(currentScreen))return;
+    const patch=patches[patchIndex];
+    $("patchTitle").textContent=copy(patch.name);
+    $("progressPill").textContent=`${patchIndex+1} / ${patches.length}`;
+    $("prompt").textContent=copy(patch.objective);
+    $("ruleText").textContent=copy(patch.rule);
+    const root=$("board");root.replaceChildren();
+    patch.tiles.forEach((tile,index)=>{const button=document.createElement("button");button.type="button";button.className="tile";button.setAttribute("role","gridcell");button.setAttribute("aria-label",copy("rotate",{number:index+1}));const edges=oriented(tile,index);["n","e","s","w"].forEach((position,edgeIndex)=>button.appendChild(edgeNode(edges[edgeIndex],position)));const label=document.createElement("span");label.className="tile-label";label.textContent=index===3?"✣":index===0?"❧":index===1?"≈":"◆";label.setAttribute("aria-hidden","true");button.appendChild(label);button.addEventListener("click",()=>rotateTile(index));root.appendChild(button)});
+    $("status").textContent=feedback?copy(feedback,{animal:copy(patch.animal),name:copy(patch.name)}):"";
+    $("status").className=feedback==="correct"?"status good":feedback==="wrong"?"status try":"status";
+  }
   function rotateTile(index){if(feedback==="correct")return;rotations[index]=(rotations[index]+1)%4;turns+=1;sessionTurns+=1;feedback="turned";window.WeightPlayAudio.play("board.rotate");announce("turn",{tile:index+1});renderBattle()}
-  function checkBoard(){if(boardSolved()){feedback="correct";solved.add(patchIndex);cleared.add(patchIndex);unlockedStage=Math.min(patches.length,Math.max(unlockedStage,patchIndex+2));saveProgress();announce("complete",{checkpoint:Boolean(patches[patchIndex].checkpoint)});renderBattle();setTimeout(()=>{show("result");renderResult()},280)}else{feedback="wrong";announce("check",{correct:false});renderBattle()}}
-  function renderResult(){if(!$("resultText"))return;const complete=patchIndex===patches.length-1&&cleared.has(patchIndex);$("resultTitle").textContent=complete?copy("resultTitle"):patches[patchIndex].checkpoint?copy("checkpointGoal",{name:copy(patches[patchIndex].name)}):copy("resultPartial");$("resultText").textContent=complete?copy("campaignComplete"):copy("resultText",{count:cleared.size,total:patches.length,turns:sessionTurns});const nextIndex=patchIndex+1;$("nextBtn").hidden=nextIndex>=unlockedStage||nextIndex>=patches.length;$("resultMapBtn").hidden=false;if(complete){const old=Number(storage.get("weightplay-animal-patchwork-paws-best-v3")||0);if(!old||sessionTurns<old)storage.set("weightplay-animal-patchwork-paws-best-v3",String(sessionTurns));}}
-  function nextPatch(){const next=patchIndex+1;if(next<unlockedStage&&next<patches.length)startPatch(next);else{show("stage");renderStages()}}
-  function goBack(){if(currentScreen==="battle"){show("stage");renderStages()}else if(currentScreen==="stage"||currentScreen==="result"){show("main");renderBest()}}
-  function bind(){$("startBtn").addEventListener("click",()=>{show("stage");renderStages();announce("stage_open")});$("mapBtn").addEventListener("click",()=>{show("stage");renderStages()});$("resultMapBtn").addEventListener("click",()=>{show("stage");renderStages()});$("nextBtn").addEventListener("click",nextPatch);$("checkBtn").addEventListener("click",checkBoard);$("resetBtn").addEventListener("click",()=>{rotations=[...patches[patchIndex].initial];turns=0;feedback="";renderBattle();announce("reset")});["backBtn","stageBackBtn","battleBackBtn"].forEach(id=>{if($(id))$(id).addEventListener("click",goBack)});["settingsBtn","stageSettingsBtn","battleSettingsBtn"].forEach(id=>{if($(id))$(id).addEventListener("click",()=>{$("settingsPanel").hidden=false})});$("closeSettings").addEventListener("click",()=>{$("settingsPanel").hidden=true});$("soundBtn").addEventListener("click",()=>{sound=window.WeightPlayAudio.setEnabled(!sound);storage.set("weightplay-animal-patchwork-paws-sound",sound?"on":"off");renderStatic()});$("localeSelect").addEventListener("change",event=>{locale=event.target.value;storage.set("weightplay-animal-patchwork-paws-locale",locale);renderStatic()})}
-  function boot(){bind();$("localeSelect").value=locale;$("loading").hidden=true;$("app").hidden=false;show("main");renderStatic();repairShellGeometry();const shellObserver=new MutationObserver(()=>repairShellGeometry());shellObserver.observe(document.body,{childList:true,subtree:true});window.setTimeout(()=>shellObserver.disconnect(),8000);[350,900,1800,3000,5000].forEach(delay=>window.setTimeout(repairShellGeometry,delay));announce("loaded")}
-  window.__ANIMAL_PATCHWORK_PAWS_TEST__={patches,startPatch,rotateTile,checkBoard,getState:()=>({patchIndex,rotations:[...rotations],solved:[...solved],cleared:[...cleared],unlockedStage,turns,screen:currentScreen,feedback,boardSolved:boardSolved()})};
+  function revealResultAction(){const panel=$("resultScreen");const action=[...panel.querySelectorAll("button:not([hidden]):not([disabled])")][0];if(!action)return;panel.scrollTop=panel.scrollHeight;action.focus({preventScroll:true})}
+  function checkBoard(){if(boardSolved()){feedback="correct";solved.add(patchIndex);cleared.add(patchIndex);unlockedStage=Math.min(patches.length,Math.max(unlockedStage,patchIndex+2));saveProgress();announce("complete",{checkpoint:Boolean(patches[patchIndex].checkpoint)});renderBattle();const completedIndex=patchIndex;setTimeout(()=>{if(currentScreen==="battle"&&patchIndex===completedIndex){renderResult();show("result");revealResultAction()}},280)}else{feedback="wrong";announce("check",{correct:false});renderBattle()}}
+  function renderResult(){if(!$("resultText"))return;const complete=patchIndex===patches.length-1&&cleared.has(patchIndex);$("resultTitle").textContent=complete?copy("resultTitle"):patches[patchIndex].checkpoint?copy("checkpointGoal",{name:copy(patches[patchIndex].name)}):copy("resultPartial");$("resultText").textContent=complete?copy("campaignComplete"):copy("resultText",{count:cleared.size,total:patches.length,turns:sessionTurns});const nextIndex=patchIndex+1;$("nextBtn").hidden=nextIndex>=unlockedStage||nextIndex>=patches.length;$("resultMapBtn").hidden=false;if(complete){const old=Number(storage.get("weightplay-animal-patchwork-paws-best-v3")||0);if(!old||sessionTurns<old)storage.set("weightplay-animal-patchwork-paws-best-v3",String(sessionTurns))}}
+  function renderLeaveConfirm(){const copySet=window.ANIMAL_PATCHWORK_PAWS_LEAVE_COPY?.[locale]||window.ANIMAL_PATCHWORK_PAWS_LEAVE_COPY?.en;if(!copySet)return;const patch=patches[patchIndex];$("leaveTitle").textContent=copySet.title;$("leaveBody").textContent=copySet.body.replaceAll("{stage}",copy(patch.name));$("leaveConfirm").querySelector("[data-wp-leave-continue]").textContent=copySet.continue;$("leaveConfirm").querySelector("[data-wp-leave-confirm]").textContent=copySet.leave}
+  function openLeaveConfirm(){renderLeaveConfirm();$("leaveConfirm").hidden=false;$("leaveConfirm").querySelector("[data-wp-leave-continue]").focus({preventScroll:true})}
+  function closeLeaveConfirm(){if($("leaveConfirm").hidden)return;$("leaveConfirm").hidden=true;$("battleBackBtn").focus({preventScroll:true})}
+  function confirmLeave(){selectedStage=patchIndex;$("leaveConfirm").hidden=true;show("stage");renderStages();announce("stage_open")}
+  function nextPatch(){const next=patchIndex+1;if(next<unlockedStage&&next<patches.length)startPatch(next);else{selectedStage=patchIndex;show("stage");renderStages()}}
+  function goBack(){if(currentScreen==="battle"){openLeaveConfirm()}else if(currentScreen==="result"){selectedStage=patchIndex;show("stage")}else if(currentScreen==="stage"){show("main");renderBest()}}
+  function bind(){
+    $("startBtn").addEventListener("click",()=>{selectedStage=Math.min(unlockedStage-1,patches.length-1);show("stage");renderStages();announce("stage_open")});
+    $("resultMapBtn").addEventListener("click",()=>{selectedStage=patchIndex;show("stage");renderStages()});
+    $("nextBtn").addEventListener("click",nextPatch);
+    $("checkBtn").addEventListener("click",checkBoard);
+    $("resetBtn").addEventListener("click",()=>{rotations=[...patches[patchIndex].initial];turns=0;feedback="";renderBattle();announce("reset")});
+    ["stageBackBtn","battleBackBtn"].forEach(id=>$(id).addEventListener("click",goBack));
+    $("leaveConfirm").querySelector("[data-wp-leave-continue]").addEventListener("click",closeLeaveConfirm);
+    $("leaveConfirm").querySelector("[data-wp-leave-confirm]").addEventListener("click",confirmLeave);
+    $("leaveConfirm").addEventListener("keydown",event=>{if(event.key==="Escape"){event.preventDefault();closeLeaveConfirm();return}if(event.key!=="Tab")return;const buttons=[...$("leaveConfirm").querySelectorAll("button:not([disabled])")];if(!buttons.length)return;const first=buttons[0],last=buttons[buttons.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}});
+    $("localeSelect").addEventListener("change",event=>{locale=event.target.value;storage.set("weightplay-animal-patchwork-paws-locale",locale);renderStatic()});
+  }
+  function boot(){
+    bind();
+    $("localeSelect").value=locale;
+    frameUI=window.mountAnimalPatchworkPawsFrame({patches,getState:()=>({unlockedStage,cleared}),text:key=>copy(key),onSelect:index=>{selectedStage=index},onStart:index=>startPatch(index,true)});
+    frameUI.frame.activate("main");
+    show("main");
+    renderStatic();
+    window.WeightPlayGameEntryLoader?.ready?.();
+    announce("loaded");
+  }
+  window.__ANIMAL_PATCHWORK_PAWS_TEST__={patches,startPatch,rotateTile,checkBoard,getState:()=>({patchIndex,selectedStage,rotations:[...rotations],solved:[...solved],cleared:[...cleared],unlockedStage,turns,screen:currentScreen,feedback,boardSolved:boardSolved()})};
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
 }());
