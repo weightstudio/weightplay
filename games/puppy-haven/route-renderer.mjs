@@ -24,6 +24,7 @@ export function renderPuppyHavenRoute(locale,source=fs.readFileSync(new URL('./i
   .replace(/(<img\b[^>]*src="[^"]*cover-block-v1.webp"[^>]*alt=")[^"]*/g,`$1${escape(alt)}`)
   .replace(/(<select id="localeSelect" aria-label=")[^"]*/,`$1${escape(LANGUAGE_LABELS[locale])}`)
   .replace(/(<button id="closePanel" aria-label=")[^"]*/,`$1${escape(c.close)}`)
+  .replace(/<button\b[^>]*data-label="([^"]+)"[^>]*>/g,(tag,key)=>tag.replace(/aria-label="[^"]*"/,`aria-label="${escape(c[key])}"`))
   .replace(/(<div id="dogRail"[^>]*aria-label=")[^"]*/,`$1${escape(c.dogs.replace('{n}','2'))}`)
   .replace(/(src|href)="(?!\/|https?:|#)(style\.css|game\.mjs|assets\/[^"\s]+)"/g,'$1="/games/puppy-haven/$2"');
  return html;

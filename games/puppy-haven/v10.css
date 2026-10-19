@@ -1,0 +1,44 @@
+/* One selected care card leaves the observation yard open. */
+.yard{background:#9bb29a url('/games/puppy-haven/assets/yard-countryside.svg') center/cover no-repeat}
+#battleLive:not([data-hunt]){grid-template-columns:minmax(0,1fr);grid-template-rows:40px minmax(110px,1fr) 36px 100px}
+#battleLive[data-care-open="true"]:not([data-hunt]){grid-template-rows:40px minmax(110px,1fr) auto 36px 100px}
+#battleLive:not([data-hunt]) .yard{grid-column:auto;grid-row:auto}
+.yard-tools{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(44px,1fr));gap:5px}
+#yardControls{position:absolute;inset:auto 8px 8px;display:flex;justify-content:space-between;gap:8px;z-index:3;pointer-events:none}
+#yardControls button{pointer-events:auto;min-height:44px;background:#244537eb;box-shadow:0 2px 10px #18392c33}
+#chooseDogBtn{max-width:48%;padding:5px 10px;font-size:12px}
+.camera-buttons{display:flex;gap:4px}.camera-buttons button{width:44px;font-size:22px}
+#yardHint{position:absolute;inset:auto 10px 60px;margin:0;text-align:center;font-size:12px;line-height:1.4;padding:5px 8px;border-radius:8px;background:#244537d9;pointer-events:none}
+#worldCue{max-width:calc(100% - 20px);white-space:normal;text-align:center;font-size:12px}
+.care-panel{grid-template-rows:auto auto 30px 44px;gap:4px;max-height:100%;overflow:auto}
+.dog-identity{display:grid;grid-template-columns:minmax(0,1fr) 44px;gap:2px 8px;white-space:normal;overflow:visible}
+#dogName,#dogAge{grid-column:1;min-width:0;overflow-wrap:anywhere}#dogName{font-size:13px}#dogAge{font-size:10px}
+#closeDogCard{grid-column:2;grid-row:1/3;width:44px;min-height:44px;font-size:22px}
+#dogAbility{font-size:10px;line-height:1.35;margin:0;overflow-wrap:anywhere}
+.care-buttons{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}.care-buttons button{font-size:11px;line-height:1.2}
+.resident-choice{display:grid;grid-template-columns:48px minmax(0,1fr);gap:4px 8px;text-align:start;padding:8px;min-width:0}
+.resident-choice img{grid-column:1;grid-row:1/3}.resident-choice strong,.resident-choice small{grid-column:2;overflow-wrap:anywhere}.resident-choice small{font-size:11px;line-height:1.4;font-weight:400}
+.dog-portrait{object-fit:contain;border-radius:10px;background:#bed1b8;max-width:100%}
+.dog-detail-heading{display:flex;gap:12px;align-items:center;overflow-wrap:anywhere}.dog-detail-heading img{flex:none}
+.danger-button{background:#704b3d;border-color:#cc9878}
+.currency-cost{display:inline-flex;gap:5px;align-items:center;vertical-align:middle;margin-inline-start:8px}.currency-cost img{object-fit:contain;flex:none}
+.diamond-balance{display:flex;gap:8px;align-items:center;font-size:13px;margin:4px 0}
+.house-row{grid-template-columns:48px minmax(0,1fr) 105px;grid-template-rows:auto auto;gap:6px 8px;align-items:center}.house-row>img{grid-column:1;grid-row:1/3}.house-row strong,.house-row small{grid-column:2;overflow-wrap:anywhere}.house-row>button{grid-column:3;grid-row:1;min-width:0;line-height:1.3}.house-row>[data-manage-dog]{grid-row:2}
+.codex-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.codex-gallery figure{margin:0;padding:6px;text-align:center;background:#1d352b;border:1px solid var(--line);border-radius:12px}.codex-gallery figcaption{font-size:12px;line-height:1.4;overflow-wrap:anywhere}.codex-gallery img{width:72px;height:72px}
+.cultivation-recipe>img{float:inline-start;margin-inline-end:10px;margin-block-end:6px}.cultivation-recipe{display:flow-root;min-height:92px}
+.formation-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.formation-grid button,#huntCells button{min-width:0;text-align:start;line-height:1.25;display:flex;align-items:center;gap:4px;font-size:10px;padding:4px;overflow-wrap:anywhere}
+.formation-grid button[aria-pressed="true"],#huntCells button[aria-pressed="true"]{border:2px solid #e4c47b;background:#5d704a}
+.candidate-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.candidate-card{display:grid;grid-template-columns:48px minmax(0,1fr);gap:5px;padding:8px;min-width:0;text-align:start;align-content:start}.candidate-card>img{grid-column:1;grid-row:1}.candidate-card>strong{grid-column:2;font-size:12px;overflow-wrap:anywhere;align-self:center}.candidate-card>small{grid-column:1/-1;font-size:10px;line-height:1.45;font-weight:400;overflow-wrap:anywhere}.candidate-card[aria-pressed="true"]{border-color:#e4c47b;background:#445d42}
+.hunt-actions{grid-template-columns:repeat(3,minmax(0,1fr))}#launchHunt{grid-column:1/-1}#huntSelected{font-size:10px;line-height:1.4}
+#battleLive[data-hunt]{grid-template-rows:40px minmax(100px,1fr) minmax(250px,300px) 30px}
+#battleLive[data-hunt][data-phase="fight"]{grid-template-rows:40px minmax(100px,1fr) 64px 30px}
+#battleLive[data-phase="fight"] #huntCells,#battleLive[data-phase="fight"] #huntSelected,#battleLive[data-phase="fight"] .nursery-note,#battleLive[data-phase="fight"] #launchHunt,#battleLive[data-phase="fight"] #clearHunt,#battleLive[data-phase="fight"] #autoHunt{display:none}
+@media(min-aspect-ratio:3/2){
+ #battleLive:not([data-hunt]),#battleLive[data-care-open="true"]:not([data-hunt]){grid-template-columns:minmax(180px,1fr) 300px;grid-template-rows:minmax(0,1fr) 36px 100px}
+ #battleLive:not([data-hunt]) .yard{grid-column:1;grid-row:1/4}
+ #battleLive:not([data-hunt]) .care-panel{grid-column:2;grid-row:1;align-self:start}
+ #battleLive:not([data-hunt]) .feedback{grid-column:2;grid-row:2}
+ #battleLive:not([data-hunt]) .yard-tools{grid-column:2;grid-row:3;align-self:stretch}
+ #battleLive:not([data-hunt]) #worldCue{top:58px}
+ #battleLive[data-hunt],#battleLive[data-hunt][data-phase="fight"]{grid-template-rows:minmax(0,1fr) 30px}
+}

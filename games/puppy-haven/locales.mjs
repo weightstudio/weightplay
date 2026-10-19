@@ -1,4 +1,5 @@
 import {applyCultivationCopy} from './cultivation-copy.mjs';
+import {applyV10Copy} from './v10-copy.mjs';
 import {EXTRA} from './locale-packs.mjs';
 import {MISSIONS} from './simulation.mjs';
 import {applyObservationCopy} from './observation-copy.mjs';
@@ -23,5 +24,6 @@ COPY['zh-Hant'].missionPairs=MISSIONS.map(m=>[m.zh,m.goalZh]);
 applyObservationCopy(COPY);
 applyHuntCopy(COPY);
 applyCultivationCopy(COPY);
+applyV10Copy(COPY);
 export const SUPPORTED=['en','zh-Hant','zh-Hans','ja','ko','es','pt-BR','fr','de','it','ru','hi','ar'];
 export const LANGUAGE_LABELS={en:'Language','zh-Hant':'語言','zh-Hans':'语言',ja:'言語',ko:'언어',es:'Idioma','pt-BR':'Idioma',fr:'Langue',de:'Sprache',it:'Lingua',ru:'Язык',hi:'भाषा',ar:'اللغة'};

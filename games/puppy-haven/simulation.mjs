@@ -1,5 +1,6 @@
 import {CULTIVATION,normalizeCare,cultivationReady} from './cultivation.mjs';
 import {normalizeHunt} from "./hunt.mjs";
+import {individual,trainingLevel,trainingCost,collectionCapacity,normalizePopulation,pruneLineage} from './progression.mjs';
 export const BREEDS = [
   {id:'shiba', en:'Shiba', zh:'柴犬', price:90, coat:0xd99648, cream:0xffedce, ears:'up'},
   {id:'corgi', en:'Corgi', zh:'柯基', price:110, coat:0xc98342, cream:0xfff2d8, ears:'up', long:true},
@@ -12,12 +13,21 @@ export const BREEDS = [
   {id:'dalmeagle',en:'Dalmeagle',zh:'斑米犬',offspringOnly:true,coat:0xf1eee5,cream:0xb9824b,ears:'down',spots:true,saddle:true},
 ];
 export const BASE_BREEDS=BREEDS.filter(b=>!b.offspringOnly);
-export const RECIPES=[{parents:['shiba','corgi'],child:'shorgi'},{parents:['labrador','husky'],child:'huskador'},{parents:['dalmatian','beagle'],child:'dalmeagle'}];
+export const RECIPES=[
+ {parents:['shiba','shiba'],child:'husky',chance:.2},
+ {parents:['shiba','husky'],child:'corgi',chance:.25},
+ {parents:['husky','husky'],child:'labrador',chance:.25},
+ {parents:['labrador','labrador'],child:'dalmatian',chance:.25},
+ {parents:['corgi','corgi'],child:'beagle',chance:.25},
+ {parents:['shiba','corgi'],child:'shorgi',chance:.6},
+ {parents:['labrador','husky'],child:'huskador',chance:.6},
+ {parents:['dalmatian','beagle'],child:'dalmeagle',chance:.6},
+];
 export function offspringOdds(a,b){
  if(!BREEDS.some(v=>v.id===a)||!BREEDS.some(v=>v.id===b))return [];
- if(a===b)return [{breed:a,chance:1}];
- const recipe=RECIPES.find(r=>r.parents.includes(a)&&r.parents.includes(b));
- return recipe?[{breed:recipe.child,chance:.6},{breed:a,chance:.2},{breed:b,chance:.2}]:[{breed:a,chance:.5},{breed:b,chance:.5}];
+ const recipe=RECIPES.find(r=>r.parents.toSorted().join(',')===[a,b].toSorted().join(','));
+ if(recipe)return [{breed:recipe.child,chance:recipe.chance},...([...new Set([a,b])].map(breed=>({breed,chance:(1-recipe.chance)/(a===b?1:2)})))];
+ return a===b?[{breed:a,chance:1}]:[{breed:a,chance:.5},{breed:b,chance:.5}];
 }
 export const MEAL_SPOTS=[[-2.6,1.8],[0,1.8],[2.6,1.8],[-2.6,-.7],[0,-.7],[2.6,.25]];
 export const DOG_SPOTS=[[-.9,.4],[.9,.4],[-2.7,.4],[2.7,.4],[-.9,2],[.9,2],[-2.7,2],[2.7,2],[-.9,-1.2],[.9,-1.2],[-2.7,-1.2],[2.7,-.75]];
@@ -66,8 +76,8 @@ export const YARD_CAPACITY=12, REST_CAPACITY=500;
 function yardPoint(x,z){x=clamp(x,-3,3);z=clamp(z,-1.5,2.2);if(x>1.45&&z<-.75){if(x-1.45<-.75-z)x=1.45;else z=-.75;}return [x,z];}
 
 const blankRun=()=>({feeds:[],pets:[],clean:0,bought:[],adopted:[],welcomed:[],welcomePetted:false,pairs:0,births:0,matured:0,puppyFed:false,adultFed:false,sequence:[],complete:false});
-function makeDog(id,breed,sex,parents=[],puppy=false){const [x,z]=DOG_SPOTS[(id-1)%12];return {id,breed,sex,parents,care:normalizeCare(),cultivation:null,huntXp:0,age:puppy?'puppy':'adult',growth:puppy?0:100,activeAge:0,hunger:puppy?65:72,happy:72,clean:85,cooldown:0,pregnancy:null,poopIn:18+id%4*6,petIn:0,x,z,targetX:x,targetZ:z,heading:0,activity:'rest',wait:1+id%3,foodId:null,eatTime:0};}
-export function freshState(){return {schema:1,cultivationVersion:1,hunt:normalizeHunt(),coins:360,food:[12,3,1],bowls:[],courtshipIn:10,discovered:['shiba'],dogs:[makeDog(1,'shiba','M'),makeDog(2,'shiba','F'),makeDog(3,'shiba','M',[],true),makeDog(4,'shiba','F',[],true)],restDogs:[],poops:[],nextId:5,clock:0,births:0,unlocked:1,cleared:[],selected:1,stage:0,run:blankRun()};}
+function makeDog(id,breed,sex,parents=[],puppy=false){const [x,z]=DOG_SPOTS[(id-1)%12];return {id,breed,sex,parents,individual:individual({id}),trainingLevel:1,playIn:0,care:normalizeCare(),cultivation:null,huntXp:0,age:puppy?'puppy':'adult',growth:puppy?0:100,activeAge:0,hunger:puppy?65:72,happy:72,clean:85,cooldown:0,pregnancy:null,poopIn:18+id%4*6,petIn:0,x,z,targetX:x,targetZ:z,heading:0,activity:'rest',wait:1+id%3,foodId:null,eatTime:0};}
+export function freshState(){const s={schema:1,cultivationVersion:1,hunt:normalizeHunt(),coins:360,food:[12,3,1],bowls:[],courtshipIn:10,discovered:['shiba'],dogs:[makeDog(1,'shiba','M'),makeDog(2,'shiba','F'),makeDog(3,'shiba','M',[],true),makeDog(4,'shiba','F',[],true)],restDogs:[],poops:[],nextId:5,clock:0,births:0,unlocked:1,cleared:[],selected:1,stage:0,run:blankRun()};normalizePopulation(s);return s;}
 export function normalizeState(raw){
  const s=freshState();if(!raw||raw.schema!==1)return s;
  s.coins=clamp(raw.coins,0,999999);s.food=FOOD.map((_,i)=>Math.floor(clamp(raw.food?.[i],0,999)));
@@ -78,6 +88,7 @@ export function normalizeState(raw){
   if(!d||typeof d!=='object')continue;
   if(!Number.isSafeInteger(d.id)||d.id<1||ids.has(d.id)||!BREEDS.some(b=>b.id===d.breed)||!['M','F'].includes(d.sex))continue;
   ids.add(d.id);const dog=makeDog(d.id,d.breed,d.sex,[],d.age==='puppy');
+  dog.individual=individual(d);dog.trainingLevel=trainingLevel(d);dog.playIn=clamp(d.playIn,0,10);
   for(const k of ['hunger','happy','clean','growth'])dog[k]=clamp(d[k]);
   dog.care=normalizeCare(d.care);dog.cultivation=CULTIVATION.some(p=>p.breed===d.cultivation)?d.cultivation:null;
   dog.huntXp=clamp(d.huntXp,0,100);dog.activeAge=clamp(d.activeAge,0,999999);dog.cooldown=clamp(d.cooldown,0,180);dog.poopIn=clamp(d.poopIn,2,65);dog.petIn=clamp(d.petIn,0,8);
@@ -108,13 +119,15 @@ export function normalizeState(raw){
  s.discovered=BREEDS.filter(b=>s.dogs.concat(s.restDogs).some(d=>d.breed===b.id)||(Array.isArray(raw.discovered)&&raw.discovered.includes(b.id))).map(b=>b.id);
  s.hunt=normalizeHunt(raw.hunt,s.dogs.concat(s.restDogs));
  s.courtshipIn=raw.courtshipIn===undefined?10:clamp(raw.courtshipIn,.01,10);
- s.nextId=Math.max(s.nextId,...s.poops.map(p=>p.id+1),...s.bowls.map(b=>b.id+1));if(Number.isSafeInteger(raw.nextId)&&raw.nextId<Number.MAX_SAFE_INTEGER)s.nextId=Math.max(s.nextId,raw.nextId);if(raw.cultivationVersion!==1){for(const sex of ['M','F']){if(s.dogs.length+s.restDogs.length>=YARD_CAPACITY+REST_CAPACITY)break;const puppy=makeDog(s.nextId++,'shiba',sex,[],true);if(s.dogs.length+s.dogs.filter(d=>d.pregnancy).length<YARD_CAPACITY)s.dogs.push(puppy);else s.restDogs.push(puppy);}}s.cultivationVersion=1;return s;
+ s.nextId=Math.max(s.nextId,...s.poops.map(p=>p.id+1),...s.bowls.map(b=>b.id+1));if(Number.isSafeInteger(raw.nextId)&&raw.nextId<Number.MAX_SAFE_INTEGER)s.nextId=Math.max(s.nextId,raw.nextId);if(raw.cultivationVersion!==1){for(const sex of ['M','F']){if(s.dogs.length+s.restDogs.length>=YARD_CAPACITY+REST_CAPACITY)break;const puppy=makeDog(s.nextId++,'shiba',sex,[],true);if(s.dogs.length+s.dogs.filter(d=>d.pregnancy).length<YARD_CAPACITY)s.dogs.push(puppy);else s.restDogs.push(puppy);}}s.cultivationVersion=1;normalizePopulation(s,raw);return s;
 }
 export class Haven {
  constructor(state=freshState(),random=Math.random){this.s=state;this.random=random;this.events=[];}
  get selected(){return this.s.dogs.find(d=>d.id===this.s.selected)||this.s.dogs[0];}
  get allDogs(){return this.s.dogs.concat(this.s.restDogs||[]);}
  get reserved(){return this.s.dogs.length+this.s.dogs.filter(d=>d.pregnancy).length;}
+ get collectionReserved(){return this.allDogs.length+this.s.dogs.filter(d=>d.pregnancy).length;}
+ get capacity(){return collectionCapacity(this.s);}
  emit(type,data={}){this.events.push({type,...data});}
  start(stage=0){if(!Number.isInteger(stage)||stage<0||stage>this.s.unlocked)return false;this.s.stage=stage;this.s.run=blankRun();this.events=[];return true;}
  select(id){if(!this.s.dogs.some(d=>d.id===id))return false;this.s.selected=id;return true;}
@@ -129,6 +142,15 @@ export class Haven {
    s.food[grade]--;const bowl={id:s.nextId++,grade,spot,remaining:3};s.bowls.push(bowl);result={bowl};
   }else if(type==='pet'){
    if(d.petIn>0)return this.reject('rest');d.happy=clamp(d.happy+22);if(d.age==='puppy')d.care.pets++;d.petIn=8;s.coins+=3;if(!r.pets.includes(d.id))r.pets.push(d.id);if(r.welcomed.includes(d.id))r.welcomePetted=true;this.sequence('pet');result={dog:d.id,coins:3};
+  }else if(type==='play'){
+   if(d.playIn>0)return this.reject('rest');d.happy=clamp(d.happy+18);d.hunger=clamp(d.hunger-3);d.playIn=10;result={dog:d.id};
+  }else if(type==='train'){
+   const dog=this.allDogs.find(d=>d.id===Number(data.id));if(!dog)return this.reject('invalid');if(dog.age!=='adult')return this.reject('adult');const cost=trainingCost(dog);if(cost===null)return this.reject('maxLevel');if(s.coins<cost)return this.reject('coins');s.coins-=cost;dog.trainingLevel=trainingLevel(dog)+1;result={dog:dog.id,cost};
+  }else if(type==='rehome'){
+   const dog=this.allDogs.find(d=>d.id===Number(data.id));if(!dog||data.confirmedId!==dog.id)return this.reject('confirmDog');if(dog.pregnancy)return this.reject('pregnant');const active=s.dogs.includes(dog);if(active&&s.dogs.length<=1)return this.reject('lastDog');
+   s.lineage[dog.id]=dog.parents.slice();(active?s.dogs:s.restDogs).splice((active?s.dogs:s.restDogs).indexOf(dog),1);s.hunt.formation=s.hunt.formation.map(id=>id===dog.id?null:id);if(s.selected===dog.id)s.selected=s.dogs[0].id;pruneLineage(s);result={dog:dog.id};
+  }else if(type==='breedingPause'){
+   if(typeof data.paused!=='boolean')return this.reject('invalid');s.breedingPaused=data.paused;result={paused:data.paused};
   }else if(type==='clean'){
    const index=data.id===undefined?0:s.poops.findIndex(p=>p.id===data.id);if(index<0||!s.poops.length)return this.reject('alreadyClean');
    const [poop]=s.poops.splice(index,1);s.coins+=5;r.clean++;for(const dog of s.dogs)dog.clean=clamp(dog.clean+18);this.sequence('clean');result={poop,coins:5};
@@ -170,14 +192,14 @@ export class Haven {
    }
   }
  }
- courtship(){for(const mother of this.s.dogs.filter(d=>d.sex==='F')){const father=this.s.dogs.filter(d=>!this.pairReason(d,mother)&&Math.hypot(d.x-mother.x,d.z-mother.z)<=2.4).sort((a,b)=>Math.hypot(a.x-mother.x,a.z-mother.z)-Math.hypot(b.x-mother.x,b.z-mother.z)||a.id-b.id)[0];if(!father||this.random()>=.35)continue;const odds=offspringOdds(father.breed,mother.breed),roll=this.random();let cumulative=0;const chosen=odds.find(o=>(cumulative+=o.chance)>roll)||odds.at(-1);mother.pregnancy={father:father.id,remaining:45,breed:chosen.breed,sex:this.random()<.5?'M':'F'};father.cooldown=mother.cooldown=180;this.s.run.pairs++;this.emit('pair',{dog:mother.id,father:father.id});}}
- ancestors(d,seen=new Set()){if(!d)return seen;for(const id of d.parents){if(seen.has(id))continue;seen.add(id);this.ancestors(this.allDogs.find(p=>p.id===id),seen);}return seen;}
+ courtship(){if(this.s.breedingPaused)return;for(const mother of this.s.dogs.filter(d=>d.sex==='F')){const father=this.s.dogs.filter(d=>!this.pairReason(d,mother)&&Math.hypot(d.x-mother.x,d.z-mother.z)<=2.4).sort((a,b)=>Math.hypot(a.x-mother.x,a.z-mother.z)-Math.hypot(b.x-mother.x,b.z-mother.z)||a.id-b.id)[0];if(!father||this.random()>=.35)continue;const odds=offspringOdds(father.breed,mother.breed),roll=this.random();let cumulative=0;const chosen=odds.find(o=>(cumulative+=o.chance)>roll)||odds.at(-1);mother.pregnancy={father:father.id,remaining:45,breed:chosen.breed,sex:this.random()<.5?'M':'F'};father.cooldown=mother.cooldown=180;this.s.run.pairs++;this.emit('pair',{dog:mother.id,father:father.id});}}
+ ancestors(d,seen=new Set()){const pending=[...(d?.parents||[])];while(pending.length){const id=pending.pop();if(seen.has(id))continue;seen.add(id);pending.push(...(this.allDogs.find(p=>p.id===id)?.parents||this.s.lineage?.[id]||[]));}return seen;}
  pairReason(father,mother){
   if(!father||!mother||father.id===mother.id||father.sex!=='M'||mother.sex!=='F')return 'sex';
   if(father.age!=='adult'||mother.age!=='adult')return 'adult';
   if(mother.pregnancy)return 'pregnant';if(father.cooldown>0||mother.cooldown>0)return 'cooldown';
   const fa=this.ancestors(father),ma=this.ancestors(mother);if(fa.has(mother.id)||ma.has(father.id)||[...fa].some(id=>ma.has(id)))return 'related';
-  if([father,mother].some(d=>Math.min(d.hunger,d.happy,d.clean)<60))return 'needs';if(this.reserved>=YARD_CAPACITY)return 'capacity';return '';
+  if([father,mother].some(d=>Math.min(d.hunger,d.happy,d.clean)<60))return 'needs';if(this.reserved>=YARD_CAPACITY||this.collectionReserved>=this.capacity)return 'capacity';return '';
  }
  sequence(action){const seq=this.s.run.sequence;seq.push(action);if(seq.length>3)seq.shift();}
  tick(seconds){
@@ -186,10 +208,10 @@ export class Haven {
   for(const d of s.restDogs){d.cooldown=Math.max(0,d.cooldown-dt);d.petIn=Math.max(0,d.petIn-dt);}
   for(const d of [...s.dogs]){
    d.activeAge+=dt;d.hunger=clamp(d.hunger-dt*.11);d.happy=clamp(d.happy-dt*.055);d.clean=clamp(d.clean-dt*s.poops.length*.025);
-   d.petIn=Math.max(0,d.petIn-dt);d.cooldown=Math.max(0,d.cooldown-dt);d.poopIn-=dt;
+   d.petIn=Math.max(0,d.petIn-dt);d.playIn=Math.max(0,(d.playIn||0)-dt);d.cooldown=Math.max(0,d.cooldown-dt);d.poopIn-=dt;
    if(d.poopIn<=0){d.poopIn=45+this.random()*20;if(s.poops.length<24){const poop={id:s.nextId++,x:d.x,z:d.z};s.poops.push(poop);d.clean=clamp(d.clean-10);this.emit('poop',{poop});}}
    if(d.age==='puppy'){if(['walk','seek'].includes(d.activity))d.care.walk=Math.min(9999,d.care.walk+dt);if(d.hunger>=50&&d.happy>=50)d.growth=clamp(d.growth+dt*.25);if(d.growth>=100&&d.activeAge>=60&&cultivationReady(d)){if(d.cultivation){d.breed=d.cultivation;if(!s.discovered.includes(d.breed))s.discovered.push(d.breed);}d.age='adult';s.run.matured++;this.emit('growth',{dog:d.id});}}
-   if(d.pregnancy){d.pregnancy.remaining=Math.max(0,d.pregnancy.remaining-dt);if(d.pregnancy.remaining===0){const p=d.pregnancy;d.pregnancy=null;const baby=makeDog(s.nextId++,p.breed,p.sex,[p.father,d.id],true);this.placeDog(baby);s.dogs.push(baby);if(!s.discovered.includes(p.breed))s.discovered.push(p.breed);s.births++;s.run.births++;this.emit('birth',{dog:baby.id});}}
+   if(d.pregnancy){d.pregnancy.remaining=Math.max(0,d.pregnancy.remaining-dt);if(d.pregnancy.remaining===0){const p=d.pregnancy;d.pregnancy=null;const baby=makeDog(s.nextId++,p.breed,p.sex,[p.father,d.id],true);s.lineage[baby.id]=baby.parents.slice();this.placeDog(baby);s.dogs.push(baby);if(!s.discovered.includes(p.breed))s.discovered.push(p.breed);s.births++;s.run.births++;this.emit('birth',{dog:baby.id});}}
   }s.courtshipIn-=dt;if(s.courtshipIn<=0){s.courtshipIn=10;this.courtship();}this.check();
  }
  objective(){

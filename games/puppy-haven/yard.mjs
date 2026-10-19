@@ -1,16 +1,17 @@
 import * as THREE from './vendor/three/three.module.min.js';
 import {BREEDS,MEAL_SPOTS,DOG_SPOTS} from './simulation.mjs';
+import {YardCamera} from './yard-camera.mjs';
 const SPAWNS=DOG_SPOTS;
 
 // Every visible dog/prop is authored world geometry. Shared resources live only
 // for this renderer and are disposed once when the yard closes.
 export class Yard {
- constructor(host,onPick,onLoss){
+ constructor(host,onPick,onLoss,canControl=()=>true){
   this.host=host;this.onPick=onPick;this.dogs=new Map();this.departures=[];this.poops=new Map();this.materials=new Map();this.portraits=new Map();this.abort=new AbortController();
   this.reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  this.scene=new THREE.Scene();this.scene.background=new THREE.Color(0xd2e4d5);
+  this.scene=new THREE.Scene();this.scene.background=null;
   this.camera=new THREE.OrthographicCamera(-6,6,6,-6,.1,80);this.camera.position.set(9,12,14);this.camera.lookAt(0,0,0);
-  this.renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'low-power'});
+  this.renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});
   this.renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.15;this.renderer.info.autoReset=false;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
   host.append(this.renderer.domElement);this.renderer.domElement.setAttribute('aria-label','3D dog garden');
   this.box=new THREE.BoxGeometry(1,1,1);this.ray=new THREE.Raycaster();this.point=new THREE.Vector2();
@@ -23,7 +24,8 @@ export class Yard {
   this.bowls=new THREE.InstancedMesh(this.box,this.detailMaterial,36);this.bowls.count=0;this.bowls.receiveShadow=true;this.bowls.frustumCulled=false;this.scene.add(this.bowls);this.bowlTransform=new THREE.Object3D();this.bowlColor=new THREE.Color();this.bowlAges=new Map();
   for(const z of [-.46,.46])this.cube(this.marker,0xeabf59,[.96,.008,.045],[0,0,z]);
   for(const x of [-.46,.46])this.cube(this.marker,0xeabf59,[.045,.008,.96],[x,0,0]);
-  this.renderer.domElement.addEventListener('click',e=>this.pick(e),{signal:this.abort.signal});
+  if(this.constructor===Yard)this.cameraRig=new YardCamera(this.renderer.domElement,this.camera,{signal:this.abort.signal,canControl,onPick:e=>this.pick(e)});
+  else this.renderer.domElement.addEventListener('click',e=>this.pick(e),{signal:this.abort.signal});
   this.renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();onLoss();},{signal:this.abort.signal});
   this.resize=new ResizeObserver(()=>this.fit());this.resize.observe(host);this.fit();
  }
@@ -63,6 +65,7 @@ export class Yard {
  }
 
  mealPoint(spot){const [x,z]=MEAL_SPOTS[spot],v=new THREE.Vector3(x,.3,z).project(this.camera),r=this.host.getBoundingClientRect();return {x:(v.x+1)*r.width/2,y:(1-v.y)*r.height/2};}
+ dogPoint(id){const dog=this.dogs.get(id);if(!dog)return null;const v=new THREE.Vector3(dog.g.position.x,.7,dog.g.position.z).project(this.camera),r=this.host.getBoundingClientRect();return {x:r.left+(v.x+1)*r.width/2,y:r.top+(1-v.y)*r.height/2};}
  makeDog(d){
   const b=BREEDS.find(b=>b.id===d.breed),g=new THREE.Group(),body=new THREE.Group(),head=new THREE.Group();g.add(body);body.add(head);
   const low=b.long?.16:.29,bodyLength=b.long?1.02:.78,detailParts=[];const detail=(anchor,color,size,pos,rot=0)=>{const node=new THREE.Object3D();node.position.set(...pos);node.scale.set(...size);node.rotation.z=rot;anchor.add(node);detailParts.push({node,color});};
