@@ -2,12 +2,13 @@
 (() => {
   "use strict";
 
-  const poster = "/games/animal-patchwork-paws/assets/animal-patchwork-paws-cover.svg";
+  const poster = "/assets/interface7-redrawn/animal-patchwork-paws.webp";
+  const background = "/games/animal-patchwork-paws/assets/animal-patchwork-paws-board-block-v1.png";
 
   window.AnimalPatchworkPawsStageConfig = ({ patches, getState, text }) => ({
     count: patches.length,
     poster,
-    background: poster,
+    background,
     stage(index) {
       const patch = patches[index];
       const state = getState();

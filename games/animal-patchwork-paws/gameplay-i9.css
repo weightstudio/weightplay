@@ -170,7 +170,16 @@
 
 .patchwork-result[hidden],
 .patchwork-leave[hidden] { display: none; }
-.patchwork-result .result-guide { display: block; width: min(100%, 120px); margin: 0 auto 12px; border-radius: 50%; }
+.patchwork-result .result-guide {
+  display: block;
+  width: 120px;
+  height: 120px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center;
+  margin: 0 auto 12px;
+  border-radius: var(--wp-ui-radius, 12px);
+}
 .patchwork-result .eyebrow,
 .patchwork-result h2,
 .patchwork-result .intro,
@@ -205,6 +214,9 @@
 }
 
 @media (max-height: 500px) and (min-width: 700px) {
+  .patchwork-result { padding: 10px 18px; }
+  .patchwork-result .result-guide { width: 64px; height: 64px; margin-bottom: 4px; }
+  .patchwork-result .result-actions { margin-top: 10px; }
   #battleScreen[data-wp-frame-play-fill] .patchwork-battle-content {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr) 2.8em auto;
