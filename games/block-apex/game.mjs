@@ -1,10 +1,11 @@
-import {STAGES, VEHICLES, UPGRADE_KEYS, UPGRADE_COSTS, GAME_VERSION, campaignStars} from './data.mjs';
+import {STAGES, VEHICLES, UPGRADE_KEYS, UPGRADE_COSTS, GAME_VERSION, GAME_RELEASE_VERSION, INTERFACE_VERSION, campaignStars} from './data.mjs';
 import {createRace, buildTrack, stepRace, pauseRace, resumeRace, recoverCar, STEP} from './physics.mjs';
 import {SaveStore} from './store.mjs';
 import {RaceInput} from './input.mjs?v=20261003-v15-guide-hant-copy1';
 import {RaceAudio} from './audio.mjs';
 import {CATALOG, LOCALE_ORDER, LOCALE_NAMES, detectLocale, translate} from './locales.mjs';
 import {renderGuide} from './guide.mjs?v=20261003-v15-guide-hant-copy1';
+import {STAGE_CONFIG} from './stage-config.mjs';
 
 const $ = id => document.getElementById(id);
 // Public sync merges both tracked asset trees into the lowercase /assets route.
@@ -62,7 +63,7 @@ function finishAnalytics(result) {
   if(!analyticsRunStarted)return;
   if(result.success&&race?.stage.id===STAGES.length) {
     analyticsCall('complete');
-    try{window.WonderAnalytics?.trackPrivacySafe?.('game_complete',{game_id:'block-apex',game_version:'v15',interface_version:'7',locale});}catch{/* Analytics is optional and must not affect play. */}
+    try{window.WonderAnalytics?.trackPrivacySafe?.('game_complete',{game_id:'block-apex',game_version:GAME_RELEASE_VERSION,interface_version:String(INTERFACE_VERSION),locale});}catch{/* Analytics is optional and must not affect play. */}
   } else analyticsCall('end',result.success?'success':'fail');
   analyticsRunStarted=false;
 }
@@ -85,6 +86,26 @@ function goals(stage) {
     ...(stage.collect ? [['rings',t('ringGoal',{n:stage.collect})]] : []),
     ...(Number.isFinite(stage.contactCap) ? [['clean',t('cleanGoal',{n:stage.contactCap})]] : []),
     ['time',t('timeGoal',{n:stage.limit})]];
+}
+
+function stagePresentation(index) {
+  const stage=STAGES[index], entry=STAGE_CONFIG.entries[index];
+  if(!stage||!entry)return {id:index+1,locked:true};
+  const record=store.data.records[stage.id], unlocked=stage.id<=store.data.unlocked;
+  const objectives=goals(stage).map(([,label])=>label);
+  return {
+    id:entry.id,
+    kicker:t(unlocked?'ready':'locked'),
+    title:String(stage.id),
+    subtitle:CATALOG[locale].names[stage.track]+(stage.reverse?' · '+CATALOG[locale].names[11]:''),
+    status:record?'★'.repeat(record.stars)+'☆'.repeat(3-record.stars):'',
+    summary:objectives.join(' · '),
+    details:record?objectives.concat(t('best')+': '+record.best.toFixed(1)+' s'):objectives,
+    locked:!unlocked,
+    cleared:Boolean(record),
+    poster:entry.poster,
+    posterPosition:entry.posterPosition,
+  };
 }
 
 // A bounded import timeout leaves navigation available even when a dependency fails.
@@ -127,7 +148,7 @@ function selectTab(name, focus=false) {
     $(value+'Panel').hidden=!active;button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1;
     button.classList.toggle('active',active);
   }
-  if(name==='stages'){rail.refresh();rail.center(store.data.unlocked-1);}
+  if(name==='stages')rail.refresh(selectedStage-1);
   else renderManagement();
   if(focus)$(name+'Tab').focus({preventScroll:true});
 }
@@ -144,19 +165,6 @@ function drawMap(canvas, track, cars=[]) {
   context.strokeStyle='#17243a';context.lineWidth=10;context.stroke();context.strokeStyle='#9cddd9';context.lineWidth=4;context.stroke();
   const [sx,sy]=xy(track.gates[0]);context.fillStyle='#f5c84c';context.fillRect(sx-4,sy-4,8,8);
   for(const car of [...cars].reverse()) {const [x,y]=xy(car);context.beginPath();context.arc(x,y,car.id===0?4.5:3,0,Math.PI*2);context.fillStyle=car.id===0?'#ffffff':'#fa8468';context.fill();}
-}
-function bindStage(card,index) {
-  const stage=STAGES[index], record=store.data.records[stage.id], unlocked=stage.id<=store.data.unlocked;
-  card.className='stage-card apex-stage-card';card.dataset.stage=String(stage.id);
-  card.setAttribute('aria-disabled',String(!unlocked));card.classList.toggle('locked',!unlocked);
-  card.dataset.wpStageRecommended=String(stage.id===store.data.unlocked);
-  const content=document.createElement('div');content.dataset.wpItemContent='';
-  const map=document.createElement('canvas');map.width=192;map.height=116;map.className='apex-track-map';map.setAttribute('aria-hidden','true');
-  content.append(map,text('strong',stageTitle(stage)),text('span',record?'★'.repeat(record.stars)+'☆'.repeat(3-record.stars):t(unlocked?'ready':'locked')));
-  const objective=text('small',goals(stage).map(([,label])=>label).join(' · '));content.append(objective);
-  if(record)content.append(text('small',`${t('best')}: ${record.best.toFixed(1)} s`));
-  card.replaceChildren(content);card.setAttribute('aria-label',`${stageTitle(stage)}. ${objective.textContent}. ${t(unlocked?'ready':'locked')}`);
-  drawMap(map,trackFor(stage));
 }
 function renderManagement() {
   if(!input)return;
@@ -388,16 +396,30 @@ function tick(now) {
 }
 
 function boot() {
-  if(!window.WeightPlayScreenFrame||!window.WeightPlayStageV6)throw new Error('SHARED_RUNTIME_MISSING');
+  if(!window.WeightPlayScreenFrame||!window.WeightPlayPlayUI||!window.WeightPlayStageRailI9)throw new Error('SHARED_RUNTIME_MISSING');
   for(let i=0;i<LOCALE_ORDER.length;i++)$('localeSelect').add(new Option(LOCALE_NAMES[i],LOCALE_ORDER[i]));
   localize();
-  frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect:$('localeSelect'),scenes:{
+  selectedStage=Math.min(store.data.unlocked,STAGES.length);
+  frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect:$('localeSelect'),playUI:true,scenes:{
     main:{root:$('mainScreen'),header:$('mainHeader'),content:$('mainContent')},
     stage:{root:$('stageScreen'),header:$('stageHeader'),content:$('stageContent')},
     battle:{root:$('battleScreen'),header:$('battleHeader'),content:$('battleContent'),headerInfo:$('hudStats')}
   }});
+  const battleInfoGroup=window.WeightPlayScreenFrame.createGroup();
+  for(const node of [...$('hudStats').children])battleInfoGroup.add(node);
+  frame.battleTopUI.add(battleInfoGroup);
+  const stageActionGroup=window.WeightPlayScreenFrame.createGroup();
+  for(const node of document.querySelectorAll('#stageScreen [data-wp-frame-stage-nav] > button'))stageActionGroup.add(node);
+  frame.commonDownButton.clear().add(stageActionGroup);
   input=new RaceInput($('driveControls'),{pause,recover:()=>{if(race&&!modalKind)recoverCar(race);},gesture:()=>sound?.unlock()});
-  rail=window.WeightPlayStageV6.install($('stageRail'),{total:STAGES.length,poolSize:9,initialIndex:()=>store.data.unlocked-1,bind:bindStage,activate:index=>{if(screen==='stage'&&tab==='stages')void startRace(index+1);}});
+  rail=window.WeightPlayPlayUI.mountStage({
+    page:$('stagesPanel'),rail:$('stageRail'),
+    config:{...STAGE_CONFIG,count:STAGE_CONFIG.entries.length,stage:stagePresentation},
+    selected:selectedStage-1,
+    isActive:()=>screen==='stage'&&tab==='stages',
+    onSelect:index=>{selectedStage=index+1;},
+    onStart:index=>{selectedStage=index+1;void startRace(index+1);}
+  });
   if(!rail)throw new Error('STAGE_RAIL_MISSING');
   listen($('start'),'click',()=>{activate('stage');selectTab('stages');});
   listen($('stageBack'),'click',()=>{activate('main');$('start').focus({preventScroll:true});});
@@ -445,8 +467,8 @@ function boot() {
   listen(window,'blur',background);listen(document,'visibilitychange',()=>{if(document.hidden)background();});
   listen(window,'pagehide',event=>{if(event.persisted){background();return;}destroy();});
   listen(window,'pageshow',event=>{if(event.persisted&&!disposed)frame.activate(screen,{covered:!!modalKind});});
-  activate('main');syncAnalytics();renderManagement();document.body.dataset.apexBooted='true';document.body.dataset.apexVersion=GAME_VERSION;
-  window.BlockApex=Object.freeze({snapshot:()=>({version:GAME_VERSION,screen,modal:modalKind,stage:race?.stage.id,status:race?.status,time:race?.time,unlocked:store.data.unlocked,
+  activate('main');syncAnalytics();renderManagement();document.body.dataset.apexBooted='true';document.body.dataset.apexVersion=GAME_VERSION;document.body.dataset.apexRelease=GAME_RELEASE_VERSION;
+  window.BlockApex=Object.freeze({snapshot:()=>({version:GAME_VERSION,gameVersion:GAME_RELEASE_VERSION,interfaceVersion:INTERFACE_VERSION,screen,modal:modalKind,stage:race?.stage.id,status:race?.status,time:race?.time,unlocked:store.data.unlocked,
     player:race?{x:race.player.x,z:race.player.z,speed:race.player.speed,gates:race.player.gates,lap:race.player.completedLaps,
       driftLevel:race.player.driftLevel,driftBank:race.player.driftBank,miniBoost:race.player.miniBoost,draftCharge:race.player.draftCharge,draftBoost:race.player.draftBoost,contacts:race.player.contacts}:null,
     resources:renderer?.metrics()||{renderer:false},raf:!!raf,pool:$('stageRail').children.length})});

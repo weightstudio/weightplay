@@ -1,6 +1,7 @@
 // Original WeightPlay campaign data. No generated random stage substitutes.
 export const GAME_VERSION = '0.1.0';
-export const INTERFACE_VERSION = 7;
+export const GAME_RELEASE_VERSION = 'v16';
+export const INTERFACE_VERSION = 9;
 export const SAVE_KEY = 'weightplay:block-apex:v1';
 export const STEP = 1 / 120;
 export const GATE_COUNT = 16;

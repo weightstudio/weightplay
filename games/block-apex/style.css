@@ -1,17 +1,9 @@
 /* Game content only. Frame, guide, header and settings belong to shared CSS. */
 [hidden]{display:none!important}
-.apex-art{aspect-ratio:1;display:grid;place-items:center;overflow:hidden;background:var(--wp-ui-surface)}
+.apex-art{aspect-ratio:1;display:grid;place-items:center;overflow:hidden}
 .apex-art img{display:block;width:100%;height:100%;object-fit:contain}
 .apex-art p{padding:16px;text-align:center}
 .apex-workspace{min-width:0;min-height:0;overflow:hidden;position:relative}
-.apex-track-page{height:100%;min-width:0;min-height:0;display:grid;align-items:center}
-.apex-track-map{display:block;width:80px;height:40px;max-width:100%;object-fit:contain}
-.apex-stage-card{padding:6px;background:var(--wp-ui-surface);color:var(--wp-ui-text);border:2px solid var(--wp-ui-line);font:inherit}
-.apex-stage-card [data-wp-item-content]{gap:3px}
-.apex-stage-card strong{font-size:16px;line-height:1.2;overflow-wrap:anywhere}
-.apex-stage-card span{font-size:13px;line-height:1.2}
-.apex-stage-card small{font-size:12px;line-height:1.25;overflow-wrap:anywhere;max-width:240px}
-.apex-stage-card.locked canvas{opacity:.55}
 .apex-management{height:100%;overflow:auto;overscroll-behavior:contain;padding:12px;box-sizing:border-box}
 .apex-resource-summary,.apex-tuning-help{margin:0 0 12px}
 .apex-collection{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;align-content:start}
@@ -54,10 +46,10 @@
 .apex-drive-controls button{transition:background-color .08s,border-color .08s,box-shadow .08s}
 .apex-drive-controls button.held{border-color:#65e5ed;box-shadow:inset 0 -4px rgba(23,142,160,.4)}
 .apex-overlay:not([hidden]) .apex-modal{animation:apex-panel-in .18s ease-out both}
-.apex-track-page:not([hidden]),.apex-management:not([hidden]){animation:apex-panel-in .18s ease-out both}
+.apex-management:not([hidden]){animation:apex-panel-in .18s ease-out both}
 @keyframes apex-panel-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){
- .apex-overlay:not([hidden]) .apex-modal,.apex-track-page:not([hidden]),.apex-management:not([hidden]){animation-name:apex-panel-fade}
+ .apex-overlay:not([hidden]) .apex-modal,.apex-management:not([hidden]){animation-name:apex-panel-fade}
  @keyframes apex-panel-fade{from{opacity:.5}to{opacity:1}}
 }
 .apex-drive-controls{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;padding:8px;background:var(--wp-ui-background);touch-action:none}
@@ -111,15 +103,3 @@
  .apex-modal p,.apex-goal-results{font-size:13px;margin-bottom:8px}
 }
 @media(prefers-reduced-motion:reduce){.apex-drive-controls button{transition:none}}
-/* At the governed 844px landscape width, scale the registered poster and fit
-   its adjacent copy block so the primary action stays inside the frame. */
-@media(min-width:700px) and (max-width:900px){
- html body [data-wp-frame="2"] [data-wp-frame-content="main"],
- html body #mainContent{--wp-main-poster-size:260px!important;grid-template-columns:260px minmax(0,1fr)!important;height:auto!important;min-height:0!important}
- html body [data-wp-frame="2"] [data-wp-frame-poster],
- html body #mainContent [data-wp-frame-poster]{width:260px!important;height:260px!important;min-width:260px!important;max-width:260px!important;min-height:260px!important;max-height:260px!important}
- html body [data-wp-frame="2"] [data-wp-frame-poster]>img,
- html body #mainContent [data-wp-frame-poster]>img{width:260px!important;height:260px!important;min-width:260px!important;max-width:260px!important;min-height:260px!important;max-height:260px!important}
- html body [data-wp-frame="2"] [data-wp-frame-copy],
- html body #mainContent [data-wp-frame-copy]{height:auto!important;min-height:0!important;gap:8px!important}
-}
