@@ -187,6 +187,103 @@
     ru: ['Настройки', 'Язык', 'Звук', 'Вкл.', 'Без звука'], hi: ['सेटिंग्स', 'भाषा', 'ध्वनि', 'चालू', 'म्यूट'],
     ar: ['الإعدادات', 'اللغة', 'الصوت', 'مفعّل', 'صامت'],
   };
+  function currentSettingsLocale() {
+    return window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || document.documentElement.lang;
+  }
+  const localeUnavailableCopy = {
+    en: 'This language is not available for this game yet.',
+    'zh-Hant': '這款遊戲尚未提供此語言。', 'zh-Hans': '这款游戏尚未提供此语言。',
+    ja: 'このゲームでは、この言語はまだ利用できません。', ko: '이 게임은 아직 이 언어를 지원하지 않습니다.',
+    es: 'Este idioma aún no está disponible para este juego.', 'pt-BR': 'Este idioma ainda não está disponível neste jogo.',
+    fr: 'Cette langue n’est pas encore disponible pour ce jeu.', de: 'Diese Sprache ist für dieses Spiel noch nicht verfügbar.',
+    it: 'Questa lingua non è ancora disponibile per questo gioco.', ru: 'Этот язык пока недоступен для этой игры.',
+    hi: 'इस गेम के लिए यह भाषा अभी उपलब्ध नहीं है।', ar: 'هذه اللغة غير متاحة لهذه اللعبة بعد.',
+  };
+  const pendingSettingsLocales = new WeakMap();
+  function cancelSettingsLocale(select) {
+    const pending = pendingSettingsLocales.get(select);
+    if (!pending) return;
+    pendingSettingsLocales.delete(select);
+    pending.controller.abort();
+    select.disabled = false;
+    select.value = currentSettingsLocale();
+  }
+  async function changeSettingsLocale(select, refresh, isActive) {
+    const requested = select.value;
+    cancelSettingsLocale(select);
+    select.setCustomValidity('');
+    const i18n = window.WonderI18n, current = currentSettingsLocale();
+    if (!i18n?.setLocale || requested === current) return;
+    const pending = {controller:new AbortController(), requested}, entry = location.href;
+    pendingSettingsLocales.set(select, pending);
+    select.value = requested;
+    const isCurrent = () => pendingSettingsLocales.get(select) === pending && select.isConnected
+      && isActive() && location.href === entry && currentSettingsLocale() === current;
+    const path = i18n.localizedPath?.(requested, `${location.pathname}${location.search}${location.hash}`);
+    const timeout = setTimeout(() => pending.controller.abort(), 5000);
+    select.disabled = true;
+    try {
+      if (path && /^https?:$/.test(location.protocol) && window.WONDER_SITE?.localization?.useLocaleRoutes !== false) {
+        // Incomplete prototypes may have no localized game page. Never turn
+        // their shared Settings control into a link to a missing route.
+        const target = new URL(path, location.href);
+        const gameId = value => value.match(/\/games\/([^/]+)/)?.[1];
+        if (target.origin !== location.origin || gameId(target.pathname) !== gameId(location.pathname)) {
+          throw new Error('LOCALE_ROUTE_OUT_OF_SCOPE');
+        }
+        const response = await fetch(target, {method:'HEAD', redirect:'error', signal:pending.controller.signal});
+        if (!response.ok) throw new Error('LOCALE_ROUTE_UNAVAILABLE');
+      }
+      if (isCurrent()) i18n.setLocale(requested);
+    } catch {
+      if (isCurrent()) {
+        select.value = current;
+        select.setCustomValidity(localeUnavailableCopy[current] || localeUnavailableCopy.en);
+        select.disabled = false;
+        select.reportValidity();
+      }
+    } finally {
+      clearTimeout(timeout);
+      if (pendingSettingsLocales.get(select) === pending) {
+        pendingSettingsLocales.delete(select);
+        select.disabled = false;
+        refresh();
+      }
+    }
+  }
+  let settingsI18nPending = false;
+  function ensureSettingsI18n() {
+    if (window.WonderI18n || settingsI18nPending) return;
+    if (document.readyState === 'loading') {
+      settingsI18nPending = true;
+      document.addEventListener('DOMContentLoaded', () => {
+        settingsI18nPending = false;
+        ensureSettingsI18n();
+      }, {once:true});
+      return;
+    }
+    // Older game routes may omit i18n altogether. Wait until parsing finishes
+    // before checking, so a later ordinary script tag is never loaded twice.
+    if ([...document.scripts].some(script => /\/i18n\.js(?:[?#]|$)/.test(script.src))) return;
+    const script = document.createElement('script');
+    script.src = new URL('i18n.js', frameScriptUrl).href;
+    script.dataset.wpSharedSettingsI18n = 'true';
+    document.head.append(script);
+  }
+  function syncSettingsLocales(select, source) {
+    if (!source) ensureSettingsI18n();
+    const i18n = window.WonderI18n;
+    const options = i18n?.supportedLocales?.map(locale => [locale, i18n.localeLabels?.[locale] || locale])
+      || Array.from(source?.options || [], option => [option.value, option.textContent]);
+    // Refresh can run after the locale runtime loads, or after scene placement.
+    // Keep the same nodes when nothing changed so focus/selection stay intact.
+    if (options.length && (select.options.length !== options.length || options.some(([value, label], index) =>
+      select.options[index]?.value !== value || select.options[index]?.textContent !== label))) {
+      select.replaceChildren(...options.map(([value, label]) => new Option(label, value)));
+    }
+    select.value = pendingSettingsLocales.get(select)?.requested || currentSettingsLocale() || source?.value || '';
+    select.disabled = pendingSettingsLocales.has(select) || (!source && typeof i18n?.setLocale !== 'function');
+  }
   function createSettings({localeSelect, showLanguage = true, id = 'lobby', onOpen = () => {}}) {
     const abort = new AbortController();
     const notifyInteraction = () => {
@@ -202,7 +299,7 @@
     // The canonical locale normalizer identifies the shared select by stable ID.
     select.id=`wp-frame-${id}-locale`;
     utility.setAttribute('data-runtime-localize','off');
-    for(const option of localeSelect?.options||[])select.add(option.cloneNode(true));
+    syncSettingsLocales(select, localeSelect);
     if (localeSelect) {
       const localeOwner = localeSelect.closest('label,.language-picker,.locale-picker,.locale-control,.locale,.lang-switch') || localeSelect;
       if (!localeOwner.closest('[data-wp-frame-locale-source]') && localeOwner.parentNode) {
@@ -221,27 +318,31 @@
         };
       }
     }
-    panel.querySelector('label').hidden=!showLanguage||!localeSelect;
-    const close=(focus=false)=>{const wasOpen=!panel.hidden;panel.hidden=true;button.setAttribute('aria-expanded','false');if(wasOpen)notifyInteraction();if(focus)button.focus({preventScroll:true});};
+    panel.querySelector('label').hidden=!showLanguage;
+    const close=(focus=false)=>{const wasOpen=!panel.hidden;cancelSettingsLocale(select);panel.hidden=true;button.setAttribute('aria-expanded','false');if(wasOpen)notifyInteraction();if(focus)button.focus({preventScroll:true});};
     const refresh=()=>{
-      const locale=window.WonderI18n?.locale?.()||document.documentElement.lang;
+      const locale=currentSettingsLocale();
       const labels=copy[locale]||copy.en;
       button.setAttribute('aria-label',labels[0]);panel.setAttribute('aria-label',labels[0]);
-      languageText.textContent=labels[1];select.setAttribute('aria-label',labels[1]);select.value=localeSelect?.value||locale;
+      languageText.textContent=labels[1];select.setAttribute('aria-label',labels[1]);syncSettingsLocales(select,localeSelect);
       const muted=Boolean(window.WeightPlayAudio?.isMuted?.());
       soundText.textContent=labels[2];soundState.textContent=muted?labels[4]:labels[3];sound.setAttribute('aria-label',`${labels[2]}：${muted?labels[4]:labels[3]}`);sound.setAttribute('aria-checked',String(!muted));
       sound.disabled=!window.WeightPlayAudio?.setMuted;
     };
-    listen(button,'click',()=>{refresh();const open=panel.hidden;if(open)onOpen();panel.hidden=!open;button.setAttribute('aria-expanded',String(open));notifyInteraction();});
-    listen(select,'change',()=>{localeSelect.value=select.value;localeSelect.dispatchEvent(new Event('change',{bubbles:true}));refresh();});
+    listen(button,'click',()=>{refresh();const open=panel.hidden;if(open)onOpen();else cancelSettingsLocale(select);panel.hidden=!open;button.setAttribute('aria-expanded',String(open));notifyInteraction();});
+    listen(select,'change',()=>{
+      if(localeSelect){localeSelect.value=select.value;localeSelect.dispatchEvent(new Event('change',{bubbles:true}));}
+      else {void changeSettingsLocale(select,refresh,()=>showLanguage&&!panel.hidden&&Boolean(utility.getClientRects().length));return;}
+      refresh();
+    });
     listen(sound,'click',()=>{window.WeightPlayAudio?.setMuted?.(!window.WeightPlayAudio?.isMuted?.());refresh();});
     // Inside interactions belong to this component, not legacy game dismissal handlers.
     for(const event of ['pointerdown','click'])listen(panel,event,e=>e.stopPropagation());
     listen(document,'pointerdown',e=>{if(!utility.contains(e.target))close();});
     listen(document,'keydown',e=>{if(e.key==='Escape'&&!panel.hidden){e.preventDefault();e.stopPropagation();close(true);}});
-    listen(window,'wonder:locale-change',refresh);listen(window,'weightplay:audio-volume-change',refresh);
+    listen(window,'wonder:locale-change',refresh);listen(window,'wonder:i18n-ready',refresh);listen(window,'weightplay:audio-volume-change',refresh);
     refresh();
-    return {utility,button,panel,select,sound,close,refresh,destroy(){const wasOpen=!panel.hidden;abort.abort();restoreLocaleSource?.();utility.remove();if(wasOpen)notifyInteraction();}};
+    return {utility,button,panel,select,sound,close,refresh,destroy(){const wasOpen=!panel.hidden;cancelSettingsLocale(select);abort.abort();restoreLocaleSource?.();utility.remove();if(wasOpen)notifyInteraction();}};
   }
   function mount({ root, scenes, localeSelect, playUI = false }) {
     if (mounts.has(root)) return mounts.get(root);
@@ -830,6 +931,7 @@
   let combinedSoundRow;
   let combinedSoundToggle;
   let localeOwner;
+  let fallbackLocaleSelect;
   let soundToggle;
   let currentHeader;
   let generatedTitle;
@@ -1000,6 +1102,9 @@
     button.setAttribute("aria-label", copy[0]);
     popover.setAttribute("aria-label", copy[0]);
     languageRow.querySelector("span").textContent = copy[1];
+    const select = localeOwner?.matches('select') ? localeOwner : localeOwner?.querySelector('select');
+    if (select === fallbackLocaleSelect) syncSettingsLocales(select);
+    select?.setAttribute('aria-label', copy[1]);
     const combinedSoundCopy = SOUND_COPY[localeCode()] || SOUND_COPY.en;
     combinedSoundRow.querySelector("span").textContent = combinedSoundCopy;
     combinedSoundToggle.setAttribute("aria-label", combinedSoundCopy);
@@ -1029,6 +1134,13 @@
     languageRow = document.createElement("label");
     languageRow.className = "wp-shell-settings-row wp-shell-language-row";
     languageRow.innerHTML = "<span></span>";
+    fallbackLocaleSelect = document.createElement("select");
+    fallbackLocaleSelect.id = "wp-shell-settings-locale";
+    fallbackLocaleSelect.dataset.wpSharedLocale = "true";
+    fallbackLocaleSelect.addEventListener("change", () => {
+      void changeSettingsLocale(fallbackLocaleSelect, updateCopy, () => !popover.hidden
+        && activeScreen().type === 'main' && localeOwner === fallbackLocaleSelect);
+    });
 
     combinedSoundRow = document.createElement("div");
     combinedSoundRow.className = "wp-shell-settings-row wp-shell-combined-sound-row";
@@ -1073,12 +1185,15 @@
       if (event.key === "Escape" && !popover.hidden) setOpen(false, true);
     });
     window.addEventListener("wonder:locale-change", updateCopy);
+    window.addEventListener("wonder:i18n-ready", updateCopy);
     updateCopy();
     syncCombinedSound();
   }
 
   function setOpen(open, restoreFocus) {
+    if (!open) cancelSettingsLocale(fallbackLocaleSelect);
     if (open) {
+      updateCopy();
       const bounds = host.getBoundingClientRect();
       host.dataset.wpPopoverEdge = bounds.left + bounds.width / 2 < window.innerWidth / 2
         ? "left"
@@ -1090,9 +1205,9 @@
   }
 
   function findLocaleOwner() {
-    const select = document.querySelector(
+    const select = [...document.querySelectorAll(
       "#locale,#localeSelect,#languageSelect,#langSelect,select[id*='locale' i],select[id*='language' i],select[data-locale],select[data-language]"
-    );
+    )].find(candidate => !candidate.hasAttribute('data-wp-shared-locale'));
     if (!select) return null;
     return select.closest("label,.language-picker,.locale-picker,.locale-control,.locale,.lang-switch") || select;
   }
@@ -1112,11 +1227,15 @@
       candidate.tabIndex = -1;
     });
 
-    if (!localeOwner || !localeOwner.isConnected) localeOwner = findLocaleOwner();
+    if (!localeOwner || !localeOwner.isConnected || localeOwner === fallbackLocaleSelect) {
+      localeOwner = findLocaleOwner() || fallbackLocaleSelect;
+    }
+    if (localeOwner !== fallbackLocaleSelect) {cancelSettingsLocale(fallbackLocaleSelect);fallbackLocaleSelect.remove();}
     if (localeOwner && !languageRow.contains(localeOwner)) {
       localeOwner.classList.remove("wp-shell-legacy-control");
       languageRow.append(localeOwner);
     }
+    if (localeOwner === fallbackLocaleSelect) syncSettingsLocales(fallbackLocaleSelect);
 
     const candidate = document.querySelector("button[data-sound-toggle]:not([data-wp-battle-utility])");
     if (candidate && candidate !== soundToggle) soundToggle = candidate;

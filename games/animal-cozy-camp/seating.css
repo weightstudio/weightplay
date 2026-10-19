@@ -1,0 +1,88 @@
+/* Game-owned seating workspace. All measurements live inside the shared Canvas. */
+body[data-wp-game-id="animal-cozy-camp"] #battleScreen #battle-content.cozy-puzzle {
+  display: grid !important;
+  grid-template: 24px 132px minmax(236px, 1fr) 22px 112px 38px 48px / minmax(0, 1fr);
+  gap: 6px !important;
+  padding: 10px 12px !important;
+  overflow: hidden !important;
+  background: #0c2228;
+}
+body[data-wp-game-id="animal-cozy-camp"] #battleScreen #battle-content[hidden] { display: none !important; }
+.cozy-puzzle .battle-heading { margin: 0 !important; align-items: center !important; }
+.cozy-puzzle .battle-heading h1 { margin: 0 !important; font-size: 18px !important; line-height: 24px !important; }
+.cozy-puzzle .round-badge { padding: 2px 9px !important; font-size: 12px !important; }
+body #battleScreen .cozy-puzzle .clue-card { padding: 8px 12px; min-height: 0; border-radius: 14px; background: #142f33; }
+body #battleScreen .cozy-puzzle .clue-card h2 { font-size: 13px; line-height: 18px; color: #bccfcd; }
+body #battleScreen .cozy-puzzle #clue-list { display: grid; gap: 4px; margin: 4px 0 0; padding: 0; list-style: none; font-size: 14px; }
+.cozy-puzzle #clue-list li { display: flex; align-items: center; gap: 8px; min-height: 26px; transition: background .18s, color .18s; }
+.clue-mark { display: grid; place-items: center; flex: 0 0 20px; height: 20px; border: 1px solid #567675; border-radius: 6px; font-size: 12px; color: #c1d2d0; }
+.clue-relation { flex: 1; text-align: center; color: #f1f2ea; }
+.friend-chip { display: inline-grid; place-items: center; min-width: 52px; padding: 2px 8px; border: 1px solid var(--friend); border-radius: 7px; color: var(--friend); background: #10272d; font-size: 14px; font-weight: 750; white-space: nowrap; }
+.friend-orla { --friend: #e6c0ff; }
+.friend-moss { --friend: #b9e997; }
+.friend-taro { --friend: #ffc89a; }
+.friend-pip { --friend: #a9ddff; }
+#clue-list li[data-result="pass"] .clue-mark { background: #2b6348; color: #d4ffdb; border-color: #8edca6; }
+#clue-list li[data-result="fail"] { background: #5c2e2a; border-radius: 7px; }
+#clue-list li[data-result="fail"] .clue-mark { color: #fff0e6; border-color: #ffb4a3; background: #843f32; }
+.camp-preview { position: relative; display: grid; place-items: center; align-content: center; min-height: 0; overflow: hidden; border-radius: 16px; border: 1px solid #426665; background: linear-gradient(#0c2228a8, #0c2228ec), url("assets/animal-cozy-camp-background.png") center / cover; }
+.preview-label { position: absolute; top: 8px; inset-inline-start: 10px; font-size: 12px; color: #ffe0a5; font-weight: 800; }
+.camp-preview p { margin: 0; color: #c4d4d1; font-size: 12px; line-height: 18px; text-align: center; }
+#seat-preview { height: 216px; }
+.seat-circle { position: relative; display: block; width: 244px; height: 216px; direction: ltr; }
+.seat-circle::before { content: ""; position: absolute; inset: 28px 40px; border: 2px dashed #c3b18b80; border-radius: 50%; }
+.seat-fire { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 44px; line-height: 1; filter: drop-shadow(0 0 20px #ffc44a66); }
+.circle-seat { position: absolute; width: 76px; height: 32px; min-width: 0; padding: 0 4px; font-size: 16px; transform: translate(-50%, -50%); box-shadow: 0 3px 10px #0005; }
+.seat-0 { left: 50%; top: 12%; }
+.seat-1 { left: 83%; top: 50%; }
+.seat-2 { left: 50%; top: 88%; }
+.seat-3 { left: 17%; top: 50%; }
+body #battleScreen .cozy-puzzle .choice-heading { display: flex !important; align-items: center; justify-content: space-between; gap: 8px; margin: 0; }
+body #battleScreen .cozy-puzzle .choice-heading h2 { font-size: 14px; line-height: 20px; }
+body #battleScreen .cozy-puzzle .selection-note { margin: 0; min-height: 0; font-size: 12px; line-height: 18px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+body #battleScreen .cozy-puzzle .layout-choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; min-height: 0; }
+body #battleScreen .cozy-puzzle .layout-card { display: grid; place-items: center; align-content: center; gap: 0; min-height: 0; padding: 3px; border: 2px solid #486867; border-radius: 12px; background: #142f33; animation: none; transform: none; text-align: center; transition: border-color .16s, background .16s, box-shadow .16s; }
+body #battleScreen .cozy-puzzle .layout-card strong { font-size: 13px; line-height: 18px; }
+body #battleScreen .cozy-puzzle .layout-card.is-selected { background: #3c4230; border-color: #ffda87; box-shadow: inset 0 0 0 1px #ffda87; }
+body #battleScreen .cozy-puzzle .layout-card:focus-visible { outline: 3px solid white; outline-offset: -5px; }
+.is-miniature.seat-circle { width: 100px; height: 82px; }
+.is-miniature.seat-circle::before { inset: 10px 18px; border-width: 1px; }
+.is-miniature .circle-seat { width: 40px; height: 18px; font-size: 10px; padding: 0 1px; border-radius: 4px; box-shadow: none; }
+.is-miniature .seat-fire { font-size: 20px; }
+.is-miniature .seat-1 { left: 78%; }
+.is-miniature .seat-3 { left: 22%; }
+body #battleScreen .cozy-puzzle .status { min-height: 0; margin: 0; font-size: 13px; line-height: 18px; align-self: center; }
+body #battleScreen .cozy-puzzle .battle-actions { display: grid; grid-template-columns: 1fr 1.8fr; width: 100%; margin: 0; gap: 10px; }
+body #battleScreen .cozy-puzzle .battle-actions button { order: 0; min-height: 48px; height: 48px; padding: 4px 10px; font-size: 15px; }
+body #battleScreen .cozy-puzzle #check-button { grid-column: 2; grid-row: 1; }
+body #battleScreen .cozy-puzzle #reset-button { grid-column: 1; grid-row: 1; }
+body #battleScreen .cozy-puzzle button:disabled { opacity: .45; cursor: default; }
+@keyframes cozy-preview-in { from { opacity: .35; } to { opacity: 1; } }
+#seat-preview > .seat-circle { animation: cozy-preview-in .18s ease-out; }
+body #battleScreen #result-view .result-actions { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+body #battleScreen #result-view .result-actions button { min-height: 48px; font-size: 14px; padding: 6px; }
+body #battleScreen #result-view #next-stage-button { order: 0 !important; }
+@media (orientation: landscape) and (max-height: 560px) {
+  body[data-wp-game-id="animal-cozy-camp"] #battleScreen #battle-content.cozy-puzzle {
+    grid-template: 24px 94px 100px 44px / 260px minmax(0, 1fr);
+    grid-template-areas: "preview heading" "preview clues" "preview choices" "status actions";
+    gap: 4px 12px !important; padding: 6px 12px !important;
+  }
+  .cozy-puzzle .battle-heading { grid-area: heading; }
+  .cozy-puzzle .camp-preview { grid-area: preview; }
+  body #battleScreen .cozy-puzzle .clue-card { grid-area: clues; padding: 3px 8px; }
+  body #battleScreen .cozy-puzzle .clue-card h2 { display: none; }
+  body #battleScreen .cozy-puzzle #clue-list { gap: 2px; margin: 1px 0; }
+  body #battleScreen .cozy-puzzle .choice-heading { display: none !important; }
+  .cozy-puzzle .layout-choices { grid-area: choices; }
+  body #battleScreen .cozy-puzzle .battle-actions { grid-area: actions; }
+  body #battleScreen .cozy-puzzle .battle-actions button { min-height: 44px; height: 44px; }
+  .cozy-puzzle .status { grid-area: status; }
+  .camp-preview p { max-width: 240px; font-size: 11px; }
+  #seat-preview { height: 196px; }
+  #seat-preview .seat-circle { height: 196px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #seat-preview > .seat-circle { animation: none; }
+  .cozy-puzzle * { transition: none !important; }
+}

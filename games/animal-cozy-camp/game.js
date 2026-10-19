@@ -23,7 +23,7 @@
     locale: "en", sound: !Boolean(window.WeightPlayAudio?.isMuted?.()), round: 0,
     selected: null, checks: 0, totalChecks: 0, view: "main", locked: false,
     progress: Campaign?.freshProgress?.() || { schema: 1, completedIds: [], bestChecksByStage: {} },
-    stageVirtual: null, runToken: 0,
+    stageVirtual: null, runToken: 0, checked: false,
   };
   const $ = (id) => document.getElementById(id);
   const t = (key, vars = {}) => {
@@ -208,6 +208,54 @@
     virtual.center(Campaign.highestUnlockedIndex(state.progress));
   }
 
+  function nameChip(name) {
+    const chip = document.createElement("span");
+    chip.className = `friend-chip friend-${name}`;
+    chip.textContent = t(name);
+    return chip;
+  }
+
+  function seatDiagram(layout, miniature = false) {
+    const circle = document.createElement("span");
+    circle.className = `seat-circle${miniature ? " is-miniature" : ""}`;
+    circle.setAttribute("aria-hidden", "true");
+    const fire = document.createElement("span");
+    fire.className = "seat-fire";
+    fire.textContent = "🔥";
+    circle.append(fire);
+    layout.forEach((name, position) => {
+      const seat = nameChip(name);
+      seat.classList.add("circle-seat", `seat-${position}`);
+      circle.append(seat);
+    });
+    return circle;
+  }
+
+  function updateSelection() {
+    const round = rounds[state.round];
+    const previewIndex = state.selected ?? 0;
+    const label = t(["layoutA", "layoutB", "layoutC"][previewIndex]);
+    $("seat-preview").replaceChildren(seatDiagram(round.layouts[previewIndex]));
+    $("preview-label").textContent = label;
+    $("selection-note").textContent = state.selected === null ? "" : t("selected", { n: "ABC"[state.selected] });
+    $("seat-preview").setAttribute("role", "img");
+    $("seat-preview").setAttribute("aria-label", `${label}: ${t("clockwise")}: ${round.layouts[previewIndex].map((name) => t(name)).join(" → ")}`);
+    $("layout-choices").querySelectorAll("button").forEach((button, index) => {
+      button.classList.toggle("is-selected", state.selected === index);
+      button.setAttribute("aria-pressed", String(state.selected === index));
+      button.disabled = state.locked;
+    });
+    $("check-button").disabled = state.selected === null || state.locked;
+    $("reset-button").disabled = state.selected === null || state.locked;
+    const results = state.checked ? Campaign.evaluateRules(round.layouts[state.selected], stage().patternIndex) : null;
+    $("clue-list").querySelectorAll("li").forEach((node, index) => {
+      node.dataset.result = results ? (results[index] ? "pass" : "fail") : "";
+      const mark = node.querySelector(".clue-mark");
+      mark.textContent = results ? (results[index] ? "✓" : "×") : String(index + 1);
+      mark.setAttribute("aria-label", results ? t(results[index] ? "ruleMet" : "ruleMissed") : String(index + 1));
+    });
+  }
+
   function renderBattle() {
     const round = rounds[state.round];
     if (!round) return;
@@ -215,9 +263,15 @@
     $("round-title").textContent = t(round.title);
     $("round-count").textContent = `${item.number}/${Campaign.STAGE_COUNT}`;
     const clues = $("clue-list");
-    clues.replaceChildren(...round.clues.map((key) => {
+    clues.replaceChildren(...Campaign.ruleSets[item.patternIndex].map(([left, relation, right], index) => {
       const clue = document.createElement("li");
-      clue.textContent = t(key);
+      const mark = document.createElement("span");
+      mark.className = "clue-mark";
+      mark.textContent = String(index + 1);
+      const link = document.createElement("span");
+      link.className = "clue-relation";
+      link.textContent = t(relation);
+      clue.append(mark, nameChip(left), link, nameChip(right));
       return clue;
     }));
     const choices = $("layout-choices");
@@ -229,29 +283,23 @@
       button.classList.toggle("is-selected", state.selected === index);
       const title = document.createElement("strong");
       title.textContent = t(index === 0 ? "layoutA" : index === 1 ? "layoutB" : "layoutC");
-      const order = document.createElement("span");
-      order.className = "seat-order";
-      layout.forEach((name) => {
-        const seat = document.createElement("span");
-        seat.className = "seat-chip";
-        seat.textContent = t(name);
-        order.append(seat);
-      });
-      button.append(title, order);
+      button.setAttribute("aria-label", `${title.textContent}: ${t("clockwise")}: ${layout.map((name) => t(name)).join(" → ")}`);
+      button.append(title, seatDiagram(layout, true));
       button.addEventListener("click", () => {
         if (state.locked) return;
         state.selected = index;
+        state.checked = false;
+        $("battleScreen").classList.remove("is-wrong");
         $("selection-note").textContent = t("selected", { n: index + 1 });
         $("battle-status").textContent = t("choose");
         $("battle-status").dataset.kind = "";
         $("check-button").disabled = false;
-        renderBattle();
+        updateSelection();
         track("layout_select", { stage: item.number, choice: index + 1 });
       });
       return button;
     }));
-    $("check-button").disabled = state.selected === null || state.locked;
-    $("reset-button").disabled = state.locked;
+    updateSelection();
   }
 
   function renderResult() {
@@ -265,7 +313,8 @@
     $("result-best").textContent = String(best || t("noBest"));
     $("result-status").textContent = t("stageProgressShort", { done: state.progress.completedIds.length, total: Campaign.STAGE_COUNT });
     const hasNext = item.number < Campaign.STAGE_COUNT && Campaign.isUnlocked(state.progress, state.round + 1);
-    $("next-stage-button").hidden = !hasNext;
+    $("next-stage-button").hidden = false;
+    $("next-stage-button").disabled = !hasNext;
     $("result-view").classList.toggle("is-campaign-complete", campaignComplete);
   }
 
@@ -276,6 +325,7 @@
     rounds = buildCampaign();
     state.round = index;
     state.selected = null;
+    state.checked = false;
     state.checks = 0;
     state.locked = false;
     $("selection-note").textContent = "";
@@ -295,11 +345,13 @@
 
   function reset() {
     if (state.locked) return;
+    $("battleScreen").classList.remove("is-wrong");
     state.selected = null;
+    state.checked = false;
     $("selection-note").textContent = "";
     $("battle-status").textContent = t("choose");
     $("battle-status").dataset.kind = "";
-    renderBattle();
+    updateSelection();
     track("layout_reset", { stage: stage().number });
   }
 
@@ -307,7 +359,9 @@
     if (state.selected === null || state.locked) return;
     state.checks += 1;
     state.totalChecks += 1;
-    if (state.selected !== rounds[state.round].solution) {
+    state.checked = true;
+    updateSelection();
+    if (!Campaign.evaluateRules(rounds[state.round].layouts[state.selected], stage().patternIndex).every(Boolean)) {
       $("battle-status").textContent = t("wrong");
       $("battle-status").dataset.kind = "wrong";
       $("battleScreen").classList.remove("is-wrong");
@@ -320,6 +374,7 @@
 
     const completedStage = stage();
     state.locked = true;
+    updateSelection();
     $("battle-status").textContent = t("correct");
     $("battle-status").dataset.kind = "correct";
     $("check-button").disabled = true;
@@ -383,7 +438,6 @@
     $("next-stage-button").addEventListener("click", () => playStage(state.round + 1, false));
     $("stage-map-button").addEventListener("click", () => show("stage"));
     $("replay-button").addEventListener("click", () => playStage(state.round, true));
-    $("home-button").addEventListener("click", () => { show("main"); applyLocale(); });
     window.setTimeout(() => {
       $("loading-view").hidden = true;
       show("main");

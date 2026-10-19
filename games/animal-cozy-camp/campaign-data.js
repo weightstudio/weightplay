@@ -44,6 +44,22 @@
     }),
   ]);
 
+  // Rules describe actual circular distance, shared by clues and check feedback.
+  const ruleSets = Object.freeze([
+    [["pip", "beside", "orla"], ["moss", "beside", "orla"], ["pip", "opposite", "moss"]],
+    [["taro", "beside", "pip"], ["orla", "opposite", "taro"], ["moss", "beside", "orla"]],
+    [["pip", "beside", "orla"], ["taro", "opposite", "pip"], ["moss", "beside", "taro"]],
+  ].map((rules) => Object.freeze(rules.map((rule) => Object.freeze(rule)))));
+
+  function evaluateRules(layout, patternIndex) {
+    return ruleSets[patternIndex].map(([left, relation, right]) => {
+      const a = layout.indexOf(left), b = layout.indexOf(right);
+      if (a < 0 || b < 0) return false;
+      const distance = Math.abs(a - b);
+      return relation === "opposite" ? distance === 2 : distance === 1 || distance === 3;
+    });
+  }
+
   const stageId = (number) => `cozy-circle-${String(number).padStart(2, "0")}`;
   const stages = Object.freeze(Array.from({ length: STAGE_COUNT }, (_, index) => {
     const number = index + 1;
@@ -134,6 +150,8 @@
     PROGRESS_KEY,
     LEGACY_BEST_KEY,
     authoredRounds,
+    ruleSets,
+    evaluateRules,
     stages,
     freshProgress,
     normalizeProgress,

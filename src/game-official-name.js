@@ -6,13 +6,15 @@
   const routeLocale=map[location.pathname.split('/').filter(Boolean)[0]?.toLowerCase()];
   const queryLocale=map[(new URLSearchParams(location.search).get('lang')||'').toLowerCase()];
   let locale=queryLocale||routeLocale||map[document.documentElement.lang.toLowerCase()]||'en';
-  const liveLocaleOwner=id==='animal-rune-tactics';
   const title=()=>window.WEIGHTPLAY_GAME_TITLES?.[id]?.[locale]||'';
   window.WeightPlayOfficialName={title};
   let observer,labels=[];
   const sync=()=>{
-    if(liveLocaleOwner)locale=window.WonderI18n?.actualLocale?.()||map[document.documentElement.lang.toLowerCase()]||locale;
-    else if(!routeLocale&&!queryLocale)locale=map[document.documentElement.lang.toLowerCase()]||locale;
+    // A select change requests another locale; navigation may not have
+    // committed yet. Keep every title writer on the effective locale so an
+    // old document cannot oscillate between old/new names and starve navigation.
+    locale=window.WonderI18n?.actualLocale?.()||queryLocale||routeLocale
+      ||map[document.documentElement.lang.toLowerCase()]||locale;
     const name=title();if(!name)return;
     const normalized=map[document.documentElement.lang.toLowerCase()];
     if(normalized===locale&&document.documentElement.lang!==normalized)document.documentElement.lang=normalized;
@@ -27,17 +29,17 @@
     const node=document.querySelector('title');if(node)node.dataset.runtimeLocalize='off';
     observer ||= new MutationObserver(sync);
     for(const element of [...labels,...(node?[node]:[])])observer.observe(element,{childList:true,subtree:true,characterData:true});
-    if(liveLocaleOwner||(!routeLocale&&!queryLocale))observer.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+    observer.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
     sync();
   };
   document.addEventListener('change',event=>{
     const select=event.target;
     if(select instanceof HTMLSelectElement && select.querySelector('option[value="en"]') && (select.querySelector('option[value="zh-Hant"]')||select.querySelector('option[value="zh-TW"]'))){
-      const next=map[select.value.toLowerCase()];if(next){locale=next;sync();}
+      if(map[select.value.toLowerCase()])sync();
     }
   });
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',connect,{once:true});else connect();
-  if(liveLocaleOwner)window.addEventListener('wonder:locale-change',sync);
+  window.addEventListener('wonder:locale-change',sync);
   window.addEventListener('pagehide',()=>observer?.disconnect());
   window.addEventListener('pageshow',connect);
 })();

@@ -9,8 +9,10 @@ const POSTER='/games/fusekeep/assets/poster.webp';
 export function createFusekeepStageConfig({locale,save,text,formatTime,troopName}){
  const copy=COPY[locale]||COPY.en,dict=DICT[locale]||DICT.en;
  return {
+  gameId:'fusekeep',
   count:STAGES.length,
   poster:POSTER,
+  background:'/assets/lobby-block-atmosphere.svg',
   stage(index){
    const stage=STAGES[index];
    if(!stage)throw new RangeError(`FUSEKEEP_STAGE_INDEX:${index}`);

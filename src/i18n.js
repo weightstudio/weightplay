@@ -2422,14 +2422,16 @@ const essentialLobbyCopy = {
         Array.from(select.options).forEach((option) => {
           if (!supportedLocales.includes(option.value)) option.remove();
         });
-        supportedLocales.forEach((locale) => {
+        supportedLocales.forEach((locale, index) => {
           const option = options.get(locale) || document.createElement("option");
-          option.value = locale;
-          option.textContent = localeLabels[locale] || locale;
-          select.appendChild(option);
+          if (option.value !== locale) option.value = locale;
+          const label = localeLabels[locale] || locale;
+          if (option.textContent !== label) option.textContent = label;
+          const current = select.options[index];
+          if (current !== option) select.insertBefore(option, current || null);
         });
       }
-      if (select.querySelector(`option[value="${currentLocale}"]`)) select.value = currentLocale;
+      if (select.value !== currentLocale && select.querySelector(`option[value="${currentLocale}"]`)) select.value = currentLocale;
     });
     if (currentLocale === "zh-Hans") translateTree(document.documentElement);
     else restoreTranslatedDom();
@@ -2490,13 +2492,16 @@ const essentialLobbyCopy = {
     simplifyChineseValue,
     localizeLegacyText,
     supportedLocales,
+    localeLabels,
     fallbackLocale,
     localeFromPath,
     localizedPath,
     localeSegment(locale = currentLocale) { return localeSegments[locale] || localeSegments.en; },
   };
 
-  document.addEventListener("DOMContentLoaded", () => {
+  window.dispatchEvent(new Event("wonder:i18n-ready"));
+
+  function initializeLocaleDom() {
     installCanvasLocaleBridge();
     syncLocaleCompatibility();
     window.setTimeout(syncLocaleCompatibility, 250);
@@ -2524,7 +2529,12 @@ const essentialLobbyCopy = {
       characterData: true,
       subtree: true,
     });
-  }, { once: true });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeLocaleDom, { once: true });
+  } else {
+    initializeLocaleDom();
+  }
   window.addEventListener("wonder:locale-change", () => {
     window.setTimeout(syncStandardMainStartLabels, 0);
     window.setTimeout(syncLocaleCompatibility, 0);

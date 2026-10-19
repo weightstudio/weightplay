@@ -128,4 +128,41 @@
     table.guide5Title = table.guide5Title || "5. Finish and replay";
     table.faqTitle = table.faqTitle || "FAQ";
   }
+  // Short, spatial vocabulary. One relation per clue; no fictional lantern/quiet rule.
+  const seatingCopy = {
+    en: ["beside", "opposite", "Match every clue", "Choose a plan", "Choose A, B or C, then check.", "Check the × clues and try another plan.", "Check seats", "Clear", "Tap a plan below to see its seats here.", "Clockwise from the top", "Clue matched", "Clue not matched"],
+    "zh-Hant": ["坐旁邊", "坐對面", "讓每個條件都成立", "選一個方案", "選 A、B 或 C，再確認座位。", "標記 × 的條件不符合，換個方案試試。", "確認座位", "清除", "點下方方案，在這裡放大比較座位。", "從上方順時針排列", "條件符合", "條件不符合"],
+    "zh-Hans": ["坐旁边", "坐对面", "让每个条件都成立", "选一个方案", "选 A、B 或 C，再确认座位。", "标记 × 的条件不符合，换个方案试试。", "确认座位", "清除", "点下方方案，在这里放大比较座位。", "从上方顺时针排列", "条件符合", "条件不符合"],
+    ja: ["隣に座る", "向かいに座る", "すべての条件を満たそう", "配置を選ぶ", "A・B・Cから選んで確認。", "×の条件を見て、別の配置を試そう。", "席を確認", "解除", "下の配置を押すと、席を大きく表示します。", "上から時計回り", "条件に一致", "条件に不一致"],
+    ko: ["옆자리", "맞은편", "모든 조건을 맞추세요", "배치 선택", "A, B, C 중 고른 뒤 확인하세요.", "× 표시 조건을 보고 다른 배치를 골라 보세요.", "자리 확인", "해제", "아래 배치를 누르면 자리를 크게 볼 수 있어요.", "위에서 시계 방향", "조건 일치", "조건 불일치"],
+    es: ["al lado de", "enfrente de", "Cumple todas las pistas", "Elige un plan", "Elige A, B o C y comprueba.", "Revisa las pistas con × y prueba otro plan.", "Comprobar", "Limpiar", "Toca un plan para ampliar sus asientos.", "Desde arriba, en sentido horario", "Pista cumplida", "Pista incumplida"],
+    "pt-BR": ["ao lado de", "de frente para", "Cumpra todas as pistas", "Escolha um plano", "Escolha A, B ou C e confira.", "Veja as pistas com × e tente outro plano.", "Conferir", "Limpar", "Toque num plano para ampliar os lugares.", "Do topo, em sentido horário", "Pista atendida", "Pista não atendida"],
+    fr: ["à côté de", "en face de", "Respecte chaque indice", "Choisis un plan", "Choisis A, B ou C, puis vérifie.", "Relis les indices × et essaie un autre plan.", "Vérifier", "Effacer", "Touche un plan pour agrandir les places.", "Depuis le haut, sens horaire", "Indice respecté", "Indice non respecté"],
+    de: ["neben", "gegenüber", "Erfülle alle Hinweise", "Plan wählen", "Wähle A, B oder C und prüfe.", "Prüfe die ×-Hinweise und wähle einen anderen Plan.", "Prüfen", "Leeren", "Tippe auf einen Plan, um die Plätze zu vergrößern.", "Von oben im Uhrzeigersinn", "Hinweis erfüllt", "Hinweis nicht erfüllt"],
+    it: ["accanto a", "di fronte a", "Rispetta tutti gli indizi", "Scegli un piano", "Scegli A, B o C e controlla.", "Rileggi gli indizi × e prova un altro piano.", "Controlla", "Cancella", "Tocca un piano per ingrandire i posti.", "Dall’alto, in senso orario", "Indizio rispettato", "Indizio non rispettato"],
+    ru: ["рядом с", "напротив", "Выполни все условия", "Выбери план", "Выбери A, B или C и проверь.", "Проверь условия с × и выбери другой план.", "Проверить", "Сбросить", "Нажми на план, чтобы рассмотреть места.", "Сверху по часовой стрелке", "Условие выполнено", "Условие не выполнено"],
+    hi: ["के बगल में", "के सामने", "हर संकेत पूरा करें", "योजना चुनें", "A, B या C चुनें और जाँचें।", "× वाले संकेत देखें और दूसरी योजना चुनें।", "जाँचें", "हटाएँ", "सीटें बड़ी देखने के लिए नीचे की योजना दबाएँ।", "ऊपर से घड़ी की दिशा में", "संकेत पूरा", "संकेत अधूरा"],
+    ar: ["بجوار", "مقابل", "حقق كل الشروط", "اختر ترتيبًا", "اختر A أو B أو C ثم تحقق.", "راجع الشروط × وجرب ترتيبًا آخر.", "تحقق", "امسح", "اضغط ترتيبًا لتكبير عرض المقاعد هنا.", "من الأعلى باتجاه عقارب الساعة", "الشرط محقق", "الشرط غير محقق"],
+  };
+  const seatingKeys = ["beside", "opposite", "cluesTitle", "layoutTitle", "choose", "wrong", "check", "reset", "previewHelp", "clockwise", "ruleMet", "ruleMissed"];
+  const circleCopy = {
+    en: ["Circle", "Lantern circle", "Pinecone circle", "Quiet circle"],
+    "zh-Hant": ["營火圈", "提燈圈", "松果圈", "安靜圈"], "zh-Hans": ["营火圈", "提灯圈", "松果圈", "安静圈"],
+    ja: ["輪", "ランタンの輪", "松ぼっくりの輪", "静かな輪"], ko: ["모닥불", "등불 모닥불", "솔방울 모닥불", "조용한 모닥불"],
+    es: ["Círculo", "Círculo de faroles", "Círculo de piñas", "Círculo tranquilo"], "pt-BR": ["Círculo", "Círculo da lanterna", "Círculo das pinhas", "Círculo tranquilo"],
+    fr: ["Cercle", "Cercle des lanternes", "Cercle des pommes de pin", "Cercle tranquille"], de: ["Kreis", "Laternenkreis", "Zapfenkreis", "Ruhekreis"],
+    it: ["Cerchio", "Cerchio delle lanterne", "Cerchio delle pigne", "Cerchio tranquillo"], ru: ["Круг", "Фонарный круг", "Круг шишек", "Тихий круг"],
+    hi: ["घेरा", "लालटेन घेरा", "चीड़ का घेरा", "शांत घेरा"], ar: ["الدائرة", "دائرة الفانوس", "دائرة الصنوبر", "الدائرة الهادئة"],
+  };
+  for (const [locale, values] of Object.entries(seatingCopy)) {
+    const table = window.ANIMAL_COZY_CAMP_LOCALES[locale];
+    seatingKeys.forEach((key, index) => { table[key] = values[index]; });
+    ["round", "roundOne", "roundTwo", "roundThree"].forEach((key, index) => { table[key] = circleCopy[locale][index]; });
+    table.guide1 = `${table.cluesTitle}. ${table.orla} · ${table.moss} · ${table.taro} · ${table.pip}.`;
+    table.guide2 = table.previewHelp;
+    table.guide3 = `${table.choose} ${table.wrong}`;
+    ["layoutA", "layoutB", "layoutC"].forEach((key, index) => { table[key] = "ABC"[index]; });
+  }
+  Object.assign(window.ANIMAL_COZY_CAMP_LOCALES["zh-Hant"], { orla: "奧拉", moss: "莫斯", taro: "塔羅", pip: "皮普", guide1: "每列是一個條件。角色顏色和座位圖一致；旁邊是相鄰座位，對面是隔著營火相望。", guide1Title: "1. 看條件", guide2Title: "2. 比較座位", guide3Title: "3. 確認答案", intro: "看懂誰坐旁邊、誰坐對面，選出符合所有條件的營火座位圖。", selected: "已選方案 {n}" });
+  Object.assign(window.ANIMAL_COZY_CAMP_LOCALES["zh-Hans"], { orla: "奥拉", moss: "莫斯", taro: "塔罗", pip: "皮普", guide1: "每行是一个条件。角色颜色和座位图一致；旁边是相邻座位，对面是隔着营火相望。", guide1Title: "1. 看条件", guide2Title: "2. 比较座位", guide3Title: "3. 确认答案", intro: "看懂谁坐旁边、谁坐对面，选出符合所有条件的营火座位图。", selected: "已选方案 {n}" });
 })();
