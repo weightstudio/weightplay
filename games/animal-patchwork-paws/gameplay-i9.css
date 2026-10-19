@@ -6,11 +6,11 @@
 #battleScreen[hidden],
 .game-page-info-static[hidden] { display: none !important; }
 
-#battleScreen[data-wp-logical-battle-canvas] .patchwork-battle-content {
+#battleScreen[data-wp-frame-play-fill] .patchwork-battle-content {
   position: relative;
   box-sizing: border-box;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  grid-template-rows: auto minmax(0, 1fr) 2.8em auto;
   gap: clamp(6px, 1.4vh, 14px);
   width: 100%;
   height: 100%;
@@ -31,6 +31,15 @@
 .patchwork-battle-content .prompt {
   font-weight: 750;
   color: var(--wp-ui-text, #f8fafc);
+}
+
+#best { min-height: 40px; }
+
+.patchwork-battle-content .status {
+  min-height: 2.8em;
+  max-height: 2.8em;
+  overflow: auto;
+  scrollbar-gutter: stable;
 }
 
 .patchwork-battle-content .weave-card {
@@ -172,10 +181,33 @@
 .patchwork-result .result-actions,
 .patchwork-leave .leave-actions { margin-top: 18px; }
 
+.patchwork-result .result-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.patchwork-result .result-actions > button {
+  min-width: 0;
+  padding-inline: 6px;
+  font-size: clamp(12px, 3vw, 15px);
+  overflow-wrap: anywhere;
+}
+
+.patchwork-result .result-actions > button:disabled {
+  opacity: .48;
+  cursor: not-allowed;
+  filter: saturate(.45);
+}
+
+@media (max-width: 420px) {
+  .patchwork-result .result-actions { grid-template-columns: minmax(0, 1fr); }
+}
+
 @media (max-height: 500px) and (min-width: 700px) {
-  #battleScreen[data-wp-logical-battle-canvas] .patchwork-battle-content {
+  #battleScreen[data-wp-frame-play-fill] .patchwork-battle-content {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr) auto auto;
+    grid-template-rows: auto minmax(0, 1fr) 2.8em auto;
     gap: 6px;
     padding: 8px 14px;
   }
@@ -191,4 +223,85 @@
   .patchwork-battle-content .rule { grid-column: 2; grid-row: 1; align-self: center; }
   .patchwork-battle-content .status { grid-column: 1; grid-row: 3; }
   .patchwork-battle-content .battle-actions { grid-column: 1; grid-row: 4; }
+}
+
+/* Finite feedback stays inside the shared I9 geometry. */
+body[data-wp-game-id="animal-patchwork-paws"][data-wp-interface-version="9"] [data-wp-frame-scene].wp-patchwork-scene-entering {
+  animation: wp-patchwork-scene-in 150ms ease-out both;
+}
+
+body[data-wp-game-id="animal-patchwork-paws"][data-wp-interface-version="9"] [data-wp-frame-scene].wp-patchwork-scene-exiting {
+  animation: wp-patchwork-scene-out 150ms ease-in both;
+  pointer-events: none;
+}
+
+@keyframes wp-patchwork-scene-in { from { opacity: .72; } to { opacity: 1; } }
+@keyframes wp-patchwork-scene-out { from { opacity: 1; } to { opacity: .72; } }
+
+.patchwork-battle-content .tile {
+  transition: filter 100ms ease;
+}
+
+.patchwork-battle-content .tile:active,
+.patchwork-battle-content .battle-actions > button:active,
+.patchwork-result .result-actions > button:active,
+.patchwork-leave .leave-actions > button:active {
+  filter: brightness(1.14);
+}
+
+.patchwork-battle-content .tile-face {
+  position: absolute;
+  inset: 0;
+  transform-origin: center;
+}
+
+.patchwork-battle-content .tile.wp-patchwork-turn .tile-face {
+  animation: wp-patchwork-turn 180ms cubic-bezier(.2, .72, .24, 1) both;
+}
+
+@keyframes wp-patchwork-turn { from { transform: rotate(-90deg); } to { transform: rotate(0); } }
+
+.patchwork-battle-content .board.wp-patchwork-reset .tile-face {
+  animation: wp-patchwork-reset 160ms ease-out both;
+}
+
+@keyframes wp-patchwork-reset { from { opacity: .42; } to { opacity: 1; } }
+
+.patchwork-battle-content .status.wp-patchwork-status-change {
+  animation: wp-patchwork-status 180ms ease-out both;
+}
+
+@keyframes wp-patchwork-status { from { opacity: .45; } to { opacity: 1; } }
+
+.patchwork-result:not([hidden]),
+.patchwork-leave:not([hidden]) {
+  animation: wp-patchwork-overlay-in 160ms ease-out both;
+}
+
+.patchwork-result.wp-patchwork-overlay-exiting,
+.patchwork-leave.wp-patchwork-overlay-exiting {
+  animation: wp-patchwork-overlay-out 140ms ease-in both;
+  pointer-events: none;
+}
+
+@keyframes wp-patchwork-overlay-in { from { opacity: .45; } to { opacity: 1; } }
+@keyframes wp-patchwork-overlay-out { from { opacity: 1; } to { opacity: .3; } }
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-wp-game-id="animal-patchwork-paws"][data-wp-interface-version="9"] [data-wp-frame-scene].wp-patchwork-scene-entering,
+  body[data-wp-game-id="animal-patchwork-paws"][data-wp-interface-version="9"] [data-wp-frame-scene].wp-patchwork-scene-exiting,
+  .patchwork-battle-content .status.wp-patchwork-status-change,
+  .patchwork-result:not([hidden]),
+  .patchwork-leave:not([hidden]),
+  .patchwork-result.wp-patchwork-overlay-exiting,
+  .patchwork-leave.wp-patchwork-overlay-exiting {
+    animation-duration: 80ms !important;
+  }
+
+  .patchwork-battle-content .tile.wp-patchwork-turn .tile-face,
+  .patchwork-battle-content .board.wp-patchwork-reset .tile-face {
+    animation: wp-patchwork-reduced-feedback 80ms ease-out both;
+  }
+
+  @keyframes wp-patchwork-reduced-feedback { from { opacity: .52; } to { opacity: 1; } }
 }
