@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "gameId": "animal-ring-garden",
   "audience": "general",
-  "interfaceVersion": 6,
+  "interfaceVersion": 9,
   "status": "internal-noindex-prototype",
   "generalReservePx": 56,
   "screens": ["Main", "Stage", "Battle", "Result-substate"],
