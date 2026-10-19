@@ -194,6 +194,8 @@ WeightPlay covers these game and content clusters:
 - Habitat Builder: https://weightplay.com/en/games/animal-habitat-builder/
 - Animal Putt Trails: https://weightplay.com/en/games/animal-putt-trails/
 - Snake: https://weightplay.com/en/games/snake/
+- Wildwood Raid / 荒林奇襲: https://weightplay.com/en/games/animal-wildwood-raid/ — Guide a red panda ranger through 30 forest missions, gather timber, rescue friends, and face eight guardian archetypes.
+
 ## Age And Skill Positioning
 
 WeightPlay uses age-aware and skill-aware game discovery.
