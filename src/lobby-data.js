@@ -4635,7 +4635,7 @@ const animalAcornAuctionPlanned = {
   ages: ["9", "family"],
   ageLabel: marketFiveLocalized(Array(13).fill("9+")),
   href: "games/animal-acorn-auction/",
-  internalTrial: "index.html?trial=1",
+  internalTrial: "index.html?preview=1",
   art: { kind: "image", background: "games/animal-acorn-auction/assets/animal-acorn-auction-cover.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalAcornAuctionPlanned[field], "__localizedExact", { value: true, enumerable: false });

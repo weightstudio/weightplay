@@ -19,7 +19,9 @@
   };
   const copy = (key, vars = {}) => {
     const table = locales[state?.locale || routeLocale] || locales.en || {};
-    let value = table[key] || locales.en?.[key] || fallback[key] || key;
+    const extra = window.ANIMAL_CAIRN_COURIER_I9_COPY?.[state?.locale || routeLocale] || {};
+    const englishExtra = window.ANIMAL_CAIRN_COURIER_I9_COPY?.en || {};
+    let value = table[key] || extra[key] || locales.en?.[key] || englishExtra[key] || fallback[key] || key;
     Object.entries(vars).forEach(([name, val]) => { value = value.replaceAll(`{${name}}`, String(val)); });
     return value;
   };
@@ -83,7 +85,10 @@
   const STORE_KEY = "weightplay-animal-cairn-courier-v7-campaign-v1";
   const BEST_KEY = "weightplay-animal-cairn-courier-best-v7";
   const state = { locale: routeLocale, round: 0, stack: [], picks: 0, sessionPicks: 0, sound: true, screen: "main", status: "", completed: false };
+  const frame = window.__ANIMAL_CAIRN_COURIER_FRAME__;
   let solved = new Set();
+  let stageSelector = null;
+  let selectedStage = 0;
   try { const raw = JSON.parse(storage.get(STORE_KEY, "{}")); if (Array.isArray(raw.solved)) raw.solved.filter((n) => Number.isInteger(n) && n >= 1 && n <= 30).forEach((n) => solved.add(n)); } catch {}
   const track = (name, data = {}) => { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `animal_cairn_courier_${name}`, stage: state.round + 1, ...data }); };
   const stoneName = (id) => copy(stoneCatalog[id].key);
@@ -106,7 +111,36 @@
     return true;
   };
   const statusFor = (plan, index) => solved.has(plan.id) ? copy("complete") : index === 0 || solved.has(STAGES[index - 1].id) ? copy("open") : copy("locked");
-  const renderStages = () => { const root = $("stageList"); if (!root) return; root.replaceChildren(...STAGES.map((plan, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "stage-card"; const locked = !(index === 0 || solved.has(STAGES[index - 1].id)); button.disabled = locked; button.innerHTML = `<span><strong>${plan.id}. ${stageText(plan, "title")}</strong><small>${stageText(plan, "arc")} · ${copy("detail", { rule: ruleText(plan), count: plan.stones.length, status: statusFor(plan, index) })}</small></span><span class="stage-mark" aria-hidden="true">${solved.has(plan.id) ? "✓" : locked ? "🔒" : "→"}</span>`; button.addEventListener("click", () => startRound(index)); return button; })); };
+  const ensureStageSelector = () => {
+    if (stageSelector) return stageSelector;
+    const config = window.AnimalCairnCourierStageConfig({
+      stages: STAGES,
+      solved,
+      stageText,
+      ruleText,
+      statusFor,
+      text: copy,
+    });
+    stageSelector = window.WeightPlayPlayUI.mountStage({
+      page: $("stageWorkspace"),
+      rail: $("stageList"),
+      config,
+      selected: selectedStage,
+      isActive: () => state.screen === "stage",
+      onSelect(index) { selectedStage = index; },
+      onStart(index) { startRound(index); },
+    });
+    return stageSelector;
+  };
+  const renderStages = () => {
+    let latestUnlocked = 0;
+    for (let index = 1; index < STAGES.length; index += 1) {
+      if (!solved.has(STAGES[index - 1].id)) break;
+      latestUnlocked = index;
+    }
+    selectedStage = Math.max(latestUnlocked, Math.min(selectedStage, STAGES.length - 1));
+    ensureStageSelector().refresh(selectedStage);
+  };
   const renderBattle = () => {
     const plan = STAGES[state.round]; $("roundLabel").textContent = copy("roundV7", { n: plan.id, total: STAGES.length }); $("roundName").textContent = stageText(plan, "title"); $("trailNote").textContent = `${copy("stageNote")} ${plan.checkpointRule ? `${copy("checkpoint")}: ${stageText(plan, "checkpointRule")}` : ""}`;
     $("selectionCount").textContent = `${state.stack.length} / ${plan.stones.length}`;
@@ -114,10 +148,54 @@
     $("stoneTray").replaceChildren(...plan.stones.map((id) => { const stone = stoneCatalog[id]; const button = document.createElement("button"); button.type = "button"; button.className = "stone-btn"; button.disabled = state.stack.includes(id); button.setAttribute("aria-label", stoneName(id)); button.innerHTML = `<span class="stone-mark" aria-hidden="true">${stone.mark}</span><span>${stoneName(id)}</span><small>${copy(`group${stone.group[0].toUpperCase()}${stone.group.slice(1)}`)} · ${stone.weight}</small>`; button.addEventListener("click", () => pickStone(id)); return button; }));
     $("battleStatus").textContent = state.status ? copy(state.status) : copy("waiting"); $("checkBtn").disabled = state.stack.length !== plan.stones.length; if ($("undoBtn")) $("undoBtn").disabled = state.stack.length === 0;
   };
-  const renderResult = () => { const done = solved.size === STAGES.length; $("resultTitle").textContent = done ? copy("resultTitle") : copy("resultPartial"); $("resultText").textContent = copy("resultText", { count: solved.size, total: STAGES.length, picks: state.sessionPicks }); $("resultPrimaryBtn").textContent = done ? copy("map") : copy("next"); $("resultPrimaryBtn").onclick = done ? () => { show("stage"); renderStages(); } : () => startRound(Math.min(STAGES.length - 1, state.round + 1)); $("resultMapBtn").hidden = done; };
-  const applyLocale = () => { document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr"; document.querySelectorAll("[data-copy]").forEach((node) => { if (!node.matches("[data-wp-return='main']")) node.textContent = copy(node.dataset.copy); }); if ($("localeSelect")) $("localeSelect").value = state.locale; $("stageBackBtn")?.setAttribute("aria-label", copy("backToMain")); $("battleBackBtn")?.setAttribute("aria-label", copy("backToMap")); $("settingsBtn")?.setAttribute("aria-label", copy("settings")); $("stageSettingsBtn")?.setAttribute("aria-label", copy("settings")); $("battleSettingsBtn")?.setAttribute("aria-label", copy("settings")); if ($("soundBtn")) $("soundBtn").textContent = state.sound ? copy("soundOn") : copy("soundOff"); if ($("bestValue")) $("bestValue").textContent = storage.get(BEST_KEY, "") || copy("noBest"); if ($("mainProgress")) $("mainProgress").textContent = copy("stagesV7", { current: solved.size, total: STAGES.length }); if (state.screen === "stage") renderStages(); if (state.screen === "battle") renderBattle(); if (state.screen === "result") renderResult(); };
-  const show = (screen) => { state.screen = screen; document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); };
-  const startRound = (index) => { if (index > 0 && !solved.has(STAGES[index - 1].id)) return; state.round = Math.max(0, Math.min(STAGES.length - 1, index)); state.stack = []; state.picks = 0; state.status = ""; show("battle"); renderBattle(); track("stage_start"); };
+  const renderResult = () => {
+    const done = solved.size === STAGES.length;
+    $("resultTitle").textContent = done ? copy("resultTitle") : copy("resultPartial");
+    $("resultText").textContent = copy("resultText", { count: solved.size, total: STAGES.length, picks: state.sessionPicks });
+    $("resultStagesBtn").textContent = copy("stages");
+    $("resultNextBtn").textContent = copy("next");
+    $("resultNextBtn").disabled = done;
+    $("resultReplayBtn").textContent = copy("replay");
+    $("resultStagesBtn").onclick = () => { show("stage"); renderStages(); };
+    $("resultNextBtn").onclick = () => { if (!done) startRound(Math.min(STAGES.length - 1, state.round + 1)); };
+    $("resultReplayBtn").onclick = () => startRound(state.round);
+  };
+  const applyLocale = () => {
+    document.documentElement.lang = state.locale;
+    document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
+    document.querySelectorAll("[data-copy]").forEach((node) => {
+      if (!node.matches("[data-wp-return='main']")) node.textContent = copy(node.dataset.copy);
+    });
+    if ($("localeSelect")) $("localeSelect").value = state.locale;
+    $("stageBackBtn")?.setAttribute("aria-label", copy("backToMain"));
+    $("battleBackBtn")?.setAttribute("aria-label", copy("backToMap"));
+    if ($("bestValue")) $("bestValue").textContent = storage.get(BEST_KEY, "") || copy("noBest");
+    if ($("mainProgress")) $("mainProgress").textContent = copy("stagesV7", { current: solved.size, total: STAGES.length });
+    if (state.screen === "stage") renderStages();
+    if (state.screen === "battle") renderBattle();
+    if (state.screen === "result") renderResult();
+    window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale: state.locale } }));
+  };
+  const show = (screen) => {
+    state.screen = screen;
+    document.body.dataset.screen = screen;
+    const activeScene = screen === "result" ? "battle" : screen;
+    document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== activeScene; });
+    $("resultScreen").hidden = screen !== "result";
+    $("leaveConfirm").hidden = true;
+    frame?.activate(activeScene, { covered: screen === "result" });
+  };
+  const startRound = (index) => {
+    if (index > 0 && !solved.has(STAGES[index - 1].id)) return;
+    state.round = Math.max(0, Math.min(STAGES.length - 1, index));
+    selectedStage = state.round;
+    state.stack = [];
+    state.picks = 0;
+    state.status = "";
+    show("battle");
+    renderBattle();
+    track("stage_start");
+  };
   const pickStone = (id) => { const plan = STAGES[state.round]; if (!plan.stones.includes(id) || state.stack.includes(id) || state.stack.length >= plan.stones.length) return; state.stack.push(id); state.picks += 1; state.sessionPicks += 1; state.status = ""; renderBattle(); track("stone_pick", { stone: id }); };
   const writeProgress = () => storage.set(STORE_KEY, JSON.stringify({ solved: [...solved].sort((a, b) => a - b), updatedAt: new Date().toISOString() }));
   const checkStack = () => { const plan = STAGES[state.round]; const valid = validate(plan, state.stack); track("stack_check", { valid, picks: state.picks, mechanic: plan.mechanic }); if (valid) { solved.add(plan.id); writeProgress(); state.status = "correct"; if (solved.size === STAGES.length) { state.completed = true; const old = Number(storage.get(BEST_KEY, "0")); if (!old || state.sessionPicks < old) storage.set(BEST_KEY, String(state.sessionPicks)); track("campaign_complete", { picks: state.sessionPicks }); } show("result"); renderResult(); } else { state.status = "wrong"; state.stack = []; renderBattle(); } };

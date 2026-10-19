@@ -1,228 +1,295 @@
-@import url("./style-v7-base.css");
-
-/* Interface 7 shared-flow cleanup for Cairn Courier.
-   Keep authored gameplay/art in style-v7-base.css and remove only legacy
-   Main / Stage / Battle chrome that conflicts with the shared contract. */
-
-/* Main owns one primary Start Game path. The old map shortcut duplicated the
-   same Main -> Stage transition and must not compete with the primary action. */
-#mapBtn {
-  display: none !important;
+:root {
+  color-scheme: dark;
+  font-family: "Avenir Next", "Noto Sans", system-ui, sans-serif;
+  --cairn-panel: rgba(8, 30, 43, 0.92);
+  --cairn-panel-soft: rgba(18, 49, 62, 0.9);
+  --cairn-line: rgba(174, 223, 211, 0.5);
+  --cairn-text: #f6f5e7;
+  --cairn-muted: #c4d8d3;
+  --cairn-gold: #f0c56e;
 }
 
-/* Main's compact sequence is poster -> summary -> progress -> Start Game.
-   Retire legacy decorative/status elements that made Start Game no longer the
-   final poster-column action and could push it below the first phone viewport. */
-#mainScreen .guide-mascot,
-#mainScreen .kicker,
-#mainScreen .best-line,
-#mainScreen .hero-copy > h1 {
-  display: none !important;
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+button, select { font: inherit; }
+button { color: inherit; }
+
+.loading-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(7, 24, 33, 0.78);
 }
 
-/* Interface 7 uses the full available phone content width for the square
-   poster and the same 420px wide-layout poster even on 844x390 landscape. */
-@media (max-width: 699px) {
-  #mainScreen .cover-wrap {
-    width: 100% !important;
-    max-width: none !important;
-  }
+.loading-card {
+  display: grid;
+  gap: 10px;
+  width: min(100%, 360px);
+  padding: 22px;
+  border: 1px solid var(--cairn-line);
+  border-radius: 16px;
+  background: var(--cairn-panel);
+  color: var(--cairn-text);
+  text-align: center;
 }
 
-@media (min-width: 700px) and (max-height: 500px) and (min-aspect-ratio: 3 / 2) {
-  #mainScreen .hero-grid {
-    grid-template-columns: 420px minmax(0, 1fr) !important;
-  }
+.wp-standard-main-composition,
+.wp-standard-main-copy { color: var(--cairn-text); }
 
-  #mainScreen .cover-wrap {
-    width: 100% !important;
-    max-width: 420px !important;
-  }
+.wp-standard-main-poster {
+  overflow: hidden;
+  border-radius: 14px;
 }
 
-/* Shared Interface 7 owns Settings. Retire the game-local Stage/Battle gears
-   so there is never a second visible utility owner. */
-#stageSettingsBtn,
-#battleSettingsBtn {
-  display: none !important;
+.wp-standard-main-poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* Stage and Battle are Canvas surfaces, not a nested rounded phone card. Use
-   the catalog outer inset instead of the legacy 16-40px per-game padding. */
-#stageScreen[data-wp-standard-stage-screen],
-#battleScreen[data-wp-logical-battle-canvas] {
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  padding: 12px !important;
+.wp-standard-main-summary,
+.wp-standard-main-progress {
+  margin: 0;
+  color: var(--cairn-muted);
+  line-height: 1.55;
 }
 
-@media (min-width: 700px) {
-  #stageScreen[data-wp-standard-stage-screen],
-  #battleScreen[data-wp-logical-battle-canvas] {
-    padding: 16px !important;
-  }
+.wp-standard-main-progress {
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
-/* Interface 7 Stage is a 48px title-free play-top, one flexible workspace,
-   then the fixed 56px three-slot navigation row. */
-#stageScreen[data-wp-standard-stage-screen] {
-  grid-template-rows: 48px minmax(0, 1fr) 56px !important;
-  gap: 0 !important;
-  overflow: hidden !important;
+.wp-standard-main-start,
+.battle-actions button,
+.result-actions button,
+.leave-actions button {
+  min-height: 48px;
+  border: 1px solid var(--cairn-line);
+  border-radius: 10px;
+  background: var(--cairn-panel-soft);
+  color: var(--cairn-text);
+  font-weight: 800;
+  cursor: pointer;
 }
 
-#stageScreen .stage-header {
-  --wp-frame-play-header-height: 48px !important;
-  height: 48px !important;
-  min-height: 48px !important;
-  max-height: 48px !important;
-  grid-template-columns: 48px minmax(0, 1fr) 48px !important;
-  gap: 8px !important;
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
+.battle-actions .primary-btn,
+.result-actions .primary-btn {
+  border-color: #f0c56e;
+  background: linear-gradient(#f8d988, #d99a3f);
+  color: #292314;
 }
 
-/* Trail map is a legacy Stage page title. The shared title-free play-top keeps
-   the permanent return/utility geometry and releases the title space. */
-#stageScreen .stage-header > h2 {
-  display: none !important;
+.game-page-info { color: var(--cairn-text); }
+.game-page-info .game-info-section { min-width: 0; overflow-wrap: anywhere; }
+.game-page-info .game-info-section p { line-height: 1.65; }
+
+.battle-content {
+  display: grid;
+  grid-template-rows: auto minmax(24px, 76px) auto auto minmax(64px, 1fr) auto auto;
+  align-content: stretch;
+  align-items: center;
+  gap: 8px;
+  width: min(100%, 760px);
+  min-width: 0;
+  min-height: 0;
+  margin-inline: auto;
+  padding: 8px 12px max(8px, env(safe-area-inset-bottom));
+  overflow: auto;
+  color: var(--cairn-text);
 }
 
-/* The Stage rail lives in one bounded workspace. Its centered card is anchored
-   at the standard upper-middle 38% point, clamped by 8px so short landscape
-   still keeps the complete 264x190 card inside the workspace. */
-#stageScreen .cairn-stage-workspace {
-  grid-row: 2 !important;
-  position: relative !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  overflow: hidden !important;
+.trail-note {
+  width: min(100%, 680px);
+  margin: 0 auto;
+  padding: 8px 12px;
+  border: 1px solid var(--cairn-line);
+  border-radius: 10px;
+  background: var(--cairn-panel);
+  color: var(--cairn-text);
+  line-height: 1.4;
+  text-align: center;
 }
 
-/* Undo the old >=700px three-column grid. The standard horizontal rail keeps
-   one 264x190 card geometry and remains draggable/snap-owned by shared code. */
-#stageScreen .cairn-stage-workspace > .stage-list {
-  position: absolute !important;
-  top: clamp(107px, 38%, calc(100% - 107px)) !important;
-  left: 0 !important;
-  right: 0 !important;
-  transform: translateY(-50%) !important;
-  display: flex !important;
-  grid-template-columns: none !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  height: 198px !important;
-  min-height: 198px !important;
-  margin: 0 !important;
-  gap: 12px !important;
-  padding-inline: max(24px, calc((100% - 264px) / 2)) !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  scroll-snap-type: x mandatory !important;
-  scrollbar-width: none !important;
+.stone-atlas {
+  display: block;
+  width: min(100%, 420px);
+  height: 100%;
+  max-height: 76px;
+  margin: 0 auto;
+  object-fit: contain;
 }
 
-#stageScreen .stage-list::-webkit-scrollbar {
-  display: none !important;
+.stack-card {
+  width: min(100%, 680px);
+  min-width: 0;
+  margin: 0 auto;
+  padding: 10px 12px;
+  border: 1px solid var(--cairn-line);
+  border-radius: 12px;
+  background: var(--cairn-panel);
 }
 
-#stageScreen .stage-card {
-  box-sizing: border-box !important;
-  flex: 0 0 264px !important;
-  width: 264px !important;
-  min-width: 264px !important;
-  max-width: 264px !important;
-  height: 190px !important;
-  min-height: 190px !important;
-  max-height: 190px !important;
-  scroll-snap-align: center !important;
+.stack-card h3,
+.choice-head h3 {
+  margin: 0;
+  color: var(--cairn-text);
+  font-size: 0.95rem;
 }
 
-/* One real Stages category belongs in the center slot. Missing Team/Equipment
-   categories leave their tracks empty; do not manufacture placeholder tabs. */
-#stageScreen .stage-tabs {
-  grid-row: 3 !important;
-  align-self: end !important;
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 8px !important;
-  width: 100% !important;
-  height: 56px !important;
-  min-height: 56px !important;
-  margin: 0 !important;
-  padding: 6px !important;
+.stack {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  min-height: 64px;
+  margin-top: 8px;
 }
 
-#stageScreen .stage-tabs > button {
-  grid-column: 2 !important;
-  width: 100% !important;
-  height: 44px !important;
-  min-height: 44px !important;
-  max-height: 44px !important;
-  margin: 0 !important;
-  padding-inline: 10px !important;
-  border-radius: 14px !important;
-  font: 700 14px/1.2 system-ui, sans-serif !important;
-  white-space: nowrap !important;
+.stack-stone {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  gap: 2px 8px;
+  width: min(100%, 112px);
+  min-height: 62px;
+  padding: 6px 8px;
+  border: 1px solid var(--cairn-line);
+  border-radius: 10px 10px 7px 7px;
+  background: #3e6269;
+  text-align: center;
 }
 
-#stageScreen .stage-tabs > button[aria-selected="true"] {
-  border: 2px solid var(--wp-ui-accent, #63e6be) !important;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--wp-ui-accent, #63e6be) 28%, transparent) !important;
+.stack-stone b { color: var(--cairn-gold); font-size: 0.8rem; }
+.stack-stone span { font-size: 1.4rem; }
+.stack-stone small { grid-column: 1 / -1; color: var(--cairn-muted); font-size: 0.68rem; }
+
+.choice-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: min(100%, 680px);
+  margin: 0 auto;
 }
 
-/* Battle keeps Cairn/stage state as useful HUD. Fit the two concise state lines
-   inside the protected 48px track instead of leaving the old large h2 chrome. */
-#battleScreen .battle-header {
-  min-height: 48px !important;
-  height: 48px !important;
-  max-height: 48px !important;
-  grid-template-columns: 48px minmax(0, 1fr) 48px !important;
-  gap: 8px !important;
+.selection-count { color: var(--cairn-muted); font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+
+.stone-tray {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-content: center;
+  gap: 8px;
+  width: min(100%, 680px);
+  min-width: 0;
+  margin: 0 auto;
 }
 
-#battleScreen .battle-header > div {
-  min-width: 0 !important;
-  display: grid !important;
-  place-items: center !important;
-  align-content: center !important;
-  gap: 1px !important;
+.stone-btn {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  justify-items: center;
+  gap: 2px 6px;
+  min-width: 0;
+  min-height: 54px;
+  padding: 5px 7px;
+  border: 1px solid var(--cairn-line);
+  border-radius: 10px;
+  background: var(--cairn-panel-soft);
+  color: var(--cairn-text);
+  cursor: pointer;
 }
 
-#battleScreen #roundName {
-  max-width: 100% !important;
-  margin: 0 !important;
-  font-size: 14px !important;
-  line-height: 1.15 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+.stone-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.stone-btn > span:not(.stone-mark) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stone-mark { color: var(--cairn-gold); font-size: 1.3rem; }
+.stone-btn small { grid-column: 1 / -1; color: var(--cairn-muted); font-size: 0.68rem; }
+
+.battle-status {
+  min-height: 1.2em;
+  margin: 0;
+  color: var(--cairn-gold);
+  font-weight: 800;
+  text-align: center;
 }
 
-#battleScreen #roundLabel {
-  max-width: 100% !important;
-  margin: 0 !important;
-  font-size: 11px !important;
-  line-height: 1.15 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+.battle-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: min(100%, 680px);
+  margin: 0 auto;
 }
 
-@media (min-width: 700px) {
-  #stageScreen .stage-list {
-    display: flex !important;
-    grid-template-columns: none !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-  }
+.result-layer,
+.leave-confirm {
+  position: absolute;
+  inset: var(--wp-frame-play-header-height, 56px) 0 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  overflow: auto;
+  padding: 16px;
+  background: rgba(5, 19, 29, 0.78);
+}
 
-  #stageScreen .stage-card {
-    max-width: 264px !important;
-  }
+.dialog-card {
+  width: min(100%, 520px);
+  max-height: 100%;
+  overflow: auto;
+  padding: clamp(16px, 4vw, 28px);
+  border: 2px solid var(--cairn-line);
+  border-radius: 16px;
+  background: var(--cairn-panel);
+  color: var(--cairn-text);
+  text-align: center;
+  box-shadow: 0 6px 0 rgba(3, 15, 22, 0.7);
+}
+
+.dialog-card h2 { margin: 0 0 8px; }
+.dialog-card p { margin: 0; color: var(--cairn-muted); line-height: 1.55; }
+.result-mascot { display: block; width: 84px; height: 84px; margin: 0 auto 8px; object-fit: contain; }
+.result-spark { display: block; margin-bottom: 6px; color: var(--cairn-gold); font-size: 2rem; }
+
+.result-actions,
+.leave-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.leave-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.result-actions button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+button:focus-visible,
+a:focus-visible,
+select:focus-visible {
+  outline: 3px solid #a7f2d8;
+  outline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+  .stone-tray { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .result-actions { grid-template-columns: 1fr; }
+}
+
+@media (max-height: 500px) and (min-aspect-ratio: 3 / 2) {
+  .battle-content { grid-template-rows: auto 24px auto auto minmax(48px, 1fr) auto auto; gap: 4px; padding: 4px 12px; }
+  .stone-atlas { max-height: 24px; }
+  .trail-note { padding: 4px 8px; font-size: 0.82rem; line-height: 1.2; }
+  .stack-card { padding: 6px 10px; }
+  .stack { min-height: 44px; margin-top: 4px; }
+  .stack-stone { min-height: 42px; }
+  .stone-btn { min-height: 42px; padding: 3px 6px; }
+  .battle-actions button { min-height: 40px; }
+  .dialog-card { padding: 12px 16px; }
+  .result-mascot { width: 48px; height: 48px; margin-bottom: 4px; }
+  .result-spark { font-size: 1.2rem; margin-bottom: 2px; }
+  .result-actions, .leave-actions { margin-top: 8px; }
 }
