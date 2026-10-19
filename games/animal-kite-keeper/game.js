@@ -1,6 +1,8 @@
 (() => {
   "use strict";
   const $ = id => document.getElementById(id);
+  const locales = window.KITE_KEEPER_LOCALES;
+  if (!locales) throw new Error("Kite Keeper locale data is unavailable");
   const vectors = { north: [0, -1], east: [1, 0], south: [0, 1], west: [-1, 0] };
   const routeFixtures = [
     { start: [0, 2], sequence: ["east", "north", "east"] },
@@ -127,6 +129,7 @@
     return;
   }
   const frame = frameHost.frame;
+  const activateScene = frameHost.activate;
   const storageSound = readStorage("weightplay-kite-keeper-sound");
   if ((storageSound === "on" || storageSound === "off") && readStorage("wonderSoundMuted") === null) {
     window.WeightPlayAudio?.setMuted?.(storageSound === "off");
@@ -208,11 +211,11 @@
   }
   function activateMain() {
     cancelPendingResult();
-    frame.activate("main");
+    activateScene("main");
   }
   function activateStage() {
     cancelPendingResult();
-    frame.activate("stage");
+    activateScene("stage");
     renderStages();
   }
   function clearResultMotion() {
@@ -248,7 +251,7 @@
     renderResult();
     battleContent.inert = true;
     battleContent.setAttribute("aria-hidden", "true");
-    frame.activate("battle", { covered: true });
+    activateScene("battle", { covered: true });
     resultLayer.hidden = false;
     animateResult(true);
   }
@@ -260,7 +263,7 @@
       battleContent.inert = false;
       battleContent.removeAttribute("aria-hidden");
       resultClosing = false;
-      frame.activate("battle");
+      activateScene("battle");
       after?.();
     });
   }
@@ -364,7 +367,7 @@
     renderBattle();
     $("status").className = "status";
     setFeedbackText($("status"), "");
-    frame.activate("battle");
+    activateScene("battle");
     announce("start");
   }
   function chooseWind(direction) {
@@ -464,7 +467,7 @@
       renderStages();
       renderBattle();
       renderResult();
-      frame.activate("main");
+      activateScene("main");
       feedbackReady = true;
       document.body.removeAttribute("aria-busy");
       window.WeightPlayGameEntryLoader?.ready?.();

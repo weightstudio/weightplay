@@ -2747,7 +2747,7 @@ const classicLogicEntries = [
   ages: ["9", "family"],
   ageLabel: classicLogicText(["9+", "9+", "9+", "9+", "9+", "9+", "9+", "9+", "9+", "9+", "9+", "9+", "9+"]),
   href: `games/${id}/`,
-  internalTrial: "index.html?trial=1",
+  internalTrial: id === "minefield-logic" ? "index.html?preview=1" : "index.html?trial=1",
   description: classicLogicText(description),
   meta: classicLogicMetaOverrides[id] || classicLogicMeta(meta),
   ...(Array.isArray(searchAliases) ? { searchAliases } : {}),
@@ -4448,7 +4448,7 @@ const animalKiteKeeperPlanned = {
   ages: ["6", "family"],
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-kite-keeper/",
-  internalTrial: "index.html?trial=1",
+  internalTrial: "index.html?preview=1",
   art: { kind: "image", background: "assets/lobby-posters/animal-kite-keeper-square-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalKiteKeeperPlanned[field], "__localizedExact", { value: true, enumerable: false });

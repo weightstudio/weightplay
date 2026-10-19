@@ -28,6 +28,12 @@
         battle: { root: battle, header: battleHeader, content: document.getElementById("battleContent") },
       },
     });
+    const sceneRoots = { main, stage, battle };
+    function activate(scene, options) {
+      if (!Object.hasOwn(sceneRoots, scene)) throw new Error(`Unknown Kite Keeper scene: ${scene}`);
+      for (const [name, sceneRoot] of Object.entries(sceneRoots)) sceneRoot.hidden = name !== scene;
+      frame.activate(scene, options);
+    }
 
     const stageProgress = document.createElement("span");
     stageProgress.id = "stageProgress";
@@ -48,7 +54,7 @@
       frame.commonDownButton.add(button);
     });
 
-    frame.activate("main");
-    return Object.freeze({ frame, stageProgress, routeTitle, progressPill, familyButtons });
+    activate("main");
+    return Object.freeze({ frame, activate, stageProgress, routeTitle, progressPill, familyButtons });
   };
 })();

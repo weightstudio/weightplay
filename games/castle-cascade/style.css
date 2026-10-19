@@ -45,9 +45,6 @@ button { color: inherit; }
   box-shadow: 0 5px 0 #c1d8e1;
   cursor: pointer;
 }
-.locale { display: grid; gap: 2px; font-size: .72rem; font-weight: 800; }
-.locale[hidden] { display: none !important; }
-.locale select { width: 100%; min-height: 36px; padding: 4px 6px; border: 1px solid #8b9bb0; border-radius: 8px; background: #fff; }
 .hero {
   display: grid;
   grid-template-columns: minmax(240px, .92fr) minmax(260px, 1.08fr);
@@ -74,21 +71,6 @@ button { color: inherit; }
 }
 .hero .primary { width: min(100%, 380px); margin-block-start: 10px; }
 button:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid #176a9d; outline-offset: 3px; }
-.game-page-info { margin-block-start: 4px; }
-.game-info-hero { border-radius: 18px 18px 0 0; background: #322149; color: white; }
-.game-info-title { padding: 22px 24px; }
-.game-info-title h2 { margin: 8px 0; }
-.game-info-title p { margin: 0; line-height: 1.55; }
-.game-info-kicker { color: #d7bbff; font-size: .78rem; font-weight: 800; }
-.game-info-sections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; overflow: hidden; border-radius: 0 0 18px 18px; }
-.game-info-section { padding: 18px 20px; background: #fffdf8; line-height: 1.6; }
-.game-info-section h3 { margin: 0 0 8px; font-size: 1.04rem; }
-.game-info-section p { margin: 0; }
-.game-info-section dl { margin: 0; }
-.game-info-section dl > div + div { margin-block-start: 12px; }
-.game-info-section dt { font-weight: 850; }
-.game-info-section dd { margin: 3px 0 0; }
-
 .canvas { height: 100svh; min-height: 430px; overflow: hidden; color: #fff; background: #211638; }
 .scene-header { min-height: 56px; padding: 4px 12px; background: #401d5a; color: #fff; grid-template-columns: 56px minmax(0, 1fr) 56px; }
 .scene-header .icon-button { width: 44px; height: 44px; box-shadow: none; }
@@ -146,7 +128,6 @@ button:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid
   .hero { grid-template-columns: 1fr; gap: 8px; padding: 12px; }
   .hero-character { min-height: 205px; }
   .hero-copy h2 { font-size: clamp(2.25rem, 12vw, 3.5rem); }
-  .game-info-sections { grid-template-columns: 1fr; }
   .battle-hud { font-size: .7rem; }
   .board-viewport { width: min(100%, calc(100svh - 148px), 760px); border-radius: 0; }
 }
