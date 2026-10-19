@@ -12,7 +12,7 @@ body[data-wp-game-id="animal-firefly-folio"] #resultScreen[data-wp-battle-substa
   padding:12px!important;
   overflow:auto!important;
   place-items:center!important;
-  background:rgba(5,15,31,.94)!important;
+  background:transparent!important;
 }
 body[data-wp-game-id="animal-firefly-folio"] #resultScreen[data-wp-battle-substate="result"]:not([hidden]){
   display:grid!important;

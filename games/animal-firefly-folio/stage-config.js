@@ -13,7 +13,7 @@
     return {
       gameId: "animal-firefly-folio",
       poster,
-      background: "/games/animal-firefly-folio/assets/animal-firefly-folio-background-voxel-v1.png",
+      background: "/assets/lobby-block-atmosphere.svg",
       count: pages.length,
       stage(index) {
         const page = pages[index];
