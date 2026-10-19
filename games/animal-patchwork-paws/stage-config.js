@@ -3,7 +3,7 @@
   "use strict";
 
   const poster = "/assets/interface7-redrawn/animal-patchwork-paws.webp";
-  const background = "/games/animal-patchwork-paws/assets/animal-patchwork-paws-board-block-v1.png";
+  const background = "/assets/lobby-block-atmosphere.svg";
 
   window.AnimalPatchworkPawsStageConfig = ({ patches, getState, text }) => ({
     count: patches.length,
