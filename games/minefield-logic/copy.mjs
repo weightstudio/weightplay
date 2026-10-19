@@ -1,6 +1,14 @@
 export const LOCALES = ['en','zh-Hant','zh-Hans','ja','ko','es','pt-BR','fr','de','it','ru','hi','ar'];
 export const ROUTES = ['en','zh-tw','zh-cn','ja','ko','es','pt-br','fr','de','it','ru','hi','ar'];
 export const LANGUAGES = ['English','繁體中文','简体中文','日本語','한국어','Español','Português','Français','Deutsch','Italiano','Русский','हिन्दी','العربية'];
+
+// Coming Soon preview is the only game-route query state. Locale changes keep
+// that one flag and discard unrelated query or fragment state.
+export function previewRouteSuffix(search) {
+  const values = new URLSearchParams(search).getAll('preview');
+  return values.length === 1 && values[0] === '1' ? '?preview=1' : '';
+}
+
 const KEYS = 'start|back|level|easy|medium|hard|reveal|flag|hint|undo|new|continue|leave|confirm|time|mines|safe|best|win|lost|again|assisted|clean|ready|hintSafe|hintMine|hintUnflag|hintNone|covered|marked|mine|cell|how|rulesTitle|controlsTitle|difficultyTitle|hintsTitle|savingTitle|replacePrompt|summary'.split('|');
 const ROWS = {
 en: 'Start Game|Back to WeightPlay|Difficulty|Easy|Medium|Hard|Reveal|Flag|Hint|Undo|New puzzle|Continue|Return to Main|Confirm|Time|Mines left*|Safe cells|Best time|Field cleared!|Mine triggered|Play again|Assisted round|Unassisted round|Choose a cell. Your first reveal opens a safe area.|The highlighted cell is safe according to the visible numbers and total mines.|The highlighted cell must contain a mine. Flag it yourself.|The highlighted flag is on a provably safe cell. Remove it first.|No certain move found by this hint system. It will not guess or inspect hidden mines.|Covered|Flagged|Mine|Row {r}, column {c}: {state}|How to play|Rules and objective|Controls|Difficulty and replay|Logical hints|Local records|Leave this puzzle? Unsaved board progress will be lost.|Read the numbers, avoid mines, and reveal every safe cell.',

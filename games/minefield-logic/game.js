@@ -1,4 +1,4 @@
-/* Minefield v19: authored campaign data in the shared I9 Stage and screen frame. */
+/* Minefield v20: authored campaign data in the shared I9 Stage and screen frame. */
 (() => {
   'use strict';
   const root = document.querySelector('#logicApp');
@@ -8,7 +8,7 @@
   // legacy DOM-discovery controller while the module graph is loading.
   root.setAttribute('data-wp-frame-root', '');
   const base = new URL('.', document.currentScript.src);
-  const version = '20261017-minefield-v19-i9-shared-stage1';
+  const version = '20261020-minefield-v20-i9-preview-route1';
   const asset = name => new URL(`/src/${name}`, location.origin).href;
   document.querySelectorAll('link[rel="stylesheet"][href*="classic-logic-lab.css"]').forEach(link => link.remove());
   function style(url) {
