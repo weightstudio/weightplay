@@ -1,6 +1,6 @@
 import * as THREE from './vendor/three/three.module.min.js';
-import {BREEDS} from './simulation.mjs';
-const SPAWNS=[[-.9,.4],[.9,.4],[-2.7,.4],[2.7,.4],[-.9,2],[.9,2],[-2.7,2],[2.7,2],[-.9,-1.2],[.9,-1.2],[-2.7,-1.2],[2.7,-1.2]];
+import {BREEDS,MEAL_SPOTS,DOG_SPOTS} from './simulation.mjs';
+const SPAWNS=DOG_SPOTS;
 
 // Every visible dog/prop is authored world geometry. Shared resources live only
 // for this renderer and are disposed once when the yard closes.
@@ -20,6 +20,7 @@ export class Yard {
   // pieces per resident keep the shadow pass bounded, even at full capacity.
   this.shadowProxyMaterial=new THREE.MeshBasicMaterial({colorWrite:false,depthWrite:false});this.shadowProxy=new THREE.InstancedMesh(this.box,this.shadowProxyMaterial,78);this.shadowProxy.count=0;this.shadowProxy.castShadow=true;this.shadowProxy.frustumCulled=false;this.shadowProxy.instanceMatrix.setUsage(THREE.DynamicDrawUsage);this.scene.add(this.shadowProxy);this.detailMaterial=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.85});this.dogDetails=new THREE.InstancedMesh(this.box,this.detailMaterial,156);this.dogDetails.count=0;this.dogDetails.receiveShadow=true;this.dogDetails.frustumCulled=false;this.dogDetails.instanceMatrix.setUsage(THREE.DynamicDrawUsage);this.scene.add(this.dogDetails);
   this.marker=new THREE.Group();this.scene.add(this.marker);this.marker.position.y=-.055;this.marker.rotation.y=.15;
+  this.bowls=new THREE.InstancedMesh(this.box,this.detailMaterial,36);this.bowls.count=0;this.bowls.receiveShadow=true;this.bowls.frustumCulled=false;this.scene.add(this.bowls);this.bowlTransform=new THREE.Object3D();this.bowlColor=new THREE.Color();this.bowlAges=new Map();
   for(const z of [-.46,.46])this.cube(this.marker,0xeabf59,[.96,.008,.045],[0,0,z]);
   for(const x of [-.46,.46])this.cube(this.marker,0xeabf59,[.045,.008,.96],[x,0,0]);
   this.renderer.domElement.addEventListener('click',e=>this.pick(e),{signal:this.abort.signal});
@@ -81,11 +82,11 @@ export class Yard {
    this.cube(ear,b.coat,[.18,b.ears==='up'?.33:.44,.22],[0,0,0]);this.cube(ear,b.ears==='up'?0xe6a696:0x7e573b,[.1,.2,.035],[0,0,.12]);
   }
   for(const x of [-1,1]){detail(head,b.id==='husky'?b.coat:(b.spots?0x343b44:b.cream),[.14,.045,.045],[x*.2,.15,.325],-x*.07);detail(head,b.spots?0xfaf3e3:b.cream,[.13,.17,.15],[x*.27,-.12,.22]);detail(body,b.spots?0xfaf3e3:b.cream,[.025,.12,.5],[x*.289,low+.15,-.04]);}
-  if(['corgi','beagle'].includes(b.id))detail(head,0xfff2d8,[.12,.28,.035],[0,.015,.295]);else if(b.id==='husky')detail(head,b.cream,[.1,.31,.035],[0,.035,.295]);
+  if(['corgi','beagle','shorgi'].includes(b.id))detail(head,0xfff2d8,[.12,.28,.035],[0,.015,.295]);else if(b.id==='husky')detail(head,b.cream,[.1,.31,.035],[0,.035,.295]);
   for(const i of [1,3])detail(legs[i],b.spots?0xfaf3e3:b.cream,[.18,.08,.19],[0,-low/2+.08,.025]);
   this.cube(body,d.sex==='F'?0xcb7e89:0x79aaa9,[.59,.08,.16],[0,low+.55,.31]);
   const tail=new THREE.Group();tail.position.set(0,low+.48,-bodyLength*.54);body.add(tail);if(['labrador','dalmatian'].includes(b.id)){this.cube(tail,b.coat,[.14,.15,.42],[0,.05,-.16]);this.cube(tail,b.cream,[.12,.12,.18],[0,.08,-.43]);}else{this.cube(tail,b.coat,[b.id==='husky'?.22:.16,b.long?.2:.28,.25],[0,.08,-.06],-.1);this.cube(tail,b.cream,[b.id==='husky'?.23:.17,.13,.2],[0,b.long?.19:.25,-.12]);if(b.id==='shiba')detail(tail,b.cream,[.12,.1,.14],[.1,.24,-.02]);}
-  if(b.spots)for(const [x,y,z] of [[.29,.55,0],[-.29,.55,-.2],[.1,.74,-.2],[-.2,.76,.2]])detail(body,0x41494a,[.08,.14,.18],[x,y,z]);
+  if(b.spots)for(const [x,y,z] of [[.29,.55,0],[-.29,.55,-.2],[.1,.74,-.2],[-.2,.76,.2]].slice(0,b.saddle?3:4))detail(body,0x41494a,[.08,.14,.18],[x,y,z]);
   if(b.saddle)detail(body,0x4c5147,[.58,.12,.48],[0,low+.58,-.15]);
   const occupied=new Set([...this.dogs.values()].map(o=>o.slot));const slot=Math.max(0,SPAWNS.findIndex((_,i)=>!occupied.has(i))),home=SPAWNS[slot],baseY=.055-low/2;g.position.set(home[0],-.06,home[1]);body.position.y=baseY;g.rotation.y=.15;this.scene.add(g);
   const obj={g,body,head,tail,legs,paws,shadowParts:[torso,skull,...paws],detailParts,id:d.id,slot,home,baseY,phase:d.id*1.9,effect:0,enterT:0,visualScale:d.age==='puppy'?.68+d.growth*.0067:1.35};g.traverse(o=>{o.userData.dog=d.id;});this.dogs.set(d.id,obj);return obj;
@@ -121,26 +122,32 @@ export class Yard {
   const camera=new THREE.OrthographicCamera(-1.05,1.05,1.05,-1.05,.1,20);camera.position.set(2.6,1.8,3);camera.lookAt(0,.6,0);camera.updateProjectionMatrix();
   const details=new THREE.InstancedMesh(this.box,this.detailMaterial,156);scene.add(details);scene.updateMatrixWorld(true);this.fillDetails(details,[obj]);this.renderer.setSize(128,128,false);this.renderer.info.reset();this.renderer.render(scene,camera);const url=this.renderer.domElement.toDataURL('image/png');this.portraits.set(breed,url);scene.clear();details.dispose();this.fit();return url;
  }
- render(s,dt,visualDt=dt){
+ render(s,dt,visualDt=dt,renderFrame=true){
   const active=new Set(s.dogs.map(d=>d.id));
   for(const [id,o]of this.dogs)if(!active.has(id)){this.dogs.delete(id);for(const prior of this.departures)this.scene.remove(prior.g);this.departures.length=0;this.departures.push({g:o.g,shadowParts:o.shadowParts,detailParts:o.detailParts,left:.22});}
   for(let i=this.departures.length-1;i>=0;i--){const o=this.departures[i];o.left-=visualDt;o.g.scale.multiplyScalar(this.reduced?.2:Math.max(.1,1-visualDt*12));if(o.left<=0){this.scene.remove(o.g);this.departures.splice(i,1);}}
   for(const d of s.dogs){const o=this.dogs.get(d.id)||this.makeDog(d);o.effect=Math.max(0,o.effect-visualDt);const t=s.clock+o.phase;
    o.enterT=Math.min(.22,o.enterT+visualDt);const scale=d.age==='puppy'?.68+d.growth*.0067:1.35;o.visualScale=this.reduced?scale:o.visualScale+(scale-o.visualScale)*Math.min(1,visualDt/.15);o.g.scale.setScalar(o.visualScale*(this.reduced?1:Math.sin(o.enterT/.22*Math.PI/2)));
-   const moving=!this.reduced&&!o.effect;
-   // Idle strolls stay inside the same full visible yard; visual positions do not own care state.
-   if(moving){o.g.position.x=o.home[0]+Math.sin(t*.35)*.09;o.g.position.z=THREE.MathUtils.clamp(o.home[1]+Math.cos(t*.42)*.06,-1.2,2);}
-   o.head.rotation.x=this.reduced?0:o.action==='feed'&&o.effect?Math.sin(o.effect/.7*Math.PI)*.28:0;
+   const moving=['walk','seek'].includes(d.activity);
+   // Essential travel follows authoritative saved positions even in reduced
+   // motion; decorative bounce/wag is optional. No render callback feeds dogs.
+   const follow=Math.min(1,visualDt*14);o.g.position.x+=(d.x-o.g.position.x)*follow;o.g.position.z+=(d.z-o.g.position.z)*follow;
+   let turn=d.heading-o.g.rotation.y;turn=Math.atan2(Math.sin(turn),Math.cos(turn));o.g.rotation.y+=turn*Math.min(1,visualDt*7);
+   o.head.rotation.x=d.activity==='eat'?.35+(this.reduced?0:Math.sin(t*9)*.06):this.reduced?0:o.action==='feed'&&o.effect?Math.sin(o.effect/.7*Math.PI)*.28:0;
    o.tail.rotation.z=this.reduced?0:Math.sin(t*8)*(o.effect?.6:.22);o.head.rotation.z=this.reduced?0:Math.sin(t*1.2)*.035;o.body.position.y=o.baseY+(this.reduced?0:Math.sin(t*3)*.012+(o.effect?Math.sin(o.effect/.7*Math.PI)*.16:0));
-   for(let i=0;i<o.legs.length;i++)o.legs[i].rotation.x=moving?Math.sin(t*3+i*Math.PI)*.07:0;
+   for(let i=0;i<o.legs.length;i++)o.legs[i].rotation.x=moving&&!this.reduced?Math.sin(t*7+(i%2)*Math.PI)*.22:0;
   }
+  let bowlCount=0;const liveBowls=new Set(s.bowls.map(b=>b.id));for(const id of this.bowlAges.keys())if(!liveBowls.has(id))this.bowlAges.delete(id);
+  for(const bowl of s.bowls){const age=Math.min(.22,(this.bowlAges.get(bowl.id)||0)+visualDt);this.bowlAges.set(bowl.id,age);const eater=s.dogs.find(d=>d.foodId===bowl.id&&d.activity==='eat'),exit=eater?Math.min(1,(3-eater.eatTime)/.22):1,k=this.reduced?1:Math.max(.01,Math.min(age/.22,exit)),[x,z]=MEAL_SPOTS[bowl.spot],color=[0xb7824d,0x72958a,0xd7ac61][bowl.grade];
+   for(const [size,pos,tint]of [[[.64,.08,.64],[0,.015,0],color],[[.08,.14,.64],[-.28,.1,0],color],[[.08,.14,.64],[.28,.1,0],color],[[.48,.14,.08],[0,.1,-.28],color],[[.48,.14,.08],[0,.1,.28],color],[[.44,.07,.44],[0,.105,0],[0x87603d,0xc99457,0xb6754e][bowl.grade]]]){this.bowlTransform.position.set(x+pos[0]*k,-.04+pos[1]*k,z+pos[2]*k);this.bowlTransform.scale.set(...size.map(n=>n*k));this.bowlTransform.updateMatrix();this.bowls.setMatrixAt(bowlCount,this.bowlTransform.matrix);this.bowls.setColorAt(bowlCount++,this.bowlColor.set(tint));}
+  }this.bowls.count=bowlCount;this.bowls.instanceMatrix.needsUpdate=true;if(this.bowls.instanceColor)this.bowls.instanceColor.needsUpdate=true;
   const live=new Set(s.poops.map(p=>p.id));for(const [id,g]of this.poops)if(!live.has(id)){g.userData.exit=(g.userData.exit||0)+visualDt;g.scale.setScalar(Math.max(.001,1-g.userData.exit/(this.reduced?.1:.22)));if(g.userData.exit>=(this.reduced?.1:.22)){this.scene.remove(g);this.poops.delete(id);}}
   for(const p of s.poops)if(!this.poops.has(p.id)){const g=new THREE.Group();g.position.set(p.x,.02,p.z);this.cube(g,0x79604a,[.32,.13,.28],[0,.06,0]);this.cube(g,0x896b50,[.23,.12,.2],[.01,.16,0]);g.userData.enter=0;g.scale.setScalar(.001);g.traverse(o=>{o.userData.poop=p.id;});this.scene.add(g);this.poops.set(p.id,g);}
   for(const [id,g]of this.poops)if(live.has(id)){g.userData.enter=Math.min(.18,g.userData.enter+visualDt);g.scale.setScalar(this.reduced?1:Math.max(.001,Math.sin(g.userData.enter/.18*Math.PI/2)));g.children[1].material=this.material(this.reduced&&g.userData.enter<.12?0xb79b73:0x896b50);}
   const selected=this.dogs.get(s.selected);if(selected){const k=this.reduced?1:Math.min(1,visualDt/.09);this.marker.position.x+=(selected.g.position.x-this.marker.position.x)*k;this.marker.position.z+=(selected.g.position.z-this.marker.position.z)*k;}
   this.scene.updateMatrixWorld(true);let shadowCount=0;for(const dog of [...this.dogs.values(),...this.departures])for(const part of dog.shadowParts)this.shadowProxy.setMatrixAt(shadowCount++,part.matrixWorld);this.shadowProxy.count=shadowCount;this.shadowProxy.instanceMatrix.needsUpdate=true;this.fillDetails(this.dogDetails,[...this.dogs.values(),...this.departures]);
-  this.renderer.info.reset();this.renderer.render(this.scene,this.camera);this.lastFrame={calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles};
+  if(renderFrame){this.renderer.info.reset();this.renderer.render(this.scene,this.camera);this.lastFrame={calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles};}
  }
- stats(){const r=this.renderer.info;return {revision:THREE.REVISION,calls:this.lastFrame?.calls||0,triangles:this.lastFrame?.triangles||0,geometries:r.memory.geometries,textures:r.memory.textures,shadowInstances:this.shadowProxy.count,detailInstances:this.dogDetails.count,shadowMapSize:this.sun.shadow.mapSize.x,portraitCache:this.portraits.size,departures:this.departures.length,droppings:this.poops.size,dogs:this.dogs.size,slots:[...this.dogs.values()].map(d=>({id:d.id,slot:d.slot})),pawClearance:[...this.dogs.values()].map(d=>Math.max(...d.paws.map(p=>Math.abs(new THREE.Box3().setFromObject(p).min.y+.06))))};}
- dispose(){if(this.disposed)return;this.disposed=true;this.abort.abort();this.resize.disconnect();this.renderer.setAnimationLoop(null);this.sun.shadow.dispose();this.shadowProxy.dispose();this.shadowProxyMaterial.dispose();this.dogDetails.dispose();this.detailMaterial.dispose();this.gardenDetails.dispose();this.gardenDetailMaterial.dispose();this.box.dispose();for(const m of this.materials.values())m.dispose();this.renderer.dispose();this.renderer.forceContextLoss();this.renderer.domElement.remove();this.dogs.clear();this.departures.length=0;this.poops.clear();this.materials.clear();this.portraits.clear();}
+ stats(){const r=this.renderer.info;return {revision:THREE.REVISION,calls:this.lastFrame?.calls||0,triangles:this.lastFrame?.triangles||0,geometries:r.memory.geometries,textures:r.memory.textures,shadowInstances:this.shadowProxy.count,detailInstances:this.dogDetails.count,shadowMapSize:this.sun.shadow.mapSize.x,portraitCache:this.portraits.size,bowls:this.bowlAges.size,bowlInstances:this.bowls.count,departures:this.departures.length,droppings:this.poops.size,dogs:this.dogs.size,slots:[...this.dogs.values()].map(d=>({id:d.id,slot:d.slot})),pawClearance:[...this.dogs.values()].map(d=>Math.max(...d.paws.map(p=>Math.abs(new THREE.Box3().setFromObject(p).min.y+.06))))};}
+ dispose(){if(this.disposed)return;this.disposed=true;this.abort.abort();this.resize.disconnect();this.renderer.setAnimationLoop(null);this.sun.shadow.dispose();this.bowls.dispose();this.bowlAges.clear();this.shadowProxy.dispose();this.shadowProxyMaterial.dispose();this.dogDetails.dispose();this.detailMaterial.dispose();this.gardenDetails.dispose();this.gardenDetailMaterial.dispose();this.box.dispose();for(const m of this.materials.values())m.dispose();this.renderer.dispose();this.renderer.forceContextLoss();this.renderer.domElement.remove();this.dogs.clear();this.departures.length=0;this.poops.clear();this.materials.clear();this.portraits.clear();}
 }

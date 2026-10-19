@@ -9,13 +9,21 @@
     const stage = $("stageScreen");
     const battle = $("battleScreen");
     const mainHeader = main.querySelector("header");
+    const mainTitle = mainHeader.querySelector("#title");
+    const mainCopy = main.querySelector(".main-copy");
+    const mainAnnouncement = main.querySelector("#coming");
+    const mainTagline = main.querySelector("#tagline");
+    const mainSummary = main.querySelector("#objective");
     const stageHeader = stage.querySelector("header");
     const battleHeader = battle.querySelector("header");
     const localeSelect = $("localeSelect");
 
-    mainHeader.querySelector("#title").dataset.wpFrameTitle = "";
+    if (mainCopy && mainAnnouncement) mainCopy.prepend(mainAnnouncement);
+    if (mainTagline) mainTagline.hidden = true;
+
+    mainTitle.dataset.wpFrameTitle = "";
     main.querySelector(".poster").dataset.wpFramePoster = "";
-    main.querySelector("#tagline").dataset.wpFrameSummary = "";
+    mainSummary.dataset.wpFrameSummary = "";
     $("startBtn").dataset.wpFrameAction = "primary";
 
     const stageBack = $("stageBack");
@@ -83,14 +91,30 @@
     stageTab.setAttribute("aria-pressed", "true");
     frame.commonDownButton.clear().add(stageTab);
     window.addEventListener("wonder:locale-change", syncStageInfo);
-    document.addEventListener("DOMContentLoaded", () => {
+
+    const syncMainTitle = () => {
+      const titles = window.WEIGHTPLAY_GAME_TITLES?.["animal-cloudhook-courier"];
+      const locale = localeSelect.value || document.documentElement.lang || "en";
+      mainTitle.textContent = titles?.[locale] || titles?.en || "Cloudhook Courier";
+    };
+    syncMainTitle();
+    window.addEventListener("wonder:locale-change", syncMainTitle);
+
+    const moveGuideIntoMain = () => {
       const guide = document.querySelector(".game-page-info");
       if (guide && !main.contains(guide)) main.append(guide);
-    }, { once: true });
+    };
+    moveGuideIntoMain();
+    const guideObserver = new MutationObserver(moveGuideIntoMain);
+    guideObserver.observe(document.body, { childList: true });
+    window.addEventListener("wonder:locale-change", moveGuideIntoMain);
 
     frame.activate("main");
     window.addEventListener("pagehide", (event) => {
       if (event.persisted) return;
+      guideObserver.disconnect();
+      window.removeEventListener("wonder:locale-change", syncMainTitle);
+      window.removeEventListener("wonder:locale-change", moveGuideIntoMain);
       stageUI.destroy();
       frame.destroy();
     }, { once: true });
