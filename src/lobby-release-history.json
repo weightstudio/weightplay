@@ -533,6 +533,10 @@
       "date": "2026-09-05T02:17:10+08:00",
       "evidence": "git:3ec5a0dfe850d98d0940648159cec6470da5d6ef"
     },
+    "tic-tac-toe": {
+      "date": "2026-10-20T00:18:05.505Z",
+      "evidence": "owner-approval:OAR-c49d98efeb64c0e44171906b"
+    },
     "tiny-weather-rescue": {
       "date": "2026-06-30T16:06:14+08:00",
       "evidence": "git:346acd6893672262c5918c4702caa6278b5442d3"
