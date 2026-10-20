@@ -48,7 +48,7 @@ function result(){release();persist();$('pausePanel').hidden=true;$('result').hi
  $('resultTip').textContent=['overheat','hull'].includes(reason)?'救援隊已回收部分未出售礦物與材料。升級散熱、使用補給，或改走安全路線。':won&&run.stage.checkpoint?`${REGIONS[run.stage.arc].discovery}\n遺物已存入文明檔案。`:won?'礦物與材料已入庫，下一區已解鎖。到基地製作模組、邀請夥伴或領取成就獎勵。':reason==='complete'?'已出售全部礦物。查看任務進度，換條路線再試。':'礦物與材料已入庫。到遠征基地改裝，再來挑戰。';
  $('next').hidden=!won||run.stage.id===30;$('retry').hidden=won&&run.stage.id<30;
  sound(won?'result.win':['overheat','hull'].includes(reason)?'result.lose':'reward.coin');
- (won&&run.stage.id<30?$('next'):$('retry')).focus();}
+ $('resultTitle').tabIndex=-1;$('resultTitle').focus({preventScroll:true});$('resultTitle').closest('.panel').scrollTop=0;}
 function processEvents(){if(!run)return;for(const e of run.events.splice(0)){
  if(e.type==='break'){world?.burst(e.lane,ROCKS[e.kind].color,reduced.matches);sound(e.kind==='X'?'impact.glass':'impact.stone');
   $('notice').textContent=e.kind==='W'?'冷卻泉：熱度下降':e.kind==='X'?(e.gentle?'完整水晶入艙！':'水晶受損；分段短按可保完整'):`${ROCKS[e.kind].zh}入艙 · 價值 ${e.value}`;

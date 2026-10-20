@@ -68,3 +68,4 @@
 #battleContent #commands{grid-template-rows:44px 36px}
 #battleContent #commands #feedback{position:static;grid-row:2;inset:auto;height:36px;max-height:36px;margin:0;padding:6px 8px;overflow:hidden}
 #battleContent[data-wide=true] #commands{grid-template-rows:auto 36px}
+#battleContent[data-wide=true] #commands #feedback{padding-block:3px;font-size:11px;line-height:1.2}
