@@ -1,0 +1,42 @@
+(() => {
+  "use strict";
+
+  const POSTER = "/assets/interface7-redrawn/animal-sanctuary-loop.webp";
+  const BACKGROUND = "/assets/lobby-block-atmosphere.svg";
+
+  window.AnimalSanctuaryLoopStageConfig = Object.freeze({
+    create({ stages, readSave, text, objectiveFor, describeStage }) {
+      if (!Array.isArray(stages) || typeof readSave !== "function" || typeof text !== "function"
+          || typeof objectiveFor !== "function" || typeof describeStage !== "function") {
+        throw new TypeError("SANCTUARY_STAGE_CONFIG_REQUIRED");
+      }
+      return Object.freeze({
+        gameId: "animal-sanctuary-loop",
+        count: stages.length,
+        poster: POSTER,
+        background: BACKGROUND,
+        stage(index) {
+          const stage = stages[index];
+          if (!stage) throw new RangeError("SANCTUARY_STAGE_OUT_OF_RANGE");
+          const save = readSave();
+          const stars = Number(save.stars?.[stage.n]) || 0;
+          const locked = stage.n > save.unlocked;
+          const objective = objectiveFor(stage);
+          const chapter = text(`chapter${stage.chapter + 1}`);
+          return {
+            id: stage.n,
+            kicker: chapter,
+            title: String(stage.n),
+            subtitle: objective,
+            status: locked ? text("lockedBadge") : "★".repeat(stars) + "☆".repeat(3 - stars),
+            summary: objective,
+            details: [describeStage(stage)],
+            locked,
+            cleared: stars > 0,
+            poster: POSTER,
+          };
+        },
+      });
+    },
+  });
+})();

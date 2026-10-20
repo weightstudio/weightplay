@@ -22,23 +22,28 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-interface-version" content="9">
   <title>星礦漂流 | WeightPlay</title>
 
   <link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0">
-  <link rel="stylesheet" href="/games/space-rocks/art.css?v=20261018-campaign-v23">
+  <link rel="stylesheet" href="/games/space-rocks/art.css?v=20261021-space-rocks-i9-landscape-dialog-v1">
 <link rel="stylesheet" href="/src/game-play-ui.css?v=20261018-space-campaign">
 <link rel="stylesheet" href="/src/loading-screen.css">
-<link rel="stylesheet" href="/src/game-page-info.css?v=20260905-space-score-reserve-v19">
-  <meta name="description" content="駕駛魯克穿越三波漂移礦群，讓晶礦由大分裂到小，並把護盾留給守護核心。" />
+<link rel="stylesheet" href="/src/game-page-info.css?v=20261014-guide-related-i9-v1">
+<script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
+<script src="/src/shared-interface-bootstrap.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-shared-interface="7"></script>
+<link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<meta name="weightplay-game-version" content="v23">
+  <meta name="description" content="駕駛太空船挑戰 30 個關卡，收集水晶、救援太空艙並迎戰 6 位頭目。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="星礦漂流 | WeightPlay" />
-    <meta property="og:description" content="駕駛魯克穿越三波漂移礦群，讓晶礦由大分裂到小，並把護盾留給守護核心。" />
+    <meta property="og:description" content="駕駛太空船挑戰 30 個關卡，收集水晶、救援太空艙並迎戰 6 位頭目。" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/space-rocks/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/space-rocks.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="星礦漂流 | WeightPlay" />
-    <meta name="twitter:description" content="駕駛魯克穿越三波漂移礦群，讓晶礦由大分裂到小，並把護盾留給守護核心。" />
+    <meta name="twitter:description" content="駕駛太空船挑戰 30 個關卡，收集水晶、救援太空艙並迎戰 6 位頭目。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/space-rocks.webp" />
     <script type="application/ld+json">
 {
@@ -48,7 +53,7 @@
   "alternateName": "Space Rocks",
   "url": "https://weightplay.com/zh-tw/games/space-rocks/",
   "image": "https://weightplay.com/assets/interface7-redrawn/space-rocks.webp",
-  "description": "駕駛魯克穿越三波漂移礦群，讓晶礦由大分裂到小，並把護盾留給守護核心。",
+  "description": "駕駛太空船挑戰 30 個關卡，收集水晶、救援太空艙並迎戰 6 位頭目。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -69,10 +74,11 @@
 }
     </script>
   </head>
-<body data-game-id="space-rocks" data-wp-game-id="space-rocks" data-wp-game-version="v23" data-wp-interface-version="7" data-wp-game-owned-guide="true" data-sound-toggle="off">
+<body data-game-id="space-rocks" data-wp-game-id="space-rocks" data-wp-game-version="v23" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-sound-toggle="off">
 <div id="loadingPanel" class="loading-panel" role="status"></div>
-<main data-space-campaign data-wp-frame-root data-runtime-localize="off"></main>
-<details id="spaceRocksStaticGuide" class="game-page-info game-page-info-static" data-wp-space-rocks-guide><summary>飛行手冊</summary><h1>星礦漂流</h1><p>使用 WASD、方向鍵或搖桿飛行，武器會自動瞄準射擊。靠近晶礦即可收集；救援艙須運回中央信標。護盾抵擋兩秒傷害，脈衝清除附近威脅，兩者皆會充能。通關解鎖下一關。完成任務得一星、船體完整再得一星、剩餘一半時間且船體完整再得一星。進度儲存在此瀏覽器。</p></details>
+<main data-space-campaign data-wp-frame-root data-runtime-localize="off">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">星礦漂流</h1></main>
+<section id="spaceRocksStaticGuide" class="game-page-info game-page-info-static" data-wp-preserve-static-guide data-wp-game-owned-guide="true" data-wp-game-guide data-wp-guide-related-interface="9" data-wp-space-rocks-guide aria-label="飛行手冊"><h2>飛行手冊</h2><p>使用 WASD、方向鍵或搖桿飛行，武器會自動瞄準射擊。靠近晶礦即可收集；救援艙須運回中央信標。護盾抵擋兩秒傷害，脈衝清除附近威脅，兩者皆會充能。通關解鎖下一關。完成任務得一星、船體完整再得一星、剩餘一半時間且船體完整再得一星。進度儲存在此瀏覽器。</p><div class="game-info-section"><h3>常見問題</h3><dl><div><dt>如何通過關卡？</dt><dd>完成該關卡顯示的目標即可解鎖下一關。戰役共有 30 關與 6 位頭目。</dd></div><div><dt>護盾與脈衝有什麼作用？</dt><dd>護盾可抵擋傷害 2 秒；脈衝會清除附近威脅。兩者使用後都會充能。</dd></div><div><dt>遊戲進度會保存嗎？</dt><dd>已通過的關卡與星星會儲存在此瀏覽器；離開關卡時，當次挑戰進度會失去。</dd></div></dl></div><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相關遊戲</h3><p>想換個節奏，再試試這些街機挑戰。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="snake" data-related-game="snake" href="/zh-tw/games/snake/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/snake.webp" data-final-src="/assets/weightplay-logo.png" alt="貪食蛇" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">貪食蛇</strong></span></a><a class="game-info-related-card" data-game-id="maze-chase" data-related-game="maze-chase" href="/zh-tw/games/maze-chase/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/maze-chase.webp" data-final-src="/assets/weightplay-logo.png" alt="星徑迷宮" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">星徑迷宮</strong></span></a></div></div></section>
 <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
 <script src="/src/game-layout-config.js?v=20260919-banner1"></script>
 <script src="/src/weightplay-audio.js?v=1.0.0"></script>
@@ -81,38 +87,12 @@
 <script src="/src/edge-guard.js"></script>
 <script src="/src/analytics.js?v=20260929-block-world-v3"></script>
 <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="/src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+  <script src="/src/game-screen-frame.js?v=20261021-space-rocks-i9-battle-root-v1"></script>
 <script src="/src/game-play-ui.js?v=20261018-space-campaign"></script>
 <script src="/games/space-rocks/analytics-ownership.js?v=20261018-campaign-v23"></script>
 <script src="/games/space-rocks/locales.js?v=20261018-campaign-v23"></script>
-<script src="/games/space-rocks/game.js?v=20261018-campaign-v23"></script>
+<script src="/games/space-rocks/game.js?v=20261021-space-rocks-v23-i9"></script>
 <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="星礦漂流 遊戲資訊">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>星礦漂流</h2><p>駕駛魯克穿越三波漂移礦群，讓晶礦由大分裂到小，並把護盾留給守護核心。</p></div>
-      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>慣性街機射擊</span><span>隕石分裂</span><span>護盾與快速射擊</span></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>慣性太空射擊</strong></div><div class="game-info-fact"><span>類型</span><strong>街機 · 太空射擊 · 動作</strong></div><div class="game-info-fact"><span>難度</span><strong>容易到具挑戰性</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>3–10 分鐘</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界與任務</h3><p>戰場是一片會繞回另一側的開放星域，不是固定的路線。每一次短暫推進都會改變飛船接下來的漂移方向，因此瞄準與移動必須一起思考。</p>
-<p>大型晶礦會分裂成中型碎片，再分裂成小型碎片。後續波次加入移動 UFO、連射機會與更密集的壓力，第三波則以守護核心提供清楚的目標與收尾。</p></div>
-      <div class="game-info-section"><h3>遊戲系統</h3><p>用左右方向鍵旋轉、上方向鍵或 W 推進、空白鍵射擊，並用 Shift 或觸控護盾抵擋有限次數的近距離撞擊。手機觸控按鈕與鍵盤使用相同規則。</p>
-<p>子彈會穿越並繞回星域。大型晶礦會分裂成兩個中型晶礦，中型晶礦再分裂成小碎片；每次清除都會增加分數、連擊與碎片紀錄。</p>
-<p>連射會暫時縮短射擊間隔。護盾可以吸收近距離撞擊，但容量有限，不能把它留在每一次小碰撞上，否則第三波會缺少防護。</p>
-<p>第三波加入橘色守護核心；撞擊會讓飛船重置位置並消耗一次承受次數，累積五次撞擊就會結束本局。清除三波即可進入成功結果。</p></div>
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>先從 Main 開始，輕按一次推進觀察漂移方向，再決定下一段軌道。</li><li>朝最近的大型晶礦旋轉並分段射擊，利用慣性繞過礦群。</li><li>每次命中後都要留意分裂碎片；大型晶礦必須一路清到小碎片才算完成。</li><li>看到連射就斟酌取得，但把護盾留給近距離通過或守護核心的密集階段。</li><li>清除三波，或按重新開始重置資源，重新練習第一段軌道。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>不要長按上方向鍵；用短促推進配合旋轉，讓下一段弧線更容易控制。</li><li>在晶礦進入飛船路徑前先射擊，接著轉向避開分裂後的碎片，不要停在原地。</li><li>連續連擊需要依序清除大型、中型與小型晶礦，但生存比冒險靠近射擊更重要。</li><li>把護盾當成穿越危險區的時機工具，不要把它當成永久裝甲。</li><li>第三波繞著守護核心移動，優先觀察橘色核心提示再開火。</li></ul></div>
-      <div class="game-info-section"><h3>關卡與難度成長</h3><p>第一波教你旋轉、推進、慣性漂移，以及大型到小型的分裂鏈。</p>
-<p>第二波加入更多晶礦、移動 UFO 與連射壓力，要求同時處理瞄準與移動。</p>
-<p>第三波加入守護核心與更密集的碎片，考驗護盾時機、受控繞行與連續射擊。</p></div>
-      <div class="game-info-section"><h3>開發設計理念</h3><p>星礦漂流使用原創 Canvas 星域、飛船、晶礦、UFO、守護核心、粒子與音效語言，並提供一致的響應式邏輯畫布、鍵盤與觸控操作、在地化提示、分數與最佳紀錄，以及完整的成功、失敗、重玩、重新開始與回到 Main 流程。</p></div>
-      <div class="game-info-section game-info-save"><h3>玩家與存檔資訊</h3><p>最佳分數與音效偏好會保存在目前瀏覽器。不需要帳號或付費；清除瀏覽器資料可能會刪除本機紀錄。</p></div>
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>慣性要怎麼控制？</dt><dd>推進會增加速度，飛船之後仍會持續漂移；請搭配旋轉與短促推進來安排下一段軌道，不要期待立刻停下。</dd></div><div><dt>大型晶礦被擊中後會怎樣？</dt><dd>它會分裂成中型晶礦，再分裂成小碎片；必須清除完整分裂鏈才算真正清掉。</dd></div><div><dt>連射有什麼作用？</dt><dd>連射會暫時縮短射擊間隔，讓密集的碎片區更容易清除。</dd></div><div><dt>護盾應該什麼時候使用？</dt><dd>在穿越危險區或守護核心附近時使用。護盾容量有限，不適合每次經過都開啟。</dd></div><div><dt>第三波有什麼不同？</dt><dd>第三波加入橘色守護核心與更密集的壓力，核心提示與護盾時機會變得重要。</dd></div><div><dt>進度會保存嗎？</dt><dd>最佳分數與音效偏好會保存在目前瀏覽器，不需要帳號。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/snake/"><img src="/assets/interface7-redrawn/snake.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>貪食蛇</strong><span>在格線上引導逐漸變長的蛇收集食物，並繞開蛇身與 Gate、Orbit 障礙。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/maze-chase/"><img src="/assets/interface7-redrawn/maze-chase.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>星徑迷宮</strong><span>在固定迷宮中引導奧拉收集星塵，讀懂四種光靈追逐模式，並用信標把危險走廊變成短暫的反擊窗口。</span></span></a></div></div>
-    </div>
-  </section>
 </body></html>

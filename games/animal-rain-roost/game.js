@@ -198,9 +198,30 @@
   }
   function updateScore() {
     const round = rounds[state.round] || rounds[0];
-    $("roundLabel").textContent = t("round", { current: state.round + 1, total: rounds.length });
-    $("catchLabel").textContent = t("caught", { current: state.caught, target: round.target });
-    $("bestLabel").textContent = t("best", { value: state.best });
+    const updateStat = (id, key, vars) => {
+      const node = $(id);
+      const template = (copy[state.locale] || copy.en)[key] || copy.en[key] || key;
+      const firstValue = /\{(\w+)\}/.exec(template);
+      const fullText = t(key, vars);
+      if (!firstValue) {
+        node.textContent = fullText;
+        node.setAttribute("aria-label", fullText);
+        return;
+      }
+      const label = template.slice(0, firstValue.index).trim();
+      const value = template.slice(firstValue.index).replace(/\{(\w+)\}/g, (_, name) => String(vars[name] ?? "")).trim();
+      const labelNode = document.createElement("span");
+      labelNode.textContent = label;
+      const valueNode = document.createElement("b");
+      valueNode.dir = "ltr";
+      valueNode.textContent = value;
+      node.replaceChildren(...(label ? [labelNode, valueNode] : [valueNode]));
+      node.setAttribute("aria-label", fullText);
+      node.dispatchEvent(new CustomEvent("weightplay:group-change", { bubbles: true }));
+    };
+    updateStat("roundLabel", "round", { current: state.round + 1, total: rounds.length });
+    updateStat("catchLabel", "caught", { current: state.caught, target: round.target });
+    updateStat("bestLabel", "best", { value: state.best });
   }
   function cancelTransition() {
     if (transitionTimer) window.clearTimeout(transitionTimer);

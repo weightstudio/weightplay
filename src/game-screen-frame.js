@@ -179,7 +179,7 @@
     }
     if (!document.querySelector('script[src*="battle-canvas-standard.js"]')) {
       const script = document.createElement("script");
-      script.src = `${new URL("battle-canvas-standard.js", sharedAssetBase).href}?v=20260911-folded-field-battle-envelope-v1`;
+      script.src = `${new URL("battle-canvas-standard.js", sharedAssetBase).href}?v=20261021-space-rocks-i9-battle-root-v1`;
       script.dataset.wpBattleStandard = "true";
       document.body.append(script);
     }

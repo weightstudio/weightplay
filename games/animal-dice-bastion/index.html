@@ -25,20 +25,23 @@
   <meta name="robots" content="index,follow">
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#071c2d">
+  <meta name="weightplay-game-version" content="v33">
+  <meta name="weightplay-interface-version" content="9">
   <title>Dice Bastion | WeightPlay</title>
   <meta name="description" content="Summon, merge, and command animal guardian dice through thirty original fortress defenses.">
   <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <link rel="stylesheet" href="style.css?v=20260921-desktop-battle-v31"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+  <link rel="stylesheet" href="style.css?v=20261021-interface9-v33"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
   <link rel="stylesheet" href="../../src/game-ui-theme.css">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-v33">
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1">
 </head>
-<body data-screen="main" data-game-id="animal-dice-bastion" data-wp-combined-sound="true" data-runtime-localize="off">
+<body data-screen="main" data-game-id="animal-dice-bastion" data-wp-game-id="animal-dice-bastion" data-wp-game-version="v33" data-wp-interface-version="9" data-wp-combined-sound="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <img src="../../assets/weightplay-logo.png" alt="">
@@ -114,7 +117,7 @@
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-dice-bastion/stage-background-block-v1.png')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
         <div><strong data-i18n="title" data-wp-game-title data-runtime-localize="off">Dice Bastion</strong><span id="stageSummary"></span></div>
@@ -189,7 +192,7 @@
           <article><img src="../../assets/animal-dice-bastion/guardian-forge-block-v32-alpha8.png" alt=""><b data-i18n="forge">Forge</b><small data-i18n="forgeRole">Breaks enemy armor</small></article>
           <article><img src="../../assets/animal-dice-bastion/guardian-tide-block-v32-alpha8.png" alt=""><b data-i18n="tide">Tide</b><small data-i18n="tideRole">Splash damage to groups</small></article>
         </div>
-        <button id="tutorialStartBtn" class="primary-action" type="button" data-wp-primary-action data-i18n="tutorialStart">Guard the bastion</button>
+        <button id="tutorialStartBtn" class="primary-action" type="button" data-wp-primary-action data-wp-tutorial-next data-i18n="tutorialStart">Guard the bastion</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
         <h2 id="leaveTitle" data-i18n="leaveTitle">Leave this defense?</h2><p data-i18n="leaveText">Continue keeps this exact Battle frozen. Returning to Stages ends only this attempt.</p>
@@ -218,9 +221,12 @@
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="locale-data.js?v=20261015-how3-mechanics-copy-v1"></script>
   <script src="locales.js?v=20261015-how3-mechanics-copy-v1"></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-  <script src="frame.js"></script>
-  <script src="game.js?v=20260921-desktop-battle-v31&wp-audio=1.0.0"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-v33"></script>
+  <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+  <script src="/src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
+  <script src="/games/animal-dice-bastion/stage-config.js?v=20261021-interface9-v33"></script>
+  <script src="frame.js?v=20261021-interface9-v33"></script>
+  <script src="game.js?v=20261021-interface9-v33&wp-audio=1.0.0"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>

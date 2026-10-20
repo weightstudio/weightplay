@@ -22,23 +22,28 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-interface-version" content="9">
   <title>スペース・ロックス | WeightPlay</title>
 
   <link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0">
-  <link rel="stylesheet" href="/games/space-rocks/art.css?v=20261018-campaign-v23">
+  <link rel="stylesheet" href="/games/space-rocks/art.css?v=20261021-space-rocks-i9-landscape-dialog-v1">
 <link rel="stylesheet" href="/src/game-play-ui.css?v=20261018-space-campaign">
 <link rel="stylesheet" href="/src/loading-screen.css">
-<link rel="stylesheet" href="/src/game-page-info.css?v=20260905-space-score-reserve-v19">
-  <meta name="description" content="ルクを操り、3ウェーブの結晶岩を大から小へ分裂させ、守護コアにシールドを温存します。" />
+<link rel="stylesheet" href="/src/game-page-info.css?v=20261014-guide-related-i9-v1">
+<script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
+<script src="/src/shared-interface-bootstrap.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-shared-interface="7"></script>
+<link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<meta name="weightplay-game-version" content="v23">
+  <meta name="description" content="全30ステージの宇宙キャンペーンで結晶を集め、ポッドを救出し、6体のボスに挑もう。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="スペース・ロックス | WeightPlay" />
-    <meta property="og:description" content="ルクを操り、3ウェーブの結晶岩を大から小へ分裂させ、守護コアにシールドを温存します。" />
+    <meta property="og:description" content="全30ステージの宇宙キャンペーンで結晶を集め、ポッドを救出し、6体のボスに挑もう。" />
     <meta property="og:url" content="https://weightplay.com/ja/games/space-rocks/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/space-rocks.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="スペース・ロックス | WeightPlay" />
-    <meta name="twitter:description" content="ルクを操り、3ウェーブの結晶岩を大から小へ分裂させ、守護コアにシールドを温存します。" />
+    <meta name="twitter:description" content="全30ステージの宇宙キャンペーンで結晶を集め、ポッドを救出し、6体のボスに挑もう。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/space-rocks.webp" />
     <script type="application/ld+json">
 {
@@ -48,7 +53,7 @@
   "alternateName": "Space Rocks",
   "url": "https://weightplay.com/ja/games/space-rocks/",
   "image": "https://weightplay.com/assets/interface7-redrawn/space-rocks.webp",
-  "description": "ルクを操り、3ウェーブの結晶岩を大から小へ分裂させ、守護コアにシールドを温存します。",
+  "description": "全30ステージの宇宙キャンペーンで結晶を集め、ポッドを救出し、6体のボスに挑もう。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -69,10 +74,11 @@
 }
     </script>
   </head>
-<body data-game-id="space-rocks" data-wp-game-id="space-rocks" data-wp-game-version="v23" data-wp-interface-version="7" data-wp-game-owned-guide="true" data-sound-toggle="off">
+<body data-game-id="space-rocks" data-wp-game-id="space-rocks" data-wp-game-version="v23" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-sound-toggle="off">
 <div id="loadingPanel" class="loading-panel" role="status"></div>
-<main data-space-campaign data-wp-frame-root data-runtime-localize="off"></main>
-<details id="spaceRocksStaticGuide" class="game-page-info game-page-info-static" data-wp-space-rocks-guide><summary>飛行ガイド</summary><h1>スペース・ロックス</h1><p>WASD、矢印キー、ジョイスティックで移動。照準と射撃は自動。結晶に近づいて回収し、救助ポッドを中央へ運びます。シールドは2秒間防御、パルスは周辺を一掃。両方再充電。クリアで次へ。クリア、無傷、半分の時間で無傷の各条件で星を獲得。このブラウザーに保存。</p></details>
+<main data-space-campaign data-wp-frame-root data-runtime-localize="off">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">スペース・ロックス</h1></main>
+<section id="spaceRocksStaticGuide" class="game-page-info game-page-info-static" data-wp-preserve-static-guide data-wp-game-owned-guide="true" data-wp-game-guide data-wp-guide-related-interface="9" data-wp-space-rocks-guide aria-label="飛行ガイド"><h2>飛行ガイド</h2><p>WASD、矢印キー、ジョイスティックで移動。照準と射撃は自動。結晶に近づいて回収し、救助ポッドを中央へ運びます。シールドは2秒間防御、パルスは周辺を一掃。両方再充電。クリアで次へ。クリア、無傷、半分の時間で無傷の各条件で星を獲得。このブラウザーに保存。</p><div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>ステージをクリアするには？</dt><dd>表示された目標を達成すると次のステージが解放されます。キャンペーンは全30ステージ、ボスは6体です。</dd></div><div><dt>シールドとパルスの効果は？</dt><dd>シールドは2秒間ダメージを防ぎます。パルスは近くの脅威を一掃します。どちらも使用後に再充電されます。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>クリアしたステージと獲得した星はこのブラウザに保存されます。ステージ中に離れると、その挑戦の進行は失われます。</dd></div></dl></div><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>関連ゲームをもっと見る</h3><p>ほかのアーケードゲームにも挑戦しましょう。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="snake" data-related-game="snake" href="/ja/games/snake/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/snake.webp" data-final-src="/assets/weightplay-logo.png" alt="スネーク" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">スネーク</strong></span></a><a class="game-info-related-card" data-game-id="maze-chase" data-related-game="maze-chase" href="/ja/games/maze-chase/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/maze-chase.webp" data-final-src="/assets/weightplay-logo.png" alt="メイズチェイス" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">メイズチェイス</strong></span></a></div></div></section>
 <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
 <script src="/src/game-layout-config.js?v=20260919-banner1"></script>
 <script src="/src/weightplay-audio.js?v=1.0.0"></script>
@@ -81,40 +87,14 @@
 <script src="/src/edge-guard.js"></script>
 <script src="/src/analytics.js?v=20260929-block-world-v3"></script>
 <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="/src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+  <script src="/src/game-screen-frame.js?v=20261021-space-rocks-i9-battle-root-v1"></script>
 <script src="/src/game-play-ui.js?v=20261018-space-campaign"></script>
 <script src="/games/space-rocks/analytics-ownership.js?v=20261018-campaign-v23"></script>
 <script src="/games/space-rocks/locales.js?v=20261018-campaign-v23"></script>
-<script src="/games/space-rocks/game.js?v=20261018-campaign-v23"></script>
+<script src="/games/space-rocks/game.js?v=20261021-space-rocks-v23-i9"></script>
 <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="スペース・ロックス ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>スペース・ロックス</h2><p>ルクを操り、3ウェーブの結晶岩を大から小へ分裂させ、守護コアにシールドを温存します。</p></div>
-      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>慣性型アーケードシューティング</span><span>小惑星の分裂</span><span>シールド＋連射</span></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>慣性スペースシューター</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>アーケード · スペースシューティング · アクション</strong></div><div class="game-info-fact"><span>難易度</span><strong>始めやすく、極めがいあり</strong></div><div class="game-info-fact"><span>目安時間</span><strong>3～10分</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>戦場は端と端がつながる開けた空間で、固定されたレーンの集合ではありません。短い推進でも船の次の軌道が変わるため、照準は移動と一体です。撃つたびに、その後どこへ流れるかを考えます。</p>
-<p>大きな岩は中サイズ、さらに小さな破片へ分裂します。後半のウェーブでは動くUFOやラピッドファイアの機会、より密な危険が加わり、最後のウェーブではガーディアンコアが明確な目標と勝利条件を示します。</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>左右で回転し、上キーまたはWで推進し、スペースで射撃します。Shiftまたはシールドボタンで、回数に限りのあるシールドを使えます。タッチ操作でも同じ行動を選べます。</p>
-<p>弾はループするフィールドを進みます。大きな岩は2つの中サイズの岩に、中サイズの岩は小さな破片に分裂し、連続して片付けるとスコア、コンボ、破片カウントが増えます。</p>
-<p>ラピッドファイアは一時的に射撃間隔を短くします。シールドは近い衝突を吸収しますが容量が限られるため、毎回の通過で使うとコア戦に必要な資源が足りなくなります。</p>
-<p>3ウェーブ目にはオレンジ色のガーディアンコアが現れます。衝突すると船はフィールド内へ戻り、被弾を1つ消費します。5回被弾すると終了し、3ウェーブを片付けると成功結果が開きます。</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>メイン画面から始め、最初に推進を1回押して開幕の漂流を確認してから、長く推進するか決めます。</li><li>最も近い大きな岩へ向きを合わせ、短い連射を使い、勢いでフィールドを回り込みます。</li><li>命中するたびに破片を確認します。大きな岩は、分裂した小さな子を処理して初めて片付きます。</li><li>ラピッドファイアは見つけたら回収し、シールドは近い通過や混み合ったコア戦のために残します。</li><li>3ウェーブを片付けるか、リスタートでラウンドを初期化し、新しい資源で最初の軌道を練習します。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>推進を押し続けず、短い推進と回転で次の弧を作ると減速しやすくなります。</li><li>岩が船の進路に入る前に撃ち、分裂した破片から離れるように回転します。その場で止まろうとしないでください。</li><li>大・中・小の岩を続けて片付けるとコンボを保てますが、危険な近距離射撃より生存を優先します。</li><li>シールドは危険地帯を抜けるためのタイミング道具として使い、限られた容量を常時の鎧にしないでください。</li><li>3ウェーブ目はコアの周りを回り、オレンジ色のコアを優先してから他の標的を追います。</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>第1ウェーブでは回転、推進、慣性による漂流、大きな岩から小さな破片へ続く分裂を覚えます。</p>
-<p>第2ウェーブでは岩の数、動くUFO、連射の圧力が増え、照準と移動を同時に扱います。</p>
-<p>第3ウェーブではガーディアンコアと密集した破片が加わり、シールドのタイミングと制御された旋回を試します。</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>スペースロックスは、オリジナルのCanvasフィールド、船、クリスタルロック、UFO、ガーディアン、粒子、サウンドを使います。レスポンシブな論理キャンバス、キーボードとタッチ操作、ローカライズされた合図、スコアとベスト記録、成功・失敗・リプレイ・リスタート・メイン画面への復帰を備えています。</p></div>
-      <div class="game-info-section game-info-save"><h3>プレイヤーと保存情報</h3><p>ベストスコアとサウンド設定はこのブラウザに保存されます。アカウントや購入は不要です。ブラウザデータを消去すると、このローカル記録が削除される場合があります。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>慣性はどう操作しますか？</dt><dd>推進すると速度が増し、船はその後も漂います。回転と短い推進で次の軌道を作り、すぐに止まるとは考えないでください。</dd></div><div><dt>大きな岩に当たるとどうなりますか？</dt><dd>中サイズの岩、さらに小さな破片へ分裂します。分裂の連鎖をすべて片付けると、スコアと破片カウントが増えます。</dd></div><div><dt>ラピッドファイアとは何ですか？</dt><dd>一時的に射撃間隔を短くする強化で、破片が密集した場所を片付けやすくします。</dd></div><div><dt>シールドはどう使いますか？</dt><dd>危険地帯を抜けるときやガーディアンに近づくときに使います。容量は限られ、無防備な衝突が5回でラウンド終了です。</dd></div><div><dt>3ウェーブ目は何が変わりますか？</dt><dd>オレンジ色のガーディアンコアが現れ、危険が増えます。コアの合図とシールドのタイミングが重要です。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>ベストスコアとサウンド設定はこのブラウザに保存され、アカウントは不要です。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/snake/"><img src="/assets/interface7-redrawn/snake.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>スネーク</strong><span>グリッドで成長するヘビを動かして餌を集め、体とGate／Orbitの障害マスを避けます。</span></span></a><a class="game-info-related-card" href="/ja/games/maze-chase/"><img src="/assets/interface7-redrawn/maze-chase.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>メイズチェイス</strong><span>メイズチェイスは、固定迷路で星のかけらを集めるオリジナルゲームです。</span></span></a></div></div>
-    </div>
-  </section>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="スペース・ロックス";document.title="スペース・ロックス | WeightPlay";},{once:true});</script>
 </body></html>

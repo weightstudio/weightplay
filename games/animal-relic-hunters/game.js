@@ -1412,6 +1412,8 @@
   let windowFocused = document.hasFocus();
   let lastSimulationFrame = 0;
   let simulationAccumulator = 0;
+  const activeTouchPointerIds = new Set();
+  const staleTouchClickPointerIds = new Set();
 
   function clearEliteSpawnTimer() {
     window.clearTimeout(eliteSpawnTimer);
@@ -4621,6 +4623,11 @@
     if (!nodes.equipmentDialog) return;
     if (active && !battleInputReady()) return;
     if (equipmentOpen === active) return;
+    // Opening the dialog while a joystick finger is still down can retarget
+    // that finger's eventual synthetic click into a newly revealed gear
+    // action. Remember those pointer IDs so the stale release cannot activate
+    // a control in the dialog (notably in RTL layouts where the overlap differs).
+    if (active) activeTouchPointerIds.forEach(pointerId => staleTouchClickPointerIds.add(pointerId));
     equipmentOpen = active;
     if (active) {
       suspendBackgroundBattle();
@@ -4642,7 +4649,11 @@
     if (nodes.playerHealth) return;
     // Reuse the existing, localized health nodes rather than displaying a
     // second value that could drift from the authoritative HP update.
-    nodes.playerHealth = nodes.hpText.closest('[data-wp-frame-stat]');
+    const healthStat = nodes.hpText.closest('[data-wp-frame-stat]');
+    // I9 owns HP in the Battle information group. Keep that single live value
+    // in the shared header instead of moving the whole group over the arena.
+    if (healthStat?.closest('[data-wp-frame-info]')) return;
+    nodes.playerHealth = healthStat;
     if (nodes.playerHealth) {
       nodes.playerHealth.parentElement.style.setProperty('--wp-frame-stat-count', '3');
       nodes.playerHealth.removeAttribute('data-wp-frame-stat');
@@ -4665,7 +4676,7 @@
     nodes.equipmentBtn.setAttribute('aria-haspopup', 'dialog');
     nodes.equipmentBtn.setAttribute('aria-expanded', 'false');
     nodes.equipmentBtn.setAttribute('aria-keyshortcuts', 'E');
-    layout.append(nodes.equipmentBtn);
+    nodes.equipmentBtn.dataset.wpFrameAction = 'secondary';
     nodes.equipmentDialog = make('section', 'equipmentDialog', 'equipment-dialog hidden');
     nodes.equipmentDialog.tabIndex = -1;
     nodes.equipmentDialog.setAttribute('role', 'dialog');
@@ -4689,6 +4700,8 @@
     });
     nodes.battleControls = make('div', 'battleControls', 'battle-controls');
     nodes.battleControls.innerHTML = '<div class="battle-skills"><button type="button" id="dodgeButton" aria-keyshortcuts="Shift"><b aria-hidden="true">➤</b><span></span></button><button type="button" id="pulseButton" aria-keyshortcuts="Space"><b aria-hidden="true">◆</b><span></span></button></div>';
+    nodes.battleControls.prepend(nodes.equipmentBtn);
+    nodes.battleControls.querySelectorAll('button').forEach(button => { button.dataset.wpFrameAction = 'secondary'; });
     layout.append(nodes.battleControls);
     joystick = window.WeightPlayJoystick.create({
       surface: nodes.gameCanvas,
@@ -4730,6 +4743,35 @@
   }
 
   function setupInputs() {
+    document.addEventListener('pointerdown', event => {
+      if (event.pointerType !== 'touch') return;
+      // Touch pointer IDs are reused by browsers; a fresh gesture supersedes
+      // any expired suppression token from the same device.
+      staleTouchClickPointerIds.delete(event.pointerId);
+      activeTouchPointerIds.add(event.pointerId);
+    }, true);
+    document.addEventListener('pointerup', event => {
+      if (event.pointerType !== 'touch') return;
+      activeTouchPointerIds.delete(event.pointerId);
+      if (staleTouchClickPointerIds.has(event.pointerId)) {
+        window.setTimeout(() => staleTouchClickPointerIds.delete(event.pointerId), 300);
+      }
+    }, true);
+    document.addEventListener('pointercancel', event => {
+      if (event.pointerType !== 'touch') return;
+      activeTouchPointerIds.delete(event.pointerId);
+      staleTouchClickPointerIds.delete(event.pointerId);
+    }, true);
+    document.addEventListener('click', event => {
+      if (event.detail <= 0 || (event.pointerType !== 'touch' && !event.sourceCapabilities?.firesTouchEvents)) return;
+      const pointerId = Number.isInteger(event.pointerId)
+        ? event.pointerId
+        : staleTouchClickPointerIds.size === 1 ? staleTouchClickPointerIds.values().next().value : null;
+      if (pointerId === null || !staleTouchClickPointerIds.has(pointerId)) return;
+      staleTouchClickPointerIds.delete(pointerId);
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }, true);
     window.addEventListener("keydown", (e) => {
       if (manualPauseActive || equipmentOpen || settingsOpen) return;
       if (!nodes.draftPanel.classList.contains("hidden")) {

@@ -59,3 +59,160 @@
     padding: 8px;
   }
 }
+
+/* Battle content fills the shared frame below its common header. The canvas
+   keeps its authored 4:5 playfield while equipment and skills use the shared
+   action-button contract in one bounded bottom lane. */
+html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="battle"] .game-layout.relic-battle-content {
+  position: relative !important;
+  inset: auto !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: minmax(0, 1fr) 56px !important;
+  gap: 8px !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 8px !important;
+  overflow: hidden !important;
+  transform: none !important;
+  background: transparent !important;
+}
+
+html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="battle"] .arena-viewport {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  display: grid !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 4px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  container-type: size;
+}
+
+html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="battle"] .arena-hud[hidden] {
+  display: none !important;
+}
+
+html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="battle"] .canvas-container {
+  box-sizing: border-box !important;
+  width: min(100%, 520px, calc(100cqh * 0.8)) !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 100% !important;
+  aspect-ratio: 4 / 5 !important;
+  align-self: center !important;
+  justify-self: center !important;
+}
+
+html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="battle"] .canvas-container canvas {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 4 / 5 !important;
+}
+
+html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="battle"] .battle-controls {
+  position: relative !important;
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-items: center !important;
+  justify-self: center !important;
+  width: min(100%, 520px) !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  max-height: 56px !important;
+  gap: 8px !important;
+  overflow: visible !important;
+}
+
+html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="battle"] .battle-skills {
+  display: contents !important;
+}
+
+html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="battle"] .battle-controls [data-wp-frame-action] {
+  position: relative !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+  gap: 5px !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  font-size: 13px !important;
+}
+
+html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="battle"] .cooldown-ring {
+  position: absolute !important;
+  inset: 3px !important;
+  width: calc(100% - 6px) !important;
+  height: calc(100% - 6px) !important;
+  overflow: visible !important;
+  transform: rotate(-90deg) !important;
+  pointer-events: none !important;
+}
+
+html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="battle"] .cooldown-ring circle {
+  fill: none !important;
+  stroke-width: 6 !important;
+}
+
+html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="battle"] .cooldown-track {
+  stroke: var(--wp-ui-line) !important;
+}
+
+html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="battle"] .cooldown-progress {
+  stroke: var(--wp-ui-gold) !important;
+  stroke-linecap: round !important;
+}
+
+html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="battle"] .chain-meter {
+  position: absolute !important;
+  z-index: 4 !important;
+  top: 8px !important;
+  left: 50% !important;
+  display: none !important;
+  max-width: calc(100% - 112px) !important;
+  transform: translateX(-50%) !important;
+  pointer-events: none !important;
+}
+
+html body [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-scene="battle"] .chain-meter.is-active {
+  display: block !important;
+}
+
+/* Retire the old logical-Canvas two-column rules after I9 moves equipment
+   into the common action lane and HP into the shared header. */
+html body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-canvas] > .game-layout.relic-battle-content {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: minmax(0, 1fr) 56px !important;
+  gap: 8px !important;
+  padding: 8px !important;
+}
+
+html body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-canvas] .arena-viewport {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+}
+
+html body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-canvas] .canvas-container {
+  grid-column: auto !important;
+  grid-row: auto !important;
+  top: auto !important;
+  width: min(100%, 520px, calc(100cqh * 0.8)) !important;
+}
+
+html body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-canvas] .battle-controls {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+}

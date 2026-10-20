@@ -2,38 +2,12 @@
 (function () {
   'use strict';
 
-  /* Locale routes use <base> to the canonical game directory, so load the
-     scoped content cleanup from this adapter instead of duplicating 13 HTML edits. */
-  const cleanupHref = new URL('interface-7-cleanup.css?v=20260924-i7-content2', document.currentScript?.src || document.baseURI).href;
-  if (!document.querySelector('link[data-dice-bastion-interface7-cleanup]')) {
-    const cleanup = document.createElement('link');
-    cleanup.rel = 'stylesheet';
-    cleanup.href = cleanupHref;
-    cleanup.dataset.diceBastionInterface7Cleanup = '';
-    document.head.append(cleanup);
-  }
-
-  const stageArtwork = '../../assets/animal-dice-bastion/stage-background-block-v1.png';
-  const applyStageArtwork = () => {
-    const stage = document.querySelector('#stageScreen .stage-canvas');
-    if (!stage) return;
-    const url = new URL(stageArtwork, document.baseURI).href;
-    stage.style.setProperty('--wp-stage-art', `url("${url.replaceAll('"', '\\"')}")`);
-  };
-  const queueStageArtwork = () => {
-    applyStageArtwork();
-    requestAnimationFrame(() => { applyStageArtwork(); requestAnimationFrame(applyStageArtwork); });
-  };
-  window.queueDiceBastionStageArtwork = queueStageArtwork;
-  window.addEventListener('load', queueStageArtwork, { once: true });
-  window.addEventListener('weightplay:screen-change', event => {
-    if (event.detail?.screen === 'stage') queueStageArtwork();
-  });
   window.mountDiceBastionFrame = function () {
     const root = document.getElementById('gameFrame');
     const main = document.getElementById('mainScreen');
     const stage = document.querySelector('#stageScreen .stage-canvas');
     const battle = document.querySelector('#battleScreen .battle-canvas');
+    const stageSummary = document.getElementById('stageSummary');
     const mainHeader = main.querySelector('header');
     const stageHeader = stage.querySelector(':scope > header');
     const battleHeader = battle.querySelector('.battle-header');
@@ -49,8 +23,10 @@
     const workspace = document.createElement('div');
     workspace.id = 'stageWorkspace';
     workspace.dataset.wpStageWorkspace = '';
-    workspace.append(document.getElementById('stageSummary'), stage.querySelector('.chapter-panel'),
-      document.getElementById('stageRail'), document.getElementById('teamPanel'), document.getElementById('equipmentPanel'));
+    const stageSelectorPage = document.createElement('div');
+    stageSelectorPage.id = 'stageSelectorPage';
+    stageSelectorPage.append(stage.querySelector('.chapter-panel'), document.getElementById('stageRail'));
+    workspace.append(stageSummary, stageSelectorPage, document.getElementById('teamPanel'), document.getElementById('equipmentPanel'));
     stage.append(workspace);
     stageHeader.querySelectorAll(':scope > div,:scope > span').forEach(node => node.remove());
 
@@ -94,11 +70,12 @@
     root.querySelectorAll('button:not([data-wp-return])').forEach(node => {
       node.setAttribute('data-wp-frame-action', node.classList.contains('primary-action') || node.id === 'summonBtn' ? 'primary' : 'secondary');
     });
-    const frame = window.WeightPlayScreenFrame.mount({root,localeSelect:document.getElementById('localeSelect'),scenes:{
+    const frame = window.WeightPlayScreenFrame.mount({root,localeSelect:document.getElementById('localeSelect'),playUI:true,scenes:{
       main:{root:main,header:mainHeader,content:main.querySelector('.main-hero')},
       stage:{root:stage,header:stageHeader,content:workspace},
       battle:{root:battle,header:battleHeader,content:battleLive,headerInfo:info}
     }});
+    frame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup().add(stageSummary));
     window.addEventListener('pagehide', event => { if (!event.persisted) frame.destroy(); });
     return frame;
   };

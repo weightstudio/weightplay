@@ -25,7 +25,7 @@
   // Mount in the shared game module so every existing locale route uses the same dock.
   const battleDock = document.createElement("div");
   battleDock.id = "battleDock";
-  battleDock.innerHTML = '<button id="mapToggle" type="button" aria-pressed="false" data-ta="overviewControl"><canvas id="tacticalMap" width="192" height="192" aria-hidden="true"></canvas><span data-t="mapLabel"></span></button><div id="steerStick" role="group" data-ta="stickControl"><span class="stick-orbit" aria-hidden="true"></span><span id="stickKnob" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 4 20 11H12ZM28 16 21 20V12ZM16 28 12 21H20ZM4 16 11 12V20Z" fill="currentColor"/></svg></span></div>';
+  battleDock.innerHTML = '<button id="mapToggle" type="button" aria-pressed="false" data-ta="overviewControl"><canvas id="tacticalMap" width="192" height="192" aria-hidden="true"></canvas><span data-t="mapLabel"></span></button>';
   $("arenaWrap").append(battleDock);
   battleDock.append($("touchPad"));
   const motion = window.SanctuaryLoopMotion.create();
@@ -37,8 +37,8 @@
       stage: { root: $("stageCanvas"), header: $("stageHeader"), content: $("stageContent") },
       battle: { root: $("battleCanvas"), header: $("battleHeader"), content: $("battleLive"), headerInfo: $("battleInfo") },
     },
+    playUI: true,
   });
-  const interfaceValidator = new URLSearchParams(location.search).get("qa") === "interface-validator";
   const localePack = window.AnimalSanctuaryLoopLocales;
   const localeCodes = localePack.codes;
   // The reviewed French action is already localized. Do not let the generic
@@ -105,7 +105,8 @@
     const segment = routeSegments[next];
     const currentSegment = location.pathname.split("/").filter(Boolean)[0];
     if (!segment || currentSegment === segment) return false;
-    location.href = `/${segment}/games/animal-sanctuary-loop/${location.search}${location.hash}`;
+    const preview = new URLSearchParams(location.search).get("preview") === "1" ? "?preview=1" : "";
+    location.href = `/${segment}/games/animal-sanctuary-loop/${preview}`;
     return true;
   }
   function t(key, vars = {}) {
@@ -224,18 +225,14 @@
   let currentScreen = "loading";
   let resultDecisionCommitted = false;
   let settingsPaused = false;
-  const STAGE_CARD_POOL_SIZE = 9;
   const clamp = (value, minimum, maximum) => Math.max(minimum, Math.min(maximum, value));
-  let stageCardPool = [];
-  let stageWindowStart = 0;
   let selectedStageIndex = 0;
-  let stageSettleRaf = 0;
-  let restoreStageRailBehavior = () => {};
+  let stageSelector = null;
+  let stageAtelierOpen = false;
+  let stageActionButton = null;
 
   function cancelStageMotion() {
-    cancelAnimationFrame(stageSettleRaf);
-    stageSettleRaf = 0;
-    restoreStageRailBehavior();
+    stageSelector?.cancel();
   }
 
   function objectiveFor(stage) {
@@ -258,6 +255,12 @@
     $("locale").value = locale;
     $("lobbyReturn").href = `/${routeSegments[locale]}/`;
     staticText.forEach((element) => { element.textContent = t(element.dataset.t); });
+    if (stageActionButton) {
+      stageActionButton.textContent = t(stageAtelierOpen ? "missions" : "atelier");
+      stageActionButton.setAttribute("aria-label", stageActionButton.textContent);
+    }
+    updateStageFrameInfo();
+    stageSelector?.refresh(selectedStageIndex);
     $("firstLoopCue").textContent = `${t("tutorialFirstLoop")} ${t("pulseHint")}`;
     assistiveText.forEach((element) => element.setAttribute(element.tagName === "IMG" ? "alt" : "aria-label", t(element.dataset.ta)));
     const resultActions = $("resultStage").parentElement;
@@ -312,14 +315,14 @@
     $("stage").hidden = name !== "stage";
     $("battle").hidden = name !== "battle";
     screenFrame.activate(name);
+    syncJoystick();
     if (name === "main") { motion.reveal(document.querySelector(".poster")); motion.reveal(document.querySelector(".main-copy"), 50); }
     if (name === "stage") motion.reveal($("stageContent"));
     if (name === "battle") motion.reveal($("arenaWrap"));
     if (name !== "battle") { settingsPaused = false; stopLoop(); blockView.release(); }
     if (name === "stage") {
-      if (previousScreen !== "stage") {
+      if (previousScreen === "main" || previousScreen === "loading") {
         selectedStageIndex = Math.min(save.unlocked, stages.length) - 1;
-        activateStageTab(stageTabButtons.find((button) => button.dataset.tab === "missions"));
       }
       renderStage();
       requestAnimationFrame(() => centerCurrentStage(restoreFocus));
@@ -334,301 +337,85 @@
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
 
-  function stageWindowLimit() {
-    return Math.max(0, stages.length - STAGE_CARD_POOL_SIZE);
+  const stageMissionStat = document.createElement("span");
+  const stageStarStat = document.createElement("span");
+  const stageInfoGroup = window.WeightPlayScreenFrame.createGroup()
+    .add(stageMissionStat)
+    .add(stageStarStat);
+  screenFrame.stageTopUI.add(stageInfoGroup);
+
+  function updateStageFrameInfo() {
+    const cleared = Object.keys(save.stars).length;
+    const stars = Object.values(save.stars).reduce((total, count) => total + (Number(count) || 0), 0);
+    stageMissionStat.textContent = `${t("missions")} ${cleared}/30`;
+    stageMissionStat.setAttribute("aria-label", `${t("missions")} ${cleared}/30`);
+    stageStarStat.textContent = `${t("stars")} ${stars}`;
+    stageStarStat.setAttribute("aria-label", `${t("stars")} ${stars}`);
   }
 
-  function desiredStageWindow(index) {
-    return clamp(index - Math.floor(STAGE_CARD_POOL_SIZE / 2), 0, stageWindowLimit());
-  }
-
-  function createStageCard(poolIndex) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "stage-card";
-    button.dataset.wpStagePoolNode = String(poolIndex + 1);
-    button.innerHTML = '<span class="stage-card-content" data-wp-item-content><small></small><strong></strong><span class="stage-objective"></span><small class="stage-twist"></small><small class="stage-stars"></small></span>';
-    button.addEventListener("click", (event) => {
-      if (heldScreenTransition === "main") return;
-      const index = Number(button.dataset.stageIndex);
-      const stage = stages[index];
-      if (!stage || stage.n > save.unlocked) {
-        $("stageHint").textContent = t("stageLocked");
-        return;
-      }
-      selectedStageIndex = index;
-      startBattle(index, event);
-    });
-    button.addEventListener("keydown", (event) => {
-      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-      event.preventDefault();
-      const rtl = document.documentElement.dir === "rtl";
-      const current = Number(button.dataset.stageIndex);
-      const next = event.key === "Home" ? 0
-        : event.key === "End" ? stages.length - 1
-          : clamp(current + (event.key === "ArrowRight" ? (rtl ? -1 : 1) : (rtl ? 1 : -1)), 0, stages.length - 1);
-      selectStage(next, true);
-    });
-    return button;
-  }
-
-  function bindStageCard(button, index) {
-    const stage = stages[index];
-    const locked = stage.n > save.unlocked;
-    const rule = objectiveFor(stage);
-    const earned = Number(save.stars[stage.n]) || 0;
-    button.dataset.stage = String(stage.n);
-    button.dataset.chapter = String(stage.chapter);
-    button.dataset.index = String(index);
-    button.dataset.stageIndex = String(index);
-    button.setAttribute("aria-posinset", String(index + 1));
-    button.setAttribute("aria-setsize", String(stages.length));
-    button.setAttribute("aria-disabled", locked ? "true" : "false");
-    button.setAttribute("aria-label", `${locked ? `${t("lockedBadge")}. ${t("stageLocked")} ` : ""}${t(chapters[stage.chapter])}, ${stage.n}, ${rule}`);
-    button.classList.toggle("locked", locked);
-    button.querySelector("small").textContent = locked ? t("lockedBadge") : earned ? `${t(chapters[stage.chapter])} · ${t("clearedBadge")}` : t(chapters[stage.chapter]);
-    button.querySelector("strong").textContent = String(stage.n);
-    button.querySelector(".stage-objective").textContent = rule;
-    button.querySelector(".stage-twist").textContent = describeStage(stage);
-    button.querySelector(".stage-stars").textContent = `${"★".repeat(earned)}${"☆".repeat(3 - earned)}`;
-  }
-
-  function syncStageCards() {
-    stageCardPool.forEach((button) => {
-      const index = Number(button.dataset.stageIndex);
-      const selected = index === selectedStageIndex;
-      bindStageCard(button, index);
-      button.tabIndex = selected ? 0 : -1;
-      button.classList.toggle("centered", selected);
-      button.classList.toggle("wp-stage-centered", selected);
-      if (selected) button.setAttribute("aria-current", "true");
-      else button.removeAttribute("aria-current");
-      if (index === Math.max(0, save.unlocked - 1)) button.dataset.wpStageRecommended = "true";
-      else delete button.dataset.wpStageRecommended;
-    });
-  }
-
-  function buildStageCardPool() {
-    const rail = $("stageRail");
-    const count = Math.min(STAGE_CARD_POOL_SIZE, stages.length);
-    rail.innerHTML = "";
-    stageWindowStart = desiredStageWindow(selectedStageIndex);
-    stageCardPool = Array.from({ length: count }, (_, offset) => {
-      const button = createStageCard(offset);
-      bindStageCard(button, stageWindowStart + offset);
-      rail.append(button);
-      return button;
-    });
-    rail.dataset.wpStageVirtualized = "bounded-recycle";
-    rail.dataset.wpStagePoolSize = String(count);
-    rail.dataset.wpStageTotal = String(stages.length);
-    rail.dataset.wpStageWindowStart = String(stageWindowStart);
-    rail.dataset.wpStageWindowEnd = String(stageWindowStart + count - 1);
-  }
-
-  function moveStageWindow(targetStart) {
-    const rail = $("stageRail");
-    const target = clamp(targetStart, 0, stageWindowLimit());
-    let recycledCount = 0;
-    while (stageWindowStart < target) {
-      const recycled = rail.firstElementChild;
-      const anchor = recycled?.nextElementSibling;
-      const before = anchor?.getBoundingClientRect().left;
-      stageWindowStart += 1;
-      rail.append(recycled);
-      bindStageCard(recycled, stageWindowStart + stageCardPool.length - 1);
-      recycledCount += 1;
-      const after = anchor?.getBoundingClientRect().left;
-      if (Number.isFinite(before) && Number.isFinite(after)) rail.scrollLeft += (after - before) * (rail.clientWidth / rail.getBoundingClientRect().width || 1);
+  function ensureStageSelector() {
+    if (stageSelector) return stageSelector;
+    if (!window.WeightPlayPlayUI?.mountStage || !window.AnimalSanctuaryLoopStageConfig?.create) {
+      throw new Error("SANCTUARY_SHARED_STAGE_REQUIRED");
     }
-    while (stageWindowStart > target) {
-      const recycled = rail.lastElementChild;
-      const anchor = recycled?.previousElementSibling;
-      const before = anchor?.getBoundingClientRect().left;
-      stageWindowStart -= 1;
-      rail.prepend(recycled);
-      bindStageCard(recycled, stageWindowStart);
-      recycledCount += 1;
-      const after = anchor?.getBoundingClientRect().left;
-      if (Number.isFinite(before) && Number.isFinite(after)) rail.scrollLeft += (after - before) * (rail.clientWidth / rail.getBoundingClientRect().width || 1);
-    }
-    stageCardPool = [...rail.children];
-    rail.dataset.wpStageWindowStart = String(stageWindowStart);
-    rail.dataset.wpStageWindowEnd = String(stageWindowStart + stageCardPool.length - 1);
-    if (recycledCount) rail.dataset.wpStageRecycleCount = String(Number(rail.dataset.wpStageRecycleCount || 0) + recycledCount);
-    return recycledCount;
-  }
-
-  function ensureStageWindow(index) {
-    if (!stageCardPool.length) buildStageCardPool();
-    moveStageWindow(desiredStageWindow(index));
-    syncStageCards();
-  }
-
-  function stageRailGeometry() {
-    const rail = $("stageRail");
-    const cards = [...rail.children];
-    const railRect = rail.getBoundingClientRect();
-    const first = cards[0]?.getBoundingClientRect();
-    const second = cards[1]?.getBoundingClientRect();
-    const delta = first && second ? (second.left + second.width / 2) - (first.left + first.width / 2) : 0;
-    const fallback = (first?.width || 264) + (parseFloat(getComputedStyle(rail).columnGap) || 12);
-    const pitch = Math.abs(delta) || fallback;
-    return { rail, center: railRect.left + railRect.width / 2, pitch, cssPitch: pitch * (rail.clientWidth / railRect.width || 1), orientation: Math.sign(delta) || 1 };
-  }
-
-  function nearestStageCard() {
-    const rail = $("stageRail");
-    const railRect = rail.getBoundingClientRect();
-    const center = railRect.left + railRect.width / 2;
-    return stageCardPool.reduce((nearest, card) => {
-      const rect = card.getBoundingClientRect();
-      const distance = Math.abs(rect.left + rect.width / 2 - center);
-      return !nearest || distance < nearest.distance ? { card, distance } : nearest;
-    }, null)?.card || null;
-  }
-
-  function currentStageLogicalPosition() {
-    const card = nearestStageCard();
-    if (!card) return selectedStageIndex;
-    const index = Number(card.dataset.stageIndex);
-    const rect = card.getBoundingClientRect();
-    const geometry = stageRailGeometry();
-    return clamp(index + (geometry.center - (rect.left + rect.width / 2)) / (geometry.pitch * geometry.orientation), 0, stages.length - 1);
-  }
-
-  function positionStageRail(logicalPosition) {
-    const logical = clamp(logicalPosition, 0, stages.length - 1);
-    const anchorIndex = Math.round(logical);
-    const recycled = moveStageWindow(desiredStageWindow(anchorIndex));
-    if (recycled) syncStageCards();
-    const card = $("stageRail").querySelector(`[data-stage-index="${anchorIndex}"]`);
-    if (!card) return logical;
-    card.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" });
-    const geometry = stageRailGeometry();
-    const fraction = logical - anchorIndex;
-    if (Math.abs(fraction) > 0.0001) geometry.rail.scrollLeft += fraction * geometry.orientation * geometry.cssPitch;
-    geometry.rail.dataset.wpStageDragLogical = logical.toFixed(4);
-    return logical;
-  }
-
-  function selectStage(index, restoreFocus = false) {
-    selectedStageIndex = clamp(index, 0, stages.length - 1);
-    ensureStageWindow(selectedStageIndex);
-    positionStageRail(selectedStageIndex);
-    syncStageCards();
-    if (restoreFocus) $("stageRail").querySelector(`[data-stage-index="${selectedStageIndex}"]`)?.focus({ preventScroll: true });
-  }
-
-  function installVirtualStageDrag() {
-    const rail = $("stageRail");
-    if (!rail || rail.dataset.wpStageVirtualDrag === "true") return;
-    rail.dataset.wpStageVirtualDrag = "true";
-    rail.dataset.wpStageCenterObserver = "manual";
-    const baseSnap = rail.style.getPropertyValue("scroll-snap-type");
-    const baseBehavior = rail.style.getPropertyValue("scroll-behavior");
-    let pointerId = null;
-    let startX = 0;
-    let lastX = 0;
-    let dragLogical = 0;
-    let moved = false;
-    let suppressClick = false;
-    const restoreRailBehavior = () => {
-      if (baseBehavior) rail.style.setProperty("scroll-behavior", baseBehavior); else rail.style.removeProperty("scroll-behavior");
-      if (baseSnap) rail.style.setProperty("scroll-snap-type", baseSnap); else rail.style.removeProperty("scroll-snap-type");
-      delete rail.dataset.wpStageSettling;
-      delete rail.dataset.wpDragDown;
-      rail.classList.remove("wp-stage-dragging");
-    };
-    restoreStageRailBehavior = () => { pointerId = null; moved = false; suppressClick = false; restoreRailBehavior(); };
-    rail.addEventListener("pointerdown", (event) => {
-      if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
-      cancelAnimationFrame(stageSettleRaf);
-      stageSettleRaf = 0;
-      pointerId = event.pointerId;
-      startX = lastX = event.clientX;
-      dragLogical = currentStageLogicalPosition();
-      moved = false;
-      rail.style.setProperty("scroll-behavior", "auto", "important");
-      rail.style.setProperty("scroll-snap-type", "none", "important");
-      rail.dataset.wpDragDown = "1";
-      event.stopImmediatePropagation();
-    }, true);
-    document.addEventListener("pointermove", (event) => {
-      if (event.pointerId !== pointerId) return;
-      const delta = event.clientX - lastX;
-      lastX = event.clientX;
-      if (!moved && Math.abs(event.clientX - startX) > 4) {
-        moved = true;
-        rail.classList.add("wp-stage-dragging");
-      }
-      if (moved) {
-        const { pitch, orientation } = stageRailGeometry();
-        if (event.cancelable) event.preventDefault();
-        dragLogical = positionStageRail(dragLogical - delta / (pitch * orientation));
-      }
-      event.stopImmediatePropagation();
-    }, true);
-    const finish = (event) => {
-      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
-      pointerId = null;
-      rail.dataset.wpDragDown = "0";
-      rail.classList.remove("wp-stage-dragging");
-      if (moved) {
-        if (event.cancelable) event.preventDefault();
-        const from = dragLogical;
-        const index = clamp(Math.round(from), 0, stages.length - 1);
-        const duration = motion.reduced ? 0 : Number(rail.dataset.wpStageSettleDuration) || 340;
-        const start = performance.now();
+    const config = window.AnimalSanctuaryLoopStageConfig.create({
+      stages,
+      readSave: () => save,
+      text: t,
+      objectiveFor,
+      describeStage,
+    });
+    stageSelector = window.WeightPlayPlayUI.mountStage({
+      page: $("missionsTab"),
+      rail: $("stageRail"),
+      config,
+      selected: selectedStageIndex,
+      onSelect(index) {
         selectedStageIndex = index;
-        syncStageCards();
-        positionStageRail(from);
-        rail.dataset.wpStageSettling = "true";
-        const settle = (now) => {
-          const progress = duration === 0 ? 1 : clamp((now - start) / duration, 0, 1);
-          const eased = progress * progress * (3 - 2 * progress);
-          positionStageRail(from + (index - from) * eased);
-          if (progress < 1) stageSettleRaf = requestAnimationFrame(settle);
-          else {
-            stageSettleRaf = 0;
-            positionStageRail(index);
-            syncStageCards();
-            restoreRailBehavior();
-          }
-        };
-        stageSettleRaf = requestAnimationFrame(settle);
-        suppressClick = true;
-        setTimeout(() => { suppressClick = false; }, 0);
-      } else restoreRailBehavior();
-      moved = false;
-      event.stopImmediatePropagation();
-    };
-    document.addEventListener("pointerup", finish, true);
-    document.addEventListener("pointercancel", finish, true);
-    rail.addEventListener("click", (event) => {
-      if (!suppressClick) return;
-      suppressClick = false;
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    }, true);
+        updateStageFrameInfo();
+      },
+      onStart(index) {
+        if (heldScreenTransition === "main" || stageAtelierOpen) return;
+        selectedStageIndex = index;
+        startBattle(index);
+      },
+      isActive: () => currentScreen === "stage" && !stageAtelierOpen,
+    });
+    return stageSelector;
+  }
+
+  function setStageAtelier(open) {
+    stageAtelierOpen = Boolean(open);
+    if (stageAtelierOpen) stageSelector?.cancel();
+    $("missionsTab").hidden = stageAtelierOpen;
+    $("atelierTab").hidden = !stageAtelierOpen;
+    if (stageActionButton) {
+      stageActionButton.textContent = t(stageAtelierOpen ? "missions" : "atelier");
+      stageActionButton.setAttribute("aria-label", stageActionButton.textContent);
+      stageActionButton.setAttribute("aria-pressed", String(stageAtelierOpen));
+    }
+    if (stageAtelierOpen) motion.reveal($("atelierTab"));
+    else {
+      const selector = ensureStageSelector();
+      selector.refresh(selectedStageIndex);
+    }
   }
 
   function renderStage() {
-    if (!stageCardPool.length) buildStageCardPool();
-    ensureStageWindow(selectedStageIndex);
-    installVirtualStageDrag();
-    $("stageProgress").textContent = `${Object.keys(save.stars).length} / 30`;
+    stageAtelierOpen = false;
+    $("missionsTab").hidden = false;
+    $("atelierTab").hidden = true;
+    if (stageActionButton) stageActionButton.textContent = t("atelier");
+    renderAtelier();
+    updateStageFrameInfo();
+    ensureStageSelector().refresh(selectedStageIndex);
   }
 
   function centerCurrentStage(restoreFocus = true) {
-    ensureStageWindow(selectedStageIndex);
-    requestAnimationFrame(() => selectStage(selectedStageIndex, restoreFocus));
+    const selector = ensureStageSelector();
+    selector.refresh(selectedStageIndex);
+    if (restoreFocus) selector.select(selectedStageIndex, { focus: true });
   }
-
-  $("stageRail").addEventListener("wonder:stage-snap", (event) => {
-    const index = Number(event.detail?.index);
-    if (Number.isInteger(index)) selectStage(index, false);
-  });
 
   function renderAtelier() {
     $("trailStyles").replaceChildren(...Object.entries(styleData).map(([id, style]) => {
@@ -675,41 +462,13 @@
     window.WeightPlayAudio?.play?.("feedback.success");
   }
 
-  const stageTabButtons = [...document.querySelectorAll(".stage-tabs [data-tab]")];
-  function activateStageTab(button, restoreFocus = false) {
-    stageTabButtons.forEach((item) => {
-      const active = item === button;
-      item.classList.toggle("active", active);
-      item.setAttribute("aria-selected", active ? "true" : "false");
-      item.tabIndex = active ? 0 : -1;
-    });
-    $("missionsTab").hidden = button.dataset.tab !== "missions";
-    $("atelierTab").hidden = button.dataset.tab !== "atelier";
-    motion.reveal($(button.dataset.tab === "missions" ? "missionsTab" : "atelierTab"));
-    if (restoreFocus) button.focus({ preventScroll: true });
-  }
-  document.querySelector(".stage-tabs")?.setAttribute("role", "tablist");
-  stageTabButtons.forEach((button, index) => {
-    const panel = $(button.dataset.tab === "missions" ? "missionsTab" : "atelierTab");
-    button.id ||= `stageTab-${button.dataset.tab}`;
-    button.setAttribute("role", "tab");
-    button.setAttribute("aria-controls", panel.id);
-    button.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
-    panel.setAttribute("role", "tabpanel");
-    panel.setAttribute("aria-labelledby", button.id);
-    button.addEventListener("click", () => activateStageTab(button));
-    button.addEventListener("keydown", (event) => {
-      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-      event.preventDefault();
-      const next = event.key === "Home"
-        ? 0
-        : event.key === "End"
-          ? stageTabButtons.length - 1
-          : (index + (event.key === "ArrowRight" ? 1 : -1) * (document.documentElement.dir === "rtl" ? -1 : 1) + stageTabButtons.length) % stageTabButtons.length;
-      activateStageTab(stageTabButtons[next], true);
-    });
-  });
-  activateStageTab(stageTabButtons.find((button) => button.classList.contains("active")) || stageTabButtons[0]);
+  stageActionButton = document.createElement("button");
+  stageActionButton.type = "button";
+  stageActionButton.textContent = t("atelier");
+  stageActionButton.setAttribute("aria-label", t("atelier"));
+  stageActionButton.setAttribute("aria-pressed", "false");
+  screenFrame.commonDownButton.add(stageActionButton);
+  stageActionButton.addEventListener("click", () => setStageAtelier(!stageAtelierOpen));
 
   let heldScreenTransition = "";
   const activationKey = (event) => event.key === "Enter" || event.key === " " || event.key === "Spacebar";
@@ -771,6 +530,15 @@
   let lastHud = "";
   let lifecycleSuspended = false;
   let windowFocused = document.hasFocus();
+  const joystick = window.WeightPlayJoystick.create({
+    surface: canvas,
+    container: $("arenaBoard"),
+    mode: "fixed",
+    anchor: { left: 76, bottom: 76 },
+    enabled: false,
+    isEnabled: () => currentScreen === "battle" && Boolean(run) && !run.paused
+      && !run.finished && !activeModal() && !lifecycleSuspended && !settingsPaused,
+  });
 
   const indexFor = (x, y) => Math.max(0, Math.min(GRID - 1, Math.floor(y))) * GRID
     + Math.max(0, Math.min(GRID - 1, Math.floor(x)));
@@ -919,13 +687,13 @@
     ensureVisibleTick();
     if (!lifecycleSuspended) raf = requestAnimationFrame(frame);
     window.WeightPlayAudio?.play?.("game.start");
-    if (!save.tutorialSeen && !interfaceValidator) requestAnimationFrame(() => openTutorial(false));
+    if (!save.tutorialSeen) requestAnimationFrame(() => openTutorial(false));
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
 
   function stopLoop() {
-    resetStick();
+    joystick.reset();
     if (raf) cancelAnimationFrame(raf);
     raf = 0;
     if (visibleTick) clearInterval(visibleTick);
@@ -963,6 +731,7 @@
     (__wpNotifyMeasurement(), run.paused = true);
     run.player.dx = 0;
     run.player.dy = 0;
+    syncJoystick();
     stopLoop();
   }
 
@@ -971,6 +740,7 @@
     (__wpNotifyMeasurement(), lifecycleSuspended = false);
     if (currentScreen !== "battle" || !run || run.finished || activeModal() || sharedSettingsOpen()) return;
     (__wpNotifyMeasurement(), run.paused = false);
+    syncJoystick();
     ensureVisibleTick();
     resumeLoop();
   }
@@ -1338,6 +1108,8 @@
     }
     const dt = Math.min(0.04, (now - lastTime) / 1000 || 0);
     lastTime = now;
+    const direction = joystick.getVector();
+    if (direction.active) setDirection(direction.x, direction.y / window.SanctuaryBlockWorld.C);
     update(dt);
     draw();
     if (!run.finished && !run.paused) raf = requestAnimationFrame(frame);
@@ -1361,8 +1133,20 @@
   }
 
   let arenaPointer = null;
+  function startsAtJoystickAnchor(event) {
+    const rect = canvas.getBoundingClientRect();
+    const scale = canvas.clientWidth / Math.max(1, rect.width);
+    const x = (event.clientX - rect.left) * scale;
+    const y = (event.clientY - rect.top) * scale;
+    const anchorY = canvas.clientHeight - 76;
+    return Math.hypot(x - 76, y - anchorY) <= 72;
+  }
   canvas.addEventListener("pointerdown", (event) => {
     if (!run || run.paused || run.finished || arenaPointer !== null) return;
+    if (event.defaultPrevented || startsAtJoystickAnchor(event)) {
+      canvas.focus({ preventScroll: true });
+      return;
+    }
     event.preventDefault();
     arenaPointer = event.pointerId;
     canvas.focus({ preventScroll: true });
@@ -1394,32 +1178,6 @@
     });
     button.addEventListener("click", () => setDirection(...dirs[button.dataset.dir]));
   });
-  // Drag relative to a fixed thumb origin; releasing recenters the stick while
-  // the arcade's existing continuous movement stays consistent with the D-pad.
-  let stickPointer = null;
-  const stick = $("steerStick"), knob = $("stickKnob");
-  function resetStick() {
-    stickPointer = null;
-    arenaPointer = null;
-    knob.style.transform = "translate(0px,0px)";
-    stick.dataset.active = "false";
-  }
-  function steer(event) {
-    if (event.pointerId !== stickPointer || !run || run.paused || run.finished) return;
-    const r = stick.getBoundingClientRect(), dx = event.clientX - r.left - r.width / 2, dy = event.clientY - r.top - r.height / 2;
-    const length = Math.hypot(dx, dy), limit = r.width * .28, scale = Math.min(1, limit / (length || 1));
-    const logicalScale = stick.clientWidth / r.width;
-    knob.style.transform = `translate(${dx * scale * logicalScale}px,${dy * scale * logicalScale}px)`;
-    if (length > r.width * .09) setDirection(dx, dy / window.SanctuaryBlockWorld.C);
-  }
-  stick.addEventListener("pointerdown", (event) => {
-    if (!run || run.paused || run.finished || stickPointer !== null) return;
-    event.preventDefault();stickPointer = event.pointerId;stick.setPointerCapture?.(event.pointerId);stick.dataset.active = "true";steer(event);
-  });
-  stick.addEventListener("pointermove", steer);
-  for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) stick.addEventListener(type, (event) => { if (event.pointerId === stickPointer) resetStick(); });
-  window.addEventListener("blur", resetStick);
-  document.addEventListener("visibilitychange", resetStick);
   $("mapToggle").addEventListener("click", () => {
     if (!run || run.paused || run.finished) return;
     $("mapToggle").setAttribute("aria-pressed", String(blockView.toggleOverview()));
@@ -1438,12 +1196,14 @@
       settingsPaused = true;
       run.paused = true;
       motion.pauseUI(true);
+      syncJoystick();
       stopLoop();
     } else if (settingsPaused) {
       settingsPaused = false;
       if (!activeModal() && !lifecycleSuspended && !document.hidden) {
         run.paused = false;
         motion.pauseUI(false);
+        syncJoystick();
         ensureVisibleTick();
         resumeLoop();
       }
@@ -1455,6 +1215,14 @@
     return [$("leave"), $("tutorial"), $("result")].find((modal) => !modal.hidden) || null;
   }
 
+  function syncJoystick() {
+    if (!joystick) return;
+    const enabled = currentScreen === "battle" && Boolean(run) && !run.paused
+      && !run.finished && !activeModal() && !lifecycleSuspended && !settingsPaused;
+    joystick.setEnabled(enabled);
+    if (enabled) joystick.refresh();
+  }
+
   function modalButtons(modal) {
     return [...modal.querySelectorAll("button:not([hidden]):not(:disabled)")];
   }
@@ -1462,6 +1230,7 @@
   function openModal(modal, focusTarget) {
     modalReturnFocus = document.activeElement;
     if (run) (__wpNotifyMeasurement(), run.paused = true);
+    syncJoystick();
     stopLoop();
     (__wpNotifyMeasurement(), modal.hidden = false);
     motion.reveal(modal.firstElementChild);
@@ -1476,6 +1245,7 @@
     screenFrame.activate("battle");
     if (run && !run.finished && !lifecycleSuspended && !sharedSettingsOpen()) {
       (__wpNotifyMeasurement(), run.paused = false);
+      syncJoystick();
       ensureVisibleTick();
       resumeLoop();
     }
@@ -1526,6 +1296,7 @@
     if (!run || run.finished) return;
     run.finished = true;
     (__wpNotifyMeasurement(), run.paused = true);
+    syncJoystick();
     resultDecisionCommitted = false;
     for (const action of [$("retry"), $("resultStage"), $("nextMission")]) action.disabled = false;
     stopLoop();
@@ -1592,6 +1363,7 @@
     (__wpNotifyMeasurement(), $("result").hidden = true);
     $("battleLive").inert = false;
     run = null;
+    selectedStageIndex = Math.min(save.unlocked, stages.length) - 1;
     showScreen("stage");
   }));
   $("nextMission").addEventListener("click", () => commitResultDecision(() => {

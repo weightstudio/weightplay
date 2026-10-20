@@ -180,13 +180,14 @@
 .stage-card{position:relative;grid-template-rows:auto auto minmax(0,1fr)}
 .stage-card>small{position:absolute;inset-block-start:54px;inset-inline-end:12px;min-width:58px;min-height:28px;padding:4px 8px;border:1px solid #ffffff24;background:#071c2de8}
 
-/* Owned workspaces inside the shared frame; never restyle shared controls. */
+/* Game-owned Stage tab contents sit inside the shared I9 scene. */
 #gameFrame .main-screen,#gameFrame .main-hero{min-height:0;padding:0}
 #gameFrame>.locale-control{display:none!important}
-#stageWorkspace{min-height:0;display:flex;flex-direction:column;gap:8px;overflow:hidden}
-#stageWorkspace #stageSummary{text-align:center;flex:0 0 auto}
-#stageWorkspace .chapter-panel{flex:0 0 auto}
-#stageWorkspace .stage-rail,#stageWorkspace .prep-panel{flex:1;min-height:0}
+#stageWorkspace{position:relative;min-width:0;min-height:0;width:100%;height:100%;overflow:hidden}
+#stageSelectorPage{width:100%;height:100%;min-height:0}
+#stageSelectorPage.hidden{display:none!important}
+#stageWorkspace .prep-panel:not([hidden]){width:100%;height:100%;min-height:0;max-height:none;box-sizing:border-box}
+#stageWorkspace .workshop:not([hidden]){overflow:auto}
 #gameFrame .battle-live{min-height:0;grid-template-rows:minmax(0,1fr)}
 #gameFrame .battle-live.is-settled{visibility:hidden;pointer-events:none}
 #gameFrame .modal-layer{grid-area:1/1/-1/-1}
@@ -222,3 +223,5 @@ html[dir="rtl"] #gameFrame :is(.command-cell button,.command-head .charge-meter>
   #gameFrame .result-card{max-height:100%;min-height:0;overflow-y:auto;align-content:start;box-sizing:border-box}
   #gameFrame .result-actions{padding-bottom:4px}
 }
+/* The shared I9 frame paints the page surface; the game must not tint html. */
+html{background:transparent!important}

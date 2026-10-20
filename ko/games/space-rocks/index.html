@@ -22,23 +22,28 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-interface-version" content="9">
   <title>스페이스 록스 | WeightPlay</title>
 
   <link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0">
-  <link rel="stylesheet" href="/games/space-rocks/art.css?v=20261018-campaign-v23">
+  <link rel="stylesheet" href="/games/space-rocks/art.css?v=20261021-space-rocks-i9-landscape-dialog-v1">
 <link rel="stylesheet" href="/src/game-play-ui.css?v=20261018-space-campaign">
 <link rel="stylesheet" href="/src/loading-screen.css">
-<link rel="stylesheet" href="/src/game-page-info.css?v=20260905-space-score-reserve-v19">
-  <meta name="description" content="룩스를 조종해 세 번의 표류 광석 웨이브를 깨고 수호 코어를 위해 실드를 아끼세요." />
+<link rel="stylesheet" href="/src/game-page-info.css?v=20261014-guide-related-i9-v1">
+<script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
+<script src="/src/shared-interface-bootstrap.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-shared-interface="7"></script>
+<link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<meta name="weightplay-game-version" content="v23">
+  <meta name="description" content="30개 스테이지 우주 캠페인에서 수정을 모으고 포드를 구출하며 보스 6종에 도전하세요." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="스페이스 록스 | WeightPlay" />
-    <meta property="og:description" content="룩스를 조종해 세 번의 표류 광석 웨이브를 깨고 수호 코어를 위해 실드를 아끼세요." />
+    <meta property="og:description" content="30개 스테이지 우주 캠페인에서 수정을 모으고 포드를 구출하며 보스 6종에 도전하세요." />
     <meta property="og:url" content="https://weightplay.com/ko/games/space-rocks/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/space-rocks.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="스페이스 록스 | WeightPlay" />
-    <meta name="twitter:description" content="룩스를 조종해 세 번의 표류 광석 웨이브를 깨고 수호 코어를 위해 실드를 아끼세요." />
+    <meta name="twitter:description" content="30개 스테이지 우주 캠페인에서 수정을 모으고 포드를 구출하며 보스 6종에 도전하세요." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/space-rocks.webp" />
     <script type="application/ld+json">
 {
@@ -48,7 +53,7 @@
   "alternateName": "Space Rocks",
   "url": "https://weightplay.com/ko/games/space-rocks/",
   "image": "https://weightplay.com/assets/interface7-redrawn/space-rocks.webp",
-  "description": "룩스를 조종해 세 번의 표류 광석 웨이브를 깨고 수호 코어를 위해 실드를 아끼세요.",
+  "description": "30개 스테이지 우주 캠페인에서 수정을 모으고 포드를 구출하며 보스 6종에 도전하세요.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -69,10 +74,11 @@
 }
     </script>
   </head>
-<body data-game-id="space-rocks" data-wp-game-id="space-rocks" data-wp-game-version="v23" data-wp-interface-version="7" data-wp-game-owned-guide="true" data-sound-toggle="off">
+<body data-game-id="space-rocks" data-wp-game-id="space-rocks" data-wp-game-version="v23" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-sound-toggle="off">
 <div id="loadingPanel" class="loading-panel" role="status"></div>
-<main data-space-campaign data-wp-frame-root data-runtime-localize="off"></main>
-<details id="spaceRocksStaticGuide" class="game-page-info game-page-info-static" data-wp-space-rocks-guide><summary>비행 안내</summary><h1>스페이스 록스</h1><p>WASD, 방향키, 조이스틱으로 이동. 자동 조준과 발사. 수정에 접근해 수집하고 캡슐을 중앙으로 운반하세요. 보호막은 2초 방어, 펄스는 주변 위협 제거. 둘 다 재충전. 완료하면 다음 스테이지 해제. 완료, 무손상, 절반 시간 내 무손상으로 별 획득. 이 브라우저에 저장됩니다.</p></details>
+<main data-space-campaign data-wp-frame-root data-runtime-localize="off">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">스페이스 록스</h1></main>
+<section id="spaceRocksStaticGuide" class="game-page-info game-page-info-static" data-wp-preserve-static-guide data-wp-game-owned-guide="true" data-wp-game-guide data-wp-guide-related-interface="9" data-wp-space-rocks-guide aria-label="비행 안내"><h2>비행 안내</h2><p>WASD, 방향키, 조이스틱으로 이동. 자동 조준과 발사. 수정에 접근해 수집하고 캡슐을 중앙으로 운반하세요. 보호막은 2초 방어, 펄스는 주변 위협 제거. 둘 다 재충전. 완료하면 다음 스테이지 해제. 완료, 무손상, 절반 시간 내 무손상으로 별 획득. 이 브라우저에 저장됩니다.</p><div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>스테이지를 클리어하려면?</dt><dd>해당 스테이지에 표시된 목표를 완료하면 다음 스테이지가 열립니다. 캠페인은 30개 스테이지와 보스 6종으로 구성됩니다.</dd></div><div><dt>보호막과 펄스는 어떤 기능인가요?</dt><dd>보호막은 2초 동안 피해를 막고, 펄스는 주변 위협을 제거합니다. 둘 다 사용 후 재충전됩니다.</dd></div><div><dt>진행 상황은 저장되나요?</dt><dd>완료한 스테이지와 획득한 별은 이 브라우저에 저장됩니다. 스테이지 도중 나가면 해당 도전 기록은 사라집니다.</dd></div></dl></div><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>더 많은 관련 게임</h3><p>다른 아케이드 게임도 이어서 즐겨 보세요.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="snake" data-related-game="snake" href="/ko/games/snake/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/snake.webp" data-final-src="/assets/weightplay-logo.png" alt="스네이크" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">스네이크</strong></span></a><a class="game-info-related-card" data-game-id="maze-chase" data-related-game="maze-chase" href="/ko/games/maze-chase/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/maze-chase.webp" data-final-src="/assets/weightplay-logo.png" alt="미로 추격" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">미로 추격</strong></span></a></div></div></section>
 <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
 <script src="/src/game-layout-config.js?v=20260919-banner1"></script>
 <script src="/src/weightplay-audio.js?v=1.0.0"></script>
@@ -81,38 +87,12 @@
 <script src="/src/edge-guard.js"></script>
 <script src="/src/analytics.js?v=20260929-block-world-v3"></script>
 <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="/src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+  <script src="/src/game-screen-frame.js?v=20261021-space-rocks-i9-battle-root-v1"></script>
 <script src="/src/game-play-ui.js?v=20261018-space-campaign"></script>
 <script src="/games/space-rocks/analytics-ownership.js?v=20261018-campaign-v23"></script>
 <script src="/games/space-rocks/locales.js?v=20261018-campaign-v23"></script>
-<script src="/games/space-rocks/game.js?v=20261018-campaign-v23"></script>
+<script src="/games/space-rocks/game.js?v=20261021-space-rocks-v23-i9"></script>
 <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="스페이스 록스 게임 정보">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>스페이스 록스</h2><p>룩스를 조종해 세 번의 표류 광석 웨이브를 깨고 수호 코어를 위해 실드를 아끼세요.</p></div>
-      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>관성 기반 아케이드 슈팅</span><span>소행성 분할</span><span>보호막 + 연사</span></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>관성 우주 슈터</strong></div><div class="game-info-fact"><span>장르</span><strong>아케이드 · 우주 슈팅 · 액션</strong></div><div class="game-info-fact"><span>난이도</span><strong>시작은 쉽고 숙련은 도전적</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>3~10분</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>세계와 목표</h3><p>전장은 고정된 길이 아니라 양 끝이 이어지는 열린 공간입니다. 짧은 추진도 우주선의 다음 궤도를 바꾸므로 조준은 이동과 함께 생각해야 합니다. 발사할 때마다 그다음에 우주선이 어디로 흘러갈지 결정합니다.</p>
-<p>큰 바위는 중간 조각으로, 중간 조각은 작은 파편으로 나뉩니다. 뒤 웨이브에는 움직이는 UFO, 래피드 파이어 기회, 더 촘촘한 위험이 추가되고, 마지막 웨이브의 가디언 코어는 분명한 목표와 승리 보상을 제공합니다.</p></div>
-      <div class="game-info-section"><h3>게임 시스템</h3><p>왼쪽과 오른쪽으로 회전하고, 위쪽 키 또는 W로 추진하며, 스페이스로 발사합니다. Shift 또는 실드 버튼으로 횟수가 제한된 실드를 사용합니다. 터치 버튼도 같은 행동을 제공합니다.</p>
-<p>탄환은 이어진 전장을 가로질러 이동합니다. 큰 바위는 중간 바위 두 개로, 중간 바위는 작은 파편으로 나뉘며, 모두 제거하면 점수와 콤보와 파편 수가 올라갑니다.</p>
-<p>래피드 파이어는 잠시 발사 간격을 줄입니다. 실드는 가까운 충돌을 막지만 용량이 제한되어 있으므로 매번 통과할 때 쓰면 코어전에서 필요한 자원이 부족해집니다.</p>
-<p>세 번째 웨이브에는 주황색 가디언 코어가 나타납니다. 충돌하면 우주선이 전장으로 돌아오고 피격 기회를 하나 사용합니다. 다섯 번 피격되면 라운드가 끝나며, 세 웨이브를 모두 제거하면 성공 결과가 열립니다.</p></div>
-      <div class="game-info-section"><h3>게임 방법</h3><ol><li>메인 화면에서 시작해 추진을 한 번 눌러 처음의 이동 신호를 확인한 뒤 긴 추진을 할지 결정하세요.</li><li>가장 가까운 큰 바위를 향해 회전하고 짧게 연사하며, 관성으로 전장을 돌아가세요.</li><li>명중할 때마다 파편을 확인하세요. 큰 바위는 더 작은 조각을 처리해야 완전히 제거됩니다.</li><li>래피드 파이어는 보이면 획득하되, 실드는 가까운 통과나 복잡한 가디언 코어 구간을 위해 남겨 두세요.</li><li>세 웨이브를 제거하거나 재시작으로 라운드를 초기화해 새 자원으로 첫 궤도를 연습하세요.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>추진을 계속 누르기보다 짧은 추진과 회전으로 다음 호를 만들면 속도를 제어하기 쉽습니다.</li><li>바위가 경로에 들어오기 전에 발사하고, 분열된 파편에서 멀어지도록 회전하세요. 한곳에 멈추려 하지 마세요.</li><li>큰 바위, 중간 바위, 작은 파편을 이어서 제거하면 콤보를 유지할 수 있지만 위험한 근접 사격보다 생존을 우선하세요.</li><li>실드는 위험 구역을 통과하는 타이밍 도구로 사용하고, 제한된 용량을 항상 켜 둔 갑옷처럼 쓰지 마세요.</li><li>세 번째 웨이브에서는 코어 주위를 돌며 주황색 코어를 먼저 처리한 뒤 다른 표적을 쫓으세요.</li></ul></div>
-      <div class="game-info-section"><h3>진행과 난이도</h3><p>첫 번째 웨이브에서 회전, 추진, 관성 이동과 큰 바위가 작은 파편으로 이어지는 분열을 배웁니다.</p>
-<p>두 번째 웨이브에는 더 많은 바위, 움직이는 UFO, 연사 압박이 추가되어 조준과 이동을 함께 다뤄야 합니다.</p>
-<p>세 번째 웨이브에는 가디언 코어와 더 빽빽한 파편이 추가되어 실드 타이밍과 통제된 선회를 시험합니다.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>스페이스 록스는 오리지널 Canvas 전장, 우주선, 수정 바위, UFO, 가디언, 파티클과 사운드를 사용합니다. 반응형 논리 캔버스, 키보드와 터치 조작, 현지화된 신호, 점수와 최고 기록, 성공·실패·다시 플레이·재시작·메인 화면 복귀 흐름을 모두 제공합니다.</p></div>
-      <div class="game-info-section game-info-save"><h3>플레이어 및 저장 정보</h3><p>최고 점수와 사운드 설정은 이 브라우저에 저장됩니다. 계정이나 구매는 필요하지 않습니다. 브라우저 데이터를 지우면 이 로컬 기록이 삭제될 수 있습니다.</p></div>
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>관성은 어떻게 조절하나요?</dt><dd>추진하면 속도가 올라가고 우주선은 계속 미끄러집니다. 회전과 짧은 추진으로 다음 궤도를 만들고 즉시 멈출 것이라고 기대하지 마세요.</dd></div><div><dt>큰 바위에 맞으면 어떻게 되나요?</dt><dd>중간 바위로 나뉜 뒤 작은 파편으로 나뉩니다. 분열된 연쇄를 모두 제거하면 점수와 파편 수를 얻습니다.</dd></div><div><dt>래피드 파이어는 무엇인가요?</dt><dd>발사 간격을 잠시 줄이는 강화 효과로, 파편이 빽빽한 구역을 정리하기 쉽게 합니다.</dd></div><div><dt>실드는 어떻게 사용하나요?</dt><dd>위험 구역을 지나거나 가디언에 가까이 갈 때 사용하세요. 용량은 제한되며 보호받지 못한 충돌 다섯 번이면 라운드가 끝납니다.</dd></div><div><dt>세 번째 웨이브에서는 무엇이 달라지나요?</dt><dd>주황색 가디언 코어와 더 큰 압박이 나타나므로 코어 신호와 실드 타이밍이 중요해집니다.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>최고 점수와 사운드 설정은 이 브라우저에 저장되며 계정은 필요하지 않습니다.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/snake/"><img src="/assets/interface7-redrawn/snake.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>스네이크</strong><span>격자에서 자라나는 뱀을 조종해 먹이를 모으고 몸통과 Gate·Orbit 장애물을 피하세요.</span></span></a><a class="game-info-related-card" href="/ko/games/maze-chase/"><img src="/assets/interface7-redrawn/maze-chase.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>미로 추격</strong><span>미로 추격은 고정 미로에서 별 조각을 모으는 WeightPlay 오리지널 게임입니다.</span></span></a></div></div>
-    </div>
-  </section>
 </body></html>
