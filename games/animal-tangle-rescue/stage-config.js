@@ -3,11 +3,12 @@
   'use strict';
   const scriptUrl = document.currentScript?.src || document.baseURI;
   const poster = new URL('assets/animal-tangle-rescue-cover.webp', scriptUrl).href;
+  const background = new URL('../../assets/lobby-block-atmosphere.svg', scriptUrl).href;
   window.TangleRescueStageConfig = Object.freeze({
     gameId: 'animal-tangle-rescue',
     get count() { return window.AnimalTangleRescueI9?.stageCount || 30; },
     poster,
-    background: poster,
+    background,
     stage(index) {
       const record = window.AnimalTangleRescueI9?.stageRecord(index);
       if (!record) throw new RangeError(`Unknown Tangle Rescue stage: ${index}`);

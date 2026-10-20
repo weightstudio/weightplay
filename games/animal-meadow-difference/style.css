@@ -17,7 +17,7 @@ button { cursor: pointer; }
 .hero-copy { display: grid; align-content: center; gap: 12px; min-width: 0; }
 .hero-copy > * { margin: 0; }
 .main-summary { line-height: 1.5; }
-.facts { color: var(--wp-ui-muted, #b9cbd1); line-height: 1.45; }
+.facts { line-height: 1.45; }
 .locale-source { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
 
 .battle-workspace { display: grid; align-content: start; justify-items: center; gap: 12px; width: 100%; min-width: 0; min-height: 0; padding: 16px; overflow: auto; }

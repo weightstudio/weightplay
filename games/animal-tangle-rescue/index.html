@@ -24,17 +24,17 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-version" content="v11">
-  <meta name="weightplay-interface-version" content="7">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="An internal WeightPlay puzzle about swapping vine endpoints to rescue animals.">
   <title>Tangle Rescue | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261019-guide-no-legacy-stage-css-v1">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20261017-shared-play-canvas1">
-  <link rel="stylesheet" href="style.css?v=20261019-tangle-rescue-i9-motion-v1">
+  <link rel="stylesheet" href="style.css?v=20261020-tangle-rescue-i9-shared-surfaces-v1">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-settings-locale-adoption-v1">
   <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261017-interface9-guide-theme1">
 </head>
-<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-tangle-rescue" data-wp-game-version="v11" data-wp-interface-candidate="9" data-wp-battle-layout="native" data-screen="main">
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-tangle-rescue" data-wp-game-version="v11" data-wp-interface-version="9" data-wp-battle-layout="native" data-screen="main">
   <div id="app" data-wp-frame-root data-wp-game-shell-root data-wp-play-ui="1" hidden>
     <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-main-screen>
       <div class="main-canvas" data-wp-standard-main-screen data-wp-logical-main-canvas>
@@ -61,10 +61,10 @@
     <details id="guideScreen" class="guide-card game-page-info" data-wp-game-guide aria-labelledby="guideHeading">
       <summary id="guideHeading" data-copy="guideTitle">How to play</summary>
       <div class="guide-canvas" data-wp-logical-guide-canvas>
-        <div class="guide-grid">
-          <article><span class="step-dot">1</span><h3 data-copy="guideOneTitle">Read the shelters</h3><p data-copy="guideOne">The bottom row shows which animal belongs in each shelter.</p></article>
-          <article><span class="step-dot">2</span><h3 data-copy="guideTwoTitle">Swap two endpoints</h3><p data-copy="guideTwo">Tap one vine end, then another. Their animals trade places.</p></article>
-          <article><span class="step-dot">3</span><h3 data-copy="guideThreeTitle">Check the rescue</h3><p data-copy="guideThree">Every correct trail locks in. Wrong tries stay visible and safe.</p></article>
+        <div class="game-info-sections">
+          <section class="game-info-section"><span class="step-dot">1</span><h3 data-copy="guideOneTitle">Read the shelters</h3><p data-copy="guideOne">The bottom row shows which animal belongs in each shelter.</p></section>
+          <section class="game-info-section"><span class="step-dot">2</span><h3 data-copy="guideTwoTitle">Swap two endpoints</h3><p data-copy="guideTwo">Tap one vine end, then another. Their animals trade places.</p></section>
+          <section class="game-info-section"><span class="step-dot">3</span><h3 data-copy="guideThreeTitle">Check the rescue</h3><p data-copy="guideThree">Every correct trail locks in. Wrong tries stay visible and safe.</p></section>
         </div>
         <button id="guideStartBtn" class="primary-btn" type="button" data-copy="start">Start a rescue</button>
       </div>
@@ -106,7 +106,7 @@
   <script src="/src/game-entry-loader.js?v=20261018-entry-readiness-bridge2"></script>
   <script src="../../src/game-screen-frame.js?v=20261019-interface9-candidate-entry-loader-v1"></script>
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-ui1"></script>
-  <script src="stage-config.js?v=20261018-tangle-rescue-i9-candidate1"></script>
+  <script src="stage-config.js?v=20261020-tangle-rescue-i9-shared-surfaces-v1"></script>
   <script src="frame.js?v=20261018-tangle-rescue-i9-candidate1"></script>
   <script src="game.js?v=20261019-tangle-rescue-i9-motion-v1"></script>
 </body>

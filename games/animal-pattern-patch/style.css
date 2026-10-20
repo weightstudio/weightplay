@@ -34,7 +34,7 @@ h1, h2 { color:var(--deep-leaf); line-height:1.08; }
 h1 { margin-bottom:10px; font-size:clamp(2.15rem,8vw,4.5rem); letter-spacing:-.06em; }
 h2 { margin-bottom:10px; font-size:clamp(1.5rem,4vw,2.5rem); letter-spacing:-.04em; }
 .main-summary { max-width:38rem; margin:0 0 10px; font-size:1.08rem; line-height:1.55; }
-.cover-art { justify-self:center; width:420px; height:420px; aspect-ratio:1; display:block; border-radius:24px; object-fit:cover; object-position:center; background:var(--moss); }
+.cover-art { justify-self:center; width:420px; height:420px; aspect-ratio:1; display:block; border-radius:24px; object-fit:cover; object-position:center; background:transparent; }
 .main-progress { min-height:44px; display:flex; align-items:center; margin-top:12px; color:var(--deep-leaf); font-size:.9rem; font-weight:800; }
 .primary-button, .secondary-button, .text-button { min-height:48px; border-radius:14px; border:1px solid transparent; font-weight:800; transition:transform .18s ease,box-shadow .18s ease,background .18s ease; }
 .primary-button { padding:12px 18px; background:var(--deep-leaf); color:#fff; box-shadow:0 8px 18px rgba(49,91,73,.22); }
@@ -49,7 +49,7 @@ h2 { margin-bottom:10px; font-size:clamp(1.5rem,4vw,2.5rem); letter-spacing:-.04
 .guide-layout p { margin:0; color:var(--muted); line-height:1.5; }
 .guide-card:not([open]) .guide-layout { display:none; }
 .guide-pose { width:100%; max-height:180px; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 8px 10px rgba(49,91,73,.18)); }
-.battle-screen { width:100%; height:calc(100vh - var(--wp-ad-reserve-height, 0px)); min-height:0; margin-top:0; padding:0 14px 20px; overflow:auto; background:linear-gradient(rgba(255,253,247,.78),rgba(245,240,223,.84)),url("assets/animal-pattern-patch-background.png") center / cover; }
+.battle-screen { width:100%; height:calc(100vh - var(--wp-ad-reserve-height, 0px)); min-height:0; margin-top:0; padding:0 14px 20px; overflow:auto; background:transparent; }
 .battle-screen .main-header, .battle-screen .battle-header { position:sticky; top:0; z-index:10; width:min(892px,100%); margin:0 auto; background:rgba(255,253,247,.96); }
 .battle-content { width:min(640px,100%); margin:0 auto; padding-top:14px; text-align:center; }
 .status-row { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:0 auto 14px; color:var(--deep-leaf); font-size:.9rem; font-weight:900; }
@@ -75,7 +75,7 @@ h2 { margin-bottom:10px; font-size:clamp(1.5rem,4vw,2.5rem); letter-spacing:-.04
 .leave-dialog h2 { margin:0 0 10px; font-size:clamp(24px,4vw,34px); }
 .leave-dialog p { color:var(--muted); line-height:1.5; }
 .leave-dialog .result-actions { margin-top:18px; }
-.result-screen { position:absolute; z-index:25; inset:0; display:grid; place-items:center; overflow:auto; padding:20px 14px; background:linear-gradient(rgba(255,253,247,.94),rgba(245,240,223,.96)),url("assets/animal-pattern-patch-background.png") center / cover; }
+.result-screen { position:absolute; z-index:25; inset:0; display:grid; place-items:center; overflow:auto; padding:20px 14px; background:transparent; }
 .result-card { width:min(640px,100%); margin:0 auto; padding:28px 24px 36px; text-align:center; }
 .result-guide { display:block; width:min(150px,45vw); height:150px; margin:-10px auto -2px; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 8px 10px rgba(49,91,73,.18)); }
 .result-icon { display:grid; place-items:center; width:74px; height:74px; margin:0 auto 18px; border-radius:50%; background:var(--sun); color:#fff; font-size:2.3rem; }
