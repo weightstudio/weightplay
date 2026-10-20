@@ -9,35 +9,19 @@ const saveKey='wp-robot-dog-showtime-v2';
 const stages=STAGES;
 const loopbackHost=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname);
 const initialParams=new URLSearchParams(location.search);
-const reviewerPreview=window.__weightplayReviewerTopicsPreview;
-const currentGameId=document.body.dataset.wpGameId;
-const currentGameVersion=document.querySelector('meta[name="weightplay-game-version"]')?.content;
-const currentInterfaceVersion=document.querySelector('meta[name="weightplay-interface-version"]')?.content;
-const reviewerPracticeEntry=loopbackHost&&initialParams.get('preview')==='1'&&reviewerPreview?.role==='reviewer'&&reviewerPreview?.gameId===currentGameId&&reviewerPreview?.gameVersion===currentGameVersion&&String(reviewerPreview?.interfaceVersion)===String(currentInterfaceVersion);
-if(reviewerPracticeEntry){const localUrl=new URL(location.href);localUrl.searchParams.set('practice','1');history.replaceState(null,'',localUrl)}
-const practicePageIsolation=loopbackHost&&new URLSearchParams(location.search).get('practice')==='1';
+const practicePageIsolation=loopbackHost&&initialParams.get('practice')==='1';
 if(practicePageIsolation)document.body.dataset.localPracticePreview='true';
 const campaignSave=practicePageIsolation?null:readSave();
-let LocalPractice=null,save=campaignSave||emptyPracticeSave(),screen='main',stageIndex=0,activeStageRange=0,selectedActor=0,selectedBeat=0,plan=[],scene=null,renderEpoch=0,rehearsing=false,focusBeforeDialog=null,activeRemix=false,remixFirstRehearsal=false,practiceMode=false,practiceActive=false,practiceSave=null,practiceStartAuthorized=false;
-const els={main:$('mainScreen'),stage:$('stageScreen'),battle:$('battleScreen'),rail:$('stageRail'),spotlightRail:$('spotlightRail'),summary:$('stageSummary'),label:$('battleLabel'),status:$('cueStatus'),beatRail:$('beatRail'),dogPlan:$('dogPlan'),foxPlan:$('foxPlan'),dogGoal:$('dogGoal'),foxGoal:$('foxGoal'),canvas:$('stage3d'),fallback:$('renderFallback'),help:$('helpDialog'),leave:$('leaveDialog'),result:$('resultDialog')};
+let LocalPractice=null,save=campaignSave||emptyPracticeSave(),screen='main',stageIndex=0,selectedActor=0,selectedBeat=0,plan=[],scene=null,renderEpoch=0,rehearsing=false,focusBeforeDialog=null,activeRemix=false,remixFirstRehearsal=false,practiceMode=false,practiceActive=false,practiceSave=null,practiceStartAuthorized=false,sharedFrame=null;
+const els={main:$('mainScreen'),stage:$('stageScreen'),battle:$('battleScreen'),stageBack:$('stageBack'),label:$('battleLabel'),status:$('cueStatus'),beatRail:$('beatRail'),dogPlan:$('dogPlan'),foxPlan:$('foxPlan'),dogGoal:$('dogGoal'),foxGoal:$('foxGoal'),canvas:$('stage3d'),fallback:$('renderFallback'),help:$('helpDialog'),leave:$('leaveDialog'),result:$('resultDialog')};
 
 function readSave(){try{const raw=JSON.parse(localStorage.getItem(saveKey)||'{}');return{unlocked:Math.max(1,Math.min(30,Number(raw.unlocked)||1)),cleared:Array.isArray(raw.cleared)?raw.cleared.filter(n=>Number.isInteger(n)&&n>=1&&n<=30):[],drafts:raw.drafts&&typeof raw.drafts==='object'?raw.drafts:{},remixCleared:Array.isArray(raw.remixCleared)?raw.remixCleared.filter(n=>spotlightStageIds.includes(n)):[],remixFirstTry:Array.isArray(raw.remixFirstTry)?raw.remixFirstTry.filter(n=>spotlightStageIds.includes(n)):[],remixAttempted:Array.isArray(raw.remixAttempted)?raw.remixAttempted.filter(n=>spotlightStageIds.includes(n)):[]}}catch{return{unlocked:1,cleared:[],drafts:{},remixCleared:[],remixFirstTry:[],remixAttempted:[]}}}
 function persist(){if(practicePageIsolation||practiceActive)return;try{localStorage.setItem(saveKey,JSON.stringify(save))}catch{setStatus('Progress could not be saved in this browser. You can keep playing this stage.')}}
 function setStatus(text,bad=false){els.status.textContent=text;els.status.dataset.kind=bad?'error':'info'}
-function syncScreen(next){screen=next;document.body.dataset.screen=next;els.main.hidden=next!=='main';els.stage.hidden=next!=='stage';els.battle.hidden=next!=='battle';if(next==='battle')els.battle.querySelector('.battle-canvas')?.setAttribute('data-wp-logical-battle-canvas','')}
+function syncScreen(next){screen=next;document.body.dataset.screen=next;els.main.hidden=next!=='main';els.stage.hidden=next!=='stage';els.battle.hidden=next!=='battle';$('gameGuide').hidden=next!=='main';sharedFrame?.frame.activate(next)}
 function stageName(stage){return `Stage ${stage.id} · ${stage.arc}`}
 function renderMain(){const cleared=save.cleared.length;$('mainProgress').textContent=cleared?`${cleared} / 30 cleared · Stage ${save.unlocked} ready`:'Stage 1 · ready'}
-function setStageRange(range){activeStageRange=Math.max(0,Math.min(2,Number(range)||0));const first=activeStageRange*10+1,last=first+9;
-  for(const tab of document.querySelectorAll('[data-stage-range]')){const selected=Number(tab.dataset.stageRange)===activeStageRange;tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1}
-  for(const card of els.rail.querySelectorAll('.stage-card')){const id=Number(card.dataset.stageId);card.hidden=id<first||id>last}
-  const resetRail=()=>els.rail.scrollTo({left:0,top:0,behavior:'instant'});
-  resetRail();requestAnimationFrame(()=>requestAnimationFrame(resetRail))
-}
-function renderMap(){const localPractice=practiceMode||practiceActive;els.summary.textContent=localPractice?'Local practice · no campaign progress':`${save.cleared.length} cleared · ${save.unlocked} unlocked`;els.rail.replaceChildren();els.spotlightRail.replaceChildren();activeStageRange=localPractice?0:Math.floor((save.unlocked-1)/10);
-  for(const stage of stages){const b=document.createElement('button');b.type='button';b.className='stage-card';b.dataset.stageId=String(stage.id);b.disabled=localPractice?!practiceMode:stage.id>save.unlocked;b.setAttribute('aria-label',`${stageName(stage)}${b.disabled?', locked':''}${localPractice?', local practice':''}`);if(stage.id===stageIndex+1)b.setAttribute('aria-current','true');b.innerHTML=`<span class="num">${String(stage.id).padStart(2,'0')}</span><span class="arc">${stage.arc}</span><span class="state">${localPractice?'Practice':save.cleared.includes(stage.id)?'Cleared':b.disabled?'Locked':'Play'}</span>`;b.addEventListener('click',()=>localPractice?LocalPractice?.challenge('robot-dog-showtime',stage.id):startBattle(stage.id-1));els.rail.append(b)}
-  for(const stage of stages.filter(item=>spotlightAvailable(item.id,save.cleared))){const remix=document.createElement('button');remix.type='button';remix.className='stage-remix';remix.dataset.remixStage=String(stage.id);remix.textContent=save.remixFirstTry.includes(stage.id)?`Stage ${stage.id} · first try!`:save.remixCleared.includes(stage.id)?`Replay Mix · Stage ${stage.id}`:`Spotlight Mix · Stage ${stage.id}`;remix.setAttribute('aria-label',`${save.remixCleared.includes(stage.id)?'Replay':'Try'} Spotlight Mix on Stage ${stage.id}${save.remixFirstTry.includes(stage.id)?', first rehearsal clear':''}`);remix.addEventListener('click',()=>startBattle(stage.id-1,{remix:true}));els.spotlightRail.append(remix)}
-  els.spotlightRail.hidden=els.spotlightRail.childElementCount===0;setStageRange(activeStageRange);
-}
+function renderMap(){sharedFrame?.refreshStage(stageIndex)}
 function draftFor(stage,remix=false){const source=save.drafts[remix?`${stage.id}:spotlight`:String(stage.id)];return Array.from({length:stage.beats},(_,i)=>Array.from({length:2},(_,actor)=>ACTIONS_SAFE(source?.[i]?.[actor])))}
 function ACTIONS_SAFE(value){return Object.hasOwn(byCue,value)?value:null}
 function saveDraft(){if(practiceActive)return;save.drafts[activeRemix?`${stageIndex+1}:spotlight`:String(stageIndex+1)]=plan.map(pair=>[...pair]);persist()}
@@ -89,23 +73,34 @@ function openHelp(){if(rehearsing)return;focusBeforeDialog=document.activeElemen
 function goMap(){if(rehearsing)return;closeDialog(els.leave);closeDialog(els.result);scene?.suspend();syncScreen('stage');renderMap();$('stageBack').focus()}
 function closeToMap(){if(rehearsing)return;scene?.suspend();closeDialog(els.leave);closeDialog(els.help);syncScreen('stage');renderMap();$('stageBack').focus()}
 
-$('startButton').addEventListener('click',()=>{syncScreen('stage');renderMap();$('stageBack').focus()});
-$('stageScreen').querySelector('.stage-tabs').addEventListener('click',event=>{const tab=event.target.closest('[data-stage-range]');if(tab)setStageRange(tab.dataset.stageRange)});
-$('stageScreen').querySelector('.stage-tabs').addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight'].includes(event.key))return;event.preventDefault();const next=Math.max(0,Math.min(2,activeStageRange+(event.key==='ArrowRight'?1:-1)));setStageRange(next);document.querySelector(`[data-stage-range="${next}"]`).focus()});
+$('startButton').addEventListener('click',()=>{stageIndex=practiceMode||practiceActive?0:Math.max(0,save.unlocked-1);syncScreen('stage');renderMap();$('stageBack').focus()});
 $('stageBack').addEventListener('click',()=>{exitPractice();syncScreen('main');renderMain();$('startButton').focus()});
 $('selectDog').addEventListener('click',()=>chooseActor(0));$('selectFox').addEventListener('click',()=>chooseActor(1));
 for(const b of document.querySelectorAll('[data-cue]'))b.addEventListener('click',()=>setCue(b.dataset.cue));
 $('clearCue').addEventListener('click',clearCue);$('resetPlan').addEventListener('click',resetPlan);$('rehearseButton').addEventListener('click',rehearse);
 $('battleBack').addEventListener('click',()=>{if(rehearsing)return;focusBeforeDialog=document.activeElement;els.leave.hidden=false;$('continueBattle').focus()});
 $('continueBattle').addEventListener('click',()=>closeDialog(els.leave,focusBeforeDialog));$('returnMap').addEventListener('click',closeToMap);
-$('helpButton').addEventListener('click',openHelp);$('closeHelp').addEventListener('click',()=>closeDialog(els.help,focusBeforeDialog));
+$('closeHelp').addEventListener('click',()=>closeDialog(els.help,focusBeforeDialog));
   $('resultMap').addEventListener('click',goMap);$('nextStage').addEventListener('click',async()=>{closeDialog(els.result);if(practiceActive){if(stageIndex<29){if(!await LocalPractice?.challenge('robot-dog-showtime',stageIndex+2))setStatus('Local practice session expired. Return to the map and reauthorize to continue.',true)}else goMap();return}if(stageIndex<29)startBattle(stageIndex+1);else goMap()});$('spotlightResult').addEventListener('click',()=>{closeDialog(els.result);startBattle(stageIndex,{remix:true})});
 $('retryRender').addEventListener('click',async()=>{if(practiceActive&&!await LocalPractice?.validate()){setStatus('Local practice session expired. Return to the map and reauthorize to continue.',true);return}destroyScene();showBattleScene(renderEpoch)});
 for(const dialog of [els.help,els.leave,els.result])dialog.addEventListener('keydown',event=>{if(event.key==='Escape'&&dialog!==els.result){event.preventDefault();closeDialog(dialog,focusBeforeDialog)}});
 window.addEventListener('keydown',event=>{if(screen!=='battle'||rehearsing||els.help.hidden===false||els.leave.hidden===false||els.result.hidden===false)return;const cue=({ArrowUp:'N',ArrowRight:'E',ArrowDown:'S',ArrowLeft:'W'})[event.key];if(cue){event.preventDefault();setCue(cue)}});
 window.addEventListener('pagehide',destroyScene,{once:true});
 
+sharedFrame=window.mountRobotDogShowtimeFrame({
+  stages,
+  selected:stageIndex,
+  getState:()=>({save,practiceMode,practiceActive}),
+  isSpotlightAvailable:(id,cleared)=>spotlightAvailable(id,cleared),
+  onSelect:index=>{stageIndex=index},
+  onStart:index=>{
+    if(practiceMode||practiceActive){void LocalPractice?.challenge('robot-dog-showtime',stages[index].id);return}
+    startBattle(index);
+  },
+  onSpotlight:()=>startBattle(stageIndex,{remix:true}),
+  onHelp:openHelp,
+});
 renderMain();
 const authoringIssues=validateStages();if(authoringIssues.length)console.error('Stage data authoring issues',authoringIssues);
 if(practicePageIsolation)import('../../src/game-local-practice.mjs').then(({LocalPractice:api})=>{LocalPractice=api;return api.register({gameId:'robot-dog-showtime',stageIds:stages.map(stage=>stage.id),enable:enabled=>{practiceMode=enabled===true;if(screen==='stage')renderMap()},startStage:(id,options)=>startPracticeStage(id,options)})});
-window.__robotDogShowtime={stages:()=>stages.map(s=>({id:s.id,arc:s.arc,beats:s.beats,solution:s.solution})),snapshot:()=>({screen,stage:stageIndex+1,remix:activeRemix,goals:[...currentGoals()],plan:plan.map(x=>[...x]),selectedActor,selectedBeat,save:{...save},gestures:[...(scene?.gestures||[])],renderer:scene?.stats()||null}),start:(index,options)=>startBattle(index,options),setCue,clearStage,solveIssues:authoringIssues};
+window.__robotDogShowtime={stages:()=>stages.map(s=>({id:s.id,arc:s.arc,beats:s.beats,solution:s.solution})),snapshot:()=>({screen,stage:stageIndex+1,remix:activeRemix,goals:[...currentGoals()],plan:plan.map(x=>[...x]),selectedActor,selectedBeat,save:{...save},gestures:[...(scene?.gestures||[])],renderer:scene?.stats()||null}),selectStage:index=>sharedFrame.selector.select(index),start:(index,options)=>startBattle(index,options),setCue,clearStage,solveIssues:authoringIssues};

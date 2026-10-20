@@ -1,4 +1,4 @@
-/* Burrow Shape Match v11 / 30 stages × 5 rooms / shared Interface 9. */
+/* Burrow Shape Match v12 / 30 stages × 5 rooms / shared Interface 9. */
 (() => {
   'use strict';
   const P = window.HollowPuzzles, L = window.ANIMAL_HOLLOW_FIT_LOCALES;
@@ -9,7 +9,7 @@
   const abort = new AbortController(), motions = new Set(), effects = new Set();
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const audio = window.WeightPlayAudio?.createScope?.();
-  let epoch = 0, frame, stageUI, round, lastFocus, progress, storageOK = true, destroyed = false;
+  let epoch = 0, frame, stageUI, resultSettings, round, lastFocus, progress, storageOK = true, destroyed = false;
   const state = {view:'main', phase:'idle', locale:'en', index:0, selected:null, turns:0, flipped:false, attempts:0, hinted:false, seed:0, beforeLeave:'play'};
   try { progress = P.readProgress(localStorage.getItem(KEY)); } catch { progress = P.readProgress(null); storageOK = false; }
   const t = (key, vars = {}) => String(L[state.locale][key]).replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? `{${name}}`);
@@ -44,7 +44,7 @@
     document.querySelectorAll('[data-storage-warning]').forEach(node => {node.hidden = storageOK; node.textContent = t('storageWarning');});
   }
   function showStage() {
-    ++epoch;clearMotion();state.view='stage';state.phase='idle';state.selected=null;
+    resultSettings?.close();++epoch;clearMotion();state.view='stage';state.phase='idle';state.selected=null;
     $('mainScreen').hidden=true;$('gameGuide').hidden=true;$('battleScreen').hidden=true;$('stageScreen').hidden=false;
     updateProgress();stageUI?.refresh(firstOpenStage());frame.activate('stage');
   }
@@ -137,7 +137,7 @@
     motion($('target-grid'),[{opacity:.65},{opacity:1}],220);
   }
   function loadRound(index) {
-    ++epoch;clearMotion();state.index=index;state.selected=null;state.turns=0;state.flipped=false;state.attempts=0;state.hinted=false;state.phase='play';
+    resultSettings?.close();++epoch;clearMotion();state.index=index;state.selected=null;state.turns=0;state.flipped=false;state.attempts=0;state.hinted=false;state.phase='play';
     round=P.make(index,(state.seed+index*2654435761)>>>0);
     $('room-count').textContent=`${round.stage+1} / ${P.STAGE_TOTAL}`;$('sublevel-count').textContent=`${round.sublevel+1} / ${P.ROOMS_PER_STAGE}`;$('check-count').textContent='0';
     $('chapter-title').textContent=L[state.locale].chapters[round.chapter];
@@ -221,7 +221,7 @@
     $('start-button').focus({preventScroll:true});
   }
   function home() {
-    ++epoch;clearMotion();audio?.stop();state.phase='idle';state.selected=null;
+    resultSettings?.close();++epoch;clearMotion();audio?.stop();state.phase='idle';state.selected=null;
     $('resultPanel').hidden=true;$('leavePanel').hidden=true;$('battleViewport').inert=false;
     $('battleScreen').hidden=true;showStage();
   }
@@ -230,13 +230,13 @@
     if(event.key==='Escape'){event.preventDefault();if(state.phase==='leave')stay();else if(state.phase==='result')home();else requestLeave();return;}
     const panel=state.phase==='leave'?$('leavePanel'):state.phase==='result'?$('resultPanel'):null;
     if(event.key!=='Tab'||!panel)return;
-    const nodes=[...panel.querySelectorAll('button:not(:disabled)')].filter(n=>!n.hidden);
+    const nodes=[...panel.querySelectorAll('button:not(:disabled)')].filter(n=>!n.hidden&&n.getClientRects().length&&!n.closest('[hidden],[inert]'));
     const i=nodes.indexOf(document.activeElement);
     if(event.shiftKey&&(i<=0)){event.preventDefault();nodes.at(-1)?.focus();}
     else if(!event.shiftKey&&(i===nodes.length-1||i===-1)){event.preventDefault();nodes[0]?.focus();}
   }
   function destroy() {
-    if(destroyed)return;destroyed=true;++epoch;clearMotion();abort.abort();observer.disconnect();stageUI?.destroy();audio?.dispose();frame.destroy();
+    if(destroyed)return;destroyed=true;resultSettings?.destroy();++epoch;clearMotion();abort.abort();observer.disconnect();stageUI?.destroy();audio?.dispose();frame.destroy();
   }
   state.locale=chooseLocale();
   $('locale-select').replaceChildren(...Object.keys(ROUTES).map((code,i)=>{const o=document.createElement('option');o.value=code;o.textContent=NAMES[i];return o;}));
@@ -246,6 +246,10 @@
     stage:{root:$('stageScreen'),header:$('stageHeader'),content:$('stageWorkspace'),headerInfo:$('stageHeaderInfo')},
     battle:{root:$('battleScreen'),header:$('battleHeader'),content:$('battleViewport'),headerInfo:$('battleHud')}
   }});
+  resultSettings=window.WeightPlayScreenFrame.createSettings({showLanguage:false,id:'animal-hollow-fit-result'});
+  resultSettings.button.setAttribute('data-wp-battle-utility','');
+  resultSettings.utility.classList.add('hollow-fit-result-settings');
+  $('resultPanel').querySelector('.overlay-card').prepend(resultSettings.utility);
   frame.activate('main');
   stageUI=window.WeightPlayPlayUI.mountStage({
     page:$('stageWorkspace'),rail:$('stageRail'),selected:firstOpenStage(),

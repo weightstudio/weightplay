@@ -518,6 +518,14 @@
         },
       },
     });
+    const stagesTab = document.createElement("button");
+    stagesTab.type = "button";
+    stagesTab.dataset.wpFrameAction = "tab";
+    stagesTab.dataset.copy = "stages";
+    stagesTab.setAttribute("aria-current", "page");
+    stagesTab.setAttribute("aria-pressed", "true");
+    stagesTab.textContent = t("stages");
+    frame.commonDownButton.clear().add(stagesTab);
     frame.activate("main");
     const config = window.WeightPlayOrbitOrchardStageConfig.create({
       rounds,

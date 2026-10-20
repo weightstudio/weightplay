@@ -5,8 +5,8 @@ export function mountScreens(d){
  template.innerHTML=`<section id="stageScreen" data-wp-stage-workspace hidden><div id="stageCanvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="/games/pawflow/assets/poster.webp" style="--wp-stage-art:url('/games/pawflow/assets/poster.webp')">
  <header id="stageHeader"><button type="button" data-wp-return="stage" data-aria="back"></button><h2 data-wp-frame-title hidden></h2></header>
  <div id="stageContent"><div id="stageHud" data-wp-frame-info><div><span data-t="stages"></span><strong id="stageProgress"></strong></div><div><span data-t="stars"></span><strong id="stageStars"></strong></div></div>
- <section id="missionPane" role="tabpanel" aria-labelledby="missionTab"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="340"></div></section>
- </div><nav data-wp-frame-stage-nav role="tablist"><button id="missionTab" type="button" role="tab" aria-controls="missionPane" aria-selected="true" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" data-t="stages"></button></nav></div></section>
+ <div id="stageRail" class="stage-rail" role="tabpanel" aria-labelledby="missionTab" data-wp-stage-rail data-wp-stage-settle-duration="340"></div>
+ </div><nav data-wp-frame-nav data-wp-frame-stage-nav role="tablist"><button id="missionTab" type="button" role="tab" aria-controls="stageRail" aria-selected="true" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" data-t="stages"></button></nav></div></section>
  <section id="battleScreen" hidden><div id="battleCanvas" class="battle-shell" data-wp-battle-canvas-root data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="700" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
  <header id="battleHeader"><button type="button" data-wp-return="battle" data-aria="back"></button><h2 data-wp-frame-title hidden></h2></header>
  <div id="battleContent"><div id="battleHud" data-wp-frame-info><div><span data-t="stages"></span><strong id="battleLevel"></strong></div><div><span data-t="remaining"></span><strong id="battlePixels"></strong></div><div><span data-t="dispatches"></span><strong id="battleDispatch"></strong></div></div>
@@ -16,5 +16,6 @@ export function mountScreens(d){
  app.append(template.content);
  for(const n of app.querySelectorAll('[data-t]'))n.textContent=d[n.dataset.t];
  for(const n of app.querySelectorAll('[data-aria]'))n.setAttribute('aria-label',d[n.dataset.aria]);
+ app.querySelector('[data-wp-frame-stage-nav]')?.setAttribute('aria-label',d.stages);
  document.getElementById('help').setAttribute('aria-label',d.help);
 }
