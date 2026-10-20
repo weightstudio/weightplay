@@ -27,8 +27,8 @@ button:focus-visible, select:focus-visible, a:focus-visible {
 /* Main composition and all frame controls use the shared Interface 9 layout. */
 .main-canvas { min-width: 0; }
 .hero-copy { min-width: 0; }
-.hero-copy .eyebrow { margin: 0; color: var(--habitat-muted); font-size: .82rem; font-weight: 800; }
-.hero-copy h1 { margin: 0; color: var(--habitat-text); font-size: clamp(2rem, 6vw, 3.5rem); line-height: 1.05; }
+.hero-copy .eyebrow { margin: 0; font-size: .82rem; font-weight: 800; }
+.hero-copy h1 { margin: 0; font-size: clamp(2rem, 6vw, 3.5rem); line-height: 1.05; }
 .hero-copy .intro { margin: 0; color: var(--habitat-muted); font-size: 1rem; line-height: 1.55; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .progress { min-height: 40px; margin: 0; }
@@ -116,7 +116,25 @@ button:focus-visible, select:focus-visible, a:focus-visible {
 .cell[data-route="0"], .cell[data-route="2"] { box-shadow: inset 0 0 0 2px #bca3d3; }
 .cell[data-route="3"] { border-style: dashed; }
 .keyboard-hint { max-width: 440px; margin: 0 auto 8px; color: var(--habitat-muted); font-size: .78rem; line-height: 1.4; text-align: center; }
-.feedback { min-height: 32px; margin: 4px 0 8px; color: var(--habitat-highlight); font-size: .88rem; font-weight: 800; text-align: center; }
+.feedback {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  block-size: 5.5em;
+  min-block-size: 5.5em;
+  max-block-size: 5.5em;
+  margin: 4px 0 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  color: var(--habitat-highlight);
+  font-size: .88rem;
+  font-weight: 800;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
 .feedback.is-wrong { color: var(--habitat-error); }
 .battle-actions, .result-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .battle-actions > button, .result-actions > button { flex: 1 1 130px; min-width: 0; overflow-wrap: anywhere; }

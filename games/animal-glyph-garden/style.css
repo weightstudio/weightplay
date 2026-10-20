@@ -1,4 +1,16 @@
 /* Glyph Garden owns puzzle content; the shared frame owns every screen shell. */
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+}
+
+.facts > span {
+  display: inline-flex;
+  align-items: center;
+}
+
 #battleScreen { color: var(--wp-ui-text, #f5fbff); }
 .battle-content {
   box-sizing: border-box;

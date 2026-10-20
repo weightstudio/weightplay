@@ -82,9 +82,10 @@
 }
     </script>
   </head>
-<body data-game-id="alien-defender" data-wp-game-id="alien-defender" data-wp-game-version="v61" data-wp-interface-version="9" data-wp-battle-layout="native" data-wp-combined-sound="true" data-runtime-localize="off" data-screen="main">
+<body data-game-id="alien-defender" data-wp-game-id="alien-defender" data-wp-game-version="v61" data-wp-interface-version="9" data-wp-combined-sound="true" data-runtime-localize="off" data-screen="main">
   <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
     <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-main-screen>
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">エイリアン・ディフェンダー</h1>
       <div class="main-canvas">
         <header class="main-header">
           <a class="main-return" href="/" data-wp-return="main" aria-label="WeightPlayへ戻る"><span aria-hidden="true">←</span></a>
@@ -94,9 +95,9 @@
         <section class="hero-card">
           <img class="main-poster" src="/assets/alien-defender-cover.webp" alt="" aria-hidden="true">
           <div class="main-copy">
-            <h1 data-copy="title">エイリアン・ディフェンダー</h1>
             <p class="status-pill" data-copy="comingSoon">近日公開</p>
-            <p class="lead main-summary" data-copy="guideIntro">30のオリジナルステージで信号ステーションを守ります。ステージ1でウェーブ1から2へのつなぎを学び、以降は各ステージの編隊に挑みます。</p>
+            <p class="lead main-summary" data-copy="guideIntro">信号ステーションを守り、クレジットで30ステージを強化します。</p>
+          <p id="mainProgress" class="main-progress">1 / 30 unlocked</p>
             <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-copy="start" data-runtime-localize="off">防衛を始める</button>
           </div>
         </section>
@@ -166,11 +167,12 @@
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-script></script>
+  <script src="../../src/battle-canvas-standard.js?v=20261020-shared-i9-battle-canvas1" data-wp-battle-standard></script>
   <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
   <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
   <script src="stage-config.js?v=20261020-alien-defender-v61-i9"></script>
   <script src="frame.js?v=20261020-alien-defender-v61-i9"></script>
-  <script src="game.js?v=20261020-alien-defender-v61-i9-repair1&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261020-alien-defender-v61-i9-repair3&wp-audio=1.0.0"></script>
   <section class="game-page-info game-page-info-static" aria-label="エイリアン・ディフェンダー ゲーム情報">
 
     <div class="game-info-hero">

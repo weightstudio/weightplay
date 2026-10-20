@@ -116,7 +116,9 @@
     $("resultScore").textContent=String(Math.floor(run.score));$("resultFlips").textContent=String(run.flips);$("resultBest").textContent=String(save.best[run.index]||0);
     $("resultText").textContent=roughLanding?t("roughLanding",{n:routeName(run.index)}):success?t("winCopy",{n:routeName(run.index)}):t(reason||"badLanding");
     $("skillReport").textContent=t("skillReport",{flips:run.flips,spill:Math.round(run.spill)});
-    $("nextBtn").hidden=!success||run.index>=LEVEL_COUNT-1;$("resultPanel").hidden=false;$("hint").textContent=roughLanding?t("roughLanding",{n:routeName(run.index)}):success?t("landed"):t("tryAgain");resetInput();
+    const nextUnavailable=!success||run.index>=LEVEL_COUNT-1;
+    $("nextBtn").hidden=false;$("nextBtn").disabled=nextUnavailable;$("nextBtn").setAttribute("aria-disabled",String(nextUnavailable));
+    $("resultPanel").hidden=false;$("hint").textContent=roughLanding?t("roughLanding",{n:routeName(run.index)}):success?t("landed"):t("tryAgain");resetInput();
   }
   function update(dt){
     if(!run||run.ended||run.paused)return;
@@ -261,7 +263,7 @@
     $("pauseStagesBtn").addEventListener("click",()=>{$("pausePanel").hidden=true;run=null;showScreen("stage");});
     $("resultStagesBtn").addEventListener("click",()=>{$("resultPanel").hidden=true;run=null;showScreen("stage");});
     $("retryBtn").addEventListener("click",()=>startRun(selectedStage));
-    $("nextBtn").addEventListener("click",()=>{if(run?.perfect&&run.index<LEVEL_COUNT-1)startRun(run.index+1);});
+    $("nextBtn").addEventListener("click",()=>{if(!$("nextBtn").disabled&&run?.perfect&&run.index<LEVEL_COUNT-1)startRun(run.index+1);});
     setHold("leftBtn","left");setHold("rightBtn","right");setHold("boostBtn","boost");
     window.addEventListener("keydown",event=>{if(event.repeat&&["ArrowLeft","ArrowRight","Space"].includes(event.code))return;if(["ArrowLeft","ArrowRight","Space"].includes(event.code))event.preventDefault();if(event.code==="ArrowLeft")input.left=true;if(event.code==="ArrowRight")input.right=true;if(event.code==="Space")input.boost=true;});
     window.addEventListener("keyup",event=>{if(event.code==="ArrowLeft")input.left=false;if(event.code==="ArrowRight")input.right=false;if(event.code==="Space")input.boost=false;});

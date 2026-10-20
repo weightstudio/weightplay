@@ -1,9 +1,4 @@
-/* v6 repairs: preserve the game's required landscape composition and guide card
-   geometry after the shared Interface 7 normalization is loaded. */
-
-/* v9 Guide contract: Interface 7 uses a compact 3px token by default, but this
-   game-owned public Guide must remain visibly framed and sectioned. Keep the
-   repair scoped to Orbit Orchard so the shared standard is unchanged. */
+/* Orbit Orchard I9 Guide and compact-landscape Battle content repairs. */
 @layer wp-frame-contract {
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .game-page-info,
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .game-info-section {
@@ -12,108 +7,6 @@
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .game-page-info {
     --wp-ui-radius: 18px !important;
   }
-}
-
-/* This file is loaded only by Orbit Orchard. Keep these selectors independent
-   of the bootstrap's dynamically-added document attribute so the repair also
-   applies during the first frame of route startup. */
-
-/* v7 shell contract: Stage and Battle use the shared title-free control track,
-   while the Stage rail and Result actions keep the standard navigation shape. */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .logical-shell {
-  display: grid !important;
-  grid-template-rows: 48px minmax(0, 1fr) 56px !important;
-  gap: 0 !important;
-  height: 100% !important;
-  min-height: 100% !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .wp-generated-main-title, html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .wp-generated-main-title {
-  display: none !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .panel-head h2, html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .stage-utility, html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .panel-head h2 {
-  display: none !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .stage-workspace {
-  grid-row: 2 !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  overflow: hidden !important;
-  display: grid !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .orbit-list {
-  display: flex !important;
-  align-items: stretch !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  height: 100% !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  overscroll-behavior-x: contain;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .stage-tabs {
-  grid-row: 3 !important;
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  align-items: center !important;
-  gap: 8px !important;
-  width: 100% !important;
-  height: 56px !important;
-  min-height: 56px !important;
-  margin: 0 !important;
-  padding: 6px !important;
-  border-radius: 0 !important;
-  background: #17243a !important;
-  border-top: 1px solid rgb(255 255 255 / 12%) !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .stage-tab-slot {
-  display: block !important;
-  min-width: 0 !important;
-  height: 44px !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #stageScreen .stage-tabs button {
-  width: 100% !important;
-  min-width: 0 !important;
-  height: 44px !important;
-  min-height: 44px !important;
-  padding: 10px !important;
-  border: 2px solid #66e6bd !important;
-  border-radius: 10px !important;
-  background: #10233c !important;
-  color: #f8fafc !important;
-  font: 700 14px/1.2 system-ui, sans-serif !important;
-  white-space: nowrap !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .logical-shell {
-  display: grid !important;
-  grid-template-rows: 48px minmax(0, 1fr) !important;
-  gap: 0 !important;
-  height: 100% !important;
-  min-height: 100% !important;
-  overflow: hidden !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .battle-content {
-  grid-row: 2 !important;
-  min-height: 0 !important;
-  overflow: auto !important;
-  overscroll-behavior: contain;
 }
 
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #resultScreen .result-actions {
@@ -137,8 +30,7 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] 
   cursor: not-allowed !important;
 }
 
-/* v8 compact-landscape Battle envelope: keep the full interaction inside the
-   logical Canvas and leave the physical General reserve untouched. */
+/* Compact landscape keeps the complete authored dial and action sequence visible. */
 @media (min-width: 700px) and (max-height: 560px) and (orientation: landscape) {
   body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .battle-content {
     display: grid !important;

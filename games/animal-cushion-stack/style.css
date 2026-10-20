@@ -10,23 +10,6 @@
 
 .locale-source { display: none !important; }
 
-#mainScreen .hero-copy {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  min-width: 0;
-}
-
-#mainScreen .hero-copy > * { margin: 0; }
-#mainScreen .hero-copy .kicker { color: var(--wp-ui-muted); font-weight: 700; }
-#mainScreen .hero-copy h2 { color: var(--wp-ui-text); font-size: clamp(24px, 4vw, 36px); line-height: 1.15; }
-#mainScreen .hero-copy .intro,
-#mainScreen .hero-copy .summary { max-width: 56ch; color: var(--wp-ui-text); line-height: 1.55; }
-#mainScreen .hero-copy .progress { color: var(--wp-ui-muted); }
-#mainScreen .hero-actions { width: 100%; }
-#mainScreen .best-line { color: var(--wp-ui-muted); font-size: 14px; }
-
 .battle-content {
   box-sizing: border-box;
   display: grid;

@@ -13,7 +13,7 @@
     localeSelect,
     playUI: true,
     scenes: {
-      main: { root: main, header: main.querySelector('header'), content: main.querySelector('.hero-grid') },
+      main: { root: main, header: main.querySelector('header'), content: main.querySelector('.wp-standard-main-composition') },
       stage: { root: stage, header: stage.querySelector('header'), content: stagePage },
       battle: { root: battle, header: battle.querySelector('header'), content: document.getElementById('battleContent') },
     },

@@ -8,6 +8,8 @@
   window.addEventListener("pageshow", resetInitialScroll, { once: true });
   window.addEventListener("load", () => window.setTimeout(resetInitialScroll, 320), { once: true });
   const locales = window.ORBIT_ORCHARD_LOCALES;
+  let frame = null;
+  let stageController = null;
   const START_LABELS = {
     en: "Start Game", "zh-Hant": "開始遊戲", "zh-Hans": "开始游戏", ja: "ゲーム開始", ko: "게임 시작",
     es: "Iniciar juego", "pt-BR": "Iniciar jogo", fr: "Démarrer le jeu", de: "Spiel starten", it: "Inizia gioco",
@@ -31,23 +33,13 @@
   Object.entries(START_LABELS).forEach(([locale, label]) => {
     if (locales?.[locale]) locales[locale].start = label;
   });
-  const ensureStylesheet = () => {
-    if (document.querySelector('link[href*="interface-7-cleanup.css"]')) return;
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = "interface-7-cleanup.css?v=20260922-orbit-interface7-cleanup-v2";
-    document.head.append(link);
-  };
-  ensureStylesheet();
   const motionStyle = document.createElement("style");
   motionStyle.textContent = `
-    .orbit-card{transition:transform .22s ease,box-shadow .22s ease}
-    .orbit-card:hover,.orbit-card:focus-visible{transform:translateY(-5px);box-shadow:0 12px 24px rgba(20,70,85,.18)}
     .beacon{transition:filter .18s ease;will-change:transform}.seed{will-change:transform}
     .battle-status{transition:transform .2s ease,opacity .2s ease}
     .primary-btn,.secondary-btn{transition:transform .14s ease,filter .14s ease}
     .primary-btn:active,.secondary-btn:active{transform:scale(.97)}
-    @media (prefers-reduced-motion:reduce){.orbit-card,.battle-status,.primary-btn,.secondary-btn{transition:none!important}}
+    @media (prefers-reduced-motion:reduce){.battle-status,.primary-btn,.secondary-btn{transition:none!important}}
   `;
   document.head.append(motionStyle);
   const makeStage = (id, arc, angles, beacons, objective, extra = {}) => ({
@@ -288,12 +280,23 @@
     catch (_) { return normalizeCampaign({}); }
   }
   let campaign = readCampaign();
+  let selectedStageIndex = Math.max(0, campaign.highestUnlocked - 1);
+  let lastObservedStageUnlock = campaign.highestUnlocked;
   function renderCampaignProgress() {
     const copy = t("facts", { cleared: campaign.cleared.length, total: rounds.length });
-    document.querySelectorAll("#mainScreen [data-wp-main-progress], #campaignProgress").forEach((node) => {
+    document.querySelectorAll("#mainScreen [data-wp-main-progress]").forEach((node) => {
       if (node.dataset.wpMainProgress === "generated") node.dataset.wpMainProgress = "";
       if (node.textContent !== copy) node.textContent = copy;
     });
+    const stageProgress = $("campaignProgress");
+    if (stageProgress) {
+      const cleared = new Intl.NumberFormat(state.locale || "en").format(campaign.cleared.length);
+      const total = new Intl.NumberFormat(state.locale || "en").format(rounds.length);
+      const value = `${cleared} / ${total}`;
+      if (stageProgress.textContent !== value) stageProgress.textContent = value;
+      stageProgress.setAttribute("aria-label", copy);
+      stageProgress.title = copy;
+    }
   }
   function installCampaignProgressOwner() {
     const main = $("mainScreen");
@@ -396,9 +399,6 @@
       node.textContent = t(node.dataset.copy, { cleared: campaign.cleared.length, total: rounds.length });
     });
     document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", t(node.dataset.copyAriaLabel)));
-    $("settingsBtn").setAttribute("aria-label", t("settings"));
-    $("settingsPanel").setAttribute("aria-label", t("settings"));
-    $("soundBtn").textContent = t(state.sound ? "soundOn" : "soundOff");
     $("angleInput").setAttribute("aria-label", t("dial"));
     $("orbitDial").setAttribute("aria-label", t("dial"));
     $("targetChoice").setAttribute("aria-label", t("targetChoice"));
@@ -412,7 +412,7 @@
   function populateLocales() { const select = $("localeSelect"); locales.__localeKeys.forEach((key) => { const option = document.createElement("option"); option.value = key; option.textContent = locales.en.languageNames[key] || key; select.append(option); }); select.value = state.locale; select.addEventListener("change", () => { state.locale = select.value; storage.set("weightplay-orbit-locale", state.locale); applyLocale(); }); }
   function installBattleSubstates() {
     const battle = $("battleScreen");
-    const shell = battle?.querySelector(".logical-shell");
+    const shell = battle;
     const result = $("resultScreen");
     if (shell && result && result.parentElement !== shell) {
       result.classList.add("battle-result-substate");
@@ -464,6 +464,7 @@
   function show(screen) {
     const resultState = screen === "resultScreen";
     const scene = resultState ? "battleScreen" : screen;
+    const sceneName = scene === "mainScreen" ? "main" : scene === "stageScreen" ? "stage" : "battle";
     ["mainScreen", "stageScreen", "battleScreen"].forEach((id) => { $(id).hidden = id !== scene; });
     const result = $("resultScreen");
     if (result) result.hidden = !resultState;
@@ -473,6 +474,9 @@
       battleContent.inert = resultState;
     }
     $("mainScreen").parentElement.querySelector(".guide-card")?.toggleAttribute("hidden", scene !== "mainScreen");
+    const footer = $("app").querySelector("footer");
+    if (footer) footer.hidden = scene !== "mainScreen";
+    frame?.activate(sceneName, { covered: resultState });
     document.body.dataset.screen = resultState ? "battle" : scene.replace("Screen", "");
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.scrollTo(0, 0);
@@ -481,28 +485,56 @@
   function stageTitle(stage) { return t("stageTitle", { id: stage.id, arc: arcName(stage) }); }
   function renderStage() {
     if (!$('stageScreen') || $('stageScreen').hidden) return;
-    const list = $("orbitList");
-    if (!list) return;
-    const unlocked = campaign.highestUnlocked;
+    if (!$("orbitList")) return;
+    if (campaign.highestUnlocked !== lastObservedStageUnlock) {
+      selectedStageIndex = Math.max(0, campaign.highestUnlocked - 1);
+      lastObservedStageUnlock = campaign.highestUnlocked;
+    }
     renderCampaignProgress();
-    list.replaceChildren(...rounds.map((stage, index) => {
-      const button = document.createElement("button");
-      const isCleared = campaign.cleared.includes(stage.id);
-      const isLocked = stage.id > unlocked;
-      button.type = "button";
-      button.className = `orbit-card campaign-stage-card${isCleared ? " is-cleared" : ""}${stage.checkpoint ? " is-checkpoint" : ""}`;
-      button.disabled = isLocked;
-      button.dataset.stageId = String(stage.id);
-      button.setAttribute("aria-label", `${stageTitle(stage)} · ${t(isLocked ? "locked" : isCleared ? "cleared" : "stageReady")}`);
-      const targetNames = stage.targets.map((target) => t(target.beacon)).join(" → ");
-      const targetAngle = stage.veiled ? t("targetVeiled", { name: targetNames }) : stage.targets.map((target) => `${t(target.beacon)} ${target.angle}°`).join(" → ");
-      const statusKey = isLocked ? "locked" : isCleared ? "cleared" : "stageReady";
-      button.innerHTML = `<span class="campaign-stage-number">${t("orbit", { current: stage.id, total: rounds.length })}</span><strong>${arcName(stage)}${stage.checkpoint ? ` · ${t("checkpoint")}` : ""}</strong><span>${t(stage.objective)}</span><em>${targetAngle}</em><small>${t(statusKey)}${campaign.bestByStage[stage.id] ? ` · ${t("best")}: ${campaign.bestByStage[stage.id]}` : ""}</small>`;
-      if (!isLocked) button.addEventListener("click", () => startRound(index));
-      return button;
-    }));
-    window.dispatchEvent(new Event("weightplay:stage-sync"));
-    list.querySelector(`[data-stage-id="${unlocked}"]`)?.scrollIntoView?.({ block: "center", inline: "nearest" });
+    stageController?.refresh(selectedStageIndex);
+  }
+  function mountSharedFrame() {
+    frame = window.WeightPlayScreenFrame.mount({
+      root: $("app"),
+      localeSelect: $("localeSelect"),
+      playUI: true,
+      scenes: {
+        main: {
+          root: $("mainScreen"),
+          header: $("mainScreen").querySelector(".topbar"),
+          content: $("mainScreen").querySelector(".hero-card"),
+        },
+        stage: {
+          root: $("stageScreen"),
+          header: $("stageScreen").querySelector(".panel-head"),
+          content: $("stageScreen").querySelector(".stage-workspace"),
+          headerInfo: $("stageHeaderInfo"),
+        },
+        battle: {
+          root: $("battleScreen"),
+          header: $("battleScreen").querySelector(".panel-head"),
+          content: $("battleScreen").querySelector(".battle-playfield"),
+          headerInfo: $("battleHeaderInfo"),
+        },
+      },
+    });
+    frame.activate("main");
+    const config = window.WeightPlayOrbitOrchardStageConfig.create({
+      rounds,
+      getLocale: () => state.locale,
+      getCampaign: () => campaign,
+      localize: (key, vars) => t(key, vars),
+      arcName,
+    });
+    stageController = window.WeightPlayPlayUI.mountStage({
+      page: $("stageScreen").querySelector(".stage-workspace"),
+      rail: $("orbitList"),
+      config,
+      selected: selectedStageIndex,
+      onSelect: (index) => { selectedStageIndex = index; },
+      onStart: (index) => { selectedStageIndex = index; startRound(index); },
+      isActive: () => $("app").dataset.wpFrameActive === "stage",
+    });
   }
   function setBattleStatus(key, vars = {}, className = "") {
     state.statusKey = key; state.statusVars = vars; state.statusClass = className;
@@ -590,6 +622,8 @@
     if (!Number.isInteger(nextIndex) || nextIndex < 0 || nextIndex >= rounds.length) return;
     const stage = rounds[nextIndex];
     if (stage.id > campaign.highestUnlocked && !campaign.cleared.includes(stage.id)) return;
+    stageController?.cancel();
+    selectedStageIndex = nextIndex;
     cancelPendingAdvance(); stopMotion(); closeLeave({ resume: false, focus: false });
     if ($("patternDialog")) $("patternDialog").hidden = true;
     state.round = nextIndex; state.targetIndex = 0; state.releases = 0; state.stageReleases = 0;
@@ -774,7 +808,6 @@
   }
   function goHome() { cancelPendingAdvance(); stopMotion(); closeLeave({ resume: false, focus: false }); if ($("patternDialog")) $("patternDialog").hidden = true; show("mainScreen"); applyLocale(); }
   function openMap() { cancelPendingAdvance(); stopMotion(); closeLeave({ resume: false, focus: false }); if ($("patternDialog")) $("patternDialog").hidden = true; show("stageScreen"); renderStage(); }
-  function toggleSettings() { const panel = $("settingsPanel"); const open = panel.hidden; panel.hidden = !open; $("settingsBtn").setAttribute("aria-expanded", String(open)); }
   function openPattern() {
     const stage = rounds[state.round];
     if (!stage.memory || state.locked) return;
@@ -805,6 +838,7 @@
     installBattleSubstates();
     installCampaignProgressOwner();
     populateLocales();
+    mountSharedFrame();
     applyLocale();
     window.setTimeout(() => { $("loadingPanel").hidden = true; $("app").hidden = false; }, 260);
     $("startBtn").addEventListener("click", start);
@@ -850,9 +884,6 @@
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) pauseTransition(); else { syncBattleControls(); resumeTransition(); }
     });
-    $("settingsBtn").addEventListener("click", toggleSettings);
-    $("closeSettingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = true; $("settingsBtn").setAttribute("aria-expanded", "false"); });
-    $("soundBtn").addEventListener("click", () => { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); });
   });
   window.ORBIT_ORCHARD_TEST = {
     rounds, start, startRound, release, renderBattle, normalizeCampaign,

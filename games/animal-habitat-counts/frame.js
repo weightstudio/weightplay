@@ -50,6 +50,15 @@
       isActive: () => game.screen === 'stage',
     });
     game.setStageSelector(selector);
+    const stagesTab = document.createElement('button');
+    stagesTab.type = 'button';
+    stagesTab.setAttribute('role', 'tab');
+    stagesTab.setAttribute('aria-selected', 'true');
+    stagesTab.setAttribute('aria-controls', 'stageWorkspace');
+    stagesTab.dataset.copy = 'stages';
+    stagesTab.textContent = game.stageTabLabel();
+    stagesTab.addEventListener('click', () => selector.select(game.selectedStage, { focus: true, notify: false }));
+    frame.commonDownButton.add(stagesTab);
     game.setFrame(frame);
     frame.activate(game.screen);
     window.addEventListener('pagehide', (event) => {

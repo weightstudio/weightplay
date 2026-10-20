@@ -293,7 +293,11 @@
     const resultOpen=name==="result",battleOpen=name==="battle"||resultOpen;
     $("mainScreen").hidden=name!=="main";$("stageScreen").hidden=name!=="stage";$("battleScreen").hidden=!battleOpen;
     if(v44ResultScreen)v44ResultScreen.hidden=!resultOpen;
-    if(v44BattleStage)v44BattleStage.dataset.resultOpen=String(resultOpen);
+    if(v44BattleStage){
+      v44BattleStage.dataset.resultOpen=String(resultOpen);
+      for(const layer of v44BattleStage.children)if(layer!==v44ResultScreen)layer.inert=resultOpen;
+    }
+    $("battleBackBtn").inert=resultOpen;
     $("battleBackBtn").dataset.wpReturn="battle";
     pinViewportTop(name==="stage"||battleOpen);window.dispatchEvent(new Event("weightplay:shell-sync"));
   };
@@ -1176,6 +1180,7 @@
     alienI9Frame.frame.activate(active);
     if(active==="stage")renderStageCardsV44();
     if(active==="battle")requestAnimationFrame(resize);
+    if(name==="result")$("resultStages")?.focus({preventScroll:true});
   };
   show(screen);
 })();

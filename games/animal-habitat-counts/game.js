@@ -166,6 +166,7 @@
 
   window.AnimalHabitatCountsI9 = Object.freeze({
     get screen() { return state.screen; },
+    stageTabLabel() { return t("stages"); },
     get selectedStage() { return state.selectedStage; },
     get stageCount() { return stages.length; },
     stageRecord,

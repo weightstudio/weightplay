@@ -166,6 +166,24 @@
     return;
   }
   const frameScriptUrl = document.currentScript?.src || new URL('/src/game-screen-frame.js', location.origin).href;
+  const sharedAssetBase = new URL('.', frameScriptUrl);
+
+  function ensureBattleCanvasRuntime() {
+    if (document.body?.dataset.wpBattleLayout === "native") return;
+    if (!document.querySelector('link[href*="battle-canvas-standard.css"]')) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = new URL("battle-canvas-standard.css", sharedAssetBase).href;
+      link.dataset.wpBattleStandard = "true";
+      document.head.append(link);
+    }
+    if (!document.querySelector('script[src*="battle-canvas-standard.js"]')) {
+      const script = document.createElement("script");
+      script.src = `${new URL("battle-canvas-standard.js", sharedAssetBase).href}?v=20260911-folded-field-battle-envelope-v1`;
+      script.dataset.wpBattleStandard = "true";
+      document.body.append(script);
+    }
+  }
   const mounts = new WeakMap();
   const slotMounts = new WeakMap();
   // Content groups carry game-owned nodes; shared slots retain layout ownership.
@@ -361,6 +379,7 @@
   function mount({ root, scenes, localeSelect, playUI = false }) {
     if (mounts.has(root)) return mounts.get(root);
     if (!root || !scenes.main || !scenes.battle) throw new Error('FRAME_SCENES_REQUIRED');
+    if (playUI) ensureBattleCanvasRuntime();
     const abort = new AbortController();
     // Explicit frame consumers are Interface 7 routes even when their HTML
     // predates the bootstrap script. Set the shared marker at mount time so
@@ -708,7 +727,6 @@
   if (window.__weightPlayFrameAutoMountRequested) return;
   window.__weightPlayFrameAutoMountRequested = true;
 
-  const sharedAssetBase = new URL(".", frameScriptUrl);
   const immutableSceneControls =
     document.querySelector('meta[name="weightplay-audience"]')?.content?.toLowerCase() === "kids"
     || document.querySelector('meta[name="weightplay-scene-controls"]')?.content?.toLowerCase() === "immutable";
@@ -888,23 +906,6 @@
       window.dispatchEvent(new Event("weightplay:lifecycle-error"));
     }, { once: true });
     document.head.append(script);
-  }
-
-  function ensureBattleCanvasRuntime() {
-    if (document.body?.dataset.wpBattleLayout === "native") return;
-    if (!document.querySelector('link[href*="battle-canvas-standard.css"]')) {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = new URL("battle-canvas-standard.css", sharedAssetBase).href;
-      link.dataset.wpBattleStandard = "true";
-      document.head.append(link);
-    }
-    if (!document.querySelector('script[src*="battle-canvas-standard.js"]')) {
-      const script = document.createElement("script");
-      script.src = `${new URL("battle-canvas-standard.js", sharedAssetBase).href}?v=20260911-folded-field-battle-envelope-v1`;
-      script.dataset.wpBattleStandard = "true";
-      document.body.append(script);
-    }
   }
 
   function ensureGameInfoRuntime() {
