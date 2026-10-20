@@ -3,12 +3,11 @@
 
   const current = document.currentScript;
   if (!current) return;
-  const base = new URL("game-v10-base.js?v=20261018-owner-clarity-v1", current.src).href;
-  const virtualization = new URL("../../src/stage-virtualization-standard.js?v=20260809-stage-v6-source-demotion-v8", current.src).href;
-  const compat = new URL("interface-7-compat.js?v=20261018-owner-clarity-v1", current.src).href;
+  const base = new URL("game-v10-base.js?v=20261021-echo-orchard-i9", current.src).href;
+  const adapter = new URL("interface-9-adapter.js?v=20261021-echo-orchard-i9", current.src).href;
 
   if (document.readyState === "loading") {
-    document.write(`<script src="${base}"><\/script><script src="${virtualization}"><\/script><script src="${compat}"><\/script>`);
+    document.write(`<script src="${base}"><\/script><script src="${adapter}"><\/script>`);
     return;
   }
 
@@ -21,5 +20,5 @@
     document.body.append(script);
   });
 
-  load(base).then(() => load(virtualization)).then(() => load(compat)).catch(() => {});
+  load(base).then(() => load(adapter)).catch((error) => console.error("Orchard I9 interface failed to load.", error));
 })();

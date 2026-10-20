@@ -69,7 +69,7 @@
   if (!locales[locale]) locale = "en";
   let sound = readStorage("weightplay-animal-weather-watch-sound") !== "off";
   let planIndex = 0; let selected = ""; let checks = 0; let sessionChecks = 0; let solved = new Set(); let feedback = ""; let currentScreen = "main";
-  let frame = null; let pendingSettlement = null; let leaveOpen = false;
+  let frame = null; let stageRailController = null; let pendingSettlement = null; let leaveOpen = false;
   let answers = {}; let activeSlot = 0; let hintOpen = false; let settled = false;
   solved = new Set(progress.cleared);
   const copy = (key, vars = {}) => Object.entries(vars).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, String(value)), (locales[locale] || locales.en)[key] || locales.en[key] || key);
@@ -85,6 +85,7 @@
     const result = $("resultScreen"), live = $("weatherBattleLive"), isResult = screen === "result";
     if (result) { result.hidden = !isResult; result.inert = !isResult; }
     if (live) { live.hidden = isResult; live.inert = isResult || scene !== "battle"; }
+    const battleHeaderInfo = $("battleHeaderInfo"); if (battleHeaderInfo) battleHeaderInfo.hidden = isResult;
     document.body.dataset.screen = scene; document.body.dataset.weatherState = screen;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.body.dir = locale === "ar" ? "rtl" : "ltr";
     $("gameGuide").hidden = screen !== "main"; frame?.activate(scene, { covered: isResult });
@@ -93,8 +94,8 @@
       else if ((__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen; __wpNotifyMeasurement(); }
   }
-  function mountInterface7() {
-    if (!window.WeightPlayScreenFrame?.mount) throw Error("Interface 7 shared frame unavailable");
+  function mountInterface9() {
+    if (!window.WeightPlayScreenFrame?.mount || !window.WeightPlayPlayUI?.mountStage) throw Error("Interface 9 shared play UI unavailable");
     const root = $("app"), mainRoot = $("mainScreen"), mainHeader = mainRoot.querySelector("header");
     const mainTitle = mainHeader.querySelector("[data-wp-game-title]"); mainTitle.dataset.wpFrameTitle = "";
     const poster = mainRoot.querySelector(".main-cover"); poster.dataset.wpFramePoster = "";
@@ -112,7 +113,6 @@
     if (!workspace) { workspace = document.createElement("div"); workspace.id = "stageWorkspace"; workspace.className = "stage-workspace"; const rail = $("stageList"); rail.before(workspace); workspace.append(rail); }
     const nav = stageRoot.querySelector(".stage-tabs"); nav.dataset.wpFrameStageNav = ""; nav.replaceChildren();
     const stageTab = document.createElement("button"); stageTab.id = "stagesTab"; stageTab.type = "button"; stageTab.setAttribute("role","tab"); stageTab.setAttribute("aria-selected","true"); stageTab.dataset.wpFrameAction = "tab"; stageTab.dataset.wpFrameStageSlot = "stages"; nav.append(stageTab); stageRoot.append(workspace, nav);
-    const posterSrc = poster.currentSrc || poster.src; stageRoot.dataset.wpStageArt = posterSrc; stageRoot.style.setProperty("--wp-stage-art", 'url("' + posterSrc + '")');
     const battleRoot = $("battleScreen"), battleHeader = battleRoot.querySelector("header");
     let battleTitle = battleHeader.querySelector("[data-wp-frame-title]");
     if (!battleTitle) { battleTitle = document.createElement("strong"); battleTitle.dataset.wpFrameTitle = ""; battleHeader.append(battleTitle); }
@@ -127,10 +127,10 @@
       leave.innerHTML = '<div class="weather-leave-card"><h2 id="leaveDialogTitle"></h2><p id="leaveDialogText"></p><div class="weather-leave-actions"><button id="continueBtn" class="primary" type="button"></button><button id="leaveBtn" class="secondary" type="button"></button></div></div>';
       battleRoot.append(leave);
     }
-    frame = window.WeightPlayScreenFrame.mount({root, scenes:{
+    frame = window.WeightPlayScreenFrame.mount({root, playUI:true, scenes:{
       main:{root:mainRoot,header:mainHeader,content:mainRoot.querySelector(".main-copy")},
       stage:{root:stageRoot,header:stageHeader,content:workspace},
-      battle:{root:battleRoot,header:battleHeader,content:live}
+      battle:{root:battleRoot,header:battleHeader,content:live,headerInfo:$("battleHeaderInfo")}
     }, localeSelect});
     return localeSelect;
   }
@@ -149,17 +149,39 @@
     $("mainProgress").textContent = campaignCopy("progress", {count:solved.size});
   }
   function renderStages() {
-    const root = $("stageList"); if (!root) return;
-    root.replaceChildren();
-    plans.forEach((plan, index) => {
-      const button = document.createElement("button");
-      const locked = index > unlocked();
-      button.type = "button"; button.className = "stage-card"; button.disabled = locked;
-      button.dataset.stage = index; button.dataset.wpStageLocked = String(locked);
-      button.setAttribute("aria-label", planName(plan)); if (index === unlocked()) button.dataset.wpStageRecommended = "true";
-      button.innerHTML = `<span><small>${plan.checkpoint ? campaignCopy("checkpoint") : campaignCopy("case")}</small><strong>${planName(plan)}</strong><small>${campaignCopy("tasks")[plan.repair ? 2 : plan.arc >= 3 ? 1 : 0]}</small><small>${locked ? campaignCopy("locked") : solved.has(index) ? campaignCopy("cleared") + " · " + campaignCopy("best",{count:progress.best[index] || "—"}) : campaignCopy("ready")}</small></span><span class="arrow" aria-hidden="true">${locked ? "·" : solved.has(index) ? "✓" : "→"}</span>`;
-      button.addEventListener("click", () => startPlan(index, true)); root.appendChild(button);
-    });
+    const page = $("stageWorkspace"), rail = $("stageList"); if (!page || !rail) return;
+    const stageData = (index) => {
+      const plan = plans[index], locked = index > unlocked(), cleared = solved.has(index);
+      return {
+        id: plan.id,
+        kicker: plan.checkpoint ? campaignCopy("checkpoint") : campaignCopy("case"),
+        title: planName(plan),
+        subtitle: campaignCopy("tasks")[plan.repair ? 2 : plan.arc >= 3 ? 1 : 0],
+        status: locked ? campaignCopy("locked") : cleared ? `${campaignCopy("cleared")} · ${campaignCopy("best",{count:progress.best[index] || "—"})}` : campaignCopy("ready"),
+        summary: campaignCopy("rules")[plan.arc],
+        details: [campaignCopy("instruction"), campaignCopy("rules")[plan.arc]],
+        locked,
+        cleared,
+      };
+    };
+    const config = {
+      gameId: "animal-weather-watch",
+      poster: "/assets/interface7-redrawn/animal-weather-watch.webp",
+      background: "/assets/lobby-block-atmosphere.svg",
+      count: plans.length,
+      stage: stageData,
+    };
+    if (!stageRailController) {
+      stageRailController = window.WeightPlayPlayUI.mountStage({
+        page,
+        rail,
+        config,
+        selected: unlocked(),
+        onStart: (index) => startPlan(index, true),
+        isActive: () => frame?.active === "stage",
+      });
+      if (!stageRailController) throw Error("Interface 9 shared Stage selector could not initialize");
+    } else stageRailController.refresh(unlocked());
   }
   function startPlan(index, fromStage = false) { if (!plans[index] || index > unlocked()) return; cancelPendingSettlement(); planIndex = index; selected = ""; checks = 0; feedback = ""; answers = {}; activeSlot = plans[index].slots[0]; hintOpen = false; settled = false;
     if (plans[index].repair) plans[index].slots.forEach(slot => { const types = ["sun","cloud","rain"]; answers[slot] = types[(types.indexOf(plans[index].sequence[slot]) + 1) % 3]; });
@@ -168,7 +190,7 @@
 }
   function renderBattle() {
     if (!$("choiceGrid") || currentScreen !== "battle") return;
-    const plan = plans[planIndex]; $("progressPill").textContent = `${planName(plan)} / 30`;
+    const plan = plans[planIndex]; $("progressPill").textContent = `${planIndex + 1} / ${plans.length}`; $("progressPill").setAttribute("aria-label", `${planName(plan)} · ${planIndex + 1} / ${plans.length}`);
     $("prompt").textContent = campaignCopy("tasks")[plan.repair ? 2 : plan.arc >= 3 ? 1 : 0];
     $("rule").textContent = hintOpen ? campaignCopy("rules")[plan.arc] + " (" + plan.pattern.map(signName).join(" → ") + ")" : campaignCopy("instruction");
     $("hintBtn").textContent = campaignCopy(hintOpen ? "hideHint" : "hint"); $("hintBtn").setAttribute("aria-pressed", String(hintOpen));
@@ -252,7 +274,7 @@
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
     });
   }
-  function boot() { mountInterface7(); bind(); $("loading").hidden = true; $("app").hidden = false; show("main"); renderStatic(); announce("loaded"); }
+  function boot() { mountInterface9(); bind(); $("app").hidden = false; show("main"); renderStatic(); announce("loaded"); }
   window.__ANIMAL_WEATHER_WATCH_TEST__ = { plans, startPlan, getState: () => ({ planIndex, selected, solved: [...solved], checks, screen: currentScreen }) };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();
 }());

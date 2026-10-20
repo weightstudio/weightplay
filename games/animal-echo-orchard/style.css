@@ -1,12 +1,7 @@
-@import url("style-v10-base.css");
-@import url("interface-7-cleanup.css?v=20261015-i9-frame-v1");
-/* The play surface explains the action at the moment it becomes relevant. */
-html body[data-wp-game-id="animal-echo-orchard"] #battleScreen :is(.battle-content,.wp-frame-play-content) {
-  display:grid!important; grid-template-rows:96px 38px minmax(180px,1fr) 50px 32px;
-  gap:10px!important; min-height:0; width:100%; overflow:hidden;
+/* Game-owned Battle playfield content; shared frame owns all scene geometry. */
+body[data-wp-game-id="animal-echo-orchard"] #battleContent {
+  display:flex; flex:1 1 auto; flex-direction:column; min-height:0; width:100%; overflow:hidden;
 }
-body[data-wp-game-id="animal-echo-orchard"] #battleScreen :is(.battle-content,.wp-frame-play-content) > .battle-context,
-body[data-wp-game-id="animal-echo-orchard"] #battleScreen :is(.battle-content,.wp-frame-play-content) > .battle-utility { display:none!important; }
 body[data-wp-game-id="animal-echo-orchard"] #battleScreen #prompt { display:none!important; }
 body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-phase { display:flex; align-items:center; gap:14px; padding:12px 16px; min-width:0; border:1px solid #506b60; border-radius:16px; background:#102c2bf2; color:#f7f7df; transition:border-color .18s,background .18s; }
 body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-phase-number { display:grid;place-items:center; flex:0 0 42px; height:42px; border-radius:12px; background:#f2d386; color:#173d36; font-size:24px; font-weight:900; }
@@ -23,6 +18,11 @@ body[data-wp-game-id="animal-echo-orchard"] #battleScreen .fruit-button:disabled
 body[data-wp-game-id="animal-echo-orchard"] #battleScreen .fruit-button:disabled:not(.is-lit) .fruit-icon { filter:saturate(.6); }
 body[data-wp-game-id="animal-echo-orchard"] #battleScreen .fruit-button strong { font-size:14px; font-weight:850; line-height:1.2; z-index:1; }
 body[data-wp-game-id="animal-echo-orchard"] #battleScreen .fruit-icon { width:88px; height:88px; max-width:65%; max-height:65%; flex:0 1 88px; border-radius:15px; box-shadow:inset 0 0 0 2px #ffffff90; transition:filter .16s; }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .fruit-icon { display:block; background-image:url("assets/animal-echo-orchard-chime-atlas-v1.png"); background-repeat:no-repeat; background-size:200% 200%; background-color:#edf6ea; }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .fruit-amber .fruit-icon { background-position:0 0; }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .fruit-mint .fruit-icon { background-position:100% 0; }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .fruit-coral .fruit-icon { background-position:100% 100%; }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .fruit-violet .fruit-icon { background-position:0 100%; }
 body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-key { position:absolute; inset:9px auto auto 10px; display:grid; place-items:center; width:25px; height:25px; border-radius:7px; border:1px solid #698d78; background:#ffffff9e; font-size:14px; font-weight:900; }
 body[data-wp-game-id="animal-echo-orchard"] #battleScreen .fruit-button.is-lit { transform:none; background:#fff2ab; border-color:#ffe79d; box-shadow:0 0 0 4px #f2d38690,0 0 30px #f2d38665; }
 body[data-wp-game-id="animal-echo-orchard"] #battleScreen .fruit-button.is-lit .fruit-icon { filter:brightness(1.18); }
@@ -35,7 +35,7 @@ body[data-wp-game-id="animal-echo-orchard"] #battleScreen[data-echo-phase="repea
 body[data-wp-game-id="animal-echo-orchard"] #battleScreen[data-echo-phase="pause"] .echo-phase { border-color:#edaf8e; background:#4e332c; }
 body[data-wp-game-id="animal-echo-orchard"] #battleScreen[data-echo-phase="complete"] .echo-phase { border-color:#d8efa6; background:#2b5233; }
 @media (orientation:landscape) and (max-height:560px) {
-  html body[data-wp-game-id="animal-echo-orchard"] #battleScreen :is(.battle-content,.wp-frame-play-content) { grid-template-columns:1fr 1fr; grid-template-rows:80px 34px minmax(40px,1fr) 26px; gap:7px 14px!important; }
+  html body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-content-host { grid-template-columns:1fr 1fr; grid-template-rows:80px 34px minmax(40px,1fr) 26px!important; gap:7px 14px!important; }
   #battleScreen .echo-phase { grid-column:1; grid-row:1; padding:8px 12px; }
   #battleScreen #echoPhaseTitle { font-size:15px; }
   #battleScreen #echoPhaseHelp { font-size:12px; }
@@ -52,14 +52,36 @@ body[data-wp-game-id="animal-echo-orchard"] #battleScreen[data-echo-phase="compl
   #battleScreen .fruit-button,body[data-wp-game-id="animal-echo-orchard"] #battleScreen .fruit-icon,body[data-wp-game-id="animal-echo-orchard"] #battleScreen .pattern-slot,body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-phase { transition:none; }
 }
 html body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-content-host {
-  display:grid!important; height:100%!important; min-height:0!important; align-self:stretch;
+  display:grid!important; flex:1 1 auto; min-height:0!important; align-self:stretch;
   grid-template-rows:96px 38px minmax(180px,1fr) 50px 32px!important; gap:10px!important;
 }
-body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-content-host > .battle-header { display:none!important; }
 @media (orientation:landscape) and (max-height:560px) {
   html body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-content-host {
     grid-template-columns:1fr 1fr!important; grid-template-rows:80px 34px minmax(40px,1fr) 26px!important; gap:7px 14px!important;
   }
 }
-html body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-content-host { flex:1; height:auto!important; }
 html body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-content-host[hidden] { display:none!important; }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-result-screen {
+  display:grid; flex:1 1 auto; min-height:0; align-content:center; justify-items:center; gap:12px;
+  overflow-y:auto; padding:clamp(16px,4vw,28px); border:1px solid var(--wp-ui-line);
+  border-radius:var(--wp-ui-radius); background:var(--wp-ui-background); color:var(--wp-ui-text); text-align:center;
+}
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-result-screen[hidden] { display:none!important; }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-result-screen .result-icon { color:var(--wp-ui-gold); font-size:2.4rem; }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-result-screen .eyebrow,
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-result-screen h2,
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-result-screen .intro { margin:0; color:var(--wp-ui-text); }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .result-actions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; width:min(100%,620px); }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .result-actions > button { min-width:0; white-space:normal; }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .result-actions > button[disabled] { opacity:.55; cursor:not-allowed; }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-leave-dialog { position:absolute; inset:0; z-index:var(--wp-frame-dialog-z,20); display:grid; place-items:center; padding:16px; background:var(--wp-ui-scrim,#061022b8); }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-leave-dialog[hidden] { display:none!important; }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-leave-card { width:min(100%,420px); padding:20px; border:1px solid var(--wp-ui-line); border-radius:var(--wp-ui-radius); background:var(--wp-ui-background); color:var(--wp-ui-text); box-shadow:var(--wp-ui-shadow,0 20px 60px #06102288); }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-leave-card h2,
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-leave-card p { margin:0; }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-leave-card p { margin-top:8px; line-height:1.5; }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-leave-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:16px; }
+body[data-wp-game-id="animal-echo-orchard"] #battleScreen .echo-leave-actions button { min-width:0; min-height:44px; white-space:normal; }
+@media (max-width:520px) {
+  body[data-wp-game-id="animal-echo-orchard"] #battleScreen .result-actions { grid-template-columns:1fr; }
+}

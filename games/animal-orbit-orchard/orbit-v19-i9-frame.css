@@ -19,3 +19,10 @@ body[data-wp-game-id="animal-orbit-orchard"] #battleScreen > .battle-playfield >
   overflow: auto;
   overscroll-behavior: contain;
 }
+
+/* Keep the Orchard phone Main poster above Interface 9's 320px minimum. */
+@media (max-width: 680px) {
+  body[data-wp-game-id="animal-orbit-orchard"] .hero-card {
+    padding-inline: 13px;
+  }
+}

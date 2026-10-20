@@ -62,6 +62,25 @@
   const stageTitle = (index) => `${campaign().arcs[groves[index].arc - 1]} · ${campaign().stage} ${groves[index].id}`;
   const stageHint = (index) => `${campaign().focus[groves[index].focus]} · ${groves[index].checkpoint ? campaign().checkpoint : campaign().arc + " " + groves[index].arc}`;
   const canAccess = (index) => index < unlockedThrough || solved.has(index);
+  const stageRecord = (index) => {
+    const grove = groves[index];
+    const locked = !canAccess(index);
+    const cleared = solved.has(index);
+    return {
+      id: `grove-${grove.id}`,
+      kicker: `${campaign().arc} ${grove.arc}`,
+      title: `${campaign().stage} ${grove.id}`,
+      subtitle: stageTitle(index),
+      status: cleared ? campaign().complete : locked ? campaign().locked : "",
+      summary: stageHint(index),
+      details: "",
+      locked,
+      cleared,
+      poster: "/assets/interface7-redrawn/animal-echo-orchard.webp",
+      posterPosition: "center"
+    };
+  };
+  const stageSummary = () => `${copy("groves")}: ${solved.size} / ${groves.length}`;
   const saveProgress = () => { localStorage.setItem("weightplay-echo-orchard-unlocked-v2", String(unlockedThrough)); localStorage.setItem("weightplay-echo-orchard-solved-v2", JSON.stringify([...solved].sort((a, b) => a - b))); };
   const bestValue = () => Number(localStorage.getItem("weightplay-echo-orchard-best-v1") || 0) || "—";
   const fruitName = (fruit) => copy(`fruit${fruit[0].toUpperCase()}${fruit.slice(1)}`);
@@ -79,14 +98,21 @@
     if (window.WeightPlayAudio && window.WeightPlayAudio.isMuted() === sound) window.WeightPlayAudio.setMuted(!sound);
     renderStatic();
   }
-  function show(screen) { phase = screen; document.body.dataset.screen = screen; document.querySelectorAll("[data-screen]:not(body)").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); $("settingsPanel").hidden = true; $("backBtn").hidden = screen !== "main";
-    const play = $("battleScreen").querySelector(".echo-content-host");
+  function show(screen) {
+    phase = screen;
+    const scene = screen === "result" ? "battle" : screen;
+    document.body.dataset.screen = screen;
+    document.querySelectorAll("[data-screen]:not(body)").forEach((node) => { node.hidden = node.dataset.screen !== scene; });
+    const result = $("resultScreen");
+    if (result) result.hidden = screen !== "result";
+    const play = $("battleScreen")?.querySelector(".echo-content-host");
     if (play) { play.hidden = screen === "result"; play.inert = screen === "result"; }
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
       if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
-}
+    window.dispatchEvent(new CustomEvent("weightplay:orchard-screen-change", { detail: { screen, scene } }));
+  }
   function syncGuide() {
     const sections = document.querySelectorAll("[data-wp-game-guide] .game-info-sections > .game-info-section");
     const system = sections[1]?.querySelector("p");
@@ -96,8 +122,26 @@
     const wrong = sections[7]?.querySelectorAll("dd")[2];
     if (wrong) wrong.textContent = copy("retryHelp");
   }
-  function renderStatic() { const isArabic = locale === "ar"; document.documentElement.lang = locale; document.documentElement.dir = isArabic ? "rtl" : "ltr"; document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = copy(node.dataset.i18n); }); $("backBtn")?.setAttribute("aria-label", copy("close")); $("settingsBtn")?.setAttribute("aria-label", copy("settings")); $("stageBack")?.setAttribute("aria-label", copy("close")); $("stageUtilityBtn")?.setAttribute("aria-label", copy("settings")); $("stageList")?.setAttribute("aria-label", copy("groves")); $("battleBackBtn")?.setAttribute("aria-label", copy("close")); $("battleUtilityBtn")?.setAttribute("aria-label", copy("settings")); $("patternSlots")?.setAttribute("aria-label", copy("pattern")); $("orchardButtons")?.setAttribute("aria-label", copy("fruits")); $("closeSettings")?.setAttribute("aria-label", copy("close")); $("localeSelect").setAttribute("aria-label", copy("language")); $("soundBtn").textContent = sound ? copy("on") : copy("off"); $("soundBtn").setAttribute("aria-pressed", String(sound)); $("best").textContent = copy("best", { best: bestValue() }); $("mainProgress").textContent = `${copy("groves")}: ${solved.size} / ${groves.length}`; renderStages(); renderBattle(); renderResult(); syncGuide(); }
-  function renderStages() { const root = $("stageList"); if (!root) return; root.replaceChildren(); groves.forEach((grove, index) => { const button = document.createElement("button"); const available = canAccess(index); button.type = "button"; button.className = `stage-card ${available ? "" : "is-locked"}`; button.dataset.groveIndex = String(index); button.setAttribute("role", "tab"); button.setAttribute("aria-selected", String(solved.has(index))); button.disabled = !available; button.setAttribute("aria-label", `${stageTitle(index)} — ${available ? (solved.has(index) ? campaign().complete : stageHint(index)) : campaign().locked}`); button.innerHTML = `<span><strong>${stageTitle(index)}</strong><small>${available ? stageHint(index) : campaign().locked}</small></span><span class="arrow">${solved.has(index) ? "✓" : available ? "→" : "🔒"}</span>`; button.addEventListener("click", () => startGrove(index, true)); root.appendChild(button); }); }
+  function renderStatic() {
+    const isArabic = locale === "ar";
+    document.documentElement.lang = locale;
+    document.documentElement.dir = isArabic ? "rtl" : "ltr";
+    document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = copy(node.dataset.i18n); });
+    $("backBtn")?.setAttribute("aria-label", copy("close"));
+    $("stageBack")?.setAttribute("aria-label", copy("close"));
+    $("stageList")?.setAttribute("aria-label", copy("groves"));
+    $("battleBackBtn")?.setAttribute("aria-label", copy("close"));
+    $("patternSlots")?.setAttribute("aria-label", copy("pattern"));
+    $("orchardButtons")?.setAttribute("aria-label", copy("fruits"));
+    $("localeSelect")?.setAttribute("aria-label", copy("language"));
+    $("best").textContent = copy("best", { best: bestValue() });
+    $("mainProgressText").textContent = stageSummary();
+    $("stageSummary").textContent = stageSummary();
+    renderStages(); renderBattle(); renderResult(); syncGuide();
+  }
+  function renderStages() {
+    window.__ECHO_ORCHARD_I9__?.refreshStage?.();
+  }
   function clearTimer(stopNote = true) {
     playbackGeneration += 1;
     if (timer) clearTimeout(timer);
@@ -195,7 +239,7 @@
     $("status").className = phase === "complete" ? "status good" : "status";
   }
   function chooseFruit(fruit) {
-    if (phase !== "repeat" || !fruits.includes(fruit) || !$("settingsPanel").hidden || document.querySelector('.echo-leave-dialog:not([hidden])')) return;
+    if (phase !== "repeat" || !fruits.includes(fruit) || document.querySelector('.wp-shell-settings-popover:not([hidden])') || document.querySelector('.echo-leave-dialog:not([hidden])')) return;
     const pattern = groves[groveIndex].pattern; attempts += 1; sessionAttempts += 1;
     const position = entered.length; soundFruit(fruit);
     if (fruit !== pattern[position]) {
@@ -208,20 +252,34 @@
       timer = setTimeout(() => { show("result"); renderResult(); }, 750);
     } else renderBattle();
   }
-  function renderResult() { if (!$("resultText")) return; const complete = solved.size === groves.length && groveIndex === groves.length - 1; $("resultTitle").textContent = complete ? copy("resultTitle") : copy("resultRound"); $("resultText").textContent = complete ? campaign().resultAll.replaceAll("{best}", bestValue()).replaceAll("{total}", String(groves.length)) : campaign().result.replaceAll("{count}", String(solved.size)).replaceAll("{total}", String(groves.length)).replaceAll("{attempts}", String(attempts)); $("nextBtn").hidden = complete; (__wpNotifyMeasurement(), $("resultMapBtn").hidden = !complete); if (complete && phase === "result" && runSolved.size === groves.length) { const old = Number(localStorage.getItem("weightplay-echo-orchard-best-v1") || 0); if (!old || sessionAttempts < old) localStorage.setItem("weightplay-echo-orchard-best-v1", String(sessionAttempts)); $("resultText").textContent = campaign().resultAll.replaceAll("{best}", String(Math.min(old || sessionAttempts, sessionAttempts))).replaceAll("{total}", String(groves.length)); } }
+  function renderResult() {
+    if (!$("resultText")) return;
+    const complete = solved.size === groves.length && groveIndex === groves.length - 1;
+    $("resultTitle").textContent = complete ? copy("resultTitle") : copy("resultRound");
+    $("resultText").textContent = complete
+      ? campaign().resultAll.replaceAll("{best}", bestValue()).replaceAll("{total}", String(groves.length))
+      : campaign().result.replaceAll("{count}", String(solved.size)).replaceAll("{total}", String(groves.length)).replaceAll("{attempts}", String(attempts));
+    $("resultMapBtn").hidden = false;
+    $("nextBtn").hidden = false;
+    $("nextBtn").disabled = complete;
+    $("nextBtn").setAttribute("aria-disabled", String(complete));
+    $("resultReplayBtn").hidden = false;
+    __wpNotifyMeasurement();
+    if (complete && phase === "result" && runSolved.size === groves.length) {
+      const old = Number(localStorage.getItem("weightplay-echo-orchard-best-v1") || 0);
+      if (!old || sessionAttempts < old) localStorage.setItem("weightplay-echo-orchard-best-v1", String(sessionAttempts));
+      $("resultText").textContent = campaign().resultAll.replaceAll("{best}", String(Math.min(old || sessionAttempts, sessionAttempts))).replaceAll("{total}", String(groves.length));
+    }
+  }
   function nextGrove() { const next = groveIndex + 1; if (next < groves.length && canAccess(next)) startGrove(next); else { show("stage"); renderStages(); } }
-  function goBack() { clearTimer(); if (phase === "ready" || phase === "battle" || phase === "watch" || phase === "repeat" || phase === "pause" || phase === "complete") { show("stage"); renderStages(); } else if (phase === "stage" || phase === "result") show("main"); }
+  function goBack() { clearTimer(); if (["ready", "battle", "watch", "repeat", "pause", "complete", "result"].includes(phase)) { show("stage"); renderStages(); } else if (phase === "stage") { show("main"); renderStatic(); } }
   function openStage() {
     show("stage");
     renderStages();
-    // Generated locale shells load the shared Stage runtime after this game
-    // script. Sync immediately after mounting the rail so the first portrait
-    // frame is already inside the fixed Stage canvas, rather than waiting for
-    // the observer's next animation frame.
-    window.dispatchEvent(new Event("weightplay:stage-sync"));
+    window.__ECHO_ORCHARD_I9__?.refreshStage?.();
   }
   document.addEventListener("keydown", (event) => {
-    if (event.repeat || event.altKey || event.metaKey || event.ctrlKey || event.target.closest("input,select,textarea,[contenteditable=true]") || document.querySelector('[role="dialog"]:not([hidden])') || !$("settingsPanel").hidden) return;
+    if (event.repeat || event.altKey || event.metaKey || event.ctrlKey || event.target.closest("input,select,textarea,[contenteditable=true]") || document.querySelector('[role="dialog"]:not([hidden])') || document.querySelector('.wp-shell-settings-popover:not([hidden])')) return;
     const index = Number(event.key) - 1;
     if (phase === "repeat" && index >= 0 && index < fruits.length && /^[1-4]$/.test(event.key)) { event.preventDefault(); chooseFruit(fruits[index]); }
     if (event.key.toLowerCase() === "r" && ["ready", "repeat", "pause"].includes(phase)) { event.preventDefault(); playPattern(); }
@@ -232,9 +290,9 @@
     }
   });
   window.addEventListener("pagehide", clearTimer);
-  function bind() { $("startBtn").addEventListener("click", openStage); $("mapBtn").addEventListener("click", openStage); $("resultMapBtn").addEventListener("click", openStage); $("nextBtn").addEventListener("click", nextGrove); $("replayBtn").addEventListener("click", playPattern); $("resetBtn").addEventListener("click", () => { __wpReplayStart(() => startGrove(groveIndex)); }); $("backBtn").addEventListener("click", goBack); $("stageBack").addEventListener("click", () => { show("main"); renderStatic(); }); $("battleBackBtn").addEventListener("click", goBack); $("battleUtilityBtn").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("settingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("closeSettings").addEventListener("click", () => { $("settingsPanel").hidden = true; }); $("soundBtn").addEventListener("click", () => { setSoundEnabled(!sound); }); $("localeSelect").addEventListener("change", (event) => { locale = event.target.value; localStorage.setItem("weightplay-echo-orchard-locale", locale); renderStatic(); }); }
+  function bind() { $("startBtn").addEventListener("click", openStage); $("resultMapBtn").addEventListener("click", openStage); $("resultReplayBtn").addEventListener("click", () => { __wpReplayStart(() => startGrove(groveIndex)); }); $("nextBtn").addEventListener("click", nextGrove); $("replayBtn").addEventListener("click", playPattern); $("resetBtn").addEventListener("click", () => { __wpReplayStart(() => startGrove(groveIndex)); }); $("stageBack").addEventListener("click", () => { show("main"); renderStatic(); }); $("battleBackBtn").addEventListener("click", goBack); $("localeSelect").addEventListener("change", (event) => { locale = event.target.value; localStorage.setItem("weightplay-echo-orchard-locale", locale); renderStatic(); }); }
   window.addEventListener("weightplay:audio-volume-change", syncSharedSound);
-  function boot() { Object.assign($("battleScreen").dataset, {wpBattleMinWidth:"390",wpBattleMinHeight:"680",wpBattleLandscapeWidth:"844",wpBattleLandscapeHeight:"390"}); bind(); $("localeSelect").value = locale; $("loading").hidden = true; $("app").hidden = false; show("main"); renderStatic(); announce("loaded"); }
-  window.__ECHO_ORCHARD_TEST__ = { groves, startGrove, playPattern, chooseFruit, getState: () => ({ groveIndex, phase, entered: [...entered], solved: [...solved], unlockedThrough, attempts, screen: phase }) };
+  function boot() { bind(); $("localeSelect").value = locale; $("loading")?.setAttribute("hidden", ""); $("app").hidden = false; show("main"); renderStatic(); announce("loaded"); }
+  window.__ECHO_ORCHARD_TEST__ = { groves, startGrove, playPattern, chooseFruit, copy, stageRecord, stageSummary, getState: () => ({ groveIndex, phase, entered: [...entered], solved: [...solved], unlockedThrough, attempts, screen: phase }) };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();
 }());

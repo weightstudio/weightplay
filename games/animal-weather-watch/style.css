@@ -14,8 +14,6 @@
 
 html, body, #app { width: 100%; min-height: 100%; }
 
-html { background: #e8efe8; }
-
 body {
   margin: 0;
   min-height: 100vh;
@@ -28,16 +26,6 @@ body {
 button, select { font: inherit; }
 button { cursor: pointer; }
 [hidden] { display: none !important; }
-
-.loading-screen {
-  min-height: 100vh;
-  display: grid;
-  place-content: center;
-  text-align: center;
-  color: var(--muted);
-}
-
-.loader-mark { color: var(--accent); font-size: 4rem; }
 
 .panel {
   background: #ffffffc9;
@@ -57,6 +45,7 @@ button { cursor: pointer; }
 }
 
 .main-copy { max-width: 720px; margin: 0 auto; }
+.main-summary { display: block; align-self: start; max-height: 4.65em; overflow: hidden; }
 
 .cover-wrap {
   position: relative;
@@ -64,7 +53,6 @@ button { cursor: pointer; }
   aspect-ratio: 1;
   margin: 0 auto 18px;
   border-radius: 24px;
-  background: #c4e1e4;
   overflow: hidden;
 }
 
@@ -103,9 +91,15 @@ h3 { margin: 1.2rem 0 .5rem; }
 .intro, .prompt, .rule { max-width: 680px; color: var(--muted); font-size: 1.08rem; line-height: 1.55; }
 
 .main-progress {
+  height: 42px;
   min-height: 42px;
+  max-height: 42px;
   display: grid;
   align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 1;
   margin: 18px 0 0;
   padding: 8px 14px;
   border: 1px solid #b9d9d5;
@@ -130,11 +124,6 @@ h3 { margin: 1.2rem 0 .5rem; }
 button:disabled { opacity: .48; cursor: not-allowed; }
 .best { margin-top: 20px; color: var(--muted); }
 
-
-.stage-list { margin-top: 4px; }
-.stage-card { color: var(--ink); text-align: start; }
-.stage-card small { display: block; margin-top: 8px; color: var(--muted); line-height: 1.35; }
-.arrow { color: var(--accent); font-size: 1.5rem; }
 
 .battle-screen { color: var(--ink); }
 .pill { justify-self: end; display: block; width: max-content; margin: 8px 0 0 auto; padding: 8px 12px; border-radius: 999px; background: #e5f1ef; color: var(--accent); font-weight: 700; white-space: nowrap; }
@@ -218,8 +207,7 @@ select { min-height: 44px; max-width: 62%; border: 1px solid var(--line); border
 }
 
 
-/* Interface 7 cleanup: shared frame owns scene geometry and chrome. */
-body[data-wp-game-id="animal-weather-watch"] #stageScreen[data-wp-frame-scene]{background:linear-gradient(#17243ad9,#17243ae8),var(--wp-stage-art) center/cover;color:var(--wp-ui-text)}
+/* Shared Interface 9 owns Stage cards, gestures, fit, and background. */
 .stage-workspace{position:relative;min-width:0;min-height:0;overflow:hidden}
 .stage-tabs[data-wp-frame-stage-nav]{margin:0}
 .weather-battle-live{min-width:0;min-height:0;overflow:auto;overscroll-behavior:contain;padding:12px}
@@ -234,10 +222,10 @@ body[data-wp-game-id="animal-weather-watch"] #stageScreen[data-wp-frame-scene]{b
 
 /* Weather investigation content. The shared frame retains its geometry. */
 #weatherBattleLive {
-  display:grid; grid-template-rows:32px 58px 52px minmax(240px,1fr) 30px 104px 54px 48px;
+  display:grid; grid-template-rows:58px 52px minmax(240px,1fr) 30px 104px 54px 48px;
   gap:8px; padding:12px 16px 16px; background:#101f2fee; color:#f1f6f9;
 }
-#progressPill { justify-self:start; align-self:center; margin:0; padding:4px 9px; border:1px solid #507785; border-radius:6px; background:#183947; color:#b8e9e2; font-size:12px; }
+#progressPill { justify-self:start; align-self:center; margin:0; min-width:58px; padding:4px 9px; border:1px solid #507785; border-radius:6px; background:#183947; color:#b8e9e2; font-size:12px; text-align:center; }
 .observation-heading { display:grid; grid-template-columns:minmax(0,1fr) 96px; gap:8px; align-items:center; }
 #prompt { margin:0; color:#f2f7fa; font-size:21px; font-weight:800; line-height:1.25; }
 #hintBtn { min-height:42px; padding:6px; font-size:12px; border-color:#5e8792; background:#183947; color:#ccefe9; }
@@ -289,7 +277,6 @@ body[data-weather-state=result] #resultScreen {
 #resultScreen { padding-bottom:24px!important; }
 @media (min-aspect-ratio:3/2) {
   #weatherBattleLive { grid-template-columns:minmax(0,1fr) 300px;grid-template-rows:42px 46px 30px minmax(92px,1fr) 50px 44px;gap:6px 14px;padding:8px 14px; }
-  #progressPill { grid-column:1;grid-row:1; }
   #sequence { grid-column:1;grid-row:2/7;padding:12px; }
   #sequence .sign { min-height:100px; }
   .observation-heading { grid-column:2;grid-row:1;grid-template-columns:minmax(0,1fr) 82px; }

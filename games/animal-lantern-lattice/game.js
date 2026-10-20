@@ -269,12 +269,8 @@
   let sharedFrame = null;
   let stageRailController = null;
   let stageBrowseIndex = 0;
-  let stageRailResizeObserver = null;
   let stageProgressSnapshot = null;
   let stageBestsSnapshot = {};
-  const centerStageAfterViewportChange = () => {
-    if (state.screen === "stage") requestAnimationFrame(() => stageRailController?.center(stageBrowseIndex));
-  };
   const t = (key, vars = {}) => {
     const table = copy[state.locale] || copy.en || {};
     let value = table[key] || copy.en?.[key] || key;
@@ -420,75 +416,39 @@
     const progress = stageProgressSnapshot = readProgress();
     stageBestsSnapshot = readStageBests();
     if (entry) stageBrowseIndex = state.campaignRun ? 0 : progress.highestUnlocked - 1;
-    rail.setAttribute("aria-label", `${t("stageAll")} · ${t("progressBody", { unlocked: progress.highestUnlocked, total: paths.length })}`);
-    // The shared rail skin enables smooth scrolling for legacy CSS snap rails.
-    // This data-backed controller owns frame-by-frame movement and must not
-    // have the browser animate each scrollLeft assignment behind its state.
-    rail.style.setProperty("scroll-behavior", "auto", "important");
-    const bindCard = (button, index) => {
-      const item = paths[index];
-      const unlocked = index + 1 <= stageProgressSnapshot.highestUnlocked;
-      button.type = "button";
-      button.className = `stage-card${unlocked ? "" : " locked"}`;
-      button.dataset.index = String(index);
-      button.dataset.stageIndex = String(index);
-      button.setAttribute("aria-disabled", String(!unlocked));
-      if (index + 1 === stageProgressSnapshot.highestUnlocked) button.dataset.wpStageRecommended = "true";
-      else delete button.dataset.wpStageRecommended;
-      const title = document.createElement("strong");
-      title.textContent = t("stageRound", { n: index + 1, total: paths.length });
-      const name = document.createElement("span");
-      name.textContent = t(item.titleKey);
-      const meta = document.createElement("em");
-      meta.className = "stage-card-meta";
-      meta.textContent = `${t(item.arcKey)}${item.checkpoint ? ` · ${t("checkpoint")}` : ""}`;
-      const preview = document.createElement("small");
-      preview.className = "stage-card-summary";
-      const length = document.createElement("span");
-      length.className = "stage-card-length";
-      length.textContent = t("stageLength", { count: item.target.length });
-      const pips = document.createElement("span");
-      pips.className = "stage-route-pips";
-      pips.setAttribute("aria-hidden", "true");
-      for (let spot = 0; spot < item.target.length; spot += 1) pips.append(document.createElement("i"));
-      const best = document.createElement("span");
-      best.className = "stage-card-best";
-      const bestChecks = stageBestsSnapshot[String(index + 1)];
-      best.textContent = bestChecks
-        ? t("stageBest", { count: bestChecks, stars: starMarks(starCountForChecks(bestChecks)) })
-        : t("noBest");
-      preview.append(length, pips, best);
-      button.setAttribute("aria-label", `${title.textContent}: ${name.textContent}${unlocked ? `, ${length.textContent}, ${best.textContent}` : `, ${t("locked")}`}`);
-      button.disabled = false;
-      button.replaceChildren(title, name, meta, preview);
-    };
+    rail.setAttribute("aria-label", [t("stageAll"), t("progressBody", { unlocked: progress.highestUnlocked, total: paths.length })].join(" · "));
     if (!stageRailController) {
-      if (!window.WeightPlayStageV6?.install) throw new Error("Lantern Lattice requires the shared Stage V6 controller.");
-      stageRailController = window.WeightPlayStageV6.install(rail, {
-        total: paths.length,
-        poolSize: 9,
-        initialIndex: () => stageBrowseIndex,
-        bind: bindCard,
-        activate: (index) => {
+      if (!window.WeightPlayPlayUI?.mountStage) throw new Error("Lantern Lattice requires the shared Interface 9 Play UI.");
+      stageRailController = window.WeightPlayPlayUI.mountStage({
+        page: $("stageContent"),
+        rail,
+        config: stageConfig,
+        selected: stageBrowseIndex,
+        onSelect: (index) => { stageBrowseIndex = index; },
+        onStart: (index) => {
           if (index + 1 <= readProgress().highestUnlocked) startPath(index, { campaign: state.campaignRun, resetSession: !state.campaignRun });
         },
-        onChange: (index) => { stageBrowseIndex = index; },
+        isActive: () => state.screen === "stage",
       });
-      if (!stageRailController) throw new Error("The shared Stage V6 controller could not initialize the Lantern Lattice rail.");
-      if (typeof ResizeObserver === "function") {
-        stageRailResizeObserver = new ResizeObserver(() => {
-          if (state.screen === "stage") stageRailController?.center(stageBrowseIndex);
-        });
-        stageRailResizeObserver.observe(rail);
-      }
-    } else stageRailController.refresh();
-    stageRailController.center(stageBrowseIndex);
+      if (!stageRailController) throw new Error("The shared Interface 9 Stage selector could not initialize Lantern Lattice.");
+    } else stageRailController.refresh(stageBrowseIndex);
   };
 
   const ruleVars = (item) => ({
     name: t(item.echoId || item.decoy || "owl"),
     echo: t(item.echoId || "owl"),
     decoy: t(item.decoy || "owl"),
+  });
+
+  const stageConfig = window.createAnimalLanternLatticeStageConfig({
+    paths,
+    getProgress: () => stageProgressSnapshot || readProgress(),
+    getStageBests: () => stageBestsSnapshot,
+    text: t,
+    stars: starMarks,
+    rule: (item) => t(item.ruleKey, ruleVars(item)),
+    poster: "/games/animal-lantern-lattice/assets/animal-lantern-lattice-cover-voxel-v1.png",
+    background: "/assets/lobby-block-atmosphere.svg",
   });
   const renderBattle = () => {
     const item = paths[state.path];
@@ -942,6 +902,7 @@
   $("localeSelect").value = state.locale;
   sharedFrame = window.WeightPlayScreenFrame.mount({
     root: app,
+    playUI: true,
     localeSelect: $("localeSelect"),
     scenes: {
       main: { root: $("mainScreen"), header: $("mainHeader"), content: $("mainContent") },
@@ -949,7 +910,6 @@
       battle: { root: $("battleScreen"), header: $("battleHeader"), content: $("battleContent"), headerInfo: $("battleHeaderInfo") },
     },
   });
-  window.addEventListener("resize", centerStageAfterViewportChange);
   const effectPauseObserver = new MutationObserver(() => {
     const covered = $("battleContent").inert;
     effects.forEach((animation) => covered ? animation.pause() : animation.play());
@@ -961,8 +921,6 @@
     if (event.persisted) return;
     effectPauseObserver.disconnect();
     audio?.dispose();
-    window.removeEventListener("resize", centerStageAfterViewportChange);
-    stageRailResizeObserver?.disconnect();
     stageRailController?.destroy();
     stageRailController = null;
   });
@@ -971,7 +929,7 @@
     // Install the one persistent rail owner before Main becomes interactive;
     // returning from Stage must not add a second set of document writers.
     renderStages();
-    $("loadingPanel").hidden = true; show("main"); applyLocale(); track("main_ready");
+    show("main"); applyLocale(); track("main_ready");
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", revealMain, { once: true });
   else revealMain();
@@ -989,37 +947,4 @@
     getState: () => ({ ...state, chain: [...state.chain] }),
   };
 
-  const installInterfaceSevenRuntime = () => {
-    if (document.querySelector('link[href*="interface-7-cleanup.css"]')) return;
-    const stageScreen = $("stageScreen");
-    const battleScreen = $("battleScreen");
-    const stageCanvas = stageScreen?.querySelector(".stage-canvas");
-    stageScreen?.setAttribute("data-wp-logical-stage-canvas", "");
-    stageScreen?.setAttribute("data-wp-canvas-max-width", "920");
-    stageScreen?.setAttribute("data-wp-frame-play-fill", "");
-    stageScreen?.setAttribute("data-wp-frame-logical-header", "stage");
-    stageCanvas?.setAttribute("data-wp-standard-stage-screen", "");
-    battleScreen?.setAttribute("data-wp-logical-battle-canvas", "");
-    battleScreen?.setAttribute("data-wp-canvas-max-width", "920");
-    battleScreen?.setAttribute("data-wp-frame-play-fill", "");
-    battleScreen?.setAttribute("data-wp-frame-logical-header", "battle");
-    // Use the shared scaler's compact envelope instead of shrinking a 788px
-    // portrait reference into landscape and leaving unreadable controls.
-    battleScreen?.setAttribute("data-wp-battle-landscape-width", "760");
-    battleScreen?.setAttribute("data-wp-battle-landscape-height", "334");
-
-    const markup = [
-      '<link rel="stylesheet" href="/src/stage-selector-standard.css" data-wp-stage-standard>',
-      '<link rel="stylesheet" href="/src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">',
-       '<link rel="stylesheet" href="/games/animal-lantern-lattice/interface-7-cleanup.css?v=20260924-lantern-i7-hit-target-fix">',
-      '<script src="/src/stage-selector-standard.js" data-wp-stage-standard></script>',
-      '<script src="/src/stage-virtualization-standard.js?v=20260809-stage-v6-source-demotion-v8" data-wp-stage-virtualization-standard></script>',
-      '<script src="/src/battle-canvas-standard.js?v=20260911-folded-field-battle-envelope-v1" data-wp-battle-standard></script>',
-       '<script src="/games/animal-lantern-lattice/interface-7-compat.js?v=20260924-lantern-i7-copy-hit-target-fix"></script>',
-      '<script src="/games/animal-lantern-lattice/interface-7-followup.js?v=20260923-lantern-i7-cleanup2"></script>',
-      '<script src="/src/game-screen-frame.js?v=20260921-interface7-single-frame-v2&wp-audio=1.0.0"></script>',
-    ].join("");
-    if (document.readyState === "loading") document.write(markup);
-  };
-  installInterfaceSevenRuntime();
 })();
