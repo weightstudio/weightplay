@@ -527,7 +527,7 @@
       config: {
         count: STAGES.length,
         poster: "/games/animal-river-gates/assets/animal-river-gates-cover-voxel-v2.png",
-        background: "/games/animal-river-gates/assets/animal-river-gates-background-voxel-v1.png",
+        background: "/assets/lobby-block-atmosphere.svg",
         stage: stageRecord,
       },
       isActive: () => sharedFrameController?.active === "stage",

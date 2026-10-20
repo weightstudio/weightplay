@@ -58,7 +58,7 @@
 <h1 class="wp-route-heading" data-runtime-localize="off">地雷邏輯</h1>
 <div id="logicApp" data-wp-play-ui="1"></div>
 <section class="game-page-info game-page-info-static" data-mf-guide-version="20" data-runtime-localize="off" aria-label="遊玩指南">
-<div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">遊玩指南</span><h2>地雷邏輯</h2><p>讀懂數字避開地雷，翻開所有安全格。</p><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>邏輯益智</span><span>掃雷</span><span>單人遊戲</span></div></div><div class="game-info-facts"><div class="game-info-fact"><span>難度</span><strong>9×9 / 16×16 / 16×30</strong></div><div class="game-info-fact"><span>未標記雷數*</span><strong>10 / 40 / 99</strong></div><div class="game-info-fact"><span>安全格</span><strong>71 / 216 / 381</strong></div><div class="game-info-fact"><span>最佳時間</span><strong data-mf-best>—</strong></div></div></div>
+<div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">遊玩指南</span><h2>地雷邏輯</h2><p>讀懂數字避開地雷，翻開所有安全格。</p><div class="game-info-tags"><span>邏輯益智</span><span>掃雷</span><span>單人遊戲</span></div></div><div class="game-info-facts"><div class="game-info-fact"><span>難度</span><strong>9×9 / 16×16 / 16×30</strong></div><div class="game-info-fact"><span>未標記雷數*</span><strong>10 / 40 / 99</strong></div><div class="game-info-fact"><span>安全格</span><strong>71 / 216 / 381</strong></div><div class="game-info-fact"><span>最佳時間</span><strong data-mf-best>—</strong></div></div></div>
 <div class="game-info-sections">
 <section class="game-info-section"><h3>規則與目標</h3><p>翻開所有安全格即可獲勝；旗標只是筆記，不必插滿才能過關。數字計算周圍八格的地雷，包含斜角。第一次翻開的格子與相鄰格都不會放地雷，空白區會一起展開。翻到地雷就結束回合，結算時會顯示地雷位置，方便回看判斷。</p></section>
 <section class="game-info-section"><h3>操作方式</h3><p>點擊或輕觸可翻格；切換「插旗」後可標記或移除旗標，也可使用滑鼠右鍵或在焦點格按 F。方向鍵移動焦點，Enter 或空白鍵依目前模式操作。再次翻開數字格時，若周圍旗標數剛好等於數字，就會連開其他未標記鄰格；旗標放錯仍可能踩雷。大盤面可在棋盤內滑動或用方向鍵移動，棋盤外的操作按鈕不會跟著捲走。</p></section>
@@ -71,8 +71,9 @@
 <div><dt>第一步可能踩雷嗎？</dt><dd>第一次翻開的格子與它周圍實際存在的相鄰格都受到保護，因此能安全開局。不過，這不代表後續每一步都保證可以完全不用猜。</dd></div>
 <div><dt>為什麼提示有時找不到步驟？</dt><dd>提示會利用可見數字及總雷數，檢查直接推理與集合相減。找不到結果只代表這個提示系統沒有證明下一步，不代表一定要猜，也不代表謎題無解。</dd></div>
 <div><dt>使用復原還能刷新最佳時間嗎？</dt><dd>不能。使用提示或復原後，整個回合都會標為輔助回合，即使復原到開局也一樣。仍可正常完成遊戲，但只有無輔助勝利會更新本機最佳時間。</dd></div></dl></section>
-
-
+<section class="game-info-section" data-mf-comparison="review-required"><h3>相似玩法參考</h3><p>Microsoft Minesweeper 也使用數字線索與地雷標記。地雷邏輯另有 30 個固定編排的戰役盤面與本機解鎖重玩，同時保留隨機尺寸快玩、依可見線索推理的提示及復原。兩者是不同作品，此比較不代表合作或授權。</p><a href="https://zone.msn.com/en/games/msminesweeper" rel="external noopener">官方遊戲介紹 — Microsoft Minesweeper</a></section>
+<section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>其他 WeightPlay 益智遊戲</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="lights-out" href="/zh-tw/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" data-final-src="/assets/weightplay-logo.png" alt="熄燈遊戲" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>熄燈遊戲</strong></span></a>
+<a class="game-info-related-card" data-game-id="peg-solitaire" href="/zh-tw/games/peg-solitaire/"><img src="/assets/interface7-redrawn/peg-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="孔明棋" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>孔明棋</strong></span></a></div></section>
 </div></section>
 <script src="/src/game-title-registry.js"></script><script src="game.js?v=20261020-minefield-v20-i9-preview-route1"></script>
 </body></html>

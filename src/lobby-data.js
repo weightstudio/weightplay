@@ -79,7 +79,7 @@ window.WONDER_LOBBY = {
   games: [
     {
       id: "deep-drill", audience: "general", status: "planned", internalOnly: true,
-      internalTrial: "games/deep-drill/?preview=1", href: "games/deep-drill/",
+      internalTrial: "/games/deep-drill/?preview=1", href: "games/deep-drill/",
       title: { en: "Deep Drill", "zh-Hant": "地心鑽探" },
       type: { en: "Mining & Upgrades", "zh-Hant": "採礦與升級" },
       description: { en: "Drill deeper, recover ore, upgrade your rig and unlock automatic drilling.", "zh-Hant": "往地心鑽進，帶礦返航、升級與更換鑽頭，解鎖自動鑽掘。" },

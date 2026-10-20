@@ -41,7 +41,7 @@
       localeSelect,
       playUI: true,
       scenes: {
-        main: { root: main, header: mainHeader, content: main.querySelector(".main-content") },
+        main: { root: main, header: mainHeader, content: main.querySelector(".wp-standard-main-composition") },
         stage: { root: stage, header: stageHeader, content: $("stageWorkspace") },
         battle: { root: battle, header: battleHeader, content: $("battleWorkspace") },
       },

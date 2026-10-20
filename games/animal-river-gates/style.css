@@ -10,7 +10,6 @@
   --try: #a55b37;
   font-family: ui-rounded, "Avenir Next", system-ui, sans-serif;
   color: var(--ink);
-  background: #123a50;
 }
 
 body { margin: 0; color: var(--ink); font-family: inherit; }
@@ -19,8 +18,6 @@ button, select { font: inherit; }
 button { cursor: pointer; }
 button:disabled { opacity: .48; cursor: not-allowed; }
 
-.main-content { min-width: 0; display: grid; justify-items: center; gap: 12px; text-align: center; }
-.cover-wrap { width: min(100%, 520px); overflow: hidden; border: 2px solid #f0d087; border-radius: 16px; background: #c4e1e4; box-shadow: 0 10px 26px #08283b55; }
 .main-poster { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
 .eyebrow { margin: 0; color: var(--accent); font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 .intro, .prompt, .rule { max-width: 680px; margin: 0; font-size: 1rem; line-height: 1.5; color: var(--muted); }
