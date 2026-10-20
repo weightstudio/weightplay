@@ -63,7 +63,8 @@
   window.GUST_GARDEN_LOCALE_NAMES = localeNames;
 
   const localizedRoute = /^\/(?:en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\/games\/animal-gust-garden\//i.test(location.pathname);
-  if (localizedRoute && document.readyState === "loading") {
+  const isInterface9 = document.body?.dataset.wpInterfaceVersion === "9";
+  if (localizedRoute && !isInterface9 && document.readyState === "loading") {
     const version = "20260923-gust-garden-interface7-localized1";
     document.write(`<link rel="stylesheet" href="../../src/stage-selector-standard.css?v=${version}" data-wp-stage-standard>`);
     document.write(`<link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=${version}" data-wp-battle-standard>`);

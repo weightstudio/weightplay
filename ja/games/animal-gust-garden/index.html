@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="ja" data-wp-official-name>
 <head>
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-gust-garden/" />
+  <script src="/src/game-page-info.js?v=20260908-approved-game-names1" defer></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/ja/games/animal-gust-garden/" />
@@ -27,14 +27,15 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-gust-garden" />
-  <meta name="weightplay-game-version" content="v15" />
-  <meta name="weightplay-interface-version" content="6" />
+  <meta name="weightplay-game-version" content="v16" />
+  <meta name="weightplay-interface-version" content="9" />
   <meta name="weightplay-scene-controls" content="immutable" />
   <title>風まかせ種まき庭園 | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
-  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-  <link rel="stylesheet" href="style.css?v=20261018-gust-v15-clarity1" /><script src="/src/shared-interface-bootstrap.js?v=20261017-shared-dark-loader1" data-wp-shared-interface="7"></script>
+  <link rel="stylesheet" href="style.css?v=20261021-gust-v16-i9" /><link rel="stylesheet" href="../../src/game-ui-theme.css" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-style />
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2" />
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
   <meta name="description" content="種を選び、一度に一陣の風を送り、棘を避けてすべての花を咲かせよう。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -49,60 +50,66 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"風まかせ種まき庭園","alternateName":"Wind-Sown Garden","url":"https://weightplay.com/ja/games/animal-gust-garden/","image":"https://weightplay.com/assets/interface7-redrawn/animal-gust-garden.webp","description":"種を選び、一度に一陣の風を送り、棘を避けてすべての花を咲かせよう。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["パズル","ロジック","空間計画","ファミリー","動物"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-<link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-frame-style>
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-<body data-wp-game-id="animal-gust-garden" data-wp-audience="general" data-wp-battle-settings="visible" data-wp-game-owned-guide="true">
-  <div id="loading" class="loading-screen"><span class="spinner" aria-hidden="true">✦</span><p data-i18n="loading">Waking the garden breeze…</p></div>
-  <main id="app" hidden>
-    <section id="mainScreen" class="screen panel" data-screen="main">
-      <header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="WeightPlayへ戻る" data-i18n-aria="mainBack"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><strong data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">風まかせ種まき庭園</strong><button id="settingsButton" class="icon-button" type="button" data-wp-settings aria-label="Settings" data-i18n-aria="settings">⚙</button></header>
-      <div class="cover-wrap"><picture><source srcset="assets/animal-gust-garden-cover-art.webp" type="image/webp" /><img src="assets/animal-gust-garden-cover-art.png" width="1254" height="1254" data-i18n-alt="coverAlt" alt="" /></picture><span class="cover-badge" data-i18n="kicker">A tiny wind puzzle</span></div>
-      <p class="eyebrow" data-i18n="world">Mosslight meadow</p>
-      <h1 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">風まかせ種まき庭園</h1>
-      <p class="intro main-summary" data-i18n="intro">Choose a seed, point the vane, and guide every seed to a flower without brushing a thorn.</p>
-      <div class="facts"><span data-i18n="fact1">30の花壇</span><span data-i18n="fact2">Plan each gust</span><span data-i18n="fact3">Calm retry</span></div>
-      <p id="mainProgress" class="progress" data-wp-main-progress aria-live="polite">花壇：0 / 30</p>
-      <div class="main-actions"><button id="startButton" class="primary" type="button" data-wp-main-start data-i18n="start">Open the garden</button><button id="chooseButton" class="secondary" type="button" data-i18n="choose">Choose a breeze</button></div>
-      <p id="bestText" class="best" aria-live="polite"></p>
+<body data-wp-game-id="animal-gust-garden" data-wp-game-version="v16" data-wp-interface-version="9" data-wp-audience="general" data-wp-game-owned-guide>
+  <main id="app" hidden data-wp-frame-root>
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap" data-wp-game-title data-runtime-localize="off">風まかせ種まき庭園</h1>
+    <select id="localeSelect" aria-label="Language" hidden>
+      <option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option>
+    </select>
+    <section id="mainScreen" class="screen main-screen" data-screen="main" data-wp-standard-main-screen>
+      <header class="main-header">
+        <a class="main-return" href="/" data-wp-return="main" aria-label="WeightPlayへ戻る" data-i18n-aria="mainBack"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="120" height="120" /></a>
+        <strong data-runtime-localize="off" data-wp-game-title data-wp-frame-title data-runtime-localize="off">風まかせ種まき庭園</strong>
+      </header>
+      <div class="main-copy">
+        <div class="cover-wrap"><picture><source srcset="assets/animal-gust-garden-cover-art.webp" type="image/webp" /><img class="main-cover" src="assets/animal-gust-garden-cover-art.png" width="1254" height="1254" data-wp-frame-poster data-i18n-alt="coverAlt" alt="" /></picture></div>
+        <p class="intro main-summary" data-i18n="intro" data-wp-frame-summary>Choose a seed, point the vane, and guide every seed to a flower without brushing a thorn.</p>
+        <p id="mainProgress" class="main-progress" data-wp-main-progress data-wp-frame-progress role="status" aria-live="polite">花壇：0 / 30</p>
+        <div class="main-actions"><button id="startButton" class="primary" type="button" data-wp-main-start data-wp-frame-action="primary" data-i18n="start">Open the garden</button></div>
+        <p id="bestText" class="best" aria-live="polite"></p>
+      </div>
     </section>
 
-    <section id="stageScreen" class="stage-shell" data-screen="stage" hidden>
-      <div class="stage-canvas" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-frame-logical-header="stage" data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="/games/animal-gust-garden/assets/animal-gust-garden-cover-art.webp" style="--wp-stage-art:url('/games/animal-gust-garden/assets/animal-gust-garden-cover-art.webp')">
-        <header class="stage-header"><button id="stageBackButton" class="icon-button" type="button" data-wp-return="stage" aria-label="Back" data-i18n-aria="back">←</button><div><p class="eyebrow" data-i18n="chapter">Breeze plots</p><h2 data-i18n="choose">Choose a breeze</h2></div><button id="stageSettingsButton" class="icon-button" type="button" data-wp-settings aria-label="Settings" data-i18n-aria="settings">⚙</button></header>
-        <div><p class="stage-intro intro" data-i18n="stageHint">Select a plot, then guide each seed one square at a time.</p><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div></div>
-        <nav class="stage-tabs" aria-label="ステージのセクション" data-i18n-aria="stageSections"><span aria-hidden="true"></span><button type="button" role="tab" aria-current="page" data-i18n="chapter">Breeze plots</button><span aria-hidden="true"></span></nav>
-      </div><div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
+    <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
+      <header class="stage-header">
+        <button id="stageBackButton" class="icon-btn scene-return" type="button" data-wp-return="stage" aria-label="Back" data-i18n-aria="back">←</button>
+        <strong data-wp-frame-title hidden aria-hidden="true">Wind-Sown Garden</strong>
+      </header>
+      <div id="stageWorkspace" class="stage-workspace"><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail data-wp-stage-center-observer="manual"></div></div>
+      <nav class="stage-tabs" data-wp-frame-stage-nav role="tablist" aria-label="ステージのセクション"><button id="stagesTab" type="button" role="tab" aria-selected="true" data-wp-frame-action="tab" data-wp-frame-stage-slot="stages">Stages</button></nav>
     </section>
 
-    <section id="battleScreen" class="battle-shell" data-screen="battle" hidden>
-      <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-canvas-max-width="920">
-        <header class="battle-head"><button id="battleBackButton" class="icon-button" type="button" data-wp-return="battle" aria-label="Back" data-i18n-aria="back">←</button><div><p class="eyebrow" data-i18n="round">Breeze plot</p><h2 id="stageTitle"></h2><span id="progressPill" class="progress-pill" aria-live="polite">1 / 30</span></div><button id="battleSettingsButton" class="icon-button" type="button" data-wp-settings aria-label="Settings" data-i18n-aria="settings">⚙</button></header>
-        <p id="prompt" class="prompt" aria-live="polite"></p>
-        <div id="grid" class="grid" role="grid"></div>
-        <div class="legend"><span><b class="legend-seed">●</b><span data-i18n="seed">seed</span></span><span><b class="legend-flower">✿</b><span data-i18n="flower">flower</span></span><span><b class="legend-thorn">✦</b><span data-i18n="thorn">thorn</span></span></div>
-        <p id="status" class="status" role="status" aria-live="polite"></p>
-        <div class="direction-panel"><p class="eyebrow" data-i18n="chooseDirection">Choose a gust</p><div id="directionButtons" class="direction-buttons" role="group"></div></div>
-        <div class="battle-actions"><button id="gustButton" class="primary" type="button" data-i18n="gust">Send gust</button><button id="resetButton" class="secondary" type="button" data-i18n="reset">Reset plot</button></div>
-      </div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+    <section id="battleScreen" class="screen battle-screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-battle-landscape-width="800" data-wp-battle-landscape-height="440" data-wp-canvas-max-width="920" hidden>
+      <header class="battle-header">
+        <button id="battleBackButton" class="icon-btn scene-return" type="button" data-wp-return="battle" aria-label="Back" data-i18n-aria="back">←</button>
+        <strong data-wp-frame-title hidden aria-hidden="true">Wind-Sown Garden</strong>
+      </header>
+      <div id="gardenBattleLive" class="garden-battle-live">
+        <div id="battleHeaderInfo" class="battle-header-info"><span id="stageTitle" class="battle-stage-title"></span><span id="progressPill" class="pill" role="status" aria-live="polite">1 / 30</span></div>
+        <div class="battle-canvas" data-garden-layout>
+          <p id="prompt" class="prompt" aria-live="polite"></p>
+          <div id="grid" class="grid" role="grid"></div>
+          <div class="legend"><span><b class="legend-seed">●</b><span data-i18n="seed">seed</span></span><span><b class="legend-flower">✿</b><span data-i18n="flower">flower</span></span><span><b class="legend-thorn">✦</b><span data-i18n="thorn">thorn</span></span></div>
+          <p id="status" class="status" role="status" aria-live="polite"></p>
+          <div class="direction-panel"><p class="eyebrow" data-i18n="chooseDirection">Choose a gust</p><div id="directionButtons" class="direction-buttons" role="group"></div></div>
+          <div class="battle-actions"><button id="gustButton" class="primary" type="button" data-i18n="gust">Send gust</button><button id="resetButton" class="secondary" type="button" data-i18n="reset">Reset plot</button></div>
+        </div>
+      </div>
+      <section id="resultScreen" class="result-panel" data-wp-battle-substate="result" hidden>
+        <div class="result-icon"><img class="result-art" src="assets/animal-gust-garden-taro.png" width="1024" height="1536" data-i18n-alt="taroAlt" alt="" /></div><p class="eyebrow" data-i18n="finished">Plot in bloom</p><h2 data-i18n="resultTitle">The garden is breathing again!</h2><p id="resultText" class="intro"></p>
+        <div class="main-actions"><button id="mapButton" class="secondary" type="button" data-i18n="choose">Choose a breeze</button><button id="nextButton" class="primary" type="button" data-i18n="next">Next plot</button><button id="replayButton" class="secondary" type="button">Replay</button></div>
+      </section>
     </section>
-
-    <section id="resultScreen" class="screen panel" data-screen="result" hidden>
-      <div class="result-icon"><img class="result-art" src="assets/animal-gust-garden-taro.png" width="1024" height="1536" data-i18n-alt="taroAlt" alt="" /></div><p class="eyebrow" data-i18n="finished">Plot in bloom</p><h2 data-i18n="resultTitle">The garden is breathing again!</h2><p id="resultText" class="intro"></p>
-      <div class="main-actions"><button id="nextButton" class="primary" type="button" data-i18n="next">Next plot</button><button id="mapButton" class="secondary" type="button" data-i18n="choose">Choose a breeze</button></div>
-    </section>
-
-    <section id="settingsPanel" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="modal-card"><button id="closeSettings" class="close-button" type="button" aria-label="Close" data-i18n-aria="close">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label class="setting-row wp-shell-sound-row"><span data-i18n="sound">Sound</span><button id="soundButton" class="toggle" type="button" data-sound-toggle aria-pressed="true"></button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   </main>
-  <section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="風まきガーデン game information"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2 data-wp-game-title data-runtime-localize="off">風まかせ種まき庭園</h2><p>『風まきガーデン』は、風を一手ずつ送り、トゲに触れずにすべての種を花へ導く空間計画パズルです。</p></div><div class="game-info-facts"><div class="game-info-fact"><span>ゲームプレイ</span><strong>風向き種子パズル</strong></div><div class="game-info-fact"><span>キャンペーン</span><strong>30ステージ · 6章</strong></div><div class="game-info-fact"><span>操作</span><strong>タッチまたはマウス</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>世界とミッション</h3><p>苔の光る草原では、各ステージが3つの種、3つの花、空き地、動かないトゲからなる小さな庭の道です。種を選び、上下左右の風を送り、すべての花を咲かせます。大切なのは観察と計画で、トゲには触れません。</p></div><div class="game-info-section"><h3>ステージの見方</h3><p>盤面は5列×4行の草原です。種、花、トゲ、特殊タイルは動かす前に見えます。ポインター、キーボード、タッチで種を選ぶと、次の風を受ける種がハイライトされます。タイマーや残機はありません。</p></div><div class="game-info-section"><h3>風の仕組み</h3><p>通常の風は選んだ種を上下左右のいずれかへ1マス動かします。安全な空きマスだけに進めます。トゲ、端、別の種、ルート規則で止まったときは状態メッセージが理由を示すので、失敗ではなく手がかりになります。</p></div><div class="game-info-section"><h3>気流、片道ゲート、ポータル</h3><p>後半には3つのルート要素が登場します。矢印と同じ向きから気流に入ると2マス進み、印の方向から片道ゲートへ近づくと通過し、ポータルに乗ると対のポータルへ移動します。道が変わっても、すべての種を花へ導く目的は同じです。</p></div><div class="game-info-section"><h3>キャンペーンとチェックポイント</h3><p>30ステージは5ステージずつの6章、草原の目覚め、交差する風、灯りのポータル、トゲの迷路、月種の道、完全な樹冠に分かれます。5、10、15、20、25、30は名前付きチェックポイントで、開花順が表示されます。クリアすると次が開き、済んだステージは再挑戦できます。</p></div><div class="game-info-section"><h3>攻略とやり直し</h3><p>動かす前に草原全体を見て、現実的な入口が1つしかない花から考えます。ほかの種を通路から遠ざけ、風のたびに状態を読みましょう。チェックポイントでは近い花より開花順を優先します。「庭をリセット」で初期配置に戻せますが、解放状況は消えません。</p></div><div class="game-info-section"><h3>チェックポイントの例</h3><p>ステージ10では、開花順が3、1、2と表示されます。先に種1を選んで花に入ろうとしても、その開花は受け付けられず盤面は変わりません。表示された順に進めましょう。</p></div><div class="game-info-section"><h3>開発者の設計メモ</h3><p>本作は、縦横4方向の風と5列×4行の小さな盤面を中心に設計しました。5ステージずつの6章では、気流、一方通行ゲート、ポータルなどの経路制約が加わりますが、「すべての花を咲かせる」という目標は変わりません。チェックポイントには開花順が表示されます。タイマーやライフはなく、盤面を見てから種を選ぶ遊びです。タッチ、マウス、キーボードで同じ盤面と方向操作を使えます。</p></div><div class="game-info-section"><h3>プレイヤーと保存情報</h3><p>アカウント、購入、オンライン接続は不要です。タッチとマウスに対応し、音は設定で変更できます。解放済み、クリア済みのステージと最少風回数はこのブラウザだけに保存されます。サイトデータを消したりブラウザを変えたりするとローカル進行が失われる場合があり、クラウド保存ではありません。</p></div><div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>ステージはいくつありますか？</dt><dd>全30ステージで、5ステージずつの6章に分かれています。5、10、15、20、25、30がチェックポイントです。</dd></div><div><dt>風を1回送るとどうなりますか？</dt><dd>通常は選んだ種が4方向のいずれかへ1マス進みます。対応する気流に入ると2マス進むことがあります。</dd></div><div><dt>風が止まったらどうなりますか？</dt><dd>盤面は安全なままで、状態メッセージが理由を示します。種や方向を変えるか、庭をリセットして再挑戦できます。</dd></div><div><dt>咲いたステージを再プレイできますか？</dt><dd>はい。次のステージを解放した後も、クリア済みのステージはステージレールに残ります。</dd></div><div><dt>進行状況はオンラインに保存されますか？</dt><dd>いいえ。解放、クリア、最少風回数はこのブラウザだけに保存され、アカウントやクラウド保存はありません。</dd></div></dl></div><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>関連ゲームをもっと見る</h3><p>明確な合図とルート計画を楽しめるWeightPlayの別のパズルもどうぞ。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-signal-scout" href="/ja/games/animal-signal-scout/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-signal-scout.webp" data-final-src="/assets/weightplay-logo.png" alt="巡回信号合わせ" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">巡回信号合わせ</strong><span>3つの偵察メモを読み、動物と信号色を合わせ、見える巡回順をまねします。</span></span></a><a class="game-info-related-card" data-game-id="lights-out" href="/ja/games/lights-out/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/lights-out.webp" data-final-src="/assets/weightplay-logo.png" alt="ライツアウト" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">ライツアウト</strong><span>マスと上下左右を切り替え、すべての灯りを消します。</span></span></a></div></div></div></section>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1" data-wp-frame-script></script><script src="locales.js?v=20260913-gust-garden-depth30-v13"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
-  <script src="../../src/battle-canvas-standard.js?v=20260923-gust-i7-cleanup2" data-wp-battle-standard></script>
-  <script src="../../src/stage-virtualization-standard.js?v=20260923-gust-i7-cleanup2"></script>
-  <script src="interface-7-stage-data.js?v=20261018-gust-v15-clarity1"></script>
-  <script src="game.js?v=20261018-gust-v15-clarity1"></script>
-  <script src="interface-7-compat.js?v=20260923-gust-i7-cleanup2"></script>
-<script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
+  <section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="風まきガーデン game information"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2 data-wp-game-title data-runtime-localize="off">風まかせ種まき庭園</h2><p>『風まきガーデン』は、風を一手ずつ送り、トゲに触れずにすべての種を花へ導く空間計画パズルです。</p></div><div class="game-info-facts"><div class="game-info-fact"><span>ゲームプレイ</span><strong>風向き種子パズル</strong></div><div class="game-info-fact"><span>キャンペーン</span><strong>30ステージ · 6章</strong></div><div class="game-info-fact"><span>操作</span><strong>タッチまたはマウス</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>世界とミッション</h3><p>苔の光る草原では、各ステージが3つの種、3つの花、空き地、動かないトゲからなる小さな庭の道です。種を選び、上下左右の風を送り、すべての花を咲かせます。大切なのは観察と計画で、トゲには触れません。</p></div><div class="game-info-section"><h3>ステージの見方</h3><p>盤面は5列×4行の草原です。種、花、トゲ、特殊タイルは動かす前に見えます。ポインター、キーボード、タッチで種を選ぶと、次の風を受ける種がハイライトされます。タイマーや残機はありません。</p></div><div class="game-info-section"><h3>風の仕組み</h3><p>通常の風は選んだ種を上下左右のいずれかへ1マス動かします。安全な空きマスだけに進めます。トゲ、端、別の種、ルート規則で止まったときは状態メッセージが理由を示すので、失敗ではなく手がかりになります。</p></div><div class="game-info-section"><h3>気流、片道ゲート、ポータル</h3><p>後半には3つのルート要素が登場します。矢印と同じ向きから気流に入ると2マス進み、印の方向から片道ゲートへ近づくと通過し、ポータルに乗ると対のポータルへ移動します。道が変わっても、すべての種を花へ導く目的は同じです。</p></div><div class="game-info-section"><h3>キャンペーンとチェックポイント</h3><p>30ステージは5ステージずつの6章、草原の目覚め、交差する風、灯りのポータル、トゲの迷路、月種の道、完全な樹冠に分かれます。5、10、15、20、25、30は名前付きチェックポイントで、開花順が表示されます。クリアすると次が開き、済んだステージは再挑戦できます。</p></div><div class="game-info-section"><h3>攻略とやり直し</h3><p>動かす前に草原全体を見て、現実的な入口が1つしかない花から考えます。ほかの種を通路から遠ざけ、風のたびに状態を読みましょう。チェックポイントでは近い花より開花順を優先します。「庭をリセット」で初期配置に戻せますが、解放状況は消えません。</p></div><div class="game-info-section"><h3>チェックポイントの例</h3><p>ステージ10では、開花順が3、1、2と表示されます。先に種1を選んで花に入ろうとしても、その開花は受け付けられず盤面は変わりません。表示された順に進めましょう。</p></div><div class="game-info-section"><h3>開発者の設計メモ</h3><p>本作は、縦横4方向の風と5列×4行の小さな盤面を中心に設計しました。5ステージずつの6章では、気流、一方通行ゲート、ポータルなどの経路制約が加わりますが、「すべての花を咲かせる」という目標は変わりません。チェックポイントには開花順が表示されます。タイマーやライフはなく、盤面を見てから種を選ぶ遊びです。タッチ、マウス、キーボードで同じ盤面と方向操作を使えます。</p></div><div class="game-info-section"><h3>プレイヤーと保存情報</h3><p>アカウント、購入、オンライン接続は不要です。タッチとマウスに対応し、音は設定で変更できます。解放済み、クリア済みのステージと最少風回数はこのブラウザだけに保存されます。サイトデータを消したりブラウザを変えたりするとローカル進行が失われる場合があり、クラウド保存ではありません。</p></div><div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>ステージはいくつありますか？</dt><dd>全30ステージで、5ステージずつの6章に分かれています。5、10、15、20、25、30がチェックポイントです。</dd></div><div><dt>風を1回送るとどうなりますか？</dt><dd>通常は選んだ種が4方向のいずれかへ1マス進みます。対応する気流に入ると2マス進むことがあります。</dd></div><div><dt>風が止まったらどうなりますか？</dt><dd>盤面は安全なままで、状態メッセージが理由を示します。種や方向を変えるか、庭をリセットして再挑戦できます。</dd></div><div><dt>咲いたステージを再プレイできますか？</dt><dd>はい。次のステージを解放した後も、クリア済みのステージはステージレールに残ります。</dd></div><div><dt>進行状況はオンラインに保存されますか？</dt><dd>いいえ。解放、クリア、最少風回数はこのブラウザだけに保存され、アカウントやクラウド保存はありません。</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><p>明確な合図とルート計画を楽しめるWeightPlayの別のパズルもどうぞ。</p><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-signal-scout/"><img src="/games/animal-signal-scout/assets/outpost-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>巡回信号合わせ</strong><span>3つの偵察メモを読み、動物と信号色を合わせ、見える巡回順をまねします。</span></span></a><a class="game-info-related-card" href="/ja/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ライツアウト</strong><span>マスと上下左右を切り替え、すべての灯りを消します。</span></span></a></div></div></div></section>
+  <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-script></script>
+  <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+  <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+  <script src="locales.js?v=20261021-gust-v16-i9"></script>
+  <script src="game.js?v=20261021-gust-v16-i9"></script>
+  <script src="interface-7-compat.js?v=20261021-gust-v16-i9"></script>
+<script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>

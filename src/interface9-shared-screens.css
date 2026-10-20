@@ -151,6 +151,36 @@ html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) 
   color: var(--wp-ui-muted);
 }
 
+/* Opt-in I9 Battle result cards retain readable physical typography inside a
+   uniformly scaled logical Canvas. Shared action buttons already use this
+   inverse scale; keep the result card and its copy on the same physical basis. */
+html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"])
+  [data-wp-frame-logical-actions="battle"] [data-wp-frame-result-card] {
+  box-sizing: border-box;
+  width: min(calc(460px * var(--wp-battle-canvas-inverse-scale, 1)), 100%);
+  max-width: none;
+  padding: calc(28px * var(--wp-battle-canvas-inverse-scale, 1));
+  border-radius: calc(24px * var(--wp-battle-canvas-inverse-scale, 1));
+}
+
+html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"])
+  [data-wp-frame-logical-actions="battle"] [data-wp-frame-result-card] h2 {
+  font-size: calc(32px * var(--wp-battle-canvas-inverse-scale, 1));
+  margin-bottom: calc(9px * var(--wp-battle-canvas-inverse-scale, 1));
+}
+
+html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"])
+  [data-wp-frame-logical-actions="battle"] [data-wp-frame-result-card] p {
+  font-size: calc(16px * var(--wp-battle-canvas-inverse-scale, 1));
+  line-height: 1.55;
+  margin-bottom: calc(20px * var(--wp-battle-canvas-inverse-scale, 1));
+}
+
+html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"])
+  [data-wp-frame-logical-actions="battle"] [data-wp-frame-result-card] .logic-result-actions {
+  gap: calc(8px * var(--wp-battle-canvas-inverse-scale, 1));
+}
+
 @media (min-width: 721px) {
   html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) .game-page-info .game-info-facts {
     grid-template-columns: repeat(4, minmax(0, 1fr));

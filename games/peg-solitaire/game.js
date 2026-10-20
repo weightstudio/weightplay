@@ -57,6 +57,90 @@
     }
   }
 
+  const sharedFrame = (() => {
+    if (!app) return null;
+    const frameRuntime = window.WeightPlayScreenFrame;
+    if (!frameRuntime) throw new Error("PEG_SOLITAIRE_SHARED_FRAME_REQUIRED");
+
+    const root = app.root;
+    const mainHeader = app.main.querySelector("header");
+    const battleHeader = app.battle.querySelector("header");
+    const mainContent = app.main.querySelector(".logic-hero");
+    const battleContent = app.battle.querySelector(".logic-battle-wrap");
+    const localeSelect = root.querySelector("#localePicker");
+    if (!mainHeader || !battleHeader || !mainContent || !battleContent || !localeSelect || !app.battleChip) {
+      throw new Error("PEG_SOLITAIRE_SHARED_FRAME_SLOTS_REQUIRED");
+    }
+
+    const localeOwner = localeSelect.closest("label") || localeSelect;
+    const localeSource = document.createElement("div");
+    localeSource.hidden = true;
+    localeSource.inert = true;
+    localeSource.append(localeOwner);
+    root.append(localeSource);
+    mainHeader.querySelector(".logic-header-tools")?.remove();
+    app.main.querySelector(".logic-guide")?.remove();
+    app.stage?.remove();
+    root.querySelector(".logic-lab")?.classList.remove("logic-lab");
+    app.main.classList.remove("logic-main");
+
+    mainHeader.querySelector("h1")?.setAttribute("data-wp-frame-title", "");
+    battleHeader.querySelector("h1")?.setAttribute("data-wp-frame-title", "");
+    mainContent.querySelector(".logic-poster img")?.setAttribute("data-wp-frame-poster", "");
+    mainContent.querySelector(".logic-copy")?.setAttribute("data-wp-frame-copy", "");
+    const summary = [...mainContent.querySelectorAll(".logic-copy p")]
+      .find((paragraph) => !paragraph.classList.contains("logic-kicker"));
+    summary?.setAttribute("data-wp-frame-summary", "");
+    mainContent.querySelector(".logic-progress-slot")?.setAttribute("data-wp-frame-progress", "");
+    const start = root.querySelector("#startButton");
+    start?.setAttribute("data-wp-frame-action", "primary");
+    battleContent.querySelectorAll(".logic-action-row button").forEach((button) => {
+      button.setAttribute("data-wp-frame-action", "secondary");
+    });
+    for (const button of root.querySelectorAll(".logic-result-actions button")) {
+      button.setAttribute("data-wp-frame-action", "secondary");
+    }
+    root.querySelector("#resultReplay")?.setAttribute("data-wp-frame-action", "primary");
+    root.querySelector("#leaveContinue")?.setAttribute("data-wp-frame-action", "primary");
+    app.tutorial?.setAttribute("data-wp-scroll-owner", "");
+    app.battle.setAttribute("data-wp-frame-logical-header", "battle");
+    app.battle.setAttribute("data-wp-frame-play-fill", "");
+    app.result.querySelector(".logic-result-card")?.setAttribute("data-wp-frame-result-card", "");
+
+    const frame = frameRuntime.mount({
+      root,
+      localeSelect,
+      playUI: true,
+      scenes: {
+        main: { root: app.main, header: mainHeader, content: mainContent },
+        battle: { root: app.battle, header: battleHeader, content: battleContent },
+      },
+    });
+    const battleInfo = frameRuntime.createGroup().add(app.battleChip);
+    frame.battleTopUI.add(battleInfo);
+
+    const leave = root.querySelector("#logicLeave");
+    const syncScene = () => {
+      const battleVisible = !app.battle.hidden;
+      const covered = !app.result.hidden || Boolean(leave && !leave.hidden);
+      frame.activate(battleVisible ? "battle" : "main", { covered: battleVisible && covered });
+    };
+    const scenesObserver = new MutationObserver(syncScene);
+    for (const screen of [app.main, app.battle, app.result, leave].filter(Boolean)) {
+      scenesObserver.observe(screen, { attributes: true, attributeFilter: ["hidden"] });
+    }
+    frame.activate("main");
+    const dispose = (event) => {
+      if (event.persisted) return;
+      scenesObserver.disconnect();
+      frame.destroy();
+      window.removeEventListener("pagehide", dispose);
+    };
+    window.addEventListener("pagehide", dispose);
+    window.addEventListener("pageshow", syncScene);
+    return frame;
+  })();
+
   const lessonCopy = {
     en: {
       success: "One peg left after {moves} moves—you reached the goal. Replay and look for a route that keeps an exit open.",
@@ -182,7 +266,12 @@
     if (!board) return;
     const labels = pegCellLabelCopy[document.documentElement.lang] || pegCellLabelCopy.en;
     [...board.querySelectorAll(".logic-cell")].forEach((cell, index) => {
-      if (cell.classList.contains("void")) return;
+      if (cell.classList.contains("void")) {
+        cell.disabled = true;
+        cell.tabIndex = -1;
+        cell.setAttribute("aria-hidden", "true");
+        return;
+      }
       const template = cell.classList.contains("peg") ? labels.peg : labels.empty;
       cell.setAttribute("aria-label", template.replace("{index}", String(index + 1)));
     });

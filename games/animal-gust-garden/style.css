@@ -78,7 +78,7 @@ h2 { font-size: clamp(1.45rem, 5vw, 2rem); }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 /* The garden is content inside the shared frame. Its two declared logical
    compositions keep fixed controls and a square-cell board at every size. */
-html[data-wp-shared-interface] body[data-wp-game-id="animal-gust-garden"] #battleScreen .battle-canvas[data-garden-layout] {
+html body[data-wp-game-id="animal-gust-garden"] #battleScreen .battle-canvas[data-garden-layout] {
   display: grid !important; grid-template-columns: minmax(0, 1fr) !important; grid-template-rows: 48px minmax(0, 1fr) !important;
   gap: 8px !important; padding: 12px !important; overflow: hidden !important;
   background: linear-gradient(160deg, #102b30e8, #101f2af2), url('assets/animal-gust-garden-background.webp') center/cover !important;
@@ -147,201 +147,57 @@ html body[data-wp-game-id="animal-gust-garden"] #battleScreen .garden-controls .
 }
 @media (min-width: 720px) { .screen { padding: 24px 32px 34px; } #mainScreen { margin-top: 18px; } }
 
-/* Interface 6 shell contract: Main owns its centered header and guide, while
-   Stage and Battle fill the viewport above the General reserve. */
-.main-header { min-height: 64px; display: grid; grid-template-columns: 58px minmax(0, 1fr) 48px; align-items: center; gap: 10px; margin: -4px -4px 8px; }
-.main-header > strong { text-align: center; letter-spacing: .02em; }
-.main-return { width: 58px; height: 48px; display: grid; grid-template-columns: 18px 1fr; align-items: center; gap: 4px; color: var(--text); text-decoration: none; }
+
+/* Interface 9 keeps scene ownership in the shared frame. These rules only
+   size the garden board and its controls inside the shared Battle content. */
+#app { min-height: 100svh; padding-bottom: 0; }
+#app > .screen { width: min(100%, 920px); margin: 0 auto; padding: 0; }
+#mainScreen { margin: 0; padding: 12px 16px 20px; text-align: center; }
+.main-header { min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.main-header > strong { flex: 1; text-align: center; letter-spacing: .02em; }
+.main-return { width: 58px; min-width: 58px; height: 48px; display: grid; grid-template-columns: 18px 1fr; align-items: center; gap: 4px; color: var(--text); text-decoration: none; }
 .main-return img { display: block; width: 36px; height: 28px; object-fit: contain; }
-.main-header .icon-button, .stage-header .icon-button, .battle-head .icon-button { width: 48px; height: 48px; min-width: 48px; min-height: 48px; }
-#mainScreen .cover-wrap { width: min(100%, 420px); margin-inline: auto; }
-#mainScreen .primary { min-height: 52px; }
-#mainProgress { min-height: 40px; display: grid; place-items: center; }
-.stage-shell, .battle-shell { width: 100%; margin: 0; }
-.stage-canvas, .battle-canvas { width: min(100%, 920px); margin-inline: auto; color: var(--text); }
-.stage-canvas { height: calc(100svh - var(--wp-ad-reserve-height, 0px)); min-height: 0; display: grid; grid-template-rows: 64px minmax(0, 1fr) 56px; gap: 8px; padding: 10px 14px 0; overflow: hidden; border: 0; border-radius: 0; background: linear-gradient(145deg, rgb(20 49 58 / 92%), rgb(13 39 45 / 94%)), var(--wp-stage-art); background-size: cover; background-position: center; }
-.stage-header { min-height: 60px; display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; gap: 10px; }
-.stage-header > div { text-align: center; min-width: 0; }
-.stage-header .eyebrow { margin: 0 0 4px; }
-.stage-intro { min-height: 48px; margin: 0 auto 8px; text-align: center; }
-.stage-canvas > div:nth-child(2) { min-height: 0; overflow: auto; }
-.stage-canvas .stage-list { min-height: 0; margin: 0; padding: 4px 0 10px; }
-.stage-canvas .stage-rail { display: grid !important; grid-template-columns: minmax(0, 1fr) !important; grid-auto-columns: unset !important; grid-auto-flow: row !important; align-items: stretch !important; overflow-y: auto !important; overflow-x: hidden !important; }
-.stage-canvas .stage-rail > .stage-card { flex: 0 1 auto !important; width: 100% !important; min-width: 0 !important; height: 72px !important; min-height: 72px !important; max-height: 72px !important; }
-.stage-canvas .stage-card { min-height: 72px; }
-.stage-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; gap: 8px; min-height: 56px; padding: 6px; border-radius: 12px; background: rgb(4 25 29 / 60%); }
-.stage-tabs > button { min-width: 0; min-height: 44px; border: 1px solid var(--line); border-radius: 10px; background: rgb(255 255 255 / 8%); color: var(--text); font-weight: 800; }
-.stage-tabs > button[aria-current="page"] { border-color: var(--accent); background: rgb(246 205 114 / 18%); }
-.stage-ad-reserve, .battle-ad-reserve { width: min(100%, 920px); height: var(--wp-ad-reserve-height, 0px); margin-inline: auto; flex: 0 0 var(--wp-ad-reserve-height, 0px); background: transparent; }
-.battle-canvas { height: calc(100svh - var(--wp-ad-reserve-height, 0px)); min-height: 0; padding: 10px 14px 18px; overflow: auto; border: 0; border-radius: 0; background: linear-gradient(rgb(20 49 58 / 78%), rgb(20 49 58 / 90%)), url("assets/animal-gust-garden-background.webp"); background-size: cover; background-position: center; }
-.battle-head { min-height: 60px; display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; gap: 10px; }
-.battle-head > div { min-width: 0; text-align: center; }
-.battle-head .eyebrow { margin: 0 0 4px; }
-.progress-pill { display: inline-block; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .78rem; }
-.battle-head h2 { overflow-wrap: anywhere; }
-.battle-head .icon-button:last-child { justify-self: end; }
-.game-page-info { width: min(100%, 920px); margin: 18px auto 28px; padding: 18px 16px 24px; border: 1px solid var(--line); border-radius: 18px; background: rgb(20 49 58 / 86%); box-shadow: 0 18px 60px rgb(0 0 0 / 25%); }
-.game-info-hero, .game-info-sections { border: 1px solid var(--line); border-radius: 18px; background: #14313a; }
-.game-info-hero { padding: 18px; }
-.game-info-kicker { color: var(--accent); }
-.game-info-title h2 { margin: 4px 0; color: var(--text); }
-.game-info-title p, .game-info-section { color: var(--muted); }
-.game-info-sections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; padding: 16px; }
-.game-info-section { background: #173940; }
-.game-info-section h3 { margin-top: 0; color: var(--text); }
-.game-info-section dt { color: var(--text); }
-.game-info-section dd,
-.game-info-section p { color: var(--muted); }
-.game-info-section li { margin-block: 6px; color: var(--muted); }
-[data-wp-game-guide][hidden] { display: none !important; }
-/* The shared Interface 7 shell keeps a normalized Main node in flow while a
-   native screen is active; make Gust Garden's own hidden state authoritative
-   so Stage/Battle/Result start at the viewport origin. */
-body[data-wp-active-screen="stage"] #mainScreen,
-body[data-wp-active-screen="battle"] #mainScreen,
-body[data-wp-active-screen="result"] #mainScreen { display: none !important; }
-@media (max-width: 699px) { .main-header { margin-inline: -2px; } .stage-canvas, .battle-canvas { padding-inline: 10px; } .game-info-sections { grid-template-columns: 1fr; } }
-@media (min-width: 700px) and (max-height: 560px) {
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 420px;
-    grid-template-columns: 420px minmax(0, 1fr) !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] .wp-standard-main-copy {
-    height: 420px;
-  }
+.main-copy { min-width: 0; }
+#mainScreen .cover-wrap { width: min(100%, 420px); margin: 8px auto 16px; background: transparent; }
+#mainScreen .main-summary { display: -webkit-box; max-width: 56ch; max-height: 3.9em; margin: 14px auto; overflow: hidden; color: var(--muted); line-height: 1.3; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+#mainScreen .main-progress { height: 42px; min-height: 42px; max-height: 42px; margin: 12px 0; overflow: hidden; color: var(--muted); font-weight: 700; }
+#mainScreen .main-actions { justify-content: center; margin: 14px 0; }
+#mainScreen .main-actions button { min-width: min(100%, 280px); }
+#mainScreen .best { min-height: 24px; margin: 8px 0; color: #f6f2dd; }
+#stageScreen { min-height: 0; }
+#stageScreen .stage-workspace { min-width: 0; min-height: 0; }
+#stageScreen .stage-tabs { min-height: 56px; }
+#stageScreen .stage-tabs > button { min-height: 44px; border: 1px solid var(--line); border-radius: 12px; background: #20474b; color: var(--text); font-weight: 800; }
+#battleScreen { background: transparent; }
+#battleScreen .garden-battle-live { min-width: 0; min-height: 0; }
+#battleScreen .battle-header-info { min-height: 28px; display: flex; align-items: center; justify-content: center; }
+#battleScreen .battle-stage-title { color: var(--text); font-size: .95rem; font-weight: 800; }
+html body[data-wp-game-id="animal-gust-garden"] #battleScreen .battle-canvas[data-garden-layout] {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+  gap: 8px !important;
+  padding: 10px !important;
+  overflow: hidden !important;
+  background: linear-gradient(160deg, #102b30e8, #101f2af2), url('assets/animal-gust-garden-background.webp') center/cover !important;
 }
-
-/* Compact landscape keeps the shared Main and terminal Result actions inside
-   the governed 844x390 viewport. The game remains width-responsive elsewhere. */
-@media (min-width: 700px) and (max-height: 560px) and (orientation: landscape) {
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 420px !important;
-    grid-template-columns: 420px minmax(0, 1fr) !important;
-    gap: 14px !important;
-    padding: 8px !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .wp-standard-main-copy {
-    height: 300px !important;
-    gap: 7px !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .wp-standard-main-copy h1 {
-    font-size: 1.8rem !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .wp-standard-main-copy .facts {
-    gap: 4px !important;
-    margin: 4px 0 !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .wp-standard-main-copy .main-actions {
-    gap: 6px !important;
-    margin-top: 2px !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .wp-standard-main-copy .best {
-    min-height: 20px !important;
-    margin: 2px 0 !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #resultScreen {
-    min-height: 0 !important;
-    height: calc(100svh - 8px) !important;
-    overflow: hidden !important;
-    padding: 6px 16px 8px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-  }
-  /* The compact Result contract uses flex when active, but native hidden
-     state must still remove the inactive Result from document flow. */
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #resultScreen[hidden] {
-    display: none !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #resultScreen .result-icon {
-    width: 72px !important;
-    height: 72px !important;
-    margin: 2px auto 6px !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #resultScreen .eyebrow {
-    margin: 2px 0 !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #resultScreen h2 {
-    font-size: 1.35rem !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #resultScreen .intro {
-    margin: 5px auto !important;
-    max-height: 44px !important;
-    overflow: hidden !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #resultScreen .main-actions {
-    gap: 8px !important;
-    margin-top: 6px !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #resultScreen .main-actions button {
-    min-height: 44px !important;
-    padding-block: 8px !important;
-  }
+#battleScreen .garden-workspace { grid-row: 1; grid-template-rows: minmax(0, 1fr) 330px; gap: 8px; }
+#battleScreen .garden-controls { grid-template-rows: 36px 44px 66px 42px 48px 44px 32px; }
+#battleScreen .result-panel { min-height: 0; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 18px; text-align: center; }
+#battleScreen .result-panel[hidden] { display: none !important; }
+#battleScreen .result-panel .main-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+#battleScreen #nextButton:disabled { opacity: .48; }
+#gustGardenLeaveModal { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 18px; background: rgba(4, 13, 17, .78); }
+#gustGardenLeaveModal[hidden] { display: none !important; }
+#gustGardenLeaveModal .gust-leave-card { width: min(100%, 420px); padding: 22px 20px; border: 1px solid var(--line); border-radius: 18px; background: #15363d; box-shadow: 0 20px 70px rgba(0, 0, 0, .45); }
+#gustGardenLeaveModal .gust-leave-card h2 { margin: 0 0 10px; }
+#gustGardenLeaveModal .gust-leave-card p { color: var(--muted); }
+#gustGardenLeaveModal .gust-leave-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+@media (orientation: landscape) and (max-height: 560px) {
+  #battleScreen .garden-workspace { grid-template-columns: minmax(0, 1fr) 310px; grid-template-rows: minmax(0, 1fr); gap: 10px; }
+  #battleScreen .garden-board { grid-template-rows: 52px minmax(0, 1fr) 20px; }
+  #battleScreen .garden-controls { grid-template-rows: 30px 38px 62px 34px 42px 36px 26px; gap: 2px; }
 }
-@media (max-height: 900px) and (orientation: landscape) {
-  .stage-canvas { padding: 4px 10px 0; grid-template-rows: 52px minmax(0, 1fr) 50px; gap: 4px; }
-  .stage-header { min-height: 52px; }
-  .stage-intro { display: none; }
-  .stage-canvas > div:nth-child(2) { overflow: hidden; }
-  .stage-canvas .stage-list { gap: 4px; padding: 0; }
-  .stage-canvas .stage-card { height: 52px !important; min-height: 52px !important; max-height: 52px !important; padding: 4px 10px; }
-  .stage-tabs { min-height: 50px; padding: 3px; gap: 4px; }
-  .stage-tabs > button { min-height: 44px; }
-  .battle-canvas { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); grid-template-rows: 52px 36px 30px 30px 82px 48px; align-content: center; gap: 4px; padding: 4px 10px 8px; overflow: hidden; }
-  .battle-head { grid-column: 1 / -1; grid-row: 1; min-height: 52px; }
-  .battle-canvas > .prompt { grid-column: 2; grid-row: 2; min-height: 0; margin: 0; align-self: center; text-align: center; }
-  .battle-canvas > .grid { grid-column: 1; grid-row: 2 / 7; width: 250px; margin: 0 auto; align-self: center; gap: 4px; }
-  .battle-canvas > .legend { grid-column: 2; grid-row: 3; align-self: center; gap: 8px; }
-  .battle-canvas > .status { grid-column: 2; grid-row: 4; min-height: 0; margin: 0; align-self: center; }
-  .battle-canvas > .direction-panel { grid-column: 2; grid-row: 5; width: min(100%, 250px); margin: 0 auto; align-self: center; }
-  .battle-canvas > .battle-actions { grid-column: 2; grid-row: 6; margin: 0; gap: 6px; align-self: center; }
-  .battle-canvas > .battle-actions > button { min-width: 0; padding-inline: 10px; }
-}
-
-/* Interface 6 Main contract: preserve the framed Guide and canonical
-   420px wide-layout poster even when shared Interface 7 defaults are compact. */
-@layer wp-gust-main-contract {
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] .game-page-info {
-    border-radius: 18px !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] .game-info-sections {
-    display: grid !important;
-    gap: 14px !important;
-    border-radius: 18px !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] .game-info-section {
-    border-radius: 16px !important;
-    padding: 16px !important;
-    background: #173940 !important;
-  }
-  @media (min-width: 700px) and (max-height: 900px) {
-    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .cover-wrap,
-    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .cover-wrap picture,
-    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .cover-wrap img,
-    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .wp-standard-main-poster,
-    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .wp-standard-main-poster-media,
-    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .wp-standard-main-poster-media img {
-      width: 420px !important;
-      min-width: 420px !important;
-      max-width: 420px !important;
-      height: 420px !important;
-      min-height: 420px !important;
-      max-height: 420px !important;
-    }
-  }
-  /* Important declarations in this game-owned layer intentionally outrank
-     the 420px Interface 6 poster contract above for short landscape. */
-  @media (min-width: 700px) and (max-height: 560px) and (orientation: landscape) {
-    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen :is(.wp-standard-main-poster, .wp-standard-main-poster-media, .wp-standard-main-poster-media > img, .wp-standard-main-poster > img, .cover-wrap, .cover-wrap picture, .cover-wrap img) {
-      width: 420px !important;
-      min-width: 420px !important;
-      max-width: 420px !important;
-      height: 420px !important;
-      min-height: 420px !important;
-      max-height: 420px !important;
-    }
-    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .wp-standard-main-copy {
-      height: 300px !important;
-    }
-  }
+@media (max-width: 699px) {
+  #mainScreen { padding-inline: 12px; }
 }

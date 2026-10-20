@@ -2,8 +2,8 @@
   "use strict";
 
   const GAME_ID = "peg-solitaire";
-  const GAME_VERSION = "v18";
-  const INTERFACE_VERSION = "6";
+  const GAME_VERSION = "v15";
+  const INTERFACE_VERSION = "9";
   const LOCALE_MAP = {
     en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko",
     es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar",
@@ -110,23 +110,4 @@
       resultVisible = false;
     }
   }).observe(result, { attributes: true, attributeFilter: ["hidden"] });
-})();
-
-
-/* Interface 7 shell runtime is game-local so every localized Peg Solitaire route
-   receives the same Main/Battle ownership repair without forking shared rules. */
-(() => {
-  const href = "/games/peg-solitaire/interface-7-cleanup.css?v=20260926-peg-i7-source1";
-  if (!document.querySelector('link[data-peg-i7-cleanup]')) {
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = href;
-    link.dataset.pegI7Cleanup = "";
-    document.head.append(link);
-  }
-  import("/src/game-screen-frame.js?v=20260921-interface7-single-frame-v2")
-    .then(() => window.dispatchEvent(new CustomEvent("weightplay:shell-sync")))
-    .catch(() => {});
-  import("/games/peg-solitaire/interface-7-compat.js?v=20260926-peg-i7-source1")
-    .catch(() => {});
 })();

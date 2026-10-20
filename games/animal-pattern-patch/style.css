@@ -6,7 +6,12 @@ button, select { font:inherit; }
 button { cursor:pointer; }
 button:focus-visible, select:focus-visible, summary:focus-visible, a:focus-visible { outline:3px solid #f3ad49; outline-offset:3px; }
 .app-shell { width:min(920px,calc(100% - 28px)); margin:0 auto; padding:18px 0 28px; }
-.screen { position:relative; }
+.screen, .game-page-info { position:relative; transition:opacity .18s ease; }
+.screen.is-scene-entering, .screen.is-scene-exiting,
+.game-page-info.is-scene-entering, .game-page-info.is-scene-exiting,
+.guide-layout.is-panel-entering, .guide-layout.is-panel-exiting,
+.wp-shell-settings-popover.is-panel-entering, .wp-shell-settings-popover.is-panel-exiting,
+.leave-dialog.is-panel-entering, .leave-dialog.is-panel-exiting { opacity:0; }
 .screen[hidden], .game-page-info[hidden] { display:none !important; }
 .main-screen { min-height:0; }
 .main-header, .battle-header { position:relative; min-height:64px; height:64px; display:grid; grid-template-columns:58px minmax(0,1fr) 48px; align-items:center; gap:8px; margin:0; }
@@ -17,7 +22,7 @@ button:focus-visible, select:focus-visible, summary:focus-visible, a:focus-visib
 .home-link img { width:28px; height:28px; object-fit:contain; }
 .back-button, .icon-button { display:grid; place-items:center; padding:0; font-size:1.35rem; line-height:1; }
 .icon-button svg { width:22px; height:22px; fill:none; stroke:var(--ink); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
-.wp-shell-settings-popover { position:absolute; z-index:20; top:58px; right:0; width:min(280px,calc(100% - 24px)); padding:12px; border:1px solid rgba(102,132,111,.3); border-radius:16px; background:#fff; box-shadow:0 16px 30px rgba(38,53,41,.2); }
+.wp-shell-settings-popover { position:absolute; z-index:20; top:58px; right:0; width:min(280px,calc(100% - 24px)); padding:12px; border:1px solid rgba(102,132,111,.3); border-radius:16px; background:#fff; box-shadow:0 16px 30px rgba(38,53,41,.2); transition:opacity .16s ease; }
 .settings-row { min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:12px; color:var(--ink); font-weight:800; }
 .settings-row + .settings-row { border-top:1px solid #edf0ea; }
 .settings-row select { width:150px; min-height:40px; border:1px solid var(--line); border-radius:10px; padding:0 8px; background:#fff; color:var(--ink); }
@@ -45,13 +50,14 @@ h2 { margin-bottom:10px; font-size:clamp(1.5rem,4vw,2.5rem); letter-spacing:-.04
 .primary-button:hover, .secondary-button:hover, .text-button:hover, .icon-button:hover { transform:translateY(-1px); }
 .guide-card { display:block; margin-top:14px; padding:18px 22px; }
 .guide-card summary { cursor:pointer; font-weight:900; }
-.guide-layout { display:grid; grid-template-columns:minmax(90px,150px) 1fr; align-items:center; gap:18px; }
+.guide-layout { display:grid; grid-template-columns:minmax(90px,150px) 1fr; align-items:center; gap:18px; transition:opacity .16s ease; }
 .guide-layout p { margin:0; color:var(--muted); line-height:1.5; }
 .guide-card:not([open]) .guide-layout { display:none; }
 .guide-pose { width:100%; max-height:180px; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 8px 10px rgba(49,91,73,.18)); }
 .battle-screen { width:100%; height:calc(100vh - var(--wp-ad-reserve-height, 0px)); min-height:0; margin-top:0; padding:0 14px 20px; overflow:auto; background:transparent; }
-.battle-screen .main-header, .battle-screen .battle-header { position:sticky; top:0; z-index:10; width:min(892px,100%); margin:0 auto; background:rgba(255,253,247,.96); }
-.battle-content { width:min(640px,100%); margin:0 auto; padding-top:14px; text-align:center; }
+.battle-screen .main-header, .battle-screen .battle-header { position:sticky; top:0; z-index:10; width:min(892px,100%); margin:0 auto; background:rgba(255,253,247,.96); transition:opacity .18s ease; }
+.battle-content { width:min(640px,100%); margin:0 auto; padding-top:14px; text-align:center; transition:opacity .18s ease; }
+.battle-screen .battle-header.is-result-underlay, .battle-screen .battle-content.is-result-underlay { opacity:0; pointer-events:none; }
 .status-row { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:0 auto 14px; color:var(--deep-leaf); font-size:.9rem; font-weight:900; }
 .pattern-card { max-width:520px; margin:0 auto; padding:14px; }
 .instruction { margin:0 auto 16px; max-width:38rem; color:var(--muted); line-height:1.5; text-align:center; }
@@ -63,7 +69,7 @@ h2 { margin-bottom:10px; font-size:clamp(1.5rem,4vw,2.5rem); letter-spacing:-.04
 .option-token { background:#fff; }
 .option-token:hover:not(:disabled) { background:#fff5cf; border-color:#e4bf63; transform:translateY(-1px); }
 .options-heading { margin-top:18px; color:var(--deep-leaf); font-size:.85rem; font-weight:800; text-align:center; }
-.token.is-wrong { background:#ffe5d9; border-color:var(--coral); animation:nudge .24s linear; }
+.token.is-wrong { background:#ffe5d9; border-color:var(--coral); animation:nudge .24s linear; transition:background-color .16s ease,border-color .16s ease,color .16s ease; }
 .token.is-correct { background:#d6f0c8; border-color:var(--deep-leaf); box-shadow:0 0 0 3px rgba(79,125,94,.18); }
 .token:disabled { cursor:default; }
 .feedback { display:flex; align-items:center; justify-content:center; gap:8px; min-height:30px; margin:15px auto 0; max-width:40rem; color:var(--deep-leaf); font-size:.92rem; font-weight:700; text-align:center; }
@@ -71,7 +77,7 @@ h2 { margin-bottom:10px; font-size:clamp(1.5rem,4vw,2.5rem); letter-spacing:-.04
 .feedback.is-wrong { color:#b45b4c; }
 .progress-line { color:var(--muted); font-size:.82rem; text-align:center; }
 .text-button { padding:8px 14px; margin-top:12px; background:transparent; color:var(--muted); text-decoration:underline; }
-.leave-dialog { position:absolute; z-index:30; top:92px; left:50%; transform:translateX(-50%); width:min(480px,calc(100% - 28px)); padding:24px; border:1px solid rgba(102,132,111,.3); border-radius:20px; background:#fff; box-shadow:0 18px 36px rgba(38,53,41,.25); }
+.leave-dialog { position:absolute; z-index:30; top:92px; left:50%; transform:translateX(-50%); width:min(480px,calc(100% - 28px)); padding:24px; border:1px solid rgba(102,132,111,.3); border-radius:20px; background:#fff; box-shadow:0 18px 36px rgba(38,53,41,.25); transition:opacity .16s ease; }
 .leave-dialog h2 { margin:0 0 10px; font-size:clamp(24px,4vw,34px); }
 .leave-dialog p { color:var(--muted); line-height:1.5; }
 .leave-dialog .result-actions { margin-top:18px; }
@@ -227,3 +233,25 @@ body.wp-logical-battle-active .battle-screen :is(
 
 /* Shared Interface 7 owns the Guide radius through the shared token. */
 .guide-card { border-radius:var(--wp-ui-radius) !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .screen, .game-page-info, .guide-layout, .wp-shell-settings-popover,
+  .leave-dialog, .battle-header, .battle-content {
+    transition-duration:80ms !important;
+    transition-timing-function:linear !important;
+  }
+  .token.is-wrong {
+    animation:none !important;
+    transition:background-color 80ms linear,border-color 80ms linear,color 80ms linear !important;
+  }
+  .primary-button, .secondary-button, .text-button, .icon-button,
+  .option-token, .sound-knob {
+    transition-duration:80ms !important;
+    transition-timing-function:linear !important;
+  }
+  .primary-button:hover, .primary-button:active, .secondary-button:hover,
+  .text-button:hover, .icon-button:hover, .option-token:hover:not(:disabled) {
+    transform:none !important;
+  }
+  .sound-knob, .sound-switch[aria-checked="false"] .sound-knob { left:15px; transition:none !important; }
+}

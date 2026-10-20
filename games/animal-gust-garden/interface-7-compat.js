@@ -250,7 +250,7 @@
       }
     }
   `;
-  document.head.append(style);
+  if (document.body.dataset.wpInterfaceVersion !== "9") document.head.append(style);
 
   const lang = () => document.documentElement.lang || "en";
   const localized = (catalog) => catalog[lang()] || catalog.en;
@@ -450,6 +450,17 @@
   }
 
   function install() {
+    if (document.body.dataset.wpInterfaceVersion === "9") {
+      ensureReplayButton();
+      normalizeLabels();
+      ensureLeaveModal();
+      installLeaveProtection();
+      window.addEventListener("weightplay:gust-stage-started", () => { replayDirty = false; });
+      const localeObserver = new MutationObserver(normalizeLabels);
+      localeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
+      window.addEventListener("weightplay:shell-sync", normalizeLabels);
+      return;
+    }
     moveResultIntoBattle();
     normalizeLabels();
     ensureLeaveModal();

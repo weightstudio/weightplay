@@ -134,6 +134,10 @@
     const stage = $("stageScreen");
     const battle = $("battleScreen");
     const localeSelect = $("localeSelect");
+    const stageHeaderInfo = $("stageHeaderStats");
+    const battleHeaderInfo = $("battleHeaderStats");
+    stageHeaderInfo.remove();
+    battleHeaderInfo.remove();
 
     frame = window.WeightPlayScreenFrame.mount({
       root,
@@ -141,14 +145,14 @@
       playUI: true,
       scenes: {
         main: { root: main, header: $("mainHeader"), content: $("mainContent") },
-        stage: { root: stage, header: $("stageHeader"), content: $("stageWorkspace"), headerInfo: $("stageHeaderStats") },
-        battle: { root: battle, header: $("battleHeader"), content: $("battleContent"), headerInfo: $("battleHeaderStats") }
+        stage: { root: stage, header: $("stageHeader"), content: $("stageWorkspace"), headerInfo: stageHeaderInfo },
+        battle: { root: battle, header: $("battleHeader"), content: $("battleContent"), headerInfo: battleHeaderInfo }
       }
     });
 
-    const stageInfo = window.WeightPlayScreenFrame.createGroup().add($("stageSummary"));
+    const stageInfo = window.WeightPlayScreenFrame.createGroup().add(stageHeaderInfo.firstElementChild);
     frame.stageTopUI.add(stageInfo);
-    const battleInfo = window.WeightPlayScreenFrame.createGroup().add($("roundTitle")).add($("progressPill"));
+    const battleInfo = window.WeightPlayScreenFrame.createGroup().add(battleHeaderInfo.firstElementChild).add(battleHeaderInfo.lastElementChild);
     frame.battleTopUI.add(battleInfo);
     frame.commonDownButton.clear();
 

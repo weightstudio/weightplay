@@ -14,6 +14,8 @@
   markerFiles.completion = "assets/animal-pattern-patch-marker-completion.png";
   const state = { locale: "en", sound: !window.WeightPlayAudio.isMuted(), roundIndex: 0, checks: 0, solved: 0 };
   const pendingTimers = new Set();
+  const motionTimers = new Map();
+  const motionTokens = new WeakMap();
   let leaveDialogOpen = false;
   window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
   const $ = (id) => document.getElementById(id);
@@ -67,29 +69,173 @@
   function setGameplayInert(inert) {
     const header = $("battleView").querySelector(".battle-header");
     const content = $("battleView").querySelector(".battle-content");
-    if (header) header.inert = inert;
-    if (content) content.inert = inert;
+    [header, content].filter(Boolean).forEach((node) => {
+      node.inert = inert;
+      if (inert) node.setAttribute("aria-hidden", "true");
+      else node.removeAttribute("aria-hidden");
+    });
+  }
+  function motionDuration(panel = false) {
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    return reduced ? 80 : panel ? 160 : 180;
+  }
+  function cancelMotion(node) {
+    const timer = motionTimers.get(node);
+    if (timer) window.clearTimeout(timer);
+    motionTimers.delete(node);
+    const token = (motionTokens.get(node) || 0) + 1;
+    motionTokens.set(node, token);
+    return token;
+  }
+  function scheduleMotion(node, callback, delay) {
+    const token = cancelMotion(node);
+    const timer = window.setTimeout(() => {
+      if (motionTokens.get(node) !== token) return;
+      motionTimers.delete(node);
+      callback();
+    }, delay + 32);
+    motionTimers.set(node, timer);
+    return token;
+  }
+  function clearSceneGeometry(node) {
+    ["position", "top", "left", "width", "height", "margin", "z-index", "pointer-events"].forEach((key) => node.style.removeProperty(key));
+  }
+  function finishSceneExit(node) {
+    if (!node.classList.contains("is-scene-exiting")) return;
+    node.hidden = true;
+    node.classList.remove("is-scene-entering", "is-scene-exiting");
+    clearSceneGeometry(node);
+    node.inert = false;
+    node.removeAttribute("aria-hidden");
+  }
+  function beginSceneExit(node, pin = true) {
+    if (!node || node.hidden) return;
+    cancelMotion(node);
+    if (pin) {
+      const rect = node.getBoundingClientRect();
+      node.style.position = "fixed";
+      node.style.top = `${rect.top}px`;
+      node.style.left = `${rect.left}px`;
+      node.style.width = `${rect.width}px`;
+      node.style.height = `${rect.height}px`;
+      node.style.margin = "0";
+      node.style.zIndex = "40";
+      node.style.pointerEvents = "none";
+    }
+    node.inert = true;
+    node.setAttribute("aria-hidden", "true");
+    node.classList.remove("is-scene-entering");
+    node.classList.add("is-scene-exiting");
+    scheduleMotion(node, () => finishSceneExit(node), motionDuration());
+  }
+  function beginSceneEnter(node) {
+    const token = cancelMotion(node);
+    node.hidden = false;
+    clearSceneGeometry(node);
+    node.inert = false;
+    node.removeAttribute("aria-hidden");
+    node.classList.remove("is-scene-exiting");
+    node.classList.add("is-scene-entering");
+    void node.offsetWidth;
+    window.requestAnimationFrame(() => {
+      if (motionTokens.get(node) === token && !node.hidden) node.classList.remove("is-scene-entering");
+    });
+  }
+  function beginPanelEnter(node) {
+    const token = cancelMotion(node);
+    node.hidden = false;
+    node.inert = false;
+    node.setAttribute("aria-hidden", "false");
+    node.classList.remove("is-panel-exiting");
+    node.classList.add("is-panel-entering");
+    void node.offsetWidth;
+    window.requestAnimationFrame(() => {
+      if (motionTokens.get(node) === token && !node.hidden) node.classList.remove("is-panel-entering");
+    });
+  }
+  function beginPanelExit(node) {
+    if (node.hidden) return;
+    node.inert = true;
+    node.setAttribute("aria-hidden", "true");
+    node.classList.remove("is-panel-entering");
+    node.classList.add("is-panel-exiting");
+    scheduleMotion(node, () => {
+      node.hidden = true;
+      node.classList.remove("is-panel-entering", "is-panel-exiting");
+    }, motionDuration(true));
+  }
+  function hidePanelImmediately(node) {
+    cancelMotion(node);
+    node.hidden = true;
+    node.classList.remove("is-panel-entering", "is-panel-exiting");
+    node.inert = false;
+    node.removeAttribute("aria-hidden");
   }
   function showView(id) {
+    const main = $("mainView");
+    const battle = $("battleView");
+    const result = $("resultView");
+    const guide = $("gameGuide");
     const mainActive = id === "mainView";
     const resultActive = id === "resultView";
-    $("mainView").hidden = !mainActive;
-    $("battleView").hidden = mainActive;
-    $("resultView").hidden = !resultActive;
-    $("gameGuide").hidden = !mainActive;
-    $("leaveDialog").hidden = true;
+    const wasMain = !main.hidden;
+    const wasResult = !result.hidden;
     leaveDialogOpen = false;
-    setGameplayInert(resultActive);
-    $("mainView").classList.toggle("is-active", mainActive);
-    $("battleView").classList.toggle("is-active", !mainActive);
-    $("resultView").classList.toggle("is-active", resultActive);
+
+    if (resultActive) {
+      if (wasMain) beginSceneExit(main);
+      if (!guide.hidden) beginSceneExit(guide);
+      if (battle.hidden) beginSceneEnter(battle);
+      const header = battle.querySelector(".battle-header");
+      const content = battle.querySelector(".battle-content");
+      [header, content].filter(Boolean).forEach((node) => node.classList.add("is-result-underlay"));
+      result.classList.toggle("is-active", true);
+      if (result.hidden) beginSceneEnter(result);
+      setGameplayInert(true);
+    } else if (mainActive) {
+      if (!battle.hidden) beginSceneExit(battle);
+      if (main.hidden) beginSceneEnter(main);
+      if (guide.hidden) beginSceneEnter(guide);
+      else if (!wasMain) beginSceneEnter(guide);
+      result.classList.remove("is-active");
+      if (!result.hidden) beginSceneExit(result, false);
+      setGameplayInert(false);
+      const popover = $("mainSettingsPopover");
+      if (!popover.hidden) {
+        cancelMotion(popover);
+        popover.hidden = true;
+        popover.classList.remove("is-panel-entering", "is-panel-exiting");
+        popover.inert = false;
+        popover.removeAttribute("aria-hidden");
+      }
+      $("mainSettingsBtn").setAttribute("aria-expanded", "false");
+    } else {
+      if (wasMain) {
+        beginSceneExit(main);
+        if (!guide.hidden) beginSceneExit(guide);
+        hidePanelImmediately($("leaveDialog"));
+      }
+      if (battle.hidden) beginSceneEnter(battle);
+      if (wasResult || !result.hidden) beginSceneExit(result, false);
+      battle.querySelectorAll(".battle-header, .battle-content").forEach((node) => {
+        node.classList.remove("is-result-underlay");
+        node.inert = false;
+        node.removeAttribute("aria-hidden");
+      });
+      result.classList.remove("is-active");
+      setGameplayInert(false);
+    }
+
+    main.classList.toggle("is-active", mainActive);
+    battle.classList.toggle("is-active", !mainActive);
     document.body.dataset.screen = mainActive ? "main" : "battle";
     if (resultActive) document.body.dataset.battleSubstate = "result";
     else delete document.body.dataset.battleSubstate;
-    if (mainActive) {
-      $("mainSettingsPopover").hidden = true;
+    if (!mainActive && !$("mainSettingsPopover").hidden) {
       $("mainSettingsBtn").setAttribute("aria-expanded", "false");
     }
+    const leaveDialog = $("leaveDialog");
+    if (!leaveDialog.hidden) beginPanelExit(leaveDialog);
     window.scrollTo(0, 0);
   }
   function makeToken(token, label, interactive, callback) {
@@ -157,18 +303,59 @@
   function finish() { clearPendingTimers(); const key = "weightplay-pattern-patch-best-checks"; const prior = Number(safeStorage.get(key)); if (!prior || state.checks < prior) safeStorage.set(key, String(state.checks)); $("resultSummary").textContent = t("summary"); $("bestCount").textContent = safeStorage.get(key) || String(state.checks); showView("resultView"); }
   function goHome() { clearPendingTimers(); showView("mainView"); applyLocale(); }
   function toggleSound() { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); }
-  function toggleSettings() { const popover = $("mainSettingsPopover"); const open = popover.hidden; popover.hidden = !open; $("mainSettingsBtn").setAttribute("aria-expanded", String(open)); }
+  function toggleSettings() {
+    const popover = $("mainSettingsPopover");
+    const open = popover.hidden || popover.inert;
+    if (open) beginPanelEnter(popover);
+    else beginPanelExit(popover);
+    $("mainSettingsBtn").setAttribute("aria-expanded", String(open));
+  }
+  function setGuideOpen(open) {
+    const guide = $("gameGuide");
+    const summary = guide.querySelector("summary");
+    const content = guide.querySelector(".guide-layout");
+    const targetOpen = Boolean(open);
+    guide.dataset.panelOpen = String(targetOpen);
+    summary.setAttribute("aria-expanded", String(targetOpen));
+    cancelMotion(content);
+    content.classList.remove("is-panel-entering", "is-panel-exiting");
+    if (targetOpen) {
+      guide.open = true;
+      content.inert = false;
+      content.setAttribute("aria-hidden", "false");
+      content.classList.add("is-panel-entering");
+      void content.offsetWidth;
+      const token = motionTokens.get(content);
+      window.requestAnimationFrame(() => {
+        if (motionTokens.get(content) === token && guide.dataset.panelOpen === "true") content.classList.remove("is-panel-entering");
+      });
+      return;
+    }
+    content.inert = true;
+    content.setAttribute("aria-hidden", "true");
+    content.classList.add("is-panel-exiting");
+    scheduleMotion(content, () => {
+      if (guide.dataset.panelOpen !== "false") return;
+      guide.open = false;
+      content.classList.remove("is-panel-entering", "is-panel-exiting");
+    }, motionDuration(true));
+  }
+  function toggleGuide(event) {
+    event.preventDefault();
+    const guide = $("gameGuide");
+    setGuideOpen(guide.dataset.panelOpen !== "true");
+  }
   function openLeaveDialog() {
     if (leaveDialogOpen || !$("resultView").hidden) return;
     leaveDialogOpen = true;
     pausePendingTimers();
     setGameplayInert(true);
-    $("leaveDialog").hidden = false;
+    beginPanelEnter($("leaveDialog"));
     $("continueBtn").focus();
   }
   function closeLeaveDialog() {
     if (!leaveDialogOpen) return;
-    $("leaveDialog").hidden = true;
+    beginPanelExit($("leaveDialog"));
     leaveDialogOpen = false;
     setGameplayInert(false);
     resumePendingTimers();
@@ -176,7 +363,6 @@
   }
   function confirmLeave() {
     if (!leaveDialogOpen) return;
-    $("leaveDialog").hidden = true;
     leaveDialogOpen = false;
     clearPendingTimers();
     goHome();
@@ -220,6 +406,16 @@
     $("mainSettingsBtn").addEventListener("click", toggleSettings);
     $("soundToggle").addEventListener("click", toggleSound);
     $("battleSoundToggle").addEventListener("click", toggleSound);
+    const guide = $("gameGuide");
+    guide.dataset.panelOpen = String(guide.open);
+    guide.querySelector("summary").setAttribute("aria-expanded", String(guide.open));
+    guide.querySelector("summary").addEventListener("click", toggleGuide);
+    guide.querySelector(".guide-layout").inert = !guide.open;
+    guide.querySelector(".guide-layout").setAttribute("aria-hidden", String(!guide.open));
+    $("mainSettingsPopover").inert = true;
+    $("mainSettingsPopover").setAttribute("aria-hidden", "true");
+    $("leaveDialog").inert = true;
+    $("leaveDialog").setAttribute("aria-hidden", "true");
     document.addEventListener("keydown", trapLeaveDialogFocus, true);
   });
   window.PATTERN_PATCH_TEST = { rounds, symbols, start, renderRound };
