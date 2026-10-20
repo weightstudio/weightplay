@@ -106,7 +106,7 @@ export function approach(state, choice) {
   const pet = state.pets[species.id] ||= petFor(state,species.id);
   if (pet.collected) return result(true,'expedition','alreadyCollected',{ species: species.id });
   const required = trustNeeded(state,species);
-  pet.trust = Math.min(required,pet.trust+1);
+  pet.trust = Math.min(species.trustRequired,pet.trust+1);
   if (pet.trust < required) return result(true,'trust','trustGained',{ species: species.id,trust: pet.trust,required,remaining: required-pet.trust });
   pet.collected = true;
   pet.careTurn = state.turn;

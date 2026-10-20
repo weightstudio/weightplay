@@ -2942,5 +2942,21 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Мурчащий домик",
     "hi": "म्याऊँ का आशियाना",
     "ar": "بيت الخرخرة"
+  },
+  "kindred-habitats": {
+    "__localizedExact": true,
+    "en": "Kindred Habitats",
+    "zh-Hant": "棲旅圖鑑",
+    "zh-Hans": "栖旅图鉴",
+    "ja": "いきものの絆図鑑",
+    "ko": "서식지 친구 도감",
+    "es": "Hábitats en armonía",
+    "pt-BR": "Laços da natureza",
+    "fr": "Compagnons des habitats",
+    "de": "Gefährten der Lebensräume",
+    "it": "Legami della natura",
+    "ru": "Атлас дружбы с природой",
+    "hi": "प्रकृति के साथी",
+    "ar": "رفاق المواطن الطبيعية"
   }
 };

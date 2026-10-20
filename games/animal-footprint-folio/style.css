@@ -302,3 +302,12 @@ body.wp-shell-battle-active > main > .battle-ad-reserve { display: block; positi
     height: 48px;
   }
 }
+
+@media (min-width: 1600px) {
+  /* The shared frame lays grouped stats in separate header columns. Let the
+     generated group expose Record and Solved as those grid items so the tall
+     stacked group cannot push the first label above the scaled header. */
+  #battleScreen[data-wp-logical-battle-canvas] [data-wp-frame-info] > [data-wp-frame-group] {
+    display: contents;
+  }
+}

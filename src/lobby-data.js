@@ -20,6 +20,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "kindred-habitats",
       "deep-drill",
       "fusekeep",
       "animal-wildwood-raid",
@@ -80,7 +81,7 @@ window.WONDER_LOBBY = {
     {
       id: "kindred-habitats", audience: "general", status: "planned", internalOnly: true,
       internalTrial: "/games/kindred-habitats/?preview=1", href: "games/kindred-habitats/",
-      title: { en: "Kindred Habitats", "zh-Hant": "棲旅圖鑑" },
+      title: {"__localizedExact":true,"en":"Kindred Habitats","zh-Hant":"棲旅圖鑑","zh-Hans":"栖旅图鉴","ja":"いきものの絆図鑑","ko":"서식지 친구 도감","es":"Hábitats en armonía","pt-BR":"Laços da natureza","fr":"Compagnons des habitats","de":"Gefährten der Lebensräume","it":"Legami della natura","ru":"Атлас дружбы с природой","hi":"प्रकृति के साथी","ar":"رفاق المواطن الطبيعية"},
       type: { en: "Pet Collection & Care", "zh-Hant": "寵物收集與養成" },
       description: { en: "Read habitat clues, prepare thoughtful encounters and grow a sanctuary of distinct animal companions.", "zh-Hant": "讀懂棲地線索，準備食物與環境，結識習性各異的動物夥伴。" },
       categories: ["Strategy", "Adventure", "Animal Games", "Pet Care"], skills: ["Planning", "Observation"], ages: ["general"],
