@@ -1,4 +1,4 @@
-/* Tide Level Calibration v4: authored campaign and deterministic transactions. */
+/* Tide Level Calibration v4 campaign model, retained by the v5 shared-interface release. */
 (function (root) {
   'use strict';
   const VERSION = 4, TOTAL = 30, READINGS = 5;

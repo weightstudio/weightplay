@@ -20,10 +20,10 @@
     return map[location.pathname.split("/").filter(Boolean)[0]] || null;
   })();
   const state = {
-    locale: "en", sound: !Boolean(window.WeightPlayAudio?.isMuted?.()), round: 0,
+    locale: "en", round: 0,
     selected: null, checks: 0, totalChecks: 0, view: "main", locked: false,
     progress: Campaign?.freshProgress?.() || { schema: 1, completedIds: [], bestChecksByStage: {} },
-    stageVirtual: null, runToken: 0, checked: false,
+    stageSelector: null, frame: null, stageBrowseIndex: 0, runToken: 0, checked: false,
   };
   const $ = (id) => document.getElementById(id);
   const t = (key, vars = {}) => {
@@ -35,13 +35,18 @@
   const safeStorage = () => { try { return window.localStorage; } catch (_) { return null; } };
   const refreshProgress = () => { state.progress = Campaign.loadProgress(safeStorage()); };
   const persistProgress = () => Campaign.saveProgress(safeStorage(), state.progress);
+  state.progress = Campaign.loadProgress(safeStorage());
+  state.stageBrowseIndex = Campaign.highestUnlockedIndex(state.progress);
   const stage = () => Campaign.stages[state.round];
   const isAllComplete = () => state.progress.completedIds.length === Campaign.STAGE_COUNT;
   const track = (event, detail = {}) => {
     window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-cozy-camp", event, ...detail } }));
   };
   const tone = (cue = "ui.click") => window.WeightPlayAudio?.play(cue);
-  const syncSoundState = () => { state.sound = !Boolean(window.WeightPlayAudio?.isMuted?.()); };
+  const renderMainProgress = () => {
+    const target = $("main-progress");
+    if (target) target.textContent = t("stageProgressShort", { done: state.progress.completedIds.length, total: Campaign.STAGE_COUNT });
+  };
 
   function show(view) {
     state.view = view;
@@ -55,8 +60,9 @@
     document.body.dataset.screen = view;
     document.body.dataset.battleState = view === "result" ? "result" : view === "battle" ? "live" : "";
     document.body.dataset.battleSubstate = view === "result" ? "result" : "";
-    window.scrollTo(0, 0);
+    state.frame?.activate(inBattle ? "battle" : view);
     if (view === "stage") renderStages();
+    if (view === "main") renderMainProgress();
     if (view === "battle") renderBattle();
     if (view === "result") renderResult();
     window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
@@ -69,17 +75,10 @@
     document.title = `${t("title")} | WeightPlay`;
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
     document.querySelectorAll("[data-copy-alt]").forEach((node) => { node.setAttribute("alt", t(node.dataset.copyAlt)); });
-    document.querySelectorAll("[data-copy-aria]").forEach((node) => {
-      const key = node.dataset.copyAria === "sound" ? (state.sound ? "soundOn" : "soundOff") : node.dataset.copyAria;
-      node.setAttribute("aria-label", t(key));
-    });
+    document.querySelectorAll("[data-copy-aria]").forEach((node) => node.setAttribute("aria-label", t(node.dataset.copyAria)));
     $("gameGuide")?.setAttribute("aria-label", t("guideTitle"));
     $("layout-choices")?.setAttribute("aria-label", t("layoutAria"));
-    [$("sound-toggle"), $("camp-sound-toggle")].filter(Boolean).forEach((node) => {
-      node.textContent = state.sound ? t("soundOn") : t("soundOff");
-      node.setAttribute("aria-pressed", String(state.sound));
-    });
-    [$("locale-select"), $("camp-picker")].filter(Boolean).forEach((node) => {
+    [$("locale-select")].filter(Boolean).forEach((node) => {
       node.setAttribute("aria-label", t("language"));
       node.value = state.locale;
     });
@@ -96,16 +95,23 @@
       return option;
     });
     const select = $("locale-select");
-    const picker = $("camp-picker");
-    [select, picker].filter(Boolean).forEach((node) => node.replaceChildren(...options()));
+    select?.replaceChildren(...options());
     const onLocaleChange = (event) => {
-      state.locale = event.target.value;
-      try { safeStorage()?.setItem("weightplay-animal-cozy-camp-locale", state.locale); } catch (_) {}
+      const next = event.target.value;
+      if (!locales[next]) return;
+      state.locale = next;
+      try {
+        safeStorage()?.setItem("weightplay-animal-cozy-camp-locale", state.locale);
+        safeStorage()?.setItem("weightPlayLocale", state.locale);
+      } catch (_) {}
       window.dispatchEvent(new CustomEvent("wonder:locale-change"));
       applyLocale();
+      const segments = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+      const preview = new URLSearchParams(location.search).get("preview") === "1" ? "?preview=1" : "";
+      const targetPath = `/${segments[state.locale]}/games/animal-cozy-camp/`;
+      if (location.pathname !== targetPath) location.assign(targetPath + preview);
     };
     select?.addEventListener("change", onLocaleChange);
-    picker?.addEventListener("change", onLocaleChange);
   }
 
   function openDialog(id) {
@@ -146,66 +152,13 @@
 
   let rounds = buildCampaign();
 
-  function bindStageCard(card, index) {
-    const item = Campaign.stages[index];
-    if (!item) return;
-    const unlocked = Campaign.isUnlocked(state.progress, index);
-    const completed = state.progress.completedIds.includes(item.id);
-    card.type = "button";
-    card.className = `stage-card cozy-stage-card${completed ? " is-complete" : ""}${unlocked ? "" : " is-locked"}`;
-    card.dataset.stageIndex = String(index);
-    card.setAttribute("aria-disabled", String(!unlocked));
-    card.setAttribute("aria-current", String(state.round === index && state.view === "stage"));
-    card.setAttribute("aria-label", t("stageCardLabel", { n: item.number, title: t(authoredRounds[item.patternIndex].title), status: t(completed ? "stageDone" : unlocked ? "stageReady" : "stageLockedShort") }));
-    const number = document.createElement("span");
-    number.className = "cozy-stage-number";
-    number.textContent = String(item.number).padStart(2, "0");
-    const title = document.createElement("strong");
-    title.className = "cozy-stage-title";
-    title.textContent = t(authoredRounds[item.patternIndex].title);
-    const subtitle = document.createElement("small");
-    subtitle.className = "cozy-stage-subtitle";
-    subtitle.textContent = t("stageCircle", { n: item.number, total: Campaign.STAGE_COUNT });
-    const status = document.createElement("span");
-    status.className = "cozy-stage-status";
-    status.textContent = completed ? "✓" : unlocked ? "→" : "•";
-    card.replaceChildren(number, title, subtitle, status);
-  }
-
-  function ensureStageVirtual() {
-    const rail = $("stage-rail");
-    if (!rail || !window.WeightPlayStageV6?.install) return null;
-    if (!state.stageVirtual) {
-      state.stageVirtual = window.WeightPlayStageV6.install(rail, {
-        total: () => Campaign.STAGE_COUNT,
-        poolSize: 9,
-        initialIndex: () => Campaign.highestUnlockedIndex(state.progress),
-        bind: bindStageCard,
-        activate: (index) => {
-          if (!Campaign.isUnlocked(state.progress, index)) {
-            $("stage-progress").textContent = t("stageLocked");
-            tone("ui.click");
-            return;
-          }
-          playStage(index, true);
-        },
-      });
-    }
-    return state.stageVirtual;
-  }
-
   function renderStages() {
     const total = Campaign.STAGE_COUNT;
     const complete = state.progress.completedIds.length;
     const next = Math.min(total, complete + 1);
     $("stage-progress").textContent = t("stageProgress", { done: complete, total, next });
-    const virtual = ensureStageVirtual();
-    if (!virtual) {
-      $("stage-progress").textContent = t("stageUnavailable");
-      return;
-    }
-    virtual.refresh();
-    virtual.center(Campaign.highestUnlockedIndex(state.progress));
+    state.stageBrowseIndex = Math.min(state.stageBrowseIndex, Campaign.highestUnlockedIndex(state.progress));
+    state.stageSelector?.refresh(state.stageBrowseIndex);
   }
 
   function nameChip(name) {
@@ -339,6 +292,7 @@
 
   function start() {
     tone("ui.click");
+    state.stageBrowseIndex = Campaign.highestUnlockedIndex(state.progress);
     show("stage");
     track("camp_stage_map_open");
   }
@@ -395,12 +349,10 @@
   }
 
   function requestStageMap() { openDialog("leave-dialog"); }
-  function returnToStageMap() { closeDialog("leave-dialog"); state.selected = null; state.locked = false; show("stage"); }
+  function returnToStageMap() { closeDialog("leave-dialog"); state.selected = null; state.locked = false; state.stageBrowseIndex = Campaign.highestUnlockedIndex(state.progress); show("stage"); }
   function returnToMain() { closeDialog("leave-dialog"); show("main"); applyLocale(); }
 
   state.locale = (() => {
-    const query = new URLSearchParams(location.search).get("lang");
-    if (locales[query]) return query;
     if (routeLocale && locales[routeLocale]) return routeLocale;
     try {
       const saved = safeStorage()?.getItem("weightplay-animal-cozy-camp-locale");
@@ -414,21 +366,7 @@
     populateLocales();
     applyLocale();
     $("start-button").addEventListener("click", start);
-    $("guide-button").addEventListener("click", () => openDialog("guide-dialog"));
-    $("guide-start").addEventListener("click", () => { closeDialog("guide-dialog"); start(); });
-    $("close-guide").addEventListener("click", () => closeDialog("guide-dialog"));
     $("stage-home").addEventListener("click", returnToMain);
-    $("main-settings").addEventListener("click", () => openDialog("settings-dialog"));
-    $("battle-settings").addEventListener("click", () => openDialog("settings-dialog"));
-    $("close-settings").addEventListener("click", () => closeDialog("settings-dialog"));
-    const toggleSound = () => {
-      window.WeightPlayAudio?.setMuted?.(!Boolean(window.WeightPlayAudio?.isMuted?.()));
-      syncSoundState();
-      applyLocale();
-    };
-    $("sound-toggle").addEventListener("click", toggleSound);
-    $("camp-sound-toggle").addEventListener("click", toggleSound);
-    window.addEventListener("weightplay:audio-volume-change", () => { syncSoundState(); applyLocale(); });
     $("battle-home").addEventListener("click", requestStageMap);
     $("cancel-leave").addEventListener("click", () => closeDialog("leave-dialog"));
     $("keep-playing").addEventListener("click", () => closeDialog("leave-dialog"));
@@ -436,7 +374,7 @@
     $("reset-button").addEventListener("click", reset);
     $("check-button").addEventListener("click", check);
     $("next-stage-button").addEventListener("click", () => playStage(state.round + 1, false));
-    $("stage-map-button").addEventListener("click", () => show("stage"));
+    $("stage-map-button").addEventListener("click", returnToStageMap);
     $("replay-button").addEventListener("click", () => playStage(state.round, true));
     window.setTimeout(() => {
       $("loading-view").hidden = true;
@@ -451,4 +389,34 @@
     playStage,
     getState: () => ({ ...state, progress: Campaign.normalizeProgress(state.progress), rounds }),
   };
+  window.AnimalCozyCampI9 = Object.freeze({
+    get stageCount() { return Campaign.STAGE_COUNT; },
+    get selectedStage() { return state.stageBrowseIndex; },
+    get screen() { return state.view; },
+    get initialStageIndex() { return Campaign.highestUnlockedIndex(state.progress); },
+    stageRecord(index) {
+      const item = Campaign.stages[index];
+      if (!item) return null;
+      const locked = !Campaign.isUnlocked(state.progress, index);
+      const cleared = state.progress.completedIds.includes(item.id);
+      return {
+        id: item.id,
+        kicker: t("stageCircle", { n: item.number, total: Campaign.STAGE_COUNT }),
+        title: t(authoredRounds[item.patternIndex].title),
+        subtitle: "",
+        status: locked ? t("stageLockedShort") : cleared ? t("stageDone") : t("stageReady"),
+        summary: t("stageProgressShort", { done: state.progress.completedIds.length, total: Campaign.STAGE_COUNT }),
+        details: [t("guide4Stage")],
+        locked,
+        cleared,
+        poster: "/games/animal-cozy-camp/assets/animal-cozy-camp-cover.png",
+      };
+    },
+    selectStage(index) {
+      state.stageBrowseIndex = Math.max(0, Math.min(Campaign.STAGE_COUNT - 1, Math.round(index)));
+    },
+    startStage(index) { playStage(index, true); },
+    setStageSelector(selector) { state.stageSelector = selector; },
+    setFrame(frame) { state.frame = frame; show(state.view); },
+  });
 })();

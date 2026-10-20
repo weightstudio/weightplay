@@ -25,19 +25,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="robots" content="noindex,nofollow,noarchive" />
     <meta name="weightplay-audience" content="general">
-    <meta name="weightplay-game-version" content="v8">
-    <meta name="weightplay-interface-version" content="6">
+    <meta name="weightplay-game-version" content="v9">
+    <meta name="weightplay-interface-version" content="9">
     <meta name="description" content="आवास के सिरों को मिलाकर चाँदनी वन के तीन शांत चक्र पूरे करें।" />
     <title>आवास डोमिनो श्रृंखला | WeightPlay</title>
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261020-grove-dominoes-v9-i9-ui4">
-    <link rel="stylesheet" href="style.css?v=20261020-grove-dominoes-v9-i9-ui4">
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261020-grove-dominoes-v9-i9-ui5">
+    <link rel="stylesheet" href="style.css?v=20261020-grove-dominoes-v9-i9-ui5">
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-style>
     <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
     <link rel="stylesheet" href="/src/stage-rail-i9.css?v=20261016-shared-play1">
     <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1">
     <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" defer data-wp-frame-script></script>
-    <script src="locales.js?v=20261020-grove-dominoes-v9-i9-ui4" defer></script>
-    <script src="game.js?v=20261020-grove-dominoes-v9-i9-ui4&wp-audio=1.0.0" defer></script><meta property="og:site_name" content="WeightPlay" />
+    <script src="locales.js?v=20261020-grove-dominoes-v9-i9-ui5" defer></script>
+    <script src="game.js?v=20261020-grove-dominoes-v9-i9-ui5&wp-audio=1.0.0" defer></script><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="आवास डोमिनो श्रृंखला | WeightPlay" />
     <meta property="og:description" content="आवास के सिरों को मिलाकर चाँदनी वन के तीन शांत चक्र पूरे करें।" />
@@ -51,7 +51,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-  <body data-audience="general" data-wp-game-id="animal-grove-dominoes" data-wp-game-version="v8" data-wp-interface-version="6" data-wp-interface-candidate="9" data-wp-game-owned-guide data-screen="main">
+  <body data-audience="general" data-wp-game-id="animal-grove-dominoes" data-wp-game-version="v9" data-wp-interface-version="9" data-wp-game-owned-guide data-screen="main">
     <main id="app" class="app-shell" data-wp-frame-root>
       <section id="mainView" class="screen main-screen" data-wp-standard-main-screen data-wp-main-screen data-wp-logical-main-canvas aria-labelledby="mainTitle">
         <header class="topbar wp-main-shell-header">
@@ -60,15 +60,19 @@
         </header>
         <select id="localeSelect" hidden aria-hidden="true" tabindex="-1"></select>
         <div class="main-content" data-wp-frame-content="main">
-        <section class="hero-grid">
-          <img class="cover main-poster" data-wp-frame-poster src="assets/animal-grove-dominoes-cover.webp" alt="" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
-          <div class="hero-copy" data-wp-frame-copy>
+        <section class="wp-standard-main-composition">
+          <div class="wp-standard-main-poster">
+            <img class="main-poster wp-standard-main-poster-media" data-wp-frame-poster src="assets/animal-grove-dominoes-cover.webp" alt="" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
+          </div>
+          <div class="wp-standard-main-copy">
             <p class="kicker" data-copy="kicker">शांत आवास-श्रृंखला पहेली</p>
             <p class="intro main-summary wp-standard-main-summary" data-wp-frame-summary data-copy="intro">रास्ता बनाएँ और अनिवार्य टाइलों से चाँद तक पहुँचें।</p>
-            <p class="facts wp-standard-main-progress" data-wp-frame-progress data-wp-main-progress data-copy="facts">30 रास्तों की पहेलियाँ · प्रगति इसी उपकरण पर सहेजी जाती है</p>
-            <button id="startBtn" disabled class="primary-btn" data-wp-frame-action="primary" data-wp-main-start data-runtime-localize="off" type="button" data-copy="start">श्रृंखला शुरू करें</button>
+            <p class="wp-standard-main-progress" data-wp-frame-progress data-wp-main-progress data-copy="facts">30 रास्तों की पहेलियाँ · प्रगति इसी उपकरण पर सहेजी जाती है</p>
+            <button id="startBtn" disabled class="primary-btn wp-standard-main-start" data-wp-frame-action="primary" data-wp-main-start data-runtime-localize="off" type="button">Start Game</button>
           </div>
         </section>
+        </div>
+      </section>
 
       <section class="guide-card game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-copy-aria-label="guideAria" aria-label="वन श्रृंखला गेम की जानकारी" aria-labelledby="guideTitle">
         <img class="guide-fia" src="assets/animal-grove-dominoes-fia-v2.png" alt="" aria-hidden="true" width="1337" height="1176" loading="lazy">
@@ -81,17 +85,18 @@
         </div>
       </section>
       <footer data-copy="footer">Internal prototype · planned Coming Soon · no public playable route</footer>
-      </div>
-      </section>
 
       <section id="stageView" class="screen panel stage-screen" data-screen="stage" hidden aria-labelledby="stageTitle">
         <header class="panel-head">
           <button id="stageBackBtn" class="back-button" data-wp-return="stage" data-copy-aria-label="backHome" type="button" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span></button>
           <h2 id="stageTitle" class="header-title" data-wp-frame-title data-copy="title" data-wp-game-title data-runtime-localize="off">आवास डोमिनो श्रृंखला</h2>
         </header>
-        <div id="stageWorkspace" class="stage-workspace">
+        <div id="stageWorkspace" class="stage-workspace" role="tabpanel" aria-labelledby="stageTab">
           <div id="stageList" class="stage-rail" aria-label="Stages"></div>
         </div>
+        <nav id="stageNav" class="stage-tabs" data-wp-frame-nav role="tablist" aria-label="Stages">
+          <button id="stageTab" type="button" role="tab" data-wp-frame-action="tab" aria-selected="true" aria-controls="stageWorkspace">Stages</button>
+        </nav>
       </section>
 
       <section id="battleView" class="screen panel" data-screen="battle" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-battle-min-width="390" data-wp-battle-min-height="788" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="566" data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-battle-return-only hidden aria-labelledby="battleTitle">
@@ -103,7 +108,7 @@
             <div id="battleHeaderInfo" class="battle-header-info">
               <div><span id="roundLabel" class="round-label"></span></div>
               <div><span id="endLabel"></span></div>
-              <div><span data-copy="tilesPlaced">Tiles</span> <b id="placedCount">0</b>/5</div>
+              <div><span data-copy="tilesPlaced">Tiles</span> <b id="placedCount">0</b></div>
             </div>
             <div id="logicalShell" class="logical-shell">
             <section class="chain-card" aria-labelledby="chainTitle"><h3 id="chainTitle" class="sr-only" data-copy="chainTitle">Habitat chain</h3><div id="chainTrack" class="chain-track"></div><span id="feedbackArt" class="feedback-art" data-feedback="idle" aria-hidden="true"></span></section>

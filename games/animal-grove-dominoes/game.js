@@ -3,7 +3,12 @@
 
   const locales = window.GROVE_CHAIN_LOCALES;
   const localeKeys = locales.__localeKeys;
-  const GAME_VERSION = "v8";
+  const MAIN_START_COPY = Object.freeze({
+    en: "Start Game", "zh-Hant": "開始遊戲", "zh-Hans": "开始游戏", ja: "ゲーム開始",
+    ko: "게임 시작", es: "Iniciar juego", "pt-BR": "Iniciar jogo", fr: "Commencer",
+    de: "Spiel starten", it: "Inizia gioco", ru: "Начать игру", hi: "खेल शुरू करें", ar: "ابدأ اللعبة",
+  });
+  const GAME_VERSION = "v9";
   let advanceTimer = null;
   let advanceDeadline = 0;
   let pausedAdvanceRemaining = null;
@@ -80,9 +85,14 @@
     document.body.dataset.gameVersion = GAME_VERSION;
     document.documentElement.dir = copy().direction || "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
+    $('startBtn').removeAttribute('data-copy');
+    $('startBtn').textContent = MAIN_START_COPY[state.locale] || MAIN_START_COPY.en;
     document.querySelectorAll("[data-copy-aria-label]").forEach((node) => { node.setAttribute("aria-label", t(node.dataset.copyAriaLabel)); });
     document.querySelectorAll('[data-copy="facts"]').forEach(node=>node.textContent=cc().summary);
     $('stageList').setAttribute('aria-label',cc().stages);
+    $('stageNav').setAttribute('aria-label',cc().stages);
+    $('stageTab').textContent=cc().stages;
+    $('stageTab').setAttribute('aria-label',cc().stages);
     $('flipChain').textContent=cc().flip;
     $('leaveBtn').textContent=cc().backStages;$('homeBtn').textContent=cc().backStages;$('nextStage').textContent=cc().next;
     stageController?.refresh();
@@ -143,8 +153,15 @@
   }
   function renderRound() {
     const round = rounds[state.roundIndex];
-    $("roundLabel").textContent = t("round", { current: state.roundIndex + 1, total: rounds.length });
-    $("endLabel").textContent = t("end", { habitat: habitat(state.currentEnd) });
+    const number = new Intl.NumberFormat(state.locale);
+    const roundLabel = t("round", { current: state.roundIndex + 1, total: rounds.length });
+    const endLabel = t("end", { habitat: habitat(state.currentEnd) });
+    $("roundLabel").textContent = `${number.format(state.roundIndex + 1)}/${number.format(rounds.length)}`;
+    $("roundLabel").setAttribute("aria-label", roundLabel);
+    $("roundLabel").title = roundLabel;
+    $("endLabel").textContent = habitat(state.currentEnd);
+    $("endLabel").setAttribute("aria-label", endLabel);
+    $("endLabel").title = endLabel;
     $("placedCount").textContent = `${state.placed.length}/${round.tiles.length}`;
     const words=recoveryCopy[state.locale]||recoveryCopy.en;
     const c=cc();
@@ -185,7 +202,7 @@
     $('battleStatus').textContent='';$('appStatus').textContent=t('end',{habitat:habitat(state.currentEnd)});setFeedbackState('idle');playTone('board.undo');renderRound();
   }
   function start(index=0) {if(!Number.isInteger(index)||index<0||index>=progress.unlocked)return;selectedStageIndex=index;completionReceipt=null;state.roundIndex=index; state.picks = 0; state.solved = 0; track("session_started",{stage:index+1});playTone('game.start'); showView("battleView"); startRound(); }
-  function openStages(preferLatestUnlocked=false){if(preferLatestUnlocked)selectedStageIndex=Math.max(0,progress.unlocked-1);showView('stageView');stageController?.refresh(selectedStageIndex);}
+  function openStages(preferLatestUnlocked=false){if(preferLatestUnlocked===true)selectedStageIndex=Math.max(0,progress.unlocked-1);showView('stageView');stageController?.refresh(selectedStageIndex);}
   function recordCompletion(){
     if(completionReceipt)return completionReceipt;
     if(outcome(chainState)!=='complete')throw new Error('Incomplete route cannot earn progress');
@@ -253,6 +270,7 @@
       onStart:index=>{selectedStageIndex=index;start(index);},
       isActive:()=>$('app').dataset.wpFrameActive==='stage',
     });
+    $('stageTab').addEventListener('click',()=>stageController?.select(stageController.selected,{center:true,focus:true}));
     $('startBtn').addEventListener('click',()=>openStages(true));
     $('replayBtn').addEventListener('click',()=>start(state.roundIndex));
     $('nextStage').addEventListener('click',()=>start(state.roundIndex+1));

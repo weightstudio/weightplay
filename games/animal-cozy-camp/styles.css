@@ -1,423 +1,175 @@
-@import url("./styles-v6-base.css");
-
-/*
- * Interface 7 compatibility cleanup for Cozy Camp.
- * Keep game-specific puzzle visuals in styles-v6-base.css; this layer only
- * removes legacy Main/Battle chrome that conflicts with the shared contract.
- * Runtime presentation is aligned to Interface 7; formal independent QA remains separate.
- */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #mainScreen .main-content > .eyebrow,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #mainScreen .main-content > h1,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #mainScreen .main-content > .fact-row,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #guide-button {
-  display: none !important;
+/* Cozy Camp owns puzzle content. I9 frame and Play UI own every shared shell. */
+* { box-sizing: border-box; }
+html, body { min-height: 100%; margin: 0; }
+body { color: var(--wp-ui-text); font-family: system-ui, sans-serif; line-height: 1.45; }
+button, select { font: inherit; }
+button { touch-action: manipulation; cursor: pointer; }
+:root {
+  --cozy-ink: var(--wp-ui-text);
+  --cozy-muted: var(--wp-ui-muted);
+  --cozy-line: var(--wp-ui-line);
+  --cozy-surface: var(--wp-ui-surface);
+  --cozy-panel: var(--wp-ui-background);
 }
 
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #mainScreen .main-actions {
-  grid-template-columns: minmax(0, 1fr) !important;
-  width: 100% !important;
-  max-width: none !important;
-  gap: 0 !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #start-button {
-  width: 100% !important;
-  height: 52px !important;
-  min-height: 52px !important;
-  max-height: 52px !important;
-}
-
-/* Retire the repeated game title, private Battle Settings gear and brand kicker. */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #battleScreen > .topbar > .wp-shell-main-title,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #battleScreen > .topbar > #battle-settings,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #battleScreen .battle-heading > div > .eyebrow {
-  display: none !important;
-}
-
-/* The governed play-top is always one 48px row, including short landscape. */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"].wp-logical-battle-active #battleScreen.battle-screen > .topbar,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"].wp-shell-battle-active #battleScreen.battle-screen > .topbar {
-  flex: 0 0 48px !important;
-  width: 100% !important;
-  height: 48px !important;
-  min-height: 48px !important;
-  max-height: 48px !important;
-  margin: 0 !important;
-}
-
-/* Do not preserve the legacy physical 56px ad deduction when bannerAds=false. */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #battleScreen.battle-screen {
-  height: calc(100svh - var(--wp-ad-reserve-height, 0px));
-  min-height: calc(100svh - var(--wp-ad-reserve-height, 0px));
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .battle-ad-reserve[data-wp-ad-reserve] {
-  height: var(--wp-ad-reserve-height, 0px) !important;
-  min-height: var(--wp-ad-reserve-height, 0px) !important;
-  max-height: var(--wp-ad-reserve-height, 0px) !important;
-  border-top: 0 !important;
-}
-
-/* Shared Battle keeps the document edge locked through Result. Keep the
-   complete terminal layout inside that viewport so its actions never need
-   document scrolling after the final circle. */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-content {
-  margin-top: 1vh;
-  padding-top: clamp(8px, 1.5vh, 16px);
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-guide {
-  max-height: min(220px, 32vh);
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-card {
-  margin: 16px auto 12px;
-  padding: 14px;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-content .status {
-  min-height: 22px;
-  margin: 6px 2px 10px;
-}
-
-@media (max-height: 640px) {
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view {
-    padding-top: max(env(safe-area-inset-top), 4px);
-    padding-bottom: 8px;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-content {
-    margin-top: 0;
-    padding-top: 6px;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-guide {
-    width: 54px;
-    height: 76px;
-    max-width: 100%;
-    max-height: 76px;
-    margin: 0 auto -8px;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-content h1 {
-    margin: 3px 0 5px;
-    font-size: clamp(24px, 6vw, 34px);
-    line-height: 1.05;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-content .lede {
-    margin: 0 auto 8px;
-    font-size: 14px;
-    line-height: 1.25;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-card {
-    margin: 8px auto;
-    padding: 8px;
-    gap: 4px;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-card strong {
-    font-size: 22px;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-content .status {
-    min-height: 16px;
-    margin: 4px 2px 8px;
-    font-size: 12px;
-    line-height: 16px;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-actions {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-actions button {
-    min-height: 44px;
-    padding: 7px 8px;
-    font-size: 14px;
-  }
-}
-
-/* v9 motion pass: feedback must be visible without making reduced-motion users wait. */
-@keyframes cozy-fire-breathe { 0%,100%{transform:translateY(0) scale(.96);filter:brightness(.95)} 50%{transform:translateY(-3px) scale(1.08);filter:brightness(1.18)} }
-@keyframes cozy-stars-drift { 0%,100%{transform:translateX(-5px);opacity:.55} 50%{transform:translateX(5px);opacity:1} }
-@keyframes cozy-card-in { from{opacity:0;transform:translateY(10px) scale(.97)} to{opacity:1;transform:none} }
-@keyframes cozy-correct { 0%{transform:scale(1)} 45%{transform:scale(1.015)} 100%{transform:scale(1)} }
-@keyframes cozy-wrong { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .campfire{animation:cozy-fire-breathe 1.45s ease-in-out infinite;transform-origin:50% 85%}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .scene-stars{animation:cozy-stars-drift 3.2s ease-in-out infinite}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .layout-card{animation:cozy-card-in .28s ease both;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .layout-card:nth-child(2){animation-delay:.05s}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .layout-card:nth-child(3){animation-delay:.1s}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .layout-card:is(:hover,:focus-visible){transform:translateY(-3px)}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .layout-card.is-selected{transform:translateY(-4px) scale(1.015)}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #battleScreen.is-correct .battle-content{animation:cozy-correct .48s ease}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #battleScreen.is-wrong .layout-card.is-selected{animation:cozy-wrong .28s ease}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] button{transition:transform .16s ease,filter .16s ease}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] button:active{transform:scale(.97)}
-@media (prefers-reduced-motion:reduce){
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] :is(.campfire,.scene-stars,.layout-card,#battleScreen.is-correct .battle-content,#battleScreen.is-wrong .layout-card.is-selected){animation:none!important;transition:none!important}
-}
-
-/* v11 recovery: hidden subviews must stay hidden despite game-owned layout rules. */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #result-view[hidden]{display:none!important}
-
-/* Keep the Result-only state readable on short landscape screens. */
-@media (max-height:560px) and (orientation:landscape){
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #battle-content[hidden]{display:none!important}
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view:not([hidden]){display:grid!important;align-content:start!important;overflow-y:auto!important;min-height:100svh}
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-content{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"art score" "kicker score" "title score" "copy status" "actions actions";align-items:center;gap:2px 14px;width:min(100%,820px);min-height:0;margin:0 auto;padding:60px 14px 8px;text-align:center}
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-guide{grid-area:art;width:auto;height:68px;max-height:68px;margin:0 auto;object-fit:contain}
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-kicker{grid-area:kicker;margin:0;font-size:10px;line-height:1}
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-title{grid-area:title;margin:0;font-size:clamp(25px,6vh,34px);line-height:1}
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-text{grid-area:copy;max-width:none;margin:0;font-size:12px;line-height:1.25}
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-card{grid-area:score;width:min(100%,330px);margin:0 auto;padding:10px;gap:3px 10px}
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-status{grid-area:status;min-height:0;margin:0}
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-actions{grid-area:actions;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%;max-width:760px}
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #result-view .result-actions button{min-height:48px;padding:6px 8px;font-size:12px}
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #battleScreen #battle-content .battle-actions{flex:0 0 48px!important;min-height:48px!important}
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #battleScreen #battle-content .battle-actions button{min-height:48px!important}
-}
-
-@media (max-width:680px) and (max-height:560px) and (orientation:landscape){
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #result-view .result-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-
-/* v10 Stage catalog: keep the shared shell geometry and own only Cozy Camp art/copy. */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #stageScreen[data-wp-standard-stage-screen] {
-  --wp-stage-art: url("/games/animal-cozy-camp/assets/animal-cozy-camp-cover.png");
-  --wp-stage-scrim: linear-gradient(180deg, rgb(7 27 26 / 80%), rgb(7 25 24 / 88%));
-  min-height: calc(100svh - var(--wp-ad-reserve-height, 0px));
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="stage"] #stageScreen {
-  display: flex !important;
-  flex-direction: column !important;
-  overflow: hidden !important;
-  padding: 0 !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="stage"] #stageScreen > .stage-screen-head {
-  flex: 0 0 48px !important;
-  width: 100% !important;
-  height: 48px !important;
-  min-height: 48px !important;
-  max-height: 48px !important;
-  margin: 0 !important;
-  position: relative !important;
-  z-index: 4;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="stage"] #stageScreen > .stage-content {
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  flex: 1 1 auto;
-  min-height: 0;
+body[data-wp-game-id="animal-cozy-camp"] .app-shell {
   width: 100%;
-  max-width: 920px;
+  min-height: 100svh;
   margin: 0 auto;
-  padding: clamp(18px, 4vh, 40px) 18px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(18px, 4vh, 34px);
+  color: var(--cozy-ink);
 }
 
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="stage"] #stageScreen > .stage-content::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: 8px 12px;
-  border: 1px solid rgb(185 226 185 / 26%);
-  border-radius: 28px;
-  background-image: var(--wp-stage-scrim), var(--wp-stage-art);
-  background-position: center, center 58%;
-  background-size: cover;
-  box-shadow: 0 20px 60px rgb(0 0 0 / 32%);
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .stage-summary {
-  width: min(100%, 820px);
-  text-align: center;
-  color: #f4f9e9;
-  text-shadow: 0 2px 10px #061b19;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .stage-summary .eyebrow {
-  margin: 0 0 7px;
-  color: #f3d893;
-  font-size: 12px;
-  letter-spacing: .12em;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .stage-summary h1 {
-  margin: 0;
-  font-size: clamp(26px, 4vw, 38px);
-  line-height: 1.1;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #stage-progress {
-  min-height: 22px;
-  margin: 8px 0 0;
-  color: #e3f3df;
-  font-size: 14px;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #stage-rail {
-  width: 100% !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
-  min-height: 190px;
-  align-items: center;
-  padding: 8px max(18px, calc((100% - 852px) / 2));
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #stage-rail > .cozy-stage-card {
-  position: relative;
-  display: flex !important;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 10px;
-  padding: 20px 22px !important;
-  overflow: hidden;
-  border: 2px solid rgb(201 226 174 / 42%);
-  border-radius: 25px;
-  background: linear-gradient(145deg, rgb(23 66 54 / 97%), rgb(11 38 38 / 97%));
-  color: #f5f7e9;
-  text-align: start;
-  box-shadow: 0 12px 28px rgb(0 0 0 / 28%);
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #stage-rail > .cozy-stage-card[aria-current="true"] {
-  border-color: #ffe59a;
-  box-shadow: 0 0 0 3px rgb(255 229 154 / 22%), 0 16px 36px rgb(0 0 0 / 36%);
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #stage-rail > .cozy-stage-card[aria-disabled="true"] {
-  color: #b8c7b5;
-  background: linear-gradient(145deg, rgb(35 49 44 / 97%), rgb(18 31 31 / 97%));
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .cozy-stage-number {
-  display: grid;
-  width: 54px;
-  height: 54px;
-  place-items: center;
-  border: 1px solid #f1d990;
-  border-radius: 50%;
-  background: rgb(255 225 144 / 12%);
-  color: #ffe39a;
-  font-size: 22px;
-  font-weight: 900;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .cozy-stage-title {
-  max-width: 100%;
-  overflow-wrap: anywhere;
-  font-size: 20px;
-  line-height: 1.2;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .cozy-stage-subtitle {
-  color: #cce0c9;
-  font-size: 14px;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .cozy-stage-status {
-  position: absolute;
-  inset-inline-end: 20px;
-  inset-block-start: 20px;
-  color: #ffe39a;
-  font-size: 22px;
-  font-weight: 900;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #stageScreen > .stage-tabs {
-  flex: 0 0 56px !important;
-  height: 56px !important;
-  min-height: 56px !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #stageScreen > .stage-tabs > button {
+body[data-wp-game-id="animal-cozy-camp"] #battleWorkspace {
   box-sizing: border-box;
-  height: 44px !important;
-  min-height: 44px !important;
-  max-height: 44px !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #battleScreen > #result-view {
-  flex: 1 1 auto;
-  min-height: 0 !important;
-  height: auto !important;
-  max-height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
   width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body[data-wp-game-id="animal-cozy-camp"] #result-view[hidden] {
+  display: none !important;
+}
+
+body[data-wp-game-id="animal-cozy-camp"] #result-view:not([hidden]) {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  padding: clamp(10px, 2vh, 20px);
   overflow: auto;
-  padding: 0 !important;
+  border: 1px solid var(--cozy-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--cozy-surface);
+  color: var(--cozy-ink);
 }
 
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="result"] #battleScreen {
-  overflow: hidden !important;
+body[data-wp-game-id="animal-cozy-camp"] .result-content {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto auto auto auto auto auto;
+  justify-items: center;
+  align-content: center;
+  gap: clamp(4px, 1vh, 10px);
+  width: min(100%, 660px);
+  min-width: 0;
+  margin: auto;
+  text-align: center;
 }
 
-@media (max-width: 640px) {
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="stage"] #stageScreen > .stage-content {
-    padding: 18px 8px;
-    gap: 18px;
-  }
+body[data-wp-game-id="animal-cozy-camp"] .result-content :is(h1, p) {
+  margin: 0;
+}
 
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="stage"] #stageScreen > .stage-content::before {
-    inset-inline: 4px;
-    border-radius: 22px;
-  }
+body[data-wp-game-id="animal-cozy-camp"] .result-content h1 {
+  font-size: clamp(24px, 5vw, 38px);
+  line-height: 1.12;
+}
 
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #stage-rail {
-    padding-inline: 8px;
-  }
+body[data-wp-game-id="animal-cozy-camp"] .result-guide {
+  width: min(150px, 28vw);
+  height: min(150px, 24vh);
+  margin: 0 auto;
+  object-fit: contain;
+}
 
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #stage-rail > .cozy-stage-card {
-    padding: 18px !important;
-  }
+body[data-wp-game-id="animal-cozy-camp"] .result-card {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, auto));
+  align-items: center;
+  justify-content: center;
+  gap: 8px 14px;
+  width: min(100%, 420px);
+  padding: 12px;
+  border: 1px solid var(--cozy-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--cozy-panel);
+  color: var(--cozy-ink);
+}
+
+body[data-wp-game-id="animal-cozy-camp"] .result-card strong {
+  font-size: 24px;
+  font-variant-numeric: tabular-nums;
+}
+
+body[data-wp-game-id="animal-cozy-camp"] #result-status {
+  min-height: 1.3em;
+  color: var(--cozy-muted);
+}
+
+body[data-wp-game-id="animal-cozy-camp"] .result-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+
+body[data-wp-game-id="animal-cozy-camp"] .result-actions button,
+body[data-wp-game-id="animal-cozy-camp"] .dialog-actions button {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 48px;
+  padding: 6px 8px;
+  border: 2px solid var(--cozy-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--wp-ui-button-image);
+  color: var(--cozy-ink);
+  font: 700 14px/1.25 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+body[data-wp-game-id="animal-cozy-camp"] .result-actions .primary-button,
+body[data-wp-game-id="animal-cozy-camp"] .dialog-actions .primary-button {
+  border-color: var(--wp-ui-gold);
+  background: var(--wp-ui-active);
+  color: var(--wp-ui-text);
+}
+
+body[data-wp-game-id="animal-cozy-camp"] .result-actions button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+body[data-wp-game-id="animal-cozy-camp"] .modal-dialog .dialog-card {
+  box-sizing: border-box;
+  width: min(calc(100vw - 24px), 440px);
+  max-height: calc(100svh - 24px);
+  padding: 18px;
+  overflow: auto;
+  border: 2px solid var(--cozy-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--cozy-surface);
+  color: var(--cozy-ink);
+  box-shadow: 0 5px 0 var(--wp-ui-shadow);
+}
+
+body[data-wp-game-id="animal-cozy-camp"] .modal-dialog::backdrop {
+  background: #061820bf;
+  backdrop-filter: blur(3px);
 }
 
 @media (max-height: 560px) and (orientation: landscape) {
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="stage"] #stageScreen > .stage-content {
-    padding: 0 10px;
-    gap: 0;
+  body[data-wp-game-id="animal-cozy-camp"] #result-view:not([hidden]) {
+    padding: 6px 10px;
   }
 
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"][data-screen="stage"] #stageScreen > .stage-content::before {
-    inset: 2px 6px;
+  body[data-wp-game-id="animal-cozy-camp"] .result-content {
+    grid-template-columns: minmax(0, 1fr) minmax(120px, .75fr);
+    grid-template-areas: "art score" "kicker score" "title score" "copy status" "actions actions";
+    gap: 3px 10px;
   }
 
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .stage-summary .eyebrow {
-    display: none;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] .stage-summary h1 {
-    font-size: 20px;
-    line-height: 22px;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #stage-progress {
-    min-height: 16px;
-    margin: 0;
-    font-size: 12px;
-    line-height: 16px;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #stage-rail {
-    min-height: 190px;
-    max-height: 190px;
-    padding-block: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-cozy-camp"] #stage-rail > .cozy-stage-card {
-    transition: none !important;
-  }
+  body[data-wp-game-id="animal-cozy-camp"] .result-guide { grid-area: art; height: 62px; }
+  body[data-wp-game-id="animal-cozy-camp"] #result-kicker { grid-area: kicker; }
+  body[data-wp-game-id="animal-cozy-camp"] #result-title { grid-area: title; }
+  body[data-wp-game-id="animal-cozy-camp"] #result-text { grid-area: copy; }
+  body[data-wp-game-id="animal-cozy-camp"] .result-card { grid-area: score; width: 100%; padding: 8px; }
+  body[data-wp-game-id="animal-cozy-camp"] #result-status { grid-area: status; }
+  body[data-wp-game-id="animal-cozy-camp"] .result-actions { grid-area: actions; }
 }

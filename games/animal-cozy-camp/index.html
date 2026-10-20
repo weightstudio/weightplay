@@ -25,91 +25,62 @@
   <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="description" content="Campfire Seating Logic is a 30-circle WeightPlay deduction game about circular seating, neighbour clues, and careful reasoning." />
   <meta name="weightplay-game-id" content="animal-cozy-camp" />
-  <meta name="weightplay-game-version" content="v14" />
-  <meta name="weightplay-interface-version" content="7" />
+  <meta name="weightplay-game-version" content="v15" />
+  <meta name="weightplay-interface-version" content="9" />
   <title>Campfire Seating Logic | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260924-cozy-camp-v10-stage-catalog" data-wp-game-guide />
-  <link rel="stylesheet" href="styles.css?v=20261020-cozy-camp-v14-stage-landscape" />
-  <style>
-    .app-shell{width:min(100%,920px);margin:auto}
-    .wp-shell-return{width:58px;height:48px;min-width:58px;display:inline-flex;align-items:center;gap:3px;padding:4px}
-    .wp-shell-return img{width:28px;height:28px;object-fit:contain}
-    .wp-shell-return-arrow{display:inline-grid;place-items:center;width:20px;height:34px;font-size:20px}
-    .wp-shell-main-title{position:absolute;left:50%;transform:translateX(-50%);max-width:58%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .wp-shell-settings-button,.cozy-settings-button{width:48px;height:48px;min-height:48px;padding:0}
-    .battle-screen .battle-utility-button{width:48px;height:48px;min-width:48px;min-height:48px;padding:0}
-    .modal-dialog #locale-label{display:none}
-    .main-screen .concept-cover{aspect-ratio:1;object-fit:cover}
-    .guide-card{display:block;width:min(100%,920px);margin:22px auto 0;padding:18px;border:1px solid #4b8a70;border-radius:18px;background:#11382fcc}
-    .guide-card[hidden]{display:none}
-    .guide-card h2{margin:0 0 10px;color:#ffe098;font-size:20px}
-    .game-info-sections{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-    .game-info-section{border:1px solid #396c59;border-radius:13px;background:#0e2b26;padding:12px;text-align:left}
-    .game-info-section h3{margin:0 0 5px;font-size:14px;color:#d6f6dc}
-    .game-info-section p{margin:0;color:var(--muted);font-size:13px}
-    .main-actions button{height:52px;min-height:52px;line-height:1.2;padding:0 12px}
-    .battle-screen{height:calc(100svh - var(--wp-ad-reserve-height,0px));min-height:calc(100svh - var(--wp-ad-reserve-height,0px));overflow:auto}
-    .battle-ad-reserve{width:min(100%,920px);height:var(--wp-ad-reserve-height,0px);margin:0 auto}
-    .battle-screen .camp-scene{min-height:100px}
-    html[data-wp-shared-interface="7"] body #gameGuide{border-radius:24px!important}
-    html[data-wp-shared-interface="7"] body #gameGuide .game-info-section{border-radius:24px!important}
-    html body[data-wp-game-id="animal-cozy-camp"].wp-logical-battle-active #battleScreen{display:flex!important;flex-direction:column!important;gap:0!important;padding:0!important;box-sizing:border-box!important;overflow:hidden!important}
-    html body[data-wp-game-id="animal-cozy-camp"].wp-logical-battle-active #battleScreen>.topbar{flex:0 0 48px!important;width:100%!important;height:48px!important;min-height:48px!important;max-height:48px!important;margin:0!important;position:relative!important;z-index:10!important}
-    html body[data-wp-game-id="animal-cozy-camp"].wp-logical-battle-active #battleScreen>.topbar>:is(.return-link,.utility-button){position:relative!important;z-index:20!important}
-    html body[data-wp-game-id="animal-cozy-camp"].wp-logical-battle-active #battleScreen>.battle-content{flex:1 1 auto!important;width:100%!important;max-width:none!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;box-sizing:border-box!important;overflow:auto!important}
-    @media(max-width:640px){.battle-screen .layout-choices{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.battle-screen .layout-card{min-height:84px;padding:9px 6px}.battle-screen .seat-order{grid-template-columns:repeat(2,1fr);gap:4px}.battle-screen .seat-chip{min-height:30px;font-size:11px;padding:3px 2px}}
-    @media (max-width:700px){.main-screen .main-content .concept-cover{width:100%;max-width:none}}
-    @media (max-height:560px) and (orientation:landscape){.main-content .concept-cover{width:420px;max-width:100%}.main-content{grid-template-columns:420px minmax(0,1fr)}.game-info-sections{grid-template-columns:repeat(3,minmax(0,1fr))}.battle-screen .camp-scene{min-height:36px}.battle-screen .battle-content{height:calc(100% - 48px);min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:3px}.battle-screen .battle-heading{flex:0 0 30px;margin:0;align-items:center}.battle-screen .battle-heading h1{font-size:24px;line-height:1;margin:0}.battle-screen .round-badge{padding:4px 9px;font-size:11px}.battle-screen .camp-scene{flex:0 0 36px;margin:0}.battle-screen .campfire{font-size:30px}.battle-screen .scene-stars{top:4px;font-size:10px}.battle-screen .clue-card{flex:0 0 32px;min-height:0;padding:4px 11px}.battle-screen .clue-card h2{font-size:12px;line-height:15px}.battle-screen .clue-card ul{display:flex;gap:12px;margin:0;padding-left:18px;font-size:10px;line-height:13px}.battle-screen .choice-heading{flex:0 0 23px;min-height:0;margin:0;display:flex;align-items:baseline}.battle-screen .choice-heading h2{font-size:13px}.battle-screen .selection-note{min-height:0;font-size:10px;line-height:13px}.battle-screen .layout-choices{flex:0 0 64px;min-height:0;gap:6px}.battle-screen .layout-card{min-height:64px;padding:5px 6px;gap:3px}.battle-screen .layout-card strong{font-size:11px;line-height:13px}.battle-screen .seat-order{gap:3px}.battle-screen .seat-chip{min-height:21px;padding:2px;font-size:9px;line-height:11px}.battle-screen .status{flex:0 0 14px;min-height:14px;margin:0 2px;font-size:11px;line-height:14px;overflow:hidden}.battle-screen .battle-actions{flex:0 0 42px;min-height:42px;gap:8px}.battle-screen .battle-actions button{min-height:42px;padding:5px 9px;font-size:12px}}
-    @media(max-width:640px){.game-info-sections{grid-template-columns:1fr}}
-    @media (min-width:700px) and (max-height:560px){html body[data-wp-game-id="animal-cozy-camp"] .wp-standard-main-composition{--wp-main-landscape-poster-size:420px!important}}
-  </style><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide />
+  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-style />
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261020-interface9-play-ui" />
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1" />
+  <link rel="stylesheet" href="styles.css?v=20261020-cozy-camp-v15-i9" />
+  <link rel="stylesheet" href="seating.css?v=20261020-cozy-camp-v15-i9" />
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
   <script src="/src/shared-interface-bootstrap.js?v=20261017-shared-dark-loader1" data-wp-shared-interface="7"></script>
-<link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-frame-style>
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <link rel="stylesheet" href="seating.css?v=20261019-cozy-v13">
 </head>
-<body data-wp-game-id="animal-cozy-camp" data-wp-audience="general" data-wp-game-version="v14" data-wp-battle-settings="hidden" data-runtime-localize="off">
-  <main class="app-shell">
+<body data-wp-game-id="animal-cozy-camp" data-wp-audience="general" data-audience="general" data-wp-game-age-tags="9,family" data-wp-game-version="v15" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-wp-battle-layout="native" data-runtime-localize="off">
+  <div id="appShell" class="app-shell" data-wp-frame-root data-wp-play-ui="1">
     <section id="loading-view" class="screen loading-view" data-view="loading" aria-live="polite">
       <div class="loading-orb" aria-hidden="true">✦</div><p data-copy="loading">Warming the campfire…</p>
     </section>
 
-    <section id="mainScreen" class="screen main-screen" data-view="main" data-screen="main" hidden>
-      <header class="topbar wp-main-shell-header"><a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" data-copy-aria="mainBack" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" /></a><strong class="wp-shell-main-title" data-copy="title" data-wp-game-title data-runtime-localize="off">Campfire Seating Logic</strong><button id="main-settings" class="utility-button cozy-settings-button wp-shell-legacy-control" data-wp-settings data-copy-aria="settings" type="button" aria-label="Settings">⚙</button></header>
-      <div class="main-content">
-        <img class="concept-cover main-poster" src="assets/animal-cozy-camp-cover.png" data-copy-alt="coverAlt" alt="Moonlit animal campfire with four friendly animals" draggable="false" />
-        <p class="eyebrow" data-copy="kicker">CAMPFIRE COMFORT LOGIC</p>
-        <h1 data-copy="title" data-wp-game-title data-runtime-localize="off">Campfire Seating Logic</h1>
-        <p class="lede main-summary" data-copy="intro">Read the animals' comfort notes, then choose the one circular seat order that keeps the campfire cozy.</p>
-        <div class="fact-row"><span data-copy="factOne">30 camp circles</span><span data-copy="factTwo">Neighbour clues</span><span data-copy="factThree">Calm retry</span></div>
-        <div class="main-actions"><button id="start-button" class="primary-button" type="button" data-wp-main-start data-copy="start">Start Game</button><button id="guide-button" class="secondary-button" type="button" data-copy="guide">How to play</button></div>
-      </div>
-    </section>
-    <section id="stageScreen" class="screen stage-screen" data-view="stage" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-stage-landscape-width="844" data-wp-stage-landscape-height="334" data-wp-frame-play-fill data-wp-frame-logical-header="stage" data-wp-stage-art hidden>
-      <header class="topbar stage-screen-head"><button id="stage-home" class="return-link wp-shell-return" type="button" data-wp-return="stage" data-copy-aria="mainBack" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span></button></header>
-      <div class="stage-content" data-wp-shell-content="stage">
-        <div class="stage-summary"><p class="eyebrow" data-copy="kicker">CAMPFIRE COMFORT LOGIC</p><h1 data-copy="stageTitle">Choose a circle</h1><p id="stage-progress" role="status" aria-live="polite"></p></div>
+    <main id="mainScreen" class="screen main-screen" data-view="main" data-screen="main" hidden>
+      <header class="topbar wp-main-shell-header"><a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" data-copy-aria="mainBack" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span></a><strong class="wp-shell-main-title" data-wp-frame-title data-copy="title" data-wp-game-title data-runtime-localize="off">Cozy Camp</strong></header>
+      <section class="wp-standard-main-composition" data-wp-frame-content="main">
+        <div class="wp-standard-main-poster"><img class="concept-cover main-poster wp-standard-main-poster-media" data-wp-frame-poster src="assets/animal-cozy-camp-cover.png" data-copy-alt="coverAlt" alt="Moonlit animal campfire with four friendly animals" draggable="false" /></div>
+        <div class="wp-standard-main-copy" data-wp-frame-copy>
+          <p class="lede main-summary wp-standard-main-summary" data-wp-frame-summary data-copy="intro">Read the animals' comfort notes, then choose the one circular seat order that keeps the campfire cozy.</p>
+          <p id="main-progress" class="wp-standard-main-progress" data-wp-frame-progress role="status" aria-live="polite"></p>
+          <button id="start-button" class="primary-button wp-standard-main-start" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start">Start Game</button>
+        </div>
+      </section>
+    </main>
+    <section id="stageScreen" class="screen stage-screen" data-view="stage" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-stage-landscape-width="844" data-wp-stage-landscape-height="334" data-wp-frame-play-fill data-wp-frame-logical-header="stage" hidden>
+      <header class="topbar stage-screen-head"><button id="stage-home" class="return-link wp-shell-return" type="button" data-wp-return="stage" data-copy-aria="mainBack" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span></button><strong class="wp-shell-main-title" data-wp-frame-title hidden>Choose a circle</strong><div id="stage-top-title" class="stage-top-title" data-copy="stageTitle">Choose a circle</div><p id="stage-progress" class="stage-progress" role="status" aria-live="polite"></p></header>
+      <div id="stageWorkspace" class="stage-content" data-wp-shell-content="stage">
         <div id="stage-rail" class="stage-rail" data-wp-stage-rail data-copy-aria="stageTitle" aria-label="Choose a circle"></div>
       </div>
-      <nav class="stage-tabs" data-wp-shell-nav data-copy-aria="stageTab" aria-label="Stages"><button class="is-active" type="button" aria-current="page" data-wp-frame-action="tab" data-copy="stageTab">Stages</button></nav>
+      <nav class="stage-tabs" data-wp-frame-nav data-copy-aria="stageTab" aria-label="Stages"><button class="is-active" type="button" aria-current="page" data-wp-frame-action="tab" data-copy="stageTab">Stages</button></nav>
     </section>
-    <section id="gameGuide" class="game-page-info guide-card" data-view="main" data-wp-game-guide data-copy-aria="guideTitle" aria-label="Cozy Camp game guide" style="--wp-ui-radius:24px!important;border-radius:24px!important">
-      <h2 data-copy="guideTitle">How to play</h2>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-view="main" data-wp-game-guide data-copy-aria="guideTitle" aria-labelledby="guideTitle" hidden>
+      <h2 id="guideTitle" data-copy="guideTitle">How to play</h2>
       <div class="game-info-sections">
-        <div class="game-info-section" style="border-radius:24px!important"><h3 data-copy="guide1Title">1. Read the notes</h3><p data-copy="guide1">Start by reading both comfort notes for the current circle. Each note describes a relationship, a preferred neighbour, or a direction that matters around the fire. Treat the words as the puzzle rules, not as decoration. Notice who is named, whether the clue says beside or opposite, and whether a phrase such as left, away, or between fixes the direction. You do not need to remember anything from an earlier circle: every round gives you a fresh, self-contained set of clues.</p></div>
-        <div class="game-info-section" style="border-radius:24px!important"><h3 data-copy="guide2Title">2. Compare circles</h3><p data-copy="guide2">Three circle cards show three complete seat orders. A circular order wraps around, so the first and last names are neighbours too. Compare each card with every clue before checking it. For a beside clue, look at the two seats touching that animal. For an opposite clue, count two seats across the four-seat circle. For a between clue, check the two neighbours on both sides of the named animal. A card can look almost right while still breaking one small relationship, so read the full order instead of judging by the first pair you recognize. The animals are Orla, Moss, Taro, and Pip, and their positions rotate from round to round.</p></div>
-        <div class="game-info-section" style="border-radius:24px!important"><h3 data-copy="guide3Title">3. Check gently</h3><p data-copy="guide3">Select a card by tapping or clicking anywhere on it. The selected card gets a clear highlight, the selection message names its position, and the Check the camp button becomes available. If your choice is not the solution, the camp remains safe: the round does not advance, the clues stay visible, and you can choose another card. A wrong check is useful feedback rather than a penalty. Read the notes again, compare the neighbours, and try a different order. Use Reset choice when you want to remove the highlight and reconsider the round from the beginning. Your checks are counted for the result, so careful reading helps you make a cleaner run.</p></div>
-        <div class="game-info-section" style="border-radius:24px!important"><h3 data-copy="guide4StageTitle">4. Follow the stage map</h3><p data-copy="guide4Stage">Choose an unlocked circle from Stages. Solving it opens the result with a clear next-step choice; the next circle unlocks only after the current one is solved. There is no timer, so take time to compare the clues and all three seat orders.</p></div>
-        <div class="game-info-section" style="border-radius:24px!important"><h3 data-copy="guide5StageTitle">5. Finish and replay</h3><p data-copy="guide5Stage">Solved circles stay available for replay, while the newest unlocked circle is centered when you return to Stages. Your completed circles and best checks per circle are saved in this browser. Back to start returns to Main; no account or purchase is required.</p></div>
-        <div class="game-info-section" style="border-radius:24px!important"><h3 data-copy="faqTitle">FAQ</h3><p data-copy="faqText">How long is a session? The full campaign contains 30 quick circles with no timer, so you can solve them at your own pace. What happens after a miss? Nothing is lost; the same circle stays open so you can reread the clues, reset the card, and try again. Does the puzzle need a special device? No. The cards and buttons are designed for touch, mouse, and keyboard use, with large action targets and a responsive layout for portrait and landscape screens. Do the choices move? Yes. Each logic family keeps a valid solution while answer cards reshuffle at the start of a camp. Can I change sound or language? Open the shared Settings control on Main or Result, choose a language, and use the Sound switch as needed. Why are there no ads in the play area? This internal General prototype reserves the governed space without placing an ad over the puzzle. The important habit is simple: read the current notes, test one complete circle, learn from a miss, and keep the camp comfortable.</p></div>
+        <div class="game-info-section"><h3 data-copy="guide1Title">1. Read the notes</h3><p data-copy="guide1">Start by reading both comfort notes for the current circle. Each note describes a relationship, a preferred neighbour, or a direction that matters around the fire. Treat the words as the puzzle rules, not as decoration. Notice who is named, whether the clue says beside or opposite, and whether a phrase such as left, away, or between fixes the direction. You do not need to remember anything from an earlier circle: every round gives you a fresh, self-contained set of clues.</p></div>
+        <div class="game-info-section"><h3 data-copy="guide2Title">2. Compare circles</h3><p data-copy="guide2">Three circle cards show three complete seat orders. A circular order wraps around, so the first and last names are neighbours too. Compare each card with every clue before checking it. For a beside clue, look at the two seats touching that animal. For an opposite clue, count two seats across the four-seat circle. For a between clue, check the two neighbours on both sides of the named animal. A card can look almost right while still breaking one small relationship, so read the full order instead of judging by the first pair you recognize. The animals are Orla, Moss, Taro, and Pip, and their positions rotate from round to round.</p></div>
+        <div class="game-info-section"><h3 data-copy="guide3Title">3. Check gently</h3><p data-copy="guide3">Select a card by tapping or clicking anywhere on it. The selected card gets a clear highlight, the selection message names its position, and the Check the camp button becomes available. If your choice is not the solution, the camp remains safe: the round does not advance, the clues stay visible, and you can choose another card. A wrong check is useful feedback rather than a penalty. Read the notes again, compare the neighbours, and try a different order. Use Reset choice when you want to remove the highlight and reconsider the round from the beginning. Your checks are counted for the result, so careful reading helps you make a cleaner run.</p></div>
+        <div class="game-info-section"><h3 data-copy="guide4StageTitle">4. Follow the stage map</h3><p data-copy="guide4Stage">Choose an unlocked circle from Stages. Solving it opens the result with a clear next-step choice; the next circle unlocks only after the current one is solved. There is no timer, so take time to compare the clues and all three seat orders.</p></div>
+        <div class="game-info-section"><h3 data-copy="guide5StageTitle">5. Finish and replay</h3><p data-copy="guide5Stage">Solved circles stay available for replay, while the newest unlocked circle is centered when you return to Stages. Your completed circles and best checks per circle are saved in this browser. Back to start returns to Main; no account or purchase is required.</p></div>
+        <div class="game-info-section"><h3 data-copy="faqTitle">FAQ</h3><p data-copy="faqText">How long is a session? The full campaign contains 30 quick circles with no timer, so you can solve them at your own pace. What happens after a miss? Nothing is lost; the same circle stays open so you can reread the clues, reset the card, and try again. Does the puzzle need a special device? No. The cards and buttons are designed for touch, mouse, and keyboard use, with large action targets and a responsive layout for portrait and landscape screens. Do the choices move? Yes. Each logic family keeps a valid solution while answer cards reshuffle at the start of a camp. Can I change sound or language? Open the shared Settings control on Main or Result, choose a language, and use the Sound switch as needed. Why are there no ads in the play area? This internal General prototype reserves the governed space without placing an ad over the puzzle. The important habit is simple: read the current notes, test one complete circle, learn from a miss, and keep the camp comfortable.</p></div>
+        <div class="game-info-section game-info-related-section"><h3 data-copy="relatedTitle">More related games</h3><p data-copy="relatedIntro">Keep practicing visual planning with another WeightPlay puzzle.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="block-blast" href="/en/games/block-blast/"><span class="game-info-related-poster"><img src="/assets/interface7-posters/block-blast.webp" alt="Block Blast game poster" width="320" height="320" loading="lazy" decoding="async" /></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Block Blast</strong><span data-copy="relatedBlockBlastDescription">Place blocks to clear complete rows and columns.</span></span></a></div></div>
       </div>
     </section>
 
-    <section id="battleScreen" class="screen battle-screen" data-view="battle" data-screen="battle" data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-battle-return-only data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
-      <header class="topbar"><button id="battle-home" class="return-link wp-shell-return" type="button" data-wp-return="battle" data-copy-aria="battleBack" aria-label="Back to stages"><span class="wp-shell-return-arrow" aria-hidden="true">←</span></button><strong class="wp-shell-main-title" data-copy="title" data-wp-game-title data-runtime-localize="off" hidden>Campfire Seating Logic</strong><button id="battle-settings" class="utility-button battle-utility-button" hidden data-wp-battle-utility data-copy-aria="settings" type="button" aria-label="Settings">⚙</button></header>
+    <section id="battleScreen" class="screen battle-screen" data-view="battle" data-screen="battle" data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
+      <header class="topbar"><button id="battle-home" class="return-link wp-shell-return" type="button" data-wp-return="battle" data-copy-aria="battleBack" aria-label="Back to stages"><span class="wp-shell-return-arrow" aria-hidden="true">←</span></button><strong class="wp-shell-main-title" data-wp-frame-title data-copy="title" data-wp-game-title data-runtime-localize="off" hidden>Cozy Camp</strong></header>
+      <div id="battleWorkspace" class="battle-workspace" data-wp-shell-content="battle">
       <div id="battle-content" class="battle-content battle-canvas cozy-puzzle">
-        <div class="battle-heading"><div><p class="eyebrow" data-copy="kicker">CAMPFIRE COMFORT LOGIC</p><h1 id="round-title">Lantern circle</h1></div><div class="round-badge"><span data-copy="round">Circle</span> <strong id="round-count">1/30</strong></div></div>
+        <h1 id="round-title">Lantern circle</h1>
+        <div class="round-badge"><span data-copy="round">Circle</span> <strong id="round-count">1/30</strong></div>
         <div class="clue-card"><h2 data-copy="cluesTitle">Comfort notes</h2><ul id="clue-list"></ul></div>
         <div class="camp-preview"><span id="preview-label" class="preview-label"></span><div id="seat-preview"></div><p data-copy="previewHelp">Choose a card below to compare seats.</p></div>
         <div class="choice-heading"><h2 data-copy="layoutTitle">Choose a seat order</h2><p id="selection-note" class="selection-note" role="status" aria-live="polite"></p></div>
@@ -117,19 +88,22 @@
         <p id="battle-status" class="status" role="status" aria-live="polite" data-copy="choose">Choose one circle, then check it.</p>
         <div class="battle-actions"><button id="reset-button" class="secondary-button" type="button" data-copy="reset">Reset choice</button><button id="check-button" class="primary-button" type="button" data-copy="check" disabled>Check the camp</button></div>
       </div>
-      <section id="result-view" class="result-panel screen" data-screen="result" hidden>
+      <section id="result-view" class="result-panel" data-screen="result" aria-labelledby="result-title" hidden>
         <div class="result-content"><img class="result-guide" src="assets/animal-cozy-camp-orla-guide.png" alt="" aria-hidden="true" draggable="false" /><p id="result-kicker" class="eyebrow" data-copy="circleComplete">CIRCLE COMPLETE</p><h1 id="result-title" data-copy="resultTitle">The animals are cozy.</h1><p id="result-text" class="lede"></p><div class="result-card"><span data-copy="resultChecks">Checks</span><strong id="result-checks">0</strong><span data-copy="best">Best</span><strong id="result-best">—</strong></div><p id="result-status" class="status" role="status" aria-live="polite"></p><div class="result-actions"><button id="stage-map-button" class="secondary-button" type="button" data-copy="stageMap">Choose a circle</button><button id="next-stage-button" class="primary-button" type="button" data-copy="next">Next circle</button><button id="replay-button" class="secondary-button" type="button" data-copy="replay">Replay this circle</button></div></div>
       </section>
+      </div>
     </section>
-    <div class="battle-ad-reserve" data-view="battle" data-wp-ad-reserve aria-hidden="true"></div>
-
-    <dialog id="guide-dialog" class="modal-dialog"><div class="dialog-card"><div class="dialog-head"><h2 data-copy="guideTitle">How to play</h2><button id="close-guide" class="close-button" type="button" data-copy-aria="close" aria-label="Close">×</button></div><p data-copy="guideIntro">Every circle has one comfortable order.</p><ol><li data-copy="guide1">Read both comfort notes.</li><li data-copy="guide2">Compare the three circular seat orders.</li><li data-copy="guide3">Check your choice; a miss stays safe to try again.</li></ol><button id="guide-start" class="primary-button" type="button" data-copy="start">Start Game</button></div></dialog>
-    <dialog id="settings-dialog" class="modal-dialog" role="dialog"><div class="dialog-card"><div class="dialog-head"><h2 data-copy="settings">Settings</h2><button id="close-settings" class="close-button" type="button" data-copy-aria="close" aria-label="Close">×</button></div><label id="locale-label" for="locale-select" data-copy="language">Language</label><select id="locale-select" data-copy-aria="language" aria-label="Language"></select><label for="camp-picker" data-copy="language">Language</label><select id="camp-picker" data-camp-locale-picker aria-label="Language"></select><button id="sound-toggle" class="secondary-button" data-sound-toggle data-copy-aria="sound" type="button" aria-pressed="true">Sound: On</button><button id="camp-sound-toggle" class="secondary-button" data-camp-sound-toggle data-copy-aria="sound" type="button" aria-pressed="true">Sound: On</button></div></dialog>
+    <label class="locale-source" hidden><span data-copy="language">Language</span><select id="locale-select" data-copy-aria="language" aria-label="Language"></select></label>
     <dialog id="leave-dialog" class="modal-dialog"><div class="dialog-card"><div class="dialog-head"><h2 data-copy="leaveTitle">Return to stages?</h2><button id="cancel-leave" class="close-button" type="button" data-copy-aria="close" aria-label="Close">×</button></div><p data-copy="leaveText">Your unlocked circles and saved progress will be kept.</p><div class="dialog-actions"><button id="keep-playing" class="secondary-button" type="button" data-copy="keepPlaying">Keep playing</button><button id="confirm-leave" class="primary-button" type="button" data-copy="confirmLeave">Choose a circle</button></div></div></dialog>
-  </main>
-  <script src="/src/stage-virtualization-standard.js?v=20261019-cozy-camp-v13-spatial-seating" data-wp-stage-standard></script>
+  </div>
   <script src="/games/animal-cozy-camp/campaign-data.js?v=20261019-cozy-camp-v13-spatial-seating"></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1" data-wp-frame-script></script><script src="locales.js?v=20261019-cozy-camp-v13-spatial-seating"></script>
-  <script src="game.js?v=20261019-cozy-camp-v13-spatial-seating&wp-audio=1.0.0"></script>
+  <script src="../../src/stage-rail-i9.js?v=20261020-shared-rail-i9"></script>
+  <script src="../../src/game-play-ui.js?v=20261020-interface9-play-ui"></script>
+  <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-script></script>
+  <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
+  <script src="locales.js?v=20261019-cozy-camp-v13-spatial-seating"></script>
+  <script src="game.js?v=20261020-cozy-camp-v15-i9"></script>
+  <script src="stage-config.js?v=20261020-cozy-camp-v15-i9"></script>
+  <script src="frame.js?v=20261020-cozy-camp-v15-i9"></script>
 </body>
 </html>

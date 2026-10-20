@@ -1,4 +1,4 @@
-/* Tide Level Calibration v4 / shared Interface 9. The frame owns all shell UI. */
+/* Tide Level Calibration v5 / shared Interface 9. The frame owns all shell UI. */
 (function () {
   'use strict';
   const R=window.TideglassRules,C=window.TIDEGLASS_LOCALES,StageConfig=window.TideglassStageConfig,$=id=>document.getElementById(id),app=$('app');

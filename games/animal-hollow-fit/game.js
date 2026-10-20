@@ -1,4 +1,4 @@
-/* Burrow Shape Match v11 / 30 stages × 5 rooms / shared Interface 7. */
+/* Burrow Shape Match v11 / 30 stages × 5 rooms / shared Interface 9. */
 (() => {
   'use strict';
   const P = window.HollowPuzzles, L = window.ANIMAL_HOLLOW_FIT_LOCALES;
@@ -9,7 +9,7 @@
   const abort = new AbortController(), motions = new Set(), effects = new Set();
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const audio = window.WeightPlayAudio?.createScope?.();
-  let epoch = 0, frame, round, lastFocus, progress, storageOK = true, destroyed = false;
+  let epoch = 0, frame, stageUI, round, lastFocus, progress, storageOK = true, destroyed = false;
   const state = {view:'main', phase:'idle', locale:'en', index:0, selected:null, turns:0, flipped:false, attempts:0, hinted:false, seed:0, beforeLeave:'play'};
   try { progress = P.readProgress(localStorage.getItem(KEY)); } catch { progress = P.readProgress(null); storageOK = false; }
   const t = (key, vars = {}) => String(L[state.locale][key]).replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? `{${name}}`);
@@ -39,31 +39,14 @@
   }
   function updateProgress() {
     $('main-progress').textContent = t('progressText', {done:completedStages(),total:P.STAGE_TOTAL,stars:starTotal()});
+    $('stage-progress').textContent = t('stageProgress',{done:completedStages(),total:P.STAGE_TOTAL});
     $('star-count').textContent = String(starTotal());
     document.querySelectorAll('[data-storage-warning]').forEach(node => {node.hidden = storageOK; node.textContent = t('storageWarning');});
-  }
-  function renderStages() {
-    const rail=$('stageRail'), current=firstOpenStage();
-    rail.replaceChildren(...Array.from({length:P.STAGE_TOTAL},(_,stage)=>{
-      const complete=stageComplete(stage), unlocked=stage===0||stageComplete(stage-1)||complete;
-      const stars=stageStars(stage), done=stars.filter(Boolean).length, totalStars=stars.reduce((a,b)=>a+b,0);
-      const button=document.createElement('button');button.type='button';button.className='stage-card';button.dataset.stageIndex=String(stage);button.dataset.index=String(stage);
-      button.disabled=!unlocked;button.classList.toggle('is-locked',!unlocked);button.dataset.wpStageRecommended=String(stage===current);button.setAttribute('aria-current',String(stage===current));
-      button.setAttribute('aria-label',t('stageCardAria',{stage:stage+1,done,total:P.ROOMS_PER_STAGE,stars:totalStars}));
-      const content=document.createElement('span');content.setAttribute('data-wp-item-content','');
-      const number=document.createElement('strong');number.textContent=t('stageNumber',{stage:stage+1});
-      const mechanic=document.createElement('span');mechanic.textContent=L[state.locale].chapters[Math.floor(stage/P.CHAPTER_SIZE)];
-      const dots=document.createElement('span');dots.className='stage-card-dots';dots.setAttribute('aria-hidden','true');dots.replaceChildren(...stars.map(value=>{const dot=document.createElement('i');if(value)dot.className='done';return dot;}));
-      const score=document.createElement('small');score.textContent=t('stageCardProgress',{done,total:P.ROOMS_PER_STAGE,stars:totalStars});
-      content.append(number,mechanic,dots,score);button.append(content);return button;
-    }));
-    $('stage-progress').textContent=t('stageProgress',{done:completedStages(),total:P.STAGE_TOTAL});
   }
   function showStage() {
     ++epoch;clearMotion();state.view='stage';state.phase='idle';state.selected=null;
     $('mainScreen').hidden=true;$('gameGuide').hidden=true;$('battleScreen').hidden=true;$('stageScreen').hidden=false;
-    renderStages();frame.activate('stage');updateProgress();
-    requestAnimationFrame(()=>document.querySelector('#stageRail [data-wp-stage-recommended="true"]')?.scrollIntoView({block:'nearest',inline:'center'}));
+    updateProgress();stageUI?.refresh(firstOpenStage());frame.activate('stage');
   }
   function applyLocale() {
     const copy = L[state.locale];
@@ -75,7 +58,7 @@
     $('locale-select').value = state.locale;
     document.querySelector('[data-wp-return="main"]').href = `/${ROUTES[state.locale]}/`;
     document.querySelectorAll('[data-related-game]').forEach(node => {node.href=`/${ROUTES[state.locale]}/games/${node.dataset.relatedGame}/`;});
-    updateProgress(); if(state.view==='stage')renderStages(); frame?.refresh();
+    updateProgress();if(state.view==='stage')stageUI?.refresh(stageUI.selected);frame?.refresh();
   }
   function chooseLocale() {
     const route = location.pathname.split('/').filter(Boolean)[0];
@@ -178,6 +161,7 @@
   function start(stage) {
     if(state.view==='battle'&&state.phase!=='result')return;
     const targetStage=Number.isInteger(stage)?Math.max(0,Math.min(P.STAGE_TOTAL-1,stage)):firstOpenStage();
+    if(targetStage>0&&!stageComplete(targetStage-1)&&!stageComplete(targetStage))return;
     const next=firstOpenRoom(targetStage);
     const seed=new Uint32Array(1);crypto.getRandomValues(seed);state.seed=seed[0];
     state.view='battle';$('mainScreen').hidden=true;$('gameGuide').hidden=true;$('stageScreen').hidden=true;$('battleScreen').hidden=false;
@@ -252,17 +236,38 @@
     else if(!event.shiftKey&&(i===nodes.length-1||i===-1)){event.preventDefault();nodes[0]?.focus();}
   }
   function destroy() {
-    if(destroyed)return;destroyed=true;++epoch;clearMotion();abort.abort();observer.disconnect();audio?.dispose();frame.destroy();
+    if(destroyed)return;destroyed=true;++epoch;clearMotion();abort.abort();observer.disconnect();stageUI?.destroy();audio?.dispose();frame.destroy();
   }
   state.locale=chooseLocale();
   $('locale-select').replaceChildren(...Object.keys(ROUTES).map((code,i)=>{const o=document.createElement('option');o.value=code;o.textContent=NAMES[i];return o;}));
   applyLocale();
-  frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect:$('locale-select'),scenes:{
+  frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect:$('locale-select'),playUI:true,scenes:{
     main:{root:$('mainScreen'),header:$('mainHeader'),content:$('mainContent')},
-    stage:{root:$('stageScreen'),header:$('stageHeader'),content:$('stageContent')},
+    stage:{root:$('stageScreen'),header:$('stageHeader'),content:$('stageWorkspace'),headerInfo:$('stageHeaderInfo')},
     battle:{root:$('battleScreen'),header:$('battleHeader'),content:$('battleViewport'),headerInfo:$('battleHud')}
   }});
   frame.activate('main');
+  stageUI=window.WeightPlayPlayUI.mountStage({
+    page:$('stageWorkspace'),rail:$('stageRail'),selected:firstOpenStage(),
+    config:{
+      gameId:'animal-hollow-fit',count:P.STAGE_TOTAL,
+      poster:'/games/animal-hollow-fit/assets/animal-hollow-fit-cover-v10.webp',
+      stage(index){
+        const stars=stageStars(index),done=stars.filter(Boolean).length,totalStars=stars.reduce((sum,value)=>sum+value,0);
+        const complete=stageComplete(index),locked=index>0&&!stageComplete(index-1)&&!complete;
+        const values={stage:index+1,done,total:P.ROOMS_PER_STAGE,stars:totalStars};
+        return {
+          id:index+1,kicker:`${t('stageLabel')} ${new Intl.NumberFormat(state.locale).format(index+1)} / ${new Intl.NumberFormat(state.locale).format(P.STAGE_TOTAL)}`,
+          title:L[state.locale].chapters[Math.floor(index/P.CHAPTER_SIZE)],subtitle:t('stageNumber',{stage:new Intl.NumberFormat(state.locale).format(index+1)}),
+          status:t(locked?'stageLocked':complete?'stageCleared':'stageReady'),summary:t('stageCardProgress',values),
+          details:[t('stageHint'),t('stageCardAria',values)],locked,cleared:complete,
+          poster:'/games/animal-hollow-fit/assets/animal-hollow-fit-cover-v10.webp'
+        };
+      }
+    },
+    onSelect:()=>{},onStart:index=>start(index),
+    isActive:()=>$('app').dataset.wpFrameActive==='stage'
+  });
   listen($('locale-select'),'change',e=>{
     if(state.view!=='main'||!L[e.target.value])return;
     const next=e.target.value;try{localStorage.setItem('weightplay-animal-hollow-fit-locale',next);}catch{}
@@ -271,7 +276,7 @@
   });
   listen($('start-button'),'click',showStage);
   listen($('stage-home'),'click',stageHome);
-  listen($('stageRail'),'click',e=>{const card=e.target.closest('[data-stage-index]');if(card&&!card.disabled)start(Number(card.dataset.stageIndex));});
+  listen($('stageTab'),'click',()=>stageUI?.select(stageUI.selected,{center:true,focus:true}));
   listen($('guide-button'),'click',()=>{$('gameGuide').scrollIntoView({behavior:reduced.matches?'instant':'smooth'});});
   listen($('piece-options'),'click',e=>{const node=e.target.closest('[data-piece]');if(node)select(Number(node.dataset.piece));});
   listen($('rotate-button'),'click',()=>changePiece('rotate'));listen($('mirror-button'),'click',()=>changePiece('mirror'));listen($('reset-button'),'click',()=>changePiece('reset'));
