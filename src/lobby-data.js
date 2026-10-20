@@ -2422,8 +2422,7 @@ window.WONDER_LOBBY.games.push({
     ko: "틱택토", es: "Tres en raya", "pt-BR": "Jogo da velha", fr: "Morpion",
     de: "Drei gewinnt", it: "Tris", ru: "Крестики-нолики", hi: "टिक-टैक-टो", ar: "إكس-أو",
   },
-  status: "planned",
-  statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+  status: "playable",
   type: {
     en: "Tactical Board Classic", "zh-Hant": "戰術棋盤經典", "zh-Hans": "战术棋盘经典", ja: "戦術ボードクラシック",
     ko: "전술 보드 클래식", es: "Clásico de tablero táctico", "pt-BR": "Clássico de tabuleiro tático", fr: "Classique de plateau tactique",
@@ -2434,7 +2433,7 @@ window.WONDER_LOBBY.games.push({
   ages: ["9", "family"],
   ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" },
   href: "games/tic-tac-toe/",
-  internalTrial: "index.html?preview=1",
+  previewVideo: "assets/previews/tic-tac-toe-battle.webm",
   description: {
     en: "Place X and read the rival's immediate O reply across nine squares; make three in a row, block the threat, or settle a draw.",
     "zh-Hant": "在九個格子放下 X，讀懂對手即時回應的 O；連成三格、封鎖威脅，或迎接和局。",

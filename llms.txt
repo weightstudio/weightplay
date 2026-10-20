@@ -196,6 +196,8 @@ WeightPlay covers these game and content clusters:
 - Snake: https://weightplay.com/en/games/snake/
 - Wildwood Raid / 荒林奇襲: https://weightplay.com/en/games/animal-wildwood-raid/ — Guide a red panda ranger through 30 forest missions, gather timber, rescue friends, and face eight guardian archetypes.
 
+- Tic-Tac-Toe: https://weightplay.com/en/games/tic-tac-toe/ — Play a tactical 3×3 match, place X and O, block threats, and reach a natural win, loss, or draw.
+
 ## Age And Skill Positioning
 
 WeightPlay uses age-aware and skill-aware game discovery.
