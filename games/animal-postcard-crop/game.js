@@ -13,6 +13,7 @@
   const L=packs[locale];
   const t=(key,args={})=>{const text=L.ui[key];if(typeof text!=='string')throw new Error(`Missing native copy: ${locale}/${key}`);return text.replace(/\{(\w+)\}/g,(_,k)=>String(args[k]??''));};
   const asset='/games/animal-postcard-crop/assets/';
+  const stage=$('stageScreen');
   // Generated routes may replace #gameGuide with an anonymous shared guide.
   // Optional document content must never interrupt a gameplay transition.
   const guides=[...document.querySelectorAll('[data-wp-game-guide],.game-page-info')];
@@ -35,20 +36,6 @@
     hi:['स्तर','चुनने के लिए स्वाइप करें। खुले कार्ड पर टैप करें।','बंद','उपलब्ध','पूरा'],
     ar:['المراحل','اسحب للتصفح، ثم اضغط بطاقة مفتوحة للعب.','مغلقة','متاحة','مكتملة']
   }[locale];
-  const stage=document.createElement('section');
-  stage.id='stageScreen';stage.hidden=true;stage.className='pc-stage';
-  Object.assign(stage.dataset,{screen:'stage',wpStandardStageScreen:'',wpStageLandscapeWidth:'760',wpStageLandscapeHeight:'334',wpStageArt:asset+'animal-postcard-crop-cover-v2.webp'});
-  stage.style.setProperty('--wp-stage-art',`url('${stage.dataset.wpStageArt}')`);
-  stage.innerHTML=`<header id="stageHeader"><button id="stageBack" type="button" data-wp-return="stage" data-act="stageBack" data-label="back"></button><span data-wp-frame-title hidden></span></header>
-    <div id="stageContent" class="pc-stage-content" data-wp-frame-content="stage" data-wp-stage-workspace>
-      <div id="stageRail" class="stage-rail" data-wp-stage-rail role="list" dir="ltr"></div>
-      <p id="stageHint" class="pc-stage-hint"></p>
-    </div>
-    <nav data-wp-frame-stage-nav><button id="stagesTab" type="button" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" data-act="stagesTab" aria-current="page" aria-pressed="true"></button></nav>`;
-  $('app').append(stage);
-  $('stageHint').textContent=stageLabels[1];$('stagesTab').textContent=stageLabels[0];
-  $('stageRail').setAttribute('aria-label',stageLabels[0]);
-
   let save;try{save=E.sanitizeSave(JSON.parse(read('weightplay-postcard-album-v5')),cards.length);}catch{save=E.sanitizeSave(null,cards.length);}
   let state={screen:'main',mode:'idle',index:0,pose:{...cards[0].start},moves:0,errors:0,hinted:false,par:0};
   let storageOK=true,epoch=0,gesture=null,previousFocus=null;
@@ -65,8 +52,8 @@
   const button=(action,label=action,primary=false)=>`<button type="button" data-act="${action}" data-copy="${label}" data-wp-frame-action="${primary?'primary':'secondary'}"></button>`;
   const battle=document.createElement('section');
   battle.id='battleScreen';battle.hidden=true;battle.className='pc-battle';battle.dataset.screen='battle';
-  Object.assign(battle.dataset,{wpBattleCanvasRoot:'',wpLogicalBattleCanvas:'',wpBattleMinWidth:'390',wpBattleMinHeight:'640',wpBattleLandscapeWidth:'760',wpBattleLandscapeHeight:'334'});
-  battle.innerHTML=`<header id="battleHeader"><button type="button" id="battleBack" data-wp-return="battle" data-act="back" data-label="back"></button><span data-wp-frame-title hidden></span></header>
+  Object.assign(battle.dataset,{wpBattleCanvasRoot:'',wpLogicalBattleCanvas:'',wpBattleMinWidth:'390',wpBattleMinHeight:'640',wpBattleLandscapeWidth:'760',wpBattleLandscapeHeight:'334',wpFramePlayFill:'',wpFrameLogicalHeader:'battle',wpBattleReturnOnly:''});
+  battle.innerHTML=`<header id="battleHeader"><button type="button" id="battleBack" data-wp-return="battle" data-act="back" data-label="back"></button><h2 data-wp-frame-title data-wp-game-title data-runtime-localize="off">Postcard Crop</h2></header>
     <div id="battleContent" class="pc-workspace" data-wp-frame-content="battle">
       <div id="battleInfo" data-wp-frame-info><div><span data-copy="card"></span><strong id="cardCount"></strong></div><div><span data-copy="moves"></span><strong id="moveCount"></strong></div><div><span data-copy="par"></span><strong id="parCount"></strong></div></div>
       <section class="pc-clues"><p id="chapterName"></p><p><strong data-copy="include"></strong> <span id="targetText"></span></p><p><strong data-copy="exclude"></strong> <span id="avoidText"></span></p><p id="cornerText"></p></section>
@@ -90,45 +77,47 @@
   document.querySelectorAll('[data-wp-game-title]').forEach(n=>n.textContent=official);
   // Main copy is native even when the route generator replaces guide markup.
   const summary=document.querySelector('[data-wp-frame-summary]');
-  if(summary){summary.textContent=L.summary;if(summary.previousElementSibling?.tagName==='P')summary.previousElementSibling.textContent=L.page.status;}
+  if(summary){summary.textContent=L.mainSummary||L.summary;if(summary.previousElementSibling?.tagName==='P')summary.previousElementSibling.textContent=L.page.status;}
   const guideLink=document.querySelector('#mainContent a[href="#gameGuide"]');if(guideLink)guideLink.textContent=t('guide');
-  const startLabels=['Start Game','開始遊戲','开始游戏','ゲーム開始','게임 시작','Iniciar juego','Iniciar jogo','Commencer','Spiel starten','Inizia a giocare','Начать игру','खेल शुरू करें','ابدأ اللعب'];
-  $('startButton').textContent=startLabels[keys.indexOf(locale)];
-  const frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect:select,scenes:{
+  $('startButton').textContent=t('start');
+  const frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect:select,playUI:true,scenes:{
     main:{root:$('mainScreen'),header:$('mainHeader'),content:$('mainContent')},
-    stage:{root:stage,header:$('stageHeader'),content:$('stageContent')},
+    stage:{root:$('stageScreen'),header:$('stageHeader'),content:$('stageWorkspace'),headerInfo:$('stageHeaderInfo')},
     battle:{root:battle,header:$('battleHeader'),content:$('battleContent'),headerInfo:$('battleInfo')}
   }});
-  const stageController=window.WeightPlayStageV6.install($('stageRail'),{
-    total:cards.length,poolSize:9,initialIndex:()=>browseIndex,
-    bind(node,index){
-      const card=cards[index],locked=index>unlockedIndex(),medal=save.medals[index];
-      node.className='stage-card pc-stage-card';node.setAttribute('aria-disabled',String(locked));
-      node.classList.toggle('locked',locked);
-      if(!node.firstElementChild){
-        const group=document.createElement('span');group.setAttribute('data-wp-item-content','');
-        for(const name of ['number','chapter','objective','status']){const part=document.createElement(name==='number'?'strong':'span');part.dataset.pcCardPart=name;group.append(part);}
-        node.append(group);
+  const stageUI=window.WeightPlayPlayUI.mountStage({
+    page:$('stageWorkspace'),rail:$('stageRail'),selected:unlockedIndex(),
+    config:{
+      gameId:'animal-postcard-crop',count:cards.length,
+      poster:asset+'animal-postcard-crop-cover-v2.webp',
+      stage(index){
+        const card=cards[index],locked=index>unlockedIndex(),medal=save.medals[index];
+        const targets=card.targets.map(value=>L.scenes[value]).join(' · ');
+        const avoid=card.avoid.map(value=>L.scenes[value]).join(' · ');
+        const summary=`${t('include')}: ${targets} · ${t('exclude')}: ${avoid}`;
+        return {
+          id:index+1,
+          kicker:`${t('card')} ${new Intl.NumberFormat(locale).format(index+1)} / ${new Intl.NumberFormat(locale).format(cards.length)}`,
+          title:L.chapters[card.chapter],subtitle:targets,
+          status:locked?stageLabels[2]:medal?`${stageLabels[4]} · ${'★'.repeat(medal)}${'☆'.repeat(3-medal)}`:stageLabels[3],
+          summary,details:[stageLabels[1],summary,card.corner===null?'':t('corner',{name:L.scenes[card.corner]})],
+          locked,cleared:Boolean(medal),poster:asset+'animal-postcard-crop-cover-v2.webp'
+        };
       }
-      const put=(part,value)=>{const target=node.querySelector(`[data-pc-card-part="${part}"]`);if(target.textContent!==value)target.textContent=value;};
-      put('number',`${t('card')} ${index+1}`);put('chapter',L.chapters[card.chapter]);
-      put('objective',card.targets.map(value=>L.scenes[value]).join(' · '));
-      put('status',locked?stageLabels[2]:medal?`${stageLabels[4]} · ${'★'.repeat(medal)}${'☆'.repeat(3-medal)}`:stageLabels[3]);
-      node.setAttribute('aria-label',`${t('card')} ${index+1}. ${L.chapters[card.chapter]}. ${locked?stageLabels[2]:medal?stageLabels[4]:stageLabels[3]}`);
     },
-    onChange(index){browseIndex=index;},
-    activate(index){if(state.screen==='stage'&&index<=unlockedIndex())startCard(index);}
+    onSelect(index){browseIndex=index;},onStart:index=>startCard(index),
+    isActive:()=>$('app').dataset.wpFrameActive==='stage'
   });
-  // Re-centering is delegated to the shared rail, including a scaler refit.
-  const stageResize=new ResizeObserver(()=>{if(state.screen==='stage')stageController.center(browseIndex);});
-  stageResize.observe($('stageContent'));
+  $('stagesTab').textContent=stageLabels[0];$('stagesTab').setAttribute('aria-label',stageLabels[0]);
+  $('stageRail').setAttribute('aria-label',stageLabels[0]);
   $('resultPanel').querySelector('[data-act="stages"]').textContent=stageLabels[0];
   function showStages(index=unlockedIndex()){
     cancelMotion();audio?.stop();browseIndex=Math.max(0,Math.min(cards.length-1,index));
     state.screen='stage';state.mode='idle';battle.hidden=true;$('mainScreen').hidden=true;showGuides(false);
     $('resultPanel').hidden=true;$('leavePanel').hidden=true;$('battleContent').inert=false;stage.hidden=false;
+    $('stageProgress').textContent=progress();
     if(reserve)reserve.hidden=false;
-    frame.activate('stage');stageController.refresh();stageController.center(browseIndex);
+    frame.activate('stage');stageUI.refresh(browseIndex);
     $('stageRail').querySelector('[aria-current="true"]')?.focus({preventScroll:true});
   }
   on(select,'change',()=>{
@@ -220,7 +209,7 @@
     if(event.detail>1&&['result','leave'].includes(state.mode))return;
     if(name==='start'&&state.screen==='main')showStages();
     else if(name==='stageBack'&&state.screen==='stage')showMain();
-    else if(name==='stagesTab'&&state.screen==='stage')stageController.center(browseIndex);
+    else if(name==='stagesTab'&&state.screen==='stage')stageUI.refresh(browseIndex);
     else if(name==='back')requestLeave();else if(name==='capture')capture();else if(name==='hint')hint();
     else if(name==='reset'&&state.mode==='play')startCard(state.index);
     else if(name==='replay'&&state.mode==='result')startCard(state.index);
@@ -251,9 +240,9 @@
   for(const event of ['pointercancel','lostpointercapture'])on($('sceneGrid'),event,()=>{gesture=null;});
   function pauseMotion(){const pending=state.mode==='capturing';cancelMotion();audio?.stop();if(pending)result();}
   on(document,'visibilitychange',()=>{if(document.hidden)pauseMotion();});
-  on(window,'pagehide',event=>{pauseMotion();if(!event.persisted){resize.disconnect();stageResize.disconnect();stageController.destroy();frame.destroy();audio?.dispose();abort.abort();}});
+  on(window,'pagehide',event=>{pauseMotion();if(!event.persisted){resize.disconnect();stageUI.destroy();frame.destroy();audio?.dispose();abort.abort();}});
   on(reduce,'change',()=>{pauseMotion();renderPosition();});
-  $('mainProgress').textContent=progress();frame.activate('main');$('app').dataset.pcReady='v6';
+  $('mainProgress').textContent=progress();frame.activate('main');$('app').dataset.pcReady='v7-i9';
   // Canonical entry is locale-neutral; explicit localized routes always win over saved preferences.
   if(pathLocale<0&&/^https?:$/.test(location.protocol)&&!['localhost','127.0.0.1','[::1]'].includes(location.hostname)){
     const url=new URL(location.href);url.pathname=`/${routeNames[keys.indexOf(locale)]}/games/animal-postcard-crop/`;url.searchParams.delete('lang');location.replace(url.href);

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-wp-official-name>
+<html lang="en" data-wp-shared-interface="7" data-wp-official-name>
 <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-rain-roost/"+location.search+location.hash)}catch{location.replace("/en/games/animal-rain-roost/"+location.search+location.hash)}})();</script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
@@ -25,37 +25,39 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-rain-roost">
-  <meta name="weightplay-game-version" content="v3">
-  <meta name="weightplay-interface-version" content="7">
+  <meta name="weightplay-game-version" content="v4">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="Rain Roost is an original WeightPlay internal prototype about catching gentle rain drops.">
-  <title>Raindrop Catcher | WeightPlay</title>
-  <link rel="stylesheet" href="/src/game-page-info.css?v=20260906-rain-roost-v2" data-wp-game-guide>
-  <link rel="stylesheet" href="style.css">
+  <title>Rain Roost | WeightPlay</title>
+  <link rel="stylesheet" href="style.css?v=20261020-rain-roost-v4-i9">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="/src/game-page-info.css?v=20260921-interface7-single-frame-v2" data-wp-game-guide>
+  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
   <script src="/src/shared-interface-bootstrap.js?v=20261017-shared-dark-loader1" data-wp-shared-interface="7"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-<body data-wp-game-owned-guide data-wp-game-id="animal-rain-roost" data-wp-audience="general" data-wp-interface-version="7" data-screen="main">
-  <div class="app-shell" id="app">
-    <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-game-id="animal-rain-roost" data-wp-game-version="v3" data-wp-interface-version="7">
-      <header class="topbar wp-main-shell-header">
-        <a class="return-link wp-shell-return" href="../../index.html" id="mainReturn" data-wp-return="main" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt="" width="28" height="28" draggable="false"></a>
-        <strong class="wp-shell-main-title" data-copy="title" data-wp-game-title data-runtime-localize="off">Raindrop Catcher</strong>
+<body data-wp-game-owned-guide data-wp-game-id="animal-rain-roost" data-wp-audience="general" data-wp-game-version="v4" data-wp-interface-version="9" data-screen="main">
+  <div class="app-shell" id="app" data-wp-frame-root>
+    <main id="mainScreen" class="wp-standard-main-screen" data-screen="main" data-wp-standard-main-screen data-wp-main-screen data-wp-logical-main-canvas data-wp-game-id="animal-rain-roost" data-wp-game-version="v4" data-wp-interface-version="9">
+      <header class="wp-main-shell-header">
+        <a class="wp-shell-return" href="../../index.html" id="mainReturn" data-wp-return="main" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt="" width="28" height="28" draggable="false"></a>
+        <h1 class="wp-shell-main-title" data-copy="title" data-wp-frame-title data-wp-game-title data-runtime-localize="off">Rain Roost</h1>
       </header>
-      <section class="main-view" id="mainView">
-        <div class="cover-card" aria-hidden="true">
-          <img class="main-poster" src="/games/animal-rain-roost/assets/animal-rain-roost-cover.png" alt="" width="1254" height="1254" fetchpriority="high" draggable="false">
-        </div>
-        <div class="hero-copy">
-          <p class="lead main-summary" data-copy="intro">Slide Nori's little nest to catch gentle rain while leaves drift past.</p>
-          <button class="primary-button" id="startButton" data-wp-main-start type="button" data-copy="start">Start a shower</button>
-        </div>
+      <div class="main-view" id="mainView" data-wp-frame-content="main">
+        <section class="wp-standard-main-composition">
+          <div class="wp-standard-main-poster"><img class="main-poster" data-wp-frame-poster src="/games/animal-rain-roost/assets/animal-rain-roost-cover.png" alt="" width="1254" height="1254" fetchpriority="high" draggable="false"></div>
+          <div class="wp-standard-main-copy" data-wp-frame-copy>
+            <p class="main-summary wp-standard-main-summary" data-copy="intro" data-wp-frame-summary>Slide Nori's little nest to catch gentle rain while leaves drift past.</p>
+            <button class="primary-button" id="startButton" data-wp-main-start data-wp-frame-action="primary" type="button" data-copy="start">Start a shower</button>
+          </div>
+        </section>
         <div id="settingsPanel" hidden aria-hidden="true"><select id="localeSelect"></select></div>
-      </section>
+      </div>
     </main>
 
-    <section class="screen battle-screen battle-canvas" id="battleView" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" hidden>
+    <section class="screen battle-screen battle-canvas" id="battleView" data-screen="battle" data-wp-standard-battle-screen data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" hidden>
       <header class="screen-heading">
         <button class="icon-button" id="homeFromBattle" data-wp-return="battle" type="button" aria-label="Back to main">←</button>
         <strong data-wp-frame-title data-copy="title" hidden aria-hidden="true">Rain Roost</strong>
@@ -104,8 +106,9 @@
         </div>
       </section>
     </section>
+  </div>
 
-    <section class="game-page-info game-page-info-static guide-card" id="gameGuide" data-wp-game-guide aria-label="Rain Roost game guide">
+    <section class="game-page-info game-page-info-static" id="gameGuide" data-wp-game-guide data-wp-guide-complete="true" aria-label="Rain Roost game guide">
       <div class="game-info-hero guide-heading">
         <div>
           <p class="kicker" data-copy="guideKicker">Quick guide</p>
@@ -119,7 +122,8 @@
         </div>
       </div>
     </section>
-  </div>
-  <script src="game.js?wp-audio=1.0.0&interface=7"></script>
+  <script src="/src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-script></script>
+  <script src="/src/battle-canvas-standard.js?v=20260911-folded-field-battle-envelope-v1" data-wp-battle-standard></script>
+  <script src="game.js?v=20261020-rain-roost-v4-i9&wp-audio=1.0.0&interface=9"></script>
 </body>
 </html>

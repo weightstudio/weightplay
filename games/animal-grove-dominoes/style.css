@@ -170,6 +170,7 @@ body[data-screen="battle"] footer, body[data-screen="result"] footer { display:n
 #mainView .main-content{display:grid;gap:14px}
 #mainView .guide-fia{top:12px;right:16px;width:64px;height:92px}
 #mainView .game-info-title{padding-right:82px}
+@media(max-width:420px){.game-page-info .guide-fia{display:none}.game-page-info .game-info-title{padding-right:0}}
 #battleView{color:#ecf5e8}
 #battleView .battle-content{width:100%;height:100%;min-height:0;max-width:920px;margin:0 auto;text-align:center;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:0;box-sizing:border-box}
 #battleView .logical-shell{width:100%;height:100%;min-height:0;max-width:none;margin:0;padding:10px;box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;align-content:stretch;gap:8px;overflow:hidden;color:#ecf5e8;background-image:linear-gradient(#152b32d9,#173532e6),url('assets/animal-grove-dominoes-background.png');background-position:center;background-size:cover}

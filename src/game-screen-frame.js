@@ -453,7 +453,11 @@
             const stats = [...scene.headerInfo.children].flatMap(node => node.hasAttribute('data-wp-frame-group') ? [...node.children] : [node]);
             scene.headerInfo.hidden = !stats.length;
             scene.headerInfo.style.setProperty('--wp-frame-stat-count', Math.max(1, stats.length));
-            stats.forEach(node => node.setAttribute('data-wp-frame-stat',''));
+            stats.forEach(node => {
+              node.setAttribute('data-wp-frame-stat','');
+              if (node.childElementCount) node.removeAttribute('data-wp-frame-stat-text');
+              else node.setAttribute('data-wp-frame-stat-text','');
+            });
           };
           listen(scene.headerInfo, 'weightplay:group-change', refreshInfo);
           topSlots[name] = contentSlot(scene.headerInfo, refreshInfo);

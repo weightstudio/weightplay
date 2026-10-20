@@ -8,7 +8,7 @@
     ko: "게임 시작", es: "Iniciar juego", "pt-BR": "Iniciar jogo", fr: "Commencer",
     de: "Spiel starten", it: "Inizia gioco", ru: "Начать игру", hi: "खेल शुरू करें", ar: "ابدأ اللعبة",
   });
-  const GAME_VERSION = "v9";
+  const GAME_VERSION = "v10";
   let advanceTimer = null;
   let advanceDeadline = 0;
   let pausedAdvanceRemaining = null;
