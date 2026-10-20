@@ -23,7 +23,9 @@ button { cursor: pointer; }
 .main-copy { min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 8px; padding: 0; }
 #mainScreen #startBtn { margin-top: 4px; }
 @media (max-width: 699px) {
-  #mainScreen .fact-row { display: none; }
+  /* The summary repeats the lede; keep it in the Guide below the compact first fold. */
+  #mainScreen .fact-row,
+  #mainScreen #main-summary { display: none; }
 }
 .concept-cover { display: block; width: 100%; height: auto; object-fit: cover; object-position: center; }
 .eyebrow { margin: 0; font-size: .78rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
@@ -140,6 +142,7 @@ button { cursor: pointer; }
   #battleScreen .battle-content { padding: 4px 10px; }
   #battleScreen #play-panel { gap: 4px; }
   #battleScreen .clue-card, #battleScreen .status { padding: 6px 10px; line-height: 1.3; }
+  #battleScreen #battle-status { padding: 3px 8px; font-size: .9rem; line-height: 1.2; }
   #battleScreen .target-card { padding: 6px 10px; }
   #battleScreen .ring-unit { padding: 4px 5px; }
   #battleScreen .ring-visual { width: min(100%, 92px); margin: 2px auto; }

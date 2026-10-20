@@ -12,7 +12,7 @@
   <meta name="description" content="转动三层花瓣环，让月光花园图样绽放，再用更少转动重玩。" />
   <meta name="weightplay-game-id" content="animal-ring-garden">
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v15">
+  <meta name="weightplay-game-version" content="v20">
   <meta name="weightplay-interface-version" content="9">
   <meta name="theme-color" content="#163440">
   <title>旋环图样解谜 | WeightPlay</title>
@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261016-shared-play1">
   <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261017-interface9-shell1">
-  <link rel="stylesheet" href="style.css?v=20261021-animal-ring-garden-v15-i9-main-start-visible">
+  <link rel="stylesheet" href="style.css?v=20261021-animal-ring-garden-v20-i9-short-landscape-reset-fit">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="旋环图样解谜 | WeightPlay" />
@@ -51,7 +51,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="animal-ring-garden" data-wp-game-version="v15" data-wp-interface-version="9" data-wp-combined-sound="true" data-runtime-localize="off">
+<body data-screen="main" data-audience="general" data-wp-game-id="animal-ring-garden" data-wp-game-version="v20" data-wp-interface-version="9" data-wp-combined-sound="true" data-runtime-localize="off">
   <div id="app" class="app-shell" data-wp-frame-root data-wp-play-ui="1">
     <main id="mainScreen" class="screen main-screen" data-screen="main">
       <header class="topbar main-header">
@@ -96,7 +96,7 @@
     </div>
   </section>
 
-    <main id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
+    <main id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" hidden>
       <header class="topbar stage-header">
         <button id="stage-back" class="return-link" data-wp-return="stage" type="button" aria-label="Back to Main"><span aria-hidden="true">←</span></button>
         <strong class="stage-header-title" id="stage-header-title" data-wp-frame-title hidden>Choose a garden</strong>
@@ -106,7 +106,7 @@
       </section>
     </main>
 
-    <main id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+    <main id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
       <header class="topbar battle-header">
         <button id="battle-back" class="return-link" data-wp-return="battle" type="button" aria-label="Back to Stages"><span aria-hidden="true">←</span></button>
         <strong class="battle-header-title" id="battle-header-title" data-wp-frame-title hidden>Moon garden</strong>
@@ -120,7 +120,7 @@
           <img class="ring-atlas-art" src="assets/animal-ring-garden-ring-atlas.png" alt="" aria-hidden="true" draggable="false">
           <div id="ring-board" class="ring-board" aria-label="Three petal rings"></div>
           <p id="battle-status" class="status" role="status" aria-live="polite">Choose a ring to begin.</p>
-          <div class="battle-actions"><button id="reset-button" class="secondary-button" type="button">Reset</button></div>
+          <div class="battle-actions"><button id="reset-button" class="secondary-button" data-wp-frame-action type="button">Reset</button></div>
         </div>
         <section id="result-panel" class="result-panel" data-wp-result-audit hidden>
           <p class="eyebrow" id="result-eyebrow">GARDEN COMPLETE</p>
@@ -153,13 +153,13 @@
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
-  <script src="locales.js?v=20261021-animal-ring-garden-v15-i9"></script>
-  <script src="game.js?v=20261021-animal-ring-garden-v15-i9-shared-ui"></script>
-  <script src="stage-config.js?v=20261021-animal-ring-garden-v15-i9"></script>
+  <script src="locales.js?v=20261021-animal-ring-garden-v20-i9"></script>
+  <script src="game.js?v=20261021-animal-ring-garden-v20-i9-shared-ui"></script>
+  <script src="stage-config.js?v=20261021-animal-ring-garden-v20-i9"></script>
   <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
-  <script src="frame.js?v=20261021-animal-ring-garden-v15-i9-shared-ui"></script>
+  <script src="frame.js?v=20261021-animal-ring-garden-v20-i9-shared-ui"></script>
 <script src="/src/runtime-locales/zh-cn.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>

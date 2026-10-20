@@ -1,150 +1,290 @@
-:root{--ink:#f8fbff;--muted:#a9bad8;--panel:rgba(8,20,45,.88);--panel-strong:#0b1d40;--gold:#ffd76a;--gold-deep:#f0a629;--cyan:#66e8ff;--violet:#aa8cff;--danger:#ff7692;--success:#6bf0ba;--line:#536a9b;--border:rgba(182,211,255,.2);font-family:Inter,ui-rounded,"Segoe UI",system-ui,sans-serif;color:var(--ink);background:#051126}
-*{box-sizing:border-box}
-html,body{margin:0;min-width:320px;background:#051126;color:var(--ink)}
-html{overflow-y:auto!important;overscroll-behavior-y:auto!important}
-body{min-height:100vh}
-body[data-screen="main"]{height:auto!important;overflow-y:visible!important;overscroll-behavior-y:auto!important}
-body[data-game-id="animal-starlight-trails"].wp-shell-main-active .wp-standard-main-screen{min-height:100svh!important}
-button,select{font:inherit}
-button{cursor:pointer}
-button:focus-visible,select:focus-visible,[role="button"]:focus-visible{outline:3px solid #fff48b;outline-offset:3px}
-[hidden]{display:none!important}
-.sr-only,.sr-only:not(:focus):not(:active){position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-
-.main-screen{width:min(100%,920px);min-height:100svh;margin:0 auto;padding:12px;background:radial-gradient(circle at 25% 20%,#263c76 0,transparent 34%),linear-gradient(180deg,#07172f,#061126);display:grid;grid-template-rows:64px minmax(0,1fr);gap:12px}
-.main-header{display:grid;grid-template-columns:58px minmax(0,1fr) 142px;align-items:center;gap:10px;min-width:0;height:58px!important;min-height:58px!important;max-height:58px!important;padding:6px 8px;border:1px solid var(--border);border-radius:18px;background:rgba(7,20,45,.88);box-shadow:0 16px 40px rgba(0,0,0,.25)}
-.main-header>strong{min-width:0;text-align:center;font-size:clamp(16px,3vw,24px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.main-return{display:grid!important}.locale-control select{width:100%;height:44px;border:1px solid var(--border);border-radius:12px;background:#122852;color:var(--ink);padding:0 8px;font-weight:800}
-.main-hero{display:grid;grid-template-columns:minmax(280px,1fr) minmax(260px,.82fr);align-items:center;gap:18px;padding:8px 18px 18px}
-.main-poster{display:block;width:min(100%,520px);aspect-ratio:1;object-fit:cover;justify-self:center;border-radius:28px;border:2px solid rgba(255,215,106,.45);box-shadow:0 22px 60px rgba(0,0,0,.42)}
-.main-copy{display:grid;gap:14px;align-content:center}.main-copy small{color:var(--gold);font-weight:900;letter-spacing:.08em;text-transform:uppercase}.main-copy h1{margin:0;font-size:clamp(34px,6vw,62px);line-height:.95}.main-copy p{margin:0;color:#c4d2ec;font-size:clamp(16px,2vw,20px);line-height:1.55}.main-progress{min-height:68px;padding:12px 14px;border:1px solid var(--border);border-radius:16px;background:rgba(8,20,45,.76);display:grid;gap:5px}.main-progress strong{color:var(--gold);font-size:18px}.main-progress span{color:var(--muted);font-size:13px}
-.primary-action{min-height:54px;border:0;border-radius:14px;background:linear-gradient(180deg,#ffe58a,#f6b52e);color:#2b1b08;font-weight:950;box-shadow:0 6px 0 #a96417,0 14px 30px rgba(246,181,46,.22);transition:transform .15s}.primary-action:active{transform:translateY(4px);box-shadow:0 2px 0 #a96417}
-.game-page-info{width:min(100%,920px);margin:0 auto}
-body[data-screen="stage"] .game-page-info,body[data-screen="battle"] .game-page-info{display:none!important}
-
-.stage-shell{position:fixed;inset:0 0 var(--wp-ad-reserve-height, 0px);overflow:hidden;background:#061126}
-.stage-canvas{width:390px;height:788px;padding:10px;display:grid;grid-template-rows:66px minmax(0,1fr) 198px;gap:10px;background-color:#07172f;background-image:linear-gradient(rgba(4,15,38,.4),rgba(4,15,38,.75)),url('../../assets/animal-starlight-trails-bg.webp');background-position:center;background-size:cover;overflow:hidden}
-.stage-header{display:grid;grid-template-columns:48px minmax(0,1fr) 52px;align-items:center;gap:10px;padding:8px;border:1px solid var(--border);border-radius:16px;background:rgba(5,17,38,.88)}
-.stage-header>div{min-width:0;display:grid;gap:2px}.stage-header strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.stage-header span{color:var(--muted);font-size:12px}.stage-header>img{width:52px;height:52px;object-fit:cover;object-position:center 22%;border-radius:50%;border:2px solid var(--gold)}
-.stage-header.wp-stage-shell-header>img{display:none!important}
-.stage-header.wp-stage-shell-header>div:not(.wp-shell-settings){display:none!important}
-.stage-header .wp-shell-settings-row,
-.stage-header .wp-shell-settings-row>span:first-child{font-size:14px!important}
-.chapter-panel{align-self:center;justify-self:center;width:min(100%,520px);min-height:210px;padding:24px;display:grid;align-content:center;gap:9px;text-align:center;border:1px solid rgba(255,215,106,.35);border-radius:24px;background:linear-gradient(145deg,rgba(8,24,58,.9),rgba(24,32,72,.84));box-shadow:0 18px 50px rgba(0,0,0,.28)}
-.chapter-panel small{color:var(--gold);font-weight:900;letter-spacing:.1em;text-transform:uppercase}.chapter-panel strong{font-size:28px}.chapter-panel p{margin:0;color:#c7d6ef;line-height:1.5}
-.stage-rail{height:198px}
-.stage-card{position:relative;padding:16px;text-align:left;color:var(--ink);border:2px solid rgba(129,171,230,.28);border-radius:20px;background:linear-gradient(145deg,rgba(13,33,70,.96),rgba(20,25,60,.96));display:grid;grid-template-rows:auto auto 1fr auto;gap:8px;box-shadow:0 12px 28px rgba(0,0,0,.26)}
-.stage-card.selected{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(102,232,255,.15),0 12px 28px rgba(0,0,0,.26)}.stage-card.cleared{background:linear-gradient(145deg,rgba(17,61,70,.96),rgba(18,31,62,.96))}.stage-card.locked{filter:saturate(.5);opacity:.62}
-.stage-card small{color:var(--gold);font-weight:900}.stage-card strong{font-size:21px}.stage-card p{margin:0;color:#c2d1ea;font-size:13px;line-height:1.35}.stage-card .stage-scope{display:block;margin-top:5px;color:var(--cyan);font-size:12px;font-weight:900}.stage-card footer{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}.stage-card .card-stars{color:var(--gold);letter-spacing:2px;font-size:16px}
-
-.battle-screen{position:fixed;inset:0;background:#041020;overflow:hidden}
-.trail-battle-canvas{position:relative;width:390px;height:788px;padding:8px;display:grid;grid-template-rows:62px auto minmax(0,1fr) 42px 58px;gap:6px;background-color:#07172f;background-image:linear-gradient(rgba(4,13,34,.58),rgba(4,13,34,.8)),url('../../assets/animal-starlight-trails-bg.webp');background-position:center;background-size:cover;overflow:hidden}
-.battle-header{display:grid;grid-template-columns:48px minmax(0,1fr) 72px 64px 48px;gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--border);border-radius:14px;background:rgba(5,17,38,.9)}
-.battle-progress{min-width:0;display:grid;gap:5px}.battle-progress>span{font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.battle-progress>div{height:7px;border-radius:999px;background:#1a315e;overflow:hidden}.battle-progress i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--cyan),var(--gold));transition:width .22s}
-.battle-stat{min-width:0;text-align:center;display:grid;gap:1px}.battle-stat small{color:var(--muted);font-size:10px}.battle-stat strong{font-size:16px;white-space:nowrap}
-.battle-utility{width:48px;min-width:48px;height:48px;padding:0;border:1px solid rgba(158,195,255,.34);border-radius:12px;background:linear-gradient(180deg,#234a80,#122b57);color:var(--ink);font-size:20px;font-weight:950}
-.objective-row{min-height:48px;display:flex;align-items:center;justify-content:center;padding:5px 12px;border:1px solid rgba(170,140,255,.3);border-radius:12px;background:rgba(15,22,60,.85);color:#d9d2ff;font-size:13px;font-weight:800;line-height:1.25;text-align:center;white-space:normal;overflow:visible;text-wrap:balance}
-.puzzle-scene{position:relative;min-width:0;min-height:0;display:grid;place-items:center;border:1px solid rgba(148,190,255,.25);border-radius:22px;background:radial-gradient(circle at center,rgba(43,70,126,.2),rgba(3,12,30,.62));overflow:hidden;touch-action:none}
-#graphSvg{display:block;width:min(100%,610px);height:min(100%,610px);min-width:340px;min-height:340px;touch-action:none;user-select:none;overflow:visible}
-.graph-edge{stroke:var(--line);stroke-width:2.1;stroke-linecap:round;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 2px rgba(79,128,215,.35));transition:stroke .18s,opacity .18s}.graph-edge.used{stroke:var(--gold);stroke-width:3;filter:drop-shadow(0 0 3px rgba(255,215,106,.58))}.graph-edge.directed:not(.used){stroke:var(--violet);stroke-width:3}.graph-edge.gate:not(.used){stroke:var(--danger);stroke-dasharray:5 3}.graph-edge.gate.open:not(.used){stroke:var(--success);stroke-dasharray:none}.direction-arrow{fill:#fff7ff;stroke:#5d2aa8;stroke-width:1.15;paint-order:stroke fill;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 3px rgba(229,185,255,.95));pointer-events:none}
-.graph-node{cursor:pointer;outline:none}.graph-node[role="button"]:focus-visible{outline:none}.node-halo{fill:transparent;stroke:transparent;opacity:0}.node-core{fill:#eaf6ff;stroke:#5c8fd4;stroke-width:1.35;filter:drop-shadow(0 0 3px rgba(120,190,255,.72));transition:fill .16s,stroke .16s,filter .16s}.graph-node.current .node-core{fill:var(--gold);stroke:#fff4bd;filter:drop-shadow(0 0 5px rgba(255,215,106,.82))}.graph-node.start .node-core{stroke:var(--success);stroke-width:2}.graph-node.key .node-core{fill:#ffe083;stroke:#fff2b0;stroke-width:1.8}.graph-node.checkpoint .node-core{stroke:var(--violet);stroke-width:2}.graph-node.hinted .node-core{fill:var(--cyan);stroke:#fff;animation:hintTwinkle .9s ease-in-out infinite}.graph-node:focus-visible .node-core{stroke:#fff;stroke-width:2}.node-label{fill:#102142;font-size:5px;font-weight:950;text-anchor:middle;dominant-baseline:central;pointer-events:none}
-.battle-feedback{min-width:0;padding:5px 10px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:12px;background:rgba(5,17,38,.88)}.battle-feedback strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}.battle-feedback span{flex:none;color:var(--muted);font-size:11px}.battle-feedback.error strong{color:#ffafbd}.battle-feedback.success strong{color:var(--success)}
-.battle-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.battle-actions button,.result-actions button{border:1px solid rgba(158,195,255,.28);border-radius:12px;background:linear-gradient(180deg,#183665,#10254c);color:var(--ink);font-weight:900}.battle-actions button:disabled{opacity:.42;cursor:default}.battle-actions button:active:not(:disabled){transform:translateY(2px)}
-.battle-ad-reserve{position:fixed;left:50%;bottom:0;width:min(100%,920px);height:var(--wp-ad-reserve-height, 0px);transform:translateX(-50%);background:#071329;pointer-events:none}
-body[data-screen="stage"] .sound-toggle,body[data-screen="battle"] .sound-toggle{display:none!important}
-
-.result-overlay{position:absolute;inset:0;z-index:20;display:grid;place-items:center;padding:16px;background:rgba(2,8,22,.76);backdrop-filter:blur(8px)}
-.battle-leave-overlay{position:absolute;inset:0;z-index:25;display:grid;place-items:center;padding:16px;background:rgba(2,8,22,.8);backdrop-filter:blur(8px)}
-.battle-leave-card{width:min(100%,460px);max-height:100%;overflow:auto;padding:22px;border:1px solid rgba(158,195,255,.38);border-radius:20px;background:linear-gradient(155deg,rgba(18,44,83,.98),rgba(7,21,47,.98));box-shadow:0 20px 54px rgba(0,0,0,.5);text-align:center}.battle-leave-card h2{margin:0;color:#fff;font-size:clamp(21px,5.5vw,30px);line-height:1.12}.battle-leave-card p{margin:12px 0 18px;color:var(--muted);font-size:14px;line-height:1.45}.battle-leave-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.battle-leave-actions button{min-height:48px;padding:8px;border:1px solid rgba(158,195,255,.34);border-radius:12px;background:linear-gradient(180deg,#1c4278,#112a55);color:var(--ink);font-weight:900}.battle-leave-actions button:last-child{background:linear-gradient(180deg,#71344f,#482139)}
-.result-card{width:min(100%,520px);max-height:100%;overflow:auto;padding:18px;display:grid;grid-template-columns:74px minmax(0,1fr);gap:8px 14px;border:2px solid rgba(255,215,106,.54);border-radius:24px;background:linear-gradient(155deg,#122c59,#0a1735);box-shadow:0 24px 80px rgba(0,0,0,.48);animation:resultIn .35s cubic-bezier(.2,.8,.2,1)}
-.result-card>img{grid-row:1/5;width:74px;height:96px;object-fit:cover;object-position:center 22%;border-radius:18px}.result-card>small{color:var(--gold);font-weight:900;text-transform:uppercase;letter-spacing:.08em}.result-card h2,.result-card p{margin:0}.result-card h2{font-size:27px}.result-stars{color:var(--gold);font-size:28px;letter-spacing:4px}.result-facts{grid-column:1/-1;padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.05);color:var(--muted);text-align:center;font-weight:800}.comparison{grid-column:1/-1;color:#c7d6ef;text-align:center;font-size:12px}.result-actions{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;min-height:48px}.result-actions .primary-action{border:1px solid #ffe89a;background:linear-gradient(180deg,#ffe58a,#f6b52e);color:#2b1b08;box-shadow:inset 0 -3px 0 rgba(151,86,9,.32),0 0 18px rgba(246,181,46,.2)}
-.result-actions button:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
-.hint-pulse{position:absolute;width:50px;height:50px;border:3px solid var(--cyan);border-radius:50%;pointer-events:none;animation:hintRing .8s ease-out infinite}
-.shake{animation:shake .28s linear}
-.sparkle{animation:sparkle .45s ease-out}
-.sr-status{position:absolute;left:-9999px}
-@keyframes hintTwinkle{50%{filter:drop-shadow(0 0 6px rgba(102,232,255,.95))}}
-@keyframes resultIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
-@keyframes hintRing{from{transform:scale(.45);opacity:1}to{transform:scale(1.25);opacity:0}}
-@keyframes shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
-@keyframes sparkle{50%{filter:brightness(1.8)}}
-
-@media(max-width:720px){.main-screen{padding:8px;grid-template-rows:60px auto}.main-header{grid-template-columns:58px minmax(0,1fr) 112px;height:58px!important;min-height:58px!important;max-height:58px!important}.main-hero{grid-template-columns:1fr;gap:10px;padding:2px 4px 16px}.main-poster{width:min(100%,340px);border-radius:20px}.main-copy{gap:9px}.main-copy h1{font-size:30px;text-align:center}.main-copy small,.main-copy p{text-align:center}.main-copy p{font-size:14px}.main-progress{min-height:54px;padding:8px 12px}.primary-action{min-height:52px}}
-@media (min-width:700px) and (max-height:600px){
-  .main-screen{height:100svh;min-height:100svh;padding:6px;grid-template-rows:56px minmax(0,1fr);gap:6px;overflow:hidden}
-  .main-header{grid-template-columns:58px minmax(0,1fr) 142px;height:58px!important;min-height:58px!important;max-height:58px!important;padding:3px 8px;border-radius:14px}
-  .main-hero{min-height:0;grid-template-columns:minmax(0,.9fr) minmax(320px,1fr);align-items:stretch;gap:14px;padding:0 10px 6px;overflow:hidden}
-  .main-poster{width:min(100%,calc(100svh - 80px));height:auto;max-width:100%;max-height:100%;align-self:center;border-radius:18px}
-  .main-copy{min-height:0;gap:6px;align-content:center}
-  .main-copy small{font-size:12px}
-  .main-copy h1{font-size:28px;line-height:1}
-  .main-copy p{font-size:14px;line-height:1.3}
-  .main-progress{min-height:48px;padding:6px 10px;gap:2px}
-  .main-progress strong{font-size:15px}
-  .main-progress span{font-size:11px}
-  .main-copy .primary-action{min-height:48px}
-  body[data-game-id="animal-starlight-trails"] .wp-standard-main-composition{--wp-main-landscape-poster-size:420px;grid-template-columns:420px minmax(0,1fr)!important;gap:14px;padding:6px 10px!important}
-  body[data-game-id="animal-starlight-trails"] .wp-standard-main-poster{width:420px!important;height:420px!important}
-  body[data-game-id="animal-starlight-trails"] .wp-standard-main-poster-media,
-  body[data-game-id="animal-starlight-trails"] .wp-standard-main-poster-media>img,
-  body[data-game-id="animal-starlight-trails"] .wp-standard-main-poster>img{width:420px!important;min-width:420px!important;max-width:420px!important;height:420px!important;min-height:420px!important;max-height:420px!important}
-  body[data-game-id="animal-starlight-trails"] .wp-standard-main-copy{height:420px!important;gap:6px}
-  .stage-canvas{grid-template-rows:120px minmax(0,1fr) 198px}
-  body[data-game-id="animal-starlight-trails"] .stage-header{grid-template-columns:104px minmax(0,1fr) 104px!important}
-  body[data-game-id="animal-starlight-trails"] .stage-header>button:first-child,
-  body[data-game-id="animal-starlight-trails"] .stage-header>.wp-shell-settings,
-  body[data-game-id="animal-starlight-trails"] .stage-header .wp-shell-settings-button{width:104px!important;min-width:104px!important;max-width:104px!important;height:104px!important;min-height:104px!important;max-height:104px!important}
-  .trail-battle-canvas{padding:8px;grid-template-columns:minmax(0,1fr) 300px;grid-template-rows:48px minmax(0,1fr);gap:8px}
-  .battle-header{grid-column:1/-1;grid-row:1;grid-template-columns:48px minmax(0,1fr) 72px 64px 48px;gap:8px;padding:4px 8px;border-radius:14px}
-  .battle-header button{font-size:20px}.battle-progress{gap:4px}.battle-progress>span{font-size:14px}.battle-progress>div{height:7px}.battle-stat{gap:1px}.battle-stat small{font-size:10px}.battle-stat strong{font-size:16px}
-  .puzzle-scene{grid-column:1;grid-row:2;border-radius:18px}.puzzle-scene #graphSvg{width:100%;height:100%;min-width:0;min-height:0}
-  .objective-row{grid-column:2;grid-row:2;align-self:start;min-height:54px;padding:6px 10px;border-radius:12px;font-size:14px;line-height:1.25;white-space:normal;overflow:visible}
-  .battle-feedback{grid-column:2;grid-row:2;align-self:center;min-height:54px;padding:6px 10px;border-radius:12px}.battle-feedback strong{font-size:16px}.battle-feedback span{font-size:14px}
-  .battle-actions{grid-column:2;grid-row:2;align-self:end;height:48px;gap:8px}.battle-actions button{border-radius:12px;font-size:16px}
-  .battle-leave-card{width:min(560px,100%);padding:16px 20px}.battle-leave-card h2{font-size:24px}.battle-leave-card p{margin:8px 0 12px;font-size:16px;line-height:1.3}.battle-leave-actions{gap:12px}.battle-leave-actions button{min-height:48px;font-size:16px}
-  .result-overlay{padding:8px}
-  .result-card{width:min(800px,100%);height:300px;padding:12px;grid-template-columns:90px minmax(0,1fr) 260px;grid-template-rows:auto auto 1fr 48px;gap:6px 12px;border-radius:20px}
-  .result-card>img{grid-row:1/4;width:82px;height:108px;border-radius:16px}.result-card>small{font-size:12px}.result-card h2{font-size:24px}.result-card p{font-size:14px;line-height:1.3}.result-stars{font-size:24px}
-  .result-facts{grid-column:3;grid-row:1/4;align-self:center;padding:12px;font-size:14px;line-height:1.4}
-  #resultText{grid-column:2;grid-row:3;align-self:start}.comparison{grid-column:2;grid-row:3;align-self:end;font-size:12px}.result-actions{grid-column:1/-1;grid-row:4;height:48px;min-height:48px;gap:8px}.result-actions button{border-radius:12px;font-size:16px}
+/* Starlink game content. Shared Main, Stage, Battle, settings and tab chrome
+   are owned by game-screen-frame, Play UI and Interface 9. */
+:root {
+  --ink: #f8fbff;
+  --muted: #a9bad8;
+  --gold: #ffd76a;
+  --gold-deep: #f0a629;
+  --cyan: #66e8ff;
+  --violet: #aa8cff;
+  --danger: #ff7692;
+  --success: #6bf0ba;
+  --line: #536a9b;
+  --border: rgba(182, 211, 255, .2);
+  font-family: Inter, ui-rounded, "Segoe UI", system-ui, sans-serif;
+  color: var(--ink);
 }
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 
-/* Starlink observatory: game content only; shared navigation retains its owner. */
-body[data-game-id="animal-starlight-trails"]{--cyan:#8be8f1;--gold:#ffdb88;--line:#8aabc5;--wp-ui-accent:#8be8f1}
-.stage-canvas,.trail-battle-canvas{background-image:linear-gradient(180deg,rgba(5,13,35,.2),rgba(5,13,35,.35)),url('/assets/animal-starlight-trails-observatory-v22.webp')}
-.stage-canvas{grid-template-rows:48px minmax(0,1fr) 56px;gap:8px}
-.stage-header>div:not(.wp-shell-settings){display:none!important}
-.observatory-workspace{position:relative;min-width:0;min-height:0;overflow:hidden}
-.observatory-workspace .stage-rail{position:absolute!important;top:calc(38% - 95px)!important;bottom:auto!important;left:0;right:0;height:190px!important;z-index:2}
-.observatory-workspace .chapter-panel{position:absolute;left:50%;top:calc(38% + 118px);transform:translateX(-50%);width:calc(100% - 24px);max-width:520px;min-height:0;height:210px;grid-template-columns:94px minmax(0,1fr);grid-template-rows:24px auto auto 16px;gap:7px 16px;padding:20px;text-align:start;border-radius:8px;border-color:rgba(145,199,217,.25);background:linear-gradient(135deg,rgba(12,32,58,.95),rgba(12,21,43,.93));box-shadow:inset 0 1px rgba(255,255,255,.08),0 14px 28px #0004}
-.constellation-preview{grid-column:1;grid-row:1/5;align-self:center;width:94px;height:112px;border:1px solid #9ebacf33;background:#040c21;border-radius:4px;padding:7px}
-.constellation-preview svg{width:100%;height:100%;overflow:visible}.constellation-preview line{stroke:#8be8f1;stroke-width:1.2}.constellation-preview rect{fill:#ffe4a5}
-.chapter-panel small{grid-column:2;font-size:11px;letter-spacing:.08em}.chapter-panel strong{grid-column:2;font-size:21px;line-height:1.15}.chapter-panel p{grid-column:2;font-size:12px;line-height:1.4}
-.observatory-seals{display:flex;gap:6px;grid-column:2;align-items:center}.observatory-seals i{width:9px;height:9px;border:1px solid #b3ccdd66;background:#344254;transform:rotate(45deg)}.observatory-seals i.lit{background:#ffdb88;border-color:#fff1ce;box-shadow:0 0 8px #ffdb8870}
-.stage-card{border-radius:8px!important;background:linear-gradient(135deg,#142941f5,#0c172df5);box-shadow:inset 0 4px #ffffff09,0 14px 25px #0004}.stage-card.selected{border-color:#a5f4ed;box-shadow:0 0 0 3px #77cfd422,0 8px 30px #0006}.stage-card.cleared{background:linear-gradient(135deg,#163c43f5,#102839f5)}
-.stage-tabs{grid-row:3;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;height:56px;padding:6px;margin:0;border-top:1px solid #b5d5e533;background:#101e33;align-self:end;z-index:4}
-.stage-tabs button{height:44px;min-width:0;border:1px solid #aecbd94d;border-radius:5px;background:#172e44;color:#f8fafc;font-weight:750;font-size:14px;transition:background .18s,border-color .18s}
-#constellationTab{grid-column:2}#appearanceTab{grid-column:3}.stage-tabs button[aria-selected="true"]{border-color:#a5f4ed;background:#22515a;box-shadow:inset 0 -3px #8be8f144}
-.appearance-workspace{grid-row:2;min-height:0;overflow:auto;padding:12px 12px 16px;overscroll-behavior:contain}.appearance-balance{height:44px;display:flex;align-items:center;justify-content:center;gap:8px;background:#101e33e8;border:1px solid #c4e7e429;border-radius:6px;font-size:14px;font-weight:750}.appearance-balance img{height:28px;width:28px;object-fit:contain}
-.appearance-card{margin:12px auto 0;max-width:440px;padding:16px;background:#10213bec;border:1px solid #80e1e566;border-radius:8px;box-shadow:0 12px 30px #0004;text-align:center}.appearance-art{height:170px;position:relative;overflow:hidden;border-radius:5px;background:#071529}.appearance-art>img:first-child{width:100%;height:100%;object-fit:cover;filter:hue-rotate(15deg) brightness(1.5)}.appearance-art .appearance-orla{position:absolute;inset:5px auto 0 50%;transform:translateX(-50%);width:155px;height:160px;object-fit:contain;filter:drop-shadow(0 0 16px #67f0da77)}.appearance-card h2{margin:14px 0 8px;font-size:24px;color:#a6f8e7}.appearance-card p{margin:0 0 12px;font-size:14px;line-height:1.55;min-height:66px;color:#d0dfe9}.appearance-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;height:48px}.appearance-actions button{font-size:13px;font-weight:800;border:1px solid #b6ebe4;border-radius:5px;background:#c0f4df;color:#102c36;min-width:0}.appearance-actions button:only-child{grid-column:1/-1}.appearance-actions button[hidden]+button{grid-column:1/-1}#appearanceBuy{grid-column:1}#appearanceCancel{grid-column:2;background:#233b50;color:#f8fafc}#appearanceGold{height:44px;width:100%;margin-top:10px;border:1px solid #a7c9d94d;border-radius:5px;background:#1c334a;color:#ffdfa5;font-weight:700}.appearance-card button:disabled{opacity:.6}.appearance-status{height:42px;padding-top:10px;font-size:12px;color:#ffe1a0}
-.trail-battle-canvas{grid-template-rows:48px 48px minmax(0,1fr) 56px 52px;gap:8px}
-.battle-header{height:48px;border-radius:6px;padding:0 4px;grid-template-columns:48px minmax(0,1fr) 55px 40px 44px;gap:5px;background:#0c1d34ee}.battle-header .battle-stat strong{font-size:14px}.battle-progress>span{font-size:12px}.battle-stat small{font-size:9px}.battle-progress>div,.battle-progress i{border-radius:1px;height:4px}
-.starlink-hud{display:grid;grid-template-columns:minmax(0,1fr) 46px 28px;align-items:center;gap:6px;min-width:0}.starlink-hud .battle-progress>span{font-size:11px}.starlink-hud .battle-stat strong{font-size:13px}
-.objective-row{border-radius:5px;background:#14233de8;border-color:#819ead44;font-size:12px;line-height:1.4}
-.puzzle-scene{border-radius:8px;border:1px solid #c3e6ef29;background:radial-gradient(ellipse at 50% 40%,#172f5733,#030e2477);box-shadow:inset 0 0 40px #030c234d;isolation:isolate}
-.puzzle-scene::before,.puzzle-scene::after{content:"";position:absolute;width:24px;height:24px;pointer-events:none;border-color:#a9ced95c;z-index:0}.puzzle-scene::before{top:10px;left:10px;border-left:2px solid;border-top:2px solid}.puzzle-scene::after{bottom:10px;right:10px;border-right:2px solid;border-bottom:2px solid}
-#graphSvg{width:min(100%,610px);height:auto;aspect-ratio:1;min-width:0;min-height:0;max-height:100%;position:relative;z-index:2;overflow:visible}
-.observatory-renderer{position:absolute;pointer-events:none;z-index:1;display:block}.has-observatory-3d .node-core,.has-observatory-3d .graph-edge{opacity:0}.has-observatory-3d .node-halo{fill:transparent;stroke:none;opacity:1;pointer-events:all}.node-label{font-size:4.8px;fill:#092135;paint-order:stroke fill;stroke:#edfaff;stroke-width:.5px}.graph-node.current .node-label{fill:#473319;stroke:#fff4c9}.graph-node.hinted .node-halo,.graph-node:focus-visible .node-halo{stroke:#b4fff4;stroke-width:.65;opacity:1;fill:none;stroke-dasharray:2 1}.node-core{filter:drop-shadow(1px 2px 0 #243d66) drop-shadow(0 0 2px #74b9db);stroke-width:.6}.graph-edge{stroke-width:2.5}.graph-edge.used{stroke-width:4}.direction-arrow{stroke-width:.55;fill:#ebd5ff;filter:drop-shadow(0 0 3px #783eda)}
-.battle-feedback{border-radius:5px;min-height:56px;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:32px 16px;gap:0;padding:4px 10px;background:#0b1c34ee}.battle-feedback strong{white-space:normal;text-overflow:clip;font-size:12px;line-height:16px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.battle-feedback span{font-size:10px}.battle-actions button{border-radius:5px;background:linear-gradient(#243e57,#152a41);box-shadow:inset 0 2px #d5edf212,inset 0 -3px #0003;font-size:13px}
-.result-card{border-radius:8px;border-color:#edce86;background:linear-gradient(135deg,#17334e,#111c37);box-shadow:0 20px 70px #0008,inset 0 4px #ffdf8714}.result-card>img{object-fit:contain;border-radius:0}.result-stars{filter:drop-shadow(0 3px 0 #8b5b25)}.result-actions button{border-radius:5px}.result-facts{border-radius:4px}.result-overlay{background:#030c22b8}.puzzle-scene[data-complete="true"]{border-color:#ffdf8799;box-shadow:inset 0 0 45px #f8c96822,0 0 22px #f8c96822;transition:box-shadow .4s,border-color .4s}
-body[data-starlink-appearance="aurora"]{--gold:#8af4e3;--gold-deep:#30bdc9}body[data-starlink-appearance="aurora"] .graph-edge.used{stroke:#8af4e3}body[data-starlink-appearance="aurora"] .puzzle-scene{background:radial-gradient(ellipse at 50% 40%,#267b723d,#06152888)}
-@media(min-aspect-ratio:1/1){
-  .observatory-workspace .chapter-panel{left:auto;right:12px;top:auto;bottom:8px;transform:none;width:310px;height:116px;padding:10px;grid-template-columns:68px minmax(0,1fr);grid-template-rows:18px auto auto;gap:3px 10px}.constellation-preview{width:68px;height:88px}.chapter-panel strong{font-size:16px}.chapter-panel p{font-size:11px}.observatory-seals{display:none}
-  .observatory-workspace .stage-rail{top:calc(38% - 95px)!important}.appearance-workspace{padding:8px 16px}.appearance-card{max-width:660px;display:grid;grid-template-columns:180px minmax(0,1fr);gap:6px 16px;margin-top:8px;padding:10px}.appearance-art{height:178px;grid-row:1/6}.appearance-card h2{margin:0;font-size:19px}.appearance-card p{font-size:12px;min-height:0;margin:0}.appearance-actions{height:44px}#appearanceGold{margin:0}.appearance-status{height:24px;padding:0}
-  .trail-battle-canvas{grid-template-rows:48px minmax(0,1fr);grid-template-columns:minmax(0,1fr) 270px}.battle-header{grid-template-columns:48px minmax(0,1fr) 72px 64px 48px}.battle-feedback{grid-column:2;grid-row:2;align-self:center;min-height:64px}.objective-row{font-size:14px}.battle-actions{height:48px}.battle-actions button{font-size:14px}#graphSvg{width:auto;height:100%;max-width:100%;max-height:100%;aspect-ratio:1}.puzzle-scene{border-radius:8px}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; min-width: 320px; }
+button, select { font: inherit; }
+button { cursor: pointer; }
+button:focus-visible, select:focus-visible, [role="button"]:focus-visible {
+  outline: 3px solid #fff48b;
+  outline-offset: 3px;
 }
-.puzzle-scene{container-type:size}
-.puzzle-scene #graphSvg{width:min(100cqw,100cqh,610px);height:min(100cqw,100cqh,610px);max-width:100%;max-height:100%;min-width:0;min-height:0}
-.observatory-workspace .stage-rail{top:clamp(8px,calc(38% - 95px),calc(100% - 198px))!important}
-@media(max-height:500px) and (min-aspect-ratio:1/1){.observatory-workspace .chapter-panel{display:none}}
+[hidden] { display: none !important; }
+.sr-only, .sr-only:not(:focus):not(:active) {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* The shared frame supplies the poster and copy tracks. This wrapper only
+   places Starlink's authored Main content in those tracks. */
+#mainScreen {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: inherit;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  background: none;
+}
+.main-hero { display: contents; }
+.main-copy { display: grid; align-content: center; justify-items: start; gap: 12px; min-width: 0; }
+.main-copy p { max-width: 38rem; margin: 0; line-height: 1.5; }
+#mainProgress { font-variant-numeric: tabular-nums; }
+.game-page-info { grid-column: 1 / -1; }
+
+/* Stage page and Equipment are game-owned content inside the shared Canvas. */
+#stageContent { position: relative; min-width: 0; min-height: 0; }
+.observatory-workspace { position: relative; width: 100%; height: 100%; min-width: 0; min-height: 0; overflow: hidden; }
+.stage-rail { min-width: 0; min-height: 0; }
+#appearanceWorkspace {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 16px;
+  overscroll-behavior: contain;
+  background: linear-gradient(145deg, #101f37f2, #07152bf2);
+}
+.appearance-balance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 1px solid #c4e7e429;
+  border-radius: 8px;
+  background: #101e33e8;
+  font-size: 14px;
+  font-weight: 750;
+}
+.appearance-balance img { width: 28px; height: 28px; object-fit: contain; }
+.appearance-card {
+  width: min(100%, 440px);
+  margin: 12px auto 0;
+  padding: 16px;
+  border: 1px solid #80e1e566;
+  border-radius: 8px;
+  background: #10213bec;
+  box-shadow: 0 12px 30px #0004;
+  text-align: center;
+}
+.appearance-art { position: relative; height: 170px; overflow: hidden; border-radius: 5px; background: #071529; }
+.appearance-art > img:first-child { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(15deg) brightness(1.5); }
+.appearance-art .appearance-orla {
+  position: absolute; inset: 5px auto 0 50%; width: 155px; height: 160px;
+  transform: translateX(-50%); object-fit: contain; filter: drop-shadow(0 0 16px #67f0da77);
+}
+.appearance-card h2 { margin: 14px 0 8px; font-size: 24px; color: #a6f8e7; }
+.appearance-card p { min-height: 66px; margin: 0 0 12px; color: #d0dfe9; font-size: 14px; line-height: 1.55; }
+.appearance-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; min-height: 48px; }
+.appearance-actions button {
+  min-width: 0; border: 1px solid #b6ebe4; border-radius: 5px;
+  background: #c0f4df; color: #102c36; font-size: 13px; font-weight: 800;
+}
+.appearance-actions button:only-child, .appearance-actions button[hidden] + button { grid-column: 1 / -1; }
+#appearanceBuy { grid-column: 1; }
+#appearanceCancel { grid-column: 2; background: #233b50; color: #f8fafc; }
+#appearanceGold {
+  width: 100%; min-height: 44px; margin-top: 10px; border: 1px solid #a7c9d94d;
+  border-radius: 5px; background: #1c334a; color: #ffdfa5; font-weight: 700;
+}
+.appearance-card button:disabled { opacity: .6; }
+.appearance-status { min-height: 32px; padding-top: 10px; color: #ffe1a0; font-size: 12px; }
+
+/* The active puzzle stays game-owned inside the shared Battle Canvas. */
+#battleLive {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.starlink-hud {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(40px, .8fr) minmax(30px, .55fr);
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.battle-progress { display: grid; gap: 4px; min-width: 0; }
+.battle-progress > span { overflow: hidden; font-size: 11px; font-weight: 900; text-overflow: ellipsis; white-space: nowrap; }
+.battle-progress > div { height: 6px; overflow: hidden; border-radius: 999px; background: #1a315e; }
+.battle-progress i { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--cyan), var(--gold)); transition: width .22s; }
+.battle-stat { display: grid; gap: 1px; min-width: 0; text-align: center; }
+.battle-stat small { overflow: hidden; color: var(--muted); font-size: 9px; text-overflow: ellipsis; }
+.battle-stat strong { overflow: hidden; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.objective-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 48px;
+  padding: 6px 12px;
+  border: 1px solid rgba(170, 140, 255, .3);
+  border-radius: 8px;
+  background: rgba(15, 22, 60, .85);
+  color: #d9d2ff;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.3;
+  text-align: center;
+  text-wrap: balance;
+}
+.puzzle-scene {
+  container-type: size;
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid rgba(148, 190, 255, .25);
+  border-radius: 8px;
+  background: radial-gradient(ellipse at 50% 40%, #172f5733, #030e2477);
+  box-shadow: inset 0 0 40px #030c234d;
+  isolation: isolate;
+  touch-action: none;
+}
+.puzzle-scene::before, .puzzle-scene::after {
+  position: absolute; z-index: 0; width: 24px; height: 24px;
+  border-color: #a9ced95c; content: ""; pointer-events: none;
+}
+.puzzle-scene::before { top: 10px; left: 10px; border-top: 2px solid; border-left: 2px solid; }
+.puzzle-scene::after { right: 10px; bottom: 10px; border-right: 2px solid; border-bottom: 2px solid; }
+#graphSvg {
+  position: relative; z-index: 2; display: block; width: min(100cqw, 100cqh, 610px);
+  height: min(100cqw, 100cqh, 610px); max-width: 100%; max-height: 100%;
+  min-width: 0; min-height: 0; overflow: visible; aspect-ratio: 1; touch-action: none; user-select: none;
+}
+.graph-edge { stroke: var(--line); stroke-width: 2.5; stroke-linecap: round; vector-effect: non-scaling-stroke; filter: drop-shadow(0 0 2px rgba(79,128,215,.35)); transition: stroke .18s, opacity .18s; }
+.graph-edge.used { stroke: var(--gold); stroke-width: 4; filter: drop-shadow(0 0 3px rgba(255,215,106,.58)); }
+.graph-edge.directed:not(.used) { stroke: var(--violet); stroke-width: 3; }
+.graph-edge.gate:not(.used) { stroke: var(--danger); stroke-dasharray: 5 3; }
+.graph-edge.gate.open:not(.used) { stroke: var(--success); stroke-dasharray: none; }
+.direction-arrow { fill: #ebd5ff; stroke: #5d2aa8; stroke-width: .55; paint-order: stroke fill; vector-effect: non-scaling-stroke; filter: drop-shadow(0 0 3px #783eda); pointer-events: none; }
+.graph-node { cursor: pointer; outline: none; }
+.graph-node[role="button"]:focus-visible { outline: none; }
+.node-halo { fill: transparent; stroke: transparent; opacity: 0; }
+.node-core { fill: #eaf6ff; stroke: #5c8fd4; stroke-width: .6; filter: drop-shadow(1px 2px 0 #243d66) drop-shadow(0 0 2px #74b9db); transition: fill .16s, stroke .16s, filter .16s; }
+.graph-node.current .node-core { fill: var(--gold); stroke: #fff4bd; filter: drop-shadow(0 0 5px rgba(255,215,106,.82)); }
+.graph-node.start .node-core { stroke: var(--success); stroke-width: 2; }
+.graph-node.key .node-core { fill: #ffe083; stroke: #fff2b0; stroke-width: 1.8; }
+.graph-node.checkpoint .node-core { stroke: var(--violet); stroke-width: 2; }
+.graph-node.hinted .node-core { fill: var(--cyan); stroke: #fff; animation: hintTwinkle .9s ease-in-out infinite; }
+.graph-node:focus-visible .node-core { stroke: #fff; stroke-width: 2; }
+.node-label { fill: #092135; stroke: #edfaff; stroke-width: .5px; paint-order: stroke fill; font-size: 4.8px; font-weight: 950; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.graph-node.current .node-label { fill: #473319; stroke: #fff4c9; }
+.node-halo { fill: transparent; stroke: none; pointer-events: all; }
+.graph-node.hinted .node-halo, .graph-node:focus-visible .node-halo { fill: none; stroke: #b4fff4; stroke-width: .65; stroke-dasharray: 2 1; opacity: 1; }
+.observatory-renderer { position: absolute; z-index: 1; display: block; pointer-events: none; }
+.has-observatory-3d .node-core, .has-observatory-3d .graph-edge { opacity: 0; }
+.hint-pulse { position: absolute; width: 50px; height: 50px; border: 3px solid var(--cyan); border-radius: 50%; pointer-events: none; animation: hintRing .8s ease-out infinite; }
+.battle-feedback {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(32px, auto) auto;
+  gap: 2px;
+  min-width: 0;
+  min-height: 48px;
+  padding: 4px 10px;
+  border-radius: 5px;
+  background: #0b1c34ee;
+}
+.battle-feedback strong { display: -webkit-box; overflow: hidden; color: var(--ink); font-size: 12px; line-height: 16px; text-overflow: ellipsis; white-space: normal; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.battle-feedback span { overflow: hidden; color: var(--muted); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.battle-feedback.error strong { color: #ffafbd; }
+.battle-feedback.success strong { color: var(--success); }
+.battle-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; min-width: 0; min-height: 48px; }
+.battle-actions button, .result-actions button { border: 1px solid rgba(158,195,255,.28); border-radius: 5px; background: linear-gradient(#243e57,#152a41); color: var(--ink); font-weight: 900; }
+.battle-actions button:disabled, .result-actions button:disabled { opacity: .45; cursor: default; box-shadow: none; }
+.battle-actions button:active:not(:disabled) { transform: translateY(2px); }
+
+/* Result and the in-Battle leave decision remain game-owned substates. */
+.result-overlay, .battle-leave-overlay { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; padding: 16px; background: #030c22e8; }
+.battle-leave-overlay { z-index: 25; background: rgba(2,8,22,.82); backdrop-filter: blur(8px); }
+.battle-leave-card { width: min(100%, 460px); max-height: 100%; overflow: auto; padding: 22px; border: 1px solid rgba(158,195,255,.38); border-radius: 12px; background: linear-gradient(155deg, #122c53fa, #07152ffa); box-shadow: 0 20px 54px #0008; text-align: center; }
+.battle-leave-card h2 { margin: 0; color: #fff; font-size: clamp(21px, 5.5vw, 30px); line-height: 1.12; }
+.battle-leave-card p { margin: 12px 0 18px; color: var(--muted); font-size: 14px; line-height: 1.45; }
+.battle-leave-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.battle-leave-actions button { min-height: 48px; padding: 8px; border: 1px solid rgba(158,195,255,.34); border-radius: 8px; background: linear-gradient(#1c4278,#112a55); color: var(--ink); font-weight: 900; }
+.battle-leave-actions button:last-child { background: linear-gradient(#71344f,#482139); }
+.result-card {
+  display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 8px 14px;
+  width: min(100%, 520px); max-height: 100%; overflow: auto; padding: 18px;
+  border: 2px solid rgba(255,215,106,.54); border-radius: 12px;
+  background: linear-gradient(155deg,#122c59,#0a1735); box-shadow: 0 24px 80px #0008;
+  animation: resultIn .35s cubic-bezier(.2,.8,.2,1);
+}
+.result-card > img { grid-row: 1 / 5; width: 74px; height: 96px; object-fit: contain; object-position: center 22%; }
+.result-card > small { color: var(--gold); font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.result-card h2, .result-card p { margin: 0; }
+.result-card h2 { font-size: 27px; }
+.result-stars { color: var(--gold); font-size: 28px; letter-spacing: 4px; filter: drop-shadow(0 3px 0 #8b5b25); }
+.result-facts { grid-column: 1 / -1; padding: 10px 12px; border: 1px solid var(--border); border-radius: 4px; background: rgba(255,255,255,.05); color: var(--muted); font-weight: 800; text-align: center; }
+.comparison { grid-column: 1 / -1; color: #c7d6ef; font-size: 12px; text-align: center; }
+.result-actions { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; min-height: 48px; }
+.result-actions .primary-action { border-color: #edce86; background: linear-gradient(135deg,#17334e,#111c37); color: var(--ink); box-shadow: inset 0 4px #ffdf8714; }
+.puzzle-scene[data-complete="true"] { border-color: #ffdf8799; box-shadow: inset 0 0 45px #f8c96822, 0 0 22px #f8c96822; transition: box-shadow .4s, border-color .4s; }
+.shake { animation: shake .28s linear; }
+.sparkle { animation: sparkle .45s ease-out; }
+.sr-status { position: absolute; left: -9999px; }
+
+@media (min-aspect-ratio: 1 / 1) {
+  #battleLive { grid-template-columns: minmax(0, 1fr) 270px; grid-template-rows: auto minmax(0, 1fr) auto; }
+  #objectiveRow { grid-column: 2; grid-row: 1; }
+  #puzzleScene { grid-column: 1; grid-row: 1 / 4; }
+  .battle-feedback { grid-column: 2; grid-row: 2; align-self: center; }
+  .battle-actions { grid-column: 2; grid-row: 3; }
+  .appearance-workspace { padding: 8px 16px; }
+  .appearance-card { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 6px 16px; width: min(100%, 660px); margin-top: 8px; padding: 10px; text-align: start; }
+  .appearance-art { grid-row: 1 / 6; height: 178px; }
+  .appearance-card h2 { margin: 0; font-size: 19px; }
+  .appearance-card p { min-height: 0; margin: 0; font-size: 12px; }
+  .appearance-actions { height: 44px; }
+  #appearanceGold { margin: 0; }
+  .appearance-status { min-height: 24px; padding: 0; }
+}
+
+@media (max-width: 600px) {
+  .appearance-workspace { padding: 10px; }
+  .appearance-card { padding: 12px; }
+  .result-card { grid-template-columns: 54px minmax(0, 1fr); gap: 8px; padding: 12px; }
+  .result-card > img { width: 54px; height: 72px; }
+  .result-card h2 { font-size: 22px; }
+  .result-stars { font-size: 23px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
+
+body[data-starlink-appearance="aurora"] { --gold: #8af4e3; --gold-deep: #30bdc9; }
+body[data-starlink-appearance="aurora"] .graph-edge.used { stroke: #8af4e3; }
+body[data-starlink-appearance="aurora"] .puzzle-scene { background: radial-gradient(ellipse at 50% 40%, #267b723d, #06152888); }
+@keyframes hintTwinkle { 50% { filter: drop-shadow(0 0 6px rgba(102,232,255,.95)); } }
+@keyframes resultIn { from { opacity: 0; transform: translateY(18px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes hintRing { from { transform: scale(.45); opacity: 1; } to { transform: scale(1.25); opacity: 0; } }
+@keyframes shake { 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-3px); } }
+@keyframes sparkle { 50% { filter: brightness(1.8); } }

@@ -1,0 +1,95 @@
+body[data-wp-game-id="animal-moonlight-workshop"] { --workshop-amber:#ffe5a2; --workshop-blue:#9ae8ed; }
+
+#battle-content.workshop-battle-layout {
+  box-sizing:border-box;
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  grid-template-rows:60px minmax(0,1fr) 28px 94px 16px;
+  gap:2px;
+  min-width:0;
+  min-height:0;
+  padding:8px 8px 4px;
+  overflow:hidden;
+}
+
+#workshop-objective { display:grid;grid-template-rows:32px 24px;gap:2px;min-width:0; }
+.workshop-checklist {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;}
+.workshop-task {display:flex;align-items:center;gap:6px;padding:3px 6px;background:#10283b;color:#9bb0c5;border:1px solid #56788a66;border-radius:6px;min-width:0;font-size:12px;line-height:1.15;}
+.workshop-task b {display:grid;place-items:center;width:22px;height:22px;flex-shrink:0;border:1px solid currentColor;border-radius:4px;font-size:13px;}
+.workshop-task.current {color:#ffe7ae;border-color:#eacb7a;background:#493b29;box-shadow:inset 0 -2px #dfac47;}
+.workshop-task.done {color:#9fe5c9;border-color:#60bca0;background:#173d36;}
+.workshop-mission {margin:0;text-align:center;color:#ffe8ae;line-height:24px;font-size:15px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+.m5-canvas-wrap {grid-row:2;grid-column:1;min-width:0;min-height:0;position:relative;width:100%;height:100%;border:0;border-radius:0;background:none;container-type:size;overflow:visible;}
+.m5-canvas-wrap > canvas {display:none!important;}
+#workshop-board {position:absolute;inset:0;display:grid;place-items:center;}
+.workshop-grid {position:relative;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr));width:min(100cqw,160cqh);height:min(100cqh,62.5cqw);isolation:isolate;background:#0d2538;outline:2px solid #5e8492;box-shadow:0 16px 42px #0008,0 0 32px #9ad9e416;border-radius:5px;}
+.workshop-cell {position:relative;min-width:0;min-height:0;width:100%;height:100%;padding:0;border:1px solid #3b586f;background:linear-gradient(145deg,#273f52,#1b3044);border-radius:0;color:#fff;touch-action:manipulation;transition:background .18s,box-shadow .18s,filter .18s;}
+.workshop-cell:nth-child(even) {background:linear-gradient(145deg,#2c4457,#20374b);}
+.workshop-cell.adjacent {box-shadow:inset 0 0 0 2px #8ae1dd55;}
+.workshop-cell.adjacent:after {content:'';position:absolute;inset:40%;background:#d1faff88;border-radius:50%;pointer-events:none;}
+.workshop-cell:focus-visible {outline:3px solid white;outline-offset:-4px;z-index:3;}
+.workshop-cell.wall {background:linear-gradient(135deg,#0a1522,#142333);border:2px solid #061322;box-shadow:inset 0 3px #385064;}
+.workshop-cell.wall .workshop-sprite {opacity:.35;filter:grayscale(1);}
+.workshop-cell.ice {background:repeating-linear-gradient(130deg,#407588 0 9px,#578fa0 10px 12px,#407588 13px 24px);}
+.workshop-cell.portal {background:radial-gradient(ellipse,#9977c7 0,#5c348a 36%,#1b3044 65%);box-shadow:inset 0 0 0 2px #bd9bdf;}
+.workshop-cell.gate {box-shadow:inset 0 0 0 3px #62cdb4;background:#174b49;}
+.workshop-cell.gate.closed {background:repeating-linear-gradient(90deg,#61482e 0 8px,#b78c48 9px 12px,#61482e 13px 20px);box-shadow:inset 0 0 0 3px #d6ae6b;}
+.workshop-cell.switch:not(.lit) .workshop-sprite {filter:saturate(.25) brightness(.7);}
+.workshop-cell.lit {background:radial-gradient(ellipse,#3d8b89,#173b48);box-shadow:inset 0 0 0 2px #9af1d4;}
+.workshop-cell.target {box-shadow:inset 0 0 0 2px #ffe5a2,inset 0 0 15px #ffd87933;}
+.workshop-cell.dormant .workshop-sprite {opacity:.3;filter:grayscale(.7);}
+.workshop-sprite {position:absolute;inset:6%;background:url('assets/animal-moonlight-workshop-atlas.png') 0 0/400% 200% no-repeat;pointer-events:none;transition:filter .2s,opacity .2s;}
+.workshop-tile-badge {position:absolute;top:3px;right:3px;min-width:17px;height:17px;display:grid;place-items:center;background:#091825e8;border:1px solid #ffe5a2;color:#ffe8aa;font-size:11px;font-weight:800;line-height:1;border-radius:3px;pointer-events:none;z-index:2;}
+.workshop-player {position:absolute;width:12.5%;height:20%;padding:1%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 3px 1px #000b) drop-shadow(0 0 5px #8afff5);transition:left .14s ease-out,top .14s ease-out;z-index:4;}
+.workshop-hint-arrow {position:absolute;inset:0;display:grid;place-items:center;background:#ffe097bb;color:#12283c;text-shadow:0 1px #fff9;font-size:30px;z-index:5;pointer-events:none;}
+
+#workshop-feedback {grid-row:3;grid-column:1;margin:0;align-self:center;color:#bfe6ef;text-align:center;font-size:12px;line-height:14px;height:28px;overflow:hidden;display:grid;place-items:center;}
+#battle-controls {grid-row:4;grid-column:1;display:grid;grid-template-columns:minmax(0,1fr) 156px;gap:12px;min-height:0;padding:0 8px;}
+.workshop-tools {display:grid;grid-template-columns:1fr 44px;grid-template-rows:44px 44px;gap:6px;align-content:center;}
+.workshop-tools button {min-width:0;min-height:44px;border:1px solid #50778f;border-radius:5px;background:#1d3a50;color:#ecfaff;font-size:13px;font-weight:700;padding:0 6px;}
+#workshop-undo {grid-column:1;grid-row:1;}#workshop-hint {grid-column:1;grid-row:2;color:#ffe4a3;border-color:#b79b62;}#workshop-reset {grid-column:2;grid-row:1/3;align-self:center;font-size:24px;}
+.workshop-pad {display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:44px 44px;gap:6px;justify-content:center;align-content:center;}
+.workshop-direction {border:1px solid #6f9cab;border-bottom:3px solid #517c8d;border-radius:5px;background:linear-gradient(#2b5369,#1b394e);font-size:25px;line-height:1;min-width:44px;min-height:44px;padding:0;color:#e1faff;box-shadow:0 2px 8px #0005;}
+.workshop-direction.up {grid-column:2;grid-row:1}.workshop-direction.left {grid-column:1;grid-row:2}.workshop-direction.down {grid-column:2;grid-row:2}.workshop-direction.right {grid-column:3;grid-row:2}
+#battle-controls button:active {filter:brightness(1.35);box-shadow:inset 0 0 0 2px #b8f5fa;}
+#battle-controls button:disabled {opacity:.35;cursor:default;}
+.m5-hint {grid-row:5;grid-column:1;line-height:16px;margin:0;font-size:11px;color:#a4bfce;align-self:center;}
+.workshop-low {color:#ffbd96!important;}
+
+.workshop-leave {max-width:min(420px,calc(100% - 32px));border:1px solid #84bbc7;border-radius:10px;background:#102b40;color:#effaff;padding:24px;box-shadow:0 20px 80px #000b;}
+.workshop-leave::backdrop {background:#04101cbb;}
+.workshop-leave p {margin:0 0 20px;line-height:1.7;}
+.workshop-leave button {display:block;min-height:44px;width:100%;margin-top:10px;padding:8px 14px;border:1px solid #75b2bf;border-radius:5px;background:#254c60;color:#f5fdff;}
+#workshop-stay {background:#ffe3a2;color:#17293a;border-color:#ffe3a2;}
+.workshop-settled #workshop-board,.workshop-settled #workshop-objective,.workshop-settled #battle-controls,.workshop-settled #workshop-feedback,.workshop-settled .m5-hint {visibility:hidden;}
+#result-screen {position:absolute;inset:8px;max-height:none;overflow-y:auto;align-content:center;z-index:10;background:#0c2539f5;border:1px solid #7292a8;border-radius:8px;padding:24px;grid-template-rows:44px 72px 44px;grid-template-columns:minmax(0,1fr);justify-content:stretch;justify-items:stretch;gap:12px;}
+#result-screen:not([hidden]) {display:grid;animation:workshop-enter .22s ease-out;}
+#result-copy {margin:0;max-height:72px;overflow-y:auto;line-height:1.5;}
+#result-title {margin:0;}
+.m5-result-actions {width:min(100%,600px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+.m5-result-actions > button {box-sizing:border-box;min-width:0;height:44px;min-height:44px;max-height:44px;margin:0;padding:0 12px;font-size:14px;line-height:1.2;font-weight:700;white-space:nowrap;}
+.workshop-key-flight {position:absolute;z-index:8;pointer-events:none;background:url('assets/animal-moonlight-workshop-atlas.png') 0 0/400% 200% no-repeat;}
+
+@keyframes workshop-enter {from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+@media (orientation:portrait) {
+  .workshop-grid {grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(8,minmax(0,1fr));width:min(100cqw,62.5cqh);height:min(100cqh,160cqw);}
+  .workshop-player {width:20%;height:12.5%;}
+}
+
+@media (max-height:500px) and (orientation:landscape) {
+  #battle-content.workshop-battle-layout {grid-template-columns:minmax(0,1fr) 208px;grid-template-rows:60px minmax(0,1fr) 28px;gap:6px;}
+  #workshop-objective {grid-column:1;grid-row:1;grid-template-rows:34px 28px;}
+  .workshop-task {font-size:11px;padding:3px 5px;}.workshop-task b{width:20px;height:20px;}
+  .m5-canvas-wrap {grid-column:1;grid-row:2;}
+  #battle-controls {grid-column:2;grid-row:1/4;grid-template-columns:1fr;grid-template-rows:94px 94px;gap:10px;align-content:center;padding:0 6px;}
+  #workshop-feedback {grid-column:2;grid-row:3;font-size:11px;line-height:15px;}
+  .m5-hint {display:none;}
+  #result-screen {align-content:start;}
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .workshop-player,.workshop-cell,.workshop-sprite {transition:none!important;}
+  #result-screen {animation:none!important;}
+}

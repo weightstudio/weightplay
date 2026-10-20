@@ -2,7 +2,7 @@
 // Facts are grounded in game.js and the current first-party Guide.
 export const SPECTRUM_PULSE_TEXT_140 = {
   en: {
-    tags: ["Precision arcade", "Timing", "Emblem matching"],
+    tags: ["Precision play", "Timing", "Symbol matching"],
     mainKicker: "ONE-PRESS ARCADE",
     guideIntro: "Learn the read-and-pulse loop, then clear 30 fixed-pattern aurora towers across six chapters.",
     description: "Match the current colour and emblem at each scan point as you clear 30 fixed-pattern towers across six chapters.",

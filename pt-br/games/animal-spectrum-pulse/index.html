@@ -62,9 +62,10 @@
         <strong data-t="titleShort" data-wp-game-title data-wp-frame-title data-runtime-localize="off">Pulso Espectral</strong>
         <label class="locale-control"><span class="sr-only" data-t="language">Idioma</span><select id="localeSelect" aria-label="Idioma" data-t-aria="language"></select></label>
       </header>
-    <main id="mainScreen" class="main-screen">
+      <div id="mainFlow">
+    <main id="mainScreen" class="main-screen" data-wp-main-validation-root>
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap" data-wp-game-title data-runtime-localize="off">Pulso Espectral</h1>
-        <img class="poster" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v22" alt="Panko guia um espírito pelos portais da aurora" data-t-alt="posterAlt">
+        <div class="main-hero"><img class="poster" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v22" alt="Panko guia um espírito pelos portais da aurora" data-t-alt="posterAlt"></div>
         <div class="main-copy" data-wp-frame-copy>
           <small data-t="mainKicker">Arcade de um toque</small>
           <p data-t="mainSummary" data-wp-frame-summary>Impulsione o espírito espectral de Panko por portais giratórios com emblemas.</p>
@@ -72,6 +73,7 @@
           <span id="mainProgress" data-wp-frame-progress></span>
           <button id="start" class="primary" type="button" data-t="startGame" data-wp-main-start data-wp-frame-action="primary">Iniciar jogo</button>
         </div>
+      </main>
       <section class="public-guide game-page-info wp-spectrum-guide game-page-info-static" aria-labelledby="guideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Arcade de precisão</span><span>Ritmo</span><span>Combinação de emblemas</span></div>
       <small data-t="guideKicker">GUIA DO JOGO</small>
       <h2 id="guideTitle" data-t="guideTitle">Sinta o pulso e leia o portal</h2>
@@ -94,12 +96,13 @@
         <details><summary data-t="guideFaq4Question">O progresso é salvo?</summary><p data-t="guideFaq4Answer">Desbloqueios, medalhas, melhores tempos, melhorias e preferências ficam salvos localmente neste navegador.</p></details>
       <details data-wp-spectrum-text140-faq><summary data-t="guideFaq5Question">Como os seis capítulos mudam os portais?</summary><p data-t="guideFaq5Answer">As torres 1–5 usam um anel giratório. Depois entram pares em rotação oposta, barras e cruzes, espirais de pétalas, mudanças de ritmo e padrões combinados de coroa.</p></details><details data-wp-spectrum-text140-faq><summary data-t="guideFaq6Question">Dá para identificar um portal sem depender da cor?</summary><p data-t="guideFaq6Answer">Sim. Onda, sol, diamante e pata têm emblemas e texturas próprios além das cores.</p></details><details data-wp-spectrum-text140-faq><summary data-t="guideFaq7Question">O que acontece se eu sair durante uma torre?</summary><p data-t="guideFaq7Answer">Ao continuar, você retoma a mesma partida, com ângulos dos portais, cronômetro e Ressonância. Voltar às Torres encerra a partida.</p></details></section>
     </section>
-    </main>
+      </div>
   </div>
 
   <section id="stageScreen" class="stage-canvas" data-wp-logical-stage-canvas hidden>
-    <header id="stageHeader" class="stage-header" data-wp-shell-header="stage"><button id="stageBack" type="button" aria-label="Voltar" data-t-aria="back" data-wp-return="stage">←</button><strong data-wp-frame-title></strong><div id="stageInfo"><span id="stageSummary"></span></div></header>
+    <header id="stageHeader" class="stage-header" data-wp-shell-header="stage"><button id="stageBack" type="button" aria-label="Voltar" data-t-aria="back" data-wp-return="stage">←</button><strong data-wp-frame-title></strong></header>
     <div id="stageContent" class="stage-content" data-wp-shell-content="stage">
+      <div id="stageInfo"><span id="stageSummary"></span></div>
       <section id="towerPanel" class="tab-panel tower-panel"><div id="stageRail" class="stage-rail" aria-label="Seletor de torres" data-t-aria="stageRailLabel"></div></section>
       <section id="studioPanel" class="tab-panel studio-panel" hidden>
         <div class="studio-intro"><img src="../../assets/weightplay-character-drum-belly-panda-block-v1.webp" alt=""><div><h2 data-t="studioTitle">Estúdio de ressonância</h2><p data-t="studioIntro">Use Notas Estelares em ajustes permanentes.</p><strong id="noteCount"></strong></div></div>
@@ -118,16 +121,17 @@
     <header id="battleHeader" class="battle-header" data-wp-shell-header="battle">
       <button id="battleBack" type="button" aria-label="Voltar" data-t-aria="back" data-wp-return="battle">←</button>
       <strong data-wp-frame-title></strong>
-      <div id="battleFrameInfo" class="battle-frame-info"><div class="tower-block"><small id="towerLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="gate">Portal</b><strong id="gateValue">0/0</strong></span><span><b data-t="resonance">Ressonância</b><strong id="resonanceValue">×1</strong></span><span><b data-t="guard">Guarda</b><strong id="guardValue">0</strong></span></div></div>
+
     </header>
     <div id="battleLive" class="battle-live" data-wp-shell-content="battle">
+      <div id="battleFrameInfo" class="battle-frame-info"><div class="tower-block"><small id="towerLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="gate">Portal</b><strong id="gateValue">0/0</strong></span><span><b data-t="resonance">Ressonância</b><strong id="resonanceValue">×1</strong></span><span><b data-t="guard">Guarda</b><strong id="guardValue">0</strong></span></div></div>
       <div class="identity-row"><span data-t="currentIdentity">Atual</span><img id="identityIcon" src="../../assets/animal-spectrum-pulse/node-cyan.webp" alt=""><strong id="identityName"></strong><span id="nextIdentity"></span><button id="battleHelp" type="button" aria-label="Como jogar" data-t-aria="help" data-wp-battle-utility>?</button></div>
       <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="720" height="1200" tabindex="0" aria-label="Torre de pulso espectral" data-t-aria="arenaLabel"></canvas><div class="scan-legend" hidden><span data-t="scanMarker">SCAN</span><i></i></div><div id="timingCue" class="timing-cue" aria-hidden="true"></div><div class="control-cue" data-t="controlCue">Toque em qualquer lugar · Space / Enter / ↑</div></div>
       <p id="feedback" class="feedback" aria-live="polite"></p>
       <div class="combat-actions"><button id="dashButton" class="dash-button" type="button" data-t="dash">DASH · Shift</button><button id="pulseButton" class="pulse-button" type="button" data-t="pulse">PULSO</button></div>
     </div>
     <section id="buildModal" class="modal-layer build-modal" role="dialog" aria-modal="true" aria-labelledby="buildTitle" hidden><div class="dialog-card"><small data-t="buildKicker">CORE SALVAGED</small><h2 id="buildTitle" data-t="chooseBuild">Choose your power</h2><div id="buildChoices" class="build-choices"></div></div></section>
-    <section id="helpModal" class="modal-layer tutorial-panel" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">Um toque, um impulso</h2><ol><li data-t="help1">Suba e solte antes de pulsar novamente.</li><li data-t="help2">Atravesse quando o scanner tocar sua cor e emblema.</li><li data-t="help3">Um portal vencido vira ponto seguro. Alcance a coroa a tempo.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">Continuar</button></div></div></section>
+    <section id="helpModal" class="modal-layer tutorial-panel" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">Um toque, um impulso</h2><ol><li data-t="help1">Suba e solte antes de pulsar novamente.</li><li data-t="help2">Atravesse quando o scanner tocar sua cor e emblema.</li><li data-t="help3">Um portal vencido vira ponto seguro. Alcance a coroa a tempo.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue" data-wp-tutorial-next>Continuar</button></div></div></section>
     <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">Manter esta partida?</h2><p data-t="leaveText">Continuar retoma espírito, ângulos, tempo e Ressonância. Voltar às Torres encerra a partida.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continuar</button><button id="leaveStage" type="button" data-t="returnTowers">Voltar às Torres</button></div></div></section>
     <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-drum-belly-panda-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">Tempo</b><strong id="resultTime"></strong></span><span><b data-t="bestResonance">Melhor ressonância</b><strong id="resultChain"></strong></span><span><b data-t="medal">Medalha</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultTowers" type="button" data-t="towers">Torres</button><button id="next" class="primary" type="button" data-t="nextTower">Próxima torre</button><button id="retry" type="button" data-t="retry">Tentar novamente</button></div></div></section>
   </section>

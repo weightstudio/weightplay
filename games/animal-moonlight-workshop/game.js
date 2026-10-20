@@ -1,16 +1,8 @@
 /* Moonlight Workshop: game-owned deterministic puzzle and guided play. */
+import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
-  const style = document.createElement('link');
-  style.rel = 'stylesheet';
-  style.href = new URL('interface-7-cleanup.css?v=20261018-guided-workshop1', document.currentScript.src).href;
-  document.head.append(style);
-  // Localized legacy shells share this game entry; bind the one platform guard.
-  if (!window.__weightPlayEdgeGuardInstalled && !document.querySelector('script[src*="/edge-guard.js"]')) {
-    const guard=document.createElement('script'); guard.src=new URL('../../src/edge-guard.js',document.currentScript.src).href;
-    document.head.append(guard);
-  }
   const profiles = [
     { badge:"◎", start:[0,2], switches:[[2,1],[4,3]], key:[5,1], exit:[7,2], limit:18, walls:[[1,0],[3,0],[3,2],[4,2],[4,4],[6,4]] },
     { badge:"⚙", start:[0,4], switches:[[1,3],[3,1],[5,3]], key:[6,3], exit:[7,4], limit:22, walls:[[1,2],[2,2],[4,2],[6,2],[2,1],[2,0],[4,0],[6,0],[1,4],[2,4],[3,4],[4,4],[5,4],[6,4]], gates:[{x:2,y:3,needs:1},{x:4,y:1,needs:2},{x:6,y:3,needs:3}] },
@@ -46,6 +38,12 @@
   let best = Math.max(0, Math.min(profiles.length, Math.floor(Number(read(key, '0')) || 0)));
   let records; try { records = JSON.parse(read(recordsKey, '{}')); } catch { records = {}; }
   if (!records || typeof records !== 'object' || Array.isArray(records)) records = {};
+  let selectedStageIndex = Math.min(profiles.length - 1, best);
+  const stageConfig = createMoonlightWorkshopStageConfig({profiles,getState:()=>({
+    best, records, names:names(), mechanics:mechanics(), stageLabel:common(9), bestLabel:common(8),
+    switchLabel:t(23), moveLabel:t(5),
+  })});
+  let stageSelector = null;
   let screen = 'main', stage = 1, game, history = [], hinted = null, notice = '', resultWin = false, leaving = false;
   const directions = {up:[0,-1,'↑',16],left:[-1,0,'←',17],down:[0,1,'↓',18],right:[1,0,'→',19]};
   const audio = window.WeightPlayAudio?.createScope();
@@ -150,8 +148,6 @@
   dialog.setAttribute('aria-labelledby','workshop-leave-copy');
   dialog.innerHTML='<p id="workshop-leave-copy"></p><button type="button" id="workshop-stay"></button><button type="button" id="workshop-leave"></button>';
   $('battle-screen').append(dialog);
-  const instruction = document.createElement('p'); instruction.className='workshop-intro';
-  $('start-game').before(instruction);
   const controlHost = $('battle-controls');
   controlHost.innerHTML = '<div class="workshop-tools"><button id="workshop-undo" type="button"></button><button id="workshop-hint" type="button"></button><button id="workshop-reset" type="button">↺</button></div><div class="workshop-pad" dir="ltr"></div>';
   for (const [direction,values] of Object.entries(directions)) {
@@ -159,6 +155,35 @@
     button.textContent=values[2]; button.className=`workshop-direction ${direction}`;
     button.addEventListener('click',() => move(direction));
     controlHost.querySelector('.workshop-pad').append(button);
+  }
+  const frame = window.WeightPlayScreenFrame.mount({
+    root:$('app'),localeSelect:$('localeSelect'),playUI:true,
+    scenes:{
+      main:{root:$('main-screen'),header:$('main-screen').querySelector('header'),content:$('main-content')},
+      stage:{root:$('stage-screen'),header:$('stage-screen').querySelector('header'),content:$('stage-content')},
+      battle:{root:$('battle-screen'),header:$('battle-screen').querySelector('header'),content:$('battle-content'),headerInfo:$('battle-info')},
+    },
+  });
+  const stageProgress = document.createElement('span');
+  const stageInfoGroup = window.WeightPlayScreenFrame.createGroup().add(stageProgress);
+  frame.stageTopUI.add(stageInfoGroup);
+  const stageTab = $('stageTabButton');
+  frame.commonDownButton.add(stageTab);
+  stageTab.addEventListener('click',()=>stageSelector?.select(selectedStageIndex,{center:true,focus:false,notify:false}));
+  const battleInfoGroup = window.WeightPlayScreenFrame.createGroup().add($('stage-label')).add($('score-label'));
+  frame.battleTopUI.add(battleInfoGroup);
+  function updateStageProgress() {
+    stageProgress.textContent = `${common(9)} ${selectedStageIndex+1} / ${profiles.length} · ${t(15)} ${best} / ${profiles.length}`;
+  }
+  function ensureStageSelector() {
+    if (stageSelector) return stageSelector;
+    stageSelector = window.WeightPlayPlayUI.mountStage({
+      page:$('stage-content'),rail:$('stage-list'),config:stageConfig,selected:selectedStageIndex,
+      isActive:()=>screen==='stage',
+      onSelect(index){selectedStageIndex=index;updateStageProgress();},
+      onStart(index){start(index+1);},
+    });
+    return stageSelector;
   }
   const measure = {screen:'main',roundKey:null,started:false,ended:false,restart:false,outcome:'complete'};
   const observe = () => { try { window.WonderAnalytics?.game?.observeState(() => ({...measure,screen:screen==='battle'&&!leaving?'battle':screen==='main'||screen==='stage'?screen:null,paused:leaving||Boolean(document.querySelector('.wp-shell-settings-popover:not([hidden])')),node:document.body,activityMode:'input',idleSeconds:300,keyboardKeys:['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d']})); } catch { /* Optional local telemetry. */ } };
@@ -172,6 +197,7 @@
     settleEffects(); grid.getAnimations({subtree:true}).forEach(a=>a.cancel());
     audio?.stop(); screen=next; leaving=false; if (dialog.open) dialog.close();
     document.body.dataset.screen = next==='result'?'battle':next;
+    document.querySelector('[data-wp-game-guide]')?.toggleAttribute('hidden',next!=='main');
     for (const node of document.querySelectorAll('.screen')) {
       const active = node.id==='battle-screen' ? next==='battle'||next==='result' : node.dataset.screen===next;
       node.hidden=!active; node.classList.toggle('active',active);
@@ -179,29 +205,17 @@
     $('result-screen').hidden=next!=='result';
     board.inert=next!=='battle'; controlHost.inert=next!=='battle'; objective.inert=next!=='battle';
     $('battle-screen').classList.toggle('workshop-settled',next==='result');
+    frame.activate(next==='result'?'battle':next);
+    if(next==='stage'){
+      ensureStageSelector().refresh(selectedStageIndex);
+      updateStageProgress();
+    }
     window.dispatchEvent(new CustomEvent(next==='battle'?'weightplay:battle-open':'weightplay:shell-sync'));
     observe();
   }
-  function stageCards() {
-    const unlocked=Math.min(profiles.length,best+1);
-    $('stage-list').replaceChildren(...profiles.map((p,i) => {
-      const n=i+1, button=document.createElement('button'); button.type='button';
-      button.className=`m5-stage-card stage-card${n===unlocked?' recommended':''}`;
-      button.dataset.stage=String(n); button.disabled=n>unlocked; button.setAttribute('aria-disabled',String(button.disabled));
-      if (!button.disabled) button.dataset.wpEnterBattle='';
-      const title=document.createElement('span'); title.textContent=`${common(9)} ${n}`;
-      const subtitle=document.createElement('small'); subtitle.textContent=names()[i];
-      const detail=document.createElement('small');
-      detail.textContent=button.disabled?'🔒':`${p.switches.length} ${t(23)} · ${p.limit} ${t(5)}`;
-      button.append(title,subtitle,detail);
-      if(Number.isFinite(Number(records[n])) && Number(records[n])>0){const record=document.createElement('small');record.textContent=`${common(8)} ${records[n]} / ${p.limit}`;button.append(record);}
-      button.addEventListener('click',() => start(n)); return button;
-    }));
-    requestAnimationFrame(() => { if(screen==='stage') $('stage-list').querySelector('.recommended')?.scrollIntoView({inline:'center',block:'nearest'}); });
-  }
   function localize() {
     document.querySelector('[data-m5-lede]').textContent=t(16);
-    instruction.textContent=t(20);
+    stageTab.textContent=common(2);
     $('main-progress').textContent=`${t(15)}: ${best} / ${profiles.length}`;
     $('workshop-undo').textContent=`↶ ${t(3)}`;
     $('workshop-hint').textContent=`◇ ${t(4)}`;
@@ -210,10 +224,16 @@
     $('workshop-stay').textContent=t(18); $('workshop-leave').textContent=t(19);
     $('workshop-leave-copy').textContent=`${common(9)} ${stage}. ${t(17)}`;
     document.querySelector('[data-m5-guide]').textContent=t(6);
-    stageCards(); if(game) render();
+    if(stageSelector)stageSelector.refresh(selectedStageIndex);
+    updateStageProgress();
+    frame.refresh();
+    if(game) render();
   }
   function start(n,replay=false) {
     if (n<1 || n>Math.min(profiles.length,best+1)) return;
+    selectedStageIndex=n-1;
+    stageSelector?.select(selectedStageIndex,{center:true,notify:false});
+    updateStageProgress();
     stage=n; game=initial(profiles[n-1]); history=[]; hinted=null; notice=''; resultWin=false;
     $('stage-label').textContent=`${common(9)} ${stage} / ${profiles.length}`;
     measure.roundKey={}; measure.started=true; measure.ended=false; measure.restart=replay; measure.outcome='complete';
@@ -311,18 +331,18 @@
   $('workshop-undo').addEventListener('click',undoMove);
   $('workshop-hint').addEventListener('click',hint);
   $('workshop-reset').addEventListener('click',() => {if(canAct()){start(stage,true);feedback(t(32));}});
-  $('start-game').addEventListener('click',() => {stageCards();show('stage');});
+  $('start-game').addEventListener('click',() => {selectedStageIndex=Math.min(profiles.length-1,best);show('stage');});
   $('stage-back').addEventListener('click',() => show('main'));
   $('battle-back').addEventListener('click',() => {
-    if(screen==='result'){stageCards();show('stage');return;}
+    if(screen==='result'){show('stage');return;}
     leaving=true; $('workshop-leave-copy').textContent=`${common(9)} ${stage}. ${t(17)}`;
     dialog.showModal(); $('workshop-stay').focus(); observe();
   });
   function stay(){leaving=false;dialog.close();$('battle-back').focus({preventScroll:true});observe();}
   $('workshop-stay').addEventListener('click',stay);
   dialog.addEventListener('cancel',event=>{event.preventDefault();stay();});
-  $('workshop-leave').addEventListener('click',()=>{measure.ended=true;measure.outcome='abandon';stageCards();show('stage');});
-  $('to-stages').addEventListener('click',()=>{stageCards();show('stage');});
+  $('workshop-leave').addEventListener('click',()=>{measure.ended=true;measure.outcome='abandon';show('stage');});
+  $('to-stages').addEventListener('click',()=>show('stage'));
   $('retry').addEventListener('click',()=>start(stage,true));
   $('next').addEventListener('click',()=>{if(resultWin&&stage<profiles.length)start(stage+1);});
   window.addEventListener('keydown',event => {
@@ -334,7 +354,6 @@
   window.addEventListener('pagehide',()=>audio?.stop());
   window.addEventListener('weightplay:market-locale-change',localize);
   window.addEventListener('resize',()=>{hinted=null;if(game)render();},{passive:true});
+  ensureStageSelector();
   localize(); show('main');
-  const hideLoading=()=>{$('loadingPanel')?.classList.add('hidden');$('loadingPanel')?.setAttribute('hidden','');};
-  if(document.readyState==='complete')hideLoading();else window.addEventListener('load',hideLoading,{once:true});
 })();

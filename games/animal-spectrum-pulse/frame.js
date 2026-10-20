@@ -32,7 +32,7 @@
       localeSelect,
       playUI: true,
       scenes: {
-        main: { root: main, header: byId("mainHeader"), content: byId("mainScreen") },
+        main: { root: main, header: byId("mainHeader"), content: byId("mainFlow") },
         stage: { root: stage, header: stageHeader, content: stageContent, headerInfo: stageInfo },
         battle: { root: battle, header: battleHeader, content: battleLive, headerInfo: battleFrameInfo },
       },

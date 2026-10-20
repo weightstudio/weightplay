@@ -24,7 +24,9 @@
     if (segmentLocales[String(parts[0] || "").toLowerCase()]) parts.shift();
     const suffix = parts.length ? `/${parts.join("/")}${sourceUrl.pathname.endsWith("/") ? "/" : ""}` : "/";
     const prefix = `${projectPrefix ? `/${projectPrefix}` : ""}${segment ? `/${segment}` : ""}`;
-    return `${prefix}${suffix}${sourceUrl.search}${sourceUrl.hash}`.replace(/\/{2,}/g, "/");
+    const previewValues = sourceUrl.searchParams.getAll("preview");
+    const previewQuery = previewValues.length === 1 && previewValues[0] === "1" ? "?preview=1" : "";
+    return `${prefix}${suffix}${previewQuery}`.replace(/\/{2,}/g, "/");
   }
 
   const dictionaries = {

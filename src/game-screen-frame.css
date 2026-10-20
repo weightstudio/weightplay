@@ -70,48 +70,48 @@ html body [data-wp-frame="2"] [data-wp-frame-stat] :is(b,strong) {font-size:14px
 html body [data-wp-frame="2"] [data-wp-frame-stat] img {width:22px!important;height:22px!important;object-fit:contain!important;flex:none!important}
 /* The guide is outside the play canvas, but belongs to the same shared skin. */
 html body:has([data-wp-frame="2"][data-wp-frame-active="main"]) [data-weightplay-version] {display:none!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-page-info {padding:16px!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-info-title {gap:10px!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-info-title h2 {font:800 clamp(22px,3vw,30px)/1.35 system-ui!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-info-title p {max-width:72ch!important;font:400 15px/1.7 system-ui!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-info-facts {display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-info-fact {min-width:0!important;min-height:0!important;padding:12px!important;gap:8px!important;align-content:start!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-info-sections {display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px!important;margin-top:24px!important;background:transparent!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-info-section {min-width:0!important;padding:16px!important;gap:12px!important;align-content:start!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-info-section h3 {font:700 18px/1.4 system-ui!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-info-section :is(p,li,dd) {max-width:72ch!important;font:400 15px/1.75 system-ui!important;overflow-wrap:anywhere!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-info-tags {gap:6px!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-info-tags > span {padding:5px 8px!important;font:600 13px/1.4 system-ui!important;white-space:normal!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-page-info {padding:16px!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-info-title {gap:10px!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-info-title h2 {font:800 clamp(22px,3vw,30px)/1.35 system-ui!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-info-title p {max-width:72ch!important;font:400 15px/1.7 system-ui!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-info-facts {display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-info-fact {min-width:0!important;min-height:0!important;padding:12px!important;gap:8px!important;align-content:start!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-info-sections {display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px!important;margin-top:24px!important;background:transparent!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-info-section {min-width:0!important;padding:16px!important;gap:12px!important;align-content:start!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-info-section h3 {font:700 18px/1.4 system-ui!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-info-section :is(p,li,dd) {max-width:72ch!important;font:400 15px/1.75 system-ui!important;overflow-wrap:anywhere!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-info-tags {gap:6px!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-info-tags > span {padding:5px 8px!important;font:600 13px/1.4 system-ui!important;white-space:normal!important}
 @media(min-width:700px) {
- html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-page-info {padding:24px!important}
- html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-info-facts {grid-template-columns:repeat(4,minmax(0,1fr))!important}
- html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-info-section {padding:20px!important}
+ html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-page-info {padding:24px!important}
+ html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-info-facts {grid-template-columns:repeat(4,minmax(0,1fr))!important}
+ html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-info-section {padding:20px!important}
 }
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-page-info {box-shadow:0 5px 0 var(--wp-ui-shadow)!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-page-info :is(.game-info-fact > span,.game-info-related-copy span) {color:var(--wp-ui-muted)!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-page-info :is(dt,a,.game-info-kicker,li::marker) {color:var(--wp-ui-text)!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-page-info :is(.game-info-tags,.game-info-skills) > span {background:var(--wp-ui-tag-background)!important;color:var(--wp-ui-tag-text)!important;border:1px solid var(--wp-ui-tag-border)!important;border-radius:var(--wp-ui-radius)!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-page-info {box-sizing:border-box!important;width:min(var(--wp-main-width),calc(100% - 2 * var(--wp-main-gutter)))!important;max-width:var(--wp-main-width)!important;margin-inline:auto!important;background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius)!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-page-info :is(.game-info-section,.game-info-band,.game-info-related-card,.game-info-fact) {background:var(--wp-ui-background)!important;color:var(--wp-ui-text)!important;border-color:var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]) .game-page-info :is(h2,h3,p,li,dd,strong,.game-info-kicker,.game-info-band span,.game-info-related-copy span) {color:var(--wp-ui-text)!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-page-info {box-shadow:0 5px 0 var(--wp-ui-shadow)!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-page-info :is(.game-info-fact > span,.game-info-related-copy span) {color:var(--wp-ui-muted)!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-page-info :is(dt,a,.game-info-kicker,li::marker) {color:var(--wp-ui-text)!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-page-info :is(.game-info-tags,.game-info-skills) > span {background:var(--wp-ui-tag-background)!important;color:var(--wp-ui-tag-text)!important;border:1px solid var(--wp-ui-tag-border)!important;border-radius:var(--wp-ui-radius)!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-page-info {box-sizing:border-box!important;width:min(var(--wp-main-width),calc(100% - 2 * var(--wp-main-gutter)))!important;max-width:var(--wp-main-width)!important;margin-inline:auto!important;background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius)!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-page-info :is(.game-info-section,.game-info-band,.game-info-related-card,.game-info-fact) {background:var(--wp-ui-background)!important;color:var(--wp-ui-text)!important;border-color:var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-page-info :is(h2,h3,p,li,dd,strong,.game-info-kicker,.game-info-band span,.game-info-related-copy span) {color:var(--wp-ui-text)!important}
 /* Road Crosser v20/I7 preserves the framed Guide radius required by its
    exact current acceptance issue while remaining scoped to that game. */
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"])[data-wp-game-id="road-crosser"] .game-page-info,
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"])[data-wp-game-id="road-crosser"] .game-info-section {border-radius:18px!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"])[data-wp-game-id="road-crosser"] .game-page-info,
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"])[data-wp-game-id="road-crosser"] .game-info-section {border-radius:18px!important}
 /* Balance Grove v7/I6 preserves the framed Guide radius required by its
    exact current acceptance issue while remaining scoped to that game. */
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"])[data-wp-game-id="animal-balance-grove"] .game-page-info,
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"])[data-wp-game-id="animal-balance-grove"] .game-info-section {border-radius:var(--wp-ui-radius)!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"])[data-wp-game-id="animal-balance-grove"] .game-page-info,
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"])[data-wp-game-id="animal-balance-grove"] .game-info-section {border-radius:var(--wp-ui-radius)!important}
 /* Moonlight Workshop v7/I6 restores the framed Guide and its structured
    single-column sections after the shared Interface 7 contract is applied. */
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"])[data-wp-game-id="animal-moonlight-workshop"] .game-page-info,
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"])[data-wp-game-id="animal-moonlight-workshop"] .game-info-section {border-radius:var(--wp-ui-radius)!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"])[data-wp-game-id="animal-moonlight-workshop"] .game-info-sections {display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"])[data-wp-game-id="animal-moonlight-workshop"] .game-page-info,
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"])[data-wp-game-id="animal-moonlight-workshop"] .game-info-section {border-radius:var(--wp-ui-radius)!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"])[data-wp-game-id="animal-moonlight-workshop"] .game-info-sections {display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px!important}
 /* Mosaic Clues v21/I6 keeps the generated Guide as a framed reading surface
    after the shared Interface 7 compact-radius contract is applied. */
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"])[data-wp-game-id="animal-mosaic-clues"] .game-page-info,
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"])[data-wp-game-id="animal-mosaic-clues"] .game-info-section {border-radius:18px!important}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"])[data-wp-game-id="animal-mosaic-clues"] .game-info-sections {display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"])[data-wp-game-id="animal-mosaic-clues"] .game-page-info,
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"])[data-wp-game-id="animal-mosaic-clues"] .game-info-section {border-radius:18px!important}
+html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"])[data-wp-game-id="animal-mosaic-clues"] .game-info-sections {display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px!important}
 /* Layer Grove v11/I6 keeps its game-owned Guide as a framed reading surface
    after the shared Interface 7 compatibility skin is applied. The custom
    token is local to this Guide so shared Battle controls retain their compact

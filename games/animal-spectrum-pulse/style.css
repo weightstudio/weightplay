@@ -1,4 +1,8 @@
 /* Spectrum Pulse game-owned content. Shared screen chrome lives in the I9 frame. */
+[hidden] {
+  display: none !important;
+}
+
 body[data-wp-game-id="animal-spectrum-pulse"] {
   --spectrum-cyan: #55e8ff;
   --spectrum-gold: #ffe176;
@@ -20,21 +24,26 @@ body[data-wp-game-id="animal-spectrum-pulse"] {
   gap: 12px;
 }
 
-.main-copy > small {
-  color: var(--spectrum-cyan);
-  font-weight: 800;
-  letter-spacing: .14em;
+#mainFlow > #mainScreen {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: inherit;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
 }
 
 .main-copy p {
   max-width: 38rem;
   margin: 0;
-  color: var(--spectrum-copy);
   line-height: 1.55;
 }
 
 #mainProgress {
-  color: var(--spectrum-gold);
+  box-sizing: border-box;
+  height: 42px;
+  max-height: 44px;
+  overflow: hidden;
   font-variant-numeric: tabular-nums;
 }
 
@@ -144,8 +153,8 @@ body[data-wp-game-id="animal-spectrum-pulse"] {
 }
 
 #battleHelp {
-  width: 36px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   flex: 0 0 auto;
   border: 1px solid #628cb2;
   border-radius: 6px;

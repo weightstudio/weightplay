@@ -194,7 +194,7 @@
     $("result-copy").textContent = t("completeCopy");
     $("result-turns").textContent = String(state.turns);
     $("result-best").textContent = best === null ? t("noBest") : String(best);
-    $("result-status").textContent = state.gardenIndex === gardens.length - 1 ? t("final") : t("completeCopy");
+    $("result-status").textContent = state.completedGardens.size === gardens.length ? t("final") : t("completeCopy");
     $("next-button").disabled = state.gardenIndex === gardens.length - 1;
   }
 

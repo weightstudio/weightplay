@@ -10,6 +10,8 @@
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-scene-controls" content="immutable" />
   <meta name="theme-color" content="#07172f" />
+  <meta name="weightplay-game-version" content="v23" />
+  <meta name="weightplay-interface-version" content="9" />
   <title>Starlink | WeightPlay</title>
   <meta name="description" content="Restore thirty original animal constellations by tracing every starlight trail exactly once." />
   <meta property="og:site_name" content="WeightPlay" />
@@ -52,32 +54,28 @@
   }
   </script>
   <link rel="stylesheet" href="../../src/tutorial.css" />
-  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-  <link rel="stylesheet" href="../../src/stage-selector-standard.css" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20261013-observatory-v22" />
+  <link rel="stylesheet" href="style.css?v=20261021-starlight-v23-i9" />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261021-shared-play1" />
+  <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261021-stage-rail-i9" />
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-<body data-screen="main" data-game-id="animal-starlight-trails" data-wp-combined-sound="true">
-  <section id="loadingPanel" class="loading-panel" aria-live="polite">
-    <div class="loading-card"><strong>Starlink</strong><span id="loadingText">Loading star map…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
-  </section>
-
-  <main id="mainScreen" class="main-screen">
-    <header class="main-header">
+<body data-screen="main" data-game-id="animal-starlight-trails" data-wp-game-id="animal-starlight-trails" data-wp-game-version="v23" data-wp-interface-version="9" data-wp-combined-sound="true" data-wp-game-owned-guide="true">
+  <span id="loadingPanel" aria-hidden="true" data-wp-entry-readiness-sentinel></span>
+  <div id="gameRoot" data-wp-frame-root>
+    <div id="mainGroup" hidden>
+    <header id="mainHeader" class="main-header" data-wp-shell-header="main">
       <a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
-      <strong data-i18n="title" data-wp-game-title>Starlink</strong>
+      <strong data-i18n="title" data-wp-game-title data-wp-frame-title>Starlink</strong>
       <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
     </header>
-    <section class="main-hero">
-      <img class="main-poster" src="../../assets/animal-starlight-trails-cover.webp" alt="" />
-      <div class="main-copy"><small data-i18n="eyebrow">Moon Cap Orla's constellation workshop</small><h1 data-i18n="title" data-wp-game-title>Starlink</h1><p data-i18n="pitch">Trace every trail exactly once and relight the Animal Star Map.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
-    </section>
-  </main>
-
+    <div id="mainFlow" data-wp-shell-content="main">
+      <main id="mainScreen" class="main-screen">
+        <div class="main-hero"><img class="main-poster" data-wp-frame-poster src="../../assets/animal-starlight-trails-cover.webp" alt="" /></div>
+        <div class="main-copy" data-wp-frame-copy><small data-i18n="eyebrow">Moon Cap Orla's constellation workshop</small><p data-i18n="pitch" data-wp-frame-summary>Trace every trail exactly once and relight the Animal Star Map.</p><div id="mainProgress" class="main-progress" data-wp-frame-progress></div><button id="startBtn" class="primary-action" type="button" data-i18n="start" data-wp-main-start data-wp-frame-action="primary">Start Game</button></div>
+      </main>
   <section class="game-page-info game-page-info-static" aria-label="Starlink game information">
 
     <div class="game-info-hero">
@@ -97,24 +95,33 @@
       <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Stars with an odd number of unused trails often reveal where an open route should begin or end.</li><li>Before entering a narrow branch, check whether another unused trail can bring the route back to the main constellation.</li><li>Treat arrows, numbers, keys, and gates as route constraints rather than decoration.</li><li>Use Undo for a short correction and Restart when the opening choice has trapped several later branches.</li></ul></div>
       <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Stages 1-5 teach classic open trails. Stages 6-10 introduce required starts. Stages 11-15 teach one-way comet paths.</p>
 <p>Stages 16-20 add ordered stars, Stages 21-25 introduce key-and-gate routes, and Stages 26-30 combine the complete vocabulary in larger mastery constellations.</p></div>
-      <div class="game-info-section"><h3>Developer Design Note</h3><p>Starlink uses a responsive logical Canvas that fills the safe Stage and Battle area without stretching individual puzzle elements. Extra space is distributed through stable tracks and anchors, so phones and wide desktop browsers show the same route information and controls. The separate General ad reserve never overlays gameplay or Result actions.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>Starlink uses a responsive logical Canvas that fills the shared safe Stage and Battle area without stretching individual puzzle elements. Extra space is distributed through stable tracks and anchors, so phones and wide desktop browsers show the same route information and controls. Hints and Result actions stay within their game layouts.</p></div>
       <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Starlink runs free in the browser and requires no account. Unlocks, best ratings, and times are stored only in this browser; clearing site data or changing browsers may create a separate save. Skill feedback is supportive entertainment and not a formal ability assessment.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Can I pass through the same star twice?</dt><dd>Yes. Stars may be revisited, but each connecting trail may be used only once.</dd></div><div><dt>Why can I not use a pink comet trail?</dt><dd>The arrow on that trail shows its allowed direction. Entering from the opposite end is not legal.</dd></div><div><dt>What happens at a dead end?</dt><dd>The attempt remains visible so you can Undo one or more steps or Restart for free.</dd></div><div><dt>Are hints required?</dt><dd>No. Every stage can be solved without hints; Hint only marks one route-safe next star.</dd></div><div><dt>Does progress save?</dt><dd>Yes. Unlocks, best star ratings, and best times are stored locally in this browser.</dd></div><div><dt>How many stages are included?</dt><dd>There are 30 authored stages across six rule chapters. Stage 30 remains replayable after completion.</dd></div><div><dt>What lowers a stage&#39;s star rating?</dt><dd>The attempt counts invalid moves, Restarts made after drawing a path, and two points per Hint. Zero gives three stars, one to three gives two, and more gives one. Undo itself adds no penalty.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>More Related Games</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-one-line" href="/en/games/animal-one-line/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-one-line.webp" data-final-src="/assets/weightplay-logo.png" alt="One Line" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">One Line</strong><span>One Line is an original 30-stage grid puzzle starring Rainbow Hop Mimi.</span></span></a></div></div>
     </div>
   </section>
 
-  <section id="stageScreen" class="stage-shell" data-wp-canvas-max-width="920" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-frame-logical-header="stage" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="358" style="--wp-stage-art:url('../../assets/animal-starlight-trails-observatory-v22.webp')">
-      <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back">&larr;</button><div><strong data-i18n="chooseStage">Choose Constellation</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt="" /></header>
-      <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
-      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-management-nav data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Constellations"></div>
     </div>
+    </div>
+
+  <section id="stageScreen" class="stage-canvas wp-stage-art-shell" data-wp-logical-stage-canvas data-wp-frame-play-fill data-wp-canvas-max-width="920" hidden>
+    <header id="stageHeader" class="stage-header" data-wp-shell-header="stage"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back">&larr;</button><strong data-wp-frame-title></strong></header>
+    <div id="stageContent" data-wp-shell-content="stage">
+      <div id="stageInfo"><span id="stageSummary"></span></div>
+      <section id="observatoryWorkspace" class="observatory-workspace"><div id="stageRail" class="stage-rail" aria-label="Constellations"></div></section>
+    </div>
+    <nav id="stageTabs" class="stage-tabs" data-wp-frame-nav role="tablist" aria-label="Choose Constellation">
+      <span aria-hidden="true" data-wp-frame-group></span>
+      <span data-wp-frame-group><button id="constellationTab" type="button" role="tab" aria-selected="true" data-wp-frame-action="tab" data-wp-frame-stage-slot="stages" data-i18n="stages">Stages</button></span>
+      <span data-wp-frame-group><button id="appearanceTab" type="button" role="tab" aria-selected="false" data-wp-frame-action="tab" data-wp-frame-stage-slot="equipment">Equipment</button></span>
+    </nav>
   </section>
 
-  <section id="battleScreen" class="battle-screen" hidden>
-    <div class="trail-battle-canvas" data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-canvas-max-width="920">
-      <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><div><i id="edgeProgress"></i></div></div><div class="battle-stat"><small data-i18n="trails">Trails</small><strong id="trailCount">0 / 0</strong></div><div class="battle-stat"><small data-i18n="stars">Stars</small><strong id="starTotal">0</strong></div><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility data-wp-primary-action aria-label="Hint">?</button></header>
+  <section id="battleScreen" class="trail-battle-canvas" data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-canvas-max-width="920" hidden>
+      <header id="battleHeader" class="battle-header" data-wp-shell-header="battle"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back">&larr;</button><strong data-wp-frame-title></strong></header>
+      <div id="battleLive" data-wp-shell-content="battle">
+      <div id="battleFrameInfo" class="starlink-hud"><div class="battle-progress"><span id="stageLabel"></span><div><i id="edgeProgress"></i></div></div><div class="battle-stat"><small data-i18n="trails">Trails</small><strong id="trailCount">0 / 0</strong></div><div class="battle-stat"><small data-i18n="stars">Stars</small><strong id="starTotal">0</strong></div></div>
       <div id="objectiveRow" class="objective-row"></div>
       <section id="puzzleScene" class="puzzle-scene" aria-label="Constellation puzzle"><svg id="graphSvg" viewBox="0 0 100 100" role="group" aria-label="One-stroke constellation"></svg><div id="hintPulse" class="hint-pulse" hidden></div></section>
       <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="assistText"></span></div>
@@ -122,9 +129,9 @@
       <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
         <div class="result-card"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt="" /><small data-i18n="resultSummary">Run Summary</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="resultFacts" class="result-facts"></p><p id="comparisonText" class="comparison"></p><div class="result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Retry</button></div></div>
       </section>
-    </div>
-    <div class="battle-ad-reserve" aria-hidden="true"></div>
+      </div>
   </section>
+  </div>
 
   <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <script>try{const segment=location.pathname.split("/").filter(Boolean)[0];const locale=({en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"})[segment];if(locale)localStorage.setItem("weightPlayLocale",locale);}catch{}</script>
@@ -132,11 +139,12 @@
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="../../src/tutorial.js"></script>
   <script src="guide-locales.js?v=20260930-starlink-faq1"></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1" data-wp-frame-script></script><script src="game.js?v=20261013-observatory-v22&wp-audio=1.0.0"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
+  <script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script>
+  <script src="../../src/game-play-ui.js?v=20261021-shared-play1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1" data-wp-frame-script></script><script src="game.js?v=20261021-starlight-v23-i9&amp;wp-audio=1.0.0"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
   <script src="../../src/edge-guard.js"></script>
   <script data-wp-comparison-only src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  </body>
+</body>
 </html>
