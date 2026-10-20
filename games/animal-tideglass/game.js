@@ -1,12 +1,12 @@
-/* Tide Level Calibration v4 / shared Interface 7. Game-owned content only. */
+/* Tide Level Calibration v4 / shared Interface 9. The frame owns all shell UI. */
 (function () {
   'use strict';
-  const R=window.TideglassRules,C=window.TIDEGLASS_LOCALES,$=id=>document.getElementById(id),app=$('app');
+  const R=window.TideglassRules,C=window.TIDEGLASS_LOCALES,StageConfig=window.TideglassStageConfig,$=id=>document.getElementById(id),app=$('app');
   if(!app||app.dataset.tideglassMounted)return;
   app.dataset.wpFrameRoot='';app.dataset.tideglassMounted='true';
   const locale=C?.__localeKeys.find(key=>C[key].segment===location.pathname.split('/').filter(Boolean)[0])||document.documentElement.lang||'en';
   const copy=C?.[locale];
-  if(!R||!copy||!window.WeightPlayScreenFrame?.mount||!window.WeightPlayStageV6?.install||!window.TideglassMotion){$('loadError').hidden=false;return;}
+  if(!R||!copy||!StageConfig||!window.WeightPlayScreenFrame?.mount||!window.WeightPlayPlayUI?.mountStage||!window.TideglassMotion){$('loadError').hidden=false;return;}
   const t=(key,vars={})=>Object.entries(vars).reduce((s,[k,v])=>s.replaceAll(`{${k}}`,String(v)),copy[key]);
   const format=(template,vars={})=>Object.entries(vars).reduce((s,[k,v])=>s.replaceAll(`{${k}}`,String(v)),template);
   const store={get(key){try{return localStorage.getItem(key);}catch{return null;}},set(key,value){try{localStorage.setItem(key,value);return true;}catch{return false;}}};
@@ -24,13 +24,16 @@
     const title=make('strong');title.dataset.wpFrameTitle='';title.textContent=copy.title;h.append(back,title);return h;
   }
   // Main, Stage and Battle are constructed once. All later transitions change state, not control identity.
-  const stage=make('section','stageView','stage-canvas');stage.hidden=true;stage.dataset.screen='stage';stage.dataset.wpStandardStageScreen='';stage.dataset.wpStageLandscapeWidth='760';stage.dataset.wpStageLandscapeHeight='334';
-  stage.dataset.wpStageArt=$('poster').getAttribute('src');stage.style.setProperty('--wp-stage-art',`url("${$('poster').src}")`);
+  const stage=make('section','stageView','stage-canvas');stage.hidden=true;stage.dataset.screen='stage';
   const stageHeader=header('stage'),workspace=make('div','stageWorkspace','tg-stage-workspace'),rail=make('div','stageRail','stage-rail');
-  rail.dataset.wpStageRail='';rail.dataset.wpStageVirtualDrag='true';rail.setAttribute('aria-label',t('stages'));workspace.append(rail);
-  const nav=make('nav');nav.dataset.wpFrameStageNav='';nav.setAttribute('aria-label',t('stages'));
-  const tab=button('stageTab','stages');tab.dataset.wpFrameAction='tab';tab.dataset.wpFrameStageSlot='stages';tab.setAttribute('aria-current','page');nav.append(tab);stage.append(stageHeader,workspace,nav);app.append(stage);
-  const battle=make('section','battleView','battle-canvas');battle.hidden=true;battle.dataset.screen='battle';battle.dataset.wpLogicalBattleCanvas='';battle.dataset.wpBattleLandscapeWidth='760';battle.dataset.wpBattleLandscapeHeight='390';
+  rail.setAttribute('aria-label',t('stages'));workspace.append(rail);
+  const nav=make('nav');nav.dataset.wpFrameNav='';nav.setAttribute('aria-label',t('stages'));
+  const tab=button('stageTab','stages');tab.dataset.wpFrameAction='tab';tab.setAttribute('aria-current','page');nav.append(tab);stage.append(stageHeader,workspace,nav);app.append(stage);
+  const stageFields=[];
+  for(const [label,id] of [[t('stages'),'stageNumberValue'],[t('stars'),'stageStarsValue']]){
+    const field=make('div'),caption=make('span'),value=make('b',id);caption.textContent=label;field.append(caption,value);stageFields.push({field,value});
+  }
+  const battle=make('section','battleView','battle-canvas');battle.hidden=true;battle.dataset.screen='battle';battle.dataset.wpLogicalBattleCanvas='';
   const battleHeader=header('battle'),play=make('div','battleContent','tg-play');play.dataset.wpFrameLogicalActions='battle';
   const hud=make('div','battleStats');
   for(const [id,key] of [['stageStat','stage'],['readingStat','reading'],['starStat','stars']]){
@@ -77,21 +80,9 @@
     $('gameGuide').hidden=name!=='main';frame.activate(name);updateProgress();pause();
     if(name==='main'){motion.fade($('poster'));if(focus)$('startBtn').focus({preventScroll:true});}
     if(name==='stage'){
-      stageController.refresh();stageController.center(R.unlocked(progress));
-      if(focus)$('stageBack').focus({preventScroll:true});for(const node of rail.querySelectorAll('.tg-stage-item'))motion.fade(node);
+      stageController.select(R.unlocked(progress),{center:true,focus:false,notify:true});
+      if(focus)$('stageBack').focus({preventScroll:true});
     }
-  }
-  function bindStage(card,index){
-    const level=R.stages[index],best=progress.best[index],locked=index>R.unlocked(progress);
-    card.type='button';card.className='stage-card'+(locked?' locked':'');card.setAttribute('aria-disabled',String(locked));
-    card.dataset.tgArc=String(level.arc);card.dataset.tgState=locked?'locked':best?'done':'ready';card.dataset.tgCheckpoint=String(level.checkpoint);
-    if(index===R.unlocked(progress))card.dataset.wpStageRecommended='true';else delete card.dataset.wpStageRecommended;
-    const group=make('div',null,'tg-stage-item');group.dataset.wpItemContent='';
-    const emblem=make('span',null,'tg-stage-emblem');emblem.setAttribute('aria-hidden','true');emblem.textContent=['≈','◈','±','∑','½','✦'][level.arc-1];
-    const title=make('strong'),mode=make('span'),state=make('small'),stars=make('span',null,'tg-stage-stars');
-    title.textContent=t('stage',{value:index+1});mode.textContent=copy.modes[level.arc-1];state.textContent=locked?t('locked'):best?t('done'):'5 × '+t('reading',{current:1,total:1}).replace('1/1','').trim();
-    stars.textContent='★'.repeat(best?.stars||0)+'☆'.repeat(3-(best?.stars||0));stars.setAttribute('aria-label',t('stars')+': '+(best?.stars||0)+'/3');
-    group.append(emblem,title,mode,stars,state);card.replaceChildren(group);
   }
   function setWater(value,instant=false){
     const from=visualWater,to=R.clamp(value);
@@ -126,7 +117,7 @@
     renderValue(instant);
   }
   function startStage(index){
-    const next=R.newRun(index,progress);if(!next)return false;run=next;show('battle',false);renderRound(true);seal.focus({preventScroll:true});motion.fade(field);audio('game.start');return true;
+    const next=R.newRun(index,progress);if(!next)return false;run=next;stageController.select(index,{center:true,notify:true});show('battle',false);renderRound(true);seal.focus({preventScroll:true});motion.fade(field);audio('game.start');return true;
   }
   function submit(){
     if(blocked())return;
@@ -151,13 +142,19 @@
   }
   function closeLeave(){releaseModal();renderRound(true);if(focusBefore?.isConnected&&!focusBefore.disabled)focusBefore.focus({preventScroll:true});else seal.focus();}
   try{
-    frame=window.WeightPlayScreenFrame.mount({root:app,scenes:{main:{root:main,header:mainHeader,content:mainContent},stage:{root:stage,header:stageHeader,content:workspace},battle:{root:battle,header:battleHeader,content:play,headerInfo:hud}},localeSelect:sourceSelect});
+    frame=window.WeightPlayScreenFrame.mount({root:app,scenes:{main:{root:main,header:mainHeader,content:mainContent},stage:{root:stage,header:stageHeader,content:workspace},battle:{root:battle,header:battleHeader,content:play,headerInfo:hud}},localeSelect:sourceSelect,playUI:true});
     sourceSelect.id='tideglassLocaleSource';
-    stageController=window.WeightPlayStageV6.install(rail,{total:R.TOTAL,poolSize:9,bind:bindStage,initialIndex:()=>R.unlocked(progress),activate:index=>{if(scene==='stage'&&!settingsOpen())startStage(index);}});
-    if(!stageController)throw Error('Stage controller unavailable');
+    const stageGroup=window.WeightPlayScreenFrame.createGroup();stageFields.forEach(({field})=>stageGroup.add(field));frame.stageTopUI.add(stageGroup);
+    const battleGroup=window.WeightPlayScreenFrame.createGroup();[...hud.children].forEach(field=>battleGroup.add(field));frame.battleTopUI.add(battleGroup);
+    frame.commonDownButton.add(tab);
+    stageController=window.WeightPlayPlayUI.mountStage({page:workspace,rail,config:StageConfig({rules:R,text:t,copy,getProgress:()=>progress}),selected:R.unlocked(progress),onSelect:index=>{
+      stageFields[0].value.textContent=`${index+1}/${R.TOTAL}`;stageFields[1].value.textContent=`${R.totalStars(progress)}/${R.TOTAL*3}`;
+    },onStart:index=>{if(scene==='stage'&&!settingsOpen())startStage(index);},isActive:()=>scene==='stage'&&!settingsOpen()});
+    if(!stageController)throw Error('Shared Stage selector unavailable');
+    listen(tab,'click',()=>stageController.select(stageController.selected,{center:true,focus:false,notify:true}));
     listen($('startBtn'),'click',()=>show('stage'));listen($('stageBack'),'click',()=>show('main'));
     listen($('battleBack'),'click',()=>{if(!modal){if(run.phase==='result')show('stage');else openModal('leave');}});
-    listen(sourceSelect,'change',()=>{const next=C[sourceSelect.value];if(!next)return;store.set('weightPlayLocale',sourceSelect.value);store.set('weightplay-tideglass-locale',sourceSelect.value);location.assign('/'+next.segment+'/games/animal-tideglass/'+location.search+location.hash);});
+    listen(sourceSelect,'change',()=>{const next=C[sourceSelect.value];if(!next)return;store.set('weightPlayLocale',sourceSelect.value);store.set('weightplay-tideglass-locale',sourceSelect.value);const preview=new URLSearchParams(location.search).get('preview')==='1'?'?preview=1':'';location.assign('/'+next.segment+'/games/animal-tideglass/'+preview);});
     listen(range,'input',()=>{if(blocked()){range.value=String(run?.value||0);return;}if(R.setValue(run,range.value)){feedback.textContent='';field.dataset.feedback='';renderValue();}});
     for(const [node,delta] of [[minus,-1],[plus,1]])listen(node,'click',()=>{if(!blocked()&&R.setValue(run,run.value+delta)){feedback.textContent='';field.dataset.feedback='';renderValue();}});
     listen(reset,'click',()=>{if(!blocked()&&R.setValue(run,R.roundOf(run).initial)){renderValue();feedback.textContent='';field.dataset.feedback='';audio('ui.click');}});
@@ -178,10 +175,9 @@
       }
       if(event.key==='Escape'&&!settingsOpen()){event.preventDefault();if(run.phase==='result')show('stage');else openModal('leave');}
     });
-    const resize=new ResizeObserver(()=>{if(scene==='stage')stageController.center();});resize.observe(rail);
     listen(window,'weightplay:interaction-state',pause);listen(document,'visibilitychange',pause);
     listen(window,'pageshow',()=>{motion.resume('bfcache');pause();});
-    listen(window,'pagehide',event=>{if(event.persisted){motion.pause('bfcache');return;}++epoch;resize.disconnect();motion.destroy();stageController.destroy();frame.destroy();life.abort();});
+    listen(window,'pagehide',event=>{if(event.persisted){motion.pause('bfcache');return;}++epoch;motion.destroy();stageController.destroy();frame.destroy();life.abort();});
     $('startBtn').disabled=false;$('loadError').hidden=true;show('main',false);
     // Read-only diagnostics. Native tests must still use the real controls.
     window.TIDEGLASS_TEST=Object.freeze({getState:()=>({scene,modal,busy,run:run?{...run}:null,completed:R.completed(progress),stars:R.totalStars(progress),water:run?R.water(run):0,visualWater,saveOK}),motion:()=>motion.snapshot()});

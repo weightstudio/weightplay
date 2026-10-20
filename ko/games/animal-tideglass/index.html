@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>조수 수위 맞추기 | WeightPlay</title>
 <meta name="description" content="눈금, 기억, 계기 오차, 상보적인 수위와 분수 문제로 움직이는 조수 유리병을 보정하세요."><meta name="robots" content="noindex,nofollow,noarchive">
-<meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v4"><meta name="weightplay-interface-version" content="7">
+<meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v4"><meta name="weightplay-interface-version" content="9">
 <meta name="weightplay-text-version" content="1.3.0"><link rel="canonical" href="https://weightplay.com/ko/games/animal-tideglass/">
 <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-tideglass/">
 <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-tideglass/">
@@ -25,25 +25,27 @@
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="조수 수위 맞추기"><meta name="twitter:description" content="눈금, 기억, 계기 오차, 상보적인 수위와 분수 문제로 움직이는 조수 유리병을 보정하세요."><meta name="twitter:image" content="https://weightplay.com/games/animal-tideglass/assets/animal-tideglass-cover-v2.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","@id":"https://weightplay.com/ko/games/animal-tideglass/#game","name":"조수 수위 맞추기","url":"https://weightplay.com/ko/games/animal-tideglass/","image":"https://weightplay.com/games/animal-tideglass/assets/animal-tideglass-cover-v2.png","description":"눈금, 기억, 계기 오차, 상보적인 수위와 분수 문제로 움직이는 조수 유리병을 보정하세요.","inLanguage":"ko","genre":["시각적 추정","기억 퍼즐","분수 연습"],"gamePlatform":"Web browser","operatingSystem":"Any","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"},"numberOfPlayers":{"@type":"QuantitativeValue","value":1}},{"@type":"FAQPage","@id":"https://weightplay.com/ko/games/animal-tideglass/#faq","inLanguage":"ko","mainEntity":[{"@type":"Question","name":"측정 다섯 번이면 다섯 스테이지가 완료되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 다섯 번 모두 완료해야 한 스테이지만 완료됩니다."}},{"@type":"Question","name":"기억 문제는 빨리 풀어야 하나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 기억했어요를 누르기 전까지 원하는 만큼 관찰하세요. 이후 힌트를 쓰거나 측정을 마칠 때까지 목표가 가려집니다."}},{"@type":"Question","name":"다이얼과 수위는 왜 다른가요?","acceptedAnswer":{"@type":"Answer","text":"계기 오차 문제는 다이얼에 부호가 있는 오차를 더합니다. 목표가 60%, 오차가 +8이면 다이얼은 52입니다."}}]}]}</script>
 
-<link rel="stylesheet" href="/src/game-page-info.css?v=20260919-guide1"><link rel="stylesheet" href="/src/stage-selector-standard.css?v=20260925-stage-v7"><link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20260925-stage-v7"><link rel="stylesheet" href="/src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><link rel="stylesheet" href="/games/animal-tideglass/style.css?v=tideglass-v4">
+<link rel="stylesheet" href="/src/game-page-info.css?v=20261019-guide-no-legacy-stage-css-v1"><link rel="stylesheet" href="/games/animal-tideglass/style.css?v=20261020-tideglass-v4-i9-1"><link rel="stylesheet" href="/src/game-screen-frame.css?v=20261019-interface9-settings-locale-adoption-v1"><link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play-ui1"><link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20260925-stage-v7"><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261017-interface9-guide-theme1">
 <script defer src="/src/game-layout-config.js?v=20260919-banner1"></script>
 <script defer src="/src/weightplay-audio.js?v=1.0.0"></script>
+<script defer src="/src/i18n.js?v=20260721-locale13-1"></script>
 <script defer src="/src/game-title-registry.js?v=20260908-approved-game-names1"></script>
 <script defer src="/games/animal-tideglass/locales.js?v=tideglass-v4"></script>
 <script defer src="/games/animal-tideglass/rules.js?v=tideglass-v4"></script>
 <script defer src="/games/animal-tideglass/motion.js?v=tideglass-v4"></script>
-<script defer src="/src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-<script defer src="/src/stage-virtualization-standard.js?v=20260922-v6"></script>
-<script defer src="/games/animal-tideglass/game.js?v=tideglass-v4"></script>
-<script defer src="/src/stage-selector-standard.js?v=20260925-stage-v7"></script>
+<script defer src="/games/animal-tideglass/stage-config.js?v=20261020-tideglass-i9-stage-config1"></script>
+<script defer src="/src/stage-rail-i9.js?v=20261017-shared-stage-rail1"></script>
+<script defer src="/src/game-play-ui.js?v=20261017-shared-play-ui1"></script>
+<script defer src="/src/game-screen-frame.js?v=20261019-interface9-settings-locale-adoption-v1"></script>
 <script defer src="/src/battle-canvas-standard.js?v=20260925-stage-v7"></script>
+<script defer src="/src/interface7-poster-registry.js?v=20261020-tideglass-i9-related1"></script>
+<script defer src="/src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
+<script defer src="/games/animal-tideglass/game.js?v=20261020-tideglass-v4-i9-1"></script>
 <script>window.addEventListener('load',()=>{if(!window.TIDEGLASS_TEST)document.getElementById('loadError').hidden=false;},{once:true});</script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-<body data-wp-game-id="animal-tideglass" data-screen="main">
-<main id="app" data-wp-frame-root>
+<body class="has-game-page-info" data-audience="general" data-wp-game-age-tags="9,family" data-wp-game-id="animal-tideglass" data-wp-game-version="v4" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-screen="main">
+<main id="app" data-wp-frame-root data-wp-play-ui="1">
 <section id="mainView" data-screen="main" aria-labelledby="mainTitle">
 <header id="mainHeader"><a href="/ko/" data-wp-return="main" aria-label="WeightPlay">←</a><strong id="mainTitle" data-wp-frame-title data-wp-game-title data-runtime-localize="off">조수 수위 맞추기</strong></header>
 <div id="mainContent"><img id="poster" data-wp-frame-poster src="/games/animal-tideglass/assets/animal-tideglass-cover-v2.png" alt="조수 수위 맞추기" width="1254" height="1254" fetchpriority="high">
@@ -52,15 +54,17 @@
 <select id="localeSelect" hidden aria-hidden="true" tabindex="-1"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko" selected>한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select>
 <p id="loadError" role="alert" hidden>게임을 불러오지 못했습니다. 페이지를 새로고침해 주세요.</p>
 <noscript><p>눈금, 기억, 계기 오차, 상보적인 수위와 분수 문제로 움직이는 조수 유리병을 보정하세요.</p></noscript>
-<section id="gameGuide" class="game-page-info tg-guide" data-wp-game-guide data-wp-guide-complete="true" data-wp-text-version="1.3.0" data-runtime-localize="off" aria-labelledby="guideTitle">
-<h1 id="guideTitle" class="game-info-title" data-wp-game-title>조수 수위 맞추기</h1><p>눈금, 기억, 계기 오차, 상보적인 수위와 분수 문제로 움직이는 조수 유리병을 보정하세요.</p><div class="game-info-tags"><span>시각적 추정</span><span>기억 퍼즐</span><span>분수 연습</span></div>
+<section id="gameGuide" class="game-page-info game-page-info-static tg-guide" data-wp-game-guide data-wp-guide-complete="true" data-wp-text-version="1.3.0" data-runtime-localize="off" aria-labelledby="guideTitle">
+<div class="game-info-hero"><div class="game-info-title"><h2 id="guideTitle" data-wp-game-title>조수 수위 맞추기</h2><p>눈금, 기억, 계기 오차, 상보적인 수위와 분수 문제로 움직이는 조수 유리병을 보정하세요.</p></div></div><div class="game-info-tags"><span>시각적 추정</span><span>기억 퍼즐</span><span>분수 연습</span></div>
+<div class="game-info-sections">
 <section class="game-info-section"><h3>게임 소개</h3><p>Nori와 함께 산호초의 수위계를 점검하는 관찰·수 추리 퍼즐입니다. 실제 조수 예보나 액체 색깔 분류 게임은 아닙니다. 장마다 다른 판단 방식이 필요합니다.</p></section>
 <section class="game-info-section"><h3>플레이 방법</h3><p>열린 스테이지를 선택하고 슬라이더를 움직이세요. 슬라이더에 초점을 맞춘 뒤 방향키를 쓰거나 더하기·빼기 버튼으로 한 칸씩 조정할 수도 있습니다. 지시와 수면을 확인하고 확정을 누르세요. 틀려도 같은 문제를 계속 풀 수 있으며 시간이나 목숨 제한이 없습니다.</p></section>
 <section class="game-info-section"><h3>규칙과 진행</h3><p>여섯 장에 걸쳐 30개 스테이지가 있으며 스테이지마다 측정 다섯 번을 완료해야 합니다. 다섯 번을 모두 마쳐야 전체 진행이 한 단계 늘어납니다. 기억, 부호가 있는 계기 오차, 합이 100%인 두 수위와 분수 문제가 차례로 등장합니다. 다섯 번째 스테이지마다 허용 오차가 좁아집니다.</p></section>
 <section class="game-info-section"><h3>보정 요령</h3><p>실수와 힌트가 없으면 별 세 개입니다. 실수 세 번 이하, 힌트 한 번 이하이면 별 두 개, 그 밖에 완료한 경우는 별 한 개입니다. 힌트는 스테이지당 두 번입니다. 병의 장식 대신 금색 눈금을 보세요. 오차 문제에서는 목표에서 부호가 있는 오차를 빼면 다이얼 값이 됩니다.</p></section>
 <section class="game-info-section"><h3>진행 상황 저장</h3><p>브라우저 저장이 가능하면 완료한 스테이지, 최고 별 수, 최소 시도 횟수가 저장됩니다. 다시 해도 더 좋은 기록은 지워지지 않습니다. 도중에 나가면 그 스테이지는 처음부터 시작합니다. 이전 시제품 기록은 남지만 새 스테이지를 열어 주지는 않습니다.</p></section>
 <section id="faq" class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>측정 다섯 번이면 다섯 스테이지가 완료되나요?</dt><dd>아니요. 다섯 번 모두 완료해야 한 스테이지만 완료됩니다.</dd></div><div><dt>기억 문제는 빨리 풀어야 하나요?</dt><dd>아니요. 기억했어요를 누르기 전까지 원하는 만큼 관찰하세요. 이후 힌트를 쓰거나 측정을 마칠 때까지 목표가 가려집니다.</dd></div><div><dt>다이얼과 수위는 왜 다른가요?</dt><dd>계기 오차 문제는 다이얼에 부호가 있는 오차를 더합니다. 목표가 60%, 오차가 +8이면 다이얼은 52입니다.</dd></div></dl></section>
-<section class="game-info-section"><h3>관련 게임</h3><p><a href="/ko/games/star-memory/" data-runtime-localize="off">별 메모리</a> — 카드 위치를 기억하는 연습.</p>
-<p><a href="/ko/games/animal-number-match/" data-runtime-localize="off">판코의 넘버 그로브</a> — 숫자를 짝짓는 연습.</p></section>
+<section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>관련 게임</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="block-blast" href="/ko/games/block-blast/"><span class="game-info-related-poster"><img src="/assets/weightplay-logo.png" data-final-src="/assets/weightplay-logo.png" alt="블록 블라스트 game poster" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">블록 블라스트</strong><span>블록을 배치해 가로줄과 세로줄을 완성하세요.</span></span></a>
+<a class="game-info-related-card" data-game-id="animal-number-match" href="/ko/games/animal-number-match/"><span class="game-info-related-poster"><img src="/assets/weightplay-logo.png" data-final-src="/assets/weightplay-logo.png" alt="판코의 넘버 그로브 game poster" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">판코의 넘버 그로브</strong><span>숫자를 짝짓는 연습.</span></span></a></div></section>
+</div>
 </section>
 </body></html>

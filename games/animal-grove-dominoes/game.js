@@ -42,14 +42,18 @@
   const {campaignGuide}=await import('./campaign-guide.mjs?v=20260909-grove-campaign-v6');
   for(const [locale,guide] of Object.entries(campaignGuide))Object.assign(locales[locale],guide);
   const {PROGRESS_KEY,normalizeProgress,completeStage}=await import('./progress.mjs?v=20260909-grove-campaign-v6');
-  const {createStageView}=await import('./stage-view.mjs?v=20260921-grove-dominoes-v6-safe-height-guide-contract');
   const {createHabitatArt}=await import('./habitat-art.mjs?v=20260909-grove-campaign-v6');
   const rounds=campaign.map(p=>({...p,tiles:p.tiles.map(tile=>Object.assign([tile.from,tile.to],tile))}));
-  let stageView,progress,flipMode=false,fitBattle=()=>{},completionReceipt=null;
+  let frame,stageController,selectedStageIndex=0,progress,flipMode=false,completionReceipt=null;
   const cc=()=>campaignCopy[state.locale]||campaignCopy.en;
   let chainState=null,rackOrder=[];
-  const state = { locale: "en", sound: !window.WeightPlayAudio.isMuted(), roundIndex: 0, currentEnd: "", picks: 0, placed: [], rack: [], solved: 0 };
-  window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
+  const state = { locale: "en", roundIndex: 0, currentEnd: "", picks: 0, placed: [], rack: [], solved: 0 };
+  let lastSoundEnabled=!window.WeightPlayAudio.isMuted();
+  window.addEventListener("weightplay:audio-volume-change",()=>{
+    const enabled=!window.WeightPlayAudio.isMuted();
+    if(enabled===lastSoundEnabled)return;
+    lastSoundEnabled=enabled;track("sound_changed",{enabled});
+  });
   const $ = (id) => document.getElementById(id);
   const safeStorage = { get(key) { try { return window.localStorage.getItem(key); } catch (_) { return null; } }, set(key, value) { try { window.localStorage.setItem(key, value);return true; } catch (_) {return false;} } };
   progress=normalizeProgress(safeStorage.get(PROGRESS_KEY));
@@ -77,19 +81,13 @@
     document.documentElement.dir = copy().direction || "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
     document.querySelectorAll("[data-copy-aria-label]").forEach((node) => { node.setAttribute("aria-label", t(node.dataset.copyAriaLabel)); });
-    $("settingsBtn").setAttribute("aria-label", t("settings"));
-    $("settingsPanel").setAttribute("aria-label", t("settings"));
-    $("battleSoundBtn").setAttribute("aria-label", state.sound ? t("soundOn") : t("soundOff"));
-    $("battleSoundBtn").setAttribute("aria-pressed", String(state.sound));
-    $("battleSoundBtn").textContent = state.sound ? "♪" : "×";
-    $("soundBtn").textContent = state.sound ? t("soundOn") : t("soundOff");
-    $("soundBtn").setAttribute("aria-pressed", String(state.sound));
     document.querySelectorAll('[data-copy="facts"]').forEach(node=>node.textContent=cc().summary);
+    $('stageList').setAttribute('aria-label',cc().stages);
     $('flipChain').textContent=cc().flip;
-    $('battleBackBtn').textContent='←';$('battleBackBtn').setAttribute('aria-label',cc().backStages);
     $('leaveBtn').textContent=cc().backStages;$('homeBtn').textContent=cc().backStages;$('nextStage').textContent=cc().next;
-    if(stageView&&!stageView.root.hidden)stageView.refresh();
-    if (!$('battleView').hidden) renderRound();
+    stageController?.refresh();
+    if (frame?.active === 'battle' && !$('resultView').hidden) return;
+    if (frame?.active === 'battle') renderRound();
   }
   function populateLocales() {
     const select = $("localeSelect");
@@ -102,21 +100,16 @@
     cancelAnimationFrame(viewportResetFrame);
     const main = id === "mainView";
     const result = id === "resultView";
-    const stage=id==='stageView';
-    if(stageView)stageView.root.hidden=!stage;
+    const stage = id === "stageView";
     $("mainView").hidden = !main;
+    $("stageView").hidden = !stage;
+    $("battleView").hidden = main || stage;
     const guide = document.querySelector(".guide-card, [data-wp-game-guide], .game-page-info-static");
     if (guide) guide.hidden = !main;
-    $("battleView").hidden = main || stage;
-    document.querySelector('#battleView .logical-shell').hidden=result;
+    $("logicalShell").hidden = result;
     $("resultView").hidden = !result;
     document.body.dataset.screen = main ? "main" : stage?'stage':result ? "result" : "battle";
-    $("settingsPanel").hidden = true;
-    $("settingsBtn").setAttribute("aria-expanded", "false");
-    // Keep the shared shell's document-flow/active-play lock in step with the
-    // scene before an immediate post-return gesture (for example, the Main
-    // guide wheel in the responsive smoke path). The mutation observer also
-    // reconciles this state, but only on its next animation frame.
+    frame?.activate(main ? 'main' : stage ? 'stage' : 'battle', {covered:result});
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.scrollTo(0, 0);
     if(!main)viewportResetFrame=requestAnimationFrame(()=>{
@@ -124,7 +117,6 @@
       document.documentElement.scrollTop=0;document.body.scrollTop=0;
       window.scrollTo({left:0,top:0,behavior:'instant'});
     });
-    if(!main&&!stage)fitBattle();
   }
   function shuffle(items) { return [...items].sort((a, b) => (a[0].charCodeAt(0) + a[1].charCodeAt(0)) - (b[0].charCodeAt(0) + b[1].charCodeAt(0))); }
   function tileButton(tile, index) {
@@ -153,7 +145,7 @@
     const round = rounds[state.roundIndex];
     $("roundLabel").textContent = t("round", { current: state.roundIndex + 1, total: rounds.length });
     $("endLabel").textContent = t("end", { habitat: habitat(state.currentEnd) });
-    $("placedCount").textContent = String(state.placed.length);
+    $("placedCount").textContent = `${state.placed.length}/${round.tiles.length}`;
     const words=recoveryCopy[state.locale]||recoveryCopy.en;
     const c=cc();
     const rules=[`${c.goal}: ${habitat(round.goal)}`,`${c.required}: ${chainState.tiles.filter(tile=>tile.required&&!chainState.path.includes(tile.id)).length}`];
@@ -163,7 +155,6 @@
     if(round.deliveries?.length)rules.push(`${c.deliveries}: ${round.deliveries.map((h,i)=>`${i<chainState.deliveryIndex?'✓ ':''}${habitat(h)}`).join(' → ')}`);
     $("instruction").textContent=rules.join(' • ');
     $('flipChain').disabled=!round.tiles.some(tile=>tile.reversible);$('flipChain').setAttribute('aria-pressed',String(flipMode));
-    $('placedCount').parentElement.lastChild.textContent=`/${round.tiles.length}`;
     if($('undoChain')){$('undoChain').textContent=words[0];$('undoChain').disabled=!chainState?.path.length;}
     renderChain();
     const rackNode = $("tileRack"); rackNode.replaceChildren();
@@ -193,8 +184,8 @@
     state.rack=rackOrder.map(tile=>chainState.path.includes(tile.id)?null:tile);
     $('battleStatus').textContent='';$('appStatus').textContent=t('end',{habitat:habitat(state.currentEnd)});setFeedbackState('idle');playTone('board.undo');renderRound();
   }
-  function start(index=0) {if(!Number.isInteger(index)||index<0||index>=progress.unlocked)return;completionReceipt=null;state.roundIndex=index; state.picks = 0; state.solved = 0; track("session_started",{stage:index+1});playTone('game.start'); showView("battleView"); startRound(); }
-  function openStages(){showView('stageView');stageView.refresh({resetSelection:true});}
+  function start(index=0) {if(!Number.isInteger(index)||index<0||index>=progress.unlocked)return;selectedStageIndex=index;completionReceipt=null;state.roundIndex=index; state.picks = 0; state.solved = 0; track("session_started",{stage:index+1});playTone('game.start'); showView("battleView"); startRound(); }
+  function openStages(preferLatestUnlocked=false){if(preferLatestUnlocked)selectedStageIndex=Math.max(0,progress.unlocked-1);showView('stageView');stageController?.refresh(selectedStageIndex);}
   function recordCompletion(){
     if(completionReceipt)return completionReceipt;
     if(outcome(chainState)!=='complete')throw new Error('Incomplete route cannot earn progress');
@@ -211,8 +202,6 @@
     setFeedbackState('complete');showView('resultView');
   }
   function goHome() { track("session_abandoned", { round: state.roundIndex + 1 }); showView("mainView"); applyLocale(); }
-  function toggleSettings() { const panel = $("settingsPanel"); const open = panel.hidden; panel.hidden = !open; $("settingsBtn").setAttribute("aria-expanded", String(open)); }
-  function toggleSound() { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); track("sound_changed", { enabled: state.sound }); }
   state.locale = queryLocale();
   const initialize = () => {
     const actions=document.createElement('div');actions.className='grove-battle-actions';$('leaveBtn').before(actions);
@@ -221,24 +210,57 @@
     actions.append(undoButton,flip,$('leaveBtn'));
     const routePanel=document.createElement('div');routePanel.className='grove-route-panel';
     document.querySelector('.chain-card').before(routePanel);routePanel.append(document.querySelector('.chain-card'),$('instruction'),$('battleStatus'));
-    const next=document.createElement('button');next.id='nextStage';next.type='button';next.className='primary-btn';next.addEventListener('click',()=>start(state.roundIndex+1));$('replayBtn').before(next);
-    const canvas=document.querySelector('#battleView .battle-canvas'),frame=document.createElement('div');frame.className='grove-battle-frame';
-    frame.append(document.querySelector('#battleView .logical-shell'),$('resultView'));canvas.append(frame);
-    fitBattle=()=>{
-      if($('battleView').hidden)return;
-      const width=Math.min(920,document.documentElement.clientWidth);
-      const reserveHeight=Number(window.WeightPlayLayout?.reserveHeight)||0;
-      const height=Math.max(1,(window.visualViewport?.height||innerHeight)-reserveHeight);
-      const wide=width>=680&&width>height*1.3;
-      // Recompose route and rack tracks on viewport changes; domino, label
-      // and action dimensions stay identical in both layouts.
-      frame.dataset.layout=wide?'wide':'tall';
-      const scale=Math.min(width/(wide?740:390),height/(wide?354:620));
-      canvas.style.height=height+'px';frame.style.width=width/scale+'px';frame.style.height=height/scale+'px';frame.style.transform=`scale(${scale})`;
-    };
-    const resizeLifecycle=new AbortController();window.addEventListener('resize',fitBattle,{signal:resizeLifecycle.signal});window.visualViewport?.addEventListener('resize',fitBattle,{signal:resizeLifecycle.signal});window.addEventListener('pagehide',()=>resizeLifecycle.abort(),{once:true});
-    stageView=createStageView({campaign,copy:cc,locale:()=>state.locale,progress:()=>progress,activate:start,home:goHome,sound:()=>state.sound,soundLabel:()=>t(state.sound?'soundOn':'soundOff'),toggleSound});
-    populateLocales();applyLocale();$('startBtn').addEventListener('click',openStages);$('replayBtn').addEventListener('click',()=>start(state.roundIndex));$('homeBtn').addEventListener('click',openStages);$('battleBackBtn').addEventListener('click',openStages);$('leaveBtn').addEventListener('click',openStages);$('settingsBtn').addEventListener('click',toggleSettings);$('soundBtn').addEventListener('click',toggleSound);$('battleSoundBtn').addEventListener('click',toggleSound);
+    populateLocales();
+    applyLocale();
+    frame=window.WeightPlayScreenFrame.mount({
+      root:$('app'),localeSelect:$('localeSelect'),playUI:true,
+      scenes:{
+        main:{root:$('mainView'),header:$('mainView').querySelector('.topbar'),content:$('mainView').querySelector('.main-content')},
+        stage:{root:$('stageView'),header:$('stageView').querySelector('.panel-head'),content:$('stageWorkspace')},
+        battle:{root:$('battleView'),header:$('battleView').querySelector('.panel-head'),content:$('battleView').querySelector('.battle-content'),headerInfo:$('battleHeaderInfo')},
+      },
+    });
+    frame.activate('main');
+    stageController=window.WeightPlayPlayUI.mountStage({
+      page:$('stageWorkspace'),rail:$('stageList'),selected:selectedStageIndex,
+      config:{
+        gameId:'animal-grove-dominoes',count:campaign.length,
+        poster:'/games/animal-grove-dominoes/assets/animal-grove-dominoes-cover.webp',
+        background:'/assets/lobby-block-atmosphere.svg',
+        stage(index){
+          const stage=campaign[index];
+          if(!stage)throw new RangeError(`GROVE_STAGE_INDEX:${index}`);
+          const c=cc(),locked=stage.id>progress.unlocked,best=progress.best[stage.id],cleared=Boolean(best);
+          const number=new Intl.NumberFormat(state.locale);
+          const required=stage.tiles.filter(tile=>tile.required).length,optional=stage.tiles.length-required;
+          const goal=`${c.goal}: ${habitat(stage.goal)}`;
+          const summary=`${number.format(required)} ${c.required} · ${goal}`;
+          const details=[`${c.required}: ${number.format(required)}`,`${c.optional}: ${number.format(optional)}`,goal];
+          if(stage.visits?.length)details.push(`${c.visits}: ${stage.visits.map(habitat).join(' · ')}`);
+          if(stage.bridges!==undefined)details.push(`${c.bridges}: ${stage.bridges}`);
+          if(stage.flips!==undefined)details.push(`${c.flips}: ${stage.flips}`);
+          if(stage.deliveries?.length)details.push(`${c.deliveries}: ${stage.deliveries.map(habitat).join(' → ')}`);
+          return {
+            id:stage.id,kicker:`${c.stages} ${number.format(stage.id)} / ${number.format(campaign.length)}`,
+            title:stage.names[state.locale]||stage.names.en,subtitle:goal,
+            status:locked?c.locked:cleared?`${c.cleared} · ${t('best')}: ${best}`:c.play,
+            summary,details,locked,cleared,
+            poster:'/games/animal-grove-dominoes/assets/animal-grove-dominoes-cover.webp',
+          };
+        },
+      },
+      onSelect:index=>{selectedStageIndex=index;},
+      onStart:index=>{selectedStageIndex=index;start(index);},
+      isActive:()=>$('app').dataset.wpFrameActive==='stage',
+    });
+    $('startBtn').addEventListener('click',()=>openStages(true));
+    $('replayBtn').addEventListener('click',()=>start(state.roundIndex));
+    $('nextStage').addEventListener('click',()=>start(state.roundIndex+1));
+    $('homeBtn').addEventListener('click',openStages);
+    $('battleBackBtn').addEventListener('click',openStages);
+    $('stageBackBtn').addEventListener('click',()=>goHome());
+    $('leaveBtn').addEventListener('click',openStages);
+    applyLocale();
     // Decode the two-ended domino art before the first entry. Text labels
     // remain a usable fallback if an asset request fails; no retry loop.
     $('startBtn').disabled=true;$('startBtn').setAttribute('aria-busy','true');

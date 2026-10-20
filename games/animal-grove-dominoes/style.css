@@ -13,7 +13,6 @@ button:focus-visible, select:focus-visible, a:focus-visible { outline:3px solid 
 .return-link { width:58px; display:grid; grid-template-columns:16px 28px; gap:4px; align-items:center; justify-content:center; padding:4px; font-size:1.35rem; line-height:1; overflow:hidden; text-decoration:none; }
 .return-link img { width:28px; height:28px; object-fit:contain; }
 .back-button, .icon-btn { display:grid; place-items:center; padding:0; font-size:1.2rem; }
-body[data-wp-game-id="animal-grove-dominoes"] :is(button, a)[data-wp-return="battle"] { box-sizing:border-box !important; width:64px !important; min-width:64px !important; max-width:64px !important; height:48px !important; min-height:48px !important; max-height:48px !important; display:flex !important; align-items:center !important; justify-content:center !important; padding:10px 4px !important; border:1px solid var(--line) !important; border-radius:12px !important; background:rgba(255,255,255,.88) !important; color:var(--ink) !important; box-shadow:none !important; font-size:1rem !important; font-weight:800 !important; line-height:1 !important; text-decoration:none !important; overflow:visible !important; }
 .settings-panel { position:absolute; z-index:20; top:58px; right:0; width:min(290px,calc(100% - 24px)); padding:10px 12px; border:1px solid rgba(102,132,111,.3); border-radius:16px; background:#fff; box-shadow:0 16px 30px rgba(38,53,41,.2); }
 .setting-row { min-height:46px; display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; border:0; border-radius:8px; background:#fff; color:var(--ink); font-weight:800; text-align:start; }
 select { min-height:38px; max-width:160px; border:1px solid var(--line); border-radius:10px; padding:0 8px; color:var(--ink); background:#fff; }
@@ -34,15 +33,14 @@ h2 { margin-bottom:12px; font-size:clamp(1.5rem,4vw,2.5rem); letter-spacing:-.04
 .secondary-btn { padding:10px 16px; background:#fff; border-color:var(--line); color:var(--deep-leaf); }
 .primary-btn:hover, .secondary-btn:hover, .text-btn:hover, .icon-btn:hover { transform:translateY(-1px); }
 .hero-copy .primary-btn { width:100%; }
-.guide-card { margin-top:14px; padding:20px 22px; }
+.guide-card { padding:20px 22px; }
 .guide-card { position:relative; }
 .guide-fia { position:absolute; top:-22px; right:18px; width:82px; height:112px; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 8px 10px rgba(49,91,73,.18)); }
 .guide-card h2 { font-size:1.25rem; }
 .guide-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
 .guide-grid article { color:var(--deep-leaf); }
 .guide-grid p { margin:6px 0 0; color:var(--muted); line-height:1.5; }
-.panel { width:100%; min-height:calc(100vh - var(--wp-ad-reserve-height, 0px)); }
-.panel[data-screen="battle"] { min-height:100vh; }
+.panel { width:100%; }
 .battle-canvas { width:min(920px,100%); height:calc(100vh - var(--wp-ad-reserve-height, 0px)); min-height:0; margin:0 auto; overflow-x:hidden; overflow-y:auto; padding:8px 14px 18px; border-radius:0; background-color:#d8e5df; background-image:linear-gradient(rgba(246,250,241,.86),rgba(246,250,241,.93)),var(--wp-battle-art); background-position:center; background-repeat:no-repeat; background-size:cover; }
 .panel[data-screen="battle"] { display:block; }
 .logical-shell { width:min(760px,100%); margin:0 auto; padding:8px 14px 18px; }
@@ -150,7 +148,6 @@ body[data-screen="battle"] footer, body[data-screen="result"] footer { display:n
   .panel-head { min-height:40px; margin-bottom:4px; }
   .panel-head .back-button,
   .panel-head .battle-utility { width:40px !important; min-width:40px !important; max-width:40px !important; height:40px !important; min-height:40px !important; max-height:40px !important; padding:4px !important; }
-  body[data-wp-game-id="animal-grove-dominoes"] :is(button, a)[data-wp-return="battle"] { width:64px !important; min-width:64px !important; max-width:64px !important; height:48px !important; min-height:48px !important; max-height:48px !important; padding:10px 4px !important; }
   .status-row { margin-bottom:4px; }
   .chain-card { padding:4px 8px; }
   .chain-track { min-height:42px; gap:4px; }
@@ -167,25 +164,6 @@ body[data-screen="battle"] footer, body[data-screen="result"] footer { display:n
   .text-btn { height:36px; min-height:36px; margin-top:2px; padding:4px 10px; font-size:.78rem; }
 }
 [dir="rtl"] .status-row { direction:rtl; }
-
-/* Interface 7 keeps the authored guide as the public information surface.
-   Reassert its framed cards after the shared shell's broad guide skin. */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .guide-card {
-  --wp-ui-radius:24px;
-  border:1px solid rgba(79,125,94,.23) !important;
-  border-radius:24px !important;
-  background:rgba(255,253,247,.92) !important;
-  box-shadow:var(--shadow) !important;
-}
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"] .guide-card .game-info-section {
-  --wp-ui-radius:24px;
-  display:grid !important;
-  gap:10px !important;
-  padding:16px !important;
-  border:1px solid #d8e0ee !important;
-  border-radius:var(--wp-ui-radius) !important;
-  background:#fff !important;
-}
 
 /* Ivory domino bodies; the two illustrated ends are the actual matching data. */
 .habitat-tile {
@@ -206,130 +184,44 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"]
 }
 @media(prefers-reduced-motion:reduce){.habitat-tile.is-wrong{animation:none}}
 
-/* One bounded Stage envelope and fixed nine-node shared selector pool. */
-#stageView{position:fixed;inset:0;z-index:20;background:#101c29;overflow:hidden;}
-.grove-stage-canvas{position:relative;width:min(100%,920px);margin:auto;overflow:hidden;background:linear-gradient(#101d35c9,#101d35e8),url('assets/animal-grove-dominoes-background.png') center/cover;}
-.grove-stage-logical{transform-origin:top left;display:grid;grid-template-rows:64px minmax(0,1fr) 56px;color:#f8fafc;}
-.grove-stage-logical header{display:grid;grid-template-columns:64px 1fr 64px;align-items:center;padding:6px 12px;text-align:center;}
-.grove-stage-logical h2{font-size:22px;margin:0;color:#f8fafc;}
-.grove-stage-logical header button{width:48px;height:48px;color:#247795;background:#f8fafc;border-radius:12px;font-size:28px;}
-.grove-stage-workspace{position:relative;min-height:0;overflow:hidden;}
-.grove-stage-rail{position:absolute;top:calc(38% - 95px);width:100%;height:206px;display:flex;gap:16px;padding:8px max(0px,calc((100% - 264px)/2));box-sizing:border-box;overflow:hidden;direction:ltr;}
-.grove-stage-card{flex:0 0 264px;width:264px;height:190px;border:2px solid #718884;border-radius:20px;background:radial-gradient(ellipse at 50% 20%,#64786077,transparent 65%),linear-gradient(130deg,#223c49f2,#183142f5);box-shadow:inset 0 1px 0 #e6e3bd66,inset 0 -5px 10px #071f2880;color:#f8fafc;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px;white-space:normal;}
-.grove-stage-card strong{font-size:18px;line-height:1.25;min-height:45px;display:flex;align-items:center;justify-content:center;}
-.grove-stage-card>span:first-child{font-size:12px;color:#d2dbd1;letter-spacing:.04em;}
-.grove-stage-card>span:last-child{font-size:12px;font-weight:700;color:#f0d78e;}
-.grove-stage-preview{display:flex;align-items:center;justify-content:center;gap:15px;height:54px;min-height:54px;direction:ltr;}
-.grove-stage-preview .tile-art{display:block;flex:0 0 54px;width:54px;height:54px;margin:0;border:1px solid #ead6a2aa;border-radius:16px;background-color:#eee1b4;box-shadow:0 3px 0 #b99c68,0 5px 10px #06151f99;}
-.grove-stage-route-arrow{color:#e4c77c;font-size:24px;}
-.grove-stage-card[aria-disabled="true"] .grove-stage-preview{filter:saturate(.4);opacity:.65;}
-.grove-stage-card[aria-current="true"]{border-color:#efd185;box-shadow:inset 0 0 22px #d4af5130;}
-.grove-stage-card[aria-disabled="true"]{color:#a6b5c2;}
-.grove-stage-tabs{height:56px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:6px;background:#17243a;box-sizing:border-box;}
-.grove-stage-tabs button{height:44px;border:1px solid #e9c985;border-radius:10px;background:#34504d;color:#fff;font-weight:bold;}
-html:has(body:is([data-screen="stage"],[data-screen="battle"],[data-screen="result"])){overflow:hidden;overscroll-behavior:none;}
-body:is([data-screen="stage"],[data-screen="battle"],[data-screen="result"]){position:fixed;inset:0;width:100%;height:100dvh;overflow:hidden;overscroll-behavior:none;}
-#battleView{touch-action:none;}
-/* Let the document root own Main scrolling. Keeping body as a second
-   scroll container makes Chromium's mobile/touch wheel path stall at 0
-   even though the guide's content is taller than the viewport. */
-html:has(body[data-screen="main"]){overflow-y:auto;overscroll-behavior-y:contain;touch-action:pan-y;}
-body[data-screen="main"],
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"][data-screen="main"]{
-  height:auto!important;
-  overflow:visible!important;
-  overscroll-behavior-y:contain;
-  touch-action:pan-y;
-}
-.grove-stage-logical header .utility-button{justify-self:end;}
-.grove-stage-canvas[data-header-layout="stacked"] .grove-stage-logical{grid-template-rows:104px minmax(0,1fr) 56px;}
-.grove-stage-canvas[data-header-layout="stacked"] header{grid-template-columns:48px minmax(0,1fr) 48px;grid-template-rows:48px 32px;row-gap:8px;padding:8px 12px;}
-.grove-stage-canvas[data-header-layout="stacked"] header [data-wp-return]{grid-row:1;grid-column:1;}
-.grove-stage-canvas[data-header-layout="stacked"] header .utility-button{grid-row:1;grid-column:3;}
-.grove-stage-canvas[data-header-layout="stacked"] header h2{grid-row:2;grid-column:1/-1;line-height:32px;}
-.domino-rule{font-size:9px;line-height:1.2;color:#715521;grid-column:1/-1;}
-.grove-battle-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px;}
-.grove-battle-actions button{min-height:44px;height:auto;margin:0;padding:6px;font-size:12px;}
-#flipChain[aria-pressed="true"]{outline:2px solid #bc852f;background:#ffe1a0;}
-#resultView{min-height:0;height:100%;width:100%;overflow:auto;padding:12px;box-sizing:border-box;}
-#resultView .result-card{margin:0 auto;max-width:600px;padding:16px;}
-#resultView .result-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
-#resultView .result-fia{max-height:100px;width:auto;}
-#instruction{min-height:56px;font-size:12px;margin:8px 0;}
-@media(min-width:700px) and (max-height:540px) and (orientation:landscape){
- #tileRack{grid-template-columns:repeat(8,minmax(0,1fr));}
- .habitat-tile{grid-template-rows:1fr 1fr auto;}
- #instruction{min-height:32px;font-size:10px;margin:3px 0;}
- .grove-battle-actions{margin-top:3px;}
- #resultView .result-fia,#resultView .result-feedback-art{display:none;}
-}
-
-/* One viewport-derived scale owns Battle and its Result substate. */
-#battleView{position:fixed;inset:0;overflow:hidden;z-index:21;}
-#battleView[hidden]{display:none!important;}
-#battleView .battle-canvas{position:relative;padding:0;overflow:hidden;background-image:linear-gradient(#152b32d9,#173532e6),var(--wp-battle-art);}
-.grove-battle-frame{transform-origin:top left;position:absolute;left:0;top:0;}
-.grove-stage-logical{position:absolute;left:0;top:0;}
-#battleView .logical-shell{width:100%;height:100%;max-width:none;margin:0;padding:12px 18px;box-sizing:border-box;display:grid;grid-template-rows:64px minmax(0,1fr);color:#ecf5e8;}
-#battleView .logical-shell[hidden]{display:none!important;}
-#battleView .panel-head{width:100%;height:64px;margin:0;display:grid;grid-template-columns:56px minmax(0,1fr) 56px;align-items:center;gap:8px;}
-#battleView .panel-head h2{font-size:18px;color:#f3e8c5;line-height:1.2;}
-#battleView .round-label{font-size:12px;color:#ccdbc8;}
-#battleView .panel-head button{width:48px!important;height:48px!important;min-width:48px!important;max-width:48px!important;min-height:48px!important;max-height:48px!important;padding:4px!important;}
-#battleView .battle-content{width:100%;height:100%;max-width:none;display:grid;grid-template-rows:32px 76px 70px minmax(272px,1fr) 44px 48px;gap:6px;}
-#battleView .status-row{height:32px;margin:0;font-size:12px;color:#e9efd9;}
-#battleView .progress-pill{font-size:12px;color:#d8e3d1;}
-#battleView .chain-card{height:76px;padding:10px;border:1px solid #d5bd7a77;background:#0d252ac9;border-radius:18px;overflow:auto;}
-#battleView .chain-track{min-height:54px;gap:7px;}
-#battleView .chain-node{min-width:70px;min-height:48px;font-size:12px;padding:6px;background:#234438;color:#ebf1dc;border-color:#8ba77e;}
-#battleView .chain-node.current{color:#342e16;background:#f4dda0;border-color:#faedbf;animation:grove-arrive .25s ease-out;}
-#battleView .chain-arrow{color:#efd690;}
-#battleView #feedbackArt{display:none;}
-#battleView #instruction{height:70px;min-height:0;margin:0;font-size:12px;line-height:1.4;overflow:auto;align-content:center;color:#d7e6d7;}
-#battleView #tileRack{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,132px);gap:8px;align-content:center;}
-#battleView .habitat-tile,#battleView .domino-slot{width:100%;max-width:112px;height:132px;min-height:132px;justify-self:center;border-radius:12px;box-sizing:border-box;}
-#battleView .habitat-tile{grid-template-rows:1fr 1fr 22px;padding:4px;}
-#battleView .domino-half{padding:0;gap:0;}
-#battleView .domino-half .tile-art{display:block;width:34px;height:34px;}
-#battleView .tile-side{font-size:10px;line-height:1.1;}
-#battleView .domino-rule{font-size:8px;line-height:1.2;}
-#battleView .battle-status{height:44px;min-height:0;margin:0;font-size:12px;line-height:1.3;overflow:auto;color:#ebd998;}
-#battleView .grove-battle-actions{margin:0;gap:8px;}
-#battleView .grove-battle-actions button{height:48px;min-height:48px;font-size:12px;text-decoration:none;}
-#battleView #leaveBtn{background:#294a45;color:#eef2da;border:1px solid #b2b98b;}
-#battleView #resultView{position:absolute;inset:0;padding:20px;overflow:hidden;}
-#battleView #resultView .result-card{height:100%;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#132e32ed;border:1px solid #d4b971;border-radius:24px;color:#f5e9c8;box-sizing:border-box;}
-#battleView #resultView .result-fia{display:block;width:auto;height:140px;max-height:140px;margin:0;}
-#battleView #resultView .result-feedback-art,#battleView #resultView .result-badge{display:none;}
-#battleView #resultView h2{color:#f7e2a4;margin:0;}
-#battleView #resultView p,#battleView #resultView .best-line{color:#dce8d1;margin:0;}
-#battleView #resultView .result-actions{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px;}
-#battleView #resultView .result-actions button{font-size:12px;min-width:0;padding:8px;min-height:52px;}
+/* Interface 9: shared frame owns scene bounds; game CSS owns board content. */
+#mainView .main-content{display:grid;gap:14px}
+#mainView .hero-grid{margin-top:0}
+#mainView .guide-fia{top:12px;right:16px;width:64px;height:92px}
+#mainView .game-info-title{padding-right:82px}
+#battleView{color:#ecf5e8}
+#battleView .battle-content{width:100%;height:100%;min-height:0;max-width:920px;margin:0 auto;text-align:center;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:0;box-sizing:border-box}
+#battleView .logical-shell{width:100%;height:100%;min-height:0;max-width:none;margin:0;padding:10px;box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;align-content:stretch;gap:8px;overflow:hidden;color:#ecf5e8;background-image:linear-gradient(#152b32d9,#173532e6),url('assets/animal-grove-dominoes-background.png');background-position:center;background-size:cover}
+#battleView .battle-header-info{display:flex;justify-content:center;align-items:center;gap:12px;color:#e9efd9}
+#battleView .round-label{font-size:12px;color:#ccdbc8}
+#battleView .grove-route-panel{display:grid;grid-template-rows:auto auto auto;align-content:start;gap:8px;min-width:0;min-height:0}
+#battleView .chain-card{min-height:76px;padding:8px;border:1px solid #d5bd7a77;background:#0d252ac9;border-radius:18px;overflow:auto}
+#battleView .chain-track{min-height:54px;gap:7px}
+#battleView .chain-node{min-width:70px;min-height:48px;font-size:12px;padding:6px;background:#234438;color:#ebf1dc;border-color:#8ba77e}
+#battleView .chain-node.current{color:#342e16;background:#f4dda0;border-color:#faedbf;animation:grove-arrive .25s ease-out}
+#battleView .chain-arrow{color:#efd690}
+#battleView #feedbackArt{display:block;width:56px;height:32px;margin:4px auto 0;border-radius:10px}
+#battleView #instruction{min-height:48px;margin:0;font-size:12px;line-height:1.4;color:#d7e6d7}
+#battleView #tileRack{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px;align-content:center;align-self:stretch;min-height:0}
+#battleView .habitat-tile,#battleView .domino-slot{width:100%;max-width:200px;height:120px;min-height:100px;justify-self:center;border-radius:12px;box-sizing:border-box}
+#battleView .habitat-tile{grid-template-rows:1fr 1fr 22px;padding:4px}
+#battleView .domino-half{padding:0;gap:0}
+#battleView .domino-half .tile-art{display:block;width:34px;height:34px}
+#battleView .tile-side{font-size:10px;line-height:1.1}
+#battleView .domino-rule{font-size:8px;line-height:1.2}
+#battleView .battle-status{min-height:36px;margin:0;font-size:12px;line-height:1.3;color:#ebd998}
+#battleView .grove-battle-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0}
+#battleView .grove-battle-actions{align-self:end}
+#battleView .grove-battle-actions button{box-sizing:border-box;width:100%;min-width:0;height:calc(48px * var(--wp-battle-canvas-inverse-scale,1));min-height:calc(48px * var(--wp-battle-canvas-inverse-scale,1));max-height:none;margin:0;padding:6px;font-size:calc(14px * var(--wp-battle-canvas-inverse-scale,1));line-height:1.15;overflow-wrap:anywhere;text-decoration:none}
+#battleView #leaveBtn{background:#294a45;color:#eef2da;border:1px solid #b2b98b;text-decoration:none}
+#flipChain[aria-pressed="true"]{outline:2px solid #bc852f;background:#ffe1a0}
+#resultView{position:absolute;inset:0;z-index:2;min-height:0;width:100%;height:100%;overflow:auto;padding:12px}
+#resultView .result-card{height:100%;margin:0 auto;max-width:760px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#132e32ed;border:1px solid #d4b971;border-radius:24px;color:#f5e9c8}
+#resultView .result-fia{display:block;width:auto;height:112px;max-height:112px;margin:0}
+#resultView .result-feedback-art,#resultView .result-badge{display:none}
+#resultView h2{color:#f7e2a4;margin:0}
+#resultView p,#resultView .best-line{color:#dce8d1;margin:0}
+#resultView .result-actions{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+#resultView .result-actions button{box-sizing:border-box;min-width:0;height:calc(48px * var(--wp-battle-canvas-inverse-scale,1));min-height:calc(48px * var(--wp-battle-canvas-inverse-scale,1));padding:calc(8px * var(--wp-battle-canvas-inverse-scale,1));font-size:calc(14px * var(--wp-battle-canvas-inverse-scale,1));line-height:1.15;overflow-wrap:anywhere}
 @keyframes grove-arrive{from{box-shadow:0 0 0 5px #f4dda077}to{box-shadow:0 0 0 0 #f4dda000}}
 @media(prefers-reduced-motion:reduce){#battleView .chain-node.current{animation:none}}
-
-/* Responsive composition, not separately scaled controls: the same domino
-   and action dimensions live beside the route on wide, above it on tall. */
-#battleView .logical-shell{padding:8px 14px;grid-template-rows:48px minmax(0,1fr);}
-#battleView .panel-head{height:48px;}
-#battleView .battle-content{grid-template-columns:minmax(0,1fr);grid-template-rows:28px 180px minmax(208px,1fr) 48px;gap:6px;}
-#battleView .status-row{grid-row:1;height:28px;}
-#battleView .grove-route-panel{grid-row:2;display:grid;grid-template-rows:64px minmax(0,1fr) 44px;gap:4px;min-height:0;min-width:0;}
-#battleView .chain-card{height:64px;padding:6px;}
-#battleView .chain-track{min-height:48px;}
-#battleView #instruction{height:100%;font-size:12px;line-height:1.4;}
-#battleView #tileRack{grid-row:3;grid-template-rows:repeat(2,100px);align-content:center;}
-#battleView .habitat-tile,#battleView .domino-slot{height:100px;min-height:100px;}
-#battleView .domino-half .tile-art{width:26px;height:26px;}
-#battleView .habitat-tile{grid-template-rows:1fr 1fr 18px;}
-#battleView .grove-battle-actions{grid-row:4;}
-#battleView [data-layout="wide"] .battle-content{grid-template-columns:minmax(240px,1fr) minmax(360px,1.65fr);grid-template-rows:26px minmax(208px,1fr) 48px;gap:4px 12px;}
-#battleView [data-layout="wide"] .status-row{grid-column:1/-1;height:26px;}
-#battleView [data-layout="wide"] .grove-route-panel{grid-column:1;grid-row:2;}
-#battleView [data-layout="wide"] #tileRack{grid-column:2;grid-row:2;}
-#battleView [data-layout="wide"] .grove-battle-actions{grid-column:1/-1;grid-row:3;}
-#battleView [data-layout="wide"] #resultView .result-card{max-width:none;display:grid;grid-template-columns:140px minmax(0,1fr);grid-template-rows:24px 40px 44px 32px 60px;gap:4px 20px;padding:14px;align-content:center;}
-#battleView [data-layout="wide"] #resultView .result-fia{grid-column:1;grid-row:1/6;justify-self:center;}
-#battleView [data-layout="wide"] #resultView .result-card>:not(.result-fia){grid-column:2;}
-#battleView [data-layout="wide"] #resultView .result-actions{margin:0;}
-#battleView .game-ad-reserve,#stageView [data-wp-stage-physical-reserve]{width:min(100%,920px);height:var(--wp-ad-reserve-height, 0px);min-height:var(--wp-ad-reserve-height, 0px);margin:0 auto;background:#17243a;pointer-events:none;}

@@ -240,6 +240,10 @@
     select.disabled = false;
     select.value = currentSettingsLocale();
   }
+  function previewOnlyLocaleRouteInput(pathname, search) {
+    const preview = new URLSearchParams(String(search || '')).get('preview') === '1' ? '?preview=1' : '';
+    return `${pathname}${preview}`;
+  }
   async function changeSettingsLocale(select, refresh, isActive) {
     const requested = select.value;
     cancelSettingsLocale(select);
@@ -251,7 +255,8 @@
     select.value = requested;
     const isCurrent = () => pendingSettingsLocales.get(select) === pending && select.isConnected
       && isActive() && location.href === entry && currentSettingsLocale() === current;
-    const path = i18n.localizedPath?.(requested, `${location.pathname}${location.search}${location.hash}`);
+    const routeInput = previewOnlyLocaleRouteInput(location.pathname, location.search);
+    const path = i18n.localizedPath?.(requested, routeInput);
     const timeout = setTimeout(() => pending.controller.abort(), 5000);
     select.disabled = true;
     try {
@@ -265,8 +270,13 @@
         }
         const response = await fetch(target, {method:'HEAD', redirect:'error', signal:pending.controller.signal});
         if (!response.ok) throw new Error('LOCALE_ROUTE_UNAVAILABLE');
+        if (isCurrent()) {
+          i18n.setLocale(requested, {navigate:false, dispatch:false});
+          window.location.assign(target.href);
+        }
+      } else if (isCurrent()) {
+        i18n.setLocale(requested, {navigate:false});
       }
-      if (isCurrent()) i18n.setLocale(requested);
     } catch {
       if (isCurrent()) {
         select.value = current;
