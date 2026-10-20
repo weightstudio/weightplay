@@ -2,7 +2,8 @@
   "use strict";
 
   const localeSegments = {
-    en: "en",
+    // English is served from the canonical root; no /en page is generated.
+    en: "",
     "zh-Hant": "zh-tw",
     "zh-Hans": "zh-cn",
     ja: "ja",
@@ -17,7 +18,7 @@
     ar: "ar",
   };
   const localeCodes = Object.keys(localeSegments);
-  const segmentToLocale = Object.fromEntries(Object.entries(localeSegments).map(([key, value]) => [value, key]));
+  const segmentToLocale = Object.fromEntries(Object.entries(localeSegments).filter(([, value]) => value).map(([key, value]) => [value, key]));
   const base = {
     title: "Deep Sea Salvage Company",
     shortTitle: "Deep Sea Salvage",
@@ -688,7 +689,7 @@
   const stored = (() => {
     try { return localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale") || ""; } catch { return ""; }
   })();
-  const locale = segmentToLocale[pathMatch?.[1]] || (localeCodes.includes(stored) ? stored : "en");
+  const locale = (pathMatch?.[1] === "en" ? "en" : segmentToLocale[pathMatch?.[1]]) || (localeCodes.includes(stored) ? stored : "en");
 
   const translate = (key, vars = {}) => {
     const template = dictionaries[locale]?.[key] ?? base[key] ?? key;
@@ -699,9 +700,11 @@
     try { localStorage.setItem("weightPlayLocale", next); } catch { /* keep navigation functional */ }
     const segment = localeSegments[next];
     const current = window.location.pathname;
-    const nextPath = /^\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)(?=\/|$)/u.test(current)
-      ? current.replace(/^\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)/u, `/${segment}`)
-      : `/${segment}${current.startsWith("/") ? current : `/${current}`}`;
+    const localePrefix = /^\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)(?=\/|$)/u;
+    const segmentPrefix = segment ? `/${segment}` : "";
+    const nextPath = localePrefix.test(current)
+      ? current.replace(localePrefix, segmentPrefix)
+      : `${segmentPrefix}${current.startsWith("/") ? current : `/${current}`}`;
     window.location.href = `${nextPath}${window.location.search}${window.location.hash}`;
   };
 

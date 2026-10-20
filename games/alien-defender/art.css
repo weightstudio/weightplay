@@ -1,9 +1,7 @@
-body[data-game-id="alien-defender"][data-screen="battle"] .battle-stage {
+/* Game-specific Battle art stays inside the Battle content. The shared I9
+   scene background remains visible around the playfield and throughout Stage. */
+body[data-game-id="alien-defender"] .battle-stage {
   background:
-    linear-gradient(145deg, rgba(8, 11, 32, .56), rgba(5, 8, 25, .8)),
+    linear-gradient(145deg, rgba(8, 11, 32, .48), rgba(5, 8, 25, .7)),
     url("assets/alien-defender-board-block-v1.png") center / cover no-repeat;
-}
-
-body[data-game-id="alien-defender"][data-screen="battle"] .battle-stage > canvas {
-  opacity: .82;
 }

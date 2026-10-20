@@ -24680,6 +24680,29 @@
     };
   }
 
+  const deepSeaSalvageGenres = {
+    en: ["Simulation", "Strategy", "Idle", "Animal"],
+    "zh-Hant": ["模擬", "策略", "放置", "動物"],
+    "zh-Hans": ["模拟", "策略", "放置", "动物"],
+    ja: ["シミュレーション", "戦略", "放置系", "動物"],
+    ko: ["시뮬레이션", "전략", "방치형", "동물"],
+    es: ["Simulación", "Estrategia", "Idle", "Animales"],
+    "pt-BR": ["Simulação", "Estratégia", "Idle", "Animais"],
+    fr: ["Simulation", "Stratégie", "Idle", "Animaux"],
+    de: ["Simulation", "Strategie", "Idle", "Tiere"],
+    it: ["Simulazione", "Strategia", "Idle", "Animali"],
+    ru: ["Симуляция", "Стратегия", "Idle", "Животные"],
+    hi: ["सिमुलेशन", "रणनीति", "Idle", "जानवर"],
+    ar: ["محاكاة", "استراتيجية", "خمول", "حيوانات"],
+  };
+  for (const [localeCode, genre] of Object.entries(deepSeaSalvageGenres)) {
+    localizedGames[localeCode] ||= {};
+    localizedGames[localeCode]["animal-deep-sea-salvage"] = {
+      ...(localizedGames[localeCode]["animal-deep-sea-salvage"] || {}),
+      genre,
+    };
+  }
+
   localizedGames["ar"] ||= {};
   localizedGames["ar"]["animal-relic-hunters"] = {
     ...games["animal-relic-hunters"],

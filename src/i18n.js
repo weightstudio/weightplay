@@ -3,7 +3,7 @@
   const localeKey = "weightPlayLocale";
   const fallbackLocale = config.fallbackLocale || "en";
   const supportedLocales = config.phaseOneLocales || ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
-  const localeSegments = Object.freeze({ en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" });
+  const localeSegments = Object.freeze({ en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar", ...(config.localeSegments || {}) });
   const localeLabels = Object.freeze({ en: "English", "zh-Hant": "繁體中文", "zh-Hans": "简体中文", ja: "日本語", ko: "한국어", es: "Español", "pt-BR": "Português", fr: "Français", de: "Deutsch", it: "Italiano", ru: "Русский", hi: "हिन्दी", ar: "العربية" });
   const segmentLocales = Object.freeze(Object.fromEntries(Object.entries(localeSegments).map(([locale, segment]) => [segment, locale])));
 
@@ -14,14 +14,16 @@
   }
 
   function localizedPath(targetLocale, input = window.location?.pathname || "/") {
-    const segment = localeSegments[targetLocale] || localeSegments[fallbackLocale] || "en";
+    const segment = Object.prototype.hasOwnProperty.call(localeSegments, targetLocale)
+      ? localeSegments[targetLocale]
+      : localeSegments[fallbackLocale] || "en";
     const sourceOrigin = /^https?:\/\//i.test(window.location?.origin || "") ? window.location.origin : "https://weightplay.com";
     const sourceUrl = new URL(String(input || "/"), sourceOrigin);
     const parts = sourceUrl.pathname.split("/").filter(Boolean);
     const projectPrefix = parts[0] === "weightplay" ? parts.shift() : "";
     if (segmentLocales[String(parts[0] || "").toLowerCase()]) parts.shift();
     const suffix = parts.length ? `/${parts.join("/")}${sourceUrl.pathname.endsWith("/") ? "/" : ""}` : "/";
-    const prefix = `${projectPrefix ? `/${projectPrefix}` : ""}/${segment}`;
+    const prefix = `${projectPrefix ? `/${projectPrefix}` : ""}${segment ? `/${segment}` : ""}`;
     return `${prefix}${suffix}${sourceUrl.search}${sourceUrl.hash}`.replace(/\/{2,}/g, "/");
   }
 

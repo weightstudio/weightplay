@@ -255,6 +255,22 @@
     ar:{guideIntro:"احمِ المحطة عبر 30 مرحلة أصلية. تعلّم في المرحلة 1 الانتقال من الموجة 1 إلى الموجة 2؛ وتركّز المراحل التالية على تشكيل واحد لكل منها."}
   };
   Object.entries(V55_COPY_PATCH).forEach(([key,patch])=>Object.assign(COPY[key],patch));
+  const I9_MAIN_SUMMARY_COPY={
+    en:{guideIntro:"Defend the station through 30 stages. Spend Credits on upgrades."},
+    "zh-Hant":{guideIntro:"守護訊號站，挑戰 30 個關卡並用點數升級。"},
+    "zh-Hans":{guideIntro:"守护信号站，挑战 30 个关卡并用点数升级。"},
+    ja:{guideIntro:"信号ステーションを守り、クレジットで30ステージを強化します。"},
+    ko:{guideIntro:"신호 기지를 지키고 크레딧으로 30개 스테이지의 장비를 강화하세요."},
+    es:{guideIntro:"Defiende la estación en 30 fases. Usa créditos para mejorar tu nave."},
+    "pt-BR":{guideIntro:"Defenda a estação em 30 fases. Use créditos para melhorar sua nave."},
+    fr:{guideIntro:"Défendez la station sur 30 niveaux. Dépensez des crédits en améliorations."},
+    de:{guideIntro:"Verteidige die Station in 30 Stufen. Kaufe Verbesserungen mit Credits."},
+    it:{guideIntro:"Difendi la stazione in 30 livelli. Usa i crediti per migliorare la nave."},
+    ru:{guideIntro:"Защищайте станцию на 30 этапах. Тратьте кредиты на улучшения."},
+    hi:{guideIntro:"30 स्टेज में स्टेशन की रक्षा करें। क्रेडिट से सुधार खरीदें."},
+    ar:{guideIntro:"احمِ المحطة في 30 مرحلة. استخدم الأرصدة لشراء الترقيات."}
+  };
+  Object.entries(I9_MAIN_SUMMARY_COPY).forEach(([key,patch])=>Object.assign(COPY[key],patch));
   const V42_RESULT_COPY_PATCH={
     en:{stageResultWin:"Stage {stage} cleared.",stageResultFail:"Stage {stage} needs another run."},"zh-Hant":{stageResultWin:"第 {stage} 關已清除。",stageResultFail:"第 {stage} 關需要再挑戰一次。"},"zh-Hans":{stageResultWin:"第 {stage} 关已清除。",stageResultFail:"第 {stage} 关需要再挑战一次。"},ja:{stageResultWin:"ステージ{stage}をクリアしました。",stageResultFail:"ステージ{stage}をもう一度挑戦しましょう。"},ko:{stageResultWin:"스테이지 {stage} 클리어.",stageResultFail:"스테이지 {stage}를 다시 도전하세요."},es:{stageResultWin:"Fase {stage} superada.",stageResultFail:"La fase {stage} necesita otro intento."},"pt-BR":{stageResultWin:"Fase {stage} concluída.",stageResultFail:"A fase {stage} precisa de outra tentativa."},fr:{stageResultWin:"Niveau {stage} terminé.",stageResultFail:"Le niveau {stage} demande un nouvel essai."},de:{stageResultWin:"Stufe {stage} geschafft.",stageResultFail:"Stufe {stage} braucht einen weiteren Versuch."},it:{stageResultWin:"Livello {stage} completato.",stageResultFail:"Il livello {stage} richiede un altro tentativo."},ru:{stageResultWin:"Этап {stage} пройден.",stageResultFail:"Этап {stage} нужно пройти ещё раз."},hi:{stageResultWin:"स्टेज {stage} पूरा।",stageResultFail:"स्टेज {stage} फिर से खेलें।"},ar:{stageResultWin:"اكتملت المرحلة {stage}.",stageResultFail:"تحتاج المرحلة {stage} إلى محاولة أخرى."}
   };
@@ -266,8 +282,7 @@
   const persistedShieldLevel=Math.max(0,Math.min(5,Math.floor(Number(localStorage.getItem("wp-alien-defender-upgrade-shield")||0)||0)));
   const persistedHullLevel=Math.max(0,Math.min(3,Math.floor(Number(localStorage.getItem("wp-alien-defender-upgrade-hull")||0)||0)));
   const persistedRapidLevel=Math.max(0,Math.min(4,Math.floor(Number(localStorage.getItem("wp-alien-defender-upgrade-rapid")||0)||0)));
-  const canvas=document.getElementById("gameCanvas"),ctx=canvas.getContext("2d"),$=id=>document.getElementById(id);let locale=document.documentElement.lang||"en";if(!COPY[locale])locale="en";let copy=COPY[locale],screen="main",wave=1,score=0,best=Number(localStorage.getItem("wp-alien-defender-best")||0),raf=0,last=0,world=null,audio=null,sound=!window.WeightPlayAudio.isMuted(),keys={left:false,right:false,fire:false},gesture=null,stageMode=true,selectedStage=persistedUnlockedStage-1,unlockedStage=persistedUnlockedStage,firepowerLevel=persistedFirepower,credits=persistedCredits,shieldLevel=persistedShieldLevel,hullLevel=persistedHullLevel,rapidLevel=persistedRapidLevel,stageResultAwarded=false,lastStageReward=0;
-  window.addEventListener("weightplay:audio-volume-change", () => { sound = !window.WeightPlayAudio.isMuted(); });
+  const canvas=document.getElementById("gameCanvas"),ctx=canvas.getContext("2d"),$=id=>document.getElementById(id);let locale=document.documentElement.lang||"en";if(!COPY[locale])locale="en";let copy=COPY[locale],screen="main",wave=1,score=0,best=Number(localStorage.getItem("wp-alien-defender-best")||0),raf=0,last=0,world=null,audio=null,keys={left:false,right:false,fire:false},gesture=null,stageMode=true,selectedStage=persistedUnlockedStage-1,unlockedStage=persistedUnlockedStage,firepowerLevel=persistedFirepower,credits=persistedCredits,shieldLevel=persistedShieldLevel,hullLevel=persistedHullLevel,rapidLevel=persistedRapidLevel,stageResultAwarded=false,lastStageReward=0,alienI9Frame=null;
   // v44 screen ownership: Result is a Battle substate, not a fourth scene.
   // Keep the existing Result markup and move it into the live Battle envelope
   // so the shared shell, Canvas, and reserve remain one stable geometry.
@@ -279,21 +294,20 @@
     $("mainScreen").hidden=name!=="main";$("stageScreen").hidden=name!=="stage";$("battleScreen").hidden=!battleOpen;
     if(v44ResultScreen)v44ResultScreen.hidden=!resultOpen;
     if(v44BattleStage)v44BattleStage.dataset.resultOpen=String(resultOpen);
-    const localePicker=$("localeSelect")?.closest(".locale-picker");if(localePicker)localePicker.hidden=name!=="main";
-    $("battleBackBtn").dataset.wpReturn=battleOpen?"battle":"main";
+    $("battleBackBtn").dataset.wpReturn="battle";
     pinViewportTop(name==="stage"||battleOpen);window.dispatchEvent(new Event("weightplay:shell-sync"));
   };
   ["mainScreen","stageScreen","battleScreen","resultScreen"].forEach(id=>$(id)?.setAttribute("data-screen",id.replace("Screen","").toLowerCase()));
-  function t(k){return copy[k]??COPY.en[k]??k}function setText(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";copy=COPY[locale]||COPY.en;document.title=`${t("title")} | WeightPlay`;document.querySelectorAll("[data-copy]").forEach(n=>n.textContent=t(n.dataset.copy));document.querySelectorAll("[data-copy-aria]").forEach(n=>n.setAttribute("aria-label",t(n.dataset.copyAria)));canvas.setAttribute("aria-label",t("canvasLabel"));$("localeSelect").value=locale;$("soundBtn").setAttribute("aria-label",t(sound?"soundOn":"soundOff"));$("soundBtn").textContent=sound?"◒":"◌";}
+  function t(k){return copy[k]??COPY.en[k]??k}function setText(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";copy=COPY[locale]||COPY.en;document.title=`${t("title")} | WeightPlay`;document.querySelectorAll("[data-copy]").forEach(n=>n.textContent=t(n.dataset.copy));document.querySelectorAll("[data-copy-aria]").forEach(n=>n.setAttribute("aria-label",t(n.dataset.copyAria)));canvas.setAttribute("aria-label",t("canvasLabel"));const localeSelect=$("localeSelect");if(localeSelect)localeSelect.value=locale;}
   const SWIPE_GUIDE={en:"Swipe horizontally to steer.","zh-Hant":"也可左右滑動控制。","zh-Hans":"也可以左右滑动控制。",ja:"左右にスワイプして操縦できます。",ko:"좌우로 스와이프해 조종할 수 있습니다.",es:"También puedes deslizarte horizontalmente para dirigir.","pt-BR":"Você também pode deslizar horizontalmente para pilotar.",fr:"Glissez aussi horizontalement pour piloter.",de:"Wische auch horizontal zum Steuern.",it:"Puoi anche scorrere orizzontalmente per guidare.",ru:"Можно также вести корабль горизонтальным свайпом.",hi:"दिशा बदलने के लिए क्षैतिज स्वाइप भी करें।",ar:"يمكنك أيضاً السحب أفقياً للتوجيه."};
   Object.entries(SWIPE_GUIDE).forEach(([key,suffix])=>{if(COPY[key])COPY[key].how2=`${COPY[key].how2} ${suffix}`});
   let pinFrame=0;
-  function pinViewportTop(active){const root=document.documentElement,body=document.body;root.classList.toggle("wp-active-play",active);root.style.overflow=active?"hidden":"auto";root.style.overscrollBehavior=active?"none":"contain";root.style.touchAction=active?"none":"";body.style.position=active?"fixed":"";body.style.inset=active?"0":"";body.style.width=active?"100%":"";body.style.overflow=active?"hidden":"auto";body.style.overscrollBehavior=active?"none":"contain";body.style.touchAction=active?"none":"pan-y";root.scrollTop=0;body.scrollTop=0;window.scrollTo({left:0,top:0,behavior:"instant"});cancelAnimationFrame(pinFrame);if(active)pinFrame=requestAnimationFrame(()=>{root.scrollTop=0;body.scrollTop=0;window.scrollTo({left:0,top:0,behavior:"instant"});pinFrame=requestAnimationFrame(()=>{root.scrollTop=0;body.scrollTop=0;window.scrollTo({left:0,top:0,behavior:"instant"})})});else pinFrame=requestAnimationFrame(()=>window.scrollTo({left:0,top:0,behavior:"instant"}))}
-  function show(name){screen=name;document.body.dataset.screen=name;["mainScreen","stageScreen","battleScreen","resultScreen"].forEach(id=>$(id).hidden=id!==`${name}Screen`);$("localeSelect").closest(".locale-picker").hidden=name!=="main";$("battleBackBtn").dataset.wpReturn=name==="battle"?"battle":"main";pinViewportTop(name==="stage"||name==="battle"||name==="result");window.dispatchEvent(new Event("weightplay:shell-sync"));}
+  function pinViewportTop(active){if(!active){cancelAnimationFrame(pinFrame);return}document.documentElement.scrollTop=0;document.body.scrollTop=0;}
+  function show(name){screen=name;document.body.dataset.screen=name;["mainScreen","stageScreen","battleScreen","resultScreen"].forEach(id=>$(id).hidden=id!==`${name}Screen`);$("battleBackBtn").dataset.wpReturn="battle";pinViewportTop(name==="stage"||name==="battle"||name==="result");window.dispatchEvent(new Event("weightplay:shell-sync"));}
   function beep(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
   function makeWorld(){const enemies=[];const cols=wave===1?7:wave===2?8:9,rows=wave===3?4:3;for(let y=0;y<rows;y++)for(let x=0;x<cols;x++)enemies.push({x:150+x*78,y:145+y*52,waveType:wave===3&&y===0?"captain":"scout",alive:true});return{enemies,dir:1,moveTimer:0,moveEvery:wave===1?.68:wave===2?.5:.37,bullets:[],enemyBullets:[],player:{x:460,y:0},lives:3,combo:1,shield:0,fireTimer:0,enemyFire:0,fireIndex:0,flash:0}}
   function start(stageIndex=selectedStage){cancelAnimationFrame(raf);selectedStage=Math.max(0,Math.min(TOTAL_WAVES-1,Number(stageIndex)||0));wave=selectedStage+1;score=0;stageResultAwarded=false;stageMode=true;world=makeWorld();$("resultGoal").textContent="";show("battle");updateHud();$("battleMessage").textContent=t("stageGoal").replace(/\{stage\}/g,String(wave));canvas.focus({preventScroll:true});last=performance.now();raf=requestAnimationFrame(loop);beep("game.start",.1)}
-  function updateHud(){$("waveValue").textContent=`${t("stage")} ${selectedStage+1} / ${TOTAL_WAVES}`;$(`scoreValue`).textContent=score;$(`bestValue`).textContent=best;$(`firepowerValue`).textContent=firepowerLevel;$(`livesValue`).textContent=world?.lives||3}
+  function updateHud(){$("waveValue").textContent=`${selectedStage+1} / ${TOTAL_WAVES}`;$(`scoreValue`).textContent=score;$(`bestValue`).textContent=best;$(`firepowerValue`).textContent=firepowerLevel;$(`livesValue`).textContent=world?.lives||3}
   function shoot(){if(screen!=="battle"||!world||world.fireTimer>0)return;world.bullets.push({x:world.player.x,y:625,s:-640});world.fireTimer=.22;beep("weapon.laser.fire",.035)}
   function update(dt){if(!world)return;const p=world.player;p.x+=((keys.right?1:0)-(keys.left?1:0))*420*dt;p.x=Math.max(45,Math.min(875,p.x));world.fireTimer=Math.max(0,world.fireTimer-dt);if(keys.fire)shoot();world.flash=Math.max(0,world.flash-dt);world.shield=Math.max(0,world.shield-dt);world.moveTimer+=dt;world.enemyFire+=dt;if(world.moveTimer>world.moveEvery){world.moveTimer=0;const active=world.enemies.filter(e=>e.alive);const min=Math.min(...active.map(e=>e.x)),max=Math.max(...active.map(e=>e.x));if(max>855&&world.dir>0||min<65&&world.dir<0){world.dir*=-1;active.forEach(e=>e.y+=18)}active.forEach(e=>e.x+=world.dir*18)}if(world.enemyFire>(wave===1?.92:wave===2?.72:.56)){world.enemyFire=0;const active=world.enemies.filter(e=>e.alive);if(active.length){const e=active[Math.floor(Math.random()*active.length)];world.enemyBullets.push({x:e.x,y:e.y+20,s:wave===3?300:240})}}for(const b of world.bullets)b.y+=b.s*dt;for(const b of world.enemyBullets)b.y+=b.s*dt;world.bullets=world.bullets.filter(b=>b.y>-20);world.enemyBullets=world.enemyBullets.filter(b=>b.y<760);for(const b of world.bullets){const e=world.enemies.find(x=>x.alive&&Math.abs(x.x-b.x)<27&&Math.abs(x.y-b.y)<24);if(e){e.alive=false;b.y=-100;world.combo=Math.min(9,world.combo+1);score+=e.waveType==="captain"?40:10*world.combo;beep("enemy.defeat",.04);$("battleMessage").textContent=t("hit")}}for(const b of world.enemyBullets){if(Math.abs(b.x-p.x)<24&&Math.abs(b.y-625)<28){b.y=800;if(world.shield>0){$("battleMessage").textContent=t("shield");beep("combat.block",.06)}else{world.lives--;world.combo=1;world.flash=.35;beep("player.hurt",.13);if(world.lives<=0){finish(false);return}}}}const lowest=Math.max(...world.enemies.filter(e=>e.alive).map(e=>e.y),-99);if(lowest>570){finish(false);return}if(!world.enemies.some(e=>e.alive)){if(wave>=3){finish(true);return}wave++;score+=100;world=makeWorld();world.shield=3;$("battleMessage").textContent=t("shield");beep("game.checkpoint",.12)}updateHud()}
   function finish(win){cancelAnimationFrame(raf);if(score>best){best=score;localStorage.setItem("wp-alien-defender-best",best)}show("result");$("resultTitle").textContent=t(win?"winTitle":"loseTitle");$("resultCopy").textContent=t(win?"winCopy":"loseCopy");const goal=$("resultGoal");if(goal)goal.textContent=t(win?"replayWinGoal":wave>=TOTAL_WAVES?"replayFinalGoal":"replayGoal").replace(/\{wave\}/g,String(wave)).replace(/\{nextWave\}/g,String(Math.min(wave+1,TOTAL_WAVES)));$("resultScore").textContent=score;$("resultBest").textContent=best;const resultWave=$("resultWave");if(resultWave)resultWave.textContent=`${wave} / ${TOTAL_WAVES}`;beep(win?"result.win":"result.lose",.16)}
@@ -304,7 +318,7 @@
   function syncControlButton(key){const active=[...controlPointers.values()].includes(key),button=$(key==="left"?"leftBtn":key==="right"?"rightBtn":"fireBtn");setKey(key,active);button?.classList.toggle("is-held",active);button?.setAttribute("aria-pressed",String(active))}
   function pressControl(event,key,button){if(screen!=="battle"||event.button>0)return;event.preventDefault();controlPointers.set(event.pointerId,key);try{button.setPointerCapture(event.pointerId)}catch{}syncControlButton(key);if(key==="fire")shoot()}
   function releaseControlPointer(event){const key=controlPointers.get(event.pointerId);if(!key)return;controlPointers.delete(event.pointerId);syncControlButton(key)}
-  document.getElementById("startBtn").addEventListener("click",openStageSelector);document.getElementById("retryBtn").addEventListener("click",()=>start(selectedStage));document.getElementById("stageBackBtn")?.addEventListener("click",()=>{cancelAnimationFrame(raf);show("main")});document.getElementById("battleBackBtn").addEventListener("click",openLeaveDialog);document.getElementById("restartBtn").addEventListener("click",()=>start(selectedStage));document.getElementById("soundBtn").addEventListener("click",()=>{sound=window.WeightPlayAudio.setEnabled(!sound);setText();beep("ui.click",.05)});[["leftBtn","left"],["rightBtn","right"],["fireBtn","fire"]].forEach(([id,key])=>{const button=$(id);button.addEventListener("pointerdown",event=>pressControl(event,key,button));button.addEventListener("pointerup",releaseControlPointer);button.addEventListener("pointercancel",releaseControlPointer);button.addEventListener("lostpointercapture",releaseControlPointer)});canvas.addEventListener("pointerdown",e=>{if(screen!=="battle")return;gesture={x:e.clientX};canvas.setPointerCapture?.(e.pointerId)});canvas.addEventListener("pointerup",e=>{if(!gesture)return;const dx=e.clientX-gesture.x;gesture=null;if(Math.abs(dx)<24)return;const key=dx>0?"right":"left";setKey(key,true);setTimeout(()=>setKey(key,false),160)});document.addEventListener("keydown",e=>{const k=e.key.toLowerCase();const map={arrowleft:"left",a:"left",arrowright:"right",d:"right"," ":"fire"};if(screen!=="battle"||!map[k])return;e.preventDefault();setKey(map[k],true);if(map[k]==="fire")shoot()});document.addEventListener("keyup",e=>{const k=e.key.toLowerCase();const map={arrowleft:"left",a:"left",arrowright:"right",d:"right"," ":"fire"};if(map[k])setKey(map[k],false)});document.getElementById("localeSelect").addEventListener("change",e=>{locale=e.target.value;try{localStorage.setItem("weightPlayLocale",locale)}catch{}setText()});window.addEventListener("resize",resize);setText();show("main");window.__alienDefenderSmoke={start,finish,snapshot:()=>({screen,wave,score,best,lives:world?.lives,enemies:world?.enemies?.filter(e=>e.alive).length})};
+  document.getElementById("startBtn").addEventListener("click",openStageSelector);document.getElementById("retryBtn").addEventListener("click",()=>start(selectedStage));document.getElementById("stageBackBtn")?.addEventListener("click",()=>{cancelAnimationFrame(raf);show("main")});document.getElementById("battleBackBtn").addEventListener("click",openLeaveDialog);document.getElementById("restartBtn").addEventListener("click",()=>start(selectedStage));[["leftBtn","left"],["rightBtn","right"],["fireBtn","fire"]].forEach(([id,key])=>{const button=$(id);button.addEventListener("pointerdown",event=>pressControl(event,key,button));button.addEventListener("pointerup",releaseControlPointer);button.addEventListener("pointercancel",releaseControlPointer);button.addEventListener("lostpointercapture",releaseControlPointer)});canvas.addEventListener("pointerdown",e=>{if(screen!=="battle")return;gesture={x:e.clientX};canvas.setPointerCapture?.(e.pointerId)});canvas.addEventListener("pointerup",e=>{if(!gesture)return;const dx=e.clientX-gesture.x;gesture=null;if(Math.abs(dx)<24)return;const key=dx>0?"right":"left";setKey(key,true);setTimeout(()=>setKey(key,false),160)});document.addEventListener("keydown",e=>{const k=e.key.toLowerCase();const map={arrowleft:"left",a:"left",arrowright:"right",d:"right"," ":"fire"};if(screen!=="battle"||!map[k])return;e.preventDefault();setKey(map[k],true);if(map[k]==="fire")shoot()});document.addEventListener("keyup",e=>{const k=e.key.toLowerCase();const map={arrowleft:"left",a:"left",arrowright:"right",d:"right"," ":"fire"};if(map[k])setKey(map[k],false)});document.getElementById("localeSelect").addEventListener("change",e=>{locale=e.target.value;try{localStorage.setItem("weightPlayLocale",locale)}catch{}setText()});window.addEventListener("resize",resize);setText();show("main");window.__alienDefenderSmoke={start,finish,snapshot:()=>({screen,wave,score,best,lives:world?.lives,enemies:world?.enemies?.filter(e=>e.alive).length})};
   // v4 Director repair: preserve the three-wave structure while giving the
   // first wave a clearer learning window and immediate observation feedback.
   function makeWorld(){const enemies=[];const cols=wave===1?7:wave===2?8:9,rows=wave===3?4:3;for(let y=0;y<rows;y++)for(let x=0;x<cols;x++)enemies.push({x:150+x*78,y:145+y*52,waveType:wave===3&&y===0?"captain":"scout",alive:true});return{enemies,dir:1,moveTimer:0,moveEvery:wave===1?.82:wave===2?.5:.37,bullets:[],enemyBullets:[],player:{x:460,y:0},lives:wave===1?4:3,combo:1,shield:wave===1?1.5:0,fireTimer:0,enemyFire:0,fireIndex:0,flash:0}}
@@ -576,19 +590,6 @@
     if(beforeEnemies!==null&&afterEnemies!==null&&afterEnemies<beforeEnemies)$("battleMessage").textContent=t("wave1Hit");
   };
   if(window.__alienDefenderSmoke)window.__alienDefenderSmoke.finish=finish;
-  function ensureBattleHudCompatibility(){
-    const hud=document.querySelector(".battle-hud");
-    if(hud&&!hud.querySelector(".hud-stats")){
-      const stats=[...hud.children].filter(node=>node.matches("div")).slice(0,5);
-      const statGroup=document.createElement("div");
-      statGroup.className="hud-stats";
-      stats.forEach(node=>{node.classList.add("hud-stat");statGroup.append(node)});
-      const actionGroup=document.createElement("div");
-      actionGroup.className="hud-actions";
-      [$("soundBtn"),$("restartBtn")].filter(Boolean).forEach(node=>actionGroup.append(node));
-      hud.append(statGroup,actionGroup);
-    }
-  }
   function ensureResultWaveStat(){
     const stats=document.querySelector(".result-stats");
     if(stats&&!$("resultWave")){
@@ -614,9 +615,8 @@
     }
     return dialog;
   }
-  ensureBattleHudCompatibility();
   ensureResultWaveStat();
-  const leaveDialog=ensureLeaveDialog(),continueBtn=$("continueBtn"),leaveBtn=$("leaveBtn"),touchControls=document.querySelector(".touch-controls"),battleHeader=()=>document.querySelector(".wp-generated-battle-header");
+  const leaveDialog=ensureLeaveDialog(),continueBtn=$("continueBtn"),leaveBtn=$("leaveBtn"),touchControls=document.querySelector(".touch-controls"),battleHeader=()=>document.querySelector('[data-wp-frame-header="battle"]');
   function closeLeaveDialog(resume=true){
     if(!leaveDialog)return;
     leaveDialog.hidden=true;
@@ -901,28 +901,13 @@
   // a result screen with Stages, Next Stage, and Replay actions.
   function saveUnlockedStage(){try{localStorage.setItem("wp-alien-defender-unlocked-stage",String(unlockedStage))}catch{}}
   function saveFirepower(){try{localStorage.setItem("wp-alien-defender-firepower",String(firepowerLevel))}catch{}}
-  function unlockStage(stageNumber){if(stageNumber>unlockedStage){unlockedStage=Math.min(TOTAL_WAVES,stageNumber);saveUnlockedStage()}}
-  function renderStageCards(){
-    const rail=$("stageRail");
-    if(!rail)return;
-    rail.textContent="";
-    $("stageProgressText").textContent=t("stageProgress").replace(/\{unlocked\}/g,String(unlockedStage)).replace(/\{shots\}/g,String(firepowerLevel));
-    for(let index=0;index<TOTAL_WAVES;index++){
-      const available=index<unlockedStage,card=document.createElement("button");
-      card.type="button";card.className="stage-card";card.dataset.stageIndex=String(index);card.dataset.index=String(index);card.disabled=!available;card.setAttribute("aria-disabled",String(!available));card.setAttribute("aria-posinset",String(index+1));card.setAttribute("aria-setsize",String(TOTAL_WAVES));card.setAttribute("aria-label",`${t("stage")} ${index+1} · ${available?t("stageUnlocked"):t("stageLocked")}`);card.setAttribute("aria-current",index===selectedStage?"true":"false");card.classList.toggle("selected",index===selectedStage);card.classList.toggle("locked",!available);
-      const number=document.createElement("span");number.className="stage-card-number";number.textContent=String(index+1).padStart(2,"0");
-      const name=document.createElement("strong");name.className="stage-card-name";name.textContent=`${t("stage")} ${index+1}`;
-      const power=document.createElement("span");power.className="stage-card-power";power.textContent=t("stagePower").replace(/\{shots\}/g,String(firepowerLevel));
-      const status=document.createElement("span");status.className="stage-card-status";status.textContent=available?t("stageUnlocked"):t("stageLocked");
-      card.append(number,name,power,status);rail.append(card);
-    }
-  }
-  function openStageSelector(){cancelAnimationFrame(raf);selectedStage=Math.max(0,unlockedStage-1);renderStageCards();show("stage");const active=$("stageRail")?.querySelector(`.stage-card[data-stage-index="${selectedStage}"]`);active?.focus({preventScroll:true})}
-  $("stageRail")?.addEventListener("click",event=>{const card=event.target.closest(".stage-card");if(!card||card.dataset.wpStagePoolNode||card.disabled||card.getAttribute("aria-disabled")==="true")return;selectedStage=Number(card.dataset.stageIndex)||0;start(selectedStage)});
-  $("stageRail")?.addEventListener("keydown",event=>{if(event.target.closest("[data-wp-stage-pool-node]"))return;const cards=[...$("stageRail").querySelectorAll(".stage-card:not([disabled])")];if(!cards.length)return;const current=Math.max(0,cards.indexOf(document.activeElement));let next=current;if(event.key==="ArrowRight"||event.key==="ArrowDown")next=Math.min(cards.length-1,current+1);if(event.key==="ArrowLeft"||event.key==="ArrowUp")next=Math.max(0,current-1);if(event.key==="Home")next=0;if(event.key==="End")next=cards.length-1;if(next!==current){event.preventDefault();cards[next].focus({preventScroll:false})}});
-  function settleStageResult(win){cancelAnimationFrame(raf);if(score>best){best=score;try{localStorage.setItem("wp-alien-defender-best",String(best))}catch{}}track("result",{wave,result_reason:win?"stage_cleared":"defense_line_or_lives"});if(win)track("wave_clear",{wave,result_reason:"formation_cleared"});show("result");$("resultTitle").textContent=t(win?"winTitle":"loseTitle");$("resultCopy").textContent=t(win?"winCopy":"loseCopy");$("resultScore").textContent=score;$("resultBest").textContent=best;$("resultGoal").textContent="";$("resultWave").textContent=`${t("stage")} ${selectedStage+1} / ${TOTAL_WAVES}`;beep(win?"result.win":"result.lose",.16)}
+  function updateMainProgress(){const node=$("mainProgress");if(node)node.textContent=t("stageProgress").replace(/\{unlocked\}/g,String(unlockedStage)).replace(/\{shots\}/g,String(firepowerLevel))}
+  function unlockStage(stageNumber){if(stageNumber>unlockedStage){unlockedStage=Math.min(TOTAL_WAVES,stageNumber);saveUnlockedStage();updateMainProgress()}}
+  function renderStageCards(){if(alienI9Frame)alienI9Frame.stageUI.refresh(selectedStage)}
+  function openStageSelector(){cancelAnimationFrame(raf);selectedStage=Math.max(0,unlockedStage-1);renderStageCards();show("stage")}
+  function settleStageResult(win){cancelAnimationFrame(raf);if(score>best){best=score;try{localStorage.setItem("wp-alien-defender-best",String(best))}catch{}}track("result",{wave,result_reason:win?"stage_cleared":"defense_line_or_lives"});if(win)track("wave_clear",{wave,result_reason:"formation_cleared"});show("result");$("resultTitle").textContent=t(win?"winTitle":"loseTitle");$("resultCopy").textContent=t(win?"winCopy":"loseCopy");$("resultScore").textContent=score;$("resultBest").textContent=best;$("resultGoal").textContent="";$("resultWave").textContent=`${selectedStage+1} / ${TOTAL_WAVES}`;beep(win?"result.win":"result.lose",.16)}
   const v42Finish=finish;
-  finish=function finishWithStageProgress(win){if(stageMode){if(win&&!stageResultAwarded){const frontier=selectedStage+1>=unlockedStage;stageResultAwarded=true;if(frontier&&firepowerLevel<TOTAL_WAVES){firepowerLevel+=1;saveFirepower()}unlockStage(wave+1)}settleStageResult(win);const stageText=t(win?"stageResultWin":"stageResultFail").replace(/\{stage\}/g,String(selectedStage+1)),goalText=t(win?(selectedStage===TOTAL_WAVES-1?"stageFinalGoal":"stageWinGoal"):"stageFailGoal").replace(/\{stage\}/g,String(selectedStage+1)).replace(/\{shots\}/g,String(firepowerLevel));$("resultCopy").textContent=stageText;$("resultWave").textContent=`${t("stage")} ${selectedStage+1} / ${TOTAL_WAVES}`;$("resultGoal").textContent=goalText;$("nextStageBtn").disabled=!win||selectedStage>=TOTAL_WAVES-1||selectedStage+1>=unlockedStage;$("nextStageBtn").setAttribute("aria-disabled",String($("nextStageBtn").disabled));return}v42Finish(win)};
+  finish=function finishWithStageProgress(win){if(stageMode){if(win&&!stageResultAwarded){const frontier=selectedStage+1>=unlockedStage;stageResultAwarded=true;if(frontier&&firepowerLevel<TOTAL_WAVES){firepowerLevel+=1;saveFirepower()}unlockStage(wave+1)}settleStageResult(win);const stageText=t(win?"stageResultWin":"stageResultFail").replace(/\{stage\}/g,String(selectedStage+1)),goalText=t(win?(selectedStage===TOTAL_WAVES-1?"stageFinalGoal":"stageWinGoal"):"stageFailGoal").replace(/\{stage\}/g,String(selectedStage+1)).replace(/\{shots\}/g,String(firepowerLevel));$("resultCopy").textContent=stageText;$("resultWave").textContent=`${selectedStage+1} / ${TOTAL_WAVES}`;$("resultGoal").textContent=goalText;$("nextStageBtn").disabled=!win||selectedStage>=TOTAL_WAVES-1||selectedStage+1>=unlockedStage;$("nextStageBtn").setAttribute("aria-disabled",String($("nextStageBtn").disabled));return}v42Finish(win)};
   // v44 Long campaign and economy: the six authored waves are now the first
   // chapter of a thirty-stage campaign. Every Stage still owns one Battle
   // formation, while chapters introduce readable rule changes instead of a
@@ -949,7 +934,7 @@
   function upgradeMax(kind){return kind==="firepower"?MAX_FIREPOWER:kind==="shield"?5:kind==="hull"?3:4}
   function upgradeLabel(kind){return t(kind==="firepower"?"upgradeFirepower":kind==="shield"?"upgradeShield":kind==="hull"?"upgradeHull":"upgradeRapid")}
   function updateHudV44(){
-    $("waveValue").textContent=`${t("stage")} ${selectedStage+1} / ${TOTAL_STAGES}`;
+    $("waveValue").textContent=`${selectedStage+1} / ${TOTAL_STAGES}`;
     $("scoreValue").textContent=score;$("bestValue").textContent=best;$("firepowerValue").textContent=firepowerLevel;$("livesValue").textContent=world?.lives||3;
     if($("creditValue"))$("creditValue").textContent=credits;if($("battleCreditValue"))$("battleCreditValue").textContent=credits;if($("resultCredits"))$("resultCredits").textContent=lastStageReward;
   }
@@ -972,34 +957,22 @@
     const active=world.enemies.filter(e=>e.alive),lowest=active.length?Math.max(...active.map(e=>e.y)):-99;if(lowest>570){finish(false);return}if(!active.length){finish(true);return}updateHudV44();
   };
   function renderStageCardsV44(){
-    const rail=$("stageRail");if(!rail)return;rail.textContent="";$("stageProgressText").textContent=t("stageProgress").replace(/\{unlocked\}/g,String(unlockedStage));if($("creditValue"))$("creditValue").textContent=credits;
-    for(let index=0;index<TOTAL_STAGES;index++){const number=index+1,config=stageConfig(number),available=index<unlockedStage,card=document.createElement("button");card.type="button";card.className="stage-card";card.dataset.stageIndex=String(index);card.disabled=!available;card.setAttribute("aria-disabled",String(!available));card.setAttribute("aria-posinset",String(number));card.setAttribute("aria-setsize",String(TOTAL_STAGES));card.setAttribute("aria-label",`${t("stage")} ${number} · ${t(config.ruleKey)} · ${available?t("stageUnlocked"):t("stageLocked")}`);card.setAttribute("aria-current",index===selectedStage?"true":"false");card.classList.toggle("locked",!available);const numberNode=document.createElement("span");numberNode.className="stage-card-number";numberNode.textContent=String(number).padStart(2,"0");const name=document.createElement("strong");name.className="stage-card-name";name.textContent=`${t("stage")} ${number}`;const power=document.createElement("span");power.className="stage-card-power";power.textContent=t("stagePower").replace(/\{shots\}/g,String(firepowerLevel));const rule=document.createElement("span");rule.className="stage-card-rule";rule.textContent=t(config.ruleKey);const status=document.createElement("span");status.className="stage-card-status";status.textContent=available?t("stageUnlocked"):t("stageLocked");card.append(numberNode,name,power,rule,status);card.addEventListener("click",event=>{if(!available)return;event.stopPropagation();selectedStage=index;start(index)});rail.append(card)}
+    $("stageProgressText").textContent=t("stageProgress").replace(/\{unlocked\}/g,String(unlockedStage)).replace(/\{shots\}/g,String(firepowerLevel));
+    if($("creditValue"))$("creditValue").textContent=credits;
+    alienI9Frame?.stageUI.refresh(selectedStage);
   }
   renderStageCards=renderStageCardsV44;
-  function exposeStagePoolCards(){
-    const rail=$("stageRail");
-    if(!rail)return;
-    rail.querySelectorAll("[data-wp-stage-pool-node]").forEach((card)=>{
-      // The shared virtualizer demotes source cards into an aria-hidden store.
-      // Recycled cards are visible controls and must not inherit that state.
-      card.removeAttribute("aria-hidden");
-    });
-  }
-  const stagePoolA11yObserver=new MutationObserver(exposeStagePoolCards);
-  stagePoolA11yObserver.observe($("stageRail"),{subtree:true,childList:true,attributes:true,attributeFilter:["aria-hidden"]});
-  exposeStagePoolCards();
   let upgradeReturnFocus=null;
-  function closeUpgradePanel(){const panel=$("upgradePanel"),shell=document.querySelector(".stage-shell");if(panel)panel.hidden=true;if(shell){shell.inert=false;shell.removeAttribute("aria-hidden")}document.body.classList.remove("wp-upgrades-open");if(upgradeReturnFocus?.isConnected)upgradeReturnFocus.focus({preventScroll:true});upgradeReturnFocus=null}
+  function closeUpgradePanel(){const panel=$("upgradePanel"),workspace=$("stageWorkspace");if(panel)panel.hidden=true;if(workspace){workspace.inert=false;workspace.removeAttribute("aria-hidden")}document.body.classList.remove("wp-upgrades-open");if(upgradeReturnFocus?.isConnected)upgradeReturnFocus.focus({preventScroll:true});upgradeReturnFocus=null}
   function renderUpgrades(){
     if($("creditValue"))$("creditValue").textContent=credits;if($("shopCreditValue"))$("shopCreditValue").textContent=credits;
     document.querySelectorAll("[data-upgrade]").forEach(button=>{const kind=button.dataset.upgrade,level=upgradeLevel(kind),max=upgradeMax(kind),cost=upgradeCost(kind),levelNode=button.querySelector("[data-upgrade-level]"),costNode=button.querySelector("[data-upgrade-cost]"),action=button.querySelector("[data-upgrade-action]");if(levelNode)levelNode.textContent=`${level} / ${max}`;if(costNode)costNode.textContent=level>=max?t("maxed"):t("upgradeCost").replace(/\{cost\}/g,String(cost));if(action)action.textContent=level>=max?t("maxed"):cost>credits?`${t("buy")} · ${cost}`:t("buy");button.disabled=level>=max||cost>credits;button.setAttribute("aria-disabled",String(button.disabled))});
   }
-  function openUpgradePanel(){renderUpgrades();const panel=$("upgradePanel"),shell=document.querySelector(".stage-shell");if(panel){if(panel.hidden)upgradeReturnFocus=document.activeElement instanceof HTMLElement?document.activeElement:null;if(shell){shell.inert=true;shell.setAttribute("aria-hidden","true")}panel.hidden=false;document.body.classList.add("wp-upgrades-open");$("closeShopBtn")?.focus({preventScroll:true})}}
+  function openUpgradePanel(){renderUpgrades();const panel=$("upgradePanel"),workspace=$("stageWorkspace");if(panel){if(panel.hidden)upgradeReturnFocus=document.activeElement instanceof HTMLElement?document.activeElement:null;if(workspace){workspace.inert=true;workspace.setAttribute("aria-hidden","true")}panel.hidden=false;document.body.classList.add("wp-upgrades-open");$("closeShopBtn")?.focus({preventScroll:true})}}
   function buyUpgrade(kind){const level=upgradeLevel(kind),max=upgradeMax(kind),cost=upgradeCost(kind);if(level>=max||credits<cost)return;credits-=cost;if(kind==="firepower")firepowerLevel++;if(kind==="shield")shieldLevel++;if(kind==="hull")hullLevel++;if(kind==="rapid")rapidLevel++;saveEconomy();renderUpgrades();renderStageCardsV44();updateHudV44();beep("reward.upgrade",.12)}
   document.querySelectorAll("[data-upgrade]").forEach(button=>button.addEventListener("click",()=>buyUpgrade(button.dataset.upgrade)));
   if($("shopBtn"))$("shopBtn").addEventListener("click",openUpgradePanel);
   if($("closeShopBtn"))$("closeShopBtn").addEventListener("click",closeUpgradePanel);
-  document.addEventListener("click",event=>{const target=event.target instanceof Element?event.target.closest("#shopBtn,#closeShopBtn,#stageBackBtn"):null;if(!target)return;if(target.id==="shopBtn")openUpgradePanel();if(target.id==="closeShopBtn")closeUpgradePanel();if(target.id==="stageBackBtn"){cancelAnimationFrame(raf);show("main")}});
   document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!$("upgradePanel")?.hidden){event.preventDefault();closeUpgradePanel()}});
   const v44Start=start;
   start=function startV44(stageIndex=selectedStage){closeUpgradePanel();v44Start(Math.max(0,Math.min(TOTAL_STAGES-1,Number(stageIndex)||0)));if(world){const config=world.config||stageConfig(wave);$("battleMessage").textContent=t("stageGoal").replace(/\{stage\}/g,String(wave)).replace(/\{rule\}/g,t(config.ruleKey))}updateHudV44()};
@@ -1007,7 +980,7 @@
   openStageSelector=openStageSelectorV44;
   const v44OldFinish=finish;
   finish=function finishV44(win){
-    if(!stageMode){v44OldFinish(win);return}cancelAnimationFrame(raf);const config=stageConfig(wave),runCredits=world?.creditsEarned||0;if(win&&!stageResultAwarded){stageResultAwarded=true;const clearReward=config.clearReward||90+wave*8;credits+=clearReward;lastStageReward=runCredits+clearReward;unlockStage(wave+1);saveEconomy()}else lastStageReward=runCredits;if(score>best){best=score;try{localStorage.setItem("wp-alien-defender-best",String(best))}catch{}}track("result",{wave,result_reason:win?"stage_cleared":"defense_line_or_lives"});if(win)track("wave_clear",{wave,result_reason:"formation_cleared"});show("result");$("resultTitle").textContent=t(win?"winTitle":"loseTitle");$("resultCopy").textContent=t(win?"stageResultWin":"stageResultFail").replace(/\{stage\}/g,String(wave));$("resultScore").textContent=score;$("resultBest").textContent=best;$("resultWave").textContent=`${t("stage")} ${wave} / ${TOTAL_STAGES}`;if($("resultCredits"))$("resultCredits").textContent=lastStageReward;const goalKey=win?(wave===TOTAL_STAGES?"stageFinalGoal":"stageWinGoal"):"stageFailGoal";$("resultGoal").textContent=t(goalKey).replace(/\{stage\}/g,String(wave)).replace(/\{credits\}/g,String(lastStageReward)).replace(/\{shots\}/g,String(firepowerLevel));$("nextStageBtn").disabled=!win||wave>=TOTAL_STAGES||wave>=unlockedStage;$("nextStageBtn").setAttribute("aria-disabled",String($("nextStageBtn").disabled));beep(win?"result.win":"result.lose",.16);
+    if(!stageMode){v44OldFinish(win);return}cancelAnimationFrame(raf);const config=stageConfig(wave),runCredits=world?.creditsEarned||0;if(win&&!stageResultAwarded){stageResultAwarded=true;const clearReward=config.clearReward||90+wave*8;credits+=clearReward;lastStageReward=runCredits+clearReward;unlockStage(wave+1);saveEconomy()}else lastStageReward=runCredits;if(score>best){best=score;try{localStorage.setItem("wp-alien-defender-best",String(best))}catch{}}track("result",{wave,result_reason:win?"stage_cleared":"defense_line_or_lives"});if(win)track("wave_clear",{wave,result_reason:"formation_cleared"});show("result");$("resultTitle").textContent=t(win?"winTitle":"loseTitle");$("resultCopy").textContent=t(win?"stageResultWin":"stageResultFail").replace(/\{stage\}/g,String(wave));$("resultScore").textContent=score;$("resultBest").textContent=best;$("resultWave").textContent=`${wave} / ${TOTAL_STAGES}`;if($("resultCredits"))$("resultCredits").textContent=lastStageReward;const goalKey=win?(wave===TOTAL_STAGES?"stageFinalGoal":"stageWinGoal"):"stageFailGoal";$("resultGoal").textContent=t(goalKey).replace(/\{stage\}/g,String(wave)).replace(/\{credits\}/g,String(lastStageReward)).replace(/\{shots\}/g,String(firepowerLevel));$("nextStageBtn").disabled=!win||wave>=TOTAL_STAGES||wave>=unlockedStage;$("nextStageBtn").setAttribute("aria-disabled",String($("nextStageBtn").disabled));beep(win?"result.win":"result.lose",.16);
   };
   $("resultStages")?.addEventListener("click",openStageSelector);
   $("nextStageBtn")?.addEventListener("click",()=>{if(selectedStage<TOTAL_WAVES-1&&selectedStage+1<unlockedStage)start(selectedStage+1)});
@@ -1077,7 +1050,7 @@
   const v55UpdateHud=updateHudV44;
   updateHudV44=function updateOpeningConvergenceHud(){
     v55UpdateHud();
-    if(screen==="battle"&&stageMode&&selectedStage===0&&wave===2)$("waveValue").textContent=`${t("wave")} 2 · ${t("stage")} 1 / ${TOTAL_STAGES}`;
+    
   };
   const v55Finish=finish;
   finish=function finishOpeningConvergence(win){
@@ -1156,7 +1129,7 @@
     v56LaneFeedback.textContent=message;
   }
   const v56SetText=setText;
-  setText=function setTextWithLaneFeedback(){v56SetText();v56RenderLaneFeedback(true)};
+  setText=function setTextWithLaneFeedback(){v56SetText();v56RenderLaneFeedback(true);updateMainProgress()};
   const v56Start=start;
   start=function startWithLaneFeedback(stageIndex=selectedStage){
     v56HeldDirection="";v56LastLaneFeedbackKey="";v56Start(stageIndex);v56RenderLaneFeedback(true);
@@ -1180,4 +1153,29 @@
   const v56ClearHeldDirection=()=>{v56HeldDirection="";v56RenderLaneFeedback(true)};
   window.addEventListener("blur",v56ClearHeldDirection);
   document.addEventListener("visibilitychange",()=>{if(document.hidden)v56ClearHeldDirection()});
+
+  updateMainProgress();
+  alienI9Frame=window.mountAlienDefenderFrame({
+    t,
+    stageConfig,
+    getSelected:()=>selectedStage,
+    getUnlocked:()=>unlockedStage,
+    getFirepower:()=>firepowerLevel,
+    setSelected:index=>{selectedStage=index},
+    start:index=>start(index),
+  });
+  const showBeforeI9=show;
+  show=function showWithSharedI9Frame(name){
+    if(name!=="stage")closeUpgradePanel();
+    showBeforeI9(name);
+    const active=name==="result"?"battle":name;
+    document.body.dataset.screen=active;
+    if(name==="result")document.body.dataset.wpGameSubstate="result";
+    else delete document.body.dataset.wpGameSubstate;
+    $("battleBackBtn").dataset.wpReturn="battle";
+    alienI9Frame.frame.activate(active);
+    if(active==="stage")renderStageCardsV44();
+    if(active==="battle")requestAnimationFrame(resize);
+  };
+  show(screen);
 })();
