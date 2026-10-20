@@ -1,33 +1,6 @@
 /* Guard Yard v31: one dark jade/brass language; game-owned workspaces only. */
-body{--wp-scene-return-arrow-color:#f7e4ac;background:#102a2b;color:#edf4e8}
-.yard-game{background:#102a2b;color:#edf4e8}
-.main-entry-panel{background:linear-gradient(145deg,#193e3c,#0a1d28)!important;color:#edf4e8!important;border-color:#638782!important;border-radius:8px!important}
-.main-entry-copy{color:#edf4e8!important}.main-entry-copy span{color:#bbcec2!important}
-body.guard-yard-stage #menuPanel{background:#102a2b!important;border-radius:5px!important;border:2px solid #61817c!important}
-body.guard-yard-stage #menuPanel::before{opacity:.3!important}
-body.guard-yard-stage .menu-shell{grid-template-rows:48px minmax(0,1fr)!important;padding:6px!important;gap:8px!important}
-body.guard-yard-stage .stage-screen-head>strong,body.guard-yard-stage .menu-heading{display:none!important}
-body.guard-yard-stage .menu-content{min-height:0!important;grid-row:2!important}
-body.guard-yard-stage #stageTabPanel{grid-template-rows:48px 32px minmax(0,1fr)!important;gap:6px!important}
-body.guard-yard-stage .mastery-summary{background:#193c3ae8!important;color:#e6d499!important;border:1px solid #7c8a64!important;border-radius:4px!important;min-height:0!important;padding:6px 10px!important;display:flex!important;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px!important;box-shadow:none!important}
-body.guard-yard-stage .mastery-summary>*{font-size:12px!important;color:inherit!important}.mastery-summary small{margin-inline-start:auto}
-body.guard-yard-stage .training-bridge-cue{background:#142e32e8!important;color:#b5d1bd!important;border:0!important;border-radius:3px!important;padding:6px 10px!important;font-size:11px!important;line-height:16px!important;max-height:32px;overflow:hidden;margin:0!important}
-body.guard-yard-stage .beast-guide{display:none!important}
-body.guard-yard-stage .stage-grid{min-height:0!important;grid-row:3!important;align-items:center!important}
-body.guard-yard-stage .stage-card{background:linear-gradient(140deg,#294c48,#132c32)!important;color:#e9edd9!important;border:2px solid #657e73!important;border-radius:6px!important;box-shadow:0 5px 0 #071b20!important;padding:16px!important;overflow:hidden}
-body.guard-yard-stage .stage-card.active,body.guard-yard-stage .stage-card[aria-current=true]{border-color:#e6c473!important;box-shadow:0 5px 0 #796842,0 0 0 3px #dfbc6844!important}
-body.guard-yard-stage .stage-card :is(strong,span,small,b,em){color:inherit!important}
-body.guard-yard-stage .stage-card>img{width:62px!important;height:62px!important;object-fit:contain}
-body.guard-yard-stage .stage-threat{background:#10272c!important;color:#a9c6bb!important;border:1px solid #526d64!important;border-radius:4px!important}
-body.guard-yard-stage .stage-threat img{width:28px!important;height:32px!important}
-body.guard-yard-stage .menu-tabs{background:#112c30!important;gap:6px!important;padding:6px!important;border-top:1px solid #6d867c!important}
-body.guard-yard-stage .menu-tabs button{background:#234649!important;color:#dceade!important;border:1px solid #678780!important;border-radius:4px!important;box-shadow:0 3px 0 #0a1d22!important;transform:none!important}
-body.guard-yard-stage .menu-tabs button.active{background:#d9b864!important;color:#182d30!important;border-color:#f0d79a!important}
+/* Team and Battle content keeps its game art; shared screens own Main and Stage. */
 body.guard-yard-stage :is(.kennel-panel,.shop-panel){background:#102a30!important;color:#e7ecdc!important;border:1px solid #6d8478!important;border-radius:6px!important}
-body.guard-yard-stage :is(.kennel-card,.shop-card){background:#203e40!important;color:#e7ecdc!important;border:1px solid #6d8478!important;border-radius:5px!important;box-shadow:none!important}
-body.guard-yard-stage :is(.kennel-card,.shop-card) :is(strong,span,small){color:inherit!important}
-body.guard-yard-stage :is(.kennel-card,.shop-card) button{background:#d8b75f!important;color:#192d2c!important;border:1px solid #e9d5a0!important;border-radius:4px!important}
-body.guard-yard-stage :is(.kennel-card,.shop-card) button:disabled{opacity:.55}
 /* The logical envelope scales once; the board consumes the flexible track. */
 body.guard-yard-playing .fixed-game-shell{grid-template-rows:48px 30px 80px minmax(0,1fr) 52px 44px!important;gap:5px!important;padding:6px!important;border:2px solid #66837a!important;border-radius:4px!important;background:#102b30!important;color:#e6eee0!important}
 body.guard-yard-playing .resource-pill{background:none!important;border:0!important;color:#f1d28a!important;box-shadow:none!important}
@@ -76,22 +49,11 @@ body.guard-yard-playing :is(.result-card,.pause-card) button{background:#d5b86d!
  body.guard-yard-playing .yard-board{grid-column:2;grid-row:3!important}
  .yard-command-dock{grid-column:2;grid-row:4!important}.yard-command-dock button{height:48px}
  body.guard-yard-playing .hint-text{grid-column:1;grid-row:4!important;font-size:9px!important;line-height:13px!important;height:48px!important;max-height:48px!important}
- body.guard-yard-stage .stage-card{padding:8px!important}
- body.guard-yard-stage .stage-card>img{height:35px!important;width:35px!important}
- body.guard-yard-stage #stageTabPanel{grid-template-rows:30px minmax(0,1fr)!important}
- body.guard-yard-stage .training-bridge-cue{display:none!important}body.guard-yard-stage .stage-grid{grid-row:2!important}
 }
 @media(prefers-reduced-motion:reduce){.yard-board *{animation:none!important;transition:none!important}}
-/* Override the older shared art-shell skin and remove additive rail offsets. */
-body.guard-yard-stage #stageTabPanel .stage-card{align-self:center!important}
-body.guard-yard-stage .stage-card .mini-animal{width:76px!important;height:76px!important}
-body.guard-yard-stage .stage-card .mini-animal img{width:100%;height:100%;object-fit:contain}
 .yard-board[data-renderer="3d"] .cell::before,.yard-board[data-renderer="3d"] .cell::after{display:none!important}
 .yard-board[data-renderer="3d"] .cell{box-shadow:none!important;border-radius:0!important}
-body.guard-yard-stage #menuPanel .stage-card{padding:16px!important}
-body.guard-yard-stage #menuPanel .stage-animal,body.guard-yard-stage #menuPanel .stage-animal .animal-sprite{width:70px!important;height:70px!important}
-body.guard-yard-stage #menuPanel .stage-animal img{width:100%!important;height:100%!important;object-fit:contain}
-@media(orientation:landscape) and (max-height:520px){body.guard-yard-stage #menuPanel .stage-card{padding:8px!important}body.guard-yard-stage #menuPanel .stage-animal,body.guard-yard-stage #menuPanel .stage-animal .animal-sprite{width:36px!important;height:36px!important}}
+@media(orientation:landscape) and (max-height:520px){}
 body.guard-yard-playing .fixed-game-shell{grid-template-rows:48px 30px 80px 32px minmax(0,1fr) 52px 54px!important}
 body.guard-yard-playing #yardBoard{grid-row:5!important}
 body.guard-yard-playing .yard-command-dock{grid-row:6!important}

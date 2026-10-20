@@ -38,26 +38,23 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-guard-yard/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-guard-yard/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-guard-yard/" />
-    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260729-guard-general2" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260729-guard-general2" data-wp-battle-standard />
-    <link rel="stylesheet" href="style.css?v=20260919-guard-yard-v36-main-battle-talent-locale" data-wp-stage-standard data-wp-battle-standard />
-    <script data-wp-stage-standard>/* Shared General Stage selector owns pointer drag, settle, and the physical reserve. */</script>
+    <link rel="stylesheet" href="style.css?v=20261021-guard-yard-v39-i9-r2" data-wp-battle-standard />
     <script data-wp-battle-standard>/* Shared General Battle Canvas owns capped scaling and the physical reserve. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Animal Guard Yard","alternateName":"動物守衛庭院","url":"https://weightplay.com/hi/games/animal-guard-yard/","image":"https://weightplay.com/assets/interface7-redrawn/animal-guard-yard.webp","description":"पाँच रास्तों पर पशु रक्षक लगाकर छह क्षेत्रों के 30 चरण बचाएँ। नए शत्रु, प्रतिभाएँ और बॉस आते हैं; लड़ाई में ऊर्जा अपने आप लौटती है और समय-सीमा नहीं है।","genre":["लेन रक्षा रणनीति पहेली","पाँच रास्तों पर पशु रक्षक","छह बॉस वाले 30 चरण"],"gamePlatform":"Web browser","playMode":"SinglePlayer","keywords":"animal games, lane defense game, strategy game, browser game, animal tower defense","audience":{"@type":"Audience","audienceType":"General players and families","suggestedMinAge":6},"applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"hi","isAccessibleForFree":true}</script>
     <meta name="weightplay-scene-controls" content="immutable" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
-    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" /><link rel="stylesheet" href="block-v31.css?v=20260919-guard-yard-v36-main-battle-talent-locale" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" /><link rel="stylesheet" href="block-v31.css?v=20261021-guard-yard-v39-i9-r2" />
   <meta name="twitter:description" content="पाँच रास्तों पर पशु रक्षक लगाकर छह क्षेत्रों के 30 चरण बचाएँ। नए शत्रु, प्रतिभाएँ और बॉस आते हैं; लड़ाई में ऊर्जा अपने आप लौटती है और समय-सीमा नहीं है।" />
 
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta name="twitter:title" content="Animal Guard Yard | WeightPlay" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-guard-yard.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-  <body data-tutorial-auto-show="false" data-wp-active-scene="main" data-wp-game-owned-guide="true">
+  <body data-tutorial-auto-show="false" data-wp-active-scene="main" data-wp-interface-version="9" data-wp-game-owned-guide="true">
     <main class="yard-game main-screen" data-no-mobile-immersive="true" data-wp-frame-root>
       <header class="topbar">
         <a class="home-link" data-wp-return="main" href="/" aria-label="लॉबी पर लौटें"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
@@ -91,7 +88,7 @@
         <button id="startGameBtn" class="main-start-btn" type="button" data-ui="chooseStage">चरण चुनें</button>
       </section>
 
-      <section id="menuPanel" class="menu-panel wp-stage-art-shell hidden" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/interface7-redrawn/animal-guard-yard.webp" style="--wp-stage-art: url('../../assets/interface7-redrawn/animal-guard-yard.webp')">
+      <section id="menuPanel" class="menu-panel hidden" data-screen="stage" data-wp-standard-stage-screen>
         <div class="menu-shell">
           <div class="stage-screen-head"><button id="stageBackMainBtn" data-wp-return="stage" type="button" aria-label="वापस">&larr;</button><strong data-ui="chooseStage">चरण चुनें</strong></div>
           <div class="wallet-row" aria-label="Animal Guard Yard वॉलेट">
@@ -106,7 +103,7 @@
             <div id="masterySummary" class="mastery-summary" aria-live="polite"></div>
             <p id="stageTrainingCue" class="training-bridge-cue"></p>
             <div id="beastGuide" class="beast-guide" aria-label="जानवरों की गाइड"></div>
-            <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="चरण सूची"></div>
+            <div id="stageGrid" aria-label="चरण सूची"></div>
           </section>
           <section id="animalTabPanel" class="menu-tab-panel hidden" data-tab-panel="animals">
             <div class="kennel-panel">
@@ -165,7 +162,7 @@
         </div>
         <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
           <div class="result-card">
-            <strong id="resultTitle">Victory!</strong>
+            <strong id="resultTitle" tabindex="-1">Victory!</strong>
             <div id="resultText" class="result-report"></div>
             <button id="resultStagesBtn" type="button" data-ui="stages">चरण</button>
             <button id="nextStageBtn" type="button" data-ui="nextStage">अगला चरण</button>
@@ -208,8 +205,8 @@
         try {
           window.WonderAnalytics?.track("game_view", {
             game_id: "animal-guard-yard",
-            game_version: "v36",
-            interface_version: 6,
+            game_version: "v39",
+            interface_version: 9,
             locale: document.documentElement.lang || "en",
             viewport_bucket: viewportBucket,
           });
@@ -226,12 +223,16 @@
     <script src="upgrade-copy.js?v=31"></script>
     <script type="module" src="yard-3d.mjs?v=32-owner-mesh2"></script>
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2">
-    <link rel="stylesheet" href="frame-content.css?v=20260919-guard-yard-v36-main-battle-talent-locale-landscape-rail">
+    <link rel="stylesheet" href="frame-content.css?v=20261021-guard-yard-v39-i9-r2">
+    <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261017-shared-play-spacing1">
+    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
+    <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261021-i9-logical-result-readability1">
     <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
-    <script src="frame.js?v=20260919-guard-yard-v36-main-battle-talent-locale"></script>
+    <script src="frame.js?v=20261021-guard-yard-v39-i9-r2"></script>
+    <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
+    <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
     <script src="talents.js?v=36"></script>
-    <script src="game.js?v=20261001-animal-guard-yard-text140-v2&wp-audio=1.0.0"></script>
-    <script src="../../src/stage-selector-standard.js?v=20260729-guard-general2" data-wp-stage-standard></script>
+    <script type="module" src="game.js?v=20261001-animal-guard-yard-text140-v2&wp-audio=1.0.0"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260729-guard-general2" data-wp-battle-standard></script>
     <script>
       (() => {
@@ -254,6 +255,6 @@
       })();
     </script>
 
-<section id="guardYardGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off"><h2>बगीचे की रक्षा करें</h2><p>शत्रुओं को घर पहुँचने से पहले रोकें।</p><div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>पाँच लेन में पशु रक्षा</strong></div><div class="game-info-fact"><span>शैली</span><strong>लेन-रक्षा रणनीति</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>आसान से चुनौतीपूर्ण</strong></div><div class="game-info-fact"><span>ऊर्जा</span><strong>युद्ध में स्वतः बहाल</strong></div></div><div class="game-info-sections"><div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>रक्षक चुनें और खाली घास के खाने पर रखें। लहर शुरू करने से पहले एक रक्षक तैनात करें।</li><li>लड़ाई में ऊर्जा अपने आप लौटती है। उठाने की जरूरत नहीं; तैयारी और विराम में बहाली रुकती है।</li><li>लहरों के बीच रक्षकों को वापस बुलाकर नई जगह रखें, फिर अगली लहर शुरू करें।</li></ol></div><div class="game-info-section"><h3>रणनीति</h3><p>आपातकाल के लिए ऊर्जा बचाएँ और खतरे वाली पंक्ति में एकजुट का उपयोग करें। पत्थर पर रक्षक नहीं रख सकते।</p></div><div class="game-info-section"><h3>प्रतिभाएँ</h3><p>हर जोड़ी से एक चुनें। लड़ाई से पहले मुफ्त बदलाव; चरण पूरे करके और खोलें।</p></div><div class="game-info-section"><h3>अक्सर पूछे जाने वाले सवाल</h3><dl><div><dt>खेल में कितने चरण हैं?</dt><dd>छह क्षेत्रों में 30 नामित चरण हैं और हर पाँच चरण पर अलग यांत्रिकी वाला बॉस आता है।</dd></div><div><dt>प्रिज़्म शेल टर्टल को इतना कम नुकसान क्यों होता है?</dt><dd>उसकी चमकती ढाल बंद रहने पर नुकसान घटाती है; ढाल खुलने के बाद अपनी रक्षा को मजबूत रखें।</dd></div><div><dt>क्या बिल खोदने वाले दुश्मन लेन बदल सकते हैं?</dt><dd>हाँ। पास वाली लेन में जाने से पहले वे साफ़ चेतावनी देते हैं।</dd></div><div><dt>सन थीफ़ क्या करता है?</dt><dd>वह एक बार 12 यूनिट बची हुई सन चुरा लेता है, लेकिन पहले से रखे रक्षकों को नहीं हटाता।</dd></div><div><dt>क्या पशु रक्षकों को अपग्रेड किया जा सकता है?</dt><dd>हाँ। स्थानीय सिक्कों से रक्षकों को प्रशिक्षित किया जाता है। लोमड़ी साझा डायमंड से मिलने वाला वैकल्पिक अनलॉक है और खेलना उसके बिना भी संभव है।</dd></div><div><dt>क्या प्रगति सहेजी जाती है?</dt><dd>स्टेज अनलॉक, क्लियर, स्कोर, पदक, सिक्के और प्रशिक्षण इसी ब्राउज़र में सहेजे जाते हैं।</dd></div><div><dt>क्या यह फ़ोन पर चलता है?</dt><dd>हाँ। स्टेज चयन में क्षैतिज ड्रैग होता है और लड़ाई में बड़े टैप लक्ष्य दिए गए हैं।</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>संबंधित खेल</h3><p>WeightPlay का एक और रक्षा खेल आज़माएँ।</p><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/animal-dice-bastion/"><span class="game-info-related-copy"><strong>पासा दुर्ग</strong><span>पशु रक्षकों को मिलाकर 30 किले रक्षा चरण खेलें।</span></span></a><a class="game-info-related-card" href="/hi/games/animal-honey-shield/"><span class="game-info-related-copy"><strong>हनी शील्ड</strong><span>दीवारें बनाकर और सुधारकर कुत्ते को मधुमक्खियों के झुंड से बचाएँ।</span></span></a></div></div><article class="game-info-section" data-wp-market-comparison="1.3.0" data-comparison-locale="hi" data-runtime-localize="off" aria-label="मिलती-जुलती लेन-डिफेंस रणनीति का संदर्भ"><h3 data-comparison-heading>मिलती-जुलती लेन-डिफेंस रणनीति का संदर्भ</h3><p><strong data-comparison-tags-label>गेमप्ले टैग:</strong></p><div class="game-info-tags" data-wp-gameplay-tags="1.3.0" data-comparison-tags><span>लेन रक्षा</span><span>रक्षक तैनाती</span><span>लहर रणनीति</span><span>संसाधन प्रबंधन</span></div><p data-comparison-shared>Plants vs. Zombies और Animal Guard Yard दोनों में कई लेन पर रक्षक तैनात करके आने वाले दुश्मनों को सुरक्षित क्षेत्र तक पहुँचने से पहले रोकना होता है। EA के आधिकारिक Plants vs. Zombies पेज में दर्जनों ज़ॉम्बी-विरोधी पौधों और सूर्यास्त, धुंध तथा स्विमिंग पूल जैसी बदलती बाधाओं का वर्णन है।</p><p data-comparison-diff>Animal Guard Yard में पाँच लेन और 30 तय बगीचा चरण हैं, जिनमें पशु रक्षक इस्तेमाल होते हैं। लड़ाई में ऊर्जा अपने आप लौटती है, लहरों के बीच रक्षकों को वापस बुलाकर नई जगह रखा जा सकता है, खतरे वाली लेन में Rally काम आता है और पत्थर वाले खाने तैनाती रोकते हैं। प्रतिभाएँ, प्रशिक्षण और ब्राउज़र-स्थानीय प्रगति भी है। यह EA द्वारा बताए गए पाँच मोड वाले पैकेज की जगह एक छोटा एकल-खिलाड़ी ब्राउज़र अभियान है।</p><p data-comparison-disclaimer>Animal Guard Yard, WeightPlay का स्वतंत्र गेम है। WeightPlay का Electronic Arts, PopCap या Plants vs. Zombies से कोई संबद्धता, समर्थन, लाइसेंस, प्रायोजन या संयुक्त विकास संबंध नहीं है।</p><p><a data-comparison-source href="https://www.ea.com/games/plants-vs-zombies/plants-vs-zombies" rel="noopener noreferrer">आधिकारिक स्रोत: Electronic Arts — Plants vs. Zombies</a></p></article></div></section>
+<section id="guardYardGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off"><h2>बगीचे की रक्षा करें</h2><p>शत्रुओं को घर पहुँचने से पहले रोकें।</p><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>लेन रक्षा रणनीति पहेली</span><span>पाँच रास्तों पर पशु रक्षक</span><span>छह बॉस वाले 30 चरण</span></div><div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>पाँच लेन में पशु रक्षा</strong></div><div class="game-info-fact"><span>शैली</span><strong>लेन रक्षा रणनीति</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>आसान से चुनौतीपूर्ण</strong></div></div><div class="game-info-sections"><div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>रक्षक चुनें और खाली घास के खाने पर रखें। लहर शुरू करने से पहले एक रक्षक तैनात करें।</li><li>लड़ाई में ऊर्जा अपने आप लौटती है। उठाने की जरूरत नहीं; तैयारी और विराम में बहाली रुकती है।</li><li>लहरों के बीच रक्षकों को वापस बुलाकर नई जगह रखें, फिर अगली लहर शुरू करें।</li></ol></div><div class="game-info-section"><h3>रणनीति</h3><p>आपातकाल के लिए ऊर्जा बचाएँ और खतरे वाली पंक्ति में एकजुट का उपयोग करें। पत्थर पर रक्षक नहीं रख सकते।</p></div><div class="game-info-section"><h3>प्रतिभाएँ</h3><p>हर जोड़ी से एक चुनें। लड़ाई से पहले मुफ्त बदलाव; चरण पूरे करके और खोलें।</p></div><div class="game-info-section"><h3>अक्सर पूछे जाने वाले सवाल</h3><dl><div><dt>खेल में कितने चरण हैं?</dt><dd>छह क्षेत्रों में 30 नामित चरण हैं और हर पाँच चरण पर अलग यांत्रिकी वाला बॉस आता है।</dd></div><div><dt>प्रिज़्म शेल टर्टल को इतना कम नुकसान क्यों होता है?</dt><dd>उसकी चमकती ढाल बंद रहने पर नुकसान घटाती है; ढाल खुलने के बाद अपनी रक्षा को मजबूत रखें।</dd></div><div><dt>क्या बिल खोदने वाले दुश्मन लेन बदल सकते हैं?</dt><dd>हाँ। पास वाली लेन में जाने से पहले वे साफ़ चेतावनी देते हैं।</dd></div><div><dt>सन थीफ़ क्या करता है?</dt><dd>वह एक बार 12 यूनिट बची हुई सन चुरा लेता है, लेकिन पहले से रखे रक्षकों को नहीं हटाता।</dd></div><div><dt>क्या पशु रक्षकों को अपग्रेड किया जा सकता है?</dt><dd>हाँ। स्थानीय सिक्कों से रक्षकों को प्रशिक्षित किया जाता है। लोमड़ी साझा डायमंड से मिलने वाला वैकल्पिक अनलॉक है और खेलना उसके बिना भी संभव है।</dd></div><div><dt>क्या प्रगति सहेजी जाती है?</dt><dd>स्टेज अनलॉक, क्लियर, स्कोर, पदक, सिक्के और प्रशिक्षण इसी ब्राउज़र में सहेजे जाते हैं।</dd></div><div><dt>क्या यह फ़ोन पर चलता है?</dt><dd>हाँ। स्टेज चयन में क्षैतिज ड्रैग होता है और लड़ाई में बड़े टैप लक्ष्य दिए गए हैं।</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>संबंधित खेल</h3><p>WeightPlay का एक और रक्षा खेल आज़माएँ।</p><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/animal-dice-bastion/"><span class="game-info-related-copy"><strong>पासा दुर्ग</strong><span>पशु रक्षकों को मिलाकर 30 किले रक्षा चरण खेलें।</span></span></a><a class="game-info-related-card" href="/hi/games/animal-honey-shield/"><span class="game-info-related-copy"><strong>हनी शील्ड</strong><span>दीवारें बनाकर और सुधारकर कुत्ते को मधुमक्खियों के झुंड से बचाएँ।</span></span></a></div></div></div></section>
 </body>
 </html>

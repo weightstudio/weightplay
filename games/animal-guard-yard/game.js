@@ -1,3 +1,5 @@
+import { createGuardYardStageConfig } from "./stage-config.mjs";
+
 const ANIMAL_GUARD_YARD_SHELL_COPY = {
   en: {
     gameTitle: "Animal Guard Yard", language: "Language", back: "Back", backToLobby: "Back to lobby",
@@ -190,8 +192,8 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   __wpNotifyMeasurement();
 
   const GAME_ID = "animal-guard-yard";
-  const GAME_VERSION = "v36";
-  const INTERFACE_VERSION = 6;
+  const GAME_VERSION = "v39";
+  const INTERFACE_VERSION = 9;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
   const bestKey = "weightplay_animal_guard_best";
@@ -1097,7 +1099,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     ["Crossed Tunnels", "\u4ea4\u932f\u5730\u9053", "Use Fox or spread ranged guards across neighboring lanes.", "\u7528\u72d0\u72f8\u8de8\u7dda\u652f\u63f4\uff0c\u6216\u628a\u9060\u7a0b\u5b88\u885b\u5206\u6563\u5230\u76f8\u9130\u8def\u3002", ["burrow", "fast"]],
     ["Burrow and Shield", "\u947d\u5730\u8207\u76fe", "Do not let one blocker carry the whole center lane.", "\u4e0d\u8981\u53ea\u9760\u4e00\u96bb\u72d7\u6230\u58eb\u5b88\u6574\u689d\u4e2d\u8def\u3002", ["burrow", "shield"]],
     ["Underleaf Ambush", "\u8449\u5e95\u5947\u8972", "Read the warning icon; a burrower may leave its starting lane.", "\u770b\u6e05\u9810\u8b66\u5716\u793a\uff0c\u947d\u5730\u7378\u4e0d\u4e00\u5b9a\u7559\u5728\u539f\u8def\u3002", ["burrow", "healer", "fast"]],
-    ["Badger Tunnel Hall", "\u737e\738b\u5730\u9053", "The chief changes lanes twice; keep the middle three lanes ready.", "\u737e\738b\u6703\u5169\u6b21\u63db\u7dda\uff0c\u4e2d\u9593\u4e09\u8def\u90fd\u8981\u4fdd\u7559\u9632\u5b88\u3002", ["burrow", "shield"]],
+    ["Badger Tunnel Hall", "\u737e\u738b\u5730\u9053", "The chief changes lanes twice; keep the middle three lanes ready.", "\u737e\u738b\u6703\u5169\u6b21\u63db\u7dda\uff0c\u4e2d\u9593\u4e09\u8def\u90fd\u8981\u4fdd\u7559\u9632\u5b88\u3002", ["burrow", "shield"]],
     ["Empty Sun Pouch", "\u7a7a\u967d\u5149\u888b", "Stop sun thieves before their pouch glows and removes 12 sun.", "\u967d\u5149\u76dc\u7684\u888b\u5b50\u767c\u4eae\u524d\u64cb\u4f4f\u5b83\uff0c\u5426\u5247\u6703\u5931\u53bb 12 \u9ede\u967d\u5149\u3002", ["normal", "thief"]],
     ["Guard the Harvest", "\u5b88\u4f4f\u6536\u6210", "Spend regenerating energy before a thief can take it.", "\u53ca\u6642\u6536\u967d\u5149\u4e26\u5148\u82b1\u5728\u95dc\u9375\u5b88\u885b\u4e0a\u3002", ["thief", "fast"]],
     ["Hot Footprints", "\u71b1\u6c23\u8173\u5370", "Block thieves while Owl slows the fast escort.", "\u72d7\u6230\u58eb\u64cb\u76dc\u7378\uff0c\u8c93\u982d\u9df9\u62d6\u6162\u5feb\u901f\u8b77\u885b\u3002", ["thief", "fast", "shield"]],
@@ -1280,6 +1282,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     shopGrid: $("shopGrid"),
     beastGuide: $("beastGuide"),
     masterySummary: $("masterySummary"),
+    stageTabPanel: $("stageTabPanel"),
     menuTabs: $("menuTabs"),
     mainPanel: $("mainPanel"),
     startGameBtn: $("startGameBtn"),
@@ -1379,38 +1382,16 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   let currentSpawnDelay = 1;
   let nextSpawnPlan = null;
   let lastBreachSnapshot = null;
-  let viewportWidth = 0;
-  let viewportHeight = 0;
-  let viewportMode = "";
   let activeScene = "main";
   let sharedFrame = null;
   let sceneGeneration = 0;
-  const STAGE_POOL_SIZE = 9;
-  const STAGE_NAV_SHORTCUTS = "ArrowLeft ArrowRight Home End";
-  let stageWindowStart = 0;
-  let stageCardPool = [];
+  let stageController = null;
   let stageBrowseIndex = 0;
-  let stageSettleFrame = 0;
-
-  function ensureStageArtwork() {
-    if (!nodes.menuPanel) return;
-    const stageArt = new URL("../../assets/interface7-redrawn/animal-guard-yard.webp", document.baseURI).href;
-    const expectedValue = `url("${stageArt}")`;
-    if (!nodes.menuPanel.classList.contains("wp-stage-art-shell")) {
-      nodes.menuPanel.classList.add("wp-stage-art-shell");
-    }
-    if (nodes.menuPanel.dataset.wpStageArt !== stageArt) {
-      nodes.menuPanel.dataset.wpStageArt = stageArt;
-    }
-    if (nodes.menuPanel.style.getPropertyValue("--wp-stage-art") !== expectedValue) {
-      nodes.menuPanel.style.setProperty("--wp-stage-art", expectedValue);
-    }
-  }
 
   function activateScene(scene) {
     if(scene!=='battle')disposeYard();
     if (!['main', 'stage', 'battle'].includes(scene)) return sceneGeneration;
-    if (scene !== "stage") cancelStageSettlement();
+    if (scene !== "stage") stageController?.cancel();
     activeScene = scene;
     sharedFrame?.activate(scene);
     sceneGeneration += 1;
@@ -1420,9 +1401,6 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     if (scene === "main") document.body.removeAttribute("data-screen");
     else document.body.dataset.screen = scene;
     document.body.dataset.wpActiveScene = scene;
-    if (scene === "stage") {
-      ensureStageArtwork();
-    }
     document.documentElement.classList.toggle("guard-yard-stage", scene === "stage");
     document.body.classList.toggle("guard-yard-stage", scene === "stage");
     document.documentElement.classList.toggle("guard-yard-playing", scene === "battle");
@@ -1458,6 +1436,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
       mainHeader.classList.toggle("hidden", scene !== "main");
       mainHeader.setAttribute("aria-hidden", String(scene !== "main"));
     }
+    if (scene === "stage") stageController?.refresh(stageBrowseIndex);
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     const __wpReturn = (sceneGeneration);
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
@@ -1467,67 +1446,10 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
 return __wpReturn;
   }
 
-  if (typeof MutationObserver === "function" && nodes.menuPanel) {
-    const stageArtworkObserver = new MutationObserver(() => {
-      if (activeScene === "stage") ensureStageArtwork();
-    });
-    stageArtworkObserver.observe(nodes.menuPanel, {
-      attributes: true,
-      attributeFilter: ["class", "style", "data-wp-stage-art"],
-    });
-  }
-
   function updateGuardYardViewport() {
-    const viewport = window.visualViewport;
-    const visualWidth = Math.round(viewport?.width || 0);
-    const visualHeight = Math.round(viewport?.height || 0);
-    const visualMatchesLayout = visualWidth > 0
-      && visualHeight > 0
-      && Math.abs(visualWidth - window.innerWidth) <= 2
-      && visualHeight <= window.innerHeight + 2;
-    const safeWidth = visualMatchesLayout ? visualWidth : window.innerWidth;
-    const height = visualMatchesLayout ? visualHeight : window.innerHeight;
-    const mode = activeScene === "stage" ? "stage" : activeScene === "battle" ? "playing" : "main";
-    if (safeWidth === viewportWidth && height === viewportHeight && mode === viewportMode) return;
-    viewportWidth = safeWidth;
-    viewportHeight = height;
-    viewportMode = mode;
-    const reserveHeight = mode === "main"
-      ? 0
-      : Math.max(0, Number(window.WeightPlayLayout?.reserveHeight) || 0);
-    const availableHeight = Math.max(1, height - reserveHeight);
-    const width = Math.min(Math.max(1, safeWidth), 920);
-    document.documentElement.style.setProperty("--guard-yard-vw", `${width}px`);
-    document.documentElement.style.setProperty("--guard-yard-vh", `${availableHeight}px`);
-    const isStage = mode === "stage";
-    const isPlaying = mode === "playing";
-    if (isStage || isPlaying) {
-      const compactLandscape=safeWidth>height&&height<=520;
-      const minimumLogicalWidth = compactLandscape?760:390;
-      const minimumLogicalHeight = compactLandscape?334:788;
-      const scale = Math.min(
-        Math.max(1, width) / minimumLogicalWidth,
-        availableHeight / minimumLogicalHeight
-      );
-      const logicalWidth = width / scale;
-      const logicalHeight = availableHeight / scale;
-      document.documentElement.style.setProperty("--guard-yard-frame-scale", String(scale));
-      document.documentElement.style.setProperty("--guard-yard-frame-left", `${Math.max(0, (safeWidth - width) / 2)}px`);
-      document.documentElement.style.setProperty("--guard-yard-frame-top", "0px");
-      document.documentElement.style.setProperty("--guard-yard-logical-width", `${logicalWidth}px`);
-      document.documentElement.style.setProperty("--guard-yard-logical-height", `${logicalHeight}px`);
-      const canvas = isStage ? document.querySelector("#menuPanel") : document.querySelector("#playPanel");
-      if (canvas) {
-        canvas.dataset.logicalWidth = logicalWidth.toFixed(4);
-        canvas.dataset.logicalHeight = logicalHeight.toFixed(4);
-        canvas.dataset.commonScale = scale.toFixed(6);
-      }
-    }
+    if (activeScene === "stage") window.dispatchEvent(new Event("weightplay:stage-sync"));
+    if (activeScene === "battle") window.dispatchEvent(new Event("weightplay:battle-sync"));
   }
-
-  updateGuardYardViewport();
-  window.addEventListener("resize", updateGuardYardViewport, { passive: true });
-  window.visualViewport?.addEventListener("resize", updateGuardYardViewport, { passive: true });
 
   function modernizeGuardNames(value) {
     const copy=window.GUARD_YARD_UPGRADE_COPY?.[locale]||window.GUARD_YARD_UPGRADE_COPY.en;
@@ -1906,10 +1828,6 @@ return __wpReturn;
       if (!guide) return;
       guide.style.setProperty('--wp-ui-radius', '18px', 'important');
       guide.style.setProperty('border-radius', '18px', 'important');
-      guide.querySelectorAll('.game-info-section').forEach((section) => {
-        section.style.setProperty('--wp-ui-radius', '18px', 'important');
-        section.style.setProperty('border-radius', '18px', 'important');
-      });
     };
     import('/games/animal-guard-yard/guide.mjs?v=37-text140-preserve').then(({guardYardGuide}) => {
       const guide=document.querySelector('.game-page-info');
@@ -1980,363 +1898,55 @@ return __wpReturn;
     window.setTimeout(() => bubble.remove(), 900);
   }
 
-  function cancelStageSettlement() {
-    if (stageSettleFrame) cancelAnimationFrame(stageSettleFrame);
-    stageSettleFrame = 0;
-    nodes.stageGrid?.style.removeProperty("scroll-behavior");
-    nodes.stageGrid?.style.removeProperty("scroll-snap-type");
-    if (nodes.stageGrid) delete nodes.stageGrid.dataset.wpStageSettling;
-  }
-
-  const stageWindowLimit = () => Math.max(0, stages.length - STAGE_POOL_SIZE);
-  const desiredStageWindow = (index) => clamp(index - Math.floor(STAGE_POOL_SIZE / 2), 0, stageWindowLimit());
-
-  function createStageCard(poolIndex) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "stage-card";
-    button.dataset.wpStagePoolNode = String(poolIndex + 1);
-    return button;
-  }
-
-  function bindStageCard(button, index) {
-    const stage = stages[index];
-    if (!stage) return;
-    const stageNo = index + 1;
-    const locked = stageNo > unlocked;
-    const active = index === stageBrowseIndex;
-    const selected = index === clamp(Math.max(currentStage, unlocked - 1), 0, stages.length - 1);
-    const progress = loadProgress();
-    const records = typeof progress.stageRecords === "object" && progress.stageRecords ? progress.stageRecords : {};
-    const record = typeof records[String(stageNo)] === "object" && records[String(stageNo)] ? records[String(stageNo)] : {};
-    const cleared = Boolean(record.cleared) || stageNo <= (Number(readStorage(bestKey)) || 0);
-    const perfect = Boolean(record.perfect);
-    const bestScore = Number(record.bestScore) || 0;
-    const progressMeta = locked
-      ? `<div class="stage-progress"><em class="stage-lock">${t("locked")}</em></div>`
-      : cleared || bestScore > 0
-        ? `<div class="stage-progress">${cleared ? `<em>${t("stageCleared")}</em>` : ""}${perfect ? `<em class="perfect">${t("perfectBadge")}</em>` : ""}${bestScore > 0 ? `<small>${t("stageBest", { score: bestScore })}</small>` : ""}</div>`
-        : "";
-    const iconUnit = units[Math.min(index, units.length - 1)]?.id || "cat";
-    button.dir = document.documentElement.dir || "ltr";
-    const adjacent = index === stageBrowseIndex - 1 ? " is-prev" : index === stageBrowseIndex + 1 ? " is-next" : "";
-    button.className = `stage-card${selected ? " selected" : ""}${active ? " is-centered" : ""}${adjacent}${locked ? " locked" : ""}${cleared ? " cleared" : ""}`;
-    button.dataset.stageIndex = String(index);
-    button.dataset.stageLabel = t("stage", { n: stageNo });
-    button.setAttribute("aria-label", `${t("stage", { n: stageNo })}. ${stageCopy(stage, "title")}${locked ? `. ${t("locked")}` : ""}`);
-    button.setAttribute("aria-disabled", String(locked));
-    button.setAttribute("aria-current", String(active));
-    button.setAttribute("aria-posinset", String(stageNo));
-    button.setAttribute("aria-setsize", String(stages.length));
-    button.setAttribute("aria-keyshortcuts", STAGE_NAV_SHORTCUTS);
-    button.tabIndex = active ? 0 : -1;
-    if (active && !locked) button.dataset.wpStageRecommended = "true";
-    else delete button.dataset.wpStageRecommended;
-    button.innerHTML = `<b class="stage-animal">${animalSprite(iconUnit)}</b><strong>${t("stage", { n: stageNo })}</strong><span>${stageCopy(stage, "title")}</span><small class="stage-plan">${stageCopy(stage, "plan")}</small>${progressMeta}${stageThreatPreview(stage)}`;
-  }
-
-  function buildStagePool() {
-    nodes.stageGrid.dir = "ltr";
-    nodes.stageGrid.replaceChildren();
-    stageWindowStart = desiredStageWindow(stageBrowseIndex);
-    stageCardPool = Array.from({ length: Math.min(STAGE_POOL_SIZE, stages.length) }, (_, offset) => {
-      const button = createStageCard(offset);
-      bindStageCard(button, stageWindowStart + offset);
-      nodes.stageGrid.append(button);
-      return button;
-    });
-    Object.assign(nodes.stageGrid.dataset, {
-      wpStageVirtualized: "bounded-recycle",
-      wpStagePoolSize: String(stageCardPool.length),
-      wpStageTotal: String(stages.length),
-      wpStageRecycleCount: "0",
-      wpStageCenterObserver: "manual",
+  function createStageConfig() {
+    return createGuardYardStageConfig({
+      stages,
+      getUnlocked: () => unlocked,
+      getRecord: (stageNo) => {
+        const progress = loadProgress();
+        const records = typeof progress.stageRecords === "object" && progress.stageRecords ? progress.stageRecords : {};
+        const saved = typeof records[String(stageNo)] === "object" && records[String(stageNo)] ? records[String(stageNo)] : {};
+        return {
+          ...saved,
+          cleared: Boolean(saved.cleared) || stageNo <= (Number(readStorage(bestKey)) || 0),
+        };
+      },
+      copy: stageCopy,
+      text: (key, data) => t(key, data),
+      threatLabels: (stage) => {
+        const types = [...new Set((stage.zombies || []).map((enemy) => enemy.type))];
+        if (stage.boss?.type) types.unshift(stage.boss.type);
+        return [...new Set(types)].map(stageThreatLabel);
+      },
     });
   }
 
-  function moveStageWindow(targetStart) {
-    const target = clamp(targetStart, 0, stageWindowLimit());
-    if (!stageCardPool.length || stageCardPool.some((card) => !card.isConnected)) buildStagePool();
-    let recycled = 0;
-    while (stageWindowStart < target) {
-      const card = nodes.stageGrid.firstElementChild;
-      const anchor = card?.nextElementSibling;
-      const before = anchor?.getBoundingClientRect().left;
-      stageWindowStart += 1;
-      nodes.stageGrid.append(card);
-      bindStageCard(card, stageWindowStart + stageCardPool.length - 1);
-      const after = anchor?.getBoundingClientRect().left;
-      if (Number.isFinite(before) && Number.isFinite(after)) nodes.stageGrid.scrollLeft += after - before;
-      recycled += 1;
+  function renderStageGrid({ focus = false } = {}) {
+    stageBrowseIndex = clamp(Math.max(currentStage, unlocked - 1), 0, stages.length - 1);
+    if (!window.WeightPlayPlayUI) throw new Error("SHARED_PLAY_UI_MISSING");
+    if (!stageController) {
+      stageController = window.WeightPlayPlayUI.mountStage({
+        page: nodes.stageTabPanel,
+        rail: nodes.stageGrid,
+        config: createStageConfig(),
+        selected: stageBrowseIndex,
+        onSelect: (index) => { stageBrowseIndex = index; },
+        onStart: (index) => { startStage(index); },
+        isActive: () => activeScene === "stage" && activeMenuTab === "stages",
+      });
+    } else {
+      stageController.refresh(stageBrowseIndex);
     }
-    while (stageWindowStart > target) {
-      const card = nodes.stageGrid.lastElementChild;
-      const anchor = card?.previousElementSibling;
-      const before = anchor?.getBoundingClientRect().left;
-      stageWindowStart -= 1;
-      nodes.stageGrid.prepend(card);
-      bindStageCard(card, stageWindowStart);
-      const after = anchor?.getBoundingClientRect().left;
-      if (Number.isFinite(before) && Number.isFinite(after)) nodes.stageGrid.scrollLeft += after - before;
-      recycled += 1;
-    }
-    stageCardPool = [...nodes.stageGrid.children];
-    nodes.stageGrid.dataset.wpStageWindowStart = String(stageWindowStart + 1);
-    nodes.stageGrid.dataset.wpStageWindowEnd = String(stageWindowStart + stageCardPool.length);
-    if (recycled) nodes.stageGrid.dataset.wpStageRecycleCount = String(Number(nodes.stageGrid.dataset.wpStageRecycleCount || 0) + recycled);
-  }
-
-  function ensureStageWindow(index) {
-    if (!stageCardPool.length || stageCardPool.some((card) => !card.isConnected)) buildStagePool();
-    moveStageWindow(desiredStageWindow(index));
-    stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.stageIndex)));
-  }
-
-  function stageRailGeometry() {
-    const first = stageCardPool[0]?.getBoundingClientRect();
-    const second = stageCardPool[1]?.getBoundingClientRect();
-    const rail = nodes.stageGrid.getBoundingClientRect();
-    const delta = first && second ? (second.left + second.width / 2) - (first.left + first.width / 2) : 0;
-    return { center: rail.left + rail.width / 2, pitch: Math.abs(delta) || 280, orientation: Math.sign(delta) || 1 };
-  }
-
-  function nearestStageCard() {
-    const { center } = stageRailGeometry();
-    return stageCardPool.reduce((nearest, card) => {
-      const box = card.getBoundingClientRect();
-      const distance = Math.abs(box.left + box.width / 2 - center);
-      return !nearest || distance < nearest.distance ? { card, distance } : nearest;
-    }, null)?.card || null;
-  }
-
-  function currentStageLogicalPosition() {
-    const card = nearestStageCard();
-    if (!card) return stageBrowseIndex;
-    const box = card.getBoundingClientRect();
-    const geometry = stageRailGeometry();
-    return clamp(Number(card.dataset.stageIndex) + (geometry.center - (box.left + box.width / 2)) / (geometry.pitch * geometry.orientation), 0, stages.length - 1);
-  }
-
-  function positionStageRail(logicalPosition) {
-    const logical = clamp(logicalPosition, 0, stages.length - 1);
-    const anchorIndex = Math.round(logical);
-    moveStageWindow(desiredStageWindow(anchorIndex));
-    const card = nodes.stageGrid.querySelector(`[data-stage-index="${anchorIndex}"]`);
-    if (card) {
-      // scrollIntoView() on every pointermove causes a layout/scroll feedback
-      // loop on the transformed Stage Canvas. Calculate the logical target
-      // directly so drag updates stay within one frame and never jump.
-      const rail = nodes.stageGrid;
-      const railBox = rail.getBoundingClientRect();
-      const cardBox = card.getBoundingClientRect();
-      const coordinateScale = railBox.width > 0 ? rail.clientWidth / railBox.width : 1;
-      const anchorScroll = rail.scrollLeft
-        + ((cardBox.left + cardBox.width / 2) - (railBox.left + railBox.width / 2)) * coordinateScale;
-      const fraction = logical - anchorIndex;
-      const target = anchorScroll + fraction * stageRailGeometry().orientation * stageRailGeometry().pitch * coordinateScale;
-      const maximum = Math.max(0, rail.scrollWidth - rail.clientWidth);
-      const immediateScroll = rail.dataset.wpStageDragDown !== "1" && rail.dataset.wpStageSettling !== "true";
-      const previousBehavior = rail.style.getPropertyValue("scroll-behavior");
-      const previousPriority = rail.style.getPropertyPriority("scroll-behavior");
-      if (immediateScroll) rail.style.setProperty("scroll-behavior", "auto", "important");
-      rail.scrollLeft = getComputedStyle(rail).direction === "rtl"
-        ? Math.max(-maximum, Math.min(0, target))
-        : Math.max(0, Math.min(maximum, target));
-      if (immediateScroll) {
-        if (previousBehavior) rail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
-        else rail.style.removeProperty("scroll-behavior");
-      }
-    }
-    nodes.stageGrid.dataset.wpStageDragLogical = logical.toFixed(4);
-    return logical;
-  }
-
-  function syncCenteredStageCard() {
-    const nearest = nearestStageCard();
-    const index = Number(nearest?.dataset.stageIndex);
-    if (Number.isInteger(index)) stageBrowseIndex = index;
-    stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.stageIndex)));
-    const stagePanel = document.querySelector("#stageTabPanel");
-    if (stagePanel) {
-      stagePanel.dataset.prevStageLabel = stageBrowseIndex > 0 ? t("stage", { n: stageBrowseIndex }) : "";
-      stagePanel.dataset.nextStageLabel = stageBrowseIndex + 1 < stages.length ? t("stage", { n: stageBrowseIndex + 2 }) : "";
-    }
-    return nearest;
-  }
-
-  function settleStageRail(from, targetIndex, immediate = false) {
-    cancelStageSettlement();
-    const target = clamp(targetIndex, 0, stages.length - 1);
-    stageBrowseIndex = target;
-    if (immediate) {
-      positionStageRail(target);
-      // Chromium may defer the geometry update from scrollIntoView. Keyboard
-      // navigation already owns an exact logical target, so commit that target
-      // directly instead of letting pre-scroll geometry restore the old card.
-      stageBrowseIndex = target;
-      stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.stageIndex)));
-      const stagePanel = document.querySelector("#stageTabPanel");
-      if (stagePanel) {
-        stagePanel.dataset.prevStageLabel = target > 0 ? t("stage", { n: target }) : "";
-        stagePanel.dataset.nextStageLabel = target + 1 < stages.length ? t("stage", { n: target + 2 }) : "";
-      }
-      return;
-    }
-    const started = performance.now();
-    nodes.stageGrid.style.setProperty("scroll-behavior", "auto", "important");
-    nodes.stageGrid.style.setProperty("scroll-snap-type", "none", "important");
-    nodes.stageGrid.dataset.wpStageSettling = "true";
-    const animate = (now) => {
-      if (activeScene !== "stage") return cancelStageSettlement();
-      const progress = clamp((now - started) / 340, 0, 1);
-      const eased = progress * progress * (3 - 2 * progress);
-      positionStageRail(from + (target - from) * eased);
-      if (progress < 1) stageSettleFrame = requestAnimationFrame(animate);
-      else {
-        stageSettleFrame = 0;
-        positionStageRail(target);
-        syncCenteredStageCard();
-        nodes.stageGrid.style.removeProperty("scroll-behavior");
-        nodes.stageGrid.style.removeProperty("scroll-snap-type");
-        delete nodes.stageGrid.dataset.wpStageSettling;
-      }
-    };
-    stageSettleFrame = requestAnimationFrame(animate);
-  }
-
-  function rejectRepeatedScreenActivation(event) {
-    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
+    nodes.stageGrid?.setAttribute("aria-label", t("stageListAria"));
+    if (focus) {
+      window.requestAnimationFrame(() => {
+        nodes.stageGrid.querySelector('[aria-current="true"]')?.focus({ preventScroll: true });
+      });
     }
   }
 
   function focusSelectedStage() {
-    const card = nodes.stageGrid.querySelector('.stage-card[aria-current="true"]') || nodes.stageGrid.querySelector(".stage-card:not(.locked)");
-    card?.focus({ preventScroll: true });
-    settleStageRail(stageBrowseIndex, Number(card?.dataset.stageIndex) || 0, true);
-  }
-
-  function bindStageGridSelection() {
-    if (nodes.stageGrid.dataset.selectionBound === "1") return;
-    nodes.stageGrid.dataset.selectionBound = "1";
-    nodes.stageGrid.addEventListener("dragstart", (event) => event.preventDefault());
-    nodes.stageGrid.addEventListener("keydown", (event) => {
-      const card = event.target.closest(".stage-card");
-      if (!card || !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-      const currentIndex = Number(card.dataset.stageIndex);
-      const rtl = document.documentElement.dir === "rtl";
-      const nextIndex = event.key === "Home" ? 0
-        : event.key === "End" ? stages.length - 1
-          : clamp(currentIndex + (event.key === "ArrowRight" ? (rtl ? -1 : 1) : (rtl ? 1 : -1)), 0, stages.length - 1);
-      event.stopImmediatePropagation();
-      stageBrowseIndex = nextIndex;
-      ensureStageWindow(nextIndex);
-      const target = nodes.stageGrid.querySelector(`[data-stage-index="${nextIndex}"]`);
-      if (!target) return;
-      event.preventDefault();
-      settleStageRail(currentStageLogicalPosition(), nextIndex, true);
-      nodes.stageGrid.querySelector(`[data-stage-index="${nextIndex}"]`)?.focus({ preventScroll: true });
-    });
-    const recenterStagePool = () => {
-      if (activeScene === "stage") requestAnimationFrame(() => settleStageRail(stageBrowseIndex, stageBrowseIndex, true));
-    };
-    window.addEventListener("resize", recenterStagePool, { passive: true });
-    window.visualViewport?.addEventListener("resize", recenterStagePool, { passive: true });
-    nodes.stageGrid.addEventListener("click", (event) => {
-      const button = event.target.closest(".stage-card");
-      if (!button || !nodes.stageGrid.contains(button)) return;
-      const index = Number(button.dataset.stageIndex);
-      if (!Number.isInteger(index)) return;
-      if (index + 1 > unlocked) {
-        showFloatingText(t("locked"));
-        playSound("ui.click");
-        return;
-      }
-      startStage(index);
-    });
-    let pointerId = null;
-    let startX = 0;
-    let lastX = 0;
-    let logical = 0;
-    let moved = false;
-    let suppressClick = false;
-    let dragFrame = 0;
-    let pendingDragLogical = 0;
-    let previousScrollBehavior = "";
-    let previousScrollBehaviorPriority = "";
-    nodes.stageGrid.dataset.wpStageVirtualDrag = "true";
-    nodes.stageGrid.addEventListener("pointerdown", (event) => {
-      if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
-      cancelStageSettlement();
-      if (dragFrame) cancelAnimationFrame(dragFrame);
-      dragFrame = 0;
-      pointerId = event.pointerId;
-      startX = lastX = event.clientX;
-      logical = currentStageLogicalPosition();
-      pendingDragLogical = logical;
-      moved = false;
-      nodes.stageGrid.dataset.wpStageDragDown = "1";
-      previousScrollBehavior = nodes.stageGrid.style.getPropertyValue("scroll-behavior");
-      previousScrollBehaviorPriority = nodes.stageGrid.style.getPropertyPriority("scroll-behavior");
-      nodes.stageGrid.style.setProperty("scroll-behavior", "auto", "important");
-      nodes.stageGrid.style.setProperty("scroll-snap-type", "none", "important");
-      event.stopImmediatePropagation();
-    }, true);
-    document.addEventListener("pointermove", (event) => {
-      if (event.pointerId !== pointerId) return;
-      const delta = event.clientX - lastX;
-      lastX = event.clientX;
-      if (!moved && Math.abs(event.clientX - startX) > 4) moved = true;
-      if (moved) {
-        if (event.cancelable) event.preventDefault();
-        logical = clamp(logical - delta / stageRailGeometry().pitch, 0, stages.length - 1);
-        pendingDragLogical = logical;
-        if (!dragFrame) {
-          dragFrame = requestAnimationFrame(() => {
-            dragFrame = 0;
-            if (pointerId !== null) positionStageRail(pendingDragLogical);
-          });
-        }
-      }
-      event.stopImmediatePropagation();
-    }, true);
-    const finish = (event) => {
-      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
-      pointerId = null;
-      if (moved) {
-        if (event.cancelable) event.preventDefault();
-        if (dragFrame) cancelAnimationFrame(dragFrame);
-        dragFrame = 0;
-        positionStageRail(pendingDragLogical);
-        logical = pendingDragLogical;
-        settleStageRail(logical, Math.round(logical));
-        suppressClick = true;
-        setTimeout(() => { suppressClick = false; }, 0);
-      } else {
-        nodes.stageGrid.style.removeProperty("scroll-snap-type");
-        if (previousScrollBehavior) nodes.stageGrid.style.setProperty("scroll-behavior", previousScrollBehavior, previousScrollBehaviorPriority);
-        else nodes.stageGrid.style.removeProperty("scroll-behavior");
-      }
-      nodes.stageGrid.dataset.wpStageDragDown = "0";
-      moved = false;
-      event.stopImmediatePropagation();
-    };
-    document.addEventListener("pointerup", finish, true);
-    document.addEventListener("pointercancel", finish, true);
-    nodes.stageGrid.addEventListener("click", (event) => {
-      if (!suppressClick) return;
-      suppressClick = false;
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    }, true);
-  }
-
-  function renderStageGrid() {
-    stageBrowseIndex = clamp(Math.max(currentStage, unlocked - 1), 0, stages.length - 1);
-    ensureStageWindow(stageBrowseIndex);
-    bindStageGridSelection();
-    window.requestAnimationFrame(() => settleStageRail(stageBrowseIndex, stageBrowseIndex, true));
+    renderStageGrid({ focus: true });
   }
 
   function renderBeastGuide() {
@@ -2620,11 +2230,9 @@ return __wpReturn;
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     (__wpNotifyMeasurement(), nodes.pausePanel.classList.add("hidden"));
     showMenuTab(activeMenuTab);
-    ensureStageArtwork();
     window.requestAnimationFrame(() => {
-      ensureStageArtwork();
       window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-      focusSelectedStage();
+      if (activeMenuTab === "stages") focusSelectedStage();
     });
   }
 
@@ -3695,7 +3303,7 @@ return __wpReturn;
     nodes.gameShell.inert = true;
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
     sharedFrame?.activate('battle', {covered:true});
-    primaryResultAction.focus({ preventScroll: true });
+    nodes.resultTitle.focus({ preventScroll: true });
     renderWallet();
     renderKennel();
 
@@ -3837,18 +3445,23 @@ return __wpReturn;
     }
     playSound("ui.click");
   });
+  function rejectRepeatedScreenActivation(event) {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }
   nodes.playPanel.addEventListener("click", (event) => {
     if (reclaimVisiblePlayerAction(event)) return;
     event.preventDefault();
     event.stopImmediatePropagation();
   }, true);
   nodes.startGameBtn?.addEventListener("keydown", rejectRepeatedScreenActivation, true);
-  nodes.stageGrid.addEventListener("keydown", rejectRepeatedScreenActivation, true);
   nodes.kennelGrid?.addEventListener("keydown", rejectRepeatedScreenActivation, true);
   nodes.shopGrid?.addEventListener("keydown", rejectRepeatedScreenActivation, true);
   nodes.startGameBtn?.addEventListener("click", () => showMenu());
   nodes.stageBackMainBtn?.addEventListener("click", returnToMain);
-  nodes.backToStagesBtn.addEventListener("click", showPause);
+  nodes.backToStagesBtn.addEventListener("click", showMenu);
   nodes.pauseBtn.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
@@ -3882,6 +3495,18 @@ return __wpReturn;
   nodes.resultPanel.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault();
+      return;
+    }
+    if (event.key === "Tab") {
+      const actions = [nodes.resultStagesBtn, nodes.nextStageBtn, nodes.retryBtn]
+        .filter((button) => !button.disabled && button.getClientRects().length > 0);
+      if (!actions.length) return;
+      const index = actions.indexOf(document.activeElement);
+      const nextIndex = event.shiftKey
+        ? (index <= 0 ? actions.length - 1 : index - 1)
+        : (index < 0 || index >= actions.length - 1 ? 0 : index + 1);
+      event.preventDefault();
+      actions[nextIndex].focus({ preventScroll: true });
     }
   });
   nodes.resultStagesBtn.addEventListener("click", () => {

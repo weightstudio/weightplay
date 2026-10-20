@@ -7,21 +7,23 @@
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
   <meta charset="utf-8">
+  <meta name="weightplay-game-version" content="v23">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#170d38">
   <meta name="weightplay-audience" content="general">
   <title>スペクトラムパルス | WeightPlay</title>
-  <meta name="description" content="暴走する観測所で弾幕をかわし、連鎖爆発を起こそう。 コアを3個破壊して強化を選択。5ステージごとに守護者が出現。" />
+  <meta name="description" content="各スキャン地点で色と紋章を合わせ、6章・全30基の固定パターンのパルス塔を進もう。" />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="スペクトラムパルス | WeightPlay" />
-  <meta property="og:description" content="暴走する観測所で弾幕をかわし、連鎖爆発を起こそう。 コアを3個破壊して強化を選択。5ステージごとに守護者が出現。" />
+  <meta property="og:description" content="各スキャン地点で色と紋章を合わせ、6章・全30基の固定パターンのパルス塔を進もう。" />
   <meta property="og:url" content="https://weightplay.com/ja/games/animal-spectrum-pulse/" />
-  <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-spectrum-pulse.webp" />
+  <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v21" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="スペクトラムパルス | WeightPlay" />
-  <meta name="twitter:description" content="暴走する観測所で弾幕をかわし、連鎖爆発を起こそう。 コアを3個破壊して強化を選択。5ステージごとに守護者が出現。" />
+  <meta name="twitter:description" content="各スキャン地点で色と紋章を合わせ、6章・全30基の固定パターンのパルス塔を進もう。" />
   <link rel="canonical" href="https://weightplay.com/ja/games/animal-spectrum-pulse/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-spectrum-pulse/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-spectrum-pulse/" />
@@ -40,98 +42,102 @@
     <link rel="icon" href="../../assets/weightplay-logo.png">
   <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <link rel="stylesheet" href="style.css?v=20261013-spectrum-v22">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-spectrum-pulse.webp" />
-  <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
-<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-  <script src="/src/interface7-poster-registry.js?v=20261013-spectrum-v22"></script>
+  <link rel="stylesheet" href="style.css?v=20261021-spectrum-v23-i9">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2"><script src="/src/interface7-poster-registry.js?v=20261013-spectrum-v22"></script>
 <link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0">
 <link rel="stylesheet" href="/games/animal-spectrum-pulse/combat.css?v=20261013-spectrum-v22">
-
+<link rel="stylesheet" href="/src/game-play-ui.css?v=20261021-shared-play1">
+<link rel="stylesheet" href="/src/stage-rail-i9.css?v=20261021-stage-rail-i9">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v21" />
+  <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-  <body data-screen="main" data-wp-game-id="animal-spectrum-pulse" data-wp-combined-sound="true" data-wp-game-owned-guide>
-  <div id="loadingPanel" class="loading" role="status"><img src="../../assets/animal-spectrum-pulse/spectrum-spirit.webp" alt=""><strong data-t="loading">スペクトラムドラムを調律中…</strong></div>
-
+  <body data-screen="main" data-wp-game-id="animal-spectrum-pulse" data-wp-game-version="v23" data-wp-interface-version="9" data-wp-combined-sound="true" data-wp-game-owned-guide>
+  <span id="loadingPanel" aria-hidden="true" data-wp-entry-readiness-sentinel></span>
+  <div id="gameRoot" data-wp-frame-root>
   <div id="mainGroup" class="main-group">
-    <main id="mainScreen" class="main-screen">
-      <header class="main-header">
+      <header id="mainHeader" class="main-header">
         <a class="lobby-return" data-wp-return="main" href="/" aria-label="WeightPlayに戻る" data-t-aria="lobbyReturn"><span>←</span><img src="../../assets/weightplay-logo.png" alt="スペクトラムパルスのゲーム画像"></a>
-        <strong data-t="titleShort" data-wp-game-title data-runtime-localize="off">スペクトラムパルス</strong>
+        <strong data-t="titleShort" data-wp-game-title data-wp-frame-title data-runtime-localize="off">スペクトラムパルス</strong>
         <label class="locale-control"><span class="sr-only" data-t="language">言語</span><select id="localeSelect" aria-label="言語" data-t-aria="language"></select></label>
       </header>
-      <section class="main-hero">
-        <img class="poster" src="../../assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v22" alt="パンクがオーロラゲートへ精霊を導く" data-t-alt="posterAlt">
-        <div class="main-copy">
-          <small data-t="mainKicker">回避 × 爆破 × ボス戦</small>
-          <h1 data-t="title" data-wp-game-title data-runtime-localize="off">スペクトラムパルス</h1>
-          <p data-t="mainSummary">暴走する観測所で弾幕をかわし、連鎖爆発を起こそう。</p>
-          <p data-t="mainGoal">コアを3個破壊して強化を選択。5ステージごとに守護者が出現。</p>
-          <span id="mainProgress"></span>
-          <button id="start" class="primary" type="button" data-t="startGame">ゲーム開始</button>
+    <main id="mainScreen" class="main-screen">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap" data-wp-game-title data-runtime-localize="off">スペクトラムパルス</h1>
+        <img class="poster" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v22" alt="パンクがオーロラゲートへ精霊を導く" data-t-alt="posterAlt">
+        <div class="main-copy" data-wp-frame-copy>
+          <small data-t="mainKicker">ワンタッチアーケード</small>
+          <p data-t="mainSummary" data-wp-frame-summary>パンクのスペクトラム精霊をパルスで押し上げ、回転する紋章ゲートを抜けよう。</p>
+          <p data-t="mainGoal">スキャン地点で波・太陽・ダイヤ・肉球を合わせ、30の塔を修復しよう。</p>
+          <span id="mainProgress" data-wp-frame-progress></span>
+          <button id="start" class="primary" type="button" data-t="startGame" data-wp-main-start data-wp-frame-action="primary">ゲーム開始</button>
         </div>
-      </section>
-    </main>
-      <section class="public-guide game-page-info wp-spectrum-guide game-page-info-static" aria-labelledby="guideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>回避 × 爆破 × ボス戦</span></div>
+      <section class="public-guide game-page-info wp-spectrum-guide game-page-info-static" aria-labelledby="guideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>精密アーケード</span><span>タイミング</span><span>紋章合わせ</span></div>
       <small data-t="guideKicker">ゲームガイド</small>
-      <h2 id="guideTitle" data-t="guideTitle">回避 × 爆破 × ボス戦</h2>
-      <p data-t="guideIntro">暴走する観測所で弾幕をかわし、連鎖爆発を起こそう。 コアを3個破壊して強化を選択。5ステージごとに守護者が出現。</p>
+      <h2 id="guideTitle" data-t="guideTitle">リズムを感じ、ゲートを読む</h2>
+      <p data-t="guideIntro">読み取りとパルスの流れを覚え、6章に並ぶ固定パターンのオーロラ塔30基を進もう。</p>
       <div class="guide-grid">
-        <article><h3 data-t="guideWorldTitle">目標</h3><p data-t="guideWorld">コアを3個破壊して強化を選択。5ステージごとに守護者が出現。</p></article>
-        <article><h3 data-t="guideLoopTitle">移動で開始</h3><p data-t="guideLoop">WASD、矢印キー、または場内をドラッグして移動。近くの敵とコアを自動で狙います。</p></article>
-        <article><h3 data-t="guideReadTitle">パルス · Space</h3><p data-t="guideRead">Space／パルスで近くの弾を消し、オレンジの爆薬を起爆。Shift／ダッシュは短時間無敵になり敵にダメージ。</p></article>
-        <article><h3 data-t="guideStrategyTitle">ダッシュ · Shift</h3><p data-t="guideStrategy">敵を爆薬に誘い、パルスで連鎖爆発。突進予告にはダッシュを残し、ボスの攻撃後の隙に大ダメージを狙いましょう。</p></article>
-        <article><h3 data-t="guideProgressTitle">コア3個を破壊 → 脱出</h3><p data-t="guideProgress">6種類の地形と30ステージ。砲台と突進する重装兵が加わり、5ステージごとに守護者と対決します。</p></article>
-        <article><h3 data-t="guideDesignTitle">強化を選ぼう</h3><p data-t="guideDesign">コアを3個破壊。最初のコアで強化を1つ選択。5ステージごとのボスは予告を避け、攻撃後の隙を狙って北の出口へ。</p></article>
-        <article><h3 data-t="guidePlayerTitle">保存と進行</h3><p data-t="guidePlayer">進行はブラウザに保存。解放状況、音符、強化を引き継ぎ、旧ルールのメダルと記録は別に保管します。登録・購入不要。</p></article>
+        <article><h3 data-t="guideWorldTitle">静かなオーロラ塔</h3><p data-t="guideWorld">パンクのドラムは沈黙した。精霊を救うたび、紋章塔が戻り、王冠へ鼓動が届く。</p></article>
+        <article><h3 data-t="guideLoopTitle">一回押して、一回パルス</h3><p data-t="guideLoop">タップ、クリック、Space、Enter、上矢印は同じ上昇力。次は一度離してから。</p></article>
+        <article><h3 data-t="guideReadTitle">色だけに頼らない</h3><p data-t="guideRead">シアンの波、金の太陽、紫のダイヤ、珊瑚色の肉球は紋章と模様でも区別できます。</p></article>
+        <article><h3 data-t="guideStrategyTitle">安全なチェックポイントで待つ</h3><p data-t="guideStrategy">通過したゲートは安全な拍になる。スキャン印を見て、自分の紋章で進もう。</p></article>
+        <article><h3 data-t="guideProgressTitle">圧力が高まる六つの章</h3><p data-t="guideProgress">1～5塔は一つの回転リング、6～10塔は逆回転のペア、11～15塔は揺れるバーと十字、16～20塔は花弁スパイラル、21～25塔はテンポ変化、26～30塔は王冠・花弁・反転を組み合わせます。通過したゲートはチェックポイントになります。</p></article>
+        <article><h3 data-t="guideDesignTitle">読める一拍を中心に設計</h3><p data-t="guideDesign">精霊は毎回同じパルスで上昇し、ゲートだけが独立して動きます。下のマーカーを読み、現在の色と紋章を合わせてから押す。パルス制御、先読み、エコーガードはタイミング規則を変えずにリカバリーを助けます。</p></article>
+        <article><h3 data-t="guidePlayerTitle">プレイヤー・端末・保存情報</h3><p data-t="guidePlayer">タップ、クリック、Space、Enter、上矢印は同じパルス操作です。塔の解放、メダル、ベストタイム、共鳴強化、言語、外見用の軌跡はこのブラウザに保存されます。アカウントや購入は不要で、軌跡は外見だけです。</p></article>
       </div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle">関連ゲームをもっと見る</h3><p id="guideRelatedIntro" data-t="guideRelatedIntro">暴走する観測所で弾幕をかわし、連鎖爆発を起こそう。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-rune-reels" href="/ja/games/animal-rune-reels/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-rune-reels.webp" data-final-src="/assets/weightplay-logo.png" alt="ルーンリール" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">ルーンリール</strong></span></a><a class="game-info-related-card" data-game-id="animal-moonlight-heist" href="/ja/games/animal-moonlight-heist/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-moonlight-heist.webp" data-final-src="/assets/weightplay-logo.png" alt="月夜の潜入" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">月夜の潜入</strong></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle">More Related Games</h3><p id="guideRelatedIntro" data-t="guideRelatedIntro">判読を楽しむ二つのWeightPlayゲームも続けて遊べます。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-rune-reels" href="/ja/games/animal-rune-reels/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-rune-reels.webp" data-final-src="/assets/weightplay-logo.png" alt="Rune Reels" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Rune Reels</strong></span></a><a class="game-info-related-card" data-game-id="animal-moonlight-heist" href="/ja/games/animal-moonlight-heist/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-moonlight-heist.webp" data-final-src="/assets/weightplay-logo.png" alt="Moonlight Heist" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Moonlight Heist</strong></span></a></div></div>
       <section class="guide-faq" aria-labelledby="guideFaqTitle">
         <h3 id="guideFaqTitle" data-t="guideFaqTitle">よくある質問</h3>
-        <details><summary id="guideFaqOneQuestion" data-t="guideFaq1Question">移動で開始</summary><p id="guideFaqOneAnswer" data-t="guideFaq1Answer">WASD、矢印キー、または場内をドラッグして移動。近くの敵とコアを自動で狙います。</p></details>
-        <details><summary id="guideFaqTwoQuestion" data-t="guideFaq2Question">パルス · Space</summary><p id="guideFaqTwoAnswer" data-t="guideFaq2Answer">Space／パルスで近くの弾を消し、オレンジの爆薬を起爆。Shift／ダッシュは短時間無敵になり敵にダメージ。</p></details>
-        <details><summary data-t="guideFaq3Question">体力</summary><p data-t="guideFaq3Answer">体力がなくなりました。遮蔽物とダッシュを活用し、パルスで弾を消しましょう。</p></details>
-        <details><summary data-t="guideFaq4Question">保存と進行</summary><p data-t="guideFaq4Answer">進行はブラウザに保存。解放状況、音符、強化を引き継ぎ、旧ルールのメダルと記録は別に保管します。登録・購入不要。</p></details>
-      <details data-wp-spectrum-text140-faq><summary data-t="guideFaq5Question">コア3個を破壊 → 脱出</summary><p data-t="guideFaq5Answer">6種類の地形と30ステージ。砲台と突進する重装兵が加わり、5ステージごとに守護者と対決します。</p></details><details data-wp-spectrum-text140-faq><summary data-t="guideFaq6Question">ダッシュ · Shift</summary><p data-t="guideFaq6Answer">敵を爆薬に誘い、パルスで連鎖爆発。突進予告にはダッシュを残し、ボスの攻撃後の隙に大ダメージを狙いましょう。</p></details><details data-wp-spectrum-text140-faq><summary data-t="guideFaq7Question">目標</summary><p data-t="guideFaq7Answer">続けると敵、体力、残り時間を保ったまま再開。ステージに戻ると今回の戦闘は終了します。</p></details></section>
+        <details><summary id="guideFaqOneQuestion" data-t="guideFaq1Question">安全にパルスするには？</summary><p id="guideFaqOneAnswer" data-t="guideFaq1Answer">短く一度押して完全に離し、下のスキャン印が現在の色と紋章に合うまで待ってから次を押します。</p></details>
+        <details><summary id="guideFaqTwoQuestion" data-t="guideFaq2Question">強化でタイミング規則は変わりますか？</summary><p id="guideFaqTwoAnswer" data-t="guideFaq2Answer">いいえ。パルス制御、先読み、エコーガードは復帰を助けますが、各ゲートの色と紋章の規則は同じです。</p></details>
+        <details><summary data-t="guideFaq3Question">間違ったゲートを通ると？</summary><p data-t="guideFaq3Answer">エコーガードか練習ビートが安全地点へ戻さない限り、ランは終了します。Resultで次の再挑戦を確認できます。</p></details>
+        <details><summary data-t="guideFaq4Question">進行状況は保存されますか？</summary><p data-t="guideFaq4Answer">塔の解放、メダル、ベストタイム、強化、設定はこのブラウザにローカル保存されます。</p></details>
+      <details data-wp-spectrum-text140-faq><summary data-t="guideFaq5Question">6つの章でゲートはどう変わりますか？</summary><p data-t="guideFaq5Answer">塔1〜5は回転リングです。後の章では逆回転するペア、バーと十字、花弁スパイラル、速度変化、王冠の複合パターンが加わります。</p></details><details data-wp-spectrum-text140-faq><summary data-t="guideFaq6Question">色を見なくてもゲートを見分けられますか？</summary><p data-t="guideFaq6Answer">はい。波、太陽、ダイヤ、肉球は色だけでなく、異なる紋章と模様でも見分けられます。</p></details><details data-wp-spectrum-text140-faq><summary data-t="guideFaq7Question">塔の途中で離れるとどうなりますか？</summary><p data-t="guideFaq7Answer">「続ける」を選ぶとゲートの角度、タイマー、共鳴を保った同じプレイを再開します。塔へ戻るとそのプレイは終了します。</p></details></section>
     </section>
+    </main>
   </div>
 
-  <section id="stageScreen" class="active-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell wp-spectrum-block-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-shell-content="stage" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v22" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v22')">
-      <header class="stage-header" data-wp-shell-header="stage"><button id="stageBack" type="button" aria-label="戻る" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseTower">パルス塔を選ぶ</strong><span id="stageSummary"></span></div></header>
-      <nav class="stage-tabs"><button id="towersTab" class="active" type="button" aria-pressed="true" data-t="towers">塔</button><button id="studioTab" type="button" aria-pressed="false" data-t="studio">共鳴スタジオ</button></nav>
-      <section id="towerPanel" class="tab-panel tower-panel"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="パルス塔セレクター" data-t-aria="stageRailLabel"></div><p id="stageHint" data-t="stageHint">レールをドラッグして解除済みの塔を選択。</p></section>
+  <section id="stageScreen" class="stage-canvas" data-wp-logical-stage-canvas hidden>
+    <header id="stageHeader" class="stage-header" data-wp-shell-header="stage"><button id="stageBack" type="button" aria-label="戻る" data-t-aria="back" data-wp-return="stage">←</button><strong data-wp-frame-title></strong><div id="stageInfo"><span id="stageSummary"></span></div></header>
+    <div id="stageContent" class="stage-content" data-wp-shell-content="stage">
+      <section id="towerPanel" class="tab-panel tower-panel"><div id="stageRail" class="stage-rail" aria-label="パルス塔セレクター" data-t-aria="stageRailLabel"></div></section>
       <section id="studioPanel" class="tab-panel studio-panel" hidden>
-        <div class="studio-intro"><img src="../../assets/weightplay-character-drum-belly-panda-block-v1.webp" alt=""><div><h2 data-t="studioTitle">共鳴スタジオ</h2><p data-t="studioIntro">レベルごとに攻撃力 +8%。 レベルごとに連射速度 +9%。 レベルごとに最大体力 +1。</p><strong id="noteCount"></strong></div></div>
+        <div class="studio-intro"><img src="../../assets/weightplay-character-drum-belly-panda-block-v1.webp" alt=""><div><h2 data-t="studioTitle">共鳴スタジオ</h2><p data-t="studioIntro">スターノートでパルスを恒久調整。</p><strong id="noteCount"></strong></div></div>
         <p id="studioHint" class="studio-hint" data-t="studioReady" aria-live="polite">調律を選んでください。費用と残高は常に表示されます。</p>
         <div id="upgrades" class="upgrades"></div>
-        <div class="trail-card"><img src="../../assets/animal-spectrum-pulse/perfect-burst.webp" alt=""><div><strong data-t="trailTitle">星光ドラム軌跡</strong><p data-t="trailDesc">移動時の残像。戦闘能力は変わりません。</p></div><button id="trailButton" type="button" data-t="trailBuy">解除 · 10 ◆</button></div>
+        <div class="trail-card"><img src="../../assets/animal-spectrum-pulse/perfect-burst.webp" alt=""><div><strong data-t="trailTitle">星光ドラム軌跡</strong><p data-t="trailDesc">タイミングに影響しない外見効果。</p></div><button id="trailButton" type="button" data-t="trailBuy">解除 · 10 ◆</button></div>
       </section>
     </div>
+    <nav id="stageTabs" class="stage-tabs" data-wp-frame-nav data-wp-frame-stage-nav aria-label="Stage options">
+      <button id="towersTab" class="active" type="button" aria-pressed="true" data-wp-frame-action="tab" data-wp-frame-stage-slot="stages" data-t="towers">塔</button>
+      <button id="studioTab" type="button" aria-pressed="false" data-wp-frame-action="tab" data-wp-frame-stage-slot="equipment" data-t="studio">共鳴スタジオ</button>
+    </nav>
   </section>
 
-  <section id="battleScreen" class="active-screen" hidden>
-    <div class="battle-canvas wp-spectrum-block-shell" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-shell-content="battle">
-      <div id="battleLive" class="battle-live">
-        <header class="battle-header" data-wp-shell-header="battle"><button id="battleBack" type="button" aria-label="戻る" data-t-aria="back" data-wp-return="battle">←</button><div class="tower-block"><small id="towerLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="gate">コア</b><strong id="gateValue">0/0</strong></span><span><b data-t="resonance">撃破</b><strong id="resonanceValue">×1</strong></span><span><b data-t="guard">体力</b><strong id="guardValue">0</strong></span></div><button id="battleHelp" type="button" aria-label="遊び方" data-t-aria="help" data-wp-battle-utility>?</button></header>
-        <div class="identity-row"><span data-t="currentIdentity">目標</span><img id="identityIcon" src="../../assets/animal-spectrum-pulse/node-cyan.webp" alt=""><strong id="identityName"></strong><span id="nextIdentity"></span></div>
-        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="720" height="1200" tabindex="0" aria-label="スペクトラムパルス塔" data-t-aria="arenaLabel"></canvas><div class="scan-legend" hidden><span data-t="scanMarker">スキャン</span><i></i></div><div id="timingCue" class="timing-cue" aria-hidden="true"></div><div class="control-cue" data-t="controlCue">WASD／矢印／ドラッグ移動 · 自動射撃</div></div>
-        <p id="feedback" class="feedback" aria-live="polite"></p>
-        <div class="combat-actions"><button id="dashButton" class="dash-button" type="button" data-t="dash">ダッシュ · Shift</button><button id="pulseButton" class="pulse-button" type="button" data-t="pulse">パルス · Space</button></div>
-      </div>
-
-      <section id="buildModal" class="modal-layer build-modal" role="dialog" aria-modal="true" aria-labelledby="buildTitle" hidden><div class="dialog-card"><small data-t="buildKicker">コア回収</small><h2 id="buildTitle" data-t="chooseBuild">強化を選ぼう</h2><div id="buildChoices" class="build-choices"></div></div></section>
-      <section id="helpModal" class="modal-layer tutorial-panel" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">回避 × 爆破 × ボス戦</h2><ol><li data-t="help1">WASD、矢印キー、または場内をドラッグして移動。近くの敵とコアを自動で狙います。</li><li data-t="help2">Space／パルスで近くの弾を消し、オレンジの爆薬を起爆。Shift／ダッシュは短時間無敵になり敵にダメージ。</li><li data-t="help3">コアを3個破壊。最初のコアで強化を1つ選択。5ステージごとのボスは予告を避け、攻撃後の隙を狙って北の出口へ。</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">続ける</button></div></div></section>
-      <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">このパルスを続けますか？</h2><p data-t="leaveText">続けると敵、体力、残り時間を保ったまま再開。ステージに戻ると今回の戦闘は終了します。</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">続ける</button><button id="leaveStage" type="button" data-t="returnTowers">塔へ戻る</button></div></div></section>
-      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-drum-belly-panda-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">時間</b><strong id="resultTime"></strong></span><span><b data-t="bestResonance">スコア</b><strong id="resultChain"></strong></span><span><b data-t="medal">メダル</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultTowers" type="button" data-t="towers">塔</button><button id="next" class="primary" type="button" data-t="nextTower">次の塔</button><button id="retry" type="button" data-t="retry">再挑戦</button></div></div></section>
+  <section id="battleScreen" class="battle-canvas" data-wp-logical-battle-canvas hidden>
+    <header id="battleHeader" class="battle-header" data-wp-shell-header="battle">
+      <button id="battleBack" type="button" aria-label="戻る" data-t-aria="back" data-wp-return="battle">←</button>
+      <strong data-wp-frame-title></strong>
+      <div id="battleFrameInfo" class="battle-frame-info"><div class="tower-block"><small id="towerLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="gate">ゲート</b><strong id="gateValue">0/0</strong></span><span><b data-t="resonance">共鳴</b><strong id="resonanceValue">×1</strong></span><span><b data-t="guard">ガード</b><strong id="guardValue">0</strong></span></div></div>
+    </header>
+    <div id="battleLive" class="battle-live" data-wp-shell-content="battle">
+      <div class="identity-row"><span data-t="currentIdentity">現在</span><img id="identityIcon" src="../../assets/animal-spectrum-pulse/node-cyan.webp" alt=""><strong id="identityName"></strong><span id="nextIdentity"></span><button id="battleHelp" type="button" aria-label="遊び方" data-t-aria="help" data-wp-battle-utility>?</button></div>
+      <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="720" height="1200" tabindex="0" aria-label="スペクトラムパルス塔" data-t-aria="arenaLabel"></canvas><div class="scan-legend" hidden><span data-t="scanMarker">スキャン</span><i></i></div><div id="timingCue" class="timing-cue" aria-hidden="true"></div><div class="control-cue" data-t="controlCue">どこでもタップ · Space／Enter／↑</div></div>
+      <p id="feedback" class="feedback" aria-live="polite"></p>
+      <div class="combat-actions"><button id="dashButton" class="dash-button" type="button" data-t="dash">DASH · Shift</button><button id="pulseButton" class="pulse-button" type="button" data-t="pulse">パルス</button></div>
     </div>
-    <div class="ad-reserve" aria-hidden="true"></div>
+    <section id="buildModal" class="modal-layer build-modal" role="dialog" aria-modal="true" aria-labelledby="buildTitle" hidden><div class="dialog-card"><small data-t="buildKicker">CORE SALVAGED</small><h2 id="buildTitle" data-t="chooseBuild">Choose your power</h2><div id="buildChoices" class="build-choices"></div></div></section>
+    <section id="helpModal" class="modal-layer tutorial-panel" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">一回押して、一回パルス</h2><ol><li data-t="help1">上へパルスし、離してから次を押します。</li><li data-t="help2">スキャン印が同じ色と紋章に触れた時に通過します。</li><li data-t="help3">通過ゲートは安全地点。時間内に王冠へ。</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">続ける</button></div></div></section>
+    <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">このパルスを続けますか？</h2><p data-t="leaveText">続けると精霊、角度、時間、共鳴をそのまま再開。塔へ戻ると終了します。</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">続ける</button><button id="leaveStage" type="button" data-t="returnTowers">塔へ戻る</button></div></div></section>
+    <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-drum-belly-panda-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">時間</b><strong id="resultTime"></strong></span><span><b data-t="bestResonance">最高共鳴</b><strong id="resultChain"></strong></span><span><b data-t="medal">メダル</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultTowers" type="button" data-t="towers">塔</button><button id="next" class="primary" type="button" data-t="nextTower">次の塔</button><button id="retry" type="button" data-t="retry">再挑戦</button></div></div></section>
   </section>
+  <div class="ad-reserve" aria-hidden="true"></div>
+  </div>
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"スペクトラムパルス","alternateName":"動物光譜脈衝","url":"https://weightplay.com/ja/games/animal-spectrum-pulse/","image":"https://weightplay.com/assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v22","description":"暴走する観測所で弾幕をかわし、連鎖爆発を起こそう。 コアを3個破壊して強化を選択。5ステージごとに守護者が出現。","publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","applicationCategory":"Game","genre":["Action","Arcade"],"audience":{"@type":"PeopleAudience"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"スペクトラムパルス","alternateName":"動物光譜脈衝","url":"https://weightplay.com/ja/games/animal-spectrum-pulse/","image":"https://weightplay.com/assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v22","description":"各スキャン地点で色と紋章を合わせ、6章・全30基の固定パターンのパルス塔を進もう。","publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","applicationCategory":"Game","genre":["精密アーケード","タイミング","紋章合わせ"],"audience":{"@type":"PeopleAudience"}}</script>
 
-  <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="locales.js?v=20261004-spectrum-pulse-text140-v1"></script>
   <script data-wp-spectrum-text140-runtime>(function(){const data={"en":{"mainKicker":"ONE-PRESS ARCADE","guideIntro":"Learn the read-and-pulse loop, then clear 30 fixed-pattern aurora towers across six chapters.","guideFaq5Question":"How do the six chapters change the gates?","guideFaq5Answer":"Towers 1–5 use a rotating ring; later chapters add counter-rotating pairs, bars and crosses, petal spirals, tempo changes, and combined crown patterns.","guideFaq6Question":"Can I identify a gate without relying on colour?","guideFaq6Answer":"Yes. Wave, sun, diamond, and paw each have a distinct emblem and texture as well as a colour.","guideFaq7Question":"What happens if I leave during a tower?","guideFaq7Answer":"Continue resumes the same run, including its gate angles, timer, and Resonance. Returning to Towers ends that run."},"zh-Hant":{"mainKicker":"單鍵街機","guideIntro":"掌握判讀與脈衝玩法，並在六章中修復 30 座固定圖樣的極光塔。","guideFaq5Question":"六個章節如何改變星門？","guideFaq5Answer":"第 1–5 座塔使用旋轉環；後續章節依序加入反向旋轉的成對星門、橫桿與十字、花瓣螺旋、速度變化，以及組合王冠圖樣。","guideFaq6Question":"不看顏色也能分辨星門嗎？","guideFaq6Answer":"可以。波浪、太陽、菱形與腳印各有不同紋章與紋理，不只靠顏色區分。","guideFaq7Question":"進行塔樓時離開會怎樣？","guideFaq7Answer":"選擇繼續會恢復同一局，包括星門角度、計時器與共鳴；返回塔樓則會結束該局。","guideLoop":"輕觸、點擊、Space 或方向鍵上都會產生相同推力；放開後才能再次脈衝。","guidePlayer":"輕觸、點擊、Space 與方向鍵上使用相同脈衝動作。塔樓解鎖、獎牌、最佳時間、共鳴升級、語言與外觀鼓尾跡只保存在這個瀏覽器。不需要帳號或付費；鼓尾跡只有外觀效果。"},"zh-Hans":{"mainKicker":"单键街机","guideIntro":"掌握判读与脉冲玩法，并在六章中修复 30 座固定图案的极光塔。","guideFaq5Question":"六个章节如何改变星门？","guideFaq5Answer":"第 1–5 座塔使用旋转环；后续章节依次加入反向旋转的成对星门、横杆与十字、花瓣螺旋、速度变化，以及组合王冠图案。","guideFaq6Question":"不看颜色也能分辨星门吗？","guideFaq6Answer":"可以。波浪、太阳、菱形与脚印各有不同徽记和纹理，不只靠颜色区分。","guideFaq7Question":"进行塔楼时离开会怎样？","guideFaq7Answer":"选择继续会恢复同一局，包括星门角度、计时器与共鸣；返回塔楼则会结束该局。"},"ja":{"mainKicker":"ワンタッチアーケード","guideIntro":"読み取りとパルスの流れを覚え、6章に並ぶ固定パターンのオーロラ塔30基を進もう。","guideFaq5Question":"6つの章でゲートはどう変わりますか？","guideFaq5Answer":"塔1〜5は回転リングです。後の章では逆回転するペア、バーと十字、花弁スパイラル、速度変化、王冠の複合パターンが加わります。","guideFaq6Question":"色を見なくてもゲートを見分けられますか？","guideFaq6Answer":"はい。波、太陽、ダイヤ、肉球は色だけでなく、異なる紋章と模様でも見分けられます。","guideFaq7Question":"塔の途中で離れるとどうなりますか？","guideFaq7Answer":"「続ける」を選ぶとゲートの角度、タイマー、共鳴を保った同じプレイを再開します。塔へ戻るとそのプレイは終了します。"},"ko":{"mainKicker":"원터치 아케이드","guideIntro":"읽고 펄스하는 흐름을 익히고 여섯 챕터의 고정 패턴 펄스 탑 30개를 진행하세요.","guideFaq5Question":"여섯 챕터에서 관문은 어떻게 달라지나요?","guideFaq5Answer":"탑 1–5는 회전 링을 사용합니다. 이후 챕터에는 역회전 쌍, 막대와 십자, 꽃잎 나선, 속도 변화, 왕관 조합 패턴이 추가됩니다.","guideFaq6Question":"색을 보지 않고도 관문을 구별할 수 있나요?","guideFaq6Answer":"네. 파도, 태양, 다이아몬드, 발바닥은 색뿐 아니라 서로 다른 문양과 질감으로도 구별됩니다.","guideFaq7Question":"탑을 진행하다 나가면 어떻게 되나요?","guideFaq7Answer":"계속하기를 선택하면 관문 각도, 타이머, 공명을 포함해 같은 진행을 재개합니다. 탑으로 돌아가면 해당 진행이 끝납니다."},"es":{"mainKicker":"Arcade de un toque","guideIntro":"Aprende el ciclo de lectura y pulso y avanza por 30 torres de aurora con patrones fijos en seis capítulos.","guideFaq5Question":"¿Cómo cambian las puertas en los seis capítulos?","guideFaq5Answer":"Las torres 1–5 usan un anillo giratorio. Después aparecen parejas que giran en sentidos opuestos, barras y cruces, espirales de pétalos, cambios de ritmo y patrones de corona combinados.","guideFaq6Question":"¿Puedo distinguir una puerta sin depender del color?","guideFaq6Answer":"Sí. La ola, el sol, el diamante y la huella tienen emblemas y texturas distintos además de sus colores.","guideFaq7Question":"¿Qué pasa si salgo durante una torre?","guideFaq7Answer":"Al continuar se reanuda la misma partida, con los ángulos de las puertas, el cronómetro y la Resonancia. Volver a Torres termina esa partida."},"pt-BR":{"mainKicker":"Arcade de um toque","guideIntro":"Aprenda o ciclo de leitura e pulso e avance por 30 torres de aurora com padrões fixos em seis capítulos.","guideFaq5Question":"Como os seis capítulos mudam os portais?","guideFaq5Answer":"As torres 1–5 usam um anel giratório. Depois entram pares em rotação oposta, barras e cruzes, espirais de pétalas, mudanças de ritmo e padrões combinados de coroa.","guideFaq6Question":"Dá para identificar um portal sem depender da cor?","guideFaq6Answer":"Sim. Onda, sol, diamante e pata têm emblemas e texturas próprios além das cores.","guideFaq7Question":"O que acontece se eu sair durante uma torre?","guideFaq7Answer":"Ao continuar, você retoma a mesma partida, com ângulos dos portais, cronômetro e Ressonância. Voltar às Torres encerra a partida."},"fr":{"mainKicker":"Arcade à une touche","guideIntro":"Apprenez la lecture et le rythme des impulsions, puis parcourez 30 tours à motifs fixes en six chapitres.","guideFaq5Question":"Comment les six chapitres font-ils évoluer les portes ?","guideFaq5Answer":"Les tours 1 à 5 utilisent un anneau rotatif. Les chapitres suivants ajoutent des paires en rotation opposée, des barres et croix, des spirales de pétales, des changements de tempo et des motifs de couronne combinés.","guideFaq6Question":"Peut-on reconnaître une porte sans se fier à la couleur ?","guideFaq6Answer":"Oui. L’onde, le soleil, le losange et la patte ont chacun un emblème et une texture distincts en plus de leur couleur.","guideFaq7Question":"Que se passe-t-il si je quitte pendant une tour ?","guideFaq7Answer":"Continuer reprend la même partie avec les angles des portes, le minuteur et la Résonance. Revenir aux Tours met fin à cette partie."},"de":{"mainKicker":"Ein-Tasten-Arcade","guideIntro":"Lerne den Lese-und-Puls-Ablauf und spiele 30 Pulstürme mit festen Mustern in sechs Kapiteln.","guideFaq5Question":"Wie verändern die sechs Kapitel die Tore?","guideFaq5Answer":"Türme 1–5 verwenden einen rotierenden Ring. Spätere Kapitel ergänzen gegenläufige Paare, Balken und Kreuze, Blütenspiralen, Tempowechsel und kombinierte Kronenmuster.","guideFaq6Question":"Kann ich ein Tor ohne die Farbe erkennen?","guideFaq6Answer":"Ja. Welle, Sonne, Diamant und Pfote haben neben ihrer Farbe jeweils ein eigenes Emblem und Muster.","guideFaq7Question":"Was passiert, wenn ich einen Turm zwischendurch verlasse?","guideFaq7Answer":"Mit „Weiter“ setzt du denselben Lauf samt Torwinkeln, Timer und Resonanz fort. Die Rückkehr zur Turmauswahl beendet den Lauf."},"it":{"mainKicker":"Arcade a un tocco","guideIntro":"Impara il ciclo di lettura e impulso e affronta 30 torri a schemi fissi in sei capitoli.","guideFaq5Question":"Come cambiano i portali nei sei capitoli?","guideFaq5Answer":"Le torri 1–5 usano un anello rotante. I capitoli successivi aggiungono coppie in rotazione opposta, barre e croci, spirali di petali, cambi di ritmo e motivi combinati a corona.","guideFaq6Question":"Posso riconoscere un portale senza affidarmi al colore?","guideFaq6Answer":"Sì. Onda, sole, diamante e zampa hanno ciascuno un emblema e una trama distinti oltre al colore.","guideFaq7Question":"Cosa succede se esco durante una torre?","guideFaq7Answer":"Continua riprende la stessa partita con angoli dei portali, timer e Risonanza. Tornare alle Torri termina la partita."},"ru":{"mainKicker":"Аркада с одним нажатием","guideIntro":"Освойте цикл чтения и импульса и пройдите 30 башен с заданными узорами в шести главах.","guideFaq5Question":"Как меняются ворота в шести главах?","guideFaq5Answer":"В башнях 1–5 используется вращающееся кольцо. Затем появляются пары с обратным вращением, перекладины и кресты, спирали-лепестки, смена темпа и комбинированные коронные узоры.","guideFaq6Question":"Можно ли распознать ворота без опоры на цвет?","guideFaq6Answer":"Да. Волна, солнце, ромб и лапа различаются не только цветом, но и собственными эмблемами и текстурами.","guideFaq7Question":"Что будет, если выйти во время прохождения башни?","guideFaq7Answer":"Кнопка продолжения вернёт тот же заход с углами ворот, таймером и резонансом. Возврат к башням завершит его."},"hi":{"mainKicker":"एक-टच आर्केड","guideIntro":"पहचान और पल्स का क्रम सीखें और छह अध्यायों में तय पैटर्न वाले 30 ऑरोरा टावर पूरे करें।","guideFaq5Question":"छह अध्यायों में द्वार कैसे बदलते हैं?","guideFaq5Answer":"टावर 1–5 में घूमती रिंग होती है। आगे के अध्यायों में उलटी दिशा में घूमती जोड़ियाँ, पट्टियाँ और क्रॉस, पंखुड़ी सर्पिल, बदलती गति और मुकुट के संयुक्त पैटर्न आते हैं।","guideFaq6Question":"क्या रंग पर निर्भर हुए बिना द्वार पहचान सकते हैं?","guideFaq6Answer":"हाँ। तरंग, सूर्य, हीरा और पंजे के रंग के साथ अलग प्रतीक और बनावट भी हैं।","guideFaq7Question":"टावर के बीच निकलने पर क्या होता है?","guideFaq7Answer":"जारी रखने पर वही खेल लौटता है—द्वारों के कोण, टाइमर और रेज़ोनेंस सहित। टावर सूची पर लौटने से वह खेल समाप्त होता है।"},"ar":{"mainKicker":"أركيد بلمسة واحدة","guideIntro":"تعلّم دورة القراءة والنبض، وأكمل 30 برج شفق بأنماط ثابتة عبر ستة فصول.","guideFaq5Question":"كيف تغيّر الفصول الستة البوابات؟","guideFaq5Answer":"تستخدم الأبراج 1–5 حلقة دوارة. ثم تضيف الفصول أزواجًا تدور في اتجاهين متعاكسين، وقضبانًا وصلبانًا، ولوالب بتلات، وتغيّر الإيقاع، وأنماط تيجان مركبة.","guideFaq6Question":"هل يمكن تمييز البوابة دون الاعتماد على اللون؟","guideFaq6Answer":"نعم. للموجة والشمس والماسة وبصمة المخلب شعارات وملامس مختلفة إلى جانب ألوانها.","guideFaq7Question":"ماذا يحدث إذا غادرت أثناء البرج؟","guideFaq7Answer":"يستأنف خيار المتابعة المحاولة نفسها بزوايا البوابات والمؤقت والرنين كما هي. والعودة إلى الأبراج تنهي المحاولة."}};for(const [locale,copy] of Object.entries(data)){const catalog=window.SPECTRUM_PULSE_LOCALES?.[locale];if(catalog)Object.assign(catalog,copy);const publicCopy=window.SPECTRUM_PULSE_PUBLIC_COPY?.[locale];if(publicCopy)Object.assign(publicCopy,copy)}})();</script>
@@ -139,13 +145,16 @@
   <script src="/src/virtual-joystick.js?v=1.0.0"></script>
 <script src="/games/animal-spectrum-pulse/combat.js?v=20261013-spectrum-v22"></script>
 <script src="/games/animal-spectrum-pulse/combat-view.js?v=20261013-spectrum-v22"></script>
-<script src="/games/animal-spectrum-pulse/combat-locales.js?v=20261013-spectrum-v22"></script>
-<script src="game.js?v=20261013-spectrum-v22"></script>
-  <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
+<script src="/games/animal-spectrum-pulse/combat-locales.js?v=20261004-spectrum-pulse-text140-v1"></script>
+<script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script>
+<script src="../../src/game-play-ui.js?v=20261021-shared-play1"></script>
+<script src="../../src/battle-canvas-standard.js?v=20261016-battle-canvas-i9"></script>
+<script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+<script src="stage-config.js?v=20261021-spectrum-v23-i9"></script>
+<script src="frame.js?v=20261021-spectrum-v23-i9"></script>
+<script src="game.js?v=20261021-spectrum-v23-i9"></script>
+  <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
-  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="スペクトラムパルス";document.title="スペクトラムパルス | WeightPlay";},{once:true});</script>
 </body>
 </html>

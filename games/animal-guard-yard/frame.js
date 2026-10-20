@@ -15,17 +15,7 @@
     hi: 'खेल शुरू करें',
     ar: 'ابدأ اللعب',
   });
-  const scriptUrl = document.currentScript?.src || location.href;
   let frame;
-
-  function ensureInterfaceCleanupStyles() {
-    if (document.querySelector('link[data-guard-yard-interface-cleanup]')) return;
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = new URL('interface-7-cleanup.css?v=20260922-guard-yard-interface7-cleanup2', scriptUrl).href;
-    link.dataset.guardYardInterfaceCleanup = '';
-    document.head.append(link);
-  }
 
   function currentLocale(localeSelect) {
     const locale = window.WonderI18n?.actualLocale?.()
@@ -145,12 +135,9 @@
 
   window.mountGuardYardFrame = () => {
     if (frame) return frame;
-    ensureInterfaceCleanupStyles();
     const root = document.querySelector('.yard-game');
     const main = document.getElementById('mainPanel');
     const stage = document.getElementById('menuPanel');
-    stage.dataset.wpStageLandscapeWidth = '760';
-    stage.dataset.wpStageLandscapeHeight = '420';
     const battle = document.getElementById('playPanel');
     // Declare the content envelope to the shared scaler before its first fit.
     battle.dataset.wpBattleMinWidth = '390';
@@ -219,7 +206,7 @@
     energyValue.style.transform='translateY(-4px)';
     info.prepend(energy); battleContent.prepend(info);
     battle.prepend(battleHeader);
-    frame=window.WeightPlayScreenFrame.mount({root,localeSelect,scenes:{
+    frame=window.WeightPlayScreenFrame.mount({root,localeSelect,playUI:true,scenes:{
       main:{root:main,header:mainHeader,content:mainContent},
       stage:{root:stage,header:stageHeader,content:stageContent},
       battle:{root:battle,header:battleHeader,content:battleContent,headerInfo:info}

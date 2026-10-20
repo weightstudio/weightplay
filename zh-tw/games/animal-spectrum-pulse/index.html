@@ -7,21 +7,23 @@
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
   <meta charset="utf-8">
+  <meta name="weightplay-game-version" content="v23">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#170d38">
   <meta name="weightplay-audience" content="general">
   <title>光譜脈衝 | WeightPlay</title>
-  <meta name="description" content="衝進失控的觀測站，閃避彈幕、引爆連鎖反應。 擊破三座核心、選擇戰鬥升級，每五關挑戰守衛頭目。" />
+  <meta name="description" content="在每個掃描點配對目前顏色與紋章，通過六章共 30 座固定圖樣的脈衝塔。" />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="光譜脈衝 | WeightPlay" />
-  <meta property="og:description" content="衝進失控的觀測站，閃避彈幕、引爆連鎖反應。 擊破三座核心、選擇戰鬥升級，每五關挑戰守衛頭目。" />
+  <meta property="og:description" content="在每個掃描點配對目前顏色與紋章，通過六章共 30 座固定圖樣的脈衝塔。" />
   <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-spectrum-pulse/" />
-  <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-spectrum-pulse.webp" />
+  <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v21" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="光譜脈衝 | WeightPlay" />
-  <meta name="twitter:description" content="衝進失控的觀測站，閃避彈幕、引爆連鎖反應。 擊破三座核心、選擇戰鬥升級，每五關挑戰守衛頭目。" />
+  <meta name="twitter:description" content="在每個掃描點配對目前顏色與紋章，通過六章共 30 座固定圖樣的脈衝塔。" />
   <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-spectrum-pulse/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-spectrum-pulse/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-spectrum-pulse/" />
@@ -40,97 +42,101 @@
     <link rel="icon" href="../../assets/weightplay-logo.png">
   <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <link rel="stylesheet" href="style.css?v=20261013-spectrum-v22">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-spectrum-pulse.webp" />
-  <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
-<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-  <script src="/src/interface7-poster-registry.js?v=20261013-spectrum-v22"></script>
+  <link rel="stylesheet" href="style.css?v=20261021-spectrum-v23-i9">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2"><script src="/src/interface7-poster-registry.js?v=20261013-spectrum-v22"></script>
 <link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0">
 <link rel="stylesheet" href="/games/animal-spectrum-pulse/combat.css?v=20261013-spectrum-v22">
-
+<link rel="stylesheet" href="/src/game-play-ui.css?v=20261021-shared-play1">
+<link rel="stylesheet" href="/src/stage-rail-i9.css?v=20261021-stage-rail-i9">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v21" />
+  <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-  <body data-screen="main" data-wp-game-id="animal-spectrum-pulse" data-wp-combined-sound="true" data-wp-game-owned-guide>
-  <div id="loadingPanel" class="loading" role="status"><img src="../../assets/animal-spectrum-pulse/spectrum-spirit.webp" alt=""><strong data-t="loading">正在調整光譜鼓…</strong></div>
-
+  <body data-screen="main" data-wp-game-id="animal-spectrum-pulse" data-wp-game-version="v23" data-wp-interface-version="9" data-wp-combined-sound="true" data-wp-game-owned-guide>
+  <span id="loadingPanel" aria-hidden="true" data-wp-entry-readiness-sentinel></span>
+  <div id="gameRoot" data-wp-frame-root>
   <div id="mainGroup" class="main-group">
-    <main id="mainScreen" class="main-screen">
-      <header class="main-header">
+      <header id="mainHeader" class="main-header">
         <a class="lobby-return" data-wp-return="main" href="/" aria-label="返回 WeightPlay" data-t-aria="lobbyReturn"><span>←</span><img src="../../assets/weightplay-logo.png" alt="《光譜脈衝》遊戲圖片"></a>
-        <strong data-t="titleShort" data-wp-game-title data-runtime-localize="off">光譜脈衝</strong>
+        <strong data-t="titleShort" data-wp-game-title data-wp-frame-title data-runtime-localize="off">光譜脈衝</strong>
         <label class="locale-control"><span class="sr-only" data-t="language">語言</span><select id="localeSelect" aria-label="語言" data-t-aria="language"></select></label>
       </header>
-      <section class="main-hero">
-        <img class="poster" src="../../assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v22" alt="鼓肚熊貓引導光譜精靈穿越極光星門" data-t-alt="posterAlt">
-        <div class="main-copy">
-          <small data-t="mainKicker">走位 × 爆破 × 頭目戰</small>
-          <h1 data-t="title" data-wp-game-title data-runtime-localize="off">光譜脈衝</h1>
-          <p data-t="mainSummary">衝進失控的觀測站，閃避彈幕、引爆連鎖反應。</p>
-          <p data-t="mainGoal">擊破三座核心、選擇戰鬥升級，每五關挑戰守衛頭目。</p>
-          <span id="mainProgress"></span>
-          <button id="start" class="primary" type="button" data-t="startGame">開始遊戲</button>
+    <main id="mainScreen" class="main-screen">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap" data-wp-game-title data-runtime-localize="off">光譜脈衝</h1>
+        <img class="poster" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v22" alt="鼓肚熊貓引導光譜精靈穿越極光星門" data-t-alt="posterAlt">
+        <div class="main-copy" data-wp-frame-copy>
+          <small data-t="mainKicker">單鍵街機</small>
+          <p data-t="mainSummary" data-wp-frame-summary>用脈衝引導 Panko 的光譜精靈，向上穿越旋轉紋章星門。</p>
+          <p data-t="mainGoal">在掃描點配對波浪、太陽、菱形與腳印，修復全部 30 座塔。</p>
+          <span id="mainProgress" data-wp-frame-progress></span>
+          <button id="start" class="primary" type="button" data-t="startGame" data-wp-main-start data-wp-frame-action="primary">開始遊戲</button>
         </div>
-      </section>
-    </main>
-      <section class="public-guide game-page-info wp-spectrum-guide game-page-info-static" aria-labelledby="guideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>走位 × 爆破 × 頭目戰</span></div>
+      <section class="public-guide game-page-info wp-spectrum-guide game-page-info-static" aria-labelledby="guideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>精準街機</span><span>時機判斷</span><span>紋章配對</span></div>
       <small data-t="guideKicker">遊戲指南</small>
-      <h2 id="guideTitle" data-t="guideTitle">走位 × 爆破 × 頭目戰</h2>
-      <p data-t="guideIntro">衝進失控的觀測站，閃避彈幕、引爆連鎖反應。 擊破三座核心、選擇戰鬥升級，每五關挑戰守衛頭目。</p>
+      <h2 id="guideTitle" data-t="guideTitle">聽見節拍，看懂星門</h2>
+      <p data-t="guideIntro">掌握判讀與脈衝玩法，並在六章中修復 30 座固定圖樣的極光塔。</p>
       <div class="guide-grid">
-        <article><h3 data-t="guideWorldTitle">目標</h3><p data-t="guideWorld">擊破三座核心、選擇戰鬥升級，每五關挑戰守衛頭目。</p></article>
-        <article><h3 data-t="guideLoopTitle">移動開始戰鬥</h3><p data-t="guideLoop">使用 WASD、方向鍵或在場上拖曳移動。武器會自動瞄準附近的敵人與核心。</p></article>
-        <article><h3 data-t="guideReadTitle">脈衝 · 空白鍵</h3><p data-t="guideRead">空白鍵／脈衝可清除近身子彈、引爆橘色炸點；Shift／衝刺可短暫無敵並撞擊敵人。</p></article>
-        <article><h3 data-t="guideStrategyTitle">衝刺 · Shift</h3><p data-t="guideStrategy">把敵群引到橘色炸點旁，一次脈衝就能觸發連鎖、清彈並震退敵人。保留衝刺躲開衝鋒路線，趁頭目收招時貼近造成額外傷害。</p></article>
-        <article><h3 data-t="guideProgressTitle">摧毀 3 座核心 → 撤離</h3><p data-t="guideProgress">六種戰場配置，共 30 關。遠程砲台與衝鋒重裝敵人逐步加入；每五關挑戰一場守衛頭目戰。</p></article>
-        <article><h3 data-t="guideDesignTitle">選擇戰鬥強化</h3><p data-t="guideDesign">摧毀三座核心；第一座提供三選一強化。每五關出現頭目：躲開預警，趁收招破綻反擊，再走進北方傳送門。</p></article>
-        <article><h3 data-t="guidePlayerTitle">存檔與進度</h3><p data-t="guidePlayer">進度保存在此瀏覽器。既有解鎖、星音與永久升級保留；舊節奏玩法的獎牌與紀錄另行封存，不混入新戰鬥成績。不需帳號或付費。</p></article>
+        <article><h3 data-t="guideWorldTitle">沉默的極光塔</h3><p data-t="guideWorld">Panko 的光譜鼓失去聲音。每救回一隻精靈，就能修復一座紋章塔並把脈衝送往王冠。</p></article>
+        <article><h3 data-t="guideLoopTitle">按一下，一次脈衝</h3><p data-t="guideLoop">輕觸、點擊、Space 或方向鍵上都會產生相同推力；放開後才能再次脈衝。</p></article>
+        <article><h3 data-t="guideReadTitle">顏色不是唯一線索</h3><p data-t="guideRead">青色波浪、金色太陽、紫色菱形與珊瑚腳印都有不同紋章與紋理。</p></article>
+        <article><h3 data-t="guideStrategyTitle">在安全檢查點等待</h3><p data-t="guideStrategy">通過的星門會成為安全節拍。先看掃描標記，再在自己的紋章到位時前進。</p></article>
+        <article><h3 data-t="guideProgressTitle">六個逐步加壓的章節</h3><p data-t="guideProgress">第 1–5 座使用單一旋轉環；第 6–10 座加入反向旋轉的成對星門；第 11–15 座加入擺動橫桿與十字；第 16–20 座加入花瓣螺旋；第 21–25 座改變節奏；第 26–30 座組合王冠、花瓣與反轉。每道通過的星門都會成為檢查點。</p></article>
+        <article><h3 data-t="guideDesignTitle">圍繞一個清楚的節拍設計</h3><p data-t="guideDesign">精靈每次都以相同脈衝上升，但每道星門會獨立移動。先讀下方標記，再配對目前顏色與紋章，最後按下脈衝。脈衝控制、前奏預視與回音護盾能降低失誤成本，卻不會改變時機規則。</p></article>
+        <article><h3 data-t="guidePlayerTitle">玩家、裝置與保存資訊</h3><p data-t="guidePlayer">輕觸、點擊、Space 與方向鍵上使用相同脈衝動作。塔樓解鎖、獎牌、最佳時間、共鳴升級、語言與外觀鼓尾跡只保存在這個瀏覽器。不需要帳號或付費；鼓尾跡只有外觀效果。</p></article>
       </div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle">更多相關遊戲</h3><p id="guideRelatedIntro" data-t="guideRelatedIntro">衝進失控的觀測站，閃避彈幕、引爆連鎖反應。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-rune-reels" href="/zh-tw/games/animal-rune-reels/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-rune-reels.webp" data-final-src="/assets/weightplay-logo.png" alt="符文轉輪" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">符文轉輪</strong></span></a><a class="game-info-related-card" data-game-id="animal-moonlight-heist" href="/zh-tw/games/animal-moonlight-heist/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-moonlight-heist.webp" data-final-src="/assets/weightplay-logo.png" alt="月影潛行隊" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">月影潛行隊</strong></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle">More Related Games</h3><p id="guideRelatedIntro" data-t="guideRelatedIntro">繼續探索 WeightPlay，試試這兩款同樣重視判讀的遊戲。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-rune-reels" href="/zh-tw/games/animal-rune-reels/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-rune-reels.webp" data-final-src="/assets/weightplay-logo.png" alt="Rune Reels" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Rune Reels</strong></span></a><a class="game-info-related-card" data-game-id="animal-moonlight-heist" href="/zh-tw/games/animal-moonlight-heist/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-moonlight-heist.webp" data-final-src="/assets/weightplay-logo.png" alt="Moonlight Heist" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Moonlight Heist</strong></span></a></div></div>
       <section class="guide-faq" aria-labelledby="guideFaqTitle">
         <h3 id="guideFaqTitle" data-t="guideFaqTitle">常見問題</h3>
-        <details><summary id="guideFaqOneQuestion" data-t="guideFaq1Question">移動開始戰鬥</summary><p id="guideFaqOneAnswer" data-t="guideFaq1Answer">使用 WASD、方向鍵或在場上拖曳移動。武器會自動瞄準附近的敵人與核心。</p></details>
-        <details><summary id="guideFaqTwoQuestion" data-t="guideFaq2Question">脈衝 · 空白鍵</summary><p id="guideFaqTwoAnswer" data-t="guideFaq2Answer">空白鍵／脈衝可清除近身子彈、引爆橘色炸點；Shift／衝刺可短暫無敵並撞擊敵人。</p></details>
-        <details><summary data-t="guideFaq3Question">生命</summary><p data-t="guideFaq3Answer">生命耗盡。利用掩體走位、衝刺穿過危險，並用脈衝清除彈幕。</p></details>
-        <details><summary data-t="guideFaq4Question">存檔與進度</summary><p data-t="guideFaq4Answer">進度保存在此瀏覽器。既有解鎖、星音與永久升級保留；舊節奏玩法的獎牌與紀錄另行封存，不混入新戰鬥成績。不需帳號或付費。</p></details>
-      <details data-wp-spectrum-text140-faq><summary data-t="guideFaq5Question">摧毀 3 座核心 → 撤離</summary><p data-t="guideFaq5Answer">六種戰場配置，共 30 關。遠程砲台與衝鋒重裝敵人逐步加入；每五關挑戰一場守衛頭目戰。</p></details><details data-wp-spectrum-text140-faq><summary data-t="guideFaq6Question">衝刺 · Shift</summary><p data-t="guideFaq6Answer">把敵群引到橘色炸點旁，一次脈衝就能觸發連鎖、清彈並震退敵人。保留衝刺躲開衝鋒路線，趁頭目收招時貼近造成額外傷害。</p></details><details data-wp-spectrum-text140-faq><summary data-t="guideFaq7Question">目標</summary><p data-t="guideFaq7Answer">繼續會保留敵人、生命及倒數；返回關卡會結束這次戰鬥。</p></details></section>
+        <details><summary id="guideFaqOneQuestion" data-t="guideFaq1Question">怎樣脈衝最安全？</summary><p id="guideFaqOneAnswer" data-t="guideFaq1Answer">短按一次後完全放開，等下方掃描標記對準目前的顏色與紋章，再進行下一次脈衝。</p></details>
+        <details><summary id="guideFaqTwoQuestion" data-t="guideFaq2Question">升級會改變時機規則嗎？</summary><p id="guideFaqTwoAnswer" data-t="guideFaq2Answer">不會。脈衝控制、前奏預視與回音護盾只讓恢復更容易，每道星門仍使用相同的顏色與紋章判定。</p></details>
+        <details><summary data-t="guideFaq3Question">通過錯誤星門後會怎樣？</summary><p data-t="guideFaq3Answer">除非回音護盾或練習節拍把你送回安全檢查點，否則本局會結束；Result 會說明下一次重試。</p></details>
+        <details><summary data-t="guideFaq4Question">進度會保存嗎？</summary><p data-t="guideFaq4Answer">塔樓解鎖、獎牌、最佳時間、升級與偏好設定都會儲存在這個瀏覽器。</p></details>
+      <details data-wp-spectrum-text140-faq><summary data-t="guideFaq5Question">六個章節如何改變星門？</summary><p data-t="guideFaq5Answer">第 1–5 座塔使用旋轉環；後續章節依序加入反向旋轉的成對星門、橫桿與十字、花瓣螺旋、速度變化，以及組合王冠圖樣。</p></details><details data-wp-spectrum-text140-faq><summary data-t="guideFaq6Question">不看顏色也能分辨星門嗎？</summary><p data-t="guideFaq6Answer">可以。波浪、太陽、菱形與腳印各有不同紋章與紋理，不只靠顏色區分。</p></details><details data-wp-spectrum-text140-faq><summary data-t="guideFaq7Question">進行塔樓時離開會怎樣？</summary><p data-t="guideFaq7Answer">選擇繼續會恢復同一局，包括星門角度、計時器與共鳴；返回塔樓則會結束該局。</p></details></section>
     </section>
+    </main>
   </div>
 
-  <section id="stageScreen" class="active-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell wp-spectrum-block-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-shell-content="stage" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v22" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v22')">
-      <header class="stage-header" data-wp-shell-header="stage"><button id="stageBack" type="button" aria-label="返回" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseTower">選擇脈衝塔</strong><span id="stageSummary"></span></div></header>
-      <nav class="stage-tabs"><button id="towersTab" class="active" type="button" aria-pressed="true" data-t="towers">塔樓</button><button id="studioTab" type="button" aria-pressed="false" data-t="studio">共鳴工坊</button></nav>
-      <section id="towerPanel" class="tab-panel tower-panel"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="脈衝塔選擇列" data-t-aria="stageRailLabel"></div><p id="stageHint" data-t="stageHint">拖曳選擇已解鎖的塔。</p></section>
+  <section id="stageScreen" class="stage-canvas" data-wp-logical-stage-canvas hidden>
+    <header id="stageHeader" class="stage-header" data-wp-shell-header="stage"><button id="stageBack" type="button" aria-label="返回" data-t-aria="back" data-wp-return="stage">←</button><strong data-wp-frame-title></strong><div id="stageInfo"><span id="stageSummary"></span></div></header>
+    <div id="stageContent" class="stage-content" data-wp-shell-content="stage">
+      <section id="towerPanel" class="tab-panel tower-panel"><div id="stageRail" class="stage-rail" aria-label="脈衝塔選擇列" data-t-aria="stageRailLabel"></div></section>
       <section id="studioPanel" class="tab-panel studio-panel" hidden>
-        <div class="studio-intro"><img src="../../assets/weightplay-character-drum-belly-panda-block-v1.webp" alt=""><div><h2 data-t="studioTitle">共鳴工坊</h2><p data-t="studioIntro">每級增加 8% 攻擊傷害。 每級增加 9% 射擊速度。 每級增加 1 點生命上限。</p><strong id="noteCount"></strong></div></div>
+        <div class="studio-intro"><img src="../../assets/weightplay-character-drum-belly-panda-block-v1.webp" alt=""><div><h2 data-t="studioTitle">共鳴工坊</h2><p data-t="studioIntro">使用星音符永久調整脈衝。</p><strong id="noteCount"></strong></div></div>
         <p id="studioHint" class="studio-hint" data-t="studioReady" aria-live="polite">選擇一項調律；費用與餘額會持續顯示。</p>
         <div id="upgrades" class="upgrades"></div>
-        <div class="trail-card"><img src="../../assets/animal-spectrum-pulse/perfect-burst.webp" alt=""><div><strong data-t="trailTitle">星光鼓尾跡</strong><p data-t="trailDesc">移動時留下星光殘影，僅為外觀效果。</p></div><button id="trailButton" type="button" data-t="trailBuy">解鎖 · 10 ◆</button></div>
+        <div class="trail-card"><img src="../../assets/animal-spectrum-pulse/perfect-burst.webp" alt=""><div><strong data-t="trailTitle">星光鼓尾跡</strong><p data-t="trailDesc">只有外觀效果，不會改變時機判定。</p></div><button id="trailButton" type="button" data-t="trailBuy">解鎖 · 10 ◆</button></div>
       </section>
     </div>
+    <nav id="stageTabs" class="stage-tabs" data-wp-frame-nav data-wp-frame-stage-nav aria-label="Stage options">
+      <button id="towersTab" class="active" type="button" aria-pressed="true" data-wp-frame-action="tab" data-wp-frame-stage-slot="stages" data-t="towers">塔樓</button>
+      <button id="studioTab" type="button" aria-pressed="false" data-wp-frame-action="tab" data-wp-frame-stage-slot="equipment" data-t="studio">共鳴工坊</button>
+    </nav>
   </section>
 
-  <section id="battleScreen" class="active-screen" hidden>
-    <div class="battle-canvas wp-spectrum-block-shell" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-shell-content="battle">
-      <div id="battleLive" class="battle-live">
-        <header class="battle-header" data-wp-shell-header="battle"><button id="battleBack" type="button" aria-label="返回" data-t-aria="back" data-wp-return="battle">←</button><div class="tower-block"><small id="towerLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="gate">核心</b><strong id="gateValue">0/0</strong></span><span><b data-t="resonance">擊破</b><strong id="resonanceValue">×1</strong></span><span><b data-t="guard">生命</b><strong id="guardValue">0</strong></span></div><button id="battleHelp" type="button" aria-label="玩法說明" data-t-aria="help" data-wp-battle-utility>?</button></header>
-        <div class="identity-row"><span data-t="currentIdentity">目標</span><img id="identityIcon" src="../../assets/animal-spectrum-pulse/node-cyan.webp" alt=""><strong id="identityName"></strong><span id="nextIdentity"></span></div>
-        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="720" height="1200" tabindex="0" aria-label="光譜脈衝塔" data-t-aria="arenaLabel"></canvas><div class="scan-legend" hidden><span data-t="scanMarker">掃描</span><i></i></div><div id="timingCue" class="timing-cue" aria-hidden="true"></div><div class="control-cue" data-t="controlCue">WASD／方向鍵／拖曳移動 · 自動射擊</div></div>
-        <p id="feedback" class="feedback" aria-live="polite"></p>
-        <div class="combat-actions"><button id="dashButton" class="dash-button" type="button" data-t="dash">衝刺 · Shift</button><button id="pulseButton" class="pulse-button" type="button" data-t="pulse">脈衝 · 空白鍵</button></div>
-      </div>
-
-      <section id="buildModal" class="modal-layer build-modal" role="dialog" aria-modal="true" aria-labelledby="buildTitle" hidden><div class="dialog-card"><small data-t="buildKicker">核心回收成功</small><h2 id="buildTitle" data-t="chooseBuild">選擇戰鬥強化</h2><div id="buildChoices" class="build-choices"></div></div></section>
-      <section id="helpModal" class="modal-layer tutorial-panel" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">走位 × 爆破 × 頭目戰</h2><ol><li data-t="help1">使用 WASD、方向鍵或在場上拖曳移動。武器會自動瞄準附近的敵人與核心。</li><li data-t="help2">空白鍵／脈衝可清除近身子彈、引爆橘色炸點；Shift／衝刺可短暫無敵並撞擊敵人。</li><li data-t="help3">摧毀三座核心；第一座提供三選一強化。每五關出現頭目：躲開預警，趁收招破綻反擊，再走進北方傳送門。</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">繼續</button></div></div></section>
-      <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">保留這次脈衝進度？</h2><p data-t="leaveText">繼續會保留敵人、生命及倒數；返回關卡會結束這次戰鬥。</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">繼續</button><button id="leaveStage" type="button" data-t="returnTowers">返回塔樓</button></div></div></section>
-      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-drum-belly-panda-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">時間</b><strong id="resultTime"></strong></span><span><b data-t="bestResonance">戰鬥分數</b><strong id="resultChain"></strong></span><span><b data-t="medal">獎牌</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultTowers" type="button" data-t="towers">塔樓</button><button id="next" class="primary" type="button" data-t="nextTower">下一座塔</button><button id="retry" type="button" data-t="retry">再試一次</button></div></div></section>
+  <section id="battleScreen" class="battle-canvas" data-wp-logical-battle-canvas hidden>
+    <header id="battleHeader" class="battle-header" data-wp-shell-header="battle">
+      <button id="battleBack" type="button" aria-label="返回" data-t-aria="back" data-wp-return="battle">←</button>
+      <strong data-wp-frame-title></strong>
+      <div id="battleFrameInfo" class="battle-frame-info"><div class="tower-block"><small id="towerLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="gate">星門</b><strong id="gateValue">0/0</strong></span><span><b data-t="resonance">共鳴</b><strong id="resonanceValue">×1</strong></span><span><b data-t="guard">護盾</b><strong id="guardValue">0</strong></span></div></div>
+    </header>
+    <div id="battleLive" class="battle-live" data-wp-shell-content="battle">
+      <div class="identity-row"><span data-t="currentIdentity">目前</span><img id="identityIcon" src="../../assets/animal-spectrum-pulse/node-cyan.webp" alt=""><strong id="identityName"></strong><span id="nextIdentity"></span><button id="battleHelp" type="button" aria-label="玩法說明" data-t-aria="help" data-wp-battle-utility>?</button></div>
+      <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="720" height="1200" tabindex="0" aria-label="光譜脈衝塔" data-t-aria="arenaLabel"></canvas><div class="scan-legend" hidden><span data-t="scanMarker">掃描</span><i></i></div><div id="timingCue" class="timing-cue" aria-hidden="true"></div><div class="control-cue" data-t="controlCue">輕觸任意處 · 空白鍵／回車／↑</div></div>
+      <p id="feedback" class="feedback" aria-live="polite"></p>
+      <div class="combat-actions"><button id="dashButton" class="dash-button" type="button" data-t="dash">DASH · Shift</button><button id="pulseButton" class="pulse-button" type="button" data-t="pulse">脈衝</button></div>
     </div>
-    <div class="ad-reserve" aria-hidden="true"></div>
+    <section id="buildModal" class="modal-layer build-modal" role="dialog" aria-modal="true" aria-labelledby="buildTitle" hidden><div class="dialog-card"><small data-t="buildKicker">CORE SALVAGED</small><h2 id="buildTitle" data-t="chooseBuild">Choose your power</h2><div id="buildChoices" class="build-choices"></div></div></section>
+    <section id="helpModal" class="modal-layer tutorial-panel" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">按一下，一次脈衝</h2><ol><li data-t="help1">向上脈衝，放開後再按下一次。</li><li data-t="help2">當掃描標記碰到相同顏色與紋章時穿越。</li><li data-t="help3">通過的星門會成為安全檢查點；時間結束前抵達王冠。</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">繼續</button></div></div></section>
+    <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">保留這次脈衝進度？</h2><p data-t="leaveText">繼續會恢復完全相同的精靈、星門角度、時間與共鳴；返回塔樓會結束本局。</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">繼續</button><button id="leaveStage" type="button" data-t="returnTowers">返回塔樓</button></div></div></section>
+    <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-drum-belly-panda-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">時間</b><strong id="resultTime"></strong></span><span><b data-t="bestResonance">最高共鳴</b><strong id="resultChain"></strong></span><span><b data-t="medal">獎牌</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultTowers" type="button" data-t="towers">塔樓</button><button id="next" class="primary" type="button" data-t="nextTower">下一座塔</button><button id="retry" type="button" data-t="retry">再試一次</button></div></div></section>
   </section>
+  <div class="ad-reserve" aria-hidden="true"></div>
+  </div>
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"光譜脈衝","alternateName":"動物光譜脈衝","url":"https://weightplay.com/zh-tw/games/animal-spectrum-pulse/","image":"https://weightplay.com/assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v22","description":"衝進失控的觀測站，閃避彈幕、引爆連鎖反應。 擊破三座核心、選擇戰鬥升級，每五關挑戰守衛頭目。","publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"},"inLanguage":"zh-Hant","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","applicationCategory":"Game","genre":["Action","Arcade"],"audience":{"@type":"PeopleAudience"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"光譜脈衝","alternateName":"動物光譜脈衝","url":"https://weightplay.com/zh-tw/games/animal-spectrum-pulse/","image":"https://weightplay.com/assets/interface7-redrawn/animal-spectrum-pulse.webp?v=20261013-spectrum-v22","description":"在每個掃描點配對目前顏色與紋章，通過六章共 30 座固定圖樣的脈衝塔。","publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"},"inLanguage":"zh-Hant","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","applicationCategory":"Game","genre":["精準街機","時機判斷","紋章配對"],"audience":{"@type":"PeopleAudience"}}</script>
 
-  <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="locales.js?v=20261004-spectrum-pulse-text140-v1"></script>
   <script data-wp-spectrum-text140-runtime>(function(){const data={"en":{"mainKicker":"ONE-PRESS ARCADE","guideIntro":"Learn the read-and-pulse loop, then clear 30 fixed-pattern aurora towers across six chapters.","guideFaq5Question":"How do the six chapters change the gates?","guideFaq5Answer":"Towers 1–5 use a rotating ring; later chapters add counter-rotating pairs, bars and crosses, petal spirals, tempo changes, and combined crown patterns.","guideFaq6Question":"Can I identify a gate without relying on colour?","guideFaq6Answer":"Yes. Wave, sun, diamond, and paw each have a distinct emblem and texture as well as a colour.","guideFaq7Question":"What happens if I leave during a tower?","guideFaq7Answer":"Continue resumes the same run, including its gate angles, timer, and Resonance. Returning to Towers ends that run."},"zh-Hant":{"mainKicker":"單鍵街機","guideIntro":"掌握判讀與脈衝玩法，並在六章中修復 30 座固定圖樣的極光塔。","guideFaq5Question":"六個章節如何改變星門？","guideFaq5Answer":"第 1–5 座塔使用旋轉環；後續章節依序加入反向旋轉的成對星門、橫桿與十字、花瓣螺旋、速度變化，以及組合王冠圖樣。","guideFaq6Question":"不看顏色也能分辨星門嗎？","guideFaq6Answer":"可以。波浪、太陽、菱形與腳印各有不同紋章與紋理，不只靠顏色區分。","guideFaq7Question":"進行塔樓時離開會怎樣？","guideFaq7Answer":"選擇繼續會恢復同一局，包括星門角度、計時器與共鳴；返回塔樓則會結束該局。","guideLoop":"輕觸、點擊、Space 或方向鍵上都會產生相同推力；放開後才能再次脈衝。","guidePlayer":"輕觸、點擊、Space 與方向鍵上使用相同脈衝動作。塔樓解鎖、獎牌、最佳時間、共鳴升級、語言與外觀鼓尾跡只保存在這個瀏覽器。不需要帳號或付費；鼓尾跡只有外觀效果。"},"zh-Hans":{"mainKicker":"单键街机","guideIntro":"掌握判读与脉冲玩法，并在六章中修复 30 座固定图案的极光塔。","guideFaq5Question":"六个章节如何改变星门？","guideFaq5Answer":"第 1–5 座塔使用旋转环；后续章节依次加入反向旋转的成对星门、横杆与十字、花瓣螺旋、速度变化，以及组合王冠图案。","guideFaq6Question":"不看颜色也能分辨星门吗？","guideFaq6Answer":"可以。波浪、太阳、菱形与脚印各有不同徽记和纹理，不只靠颜色区分。","guideFaq7Question":"进行塔楼时离开会怎样？","guideFaq7Answer":"选择继续会恢复同一局，包括星门角度、计时器与共鸣；返回塔楼则会结束该局。"},"ja":{"mainKicker":"ワンタッチアーケード","guideIntro":"読み取りとパルスの流れを覚え、6章に並ぶ固定パターンのオーロラ塔30基を進もう。","guideFaq5Question":"6つの章でゲートはどう変わりますか？","guideFaq5Answer":"塔1〜5は回転リングです。後の章では逆回転するペア、バーと十字、花弁スパイラル、速度変化、王冠の複合パターンが加わります。","guideFaq6Question":"色を見なくてもゲートを見分けられますか？","guideFaq6Answer":"はい。波、太陽、ダイヤ、肉球は色だけでなく、異なる紋章と模様でも見分けられます。","guideFaq7Question":"塔の途中で離れるとどうなりますか？","guideFaq7Answer":"「続ける」を選ぶとゲートの角度、タイマー、共鳴を保った同じプレイを再開します。塔へ戻るとそのプレイは終了します。"},"ko":{"mainKicker":"원터치 아케이드","guideIntro":"읽고 펄스하는 흐름을 익히고 여섯 챕터의 고정 패턴 펄스 탑 30개를 진행하세요.","guideFaq5Question":"여섯 챕터에서 관문은 어떻게 달라지나요?","guideFaq5Answer":"탑 1–5는 회전 링을 사용합니다. 이후 챕터에는 역회전 쌍, 막대와 십자, 꽃잎 나선, 속도 변화, 왕관 조합 패턴이 추가됩니다.","guideFaq6Question":"색을 보지 않고도 관문을 구별할 수 있나요?","guideFaq6Answer":"네. 파도, 태양, 다이아몬드, 발바닥은 색뿐 아니라 서로 다른 문양과 질감으로도 구별됩니다.","guideFaq7Question":"탑을 진행하다 나가면 어떻게 되나요?","guideFaq7Answer":"계속하기를 선택하면 관문 각도, 타이머, 공명을 포함해 같은 진행을 재개합니다. 탑으로 돌아가면 해당 진행이 끝납니다."},"es":{"mainKicker":"Arcade de un toque","guideIntro":"Aprende el ciclo de lectura y pulso y avanza por 30 torres de aurora con patrones fijos en seis capítulos.","guideFaq5Question":"¿Cómo cambian las puertas en los seis capítulos?","guideFaq5Answer":"Las torres 1–5 usan un anillo giratorio. Después aparecen parejas que giran en sentidos opuestos, barras y cruces, espirales de pétalos, cambios de ritmo y patrones de corona combinados.","guideFaq6Question":"¿Puedo distinguir una puerta sin depender del color?","guideFaq6Answer":"Sí. La ola, el sol, el diamante y la huella tienen emblemas y texturas distintos además de sus colores.","guideFaq7Question":"¿Qué pasa si salgo durante una torre?","guideFaq7Answer":"Al continuar se reanuda la misma partida, con los ángulos de las puertas, el cronómetro y la Resonancia. Volver a Torres termina esa partida."},"pt-BR":{"mainKicker":"Arcade de um toque","guideIntro":"Aprenda o ciclo de leitura e pulso e avance por 30 torres de aurora com padrões fixos em seis capítulos.","guideFaq5Question":"Como os seis capítulos mudam os portais?","guideFaq5Answer":"As torres 1–5 usam um anel giratório. Depois entram pares em rotação oposta, barras e cruzes, espirais de pétalas, mudanças de ritmo e padrões combinados de coroa.","guideFaq6Question":"Dá para identificar um portal sem depender da cor?","guideFaq6Answer":"Sim. Onda, sol, diamante e pata têm emblemas e texturas próprios além das cores.","guideFaq7Question":"O que acontece se eu sair durante uma torre?","guideFaq7Answer":"Ao continuar, você retoma a mesma partida, com ângulos dos portais, cronômetro e Ressonância. Voltar às Torres encerra a partida."},"fr":{"mainKicker":"Arcade à une touche","guideIntro":"Apprenez la lecture et le rythme des impulsions, puis parcourez 30 tours à motifs fixes en six chapitres.","guideFaq5Question":"Comment les six chapitres font-ils évoluer les portes ?","guideFaq5Answer":"Les tours 1 à 5 utilisent un anneau rotatif. Les chapitres suivants ajoutent des paires en rotation opposée, des barres et croix, des spirales de pétales, des changements de tempo et des motifs de couronne combinés.","guideFaq6Question":"Peut-on reconnaître une porte sans se fier à la couleur ?","guideFaq6Answer":"Oui. L’onde, le soleil, le losange et la patte ont chacun un emblème et une texture distincts en plus de leur couleur.","guideFaq7Question":"Que se passe-t-il si je quitte pendant une tour ?","guideFaq7Answer":"Continuer reprend la même partie avec les angles des portes, le minuteur et la Résonance. Revenir aux Tours met fin à cette partie."},"de":{"mainKicker":"Ein-Tasten-Arcade","guideIntro":"Lerne den Lese-und-Puls-Ablauf und spiele 30 Pulstürme mit festen Mustern in sechs Kapiteln.","guideFaq5Question":"Wie verändern die sechs Kapitel die Tore?","guideFaq5Answer":"Türme 1–5 verwenden einen rotierenden Ring. Spätere Kapitel ergänzen gegenläufige Paare, Balken und Kreuze, Blütenspiralen, Tempowechsel und kombinierte Kronenmuster.","guideFaq6Question":"Kann ich ein Tor ohne die Farbe erkennen?","guideFaq6Answer":"Ja. Welle, Sonne, Diamant und Pfote haben neben ihrer Farbe jeweils ein eigenes Emblem und Muster.","guideFaq7Question":"Was passiert, wenn ich einen Turm zwischendurch verlasse?","guideFaq7Answer":"Mit „Weiter“ setzt du denselben Lauf samt Torwinkeln, Timer und Resonanz fort. Die Rückkehr zur Turmauswahl beendet den Lauf."},"it":{"mainKicker":"Arcade a un tocco","guideIntro":"Impara il ciclo di lettura e impulso e affronta 30 torri a schemi fissi in sei capitoli.","guideFaq5Question":"Come cambiano i portali nei sei capitoli?","guideFaq5Answer":"Le torri 1–5 usano un anello rotante. I capitoli successivi aggiungono coppie in rotazione opposta, barre e croci, spirali di petali, cambi di ritmo e motivi combinati a corona.","guideFaq6Question":"Posso riconoscere un portale senza affidarmi al colore?","guideFaq6Answer":"Sì. Onda, sole, diamante e zampa hanno ciascuno un emblema e una trama distinti oltre al colore.","guideFaq7Question":"Cosa succede se esco durante una torre?","guideFaq7Answer":"Continua riprende la stessa partita con angoli dei portali, timer e Risonanza. Tornare alle Torri termina la partita."},"ru":{"mainKicker":"Аркада с одним нажатием","guideIntro":"Освойте цикл чтения и импульса и пройдите 30 башен с заданными узорами в шести главах.","guideFaq5Question":"Как меняются ворота в шести главах?","guideFaq5Answer":"В башнях 1–5 используется вращающееся кольцо. Затем появляются пары с обратным вращением, перекладины и кресты, спирали-лепестки, смена темпа и комбинированные коронные узоры.","guideFaq6Question":"Можно ли распознать ворота без опоры на цвет?","guideFaq6Answer":"Да. Волна, солнце, ромб и лапа различаются не только цветом, но и собственными эмблемами и текстурами.","guideFaq7Question":"Что будет, если выйти во время прохождения башни?","guideFaq7Answer":"Кнопка продолжения вернёт тот же заход с углами ворот, таймером и резонансом. Возврат к башням завершит его."},"hi":{"mainKicker":"एक-टच आर्केड","guideIntro":"पहचान और पल्स का क्रम सीखें और छह अध्यायों में तय पैटर्न वाले 30 ऑरोरा टावर पूरे करें।","guideFaq5Question":"छह अध्यायों में द्वार कैसे बदलते हैं?","guideFaq5Answer":"टावर 1–5 में घूमती रिंग होती है। आगे के अध्यायों में उलटी दिशा में घूमती जोड़ियाँ, पट्टियाँ और क्रॉस, पंखुड़ी सर्पिल, बदलती गति और मुकुट के संयुक्त पैटर्न आते हैं।","guideFaq6Question":"क्या रंग पर निर्भर हुए बिना द्वार पहचान सकते हैं?","guideFaq6Answer":"हाँ। तरंग, सूर्य, हीरा और पंजे के रंग के साथ अलग प्रतीक और बनावट भी हैं।","guideFaq7Question":"टावर के बीच निकलने पर क्या होता है?","guideFaq7Answer":"जारी रखने पर वही खेल लौटता है—द्वारों के कोण, टाइमर और रेज़ोनेंस सहित। टावर सूची पर लौटने से वह खेल समाप्त होता है।"},"ar":{"mainKicker":"أركيد بلمسة واحدة","guideIntro":"تعلّم دورة القراءة والنبض، وأكمل 30 برج شفق بأنماط ثابتة عبر ستة فصول.","guideFaq5Question":"كيف تغيّر الفصول الستة البوابات؟","guideFaq5Answer":"تستخدم الأبراج 1–5 حلقة دوارة. ثم تضيف الفصول أزواجًا تدور في اتجاهين متعاكسين، وقضبانًا وصلبانًا، ولوالب بتلات، وتغيّر الإيقاع، وأنماط تيجان مركبة.","guideFaq6Question":"هل يمكن تمييز البوابة دون الاعتماد على اللون؟","guideFaq6Answer":"نعم. للموجة والشمس والماسة وبصمة المخلب شعارات وملامس مختلفة إلى جانب ألوانها.","guideFaq7Question":"ماذا يحدث إذا غادرت أثناء البرج؟","guideFaq7Answer":"يستأنف خيار المتابعة المحاولة نفسها بزوايا البوابات والمؤقت والرنين كما هي. والعودة إلى الأبراج تنهي المحاولة."}};for(const [locale,copy] of Object.entries(data)){const catalog=window.SPECTRUM_PULSE_LOCALES?.[locale];if(catalog)Object.assign(catalog,copy);const publicCopy=window.SPECTRUM_PULSE_PUBLIC_COPY?.[locale];if(publicCopy)Object.assign(publicCopy,copy)}})();</script>
@@ -138,12 +144,15 @@
   <script src="/src/virtual-joystick.js?v=1.0.0"></script>
 <script src="/games/animal-spectrum-pulse/combat.js?v=20261013-spectrum-v22"></script>
 <script src="/games/animal-spectrum-pulse/combat-view.js?v=20261013-spectrum-v22"></script>
-<script src="/games/animal-spectrum-pulse/combat-locales.js?v=20261013-spectrum-v22"></script>
-<script src="game.js?v=20261013-spectrum-v22"></script>
-  <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
+<script src="/games/animal-spectrum-pulse/combat-locales.js?v=20261004-spectrum-pulse-text140-v1"></script>
+<script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script>
+<script src="../../src/game-play-ui.js?v=20261021-shared-play1"></script>
+<script src="../../src/battle-canvas-standard.js?v=20261016-battle-canvas-i9"></script>
+<script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+<script src="stage-config.js?v=20261021-spectrum-v23-i9"></script>
+<script src="frame.js?v=20261021-spectrum-v23-i9"></script>
+<script src="game.js?v=20261021-spectrum-v23-i9"></script>
+  <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
-  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
 </body>
 </html>

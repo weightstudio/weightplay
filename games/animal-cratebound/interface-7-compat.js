@@ -7,19 +7,23 @@
   document.documentElement.dataset.wpCrateboundInterface7Compat="true";
 
   const currentScript=document.currentScript;
-  if(!document.querySelector('link[data-wp-cratebound-interface7-corrections]')){
-    const corrections=document.createElement('link');
-    corrections.rel='stylesheet';
-    corrections.href=new URL('interface-7-corrections.css?v=20261018-cratebound-dark-follow-v18',currentScript?.src||document.baseURI).href;
-    corrections.dataset.wpCrateboundInterface7Corrections='true';
-    document.head.append(corrections);
-  }
-  if(!document.querySelector('link[data-wp-cratebound-interface7]')){
-    const link=document.createElement("link");
-    link.rel="stylesheet";
-    link.href=new URL("interface-7-cleanup.css?v=20261018-cratebound-dark-follow-v18",currentScript?.src||location.href).href;
-    link.dataset.wpCrateboundInterface7="true";
-    document.head.append(link);
+  // Gameplay/result compatibility remains active; the I9 frame replaces only
+  // the legacy Interface 7 scene and control skins.
+  if(document.body.dataset.wpInterfaceVersion!=="9"){
+    if(!document.querySelector('link[data-wp-cratebound-interface7-corrections]')){
+      const corrections=document.createElement('link');
+      corrections.rel='stylesheet';
+      corrections.href=new URL('interface-7-corrections.css?v=20261018-cratebound-dark-follow-v18',currentScript?.src||document.baseURI).href;
+      corrections.dataset.wpCrateboundInterface7Corrections='true';
+      document.head.append(corrections);
+    }
+    if(!document.querySelector('link[data-wp-cratebound-interface7]')){
+      const link=document.createElement("link");
+      link.rel="stylesheet";
+      link.href=new URL("interface-7-cleanup.css?v=20261018-cratebound-dark-follow-v18",currentScript?.src||location.href).href;
+      link.dataset.wpCrateboundInterface7="true";
+      document.head.append(link);
+    }
   }
 
   const main=document.getElementById("mainScreen");
