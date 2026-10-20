@@ -1,152 +1,61 @@
-/* Game-owned content only; frame geometry and controls remain shared. */
-.relic-stage-content { position:relative; min-width:0; min-height:0; display:flex; flex-direction:column; gap:8px; }
-.relic-stage-content > .stage-workspace { flex:1; min-height:0; }
-.relic-stage-content > .stage-bottom-tabs { position:static; flex-shrink:0; }
-.relic-battle-content { position:relative; min-width:0; min-height:0; }
-.relic-battle-content > #pauseBtn { top:8px; right:8px; }
-/* These content dialogs use physical-readable card layouts inside the logical
-   Battle plane. The canonical scaler remains the only source of the factor. */
-body.relic-playing .relic-battle-content > :is(#draftPanel,#lootPanel) { inset:0; height:auto; }
-.relic-battle-content :is(.draft-card-box,.loot-box) {
-  zoom:calc(1 / var(--wp-battle-canvas-scale, 1));
-  max-height:calc(100dvh - 128px);
-  overflow-y:auto;
-  overscroll-behavior:contain;
+/* Game-owned preparation content inside the shared I9 Stage frame. */
+.relic-stage-content,
+.relic-stage-content > .stage-workspace {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
 }
-.relic-battle-content .draft-card-box { width:min(680px, calc(100vw - 32px)); }
 
-/* v31: one full-height battlefield. Equipment is a paused Battle substate. */
-html body.relic-playing #gamePanel.game-panel .game-layout.relic-battle-content {
-  display:block!important; padding:0!important; gap:0!important;
-  height:100%!important; overflow:hidden; background:#102a2d;
-  --relic-unit:calc(1px / var(--wp-battle-canvas-scale, 1));
+.relic-stage-content .stage-view {
+  display: none;
+  position: absolute;
+  inset: 0;
+  min-width: 0;
+  min-height: 0;
 }
-html body.relic-playing #gamePanel.game-panel .relic-battle-content > .arena-viewport {
-  position:absolute; inset:0; display:block!important; padding:0!important;
-  width:100%!important; height:100%!important; border:0; border-radius:0;
+
+.relic-stage-content .stage-view.is-active:not([hidden]) {
+  display: block;
 }
-html body.relic-playing #gamePanel.game-panel .relic-battle-content .arena-hud { display:none!important; }
-html body.relic-playing #gamePanel.game-panel .relic-battle-content .canvas-container {
-  position:absolute!important; inset:0!important; transform:none!important; width:100%!important; min-width:0!important; max-width:none!important;
-  height:100%!important; min-height:0!important; max-height:none!important;
-  aspect-ratio:auto!important; border:0; border-radius:0;
+
+.relic-stage-content #stageMapPage {
+  overflow: hidden;
 }
-html body.relic-playing #gamePanel.game-panel .relic-battle-content #gameCanvas {
-  display:block; width:100%!important; height:100%!important; aspect-ratio:auto!important;
-  touch-action:none;
+
+.relic-stage-content #stageTeamView,
+.relic-stage-content #stageConfigMount {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px;
 }
-html body.relic-playing #gamePanel.game-panel [data-wp-frame-info] .bar-bg {
-  width:100%; max-width:60px; height:3px; min-height:3px; margin:0;
-  background:#102329; overflow:hidden;
+
+.relic-stage-content #stageTeamView .training-panel,
+.relic-stage-content #stageConfigMount .menu-shop {
+  width: min(100%, 720px);
+  min-height: 0;
+  margin: 0 auto;
 }
-html body.relic-playing #gamePanel.game-panel [data-wp-frame-info] .bar-fill { height:100%; transition:width 140ms ease-out; }
-/* One compact health strip; the number overlays the fill, outside sprite motion. */
-.relic-battle-content .player-health {
-  position:absolute; z-index:6; pointer-events:none;
-  left:clamp(calc(37 * var(--relic-unit)),var(--health-x,50%),calc(100% - 37 * var(--relic-unit)));
-  top:clamp(calc(20 * var(--relic-unit)),var(--health-y,50%),calc(100% - 8 * var(--relic-unit)));
-  transform:translate(-50%,-100%); width:calc(66 * var(--relic-unit)); height:calc(16 * var(--relic-unit));
-  padding:0; border:0; background:none;
-  text-align:center; direction:ltr;
+
+.relic-stage-content #stageConfigMount .menu-shop {
+  padding: 12px;
+  overflow: visible;
 }
-.relic-battle-content .player-health [data-ui="hudHp"] {
-  position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%);
+
+.relic-stage-content [hidden] {
+  display: none !important;
 }
-.relic-battle-content .player-health #hpText {
-  position:absolute; inset:0; z-index:1; display:flex; align-items:center; justify-content:center;
-  margin:0; color:#fff; font:800 calc(11 * var(--relic-unit))/1 system-ui;
-  font-variant-numeric:tabular-nums; text-shadow:0 1px 2px #001c20,0 0 3px #001c20;
-}
-.relic-battle-content .player-health .bar-bg {
-  width:100%; height:100%; min-height:0; margin:0; box-sizing:border-box;
-  background:#35282d; border:calc(1 * var(--relic-unit)) solid #b8e4d3;
-  border-radius:calc(3 * var(--relic-unit)); overflow:hidden;
-}
-.relic-battle-content .player-health #hpFill { height:100%; background:#219c71; transition:width 140ms ease-out; }
-.relic-battle-content .player-health.is-low .bar-bg { border-color:#ff8f91; }
-.relic-battle-content .player-health.is-low #hpFill { background:#cb3e50; }
-html body.relic-playing #gamePanel.game-panel .relic-battle-content #roomObjective {
-  position:absolute; inset:calc(62 * var(--relic-unit)) calc(12 * var(--relic-unit)) auto;
-  min-height:0; max-width:none; width:auto; margin:0; padding:calc(6 * var(--relic-unit)) calc(10 * var(--relic-unit));
-  font:600 calc(12 * var(--relic-unit))/1.4 system-ui; text-align:center;
-  color:#fff4c8; background:rgba(9,30,31,.8); border:1px solid #8a8250;
-  border-radius:calc(6 * var(--relic-unit)); pointer-events:none; z-index:3;
-}
-html body.relic-playing #gamePanel.game-panel .relic-battle-content > :is(#pauseBtn,#equipmentBtn) {
-  position:absolute; top:calc(10 * var(--relic-unit)); z-index:8;
-  min-width:calc(44 * var(--relic-unit))!important; min-height:calc(44 * var(--relic-unit))!important;
-  height:calc(44 * var(--relic-unit))!important; max-height:none!important;
-  padding:0 calc(12 * var(--relic-unit)); border:2px solid #b8a569;
-  border-radius:calc(8 * var(--relic-unit)); background:rgba(12,39,40,.92); color:#fff4d1;
-  font:700 calc(14 * var(--relic-unit))/1 system-ui; touch-action:manipulation;
-}
-html body.relic-playing #gamePanel.game-panel .relic-battle-content > #equipmentBtn { left:calc(12 * var(--relic-unit)); right:auto; width:auto!important; max-width:calc(180 * var(--relic-unit)); }
-html body.relic-playing #gamePanel.game-panel .relic-battle-content > #pauseBtn { right:calc(12 * var(--relic-unit)); left:auto; width:calc(44 * var(--relic-unit))!important; }
-.battle-controls { position:absolute; inset:0; pointer-events:none; z-index:7; direction:ltr; }
-.battle-skills { position:absolute; right:calc(16 * var(--relic-unit)); bottom:calc(24 * var(--relic-unit)); display:flex; gap:calc(10 * var(--relic-unit)); align-items:flex-end; }
-.battle-skills button {
-  position:relative; overflow:visible;
-  width:calc(70 * var(--relic-unit)); height:calc(70 * var(--relic-unit)); padding:calc(5 * var(--relic-unit));
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:calc(4 * var(--relic-unit));
-  background:rgba(22,38,53,.94); color:#ccd6dd; border:2px solid #82919d; border-radius:50%;
-  pointer-events:auto; touch-action:none; user-select:none; transition:background 120ms ease-out;
-}
-.battle-skills #pulseButton { width:calc(84 * var(--relic-unit)); height:calc(84 * var(--relic-unit)); }
-.battle-skills button b { font-size:calc(25 * var(--relic-unit)); line-height:1; }
-.battle-skills button span { max-width:100%; font:700 calc(10 * var(--relic-unit))/1.15 system-ui; overflow-wrap:anywhere; }
-.battle-skills button.is-ready { color:#e8ffec; border-color:#65ebce; background:rgba(10,73,66,.94); box-shadow:0 0 12px #45cfab55; }
-.battle-skills .cooldown-ring {
-  position:absolute; inset:calc(-5 * var(--relic-unit));
-  width:calc(100% + 10 * var(--relic-unit)); height:calc(100% + 10 * var(--relic-unit));
-  overflow:visible; pointer-events:none; transform:rotate(-90deg); fill:none; stroke-width:5;
-}
-.battle-skills .cooldown-track { stroke:#09262ee6; }
-.battle-skills .cooldown-progress { stroke:#ffd478; stroke-linecap:round; filter:drop-shadow(0 0 2px #ffcf7680); }
-.battle-skills button.is-ready .cooldown-progress { stroke:#7affdd; filter:drop-shadow(0 0 3px #53efcda0); }
-.battle-skills button:active { filter:brightness(1.4); }
-.chain-meter { position:absolute; top:calc(110 * var(--relic-unit)); left:50%; transform:translateX(-50%); max-width:85%; padding:calc(5 * var(--relic-unit)) calc(12 * var(--relic-unit)); background:#092b29e8; color:#8dffda; border:1px solid #56c6aa; border-radius:4px; font:800 calc(13 * var(--relic-unit))/1.2 system-ui; pointer-events:none; opacity:0; transition:opacity 120ms; z-index:4; white-space:nowrap; }
-.chain-meter.is-active { opacity:1; }
-html body.relic-playing #gamePanel.game-panel .relic-battle-content .equipment-dialog {
-  position:absolute; inset:0; z-index:70; display:flex; flex-direction:column; overflow:hidden;
-  background:linear-gradient(150deg,#15373c,#101d29); color:#f6f0d6;
-  animation:relic-panel-enter 150ms ease-out;
-}
-html body.relic-playing #gamePanel.game-panel .equipment-dialog.hidden { display:none!important; }
-.equipment-head { display:flex; align-items:center; justify-content:space-between; gap:calc(12 * var(--relic-unit)); padding:calc(14 * var(--relic-unit)); border-bottom:1px solid #65877c; }
-.equipment-head h2 { margin:0 0 calc(6 * var(--relic-unit)); font-size:calc(22 * var(--relic-unit)); }
-.equipment-head p { margin:0; color:#b6cbc4; font-size:calc(12 * var(--relic-unit)); }
-.equipment-head button { min-width:calc(90 * var(--relic-unit)); min-height:calc(48 * var(--relic-unit)); padding:calc(8 * var(--relic-unit)); border:1px solid #bda971; border-radius:6px; background:#265a54; color:#fff4c8; font:700 calc(13 * var(--relic-unit))/1.3 system-ui; }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog #inventoryPanel {
-  position:static!important; display:block!important; width:100%!important; height:auto!important;
-  min-height:0!important; max-height:none!important; flex:1; overflow:auto!important;
-  padding:calc(14 * var(--relic-unit)); background:none; border:0; border-radius:0;
-}
-html body.relic-playing #gamePanel.game-panel .equipment-dialog #inventoryPanel h2 { font-size:calc(16 * var(--relic-unit)); margin:0 0 calc(12 * var(--relic-unit)); }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog .gear-slots { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:calc(8 * var(--relic-unit)); height:auto; }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog .gear-slot-card { width:auto; min-width:0; height:auto; min-height:calc(130 * var(--relic-unit)); }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog .slot-header { padding:calc(8 * var(--relic-unit)); font-size:calc(11 * var(--relic-unit)); }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog .slot-body { padding:calc(10 * var(--relic-unit)); gap:calc(6 * var(--relic-unit)); }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog .slot-icon { width:calc(38 * var(--relic-unit)); height:calc(38 * var(--relic-unit)); }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog .item-name { font-size:calc(12 * var(--relic-unit)); line-height:1.4; }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog .item-effect { font-size:calc(11 * var(--relic-unit)); }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog :is(.backpack-panel,.backpack-list,.stats-list) { display:block; overflow:visible; max-height:none; height:auto; }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog h3 { font-size:calc(15 * var(--relic-unit)); margin:calc(18 * var(--relic-unit)) 0 calc(10 * var(--relic-unit)); }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog .backpack-item { display:grid; grid-template-columns:calc(44 * var(--relic-unit)) minmax(0,1fr) auto; gap:calc(10 * var(--relic-unit)); padding:calc(12 * var(--relic-unit)); margin-bottom:calc(10 * var(--relic-unit)); }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog .backpack-item > img { width:calc(44 * var(--relic-unit)); height:calc(44 * var(--relic-unit)); }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog .backpack-copy { font-size:calc(14 * var(--relic-unit)); }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog .backpack-copy small { font-size:calc(12 * var(--relic-unit)); line-height:1.5; }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog .gear-level-tag { font-size:calc(11 * var(--relic-unit)); }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog .backpack-actions { grid-column:1/-1; display:grid; grid-template-columns:1fr 1fr; gap:calc(10 * var(--relic-unit)); }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog .backpack-actions button { width:100%; min-height:calc(46 * var(--relic-unit)); font-size:calc(13 * var(--relic-unit)); }
-html body.relic-playing #gamePanel.game-panel .equipment-dialog :is(.stat-row,.backpack-empty) { font-size:calc(13 * var(--relic-unit)); line-height:1.6; }
-@keyframes relic-panel-enter { from { opacity:.2; transform:translateY(8px); } to { opacity:1; transform:none; } }
-@media (max-height:560px) and (orientation:landscape) {
-  .battle-skills { bottom:calc(12 * var(--relic-unit)); }
-  html body.relic-playing #gamePanel.game-panel .relic-battle-content #roomObjective { top:calc(12 * var(--relic-unit)); left:calc(150 * var(--relic-unit)); right:calc(70 * var(--relic-unit)); }
-  .chain-meter { top:calc(56 * var(--relic-unit)); }
-}
-@media (prefers-reduced-motion:reduce) {
-  .relic-battle-content .player-health #hpFill { transition:none; }
-  .equipment-dialog { animation:none!important; }
-  .battle-skills button,.chain-meter,html body.relic-playing #gamePanel.game-panel [data-wp-frame-info] .bar-fill { transition:none; }
+
+@media (max-height: 560px) and (orientation: landscape) {
+  .relic-stage-content #stageTeamView,
+  .relic-stage-content #stageConfigMount {
+    padding: 8px;
+  }
+
+  .relic-stage-content #stageConfigMount .menu-shop {
+    padding: 8px;
+  }
 }

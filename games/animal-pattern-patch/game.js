@@ -171,6 +171,84 @@
     node.inert = false;
     node.removeAttribute("aria-hidden");
   }
+  function installSharedSettingsMotion() {
+    const panel = document.querySelector(".wp-shell-settings-popover:not(#mainSettingsPopover)");
+    const button = document.querySelector("button.wp-shell-settings-button:not(#mainSettingsBtn)");
+    if (!panel || !button || panel.dataset.patternMotionReady === "true") return;
+    panel.dataset.patternMotionReady = "true";
+    panel.inert = panel.hidden;
+    panel.setAttribute("aria-hidden", String(panel.hidden));
+    let previousHidden = panel.hidden;
+    let exitSnapshot = null;
+
+    function captureExitSnapshot() {
+      if (panel.hidden || exitSnapshot) return;
+      const rect = panel.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const snapshot = panel.cloneNode(true);
+      snapshot.removeAttribute("id");
+      snapshot.querySelectorAll("[id]").forEach((node) => node.removeAttribute("id"));
+      snapshot.hidden = false;
+      snapshot.inert = true;
+      snapshot.setAttribute("aria-hidden", "true");
+      snapshot.classList.remove("is-panel-entering", "is-panel-exiting");
+      Object.assign(snapshot.style, {
+        position: "fixed", top: `${rect.top}px`, left: `${rect.left}px`, right: "auto",
+        width: `${rect.width}px`, height: `${rect.height}px`, margin: "0",
+        zIndex: "1200", pointerEvents: "none",
+      });
+      document.body.append(snapshot);
+      exitSnapshot = snapshot;
+      window.setTimeout(() => {
+        if (exitSnapshot === snapshot && !panel.hidden) {
+          snapshot.remove();
+          exitSnapshot = null;
+        }
+      }, 0);
+    }
+
+    const observer = new MutationObserver(() => {
+      const hidden = panel.hidden;
+      if (hidden === previousHidden) return;
+      previousHidden = hidden;
+      if (hidden) {
+        panel.inert = true;
+        panel.setAttribute("aria-hidden", "true");
+        panel.classList.remove("is-panel-entering", "is-panel-exiting");
+        if (exitSnapshot) {
+          const snapshot = exitSnapshot;
+          exitSnapshot = null;
+          void snapshot.offsetWidth;
+          snapshot.classList.add("is-panel-exiting");
+          scheduleMotion(snapshot, () => snapshot.remove(), motionDuration(true));
+        }
+        return;
+      }
+      if (exitSnapshot) {
+        exitSnapshot.remove();
+        exitSnapshot = null;
+      }
+      const token = cancelMotion(panel);
+      panel.inert = false;
+      panel.setAttribute("aria-hidden", "false");
+      panel.classList.remove("is-panel-exiting");
+      panel.classList.add("is-panel-entering");
+      void panel.offsetWidth;
+      window.requestAnimationFrame(() => {
+        if (motionTokens.get(panel) === token && !panel.hidden) panel.classList.remove("is-panel-entering");
+      });
+    });
+    observer.observe(panel, { attributes: true, attributeFilter: ["hidden"] });
+    document.addEventListener("pointerdown", (event) => {
+      if (!panel.hidden && !panel.contains(event.target) && !button.contains(event.target)) captureExitSnapshot();
+    }, true);
+    document.addEventListener("click", (event) => {
+      if (!panel.hidden && (!panel.contains(event.target) || button.contains(event.target))) captureExitSnapshot();
+    }, true);
+    document.addEventListener("keydown", (event) => {
+      if (!panel.hidden && event.key === "Escape") captureExitSnapshot();
+    }, true);
+  }
   function showView(id) {
     const main = $("mainView");
     const battle = $("battleView");
@@ -416,6 +494,15 @@
     $("mainSettingsPopover").setAttribute("aria-hidden", "true");
     $("leaveDialog").inert = true;
     $("leaveDialog").setAttribute("aria-hidden", "true");
+    installSharedSettingsMotion();
+    if (!document.querySelector(".wp-shell-settings-popover:not(#mainSettingsPopover)")) {
+      const frameObserver = new MutationObserver(() => {
+        if (!document.querySelector(".wp-shell-settings-popover:not(#mainSettingsPopover)")) return;
+        frameObserver.disconnect();
+        installSharedSettingsMotion();
+      });
+      frameObserver.observe(document.body, { childList: true, subtree: true });
+    }
     document.addEventListener("keydown", trapLeaveDialogFocus, true);
   });
   window.PATTERN_PATCH_TEST = { rounds, symbols, start, renderRound };

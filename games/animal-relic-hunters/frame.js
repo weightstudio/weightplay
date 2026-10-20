@@ -28,6 +28,9 @@
     document.getElementById('showStageBtn').setAttribute('data-wp-frame-action', 'primary');
     const stageHeader = stage.querySelector('.stage-panel-head');
     document.getElementById('stageTitle').setAttribute('data-wp-frame-title', '');
+    const stageNavigation = document.getElementById('stageNavigation');
+    stageNavigation.setAttribute('data-wp-frame-nav', '');
+    stageNavigation.querySelectorAll('[data-stage-tab]').forEach(button => { button.dataset.wpFrameAction = 'tab'; });
     const stageContent = document.createElement('div');
     stageContent.className = 'relic-stage-content';
     for (const child of [...stage.children]) if (child !== stageHeader && !child.matches('.stage-bottom-tabs')) stageContent.append(child);
@@ -73,11 +76,15 @@
     document.getElementById('resultPanel').setAttribute('data-wp-frame-logical-actions', 'battle');
     for (const button of battleContent.querySelectorAll('#resultPanel button')) button.setAttribute('data-wp-frame-action', 'secondary');
     root.setAttribute('data-wp-frame-root', '');
-    frame = core.mount({root, localeSelect, scenes: {
+    frame = core.mount({root, localeSelect, playUI: true, scenes: {
       main: {root:main, header, content:mainContent},
       stage: {root:stage, header:stageHeader, content:stageContent},
       battle: {root:battle, header:battleHeader, content:battleContent, headerInfo:hud},
     }});
+    const stageSummary = document.createElement('span');
+    stageSummary.id = 'stageSummary';
+    stageSummary.setAttribute('aria-live', 'polite');
+    frame.stageTopUI.add(core.createGroup().add(stageSummary));
     window.addEventListener('pagehide', event => { if (!event.persisted) { frame?.destroy(); frame = null; } });
     return frame;
   };

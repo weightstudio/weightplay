@@ -22,7 +22,8 @@
   const $ = (id) => document.getElementById(id);
   const levels = UNBLOCK_LEVELS.levels;
   const dict = UNBLOCK_LOCALES;
-const GAME_VERSION = "v24";
+  const GAME_VERSION = "v25";
+  const INTERFACE_VERSION = "9";
   document.body.dataset.gameVersion = GAME_VERSION;
   const codes = Object.keys(dict);
   const localeRoutes = {
@@ -52,6 +53,7 @@ const GAME_VERSION = "v24";
   let animationToken = 0;
   let resultActionClaimed = false;
   let frame = null;
+  let stageSelector = null;
 
   const saveKey = "unblockProgress";
   const bestMovesKey = "unblockBestMoves";
@@ -114,7 +116,7 @@ const GAME_VERSION = "v24";
     window.WonderAnalytics?.track?.(name, {
       game_id: "animal-unblock",
       game_version: GAME_VERSION,
-      interface_version: "7",
+      interface_version: INTERFACE_VERSION,
       ...detail,
     });
   }
@@ -179,7 +181,10 @@ const GAME_VERSION = "v24";
     document.querySelector("#main header a").href =
       `/${localeRoutes[locale] || "en"}/`;
     $("locale").value = locale;
-    renderStage();
+    if ($("progress")) {
+      $("progress").textContent = t("progress", { done: progress.filter(Boolean).length });
+    }
+    stageSelector?.refresh(selected);
     renderResultPreview();
     frame?.refresh();
   }
@@ -227,10 +232,11 @@ const GAME_VERSION = "v24";
     $("battleLive").inert = nextScreen !== "battle";
     frame?.activate(nextScreen);
     $("mainProgress").textContent = t("progress", {done: progress.filter(Boolean).length});
-    screen = nextScreen;
-    if (nextScreen === "stage" && previousScreen === "battle") {
-      renderStage();
+    if ($("progress")) {
+      $("progress").textContent = t("progress", { done: progress.filter(Boolean).length });
     }
+    screen = nextScreen;
+    if (nextScreen === "stage") stageSelector?.refresh(selected);
     window.scrollTo(0, 0);
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[nextScreen] ?? null;
@@ -239,102 +245,9 @@ const GAME_VERSION = "v24";
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
 
-  function selectStage(levelIndex, center = false, focus = false) {
-    selected = Math.max(0, Math.min(29, levelIndex));
-    let owner = null;
-    document
-      .querySelectorAll("#stageGrid .stage-card")
-      .forEach((card, cardIndex) => {
-        const active = cardIndex === selected;
-        card.classList.toggle("selected", active);
-        card.classList.toggle("centered", active);
-        card.setAttribute("aria-current", active ? "true" : "false");
-        card.tabIndex = active ? 0 : -1;
-        if (active) owner = card;
-      });
-    if (center) {
-      const rail = $("stageGrid");
-      if (owner && rail?.getClientRects().length) {
-        const railRect = rail.getBoundingClientRect();
-        const ownerRect = owner.getBoundingClientRect();
-        const coordinateScale = railRect.width > 0
-          ? rail.clientWidth / railRect.width
-          : 1;
-        const target = rail.scrollLeft
-          + ((ownerRect.left + ownerRect.width / 2)
-            - (railRect.left + railRect.width / 2)) * coordinateScale;
-        const maximum = Math.max(0, rail.scrollWidth - rail.clientWidth);
-        const previousBehavior = rail.style.getPropertyValue("scroll-behavior");
-        const previousPriority = rail.style.getPropertyPriority("scroll-behavior");
-        rail.style.setProperty("scroll-behavior", "auto", "important");
-        rail.scrollLeft = getComputedStyle(rail).direction === "rtl"
-          ? Math.max(-maximum, Math.min(0, target))
-          : Math.max(0, Math.min(maximum, target));
-        if (previousBehavior) {
-          rail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
-        } else {
-          rail.style.removeProperty("scroll-behavior");
-        }
-      }
-    }
-    if (focus) owner?.focus({ preventScroll: true });
-  }
-
-  function handleStageCardKeydown(event) {
-    const card = event.currentTarget;
-    const currentIndex = Number(card.dataset.index);
-    if (!Number.isInteger(currentIndex)) return;
-    const rtl = document.documentElement.dir === "rtl";
-    let nextIndex = null;
-    if (event.key === "Home") nextIndex = 0;
-    else if (event.key === "End") nextIndex = levels.length - 1;
-    else if (event.key === "ArrowRight") nextIndex = currentIndex + (rtl ? -1 : 1);
-    else if (event.key === "ArrowLeft") nextIndex = currentIndex + (rtl ? 1 : -1);
-    if (nextIndex == null) return;
-    event.preventDefault();
-    selectStage(Math.max(0, Math.min(levels.length - 1, nextIndex)), true, true);
-  }
-
-  function renderStage() {
-    if (screen !== "stage") return;
-    $("progress").textContent = t("progress", {
-      done: progress.filter(Boolean).length,
-    });
-    $("stageGrid").innerHTML = levels
-      .map(
-        (_, levelIndex) =>
-          `<button class="stage-card ${
-            levelIndex === selected ? "selected centered" : ""
-          }${
-            levelIndex && !progress[levelIndex - 1] ? " locked" : ""
-          }" data-index="${levelIndex}" data-stage-index="${levelIndex}"${levelIndex < 3 ? ' role="tab"' : ""} aria-current="${
-             levelIndex === selected
-          }" aria-posinset="${levelIndex + 1}" aria-setsize="${levels.length}" aria-keyshortcuts="ArrowLeft ArrowRight Home End" aria-disabled="${
-            Boolean(levelIndex && !progress[levelIndex - 1])
-          }"><b>${t("trail", { n: levelIndex + 1 })}</b><small>${
-            progress[levelIndex]
-              ? `✓ ${t("complete")}`
-              : t("chapter", { n: Math.floor(levelIndex / 10) + 1 })
-          }</small><em class="stage-preview" data-runtime-localize="off" data-challenge-preview="${challengePreviewKey(levelIndex)}">${challengePreview(levelIndex)}</em></button>`,
-      )
-      .join("");
-    document
-      .querySelectorAll("#stageGrid .stage-card")
-      .forEach((button) => {
-      button.onclick = () => {
-        const levelIndex = Number(button.dataset.index);
-        selectStage(levelIndex, true);
-        if (button.getAttribute("aria-disabled") !== "true") {
-          start(levelIndex, "stage_card");
-        }
-      };
-      button.addEventListener("keydown", handleStageCardKeydown);
-    });
-    selectStage(selected);
-  }
-
   function start(levelIndex, startSource = "stage_card") {
     index = levelIndex;
+    selected = levelIndex;
     blocks = levels[levelIndex].blocks.map((block) => ({ ...block }));
     history = [];
     moves = 0;
@@ -741,7 +654,6 @@ const GAME_VERSION = "v24";
 
   $("start").onclick = () => {
     show("stage");
-    renderStage();
     requestAnimationFrame(() => {
       document.querySelector("#stageGrid .stage-card[aria-current='true']")?.focus({
         preventScroll: true,
@@ -776,12 +688,6 @@ const GAME_VERSION = "v24";
     document.querySelector('#battle [data-back]').focus({preventScroll: true});
   });
   $("result").addEventListener("cancel", event => event.preventDefault());
-  $("stageGrid").addEventListener("wonder:stage-snap", (event) => {
-    const levelIndex = Number(event.detail?.index);
-    if (Number.isInteger(levelIndex) && levelIndex >= 0) {
-      selectStage(levelIndex);
-    }
-  });
   $("undo").onclick = undo;
   $("hint").onclick = hint;
   $("restart").onclick = () => __wpReplayStart(() => start(index, "battle_restart"));
@@ -789,7 +695,6 @@ const GAME_VERSION = "v24";
     (__wpNotifyMeasurement(), $("result").close());
     selected = Math.min(29, index + 1);
     show("stage");
-    renderStage();
   });
   $("next").onclick = () => claimResultAction(() => {
     if (index >= levels.length - 1) return;
@@ -819,7 +724,14 @@ const GAME_VERSION = "v24";
     }
   });
 
-  frame = window.mountUnblockFrame();
+  const mountedFrame = window.mountUnblockFrame({
+    config: window.UnblockTrailStageConfig({ levels, progress, t, preview: challengePreview }),
+    selected,
+    onSelect(levelIndex) { selected = levelIndex; },
+    onStart(levelIndex) { start(levelIndex, "stage_card"); },
+  });
+  frame = mountedFrame.frame;
+  stageSelector = mountedFrame.stageSelector;
   chooseLocale(rememberedLocale(), false);
   show("main");
 })();

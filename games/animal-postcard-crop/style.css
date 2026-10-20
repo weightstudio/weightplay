@@ -43,6 +43,7 @@
  #cornerText {min-height:16px;}
  .pc-status {grid-column:2;grid-row:2;font-size:12px;}
  .pc-controls {grid-column:2;grid-row:3;}
+ .pc-controls [data-act="capture"] {font-size:12px;white-space:nowrap;overflow-wrap:normal;}
  .pc-result-card img {display:none;}
  .pc-result-card {max-width:560px;}
 }

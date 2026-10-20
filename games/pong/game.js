@@ -36,7 +36,7 @@
       }
       window.__weightPlayScreenFrameRequested = true;
       const script = document.createElement('script');
-      script.src = new URL('../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2', base).href;
+      script.src = new URL('../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2', base).href;
       script.dataset.wpSharedInterface = '7';
       script.addEventListener('load', resolve, { once: true });
       script.addEventListener('error', reject, { once: true });
@@ -50,7 +50,7 @@
   ]);
   const asset = name => new URL('../../assets/'+name,base).href;
   if (!document.querySelector('link[href*="/games/pong/pong.css"]')) {
-    const style=document.createElement('link'); style.rel='stylesheet'; style.href=new URL('pong.css?v=20261018-pong-clarity-v13',base); document.head.append(style);
+    const style=document.createElement('link'); style.rel='stylesheet'; style.href=new URL('pong.css?v=20261021-pong-v13-i9',base); document.head.append(style);
   }
   const artStyle=document.createElement('link'); artStyle.rel='stylesheet'; artStyle.href=new URL('art.css?v=20261018-pong-clarity-v13',base); document.head.append(artStyle);
   let locale=Object.keys(ROUTES).find(key=>location.pathname.startsWith('/'+ROUTES[key]+'/'))||document.documentElement.lang;
@@ -83,7 +83,7 @@
   appHost.innerHTML=`<main id="pongApp" data-wp-frame-root>
   <section id="mainScreen" class="pw-main" data-wp-scene="main">
     <header class="pw-header"><a class="pw-return" data-wp-return="main" href="/${ROUTES[locale]}/"><span>←</span><img src="${asset('weightplay-logo.png')}" alt=""></a><h1 data-wp-frame-title></h1></header>
-    <div id="mainContent" class="pw-main-content" data-wp-frame-content="main"><div class="pw-intro"><img class="pw-poster main-poster" data-wp-frame-poster src="${asset('pong-cover-v1.webp')}" width="1254" height="1254" alt=""><div class="pw-copy" data-wp-frame-copy><p id="summary" class="main-summary" data-wp-frame-summary></p><p id="record" data-wp-frame-progress></p><button id="startBtn" class="pw-primary" data-wp-main-start data-wp-frame-action="primary"></button></div></div></div>
+    <div id="mainContent" class="pw-main-content" data-wp-frame-content="main"><img class="pw-poster main-poster" data-wp-frame-poster src="${asset('pong-cover-v1.webp')}" width="1254" height="1254" alt=""><div class="pw-copy" data-wp-frame-copy><p id="summary" class="main-summary" data-wp-frame-summary></p><p id="record" data-wp-frame-progress></p><button id="startBtn" class="pw-primary" data-wp-main-start data-wp-frame-action="primary"></button></div></div>
   </section>
   <section id="publicGuide" class="pw-main pw-guide game-page-info" data-wp-game-guide></section>
   <section id="battleScreen" class="pw-battle" data-wp-scene="battle" hidden>
@@ -98,7 +98,7 @@
         <div id="controlRail" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100"><span id="railLabel"></span><i id="railThumb" aria-hidden="true"></i></div>
         <div class="pw-controls"><button id="leftBtn">◀</button><button id="serveBtn" class="pw-primary" data-wp-primary-action></button><button id="rightBtn">▶</button></div>
       </div>
-      <section id="resultPanel" data-wp-battle-substate="result" hidden><h2 id="resultTitle"></h2><p id="resultScore" dir="ltr"></p><p id="resultCopy"></p><div class="pw-result-actions"><button id="homeBtn"></button><button id="retryBtn" class="pw-primary"></button></div></section>
+      <section id="resultPanel" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultScore resultCopy" data-wp-battle-substate="result" data-wp-result-screen hidden><h2 id="resultTitle" tabindex="-1"></h2><p id="resultScore" dir="ltr"></p><p id="resultCopy"></p><div class="pw-result-actions"><button id="homeBtn"></button><button id="retryBtn" class="pw-primary"></button></div></section>
       <section id="leavePanel" class="pw-leave-overlay" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveText" hidden><div class="pw-leave-card"><h2 id="leaveTitle"></h2><p id="leaveText"></p><div class="pw-leave-actions"><button id="leaveContinue" class="pw-primary"></button><button id="leaveMain"></button></div></div></section>
     </div>
   </section>
@@ -112,6 +112,21 @@
     document.getElementById('publicGuide').replaceWith(initialGuide);
   }
   const $=id=>document.getElementById(id), canvas=$('court'), ctx=canvas.getContext('2d'), set=(id,text)=>{$(id).textContent=text;};
+  function setResultOpen(open){
+    const header=document.querySelector('.pw-canvas > .pw-hud');
+    $('resultPanel').hidden=!open;
+    if(header){header.inert=open;if(open)header.setAttribute('aria-hidden','true');else header.removeAttribute('aria-hidden');}
+    if(open)document.body.dataset.wpResultOpen='true';else delete document.body.dataset.wpResultOpen;
+  }
+  document.addEventListener('keydown',event=>{
+    const panel=$('resultPanel');
+    if(event.key!=='Tab'||panel.hidden)return;
+    const controls=panel.querySelectorAll('button:not([disabled])');
+    const first=controls[0],last=controls[controls.length-1],active=document.activeElement;
+    if(!first||!last)return;
+    if(event.shiftKey&&(active===first||active===$('resultTitle')||!panel.contains(active))){event.preventDefault();last.focus({preventScroll:true});}
+    else if(!event.shiftKey&&(active===last||!panel.contains(active))){event.preventDefault();first.focus({preventScroll:true});}
+  });
   function animate(node, kind='enter') {
     node.getAnimations().forEach(animation=>animation.cancel());
     const frames=kind==='score'?[{opacity:.55},{opacity:1}]:[{opacity:0},{opacity:1}];
@@ -183,8 +198,9 @@
   }
   function finish(){
     stop();if(match.you===7){wins[difficulty]=Math.min(1000000,wins[difficulty]+1);persist();}
-    beep(match.you===7?'result.win':'result.lose');animate($('resultPanel'));
-    $('livePanel').hidden=true;$('livePanel').inert=true;$('livePanel').setAttribute('aria-hidden','true');(__wpNotifyMeasurement(), $('resultPanel').hidden=false);document.body.dataset.screen='battle';frameApi?.activate?.('battle',{covered:true});set('resultTitle',match.you===7?t.won:t.lost);set('resultScore',`${match.you} : ${match.them}`);set('resultCopy',`${COACH[locale].best}: ${match.bestRally} · ${t.wins}: ${wins[difficulty]}`);animate($('resultPanel'));$('retryBtn').focus();
+    beep(match.you===7?'result.win':'result.lose');
+    set('resultTitle',match.you===7?t.won:t.lost);set('resultScore',`${match.you} : ${match.them}`);set('resultCopy',`${COACH[locale].best}: ${match.bestRally} · ${t.wins}: ${wins[difficulty]}`);
+    $('livePanel').hidden=true;$('livePanel').inert=true;$('livePanel').setAttribute('aria-hidden','true');setResultOpen(true);__wpNotifyMeasurement();document.body.dataset.screen='battle';frameApi?.activate?.('battle',{covered:true});animate($('resultPanel'));$('resultTitle').focus({preventScroll:true});
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
@@ -207,14 +223,14 @@
     if (!__wpMeasurement.started || __wpMeasurement.ended) { __wpMeasurement.roundKey = {}; __wpMeasurement.restart = Boolean(__wpMeasurement.restart && !__wpMeasurement.started); __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
     __wpNotifyMeasurement();
 }
-  function start(){stop();closeLeave({resume:false,focus:false});match=new Match(difficulty);lastRally=-1;screen='battle';document.body.dataset.screen='battle';document.documentElement.classList.add('pw-active');$('mainScreen').hidden=true;$('publicGuide').hidden=true;$('battleScreen').hidden=false;$('livePanel').hidden=false;$('livePanel').inert=false;$('livePanel').removeAttribute('aria-hidden');(__wpNotifyMeasurement(), $('resultPanel').hidden=true);frameApi?.activate?.('battle');window.scrollTo(0,0);hud();draw();animate($('livePanel'));$('serveBtn').focus();
+  function start(){stop();closeLeave({resume:false,focus:false});match=new Match(difficulty);lastRally=-1;screen='battle';document.body.dataset.screen='battle';document.documentElement.classList.add('pw-active');$('mainScreen').hidden=true;$('publicGuide').hidden=true;$('battleScreen').hidden=false;$('livePanel').hidden=false;$('livePanel').inert=false;$('livePanel').removeAttribute('aria-hidden');setResultOpen(false);__wpNotifyMeasurement();frameApi?.activate?.('battle');window.scrollTo(0,0);hud();draw();animate($('livePanel'));$('serveBtn').focus();
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["battle"] ?? null;
       if (["result"].includes("battle") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = false; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpNotifyMeasurement();
 }
-  function home(){stop();closeLeave({resume:false,focus:false});screen='main';document.body.dataset.screen='main';document.documentElement.classList.remove('pw-active');$('mainScreen').hidden=false;$('publicGuide').hidden=false;$('battleScreen').hidden=true;frameApi?.activate?.('main');localize();$('startBtn').focus();
+  function home(){stop();closeLeave({resume:false,focus:false});setResultOpen(false);screen='main';document.body.dataset.screen='main';document.documentElement.classList.remove('pw-active');$('mainScreen').hidden=false;$('publicGuide').hidden=false;$('battleScreen').hidden=true;frameApi?.activate?.('main');localize();$('startBtn').focus();
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
       if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }

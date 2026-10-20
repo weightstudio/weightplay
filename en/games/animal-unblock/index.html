@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
   <head>
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <base href="/games/animal-unblock/" />
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/en/games/animal-unblock/" />
@@ -29,19 +29,19 @@
     <meta name="robots" content="index,follow" />
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-version" content="v25" />
-    <meta name="weightplay-interface-version" content="7" />
+    <meta name="weightplay-interface-version" content="9" />
     <title>Unblock Trail | WeightPlay</title>
-    <link
-      rel="stylesheet"
-      href="../../src/stage-selector-standard.css"
-      data-wp-stage-standard
-    />
-    <link rel="stylesheet" href="style.css?v=20260912-unblock-validator-contract-v24" />
+    <script src="/src/shared-interface-bootstrap.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-shared-interface="7"></script>
+    <link rel="stylesheet" href="style.css?v=20261021-unblock-i9-playfield-v1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-    <link rel="stylesheet" href="result-v4.css" />
-    <link rel="stylesheet" href="../../src/game-ui-theme.css">
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-    <link rel="stylesheet" href="frame-content.css?v=20260912-unblock-validator-contract-v24">
+    <link rel="stylesheet" href="result-v4.css?v=20261021-unblock-i9-result-v1" />
+    <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20261017-shared-dark-loader1">
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2">
+    <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261017-shared-play-spacing1">
+    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20261018-shared-result-hidden-fix1">
+    <link rel="stylesheet" href="frame-content.css?v=20261021-unblock-i9-playfield-v1">
+    <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261021-i9-logical-result-readability1">
   <meta name="description" content="Free the green bamboo block with the gold arrow through the gate in 30 authored sliding puzzles across three chapters." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -81,10 +81,8 @@
   }
 }
     </script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-  <body data-wp-game-id="animal-unblock" data-wp-game-version="v25" data-wp-interface-version="7" data-wp-combined-sound="true">
+  </head>
+  <body data-wp-game-id="animal-unblock" data-wp-game-version="v25" data-wp-interface-version="9" data-wp-combined-sound="true" data-wp-game-owned-guide="true">
     <div id="gameFrame" data-wp-frame-root>
     <main id="main" class="screen main main-screen" data-screen="main">
       <header>
@@ -108,30 +106,12 @@
           </button></div>
       </section>
     </main>
-    <main
-      id="stage"
-      class="screen canvas stage-canvas"
-      data-wp-standard-stage-screen
-      data-wp-logical-stage-canvas
-      data-wp-canvas-max-width="920"
-      data-wp-stage-landscape-width="760"
-      data-wp-stage-landscape-height="334"
-      style="--wp-stage-art: url('../../assets/interface7-redrawn/animal-unblock.webp')"
-      hidden
-    >
+    <main id="stage" class="screen canvas stage-canvas" hidden>
       <header>
         <button data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
         <h2 data-t="choose" data-wp-frame-title hidden></h2>
       </header>
-      <section
-        id="stageGrid"
-        class="stage-rail"
-        data-wp-stage-rail
-        data-wp-stage-recommendation="last"
-        data-t-aria="stageList"
-        aria-label="Trail list"
-      ></section>
-      <div data-wp-frame-nav><span id="progress"></span></div>
+      <section id="stageWorkspace"><div id="stageInfo" hidden><span id="progress" role="status" aria-live="polite"></span></div><div id="stageGrid" class="stage-rail" data-wp-stage-rail aria-label="Trail list"></div></section>
     </main>
     <main id="battle" class="screen canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
       <header>
@@ -139,7 +119,7 @@
         <strong data-wp-frame-title hidden></strong>
       </header>
       <section class="battle" id="battleLive">
-        <div id="battleInfo" data-wp-frame-info>
+        <div id="battleInfo" data-wp-frame-info hidden>
           <div><strong id="trailName"></strong></div>
           <div><strong id="moveCount"></strong></div>
         </div>
@@ -155,7 +135,7 @@
         </div>
         <p id="status"></p>
       </section>
-    <dialog id="result">
+    <dialog id="result" class="result-card" data-wp-frame-result-card>
       <img
         class="result-character"
         src="../../assets/animal-unblock-panda-block-v22.webp"
@@ -202,23 +182,22 @@
       <div class="game-info-section"><h3>Developer Design Note</h3><p>The drag direction, grid snapping, collision test, and block artwork use the same cell geometry on touch, mouse, and keyboard input. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
       <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>There is no timer, account, purchase, or public score. Unlocks and local best move counts stay in this browser. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Can blocks rotate?</dt><dd>No, each block keeps its original orientation.</dd></div><div><dt>Why did a drag stop?</dt><dd>The next cell was occupied or outside the board.</dd></div><div><dt>Which block must exit?</dt><dd>The green bamboo block marked with a gold arrow.</dd></div><div><dt>Are all thirty trails solvable?</dt><dd>Yes, each authored layout has a verified solution.</dd></div><div><dt>Which controls and screen sizes are supported?</dt><dd>The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports.</dd></div><div><dt>Can progress move automatically to another device?</dt><dd>No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>More Related Games</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-one-line" href="/en/games/animal-one-line/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-one-line.webp" data-final-src="/assets/weightplay-logo.png" alt="One Line" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">One Line</strong><span>One Line is an original 30-stage grid puzzle starring Rainbow Hop Mimi.</span></span></a><a class="game-info-related-card" data-game-id="animal-2048" href="/en/games/animal-2048/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-2048.webp" data-final-src="/assets/weightplay-logo.png" alt="2048: Forest Evolution" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">2048: Forest Evolution</strong><span>Animal 2048 is a turn-based forest strategy puzzle hosted by Moon Cap Orla.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Related Games</h3><div class="game-info-related"><a class="game-info-related-card" href="/en/games/animal-rootvault-pins/"><img src="/assets/interface7-redrawn/animal-rootvault-pins.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Rootvault Pins</strong><span>Pull complete golden pins to route Taro, Moonwater, Emberlight, wards, keys, shadows, and a Star Core through 30 authored Rootvault chambers.</span></span></a><a class="game-info-related-card" href="/en/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line</strong><span>One Line is an original 30-stage grid puzzle starring Rainbow Hop Mimi.</span></span></a><a class="game-info-related-card" href="/en/games/animal-2048/"><img src="/assets/interface7-redrawn/animal-2048.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>2048: Forest Evolution</strong><span>Animal 2048 is a turn-based forest strategy puzzle hosted by Moon Cap Orla.</span></span></a></div></div>
     </div>
   </section>
-    <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+    <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script>
     <script src="/src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script src="levels.js"></script>
     <script src="locales.js?v=20260826-reviewed-guide-v16"></script>
     <script src="guide-copy.js?v=20260912-unblock-validator-contract-v24"></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-    <script src="frame.js?v=20260912-unblock-validator-contract-v24"></script>
-    <script src="game.js?v=20260912-unblock-validator-contract-v24"></script>
-    <script
-      src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
-      data-wp-stage-standard
-    ></script>
+    <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
+    <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-script></script>
+    <script src="stage-config.js?v=20261021-unblock-i9-playfield-v1"></script>
+    <script src="frame.js?v=20261021-unblock-i9-playfield-v1"></script>
+    <script src="game.js?v=20261021-unblock-v25-i9"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
 </body>
 </html>

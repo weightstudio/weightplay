@@ -1,59 +1,13 @@
+/* Game-owned Result action arrangement; the shared frame sizes the controls. */
 .result-actions {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
 
-.result-actions button {
-  min-width: 0;
-  min-height: 48px;
-  padding-inline: 12px;
-}
+.result-actions button { min-width: 0; }
 
 .result-actions button:disabled {
   cursor: not-allowed;
-  opacity: 0.48;
-}
-
-.result-target {
-  margin: 6px 0 14px;
-  font-weight: 750;
-}
-
-.result-next-preview {
-  margin: 6px 0 14px;
-  font-size: 0.92rem;
-  font-weight: 750;
-  line-height: 1.35;
-}
-
-@media (max-height: 500px) and (min-width: 681px) {
-  #result[open] {
-    inset: 8px 0 auto;
-    margin-inline: auto;
-    max-height: 318px;
-    padding: 14px 24px;
-  }
-
-  #result .result-character {
-    width: 72px;
-    height: 72px;
-    margin-bottom: 2px;
-  }
-
-  #result h2 {
-    margin: 4px 0;
-  }
-
-  #result p {
-    margin: 6px 0 10px;
-  }
-
-  #result .result-target {
-    margin: 4px 0 8px;
-  }
-
-  #result .result-next-preview {
-    margin: 4px 0 8px;
-  }
+  opacity: .48;
 }

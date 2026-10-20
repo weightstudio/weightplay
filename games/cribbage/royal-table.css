@@ -72,3 +72,9 @@ body.cribbage-royal-table .playing-card.is-selected {border-color:#ffe3a0;box-sh
 @media(min-width:700px){
  body[data-wp-card-game="cribbage"] .wp-standard-main-composition{--wp-main-landscape-poster-size:420px}
 }
+
+
+/* I9 shared Main progress treatment. */
+body[data-wp-card-game="cribbage"] .wp-standard-main-progress { background-color: transparent !important; border: none !important; color: #f8fafc !important; }
+body[data-wp-card-game="cribbage"] .wp-standard-main-progress > strong,
+body[data-wp-card-game="cribbage"] .wp-standard-main-progress > span { color: #f8fafc !important; }

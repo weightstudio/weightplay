@@ -53,9 +53,9 @@
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 34;
+  const GAME_VERSION = 35;
   let combatRules;
-  const INTERFACE_VERSION = 7;
+  const INTERFACE_VERSION = 9;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
   const localeKey = "weightPlayLocale";
@@ -82,10 +82,10 @@
     expeditionRail: $("expeditionRail"),
     stageConfigMount: $("stageConfigMount"),
     stageWorkspace: $("stageWorkspace"),
+    stageMapPage: $("stageMapPage"),
     showStageBtn: $("showStageBtn"),
     stageBackBtn: $("stageBackBtn"),
     stageTitle: $("stageTitle"),
-    stageSetupText: $("stageSetupText"),
     gamePanel: $("gamePanel"),
     backToStageBtn: $("backToStageBtn"),
     pauseBtn: $("pauseBtn"),
@@ -1391,12 +1391,8 @@
   let profile = createDefaultProfile();
   let selectedExpedition = 1;
   let browsedExpedition = 1;
-  const EXPEDITION_CARD_POOL_SIZE = 9;
-  let expeditionCardPool = [];
-  let expeditionWindowStart = 0;
-  let expeditionDrag = null;
-  let expeditionSettleFrame = 0;
-  let suppressExpeditionClick = false;
+  let stageSelector = null;
+  let activeStageTab = 'stages';
   let resultNextExpedition = 0;
   let resultMapIsPrimary = false;
   let lastTrackedObjectiveKey = "";
@@ -2130,6 +2126,7 @@
   }
 
   function selectStageTab(tabName, { focus = false } = {}) {
+    activeStageTab = tabName;
     nodes.stagePanel.querySelectorAll("[data-stage-tab]").forEach((button) => {
       const active = button.dataset.stageTab === tabName;
       button.classList.toggle("is-active", active);
@@ -2139,13 +2136,18 @@
       if (active && focus) button.focus({ preventScroll: true });
     });
     nodes.stagePanel.querySelectorAll("[data-stage-view]").forEach((view) => {
-      view.classList.toggle("is-active", view.dataset.stageView === tabName);
+      const active = view.dataset.stageView === tabName;
+      view.classList.toggle("is-active", active);
+      view.hidden = !active;
     });
     if (tabName === "stages") {
       requestAnimationFrame(() => {
         renderExpeditionStage(false);
         window.dispatchEvent(new Event("resize"));
       });
+    } else {
+      stageSelector?.cancel();
+      updateStageSummary();
     }
   }
 
@@ -2183,8 +2185,6 @@
     for (const candidate of ["main", "stage", "battle"]) {
       document.body.classList.toggle(`wp-shell-${candidate}-active`, candidate === screen);
     }
-    document.body.classList.toggle("wp-stage-select-active", screen === "stage");
-    document.documentElement.classList.toggle("wp-stage-select-active", screen === "stage");
     window.dispatchEvent(new CustomEvent("weightplay:shell-sync", { detail: { screen } }));
     window.dispatchEvent(new CustomEvent("weightplay:stage-sync", { detail: { screen } }));
     window.dispatchEvent(new CustomEvent("weightplay:battle-sync", { detail: { screen } }));
@@ -2197,7 +2197,7 @@
 }
 
   function showMain() {
-    cancelExpeditionStageMotion();
+    stageSelector?.cancel();
     clearEliteSpawnTimer();
     clearAmuletConfirmation();
     state.gameActive = false;
@@ -2205,7 +2205,7 @@
     setPauseModalActive(false, false);
     clearMovementInput();
     cancelAnimationFrame(state.gameLoopId);
-    document.body.classList.remove("relic-playing", "relic-stage-select");
+    document.body.classList.remove("relic-playing");
     document.body.classList.remove("relic-result");
     resultNextExpedition = 0;
     resultMapIsPrimary = false;
@@ -2223,177 +2223,55 @@
     restoreMainStartFocus();
   }
 
-  function expeditionWindowLimit() { return Math.max(0, expeditionDefs.length - EXPEDITION_CARD_POOL_SIZE); }
-  function desiredExpeditionWindow(index) { return Math.max(0, Math.min(expeditionWindowLimit(), index - Math.floor(EXPEDITION_CARD_POOL_SIZE / 2))); }
-  function expeditionCardCopy(expedition) {
-    const currentLocale = getLocale();
-    const name = currentLocale === "zh-Hant" ? expedition.zh : currentLocale === "es" ? expedition.es : currentLocale === "ar" ? expedition.ar : expedition.en;
-    const checkpoint = expedition.checkpoint
-      ? (currentLocale === "zh-Hant" ? "守護者" : currentLocale === "es" ? "Guardián" : currentLocale === "ar" ? "حارس" : "Guardian")
-      : (currentLocale === "zh-Hant" ? `區域 ${expedition.region}` : currentLocale === "es" ? `Región ${expedition.region}` : currentLocale === "ar" ? `المنطقة ${expedition.region}` : `Region ${expedition.region}`);
-    const label = currentLocale === "zh-Hant" ? `遠征 ${expedition.id}` : currentLocale === "es" ? `Expedición ${expedition.id}` : currentLocale === "ar" ? `الرحلة ${expedition.id}` : `Expedition ${expedition.id}`;
-    return { name, checkpoint, label };
+  function updateStageSummary() {
+    const summary = document.getElementById('stageSummary');
+    if (!summary) return;
+    const expedition = expeditionDefs[Math.max(0, Math.min(expeditionDefs.length - 1, browsedExpedition - 1))];
+    summary.textContent = `${t('expeditionGoal', { level: expedition.level })} · ${browsedExpedition}/${EXPEDITION_COUNT}`;
   }
-  function bindExpeditionCard(card, index) {
-    const expedition = expeditionDefs[index];
-    if (!expedition) { card.hidden = true; return; }
-    const locked = expedition.id > profile.unlockedExpedition;
-    const copy = expeditionCardCopy(expedition);
-    const current = expedition.id === browsedExpedition;
-    card.hidden = false;
-    card.className = `expedition-card stage-card${expedition.id === selectedExpedition ? " is-selected" : ""}${current ? " is-centered" : ""}${locked ? " is-locked" : ""}${expedition.checkpoint ? " is-checkpoint" : ""}`;
-    card.dataset.expedition = String(expedition.id);
-    card.dataset.stageIndex = String(index);
-    card.tabIndex = current ? 0 : -1;
-    card.setAttribute("aria-posinset", String(index + 1));
-    card.setAttribute("aria-setsize", String(expeditionDefs.length));
-    card.setAttribute("aria-disabled", String(locked));
-    if (current) card.setAttribute("aria-current", "true"); else card.removeAttribute("aria-current");
-    card.setAttribute("aria-label", `${copy.label}. ${copy.name}. ${locked ? t("expeditionLocked", { region: expedition.id - 1 }) : t("expeditionGoal", { level: expedition.level })}`);
-    card.innerHTML = `<span>${copy.label} · ${copy.checkpoint}</span><strong>${copy.name}</strong><small>${locked ? t("expeditionLocked", { region: expedition.id - 1 }) : t("expeditionGoal", { level: expedition.level })}</small>`;
-  }
-  function buildExpeditionPool() {
-    nodes.expeditionRail.innerHTML = "";
-    expeditionWindowStart = desiredExpeditionWindow(browsedExpedition - 1);
-    expeditionCardPool = Array.from({ length: Math.min(EXPEDITION_CARD_POOL_SIZE, expeditionDefs.length) }, (_, offset) => {
-      const card = document.createElement("button");
-      card.type = "button";
-      card.dataset.wpPoolIdentity = `relic-pool-${offset}`;
-      bindExpeditionCard(card, expeditionWindowStart + offset);
-      card.addEventListener("click", (event) => {
-        if (suppressExpeditionClick) return;
-        const id = Number(card.dataset.expedition);
-        browsedExpedition = id;
-        syncExpeditionCards();
-        updateExpeditionSetup();
-        if (card.getAttribute("aria-disabled") === "true") return;
-        selectedExpedition = id;
-        window.WeightPlayAudio?.play("ui.click");
-        startRun(event.detail === 0 ? "keyboard" : "pointer");
-      });
-      nodes.expeditionRail.append(card);
-      return card;
-    });
-    nodes.expeditionRail.dataset.wpStageVirtualized = "bounded-recycle";
-    nodes.expeditionRail.dataset.wpStagePoolSize = String(expeditionCardPool.length);
-    nodes.expeditionRail.dataset.wpStageTotal = String(expeditionDefs.length);
-    nodes.expeditionRail.dataset.wpStageRecycleCount = "0";
-  }
-  function moveExpeditionWindow(target) {
-    target = Math.max(0, Math.min(expeditionWindowLimit(), target));
-    let recycled = 0;
-    while (expeditionWindowStart < target) {
-      const card = nodes.expeditionRail.firstElementChild;
-      expeditionWindowStart += 1;
-      nodes.expeditionRail.append(card);
-      bindExpeditionCard(card, expeditionWindowStart + expeditionCardPool.length - 1);
-      recycled += 1;
-    }
-    while (expeditionWindowStart > target) {
-      const card = nodes.expeditionRail.lastElementChild;
-      expeditionWindowStart -= 1;
-      nodes.expeditionRail.prepend(card);
-      bindExpeditionCard(card, expeditionWindowStart);
-      recycled += 1;
-    }
-    expeditionCardPool = [...nodes.expeditionRail.children];
-    nodes.expeditionRail.dataset.wpStageWindowStart = String(expeditionWindowStart);
-    nodes.expeditionRail.dataset.wpStageWindowEnd = String(expeditionWindowStart + expeditionCardPool.length - 1);
-    if (recycled) nodes.expeditionRail.dataset.wpStageRecycleCount = String(Number(nodes.expeditionRail.dataset.wpStageRecycleCount || 0) + recycled);
-  }
-  function updateExpeditionSetup() {
-    const expedition = expeditionDefs[browsedExpedition - 1];
-    nodes.stageSetupText.textContent = browsedExpedition > profile.unlockedExpedition ? t("expeditionLocked", { region: browsedExpedition - 1 }) : t("expeditionGoal", { level: expedition.level });
-  }
-  function syncExpeditionCards() { expeditionCardPool.forEach((card) => bindExpeditionCard(card, Number(card.dataset.stageIndex))); }
-  function syncCenteredExpedition() {
-    if (nodes.stagePanel.classList.contains("hidden") || expeditionDrag || expeditionSettleFrame) return;
-    const cards = expeditionCardPool.filter((card) => !card.hidden);
-    const railRect = nodes.expeditionRail.getBoundingClientRect();
-    if (!cards.length || railRect.width <= 0) return;
-    const center = railRect.left + railRect.width / 2;
-    const centered = cards.reduce((best, card) => {
-      const rect = card.getBoundingClientRect(), distance = Math.abs(rect.left + rect.width / 2 - center);
-      return !best || distance < best.distance ? { card, distance } : best;
-    }, null)?.card;
-    if (!centered) return;
-    browsedExpedition = Number(centered.dataset.expedition) || selectedExpedition;
-    syncExpeditionCards();
-    updateExpeditionSetup();
-  }
+
   function renderExpeditionStage(focusSelected = false) {
     selectedExpedition = Math.max(1, Math.min(profile.unlockedExpedition || 1, selectedExpedition));
     browsedExpedition = selectedExpedition;
-    if (expeditionCardPool.length !== Math.min(EXPEDITION_CARD_POOL_SIZE, expeditionDefs.length) || !expeditionCardPool.every((card) => card.isConnected)) buildExpeditionPool();
-    moveExpeditionWindow(desiredExpeditionWindow(browsedExpedition - 1));
-    syncExpeditionCards();
-    nodes.stageTitle.textContent = t("title");
-    updateExpeditionSetup();
-    requestAnimationFrame(() => {
-      const card = nodes.expeditionRail.querySelector("[aria-current='true']");
-      card?.scrollIntoView({ inline: "center", block: "nearest" });
-      if (focusSelected) card?.focus({ preventScroll: true });
-    });
+    nodes.stageTitle.textContent = t('title');
+    updateStageSummary();
+    stageSelector?.refresh(selectedExpedition - 1);
+    if (focusSelected) requestAnimationFrame(() => nodes.expeditionRail.querySelector('[aria-current="true"]')?.focus({ preventScroll: true }));
   }
-  function expeditionPitch() {
-    const cards = expeditionCardPool.filter((card) => !card.hidden);
-    return cards.length > 1 ? Math.abs(cards[1].offsetLeft - cards[0].offsetLeft) || 282 : (cards[0]?.offsetWidth || 264) + 18;
-  }
-  function positionExpeditionLogical(logical, focus = false) {
-    logical = Math.max(0, Math.min(expeditionDefs.length - 1, logical));
-    const anchor = Math.round(logical);
-    browsedExpedition = anchor + 1;
-    moveExpeditionWindow(desiredExpeditionWindow(anchor));
-    syncExpeditionCards();
-    updateExpeditionSetup();
-    const card = nodes.expeditionRail.querySelector(`[data-expedition="${browsedExpedition}"]`);
-    const rtl = document.documentElement.dir === "rtl" ? -1 : 1;
-    // The shared Stage stylesheet keeps native rails smooth for ordinary
-    // selectors. This V6 rail is game-owned and positions a recycled card on
-    // every key/drag frame; leaving smooth scrolling enabled lets an older
-    // animation overwrite the newer logical target (for example 1 -> 10).
-    const previousBehavior = nodes.expeditionRail.style.getPropertyValue("scroll-behavior");
-    const previousPriority = nodes.expeditionRail.style.getPropertyPriority("scroll-behavior");
-    nodes.expeditionRail.style.setProperty("scroll-behavior", "auto", "important");
-    try {
-      nodes.expeditionRail.scrollTo({ left: card.offsetLeft - nodes.expeditionRail.offsetLeft - (nodes.expeditionRail.clientWidth - card.offsetWidth) / 2, behavior: "auto" });
-      nodes.expeditionRail.scrollLeft += (logical - anchor) * expeditionPitch() * rtl;
-      nodes.expeditionRail.dataset.wpStageDragLogical = logical.toFixed(4);
-      if (focus) card.focus({ preventScroll: true });
-    } finally {
-      if (previousBehavior) nodes.expeditionRail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
-      else nodes.expeditionRail.style.removeProperty("scroll-behavior");
+
+  function mountRelicStageSelector() {
+    if (stageSelector) return stageSelector;
+    if (!window.WeightPlayPlayUI?.mountStage || !window.AnimalRelicHuntersStageConfig) {
+      throw new Error('RELIC_HUNTERS_SHARED_STAGE_REQUIRED');
     }
-    return logical;
-  }
-  function cancelExpeditionStageMotion() {
-    if (expeditionSettleFrame) cancelAnimationFrame(expeditionSettleFrame);
-    expeditionSettleFrame = 0;
-    expeditionDrag = null;
-    suppressExpeditionClick = false;
-    nodes.expeditionRail.style.removeProperty("scroll-snap-type");
-    delete nodes.expeditionRail.dataset.wpStageSettling;
-    delete nodes.expeditionRail.dataset.wpStageDragLogical;
-  }
-  function finishExpeditionDrag(event) {
-    if (event.pointerId !== expeditionDrag?.id) return;
-    const drag = expeditionDrag;
-    expeditionDrag = null;
-    if (nodes.expeditionRail.hasPointerCapture?.(event.pointerId)) nodes.expeditionRail.releasePointerCapture(event.pointerId);
-    if (!drag.moved) { nodes.expeditionRail.style.removeProperty("scroll-snap-type"); return; }
-    event.preventDefault();
-    const from = drag.logical, target = Math.round(from), started = performance.now();
-    nodes.expeditionRail.dataset.wpStageSettling = "true";
-    const settle = (now) => {
-      const progress = Math.min(1, (now - started) / 340), eased = progress * progress * (3 - 2 * progress);
-      positionExpeditionLogical(from + (target - from) * eased);
-      if (progress < 1) expeditionSettleFrame = requestAnimationFrame(settle);
-      else { expeditionSettleFrame = 0; positionExpeditionLogical(target); nodes.expeditionRail.style.removeProperty("scroll-snap-type"); delete nodes.expeditionRail.dataset.wpStageSettling; }
-    };
-    expeditionSettleFrame = requestAnimationFrame(settle);
-    suppressExpeditionClick = true;
-    setTimeout(() => { suppressExpeditionClick = false; }, 0);
-    event.stopImmediatePropagation();
+    stageSelector = window.WeightPlayPlayUI.mountStage({
+      page: document.getElementById('stageMapPage'),
+      rail: nodes.expeditionRail,
+      config: window.AnimalRelicHuntersStageConfig({
+        expeditions: expeditionDefs,
+        getProgress: () => ({
+          unlockedExpedition: profile.unlockedExpedition,
+          bestExpedition: profile.bestExpedition,
+        }),
+        text: t,
+        getLocale,
+      }),
+      selected: selectedExpedition - 1,
+      onSelect(index) {
+        browsedExpedition = index + 1;
+        updateStageSummary();
+      },
+      onStart(index) {
+        selectedExpedition = index + 1;
+        browsedExpedition = selectedExpedition;
+        window.WeightPlayAudio?.play('ui.click');
+        trackGrowthEvent('stage_select', { input_type: 'stage-card', expedition: selectedExpedition });
+        startRun('stage');
+      },
+      isActive: () => document.body.dataset.screen === 'stage' && activeStageTab === 'stages',
+    });
+    updateStageSummary();
+    return stageSelector;
   }
 
   function showStage() {
@@ -2406,7 +2284,6 @@
     document.body.classList.remove("wp-logical-battle-active");
     document.body.classList.remove("relic-playing");
     document.body.classList.remove("relic-result");
-    document.body.classList.add("relic-stage-select");
     resultNextExpedition = 0;
     resultMapIsPrimary = false;
     setResultModalActive(false);
@@ -2800,7 +2677,7 @@
 
   // Combat loop updates
   function startRun(inputType = "programmatic") {
-    cancelExpeditionStageMotion();
+    stageSelector?.cancel();
     clearEliteSpawnTimer();
     state.gameActive = false;
     setEquipmentOpen(false, false);
@@ -2854,7 +2731,6 @@
     nodes.stagePanel.classList.add("hidden");
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     nodes.gamePanel.classList.remove("hidden");
-    document.body.classList.remove("relic-stage-select");
     document.body.classList.remove("relic-result");
     document.body.classList.add("relic-playing");
     setScreenOwner("battle");
@@ -3579,7 +3455,6 @@
 
     nodes.gamePanel.classList.remove("hidden");
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
-    document.body.classList.remove("relic-stage-select");
     document.body.classList.add("relic-playing", "relic-result");
 
     nodes.resultTitle.textContent = won ? t("runComplete") : t("runFailed");
@@ -4937,6 +4812,7 @@
     translateUI();
     setupInputs();
     setScreenOwner("main");
+    mountRelicStageSelector();
 
     // Event buttons
     nodes.showStageBtn.addEventListener("click", () => {
@@ -4946,54 +4822,6 @@
     nodes.showStageBtn.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
-    nodes.expeditionRail.dataset.wpStageVirtualDrag = "true";
-    nodes.expeditionRail.dataset.wpStageCenterObserver = "manual";
-    addEventListener("keydown", (event) => {
-      const card = event.target.closest?.("#expeditionRail .expedition-card");
-      if (!card) return;
-      if ((event.key === "Enter" || event.key === " ") && (event.repeat || card.getAttribute("aria-disabled") === "true")) { event.preventDefault(); event.stopImmediatePropagation(); return; }
-      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      const current = Number(card.dataset.stageIndex), rtl = document.documentElement.dir === "rtl";
-      const step = event.key === "ArrowRight" ? (rtl ? -1 : 1) : (rtl ? 1 : -1);
-      const next = event.key === "Home" ? 0 : event.key === "End" ? expeditionDefs.length - 1 : Math.max(0, Math.min(expeditionDefs.length - 1, current + step));
-      positionExpeditionLogical(next, true);
-    }, true);
-    addEventListener("pointerdown", (event) => {
-      if (!event.target.closest?.("#expeditionRail") || event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
-      if (expeditionSettleFrame) cancelAnimationFrame(expeditionSettleFrame);
-      expeditionSettleFrame = 0;
-      expeditionDrag = { id: event.pointerId, startX: event.clientX, lastX: event.clientX, logical: browsedExpedition - 1, moved: false };
-      nodes.expeditionRail.style.setProperty("scroll-snap-type", "none", "important");
-      event.stopImmediatePropagation();
-    }, true);
-    addEventListener("pointermove", (event) => {
-      if (event.pointerId !== expeditionDrag?.id) return;
-      const delta = event.clientX - expeditionDrag.lastX;
-      expeditionDrag.lastX = event.clientX;
-      if (!expeditionDrag.moved && Math.abs(event.clientX - expeditionDrag.startX) > 4) {
-        expeditionDrag.moved = true;
-        nodes.expeditionRail.setPointerCapture?.(event.pointerId);
-      }
-      if (expeditionDrag.moved) {
-        event.preventDefault();
-        const rtl = document.documentElement.dir === "rtl" ? -1 : 1;
-        expeditionDrag.logical = positionExpeditionLogical(expeditionDrag.logical - delta * rtl / expeditionPitch());
-      }
-      event.stopImmediatePropagation();
-    }, true);
-    addEventListener("pointerup", finishExpeditionDrag, true);
-    addEventListener("pointercancel", finishExpeditionDrag, true);
-    addEventListener("click", (event) => {
-      if (!suppressExpeditionClick || !event.target.closest?.("#expeditionRail")) return;
-      suppressExpeditionClick = false;
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    }, true);
-    nodes.expeditionRail.addEventListener("wonder:stage-snap", () => window.requestAnimationFrame(syncCenteredExpedition));
-    nodes.expeditionRail.addEventListener("scrollend", syncCenteredExpedition);
-
     nodes.stageBackBtn.addEventListener("click", () => {
       window.WeightPlayAudio?.play("ui.click");
       showMain();
@@ -5194,7 +5022,7 @@
       }
     });
 
-    if (new URLSearchParams(location.search).has("smoke")) {
+    if (window.__WP_TESTING__ === true) {
       window.__animalRelicHuntersSmoke = {
         weaponTrial(weapon = 'sword-rare') {
           startRun();

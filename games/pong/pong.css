@@ -41,6 +41,8 @@ html.pw-active,html.pw-active body{height:100%;overflow:hidden;overscroll-behavi
 .pong-realtime #resultPanel{grid-column:1;grid-row:2;height:100%;min-height:0;overflow:auto;padding:24px;display:flex;flex-direction:column;justify-content:center;text-align:center;align-items:center;gap:20px}
 .pong-realtime #resultPanel h2,.pong-realtime #resultPanel p{margin:0}
 .pong-realtime #resultTitle{font-size:32px}
+.pong-realtime #resultTitle:focus-visible{outline:3px solid #ffe29b;outline-offset:4px}
+.pong-realtime[data-wp-result-open='true'] .pw-canvas>.pw-hud{visibility:hidden;pointer-events:none}
 .pong-realtime #resultScore{font-size:56px;font-weight:850;color:#ffe098}
 .pong-realtime .pw-result-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%;max-width:480px}
 .pong-realtime .pw-leave-overlay{position:absolute;inset:0;z-index:300;display:grid;place-items:center;padding:20px;background:#020b16d9;backdrop-filter:blur(6px)}
