@@ -6,7 +6,7 @@ import {clearCount,rewardType} from './progression.mjs';
 const POSTER='/games/fusekeep/assets/poster.webp';
 
 /** Fusekeep supplies mission facts and save state; shared Play UI owns cards and gestures. */
-export function createFusekeepStageConfig({locale,save,text,formatTime,troopName}){
+export function createFusekeepStageConfig({locale,save,text,formatTime,troopName,isPracticeEnabled=()=>false}){
  const copy=COPY[locale]||COPY.en,dict=DICT[locale]||DICT.en;
  return {
   gameId:'fusekeep',
@@ -16,7 +16,7 @@ export function createFusekeepStageConfig({locale,save,text,formatTime,troopName
   stage(index){
    const stage=STAGES[index];
    if(!stage)throw new RangeError(`FUSEKEEP_STAGE_INDEX:${index}`);
-   const state=save(),locked=stage.id>state.unlocked,stars=Number(state.stars[index]||0);
+   const state=save(),locked=stage.id>state.unlocked&&!isPracticeEnabled(),stars=Number(state.stars[index]||0);
    const boss=stage.boss?dict.bosses[BOSSES.indexOf(stage.boss)]:'';
    const rule=stage.boss?text('bossRule'):copy.patterns[stage.pattern];
    const best=Number(state.best[index]||0);

@@ -27,7 +27,7 @@
       return;
     }
     const script = document.createElement('script');
-    script.src = '/src/game-entry-loader.js?v=20261019-entry-early-script-failure-v1';
+    script.src = '/src/game-entry-loader.js?v=20261020-single-loading-label1';
     script.dataset.wpGameEntryLoaderBootstrap = 'true';
     // This bootstrap has no dependency on the game modules. Let it execute
     // independently of their ordered dynamic-script queue so a slow or failed

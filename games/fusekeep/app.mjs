@@ -6,7 +6,8 @@ import {PROGRESSION_COPY} from './progression-copy.mjs';
 import {LOCALES,LABELS,DICT,translator} from './locales.mjs?v=8';
 import {COPY,ROUTES,interpolate} from './copy.mjs';
 import {cue,combatAudio,resetAudio} from './audio.mjs';
-import {createFusekeepStageConfig} from './stage-config.mjs?v=9';
+import {createFusekeepStageConfig} from './stage-config.mjs?v=10';
+import {LocalPractice} from '../../src/game-local-practice.mjs';
 const rootURL=new URL('../../',import.meta.url),assetURL=new URL('./assets/',import.meta.url);
 const preview=new URL(location.href).searchParams.get('preview')==='1';
 const previewURL=path=>{const url=new URL(path,rootURL);if(preview)url.searchParams.set('preview','1');return url.href;};
@@ -30,7 +31,8 @@ const padNodes=[],deckNodes=[],damageNodes=[];
 const formatTime=seconds=>`${Math.floor(seconds/60)}:${String(Math.floor(seconds%60)).padStart(2,'0')}`;
 const troopName=type=>d.troops[TYPES.indexOf(type)];
 const unitLabel=unit=>t('unitHint',{name:troopName(unit.type),rank:unit.rank});
-const stageConfig=createFusekeepStageConfig({locale,save:()=>saved,text:t,formatTime,troopName});
+let practiceEnabled=false,practiceRun=false;
+const stageConfig=createFusekeepStageConfig({locale,save:()=>saved,text:t,formatTime,troopName,isPracticeEnabled:()=>practiceEnabled});
 function feedback(key,values={}){
  if(key==='upgrade'){
   const level=battle?.upgrades||0;
@@ -159,7 +161,7 @@ stageController=window.WeightPlayPlayUI.mountStage({
  page:$('missionPane'),rail:$('stageRail'),config:stageConfig,selected:selectedStage,
  isActive:()=>scene==='stage'&&!$('missionPane').hidden,
  onSelect(index){selectedStage=index;},
- onStart(index){selectedStage=index;void startBattle(index+1);},
+ onStart(index){selectedStage=index;void startBattle(index+1,{practice:practiceEnabled});},
 });
 function cancelGesture(){
  const active=gesture;gesture=null;arena?.clearDrag();
@@ -183,7 +185,7 @@ function releaseArena(){
 }
 function disposeRun(){
  runEpoch++;clearTimeout(loadTimer);loadTimer=0;stopLoop();cancelGesture();releaseArena();resetAudio();
- battle=null;selected=-1;focused=-1;modal=null;settingsPaused=false;
+ battle=null;selected=-1;focused=-1;modal=null;settingsPaused=false;practiceRun=false;
  $('battleDialog').hidden=true;$('battleContent').inert=false;damageNodes.forEach(item=>{item.node.hidden=true;item.until=0;});
 }
 function toStage(){disposeRun();saved=store.refresh();refreshStage();setTab(false);activate('stage');}
@@ -247,18 +249,24 @@ async function restoreArena(){
  finally{if(epoch===runEpoch){clearTimeout(loadTimer);loadTimer=0;}}
 }
 function seed(){try{return crypto.getRandomValues(new Uint32Array(1))[0];}catch{return Date.now()>>>0;}}
-async function startBattle(id){
- if(disposed||!Number.isInteger(id)||id<1||id>saved.unlocked||id>STAGES.length)return;
+async function startBattle(id,{practice=false}={}){
+ if(disposed||!Number.isInteger(id)||id<1||id>STAGES.length)return;
+ if(practice){
+  if(!LocalPractice.enabled||!await LocalPractice.validate()||!LocalPractice.enabled)return;
+ }else if(id>saved.unlocked)return;
  if(draft.length!==5){setTab(true);text($('deckMessage'),t('deckMin'));return;}
  selectedStage=id-1;stageController.refresh(selectedStage);
- disposeRun();const stored=await save(current=>({...current,deck:[...draft]}));if(!stored.ok)return;draft=[...saved.deck];battle=new Battle(id,draft,seed(),saved.collection.levels);battle.pause(true);speed=1;feedbackText='';
+ disposeRun();
+ if(!practice){const stored=await save(current=>({...current,deck:[...draft]}));if(!stored.ok)return;}
+ draft=[...saved.deck];practiceRun=practice;
+ battle=new Battle(id,draft,seed(),saved.collection.levels);battle.pause(true);speed=1;feedbackText='';
  activate('battle');await restoreArena();
 }
 let resultPending=false;
 async function showResult(){
  if(!battle||modal==='result'||resultPending)return;
- resultPending=true;const completed=battle,won=completed.status==='won',id=completed.stage.id;let firstClear=false;
- if(won){
+ resultPending=true;const completed=battle,won=completed.status==='won',id=completed.stage.id,practiced=practiceRun;let firstClear=false;
+ if(won&&!practiced){
   const outcome=await store.transact(current=>{firstClear=clearCount(current.collection,id)===0;return {ok:true,save:settle(current,completed,store.actor)};});
   if(!outcome.ok){saved=store.refresh();completed.economySaveError=true;}
   else saved=outcome.save;
@@ -266,12 +274,12 @@ async function showResult(){
  resultPending=false;if(battle!==completed||disposed)return;
  cue(won?'win':'wrong');
  const replay=completed.economyReward;
- const currency=won?(completed.economySaveError?t('transactionUnavailable'):firstClear?t('firstClearCurrency'):replay?.replayGold?t('replayGoldResult',{n:replay.replayGold}):t('replayGoldCapped')):'';
- const reward=won&&completed.shardReward?`${t('reward',{name:troopName(completed.shardReward.type),n:completed.shardReward.amount})} · ${currency}`:currency;
+ const currency=practiced?'':won?(completed.economySaveError?t('transactionUnavailable'):firstClear?t('firstClearCurrency'):replay?.replayGold?t('replayGoldResult',{n:replay.replayGold}):t('replayGoldCapped')):'';
+ const reward=practiced?'':won&&completed.shardReward?`${t('reward',{name:troopName(completed.shardReward.type),n:completed.shardReward.amount})} · ${currency}`:currency;
  showModal('result',t(won?'victory':'defeat'),reward,[
   {label:t('campaign'),run:toStage},
-  {label:t('next'),run:()=>void startBattle(id+1),disabled:!won||id>=STAGES.length},
-  {label:t('retry'),run:()=>void startBattle(id)},
+  {label:t('next'),run:()=>void startBattle(id+1,{practice:practiced}),disabled:!won||id>=STAGES.length},
+  {label:t('retry'),run:()=>void startBattle(id,{practice:practiced})},
  ]);
  text($('dialogStats'),`${t('stars')}: ${completed.stars}/3 · ${t('wall')}: ${completed.hp}/${completed.maxHp} · ${t('time')}: ${formatTime(completed.time)}`);
 }
@@ -445,7 +453,7 @@ listen(window,'pageshow',event=>{
 });
 // Observability for the next AI; no cheat setters, release flags, or test acceptance.
 window.FusekeepDiagnostics=Object.freeze({
- snapshot:()=>({scene,version:9,interfaceVersion:9,locale,modal,speed,loopActive:Boolean(raf),selected,selectedStage,
+ snapshot:()=>({scene,version:10,interfaceVersion:9,locale,modal,speed,loopActive:Boolean(raf),selected,selectedStage,
   battle:battle?{stage:battle.stage.id,wave:battle.wave,status:battle.status,hp:battle.hp,gold:battle.gold,
    board:battle.board.map(unit=>unit?{id:unit.id,type:unit.type,rank:unit.rank}:null),enemies:battle.enemies.length,
    pending:battle.pending.length,shots:battle.shots.length,time:battle.time}:null,
@@ -454,3 +462,9 @@ window.FusekeepDiagnostics=Object.freeze({
 });
 renderProgress();renderDeck();setTab(false);activate('main');
 $('bootError').hidden=true;document.documentElement.dataset.fusekeepReady='true';
+void LocalPractice.register({
+ gameId:'fusekeep',
+ stageIds:STAGES.map(stage=>stage.id),
+ enable(enabled){practiceEnabled=enabled===true;if(!practiceEnabled)selectedStage=Math.min(selectedStage,saved.unlocked-1);refreshStage();},
+ startStage(id,options){return startBattle(Number(id),options);},
+});

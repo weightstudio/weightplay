@@ -61,3 +61,10 @@
 .game-dialog-actions button{min-height:44px;min-width:0;white-space:normal}
 .game-dialog-actions button:disabled{opacity:.52;cursor:not-allowed;filter:grayscale(.3)}
 @media(max-width:420px){.game-dialog-actions{grid-template-columns:1fr}#mainContent [data-t="gachaOpen"]{width:100%}}
+
+/* I9 maintenance v10: keep focus and transient feedback out of neighboring controls. */
+#mainContent #start:focus-visible{outline-offset:-2px}
+#battleContent{grid-template-rows:44px minmax(0,1fr) 80px 24px}
+#battleContent #commands{grid-template-rows:44px 36px}
+#battleContent #commands #feedback{position:static;grid-row:2;inset:auto;height:36px;max-height:36px;margin:0;padding:6px 8px;overflow:hidden}
+#battleContent[data-wide=true] #commands{grid-template-rows:auto 36px}

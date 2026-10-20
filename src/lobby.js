@@ -3378,7 +3378,7 @@ renderLobby();
 loadGameStats();
 if (!isKidsLobby && !document.querySelector('[data-wp-game-entry-loader-bootstrap="true"]')) {
   const entryLoaderScript = document.createElement("script");
-  entryLoaderScript.src = "/src/game-entry-loader.js?v=20261018-entry-readiness-bridge2";
+  entryLoaderScript.src = "/src/game-entry-loader.js?v=20261020-single-loading-label1";
   entryLoaderScript.dataset.wpGameEntryLoaderBootstrap = "true";
   document.head.append(entryLoaderScript);
 }

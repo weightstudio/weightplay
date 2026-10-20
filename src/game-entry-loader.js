@@ -2,7 +2,7 @@
 (() => {
   const path = window.location.pathname.replace(/\/+$/, "");
   const GAME_ID = path.match(/\/games\/([a-z0-9-]+)(?:\/index\.html)?$/)?.[1] || "";
-  const STYLE_URL = "/src/game-entry-loader.css?v=20261017-shared-dark-loader1";
+  const STYLE_URL = "/src/game-entry-loader.css?v=20261020-single-loading-label1";
   const ROOT_CLASS = "wp-game-entry-loader";
   const gamePath = Boolean(GAME_ID);
   let selectedGameId = GAME_ID;
@@ -62,7 +62,13 @@
     const status = document.createElement("span");
     status.className = "wp-game-entry-loader-status";
     status.setAttribute("aria-live", "polite");
-    status.textContent = messageText || (mode === "error" ? errorCopy : loadingText);
+    const setStatus = (message = "") => {
+      const text = String(message).trim();
+      const normalize = (value) => value.trim().replace(/\s+/g, " ");
+      status.textContent = normalize(text) === normalize(title.textContent) ? "" : text;
+      status.hidden = !status.textContent;
+    };
+    setStatus(messageText ?? (mode === "error" ? errorCopy : ""));
     const track = document.createElement("span");
     track.className = "wp-game-entry-loader-track";
     track.setAttribute("role", "progressbar");
@@ -101,7 +107,7 @@
     };
     if (document.body) append();
     else document.addEventListener("DOMContentLoaded", append, { once: true, signal: appendController.signal });
-    return { overlay, status, track, actions, button, appendController };
+    return { overlay, title, status, setStatus, track, actions, button, appendController };
   }
 
   const goBack = () => {
@@ -145,14 +151,15 @@
       if (!ui) return;
       ui.overlay.dataset.state = "loading";
       ui.overlay.setAttribute("aria-busy", "true");
-      ui.status.textContent = copy()[0];
+      ui.title.textContent = copy()[0];
+      ui.setStatus();
       ui.track.removeAttribute("aria-valuenow");
       ui.track.setAttribute("aria-valuetext", copy()[0]);
       if (state.total) {
         ui.track.setAttribute("aria-valuemax", String(state.total));
         ui.track.setAttribute("aria-valuenow", "0");
         ui.track.style.setProperty("--wp-entry-progress", "0%");
-        ui.status.textContent = copy()[7].replace("{loaded}", "0").replace("{total}", String(state.total));
+        ui.setStatus(copy()[7].replace("{loaded}", "0").replace("{total}", String(state.total)));
       } else {
         ui.track.removeAttribute("aria-valuemax");
         ui.track.style.removeProperty("--wp-entry-progress");
@@ -168,7 +175,7 @@
       ui.track.setAttribute("aria-valuenow", String(state.loaded));
       ui.track.setAttribute("aria-valuetext", copy()[7].replace("{loaded}", String(state.loaded)).replace("{total}", String(state.total)));
       ui.track.style.setProperty("--wp-entry-progress", `${state.loaded / state.total * 100}%`);
-      ui.status.textContent = copy()[7].replace("{loaded}", String(state.loaded)).replace("{total}", String(state.total));
+      ui.setStatus(copy()[7].replace("{loaded}", String(state.loaded)).replace("{total}", String(state.total)));
     };
     const fail = (message, retry) => {
       if (state.ready || state.failed) return;
@@ -323,7 +330,9 @@
     if (overlayState) {
       overlayState.overlay.dataset.state = "loading";
       overlayState.overlay.setAttribute("aria-busy", "true");
-      overlayState.status.textContent = copy()[6];
+      overlayState.title.textContent = copy()[6];
+      overlayState.setStatus();
+      overlayState.status.setAttribute("aria-live", "polite");
       overlayState.actions.replaceChildren();
       overlayState.button(copy()[5], () => reset({ restoreFocus: true }));
     } else {

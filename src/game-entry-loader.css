@@ -53,6 +53,10 @@
   overflow-wrap: anywhere;
 }
 
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
 .wp-game-entry-loader-track {
   position: relative;
   display: block;
