@@ -1,0 +1,18 @@
+/* Game-owned animal sprite details; cards and screen geometry stay shared. */
+.scout-art { background-image: url("assets/animal-silhouette-scout-animal-atlas.png"); background-repeat: no-repeat; background-size: 300% 200%; color: transparent; text-indent: -9999px; }
+#silhouette.scout-art { width: min(100%, 420px); height: 100%; max-height: 220px; margin: 4px auto 0; border-radius: 14px; filter: grayscale(1) contrast(1.45); }
+#silhouette.scout-art-fox, .choice-emoji.scout-art-fox { background-position: 0 100%; }
+#silhouette.scout-art-owl, .choice-emoji.scout-art-owl { background-position: 50% 100%; }
+#silhouette.scout-art-hare { background-position: 50% 0; }
+#silhouette.scout-art-rabbit, .choice-emoji.scout-art-rabbit { background-position: 50% 0; }
+#silhouette.scout-art-deer, .choice-emoji.scout-art-deer { background-position: 0 0; }
+.scout-target-art { width: 100%; height: min(100%, 170px); border-radius: 12px; background-color: #07192380; filter: grayscale(1) contrast(1.45); }
+.choice-emoji.scout-art-fox, .choice-emoji.scout-art-rabbit, .choice-emoji.scout-art-owl, .choice-emoji.scout-art-deer { width: 100%; height: 38px; font-size: 0; }
+@media (max-width: 680px) {
+  #silhouette.scout-art { max-height: 150px; }
+  .scout-target-art { height: 110px; }
+}
+@media (orientation: landscape) and (max-height: 560px) {
+  #silhouette.scout-art { max-height: 120px; }
+  .scout-target-art { max-height: 105px; }
+}
