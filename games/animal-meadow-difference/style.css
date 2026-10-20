@@ -24,11 +24,11 @@ button { cursor: pointer; }
 .round-content { display: grid; align-content: start; justify-items: center; gap: 12px; width: min(100%, 920px); min-width: 0; }
 .instruction { max-width: 38rem; margin: 0 auto; color: var(--wp-ui-muted, #64777d); text-align: center; line-height: 1.5; }
 .compare-layout { display: grid; align-items: center; gap: 9px; width: 100%; min-width: 0; }
-.compare-panel { min-width: 0; padding: 12px; border: 1px solid var(--meadow-line); border-radius: 16px; background: #fffdf7; color: var(--meadow-ink); box-shadow: 0 8px 20px rgba(0, 0, 0, .18); }
+.compare-panel { width: min(100%, 280px, calc(100svh - 210px)); min-width: 0; justify-self: center; padding: 12px; border: 1px solid var(--meadow-line); border-radius: 16px; background: #fffdf7; color: var(--meadow-ink); box-shadow: 0 8px 20px rgba(0, 0, 0, .18); }
 .answer-panel { border-color: #b8d0ad; background: #f8fcf1; }
 .panel-label { margin-bottom: 10px; color: var(--meadow-leaf); font-size: .84rem; font-weight: 800; text-align: center; }
 .difference-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
-.tile { display: grid; place-items: center; min-width: 0; min-height: 58px; aspect-ratio: 1; padding: 0; border: 1px solid rgba(61, 105, 79, .2); border-radius: 13px; background: linear-gradient(145deg, #eef6e5, #d9eaca); color: var(--meadow-leaf); font-size: clamp(1.4rem, 6vw, 2.2rem); box-shadow: inset 0 -3px 0 rgba(61, 105, 79, .09); }
+.tile { display: grid; place-items: center; min-width: 0; min-height: 44px; aspect-ratio: 1; padding: 0; border: 1px solid rgba(61, 105, 79, .2); border-radius: 13px; background: linear-gradient(145deg, #eef6e5, #d9eaca); color: var(--meadow-leaf); font-size: clamp(1.4rem, 6vw, 2.2rem); box-shadow: inset 0 -3px 0 rgba(61, 105, 79, .09); }
 .tile span.has-sprite { display: block; width: 70%; height: 70%; background-image: url("assets/animal-meadow-difference-object-atlas.png"); background-position: var(--sprite-position) center; background-repeat: no-repeat; background-size: 800% 100%; font-size: 0; }
 .tile:not(:disabled):hover { background: #fff5cf; border-color: #e4bf63; transform: translateY(-1px); }
 .tile:disabled { cursor: default; }
@@ -39,7 +39,7 @@ button { cursor: pointer; }
 .feedback.is-wrong { color: #ffc0ad; }
 
 .result-screen { width: min(100%, 920px); margin: 0 auto; padding: 12px; }
-.result-card { display: grid; justify-items: center; gap: 12px; padding: 24px; border: 1px solid var(--meadow-line); border-radius: 16px; background: #fffdf7; color: var(--meadow-ink); text-align: center; }
+.result-card { display: grid; justify-items: center; gap: 12px; width: min(100%, 440px); padding: 24px; border: 1px solid var(--meadow-line); border-radius: 16px; background: #fffdf7; color: var(--meadow-ink); text-align: center; }
 .result-card > * { margin: 0; }
 .result-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--meadow-sun); color: white; font-size: 2.3rem; }
 .result-card h2 { margin: 0; }
@@ -47,6 +47,36 @@ button { cursor: pointer; }
 .best-line { color: var(--meadow-leaf); }
 .guide-art { display: block; width: min(100%, 240px); height: auto; object-fit: contain; }
 .result-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+body.wp-logical-battle-active #battleView .result-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; max-width: 360px; }
+body.wp-logical-battle-active #battleView .result-actions [data-wp-frame-action] { width: 100% !important; min-width: 0 !important; padding-inline: 8px !important; }
+
+body.wp-logical-battle-active #battleView .result-screen:not([hidden]) {
+  position: absolute !important;
+  inset: 0 !important;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
+  margin: 0;
+  padding: 12px;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  place-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+body.wp-logical-battle-active #battleView .result-screen:not([hidden]) > .result-card {
+  max-height: 100%;
+  overflow-y: auto;
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  #battleView .result-card { gap: 8px; padding: 14px; }
+  #battleView .guide-art { display: none; }
+  #battleView .result-icon { width: 44px; height: 44px; font-size: 1.7rem; }
+  #battleView .result-actions [data-wp-frame-action] { height: 44px !important; min-height: 44px !important; }
+}
 
 .leave-confirm { position: fixed; z-index: 1000; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(4, 17, 24, .76); }
 .leave-confirm-card { display: grid; gap: 14px; width: min(100%, 480px); padding: 24px; border: 1px solid var(--meadow-line); border-radius: 16px; background: #fffdf7; color: var(--meadow-ink); box-shadow: 0 18px 40px rgba(0, 0, 0, .28); }
@@ -56,14 +86,18 @@ button { cursor: pointer; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 @keyframes nudge { 0%, 100% { transform: translateX(0); } 35% { transform: translateX(-3px); } 70% { transform: translateX(3px); } }
 
-@media (min-width: 680px) {
+@media (min-width: 520px) {
   .compare-layout { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 14px; }
-  .tile { min-height: 78px; }
+  .compare-panel { width: min(100%, 320px, calc(100svh - 210px)); padding: 10px; }
+  .tile { min-height: 44px; }
 }
 @media (max-width: 420px) {
   .battle-workspace { padding: 12px; }
   .compare-panel { padding: 8px; }
   .difference-grid { gap: 5px; }
   .tile { min-height: 50px; border-radius: 10px; }
+}
+@media (min-width: 520px) and (min-height: 501px) {
+  .tile { min-height: 56px; }
 }
 [dir="rtl"] .result-actions { flex-direction: row-reverse; }

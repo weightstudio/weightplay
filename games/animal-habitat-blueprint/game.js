@@ -43,9 +43,9 @@
   });
 
   const habitatSets = [
-    { name: "blueprint1", hint: "hint1", solution: ["pond", "reed", "nest", "meadow"], rules: [{ key: "ruleTouch", a: "pond", b: "reed" }, { key: "ruleApart", a: "pond", b: "nest" }, { key: "ruleBelow", a: "meadow", b: "nest" }] },
-    { name: "blueprint2", hint: "hint2", solution: ["fern", "canopy", "burrow", "stream"], rules: [{ key: "ruleTouch", a: "stream", b: "fern" }, { key: "ruleApart", a: "canopy", b: "stream" }, { key: "ruleBelow", a: "burrow", b: "canopy" }] },
-    { name: "blueprint3", hint: "hint3", solution: ["lantern", "moss", "dusk", "pool"], rules: [{ key: "ruleTouch", a: "lantern", b: "moss" }, { key: "ruleApart", a: "lantern", b: "pool" }, { key: "ruleBelow", a: "dusk", b: "moss" }] }
+    { name: "blueprint1", hint: "hint1", solution: ["pond", "reed", "nest", "meadow"], rules: [{ key: "ruleTopLeft", a: "pond" }, { key: "ruleTouch", a: "pond", b: "reed" }, { key: "ruleBelow", a: "meadow", b: "reed" }] },
+    { name: "blueprint2", hint: "hint2", solution: ["fern", "canopy", "burrow", "stream"], rules: [{ key: "ruleTopLeft", a: "fern" }, { key: "ruleTouch", a: "fern", b: "canopy" }, { key: "ruleBelow", a: "stream", b: "canopy" }] },
+    { name: "blueprint3", hint: "hint3", solution: ["lantern", "moss", "dusk", "pool"], rules: [{ key: "ruleTopLeft", a: "lantern" }, { key: "ruleTouch", a: "lantern", b: "moss" }, { key: "ruleBelow", a: "pool", b: "moss" }] }
   ];
   const starts = [[1, 2, 0, 3], [2, 0, 3, 1], [3, 2, 1, 0], [1, 3, 2, 0], [2, 3, 0, 1]];
   const chapterModes = ["open", "adjacent", "diagonal", "anchor", "budget", "master"];
@@ -106,7 +106,7 @@
   let settlementCallback = null;
 
   const copy = (key, vars = {}) => Object.entries(vars).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, String(value)), (locales[locale] || locales.en)[key] || locales.en[key] || key);
-  const tileName = (type) => copy(`tile${type[0].toUpperCase()}${type.slice(1)}`);
+  const tileName = (type) => type ? copy(`tile${type[0].toUpperCase()}${type.slice(1)}`) : "";
   const announce = (name, data = {}) => { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `habitat_blueprint_${name}`, plan: planIndex + 1, swaps, ...data }); };
   const bestValue = () => Number(localStorage.getItem("weightplay-habitat-blueprint-best-v1") || 0) || "—";
   const solvedPlan = () => tiles.every((tile, index) => tile === plans[planIndex].solution[index]);

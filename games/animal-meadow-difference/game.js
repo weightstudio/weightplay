@@ -101,12 +101,15 @@
   function showView(mode) {
     const mainActive = mode === "main";
     const resultActive = mode === "result";
+    $("mainScreen").hidden = !mainActive;
+    $("battleView").hidden = mainActive;
     $("roundContent").hidden = resultActive;
     $("resultView").hidden = !resultActive;
     $("battleView").classList.toggle("is-result", resultActive);
     document.body.dataset.screen = mainActive ? "main" : resultActive ? "result" : "battle";
     const frame = window.MeadowDifferenceFrame?.frame;
     if (frame) frame.activate(mainActive ? "main" : "battle", { covered: !mainActive && (resultActive || state.leaveOpen) });
+    window.WeightPlayBattleCanvas?.sync?.();
     window.scrollTo(0, 0);
   }
 

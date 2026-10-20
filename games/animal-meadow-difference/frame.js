@@ -14,6 +14,7 @@
     const battleHeader = battle.querySelector(".battle-header");
     const battleContent = battle.querySelector(".battle-workspace");
     const headerInfo = $("battleHeaderInfo");
+    if (!battleContent.contains(headerInfo)) battleContent.append(headerInfo);
 
     const frame = window.WeightPlayScreenFrame.mount({
       root,

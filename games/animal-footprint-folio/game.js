@@ -277,5 +277,6 @@
   $("#locale").addEventListener("change", (event) => { state.locale = event.target.value; applyCopy(); });
   syncSharedSettingsIds();
   window.__ANIMAL_FOOTPRINT_FOLIO_TEST__ = { state, records: RECORDS, start, selectMarker, confirm, nextRecord };
+  setScreen("main");
   applyCopy();
 })();

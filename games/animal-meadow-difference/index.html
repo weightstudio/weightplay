@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="en" dir="ltr">
   <head>
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-meadow-difference/")}catch{location.replace("/en/games/animal-meadow-difference/")}})();</script>
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-meadow-difference/"+(new URLSearchParams(location.search).get("preview")==="1"?"?preview=1":""))}catch{location.replace("/en/games/animal-meadow-difference/"+(new URLSearchParams(location.search).get("preview")==="1"?"?preview=1":""))}})();</script>
+    <base href="/games/animal-meadow-difference/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/en/games/animal-meadow-difference/" />
@@ -33,15 +34,15 @@
     <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide>
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-shell-standard>
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
-    <link rel="stylesheet" href="style.css?v=20261018-meadow-i9-frame-v1">
+    <link rel="stylesheet" href="style.css?v=20261020-meadow-i9-result-fit5">
     <script src="locales.js?v=20261018-meadow-i9-frame-v1" defer></script>
-    <script src="game.js?v=20261018-meadow-i9-frame-v1" defer></script>
+    <script src="game.js?v=20261020-meadow-i9-result-canvas2" defer></script>
     <script src="/src/shared-interface-bootstrap.js?v=20261017-shared-dark-loader1" data-wp-shared-interface="7"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
     <body data-audience="general" data-wp-game-id="animal-meadow-difference" data-wp-game-version="v10" data-wp-interface-version="9" data-screen="main" data-has-stage="false">
-    <div id="gameFrame" data-wp-frame-root>
+    <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
     <main class="app-shell screen main-screen" id="mainScreen" data-screen="main" aria-labelledby="mainTitle">
       <header class="main-header topbar wp-main-shell-header" data-wp-shell-header="main">
         <a class="main-return home-link" data-wp-return="main" data-meadow-copy="backToLobby" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
@@ -82,7 +83,7 @@
           </div>
           <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
           </div>
-        <section class="view result-screen" id="resultView" data-wp-battle-substate="result" data-wp-result-screen aria-labelledby="resultTitle" hidden>
+        <section class="view result-screen result-overlay" id="resultView" data-wp-battle-substate="result" data-wp-result-screen aria-labelledby="resultTitle" hidden>
           <div class="result-card" data-wp-result-card>
             <div class="result-icon" aria-hidden="true">✦</div>
             <img class="guide-art" src="assets/animal-meadow-difference-orla.png" alt="" aria-hidden="true">
@@ -110,6 +111,6 @@
     <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard defer></script>
     <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" defer></script>
-    <script src="frame.js?v=20261018-meadow-i9-frame-v1" defer></script>
+    <script src="frame.js?v=20261020-meadow-i9-header-slot1" defer></script>
   </body>
 </html>
