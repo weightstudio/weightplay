@@ -188,7 +188,8 @@
     Object.keys(screens).forEach((key) => { screens[key].hidden = key !== (name === "stages" ? "stages" : scene); });
     $("battlePlay").hidden = name === "result";
     $("resultScreen").hidden = name !== "result";
-    document.querySelector("[data-wp-game-guide]").hidden = name !== "main";
+    const guide = document.querySelector("[data-wp-game-guide]");
+    if (guide) guide.hidden = name !== "main";
     document.body.dataset.screen = name === "stages" ? "stage" : name;
     state.frame?.activate(scene);
   };

@@ -92,7 +92,7 @@ h1, h2, p { margin-top: 0; }
 }
 .firepower-chip { left: 10px; display: flex; align-items: center; gap: 6px; padding: 0 10px; color: var(--muted); font-size: .78rem; }
 .firepower-chip strong { color: var(--gold); }
-.restart-button { right: 10px; width: 40px; padding: 0; font-size: 1.25rem; }
+.restart-button { right: 10px; width: var(--wp-play-control, 40px); min-width: var(--wp-play-control, 40px); height: var(--wp-play-control, 40px); min-height: var(--wp-play-control, 40px); padding: 0; font-size: 1.25rem; }
 .touch-controls {
   position: absolute;
   z-index: 4;
@@ -104,9 +104,10 @@ h1, h2, p { margin-top: 0; }
   pointer-events: none;
 }
 .touch-controls button {
-  width: 58px;
-  min-width: 58px;
-  height: 54px;
+  width: var(--wp-play-control, 58px);
+  min-width: var(--wp-play-control, 58px);
+  height: var(--wp-play-control, 54px);
+  min-height: var(--wp-play-control, 54px);
   border: 1px solid var(--line);
   border-radius: 12px;
   background: rgba(5, 20, 32, .86);
@@ -116,7 +117,7 @@ h1, h2, p { margin-top: 0; }
   pointer-events: auto;
 }
 .touch-controls #rightBtn { margin-inline-start: 0; }
-.touch-controls .fire-button { width: 76px; min-width: 76px; margin-inline-start: auto; color: #071923; background: var(--cyan); font-weight: 900; }
+.touch-controls .fire-button { width: var(--wp-play-control, 76px); min-width: var(--wp-play-control, 76px); margin-inline-start: auto; color: #071923; background: var(--cyan); font-weight: 900; }
 .touch-controls button.is-held { transform: translateY(1px) scale(.96); border-color: var(--gold); box-shadow: 0 0 0 2px rgba(255, 212, 124, .2); }
 .battle-message {
   position: absolute;
@@ -207,14 +208,16 @@ h1, h2, p { margin-top: 0; }
 .result-stats strong { color: var(--gold); font-size: 1.2rem; }
 .result-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .result-actions button { width: 100%; min-width: 0; padding-inline: 6px; }
+.result-actions .primary-action:disabled { border-color: rgba(195, 200, 216, .34); background: #263646; color: #9aa5b5; box-shadow: none; opacity: .78; cursor: not-allowed; }
+.result-actions .primary-action:disabled:hover { filter: none; transform: none; }
 .result-goal { padding: 8px 10px; border: 1px solid rgba(116, 230, 238, .24); border-radius: 10px; background: rgba(116, 230, 238, .07); }
 
 @media (max-width: 700px) {
   .upgrade-list { grid-template-columns: minmax(0, 1fr); }
   .result-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .touch-controls { inset-inline: 10px; bottom: 10px; }
-  .touch-controls button { width: 52px; min-width: 52px; height: 48px; }
-  .touch-controls .fire-button { width: 68px; min-width: 68px; }
+  .touch-controls button { width: var(--wp-play-control, 52px); min-width: var(--wp-play-control, 52px); height: var(--wp-play-control, 48px); min-height: var(--wp-play-control, 48px); }
+  .touch-controls .fire-button { width: var(--wp-play-control, 68px); min-width: var(--wp-play-control, 68px); }
   .battle-message { top: 58px; width: calc(100% - 24px); font-size: .74rem; }
   .battle-lane-feedback { bottom: 70px; font-size: .68rem; }
 }
@@ -225,7 +228,7 @@ h1, h2, p { margin-top: 0; }
 @media (max-height: 500px) and (orientation: landscape) {
   .battle-message { top: 48px; }
   .touch-controls { bottom: 6px; }
-  .touch-controls button { height: 42px; }
+  .touch-controls button { height: var(--wp-play-control, 42px); min-height: var(--wp-play-control, 42px); }
   .battle-lane-feedback { bottom: 56px; max-height: 30px; overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) {
