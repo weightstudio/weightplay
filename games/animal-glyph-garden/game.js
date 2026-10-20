@@ -4,7 +4,7 @@
   const $ = (id) => document.getElementById(id);
   const locales = window.GLYPH_GARDEN_LOCALES || {};
   const localeMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
-  const GAME_VERSION = "v5";
+  const GAME_VERSION = "v8";
   const shapes = ["circle", "triangle", "square", "star", "diamond", "heart"];
   const colors = ["blue", "gold", "violet", "green", "coral", "amber"];
   const stageBlueprints = [
@@ -188,6 +188,8 @@
       root.append(button);
     });
     $("selection").textContent = selected === null ? "" : copy("selected", { name: label(plot.options[stepIndex][selected]) });
+    $("checkBtn").disabled = selected === null;
+    $("clearBtn").disabled = selected === null;
     $("status").textContent = "";
     $("status").className = "status";
   }

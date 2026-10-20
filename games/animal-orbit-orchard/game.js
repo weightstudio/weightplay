@@ -688,7 +688,9 @@
     const target = effectiveTarget();
     const targetData = stage.targets[state.targetIndex];
     const name = t(targetData.beacon);
-    $("roundLabel").textContent = `${t("orbit", { current: stage.id, total: rounds.length })} · ${arcName(stage)}`;
+    // Keep the shared top-slot label concise enough for the physical header;
+    // the active route name and objective remain visible in targetLabel.
+    $("roundLabel").textContent = t("orbit", { current: stage.id, total: rounds.length });
     $("targetLabel").textContent = stage.veiled || state.memoryTest
       ? `${t("targetVeiled", { name })} · ${t(stage.objective)}`
       : `${t("target", { angle: Math.round(target) })} · ${name} · ${t(stage.objective)}`;

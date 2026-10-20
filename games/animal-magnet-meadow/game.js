@@ -63,16 +63,33 @@
   ];
 
   const firstRound = rounds[0];
-  const state = {
-    locale: "en", screen: "main", round: 0, positions: { ...firstRound.initial }, moves: 0,
-    completed: [], selected: "a", statusKey: "ready", statusStone: null, drag: null,
-    resultActive: false
-  };
+  const completedKey = "weightplay-animal-magnet-meadow-completed-v1";
   const bestKey = "weightplay-animal-magnet-meadow-best-v9";
-  const $ = (id) => document.getElementById(id);
   const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
+  const loadCompletedRounds = () => {
+    try {
+      const saved = JSON.parse(safeGet(completedKey, "[]"));
+      if (!Array.isArray(saved)) return [];
+      return [...new Set(saved.filter((index) => Number.isInteger(index) && index >= 0 && index < rounds.length))]
+        .sort((left, right) => left - right);
+    } catch (_error) {
+      return [];
+    }
+  };
+  const state = {
+    locale: "en", screen: "main", round: 0, positions: { ...firstRound.initial }, moves: 0,
+    completed: loadCompletedRounds(), selected: "a", statusKey: "ready", statusStone: null, drag: null,
+    resultActive: false
+  };
+  const $ = (id) => document.getElementById(id);
   const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
+  const recordCompletedRound = (index) => {
+    if (!Number.isInteger(index) || index < 0 || index >= rounds.length || state.completed.includes(index)) return;
+    state.completed.push(index);
+    state.completed.sort((left, right) => left - right);
+    safeSet(completedKey, JSON.stringify(state.completed));
+  };
   const transitionVisualUpdate = (update) => {
     const app = $("app");
     const startTransition = document.startViewTransition;
@@ -524,7 +541,7 @@
     const total = state.moves;
     const previousBest = bestTotal();
     if (final && (!previousBest || total < previousBest)) safeSet(bestKey, String(total));
-    if (!state.completed.includes(state.round)) state.completed.push(state.round);
+    recordCompletedRound(state.round);
     state.resultActive = true;
     battleDirty = false;
     transitionVisualUpdate(() => {
@@ -541,7 +558,6 @@
   const checkRound = () => {
     if (leaveOpen || state.resultActive) return;
     if (samePosition(state.positions, currentRound().target)) {
-      if (!state.completed.includes(state.round)) state.completed.push(state.round);
       setBattleStatus("correct");
       showResult();
       return;

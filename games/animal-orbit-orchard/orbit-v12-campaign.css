@@ -393,8 +393,8 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] 
   }
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .dial-label { display: none !important; }
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen #orbitDial {
-    width: 190px !important; height: 190px !important;
-    --orbit-beacon-radius: 58px; --orbit-seed-radius: 42px;
+    width: min(31vh, 150px) !important; height: min(31vh, 150px) !important;
+    --orbit-beacon-radius: 46px; --orbit-seed-radius: 33px;
   }
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] #battleScreen .campaign-choice-row {
     grid-area: choices !important;

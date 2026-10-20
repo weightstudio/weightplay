@@ -114,6 +114,12 @@
   touch-action: manipulation;
 }
 .battle-actions [data-wp-primary-action], .result-actions [data-wp-primary-action] { background: var(--wp-ui-active, #14515a); border-color: var(--wp-i9-focus, #9ff3d6); }
+.battle-actions > button:disabled {
+  background: #102930;
+  border-color: #3c5961;
+  color: #8fa6ab;
+  cursor: not-allowed;
+}
 .result-panel {
   position: absolute;
   inset: 8%;

@@ -381,6 +381,10 @@
     if (!root || !scenes.main || !scenes.battle) throw new Error('FRAME_SCENES_REQUIRED');
     if (playUI) ensureBattleCanvasRuntime();
     const abort = new AbortController();
+    const logicalBattleActionRoot = playUI && scenes.battle.root.matches?.('[data-wp-logical-battle-canvas]')
+      ? scenes.battle.root : null;
+    const priorLogicalBattleActionMode = logicalBattleActionRoot?.getAttribute('data-wp-frame-logical-actions') ?? null;
+    if (logicalBattleActionRoot) logicalBattleActionRoot.setAttribute('data-wp-frame-logical-actions', 'battle');
     // Explicit frame consumers are Interface 7 routes even when their HTML
     // predates the bootstrap script. Set the shared marker at mount time so
     // guide and frame contract styles apply consistently.
@@ -615,7 +619,12 @@
       destroy() {
         playResize?.disconnect();cancelAnimationFrame(playLayoutFrame);
         try { window.dispatchEvent(new CustomEvent('weightplay:screen-change', {detail:{owner:root,release:true}})); } catch { /* Optional analytics. */ }
-        releaseRootLifecycle(); close(); abort.abort(); Object.values(entries).forEach(entry => entry.destroy()); mounts.delete(root);
+        releaseRootLifecycle(); close(); abort.abort(); Object.values(entries).forEach(entry => entry.destroy());
+        if (logicalBattleActionRoot) {
+          if (priorLogicalBattleActionMode === null) logicalBattleActionRoot.removeAttribute('data-wp-frame-logical-actions');
+          else logicalBattleActionRoot.setAttribute('data-wp-frame-logical-actions', priorLogicalBattleActionMode);
+        }
+        mounts.delete(root);
       },
     });
     mounts.set(root, api); refresh(); return api;
