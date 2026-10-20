@@ -212,8 +212,8 @@
   border:0!important;
 }
 
-/* Stage/Battle returns are arrow-only permanent scene controls. Their existing
-   localized Back text remains in the accessibility tree. */
+/* Stage/Battle returns are arrow-only permanent scene controls. The shared
+   frame owns their visible arrow; the localized Back label remains accessible. */
 #stageScreen .back-btn,
 #battleScreen .back-btn{
   width:48px!important;
@@ -225,13 +225,6 @@
   place-items:center!important;
   font-size:0!important;
   line-height:1!important;
-}
-#stageScreen .back-btn::before,
-#battleScreen .back-btn::before{
-  content:"←";
-  font-size:22px;
-  font-weight:900;
-  line-height:1;
 }
 
 /* Battle keeps only actionable HUD state between the return and utility.

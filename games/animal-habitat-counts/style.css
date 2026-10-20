@@ -1,574 +1,159 @@
-:root { color-scheme: light; --ink:#263746; --muted:#687b82; --paper:#fffdf7; --cream:#f4efdf; --moss:#dcebd2; --leaf:#4f7d5e; --deep-leaf:#315b49; --coral:#d77763; --sun:#f2c65d; --line:#c9ddca; --shadow:0 18px 40px rgba(49,91,73,.14); font-family:"Avenir Next","Noto Sans",system-ui,sans-serif; }
-* { box-sizing:border-box; }
-html, body { margin:0; min-height:100%; }
-body { min-width:320px; background:radial-gradient(circle at 18% 5%,#fffaf0 0,var(--cream) 42%,#d9e9d3 100%); color:var(--ink); }
-button, select { font:inherit; }
-button { cursor:pointer; }
-button:focus-visible, select:focus-visible, a:focus-visible { outline:3px solid #f3ad49; outline-offset:3px; }
-.game-page-info[hidden] { display:none !important; }
-.screen[hidden], .battle-content[hidden] { display:none !important; }
-.main-canvas, .stage-canvas, .battle-canvas { width:min(920px,100%); margin:0 auto; }
-#mainScreen { width:min(920px,100%); margin:0 auto; }
-.stage-canvas, .battle-canvas { width:min(920px,100%); }
-.icon-btn { width:48px; height:48px; min-width:48px; min-height:48px; display:grid; place-items:center; border:1px solid var(--line); border-radius:14px; background:#fff; color:var(--ink); text-decoration:none; }
-.shell-mark { color:var(--coral); }
-.shell-title, .panel-head h2 { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:center; }
-.shell-title { font-size:21px; }
-.panel-head h2 { margin:0; color:var(--deep-leaf); font-size:clamp(1.45rem,4vw,2.1rem); }
-.icon-btn { border:1px solid var(--line); padding:0; font-size:1.3rem; }
-.hero-card, .stage-canvas, .clue-card, .grid-card, .result-panel, .leave-dialog { background:rgba(255,253,247,.93); border:1px solid rgba(79,125,94,.23); border-radius:24px; box-shadow:var(--shadow); }
-.hero-card { min-height:420px; display:grid; grid-template-columns:minmax(0,1fr) 420px; gap:28px; align-items:center; padding:clamp(24px,5vw,60px); margin:20px 0 14px; overflow:hidden; }
-.cover-art { justify-self:center; width:min(420px,100%); height:auto; aspect-ratio:1; max-width:100%; display:block; border-radius:24px; object-fit:cover; background:var(--moss); }
-.hero-copy { min-width:0; }
-.eyebrow { margin:0 0 8px; color:var(--coral); font-size:.74rem; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }
-h1, h2, h3, p { margin-top:0; }
-h1 { margin-bottom:12px; color:var(--deep-leaf); font-size:clamp(2.1rem,8vw,4.45rem); line-height:1.04; letter-spacing:-.06em; }
-h2 { color:var(--deep-leaf); line-height:1.1; }
-.intro, .panel-intro, .rule-note, .clue-card p { color:var(--muted); line-height:1.5; }
-.intro { max-width:38rem; margin-bottom:10px; font-size:1.08rem; }
-.progress { min-height:40px; margin:12px 0; color:var(--deep-leaf); font-size:.9rem; font-weight:800; }
-.hero-actions, .battle-actions, .result-actions { display:flex; flex-wrap:wrap; gap:10px; }
-.primary-btn, .secondary-btn, .text-btn { min-height:48px; border-radius:14px; border:1px solid transparent; font-weight:800; }
-.primary-btn { padding:12px 18px; background:var(--deep-leaf); color:#fff; box-shadow:0 8px 18px rgba(49,91,73,.22); }
-#startBtn { min-height:52px; }
-.secondary-btn { padding:10px 16px; background:#fff; border-color:var(--line); color:var(--deep-leaf); }
-.text-btn { padding:8px 14px; background:transparent; color:var(--muted); text-decoration:underline; }
-.primary-btn:hover, .secondary-btn:hover, .text-btn:hover, .icon-btn:hover { transform:translateY(-1px); }
-.settings-panel { position:absolute; z-index:20; top:58px; right:0; width:min(300px,calc(100% - 24px)); padding:14px; border:1px solid rgba(102,132,111,.3); border-radius:16px; background:#fff; box-shadow:0 16px 30px rgba(38,53,41,.2); }
-.settings-head { display:flex; justify-content:space-between; align-items:center; gap:10px; }
-.settings-head h2 { margin:0; font-size:1.15rem; }
-.setting-row { min-height:48px; display:flex; align-items:center; justify-content:space-between; gap:10px; color:var(--ink); font-weight:800; }
-.setting-row select { width:160px; min-height:40px; border:1px solid var(--line); border-radius:10px; padding:0 8px; background:#fff; color:var(--ink); }
-.sound-btn { width:100%; margin-top:8px; }
-.stage-canvas { min-height:calc(100vh - var(--wp-ad-reserve-height, 0px)); margin-top:0; padding:0 18px 22px; }
-.stage-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
-.stage-card { display:flex; flex-direction:column; align-items:flex-start; gap:9px; padding:18px; border:1px solid var(--line); border-radius:18px; background:#fff; color:var(--ink); text-align:start; }
-.stage-card strong { color:var(--deep-leaf); font-size:1.1rem; }
-.stage-card span { color:var(--muted); line-height:1.35; }
-.stage-card b { margin-top:auto; color:var(--coral); }
-.stage-card.complete { background:var(--moss); border-color:var(--leaf); }
-.stage-card:disabled { cursor:not-allowed; opacity:.55; }
-.battle-canvas { position:relative; height:calc(100vh - var(--wp-ad-reserve-height, 0px)); min-height:0; overflow:auto; padding:0 0 10px; }
-.battle-content { width:min(600px,100%); margin:0 auto; padding:8px 10px 18px; }
-.mission-row { display:flex; justify-content:space-between; align-items:center; gap:14px; margin-bottom:10px; }
-.mission-row .panel-intro { margin:0; }
-.progress-badge, .small-stat { display:inline-flex; align-items:center; justify-content:center; min-height:32px; padding:5px 10px; border-radius:999px; background:var(--moss); color:var(--deep-leaf); font-size:.82rem; font-weight:900; white-space:nowrap; }
-.clue-card, .grid-card { padding:16px; }
-.clue-card { margin-bottom:12px; }
-.clue-card h3, .grid-card h3 { margin:0 0 6px; color:var(--deep-leaf); font-size:1.12rem; }
-.clue-card p { margin-bottom:12px; font-size:.92rem; }
-.clue-legend { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:5px; color:var(--muted); font-size:.74rem; font-weight:900; text-transform:uppercase; letter-spacing:.08em; }
-.clue-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-top:8px; }
-.clue { padding:8px 4px; border-radius:12px; background:#f3f0df; color:var(--deep-leaf); font-size:.82rem; font-weight:800; text-align:center; }
-.clue.is-mismatch { background:#ffe4d9; color:#b45b4c; box-shadow:inset 0 0 0 2px var(--coral); }
-.section-heading { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; }
-.habitat-grid { width:min(390px,100%); margin:0 auto 12px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
-.cell { aspect-ratio:1; min-width:0; min-height:64px; border:2px solid #a6c6a0; border-radius:15px; background:#edf5e8; color:var(--deep-leaf); font-size:clamp(1.7rem,7vw,2.5rem); box-shadow:inset 0 -4px 0 rgba(49,91,73,.08); }
-.cell[aria-pressed="true"] { background:#a9d09e; border-color:var(--deep-leaf); }
-.cell[aria-pressed="true"]::before { content:"✦"; }
-.cell[aria-pressed="false"]::before { content:"·"; opacity:.4; }
-.cell.is-mismatch { border-color:var(--coral); background:#ffe4d9; }
-.keyboard-hint { margin:0 auto 10px; max-width:390px; color:var(--muted); font-size:.78rem; line-height:1.4; text-align:center; }
-.feedback { min-height:30px; margin:5px 0 10px; color:var(--deep-leaf); font-size:.9rem; font-weight:800; text-align:center; }
-.feedback.is-wrong { color:#b45b4c; }
-.battle-actions .primary-btn, .battle-actions .secondary-btn { flex:1 1 190px; }
-.rule-note { margin:12px 4px 0; font-size:.82rem; text-align:center; }
-.result-panel { width:min(600px,calc(100% - 20px)); margin:45px auto 20px; padding:28px 22px; text-align:center; }
-.result-panel[hidden], .leave-dialog[hidden] { display:none !important; }
-.result-panel h2 { margin-bottom:10px; }
-.result-panel > p:not(.eyebrow):not(.result-stats) { color:var(--muted); line-height:1.5; }
-.result-stats { margin:20px 0; color:var(--deep-leaf); font-weight:900; }
-.result-actions { justify-content:center; }
-.leave-dialog { position:absolute; z-index:20; top:80px; left:50%; width:min(460px,calc(100% - 30px)); transform:translateX(-50%); padding:24px; }
-.leave-dialog h2 { margin-bottom:10px; }
-.leave-dialog p { color:var(--muted); line-height:1.5; }
-.general-reserve { width:min(920px,100%); height:56px; margin:0 auto; pointer-events:none; }
-[dir="rtl"] .settings-head, [dir="rtl"] .setting-row, [dir="rtl"] .mission-row { direction:rtl; }
-body[data-screen="battle"] { overflow:hidden; overscroll-behavior:none; }
-@media (min-width:701px) {
-  .hero-card { grid-template-columns:420px minmax(0,1fr); padding:24px; }
-  .cover-art { width:420px; max-width:420px; }
-  .battle-content { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:start; column-gap:12px; }
-  .battle-content > .mission-row, .battle-content > .rule-note { grid-column:1 / -1; }
-  .clue-card { margin-bottom:0; }
-  .grid-card { min-width:0; }
-  .battle-actions .primary-btn, .battle-actions .secondary-btn { flex:1 1 120px; }
-}
-@media (max-width:700px) {
-  .main-canvas { width:calc(100% - 20px); }
-  .shell-title { grid-column:1 / -1; grid-row:2; font-size:20px; }
-  .topbar .icon-btn { grid-row:1; z-index:1; }
-  .topbar .icon-btn { grid-column:3; }
-  .hero-card { grid-template-columns:1fr; min-height:0; padding:25px 20px; }
-  .cover-art { width:100%; max-width:none; height:auto; aspect-ratio:1; }
-  .hero-copy { text-align:start; }
-  h1 { font-size:36px; }
-  .stage-list { grid-template-columns:1fr; }
-  .stage-canvas { padding-inline:10px; }
-  .battle-content { padding-inline:5px; }
-  .cell { min-height:54px; border-radius:12px; }
-}
-@media (orientation:landscape) and (max-height:500px) {
-  .battle-canvas .panel-head .icon-btn { width:44px; height:44px; min-width:44px; min-height:44px; border-radius:10px; }
-  .battle-content { width:min(760px,100%); padding-top:2px; }
-  .mission-row { margin-bottom:4px; }
-  .clue-card { padding:9px; margin-bottom:5px; }
-  .clue-card p { margin-bottom:5px; font-size:.75rem; }
-  .clue-list { margin-top:4px; gap:4px; }
-  .clue { padding:4px; font-size:.7rem; }
-  .grid-card { padding:9px; }
-  .habitat-grid { width:180px; gap:4px; margin-bottom:4px; }
-  .cell { min-height:0; border-radius:8px; font-size:1.25rem; }
-  .feedback { min-height:17px; margin:2px 0 4px; font-size:.7rem; }
-  .battle-actions .primary-btn, .battle-actions .secondary-btn { min-height:40px; padding:6px 10px; }
-  .rule-note { margin-top:4px; font-size:.65rem; }
-}
-@media (min-width:701px) and (max-height:560px) {
-  .hero-card { grid-template-columns:420px minmax(0,1fr); }
-  .cover-art { width:420px; max-width:420px; }
+:root {
+  color-scheme: dark;
+  --habitat-panel: #0b2231;
+  --habitat-panel-raised: #123443;
+  --habitat-line: #597775;
+  --habitat-text: #f6f2dd;
+  --habitat-muted: #a4bdb9;
+  --habitat-highlight: #71e7cb;
+  --habitat-error: #ffb6a5;
+  font-family: "Avenir Next", "Noto Sans", system-ui, sans-serif;
 }
 
-/* Interface 7's generic height-derived compact-landscape poster is not the
-   Habitat Counts contract: retain the governed 420px wide-layout column. */
-
-/* The authored Guide remains the public information surface. These rules
-   live in the shared frame layer so their important declarations outrank the
-   generic Interface 7 compatibility skin. */
-
-/* Keep the settlement controls in the first visible mobile Battle frame. */
-@media (max-width:700px) {
-  .battle-content { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:start; column-gap:8px; row-gap:0; }
-  .battle-content > .mission-row, .battle-content > .rule-note { grid-column:1 / -1; }
-  .mission-row { gap:8px; margin-bottom:6px; }
-  .mission-row .panel-intro { font-size:.78rem; }
-  .progress-badge, .small-stat { min-height:28px; padding:4px 7px; font-size:.72rem; }
-  .clue-card { margin-bottom:0; padding:10px 7px; }
-  .grid-card { min-width:0; padding:10px 7px; }
-  .clue-card h3, .grid-card h3 { margin-bottom:4px; font-size:.9rem; }
-  .clue-card p { margin-bottom:7px; font-size:.72rem; line-height:1.35; }
-  .clue-legend { gap:4px; margin-bottom:3px; font-size:.6rem; letter-spacing:.04em; }
-  .clue-list { grid-template-columns:1fr; gap:4px; margin-top:4px; }
-  .clue { padding:5px 2px; border-radius:8px; font-size:.68rem; }
-  .section-heading { gap:4px; margin-bottom:5px; }
-  .habitat-grid { width:100%; gap:4px; margin-bottom:6px; }
-  .cell { min-height:0; border-radius:8px; font-size:clamp(1.2rem,7vw,1.7rem); }
-  .keyboard-hint { margin-bottom:5px; font-size:.64rem; line-height:1.25; }
-  .feedback { min-height:24px; margin:2px 0 5px; font-size:.72rem; }
-  .battle-actions { gap:5px; }
-  .battle-actions .primary-btn, .battle-actions .secondary-btn { flex:1 1 100%; min-height:42px; padding:7px 5px; font-size:.78rem; }
-  .rule-note { margin:5px 2px 0; font-size:.68rem; line-height:1.3; }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body { min-width: 320px; color: var(--habitat-text); }
+button, select { font: inherit; }
+button { cursor: pointer; }
+button:focus-visible, select:focus-visible, a:focus-visible {
+  outline: 3px solid var(--habitat-highlight);
+  outline-offset: 3px;
 }
-
-@media (orientation:landscape) and (max-height:500px) {
-  .battle-content { row-gap:0; }
-  .grid-card { padding:6px; }
-  .section-heading { margin-bottom:3px; }
-  .habitat-grid { width:168px; margin-bottom:2px; }
-  .keyboard-hint { margin-bottom:2px; font-size:.62rem; }
-  .feedback { min-height:13px; margin:0 0 2px; }
-  .battle-actions { gap:4px; }
-  .battle-actions .primary-btn, .battle-actions .secondary-btn { min-height:36px; padding:4px 6px; font-size:.72rem; }
-}
-
-@media (max-width:700px) {
-  .feedback { height:48px; min-height:48px; display:flex; align-items:center; justify-content:center; }
-}
-
-@media (orientation:landscape) and (max-height:500px) {
-  .grid-card { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:start; column-gap:8px; }
-  .grid-card .section-heading { grid-column:1 / -1; }
-  .grid-card .habitat-grid { grid-column:1; grid-row:2 / span 3; align-self:start; }
-  .grid-card .keyboard-hint { grid-column:2; grid-row:2; align-self:center; margin:0; }
-  .grid-card .feedback { grid-column:2; grid-row:3; align-self:center; height:24px; min-height:24px; margin:2px 0; }
-  .grid-card .battle-actions { grid-column:2; grid-row:4; align-self:start; flex-direction:column; }
-  .grid-card .battle-actions .primary-btn, .grid-card .battle-actions .secondary-btn { flex:1 1 auto; width:100%; }
-}
-
-@media (min-width:701px) and (min-height:501px) {
-  .feedback { height:56px; min-height:56px; display:flex; align-items:center; justify-content:center; }
-}
-
-/* v9 shell contract: the shared Settings surface is the sole Main utility,
-   Stage owns a title-free track plus its persistent tab bar, and Battle keeps
-   its result actions inside the same compact play envelope. */
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .wp-main-shell-header #mainSettingsBtn, html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .wp-stage-shell-header :is(#stageInfoBtn, h2, .wp-generated-main-title), html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .battle-canvas .panel-head :is(#battleHeading, .wp-generated-main-title) {
+.screen[hidden], .battle-content[hidden], .result-panel[hidden], .leave-dialog[hidden] {
   display: none !important;
 }
+.game-page-info[hidden] { display: none !important; }
 
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] [data-wp-logical-stage-canvas] {
-  display: grid !important;
-  grid-template-rows: 48px minmax(0, 1fr) 56px !important;
-  gap: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
+/* Main composition and all frame controls use the shared Interface 9 layout. */
+.main-canvas { min-width: 0; }
+.hero-copy { min-width: 0; }
+.hero-copy .eyebrow { margin: 0; color: var(--habitat-muted); font-size: .82rem; font-weight: 800; }
+.hero-copy h1 { margin: 0; color: var(--habitat-text); font-size: clamp(2rem, 6vw, 3.5rem); line-height: 1.05; }
+.hero-copy .intro { margin: 0; color: var(--habitat-muted); font-size: 1rem; line-height: 1.55; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.progress { min-height: 40px; margin: 0; }
+.setting-row[hidden] { display: none !important; }
+
+/* Shared Play UI owns the Stage rail, card size, poster crop, and gestures. */
+.stage-workspace { position: relative; width: 100%; height: 100%; min-width: 0; min-height: 0; overflow: hidden; }
+.panel-intro { margin: 0; color: var(--habitat-muted); line-height: 1.45; }
+
+/* Battle content keeps the habitat puzzle readable inside the shared canvas. */
+.battle-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0 auto;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: transparent;
 }
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-workspace {
-  grid-row: 2 !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  display: grid !important;
-  grid-template-rows: auto minmax(0, 1fr) !important;
-  gap: 8px !important;
-  padding: 8px 0 0 !important;
-  overflow: hidden !important;
+.battle-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+  width: min(920px, 100%);
+  min-width: 0;
+  margin: 0 auto;
+  padding: 12px;
 }
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-workspace > .panel-intro {
-  margin: 0 !important;
-  padding: 0 10px !important;
-  color: #f8fafc !important;
-  text-align: center !important;
-  line-height: 1.35 !important;
+.battle-content > .mission-row,
+.battle-content > #zoneCard,
+.battle-content > #ruleList { grid-column: 1 / -1; }
+.mission-row { min-width: 0; margin: 0 2px; padding: 4px 2px; color: var(--habitat-muted); font-size: .86rem; font-weight: 700; line-height: 1.4; }
+.clue-card, .grid-card, .result-panel, .leave-dialog {
+  min-width: 0;
+  border: 1px solid var(--habitat-line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--habitat-panel) 94%, transparent);
+  color: var(--habitat-text);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%), 0 4px 0 rgb(6 24 32 / 70%);
 }
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-workspace > .stage-rail {
-  align-self: start !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  height: 198px !important;
-  min-height: 198px !important;
-  max-height: 198px !important;
+.clue-card, .grid-card { padding: 14px; }
+.clue-card h3, .grid-card h3 { margin: 0; font-size: 1rem; line-height: 1.35; }
+.clue-card p { margin: 8px 0 12px; color: var(--habitat-muted); font-size: .9rem; line-height: 1.45; }
+.clue-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; color: var(--habitat-muted); font-size: .7rem; font-weight: 800; }
+.clue-list { display: grid; grid-template-columns: repeat(var(--board-size, 5), minmax(0, 1fr)); gap: 6px; margin-top: 8px; }
+.clue {
+  min-width: 0;
+  padding: 8px 4px;
+  border: 1px solid var(--habitat-line);
+  border-radius: 8px;
+  background: var(--habitat-panel-raised);
+  color: var(--habitat-text);
+  font-size: clamp(.66rem, 2.2vw, .82rem);
+  font-weight: 800;
+  line-height: 1.25;
+  text-align: center;
+  overflow-wrap: anywhere;
 }
+.clue.is-mismatch { border-color: var(--habitat-error); background: #572d2d; color: #fff0e8; }
+.section-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.small-stat, .progress-badge { color: var(--habitat-muted); font-size: .78rem; font-weight: 800; }
+.zone-clues { display: flex; flex-wrap: wrap; gap: 8px; }
+.zone-clue { display: flex; align-items: center; min-height: 38px; padding: 7px 10px; border: 1px solid var(--habitat-line); border-radius: 8px; background: var(--habitat-panel-raised); color: var(--habitat-text); font-size: .84rem; font-weight: 800; }
+.zone-clue.is-mismatch { border-color: var(--habitat-error); color: var(--habitat-error); }
+#lensCount { display: inline-flex; align-items: center; gap: 7px; }
+#lensCount img, .lens-use img { width: 26px; height: 26px; object-fit: contain; }
+.lens-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
+.lens-use { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 6px 10px; border: 1px solid var(--habitat-line); border-radius: 8px; background: var(--habitat-panel-raised); color: var(--habitat-text); font-weight: 800; }
+.lens-use:disabled { cursor: not-allowed; opacity: .58; }
+.lens-note { flex-basis: 100%; margin: 0; color: var(--habitat-muted); font-size: .82rem; }
+.habitat-grid { display: grid; grid-template-columns: repeat(var(--board-size, 5), minmax(0, 1fr)); gap: 6px; width: min(440px, 100%); margin: 0 auto 10px; }
+.cell { position: relative; min-width: 0; min-height: 44px; aspect-ratio: 1; padding: 2px; overflow: hidden; border: 2px solid #638f7f; border-radius: 9px; background: #173b42; color: var(--habitat-text); font-size: clamp(1.1rem, 5vw, 1.7rem); }
+.cell[aria-pressed="true"] { border-color: #9cfaff; background: #2c705d; }
+.cell[aria-pressed="true"]::before { content: "✦"; }
+.cell[aria-pressed="false"]::before { content: "·"; opacity: .5; }
+.cell.is-stone { display: grid; place-items: center; border-color: #777d75; background: #343c3a; cursor: not-allowed; }
+.cell.is-stone::before { content: none !important; }
+.cell.is-stone img { width: 78%; height: 78%; object-fit: contain; }
+.cell.is-mismatch { border-color: var(--habitat-error); background: #572d2d; }
+.zone-marker { position: absolute; inset-block-start: 2px; inset-inline-start: 3px; z-index: 1; min-width: 15px; height: 15px; display: grid; place-items: center; padding: 0 3px; border-radius: 99px; background: #fff5cb; color: #5a6730; font-size: 10px; font-weight: 950; line-height: 1; }
+.route-marker { position: absolute; inset-block-end: 1px; inset-inline-end: 3px; z-index: 1; min-width: 15px; height: 15px; display: grid; place-items: center; border-radius: 99px; background: #fff; color: #664789; box-shadow: 0 1px 3px #26374655; font-size: 10px; font-weight: 950; line-height: 1; }
+.cell[data-route="0"], .cell[data-route="2"] { box-shadow: inset 0 0 0 2px #bca3d3; }
+.cell[data-route="3"] { border-style: dashed; }
+.keyboard-hint { max-width: 440px; margin: 0 auto 8px; color: var(--habitat-muted); font-size: .78rem; line-height: 1.4; text-align: center; }
+.feedback { min-height: 32px; margin: 4px 0 8px; color: var(--habitat-highlight); font-size: .88rem; font-weight: 800; text-align: center; }
+.feedback.is-wrong { color: var(--habitat-error); }
+.battle-actions, .result-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.battle-actions > button, .result-actions > button { flex: 1 1 130px; min-width: 0; overflow-wrap: anywhere; }
+.rule-list { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0; padding: 2px 18px 8px 32px; color: var(--habitat-muted); font-size: .82rem; line-height: 1.4; }
+.result-panel { width: min(600px, calc(100% - 24px)); margin: 24px auto; padding: 24px 18px; text-align: center; }
+.result-panel h2 { margin: 0 0 10px; color: var(--habitat-text); }
+.result-panel > p:not(.eyebrow):not(.result-stats) { color: var(--habitat-muted); line-height: 1.5; }
+.result-stats { margin: 16px 0; color: var(--habitat-highlight); font-weight: 900; }
+.result-actions { justify-content: center; }
+.result-actions > button { flex-basis: 110px; }
+.result-panel #resultNextBtn:disabled { opacity: .5; cursor: not-allowed; }
+.checkpoint-reward { padding: 10px 12px; border-radius: 8px; background: #514225; color: #fff0b5; font-weight: 900; }
+.leave-dialog { position: absolute; z-index: 20; top: 50%; left: 50%; width: min(460px, calc(100% - 24px)); transform: translate(-50%, -50%); padding: 22px; }
+.leave-dialog h2 { margin: 0 0 10px; }
+.leave-dialog p { color: var(--habitat-muted); line-height: 1.5; }
+.visually-hidden { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
 
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-tabs {
-  grid-row: 3 !important;
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  align-items: center !important;
-  gap: 8px !important;
-  height: 56px !important;
-  min-height: 56px !important;
-  padding: 6px !important;
-  background: #17243a !important;
-  border-top: 1px solid rgb(255 255 255 / 12%) !important;
-}
+[dir="rtl"] .rule-list { padding-inline-start: 18px; padding-inline-end: 32px; }
 
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-tab-slot {
-  display: block !important;
-  min-width: 0 !important;
-  height: 44px !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .stage-tab {
-  width: 100% !important;
-  min-width: 0 !important;
-  height: 44px !important;
-  min-height: 44px !important;
-  padding: 10px !important;
-  border: 2px solid #66e6bd !important;
-  border-radius: 10px !important;
-  background: #10233c !important;
-  color: #f8fafc !important;
-  font: 700 14px/1.2 system-ui, sans-serif !important;
-  white-space: nowrap !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .battle-canvas {
-  display: grid !important;
-  grid-template-rows: 48px minmax(0, 1fr) !important;
-  gap: 0 !important;
-  height: calc(100vh - var(--wp-ad-reserve-height, 0px)) !important;
-  min-height: 0 !important;
-  overflow: hidden !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .battle-canvas > .battle-content,
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .battle-canvas > .result-panel {
-  grid-row: 2 !important;
-  min-height: 0 !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .battle-canvas > .battle-content {
-  width: min(600px, 100%) !important;
-  overflow: auto !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .result-actions {
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  align-items: stretch !important;
-  gap: 8px !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .result-actions > button {
-  width: 100% !important;
-  min-width: 0 !important;
-  min-height: 44px !important;
-  white-space: normal !important;
-  overflow-wrap: anywhere !important;
-  line-height: 1.1 !important;
-}
-
-html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .result-panel #resultNextBtn:disabled {
-  opacity: .5 !important;
-  cursor: not-allowed !important;
+@media (max-width: 700px) {
+  .battle-content { grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 8px; }
+  .battle-content > .mission-row, .battle-content > #zoneCard, .battle-content > #ruleList { grid-column: 1; }
+  .battle-content[data-board-size="3"] { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .battle-content[data-board-size="3"] > .mission-row,
+  .battle-content[data-board-size="3"] > #zoneCard,
+  .battle-content[data-board-size="3"] > #ruleList { grid-column: 1 / -1; }
+  .clue-card, .grid-card { padding: 10px; }
+  .clue-list { gap: 4px; }
+  .clue { padding: 6px 2px; }
+  .habitat-grid { gap: 4px; }
+  .cell { min-height: 38px; border-radius: 7px; }
+  .rule-list { padding-inline-start: 24px; }
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .battle-canvas .feedback {
-    height: 32px !important;
-    min-height: 32px !important;
-    line-height: 1.2 !important;
-    overflow: visible !important;
-  }
-
-  /* Keep the compact grid card in normal flow. The two-column micro-layout
-     can make the action stack overlap the rightmost cells at 844x390. */
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-    align-items: start !important;
-    column-gap: 8px !important;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card .section-heading {
-    grid-column: 1 / -1 !important;
-    grid-row: 1 !important;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card .habitat-grid {
-    grid-column: 1 !important;
-    grid-row: 2 / span 3 !important;
-    width: min(120px, 100%) !important;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card .keyboard-hint {
-    grid-column: 2 !important;
-    grid-row: 2 !important;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card .feedback {
-    grid-column: 2 !important;
-    grid-row: 3 !important;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card .battle-actions {
-    grid-column: 2 !important;
-    grid-row: 4 !important;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card .habitat-grid {
-    align-self: center !important;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"] .grid-card .battle-actions {
-    flex-direction: column !important;
-    width: 100% !important;
-  }
-}
-
-/* v13: keep 3x3 sanctuary and line clues in separate responsive tracks. */
-.stage-list.stage-rail { align-items:center; }
-.stage-card { justify-content:flex-start; }
-.stage-card strong { line-height:1.25; }
-.stage-card span { font-size:.92rem; }
-.stage-card.checkpoint b { color:#9a5c17; }
-.battle-content { grid-template-columns:minmax(0,1fr) minmax(0,1fr); row-gap:10px; }
-.battle-content > .mission-row, .battle-content > #zoneCard, .battle-content > #ruleList { grid-column:1 / -1; }
-.zone-card { min-width:0; }
-.zone-clues { display:flex; flex-wrap:wrap; gap:8px; }
-.zone-clue { min-height:38px; display:flex; align-items:center; padding:7px 10px; border:1px solid var(--line); border-radius:12px; background:#f3f0df; color:var(--deep-leaf); font-size:.84rem; font-weight:850; }
-.zone-clue.is-mismatch { border-color:var(--coral); background:#ffe4d9; color:#a94c40; }
-#lensCount { gap:7px; white-space:normal; }
-#lensCount img, .lens-use img { width:26px; height:26px; object-fit:contain; }
-.lens-controls { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:10px; }
-.lens-use { min-height:44px; display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border:1px solid var(--line); border-radius:12px; background:#fff; color:var(--deep-leaf); font-weight:850; }
-.lens-use:disabled { cursor:not-allowed; opacity:.58; }
-.lens-note { flex-basis:100%; margin:0; color:var(--muted); font-size:.82rem; }
-.habitat-grid { grid-template-columns:repeat(var(--board-size,3),minmax(0,1fr)); }
-.cell { position:relative; min-height:0; padding:2px; overflow:hidden; }
-.cell.is-stone { display:grid; place-items:center; background:#dedfd3; border-color:#96998d; cursor:not-allowed; }
-.cell.is-stone img { width:78%; height:78%; object-fit:contain; }
-.zone-marker { position:absolute; inset-block-start:2px; inset-inline-start:3px; z-index:1; min-width:15px; height:15px; display:grid; place-items:center; padding:0 3px; border-radius:99px; background:#fff5cb; color:#5a6730; font-size:10px; font-weight:950; line-height:1; }
-.route-marker { position:absolute; inset-block-end:1px; inset-inline-end:3px; z-index:1; min-width:15px; height:15px; display:grid; place-items:center; border-radius:99px; background:#fff; color:#664789; box-shadow:0 1px 3px #26374655; font-size:10px; font-weight:950; line-height:1; }
-.cell[data-route="0"], .cell[data-route="2"] { box-shadow:inset 0 0 0 2px #8566a4; }
-.cell[data-route="3"] { border-style:dashed; }
-.rule-list { grid-column:1 / -1; display:flex; flex-wrap:wrap; gap:6px 18px; margin:0; padding:2px 18px 8px 32px; color:var(--muted); font-size:.82rem; line-height:1.4; }
-.checkpoint-reward { padding:10px 12px; border-radius:12px; background:#fff5d3; color:#72521b !important; font-weight:900; }
-.visually-hidden { position:absolute !important; width:1px !important; height:1px !important; padding:0 !important; margin:-1px !important; overflow:hidden !important; clip:rect(0,0,0,0) !important; white-space:nowrap !important; border:0 !important; }
-@media (max-width:700px) {
-  .battle-content { grid-template-columns:minmax(0,1fr); }
-  .battle-content > .mission-row, .battle-content > #zoneCard, .battle-content > #ruleList { grid-column:1; }
-  .clue-card, .grid-card { padding:12px; }
-  .clue-list { grid-template-columns:repeat(var(--board-size,5),minmax(0,1fr)); }
-  .habitat-grid { width:min(390px,100%); gap:5px; }
-  .cell { min-height:38px; border-radius:10px; font-size:clamp(1.1rem,5vw,1.7rem); }
-  .rule-list { padding-inline-start:24px; }
-}
-@media (min-width:701px) {
-  .zone-clues { gap:10px; }
-  .zone-clue { min-width:120px; }
-}
-.mission-row { padding:8px 12px; border:1px solid rgba(79,125,94,.23); border-radius:16px; background:rgba(255,253,247,.95); box-shadow:0 8px 20px rgba(49,91,73,.1); }
-.cell.is-stone::before { content:none !important; }
-@media (max-width:700px) {
-  .battle-content[data-board-size="3"] { grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
-  .battle-content[data-board-size="3"] > .mission-row,
-  .battle-content[data-board-size="3"] > #zoneCard,
-  .battle-content[data-board-size="3"] > #ruleList { grid-column:1 / -1; }
-  .battle-content[data-board-size="3"] > #zoneCard { grid-row:2; }
-  .battle-content[data-board-size="3"] > .clue-card:not(.zone-card) { grid-column:1; grid-row:3; }
-  .battle-content[data-board-size="3"] > .grid-card { grid-column:2; grid-row:3; }
-}
-
-/* Keep Stage 6's complete clue context beside the active 4x4 board in short
-   landscape, instead of making players scroll between the clues and cells. */
-@media (orientation:landscape) and (max-height:500px) {
-  .battle-content[data-board-size="4"] {
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-    column-gap:8px;
-    row-gap:3px;
-    padding:2px 6px 4px;
-  }
-  .battle-content[data-board-size="4"] > .mission-row {
-    grid-column:1 / -1;
-    grid-row:1;
-    margin-bottom:1px;
-  }
-  .battle-content[data-board-size="4"] > #zoneCard {
-    grid-column:1;
-    grid-row:2;
-    padding:7px;
-    margin:0;
-  }
-  .battle-content[data-board-size="4"] > .clue-card:not(.zone-card) {
-    grid-column:1;
-    grid-row:3;
-    padding:7px;
-    margin:0;
-  }
-  .battle-content[data-board-size="4"] > .grid-card {
-    grid-column:2;
-    grid-row:2 / span 2;
-    align-self:stretch;
-    padding:6px;
-  }
-  .battle-content[data-board-size="4"] > #ruleList {
-    grid-column:1;
-    grid-row:4;
-    margin:1px 2px 0;
-    padding:0 4px;
-    gap:3px 10px;
-    font-size:.58rem;
-    line-height:1.15;
-  }
-  .battle-content[data-board-size="4"] .clue-card h3,
-  .battle-content[data-board-size="4"] .grid-card h3 {
-    margin-bottom:2px;
-    font-size:.82rem;
-  }
-  .battle-content[data-board-size="4"] .clue-card p {
-    margin-bottom:4px;
-    font-size:.66rem;
-    line-height:1.2;
-  }
-  .battle-content[data-board-size="4"] .clue-legend {
-    gap:3px;
-    margin-bottom:2px;
-    font-size:.56rem;
-  }
-  .battle-content[data-board-size="4"] .clue-list {
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:3px;
-    margin-top:3px;
-  }
-  .battle-content[data-board-size="4"] .clue {
-    min-width:0;
-    padding:3px 2px;
-    border-radius:7px;
-    font-size:.6rem;
-    line-height:1.1;
-    overflow-wrap:anywhere;
-  }
-  .battle-content[data-board-size="4"] #zoneCard .section-heading {
-    margin-bottom:3px;
-  }
-  .battle-content[data-board-size="4"] #zoneCard .zone-clues {
-    gap:4px;
-  }
-  .battle-content[data-board-size="4"] #zoneCard .zone-clue {
-    min-height:28px;
-    padding:4px 6px;
-    font-size:.66rem;
-  }
-  .battle-content[data-board-size="4"] #zoneCard .lens-controls {
-    gap:4px;
-    margin-top:4px;
-  }
-  .battle-content[data-board-size="4"] #zoneCard .lens-use {
-    min-height:34px;
-    padding:4px 7px;
-    font-size:.68rem;
-  }
-  .battle-content[data-board-size="4"] .grid-card .habitat-grid {
-    width:188px;
-  }
-}
-
-/* v15: keep the compact 4x4 Battle usable without scrolling. The final
-   Interface 7 compatibility rules had reduced its cells and action targets
-   below the shared touch-size floor after the v14 layout was applied. */
-@media (orientation:landscape) and (max-height:500px) {
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
-    .battle-content[data-board-size="4"] > .mission-row {
-    padding:4px 8px !important;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
-    .battle-canvas > .battle-content[data-board-size="4"] {
-    width:min(760px,100%) !important;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
-    .battle-content[data-board-size="4"] .grid-card {
-    grid-template-columns:188px minmax(0,1fr) !important;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
-    .battle-content[data-board-size="4"] .grid-card .habitat-grid {
-    width:188px !important;
-    grid-template-columns:repeat(4,44px) !important;
-    gap:4px !important;
-    margin:0 !important;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
-    .battle-content[data-board-size="4"] .grid-card .cell {
-    width:44px !important;
-    height:44px !important;
-    min-width:44px !important;
-    min-height:44px !important;
-    font-size:1.1rem !important;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
-    .battle-content[data-board-size="4"] .grid-card .battle-actions .primary-btn,
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
-    .battle-content[data-board-size="4"] .grid-card .battle-actions .secondary-btn {
-    min-height:44px !important;
-    padding:4px 8px !important;
-    font-size:14px !important;
-    line-height:1.2 !important;
-    overflow-wrap:anywhere;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
-    .battle-content[data-board-size="4"] #zoneCard .lens-use {
-    min-height:44px !important;
-    font-size:14px !important;
-  }
-
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
-    .battle-content[data-board-size="4"] .clue-card:not(.zone-card) .clue,
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-counts"]
-    .battle-content[data-board-size="4"] #zoneCard .zone-clue {
-    font-size:.75rem !important;
-  }
+  .battle-content { gap: 6px; padding: 6px; }
+  .clue-card, .grid-card { padding: 8px; }
+  .habitat-grid { width: min(360px, 100%); gap: 4px; }
+  .cell { min-height: 34px; }
 }

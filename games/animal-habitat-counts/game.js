@@ -54,9 +54,12 @@
   const progress = readProgress();
   const state = {
     locale: "en", screen: "main", roundIndex: 0, board: [], checks: 0,
+    selectedStage: Math.max(0, progress.unlocked - 1),
     completed: progress.completed, unlocked: progress.unlocked, lens: progress.lens,
-    revealed: new Set(), sound: !(window.WeightPlayAudio?.isMuted?.() ?? false), resultVisible: false, checkpointGrant: 0,
+    revealed: new Set(), resultVisible: false, checkpointGrant: 0,
   };
+  let screenFrame = null;
+  let stageSelector = null;
   const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)");
   const tween = (node, frames, duration = 240) => {
     if (!node?.animate || reduceMotion?.matches || document.hidden) return;
@@ -74,8 +77,6 @@
   const status = (index) => c("status")[index];
   const routeLocale = { en:"en", "zh-tw":"zh-Hant", "zh-cn":"zh-Hans", ja:"ja", ko:"ko", es:"es", "pt-br":"pt-BR", fr:"fr", de:"de", it:"it", ru:"ru", hi:"hi", ar:"ar" };
   const queryLocale = () => {
-    const query = new URLSearchParams(location.search).get("lang");
-    if (query && locales[query]) return query;
     const segment = location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
     const route = routeLocale[segment];
     return route && locales[route] ? route : STORAGE.get("weightplay-habitat-counts-locale", "en");
@@ -83,7 +84,7 @@
   const currentStage = () => stages[state.roundIndex];
   const isComplete = (stage) => state.completed.includes(stage.id);
   const saveProgress = () => STORAGE.set(SAVE_KEY, JSON.stringify({ completed: state.completed, unlocked: state.unlocked, lens: state.lens }));
-  const play = (event) => { if (state.sound && window.WeightPlayAudio?.play) window.WeightPlayAudio.play(event); };
+  const play = (event) => { window.WeightPlayAudio?.play?.(event); };
 
   function setScreen(screen) {
     state.screen = screen;
@@ -97,7 +98,8 @@
     if (screen === "main") renderMain();
     if (screen === "stage") renderStages();
     if (screen === "battle") renderBattle();
-    window.dispatchEvent(new Event("weightplay:shell-sync"));
+    screenFrame?.activate(screen);
+    if (screen === "stage") stageSelector?.refresh(state.selectedStage);
     window.scrollTo(0, 0);
   }
 
@@ -109,10 +111,6 @@
     document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", t(node.dataset.copyAriaLabel)));
     document.querySelectorAll("[data-campaign-copy]").forEach((node) => { node.textContent = c(node.dataset.campaignCopy); });
     $("startBtn").textContent = state.completed.length ? t("continue") : t("start");
-    $("soundBtn").textContent = state.sound ? t("soundOn") : t("soundOff");
-    $("soundBtn").setAttribute("aria-pressed", String(state.sound));
-    $("battleSoundBtn").setAttribute("aria-label", state.sound ? t("soundOn") : t("soundOff"));
-    $("battleSoundBtn").setAttribute("aria-pressed", String(state.sound));
     if (state.screen === "main") renderMain();
     if (state.screen === "stage") renderStages();
     if (state.screen === "battle") {
@@ -129,28 +127,53 @@
   }
 
   function renderStages() {
-    $("stageList").replaceChildren(...stages.map((stage, index) => {
-      const button = document.createElement("button");
-      const complete = isComplete(stage);
-      const unlocked = stage.number <= state.unlocked;
-      const stateIndex = complete ? 1 : unlocked ? 0 : 2;
-      button.type = "button";
-      button.className = "stage-card" + (complete ? " complete" : "") + (stage.checkpoint ? " checkpoint" : "");
-      button.disabled = !unlocked;
-      button.dataset.stageId = stage.id;
-      const number = document.createElement("strong");
-      number.textContent = c("stageName", { arc: c("arcs")[index / 5 | 0], stageWord: c("stageWord"), number: stage.number });
-      const details = document.createElement("span");
-      details.textContent = c("stageHint", { arc: c("arcs")[index / 5 | 0], size: stage.size });
-      const marker = document.createElement("b");
-      marker.textContent = status(stateIndex);
-      button.append(number, details, marker);
-      button.addEventListener("click", () => startStage(index));
-      requestAnimationFrame(() => tween(button, [{ opacity: 0 }, { opacity: 1 }], 180 + Math.min(index, 5) * 30));
-      return button;
-    }));
-    window.dispatchEvent(new Event("weightplay:stage-sync"));
+    const summary = $("stageSummary");
+    if (summary) summary.textContent = c("progress", { count: state.completed.length, total: stages.length });
+    stageSelector?.refresh(state.selectedStage);
   }
+
+  function stageRecord(index) {
+    const stage = stages[index];
+    if (!stage) return null;
+    const arc = c("arcs")[index / 5 | 0];
+    const locked = stage.number > state.unlocked;
+    const cleared = isComplete(stage);
+    const rules = c("rules");
+    const details = [rules[0]];
+    if (stage.zones.length) details.push(`${c("zonesTitle")}: ${stage.zones.length}`);
+    if (stage.stones.length) details.push(rules[1]);
+    if (stage.trail.length) details.push(rules[2]);
+    if (stage.branch.length) details.push(rules[3]);
+    return {
+      id: stage.id,
+      kicker: arc,
+      title: String(stage.number),
+      subtitle: c("stageHint", { arc, size: stage.size }),
+      status: status(cleared ? 1 : locked ? 2 : 0),
+      summary: c("stageHint", { arc, size: stage.size }),
+      details,
+      poster: "/games/animal-habitat-counts/assets/animal-habitat-counts-cover.svg",
+      locked,
+      cleared,
+    };
+  }
+
+  function selectStage(index) {
+    state.selectedStage = Math.max(0, Math.min(stages.length - 1, Number(index) || 0));
+    const summary = $("stageSummary");
+    if (summary) summary.textContent = c("progress", { count: state.completed.length, total: stages.length });
+  }
+
+  window.AnimalHabitatCountsI9 = Object.freeze({
+    get screen() { return state.screen; },
+    get selectedStage() { return state.selectedStage; },
+    get stageCount() { return stages.length; },
+    stageRecord,
+    selectStage,
+    startStage,
+    setFrame(frame) { screenFrame = frame; },
+    setStageSelector(selector) { stageSelector = selector; },
+  });
 
   function renderClues(stage) {
     const makeClue = (label, count, type, index) => {
@@ -345,6 +368,8 @@
 
   function startStage(index) {
     if (index < 0 || index >= stages.length || index + 1 > state.unlocked) return;
+    state.selectedStage = index;
+    stageSelector?.select(index, { notify: false });
     state.roundIndex = index;
     state.board = Array(stages[index].size * stages[index].size).fill(0);
     state.checks = 0;
@@ -360,13 +385,9 @@
   }
 
   function startGame() {
-    let target = stages.findIndex((stage) => stage.number <= state.unlocked && !isComplete(stage));
-    if (target < 0) target = Math.min(state.unlocked, 30) - 1;
+    state.selectedStage = Math.max(0, Math.min(stages.length - 1, state.unlocked - 1));
     setScreen("stage");
-    if (target >= 0) {
-      const card = document.querySelector(`[data-stage-id="${stages[target].id}"]`);
-      if (card) card.focus({ preventScroll: true });
-    }
+    stageSelector?.select(state.selectedStage, { focus: true, notify: false });
   }
 
   function highlightValidation(result) {
@@ -424,14 +445,15 @@
       }
       saveProgress();
     }
+    state.selectedStage = Math.max(state.selectedStage, state.unlocked - 1);
     renderMain();
+    renderStages();
     $("battlePanel").hidden = true;
     $("battlePanel").inert = true;
     $("resultPanel").hidden = false;
     state.resultVisible = true;
     renderResult();
     tween($("resultPanel"), [{ opacity: 0, transform: "translateY(12px) scale(.985)" }, { opacity: 1, transform: "translateY(0) scale(1)" }], 280);
-    window.dispatchEvent(new Event("weightplay:shell-sync"));
   }
 
   function renderResult() {
@@ -481,19 +503,6 @@
     if (focus) $("battleBackBtn").focus();
   }
 
-  function toggleSound() {
-    state.sound = !state.sound;
-    window.WeightPlayAudio?.setEnabled?.(state.sound);
-    applyLocale();
-  }
-
-  function toggleSettings() {
-    const panel = $("settingsPanel");
-    const open = panel.hidden;
-    panel.hidden = !open;
-    $("mainSettingsBtn").setAttribute("aria-expanded", String(open));
-  }
-
   function populateLocales() {
     const select = $("languageSelect");
     localeKeys.forEach((key) => {
@@ -532,14 +541,11 @@
 
   state.locale = queryLocale();
   document.addEventListener("DOMContentLoaded", () => {
-    const stageTab = document.querySelector('[data-wp-stage-tab="stages"]');
-    if (stageTab) stageTab.dataset.copy = "stages";
     populateLocales();
     applyLocale();
     renderMain();
     $("habitatGrid").addEventListener("keydown", moveGridFocus);
     $("startBtn").addEventListener("click", startGame);
-    $("mapBtn").addEventListener("click", () => setScreen("stage"));
     $("stageBackBtn").addEventListener("click", () => setScreen("main"));
     $("battleBackBtn").addEventListener("click", openLeave);
     $("checkBtn").addEventListener("click", checkBoard);
@@ -559,10 +565,9 @@
       if (event.shiftKey && index <= 0) { event.preventDefault(); controls.at(-1).focus(); }
       else if (!event.shiftKey && index === controls.length - 1) { event.preventDefault(); controls[0].focus(); }
     });
-    $("mainSettingsBtn").addEventListener("click", toggleSettings);
-    $("closeSettingsBtn").addEventListener("click", toggleSettings);
-    $("soundBtn").addEventListener("click", toggleSound);
-    $("battleSoundBtn").addEventListener("click", toggleSound);
+    screenFrame = window.mountHabitatCountsFrame();
+    renderStages();
+    setScreen("main");
   });
 
   window.ANIMAL_HABITAT_COUNTS_TEST = { stages, startGame, startStage, checkBoard, state, saveProgress, readProgress };
