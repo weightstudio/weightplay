@@ -133,7 +133,7 @@
     }, true);
   }
 
-  import("./game-v4-base.js?v=20261018-acorn-auction-i9-v9-issue-repair")
+  import("./game-v4-base.js?v=20261020-acorn-auction-i9-v10-issue-repair")
     .then(() => {
       window.mountAnimalAcornAuctionFrame();
       installBattleLeaveGuard();

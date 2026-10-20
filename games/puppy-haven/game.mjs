@@ -264,7 +264,6 @@ function renderFormation(){
 }
 function placeCandidate(id){if(hunt?.phase!=='prep'||panelType!=='formation')return;const form=assignFormation(haven.s.hunt.formation,formationCell,id,haven.allDogs,hunt.stage.limit);if(!form){feedback(`${t('deploy')} ${hunt.allies.length}/${hunt.stage.limit}`,true);return;}haven.s.hunt.formation=form;hunt=new Hunt(hunt.stage.id,haven.allDogs,form);renderHuntControls();save();closePanel();feedback(t('chooseDog'));sound('ui.click');}
 function boot(){
- if(new URLSearchParams(location.search).get('preview')!=='1'){copy();$('gameFrame').hidden=true;$('mainGuide').hidden=true;$('comingSoon').hidden=false;return;}
  try{const recovery=recoverExpansion({state:haven.s,storage:localStorage,wallet:window.WeightPlayWallet,key:STORE});if(!recovery.ok){$('saveWarning').textContent=t(recovery.reason);$('saveWarning').hidden=false;}}catch{$('saveWarning').textContent=t('purchaseError');$('saveWarning').hidden=false;}
  window.WonderI18n?.setLocale?.(locale,{navigate:false});
  window.WeightPlayAudio?.preload?.(['ui.click','feedback.error','feedback.success','result.win','reward.coin','reward.unlock','shop.purchase','combat.strike','combat.critical','combat.block','combat.shield.break','player.hurt','enemy.defeat','magic.heal','alert.boss','result.lose']);

@@ -1010,6 +1010,7 @@
   if (!state.currentDive) startDive();
   bind();
   render();
+  window.addEventListener("load", () => window.WeightPlayGameEntryLoader?.ready(), { once: true });
   window.setInterval(tick, 250);
   window.setInterval(save, 5000);
   window.requestAnimationFrame(drawScene);

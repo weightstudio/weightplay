@@ -5,7 +5,7 @@ import {RaceInput} from './input.mjs?v=20261003-v15-guide-hant-copy1';
 import {RaceAudio} from './audio.mjs';
 import {CATALOG, LOCALE_ORDER, LOCALE_NAMES, detectLocale, translate} from './locales.mjs';
 import {renderGuide} from './guide.mjs?v=20261003-v15-guide-hant-copy1';
-import {STAGE_CONFIG} from './stage-config.mjs';
+import {STAGE_CONFIG, defaultUnlockedStage} from './stage-config.mjs';
 
 const $ = id => document.getElementById(id);
 // Public sync merges both tracked asset trees into the lowercase /assets route.
@@ -399,7 +399,7 @@ function boot() {
   if(!window.WeightPlayScreenFrame||!window.WeightPlayPlayUI||!window.WeightPlayStageRailI9)throw new Error('SHARED_RUNTIME_MISSING');
   for(let i=0;i<LOCALE_ORDER.length;i++)$('localeSelect').add(new Option(LOCALE_NAMES[i],LOCALE_ORDER[i]));
   localize();
-  selectedStage=Math.min(store.data.unlocked,STAGES.length);
+  selectedStage=defaultUnlockedStage(store.data.unlocked,STAGES.length);
   frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect:$('localeSelect'),playUI:true,scenes:{
     main:{root:$('mainScreen'),header:$('mainHeader'),content:$('mainContent')},
     stage:{root:$('stageScreen'),header:$('stageHeader'),content:$('stageContent')},
@@ -421,7 +421,7 @@ function boot() {
     onStart:index=>{selectedStage=index+1;void startRace(index+1);}
   });
   if(!rail)throw new Error('STAGE_RAIL_MISSING');
-  listen($('start'),'click',()=>{activate('stage');selectTab('stages');});
+  listen($('start'),'click',()=>{selectedStage=defaultUnlockedStage(store.data.unlocked,STAGES.length);activate('stage');selectTab('stages');});
   listen($('stageBack'),'click',()=>{activate('main');$('start').focus({preventScroll:true});});
   listen($('battleBack'),'click',pause);
   for(const name of ['garage','stages','tuning'])listen($(name+'Tab'),'click',()=>selectTab(name));

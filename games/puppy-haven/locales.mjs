@@ -25,5 +25,22 @@ applyObservationCopy(COPY);
 applyHuntCopy(COPY);
 applyCultivationCopy(COPY);
 applyV10Copy(COPY);
+// The public route and runtime language switch share these FAQ labels.
+const faqLabels={
+ en:['FAQ','Can puppies go hunting?','How do I raise a different breed?'],
+ 'zh-Hant':['常見問題','幼犬可以出戰嗎？','怎麼培養出不同犬種？'],
+ 'zh-Hans':['常见问题','幼犬可以出战吗？','怎么培养出不同犬种？'],
+ ja:['よくある質問','子犬は狩りに出られますか？','別の犬種に育てるには？'],
+ ko:['자주 묻는 질문','강아지도 사냥에 나갈 수 있나요?','다른 견종으로 키우려면 어떻게 하나요?'],
+ es:['Preguntas frecuentes','¿Pueden los cachorros ir de cacería?','¿Cómo crío una raza diferente?'],
+ 'pt-BR':['Perguntas frequentes','Filhotes podem caçar?','Como criar uma raça diferente?'],
+ fr:['Questions fréquentes','Les chiots peuvent-ils chasser ?','Comment élever une autre race ?'],
+ de:['Häufige Fragen','Können Welpen auf die Jagd gehen?','Wie ziehe ich eine andere Rasse auf?'],
+ it:['Domande frequenti','I cuccioli possono andare a caccia?','Come allevo una razza diversa?'],
+ ru:['Частые вопросы','Могут ли щенки охотиться?','Как вырастить собаку другой породы?'],
+ hi:['अक्सर पूछे गए प्रश्न','क्या पिल्ले शिकार पर जा सकते हैं?','मैं दूसरी नस्ल कैसे पालूँ?'],
+ ar:['الأسئلة الشائعة','هل تستطيع الجراء الذهاب للصيد؟','كيف أربي سلالة مختلفة؟'],
+};
+for(const [locale,[faqTitle,faqPuppy,faqBreeds]]of Object.entries(faqLabels))Object.assign(COPY[locale],{faqTitle,faqPuppy,faqBreeds});
 export const SUPPORTED=['en','zh-Hant','zh-Hans','ja','ko','es','pt-BR','fr','de','it','ru','hi','ar'];
 export const LANGUAGE_LABELS={en:'Language','zh-Hant':'語言','zh-Hans':'语言',ja:'言語',ko:'언어',es:'Idioma','pt-BR':'Idioma',fr:'Langue',de:'Sprache',it:'Lingua',ru:'Язык',hi:'भाषा',ar:'اللغة'};

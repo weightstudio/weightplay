@@ -75,8 +75,8 @@
     stagesTab.textContent = bridge.getStageTabLabel();
     frame.commonDownButton.clear().add(stagesTab);
 
-    const poster = new URL("assets/animal-acorn-auction-cover.webp", location.href).href;
-    const background = new URL("assets/animal-acorn-auction-background.png", location.href).href;
+    const poster = new URL("/games/animal-acorn-auction/assets/animal-acorn-auction-cover.webp", location.origin).href;
+    const background = new URL("/games/animal-acorn-auction/assets/animal-acorn-auction-background.png", location.origin).href;
     const stageUI = window.WeightPlayPlayUI.mountStage({
       page: $("stageWorkspace"),
       rail: $("stageList"),

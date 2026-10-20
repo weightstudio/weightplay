@@ -7478,10 +7478,10 @@ window.WONDER_LOBBY.games.push({
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("flying-tram");
 
-// Owner-requested dog-care production. Visible only in the internal preview lobby.
+// Owner-approved Puppy Haven public entry; retain its existing poster and URL.
 window.WONDER_LOBBY.games.push({
-  id: "puppy-haven", audience: "general", status: "planned", internalOnly: true,
-  internalTrial: "/games/puppy-haven/index.html?preview=1",
+  id: "puppy-haven", audience: "general", status: "playable",
+  previewVideo: "assets/previews/puppy-haven-battle.webm",
   title: { __localizedExact: true, en: "Puppy Haven", "zh-Hant": "汪汪小院", "zh-Hans": "汪汪小院", ja: "わんこの庭", ko: "강아지 마당", es: "Hogar de Cachorros", "pt-BR": "Lar dos Filhotes", fr: "Le Jardin des Chiots", de: "Welpenhof", it: "Il Giardino dei Cuccioli", ru: "Щенячий дворик", hi: "पिल्लों का आँगन", ar: "حديقة الجراء" },
   type: {
     "en": "Dog Care & Family",
@@ -7513,7 +7513,6 @@ window.WONDER_LOBBY.games.push({
     "hi": "छोटा आँगन, बढ़ता परिवार। अपने कुत्तों को खिलाएँ, उनकी देखभाल करें और पिल्ले पालें।",
     "ar": "حديقة صغيرة وعائلة تكبر. أطعم كلابك واعتن بها وربِّ جراءها."
   },
-  statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
   categories: ["Simulation", "Management", "Animal Games"],
   skills: ["Planning", "Resource Balance"], ages: ["general"],
   href: "games/puppy-haven/",

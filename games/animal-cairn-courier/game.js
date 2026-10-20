@@ -78,7 +78,7 @@
   const current = document.currentScript;
   const runtime = document.createElement("script");
   runtime.async = false;
-  runtime.src = new URL("./game-v7-base.js?v=20261020-cairn-courier-i9", current?.src || location.href).href;
+  runtime.src = new URL("./game-v7-base.js?v=20261020-cairn-courier-v10-start-audio", current?.src || location.href).href;
   runtime.dataset.wpCairnCourierRuntime = "v7-base";
   if (current?.parentNode) current.after(runtime);
   else document.body.append(runtime);

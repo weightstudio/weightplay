@@ -2,7 +2,16 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {STAGES,TRACKS,VEHICLES,UPGRADE_COSTS,vehicleStats,campaignStars} from '../data.mjs';
 import {freshSave,validateSave,rewardResult,purchaseUpgrade,SaveStore} from '../store.mjs';
+import {defaultUnlockedStage,STAGE_CONFIG} from '../stage-config.mjs';
 const result=(extra={})=>({runId:'one',stageId:1,success:true,stars:3,time:30,rank:1,progress:1,...extra});
+
+test('Stage defaults to the highest unlocked stage and uses Block Apex art behind the rail',()=>{
+  assert.equal(defaultUnlockedStage(1,STAGES.length),1);
+  assert.equal(defaultUnlockedStage(8,STAGES.length),8);
+  assert.equal(defaultUnlockedStage(99,STAGES.length),STAGES.length);
+  assert.equal(defaultUnlockedStage(NaN,STAGES.length),1);
+  assert.equal(STAGE_CONFIG.background,'/assets/block-apex-poster.webp');
+});
 
 test('30 authored stages reference seven circuits and valid goal budgets',()=>{
   assert.equal(STAGES.length,30);assert.equal(TRACKS.length,7);assert.equal(VEHICLES.length,4);

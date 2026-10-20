@@ -47,7 +47,9 @@
     locale: "en", round: 0, selected: [], checks: 0, sessionChecks: 0, screen: "main", unlocked: 1, cleared: new Set(),
   };
   const $ = (id) => document.getElementById(id);
-  let mainMapObserver;
+  let sharedFrameController;
+  let stageSelector;
+  let stageBrowseIndex = 0;
   const progressKey = "weightplay-animal-silhouette-scout-progress-v4";
   const t = (key, vars = {}) => {
     const table = locales[state.locale] || locales.en || {};
@@ -80,36 +82,66 @@
   };
   const show = (screen) => {
     state.screen = screen;
-    document.querySelectorAll("section[data-screen], main[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; });
+    const scene = screen === "result" ? "battle" : screen;
+    $("mainScreen").hidden = scene !== "main";
+    $("stageScreen").hidden = scene !== "stage";
+    $("battleScreen").hidden = scene !== "battle";
+    $("gameGuide").hidden = screen !== "main";
+    $("battlePlayWorkspace").hidden = screen === "result";
+    $("battlePlayWorkspace").inert = screen === "result";
+    $("resultScreen").hidden = screen !== "result";
     document.body.dataset.screen = screen;
+    sharedFrameController?.activate(scene);
+    if (scene === "stage") renderStages();
   };
   const targetsFor = (round) => round.targets || [round.target];
   const isMulti = (round) => targetsFor(round).length > 1;
   const selectedFor = () => Array.isArray(state.selected) ? state.selected : (state.selected ? [state.selected] : []);
   const artClass = (animal, base) => atlasAnimals.has(animal) ? `${base} scout-art scout-art-${animal}` : `${base} scout-target-fallback`;
-  const moveMainMapEntry = () => {
-    const map = $("mapBtn");
-    const copy = document.querySelector(".wp-standard-main-copy");
-    if (map && copy && !copy.contains(map)) { copy.append(map); mainMapObserver?.disconnect(); }
-  };
-  const openStage = () => { show("stage"); renderStages(); };
-  const renderStages = () => {
+  const renderStageProgress = () => {
+    $("progress").textContent = `${t("lookouts")}: ${state.cleared.size} / ${rounds.length}`;
     $("mainProgress").textContent = `${t("lookouts")}: ${state.cleared.size} / ${rounds.length}`;
-    $("stageList").replaceChildren(...rounds.map((round, index) => {
-      const unlocked = index < state.unlocked;
-      const complete = state.cleared.has(round.id);
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = `stage-card${complete ? " complete" : ""}${round.checkpoint ? " checkpoint" : ""}`;
-      button.setAttribute("role", "listitem");
-      button.setAttribute("aria-disabled", String(!unlocked));
-      button.setAttribute("aria-label", `${t(round.nameKey)}. ${unlocked ? (complete ? t("complete") : t("open")) : t("locked")}`);
-      button.dataset.stage = String(round.id);
-      button.innerHTML = `<strong>${t("round", { n: round.id, total: rounds.length })}</strong><span>${t(round.nameKey)}</span><small>${unlocked ? (complete ? t("complete") : t("open")) : t("locked")}</small>`;
-      button.disabled = !unlocked;
-      if (unlocked) button.onclick = () => startRound(index);
-      return button;
-    }));
+  };
+  const stageRecord = (index) => {
+    const round = rounds[index];
+    const locked = index >= state.unlocked;
+    const cleared = state.cleared.has(round.id);
+    const clue = t(round.clueKey);
+    return {
+      id: round.id,
+      kicker: t("round", { n: round.id, total: rounds.length }),
+      title: t(round.nameKey),
+      subtitle: clue,
+      status: locked ? t("locked") : cleared ? t("complete") : t("open"),
+      summary: clue,
+      details: [clue],
+      poster: "/games/animal-silhouette-scout/assets/animal-silhouette-scout-cover.webp",
+      locked,
+      cleared,
+    };
+  };
+  const openStage = () => { stageBrowseIndex = Math.min(stageBrowseIndex, state.unlocked - 1); show("stage"); };
+  const renderStages = () => {
+    renderStageProgress();
+    const page = $("stageWorkspace");
+    const rail = $("stageList");
+    if (!page || !rail || !window.WeightPlayPlayUI) return;
+    if (!stageSelector) {
+      stageSelector = window.WeightPlayPlayUI.mountStage({
+        page,
+        rail,
+        selected: stageBrowseIndex,
+        config: {
+          count: rounds.length,
+          poster: "/games/animal-silhouette-scout/assets/animal-silhouette-scout-cover.webp",
+          background: "/assets/lobby-block-atmosphere.svg",
+          stage: stageRecord,
+        },
+        isActive: () => sharedFrameController?.active === "stage",
+        onSelect(index) { stageBrowseIndex = index; renderStageProgress(); },
+        onStart(index) { startRound(index); },
+      });
+    } else stageSelector.refresh(stageBrowseIndex);
   };
   const renderTarget = (round) => {
     const targetNode = $("silhouette");
@@ -166,6 +198,7 @@
   const startRound = (index, continueSession = false) => {
     if (index < 0 || index >= rounds.length || index >= state.unlocked) return;
     state.round = index;
+    stageBrowseIndex = index;
     state.selected = [];
     state.checks = 0;
     if (!continueSession) state.sessionChecks = 0;
@@ -197,7 +230,7 @@
     show("result");
     renderResult();
   };
-  const resetToMain = () => { state.round = 0; state.selected = []; state.sessionChecks = 0; show("main"); renderStages(); };
+  const resetToMain = () => { state.round = 0; state.selected = []; state.sessionChecks = 0; renderStageProgress(); show("main"); };
   $("startBtn").onclick = openStage;
   $("mapBtn").onclick = openStage;
   $("stageBackBtn").onclick = resetToMain;
@@ -206,19 +239,22 @@
   $("resultHomeBtn").onclick = resetToMain;
   $("checkBtn").onclick = check;
   $("clearBtn").onclick = () => { state.selected = []; renderBattle(); $("battleStatus").textContent = t("waiting"); };
-  $("battleUtilityBtn").onclick = () => { $("battleStatus").textContent = t("waiting"); $("battleUtilityBtn").setAttribute("aria-pressed", "true"); };
-  $("settingsBtn").onclick = () => { $("settingsPanel").hidden = !$("settingsPanel").hidden; };
   $("localeSelect").onchange = (event) => {
     state.locale = locales[event.target.value] ? event.target.value : "en";
-    try { localStorage.setItem("weightplayLocale", state.locale); } catch (_) {}
+    try {
+      localStorage.setItem("weightPlayLocale", state.locale);
+      localStorage.setItem("weightplayLocale", state.locale);
+    } catch (_) {}
     applyLocale();
+    window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale: state.locale } }));
   };
   const initialLocale = () => {
-    const query = new URLSearchParams(window.location.search).get("lang");
-    if (query && locales[query]) return query;
     const segment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
     if (routeLocaleMap[segment] && locales[routeLocaleMap[segment]]) return routeLocaleMap[segment];
-    try { const saved = localStorage.getItem("weightplayLocale"); if (saved && locales[saved]) return saved; } catch (_) {}
+    try {
+      const saved = localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale");
+      if (saved && locales[saved]) return saved;
+    } catch (_) {}
     return "en";
   };
   const applyLocale = () => {
@@ -228,36 +264,29 @@
     document.querySelectorAll("[data-copy-aria]").forEach((node) => node.setAttribute("aria-label", t(node.dataset.copyAria)));
     $("localeSelect").value = state.locale;
     $("localeSelect").setAttribute("aria-label", t("language"));
-    $("mainProgress").textContent = `${t("lookouts")}: ${state.cleared.size} / ${rounds.length}`;
+    renderStageProgress();
     $("bestValue").textContent = readBest() || t("noBest");
     if (state.screen === "stage") renderStages();
-    if (state.screen === "battle") renderBattle();
+    if (state.screen === "battle" || state.screen === "result") renderBattle();
     if (state.screen === "result") renderResult();
     localizeAccessibility();
   };
   function localizeAccessibility() {
-    const labels = [["#stageList", "aria-label", "stageSelector"], [".stage-tabs", "aria-label", "lookoutSections"], ["#choiceGrid", "aria-label", "animalChoices"], [".game-page-info", "aria-label", "gameInfo"]];
+    const labels = [["#stageList", "aria-label", "stageSelector"], ["#stageTabs", "aria-label", "lookoutSections"], ["#choiceGrid", "aria-label", "animalChoices"], [".game-page-info", "aria-label", "gameInfo"]];
     labels.forEach(([selector, attribute, key]) => document.querySelector(selector)?.setAttribute(attribute, t(key)));
-    document.querySelector(".cover")?.setAttribute("alt", t("coverAlt"));
-    const guideKicker = document.querySelector(".game-info-kicker");
-    if (guideKicker) guideKicker.textContent = t("originalGuide");
-    const utility = $("battleUtilityBtn");
-    if (utility) utility.title = t("settings");
+    $("mainPoster")?.setAttribute("alt", t("coverAlt"));
     document.title = t("pageTitle");
   }
   readProgress();
   state.locale = initialLocale();
   applyLocale();
+  sharedFrameController = window.mountAnimalSilhouetteScoutFrame?.() || null;
   show("main");
-  mainMapObserver = new MutationObserver(moveMainMapEntry);
-  mainMapObserver.observe(document.body, { childList: true, subtree: true });
-  moveMainMapEntry();
-  const placeScoutGuide = (attempt = 0) => {
-    const image = document.querySelector(".scout-guide");
-    const copy = document.querySelector(".wp-standard-main-copy");
-    if (image && copy && !copy.contains(image)) copy.prepend(image);
-    if ((!image || !copy) && attempt < 40) window.setTimeout(() => placeScoutGuide(attempt + 1), 50);
+  window.addEventListener("load", () => window.WeightPlayGameEntryLoader?.ready(), { once: true });
+  window.__ANIMAL_SILHOUETTE_SCOUT_TEST__ = {
+    rounds,
+    startRound,
+    check,
+    getState: () => ({ ...state, cleared: [...state.cleared] }),
   };
-  placeScoutGuide();
-  window.__ANIMAL_SILHOUETTE_SCOUT_TEST__ = { rounds, startRound, check, getState: () => ({ ...state, cleared: [...state.cleared] }) };
 })();

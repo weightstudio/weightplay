@@ -9,7 +9,13 @@
   --cairn-gold: #f0c56e;
 }
 
+/* Keep the approved Cairn ridge art on the shared I9 Battle canvas. */
+.battle-canvas {
+  --wp-ui-background-image: url("/games/animal-cairn-courier/assets/animal-cairn-courier-background-v2.png");
+}
+
 * { box-sizing: border-box; }
+html, body { margin: 0; }
 [hidden] { display: none !important; }
 button, select { font: inherit; }
 button { color: inherit; }

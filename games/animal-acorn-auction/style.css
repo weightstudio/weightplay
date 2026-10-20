@@ -14,7 +14,8 @@
 #mainScreen .best {
   margin: 0;
 }
-#mainScreen .eyebrow { color: var(--wp-ui-muted); }
+#mainScreen { box-shadow: none; }
+#mainScreen .eyebrow { color: var(--wp-ui-text); }
 #mainScreen .main-summary { color: var(--wp-ui-text); }
 #mainScreen .main-progress {
   min-height: 40px;

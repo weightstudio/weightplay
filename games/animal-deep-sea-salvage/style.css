@@ -18,15 +18,12 @@
 
 * { box-sizing: border-box; }
 
-html { min-width: 320px; background: #020e1b; }
+html { min-width: 320px; }
 
 body {
   min-width: 320px;
   margin: 0;
   color: var(--ink);
-  background:
-    radial-gradient(circle at 50% -20%, rgba(24, 92, 136, 0.52), transparent 38rem),
-    linear-gradient(180deg, #061e34 0%, #031120 55%, #020b15 100%);
   min-height: 100vh;
 }
 
@@ -46,23 +43,6 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
   border: 0;
 }
 
-.loading {
-  position: fixed;
-  inset: 0;
-  z-index: 20;
-  display: grid;
-  place-items: center;
-  gap: 0.75rem;
-  background: #031321;
-  transition: opacity 220ms ease, visibility 220ms ease;
-}
-
-.loading.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-.loading strong { color: var(--muted-strong); font-size: 0.9rem; letter-spacing: 0.04em; }
-.loading-orb { width: 3rem; height: 3rem; border: 0.22rem solid rgba(110, 231, 226, 0.25); border-top-color: var(--cyan); border-radius: 50%; animation: spin 850ms linear infinite; }
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
 .app {
   width: min(920px, 100%);
   margin: 0 auto;
@@ -72,6 +52,7 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 [hidden] { display: none !important; }
 body.deep-sea-game-started #mainLanding { display: none !important; }
 body:not(.deep-sea-game-started) #gameDashboard { display: none !important; }
+body:not(.deep-sea-game-started) #toast { display: none !important; }
 
 .topbar > .locale-control { display: none; }
 .wp-shell-settings .locale-control { display: block; }

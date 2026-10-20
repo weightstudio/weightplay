@@ -3,14 +3,14 @@ const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 
 export function actionsFromKeys(keys){return new Set([...keys].map(key=>KEYS[key]||key.replace('button:','')));}
 
-// Negative physics yaw turns screen-left in the trailing-camera view.
-export function steerFromActions(actions){return Number(actions.has('right'))-Number(actions.has('left'));}
+// Three.js camera screen-right points toward world -X when following +Z.
+export function steerFromActions(actions){return Number(actions.has('left'))-Number(actions.has('right'));}
 
 export function steerFromGamepad(pad){
   const axis=pad.axes[0]||0,dead=.16;
-  let steer=Math.abs(axis)>dead?clamp((Math.abs(axis)-dead)/(1-dead),0,1)*Math.sign(axis):0;
-  if(pad.buttons[14]?.pressed)steer=-1;
-  if(pad.buttons[15]?.pressed)steer=1;
+  let steer=Math.abs(axis)>dead?-clamp((Math.abs(axis)-dead)/(1-dead),0,1)*Math.sign(axis):0;
+  if(pad.buttons[14]?.pressed)steer=1;
+  if(pad.buttons[15]?.pressed)steer=-1;
   return steer;
 }
 

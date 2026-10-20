@@ -129,7 +129,8 @@
     if (!$("resultText")) return;
     const complete = runSolved.size === rounds.length;
     $("resultTitle").textContent = complete ? copy("resultTitle") : copy("resultRound");
-    $("resultText").textContent = complete ? copy("resultAll", { best: bestValue() }) : copy("resultText", { count: runSolved.size, picks });
+    const resultCopy = locale === "en" && picks === 1 ? "resultTextOne" : "resultText";
+    $("resultText").textContent = complete ? copy("resultAll", { best: bestValue() }) : copy(resultCopy, { count: runSolved.size, picks });
     $("resultMapBtn").hidden = false;
     $("nextBtn").hidden = false;
     $("nextBtn").disabled = complete;

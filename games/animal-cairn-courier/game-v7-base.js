@@ -188,6 +188,7 @@
   };
   const startRound = (index) => {
     if (index > 0 && !solved.has(STAGES[index - 1].id)) return;
+    window.WeightPlayAudio?.play("game.start");
     state.round = Math.max(0, Math.min(STAGES.length - 1, index));
     selectedStage = state.round;
     state.stack = [];
