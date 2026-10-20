@@ -189,8 +189,6 @@
   const normalizeLegacyChrome = () => {
     const duplicateTitle = document.querySelector("#mainScreen .hero-copy > h1");
     if (duplicateTitle) { duplicateTitle.hidden = true; duplicateTitle.setAttribute("aria-hidden", "true"); }
-    const mapButton = $("mapBtn");
-    if (mapButton) { mapButton.hidden = true; mapButton.setAttribute("aria-hidden", "true"); mapButton.tabIndex = -1; }
     const stageTitle = document.querySelector("#stageScreen .panel-head > h2");
     const stageIntro = document.querySelector("#stageScreen > .stage-canvas > .panel-intro");
     [stageTitle, stageIntro].forEach((node) => { if (node) { node.hidden = true; node.setAttribute("aria-hidden", "true"); } });
@@ -580,6 +578,7 @@
 
   const bind = () => {
     $("startBtn")?.addEventListener("click", enterStage);
+    $("mapBtn")?.addEventListener("click", enterStage);
     $("stageBackBtn")?.addEventListener("click", () => setScreen("main"));
     $("battleBackBtn")?.addEventListener("click", (event) => {
       if (state.resultActive) return;

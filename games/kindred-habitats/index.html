@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-scene-controls" content="immutable">
+  <title>Kindred-Habitats | WeightPlay</title>
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+</head>
+<body data-screen="main" data-game-id="kindred-habitats" data-wp-game-id="kindred-habitats" data-has-stage="false">
+  <div id="gameFrame" data-wp-frame-root>
+  <div id="mainGroup">
+    <main id="mainScreen" class="main-screen">
+      <header class="main-header" data-wp-shell-header="main">
+        <a id="mainReturn" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+        <strong data-wp-game-title>Kindred-Habitats</strong>
+      </header>
+      <section class="main-hero">
+        <img class="main-poster cover" src="../../assets/kindred-habitats/cover.webp" alt="Kindred-Habitats poster">
+        <div class="main-copy menu-copy">
+          <small>WeightPlay Original</small>
+          <h1>Kindred-Habitats</h1>
+          <p class="main-summary">Replace this with one concise, truthful summary of the shipped core loop.</p>
+          <div class="main-progress" data-wp-main-progress>Stage 1</div>
+          <button id="startBtn" type="button" data-wp-main-start>Start Game</button>
+        </div>
+      </section>
+    </main>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide aria-label="Game guide">
+      <div id="gameGuideTitle" class="game-info-hero" data-wp-content-slot="guide-title"></div>
+      <div id="gameGuideFacts" class="game-info-facts" data-wp-content-slot="guide-facts"></div>
+      <div id="gameGuideSections" class="game-info-sections" data-wp-content-slot="guide-sections"></div>
+      <div id="gameGuideFaq" data-wp-content-slot="guide-faq"></div>
+      <div id="gameGuideRelated" data-wp-content-slot="guide-related"></div>
+    </section>
+  </div>
+<section id="battleScreen" class="battle-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="788" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
+      <header class="battle-header" data-wp-shell-header="battle"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back">←</button><strong>Kindred-Habitats</strong><button id="pauseBtn" type="button" data-wp-battle-utility aria-label="Pause">Ⅱ</button></header>
+      <main class="battle-workspace" data-wp-shell-content="battle">
+        <section class="game-owned-play-surface" aria-label="Game play surface"><p>Replace this bounded area with the game-owned simulation.</p><button id="gameActionBtn" type="button" data-wp-primary-action>Game action</button></section>
+        <p id="battleFeedback" aria-live="polite">Ready.</p>
+      </main>
+    </div>
+    <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
+  </section>
+  </div>
+
+  <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
+  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script src="../../src/game-screen-frame.js?v=20260921-interface7-single-frame-v2"></script>
+  <script src="game.js"></script>
+</body>
+</html>

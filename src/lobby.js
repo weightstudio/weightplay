@@ -721,6 +721,7 @@ function syncDemonEventPreview() {
 }
 
 const exploreTypeRules = [
+  { id: "Pet Care", label: () => categoryText("Pet Care"), matches: (game) => (game.categories || []).includes("Pet Care") },
   { id: "RPG", label: () => "RPG", matches: (game) => /\bRPG\b/i.test(game.type?.en || "") },
   { id: "tower-defense", label: () => ({en:"Tower Defense","zh-Hant":"塔防","zh-Hans":"塔防",ja:"タワーディフェンス",ko:"타워 디펜스",es:"Defensa de torres","pt-BR":"Defesa de torre",fr:"Défense de tours",de:"Tower Defense",it:"Difesa della torre",ru:"Защита башни",hi:"टावर डिफेंस",ar:"دفاع الأبراج"}[i18n.actualLocale()] || "Tower Defense"), matches: (game) => /tower defense/i.test(game.type?.en || "") },
   { id: "Puzzle", label: () => categoryText("Puzzle"), matches: (game) => (game.categories || []).includes("Puzzle") },

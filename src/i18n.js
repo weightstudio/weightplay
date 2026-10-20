@@ -1839,6 +1839,16 @@
   "龜": "龟"
 });
 
+  const petCareLabels = {
+    en: "Pet Care", "zh-Hant": "養成", "zh-Hans": "养成", ja: "ペット育成",
+    ko: "펫 키우기", es: "Cuidado de mascotas", "pt-BR": "Cuidar de pets",
+    fr: "Animaux de compagnie", de: "Tierpflege", it: "Animali domestici",
+    ru: "Забота о питомцах", hi: "पालतू जानवरों की देखभाल", ar: "رعاية الحيوانات الأليفة",
+  };
+  Object.entries(petCareLabels).forEach(([locale, label]) => {
+    dictionaries[locale] = { ...(dictionaries[locale] || {}), "category.Pet Care": label };
+  });
+
 const essentialLobbyCopy = {
     ja: ["すべてのゲーム", "最近プレイ", "お気に入り", "すべてのテーマ", "注目", "どうぶつゲーム", "パズル", "ストラテジー", "アーケードゲーム", "学び"],
     ko: ["모든 게임", "최근 플레이", "즐겨찾기", "모든 주제", "추천", "동물 게임", "퍼즐", "전략", "아케이드 게임", "교육"],

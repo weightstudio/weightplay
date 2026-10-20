@@ -118,10 +118,10 @@
   const normalizeLocale = (value) => value === "zh-TW" ? "zh-Hant" : supportedLocales.includes(value) ? value : "en";
   const routeLocaleMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const routeLocale = routeLocaleMap[window.location.pathname.match(/^\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)(?:\/|$)/i)?.[1]?.toLowerCase()];
-  const state = { locale: normalizeLocale(routeLocale || routedLocale || savedLocale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang), stage: 0, step: 0, placed: [], selected: null, totalPicks: 0, stagePicks: 0, finished: false, sound: !window.WeightPlayAudio.isMuted(), storage: true, status: "", campaign: null, stageBrowseIndex: 0, runStartStage: 0, braceActive: false, stageSelector: null };
+  const state = { locale: normalizeLocale(routeLocale || routedLocale || savedLocale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang), stage: 0, step: 0, placed: [], selected: null, totalPicks: 0, stagePicks: 0, finished: false, sound: !window.WeightPlayAudio.isMuted(), storage: true, status: "", campaign: null, stageBrowseIndex: 0, runStartStage: 0, braceActive: false, stageSelector: null, frame: null, screen: "main" };
   window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
   const $ = (id) => document.getElementById(id);
-  const screens = { main: $("mainScreen"), stages: $("stageScreen"), battle: $("battleScreen"), result: $("resultScreen") };
+  const screens = { main: $("mainScreen"), stages: $("stageScreen"), battle: $("battleScreen") };
   const t = (key, vars) => { const table = copy[state.locale] || copy.en || {}; let value = table[key] || (copy.en && copy.en[key]) || key; Object.keys(vars || {}).forEach((name) => { value = value.replace(new RegExp("\\{" + name + "\\}", "g"), String(vars[name])); }); return value; };
   const campaignSaveKey = "weightplay-animal-cushion-stack-campaign-v1";
   const readCampaign = () => {
@@ -182,27 +182,37 @@
   const beep = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
   const readBest = () => { try { const value = Number(localStorage.getItem("weightplay-animal-cushion-stack-best-v3")); return Number.isFinite(value) && value > 0 ? value : null; } catch (error) { state.storage = false; return null; } };
   const writeBest = (value) => { try { const current = readBest(); if (!current || value < current) localStorage.setItem("weightplay-animal-cushion-stack-best-v3", String(value)); } catch (error) { state.storage = false; } };
-  const show = (name) => { Object.keys(screens).forEach((key) => { screens[key].hidden = key !== name; }); document.body.dataset.screen = name === "stages" ? "stage" : name; };
+  const show = (name) => {
+    state.screen = name;
+    const scene = name === "stages" ? "stage" : name === "result" ? "battle" : name;
+    Object.keys(screens).forEach((key) => { screens[key].hidden = key !== (name === "stages" ? "stages" : scene); });
+    $("battlePlay").hidden = name === "result";
+    $("resultScreen").hidden = name !== "result";
+    document.querySelector("[data-wp-game-guide]").hidden = name !== "main";
+    document.body.dataset.screen = name === "stages" ? "stage" : name;
+    state.frame?.activate(scene);
+  };
   const setLocale = (locale) => { state.locale = normalizeLocale(locale); try { localStorage.setItem("weightPlayLocale", state.locale); localStorage.setItem("weightplayLocale", state.locale); } catch (error) { state.storage = false; } applyLocale(); track("locale", { locale: state.locale }); };
   const applyLocale = () => {
     document.documentElement.lang = state.locale === "zh-Hant" ? "zh-TW" : state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
-    $("localeSelect").value = state.locale; $("cushionDialect") && ($("cushionDialect").value = state.locale); $("soundBtn").textContent = state.sound ? t("soundOn") : t("soundOff"); $("settingsBtn").setAttribute("aria-label", t("settings")); $("settingsPanel").setAttribute("aria-label", t("settings")); $("localeSelect").setAttribute("aria-label", t("language")); $("cushionDialect")?.setAttribute("aria-label", t("language")); $("choiceTray").setAttribute("aria-label", t("chooseBlock")); $("tower").setAttribute("aria-label", t("title")); $("stageInfoBtn").setAttribute("aria-label", t("stageReady")); $("stageInfoBtn").setAttribute("title", t("stageReady")); $("battleInfoBtn").setAttribute("aria-label", t("guideTwo")); $("battleInfoBtn").setAttribute("title", t("guideTwo")); $("stageScreen").querySelector(".stage-tabs")?.setAttribute("aria-label", t("stages")); $("battleHeading").textContent = t("title"); document.querySelector(".main-return")?.setAttribute("aria-label", t("lobbyReturn")); document.querySelector(".return-link")?.setAttribute("aria-label", t("lobbyReturn")); $("bestValue").textContent = readBest() || t("noBest"); $("mainProgress").textContent = t("round", { n: state.campaign.unlocked, total: stages.length }); applyStaticGuideLocale();
-    if (!screens.stages.hidden) renderStages(); if (!screens.battle.hidden) renderBattle(); if (!screens.result.hidden) renderResult();
+    $("localeSelect").value = state.locale;
+    $("localeSelect").setAttribute("aria-label", t("language"));
+    $("choiceTray").setAttribute("aria-label", t("chooseBlock"));
+    $("tower").setAttribute("aria-label", t("title"));
+    $("battleHeading").textContent = t("title");
+    $("stageBackBtn").setAttribute("aria-label", t("back"));
+    $("battleBackBtn").setAttribute("aria-label", t("back"));
+    $("mainReturnBtn").setAttribute("aria-label", t("lobbyReturn"));
+    $("bestValue").textContent = readBest() || t("noBest");
+    $("mainProgress").textContent = t("round", { n: state.campaign.unlocked, total: stages.length });
+    applyStaticGuideLocale();
+    if (state.screen === "stages") state.stageSelector?.refresh(state.stageBrowseIndex);
+    if (state.screen === "battle") renderBattle();
+    if (state.screen === "result") renderResult();
   };
-  const bindStageCard = (card, index) => {
-    const stage = stages[index]; const locked = index >= state.campaign.unlocked; const cleared = state.campaign.cleared[index];
-    card.className = `stage-card${locked ? " is-locked" : ""}${cleared ? " is-cleared" : ""}`;
-    card.dataset.stage = String(index); card.setAttribute("aria-disabled", String(locked)); card.setAttribute("aria-label", `${t("round", { n: index + 1, total: stages.length })}: ${t(stage.title)}`);
-    card.innerHTML = `<span class="stage-number">${t("round", { n: index + 1, total: stages.length })}</span><h3>${t(stage.title)}</h3><p>${t(stage.hint)}</p><span class="stage-preview" aria-hidden="true">${stage.placements.slice(0, 3).map((placement) => `<i class="block-atlas-crop" style="${spriteStyle(placement.correct, 34, 34)}"></i>`).join("")}</span><span class="stage-chip">${locked ? "🔒" : cleared ? t("lookoutReady") : t("stageReady")}</span>`;
-  };
-  const renderStages = () => {
-    const rail = $("stageList");
-    if (!state.stageSelector) state.stageSelector = window.WeightPlayStageV6.install(rail, { total: stages.length, poolSize: 9, initialIndex: () => state.stageBrowseIndex, bind: bindStageCard, onChange: (index) => { state.stageBrowseIndex = index; }, activate: (index) => { if (index < state.campaign.unlocked) startStage(index, false); } });
-    else state.stageSelector.refresh();
-    state.stageSelector?.center(state.stageBrowseIndex);
-  };
+  const renderStages = () => state.stageSelector?.refresh(state.stageBrowseIndex);
   const renderTower = () => {
     const stage = stages[state.stage];
     const tower = $("tower");
@@ -227,34 +237,35 @@
   const clearChoice = () => { state.selected = null; state.status = t("ready"); renderBattle(); };
   const toggleCloudBrace = () => { if (state.campaign.cloudCharges < 1 || state.finished) return; state.braceActive = !state.braceActive; state.status = state.braceActive ? t("selected", { name: t("cloud") }) : t("ready"); beep("ui.click"); renderBattle(); };
   const goHome = () => { show("main"); applyLocale(); track("home"); };
-  const toggleSettings = () => {
-    const panel = $("settingsPanel");
-    // This authored trigger is retained for the maintained Cushion Stack
-    // smoke/keyboard path, while the shared shell owns the actual language and
-    // sound controls. Delegate to the shared button so pointer, keyboard, and
-    // audit activation all use its single open/close state machine. Keep the
-    // legacy panel as a collapsed compatibility proxy so RTL never paints two
-    // overlapping settings surfaces.
-    const generatedHost = document.querySelector(".wp-shell-settings");
-    const generatedButton = generatedHost?.querySelector(".wp-shell-settings-button");
-    if (generatedButton && generatedButton !== $("settingsBtn")) {
-      panel.classList.add("cushion-settings-proxy");
-      panel.hidden = true;
-      generatedButton.click();
-      $("settingsBtn").setAttribute("aria-expanded", generatedButton.getAttribute("aria-expanded") || "false");
-      return;
-    }
-    const hidden = panel.hidden;
-    panel.hidden = !hidden;
-    $("settingsBtn").setAttribute("aria-expanded", String(hidden));
+  const ensureLocaleOptions = () => { const options = supportedLocales.map((locale) => { const option = document.createElement("option"); option.value = locale; option.textContent = localeLabels[locale]; return option; }); $("localeSelect").replaceChildren(...options); };
+  const openStageMap = (fromMain = false) => {
+    if (fromMain) state.stageBrowseIndex = Math.max(0, state.campaign.unlocked - 1);
+    state.stageBrowseIndex = Math.min(state.stageBrowseIndex, state.campaign.unlocked - 1);
+    show("stages"); applyLocale(); renderStages();
   };
-
-  const ensureLocaleOptions = () => { const options = supportedLocales.map((locale) => { const option = document.createElement("option"); option.value = locale; option.textContent = localeLabels[locale]; return option; }); $("localeSelect").replaceChildren(...options); const legacy = $("cushionDialect"); if (legacy) legacy.replaceChildren(...options.map((option) => option.cloneNode(true))); };
-  const openStageMap = () => { state.stageBrowseIndex = Math.max(0, state.campaign.unlocked - 1); show("stages"); applyLocale(); renderStages(); };
-  const recenterStageSelector = () => { if (!screens.stages.hidden) requestAnimationFrame(() => state.stageSelector?.center(state.stageBrowseIndex)); };
-  window.addEventListener("resize", recenterStageSelector);
-  window.addEventListener("pagehide", () => { state.stageSelector?.destroy(); window.removeEventListener("resize", recenterStageSelector); }, { once: true });
-  $("startBtn").addEventListener("click", openStageMap); $("mapBtn").addEventListener("click", openStageMap); $("stageBackBtn").addEventListener("click", goHome); $("battleBackBtn").addEventListener("click", openStageMap); $("battleMapBtn").addEventListener("click", openStageMap); $("checkBtn").addEventListener("click", checkChoice); $("clearBtn").addEventListener("click", clearChoice); $("advanceBtn").addEventListener("click", advance); $("cloudBraceBtn").addEventListener("click", toggleCloudBrace); $("resultPrimaryBtn").addEventListener("click", () => startStage(state.runStartStage, false)); $("resultMapBtn").addEventListener("click", openStageMap); $("resultHomeBtn").addEventListener("click", goHome); $("settingsBtn").addEventListener("click", toggleSettings); $("soundBtn").addEventListener("click", () => { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); track("sound", { enabled: state.sound }); }); $("localeSelect").addEventListener("change", (event) => setLocale(event.target.value)); $("cushionDialect")?.addEventListener("change", (event) => setLocale(event.target.value)); $("stageInfoBtn").addEventListener("click", () => window.alert(t("stageReady"))); $("battleInfoBtn").addEventListener("click", () => window.alert(t("guideTwo")));
+  $("startBtn").addEventListener("click", () => openStageMap(true));
+  $("stageBackBtn").addEventListener("click", goHome);
+  $("battleBackBtn").addEventListener("click", () => openStageMap(false));
+  $("checkBtn").addEventListener("click", checkChoice); $("clearBtn").addEventListener("click", clearChoice); $("advanceBtn").addEventListener("click", advance); $("cloudBraceBtn").addEventListener("click", toggleCloudBrace);
+  $("resultPrimaryBtn").addEventListener("click", () => startStage(state.runStartStage, false));
+  $("resultMapBtn").addEventListener("click", () => openStageMap(false)); $("resultHomeBtn").addEventListener("click", goHome);
+  $("localeSelect").addEventListener("change", (event) => setLocale(event.target.value));
   ensureLocaleOptions();
-  window.setTimeout(() => { $("loadingPanel").hidden = true; show("main"); applyLocale(); }, 40);
+  window.AnimalCushionStackI9 = Object.freeze({
+    get selectedStage() { return state.stageBrowseIndex; },
+    get stageCount() { return stages.length; },
+    get screen() { return state.screen; },
+    stageRecord(index) {
+      const stage = stages[index];
+      if (!stage) return null;
+      const locked = index >= state.campaign.unlocked;
+      const cleared = state.campaign.cleared[index];
+      return { id: stage.id, kicker: t("round", { n: stage.id, total: stages.length }), title: t(stage.title), subtitle: t(stage.hint), status: locked ? "🔒" : cleared ? t("lookoutReady") : "", summary: t("stageReady"), details: [t(stage.hint)], poster: "/games/animal-cushion-stack/assets/animal-cushion-stack-cover-v2.png", locked, cleared };
+    },
+    selectStage(index) { state.stageBrowseIndex = Math.max(0, Math.min(stages.length - 1, Math.round(index))); },
+    startStage(index) { startStage(index, false); },
+    setStageSelector(selector) { state.stageSelector = selector; },
+    setFrame(frame) { state.frame = frame; show(state.screen); },
+  });
+  show("main"); applyLocale();
 })();

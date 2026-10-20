@@ -78,6 +78,16 @@ window.WONDER_LOBBY = {
   },
   games: [
     {
+      id: "kindred-habitats", audience: "general", status: "planned", internalOnly: true,
+      internalTrial: "/games/kindred-habitats/?preview=1", href: "games/kindred-habitats/",
+      title: { en: "Kindred Habitats", "zh-Hant": "棲旅圖鑑" },
+      type: { en: "Pet Collection & Care", "zh-Hant": "寵物收集與養成" },
+      description: { en: "Read habitat clues, prepare thoughtful encounters and grow a sanctuary of distinct animal companions.", "zh-Hant": "讀懂棲地線索，準備食物與環境，結識習性各異的動物夥伴。" },
+      categories: ["Strategy", "Adventure", "Animal Games", "Pet Care"], skills: ["Planning", "Observation"], ages: ["general"],
+      meta: { en: ["36 Species", "6 Habitats", "No Combat"], "zh-Hant": ["36 種動物", "6 大棲地", "無戰鬥"] },
+      art: { kind: "image", background: "games/kindred-habitats/art/poster.webp", hideHero: true },
+    },
+    {
       id: "deep-drill", audience: "general", status: "planned", internalOnly: true,
       internalTrial: "/games/deep-drill/?preview=1", href: "games/deep-drill/",
       title: { en: "Deep Drill", "zh-Hant": "地心鑽探" },
@@ -7513,7 +7523,7 @@ window.WONDER_LOBBY.games.push({
     "hi": "छोटा आँगन, बढ़ता परिवार। अपने कुत्तों को खिलाएँ, उनकी देखभाल करें और पिल्ले पालें।",
     "ar": "حديقة صغيرة وعائلة تكبر. أطعم كلابك واعتن بها وربِّ جراءها."
   },
-  categories: ["Simulation", "Management", "Animal Games"],
+  categories: ["Simulation", "Management", "Animal Games", "Pet Care"],
   skills: ["Planning", "Resource Balance"], ages: ["general"],
   href: "games/puppy-haven/",
   art: { kind: "image", background: "games/puppy-haven/assets/cover-block-v1.webp", hideHero: true },
@@ -7586,3 +7596,16 @@ window.WONDER_LOBBY.games.push({
   },
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("puppy-haven");
+
+// Owner-requested new-game identity; gameplay stays in the Coming Soon preview.
+window.WONDER_LOBBY.games.push({
+  id: "purrch-grove", audience: "general", status: "planned", internalOnly: true,
+  internalTrial: "index.html?preview=1", href: "games/purrch-grove/",
+  title: { en: "Purrch Grove", "zh-Hant": "呼嚕小築", "zh-Hans": "呼噜小筑", ja: "ゴロゴロの小屋", ko: "골골 작은 집", es: "Rincón Ronroneo", "pt-BR": "Recanto Ronrom", fr: "Le refuge ronron", de: "Schnurrnest", it: "Il rifugio delle fusa", ru: "Мурчащий домик", hi: "म्याऊँ का आशियाना", ar: "بيت الخرخرة", __localizedExact: true },
+  type: {"en":"Cats · Growth","zh-Hant":"貓咪 · 成長","zh-Hans":"猫咪 · 成长","ja":"ねこ · 成長","ko":"고양이 · 성장","es":"Gatos · Crecimiento","pt-BR":"Gatos · Crescimento","fr":"Chats · Croissance","de":"Katzen · Wachstum","it":"Gatti · Crescita","ru":"Кошки · Рост","hi":"बिल्लियाँ · विकास","ar":"القطط · نمو"},
+  description: {"__localizedExact":true,"en":"Learn each cat’s favourite play. Grow trust and build a comfortable climbing home.","zh-Hant":"觀察貓咪偏好的遊戲，培養信任，布置舒服的攀爬小屋。","zh-Hans":"观察猫咪偏好的游戏，培养信任，布置舒服的攀爬小屋。","ja":"ねこの好みを見つけ、信頼を育て、登って休める家を作ろう。","ko":"고양이가 좋아하는 놀이를 찾고 신뢰를 쌓아 편안한 집을 꾸미세요.","es":"Descubre el juego favorito de cada gato y crea un hogar para trepar y descansar.","pt-BR":"Descubra a brincadeira favorita de cada gato e crie um lar para subir e descansar.","fr":"Découvrez le jeu préféré de chaque chat et créez un foyer pour grimper et se reposer.","de":"Entdecke das Lieblingsspiel jeder Katze und baue ein gemütliches Kletterheim.","it":"Scopri il gioco preferito di ogni gatto e crea una casa comoda per arrampicarsi.","ru":"Узнайте любимую игру каждой кошки и создайте уютный дом для игр и отдыха.","hi":"हर बिल्ली का पसंदीदा खेल जानें और चढ़ने व आराम करने का घर बनाएँ।","ar":"اكتشف لعبة كل قطة المفضلة وابنِ بيتًا مريحًا للتسلق والراحة."},
+  categories: ["Simulation", "Animal Games", "Family", "Pet Care"], skills: ["Planning", "Observation"], ages: ["9", "family"],
+  meta: {"en":["30 Goals","Favourite","Free home"],"zh-Hant":["30 成長目標","偏好","自由小屋"],"zh-Hans":["30 成长目标","偏好","自由小屋"],"ja":["30 成長目標","お気に入り","自由な家"],"ko":["30 성장 목표","선호","자유로운 집"],"es":["30 Metas","Favorito","Hogar libre"],"pt-BR":["30 Metas","Favorito","Lar livre"],"fr":["30 Objectifs","Préférence","Foyer libre"],"de":["30 Ziele","Vorliebe","Freies Heim"],"it":["30 Obiettivi","Preferito","Casa libera"],"ru":["30 Цели","Любимое","Свободный дом"],"hi":["30 लक्ष्य","पसंदीदा","खुला घर"],"ar":["30 الأهداف","المفضلة","بيت حر"]},
+  art: { kind: "image", background: "games/purrch-grove/assets/cover-block-v1.webp", hideHero: true }
+});
+window.WONDER_LOBBY.audiences.generalGameIds.push("purrch-grove");

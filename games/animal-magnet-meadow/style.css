@@ -276,8 +276,6 @@ h1,h2,p { margin-top:0; }
   #battlePanel > .legend { grid-column:1; margin-top:6px; }
   #battlePanel > .move-hint { grid-column:1; margin-top:4px; line-height:1.2; }
   #battlePanel > .battle-actions { grid-column:2; grid-row:2 / span 5; grid-template-columns:1fr; align-self:start; margin-top:6px; }
-  #battlePanel .moonstone,
-  #battlePanel .moonstone.selected { top:0; transform:translate(-50%,-100%); }
   #resultPanel { margin-top:4px; }
 }
 

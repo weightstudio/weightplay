@@ -4,3 +4,33 @@
 .main-hero .primary-button{min-height:52px}
 .battle-ad-reserve{bottom:-var(--wp-ad-reserve-height, 0px)}.battle-screen .action-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.battle-screen .action-button{min-height:140px;padding:10px}.battle-screen .action-art{width:36px;height:48px;background-size:108px 72px}.battle-screen .action-art-shade{background-position-x:-36px}.battle-screen .action-art-sun{background-position-x:-72px}
 @media (orientation:landscape) and (max-height:600px){.battle-screen{padding:8px}.battle-screen .screen-heading{margin-bottom:6px}.battle-screen .screen-heading h2{font-size:1.1rem}.battle-screen .weather-card{padding:8px;margin-bottom:6px}.battle-screen .weather-card h3{margin:2px 0 3px;font-size:1rem}.battle-screen .weather-card p:last-child{font-size:.78rem;line-height:1.2}.battle-screen .orchard-layout{gap:8px}.battle-screen .meter-card,.battle-screen .care-card{padding:8px}.battle-screen .meter-heading{margin-bottom:5px}.battle-screen .meter-heading h3{font-size:.9rem}.battle-screen .meter-heading span{font-size:.65rem}.battle-screen .meter-row{margin:5px 0}.battle-screen .meter-track{height:8px;margin-top:3px}.battle-screen .meter-value,.battle-screen .meter-label{font-size:.68rem}.battle-screen .action-grid{gap:5px}.battle-screen .action-button{min-height:86px;padding:6px;font-size:.72rem}.battle-screen .action-art{width:24px;height:30px;background-size:72px 45px}.battle-screen .action-art-shade{background-position-x:-24px}.battle-screen .action-art-sun{background-position-x:-48px}.battle-screen .action-name{margin-bottom:3px}.battle-screen .action-delta{font-size:.62rem}.battle-screen .feedback{min-height:18px;margin:6px 0 4px;font-size:.72rem}.battle-screen #restartDay{min-height:34px;padding:6px 10px;font-size:.72rem}}
+
+/* The shared frame lifts Battle controls into the header. Reserve their tracks
+   locally too, so the day title cannot sit underneath either lifted button. */
+.battle-screen .screen-heading:has(> [data-wp-return="battle"]):has(> [data-wp-battle-utility]) {
+  display:grid!important;
+  grid-template-columns:48px minmax(0,1fr) 48px!important;
+  align-items:center;
+  gap:8px;
+}
+.battle-screen .screen-heading > [data-wp-return="battle"] { grid-column:1!important; }
+.battle-screen .screen-heading > div { grid-column:2!important; min-width:0; text-align:center; }
+.battle-screen .screen-heading > [data-wp-battle-utility] { grid-column:3!important; justify-self:end; }
+.battle-screen .kicker,.result-screen .kicker { color:#496343; }
+@media(max-width:460px){
+  .battle-screen .action-grid { grid-template-columns:repeat(2,minmax(0,1fr))!important; }
+  .battle-screen .action-button {
+    display:grid;
+    grid-template-columns:45px minmax(0,1fr);
+    column-gap:8px;
+    align-items:center;
+    min-height:92px;
+    text-align:start;
+  }
+  .battle-screen .action-button:last-child { grid-column:1/-1; }
+  .battle-screen .action-art { grid-row:span 2; width:45px; height:60px; margin:0; background-size:135px 72px; }
+  .battle-screen .action-art-shade { background-position-x:-45px; }
+  .battle-screen .action-art-sun { background-position-x:-90px; }
+  .battle-screen .action-name { align-self:end; margin-bottom:4px; font-size:.88rem; line-height:1.15; }
+  .battle-screen .action-delta { align-self:start; font-size:.68rem; line-height:1.25; }
+}

@@ -2926,5 +2926,21 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Щенячий дворик",
     "hi": "पिल्लों का आँगन",
     "ar": "حديقة الجراء"
+  },
+  "purrch-grove": {
+    "__localizedExact": true,
+    "en": "Purrch Grove",
+    "zh-Hant": "呼嚕小築",
+    "zh-Hans": "呼噜小筑",
+    "ja": "ゴロゴロの小屋",
+    "ko": "골골 작은 집",
+    "es": "Rincón Ronroneo",
+    "pt-BR": "Recanto Ronrom",
+    "fr": "Le refuge ronron",
+    "de": "Schnurrnest",
+    "it": "Il rifugio delle fusa",
+    "ru": "Мурчащий домик",
+    "hi": "म्याऊँ का आशियाना",
+    "ar": "بيت الخرخرة"
   }
 };

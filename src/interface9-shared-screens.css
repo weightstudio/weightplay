@@ -75,6 +75,12 @@ html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) 
   box-shadow: 0 5px 0 var(--wp-ui-shadow);
 }
 
+html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"])
+  [data-wp-frame-content="main"] > .game-page-info {
+  grid-column: 1 / -1;
+  justify-self: stretch;
+}
+
 html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) .game-page-info .game-info-hero {
   border-radius: var(--wp-ui-radius) var(--wp-ui-radius) 0 0;
   background: var(--wp-ui-header-image);
