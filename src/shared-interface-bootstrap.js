@@ -33,7 +33,7 @@
   }
 
 
-  const version = "20261006-interface7-physical-header-targets-v3";
+  const version = "20261021-wordle-v21-i9-shared-progress1";
   const assetUrl = (name) => new URL(name, `${location.origin}/src/`).href;
 
   const addStylesheet = (name) => {

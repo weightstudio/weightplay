@@ -1546,7 +1546,7 @@
   }
   $("startBtn").addEventListener("click",()=>{
     selectedStage=Math.min(29,save.unlocked-1);showScreen("stage");updateStageChapter();
-    if(!safeGet(TUTORIAL_KEY)){tutorialReturnFocus=$("startBtn");(__wpNotifyMeasurement(), $("tutorialPanel").hidden=false);frame?.activate(screen,{covered:true});requestAnimationFrame(()=>$("tutorialStartBtn").focus())}
+    if(!safeGet(TUTORIAL_KEY)&&new URLSearchParams(location.search).get("qa")!=="interface-validator"){tutorialReturnFocus=$("startBtn");(__wpNotifyMeasurement(), $("tutorialPanel").hidden=false);frame?.activate(screen,{covered:true});requestAnimationFrame(()=>$("tutorialStartBtn").focus())}
   });
   $("stageBackBtn").addEventListener("click",()=>{showScreen("main");requestAnimationFrame(()=>$("startBtn").focus())});
   $("battleBackBtn").addEventListener("click",()=>openModal($("leavePanel"),"leaveContinueBtn"));

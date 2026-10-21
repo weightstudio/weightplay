@@ -1120,11 +1120,16 @@ body[data-wp-game-id="animal-trap-trail"] .stage-list > .wp-stage-card-clipped {
   box-sizing: border-box !important;
   display: flex !important;
   align-items: center;
+  gap: 8px !important;
   width: 100%;
   height: 44px !important;
   min-height: 0 !important;
   max-height: 44px !important;
   padding-block: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
   overflow: hidden;
   margin: 0 !important;
 }

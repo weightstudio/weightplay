@@ -2,6 +2,7 @@
 window.HoneyShieldStageConfig = ({save, text}) => ({
   count:30,
   poster:'/assets/interface7-redrawn/animal-honey-shield.webp',
+  background:'/assets/lobby-block-atmosphere.svg',
   stage(index) {
     const state=save(), chapter=Math.floor(index/5), chapterName=text('chapters')[chapter], rule=text('chapterRules')[chapter];
     return {

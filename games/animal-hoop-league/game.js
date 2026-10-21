@@ -46,16 +46,15 @@
   const read = (k, fallback) => {try{return localStorage.getItem(k) || fallback;}catch{return fallback;}};
   let best = Math.max(0,Math.min(6,Number(read(key,0))||0)), records={};
   try { records=JSON.parse(read(recordKey,'{}')); if(!records||Array.isArray(records)||typeof records!=='object')records={}; } catch {}
+  let selectedStageIndex=Math.min(5,best), stageController=null;
   const state={screen:'main', round:newRound(1), charging:false, power:0, direction:1, flight:null, paused:false, raf:0, last:0, feedback:'', feedbackUntil:0, pointer:null};
   let roundKey=null,restart=false,ended=false,outcome='complete';
   const readMeasurement=()=>({screen:state.screen==='battle'&&!ended?'battle':state.screen==='result'?null:state.screen,roundKey,started:Boolean(roundKey),ended,outcome,restart,paused:state.paused||document.hidden,node:document.body,activityMode:'input',idleSeconds:300,keyboardKeys:[' ','Enter']});
   const notify=()=>{try{window.WonderAnalytics?.game?.observeState(readMeasurement);}catch{/* Optional shared measurement. */}};
   window.addEventListener('weightplay:analytics-ready',notify);
   const canvas=$('arena'), ctx=canvas.getContext('2d'), hero=new Image(); hero.src='../../assets/weightplay-character-boom-mane-lion-block-v1.webp';
-  const css=document.createElement('link'); css.rel='stylesheet'; css.href='interface-7-cleanup.css?v=20261018-hoop-rebuild1'; document.head.append(css);
   const result=$('result-screen'); result.classList.remove('screen'); result.removeAttribute('data-screen'); result.dataset.wpBattleSubstate='result';
   $('stage-screen').style.backgroundImage='none';
-  document.querySelector('.m5-cover').src=hero.src;
   $('battle-controls').innerHTML='<div class="hoop-meter-heading"><b id="hoop-meter-label"></b><span id="hoop-shot-count"></span></div><div id="hoop-release-track" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="hoop-zone"></i><i id="hoop-perfect"></i><i id="hoop-marker"></i></div><div class="hoop-meter-legend"><span>0</span><strong id="hoop-zone-label"></strong><span>100</span></div><button type="button" data-action="shoot" data-wp-primary-action class="primary-control" id="hoop-shoot"></button>';
   const shoot=$('hoop-shoot'), meter=$('hoop-release-track'), marker=$('hoop-marker');
   const score=document.createElement('div'); score.className='hoop-scoreboard'; score.innerHTML='<div><span id="hoop-you"></span><b id="hoop-score">0</b></div><span class="hoop-score-divider">:</span><div><span id="hoop-rival"></span><b id="hoop-opponent">0</b></div>'; canvas.parentElement.append(score);
@@ -72,18 +71,9 @@
   }
   const save=()=>{try{localStorage.setItem(key,String(best));localStorage.setItem(recordKey,JSON.stringify(records));}catch{}};
   function progress(){ $('main-progress').textContent=`${text()[16]} · ${best} / 6`; }
-  function stageCards(){
-    const unlocked=Math.min(6,best+1), names=locale.game().courts;
-    $('stage-list').replaceChildren(...courts.map((c,i)=>{
-      const b=document.createElement('button');b.className='m5-stage-card stage-card';b.dataset.stage=i+1;b.disabled=i+1>unlocked;b.setAttribute('aria-disabled',String(b.disabled));
-      if(i+1===unlocked)b.classList.add('recommended');b.style.setProperty('--court-color',c.color);
-      const n=document.createElement('span');n.textContent=String(i+1).padStart(2,'0');
-      const title=document.createElement('strong'); title.textContent=names[i];
-      const detail=document.createElement('small');detail.textContent=b.disabled?'🔒':`${c.shots} ${text()[15]} · ${text()[18]} ${c.rival.reduce((a,x)=>a+x,0)}`;
-      const rec=document.createElement('small');const value=Number(records[i+1])||0;rec.textContent=value?`${text()[16]} ${value} ★`:'—';b.append(n,title,detail,rec);b.onclick=()=>start(i+1);return b;
-    }));
-    requestAnimationFrame(()=>$('stage-list').querySelector('.recommended')?.scrollIntoView({inline:'center',block:'nearest'}));
-  }
+  function refreshStage(){stageController?.refresh(selectedStageIndex);}
+  function selectStage(index){selectedStageIndex=Math.max(0,Math.min(5,Math.round(index)));}
+  function openRecommendedStage(){selectedStageIndex=Math.min(5,best);show('stage');}
   function cancel(){state.charging=false;state.power=0;state.pointer=null;state.input=null;shoot.classList.remove('charging');}
   function show(scene){
     if(scene==='result'){ended=true;outcome=state.round.score>state.round.rival?'win':'lose';}
@@ -93,11 +83,15 @@
     for(const id of ['main','stage','battle']){const node=$(id+'-screen'),on=id===scene||(id==='battle'&&scene==='result');node.hidden=!on;node.classList.toggle('active',on);}
     result.hidden=scene!=='result';
     $('battle-controls').inert=scene==='result';
+    if(result.parentElement){for(const node of result.parentElement.children)if(node!==result&&node!==help&&node!==leave)node.inert=scene==='result';}
+    $('battle-screen').querySelector(':scope > header')?.toggleAttribute('inert',scene==='result');
+    if(scene==='stage')refreshStage();
     window.dispatchEvent(new CustomEvent(scene==='battle'?'weightplay:battle-open':'weightplay:shell-sync'));
+    window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));
     state.last=performance.now();
     notify();
   }
-  function start(stage){roundKey={};ended=false;outcome='complete';restart=false;state.round=newRound(stage);state.flight=null;state.feedback='';show('battle');$('stage-label').textContent=locale.game().courts[stage-1];hud();sound('game.start');shoot.focus({preventScroll:true});}
+  function start(stage){selectedStageIndex=stage-1;roundKey={};ended=false;outcome='complete';restart=false;state.round=newRound(stage);state.flight=null;state.feedback='';show('battle');$('stage-label').textContent=locale.game().courts[stage-1];hud();sound('game.start');shoot.focus({preventScroll:true});}
   function hud(){
     const t=text(),r=state.round,c=courts[r.stage-1],ch=challenge(r.stage,Math.min(r.shots,c.shots-1));
     $('score-label').textContent=`${r.shots} / ${c.shots}`;swap($('hoop-score'),r.score);swap($('hoop-opponent'),r.rival);
@@ -135,23 +129,25 @@
   window.addEventListener('blur',()=>{cancel();if(state.screen==='battle')state.paused=true;hud();});
   document.addEventListener('visibilitychange',()=>{cancel();if(document.hidden)state.paused=true;else if(help.hidden&&leave.hidden){state.paused=false;state.last=performance.now();}hud();});
   window.addEventListener('focus',()=>{if(help.hidden&&leave.hidden){state.paused=false;state.last=performance.now();}});
-  $('start-game').onclick=()=>{stageCards();show('stage');};$('stage-back').onclick=()=>show('main');
-  $('battle-back').onclick=()=>{if(state.screen==='result'){stageCards();show('stage');return;}cancel();state.paused=true;leave.querySelector('p').textContent=`${common(4)}? ${text()[1]}`;leave.hidden=false;$('hoop-continue').textContent=common(1);$('hoop-exit').textContent=common(4);$('hoop-continue').focus();};
+  $('start-game').onclick=openRecommendedStage;$('stage-back').onclick=()=>show('main');
+  $('battle-back').onclick=()=>{if(state.screen==='result'){selectedStageIndex=state.round.stage-1;show('stage');return;}cancel();state.paused=true;leave.querySelector('p').textContent=`${common(4)}? ${text()[1]}`;leave.hidden=false;$('hoop-continue').textContent=common(1);$('hoop-exit').textContent=common(4);$('hoop-continue').focus();};
   $('hoop-continue').onclick=()=>{leave.hidden=true;state.paused=false;state.last=performance.now();shoot.focus();};
-  $('hoop-exit').onclick=()=>{stageCards();show('stage');};
+  $('hoop-exit').onclick=()=>{selectedStageIndex=state.round.stage-1;show('stage');};
   leave.addEventListener('keydown',e=>{if(e.key==='Escape')$('hoop-continue').click();if(e.key==='Tab'){e.preventDefault();(document.activeElement===$('hoop-continue')?$('hoop-exit'):$('hoop-continue')).focus();}});
   $('battle-utility').onclick=()=>{cancel();state.paused=true;help.querySelector('p').textContent=`${text()[0]} ${text()[1]} ${text()[20]}`;help.hidden=false;help.querySelector('button').setAttribute('aria-label',common(3));help.querySelector('button').focus();};
   help.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();help.querySelector('button').click();}if(e.key==='Tab'){e.preventDefault();help.querySelector('button').focus();}});
   const overlayObserver=new MutationObserver(()=>{
-    const blocked=!help.hidden||!leave.hidden;
-    for(const node of $('battle-screen').children)if(node!==help&&node!==leave)node.inert=blocked;
+    const blocked=!help.hidden||!leave.hidden, parent=help.parentElement;
+    if(parent)for(const node of parent.children)if(node!==help&&node!==leave)node.inert=blocked||(state.screen==='result'&&node!==result);
+    $('battle-screen').querySelector(':scope > header')?.toggleAttribute('inert',blocked||state.screen==='result');
     if(!blocked)$('battle-controls').inert=state.screen==='result';
+    window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));
   });
   overlayObserver.observe(help,{attributes:true,attributeFilter:['hidden']});overlayObserver.observe(leave,{attributes:true,attributeFilter:['hidden']});
-  $('to-stages').onclick=()=>{stageCards();show('stage');};$('retry').onclick=()=>{start(state.round.stage);restart=true;notify();};$('next').onclick=()=>{if(state.round.score>state.round.rival&&state.round.stage<6)start(state.round.stage+1);};
+  $('to-stages').onclick=()=>{selectedStageIndex=state.round.stage-1;show('stage');};$('retry').onclick=()=>{start(state.round.stage);restart=true;notify();};$('next').onclick=()=>{if(state.round.score>state.round.rival&&state.round.stage<6)start(state.round.stage+1);};
   function localize(){
     const t=text();document.querySelectorAll('[data-m5-lede]').forEach(n=>n.textContent=t[0]);document.querySelectorAll('[data-m5-guide]').forEach(n=>n.textContent=`${t[1]} ${t[19]} ${t[20]}`);
-    steps.querySelectorAll('i').forEach((n,i)=>n.textContent=t[i+2]);$('hoop-zone-label').textContent=t[3];$('hoop-you').textContent=t[17];$('hoop-rival').textContent=t[18];meter.setAttribute('aria-label',t[3]);progress();stageCards();hud();
+    steps.querySelectorAll('i').forEach((n,i)=>n.textContent=t[i+2]);$('hoop-zone-label').textContent=t[3];$('hoop-you').textContent=t[17];$('hoop-rival').textContent=t[18];meter.setAttribute('aria-label',t[3]);progress();refreshStage();hud();
     document.querySelectorAll('.game-info-tags > span').forEach((n,i)=>n.textContent=t[i+2]);
   }
   window.addEventListener('weightplay:market-locale-change',localize);
@@ -201,9 +197,23 @@
     const ch=challenge(state.round.stage,state.round.shots);meter.classList.toggle('in-zone',state.charging&&Math.abs(state.power-ch.target)<=ch.tolerance);
     if(state.screen==='battle'||state.screen==='result')draw(now);state.raf=requestAnimationFrame(frame);
   }
-  document.body.dataset.gameVersion='v9';document.body.dataset.interfaceVersion='6';
+  document.body.dataset.wpGameVersion='v9';document.body.dataset.wpInterfaceVersion='9';
+  window.WeightPlayHoopLeagueI9=Object.freeze({
+    courts,
+    selectedStage:()=>selectedStageIndex,
+    currentScreen:()=>state.screen==='result'?'battle':state.screen,
+    isCovered:()=>state.screen==='result'||!help.hidden||!leave.hidden,
+    getCopy:()=>text(),
+    getBest:()=>best,
+    getRecords:()=>records,
+    getCourtName:index=>locale.game().courts[index],
+    selectStage,
+    startStage:index=>{const stage=index+1;if(stage<=Math.min(6,best+1))start(stage);},
+    attachStageController(controller){stageController=controller;refreshStage();},
+    refreshStage,
+  });
   const ready=()=>{localize();show('main');$('loadingPanel').hidden=true;$('loadingPanel').classList.add('hidden');};
-  Promise.all([hero.decode(),new Promise(resolve=>css.addEventListener('load',resolve,{once:true}))]).then(ready).catch(()=>{const panel=$('loadingPanel');panel.textContent='Unable to load court. Please reload.';});
+  hero.decode().then(ready).catch(()=>{const panel=$('loadingPanel');panel.classList.add('has-error');panel.textContent='Unable to load court. Please reload.';});
   state.last=performance.now();state.raf=requestAnimationFrame(frame);
   window.addEventListener('pagehide',()=>{cancel();cancelAnimationFrame(state.raf);},{once:true});
   window.addEventListener('pageshow',e=>{if(e.persisted){state.last=performance.now();state.raf=requestAnimationFrame(frame);}});

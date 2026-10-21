@@ -24,6 +24,12 @@
     style.dataset.wordleV20Style = "";
     document.head.append(style);
   }
+  if (!document.querySelector('link[href*="/games/wordle/art.css"]')) {
+    const artStyle = document.createElement("link");
+    artStyle.rel = "stylesheet";
+    artStyle.href = "/games/wordle/art.css?v=20261021-wordle-v21-i9-board-art1";
+    document.head.append(artStyle);
+  }
   const battleActions = battle?.querySelector(".battle-top > .control-row");
   const message = battle?.querySelector("#gameMessage");
   if (battleActions && message) {
@@ -39,10 +45,35 @@
     result.dataset.wpBattleSubstate = "result";
     battleCanvas.append(result);
   }
+  result?.setAttribute("role", "dialog");
+  result?.setAttribute("aria-modal", "true");
+  result?.setAttribute("aria-labelledby", "resultTitle");
+  result?.setAttribute("aria-describedby", "resultCopy");
   if (leaveModal && battleCanvas && leaveModal.parentElement !== battleCanvas) battleCanvas.append(leaveModal);
   const mainCopy = document.querySelector("#mainScreen .main-copy");
+  const mainObjective = document.querySelector("#objective");
+  const mainEyebrow = document.querySelector("#eyebrow");
+  const mainTagline = document.querySelector("#gameTagline");
+  const mainScreen = document.querySelector("#mainScreen");
+  const mainPanel = mainCopy?.closest(".main-panel");
+  const mainPosterFrame = mainPanel?.querySelector(".preview-art");
+  const mainPoster = mainPosterFrame?.querySelector("img.cover");
+  const mainProgress = mainPanel?.querySelector(".main-progress");
+  mainScreen?.classList.add("wp-standard-main-screen");
+  mainPanel?.classList.remove("arcade-panel", "main-panel");
+  mainPanel?.classList.add("wp-standard-main-composition");
+  mainPosterFrame?.classList.remove("preview-art");
+  mainPosterFrame?.classList.add("wp-standard-main-poster");
+  mainPoster?.classList.add("wp-standard-main-poster-media");
+  mainCopy?.classList.remove("main-copy");
+  mainCopy?.classList.add("wp-standard-main-copy");
+  mainObjective?.classList.remove("objective");
+  mainObjective?.classList.add("wp-standard-main-summary");
+  mainProgress?.classList.add("wp-standard-main-progress");
+  startButton?.classList.add("wp-standard-main-start");
+  if (mainCopy && mainObjective) mainObjective.before(...[mainEyebrow, mainTagline].filter(Boolean));
   mainCopy?.setAttribute("data-wp-frame-copy", "");
-  document.querySelector("#objective")?.setAttribute("data-wp-frame-summary", "");
+  mainObjective?.setAttribute("data-wp-frame-summary", "");
   for (const selector of ["#hintBtn", "#restartBtn", "#retryBtn", "#homeBtn", "#leaveContinue", "#leaveMain"]) {
     const action = document.querySelector(selector);
     if (action) action.dataset.wpFrameAction = ["#hintBtn", "#restartBtn", "#homeBtn", "#leaveMain"].includes(selector) ? "secondary" : "primary";
@@ -102,10 +133,16 @@
     if (document.body.dataset.screen === "battle" && !resultIsOpen()) coverBattle(true);
   }, true);
   window.WPPopularArcade?.mount("wordle");
+  // The shell bootstraps its legacy copy during mount. Paint the current
+  // localized Main summary immediately, before the first round is started.
+  window.WPWordleUI?.paintMain?.();
   // v17 is already assigned to the shared-audio migration in the version record.
   document.body.dataset.gameVersion = "v21";
   document.body.dataset.wpGameVersion = "v21";
   document.body.dataset.wordleReview = "owner-20261018";
+  // The shared frame already owns this header. The legacy shell initializer can
+  // leave an empty .battle-top wrapper that reserves a dead first grid row.
+  battle?.querySelectorAll(".battle-top").forEach(node => node.remove());
   sharedFrame.sync();
   syncBattleSubstate();
   const focusableLeaveActions = () => [...(leaveModal?.querySelectorAll("button:not([disabled])") || [])]

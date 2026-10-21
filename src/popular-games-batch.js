@@ -797,7 +797,11 @@
       soundButton.textContent = `${ui.sound}: ${enabled ? ui.soundOn : ui.soundOff}`;
     }
     const progress = document.querySelector("[data-wp-main-progress]");
-    if (progress) {
+    if (progress && window.WPWordleUI?.paintMain) {
+      // Wordle's I9 progress row is game-owned localized collection data.
+      // Keep the shared legacy shell from repainting its stale static copy.
+      window.WPWordleUI.paintMain(locale);
+    } else if (progress) {
       const label = progress.querySelector("strong");
       const value = progress.querySelector("span");
       if (label) label.textContent = ui.progressLabel;

@@ -32,6 +32,22 @@
     hi: {lock:"संकेतों का पालन", lockHelp:"पहली कोशिश या संकेत से पहले चुनें। दोहराए अक्षरों की संख्या समेत सभी पुराने संकेत मानें।", conflict:"यह अनुमान पुराने संकेत से मेल नहीं खाता। कोशिश नहीं घटी।", repeat:"यह अनुमान पहले दिया जा चुका है। कोशिश नहीं घटी।", notWord:"यह शब्द मान्य सूची में नहीं है। कोई और पाँच-अक्षर का अंग्रेज़ी शब्द चुनें; कोशिश नहीं घटेगी।", hint:"संकेत {n}/2: स्थान {p} पर {letter} है।", noHints:"दोनों संकेत इस्तेमाल हो चुके हैं।", revealing:"अक्षरों का परिणाम दिखाया जा रहा है…", solved:"शब्द मिल गया!", ended:"पहेली समाप्त", answer:"उत्तर: {word} · {stars}/3 सितारे", score:"अंक", guesses:"कोशिशें", hints:"संकेत", best:"सर्वश्रेष्ठ", collection:"सितारों का संग्रह", progress:"{stars}/36 सितारे · छह पहेलियाँ, दो तरीके।", again:"फिर खेलें", home:"मुख्य पृष्ठ पर", guideTitle:"संकेतों का पालन और सितारे", guide:"छह अंग्रेज़ी पहेलियाँ स्वतंत्र रूप से खेलें या पहली कोशिश अथवा संकेत से पहले संकेतों का पालन चुनें। इस तरीके में दोहराए अक्षरों की संख्या और खुली जगहों समेत सभी पुराने संकेतों का पालन ज़रूरी है। गलत प्रारूप या दोहराए अनुमान से कोशिश नहीं घटती। हर पहेली में अधिकतम दो संकेत हैं; हर संकेत एक अनिश्चित स्थान खोलता है और कोशिश नहीं खर्च करता। बिना संकेत तीन कोशिशों में हल करने पर तीन सितारे, अधिकतम एक संकेत के साथ चार कोशिशों में दो सितारे, अन्य सही उत्तर पर एक सितारा मिलता है। हर पहेली और तरीके का सर्वश्रेष्ठ संग्रहित होता है: कुल 36 सितारे, दोहराने से अतिरिक्त सितारे नहीं जुड़ते। सही उत्तर पर 500 अंक, हर बची कोशिश पर 100 अतिरिक्त, हर संकेत पर 50 कम और संकेतों के पालन वाले तरीके में 100 अतिरिक्त मिलते हैं; असफलता पर शून्य। रिकॉर्ड इसी ब्राउज़र में रहते हैं; संग्रहण बंद हो तो केवल इस बार की यात्रा तक। अनुमान के लिए सूची में मौजूद पाँच-अक्षर वाले अंग्रेज़ी शब्द चाहिए; दुर्लभ या क्षेत्रीय शब्द छूट सकते हैं।"},
     ar: {lock:"الالتزام بالأدلة", lockHelp:"اختر قبل أول تخمين أو تلميح. التزم بكل الأدلة، بما فيها عدد الأحرف المكررة.", conflict:"هذا التخمين يخالف دليلًا سابقًا. لم تُستهلك محاولة.", repeat:"جرّبت هذا التخمين من قبل. لم تُستهلك محاولة.", notWord:"هذه الكلمة غير موجودة في القائمة المقبولة. جرّب كلمة إنجليزية أخرى من خمسة أحرف؛ لن تُستهلك محاولة.", hint:"تلميح {n}/2: الحرف في الموضع {p} هو {letter}.", noHints:"استُخدم التلميحان.", revealing:"جارٍ كشف نتيجة التخمين…", solved:"وجدت الكلمة!", ended:"انتهى اللغز", answer:"الإجابة: {word} · {stars}/3 نجوم", score:"النقاط", guesses:"المحاولات", hints:"التلميحات", best:"الأفضل", collection:"مجموعة النجوم", progress:"{stars}/36 نجمة · ستة ألغاز بطريقتين.", again:"العب مجددًا", home:"العودة إلى الرئيسية", guideTitle:"الالتزام بالأدلة وجمع النجوم", guide:"العب الألغاز الإنجليزية الستة بحرية أو اختر الالتزام بالأدلة قبل أول تخمين أو تلميح. عند تفعيله يجب أن يطابق كل تخمين الأدلة السابقة، بما فيها عدد الأحرف المكررة والمواضع المكشوفة. الإدخال غير الصالح أو المكرر لا يستهلك محاولة. لكل لغز تلميحان يكشف كل منهما موضعًا غير مؤكد دون استهلاك تخمين. تحصل على ثلاث نجوم عند الحل خلال ثلاث محاولات دون تلميحات، ونجمتين خلال أربع محاولات مع تلميح واحد كحد أقصى، وإلا نجمة واحدة للحل. يُحفظ أفضل عدد لكل لغز وطريقة: 36 نجمة إجمالًا دون جمع إضافي بتكرار اللعب. الحل يمنح 500 نقطة، و100 لكل محاولة متبقية، ويخصم 50 لكل تلميح، ويضيف 100 عند الالتزام بالأدلة؛ عدم الحل يمنح صفرًا. تبقى السجلات في هذا المتصفح؛ إذا مُنع التخزين فتبقى لهذه الزيارة فقط. يجب أن تكون التخمينات كلمات إنجليزية معروفة من خمسة أحرف؛ قد لا تتضمن القائمة الكلمات النادرة أو الإقليمية."}
   };
+  const mainProgressCopy = {
+    en: ["Stars", "{stars}/36 · 6 puzzles"],
+    "zh-tw": ["星數", "{stars}/36 · 六題"],
+    "zh-cn": ["星数", "{stars}/36 · 六题"],
+    ja: ["星", "{stars}/36 · 6問"],
+    ko: ["별", "{stars}/36 · 6문제"],
+    es: ["Estrellas", "{stars}/36 · 6 retos"],
+    "pt-br": ["Estrelas", "{stars}/36 · 6 desafios"],
+    fr: ["Étoiles", "{stars}/36 · 6 jeux"],
+    de: ["Sterne", "{stars}/36 · 6 Rätsel"],
+    it: ["Stelle", "{stars}/36 · 6 enigmi"],
+    ru: ["Звёзды", "{stars}/36 · 6 задач"],
+    hi: ["सितारे", "{stars}/36 · 6 पहेलियाँ"],
+    ar: ["نجوم", "{stars}/36 · 6 ألغاز"],
+  };
+  for (const [locale, [collection, progress]] of Object.entries(mainProgressCopy)) Object.assign(TEXT[locale], {collection, progress});
   const localeKey = locale => ({"zh-Hant":"zh-tw","zh-Hans":"zh-cn","pt-BR":"pt-br"})[locale] || locale;
   const copy = locale => COPY[localeKey(locale)] || COPY.en;
   const text = locale => TEXT[localeKey(locale)] || TEXT.en;
@@ -334,9 +350,9 @@
     }
     if (tutorial && !tutorial.hidden) paintTutorial();
   }
-  function paintMain() {
-    if (!active) return;
-    const ui = text(active.locale), c = copy(active.locale);
+  function paintMain(localeOverride) {
+    const locale = localeOverride || active?.locale || document.documentElement.lang || "en";
+    const ui = text(locale), c = copy(locale);
     const progress = document.querySelector("[data-wp-main-progress]");
     if (progress) {
       progress.dataset.runtimeLocalize = "off";
@@ -345,16 +361,16 @@
       if (value) value.textContent = format(ui.progress, {stars:collectionTotal()});
     }
     const instruction = document.getElementById("mainInstruction");
-    if (instruction) { instruction.dataset.runtimeLocalize = "off"; instruction.textContent = coach(active.locale)[21]; }
+    if (instruction) { instruction.dataset.runtimeLocalize = "off"; instruction.textContent = coach(locale)[21]; }
     const objective = document.getElementById("objective");
-    if (objective) { objective.dataset.runtimeLocalize = "off"; objective.textContent = coach(active.locale)[1]; }
+    if (objective) { objective.dataset.runtimeLocalize = "off"; objective.textContent = coach(locale)[1]; }
     const guide = document.querySelector(".game-info-sections");
     if (guide) {
       let article = document.getElementById("wordleMasteryGuide");
       if (!article) { article = document.createElement("article"); article.id = "wordleMasteryGuide"; article.className = "game-info-section"; article.dataset.runtimeLocalize = "off"; article.innerHTML = "<h3></h3><p></p>"; guide.append(article); }
       article.querySelector("h3").textContent = ui.guideTitle;
       article.querySelector("p").textContent = ui.guide;
-      article.lang = active.locale;
+      article.lang = locale;
     }
   }
   function recordResult() {
@@ -393,7 +409,9 @@
     if (focus && resultPresented !== state) {
       resultPresented = state;
       retry.focus({preventScroll:true});
-      void tween(result.querySelector(".arcade-panel"), [{opacity:0, transform:"translateY(12px) scale(.98)"}, {opacity:1, transform:"translateY(0) scale(1)"}], {duration:260}, false);
+      // Keep touch targets at their shared physical minimum during the
+      // entrance; scaling the whole card to .98 made 44px actions 43.12px.
+      void tween(result.querySelector(".arcade-panel"), [{opacity:0, transform:"translateY(12px)"}, {opacity:1, transform:"translateY(0)"}], {duration:260}, false);
     }
     paintMain();
   }
@@ -521,7 +539,7 @@
     if (reduced.matches) animations.forEach(entry => { if (!entry.gameplay || !pauseReasons.size) entry.animation.finish(); });
   });
   window.WPWordleUI = {
-    render, feedback, copy, onScene, presentResult,
+    render, feedback, copy, onScene, presentResult, paintMain,
     rules:Object.freeze({isAcceptedWord, respectsClues, scoreFor, starsFor, summarizeClues}),
     locales:Object.freeze({copy:COPY, text:TEXT, coach:window.WPWordleCoachCopy})
   };
