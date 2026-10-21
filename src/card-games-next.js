@@ -2020,6 +2020,36 @@
     const result = document.querySelector("#resultOverlay");
     const resultTitle = document.querySelector("#resultTitle");
     const resultText = document.querySelector("#resultText");
+    let ginResultReturnFocus = null;
+    const ginResultControls = () => [...(result?.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])') || [])]
+      .filter((control) => control.getClientRects().length > 0);
+    const focusGinResult = () => ginResultControls()[0]?.focus({ preventScroll: true });
+    const restoreGinBattleFocus = () => {
+      if (id !== "gin-rummy") return;
+      const remembered = ginResultReturnFocus;
+      const nextAction = [...(actions?.querySelectorAll("button:not([disabled])") || [])].find((control) => control.getClientRects().length > 0);
+      const target = remembered?.isConnected && !remembered.disabled && remembered.getClientRects().length > 0
+        ? remembered
+        : nextAction || document.querySelector('#battleScreen [data-wp-return="battle"]');
+      target?.focus({ preventScroll: true });
+      ginResultReturnFocus = null;
+    };
+    if (id === "gin-rummy" && result) {
+      result.addEventListener("keydown", (event) => {
+        if (result.hidden || event.key !== "Tab") return;
+        const controls = ginResultControls();
+        if (!controls.length) return;
+        const first = controls[0];
+        const last = controls.at(-1);
+        if (event.shiftKey && (document.activeElement === first || !result.contains(document.activeElement))) {
+          event.preventDefault();
+          last.focus({ preventScroll: true });
+        } else if (!event.shiftKey && (document.activeElement === last || !result.contains(document.activeElement))) {
+          event.preventDefault();
+          first.focus({ preventScroll: true });
+        }
+      });
+    }
     const audioButton = document.querySelector("#soundBtn");
     let battleUtility = document.querySelector("[data-wp-battle-utility]");
     const localeSelect = document.querySelector("#localeSelect");
@@ -2449,7 +2479,12 @@
           result.dataset.outcome = won ? "win" : "loss";
           resultText.dataset.cribbageResultMastery = message ? "true" : "false";
         }
+        if (id === "gin-rummy" && result.hidden) {
+          const active = document.activeElement;
+          ginResultReturnFocus = active instanceof HTMLElement && battle?.contains(active) && !result.contains(active) ? active : null;
+        }
         (__wpNotifyMeasurement(), result.hidden = false);
+        if (id === "gin-rummy") window.requestAnimationFrame(() => { if (!result.hidden) focusGinResult(); });
         if (id === "casino") { if (won === true) playCardGameCue("win"); else if (won === false) playCardGameCue("lose"); }
         else sound?.[won === null ? "place" : won ? "win" : "reject"]?.();
 
@@ -2579,9 +2614,20 @@
       if (id === "old-maid") oldMaidTrack("back", { source: "battle" });
       controller.openMain();
     });
-    document.querySelector("#resultNewGame")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("new_game", { source: "result" }); (__wpNotifyMeasurement(), result.hidden = true); game.reset(); controller.openBattle(); });
-    document.querySelector("#resultRestart")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("restart", { source: "result" }); resultRecorded = false; (__wpNotifyMeasurement(), result.hidden = true); __wpReplayStart(() => game.reset()); render(); });
-    document.querySelector("#resultClose")?.addEventListener("click", () => { if (id === "old-maid" || id === "hearts") { if (id === "old-maid") oldMaidTrack("back", { source: "result" }); controller.openMain(); } else { (__wpNotifyMeasurement(), result.hidden = true); render(); } });
+    document.querySelector("#resultNewGame")?.addEventListener("click", () => {
+      if (id === "old-maid") oldMaidTrack("new_game", { source: "result" });
+      (__wpNotifyMeasurement(), result.hidden = true); game.reset(); controller.openBattle();
+      if (id === "gin-rummy") window.requestAnimationFrame(restoreGinBattleFocus);
+    });
+    document.querySelector("#resultRestart")?.addEventListener("click", () => {
+      if (id === "old-maid") oldMaidTrack("restart", { source: "result" });
+      resultRecorded = false; (__wpNotifyMeasurement(), result.hidden = true); __wpReplayStart(() => game.reset()); render();
+      if (id === "gin-rummy") window.requestAnimationFrame(restoreGinBattleFocus);
+    });
+    document.querySelector("#resultClose")?.addEventListener("click", () => {
+      if (id === "old-maid" || id === "hearts") { if (id === "old-maid") oldMaidTrack("back", { source: "result" }); controller.openMain(); }
+      else { (__wpNotifyMeasurement(), result.hidden = true); render(); if (id === "gin-rummy") window.requestAnimationFrame(restoreGinBattleFocus); }
+    });
     document.querySelector("#startBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("old_maid_start", { source: "main" }); game.reset(); controller.openBattle(); });
     document.querySelector("#restartBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("restart", { source: "main" }); __wpReplayStart(() => game.reset()); controller.openBattle(); });
     document.querySelector("#newGameBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("new_game", { source: "main" }); game.reset(); controller.openBattle(); });
@@ -2617,6 +2663,9 @@
       window.location.reload();
     });
     const ensureMainControls = () => {
+      // Gin Rummy I9 keeps one authored Start action on Main; replay choices
+      // remain in the Battle-owned Result panel.
+      if (id === "gin-rummy" && /^9(?:\.|$)/u.test(document.body?.dataset.wpInterfaceVersion || "")) return;
       const copy = document.querySelector(".wp-standard-main-copy") || document.querySelector(".main-copy");
       if (!copy || copy.querySelector("[data-card-main-controls]")) return;
       const row = document.createElement("div");
@@ -2668,7 +2717,8 @@
       if (battleRenderTimer !== null) window.clearInterval(battleRenderTimer);
     }, { once: true });
     let mainControlAttempts = 0;
-    const mainControlTimer = window.setInterval(() => { ensureMainControls(); mainControlAttempts += 1; if (document.querySelector("[data-card-main-controls]") || mainControlAttempts > 40) window.clearInterval(mainControlTimer); }, 50);
+    const mainControlsRequired = !(id === "gin-rummy" && /^9(?:\.|$)/u.test(document.body?.dataset.wpInterfaceVersion || ""));
+    const mainControlTimer = mainControlsRequired ? window.setInterval(() => { ensureMainControls(); mainControlAttempts += 1; if (document.querySelector("[data-card-main-controls]") || mainControlAttempts > 40) window.clearInterval(mainControlTimer); }, 50) : null;
 
   if (__wpMeasurement.screen === null && !__wpMeasurement.started) { __wpMeasurement.screen = "main"; __wpNotifyMeasurement(); }
 }

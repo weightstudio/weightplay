@@ -407,6 +407,10 @@
     $("guideStartBtn").addEventListener("click", () => setScreen("stage"));
     $("stageBackBtn").addEventListener("click", () => setScreen("main"));
     $("battleBackBtn").addEventListener("click", () => setScreen("stage"));
+    $("stageTab").addEventListener("click", () => {
+      stageSelector?.select(state.selectedStage, { focus: true });
+      $("stageList").querySelector('[aria-current="true"]')?.focus({ preventScroll: true });
+    });
     $("checkBtn").addEventListener("click", checkBoard);
     $("resetBtn").addEventListener("click", resetBoard);
     $("leaveBtn").addEventListener("click", openLeaveDialog);

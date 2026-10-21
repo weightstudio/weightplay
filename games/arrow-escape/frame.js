@@ -1,117 +1,122 @@
-/* Game content bindings only. Shared frame owns headers and preferences. */
+/* Arrow Escape content adapter; shared frame and Play UI own screen geometry. */
 (() => {
-  'use strict';
-  const artStyles = document.createElement('link');
-  artStyles.rel = 'stylesheet';
-  artStyles.href = '/games/arrow-escape/block-art.css';
+  "use strict";
+
+  const $ = (id) => document.getElementById(id);
+  const root = $("gameFrame");
+  const main = $("mainScreen");
+  const stage = $("stageScreen");
+  const battle = $("battleScreen");
+  const game = window.ArrowEscapeGame;
+  const localeSelect = $("localeSelect");
+
+  if (!game || !window.WeightPlayPlayUI || !window.ArrowEscapeStageConfig) {
+    throw new Error("ARROW_ESCAPE_I9_DEPENDENCIES_REQUIRED");
+  }
+
+  const artStyles = document.createElement("link");
+  artStyles.rel = "stylesheet";
+  artStyles.href = "/games/arrow-escape/block-art.css?v=20261021-arrow-escape-i9";
   document.head.append(artStyles);
-  const $ = id => document.getElementById(id);
-  const root = $('gameFrame'), main = $('mainScreen');
-  // Legacy full-viewport wrapper must not insert blank space before the guide.
-  $('mainGroup').style.minHeight = '0';
-  const stage = root.querySelector('.stage-canvas'), battle = $('battleLive');
-  const select = $('localeSelect');
-  // Keep runtime locale switching aligned with the exact public titles registered
-  // for this game. SEO comparison prose must not invent transliterated aliases.
-  const exactTitleReplacements = {
-    ja: ['アローエスケープ', 'アロー・エスケープ'],
-    ko: ['애로우 이스케이프', '화살표 탈출'],
-    fr: ['Arrow Escape', 'Évasion des flèches'],
-    de: ['Arrow Escape', 'Pfeilflucht'],
-    it: ['Fuga delle Frecce', 'Fuga delle frecce'],
-    hi: ['एरो एस्केप', 'तीरों से बचाव'],
-  };
-  const normalizeExactOwnedTitle = () => {
-    const locale = select.value || document.documentElement.lang;
-    const replacement = exactTitleReplacements[locale];
-    if (!replacement) return;
-    const [alias, exact] = replacement;
-    document.querySelectorAll('[data-arrow-compare="body"], [data-arrow-compare="disclaimer"]').forEach(node => {
-      if (node.textContent.includes(alias)) node.textContent = node.textContent.split(alias).join(exact);
-    });
-    [document.querySelector('.poster'), document.querySelector('#resultModal img')].forEach(img => {
-      if (img?.alt?.includes(alias)) img.alt = img.alt.split(alias).join(exact);
-    });
-  };
-  select.addEventListener('change', () => queueMicrotask(normalizeExactOwnedTitle));
-  queueMicrotask(normalizeExactOwnedTitle);
-  // Retain IDs used by the original sound state handler without displaying
-  // a second preferences UI. The shared sound component uses WeightPlayAudio.
-  select.hidden = true;
-  root.append(select);
-  main.querySelector('.main-controls').hidden = true;
-  const mainHeader = main.querySelector('header');
-  mainHeader.querySelector('strong').setAttribute('data-wp-frame-title', '');
-  const hero = main.querySelector('.hero');
-  hero.classList.remove('hero');
-  const poster = hero.querySelector('.poster');
-  poster.classList.add('main-poster');
-  poster.setAttribute('data-wp-frame-poster', '');
-  const copy = hero.querySelector('.hero-copy');
-  copy.classList.remove('hero-copy');
-  copy.setAttribute('data-wp-frame-copy', '');
-  copy.querySelector('h1').hidden = true;
-  copy.querySelector('small').hidden = true;
-  copy.querySelector('p').setAttribute('data-wp-frame-summary', '');
-  $('mainProgress').setAttribute('data-wp-frame-progress', '');
-  $('startBtn').setAttribute('data-wp-frame-action', 'primary');
-  for (const id of ['hintBtn','restartBtn','battleHelp','helpClose','leaveContinue','leaveStage','resultStageBtn','retryBtn']) {
-    $(id).setAttribute('data-wp-frame-action', 'secondary');
+
+  // Retain the native locale source for the common Settings popover.
+  localeSelect.hidden = true;
+  root.append(localeSelect);
+  main.querySelector(".main-controls").hidden = true;
+
+  const mainHeader = main.querySelector(".main-header");
+  mainHeader.querySelector("strong").setAttribute("data-wp-frame-title", "");
+  const hero = main.querySelector(".hero");
+  hero.classList.remove("hero");
+  const poster = hero.querySelector(".poster");
+  poster.classList.add("main-poster");
+  poster.setAttribute("data-wp-frame-poster", "");
+  const copy = hero.querySelector(".hero-copy");
+  copy.classList.remove("hero-copy");
+  copy.setAttribute("data-wp-frame-copy", "");
+  copy.querySelector("h1").hidden = true;
+  copy.querySelector("small").hidden = true;
+  copy.querySelector("p").setAttribute("data-wp-frame-summary", "");
+  $("mainProgress").setAttribute("data-wp-frame-progress", "");
+  $("startBtn").setAttribute("data-wp-frame-action", "primary");
+  for (const id of ["hintBtn", "restartBtn", "battleHelp", "helpClose", "leaveContinue", "leaveStage", "resultStageBtn", "retryBtn"]) {
+    $(id).setAttribute("data-wp-frame-action", "secondary");
   }
-  $('nextBtn').setAttribute('data-wp-frame-action', 'primary');
-  const stageHeader = stage.querySelector('header');
-  const stageContent = document.createElement('div');
-  stageContent.className = 'arrow-stage-content';
-  stageContent.style.background = 'linear-gradient(#08202b55,#08202baa), url("/assets/arrow-escape/block-sky-castle-v1.webp") center / cover';
-  stage.append(stageContent);
-  stageContent.append($('stageSummary'), $('stageRail'));
-  stageHeader.querySelector('div').remove();
-  const footer = stage.querySelector('footer');
-  footer.setAttribute('data-wp-frame-nav', '');
-  footer.querySelectorAll('button').forEach(button => {
-    button.setAttribute('data-wp-frame-action', 'secondary');
+  $("nextBtn").setAttribute("data-wp-frame-action", "primary");
+
+  const stageHeader = stage.querySelector(".stage-header");
+  const stageWorkspace = $("stageWorkspace");
+  const battleHeader = battle.querySelector(".battle-header");
+  const battleContent = $("battleLive");
+  const guide = root.querySelector(".game-page-info");
+
+  const frame = window.WeightPlayScreenFrame.mount({
+    root,
+    localeSelect,
+    playUI: true,
+    scenes: {
+      main: { root: main, header: mainHeader, content: hero },
+      stage: { root: stage, header: stageHeader, content: stageWorkspace },
+      battle: { root: battle, header: battleHeader, content: battleContent },
+    },
   });
-  const battleHeader = battle.querySelector('header');
-  const battleContent = document.createElement('div');
-  battleContent.className = 'arrow-battle-content';
-  $('board').style.background = 'url("/assets/arrow-escape/block-board-v1.webp") center / 100% 100%';
-  $('board').style.borderRadius = '3px';
-  battleContent.style.background = 'linear-gradient(#08202b44,#08202b77), url("/assets/arrow-escape/block-sky-castle-v1.webp") center / cover';
-  for (const node of [...battle.children]) if (node !== battleHeader) battleContent.append(node);
-  battle.append(battleContent);
-  battleContent.querySelector('.battle-controls').append($('battleHelp'));
-  const info = document.createElement('div');
-  info.setAttribute('data-wp-frame-info', '');
-  info.append($('stageLabel'), ...battleHeader.querySelector('.battle-stats').children);
-  battleHeader.querySelector('.battle-stats').remove();
-  battleHeader.querySelector('.battle-title').remove();
-  battleContent.prepend(info);
-  for (const header of [stageHeader, battleHeader]) {
-    const title = document.createElement('span');
-    title.hidden = true;
-    title.setAttribute('data-wp-frame-title', '');
-    header.append(title);
-  }
-  const frame = window.WeightPlayScreenFrame.mount({root, localeSelect: select, scenes: {
-    main: {root: main, header: mainHeader, content: hero},
-    stage: {root: stage, header: stageHeader, content: stageContent},
-    battle: {root: battle, header: battleHeader, content: battleContent, headerInfo: info},
-  }});
-  const guide = root.querySelector('.game-page-info');
-  root.after(guide);
-  const modals = ['helpModal','leaveModal','resultModal'].map($);
+
+  const stageInfo = window.WeightPlayScreenFrame.createGroup();
+  stageInfo.add($("stageSummary"));
+  frame.stageTopUI.add(stageInfo);
+
+  const battleInfo = window.WeightPlayScreenFrame.createGroup();
+  battleInfo.add($("stageLabel"));
+  battleInfo.add($("movesValue").parentElement);
+  battleInfo.add($("leftValue").parentElement);
+  frame.battleTopUI.add(battleInfo);
+
+  const stageUI = window.WeightPlayPlayUI.mountStage({
+    page: stageWorkspace,
+    rail: $("stageRail"),
+    config: window.ArrowEscapeStageConfig.create(game),
+    selected: game.selectedStage - 1,
+    isActive: () => document.body.dataset.screen === "stage",
+    onSelect(index) {
+      game.setSelectedStage(index + 1);
+    },
+    onStart(index) {
+      game.startStage(index + 1);
+    },
+  });
+
+  if (guide) root.after(guide);
+  const modals = ["helpModal", "leaveModal", "resultModal"].map($);
   const sync = () => {
-    const scene = document.body.dataset.screen;
-    const covered = scene === 'battle' && modals.some(node => !node.hidden);
-    guide.hidden = scene !== 'main';
-    battleContent.inert = scene !== 'battle' || covered;
-    frame.activate(scene, {covered});
+    const scene = document.body.dataset.screen || "main";
+    const covered = scene === "battle" && modals.some((node) => !node.hidden);
+    if (guide) guide.hidden = scene !== "main";
+    if (scene === "stage") stageUI.refresh(game.selectedStage - 1);
+    else stageUI.cancel();
+    battleContent.inert = scene !== "battle" || covered;
+    frame.activate(scene, { covered });
+    if (scene === "battle") {
+      window.WeightPlayBattleCanvas?.sync?.();
+      frame.activate(scene, { covered });
+    }
   };
+
   const observer = new MutationObserver(sync);
-  observer.observe(document.body, {attributes:true, attributeFilter:['data-screen']});
-  modals.forEach(node => observer.observe(node, {attributes:true, attributeFilter:['hidden']}));
-  window.addEventListener('pagehide', e => {
-    if (!e.persisted) { observer.disconnect(); frame.destroy(); }
+  observer.observe(document.body, { attributes: true, attributeFilter: ["data-screen"] });
+  modals.forEach((node) => observer.observe(node, { attributes: true, attributeFilter: ["hidden"] }));
+  window.addEventListener("weightplay:stage-sync", sync);
+  window.addEventListener("weightplay:stage-cancel", () => stageUI.cancel());
+  window.addEventListener("wonder:locale-change", () => {
+    stageUI.refresh(game.selectedStage - 1);
   });
+  window.addEventListener("pagehide", (event) => {
+    if (!event.persisted) {
+      observer.disconnect();
+      stageUI.destroy();
+      frame.destroy();
+    }
+  });
+
+  frame.activate("main");
   sync();
 })();

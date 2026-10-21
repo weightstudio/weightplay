@@ -1,13 +1,4 @@
-/* Game-content artwork only; canonical frame retains all shared controls. */
-body { min-height: 100vh; }
-#stageRail .stage-card {
-  border-radius: var(--wp-ui-radius);
-  border-color: var(--wp-ui-line);
-  background: var(--wp-ui-background);
-  color: var(--wp-ui-text);
-}
-#stageRail .stage-card small { color: var(--wp-ui-muted); }
-#stageRail .stage-card[aria-current="true"] { outline-color: var(--wp-ui-gold); }
+/* Game-owned board and result artwork only; shared screens own all chrome. */
 .result-layout img { border-radius: var(--wp-ui-radius); }
 #gameFrame .modal .dialog {
   background: var(--wp-ui-background);

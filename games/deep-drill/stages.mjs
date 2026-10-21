@@ -4,11 +4,11 @@ const rows = [
  ['黃金支線','Golden Detour','gold','GSC',2], ['滿載而歸','Full Hold','cargo','CGS',15],
  ['礦脈之門','Vein Gate','balanced','CGC',2],
  ['冷泉入口','Coolant Spring','depth','WCG',0], ['冰水迴路','Cold Circuit','coolant','CWS',3],
- ['冷熱交替','Thermal Rhythm','gold','GWG',4], ['節能採礦','Efficient Route','cool','WCG',65],
+ ['冷熱交替','Thermal Rhythm','gold','GWG',4], ['金脈速採','Golden Circuit','gold','WCG',3],
  ['泉眼封層','Spring Seal','balanced','CWG',4],
  ['熔岩前緣','Magma Edge','depth','LCS',0], ['危險金脈','Risky Gold','gold','GLS',5],
  ['避火通道','Safe Passage','safe','LSC',0], ['熱流分岔','Thermal Fork','copper','CLG',7],
- ['熔岩閘門','Magma Gate','cool','LWG',60],
+ ['熔岩閘門','Magma Gate','depth','LWG',0],
  ['水晶回聲','Crystal Echo','crystal','XCS',3], ['輕觸晶簇','Gentle Touch','quality','XWX',4],
  ['晶金取捨','Crystal or Gold','gold','XGL',6], ['冷凝晶洞','Condensed Cavern','coolant','XWL',5],
  ['稜鏡封印','Prism Seal','quality','XWX',7],
@@ -21,18 +21,18 @@ const rows = [
 ];
 export const STAGES = rows.map(([zh,en,goal,pattern,quota],i)=>({id:i+1,zh,en,goal,pattern,quota,
  target:100, arc:Math.floor(i/5), checkpoint:i%5===4, pressure:i>=20, shift:i>=25,
- decision:['路線與收益','冷卻與回溫','熔岩與機殼','短按與完整度','洩壓與補給','多規則地心遠征'][Math.floor(i/5)]}));
+ decision:['路線與收益','水道與鑽力','熔岩與機殼','短按與完整度','洩壓與補給','多規則地心遠征'][Math.floor(i/5)]}));
 export const ROCKS = Object.freeze({
- S:{zh:'岩石',en:'Stone',color:0x647182,value:3,heat:9,hard:1,weight:1},
- C:{zh:'銅礦',en:'Copper',color:0xd88a51,value:9,heat:12,hard:1.15,weight:1},
- G:{zh:'金礦',en:'Gold',color:0xffd565,value:18,heat:16,hard:1.5,weight:2},
- W:{zh:'冷卻泉',en:'Coolant',color:0x4cdbd4,value:2,heat:-23,hard:.7,weight:0},
- L:{zh:'熔岩',en:'Magma',color:0xff623d,value:28,heat:34,hard:1.8,weight:2},
- X:{zh:'水晶',en:'Crystal',color:0x75bfff,value:30,heat:18,hard:1.7,weight:2},
- I:{zh:'永凍冰礦',en:'Frost',color:0xc1e5ff,value:12,heat:-15,hard:1.65,weight:1},
- B:{zh:'玄武岩',en:'Basalt',color:0x686887,value:14,heat:20,hard:2.1,weight:1},
- D:{zh:'瓦斯礦',en:'Gas Ore',color:0xa4d87d,value:24,heat:9,hard:1.2,weight:1},
- E:{zh:'能量礦',en:'Energy',color:0xffa9da,value:22,heat:-8,hard:1.4,weight:1},
+ S:{zh:'岩石',en:'Stone',color:0x647182,value:3,hard:1,weight:1},
+ C:{zh:'銅礦',en:'Copper',color:0xd88a51,value:9,hard:1.15,weight:1},
+ G:{zh:'金礦',en:'Gold',color:0xffd565,value:18,hard:1.5,weight:2},
+ W:{zh:'冷卻泉',en:'Coolant',color:0x4cdbd4,value:2,hard:.7,weight:0},
+ L:{zh:'熔岩',en:'Magma',color:0xff623d,value:28,hard:1.8,weight:2},
+ X:{zh:'水晶',en:'Crystal',color:0x75bfff,value:30,hard:1.7,weight:2},
+ I:{zh:'永凍冰礦',en:'Frost',color:0xc1e5ff,value:12,hard:1.65,weight:1},
+ B:{zh:'玄武岩',en:'Basalt',color:0x686887,value:14,hard:2.1,weight:1},
+ D:{zh:'瓦斯礦',en:'Gas Ore',color:0xa4d87d,value:24,hard:1.2,weight:1},
+ E:{zh:'能量礦',en:'Energy',color:0xffa9da,value:22,hard:1.4,weight:1},
 });
 export function seams(stage,row){
  const out=[...stage.pattern];
