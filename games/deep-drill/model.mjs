@@ -50,7 +50,7 @@ export function settle(save,r,reason){
  settleSystems(save,r,reason,first);
  r.events.push({type:'result',reason});return true;
 }
-// Route cells retain damage until they leave the nine-cell field. No render effect owns HP.
+// Route cells retain damage until they leave the 5×5 field. No render effect owns HP.
 export function cellState(r,row=r.row,lane=r.lane){
  const kind=row===r.row?runSeams(r)[lane]:seams(r.stage,row)[lane];
  const id=`${row}:${lane}`,seal=r.stage.checkpoint&&row===19;
@@ -77,7 +77,7 @@ function checkLoad(save,r){
 function advanceRow(save,r){r.row++;r.depth=r.row*5;r.progress=0;if(r.stage.pressure)r.pressure=Math.min(100,r.pressure+10);checkLoad(save,r);if(!r.ended&&r.depth>=r.stage.target)settle(save,r,'complete');}
 export function tick(save,r,dt,held){
  if(r.ended||r.paused)return;dt=Math.max(0,Math.min(.05,finite(dt)));
- const head=HEADS[save.head],up=save.upgrades,intent=stepSystems(save,r,dt,held);r.hitTTL=Math.max(0,r.hitTTL-dt);
+ const head=HEADS[save.head],up=save.upgrades,intent=stepSystems(save,r,dt,held);r.hitTTL=Math.max(0,r.hitTTL-dt);automaticTool(save,r,cellState(r));
  if(r.beamTarget){const target=r.beamTarget;r.beamTarget=null;const cell=cellState(r,target.row,target.lane);cell.hp=0;rewards(save,r,cell,true);r.events.push({type:'beam',lane:target.lane,row:target.row-r.row});checkLoad(save,r);if(!r.ended&&target.row===r.row&&target.lane===r.lane)advanceRow(save,r);return;}
  r.autoCooling=r.smartVenting;
  if(r.pressure>=24)r.helperVenting=true;if(r.pressure<4)r.helperVenting=false;
@@ -87,7 +87,6 @@ export function tick(save,r,dt,held){
   if(r.pressure>=20&&!r.venting){r.stats.vent++;r.venting=true;}
   r.pressure=Math.max(0,r.pressure-dt*(save.auto.cool?48:32));if(r.pressure<8)r.venting=false;return;}
  r.held=intent?r.held+dt:0;const cell=cellState(r),kind=cell.kind;r.lastKind=kind;
- if(automaticTool(save,r,cell)&&r.beamTarget)return;
  if(r.stage.pressure)r.pressure=Math.min(100,r.pressure+dt*(kind==='L'?16:8));
  if(r.pressure>=100){settle(save,r,'pressure');return;}
  if(cell.hp<=0){advanceRow(save,r);return;}

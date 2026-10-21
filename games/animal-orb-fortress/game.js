@@ -1163,8 +1163,8 @@
   let lastAimTrackedAt = 0;
   let save = loadSave();
   let selectedTier = 1;
-  let centeredStageFrame = 0;
-  let stagePool = [], stageBrowseLogical = 1;
+  let stageBrowseLogical = Math.max(1, Math.min(MAX_RAID_TIER, Number(save.bestRaid) || 1));
+  let stageSelector = null;
   let stageView = "raid";
   let state = makeState();
   let lastFrame = 0;
@@ -1177,6 +1177,7 @@
   let orbHudSignature = "";
   let soundAt = {};
   let preloadFinished = false;
+  let preloadFailed = false;
   let pauseFocusOwner = null;
   let resultDecisionCommitted = false;
 
@@ -1279,6 +1280,35 @@
   function localized(value) {
     if (!value || typeof value !== "object") return String(value || "");
     return value[locale] || value.en || "";
+  }
+
+  function ensureStageSelector() {
+    if (stageSelector) return stageSelector;
+    if (!window.WeightPlayPlayUI || !window.AnimalOrbFortressStageConfig) {
+      throw new Error("ORB_FORTRESS_SHARED_STAGE_DEPENDENCIES_REQUIRED");
+    }
+    stageSelector = window.WeightPlayPlayUI.mountStage({
+      page: nodes.stageRaidView,
+      rail: nodes.stageRail,
+      selected: Math.max(0, stageBrowseLogical - 1),
+      config: window.AnimalOrbFortressStageConfig({
+        raids: raidDefs,
+        translate: (key, data) => t(key, data),
+        localize: localized,
+        getSave: () => save,
+        wavesForTier,
+      }),
+      isActive: () => !nodes.stagePanel.hidden && stageView === "raid",
+      onSelect(index) {
+        stageBrowseLogical = index + 1;
+      },
+      onStart(index) {
+        stageBrowseLogical = index + 1;
+        selectedTier = stageBrowseLogical;
+        startRaid(selectedTier);
+      },
+    });
+    return stageSelector;
   }
 
   function nextRaidPreviewText(tier) {
@@ -1536,7 +1566,8 @@
     $("battleLive").inert = battleCovered;
     $("battleLive").setAttribute("aria-hidden", battleCovered ? "true" : "false");
     document.body.classList.toggle("orb-fortress-playing", panel !== nodes.menuPanel);
-    gameShell?.activate(panel);
+    const scene = panel === nodes.menuPanel ? "main" : panel === nodes.stagePanel ? "stage" : "battle";
+    gameShell?.activate(scene, { covered: battleCovered });
     if (panel === nodes.gamePanel || battleCovered) {
       window.dispatchEvent(new Event("weightplay:stage-sync"));
       window.dispatchEvent(new Event("weightplay:battle-sync"));
@@ -1551,10 +1582,7 @@
     }
     queueOrbArenaFit();
     if (panel === nodes.stagePanel) {
-      if (stageView === "raid" && nodes.stageRail.children.length) {
-        centerUnlockedStage();
-        focusUnlockedStage();
-      }
+      if (stageView === "raid") stageSelector?.refresh(stageBrowseLogical - 1);
     } else if (panel === nodes.menuPanel) {
       settleMainStartFocus();
     }
@@ -1706,9 +1734,12 @@
     ? new ResizeObserver(queueOrbArenaFit)
     : null;
   battlePanelResizeObserver?.observe(nodes.gamePanel);
+  // The shared frame keeps the Battle shell fixed while its inner play area
+  // finishes layout. Observe that owned content box too, so the game canvas
+  // cannot retain the pre-frame height until a later covered-state change.
+  battlePanelResizeObserver?.observe(nodes.battleLive);
 
   window.addEventListener?.("resize", refreshOrbBattleLayout, { passive: true });
-  window.addEventListener?.("resize", normalizeCompactStageLayout, { passive: true });
   window.addEventListener?.("orientationchange", refreshOrbBattleLayout, { passive: true });
   window.visualViewport?.addEventListener("resize", refreshOrbBattleLayout, { passive: true });
 
@@ -1771,34 +1802,50 @@
   function preload() {
     const entries = Object.entries(assets);
     let done = 0;
+    window.WeightPlayGameEntryLoader?.begin?.(entries.length);
+    const updateProgress = () => {
+      const pct = Math.round((done / entries.length) * 100);
+      nodes.loadingText.textContent = `${pct}%`;
+      nodes.loadingFill.style.width = `${pct}%`;
+      window.WeightPlayGameEntryLoader?.assetProgress?.(done, entries.length);
+    };
     const finish = () => {
-      if (preloadFinished) return;
+      if (preloadFinished || preloadFailed || done < entries.length) return;
       preloadFinished = true;
       nodes.loadingText.textContent = "100%";
       nodes.loadingFill.style.width = "100%";
-      nodes.loadingPanel.classList.add("is-hidden");
       renderMenu();
       draw();
-      maybeSmokeStart();
+      nodes.loadingPanel.classList.add("is-hidden");
+      window.WeightPlayGameEntryLoader?.ready?.();
     };
     entries.forEach(([key, src]) => {
       const img = new Image();
       img.decoding = "async";
-      img.src = src;
       images[key] = img;
-      img.onload = img.onerror = () => {
+      let settled = false;
+      const loaded = () => {
+        if (settled || preloadFailed) return;
+        settled = true;
         done += 1;
-        const pct = Math.round((done / entries.length) * 100);
-        nodes.loadingText.textContent = `${pct}%`;
-        nodes.loadingFill.style.width = `${pct}%`;
+        updateProgress();
         if (done >= entries.length) finish();
       };
+      const failed = () => {
+        if (settled || preloadFailed) return;
+        settled = true;
+        preloadFailed = true;
+        nodes.loadingPanel.classList.add("has-error");
+        window.WeightPlayGameEntryLoader?.fail?.();
+      };
+      img.addEventListener("load", loaded, { once: true });
+      img.addEventListener("error", failed, { once: true });
+      img.src = src;
+      if (img.complete) queueMicrotask(() => img.naturalWidth > 0 ? loaded() : failed());
     });
-    window.setTimeout(finish, 1800);
   }
 
   function exposeBasicReady() {
-    nodes.loadingPanel.classList.add("is-hidden");
     document.body.dataset.orbFortressBasicReady = "true";
     window.__ANIMAL_ORB_FORTRESS_BOOTED__ = true;
     window.__ANIMAL_ORB_FORTRESS_FIRST_SCREEN__ = {
@@ -1851,8 +1898,9 @@
       panel.setAttribute("aria-hidden", String(!active));
     });
     if (next === "raid") {
-      centerUnlockedStage();
-      if (focus) focusUnlockedStage();
+      const selector = ensureStageSelector();
+      if (focus) selector.select(stageBrowseLogical - 1, { focus: true, notify: false });
+      else selector.refresh(stageBrowseLogical - 1);
     } else if (focus) {
       window.requestAnimationFrame(() => {
         nodes.roomGrid.querySelector("button:not(:disabled)")?.focus({ preventScroll: true });
@@ -1867,21 +1915,9 @@
     nodes.bestRaidText.textContent = String(unlocked);
     nodes.starStoneText.textContent = String(save.starStones || 0);
     nodes.diamondText.textContent = String(walletDiamonds());
-    nodes.stageProgressText.textContent = t("stageProgress", progressData);
-    stageBrowseLogical = unlocked;
-    // Keep the small 30-card campaign in one real rail so it uses the
-    // catalog-wide drag/snap controller rather than a game-specific variant.
-    stagePool = Array.from({ length: MAX_RAID_TIER }, (_, poolIndex) => createStageCard(poolIndex));
-    nodes.stageRail.replaceChildren(...stagePool);
-    stagePool.forEach((card, index) => bindStageCard(card, index + 1));
-    nodes.stageRail.dataset.wpStageVirtualized = "full-deck";
-    nodes.stageRail.dataset.wpStagePoolSize = String(stagePool.length);
-    nodes.stageRail.dataset.wpStageTotal = String(MAX_RAID_TIER);
-    nodes.stageRail.dataset.wpStageWindowStart = "1";
-    nodes.stageRail.dataset.wpStageWindowEnd = String(MAX_RAID_TIER);
-    nodes.stageRail.dataset.wpStageRecycleCount = "0";
-    delete nodes.stageRail.dataset.wpStageVirtualDrag;
-    setCenteredStage(unlocked);
+    nodes.stageProgressText.textContent = `${unlocked}/${MAX_RAID_TIER}`;
+    nodes.stageProgressText.setAttribute("aria-label", t("stageProgress", progressData));
+    ensureStageSelector().refresh(stageBrowseLogical - 1);
     nodes.roomGrid.innerHTML = roomDefs
       .map((room) => {
         const level = save.rooms[room.id] || 0;
@@ -1902,141 +1938,10 @@
       })
       .join("");
     setStageView(stageView, false);
-    if (!nodes.stagePanel.classList.contains("is-hidden")) {
-      if (stageView === "raid") {
-        centerUnlockedStage();
-        focusUnlockedStage();
-      }
-    }
   }
 
-  function bindStageCard(card, tier) {
-    const raid = raidDefs[tier - 1], unlocked = Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1));
-    const locked = raid.tier > unlocked;
-    card.className = `raid-card${locked ? " is-locked" : ""}`;
-    card.dataset.tier = String(raid.tier);
-    card.dataset.index = String(raid.tier);
-    card.dataset.zone = String(raid.zone);
-    card.setAttribute("aria-disabled", String(locked));
-    card.setAttribute("aria-keyshortcuts", STAGE_KEYBOARD_SHORTCUTS);
-    card.setAttribute("aria-posinset", String(raid.tier));
-    card.setAttribute("aria-setsize", String(MAX_RAID_TIER));
-    card.innerHTML = `<span class="raid-number">${raid.tier}</span><strong>${localized(raid.name)}</strong><span>${localized(raid.desc)}</span><em><span>${t(raid.rule)}</span><span aria-hidden="true"> · </span>${locked ? `<span>${t("tierLocked")}</span>` : `<span>${t("enterRaid")}</span><span aria-hidden="true"> · </span><span>${wavesForTier(raid.tier)}</span> <span>${t("waves")}</span>`}</em>`;
-  }
-  function createStageCard(poolIndex) {
-    const card = document.createElement("button");
-    card.type = "button";
-    card.dataset.poolId = String(poolIndex);
-    return card;
-  }
-  function setCenteredStage(tier) {
-    stageBrowseLogical = tier;
-    nodes.stageRail.querySelectorAll(".raid-card").forEach((card) => {
-      const centered = Number(card.dataset.tier) === tier;
-      card.classList.toggle("is-centered", centered);
-      card.tabIndex = centered ? 0 : -1;
-      if (centered) card.setAttribute("aria-current", "true");
-      else card.removeAttribute("aria-current");
-    });
-  }
-  function ensureStageWindow(tier) {
-    setCenteredStage(Math.max(1, Math.min(MAX_RAID_TIER, Math.round(tier))));
-  }
-  function stageAnchorCenter(railRect = nodes.stageRail.getBoundingClientRect()) {
-    const compactLandscape = window.matchMedia?.("(max-height: 560px) and (orientation: landscape)").matches;
-    if (!compactLandscape) return railRect.left + railRect.width / 2;
-    const canvasRect = nodes.stagePanel.getBoundingClientRect();
-    return canvasRect.left + canvasRect.width / 2;
-  }
   function cancelStageMotion() {
-    if (centeredStageFrame) cancelAnimationFrame(centeredStageFrame);
-    centeredStageFrame = 0;
-    nodes.stageRail.style.removeProperty("scroll-behavior");
-    nodes.stageRail.style.removeProperty("scroll-snap-type");
-    nodes.stageRail.classList.remove("wp-stage-dragging");
-    delete nodes.stageRail.dataset.wpStageSettling;
-  }
-
-  function centerUnlockedStage() {
-    const unlocked = Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1));
-    stageBrowseLogical = unlocked;
-    ensureStageWindow(unlocked);
-    const card = nodes.stageRail.querySelector(`[data-tier="${unlocked}"]`);
-    if (!card || !nodes.stageRail.getClientRects().length) return;
-    const railRect = nodes.stageRail.getBoundingClientRect();
-    const cardRect = card.getBoundingClientRect();
-    const coordinateScale = railRect.width > 0 ? nodes.stageRail.clientWidth / railRect.width : 1;
-    const target = nodes.stageRail.scrollLeft
-      + ((cardRect.left + cardRect.width / 2) - stageAnchorCenter(railRect)) * coordinateScale;
-    // Chromium exposes an RTL overflow rail with a negative scroll range:
-    // zero is the rightmost edge and `clientWidth - scrollWidth` is the
-    // leftmost edge. Clamping to the LTR-only [0, max] range silently pins a
-    // progressed Arabic selection to Route 1 while aria-current moves to the
-    // requested route. Keep the same measured center target, but clamp against
-    // the direction's actual scroll interval.
-    const rtl = getComputedStyle(nodes.stageRail).direction === "rtl";
-    const minScroll = rtl ? Math.min(0, nodes.stageRail.clientWidth - nodes.stageRail.scrollWidth) : 0;
-    const maxScroll = rtl ? 0 : Math.max(0, nodes.stageRail.scrollWidth - nodes.stageRail.clientWidth);
-    const bounded = Math.max(minScroll, Math.min(target, maxScroll));
-    const previousBehavior = nodes.stageRail.style.getPropertyValue("scroll-behavior");
-    const previousPriority = nodes.stageRail.style.getPropertyPriority("scroll-behavior");
-    nodes.stageRail.style.setProperty("scroll-behavior", "auto", "important");
-    nodes.stageRail.scrollLeft = bounded;
-    if (previousBehavior) nodes.stageRail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
-    else nodes.stageRail.style.removeProperty("scroll-behavior");
-    updateCenteredStage();
-  }
-
-  function updateCenteredStage() {
-    const cards = [...nodes.stageRail.querySelectorAll(".raid-card")];
-    if (!cards.length || !nodes.stageRail.getClientRects().length) return;
-    const railRect = nodes.stageRail.getBoundingClientRect();
-    const railCenter = stageAnchorCenter(railRect);
-    let centeredCard = cards[0];
-    let centeredDistance = Number.POSITIVE_INFINITY;
-    cards.forEach((card) => {
-      const rect = card.getBoundingClientRect();
-      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
-      if (distance < centeredDistance) {
-        centeredCard = card;
-        centeredDistance = distance;
-      }
-    });
-    setCenteredStage(Number(centeredCard.dataset.tier));
-  }
-
-  function queueCenteredStageUpdate() {
-    if (centeredStageFrame) return;
-    centeredStageFrame = window.requestAnimationFrame(() => {
-      centeredStageFrame = 0;
-      updateCenteredStage();
-    });
-  }
-
-  function focusUnlockedStage() {
-    const unlocked = Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1));
-    nodes.stageRail.querySelector(`[data-tier="${unlocked}"]`)?.focus({ preventScroll: true });
-  }
-
-  function moveStageFocus(event) {
-    const current = event.target?.closest?.(".raid-card");
-    if (!current) return;
-    const supported = ["ArrowLeft", "ArrowRight", "Home", "End"];
-    if (!supported.includes(event.key)) return;
-    const rtl = getComputedStyle(nodes.stageRail).direction === "rtl";
-    const currentTier = Number(current.dataset.tier);
-    let nextTier = currentTier;
-    if (event.key === "Home") nextTier = 1;
-    else if (event.key === "End") nextTier = MAX_RAID_TIER;
-    else if (event.key === "ArrowLeft") nextTier = Math.max(1, Math.min(MAX_RAID_TIER, currentTier + (rtl ? 1 : -1)));
-    else nextTier = Math.max(1, Math.min(MAX_RAID_TIER, currentTier + (rtl ? -1 : 1)));
-    event.preventDefault();
-    stageBrowseLogical = nextTier;
-    ensureStageWindow(nextTier);
-    const next = nodes.stageRail.querySelector(`[data-tier="${nextTier}"]`);
-    setCenteredStage(nextTier);
-    next.focus({ preventScroll: true });
-    next.scrollIntoView({ block: "nearest", inline: "center" });
+    stageSelector?.cancel();
   }
 
   function restoreRoomUpgradeFocus(id) {
@@ -2066,6 +1971,7 @@
     cancelAnimationFrame(raf);
     (__wpNotifyMeasurement(), backgroundSuspended = false);
     selectedTier = Math.max(1, Math.min(MAX_RAID_TIER, Number(tier) || 1));
+    stageBrowseLogical = selectedTier;
     configureArena();
     state = makeState();
     keyboardAimDeg = -90;
@@ -3867,15 +3773,10 @@
     ctx.restore();
   }
 
-  function maybeSmokeStart() {
-    const params = new URLSearchParams(location.search);
-    if (params.get("smoke") === "1" && params.get("autostart") === "1") {
-      window.setTimeout(startRaid, 80);
-    }
-  }
-
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.startBtn.addEventListener("click", () => {
+    stageBrowseLogical = Math.max(1, Math.min(MAX_RAID_TIER, Number(save.bestRaid) || 1));
+    selectedTier = stageBrowseLogical;
     setStageView("raid");
     show(nodes.stagePanel);
     renderMenu();
@@ -3900,21 +3801,6 @@
       setStageView(next.dataset.stageView, false);
       next.focus({ preventScroll: true });
     });
-  });
-  nodes.stageRail.addEventListener("keydown", (event) => {
-    if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".raid-card")) event.preventDefault();
-    moveStageFocus(event);
-  });
-  nodes.stageRail.addEventListener("focusin", (event) => {
-    const card = event.target?.closest?.(".raid-card");
-    if (!card) return;
-    setCenteredStage(Number(card.dataset.tier));
-  });
-  nodes.stageRail.addEventListener("wonder:stage-snap", (event) => setCenteredStage(Number(event.detail?.index) || 1));
-  window.addEventListener("resize", queueCenteredStageUpdate, { passive: true });
-  nodes.stageRail.addEventListener("click", (event) => {
-    const tier = Number(event.target?.closest?.("[data-tier]")?.dataset?.tier);
-    if (tier && tier <= Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1))) startRaid(tier);
   });
   nodes.retryBtn.addEventListener("click", () => commitResultDecision(() => {
     track("retry", { tier: state.raidTier, wave: state.wave });

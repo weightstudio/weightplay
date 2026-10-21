@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {normalize,buy,newRun,tick,settle,capacity,upgradeCost,cellState,selectRoute,goalMet} from './model.mjs';
 import {STAGES,seams,ROCKS} from './stages.mjs';
-import {useTool,sealState,sealContact,automaticTool,claimAchievement} from './systems.mjs';
+import {useTool,sealState,sealContact,automaticTool,claimAchievement,planLane} from './systems.mjs';
 const advance=(s,r,seconds,held=false)=>{for(let i=0;i<Math.ceil(seconds*60)&&!r.ended;i++)tick(s,r,1/60,held);};
 test('five deterministic seams keep30 stable IDs,six seals and all objective families',()=>{
  assert.equal(STAGES.length,30);assert.deepEqual(STAGES.map(s=>s.id),Array.from({length:30},(_,i)=>i+1));assert.equal(STAGES.filter(s=>s.checkpoint).length,6);
@@ -13,6 +13,7 @@ test('old save investment,money,equipment and records survive schema4 migration 
  const s=normalize(raw);assert.equal(s.schema,4);assert.equal(s.coins,777);assert.equal(s.head,2);assert.equal(s.upgrades.cooling,5);assert.deepEqual(s.records,raw.records);assert.equal(s.toolBudget,0);assert.equal(s.auto.drill,true);assert.deepEqual(normalize(JSON.parse(JSON.stringify(s))),s);
 });
 test('fresh automatic drill progresses with no input or purchased automation;no heat',()=>{const s=normalize(),r=newRun(s);assert.equal(r.auto,true);assert.equal('heat'in r,false);advance(s,r,3);assert.ok(r.depth>0);assert.equal(s.auto.drill,false);});
+test('all pilot preferences retain mission collection and active seal authority',()=>{for(const policy of ['mission','safe','value']){const s=normalize({policy,unlocked:30}),r=newRun(s,1);const row=seams(r.stage,0);assert.equal(row[planLane(s,r)],'C');const seal=newRun(s,4);seal.row=19;assert.equal(planLane(s,seal),sealState(seal).lane);}});
 test('pause freezes both automatic mining and cooldowns;return settlement pays once',()=>{const s=normalize(),r=newRun(s);advance(s,r,2);r.paused=true;const old=JSON.stringify(r);advance(s,r,5);assert.equal(JSON.stringify(r),old);r.paused=false;settle(s,r,'return');const coins=s.coins;assert.equal(settle(s,r,'return'),false);assert.equal(s.coins,coins);});
 test('normal purchases reject insufficient funds and prototype keys atomically',()=>{const s=normalize(),raw=JSON.stringify(s);assert.equal(buy(s,'upgrade','power'),false);for(const k of ['__proto__','constructor','toString'])assert.equal(buy(s,'upgrade',k),false);assert.equal(JSON.stringify(s),raw);s.coins=500;assert.equal(buy(s,'upgrade','power'),true);assert.equal(s.coins,420);assert.equal(upgradeCost(s,'power'),124);});
 function firstCellSeconds(raw){const s=normalize(raw),r=newRun(s);for(let t=0;t<20;t+=1/60){tick(s,r,1/60,false);if(r.row>0)return t+1/60;}return 20;}

@@ -108,7 +108,7 @@ export function rateMultiplier(s,r){return (equipped(s,'exchanger')?1.2:1)*(r.bu
 export function planLane(s,r,policy=s.policy){
  const seal=sealState(r);if(seal)return seal.lane;const row=runSeams(r),stat=r.stats,q=r.stage.quota;
  if(r.pressure>50&&row.includes('W'))return row.indexOf('W');
- let want=null;if(policy==='mission')switch(r.stage.goal){
+ let want=null;switch(r.stage.goal){
   case'copper':if(stat.copper<q)want='C';break;case'gold':if(stat.gold<q)want='G';break;case'crystal':want='X';break;case'quality':want='X';break;
   case'coolant':if(stat.coolant<q)want='W';break;case'balanced':want=stat.copper<q?'C':stat.gold<Math.ceil(q/2)?'G':null;break;
   case'mastery':want=stat.quality<q?'X':stat.coolant<3?'W':null;break;
@@ -125,7 +125,7 @@ export function stepSystems(s,r,dt,held){
  if(!r.auto)return held;
  const state=sealState(r);r.autoThink-=dt;
  if(r.autoThink<=0&&(r.plannedRow!==r.row||state)){
-  r.autoThink=.18;r.plannedRow=r.row;const lane=planLane(s,r,'mission');
+  r.autoThink=.18;r.plannedRow=r.row;const lane=planLane(s,r);
   if(lane!==r.lane){r.lane=lane;r.progress=0;r.held=0;r.pulse=0;}
  }
  const needsVent=r.stage.goal==='vent'||r.stage.goal==='mastery'||(state&&(r.stage.arc===4||(r.stage.arc===5&&state.phase===2)));
@@ -140,9 +140,9 @@ export function stepSystems(s,r,dt,held){
  return true;
 }
 export function automaticTool(s,r,cell){
- if(!r.auto||r.toolAllowance<=r.toolsUsed||r.toolCooldown>0||activeSeal(r)||r.smartVenting)return false;
+ if(!r.auto||r.toolAllowance<=r.toolsUsed||r.toolCooldown>0||activeSeal(r))return false;
  const kind=cell.kind;
- const candidates=[['repair',r.hull<=35],['coolant',r.pressure>=85],['blast',kind==='B'&&cell.hp>120],['beam',!['X','W','L','D'].includes(kind)&&cell.hp>180]];
+ const candidates=[['repair',r.hull<=35],['coolant',r.pressure>=85],['blast',!r.smartVenting&&kind==='B'&&cell.hp>120],['beam',!r.smartVenting&&!['X','W','L','D'].includes(kind)&&cell.hp>180]];
  for(const [key,needed] of candidates)if(needed&&!r.abilityCooldowns[key]&&useTool(s,r,key,{row:r.row,lane:r.lane})){
   r.abilityCooldowns[key]={repair:10,coolant:8,beam:8,blast:20}[key];return true;
  }

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" data-wp-official-name>
   <head>
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-orb-fortress/"+location.search+location.hash)}catch{location.replace("/en/games/animal-orb-fortress/"+location.search+location.hash)}})();</script>
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-orb-fortress/")}catch{location.replace("/en/games/animal-orb-fortress/")}})();</script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
@@ -88,7 +88,7 @@
       </section>
 
       <section id="menuPanel" class="panel menu-panel" data-screen="main" data-wp-shell-slot="main">
-        <img class="cover" src="../../assets/animal-orb-fortress-cover-block-v1.webp" alt="" />
+        <img class="cover" src="../../assets/interface7-posters/animal-orb-fortress.webp" alt="" />
         <div class="menu-copy">
           <strong data-ui="menuTitle">Aim the spirit orb through the crystal fortress.</strong>
           <span class="main-summary" data-ui="menuHint">Choose a raid route, plan ricochet shots, and protect the fortress core.</span>
@@ -97,7 +97,7 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="panel stage-panel stage-screen is-hidden" data-screen="stage" data-wp-shell-slot="stage" data-wp-standard-stage-screen data-wp-stage-workspace data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="360" style="--wp-stage-art:url('../../assets/animal-orb-fortress-arena-block-v2.png')" aria-label="Raid map" aria-hidden="true" inert hidden>
+      <section id="stagePanel" class="panel stage-panel stage-screen is-hidden" data-screen="stage" data-wp-shell-slot="stage" data-wp-logical-stage-canvas aria-label="Raid map" aria-hidden="true" inert hidden>
         <header class="stage-header" data-wp-shell-header="stage">
           <button id="stageBackBtn" class="secondary-btn play-return" type="button" data-wp-return="stage" aria-label="Return to main">&larr;</button>
           <div>
@@ -112,7 +112,7 @@
             <div><span data-ui="diamonds">Diamonds</span><strong id="diamondText">0</strong></div>
           </div>
           <section id="stageRaidView" class="stage-view-panel stage-view-panel-raid is-active" data-stage-view-panel="raid" role="tabpanel" aria-labelledby="stageRaidTab">
-            <div id="stageRail" class="stage-rail" aria-label="Raid tiers" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep"></div>
+            <div id="stageRail" class="stage-rail" aria-label="Raid tiers" data-wp-stage-rail></div>
           </section>
           <section id="stageWorkshopView" class="stage-view-panel stage-view-panel-workshop" data-stage-view-panel="workshop" role="tabpanel" aria-labelledby="stageWorkshopTab" hidden aria-hidden="true" inert>
             <strong class="workshop-title" data-ui="fortressWorkshop">Fortress Workshop</strong>
@@ -125,7 +125,7 @@
         </nav>
       </section>
 
-      <section id="gamePanel" class="panel game-panel battle-screen is-hidden" data-screen="battle" data-wp-shell-slot="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-play-viewport aria-hidden="true" inert hidden>
+      <section id="gamePanel" class="panel game-panel battle-screen is-hidden" data-screen="battle" data-wp-shell-slot="battle" data-wp-logical-battle-canvas data-play-viewport aria-hidden="true" inert hidden>
         <div id="battleLive" class="battle-live" data-wp-shell-content="battle">
         <div class="hud-row" data-wp-shell-header="battle">
           <button id="battleBackBtn" class="secondary-btn play-return" type="button" data-wp-return="battle" aria-label="Return to raid map">&larr;</button>

@@ -45,3 +45,6 @@
 #breakGain{position:absolute;top:23%;right:14px;z-index:6;color:#ffdb82;font-size:24px;font-weight:900;pointer-events:none;opacity:0}.gain-pop{animation:gain .42s ease-out}@keyframes gain{0%{opacity:1;transform:scale(.85)}35%{opacity:1;transform:scale(1.15)}100%{opacity:0;transform:translateY(-16px)}}
 @media(max-height:500px) and (orientation:landscape){#battleContent{grid-template-columns:minmax(0,1fr) 235px;grid-template-rows:44px 44px minmax(26px,1fr) 48px 44px;gap:5px;padding:0 8px 4px}.mine{grid-column:1;grid-row:1/6}.depth-strip{grid-column:2;grid-row:1}.telemetry{grid-column:2;grid-row:2}.notice{grid-column:2;grid-row:3}.controls{grid-column:2;grid-row:4}.utility-row{grid-column:2;grid-row:5}.cell-name{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.gain-pop{animation:hit-still .18s linear!important;transform:none!important}.collecting #oreFlight{animation:none!important}.drilling #drill{box-shadow:none}}
+
+/* All persistent pause targets retain physical touch size. */
+.depth-strip button{min-height:44px!important;height:44px!important}
