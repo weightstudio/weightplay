@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <base href="/games/animal-bus-jam/" />
+
+    <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <script src="/src/game-title-registry.js?v=20261001-bus-jam-v19-mastery-motion" data-wp-game-title-registry></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
@@ -30,11 +31,16 @@
   <meta name="weightplay-scene-controls" content="immutable">
   <meta name="theme-color" content="#081622">
   <title>판코의 버스 정리 | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <link rel="stylesheet" href="style.css?v=20261001-bus-jam-v19-mastery-motion">
-  <link rel="stylesheet" href="../../src/game-ui-theme.css">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
+  <link rel="stylesheet" href="style.css?v=20261021-bus-jam-v20-i9">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260923-play-header48">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
+  <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261017-shared-play-spacing1">
+  <link rel="stylesheet" href="../../src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <meta name="weightplay-game-version" content="v20">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="대기열 맨 앞 승객을 같은 색 버스로 보내고 선입선출 대기 통로를 관리해 30개 정류장을 완료하세요. 대기를 줄이고 도움 없이 세 별을 노릴 수 있습니다." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -78,8 +84,8 @@
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam" data-wp-combined-sound="true">
-  <div id="gameFrame" data-wp-frame-root>
+<body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam" data-wp-game-version="v20" data-wp-interface-version="9" data-wp-combined-sound="true" data-runtime-localize="off">
+  <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
   <main id="main" class="screen main main-screen" data-screen="main">
     <header class="main-header">
       <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="WeightPlay로 돌아가기"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -104,32 +110,30 @@
         <li data-t="guideRule3">막히기 전에 실행 취소를 사용하세요.</li>
       </ol>
       </div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>대기열 중간의 승객을 보낼 수 있나요?</dt><dd>아니요. 노출된 각 대기열의 맨 앞만 움직일 수 있습니다.</dd></div><div><dt>왜 승객이 대기 통로로 갔나요?</dt><dd>현재 버스만 탑승시키고 다른 경로는 배차 순서대로 기다리기 때문입니다.</dd></div><div><dt>왜 터미널이 막혔나요?</dt><dd>대기 순서가 현재 경로를 막았고 노출된 승객으로 풀 수 없었기 때문입니다.</dd></div><div><dt>모든 터미널을 풀 수 있나요?</dt><dd>네. 기록된 30개의 해답 경로를 모두 자동으로 확인합니다.</dd></div><div><dt>별 세 개를 받으려면 어떻게 하나요?</dt><dd>정류장을 완료하고 표시된 대기 목표 이내로 움직이며 힌트와 되돌리기를 사용하지 마세요. 조건마다 별 하나를 받습니다.</dd></div><div><dt>힌트나 되돌리기를 쓰면 다음 정류장이 잠기나요?</dt><dd>아니요. 완료하면 다음 정류장이 열립니다. 힌트와 되돌리기는 해당 시도의 무도움 별에만 영향을 줍니다.</dd></div><div><dt>어떤 기록이 저장되나요?</dt><dd>각 정류장의 최고 별점과 대기 횟수가 브라우저에 저장됩니다. 낮은 기록이 더 좋은 기록을 덮어쓰지 않으며 다른 기기와 동기화되지 않습니다.</dd></div></dl></div>
-    <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>더 많은 관련 게임</h3><p>계획과 명확한 규칙을 즐길 수 있는 WeightPlay 공개 퍼즐도 만나 보세요.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-bamboo-pipes" href="/ko/games/animal-bamboo-pipes/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" data-final-src="/assets/weightplay-logo.png" alt="판코의 대나무 수로" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">판코의 대나무 수로</strong><span>판코의 대나무 관을 돌려 모든 수로에 물을 보내고 숲을 피우세요.</span></span></a></div></div></section>
+    <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><p>계획과 명확한 규칙을 즐길 수 있는 WeightPlay 공개 퍼즐도 만나 보세요.</p><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>판코의 대나무 수로</strong><span>판코의 대나무 관을 돌려 모든 수로에 물을 보내고 숲을 피우세요.</span></span></a><a class="game-info-related-card" href="/ko/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>크레이트바운드</strong><span>30개의 수제 하늘 창고에서 룬 화물을 밀고 당기며 얼음 레일, 신호, 자석, 연결 상자를 해결하세요.</span></span></a></div></div></section>
   </main>
 
-  <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-bus-jam-terminal-block-v16.webp')" hidden>
+  <main id="stage" class="screen stage" hidden>
     <header class="scene-header">
       <button data-back data-wp-return="stage" data-t-aria="back" aria-label="돌아가기">←</button>
       <h2 data-wp-frame-title hidden></h2>
+      <span id="progress" class="stage-progress" aria-live="polite"></span>
     </header>
     <div id="stageContent" class="stage-content">
-    <span id="progress" class="stage-progress"></span>
-    <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="정류장 목록"></section>
+      <section id="stageGrid" data-wp-stage-rail data-t-aria="stageList" aria-label="정류장 목록"></section>
     </div>
     <nav class="stage-tabs" data-wp-frame-nav data-t-aria="stageTabs" aria-label="스테이지 탐색">
-      <span aria-hidden="true"></span>
-      <button type="button" class="stage-tab active" aria-current="page" data-t="stages">스테이지</button>
-      <span aria-hidden="true"></span>
+      <button id="stageAction" type="button" data-t="stages">스테이지</button>
     </nav>
   </main>
 
-  <main id="battle" class="screen canvas battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
+  <main id="battle" class="screen battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
     <header class="scene-header">
       <button id="battleBack" data-back data-wp-return="battle" data-t-aria="back" aria-label="돌아가기">←</button>
       <strong data-wp-frame-title hidden></strong>
     </header>
     <section class="battle-content">
-      <div id="battleInfo" data-wp-frame-info><div><small id="chapter"></small><strong id="stageName"></strong></div><span id="remaining"></span></div>
+      <div id="battleInfo"><span id="chapter"></span><strong id="stageName"></strong><span id="remaining"></span></div>
       <div class="convoy-panel">
         <div class="panel-label"><span data-t="convoy">출발 순서</span><span id="dispatchGoal" class="dispatch-goal" aria-live="off"></span></div>
         <div id="buses" class="buses"></div>
@@ -186,7 +190,7 @@
   </dialog>
 
   </div>
-  <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
@@ -194,12 +198,14 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="levels.js?v=20261001-bus-jam-v19-mastery-motion"></script>
   <script src="mastery.js?v=20261001-bus-jam-v19-mastery-motion"></script>
-  <script src="locales.js?v=20261001-bus-jam-v19-mastery-motion"></script>
-  <script src="strategy-locales.js?v=20261004-bus-jam-text-growth-140-v1"></script>
+  <script src="locales.js?v=20261021-bus-jam-v20-i9"></script>
+  <script src="strategy-locales.js?v=20261021-bus-jam-v20-i9"></script>
   <script src="mastery-locales.js?v=20261001-bus-jam-v19-mastery-motion"></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-  <script src="frame.js?v=20260912-bus-block-v16"></script>
-  <script src="game.js?v=20261004-bus-jam-text-growth-140-v1"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+  <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
+  <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
+  <script src="stage-config.js?v=20261021-bus-jam-v20-i9"></script>
+  <script src="frame.js?v=20261021-bus-jam-v20-i9"></script>
+  <script src="game.js?v=20261021-bus-jam-v20-i9"></script>
 </body>
 </html>

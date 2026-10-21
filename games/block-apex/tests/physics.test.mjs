@@ -36,12 +36,13 @@ test('countdown freezes position and racing time; pause has no catch-up',()=>{
 test('fixed-step contract rejects invalid and oversized time increments',()=>{
   const race=createRace(1);for(const dt of [0,-1,NaN,Infinity,1/30])assert.throws(()=>stepRace(race,{},dt),/FIXED_STEP_REQUIRED/);
 });
-test('left-labelled input turns the kart left and right-labelled input turns it right',()=>{
+test('left and right inputs rotate according to the follow-camera axis convention',()=>{
   const left=running(1),right=running(1);left.cars=[left.player];right.cars=[right.player];
   const leftCar=at(left,.01,0,18),rightCar=at(right,.01,0,18),startYaw=leftCar.yaw;
   const leftSteer=steerFromActions(actionsFromKeys(['ArrowLeft'])),rightSteer=steerFromActions(actionsFromKeys(['ArrowRight']));
   for(let i=0;i<30;i++){stepRace(left,{throttle:1,steer:leftSteer},STEP);stepRace(right,{throttle:1,steer:rightSteer},STEP);}
-  assert.ok(angle(leftCar.yaw-startYaw)<0);assert.ok(angle(rightCar.yaw-startYaw)>0);
+  // The follow camera sees world +X on screen-left, so positive yaw is a visible left turn.
+  assert.ok(angle(leftCar.yaw-startYaw)>0);assert.ok(angle(rightCar.yaw-startYaw)<0);
 });
 test('a real steering controller can drive the entire introductory circuit',()=>{
   const race=createRace(1);for(let n=0;n<11000&&race.status!=='result';n++)stepRace(race,aiControl(race,race.player));

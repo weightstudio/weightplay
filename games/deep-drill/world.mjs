@@ -100,8 +100,11 @@ export function createWorld(canvas){
  const beamMesh=box(0x75bfff,scene,0,0,3,.13,1,.1);beamMesh.visible=false;let beamTTL=0,contactTTL=0;
  const helpers=[];for(let i=0;i<3;i++){const g=new THREE.Group();scene.add(g);g.position.set(i===0?-3.1:3.1,2.8-i*.44,2.6);box(palette.dark,g,0,0,0,.58,.32,.4);box(palette.brass,g,0,.12,.25,.68,.1,.13);box(palette.teal,g,0,0,.27,.2,.12,.06);mesh(tipGeo,palette.steel,g,0,-.3,0,.6,.6,.6).rotation.z=Math.PI;helpers.push(g);}
  const particles=[];for(let i=0;i<64;i++){const m=box(0xe8c776,scene,0,-100,3,.09,.09,.09);particles.push({m,life:0,vx:0,vy:0});}
- let viewLane=2,lastLane=-1;const viewX=lane=>(((lane-viewLane+7)%5)-2)*2.55;
- let lastRow=-1,lastHead=-1,elapsed=0,kick=0,lastStage=-1,travel=0,lastSeal=false,gateEnter=0;
+ // Columns never move in response to steering. Only the rig travels laterally.
+ const viewX=lane=>(lane-2)*2.55;
+ let currentRow=0,visualRow=0,rowVelocity=0,lastRun=null,frameNumber=0;
+ let lastHead=-1,elapsed=0,kick=0,lastSeal=false,gateEnter=0,beamTarget=null;
+ const worldY=absolute=>-(absolute-visualRow)*2.3-.4;
  function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;
   renderer.setSize(w,h,false);const ratio=w/h;
   // Fixed horizontal field prevents wide-screen information advantages.
@@ -109,31 +112,48 @@ export function createWorld(canvas){
   camera.top=1.8+half;camera.bottom=1.8-half;camera.updateProjectionMatrix();}
  const observer=new ResizeObserver(resize);observer.observe(canvas);resize();
  function update(save,r,dt,drilling,reduced=false){
-  elapsed+=dt;breakPulse=Math.max(0,breakPulse-dt);beamTTL=Math.max(0,beamTTL-dt);beamMesh.visible=beamTTL>0;contactTTL=Math.max(0,contactTTL-dt);helpers.forEach((g,i)=>{g.visible=i<save.helpers;g.rotation.z=!reduced&&drilling?Math.sin(elapsed*12+i)*.04:0;});const damping=reduced?1:Math.min(1,dt*13);
-  viewLane=r?.lane??2;const targetX=0;rig.position.x=0;
+  frameNumber++;elapsed+=dt;breakPulse=Math.max(0,breakPulse-dt);beamTTL=Math.max(0,beamTTL-dt);beamMesh.visible=beamTTL>0;contactTTL=Math.max(0,contactTTL-dt);helpers.forEach((g,i)=>{g.visible=i<save.helpers;g.rotation.z=!reduced&&drilling?Math.sin(elapsed*12+i)*.04:0;});
+  if(r!==lastRun){lastRun=r;visualRow=currentRow=r?.row??0;rowVelocity=0;rig.position.x=viewX(r?.lane??2);kick=0;beamTTL=contactTTL=breakPulse=gateEnter=0;beamTarget=null;beamMesh.visible=false;particles.forEach(p=>{p.life=0;p.m.visible=false;});lastSeal=false;}
+  const previousVisualRow=visualRow,targetX=viewX(r?.lane??2);currentRow=r?.row??0;
+  rig.position.x=reduced?targetX:rig.position.x+(targetX-rig.position.x)*(1-Math.exp(-dt*22));
+  if(r&&dt>0){
+   if(reduced){visualRow=currentRow;rowVelocity=0;}
+   else{
+    // Critically damped absolute-depth tracking retains velocity between rows.
+    // Catch-up stiffness bounds the lag at earned high drilling rates; no snap.
+    const omega=12+Math.max(0,currentRow-visualRow-.75)*24;
+    const change=visualRow-currentRow,step=(rowVelocity+omega*change)*dt,decay=Math.exp(-omega*dt);
+    visualRow=currentRow+(change+step)*decay;rowVelocity=(rowVelocity-omega*step)*decay;
+   }
+  }
+  const scrollDelta=(visualRow-previousVisualRow)*2.3;
   kick=Math.max(0,kick-dt*5);rig.position.y=1.5+(drilling&&!reduced?Math.sin(elapsed*55)*.018:0)+kick*.15;
   if(drilling)drill.rotation.y+=dt*(8+save.upgrades.speed*.8);else drill.rotation.y+=dt*.18;
   if(save.head!==lastHead){lastHead=save.head;drill.children.slice(0,6).forEach(m=>{m.material=material(HEADS[save.head].color);});plasmaRing.visible=save.head===3;}
   if(r){outline.position.x=targetX;outline.visible=true;outlineMat.color.setHex(breakPulse>0?0xffdf86:0x86f5dd);
-   const seal=sealState(r);if(seal&&!lastSeal)gateEnter=reduced?0:1;lastSeal=Boolean(seal);gateEnter=Math.max(0,gateEnter-dt*4);gates.forEach((g,i)=>{g.group.visible=Boolean(seal&&i===r.stage.arc);g.group.position.y=-gateEnter*.4;g.group.scale.y=1-gateEnter*.08;if(g.group.visible)g.cores.forEach((c,lane)=>{const weak=lane+1===seal.lane;c.center.material=material(weak?REGIONS[i].color:0x2c4450);c.ring.material=material(weak?0xffdc8d:0x38505c);c.shield.visible=!weak||(i===2&&!seal.open);c.detail.rotation.z=i===4?Math.sin(elapsed*.6)*.15:0;c.part.position.x=viewX(lane+1);c.part.scale.setScalar(weak&&r.seal.hitFlash>0?1+r.seal.hitFlash*.12:1);});});
-   if(r.row!==lastRow||r.stage.id!==lastStage||r.lane!==lastLane){travel=lastStage===r.stage.id&&r.row>lastRow&&!reduced?1:0;lastRow=r.row;lastStage=r.stage.id;lastLane=r.lane;
+   outline.position.y=worldY(r.row);
+   const seal=sealState(r);if(seal&&!lastSeal)gateEnter=reduced?0:1;lastSeal=Boolean(seal);gateEnter=Math.max(0,gateEnter-dt*4);gates.forEach((g,i)=>{g.group.visible=Boolean(seal&&i===r.stage.arc);g.group.position.y=worldY(r.row)+.4-gateEnter*.4;g.group.scale.y=1-gateEnter*.08;if(g.group.visible)g.cores.forEach((c,lane)=>{const weak=lane+1===seal.lane;c.center.material=material(weak?REGIONS[i].color:0x2c4450);c.ring.material=material(weak?0xffdc8d:0x38505c);c.shield.visible=!weak||(i===2&&!seal.open);c.detail.rotation.z=i===4?Math.sin(elapsed*.6)*.15:0;c.part.position.x=viewX(lane+1);c.part.scale.setScalar(weak&&r.seal.hitFlash>0?1+r.seal.hitFlash*.12:1);});});
     rocks.forEach(({group,body,ore,row,lane})=>{
-     const offset=row-2,absolute=r.row+offset,valid=absolute>=0&&absolute<r.stage.layers;const kind=valid?runSeams(r,offset)[lane]:'S',rock=ROCKS[kind];body.material=material(row>=5?REGIONS[r.stage.arc].dark:kind==='L'?0x803e36:kind==='I'?0x436878:row%2?REGIONS[r.stage.arc].dark:0x4b6070);
-     ore.forEach((m,i)=>{m.material=material(rock.color);m.scale.setScalar(kind==='S'?.55:kind==='X'?1.1:.85);m.rotation.y=i*.7+row;m.visible=row<5;});
-     group.visible=!seal;group.position.set(viewX(lane),-(row-2)*2.3-.4,0);group.userData.valid=valid;
+     const offset=row-2,absolute=r.row+offset,valid=absolute>=0&&absolute<r.stage.layers;const kind=valid?runSeams(r,offset)[lane]:'S',rock=ROCKS[kind];
+     if(group.userData.identity!==`${r.stage.id}:${absolute}:${lane}:${kind}`){
+      group.userData.identity=`${r.stage.id}:${absolute}:${lane}:${kind}`;
+      body.material=material(kind==='L'?0x803e36:kind==='I'?0x436878:absolute%2?REGIONS[r.stage.arc].dark:0x4b6070);
+      ore.forEach((m,i)=>{m.material=material(rock.color);m.scale.setScalar(kind==='S'?.55:kind==='X'?1.1:.85);m.rotation.y=i*.7+absolute;});
+     }
+     group.visible=!seal;group.position.set(viewX(lane),worldY(absolute),0);group.userData.valid=valid;group.userData.absolute=absolute;
     });
     background.material=material(REGIONS[r.stage.arc].dark);key.color.setHex(r.stage.arc===2?0xffb987:0xffdfb2);rim.color.setHex(REGIONS[r.stage.arc].color);
-   }
-   travel=Math.max(0,travel-dt*8);for(const rock of rocks){const valid=rock.group.userData.valid,cell=valid?cellState(r,r.row+rock.row-2,rock.lane):{hp:0};rock.ore.forEach(m=>m.visible=cell.hp>0);rock.body.visible=cell.hp>0;rock.edge.visible=cell.hp>0;rock.body.position.z=contactTTL>0&&rock.lane===r.lane&&rock.row===2?.1:0;rock.group.position.x=viewX(rock.lane);rock.group.position.y=-(rock.row-2)*2.3-.4-travel*2.3;if(rock.row===2){const chosen=rock.lane===r.lane;rock.body.scale.x=2.4*(chosen?1-r.progress*.06:1);rock.body.rotation.z=chosen&&!reduced&&drilling?Math.sin(elapsed*45)*.009:0;}}
+   for(const rock of rocks){const valid=rock.group.userData.valid,cell=valid?cellState(r,r.row+rock.row-2,rock.lane):{hp:0};rock.ore.forEach(m=>m.visible=cell.hp>0);rock.body.visible=cell.hp>0;rock.edge.visible=cell.hp>0;const chosen=rock.row===2&&rock.lane===r.lane;rock.body.position.z=contactTTL>0&&chosen?.1:0;rock.body.scale.x=2.4*(chosen?1-r.progress*.06:1);rock.body.rotation.z=chosen&&!reduced&&drilling?Math.sin(elapsed*45)*.009:0;}
   }
-  particles.forEach(p=>{if(p.life>0){p.life-=dt;p.m.visible=true;p.m.position.x+=p.vx*dt;p.m.position.y+=p.vy*dt;p.vy-=dt*8;p.m.rotation.x+=dt*7;p.m.scale.setScalar(Math.max(.001,p.life)*.42);}else p.m.visible=false;});
+  particles.forEach(p=>{if(p.life>0){p.life-=dt;p.m.visible=true;p.m.position.x+=p.vx*dt;p.m.position.y+=p.vy*dt+scrollDelta;p.vy-=dt*8;p.m.rotation.x+=dt*7;p.m.scale.setScalar(Math.max(.001,p.life)*.42);}else p.m.visible=false;});
+  if(beamTarget&&beamTTL>0)positionBeam();
   renderer.render(scene,camera);
  }
  let particleCursor=0,breakPulse=0;
  function burst(lane,color,reduced=false,row=0){
   kick=reduced?0:.65;breakPulse=.14;
   if(reduced)return;
-  for(let i=0;i<24;i++){const p=particles[particleCursor++%particles.length];p.life=.3+(i%5)*.055;p.m.position.set(viewX(lane),-row*2.3-.2,1.4);const a=i*2.399;p.vx=Math.sin(a)*(2+i%4);p.vy=Math.cos(a)*(2+i%3)+2;p.m.material=material(color);}
+  for(let i=0;i<24;i++){const p=particles[particleCursor++%particles.length];p.life=.3+(i%5)*.055;p.m.position.set(viewX(lane),worldY(currentRow+row)+.2,1.4);const a=i*2.399;p.vx=Math.sin(a)*(2+i%4);p.vy=Math.cos(a)*(2+i%3)+2;p.m.material=material(color);}
  }
  // Actual equipment/ore meshes rendered with the same pinned renderer/materials.
  function thumbnail(kind){
@@ -164,9 +184,11 @@ export function createWorld(canvas){
   [camera.left,camera.right,camera.top,camera.bottom]=old;camera.position.set(0,0,24);camera.lookAt(0,0,0);camera.updateProjectionMatrix();
   return data;
  }
- function projectCell(row,lane){const c=new THREE.Vector3(viewX(lane),-row*2.3-.4,.8).project(camera),a=new THREE.Vector3(0,0,.8).project(camera),b=new THREE.Vector3(2.4,2.15,.8).project(camera);return{x:(c.x+1)/2*canvas.clientWidth,y:(1-c.y)/2*canvas.clientHeight,width:Math.abs(b.x-a.x)/2*canvas.clientWidth,height:Math.abs(b.y-a.y)/2*canvas.clientHeight};}
+ function projectCell(row,lane){const c=new THREE.Vector3(viewX(lane),worldY(currentRow+row),.8).project(camera),a=new THREE.Vector3(0,0,.8).project(camera),b=new THREE.Vector3(2.4,2.15,.8).project(camera);return{x:(c.x+1)/2*canvas.clientWidth,y:(1-c.y)/2*canvas.clientHeight,width:Math.abs(b.x-a.x)/2*canvas.clientWidth,height:Math.abs(b.y-a.y)/2*canvas.clientHeight};}
  function projectRig(){const p=new THREE.Vector3(rig.position.x,rig.position.y+.3,2.6).project(camera);return{x:(p.x+1)/2*canvas.clientWidth,y:(1-p.y)/2*canvas.clientHeight};}
+ function projectMesh(rock){const p=rock.group.position.clone();p.z=.8;p.project(camera);return{x:(p.x+1)/2*canvas.clientWidth,y:(1-p.y)/2*canvas.clientHeight};}
  function contact(lane,reduced){contactTTL=.09;if(!reduced)kick=.18;outlineMat.color.setHex(0xffdc8d);}
- function beam(lane,row,reduced){const x=viewX(lane),y=-row*2.3-.4,dx=x-rig.position.x,dy=y-2;beamMesh.position.set((x+rig.position.x)/2,(y+2)/2,3);beamMesh.scale.set(reduced?.2:.13,Math.hypot(dx,dy),.1);beamMesh.rotation.z=-Math.atan2(dx,dy);beamTTL=.18;}
- return {update,burst,contact,beam,projectCell,resize,thumbnail,stats:()=>({calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,particlePool:particles.length,activeParticles:particles.filter(p=>p.life>0).length,terrainCells:rocks.length,drillCenter:projectRig()}),destroy(){observer.disconnect();cube.dispose();crystalGeo.dispose();cones.forEach(g=>g.dispose());tipGeo.dispose();outlineGeo.dispose();outlineMat.dispose();torus.dispose();boltGeo.dispose();materials.forEach(m=>m.dispose());key.shadow.map?.dispose();renderer.dispose();}};
+ function positionBeam(){const x=viewX(beamTarget.lane),y=worldY(beamTarget.absolute),dx=x-rig.position.x,dy=y-2;beamMesh.position.set((x+rig.position.x)/2,(y+2)/2,3);beamMesh.scale.set(beamTarget.reduced?.2:.13,Math.hypot(dx,dy),.1);beamMesh.rotation.z=-Math.atan2(dx,dy);}
+ function beam(lane,row,reduced){beamTarget={lane,absolute:currentRow+row,reduced};beamTTL=.18;positionBeam();}
+ return {update,burst,contact,beam,projectCell,resize,thumbnail,stats:()=>({calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,particlePool:particles.length,activeParticles:particles.filter(p=>p.life>0).length,terrainCells:rocks.length,drillCenter:projectRig(),motion:{frame:frameNumber,visualRow,currentRow,rowVelocity,cameraX:camera.position.x,rigX:rig.position.x,cells:rocks.map(rock=>({absolute:rock.group.userData.absolute,lane:rock.lane,x:rock.group.position.x,y:rock.group.position.y,color:rock.body.material.color.getHex(),oreAngle:rock.ore[0].rotation.y,visible:rock.body.visible,screen:projectMesh(rock)}))}}),destroy(){observer.disconnect();cube.dispose();crystalGeo.dispose();cones.forEach(g=>g.dispose());tipGeo.dispose();outlineGeo.dispose();outlineMat.dispose();torus.dispose();boltGeo.dispose();materials.forEach(m=>m.dispose());key.shadow.map?.dispose();renderer.dispose();}};
 }

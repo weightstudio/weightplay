@@ -41,7 +41,7 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Voile du Signal","url":"https://weightplay.com/fr/games/signal-veil/","image":"https://weightplay.com/assets/signal-veil-cover.webp","description":"Interrogez les témoins, révélez les menaces cachées grâce à la Vision neurale et mêlez enquête et combat pour découvrir la vérité du signal.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"fr","isAccessibleForFree":true,"genre":["Action RPG","Adventure","Animal"],"audience":{"@type":"Audience","audienceType":"General players age 13 and older"}}</script>
     <link rel="stylesheet" href="../../../src/loading-screen.css?v=20261017-shared-dark-loader1">
   <link rel="stylesheet" href="../../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <link rel="stylesheet" href="../../../games/signal-veil/style.css?v=20260827-mobile-movement-surface-v11">
+   <link rel="stylesheet" href="../../../games/signal-veil/style.css?v=20260827-mobile-movement-surface-v11">
   <link rel="stylesheet" href="../../../src/game-ui-theme.css?v=20260911-sound-control">
   <link rel="stylesheet" href="../../../src/game-screen-frame.css?v=20261021-signal-veil-v17-i9">
 
@@ -53,52 +53,8 @@
       <span class="atlas-icon icon-device" aria-hidden="true"></span>
       <strong data-t="loading">Calibrage de la vision neurale…</strong>
       <span class="loading-bar"><i></i></span>
-      <p id="entryRecoveryMessage" class="loading-recovery-message" role="alert" hidden>
-        <span data-entry-copy="slow" data-t="entryLoadSlow">Le chargement prend plus de temps que prévu. Vous pouvez réessayer ou retourner à WeightPlay.</span>
-        <span data-entry-copy="failed" data-t="entryLoadFailed" hidden>Un fichier nécessaire du jeu n’a pas été chargé. Vous pouvez réessayer ou retourner à WeightPlay.</span>
-      </p>
-      <div id="entryRecoveryActions" class="loading-recovery-actions" hidden>
-        <button id="entryRetry" class="primary" type="button" data-t="entryRetry">Réessayer</button>
-        <a id="entryBack" class="loading-recovery-back" href="/fr/" data-t="entryBack">Retour à WeightPlay</a>
-      </div>
     </div>
   </div>
-  <script>
-    (()=>{
-      const panel=document.getElementById("loadingPanel");
-      const message=document.getElementById("entryRecoveryMessage");
-      const slowCopy=message?.querySelector('[data-entry-copy="slow"]');
-      const failedCopy=message?.querySelector('[data-entry-copy="failed"]');
-      const actions=document.getElementById("entryRecoveryActions");
-      const retry=document.getElementById("entryRetry");
-      let failed=false;
-      const show=(kind)=>{
-        if(!panel)return;
-        panel.hidden=false;
-        panel.dataset.wpEntryRecovery=kind;
-        if(message)message.hidden=false;
-        if(slowCopy)slowCopy.hidden=kind!=="slow";
-        if(failedCopy)failedCopy.hidden=kind!=="failed";
-        if(actions)actions.hidden=false;
-        if(kind==="failed")requestAnimationFrame(()=>retry?.focus({preventScroll:true}));
-      };
-      const showFailure=()=>{failed=true;show("failed")};
-      retry?.addEventListener("click",()=>location.reload());
-      document.addEventListener("error",event=>{
-        const target=event.target;
-        if(target instanceof HTMLScriptElement){
-          const file=new URL(target.src,location.href).pathname.split("/").pop();
-          if(/^(locales|guide-locales|state-store|quest-data|game-screen-frame|frame|game)\.js$/.test(file))showFailure();
-        }else if(target instanceof HTMLImageElement&&/\/assets\/signal-veil-[^/]+\.(?:webp|png|jpg)$/.test(new URL(target.src,location.href).pathname))showFailure();
-      },true);
-      const slowTimer=setTimeout(()=>{if(!failed&&!panel?.hidden)show("slow")},12000);
-      window.__SIGNAL_VEIL_ENTRY_RECOVERY__={
-        get active(){return failed},
-        showFailure,
-        complete(){clearTimeout(slowTimer);if(!failed&&panel){panel.hidden=true;delete panel.dataset.wpEntryRecovery}}
-      };
-    })();
-  </script>
 
   <div id="signalFrame" data-wp-frame-root></div>
   <main id="main" class="screen main-screen" data-screen="main">
@@ -108,7 +64,7 @@
       </a>
       <div class="title-slot">
         <small>WEIGHTPLAY ORIGINAL</small>
-        <strong data-t="title">Voile du Signal</strong>
+        <strong data-t="title" data-wp-game-title>Voile du Signal</strong>
       </div>
       <label class="locale-picker">
         <span data-t="language">Langue</span>

@@ -946,21 +946,21 @@
   };
   for(const [code,value] of Object.entries(interactAction))localeRegistry[code].interactAction=value;
 
-  const entryRecoveryKeys=["entryLoadSlow","entryLoadFailed","entryRetry","entryBack"];
+  const entryRecoveryKeys=["entryLoadSlow","entryLoadFailed"];
   const entryRecoveryCopy={
-    en:["Loading is taking longer than expected. Retry or return to WeightPlay.","A required game file did not load. Retry or return to WeightPlay.","Retry","Back to WeightPlay"],
-    "zh-Hant":["載入時間比預期長。你可以重試，或返回 WeightPlay。","必要的遊戲檔案未能載入。你可以重試，或返回 WeightPlay。","重試","返回 WeightPlay"],
-    "zh-Hans":["加载时间比预期长。你可以重试，或返回 WeightPlay。","必要的游戏文件未能加载。你可以重试，或返回 WeightPlay。","重试","返回 WeightPlay"],
-    ja:["読み込みに時間がかかっています。再試行するか、WeightPlay に戻れます。","必要なゲームファイルを読み込めませんでした。再試行するか、WeightPlay に戻ってください。","再試行","WeightPlay に戻る"],
-    ko:["로딩이 예상보다 오래 걸립니다. 다시 시도하거나 WeightPlay로 돌아갈 수 있습니다.","필수 게임 파일을 불러오지 못했습니다. 다시 시도하거나 WeightPlay로 돌아가세요.","다시 시도","WeightPlay로 돌아가기"],
-    es:["La carga está tardando más de lo esperado. Puedes reintentar o volver a WeightPlay.","No se pudo cargar un archivo necesario del juego. Puedes reintentar o volver a WeightPlay.","Reintentar","Volver a WeightPlay"],
-    "pt-BR":["O carregamento está demorando mais que o esperado. Você pode tentar novamente ou voltar ao WeightPlay.","Um arquivo necessário do jogo não foi carregado. Você pode tentar novamente ou voltar ao WeightPlay.","Tentar novamente","Voltar ao WeightPlay"],
-    fr:["Le chargement prend plus de temps que prévu. Vous pouvez réessayer ou retourner à WeightPlay.","Un fichier nécessaire du jeu n’a pas été chargé. Vous pouvez réessayer ou retourner à WeightPlay.","Réessayer","Retour à WeightPlay"],
-    de:["Das Laden dauert länger als erwartet. Du kannst es erneut versuchen oder zu WeightPlay zurückkehren.","Eine erforderliche Spieldatei wurde nicht geladen. Du kannst es erneut versuchen oder zu WeightPlay zurückkehren.","Erneut versuchen","Zurück zu WeightPlay"],
-    it:["Il caricamento sta richiedendo più tempo del previsto. Puoi riprovare o tornare a WeightPlay.","Non è stato caricato un file di gioco necessario. Puoi riprovare o tornare a WeightPlay.","Riprova","Torna a WeightPlay"],
-    ru:["Загрузка занимает больше времени, чем ожидалось. Можно повторить попытку или вернуться в WeightPlay.","Не удалось загрузить обязательный файл игры. Можно повторить попытку или вернуться в WeightPlay.","Повторить","Вернуться в WeightPlay"],
-    hi:["लोड होने में उम्मीद से अधिक समय लग रहा है। आप फिर से कोशिश कर सकते हैं या WeightPlay पर लौट सकते हैं।","गेम की आवश्यक फ़ाइल लोड नहीं हुई। आप फिर से कोशिश कर सकते हैं या WeightPlay पर लौट सकते हैं।","फिर से कोशिश करें","WeightPlay पर लौटें"],
-    ar:["يستغرق التحميل وقتًا أطول من المتوقع. يمكنك إعادة المحاولة أو العودة إلى WeightPlay.","تعذر تحميل ملف مطلوب للعبة. يمكنك إعادة المحاولة أو العودة إلى WeightPlay.","إعادة المحاولة","العودة إلى WeightPlay"]
+    en:["Loading is taking longer than expected. Retry or return to WeightPlay.","A required game file did not load. Retry or return to WeightPlay."],
+    "zh-Hant":["載入時間比預期長。你可以重試，或返回 WeightPlay。","必要的遊戲檔案未能載入。你可以重試，或返回 WeightPlay。"],
+    "zh-Hans":["加载时间比预期长。你可以重试，或返回 WeightPlay。","必要的游戏文件未能加载。你可以重试，或返回 WeightPlay。"],
+    ja:["読み込みに時間がかかっています。再試行するか、WeightPlay に戻れます。","必要なゲームファイルを読み込めませんでした。再試行するか、WeightPlay に戻ってください。"],
+    ko:["로딩이 예상보다 오래 걸립니다. 다시 시도하거나 WeightPlay로 돌아갈 수 있습니다.","필수 게임 파일을 불러오지 못했습니다. 다시 시도하거나 WeightPlay로 돌아가세요."],
+    es:["La carga está tardando más de lo esperado. Puedes reintentar o volver a WeightPlay.","No se pudo cargar un archivo necesario del juego. Puedes reintentar o volver a WeightPlay."],
+    "pt-BR":["O carregamento está demorando mais que o esperado. Você pode tentar novamente ou voltar ao WeightPlay.","Um arquivo necessário do jogo não foi carregado. Você pode tentar novamente ou voltar ao WeightPlay."],
+    fr:["Le chargement prend plus de temps que prévu. Vous pouvez réessayer ou retourner à WeightPlay.","Un fichier nécessaire du jeu n’a pas été chargé. Vous pouvez réessayer ou retourner à WeightPlay."],
+    de:["Das Laden dauert länger als erwartet. Du kannst es erneut versuchen oder zu WeightPlay zurückkehren.","Eine erforderliche Spieldatei wurde nicht geladen. Du kannst es erneut versuchen oder zu WeightPlay zurückkehren."],
+    it:["Il caricamento sta richiedendo più tempo del previsto. Puoi riprovare o tornare a WeightPlay.","Non è stato caricato un file di gioco necessario. Puoi riprovare o tornare a WeightPlay."],
+    ru:["Загрузка занимает больше времени, чем ожидалось. Можно повторить попытку или вернуться в WeightPlay.","Не удалось загрузить обязательный файл игры. Можно повторить попытку или вернуться в WeightPlay."],
+    hi:["लोड होने में उम्मीद से अधिक समय लग रहा है। आप फिर से कोशिश कर सकते हैं या WeightPlay पर लौट सकते हैं।","गेम की आवश्यक फ़ाइल लोड नहीं हुई। आप फिर से कोशिश कर सकते हैं या WeightPlay पर लौट सकते हैं."],
+    ar:["يستغرق التحميل وقتًا أطول من المتوقع. يمكنك إعادة المحاولة أو العودة إلى WeightPlay.","تعذر تحميل ملف مطلوب للعبة. يمكنك إعادة المحاولة أو العودة إلى WeightPlay."]
   };
   for(const [code,values] of Object.entries(entryRecoveryCopy)){
     Object.assign(localeRegistry[code],Object.fromEntries(entryRecoveryKeys.map((key,index)=>[key,values[index]])));

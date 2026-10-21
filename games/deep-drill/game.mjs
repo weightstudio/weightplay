@@ -8,6 +8,7 @@ const $=id=>document.getElementById(id),KEY='weightplay.deep-drill.v1';
 let save;try{save=normalize(JSON.parse(localStorage.getItem(KEY)||'{}'));}catch{save=normalize();}
 let run=null,screen='main',held=false,last=0,accumulator=0,stageIndex=save.unlocked-1,world=null,thumbnails={},rockImages={},lastSeam='',shopFocus=null,baseTab='rig',damageTTL=0,beamArmed=false;
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+let flightCell=null,hitCell=null,flightTTL=0,hitTTL=0;
 const sound=id=>window.WeightPlayAudio?.play(id);
 const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(save));$('saveWarning').hidden=true;}catch{$('saveWarning').hidden=false;}};
 const arcNames=REGIONS.map(r=>r.name);
@@ -33,7 +34,7 @@ function show(name){held=false;lastSeam='';if(screen==='stage')stageUI.cancel();
 function ensureWorld(){if(world)return true;try{world=createWorld($('world'));for(let i=0;i<4;i++)thumbnails[i]=world.thumbnail(i);for(const k of Object.keys(ROCKS))rockImages[k]=world.thumbnail(k);for(const k of Object.keys(MODULES))rockImages[`module:${k}`]=world.thumbnail(`module:${k}`);for(const k of Object.keys(TOOLS))rockImages[`tool:${k}`]=world.thumbnail(`tool:${k}`);REGIONS.forEach((_,i)=>rockImages[`relic:${i}`]=world.thumbnail(`relic:${i}`));for(const key of Object.keys(TOOLS))$('tool-'+key).src=rockImages[`tool:${key}`];return true;}catch(error){console.error('Deep Drill WebGL:',error);$('renderError').hidden=false;return false;}}
 function brief(index){if(index>=save.unlocked)return;stageIndex=index;const s=STAGES[index],region=REGIONS[s.arc];$('briefRegion').textContent=`${s.id}/30 · ${region.name} · 0–${s.target}m`;$('briefTitle').textContent=s.zh;$('briefStory').textContent=region.intro;$('briefGoal').textContent=goalText(s);$('briefAdvice').textContent=s.checkpoint?region.hint:advice(s);$('briefLoadout').textContent=`${HEADS[save.head].zh} · ${save.activeCrew?CREW[save.activeCrew].name+'同行':'菲亞獨行'} · ${save.equipped.length}/2 模組`;$('briefing').hidden=false;$('launch').focus();}
 for(let i=0;i<25;i++){const b=document.createElement('button');b.className='tile-target';b.dataset.cell=i;b.innerHTML='<span class=cell-name></span><span class=cell-hp></span>';b.onclick=()=>{if(!run||run.ended||run.paused)return;const row=run.row+Math.floor(i/5)-2,lane=i%5;if(beamArmed){activateTool('beam',{row,lane});}else if(Math.floor(i/5)===2){selectLane(lane);run.plannedRow=run.row;}else{$('notice').textContent='使用左右鍵手動選路，保持固定向下';}};$('tileTargets').append(b);}
-function startRun(index){beamArmed=false;if(index>=save.unlocked)return;stageIndex=index;run=newRun(save,index);$('result').hidden=true;$('pausePanel').hidden=true;show('battle');
+function startRun(index){beamArmed=false;if(index>=save.unlocked)return;stageIndex=index;run=newRun(save,index);flightCell=hitCell=null;flightTTL=hitTTL=0;$('result').hidden=true;$('pausePanel').hidden=true;show('battle');
  if(!ensureWorld()){run.paused=true;return;}$('notice').textContent=' ';$('zoneName').textContent=`${String(index+1).padStart(2,'0')} · ${run.stage.zh}`;$('depthTarget').textContent=(index+1)*100;
  $('pressureLine').hidden=!run.stage.pressure;lastSeam='';sound('game.start');renderHud();$('drill').focus({preventScroll:true});}
 function selectLane(lane){if(!run||run.ended||run.paused)return;const n=Math.max(0,Math.min(4,lane));if(run.lane!==n){selectRoute(run,n);lastSeam='';}renderHud();}
@@ -51,22 +52,23 @@ function result(){release();persist();$('pausePanel').hidden=true;$('result').hi
  sound(won?'result.win':['pressure','hull'].includes(reason)?'result.lose':'reward.coin');
  $('resultTitle').tabIndex=-1;$('resultTitle').focus({preventScroll:true});$('resultTitle').closest('.panel').scrollTop=0;}
 function processEvents(){if(!run)return;for(const e of run.events.splice(0)){
- if(e.type==='break'){world?.burst(e.lane,ROCKS[e.kind].color,reduced.matches,e.row||0);sound(e.kind==='X'?'impact.glass':'impact.stone');$('breakGain').textContent=`+${e.value}`;$('breakGain').classList.remove('gain-pop');void $('breakGain').offsetWidth;$('breakGain').classList.add('gain-pop');
+ const relativeRow=(e.worldRow??run.row+(e.row||0))-run.row;
+ if(e.type==='break'){world?.burst(e.lane,ROCKS[e.kind].color,reduced.matches,relativeRow);sound(e.kind==='X'?'impact.glass':'impact.stone');$('breakGain').textContent=`+${e.value}`;$('breakGain').classList.remove('gain-pop');void $('breakGain').offsetWidth;$('breakGain').classList.add('gain-pop');
   $('notice').textContent=e.kind==='W'?'冷泉：壓力下降':e.kind==='X'?(e.gentle?'完整水晶入艙！':'水晶受損；分段短按可保完整'):`${ROCKS[e.kind].zh}入艙 · 價值 ${e.value}`;
-  const point=world.projectCell(e.row||0,e.lane),mine=$('world').getBoundingClientRect(),dest=$('cargoBar').getBoundingClientRect();$('oreFlight').style.left=point.x+'px';$('oreFlight').style.top=point.y+'px';$('oreFlight').style.setProperty('--fly-x',`${dest.x+dest.width-mine.x-point.x}px`);$('oreFlight').style.setProperty('--fly-y',`${dest.y-mine.y-point.y}px`);
+  flightCell={row:e.worldRow??run.row+(e.row||0),lane:e.lane};flightTTL=.45;positionFeedback();
   $('battleContent').classList.remove('collecting');void $('oreFlight').offsetWidth;$('battleContent').classList.add('collecting');lastSeam='';}
- if(e.type==='hit'&&!e.seal){world?.contact(e.lane,reduced.matches);const n=$('hitNumber'),point=world.projectCell(e.row||0,e.lane);n.style.left=point.x+'px';n.style.top=(point.y-12)+'px';n.textContent=`−${e.damage}`;n.classList.remove('hit-pop');void n.offsetWidth;n.classList.add('hit-pop');}
- if(e.type==='beam'){world?.beam(e.lane,e.row,reduced.matches);sound('impact.metal');}
+ if(e.type==='hit'&&!e.seal){world?.contact(e.lane,reduced.matches);hitCell={row:e.worldRow??run.row+(e.row||0),lane:e.lane};hitTTL=.28;positionFeedback();const n=$('hitNumber');n.textContent=`−${e.damage}`;n.classList.remove('hit-pop');void n.offsetWidth;n.classList.add('hit-pop');}
+ if(e.type==='beam'){world?.beam(e.lane,relativeRow,reduced.matches);sound('impact.metal');}
  if(e.type==='sold'){persist();$('notice').textContent=save.auto.sell?'即時輸送完成': '礦艙自動運回 · 稍後繼續下鑽';sound('reward.coin');}
  if(e.type==='tool'){persist();$('notice').textContent=e.text;if(e.key!=='beam')sound(e.key==='blast'?'explosion.small':e.key==='repair'?'mechanism.screw':'water.splash');}
  if(e.type==='discovery'||e.type==='relic'){persist();$('notice').textContent=e.text;sound('game.checkpoint');}
  if(e.type==='hurt'){damageTTL=.3;$('notice').textContent=e.text;sound('player.hurt');}
  if(e.type==='seal-block'){$('notice').textContent=e.text;sound('combat.block');}
  if(e.type==='seal-start'){$('notice').textContent=e.text;sound('alert.boss');}
- if(e.type==='seal-hit'){$('notice').textContent=e.text;world?.burst(e.lane,REGIONS[run.stage.arc].color,reduced.matches);sound(e.phase===3?'combat.shield.break':'impact.metal');lastSeam='';}
+ if(e.type==='seal-hit'){$('notice').textContent=e.text;world?.burst(e.lane,REGIONS[run.stage.arc].color,reduced.matches,relativeRow);sound(e.phase===3?'combat.shield.break':'impact.metal');lastSeam='';}
  if(e.type==='result')result();
  }}
-function renderHud(){if(!run)return;$('depthTarget').textContent=run.stage.target;const seal=sealState(run),kinds=runSeams(run),key=`${run.row}-${run.lane}-${kinds.join('')}`;
+function renderHud(){if(!run)return;document.body.classList.toggle('battle-paused',run.paused||run.ended);$('depthTarget').textContent=run.stage.target;const seal=sealState(run),kinds=runSeams(run),key=`${run.row}-${run.lane}-${kinds.join('')}`;
  $('depth').textContent=run.depth;$('miningPower').textContent=`${run.docking>0?'輸送中':run.smartVenting?'洩壓中':`固定${run.lane+1}路`} · 助手${save.helpers}`;$('hullLabel').textContent=`機殼 ${Math.ceil(run.hull)}%`;$('hullLabel').style.color=run.hull<35?'#ff9375':'';
  $('cargoLabel').textContent=`礦艙 ${run.cargo}/${capacity(save)} · ${run.value} 金`;$('cargoBar').max=capacity(save);$('cargoBar').value=run.cargo;
  $('pressureLabel').textContent=`壓力 ${Math.round(run.pressure)}%`;$('pressureBar').value=run.pressure;
@@ -83,7 +85,13 @@ function renderHud(){if(!run)return;$('depthTarget').textContent=run.stage.targe
   if(rockImages[k]){const image=new Image();image.src=rockImages[k];image.alt='';b.append(image);}
   const text=document.createElement('span');text.textContent=rock.zh;const detail=document.createElement('small');detail.textContent=k==='W'?'洩壓泉':k==='L'?'機殼風險':k==='X'?'短按保完整':`${rock.value} 金`;text.append(detail);b.append(text);b.setAttribute('aria-pressed',String(i===run.lane));});}
 }
-function renderCells(){if(!run||!world)return;document.querySelectorAll('[data-cell]').forEach((b,i)=>{
+function positionFeedback(){if(!world||!run)return;
+ if(hitCell&&hitTTL>0){const point=world.projectCell(hitCell.row-run.row,hitCell.lane);$('hitNumber').style.left=point.x+'px';$('hitNumber').style.top=(point.y-12)+'px';}
+ if(flightCell&&flightTTL>0){const point=world.projectCell(flightCell.row-run.row,flightCell.lane),mine=$('world').getBoundingClientRect(),dest=$('cargoBar').getBoundingClientRect(),sx=mine.width/$('world').clientWidth,sy=mine.height/$('world').clientHeight;
+  $('oreFlight').style.left=point.x+'px';$('oreFlight').style.top=point.y+'px';$('oreFlight').style.setProperty('--fly-x',`${(dest.right-mine.x)/sx-point.x}px`);$('oreFlight').style.setProperty('--fly-y',`${(dest.y-mine.y)/sy-point.y}px`);
+ }
+}
+function renderCells(){if(!run||!world)return;positionFeedback();document.querySelectorAll('[data-cell]').forEach((b,i)=>{
  const offset=Math.floor(i/5)-2,row=run.row+offset,lane=i%5,point=world.projectCell(offset,lane);
  b.hidden=activeSeal(run);if(b.hidden)return;const valid=row>=0&&row<run.stage.layers,cell=valid?cellState(run,row,lane):null;
  b.disabled=!valid||offset!==0||cell.hp===0;b.style.left=point.x+'px';b.style.top=point.y+'px';b.style.width=point.width+'px';b.style.height=Math.max(point.height,offset===0?44:0)+'px';
@@ -145,8 +153,9 @@ window.addEventListener('pagehide',event=>{persist();release();if(!event.persist
 $('world').addEventListener('webglcontextlost',e=>{e.preventDefault();pause();$('renderError').hidden=false;persist();});
 let warned=false;
 function loop(now){const dt=Math.min(.05,(now-(last||now))/1000);last=now;
- if(screen==='battle'&&run&&world){accumulator=Math.min(.1,accumulator+dt);while(accumulator>=1/60){tick(save,run,1/60,held);accumulator-=1/60;}processEvents();renderHud();
-  const active=!run.paused&&!run.ended&&run.drilling;world.update(save,run,dt,active,reduced.matches);renderCells();damageTTL=Math.max(0,damageTTL-dt);document.body.classList.toggle('hurt',damageTTL>0);
+ if(screen==='battle'&&run&&world){accumulator=Math.min(.1,accumulator+dt);while(accumulator>=1/60){const originRow=run.row,start=run.events.length;tick(save,run,1/60,held);for(let i=start;i<run.events.length;i++)run.events[i].worldRow=originRow+(run.events[i].row||0);accumulator-=1/60;}
+  const visualDt=run.paused||run.ended?0:dt,active=!run.paused&&!run.ended&&run.drilling;
+  world.update(save,run,visualDt,active,reduced.matches);flightTTL=Math.max(0,flightTTL-visualDt);hitTTL=Math.max(0,hitTTL-visualDt);processEvents();renderHud();renderCells();damageTTL=Math.max(0,damageTTL-visualDt);document.body.classList.toggle('hurt',damageTTL>0);
   if(run.pressure>78&&!warned){warned=true;sound('alert.warning');}if(run.pressure<65)warned=false;
  }
  requestAnimationFrame(loop);
@@ -154,4 +163,4 @@ function loop(now){const dt=Math.min(.05,(now-(last||now))/1000);last=now;
 window.WeightPlayAudio?.preload(['game.start','impact.stone','impact.glass','shop.purchase','reward.upgrade','reward.coin','alert.warning','alert.boss','result.win','result.lose','feedback.error','player.hurt','combat.block','combat.shield.break','impact.metal','explosion.small','mechanism.screw','water.splash','game.checkpoint']);
 refreshStage();show('main');requestAnimationFrame(loop);
 // Read-only diagnostics supplement local geometry/resource checks; never clear a run.
-window.DeepDrill=Object.freeze({snapshot:()=>({screen,save:structuredClone(save),run:run?structuredClone(run):null,render:world?.stats()||null})});
+window.DeepDrill=Object.freeze({snapshot:()=>({screen,save:structuredClone(save),run:run?structuredClone(run):null,render:world?.stats()||null,feedback:{hit:hitTTL>0?hitCell:null,flight:flightTTL>0?flightCell:null}})});

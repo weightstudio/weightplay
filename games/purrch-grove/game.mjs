@@ -13,6 +13,7 @@ let manageAbort=new AbortController(),panelAbort=new AbortController();
 const onManage=(n,event,fn)=>n.addEventListener(event,fn,{signal:manageAbort.signal});
 const onPanel=(n,event,fn)=>n.addEventListener(event,fn,{signal:panelAbort.signal});
 let frame,selector,room=null,screen='main',tab='goals',panel='',focusReturn=null,raf=0,last=0,saveTime=0,uiTime=0,cueTime=0,lost=false,result=null,busyPurchase=false;
+let selectedGoal=grove.s.unlocked-1;
 const portraits=new Map(),sound=id=>audio?.play(id);
 function save(){try{localStorage.setItem(STORE,JSON.stringify(grove.s));$('saveWarning').hidden=true;return true;}catch{$('saveWarning').textContent=t('saveError');$('saveWarning').hidden=false;return false;}}
 function image(kind,size=64){const img=make('img');img.src=portraits.get(kind)||'/games/purrch-grove/assets/cover-block-v1.webp';img.alt='';img.width=size;img.height=size;return img;}
@@ -29,10 +30,10 @@ function show(next){
  motion.clear();if(room&&!lost)room.render(grove.s,0);motion.exit($(screen+'Screen'));if(screen==='battle'&&next!=='battle'){disposeRoom();save();}
  panel='';result=null;$('panel').hidden=true;$('resultPanel').hidden=true;$('battleLive').inert=false;screen=next;document.body.dataset.screen=next;
  for(const name of ['main','stage','battle'])$(name+'Screen').hidden=name!==next;$('mainGuide').hidden=next!=='main';frame.activate(next);motion.enter($(next+'Screen'));
- if(next==='stage'){stageTab('goals');selector.refresh(grove.s.unlocked-1);requestAnimationFrame(()=>selector.refresh(grove.s.unlocked-1));}
+ if(next==='stage'){stageTab('goals');selector.refresh(selectedGoal);requestAnimationFrame(()=>selector.refresh(selectedGoal));}
  update();window.dispatchEvent(new Event(`weightplay:${next}-sync`));
 }
-function start(id){if(!grove.start(id))return;disposeRoom();show('battle');lost=false;$('graphicsError').hidden=true;$('feedback').textContent='';
+function start(id){if(!grove.start(id))return;if(id>0)selectedGoal=id-1;disposeRoom();show('battle');lost=false;$('graphicsError').hidden=true;$('feedback').textContent='';
  try{room=new Room($('room'),id=>{if(!blocked()){grove.select(id);update();save();sound('ui.click');}},()=>{lost=true;$('graphicsError').hidden=false;save();});room.renderer.domElement.ariaLabel=t('home');room.render(grove.s,.1);}
  catch(e){lost=true;$('graphicsError').hidden=false;console.error('PURRCH_3D',e.message);}
  last=performance.now();raf=requestAnimationFrame(loop);sound('game.start');update();
@@ -47,7 +48,7 @@ function events(){for(const e of grove.events.splice(0)){
  if(e.type==='mature'){cue(t('adult'));sound('reward.unlock');}
  if(e.type==='buy'||e.type==='place'||e.type==='adopt'){announce(t(e.type==='adopt'?'adopt':e.type));sound(e.type==='buy'?'shop.purchase':'reward.unlock');}
  if(e.type==='step')motion.emphasize($('objective'));
- if(e.type==='complete'){save();if(panel)closePanel();showResult(e);}
+ if(e.type==='complete'){if(e.reward>0)selectedGoal=grove.s.unlocked-1;save();if(panel)closePanel();showResult(e);}
  }update();}
 function update(){
  if(!frame)return;const s=grove.s,d=grove.selected;$('mainProgress').textContent=`${t('goal')} ${s.unlocked} / 30`;$('coinStat').textContent=String(s.coins);$('catStat').textContent=`${s.cats.length}/4`;
@@ -61,8 +62,8 @@ function copy(){document.documentElement.lang=locale;document.documentElement.di
  document.querySelectorAll('[data-copy]').forEach(n=>{n.textContent=t(n.dataset.copy);n.dataset.runtimeLocalize='off';});$('stageBack').ariaLabel=t('leave');$('battleBack').ariaLabel=t('pause');$('closePanel').ariaLabel=t('close');$('localeSelect').ariaLabel=LABELS[LOCALES.indexOf(locale)];
  $('needs').replaceChildren();for(const key of ['food','joy','energy','clean']){const label=make('label',t(key)),m=make('meter'),v=make('output');m.id='need-'+key;m.min=0;m.max=100;m.ariaLabel=t(key);v.id='value-'+key;label.append(m,v);$('needs').append(label);}
  const sections=document.querySelector('#mainGuide .game-info-sections');sections.replaceChildren();for(const item of guideSections(locale)){const section=make('section');section.append(make('h3',item.title),make('p',item.text));sections.append(section);}
- frame?.refresh();selector?.refresh(grove.s.unlocked-1);if(screen==='stage'&&tab!=='goals')renderManage();update();}
-function stageTab(next){tab=next;const hidden=next!=='goals';$('goalsWorkspace').hidden=hidden;$('goalsWorkspace').classList.toggle('hidden',hidden);$('goalsWorkspace').inert=hidden;$('management').hidden=!hidden;for(const [id,key]of [['catsTab','cats'],['goalsTab','goals'],['shopTab','shop']])$(id).setAttribute('aria-selected',String(next===key));if(hidden){renderManage();motion.enter($('management'));}else selector?.refresh(grove.s.unlocked-1);}
+ frame?.refresh();selector?.refresh(selectedGoal);if(screen==='stage'&&tab!=='goals')renderManage();update();}
+function stageTab(next){tab=next;const hidden=next!=='goals';$('goalsWorkspace').hidden=hidden;$('goalsWorkspace').classList.toggle('hidden',hidden);$('goalsWorkspace').inert=hidden;$('management').hidden=!hidden;for(const [id,key]of [['catsTab','cats'],['goalsTab','goals'],['shopTab','shop']])$(id).setAttribute('aria-selected',String(next===key));if(hidden){renderManage();motion.enter($('management'));}else selector?.refresh(selectedGoal);}
 function renderManage(){manageAbort.abort();manageAbort=new AbortController();const content=$('manageContent');content.replaceChildren();$('manageSummary').replaceChildren(price(grove.s.coins));
  if(tab==='cats'){
   const free=make('button',t('home'));onManage(free,'click',()=>start(0));content.append(free);
@@ -95,7 +96,7 @@ function boot(){
  frame=window.WeightPlayScreenFrame.mount({root:$('gameFrame'),localeSelect:$('localeSelect'),playUI:true,scenes:{main:{root:$('mainScreen'),header:$('mainScreen').querySelector('header'),content:document.querySelector('.main-hero')},stage:{root:$('stageScreen'),header:$('stageScreen').querySelector('header'),content:$('stageWorkspace')},battle:{root:$('battleScreen'),header:$('battleScreen').querySelector('header'),content:$('battleLive')}}});
  const wallet=make('span',undefined,'price'),icon=make('img');icon.src='/assets/wonder-prop-coin-block-v1.png';icon.alt='';const coins=make('span');coins.id='coinStat';wallet.append(icon,coins);const count=make('span');count.id='catStat';frame.battleTopUI.add(window.WeightPlayScreenFrame.createGroup().add(wallet).add(count));
  const goalsPage=make('div');goalsPage.id='goalsWorkspace';$('stageWorkspace').prepend(goalsPage);goalsPage.append($('stageRail'));
- selector=window.WeightPlayPlayUI.mountStage({page:goalsPage,rail:$('stageRail'),selected:grove.s.unlocked-1,config:{count:30,poster:'/games/purrch-grove/assets/cover-block-v1.webp',background:'/assets/lobby-block-atmosphere.svg',stage(i){const g=GOALS[i];return {id:g.id,kicker:t('goal')+' '+g.id,title:labelToken(g.steps[0]),subtitle:g.steps.map(labelToken).join(' → '),summary:g.steps.map(labelToken).join(' → '),details:[t('reward')+' '+g.reward],status:t(g.id>grove.s.unlocked?'locked':grove.s.cleared.includes(g.id)?'cleared':'ready'),locked:g.id>grove.s.unlocked,cleared:grove.s.cleared.includes(g.id)};}},isActive:()=>screen==='stage'&&tab==='goals',onSelect(){},onStart(i){start(i+1);}});
+ selector=window.WeightPlayPlayUI.mountStage({page:goalsPage,rail:$('stageRail'),selected:selectedGoal,config:{count:30,poster:'/games/purrch-grove/assets/cover-block-v1.webp',background:'/assets/lobby-block-atmosphere.svg',stage(i){const g=GOALS[i];return {id:g.id,kicker:t('goal')+' '+g.id,title:labelToken(g.steps[0]),subtitle:g.steps.map(labelToken).join(' → '),summary:g.steps.map(labelToken).join(' → '),details:[t('reward')+' '+g.reward],status:t(g.id>grove.s.unlocked?'locked':grove.s.cleared.includes(g.id)?'cleared':'ready'),locked:g.id>grove.s.unlocked,cleared:grove.s.cleared.includes(g.id)};}},isActive:()=>screen==='stage'&&tab==='goals',onSelect(i){selectedGoal=i;},onStart(i){start(i+1);}});
  // Management is a sibling of the complete shared goals workspace; only the
  // owning active workspace is visible. Shared rail/briefing retain one owner.
  $('stageWorkspace').append($('management'));
@@ -111,6 +112,6 @@ function boot(){
  listen(document,'keydown',e=>{const modal=panel?$('panel'):result?$('resultPanel'):null;if(!modal)return;if(e.key==='Escape'&&panel){e.preventDefault();closePanel();}if(e.key==='Tab'){const list=[...modal.querySelectorAll('button,select,a')].filter(n=>!n.disabled&&n.getClientRects().length);const first=list[0],last=list.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}});
  listen(window,'pagehide',e=>{save();motion.clear();if(!e.persisted){disposeRoom();selector.destroy();frame.destroy();audio?.dispose();manageAbort.abort();panelAbort.abort();abort.abort();}});
  window.WeightPlayAudio?.preload?.(['game.start','ui.click','feedback.success','feedback.error','reward.coin','reward.unlock','shop.purchase','result.win']);copy();show('main');
- window.PurrchGrove=Object.freeze({identity:()=>({game:'purrch-grove',version:'v2',interface:'9',saveKey:STORE}),renderStats:()=>room?{revision:'180',calls:room.renderer.info.render.calls,triangles:room.renderer.info.render.triangles,geometries:room.renderer.info.memory.geometries,textures:room.renderer.info.memory.textures}:null});
+ window.PurrchGrove=Object.freeze({identity:()=>({game:'purrch-grove',version:'v3',interface:'9',saveKey:STORE}),renderStats:()=>room?{revision:'180',calls:room.renderer.info.render.calls,triangles:room.renderer.info.render.triangles,geometries:room.renderer.info.memory.geometries,textures:room.renderer.info.memory.textures}:null});
 }
 boot();

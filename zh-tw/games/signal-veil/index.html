@@ -41,7 +41,7 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"訊號帷幕","url":"https://weightplay.com/zh-tw/games/signal-veil/","image":"https://weightplay.com/assets/signal-veil-cover.webp","description":"訪問目擊者、用神經視界揭露隱藏威脅，並在調查與戰鬥中找出訊號背後的真相。","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"zh-Hant","isAccessibleForFree":true,"genre":["Action RPG","Adventure","Animal"],"audience":{"@type":"Audience","audienceType":"General players age 13 and older"}}</script>
     <link rel="stylesheet" href="../../../src/loading-screen.css?v=20261017-shared-dark-loader1">
   <link rel="stylesheet" href="../../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <link rel="stylesheet" href="../../../games/signal-veil/style.css?v=20260827-mobile-movement-surface-v11">
+   <link rel="stylesheet" href="../../../games/signal-veil/style.css?v=20260827-mobile-movement-surface-v11">
   <link rel="stylesheet" href="../../../src/game-ui-theme.css?v=20260911-sound-control">
   <link rel="stylesheet" href="../../../src/game-screen-frame.css?v=20261021-signal-veil-v17-i9">
 
@@ -53,52 +53,8 @@
       <span class="atlas-icon icon-device" aria-hidden="true"></span>
       <strong data-t="loading">正在校準神經視界……</strong>
       <span class="loading-bar"><i></i></span>
-      <p id="entryRecoveryMessage" class="loading-recovery-message" role="alert" hidden>
-        <span data-entry-copy="slow" data-t="entryLoadSlow">載入時間比預期長。你可以重試，或返回 WeightPlay。</span>
-        <span data-entry-copy="failed" data-t="entryLoadFailed" hidden>必要的遊戲檔案未能載入。你可以重試，或返回 WeightPlay。</span>
-      </p>
-      <div id="entryRecoveryActions" class="loading-recovery-actions" hidden>
-        <button id="entryRetry" class="primary" type="button" data-t="entryRetry">重試</button>
-        <a id="entryBack" class="loading-recovery-back" href="/zh-tw/" data-t="entryBack">返回 WeightPlay</a>
-      </div>
     </div>
   </div>
-  <script>
-    (()=>{
-      const panel=document.getElementById("loadingPanel");
-      const message=document.getElementById("entryRecoveryMessage");
-      const slowCopy=message?.querySelector('[data-entry-copy="slow"]');
-      const failedCopy=message?.querySelector('[data-entry-copy="failed"]');
-      const actions=document.getElementById("entryRecoveryActions");
-      const retry=document.getElementById("entryRetry");
-      let failed=false;
-      const show=(kind)=>{
-        if(!panel)return;
-        panel.hidden=false;
-        panel.dataset.wpEntryRecovery=kind;
-        if(message)message.hidden=false;
-        if(slowCopy)slowCopy.hidden=kind!=="slow";
-        if(failedCopy)failedCopy.hidden=kind!=="failed";
-        if(actions)actions.hidden=false;
-        if(kind==="failed")requestAnimationFrame(()=>retry?.focus({preventScroll:true}));
-      };
-      const showFailure=()=>{failed=true;show("failed")};
-      retry?.addEventListener("click",()=>location.reload());
-      document.addEventListener("error",event=>{
-        const target=event.target;
-        if(target instanceof HTMLScriptElement){
-          const file=new URL(target.src,location.href).pathname.split("/").pop();
-          if(/^(locales|guide-locales|state-store|quest-data|game-screen-frame|frame|game)\.js$/.test(file))showFailure();
-        }else if(target instanceof HTMLImageElement&&/\/assets\/signal-veil-[^/]+\.(?:webp|png|jpg)$/.test(new URL(target.src,location.href).pathname))showFailure();
-      },true);
-      const slowTimer=setTimeout(()=>{if(!failed&&!panel?.hidden)show("slow")},12000);
-      window.__SIGNAL_VEIL_ENTRY_RECOVERY__={
-        get active(){return failed},
-        showFailure,
-        complete(){clearTimeout(slowTimer);if(!failed&&panel){panel.hidden=true;delete panel.dataset.wpEntryRecovery}}
-      };
-    })();
-  </script>
 
   <div id="signalFrame" data-wp-frame-root></div>
   <main id="main" class="screen main-screen" data-screen="main">
@@ -108,7 +64,7 @@
       </a>
       <div class="title-slot">
         <small>WEIGHTPLAY ORIGINAL</small>
-        <strong data-t="title">訊號帷幕</strong>
+        <strong data-t="title" data-wp-game-title>訊號帷幕</strong>
       </div>
       <label class="locale-picker">
         <span data-t="language">語言</span>

@@ -75,6 +75,7 @@
 .tile-target.past .cell-name,.tile-target.past .cell-hp{visibility:hidden}
 
 .meter-label{display:flex;justify-content:space-between;gap:4px}.meter-label span{white-space:nowrap}.meter-label span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.battle-paused .mine *,.battle-paused #breakGain{animation-play-state:paused!important}
 @media(max-height:500px) and (orientation:landscape){
  .depth-strip{display:grid;grid-template-columns:minmax(0,1fr) 44px;grid-template-rows:16px 28px;gap:0 4px}
  .depth-strip>div{grid-column:1;grid-row:2;min-width:0}.depth-strip small{display:none}.depth-strip strong{white-space:nowrap;font-size:18px}

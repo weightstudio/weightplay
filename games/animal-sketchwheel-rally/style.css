@@ -1,75 +1,169 @@
-:root{color-scheme:dark;--ink:#ecfff5;--muted:#a9cabe;--panel:#082b27;--panel2:#103d34;--mint:#62f0bb;--gold:#ffd25d;--line:#2b6e5c;--danger:#ff8177;font-family:Inter,"Noto Sans TC",system-ui,sans-serif}*{box-sizing:border-box}[hidden]{display:none!important}html,body{margin:0;min-height:100%;background:#041b18;color:var(--ink)}body{overflow-x:hidden;background:radial-gradient(circle at 50% 15%,#174c3d,#041b18 62%)}button,select{font:inherit}button{cursor:pointer}.loading{position:fixed;inset:0;z-index:30;display:grid;place-content:center;gap:14px;text-align:center;background:#061f1b}.loading img{width:128px;height:128px;border-radius:24px;object-fit:cover}.loading div{width:190px;height:8px;overflow:hidden;border-radius:9px;background:#173d35}.loading i{display:block;width:0;height:100%;background:var(--mint);animation:load 1s forwards}@keyframes load{to{width:100%}}
-.main-group{width:min(100%,920px);margin:auto}.main-screen{min-height:min(844px,100svh);padding:18px;background:linear-gradient(#061d1bd9,#061d1bf2),url('../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-track-bg.webp') center/cover}.main-header{height:62px;display:grid;grid-template-columns:112px minmax(0,1fr) 150px;align-items:center;gap:12px}.main-header>strong{text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lobby-return{display:flex;width:78px;height:52px;align-items:center;justify-content:center;gap:7px;border-radius:14px;background:#f7faf9;color:#11649a;text-decoration:none;font-weight:900;font-size:23px}.lobby-return img{width:27px;height:27px;object-fit:contain}.main-header label{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px}.main-header select{width:100%;min-width:0;padding:9px;border:1px solid var(--line);border-radius:10px;background:#102d29;color:white}.main-hero{display:grid;grid-template-columns:minmax(280px,1.15fr) minmax(250px,.85fr);gap:28px;align-items:center;min-height:720px;padding:28px}.poster{width:100%;max-height:640px;aspect-ratio:1;object-fit:cover;border:3px solid #77d9b8;border-radius:30px;box-shadow:0 22px 55px #0008}.main-copy small{display:inline-block;padding:6px 10px;border-radius:999px;background:var(--gold);color:#3b2a00;font-weight:900}.main-copy h1{font-size:clamp(34px,5vw,66px);line-height:.98;margin:18px 0}.main-copy p{font-size:20px;line-height:1.55;color:#d4eae3}.main-copy #mainProgress{display:block;margin:20px 0;color:var(--mint);font-weight:800}.primary{border:0;border-radius:14px;background:linear-gradient(#ffe276,#f3aa25);color:#2d2100;font-weight:900;box-shadow:0 5px 0 #9d650e}.main-copy .primary{width:100%;min-height:58px;font-size:20px}.public-guide{padding:40px 34px 60px;background:#f3f0df;color:#16332b}.public-guide h2{font-size:30px}.public-guide>p{font-size:18px;line-height:1.6}.guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.guide-grid section{padding:18px;border-radius:16px;background:white;box-shadow:0 5px 18px #243d3420}.guide-grid h3{margin-top:0}.guide-grid p{line-height:1.55}
-.screen-shell{width:100%;min-height:100svh}.stage-canvas,.battle-canvas{position:relative;overflow:hidden;width:min(100%,920px);height:calc(100svh - var(--wp-ad-reserve-height, 0px));margin:auto;background:#06231f}.wp-stage-physical-reserve,.ad-reserve{height:var(--wp-ad-reserve-height, 0px);width:min(100%,920px);margin:auto;background:#031311}.stage-canvas{display:grid;grid-template-rows:72px minmax(0,1fr) 46px 154px;gap:8px;padding:12px;background:linear-gradient(#061c1ad6,#061c1af2),var(--wp-stage-art) center/cover}.stage-header,.battle-header{display:grid;align-items:center;border:1px solid var(--line);border-radius:15px;background:#071d1be8}.stage-header{grid-template-columns:58px minmax(0,1fr) 54px;padding:7px}.stage-header button,.battle-header>button{width:48px;height:48px;border:0;border-radius:12px;background:#f6faf8;color:#1677af;font-weight:900;font-size:24px}.stage-header>div{min-width:0;display:grid;padding:0 10px}.stage-header span{color:var(--muted);font-size:13px}.rux-chip{height:52px;background:url('../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-vehicle-atlas.webp') 0 0/200% 200%;border-radius:50%}.stage-rail{display:flex;align-items:center;gap:22px;overflow-x:auto;overflow-y:hidden;padding:18px calc(50% - 132px);scroll-snap-type:x mandatory;touch-action:pan-x;scrollbar-width:none}.stage-rail::-webkit-scrollbar{display:none}.stage-card{position:relative;flex:0 0 286px;height:206px;scroll-snap-align:center;border:2px solid #508c7a;border-radius:22px;overflow:hidden;color:white;background:#102c28;text-align:left;padding:0;box-shadow:0 12px 24px #0007}.stage-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.55)}.stage-card>span{position:absolute;inset:auto 14px 14px;z-index:1;text-shadow:0 2px 4px #000}.stage-card strong{display:block;font-size:22px}.stage-card small{display:block;margin-top:5px}.stage-card.locked{filter:grayscale(.75)}.stage-card.is-centered,.stage-card.wp-stage-centered{border-color:#65ffd0;box-shadow:0 0 0 3px #d8fff2,0 0 28px #42ffc8}.stage-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stage-tabs button{border:1px solid var(--line);border-radius:12px;background:#0a2b27;color:#c4ddd5;font-weight:800}.stage-tabs button.active{background:#2a6957;color:white}.stage-panel{border:1px solid var(--line);border-radius:16px;background:#071d1be8;padding:12px}.selected-brief{display:grid;grid-template-columns:46px minmax(0,1fr) 150px;gap:12px;align-items:center}.selected-brief>span{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--gold);color:#332300;font-weight:900}.selected-brief p,.forge-heading p{margin:3px 0;color:var(--muted);font-size:13px}.selected-brief .primary{height:44px}.stage-hint{margin:8px 0 0;text-align:center;color:var(--muted);font-size:12px}.forge-panel{position:absolute;inset:92px 18px 18px;z-index:8;overflow:auto;padding:18px}.forge-heading{display:flex;justify-content:space-between;gap:12px}.forge-heading b{color:var(--gold)}.upgrade-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}.upgrade-card{padding:12px;border:1px solid var(--line);border-radius:13px;background:#103d34}.upgrade-card p{min-height:42px;color:var(--muted);font-size:13px}.upgrade-card button,.lens-buy{width:100%;min-height:40px;border:0;border-radius:9px;background:#65e7b2;color:#073329;font-weight:900}.lens-buy{background:#d6b84a;color:#2b2200}
-.battle-canvas{padding:10px}.battle-live{height:100%;display:grid;grid-template-rows:70px 40px minmax(0,1fr) 176px;gap:8px}.battle-header{grid-template-columns:54px minmax(120px,1fr) minmax(260px,1.35fr) 48px;padding:7px}.battle-header>div:nth-child(2){display:grid;padding-left:8px;min-width:0}.battle-header small{color:var(--muted)}.battle-header strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.race-hud{display:grid!important;grid-template-columns:repeat(3,1fr);gap:5px}.race-hud span{display:grid;text-align:center;border-left:1px solid #285f53}.race-hud b{font-size:11px;color:var(--muted)}.race-hud strong{color:var(--mint)}.help-action{background:#214b43!important;color:white!important}.objective-row{display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-radius:11px;background:#103d34;font-size:13px}.objective-row span{color:var(--gold)}.race-scene{position:relative;min-height:0;overflow:hidden;border:2px solid #397765;border-radius:18px;background:#153c32}.race-scene canvas{display:block;width:100%;height:100%}.feedback{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);max-width:84%;padding:7px 12px;border-radius:999px;background:#061b18df;color:white;text-align:center;font-weight:800;pointer-events:none}.feedback.warn{background:#6b281fe8}.draw-controls{display:grid;grid-template-columns:130px minmax(0,1fr) minmax(0,1.2fr);gap:10px;align-items:center;min-width:0;padding:10px;border:1px solid var(--line);border-radius:16px;background:#071d1b}.draw-copy{display:grid;gap:8px}.draw-copy span{font-size:12px;color:var(--muted)}#wheelPad{width:100%;height:132px;border:2px dashed #69d9b5;border-radius:13px;background:#dff8ea;touch-action:none}.blueprints{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));min-width:0;gap:6px}.blueprints button{height:86px;min-width:0;border:1px solid #438a76;border-radius:11px;background:#103d34;color:white}.blueprints span{display:block;width:38px;height:38px;margin:2px auto 5px;border:5px solid var(--gold)}.shape.circle{border-radius:50%}.shape.tall{width:25px;border-radius:45%}.shape.spike{clip-path:polygon(50% 0,62% 30%,100% 50%,62% 68%,50% 100%,38% 68%,0 50%,38% 30%);background:var(--gold);border:0!important}.shape.wide{width:55px;height:27px;border-radius:45%}.blueprints b{font-size:11px}.modal-layer{position:absolute;inset:0;z-index:20;display:grid;place-items:center;padding:20px;background:#031714d9}.modal-layer[hidden]{display:none}.dialog-card,.result-card{width:min(540px,94%);max-height:92%;overflow:auto;padding:24px;border:2px solid #67dcb8;border-radius:22px;background:#0b302a;box-shadow:0 22px 60px #000b}.dialog-card h2,.result-card h2{margin-top:0}.dialog-card li{margin:12px 0;line-height:1.5}.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:18px}.modal-actions.three{grid-template-columns:repeat(3,1fr)}.modal-actions button,.dialog-card>.primary{min-height:46px;border:1px solid #4c907f;border-radius:11px;background:#173f37;color:white;font-weight:900}.modal-actions .primary,.dialog-card>.primary{background:linear-gradient(#ffe276,#f3aa25);color:#302200}.result-card{text-align:center;background:linear-gradient(#0c3e34,#071d1b)}.result-rux{display:block;width:110px;height:110px;margin:auto;background:url('../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-vehicle-atlas.webp') 0 100%/200% 200%}.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.result-stats span{display:grid;padding:10px;border-radius:10px;background:#061b18}.result-stats b{color:var(--muted);font-size:11px}.terrain-guide{display:grid;grid-template-columns:1fr 1fr;gap:8px}.terrain-guide div{padding:9px;border-radius:9px;background:#15483c}.terrain-guide strong,.terrain-guide small{display:block}.terrain-guide small{margin-top:2px;color:#c3ded5}
-@media(max-width:650px){.main-screen{padding:10px}.main-header{grid-template-columns:72px minmax(0,1fr) 64px;height:58px}.main-header>strong{font-size:12px;white-space:normal;line-height:1.05;overflow:visible;text-overflow:clip}.main-header label span{display:none}.lobby-return{width:62px;height:48px}.main-hero{display:flex;flex-direction:column;justify-content:center;gap:14px;min-height:720px;padding:10px 4px}.poster{width:min(100%,490px);max-height:470px;border-radius:21px}.main-copy{text-align:center}.main-copy h1{font-size:34px;margin:9px 0}.main-copy p{font-size:15px;margin:8px 0}.main-copy #mainProgress{margin:10px}.public-guide{padding:28px 18px}.guide-grid{grid-template-columns:1fr}.stage-canvas{grid-template-rows:64px minmax(0,1fr) 42px 142px;padding:8px}.stage-card{flex-basis:286px;height:206px}.selected-brief{grid-template-columns:38px minmax(0,1fr) 105px;gap:7px}.selected-brief p{font-size:11px}.battle-canvas{padding:6px}.battle-live{grid-template-rows:64px 34px minmax(0,1fr) 170px;gap:5px}.battle-header{grid-template-columns:48px minmax(82px,1fr) minmax(148px,1.35fr) 44px;padding:5px}.battle-header>button{width:44px;height:44px}.battle-header small,.battle-header strong{font-size:11px}.race-hud b{font-size:9px}.race-hud strong{font-size:12px}.objective-row{font-size:11px;padding:0 8px}.draw-controls{grid-template-columns:minmax(180px,1fr) 150px;grid-template-rows:38px 116px;padding:7px}.draw-copy{grid-column:1/-1;grid-template-columns:1fr 1fr}#wheelPad{height:112px}.blueprints{grid-template-columns:repeat(2,1fr)}.blueprints button{height:53px}.blueprints span{width:24px;height:24px;border-width:3px}.shape.tall{width:16px}.shape.wide{width:35px;height:18px}.modal-actions.three{grid-template-columns:1fr}.upgrade-list{grid-template-columns:1fr}.terrain-guide{grid-template-columns:1fr 1fr}}
-@media(max-width:650px){.main-header .wp-shell-language-row>span:first-child{display:block}}
-@media(max-height:500px) and (orientation:landscape){.main-screen{height:100vh;min-height:0;padding:7px;display:grid;grid-template-rows:58px minmax(0,1fr);gap:7px}.main-header{height:58px}.main-hero{min-height:0;height:100%;padding:9px 12px;gap:14px}.poster{height:100%;min-height:0;max-height:none;aspect-ratio:auto}.main-copy small{padding:4px 8px;font-size:12px}.main-copy h1{font-size:36px;line-height:1.02;margin:6px 0}.main-copy p{font-size:14px;line-height:1.25;margin:5px 0}.main-copy #mainProgress{margin:6px 0;font-size:14px}.main-copy .primary{min-height:48px;font-size:18px}.stage-canvas{grid-template-columns:minmax(0,1fr) minmax(276px,38%);grid-template-rows:54px minmax(0,1fr) 38px;grid-template-areas:"header header" "rail brief" "tabs brief";gap:5px;padding:5px}.stage-header{grid-area:header;height:54px}.stage-rail{grid-area:rail}.stage-tabs{grid-area:tabs}.stage-panel{grid-area:brief;min-width:0;padding:12px}.selected-brief{grid-template-columns:44px minmax(0,1fr);grid-template-rows:auto 44px;gap:8px}.selected-brief .primary{grid-column:1/-1;width:100%}.selected-brief p{font-size:12px;line-height:1.25}.stage-hint{margin-top:10px;line-height:1.3}.forge-panel{display:block;inset:62px 10px 10px}.battle-live{grid-template-rows:52px 28px minmax(0,1fr) 90px;grid-template-columns:1fr}.battle-header,.objective-row,.race-scene,.draw-controls{grid-column:1}.draw-controls{grid-row:4;grid-template-columns:110px 230px minmax(0,1fr);grid-template-rows:1fr}.draw-copy{grid-column:auto;display:grid}.draw-copy span{font-size:9px}#wheelPad{height:72px}.blueprints{grid-template-columns:repeat(4,1fr)}.blueprints button{height:62px}.blueprints span{display:none}.modal-layer{padding:8px}#helpModal .dialog-card,#resultCard{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:10px;width:min(760px,100%);height:100%;max-height:none;overflow:hidden;padding:14px}.modal-scroll{min-height:0;overflow:auto;overscroll-behavior:contain}#helpModal .dialog-card>.primary{width:100%;min-height:46px}.result-card>.modal-actions{margin-top:0}}
-.forge-panel{inset:92px 18px 208px}#forgeFeedback{min-height:34px;margin:8px 0 0;padding:7px 9px;border:1px solid #72d7bb;border-radius:10px;background:#0b3029;color:#caffed;font-weight:800;line-height:1.25}#forgeFeedback:empty{visibility:hidden}.stage-card[aria-disabled="true"],.selected-brief .primary:disabled{cursor:not-allowed}.selected-brief .primary:disabled{opacity:.62}
-@media(max-width:650px){.forge-panel{inset:84px 10px 200px}}
-@media(max-height:500px) and (orientation:landscape){.forge-panel{inset:62px 10px 53px}}
-
-.modal-actions button,.dialog-card>.primary{min-height:48px}
-.modal-actions button:disabled{cursor:not-allowed;opacity:.48}
-
-/* Canonical Main entrance geometry. */
-.main-screen{min-height:0;height:auto}
-.main-hero{grid-template-columns:420px minmax(0,1fr);min-height:0;align-items:stretch}
-.main-hero>.poster{width:420px;height:420px;max-height:none;aspect-ratio:1;object-fit:cover}
-.main-copy .primary{width:100%;height:52px;min-height:52px}
-@media(max-width:699px){
-  .main-hero{display:grid;grid-template-columns:1fr;grid-template-rows:auto auto;min-height:0}
-  .main-hero>.poster{width:100%;height:auto;max-height:none}
+/* Game-owned playfield and workshop content. Shared I9 owns screen chrome,
+   Stage cards, poster fit, background, gestures, Main and Guide composition. */
+.stage-content {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
 }
-@media(max-height:500px) and (orientation:landscape){
-  .main-screen{height:100svh}
-  body[data-wp-game-id="animal-sketchwheel-rally"] .wp-standard-main-composition{--wp-main-landscape-poster-size:420px}
-  body[data-wp-game-id="animal-sketchwheel-rally"] .wp-standard-main-copy{height:310px;align-self:start}
+.stage-page {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
 }
-
-/* Preserve logical 44px Stage navigation after shared Canvas scaling. */
-.stage-tabs{min-height:48px}
-.stage-tabs button{min-height:48px}
-@media(max-height:500px) and (orientation:landscape){
-  .stage-canvas{grid-template-rows:54px minmax(0,1fr) 48px}
+.forge-panel {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  overflow: auto;
+  padding: clamp(12px, 3vw, 24px);
+  color: var(--wp-ui-text, #eef9f6);
+  background: var(--wp-ui-surface, #0b2630);
 }
-
-@media(max-width:650px){
-  .main-header.wp-main-shell-header > .wp-shell-main-title{font-size:13px!important;line-height:1.05!important}
+.forge-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
 }
+.forge-heading p { margin: 4px 0; color: var(--wp-ui-muted, #b4c8cd); font-size: 13px; }
+.forge-heading b { color: #ffda72; white-space: nowrap; }
+.upgrade-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 16px 0; }
+.upgrade-card { min-width: 0; padding: 12px; border: 1px solid #46616b; border-radius: 8px; background: #102f3b; }
+.upgrade-card p { min-height: 42px; color: #b4c8cd; font-size: 13px; }
+.upgrade-card button, .lens-buy {
+  width: 100%; min-height: 40px; border: 1px solid #637b83; border-radius: 4px;
+  background: linear-gradient(#245260, #153a46); color: #f5fbf8; font-weight: 800;
+}
+.lens-buy { margin-top: 6px; }
 
-/* v18: game-owned instrument panel and live 3D race surface. */
-.race-scene{border-color:#4b777d;background:#87bdb3;isolation:isolate}
-#raceRibbon{position:absolute;top:16px;left:18px;right:18px;height:5px;background:#193d4e55;border-radius:5px;direction:ltr;pointer-events:none}
-#raceRibbon i{position:absolute;width:11px;height:11px;border:2px solid #fff7d4;top:-3px;border-radius:3px;box-shadow:0 2px 5px #173b4b66;transition:left .1s linear}
-.player-marker{left:calc(var(--player,0%) * .97);background:#31a497;z-index:2}.rival-marker{left:calc(var(--rival,0%) * .97);background:#e4876b;transform:translateY(7px)}
-#coursePreview{position:absolute;top:35px;inset-inline:12px;display:flex;justify-content:center;gap:5px;pointer-events:none;flex-wrap:wrap}
-#coursePreview span{padding:4px 7px;border:1px solid #ffffff55;background:#163a49cf;color:#ecf8ee;border-radius:5px;font-size:11px;font-weight:700;transition:background .18s,opacity .18s}
-#coursePreview .current{background:#f7d27f;color:#203847;border-color:#fff0c2}#coursePreview .passed{opacity:.4}
-#momentum{position:absolute;bottom:48px;inset-inline-end:14px;font-size:11px;letter-spacing:.06em;font-weight:800;padding:5px 8px;border-radius:5px;background:#163b4ee8;color:#e2f8ed;pointer-events:none}
-#momentum.boosting{background:#ffe2a0;color:#2a4145}
-.feedback{bottom:12px;max-width:94%;font-size:12px;border:1px solid #bfe1d233;border-radius:8px;background:#122e3bed;min-height:30px}
-.draw-controls{background:linear-gradient(130deg,#172f3c,#10232f);border-color:#486775}
-.draw-copy strong{color:#ffdf94}.draw-copy span{line-height:1.5;color:#a8c7ce;font-variant-numeric:tabular-nums}
-#wheelPad{border:1px solid #82988c;border-radius:9px;background:#102b38;cursor:crosshair}
-.blueprints button{background:#213f4e;border-color:#4f6f79;transition:background .16s,border-color .16s,box-shadow .16s}
-.blueprints button[aria-pressed="true"]{border-color:#ffe29c;background:#3e524f;box-shadow:inset 0 0 0 2px #ffe29c}
-.blueprints button.recommended{border-color:#83f5da}.blueprints button:active{filter:brightness(1.25)}
-.blueprints span{border-color:#ffdf94}.shape.spike{background:#ffdf94}
-button:focus-visible,canvas:focus-visible{outline:3px solid #fff0b4;outline-offset:3px}
-.dialog-card,.result-card{background:linear-gradient(140deg,#234650,#122d3a);border-color:#c9d3ad}
-.modal-layer:not([hidden]){animation:rally-enter .18s ease-out}
-#renderRecovery[hidden]{display:none!important}
-@keyframes rally-enter{from{opacity:0}to{opacity:1}}
-@media(max-height:500px) and (orientation:landscape){#coursePreview{top:27px}#coursePreview span{font-size:10px;padding:2px 5px}#raceRibbon{top:10px}.feedback{bottom:5px;font-size:11px;padding:4px 8px;min-height:24px}#momentum{bottom:35px;padding:3px 6px}}
-@media(prefers-reduced-motion:reduce){.modal-layer:not([hidden]){animation:none}#raceRibbon i,.blueprints button,#coursePreview span{transition:none}}
-.battle-header>div:has(#battleChapter){display:none!important}
-.stage-header .rux-chip{display:none!important}
-.battle-live{grid-template-rows:48px 40px minmax(0,1fr) 176px}
-@media(max-width:650px){.battle-live{grid-template-rows:48px 38px minmax(0,1fr) 170px}}
-@media(max-height:500px) and (orientation:landscape){.battle-live{grid-template-rows:48px 28px minmax(0,1fr) 90px}}
+.battle-content {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 8px;
+}
+.objective-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) 36px;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 4px 10px;
+  border: 1px solid #46616b;
+  border-radius: 6px;
+  background: #102f3b;
+  font-size: 13px;
+}
+.objective-row > * { min-width: 0; overflow-wrap: anywhere; line-height: 1.2; }
+#nextTerrain { color: #ffda72; text-align: end; }
+#battleHelp {
+  display: grid; place-items: center; width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+  padding: 0; border: 1px solid #637b83; border-radius: 4px; background: #173c48; color: #f5fbf8; font-weight: 900;
+}
+.race-scene { position: relative; min-width: 0; min-height: 0; overflow: hidden; border: 2px solid #397765; border-radius: 8px; background: #153c32; isolation: isolate; }
+.race-scene canvas { display: block; width: 100%; height: 100%; }
+#raceRibbon { position: absolute; top: 16px; left: 18px; right: 18px; height: 5px; border-radius: 5px; background: #193d4e55; direction: ltr; pointer-events: none; }
+#raceRibbon i { position: absolute; top: -3px; width: 11px; height: 11px; border: 2px solid #fff7d4; border-radius: 3px; box-shadow: 0 2px 5px #173b4b66; transition: left .1s linear; }
+.player-marker { left: calc(var(--player, 0%) * .97); z-index: 2; background: #31a497; }
+.rival-marker { left: calc(var(--rival, 0%) * .97); transform: translateY(7px); background: #e4876b; }
+#coursePreview { position: absolute; top: 35px; inset-inline: 12px; display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; pointer-events: none; }
+#coursePreview span { padding: 4px 7px; border: 1px solid #ffffff55; border-radius: 4px; background: #163a49cf; color: #ecf8ee; font-size: 11px; font-weight: 700; transition: background .18s, opacity .18s; }
+#coursePreview .current { border-color: #fff0c2; background: #f7d27f; color: #203847; }
+#coursePreview .passed { opacity: .4; }
+#momentum { position: absolute; inset-inline-end: 14px; bottom: 48px; padding: 5px 8px; border-radius: 4px; background: #163b4ee8; color: #e2f8ed; font-size: 11px; font-weight: 800; letter-spacing: .06em; pointer-events: none; }
+#momentum.boosting { background: #ffe2a0; color: #2a4145; }
+.feedback { position: absolute; left: 50%; bottom: 12px; max-width: 94%; min-height: 30px; transform: translateX(-50%); padding: 7px 12px; border: 1px solid #bfe1d233; border-radius: 8px; background: #122e3bed; color: white; text-align: center; font-size: 12px; font-weight: 800; pointer-events: none; }
+.feedback.warn { background: #6b281fe8; }
+.draw-controls {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr) minmax(0, 1.2fr);
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #46616b;
+  border-radius: 8px;
+  background: #102c37;
+}
+.draw-copy { display: grid; gap: 8px; min-width: 0; }
+.draw-copy strong { color: #ffdf94; }
+.draw-copy span { color: #a8c7ce; font-size: 12px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+#wheelPad { width: 100%; height: 132px; border: 1px solid #82988c; border-radius: 6px; background: #102b38; cursor: crosshair; touch-action: none; }
+.blueprints { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; min-width: 0; }
+.blueprints button { height: 86px; min-width: 0; border: 1px solid #4f6f79; border-radius: 6px; background: #213f4e; color: white; transition: background .16s, border-color .16s, box-shadow .16s; }
+.blueprints button[aria-pressed="true"] { border-color: #ffe29c; background: #3e524f; box-shadow: inset 0 0 0 2px #ffe29c; }
+.blueprints button.recommended { border-color: #83f5da; }
+.blueprints button:active { filter: brightness(1.25); }
+.blueprints span { display: block; width: 38px; height: 38px; margin: 2px auto 5px; border: 5px solid #ffdf94; }
+.shape.circle { border-radius: 50%; }
+.shape.tall { width: 25px; border-radius: 45%; }
+.shape.spike { border: 0 !important; background: #ffdf94; clip-path: polygon(50% 0,62% 30%,100% 50%,62% 68%,50% 100%,38% 68%,0 50%,38% 30%); }
+.shape.wide { width: 55px; height: 27px; border-radius: 45%; }
+.blueprints b { font-size: 11px; }
 
-.result-rux{width:112px;height:84px;border-radius:12px;background:url("../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp") center 48%/cover;box-shadow:0 4px 18px #071f3270}
+.modal-layer { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: #031714d9; }
+.modal-layer[hidden] { display: none !important; }
+.dialog-card, .result-card { width: min(540px, 94%); max-height: 92%; overflow: auto; padding: 24px; border: 2px solid #67dcb8; border-radius: 12px; background: linear-gradient(140deg, #234650, #122d3a); box-shadow: 0 22px 60px #000b; }
+.dialog-card h2, .result-card h2 { margin-top: 0; }
+.dialog-card li { margin: 12px 0; line-height: 1.5; }
+.modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 18px; }
+.modal-actions.three { grid-template-columns: repeat(3, 1fr); }
+.modal-actions button, .dialog-card > .primary { min-height: 46px; border: 1px solid #4c907f; border-radius: 6px; background: #173f37; color: white; font-weight: 900; }
+.modal-actions .primary, .dialog-card > .primary { background: linear-gradient(#ffe276, #f3aa25); color: #302200; }
+.modal-actions button:disabled { cursor: not-allowed; opacity: .48; }
+.result-card { text-align: center; background: linear-gradient(#0c3e34, #071d1b); }
+.result-rux { display: block; width: 110px; height: 84px; margin: auto; border-radius: 8px; background: url("../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp") center 48% / cover; box-shadow: 0 4px 18px #071f3270; }
+.result-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.result-stats span { display: grid; padding: 10px; border-radius: 6px; background: #061b18; }
+.result-stats b { color: #a8c7ce; font-size: 11px; }
+.terrain-guide { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.terrain-guide div { padding: 9px; border-radius: 6px; background: #15483c; }
+.terrain-guide strong, .terrain-guide small { display: block; }
+.terrain-guide small { margin-top: 2px; color: #c3ded5; }
+#renderRecovery[hidden] { display: none !important; }
 
-/* Long challenge and timed-gate labels share the fixed HUD row. */
-.objective-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:8px}.objective-row>*{min-width:0;overflow-wrap:anywhere;line-height:1.15}#nextTerrain{text-align:end}
+@media (max-width: 650px) {
+  .upgrade-list { grid-template-columns: 1fr; }
+  .upgrade-card p { min-height: 0; }
+  .battle-content { gap: 5px; padding: 6px; }
+  .objective-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) 32px; gap: 5px; padding-inline: 7px; font-size: 11px; }
+  #battleHelp { width: 32px; height: 32px; min-width: 32px; min-height: 32px; }
+  #raceRibbon { top: 10px; }
+  #coursePreview { top: 27px; }
+  #coursePreview span { padding: 2px 5px; font-size: 10px; }
+  .feedback { bottom: 5px; min-height: 24px; padding: 4px 8px; font-size: 11px; }
+  .draw-controls { grid-template-columns: minmax(0, 1fr) 150px; grid-template-rows: 38px 112px; gap: 6px; padding: 7px; }
+  .draw-copy { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; gap: 8px; }
+  #wheelPad { height: 112px; }
+  .blueprints { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .blueprints button { height: 53px; }
+  .blueprints span { width: 24px; height: 24px; border-width: 3px; }
+  .shape.tall { width: 16px; }
+  .shape.wide { width: 35px; height: 18px; }
+  .modal-actions.three { grid-template-columns: 1fr; }
+  .terrain-guide { grid-template-columns: 1fr 1fr; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .battle-content { grid-template-rows: auto minmax(0, 1fr) 90px; gap: 5px; padding: 5px; }
+  .draw-controls { grid-template-columns: 110px 230px minmax(0, 1fr); grid-template-rows: 1fr; padding: 5px; gap: 6px; }
+  .draw-copy { display: grid; }
+  #wheelPad { height: 76px; }
+  .blueprints { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .blueprints button { height: 72px; }
+  #coursePreview { top: 24px; }
+  #coursePreview span { padding: 2px 5px; font-size: 10px; }
+  .feedback { bottom: 5px; min-height: 24px; padding: 4px 8px; font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #raceRibbon i, .blueprints button, #coursePreview span { transition: none; }
+}

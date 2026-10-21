@@ -1,4 +1,4 @@
-(function () {
+(async function () {
   "use strict";
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
@@ -122,6 +122,17 @@
     {bounds:[720,695,425,380],parts:[[720,695,425,205],[720,900,360,175]]},
     {bounds:[1080,695,368,380],parts:[[1150,695,298,205],[1080,900,368,175]]},
   ];
+  const entryLoader=await new Promise(resolve=>{
+    const current=window.WeightPlayGameEntryLoader;
+    if(current?.begin){resolve(current);return}
+    const bootstrap=document.querySelector('script[data-wp-game-entry-loader-bootstrap="true"]');
+    if(!bootstrap){resolve(null);return}
+    const finish=()=>resolve(window.WeightPlayGameEntryLoader||null);
+    bootstrap.addEventListener("load",finish,{once:true});
+    bootstrap.addEventListener("error",finish,{once:true});
+    if(window.WeightPlayGameEntryLoader?.begin)finish();
+  });
+  entryLoader?.begin(6);
   const atlas = {sprites:new Image(),items:new Image(),npcs:new Image(),world:new Image()};
   atlas.sprites.src = "/assets/signal-veil-enemies-block-v13-final.webp";
   atlas.player = new Image();
@@ -144,6 +155,23 @@
     let value = copy[key] ?? window.SIGNAL_VEIL_LOCALES.en[key] ?? key;
     if (locale === "zh-Hans" && typeof value === "string") value = window.WonderI18n?.simplifyChineseText?.(value) || value;
     return template(value, data);
+  }
+  let entryLoadFailed=false,entryLoadFinished=false;
+  const entrySlowTimer=setTimeout(()=>{
+    if(entryLoadFinished||entryLoadFailed)return;
+    entryLoadFailed=true;
+    entryLoader?.fail(t("entryLoadSlow"),()=>location.reload());
+  },12000);
+  function failEntryLoad(){
+    if(entryLoadFinished||entryLoadFailed)return;
+    entryLoadFailed=true;clearTimeout(entrySlowTimer);
+    entryLoader?.fail(t("entryLoadFailed"),()=>location.reload());
+  }
+  function finishEntryLoad(){
+    if(entryLoadFinished||entryLoadFailed)return;
+    entryLoadFinished=true;clearTimeout(entrySlowTimer);
+    if(nodes.loading)nodes.loading.hidden=true;
+    entryLoader?.ready();
   }
 
   const canvas = $("#gameCanvas");
@@ -1314,12 +1342,20 @@
   function releaseJoystick(event){if(event.pointerId!==joystickPointer)return;joystickPointer=null;touchMove.x=0;touchMove.y=0;nodes.stick.style.transform="translate(0,0)"}
   nodes.joystick.addEventListener("pointerup",releaseJoystick);nodes.joystick.addEventListener("pointercancel",releaseJoystick);
 
-  Promise.all(Object.values(atlas).map(image=>image.decode?.().then(()=>true,()=>false)??Promise.resolve(Boolean(image.complete&&image.naturalWidth))))
-    .then(results=>setTimeout(()=>{
-      if(results.some(ready=>!ready))window.__SIGNAL_VEIL_ENTRY_RECOVERY__?.showFailure();
-      else if(window.__SIGNAL_VEIL_ENTRY_RECOVERY__)window.__SIGNAL_VEIL_ENTRY_RECOVERY__.complete();
-      else nodes.loading.hidden=true;
-    },350));
+  const waitForAtlasImage=image=>{
+    if(image.complete)return Promise.resolve(Boolean(image.naturalWidth));
+    return new Promise(resolve=>{
+      image.addEventListener("load",()=>resolve(true),{once:true});
+      image.addEventListener("error",()=>resolve(false),{once:true});
+    });
+  };
+  const atlasImages=Object.values(atlas);
+  let settledAtlasImages=0;
+  Promise.all(atlasImages.map(image=>waitForAtlasImage(image).then(ready=>{
+    entryLoader?.assetProgress(++settledAtlasImages,atlasImages.length);
+    return ready;
+  })))
+    .then(results=>{if(results.some(ready=>!ready))failEntryLoad();else finishEntryLoad()});
   if(new URLSearchParams(location.search).get("trial")==="1"){
     window.__SIGNAL_VEIL_TEST__={
       collidesTerrain,

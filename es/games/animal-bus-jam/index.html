@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <base href="/games/animal-bus-jam/" />
+
+    <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <script src="/src/game-title-registry.js?v=20261001-bus-jam-v19-mastery-motion" data-wp-game-title-registry></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
@@ -30,11 +31,16 @@
   <meta name="weightplay-scene-controls" content="immutable">
   <meta name="theme-color" content="#081622">
   <title>Atasco de buses de Panko | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <link rel="stylesheet" href="style.css?v=20261001-bus-jam-v19-mastery-motion">
-  <link rel="stylesheet" href="../../src/game-ui-theme.css">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
+  <link rel="stylesheet" href="style.css?v=20261021-bus-jam-v20-i9">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260923-play-header48">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
+  <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261017-shared-play-spacing1">
+  <link rel="stylesheet" href="../../src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <meta name="weightplay-game-version" content="v20">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="Envía pasajeros al bus de su color y gestiona la espera FIFO en 30 paradas. Busca tres estrellas: pocas esperas y sin ayuda." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -78,8 +84,8 @@
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam" data-wp-combined-sound="true">
-  <div id="gameFrame" data-wp-frame-root>
+<body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam" data-wp-game-version="v20" data-wp-interface-version="9" data-wp-combined-sound="true" data-runtime-localize="off">
+  <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
   <main id="main" class="screen main main-screen" data-screen="main">
     <header class="main-header">
       <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Volver a WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -104,32 +110,30 @@
         <li data-t="guideRule3">Deshaz antes de bloquear el carril.</li>
       </ol>
       </div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>¿Puedo enviar desde el centro de una fila?</dt><dd>No. Solo puede moverse el primer pasajero visible de cada fila.</dd></div><div><dt>¿Por qué entró un pasajero en el carril de espera?</dt><dd>Solo el autobús activo recoge pasajeros; las rutas futuras esperan en orden.</dd></div><div><dt>¿Por qué se bloqueó la terminal?</dt><dd>El orden de espera bloqueó la ruta activa y ningún pasajero visible podía despejarla.</dd></div><div><dt>¿Se pueden resolver todas las terminales?</dt><dd>Sí. Las treinta rutas de solución registradas se comprueban automáticamente.</dd></div><div><dt>¿Cómo consigo las tres estrellas?</dt><dd>Completa la parada, no superes el objetivo de esperas que aparece y termina sin usar Pista ni Deshacer. Cada condición aporta una estrella.</dd></div><div><dt>¿Pista o Deshacer impiden desbloquear la siguiente parada?</dt><dd>No. Completarla desbloquea la siguiente. Pista y Deshacer solo afectan a la estrella por jugar sin ayuda en ese intento.</dd></div><div><dt>¿Qué récords se guardan?</dt><dd>El navegador guarda la mejor puntuación de estrellas y el menor número de esperas de cada parada. Un intento peor no sustituye un récord mejor y no hay sincronización entre dispositivos.</dd></div></dl></div>
-    <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Más juegos relacionados</h3><p>Prueba otros dos puzles públicos de WeightPlay con reglas claras y decisiones de planificación.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-bamboo-pipes" href="/es/games/animal-bamboo-pipes/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" data-final-src="/assets/weightplay-logo.png" alt="Canal de bambú de Panko" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Canal de bambú de Panko</strong><span>Gira los tubos de bambú de Panko, lleva agua por cada tramo y revive la arboleda.</span></span></a></div></div></section>
+    <div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><p>Prueba otros dos puzles públicos de WeightPlay con reglas claras y decisiones de planificación.</p><div class="game-info-related"><a class="game-info-related-card" href="/es/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Canal de bambú de Panko</strong><span>Gira los tubos de bambú de Panko, lleva agua por cada tramo y revive la arboleda.</span></span></a><a class="game-info-related-card" href="/es/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Cajas Enlazadas</strong><span>Empuja, atrae y guía cargamentos rúnicos por 30 almacenes celestes con hielo, señales, imanes y cajas enlazadas.</span></span></a></div></div></section>
   </main>
 
-  <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-bus-jam-terminal-block-v16.webp')" hidden>
+  <main id="stage" class="screen stage" hidden>
     <header class="scene-header">
       <button data-back data-wp-return="stage" data-t-aria="back" aria-label="Volver">←</button>
       <h2 data-wp-frame-title hidden></h2>
+      <span id="progress" class="stage-progress" aria-live="polite"></span>
     </header>
     <div id="stageContent" class="stage-content">
-    <span id="progress" class="stage-progress"></span>
-    <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Lista de paradas"></section>
+      <section id="stageGrid" data-wp-stage-rail data-t-aria="stageList" aria-label="Lista de paradas"></section>
     </div>
     <nav class="stage-tabs" data-wp-frame-nav data-t-aria="stageTabs" aria-label="Navegación de niveles">
-      <span aria-hidden="true"></span>
-      <button type="button" class="stage-tab active" aria-current="page" data-t="stages">Niveles</button>
-      <span aria-hidden="true"></span>
+      <button id="stageAction" type="button" data-t="stages">Niveles</button>
     </nav>
   </main>
 
-  <main id="battle" class="screen canvas battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
+  <main id="battle" class="screen battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
     <header class="scene-header">
       <button id="battleBack" data-back data-wp-return="battle" data-t-aria="back" aria-label="Volver">←</button>
       <strong data-wp-frame-title hidden></strong>
     </header>
     <section class="battle-content">
-      <div id="battleInfo" data-wp-frame-info><div><small id="chapter"></small><strong id="stageName"></strong></div><span id="remaining"></span></div>
+      <div id="battleInfo"><span id="chapter"></span><strong id="stageName"></strong><span id="remaining"></span></div>
       <div class="convoy-panel">
         <div class="panel-label"><span data-t="convoy">ORDEN DE SALIDA</span><span id="dispatchGoal" class="dispatch-goal" aria-live="off"></span></div>
         <div id="buses" class="buses"></div>
@@ -186,7 +190,7 @@
   </dialog>
 
   </div>
-  <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
@@ -194,12 +198,14 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="levels.js?v=20261001-bus-jam-v19-mastery-motion"></script>
   <script src="mastery.js?v=20261001-bus-jam-v19-mastery-motion"></script>
-  <script src="locales.js?v=20261001-bus-jam-v19-mastery-motion"></script>
-  <script src="strategy-locales.js?v=20261004-bus-jam-text-growth-140-v1"></script>
+  <script src="locales.js?v=20261021-bus-jam-v20-i9"></script>
+  <script src="strategy-locales.js?v=20261021-bus-jam-v20-i9"></script>
   <script src="mastery-locales.js?v=20261001-bus-jam-v19-mastery-motion"></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-  <script src="frame.js?v=20260912-bus-block-v16"></script>
-  <script src="game.js?v=20261004-bus-jam-text-growth-140-v1"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+  <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
+  <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
+  <script src="stage-config.js?v=20261021-bus-jam-v20-i9"></script>
+  <script src="frame.js?v=20261021-bus-jam-v20-i9"></script>
+  <script src="game.js?v=20261021-bus-jam-v20-i9"></script>
 </body>
 </html>
