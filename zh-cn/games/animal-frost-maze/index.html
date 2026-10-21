@@ -27,22 +27,23 @@
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-id" content="animal-frost-maze" />
     <meta name="weightplay-game-version" content="v18" />
-    <meta name="weightplay-interface-version" content="6" />
+    <meta name="weightplay-interface-version" content="9" />
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="解开 30 个冰墙迷宫房间：破冰与筑冰开路、收齐浆果、避开漂行者，并在最后几间返回起点。" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"冰原迷宫救援","description":"解开 30 个冰墙迷宫房间：破冰与筑冰开路、收齐浆果、避开漂行者，并在最后几间返回起点。","url":"https://weightplay.com/zh-cn/games/animal-frost-maze/","image":"https://weightplay.com/assets/animal-frost-maze-cover.webp","genre":["冰墙迷宫","网格路线解谜","追逐策略"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"zh-Hans","isAccessibleForFree":true,"audience":{"@type":"Audience","audienceType":"General"},"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"},"alternateName":"Frost Maze Rescue"}</script>
     <title>冰原迷宫救援 | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20261018-frost-voxel18" />
+    <link rel="stylesheet" href="style.css?v=20261021-frost-i9" />
 
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen />
     <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide />
     <link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport />
-    <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-shell-standard />
+    <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
     <script defer src="mastery.js?v=20260908-mastery-v15"></script>
-    <script defer src="game.js?v=20261018-frost-voxel18"></script><meta property="og:site_name" content="WeightPlay" />
+    <script defer src="game.js?v=20261021-frost-i9"></script><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="冰原迷宫救援 | WeightPlay" />
     <meta property="og:description" content="解开 30 个冰墙迷宫房间：破冰与筑冰开路、收齐浆果、避开漂行者，并在最后几间返回起点。" />
@@ -54,45 +55,50 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-frost-maze.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-  <body data-wp-game-version="v18" data-wp-interface-version="6" data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-wp-battle-settings="visible" data-screen="main" data-wp-game-owned-guide data-runtime-localize="off">
+  <body data-wp-game-version="v18" data-wp-interface-version="9" data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-wp-battle-settings="visible" data-screen="main" data-wp-game-owned-guide data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-wp-game-title>冰原迷宫救援</strong><span>Preparing the ice route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
-    <main id="app" data-game="animal-frost-maze" data-audience="general">
+    <main id="app" data-game="animal-frost-maze" data-audience="general" data-wp-frame-root data-wp-play-ui="1">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
-        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="返回 WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title" data-wp-game-title>冰原迷宫救援</h1>
+        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="返回 WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title" data-wp-game-title data-wp-frame-title>冰原迷宫救援</h1>
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
-        <img class="five-game-cover main-cover" src="assets/animal-frost-maze-cover.png" alt="" aria-hidden="true" />
-        <p class="lede main-summary">收集粉红补给，用破冰开路、造墙挡住漂行者。没有倒数计时，想好再走下一步。</p>
-        <p id="main-progress" class="progress main-progress" data-wp-main-progress>Best rooms: 0</p>
-        <button id="start-game" class="primary" data-wp-main-start data-five-copy="start">Start Game</button>
+        <div id="main-content" class="main-content">
+          <img class="five-game-cover main-cover" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-frost-maze.webp" alt="" aria-hidden="true" />
+          <p class="lede main-summary" data-wp-frame-summary>Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
+          <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress>Best rooms: 0</p>
+          <button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button>
+        </div>
       </section>
-      <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-wp-stage-art="/assets/interface7-redrawn/animal-frost-maze.webp" style="--wp-stage-art:url(&quot;/assets/interface7-redrawn/animal-frost-maze.webp&quot;)" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
-        <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="返回主页">←</button><h2>Ice Chapters</h2></header>
-        <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div>
-        <nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav>
+      <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
+        <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="返回主页">←</button><strong data-wp-frame-title hidden>Frost Maze Rescue</strong></header>
+        <div id="stage-content"><div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail role="list"></div></div>
+        <nav class="stage-tabs" aria-label="Stage sections" data-wp-frame-nav><button type="button" data-wp-frame-action="tab" aria-current="page" aria-pressed="true">Stages</button></nav>
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
-        <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="返回章节">←</button><strong id="room-label">Chapter 1 · Room 1</strong><span id="fruit-label">Berries 0</span></header>
-        <section id="rescue-coach" class="rescue-coach" aria-label="冰原救援任务">
-          <div class="rescue-mission"><span id="rescue-kicker">冰原救援任务</span><strong id="rescue-objective">收集地图上所有粉红莓果。</strong><div class="rescue-progress"><progress id="rescue-meter" value="0" max="1" aria-label="收集地图上所有粉红莓果。"></progress><b id="rescue-count">0 / 0</b></div></div>
+        <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="返回章节">←</button><strong data-wp-frame-title hidden>Frost Maze Rescue</strong></header>
+        <div id="battle-play-content" class="battle-play-content">
+        <div id="battle-info" data-wp-frame-info><span><small>Room</small><strong id="room-label">Chapter 1 · Room 1</strong></span><span><small>Supplies</small><strong id="fruit-label">Berries 0</strong></span></div>
+        <section id="rescue-coach" class="rescue-coach" aria-label="RESCUE MISSION">
+          <div class="rescue-mission"><span id="rescue-kicker">RESCUE MISSION</span><strong id="rescue-objective">Collect every pink berry.</strong><div class="rescue-progress"><progress id="rescue-meter" value="0" max="1" aria-label="Collect every pink berry."></progress><b id="rescue-count">0 / 0</b></div></div>
           <div class="rescue-situation"><strong id="rescue-threat"></strong><span id="rescue-facing"></span><small id="rescue-rules"></small></div>
-          <div class="rescue-tools"><button id="rescue-route" type="button" aria-pressed="false">显示路线</button><button id="rescue-undo" type="button" disabled>退回一步</button></div>
-          <p id="rescue-advice" aria-live="polite">金色箭头指向哪一格，破冰和造墙就作用在哪一格。</p><small id="rescue-legend">金色：你 · 粉红：补给 · 红色：危险</small>
+          <div class="rescue-tools"><button id="rescue-route" type="button" aria-pressed="false">Show route</button><button id="rescue-undo" type="button" disabled>Undo</button></div>
+          <p id="rescue-advice" aria-live="polite">Turn the gold arrow toward the block you want to edit.</p><small id="rescue-legend">Gold: you · Pink: supplies · Red: danger</small>
         </section>
         <p id="battle-status" class="battle-status" role="status" aria-live="polite" aria-atomic="true">Arrows move. Press SPACE to break the ice ahead.</p>
         <canvas id="arena" aria-describedby="rescue-objective battle-status" width="864" height="504" aria-label="Frostline Rescue play area"></canvas>
         <div class="touch-controls"><button data-action="up">▲</button><button data-action="left">◀</button><button id="break-ice" data-action="break" data-wp-primary-action class="break">BREAK ICE</button><button data-action="build" class="build">BUILD ICE</button><button data-action="right">▶</button><button data-action="down">▼</button></div>
         <div id="frost-touch-hint" class="touch-hint">The blue blocks are breakable. Collect all berries before the drifter reaches you.</div>
-        <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
-          <h2 id="result-title">Room clear</h2><p id="result-copy"></p>
-          <div class="result-actions"><button id="to-stages">Chapters</button><button id="next">Next Room</button><button id="retry" class="primary">Retry Room</button></div>
+        </div>
+        <section id="result-screen" class="screen result" data-screen="result" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
+          <div class="result-card" data-wp-result-card>
+            <h2 id="result-title">Room clear</h2><p id="result-copy"></p>
+            <div class="result-actions"><button id="to-stages" data-wp-frame-action="secondary">Chapters</button><button id="next" data-wp-frame-action="secondary">Next Room</button><button id="retry" class="primary" data-wp-frame-action="primary">Retry Room</button></div>
+          </div>
         </section>
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
     </main>
-    <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+    <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
     <script src="../../src/weightplay-castle.js?v=20261018-frost-toast-api1"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script src="analytics-ownership.js?v=20260908-mastery-v15"></script>
@@ -115,12 +121,15 @@
       <div class="game-info-section"><h3>开发设计理念</h3><p>改冰会改变路线，也会带来代价：破冰打开通道，筑冰则改变漂行者的路径。前 20 间的八步追逐节奏清楚易读；第 21–30 间再把每次成功改冰纳入时机判断。最后五间加入醒目的起点格，因此收完最后一颗浆果后，仍可能需要再走一段路。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>最佳通关房间与各房最佳星级会保存在此浏览器。清除此网站的浏览器数据会移除记录。</p></div>
       <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>我需要收集什么？</dt><dd>收齐房间里的每颗浆果。第 26–30 间还要在收完最后一颗后，返回金色起点格。</dd></div><div><dt>漂行者何时会移动？</dt><dd>每八次成功移动一格后前进一次。第 21 间起，每次成功破冰或筑冰也会触发移动；撞墙未移动与无效改冰不会。</dd></div><div><dt>筑冰有什么作用？</dt><dd>前方空格符合条件时，可在那里筑起短冰墙并改变漂行者的路线。第 21–30 间中，成功筑冰也会让它前进。</dd></div><div><dt>第 21–25 间有什么变化？</dt><dd>每次成功改冰都会推进漂行者，因此破冰或筑冰同时改变迷宫与追逐时机。无效改冰不会让它移动。</dd></div><div><dt>房间星级如何计算？</dt><dd>通关得一星；达成该房的改冰上限与画面显示的步数目标，各可再得一星。第 1–20 间的改冰目标是四次，第 21–30 间是两次。未达星级目标仍算通关。</dd></div><div><dt>哪些房间需要返回起点？</dt><dd>第 26–30 间。收齐浆果后，移回金色起点格才能通关。</dd></div><div><dt>会保存哪些进度？</dt><dd>最佳通关房间与各房最佳星级保存在此浏览器。清除网站数据会移除记录；存档不会在设备间同步。</dd></div></dl></div>
-
+      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-unblock" data-related-game="animal-unblock" href="/zh-cn/games/animal-unblock/"><img src="/assets/interface7-redrawn/animal-unblock.webp" alt="Unblock Trail" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-runtime-localize="off">Unblock Trail</strong><span data-frost-related-description>Slide horizontal and vertical blocks along their lanes to clear a path to the exit.</span></span></a></div></div>
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+    <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+    <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
+    <script src="stage-config.js?v=20261021-frost-i9"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
   </body>
 </html>

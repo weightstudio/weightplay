@@ -23,6 +23,8 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rift-salvage/" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Rissbergung","url":"https://weightplay.com/de/games/animal-rift-salvage/","image":"https://weightplay.com/assets/animal-rift-salvage/cover.webp","genre":["Mondbergungs-Arcade","Trümmer nach Größe sammeln","Zeitkritische Rettungsmissionen"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"de","isAccessibleForFree":true,"description":"Führe Orlas Mondring durch 30 Zonen: Sammle kleinere Trümmer, rette Kerne und entkomme, bevor der Sturm den Weg schließt.","alternateName":"Rift Salvage","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":13}}</script>
   <meta charset="utf-8">
+  <meta name="weightplay-game-version" content="v18">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#07152d">
@@ -31,12 +33,16 @@
   <title>Rissbergung | WeightPlay</title>
   <link rel="icon" href="../../assets/weightplay-logo.png">
   <link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0">
+  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <link rel="stylesheet" href="/games/animal-rift-salvage/style.css?v=20261018-rift-mobile-control-1">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><meta name="description" content="Führe Orlas Mondring durch 30 Zonen: Sammle kleinere Trümmer, rette Kerne und entkomme, bevor der Sturm den Weg schließt." />
+  <link rel="stylesheet" href="/games/animal-rift-salvage/style.css?v=20261021-rift-salvage-i9">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-shared-dark-loader1">
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1"><meta name="description" content="Führe Orlas Mondring durch 30 Zonen: Sammle kleinere Trümmer, rette Kerne und entkomme, bevor der Sturm den Weg schließt." />
     <meta property="og:description" content="Führe Orlas Mondring durch 30 Zonen: Sammle kleinere Trümmer, rette Kerne und entkomme, bevor der Sturm den Weg schließt." />
     <meta name="twitter:description" content="Führe Orlas Mondring durch 30 Zonen: Sammle kleinere Trümmer, rette Kerne und entkomme, bevor der Sturm den Weg schließt." />
-    <meta property="og:site_name" content="WeightPlay" />
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Rissbergung | WeightPlay" />
     <meta property="og:url" content="https://weightplay.com/de/games/animal-rift-salvage/" />
@@ -46,12 +52,9 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rift-salvage.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-<body data-screen="main" data-wp-combined-sound="true" data-wp-game-id="animal-rift-salvage" data-audience="general" data-wp-game-owned-guide>
-  <div id="loading" class="loading-panel"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><strong data-t="loading">Mondring wird kalibriert…</strong></div>
-
+<body class="has-game-page-info" data-screen="main" data-wp-combined-sound="true" data-wp-game-id="animal-rift-salvage" data-wp-game-version="v18" data-wp-interface-version="9" data-audience="general" data-wp-game-owned-guide="true">
+  <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
   <div id="mainGroup" class="main-group" data-screen="main">
     <main id="mainScreen" class="main-screen wp-standard-main-screen">
       <header class="main-header">
@@ -80,19 +83,25 @@
         <article><h3 data-t="guideSystemsTitle">Jedes Bergungsziel verstehen</h3><p data-t="guideSystems">Erfülle zuerst die über der Arena angezeigte Quote und danach Kern- oder Rivalenziele. Prismensplitter öffnen geschützte Wracks; das Observatorium verbessert Beschleunigung, Größe und Stabilität.</p></article>
         <article><h3 data-t="guideProgressTitle">Sechs Kapitel, dreißig Zonen</h3><p data-t="guideProgress">Das erste Kapitel lehrt sichere Größenrouten; später kommen bewegte Strömungen, geschützte Ziele, Rivalenringe und ein schließender Sturm hinzu. Eine abgeschlossene Zone schaltet die nächste frei und gibt Sterngetriebe.</p></article>
         <article><h3 data-t="guideDesignTitle">Direkte Steuerung</h3><p data-t="guideDesign">Touch, Maus und Tastatur teilen eine Simulation; Bildschirmgröße ändert keine Regeln oder Belohnungen.</p></article>
-        <article><h3 data-t="guidePlayerTitle">Spieler- und Speicherinfos</h3><p data-t="guidePlayer">Halte oder ziehe, um den Ring zu führen, oder nutze Pfeiltasten und WASD. Freischaltungen, Bestzeiten, Sterngetriebe, Observatorium-Upgrades, Sprache, Ton und die kosmetische Sternbildspur bleiben in diesem Browser; Konto oder Kauf sind nicht nötig.</p></article>
+        <article><h3 data-t="guidePlayerTitle">Spieler- und Speicherinfos</h3><p data-t="guidePlayer">Nutze am Touchscreen den Stick unten links; loslassen stoppt. Am PC: Pfeile/WASD oder Ziel anklicken. Freischaltungen, Bestzeiten, Sterngetriebe, Observatorium-Upgrades, Sprache, Ton und die kosmetische Sternbildspur bleiben in diesem Browser; Konto oder Kauf sind nicht nötig.</p></article>
       </div>
 
       <section class="guide-faq" aria-labelledby="guideFaqTitle"><h3 id="guideFaqTitle" data-t="guideFaqTitle">Häufige Fragen</h3><details><summary data-t="guideFaq1Question">Warum sind manche Wracks zu groß?</summary><p data-t="guideFaq1Answer">Berge zuerst kleinere türkise Wracks, damit der Ring wächst. Bernstein ist fast passend; Rot braucht eine sicherere Route.</p></details><details><summary data-t="guideFaq2Question">Wie öffne ich ein geschütztes Wrack?</summary><p data-t="guideFaq2Answer">Sammle drei Prismensplitter und kehre zum markierten Wrack zurück. Sie öffnen den Schild, ersetzen aber nicht die Zonenquote.</p></details><details><summary data-t="guideFaq3Question">Was beendet einen Bergungslauf?</summary><p data-t="guideFaq3Answer">Der Timer kann den Riss schließen, Stabilität kann auf null fallen oder ein Ziel kann offen bleiben. Das Ergebnis zeigt Wiederholen oder Weitergehen.</p></details><details><summary data-t="guideFaq4Question">Wird der Fortschritt gespeichert?</summary><p data-t="guideFaq4Answer">Ja. Freischaltungen, Bestzeiten, Sterngetriebe, Upgrades und Einstellungen werden lokal in diesem Browser gespeichert.</p></details><details><summary data-t="guideFaq5Question">Wie helfen die Observatorium-Upgrades?</summary><p data-t="guideFaq5Answer">Gib Sterngetriebe für Beschleunigungs-, Kompressions- und Stabilitäts-Upgrades aus. Jedes erreicht Stufe 3 und verbessert dauerhaft Beschleunigung, Bergungsgröße und maximale Stabilität.</p></details></section>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle">Weitere ähnliche Spiele</h3><p data-t="guideRelatedIntro">Wenn du Systeme gern vor einem riskanten Zug liest, probiere diese WeightPlay-Spiele.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-skybridge-rivals" href="/de/games/animal-skybridge-rivals/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-skybridge-rivals.webp" data-final-src="/assets/weightplay-logo.png" alt="Himmelsbrücken" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Himmelsbrücken</strong></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle">More Related Games</h3><p data-t="guideRelatedIntro">Wenn du Systeme gern vor einem riskanten Zug liest, probiere diese WeightPlay-Spiele.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-skybridge-rivals" href="/de/games/animal-skybridge-rivals/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-skybridge-rivals.webp" data-final-src="/assets/weightplay-logo.png" alt="Skybridge Rivals" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Skybridge Rivals</strong></span></a></div></div>
     </section>
   </div>
 
-  <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-rift-salvage/cover.webp" style="--wp-stage-art:url('../../assets/animal-rift-salvage/cover.webp')">
-      <header class="stage-header"><button id="stageBack" type="button" aria-label="Zurück" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseZone">Bergungszone wählen</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""></header>
-      <nav class="stage-tabs"><button id="zonesTab" class="active" type="button" data-t="zones">Zonen</button><button id="observatoryTab" type="button" data-t="observatory">Observatorium</button></nav>
-      <section id="zonePanel" class="tab-panel zone-panel"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Bergungszonen-Auswahl" data-t-aria="stageRailLabel"></div><p id="stageHint" data-t="stageHint">Leiste ziehen und freigeschaltete Zone wählen.</p></section>
+  <section id="stageScreen" class="wp-rift-stage-screen" data-screen="stage" data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
+    <header class="stage-header">
+      <button id="stageBack" type="button" aria-label="Zurück" data-t-aria="back" data-wp-return="stage">←</button>
+      <strong data-wp-frame-title data-t="chooseZone">Bergungszone wählen</strong>
+      <span id="stageSummary"></span>
+    </header>
+    <div id="stageWorkspace" class="stage-workspace">
+      <section id="zonePanel" class="tab-panel zone-panel">
+        <div id="stageRail" class="stage-rail" aria-label="Bergungszonen-Auswahl" data-t-aria="stageRailLabel"></div>
+        <p id="stageHint" data-t="stageHint">Leiste ziehen und freigeschaltete Zone wählen.</p>
+      </section>
       <section id="observatoryPanel" class="tab-panel observatory-panel" hidden>
         <div class="observatory-intro"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><div><h2 data-t="observatoryTitle">Mondobservatorium</h2><p data-t="observatoryIntro">Sternzahnräder für dauerhafte Abstimmung ausgeben.</p><strong id="gearCount"></strong></div></div>
         <div id="upgrades" class="upgrades"></div>
@@ -100,33 +109,48 @@
         <div class="wake-card"><img src="../../assets/animal-rift-salvage/rescue-beacon.webp" alt=""><div><strong data-t="wakeTitle">Sternbildspur</strong><p data-t="wakeDesc">Kosmetische Spur ohne Vorteil.</p></div><button id="wakeButton" type="button" data-t="wakeBuy">Freischalten · 10 ◆</button></div>
       </section>
     </div>
+    <nav class="stage-tabs" data-wp-frame-nav aria-label="Salvage options">
+      <button id="zonesTab" type="button" role="tab" aria-selected="true" aria-pressed="true" data-t="zones">Zonen</button>
+      <button id="observatoryTab" type="button" role="tab" aria-selected="false" aria-pressed="false" data-t="observatory">Observatorium</button>
+    </nav>
   </section>
 
-  <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-      <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="Zurück" data-t-aria="back" data-wp-return="battle">←</button><div class="zone-block"><small id="zoneLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="salvage">Bergung</b><strong id="scoreValue">0/0</strong></span><span><b data-t="size">Größe</b><strong id="sizeValue">1</strong></span><span><b data-t="stability">Stabilität</b><strong id="stabilityValue">3</strong></span></div><button id="battleHelp" type="button" aria-label="Spielanleitung" data-t-aria="help" data-wp-battle-utility>?</button></header>
-        <p id="objective" class="objective-row"></p>
-        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="900" height="900" tabindex="0" aria-label="Astrale Bergungsarena" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown w a s d" data-t-aria="arenaLabel"></canvas><div id="salvageProgress" class="salvage-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-t="salvage">Bergung</span><b id="salvageProgressValue">0 / 0</b><i aria-hidden="true"><em id="salvageProgressFill"></em></i></div><div id="chainBadge" class="chain-badge" role="status" aria-live="polite" aria-atomic="true"><span data-t="moonChain">Mondkette</span><strong id="chainValue">×1</strong></div><div class="control-cue" data-t="controlCue">Linker Stick · Loslassen stoppt</div></div>
-        <p id="feedback" class="feedback" aria-live="polite"></p>
+  <section id="battleScreen" class="wp-rift-battle-screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+    <header class="battle-header">
+      <button id="battleBack" type="button" aria-label="Zurück" data-t-aria="back" data-wp-return="battle">←</button>
+      <strong data-wp-frame-title data-t="titleShort" data-wp-game-title data-runtime-localize="off">Rissbergung</strong>
+      <div class="zone-block"><small id="zoneLabel"></small><strong id="timerValue">0:00</strong></div>
+      <div id="battleStatus" class="battle-status">
+        <span><b data-t="salvage">Bergung</b><strong id="scoreValue">0/0</strong></span>
+        <span><b data-t="size">Größe</b><strong id="sizeValue">1</strong></span>
+        <span><b data-t="stability">Stabilität</b><strong id="stabilityValue">3</strong></span>
       </div>
-
-      <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">Führe den Mondring</h2><ol><li data-t="help1">Nutze am Touchscreen den Stick unten links; loslassen stoppt. Am PC: Pfeile/WASD oder Ziel anklicken.</li><li data-t="help2">Türkis zuerst; Bernstein fast, Rot zu groß.</li><li data-t="gunHelp">Bernsteinfarbene Striche fixieren die Schussrichtung 0,7 s vorher. Weiche seitlich aus. Treffer kosten 1 Stabilität und geben 1 s Schutz.</li><li data-t="help3">Quote und Rettung/Rivale vor Zeitende erfüllen.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">Weiter</button></div></div></section>
-      <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">Diesen Lauf behalten?</h2><p data-t="leaveText">Weiter setzt Position und Zeit fort. Zurück zu Zonen beendet den Lauf.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Weiter</button><button id="leaveStage" type="button" data-t="returnZones">Zurück zu Zonen</button></div></div></section>
-      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">Zeit</b><strong id="resultTime"></strong></span><span><b data-t="bestChain">Beste Kette</b><strong id="resultChain"></strong></span><span><b data-t="medal">Medaille</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultZones" type="button" data-t="zones">Zonen</button><button id="next" class="primary" type="button" data-t="nextZone">Nächste Zone</button><button id="retry" type="button" data-t="retry">Nochmal</button></div></div></section>
+    </header>
+    <div id="battleLive" class="battle-live">
+      <div class="objective-row"><p id="objective"></p><button id="battleHelp" type="button" aria-label="Spielanleitung" data-t-aria="help">?</button></div>
+      <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="900" height="900" tabindex="0" aria-label="Astrale Bergungsarena" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown w a s d" data-t-aria="arenaLabel"></canvas><div id="salvageProgress" class="salvage-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-t="salvage">Bergung</span><b id="salvageProgressValue">0 / 0</b><i aria-hidden="true"><em id="salvageProgressFill"></em></i></div><div id="chainBadge" class="chain-badge" role="status" aria-live="polite" aria-atomic="true"><span data-t="moonChain">Mondkette</span><strong id="chainValue">×1</strong></div><div class="control-cue" data-t="controlCue">Linker Stick · Loslassen stoppt</div></div>
+      <p id="feedback" class="feedback" aria-live="polite"></p>
     </div>
+    <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">Führe den Mondring</h2><ol><li data-t="help1">Nutze am Touchscreen den Stick unten links; loslassen stoppt. Am PC: Pfeile/WASD oder Ziel anklicken.</li><li data-t="help2">Türkis zuerst; Bernstein fast, Rot zu groß.</li><li data-t="gunHelp">Bernsteinfarbene Striche fixieren die Schussrichtung 0,7 s vorher. Weiche seitlich aus. Treffer kosten 1 Stabilität und geben 1 s Schutz.</li><li data-t="help3">Quote und Rettung/Rivale vor Zeitende erfüllen.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">Weiter</button></div></div></section>
+    <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">Diesen Lauf behalten?</h2><p data-t="leaveText">Weiter setzt Position und Zeit fort. Zurück zu Zonen beendet den Lauf.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Weiter</button><button id="leaveStage" type="button" data-t="returnZones">Zurück zu Zonen</button></div></div></section>
+    <section id="resultModal" class="modal-layer result-layer" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card" data-wp-result-card><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">Zeit</b><strong id="resultTime"></strong></span><span><b data-t="bestChain">Beste Kette</b><strong id="resultChain"></strong></span><span><b data-t="medal">Medaille</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultZones" type="button" data-wp-frame-action="secondary" data-t="zones">Zonen</button><button id="next" type="button" class="primary" data-wp-frame-action="primary" data-t="nextZone">Nächste Zone</button><button id="retry" type="button" data-wp-frame-action="secondary" data-t="retry">Nochmal</button></div></div></section>
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>
+  </div>
 
-  <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/de.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="/src/runtime-locales/de.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script src="/games/animal-rift-salvage/locales.js?v=20261018-rift-mobile-control-1"></script>
+  <script src="/games/animal-rift-salvage/locales.js?v=20261021-rift-salvage-i9"></script>
   <script src="/src/virtual-joystick.js?v=1.0.0"></script>
-  <script src="/games/animal-rift-salvage/game.js?v=20261018-rift-mobile-control-1"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
-  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+  <script src="/src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+  <script src="../../src/battle-canvas-standard.js?v=20261017-shared-dark-loader1" data-wp-battle-standard></script>
   <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-
+  <script src="stage-config.js?v=20261021-rift-salvage-i9"></script>
+  <script src="frame.js?v=20261021-rift-salvage-i9"></script>
   <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
+  <script src="game.js?v=20261021-rift-salvage-i9"></script>
 </body>
 </html>

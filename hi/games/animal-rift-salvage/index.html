@@ -23,6 +23,8 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rift-salvage/" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"रिफ्ट बचाव दल","url":"https://weightplay.com/hi/games/animal-rift-salvage/","image":"https://weightplay.com/assets/animal-rift-salvage/cover.webp","genre":["चंद्र बचाव आर्केड","आकार के अनुसार मलबा संग्रह","समयबद्ध बचाव मिशन"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"hi","isAccessibleForFree":true,"description":"ओर्ला के चंद्र-वलय से 30 क्षेत्रों में छोटे मलबे जुटाएँ, फँसे कोर बचाएँ और तूफान बंद होने से पहले निकलें।","alternateName":"Rift Salvage","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":13}}</script>
   <meta charset="utf-8">
+  <meta name="weightplay-game-version" content="v18">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#07152d">
@@ -31,12 +33,16 @@
   <title>रिफ्ट बचाव दल | WeightPlay</title>
   <link rel="icon" href="../../assets/weightplay-logo.png">
   <link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0">
+  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <link rel="stylesheet" href="/games/animal-rift-salvage/style.css?v=20261018-rift-mobile-control-1">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><meta name="description" content="ओर्ला के चंद्र-वलय से 30 क्षेत्रों में छोटे मलबे जुटाएँ, फँसे कोर बचाएँ और तूफान बंद होने से पहले निकलें।" />
+  <link rel="stylesheet" href="/games/animal-rift-salvage/style.css?v=20261021-rift-salvage-i9">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-shared-dark-loader1">
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1"><meta name="description" content="ओर्ला के चंद्र-वलय से 30 क्षेत्रों में छोटे मलबे जुटाएँ, फँसे कोर बचाएँ और तूफान बंद होने से पहले निकलें।" />
     <meta property="og:description" content="ओर्ला के चंद्र-वलय से 30 क्षेत्रों में छोटे मलबे जुटाएँ, फँसे कोर बचाएँ और तूफान बंद होने से पहले निकलें।" />
     <meta name="twitter:description" content="ओर्ला के चंद्र-वलय से 30 क्षेत्रों में छोटे मलबे जुटाएँ, फँसे कोर बचाएँ और तूफान बंद होने से पहले निकलें।" />
-    <meta property="og:site_name" content="WeightPlay" />
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="रिफ्ट बचाव दल | WeightPlay" />
     <meta property="og:url" content="https://weightplay.com/hi/games/animal-rift-salvage/" />
@@ -46,12 +52,9 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rift-salvage.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-<body data-screen="main" data-wp-combined-sound="true" data-wp-game-id="animal-rift-salvage" data-audience="general" data-wp-game-owned-guide>
-  <div id="loading" class="loading-panel"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><strong data-t="loading">चंद्र वलय को कैलिब्रेट किया जा रहा है…</strong></div>
-
+<body class="has-game-page-info" data-screen="main" data-wp-combined-sound="true" data-wp-game-id="animal-rift-salvage" data-wp-game-version="v18" data-wp-interface-version="9" data-audience="general" data-wp-game-owned-guide="true">
+  <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
   <div id="mainGroup" class="main-group" data-screen="main">
     <main id="mainScreen" class="main-screen wp-standard-main-screen">
       <header class="main-header">
@@ -80,19 +83,25 @@
         <article><h3 data-t="guideSystemsTitle">हर बचाव लक्ष्य समझें</h3><p data-t="guideSystems">अखाड़े के ऊपर दिखाए गए कोटे को पूरा करें, फिर कोर या प्रतिद्वंद्वी का लक्ष्य पूरा करें। प्रिज़्म टुकड़े सुरक्षित मलबा खोलते हैं; वेधशाला गति, आकार और स्थिरता सुधारती है।</p></article>
         <article><h3 data-t="guideProgressTitle">छह अध्याय, तीस क्षेत्र</h3><p data-t="guideProgress">पहला अध्याय सुरक्षित आकार मार्ग सिखाता है; बाद में चलती धाराएँ, ढाल, प्रतिद्वंद्वी वलय और सिकुड़ता तूफ़ान आते हैं। क्षेत्र पूरा करने पर अगला खुलता और स्टार गियर मिलता है।</p></article>
         <article><h3 data-t="guideDesignTitle">सीधे नियंत्रण के लिए बनाया गया</h3><p data-t="guideDesign">टच, माउस और कीबोर्ड एक ही सिमुलेशन साझा करते हैं; स्क्रीन का आकार नियम या पुरस्कार नहीं बदलता।</p></article>
-        <article><h3 data-t="guidePlayerTitle">खिलाड़ी और सेव जानकारी</h3><p data-t="guidePlayer">वलय को चलाने के लिए दबाकर रखें या खींचें, अथवा तीर और WASD इस्तेमाल करें। अनलॉक, श्रेष्ठ समय, स्टार गियर, वेधशाला सुधार, भाषा, ध्वनि और सजावटी पूँछ इसी ब्राउज़र में रहते हैं; खाते या खरीद की जरूरत नहीं।</p></article>
+        <article><h3 data-t="guidePlayerTitle">खिलाड़ी और सेव जानकारी</h3><p data-t="guidePlayer">टच स्क्रीन पर नीचे बाएँ स्टिक का उपयोग करें; छोड़ने पर रुकेंगे। कंप्यूटर पर तीर/WASD या गंतव्य पर क्लिक करें। अनलॉक, श्रेष्ठ समय, स्टार गियर, वेधशाला सुधार, भाषा, ध्वनि और सजावटी पूँछ इसी ब्राउज़र में रहते हैं; खाते या खरीद की जरूरत नहीं।</p></article>
       </div>
 
       <section class="guide-faq" aria-labelledby="guideFaqTitle"><h3 id="guideFaqTitle" data-t="guideFaqTitle">अक्सर पूछे जाने वाले प्रश्न</h3><details><summary data-t="guideFaq1Question">कुछ मलबा बहुत बड़ा क्यों है?</summary><p data-t="guideFaq1Answer">वलय बढ़ाने के लिए पहले छोटे फ़िरोज़ी मलबे बचाएँ। एम्बर आपके आकार के करीब है; लाल के लिए सुरक्षित रास्ता चाहिए।</p></details><details><summary data-t="guideFaq2Question">सुरक्षित मलबा कैसे खोलें?</summary><p data-t="guideFaq2Answer">तीन प्रिज़्म टुकड़े जमा करें और चिह्नित मलबे पर लौटें। टुकड़े ढाल खोलते हैं, क्षेत्र का कोटा नहीं बदलते।</p></details><details><summary data-t="guideFaq3Question">बचाव रन कब खत्म होता है?</summary><p data-t="guideFaq3Answer">समय समाप्त होने पर दरार बंद हो सकती है, स्थिरता शून्य हो सकती है या लक्ष्य अधूरा रह सकता है। परिणाम फिर कोशिश या अगला क्षेत्र बताता है।</p></details><details><summary data-t="guideFaq4Question">क्या प्रगति सेव होती है?</summary><p data-t="guideFaq4Answer">हाँ। अनलॉक, श्रेष्ठ समय, स्टार गियर, सुधार और प्राथमिकताएँ इसी ब्राउज़र में स्थानीय रूप से सेव होती हैं।</p></details><details><summary data-t="guideFaq5Question">वेधशाला के सुधार किस काम आते हैं?</summary><p data-t="guideFaq5Answer">स्टार गियर से गति, संपीड़न और स्थिरता सुधारें। हर सुधार स्तर 3 तक पहुँचता है और त्वरण, संग्रह योग्य आकार तथा अधिकतम स्थिरता को स्थायी रूप से बढ़ाता है।</p></details></section>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle">और संबंधित गेम</h3><p data-t="guideRelatedIntro">अगर आप जोखिम भरी चाल से पहले सिस्टम पढ़ना पसंद करते हैं, तो ये WeightPlay गेम आज़माएँ।</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-skybridge-rivals" href="/hi/games/animal-skybridge-rivals/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-skybridge-rivals.webp" data-final-src="/assets/weightplay-logo.png" alt="आकाशपुल प्रतिद्वंद्वी" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">आकाशपुल प्रतिद्वंद्वी</strong></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle">More Related Games</h3><p data-t="guideRelatedIntro">अगर आप जोखिम भरी चाल से पहले सिस्टम पढ़ना पसंद करते हैं, तो ये WeightPlay गेम आज़माएँ।</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-skybridge-rivals" href="/hi/games/animal-skybridge-rivals/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-skybridge-rivals.webp" data-final-src="/assets/weightplay-logo.png" alt="Skybridge Rivals" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Skybridge Rivals</strong></span></a></div></div>
     </section>
   </div>
 
-  <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-rift-salvage/cover.webp" style="--wp-stage-art:url('../../assets/animal-rift-salvage/cover.webp')">
-      <header class="stage-header"><button id="stageBack" type="button" aria-label="वापस" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseZone">बचाव क्षेत्र चुनें</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""></header>
-      <nav class="stage-tabs"><button id="zonesTab" class="active" type="button" data-t="zones">क्षेत्र</button><button id="observatoryTab" type="button" data-t="observatory">वेधशाला</button></nav>
-      <section id="zonePanel" class="tab-panel zone-panel"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="बचाव क्षेत्र चयनकर्ता" data-t-aria="stageRailLabel"></div><p id="stageHint" data-t="stageHint">रेल खींचकर खुला क्षेत्र चुनें।</p></section>
+  <section id="stageScreen" class="wp-rift-stage-screen" data-screen="stage" data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
+    <header class="stage-header">
+      <button id="stageBack" type="button" aria-label="वापस" data-t-aria="back" data-wp-return="stage">←</button>
+      <strong data-wp-frame-title data-t="chooseZone">बचाव क्षेत्र चुनें</strong>
+      <span id="stageSummary"></span>
+    </header>
+    <div id="stageWorkspace" class="stage-workspace">
+      <section id="zonePanel" class="tab-panel zone-panel">
+        <div id="stageRail" class="stage-rail" aria-label="बचाव क्षेत्र चयनकर्ता" data-t-aria="stageRailLabel"></div>
+        <p id="stageHint" data-t="stageHint">रेल खींचकर खुला क्षेत्र चुनें।</p>
+      </section>
       <section id="observatoryPanel" class="tab-panel observatory-panel" hidden>
         <div class="observatory-intro"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><div><h2 data-t="observatoryTitle">चंद्र वेधशाला</h2><p data-t="observatoryIntro">स्थायी वलय सुधार के लिए तारकीय गियर खर्च करें।</p><strong id="gearCount"></strong></div></div>
         <div id="upgrades" class="upgrades"></div>
@@ -100,33 +109,48 @@
         <div class="wake-card"><img src="../../assets/animal-rift-salvage/rescue-beacon.webp" alt=""><div><strong data-t="wakeTitle">नक्षत्र लकीर</strong><p data-t="wakeDesc">सजावटी तारकीय लकीर, खेल लाभ नहीं।</p></div><button id="wakeButton" type="button" data-t="wakeBuy">खोलें · 10 ◆</button></div>
       </section>
     </div>
+    <nav class="stage-tabs" data-wp-frame-nav aria-label="Salvage options">
+      <button id="zonesTab" type="button" role="tab" aria-selected="true" aria-pressed="true" data-t="zones">क्षेत्र</button>
+      <button id="observatoryTab" type="button" role="tab" aria-selected="false" aria-pressed="false" data-t="observatory">वेधशाला</button>
+    </nav>
   </section>
 
-  <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-      <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="वापस" data-t-aria="back" data-wp-return="battle">←</button><div class="zone-block"><small id="zoneLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="salvage">बचाव</b><strong id="scoreValue">0/0</strong></span><span><b data-t="size">आकार</b><strong id="sizeValue">1</strong></span><span><b data-t="stability">स्थिरता</b><strong id="stabilityValue">3</strong></span></div><button id="battleHelp" type="button" aria-label="कैसे खेलें" data-t-aria="help" data-wp-battle-utility>?</button></header>
-        <p id="objective" class="objective-row"></p>
-        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="900" height="900" tabindex="0" aria-label="तारकीय बचाव अखाड़ा" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown w a s d" data-t-aria="arenaLabel"></canvas><div id="salvageProgress" class="salvage-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-t="salvage">बचाव</span><b id="salvageProgressValue">0 / 0</b><i aria-hidden="true"><em id="salvageProgressFill"></em></i></div><div id="chainBadge" class="chain-badge" role="status" aria-live="polite" aria-atomic="true"><span data-t="moonChain">मून चेन</span><strong id="chainValue">×1</strong></div><div class="control-cue" data-t="controlCue">बायाँ स्टिक · छोड़ने पर रुकें</div></div>
-        <p id="feedback" class="feedback" aria-live="polite"></p>
+  <section id="battleScreen" class="wp-rift-battle-screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+    <header class="battle-header">
+      <button id="battleBack" type="button" aria-label="वापस" data-t-aria="back" data-wp-return="battle">←</button>
+      <strong data-wp-frame-title data-t="titleShort">दरार बचाव</strong>
+      <div class="zone-block"><small id="zoneLabel"></small><strong id="timerValue">0:00</strong></div>
+      <div id="battleStatus" class="battle-status">
+        <span><b data-t="salvage">बचाव</b><strong id="scoreValue">0/0</strong></span>
+        <span><b data-t="size">आकार</b><strong id="sizeValue">1</strong></span>
+        <span><b data-t="stability">स्थिरता</b><strong id="stabilityValue">3</strong></span>
       </div>
-
-      <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">चंद्र वलय को दिशा दें</h2><ol><li data-t="help1">टच स्क्रीन पर नीचे बाएँ स्टिक का उपयोग करें; छोड़ने पर रुकेंगे। कंप्यूटर पर तीर/WASD या गंतव्य पर क्लिक करें।</li><li data-t="help2">पहले फ़िरोज़ी; एम्बर लगभग तैयार, लाल बहुत बड़ा।</li><li data-t="gunHelp">पीली बिंदीदार रेखा गोली चलने से 0.7 सेकंड पहले दिशा तय करती है। बगल में हटें। लगने पर स्थिरता 1 घटती है और 1 सेकंड सुरक्षा मिलती है।</li><li data-t="help3">समय समाप्त होने से पहले कोटा और हर बचाव या प्रतिद्वंद्वी लक्ष्य पूरा करें।</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">जारी रखें</button></div></div></section>
-      <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">यह बचाव प्रयास रखें?</h2><p data-t="leaveText">जारी रखने पर यही स्थिति और समय लौटेंगे। क्षेत्र पर लौटने से प्रयास समाप्त होगा।</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">जारी रखें</button><button id="leaveStage" type="button" data-t="returnZones">क्षेत्रों पर लौटें</button></div></div></section>
-      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">समय</b><strong id="resultTime"></strong></span><span><b data-t="bestChain">श्रेष्ठ श्रृंखला</b><strong id="resultChain"></strong></span><span><b data-t="medal">पदक</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultZones" type="button" data-t="zones">क्षेत्र</button><button id="next" class="primary" type="button" data-t="nextZone">अगला क्षेत्र</button><button id="retry" type="button" data-t="retry">फिर कोशिश करें</button></div></div></section>
+    </header>
+    <div id="battleLive" class="battle-live">
+      <div class="objective-row"><p id="objective"></p><button id="battleHelp" type="button" aria-label="कैसे खेलें" data-t-aria="help">?</button></div>
+      <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="900" height="900" tabindex="0" aria-label="तारकीय बचाव अखाड़ा" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown w a s d" data-t-aria="arenaLabel"></canvas><div id="salvageProgress" class="salvage-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-t="salvage">बचाव</span><b id="salvageProgressValue">0 / 0</b><i aria-hidden="true"><em id="salvageProgressFill"></em></i></div><div id="chainBadge" class="chain-badge" role="status" aria-live="polite" aria-atomic="true"><span data-t="moonChain">मून चेन</span><strong id="chainValue">×1</strong></div><div class="control-cue" data-t="controlCue">बायाँ स्टिक · छोड़ने पर रुकें</div></div>
+      <p id="feedback" class="feedback" aria-live="polite"></p>
     </div>
+    <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">चंद्र वलय को दिशा दें</h2><ol><li data-t="help1">टच स्क्रीन पर नीचे बाएँ स्टिक का उपयोग करें; छोड़ने पर रुकेंगे। कंप्यूटर पर तीर/WASD या गंतव्य पर क्लिक करें।</li><li data-t="help2">पहले फ़िरोज़ी; एम्बर लगभग तैयार, लाल बहुत बड़ा।</li><li data-t="gunHelp">पीली बिंदीदार रेखा गोली चलने से 0.7 सेकंड पहले दिशा तय करती है। बगल में हटें। लगने पर स्थिरता 1 घटती है और 1 सेकंड सुरक्षा मिलती है।</li><li data-t="help3">समय समाप्त होने से पहले कोटा और हर बचाव या प्रतिद्वंद्वी लक्ष्य पूरा करें।</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">जारी रखें</button></div></div></section>
+    <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">यह बचाव प्रयास रखें?</h2><p data-t="leaveText">जारी रखने पर यही स्थिति और समय लौटेंगे। क्षेत्र पर लौटने से प्रयास समाप्त होगा।</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">जारी रखें</button><button id="leaveStage" type="button" data-t="returnZones">क्षेत्रों पर लौटें</button></div></div></section>
+    <section id="resultModal" class="modal-layer result-layer" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card" data-wp-result-card><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">समय</b><strong id="resultTime"></strong></span><span><b data-t="bestChain">श्रेष्ठ श्रृंखला</b><strong id="resultChain"></strong></span><span><b data-t="medal">पदक</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultZones" type="button" data-wp-frame-action="secondary" data-t="zones">क्षेत्र</button><button id="next" type="button" class="primary" data-wp-frame-action="primary" data-t="nextZone">अगला क्षेत्र</button><button id="retry" type="button" data-wp-frame-action="secondary" data-t="retry">फिर कोशिश करें</button></div></div></section>
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>
+  </div>
 
-  <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/hi.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="/src/runtime-locales/hi.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script src="/games/animal-rift-salvage/locales.js?v=20261018-rift-mobile-control-1"></script>
+  <script src="/games/animal-rift-salvage/locales.js?v=20261021-rift-salvage-i9"></script>
   <script src="/src/virtual-joystick.js?v=1.0.0"></script>
-  <script src="/games/animal-rift-salvage/game.js?v=20261018-rift-mobile-control-1"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
-  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+  <script src="/src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+  <script src="../../src/battle-canvas-standard.js?v=20261017-shared-dark-loader1" data-wp-battle-standard></script>
   <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-
+  <script src="stage-config.js?v=20261021-rift-salvage-i9"></script>
+  <script src="frame.js?v=20261021-rift-salvage-i9"></script>
   <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
+  <script src="game.js?v=20261021-rift-salvage-i9"></script>
 </body>
 </html>

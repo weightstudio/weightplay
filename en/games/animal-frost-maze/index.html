@@ -27,22 +27,23 @@
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-id" content="animal-frost-maze" />
     <meta name="weightplay-game-version" content="v18" />
-    <meta name="weightplay-interface-version" content="6" />
+    <meta name="weightplay-interface-version" content="9" />
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="Solve a 30-room ice maze: break and build walls to reach every berry, avoid the snow drifter, then return to the start in the final rooms." />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Frost Maze Rescue","description":"Solve a 30-room ice maze: break and build walls to reach every berry, avoid the snow drifter, then return to the start in the final rooms.","url":"https://weightplay.com/en/games/animal-frost-maze/","image":"https://weightplay.com/assets/animal-frost-maze-cover.webp","genre":["Ice-wall maze","Grid-route puzzle","Pursuit strategy"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"en","isAccessibleForFree":true,"audience":{"@type":"Audience","audienceType":"General"},"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"}}</script>
     <title>Frost Maze Rescue | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20261018-frost-voxel18" />
+    <link rel="stylesheet" href="style.css?v=20261021-frost-i9" />
 
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen />
     <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide />
     <link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport />
-    <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-shell-standard />
+    <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
     <script defer src="mastery.js?v=20260908-mastery-v15"></script>
-    <script defer src="game.js?v=20261018-frost-voxel18"></script><meta property="og:site_name" content="WeightPlay" />
+    <script defer src="game.js?v=20261021-frost-i9"></script><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Frost Maze Rescue | WeightPlay" />
     <meta property="og:description" content="Solve a 30-room ice maze: break and build walls to reach every berry, avoid the snow drifter, then return to the start in the final rooms." />
@@ -54,27 +55,29 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-frost-maze.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-  <body data-wp-game-version="v18" data-wp-interface-version="6" data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-wp-battle-settings="visible" data-runtime-localize="off" data-screen="main" data-wp-game-owned-guide>
+  <body data-wp-game-version="v18" data-wp-interface-version="9" data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-wp-battle-settings="visible" data-runtime-localize="off" data-screen="main" data-wp-game-owned-guide>
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-wp-game-title data-runtime-localize="off">Frost Maze Rescue</strong><span>Preparing the ice route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
-    <main id="app" data-game="animal-frost-maze" data-audience="general">
+    <main id="app" data-game="animal-frost-maze" data-audience="general" data-wp-frame-root data-wp-play-ui="1">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
-        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title" data-wp-game-title data-runtime-localize="off">Frost Maze Rescue</h1>
+        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title" data-wp-game-title data-wp-frame-title data-runtime-localize="off">Frost Maze Rescue</h1>
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
-        <img class="five-game-cover main-cover" src="assets/animal-frost-maze-cover.png" alt="" aria-hidden="true" />
-        <p class="lede main-summary">Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
-        <p id="main-progress" class="progress main-progress" data-wp-main-progress>Best rooms: 0</p>
-        <button id="start-game" class="primary" data-wp-main-start data-five-copy="start">Start Game</button>
+        <div id="main-content" class="main-content">
+          <img class="five-game-cover main-cover" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-frost-maze.webp" alt="" aria-hidden="true" />
+          <p class="lede main-summary" data-wp-frame-summary>Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
+          <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress>Best rooms: 0</p>
+          <button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button>
+        </div>
       </section>
-      <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-wp-stage-art="/assets/interface7-redrawn/animal-frost-maze.webp" style="--wp-stage-art:url(&quot;/assets/interface7-redrawn/animal-frost-maze.webp&quot;)" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
-        <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Ice Chapters</h2></header>
-        <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div>
-        <nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav>
+      <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
+        <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">Frost Maze Rescue</strong></header>
+        <div id="stage-content"><div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail role="list"></div></div>
+        <nav class="stage-tabs" aria-label="Stage sections" data-wp-frame-nav><button type="button" data-wp-frame-action="tab" aria-current="page" aria-pressed="true">Stages</button></nav>
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
-        <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Stages">←</button><strong id="room-label">Chapter 1 · Room 1</strong><span id="fruit-label">Berries 0</span></header>
+        <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Stages">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">Frost Maze Rescue</strong></header>
+        <div id="battle-play-content" class="battle-play-content">
+        <div id="battle-info" data-wp-frame-info><span><small>Room</small><strong id="room-label">Chapter 1 · Room 1</strong></span><span><small>Supplies</small><strong id="fruit-label">Berries 0</strong></span></div>
         <section id="rescue-coach" class="rescue-coach" aria-label="RESCUE MISSION">
           <div class="rescue-mission"><span id="rescue-kicker">RESCUE MISSION</span><strong id="rescue-objective">Collect every pink berry.</strong><div class="rescue-progress"><progress id="rescue-meter" value="0" max="1" aria-label="Collect every pink berry."></progress><b id="rescue-count">0 / 0</b></div></div>
           <div class="rescue-situation"><strong id="rescue-threat"></strong><span id="rescue-facing"></span><small id="rescue-rules"></small></div>
@@ -85,19 +88,22 @@
         <canvas id="arena" aria-describedby="rescue-objective battle-status" width="864" height="504" aria-label="Frostline Rescue play area"></canvas>
         <div class="touch-controls"><button data-action="up">▲</button><button data-action="left">◀</button><button id="break-ice" data-action="break" data-wp-primary-action class="break">BREAK ICE</button><button data-action="build" class="build">BUILD ICE</button><button data-action="right">▶</button><button data-action="down">▼</button></div>
         <div id="frost-touch-hint" class="touch-hint">The blue blocks are breakable. Collect all berries before the drifter reaches you.</div>
-        <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
-          <h2 id="result-title">Room clear</h2><p id="result-copy"></p>
-          <div class="result-actions"><button id="to-stages">Chapters</button><button id="next">Next Room</button><button id="retry" class="primary">Retry Room</button></div>
+        </div>
+        <section id="result-screen" class="screen result" data-screen="result" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
+          <div class="result-card" data-wp-result-card>
+            <h2 id="result-title">Room clear</h2><p id="result-copy"></p>
+            <div class="result-actions"><button id="to-stages" data-wp-frame-action="secondary">Chapters</button><button id="next" data-wp-frame-action="secondary">Next Room</button><button id="retry" class="primary" data-wp-frame-action="primary">Retry Room</button></div>
+          </div>
         </section>
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
     </main>
-    <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+    <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
     <script src="../../src/weightplay-castle.js?v=20261018-frost-toast-api1"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script src="analytics-ownership.js?v=20260908-mastery-v15"></script>
     <!-- Frost owns all 13 runtime locales; no shared DOM retranslation loop. -->
-    <script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
+    <script src="/src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/five-new-games-locale.js?v=20260908-approved-game-names1"></script>
     <section class="game-page-info game-page-info-static" aria-label="Frost Maze Rescue game information" data-wp-preserve-static-guide data-runtime-localize="off">
 
@@ -116,12 +122,15 @@
       <div class="game-info-section"><h3>Developer Design Note</h3><p>The maze makes wall editing a route choice with a cost: breaking ice opens a lane, while building it redirects the drifter. The eight-step pursuit rhythm is easy to read, then rooms 21–30 make every successful edit part of the timing. The final five rooms add a visible home tile, so collecting the last berry is not always the final move.</p></div>
       <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>The best cleared room and best star result for each room are saved in this browser. Clearing this site’s browser data removes those records.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>What do I need to collect?</dt><dd>Collect every berry in the room. In rooms 26–30, reach the gold starting tile after collecting the last berry.</dd></div><div><dt>When does the snow drifter move?</dt><dd>It moves after every eight successful grid steps. From room 21 onward, each successful break or build also triggers one move; blocked steps and invalid edits do not.</dd></div><div><dt>What does Build Ice do?</dt><dd>It places a short wall in the open cell ahead, when that space is valid, and changes the drifter’s route. In rooms 21–30 the successful edit also moves the drifter.</dd></div><div><dt>What changes in rooms 21–25?</dt><dd>Every successful ice edit now advances the drifter, so breaking or building a wall changes both the maze and the pursuit timing. Invalid edits leave it in place.</dd></div><div><dt>How are room stars awarded?</dt><dd>Clearing earns one star. Meet the room’s edit limit and its displayed step target to earn up to two more. Rooms 1–20 allow four edits for that target; rooms 21–30 allow two. A missed star target still counts as a clear.</dd></div><div><dt>Which rooms require a return to the start?</dt><dd>Rooms 26–30. Collect every berry, then move back to the gold starting tile to clear the room.</dd></div><div><dt>What progress is saved?</dt><dd>The best cleared room and best star result for each room stay in this browser. Clearing site data removes them; they are not a cross-device save.</dd></div></dl></div>
-
+      <div class="game-info-section game-info-related-section"><h3>Related Games</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-unblock" data-related-game="animal-unblock" href="/en/games/animal-unblock/"><img src="/assets/interface7-redrawn/animal-unblock.webp" alt="Unblock Trail" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-runtime-localize="off">Unblock Trail</strong><span data-frost-related-description>Slide horizontal and vertical blocks along their lanes to clear a path to the exit.</span></span></a></div></div>
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+    <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+    <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
+    <script src="stage-config.js?v=20261021-frost-i9"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
   </body>
 </html>

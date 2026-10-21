@@ -29,15 +29,11 @@ async function settle(label,scene){
 }
 async function metrics(){return page.locator('#arena').evaluate(c=>({backend:c.dataset.renderBackend,drawCalls:Number(c.dataset.drawCalls),triangles:Number(c.dataset.triangles),geometries:Number(c.dataset.geometries),textures:Number(c.dataset.textures),buffer:[c.width,c.height]}));}
 async function enter(stage=1){
- await page.locator('#start-game').click();await page.waitForTimeout(180);
- const rail=page.locator('#stage-list'),card=page.locator(`#stage-list [data-stage-index="${stage}"]`);
- for(let i=0;i<35;i++){
-  const box=await card.boundingBox(),r=await rail.boundingBox();
-  if(box&&r&&box.x+box.width/2>r.x+3&&box.x+box.width/2<r.x+r.width-3&&await card.getAttribute('aria-disabled')==='false')break;
-  const left=box&&r&&box.x+box.width/2<r.x+r.width/2;
-  const from={x:r.x+r.width*(left?.25:.75),y:r.y+r.height*.5},to={x:r.x+r.width*(left?.75:.25),y:from.y};
-  await page.mouse.move(from.x,from.y);await page.mouse.down();await page.mouse.move(to.x,to.y,{steps:12});await page.mouse.up();await page.waitForTimeout(200);
- }
+ await page.locator('#start-game').click();await page.locator('#stage-screen').waitFor({state:'visible'});
+ const rail=page.locator('#stage-list'),direction=await page.locator('html').getAttribute('dir'),advance=direction==='rtl'?'ArrowLeft':'ArrowRight';
+ await rail.locator('[aria-current="true"]').focus();
+ for(let index=1;index<stage;index++)await page.keyboard.press(advance);
+ const card=rail.locator(`[data-stage="${stage}"]`);await card.waitFor({state:'visible'});
  if(process.env.FROST_FULL_LIFECYCLE==='1')await settle('entered-stage-'+stage,'stage');await card.click();await page.locator('#battle-screen').waitFor({state:'visible'});await page.waitForFunction(()=>Number(document.querySelector('#arena').dataset.drawCalls)>0);await page.waitForTimeout(350);
 }
 async function clear(stage=1){await page.locator('#arena').focus();for(const k of plan(stage))await page.keyboard.press(k);await page.locator('#result-screen').waitFor({state:'visible'});assert.equal(await page.locator('#battle-screen .wp-shell-settings-button').isVisible(),false,'Result hides the inert Battle Settings control');await page.waitForTimeout(450);assert.ok(!(await page.locator('#next').isDisabled())||stage===30,`stage ${stage} natural win`);}

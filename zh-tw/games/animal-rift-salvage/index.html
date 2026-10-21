@@ -23,6 +23,8 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rift-salvage/" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"裂隙回收隊","url":"https://weightplay.com/zh-tw/games/animal-rift-salvage/","image":"https://weightplay.com/assets/animal-rift-salvage/cover.webp","genre":["月面回收街機","依體型收集殘骸","限時救援任務"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"zh-Hant","isAccessibleForFree":true,"description":"操控奧拉的月輪回收裝置，穿越 30 個星域收集較小殘骸、救出受困核心，並在風暴收攏前離開。","alternateName":"Rift Salvage","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":13}}</script>
   <meta charset="utf-8">
+  <meta name="weightplay-game-version" content="v18">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#07152d">
@@ -31,12 +33,16 @@
   <title>裂隙回收隊 | WeightPlay</title>
   <link rel="icon" href="../../assets/weightplay-logo.png">
   <link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0">
+  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <link rel="stylesheet" href="/games/animal-rift-salvage/style.css?v=20261018-rift-mobile-control-1">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><meta name="description" content="操控奧拉的月輪回收裝置，穿越 30 個星域收集較小殘骸、救出受困核心，並在風暴收攏前離開。" />
+  <link rel="stylesheet" href="/games/animal-rift-salvage/style.css?v=20261021-rift-salvage-i9">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-shared-dark-loader1">
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1"><meta name="description" content="操控奧拉的月輪回收裝置，穿越 30 個星域收集較小殘骸、救出受困核心，並在風暴收攏前離開。" />
     <meta property="og:description" content="操控奧拉的月輪回收裝置，穿越 30 個星域收集較小殘骸、救出受困核心，並在風暴收攏前離開。" />
     <meta name="twitter:description" content="操控奧拉的月輪回收裝置，穿越 30 個星域收集較小殘骸、救出受困核心，並在風暴收攏前離開。" />
-    <meta property="og:site_name" content="WeightPlay" />
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="裂隙回收隊 | WeightPlay" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-rift-salvage/" />
@@ -46,12 +52,9 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rift-salvage.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-<body data-screen="main" data-wp-combined-sound="true" data-wp-game-id="animal-rift-salvage" data-audience="general" data-wp-game-owned-guide>
-  <div id="loading" class="loading-panel"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><strong data-t="loading">正在校準月環……</strong></div>
-
+<body class="has-game-page-info" data-screen="main" data-wp-combined-sound="true" data-wp-game-id="animal-rift-salvage" data-wp-game-version="v18" data-wp-interface-version="9" data-audience="general" data-wp-game-owned-guide="true">
+  <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
   <div id="mainGroup" class="main-group" data-screen="main">
     <main id="mainScreen" class="main-screen wp-standard-main-screen">
       <header class="main-header">
@@ -80,19 +83,25 @@
         <article><h3 data-t="guideSystemsTitle">看懂每種回收目標</h3><p data-t="guideSystems">完成場地上方顯示的額度，再完成救援核心或對手目標。收集稜晶碎片可開啟護盾殘骸；觀測所升級加速度、可回收尺寸與穩定度。</p></article>
         <article><h3 data-t="guideProgressTitle">六個章節，三十個區域</h3><p data-t="guideProgress">第一章教安全的尺寸路線；後續加入移動水流、護盾目標、競爭月環與收縮風暴。完成區域會解鎖下一區並獲得星齒輪作永久調校。</p></article>
         <article><h3 data-t="guideDesignTitle">為直接操控而設計</h3><p data-t="guideDesign">觸控、滑鼠與鍵盤共用同一套模擬；移動、碰撞、分數、計時、對手與獎勵不因畫面改變。</p></article>
-        <article><h3 data-t="guidePlayerTitle">玩家與保存資訊</h3><p data-t="guidePlayer">按住或拖曳引導月環，也可使用方向鍵與 WASD。區域解鎖、最佳時間、星齒輪、觀測所升級、語言、音效與星座尾跡只保存在此瀏覽器，不需帳號或付費。</p></article>
+        <article><h3 data-t="guidePlayerTitle">玩家與保存資訊</h3><p data-t="guidePlayer">手機使用左下方搖桿，放開即可停下。電腦可用方向鍵／WASD，或滑鼠點選目的地。 區域解鎖、最佳時間、星齒輪、觀測所升級、語言、音效與星座尾跡只保存在此瀏覽器，不需帳號或付費。</p></article>
       </div>
 
       <section class="guide-faq" aria-labelledby="guideFaqTitle"><h3 id="guideFaqTitle" data-t="guideFaqTitle">常見問題</h3><details><summary data-t="guideFaq1Question">為什麼有些殘骸太大？</summary><p data-t="guideFaq1Answer">先回收較小的青色殘骸讓月環變大；琥珀色接近目前尺寸，紅色仍需要更安全路線。</p></details><details><summary data-t="guideFaq2Question">如何清除有護盾的殘骸？</summary><p data-t="guideFaq2Answer">收集三枚稜晶碎片，再回到標記殘骸。碎片會打開護盾，不會取代區域額度。</p></details><details><summary data-t="guideFaq3Question">什麼會結束回收？</summary><p data-t="guideFaq3Answer">計時器可能讓裂隙關閉、穩定度可能歸零，或目標未完成。Result 會告訴你再試一次或前往下一區域。</p></details><details><summary data-t="guideFaq4Question">進度會保存嗎？</summary><p data-t="guideFaq4Answer">會。解鎖、最佳時間、星齒輪、觀測所升級與偏好會保存在此瀏覽器。</p></details><details><summary data-t="guideFaq5Question">觀測所升級有什麼作用？</summary><p data-t="guideFaq5Answer">使用星齒輪升級驅動、壓縮與穩定度。每項最多 3 級，會永久提升加速度、可回收尺寸與最大穩定度。</p></details></section>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle">更多相關遊戲</h3><p data-t="guideRelatedIntro">如果你喜歡先讀懂系統再做冒險操作，可以接著玩這些 WeightPlay 遊戲。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-skybridge-rivals" href="/zh-tw/games/animal-skybridge-rivals/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-skybridge-rivals.webp" data-final-src="/assets/weightplay-logo.png" alt="天橋爭霸" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">天橋爭霸</strong></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle">More Related Games</h3><p data-t="guideRelatedIntro">如果你喜歡先讀懂系統再做冒險操作，可以接著玩這些 WeightPlay 遊戲。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-skybridge-rivals" href="/zh-tw/games/animal-skybridge-rivals/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-skybridge-rivals.webp" data-final-src="/assets/weightplay-logo.png" alt="Skybridge Rivals" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Skybridge Rivals</strong></span></a></div></div>
     </section>
   </div>
 
-  <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-rift-salvage/cover.webp" style="--wp-stage-art:url('../../assets/animal-rift-salvage/cover.webp')">
-      <header class="stage-header"><button id="stageBack" type="button" aria-label="返回" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseZone">選擇回收區域</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""></header>
-      <nav class="stage-tabs"><button id="zonesTab" class="active" type="button" data-t="zones">區域</button><button id="observatoryTab" type="button" data-t="observatory">觀測所</button></nav>
-      <section id="zonePanel" class="tab-panel zone-panel"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="回收區域選擇器" data-t-aria="stageRailLabel"></div><p id="stageHint" data-t="stageHint">拖曳軌道並選擇已解鎖區域。</p></section>
+  <section id="stageScreen" class="wp-rift-stage-screen" data-screen="stage" data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
+    <header class="stage-header">
+      <button id="stageBack" type="button" aria-label="返回" data-t-aria="back" data-wp-return="stage">←</button>
+      <strong data-wp-frame-title data-t="chooseZone">選擇回收區域</strong>
+      <span id="stageSummary"></span>
+    </header>
+    <div id="stageWorkspace" class="stage-workspace">
+      <section id="zonePanel" class="tab-panel zone-panel">
+        <div id="stageRail" class="stage-rail" aria-label="回收區域選擇器" data-t-aria="stageRailLabel"></div>
+        <p id="stageHint" data-t="stageHint">拖曳軌道並選擇已解鎖區域。</p>
+      </section>
       <section id="observatoryPanel" class="tab-panel observatory-panel" hidden>
         <div class="observatory-intro"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><div><h2 data-t="observatoryTitle">月環觀測所</h2><p data-t="observatoryIntro">使用星齒輪永久調校回收月環。</p><strong id="gearCount"></strong></div></div>
         <div id="upgrades" class="upgrades"></div>
@@ -100,33 +109,48 @@
         <div class="wake-card"><img src="../../assets/animal-rift-salvage/rescue-beacon.webp" alt=""><div><strong data-t="wakeTitle">星座尾跡</strong><p data-t="wakeDesc">純外觀星光尾跡，不影響玩法。</p></div><button id="wakeButton" type="button" data-t="wakeBuy">解鎖 · 10 ◆</button></div>
       </section>
     </div>
+    <nav class="stage-tabs" data-wp-frame-nav aria-label="Salvage options">
+      <button id="zonesTab" type="button" role="tab" aria-selected="true" aria-pressed="true" data-t="zones">區域</button>
+      <button id="observatoryTab" type="button" role="tab" aria-selected="false" aria-pressed="false" data-t="observatory">觀測所</button>
+    </nav>
   </section>
 
-  <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-      <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="返回" data-t-aria="back" data-wp-return="battle">←</button><div class="zone-block"><small id="zoneLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="salvage">回收</b><strong id="scoreValue">0/0</strong></span><span><b data-t="size">尺寸</b><strong id="sizeValue">1</strong></span><span><b data-t="stability">穩定</b><strong id="stabilityValue">3</strong></span></div><button id="battleHelp" type="button" aria-label="遊玩說明" data-t-aria="help" data-wp-battle-utility>?</button></header>
-        <p id="objective" class="objective-row"></p>
-        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="900" height="900" tabindex="0" aria-label="星界回收場" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown w a s d" data-t-aria="arenaLabel"></canvas><div id="salvageProgress" class="salvage-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-t="salvage">回收</span><b id="salvageProgressValue">0 / 0</b><i aria-hidden="true"><em id="salvageProgressFill"></em></i></div><div id="chainBadge" class="chain-badge" role="status" aria-live="polite" aria-atomic="true"><span data-t="moonChain">月鏈</span><strong id="chainValue">×1</strong></div><div class="control-cue" data-t="controlCue">左下搖桿移動 · 放開停下</div></div>
-        <p id="feedback" class="feedback" aria-live="polite"></p>
+  <section id="battleScreen" class="wp-rift-battle-screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+    <header class="battle-header">
+      <button id="battleBack" type="button" aria-label="返回" data-t-aria="back" data-wp-return="battle">←</button>
+      <strong data-wp-frame-title data-t="titleShort" data-wp-game-title data-runtime-localize="off">裂隙回收隊</strong>
+      <div class="zone-block"><small id="zoneLabel"></small><strong id="timerValue">0:00</strong></div>
+      <div id="battleStatus" class="battle-status">
+        <span><b data-t="salvage">回收</b><strong id="scoreValue">0/0</strong></span>
+        <span><b data-t="size">尺寸</b><strong id="sizeValue">1</strong></span>
+        <span><b data-t="stability">穩定</b><strong id="stabilityValue">3</strong></span>
       </div>
-
-      <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">引導月環</h2><ol><li data-t="help1">手機使用左下方搖桿，放開即可停下。電腦可用方向鍵／WASD，或滑鼠點選目的地。</li><li data-t="help2">先回收青色殘骸；琥珀色快可回收，紅色仍太大。</li><li data-t="gunHelp">琥珀色虛線會提前 0.7 秒鎖定彈道；橫向移動即可閃避。中彈扣 1 點穩定值，並獲得 1 秒保護。</li><li data-t="help3">在時間結束前完成額度及所有救援或對手目標。</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">繼續</button></div></div></section>
-      <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">保留這次回收進度？</h2><p data-t="leaveText">繼續會回到相同位置與時間；返回區域會結束本次挑戰。</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">繼續</button><button id="leaveStage" type="button" data-t="returnZones">返回區域</button></div></div></section>
-      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">時間</b><strong id="resultTime"></strong></span><span><b data-t="bestChain">最高連鎖</b><strong id="resultChain"></strong></span><span><b data-t="medal">獎牌</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultZones" type="button" data-t="zones">區域</button><button id="next" class="primary" type="button" data-t="nextZone">下一區域</button><button id="retry" type="button" data-t="retry">再試一次</button></div></div></section>
+    </header>
+    <div id="battleLive" class="battle-live">
+      <div class="objective-row"><p id="objective"></p><button id="battleHelp" type="button" aria-label="遊玩說明" data-t-aria="help">?</button></div>
+      <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="900" height="900" tabindex="0" aria-label="星界回收場" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown w a s d" data-t-aria="arenaLabel"></canvas><div id="salvageProgress" class="salvage-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-t="salvage">回收</span><b id="salvageProgressValue">0 / 0</b><i aria-hidden="true"><em id="salvageProgressFill"></em></i></div><div id="chainBadge" class="chain-badge" role="status" aria-live="polite" aria-atomic="true"><span data-t="moonChain">月鏈</span><strong id="chainValue">×1</strong></div><div class="control-cue" data-t="controlCue">左下搖桿移動 · 放開停下</div></div>
+      <p id="feedback" class="feedback" aria-live="polite"></p>
     </div>
+    <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">引導月環</h2><ol><li data-t="help1">手機使用左下方搖桿，放開即可停下。電腦可用方向鍵／WASD，或滑鼠點選目的地。</li><li data-t="help2">先回收青色殘骸；琥珀色快可回收，紅色仍太大。</li><li data-t="gunHelp">琥珀色虛線會提前 0.7 秒鎖定彈道；橫向移動即可閃避。中彈扣 1 點穩定值，並獲得 1 秒保護。</li><li data-t="help3">在時間結束前完成額度及所有救援或對手目標。</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">繼續</button></div></div></section>
+    <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">保留這次回收進度？</h2><p data-t="leaveText">繼續會回到相同位置與時間；返回區域會結束本次挑戰。</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">繼續</button><button id="leaveStage" type="button" data-t="returnZones">返回區域</button></div></div></section>
+    <section id="resultModal" class="modal-layer result-layer" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card" data-wp-result-card><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">時間</b><strong id="resultTime"></strong></span><span><b data-t="bestChain">最高連鎖</b><strong id="resultChain"></strong></span><span><b data-t="medal">獎牌</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultZones" type="button" data-wp-frame-action="secondary" data-t="zones">區域</button><button id="next" type="button" class="primary" data-wp-frame-action="primary" data-t="nextZone">下一區域</button><button id="retry" type="button" data-wp-frame-action="secondary" data-t="retry">再試一次</button></div></div></section>
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>
+  </div>
 
-  <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script src="/games/animal-rift-salvage/locales.js?v=20261018-rift-mobile-control-1"></script>
+  <script src="/games/animal-rift-salvage/locales.js?v=20261021-rift-salvage-i9"></script>
   <script src="/src/virtual-joystick.js?v=1.0.0"></script>
-  <script src="/games/animal-rift-salvage/game.js?v=20261018-rift-mobile-control-1"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
-  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+  <script src="/src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+  <script src="../../src/battle-canvas-standard.js?v=20261017-shared-dark-loader1" data-wp-battle-standard></script>
   <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-
+  <script src="stage-config.js?v=20261021-rift-salvage-i9"></script>
+  <script src="frame.js?v=20261021-rift-salvage-i9"></script>
   <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
+  <script src="game.js?v=20261021-rift-salvage-i9"></script>
 </body>
 </html>

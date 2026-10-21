@@ -23,6 +23,8 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rift-salvage/" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Rescate en la Grieta","url":"https://weightplay.com/es/games/animal-rift-salvage/","image":"https://weightplay.com/assets/animal-rift-salvage/cover.webp","genre":["Arcade de rescate lunar","Recoger escombros por tamaño","Misiones de rescate contrarreloj"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"es","isAccessibleForFree":true,"description":"Guía el anillo de Orla por 30 zonas: recoge escombros pequeños, rescata núcleos y escapa antes de que cierre la tormenta.","alternateName":"Rift Salvage","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":13}}</script>
   <meta charset="utf-8">
+  <meta name="weightplay-game-version" content="v18">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#07152d">
@@ -31,12 +33,16 @@
   <title>Rescate en la Grieta | WeightPlay</title>
   <link rel="icon" href="../../assets/weightplay-logo.png">
   <link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0">
+  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <link rel="stylesheet" href="/games/animal-rift-salvage/style.css?v=20261018-rift-mobile-control-1">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><meta name="description" content="Guía el anillo de Orla por 30 zonas: recoge escombros pequeños, rescata núcleos y escapa antes de que cierre la tormenta." />
+  <link rel="stylesheet" href="/games/animal-rift-salvage/style.css?v=20261021-rift-salvage-i9">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-shared-dark-loader1">
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1"><meta name="description" content="Guía el anillo de Orla por 30 zonas: recoge escombros pequeños, rescata núcleos y escapa antes de que cierre la tormenta." />
     <meta property="og:description" content="Guía el anillo de Orla por 30 zonas: recoge escombros pequeños, rescata núcleos y escapa antes de que cierre la tormenta." />
     <meta name="twitter:description" content="Guía el anillo de Orla por 30 zonas: recoge escombros pequeños, rescata núcleos y escapa antes de que cierre la tormenta." />
-    <meta property="og:site_name" content="WeightPlay" />
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Rescate en la Grieta | WeightPlay" />
     <meta property="og:url" content="https://weightplay.com/es/games/animal-rift-salvage/" />
@@ -46,12 +52,9 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rift-salvage.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-<body data-screen="main" data-wp-combined-sound="true" data-wp-game-id="animal-rift-salvage" data-audience="general" data-wp-game-owned-guide>
-  <div id="loading" class="loading-panel"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><strong data-t="loading">Calibrando el aro lunar…</strong></div>
-
+<body class="has-game-page-info" data-screen="main" data-wp-combined-sound="true" data-wp-game-id="animal-rift-salvage" data-wp-game-version="v18" data-wp-interface-version="9" data-audience="general" data-wp-game-owned-guide="true">
+  <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
   <div id="mainGroup" class="main-group" data-screen="main">
     <main id="mainScreen" class="main-screen wp-standard-main-screen">
       <header class="main-header">
@@ -80,19 +83,25 @@
         <article><h3 data-t="guideSystemsTitle">Entiende cada objetivo de rescate</h3><p data-t="guideSystems">Completa la cuota mostrada sobre la arena y después los objetivos de núcleos o rivales. Los fragmentos prismáticos abren restos protegidos; el Observatorio mejora aceleración, tamaño y estabilidad.</p></article>
         <article><h3 data-t="guideProgressTitle">Seis capítulos, treinta zonas</h3><p data-t="guideProgress">El primer capítulo enseña rutas seguras por tamaño; los siguientes añaden corrientes móviles, objetivos protegidos, anillos rivales y una tormenta que se cierra. Al superar una zona desbloqueas la siguiente y consigues Engranajes Estelares.</p></article>
         <article><h3 data-t="guideDesignTitle">Control directo</h3><p data-t="guideDesign">Toque, ratón y teclado comparten simulación; la pantalla no cambia movimiento, colisión, tiempo ni premios.</p></article>
-        <article><h3 data-t="guidePlayerTitle">Información del jugador y guardado</h3><p data-t="guidePlayer">Mantén pulsado o arrastra para guiar el anillo, o usa flechas y WASD. Desbloqueos, mejores tiempos, Engranajes Estelares, mejoras, idioma, sonido y la estela cosmética se guardan en este navegador; no necesitas cuenta ni compra.</p></article>
+        <article><h3 data-t="guidePlayerTitle">Información del jugador y guardado</h3><p data-t="guidePlayer">En pantallas táctiles, usa la palanca inferior izquierda y suelta para parar. En PC, usa flechas/WASD o pulsa el destino. Desbloqueos, mejores tiempos, Engranajes Estelares, mejoras, idioma, sonido y la estela cosmética se guardan en este navegador; no necesitas cuenta ni compra.</p></article>
       </div>
 
       <section class="guide-faq" aria-labelledby="guideFaqTitle"><h3 id="guideFaqTitle" data-t="guideFaqTitle">Preguntas frecuentes</h3><details><summary data-t="guideFaq1Question">¿Por qué algunos restos son demasiado grandes?</summary><p data-t="guideFaq1Answer">Recoge primero restos turquesa pequeños para hacer crecer el anillo. El ámbar está cerca de tu tamaño y el rojo necesita una ruta más segura.</p></details><details><summary data-t="guideFaq2Question">¿Cómo abro un resto protegido?</summary><p data-t="guideFaq2Answer">Reúne tres fragmentos prismáticos y vuelve al resto marcado. Los fragmentos abren el escudo, pero no sustituyen la cuota de la zona.</p></details><details><summary data-t="guideFaq3Question">¿Qué termina una partida de rescate?</summary><p data-t="guideFaq3Answer">El tiempo puede cerrar la grieta, la estabilidad puede llegar a cero o quedar un objetivo incompleto. El resultado indica si repetir o avanzar.</p></details><details><summary data-t="guideFaq4Question">¿Se guarda el progreso?</summary><p data-t="guideFaq4Answer">Sí. Desbloqueos, mejores tiempos, Engranajes Estelares, mejoras y preferencias se guardan localmente en este navegador.</p></details><details><summary data-t="guideFaq5Question">¿Cómo ayudan las mejoras del Observatorio?</summary><p data-t="guideFaq5Answer">Gasta Engranajes Estelares en mejoras de Impulso, Compresión y Estabilidad. Cada una llega al nivel 3 y mejora permanentemente la aceleración, el tamaño de recolección y la Estabilidad máxima.</p></details></section>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle">Más juegos relacionados</h3><p data-t="guideRelatedIntro">Si te gusta leer el sistema antes de arriesgarte, prueba estos juegos de WeightPlay.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-skybridge-rivals" href="/es/games/animal-skybridge-rivals/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-skybridge-rivals.webp" data-final-src="/assets/weightplay-logo.png" alt="Rivales del Puente Celeste" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Rivales del Puente Celeste</strong></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle">More Related Games</h3><p data-t="guideRelatedIntro">Si te gusta leer el sistema antes de arriesgarte, prueba estos juegos de WeightPlay.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-skybridge-rivals" href="/es/games/animal-skybridge-rivals/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-skybridge-rivals.webp" data-final-src="/assets/weightplay-logo.png" alt="Skybridge Rivals" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Skybridge Rivals</strong></span></a></div></div>
     </section>
   </div>
 
-  <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-rift-salvage/cover.webp" style="--wp-stage-art:url('../../assets/animal-rift-salvage/cover.webp')">
-      <header class="stage-header"><button id="stageBack" type="button" aria-label="Atrás" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseZone">Elige una zona</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""></header>
-      <nav class="stage-tabs"><button id="zonesTab" class="active" type="button" data-t="zones">Zonas</button><button id="observatoryTab" type="button" data-t="observatory">Observatorio</button></nav>
-      <section id="zonePanel" class="tab-panel zone-panel"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Selector de zonas" data-t-aria="stageRailLabel"></div><p id="stageHint" data-t="stageHint">Arrastra el carril y elige una zona desbloqueada.</p></section>
+  <section id="stageScreen" class="wp-rift-stage-screen" data-screen="stage" data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
+    <header class="stage-header">
+      <button id="stageBack" type="button" aria-label="Atrás" data-t-aria="back" data-wp-return="stage">←</button>
+      <strong data-wp-frame-title data-t="chooseZone">Elige una zona</strong>
+      <span id="stageSummary"></span>
+    </header>
+    <div id="stageWorkspace" class="stage-workspace">
+      <section id="zonePanel" class="tab-panel zone-panel">
+        <div id="stageRail" class="stage-rail" aria-label="Selector de zonas" data-t-aria="stageRailLabel"></div>
+        <p id="stageHint" data-t="stageHint">Arrastra el carril y elige una zona desbloqueada.</p>
+      </section>
       <section id="observatoryPanel" class="tab-panel observatory-panel" hidden>
         <div class="observatory-intro"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><div><h2 data-t="observatoryTitle">Observatorio Lunar</h2><p data-t="observatoryIntro">Gasta engranajes estelares en ajustes permanentes.</p><strong id="gearCount"></strong></div></div>
         <div id="upgrades" class="upgrades"></div>
@@ -100,33 +109,48 @@
         <div class="wake-card"><img src="../../assets/animal-rift-salvage/rescue-beacon.webp" alt=""><div><strong data-t="wakeTitle">Estela de Constelación</strong><p data-t="wakeDesc">Estela cosmética sin ventaja.</p></div><button id="wakeButton" type="button" data-t="wakeBuy">Desbloquear · 10 ◆</button></div>
       </section>
     </div>
+    <nav class="stage-tabs" data-wp-frame-nav aria-label="Salvage options">
+      <button id="zonesTab" type="button" role="tab" aria-selected="true" aria-pressed="true" data-t="zones">Zonas</button>
+      <button id="observatoryTab" type="button" role="tab" aria-selected="false" aria-pressed="false" data-t="observatory">Observatorio</button>
+    </nav>
   </section>
 
-  <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-      <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="Atrás" data-t-aria="back" data-wp-return="battle">←</button><div class="zone-block"><small id="zoneLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="salvage">Rescate</b><strong id="scoreValue">0/0</strong></span><span><b data-t="size">Tamaño</b><strong id="sizeValue">1</strong></span><span><b data-t="stability">Estabilidad</b><strong id="stabilityValue">3</strong></span></div><button id="battleHelp" type="button" aria-label="Cómo jugar" data-t-aria="help" data-wp-battle-utility>?</button></header>
-        <p id="objective" class="objective-row"></p>
-        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="900" height="900" tabindex="0" aria-label="Arena de rescate astral" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown w a s d" data-t-aria="arenaLabel"></canvas><div id="salvageProgress" class="salvage-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-t="salvage">Rescate</span><b id="salvageProgressValue">0 / 0</b><i aria-hidden="true"><em id="salvageProgressFill"></em></i></div><div id="chainBadge" class="chain-badge" role="status" aria-live="polite" aria-atomic="true"><span data-t="moonChain">Cadena Lunar</span><strong id="chainValue">×1</strong></div><div class="control-cue" data-t="controlCue">Palanca izquierda · Suelta para parar</div></div>
-        <p id="feedback" class="feedback" aria-live="polite"></p>
+  <section id="battleScreen" class="wp-rift-battle-screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+    <header class="battle-header">
+      <button id="battleBack" type="button" aria-label="Atrás" data-t-aria="back" data-wp-return="battle">←</button>
+      <strong data-wp-frame-title data-t="titleShort">Rescate de Grieta</strong>
+      <div class="zone-block"><small id="zoneLabel"></small><strong id="timerValue">0:00</strong></div>
+      <div id="battleStatus" class="battle-status">
+        <span><b data-t="salvage">Rescate</b><strong id="scoreValue">0/0</strong></span>
+        <span><b data-t="size">Tamaño</b><strong id="sizeValue">1</strong></span>
+        <span><b data-t="stability">Estabilidad</b><strong id="stabilityValue">3</strong></span>
       </div>
-
-      <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">Guía el aro lunar</h2><ol><li data-t="help1">En pantallas táctiles, usa la palanca inferior izquierda y suelta para parar. En PC, usa flechas/WASD o pulsa el destino.</li><li data-t="help2">Turquesa primero; ámbar casi está listo y rojo es demasiado grande.</li><li data-t="gunHelp">Las líneas ámbar fijan la dirección 0,7 s antes del disparo. Esquiva de lado. Cada impacto resta 1 de estabilidad y da 1 s de protección.</li><li data-t="help3">Cumple cuota y rescates o rival antes del final.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">Continuar</button></div></div></section>
-      <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">¿Conservar esta partida?</h2><p data-t="leaveText">Continuar vuelve a la misma posición y tiempo. Volver a Zonas termina la partida.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continuar</button><button id="leaveStage" type="button" data-t="returnZones">Volver a Zonas</button></div></div></section>
-      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">Tiempo</b><strong id="resultTime"></strong></span><span><b data-t="bestChain">Mejor cadena</b><strong id="resultChain"></strong></span><span><b data-t="medal">Medalla</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultZones" type="button" data-t="zones">Zonas</button><button id="next" class="primary" type="button" data-t="nextZone">Siguiente zona</button><button id="retry" type="button" data-t="retry">Reintentar</button></div></div></section>
+    </header>
+    <div id="battleLive" class="battle-live">
+      <div class="objective-row"><p id="objective"></p><button id="battleHelp" type="button" aria-label="Cómo jugar" data-t-aria="help">?</button></div>
+      <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="900" height="900" tabindex="0" aria-label="Arena de rescate astral" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown w a s d" data-t-aria="arenaLabel"></canvas><div id="salvageProgress" class="salvage-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-t="salvage">Rescate</span><b id="salvageProgressValue">0 / 0</b><i aria-hidden="true"><em id="salvageProgressFill"></em></i></div><div id="chainBadge" class="chain-badge" role="status" aria-live="polite" aria-atomic="true"><span data-t="moonChain">Cadena Lunar</span><strong id="chainValue">×1</strong></div><div class="control-cue" data-t="controlCue">Palanca izquierda · Suelta para parar</div></div>
+      <p id="feedback" class="feedback" aria-live="polite"></p>
     </div>
+    <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">Guía el aro lunar</h2><ol><li data-t="help1">En pantallas táctiles, usa la palanca inferior izquierda y suelta para parar. En PC, usa flechas/WASD o pulsa el destino.</li><li data-t="help2">Turquesa primero; ámbar casi está listo y rojo es demasiado grande.</li><li data-t="gunHelp">Las líneas ámbar fijan la dirección 0,7 s antes del disparo. Esquiva de lado. Cada impacto resta 1 de estabilidad y da 1 s de protección.</li><li data-t="help3">Cumple cuota y rescates o rival antes del final.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">Continuar</button></div></div></section>
+    <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">¿Conservar esta partida?</h2><p data-t="leaveText">Continuar vuelve a la misma posición y tiempo. Volver a Zonas termina la partida.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continuar</button><button id="leaveStage" type="button" data-t="returnZones">Volver a Zonas</button></div></div></section>
+    <section id="resultModal" class="modal-layer result-layer" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card" data-wp-result-card><img src="../../assets/weightplay-character-moon-cap-owl-block-v1.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">Tiempo</b><strong id="resultTime"></strong></span><span><b data-t="bestChain">Mejor cadena</b><strong id="resultChain"></strong></span><span><b data-t="medal">Medalla</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultZones" type="button" data-wp-frame-action="secondary" data-t="zones">Zonas</button><button id="next" type="button" class="primary" data-wp-frame-action="primary" data-t="nextZone">Siguiente zona</button><button id="retry" type="button" data-wp-frame-action="secondary" data-t="retry">Reintentar</button></div></div></section>
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>
+  </div>
 
-  <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/es.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="/src/runtime-locales/es.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script src="/games/animal-rift-salvage/locales.js?v=20261018-rift-mobile-control-1"></script>
+  <script src="/games/animal-rift-salvage/locales.js?v=20261021-rift-salvage-i9"></script>
   <script src="/src/virtual-joystick.js?v=1.0.0"></script>
-  <script src="/games/animal-rift-salvage/game.js?v=20261018-rift-mobile-control-1"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
-  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+  <script src="/src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+  <script src="../../src/battle-canvas-standard.js?v=20261017-shared-dark-loader1" data-wp-battle-standard></script>
   <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-
+  <script src="stage-config.js?v=20261021-rift-salvage-i9"></script>
+  <script src="frame.js?v=20261021-rift-salvage-i9"></script>
   <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
+  <script src="game.js?v=20261021-rift-salvage-i9"></script>
 </body>
 </html>

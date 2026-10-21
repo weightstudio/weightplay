@@ -55,7 +55,7 @@ function processEvents(){if(!run)return;for(const e of run.events.splice(0)){
   $('notice').textContent=e.kind==='W'?'冷泉：壓力下降':e.kind==='X'?(e.gentle?'完整水晶入艙！':'水晶受損；分段短按可保完整'):`${ROCKS[e.kind].zh}入艙 · 價值 ${e.value}`;
   const point=world.projectCell(e.row||0,e.lane),mine=$('world').getBoundingClientRect(),dest=$('cargoBar').getBoundingClientRect();$('oreFlight').style.left=point.x+'px';$('oreFlight').style.top=point.y+'px';$('oreFlight').style.setProperty('--fly-x',`${dest.x+dest.width-mine.x-point.x}px`);$('oreFlight').style.setProperty('--fly-y',`${dest.y-mine.y-point.y}px`);
   $('battleContent').classList.remove('collecting');void $('oreFlight').offsetWidth;$('battleContent').classList.add('collecting');lastSeam='';}
- if(e.type==='hit'){world?.contact(e.lane,reduced.matches);const n=$('hitNumber'),point=world.projectCell(e.row||0,e.lane);n.style.left=point.x+'px';n.style.top=(point.y-12)+'px';n.textContent=`−${e.damage}`;n.classList.remove('hit-pop');void n.offsetWidth;n.classList.add('hit-pop');}
+ if(e.type==='hit'&&!e.seal){world?.contact(e.lane,reduced.matches);const n=$('hitNumber'),point=world.projectCell(e.row||0,e.lane);n.style.left=point.x+'px';n.style.top=(point.y-12)+'px';n.textContent=`−${e.damage}`;n.classList.remove('hit-pop');void n.offsetWidth;n.classList.add('hit-pop');}
  if(e.type==='beam'){world?.beam(e.lane,e.row,reduced.matches);sound('impact.metal');}
  if(e.type==='sold'){persist();$('notice').textContent='自動出售完成，繼續下鑽';sound('reward.coin');}
  if(e.type==='tool'){persist();$('notice').textContent=e.text;sound(e.key==='blast'?'explosion.small':e.key==='repair'?'mechanism.screw':'water.splash');}

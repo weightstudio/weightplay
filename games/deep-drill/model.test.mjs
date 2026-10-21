@@ -153,3 +153,13 @@ test('beam breaks exactly one visible cell and pays once without skipping depth,
  assert.equal(useTool(s,r,'beam',{row:3,lane:0}),false);const q=newRun(s,4);q.row=17;assert.equal(useTool(s,q,'beam',{row:19,lane:0}),false);assert.equal(q.seal.phase,0);
  const g=newRun(s,10);g.lane=seams(g.stage,0).indexOf('L');assert.equal(useTool(s,g,'beam'),true);advance(s,g,.02,false);assert.equal(g.hull,95);assert.equal(g.mined,1);
 });
+
+test('spring pump requires a release between valves and smart pilot honors it',()=>{
+ const s=normalize(),r=newRun(s,9);r.row=19;r.depth=95;r.lane=sealState(r).lane;sealContact(s,r);assert.equal(r.seal.phase,1);r.lane=sealState(r).lane;sealContact(s,r);assert.equal(r.seal.phase,1);tick(s,r,.05,false);sealContact(s,r);assert.equal(r.seal.phase,2);
+ const auto=normalize({auto:{drill:true,smart:true}}),q=newRun(auto,9);q.row=19;q.depth=95;q.seal.needsRelease=true;tick(auto,q,.05,false);assert.equal(q.seal.needsRelease,false);
+});
+
+test('assistants finish a full vent cycle and cannot obstruct smart pressure missions',()=>{
+ const s=normalize({helpers:3}),r=newRun(s,21);r.pressure=26;advance(s,r,1,false);assert.ok(r.pressure<10);assert.equal(r.stats.vent,1);assert.equal(r.helperVenting,false);
+ const a=normalize({helpers:3,auto:{drill:true,cool:true,smart:true,sell:true},upgrades:{power:3,speed:3,cargo:3,autoPower:2,autoSpeed:2,helperPower:2}}),q=newRun(a,21);advance(a,q,180,false);assert.equal(q.clear,true);assert.ok(q.stats.vent>=4);assert.notEqual(q.reason,'pressure');
+});

@@ -28,7 +28,7 @@
   if (window.__tangleRescueCoreRequested) return;
   window.__tangleRescueCoreRequested = true;
   const core = document.createElement('script');
-  core.src = assetUrl('game-core.js?v=20261019-tangle-rescue-i9-motion-v1');
+  core.src = assetUrl('game-core.js?v=20261021-tangle-rescue-v12-stage-tab-v1');
   core.async = false;
   core.dataset.wpTangleGameCore = 'true';
   core.addEventListener('load', () => {

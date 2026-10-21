@@ -27,22 +27,23 @@
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-id" content="animal-frost-maze" />
     <meta name="weightplay-game-version" content="v18" />
-    <meta name="weightplay-interface-version" content="6" />
+    <meta name="weightplay-interface-version" content="9" />
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="30개 얼음 미로 방을 풀어 보세요. 벽을 깨고 세워 길을 만들고, 떠도는 추적자를 피하며, 마지막 방들에서는 출발점으로 돌아오세요." />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"얼음 미로 구조","description":"30개 얼음 미로 방을 풀어 보세요. 벽을 깨고 세워 길을 만들고, 떠도는 추적자를 피하며, 마지막 방들에서는 출발점으로 돌아오세요.","url":"https://weightplay.com/ko/games/animal-frost-maze/","image":"https://weightplay.com/assets/animal-frost-maze-cover.webp","genre":["얼음벽 미로","격자 경로 퍼즐","추격 전략"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"ko","isAccessibleForFree":true,"audience":{"@type":"Audience","audienceType":"General"},"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"},"alternateName":"Frost Maze Rescue"}</script>
     <title>얼음 미로 구조 | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20261018-frost-voxel18" />
+    <link rel="stylesheet" href="style.css?v=20261021-frost-i9" />
 
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen />
     <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide />
     <link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport />
-    <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-shell-standard />
+    <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
     <script defer src="mastery.js?v=20260908-mastery-v15"></script>
-    <script defer src="game.js?v=20261018-frost-voxel18"></script><meta property="og:site_name" content="WeightPlay" />
+    <script defer src="game.js?v=20261021-frost-i9"></script><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="얼음 미로 구조 | WeightPlay" />
     <meta property="og:description" content="30개 얼음 미로 방을 풀어 보세요. 벽을 깨고 세워 길을 만들고, 떠도는 추적자를 피하며, 마지막 방들에서는 출발점으로 돌아오세요." />
@@ -54,45 +55,50 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-frost-maze.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-  <body data-wp-game-version="v18" data-wp-interface-version="6" data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-wp-battle-settings="visible" data-screen="main" data-wp-game-owned-guide data-runtime-localize="off">
+  <body data-wp-game-version="v18" data-wp-interface-version="9" data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-wp-battle-settings="visible" data-screen="main" data-wp-game-owned-guide data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-wp-game-title>얼음 미로 구조</strong><span>Preparing the ice route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
-    <main id="app" data-game="animal-frost-maze" data-audience="general">
+    <main id="app" data-game="animal-frost-maze" data-audience="general" data-wp-frame-root data-wp-play-ui="1">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
-        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="WeightPlay로 돌아가기"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title" data-wp-game-title>얼음 미로 구조</h1>
+        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="WeightPlay로 돌아가기"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title" data-wp-game-title data-wp-frame-title>얼음 미로 구조</h1>
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
-        <img class="five-game-cover main-cover" src="assets/animal-frost-maze-cover.png" alt="" aria-hidden="true" />
-        <p class="lede main-summary">분홍 보급품을 모으고 얼음을 깨서 길을 여세요. 벽으로 추적자를 막을 수 있어요. 시간 제한 없이 한 수씩 생각하세요.</p>
-        <p id="main-progress" class="progress main-progress" data-wp-main-progress>Best rooms: 0</p>
-        <button id="start-game" class="primary" data-wp-main-start data-five-copy="start">Start Game</button>
+        <div id="main-content" class="main-content">
+          <img class="five-game-cover main-cover" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-frost-maze.webp" alt="" aria-hidden="true" />
+          <p class="lede main-summary" data-wp-frame-summary>Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
+          <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress>Best rooms: 0</p>
+          <button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button>
+        </div>
       </section>
-      <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-wp-stage-art="/assets/interface7-redrawn/animal-frost-maze.webp" style="--wp-stage-art:url(&quot;/assets/interface7-redrawn/animal-frost-maze.webp&quot;)" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
-        <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="메인으로 돌아가기">←</button><h2>Ice Chapters</h2></header>
-        <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div>
-        <nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav>
+      <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
+        <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="메인으로 돌아가기">←</button><strong data-wp-frame-title hidden>Frost Maze Rescue</strong></header>
+        <div id="stage-content"><div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail role="list"></div></div>
+        <nav class="stage-tabs" aria-label="Stage sections" data-wp-frame-nav><button type="button" data-wp-frame-action="tab" aria-current="page" aria-pressed="true">Stages</button></nav>
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
-        <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="스테이지로 돌아가기">←</button><strong id="room-label">Chapter 1 · Room 1</strong><span id="fruit-label">Berries 0</span></header>
-        <section id="rescue-coach" class="rescue-coach" aria-label="빙원 구조 임무">
-          <div class="rescue-mission"><span id="rescue-kicker">빙원 구조 임무</span><strong id="rescue-objective">분홍 열매를 모두 모으세요.</strong><div class="rescue-progress"><progress id="rescue-meter" value="0" max="1" aria-label="분홍 열매를 모두 모으세요."></progress><b id="rescue-count">0 / 0</b></div></div>
+        <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="스테이지로 돌아가기">←</button><strong data-wp-frame-title hidden>Frost Maze Rescue</strong></header>
+        <div id="battle-play-content" class="battle-play-content">
+        <div id="battle-info" data-wp-frame-info><span><small>Room</small><strong id="room-label">Chapter 1 · Room 1</strong></span><span><small>Supplies</small><strong id="fruit-label">Berries 0</strong></span></div>
+        <section id="rescue-coach" class="rescue-coach" aria-label="RESCUE MISSION">
+          <div class="rescue-mission"><span id="rescue-kicker">RESCUE MISSION</span><strong id="rescue-objective">Collect every pink berry.</strong><div class="rescue-progress"><progress id="rescue-meter" value="0" max="1" aria-label="Collect every pink berry."></progress><b id="rescue-count">0 / 0</b></div></div>
           <div class="rescue-situation"><strong id="rescue-threat"></strong><span id="rescue-facing"></span><small id="rescue-rules"></small></div>
-          <div class="rescue-tools"><button id="rescue-route" type="button" aria-pressed="false">경로 보기</button><button id="rescue-undo" type="button" disabled>한 수 취소</button></div>
-          <p id="rescue-advice" aria-live="polite">금색 화살표가 가리키는 칸의 얼음을 바꾸세요.</p><small id="rescue-legend">금색: 나 · 분홍: 보급품 · 빨강: 위험</small>
+          <div class="rescue-tools"><button id="rescue-route" type="button" aria-pressed="false">Show route</button><button id="rescue-undo" type="button" disabled>Undo</button></div>
+          <p id="rescue-advice" aria-live="polite">Turn the gold arrow toward the block you want to edit.</p><small id="rescue-legend">Gold: you · Pink: supplies · Red: danger</small>
         </section>
         <p id="battle-status" class="battle-status" role="status" aria-live="polite" aria-atomic="true">Arrows move. Press SPACE to break the ice ahead.</p>
         <canvas id="arena" aria-describedby="rescue-objective battle-status" width="864" height="504" aria-label="Frostline Rescue play area"></canvas>
         <div class="touch-controls"><button data-action="up">▲</button><button data-action="left">◀</button><button id="break-ice" data-action="break" data-wp-primary-action class="break">BREAK ICE</button><button data-action="build" class="build">BUILD ICE</button><button data-action="right">▶</button><button data-action="down">▼</button></div>
         <div id="frost-touch-hint" class="touch-hint">The blue blocks are breakable. Collect all berries before the drifter reaches you.</div>
-        <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
-          <h2 id="result-title">Room clear</h2><p id="result-copy"></p>
-          <div class="result-actions"><button id="to-stages">Chapters</button><button id="next">Next Room</button><button id="retry" class="primary">Retry Room</button></div>
+        </div>
+        <section id="result-screen" class="screen result" data-screen="result" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
+          <div class="result-card" data-wp-result-card>
+            <h2 id="result-title">Room clear</h2><p id="result-copy"></p>
+            <div class="result-actions"><button id="to-stages" data-wp-frame-action="secondary">Chapters</button><button id="next" data-wp-frame-action="secondary">Next Room</button><button id="retry" class="primary" data-wp-frame-action="primary">Retry Room</button></div>
+          </div>
         </section>
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
     </main>
-    <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+    <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
     <script src="../../src/weightplay-castle.js?v=20261018-frost-toast-api1"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script src="analytics-ownership.js?v=20260908-mastery-v15"></script>
@@ -115,12 +121,15 @@
       <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>얼음을 편집하면 길이 바뀌고 그 행동에도 대가가 따릅니다. 얼음을 깨면 통로가 열리고, 새 얼음벽을 세우면 추적자의 경로가 달라집니다. 처음 20개 방은 8걸음 추격 리듬을 읽기 쉽게 보여 주고, 21~30번 방은 성공적인 편집까지 타이밍 판단에 포함합니다. 마지막 다섯 방에는 출발 칸이 표시되어 있어 마지막 열매가 곧 끝은 아닙니다.</p></div>
       <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>최고로 클리어한 방과 방별 최고 별 기록은 이 브라우저에 저장됩니다. 사이트 데이터를 지우면 기록도 삭제됩니다.</p></div>
       <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>무엇을 모아야 하나요?</dt><dd>방에 있는 열매를 모두 모으세요. 26~30번 방에서는 마지막 열매를 모은 뒤 금색 출발 칸으로 돌아와야 합니다.</dd></div><div><dt>추적자는 언제 움직이나요?</dt><dd>한 칸을 성공적으로 8번 이동할 때마다 움직입니다. 21번 방부터는 얼음을 성공적으로 깨거나 세워도 한 번 움직입니다. 막힌 이동과 잘못된 편집은 움직임을 일으키지 않습니다.</dd></div><div><dt>얼음벽을 세우면 어떻게 되나요?</dt><dd>앞쪽 빈칸이 조건에 맞으면 짧은 벽을 세워 추적자의 경로를 바꿉니다. 21~30번 방에서는 성공적으로 벽을 세울 때 추적자도 움직입니다.</dd></div><div><dt>21~25번 방에서는 무엇이 달라지나요?</dt><dd>얼음을 성공적으로 편집할 때마다 추적자가 움직이므로, 벽을 깨거나 세우는 선택이 미로와 추격 타이밍을 함께 바꿉니다. 잘못된 편집은 움직임을 일으키지 않습니다.</dd></div><div><dt>방별 별은 어떻게 얻나요?</dt><dd>클리어하면 별 하나를 얻습니다. 방에 표시된 얼음 편집 한도와 걸음 목표를 각각 달성하면 별 하나씩 더 얻습니다. 편집 목표는 1~20번 방에서 4회, 21~30번 방에서 2회 이내입니다. 목표를 놓쳐도 클리어입니다.</dd></div><div><dt>출발점으로 돌아가야 하는 방은 어디인가요?</dt><dd>26~30번 방입니다. 열매를 모두 모은 다음 금색 출발 칸으로 돌아와야 클리어됩니다.</dd></div><div><dt>어떤 진행 기록이 저장되나요?</dt><dd>최고 클리어 방과 방별 최고 별 기록이 이 브라우저에 저장됩니다. 사이트 데이터를 지우면 사라지며, 기기 간 공유는 되지 않습니다.</dd></div></dl></div>
-
+      <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-unblock" data-related-game="animal-unblock" href="/ko/games/animal-unblock/"><img src="/assets/interface7-redrawn/animal-unblock.webp" alt="Unblock Trail" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-runtime-localize="off">Unblock Trail</strong><span data-frost-related-description>Slide horizontal and vertical blocks along their lanes to clear a path to the exit.</span></span></a></div></div>
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+    <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+    <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
+    <script src="stage-config.js?v=20261021-frost-i9"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
   </body>
 </html>

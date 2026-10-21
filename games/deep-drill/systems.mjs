@@ -47,19 +47,20 @@ export function sealState(r){
  const lane=a===2?(Math.floor(b.time/5)+b.phase)%3:targets[a][b.phase];
  const open=a!==2||b.time%5>2.2;
  return {lane,open,phase:b.phase,name:REGIONS[a].seal,hint:REGIONS[a].hint,
-  status:a===0?`鎖片 ${b.phase+1}/3 · 對準發光鎖片`:a===1?'對準發光泵芯，三次鑽開水道':a===2?(open?'冷卻窗開啟！':'護罩啟動，等待冷卻窗'):a===3?'每次短按少於 1 秒，保護晶環':a===4?'先洩壓，再啟動閥門':b.phase===0?'第一階段：對準發光外殼':b.phase===1?'第二階段：每次短按少於 1.2 秒':'第三階段：洩壓後啟動燈塔'};
+  status:a===0?`鎖片 ${b.phase+1}/3 · 對準發光鎖片`:a===1?(b.needsRelease?'鬆開下鑽，讓泵閥回彈':'對準發光泵芯，三次鑽開水道'):a===2?(open?'冷卻窗開啟！':'護罩啟動，等待冷卻窗'):a===3?'每次短按少於 1 秒，保護晶環':a===4?'先洩壓，再啟動閥門':b.phase===0?'第一階段：對準發光外殼':b.phase===1?'第二階段：每次短按少於 1.2 秒':'第三階段：洩壓後啟動燈塔'};
 }
 export function runSeams(r,offset=0){const state=offset===0&&sealState(r);if(state){const out=['B','B','B'];out[state.lane]=['E','W','L','X','D','E'][r.stage.arc];return out;}return seams(r.stage,r.row+offset);}
 export function sealContact(s,r){
  const state=sealState(r);if(!state)return true;const b=r.seal,a=r.stage.arc;
  let reason='';if(r.lane!==state.lane)reason='這裡是護甲，請對準發光弱點';
+ else if(a===1&&b.needsRelease)reason='泵閥需要回彈：鬆開下鑽後再啟動下一座泵';
  else if(a===2&&!state.open)reason='護罩尚未打開，等待冷卻窗';
  else if((a===3&&r.held>1)||(a===5&&b.phase===1&&r.held>1.2))reason='鑽擊太長，鬆開後用短促脈衝';
  else if((a===4||(a===5&&b.phase===2))&&r.stats.vent<=b.usedVents){r.pressure=Math.min(88,r.pressure+18);reason='閥門仍鎖住：累壓至 20% 後鬆開洩壓';}
 
  r.progress=0;
  if(reason){r.events.push({type:'seal-block',text:reason});return false;}
- b.phase++;b.usedVents=r.stats.vent;b.hitFlash=.5;r.pressure*=.35;r.value+=25;r.events.push({type:'seal-hit',phase:b.phase,lane:r.lane,text:b.phase===3?'封印解除！':`封印鬆開：${b.phase}/3`});
+ b.phase++;if(a===1)b.needsRelease=true;b.usedVents=r.stats.vent;b.hitFlash=.5;r.pressure*=.35;r.value+=25;r.events.push({type:'seal-hit',phase:b.phase,lane:r.lane,text:b.phase===3?'封印解除！':`封印鬆開：${b.phase}/3`});
  return b.phase>=3;
 }
 export function bankMaterials(s,r,fraction=1){for(const key of Object.keys(r.materials)){const value=Math.floor(r.materials[key]*fraction);s.materials[key]=Math.min(1e9,s.materials[key]+value);r.bankedMaterials[key]+=value;r.materials[key]=0;}}
@@ -127,6 +128,7 @@ export function stepSystems(s,r,dt,held){
   if(s.auto.cool&&(r.stage.goal==='vent'||r.stage.goal==='mastery'||(state&&[4,5].includes(r.stage.arc)))){
    if(r.pressure>=24)r.smartVenting=true;if(r.pressure<4)r.smartVenting=false;if(r.smartVenting)return false;
   }
+  if(state&&r.stage.arc===1&&r.seal.needsRelease)return false;
   if(state&&r.stage.arc===2&&!state.open)return false;
  }
  return held||r.auto||r.forceBreak;

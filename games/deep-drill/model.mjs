@@ -33,7 +33,7 @@ export function buy(save,type,key){
  return true;
 }
 export function newRun(save,stageIndex=0){return initializeRun(save,{stage:STAGES[int(stageIndex,0,29)],row:0,lane:1,progress:0,pressure:0,cargo:0,value:0,depth:0,
- stats:{copper:0,gold:0,crystal:0,coolant:0,quality:0,vent:0,magma:0},auto:save.auto.drill,autoCooling:false,helpersOn:true,tiles:{},pulse:0,helperPulse:0,hitTTL:0,mined:0,beamTarget:null,paused:false,ended:false,
+ stats:{copper:0,gold:0,crystal:0,coolant:0,quality:0,vent:0,magma:0},auto:save.auto.drill,autoCooling:false,helpersOn:true,helperVenting:false,tiles:{},pulse:0,helperPulse:0,hitTTL:0,mined:0,beamTarget:null,paused:false,ended:false,
  held:0,venting:false,events:[],banked:0,reason:null,clear:false,lastKind:'S'});}
 export function capacity(save){return 32+save.upgrades.cargo*12+extraCapacity(save);}
 export function goalMet(r){if(r.stage.checkpoint)return r.seal.phase>=3;const s=r.stats;switch(r.stage.goal){case'copper':return s.copper>=r.stage.quota;case'gold':return s.gold>=r.stage.quota;case'cargo':return s.copper+s.gold+s.crystal>=r.stage.quota;
@@ -79,9 +79,10 @@ export function tick(save,r,dt,held){
  const head=HEADS[save.head],up=save.upgrades,intent=stepSystems(save,r,dt,held);r.hitTTL=Math.max(0,r.hitTTL-dt);
  if(r.beamTarget){const target=r.beamTarget;r.beamTarget=null;const cell=cellState(r,target.row,target.lane);cell.hp=0;rewards(save,r,cell,true);r.events.push({type:'beam',lane:target.lane,row:target.row-r.row});checkLoad(save,r);if(!r.ended&&target.row===r.row&&target.lane===r.lane)advanceRow(save,r);return;}
  if(save.auto.cool){if(r.pressure>=70)r.autoCooling=true;if(r.pressure<=20)r.autoCooling=false;}
- const helper=save.helpers>0&&r.helpersOn&&r.pressure<24&&!activeSeal(r);
+ if(r.pressure>=24)r.helperVenting=true;if(r.pressure<4)r.helperVenting=false;
+ const helper=save.helpers>0&&r.helpersOn&&!r.helperVenting&&!r.smartVenting&&!activeSeal(r);
  const drilling=(intent||helper)&&!r.autoCooling;r.drilling=drilling;
- if(!drilling){r.held=0;r.pulse=0;r.helperPulse=0;
+ if(!drilling){if(r.seal&&r.stage.arc===1)r.seal.needsRelease=false;r.held=0;r.pulse=0;r.helperPulse=0;
   if(r.pressure>=20&&!r.venting){r.stats.vent++;r.venting=true;}
   r.pressure=Math.max(0,r.pressure-dt*32);if(r.pressure<8)r.venting=false;return;}
  r.held=intent?r.held+dt:0;const cell=cellState(r),kind=cell.kind;r.lastKind=kind;
@@ -91,7 +92,7 @@ export function tick(save,r,dt,held){
  let damage=0,actor='drill';
  if(intent){r.pulse-=dt;if(r.pulse<=0){const automatic=!held;r.pulse=1/(5*(1+up.speed*.12)*(automatic?.7*(1+up.autoSpeed*.18):1));damage=22*head.power*(1+up.power*.25)*(1+up.cooling*.12)*(automatic?1+up.autoPower*.2:1)*rateMultiplier(save,r)*(head.trait==='stone'&&kind==='S'?1.4:1);}}
  if(helper){r.helperPulse-=dt;if(r.helperPulse<=0){r.helperPulse=.5;damage+=12*save.helpers*(1+up.helperPower*.25);if(!intent)actor='helper';}}
- if(damage>0){const actual=Math.min(cell.hp,damage);cell.hp=Math.max(0,cell.hp-damage);r.hitTTL=.09;r.events.push({type:'hit',lane:r.lane,row:0,damage:Math.ceil(actual),actor});}
+ if(damage>0){const actual=Math.min(cell.hp,damage);cell.hp=Math.max(0,cell.hp-damage);r.hitTTL=.09;r.events.push({type:'hit',lane:r.lane,row:0,damage:Math.ceil(actual),actor,seal:activeSeal(r)});}
  r.progress=1-cell.hp/cell.max;
  if(cell.hp>0)return;
  if(activeSeal(r)){if(!sealContact(save,r)){cell.hp=cell.max;r.progress=0;return;}cell.hp=0;}

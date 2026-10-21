@@ -21,11 +21,18 @@
 
   const $ = (id) => document.getElementById(id);
   const loadingPanel = $("loadingPanel");
-  if (loadingPanel) {
-    const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); };
-    if (document.readyState === "complete") hideLoading();
-    else window.addEventListener("load", hideLoading, { once: true });
-  }
+  let frostEntryReady = false;
+  const markFrostEntryReady = () => {
+    if (frostEntryReady) return;
+    frostEntryReady = true;
+    if (loadingPanel) { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }
+    window.WeightPlayGameEntryLoader?.ready?.();
+  };
+  const failFrostEntry = () => {
+    if (frostEntryReady) return;
+    loadingPanel?.classList.add("has-error");
+    window.WeightPlayGameEntryLoader?.fail?.();
+  };
   const canvas = $("arena");
   const activeFlights=new Set();
   let frostScene=null;
@@ -42,6 +49,7 @@
   let savedBest = 0;
   try { const n=Number(localStorage.getItem("wp-frost-best")); if(Number.isInteger(n)&&n>=0&&n<=TOTAL_STAGES)savedBest=n; } catch {}
   const state = { screen: "main", chapter: 1, room: 1, best: savedBest, player: null, enemy: null, walls: new Set(), fruits: new Set(), facing: { x: 1, y: 0 }, moves: 0, edits: 0, ticks: 0, raf: 0 };
+  let stageController = null, selectedStageIndex = 0, resultReturnFocus = null;
   const notifyAnalytics = (name, details = {}) => window.__wpFrostAnalytics?.record?.(name, details);
   const key = (x,y) => `${x},${y}`;
   const text = (value) => value === "BREAK THE ICE" ? (FROST_COPY[frostLocale()]?.canvas || value) : window.wpFiveText ? window.wpFiveText(value) : value;
@@ -160,6 +168,57 @@
   const stageNumber = () => (state.chapter - 1) * ROOMS_PER_CHAPTER + state.room;
   const frostChapterName = (chapter, copy = frostStageText()) => chapter >= 5 ? masteryCopy()[chapter - 5] : copy.chapters[chapter - 1];
   const starsText = value => "★".repeat(value) + "☆".repeat(3 - value);
+  const frostStageConfig = window.FrostMazeStageConfig.create({
+    getLocale: frostLocale,
+    getBestGrades: () => bestGrades,
+    getRules: mastery.rules,
+    getStageCopy: frostStageText,
+    getMasteryCopy: masteryCopy,
+    getChapterName: frostChapterName,
+    getStageLabel: frostStageLabel,
+    getRoomLabel: frostRoomLabel,
+  });
+  const screenFrame = window.WeightPlayScreenFrame.mount({
+    root: $("app"),
+    localeSelect: $("localeSelect"),
+    playUI: true,
+    scenes: {
+      main: {root: $("main-screen"), header: $("main-screen").querySelector("header"), content: $("main-content")},
+      stage: {root: $("stage-screen"), header: $("stage-screen").querySelector("header"), content: $("stage-content")},
+      battle: {root: $("battle-screen"), header: $("battle-screen").querySelector("header"), content: $("battle-play-content"), headerInfo: $("battle-info")},
+    },
+  });
+  screenFrame.activate("main");
+  stageController = window.WeightPlayPlayUI.mountStage({
+    page: $("stage-content"),
+    rail: $("stage-list"),
+    config: frostStageConfig,
+    selected: selectedStageIndex,
+    onSelect: index => { selectedStageIndex = index; },
+    onStart: index => startRoom(Math.floor(index / ROOMS_PER_CHAPTER) + 1, index % ROOMS_PER_CHAPTER + 1),
+    isActive: () => state.screen === "stage",
+  });
+  const FROST_RELATED_COPY = {
+    en: "Slide horizontal and vertical blocks along their lanes to clear a path to the exit.",
+    "zh-tw": "沿著各自的方向滑動橫向與直向方塊，為出口清出通路。",
+    "zh-cn": "沿各自的方向滑动横向与纵向方块，为出口清出通路。",
+    ja: "横向きと縦向きのブロックをそれぞれの向きに動かし、出口への道を開きましょう。",
+    ko: "가로와 세로 블록을 각 방향으로 밀어 출구까지 길을 여세요.",
+    es: "Desliza los bloques horizontales y verticales en su dirección para abrir un camino hasta la salida.",
+    "pt-br": "Deslize os blocos horizontais e verticais em suas direções para abrir caminho até a saída.",
+    fr: "Faites glisser les blocs horizontaux et verticaux dans leur axe pour libérer un passage vers la sortie.",
+    de: "Schiebe waagerechte und senkrechte Blöcke entlang ihrer Spur, bis der Weg zum Ausgang frei ist.",
+    it: "Fai scorrere i blocchi orizzontali e verticali lungo il loro asse per liberare il passaggio verso l'uscita.",
+    ru: "Сдвигайте горизонтальные и вертикальные блоки вдоль их оси, чтобы освободить путь к выходу.",
+    hi: "क्षैतिज और ऊर्ध्वाधर ब्लॉकों को उनकी दिशा में सरकाकर निकास तक का रास्ता खोलें।",
+    ar: "حرّك الكتل الأفقية والعمودية على محاورها لفتح طريق إلى المخرج."
+  };
+  const FROST_BATTLE_INFO_COPY = {
+    en: ["Room", "Berries"], "zh-tw": ["房間", "莓果"], "zh-cn": ["房间", "浆果"],
+    ja: ["ルーム", "ベリー"], ko: ["방", "베리"], es: ["Sala", "Bayas"],
+    "pt-br": ["Sala", "Frutas"], fr: ["Salle", "Baies"], de: ["Raum", "Beeren"],
+    it: ["Stanza", "Bacche"], ru: ["Комната", "Ягоды"], hi: ["कमरा", "बेरी"], ar: ["الغرفة", "التوت"],
+  };
   function masteryHint() {
     const c = masteryCopy(), rules = mastery.rules(stageNumber());
     return [rules.echo ? c[4] : frostText("hint"), rules.home ? c[5] : "", `${c[2]}: ${state.edits} / ${rules.edits} · ${c[3]}: ${state.moves} / ${rules.steps}`, c[8]].filter(Boolean).join(" ");
@@ -167,11 +226,7 @@
   function syncMastery() {
     $("frost-touch-hint").textContent = masteryHint();
     syncCoach();
-    document.querySelectorAll("[data-stage-index]").forEach(card => {
-      let badge = card.querySelector(".mastery-badge");
-      if (!badge) { badge = document.createElement("small"); badge.className = "mastery-badge"; card.append(badge); }
-      badge.textContent = `${masteryCopy()[6]} ${starsText(bestGrades[card.dataset.stageIndex] || 0)}`;
-    });
+    stageController?.refresh(selectedStageIndex);
   }
 
   /* FROST_COACH_MODEL_START */
@@ -681,23 +736,16 @@
       }
       document.querySelector(".touch-hint")?.replaceChildren(document.createTextNode(frostText("hint")));
       const stageCopy = frostStageText();
-      const stageHeading = document.querySelector(".stage-header h2");
-      if (stageHeading) stageHeading.textContent = stageCopy.heading;
       const stageTabs = document.querySelector(".stage-tabs");
       if (stageTabs) stageTabs.setAttribute("aria-label", stageCopy.tab);
       const stageTab = document.querySelector(".stage-tabs button");
       if (stageTab) stageTab.textContent = stageCopy.tab;
-      document.querySelectorAll("#stage-list [data-wp-stage-card]").forEach((button) => {
-        const stage = Number(button.dataset.stageIndex || 0);
-        const chapter = Number(button.dataset.chapter || 0);
-        const room = Number(button.dataset.room || 0);
-        if (!stage || !chapter || !room) return;
-        const chapterName = frostChapterName(chapter, stageCopy);
-        const label = `${frostStageLabel()} ${stage}: ${stageCopy.chapter} ${chapter}${stageCopy.chapterSuffix || ""}, ${frostRoomLabel()} ${room}`;
-        button.innerHTML = `<strong>${frostStageLabel()} ${stage}</strong><span>${chapterName} · ${frostRoomLabel()} ${room}</span><small>${stageCopy.chapter} ${chapter}${stageCopy.chapterSuffix || ""}</small>`;
-        button.setAttribute("aria-label", label);
+      const relatedDescription = document.querySelector("[data-frost-related-description]");
+      if (relatedDescription) relatedDescription.textContent = FROST_RELATED_COPY[frostLocale()] || FROST_RELATED_COPY.en;
+      const battleInfoLabels = $("battle-info").querySelectorAll(":scope > span > small");
+      (FROST_BATTLE_INFO_COPY[frostLocale()] || FROST_BATTLE_INFO_COPY.en).forEach((label, index) => {
+        if (battleInfoLabels[index]) battleInfoLabels[index].textContent = label;
       });
-      syncFrostStageAvailability();
       $("result-title").textContent = frostResultText("winTitle");
       $("result-copy").textContent = frostResultText("winCopy", 1, 1);
       $("to-stages").textContent = frostResultText("stages");
@@ -705,6 +753,7 @@
       $("retry").textContent = frostResultText("retry");
       setBattleStatus(battleStatusKey);
       syncMastery();
+      screenFrame.refresh();
       if (state.screen === "result") renderResult(state.won);
     };
     const frostLocaleObserver = new MutationObserver((records) => {
@@ -730,17 +779,100 @@
   const frostStatusObserver = new MutationObserver(syncBattleStatusLocale);
   frostStatusObserver.observe($("battle-status"), { childList: true, characterData: true, subtree: true });
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", applyFrostLocale, { once: true }); else applyFrostLocale();
-  function syncFrostStageAvailability(){const rail=$("stage-list");if(!rail)return;const railRect=rail.getBoundingClientRect();const canvasRect=rail.closest("[data-wp-logical-stage-canvas]")?.getBoundingClientRect()||railRect;const cards=[...rail.querySelectorAll("[data-wp-stage-card]")];cards.forEach((card)=>{const rect=card.getBoundingClientRect();const centerX=rect.left+rect.width/2;const centerY=rect.top+rect.height/2;const inRail=rect.width>1&&rect.height>1&&centerX>railRect.left+2&&centerX<railRect.right-2&&centerY>railRect.top+2&&centerY<railRect.bottom-2&&centerX>canvasRect.left+2&&centerX<canvasRect.right-2&&centerY>canvasRect.top+2&&centerY<canvasRect.bottom-2;const selected=Number(card.dataset.stageIndex)===stageNumber();if(selected){card.setAttribute("aria-current","true");card.dataset.wpStageRecommended="true";}else{card.removeAttribute("aria-current");delete card.dataset.wpStageRecommended;}card.setAttribute("aria-disabled",String(!inRail&&!selected));card.tabIndex=inRail?0:-1;});}
-  function show(name){if(state.screen==="result"&&name!=="result")window.ShowResultGet?.("animal-frost-maze",false);if(name!=="result")window.WeightPlayCastle?.dismissRewardNotice?.("animal-frost-maze");if(name!=="battle")clearFlights();state.screen=name;document.body.dataset.wpBattleSettings=name==="result"?"hidden":"visible";document.body.dataset.screen=name==="result"?"battle":name;cancelAnimationFrame(state.raf);const result=document.querySelector("#result-screen");document.querySelectorAll(".screen").forEach((el)=>{const isResult=el===result&&name==="result";const keepBattle=name==="result"&&el.id==="battle-screen";const on=isResult||keepBattle||el.dataset.screen===name;el.hidden=!on;el.classList.toggle("active",on)});if(name==="result")window.ShowResultGet?.("animal-frost-maze",false);for(const child of $("battle-screen").children)if(child!==result)child.inert=name==="result";if(name==="battle")(__wpNotifyMeasurement(), result?.setAttribute("hidden",""));if(name==="stage")window.requestAnimationFrame(syncFrostStageAvailability);if(name==="battle")state.raf=requestAnimationFrame(frame);window.dispatchEvent(new Event("weightplay:stage-sync"));window.dispatchEvent(new Event("weightplay:shell-sync"));window.WeightPlayBattleCanvas?.sync?.();window.WeightPlayStageArtwork?.sync?.();frostScene?.setActive(name==="battle"||name==="result");
-    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
-      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
-      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
-      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
-}
-  function stageCards(){const copy=frostStageText();const stageLabel=frostStageLabel();const roomLabel=frostRoomLabel();const cards=Array.from({length:TOTAL_STAGES},(_,index)=>{const stage=index+1;const chapter=Math.floor(index/ROOMS_PER_CHAPTER)+1;const room=index%ROOMS_PER_CHAPTER+1;const chapterName=frostChapterName(chapter,copy);const label=`${stageLabel} ${stage}: ${copy.chapter} ${chapter}${copy.chapterSuffix || ""}, ${roomLabel} ${room}`;return `<button type="button" class="stage-card" data-wp-stage-card data-wp-enter-battle data-stage-index="${stage}" data-chapter="${chapter}" data-room="${room}" aria-label="${label}"><strong>${stageLabel} ${stage}</strong><span>${chapterName} · ${roomLabel} ${room}</span><small>${copy.chapter} ${chapter}${copy.chapterSuffix || ""}</small></button>`;}).join("");$("stage-list").innerHTML=cards;$("stage-list").querySelectorAll("button").forEach((b)=>b.addEventListener("click",()=>startRoom(Number(b.dataset.chapter),Number(b.dataset.room))));syncFrostStageAvailability();syncMastery();}
+  function show(name) {
+    const previous = state.screen;
+    if (previous === "result" && name !== "result") window.ShowResultGet?.("animal-frost-maze", false);
+    if (name !== "result") window.WeightPlayCastle?.dismissRewardNotice?.("animal-frost-maze");
+    if (name !== "stage") stageController?.cancel();
+    if (name !== "battle") clearFlights();
+    if (name === "result") {
+      resultReturnFocus = document.activeElement instanceof HTMLElement && document.activeElement !== document.body
+        ? document.activeElement : $("arena");
+    }
+    state.screen = name;
+    document.body.dataset.wpBattleSettings = name === "result" ? "hidden" : "visible";
+    document.body.dataset.screen = name === "result" ? "battle" : name;
+    cancelAnimationFrame(state.raf);
+
+    const result = $("result-screen");
+    document.querySelectorAll(".screen").forEach((element) => {
+      const isResult = element === result && name === "result";
+      const keepBattle = name === "result" && element.id === "battle-screen";
+      const on = isResult || keepBattle || element.dataset.screen === name;
+      element.hidden = !on;
+      element.classList.toggle("active", on);
+    });
+    for (const child of $("battle-screen").children) {
+      if (child !== result) child.inert = name === "result";
+    }
+
+    if (name === "result") {
+      window.ShowResultGet?.("animal-frost-maze", false);
+      screenFrame.activate("battle", {covered:true});
+      $("retry").focus({preventScroll:true});
+    } else if (name === "main") {
+      screenFrame.activate("main");
+      $("start-game").focus({preventScroll:true});
+    } else if (name === "stage") {
+      screenFrame.activate("stage");
+      stageController?.refresh(selectedStageIndex);
+      stageController?.select(selectedStageIndex, {center:true,focus:true});
+    } else if (name === "battle") {
+      $("result-screen").hidden = true;
+      screenFrame.activate("battle");
+      state.raf = requestAnimationFrame(frame);
+      $("arena").focus({preventScroll:true});
+    }
+
+    if (name === "battle") (__wpNotifyMeasurement(), result?.setAttribute("hidden", ""));
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+    window.WeightPlayBattleCanvas?.sync?.();
+    window.WeightPlayStageArtwork?.sync?.();
+    frostScene?.setActive(name === "battle" || name === "result");
+
+    const restoreFocus = previous === "result" ? resultReturnFocus : null;
+    if (previous === "result" && name !== "result") resultReturnFocus = null;
+    if (restoreFocus && name === "main" && restoreFocus.isConnected) restoreFocus.focus({preventScroll:true});
+
+    const nextScreen = ({main:"main",stage:"stage",battle:"battle"})[name] ?? null;
+    if (name === "result" && __wpMeasurement.started && !__wpMeasurement.ended) {
+      __wpMeasurement.ended = true;
+      __wpMeasurement.outcome = "complete";
+    } else if (nextScreen && (nextScreen === "main" || nextScreen === "stage")
+      && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) {
+      __wpMeasurement.ended = true;
+      __wpMeasurement.outcome = "abandon";
+    }
+    __wpMeasurement.screen = nextScreen;
+    __wpNotifyMeasurement();
+  }
+
+  $("result-screen").addEventListener("keydown", (event) => {
+    if (state.screen !== "result") return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const controls = [...$("result-screen").querySelectorAll("button:not(:disabled):not([hidden])")];
+    if (!controls.length) {
+      event.preventDefault();
+      $("result-screen").focus();
+      return;
+    }
+    const index = controls.indexOf(document.activeElement);
+    const next = event.shiftKey
+      ? (index <= 0 ? controls.length - 1 : index - 1)
+      : (index < 0 || index === controls.length - 1 ? 0 : index + 1);
+    event.preventDefault();
+    controls[next].focus();
+  });
+
   function layoutFor(chapter, room) { const variant=(chapter-1)*ROOMS_PER_CHAPTER+room-1; const walls=new Set([key(3,1),key(3,2),key(3,3),key(5,3),key(6,3),key(8,2),key(8,3),key(8,4),key(4,5),key(5,5),key(7,5)]); const variants=[[2,2],[4,1],[6,4],[9,5],[2,5],[7,1],[9,2],[5,1]]; const extra=variants[variant%variants.length]; walls.add(key(extra[0],extra[1])); if(chapter>=2)walls.add(key(6,1)); if(chapter>=3)walls.add(key(9,4)); if(chapter>=4)walls.add(key(1,2)); const candidates=[[2,1],[5,1],[7,2],[10,4],[2,4],[6,6],[9,6],[10,1],[1,1]]; const fruits=new Set(); candidates.forEach(([x,y],i)=>{if(!walls.has(key(x,y))&&i<5+(variant%3))fruits.add(key(x,y));}); return {walls,fruits,enemy:{x:10-(variant%3),y:1+(variant%2)}}; }
   function buildRoom(){clearFlights();state.renderRound=(state.renderRound||0)+1;window.clearTimeout(state.finishTimer);state.finishTimer=0;const layout=layoutFor(state.chapter,state.room);state.player={x:1,y:5};state.enemy=layout.enemy;state.facing={x:1,y:0};state.moves=0;state.edits=0;state.resolving=false;state.won=false;state.ticks=0;state.walls=layout.walls;state.fruits=layout.fruits;$(`room-label`).textContent=`${frostStageText().chapter} ${state.chapter} · ${frostRoomLabel()} ${state.room} / ${ROOMS_PER_CHAPTER}`;resetCoach();setBattleStatus("controls");updateLabels();syncMastery();coachStatus(coachText("help"));}
-  function startRoom(chapter=1,room=1){if(state.renderBlocked)return;state.chapter=chapter;state.room=room;syncFrostStageAvailability();buildRoom();show("battle");window.WeightPlayAudio?.play?.("game.start");
+  function startRoom(chapter=1,room=1){if(state.renderBlocked)return;state.chapter=chapter;state.room=room;selectedStageIndex=stageNumber()-1;stageController?.select(selectedStageIndex,{center:false});buildRoom();show("battle");window.WeightPlayAudio?.play?.("game.start");
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
   function updateLabels(){$("fruit-label").textContent=`◆ ${state.fruits.size}`;}
@@ -773,6 +905,7 @@
     if(!frostScene||!state.player)return;
     frostScene.render({stage:state.renderRound||0,roomStage:stageNumber(),player:state.player,enemy:state.enemy,facing:state.facing,
       walls:[...state.walls],fruits:[...state.fruits],route:routeShown?advicePath:null,home:mastery.rules(stageNumber()).home,won:state.won,resolving:state.resolving});
+    if (Number(canvas.dataset.renderFrames) > 0) markFrostEntryReady();
   }
   // Localized Result transaction overrides the prototype fallback above while
   // preserving the existing finish/show flow.
@@ -820,7 +953,20 @@
     if(event.code==='KeyH'){event.preventDefault();routeShown=!routeShown;syncCoach();}
   });
   window.addEventListener("keydown",(e)=>{if(state.screen!=="battle"||[...document.querySelectorAll('.wp-shell-settings-popover')].some(n=>getComputedStyle(n).display!=='none'&&n.getClientRects().length)||/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName))return;const k=e.code;if(k==="Space"&&/^(BUTTON|A)$/.test(e.target.tagName))return;if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","KeyW","KeyA","KeyS","KeyD","Space","KeyF"].includes(k)){e.preventDefault();if(k==="Space")breakIce();else if(k==="KeyF")buildIce();else if(k==="ArrowUp"||k==="KeyW")move(0,-1);else if(k==="ArrowDown"||k==="KeyS")move(0,1);else if(k==="ArrowLeft"||k==="KeyA")move(-1,0);else move(1,0)}});document.querySelectorAll("[data-action]").forEach((b)=>b.addEventListener("click",()=>{actions[b.dataset.action]();canvas.focus({preventScroll:true});}));
-  $("start-game").addEventListener("click",()=>{syncMastery();show("stage")});document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>show(b.dataset.back)));$("retry").addEventListener("click",()=>__wpReplayStart(() => startRoom(state.chapter,state.room)));$("next").addEventListener("click",()=>{const currentStage=(state.chapter-1)*ROOMS_PER_CHAPTER+state.room;if(!state.won||currentStage>=TOTAL_STAGES)return;const nextStage=currentStage+1;startRoom(Math.floor((nextStage-1)/ROOMS_PER_CHAPTER)+1,((nextStage-1)%ROOMS_PER_CHAPTER)+1);});$("to-stages").addEventListener("click",()=>{syncMastery();show("stage")});$("stage-list").addEventListener("scroll",()=>window.requestAnimationFrame(syncFrostStageAvailability),{passive:true});window.addEventListener("resize",()=>window.requestAnimationFrame(syncFrostStageAvailability));updateProgress();stageCards();buildRoom();draw();
+  $("start-game").addEventListener("click", () => show("stage"));
+  document.querySelectorAll("[data-back]").forEach(button => button.addEventListener("click", () => show(button.dataset.back)));
+  $("retry").addEventListener("click", () => __wpReplayStart(() => startRoom(state.chapter, state.room)));
+  $("next").addEventListener("click", () => {
+    const currentStage = (state.chapter - 1) * ROOMS_PER_CHAPTER + state.room;
+    if (!state.won || currentStage >= TOTAL_STAGES) return;
+    const nextStage = currentStage + 1;
+    startRoom(Math.floor((nextStage - 1) / ROOMS_PER_CHAPTER) + 1, ((nextStage - 1) % ROOMS_PER_CHAPTER) + 1);
+  });
+  $("to-stages").addEventListener("click", () => { syncMastery(); show("stage"); });
+  updateProgress();
+  stageController.refresh(selectedStageIndex);
+  buildRoom();
+  draw();
 
   function clearFlights(){for(const flight of activeFlights){for(const animation of flight.getAnimations())animation.cancel();flight.remove();}activeFlights.clear();}
   function collectFlight(point){
@@ -839,7 +985,7 @@
     if(kind==='ready'){notice.hidden=true;return;}
     (state.screen==='battle'?$('battle-screen'):state.screen==='stage'?$('stage-screen'):$('main-screen')).append(notice);notice.hidden=false;notice.inert=false;
     notice.querySelector('p').textContent=coachText(kind==='lost'?'renderLost':'renderFailed');notice.querySelector('button').textContent=coachText('renderRetry');
-    const panel=$('loadingPanel');if(panel){panel.hidden=true;panel.classList.add('hidden');}
+    failFrostEntry();
   }
   import('/games/animal-frost-maze/vendor/three/three.module.min.js').then(T=>{
   /* FROST_REALTIME_ASSETS_START */
@@ -954,6 +1100,7 @@ class FrostScene {
     for(const e of this.effects){e.age+=dt;const t=e.age/.48;for(let i=0;i<e.g.children.length;i++){const m=e.g.children[i];m.position.y=.3+(reduce?0:t*(1.2-i*.08));m.position.x=Math.cos(i*2.4)*(.1+t*.35);m.position.z=Math.sin(i*2.4)*(.1+t*.35);m.scale.setScalar(Math.max(.001,.09*(1-t)));}}
     this.effects=this.effects.filter(e=>{if(e.age>=.48){this.remove(e.g);return false;}return true;});
     this.renderer.render(this.scene,this.camera);
+    this.canvas.dataset.renderFrames=String(Number(this.canvas.dataset.renderFrames||0)+1);
     this.canvas.dataset.drawCalls=String(this.renderer.info.render.calls);this.canvas.dataset.triangles=String(this.renderer.info.render.triangles);
     this.canvas.dataset.geometries=String(this.renderer.info.memory.geometries);this.canvas.dataset.textures=String(this.renderer.info.memory.textures);
   }
@@ -961,10 +1108,10 @@ class FrostScene {
 }
 
   /* FROST_REALTIME_ASSETS_END */
-    try {frostScene=new FrostScene(canvas,renderNotice);frostScene.onCollect=collectFlight;frostScene.setActive(state.screen==='battle'||state.screen==='result');$('start-game').disabled=false;draw();}
+    try {frostScene=new FrostScene(canvas,renderNotice);frostScene.onCollect=collectFlight;frostScene.setActive(true);$('start-game').disabled=false;draw();if(state.screen!=='battle'&&state.screen!=='result')frostScene.setActive(false);}
     catch(error){renderNotice('failed');console.error('FROST_RENDERER_INIT_FAILED',error.message);}
   }).catch(error=>{renderNotice('failed');console.error('FROST_ENGINE_LOAD_FAILED',error.message);});
   window.addEventListener('visibilitychange',()=>{if(frostScene){frostScene.hidden=document.hidden||state.renderBlocked||!frostScene.active;frostScene.last=0;}});
-  window.addEventListener('pagehide',event=>{if(event.persisted){if(frostScene)frostScene.hidden=true;}else {clearFlights();frostScene?.dispose();}});
+  window.addEventListener('pagehide',event=>{if(event.persisted){if(frostScene)frostScene.hidden=true;}else {clearFlights();frostScene?.dispose();stageController?.destroy();screenFrame.destroy();}});
   window.addEventListener('pageshow',event=>{if(event.persisted&&frostScene){frostScene.hidden=false;frostScene.last=0;draw();}});
 })();

@@ -1,4 +1,4 @@
-:root{color-scheme:dark;--bg:#071e31;--panel:#103d5b;--line:#59a8c9;--gold:#ffd36b;--ice:#8ee7ff;--berry:#ff8198;--ink:#f4fcff}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 0,#1b6681 0,#071e31 58%);font-family:system-ui,sans-serif;color:var(--ink)}body{display:flex;justify-content:center;padding:clamp(12px,3vw,32px)}button{font:inherit;color:inherit;border:1px solid var(--line);background:#145073;border-radius:14px;padding:12px 18px;cursor:pointer}button:hover,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}.primary{background:linear-gradient(135deg,#f5c85e,#e57984);border-color:#ffdf91;color:#1e2530;font-weight:800}.screen{width:min(920px,100%);min-height:calc(100vh - 64px);padding:clamp(20px,5vw,56px);background:rgba(7,30,49,.9);border:1px solid #3b819b;border-radius:24px;box-shadow:0 20px 60px #0007}.screen:not(.battle):not(.result){display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.screen[hidden]{display:none !important}.brand{color:var(--ice);font-size:.76rem;letter-spacing:.14em}.lede{max-width:52ch;color:#c5e0ea;line-height:1.55}.progress{color:var(--gold)}.primary{min-width:220px}.back{align-self:flex-start;padding:8px 12px}.stage-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;width:100%;max-width:720px}.stage-list button{min-height:80px}.battle{padding:16px;display:flex;flex-direction:column;align-items:stretch}.battle-head{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--gold);font-weight:800}.battle-status{text-align:center;margin:8px;color:#c5e0ea}.battle canvas{display:block;width:100%;height:auto;max-height:calc(100vh - 235px);background:#062035;border:1px solid #6db5cf;border-radius:18px;touch-action:none}.touch-controls{display:flex;justify-content:center;align-items:center;gap:7px;padding-top:10px;flex-wrap:wrap}.touch-controls button{min-width:58px;font-size:1.2rem}.touch-controls .break{min-width:130px;color:var(--gold);font-size:.8rem}.touch-hint{text-align:center;font-size:.84rem;color:#a8cbd8;padding:8px}.result{align-items:center}.result-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}@media(max-width:560px){body{padding:0}.screen{min-height:100vh;border-radius:0;border-inline:0;padding:20px 14px}.stage-list{grid-template-columns:repeat(2,minmax(0,1fr))}.battle{padding:10px}.battle canvas{border-radius:12px}.battle-head{font-size:.8rem}.touch-controls button{padding:10px 11px}}
+:root{color-scheme:dark;--bg:#071e31;--panel:#103d5b;--line:#59a8c9;--gold:#ffd36b;--ice:#8ee7ff;--berry:#ff8198;--ink:#f4fcff}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 0,#1b6681 0,#071e31 58%);font-family:system-ui,sans-serif;color:var(--ink)}body{display:flex;justify-content:center;padding:clamp(12px,3vw,32px)}button{font:inherit;color:inherit;border:1px solid var(--line);background:#145073;border-radius:14px;padding:12px 18px;cursor:pointer}button:hover,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}.primary{background:linear-gradient(135deg,#f5c85e,#e57984);border-color:#ffdf91;color:#1e2530;font-weight:800}.screen{width:min(920px,100%);min-height:calc(100vh - 64px);padding:clamp(20px,5vw,56px);background:rgba(7,30,49,.9);border:1px solid #3b819b;border-radius:24px;box-shadow:0 20px 60px #0007}.screen:not(.battle):not(.result){display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.screen[hidden]{display:none !important}.brand{color:var(--ice);font-size:.76rem;letter-spacing:.14em}.lede{max-width:52ch;color:#c5e0ea;line-height:1.55}.progress{color:var(--gold)}.primary{min-width:220px}.back{align-self:flex-start;padding:8px 12px}.battle{padding:16px;display:flex;flex-direction:column;align-items:stretch}.battle-head{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--gold);font-weight:800}.battle-status{text-align:center;margin:8px;color:#c5e0ea}.battle canvas{display:block;width:100%;height:auto;max-height:calc(100vh - 235px);background:#062035;border:1px solid #6db5cf;border-radius:18px;touch-action:none}.touch-controls{display:flex;justify-content:center;align-items:center;gap:7px;padding-top:10px;flex-wrap:wrap}.touch-controls button{min-width:58px;font-size:1.2rem}.touch-controls .break{min-width:130px;color:var(--gold);font-size:.8rem}.touch-hint{text-align:center;font-size:.84rem;color:#a8cbd8;padding:8px}.result{align-items:center}.result-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}@media(max-width:560px){body{padding:0}.screen{min-height:100vh;border-radius:0;border-inline:0;padding:20px 14px}.battle{padding:10px}.battle canvas{border-radius:12px}.battle-head{font-size:.8rem}.touch-controls button{padding:10px 11px}}
 
 /* v4: keep the live Chapter/Room identity readable on narrow Battle headers. */
 @media (max-width:560px){
@@ -22,26 +22,6 @@
     --wp-main-landscape-poster-size:420px;
   }
 }
-
-/* Keep the complete campaign in one horizontal rail. The runtime marks cards
-   outside the visible rail as temporarily unavailable so the active card
-   centres remain hit-testable at every responsive scale. */
-body[data-wp-five-game="animal-frost-maze"] [data-wp-logical-stage-canvas] .stage-list{
-  width:100% !important;
-  max-width:none !important;
-  min-width:0 !important;
-}
-body[data-wp-five-game="animal-frost-maze"] [data-wp-logical-stage-canvas] .stage-card{
-  display:grid;
-  align-content:center;
-  justify-items:center;
-  gap:8px;
-  text-align:center;
-  padding:16px;
-}
-body[data-wp-five-game="animal-frost-maze"] [data-wp-logical-stage-canvas] .stage-card strong{font-size:28px;line-height:1}
-body[data-wp-five-game="animal-frost-maze"] [data-wp-logical-stage-canvas] .stage-card span{color:#dff6ff;line-height:1.25}
-body[data-wp-five-game="animal-frost-maze"] [data-wp-logical-stage-canvas] .stage-card small{color:var(--gold);font-weight:800}
 
 .battle-status[data-state="cracked"],.battle-status[data-state="built"],.battle-status[data-state="berry"],.battle-status[data-state="berryClear"]{color:var(--gold);font-weight:800}.battle-status.frost-beat{animation:frost-battle-beat 420ms cubic-bezier(.2,.8,.3,1)}@keyframes frost-battle-beat{0%{transform:scale(.98);opacity:.65}45%{transform:scale(1.035);opacity:1}100%{transform:scale(1);opacity:1}}@media(prefers-reduced-motion:reduce){.battle-status.frost-beat{animation:none}}
 .battle-header .utility-button{width:48px;min-width:48px;height:48px;min-height:48px;padding:0;display:grid;place-items:center;border-radius:12px}
@@ -163,14 +143,6 @@ body[data-wp-five-game="animal-frost-maze"] .rescue-coach{background:linear-grad
 #battle-screen>#frost-render-notice:not([hidden]){position:absolute;inset:65px 20px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#092336f5}
 #frost-render-notice[hidden]{display:none!important}
 .rescue-flight{position:absolute;width:14px;height:14px;background:#ff91ab;border:2px solid #ffe2c0;box-shadow:0 0 12px #ff9caf99;z-index:8;pointer-events:none;border-radius:3px}
-/* Stage content uses the full shared Canvas; header sizing remains shared-owned. */
-body[data-wp-five-game="animal-frost-maze"] #stage-screen{
- display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:var(--wp-frame-control-size-physical,48px) minmax(0,1fr) 56px;
- align-items:stretch;justify-content:stretch;padding:0;gap:0;
-}
-/* Shared rail code owns drag settlement; native smooth scrolling must not
-   animate its synchronous restoration a second time on scene re-entry. */
-body[data-wp-five-game="animal-frost-maze"] #stage-list{grid-row:2;height:100%;align-self:stretch;min-height:0!important;scroll-behavior:auto!important}
 /* Reserve fixed information tracks: facing, counter and optional targets never move controls. */
 body[data-wp-five-game="animal-frost-maze"] .rescue-coach{grid-template-rows:80px 48px 30px 14px}
 body[data-wp-five-game="animal-frost-maze"] .rescue-mission,body[data-wp-five-game="animal-frost-maze"] .rescue-situation{height:80px;overflow:hidden}
@@ -181,3 +153,24 @@ body[data-wp-five-game="animal-frost-maze"] #rescue-rules{display:block;height:2
  body[data-wp-five-game="animal-frost-maze"] #rescue-facing{display:none}
  body[data-wp-five-game="animal-frost-maze"] #rescue-rules{height:22px;min-height:22px;font-size:9px;line-height:11px}
 }
+
+/* The shared Battle frame owns the outer Canvas; the game arranges its live play surface inside it. */
+body[data-wp-five-game="animal-frost-maze"] #battle-screen{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:0!important;padding:0!important;min-height:0!important}
+body[data-wp-five-game="animal-frost-maze"] #battle-play-content{display:grid!important;box-sizing:border-box;width:100%;height:100%;min-width:0;min-height:0;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 42px minmax(0,1fr) 104px;gap:8px;padding:10px;overflow:hidden;background:#0b293c}
+body[data-wp-five-game="animal-frost-maze"] #battle-play-content #rescue-coach{grid-column:1;grid-row:1}
+body[data-wp-five-game="animal-frost-maze"] #battle-play-content #battle-status{grid-column:1;grid-row:2}
+body[data-wp-five-game="animal-frost-maze"] #battle-play-content #arena{grid-column:1;grid-row:3}
+body[data-wp-five-game="animal-frost-maze"] #battle-play-content .touch-controls{grid-column:1;grid-row:4}
+body[data-wp-five-game="animal-frost-maze"] #battle-play-content #frost-touch-hint{grid-column:1;grid-row:5}
+@media(orientation:landscape) and (max-height:560px){
+ body[data-wp-five-game="animal-frost-maze"] #battle-play-content{grid-template-columns:minmax(0,1fr) 288px;grid-template-rows:minmax(0,1fr) 102px 32px;gap:5px;padding:7px}
+ body[data-wp-five-game="animal-frost-maze"] #battle-play-content #rescue-coach{grid-column:2;grid-row:1}
+ body[data-wp-five-game="animal-frost-maze"] #battle-play-content #battle-status{grid-column:2;grid-row:3}
+ body[data-wp-five-game="animal-frost-maze"] #battle-play-content #arena{grid-column:1;grid-row:1/4}
+ body[data-wp-five-game="animal-frost-maze"] #battle-play-content .touch-controls{grid-column:2;grid-row:2}
+ body[data-wp-five-game="animal-frost-maze"] #battle-play-content #frost-touch-hint{display:none}
+}
+/* Keep the legacy readiness flag for the shared loader without drawing a second loader. */
+body[data-wp-five-game="animal-frost-maze"] #loadingPanel{visibility:hidden;pointer-events:none}
+html.wp-frame-main-flow{background-image:none!important}
+body[data-wp-five-game="animal-frost-maze"] #main-progress{box-sizing:border-box!important;width:100%!important;height:44px!important;min-height:40px!important;max-height:44px!important;padding:4px 8px!important}

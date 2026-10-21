@@ -33,3 +33,7 @@
 
 #battleContent{grid-template-rows:42px minmax(95px,1fr) 38px 3px 26px 48px 44px 44px}.depth-strip{grid-row:1}.mine{grid-row:2}.telemetry{grid-row:3}.drill-progress{grid-row:4}.notice{grid-row:5}.controls{grid-row:6}.tool-row{grid-row:7}.utility-row{grid-row:8}.utility-row button{min-height:44px}.controls{min-height:0;align-items:stretch}.controls button{min-height:48px}
 @media(max-height:500px) and (orientation:landscape){#battleContent{grid-template-rows:38px 38px 26px 48px 44px 44px}.mine{grid-column:1;grid-row:1/7}.depth-strip{grid-column:2;grid-row:1}.telemetry{grid-column:2;grid-row:2}.notice{grid-column:2;grid-row:3}.controls{grid-column:2;grid-row:4}.tool-row{grid-column:2;grid-row:5}.utility-row{grid-column:2;grid-row:6}.drill-progress{display:none}.controls button{min-height:44px;height:44px}}
+
+@keyframes hit-still{from{opacity:.95}to{opacity:0}}@media(prefers-reduced-motion:reduce){#hitNumber.hit-pop{animation:hit-still .16s linear!important;opacity:0}}
+
+@media(max-height:500px) and (orientation:landscape){#battleContent{grid-template-rows:38px 38px minmax(26px,1fr) 48px 44px 44px}}

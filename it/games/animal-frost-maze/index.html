@@ -27,22 +27,23 @@
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-id" content="animal-frost-maze" />
     <meta name="weightplay-game-version" content="v18" />
-    <meta name="weightplay-interface-version" content="6" />
+    <meta name="weightplay-interface-version" content="9" />
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="Risolvi 30 stanze in un labirinto ghiacciato: rompi e costruisci muri per raggiungere ogni bacca, evita il viandante e torna alla partenza nelle stanze finali." />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Salvataggio nel Labirinto Gelato","description":"Risolvi 30 stanze in un labirinto ghiacciato: rompi e costruisci muri per raggiungere ogni bacca, evita il viandante e torna alla partenza nelle stanze finali.","url":"https://weightplay.com/it/games/animal-frost-maze/","image":"https://weightplay.com/assets/animal-frost-maze-cover.webp","genre":["Labirinto di ghiaccio","Percorsi a griglia","Strategia d’inseguimento"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"it","isAccessibleForFree":true,"audience":{"@type":"Audience","audienceType":"General"},"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"},"alternateName":"Frost Maze Rescue"}</script>
     <title>Salvataggio nel Labirinto Gelato | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20261018-frost-voxel18" />
+    <link rel="stylesheet" href="style.css?v=20261021-frost-i9" />
 
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen />
     <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide />
     <link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport />
-    <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-shell-standard />
+    <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
     <script defer src="mastery.js?v=20260908-mastery-v15"></script>
-    <script defer src="game.js?v=20261018-frost-voxel18"></script><meta property="og:site_name" content="WeightPlay" />
+    <script defer src="game.js?v=20261021-frost-i9"></script><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Salvataggio nel Labirinto Gelato | WeightPlay" />
     <meta property="og:description" content="Risolvi 30 stanze in un labirinto ghiacciato: rompi e costruisci muri per raggiungere ogni bacca, evita il viandante e torna alla partenza nelle stanze finali." />
@@ -54,45 +55,50 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-frost-maze.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-  <body data-wp-game-version="v18" data-wp-interface-version="6" data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-wp-battle-settings="visible" data-screen="main" data-wp-game-owned-guide data-runtime-localize="off">
+  <body data-wp-game-version="v18" data-wp-interface-version="9" data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-wp-battle-settings="visible" data-screen="main" data-wp-game-owned-guide data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-wp-game-title>Salvataggio nel Labirinto Gelato</strong><span>Preparing the ice route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
-    <main id="app" data-game="animal-frost-maze" data-audience="general">
+    <main id="app" data-game="animal-frost-maze" data-audience="general" data-wp-frame-root data-wp-play-ui="1">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
-        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Torna a WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title" data-wp-game-title>Salvataggio nel Labirinto Gelato</h1>
+        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Torna a WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title" data-wp-game-title data-wp-frame-title>Salvataggio nel Labirinto Gelato</h1>
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
-        <img class="five-game-cover main-cover" src="assets/animal-frost-maze-cover.png" alt="" aria-hidden="true" />
-        <p class="lede main-summary">Raccogli le provviste rosa, rompi il ghiaccio e costruisci muri per fermare il vagabondo. Ragiona senza limiti di tempo.</p>
-        <p id="main-progress" class="progress main-progress" data-wp-main-progress>Best rooms: 0</p>
-        <button id="start-game" class="primary" data-wp-main-start data-five-copy="start">Start Game</button>
+        <div id="main-content" class="main-content">
+          <img class="five-game-cover main-cover" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-frost-maze.webp" alt="" aria-hidden="true" />
+          <p class="lede main-summary" data-wp-frame-summary>Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
+          <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress>Best rooms: 0</p>
+          <button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button>
+        </div>
       </section>
-      <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-wp-stage-art="/assets/interface7-redrawn/animal-frost-maze.webp" style="--wp-stage-art:url(&quot;/assets/interface7-redrawn/animal-frost-maze.webp&quot;)" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
-        <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Torna alla home">←</button><h2>Ice Chapters</h2></header>
-        <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div>
-        <nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav>
+      <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
+        <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Torna alla home">←</button><strong data-wp-frame-title hidden>Frost Maze Rescue</strong></header>
+        <div id="stage-content"><div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail role="list"></div></div>
+        <nav class="stage-tabs" aria-label="Stage sections" data-wp-frame-nav><button type="button" data-wp-frame-action="tab" aria-current="page" aria-pressed="true">Stages</button></nav>
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
-        <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Torna ai livelli">←</button><strong id="room-label">Chapter 1 · Room 1</strong><span id="fruit-label">Berries 0</span></header>
-        <section id="rescue-coach" class="rescue-coach" aria-label="MISSIONE DI SOCCORSO">
-          <div class="rescue-mission"><span id="rescue-kicker">MISSIONE DI SOCCORSO</span><strong id="rescue-objective">Raccogli tutte le bacche rosa.</strong><div class="rescue-progress"><progress id="rescue-meter" value="0" max="1" aria-label="Raccogli tutte le bacche rosa."></progress><b id="rescue-count">0 / 0</b></div></div>
+        <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Torna ai livelli">←</button><strong data-wp-frame-title hidden>Frost Maze Rescue</strong></header>
+        <div id="battle-play-content" class="battle-play-content">
+        <div id="battle-info" data-wp-frame-info><span><small>Room</small><strong id="room-label">Chapter 1 · Room 1</strong></span><span><small>Supplies</small><strong id="fruit-label">Berries 0</strong></span></div>
+        <section id="rescue-coach" class="rescue-coach" aria-label="RESCUE MISSION">
+          <div class="rescue-mission"><span id="rescue-kicker">RESCUE MISSION</span><strong id="rescue-objective">Collect every pink berry.</strong><div class="rescue-progress"><progress id="rescue-meter" value="0" max="1" aria-label="Collect every pink berry."></progress><b id="rescue-count">0 / 0</b></div></div>
           <div class="rescue-situation"><strong id="rescue-threat"></strong><span id="rescue-facing"></span><small id="rescue-rules"></small></div>
-          <div class="rescue-tools"><button id="rescue-route" type="button" aria-pressed="false">Mostra percorso</button><button id="rescue-undo" type="button" disabled>Annulla</button></div>
-          <p id="rescue-advice" aria-live="polite">La freccia dorata indica la casella da modificare.</p><small id="rescue-legend">Oro: tu · Rosa: provviste · Rosso: pericolo</small>
+          <div class="rescue-tools"><button id="rescue-route" type="button" aria-pressed="false">Show route</button><button id="rescue-undo" type="button" disabled>Undo</button></div>
+          <p id="rescue-advice" aria-live="polite">Turn the gold arrow toward the block you want to edit.</p><small id="rescue-legend">Gold: you · Pink: supplies · Red: danger</small>
         </section>
         <p id="battle-status" class="battle-status" role="status" aria-live="polite" aria-atomic="true">Arrows move. Press SPACE to break the ice ahead.</p>
         <canvas id="arena" aria-describedby="rescue-objective battle-status" width="864" height="504" aria-label="Frostline Rescue play area"></canvas>
         <div class="touch-controls"><button data-action="up">▲</button><button data-action="left">◀</button><button id="break-ice" data-action="break" data-wp-primary-action class="break">BREAK ICE</button><button data-action="build" class="build">BUILD ICE</button><button data-action="right">▶</button><button data-action="down">▼</button></div>
         <div id="frost-touch-hint" class="touch-hint">The blue blocks are breakable. Collect all berries before the drifter reaches you.</div>
-        <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
-          <h2 id="result-title">Room clear</h2><p id="result-copy"></p>
-          <div class="result-actions"><button id="to-stages">Chapters</button><button id="next">Next Room</button><button id="retry" class="primary">Retry Room</button></div>
+        </div>
+        <section id="result-screen" class="screen result" data-screen="result" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
+          <div class="result-card" data-wp-result-card>
+            <h2 id="result-title">Room clear</h2><p id="result-copy"></p>
+            <div class="result-actions"><button id="to-stages" data-wp-frame-action="secondary">Chapters</button><button id="next" data-wp-frame-action="secondary">Next Room</button><button id="retry" class="primary" data-wp-frame-action="primary">Retry Room</button></div>
+          </div>
         </section>
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
     </main>
-    <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+    <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
     <script src="../../src/weightplay-castle.js?v=20261018-frost-toast-api1"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script src="analytics-ownership.js?v=20260908-mastery-v15"></script>
@@ -115,12 +121,15 @@
       <div class="game-info-section"><h3>Nota di design</h3><p>Modificare il ghiaccio cambia il percorso e ha un costo: romperlo apre un passaggio, costruirlo devia il viandante. Le prime 20 stanze rendono chiaro il ritmo di inseguimento di otto mosse; nelle stanze 21–30 ogni modifica valida entra anche nella decisione sul tempo. Nelle ultime cinque la partenza dorata è visibile, perché dopo l’ultima bacca può servire un altro tratto di strada.</p></div>
       <div class="game-info-section game-info-parent"><h3>Informazioni del giocatore e salvataggio</h3><p>La migliore stanza completata e il miglior risultato di stelle per ogni stanza restano in questo browser. Cancellare i dati del sito li elimina.</p></div>
       <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Che cosa devo raccogliere?</dt><dd>Raccogli tutte le bacche della stanza. Nelle stanze 26–30, dopo l’ultima torna alla casella iniziale dorata.</dd></div><div><dt>Quando si muove il viandante?</dt><dd>Avanza dopo otto spostamenti validi di una casella. Dalla stanza 21, anche ogni rottura o costruzione valida del ghiaccio lo muove; gli spostamenti bloccati e le modifiche non valide no.</dd></div><div><dt>Che cosa fa Costruisci ghiaccio?</dt><dd>Se la casella libera davanti a te è valida, vi crea un muro corto e cambia il percorso del viandante. Nelle stanze 21–30 la modifica valida lo fa anche avanzare.</dd></div><div><dt>Che cosa cambia nelle stanze 21–25?</dt><dd>Ogni modifica valida del ghiaccio fa avanzare il viandante, quindi rompere o costruire un muro cambia sia il labirinto sia il ritmo dell’inseguimento. Una modifica non valida non lo muove.</dd></div><div><dt>Come si ottengono le stelle?</dt><dd>Completare la stanza dà una stella. Raggiungere il limite di modifiche e l’obiettivo di passi mostrato dà una stella aggiuntiva per ciascun obiettivo. Il limite è quattro modifiche nelle stanze 1–20 e due nelle 21–30. Mancare un obiettivo non impedisce il completamento.</dd></div><div><dt>In quali stanze devo tornare alla partenza?</dt><dd>Nelle stanze 26–30. Raccogli tutte le bacche e torna alla casella iniziale dorata per completare la stanza.</dd></div><div><dt>Quali progressi vengono salvati?</dt><dd>La migliore stanza completata e le stelle migliori di ogni stanza restano in questo browser. Cancellare i dati del sito le elimina; non si sincronizzano tra dispositivi.</dd></div></dl></div>
-
+      <div class="game-info-section game-info-related-section"><h3>Giochi correlati</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-unblock" data-related-game="animal-unblock" href="/it/games/animal-unblock/"><img src="/assets/interface7-redrawn/animal-unblock.webp" alt="Unblock Trail" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-runtime-localize="off">Unblock Trail</strong><span data-frost-related-description>Slide horizontal and vertical blocks along their lanes to clear a path to the exit.</span></span></a></div></div>
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+    <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+    <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
+    <script src="stage-config.js?v=20261021-frost-i9"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
   </body>
 </html>
