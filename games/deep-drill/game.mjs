@@ -44,7 +44,7 @@ function finish(reason){if(!run||run.ended)return;settle(save,run,reason);proces
 function result(){release();persist();$('pausePanel').hidden=true;$('result').hidden=false;
  const won=run.clear,reason=run.reason;
  $('resultTitle').textContent=won&&run.stage.id===30?'地心燈塔已點亮':won?'礦區突破！':['pressure','hull'].includes(reason)?'緊急救援完成':reason==='full'?'礦艙滿載，安全返航':reason==='complete'?'抵達終點，目標未完成':'返航成功';
- $('resultText').textContent=`抵達 ${run.depth}m · ${run.stage.zh}\n${goalText(run.stage)}${won?` · ${save.records[run.stage.id]?.stars||1}/3 勘探星`:''}\n材料：銅 ${run.bankedMaterials.copper} · 晶 ${run.bankedMaterials.crystal} · 零件 ${run.bankedMaterials.salvage}`;
+ $('resultText').textContent=`抵達 ${run.depth}m · ${run.stage.zh} · ${run.time.toFixed(1)} 秒\n${goalText(run.stage)}${won?` · ${save.recordsV5[run.stage.id]?.stars||1}/3 勘探星`:''}\n材料：銅 ${run.bankedMaterials.copper} · 晶 ${run.bankedMaterials.crystal} · 零件 ${run.bankedMaterials.salvage}`;
  $('resultCoins').textContent=`+ ${run.banked.toLocaleString()}`;
  $('resultTip').textContent=['pressure','hull'].includes(reason)?'救援隊已回收部分收益。升級鑽頭與鑽力後再深入。':won&&run.stage.checkpoint?`${REGIONS[run.stage.arc].discovery}\n遺物已存入文明檔案。`:won?'礦物與材料已入庫，下一區已解鎖。到基地製作模組、邀請夥伴或領取成就獎勵。':reason==='complete'?'已出售全部礦物。查看任務進度，換條路線再試。':reason==='full'?'收益已全部帶回。升級礦艙，下一次就能挖得更遠。':reason==='service'?'低機殼自動保全返航，收益完整帶回。升級鑽頭後再挑戰。':'收益已入庫。升級鑽力與轉速，回打也能持續成長。';
  $('next').hidden=!won||run.stage.id===30;$('retry').hidden=won&&run.stage.id<30;
@@ -70,7 +70,7 @@ function renderHud(){if(!run)return;$('depthTarget').textContent=run.stage.targe
  $('depth').textContent=run.depth;$('miningPower').textContent=`${run.docking>0?'輸送中':run.smartVenting?'洩壓中':`固定${run.lane+1}路`} · 助手${save.helpers}`;$('hullLabel').textContent=`機殼 ${Math.ceil(run.hull)}%`;$('hullLabel').style.color=run.hull<35?'#ff9375':'';
  $('cargoLabel').textContent=`礦艙 ${run.cargo}/${capacity(save)} · ${run.value} 金`;$('cargoBar').max=capacity(save);$('cargoBar').value=run.cargo;
  $('pressureLabel').textContent=`壓力 ${Math.round(run.pressure)}%`;$('pressureBar').value=run.pressure;
- $('pressureLine').hidden=!(run.stage.pressure||run.pressure>0);$('missionGoal').textContent=goalText(run.stage);$('missionProgress').textContent=objectiveProgress(run);$('sealCue').textContent=seal?`${seal.status} · 弱點：${`第 ${seal.lane+1} 列`}`:run.buff>0?'能量增幅啟動':run.frost>0?'冰層阻力：暫時減速':run.stage.checkpoint?`${run.stage.target-5}m 處有地層封印`:sectionName(run);document.body.classList.toggle('seal-active',Boolean(seal));
+ $('pressureLine').hidden=!(run.stage.pressure||run.pressure>0);$('missionGoal').textContent=goalText(run.stage);$('missionProgress').textContent=objectiveProgress(run);$('sealCue').textContent=seal?`弱點第${seal.lane+1}路 · ${seal.status}`:run.buff>0?'能量增幅啟動':run.frost>0?'冰層阻力：暫時減速':run.stage.checkpoint?`${run.stage.target-5}m 處有地層封印`:sectionName(run);document.body.classList.toggle('seal-active',Boolean(seal));
  for(const key of Object.keys(TOOLS)){$('count-'+key).textContent=save.tools[key];const button=document.querySelector(`[data-tool="${key}"]`);button.disabled=!save.tools[key]||run.paused||run.ended||run.toolCooldown>0||(['blast','beam'].includes(key)&&activeSeal(run));}
  $('rockProgress').style.width=`${Math.min(100,run.progress*100)}%`;
  $('helpersToggle').disabled=!save.helpers;$('helpersToggle').textContent=save.helpers?`助手：${run.helpersOn?'工作中':'暫停'} ×${save.helpers}`:'助手：未僱用';

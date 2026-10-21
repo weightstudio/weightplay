@@ -1,8 +1,6 @@
 /* Only game content: all header, preferences and guide styling is shared. */
 #gameFrame [hidden]{display:none!important}
 #main[data-wp-frame-scene]{padding:0;min-height:0}
-.number-stage-content{min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr);overflow:hidden}
-#stage .number-stage-content #progress{position:static;transform:none;text-align:center;padding:8px}
 #battle .battle-content{min-width:0;min-height:0;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto auto;align-content:center;align-items:center;justify-items:center;gap:8px;padding:12px;overflow:hidden}
 #battle .board{grid-column:1;grid-row:1;width:min(100%,350px);align-self:center}
 #battle .tools{position:static;inset:auto;transform:none;grid-column:1;grid-row:2;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;max-width:350px}
@@ -15,7 +13,6 @@
 #battle .tile.bad{outline:3px solid #b33635;outline-offset:-3px}
 #battle .tile.empty{opacity:.16;color:transparent;filter:none}
 #battle::before{background-image:linear-gradient(#eff9e7c9,#d8efdab8),url('../../assets/animal-number-match-scenery-block-v15.webp')}
-#stage{background-image:linear-gradient(#153f3788,#153f37bb),url('../../assets/animal-number-match-scenery-block-v15.webp')}
 #battle .battle-coach{display:none}
 #result,#leaveDialog,#tutorialPanel{background:var(--wp-ui-surface);color:var(--wp-ui-text);border-color:var(--wp-ui-line);border-radius:var(--wp-ui-radius);max-width:calc(100vw - 24px);box-sizing:border-box}
 @media(max-height:500px) and (orientation:landscape){

@@ -18,14 +18,14 @@
   window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
   __wpNotifyMeasurement();
 
-  const GAME_ID="animal-number-match",GAME_VERSION=16,INTERFACE_VERSION=7;
+  const GAME_ID="animal-number-match",GAME_VERSION=16,INTERFACE_VERSION=9;
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const $=selector=>document.querySelector(selector),screens=[...document.querySelectorAll(".screen")],levels=window.NUMBER_MATCH_LEVELS.levels;
   const storageKey="wp-animal-number-match-v1";
   let locale=window.WonderI18n?.actualLocale?.()||window.__WONDER_FORCED_LOCALE||read("weightPlayLocale")||read("wp-locale")||window.WonderI18n?.locale?.()||"en";if(!codes.includes(locale))locale="en";
-  const STAGE_CARD_POOL_SIZE=9,clamp=(value,minimum,maximum)=>Math.max(minimum,Math.min(maximum,value));
+  const clamp=(value,minimum,maximum)=>Math.max(minimum,Math.min(maximum,value));
   let unlocked=Number(read(storageKey))||1,selected=Math.min(unlocked,30)-1,level=null,values=[],picked=null,hintPair=[],history=[],moves=0,resultActionClaimed=false,inputLocked=false,tileFocusIndex=0,activeScene="main",sceneGeneration=0,lastInputType="unknown",returnedToMain=false;
-  let stageCardPool=[],stageWindowStart=0,stageSettleRaf=0,restoreStageRailBehavior=()=>{};
+  let stageSelector=null;
   function read(key){try{return localStorage.getItem(key)}catch{return null}}
   function write(key,value){try{localStorage.setItem(key,value)}catch{}}
   function t(key,vars={}){const value=window.NUMBER_MATCH_LOCALES[locale]?.[key]??window.NUMBER_MATCH_LOCALES.en[key]??key;return String(value).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??"")}
@@ -36,7 +36,7 @@
   function pairsLeftLabel(count){const n=Number(count);if(locale!=="ar")return t("pairsLeft",{n});if(n===1)return t("pairsLeftOne");if(n===2)return t("pairsLeftTwo");if(n>=3&&n<=10)return t("pairsLeftFew",{n});return t("pairsLeftMany",{n})}
   function pairOrientation(a,b){const ar=Math.floor(a/level.cols),ac=a%level.cols,br=Math.floor(b/level.cols),bc=b%level.cols;return ar===br?"row":ac===bc?"column":"unknown"}
   function show(id){
-    if(id!=="stage"&&activeScene==="stage")cancelStageMotion();
+    if(id!=="stage"&&activeScene==="stage")stageSelector?.cancel();
     if(id!==activeScene){activeScene=id;sceneGeneration++}
     if(id!=="battle"&&$("#leaveDialog").open)(__wpNotifyMeasurement(), $("#leaveDialog").close());
     if(id!=="battle")document.querySelectorAll("#battle .match-echo").forEach(node=>node.remove());
@@ -55,40 +55,33 @@
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
-  function cancelStageMotion(){cancelAnimationFrame(stageSettleRaf);stageSettleRaf=0;restoreStageRailBehavior()}
-  function stageWindowLimit(){return Math.max(0,levels.length-STAGE_CARD_POOL_SIZE)}
-  function desiredStageWindow(index){return clamp(index-Math.floor(STAGE_CARD_POOL_SIZE/2),0,stageWindowLimit())}
-  function createStageCard(poolIndex){
-    const button=document.createElement("button");button.type="button";button.className="stage-card";button.dataset.wpStagePoolNode=String(poolIndex+1);button.innerHTML='<strong></strong><span></span><span class="difficulty-pips" aria-hidden="true"></span>';
-    button.addEventListener("click",event=>{const index=Number(button.dataset.stageIndex),locked=index+1>unlocked;selectStage(index,true);if(!locked)startLevel(index,eventInputType(event),"stage_card")});
-    button.addEventListener("keydown",event=>{if(!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;event.preventDefault();const rtl=document.documentElement.dir==="rtl",current=Number(button.dataset.stageIndex),next=event.key==="Home"?0:event.key==="End"?levels.length-1:clamp(current+(event.key==="ArrowRight"?(rtl?-1:1):(rtl?1:-1)),0,levels.length-1);selectStage(next,true,true)});
-    return button;
+  const stagePoster="/assets/interface7-redrawn/animal-number-match.webp";
+  const stageConfig={
+    count:levels.length,
+    gameId:GAME_ID,
+    poster:stagePoster,
+    background:"/assets/lobby-block-atmosphere.svg",
+    stage(index){
+      const item=levels[index],locked=index+1>unlocked;
+      return {
+        id:index+1,
+        kicker:t("chapter",{n:Math.floor(index/5)+1}),
+        title:t("grove",{n:index+1}),
+        subtitle:`${item.rows} × ${item.cols}`,
+        status:locked?t("locked"):"",
+        summary:t("guideBody"),
+        details:[t("rule1"),t("rule2"),t("rule3"),t("recovery")],
+        poster:stagePoster,
+        locked,
+        cleared:index+1<unlocked
+      };
+    }
+  };
+  function selectStage(index){selected=clamp(index,0,levels.length-1)}
+  function renderStages(){
+    $("#progress").textContent=t("progress",{done:Math.min(unlocked-1,30)});
+    stageSelector?.refresh(selected);
   }
-  function bindStageCard(button,index){
-    const item=levels[index],locked=index+1>unlocked;button.dataset.index=String(index);button.dataset.stageIndex=String(index);button.setAttribute("aria-posinset",String(index+1));button.setAttribute("aria-setsize",String(levels.length));button.setAttribute("aria-disabled",locked?"true":"false");button.classList.toggle("locked",locked);button.querySelector("strong").textContent=t("grove",{n:index+1});button.querySelector("span").textContent=`${item.rows} × ${item.cols}${locked?" · "+t("locked"):""}`;button.querySelector(".difficulty-pips").dataset.tier=String(item.tier);
-  }
-  function syncStageCards(){stageCardPool.forEach(button=>{const index=Number(button.dataset.stageIndex),active=index===selected;bindStageCard(button,index);button.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");button.tabIndex=active?0:-1;button.classList.toggle("selected",active);button.classList.toggle("centered",active);button.classList.toggle("wp-stage-centered",active);button.setAttribute("aria-current",active?"true":"false");if(index===Math.max(0,unlocked-1))button.dataset.wpStageRecommended="true";else delete button.dataset.wpStageRecommended})}
-  function buildStageCardPool(){const rail=$("#stageGrid"),count=Math.min(STAGE_CARD_POOL_SIZE,levels.length);rail.innerHTML="";stageWindowStart=desiredStageWindow(selected);stageCardPool=Array.from({length:count},(_,offset)=>{const button=createStageCard(offset);bindStageCard(button,stageWindowStart+offset);rail.append(button);return button});rail.dataset.wpStageVirtualized="bounded-recycle";rail.dataset.wpStagePoolSize=String(count);rail.dataset.wpStageTotal=String(levels.length);rail.dataset.wpStageWindowStart=String(stageWindowStart);rail.dataset.wpStageWindowEnd=String(stageWindowStart+count-1)}
-  function moveStageWindow(targetStart){
-    const rail=$("#stageGrid"),target=clamp(targetStart,0,stageWindowLimit());let recycledCount=0;
-    while(stageWindowStart<target){const recycled=rail.firstElementChild,anchor=recycled?.nextElementSibling,before=anchor?.getBoundingClientRect().left;stageWindowStart++;rail.append(recycled);bindStageCard(recycled,stageWindowStart+stageCardPool.length-1);recycledCount++;const after=anchor?.getBoundingClientRect().left;if(Number.isFinite(before)&&Number.isFinite(after))rail.scrollLeft+=after-before}
-    while(stageWindowStart>target){const recycled=rail.lastElementChild,anchor=recycled?.previousElementSibling,before=anchor?.getBoundingClientRect().left;stageWindowStart--;rail.prepend(recycled);bindStageCard(recycled,stageWindowStart);recycledCount++;const after=anchor?.getBoundingClientRect().left;if(Number.isFinite(before)&&Number.isFinite(after))rail.scrollLeft+=after-before}
-    stageCardPool=[...rail.children];rail.dataset.wpStageWindowStart=String(stageWindowStart);rail.dataset.wpStageWindowEnd=String(stageWindowStart+stageCardPool.length-1);if(recycledCount)rail.dataset.wpStageRecycleCount=String(Number(rail.dataset.wpStageRecycleCount||0)+recycledCount);return recycledCount;
-  }
-  function ensureStageWindow(index){if(!stageCardPool.length)buildStageCardPool();moveStageWindow(desiredStageWindow(index));syncStageCards()}
-  function stageRailGeometry(){const rail=$("#stageGrid"),cards=[...rail.children],railRect=rail.getBoundingClientRect(),first=cards[0]?.getBoundingClientRect(),second=cards[1]?.getBoundingClientRect(),delta=first&&second?(second.left+second.width/2)-(first.left+first.width/2):0,fallback=(first?.width||264)+(parseFloat(getComputedStyle(rail).columnGap)||16);return{rail,center:railRect.left+railRect.width/2,pitch:Math.abs(delta)||fallback,orientation:Math.sign(delta)||1}}
-  function nearestStageCard(){const rail=$("#stageGrid"),rect=rail.getBoundingClientRect(),center=rect.left+rect.width/2;return stageCardPool.reduce((nearest,card)=>{const box=card.getBoundingClientRect(),distance=Math.abs(box.left+box.width/2-center);return!nearest||distance<nearest.distance?{card,distance}:nearest},null)?.card||null}
-  function currentStageLogicalPosition(){const card=nearestStageCard();if(!card)return selected;const index=Number(card.dataset.stageIndex),rect=card.getBoundingClientRect(),geometry=stageRailGeometry();return clamp(index+(geometry.center-(rect.left+rect.width/2))/(geometry.pitch*geometry.orientation),0,levels.length-1)}
-  function positionStageRail(logicalPosition){const logical=clamp(logicalPosition,0,levels.length-1),anchorIndex=Math.round(logical),recycled=moveStageWindow(desiredStageWindow(anchorIndex));if(recycled)syncStageCards();const card=$("#stageGrid").querySelector(`[data-stage-index="${anchorIndex}"]`);if(!card)return logical;card.scrollIntoView({behavior:"auto",block:"nearest",inline:"center"});const geometry=stageRailGeometry(),fraction=logical-anchorIndex;if(Math.abs(fraction)>.0001)geometry.rail.scrollLeft+=fraction*geometry.orientation*geometry.pitch;geometry.rail.dataset.wpStageDragLogical=logical.toFixed(4);return logical}
-  function selectStage(index,center=false,focus=false){selected=clamp(index,0,levels.length-1);ensureStageWindow(selected);if(center)positionStageRail(selected);syncStageCards();const active=$("#stageGrid").querySelector(`[data-stage-index="${selected}"]`);if(focus)active?.focus({preventScroll:true})}
-  function installVirtualStageDrag(){
-    const rail=$("#stageGrid");if(rail.dataset.wpStageVirtualDrag==="true")return;rail.dataset.wpStageVirtualDrag="true";rail.dataset.wpStageCenterObserver="manual";const baseSnap=rail.style.getPropertyValue("scroll-snap-type"),baseBehavior=rail.style.getPropertyValue("scroll-behavior");let pointerId=null,startX=0,lastX=0,dragLogical=0,moved=false,suppressClick=false;
-    const restore=()=>{if(baseBehavior)rail.style.setProperty("scroll-behavior",baseBehavior);else rail.style.removeProperty("scroll-behavior");if(baseSnap)rail.style.setProperty("scroll-snap-type",baseSnap);else rail.style.removeProperty("scroll-snap-type");delete rail.dataset.wpStageSettling;delete rail.dataset.wpDragDown;rail.classList.remove("wp-stage-dragging")};restoreStageRailBehavior=restore;
-    rail.addEventListener("pointerdown",event=>{if(event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;cancelAnimationFrame(stageSettleRaf);stageSettleRaf=0;pointerId=event.pointerId;startX=lastX=event.clientX;dragLogical=currentStageLogicalPosition();moved=false;rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");rail.dataset.wpDragDown="1";event.stopImmediatePropagation()},true);
-    document.addEventListener("pointermove",event=>{if(event.pointerId!==pointerId)return;const delta=event.clientX-lastX;lastX=event.clientX;if(!moved&&Math.abs(event.clientX-startX)>4){moved=true;rail.classList.add("wp-stage-dragging")}if(moved){const rect=rail.getBoundingClientRect(),scale=rect.width?rail.clientWidth/rect.width:1,pitch=stageRailGeometry().pitch;if(event.cancelable)event.preventDefault();dragLogical=positionStageRail(dragLogical-delta*scale/pitch)}event.stopImmediatePropagation()},true);
-    const finish=event=>{if(pointerId===null||(event.pointerId!==undefined&&event.pointerId!==pointerId))return;pointerId=null;rail.dataset.wpDragDown="0";rail.classList.remove("wp-stage-dragging");if(moved){if(event.cancelable)event.preventDefault();const from=dragLogical,index=clamp(Math.round(from),0,levels.length-1),duration=Number(rail.dataset.wpStageSettleDuration)||340,start=performance.now();selected=index;syncStageCards();positionStageRail(from);rail.dataset.wpStageSettling="true";const settle=now=>{const progress=clamp((now-start)/duration,0,1),eased=progress*progress*(3-2*progress);positionStageRail(from+(index-from)*eased);if(progress<1)stageSettleRaf=requestAnimationFrame(settle);else{stageSettleRaf=0;positionStageRail(index);syncStageCards();restore()}};stageSettleRaf=requestAnimationFrame(settle);suppressClick=true;setTimeout(()=>{suppressClick=false},0)}else restore();moved=false;event.stopImmediatePropagation()};document.addEventListener("pointerup",finish,true);document.addEventListener("pointercancel",finish,true);rail.addEventListener("click",event=>{if(!suppressClick)return;suppressClick=false;event.preventDefault();event.stopImmediatePropagation()},true);
-  }
-  function renderStages(){$("#progress").textContent=t("progress",{done:Math.min(unlocked-1,30)});if(!stageCardPool.length)buildStageCardPool();ensureStageWindow(selected);installVirtualStageDrag();requestAnimationFrame(()=>selectStage(selected,true))}
   function startLevel(index,startInputType="unknown",entryAction="stage_card"){
     selected=index;lastInputType=normalizeInputType(startInputType);level=levels[index];values=level.cells.slice();picked=null;hintPair=[];history=[];moves=0;inputLocked=false;tileFocusIndex=values.findIndex(value=>value!==null);
     $("#board").style.setProperty("--cols",level.cols);$("#chapter").textContent=t("chapter",{n:Math.floor(index/5)+1});$("#stageName").textContent=t("grove",{n:index+1});$("#status").textContent=t("selectFirst");show("battle");renderBoard();
@@ -219,7 +212,7 @@
     locale=next;write("weightPlayLocale",locale);write("wp-locale",locale);applyLocale();
     const generation=sceneGeneration;window.setTimeout(()=>{if(locale===next&&generation===sceneGeneration)applyLocale()},0);
   });
-  $("#start").onclick=()=>show("stage");$("#tutorialOpen").onclick=()=>(__wpNotifyMeasurement(), $("#tutorialPanel").showModal());$("#tutorialStart").onclick=()=>{(__wpNotifyMeasurement(), $("#tutorialPanel").close());show("stage")};$("#tutorialPanel").addEventListener("cancel",()=>(__wpNotifyMeasurement(), $("#tutorialPanel").close()));$("#stageGrid").addEventListener("wonder:stage-snap",event=>{if(activeScene!=="stage")return;const index=Number(event.detail?.index);if(Number.isInteger(index)&&index>=0)selectStage(index)});$("#stage [data-back]").onclick=event=>{track("main_return",{from:"stage",grove:selected+1,input_type:eventInputType(event)});returnedToMain=true;show("main")};
+  $("#start").onclick=()=>show("stage");$("#tutorialOpen").onclick=()=>(__wpNotifyMeasurement(), $("#tutorialPanel").showModal());$("#tutorialStart").onclick=()=>{(__wpNotifyMeasurement(), $("#tutorialPanel").close());show("stage")};$("#tutorialPanel").addEventListener("cancel",()=>(__wpNotifyMeasurement(), $("#tutorialPanel").close()));$("#stage [data-back]").onclick=event=>{track("main_return",{from:"stage",grove:selected+1,input_type:eventInputType(event)});returnedToMain=true;show("main")};
   $("#battle [data-back]").onclick=()=>{
     if(picked===null&&!history.length&&!moves){show("stage");return}
     inputLocked=true;(__wpNotifyMeasurement(), $("#leaveDialog").showModal());$("#continueBattle").focus();
@@ -236,5 +229,12 @@
   $("#undo").onclick=event=>{lastInputType=eventInputType(event);const last=history.pop();if(!last){track("undo",{grove:selected+1,outcome:"unavailable"});return}if(last.type==="reorder"){values=last.values.slice();picked=last.picked??null;hintPair=last.hintPair?.slice()??[];moves=last.moves}else{values[last.a]=last.va;values[last.b]=last.vb;picked=null;hintPair=[];moves=Math.max(0,moves-1)}track("undo",{grove:selected+1,outcome:"applied",move:moves});$("#status").textContent=t("undone");renderBoard()};
   $("#hint").onclick=event=>hint(eventInputType(event));$("#shuffle").onclick=event=>reorder(eventInputType(event));$("#restart").onclick=event=>{lastInputType=eventInputType(event);track("restart",{from:"battle",grove:selected+1,input_type:lastInputType});__wpReplayStart(() => startLevel(selected,lastInputType,"restart"))};
   $("#resultStages").onclick=event=>claimResultAction("stages",eventInputType(event),()=>{selected=Math.min(29,unlocked-1);show("stage")});$("#next").onclick=event=>claimResultAction("next_grove",eventInputType(event),()=>startLevel(selected+1,eventInputType(event),"next_grove"));$("#retry").onclick=event=>claimResultAction("replay",eventInputType(event),()=>__wpReplayStart(() => startLevel(selected,eventInputType(event),"replay")));
+  window.NUMBER_MATCH_I9=Object.freeze({
+    stageConfig,
+    selected:()=>selected,
+    select:selectStage,
+    start:(index,event)=>startLevel(index,eventInputType(event),"stage_card"),
+    attach:selector=>{stageSelector=selector;}
+  });
   applyLocale();show("main");$("#loadingPanel").classList.add("hidden");window.__NUMBER_MATCH_TEST__={matches,visiblePair,availablePair,currentSolution:()=>level?.solution?.map(pair=>pair.slice())||[]};
 })();

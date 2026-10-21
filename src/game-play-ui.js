@@ -97,7 +97,7 @@
       if(notify)onSelect(current);
       if(focus)rail.querySelector('[aria-current="true"]')?.focus({preventScroll:true});
     }
-    function startStage(index) { if (!config.stage(index).locked) {select(index);onStart(index);} }
+    function startStage(index,event) { if (!config.stage(index).locked) {select(index);onStart(index,event);} }
     rail.replaceChildren(); start=desiredStart(current);
     for(let i=0;i<poolSize;i++) {
       const card=document.createElement('button');card.type='button';card.className='stage-card';card.dataset.wpStagePoolNode=String(i+1);
@@ -105,7 +105,7 @@
       const content=document.createElement('div');content.dataset.wpItemContent='';
       for(const tag of ['em','strong','span','small'])content.append(document.createElement(tag));card.append(art,content);
       bind(card,start+i);rail.append(card);cards.push(card);
-      listen(card,'click',() => startStage(Number(card.dataset.stageIndex)));
+      listen(card,'click',event => startStage(Number(card.dataset.stageIndex),event));
     }
     rail.dataset.wpStagePoolSize=String(poolSize);
     const drag=window.WeightPlayStageRailI9.attachLogical(rail,{

@@ -1314,9 +1314,12 @@
   function releaseJoystick(event){if(event.pointerId!==joystickPointer)return;joystickPointer=null;touchMove.x=0;touchMove.y=0;nodes.stick.style.transform="translate(0,0)"}
   nodes.joystick.addEventListener("pointerup",releaseJoystick);nodes.joystick.addEventListener("pointercancel",releaseJoystick);
 
-  Promise.all(Object.values(atlas).map(image=>image.decode?.().catch(()=>{})||Promise.resolve())).finally(()=>{
-    setTimeout(()=>{nodes.loading.hidden=true},350);
-  });
+  Promise.all(Object.values(atlas).map(image=>image.decode?.().then(()=>true,()=>false)??Promise.resolve(Boolean(image.complete&&image.naturalWidth))))
+    .then(results=>setTimeout(()=>{
+      if(results.some(ready=>!ready))window.__SIGNAL_VEIL_ENTRY_RECOVERY__?.showFailure();
+      else if(window.__SIGNAL_VEIL_ENTRY_RECOVERY__)window.__SIGNAL_VEIL_ENTRY_RECOVERY__.complete();
+      else nodes.loading.hidden=true;
+    },350));
   if(new URLSearchParams(location.search).get("trial")==="1"){
     window.__SIGNAL_VEIL_TEST__={
       collidesTerrain,

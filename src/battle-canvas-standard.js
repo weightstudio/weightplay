@@ -3,6 +3,9 @@
   const GUTTER = 0;
   const DESKTOP_CANVAS_MAX_WIDTH = 920;
   const games = {
+    // Breakout's logical Battle surface is nested inside #battleScreen. Bind
+    // the inner canvas directly so the shared fitter reads its wide envelope.
+    "breakout": [".battle-canvas", 390, 788, 760, 334],
     // Canopy's shared-frame Battle uses the complete responsive envelope;
     // preserve authored touch controls instead of retaining its old native
     // top offset and portrait compression in short landscape.
@@ -213,6 +216,10 @@
   // that viewport's safe-area ratio just under the shared 1.5 threshold;
   // lower it only for this game so its physical controls stay >=44px.
   const landscapeRatioThresholdByGame = {
+    // Breakout uses the wide envelope at short landscape and 1280x720; the
+    // 920px desktop width cap keeps the latter below the shared 1.5 threshold.
+    // This preserves the physical 44px action-target height.
+    "breakout": 1.25,
     "animal-nest-weigh": 1.25,
     // Kite Keeper also uses the wide envelope at 1280x720, where the capped
     // safe-area ratio falls below the shared 1.5 threshold.

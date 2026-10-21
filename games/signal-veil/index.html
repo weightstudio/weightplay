@@ -54,9 +54,54 @@
       <span class="atlas-icon icon-device" aria-hidden="true"></span>
       <strong data-t="loading">Calibrating neural vision…</strong>
       <span class="loading-bar"><i></i></span>
+      <p id="entryRecoveryMessage" class="loading-recovery-message" role="alert" hidden>
+        <span data-entry-copy="slow" data-t="entryLoadSlow">Loading is taking longer than expected. Retry or return to WeightPlay.</span>
+        <span data-entry-copy="failed" data-t="entryLoadFailed" hidden>A required game file did not load. Retry or return to WeightPlay.</span>
+      </p>
+      <div id="entryRecoveryActions" class="loading-recovery-actions" hidden>
+        <button id="entryRetry" class="primary" type="button" data-t="entryRetry">Retry</button>
+        <a id="entryBack" class="loading-recovery-back" href="/" data-t="entryBack">Back to WeightPlay</a>
+      </div>
     </div>
   </div>
+  <script>
+    (()=>{
+      const panel=document.getElementById("loadingPanel");
+      const message=document.getElementById("entryRecoveryMessage");
+      const slowCopy=message?.querySelector('[data-entry-copy="slow"]');
+      const failedCopy=message?.querySelector('[data-entry-copy="failed"]');
+      const actions=document.getElementById("entryRecoveryActions");
+      const retry=document.getElementById("entryRetry");
+      let failed=false;
+      const show=(kind)=>{
+        if(!panel)return;
+        panel.hidden=false;
+        panel.dataset.wpEntryRecovery=kind;
+        if(message)message.hidden=false;
+        if(slowCopy)slowCopy.hidden=kind!=="slow";
+        if(failedCopy)failedCopy.hidden=kind!=="failed";
+        if(actions)actions.hidden=false;
+        if(kind==="failed")requestAnimationFrame(()=>retry?.focus({preventScroll:true}));
+      };
+      const showFailure=()=>{failed=true;show("failed")};
+      retry?.addEventListener("click",()=>location.reload());
+      document.addEventListener("error",event=>{
+        const target=event.target;
+        if(target instanceof HTMLScriptElement){
+          const file=new URL(target.src,location.href).pathname.split("/").pop();
+          if(/^(locales|guide-locales|state-store|quest-data|game-screen-frame|frame|game)\.js$/.test(file))showFailure();
+        }else if(target instanceof HTMLImageElement&&/\/assets\/signal-veil-[^/]+\.(?:webp|png|jpg)$/.test(new URL(target.src,location.href).pathname))showFailure();
+      },true);
+      const slowTimer=setTimeout(()=>{if(!failed&&!panel?.hidden)show("slow")},12000);
+      window.__SIGNAL_VEIL_ENTRY_RECOVERY__={
+        get active(){return failed},
+        showFailure,
+        complete(){clearTimeout(slowTimer);if(!failed&&panel){panel.hidden=true;delete panel.dataset.wpEntryRecovery}}
+      };
+    })();
+  </script>
 
+  <div id="signalFrame" data-wp-frame-root></div>
   <main id="main" class="screen main-screen" data-screen="main">
     <header class="main-header wp-shell-header wp-main-shell-header">
       <a class="lobby-return wp-shell-return" data-wp-return="main" data-t-aria="mainReturnLabel" href="/" aria-label="Back to WeightPlay">
@@ -82,7 +127,7 @@
       </div>
     </section>
     <!-- adsense-static-guide:start -->
-    <section class="game-guide game-page-info" aria-labelledby="guideTitle">
+    <section class="game-guide game-page-info game-page-info-static" aria-labelledby="guideTitle">
       <div class="game-info-hero">
         <div class="game-info-title">
           <h2 id="guideTitle" data-t="guideTitle">Signal Veil Field Guide</h2>
@@ -240,7 +285,7 @@
   <script src="state-store.js"></script>
   <script src="quest-data.js"></script>
   <script src="../../src/game-screen-frame.js?v=20261021-signal-veil-v17-i9"></script>
-  <script src="frame.js"></script>
+  <script src="frame.js?v=20261021-signal-veil-v17-i9"></script>
   <script defer src="game.js?v=20261021-signal-veil-v17-i9&wp-audio=1.0.0"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
 </body>

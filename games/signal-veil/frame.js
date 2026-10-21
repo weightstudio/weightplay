@@ -4,13 +4,15 @@
  let mountedFrame=null;
  window.mountSignalVeilFrame = () => {
   if(mountedFrame)return mountedFrame;
-  if(document.getElementById('signalFrame'))throw new Error('SIGNAL_FRAME_ROOT_ALREADY_EXISTS');
+  const reservedRoot=document.getElementById('signalFrame');
+  if(reservedRoot&&!reservedRoot.hasAttribute('data-wp-frame-root'))throw new Error('SIGNAL_FRAME_ROOT_ALREADY_EXISTS');
   const main=document.getElementById('main'),battle=document.getElementById('battleCanvas');
-  const root=document.createElement('div');root.id='signalFrame';root.dataset.wpFrameRoot='';
+  const root=reservedRoot||document.createElement('div');root.id='signalFrame';root.dataset.wpFrameRoot='';
+  if(root.childElementCount)throw new Error('SIGNAL_FRAME_ROOT_NOT_EMPTY');
   const settingsGuardStyle=document.createElement('style');settingsGuardStyle.dataset.signalFrameSettingsGuard='';
   settingsGuardStyle.textContent='#signalFrame [data-wp-preferences] > button.wp-frame-settings[hidden]{display:none!important;visibility:hidden!important;pointer-events:none!important}';
   document.head.append(settingsGuardStyle);
-  main.before(root);root.append(main,document.getElementById('battleShell'));
+  if(!root.isConnected)main.before(root);root.append(main,document.getElementById('battleShell'));
   // Locale generation places its owned static guide after the game shell.
   const guide=document.querySelector('.game-page-info');root.after(guide);
   const mainHeader=main.querySelector('header'),battleHeader=battle.querySelector('header');
@@ -30,6 +32,7 @@
   if(summary.parentElement!==copy)copy.append(summary);
   summary.dataset.wpFrameSummary='';
   document.getElementById('mainProgress').dataset.wpFrameProgress='';
+  document.getElementById('startGame').dataset.wpMainStart='';
   const content=document.createElement('div');content.id='signalWorkspace';
   const hud=battle.querySelector('.hud'),controls=battle.querySelector('.mobile-controls');
   const info=document.createElement('div');info.dataset.wpFrameInfo='';

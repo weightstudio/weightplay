@@ -6,14 +6,13 @@ import {createFaceElement} from './campaign-faces.mjs';
 // create an independent audio preference or a second language controller.
 export function createCampaignMainView({locale,title,lobbyHref,progress}) {
  const root=document.createElement('main');root.className='mjc-main';root.id='mainScreen';
- root.innerHTML='<header><a data-wp-return="main"><span aria-hidden="true">←</span><img alt="" draggable="false"></a><h1 data-wp-frame-title data-runtime-localize="off"></h1></header><div class="mjc-main-page-content"><div class="mjc-main-content"><img class="mjc-main-poster" data-wp-frame-poster width="1254" height="1254" alt=""><div class="mjc-main-copy"><p class="mjc-main-summary"></p><p class="mjc-main-progress"></p><button type="button" data-wp-main-start="true"></button></div></div></div>';
+ root.innerHTML='<header><a data-wp-return="main"><span aria-hidden="true">←</span><img alt="" draggable="false"></a><h1 data-wp-frame-title data-runtime-localize="off"></h1></header><div class="mjc-main-page-content"><img class="mjc-main-poster" data-wp-frame-poster width="1254" height="1254" alt=""><div class="mjc-main-copy" data-wp-frame-copy><p class="mjc-main-summary" data-wp-frame-summary></p><p class="mjc-main-progress" data-wp-frame-progress data-wp-main-progress></p><button type="button" data-wp-main-start="true" data-wp-frame-action="primary" data-wp-primary-action></button></div></div>';
  root.querySelector('.mjc-main-poster').classList.add('main-poster');
  root.querySelector('.mjc-main-summary').classList.add('main-summary');
- root.querySelector('.mjc-main-progress').dataset.wpMainProgress='';
  root.querySelector('a img').src=new URL('../../assets/weightplay-logo.png',import.meta.url).href;
  root.querySelector('.mjc-main-poster').src=new URL('../../assets/mahjong-solitaire-cover-v1.webp',import.meta.url).href;
  const guide=document.createElement('section');guide.className='mjc-guide game-page-info';guide.dataset.wpGameGuide='';
- root.querySelector('.mjc-main-page-content').append(guide);
+ root.append(guide);
  const startButton=root.querySelector('[data-wp-main-start]');
  const segments=['en','zh-tw','zh-cn','ja','ko','es','pt-br','fr','de','it','ru','hi','ar'];
  const relatedIds=['klondike-solitaire','spider-solitaire'];
