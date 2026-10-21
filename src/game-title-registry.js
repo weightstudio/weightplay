@@ -2545,7 +2545,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
   },
   "animal-river-gates": {
     "__localizedExact": true,
-    "en": "River Gate Water Routing",
+    "en": "River Gates",
     "zh-Hant": "河閘水量調度",
     "zh-Hans": "河闸水量调度",
     "ja": "水門の水量配分",

@@ -8,7 +8,8 @@
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="weightplay-game-version" content="v39" />
+    <meta name="weightplay-game-version" content="v40" />
+    <meta name="weightplay-interface-version" content="9" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#0d1b15" />
     <meta name="description" content="자동 전투 부대는 전투 전에 내리는 결정을 중심으로 한 진형 전략 게임입니다. 동물 영웅을 해금하고 훈련해 최대 여섯 명을 앞줄과 뒷줄 두 줄에 배치하고 각 전투가 자동으로 진행되는 모습을 지켜보세요. 캠페인은 Thornwood, Crystal Caverns,..." />
@@ -43,16 +44,17 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260716-kids-stage-swipe3" />
-  <link rel="stylesheet" href="style.css?v=20261011-auto-squad-command-v39" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
-    <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+  <link rel="stylesheet" href="style.css?v=20261021-auto-squad-command-v40-interface9" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-style />
+    <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261017-shared-play-spacing1" />
+    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20261018-shared-result-hidden-fix1" data-wp-battle-standard /><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
+  <link rel="stylesheet" href="interface9.css?v=20261021-auto-squad-i9-v1">
+<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-  <body data-tutorial-auto-show="false">
-    <main class="squad-app" data-no-mobile-immersive="true" data-wp-game-shell-root data-wp-frame-root>
+  <body data-tutorial-auto-show="false" data-wp-game-id="animal-auto-squad" data-wp-game-version="v40" data-wp-interface-version="9">
+    <main class="squad-app" data-no-mobile-immersive="true" data-wp-game-shell-root data-wp-frame-root data-wp-play-ui="1">
       <header class="topbar" data-wp-shell-header="main">
         <a id="backToLobbyBtn" class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand">
@@ -94,7 +96,7 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="panel stage-panel is-hidden" data-screen="stage" data-wp-shell-slot="stage" data-wp-standard-stage-screen data-wp-stage-workspace data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" aria-labelledby="stageSelectTitle">
+      <section id="stagePanel" class="panel stage-panel is-hidden" data-screen="stage" aria-labelledby="stageSelectTitle">
         <div class="stage-panel-head" data-wp-shell-header="stage">
           <button id="stageBackBtn" class="stage-back-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
           <div>
@@ -102,10 +104,11 @@
             <span id="stageProgressText">1 / 6</span>
           </div>
         </div>
-        <div class="stage-tabs" role="tablist" aria-label="Expedition management">
-          <button id="stageTabBtn" class="stage-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="stageSelectPane">⚔ <span>Stages</span></button>
-          <button id="trainingTabBtn" class="stage-tab" type="button" role="tab" aria-selected="false" aria-controls="trainingPane">✦ <span>Team</span></button>
-        </div>
+        <nav id="stageTabs" class="stage-tabs" data-wp-frame-nav aria-label="Expedition management">
+          <button id="trainingTabBtn" class="stage-tab" type="button" data-stage-view="team" data-wp-frame-action="tab" aria-controls="trainingPane">✦ <span>Team</span></button>
+          <button id="stageTabBtn" class="stage-tab is-active" type="button" data-stage-view="stages" data-wp-frame-action="tab" aria-current="page" aria-controls="stageSelectPane">⚔ <span>Stages</span></button>
+          <button id="growthTabBtn" class="stage-tab" type="button" data-stage-view="growth" data-wp-frame-action="tab" aria-controls="growthPane">✚ <span>Training</span></button>
+        </nav>
         <div class="stage-workspace">
           <section id="stageSelectPane" class="stage-pane is-active" role="tabpanel" aria-labelledby="stageTabBtn">
             <p id="stageSetupText" class="stage-setup-text">Swipe through six regions, choose an unlocked stage, then prepare your formation.</p>
@@ -135,11 +138,12 @@
               </div>
             </details>
           </section>
+          <section id="growthPane" class="stage-pane growth-pane" role="tabpanel" aria-labelledby="growthTabBtn" hidden></section>
         </div>
       </section>
       <!-- Active Play Viewport Container -->
       <button id="quitRunBtn" class="secondary-btn play-return battle-external-return" data-wp-return="battle" type="button" aria-label="Quit expedition" data-ui="quitRun">&larr;</button>
-      <section id="gamePanel" class="panel game-panel battle-screen play-area is-hidden" data-screen="battle" data-wp-shell-slot="battle" data-wp-logical-battle-canvas data-wp-battle-return-only data-play-viewport data-wp-canvas-max-width="920">
+      <section id="gamePanel" class="panel game-panel battle-screen play-area is-hidden" data-screen="battle" data-play-viewport>
 
         <!-- HUD Line -->
         <div class="hud-row">
@@ -253,16 +257,18 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260711-auto-squad-guide1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1"></script>
-    <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-  <script src="game.js?v=20261011-auto-squad-command-v39&wp-audio=1.0.0"></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-script></script>
+    <script src="../../src/battle-canvas-standard.js?v=20261018-shared-result-hidden-fix1" data-wp-battle-standard></script>
+    <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
+    <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+    <script src="frame.js?v=20261021-auto-squad-i9-v1"></script>
+  <script src="game.js?v=20261021-auto-squad-command-v40-interface9&wp-audio=1.0.0"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
           if (document.querySelector("script[data-squad-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
+          script.src = "../../src/game-page-info.js?v=20261001-text140-locale-guide-v1";
           script.dataset.squadGameInfo = "internal";
           script.async = true;
           document.body.appendChild(script);
@@ -275,8 +281,8 @@
 <section class="game-page-info game-page-info-static" aria-label="자동 전투 부대 게임 정보">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2 data-wp-game-title data-runtime-localize="off">자동 전투 부대</h2><p>Animal Auto Squad는 전투 전에 내리는 결정을 중심으로 한 진형 전략 게임입니다. 동물 영웅을 해금하고 훈련해 최대 여섯 명을 앞줄과 뒷줄 두 줄에 배치하고 각 전투가 자동으로 진행되는 모습을 지켜보세요. 캠페인은 Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, Void Crown의 여섯 지역에 걸친 여러 스테이지로 구성됩니다. 모든 스테이지에는 직접 만든 다섯 웨이브가 있고 5, 10, 15, 20, 25, 30 스테이지는 서로 다른 지역 보스로 끝납니다.</p><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>2열 분대 편성</span><span>5웨이브 자동 전투</span><span>30스테이지 동물 캠페인</span></div></div>
-
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2 data-wp-game-title data-runtime-localize="off">자동 전투 부대</h2><p>Animal Auto Squad는 전투 전에 내리는 결정을 중심으로 한 진형 전략 게임입니다. 동물 영웅을 해금하고 훈련해 최대 여섯 명을 앞줄과 뒷줄 두 줄에 배치하고 각 전투가 자동으로 진행되는 모습을 지켜보세요. 캠페인은 Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, Void Crown의 여섯 지역에 걸친 여러 스테이지로 구성됩니다. 모든 스테이지에는 직접 만든 다섯 웨이브가 있고 5, 10, 15, 20, 25, 30 스테이지는 서로 다른 지역 보스로 끝납니다.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>2열 분대 편성</span><span>5웨이브 자동 전투</span><span>30스테이지 동물 캠페인</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>전술 자동 전투</strong></div><div class="game-info-fact"><span>장르</span><strong>자동 전투 · 전략 · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>보통</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>5~10분</strong></div></div>
     </div>
 
@@ -293,10 +299,10 @@
       <div class="game-info-section"><h3>진행과 난이도</h3><p>스테이지 1~5는 선두 대상, 뒷줄 위협, 수호자와 두 줄 진형을 작은 Thornwood 부대로 가르칩니다. Thornwood Throne은 첫 보스 체크포인트입니다. 6~15에서는 뒷줄 공격, 체력 흡수, 줄 쓸기, 튼튼한 수호자를 쓰는 Crystal Cavern과 Sunken Ruin 적이 추가됩니다.</p>
 <p>스테이지 16~25는 진형 규모와 능력의 겹침을 높입니다. Ember Peak는 돌진 멧돼지, Obsidian Tanks, Rift Runners, Rune Wolves를 섞고, Moonlit Citadel은 Night Panthers, Eclipse Bats, Rune Ravens, Shadow Jaguars를 더합니다. 보스 웨이브에도 다른 적이 있으므로 중심 보스만 처치해서는 충분하지 않습니다.</p>
 <p>스테이지 26~30은 Void Crown 전체 적 목록을 사용합니다. 스테이지 29에는 플레이어의 최대 분대와 같은 여섯 적이 동시에 나올 수 있습니다. 스테이지 30 마지막 웨이브는 Void Crown Emperor와 룬, 일식, 그림자 호위대를 배치해 줄 범위, 회복, 피해와 캠페인에서 쌓은 영구 훈련을 시험합니다.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>자동 전투는 의도된 구조입니다. 실행은 짧게 하고 핵심 작업은 진형, 역할 범위, 대상 순서과 장기 훈련에 두었습니다. 성공한 웨이브가 다음 웨이브로 바로 이어져 다섯 웨이브가 따로 떨어진 메뉴 방문이 아니라 하나의 원정처럼 느껴집니다. 패배하면 준비 화면이 다시 열려 같은 실패한 배치를 무작정 반복하지 않고 대응할 수 있습니다. 탭으로 선택하고 배치하는 조작은 휴대폰에서 쓰기 쉽고, 데스크톱에서는 같은 카드를 마우스로 사용할 수 있습니다. WeightPlay의 턴제 Animal Rune Tactics나 실시간 Animal Crystal Survivor와 달리, Animal Auto Squad는 전투 중 공격을 지시하지 않고 계획을 세운 뒤 그 결과를 평가하게 합니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>자동 전투는 의도된 구조입니다. 실행은 짧게 하고 핵심 작업은 진형, 역할 범위, 대상 순서과 장기 훈련에 두었습니다. 성공한 웨이브가 다음 웨이브로 바로 이어져 다섯 웨이브가 따로 떨어진 메뉴 방문이 아니라 하나의 원정처럼 느껴집니다. 패배하면 준비 화면이 다시 열려 같은 실패한 배치를 무작정 반복하지 않고 대응할 수 있습니다. 탭으로 선택하고 배치하는 조작은 휴대폰에서 쓰기 쉽고, 데스크톱에서는 같은 카드를 마우스로 사용할 수 있습니다. WeightPlay의 턴제 Animal Rune Tactics나 실시간 Dungeon Venture와 달리, Animal Auto Squad는 전투 중 공격을 지시하지 않고 계획을 세운 뒤 그 결과를 평가하게 합니다.</p></div>
       <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>후반 스테이지는 여섯 유닛 진형, 특수 대상 규칙, 영구 강화, 전투 실패 압박, 보스 능력과 선택형 Diamond 결정을 함께 다룹니다. 캠페인 진행, 마지막 진형과 칸 위치, Training Gold, Team Level, 해금 동물, 영구 동물 레벨, 완료 스테이지와 꾸미기 선택은 이 브라우저에 저장되며 기본 플레이에는 로그인이 필요하지 않습니다. 사이트 데이터를 지우면 이 기기의 진행이 사라질 수 있습니다.</p></div>
       <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>Animal Auto Squad는 무료인가요?</dt><dd>네. 스테이지 캠페인은 WeightPlay 브라우저에서 필수 구매나 로그인 없이 실행됩니다.</dd></div><div><dt>각 스테이지의 목표는 무엇인가요?</dt><dd>다섯 개의 연속 웨이브를 버틸 분대를 만드는 것입니다. 다섯 번째 웨이브를 클리어하면 스테이지가 저장되고 다음 스테이지가 열리며, 5번째마다 지역 보스가 등장합니다.</dd></div><div><dt>전투 중 공격을 조작하나요?</dt><dd>아니요. 전투 전에 영웅, 두 줄 위치과 임시 강화를 정합니다. 이후 동물들이 자동으로 공격, 회복, 보호막과 능력을 사용합니다.</dd></div><div><dt>매 웨이브 사이에 분대를 바꿀 수 있나요?</dt><dd>승리하면 다음 웨이브로 바로 이동합니다. Heart가 남아 있는 동안 패배나 무승부 뒤에는 준비가 다시 열리므로 처음 진형은 여러 적 패턴을 견딜 수 있어야 합니다.</dd></div><div><dt>웨이브에서 패배하면 어떻게 되나요?</dt><dd>Heart 하나를 잃습니다. Heart가 남아 있으면 분대를 조정해 다시 시도할 수 있고, 모두 없어지면 원정을 끝내거나 선택형 5-Diamond 부활을 사용할 수 있습니다.</dd></div><div><dt>Diamonds는 어디에 쓰나요?</dt><dd>선택 사항입니다. 실패한 원정 부활, 프리미엄 영웅 두 명 해금, 황금 꾸미기 해금에 사용할 수 있지만 일반 스테이지 진행에는 필요하지 않습니다.</dd></div><div><dt>어떤 진행이 저장되나요?</dt><dd>해금 및 완료 스테이지, 마지막 진형과 칸 위치, Team Level과 XP, Training Gold, 해금 동물, 영구 동물 레벨, 원정 기록과 꾸미기 선택이 이 기기의 브라우저에 저장됩니다.</dd></div><div><dt>링크와 전투 경고는 무엇을 뜻하나요?</dt><dd>같은 역할을 맞추면 복셀 스쿼드 링크가 발동해 자동 전투에 작은 보너스를 줍니다. 연결된 타격은 콤보가 되고 네 번째마다 치명적 링크 타격으로 블록을 부숩니다. 보스 웨이브가 시작되면 경고가 표시됩니다.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>더 많은 관련 게임</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-orb-fortress" href="/ko/games/animal-orb-fortress/"><span class="game-info-related-poster"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" data-final-src="/assets/weightplay-logo.png" alt="구슬 요새" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">구슬 요새</strong><span>Animal Orb Fortress is a ricochet defense campaign about reading an arena before releasing a spirit orb.</span></span></a><a class="game-info-related-card" data-game-id="animal-cratebound" href="/ko/games/animal-cratebound/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-cratebound.webp" data-final-src="/assets/weightplay-logo.png" alt="크레이트바운드" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">크레이트바운드</strong><span>30개의 수제 하늘 창고에서 룬 화물을 밀고 당기며 얼음 레일, 신호, 자석, 연결 상자를 해결하세요.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>구슬 요새</strong><span>Animal Orb Fortress is a ricochet defense campaign about reading an arena before releasing a spirit orb.</span></span></a><a class="game-info-related-card" href="/ko/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>크레이트바운드</strong><span>30개의 수제 하늘 창고에서 룬 화물을 밀고 당기며 얼음 레일, 신호, 자석, 연결 상자를 해결하세요.</span></span></a></div></div>
     </div>
   </section>
 </body>

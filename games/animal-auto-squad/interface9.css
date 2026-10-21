@@ -1,0 +1,405 @@
+/* Animal Auto Squad content inside the shared Interface 9 frame. */
+.squad-app[data-wp-frame="2"] {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 920px;
+  margin-inline: auto;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+}
+
+#menuPanel.wp-standard-main-screen {
+  color: var(--wp-ui-text, #f5f8ff);
+}
+
+#menuPanel .aas-main-content {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  width: 100%;
+  min-width: 0;
+  padding: 8px 10px 14px;
+}
+
+#menuPanel .wp-standard-main-composition {
+  --wp-main-poster-size: min(42vh, 360px);
+  align-items: center;
+  gap: 18px;
+}
+
+#menuPanel .wp-standard-main-poster-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+#menuPanel .wp-standard-main-copy {
+  min-width: 0;
+  align-content: center;
+  gap: 12px;
+}
+
+#menuPanel .wp-standard-main-summary {
+  line-height: 1.45;
+}
+
+#menuPanel .profile-grid.main-progress {
+  position: relative;
+  box-sizing: border-box;
+  height: 42px;
+  min-height: 40px;
+  max-height: 44px;
+  padding-block: 0;
+}
+
+#menuPanel .aas-main-progress-cell {
+  position: relative;
+  grid-template-columns: minmax(0, 1fr) auto minmax(64px, 120px);
+  grid-template-rows: 1fr;
+  column-gap: 10px;
+}
+
+#menuPanel .aas-main-progress-bar {
+  display: block;
+  width: min(36%, 120px);
+  height: 9px;
+  overflow: hidden;
+  border: 1px solid #708295;
+  border-radius: 99px;
+  background: #0c1420;
+}
+
+#menuPanel .aas-main-progress-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #44cfb0, #ffd166);
+  transition: width 180ms ease;
+}
+
+#menuPanel .game-page-info-static {
+  width: 100%;
+}
+
+/* The shared frame owns Stage and Battle sizing. */
+html body [data-wp-frame="2"] #stagePanel {
+  position: relative !important;
+  inset: auto !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+  transform: none !important;
+  transform-origin: center !important;
+}
+
+html body [data-wp-frame="2"] #stagePanel {
+  isolation: isolate;
+  background: #071b27 !important;
+  box-shadow: none !important;
+}
+
+html body [data-wp-frame="2"] #stagePanel::before {
+  content: none !important;
+}
+
+#animalAutoSquadStageContent {
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  padding: 4px 10px 8px;
+  background:
+    linear-gradient(180deg, rgb(4 20 34 / 76%), rgb(4 20 34 / 92%)),
+    url("../../assets/lobby-block-atmosphere.svg") center / cover;
+}
+
+#stagePanel .aas-stage-info[data-wp-frame-info] {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  padding-inline: 4px;
+}
+
+#stagePanel #stageProgressText[data-wp-frame-stat] {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  color: #a9ecdc;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.15;
+  text-align: end;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#stageWorkspace {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+#stageSelectPane,
+#trainingPane,
+#growthPane {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+#stageSelectPane[data-wp-stage-selector="1"] {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 8px;
+  overflow: hidden;
+}
+
+#stageSelectPane > [data-wp-stage-source] {
+  display: none !important;
+}
+
+#stageSelectPane .wp-stage-i9-briefing {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0 8px 2px;
+}
+
+#trainingPane,
+#growthPane {
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 8px 10px 14px;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+#trainingPane .team-empty-state {
+  margin: 0 0 8px;
+}
+
+#trainingPane .team-prep-host {
+  min-width: 0;
+  min-height: 0;
+}
+
+#trainingPane #prepPhaseArea {
+  grid-template-rows: auto minmax(260px, 1fr);
+  min-height: 600px;
+}
+
+#growthPane #teamGrowthDetails {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--wp-ui-line, #52687a);
+  border-radius: 14px;
+  background: rgb(10 30 42 / 92%);
+}
+
+#growthPane #teamGrowthDetails > summary {
+  color: var(--wp-ui-text, #f5f8ff);
+  font-weight: 900;
+}
+
+.squad-app [data-wp-frame-nav] {
+  z-index: 2;
+}
+
+.squad-app [data-wp-frame-nav] > .stage-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 5px 4px;
+  color: var(--wp-ui-text, #f5f8ff);
+  background: var(--wp-ui-button-image, #293549);
+}
+
+.squad-app [data-wp-frame-nav] > .stage-tab.is-active,
+.squad-app [data-wp-frame-nav] > .stage-tab[aria-current="page"] {
+  border-color: var(--wp-ui-gold, #ffd166);
+  box-shadow: inset 0 0 0 2px rgb(255 209 102 / 35%);
+}
+
+html body [data-wp-frame="2"] #gamePanel {
+  background:
+    linear-gradient(180deg, rgb(3 17 29 / 72%), rgb(3 17 29 / 88%)),
+    url("../../assets/animal-auto-squad-arena-block-v1.webp") center / cover;
+}
+
+html body [data-wp-frame="2"] #gamePanel > .wp-frame-header .battle-external-return {
+  position: relative !important;
+  inset: auto !important;
+  display: grid !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+#animalAutoSquadBattleContent {
+  position: relative;
+  box-sizing: border-box;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden !important;
+  padding: 4px 8px 8px;
+}
+
+#gamePanel > .wp-frame-header > .hud-row {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: 100%;
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  gap: 3px;
+}
+
+#gamePanel > .wp-frame-header > .hud-row span {
+  font-size: 10px;
+}
+
+#gamePanel > .wp-frame-header > .hud-row strong {
+  font-size: 12px;
+}
+
+#animalAutoSquadBattleContent > #combatSummary {
+  flex: 0 0 44px;
+  width: 100%;
+  height: 44px;
+  min-height: 44px;
+}
+
+#animalAutoSquadBattleContent > #prepPhaseArea,
+#animalAutoSquadBattleContent > #combatArea {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+}
+
+#animalAutoSquadBattleContent > #prepPhaseArea {
+  grid-template-rows: minmax(210px, 42%) minmax(0, 1fr);
+}
+
+#animalAutoSquadBattleContent > #combatArea {
+  height: auto;
+}
+
+#animalAutoSquadBattleContent #gameCanvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+#gamePanel.is-result #animalAutoSquadBattleContent {
+  position: absolute;
+  inset: 0;
+  display: block !important;
+  padding: 8px;
+}
+
+#gamePanel.is-result #animalAutoSquadBattleContent > :not(#resultPanel) {
+  display: none !important;
+}
+
+#gamePanel.is-result #resultPanel {
+  position: absolute;
+  inset: 8px;
+  box-sizing: border-box;
+  display: grid !important;
+  grid-template-rows: minmax(96px, 24%) minmax(0, 1fr);
+  width: auto;
+  height: auto;
+  min-height: 0;
+  max-height: none !important;
+  padding: 10px;
+  overflow: auto;
+}
+
+#gamePanel .modal-panel {
+  z-index: 10;
+}
+
+@media (max-width: 520px) {
+  #menuPanel .wp-standard-main-composition {
+    --wp-main-poster-size: min(34vh, 250px);
+    gap: 12px;
+  }
+
+  #menuPanel .aas-main-content {
+    gap: 10px;
+    padding: 6px 8px 12px;
+  }
+
+  #animalAutoSquadBattleContent {
+    padding: 3px 5px 5px;
+  }
+
+  #animalAutoSquadBattleContent > .hud-row {
+    flex-basis: 52px;
+    height: 52px;
+    min-height: 52px;
+  }
+
+  #animalAutoSquadBattleContent > #prepPhaseArea {
+    grid-template-rows: minmax(185px, 40%) minmax(0, 1fr);
+  }
+
+  #gamePanel.is-result #resultPanel {
+    inset: 4px;
+    padding: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #menuPanel .aas-main-progress-fill,
+  #prepPhaseArea .card-item,
+  #gamePanel .expedition-report {
+    transition: none !important;
+    animation: none !important;
+  }
+}

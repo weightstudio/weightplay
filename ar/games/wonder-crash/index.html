@@ -7,7 +7,8 @@
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <meta charset="UTF-8" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v29" />
+    <meta name="weightplay-game-version" content="v30" />
+    <meta name="weightplay-interface-version" content="9" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#12151d" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -40,23 +41,24 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/wonder-crash/" />
     <link rel="manifest" href="manifest.webmanifest?v=20260630-upgrade1" />
     <link rel="stylesheet" href="src/styles.css?v=20260715-wonder-skill-values1" />
-    <link rel="stylesheet" href="src/stage-selector-standard.css?v=20260718-wonder-fullviewport1" />
     <link rel="stylesheet" href="src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"الدفاع عن الأسد الخيالي","alternateName":"奇幻獅子防衛","url":"https://weightplay.com/ar/games/wonder-crash/","image":"https://weightplay.com/assets/wonder-crash-cover-block-v1.png","description":"دافع عن السور بأسد مكعبات مدرّع عبر 30 مرحلة. جهّز الأسلحة واختر ترقيات بين الموجات وطوّر أحد التخصصات الثلاثة.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"ar","isAccessibleForFree":true,"genre":["الدفاع ضد الموجات","تموضع البطل","قدرات حيوانية تلقائية"],"audience":{"@type":"Audience","audienceType":"General players","suggestedMinAge":5}}</script>
     <link rel="stylesheet" href="src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link rel="stylesheet" href="src/loading-screen.css?v=20261017-shared-dark-loader1" />
     <link rel="stylesheet" href="src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v27-compact" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-style />
+    <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261017-shared-play-spacing1" />
+    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20261018-shared-result-hidden-fix1" data-wp-battle-standard />
+    <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2" />
+    <link rel="stylesheet" href="games/wonder-crash/interface9.css?v=20261021-wonder-crash-i9-v1" />
   <meta name="twitter:title" content="الدفاع عن الأسد الخيالي | WeightPlay" />
     <meta name="twitter:description" content="دافع عن السور بأسد مكعبات مدرّع عبر 30 مرحلة. جهّز الأسلحة واختر ترقيات بين الموجات وطوّر أحد التخصصات الثلاثة." />
     <meta name="twitter:image" content="https://weightplay.com/assets/wonder-crash-cover-block-v1.webp" />
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-  <body>
+  </head>
+  <body data-wp-game-id="wonder-crash" data-wp-game-version="v30" data-wp-interface-version="9">
     <main class="wonder-main-flow-slot">
-      <div class="game-shell" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="920" data-wp-stage-landscape-height="460">
+      <div class="game-shell" data-wp-frame-root>
       <canvas id="game" class="play-area" width="950" height="1688" tabindex="0" aria-label="لوحة لعبة الدفاع عن الأسد الخيالي" data-i18n-aria="canvas_label" aria-description="حرك الأسد باستخدام مفاتيح الأسهم لليسار ولليمين، أو اسحب عبر لوحة اللعبة." data-i18n-description="canvas_description" data-wp-primary-action></canvas>
 
       <section id="wonderMain" class="wonder-main" data-screen="main">
@@ -84,7 +86,7 @@
       <button id="settingsBtn" type="button" class="settings-btn hidden" data-wp-battle-utility aria-label="Settings" data-i18n-aria="menu_settings"><img src="assets/wonder-prop-settings-block-v1.png" alt="" draggable="false" /></button>
 
       <!-- Main Game Overlays / Menus -->
-      <div id="overlay" class="overlay" data-wp-standard-stage-screen data-screen="stage">
+      <div id="overlay" class="overlay hidden">
         <button id="wonderStageBack" class="wonder-stage-back" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
         <h1 class="hidden" data-i18n="game_title">الدفاع عن الأسد الخيالي</h1>
         <div id="menuCoinLine" class="menu-coin-line">
@@ -92,7 +94,7 @@
           <span class="menu-wallet-item diamond-wallet"><img src="assets/wonder-prop-diamond-block-v1.png" alt="" /> <span id="menuDiamondText">0</span></span>
           <span class="menu-wallet-item talent-wallet"><img src="assets/wonder-prop-crit-block-v1.png" alt="" /> <span id="talentText">0</span></span>
         </div>
-        <label class="language-picker wonder-language-picker">
+        <label class="language-picker wonder-language-picker" hidden aria-hidden="true">
           <span data-i18n="language">اللغة</span>
           <select id="globalLocaleSelect" aria-label="اللغة" data-i18n-aria="language">
             <option value="en">English</option>
@@ -102,8 +104,11 @@
         <p id="overlayText" data-i18n="menu_title">Main Menu</p>
 
         <div id="menuContent" class="menu-content">
-          <div id="profilePanel" class="profile-panel"></div>
-          <div id="levelGrid" class="level-grid" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-virtual-drag="true" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+          <div id="stagePlayPage" class="wonder-stage-page">
+            <div id="levelGrid" class="level-grid"></div>
+          </div>
+          <nav id="buildSectionTabs" class="build-section-tabs hidden" aria-label="Build sections"></nav>
+          <div id="profilePanel" class="profile-panel hidden"></div>
           <p id="wonderStageStatus" class="wonder-stage-status" role="status" aria-live="polite"></p>
         </div>
 
@@ -111,7 +116,7 @@
 
         <!-- Pause / Settings Panel -->
         <div id="pausePanel" class="pause-panel hidden">
-          <label class="pause-language-picker">
+          <label class="pause-language-picker" hidden aria-hidden="true">
             <span data-i18n="language">اللغة</span>
             <select id="pauseLocaleSelect" class="settings-select" aria-label="اللغة" data-i18n-aria="language">
               <option value="en">English</option>
@@ -125,12 +130,10 @@
         <button id="startBtn" type="button" class="hidden" data-i18n="btn_start">Start</button>
 
         <!-- Navigation Menu Tabs -->
-        <nav id="menuTabs" class="menu-tabs" data-wp-stage-management-nav>
+        <nav id="menuTabs" class="menu-tabs" data-wp-frame-nav aria-label="Game sections">
           <button type="button" data-menu-tab="character"><img src="../../assets/weightplay-character-boom-mane-lion-block-v1.webp" alt="" /><span data-i18n="tab_character">Hero</span></button>
-          <button type="button" data-menu-tab="equipment"><img src="../../assets/wonder-prop-eraser-block-v1.png" alt="" /><span data-i18n="tab_equipment">Weapons</span></button>
           <button type="button" data-menu-tab="battle"><img src="../../assets/wonder-prop-damage-block-v1.png" alt="" /><span data-i18n="tab_battle">Stages</span></button>
-          <button type="button" data-menu-tab="talents" data-runtime-localize="off"><img src="games/wonder-crash/icons/chain.svg" alt="" /><span>Talents</span></button>
-          <button type="button" data-menu-tab="settings"><img src="../../assets/wonder-prop-settings-block-v1.png" alt="" /><span data-i18n="tab_settings">Settings</span></button>
+          <button type="button" data-menu-tab="build"><img src="../../assets/wonder-prop-eraser-block-v1.png" alt="" /><span>Build</span></button>
         </nav>
       </div>
 
@@ -164,11 +167,14 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="src/wallet.js?v=20260630-upgrade1"></script>
     <script src="src/tutorial.js?v=20260911-wonder-crash-v26-passive"></script>
-    <script src="src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
     <script src="src/game-data.js?v=20260911-wonder-crash-v24-growth-data"></script>
     <script src="games/wonder-crash/talents.js?v=27"></script>
-    <script src="src/game.js?v=20261011-wonder-crash-v29-motion"></script>
-    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v26-passive"></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-script></script>
+    <script src="../../src/battle-canvas-standard.js?v=20261018-shared-result-hidden-fix1" data-wp-battle-standard></script>
+    <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
+    <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+    <script src="games/wonder-crash/frame.js?v=20261021-wonder-crash-i9-v1"></script>
+    <script src="src/game.js?v=20261021-wonder-crash-v30-interface9"></script>
 
     <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة الدفاع عن الأسد الخيالي">
 
@@ -197,11 +203,10 @@
       <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>دافع عن السور بأسد مكعبات مدرّع عبر 30 مرحلة. جهّز الأسلحة واختر ترقيات بين الموجات وطوّر أحد التخصصات الثلاثة. اختر مساراً واحداً. أعد الضبط مجاناً لتغييره.</p></div>
       <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>يُحفظ التقدم في هذا المتصفح. لا تسجيل دخول ولا إعلانات. النتائج تصف المعركة ولا تقيّم القدرات الشخصية.</p></div>
       <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>كيف أختار التخصص؟</dt><dd>اختر مساراً واحداً. أعد الضبط مجاناً لتغييره. ملك اللهب / ملك الرعد / ملك الحصن</dd></div><div><dt>كيف يعمل تكامل السور؟</dt><dd>الزئير يشعل أمام السور 4 ثوانٍ. الرتبة 2 تضاعف الضرر. ضربات السور تخزن شحنة لكل رتبة للإصابة التالية. ضرب السور يسبب ضرراً قريباً 4 لكل رتبة.</dd></div><div><dt>هل يمكن إعادة ضبط التخصص؟</dt><dd>نعم. إعادة الضبط مجانية وتعيد كل النقاط المصروفة وتتيح اختيار تخصص آخر.</dd></div><div><dt>متى تتفعّل المهارات التلقائية؟</dt><dd>اسحب أو استخدم ← →. المهارات تلقائية: وابل كل 14 ثانية مع وجود أعداء؛ زئير قرب السور كل 12 ثانية (حد أدنى 9)؛ درع عند تضرر السور واقتراب الأعداء كل 22 ثانية (18 بالرتبة 2). يدوم 6 ثوانٍ. لا أزرار مهارات.</dd></div><div><dt>هل تؤثر مواهب الحصن في السور؟</dt><dd>درع إضافي وتبريد أقل بثانيتين لكل رتبة. الدرع يرمم 8 نقاط حياة إضافية للسور لكل رتبة. ضرب السور يسبب ضرراً قريباً 4 لكل رتبة.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>المزيد من الألعاب ذات الصلة</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="beast-tactician" href="/ar/games/beast-tactician/"><span class="game-info-related-poster"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" data-final-src="/assets/weightplay-logo.png" alt="Beast Guardian" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Beast Guardian</strong><span>Beast Guardian هي حملة أبطال للدفاع عن الأبراج مبنية على بناء الطرق بدلاً من منصات الأبراج الثابتة.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>ألعاب مشابهة</h3><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/animal-prism-battalion/"><img src="/assets/wonder-crash-related-prism-battalion-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>كتيبة بريزم الحيوان</strong><span>تطلق البطارية النار تلقائياً.</span></span></a><a class="game-info-related-card" href="/ar/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Beast Guardian</strong><span>Beast Guardian حملة دفاع أبراج ببناء المسارات.</span></span></a></div></div>
     </div>
   </section>
 <script src="src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
 </body>
 </html>

@@ -8,7 +8,8 @@
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="weightplay-game-version" content="v39" />
+    <meta name="weightplay-game-version" content="v40" />
+    <meta name="weightplay-interface-version" content="9" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#0d1b15" />
     <meta name="description" content="Auto Squad is a formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them..." />
@@ -38,21 +39,22 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-auto-squad/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-auto-squad/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-auto-squad/" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Auto Squad","alternateName":"自走小隊","url":"https://weightplay.com/en/games/animal-auto-squad/","image":"https://weightplay.com/assets/animal-auto-squad-cover-block-v2.webp","description":"Auto Squad is a formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them...","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"en","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["Auto-Battler","Strategy","Animal","Browser Game"],"audience":{"@type":"Audience","audienceType":"General players"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Auto Squad","alternateName":"自走小隊","url":"https://weightplay.com/en/games/animal-auto-squad/","image":"https://weightplay.com/assets/animal-auto-squad-cover-block-v2.webp","description":"Auto Squad is a formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them...","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"en","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["two-row squad formation","five-wave auto-battles","30-stage animal campaign"],"audience":{"@type":"Audience","audienceType":"General players"}}</script>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260716-kids-stage-swipe3" />
-  <link rel="stylesheet" href="style.css?v=20261011-auto-squad-command-v39" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
-    <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+  <link rel="stylesheet" href="style.css?v=20261021-auto-squad-command-v40-interface9" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-style />
+    <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261017-shared-play-spacing1" />
+    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20261018-shared-result-hidden-fix1" data-wp-battle-standard /><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
+  <link rel="stylesheet" href="interface9.css?v=20261021-auto-squad-i9-v1">
+<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-  <body data-tutorial-auto-show="false">
-    <main class="squad-app" data-no-mobile-immersive="true" data-wp-game-shell-root data-wp-frame-root>
+  <body data-tutorial-auto-show="false" data-wp-game-id="animal-auto-squad" data-wp-game-version="v40" data-wp-interface-version="9">
+    <main class="squad-app" data-no-mobile-immersive="true" data-wp-game-shell-root data-wp-frame-root data-wp-play-ui="1">
       <header class="topbar" data-wp-shell-header="main">
         <a id="backToLobbyBtn" class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand">
@@ -94,7 +96,7 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="panel stage-panel is-hidden" data-screen="stage" data-wp-shell-slot="stage" data-wp-standard-stage-screen data-wp-stage-workspace data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" aria-labelledby="stageSelectTitle">
+      <section id="stagePanel" class="panel stage-panel is-hidden" data-screen="stage" aria-labelledby="stageSelectTitle">
         <div class="stage-panel-head" data-wp-shell-header="stage">
           <button id="stageBackBtn" class="stage-back-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
           <div>
@@ -102,10 +104,11 @@
             <span id="stageProgressText">1 / 6</span>
           </div>
         </div>
-        <div class="stage-tabs" role="tablist" aria-label="Expedition management">
-          <button id="stageTabBtn" class="stage-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="stageSelectPane">⚔ <span>Stages</span></button>
-          <button id="trainingTabBtn" class="stage-tab" type="button" role="tab" aria-selected="false" aria-controls="trainingPane">✦ <span>Team</span></button>
-        </div>
+        <nav id="stageTabs" class="stage-tabs" data-wp-frame-nav aria-label="Expedition management">
+          <button id="trainingTabBtn" class="stage-tab" type="button" data-stage-view="team" data-wp-frame-action="tab" aria-controls="trainingPane">✦ <span>Team</span></button>
+          <button id="stageTabBtn" class="stage-tab is-active" type="button" data-stage-view="stages" data-wp-frame-action="tab" aria-current="page" aria-controls="stageSelectPane">⚔ <span>Stages</span></button>
+          <button id="growthTabBtn" class="stage-tab" type="button" data-stage-view="growth" data-wp-frame-action="tab" aria-controls="growthPane">✚ <span>Training</span></button>
+        </nav>
         <div class="stage-workspace">
           <section id="stageSelectPane" class="stage-pane is-active" role="tabpanel" aria-labelledby="stageTabBtn">
             <p id="stageSetupText" class="stage-setup-text">Swipe through six regions, choose an unlocked stage, then prepare your formation.</p>
@@ -135,11 +138,12 @@
               </div>
             </details>
           </section>
+          <section id="growthPane" class="stage-pane growth-pane" role="tabpanel" aria-labelledby="growthTabBtn" hidden></section>
         </div>
       </section>
       <!-- Active Play Viewport Container -->
       <button id="quitRunBtn" class="secondary-btn play-return battle-external-return" data-wp-return="battle" type="button" aria-label="Quit expedition" data-ui="quitRun">&larr;</button>
-      <section id="gamePanel" class="panel game-panel battle-screen play-area is-hidden" data-screen="battle" data-wp-shell-slot="battle" data-wp-logical-battle-canvas data-wp-battle-return-only data-play-viewport data-wp-canvas-max-width="920">
+      <section id="gamePanel" class="panel game-panel battle-screen play-area is-hidden" data-screen="battle" data-play-viewport>
 
         <!-- HUD Line -->
         <div class="hud-row">
@@ -252,16 +256,18 @@
     <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/tutorial.js?v=20260711-auto-squad-guide1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1"></script>
-    <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-  <script src="game.js?v=20261011-auto-squad-command-v39&wp-audio=1.0.0"></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-script></script>
+    <script src="../../src/battle-canvas-standard.js?v=20261018-shared-result-hidden-fix1" data-wp-battle-standard></script>
+    <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
+    <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+    <script src="frame.js?v=20261021-auto-squad-i9-v1"></script>
+  <script src="game.js?v=20261021-auto-squad-command-v40-interface9&wp-audio=1.0.0"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
           if (document.querySelector("script[data-squad-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
+          script.src = "../../src/game-page-info.js?v=20261001-text140-locale-guide-v1";
           script.dataset.squadGameInfo = "internal";
           script.async = true;
           document.body.appendChild(script);
@@ -292,10 +298,10 @@
       <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Stages 1-5 teach lead targeting, back-row threats, guards, and the two-row formation with small Thornwood groups. Thornwood Throne is the first Boss checkpoint. Stages 6-15 add Crystal Cavern and Sunken Ruin enemies that attack the back row, drain health, sweep rows, or hide behind durable guards.</p>
 <p>Stages 16-25 raise both formation size and ability overlap. Ember Peak combines charging boars, Obsidian Tanks, Rift Runners, and Rune Wolves; Moonlit Citadel adds Night Panthers, Eclipse Bats, Rune Ravens, and Shadow Jaguars. Boss waves are accompanied by other enemies, so defeating the centerpiece is not the only requirement.</p>
 <p>Stages 26-30 use the full Void Crown roster. Stage 29 can field six enemies at once, matching the player&#39;s maximum squad size. The final wave of Stage 30 places the Void Crown Emperor beside rune, eclipse, and shadow escorts, testing row coverage, recovery, damage, and permanent training earned across the campaign.</p></div>
-      <div class="game-info-section"><h3>Developer Design Note</h3><p>The automated battle is intentional: execution is short so the important work happens in formation, role coverage, target order, and long-term training. A successful wave flows directly into the next one to make the five-wave stage feel like one expedition rather than five disconnected menu visits. Losses reopen preparation so the player can respond instead of watching the same failed setup repeatedly. Tap-select and tap-place support phone play, while the same cards remain usable with mouse input on desktop. Compared with WeightPlay&#39;s turn-based Animal Rune Tactics or real-time Animal Crystal Survivor, Animal Auto Squad asks the player to build a plan and then evaluate how that plan performs without issuing attacks during combat.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>The automated battle is intentional: execution is short so the important work happens in formation, role coverage, target order, and long-term training. A successful wave flows directly into the next one to make the five-wave stage feel like one expedition rather than five disconnected menu visits. Losses reopen preparation so the player can respond instead of watching the same failed setup repeatedly. Tap-select and tap-place support phone play, while the same cards remain usable with mouse input on desktop. Compared with WeightPlay&#39;s turn-based Animal Rune Tactics or real-time Dungeon Venture, Animal Auto Squad asks the player to build a plan and then evaluate how that plan performs without issuing attacks during combat.</p></div>
       <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Later stages combine six-unit formations, specialized targeting, permanent upgrades, combat failure pressure, Boss abilities, and optional Diamond decisions. Campaign progress, the last deployed formation and slot positions, Training Gold, Team Level, unlocked animals, permanent animal levels, completed stages, and cosmetic choice are stored locally in this browser; no login is required for basic play. Clearing this site&#39;s browser storage may remove that local progress.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is Animal Auto Squad free to play?</dt><dd>Yes. The campaign runs in the browser on WeightPlay without a required purchase or login.</dd></div><div><dt>What is the goal of each stage?</dt><dd>Build a squad that survives five continuous waves. Clearing wave five saves the stage and unlocks the next one; every fifth stage ends with a regional Boss.</dd></div><div><dt>Do I control attacks during battle?</dt><dd>No. You control the roster, two-row positions, and temporary upgrades before combat. The animals then attack, heal, shield, and trigger abilities automatically.</dd></div><div><dt>Can I rearrange the squad between every wave?</dt><dd>Winning moves directly to the next wave. Preparation reopens after a loss or draw while the run still has Hearts, so the initial formation should be able to handle more than one enemy pattern.</dd></div><div><dt>What happens when I lose a wave?</dt><dd>The run loses one Heart. With Hearts remaining, you can adjust the squad and try that wave again. At zero Hearts, you may end the run or use the optional five-Diamond revive.</dd></div><div><dt>What do Diamonds do?</dt><dd>Diamonds are optional. They can revive a failed expedition, unlock two premium heroes, or unlock the golden cosmetic skin; normal stage progression does not require them.</dd></div><div><dt>What progress is saved?</dt><dd>The browser stores unlocked and completed stages, the last deployed formation and slot positions, Team Level and XP, Training Gold, unlocked animals, permanent animal levels, run records, and cosmetic selection on this device.</dd></div><div><dt>What do Squad Links and battle warnings mean?</dt><dd>Matching roles activate a Voxel Squad Link and a small automatic battle bonus. Connected hits build a combo; every fourth connected hit appears as a Critical Linked Hit and breaks a block. Boss waves begin with a visible warning.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>More Related Games</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-orb-fortress" href="/en/games/animal-orb-fortress/"><span class="game-info-related-poster"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" data-final-src="/assets/weightplay-logo.png" alt="Orb Fortress" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Orb Fortress</strong><span>Animal Orb Fortress is a ricochet defense campaign about reading an arena before releasing a spirit orb.</span></span></a><a class="game-info-related-card" data-game-id="animal-cratebound" href="/en/games/animal-cratebound/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-cratebound.webp" data-final-src="/assets/weightplay-logo.png" alt="Cratebound" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Cratebound</strong><span>Walk, push, and pull rune cargo through thirty authored sky-ark warehouses.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Related Games</h3><div class="game-info-related"><a class="game-info-related-card" href="/en/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Orb Fortress</strong><span>Animal Orb Fortress is a ricochet defense campaign about reading an arena before releasing a spirit orb.</span></span></a><a class="game-info-related-card" href="/en/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Cratebound</strong><span>Walk, push, and pull rune cargo through thirty authored sky-ark warehouses.</span></span></a></div></div>
     </div>
   </section>
 </body>

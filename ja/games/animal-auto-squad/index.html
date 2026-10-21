@@ -8,7 +8,8 @@
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="weightplay-game-version" content="v39" />
+    <meta name="weightplay-game-version" content="v40" />
+    <meta name="weightplay-interface-version" content="9" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#0d1b15" />
     <meta name="description" content="オート分隊は、役割の異なる仲間を前後に置き、波ごとに編成を磨く自走チーム戦略を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。" />
@@ -43,16 +44,17 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260716-kids-stage-swipe3" />
-  <link rel="stylesheet" href="style.css?v=20261011-auto-squad-command-v39" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
-    <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+  <link rel="stylesheet" href="style.css?v=20261021-auto-squad-command-v40-interface9" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-style />
+    <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261017-shared-play-spacing1" />
+    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20261018-shared-result-hidden-fix1" data-wp-battle-standard /><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
+  <link rel="stylesheet" href="interface9.css?v=20261021-auto-squad-i9-v1">
+<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-  <body data-tutorial-auto-show="false">
-    <main class="squad-app" data-no-mobile-immersive="true" data-wp-game-shell-root data-wp-frame-root>
+  <body data-tutorial-auto-show="false" data-wp-game-id="animal-auto-squad" data-wp-game-version="v40" data-wp-interface-version="9">
+    <main class="squad-app" data-no-mobile-immersive="true" data-wp-game-shell-root data-wp-frame-root data-wp-play-ui="1">
       <header class="topbar" data-wp-shell-header="main">
         <a id="backToLobbyBtn" class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand">
@@ -94,7 +96,7 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="panel stage-panel is-hidden" data-screen="stage" data-wp-shell-slot="stage" data-wp-standard-stage-screen data-wp-stage-workspace data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" aria-labelledby="stageSelectTitle">
+      <section id="stagePanel" class="panel stage-panel is-hidden" data-screen="stage" aria-labelledby="stageSelectTitle">
         <div class="stage-panel-head" data-wp-shell-header="stage">
           <button id="stageBackBtn" class="stage-back-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
           <div>
@@ -102,10 +104,11 @@
             <span id="stageProgressText">1 / 6</span>
           </div>
         </div>
-        <div class="stage-tabs" role="tablist" aria-label="Expedition management">
-          <button id="stageTabBtn" class="stage-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="stageSelectPane">⚔ <span>Stages</span></button>
-          <button id="trainingTabBtn" class="stage-tab" type="button" role="tab" aria-selected="false" aria-controls="trainingPane">✦ <span>Team</span></button>
-        </div>
+        <nav id="stageTabs" class="stage-tabs" data-wp-frame-nav aria-label="Expedition management">
+          <button id="trainingTabBtn" class="stage-tab" type="button" data-stage-view="team" data-wp-frame-action="tab" aria-controls="trainingPane">✦ <span>Team</span></button>
+          <button id="stageTabBtn" class="stage-tab is-active" type="button" data-stage-view="stages" data-wp-frame-action="tab" aria-current="page" aria-controls="stageSelectPane">⚔ <span>Stages</span></button>
+          <button id="growthTabBtn" class="stage-tab" type="button" data-stage-view="growth" data-wp-frame-action="tab" aria-controls="growthPane">✚ <span>Training</span></button>
+        </nav>
         <div class="stage-workspace">
           <section id="stageSelectPane" class="stage-pane is-active" role="tabpanel" aria-labelledby="stageTabBtn">
             <p id="stageSetupText" class="stage-setup-text">Swipe through six regions, choose an unlocked stage, then prepare your formation.</p>
@@ -135,11 +138,12 @@
               </div>
             </details>
           </section>
+          <section id="growthPane" class="stage-pane growth-pane" role="tabpanel" aria-labelledby="growthTabBtn" hidden></section>
         </div>
       </section>
       <!-- Active Play Viewport Container -->
       <button id="quitRunBtn" class="secondary-btn play-return battle-external-return" data-wp-return="battle" type="button" aria-label="Quit expedition" data-ui="quitRun">&larr;</button>
-      <section id="gamePanel" class="panel game-panel battle-screen play-area is-hidden" data-screen="battle" data-wp-shell-slot="battle" data-wp-logical-battle-canvas data-wp-battle-return-only data-play-viewport data-wp-canvas-max-width="920">
+      <section id="gamePanel" class="panel game-panel battle-screen play-area is-hidden" data-screen="battle" data-play-viewport>
 
         <!-- HUD Line -->
         <div class="hud-row">
@@ -254,16 +258,18 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260711-auto-squad-guide1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1"></script>
-    <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-  <script src="game.js?v=20261011-auto-squad-command-v39&wp-audio=1.0.0"></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-script></script>
+    <script src="../../src/battle-canvas-standard.js?v=20261018-shared-result-hidden-fix1" data-wp-battle-standard></script>
+    <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
+    <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+    <script src="frame.js?v=20261021-auto-squad-i9-v1"></script>
+  <script src="game.js?v=20261021-auto-squad-command-v40-interface9&wp-audio=1.0.0"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
           if (document.querySelector("script[data-squad-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
+          script.src = "../../src/game-page-info.js?v=20261001-text140-locale-guide-v1";
           script.dataset.squadGameInfo = "internal";
           script.async = true;
           document.body.appendChild(script);
@@ -276,8 +282,8 @@
 <section class="game-page-info game-page-info-static" aria-label="オート分隊 ゲーム情報">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2 data-wp-game-title data-runtime-localize="off">オート分隊</h2><p>どうぶつオート分隊は、役割の異なる仲間を前後に置き、波ごとに編成を磨く自走チーム戦略を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。</p><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>2列の分隊編成</span><span>5ウェーブの自動戦闘</span><span>全30ステージの動物キャンペーン</span></div></div>
-
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2 data-wp-game-title data-runtime-localize="off">オート分隊</h2><p>どうぶつオート分隊は、役割の異なる仲間を前後に置き、波ごとに編成を磨く自走チーム戦略を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>2列の分隊編成</span><span>5ウェーブの自動戦闘</span><span>全30ステージの動物キャンペーン</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>Tactical Auto-Battler</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Auto-Battler · Strategy · Animal</strong></div><div class="game-info-fact"><span>難易度</span><strong>ふつう</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1ステージ約5〜10分</strong></div></div>
     </div>
 
@@ -294,7 +300,7 @@
       <div class="game-info-section"><h3>開発者メモ</h3><p>短いセッションでも、プレイヤー自身の判断が結果につながるよう設計しました。タッチ、マウス、キーボードで同じ目的に取り組め、画面の読みやすさと再挑戦のしやすさを大切にしています。</p></div>
       <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>このゲームはブラウザで遊べ、基本プレイにログインは必要ありません。進行やスコアはこの端末のブラウザに保存されます。表示される記録はゲーム内の振り返りであり、能力、医療、学習の正式な評価ではありません。</p></div>
       <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>無料で遊べますか？</dt><dd>はい。ブラウザで基本プレイを始められ、ログインは必要ありません。</dd></div><div><dt>進行は保存されますか？</dt><dd>対応する進行はこのブラウザにローカル保存されます。ブラウザのデータを消すと失われる場合があります。</dd></div><div><dt>スマートフォンでも遊べますか？</dt><dd>はい。タップとドラッグを使える画面に対応しています。</dd></div><div><dt>うまく進めない時は？</dt><dd>目標とヒントを確認し、位置、順番、またはタイミングを変えて再挑戦してください。</dd></div><div><dt>ゲームの記録は正式な能力テストですか？</dt><dd>いいえ。楽しむためのゲーム内記録であり、正式な評価ではありません。</dd></div><div><dt>アカウントは必要ですか？</dt><dd>いいえ。通常のプレイにアカウントは必要ありません。</dd></div><div><dt>リンクと戦闘警告は何を意味しますか？</dt><dd>同じ役割をそろえるとヴォクセル部隊リンクが発動して自動戦闘に小さなボーナスが付きます。リンクしたヒットはコンボになり、4回目ごとにクリティカルリンクヒットとしてブロックを壊します。ボスのウェーブ開始時には警告が表示されます。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>関連ゲームをもっと見る</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-orb-fortress" href="/ja/games/animal-orb-fortress/"><span class="game-info-related-poster"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" data-final-src="/assets/weightplay-logo.png" alt="星珠要塞" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">星珠要塞</strong><span>星珠要塞は、狙いを定めて星珠を発射し、迫る敵の列を押し返す要塞防衛を楽しめるWeightPlayオリジナル作品です。</span></span></a><a class="game-info-related-card" data-game-id="animal-cratebound" href="/ja/games/animal-cratebound/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-cratebound.webp" data-final-src="/assets/weightplay-logo.png" alt="クレートバウンド" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">クレートバウンド</strong><span>30の手作り天空倉庫を歩き、ルーン貨物を押して引きながら運びます。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>星珠要塞</strong><span>星珠要塞は、狙いを定めて星珠を発射し、迫る敵の列を押し返す要塞防衛を楽しめるWeightPlayオリジナル作品です。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>クレートバウンド</strong><span>30の手作り天空倉庫を歩き、ルーン貨物を押して引きながら運びます。</span></span></a></div></div>
     </div>
   </section>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="オート分隊";document.title="オート分隊 | WeightPlay";},{once:true});</script>

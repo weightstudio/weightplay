@@ -71,7 +71,6 @@
       const cover=document.querySelector("#mainScreen .cover");
       tween(cover,[{opacity:.35},{opacity:1}],{duration:500},"entrance");
     } else if(name==="stage"){
-      [...document.querySelectorAll(".route-card strong")].forEach((node,i)=>{node.dataset.abyssMotionId=`route${i}`;tween(node,[{opacity:.25},{opacity:1}],{duration:260,delay:i*18},"entrance");});
     } else if(result){
       tween($("resultSummary"),[{opacity:0},{opacity:1}],{duration:300},"entrance");
     } else bubbles();

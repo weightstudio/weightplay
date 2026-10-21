@@ -1,0 +1,40 @@
+/* One Line art inside the shared Interface 9 Stage card composition. */
+body[data-game-id="animal-one-line"] [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-stage-selector="1"] .wp-stage-i9-card-art {
+  inset: calc(46 * var(--wp-play-card-scale, 1) * var(--wp-play-unit, 1px))
+    calc(16 * var(--wp-play-card-scale, 1) * var(--wp-play-unit, 1px)) auto auto !important;
+  width: calc(96 * var(--wp-play-card-scale, 1) * var(--wp-play-unit, 1px)) !important;
+  height: calc(106 * var(--wp-play-card-scale, 1) * var(--wp-play-unit, 1px)) !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  opacity: .96;
+}
+
+body[data-game-id="animal-one-line"] [data-wp-frame-scene="main"] .wp-standard-main-composition {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  align-items: center;
+  gap: clamp(20px, 4vw, 56px);
+}
+
+body[data-game-id="animal-one-line"] [data-wp-frame-scene="main"] .wp-standard-main-poster-media {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+body[data-game-id="animal-one-line"] [data-wp-frame-scene="battle"][data-wp-logical-battle-canvas] > [data-wp-frame-content="battle"] {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  flex: 1 1 auto !important;
+  background: transparent !important;
+}
+
+@media (max-width: 720px) {
+  body[data-game-id="animal-one-line"] [data-wp-frame-scene="main"] .wp-standard-main-composition {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

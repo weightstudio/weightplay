@@ -7,7 +7,8 @@
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <meta charset="UTF-8" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v29" />
+    <meta name="weightplay-game-version" content="v30" />
+    <meta name="weightplay-interface-version" content="9" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#12151d" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -40,23 +41,24 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/wonder-crash/" />
     <link rel="manifest" href="manifest.webmanifest?v=20260630-upgrade1" />
     <link rel="stylesheet" href="src/styles.css?v=20260715-wonder-skill-values1" />
-    <link rel="stylesheet" href="src/stage-selector-standard.css?v=20260718-wonder-fullviewport1" />
     <link rel="stylesheet" href="src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"奇幻狮子防卫","alternateName":"奇幻獅子防衛","url":"https://weightplay.com/zh-cn/games/wonder-crash/","image":"https://weightplay.com/assets/wonder-crash-cover-block-v1.png","description":"带领蓝金盔甲的方块狮子守住城墙，挑战 30 个设计关卡。搭配武器、选择波次升级，并深入培养三种专精之一。","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"zh-Hans","isAccessibleForFree":true,"genre":["波次防守","英雄走位","动物技能自动触发"],"audience":{"@type":"Audience","audienceType":"General players","suggestedMinAge":5}}</script>
     <link rel="stylesheet" href="src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link rel="stylesheet" href="src/loading-screen.css?v=20261017-shared-dark-loader1" />
     <link rel="stylesheet" href="src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v27-compact" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-style />
+    <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261017-shared-play-spacing1" />
+    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20261018-shared-result-hidden-fix1" data-wp-battle-standard />
+    <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2" />
+    <link rel="stylesheet" href="games/wonder-crash/interface9.css?v=20261021-wonder-crash-i9-v1" />
   <meta name="twitter:title" content="奇幻狮子防卫 | WeightPlay" />
     <meta name="twitter:description" content="带领蓝金盔甲的方块狮子守住城墙，挑战 30 个设计关卡。搭配武器、选择波次升级，并深入培养三种专精之一。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/wonder-crash-cover-block-v1.webp" />
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-  <body>
+  </head>
+  <body data-wp-game-id="wonder-crash" data-wp-game-version="v30" data-wp-interface-version="9">
     <main class="wonder-main-flow-slot">
-      <div class="game-shell" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="920" data-wp-stage-landscape-height="460">
+      <div class="game-shell" data-wp-frame-root>
       <canvas id="game" class="play-area" width="950" height="1688" tabindex="0" aria-label="奇幻狮子守城游戏画面" data-i18n-aria="canvas_label" aria-description="使用左右方向键移动狮子，或在游戏画面上拖动。" data-i18n-description="canvas_description" data-wp-primary-action></canvas>
 
       <section id="wonderMain" class="wonder-main" data-screen="main">
@@ -84,7 +86,7 @@
       <button id="settingsBtn" type="button" class="settings-btn hidden" data-wp-battle-utility aria-label="Settings" data-i18n-aria="menu_settings"><img src="assets/wonder-prop-settings-block-v1.png" alt="" draggable="false" /></button>
 
       <!-- Main Game Overlays / Menus -->
-      <div id="overlay" class="overlay" data-wp-standard-stage-screen data-screen="stage">
+      <div id="overlay" class="overlay hidden">
         <button id="wonderStageBack" class="wonder-stage-back" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
         <h1 class="hidden" data-i18n="game_title">奇幻狮子防卫</h1>
         <div id="menuCoinLine" class="menu-coin-line">
@@ -92,7 +94,7 @@
           <span class="menu-wallet-item diamond-wallet"><img src="assets/wonder-prop-diamond-block-v1.png" alt="" /> <span id="menuDiamondText">0</span></span>
           <span class="menu-wallet-item talent-wallet"><img src="assets/wonder-prop-crit-block-v1.png" alt="" /> <span id="talentText">0</span></span>
         </div>
-        <label class="language-picker wonder-language-picker">
+        <label class="language-picker wonder-language-picker" hidden aria-hidden="true">
           <span data-i18n="language">语言</span>
           <select id="globalLocaleSelect" aria-label="语言" data-i18n-aria="language">
             <option value="en">English</option>
@@ -102,8 +104,11 @@
         <p id="overlayText" data-i18n="menu_title">Main Menu</p>
 
         <div id="menuContent" class="menu-content">
-          <div id="profilePanel" class="profile-panel"></div>
-          <div id="levelGrid" class="level-grid" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-virtual-drag="true" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+          <div id="stagePlayPage" class="wonder-stage-page">
+            <div id="levelGrid" class="level-grid"></div>
+          </div>
+          <nav id="buildSectionTabs" class="build-section-tabs hidden" aria-label="Build sections"></nav>
+          <div id="profilePanel" class="profile-panel hidden"></div>
           <p id="wonderStageStatus" class="wonder-stage-status" role="status" aria-live="polite"></p>
         </div>
 
@@ -111,7 +116,7 @@
 
         <!-- Pause / Settings Panel -->
         <div id="pausePanel" class="pause-panel hidden">
-          <label class="pause-language-picker">
+          <label class="pause-language-picker" hidden aria-hidden="true">
             <span data-i18n="language">语言</span>
             <select id="pauseLocaleSelect" class="settings-select" aria-label="语言" data-i18n-aria="language">
               <option value="en">English</option>
@@ -125,12 +130,10 @@
         <button id="startBtn" type="button" class="hidden" data-i18n="btn_start">Start</button>
 
         <!-- Navigation Menu Tabs -->
-        <nav id="menuTabs" class="menu-tabs" data-wp-stage-management-nav>
+        <nav id="menuTabs" class="menu-tabs" data-wp-frame-nav aria-label="Game sections">
           <button type="button" data-menu-tab="character"><img src="../../assets/weightplay-character-boom-mane-lion-block-v1.webp" alt="" /><span data-i18n="tab_character">Hero</span></button>
-          <button type="button" data-menu-tab="equipment"><img src="../../assets/wonder-prop-eraser-block-v1.png" alt="" /><span data-i18n="tab_equipment">Weapons</span></button>
           <button type="button" data-menu-tab="battle"><img src="../../assets/wonder-prop-damage-block-v1.png" alt="" /><span data-i18n="tab_battle">Stages</span></button>
-          <button type="button" data-menu-tab="talents" data-runtime-localize="off"><img src="games/wonder-crash/icons/chain.svg" alt="" /><span>Talents</span></button>
-          <button type="button" data-menu-tab="settings"><img src="../../assets/wonder-prop-settings-block-v1.png" alt="" /><span data-i18n="tab_settings">Settings</span></button>
+          <button type="button" data-menu-tab="build"><img src="../../assets/wonder-prop-eraser-block-v1.png" alt="" /><span>Build</span></button>
         </nav>
       </div>
 
@@ -164,11 +167,14 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="src/wallet.js?v=20260630-upgrade1"></script>
     <script src="src/tutorial.js?v=20260911-wonder-crash-v26-passive"></script>
-    <script src="src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
     <script src="src/game-data.js?v=20260911-wonder-crash-v24-growth-data"></script>
     <script src="games/wonder-crash/talents.js?v=27"></script>
-    <script src="src/game.js?v=20261011-wonder-crash-v29-motion"></script>
-    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v26-passive"></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-script></script>
+    <script src="../../src/battle-canvas-standard.js?v=20261018-shared-result-hidden-fix1" data-wp-battle-standard></script>
+    <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
+    <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+    <script src="games/wonder-crash/frame.js?v=20261021-wonder-crash-i9-v1"></script>
+    <script src="src/game.js?v=20261021-wonder-crash-v30-interface9"></script>
 
     <section class="game-page-info game-page-info-static" aria-label="奇幻狮子防卫 游戏信息">
 
@@ -197,11 +203,10 @@
       <div class="game-info-section"><h3>开发设计理念</h3><p>带领蓝金盔甲的方块狮子守住城墙，挑战 30 个设计关卡。搭配武器、选择波次升级，并深入培养三种专精之一。 选择一条路线深入培养，可免费重置改选。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>进度保存在当前浏览器，无需登录、没有广告。战斗结果仅总结本场表现，不是个人能力评估。</p></div>
       <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>如何选择专精？</dt><dd>选择一条路线深入培养，可免费重置改选。 烈焰狮王 / 雷霆狮王 / 堡垒狮王</dd></div><div><dt>城墙联动如何运作？</dt><dd>狮吼使墙前燃烧 4 秒，二级伤害加倍。 城墙受击每级保存 1 层电能，下次命中释放。 城墙受击对附近敌人造成每级 4 点伤害。</dd></div><div><dt>可以重置专精吗？</dt><dd>可以。重置免费，会退还已花费的全部点数，并可改选其他专精。</dd></div><div><dt>被动技能何时触发？</dt><dd>拖动或按 ← → 移动。技能全自动：场上有敌人时每 14 秒齐射；敌人靠近城墙时每 12 秒狮吼（最低 9 秒）；城墙受损且敌人逼近时每 22 秒护盾（二级 18 秒）。临时护盾持续 6 秒，无技能按钮。</dd></div><div><dt>堡垒专精会影响城墙吗？</dt><dd>护盾每级增加 1 层，冷却每级减少 2 秒。 护盾每级额外修复 8 点城墙生命。 城墙受击对附近敌人造成每级 4 点伤害。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="beast-tactician" href="/zh-cn/games/beast-tactician/"><span class="game-info-related-poster"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" data-final-src="/assets/weightplay-logo.png" alt="兽王守卫" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">兽王守卫</strong><span>《兽王守卫》是一套以自由改造路线为核心的英雄塔防战役。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-prism-battalion/"><img src="/assets/wonder-crash-related-prism-battalion-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>棱光军团</strong><span>炮台会自动开火，你要决定现在该守哪一路。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>兽王守卫</strong><span>《兽王守卫》是路线建构塔防战役，可部署橡果守卫、斥候弓手、符文工兵、爆鬃雷欧、苔甲太郎、月帽欧拉、电爪菲雅与齿角鲁克斯共 8 名防御者。</span></span></a></div></div>
     </div>
   </section>
 <script src="src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
 </body>
 </html>

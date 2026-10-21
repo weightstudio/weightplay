@@ -18,9 +18,9 @@
   __wpNotifyMeasurement();
 
   const GAME_ID = "animal-abyss-diver";
-  const GAME_VERSION = 26;
+  const GAME_VERSION = 27;
   const tactics=window.AbyssDiverTactics, motion=window.AbyssDiverMotion;
-  const INTERFACE_VERSION = "7";
+  const INTERFACE_VERSION = "9";
   document.body.dataset.wpCombinedSound = "true";
   const $ = (id) => document.getElementById(id);
   const playSound = (name) => window.WeightPlayAudio?.play?.(name);
@@ -660,10 +660,6 @@
   const upgradePanel=document.createElement("section");upgradePanel.id="upgradePanel";upgradePanel.className="upgrade-panel hidden";upgradePanel.setAttribute("role","dialog");upgradePanel.setAttribute("aria-modal","true");upgradePanel.setAttribute("aria-labelledby","upgradeTitle");upgradePanel.setAttribute("aria-describedby","upgradeSummary");upgradePanel.innerHTML='<h2 id="upgradeTitle"></h2><strong id="upgradePoints"></strong><output id="upgradeSummary" aria-live="polite" aria-atomic="true"></output><div><button id="upgradeHp" type="button"></button><button id="upgradeAttack" type="button"></button><button id="upgradeOxygen" type="button"></button></div><button id="upgradeDone" class="primary" type="button"></button>';$("diveField").append(upgradePanel);
   const quitPanel=document.createElement("section");quitPanel.id="quitPanel";quitPanel.className="quit-panel hidden";(__wpNotifyMeasurement(), quitPanel.setAttribute("role","dialog"));(__wpNotifyMeasurement(), quitPanel.setAttribute("aria-modal","true"));(__wpNotifyMeasurement(), quitPanel.setAttribute("aria-labelledby","quitTitle"));(__wpNotifyMeasurement(), quitPanel.setAttribute("aria-describedby","quitCopy"));quitPanel.innerHTML='<div class="quit-card"><h2 id="quitTitle"></h2><p id="quitCopy"></p><div><button id="quitKeep" class="primary" type="button"></button><button id="quitLeave" class="secondary" type="button"></button></div></div>';document.querySelector(".battle-canvas").append(quitPanel);
   const quitStylesheet=document.createElement("link");quitStylesheet.rel="stylesheet";quitStylesheet.href="quit-confirmation.css";document.head.append(quitStylesheet);
-  // Permanent Battle utility and coach share the Battle owner, not the short
-  // play-field row. Moving once keeps identity/focus stable on every return.
-  $("helpBtn").setAttribute("data-wp-battle-utility", "help");
-  document.querySelector(".battle-hud").append($("helpBtn"));
   document.querySelector(".battle-canvas").append($("diveCoach"));
   $("coachStart").setAttribute("data-wp-primary-action", "begin-dive");
   $("routesTab").onclick=()=>focusRoute(selectedRoute);
@@ -710,7 +706,7 @@
   function setResultOwnership(active){resultBackgroundNodes().forEach(node=>{node.inert=active;if(active)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});if(active)sceneFrame("battle",()=>{if(!$('result').classList.contains('hidden'))resultPrimaryAction?.focus({preventScroll:true});});}
   function syncSoundToggle(activeViewport){const toggle=document.querySelector("button[data-sound-toggle]");if(toggle)toggle.style.setProperty("display",activeViewport?"none":"grid","important");}
   function syncSceneNode(id,visible){const node=$(id);if(!node)return;node.classList.toggle("hidden",!visible);node.hidden=!visible;if(visible)node.removeAttribute("aria-hidden");else node.setAttribute("aria-hidden","true");}
-  function show(id){const resultActive=id==="result",scene=id==="mainScreen"?"main":id==="stageScreen"?"stage":"battle",activeViewport=scene!=="main";if(scene!==activeScene){activeScene=scene;sceneGeneration+=1;}document.body.dataset.screen=scene;for(const name of ["main","stage","battle"])document.body.classList.toggle(`wp-shell-${name}-active`,name===scene);document.body.classList.toggle("wp-mobile-game-mode",activeViewport);document.documentElement.classList.toggle("wp-mobile-game-mode",activeViewport);syncSoundToggle(activeViewport);syncSceneNode("mainGroup",scene==="main");syncSceneNode("mainHeader",scene==="main");syncSceneNode("mainScreen",scene==="main");syncSceneNode("stageScreen",scene==="stage");syncSceneNode("battleShell",scene==="battle");syncSceneNode("result",resultActive);setResultOwnership(resultActive);dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:scene,generation:sceneGeneration}}));window.WeightPlayBattleCanvas?.sync?.();motion.scene(scene,resultActive);
+  function show(id){const resultActive=id==="result",scene=id==="mainScreen"?"main":id==="stageScreen"?"stage":"battle",activeViewport=scene!=="main";if(scene!==activeScene){activeScene=scene;sceneGeneration+=1;}window.AnimalAbyssDiverFrame?.activate(scene);document.body.dataset.screen=scene;for(const name of ["main","stage","battle"])document.body.classList.toggle(`wp-shell-${name}-active`,name===scene);document.body.classList.toggle("wp-mobile-game-mode",activeViewport);document.documentElement.classList.toggle("wp-mobile-game-mode",activeViewport);syncSoundToggle(activeViewport);syncSceneNode("mainGroup",scene==="main");syncSceneNode("mainHeader",scene==="main");syncSceneNode("mainScreen",scene==="main");syncSceneNode("stageScreen",scene==="stage");syncSceneNode("battleShell",scene==="battle");syncSceneNode("result",resultActive);if(scene==="stage")stageSelector?.refresh(selectedRoute-1);setResultOwnership(resultActive);dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:scene,generation:sceneGeneration}}));window.WeightPlayBattleCanvas?.sync?.();motion.scene(scene,resultActive);
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle","mainScreen":"main","stageScreen":"stage","battleShell":"battle"})[id] ?? null;
       if (["result"].includes(id) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
@@ -722,15 +718,20 @@
     const target=candidates.find(node=>node&&!node.disabled&&node.getAttribute("aria-disabled")!=="true"&&!node.classList.contains("hidden"))||$("helpBtn");
     sceneFrame("battle",()=>target?.focus({preventScroll:true}));
   }
-  const ROUTE_POOL_SIZE=9;
-  let selectedRoute=Math.max(1,state.route||save.unlocked),routeWindowStart=0,routeCardPool=[];
-  function routeWindowLimit(){return Math.max(0,routes.length-ROUTE_POOL_SIZE);}
-  function desiredRouteWindow(route){return Math.max(0,Math.min(routeWindowLimit(),route-1-Math.floor(ROUTE_POOL_SIZE/2)));}
-  function bindRouteCard(card,index){const route=routes[index],n=index+1,locked=n>save.unlocked;const routeMeta=locale==="ar"?`${t("routeZones",{n:route.zones})} · ${t("routeTarget",{n:route.target})} · ${t("routeRisk",{n:route.risk})}`:`${t("zones",{n:route.zones})} · ${t("stageTarget",{n:route.target})} · ${t("risk",{n:route.risk})}`;card.dataset.route=String(n);card.setAttribute("aria-posinset",String(n));card.setAttribute("aria-setsize",String(routes.length));card.setAttribute("aria-disabled",String(locked));card.innerHTML=`<strong>${routeText(route,"name")}</strong><span>${t("route",{n})} · ${t("relic")}: ${routeText(route,"relic")}</span><small>${routeMeta}<br><b>${routeText(route,"rule")}</b></small><em>${t(locked?"locked":"routeAction")}</em>`;card.setAttribute("aria-label",`${t("route",{n})} · ${routeText(route,"name")} · ${routeText(route,"rule")} · ${locked?t("locked"):t("routeAction")}`);}
-  function syncRouteCards(){routeCardPool.forEach(card=>{const n=Number(card.dataset.route),selected=n===selectedRoute;bindRouteCard(card,n-1);card.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");card.tabIndex=selected?0:-1;card.classList.toggle("is-selected",selected);if(selected)card.setAttribute("aria-current","step");else card.removeAttribute("aria-current");});}
-  function buildRoutePool(){const rail=$("routeRail");rail.innerHTML="";routeWindowStart=desiredRouteWindow(selectedRoute);routeCardPool=Array.from({length:Math.min(ROUTE_POOL_SIZE,routes.length)},(_,offset)=>{const card=document.createElement("button");card.type="button";card.className="route-card";bindRouteCard(card,routeWindowStart+offset);card.onclick=()=>{const n=Number(card.dataset.route);if(n<=save.unlocked)start(n);};rail.append(card);return card;});rail.dataset.wpStageVirtualized="bounded-recycle";rail.dataset.wpStagePoolSize=String(routeCardPool.length);rail.dataset.wpStageTotal=String(routes.length);}
-  function moveRouteWindow(target){const rail=$("routeRail");target=Math.max(0,Math.min(routeWindowLimit(),target));let recycled=0;while(routeWindowStart<target){const card=rail.firstElementChild;routeWindowStart++;rail.append(card);bindRouteCard(card,routeWindowStart+routeCardPool.length-1);recycled++;}while(routeWindowStart>target){const card=rail.lastElementChild;routeWindowStart--;rail.prepend(card);bindRouteCard(card,routeWindowStart);recycled++;}routeCardPool=[...rail.children];rail.dataset.wpStageWindowStart=String(routeWindowStart);rail.dataset.wpStageWindowEnd=String(routeWindowStart+routeCardPool.length-1);if(recycled)rail.dataset.wpStageRecycleCount=String(Number(rail.dataset.wpStageRecycleCount||0)+recycled);return recycled;}
-  function selectRoute(route,{center=false,focus=false}={}){selectedRoute=Math.max(1,Math.min(routes.length,route));if(!routeCardPool.length)buildRoutePool();moveRouteWindow(desiredRouteWindow(selectedRoute));syncRouteCards();const card=$("routeRail").querySelector(`[data-route="${selectedRoute}"]`);if(center)card?.scrollIntoView({behavior:"auto",block:"nearest",inline:"center"});if(focus)card?.focus({preventScroll:true});}
+  let selectedRoute=Math.max(1,state.route||save.unlocked),stageSelector=null;
+  function renderStageProgress(){const node=$("stageProgress");if(node)node.textContent=`${t("route",{n:selectedRoute})} / ${routes.length}`;}
+  function stageRouteMeta(route){return locale==="ar"?`${t("routeZones",{n:route.zones})} · ${t("routeTarget",{n:route.target})} · ${t("routeRisk",{n:route.risk})}`:`${t("zones",{n:route.zones})} · ${t("stageTarget",{n:route.target})} · ${t("risk",{n:route.risk})}`;}
+  function mountStageSelector(){
+    stageSelector=window.WeightPlayPlayUI.mountStage({
+      page:$("stageWorkspace"),rail:$("routeRail"),selected:selectedRoute-1,
+      config:window.WeightPlayAbyssDiverStageConfig.create({routes,unlocked:()=>save.unlocked,t,routeText,routeMeta:stageRouteMeta}),
+      onSelect(index){selectedRoute=index+1;renderStageProgress();},
+      onStart(index){start(index+1,"stage_card");},
+      isActive:()=>activeScene==="stage",
+    });
+    renderStageProgress();
+  }
+  function selectRoute(route,{center=false,focus=false}={}){selectedRoute=Math.max(1,Math.min(routes.length,route));stageSelector?.select(selectedRoute-1,{center,focus});renderStageProgress();}
   function focusRoute(route=state.route||save.unlocked){sceneFrame("stage",()=>selectRoute(route,{center:true,focus:true}));}
   function quitBackgroundNodes(){return [...document.querySelectorAll(".battle-canvas > :not(#quitPanel):not(#result)")];}
   function renderQuit(){
@@ -762,7 +763,7 @@
     renderRoutes();
     selectRoute(returnRoute,{center:true,focus:true});
   }
-  function renderRoutes(){if(!routeCardPool.length)buildRoutePool();selectRoute(selectedRoute,{center:true});}
+  function renderRoutes(){stageSelector?.refresh(selectedRoute-1);renderStageProgress();}
   function routeConfig(){return routes[state.route-1];}
   function encounter(direction){const pair=routeConfig().encounters[state.zone-1];return outcomes[pair[direction==="left"?0:1]];}
   function sonarMessage(){return t("sonarRead",{left:t(encounter("left").label),right:t(encounter("right").label)});}
@@ -830,7 +831,7 @@
     $("beaconBtn").disabled=!beaconUseful||!!state.busy||!!state.fishBusy;
   }
   let coachReturnFocus=null;
-  function coachBackgroundNodes(){return [...document.querySelectorAll("#battleShell .battle-hud, #battleShell .objective, #battleShell .controls, #diveField > :not(#diveCoach)")];}
+  function coachBackgroundNodes(){return [...document.querySelectorAll('#battleShell > [data-wp-frame-header="battle"], #battleShell .objective, #battleShell .controls, #diveField > :not(#diveCoach)')];}
   function setCoach(open){
     const coach=$("diveCoach");
     if(open){const active=document.activeElement;coachReturnFocus=active instanceof HTMLElement&&$("battleShell").contains(active)?active:null;clearBeaconConfirmation();suspendDiveAsync();}
@@ -980,7 +981,7 @@
     $("upgradeDone").textContent=t("doneUpgrade");
     $("upgradeDone").disabled=save.statPoints>0;
   }
-  function upgradeBackgroundNodes(){return [...document.querySelectorAll("#battleShell .battle-hud, #battleShell .objective, #battleShell .controls, #diveField > :not(#upgradePanel)")];}
+  function upgradeBackgroundNodes(){return [...document.querySelectorAll('#battleShell > [data-wp-frame-header="battle"], #battleShell .objective, #battleShell .controls, #diveField > :not(#upgradePanel)')];}
   function setUpgradeModal(open,focusPrimary=true){
     motion.hold("upgrade",open);
     $("upgradePanel").classList.toggle("hidden",!open);
@@ -1045,11 +1046,10 @@
     renderBattle();
     focusCurrentDiveDecision();
   }
-  function renderMainProgress(){$("progress").textContent=`${t("route",{n:save.unlocked})} / ${routes.length}`;$("routesTab").textContent=t("routeSelect");}
+  function renderMainProgress(){$("progress").textContent=`${t("route",{n:save.unlocked})} / ${routes.length}`;$("routesTab").textContent=t("routeSelect");renderStageProgress();stageSelector?.refresh(selectedRoute-1);}
   function localize(){
     document.querySelector("#mainScreen .cover").alt=t("coverAlt");
     $("localeSelect").setAttribute("aria-label",t("language"));
-    $("loadingPanel").querySelector("span").textContent=t("loading");
     document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=`${t("title")} | WeightPlay`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStart").textContent=t("coachStart");renderCoach();$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");renderMainProgress();renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();if(!$("upgradePanel").classList.contains("hidden"))renderUpgrade();}}
   $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();};$("menuBtn").onclick=leaveDive;$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=()=>attackFish("attack");$("dodgeRightBtn").onclick=()=>attackFish("guard");$("pulseBtn").onclick=escapeFish;$("helpBtn").onclick=()=>setCoach(true);$("coachStart").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};$("surfaceBtn").onclick=()=>{if(canDiveAct()&&(!routeConfig().surfaceZones||routeConfig().surfaceZones.includes(state.zone)))finish("surface");};$("beaconBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("beaconBtn").onclick=useBeacon;["upgradeHp","upgradeAttack","upgradeOxygen"].forEach(id=>$(id).addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();}));$("upgradeHp").onclick=()=>allocateStat("hp");$("upgradeAttack").onclick=()=>allocateStat("attack");$("upgradeOxygen").onclick=()=>allocateStat("oxygen");$("upgradeDone").onclick=()=>{setUpgradeModal(false);renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;writeStorage("weightPlayLocale",locale);localize();};
   $("sonarBtn").onclick=()=>{if(!canDiveAct())return;const config=routeConfig(),cost=config.sonarCost??2;if(config.jammedZones?.includes(state.zone)){setFeedback(`${icon("sonar")}<b>×</b>`,routeText(config,"rule"));return;}if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("sonarNeed").replace("2",String(cost)));return;}state.battery-=cost;state.sonar=true;motion.event("sonar");playSound("feedback.hint");track("sonar_used",{...routeEventPayload(config),cost,power_after:state.battery});setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};
@@ -1064,6 +1064,7 @@
   $("battleBack").onclick=()=>setQuit(true);
   $("quitKeep").onclick=()=>setQuit(false,{resume:true});
   $("quitLeave").onclick=leaveDive;
+  mountStageSelector();
   ensureResultActions();
   $("menuBtn").onclick=()=>commitResultDecision(()=>{window.WonderAnalytics?.track?.("game_result_menu",resultAnalyticsPayload());track("routes_return",{...routeEventPayload(),from_result:state.resultOutcome,return_target:"route_map"});leaveDive();},$("menuBtn"));
   $("nextBtn").onclick=()=>commitResultDecision(()=>{const payload=resultAnalyticsPayload(),nextRoute=Math.min(routes.length,state.route+1);window.WonderAnalytics?.track?.("game_next_stage",{...payload,next_stage:nextRoute});track("next_route",{...routeEventPayload(),from_route:state.route,next_route:nextRoute,trigger:"result_next"});start(nextRoute,"next_route");},$("nextBtn"));
@@ -1078,32 +1079,11 @@
   $("result").addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){if(event.repeat){event.preventDefault();return;}screenDecisionKeyboardKeys.add(event.key);}if(event.key!=="Tab"||$("result").classList.contains("hidden"))return;const actions=[$("menuBtn"),$("nextBtn"),$("replayBtn")].filter(button=>!button.disabled&&!button.classList.contains("hidden"));if(!actions.length)return;event.preventDefault();const current=actions.indexOf(document.activeElement),index=event.shiftKey?(current<=0?actions.length-1:current-1):(current<0||current===actions.length-1?0:current+1);actions[index].focus({preventScroll:true});});
   $("quitPanel").addEventListener("keydown",event=>{if($("quitPanel").classList.contains("hidden"))return;if(event.key==="Enter"||event.key===" "){if(event.repeat){event.preventDefault();return;}screenDecisionKeyboardKeys.add(event.key);}if(event.key==="Escape"){event.preventDefault();setQuit(false,{resume:true,focusBack:true});return;}if(event.key!=="Tab")return;const first=$("quitKeep"),last=$("quitLeave");if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
   for(const direction of ["left","right"]){$(`${direction}Gate`).addEventListener("keydown",event=>{if(event.key!=="Enter"&&event.key!==" ")return;event.preventDefault();if(event.repeat)return;if($(`${direction}Gate`).getAttribute("aria-disabled")!=="true")move(direction);});}
-  const routeRail = $("routeRail");
-  routeRail.addEventListener("keydown",event=>{
-    if(mainEntryKeyboardKey&&event.repeat&&event.key===mainEntryKeyboardKey)event.preventDefault();
-    const card=event.target.closest(".route-card");
-    if(!card)return;
-    if((event.key==="Enter"||event.key===" ")&&card.getAttribute("aria-disabled")==="true"){event.preventDefault();return;}
-    if(!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;
-    event.preventDefault();
-    const rtl=document.documentElement.dir==="rtl";
-    const step=event.key==="ArrowRight"?(rtl?-1:1):(rtl?1:-1);
-    const current=Number(card.dataset.route),next=event.key==="Home"?1:event.key==="End"?routes.length:Math.max(1,Math.min(routes.length,current+step));
-    selectRoute(next,{center:true,focus:true});
-  });
   document.addEventListener("keyup",event=>{screenDecisionKeyboardKeys.delete(event.key);if(event.key===mainEntryKeyboardKey)mainEntryKeyboardKey="";});
   window.addEventListener("blur",()=>{screenDecisionKeyboardKeys.clear();mainEntryKeyboardKey="";});
-  let routeDrag=null,routeSettle=0,suppressRouteClick=false;
-  function positionRouteLogical(logical){logical=Math.max(1,Math.min(routes.length,logical));const anchor=Math.round(logical);selectRoute(anchor,{center:true});const pitch=276,rtl=document.documentElement.dir==="rtl"?-1:1;routeRail.scrollLeft+=(logical-anchor)*pitch*rtl;routeRail.dataset.wpStageDragLogical=logical.toFixed(4);return logical;}
-  routeRail.dataset.wpStageVirtualDrag="true";routeRail.dataset.wpStageCenterObserver="manual";
-  routeRail.addEventListener("pointerdown",event=>{if(event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;cancelAnimationFrame(routeSettle);routeSettle=0;routeDrag={id:event.pointerId,startX:event.clientX,lastX:event.clientX,logical:selectedRoute,moved:false};routeRail.setPointerCapture?.(event.pointerId);routeRail.style.setProperty("scroll-snap-type","none","important");event.stopImmediatePropagation();},true);
-  document.addEventListener("pointermove",event=>{if(event.pointerId!==routeDrag?.id)return;const delta=event.clientX-routeDrag.lastX;routeDrag.lastX=event.clientX;if(!routeDrag.moved&&Math.abs(event.clientX-routeDrag.startX)>4)routeDrag.moved=true;if(routeDrag.moved){event.preventDefault();const rtl=document.documentElement.dir==="rtl"?-1:1;routeDrag.logical=positionRouteLogical(routeDrag.logical-delta*rtl/276);}event.stopImmediatePropagation();},true);
-  const finishRouteDrag=event=>{if(event.pointerId!==routeDrag?.id)return;const drag=routeDrag;routeDrag=null;if(routeRail.hasPointerCapture?.(event.pointerId))routeRail.releasePointerCapture(event.pointerId);if(!drag.moved){routeRail.style.removeProperty("scroll-snap-type");const card=document.elementFromPoint(event.clientX,event.clientY)?.closest?.(".route-card"),n=Number(card?.dataset.route);if(card&&n<=save.unlocked){suppressRouteClick=true;setTimeout(()=>{suppressRouteClick=false;},0);start(n);}return;}event.preventDefault();const from=drag.logical,target=Math.round(from),started=performance.now();routeRail.dataset.wpStageSettling="true";const generation=sceneGeneration;const settle=now=>{if(activeScene!=="stage"||sceneGeneration!==generation){routeSettle=0;routeRail.style.removeProperty("scroll-snap-type");delete routeRail.dataset.wpStageSettling;return;}const progress=motion.reduced?1:Math.min(1,(now-started)/340),eased=progress*progress*(3-2*progress);positionRouteLogical(from+(target-from)*eased);if(progress<1)routeSettle=requestAnimationFrame(settle);else{routeSettle=0;selectRoute(target,{center:true});routeRail.style.removeProperty("scroll-snap-type");delete routeRail.dataset.wpStageSettling;}};routeSettle=requestAnimationFrame(settle);suppressRouteClick=true;setTimeout(()=>{suppressRouteClick=false;},0);event.stopImmediatePropagation();};
-  document.addEventListener("pointerup",finishRouteDrag,true);document.addEventListener("pointercancel",finishRouteDrag,true);
-  routeRail.addEventListener("click",event=>{const card=event.target.closest(".route-card");if(!card)return;if(suppressRouteClick){suppressRouteClick=false;event.preventDefault();event.stopImmediatePropagation();return;}const n=Number(card.dataset.route);if(n<=save.unlocked){event.preventDefault();event.stopImmediatePropagation();start(n);}},true);
   for(const id of ["sonarBtn","shieldBtn","helpBtn"]){$(id).addEventListener("click",clearBeaconConfirmation,{capture:true});}
   (__wpNotifyMeasurement(), $("result")?.setAttribute("aria-describedby","resultCopy resultCompletionHint"));
-  if(new URLSearchParams(location.search).has("smoke"))window.__AbyssDiverSmoke={setOxygen(value){if(!state.route)return;clearBeaconConfirmation();state.oxygen=Math.max(0,Math.min(maxOxygen(),Math.round(value)));renderBattle();if(state.fishActive)renderFish();},beaconState(){return{pending:!!state?.beaconPending,remaining:beaconConfirmRemaining,wallet:wallet()};},seedProgress(patch={}){if(!patch||typeof patch!=="object")return;save=normalizeSave({...save,...patch,stats:{...save.stats,...(patch.stats||{})}});persist();renderMainProgress();}};
+  if(/^(localhost|127\.0\.0\.1|\[::1\])$/i.test(location.hostname)&&window.__WEIGHTPLAY_TEST_HOOKS__===true)window.__AbyssDiverSmoke={setOxygen(value){if(!state.route)return;clearBeaconConfirmation();state.oxygen=Math.max(0,Math.min(maxOxygen(),Math.round(value)));renderBattle();if(state.fishActive)renderFish();},beaconState(){return{pending:!!state?.beaconPending,remaining:beaconConfirmRemaining,wallet:wallet()};},seedProgress(patch={}){if(!patch||typeof patch!=="object")return;save=normalizeSave({...save,...patch,stats:{...save.stats,...(patch.stats||{})}});persist();renderMainProgress();}};
   $("fishEncounter").querySelector(".fish-actions").append($("dodgeLeftBtn"),$("dodgeRightBtn"),$("pulseBtn"));
   localize();motion.scene("main");
   if(window.__AbyssDiverSmoke)Object.assign(window.__AbyssDiverSmoke,{

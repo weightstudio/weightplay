@@ -72,13 +72,14 @@ const loadingFill = document.querySelector("#loadingFill");
 const startBtn = document.querySelector("#startBtn");
 const menuTabs = document.querySelector("#menuTabs");
 const menuContent = document.querySelector("#menuContent");
+const stagePlayPage = document.querySelector("#stagePlayPage");
+const buildSectionTabs = document.querySelector("#buildSectionTabs");
 const levelGrid = document.querySelector("#levelGrid");
 const upgradeGrid = document.querySelector("#upgradeGrid");
 const profilePanel = document.querySelector("#profilePanel");
 const pausePanel = document.querySelector("#pausePanel");
 const settingsBtn = document.querySelector("#settingsBtn");
 const backToMenuBtn = document.querySelector("#backToMenuBtn");
-const gameShell = document.querySelector(".game-shell");
 const battleAdReserve = document.querySelector("#battleAdReserve");
 const resumeBtn = document.querySelector("#resumeBtn");
 const leaveBtn = document.querySelector("#leaveBtn");
@@ -863,13 +864,10 @@ function registerWonderCombatUpgrades() {
 }
 
 let highestUnlocked = loadHighestUnlocked();
-const STAGE_CARD_POOL_SIZE = 9;
-let stageCardPool = [];
-let stageWindowStart = 0;
-let stageBrowseLogical = 0;
 let profile = loadProfile();
 saveProfile();
 let activeMenuTab = "battle";
+let activeBuildTab = "equipment";
 let draggedWeaponId = null;
 let draggedEquipSlot = null;
 let draggedBackpackIndex = null;
@@ -1116,11 +1114,6 @@ function restart() {
     if (__wpMeasurement.roundKey !== __wpPreviousRound) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
 }
 
-const BATTLE_PORTRAIT_WIDTH = 390;
-const BATTLE_PORTRAIT_HEIGHT = 788;
-const BATTLE_LANDSCAPE_WIDTH = 760;
-const BATTLE_LANDSCAPE_HEIGHT = 360;
-
 function useShortLandscapeBattle(width, height) {
   return width / height >= 1.5 && height <= 500;
 }
@@ -1154,31 +1147,22 @@ function syncBattleCanvasOrientation(shortLandscape) {
 
 function updateBattleShell() {
   if (!document.body.classList.contains("wonder-playing")) return;
-  const width = Math.max(1, window.innerWidth);
-  const viewportHeight = Math.max(1, window.innerHeight);
+  const width = Math.max(1, document.documentElement.clientWidth || window.innerWidth);
+  const viewportHeight = Math.max(1, document.documentElement.clientHeight || window.innerHeight);
   const reserveHeight = Math.max(0, Number(window.WeightPlayLayout?.reserveHeight) || 0);
   const height = Math.max(1, viewportHeight - reserveHeight);
   const shortLandscape = useShortLandscapeBattle(width, height);
   syncBattleCanvasOrientation(shortLandscape);
-  const logicalWidth = shortLandscape ? BATTLE_LANDSCAPE_WIDTH : BATTLE_PORTRAIT_WIDTH;
-  const logicalHeight = shortLandscape ? BATTLE_LANDSCAPE_HEIGHT : BATTLE_PORTRAIT_HEIGHT;
-  const scale = Math.min(
-    Math.max(1, Math.min(width, 920)) / logicalWidth,
-    Math.max(1, height) / logicalHeight
-  );
-  document.documentElement.style.setProperty("--wonder-battle-scale", String(scale));
-  document.documentElement.style.setProperty("--wonder-battle-logical-width", `${Math.min(width, 920) / scale}px`);
-  document.documentElement.style.setProperty("--wonder-battle-logical-height", `${height / scale}px`);
 }
 
 function setBattleShellActive(active) {
   document.body.classList.toggle("wonder-playing", active);
-  gameShell?.toggleAttribute("data-battle-shell", active);
   battleAdReserve?.toggleAttribute("data-active", active);
   if (active) {
     updateBattleShell();
     requestAnimationFrame(updateBattleShell);
   }
+  window.dispatchEvent(new Event("weightplay:battle-sync"));
 }
 
 function setPauseBattleAccessibility(covered) {
@@ -1205,9 +1189,9 @@ function startLevel(levelIndex) {
   setPauseBattleAccessibility(false);
   canvas.dataset.heroX = String(state.hero.x);
   setBattleShellActive(true);
+  window.WonderCrashFrame?.moveOverlay("battle");
   wonderMain.classList.add("hidden");
   wonderStageBack.classList.add("hidden");
-  document.body.classList.remove("wonder-stage-select");
   document.body.classList.add("wonder-tutorial-hidden");
   backToMenuBtn.classList.remove("hidden");
   settingsBtn.classList.remove("hidden");
@@ -1215,7 +1199,9 @@ function startLevel(levelIndex) {
   menuCoinLine.classList.add("hidden");
   menuTabs.classList.add("hidden");
   overlay.classList.remove("settlement-screen", "equipment-screen");
+  overlay.removeAttribute("data-wp-result-screen");
   overlay.classList.add("hidden");
+  window.WonderCrashFrame?.activate("battle");
   hudElapsed = 0;
   updateHud();
   syncPassiveAccessibility();
@@ -1249,20 +1235,15 @@ startBtn.addEventListener("click", () => {
   }
   restart();
 });
-levelGrid.addEventListener("click", (event) => {
-  if (levelGrid.dataset.wpSuppressClick === "true") {
-    levelGrid.dataset.wpSuppressClick = "false";
-    event.preventDefault();
-    return;
-  }
-  const button = event.target.closest("button[data-level]");
-  if (!button) return;
-  startLevel(Number(button.dataset.level));
-});
 menuTabs.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-menu-tab]");
   if (!button) return;
-  showMainMenu(button.dataset.menuTab);
+  showMainMenu(button.dataset.menuTab === "build" ? activeBuildTab : button.dataset.menuTab);
+});
+buildSectionTabs.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-build-tab]");
+  if (!button) return;
+  showMainMenu(button.dataset.buildTab);
 });
 upgradeGrid.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-upgrade]");
@@ -1767,8 +1748,10 @@ function getBossBallColor(enemy) {
 function loseLevel() {
   clearFloatingMessage();
   pauseReturnIntent = false;
+  window.WonderCrashFrame?.moveOverlay("battle");
   overlay.classList.remove("equipment-screen");
   overlay.classList.add("settlement-screen");
+  overlay.setAttribute("data-wp-result-screen", "");
   bankRunCoins();
   state.running = false;
   syncPassiveAccessibility();
@@ -1784,6 +1767,8 @@ function loseLevel() {
   menuContent.classList.remove("hidden");
   profilePanel.classList.remove("hidden");
   profilePanel.innerHTML = renderDefeatActions();
+  overlay.classList.remove("hidden");
+  window.WonderCrashFrame?.activate("battle", { covered: true });
   focusSettlementPrimary();
   (__wpNotifyMeasurement(), pausePanel.classList.add("hidden"));
   menuTabs.classList.add("hidden");
@@ -1797,8 +1782,10 @@ function loseLevel() {
 function winLevel() {
   clearFloatingMessage();
   pauseReturnIntent = false;
+  window.WonderCrashFrame?.moveOverlay("battle");
   overlay.classList.remove("equipment-screen");
   overlay.classList.add("settlement-screen");
+  overlay.setAttribute("data-wp-result-screen", "");
   bankRunCoins();
   const wasChallenge = state.level.id === highestUnlocked;
   const drops = rollLevelDrops();
@@ -1823,6 +1810,8 @@ function winLevel() {
   profilePanel.classList.remove("hidden");
   (__wpNotifyMeasurement(), pausePanel.classList.add("hidden"));
   profilePanel.innerHTML = renderSettlement(drops, wasChallenge, diamondReward);
+  overlay.classList.remove("hidden");
+  window.WonderCrashFrame?.activate("battle", { covered: true });
   focusSettlementPrimary();
   overlay.classList.remove("hidden");
   updateHud();
@@ -2653,6 +2642,9 @@ function showMainMenu(tab = activeMenuTab) {
   disposeDefense();
   clearFloatingMessage();
   pauseReturnIntent = false;
+  if (tab === "build") tab = activeBuildTab;
+  if (["equipment", "talents", "settings"].includes(tab)) activeBuildTab = tab;
+  if (!["character", "battle", "equipment", "talents", "settings"].includes(tab)) tab = "battle";
   activeMenuTab = tab;
   state.running = false;
   state.won = false;
@@ -2660,11 +2652,12 @@ function showMainMenu(tab = activeMenuTab) {
   state.awaitingUpgrade = false;
   setPauseBattleAccessibility(false);
   setBattleShellActive(false);
+  window.WonderCrashFrame?.moveOverlay("stage");
+  overlay.removeAttribute("data-wp-result-screen");
   wonderMain.classList.add("hidden");
   wonderStageBack.classList.remove("hidden");
-  document.body.classList.add("wonder-stage-select");
   document.body.classList.remove("wonder-tutorial-hidden");
-  overlay.classList.remove("settlement-screen");
+  overlay.classList.remove("settlement-screen", "equipment-screen");
   settingsBtn.classList.add("hidden");
   backToMenuBtn.classList.add("hidden");
   battleHud.classList.add("hidden");
@@ -2681,6 +2674,9 @@ function showMainMenu(tab = activeMenuTab) {
   renderMenuTabs();
   renderMenuContent();
   overlay.classList.remove("hidden");
+  window.WonderCrashFrame?.activate("stage");
+  if (activeMenuTab === "battle") window.WonderCrashFrame?.refreshStage(Math.max(0, Math.min(LEVELS.length - 1, highestUnlocked - 1)));
+  updateWonderMainProgress();
   updateHud();
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["stage"] ?? null;
@@ -2696,10 +2692,13 @@ function showWonderMain() {
   state.running = false;
   setPauseBattleAccessibility(false);
   setBattleShellActive(false);
-  document.body.classList.remove("wonder-stage-select", "wonder-tutorial-hidden");
+  document.body.classList.remove("wonder-tutorial-hidden");
+  window.WonderCrashFrame?.moveOverlay("stage");
   overlay.classList.add("hidden");
   wonderStageBack.classList.add("hidden");
   wonderMain.classList.remove("hidden");
+  window.WonderCrashFrame?.activate("main");
+  updateWonderMainProgress();
   battleHud.classList.add("hidden");
   settingsBtn.classList.add("hidden");
   backToMenuBtn.classList.add("hidden");
@@ -2717,187 +2716,53 @@ function getMenuTitle(tab) {
 }
 
 function renderMenuTabs() {
+  const buildActive = ["equipment", "talents", "settings"].includes(activeMenuTab);
+  const selectedTab = buildActive ? "build" : activeMenuTab;
   for (const button of menuTabs.querySelectorAll("button[data-menu-tab]")) {
-    button.classList.toggle("active", button.dataset.menuTab === activeMenuTab);
-    if(button.dataset.menuTab==='talents')button.querySelector('span').textContent=window.LionTalents.copy(locale()).tab;
+    const selected = button.dataset.menuTab === selectedTab;
+    button.classList.toggle("active", selected);
+    button.setAttribute("aria-current", selected ? "page" : "false");
+    button.setAttribute("aria-pressed", String(selected));
+    const label = button.querySelector("span");
+    if (button.dataset.menuTab === "character") label.textContent = t("tab_character");
+    if (button.dataset.menuTab === "battle") label.textContent = t("tab_battle");
+    if (button.dataset.menuTab === "build") label.textContent = locale().startsWith("zh") ? "配置" : runtimeTranslate("Build");
   }
+}
+
+function renderBuildSectionTabs() {
+  buildSectionTabs.setAttribute("aria-label", locale().startsWith("zh") ? "配置分頁" : runtimeTranslate("Build sections"));
+  const tabs = [
+    ["equipment", t("tab_equipment")],
+    ["talents", window.LionTalents.copy(locale()).tab],
+    ["settings", t("menu_settings")],
+  ];
+  buildSectionTabs.replaceChildren(...tabs.map(([id, label]) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.buildTab = id;
+    button.dataset.wpFrameAction = "tab";
+    button.textContent = label;
+    button.setAttribute("aria-current", id === activeMenuTab ? "page" : "false");
+    button.setAttribute("aria-pressed", String(id === activeMenuTab));
+    return button;
+  }));
 }
 
 function renderMenuContent() {
+  const isStage = activeMenuTab === "battle";
+  const isBuild = ["equipment", "talents", "settings"].includes(activeMenuTab);
   menuContent.dataset.menuTab = activeMenuTab;
-  menuContent.classList.toggle("equipment-mode", activeMenuTab === "equipment");
-  overlay.classList.toggle("equipment-screen", activeMenuTab === "equipment");
-  levelGrid.classList.toggle("hidden", activeMenuTab !== "battle");
-  profilePanel.classList.toggle("hidden", activeMenuTab === "battle");
-  if (activeMenuTab === "battle") {
-    renderLevelGrid();
-    window.dispatchEvent(new Event("weightplay:shell-sync"));
-    return;
-  }
-  renderProfilePanel(activeMenuTab);
+  menuContent.classList.toggle("equipment-mode", isBuild);
+  overlay.classList.toggle("equipment-screen", isBuild);
+  stagePlayPage.classList.toggle("hidden", !isStage);
+  buildSectionTabs.classList.toggle("hidden", !isBuild);
+  levelGrid.classList.toggle("hidden", !isStage);
+  profilePanel.classList.toggle("hidden", isStage);
+  if (isBuild) renderBuildSectionTabs();
+  if (isStage) window.WonderCrashFrame?.refreshStage();
+  else renderProfilePanel(activeMenuTab);
   window.dispatchEvent(new Event("weightplay:shell-sync"));
-}
-
-function stageWindowLimit() {
-  return Math.max(0, LEVELS.length - STAGE_CARD_POOL_SIZE);
-}
-
-function desiredStageWindow(index) {
-  const safeIndex = Math.floor(Number(index) || 0);
-  if (!stageCardPool.length) return clamp(safeIndex - Math.floor(STAGE_CARD_POOL_SIZE / 2), 0, stageWindowLimit());
-  const currentEnd = stageWindowStart + stageCardPool.length - 1;
-  if (safeIndex < stageWindowStart + 2 || safeIndex > currentEnd - 2) {
-    return clamp(safeIndex - Math.floor(STAGE_CARD_POOL_SIZE / 2), 0, stageWindowLimit());
-  }
-  return stageWindowStart;
-}
-
-function bindStageCard(button, index) {
-  const level = LEVELS[index];
-  if (!level) return;
-  const summary = getLevelSummary(level);
-  const activeLocale = locale();
-  const stageTitle = activeLocale === "zh-Hant"
-    ? level.titleZh
-    : activeLocale === "es"
-      ? level.titleEs
-      : activeLocale === "ar"
-        ? level.titleAr
-        : activeLocale === "en"
-          ? level.titleEn
-          : level.titleByLocale?.[activeLocale] || runtimeTranslate(level.titleEn);
-  const stageRule = activeLocale === "zh-Hant"
-    ? level.ruleZh
-    : activeLocale === "es"
-      ? level.ruleEs
-      : activeLocale === "ar"
-        ? level.ruleAr
-        : activeLocale === "en"
-          ? level.ruleEn
-          : level.ruleByLocale?.[activeLocale] || runtimeTranslate(level.ruleEn);
-  const locked = level.id > highestUnlocked;
-  button.type = "button";
-  button.className = locked ? "locked" : level.id < highestUnlocked ? "completed" : level.id === highestUnlocked ? "challenge" : "";
-  button.dataset.level = String(index);
-  button.dataset.index = String(index);
-  button.dataset.stageIndex = String(index);
-  button.dataset.wpStageRecommended = index === stageBrowseLogical ? "true" : "false";
-  button.setAttribute("aria-disabled", String(locked));
-  button.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
-  button.setAttribute("aria-posinset", String(index + 1));
-  button.setAttribute("aria-setsize", String(LEVELS.length));
-  button.tabIndex = index === stageBrowseLogical ? 0 : -1;
-  button.innerHTML = `
-    <strong>${level.id}</strong>
-    <div class="level-beast-row" aria-label="${t("beast_guide_title")}">
-      ${summary.enemyTypes.map((type) => `<img src="${enemyFiles[type.imageIndex]}" alt="${t("enemy_" + type.id)}" title="${t("enemy_" + type.id)}" />`).join("")}
-    </div>
-    <span title="${escapeHtml(stageTitle || "")}">${escapeHtml(stageTitle || t("stage_waves", { count: summary.waves }))}</span>
-    <small title="${escapeHtml(stageRule || "")}">${escapeHtml(stageRule || t("stage_reward", { coins: summary.coins }))}</small>
-    <small>${t("stage_waves", { count: summary.waves })} · ${t("stage_reward", { coins: summary.coins })}</small>
-    ${summary.hasBoss ? `<em>${t("stage_boss")}</em>` : ""}
-  `;
-}
-
-function createStageCard() {
-  const button = document.createElement("button");
-  button.className = "stage-card";
-  return button;
-}
-
-function moveStageWindow(targetStart) {
-  const target = clamp(targetStart, 0, stageWindowLimit());
-  let recycled = 0;
-  while (stageWindowStart < target) {
-    const card = levelGrid.firstElementChild;
-    const anchor = card?.nextElementSibling;
-    const before = anchor?.getBoundingClientRect().left;
-    stageWindowStart += 1;
-    levelGrid.append(card);
-    bindStageCard(card, stageWindowStart + stageCardPool.length - 1);
-    const after = anchor?.getBoundingClientRect().left;
-    if (Number.isFinite(before) && Number.isFinite(after)) levelGrid.scrollLeft += after - before;
-    recycled += 1;
-  }
-  while (stageWindowStart > target) {
-    const card = levelGrid.lastElementChild;
-    const anchor = card?.previousElementSibling;
-    const before = anchor?.getBoundingClientRect().left;
-    stageWindowStart -= 1;
-    levelGrid.prepend(card);
-    bindStageCard(card, stageWindowStart);
-    const after = anchor?.getBoundingClientRect().left;
-    if (Number.isFinite(before) && Number.isFinite(after)) levelGrid.scrollLeft += after - before;
-    recycled += 1;
-  }
-  stageCardPool = [...levelGrid.children];
-  levelGrid.dataset.wpStageWindowStart = String(stageWindowStart);
-  levelGrid.dataset.wpStageWindowEnd = String(stageWindowStart + stageCardPool.length - 1);
-  if (recycled) levelGrid.dataset.wpStageRecycleCount = String(Number(levelGrid.dataset.wpStageRecycleCount || 0) + recycled);
-  return recycled;
-}
-
-function ensureStageWindow(index) {
-  if (!stageCardPool.length) {
-    stageWindowStart = desiredStageWindow(index);
-    stageCardPool = Array.from({ length: Math.min(STAGE_CARD_POOL_SIZE, LEVELS.length) }, () => createStageCard());
-    levelGrid.replaceChildren(...stageCardPool);
-  }
-  moveStageWindow(desiredStageWindow(index));
-}
-
-function setWonderStageBrowse(index) {
-  stageBrowseLogical = clamp(Number(index) || 0, 0, LEVELS.length - 1);
-  levelGrid.dataset.wpStagePreferredLevel = String(stageBrowseLogical);
-  ensureStageWindow(stageBrowseLogical);
-  return stageBrowseLogical;
-}
-
-window.WonderStage = { ensureWindow: ensureStageWindow, setBrowse: setWonderStageBrowse, total: LEVELS.length };
-
-function renderLevelGrid() {
-  stageBrowseLogical = clamp(highestUnlocked - 1, 0, LEVELS.length - 1);
-  stageWindowStart = desiredStageWindow(stageBrowseLogical);
-  stageCardPool = Array.from({ length: Math.min(STAGE_CARD_POOL_SIZE, LEVELS.length) }, () => createStageCard());
-  levelGrid.replaceChildren(...stageCardPool);
-  stageCardPool.forEach((card, offset) => bindStageCard(card, stageWindowStart + offset));
-  Object.assign(levelGrid.dataset, {
-    wpStageVirtualized: "bounded-recycle",
-    wpStagePoolSize: String(stageCardPool.length),
-    wpStageTotal: String(LEVELS.length),
-    wpStageWindowStart: String(stageWindowStart),
-    wpStageWindowEnd: String(stageWindowStart + stageCardPool.length - 1),
-    wpStagePreferredLevel: String(stageBrowseLogical),
-    wpStageRecycleCount: "0",
-    wpStageCenterObserver: "manual",
-    wpSuppressClick: "false",
-  });
-}
-
-function renderCampaignSummary() {
-  const summary = document.createElement("section");
-  summary.className = "campaign-summary";
-  const clearedStages = clamp(highestUnlocked - 1, 0, LEVELS.length);
-  const nextStage = Math.min(highestUnlocked, LEVELS.length);
-  const isComplete = clearedStages >= LEVELS.length;
-  const bossStage = LEVELS.find((level) => level.id >= nextStage && getLevelSummary(level).hasBoss)?.id;
-  const wallet = readWallet();
-  const targetLevelIndex = isComplete ? LEVELS.length - 1 : Math.max(0, nextStage - 1);
-  summary.innerHTML = `
-    <div class="campaign-summary-head">
-      <strong>${campaignText("title")}</strong>
-      <span>${campaignText(isComplete ? "complete" : "next", { stage: nextStage })}</span>
-    </div>
-    <div class="campaign-summary-stats">
-      <span>${campaignText("cleared", { cleared: clearedStages, total: LEVELS.length })}</span>
-      <span>${bossStage ? campaignText("boss", { stage: bossStage }) : campaignText("bossDone")}</span>
-      <span>${campaignText("wallet", { coins: profile.coins, diamonds: wallet.diamonds })}</span>
-    </div>
-    <button class="campaign-continue" type="button" data-level="${targetLevelIndex}">
-      ${campaignText(isComplete ? "replay" : "continue", { stage: nextStage })}
-    </button>
-  `;
-  return summary;
 }
 
 function campaignText(key, params = {}) {
@@ -2945,6 +2810,16 @@ function campaignText(key, params = {}) {
   };
   const value = table[key] || key;
   return Object.entries(params).reduce((text, [name, val]) => text.replaceAll(`{${name}}`, String(val)), value);
+}
+
+function updateWonderMainProgress() {
+  const cleared = clamp(highestUnlocked - 1, 0, LEVELS.length);
+  window.WonderCrashFrame?.updateMainProgress({
+    title: campaignText("title"),
+    label: campaignText("cleared", { cleared, total: LEVELS.length }),
+    cleared,
+    total: LEVELS.length,
+  });
 }
 
 function renderBeastGuide() {
@@ -3021,7 +2896,9 @@ function clearFloatingMessage() {
 }
 
 function showUpgradeChoices() {
+  window.WonderCrashFrame?.moveOverlay("battle");
   overlay.classList.remove("equipment-screen", "settlement-screen");
+  overlay.removeAttribute("data-wp-result-screen");
   state.running = false;
   syncPassiveAccessibility();
   document.body.classList.add("wonder-tutorial-hidden");
@@ -3040,6 +2917,7 @@ function showUpgradeChoices() {
   (__wpNotifyMeasurement(), pausePanel.classList.add("hidden"));
   renderUpgradeChoices();
   overlay.classList.remove("hidden");
+  window.WonderCrashFrame?.activate("battle", { covered: true });
 }
 
 function renderUpgradeChoices() {
@@ -3062,7 +2940,9 @@ function chooseUpgrade(id) {
   prepareNextWave();
   upgradeGrid.classList.add("hidden");
   overlay.classList.add("hidden");
+  overlay.removeAttribute("data-wp-result-screen");
   state.running = true;
+  window.WonderCrashFrame?.activate("battle");
   setBattleShellActive(true);
   document.body.classList.add("wonder-tutorial-hidden");
   backToMenuBtn.classList.remove("hidden");
@@ -3078,7 +2958,9 @@ function showPauseMenu(returnIntent = false) {
   stopDrag({pointerId:drag.pointerId});
   if (!state.running) return;
   pauseReturnIntent = returnIntent;
+  window.WonderCrashFrame?.moveOverlay("battle");
   overlay.classList.remove("equipment-screen", "settlement-screen");
+  overlay.removeAttribute("data-wp-result-screen");
   state.running = false;
   syncPassiveAccessibility();
   document.body.classList.add("wonder-tutorial-hidden");
@@ -3096,6 +2978,7 @@ function showPauseMenu(returnIntent = false) {
   upgradeGrid.classList.add("hidden");
   (__wpNotifyMeasurement(), pausePanel.classList.remove("hidden"));
   overlay.classList.remove("hidden");
+  window.WonderCrashFrame?.activate("battle", { covered: true });
   setPauseBattleAccessibility(true);
   requestAnimationFrame(() => {
     if (!pausePanel.classList.contains("hidden")) resumeBtn.focus({ preventScroll: true });
@@ -3108,8 +2991,10 @@ function resumeBattle() {
   setPauseBattleAccessibility(false);
   (__wpNotifyMeasurement(), pausePanel.classList.add("hidden"));
   overlay.classList.add("hidden");
+  overlay.removeAttribute("data-wp-result-screen");
   document.body.classList.add("wonder-tutorial-hidden");
   setBattleShellActive(true);
+  window.WonderCrashFrame?.activate("battle");
   backToMenuBtn.classList.remove("hidden");
   settingsBtn.classList.remove("hidden");
   battleHud.classList.remove("hidden");
@@ -3286,25 +3171,12 @@ function renderProfilePanel(tab = activeMenuTab) {
       <img class="profile-row-icon" src="assets/wonder-prop-settings-block-v1.png" alt="" />
       <div><strong>${t("settings_progress")}</strong><span>${t("settings_unlocked_stages", { count: Math.min(highestUnlocked, LEVELS.length) })}</span></div>
     </div>
-    <div class="profile-row setting-row">
-      <img class="profile-row-icon" src="assets/wonder-prop-settings-block-v1.png" alt="" style="filter: hue-rotate(140deg);" />
-      <div><strong>${t("language")}</strong><span>${t("language_desc")}</span></div>
-      <div class="setting-control">
-        <select id="localeSelect" class="settings-select" aria-label="Language">
-          <option value="en">English</option>
-          <option value="zh-Hant">繁體中文</option>
-        </select>
-      </div>
-    </div>
     <div class="profile-row full"><div><strong>${t("game_title")}</strong><span>WeightPlay</span></div></div>
     <div class="settings-actions">
       <button id="backToLobbyBtn" type="button">${t("back_lobby")}</button>
     </div>
   `;
 
-  const select = profilePanel.querySelector("#localeSelect");
-  if (select?.options?.[1]) select.options[1].textContent = "\u7e41\u9ad4\u4e2d\u6587";
-  bindLocaleSelect(select);
   const backToLobbyBtn = profilePanel.querySelector("#backToLobbyBtn");
   if (backToLobbyBtn) {
     backToLobbyBtn.addEventListener("click", () => {
@@ -4177,6 +4049,8 @@ function random(min, max) {
 // Hook up global locale change listener
 window.addEventListener("wonder:locale-change", () => {
   translateStaticUI();
+  updateWonderMainProgress();
+  if (window.WonderCrashFrame) renderMenuTabs();
   if (!overlay.classList.contains("hidden")) {
     if (state.awaitingUpgrade) {
       overlay.querySelector("h1").textContent = t("upgrade_panel_title");
@@ -4210,6 +4084,73 @@ translateStaticUI();
 
 wonderMainStart.addEventListener("click", () => showMainMenu("battle"));
 wonderStageBack.addEventListener("click", showWonderMain);
+
+window.mountWonderCrashFrame({
+  localeSelect: wonderMainLocaleSelect,
+  labels: {
+    hero: t("tab_character"),
+    stages: t("tab_battle"),
+    build: locale().startsWith("zh") ? "配置" : runtimeTranslate("Build"),
+  },
+  pauseLabel: t("menu_settings"),
+  progressTitle: campaignText("title"),
+  mainProgress: () => {
+    const cleared = clamp(highestUnlocked - 1, 0, LEVELS.length);
+    return {
+      title: campaignText("title"),
+      label: campaignText("cleared", { cleared, total: LEVELS.length }),
+      cleared,
+      total: LEVELS.length,
+    };
+  },
+  selectedStage: () => clamp(highestUnlocked - 1, 0, LEVELS.length - 1),
+  isStageActive: () => activeMenuTab === "battle",
+  onStart: (index) => startLevel(index),
+  stageConfig: {
+    count: LEVELS.length,
+    poster: "/assets/wonder-crash-cover-block-v1.webp",
+    background: "/assets/lobby-block-atmosphere.svg",
+    stage(index) {
+      const level = LEVELS[index];
+      const summary = getLevelSummary(level);
+      const activeLocale = locale();
+      const title = activeLocale === "zh-Hant"
+        ? level.titleZh
+        : activeLocale === "es"
+          ? level.titleEs
+          : activeLocale === "ar"
+            ? level.titleAr
+            : activeLocale === "en"
+              ? level.titleEn
+              : level.titleByLocale?.[activeLocale] || runtimeTranslate(level.titleEn);
+      const rule = activeLocale === "zh-Hant"
+        ? level.ruleZh
+        : activeLocale === "es"
+          ? level.ruleEs
+          : activeLocale === "ar"
+            ? level.ruleAr
+            : activeLocale === "en"
+              ? level.ruleEn
+              : level.ruleByLocale?.[activeLocale] || runtimeTranslate(level.ruleEn);
+      const locked = level.id > highestUnlocked;
+      const cleared = level.id < highestUnlocked;
+      const waves = t("stage_waves", { count: summary.waves });
+      const reward = t("stage_reward", { coins: summary.coins });
+      return {
+        id: level.id,
+        kicker: `${t("hud_stage")} ${level.id}`,
+        title: title || waves,
+        subtitle: rule || waves,
+        status: locked ? t("locked") : cleared ? t("victory_stage_clear") : t("btn_start"),
+        summary: [waves, reward, summary.hasBoss ? t("stage_boss") : ""].filter(Boolean).join(" · "),
+        details: [rule, `${waves} · ${reward}`, summary.hasBoss ? t("stage_boss") : ""],
+        poster: "/assets/wonder-crash-cover-block-v1.webp",
+        locked,
+        cleared,
+      };
+    },
+  },
+});
 
 if ((location.hostname === "127.0.0.1" || location.hostname === "localhost") && new URLSearchParams(location.search).get("wp_test") === "1") {
   window.WonderCrashTest = {

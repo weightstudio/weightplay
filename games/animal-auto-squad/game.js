@@ -18,20 +18,9 @@
   __wpNotifyMeasurement();
 
   document.body.dataset.wpCombinedSound = "true";
-  ["stagePanel", "gamePanel"].forEach((id) => {
-    document.getElementById(id)?.setAttribute("data-wp-canvas-max-width", "920");
-  });
-  const stagePanel = document.getElementById("stagePanel");
-  const gamePanel = document.getElementById("gamePanel");
-  stagePanel?.setAttribute("data-wp-standard-stage-screen", "true");
-  stagePanel?.setAttribute("data-wp-stage-workspace", "true");
-  stagePanel?.setAttribute("data-wp-logical-stage-canvas", "true");
-  stagePanel?.setAttribute("data-wp-stage-landscape-width", "760");
-  stagePanel?.setAttribute("data-wp-stage-landscape-height", "334");
-  gamePanel?.setAttribute("data-wp-logical-battle-canvas", "true");
 
   const GAME_ID = "animal-auto-squad";
-  const GAME_VERSION = "v39";
+  const GAME_VERSION = "v40";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 
@@ -1267,8 +1256,10 @@
     stagePanel: $("stagePanel"),
     stageTabBtn: $("stageTabBtn"),
     trainingTabBtn: $("trainingTabBtn"),
+    growthTabBtn: $("growthTabBtn"),
     stageSelectPane: $("stageSelectPane"),
     trainingPane: $("trainingPane"),
+    growthPane: $("growthPane"),
     teamEmptyState: $("teamEmptyState"),
     teamPrepHost: $("teamPrepHost"),
     teamGrowthDetails: $("teamGrowthDetails"),
@@ -1338,13 +1329,7 @@
     quitRunBtn: $("quitRunBtn"),
     hintText: $("hintText")
   };
-  const gameShell = window.WeightPlayScreenFrame.mountSlots({
-    gameId: GAME_ID,
-    root: document.querySelector("[data-wp-game-shell-root]"),
-    main: nodes.menuPanel,
-    stage: nodes.stagePanel,
-    battle: { root: nodes.gamePanel, headerInfo: nodes.hudRow },
-  });
+  let gameShell = null;
 
   // Team setup belongs to the shared Stage screen. Keep one preparation DOM
   // tree and move it between Stage / Battle so card selection, backpack
@@ -1491,14 +1476,7 @@
   let skinPurchaseTimer = 0;
   let skinPurchaseDueAt = 0;
   let skinPurchaseRemaining = 0;
-  let stageRenderVersion = 0;
-  let stageBrowseFrame = 0;
-  let stageBrowseInputOwner = "";
-  const STAGE_CARD_POOL_SIZE = 9;
-  let stageCardPool = [];
-  let stageWindowStart = 1;
   let stageBrowseLogical = 1;
-  let stageSettleFrame = 0;
   const COMBAT_STALL_STEP_LIMIT = 18;
 
   const zhRuntimeText = {
@@ -2958,7 +2936,6 @@
     gameShell?.sync();
     window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
     window.WeightPlayBattleCanvas?.sync?.();
-    window.WeightPlayStageArtwork?.sync?.();
     window.scrollTo(0, 0);
   }
 
@@ -3019,7 +2996,7 @@
     renderStageSelector();
     syncSceneOwners();
     requestAnimationFrame(() => {
-      nodes.stageRail.querySelector(".stage-card.is-browsed")?.focus({ preventScroll: true });
+      nodes.stageRail.querySelector('.stage-card[aria-current="true"]')?.focus({ preventScroll: true });
     });
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["stage"] ?? null;
@@ -3028,105 +3005,44 @@
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
 
-  const TRAINING_STAGE_STYLE_PROPERTIES = [
-    "position", "inset", "top", "right", "bottom", "left", "box-sizing",
-    "width", "min-width", "max-width", "height", "min-height", "max-height",
-    "margin", "overflow", "transform", "transform-origin",
-  ];
-  const TRAINING_RESERVE_STYLE_PROPERTIES = [
-    "position", "inset", "top", "right", "bottom", "left", "width",
-    "min-width", "max-width", "height", "min-height", "transform",
-  ];
-
-  function trainingStageReserve() {
-    let reserve = document.querySelector(".wp-stage-physical-reserve");
-    if (!reserve) {
-      reserve = document.createElement("div");
-      reserve.className = "wp-stage-physical-reserve";
-      reserve.setAttribute("aria-hidden", "true");
-      document.body.appendChild(reserve);
-    }
-    return reserve;
-  }
-
-  function clearTrainingStageCanvas() {
-    if (nodes.stagePanel?.getAttribute("data-auto-squad-training-canvas") === "true") {
-      TRAINING_STAGE_STYLE_PROPERTIES.forEach((property) => nodes.stagePanel.style.removeProperty(property));
-      nodes.stagePanel.removeAttribute("data-auto-squad-training-canvas");
-      nodes.stagePanel.removeAttribute("data-wp-logical-stage-canvas");
-    }
-    const reserve = document.querySelector(".wp-stage-physical-reserve[data-auto-squad-training-reserve]");
-    if (reserve) {
-      TRAINING_RESERVE_STYLE_PROPERTIES.forEach((property) => reserve.style.removeProperty(property));
-      reserve.removeAttribute("data-auto-squad-training-reserve");
-    }
-  }
-
-  function updateTrainingStageCanvas() {
-    const active = document.body.classList.contains("squad-stage-select")
-      && nodes.trainingPane?.classList.contains("is-active")
-      && !nodes.stagePanel?.classList.contains("is-hidden");
-    if (!active) return;
-
-    const viewport = window.visualViewport;
-    const width = Math.max(1, viewport?.width || window.innerWidth);
-    const height = Math.max(1, viewport?.height || window.innerHeight);
-    const physicalWidth = Math.min(width, 920);
-    const availableHeight = Math.max(1, height - (window.WeightPlayLayout?.reserveHeight ?? 0));
-    const scale = Math.max(0.01, Math.min(physicalWidth / 390, availableHeight / 788));
-    const logicalWidth = physicalWidth / scale;
-    const logicalHeight = availableHeight / scale;
-    const canvasLeft = Math.max(0, (width - physicalWidth) / 2);
-    const panelDeclarations = {
-      position: "fixed", inset: "auto", top: "0px", right: "auto", bottom: "auto", left: `${canvasLeft}px`,
-      "box-sizing": "border-box", width: `${logicalWidth}px`, "min-width": `${logicalWidth}px`, "max-width": `${logicalWidth}px`,
-      height: `${logicalHeight}px`, "min-height": `${logicalHeight}px`, "max-height": `${logicalHeight}px`, margin: "0", overflow: "hidden",
-      transform: `scale(${scale})`, "transform-origin": "top left",
-    };
-    Object.entries(panelDeclarations).forEach(([property, value]) => nodes.stagePanel.style.setProperty(property, value, "important"));
-    nodes.stagePanel.setAttribute("data-auto-squad-training-canvas", "true");
-    nodes.stagePanel.setAttribute("data-wp-logical-stage-canvas", `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`);
-
-    const reserve = trainingStageReserve();
-    const reserveDeclarations = {
-      position: "fixed", inset: "auto", top: `${availableHeight}px`, right: "auto", bottom: "auto", left: `${canvasLeft}px`,
-      width: `${physicalWidth}px`, "min-width": "0", "max-width": "920px", height: "56px", "min-height": "56px", transform: "none",
-    };
-    Object.entries(reserveDeclarations).forEach(([property, value]) => reserve.style.setProperty(property, value, "important"));
-    reserve.setAttribute("data-auto-squad-training-reserve", "true");
-  }
-
   function setStageTab(tab) {
-    const team = tab === "training";
-    if (!team) {
-      clearSkinPurchaseDecision();
-      clearTrainingStageCanvas();
-    }
-    nodes.stageTabBtn?.classList.toggle("is-active", !team);
-    nodes.trainingTabBtn?.classList.toggle("is-active", team);
-    nodes.stageTabBtn?.setAttribute("aria-selected", String(!team));
-    nodes.trainingTabBtn?.setAttribute("aria-selected", String(team));
-    nodes.stageTabBtn?.setAttribute("tabindex", team ? "-1" : "0");
-    nodes.trainingTabBtn?.setAttribute("tabindex", team ? "0" : "-1");
-    nodes.stageSelectPane?.classList.toggle("is-active", !team);
-    nodes.trainingPane?.classList.toggle("is-active", team);
-    if (nodes.stageSelectPane) nodes.stageSelectPane.hidden = team;
-    if (nodes.trainingPane) nodes.trainingPane.hidden = !team;
-    if (team) {
+    const selectedView = tab === "training" ? "team" : tab;
+    const view = ["stages", "team", "growth"].includes(selectedView) ? selectedView : "stages";
+    const panes = { stages: nodes.stageSelectPane, team: nodes.trainingPane, growth: nodes.growthPane };
+    const buttons = { stages: nodes.stageTabBtn, team: nodes.trainingTabBtn, growth: nodes.growthTabBtn };
+    Object.entries(panes).forEach(([name, pane]) => {
+      const active = name === view;
+      pane?.classList.toggle("is-active", active);
+      if (pane) pane.hidden = !active;
+    });
+    Object.entries(buttons).forEach(([name, button]) => {
+      const active = name === view;
+      button?.classList.toggle("is-active", active);
+      button?.setAttribute("aria-selected", String(active));
+      button?.setAttribute("aria-current", active ? "page" : "false");
+      button?.setAttribute("tabindex", active ? "0" : "-1");
+    });
+    if (view !== "team") clearSkinPurchaseDecision();
+
+    if (view === "team") {
       mountPreparationToTeam();
       syncTeamPreparationSurface();
       if (nodes.stageSelectTitle) nodes.stageSelectTitle.textContent = teamTabLabel();
       renderTrainingRoster();
       if (state.activeRun) renderPrepScreen();
-      requestAnimationFrame(() => requestAnimationFrame(updateTrainingStageCanvas));
+    } else if (view === "growth") {
+      if (nodes.stageSelectTitle) nodes.stageSelectTitle.textContent = t("trainingTitle");
+      if (nodes.teamGrowthDetails) nodes.teamGrowthDetails.open = true;
+      renderCosmeticSection();
+      renderTrainingRoster();
     } else {
       if (nodes.stageSelectTitle) nodes.stageSelectTitle.textContent = t("chooseStage");
-      requestAnimationFrame(() => renderStageSelector(true));
+      renderStageSelector(true);
     }
   }
 
   function handleStageTabKeydown(event) {
-    const tabs = [nodes.stageTabBtn, nodes.trainingTabBtn].filter(Boolean);
+    const tabs = [nodes.trainingTabBtn, nodes.stageTabBtn, nodes.growthTabBtn].filter(Boolean);
     const currentIndex = tabs.indexOf(event.currentTarget);
     if (currentIndex < 0 || tabs.length < 2) return;
 
@@ -3144,7 +3060,7 @@
 
     event.preventDefault();
     const target = tabs[targetIndex];
-    setStageTab(target === nodes.trainingTabBtn ? "training" : "stages");
+    setStageTab(target.dataset.stageView || "stages");
     target.focus({ preventScroll: true });
   }
 
@@ -3180,393 +3096,62 @@
     return REGION_METADATA.find((region) => region.id === Number(regionValue)) || REGION_METADATA[0];
   }
 
-  function selectStage(stage, shouldScroll = true) {
+  function recommendedStage() {
     save = normalizeSave(save);
-    save.selectedStage = Math.max(1, Math.min(save.unlockedStage, Number(stage) || 1));
-    saveSave();
-    renderStageSelector(shouldScroll);
+    return save.completedStages.includes(save.selectedStage)
+      ? Array.from({ length: save.unlockedStage }, (_, index) => index + 1).find((stage) => !save.completedStages.includes(stage)) || save.selectedStage
+      : save.selectedStage;
   }
 
-  function activateStageCard(card) {
-    const pendingStage = Number(card?.dataset.wpPendingStage);
-    const stage = Number.isInteger(pendingStage) ? pendingStage : Number(card?.dataset.stage);
-    if (card?.dataset) delete card.dataset.wpPendingStage;
-    if (!Number.isInteger(stage) || stage < 1 || stage > STAGE_COUNT) return;
-    save = normalizeSave(save);
-    if (stage > save.unlockedStage) {
-      stageBrowseLogical = stage;
-      syncStageCards();
-      centerStageCard(card);
-      return;
-    }
+  function animalAutoSquadStageConfig() {
+    return {
+      count: STAGE_COUNT,
+      poster: "/assets/animal-auto-squad-cover-block-v2.webp",
+      background: "/assets/lobby-block-atmosphere.svg",
+      stage(index) {
+        const stageNumber = index + 1;
+        const definition = stageDefinition(stageNumber);
+        const region = regionDefinition(definition.region);
+        const firstWave = enemyWaveStats(stageNumber, 1);
+        const finalWave = enemyWaveStats(stageNumber, WAVES_PER_STAGE);
+        const locked = stageNumber > save.unlockedStage;
+        const cleared = save.completedStages.includes(stageNumber);
+        const boss = Boolean(definition.bossId);
+        const status = locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady");
+        const encounter = `${t("stageWaveCount", { count: WAVES_PER_STAGE })}${boss ? ` · ${t("stageBoss")}` : ""} · ${t("stageEnemyRange", { first: firstWave.count, last: finalWave.count })}`;
+        return {
+          id: stageNumber,
+          kicker: localizedField(region, "name"),
+          title: stageLabel(stageNumber),
+          subtitle: localizedField(definition, "name"),
+          status,
+          summary: encounter,
+          details: [encounter, status],
+          locked,
+          cleared,
+          poster: "/assets/animal-auto-squad-cover-block-v2.webp",
+        };
+      },
+    };
+  }
 
-    // Commit the logical stage before starting the run. Re-rendering the
-    // virtualized rail between native activation and startExpedition() can
-    // recycle the clicked card and let a stale browsed owner win the race.
-    save.selectedStage = stage;
+  function startExpeditionFromSharedStage(index) {
+    save = normalizeSave(save);
+    const stageNumber = Number(index) + 1;
+    if (!Number.isInteger(stageNumber) || stageNumber < 1 || stageNumber > save.unlockedStage) return;
+    save.selectedStage = stageNumber;
     saveSave();
     startExpedition();
   }
 
-  function stageWindowLimit() {
-    return Math.max(1, STAGE_COUNT - STAGE_CARD_POOL_SIZE + 1);
-  }
-
-  function desiredStageWindow(stage) {
-    return Math.max(1, Math.min(stageWindowLimit(), Math.round(stage) - Math.floor(STAGE_CARD_POOL_SIZE / 2)));
-  }
-
-  function bindStageCard(card, stage) {
-    const definition = stageDefinition(stage);
-    const region = regionDefinition(definition.region);
-    const locked = stage > save.unlockedStage;
-    const cleared = save.completedStages.includes(stage);
-    const browsed = stage === Math.round(stageBrowseLogical);
-    const firstWave = enemyWaveStats(stage, 1);
-    const finalWave = enemyWaveStats(stage, WAVES_PER_STAGE);
-    const enemyRange = t("stageEnemyRange", { first: firstWave.count, last: finalWave.count });
-    const stageName = localizedField(definition, "name");
-    const regionName = localizedField(region, "name");
-    const bossText = definition.bossId ? ` \u00b7 ${t("stageBoss")}` : "";
-    card.className = `stage-card${stage === save.selectedStage ? " is-selected" : ""}${browsed ? " is-browsed" : ""}${cleared ? " is-cleared" : ""}${definition.bossId ? " is-boss-stage" : ""}`;
-    card.dataset.stage = String(stage);
-    card.dataset.region = String(definition.region);
-    card.dataset.boss = definition.bossId ? "true" : "false";
-    card.style.setProperty("--stage-overlay", region.overlay);
-    card.setAttribute("aria-disabled", String(locked));
-    card.setAttribute("aria-posinset", String(stage));
-    card.setAttribute("aria-setsize", String(STAGE_COUNT));
-    card.tabIndex = browsed ? 0 : -1;
-    if (browsed) card.setAttribute("aria-current", "true");
-    else card.removeAttribute("aria-current");
-    card.innerHTML = `<em>${regionName}</em><strong>${stageLabel(stage)}</strong><span>${stageName}</span><small>${t("stageWaveCount", { count: WAVES_PER_STAGE })}${bossText}</small><small>${enemyRange}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
-    card.setAttribute("aria-label", `${regionName}. ${stageLabel(stage)}. ${stageName}. ${t("stageWaveCount", { count: WAVES_PER_STAGE })}${bossText}. ${enemyRange}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
-  }
-
-  function createStageCard(poolIndex) {
-    const card = document.createElement("button");
-    card.type = "button";
-    card.dataset.poolNode = `node-${poolIndex}`;
-    card.addEventListener("click", () => activateStageCard(card));
-    return card;
-  }
-
-  function syncStageCards() {
-    stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.stage)));
-  }
-
-  function moveStageWindow(targetStart) {
-    const rail = nodes.stageRail;
-    const target = Math.max(1, Math.min(stageWindowLimit(), targetStart));
-    let recycled = 0;
-    while (stageWindowStart < target) {
-      const card = rail.firstElementChild;
-      stageWindowStart += 1;
-      rail.append(card);
-      bindStageCard(card, stageWindowStart + stageCardPool.length - 1);
-      recycled += 1;
-    }
-    while (stageWindowStart > target) {
-      const card = rail.lastElementChild;
-      stageWindowStart -= 1;
-      rail.prepend(card);
-      bindStageCard(card, stageWindowStart);
-      recycled += 1;
-    }
-    stageCardPool = [...rail.children];
-    rail.dataset.wpStageWindowStart = String(stageWindowStart);
-    rail.dataset.wpStageWindowEnd = String(stageWindowStart + stageCardPool.length - 1);
-    if (recycled) rail.dataset.wpStageRecycleCount = String(Number(rail.dataset.wpStageRecycleCount || 0) + recycled);
-  }
-
-  function ensureStageWindow(stage) {
-    moveStageWindow(desiredStageWindow(stage));
-    syncStageCards();
-  }
-
-  function stageRailGeometry() {
-    const rail = nodes.stageRail;
-    const cards = [...rail.children];
-    const railRect = rail.getBoundingClientRect();
-    const first = cards[0]?.getBoundingClientRect();
-    const second = cards[1]?.getBoundingClientRect();
-    const pitch = first && second ? Math.abs((second.left + second.width / 2) - (first.left + first.width / 2)) : 278;
-    return { rail, center: railRect.left + railRect.width / 2, pitch: pitch || 278 };
-  }
-
-  function positionStageRail(logical) {
-    const value = Math.max(1, Math.min(STAGE_COUNT, logical));
-    const anchor = Math.round(value);
-    moveStageWindow(desiredStageWindow(anchor));
-    const card = nodes.stageRail.querySelector(`[data-stage="${anchor}"]`);
-    if (!card) return value;
-    card.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" });
-    const geometry = stageRailGeometry();
-    nodes.stageRail.scrollLeft += (value - anchor) * geometry.pitch;
-    nodes.stageRail.dataset.wpStageDragLogical = value.toFixed(4);
-    return value;
-  }
-
-  function renderStageSelector(shouldScroll = true) {
+  function renderStageSelector() {
     if (!nodes.stageRail) return;
-    if (nodes.trainingPane?.classList.contains("is-active")) return;
-    const renderVersion = ++stageRenderVersion;
     save = normalizeSave(save);
-    nodes.stageSelectTitle.textContent = t("chooseStage");
     nodes.stageProgressText.textContent = t("stageProgress", { unlocked: save.unlockedStage, total: STAGE_COUNT });
     nodes.stageSetupText.textContent = t("stageSetup");
-    // Recommend the first playable uncleared expedition while preserving
-    // save.selectedStage as the last committed Battle choice.
-    stageBrowseLogical = save.completedStages.includes(save.selectedStage)
-      ? Array.from({ length: save.unlockedStage }, (_, index) => index + 1).find((stage) => !save.completedStages.includes(stage)) || save.selectedStage
-      : save.selectedStage;
-    stageWindowStart = desiredStageWindow(stageBrowseLogical);
-    nodes.stageRail.innerHTML = "";
-    stageCardPool = Array.from({ length: Math.min(STAGE_CARD_POOL_SIZE, STAGE_COUNT) }, (_, offset) => {
-      const card = createStageCard(offset);
-      bindStageCard(card, stageWindowStart + offset);
-      nodes.stageRail.appendChild(card);
-      return card;
-    });
-    nodes.stageRail.dataset.wpStageVirtualized = "bounded-recycle";
-    nodes.stageRail.dataset.wpStagePoolSize = String(stageCardPool.length);
-    nodes.stageRail.dataset.wpStageTotal = String(STAGE_COUNT);
-    moveStageWindow(stageWindowStart);
-
-    if (shouldScroll) {
-      requestAnimationFrame(() => {
-        if (renderVersion !== stageRenderVersion) return;
-        nodes.stageRail.querySelector(".stage-card.is-browsed")?.scrollIntoView({ block: "nearest", inline: "center" });
-        requestAnimationFrame(() => {
-          if (renderVersion !== stageRenderVersion) return;
-          centerStageCard(nodes.stageRail.querySelector(".stage-card.is-browsed"));
-        });
-      });
-    }
-  }
-
-  function updateBrowsedStageCard() {
-    const rail = nodes.stageRail;
-    if (!rail || !rail.getClientRects().length) return;
-    const cards = [...rail.querySelectorAll(".stage-card")];
-    if (!cards.length) return;
-    const railRect = rail.getBoundingClientRect();
-    const railCenter = railRect.left + railRect.width / 2;
-    let nearest = cards[0];
-    let nearestDistance = Infinity;
-    cards.forEach((card) => {
-      const rect = card.getBoundingClientRect();
-      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
-      if (distance < nearestDistance) {
-        nearest = card;
-        nearestDistance = distance;
-      }
-    });
-    const focusedCard = document.activeElement?.closest?.(".stage-card");
-    setBrowsedStageOwner(nearest);
-    if (focusedCard && focusedCard !== nearest && rail.contains(focusedCard)) {
-      nearest.focus({ preventScroll: true });
-    }
-  }
-
-  function setBrowsedStageOwner(owner) {
-    if (!nodes.stageRail || !owner) return;
-    stageBrowseLogical = Number(owner.dataset.stage);
-    [...nodes.stageRail.querySelectorAll(".stage-card")].forEach((card) => {
-      const browsed = card === owner;
-      card.classList.toggle("is-browsed", browsed);
-      card.tabIndex = browsed ? 0 : -1;
-      if (browsed) card.setAttribute("aria-current", "true");
-      else card.removeAttribute("aria-current");
-    });
-  }
-
-  function centerStageCard(owner) {
-    const rail = nodes.stageRail;
-    if (!rail || !owner || !rail.contains(owner)) return;
-    const previousSnapType = rail.style.scrollSnapType;
-    const previousScrollBehavior = rail.style.scrollBehavior;
-    rail.style.scrollSnapType = "none";
-    rail.style.scrollBehavior = "auto";
-    const reconcile = () => {
-      if (!rail.contains(owner)) return;
-      const railRect = rail.getBoundingClientRect();
-      const ownerRect = owner.getBoundingClientRect();
-      const centerDelta = ownerRect.left + ownerRect.width / 2
-        - (railRect.left + railRect.width / 2);
-      const canvasScale = owner.offsetWidth ? ownerRect.width / owner.offsetWidth : 1;
-      if (Math.abs(centerDelta) > 0.5) rail.scrollLeft += centerDelta / Math.max(canvasScale, 0.01);
-    };
-    reconcile();
-    requestAnimationFrame(() => {
-      reconcile();
-      rail.style.scrollSnapType = previousSnapType;
-      rail.style.scrollBehavior = previousScrollBehavior;
-    });
-  }
-
-  function handleStageCardKeydown(event) {
-    const card = event.target.closest(".stage-card");
-    if (!card || !nodes.stageRail?.contains(card)) return;
-    const rtl = getComputedStyle(nodes.stageRail).direction === "rtl"
-      || document.documentElement.dir === "rtl";
-    const currentStage = Number(card.dataset.stage);
-    let targetStage = null;
-    if (event.key === "ArrowRight") targetStage = currentStage + (rtl ? -1 : 1);
-    else if (event.key === "ArrowLeft") targetStage = currentStage + (rtl ? 1 : -1);
-    else if (event.key === "Home") targetStage = 1;
-    else if (event.key === "End") targetStage = STAGE_COUNT;
-    if (targetStage === null) return;
-
-    event.preventDefault();
-    stageBrowseInputOwner = "keyboard";
-    cancelAnimationFrame(stageBrowseFrame);
-    stageBrowseFrame = 0;
-    targetStage = Math.max(1, Math.min(STAGE_COUNT, targetStage));
-    stageBrowseLogical = targetStage;
-    ensureStageWindow(targetStage);
-    const target = nodes.stageRail.querySelector(`[data-stage="${targetStage}"]`);
-    setBrowsedStageOwner(target);
-    centerStageCard(target);
-    target.focus({ preventScroll: true });
-    requestAnimationFrame(() => {
-      if (!nodes.stageRail?.contains(target)) {
-        stageBrowseInputOwner = "";
-        return;
-      }
-      setBrowsedStageOwner(target);
-      centerStageCard(target);
-      target.focus({ preventScroll: true });
-      requestAnimationFrame(() => {
-        stageBrowseInputOwner = "";
-      });
-    });
-  }
-
-  function scheduleStageBrowseUpdate() {
-    if (stageBrowseFrame || stageBrowseInputOwner) return;
-    stageBrowseFrame = requestAnimationFrame(() => {
-      stageBrowseFrame = 0;
-      updateBrowsedStageCard();
-    });
-  }
-
-  function installVirtualStageDrag() {
-    const rail = nodes.stageRail;
-    if (!rail || rail.dataset.wpStageVirtualDrag === "true") return;
-    rail.dataset.wpStageVirtualDrag = "true";
-    rail.dataset.wpStageCenterObserver = "manual";
-    let pointerId = null;
-    let startX = 0;
-    let lastX = 0;
-    let logical = 1;
-    let moved = false;
-    const restore = () => {
-      // The bounded virtual rail owns its own drag and 340ms settle. Native
-      // CSS snap retains recycled anchors and can move the rail after the
-      // logical owner has committed, so it must not become a second writer.
-      rail.style.setProperty("scroll-behavior", "auto", "important");
-      rail.style.setProperty("scroll-snap-type", "none", "important");
-      rail.classList.remove("wp-stage-dragging");
-      delete rail.dataset.wpStageSettling;
-    };
-    restore();
-    rail.addEventListener("pointerdown", (event) => {
-      const activationCard = event.target?.closest?.(".stage-card");
-      if (activationCard && rail.contains(activationCard)) {
-        // Capture the logical card before any native scroll/virtual recycling
-        // can reuse this DOM node for another stage before click is dispatched.
-        activationCard.dataset.wpPendingStage = activationCard.dataset.stage;
-      }
-      if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
-      cancelAnimationFrame(stageSettleFrame);
-      stageSettleFrame = 0;
-      cancelAnimationFrame(stageBrowseFrame);
-      stageBrowseFrame = 0;
-      stageBrowseInputOwner = "pointer";
-      pointerId = event.pointerId;
-      startX = lastX = event.clientX;
-      logical = stageBrowseLogical;
-      moved = false;
-      rail.style.setProperty("scroll-behavior", "auto", "important");
-      rail.style.setProperty("scroll-snap-type", "none", "important");
-      rail.dataset.wpDragDown = "1";
-      event.stopImmediatePropagation();
-    }, true);
-    rail.addEventListener("keydown", (event) => {
-      if (event.repeat || (event.key !== "Enter" && event.key !== " ")) return;
-      const activationCard = event.target?.closest?.(".stage-card");
-      if (activationCard && rail.contains(activationCard)) {
-        activationCard.dataset.wpPendingStage = activationCard.dataset.stage;
-      }
-    }, true);
-    document.addEventListener("pointermove", (event) => {
-      if (event.pointerId !== pointerId) return;
-      const delta = event.clientX - lastX;
-      lastX = event.clientX;
-      if (!moved && Math.abs(event.clientX - startX) > 4) {
-        moved = true;
-        rail.classList.add("wp-stage-dragging");
-      }
-      if (moved) {
-        if (event.cancelable) event.preventDefault();
-        logical = positionStageRail(logical - delta / stageRailGeometry().pitch);
-        stageBrowseLogical = logical;
-        syncStageCards();
-      }
-      event.stopImmediatePropagation();
-    }, true);
-    const finish = (event) => {
-      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
-      pointerId = null;
-      rail.dataset.wpDragDown = "0";
-      if (!moved) {
-        if (event.type !== "pointerup") {
-          rail.querySelectorAll(".stage-card[data-wp-pending-stage]").forEach((card) => delete card.dataset.wpPendingStage);
-        }
-        stageBrowseInputOwner = "";
-        restore();
-        return;
-      }
-      if (event.cancelable) event.preventDefault();
-      const from = logical;
-      const target = Math.max(1, Math.min(STAGE_COUNT, Math.round(from)));
-      const started = performance.now();
-      rail.dataset.wpStageSettling = "true";
-      const settle = (now) => {
-        const progress = Math.min(1, (now - started) / 340);
-        const eased = progress * progress * (3 - 2 * progress);
-        stageBrowseLogical = positionStageRail(from + (target - from) * eased);
-        if (progress < 1) stageSettleFrame = requestAnimationFrame(settle);
-        else {
-          stageSettleFrame = 0;
-          stageBrowseLogical = target;
-          ensureStageWindow(target);
-          const owner = rail.querySelector(`[data-stage="${target}"]`);
-          setBrowsedStageOwner(owner);
-          centerStageCard(owner);
-          owner?.focus({ preventScroll: true });
-          restore();
-          requestAnimationFrame(() => {
-            if (!rail.contains(owner)) {
-              stageBrowseInputOwner = "";
-              return;
-            }
-            setBrowsedStageOwner(owner);
-            centerStageCard(owner);
-            owner.focus({ preventScroll: true });
-            requestAnimationFrame(() => {
-              stageBrowseInputOwner = "";
-            });
-          });
-        }
-      };
-      stageSettleFrame = requestAnimationFrame(settle);
-      moved = false;
-      event.stopImmediatePropagation();
-    };
-    document.addEventListener("pointerup", finish, true);
-    document.addEventListener("pointercancel", finish, true);
+    stageBrowseLogical = recommendedStage();
+    gameShell?.refreshStage(stageBrowseLogical);
+    gameShell?.updateMainProgress();
   }
 
   function renderCosmeticSection() {
@@ -3851,7 +3436,8 @@
     nodes.stageBackBtn.setAttribute("aria-label", t("back"));
     if (nodes.stageTabBtn) nodes.stageTabBtn.querySelector("span").textContent = t("stageTab");
     if (nodes.trainingTabBtn) nodes.trainingTabBtn.querySelector("span").textContent = teamTabLabel();
-    document.querySelector(".stage-tabs")?.setAttribute("aria-label", `${t("stageTab")} / ${teamTabLabel()}`);
+    if (nodes.growthTabBtn) nodes.growthTabBtn.querySelector("span").textContent = t("trainingTab");
+    document.querySelector(".stage-tabs")?.setAttribute("aria-label", `${teamTabLabel()} / ${t("stageTab")} / ${t("trainingTab")}`);
     if (nodes.teamEmptyState) nodes.teamEmptyState.textContent = t("stageSetup");
     const growthSummary = nodes.teamGrowthDetails?.querySelector("summary");
     if (growthSummary) growthSummary.textContent = t("trainingTitle");
@@ -6571,20 +6157,14 @@
 
   // Event Listeners Registration
   function setupEvents() {
-    installVirtualStageDrag();
     nodes.showStageBtn.addEventListener("click", showStageSelection);
     nodes.showStageBtn.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
     nodes.stageBackBtn.addEventListener("click", renderMenu);
-    nodes.stageTabBtn?.addEventListener("click", () => setStageTab("stages"));
-    nodes.trainingTabBtn?.addEventListener("click", () => setStageTab("training"));
-    nodes.stageTabBtn?.addEventListener("keydown", handleStageTabKeydown);
-    nodes.trainingTabBtn?.addEventListener("keydown", handleStageTabKeydown);
-    nodes.stageRail.addEventListener("scroll", scheduleStageBrowseUpdate, { passive: true });
-    nodes.stageRail.addEventListener("keydown", (event) => {
-      if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".stage-card")) event.preventDefault();
-      handleStageCardKeydown(event);
+    [nodes.trainingTabBtn, nodes.stageTabBtn, nodes.growthTabBtn].forEach((button) => {
+      button?.addEventListener("click", () => setStageTab(button.dataset.stageView));
+      button?.addEventListener("keydown", handleStageTabKeydown);
     });
     nodes.rerollShopBtn.addEventListener("click", rerollShop);
     nodes.defeatRevivePanel.addEventListener("keydown", (event) => trapBattleDecisionFocus(nodes.defeatRevivePanel, event));
@@ -6697,25 +6277,6 @@
     const viewportHeight = viewport?.height >= window.innerHeight * 0.75 ? viewport.height : window.innerHeight;
     document.documentElement.style.setProperty("--squad-vw", `${viewportWidth}px`);
     document.documentElement.style.setProperty("--squad-vh", `${viewportHeight}px`);
-    const availableWidth = Math.max(1, Math.min(viewportWidth, 920));
-    const availableHeight = Math.max(1, viewportHeight - (window.WeightPlayLayout?.reserveHeight ?? 0));
-    const canvasLeft = Math.max(0, (viewportWidth - availableWidth) / 2);
-    const stageScale = Math.max(0.01, Math.min(availableWidth / 390, availableHeight / 788));
-    const stageLogicalWidth = availableWidth / stageScale;
-    const stageLogicalHeight = availableHeight / stageScale;
-    const battleScale = Math.max(0.01, Math.min(availableWidth / 382, availableHeight / 780));
-    const battleLogicalWidth = availableWidth / battleScale;
-    const battleLogicalHeight = availableHeight / battleScale;
-    document.documentElement.style.setProperty("--squad-stage-scale", String(stageScale));
-    document.documentElement.style.setProperty("--squad-stage-width", `${stageLogicalWidth}px`);
-    document.documentElement.style.setProperty("--squad-stage-height", `${stageLogicalHeight}px`);
-    document.documentElement.style.setProperty("--squad-stage-rendered-width", `${availableWidth}px`);
-    document.documentElement.style.setProperty("--squad-canvas-left", `${canvasLeft}px`);
-    document.documentElement.style.setProperty("--squad-battle-width", `${battleLogicalWidth}px`);
-    document.documentElement.style.setProperty("--squad-battle-height", `${battleLogicalHeight}px`);
-    document.documentElement.style.setProperty("--squad-battle-scale", String(battleScale));
-    // The external return needs both a physical target floor and the enlarged Canvas size.
-    updateTrainingStageCanvas();
   }
 
   updateBattleViewport();
@@ -6723,6 +6284,18 @@
   window.visualViewport?.addEventListener("resize", updateBattleViewport, { passive: true });
 
   // Initialization
+  gameShell = window.mountAnimalAutoSquadFrame({
+    stageConfig: animalAutoSquadStageConfig(),
+    selectedStage: () => recommendedStage() - 1,
+    onSelect: (index) => { stageBrowseLogical = index + 1; },
+    onStart: startExpeditionFromSharedStage,
+    mainProgress: () => ({
+      unlocked: save.unlockedStage,
+      total: STAGE_COUNT,
+      valueText: t("stageProgress", { unlocked: save.unlockedStage, total: STAGE_COUNT }),
+      title: t("bestExpedition"),
+    }),
+  });
   startApp();
 
 

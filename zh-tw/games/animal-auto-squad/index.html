@@ -8,7 +8,8 @@
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="weightplay-game-version" content="v39" />
+    <meta name="weightplay-game-version" content="v40" />
+    <meta name="weightplay-interface-version" content="9" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#0d1b15" />
     <meta name="description" content="《動物自走小隊》是一款以戰前決策為核心的編成策略遊戲。玩家可以解鎖並訓練十名動物英雄，把最多六名角色配置在前後兩排，再觀看小隊依照站位與能力自動交戰。戰役分為多個關卡，依序穿越荊棘林、水晶洞窟、沉沒遺跡、燼火峰、月光城塞與虛空王冠。每關包含五波固定設計的敵人，第 5、10、15、20、25、30..." />
@@ -43,16 +44,17 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260716-kids-stage-swipe3" />
-  <link rel="stylesheet" href="style.css?v=20261011-auto-squad-command-v39" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
-    <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+  <link rel="stylesheet" href="style.css?v=20261021-auto-squad-command-v40-interface9" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-style />
+    <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261017-shared-play-spacing1" />
+    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20261018-shared-result-hidden-fix1" data-wp-battle-standard /><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
+  <link rel="stylesheet" href="interface9.css?v=20261021-auto-squad-i9-v1">
+<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-  <body data-tutorial-auto-show="false">
-    <main class="squad-app" data-no-mobile-immersive="true" data-wp-game-shell-root data-wp-frame-root>
+  <body data-tutorial-auto-show="false" data-wp-game-id="animal-auto-squad" data-wp-game-version="v40" data-wp-interface-version="9">
+    <main class="squad-app" data-no-mobile-immersive="true" data-wp-game-shell-root data-wp-frame-root data-wp-play-ui="1">
       <header class="topbar" data-wp-shell-header="main">
         <a id="backToLobbyBtn" class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand">
@@ -94,7 +96,7 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="panel stage-panel is-hidden" data-screen="stage" data-wp-shell-slot="stage" data-wp-standard-stage-screen data-wp-stage-workspace data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" aria-labelledby="stageSelectTitle">
+      <section id="stagePanel" class="panel stage-panel is-hidden" data-screen="stage" aria-labelledby="stageSelectTitle">
         <div class="stage-panel-head" data-wp-shell-header="stage">
           <button id="stageBackBtn" class="stage-back-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
           <div>
@@ -102,10 +104,11 @@
             <span id="stageProgressText">1 / 6</span>
           </div>
         </div>
-        <div class="stage-tabs" role="tablist" aria-label="Expedition management">
-          <button id="stageTabBtn" class="stage-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="stageSelectPane">⚔ <span>Stages</span></button>
-          <button id="trainingTabBtn" class="stage-tab" type="button" role="tab" aria-selected="false" aria-controls="trainingPane">✦ <span>Team</span></button>
-        </div>
+        <nav id="stageTabs" class="stage-tabs" data-wp-frame-nav aria-label="Expedition management">
+          <button id="trainingTabBtn" class="stage-tab" type="button" data-stage-view="team" data-wp-frame-action="tab" aria-controls="trainingPane">✦ <span>Team</span></button>
+          <button id="stageTabBtn" class="stage-tab is-active" type="button" data-stage-view="stages" data-wp-frame-action="tab" aria-current="page" aria-controls="stageSelectPane">⚔ <span>Stages</span></button>
+          <button id="growthTabBtn" class="stage-tab" type="button" data-stage-view="growth" data-wp-frame-action="tab" aria-controls="growthPane">✚ <span>Training</span></button>
+        </nav>
         <div class="stage-workspace">
           <section id="stageSelectPane" class="stage-pane is-active" role="tabpanel" aria-labelledby="stageTabBtn">
             <p id="stageSetupText" class="stage-setup-text">Swipe through six regions, choose an unlocked stage, then prepare your formation.</p>
@@ -135,11 +138,12 @@
               </div>
             </details>
           </section>
+          <section id="growthPane" class="stage-pane growth-pane" role="tabpanel" aria-labelledby="growthTabBtn" hidden></section>
         </div>
       </section>
       <!-- Active Play Viewport Container -->
       <button id="quitRunBtn" class="secondary-btn play-return battle-external-return" data-wp-return="battle" type="button" aria-label="Quit expedition" data-ui="quitRun">&larr;</button>
-      <section id="gamePanel" class="panel game-panel battle-screen play-area is-hidden" data-screen="battle" data-wp-shell-slot="battle" data-wp-logical-battle-canvas data-wp-battle-return-only data-play-viewport data-wp-canvas-max-width="920">
+      <section id="gamePanel" class="panel game-panel battle-screen play-area is-hidden" data-screen="battle" data-play-viewport>
 
         <!-- HUD Line -->
         <div class="hud-row">
@@ -253,16 +257,18 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260711-auto-squad-guide1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1"></script>
-    <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-  <script src="game.js?v=20261011-auto-squad-command-v39&wp-audio=1.0.0"></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-script></script>
+    <script src="../../src/battle-canvas-standard.js?v=20261018-shared-result-hidden-fix1" data-wp-battle-standard></script>
+    <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
+    <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+    <script src="frame.js?v=20261021-auto-squad-i9-v1"></script>
+  <script src="game.js?v=20261021-auto-squad-command-v40-interface9&wp-audio=1.0.0"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
           if (document.querySelector("script[data-squad-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
+          script.src = "../../src/game-page-info.js?v=20261001-text140-locale-guide-v1";
           script.dataset.squadGameInfo = "internal";
           script.async = true;
           document.body.appendChild(script);
@@ -275,8 +281,8 @@
 <section class="game-page-info game-page-info-static" aria-label="自走小隊 遊戲資訊">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2 data-wp-game-title data-runtime-localize="off">自走小隊</h2><p>《動物自走小隊》是一款以戰前決策為核心的編成策略遊戲。玩家可以解鎖並訓練十名動物英雄，把最多六名角色配置在前後兩排，再觀看小隊依照站位與能力自動交戰。戰役分為多個關卡，依序穿越荊棘林、水晶洞窟、沉沒遺跡、燼火峰、月光城塞與虛空王冠。每關包含五波固定設計的敵人，第 5、10、15、20、25、30 關則各有一名專屬區域 Boss。</p><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>雙排小隊編成</span><span>五波自動戰鬥</span><span>30 關動物戰役</span></div></div>
-
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2 data-wp-game-title data-runtime-localize="off">自走小隊</h2><p>《動物自走小隊》是一款以戰前決策為核心的編成策略遊戲。玩家可以解鎖並訓練十名動物英雄，把最多六名角色配置在前後兩排，再觀看小隊依照站位與能力自動交戰。戰役分為多個關卡，依序穿越荊棘林、水晶洞窟、沉沒遺跡、燼火峰、月光城塞與虛空王冠。每關包含五波固定設計的敵人，第 5、10、15、20、25、30 關則各有一名專屬區域 Boss。</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>雙排小隊編成</span><span>五波自動戰鬥</span><span>30 關動物戰役</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>自走小隊編成策略</strong></div><div class="game-info-fact"><span>類型</span><strong>自走戰鬥 · 編成策略 · 角色成長 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>中等</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>5-10 分鐘</strong></div></div>
     </div>
 
@@ -293,10 +299,10 @@
       <div class="game-info-section"><h3>關卡與難度成長</h3><p>第 1-5 關以較小的荊棘林敵群教導最前目標、後排威脅、守衛與兩排陣形，第 5 關荊棘王座是第一個 Boss 檢查點。第 6-15 關加入水晶洞窟與沉沒遺跡敵人，開始出現後排攻擊、吸血、整排橫掃與高耐久守衛。</p>
 <p>第 16-25 關增加同時上場的敵人數與能力組合。燼火峰會混合衝鋒野豬、黑曜重獸、裂隙迅獸與符文狼；月光城塞則加入夜影黑豹、月蝕蝙蝠、符文烏鴉與暗影美洲豹。Boss 波還帶有護衛，因此不能只處理中央首領。</p>
 <p>第 26-30 關會使用完整的虛空王冠敵人陣容。第 29 關最多同時出現六名敵人，與玩家的最大編隊相同；第 30 關最後一波讓虛空王冠獅皇與符文、月蝕及暗影護衛同場，檢驗整排輸出、恢復、傷害與整段戰役累積的永久訓練。</p></div>
-      <div class="game-info-section"><h3>開發設計理念</h3><p>自動戰鬥是刻意的設計選擇：戰鬥執行保持精簡，讓主要思考集中在陣形、定位互補、攻擊目標與永久訓練。勝利後直接銜接下一波，是為了讓五波像一場完整遠征，而不是五次反覆進出選單；失敗後重新開放準備，則讓玩家能回應問題，不必一直觀看同一套失敗配置。手機採點選角色再點格子的方式，桌面也能使用相同卡片操作。相較於回合制的《動物符文戰棋》或需要即時移動的《動物水晶生存者》，本作要求玩家先完成計畫，再從自動戰鬥結果判斷計畫是否有效。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>自動戰鬥是刻意的設計選擇：戰鬥執行保持精簡，讓主要思考集中在陣形、定位互補、攻擊目標與永久訓練。勝利後直接銜接下一波，是為了讓五波像一場完整遠征，而不是五次反覆進出選單；失敗後重新開放準備，則讓玩家能回應問題，不必一直觀看同一套失敗配置。手機採點選角色再點格子的方式，桌面也能使用相同卡片操作。相較於回合制的《動物符文戰棋》或需要即時移動的《勇闖地監》，本作要求玩家先完成計畫，再從自動戰鬥結果判斷計畫是否有效。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家與存檔說明</h3><p>後期關卡會同時組合六人陣形、特殊攻擊目標、永久升級、戰鬥失敗壓力、Boss 能力與可選鑽石決策。關卡進度、上次出場陣容與位置、訓練金幣、團隊等級、已解鎖角色、角色永久等級、已完成關卡與外觀選擇，都會儲存在目前瀏覽器本機；基本遊玩不需要登入。清除本站的瀏覽器儲存資料可能會移除這些本機進度。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>動物自走小隊可以免費玩嗎？</dt><dd>可以。戰役能直接在 WeightPlay 瀏覽器頁面遊玩，不要求購買或登入。</dd></div><div><dt>每一關的目標是什麼？</dt><dd>配置能撐過五波連續敵人的小隊。通過第五波便會保存關卡並解鎖下一關；每五關的最後一波都有區域 Boss。</dd></div><div><dt>戰鬥時需要手動攻擊嗎？</dt><dd>不用。玩家在戰前決定角色、前後排與臨時升級，之後動物會依照能力自動攻擊、治療、加盾與觸發效果。</dd></div><div><dt>每波之間都能重新排隊嗎？</dt><dd>勝利會直接進入下一波。只有失敗或平手且仍有生命時，才會回到準備畫面，因此初始陣容要能面對不只一種敵人排列。</dd></div><div><dt>輸掉一波會怎樣？</dt><dd>本場會失去一點生命。生命尚未歸零時，可以調整陣容後再挑戰同一波；生命歸零時可結束遠征，或使用可選的 5 顆鑽石復活。</dd></div><div><dt>鑽石可以做什麼？</dt><dd>鑽石只提供可選功能，包括遠征復活、解鎖兩名進階英雄與黃金外觀；一般關卡進度不需要鑽石。</dd></div><div><dt>哪些進度會保存？</dt><dd>瀏覽器會在本機保存已解鎖與完成關卡、上次出場陣容與位置、團隊等級與經驗、訓練金幣、已解鎖角色、角色永久等級、遠征紀錄與外觀選擇。</dd></div><div><dt>羈絆與戰鬥提示代表什麼？</dt><dd>湊齊相同定位可啟動方塊小隊羈絆並獲得小幅自動戰鬥加成；連攜命中會累積，連續命中達到第 4 次時顯示暴擊並破壞方塊。首領波開始時會先顯示警示。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-orb-fortress" href="/zh-tw/games/animal-orb-fortress/"><span class="game-info-related-poster"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" data-final-src="/assets/weightplay-logo.png" alt="星珠要塞" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">星珠要塞</strong><span>《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的防守戰役。</span></span></a><a class="game-info-related-card" data-game-id="animal-cratebound" href="/zh-tw/games/animal-cratebound/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-cratebound.webp" data-final-src="/assets/weightplay-logo.png" alt="方舟搬運隊" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">方舟搬運隊</strong><span>在 30 座手工設計的天空方舟倉庫中行走、推動與拉回符文貨箱。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>星珠要塞</strong><span>《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的防守戰役。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>方舟搬運隊</strong><span>在 30 座手工設計的天空方舟倉庫中行走、推動與拉回符文貨箱。</span></span></a></div></div>
     </div>
   </section>
 </body>

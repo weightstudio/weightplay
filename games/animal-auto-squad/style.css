@@ -1,26 +1,11 @@
 @import url("./style-v36-base.css?v=20260922-interface7-cleanup1");
 
-/* Interface 7 bounded compatibility cleanup.
+/* Interface 9 game-owned content styling.
    The legacy v36 artwork/gameplay stylesheet remains byte-for-byte in
-   style-v36-base.css; only shared-frame ownership is corrected here. */
+   style-v36-base.css; shared Frame and Play UI own the scene geometry. */
 
-/* Stage is title-free under Interface 7. Keep the localized heading available
-   to aria-labelledby without allowing it to consume a visible Stage row. */
-html body [data-wp-frame="2"] #stageSelectTitle {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0 0 0 0) !important;
-  clip-path: inset(50%) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-}
-
-/* Auto Squad has one player/party management page (Team) and Stages. Map them
-   to the shared three-slot Stage navigation contract: Team | Stages | empty.
+/* Auto Squad has distinct Team, Stages and permanent Training pages. Keep
+   the three shared Stage navigation actions evenly sized.
    The selector is intentionally more specific than the legacy frame adapter's
    [data-wp-frame-nav] flex fallback so the current standard remains owner. */
 html body [data-wp-frame="2"] .stage-tabs[data-wp-frame-nav] {
