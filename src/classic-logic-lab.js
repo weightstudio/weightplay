@@ -935,6 +935,12 @@
       const progress = sliding ? readSlidingProgress() : readCodeProgress();
       const copy = sliding ? slidingCampaignCopy : codeCampaignCopy;
       app.stageProgress.textContent = fillTemplate(text(copy.progress), { stage: Math.min(progress.highestUnlocked, total), cleared: progress.cleared.length });
+      if (!sliding && app.stageUi) {
+        app.stageUi.refresh(Math.max(0, Math.min(total, Number(app.stageSelection) || progress.highestUnlocked) - 1));
+        app.stageStatus.textContent = text(copy.saved);
+        window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
+        return;
+      }
       if (sliding) {
         const controller = window.WeightPlayStageV6;
         if (!controller?.install) {
@@ -1370,6 +1376,28 @@
       return { stage: data.stage, arc: data.arc.key, mode: data.mode, checkpoint: data.checkpoint, anchorIndex: data.anchorIndex, noBacktrack: data.noBacktrack, goal: data.goal.slice(), start: data.start.slice(), solution: data.solution.slice() };
     },
     progress: () => readSlidingProgress(),
+  });
+  window.__CodeBreakerCampaign = Object.freeze({
+    totalStages: CODE_BREAKER_TOTAL_STAGES,
+    stage(stage) {
+      const data = codeStageData(stage);
+      const progress = readCodeProgress();
+      const cleared = progress.cleared.includes(data.stage);
+      const locked = data.stage > progress.highestUnlocked;
+      return {
+        id: data.stage,
+        kicker: fillTemplate(text(codeCampaignCopy.stageCard), { stage: data.stage }),
+        title: text(data.arc.title),
+        subtitle: fillTemplate(text(codeCampaignCopy.objective), { stage: data.stage }),
+        status: cleared ? text(codeCampaignCopy.cleared) : locked ? text(codeCampaignCopy.locked) : fillTemplate(text(codeCampaignCopy.ready), { stage: data.stage }),
+        summary: `${text(data.arc.title)} · ${text(data.arc.rule)}`,
+        details: [text(data.arc.rule)],
+        poster: "/assets/code-breaker-cover-v2.webp",
+        locked,
+        cleared,
+      };
+    },
+    progress: () => readCodeProgress(),
   });
 
   if (__wpMeasurement.screen === null && !__wpMeasurement.started) { __wpMeasurement.screen = "main"; __wpNotifyMeasurement(); }

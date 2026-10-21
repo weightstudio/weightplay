@@ -21,6 +21,7 @@
   const L=window.AnimalSkybridgeRivalsLocales;
   const $=(id)=>document.getElementById(id);
   const els={loading:$("loading"),loadingFill:$("loadingFill"),gameRoot:$("gameRoot"),mainGroup:$("mainGroup"),mainHeader:$("mainHeader"),mainFlow:$("mainFlow"),stage:$("stage"),stageHeader:$("stageHeader"),stageContent:$("stageContent"),stagePage:$("stagePage"),stageTabs:$("stageTabs"),battle:$("battle"),battleHeader:$("battleHeader"),battleFrameInfo:$("battleFrameInfo"),stageHeaderInfo:$("stageHeaderInfo"),locale:$("locale"),lobbyReturn:$("lobbyReturn"),mainProgress:$("mainProgress"),start:$("start"),stageBack:$("stageBack"),stageRail:$("stageRail"),stageProgress:$("stageProgress"),stageHint:$("stageHint"),racesTab:$("racesTab"),workshopTab:$("workshopTab"),upgrades:$("upgrades"),shardCount:$("shardCount"),workshopFeedback:$("workshopFeedback"),diamondUnlock:$("diamondUnlock"),battleLive:$("battleLive"),battleBack:$("battleBack"),battleHelp:$("battleHelp"),raceLabel:$("raceLabel"),racePosition:$("racePosition"),stackValue:$("stackValue"),timeValue:$("timeValue"),bridgeValue:$("bridgeValue"),objective:$("objective"),arenaWrap:$("arenaWrap"),arena:$("arena"),dash:$("dash"),dashValue:$("dashValue"),feedback:$("feedback"),leave:$("leave"),continueBattle:$("continueBattle"),leaveStage:$("leaveStage"),tutorial:$("tutorial"),tutorialDone:$("tutorialDone"),result:$("result"),resultKicker:$("resultKicker"),resultTitle:$("resultTitle"),resultText:$("resultText"),resultStats:$("resultStats"),resultPurpose:$("resultPurpose"),retry:$("retry"),resultStage:$("resultStage"),nextRace:$("nextRace")};
+  const raceFrameTitle=$("raceFrameTitle");
   const moduleBase=new URL('.',document.currentScript.src);
   const [{SkyRace,STAGES,LANES},{SkybridgeView}]=await Promise.all([
     import(new URL('race-core.mjs?v=27',moduleBase)),
@@ -125,10 +126,12 @@
 }
   let run=null,lastFrame=0,raf=0,keys=new Set(),activePointerId=null,lifecyclePaused=false,windowFocused=document.hasFocus(),documentVisible=!document.hidden,pageCached=false,resultActionClaimed=false,resultFocusTimer=0;
   let currentStage=0,contextUnavailable=false;
+  function setBattleCoverage(covered){for(const node of [els.battleHeader,els.battleLive]){node.inert=covered;if(covered)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden")}}
   function syncArenaSize(){view?.resize();if(run)draw()}
   const arenaObserver=new ResizeObserver(syncArenaSize);arenaObserver.observe(els.arena);
   function loadingFailure(){
     contextUnavailable=true;lifecyclePaused=true;stopPointer();cancelAnimationFrame(raf);
+    if(els.result.hidden){els.leave.hidden=true;els.tutorial.hidden=true;setBattleCoverage(false)}
     let panel=els.arenaWrap.querySelector('.render-recovery');
     if(!panel){panel=document.createElement('div');panel.className='render-recovery';panel.setAttribute('role','alert');
       const text=document.createElement('p');text.textContent=t('renderError');
@@ -143,8 +146,8 @@
     stopPointer();run=new SkyRace(currentStage,save.upgrades);run.championAura=save.championAura;previousStack=0;cueEnd=0;raceCue.textContent='';
     lifecyclePaused=!(windowFocused&&documentVisible&&!pageCached);
     els.result.hidden=true;els.leave.hidden=true;els.tutorial.hidden=save.tutorial||opts.skipTutorial;
-    els.battleLive.inert=!els.tutorial.hidden;els.battleLive.removeAttribute('aria-hidden');
     setScreen('battle');
+    setBattleCoverage(!els.tutorial.hidden);
     try {if(contextUnavailable){loadingFailure();return;}if(!view)view=new SkybridgeView(els.arena);view.build(run);}
     catch(error){console.error('Skybridge renderer failed',error);loadingFailure();return;}
     say(t('raceObjective'),3,'route-assist');updateHud();
@@ -191,7 +194,7 @@
   function useDash(){if(!run||run.ended||run.paused||lifecyclePaused||!els.tutorial.hidden||!els.leave.hidden)return;if(!run.dash())say(t('raceCharge'),1);}
   function updateHud(){
     if(!run)return;
-    els.raceLabel.textContent=stageName(run.stage);els.racePosition.textContent=`${run.position} / 4`;
+    els.raceLabel.textContent=stageName(run.stage);raceFrameTitle.textContent=stageName(run.stage);els.racePosition.textContent=`${run.position} / 4`;
     els.stackValue.textContent=`${run.player.stack}/${run.player.capacity}`;
     els.timeValue.textContent=Math.ceil(run.timeLeft);els.bridgeValue.textContent=`${Math.round(run.player.y/run.finishY*100)}%`;
     els.objective.textContent=`${t('race',{number:run.stage.number})} · ${t('raceObjective')}`;
@@ -202,7 +205,21 @@
     if(previousStack!==run.player.stack){els.stackValue.classList.remove('stack-pop');void els.stackValue.offsetWidth;els.stackValue.classList.add('stack-pop');previousStack=run.player.stack;}
   }
   function draw(now=performance.now()){if(view&&run&&document.body.dataset.screen==='battle'&&view.actorModels.length)view.render(run,now,lifecyclePaused||run.paused||!els.tutorial.hidden||!els.leave.hidden);}
-  function finish(won){if(!run||__wpMeasurement.ended)return;if(!won)run.position=playerPosition();run.ended=true;resultActionClaimed=false;playCue(won ? "result.win" : "result.lose");const time=Math.ceil(run.timeLeft),stars=won?1+(time>=Math.ceil(run.stage.time*.42)?1:0)+(run.spills===0?1:0):0;if(won){save.stars[currentStage]=Math.max(save.stars[currentStage]||0,stars);save.best[currentStage]=Math.max(save.best[currentStage]||0,time);save.unlocked=Math.max(save.unlocked,Math.min(30,currentStage+2));save.shards+=4+stars*3;persist()}els.resultKicker.textContent=stageName(run.stage);els.resultTitle.textContent=t(won?"raceWon":"raceLost");els.resultText.textContent=t(won?"winText":"loseText");(__wpNotifyMeasurement(), els.resultPurpose.hidden=!won);els.resultPurpose.textContent=won?t(currentStage<29?"resultPurposeNext":"resultPurposeFinal",{number:currentStage+2}):"";els.resultStats.innerHTML=`<span><b>${t("place")}</b><strong>${won?1:run.position}/4</strong></span><span><b>${t("spills")}</b><strong>${run.spills}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3-stars)}</strong></span>`;const hasNext=won&&currentStage<29;const primary=hasNext?els.nextRace:won?els.resultStage:els.retry;els.resultStage.disabled=false;els.retry.disabled=false;els.nextRace.hidden=false;els.nextRace.disabled=!hasNext;[els.retry,els.resultStage,els.nextRace].forEach(action=>action.classList.toggle("primary",action===primary));(__wpNotifyMeasurement(), els.result.hidden=false);els.battleLive.inert=true;els.battleLive.setAttribute("aria-hidden","true");renderProgress();track(won?"race_result_win":"race_result_loss",{race:currentStage+1,place:won?1:run.position,spills:run.spills,stars});if(won)track("result_purpose_view",{race:currentStage+1,unlocks_race:Math.min(30,currentStage+2)});clearTimeout(resultFocusTimer);resultFocusTimer=setTimeout(()=>{resultFocusTimer=0;if(document.body.dataset.screen==="battle"&&!els.result.hidden&&!primary.disabled)primary.focus()},0)
+  function finish(won){
+    if(!run||__wpMeasurement.ended)return;
+    if(!won)run.position=playerPosition();
+    run.ended=true;resultActionClaimed=false;playCue(won?"result.win":"result.lose");
+    const time=Math.ceil(run.timeLeft),stars=won?1+(time>=Math.ceil(run.stage.time*.42)?1:0)+(run.spills===0?1:0):0;
+    if(won){save.stars[currentStage]=Math.max(save.stars[currentStage]||0,stars);save.best[currentStage]=Math.max(save.best[currentStage]||0,time);save.unlocked=Math.max(save.unlocked,Math.min(30,currentStage+2));save.shards+=4+stars*3;persist()}
+    els.resultKicker.textContent=stageName(run.stage);els.resultTitle.textContent=t(won?"raceWon":"raceLost");els.resultText.textContent=t(won?"winText":"loseText");
+    els.resultPurpose.hidden=!won;els.resultPurpose.textContent=won?t(currentStage<29?"resultPurposeNext":"resultPurposeFinal",{number:currentStage+2}):"";
+    els.resultStats.innerHTML=`<span><b>${t("place")}</b><strong>${won?1:run.position}/4</strong></span><span><b>${t("spills")}</b><strong>${run.spills}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3-stars)}</strong></span>`;
+    const hasNext=won&&currentStage<29,primary=hasNext?els.nextRace:won?els.resultStage:els.retry;
+    els.resultStage.disabled=false;els.retry.disabled=false;els.nextRace.hidden=false;els.nextRace.disabled=!hasNext;
+    [els.retry,els.resultStage,els.nextRace].forEach(action=>action.classList.toggle("primary",action===primary));els.result.hidden=false;setBattleCoverage(true);
+    renderProgress();track(won?"race_result_win":"race_result_loss",{race:currentStage+1,place:won?1:run.position,spills:run.spills,stars});
+    if(won)track("result_purpose_view",{race:currentStage+1,unlocks_race:Math.min(30,currentStage+2)});
+    clearTimeout(resultFocusTimer);resultFocusTimer=setTimeout(()=>{resultFocusTimer=0;if(document.body.dataset.screen==="battle"&&!els.result.hidden&&!primary.disabled)primary.focus()},0);
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
   function claimResultAction(){if(els.result.hidden||resultActionClaimed)return false;clearTimeout(resultFocusTimer);resultFocusTimer=0;resultActionClaimed=true;[els.retry,els.resultStage,els.nextRace].forEach(action=>action.disabled=true);return true}
@@ -231,7 +248,17 @@
   window.addEventListener("keydown",ev=>{if(document.body.dataset.screen!=="battle")return;const key=ev.key.length===1?ev.key.toLowerCase():ev.key;if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","w","a","s","d"].includes(key)){keys.add(key);ev.preventDefault()}if((ev.code==="Space"&&(document.activeElement===els.arena||document.activeElement===els.dash))||(ev.key==="Enter"&&document.activeElement===els.dash)){useDash();ev.preventDefault()}});window.addEventListener("keyup",ev=>keys.delete(ev.key.length===1?ev.key.toLowerCase():ev.key));
   window.addEventListener("blur",()=>{windowFocused=false;reconcileLifecycle()});window.addEventListener("focus",()=>{windowFocused=true;reconcileLifecycle()});document.addEventListener("visibilitychange",()=>{documentVisible=!document.hidden;reconcileLifecycle()});window.addEventListener("pagehide",()=>{pageCached=true;reconcileLifecycle()});window.addEventListener("pageshow",()=>{pageCached=false;reconcileLifecycle()});
   els.battle.addEventListener("pointerdown",reclaimVisibleForeground,true);els.battle.addEventListener("keydown",reclaimVisibleForeground,true);
-  els.soundToggle.addEventListener("click",()=>{window.WeightPlayAudio?.unlock?.();window.WeightPlayAudio?.setMuted?.(!window.WeightPlayAudio.isMuted());updateSoundToggle();if(!window.WeightPlayAudio?.isMuted?.())playCue("ui.click")});els.dash.addEventListener("click",useDash);els.start.addEventListener("click",event=>{lastInputType=eventInputType(event);setScreen("stage",{entry:"main_start"})});els.stageBack.addEventListener("click",event=>{track("main_return",{from:"race_map",input_type:eventInputType(event)});setScreen("main")});els.battleBack.addEventListener("click",()=>{if(!run||run.ended){setScreen("stage",{entry:"battle_back"});return}stopPointer();(__wpNotifyMeasurement(), run.paused=true);(__wpNotifyMeasurement(), els.leave.hidden=false);els.battleLive.inert=true;els.continueBattle.focus()});els.continueBattle.addEventListener("click",()=>{(__wpNotifyMeasurement(), els.leave.hidden=true);(__wpNotifyMeasurement(), run.paused=false);els.battleLive.inert=false;els.battleBack.focus()});els.leaveStage.addEventListener("click",()=>{(__wpNotifyMeasurement(), els.leave.hidden=true);if(run)run.ended=true;els.battleLive.inert=false;els.battleLive.removeAttribute("aria-hidden");setScreen("stage",{entry:"battle_leave"});centerStage(currentStage,false)});els.battleHelp.addEventListener("click",()=>{stopPointer();(__wpNotifyMeasurement(), run.paused=true);(__wpNotifyMeasurement(), els.tutorial.hidden=false);els.battleLive.inert=true;els.tutorialDone.focus()});els.tutorialDone.addEventListener("click",()=>{save.tutorial=true;persist();(__wpNotifyMeasurement(), els.tutorial.hidden=true);(__wpNotifyMeasurement(), run.paused=false);els.battleLive.inert=false;lastFrame=performance.now();els.arena.focus?.()});els.retry.addEventListener("click",event=>{if(!claimResultAction())return;track("retry",{from:"result",race:currentStage+1,input_type:eventInputType(event)});__wpReplayStart(() => startRace(currentStage,{skipTutorial:true,inputType:eventInputType(event),entry:"retry"}))});els.resultStage.addEventListener("click",event=>{if(!claimResultAction())return;lastInputType=eventInputType(event);(__wpNotifyMeasurement(), els.result.hidden=true);els.battleLive.inert=false;els.battleLive.removeAttribute("aria-hidden");const target=Math.min(save.unlocked-1,29);setScreen("stage",{entry:"result_map"});focusStageCardAfterSettlement(target)});els.nextRace.addEventListener("click",event=>{if(!claimResultAction())return;track("next_race",{from:"result",from_race:currentStage+1,to_race:Math.min(30,currentStage+2),input_type:eventInputType(event)});startRace(Math.min(29,currentStage+1),{skipTutorial:true,inputType:eventInputType(event),entry:"next_race"})});
+  els.dash.addEventListener("click",useDash);
+  els.start.addEventListener("click",event=>{lastInputType=eventInputType(event);setScreen("stage",{entry:"main_start"})});
+  els.stageBack.addEventListener("click",event=>{track("main_return",{from:"race_map",input_type:eventInputType(event)});setScreen("main")});
+  els.battleBack.addEventListener("click",()=>{if(!run||run.ended){setScreen("stage",{entry:"battle_back"});return}stopPointer();(__wpNotifyMeasurement(),run.paused=true);(__wpNotifyMeasurement(),els.leave.hidden=false);setBattleCoverage(true);els.continueBattle.focus()});
+  els.continueBattle.addEventListener("click",()=>{(__wpNotifyMeasurement(),els.leave.hidden=true);(__wpNotifyMeasurement(),run.paused=false);setBattleCoverage(false);els.battleBack.focus()});
+  els.leaveStage.addEventListener("click",()=>{(__wpNotifyMeasurement(),els.leave.hidden=true);if(run)run.ended=true;setBattleCoverage(false);setScreen("stage",{entry:"battle_leave"});centerStage(currentStage,false)});
+  els.battleHelp.addEventListener("click",()=>{stopPointer();(__wpNotifyMeasurement(),run.paused=true);(__wpNotifyMeasurement(),els.tutorial.hidden=false);setBattleCoverage(true);els.tutorialDone.focus()});
+  els.tutorialDone.addEventListener("click",()=>{save.tutorial=true;persist();(__wpNotifyMeasurement(),els.tutorial.hidden=true);(__wpNotifyMeasurement(),run.paused=false);setBattleCoverage(false);lastFrame=performance.now();els.arena.focus?.()});
+  els.retry.addEventListener("click",event=>{if(!claimResultAction())return;track("retry",{from:"result",race:currentStage+1,input_type:eventInputType(event)});__wpReplayStart(()=>startRace(currentStage,{skipTutorial:true,inputType:eventInputType(event),entry:"retry"}))});
+  els.resultStage.addEventListener("click",event=>{if(!claimResultAction())return;lastInputType=eventInputType(event);els.result.hidden=true;setBattleCoverage(false);const target=Math.min(save.unlocked-1,29);setScreen("stage",{entry:"result_map"});focusStageCardAfterSettlement(target)});
+  els.nextRace.addEventListener("click",event=>{if(!claimResultAction())return;track("next_race",{from:"result",from_race:currentStage+1,to_race:Math.min(30,currentStage+2),input_type:eventInputType(event)});startRace(Math.min(29,currentStage+1),{skipTutorial:true,inputType:eventInputType(event),entry:"next_race"})});
   els.locale.addEventListener("change",()=>{locale=els.locale.value;safeStore.set(LOCALE_STORAGE,locale);if(window.WonderI18n?.setLocale){window.WonderI18n.setLocale(locale);return}setText()});
   window.addEventListener("resize",syncArenaSize);
   if(['localhost','127.0.0.1','[::1]'].includes(location.hostname))window.__animalSkybridgeRivalsSmoke={
@@ -248,9 +275,11 @@
     get save(){return JSON.parse(JSON.stringify(save));}
   };
   window.addEventListener('pagehide',event=>{if(!event.persisted){cancelAnimationFrame(raf);arenaObserver.disconnect();view?.dispose();view=null;}});
-  els.loadingFill.style.width='100%';setText();setScreen('main');
+  mountSharedFrame();els.loadingFill.style.width='100%';setText();setScreen('main');
 })().catch(error=>{
   console.error('Skybridge startup failed',error);
   const loading=document.getElementById('loading');
-  if(loading){loading.textContent='3D loading failed. 載入失敗。';const retry=document.createElement('button');retry.textContent='Retry / 重試';retry.onclick=()=>location.reload();loading.append(retry);}
+  const entryLoader=window.WeightPlayGameEntryLoader;
+  if(entryLoader?.isActive&&typeof entryLoader.fail==='function'){if(loading)loading.hidden=true;entryLoader.fail('3D loading failed. 載入失敗。',()=>location.reload());return;}
+  if(loading){loading.textContent='3D loading failed. 載入失敗。';loading.classList.add('has-error');const retry=document.createElement('button');retry.textContent='Retry / 重試';retry.onclick=()=>location.reload();loading.append(retry);}
 });

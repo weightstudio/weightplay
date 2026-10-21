@@ -1320,6 +1320,48 @@
     return { locked, cleared, title, hint, stateLabel, regionLabel };
   }
 
+  let sharedStageSelector = null;
+  window.__ShadowWolfCampaign = Object.freeze({
+    config: Object.freeze({
+      count: STAGE_COUNT,
+      poster: "/assets/interface7-redrawn/shadow-wolf.webp",
+      background: "/assets/lobby-block-atmosphere.svg",
+      stage(index) {
+        const definition = STAGE_DEFINITIONS[index];
+        if (!definition) return { locked: true, title: "", status: "" };
+        const copy = stageCardCopy(definition);
+        const locale = getLocale();
+        const bossLabel = locale === "zh-Hant" ? "區域首領" : locale === "es" ? "Jefe" : locale === "ar" ? "الزعيم" : "Boss";
+        return {
+          id: definition.id,
+          kicker: `${String(definition.id).padStart(2, "0")}${definition.boss ? ` · ${bossLabel}` : ""}`,
+          title: copy.title,
+          subtitle: copy.regionLabel,
+          status: copy.stateLabel,
+          summary: copy.hint,
+          locked: copy.locked,
+          cleared: copy.cleared,
+          poster: "/assets/interface7-redrawn/shadow-wolf.webp",
+        };
+      },
+    }),
+    selectedIndex() { return Math.max(0, state.selectedStage - 1); },
+    select(index) { stageBrowseIndex = index; },
+    start(index) {
+      const stageNumber = index + 1;
+      if (stageNumber > state.unlockedStage) return;
+      state.selectedStage = stageNumber;
+      saveLocalState();
+      window.WeightPlayAudio?.play("ui.click");
+      startRun(stageNumber);
+    },
+    attachSelector(selector) {
+      sharedStageSelector = selector;
+      nodes.zoneButtons = selector.pool;
+    },
+    get selector() { return sharedStageSelector; },
+  });
+
   function bindStageCard(button, logicalIndex) {
     const definition = STAGE_DEFINITIONS[logicalIndex];
     const copy = stageCardCopy(definition);
@@ -1445,7 +1487,7 @@
     });
   }
 
-  function renderStageCards() {
+  function renderInternalStageCards() {
     const rail = document.querySelector(".world-map-grid.stage-rail");
     if (!rail) return;
     installVirtualStageRail(rail);
@@ -1474,6 +1516,24 @@
     nodes.zoneButtons = stageCardPool;
     rail.dataset.windowStart = String(stageWindowStart + 1);
     rail.dataset.currentStage = String(stageBrowseIndex + 1);
+  }
+
+  function renderStageCards() {
+    if (sharedStageSelector) {
+      sharedStageSelector.refresh(stageBrowseIndex);
+      nodes.zoneButtons = sharedStageSelector.pool;
+      return;
+    }
+    // The separate internal fixture intentionally has no shared frame scripts.
+    if (location.pathname.endsWith("/internal-test.html")) renderInternalStageCards();
+  }
+
+  function focusSelectedStage() {
+    if (sharedStageSelector) {
+      sharedStageSelector.select(Math.max(0, state.selectedStage - 1), { center: true, focus: true, notify: false });
+      return;
+    }
+    document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true });
   }
 
   function setScreen(screen) {
@@ -1567,7 +1627,9 @@
     stageWindowStart = Math.max(0, Math.min(STAGE_COUNT - STAGE_CARD_POOL_SIZE, stageBrowseIndex - Math.floor(STAGE_CARD_POOL_SIZE / 2)));
     setScreen("stage");
     renderStageCards();
-    requestAnimationFrame(() => positionStageRail("auto"));
+    if (!sharedStageSelector && location.pathname.endsWith("/internal-test.html")) {
+      requestAnimationFrame(() => positionStageRail("auto"));
+    }
   }
 
   function showMain() {
@@ -3549,7 +3611,7 @@
     nodes.startBtn.addEventListener("click", () => {
       window.WeightPlayAudio?.play("ui.click");
       showStage();
-      document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true });
+      focusSelectedStage();
     });
     document.addEventListener("keyup", (event) => {
       if (event.key === mainEntryKeyboardKey) mainEntryKeyboardKey = "";
@@ -3582,7 +3644,7 @@
     nodes.pauseStagesBtn.addEventListener("click", () => {
       window.WeightPlayAudio?.play("ui.click");
       showStage();
-      document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true });
+      focusSelectedStage();
     });
 
     nodes.retryBtn.addEventListener("click", () => {
@@ -3608,7 +3670,7 @@
       if (!claimResultAction()) return;
       window.WeightPlayAudio?.play("ui.click");
       showStage();
-      document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true });
+      focusSelectedStage();
     });
 
     nodes.localeSelect.addEventListener("change", (e) => {

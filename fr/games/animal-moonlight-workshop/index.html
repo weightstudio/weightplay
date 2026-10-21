@@ -35,7 +35,7 @@
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2">
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
     <link rel="stylesheet" href="../../src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
-    <link rel="stylesheet" href="workshop-gameplay.css?v=20261021-i9-workshop1">
+    <link rel="stylesheet" href="workshop-gameplay.css?v=20261021-i9-workshop-landscape-result3">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Évasion de l’Atelier Lunaire | WeightPlay" />
@@ -77,7 +77,7 @@
     </script>
   </head>
   <body data-wp-five-game="animal-moonlight-workshop" data-wp-market-game="animal-moonlight-workshop" data-wp-game-id="animal-moonlight-workshop" data-wp-interface-candidate="9" data-wp-game-owned-guide="true" data-runtime-localize="off" data-wp-combined-sound="true" data-screen="main">
-    <main id="app" data-audience="general" data-wp-frame-root>
+    <main id="app" data-audience="general" data-wp-frame-root data-wp-play-ui="1">
       <section id="main-screen" class="screen main-screen m5-main active" data-screen="main">
         <header class="m5-header">
           <a class="m5-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -104,7 +104,7 @@
         <div id="battle-content" class="workshop-battle-layout">
           <div id="battle-info"><strong id="stage-label"></strong><span id="score-label"></span></div>
           <p id="battle-status" class="m5-status" role="status" aria-live="polite" aria-atomic="true"></p>
-          <div class="m5-canvas-wrap"><canvas id="arena" width="960" height="540" aria-label="Moonlight Workshop Escape play area"></canvas><section id="result-screen" class="screen m5-result result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" aria-describedby="result-copy" hidden><h2 id="result-title"></h2><p id="result-copy"></p><div class="m5-result-actions"><button id="to-stages" data-m5-copy="stages">Stages</button><button id="next" data-m5-copy="next">Next Stage</button><button id="retry" class="primary" data-m5-copy="retry">Retry</button></div></section></div>
+          <div class="m5-canvas-wrap"><canvas id="arena" width="960" height="540" aria-label="Moonlight Workshop Escape play area"></canvas><section id="result-screen" class="screen m5-result result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" aria-describedby="result-copy" hidden><h2 id="result-title"></h2><p id="result-copy"></p><div class="m5-result-actions"><button id="to-stages" data-wp-frame-action="secondary" data-m5-copy="stages">Stages</button><button id="next" data-wp-frame-action="primary" data-m5-copy="next">Next Stage</button><button id="retry" data-wp-frame-action="secondary" data-m5-copy="retry">Retry</button></div></section></div>
           <div id="battle-controls" class="m5-controls"></div><p class="m5-hint" data-m5-guide></p>
         </div>
       </section>
@@ -129,6 +129,6 @@
     <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
     <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
     <script src="../../src/edge-guard.js"></script>
-    <script type="module" src="game.js?v=20261021-i9-workshop1"></script>
+    <script type="module" src="game.js?v=20261021-i9-workshop4"></script>
   </body>
 </html>

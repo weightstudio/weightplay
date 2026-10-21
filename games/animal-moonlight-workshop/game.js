@@ -45,6 +45,11 @@ import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
   })});
   let stageSelector = null;
   let screen = 'main', stage = 1, game, history = [], hinted = null, notice = '', resultWin = false, leaving = false;
+  window.addEventListener('weightplay:castle-reward',event=>{
+    if(event.detail?.gameId==='animal-moonlight-workshop'&&screen==='result')queueMicrotask(()=>{
+      if(screen==='result')window.WeightPlayCastle?.dismissRewardNotice?.('animal-moonlight-workshop');
+    });
+  });
   const directions = {up:[0,-1,'↑',16],left:[-1,0,'←',17],down:[0,1,'↓',18],right:[1,0,'→',19]};
   const audio = window.WeightPlayAudio?.createScope();
   const effects = new Set();
@@ -195,6 +200,7 @@ import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
   }
   function show(next) {
     settleEffects(); grid.getAnimations({subtree:true}).forEach(a=>a.cancel());
+    if(next!=='result')window.WeightPlayCastle?.dismissRewardNotice?.('animal-moonlight-workshop');
     audio?.stop(); screen=next; leaving=false; if (dialog.open) dialog.close();
     document.body.dataset.screen = next==='result'?'battle':next;
     document.querySelector('[data-wp-game-guide]')?.toggleAttribute('hidden',next!=='main');
@@ -287,6 +293,7 @@ import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
     $('result-copy').textContent=win?`${names()[stage-1]} · ${game.steps} / ${profiles[stage-1].limit} · ${count(game.mask)}/${profiles[stage-1].switches.length} ${t(23)}`:t(11);
     $('next').disabled=!win||stage>=profiles.length; $('next').setAttribute('aria-disabled',String($('next').disabled));
     localize(); show('result'); sound(win?'result.win':'result.lose');
+    if(win) window.WeightPlayCastle?.dismissRewardNotice?.('animal-moonlight-workshop');
     $('retry').focus({preventScroll:true});
   }
   function render() {

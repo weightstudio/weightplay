@@ -11,7 +11,7 @@
   if (!battle || !battleBack || !result || !resultToStages) return;
 
   // Result belongs to the permanent Battle canvas. It is a Battle substate,
-  // never a fourth top-level screen in the shared Interface 7 flow.
+  // never a fourth top-level screen in the shared I9 Frame flow.
   result.classList.remove("screen");
   result.removeAttribute("data-screen");
   result.dataset.wpBattleSubstate = "result";
@@ -180,6 +180,8 @@
   function setCoveredInert(value) {
     coveredNodes().forEach((node) => {
       node.inert = value;
+      if (value) node.setAttribute("aria-hidden", "true");
+      else node.removeAttribute("aria-hidden");
     });
   }
 
@@ -199,6 +201,8 @@
       .filter(Boolean)
       .forEach((node) => {
         node.inert = covered;
+        if (covered) node.setAttribute("aria-hidden", "true");
+        else node.removeAttribute("aria-hidden");
       });
   }
 

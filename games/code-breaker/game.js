@@ -1,8 +1,132 @@
 const codeBreakerArtLink = document.createElement("link");
 codeBreakerArtLink.rel = "stylesheet";
-codeBreakerArtLink.href = "art.css?v=20260921-code-breaker-block-scene-v1";
+codeBreakerArtLink.href = "art.css?v=20261021-code-breaker-v13-i9";
 document.head.appendChild(codeBreakerArtLink);
-window.WPClassicLogic?.mount("code-breaker");
+const codeBreakerApp = window.WPClassicLogic?.mount("code-breaker");
+
+function mountCodeBreakerI9(app) {
+  if (!app || !window.WeightPlayScreenFrame || !window.WeightPlayPlayUI || !window.__CodeBreakerCampaign) return;
+  const frameRoot = app.root.querySelector(".logic-lab");
+  const mainHeader = app.main.querySelector("header");
+  const mainHero = app.main.querySelector(".logic-hero");
+  const mainPoster = app.main.querySelector(".logic-poster");
+  const mainImage = app.main.querySelector(".main-poster");
+  const mainCopy = app.main.querySelector(".logic-copy");
+  const localeSelect = app.root.querySelector("#localePicker");
+  const localeOwner = localeSelect?.closest("label") || localeSelect;
+  const localeSource = document.createElement("div");
+  localeSource.hidden = true;
+  localeSource.dataset.wpFrameLocaleSource = "";
+  localeSource.setAttribute("aria-hidden", "true");
+  if (localeOwner) localeSource.append(localeOwner);
+  mainHeader.after(localeSource);
+  mainHeader.querySelector(".logic-header-tools")?.remove();
+  app.main.querySelector(".logic-guide")?.remove();
+  app.main.classList.add("wp-standard-main-screen", "wp-standard-main-flow-owner");
+  frameRoot.dataset.wpFrameRoot = "";
+  mainHero.classList.add("wp-standard-main-composition");
+  mainPoster.classList.add("wp-standard-main-poster");
+  mainImage.classList.add("wp-standard-main-poster-media");
+  mainImage.dataset.wpFramePoster = "";
+  mainImage.alt = app.title;
+  mainCopy.classList.add("wp-standard-main-copy");
+  mainCopy.querySelector("h2")?.remove();
+  mainCopy.querySelector("p:not(.logic-kicker)")?.classList.add("wp-standard-main-summary");
+  mainCopy.querySelector("[data-wp-main-progress]")?.classList.add("wp-standard-main-progress");
+  mainCopy.querySelector("[data-wp-main-start]")?.classList.add("wp-standard-main-start");
+  mainHeader.querySelector("h1")?.setAttribute("data-wp-frame-title", "");
+
+  const stageHeader = app.stage.querySelector("header");
+  const stageContent = document.createElement("div");
+  stageContent.className = "logic-stage-content";
+  stageHeader.after(stageContent);
+  for (const node of [...app.stage.children]) if (node !== stageHeader && node !== stageContent) stageContent.append(node);
+  stageContent.querySelector(".stage-tabs")?.remove();
+  const stageTitle = app.stage.querySelector("h1");
+  const stageTitleGroup = stageTitle?.parentElement;
+  if (stageTitle) stageHeader.append(stageTitle);
+  stageHeader.append(app.stageProgress);
+  stageTitleGroup?.remove();
+  app.stage.classList.remove("code-breaker-stage-screen", "wp-standard-stage-panel", "wp-stage-art-shell");
+  app.stage.style.removeProperty("--wp-stage-art");
+  app.stage.dataset.wpFramePlayFill = "";
+  stageTitle?.setAttribute("data-wp-frame-title", "");
+  app.stageSound?.remove();
+  app.stageRail.id = "wp-code-breaker-stage-rail";
+  app.stageRail.className = "wp-stage-i9-rail";
+  for (const marker of ["data-wp-stage-v6-auto", "data-wp-stage-v6-total", "data-wp-stage-recommendation", "data-wp-stage-total", "data-wp-stage-settle-duration", "data-wp-stage-settle-easing"]) app.stageRail.removeAttribute(marker);
+
+  const battleHeader = app.battle.querySelector("header");
+  app.battle.classList.add("battle-canvas");
+  app.battle.dataset.wpFramePlayFill = "";
+  app.battle.querySelector("#logicBoard")?.classList.remove("battle-canvas");
+  battleHeader.querySelector("h1")?.setAttribute("data-wp-frame-title", "");
+  app.battleContent = app.battle.querySelector(".logic-battle-wrap");
+  const frame = window.WeightPlayScreenFrame.mount({
+    root: frameRoot,
+    localeSelect,
+    playUI: true,
+    scenes: {
+      main: { root: app.main, header: mainHeader, content: mainHero },
+      stage: { root: app.stage, header: stageHeader, content: stageContent },
+      battle: { root: app.battle, header: battleHeader, content: app.battleContent },
+    },
+  });
+  app.frame = frame;
+  frame.stageTopUI.add(app.stageProgress);
+  frame.battleTopUI.add(app.battleChip);
+
+  const campaign = window.__CodeBreakerCampaign;
+  const progress = campaign.progress();
+  app.stageSelection = progress.highestUnlocked;
+  app.stageUi = window.WeightPlayPlayUI.mountStage({
+    page: stageContent,
+    rail: app.stageRail,
+    config: {
+      gameId: "code-breaker",
+      poster: "/assets/code-breaker-cover-v2.webp",
+      background: "/assets/lobby-block-atmosphere.svg",
+      count: campaign.totalStages,
+      stage: index => campaign.stage(index + 1),
+    },
+    selected: progress.highestUnlocked - 1,
+    onSelect: index => { app.stageSelection = index + 1; },
+    onStart: index => { app.stageSelection = index + 1; app.startGame(index + 1); },
+    isActive: () => frame.active === "stage" && !app.stage.hidden,
+  });
+
+  document.body.dataset.wpGameId = "code-breaker";
+  document.body.dataset.wpGameVersion = "v13";
+  document.body.dataset.wpInterfaceVersion = "9";
+  document.body.dataset.wpGameOwnedGuide = "true";
+  let activeScene = "";
+  const leaveDialog = app.root.querySelector("#logicLeave");
+  const syncFrame = () => {
+    const scene = !app.main.hidden ? "main" : !app.stage.hidden ? "stage" : "battle";
+    const covered = scene === "battle" && (!app.result.hidden || !leaveDialog.hidden);
+    if (app.battleContent) {
+      app.battleContent.inert = scene !== "battle" || covered;
+      app.battleContent.setAttribute("aria-hidden", String(scene !== "battle" || covered));
+    }
+    const key = `${scene}:${covered}`;
+    if (key !== activeScene) {
+      frame.activate(scene, { covered });
+      activeScene = key;
+    }
+  };
+  app.root.addEventListener("click", () => queueMicrotask(syncFrame));
+  const overlayObserver = new MutationObserver(syncFrame);
+  for (const overlay of [app.result, leaveDialog]) overlayObserver.observe(overlay, { attributes: true, attributeFilter: ["hidden"] });
+  window.addEventListener("pagehide", event => {
+    if (event.persisted) return;
+    overlayObserver.disconnect();
+    app.stageUi.destroy();
+    frame.destroy();
+  }, { once: true });
+  syncFrame();
+}
+
+mountCodeBreakerI9(codeBreakerApp);
 
 (() => {
   "use strict";

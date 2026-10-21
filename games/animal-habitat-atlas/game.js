@@ -897,13 +897,13 @@
   const stylesheet = document.createElement("link");
   stylesheet.rel = "stylesheet";
   stylesheet.href = new URL(
-    "interface-7-cleanup.css?v=20261018-rescue-valley-v11",
+    "interface-9-game.css?v=20261021-habitat-v12-i9",
     assetBase,
   ).href;
   document.head.append(stylesheet);
   const compat = document.createElement("script");
   compat.src = new URL(
-    "interface-7-compat.js?v=20261018-rescue-valley-v11",
+    "interface-9-compat.js?v=20261021-habitat-v12-i9",
     assetBase,
   ).href;
   compat.onload = boot;
@@ -915,8 +915,6 @@
   function boot() {
     const $ = (id) => document.getElementById(id),
       R = globalThis.HabitatRescueRules;
-    $("stage-screen").dataset.wpStageLandscapeWidth = "760";
-    $("stage-screen").dataset.wpStageLandscapeHeight = "334";
     const lang = () =>
       ({ "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", "pt-BR": "pt-br" })[
         window.WeightPlayMarketFiveLocale?.locale ||
@@ -994,6 +992,9 @@
     let screen = "main",
       game = null,
       selected = 6,
+      stageSelected = 0,
+      stageSelector = null,
+      sharedFrame = null,
       history = [],
       message = "",
       resultWin = false;
@@ -1069,6 +1070,7 @@
         n.hidden = id !== next;
         n.classList.toggle("active", id === next);
       }
+      sharedFrame?.activate(next);
       result.hidden = true;
       board.inert = false;
       $("battle-controls").inert = false;
@@ -1083,29 +1085,75 @@
         ),
       );
     }
+    const stagePoster = new URL("assets/animal-habitat-atlas-cover.webp", assetBase).href;
+    const stageBackground = new URL(
+      "assets/animal-habitat-atlas-background.png",
+      assetBase,
+    ).href;
+    function stageRecord(index) {
+      const plan = rescuePlans[index];
+      const stars = Number(journal[index + 1] || 0);
+      const unlocked = index <= best;
+      const objective = `${tx(7)} ${plan.animals.length} · ${tx(8)} ${plan.goal} · ${tx(6)} ${plan.turns}`;
+      return {
+        id: index + 1,
+        kicker: `${common(9)} ${index + 1}`,
+        title: chapter(index),
+        subtitle: `${tx(7)} ${plan.animals.length} · ${tx(8)} ${plan.goal}`,
+        status: stars ? `★ ${stars}` : unlocked ? "" : "🔒",
+        summary: objective,
+        details: [guide[lang()] || guide.en],
+        poster: stagePoster,
+        locked: !unlocked,
+        cleared: stars > 0,
+      };
+    }
     function stages() {
-      const rail = $("stage-list");
-      rail.replaceChildren();
-      rescuePlans.forEach((p, i) => {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = `m5-stage-card stage-card${i === Math.min(5, best) ? " recommended" : ""}`;
-        b.dataset.stage = i + 1;
-        b.disabled = i > best;
-        b.setAttribute("aria-disabled", String(b.disabled));
-        if (!b.disabled) b.setAttribute("data-wp-enter-battle", "");
-        const n = document.createElement("span"),
-          title = document.createElement("strong"),
-          detail = document.createElement("small");
-        n.textContent = `${i < best ? "✓" : "◈"} ${common(9)} ${i + 1} / 6`;
-        title.textContent = chapter(i);
-        detail.textContent =
-          i <= best
-            ? `${tx(7)} ${p.animals.length} · ${tx(8)} ${p.goal}${journal[i + 1] ? ` · ${"★".repeat(journal[i + 1])}` : ""}`
-            : "🔒";
-        b.append(n, title, detail);
-        b.addEventListener("click", () => start(i + 1));
-        rail.append(b);
+      stageSelected = Math.min(rescuePlans.length - 1, best);
+      $("stage-progress").textContent = `${common(8)}: ${best} / ${rescuePlans.length}`;
+      stageSelector?.refresh(stageSelected);
+    }
+    function mountSharedFrame() {
+      sharedFrame = window.WeightPlayScreenFrame.mount({
+        root: $("app"),
+        localeSelect: $("localeSelect"),
+        playUI: true,
+        scenes: {
+          main: {
+            root: $("main-screen"),
+            header: $("main-header"),
+            content: $("main-content"),
+          },
+          stage: {
+            root: $("stage-screen"),
+            header: $("stage-header"),
+            content: $("stage-content"),
+            headerInfo: $("stage-header-info"),
+          },
+          battle: {
+            root: $("battle-screen"),
+            header: $("battle-header"),
+            content: $("battle-content"),
+            headerInfo: $("battle-header-info"),
+          },
+        },
+      });
+      stageSelector = window.WeightPlayPlayUI.mountStage({
+        page: $("stage-page"),
+        rail: $("stage-list"),
+        selected: stageSelected,
+        config: {
+          count: rescuePlans.length,
+          poster: stagePoster,
+          background: stageBackground,
+          stage: stageRecord,
+        },
+        isActive: () => document.body.dataset.screen === "stage",
+        onSelect: (index) => {
+          stageSelected = index;
+          $("stage-progress").textContent = `${common(9)} ${index + 1} / ${rescuePlans.length} · ${common(8)} ${best}`;
+        },
+        onStart: (index) => start(index + 1),
       });
     }
     function start(stage, restart = false) {
@@ -1415,7 +1463,7 @@
     $("next").addEventListener("click", () => {
       if (resultWin && game.stage < 6) start(game.stage + 1);
     });
-    $("battle-utility").addEventListener("click", () =>
+    $("battle-utility")?.addEventListener("click", () =>
       $("rescue-supply").focus({ preventScroll: true }),
     );
     window.addEventListener("weightplay:market-locale-change", () => {
@@ -1430,6 +1478,7 @@
         if (screen === "stage") stages();
       }
     });
+    mountSharedFrame();
     stages();
     mainCopy();
     show("main");

@@ -1,9 +1,5 @@
-/* Habitat Atlas — scoped shared-frame compatibility. */
-body[data-wp-market-game="animal-habitat-atlas"] .m5-primary {
-  width: 100%;
-  height: 52px;
-  min-height: 52px;
-}
+
+
 
 /* Rescue valley: stable 4 × 3 board and one persistent inspector. */
 body[data-wp-market-game="animal-habitat-atlas"] #atlas-fieldwork.rescue-field {
@@ -392,63 +388,16 @@ body[data-wp-market-game="animal-habitat-atlas"]
 }
 
 @media (min-width: 700px) {
-  body[data-wp-market-game="animal-habitat-atlas"] .m5-main {
-    grid-template-columns: 420px minmax(0, 1fr);
-  }
 
-  body[data-wp-market-game="animal-habitat-atlas"] .m5-cover {
-    width: 420px;
-    height: 420px;
-    max-height: none;
-  }
+
 }
 
-body[data-wp-market-game="animal-habitat-atlas"] .m5-stage {
-  grid-template-rows: 48px minmax(0, 1fr) 56px;
-}
 
-/* The shared frame owns the permanent controls; this only removes the legacy V6 page-title residue. */
-body[data-wp-market-game="animal-habitat-atlas"] .m5-stage-header h2 {
-  display: none !important;
-}
 
-body[data-wp-market-game="animal-habitat-atlas"] .m5-stage-rail {
-  position: relative;
-  top: clamp(103px, 38%, calc(100% - 103px));
-  align-self: start;
-  height: 190px;
-  min-height: 190px;
-  transform: translateY(-50%);
-}
 
-body[data-wp-market-game="animal-habitat-atlas"] .m5-stage-card {
-  flex-basis: 264px;
-  width: 264px;
-  height: 190px;
-  min-height: 190px;
-}
 
-body[data-wp-market-game="animal-habitat-atlas"] .m5-stage-tabs {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  height: 56px;
-  padding: 6px 0;
-}
 
-body[data-wp-market-game="animal-habitat-atlas"] .m5-stage-tabs button {
-  grid-column: 2;
-  height: 44px;
-  min-height: 44px;
-  padding-inline: 10px;
-  border-radius: 14px;
-  font-size: 14px;
-  line-height: 1.2;
-}
 
-body[data-wp-market-game="animal-habitat-atlas"] .m5-battle {
-  bottom: 0;
-  grid-template-rows: 48px 34px minmax(0, 1fr) auto 28px;
-}
 
 body[data-wp-market-game="animal-habitat-atlas"] .m5-result-actions {
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -525,38 +474,15 @@ body[data-wp-market-game="animal-habitat-atlas"] .atlas-leave-actions .primary {
 }
 
 @media (max-height: 500px) and (orientation: landscape) {
-  body[data-wp-market-game="animal-habitat-atlas"] .m5-stage {
-    grid-template-rows: 48px minmax(0, 1fr) 56px;
-  }
 
-  body[data-wp-market-game="animal-habitat-atlas"] .m5-stage-card {
-    height: 190px;
-    min-height: 190px;
-  }
 
-  body[data-wp-market-game="animal-habitat-atlas"] .m5-battle {
-    grid-template-rows: 48px 28px minmax(0, 1fr) 28px;
-  }
+
 }
 
 @media (max-width: 420px) {
-  body[data-wp-market-game="animal-habitat-atlas"] .m5-battle-header {
-    grid-template-columns: 40px minmax(0, 1fr) auto 40px;
-    gap: 4px;
-    padding-inline: 6px;
-  }
 
-  body[data-wp-market-game="animal-habitat-atlas"] .m5-battle-header strong {
-    font-size: 16px;
-  }
 
-  body[data-wp-market-game="animal-habitat-atlas"]
-    .m5-battle-header
-    .m5-battle-utility {
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
-  }
+
 
   body[data-wp-market-game="animal-habitat-atlas"] .m5-status {
     white-space: normal;
@@ -567,56 +493,11 @@ body[data-wp-market-game="animal-habitat-atlas"] .atlas-leave-actions .primary {
   }
 }
 
-/* The shared Interface 7 compatibility rule centers all non-control children
-   in one track. Habitat Atlas has both a stage title and a score, so give the
-   score its own track and reserve the fourth for the utility control. */
-html[data-wp-shared-interface="7"]
-  body[data-wp-market-game="animal-habitat-atlas"]
-  .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row):has(
-    > [data-wp-battle-utility]
-  ) {
-  grid-template-columns: var(--wp-frame-control-size) minmax(0, 1fr) auto var(
-      --wp-frame-control-size
-    ) !important;
-}
-html[data-wp-shared-interface="7"]
-  body[data-wp-market-game="animal-habitat-atlas"]
-  .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row):has(
-    > [data-wp-battle-utility]
-  )
-  > #stage-label {
-  grid-column: 2 !important;
-  grid-row: 1 !important;
-}
-html[data-wp-shared-interface="7"]
-  body[data-wp-market-game="animal-habitat-atlas"]
-  .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row):has(
-    > [data-wp-battle-utility]
-  )
-  > #score-label {
-  grid-column: 3 !important;
-  grid-row: 1 !important;
-  justify-self: end !important;
-}
-html[data-wp-shared-interface="7"]
-  body[data-wp-market-game="animal-habitat-atlas"]
-  .wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row):has(
-    > [data-wp-battle-utility]
-  )
-  > [data-wp-battle-utility] {
-  grid-column: 4 !important;
-  grid-row: 1 !important;
-}
 
-/* Field notebook: the same four actionable cards on every viewport. */
-body[data-wp-market-game="animal-habitat-atlas"] .m5-battle {
-  grid-template-rows: 56px 42px minmax(0, 1fr) 60px;
-  gap: 8px;
-  padding: 8px;
-}
-body[data-wp-market-game="animal-habitat-atlas"] .m5-battle-header {
-  min-height: 48px;
-}
+
+
+
+
 body[data-wp-market-game="animal-habitat-atlas"] #battle-status {
   display: flex;
   align-items: center;
@@ -836,16 +717,8 @@ body[data-wp-market-game="animal-habitat-atlas"] #atlas-next:disabled {
 body[data-wp-market-game="animal-habitat-atlas"] .m5-hint {
   display: none !important;
 }
-body[data-wp-market-game="animal-habitat-atlas"] .m5-stage-card strong {
-  font-size: 20px;
-  display: block;
-  margin: 12px 0;
-  line-height: 1.2;
-}
-body[data-wp-market-game="animal-habitat-atlas"] .m5-stage-card small {
-  white-space: normal;
-  font-size: 13px;
-}
+
+
 body[data-wp-market-game="animal-habitat-atlas"] .m5-result {
   z-index: 20;
   background: #102e36f5;
@@ -854,11 +727,7 @@ body[data-atlas-result="true"] #atlas-fieldwork {
   visibility: hidden;
 }
 @media (min-width: 700px) and (max-height: 520px) {
-  body[data-wp-market-game="animal-habitat-atlas"] .m5-battle {
-    grid-template-rows: 48px 32px minmax(0, 1fr) 52px;
-    gap: 4px;
-    padding: 4px 8px;
-  }
+
   body[data-wp-market-game="animal-habitat-atlas"] #battle-status {
     font-size: 14px;
   }
@@ -1027,27 +896,16 @@ body[data-wp-market-game="animal-habitat-atlas"] .atlas-card-art {
 body[data-atlas-result="true"] #battle-controls {
   visibility: hidden;
 }
-body[data-wp-market-game="animal-habitat-atlas"] .m5-battle > .m5-result {
-  inset: 72px 8px 8px;
-}
 @media (min-width: 700px) and (max-height: 520px) {
-  body[data-wp-market-game="animal-habitat-atlas"] .m5-battle > .m5-result {
-    inset: 58px 8px 8px;
-  }
-}
-@media (min-width: 700px) and (max-height: 520px) {
-  body[data-wp-market-game="animal-habitat-atlas"] .m5-battle {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 48px 24px minmax(0, 1fr) 48px;
-  }
+
   body[data-wp-market-game="animal-habitat-atlas"] .m5-canvas-wrap {
     grid-column: 1;
-    grid-row: 3;
+    grid-row: 2;
   }
   body[data-wp-market-game="animal-habitat-atlas"]
     #battle-controls:has(#rescue-supply) {
     grid-column: 1;
-    grid-row: 4;
+    grid-row: 3;
   }
   body[data-wp-market-game="animal-habitat-atlas"]
     #atlas-fieldwork.rescue-field {
@@ -1061,5 +919,56 @@ body[data-wp-market-game="animal-habitat-atlas"] .m5-battle > .m5-result {
   #rescue-actions {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: 44px;
+  }
+}
+
+
+/* The shared Frame owns all outer scene and header geometry. This grid only
+   arranges Habitat Atlas status, rescue board, and action controls. */
+body[data-wp-market-game="animal-habitat-atlas"] #battle-content {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 8px;
+  overflow: hidden;
+}
+body[data-wp-market-game="animal-habitat-atlas"] .m5-canvas-wrap {
+  grid-column: 1;
+  grid-row: 2;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+body[data-wp-market-game="animal-habitat-atlas"] #battle-controls {
+  grid-column: 1;
+  grid-row: 3;
+}
+body[data-wp-market-game="animal-habitat-atlas"] #battle-screen > .m5-result {
+  position: absolute;
+  inset: 0;
+  z-index: 120;
+  box-sizing: border-box;
+}
+body[data-wp-market-game="animal-habitat-atlas"] #battle-screen > .m5-result[hidden] {
+  display: none !important;
+}
+@media (min-width: 700px) and (max-height: 520px) {
+  body[data-wp-market-game="animal-habitat-atlas"] #battle-content {
+    grid-template-rows: 24px minmax(0, 1fr) 48px;
+    gap: 4px;
+    padding: 4px 8px;
+  }
+  body[data-wp-market-game="animal-habitat-atlas"] .m5-canvas-wrap {
+    grid-row: 2;
+  }
+  body[data-wp-market-game="animal-habitat-atlas"] #battle-controls {
+    grid-row: 3;
   }
 }

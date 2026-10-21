@@ -100,7 +100,7 @@
   function startRun(index){
     if(index>save.unlocked)return;
     const level=window.FlyingTramLevels[index];
-    selectedStage=index;run={...level,index,duration:level.duration,padWidth:level.padWidth,approachProgress:level.approach,elapsed:0,launch:0,launched:false,angle:0,angVel:0,lastTurns:0,flips:0,spill:0,altitude:.42,vy:0,score:0,paused:false,ended:false,perfect:false,wind:0,lostJunk:0,hazards:level.hazards.map(h=>({...h,hit:false})),junk:[{x:-37,y:10,vx:0,vy:0,kind:0},{x:8,y:11,vx:0,vy:0,kind:1}]};
+    selectedStage=index;run={...level,index,duration:level.duration,padWidth:level.padWidth,approachProgress:level.approach,elapsed:0,launch:0,launched:false,angle:0,angVel:0,lastTurns:0,flips:0,spill:0,altitude:.42,vy:0,jetThrust:0,score:0,paused:false,ended:false,perfect:false,wind:0,lostJunk:0,hazards:level.hazards.map(h=>({...h,hit:false})),junk:[{x:-37,y:10,vx:0,vy:0,kind:0},{x:8,y:11,vx:0,vy:0,kind:1}]};
     $("resultPanel").hidden=true;$("leavePanel").hidden=true;$("pausePanel").hidden=true;resetInput();
     $("stageLabel").textContent=routeName(index);$("timeValue").textContent=String(run.duration);$("cupFill").style.width="0%";$("teaValue").textContent=t("steady");$("scoreLabel").textContent="0";$("hint").textContent=t("flightHint");
     safeCall("game.start");showScreen("battle");
@@ -133,6 +133,9 @@
       else $("hint").textContent=t("launchHint");
       if(run.launch<.75&&run.launch===0)run.elapsed+=dt*.1;
     }else{
+      const jetTarget=input.boost?1:.24;
+      const jetResponse=1-Math.exp(-dt/(input.boost?.075:.18));
+      run.jetThrust+=(jetTarget-run.jetThrust)*jetResponse;
       run.elapsed+=dt;
       const phase=run.elapsed*.72+run.index*1.1;
       const pulse=Math.sin(run.elapsed*2.15+run.index*.6);
@@ -193,6 +196,56 @@
     const nextHazard=run.hazards.find(h=>!h.hit&&h.at>=currentProgress&&h.at-currentProgress<.12);
     $("hint").textContent=run.spill>70?t("calmHint"):nextHazard?t(nextHazard.lane==="low"?"hazardRise":"hazardLower"):thermalActive?t(thermalForce>0?"thermalUp":"thermalDown"):currentProgress>=run.approachProgress?(run.vy<-.2?(input.boost?t("brakingHint"):t("brakeHint")):t("landingHint")):t("flightHint");
   }
+  function drawJetExhaust(ctx,r,scale){
+    if(!r.launched)return;
+    const reducedMotion=window.matchMedia?.("(prefers-reduced-motion: reduce)").matches===true;
+    const thrust=clamp(r.jetThrust??.24,.24,1);
+    const boost=thrust>.55;
+    const altitude=clamp((r.altitude-PAD_ALTITUDE)/(.83-PAD_ALTITUDE),0,1);
+    const clearance=.38+.62*altitude;
+    const phase=reducedMotion?.35:r.elapsed*(boost?7.4:3.2);
+    // Keep the exhaust origin just below the sprite bounds so the tram does
+    // not occlude the plume while it remains visually attached to the chassis.
+    const nozzleY=126*scale;
+    for(const [index,x] of [-98,92].entries()){
+      const flicker=reducedMotion?1:.86+.14*Math.sin(phase+index*1.7);
+      const length=(15+70*thrust)*clearance*scale*flicker;
+      const width=(5+11*thrust)*scale;
+      ctx.save();
+      ctx.globalAlpha=boost?.98:.7;
+      ctx.shadowColor=boost?"#58ecff":"#8bdfff";
+      ctx.shadowBlur=boost?15*scale:7*scale;
+      const plume=ctx.createLinearGradient(x*scale,nozzleY,x*scale,nozzleY+length);
+      if(boost){
+        plume.addColorStop(0,"#fff5bd");
+        plume.addColorStop(.18,"#ffe37a");
+        plume.addColorStop(.48,"#78efff");
+        plume.addColorStop(1,"rgba(65,206,255,0)");
+      }else{
+        plume.addColorStop(0,"rgba(226,250,255,.9)");
+        plume.addColorStop(.34,"rgba(119,220,255,.65)");
+        plume.addColorStop(1,"rgba(76,190,255,0)");
+      }
+      ctx.fillStyle=plume;
+      ctx.fillRect((x-width/2)*scale,nozzleY,width,length);
+      ctx.fillStyle=boost?"rgba(255,247,199,.94)":"rgba(198,244,255,.76)";
+      ctx.fillRect((x-2.5)*scale,nozzleY,5*scale,length*(boost?.48:.3));
+      ctx.restore();
+
+      if(boost&&!reducedMotion){
+        const particleSize=6*scale;
+        for(let particle=0;particle<3;particle++){
+          const travel=(phase*19+particle*17+index*9)%(Math.max(1,length*.72));
+          const drift=Math.sin(phase*1.6+particle+index)*4*scale;
+          const y=Math.max(nozzleY+length*.48,nozzleY+travel);
+          ctx.globalAlpha=.82-particle*.17;
+          ctx.fillStyle=particle===1?"#fff0a6":"#83f2ff";
+          ctx.fillRect(Math.round(x*scale+drift),Math.round(y),particleSize,particleSize);
+        }
+      }
+    }
+    ctx.globalAlpha=1;
+  }
   function draw(){
     const canvas=$("gameCanvas"),ctx=canvas.getContext("2d"),w=1000;
     const r=run;if(!r)return;
@@ -218,6 +271,7 @@
     const tramY=clamp(h-132-r.altitude*190+(r.altitude>PAD_ALTITUDE+.03?Math.sin(tsec*1.2)*8:0),tramHalfHeight+12,h-tramHalfHeight-12);
     const angle=normAngle(r.angle);
     ctx.save();ctx.translate(tramX,tramY);ctx.rotate(angle);
+    drawJetExhaust(ctx,r,tramScale);
     // Original WeightPlay tram and Fia sprite; retain the hand-drawn fallback
     // so an optional local art request never blocks the actual flight.
     if(tramSprite.complete&&tramSprite.naturalWidth){

@@ -63,12 +63,12 @@ body[data-wp-game-id="animal-moonlight-workshop"] { --workshop-amber:#ffe5a2; --
 .workshop-leave button {display:block;min-height:44px;width:100%;margin-top:10px;padding:8px 14px;border:1px solid #75b2bf;border-radius:5px;background:#254c60;color:#f5fdff;}
 #workshop-stay {background:#ffe3a2;color:#17293a;border-color:#ffe3a2;}
 .workshop-settled #workshop-board,.workshop-settled #workshop-objective,.workshop-settled #battle-controls,.workshop-settled #workshop-feedback,.workshop-settled .m5-hint {visibility:hidden;}
-#result-screen {position:absolute;inset:8px;max-height:none;overflow-y:auto;align-content:center;z-index:10;background:#0c2539f5;border:1px solid #7292a8;border-radius:8px;padding:24px;grid-template-rows:44px 72px 44px;grid-template-columns:minmax(0,1fr);justify-content:stretch;justify-items:stretch;gap:12px;}
+#result-screen {position:fixed;inset:68px 12px 12px;max-height:none;overflow-y:auto;align-content:center;z-index:10;background:#0c2539f5;border:1px solid #7292a8;border-radius:8px;padding:24px;grid-template-rows:44px 72px 44px;grid-template-columns:minmax(0,1fr);justify-content:stretch;justify-items:stretch;gap:12px;}
 #result-screen:not([hidden]) {display:grid;animation:workshop-enter .22s ease-out;}
 #result-copy {margin:0;max-height:72px;overflow-y:auto;line-height:1.5;}
 #result-title {margin:0;}
 .m5-result-actions {width:min(100%,600px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
-.m5-result-actions > button {box-sizing:border-box;min-width:0;height:44px;min-height:44px;max-height:44px;margin:0;padding:0 12px;font-size:14px;line-height:1.2;font-weight:700;white-space:nowrap;}
+.m5-result-actions > button {min-width:0;margin:0;white-space:nowrap;}
 .workshop-key-flight {position:absolute;z-index:8;pointer-events:none;background:url('assets/animal-moonlight-workshop-atlas.png') 0 0/400% 200% no-repeat;}
 
 @keyframes workshop-enter {from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
@@ -86,7 +86,7 @@ body[data-wp-game-id="animal-moonlight-workshop"] { --workshop-amber:#ffe5a2; --
   #battle-controls {grid-column:2;grid-row:1/4;grid-template-columns:1fr;grid-template-rows:94px 94px;gap:10px;align-content:center;padding:0 6px;}
   #workshop-feedback {grid-column:2;grid-row:3;font-size:11px;line-height:15px;}
   .m5-hint {display:none;}
-  #result-screen {align-content:start;}
+  #result-screen {align-content:start;padding:16px;}
 }
 
 @media (prefers-reduced-motion:reduce) {

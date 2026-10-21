@@ -2,8 +2,8 @@
   "use strict";
 
   const GAME_ID = "code-breaker";
-  const GAME_VERSION = "v11";
-  const INTERFACE_VERSION = "6";
+  const GAME_VERSION = "v13";
+  const INTERFACE_VERSION = "9";
   const EVENTS = new Set([
     "preview_open",
     "game_start",
