@@ -94,6 +94,14 @@
       for (const node of guide.querySelectorAll('[data-i18n]')) {
         if (strings[node.dataset.i18n]) node.textContent = strings[node.dataset.i18n];
       }
+      for (const node of guide.querySelectorAll('[data-i18n-alt]')) {
+        const value = strings[node.dataset.i18nAlt];
+        if (value) node.setAttribute('alt', value);
+      }
+      for (const link of guide.querySelectorAll('.game-info-related-card[data-game-id]')) {
+        const localizedTarget = window.WonderI18n?.localizedPath?.(documentLocale, `/games/${link.dataset.gameId}/`);
+        if (localizedTarget) link.setAttribute('href', localizedTarget);
+      }
       // The localized route generator appends this authored FAQ to the Guide.
       // It has no data-i18n attributes because its route copy is already
       // localized at build time, so refresh the complete question/answer set

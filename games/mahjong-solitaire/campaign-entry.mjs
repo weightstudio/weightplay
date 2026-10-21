@@ -1,5 +1,5 @@
-import {mountMahjongCampaign} from './campaign-app.mjs?v=20261021-mahjong-v16-i9';
-import {createCampaignMainView} from './campaign-main-view.mjs?v=20261021-mahjong-v16-i9';
+import {mountMahjongCampaign} from './campaign-app.mjs?v=20261021-mahjong-v16-i9-stage-nav';
+import {createCampaignMainView} from './campaign-main-view.mjs?v=20261021-mahjong-v16-i9-guide-alt';
 import {createCampaignSettings} from './campaign-settings.mjs?v=20261021-mahjong-v16-i9';
 import {createCampaignAudio} from './campaign-audio.mjs';
 import {CAMPAIGN_LOCALES} from './campaign-copy.mjs';

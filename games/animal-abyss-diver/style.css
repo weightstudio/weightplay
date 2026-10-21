@@ -10,8 +10,7 @@
 .main-screen h2,
 .main-screen p { margin: 0; }
 .cover { width: min(100%, 520px); justify-self: center; border-radius: 16px; }
-.progress,
-.guide { padding: 12px; border: 1px solid #427e91; border-radius: 12px; background: #102f42; }
+.progress { padding: 12px; border: 1px solid #427e91; border-radius: 12px; background: #102f42; }
 .primary,
 .secondary { min-height: 48px; border: 0; border-radius: 10px; padding: 10px 16px; font-weight: 800; }
 .primary { background: #efc957; color: #142134; }

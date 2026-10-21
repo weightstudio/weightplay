@@ -100,12 +100,18 @@ export function mountCampaignBoard(host,initial,{onTile,faceLabel,blockLabel,ord
   candidates.sort((a,b)=>(Math.abs(a.dx*dir[1]-a.dy*dir[0])*3+Math.hypot(a.dx,a.dy))-(Math.abs(b.dx*dir[1]-b.dy*dir[0])*3+Math.hypot(b.dx,b.dy)));
   if(candidates[0])nodes.get(candidates[0].id).focus({preventScroll:true});
  },{signal:abort.signal});
- const observer=new win.ResizeObserver(fit);observer.observe(host);
- const dispose=()=>{if(disposed)return;disposed=true;observer.disconnect();clearEffects();abort.abort();nodes.clear();board.remove();host.classList.remove('mjc-board-host');delete host.dataset.tileWidth;};
+ const observer=new win.ResizeObserver(fit);let observing=false;
+ const setActive=active=>{
+  if(disposed)return;
+  if(active&&!observing){observing=true;observer.observe(host);fit();}
+  else if(!active&&observing){observing=false;observer.unobserve(host);clearEffects();}
+ };
+ setActive(true);
+ const dispose=()=>{if(disposed)return;disposed=true;observer.disconnect();observing=false;clearEffects();abort.abort();nodes.clear();board.remove();host.classList.remove('mjc-board-host');delete host.dataset.tileWidth;};
  doc.addEventListener('visibilitychange',()=>{if(doc.hidden)clearEffects();},{signal:abort.signal});
  win.addEventListener('pagehide',event=>{if(event.persisted){clearEffects();observer.disconnect();}else dispose()},{signal:abort.signal});
  win.addEventListener('pageshow',event=>{if(event.persisted){observer.observe(host);fit();}},{signal:abort.signal});
  reduced.addEventListener('change',clearEffects,{signal:abort.signal});
  setState(initial);
- return {setState,dispose,clearEffects,stats:()=>({disposed,tiles:nodes.size,animations:motions.size,ghosts:ghosts.size})};
+ return {setState,setActive,dispose,clearEffects,stats:()=>({disposed,tiles:nodes.size,animations:motions.size,ghosts:ghosts.size})};
 }

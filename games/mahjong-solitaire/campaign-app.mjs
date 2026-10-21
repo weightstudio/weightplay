@@ -1,6 +1,6 @@
 import {createMahjongSession} from './campaign-session.mjs';
-import {createCampaignStageView} from './campaign-stage-view.mjs?v=20261021-mahjong-v16-i9';
-import {createCampaignBattleView} from './campaign-battle-view.mjs?v=20261021-mahjong-v16-i9';
+import {createCampaignStageView} from './campaign-stage-view.mjs?v=20261021-mahjong-v16-i9-stage-nav';
+import {createCampaignBattleView} from './campaign-battle-view.mjs?v=20261021-mahjong-v16-i9-stage-nav';
 
 // Mount once from the replacement entry. The shared Frame owns scene controls,
 // settings and play layout; the campaign session remains the state owner.

@@ -9,7 +9,7 @@ export function createCampaignBattleView({session,locale,onStages,sound}) {
  const root=document.createElement('section');root.className='mjc-battle';root.dataset.screen='battle';root.dataset.wpBattleCanvasRoot='';root.dataset.wpLogicalBattleCanvas='responsive';
  root.dataset.wpCanvasMaxWidth='920';root.dataset.wpBattleMinWidth='390';root.dataset.wpBattleMinHeight='620';root.dataset.wpBattleLandscapeWidth='760';root.dataset.wpBattleLandscapeHeight='334';root.hidden=true;
  root.innerHTML='<header><button type="button" class="mjc-back" data-wp-return="battle">←</button><h2 data-wp-frame-title hidden></h2></header><div class="mjc-battle-content"><div class="mjc-battle-info" data-wp-frame-info><div class="mjc-battle-heading"><h2></h2><p></p></div><div class="mjc-pair-progress"><span></span><progress></progress></div></div><div class="mjc-battle-live"><div class="mjc-battle-board"></div><div class="mjc-battle-feedback"><div class="mjc-feedback-message" role="status"></div><div class="mjc-rule-cues"></div></div><div class="mjc-battle-actions"><button type="button" data-action="hint"></button><button type="button" data-action="undo"></button></div></div><dialog class="mjc-leave"><h2></h2><p></p><button type="button" data-continue></button><button type="button" data-leave></button></dialog></div>';
- const header=root.querySelector('header'),content=root.querySelector('.mjc-battle-content'),headerInfo=root.querySelector('.mjc-battle-info'),live=root.querySelector('.mjc-battle-live'),host=root.querySelector('.mjc-battle-board'),dialog=root.querySelector('dialog'),back=root.querySelector('.mjc-back');
+ const header=root.querySelector('header'),content=root.querySelector('.mjc-battle-content'),headerInfo=root.querySelector('.mjc-battle-info'),frameTitle=header.querySelector('[data-wp-frame-title]'),live=root.querySelector('.mjc-battle-live'),host=root.querySelector('.mjc-battle-board'),dialog=root.querySelector('dialog'),back=root.querySelector('.mjc-back');
  const feedback=root.querySelector('.mjc-battle-feedback'),message=feedback.querySelector('.mjc-feedback-message'),cues=feedback.querySelector('.mjc-rule-cues');
  const progressText=headerInfo.querySelector('.mjc-pair-progress>span'),progressMeter=headerInfo.querySelector('progress');
  const lifetime=new AbortController();let boardView,disposed=false,lastStage=null;
@@ -19,10 +19,12 @@ export function createCampaignBattleView({session,locale,onStages,sound}) {
  function render(){
   if(disposed)throw new Error('Battle view disposed');
   const s=session.snapshot(),c=campaignCopy(locale());root.hidden=s.screen!=='battle';
-  if(root.hidden){lastStage=null;boardView?.clearEffects();return;}
+  if(root.hidden){lastStage=null;boardView?.setActive(false);boardView?.clearEffects();return;}
   const enteringStage=lastStage!==s.stage;lastStage=s.stage;
   root.dir=locale()==='ar'?'rtl':'ltr';
+  frameTitle.textContent=`${c.stage} ${s.stage} · ${mahjongStageName(locale(),s.stage)}`;
   if(!boardView)boardView=mountCampaignBoard(host,s.board,{onTile:id=>{if(dialog.open||session.snapshot().outcome==='complete')return;const before=session.snapshot(),after=session.select(id);if(after.board!==before.board)sound?.play?.(after.outcome==='complete'?'win':'pair');else if(after.selected!==before.selected)sound?.play?.('select');render()},faceLabel:f=>campaignFaceLabel(locale(),f),blockLabel:r=>campaignCopy(locale())[r]||campaignCopy(locale()).rule,orderLabel:(i,next)=>`${campaignCopy(locale()).order} ${i}${next?' · '+campaignCopy(locale()).available:''}`});
+  boardView.setActive(s.outcome!=='complete');
   boardView.setState(s.board,{selected:s.selected,hint:s.hint});
   live.hidden=s.outcome==='complete';live.inert=live.hidden||dialog.open;if(live.hidden)boardView.clearEffects();result.render(s);
   headerInfo.querySelector('.mjc-battle-heading h2').textContent=`${c.stage} ${s.stage} / 30`;

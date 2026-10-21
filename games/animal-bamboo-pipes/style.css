@@ -100,8 +100,8 @@
 .battle-settings-panel[hidden]{display:none}
 .battle-settings-panel label{display:grid;gap:4px;font-size:.76rem;font-weight:900;white-space:nowrap}
 .battle-settings-panel select{min-width:148px;min-height:38px;border:1px solid #75bd9c;border-radius:8px;background:#fff;color:#073c38}
-.battle-panel{min-height:0;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:42px minmax(0,1fr) 52px;gap:8px;justify-items:center;align-items:center}
-.battle-objective{width:min(100%,620px);height:42px;margin:0;padding:10px 14px;overflow:hidden;border:1px solid #75bd9c;border-radius:12px;background:#063831e8;text-align:center;white-space:nowrap;text-overflow:ellipsis}
+.battle-panel{min-height:0;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(42px,auto) minmax(0,1fr) 52px;gap:8px;justify-items:center;align-items:center}
+.battle-objective{width:min(100%,620px);min-height:42px;height:auto;margin:0;padding:6px 14px;display:grid;place-items:center;overflow-wrap:anywhere;border:1px solid #75bd9c;border-radius:12px;background:#063831e8;text-align:center;white-space:normal;text-overflow:clip;line-height:1.1}
 .battle .board{grid-column:1;grid-row:2;width:min(100%,520px);height:auto;max-height:100%;align-self:center}
 .battle .tools{grid-column:1;grid-row:3;width:min(100%,520px);height:52px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .battle .tools button{min-width:0;height:48px;padding:8px}

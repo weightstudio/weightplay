@@ -39,6 +39,8 @@
   background: linear-gradient(#245260, #153a46); color: #f5fbf8; font-weight: 800;
 }
 .lens-buy { margin-top: 6px; }
+#forgeFeedback { min-height: 34px; margin: 8px 0 0; padding: 7px 9px; border: 1px solid #72d7bb; border-radius: 6px; color: #caffed; font-weight: 800; line-height: 1.25; }
+#forgeFeedback[hidden] { display: none !important; }
 
 .battle-content {
   position: relative;

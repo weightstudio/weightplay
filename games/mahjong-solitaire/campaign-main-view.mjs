@@ -42,9 +42,10 @@ export function createCampaignMainView({locale,title,lobbyHref,progress}) {
   const relatedHeading=document.createElement('h3');relatedHeading.textContent=m.heading;related.append(relatedHeading);
   const relatedCards=document.createElement('div');relatedCards.className='game-info-related';
   for(const id of relatedIds){
-   const card=document.createElement('a');card.className='game-info-related-card';card.dataset.gameId=id;card.href=`/${segments[CAMPAIGN_LOCALES.indexOf(l)]}/games/${id}/`;
-   const poster=document.createElement('span');poster.className='game-info-related-poster';const image=document.createElement('img');image.src=relatedImage[id];image.alt='';image.width=320;image.height=320;image.loading='lazy';image.decoding='async';poster.append(image);
-   const copy=document.createElement('span');copy.className='game-info-related-copy';const title=document.createElement('strong'),description=document.createElement('span');title.textContent=relatedGameTitle(id,l);title.dataset.runtimeLocalize='off';description.textContent=m[id==='klondike-solitaire'?'klondike':'spider'];copy.append(title,description);card.append(poster,copy);relatedCards.append(card);
+   const relatedTitle=relatedGameTitle(id,l),relatedDescription=m[id==='klondike-solitaire'?'klondike':'spider'];
+   const card=document.createElement('a');card.className='game-info-related-card';card.dataset.gameId=id;card.href=`/${segments[CAMPAIGN_LOCALES.indexOf(l)]}/games/${id}/`;card.setAttribute('aria-label',`${relatedTitle}: ${relatedDescription}`);
+   const poster=document.createElement('span');poster.className='game-info-related-poster';const image=document.createElement('img');image.src=relatedImage[id];image.alt=relatedTitle;image.width=320;image.height=320;image.loading='lazy';image.decoding='async';poster.append(image);
+   const copy=document.createElement('span');copy.className='game-info-related-copy';const title=document.createElement('strong'),description=document.createElement('span');title.textContent=relatedTitle;title.dataset.runtimeLocalize='off';description.textContent=relatedDescription;copy.append(title,description);card.append(poster,copy);relatedCards.append(card);
   }
   related.append(relatedCards);sections.append(related);guide.replaceChildren(tags,heading,sections);
  }

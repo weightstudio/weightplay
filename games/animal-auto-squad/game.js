@@ -20,7 +20,7 @@
   document.body.dataset.wpCombinedSound = "true";
 
   const GAME_ID = "animal-auto-squad";
-  const GAME_VERSION = "v40";
+  const GAME_VERSION = "v41";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 

@@ -6,8 +6,8 @@
     const $ = (id) => document.getElementById(id);
     const root = $("gameFrame");
     const main = $("mainGroup");
-    const stage = $("stageScreen");
-    const battle = $("battleScreen");
+    const stage = $("stageScreen").querySelector(".stage-canvas");
+    const battle = $("battleScreen").querySelector(".battle-canvas");
     const game = window.SKETCHWHEEL_I9;
     const core = window.WeightPlayScreenFrame;
     const playUI = window.WeightPlayPlayUI;
@@ -91,6 +91,7 @@
     forgeAction.addEventListener("click", () => {
       setStageMode("forge");
       game.renderForge();
+      game.showForgeFeedback();
     });
 
     const dialogs = ["tutorialModal", "leaveModal", "resultModal", "helpModal", "renderRecovery"].map($);

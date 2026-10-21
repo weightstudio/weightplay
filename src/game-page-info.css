@@ -304,7 +304,8 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
 .game-info-related-card img {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
   object-fit: contain;
   object-position: center;
   background: #e6eef8;
@@ -379,7 +380,8 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
 
   .game-info-related-card img {
     width: 100%;
-    height: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
   }
 
   .game-info-related-copy {

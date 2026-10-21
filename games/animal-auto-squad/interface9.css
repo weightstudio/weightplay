@@ -152,7 +152,7 @@ html body [data-wp-frame="2"] #stagePanel::before {
   white-space: nowrap;
 }
 
-#stageWorkspace {
+.stage-workspace {
   display: block;
   box-sizing: border-box;
   width: 100%;
@@ -177,6 +177,12 @@ html body [data-wp-frame="2"] #stagePanel::before {
   grid-template-rows: minmax(0, 1fr) auto;
   gap: 8px;
   overflow: hidden;
+}
+
+@layer wp-frame-contract {
+  #stageSelectPane[hidden] {
+    display: none !important;
+  }
 }
 
 #stageSelectPane > [data-wp-stage-source] {

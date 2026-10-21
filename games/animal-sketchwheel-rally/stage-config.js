@@ -18,13 +18,14 @@
       const chapter = chapterNames[level.chapter];
       const rule = chapterRules[level.chapter];
       const challenge = challengeText(level);
+      const format = (template, values) => String(template || "").replace(/\{(\w+)\}/g, (_match, key) => values[key] ?? "");
 
       return {
         id: `race-${index + 1}`,
-        kicker: `${t.chapter({ n: level.chapter + 1 })} · ${chapter}`,
-        title: t.race({ n: index + 1 }),
+        kicker: `${format(t.chapter, { n: level.chapter + 1 })} · ${chapter}`,
+        title: format(t.race, { n: index + 1 }),
         subtitle: rule,
-        status: locked ? t.locked : best ? `${t.bestTime} ${best.toFixed(1)}s` : "",
+        status: locked ? t.locked : best ? `${best.toFixed(1)}s` : "",
         summary: challenge,
         details: [chapter, rule, challenge, level.terrain.map((type) => terrainNames[type]).join(" › ")],
         locked,
