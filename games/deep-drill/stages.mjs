@@ -45,5 +45,7 @@ export function seams(stage,row){
  if(stage.arc>=4&&row%5===1)out[(row+1)%3]='D';
  // Rotate the authored route every second layer; all choices stay visible.
  const n=(Math.floor(row/(stage.shift?1:2))+stage.id)%3;
- return out.slice(n).concat(out.slice(0,n));
+ const core=out.slice(n).concat(out.slice(0,n));
+ // Preserve every authored mission route, with two deterministic outer seams.
+ return [row%4===0?'C':'S',...core,row%3===0?'W':row%2?'G':'S'];
 }

@@ -150,6 +150,24 @@ for (const locale of LOCALES) {
  }
 }
 
+const CLARITY_KEYS='mainHow|missionCollect|missionGrow|stepPrepare|stepEncounter|changeTarget|more|findSpecies|nextCompanion|careAfterTrip|optionalPhase|careNow'.split('|');
+const CLARITY_ROWS={
+ en:'Follow one companion: prepare, explore, then earn its trust.|Befriend {species}|Grow {species}|1 · Prepare using these clues|2 · Choose how to approach|Choose another companion|More|Look for {species}|Find the next companion|Explore once, then care for {species}.|Other exploration phases|{need} · {species}',
+ 'zh-Hant':'跟著一位夥伴：準備、探索，再建立信任。|收集 {species}|照顧 {species} 長大|1 · 依線索準備|2 · 選擇接近方式|更換收集目標|更多|出發尋找 {species}|尋找下一位夥伴|先探索一次，再照顧 {species}。|其他探索時段|{need} · {species}',
+ 'zh-Hans':'跟着一位伙伴：准备、探索，再建立信任。|收集 {species}|照顾 {species} 长大|1 · 依线索准备|2 · 选择接近方式|更换收集目标|更多|出发寻找 {species}|寻找下一位伙伴|先探索一次，再照顾 {species}。|其他探索时段|{need} · {species}',
+ ja:'一匹ずつ、準備して探索し、信頼を育てよう。|{species}を仲間にする|{species}を育てる|1 · ヒントから準備|2 · 近づき方を選ぶ|別の仲間を選ぶ|その他|{species}を探す|次の仲間を探す|一度探索してから{species}のお世話をしよう。|ほかの探索時間帯|{need} · {species}',
+ ko:'한 친구에게 집중해 준비하고 탐색하며 신뢰를 쌓아요.|{species}와 친구 되기|{species} 키우기|1 · 단서를 보고 준비|2 · 다가가는 방법 선택|다른 친구 선택|더 보기|{species} 찾으러 가기|다음 친구 찾기|한 번 탐색한 뒤 {species}를 돌봐 주세요.|다른 탐색 시간대|{need} · {species}',
+ es:'Un compañero a la vez: prepara, explora y gana su confianza.|Haz amistad con {species}|Cría a {species}|1 · Prepara según las pistas|2 · Elige cómo acercarte|Elegir otro compañero|Más|Buscar a {species}|Buscar otro compañero|Explora una vez y después cuida a {species}.|Otros momentos de exploración|{need} · {species}',
+ 'pt-BR':'Um amigo por vez: prepare, explore e ganhe confiança.|Faça amizade com {species}|Crie {species}|1 · Prepare pelas pistas|2 · Escolha como se aproximar|Escolher outro amigo|Mais|Procurar {species}|Procurar o próximo amigo|Explore uma vez e depois cuide de {species}.|Outros períodos de exploração|{need} · {species}',
+ fr:'Un compagnon à la fois : préparez, explorez et gagnez sa confiance.|Se lier avec {species}|Élever {species}|1 · Préparer selon les indices|2 · Choisir une approche|Choisir un autre compagnon|Plus|Chercher {species}|Chercher le prochain compagnon|Explorez une fois, puis prenez soin de {species}.|Autres moments d’exploration|{need} · {species}',
+ de:'Ein Gefährte nach dem anderen: vorbereiten, erkunden, Vertrauen gewinnen.|{species} anfreunden|{species} großziehen|1 · Mit Hinweisen vorbereiten|2 · Annäherung wählen|Anderen Gefährten wählen|Mehr|{species} suchen|Nächsten Gefährten suchen|Erkunde einmal und kümmere dich dann um {species}.|Andere Erkundungszeiten|{need} · {species}',
+ it:'Un amico alla volta: prepara, esplora e conquista la sua fiducia.|Fai amicizia con {species}|Alleva {species}|1 · Preparati con gli indizi|2 · Scegli come avvicinarti|Scegli un altro amico|Altro|Cerca {species}|Cerca il prossimo amico|Esplora una volta, poi prenditi cura di {species}.|Altri momenti di esplorazione|{need} · {species}',
+ ru:'Один друг за раз: подготовьтесь, исследуйте и заслужите доверие.|Подружиться: {species}|Вырастить: {species}|1 · Подготовка по подсказкам|2 · Выберите подход|Выбрать другого друга|Ещё|Искать: {species}|Найти следующего друга|Исследуйте один раз, затем позаботьтесь о {species}.|Другое время исследования|{need} · {species}',
+ hi:'एक साथी पर ध्यान दें: तैयारी करें, खोजें और भरोसा जीतें।|{species} से दोस्ती करें|{species} को बड़ा करें|1 · संकेत देखकर तैयारी करें|2 · पास जाने का तरीका चुनें|दूसरा साथी चुनें|और|{species} को खोजें|अगला साथी खोजें|एक बार खोज करें, फिर {species} की देखभाल करें।|खोज के अन्य समय|{need} · {species}',
+ ar:'رفيق واحد في كل مرة: جهّز ثم استكشف واكسب ثقته.|صادق {species}|اعتنِ بـ {species} لينمو|1 · جهّز وفق الأدلة|2 · اختر طريقة الاقتراب|اختر رفيقًا آخر|المزيد|ابحث عن {species}|ابحث عن الرفيق التالي|استكشف مرة، ثم اعتنِ بـ {species}.|أوقات استكشاف أخرى|{need} · {species}'
+};
+for(const locale of LOCALES){const cells=CLARITY_ROWS[locale].split('|');if(cells.length!==CLARITY_KEYS.length)throw Error('Clarity locale mismatch: '+locale);CLARITY_KEYS.forEach((key,index)=>copy[locale][key]=cells[index]);}
+
 function canonical(locale) {
  return ({'zh-tw':'zh-Hant','zh-cn':'zh-Hans','pt-br':'pt-BR'}[locale] || (LOCALES.includes(locale) ? locale : 'en'));
 }

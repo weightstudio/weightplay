@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <base href="/games/checkers/" />
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/ar/games/checkers/" />
@@ -26,8 +26,8 @@
 <meta name="robots" content="index,follow" />
 <meta name="weightplay-audience" content="general">
 <meta name="weightplay-release-state" content="playable">
-<meta name="weightplay-game-version" content="v21">
-<meta name="weightplay-interface-version" content="7">
+<meta name="weightplay-game-version" content="v22">
+<meta name="weightplay-interface-version" content="9">
 <meta name="description" content="العب الداما على لوحة 8×8: خطط للتحركات القطرية، نفّذ الأخذ الإجباري، تابع القفزات ورقِّ القطع إلى ملك." />
 <title>الداما | WeightPlay</title>
 <style>
@@ -37,6 +37,9 @@
 </style>
 <link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260909-checkers-feedback-v21">
 <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
+  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-checkers-v22-i9">
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261021-checkers-v22-i9">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="الداما | WeightPlay" />
@@ -75,15 +78,12 @@
   }
 }
     </script>
-    <link rel="stylesheet" href="/src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-<body data-wp-game-id="checkers" data-wp-game-version="v21" data-wp-interface-version="7" data-wp-battle-layout="native" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true">
-<main id="popularArcade" class="popular-arcade">
-  <header class="arcade-header checkers-shell-header">
+  </head>
+<body data-wp-game-id="checkers" data-wp-game-version="v22" data-wp-interface-version="9" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true">
+<main id="popularArcade" class="popular-arcade" data-wp-frame-root>
+  <header class="arcade-header checkers-shell-header" data-wp-shell-header="main">
     <a class="checkers-main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay" title="Back to WeightPlay"><span class="checkers-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-    <div class="checkers-heading"><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">الداما</h1><p id="gameTagline" class="tagline"></p></div>
+    <div class="checkers-heading"><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle" data-wp-game-title>الداما</h1><p id="gameTagline" class="tagline"></p></div>
     <div class="settings-control"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings" aria-expanded="false" aria-controls="audioPopover">⚙</button><div id="audioPopover" class="settings-popover is-hidden" role="group" aria-label="Settings" hidden><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button" data-sound-toggle="true" aria-pressed="true">Sound: On</button><label class="settings-row"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></div></div>
   </header>
   <section id="mainScreen" class="screen main-screen">
@@ -92,10 +92,10 @@
       <div class="preview-art"><img class="cover" src="../../assets/checkers-cover.webp" alt="شعار WeightPlay" width="1254" height="1254" decoding="async"></div>
     </div>
   </section>
-  <section id="battleScreen" class="screen battle-screen" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas>
+  <section id="battleScreen" class="screen battle-screen" hidden data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="720" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
+    <div class="battle-canvas">
     <div class="arcade-panel battle-panel">
-      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span></div>
+      <div class="battle-top" data-wp-shell-header="battle"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><div id="checkersBattleInfo"><span id="roundLabel" class="round-label"></span></div></div>
       <div class="board-wrap"><div id="board" class="board"></div></div>
       <p id="gameMessage" class="game-message" aria-live="polite"></p>
       <div id="controls"></div>
@@ -110,11 +110,13 @@
   <footer class="arcade-footer" id="footerText"></footer>
 </main>
 <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
-<script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+<script src="/src/i18n.js?v=20260721-locale13-1"></script>
 <script src="../../src/analytics.js?v=20261002-tabletop-reward-exclusion-v1"></script>
 <script src="../../src/checkers-engine.js?v=20260827-checkers-turn-feedback-v14"></script>
 <script src="../../src/popular-games-batch.js?v=20260909-checkers-feedback-v21"></script>
-<script src="game.js?v=20260909-checkers-feedback-v21"></script>
+<script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="/src/game-screen-frame.js?v=20261021-checkers-v22-i9"></script>
+<script src="game.js?v=20261021-checkers-v22-i9"></script>
 <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة الداما">
 
     <div class="game-info-hero">
@@ -134,9 +136,8 @@
       <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>تستخدم اللمسات والماوس وتركيز لوحة المفاتيح والتلميحات وردود الخصم محرك الحركات القانونية نفسه. تظهر القطعة المحددة ومربعات الوصول القانونية بعلامتين مختلفتين، كي توضح اللوحة سبب منع الحركة الهادئة عند توفر أخذ.</p></div>
       <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>لا يلزم تسجيل الدخول أو الشراء للعب. لا تُحفظ المباراة الجارية؛ تبقى أفضل نتيجة فقط في هذا المتصفح. قد يؤدي مسح بيانات الموقع إلى حذفها.</p></div>
       <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل الأخذ إجباري؟</dt><dd>نعم. إذا توفر أخذ في أي موضع على اللوحة، فعليك اختيار حركة تتضمن الأخذ.</dd></div><div><dt>متى تنتهي القفزات المتعددة؟</dt><dd>تتابع القطعة نفسها القفز ما دامت تستطيع الأخذ من مربعها الجديد. وينتهي الدور عندما لا يتوفر أخذ آخر. إذا أدى الأخذ إلى ترقية القطعة، ينتهي الدور فوراً.</dd></div><div><dt>كيف تصبح القطعة ملكاً؟</dt><dd>عندما تصل إلى الصف الأخير للخصم، تترقى وتستطيع التحرك والأخذ قطرياً في الاتجاهين.</dd></div><div><dt>كيف أفوز بالمباراة؟</dt><dd>تفوز عندما لا يبقى للخصم قطع أو حركات قانونية. وقد تنتهي المباراة بالتعادل بعد مدة طويلة بلا أخذ أو ترقية.</dd></div><div><dt>هل تتحرك التلميحة بدلاً مني؟</dt><dd>لا. تبرز قطعة بداية قانونية فقط؛ أما مربع الوصول والحركة فتختارهما بنفسك.</dd></div><div><dt>هل تُحفظ المباراة أو أفضل نتيجة؟</dt><dd>لا تُحفظ المباراة الجارية. تبقى أفضل نتيجة في هذا المتصفح فقط؛ ولا يلزم تسجيل الدخول أو الشراء.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>المزيد من الألعاب ذات الصلة</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="lights-out" href="/ar/games/lights-out/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/lights-out.webp" data-final-src="/assets/weightplay-logo.png" alt="إطفاء الأنوار" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">إطفاء الأنوار</strong><span>إطفاء الأنوار لغز مفاتيح كلاسيكي على لوحة 5×5: بدّل الخلية وجيرانها الجانبيين حتى تطفئ كل الأضواء.</span></span></a><a class="game-info-related-card" data-game-id="four-in-a-row" href="/ar/games/four-in-a-row/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/four-in-a-row.webp" data-final-src="/assets/weightplay-logo.png" alt="أربع على التوالي" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">أربع على التوالي</strong><span>أسقط أقراصك في لوحة من سبعة أعمدة وستة صفوف.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>ألعاب مشابهة</h3><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>إطفاء الأنوار</strong><span>إطفاء الأنوار لغز مفاتيح كلاسيكي على لوحة 5×5: بدّل الخلية وجيرانها الجانبيين حتى تطفئ كل الأضواء.</span></span></a><a class="game-info-related-card" href="/ar/games/four-in-a-row/"><img src="/assets/interface7-redrawn/four-in-a-row.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>أربع على التوالي</strong><span>أسقط أقراصك في لوحة من سبعة أعمدة وستة صفوف.</span></span></a></div></div>
     </div>
   </section>
-  <script src="/src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
 </body>
 </html>

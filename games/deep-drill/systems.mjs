@@ -3,7 +3,7 @@ import {REGIONS,MODULES,CREW,TOOLS,ACHIEVEMENTS,EXPEDITION_EVENTS} from './conte
 const bounded=(v,max=1e9)=>Math.max(0,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):0)));
 const unique=(value,keys)=>[...new Set((Array.isArray(value)?value:[]).filter(x=>keys.includes(x)))];
 export function migrate(s,raw){
- s.schema=3;s.helpers=bounded(raw.helpers,3);s.materials=Object.fromEntries(['copper','crystal','salvage','core'].map(k=>[k,bounded(raw.materials?.[k])]));
+ s.schema=4;s.toolBudget=[0,1,3,5].includes(raw.toolBudget)?raw.toolBudget:0;s.helpers=bounded(raw.helpers,3);s.materials=Object.fromEntries(['copper','crystal','salvage','core'].map(k=>[k,bounded(raw.materials?.[k])]));
  s.modules=unique(raw.modules,Object.keys(MODULES));s.equipped=unique(raw.equipped,s.modules).slice(0,2);
  s.crew=unique(raw.crew,Object.keys(CREW));s.activeCrew=s.crew.includes(raw.activeCrew)?raw.activeCrew:null;
  s.tools=Object.fromEntries(Object.keys(TOOLS).map(k=>[k,raw.tools?bounded(raw.tools[k],99):['coolant','beam'].includes(k)?2:0]));
@@ -38,7 +38,7 @@ export function equipModule(s,id){if(!s.modules.includes(id))return false;if(s.e
 export function metric(s,key){return ({heads:s.heads.length,relics:s.relics.length,modules:s.modules.length,depth:s.best,clears:s.cleared.length})[key]??s.total[key]??0;}
 export function claimAchievement(s,id){const a=ACHIEVEMENTS.find(a=>a.id===id);if(!a||s.claimed.includes(id)||metric(s,a.metric)<a.target)return false;s.claimed.push(id);s.coins=Math.min(1e9,s.coins+a.reward);return true;}
 export function initializeRun(s,r){return Object.assign(r,{time:0,hull:100,buff:0,frost:0,toolsUsed:0,toolCooldown:0,
- materials:{copper:0,crystal:0,salvage:0,core:0},bankedMaterials:{copper:0,crystal:0,salvage:0,core:0},bankedOre:0,finalEarned:0,autoThink:0,smartVenting:false,forceBreak:false,drilling:false,triggered:[],
+ materials:{copper:0,crystal:0,salvage:0,core:0},bankedMaterials:{copper:0,crystal:0,salvage:0,core:0},bankedOre:0,finalEarned:0,autoThink:0,plannedRow:-1,toolAllowance:s.toolBudget,abilityCooldowns:{beam:0,blast:0,repair:0,coolant:0},pilotStatus:"自動探礦",smartVenting:false,forceBreak:false,drilling:false,triggered:[],
  seal:r.stage.checkpoint?{phase:0,time:0,usedVents:0,hitFlash:0}:null});}
 export function activeSeal(r){return Boolean(r.seal&&r.row===19&&r.seal.phase<3);}
 export function sealState(r){
@@ -46,10 +46,10 @@ export function sealState(r){
  const targets=[[0,2,1],[1,0,2],[0,1,2],[2,0,1],[0,1,2],[1,2,0]];
  const lane=a===2?(Math.floor(b.time/5)+b.phase)%3:targets[a][b.phase];
  const open=a!==2||b.time%5>2.2;
- return {lane,open,phase:b.phase,name:REGIONS[a].seal,hint:REGIONS[a].hint,
+ return {lane:lane+1,open,phase:b.phase,name:REGIONS[a].seal,hint:REGIONS[a].hint,
   status:a===0?`鎖片 ${b.phase+1}/3 · 對準發光鎖片`:a===1?(b.needsRelease?'鬆開下鑽，讓泵閥回彈':'對準發光泵芯，三次鑽開水道'):a===2?(open?'冷卻窗開啟！':'護罩啟動，等待冷卻窗'):a===3?'每次短按少於 1 秒，保護晶環':a===4?'先洩壓，再啟動閥門':b.phase===0?'第一階段：對準發光外殼':b.phase===1?'第二階段：每次短按少於 1.2 秒':'第三階段：洩壓後啟動燈塔'};
 }
-export function runSeams(r,offset=0){const state=offset===0&&sealState(r);if(state){const out=['B','B','B'];out[state.lane]=['E','W','L','X','D','E'][r.stage.arc];return out;}return seams(r.stage,r.row+offset);}
+export function runSeams(r,offset=0){const state=offset===0&&sealState(r);if(state){const out=['B','B','B','B','B'];out[state.lane]=['E','W','L','X','D','E'][r.stage.arc];return out;}return seams(r.stage,r.row+offset);}
 export function sealContact(s,r){
  const state=sealState(r);if(!state)return true;const b=r.seal,a=r.stage.arc;
  let reason='';if(r.lane!==state.lane)reason='這裡是護甲，請對準發光弱點';
@@ -75,8 +75,8 @@ export function settleSystems(s,r,reason,first){
  }
 }
 export function useTool(s,r,key,target={row:r?.row,lane:r?.lane}){
- if(!r||r.ended||r.paused||!Object.hasOwn(TOOLS,key)||r.toolCooldown>0||s.tools[key]<=0)return false;
- if(['blast','beam'].includes(key)){if(!Number.isInteger(target.row)||!Number.isInteger(target.lane)||target.lane<0||target.lane>2||target.row<r.row||target.row>Math.min(19,r.row+2)||r.stage.checkpoint&&target.row===19||r.tiles[`${target.row}:${target.lane}`]?.hp===0||r.beamTarget)return false;}
+ if(!r||r.ended||r.paused||!Object.hasOwn(TOOLS,key)||r.toolCooldown>0||s.tools[key]<=0||s.unlocked<TOOLS[key].min)return false;
+ if(['blast','beam'].includes(key)){if(!Number.isInteger(target.row)||!Number.isInteger(target.lane)||target.lane<0||target.lane>4||target.row<r.row||target.row>Math.min(19,r.row+4)||r.stage.checkpoint&&target.row===19||r.tiles[`${target.row}:${target.lane}`]?.hp===0||r.beamTarget)return false;}
  if(key==='coolant'&&r.pressure<1)return false;
  if(key==='repair'&&r.hull>=100&&r.pressure<1)return false;
  s.tools[key]--;s.total.tools++;r.toolsUsed++;r.toolCooldown=.7;
@@ -120,16 +120,31 @@ export function planLane(s,r,policy=s.policy){
 }
 export function stepSystems(s,r,dt,held){
  r.time+=dt;r.buff=Math.max(0,r.buff-dt);r.frost=Math.max(0,r.frost-dt);r.toolCooldown=Math.max(0,r.toolCooldown-dt);
+ for(const k of Object.keys(r.abilityCooldowns))r.abilityCooldowns[k]=Math.max(0,r.abilityCooldowns[k]-dt);
  if(activeSeal(r)){r.seal.time+=dt;r.seal.hitFlash=Math.max(0,r.seal.hitFlash-dt);}
- if(r.auto&&s.auto.smart){
-  r.autoThink-=dt;if(r.autoThink<=0){r.autoThink=.18;const lane=planLane(s,r);if(lane!==r.lane){r.lane=lane;r.progress=0;r.held=0;}}
-  const state=sealState(r);const pulse=runSeams(r)[r.lane]==='X'||(state&&(r.stage.arc===3||(r.stage.arc===5&&state.phase===1)));
-  if(pulse&&r.held>.65)return false;
-  if(s.auto.cool&&(r.stage.goal==='vent'||r.stage.goal==='mastery'||(state&&[4,5].includes(r.stage.arc)))){
-   if(r.pressure>=24)r.smartVenting=true;if(r.pressure<4)r.smartVenting=false;if(r.smartVenting)return false;
-  }
-  if(state&&r.stage.arc===1&&r.seal.needsRelease)return false;
-  if(state&&r.stage.arc===2&&!state.open)return false;
+ if(!r.auto)return held;
+ const state=sealState(r);r.autoThink-=dt;
+ if(r.autoThink<=0&&(r.plannedRow!==r.row||state)){
+  r.autoThink=.18;r.plannedRow=r.row;const lane=planLane(s,r,'mission');
+  if(lane!==r.lane){r.lane=lane;r.progress=0;r.held=0;r.pulse=0;}
  }
- return held||r.auto||r.forceBreak;
+ const needsVent=r.stage.goal==='vent'||r.stage.goal==='mastery'||(state&&(r.stage.arc===4||(r.stage.arc===5&&state.phase===2)));
+ if(r.pressure>=(needsVent?24:70))r.smartVenting=true;
+ if(r.pressure<4)r.smartVenting=false;
+ if(r.smartVenting){r.pilotStatus='自動洩壓 · 保護機殼';return false;}
+ if(state&&r.stage.arc===1&&r.seal.needsRelease){r.pilotStatus='泵閥回彈中';return false;}
+ if(state&&r.stage.arc===2&&!state.open){r.pilotStatus='等待封印冷卻窗';return false;}
+ const crystal=runSeams(r)[r.lane]==='X'||state&&(r.stage.arc===3||r.stage.arc===5&&state.phase===1);
+ if(crystal&&r.held>.6){r.pilotStatus='晶體脈衝保護';return false;}
+ r.pilotStatus=state?'自動破解封印':r.buff>0?'能量加速！':'自動探礦 · 任務優先';
+ return true;
+}
+export function automaticTool(s,r,cell){
+ if(!r.auto||r.toolAllowance<=r.toolsUsed||r.toolCooldown>0||activeSeal(r)||r.smartVenting)return false;
+ const kind=cell.kind;
+ const candidates=[['repair',r.hull<=35],['coolant',r.pressure>=85],['blast',kind==='B'&&cell.hp>120],['beam',!['X','W','L','D'].includes(kind)&&cell.hp>180]];
+ for(const [key,needed] of candidates)if(needed&&!r.abilityCooldowns[key]&&useTool(s,r,key,{row:r.row,lane:r.lane})){
+  r.abilityCooldowns[key]={repair:10,coolant:8,beam:8,blast:20}[key];return true;
+ }
+ return false;
 }

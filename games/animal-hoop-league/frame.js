@@ -78,10 +78,9 @@
   const utilitySlot = document.createElement('div');
   utilitySlot.className = 'hoop-court-utility';
   utilitySlot.append(utility);
-  canvasWrap.append(utilitySlot);
   canvasWrap.querySelector('#arena')?.setAttribute('data-wp-court-canvas', '');
   courtArea.append(battleStatus, canvasWrap);
-  controlsArea.append(controls, hint);
+  controlsArea.append(utilitySlot, controls, hint);
   battle.append(battleContent);
   battleContent.append(courtArea, controlsArea, result);
   for (const overlay of battle.querySelectorAll('.hoop-help,.hoop-leave-dialog')) battleContent.append(overlay);

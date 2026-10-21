@@ -212,8 +212,8 @@
       tutorial.setAttribute("aria-labelledby", "wordleTutorialTitle");
       tutorial.setAttribute("aria-describedby", "wordleTutorialIntro");
       tutorial.hidden = true;
-      tutorial.innerHTML = '<div class="wordle-tutorial-card"><span class="wordle-tutorial-step"></span><h2 id="wordleTutorialTitle"></h2><p id="wordleTutorialIntro" class="wordle-tutorial-intro"></p><div class="wordle-demo-row" dir="ltr" aria-hidden="true">' + Array.from({length:5},()=>'<span class="wordle-demo-tile"><b></b><small></small></span>').join("") + '</div><div class="wordle-demo-meaning" aria-live="polite"><p></p><p></p><p></p></div><p class="wordle-tutorial-note"></p><button type="button" class="primary wordle-demo-action"></button><button type="button" class="secondary wordle-tutorial-skip"></button></div>';
-      document.querySelector("#battleScreen [data-wp-logical-battle-canvas]").append(tutorial);
+      tutorial.innerHTML = '<div class="wordle-tutorial-card"><span class="wordle-tutorial-step"></span><h2 id="wordleTutorialTitle"></h2><p id="wordleTutorialIntro" class="wordle-tutorial-intro"></p><div class="wordle-demo-row" dir="ltr" aria-hidden="true">' + Array.from({length:5},()=>'<span class="wordle-demo-tile"><b></b><small></small></span>').join("") + '</div><div class="wordle-demo-meaning" aria-live="polite"><p></p><p></p><p></p></div><p class="wordle-tutorial-note"></p><button type="button" class="primary wordle-demo-action" data-wp-tutorial-next></button><button type="button" class="secondary wordle-tutorial-skip" data-wp-tutorial-next></button></div>';
+      document.querySelector("#battleScreen").append(tutorial);
       tutorial.querySelector(".wordle-demo-action").addEventListener("click", () => {
         if (tutorialClosing) return;
         if (tutorialStep === 0) {
@@ -234,6 +234,7 @@
     tutorialEpoch++; tutorialStep = 0; tutorialClosing = false;
     paintTutorial(); tutorial.hidden = false;
     document.querySelector("#battleScreen .battle-panel").inert = true;
+    document.querySelector("#battleScreen [data-wp-frame-header='battle']")?.setAttribute("inert", "");
     tutorial.querySelector(".wordle-demo-action").focus({preventScroll:true});
     void tween(tutorial.firstElementChild, [{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"translateY(0)"}], {duration:180}, false);
   }
@@ -242,6 +243,7 @@
     if (tutorial) tutorial.hidden = true;
     const panel = document.querySelector("#battleScreen .battle-panel");
     if (panel) panel.inert = false;
+    document.querySelector("#battleScreen [data-wp-frame-header='battle']")?.removeAttribute("inert");
   }
   async function finishTutorial() {
     if (!tutorial || tutorial.hidden || tutorialClosing) return;

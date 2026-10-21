@@ -44,7 +44,7 @@
     progression: ['', 'Completed missions and best stars are saved in this browser.'],
     parent: 'Progress is stored locally in this browser.',
     faq: [['How do I promote a general?', 'Merge two matching level-three soldiers.'], ['Why did I lose after merging?', 'Merging can leave a lane undefended. Check your formation first.'], ['Is progress saved?', 'Completed missions and best stars are saved in this browser.']],
-    related: [], hideRelatedGames: true,
+    related: ['animal-rune-tactics'], relatedIds: ['animal-rune-tactics'],
   };
   for (const [locale, [mission, progression, designNote]] of Object.entries(details)) {
     const guide = window.WeightPlayGeneralReviewedGuides?.[locale]?.games?.['zhao-yun-a-dou'];
@@ -86,6 +86,21 @@
     hi: ['मिशन','कैसे खेलें','प्रगति','सुझाव','डिज़ाइन','सहेजी गई प्रगति','प्रश्न'],
     ar: ['المهمة','طريقة اللعب','التقدم','نصائح','التصميم','الحفظ','أسئلة'],
   };
+  const relatedCopy = {
+    en: { title: 'Related games', intro: 'Try another strategy campaign focused on planning each squad action.', description: 'A turn-based squad campaign about moving, attacking, guarding, and using each hero’s distinct skill.' },
+    'zh-Hant': { title: '相關遊戲', intro: '再試試另一款需要規劃小隊行動的策略戰役。', description: '回合制小隊戰役，指揮英雄移動、攻擊、防守並使用各自技能。' },
+    'zh-Hans': { title: '相关游戏', intro: '再试试另一款需要规划小队行动的策略战役。', description: '回合制小队战役，指挥英雄移动、攻击、防守并使用各自技能。' },
+    ja: { title: '関連ゲーム', intro: '部隊の行動を計画する別の戦略キャンペーンも試してみましょう。', description: 'ヒーローを動かし、攻撃・防御や固有スキルを使うターン制分隊キャンペーンです。' },
+    ko: { title: '관련 게임', intro: '분대의 행동을 계획하는 다른 전략 캠페인도 즐겨 보세요.', description: '영웅을 이동시키고 공격·방어와 고유 기술을 사용하는 턴제 분대 캠페인입니다.' },
+    es: { title: 'Juegos relacionados', intro: 'Prueba otra campaña estratégica centrada en planificar cada acción del escuadrón.', description: 'Una campaña táctica por turnos para mover, atacar, proteger y usar las habilidades de cada héroe.' },
+    'pt-BR': { title: 'Jogos relacionados', intro: 'Experimente outra campanha estratégica que exige planejar cada ação do esquadrão.', description: 'Uma campanha tática por turnos para mover, atacar, proteger e usar as habilidades de cada herói.' },
+    fr: { title: 'Jeux associés', intro: 'Essayez une autre campagne stratégique où il faut planifier chaque action de l’escouade.', description: 'Une campagne tactique au tour par tour pour déplacer, attaquer, protéger et utiliser les compétences de chaque héros.' },
+    de: { title: 'Ähnliche Spiele', intro: 'Probiere eine weitere Strategiekampagne, in der du jede Aktion deines Teams planst.', description: 'Eine rundenbasierte Truppenkampagne mit Bewegung, Angriff, Schutz und individuellen Heldenfähigkeiten.' },
+    it: { title: 'Giochi correlati', intro: 'Prova un’altra campagna strategica in cui pianificare ogni azione della squadra.', description: 'Una campagna tattica a turni per muovere, attaccare, proteggere e usare le abilità uniche di ogni eroe.' },
+    ru: { title: 'Похожие игры', intro: 'Попробуйте другую стратегическую кампанию, где нужно планировать действия отряда.', description: 'Пошаговая кампания отряда с перемещением, атаками, защитой и особыми умениями героев.' },
+    hi: { title: 'संबंधित गेम', intro: 'एक और रणनीति अभियान आज़माएँ, जहाँ दस्ते की हर चाल की योजना बनानी होती है।', description: 'बारी-आधारित दस्ता अभियान: नायकों को चलाएँ, हमला करें, रक्षा करें और उनकी खास क्षमताएँ इस्तेमाल करें।' },
+    ar: { title: 'ألعاب مرتبطة', intro: 'جرّب حملة استراتيجية أخرى تتطلب التخطيط لكل حركة من حركات الفريق.', description: 'حملة فريق تناوبية تتيح تحريك الأبطال والهجوم والدفاع واستخدام مهاراتهم الخاصة.' },
+  };
   // Localized generation supplies the shared static guide surface; hydrate
   // that existing surface instead of leaving duplicate guides on the page.
   const root = document.getElementById('mainGuide') || document.querySelector('.game-page-info');
@@ -102,6 +117,60 @@
     if (className) el.className = className;
     return el;
   };
+  const routeSegments = { en: 'en', 'zh-Hant': 'zh-tw', 'zh-Hans': 'zh-cn', ja: 'ja', ko: 'ko', es: 'es', 'pt-BR': 'pt-br', fr: 'fr', de: 'de', it: 'it', ru: 'ru', hi: 'hi', ar: 'ar' };
+  function appendRelatedGames(parent, guide, locale) {
+    const catalog = window.WEIGHTPLAY_PUBLIC_GAME_CATALOG || {};
+    const active = catalog['zhao-yun-a-dou'];
+    const titles = window.WEIGHTPLAY_GAME_TITLES || {};
+    const posters = window.WEIGHTPLAY_INTERFACE7_POSTERS || {};
+    const activeAges = active?.ages || [];
+    const copy = relatedCopy[locale];
+    const eligible = (guide.relatedIds || guide.related || []).filter(id => {
+      const target = catalog[id];
+      const targetAges = target?.ages || [];
+      const ageOverlap = !activeAges.length || !targetAges.length || activeAges.some(age => targetAges.includes(age));
+      return id !== 'zhao-yun-a-dou'
+        && target?.status === 'playable'
+        && !target.internalOnly && !target.internalTrial && !target.previewOnly
+        && target.audience === active?.audience
+        && ageOverlap
+        && target.href === `games/${id}/`
+        && titles[id]?.[locale]
+        && posters[id]?.startsWith('/');
+    });
+    if (!eligible.length) return;
+    const section = node('div', '', 'game-info-section game-info-related-section');
+    section.dataset.wpGuideRelatedInterface = '9';
+    section.append(node('h3', copy.title), node('p', copy.intro));
+    const cards = node('div', '', 'game-info-related');
+    for (const id of eligible) {
+      const title = titles[id][locale];
+      const card = node('a', '', 'game-info-related-card');
+      card.dataset.gameId = id;
+      card.dataset.wpRelatedId = id;
+      card.href = `/${routeSegments[locale]}/games/${id}/`;
+      const poster = node('span', '', 'game-info-related-poster');
+      const image = document.createElement('img');
+      image.src = posters[id];
+      image.dataset.finalSrc = '/assets/weightplay-logo.png';
+      image.alt = title;
+      image.width = 320; image.height = 320; image.loading = 'lazy'; image.decoding = 'async';
+      const fallback = () => {
+        image.removeEventListener('error', fallback);
+        if (image.getAttribute('src') === image.dataset.finalSrc) image.hidden = true;
+        else image.src = image.dataset.finalSrc;
+      };
+      image.addEventListener('error', fallback);
+      image.addEventListener('load', () => image.removeEventListener('error', fallback), { once: true });
+      poster.append(image);
+      const content = node('span', '', 'game-info-related-copy');
+      content.append(node('strong', title), node('span', copy.description));
+      card.append(poster, content);
+      cards.append(card);
+    }
+    section.append(cards);
+    parent.append(section);
+  }
   const visibility = () => { root.hidden = document.body.dataset.screen !== 'main'; };
   function render() {
     const locale = localeSelect.value;
@@ -131,7 +200,9 @@
       detail.append(node('summary', question), node('p', answer));
       faq.append(detail);
     });
-    grid.append(faq); root.append(grid); visibility();
+    grid.append(faq);
+    appendRelatedGames(grid, guide, locale);
+    root.append(grid); visibility();
   }
   const observer = new MutationObserver(visibility);
   observer.observe(document.body, {attributes: true, attributeFilter: ['data-screen']});

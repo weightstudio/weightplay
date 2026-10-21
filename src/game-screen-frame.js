@@ -169,7 +169,8 @@
   const sharedAssetBase = new URL('.', frameScriptUrl);
 
   function ensureBattleCanvasRuntime() {
-    if (document.body?.dataset.wpBattleLayout === "native") return;
+    if (document.body?.dataset.wpBattleLayout === "native"
+        || document.querySelector("[data-wp-standard-battle-screen]")) return;
     if (!document.querySelector('link[href*="battle-canvas-standard.css"]')) {
       const link = document.createElement("link");
       link.rel = "stylesheet";

@@ -3,7 +3,7 @@
 <head>
  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
  <meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#0b1824">
- <meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="3"><meta name="weightplay-interface-version" content="9">
+ <meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="4"><meta name="weightplay-interface-version" content="9">
  <title>地心鑽探 · Deep Drill | WeightPlay</title>
  <link rel="icon" href="/assets/weightplay-logo.png">
  <link rel="stylesheet" href="/src/game-screen-frame.css"><link rel="stylesheet" href="/src/game-play-ui.css">
@@ -22,16 +22,16 @@
    <img class="cover" data-wp-frame-poster src="art/poster.png" alt="方塊狐狸駕駛黃銅鑽機，探索水晶礦洞">
    <div class="intro" data-wp-frame-copy>
     <span class="eyebrow">DEEP DRILL / HEARTLIGHT EXPEDITION</span><h1>地心鑽探</h1>
-    <p class="lead" data-wp-frame-summary>再往下，還有什麼？</p>
+    <p class="lead" data-wp-frame-summary>自動挖到底，越升級越痛快。</p>
     <p class="summary">六大礦域，三千公尺遠征。改裝鑽機、招募夥伴、破解失落文明的六道封印，點亮沉睡的地心燈塔。</p>
     <button id="start" class="primary" data-wp-frame-action="primary">開始探礦</button>
     <small class="preview-label">30 區主線 · 6 座封印 · 鑽頭改裝與智慧自動化</small>
    </div>
   </main>
   <section class="guide"><h2>從一顆礦石，到整座地下世界</h2><div class="guide-grid">
-   <article><b>01 / 下鑽</b><p>按住「下鑽」或空白鍵。左右選擇礦脈，每格受傷後才顯示耐久。強化鑽頭，讓礦石越挖越快。</p></article>
+   <article><b>01 / 下鑽</b><p>出發就自動鑽探！5×5 礦地、自動選路與洩壓。你只要選升級，破地越來越快。</p></article>
    <article><b>02 / 返航</b><p>隨時帶礦返航並出售。滿載也會返航；機殼耗盡或高壓救援只能保住 65% 的礦物收益。</p></article>
-   <article><b>03 / 改裝</b><p>用採礦所得換鑽頭、提升鑽力與轉速，或購買自動鑽掘、洩壓與出售，還能僱用助手。</p></article>
+   <article><b>03 / 改裝</b><p>用收益換鑽頭、升級鑽力、轉速與礦艙。備用工具預設不消耗，可在工坊授權每趟上限。</p></article>
   </div><p>30 次探勘，逐步遇見冷泉、熔岩、脆弱水晶與高壓岩層。完成當關目標並抵達 100m，解鎖下一區。</p></section>
  </section>
  <section id="stage" class="scene play-scene" hidden>
@@ -42,14 +42,14 @@
   <header><button data-wp-return="battle" aria-label="暫停並返回">←</button><strong data-wp-frame-title></strong></header>
   <div id="battleContent">
    <div class="depth-strip"><div><small id="zoneName">表層礦脈</small><strong><span id="depth">0</span><span class="unit"> / <span id="depthTarget">100</span> m</span></strong></div><span id="hullLabel">機殼 100%</span><button id="pause" class="subtle">暫停</button></div>
-   <div class="mine"><canvas id="world" aria-label="三條礦脈的 3D 礦井"></canvas><div class="scene-vignette"></div><div id="tileTargets" class="tile-targets" aria-label="九格礦脈"></div><div id="hitNumber" aria-hidden="true"></div><div class="mission-hud"><span id="missionGoal"></span><strong id="missionProgress"></strong><small id="sealCue"></small></div><div id="mining-label">選擇礦脈</div><div id="oreFlight" aria-hidden="true"></div><div id="renderError" hidden>3D 畫面無法啟動，請使用支援 WebGL 的瀏覽器。<button onclick="location.reload()">重新載入</button></div></div>
+   <div class="mine"><canvas id="world" aria-label="五條礦脈的 3D 礦井"></canvas><div class="scene-vignette"></div><div id="tileTargets" class="tile-targets" aria-label="五乘五礦脈"></div><div id="breakGain" aria-hidden="true"></div><div id="hitNumber" aria-hidden="true"></div><div class="mission-hud"><span id="missionGoal"></span><strong id="missionProgress"></strong><small id="sealCue"></small></div><div id="mining-label">選擇礦脈</div><div id="oreFlight" aria-hidden="true"></div><div id="renderError" hidden>3D 畫面無法啟動，請使用支援 WebGL 的瀏覽器。<button onclick="location.reload()">重新載入</button></div></div>
    <div class="telemetry"><div class="meter-label"><span id="miningPower">鑽擊待命</span><span id="cargoLabel">礦艙 0 / 32</span></div><div class="meters"><progress id="cargoBar" max="32" value="0"></progress></div><div class="pressure-line" id="pressureLine" hidden><span id="pressureLabel">壓力</span><progress id="pressureBar" max="100" value="0"></progress></div></div>
    <div id="seams" class="seams"><button data-lane="0"></button><button data-lane="1"></button><button data-lane="2"></button></div>
    <div class="drill-progress"><div id="rockProgress"></div></div>
    <p id="notice" class="notice" role="status" aria-live="polite">強化鑽機，越挖越快</p>
-   <div class="controls"><button id="left" aria-label="左側礦脈">←</button><button id="drill" class="primary">按住下鑽</button><button id="right" aria-label="右側礦脈">→</button></div>
-   <div class="tool-row"><button data-tool="beam" title="啟動後點選一格普通地磚，快捷鍵 4"><img alt="" id="tool-beam"><span>光束 <b id="count-beam">2</b></span></button><button data-tool="coolant" title="降低壓力，快捷鍵 1"><img alt="" id="tool-coolant"><span>洩壓 <b id="count-coolant">2</b></span></button><button data-tool="blast" title="打通普通岩層，快捷鍵 2"><img alt="" id="tool-blast"><span>鑽彈 <b id="count-blast">0</b></span></button><button data-tool="repair" title="修復機殼，快捷鍵 3"><img alt="" id="tool-repair"><span>修補 <b id="count-repair">0</b></span></button></div>
-   <div class="utility-row"><button id="helpersToggle" class="subtle">助手：未僱用</button><button id="autoToggle" class="subtle" disabled>自動：未購買</button><button id="return" class="subtle">返航出售</button></div>
+   <div class="controls"><button hidden id="left" aria-label="左側礦脈">←</button><button id="drill" class="primary">升級鑽機</button><button hidden id="right" aria-label="右側礦脈">→</button></div>
+   <div class="tool-row" hidden><button data-tool="beam" title="啟動後點選一格普通地磚，快捷鍵 4"><img alt="" id="tool-beam"><span>光束 <b id="count-beam">2</b></span></button><button data-tool="coolant" title="降低壓力，快捷鍵 1"><img alt="" id="tool-coolant"><span>洩壓 <b id="count-coolant">2</b></span></button><button data-tool="blast" title="打通普通岩層，快捷鍵 2"><img alt="" id="tool-blast"><span>鑽彈 <b id="count-blast">0</b></span></button><button data-tool="repair" title="修復機殼，快捷鍵 3"><img alt="" id="tool-repair"><span>修補 <b id="count-repair">0</b></span></button></div>
+   <div class="utility-row"><button hidden id="helpersToggle" class="subtle">助手：未僱用</button><button hidden id="autoToggle" class="subtle" disabled>自動：未購買</button><button id="return" class="subtle">返航出售</button></div>
    <div id="result" class="overlay" data-wp-result-audit hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="panel expedition-panel"><small>EXPEDITION REPORT</small><h2 id="resultTitle">返航成功</h2><p id="resultText"></p><div class="earnings"><small>本趟入帳</small><strong id="resultCoins">0</strong></div><p id="resultTip"></p><div class="panel-actions"><button id="retry" class="primary">再探一次</button><button id="next" class="primary" hidden>下一區</button><button id="backStages">礦區與工坊</button></div></div></div>
    <div id="pausePanel" class="overlay" hidden role="dialog" aria-modal="true" aria-labelledby="pauseTitle"><div class="panel"><small>RIG ON STANDBY</small><h2 id="pauseTitle">鑽機待命中</h2><p>本次鑽探已暫停。</p><div class="panel-actions"><button id="resume" class="primary">繼續鑽探</button><button id="exitRun">返航出售並離開</button></div></div></div>
   </div>

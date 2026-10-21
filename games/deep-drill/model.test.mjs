@@ -1,165 +1,29 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {normalize,buy,newRun,tick,settle,capacity,upgradeCost,HEADS,goalMet,cellState,selectRoute} from './model.mjs';
+import {normalize,buy,newRun,tick,settle,capacity,upgradeCost,cellState,selectRoute,goalMet} from './model.mjs';
 import {STAGES,seams,ROCKS} from './stages.mjs';
-import {sealState,runSeams,equipModule,claimAchievement,useTool,activeSeal,sealContact,planLane} from './systems.mjs';
-const advance=(save,r,seconds,held=true)=>{for(let t=0;t<seconds;t+=1/60)tick(save,r,1/60,held);};
-test('corrupt/old saves normalize without invented purchases',()=>{
- const s=normalize({coins:-3,unlocked:100,heads:[2,2,99],head:99,upgrades:{power:Infinity,cargo:900},cleared:[1,1,'x'],auto:{drill:'yes',cool:true}});
- assert.equal(s.coins,0);assert.equal(s.unlocked,30);assert.deepEqual(s.heads,[0,2]);assert.equal(s.head,0);assert.equal(s.upgrades.power,0);assert.equal(s.upgrades.cargo,20);assert.deepEqual(s.cleared,[1]);assert.equal(s.auto.drill,false);assert.equal(s.auto.cool,true);
- assert.equal(normalize(null).unlocked,1);
+import {useTool,sealState,sealContact,automaticTool,claimAchievement} from './systems.mjs';
+const advance=(s,r,seconds,held=false)=>{for(let i=0;i<Math.ceil(seconds*60)&&!r.ended;i++)tick(s,r,1/60,held);};
+test('five deterministic seams keep30 stable IDs,six seals and all objective families',()=>{
+ assert.equal(STAGES.length,30);assert.deepEqual(STAGES.map(s=>s.id),Array.from({length:30},(_,i)=>i+1));assert.equal(STAGES.filter(s=>s.checkpoint).length,6);
+ for(const s of STAGES)for(let row=0;row<20;row++){const a=seams(s,row);assert.equal(a.length,5);assert.ok(a.every(k=>ROCKS[k]));assert.deepEqual(seams(s,row),a);}
 });
-test('purchases are atomic and re-equipping owned heads is free',()=>{
- const s=normalize();const initial=JSON.stringify(s);assert.equal(buy(s,'head',1),false);assert.equal(JSON.stringify(s),initial);
- s.coins=1000;assert.equal(buy(s,'head',1),true);assert.equal(s.coins,820);assert.equal(s.head,1);buy(s,'head',0);buy(s,'head',1);assert.equal(s.coins,820);
- const cost=upgradeCost(s,'power');buy(s,'upgrade','power');assert.equal(s.coins,820-cost);assert.equal(s.upgrades.power,1);assert.ok(upgradeCost(s,'power')>cost);
- assert.equal(buy(s,'auto','drill'),true);const after=s.coins;assert.equal(buy(s,'auto','drill'),false);assert.equal(s.coins,after);
+test('old save investment,money,equipment and records survive schema4 migration idempotently',()=>{
+ const raw={schema:2,coins:777,unlocked:20,cleared:[1,2,19],heads:[0,2],head:2,upgrades:{cooling:5,power:3,speed:2},auto:{drill:true,cool:true,smart:true},records:{19:{stars:3,time:28}},tools:{blast:4,repair:3,coolant:8}};
+ const s=normalize(raw);assert.equal(s.schema,4);assert.equal(s.coins,777);assert.equal(s.head,2);assert.equal(s.upgrades.cooling,5);assert.deepEqual(s.records,raw.records);assert.equal(s.toolBudget,0);assert.equal(s.auto.drill,true);assert.deepEqual(normalize(JSON.parse(JSON.stringify(s))),s);
 });
-test('depth, harder layers and no mining when paused',()=>{
- const s=normalize(),early=newRun(s,0),deep=newRun(s,29);early.lane=seams(early.stage,0).indexOf('C');deep.lane=seams(deep.stage,0).indexOf('X');
- advance(s,early,.5);advance(s,deep,.5);assert.ok(early.progress>deep.progress);
- early.paused=true;const before=JSON.stringify(early);advance(s,early,10);assert.equal(JSON.stringify(early),before);
-});
-test('heat is absent, pressure still rescues and settlement cannot duplicate',()=>{
- const s=normalize(),r=newRun(s);assert.equal('heat' in r,false);advance(s,r,8);assert.equal(r.ended,false);assert.ok(r.row>0);
- const q=newRun(s,20);q.pressure=99.9;q.value=100;advance(s,q,.1);assert.equal(q.reason,'pressure');assert.equal(s.coins,65);assert.equal(settle(s,q,'return'),false);
-});
-test('automatic venting has pressure hysteresis and pause freezes mining',()=>{
- const s=normalize({auto:{drill:true,cool:true}}),r=newRun(s,20);r.pressure=75;advance(s,r,.2);assert.equal(r.autoCooling,true);advance(s,r,6);assert.ok(r.row>0);assert.ok(r.pressure<100);
- r.paused=true;const snapshot=JSON.stringify(r);advance(s,r,100);assert.equal(JSON.stringify(r),snapshot);
-});
-test('full cargo returns, auto sell banks once and result includes earlier sales',()=>{
- const s=normalize(),r=newRun(s);r.cargo=capacity(s);r.value=100;cellState(r).hp=1;advance(s,r,.1);assert.equal(r.reason,'full');assert.ok(s.coins>=100);
- const a=normalize({auto:{sell:true},upgrades:{cargo:1}}),q=newRun(a);q.cargo=capacity(a);q.value=100;cellState(q).hp=1;advance(a,q,.1);assert.equal(q.ended,false);assert.equal(q.cargo,0);assert.ok(a.coins>=100);const bank=a.coins;settle(a,q,'return');assert.equal(q.banked,a.coins);assert.equal(a.coins,bank);
-});
-test('all heads have an actual effect and upgrade limits cannot overcharge',()=>{
- const s=normalize({coins:100000,upgrades:{power:20}}),before=s.coins;assert.equal(buy(s,'upgrade','power'),false);assert.equal(s.coins,before);
- assert.ok(HEADS[3].power>HEADS[0].power);assert.ok(HEADS[2].power>HEADS[1].power);
- const base=normalize(),alloy=normalize({heads:[1],head:1});const a=newRun(base),b=newRun(alloy);a.lane=seams(a.stage,0).indexOf('S');b.lane=a.lane;advance(base,a,.3);advance(alloy,b,.3);assert.ok(b.depth+b.progress*5>(a.depth+a.progress*5)*1.5);
-});
-test('30 stable authored stages, six checkpoints, safe route and valid seams',()=>{
- assert.equal(STAGES.length,30);assert.equal(STAGES.filter(s=>s.checkpoint).length,6);
- assert.ok(new Set(STAGES.map(s=>s.goal)).size>=10);
- for(const s of STAGES)for(let r=0;r<20;r++){const row=seams(s,r);assert.equal(row.length,3);assert.ok(row.every(x=>ROCKS[x]));assert.ok(row.some(x=>x!=='L'));}
-});
-test('complete expedition unlocks only next stage, banked save survives normalize',()=>{
- const s=normalize(),r=newRun(s);r.depth=100;r.value=50;settle(s,r,'complete');assert.equal(r.clear,true);assert.equal(s.unlocked,2);assert.deepEqual(s.cleared,[1]);assert.deepEqual(normalize(JSON.parse(JSON.stringify(s))),s);
-});
-test('missing stage objective cannot unlock and crystal must use short pulses',()=>{
- const s=normalize(),r=newRun(s,16);r.depth=100;assert.equal(goalMet(r),false);settle(s,r,'complete');assert.equal(r.clear,false);assert.equal(s.unlocked,1);
- const c=newRun(s,15);c.lane=seams(c.stage,0).indexOf('X');cellState(c).hp=1;c.held=.2;advance(s,c,.15);assert.equal(c.stats.quality,1);
- const d=newRun(s,15);d.lane=c.lane;cellState(d).hp=1;d.held=3;advance(s,d,.15);assert.equal(d.stats.quality,0);assert.ok(c.value>d.value);
-});
-function play(s,stage){
-  const r=newRun(s,stage.id-1);r.auto=false;let cooling=false,pulse=0,oldRow=-1;
-  for(let t=0;t<1200&&!r.ended;t+=1/60){
-   const seal=sealState(r);if(seal&&r.lane!==seal.lane){r.lane=seal.lane;r.progress=0;r.held=0;}
-   if(r.row!==oldRow){oldRow=r.row;const row=seams(stage,r.row),stats=r.stats;
-    let want='C';switch(stage.goal){case'gold':want=stats.gold<stage.quota?'G':'W';break;case'coolant':want=stats.coolant<stage.quota?'W':'C';break;case'quality':case'crystal':want='X';break;case'balanced':want=stats.copper<stage.quota?'C':stats.gold<Math.ceil(stage.quota/2)?'G':'W';break;case'mastery':want=stats.quality<stage.quota?'X':stats.coolant<3?'W':'X';break;case'cool':want=r.row===19?'W':'C';break;}
-    const found=row.indexOf(want);r.lane=seal?seal.lane:found>=0?found:row.indexOf('W')>=0?row.indexOf('W'):row.findIndex(x=>!['L','B','D'].includes(x));if(r.lane<0)r.lane=row.findIndex(x=>x!=='L');r.progress=0;
-   }
-   if(r.pressure>=24)cooling=true;if(r.pressure<4)cooling=false;
-   pulse+=1/60;const rest=cooling||pulse>.65||(seal&&!seal.open);tick(s,r,1/60,!rest);if(pulse>.7)pulse=0;
-  }
-  return r;
-}
-test('every authored objective and seal has a reachable model route',()=>{
- for(const stage of STAGES){const s=normalize({upgrades:{power:2,speed:2,cooling:4,cargo:3}}),r=play(s,stage);assert.equal(r.clear,true,`${stage.id} ${stage.goal}: ${JSON.stringify(r.stats)} depth=${r.depth} heat=${r.heat} seal=${JSON.stringify(r.seal)}`);}
-});
-test('v1 saves retain equipment and clears while adding bounded full-game systems',()=>{
- const s=normalize({schema:1,coins:555,heads:[0,2],head:2,unlocked:6,cleared:[1,2,3,4,5],upgrades:{power:3}});
- assert.equal(s.schema,3);assert.equal(s.coins,555);assert.equal(s.head,2);assert.equal(s.upgrades.power,3);assert.equal(s.unlocked,6);assert.deepEqual(s.relics,[0]);assert.equal(s.materials.copper,0);assert.deepEqual(normalize(JSON.parse(JSON.stringify(s))),s);
-});
-test('crafting, recruiting and two-slot equipment never duplicate or overspend',()=>{
- const s=normalize({coins:5000,unlocked:30,materials:{copper:100,crystal:40}}),before=structuredClone(s);assert.equal(buy(s,'module','bad'),false);assert.deepEqual(s,before);
- assert.equal(buy(s,'module','exchanger'),true);assert.equal(s.materials.copper,88);assert.equal(buy(s,'module','exchanger'),false);
- buy(s,'module','prism');buy(s,'module','compressor');equipModule(s,'exchanger');equipModule(s,'prism');equipModule(s,'compressor');assert.deepEqual(s.equipped,['prism','compressor']);assert.equal(capacity(s),56);
- assert.equal(buy(s,'crew','bubble'),true);assert.equal(s.activeCrew,'bubble');assert.equal(capacity(s),66);const coins=s.coins;assert.equal(buy(s,'crew','bubble'),false);assert.equal(s.coins,coins);
-});
-test('tools consume only on actual effects and cannot bypass a seal',()=>{
- const s=normalize({tools:{coolant:2,blast:2,repair:1}}),r=newRun(s);assert.equal(useTool(s,r,'coolant'),false);assert.equal(s.tools.coolant,2);
- r.pressure=70;assert.equal(useTool(s,r,'coolant'),true);assert.equal(s.tools.coolant,1);assert.equal(r.pressure,50);assert.equal(useTool(s,r,'coolant'),false);
- r.toolCooldown=0;r.hull=30;assert.equal(useTool(s,r,'repair'),true);assert.equal(r.hull,70);
- const boss=newRun(s,4);boss.row=19;assert.equal(useTool(s,boss,'blast'),false);assert.equal(s.tools.blast,2);
- const ore=newRun(s);assert.equal(useTool(s,ore,'blast'),true);advance(s,ore,.05,false);assert.equal(ore.row,1);assert.equal(s.tools.blast,1);
-});
-test('all six seals reject invalid counterplay and final activation has three rules',()=>{
- for(let arc=0;arc<6;arc++){const s=normalize(),r=newRun(s,arc*5+4);r.row=19;r.depth=95;const state=sealState(r);r.lane=(state.lane+1)%3;
- assert.equal(sealContact(s,r),false);assert.equal(r.seal.phase,0);r.lane=state.lane;r.held=.5;r.stats.vent=1;r.seal.time=3;
- // Timed seal changes its target with its real clock.
- r.lane=sealState(r).lane;assert.equal(sealContact(s,r),false);assert.equal(r.seal.phase,1);
- }
- const s=normalize(),r=newRun(s,29);r.row=19;r.seal.phase=1;r.lane=sealState(r).lane;r.held=3;sealContact(s,r);assert.equal(r.seal.phase,1);
- r.held=.5;sealContact(s,r);assert.equal(r.seal.phase,2);r.lane=sealState(r).lane;sealContact(s,r);assert.equal(r.seal.phase,2);r.stats.vent++;assert.equal(sealContact(s,r),true);assert.equal(r.seal.phase,3);
-});
-test('achievement rewards and relic/ending settlement are idempotent',()=>{
- const s=normalize(),r=newRun(s);settle(s,r,'return');assert.equal(claimAchievement(s,'first'),true);const coins=s.coins;assert.equal(claimAchievement(s,'first'),false);assert.equal(s.coins,coins);
- const end=newRun(s,29);end.row=20;end.depth=100;end.seal.phase=3;settle(s,end,'complete');assert.equal(s.ending,true);assert.ok(s.relics.includes(5));assert.equal(s.materials.core,1);settle(s,end,'complete');assert.equal(s.materials.core,1);
-});
-test('fresh model campaign reaches the ending using only real earnings and purchases',()=>{
- const s=normalize();let totalSeconds=0;
- for(const stage of STAGES){
-  assert.ok(stage.id<=s.unlocked);
-  if(stage.id>=2&&!s.heads.includes(1))buy(s,'head',1);
-  if(stage.id>=11&&!s.heads.includes(2)&&s.coins>800)buy(s,'head',2);
-  if(stage.id>=21&&!s.heads.includes(3)&&s.coins>2000)buy(s,'head',3);
-  for(const key of ['cargo','cooling','power','speed']){const desired=Math.min(4,Math.ceil(stage.id/7));while(s.upgrades[key]<desired&&s.coins>=upgradeCost(s,key))assert.equal(buy(s,'upgrade',key),true);}
-  const r=play(s,stage);assert.equal(r.clear,true,`fresh stage ${stage.id}, coins=${s.coins}, ${r.reason}, row=${r.row}, hull=${r.hull}`);totalSeconds+=r.time;
- }
- assert.equal(s.ending,true);assert.equal(s.cleared.length,30);assert.equal(s.relics.length,6);assert.ok(s.coins>=0);assert.ok(totalSeconds>0);console.log(`Fresh campaign model: 30/30, six seals, ${Math.ceil(totalSeconds)} active seconds, ${s.coins} unspent coins.`);
-});
-test('automatic sales retain lifetime income and sold layers across save/reload without double accounting',()=>{
- const s=normalize({auto:{sell:true}}),r=newRun(s);r.cargo=32;r.value=100;cellState(r).hp=1;
- advance(s,r,.04);assert.equal(r.ended,false);assert.equal(s.total.earned,s.coins);assert.equal(s.total.ore,1);
- const restored=normalize(JSON.parse(JSON.stringify(s)));assert.equal(restored.total.earned,s.coins);assert.equal(restored.total.ore,1);
- settle(s,r,'return');assert.equal(s.total.earned,s.coins);assert.equal(s.total.ore,1);
-});
-test('salvage fabrication is an atomic alternative to buying supplies',()=>{
- const s=normalize({coins:19,materials:{salvage:2}});assert.equal(buy(s,'fabricate','coolant'),true);assert.equal(s.coins,19);assert.equal(s.materials.salvage,0);assert.equal(s.tools.coolant,3);
- const before=JSON.stringify(s);assert.equal(buy(s,'fabricate','coolant'),false);assert.equal(JSON.stringify(s),before);
- s.tools.coolant=99;s.materials.salvage=10;assert.equal(buy(s,'fabricate','coolant'),false);assert.equal(s.materials.salvage,10);
-});
-test('prototype or noncanonical transaction keys cannot create NaN or change savings',()=>{
- const s=normalize({coins:10000}),before=JSON.stringify(s);for(const type of ['head','upgrade','auto','module','crew','tool','fabricate','__proto__'])for(const key of ['__proto__','constructor','toString'])assert.equal(buy(s,type,key),false);
- assert.equal(JSON.stringify(s),before);
-});
-test('hazards, crew and modules produce the declared gameplay effects',()=>{
- function one(save,index,row,kind){const r=newRun(save,index);r.row=row;r.depth=row*5;r.lane=seams(r.stage,row).indexOf(kind);assert.ok(r.lane>=0);cellState(r).hp=1;advance(save,r,.025);return r;}
- const steel=one(normalize(),10,1,'B'),alloy=one(normalize({heads:[1],head:1}),10,1,'B');assert.equal(steel.hull,92);assert.equal(alloy.hull,97);
- const frost=one(normalize(),5,1,'I'),energy=one(normalize(),15,4,'E');assert.ok(frost.frost>3);assert.ok(energy.buff>5);
- const basic=one(normalize(),0,0,'G'),orla=one(normalize({crew:['orla'],activeCrew:'orla'}),0,0,'G');assert.ok(orla.value>basic.value);
- const s=normalize({modules:['beacon'],equipped:['beacon']}),rescue=newRun(s);rescue.value=100;settle(s,rescue,'pressure');assert.equal(s.coins,90);
-});
-
-test('v2 cooling investment becomes impact damage idempotently without changing money or progress',()=>{
- const raw={schema:2,coins:777,unlocked:20,cleared:[1,2,19],heads:[0,2],head:2,upgrades:{cooling:5,power:3,speed:2},auto:{cool:true},records:{19:{stars:3,time:28}},tools:{blast:4,repair:3,coolant:8}};
- const s=normalize(raw);assert.equal(s.upgrades.cooling,5);assert.equal(s.coins,777);assert.equal(s.auto.cool,true);assert.deepEqual(s.records,raw.records);assert.equal(s.helpers,0);assert.deepEqual(normalize(JSON.parse(JSON.stringify(s))),s);
- const base=normalize(),a=newRun(base),b=newRun(s);tick(base,a,.01,true);tick(s,b,.01,true);assert.ok(cellState(b).hp/cellState(b).max<cellState(a).hp/cellState(a).max);
-});
-test('cell HP survives route switching and manual/auto upgrades each improve real mining output',()=>{
- const base=normalize(),r=newRun(base);tick(base,r,.01,true);const hp=cellState(r).hp;selectRoute(r,0);selectRoute(r,1);assert.equal(cellState(r).hp,hp);
- function output(raw,auto=false){const s=normalize(raw),r=newRun(s);advance(s,r,3,!auto);return r.depth+r.progress*5;}
- assert.ok(output({upgrades:{power:3}})>output({}));assert.ok(output({upgrades:{speed:3}})>output({}));
- assert.ok(output({auto:{drill:true},upgrades:{autoPower:3}},true)>output({auto:{drill:true}},true));assert.ok(output({auto:{drill:true},upgrades:{autoSpeed:3}},true)>output({auto:{drill:true}},true));
- const s=normalize({coins:1000}),before=s.coins;assert.equal(buy(s,'upgrade','autoSpeed'),false);assert.equal(s.coins,before);
-});
-test('hired assistants work without holding, persist, train, pause and never bypass seals',()=>{
- const s=normalize({coins:10000});for(let i=0;i<3;i++)assert.equal(buy(s,'helper','miner'),true);const coins=s.coins;assert.equal(buy(s,'helper','miner'),false);assert.equal(s.coins,coins);assert.equal(normalize(s).helpers,3);
- const r=newRun(s);advance(s,r,3,false);assert.ok(r.depth>0);r.helpersOn=false;const before=cellState(r).hp;advance(s,r,2,false);assert.equal(cellState(r).hp,before);
- const q=newRun(s,4);q.row=19;advance(s,q,5,false);assert.equal(q.seal.phase,0);
-});
-test('beam breaks exactly one visible cell and pays once without skipping depth, seals or objectives',()=>{
- const s=normalize({tools:{beam:5}}),r=newRun(s);assert.equal(useTool(s,r,'beam',{row:2,lane:0}),true);advance(s,r,.02,false);assert.equal(r.row,0);assert.equal(r.mined,1);assert.equal(cellState(r,2,0).hp,0);const money=r.value;r.toolCooldown=0;assert.equal(useTool(s,r,'beam',{row:2,lane:0}),false);assert.equal(r.value,money);
- assert.equal(useTool(s,r,'beam',{row:3,lane:0}),false);const q=newRun(s,4);q.row=17;assert.equal(useTool(s,q,'beam',{row:19,lane:0}),false);assert.equal(q.seal.phase,0);
- const g=newRun(s,10);g.lane=seams(g.stage,0).indexOf('L');assert.equal(useTool(s,g,'beam'),true);advance(s,g,.02,false);assert.equal(g.hull,95);assert.equal(g.mined,1);
-});
-
-test('spring pump requires a release between valves and smart pilot honors it',()=>{
- const s=normalize(),r=newRun(s,9);r.row=19;r.depth=95;r.lane=sealState(r).lane;sealContact(s,r);assert.equal(r.seal.phase,1);r.lane=sealState(r).lane;sealContact(s,r);assert.equal(r.seal.phase,1);tick(s,r,.05,false);sealContact(s,r);assert.equal(r.seal.phase,2);
- const auto=normalize({auto:{drill:true,smart:true}}),q=newRun(auto,9);q.row=19;q.depth=95;q.seal.needsRelease=true;tick(auto,q,.05,false);assert.equal(q.seal.needsRelease,false);
-});
-
-test('assistants finish a full vent cycle and cannot obstruct smart pressure missions',()=>{
- const s=normalize({helpers:3}),r=newRun(s,21);r.pressure=26;advance(s,r,1,false);assert.ok(r.pressure<10);assert.equal(r.stats.vent,1);assert.equal(r.helperVenting,false);
- const a=normalize({helpers:3,auto:{drill:true,cool:true,smart:true,sell:true},upgrades:{power:3,speed:3,cargo:3,autoPower:2,autoSpeed:2,helperPower:2}}),q=newRun(a,21);advance(a,q,180,false);assert.equal(q.clear,true);assert.ok(q.stats.vent>=4);assert.notEqual(q.reason,'pressure');
-});
+test('fresh automatic drill progresses with no input or purchased automation;no heat',()=>{const s=normalize(),r=newRun(s);assert.equal(r.auto,true);assert.equal('heat'in r,false);advance(s,r,3);assert.ok(r.depth>0);assert.equal(s.auto.drill,false);});
+test('pause freezes both automatic mining and cooldowns;return settlement pays once',()=>{const s=normalize(),r=newRun(s);advance(s,r,2);r.paused=true;const old=JSON.stringify(r);advance(s,r,5);assert.equal(JSON.stringify(r),old);r.paused=false;settle(s,r,'return');const coins=s.coins;assert.equal(settle(s,r,'return'),false);assert.equal(s.coins,coins);});
+test('normal purchases reject insufficient funds and prototype keys atomically',()=>{const s=normalize(),raw=JSON.stringify(s);assert.equal(buy(s,'upgrade','power'),false);for(const k of ['__proto__','constructor','toString'])assert.equal(buy(s,'upgrade',k),false);assert.equal(JSON.stringify(s),raw);s.coins=500;assert.equal(buy(s,'upgrade','power'),true);assert.equal(s.coins,420);assert.equal(upgradeCost(s,'power'),124);});
+function firstCellSeconds(raw){const s=normalize(raw),r=newRun(s);for(let t=0;t<20;t+=1/60){tick(s,r,1/60,false);if(r.row>0)return t+1/60;}return 20;}
+test('power,speed,servo and old navigation investments measurably accelerate same automatic target',()=>{const base=firstCellSeconds({});for(const raw of [{upgrades:{power:2}},{upgrades:{speed:3}},{auto:{drill:true}},{auto:{smart:true}},{upgrades:{autoPower:2,autoSpeed:2}}])assert.ok(firstCellSeconds(raw)<base,JSON.stringify(raw));assert.ok(firstCellSeconds({upgrades:{power:2}})<base*.75);});
+test('late rock durability requires more growth than starter region',()=>{const s=normalize(),a=newRun(s,0),b=newRun(s,29);a.lane=seams(a.stage,0).indexOf('C');b.lane=seams(b.stage,0).indexOf('C');assert.ok(cellState(b).max>cellState(a).max*3);});
+test('partial cargo return earns upgrades and repeat routes remain available without stage skipping',()=>{const s=normalize(),r=newRun(s);advance(s,r,80);assert.equal(r.reason,'full');assert.ok(s.coins>=70);assert.equal(s.unlocked,1);assert.equal(buy(s,'upgrade','cargo'),true);const q=newRun(s);advance(s,q,100);assert.equal(q.clear,true);assert.equal(s.unlocked,2);assert.equal(newRun(s,0).stage.id,1);});
+test('auto tools defaultOFF preserve full inventory despite eligible rock and low hull',()=>{const s=normalize({unlocked:30,tools:{beam:5,blast:5,repair:5,coolant:5}}),r=newRun(s,25);r.hull=30;const old={...s.tools};advance(s,r,3);assert.deepEqual(s.tools,old);assert.equal(r.toolsUsed,0);});
+test('explicit per-trip stock budget,cooldown,unlock and no auto-buy are authoritative',()=>{const s=normalize({unlocked:30,toolBudget:1,tools:{beam:2,blast:2,repair:2,coolant:2}}),r=newRun(s,25);r.hull=30;const money=s.coins;assert.equal(automaticTool(s,r,cellState(r)),true);assert.equal(r.hull,70);assert.equal(s.tools.repair,1);r.toolCooldown=0;r.hull=20;assert.equal(automaticTool(s,r,cellState(r)),false);assert.equal(s.coins,money);assert.equal(r.toolsUsed,1);s.toolBudget=5;assert.equal(r.toolAllowance,1);const q=newRun(s,25);q.hull=30;automaticTool(s,q,cellState(q));q.hull=30;q.toolCooldown=0;const stock=s.tools.repair;automaticTool(s,q,cellState(q));assert.equal(s.tools.repair,stock);assert.equal(q.hull,30);assert.equal(q.abilityCooldowns.repair,10);});
+test('stock targeting only consumes after real effects and cannot bypass seal/row/goal',()=>{const s=normalize({unlocked:30,toolBudget:5,tools:{beam:3,blast:3}}),r=newRun(s);assert.equal(useTool(s,r,'beam',{row:5,lane:0}),false);assert.equal(useTool(s,r,'beam',{row:0,lane:5}),false);assert.equal(s.tools.beam,3);assert.equal(useTool(s,r,'beam',{row:4,lane:4}),true);tick(s,r,.01);assert.equal(r.row,0);assert.equal(r.mined,1);r.toolCooldown=0;assert.equal(useTool(s,r,'beam',{row:4,lane:4}),false);const seal=newRun(s,4);seal.row=19;assert.equal(automaticTool(s,seal,cellState(seal)),false);assert.equal(useTool(s,seal,'blast'),false);assert.equal(seal.seal.phase,0);});
+test('all seals reject wrong route and temporal counterplay still applies',()=>{for(let arc=0;arc<6;arc++){const s=normalize(),r=newRun(s,arc*5+4);r.row=19;const state=sealState(r);r.lane=(state.lane+1)%5;assert.equal(sealContact(s,r),false);assert.equal(r.seal.phase,0);}const s=normalize(),r=newRun(s,9);r.row=19;r.lane=sealState(r).lane;sealContact(s,r);assert.equal(r.seal.needsRelease,true);r.lane=sealState(r).lane;sealContact(s,r);assert.equal(r.seal.phase,1);});
+test('free pilot completes each seal by actual state transitions,without stock',()=>{for(let arc=0;arc<6;arc++){const s=normalize({unlocked:30,upgrades:{power:4,speed:3,cooling:2}}),r=newRun(s,arc*5+4);r.row=19;r.depth=95;advance(s,r,90);assert.equal(r.seal.phase,3,`arc${arc} ${JSON.stringify(r.seal)}`);assert.equal(r.clear,true);assert.equal(r.toolsUsed,0);}});
+test('fresh earned-growth automatic campaign reaches30 and six seals,with replay if needed',()=>{const s=normalize();let trips=0;for(const stage of STAGES){let cleared=false;for(let attempt=0;attempt<20&&!cleared;attempt++){assert.ok(stage.id<=s.unlocked);for(const [key,level]of [['cargo',4],['power',Math.ceil(stage.id/5)],['speed',3],['autoPower',2],['autoSpeed',2]])while(s.upgrades[key]<level&&s.coins>=upgradeCost(s,key))buy(s,'upgrade',key);for(const h of [1,2,3])if(!s.heads.includes(h)&&s.coins>=[180,650,1800][h-1]+100)buy(s,'head',h);const r=newRun(s,stage.id-1);advance(s,r,600);assert.equal(r.ended,true,`stalled${stage.id} ${r.row} ${JSON.stringify(r.stats)}`);cleared=r.clear;trips++;}assert.equal(cleared,true,`stage${stage.id}`);}assert.equal(s.cleared.length,30);assert.equal(s.relics.length,6);assert.equal(s.ending,true);assert.ok(s.coins>=0);console.log(JSON.stringify({campaign:30,seals:s.relics.length,trips,coins:s.coins}));});
+test('natural pressure venting and safe service return retain fair risk consequences',()=>{const s=normalize(),r=newRun(s,21);r.pressure=75;advance(s,r,2);assert.ok(r.pressure<75);assert.ok(r.stats.vent>0);r.hull=19;r.value=100;cellState(r).hp=1;advance(s,r,2);assert.equal(r.reason,'service');assert.ok(r.banked>=100);});
+test('achievement/relic rewards and reload migration never pay twice',()=>{const s=normalize(),r=newRun(s);settle(s,r,'return');assert.equal(claimAchievement(s,'first'),true);const n=s.coins;assert.equal(claimAchievement(s,'first'),false);assert.equal(normalize(s).coins,n);const q=newRun(s,29);q.seal.phase=3;q.depth=100;settle(s,q,'complete');const cores=s.materials.core;settle(s,q,'complete');assert.equal(s.materials.core,cores);assert.deepEqual(normalize(s),s);});

@@ -24,16 +24,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v12">
+  <meta name="weightplay-game-version" content="v13">
   <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="Troque duas pontas de cipó até cada trilha de resgate chegar ao abrigo certo." />
   <title>Resgate do emaranhado | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261019-guide-no-legacy-stage-css-v1">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20261017-shared-play-canvas1">
   <link rel="stylesheet" href="style.css?v=20261021-tangle-rescue-v12-main-summary-stage-tab-v4">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-settings-locale-adoption-v1">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
   <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261017-interface9-guide-theme1">
+  <script src="/src/game-page-info.js?v=20261021-guide-related-i9-shared-play-guard-v1" defer></script>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Resgate do emaranhado | WeightPlay" />
@@ -76,7 +77,7 @@
 }
     </script>
   </head>
-<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-tangle-rescue" data-wp-game-version="v12" data-wp-battle-layout="native" data-screen="main" data-wp-interface-version="9">
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-tangle-rescue" data-wp-game-version="v13" data-screen="main" data-wp-interface-version="9">
   <div id="app" data-wp-frame-root data-wp-game-shell-root data-wp-play-ui="1" hidden>
     <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-main-screen>
       <div class="main-canvas" data-wp-standard-main-screen data-wp-logical-main-canvas>
@@ -108,6 +109,21 @@
           <section class="game-info-section"><span class="step-dot">2</span><h3 data-copy="guideTwoTitle">Troque duas pontas</h3><p data-copy="guideTwo">Toque em uma ponta e depois em outra para trocar os animais.</p></section>
           <section class="game-info-section"><span class="step-dot">3</span><h3 data-copy="guideThreeTitle">Confira o resgate</h3><p data-copy="guideThree">As trilhas certas se conectam; tentativas erradas ficam visíveis.</p></section>
         </div>
+        <section class="game-page-info-static" aria-label="Related games">
+          <div class="game-info-related-section">
+            <h3>Related games</h3>
+            <div class="game-info-related">
+              <a class="game-info-related-card" data-game-id="animal-sunbeam-garden" href="/games/animal-sunbeam-garden/">
+                <span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-sunbeam-garden.webp" alt="Imagem do jogo Resgate do emaranhado" width="320" height="320" loading="lazy" decoding="async"></span>
+                <span class="game-info-related-copy"><strong>Sunbeam Garden: Mirror Paths</strong></span>
+              </a>
+              <a class="game-info-related-card" data-game-id="animal-prism-garden" href="/games/animal-prism-garden/">
+                <span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-prism-garden.webp" alt="Prism Route Garden game poster" width="320" height="320" loading="lazy" decoding="async"></span>
+                <span class="game-info-related-copy"><strong>Prism Route Garden</strong></span>
+              </a>
+            </div>
+          </div>
+        </section>
         <button id="guideStartBtn" class="primary-btn" type="button" data-copy="start">Iniciar resgate</button>
       </div>
     </details>
@@ -120,9 +136,9 @@
       <nav data-wp-frame-nav data-wp-frame-stage-nav data-copy-aria-label="map" aria-label="Mapa de resgate"><button id="stageTab" type="button" data-wp-frame-action="tab" data-wp-frame-stage-slot="stages" data-copy="map" aria-current="page">Mapa de resgate</button></nav>
     </section>
 
-    <section id="battleScreen" class="screen" data-screen="battle" hidden>
+    <section id="battleScreen" class="screen" data-screen="battle" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="788" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
       <header class="panel-head battle-header"><button id="battleBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="battle" type="button" data-copy-aria-label="map" aria-label="Mapa de resgate"><span aria-hidden="true">←</span></button><h2 id="battleHeading" data-wp-frame-title></h2></header>
-      <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <div class="battle-canvas">
         <div id="battlePlayLayer" class="battle-play-layer">
         <div class="mission-row"><div><p class="eyebrow" data-copy="boardKicker">TABULEIRO DE RESGATE</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
         <section class="tangle-board" aria-labelledby="boardTitle"><h3 id="boardTitle" class="sr-only" data-copy="boardTitle">Tabuleiro de pontas do cipó</h3><div class="board-labels"><span data-copy="endpoints">Pontas do cipó</span><span data-copy="shelters">Abrigos</span></div><div id="boardDiagram" class="board-diagram"></div></section>
@@ -148,10 +164,10 @@
   <script src="../../src/stage-rail-i9.js?v=20261017-shared-stage-rail1"></script>
   <script src="/src/game-entry-loader.js?v=20261018-entry-readiness-bridge2"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261019-interface9-candidate-entry-loader-v1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-ui1"></script>
   <script src="stage-config.js?v=20261020-tangle-rescue-i9-shared-surfaces-v1"></script>
-  <script src="frame.js?v=20261021-tangle-rescue-v12-stage-tab-v1"></script>
-  <script src="game.js?v=20261021-tangle-rescue-v12-summary-stage-tab-v1"></script>
+  <script src="frame.js?v=20261021-tangle-rescue-v13-stage-tab-v1"></script>
+  <script src="game.js?v=20261021-tangle-rescue-v13-summary-stage-tab-v1"></script>
 </body>
 </html>

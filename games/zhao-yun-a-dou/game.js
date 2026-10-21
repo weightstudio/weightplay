@@ -42,6 +42,8 @@
     ? Number(new URLSearchParams(location.search).get('stage')) : 0;
   if(Number.isInteger(qaStage)&&qaStage>=1&&qaStage<=30)progress.unlocked=Math.max(progress.unlocked,qaStage);
   let stageIndex = 0;
+  let stageSelector = null;
+  let hasVisitedStage = false;
   let battle = null;
   let loopTimer = null;
   let motionFrame = null;
@@ -295,7 +297,10 @@
     stopWorld();
     closeDialogs();
     battle = null;
-    stageIndex = Math.max(0, Math.min(data.levels.length - 1, progress.unlocked - 1));
+    if (!hasVisitedStage) {
+      stageIndex = Math.max(0, Math.min(data.levels.length - 1, progress.unlocked - 1));
+      hasVisitedStage = true;
+    }
     showScreen("stage");
     switchStagePanel("stages");
     renderStages();
@@ -319,31 +324,60 @@
     document.getElementById('talentsOpen').textContent=t('talents');
     const cleared = progress.stars.filter(Boolean).length;
     el.progress.textContent = t("stageProgress") + ": " + cleared + " / " + data.levels.length;
-    el.stageGrid.innerHTML = "";
-    data.levels.forEach(function (level, index) {
-      const unlocked = index < progress.unlocked;
-       const card = document.createElement("button");
-      const stars = progress.stars[index] ? "★".repeat(progress.stars[index]) + "☆".repeat(3 - progress.stars[index]) : "☆☆☆";
-      card.type = "button";
-      card.className = "stage-card" + (index === stageIndex ? " is-selected" : "");
-      card.setAttribute("data-wp-stage-card", String(index + 1));
-      card.setAttribute("aria-current", index === stageIndex ? "true" : "false");
-      card.setAttribute("data-wp-stage-selected", index === stageIndex ? "true" : "false");
-      card.disabled = !unlocked;
-      const localizedName = stageName(level);
-      const localizedChapter = stageChapterName(level);
-      const localizedObjective = stageObjective(level);
-      card.setAttribute("aria-label", localizedName + ", " + localizedChapter + ", " + localizedObjective + ", " + (unlocked ? t("ready") : t("locked")));
-      card.innerHTML = "<strong>" + (index + 1) + "</strong><small>" + escapeHtml(localizedChapter) + "</small><span>" + escapeHtml(localizedObjective) + "</span><i class=\"stage-stars\" aria-label=\"" + t("stars") + ": " + stars + "\">" + stars + "</i>";
-      card.addEventListener("click", function () {
-        stageIndex = index;
-        startBattle(index);
-      });
-      el.stageGrid.appendChild(card);
-    });
-    renderEnemyIntel();
+    renderEnemyIntel(stageIndex);
+    stageSelector?.refresh(stageIndex);
     if(stagePanel === "army") renderArmy();
     if(stagePanel === "talents") renderTalents();
+  }
+
+  function mountStageSelector() {
+    const poster = "/assets/interface7-redrawn/zhao-yun-a-dou.webp";
+    const config = {
+      gameId,
+      count: data.levels.length,
+      poster,
+      background: "/assets/lobby-block-atmosphere.svg",
+      stage(index) {
+        const level = data.levels[index];
+        const clearedStars = Number(progress.stars[index] || 0);
+        const unlocked = index < progress.unlocked;
+        const stars = clearedStars
+          ? "★".repeat(clearedStars) + "☆".repeat(3 - clearedStars)
+          : "☆☆☆";
+        const enemies = [...new Set(level.roster)].map(kind => t(enemyKeys[kind]));
+        const hint = level.roster.includes("arbalest") ? t("enemyBoltHelp")
+          : level.roster.includes("drummer") ? t("enemyDrumHelp")
+          : level.roster.includes("bomber") ? t("enemyBombHelp")
+          : t("pushTip");
+        return {
+          id: level.id ?? index + 1,
+          kicker: stageChapterName(level),
+          title: stageName(level),
+          subtitle: stageObjective(level),
+          status: unlocked ? `${stars} · ${t("ready")}` : t("locked"),
+          summary: stageObjective(level),
+          details: [enemies.join(" · "), hint],
+          poster,
+          locked: !unlocked,
+          cleared: clearedStars > 0,
+        };
+      },
+    };
+    stageSelector = window.WeightPlayPlayUI.mountStage({
+      page: document.getElementById("stagesPanel"),
+      rail: el.stageGrid,
+      config,
+      selected: stageIndex,
+      isActive: () => frame?.active === "stage",
+      onSelect(index) {
+        stageIndex = index;
+        renderEnemyIntel(index);
+      },
+      onStart(index) { startBattle(index); },
+    });
+    const progressGroup = window.WeightPlayScreenFrame.createGroup();
+    progressGroup.add(el.progress);
+    frame.stageTopUI.add(progressGroup);
   }
 
   function startBattle(index, options) {
@@ -383,12 +417,15 @@
     }
     if(name==='army')renderArmy();
     if(name==='talents')renderTalents();
-    if(name==='stages')window.dispatchEvent(new CustomEvent('weightplay:stage-sync'));
+    if(name==='stages'){
+      stageSelector?.refresh(stageIndex);
+      window.dispatchEvent(new CustomEvent('weightplay:stage-sync'));
+    }
   }
 
   const enemyKeys={soldier:'enemySoldier',shield:'enemyShield',raider:'enemyRaider',flanker:'enemyFlanker',medic:'enemyMedic',bomber:'enemyBomber',drummer:'enemyDrummer',arbalest:'enemyArbalest'};
-  function renderEnemyIntel() {
-    const level=data.levels[Math.max(0,progress.unlocked-1)];
+  function renderEnemyIntel(index = stageIndex) {
+    const level=data.levels[Math.max(0,Math.min(data.levels.length-1,index))];
     const node=document.getElementById('enemyIntel');node.replaceChildren();
     const heading=document.createElement('strong');heading.textContent=stageName(level)+' · '+t('enemyIntel');node.append(heading);
     const list=document.createElement('p');list.textContent=[...new Set(level.roster)].map(kind=>t(enemyKeys[kind])).join(' · ');node.append(list);
@@ -847,6 +884,7 @@
   saveProgress();
   updateStaticLocale();
   frame = window.mountZhaoFrame();
+  mountStageSelector();
   showScreen("main");
   window.setTimeout(updateStaticLocale, 900);
 

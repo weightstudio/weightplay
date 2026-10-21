@@ -3,6 +3,7 @@
 <head>
 
     <base href="/games/zhao-yun-a-dou/" />
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script src="/src/weightplay-audio.js?v=1.0.0&profile=zhao-v39"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/ru/games/zhao-yun-a-dou/" />
@@ -24,16 +25,22 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-version" content="v41">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="weightplay-scene-controls" content="immutable">
   <meta name="theme-color" content="#18231f">
   <title>Чжао Юнь и А-Доу: Чернильная оборона | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/stage-selector-standard.css">
-  <link rel="stylesheet" href="style.css?v=20260918-ui-fix1">
+  <link rel="stylesheet" href="style.css?v=20261021-zhao-v41-i9">
   <link rel="stylesheet" href="block-art.css?v=20260912-block-v24">
   <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260918-ui-fix1">
-  <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-  <link rel="stylesheet" href="frame-content.css?v=20261001-zhao-v40-strategy">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css">
+  <link rel="stylesheet" href="frame-content.css?v=20261021-zhao-v41-i9-battle-labels">
+  <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261021-stage-rail-i9">
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta name="description" content="Нажмите карту бойца. Войска сами идут вперёд и сражаются." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -72,11 +79,9 @@
   }
 }
     </script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-<body data-screen="main" data-audience="general" data-wp-game-id="zhao-yun-a-dou" data-wp-combined-sound="true">
-  <div id="gameFrame" data-wp-frame-root>
+  </head>
+<body data-screen="main" data-audience="general" data-wp-game-id="zhao-yun-a-dou" data-wp-game-version="v41" data-wp-interface-version="9" data-wp-combined-sound="true">
+  <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
   <main id="main" class="screen main">
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Чжао Юнь и А-Доу: Чернильная оборона</h1>
     <header class="main-header">
@@ -113,11 +118,11 @@
       <div class="game-info-section"><h3>Заметка разработчика</h3><p>Выберите ОДНУ доктрину. Меняйте до боя.</p></div>
       <div class="game-info-section game-info-parent"><h3>Для родителей</h3><p>Нет аккаунта, покупок, чата, рейтинга и рекламы. Прогресс хранится только в текущем браузере.</p></div>
       <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Казарма</dt><dd>Шансы: обычные 72%, редкие 24%, эпические 4%. Внутри ранга шансы равны. Общая гарантия: редкий+ за 10, эпический за 30 попыток. Используйте кнопки карточки. После 10 звёзд лишний осколок даёт 5 монет. Состав из четырёх выбираете вы.</dd></div><div><dt>Новая звезда</dt><dd>Открытие: 10. Улучшения: 20/30/45/65/90/120/160/210/270 осколков, до 10 звёзд. Каждая звезда: здоровье +12%, атака +10%.</dd></div><div><dt>Рывок Чжао Юня</dt><dd>Чжао Юнь наносит урон всем врагам и отбрасывает их.</dd></div><div><dt>Таланты</dt><dd>Выберите ОДНУ доктрину. Меняйте до боя.</dd></div></dl></div>
-
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Больше похожих игр</h3><p>Попробуйте ещё одну игру на навык «Планирование».</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-rune-tactics" href="/ru/games/animal-rune-tactics/"><span class="game-info-related-poster"><img src="/assets/animal-rune-tactics-cover.webp" data-final-src="/assets/weightplay-logo.png" alt="Тактика животных с рунами" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Тактика животных с рунами</strong><span>«Тактика животных с рунами» — оригинальная одиночная кампания: 30 созданных вручную заданий, три героя-животных и шесть боссов.</span></span></a></div></div>
     </div>
   </section>
 
-  <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-stage-art="/assets/interface7-redrawn/zhao-yun-a-dou.webp" style="--wp-stage-art: url('/assets/interface7-redrawn/zhao-yun-a-dou.webp');" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="420" hidden>
+  <main id="stage" class="screen stage" hidden>
     <header class="scene-header">
       <button data-back data-wp-return="stage" aria-label="Back"><span aria-hidden="true">←</span></button>
       <h2 data-t="shortTitle" data-wp-frame-title>Чжао Юнь и А-Доу: Чернильная оборона</h2>
@@ -129,7 +134,7 @@
       <p class="eyebrow" data-t="stageTitle">Выберите миссию</p>
       <p id="progress" class="stage-progress"></p>
     </section>
-    <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-t-aria="stageList" aria-label="Stage list"></section>
+    <section id="stageGrid" class="stage-rail" data-wp-stage-rail data-t-aria="stageList" aria-label="Stage list"></section>
     <aside id="enemyIntel" class="enemy-intel"></aside>
     </div>
     <section id="armyPanel" class="stage-management" hidden aria-labelledby="armyTitle">
@@ -224,15 +229,18 @@
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
-  <script src="../../src/game-page-info-general-reviewed.js?v=20260812-zhao-guide-v7"></script>
+  <script src="../../src/game-page-info-general-reviewed.js?v=20261021-zhao-i9-related"></script>
   <script src="/src/runtime-locales/ru.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="/src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="levels.js?v=20260921-zhao-v38"></script>
   <script src="locales.js?v=20260921-zhao-v38"></script>
   <script src="guide-copy.js?v=20260921-zhao-v38"></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-  <script src="frame.js?v=20260927-zhao-v38-command-row"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+  <script src="../../src/battle-canvas-standard.js"></script>
+  <script src="frame.js?v=20261021-zhao-v41-i9"></script>
+  <script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script>
+  <script src="../../src/game-play-ui.js?v=20261021-shared-play1"></script>
   <script src="talents.js?v=20261001-zhao-v40-strategy"></script>
   <script src="talent-copy.js?v=20260921-zhao-v38"></script>
   <script src="push-combat.js?v=20261011-zhao-v41-pass-through"></script>
@@ -240,11 +248,12 @@
   <script src="army.js?v=20261001-zhao-v40-strategy"></script>
   <script src="army-copy.js?v=20260921-zhao-v38"></script>
   <script src="strategy-copy.js?v=20261001-zhao-v40-strategy"></script>
-  <script src="game.js?v=20261001-zhao-v40-strategy&wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261021-zhao-v41-i9&wp-audio=1.0.0"></script>
   <script src="analytics-ownership.js?v=20261011-zhao-v41-pass-through"></script>
 
-  <script src="../../src/stage-selector-standard.js?v=20260805-stage"></script>
   <script src="/src/game-title-registry.js?v=20260812-title" data-wp-game-title-registry></script>
-  <script src="public-guide.js?v=20260921-zhao-v38"></script>
+  <script src="/src/public-game-catalog.js?v=20261021-zhao-i9-related"></script>
+  <script src="/src/interface7-poster-registry.js?v=20261007-kite-keeper-poster-path-fix"></script>
+  <script src="public-guide.js?v=20261021-zhao-v41-i9"></script>
 </body>
 </html>

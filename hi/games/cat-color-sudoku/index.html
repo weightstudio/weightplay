@@ -3,6 +3,8 @@
 <head>
     <script data-wp-route-locale-init>(function(){const map={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const segment=window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();const locale=map[segment]||"hi";window.__WEIGHTPLAY_ROUTE_LOCALE__=locale;document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";try{localStorage.setItem("wp-locale",locale);localStorage.setItem("weightPlayLocale",locale);}catch{}})();</script>
     <base href="/games/cat-color-sudoku/" />
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
+    <script src="/src/game-entry-loader.js?v=20261021-single-loading-label1"></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/hi/games/cat-color-sudoku/" />
@@ -24,15 +26,16 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-version" content="v8">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="weightplay-scene-controls" content="immutable">
-  <meta name="theme-color" content="#18224c">
+  <meta name="theme-color" content="#0b202b">
   <title>बिल्ली रंग सुडोकू | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260901-cat-color-sudoku-guide-v7">
-  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-  <link rel="stylesheet" href="style.css?v=20261015-cat-color-sudoku-v8-geometry-feedback">
-  <link rel="stylesheet" href="art.css?v=20260921-cat-color-sudoku-block-scene-v1">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
+  <link rel="stylesheet" href="style.css?v=20261021-cat-color-sudoku-v8-i9">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play-spacing1">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta name="description" content="हर पंक्ति, कॉलम और पैटर्न क्षेत्र में एक बिल्ली रखें और उन्हें छूने न दें।" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -74,109 +77,112 @@
   }
 }
     </script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-<body data-screen="main" data-audience="general" data-wp-game-id="cat-color-sudoku" data-wp-game-owned-guide data-wp-combined-sound="true" data-runtime-localize="off">
-  <section id="loadingPanel" class="loading-panel" aria-live="polite">
-    <div class="loading-card"><strong data-t="title">बिल्ली रंग सुडोकू</strong><span data-t="loading">ऑरला का चाँदनी एटलस खुल रहा है…</span><div class="loading-track"><i></i></div></div>
-  </section>
-
-  <main id="main" class="screen main-screen" data-screen="main">
-    <header class="main-header">
-      <a class="return" href="/" data-wp-return="main" data-t-aria="backLobby" aria-label="WeightPlay पर लौटें"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-      <strong data-t="shortTitle">बिल्ली सुडोकू</strong>
-      <div class="main-tools">
-        <button id="audio" type="button" data-t-aria="audio" aria-pressed="true" aria-label="ध्वनि"><span aria-hidden="true">♪</span><small data-t="audioOn">चालू</small></button>
-        <label class="locale"><span data-t="language">भाषा</span><select id="locale"></select></label>
+  </head>
+<body data-screen="main" data-audience="general" data-wp-game-id="cat-color-sudoku" data-wp-game-version="v8" data-wp-interface-version="9" data-wp-game-owned-guide data-runtime-localize="off">
+  <div id="gameFrame" data-wp-frame-root>
+    <main id="main" class="screen main-screen" data-screen="main">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">बिल्ली रंग सुडोकू</h1>
+      <header class="main-header">
+        <a class="return" href="/" data-wp-return="main" data-t-aria="backLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span></a>
+        <strong data-wp-frame-title data-t="title">Cat Color Sudoku</strong>
+        <div class="main-tools"><label class="locale"><span data-t="language">Language</span><select id="locale"></select></label></div>
+      </header>
+      <div id="mainContent" class="main-content">
+        <img data-wp-frame-poster src="../../assets/cat-color-sudoku-cover-v1.png" alt="बिल्ली रंग सुडोकू game artwork" data-t-alt="summary">
+        <section class="main-copy" data-wp-frame-copy aria-label="Game introduction">
+          <p class="eyebrow" data-t="mainKicker">Moon Cap Orla's color atlas</p>
+          <p class="summary" data-wp-frame-summary data-t="summary">Find one Moonwhisker cat in every row, column, and patterned color territory—without letting any cats touch.</p>
+          <p id="mainProgress" class="main-progress" data-wp-frame-progress data-wp-main-progress>0 / 30 maps solved</p>
+          <button id="start" class="primary" type="button" data-wp-main-start data-wp-frame-action="primary" data-t="start">Start game</button>
+        </section>
       </div>
-    </header>
-    <section class="hero" aria-labelledby="mainTitle">
-      <img src="../../assets/cat-color-sudoku-cover-v1.png" alt="हर पंक्ति, कॉलम और पैटर्न वाले रंग क्षेत्र में एक चाँद-बिल्ली खोजें और बिल्लियों को छूने न दें।" data-t-alt="summary">
-      <div class="hero-copy">
-        <p class="eyebrow" data-t="mainKicker">ऑरला का रंगीन चाँद एटलस</p>
-        <h1 id="mainTitle" data-t="title" data-runtime-localize="off">बिल्ली रंग सुडोकू</h1>
-        <p class="summary" data-t="summary">हर पंक्ति, कॉलम और पैटर्न वाले रंग क्षेत्र में एक चाँद-बिल्ली खोजें और बिल्लियों को छूने न दें।</p>
-        <p id="mainProgress" class="main-progress" data-wp-main-progress>0 / 30 maps solved</p>
-        <button id="start" class="primary" type="button" data-wp-main-start data-t="start">खेल शुरू करें</button>
+    </main>
+    <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide aria-labelledby="guideTitle">
+      <div class="game-info-hero">
+        <div class="game-info-title">
+          <span class="game-info-kicker" data-t="guideTitle">Game guide</span>
+          <h2 id="guideTitle" data-t="guideIntro">Read colors, patterns, rows, and columns together. Every map has one logical solution and no timer.</h2>
+          <div class="game-info-tags"><span data-t="tag1">Color-territory logic</span><span data-t="tag2">Cat-placement puzzle</span><span data-t="tag3">No-touch grid deduction</span></div>
+        </div>
+      </div>
+      <div class="game-info-sections"><div class="game-info-section public-guide-expansion"><h3>सार्वजनिक खेल</h3><p>एक शांत तर्क पहेली आज़माएँ: हर मानचित्र में हर पंक्ति, कॉलम और पैटर्न वाले क्षेत्र में एक Moonwhisker बिल्ली रखें। बिल्लियाँ तिरछे भी एक-दूसरे को छू नहीं सकतीं, इसलिए हर चाल अगली पसंद को सीमित करती है। पहले उस क्षेत्र से शुरू करें जिसमें केवल एक वैध खाना हो, सुरक्षित निष्कर्ष लिखने के लिए X चिन्ह लगाएँ और अनुमान जाँचने के लिए Undo करें। Hint आपके लिए बिल्ली रखे बिना एक वैध खाना चमकाता है। मानचित्र 1 हल करने पर मानचित्र 2 खुलेगा, फिर छह अध्यायों के 30 मानचित्रों में आगे बढ़ें। प्रगति इसी ब्राउज़र में रहती है।</p></div>
+        <div class="game-info-section">
+          <h3 data-t="howTitle">How to play</h3>
+          <ol><li data-t="how1">Each row contains exactly one cat.</li><li data-t="how2">Each column and each colored territory contains exactly one cat.</li><li data-t="how3">Cats cannot touch, even diagonally.</li><li data-t="how4">Choose Cat or X, then tap a cell. Undo and Restart are always free.</li></ol>
+        </div>
+        <div class="game-info-section">
+          <h3 data-t="winGuideTitle">Complete the atlas</h3><p data-t="winGuide">Place all cats correctly to solve the map. A conflict is rejected immediately, but a tentative assumption can be undone.</p>
+          <h3 data-t="tipsTitle">Practical tips</h3><p data-t="tips">Start with a territory that has one legal cell. After placing a cat, mark its row, column, and all eight neighboring cells.</p>
+        </div>
+        <div class="game-info-section">
+          <h3 data-t="progressTitle">30 moonlit maps</h3><p data-t="progressGuide">Six chapters grow from guided 4×4 boards to 7×7 mastery. Solving a map unlocks exactly the next one.</p>
+          <h3 data-t="saveTitle">Save and privacy</h3><p data-t="saveText">Solved maps and each map’s lowest move count stay in this browser. No account or upload is required.</p>
+        </div>
+        <div class="game-info-section">
+          <h3 data-t="faqTitle">FAQ</h3>
+          <dl>
+            <div><dt data-t="faq1Q">Do colors carry the only clue?</dt><dd data-t="faq1A">No. Every territory also has a pattern, symbol, and accessible name.</dd></div>
+            <div><dt data-t="faq2Q">Is this numeric Sudoku?</dt><dd data-t="faq2A">No. It is a cat placement puzzle using row, column, territory, and no-touch constraints.</dd></div>
+            <div><dt data-t="faq3Q">What does Hint show?</dt><dd data-t="faq3A">Hint highlights a cell that can hold the next correct cat; it does not fill the board.</dd></div>
+            <div><dt data-t="faq4Q">What happens if a move breaks a rule?</dt><dd data-t="faq4A">A placement that conflicts with a row, column, patterned territory, or no-touch rule is rejected. Undo restores your previous move.</dd></div>
+            <div><dt data-t="faq5Q">How do I complete a map?</dt><dd data-t="faq5A">Place every cat so each row, column, and patterned territory has one, with no cats touching—even diagonally. Solving a map unlocks the next one.</dd></div>
+          </dl>
+        </div>
+        <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>और संबंधित गेम</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="sudoku" data-related-game="sudoku" href="/hi/games/sudoku/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/sudoku.webp" data-final-src="/assets/weightplay-logo.png" alt="Sudoku" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Sudoku</strong></span></a></div></div>
       </div>
     </section>
-  </main>
-  <section id="guide" class="game-guide guide" data-wp-game-guide aria-labelledby="guideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-t="tag1">रंगीन क्षेत्र की तर्क-पहेली</span><span data-t="tag2">बिल्ली रखने की पहेली</span><span data-t="tag3">बिना सटे ग्रिड का तर्क</span></div>
-      <p class="eyebrow" data-t="guideTitle">खेल मार्गदर्शिका</p>
-      <h2 id="guideTitle" data-t="guideIntro">रंग, पैटर्न, पंक्ति और कॉलम साथ पढ़ें। हर मानचित्र का एक तर्कसंगत हल है और समय सीमा नहीं।</h2>
-      <div class="guide-grid">
-        <article><h3 data-t="howTitle">कैसे खेलें</h3><ol><li data-t="how1">हर पंक्ति में ठीक एक बिल्ली।</li><li data-t="how2">हर कॉलम और रंग क्षेत्र में भी ठीक एक बिल्ली।</li><li data-t="how3">बिल्लियाँ तिरछे भी एक-दूसरे को नहीं छू सकतीं।</li><li data-t="how4">बिल्ली या X चुनकर खाना दबाएँ। चाल वापस लें और फिर से शुरू करें—दोनों मुफ़्त हैं।</li></ol></article>
-        <article><h3 data-t="winGuideTitle">एटलस पूरा करें</h3><p data-t="winGuide">सभी बिल्लियाँ सही रखें। सीधा टकराव रुकता है; अनुमान को वापस लिया जा सकता है।</p><h3 data-t="tipsTitle">उपयोगी सुझाव</h3><p data-t="tips">उस क्षेत्र से शुरू करें जहाँ केवल एक वैध खाना है। बिल्ली के बाद उसकी पंक्ति, कॉलम और आठ पड़ोसी चिन्हित करें।</p></article>
-        <article><h3 data-t="progressTitle">30 चाँदनी मानचित्र</h3><p data-t="progressGuide">छह अध्याय 4×4 मार्गदर्शन से 7×7 महारत तक। हल करने पर केवल अगला मानचित्र खुलता है।</p><h3 data-t="saveTitle">सेव और गोपनीयता</h3><p data-t="saveText">प्रगति और रिकॉर्ड इसी ब्राउज़र में रहते हैं। खाता या अपलोड जरूरी नहीं।</p></article>
-      </div>
-      <div class="guide-faq"><h3 data-t="faqTitle">सामान्य प्रश्न</h3><details><summary data-t="faq1Q">क्या रंग ही एकमात्र संकेत है?</summary><p data-t="faq1A">नहीं। हर क्षेत्र का पैटर्न, चिह्न और सुलभ नाम भी है।</p></details><details><summary data-t="faq2Q">क्या यह संख्या सुडोकू है?</summary><p data-t="faq2A">नहीं। यह पंक्ति, कॉलम, क्षेत्र और न छूने के नियम वाली बिल्ली पहेली है।</p></details><details><summary data-t="faq3Q">संकेत क्या दिखाता है?</summary><p data-t="faq3A">यह उस खाने को चमकाता है जहाँ अगली सही बिल्ली रखी जा सकती है; यह पूरा बोर्ड अपने-आप हल नहीं करता।</p></details><details><summary data-t="faq4Q">नियम तोड़ने वाली चाल पर क्या होता है?</summary><p data-t="faq4A">पंक्ति, स्तंभ, पैटर्न वाले क्षेत्र या न छूने के नियम से टकराने वाली जगह अस्वीकार होती है। चाल वापस लेने से पिछली चाल लौटती है।</p></details><details><summary data-t="faq5Q">नक्शा कैसे पूरा होता है?</summary><p data-t="faq5A">सभी बिल्लियाँ इस तरह रखें कि हर पंक्ति, स्तंभ और पैटर्न क्षेत्र में एक हो, और वे तिरछे भी न छुएँ। नक्शा हल करने पर अगला नक्शा खुलता है।</p></details></div>
-      <nav class="related" aria-labelledby="relatedTitle"><h3 id="relatedTitle" data-t="relatedTitle">और तर्क खेल</h3><a href="../sudoku/index.html?trial=1" data-t="relatedSudoku">संख्या सुडोकू</a><a href="../minefield-logic/index.html?trial=1" data-t="relatedMinefield">माइनफील्ड लॉजिक</a></nav>
-  </section>
 
-  <main id="stage" class="screen canvas stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" hidden>
-    <header class="scene-header">
-      <button id="stageBack" type="button" data-wp-return="stage" data-t-aria="backLobby" aria-label="WeightPlay पर लौटें">←</button>
-      <div><small data-t="choose">चाँदनी मानचित्र चुनें</small><h2 data-t="shortTitle">बिल्ली सुडोकू</h2></div>
-      <span id="stageProgress">0/30</span>
-    </header>
-    <section id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageRailLabel" aria-label="चाँदनी मानचित्र चयन"></section>
-    <nav class="stage-tabs" data-t-aria="stageRailLabel" aria-label="चाँदनी मानचित्र चयन"><span aria-hidden="true"></span><button class="stage-tab active" type="button" aria-current="page" data-t="stages">स्तर</button><span aria-hidden="true"></span></nav>
-  </main>
+    <main id="stage" class="screen canvas stage-screen" data-screen="stage" data-wp-frame-play-fill data-wp-logical-stage-canvas hidden>
+      <header class="scene-header">
+        <button id="stageBack" type="button" data-wp-return="stage" data-t-aria="backLobby" aria-label="Return to WeightPlay">←</button>
+        <strong data-wp-frame-title data-t="shortTitle">CAT SUDOKU</strong>
+      </header>
+      <section id="stageContent" class="stage-content">
+        <div id="stageHeaderInfo" aria-live="polite"><span id="stageProgress">0/30 solved</span></div>
+        <section id="stageRail" class="stage-rail" data-t-aria="stageRailLabel" aria-label="Moon map selection"></section>
+      </section>
+      <nav id="stageNav" class="stage-tabs" data-wp-frame-nav data-t-aria="stageRailLabel" aria-label="Moon map selection">
+        <button id="stagesTab" class="stage-tab active" type="button" aria-current="page" aria-pressed="true" data-wp-frame-action="tab" data-t="stages">Stages</button>
+      </nav>
+    </main>
 
-  <main id="battle" class="screen canvas battle-screen" data-screen="battle" data-wp-frame-play-fill data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
-    <header class="scene-header">
-      <button id="battleBack" type="button" data-wp-return="battle" data-t-aria="battleBack" aria-label="मानचित्र सूची पर लौटें">←</button>
-      <div class="battle-header-hud"><small id="battleChapter"></small><h2 id="battleStage"></h2><span id="objective"></span></div>
-      <button id="battleUtility" class="utility-button" type="button" data-wp-battle-utility data-t-aria="audio" aria-label="ध्वनि"><span aria-hidden="true">♪</span></button>
-    </header>
-    <section class="battle-content">
-      <div class="board-wrap">
-        <div id="board" class="cat-board" role="grid" data-t-aria="boardLabel" aria-label="बिल्ली रंग सुडोकू बोर्ड"></div>
-        <p id="status" class="status" aria-live="polite"></p>
-      </div>
-      <aside class="battle-tools" data-t-aria="toolsLabel" aria-label="पहेली के औज़ार">
-        <div class="mode-switch" role="group" data-t-aria="placementMode" aria-label="रखने का मोड"><button id="toolCat" class="active" type="button" aria-pressed="true" data-t="toolCat" data-wp-primary-action>बिल्ली रखें</button><button id="toolMark" type="button" aria-pressed="false" data-t="toolMark">X लगाएँ</button></div>
-        <div class="action-row"><button id="undo" type="button" data-t="undo">चाल वापस लें</button><button id="hint" type="button" data-t="hint">संकेत</button><button id="restart" type="button" data-t="restart">फिर से शुरू करें</button></div>
-        <section class="rule-card"><img src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><div><strong id="ruleChapter"></strong><p id="ruleText"></p></div></section>
-      </aside>
-    </section>
-    <dialog id="leaveDialog" aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-t="leaveTitle">यह मानचित्र छोड़ें?</h2><p data-t="leaveText">जारी रखने से यही हल बचा रहेगा। स्तर सूची प्रयास समाप्त करेगी।</p><div class="dialog-actions"><button id="leaveContinue" class="primary" data-t="continue">जारी रखें</button><button id="leaveStages" data-t="returnStages">स्तर सूची</button></div></dialog>
-    <dialog id="resultDialog" aria-labelledby="resultTitle"><img class="result-cat" src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><p class="eyebrow" data-t="resultKicker">एटलस सुधरा</p><h2 id="resultTitle" data-t="resultTitle">चाँदनी मानचित्र हल!</h2><p id="resultBody"></p><p id="resultMastery" class="result-mastery" hidden></p><div class="result-actions"><button id="resultStages" data-t="stages">स्तर</button><button id="resultNext" class="primary" data-t="next">अगला मानचित्र</button><button id="resultReplay" data-t="replay">फिर खेलें</button></div></dialog>
-  </main>
-
-  <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
-  <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+    <main id="battle" class="screen canvas battle-screen" data-screen="battle" data-wp-frame-play-fill data-wp-logical-battle-canvas hidden>
+      <header class="scene-header">
+        <button id="battleBack" type="button" data-wp-return="battle" data-t-aria="battleBack" aria-label="Back to map list">←</button>
+        <strong data-wp-frame-title data-t="shortTitle">CAT SUDOKU</strong>
+      </header>
+      <section id="battleContent" class="battle-content">
+        <div id="battleHeaderInfo" class="battle-header-hud">
+          <small id="battleChapter"></small><h2 id="battleStage"></h2><span id="objective"></span>
+        </div>
+        <div class="board-wrap">
+          <div id="board" class="cat-board" role="grid" data-t-aria="boardLabel" aria-label="Cat Color Sudoku board"></div>
+          <p id="status" class="status" aria-live="polite"></p>
+        </div>
+        <aside class="battle-tools" data-t-aria="toolsLabel" aria-label="Puzzle tools">
+          <div class="mode-switch" role="group" data-t-aria="placementMode" aria-label="Placement mode"><button id="toolCat" class="active" type="button" aria-pressed="true" data-t="toolCat" data-wp-primary-action data-wp-frame-action="primary">Place cat</button><button id="toolMark" type="button" aria-pressed="false" data-t="toolMark" data-wp-frame-action="secondary">Mark X</button></div>
+          <div class="action-row"><button id="undo" type="button" data-t="undo" data-wp-frame-action="secondary">Undo</button><button id="hint" type="button" data-t="hint" data-wp-frame-action="secondary">Hint</button><button id="restart" type="button" data-t="restart" data-wp-frame-action="secondary">Restart</button></div>
+          <section class="rule-card"><img src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><div><strong id="ruleChapter"></strong><p id="ruleText"></p></div></section>
+        </aside>
+      </section>
+      <dialog id="leaveDialog" aria-labelledby="leaveTitle" data-wp-frame-result-card><h2 id="leaveTitle" data-t="leaveTitle">Leave this map?</h2><p data-t="leaveText">Continue keeps this exact deduction. Stage list ends this attempt.</p><div class="dialog-actions"><button id="leaveContinue" class="primary" type="button" data-wp-frame-action="primary" data-t="continue">Continue</button><button id="leaveStages" type="button" data-wp-frame-action="secondary" data-t="returnStages">Stage list</button></div></dialog>
+      <dialog id="resultDialog" aria-labelledby="resultTitle" data-wp-frame-result-card><img class="result-cat" src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><p class="eyebrow" data-t="resultKicker">Atlas restored</p><h2 id="resultTitle" data-t="resultTitle">Moon map solved!</h2><p id="resultBody"></p><p id="resultMastery" class="result-mastery" hidden></p><div class="result-actions"><button id="resultStages" type="button" data-wp-frame-action="secondary" data-t="stages">Stages</button><button id="resultNext" class="primary" type="button" data-wp-frame-action="primary" data-t="next">Next map</button><button id="resultReplay" type="button" data-wp-frame-action="secondary" data-t="replay">Play again</button></div></dialog>
+    </main>
+  </div>
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
   <script src="../../src/i18n.js"></script>
-  <script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+  <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+  <script src="/src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="levels.js?v=20260819-cat-color-sudoku-v1"></script>
   <script src="locales.js?v=20261010-cat-color-text-growth-140"></script>
   <script src="text-growth-140.js?v=20261010-cat-color-text-growth-140"></script>
-  <script src="game.js?v=20261015-cat-color-sudoku-v8-geometry-feedback&wp-audio=1.0.0"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
-  <script src="../../src/battle-canvas-standard.js?v=20260819-cat-color-sudoku-v1" data-wp-battle-standard></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-<section class="game-page-info game-page-info-static" aria-label="बिल्ली रंग सुडोकू गेम की जानकारी">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>बिल्ली रंग सुडोकू</h2><p>हर पंक्ति, कॉलम और पैटर्न क्षेत्र में एक बिल्ली रखें और उन्हें छूने न दें।</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>रंग क्षेत्र तर्क</strong></div><div class="game-info-fact"><span>शैली</span><strong>Classic · Puzzle · Strategy · Family</strong></div></div>
-    </div>
-
-    <div class="game-info-sections"><div class="game-info-section public-guide-expansion"><h3>सार्वजनिक खेल</h3><p>एक शांत तर्क पहेली आज़माएँ: हर मानचित्र में हर पंक्ति, कॉलम और पैटर्न वाले क्षेत्र में एक Moonwhisker बिल्ली रखें। बिल्लियाँ तिरछे भी एक-दूसरे को छू नहीं सकतीं, इसलिए हर चाल अगली पसंद को सीमित करती है। पहले उस क्षेत्र से शुरू करें जिसमें केवल एक वैध खाना हो, सुरक्षित निष्कर्ष लिखने के लिए X चिन्ह लगाएँ और अनुमान जाँचने के लिए Undo करें। Hint आपके लिए बिल्ली रखे बिना एक वैध खाना चमकाता है। मानचित्र 1 हल करने पर मानचित्र 2 खुलेगा, फिर छह अध्यायों के 30 मानचित्रों में आगे बढ़ें। प्रगति इसी ब्राउज़र में रहती है।</p></div>
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>क्या प्रगति सहेजी जाती है?</dt><dd>हाँ, केवल इसी ब्राउज़र में।</dd></div></dl></div>
-
-    </div>
-  </section>
+  <script src="/games/cat-color-sudoku/stage-config.js?v=20261021-cat-color-sudoku-v8-i9"></script>
+  <script src="/games/cat-color-sudoku/frame.js?v=20261021-cat-color-sudoku-v8-i9"></script>
+  <script src="game.js?v=20261021-cat-color-sudoku-v8-i9&amp;wp-audio=1.0.0"></script>
+<script src="/src/runtime-locales/hi.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

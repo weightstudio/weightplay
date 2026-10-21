@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="zh-Hans">
 <head>
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <base href="/games/checkers/" />
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/zh-cn/games/checkers/" />
@@ -26,8 +26,8 @@
 <meta name="robots" content="index,follow" />
 <meta name="weightplay-audience" content="general">
 <meta name="weightplay-release-state" content="playable">
-<meta name="weightplay-game-version" content="v21">
-<meta name="weightplay-interface-version" content="7">
+<meta name="weightplay-game-version" content="v22">
+<meta name="weightplay-interface-version" content="9">
 <meta name="description" content="玩一场完整的 8×8 西洋跳棋：规划斜向移动、吃掉可吃的棋子，连续跳吃并升王。" />
 <title>西洋跳棋 | WeightPlay</title>
 <style>
@@ -37,6 +37,9 @@
 </style>
 <link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260909-checkers-feedback-v21">
 <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
+  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-checkers-v22-i9">
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261021-checkers-v22-i9">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="西洋跳棋 | WeightPlay" />
@@ -75,15 +78,12 @@
   }
 }
     </script>
-    <link rel="stylesheet" href="/src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-<body data-wp-game-id="checkers" data-wp-game-version="v21" data-wp-interface-version="7" data-wp-battle-layout="native" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true">
-<main id="popularArcade" class="popular-arcade">
-  <header class="arcade-header checkers-shell-header">
+  </head>
+<body data-wp-game-id="checkers" data-wp-game-version="v22" data-wp-interface-version="9" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true">
+<main id="popularArcade" class="popular-arcade" data-wp-frame-root>
+  <header class="arcade-header checkers-shell-header" data-wp-shell-header="main">
     <a class="checkers-main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay" title="Back to WeightPlay"><span class="checkers-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-    <div class="checkers-heading"><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">西洋跳棋</h1><p id="gameTagline" class="tagline"></p></div>
+    <div class="checkers-heading"><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle" data-wp-game-title>西洋跳棋</h1><p id="gameTagline" class="tagline"></p></div>
     <div class="settings-control"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings" aria-expanded="false" aria-controls="audioPopover">⚙</button><div id="audioPopover" class="settings-popover is-hidden" role="group" aria-label="Settings" hidden><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button" data-sound-toggle="true" aria-pressed="true">Sound: On</button><label class="settings-row"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></div></div>
   </header>
   <section id="mainScreen" class="screen main-screen">
@@ -92,10 +92,10 @@
       <div class="preview-art"><img class="cover" src="../../assets/checkers-cover.webp" alt="《西洋跳棋》游戏图片" width="1254" height="1254" decoding="async"></div>
     </div>
   </section>
-  <section id="battleScreen" class="screen battle-screen" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas>
+  <section id="battleScreen" class="screen battle-screen" hidden data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="720" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
+    <div class="battle-canvas">
     <div class="arcade-panel battle-panel">
-      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span></div>
+      <div class="battle-top" data-wp-shell-header="battle"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><div id="checkersBattleInfo"><span id="roundLabel" class="round-label"></span></div></div>
       <div class="board-wrap"><div id="board" class="board"></div></div>
       <p id="gameMessage" class="game-message" aria-live="polite"></p>
       <div id="controls"></div>
@@ -110,11 +110,13 @@
   <footer class="arcade-footer" id="footerText"></footer>
 </main>
 <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
-<script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+<script src="/src/i18n.js?v=20260721-locale13-1"></script>
 <script src="../../src/analytics.js?v=20261002-tabletop-reward-exclusion-v1"></script>
 <script src="../../src/checkers-engine.js?v=20260827-checkers-turn-feedback-v14"></script>
 <script src="../../src/popular-games-batch.js?v=20260909-checkers-feedback-v21"></script>
-<script src="game.js?v=20260909-checkers-feedback-v21"></script>
+<script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="/src/game-screen-frame.js?v=20261021-checkers-v22-i9"></script>
+<script src="game.js?v=20261021-checkers-v22-i9"></script>
 <section class="game-page-info game-page-info-static" aria-label="西洋跳棋 游戏信息">
 
     <div class="game-info-hero">
@@ -134,9 +136,8 @@
       <div class="game-info-section"><h3>开发设计理念</h3><p>国际跳棋使用同一套合法走法引擎处理触控、鼠标、键盘焦点、提示和对手回合。选中的棋子和合法落点使用不同标记，让你能直接看出哪些斜向选择有效，以及为什么出现吃子时不能走安静步。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家与存档说明</h3><p>无需登录或购买即可游玩。未完成的对局不会保存；只有最佳记录会保留在此浏览器中。清除网站数据可能会删除该记录。</p></div>
       <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>有吃子时可以不吃吗？</dt><dd>不可以。只要盘上任何一枚棋子能吃子，你就必须选择一种吃子走法。</dd></div><div><dt>连续跳吃何时结束？</dt><dd>同一枚棋子落地后如果还能吃，就必须继续；没有可接续的吃子时，回合才结束。 如果这次吃子升王，回合会立即结束。</dd></div><div><dt>棋子怎样升王？</dt><dd>普通棋子走到对面底行就会升为王，之后可沿斜线前后移动和吃子。</dd></div><div><dt>怎样赢得对局？</dt><dd>让对手没有棋子或没有合法走法即可获胜；长时间没有吃子或升王时可能和局。</dd></div><div><dt>提示会替我走棋吗？</dt><dd>不会。提示只标出一枚合法起始棋子，落点和完整走法仍由你决定。</dd></div><div><dt>对局或最佳记录会保存吗？</dt><dd>未完成对局不会保存；最佳记录只保留在当前浏览器。无需登录或购买。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="lights-out" href="/zh-cn/games/lights-out/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/lights-out.webp" data-final-src="/assets/weightplay-logo.png" alt="熄灯游戏" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">熄灯游戏</strong><span>熄灯游戏是经典 5×5 开关益智游戏：点击一格及其上下左右相邻格，关掉所有灯光。</span></span></a><a class="game-info-related-card" data-game-id="four-in-a-row" href="/zh-cn/games/four-in-a-row/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/four-in-a-row.webp" data-final-src="/assets/weightplay-logo.png" alt="四子棋" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">四子棋</strong><span>四子棋是经典 7×6 重力棋盘游戏：把棋子落入列中，横向、纵向或斜向连成四子。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>熄灯游戏</strong><span>熄灯游戏是经典 5×5 开关益智游戏：点击一格及其上下左右相邻格，关掉所有灯光。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/four-in-a-row/"><img src="/assets/interface7-redrawn/four-in-a-row.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>四子棋</strong><span>四子棋是经典 7×6 重力棋盘游戏：把棋子落入列中，横向、纵向或斜向连成四子。</span></span></a></div></div>
     </div>
   </section>
-  <script src="/src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
 </body>
 </html>

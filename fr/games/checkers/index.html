@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <base href="/games/checkers/" />
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/fr/games/checkers/" />
@@ -26,8 +26,8 @@
 <meta name="robots" content="index,follow" />
 <meta name="weightplay-audience" content="general">
 <meta name="weightplay-release-state" content="playable">
-<meta name="weightplay-game-version" content="v21">
-<meta name="weightplay-interface-version" content="7">
+<meta name="weightplay-game-version" content="v22">
+<meta name="weightplay-interface-version" content="9">
 <meta name="description" content="Jouez aux dames sur un plateau 8×8 : préparez vos diagonales, prenez obligatoirement, enchaînez les sauts et faites une dame." />
 <title>Dames | WeightPlay</title>
 <style>
@@ -37,6 +37,9 @@
 </style>
 <link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260909-checkers-feedback-v21">
 <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
+  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-checkers-v22-i9">
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261021-checkers-v22-i9">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Dames | WeightPlay" />
@@ -75,15 +78,12 @@
   }
 }
     </script>
-    <link rel="stylesheet" href="/src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-<body data-wp-game-id="checkers" data-wp-game-version="v21" data-wp-interface-version="7" data-wp-battle-layout="native" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true">
-<main id="popularArcade" class="popular-arcade">
-  <header class="arcade-header checkers-shell-header">
+  </head>
+<body data-wp-game-id="checkers" data-wp-game-version="v22" data-wp-interface-version="9" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true">
+<main id="popularArcade" class="popular-arcade" data-wp-frame-root>
+  <header class="arcade-header checkers-shell-header" data-wp-shell-header="main">
     <a class="checkers-main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay" title="Back to WeightPlay"><span class="checkers-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-    <div class="checkers-heading"><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">Dames</h1><p id="gameTagline" class="tagline"></p></div>
+    <div class="checkers-heading"><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle" data-wp-game-title>Dames</h1><p id="gameTagline" class="tagline"></p></div>
     <div class="settings-control"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings" aria-expanded="false" aria-controls="audioPopover">⚙</button><div id="audioPopover" class="settings-popover is-hidden" role="group" aria-label="Settings" hidden><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button" data-sound-toggle="true" aria-pressed="true">Sound: On</button><label class="settings-row"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></div></div>
   </header>
   <section id="mainScreen" class="screen main-screen">
@@ -92,10 +92,10 @@
       <div class="preview-art"><img class="cover" src="../../assets/checkers-cover.webp" alt="Illustration du jeu Dames" width="1254" height="1254" decoding="async"></div>
     </div>
   </section>
-  <section id="battleScreen" class="screen battle-screen" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas>
+  <section id="battleScreen" class="screen battle-screen" hidden data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="720" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
+    <div class="battle-canvas">
     <div class="arcade-panel battle-panel">
-      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span></div>
+      <div class="battle-top" data-wp-shell-header="battle"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><div id="checkersBattleInfo"><span id="roundLabel" class="round-label"></span></div></div>
       <div class="board-wrap"><div id="board" class="board"></div></div>
       <p id="gameMessage" class="game-message" aria-live="polite"></p>
       <div id="controls"></div>
@@ -110,11 +110,13 @@
   <footer class="arcade-footer" id="footerText"></footer>
 </main>
 <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
-<script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+<script src="/src/i18n.js?v=20260721-locale13-1"></script>
 <script src="../../src/analytics.js?v=20261002-tabletop-reward-exclusion-v1"></script>
 <script src="../../src/checkers-engine.js?v=20260827-checkers-turn-feedback-v14"></script>
 <script src="../../src/popular-games-batch.js?v=20260909-checkers-feedback-v21"></script>
-<script src="game.js?v=20260909-checkers-feedback-v21"></script>
+<script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="/src/game-screen-frame.js?v=20261021-checkers-v22-i9"></script>
+<script src="game.js?v=20261021-checkers-v22-i9"></script>
 <section class="game-page-info game-page-info-static" aria-label="Informations sur Dames">
 
     <div class="game-info-hero">
@@ -134,9 +136,8 @@
       <div class="game-info-section"><h3>Note de conception</h3><p>La partie utilise le même moteur de coups légaux pour le toucher, la souris, le focus clavier, les indices et la réponse adverse. Le pion sélectionné et les destinations possibles ont des repères distincts ; le plateau montre ainsi pourquoi un déplacement calme est interdit lorsqu&#39;une prise existe.</p></div>
       <div class="game-info-section game-info-parent"><h3>Informations du joueur et sauvegarde</h3><p>Aucun compte ni achat n&#39;est nécessaire pour jouer. La partie en cours n&#39;est pas enregistrée ; seul le meilleur résultat reste dans ce navigateur. Effacer les données du site peut supprimer ce record.</p></div>
       <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Les prises sont-elles obligatoires ?</dt><dd>Oui. Si une prise est possible quelque part sur le plateau, vous devez choisir un coup de prise.</dd></div><div><dt>Quand une rafle se termine-t-elle ?</dt><dd>Le même pion continue tant qu&#39;il peut reprendre depuis sa nouvelle case. Le tour s&#39;arrête lorsqu&#39;aucune autre prise n&#39;est possible pour lui. Si cette prise la promeut, le tour s&#39;arrête immédiatement.</dd></div><div><dt>Comment un pion devient-il une dame ?</dt><dd>En atteignant la dernière rangée adverse, il est promu et peut se déplacer ou prendre dans les deux sens diagonaux.</dd></div><div><dt>Comment gagner la partie ?</dt><dd>Vous gagnez si l&#39;adversaire n&#39;a plus de pions ou de coups légaux. Une longue période sans prise ni promotion peut se terminer par un nul.</dd></div><div><dt>L&#39;indice joue-t-il à ma place ?</dt><dd>Non. Il indique un pion de départ légal ; vous choisissez la destination et terminez le coup.</dd></div><div><dt>La partie ou le meilleur résultat sont-ils sauvegardés ?</dt><dd>La partie en cours n&#39;est pas enregistrée. Seul le meilleur résultat est conservé dans ce navigateur ; aucun compte ni achat n&#39;est requis.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Plus de jeux associés</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="lights-out" href="/fr/games/lights-out/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/lights-out.webp" data-final-src="/assets/weightplay-logo.png" alt="Extinction des lumières" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Extinction des lumières</strong><span>Extinction des lumières est un puzzle classique 5x5 : basculez une case et ses voisines orthogonales pour tout éteindre.</span></span></a><a class="game-info-related-card" data-game-id="four-in-a-row" href="/fr/games/four-in-a-row/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/four-in-a-row.webp" data-final-src="/assets/weightplay-logo.png" alt="Puissance quatre" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Puissance quatre</strong><span>Puissance quatre est un jeu classique à gravité sur une grille 7x6 : faites tomber les pions et alignez-en quatre horizontalement, verticalement ou en diagonale.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Jeux associés</h3><div class="game-info-related"><a class="game-info-related-card" href="/fr/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Extinction des lumières</strong><span>Extinction des lumières est un puzzle classique 5x5 : basculez une case et ses voisines orthogonales pour tout éteindre.</span></span></a><a class="game-info-related-card" href="/fr/games/four-in-a-row/"><img src="/assets/interface7-redrawn/four-in-a-row.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Puissance quatre</strong><span>Puissance quatre est un jeu classique à gravité sur une grille 7x6 : faites tomber les pions et alignez-en quatre horizontalement, verticalement ou en diagonale.</span></span></a></div></div>
     </div>
   </section>
-  <script src="/src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
 </body>
 </html>

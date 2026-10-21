@@ -145,7 +145,10 @@ function selectTab(name, focus=false) {
   tab=name;
   for(const value of ['garage','stages','tuning']) {
     const active=value===name, button=$(value+'Tab');
-    $(value+'Panel').hidden=!active;button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1;
+    const panel=$(value+'Panel');
+    panel.hidden=!active;
+    if(value==='stages')panel.classList.toggle('hidden',!active);
+    button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1;
     button.classList.toggle('active',active);
   }
   if(name==='stages')rail.refresh(selectedStage-1);

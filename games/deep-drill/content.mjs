@@ -21,10 +21,10 @@ export const CREW={
  bubble:{name:'泡鰭波波',role:'運輸專家',min:13,cost:780,portrait:portrait('bubble-fin-otter'),desc:'額外增加 10 格礦艙；緊急救援保留 90% 礦物。'},
 };
 export const TOOLS={
- beam:{name:'穿岩光束',price:50,min:1,icon:'E',desc:'點選九格中的一格立即擊破，照常收礦與承受風險；不能跳過封印。快捷鍵 4。'},
- coolant:{name:'洩壓膠囊',price:35,min:1,icon:'W',desc:'壓力降低 20。快捷鍵 1。'},
- blast:{name:'震波鑽彈',price:60,min:6,icon:'B',desc:'立即打通普通礦層，不能直接破壞封印。快捷鍵 2。'},
- repair:{name:'機殼修補包',price:40,min:11,icon:'E',desc:'修復 40 點機殼並排出瓦斯。快捷鍵 3。'},
+ beam:{name:'穿岩光束',price:50,min:1,icon:'E',desc:'啟用備用工具後，自動擊破耐久較高的普通地磚；冷卻 8 秒，不碰封印或水晶。'},
+ coolant:{name:'洩壓膠囊',price:35,min:1,icon:'W',desc:'啟用備用工具後，緊急高壓時降低 20 壓力；平常免費自動洩壓。'},
+ blast:{name:'震波鑽彈',price:60,min:6,icon:'B',desc:'啟用備用工具後，自動破壞玄武岩；冷卻 20 秒，不能破壞封印。'},
+ repair:{name:'機殼修補包',price:40,min:11,icon:'E',desc:'啟用備用工具後，機殼低於 35 時修復 40；冷卻 10 秒。'},
 };
 export const ACHIEVEMENTS=[
  {id:'first',name:'第一次返航',desc:'安全完成一次探勘結算',reward:40,metric:'trips',target:1},

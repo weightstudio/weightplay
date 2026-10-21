@@ -65,7 +65,6 @@ body[data-wp-game-id="zhao-yun-a-dou"] .screen {
 }
 
 .main-screen,
-.stage-canvas,
 .battle {
   width: min(100%, 920px);
   min-height: calc(100svh - var(--wp-ad-reserve-height, 0px));
@@ -356,7 +355,6 @@ button.primary:focus-visible {
   padding: 12px 16px 0;
 }
 
-.stage-canvas,
 .battle {
   position: relative;
 }
@@ -378,109 +376,6 @@ body:is(.wp-shell-battle-active, [data-screen="battle"]) #generalReserve {
   transform: translateX(-50%);
   background: rgba(9, 20, 16, .9);
   pointer-events: none;
-}
-
-.stage-intro {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 22px 0 10px;
-}
-
-.stage-intro .eyebrow {
-  margin: 0;
-}
-
-.stage-progress {
-  margin: 0;
-  color: #e0c784;
-  font-family: Arial, sans-serif;
-  font-size: 13px;
-}
-
-.stage-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  align-content: start;
-}
-
-.stage-card {
-  position: relative;
-  border: 1px solid rgba(238, 228, 204, .24);
-  border-radius: 16px;
-  padding: 12px;
-  color: var(--paper);
-  text-align: left;
-  background: rgba(44, 61, 51, .78);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, .14);
-}
-
-.stage-card[disabled] {
-  cursor: not-allowed;
-  opacity: .5;
-  filter: saturate(.4);
-}
-
-.stage-card.is-selected,
-.stage-card:focus-visible {
-  border-color: #e4bd6e;
-  box-shadow: 0 0 0 3px rgba(228, 189, 110, .25), 0 10px 22px rgba(0, 0, 0, .18);
-}
-
-.stage-card strong,
-.stage-card small,
-.stage-card span {
-  display: block;
-}
-
-.stage-card strong {
-  font-size: 20px;
-}
-
-.stage-card small {
-  margin-top: 4px;
-  color: #d9c481;
-  font-family: Arial, sans-serif;
-  font-size: 11px;
-}
-
-.stage-card span {
-  margin-top: 9px;
-  color: #cbd3c3;
-  font-size: 12px;
-}
-
-.stage-card .stage-stars {
-  position: absolute;
-  right: 10px;
-  top: 12px;
-  color: #e5bd69;
-  letter-spacing: .06em;
-}
-
-.stage-tabs {
-  position: fixed;
-  z-index: 5;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: grid;
-  grid-template-columns: 1fr minmax(140px, 264px) 1fr;
-  align-items: center;
-  min-height: 56px;
-  padding-bottom: env(safe-area-inset-bottom);
-  color: var(--paper);
-  background: rgba(16, 27, 22, .95);
-  box-shadow: 0 -8px 20px rgba(0, 0, 0, .2);
-}
-
-.stage-tab {
-  min-height: 44px;
-  border: 0;
-  color: #f1d58d;
-  background: transparent;
-  font-weight: 700;
 }
 
 .battle-heading {
@@ -1112,18 +1007,6 @@ body:is(.wp-shell-battle-active, [data-screen="battle"]) #generalReserve {
     margin-bottom: 16px;
   }
 
-  .stage-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .stage-card {
-    padding: 10px;
-  }
-
-  .stage-card strong {
-    font-size: 18px;
-  }
-
   .battle {
     padding-inline: 10px;
   }
@@ -1238,14 +1121,6 @@ body:is(.wp-shell-battle-active, [data-screen="battle"]) #generalReserve {
     max-width: 82px;
   }
 
-  .stage-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .stage-card span {
-    font-size: 11px;
-  }
-
   .action-hint {
     font-size: 10px;
   }
@@ -1289,18 +1164,7 @@ body:is(.wp-shell-battle-active, [data-screen="battle"]) #generalReserve {
 }
 
 /* Player-facing review repairs: keep the generated shell poster inside its
-   pane, make the selected mission unmistakable, and give combat events a
-   readable visual vocabulary. */
-
-body[data-wp-game-id="zhao-yun-a-dou"] .stage-card.is-selected,
-body[data-wp-game-id="zhao-yun-a-dou"] .stage-card[data-wp-stage-selected="true"] {
-  z-index: 2;
-  border: 2px solid #ffe39a !important;
-  outline: 2px solid rgba(228, 189, 110, .78);
-  outline-offset: 3px;
-  background: rgba(65, 87, 69, .96) !important;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, .22) !important;
-}
+   pane and give combat events a readable visual vocabulary. */
 
 .battle-guide {
   box-sizing: border-box;

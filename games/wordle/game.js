@@ -6,7 +6,11 @@
   // Wordle has no Stage; its Main and Battle share the explicit I9 frame.
   document.body.dataset.wpBattleLayout = "native";
   const battle = document.querySelector("#battleScreen");
-  const battleCanvas = battle?.querySelector("[data-wp-logical-battle-canvas]");
+  const battleCanvas = battle?.matches("[data-wp-logical-battle-canvas]")
+    ? battle : battle?.querySelector("[data-wp-logical-battle-canvas]");
+  // Absolute onboarding/result substates use the same measured logical Canvas
+  // as their containing block, including the shared capped desktop width.
+  battle?.style.setProperty("position", "relative", "important");
   const battlePanel = battle?.querySelector(".battle-panel");
   const result = document.querySelector("#resultScreen");
   const leaveModal = document.querySelector("#leaveModal");

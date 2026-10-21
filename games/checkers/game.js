@@ -7,15 +7,35 @@
     document.head.append(style);
   };
   addStyle("royal-board.css?v=20260909-checkers-feedback-v21");
-  addStyle("interface-7-cleanup.css?v=20260926-checkers-interface7-source1");
+  addStyle("game-owned-presentation.css?v=20261021-checkers-v22-i9");
 
   window.WPPopularArcade?.mount("checkers");
 
-  document.querySelectorAll("#eyebrow, #gameTagline, #mainInstruction").forEach((node) => node.remove());
+  document.querySelectorAll("#eyebrow, #gameTagline, #objective, #mainInstruction").forEach((node) => node.remove());
   const result = document.querySelector("#resultScreen");
   if (result) result.dataset.wpBattleSubstate = "result";
 
-  window.WeightPlayScreenFrame?.autoMountDocument?.();
+  const frame = window.WeightPlayScreenFrame.mountSlots({
+    root: document.querySelector("#popularArcade"),
+    main: document.querySelector("#mainScreen"),
+    battle: {
+      root: document.querySelector("#battleScreen"),
+      headerInfo: document.querySelector("#checkersBattleInfo"),
+    },
+  });
+  const frameSceneObserver = new MutationObserver(() => frame.sync());
+  frameSceneObserver.observe(document.body, { attributes: true, attributeFilter: ["data-screen"] });
+  frame.sync();
+
+  window.addEventListener("pagehide", (event) => {
+    if (!event.persisted) {
+      frameSceneObserver.disconnect();
+      frame.destroy();
+    }
+  });
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) frame.sync();
+  });
 
   import(new URL("board-effects.mjs?v=20260909-checkers-feedback-v21", base).href)
     .then(({ installBoardEffects }) => installBoardEffects(document.getElementById("board")))

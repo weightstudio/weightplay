@@ -37,3 +37,11 @@
 @keyframes hit-still{from{opacity:.95}to{opacity:0}}@media(prefers-reduced-motion:reduce){#hitNumber.hit-pop{animation:hit-still .16s linear!important;opacity:0}}
 
 @media(max-height:500px) and (orientation:landscape){#battleContent{grid-template-rows:38px 38px minmax(26px,1fr) 48px 44px 44px}}
+
+/* v4: upgrade decisions own the controls; automated abilities stay in the pilot. */
+#battleContent{grid-template-rows:44px minmax(220px,1fr) 44px 26px 48px 44px;gap:5px;padding:0 10px 6px}
+.mine{grid-row:2}.depth-strip{grid-row:1}.telemetry{grid-row:3}.notice{grid-row:4}.controls{grid-row:5;display:block}.controls #drill{width:100%;height:48px;background:linear-gradient(120deg,#f0cd88,#ce9949);color:#211a11}.utility-row{grid-row:6;display:block}.utility-row #return{width:100%;height:44px}
+.tool-row,#seams,.drill-progress{display:none!important}.cell-name{font-size:9px;top:3px}.cell-hp{height:13px;line-height:13px;font-size:8px;bottom:2px}.tile-target{border-radius:2px}.tile-target.selected{border-color:#9fffe1;background:#8effc70a}.meter-label{font-size:10px}
+#breakGain{position:absolute;top:23%;right:14px;z-index:6;color:#ffdb82;font-size:24px;font-weight:900;pointer-events:none;opacity:0}.gain-pop{animation:gain .42s ease-out}@keyframes gain{0%{opacity:1;transform:scale(.85)}35%{opacity:1;transform:scale(1.15)}100%{opacity:0;transform:translateY(-16px)}}
+@media(max-height:500px) and (orientation:landscape){#battleContent{grid-template-columns:minmax(0,1fr) 235px;grid-template-rows:44px 44px minmax(26px,1fr) 48px 44px;gap:5px;padding:0 8px 4px}.mine{grid-column:1;grid-row:1/6}.depth-strip{grid-column:2;grid-row:1}.telemetry{grid-column:2;grid-row:2}.notice{grid-column:2;grid-row:3}.controls{grid-column:2;grid-row:4}.utility-row{grid-column:2;grid-row:5}.cell-name{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.gain-pop{animation:hit-still .18s linear!important;transform:none!important}.collecting #oreFlight{animation:none!important}.drilling #drill{box-shadow:none}}

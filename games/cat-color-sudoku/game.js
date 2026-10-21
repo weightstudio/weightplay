@@ -29,16 +29,14 @@
   const screens=[...document.querySelectorAll(".screen")];
   const unlockKey="wp-cat-color-sudoku-unlock-v1";
   const bestKey="wp-cat-color-sudoku-best-v1";
-  const soundKey="wp-cat-color-sudoku-sound-v1";
   const localeKey="wp-locale";
   const roots={main:$("#main"),stage:$("#stage"),battle:$("#battle")};
   let locale=read(localeKey)||read("weightPlayLocale")||"en";
   if(!codes.includes(locale))locale="en";
-  let sound=!window.WeightPlayAudio.isMuted();
-  window.addEventListener("weightplay:audio-volume-change", () => { sound = !window.WeightPlayAudio.isMuted(); });
   let unlocked=normalizeUnlock(read(unlockKey));
   let best=readBest();
   let selected=Math.min(29,unlocked-1);
+  let screenFrame=null;
   let level=null;
   let cats=new Set();
   let marks=new Set();
@@ -51,11 +49,8 @@
   let invalidReason="";
   let resultClaimed=false;
   let sceneGeneration=0;
-  let stageCards=[];
-  let stageWindowStart=0;
   let resultTimer=null;
   const feedbackAnimations=new Set();
-  let stagePointer=null;
   window.WeightPlayAudio?.preload(["feedback.success"]);
 
   // Effects never own rules, focus, hit targets or settlement. Rendering a new
@@ -92,20 +87,48 @@
   function t(key,values={}){const value=localeData[locale]?.[key]??localeData.en[key]??key;if(Array.isArray(value))return value;return String(value).replace(/\{(\w+)\}/g,(_,name)=>values[name]??"")}
   function beep(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
   function setStatus(key,error=false,values={}){const node=$("#status");node.textContent=t(key,values);node.classList.toggle("error",error)}
-  function show(id){clearFeedback();cancelResultTimer();const generation=++sceneGeneration;if($("#resultDialog").open)(__wpNotifyMeasurement(), $("#resultDialog").close());if($("#leaveDialog").open)(__wpNotifyMeasurement(), $("#leaveDialog").close());screens.forEach(screen=>{const active=screen.id===id;screen.hidden=!active;screen.inert=!active;screen.setAttribute("aria-hidden",String(!active))});$("#guide").hidden=id!=="main";$("#generalReserve").hidden=id==="main";document.body.dataset.screen=id;document.documentElement.dataset.screen=id;document.body.dataset.gameView=id;document.documentElement.dataset.gameView=id;["main","stage","battle"].forEach(name=>{document.body.classList.toggle(`wp-shell-${name}-active`,name===id);document.documentElement.classList.toggle(`wp-shell-${name}-active`,name===id)});document.body.classList.toggle("wp-stage-active",id==="stage");document.documentElement.classList.toggle("wp-stage-active",id==="stage");window.scrollTo(0,0);if(id==="stage")renderStages();window.dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:id,generation}}));window.dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:id,generation}}));window.dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:id,generation}}));window.dispatchEvent(new CustomEvent("weightplay:game-view-change",{detail:{view:id}}));window.dispatchEvent(new CustomEvent("weightplay:battle-state",{detail:{active:id==="battle"}}));window.dispatchEvent(new CustomEvent("weightplay:stage-state",{detail:{active:id==="stage"}}));requestAnimationFrame(()=>requestAnimationFrame(()=>{if(generation!==sceneGeneration)return;window.dispatchEvent(new CustomEvent("weightplay:scene-settled",{detail:{scene:id,generation}}))}))
-    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[id] ?? null;
-      if (["result"].includes(id) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
-      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
-      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
-}
-  function desiredStageWindow(index){return Math.max(0,Math.min(21,index-4))}
-  function bindStageCard(card,index){const locked=index+1>unlocked,active=index===selected,cleared=index+1<unlocked;card.dataset.index=index;card.dataset.stageIndex=index;card.className="stage-card"+(active?" selected centered":"")+(locked?" locked":"");card.style.setProperty("--stage-pos",`${20+(index%5)*15}% ${28+(index%3)*20}%`);card.tabIndex=active?0:-1;card.setAttribute("aria-disabled",String(locked));card.setAttribute("aria-posinset",String(index+1));card.setAttribute("aria-setsize","30");if(active)card.setAttribute("aria-current","true");else card.removeAttribute("aria-current");const state=locked?t("locked"):cleared?t("cleared"):t("ready");card.innerHTML=`<strong>${t("stage",{n:index+1})}</strong><span>${t("chapter",{n:Math.floor(index/5)+1})} · ${state}</span>`}
-  function buildStagePool(){const rail=$("#stageRail");rail.replaceChildren();stageWindowStart=desiredStageWindow(selected);stageCards=Array.from({length:9},(_,offset)=>{const card=document.createElement("button");card.type="button";card.dataset.wpStagePoolId=String(offset);card.onclick=()=>{const index=Number(card.dataset.index),locked=card.getAttribute("aria-disabled")==="true";selectStage(index,true,true);if(!locked)startLevel(index)};bindStageCard(card,stageWindowStart+offset);rail.append(card);return card});Object.assign(rail.dataset,{wpStageVirtualized:"bounded-recycle",wpStagePoolSize:"9",wpStageTotal:"30"})}
-  function moveStageWindow(){const target=desiredStageWindow(selected),rail=$("#stageRail");if(!stageCards.length)return;while(stageWindowStart<target){const card=rail.firstElementChild;stageWindowStart+=1;rail.append(card);bindStageCard(card,stageWindowStart+8)}while(stageWindowStart>target){const card=rail.lastElementChild;stageWindowStart-=1;rail.prepend(card);bindStageCard(card,stageWindowStart)}stageCards=[...rail.children];stageCards.forEach(card=>bindStageCard(card,Number(card.dataset.index)));rail.dataset.wpStageWindowStart=String(stageWindowStart);rail.dataset.wpStageWindowEnd=String(stageWindowStart+8)}
-  function selectStage(index,center=false,focus=false){selected=Math.max(0,Math.min(29,index));moveStageWindow();const card=$("#stageRail").querySelector(`[data-index="${selected}"]`);if(center)card?.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});if(focus)requestAnimationFrame(()=>card?.focus({preventScroll:true}))}
-  function renderStages(){$("#stageProgress").textContent=t("campaignProgress",{done:Math.min(30,unlocked-1)});if(stageCards.length!==9||!stageCards.every(card=>card.isConnected))buildStagePool();moveStageWindow();requestAnimationFrame(()=>selectStage(selected,true,false))}
-  function installStageInput(){const rail=$("#stageRail");rail.addEventListener("keydown",event=>{const card=event.target.closest(".stage-card");if(!card||!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;event.preventDefault();const rtl=document.documentElement.dir==="rtl",current=Number(card.dataset.index),next=event.key==="Home"?0:event.key==="End"?29:current+(event.key==="ArrowRight"?(rtl?-1:1):(rtl?1:-1));selectStage(next,true,true)});rail.addEventListener("pointerdown",event=>{if(event.isPrimary===false)return;stagePointer={id:event.pointerId,x:event.clientX}});rail.addEventListener("pointerup",event=>{if(!stagePointer||stagePointer.id!==event.pointerId)return;const delta=event.clientX-stagePointer.x;stagePointer=null;if(Math.abs(delta)>34)selectStage(selected+(delta<0?1:-1),true,true)});rail.addEventListener("pointercancel",()=>{stagePointer=null})}
-  function startLevel(index){cancelResultTimer();selected=Math.max(0,Math.min(29,index));level=levels[selected];starters=new Set(level.starters);cats=new Set(level.starters);marks=new Set();history=[];moves=0;mode="cat";hintIndex=-1;invalidIndex=-1;invalidReason="";resultClaimed=false;$("#battleChapter").textContent=`${t("chapter",{n:level.chapter+1})} · ${t("chapters")[level.chapter]}`;$("#battleStage").textContent=t("stage",{n:selected+1});$("#ruleChapter").textContent=t("chapters")[level.chapter];$("#ruleText").textContent=t("chapterRules")[level.chapter];show("battle");setMode("cat",false);renderBoard();setStatus("statusReady")
+  function show(id){
+    clearFeedback();
+    cancelResultTimer();
+    const generation=++sceneGeneration;
+    if($("#resultDialog").open)(__wpNotifyMeasurement(), $("#resultDialog").close());
+    if($("#leaveDialog").open)(__wpNotifyMeasurement(), $("#leaveDialog").close());
+    screens.forEach(screen=>{
+      const active=screen.id===id;
+      screen.hidden=!active;
+      screen.inert=!active;
+      screen.setAttribute("aria-hidden",String(!active));
+    });
+    document.querySelectorAll(".game-page-info,[data-wp-game-guide]").forEach(guide=>{guide.hidden=id!=="main";});
+    document.body.dataset.screen=id;
+    document.documentElement.dataset.screen=id;
+    document.body.dataset.gameView=id;
+    document.documentElement.dataset.gameView=id;
+    window.scrollTo(0,0);
+    if(id==="stage")renderStages();
+    screenFrame?.activate(id);
+    window.dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:id,generation}}));
+    window.dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:id,generation}}));
+    window.dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:id,generation}}));
+    window.dispatchEvent(new CustomEvent("weightplay:game-view-change",{detail:{view:id}}));
+    window.dispatchEvent(new CustomEvent("weightplay:battle-state",{detail:{active:id==="battle"}}));
+    window.dispatchEvent(new CustomEvent("weightplay:stage-state",{detail:{active:id==="stage"}}));
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      if(generation!==sceneGeneration)return;
+      window.dispatchEvent(new CustomEvent("weightplay:scene-settled",{detail:{scene:id,generation}}));
+    }));
+    const nextScreen=({main:"main",stage:"stage",battle:"battle"})[id]??null;
+    if(["result"].includes(id)&&__wpMeasurement.started&&!__wpMeasurement.ended){__wpMeasurement.ended=true;__wpMeasurement.outcome="complete";}
+    else if((nextScreen==="main"||nextScreen==="stage")&&__wpMeasurement.screen==="battle"&&__wpMeasurement.started&&!__wpMeasurement.ended){__wpMeasurement.ended=true;__wpMeasurement.outcome="abandon";}
+    __wpMeasurement.screen=nextScreen;
+    __wpNotifyMeasurement();
+  }
+  function renderStages(){
+    const done=Object.keys(best).filter(key=>Number.isInteger(Number(key))&&Number(key)>=1&&Number(key)<=30).length;
+    $("#stageProgress").textContent=t("campaignProgress",{done:Math.min(30,done)});
+    screenFrame?.refreshStage(selected);
+  }
+  function startLevel(index){cancelResultTimer();selected=Math.max(0,Math.min(29,index));level=levels[selected];screenFrame?.selectStage(selected,{center:false});starters=new Set(level.starters);cats=new Set(level.starters);marks=new Set();history=[];moves=0;mode="cat";hintIndex=-1;invalidIndex=-1;invalidReason="";resultClaimed=false;$("#battleChapter").textContent=`${t("chapter",{n:level.chapter+1})} · ${t("chapters")[level.chapter]}`;$("#battleStage").textContent=t("stage",{n:selected+1});$("#ruleChapter").textContent=t("chapters")[level.chapter];$("#ruleText").textContent=t("chapterRules")[level.chapter];show("battle");setMode("cat",false);renderBoard();setStatus("statusReady")
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
   function snapshot(){return {cats:[...cats],marks:[...marks],moves,hintIndex}}
@@ -131,14 +154,28 @@ cancelResultTimer();clearInvalid();cats=new Set(starters);marks=new Set();histor
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "win"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
   function claimResult(action){if(resultClaimed||!$("#resultDialog").open)return;resultClaimed=true;["#resultStages","#resultNext","#resultReplay"].forEach(selector=>$(selector).disabled=true);(__wpNotifyMeasurement(), $("#resultDialog").close());action()}
-  function syncSoundUi(){if(typeof window.WeightPlayAudio?.isMuted==="function")sound=window.WeightPlayAudio.setEnabled(!window.WeightPlayAudio.isMuted());const audio=$("#audio");if(!audio)return;audio.querySelector("small").textContent=t(sound?"audioOn":"audioOff");audio.setAttribute("aria-pressed",String(sound));audio.dataset.state=sound?"on":"off"}
-  function setSoundEnabled(enabled){sound=window.WeightPlayAudio.setEnabled(Boolean(enabled));write(soundKey,sound?"on":"off");if(typeof window.WeightPlayAudio?.setMuted==="function")window.WeightPlayAudio.setMuted(!sound);syncSoundUi();if(sound)beep("ui.click")}
-  function applyLocale(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=`${t("title")} | WeightPlay`;document.querySelectorAll("[data-t]").forEach(node=>node.textContent=t(node.dataset.t));document.querySelectorAll("[data-t-aria]").forEach(node=>node.setAttribute("aria-label",t(node.dataset.tAria)));document.querySelectorAll("[data-t-alt]").forEach(node=>node.setAttribute("alt",t(node.dataset.tAlt)));$("#locale").value=locale;syncSoundUi();$("#mainProgress").textContent=t("progress",{done:Math.min(30,unlocked-1)});if(document.body.dataset.screen==="stage")renderStages();if(document.body.dataset.screen==="battle"&&level){$("#battleChapter").textContent=`${t("chapter",{n:level.chapter+1})} · ${t("chapters")[level.chapter]}`;$("#battleStage").textContent=t("stage",{n:selected+1});$("#ruleChapter").textContent=t("chapters")[level.chapter];$("#ruleText").textContent=t("chapterRules")[level.chapter];renderBoard();if($("#resultDialog").open)renderResultMastery();setStatus(mode==="cat"?"statusCatMode":"statusMarkMode")}}
+  function applyLocale(){
+    document.documentElement.lang=locale;
+    document.documentElement.dir=locale==="ar"?"rtl":"ltr";
+    document.title=t("title")+" | WeightPlay";
+    document.querySelectorAll("[data-t]").forEach(node=>node.textContent=t(node.dataset.t));
+    document.querySelectorAll("[data-t-aria]").forEach(node=>node.setAttribute("aria-label",t(node.dataset.tAria)));
+    document.querySelectorAll("[data-t-alt]").forEach(node=>node.setAttribute("alt",t(node.dataset.tAlt)));
+    $("#locale").value=locale;
+    $("#mainProgress").textContent=t("progress",{done:Math.min(30,unlocked-1)});
+    if(document.body.dataset.screen==="stage")renderStages();
+    if(document.body.dataset.screen==="battle"&&level){
+      $("#battleChapter").textContent=t("chapter",{n:level.chapter+1})+" · "+t("chapters")[level.chapter];
+      $("#battleStage").textContent=t("stage",{n:selected+1});
+      $("#ruleChapter").textContent=t("chapters")[level.chapter];
+      $("#ruleText").textContent=t("chapterRules")[level.chapter];
+      renderBoard();
+      if($("#resultDialog").open)renderResultMastery();
+      setStatus(mode==="cat"?"statusCatMode":"statusMarkMode");
+    }
+  }
   codes.forEach(code=>{const option=document.createElement("option");option.value=code;option.textContent=localeData[code].label;$("#locale").append(option)});
   $("#locale").onchange=event=>{locale=event.target.value;write(localeKey,locale);write("weightPlayLocale",locale);try{window.WonderI18n?.setLocale?.(locale)}catch{}applyLocale()};
-  $("#audio").onclick=()=>setSoundEnabled(!sound);
-  window.addEventListener("weightplay:audio-volume-change",syncSoundUi);
-  $("#battleUtility").onclick=()=>$("#audio").click();
   $("#start").onclick=()=>show("stage");
   $("#stageBack").onclick=()=>show("main");
   $("#battleBack").onclick=()=>(__wpNotifyMeasurement(), $("#leaveDialog").showModal());
@@ -152,9 +189,18 @@ cancelResultTimer();clearInvalid();cats=new Set(starters);marks=new Set();histor
   $("#resultStages").onclick=()=>claimResult(()=>{selected=Math.min(29,selected+1);show("stage")});
   $("#resultReplay").onclick=()=>claimResult(()=>__wpReplayStart(() => startLevel(selected)));
   $("#resultNext").onclick=()=>claimResult(()=>startLevel(Math.min(29,selected+1)));
-  installStageInput();
   document.body.dataset.wpSceneWriter=`cat-color-sudoku-v${GAME_VERSION}`;
+  screenFrame=window.mountCatColorSudokuFrame({
+    localeSelect:$("#locale"),
+    save:()=>({unlocked,best}),
+    text:t,
+    selected,
+    onSelect:index=>{selected=index;},
+    onStart:index=>startLevel(index),
+  });
   applyLocale();
   show("main");
-  window.addEventListener("load",()=>$("#loadingPanel")?.classList.add("hidden"),{once:true});
+  const finishEntryLoading=()=>requestAnimationFrame(()=>window.WeightPlayGameEntryLoader?.ready?.());
+  if(document.readyState==="complete")finishEntryLoading();
+  else window.addEventListener("load",finishEntryLoading,{once:true});
 })();

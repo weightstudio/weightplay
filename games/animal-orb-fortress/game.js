@@ -18,7 +18,7 @@
   __wpNotifyMeasurement();
 
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v49";
+  const GAME_VERSION = "v50";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -35,6 +35,7 @@
   }
 
   const $ = (id) => document.getElementById(id);
+  const frameRoot = document.querySelector("[data-wp-game-shell-root]");
   const nodes = {
     lobbyReturn: document.querySelector(".topbar .back-btn"),
     localeSelect: $("localeSelect"),
@@ -85,32 +86,66 @@
     resultRewards: $("resultRewards"),
     raidPlanText: $("raidPlanText"),
   };
-  // The legacy battle row remains the source of the game's three live stats,
-  // while the shared frame owns their final header geometry. Move the aim
-  // utility out of that source row first so the optional headerInfo contract
-  // receives exactly three stat children and never competes with navigation.
+  const mainHeader = document.querySelector(".topbar");
+  const mainTitle = mainHeader?.querySelector("[data-wp-game-title]");
+  const mainContent = document.createElement("div");
+  mainContent.className = "orb-main-content";
+  const mainPoster = nodes.menuPanel?.querySelector(".cover");
+  const mainCopy = nodes.menuPanel?.querySelector(".menu-copy");
+  if (mainHeader && nodes.menuPanel && !nodes.menuPanel.contains(mainHeader)) nodes.menuPanel.prepend(mainHeader);
+  if (mainPoster && mainCopy && nodes.menuPanel) {
+    mainContent.append(mainPoster, mainCopy);
+    nodes.menuPanel.append(mainContent);
+    mainPoster.dataset.wpFramePoster = "";
+    mainCopy.dataset.wpFrameCopy = "";
+    mainCopy.querySelector(".main-summary")?.setAttribute("data-wp-frame-summary", "");
+    nodes.mainProgress?.setAttribute("data-wp-frame-progress", "");
+    nodes.startBtn?.setAttribute("data-wp-frame-action", "primary");
+  }
+  mainTitle?.setAttribute("data-wp-frame-title", "");
+
+  // Move the game-owned Battle stats into a group; the shared frame supplies
+  // the single Return / information / Settings row and its fixed geometry.
   const battleHeader = nodes.gamePanel?.querySelector('[data-wp-shell-header="battle"]');
+  if (battleHeader && battleHeader.parentElement !== nodes.gamePanel) nodes.gamePanel.prepend(battleHeader);
+  const battleTitle = document.createElement("strong");
+  battleTitle.dataset.wpFrameTitle = "";
+  battleHeader?.append(battleTitle);
   const battleHeaderInfo = document.createElement("div");
   battleHeaderInfo.className = "orb-battle-header-stats";
+  const battleStats = window.WeightPlayScreenFrame.createGroup();
   [nodes.waveText?.parentElement, nodes.coreText?.parentElement, nodes.orbStat]
     .filter(Boolean)
-    .forEach((node) => battleHeaderInfo.append(node));
-  if (battleHeader && battleHeaderInfo.children.length) battleHeader.append(battleHeaderInfo);
+    .forEach((node) => battleStats.add(node));
+  const stageHeaderInfo = document.createElement("div");
+  const stageStats = window.WeightPlayScreenFrame.createGroup();
+  const stageProfile = nodes.stagePanel?.querySelector(".profile-grid");
+  [...(stageProfile?.children || [])].forEach((node) => stageStats.add(node));
+  nodes.stageProgressText?.remove();
+  if (nodes.stageProgressText) stageStats.add(nodes.stageProgressText);
+  stageProfile?.remove();
+  nodes.stageHeading?.setAttribute("data-wp-frame-title", "");
+  nodes.stagePanel?.querySelector(".stage-tabs")?.setAttribute("data-wp-frame-nav", "");
+  nodes.assistBtn?.removeAttribute("data-wp-battle-utility");
   if (nodes.battleLive && nodes.assistBtn) nodes.battleLive.append(nodes.assistBtn);
-  const gameShell = window.WeightPlayScreenFrame.mountSlots({
-    gameId: GAME_ID,
-    root: document.querySelector("[data-wp-game-shell-root]"),
-    main: nodes.menuPanel,
-    stage: { root: nodes.stagePanel, headerInfo: nodes.stagePanel.querySelector(".profile-grid") },
-    battle: { root: nodes.gamePanel, headerInfo: battleHeaderInfo },
+  const gameShell = window.WeightPlayScreenFrame.mount({
+    root: frameRoot,
+    localeSelect: nodes.localeSelect,
+    playUI: true,
+    scenes: {
+      main: { root: nodes.menuPanel, header: mainHeader, content: mainContent },
+      stage: { root: nodes.stagePanel, header: nodes.stagePanel.querySelector(".stage-header"), content: nodes.stagePanel.querySelector(".stage-content"), headerInfo: stageHeaderInfo },
+      battle: { root: nodes.gamePanel, header: battleHeader, content: nodes.battleLive, headerInfo: battleHeaderInfo },
+    },
   });
-  // The legacy row is only a source wrapper for the shared Battle header. Once
-  // its return button and stat group have been adopted, remove the empty node
-  // so it cannot reserve an accidental second HUD row over the arena.
-  if (battleHeader && !battleHeader.children.length && !battleHeader.textContent.trim()) battleHeader.remove();
-  // The shared frame owns the generated settings surface and arrow artwork;
-  // retain the legacy semantic hooks used by the interface validator while
-  // keeping one player-facing control and one popover.
+  gameShell.stageTopUI.add(stageStats);
+  gameShell.battleTopUI.add(battleStats);
+  for (const tab of nodes.stageTabs) {
+    tab.dataset.wpFrameAction = "tab";
+    gameShell.commonDownButton.add(tab);
+  }
+  gameShell.activate("main");
+  // Keep the stable hooks consumed by existing frame and game validators.
   const sharedMainSettings = document.querySelector("[data-wp-frame-scene=\"main\"] .wp-frame-settings");
   if (sharedMainSettings) {
     sharedMainSettings.classList.add("wp-shell-settings-button");
@@ -119,26 +154,8 @@
     sharedSettingsPanel?.querySelector(".wp-frame-sound")?.classList.add("wp-shell-combined-sound-row");
   }
   nodes.lobbyReturn?.querySelector(".wp-frame-back-icon")?.append("←");
-  // Stage and Battle own the complete safe physical width. The shared
-  // responsive Canvas controllers keep one uniform scale while widening the
-  // logical envelope; this opt-in removes the superseded 920px desktop cap.
-  nodes.stagePanel.dataset.wpCanvasMaxWidth = "920";
-  nodes.stagePanel.dataset.wpStageLandscapeWidth = "760";
-  nodes.stagePanel.dataset.wpStageLandscapeHeight = "334";
-  nodes.gamePanel.dataset.wpCanvasMaxWidth = "920";
-  nodes.gamePanel.dataset.wpBattleLandscapeWidth = "760";
-  nodes.gamePanel.dataset.wpBattleLandscapeHeight = "334";
-  const stageContent = nodes.stagePanel?.querySelector(".stage-content");
-  function normalizeCompactStageLayout() {
-    if (!stageContent) return;
-    const compactLandscape = window.matchMedia?.("(max-height: 560px) and (orientation: landscape)").matches;
-    if (compactLandscape) stageContent.style.setProperty("display", "grid", "important");
-    else stageContent.style.removeProperty("display");
-  }
-  normalizeCompactStageLayout();
   const canvas = $("gameCanvas");
   const ARENA_KEYBOARD_SHORTCUTS = "ArrowLeft ArrowRight Space Enter";
-  const STAGE_KEYBOARD_SHORTCUTS = "ArrowLeft ArrowRight Home End Enter Space";
   canvas.dataset.runtimeLocalize = "off";
   const ctx = canvas.getContext("2d");
 

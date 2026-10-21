@@ -155,7 +155,7 @@
   };
 
   const zhaoId = "zhao-yun-a-dou";
-  const zhaoGuide = (copy) => ({ related: [], hideRelatedGames: true, ...copy });
+  const zhaoGuide = (copy) => ({ related: ["animal-rune-tactics"], relatedIds: ["animal-rune-tactics"], ...copy });
   const zhaoGuides = {
     "zh-Hant": zhaoGuide({
       title: "趙雲與阿斗：墨線守衛", gameplay: "合成策略防守", difficulty: "容易上手，逐步提升", time: "每關約 1–3 分鐘", genre: ["策略", "防守", "合成"], skills: ["規劃", "時機", "應變"],

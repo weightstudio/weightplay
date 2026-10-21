@@ -25,11 +25,14 @@
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#17243a" />
     <meta name="weightplay-game-version" content="v12" />
+    <meta name="weightplay-interface-version" content="9" />
     <title>Le Serment du Jardin des Pêchers | WeightPlay</title>
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260901-peach-guide-v8" />
-    <link rel="stylesheet" href="style.css?v=peach-command-loadout-v12" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-frame-style />
-    <script src="/src/shared-interface-bootstrap.js?v=20261017-shared-dark-loader1" data-wp-shared-interface="7"></script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
+    <link rel="stylesheet" href="style.css?v=peach-v12-i9" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-style />
+    <script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
   <meta name="description" content="Formez votre escouade, équipez vos héros et gagnez des combats automatiques pour avancer dans la campagne." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -71,10 +74,8 @@
   }
 }
     </script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-  <body>
+  </head>
+  <body data-wp-game-id="animal-peach-oath" data-wp-game-version="v12" data-wp-interface-version="9">
     <main id="app" class="app" data-scene="main" data-wp-frame-root>
       <section id="mainScene" class="scene main-scene" data-screen="main" data-wp-main-envelope aria-labelledby="mainTitle">
         <header class="shared-header">
@@ -152,8 +153,8 @@
         </section>
         </div>
 
-        <section id="resultPanel" class="result-panel is-hidden" aria-live="assertive">
-          <span id="resultKicker">戰鬥結果</span><h2 id="resultTitle">勝利</h2><p id="resultCopy"></p>
+        <section id="resultPanel" class="result-panel is-hidden" data-wp-battle-substate="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultCopy" aria-live="assertive">
+          <span id="resultKicker">戰鬥結果</span><h2 id="resultTitle" tabindex="-1">勝利</h2><p id="resultCopy"></p>
           <div id="resultRewards" class="reward-row"></div>
           <div id="resultMilestone" class="campaign-milestone" role="note"></div>
           <div class="result-actions">
@@ -200,10 +201,10 @@
     <script src="config.js?v=peach-guide-v11"></script>
     <script src="sprites.js?v=peach-block-sprites-v10"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1" data-wp-frame-script></script>
-    <script src="game.js?v=peach-command-loadout-v12&wp-audio=1.0.0"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
+    <script src="game.js?v=peach-v12-i9&wp-audio=1.0.0"></script>
     <script src="../../src/edge-guard.js?v=20260726"></script>
-  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
+  <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/fr.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>

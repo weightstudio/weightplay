@@ -645,6 +645,7 @@
   }
 
   function startWave() {
+    const returningFromResult = battle.resultOpen;
     const charge = new Map(battle.heroes.map(unit => [unit.id,unit.attacks]));
     clearCombatEffects();
     battle.pausedAt = 0;
@@ -661,6 +662,7 @@
     battle.enemies = enemyPack();
     (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden"));
     syncFrameCoverage();
+    if (returningFromResult) $("#autoBtn").focus({preventScroll: true});
     $("#battleStatus").textContent = state.wave === C.bossEvery ? copy("bossIncoming") : copy("enemyIncoming");
     renderCampaignMilestone();
     renderUnits();
@@ -882,6 +884,7 @@
     $("#resultNext").disabled = !win;
     if (win) collectLoot(true);
     updateHud();
+    $("#resultTitle").focus({preventScroll: true});
     save();
     tone(win ? "result.win" : "result.lose", .12);
 
@@ -933,6 +936,7 @@
     if (tab === "tavern") renderTavern();
     if (tab === "law") renderLaw();
     if (tab === "campaign") renderCampaign();
+    if (battle.manageFromResult) $("#managementTitle").focus({preventScroll: true});
 
     __wpNotifyMeasurement();
 }
@@ -946,6 +950,7 @@
       (__wpNotifyMeasurement(), $("#resultPanel").classList.remove("is-hidden"));
     }
     syncFrameCoverage();
+    if (battle.resultOpen) $("#resultTitle").focus({preventScroll: true});
     if ($('#app').dataset.scene === 'battle' && !battle.resultOpen && $('#leaveConfirm').classList.contains('is-hidden')) resumeCombat();
 
     __wpNotifyMeasurement();
@@ -1010,7 +1015,7 @@
     }).join('');
     $('#managementBody').innerHTML = `<section class="hero-workspace"><div class="section-title"><h3>${loadoutText(6)}</h3><span>${state.team.length}/3 · ${copy('deploy')}</span></div><div class="hero-roster">${roster}</div><div class="hero-workspace-columns"><section><article class="hero-card hero-detail" data-hero="${hero.id}"><div class="hero-portrait">${sprites.markup('hero', hero.id, `detail-${hero.id}`)}</div><div class="hero-card-copy"><span class="quality">${localizedValue(hero.quality)} · ${localizedValue(hero.troop)}</span><h3>${localizedValue(hero.name)}</h3><p>${localizedValue(hero.role)} · ${localizedValue(hero.skill)}</p><div class="mini-stats"><span>${copy('level')}${p.level}</span><span>${p.star} ${copy('stars')}</span><span>${copy('rank')} +${p.rank || 0}</span><span>${copy('attack')} ${stats.atk}</span><span>${copy('health')} ${stats.hp}</span><span>${interactionText(4)} ${stats.speed.toFixed(2)}</span></div></div></article>
     ${p.owned ? `<div class="hero-growth-actions card-actions"><button data-wp-frame-action="secondary" data-action="upgrade-hero" data-id="${hero.id}" ${state.resources.coins < cost || p.level >= C.heroLevelCap ? 'disabled' : ''}>${copy('upgrade')} ${resourceChip('coins', cost)}</button><button data-wp-frame-action="secondary" data-action="break-hero" data-id="${hero.id}" ${canBreak ? '' : 'disabled'}>${copy('break')} ${resourceChip('materials', breakCost)}</button><button data-wp-frame-action="secondary" data-action="toggle-team" data-id="${hero.id}">${state.team.includes(hero.id) ? copy('remove') : copy('deploy')}</button></div>` : `<p>${loadoutText(7)} · ${itemArt('fragments')}${copy('fragments')} ${p.fragments}/10</p>`}
-    <div class="section-title"><h3>${commandText(4)} · ${localizedValue(hero.name)}</h3><button class="best-gear" data-action="best-gear" data-id="${hero.id}" ${p.owned ? '' : 'disabled'}>${commandText(6)}</button></div><div class="loadout-slots">${slots}</div></section><section class="hero-backpack"><div class="section-title"><h3>${copy('equipmentBag')} · ${localizedValue(equipmentData(selectedSlot).slot)}</h3><span>${entries.length} ${copy('inventory')}</span></div><p class="loadout-help">${loadoutText(5)}</p><div class="wallet">${Object.entries(state.resources).map(([key, amount]) => resourceChip(key, fmt(amount))).join('')}</div>${equipment || `<div class="empty-equipment">${gearArt(equipmentData(selectedSlot))}<p>${loadoutText(0)}</p><p>${loadoutText(8)}</p></div>`}</section></div></section>`;
+    <div class="section-title"><h3>${commandText(4)} · ${localizedValue(hero.name)}</h3><button class="best-gear" data-wp-frame-action="secondary" data-action="best-gear" data-id="${hero.id}" ${p.owned ? '' : 'disabled'}>${commandText(6)}</button></div><div class="loadout-slots">${slots}</div></section><section class="hero-backpack"><div class="section-title"><h3>${copy('equipmentBag')} · ${localizedValue(equipmentData(selectedSlot).slot)}</h3><span>${entries.length} ${copy('inventory')}</span></div><p class="loadout-help">${loadoutText(5)}</p><div class="wallet">${Object.entries(state.resources).map(([key, amount]) => resourceChip(key, fmt(amount))).join('')}</div>${equipment || `<div class="empty-equipment">${gearArt(equipmentData(selectedSlot))}<p>${loadoutText(0)}</p><p>${loadoutText(8)}</p></div>`}</section></div></section>`;
     $('#managementBody').scrollTop = scrollTop;
     if (focused) {
       const buttons = $$('#managementBody button[data-action]');
@@ -1589,7 +1594,29 @@
     $("#resultNext").addEventListener("click", () => { if ($("#resultNext").disabled) return; state.stage += 1; state.wave = 1; (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden")); startWave(); save(); });
     $("#resultRetry").addEventListener("click", () => { (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden")); state.wave = 1; __wpReplayStart(() => startWave()); });
     document.addEventListener("keydown", (event) => {
-      if (event.key !== "Escape" || event.defaultPrevented) return;
+      if (event.defaultPrevented) return;
+      const resultPanel = $("#resultPanel");
+      if (event.key === "Tab" && !resultPanel.classList.contains("is-hidden")) {
+        const focusable = [...resultPanel.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled])')];
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const active = document.activeElement;
+        if (!first) {
+          event.preventDefault();
+          $("#resultTitle").focus({preventScroll: true});
+        } else if (!resultPanel.contains(active)) {
+          event.preventDefault();
+          first.focus({preventScroll: true});
+        } else if (event.shiftKey && (active === first || active === $("#resultTitle"))) {
+          event.preventDefault();
+          last.focus({preventScroll: true});
+        } else if (!event.shiftKey && active === last) {
+          event.preventDefault();
+          first.focus({preventScroll: true});
+        }
+        return;
+      }
+      if (event.key !== "Escape") return;
       if (!$("#modalLayer").classList.contains("is-hidden")) closeModal();
       else if (!$("#management").classList.contains("is-hidden")) closeManagement();
     });

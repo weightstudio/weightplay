@@ -3,6 +3,8 @@
 <head>
     <script data-wp-route-locale-init>(function(){const map={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const segment=window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();const locale=map[segment]||"ja";window.__WEIGHTPLAY_ROUTE_LOCALE__=locale;document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";try{localStorage.setItem("wp-locale",locale);localStorage.setItem("weightPlayLocale",locale);}catch{}})();</script>
     <base href="/games/cat-color-sudoku/" />
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
+    <script src="/src/game-entry-loader.js?v=20261021-single-loading-label1"></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/ja/games/cat-color-sudoku/" />
@@ -24,15 +26,16 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-version" content="v8">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="weightplay-scene-controls" content="immutable">
-  <meta name="theme-color" content="#18224c">
+  <meta name="theme-color" content="#0b202b">
   <title>ねこカラー数独 | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260901-cat-color-sudoku-guide-v7">
-  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-  <link rel="stylesheet" href="style.css?v=20261015-cat-color-sudoku-v8-geometry-feedback">
-  <link rel="stylesheet" href="art.css?v=20260921-cat-color-sudoku-block-scene-v1">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
+  <link rel="stylesheet" href="style.css?v=20261021-cat-color-sudoku-v8-i9">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play-spacing1">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta name="description" content="各行・各列・模様つきカラー領域にねこを1匹ずつ置き、隣接させないようにします。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -74,111 +77,114 @@
   }
 }
     </script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-<body data-screen="main" data-audience="general" data-wp-game-id="cat-color-sudoku" data-wp-game-owned-guide data-wp-combined-sound="true" data-runtime-localize="off">
-  <section id="loadingPanel" class="loading-panel" aria-live="polite">
-    <div class="loading-card"><strong data-t="title">ねこカラー数独</strong><span data-t="loading">オーラの月光地図を開いています…</span><div class="loading-track"><i></i></div></div>
-  </section>
-
-  <main id="main" class="screen main-screen" data-screen="main">
-    <header class="main-header">
-      <a class="return" href="/" data-wp-return="main" data-t-aria="backLobby" aria-label="WeightPlay に戻る"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-      <strong data-t="shortTitle">ねこカラー</strong>
-      <div class="main-tools">
-        <button id="audio" type="button" data-t-aria="audio" aria-pressed="true" aria-label="サウンド"><span aria-hidden="true">♪</span><small data-t="audioOn">オン</small></button>
-        <label class="locale"><span data-t="language">言語</span><select id="locale"></select></label>
+  </head>
+<body data-screen="main" data-audience="general" data-wp-game-id="cat-color-sudoku" data-wp-game-version="v8" data-wp-interface-version="9" data-wp-game-owned-guide data-runtime-localize="off">
+  <div id="gameFrame" data-wp-frame-root>
+    <main id="main" class="screen main-screen" data-screen="main">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">ねこカラー数独</h1>
+      <header class="main-header">
+        <a class="return" href="/" data-wp-return="main" data-t-aria="backLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span></a>
+        <strong data-wp-frame-title data-t="title">Cat Color Sudoku</strong>
+        <div class="main-tools"><label class="locale"><span data-t="language">Language</span><select id="locale"></select></label></div>
+      </header>
+      <div id="mainContent" class="main-content">
+        <img data-wp-frame-poster src="../../assets/cat-color-sudoku-cover-v1.png" alt="ねこカラー数独のゲーム画像" data-t-alt="summary">
+        <section class="main-copy" data-wp-frame-copy aria-label="Game introduction">
+          <p class="eyebrow" data-t="mainKicker">Moon Cap Orla's color atlas</p>
+          <p class="summary" data-wp-frame-summary data-t="summary">Find one Moonwhisker cat in every row, column, and patterned color territory—without letting any cats touch.</p>
+          <p id="mainProgress" class="main-progress" data-wp-frame-progress data-wp-main-progress>0 / 30 maps solved</p>
+          <button id="start" class="primary" type="button" data-wp-main-start data-wp-frame-action="primary" data-t="start">Start game</button>
+        </section>
       </div>
-    </header>
-    <section class="hero" aria-labelledby="mainTitle">
-      <img src="../../assets/cat-color-sudoku-cover-v1.png" alt="各行・各列・模様つきカラー領域にねこを1匹ずつ置き、ねこ同士が触れないようにします。" data-t-alt="summary">
-      <div class="hero-copy">
-        <p class="eyebrow" data-t="mainKicker">月帽子オーラのカラー地図</p>
-        <h1 id="mainTitle" data-t="title" data-runtime-localize="off">ねこカラー数独</h1>
-        <p class="summary" data-t="summary">各行・各列・模様つきカラー領域にねこを1匹ずつ置き、ねこ同士が触れないようにします。</p>
-        <p id="mainProgress" class="main-progress" data-wp-main-progress>0 / 30 maps solved</p>
-        <button id="start" class="primary" type="button" data-wp-main-start data-t="start">ゲーム開始</button>
+    </main>
+    <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide aria-labelledby="guideTitle">
+      <div class="game-info-hero">
+        <div class="game-info-title">
+          <span class="game-info-kicker" data-t="guideTitle">Game guide</span>
+          <h2 id="guideTitle" data-t="guideIntro">Read colors, patterns, rows, and columns together. Every map has one logical solution and no timer.</h2>
+          <div class="game-info-tags"><span data-t="tag1">Color-territory logic</span><span data-t="tag2">Cat-placement puzzle</span><span data-t="tag3">No-touch grid deduction</span></div>
+        </div>
+      </div>
+      <div class="game-info-sections"><div class="game-info-section public-guide-expansion"><h3>公開プレイ</h3><p>穏やかなロジックパズルを楽しみましょう。各マップでは、すべての行・列・模様つき領域にMoonwhiskerのねこを1匹ずつ置きます。ねこは斜めを含めて隣り合えないため、置くたびに次の候補が絞られます。合法マスが1つだけの領域から始め、Xで安全な推論を記録し、仮説を試すときはUndoを使えます。Hintは正しい候補を1マス光らせるだけで、自動配置はしません。マップ1を解くとマップ2が開き、6章30マップへ進めます。進行状況はこのブラウザだけに保存されます。</p></div>
+        <div class="game-info-section">
+          <h3 data-t="howTitle">How to play</h3>
+          <ol><li data-t="how1">Each row contains exactly one cat.</li><li data-t="how2">Each column and each colored territory contains exactly one cat.</li><li data-t="how3">Cats cannot touch, even diagonally.</li><li data-t="how4">Choose Cat or X, then tap a cell. Undo and Restart are always free.</li></ol>
+        </div>
+        <div class="game-info-section">
+          <h3 data-t="winGuideTitle">Complete the atlas</h3><p data-t="winGuide">Place all cats correctly to solve the map. A conflict is rejected immediately, but a tentative assumption can be undone.</p>
+          <h3 data-t="tipsTitle">Practical tips</h3><p data-t="tips">Start with a territory that has one legal cell. After placing a cat, mark its row, column, and all eight neighboring cells.</p>
+        </div>
+        <div class="game-info-section">
+          <h3 data-t="progressTitle">30 moonlit maps</h3><p data-t="progressGuide">Six chapters grow from guided 4×4 boards to 7×7 mastery. Solving a map unlocks exactly the next one.</p>
+          <h3 data-t="saveTitle">Save and privacy</h3><p data-t="saveText">Solved maps and each map’s lowest move count stay in this browser. No account or upload is required.</p>
+        </div>
+        <div class="game-info-section">
+          <h3 data-t="faqTitle">FAQ</h3>
+          <dl>
+            <div><dt data-t="faq1Q">Do colors carry the only clue?</dt><dd data-t="faq1A">No. Every territory also has a pattern, symbol, and accessible name.</dd></div>
+            <div><dt data-t="faq2Q">Is this numeric Sudoku?</dt><dd data-t="faq2A">No. It is a cat placement puzzle using row, column, territory, and no-touch constraints.</dd></div>
+            <div><dt data-t="faq3Q">What does Hint show?</dt><dd data-t="faq3A">Hint highlights a cell that can hold the next correct cat; it does not fill the board.</dd></div>
+            <div><dt data-t="faq4Q">What happens if a move breaks a rule?</dt><dd data-t="faq4A">A placement that conflicts with a row, column, patterned territory, or no-touch rule is rejected. Undo restores your previous move.</dd></div>
+            <div><dt data-t="faq5Q">How do I complete a map?</dt><dd data-t="faq5A">Place every cat so each row, column, and patterned territory has one, with no cats touching—even diagonally. Solving a map unlocks the next one.</dd></div>
+          </dl>
+        </div>
+        <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>関連ゲームをもっと見る</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="sudoku" data-related-game="sudoku" href="/ja/games/sudoku/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/sudoku.webp" data-final-src="/assets/weightplay-logo.png" alt="Sudoku" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Sudoku</strong></span></a></div></div>
       </div>
     </section>
-  </main>
-  <section id="guide" class="game-guide guide" data-wp-game-guide aria-labelledby="guideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-t="tag1">色分け領域の推理</span><span data-t="tag2">ねこの配置パズル</span><span data-t="tag3">非接触のマス推理</span></div>
-      <p class="eyebrow" data-t="guideTitle">ゲームガイド</p>
-      <h2 id="guideTitle" data-t="guideIntro">色、模様、行、列を一緒に読みます。各マップの論理解は1つ、時間制限はありません。</h2>
-      <div class="guide-grid">
-        <article><h3 data-t="howTitle">遊び方</h3><ol><li data-t="how1">各行にねこは1匹だけ。</li><li data-t="how2">各列と各カラー領域にも1匹だけ。</li><li data-t="how3">ねこ同士は斜めを含めて隣り合えません。</li><li data-t="how4">ねこまたは X を選んでマスをタップ。元に戻すとリスタートはいつでも無料です。</li></ol></article>
-        <article><h3 data-t="winGuideTitle">地図帳を完成</h3><p data-t="winGuide">すべてのねこを正しく置くとクリア。直接の矛盾はすぐ止まり、仮置きは元に戻せます。</p><h3 data-t="tipsTitle">攻略のコツ</h3><p data-t="tips">置けるマスが1つの領域から始めましょう。ねこを置いたら同じ行・列・周囲8マスを除外します。</p></article>
-        <article><h3 data-t="progressTitle">30の月光マップ</h3><p data-t="progressGuide">4×4の案内問題から7×7の達人問題まで6章。クリアすると次の1問だけ開きます。</p><h3 data-t="saveTitle">保存とプライバシー</h3><p data-t="saveText">進行とベスト記録はこのブラウザだけに保存。アカウントも送信も不要です。</p></article>
-      </div>
-      <div class="guide-faq"><h3 data-t="faqTitle">よくある質問</h3><details><summary data-t="faq1Q">色だけが手がかりですか？</summary><p data-t="faq1A">いいえ。領域には模様、記号、読み上げ名もあります。</p></details><details><summary data-t="faq2Q">数字の数独ですか？</summary><p data-t="faq2A">いいえ。行・列・領域・非接触を使うねこ配置パズルです。</p></details><details><summary data-t="faq3Q">ヒントには何が表示されますか？</summary><p data-t="faq3A">次に正しく置けるねこのマスを光らせます。盤面を自動で完成させる機能ではありません。</p></details><details><summary data-t="faq4Q">ルールに反する手を選ぶとどうなりますか？</summary><p data-t="faq4A">行・列・模様領域・非接触のルールに反する配置は受け付けられません。「元に戻す」で直前の手を戻せます。</p></details><details><summary data-t="faq5Q">マップのクリア条件は？</summary><p data-t="faq5A">各行・列・模様領域にねこを1匹ずつ置き、斜めを含めて互いに触れないようにします。クリアすると次のマップが開きます。</p></details></div>
-      <nav class="related" aria-labelledby="relatedTitle"><h3 id="relatedTitle" data-t="relatedTitle">ほかの論理ゲーム</h3><a href="../sudoku/index.html?trial=1" data-t="relatedSudoku">数字の数独</a><a href="../minefield-logic/index.html?trial=1" data-t="relatedMinefield">マインフィールド・ロジック</a></nav>
-  </section>
 
-  <main id="stage" class="screen canvas stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" hidden>
-    <header class="scene-header">
-      <button id="stageBack" type="button" data-wp-return="stage" data-t-aria="backLobby" aria-label="WeightPlay に戻る">←</button>
-      <div><small data-t="choose">月光マップを選ぶ</small><h2 data-t="shortTitle">ねこカラー</h2></div>
-      <span id="stageProgress">0/30</span>
-    </header>
-    <section id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageRailLabel" aria-label="月光マップ選択"></section>
-    <nav class="stage-tabs" data-t-aria="stageRailLabel" aria-label="月光マップ選択"><span aria-hidden="true"></span><button class="stage-tab active" type="button" aria-current="page" data-t="stages">ステージ</button><span aria-hidden="true"></span></nav>
-  </main>
+    <main id="stage" class="screen canvas stage-screen" data-screen="stage" data-wp-frame-play-fill data-wp-logical-stage-canvas hidden>
+      <header class="scene-header">
+        <button id="stageBack" type="button" data-wp-return="stage" data-t-aria="backLobby" aria-label="Return to WeightPlay">←</button>
+        <strong data-wp-frame-title data-t="shortTitle">CAT SUDOKU</strong>
+      </header>
+      <section id="stageContent" class="stage-content">
+        <div id="stageHeaderInfo" aria-live="polite"><span id="stageProgress">0/30 solved</span></div>
+        <section id="stageRail" class="stage-rail" data-t-aria="stageRailLabel" aria-label="Moon map selection"></section>
+      </section>
+      <nav id="stageNav" class="stage-tabs" data-wp-frame-nav data-t-aria="stageRailLabel" aria-label="Moon map selection">
+        <button id="stagesTab" class="stage-tab active" type="button" aria-current="page" aria-pressed="true" data-wp-frame-action="tab" data-t="stages">Stages</button>
+      </nav>
+    </main>
 
-  <main id="battle" class="screen canvas battle-screen" data-screen="battle" data-wp-frame-play-fill data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
-    <header class="scene-header">
-      <button id="battleBack" type="button" data-wp-return="battle" data-t-aria="battleBack" aria-label="マップ一覧に戻る">←</button>
-      <div class="battle-header-hud"><small id="battleChapter"></small><h2 id="battleStage"></h2><span id="objective"></span></div>
-      <button id="battleUtility" class="utility-button" type="button" data-wp-battle-utility data-t-aria="audio" aria-label="サウンド"><span aria-hidden="true">♪</span></button>
-    </header>
-    <section class="battle-content">
-      <div class="board-wrap">
-        <div id="board" class="cat-board" role="grid" data-t-aria="boardLabel" aria-label="ねこカラー数独ボード"></div>
-        <p id="status" class="status" aria-live="polite"></p>
-      </div>
-      <aside class="battle-tools" data-t-aria="toolsLabel" aria-label="パズルツール">
-        <div class="mode-switch" role="group" data-t-aria="placementMode" aria-label="配置モード"><button id="toolCat" class="active" type="button" aria-pressed="true" data-t="toolCat" data-wp-primary-action>ねこを置く</button><button id="toolMark" type="button" aria-pressed="false" data-t="toolMark">X を付ける</button></div>
-        <div class="action-row"><button id="undo" type="button" data-t="undo">元に戻す</button><button id="hint" type="button" data-t="hint">ヒント</button><button id="restart" type="button" data-t="restart">リスタート</button></div>
-        <section class="rule-card"><img src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><div><strong id="ruleChapter"></strong><p id="ruleText"></p></div></section>
-      </aside>
-    </section>
-    <dialog id="leaveDialog" aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-t="leaveTitle">このマップを離れますか？</h2><p data-t="leaveText">続けると現在の推理を保持。ステージへ戻るとこの挑戦を終了します。</p><div class="dialog-actions"><button id="leaveContinue" class="primary" data-t="continue">続ける</button><button id="leaveStages" data-t="returnStages">ステージ一覧</button></div></dialog>
-    <dialog id="resultDialog" aria-labelledby="resultTitle"><img class="result-cat" src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><p class="eyebrow" data-t="resultKicker">地図帳を修復</p><h2 id="resultTitle" data-t="resultTitle">月光マップ完成！</h2><p id="resultBody"></p><p id="resultMastery" class="result-mastery" hidden></p><div class="result-actions"><button id="resultStages" data-t="stages">ステージ</button><button id="resultNext" class="primary" data-t="next">次のマップ</button><button id="resultReplay" data-t="replay">もう一度</button></div></dialog>
-  </main>
-
-  <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
-  <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+    <main id="battle" class="screen canvas battle-screen" data-screen="battle" data-wp-frame-play-fill data-wp-logical-battle-canvas hidden>
+      <header class="scene-header">
+        <button id="battleBack" type="button" data-wp-return="battle" data-t-aria="battleBack" aria-label="Back to map list">←</button>
+        <strong data-wp-frame-title data-t="shortTitle">CAT SUDOKU</strong>
+      </header>
+      <section id="battleContent" class="battle-content">
+        <div id="battleHeaderInfo" class="battle-header-hud">
+          <small id="battleChapter"></small><h2 id="battleStage"></h2><span id="objective"></span>
+        </div>
+        <div class="board-wrap">
+          <div id="board" class="cat-board" role="grid" data-t-aria="boardLabel" aria-label="Cat Color Sudoku board"></div>
+          <p id="status" class="status" aria-live="polite"></p>
+        </div>
+        <aside class="battle-tools" data-t-aria="toolsLabel" aria-label="Puzzle tools">
+          <div class="mode-switch" role="group" data-t-aria="placementMode" aria-label="Placement mode"><button id="toolCat" class="active" type="button" aria-pressed="true" data-t="toolCat" data-wp-primary-action data-wp-frame-action="primary">Place cat</button><button id="toolMark" type="button" aria-pressed="false" data-t="toolMark" data-wp-frame-action="secondary">Mark X</button></div>
+          <div class="action-row"><button id="undo" type="button" data-t="undo" data-wp-frame-action="secondary">Undo</button><button id="hint" type="button" data-t="hint" data-wp-frame-action="secondary">Hint</button><button id="restart" type="button" data-t="restart" data-wp-frame-action="secondary">Restart</button></div>
+          <section class="rule-card"><img src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><div><strong id="ruleChapter"></strong><p id="ruleText"></p></div></section>
+        </aside>
+      </section>
+      <dialog id="leaveDialog" aria-labelledby="leaveTitle" data-wp-frame-result-card><h2 id="leaveTitle" data-t="leaveTitle">Leave this map?</h2><p data-t="leaveText">Continue keeps this exact deduction. Stage list ends this attempt.</p><div class="dialog-actions"><button id="leaveContinue" class="primary" type="button" data-wp-frame-action="primary" data-t="continue">Continue</button><button id="leaveStages" type="button" data-wp-frame-action="secondary" data-t="returnStages">Stage list</button></div></dialog>
+      <dialog id="resultDialog" aria-labelledby="resultTitle" data-wp-frame-result-card><img class="result-cat" src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><p class="eyebrow" data-t="resultKicker">Atlas restored</p><h2 id="resultTitle" data-t="resultTitle">Moon map solved!</h2><p id="resultBody"></p><p id="resultMastery" class="result-mastery" hidden></p><div class="result-actions"><button id="resultStages" type="button" data-wp-frame-action="secondary" data-t="stages">Stages</button><button id="resultNext" class="primary" type="button" data-wp-frame-action="primary" data-t="next">Next map</button><button id="resultReplay" type="button" data-wp-frame-action="secondary" data-t="replay">Play again</button></div></dialog>
+    </main>
+  </div>
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="../../src/i18n.js"></script>
-  <script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+  <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+  <script src="/src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="levels.js?v=20260819-cat-color-sudoku-v1"></script>
   <script src="locales.js?v=20261010-cat-color-text-growth-140"></script>
   <script src="text-growth-140.js?v=20261010-cat-color-text-growth-140"></script>
-  <script src="game.js?v=20261015-cat-color-sudoku-v8-geometry-feedback&wp-audio=1.0.0"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
-  <script src="../../src/battle-canvas-standard.js?v=20260819-cat-color-sudoku-v1" data-wp-battle-standard></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-<section class="game-page-info game-page-info-static" aria-label="ねこカラー数独 ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>ねこカラー数独</h2><p>各行・各列・模様つきカラー領域にねこを1匹ずつ置き、隣接させないようにします。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>カラー領域ロジック</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Classic · Puzzle · Strategy · Family</strong></div></div>
-    </div>
-
-    <div class="game-info-sections"><div class="game-info-section public-guide-expansion"><h3>公開プレイ</h3><p>穏やかなロジックパズルを楽しみましょう。各マップでは、すべての行・列・模様つき領域にMoonwhiskerのねこを1匹ずつ置きます。ねこは斜めを含めて隣り合えないため、置くたびに次の候補が絞られます。合法マスが1つだけの領域から始め、Xで安全な推論を記録し、仮説を試すときはUndoを使えます。Hintは正しい候補を1マス光らせるだけで、自動配置はしません。マップ1を解くとマップ2が開き、6章30マップへ進めます。進行状況はこのブラウザだけに保存されます。</p></div>
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>進行状況は保存されますか？</dt><dd>はい、このブラウザにのみ保存されます。</dd></div></dl></div>
-
-    </div>
-  </section>
+  <script src="/games/cat-color-sudoku/stage-config.js?v=20261021-cat-color-sudoku-v8-i9"></script>
+  <script src="/games/cat-color-sudoku/frame.js?v=20261021-cat-color-sudoku-v8-i9"></script>
+  <script src="game.js?v=20261021-cat-color-sudoku-v8-i9&amp;wp-audio=1.0.0"></script>
+<script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="ねこカラー数独";document.title="ねこカラー数独 | WeightPlay";},{once:true});</script>
 </body>
 </html>

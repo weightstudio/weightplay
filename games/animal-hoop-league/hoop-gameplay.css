@@ -3,6 +3,7 @@ body[data-wp-market-game="animal-hoop-league"] { --hoop-ink:#f0f8f4; --hoop-mute
 html:has(body[data-wp-market-game="animal-hoop-league"]) { background:transparent!important; }
 body[data-wp-market-game="animal-hoop-league"] .m5-main { background:radial-gradient(ellipse at 25% 45%,#245a55 0,transparent 55%),#0c2437; }
 .hoop-main-content { display:grid; grid-template-columns:minmax(0,1fr); gap:18px; align-items:center; min-width:0; }
+body[data-wp-market-game="animal-hoop-league"] #main-screen[data-wp-frame-scene="main"] { grid-template-areas:none!important; }
 body[data-wp-market-game="animal-hoop-league"] .hoop-main-content>.m5-cover { grid-area:auto; width:100%; aspect-ratio:1; object-fit:contain; background:none; filter:drop-shadow(0 16px 26px #0005); }
 body[data-wp-market-game="animal-hoop-league"] .hoop-main-content>.m5-copy { grid-area:auto; min-width:0; }
 .hoop-steps { display:flex; gap:10px; margin:0 0 6px; }
@@ -18,7 +19,7 @@ body[data-wp-market-game="animal-hoop-league"] .m5-primary { width:100%; min-hei
 body[data-wp-market-game="animal-hoop-league"] .m5-status { display:flex; flex:0 0 auto; min-height:44px; align-items:center; justify-content:center; margin:0; padding:6px 14px; overflow:hidden; background:#163949; color:#d7f7da; font-size:14px; line-height:1.3; text-align:center; }
 body[data-wp-market-game="animal-hoop-league"] .m5-canvas-wrap { position:relative; display:block; flex:1 1 auto; min-width:0; min-height:140px; overflow:hidden; background:#102941; }
 body[data-wp-market-game="animal-hoop-league"] #arena { position:absolute; inset:0; display:block; width:100%!important; height:100%!important; max-width:none!important; max-height:none!important; aspect-ratio:auto!important; }
-.hoop-court-utility { position:absolute; z-index:4; inset:10px 10px auto auto; }
+.hoop-court-utility { display:flex; flex:0 0 44px; align-items:center; justify-content:flex-end; min-height:44px; padding-inline:4px; }
 body[data-wp-market-game="animal-hoop-league"] .m5-battle-utility { width:44px; height:44px; min-width:44px; border:1px solid #92bfac; border-radius:8px; background:#092337e8; color:#e8f8e9; font-size:20px; }
 .hoop-scoreboard { position:absolute; z-index:2; inset:10px auto auto 50%; transform:translateX(-50%); display:flex; align-items:center; justify-content:center; gap:18px; min-width:164px; padding:7px 18px; border:1px solid #63978966; border-radius:8px; background:#082337e8; pointer-events:none; }
 .hoop-scoreboard>div { display:flex; flex-direction:column; align-items:center; gap:2px; }
