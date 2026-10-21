@@ -3,7 +3,7 @@
   const START_COPY = {
     en:"Start Game", "zh-Hant":"開始遊戲", "zh-Hans":"开始游戏", ja:"ゲーム開始", ko:"게임 시작", es:"Iniciar juego", "pt-BR":"Iniciar jogo", fr:"Démarrer le jeu", de:"Spiel starten", it:"Avvia gioco", ru:"Начать игру", hi:"गेम शुरू करें", ar:"ابدأ اللعبة"
   };
-  // Retain the existing Interface 7 one-frame adapter; no new public scene.
+  // Wordle has no Stage; its Main and Battle share the explicit I9 frame.
   document.body.dataset.wpBattleLayout = "native";
   const battle = document.querySelector("#battleScreen");
   const battleCanvas = battle?.querySelector("[data-wp-logical-battle-canvas]");
@@ -20,7 +20,7 @@
   if (!document.querySelector("link[data-wordle-v20-style]")) {
     const style = document.createElement("link");
     style.rel = "stylesheet";
-    style.href = "/games/wordle/wordle-v20.css?v=20261018-guided-v20";
+    style.href = "/games/wordle/wordle-v20.css?v=20261021-wordle-v21-i9-entry1";
     style.dataset.wordleV20Style = "";
     document.head.append(style);
   }
@@ -40,6 +40,28 @@
     battleCanvas.append(result);
   }
   if (leaveModal && battleCanvas && leaveModal.parentElement !== battleCanvas) battleCanvas.append(leaveModal);
+  const mainCopy = document.querySelector("#mainScreen .main-copy");
+  mainCopy?.setAttribute("data-wp-frame-copy", "");
+  document.querySelector("#objective")?.setAttribute("data-wp-frame-summary", "");
+  for (const selector of ["#hintBtn", "#restartBtn", "#retryBtn", "#homeBtn", "#leaveContinue", "#leaveMain"]) {
+    const action = document.querySelector(selector);
+    if (action) action.dataset.wpFrameAction = ["#hintBtn", "#restartBtn", "#homeBtn", "#leaveMain"].includes(selector) ? "secondary" : "primary";
+  }
+  result?.querySelector(".arcade-panel")?.setAttribute("data-wp-frame-result-card", "");
+  document.querySelector("#battleUtilityBtn")?.remove();
+  const battleInfo = document.createElement("div");
+  battleInfo.className = "wordle-battle-info";
+  const roundLabel = document.querySelector("#roundLabel");
+  if (roundLabel) battleInfo.append(roundLabel);
+  const battleTop = battle?.querySelector(".battle-top");
+  if (!battleTop || !roundLabel) throw new Error("Wordle requires its Battle information slot.");
+  battleTop.append(battleInfo);
+  const sharedFrame = window.WeightPlayScreenFrame?.mountSlots({
+    root: document.querySelector("#popularArcade"),
+    main: document.querySelector("#mainScreen"),
+    battle: {root: battle, headerInfo: battleInfo},
+  });
+  if (!sharedFrame) throw new Error("Wordle requires the shared I9 frame.");
   const sharedBattleHeader = () => battle?.querySelector("[data-wp-frame-header='battle'], .wp-battle-shell-header");
   const resultIsOpen = () => Boolean(result && !result.hidden);
   function coverBattle(covered) {
@@ -72,18 +94,28 @@
     if (header) header.inert = false;
     window.WPWordleUI?.onScene(document.body.dataset.screen || "main");
   }
-  window.addEventListener("weightplay:shell-sync", syncBattleSubstate);
+  window.addEventListener("weightplay:shell-sync", () => {
+    sharedFrame.sync();
+    syncBattleSubstate();
+  });
   battleBack?.addEventListener("click", () => {
     if (document.body.dataset.screen === "battle" && !resultIsOpen()) coverBattle(true);
   }, true);
   window.WPPopularArcade?.mount("wordle");
   // v17 is already assigned to the shared-audio migration in the version record.
-  document.body.dataset.gameVersion = "v20";
+  document.body.dataset.gameVersion = "v21";
+  document.body.dataset.wpGameVersion = "v21";
   document.body.dataset.wordleReview = "owner-20261018";
+  sharedFrame.sync();
   syncBattleSubstate();
   const focusableLeaveActions = () => [...(leaveModal?.querySelectorAll("button:not([disabled])") || [])]
     .filter(node => !node.hidden && node.getAttribute("aria-hidden") !== "true");
-  document.querySelector("#leaveContinue")?.addEventListener("click", () => coverBattle(false));
+  document.querySelector("#leaveContinue")?.addEventListener("click", () => {
+    coverBattle(false);
+    // The shared leave handler runs during capture while Battle is still inert.
+    // Restore focus after this adapter releases that coverage.
+    battleBack?.focus({preventScroll:true});
+  });
   document.querySelector("#leaveMain")?.addEventListener("click", () => coverBattle(false));
   document.addEventListener("keydown", event => {
     if (!leaveModal || leaveModal.hidden) return;

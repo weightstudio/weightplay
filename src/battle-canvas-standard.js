@@ -29,6 +29,9 @@
     // Tide Tally's responsive answer grid needs the full wide short-landscape
     // envelope so its 44px Battle controls are not shrunk into a letterbox.
     "animal-tide-tally": [".battle-canvas", 390, 788, 760, 334],
+    // Tideglass uses a native level slider. The wide short-landscape envelope
+    // keeps its authored control at the physical touch-target floor.
+    "animal-tideglass": ["#battleView", 390, 788, 760, 334],
     // Dewline's three valve controls and paired Battle actions need the wide
     // short-landscape envelope so the authored 44px targets remain physical
     // touch controls instead of inheriting the portrait scaler.
@@ -217,6 +220,7 @@
     "animal-habitat-builder": 1.25,
     "animal-folded-field": 1.25,
     "animal-gust-garden": 1.25,
+    "animal-tideglass": 1.25,
     "animal-layer-grove": 1.25,
   };
   const landscapeRatioThreshold = landscapeRatioThresholdByGame[gameId] || 1.5;

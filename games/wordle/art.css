@@ -1,5 +1,4 @@
-body[data-wp-game-id="wordle"] #battleScreen .battle-canvas,
-body[data-wp-game-id="wordle"] #resultScreen .battle-canvas {
+body[data-wp-game-id="wordle"] #battleScreen .board-wrap {
   background:
     linear-gradient(145deg, rgba(22, 39, 48, .58), rgba(7, 24, 33, .84)),
     url("assets/wordle-board-block-v1.png") center / cover no-repeat;

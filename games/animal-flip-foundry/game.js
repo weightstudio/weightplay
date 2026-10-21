@@ -43,11 +43,57 @@
     hi: { preparing: "कार्यशाला तैयार हो रही है…", stageTitle: "कार्यशाला अध्याय", chapter: "अध्याय", platforms: "4 प्लेटफ़ॉर्म", wideStarts: "खुली शुरुआत", precisionFinish: "सटीक अंत", newSpacing: "नई दूरी", backMain: "मुख्य पृष्ठ पर लौटें", backStages: "अध्यायों पर लौटें", stageSections: "अध्याय अनुभाग", stages: "अध्याय", surface: "अध्याय {chapter} · प्लेटफ़ॉर्म {platform} / 4", ready: "कंटेनर पर ऊपर की ओर स्वाइप करें।", rotation: "घुमाव देखें…", miss: "बहुत हल्का या दिशा बहुत भटकी हुई…", perfect: "बेहतरीन लैंडिंग — अगला प्लेटफ़ॉर्म तैयार है।", canvas: "फ्लिप कार्यशाला का खेल क्षेत्र", hint: "ऊपर स्वाइप करें। छोटे स्वाइप नीचे रखते हैं; लंबे स्वाइप दूर ले जाते हैं।", bestStreak: "सर्वश्रेष्ठ सिलसिला", streak: "सिलसिला", best: "सर्वश्रेष्ठ", routeClear: "कार्यशाला मार्ग पूरा", chapterClear: "अध्याय पूरा", failed: "लैंडिंग विफल", resultCopy: "अध्याय {chapter} · प्लेटफ़ॉर्म {platform} · सिलसिला {streak} · सर्वश्रेष्ठ {best}", stagesAction: "अध्याय", nextSurface: "अगला प्लेटफ़ॉर्म", retry: "फिर कोशिश करें", nextChapter: "अगला अध्याय", replayFoundry: "फ्लिप कार्यशाला फिर खेलें", retryPlatform: "प्लेटफ़ॉर्म फिर आज़माएँ" },
     ar: { preparing: "جارٍ تجهيز الورشة…", stageTitle: "فصول الورشة", chapter: "الفصل", platforms: "4 منصات", wideStarts: "بداية واسعة", precisionFinish: "نهاية دقيقة", newSpacing: "تباعد جديد", backMain: "العودة إلى الرئيسية", backStages: "العودة إلى الفصول", stageSections: "أقسام الفصول", stages: "الفصول", surface: "الفصل {chapter} · المنصة {platform} / 4", ready: "مرّر إلى الأعلى على الحاوية البلورية.", rotation: "راقب الدوران…", miss: "القوة ضعيفة أو المسار منحرف جداً…", perfect: "هبوط مثالي — المنصة التالية جاهزة.", canvas: "منطقة لعب ورشة القلب", hint: "مرّر إلى الأعلى. التمريرات القصيرة تبقي الحاوية منخفضة؛ والطويلة تجعلها تصعد أبعد.", bestStreak: "أفضل تتابع", streak: "التتابع", best: "الأفضل", routeClear: "اكتمل مسار الورشة", chapterClear: "اكتمل الفصل", failed: "فشل الهبوط", resultCopy: "الفصل {chapter} · المنصة {platform} · التتابع {streak} · الأفضل {best}", stagesAction: "الفصول", nextSurface: "المنصة التالية", retry: "إعادة المحاولة", nextChapter: "الفصل التالي", replayFoundry: "إعادة لعب ورشة القلب", retryPlatform: "إعادة محاولة المنصة" },
   };
-  const state = { screen: "main", chapter: 1, platform: 1, streak: 0, best: (()=>{try{return Math.max(0,Number(localStorage.getItem("wp-flip-best"))||0)}catch{return 0}})(), drag: null, flight: null, raf: 0, status: "ready", resultWin: null, cardsLocale: "" };
+  const state = { screen: "main", chapter: 1, platform: 1, selectedChapterIndex: 0, stageController: null, streak: 0, best: (()=>{try{return Math.max(0,Number(localStorage.getItem("wp-flip-best"))||0)}catch{return 0}})(), drag: null, flight: null, raf: 0, status: "ready", resultWin: null, cardsLocale: "" };
   const currentLocale = () => localeCopy[window.WeightPlayFiveGameLocale?.locale] ? window.WeightPlayFiveGameLocale.locale : (localeCopy[document.documentElement.lang] ? document.documentElement.lang : "en");
   const copy = () => localeCopy[currentLocale()] || localeCopy.en;
   const fill = (value, values) => value.replace(/\{(\w+)\}/g, (_, key) => values[key] ?? "");
   const label = (key, values = {}) => fill(copy()[key] || localeCopy.en[key] || key, values);
+  const chapterPoster = "/games/animal-flip-foundry/assets/animal-flip-foundry-cover.png";
+  const chapterConfig = Object.freeze({
+    gameId: "animal-flip-foundry",
+    count: 6,
+    poster: chapterPoster,
+    background: "/assets/lobby-block-atmosphere.svg",
+    stage(index) {
+      if (!Number.isInteger(index) || index < 0 || index >= 6) throw new RangeError(`FLIP_CHAPTER_INDEX:${index}`);
+      const id = index + 1;
+      const c = copy();
+      const title = `${c.chapter} ${id}`;
+      const focus = id === 1 ? c.wideStarts : id === 6 ? c.precisionFinish : c.newSpacing;
+      return {
+        id,
+        kicker: title,
+        title,
+        subtitle: c.platforms,
+        status: c.platforms,
+        summary: focus,
+        details: [focus, label("surface", {chapter:id, platform:1})],
+        locked: false,
+        cleared: false,
+        poster: chapterPoster,
+      };
+    },
+  });
+  const screenFrame = window.WeightPlayScreenFrame.mount({
+    root: $("app"),
+    localeSelect: $("localeSelect"),
+    playUI: true,
+    scenes: {
+      main: {root:$("main-screen"), header:$("main-screen").querySelector("header"), content:$("main-content")},
+      stage: {root:$("stage-screen"), header:$("stage-screen").querySelector("header"), content:$("stage-content")},
+      battle: {root:$("battle-screen"), header:$("battle-screen").querySelector("header"), content:$("battle-play-content"), headerInfo:$("battle-info")},
+    },
+  });
+  screenFrame.activate("main");
+  state.stageController = window.WeightPlayPlayUI.mountStage({
+    page:$("stage-content"),
+    rail:$("stage-list"),
+    config:chapterConfig,
+    selected:state.selectedChapterIndex,
+    onSelect:index => { state.selectedChapterIndex = index; },
+    onStart:index => start(index + 1, 1),
+    isActive:() => state.screen === "stage",
+  });
   const fitArena = () => {
     if (!arenaFrame || !canvas) return;
     const width = Math.max(1, arenaFrame.clientWidth);
@@ -70,14 +116,51 @@
   arenaObserver?.observe(arenaFrame);
   window.addEventListener("resize", scheduleArenaFit, { passive: true });
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
-  function show(name) { state.drag = null; state.charge = null; state.lastFrame = 0; audio?.stop(); state.screen = name; document.body.dataset.screen = name === "result" ? "battle" : name; cancelAnimationFrame(state.raf); const result = $("result-screen"); document.querySelectorAll(".screen").forEach((el) => { const isResult = el === result && name === "result"; const keepBattle = name === "result" && el.id === "battle-screen"; const on = isResult || keepBattle || el.dataset.screen === name; el.hidden = !on; el.classList.toggle("active", on); }); if (name === "battle") (__wpNotifyMeasurement(), result?.setAttribute("hidden", "")); if (name === "battle" || name === "result") scheduleArenaFit(); if (name === "battle") state.raf = requestAnimationFrame(frame);
+  function show(name) {
+    state.drag = null;
+    state.charge = null;
+    state.lastFrame = 0;
+    audio?.stop();
+    state.screen = name;
+    document.body.dataset.screen = name === "result" ? "battle" : name;
+    cancelAnimationFrame(state.raf);
+    const result = $("result-screen");
+    document.querySelectorAll(".screen").forEach((element) => {
+      const isResult = element === result && name === "result";
+      const keepBattle = name === "result" && element.id === "battle-screen";
+      const active = isResult || keepBattle || element.dataset.screen === name;
+      element.hidden = !active;
+      element.classList.toggle("active", active);
+    });
+
+    if (name === "result") {
+      screenFrame.activate("battle", {covered:true});
+      $("retry").focus({preventScroll:true});
+      scheduleArenaFit();
+    } else {
+      screenFrame.activate(name);
+    }
+    if (name === "battle") {
+      result?.setAttribute("hidden", "");
+      scheduleArenaFit();
+      state.raf = requestAnimationFrame(frame);
+      canvas.focus({preventScroll:true});
+    } else if (name === "stage") {
+      state.stageController?.refresh(state.selectedChapterIndex);
+      state.stageController?.select(state.selectedChapterIndex, {center:true,focus:true});
+    } else if (name === "main") {
+      $("start-game").focus({preventScroll:true});
+    }
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
       if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
-  function syncStageCardVisibility() { const rail = $("stage-list"); if (!rail || state.screen !== "stage") return; const railRect = rail.getBoundingClientRect(); rail.querySelectorAll(".stage-card").forEach((card) => { const rect = card.getBoundingClientRect(); const center = rect.left + rect.width / 2; const insideRail = rect.width > 1 && rect.height > 1 && center >= railRect.left - 1 && center <= railRect.right + 1 && rect.bottom >= railRect.top - 1 && rect.top <= railRect.bottom + 1; card.classList.toggle("wp-stage-card-clipped", !insideRail); }); }
-  function cards() { const c = copy(); const rail = $("stage-list"); rail.innerHTML = [1, 2, 3, 4, 5, 6].map((n) => { const summary = n === 1 ? c.wideStarts : n === 6 ? c.precisionFinish : c.newSpacing; return `<button class="stage-card" data-wp-enter-battle data-wp-stage-card data-chapter="${n}" aria-disabled="false" aria-label="${c.chapter} ${n}">${c.chapter} ${n}<br><small>${c.platforms} · ${summary}</small></button>`; }).join(""); rail.querySelectorAll("button").forEach((button) => button.addEventListener("click", () => start(Number(button.dataset.chapter), 1))); if (rail.dataset.wpStageVisibilityBound !== "true") { rail.addEventListener("scroll", syncStageCardVisibility, { passive: true }); window.addEventListener("resize", syncStageCardVisibility, { passive: true }); rail.dataset.wpStageVisibilityBound = "true"; } state.cardsLocale = currentLocale(); syncStageCardVisibility(); window.requestAnimationFrame(() => window.requestAnimationFrame(syncStageCardVisibility)); }
+  function cards() {
+    state.cardsLocale = currentLocale();
+    state.stageController?.refresh(state.selectedChapterIndex);
+    state.stageController?.select(state.selectedChapterIndex, {center:true});
+  }
   const audio = window.WeightPlayAudio?.createScope();
   window.WeightPlayAudio?.preload(['projectile.launch','movement.land','result.lose','result.win'])?.catch(()=>{});
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -146,8 +229,41 @@
   function setStatus(text){ const el=$('battle-status'); if(el.textContent!==text) el.textContent=text; }
   function forceNow(){ return state.charge!==null && state.charge!==undefined ? clamp((performance.now()-state.charge)*.16,0,300) : state.drag?.force || 0; }
   function renderResult() { if (state.resultWin === null) return; const c = copy(); const nextAvailable = state.resultWin && state.chapter < 6; $("result-title").textContent = state.resultWin ? (state.chapter === 6 ? c.routeClear : c.chapterClear) : c.failed; $("result-copy").textContent = (state.resultWin ? tip(9) : state.missReason || tip(6)) + " · " + label("resultCopy", { chapter: state.chapter, platform: state.platform, streak: state.streak, best: state.best }); $("to-stages").textContent = c.stagesAction; $("retry").textContent = c.retry; $("next").textContent = c.nextChapter; $("next").disabled = !nextAvailable; $("next").setAttribute("aria-disabled", String(!nextAvailable)); }
-  function renderLocalized() { const c = copy(); const mainTitle = document.querySelector(".main-title")?.textContent || "Flip Foundry"; document.querySelector(".main-summary")?.removeAttribute("data-five-copy"); $("loadingPanel")?.querySelector("strong")?.replaceChildren(document.createTextNode(mainTitle)); $("loadingPanel")?.querySelector("span")?.replaceChildren(document.createTextNode(c.preparing)); document.querySelector("#stage-screen h2").textContent = c.stageTitle; document.querySelector("#stage-screen .back").setAttribute("aria-label", c.backMain); document.querySelector("#stage-screen nav").setAttribute("aria-label", c.stageSections); document.querySelector("#stage-screen nav button").textContent = c.stages; document.querySelector("#battle-screen .back").setAttribute("aria-label", c.backStages); $("reset-surface").textContent = "↻"; $("reset-surface").title = c.retry; $("reset-surface").setAttribute("aria-label", c.retry); $("arena").setAttribute("aria-label", c.canvas); document.querySelector(".touch-hint").textContent = c.hint; $("main-progress").textContent = `${c.bestStreak}: ${state.best}`; $("surface-label").textContent = label("surface", { chapter: state.chapter, platform: state.platform }); $("streak-label").textContent = String(state.streak); $("battle-status").textContent = state.status === "ready" ? tip(4) : state.status === "perfect" ? tip(11) : label(state.status); document.querySelector(".touch-hint").textContent=tip(1); document.querySelector(".main-summary").textContent=tip(1); canvas.setAttribute("aria-label", `${c.canvas}. ${tip(10)}`); if (state.cardsLocale !== currentLocale()) cards(); renderResult(); drawScene(); }
-  function start(chapter = 1, platform = 1) { state.chapter = chapter; state.platform = platform; state.streak = 0; state.flight = null; state.settle = null; state.accumulator = 0; state.charge = null; state.status = "ready"; state.resultWin = null; show("battle"); renderLocalized();
+  function renderLocalized() {
+    const c = copy();
+    const mainTitle = document.querySelector(".main-title")?.textContent || "Flip Foundry";
+    document.querySelector(".main-summary")?.removeAttribute("data-five-copy");
+    $("loadingPanel")?.querySelector("strong")?.replaceChildren(document.createTextNode(mainTitle));
+    $("loadingPanel")?.querySelector("span")?.replaceChildren(document.createTextNode(c.preparing));
+    document.querySelector("#stage-screen h2").textContent = c.stageTitle;
+    document.querySelector('#stage-screen [data-wp-return="stage"]').setAttribute("aria-label", c.backMain);
+    const stageNavigation = document.querySelector("#stage-screen [data-wp-frame-nav]");
+    if (stageNavigation) {
+      stageNavigation.setAttribute("aria-label", c.stageSections);
+      const stageTab = stageNavigation.querySelector("button");
+      if (stageTab) stageTab.textContent = c.stages;
+    }
+    document.querySelector('#battle-screen [data-wp-return="battle"]').setAttribute("aria-label", c.backStages);
+    $("reset-surface").textContent = "↻";
+    $("reset-surface").title = c.retry;
+    $("reset-surface").setAttribute("aria-label", c.retry);
+    $("arena").setAttribute("aria-label", c.canvas);
+    $("main-progress").textContent = `${c.bestStreak}: ${state.best}`;
+    $("surface-label").textContent = label("surface", {chapter:state.chapter, platform:state.platform});
+    $("chapter-stat-label").textContent = c.chapter;
+    $("streak-stat-label").textContent = c.streak;
+    $("best-stat-label").textContent = c.best;
+    $("streak-label").textContent = String(state.streak);
+    $("best-streak-label").textContent = String(state.best);
+    $("battle-status").textContent = state.status === "ready" ? tip(4) : state.status === "perfect" ? tip(11) : label(state.status);
+    document.querySelector(".touch-hint").textContent = tip(1);
+    document.querySelector(".main-summary").textContent = tip(1);
+    canvas.setAttribute("aria-label", `${c.canvas}. ${tip(10)}`);
+    if (state.cardsLocale !== currentLocale()) cards();
+    renderResult();
+    drawScene();
+  }
+  function start(chapter = 1, platform = 1) { state.chapter = chapter; state.platform = platform; state.selectedChapterIndex = chapter - 1; state.streak = 0; state.flight = null; state.settle = null; state.accumulator = 0; state.charge = null; state.status = "ready"; state.resultWin = null; show("battle"); renderLocalized();
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
   function launch(force) {

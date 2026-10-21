@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>潮位合わせ | WeightPlay</title>
 <meta name="description" content="目盛り、記憶、計器のずれ、二つの水位の和、分数を使って、動く潮位の瓶を調整しましょう。"><meta name="robots" content="noindex,nofollow,noarchive">
-<meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v5"><meta name="weightplay-interface-version" content="9">
+<meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v6"><meta name="weightplay-interface-version" content="9">
 <meta name="weightplay-text-version" content="1.3.0"><link rel="canonical" href="https://weightplay.com/ja/games/animal-tideglass/">
 <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-tideglass/">
 <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-tideglass/">
@@ -25,7 +25,7 @@
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="潮位合わせ"><meta name="twitter:description" content="目盛り、記憶、計器のずれ、二つの水位の和、分数を使って、動く潮位の瓶を調整しましょう。"><meta name="twitter:image" content="https://weightplay.com/games/animal-tideglass/assets/animal-tideglass-cover-v2.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","@id":"https://weightplay.com/ja/games/animal-tideglass/#game","name":"潮位合わせ","url":"https://weightplay.com/ja/games/animal-tideglass/","image":"https://weightplay.com/games/animal-tideglass/assets/animal-tideglass-cover-v2.png","description":"目盛り、記憶、計器のずれ、二つの水位の和、分数を使って、動く潮位の瓶を調整しましょう。","inLanguage":"ja","genre":["視覚で推定","記憶パズル","分数の練習"],"gamePlatform":"Web browser","operatingSystem":"Any","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"},"numberOfPlayers":{"@type":"QuantitativeValue","value":1}},{"@type":"FAQPage","@id":"https://weightplay.com/ja/games/animal-tideglass/#faq","inLanguage":"ja","mainEntity":[{"@type":"Question","name":"五つの測定で五ステージ進みますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。五つ全部を終えると一ステージだけ進みます。"}},{"@type":"Question","name":"記憶の問題を急ぐ必要はありますか？","acceptedAnswer":{"@type":"Answer","text":"ありません。「覚えた」を選ぶまで自由に観察できます。その後はヒントを使うか測定を終えるまで目標が隠れます。"}},{"@type":"Question","name":"ダイヤルと水位が違うのはなぜですか？","acceptedAnswer":{"@type":"Answer","text":"計器補正の問題では符号付きのずれが加算されます。目標 60%、ずれ +8 ならダイヤルは 52 です。"}}]}]}</script>
 
-<link rel="stylesheet" href="/src/game-page-info.css?v=20261019-guide-no-legacy-stage-css-v1"><link rel="stylesheet" href="/games/animal-tideglass/style.css?v=20261020-tideglass-v5-i9-1"><link rel="stylesheet" href="/src/game-screen-frame.css?v=20261020-interface9-hidden-actions1"><link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play-ui1"><link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20260925-stage-v7"><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261017-interface9-guide-theme1">
+<link rel="stylesheet" href="/src/game-page-info.css?v=20261019-guide-no-legacy-stage-css-v1"><link rel="stylesheet" href="/games/animal-tideglass/style.css?v=20261021-tideglass-v6-i9-result-actions1"><link rel="stylesheet" href="/src/game-screen-frame.css?v=20261020-interface9-hidden-actions1"><link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play-ui1"><link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20260925-stage-v7"><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261017-interface9-guide-theme1">
 <script defer src="/src/game-layout-config.js?v=20260919-banner1"></script>
 <script defer src="/src/weightplay-audio.js?v=1.0.0"></script>
 <script defer src="/src/i18n.js?v=20260721-locale13-1"></script>
@@ -37,16 +37,16 @@
 <script defer src="/src/stage-rail-i9.js?v=20261017-shared-stage-rail1"></script>
 <script defer src="/src/game-play-ui.js?v=20261017-shared-play-ui1"></script>
 <script defer src="/src/game-screen-frame.js?v=20261019-interface9-settings-locale-adoption-v1"></script>
-<script defer src="/src/battle-canvas-standard.js?v=20260925-stage-v7"></script>
+<script defer src="/src/battle-canvas-standard.js?v=20261021-tideglass-v6-battle-canvas1"></script>
 <script defer src="/src/interface7-poster-registry.js?v=20261020-tideglass-i9-related1"></script>
 <script defer src="/src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-<script defer src="/games/animal-tideglass/game.js?v=20261020-tideglass-v5-i9-1"></script>
+<script defer src="/games/animal-tideglass/game.js?v=20261021-tideglass-v6-i9-result-actions2"></script>
 <script>window.addEventListener('load',()=>{if(!window.TIDEGLASS_TEST)document.getElementById('loadError').hidden=false;},{once:true});</script>
 </head>
-<body class="has-game-page-info" data-audience="general" data-wp-game-age-tags="9,family" data-wp-game-id="animal-tideglass" data-wp-game-version="v5" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-screen="main">
+<body class="has-game-page-info" data-audience="general" data-wp-game-age-tags="9,family" data-wp-game-id="animal-tideglass" data-wp-game-version="v6" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-screen="main">
 <main id="app" data-wp-frame-root data-wp-play-ui="1">
-<section id="mainView" data-screen="main" aria-labelledby="mainTitle">
+<section id="mainView" data-wp-main-validation-root data-screen="main" aria-labelledby="mainTitle">
 <header id="mainHeader"><a href="/ja/" data-wp-return="main" aria-label="WeightPlay">←</a><strong id="mainTitle" data-wp-frame-title data-wp-game-title data-runtime-localize="off">潮位合わせ</strong></header>
 <div id="mainContent"><img id="poster" data-wp-frame-poster src="/games/animal-tideglass/assets/animal-tideglass-cover-v2.png" alt="潮位合わせ" width="1254" height="1254" fetchpriority="high">
 <div data-wp-frame-copy><p data-wp-frame-summary>目盛り、記憶、計器のずれ、二つの水位の和、分数を使って、動く潮位の瓶を調整しましょう。</p><p id="mainProgress" data-wp-frame-progress>0/30 ステージ達成</p><button type="button" id="startBtn" data-wp-frame-action="primary" disabled>ゲーム開始</button></div></div>

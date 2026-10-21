@@ -1,4 +1,4 @@
-/* Tide Level Calibration v5 / shared Interface 9. The frame owns all shell UI. */
+/* Tide Level Calibration v6 / shared Interface 9. Results use Stages / Next / Replay. */
 (function () {
   'use strict';
   const R=window.TideglassRules,C=window.TIDEGLASS_LOCALES,StageConfig=window.TideglassStageConfig,$=id=>document.getElementById(id),app=$('app');
@@ -26,7 +26,7 @@
   // Main, Stage and Battle are constructed once. All later transitions change state, not control identity.
   const stage=make('section','stageView','stage-canvas');stage.hidden=true;stage.dataset.screen='stage';
   const stageHeader=header('stage'),workspace=make('div','stageWorkspace','tg-stage-workspace'),rail=make('div','stageRail','stage-rail');
-  rail.setAttribute('aria-label',t('stages'));workspace.append(rail);
+  rail.dataset.wpStageManagementNav='';rail.setAttribute('aria-label',t('stages'));workspace.append(rail);
   const nav=make('nav');nav.dataset.wpFrameNav='';nav.setAttribute('aria-label',t('stages'));
   const tab=button('stageTab','stages');tab.dataset.wpFrameAction='tab';tab.setAttribute('aria-current','page');nav.append(tab);stage.append(stageHeader,workspace,nav);app.append(stage);
   const stageFields=[];
@@ -63,7 +63,7 @@
   const overlay=make('section','tideModal','tg-modal');overlay.hidden=true;overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-labelledby','modalTitle');overlay.setAttribute('aria-describedby','modalText');
   const card=make('div',null,'tg-modal-card'),modalTitle=make('h2','modalTitle'),starArt=make('div','modalStars','tg-result-stars'),modalText=make('p','modalText'),saveMessage=make('p','saveMessage','tg-save-warning'),modalActions=make('div',null,'tg-modal-actions');
   starArt.setAttribute('aria-hidden','true');
-  for(const [id,key] of [['continueBtn','continue'],['nextBtn','next'],['replayBtn','replay'],['leaveBtn','leave']])modalActions.append(button(id,key,id==='nextBtn'));
+  for(const [id,key,primary] of [['continueBtn','continue',false],['stagesBtn','stages',false],['nextBtn','next',true],['replayBtn','replay',false],['leaveBtn','leave',false]])modalActions.append(button(id,key,primary));
   card.append(modalTitle,starArt,modalText,saveMessage,modalActions);overlay.append(card);battle.append(overlay);app.append(battle);
   const roots={main,stage,battle};
   function updateProgress(){ $('mainProgress').textContent=t('progress',{count:R.completed(progress),total:R.TOTAL}); }
@@ -133,11 +133,11 @@
     motion.pulse(activeGlass.art).then(finished=>{if(!finished||token!==epoch||scene!=='battle'||modal)return;busy=false;renderRound();});
   }
   function openModal(kind){
-    ++epoch;motion.cancel();busy=false;focusBefore=document.activeElement;modal=kind;overlay.hidden=false;play.inert=true;frame.activate('battle',{covered:true});
+    ++epoch;motion.cancel();busy=false;focusBefore=document.activeElement;modal=kind;overlay.dataset.kind=kind;overlay.hidden=false;play.inert=true;frame.activate('battle',{covered:true});
     modalTitle.textContent=t(kind==='leave'?'leaveTitle':'results');modalText.textContent=kind==='leave'?t('leaveBody'):t('attempts',{count:run.attempts,stars:R.starsFor(run)});
     starArt.hidden=kind!=='result';starArt.textContent=kind==='result'?'★'.repeat(R.starsFor(run))+'☆'.repeat(3-R.starsFor(run)):'';
     saveMessage.hidden=saveOK;saveMessage.textContent=t('saveError');
-    $('continueBtn').hidden=kind!=='leave';$('nextBtn').hidden=kind!=='result';$('replayBtn').hidden=kind!=='result';$('nextBtn').disabled=run.index===R.TOTAL-1;
+    $('continueBtn').hidden=kind!=='leave';$('leaveBtn').hidden=kind!=='leave';$('stagesBtn').hidden=kind!=='result';$('nextBtn').hidden=kind!=='result';$('replayBtn').hidden=kind!=='result';$('nextBtn').disabled=run.index===R.TOTAL-1;
     pause();motion.fade(card);(kind==='leave'?$('continueBtn'):run.index===R.TOTAL-1?$('replayBtn'):$('nextBtn')).focus({preventScroll:true});
   }
   function closeLeave(){releaseModal();renderRound(true);if(focusBefore?.isConnected&&!focusBefore.disabled)focusBefore.focus({preventScroll:true});else seal.focus();}
@@ -159,7 +159,7 @@
     for(const [node,delta] of [[minus,-1],[plus,1]])listen(node,'click',()=>{if(!blocked()&&R.setValue(run,run.value+delta)){feedback.textContent='';field.dataset.feedback='';renderValue();}});
     listen(reset,'click',()=>{if(!blocked()&&R.setValue(run,R.roundOf(run).initial)){renderValue();feedback.textContent='';field.dataset.feedback='';audio('ui.click');}});
     listen(hint,'click',()=>{if(!blocked()&&R.hint(run)){renderRound();audio('ui.click');}});
-    listen(seal,'click',submit);listen($('continueBtn'),'click',closeLeave);listen($('leaveBtn'),'click',()=>show('stage'));
+    listen(seal,'click',submit);listen($('continueBtn'),'click',closeLeave);listen($('stagesBtn'),'click',()=>{if(modal==='result')show('stage');});listen($('leaveBtn'),'click',()=>{if(modal==='leave')show('stage');});
     listen($('nextBtn'),'click',()=>{if(modal==='result'&&run.index<R.TOTAL-1)startStage(run.index+1);});listen($('replayBtn'),'click',()=>{if(modal==='result')startStage(run.index);});
     listen(document,'keydown',event=>{
       if(event.defaultPrevented||event.repeat||scene!=='battle')return;

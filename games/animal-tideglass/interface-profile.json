@@ -16,9 +16,9 @@
   },
   "result": "BATTLE_SUBSTATE",
   "reserve": "SHARED_GAME_LAYOUT_CONFIG",
-  "status": "internal-noindex-v5-i9-ready-for-human-review",
+  "status": "internal-noindex-v6-i9-ready-for-human-review",
   "boundary": "INTERNAL_NOINDEX_NOT_IN_LOBBY",
-  "implementedGameVersion": "v5",
+  "implementedGameVersion": "v6",
   "textGrowthTarget": "1.3.0",
-  "evidence": "docs/game-qa/animal-tideglass-v5-i9-planner-ATT-20f8ba7ed977409ca90052abc50495c5.md"
+  "evidence": "docs/game-qa/evidence/animal-tideglass-v6-i9-maintenance-20261021/maintenance-summary.md"
 }

@@ -1,4 +1,4 @@
-/* Wordle's reading and interaction layers. The shared I7 frame owns the envelope. */
+/* Wordle's content layout lives inside the shared I9 frame. */
 body[data-game-id="wordle"] {
   --wordle-ink:#eaf4f2; --wordle-muted:#b0c7ce;
   --wordle-hit:#197d68; --wordle-near:#e9c777;
@@ -9,11 +9,11 @@ body[data-game-id="wordle"] .wordle-sr-only {
   clip-path:inset(50%)!important;white-space:nowrap!important;border:0!important;
 }
 body[data-game-id="wordle"] #battleScreen .battle-canvas {
-  background:linear-gradient(160deg,rgba(10,27,37,.96),rgba(8,23,31,.97)),url("assets/wordle-board-block-v1.png") center/cover;
+  background:transparent;
   color:var(--wordle-ink);
 }
-html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .battle-panel {gap:6px;grid-template-rows:48px minmax(0,1fr) 48px 44px auto}
-html body[data-game-id="wordle"] #battleScreen .board-wrap {border:0;background:transparent;padding:8px 0;box-shadow:none}
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .battle-panel {gap:6px;grid-template-rows:minmax(0,1fr) 48px 44px auto}
+html body[data-game-id="wordle"] #battleScreen .board-wrap {border:0;padding:8px 0;box-shadow:none}
 html body[data-game-id="wordle"] #battleScreen .wordle-board {gap:5px;max-width:350px}
 html body[data-game-id="wordle"] #battleScreen .wordle-row {gap:5px}
 html body[data-game-id="wordle"] #battleScreen .word-cell {
@@ -77,7 +77,7 @@ body[data-game-id="wordle"] .wordle-tutorial .wordle-tutorial-note {font-size:12
 body[data-game-id="wordle"] .wordle-tutorial button {display:block;width:100%;height:44px;min-height:44px;border-radius:12px;margin-top:8px;font-size:14px;white-space:normal}
 body[data-game-id="wordle"] .wordle-tutorial .primary {background:#e9c777;color:#142a32}
 @media(max-height:650px) and (min-width:700px) {
-  html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .battle-panel {grid-template-rows:48px 44px 44px minmax(0,1fr)}
+  html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .battle-panel {grid-template-rows:34px 44px minmax(0,1fr)}
   html body[data-game-id="wordle"][data-screen="battle"] #battleScreen #gameMessage {height:44px;min-height:44px;padding-block:4px;font-size:12px}
   html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-key-row button {min-height:32px}
   body[data-game-id="wordle"] .wordle-lock-label {min-height:32px}
