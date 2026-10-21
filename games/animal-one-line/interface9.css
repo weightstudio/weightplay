@@ -33,6 +33,22 @@ body[data-game-id="animal-one-line"] [data-wp-frame-scene="battle"][data-wp-logi
   background: transparent !important;
 }
 
+/* The shared I9 frame owns Battle's header and keeps play content as a
+   vertical flex stack. Let the board consume the free canvas height. */
+body[data-game-id="animal-one-line"] [data-wp-frame-scene="battle"][data-wp-logical-battle-canvas] > [data-wp-frame-content="battle"] > #traceBoard {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+}
+
+@media (max-height: 480px) and (orientation: landscape) {
+  body[data-game-id="animal-one-line"] #battleScreen .trace-board {
+    padding: 1px !important;
+  }
+  body[data-game-id="animal-one-line"] #battleScreen .line-grid {
+    gap: 4px !important;
+  }
+}
+
 @media (max-width: 720px) {
   body[data-game-id="animal-one-line"] [data-wp-frame-scene="main"] .wp-standard-main-composition {
     grid-template-columns: minmax(0, 1fr);

@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <base href="/games/animal-prism-garden/" />
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/ar/games/animal-prism-garden/" />
@@ -25,6 +25,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-version" content="v18">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="theme-color" content="#071923">
   <title>حديقة مسارات الموشور | WeightPlay</title>
   <meta name="description" content="صمّم مسارات مضيئة عبر 30 حديقة كبيرة، والتزم ببوابات الألوان وأضئ كل خانة مفتوحة." />
@@ -59,13 +61,16 @@
   "alternateName": "Prism Route Garden"
 }
     </script>
-  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
   <link rel="stylesheet" href="../../src/tutorial.css">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
-  <link rel="stylesheet" href="style.css?v=20260819-chapter-mission-v14-141e1a2f03ac">
-  <link rel="stylesheet" href="frame-content.css?v=20261011-prism-v18"><link rel="stylesheet" href="/src/game-ui-theme.css"><link rel="stylesheet" href="/src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="style.css?v=20261021-prism-v18-i9">
+  <link rel="stylesheet" href="frame-content.css?v=20261021-prism-v18-i9">
+  <link rel="stylesheet" href="/src/game-ui-theme.css">
+  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/stage-rail-i9.css?v=20261017-shared-play-spacing1">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="حديقة مسارات الموشور | WeightPlay" />
@@ -76,13 +81,8 @@
     <meta name="twitter:title" content="حديقة مسارات الموشور | WeightPlay" />
     <meta name="twitter:description" content="صمّم مسارات مضيئة عبر 30 حديقة كبيرة، والتزم ببوابات الألوان وأضئ كل خانة مفتوحة." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-prism-garden.webp" />
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-<body data-screen="main" data-audience="general" data-wp-game-id="animal-prism-garden" data-wp-combined-sound="true" data-runtime-localize="off">
-  <section id="loadingPanel" class="loading-panel" aria-live="polite">
-    <div class="loading-card"><strong data-t="title">حديقة مسارات الموشور</strong><span data-t="loading">جارٍ معايرة المسارات…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
-  </section>
+  </head>
+<body data-screen="main" data-audience="general" data-game-id="animal-prism-garden" data-wp-game-id="animal-prism-garden" data-wp-game-version="v18" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-wp-combined-sound="true" data-runtime-localize="off">
 
   <div id="gameFrame" data-wp-frame-root><div id="mainGroup" class="main-group">
     <main id="main" class="screen main main-screen wp-standard-main-screen" data-screen="main">
@@ -109,21 +109,18 @@
         <div class="game-info-section"><h3 data-t="guideTipsTitle">نصائح التخطيط</h3><ol><li data-t="guideTip1">احجز الحواف الضيقة وممرات البوابات أولاً.</li><li data-t="guideTip2">ارسم الأزواج الطويلة أولاً عندما تقسم اللوحة.</li><li data-t="guideTip3">التراجع والتلميح لا يمسحان تقدمك.</li></ol><p data-t="guideRecovery">اترك مساحة للممرات الضيقة أولًا. التراجع يعيد اللوحة السابقة؛ إعادة الضبط تمسح المسارات. التلميح يكمل مسارًا غير مكتمل. يُحفظ التقدم في هذا المتصفح.</p></div>
         <div class="game-info-section"><h3 data-t="guideCampaignTitle">حملة متقدمة</h3><p data-t="guideCampaign">تتوسع ثلاثون حديقة من 7×7 إلى 10×10 وتضيف ألواناً وبوابات عبر ستة فصول.</p></div>
         <div class="game-info-section"><h3 data-t="faqTitle">الأسئلة الشائعة</h3><dl><div><dt data-t="faq1q">كيف تكتمل الحديقة؟</dt><dd data-t="faq1a">صِل كل زهرتين متطابقتين واملأ الخانات المفتوحة من دون تقاطع المسارات.</dd></div><div><dt data-t="faq2q">هل يمكن للمسارات أن تتقاطع أو تتشارك خانة؟</dt><dd data-t="faq2a">لا. تتحرك المسارات أفقيًا أو عموديًا فقط، وتخص كل خانة مسارًا واحدًا.</dd></div><div><dt data-t="faq3q">كيف تعمل بوابات الموشور؟</dt><dd data-t="faq3a">لا يعبر البوابة إلا مسار يطابق لون إطارها.</dd></div><div><dt data-t="faq4q">ماذا يفعل التلميح؟</dt><dd data-t="faq4a">يكمل مسارًا واحدًا متاحًا وغير مكتمل؛ ولا يختار كل المسارات نيابة عنك.</dd></div><div><dt data-t="faq5q">هل يُحفظ التقدم؟</dt><dd data-t="faq5a">تُحفظ الحدائق المفتوحة في هذا المتصفح عند توفر التخزين المحلي؛ وقد تفقدها عند مسح بيانات الموقع أو استخدام متصفح آخر.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>المزيد من الألعاب ذات الصلة</h3><p>جرّب ألغازًا أخرى تتطلب تخطيط مسارات واضحة وإيجاد حل كامل.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-one-line" href="/ar/games/animal-one-line/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-one-line.webp" data-final-src="/assets/weightplay-logo.png" alt="خط واحد" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">خط واحد</strong><span>خط واحد لعبة ألغاز شبكية أصلية من 30 مرحلة، بطولة رينبو هوب ميمي. ابدأ من المخلب المتوهج، وتحرك عبر الخلايا المفتوحة المتجاورة من الحواف، ولوّن اللوحة...</span></span></a></div></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>More Related Games</h3><p>Explore more compact puzzles about planning clear paths and finding a complete solution.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-one-line" href="/en/games/animal-one-line/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-one-line.webp" data-final-src="/assets/weightplay-logo.png" alt="One Line" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">One Line</strong><span>One Line is an original 30-stage grid puzzle starring Rainbow Hop Mimi. Begin on the glowing paw, move through edge-sharing open cells, and color the...</span></span></a></div></div><div class="game-info-section game-info-related-section"><h3>ألعاب ذات صلة</h3><p>جرّب ألغازًا أخرى تتطلب تخطيط مسارات واضحة وإيجاد حل كامل.</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="animal-one-line" href="/ar/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>خط واحد</strong><span>خط واحد لعبة ألغاز شبكية أصلية من 30 مرحلة، بطولة رينبو هوب ميمي. ابدأ من المخلب المتوهج، وتحرك عبر الخلايا المفتوحة المتجاورة من الحواف، ولوّن اللوحة...</span></span></a><a class="game-info-related-card" data-wp-related-id="animal-cratebound" href="/ar/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>مستودع</strong><span>تحرّك وادفع واسحب صناديق الرون عبر 30 مستودعًا سماويًا مصممًا يدويًا.</span></span></a></div></div></div>
     </section>
   </div>
 
-  <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-prism-garden.webp')" hidden>
+  <main id="stage" class="screen stage" data-screen="stage" hidden>
     <header class="scene-header stage-header">
       <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="رجوع">←</button>
       <h2 data-t="title">حديقة مسارات الموشور</h2>
     </header>
-    <section class="stage-workspace">
-      <div class="stage-summary"><small data-t="choose">اختر حديقة</small><span id="progressBadge" class="badge"></span></div>
-      <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="قائمة المراحل"></section>
-    </section>
+    <section id="stageGrid" class="stage-workspace stage-rail" data-wp-stage-rail data-t-aria="stageList" aria-label="قائمة المراحل"></section>
     <nav class="stage-tabs" data-t-aria="stageList" aria-label="قائمة المراحل">
-      <button id="stageTab" type="button" class="stage-tab active" aria-current="page" data-t="stages">المراحل</button>
+      <button id="stageTab" type="button" class="stage-tab" data-t="start">ابدأ اللعبة</button>
     </nav>
   </main>
 
@@ -143,15 +140,15 @@
       <div class="modal-card"><h2 id="leaveTitle" data-t="leaveTitle">إيقاف هذا المسار؟</h2><p id="leaveText" data-t="leaveText">المتابعة تحفظ المسارات. الرجوع إلى المراحل ينهي المحاولة.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">متابعة</button><button id="leaveStages" type="button" data-t="returnStages">العودة للمراحل</button></div></div>
     </section>
     <section id="result" class="modal-layer" data-wp-result-audit role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
-      <div class="modal-card result-card"><div class="result-mark" aria-hidden="true">✦</div><p class="eyebrow" data-t="complete">تمت معايرة الحديقة</p><h2 id="resultTitle" data-t="resultTitle">كل مسارات الموشور مستقرة.</h2><p id="resultBody"></p><div class="result-actions"><button id="resultStages" type="button" data-t="stages">المراحل</button><button id="next" class="primary" type="button" data-t="next">الحديقة التالية</button><button id="retry" type="button" data-t="retry">إعادة اللعب</button></div></div>
+      <div class="modal-card result-card"><div class="result-mark" aria-hidden="true">✦</div><p class="eyebrow" data-t="complete">تمت معايرة الحديقة</p><h2 id="resultTitle" data-t="resultTitle">كل مسارات الموشور مستقرة.</h2><p id="resultBody"></p><div class="result-actions"><button id="resultStages" type="button" data-t="stages">المراحل</button><button id="next" class="primary" type="button" data-t="next">التالي</button><button id="retry" type="button" data-t="retry">إعادة اللعب</button></div></div>
     </section>
   </main>
-  </div><div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
+  </div>
 
-  <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
-  <script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/runtime-locales/ar.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
@@ -159,10 +156,12 @@
   <script src="levels.js?v=20260819-chapter-mission-v14-3f61780b8339"></script>
   <script src="locales.js?v=20261011-prism-v18"></script>
   <script src="guide-locales.js?v=20261011-prism-v18"></script>
-  <script src="game.js?v=20261011-prism-v18&wp-audio=1.0.0"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+  <script src="game.js?v=20261021-prism-v18-i9"></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="/src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script><script src="frame.js?v=20260913-prism-v15"></script>
+  <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+  <script src="/src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+  <script src="/src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+  <script src="frame.js?v=20261021-prism-v18-i9"></script>
 </body>
 </html>

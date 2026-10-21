@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <base href="/games/animal-prism-garden/" />
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/ja/games/animal-prism-garden/" />
@@ -25,6 +25,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-version" content="v18">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="theme-color" content="#071923">
   <title>プリズム・ルートガーデン | WeightPlay</title>
   <meta name="description" content="30の大型庭園で光る経路を設計し、色指定ゲートを守って全マスを照らそう。" />
@@ -59,13 +61,16 @@
   "alternateName": "Prism Route Garden"
 }
     </script>
-  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
   <link rel="stylesheet" href="../../src/tutorial.css">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
-  <link rel="stylesheet" href="style.css?v=20260819-chapter-mission-v14-141e1a2f03ac">
-  <link rel="stylesheet" href="frame-content.css?v=20261011-prism-v18"><link rel="stylesheet" href="/src/game-ui-theme.css"><link rel="stylesheet" href="/src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="style.css?v=20261021-prism-v18-i9">
+  <link rel="stylesheet" href="frame-content.css?v=20261021-prism-v18-i9">
+  <link rel="stylesheet" href="/src/game-ui-theme.css">
+  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/stage-rail-i9.css?v=20261017-shared-play-spacing1">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="プリズム・ルートガーデン | WeightPlay" />
@@ -76,13 +81,8 @@
     <meta name="twitter:title" content="プリズム・ルートガーデン | WeightPlay" />
     <meta name="twitter:description" content="30の大型庭園で光る経路を設計し、色指定ゲートを守って全マスを照らそう。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-prism-garden.webp" />
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-<body data-screen="main" data-audience="general" data-wp-game-id="animal-prism-garden" data-wp-combined-sound="true" data-runtime-localize="off">
-  <section id="loadingPanel" class="loading-panel" aria-live="polite">
-    <div class="loading-card"><strong data-t="title">プリズム・ルートガーデン</strong><span data-t="loading">プリズム経路を調整中…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
-  </section>
+  </head>
+<body data-screen="main" data-audience="general" data-game-id="animal-prism-garden" data-wp-game-id="animal-prism-garden" data-wp-game-version="v18" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-wp-combined-sound="true" data-runtime-localize="off">
 
   <div id="gameFrame" data-wp-frame-root><div id="mainGroup" class="main-group">
     <main id="main" class="screen main main-screen wp-standard-main-screen" data-screen="main">
@@ -109,21 +109,18 @@
         <div class="game-info-section"><h3 data-t="guideTipsTitle">計画のコツ</h3><ol><li data-t="guideTip1">細い外周とゲート通路を先に確保します。</li><li data-t="guideTip2">盤面を分ける長いペアから考えます。</li><li data-t="guideTip3">元に戻す・ヒントで進行は失われません。</li></ol><p data-t="guideRecovery">狭い通路を先に確保しましょう。元に戻すと直前の盤面に戻り、リセットで道を消します。ヒントは未完成の道を一つ完成させます。進行はこのブラウザーに保存されます。</p></div>
         <div class="game-info-section"><h3 data-t="guideCampaignTitle">上級キャンペーン</h3><p data-t="guideCampaign">30面は7×7から10×10へ拡大し、6章で色とゲートが増えます。</p></div>
         <div class="game-info-section"><h3 data-t="faqTitle">よくある質問</h3><dl><div><dt data-t="faq1q">庭をクリアする条件は？</dt><dd data-t="faq1a">同じ色の花をすべて結び、道を交差させずに空いているマスを埋めます。</dd></div><div><dt data-t="faq2q">道は交差したり同じマスを共有したりできますか？</dt><dd data-t="faq2a">できません。道は上下左右に進み、各マスは一つの道だけが使えます。</dd></div><div><dt data-t="faq3q">プリズム門のルールは？</dt><dd data-t="faq3a">門の枠と同じ色の道だけが通れます。</dd></div><div><dt data-t="faq4q">ヒントでは何が起きますか？</dt><dd data-t="faq4a">ヒントは利用可能な未完成の道を一つ完成させます。すべての道を代わりに選ぶわけではありません。</dd></div><div><dt data-t="faq5q">進行状況は保存されますか？</dt><dd data-t="faq5a">解放した庭は、このブラウザーでローカル保存が使える場合に保存されます。サイトデータの消去や別ブラウザーでは引き継がれないことがあります。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>関連ゲームをもっと見る</h3><p>道筋を考え、盤面全体の解法を見つけるパズルも遊んでみましょう。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-one-line" href="/ja/games/animal-one-line/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-one-line.webp" data-final-src="/assets/weightplay-logo.png" alt="One Line" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">One Line</strong><span>One Lineは、ミミと挑む30ステージのグリッドパズルです。光る足あとから始め、上下左右に隣接する空きマスを進み、同じマスを二度通らずに盤面全体を一筆で塗ります。</span></span></a></div></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>More Related Games</h3><p>Explore more compact puzzles about planning clear paths and finding a complete solution.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-one-line" href="/en/games/animal-one-line/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-one-line.webp" data-final-src="/assets/weightplay-logo.png" alt="One Line" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">One Line</strong><span>One Line is an original 30-stage grid puzzle starring Rainbow Hop Mimi. Begin on the glowing paw, move through edge-sharing open cells, and color the...</span></span></a></div></div><div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><p>道筋を考え、盤面全体の解法を見つけるパズルも遊んでみましょう。</p><div class="game-info-related"><a class="game-info-related-card" data-wp-related-id="animal-one-line" href="/ja/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line</strong><span>One Lineは、ミミと挑む30ステージのグリッドパズルです。光る足あとから始め、上下左右に隣接する空きマスを進み、同じマスを二度通らずに盤面全体を一筆で塗ります。</span></span></a><a class="game-info-related-card" data-wp-related-id="animal-cratebound" href="/ja/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>クレートバウンド</strong><span>30の手作り天空倉庫を歩き、ルーン貨物を押して引きながら運びます。</span></span></a></div></div></div>
     </section>
   </div>
 
-  <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-prism-garden.webp')" hidden>
+  <main id="stage" class="screen stage" data-screen="stage" hidden>
     <header class="scene-header stage-header">
       <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="戻る">←</button>
       <h2 data-t="title">プリズム・ルートガーデン</h2>
     </header>
-    <section class="stage-workspace">
-      <div class="stage-summary"><small data-t="choose">庭を選ぶ</small><span id="progressBadge" class="badge"></span></div>
-      <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="ステージ一覧"></section>
-    </section>
+    <section id="stageGrid" class="stage-workspace stage-rail" data-wp-stage-rail data-t-aria="stageList" aria-label="ステージ一覧"></section>
     <nav class="stage-tabs" data-t-aria="stageList" aria-label="ステージ一覧">
-      <button id="stageTab" type="button" class="stage-tab active" aria-current="page" data-t="stages">ステージ</button>
+      <button id="stageTab" type="button" class="stage-tab" data-t="start">ゲーム開始</button>
     </nav>
   </main>
 
@@ -143,16 +140,16 @@
       <div class="modal-card"><h2 id="leaveTitle" data-t="leaveTitle">経路を一時停止？</h2><p id="leaveText" data-t="leaveText">続行すると経路を保持。ステージへ戻ると今回を終了します。</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">続ける</button><button id="leaveStages" type="button" data-t="returnStages">ステージへ</button></div></div>
     </section>
     <section id="result" class="modal-layer" data-wp-result-audit role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
-      <div class="modal-card result-card"><div class="result-mark" aria-hidden="true">✦</div><p class="eyebrow" data-t="complete">庭の調整完了</p><h2 id="resultTitle" data-t="resultTitle">すべての経路が安定しました。</h2><p id="resultBody"></p><div class="result-actions"><button id="resultStages" type="button" data-t="stages">ステージ</button><button id="next" class="primary" type="button" data-t="next">次の庭</button><button id="retry" type="button" data-t="retry">もう一度</button></div></div>
+      <div class="modal-card result-card"><div class="result-mark" aria-hidden="true">✦</div><p class="eyebrow" data-t="complete">庭の調整完了</p><h2 id="resultTitle" data-t="resultTitle">すべての経路が安定しました。</h2><p id="resultBody"></p><div class="result-actions"><button id="resultStages" type="button" data-t="stages">ステージ</button><button id="next" class="primary" type="button" data-t="next">次の庭園</button><button id="retry" type="button" data-t="retry">もう一度</button></div></div>
     </section>
   </main>
-  </div><div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
+  </div>
 
-  <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
-  <script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
@@ -160,11 +157,13 @@
   <script src="levels.js?v=20260819-chapter-mission-v14-3f61780b8339"></script>
   <script src="locales.js?v=20261011-prism-v18"></script>
   <script src="guide-locales.js?v=20261011-prism-v18"></script>
-  <script src="game.js?v=20261011-prism-v18&wp-audio=1.0.0"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+  <script src="game.js?v=20261021-prism-v18-i9"></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="/src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script><script src="frame.js?v=20260913-prism-v15"></script>
+  <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+  <script src="/src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+  <script src="/src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+  <script src="frame.js?v=20261021-prism-v18-i9"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="プリズム・ルートガーデン";document.title="プリズム・ルートガーデン | WeightPlay";},{once:true});</script>
 </body>
 </html>

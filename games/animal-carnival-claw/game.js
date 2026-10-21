@@ -21,8 +21,7 @@
 const $=id=>document.getElementById(id),$$=selector=>[...document.querySelectorAll(selector)];
 const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
 const fmt=(value,data={})=>String(value??"").replace(/\{(\w+)\}/g,(_,key)=>data[key]??"");
-const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v47",ANALYTICS_INTERFACE_VERSION="7",ANALYTICS_SCHEMA_VERSION=1;
-const interfaceValidatorRun=new URLSearchParams(location.search).get("qa")==="interface-validator";
+const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v48",ANALYTICS_INTERFACE_VERSION="9",ANALYTICS_SCHEMA_VERSION=1;
 const viewportBucket=()=>{const width=Math.max(window.innerWidth||0,window.innerHeight||0),short=Math.min(window.innerWidth||0,window.innerHeight||0);return short<480?"phone":width<900?"tablet":"desktop"};
 const boundedMetric=(value,max)=>{const number=Number(value);return Number.isFinite(number)?Math.max(0,Math.min(max,Math.round(number))):0};
 function track(eventName,details={}){try{window.WonderAnalytics?.track?.(eventName,{game_id:ANALYTICS_GAME_ID,game_version:ANALYTICS_GAME_VERSION,interface_version:ANALYTICS_INTERFACE_VERSION,schema_version:ANALYTICS_SCHEMA_VERSION,locale,viewport_bucket:viewportBucket(),...details})}catch{}}
@@ -30,7 +29,7 @@ const localeNames={"en":"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans","ja":"ja","ko":
 const routeLocale=localeNames[location.pathname.split("/").filter(Boolean)[0]?.toLowerCase()];
 let locale=routeLocale||safeGet("weightPlayLocale")||safeGet("weightplayLocale")||document.documentElement.lang||"en";
 if(!window.CARNIVAL_CLAW_LOCALES[locale])locale="en";
-let copy=window.CARNIVAL_CLAW_LOCALES[locale],screen="main",selected=0,focusReturn=null,raf=0,last=0,settledDecision=false,resolvedWallAnchor=0,stageEntry="main";
+let copy=window.CARNIVAL_CLAW_LOCALES[locale],screen="main",selected=0,focusReturn=null,raf=0,last=0,settledDecision=false,resolvedWallAnchor=0,stageEntry="main",activeStagePanel="stages",stageUI=null;
 const canvas=$("gameCanvas"),ctx=canvas.getContext("2d",{alpha:false});
 const images={
   background:loadImage("../../assets/animal-carnival-claw-background-block-v1.webp"),
@@ -52,8 +51,6 @@ const images={
 const defaultSave=()=>({unlocked:1,medals:Array(30).fill(0),cabinet:Array(8).fill(false),bolts:0,upgrades:{grip:0,stability:0,rail:0},tutorial:false});
 let save=loadSave();
 let run=null,pointerId=null,frame=null;
-const STAGE_CARD_POOL_SIZE=9;
-let stageWindowStart=0,stageCardPool=[],stageSettleRaf=0;
 const chapters=[
   {name:"chapter1",rule:"rule1",obstacle:"none"},
   {name:"chapter2",rule:"rule2",obstacle:"bumper"},
@@ -84,6 +81,37 @@ function persist(){safeSet("weightplay_animal_carnival_claw_v1",JSON.stringify(s
 function loadImage(src){const image=new Image();image.src=src;return image}
 function t(key,data){return fmt(copy[key]??window.CARNIVAL_CLAW_LOCALES.en[key]??key,data)}
 function prizeName(kind){return t(`prize${kind+1}`)}
+window.CARNIVAL_CLAW_I9=Object.freeze({
+  getSelectedStage:()=>selected,
+  selectStage(index){selected=clamp(index,0,levels.length-1)},
+  startMission(index){startMission(index,"stage_card")},
+  isStageActive:()=>screen==="stage"&&activeStagePanel==="stages",
+  attachStageUI(value){stageUI=value},
+  getStageConfig({poster}){
+    return{
+      count:levels.length,
+      poster,
+      background:"/assets/lobby-block-atmosphere.svg",
+      stage(index){
+        const level=levels[index];if(!level)throw new RangeError(`CARNIVAL_CLAW_STAGE_MISSING:${index}`);
+        const cleared=Boolean(save.medals[index]),unlocked=index<save.unlocked;
+        const rule=t(chapters[level.chapter].rule);
+        return{
+          id:index+1,
+          kicker:t("mission",{n:index+1}),
+          title:t(chapters[level.chapter].name),
+          subtitle:t("objective",{count:level.targets.length}),
+          status:cleared?t("cleared",{medal:medalText(save.medals[index])}):unlocked?t("ready"):t("locked"),
+          poster,
+          summary:rule,
+          details:[rule,`${t("targets")}: ${level.targets.map(prizeName).join(" · ")}`,`${t("drops")}: 3`],
+          locked:!unlocked,
+          cleared,
+        };
+      },
+    };
+  },
+});
 const individualPrizeArt={0:"leo",1:"nori",2:"fox",3:"turtle",4:"owl",5:"panda",6:"rux",7:"rabbit"};
 function prizeSpriteStyle(kind){
   const individual=images[individualPrizeArt[kind]];
@@ -115,14 +143,16 @@ function show(next){
   $("mainGuide").hidden=next!=="main";
   frame?.activate(next,{covered:next==="battle"&&Boolean(activeModal()||run?.result)});
   if(next==="main")renderMain();
-  if(next==="stage"){selected=clamp(save.unlocked-1,0,levels.length-1);renderStage();requestAnimationFrame(()=>centerSelected(false))}
+  if(next==="stage"){
+    selected=stageEntry==="battle_return"&&run?run.index:clamp(save.unlocked-1,0,levels.length-1);
+    setStagePanel("stages");renderStage();stageUI?.refresh(selected);
+  }
   // Settle the existing shared owners in this navigation transaction. Waiting
   // for their observers leaves Battle classes on the first returned Stage frame.
   window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
   window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
   window.WeightPlayBattleCanvas?.sync?.();
   window.WeightPlayStageArtwork?.sync?.();
-  if(next==="stage")centerSelected(false);
   window.scrollTo(0,0);
   if(next==="battle"&&run)resumeLoop();
 
@@ -136,162 +166,20 @@ function renderMain(){
   $("mainProgress").textContent=t("progress",{cleared,charms});
 }
 function setStagePanel(name){
+  activeStagePanel=name;
   $("stagesPanel").hidden=name!=="stages";$("cabinetPanel").hidden=name!=="cabinet";$("workshopPanel").hidden=name!=="workshop";
-  for(const key of ["stages","cabinet","workshop"]){const button=$(`${key}Tab`);button.classList.toggle("active",key===name);if(key===name)button.setAttribute("aria-current","page");else button.removeAttribute("aria-current")}
+  for(const key of ["stages","cabinet","workshop"]){const button=$(`${key}Tab`),active=key===name;button.classList.toggle("active",active);button.setAttribute("aria-pressed",String(active));button.setAttribute("aria-selected",String(active));if(active)button.setAttribute("aria-current","page");else button.removeAttribute("aria-current")}
+  if(name==="stages")stageUI?.refresh(selected);else stageUI?.cancel();
   if(name==="cabinet")renderCabinet();if(name==="workshop")renderWorkshop();
-}
-function stageWindowLimit(){return Math.max(0,levels.length-STAGE_CARD_POOL_SIZE)}
-function desiredStageWindow(index){return clamp(index-Math.floor(STAGE_CARD_POOL_SIZE/2),0,stageWindowLimit())}
-function createStageCard(){
-  const button=document.createElement("button"),image=document.createElement("img"),body=document.createElement("span"),title=document.createElement("strong"),status=document.createElement("small");
-  button.type="button";button.className="stage-card";image.src="/assets/interface7-redrawn/animal-carnival-claw.webp";image.alt="";
-  body.dataset.wpItemContent="true";body.append(title,status);button.append(image,body);
-  button.addEventListener("click",()=>{const index=Number(button.dataset.stageIndex);if(!Number.isInteger(index))return;selectStage(index,true);if(index<save.unlocked)startMission(index,"stage_card")});
-  return button;
-}
-function bindStageCard(button,index){
-  const level=levels[index],unlocked=index<save.unlocked,status=unlocked?(save.medals[index]?t("cleared",{medal:medalText(save.medals[index])}):t("ready")):t("locked");
-  button.dataset.stageIndex=index;button.setAttribute("aria-posinset",String(index+1));button.setAttribute("aria-setsize",String(levels.length));button.setAttribute("aria-disabled",String(!unlocked));button.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");
-  button.classList.toggle("locked",!unlocked);
-  button.querySelector("strong").textContent=t("mission",{n:index+1});
-  button.querySelector("small").textContent=`${t(chapters[level.chapter].name)} · ${status}`;
-}
-function syncStageCards(){
-  stageCardPool.forEach(button=>{
-    const index=Number(button.dataset.stageIndex),isSelected=index===selected;
-    bindStageCard(button,index);button.tabIndex=isSelected?0:-1;button.classList.toggle("is-centered",isSelected);button.classList.toggle("wp-stage-centered",isSelected);
-    if(isSelected)button.setAttribute("aria-current","true");else button.removeAttribute("aria-current");
-    if(isSelected&&index<save.unlocked)button.dataset.wpStageRecommended="true";else delete button.dataset.wpStageRecommended;
-  });
-}
-function buildStageCardPool(){
-  const rail=$("stageRail"),count=Math.min(STAGE_CARD_POOL_SIZE,levels.length);
-  rail.innerHTML="";stageWindowStart=desiredStageWindow(selected);stageCardPool=Array.from({length:count},(_,offset)=>{
-    const button=createStageCard();bindStageCard(button,stageWindowStart+offset);rail.append(button);return button;
-  });
-  rail.dataset.wpStageVirtualized="bounded-recycle";rail.dataset.wpStagePoolSize=String(count);rail.dataset.wpStageTotal=String(levels.length);
-}
-function moveStageWindow(targetStart){
-  const rail=$("stageRail"),target=clamp(targetStart,0,stageWindowLimit());
-  if(!stageCardPool.length){buildStageCardPool();return 0}
-  let recycledCount=0;
-  while(stageWindowStart<target){
-    const recycled=rail.firstElementChild,anchor=recycled?.nextElementSibling,before=anchor?.getBoundingClientRect().left;
-    stageWindowStart++;rail.append(recycled);bindStageCard(recycled,stageWindowStart+stageCardPool.length-1);recycledCount++;
-    const after=anchor?.getBoundingClientRect().left;if(Number.isFinite(before)&&Number.isFinite(after))rail.scrollLeft+=after-before;
-  }
-  while(stageWindowStart>target){
-    const recycled=rail.lastElementChild,anchor=recycled?.previousElementSibling,before=anchor?.getBoundingClientRect().left;
-    stageWindowStart--;rail.prepend(recycled);bindStageCard(recycled,stageWindowStart);recycledCount++;
-    const after=anchor?.getBoundingClientRect().left;if(Number.isFinite(before)&&Number.isFinite(after))rail.scrollLeft+=after-before;
-  }
-  stageCardPool=[...rail.children];rail.dataset.wpStageWindowStart=String(stageWindowStart);rail.dataset.wpStageWindowEnd=String(stageWindowStart+stageCardPool.length-1);
-  if(recycledCount)rail.dataset.wpStageRecycleCount=String(Number(rail.dataset.wpStageRecycleCount||0)+recycledCount);
-  return recycledCount;
-}
-function ensureStageWindow(index){
-  if(!stageCardPool.length)buildStageCardPool();
-  moveStageWindow(desiredStageWindow(index));syncStageCards();
-}
-function stageRailGeometry(){
-  const rail=$("stageRail"),cards=[...rail.children],railRect=rail.getBoundingClientRect(),first=cards[0]?.getBoundingClientRect(),second=cards[1]?.getBoundingClientRect();
-  const delta=first&&second?(second.left+second.width/2)-(first.left+first.width/2):0;
-  const fallback=(first?.width||264)+(parseFloat(getComputedStyle(rail).columnGap)||12);
-  return{rail,center:railRect.left+railRect.width/2,pitch:Math.abs(delta)||fallback,orientation:Math.sign(delta)||1};
-}
-function nearestStageCard(){
-  const rail=$("stageRail"),railRect=rail.getBoundingClientRect(),center=railRect.left+railRect.width/2;
-  return stageCardPool.reduce((nearest,card)=>{const rect=card.getBoundingClientRect(),distance=Math.abs(rect.left+rect.width/2-center);return!nearest||distance<nearest.distance?{card,distance}:nearest},null)?.card||null;
-}
-function currentStageLogicalPosition(){
-  const card=nearestStageCard();if(!card)return selected;
-  const index=Number(card.dataset.stageIndex),rect=card.getBoundingClientRect(),geometry=stageRailGeometry();
-  return clamp(index+(geometry.center-(rect.left+rect.width/2))/(geometry.pitch*geometry.orientation),0,levels.length-1);
-}
-function positionStageRail(logicalPosition){
-  const logical=clamp(logicalPosition,0,levels.length-1),anchorIndex=Math.round(logical),recycled=moveStageWindow(desiredStageWindow(anchorIndex));
-  if(recycled)syncStageCards();
-  const rail=$("stageRail"),card=rail.querySelector(`[data-stage-index="${anchorIndex}"]`);if(!card)return logical;
-  rail.scrollTo({left:card.offsetLeft+card.offsetWidth/2-rail.clientWidth/2,behavior:"auto"});
-  const railRect=rail.getBoundingClientRect(),cardRect=card.getBoundingClientRect(),scale=railRect.width?rail.clientWidth/railRect.width:1;
-  const correction=((cardRect.left+cardRect.width/2)-(railRect.left+railRect.width/2))*scale;
-  if(Math.abs(correction)>.01)rail.scrollLeft+=correction;
-  const geometry=stageRailGeometry(),fraction=logical-anchorIndex;
-  if(Math.abs(fraction)>.0001)geometry.rail.scrollLeft+=fraction*geometry.orientation*geometry.pitch;
-  geometry.rail.dataset.wpStageDragLogical=logical.toFixed(4);
-  return logical;
-}
-function installVirtualStageDrag(){
-  const rail=$("stageRail");if(!rail||rail.dataset.wpStageVirtualDrag==="true")return;
-  rail.dataset.wpStageVirtualDrag="true";rail.dataset.wpStageCenterObserver="manual";
-  const baseSnap=rail.style.getPropertyValue("scroll-snap-type"),baseBehavior=rail.style.getPropertyValue("scroll-behavior");
-  let pointerId=null,startX=0,lastX=0,dragLogical=0,moved=false,suppressClick=false;
-  const restoreRailBehavior=()=>{
-    if(baseBehavior)rail.style.setProperty("scroll-behavior",baseBehavior);else rail.style.removeProperty("scroll-behavior");
-    if(baseSnap)rail.style.setProperty("scroll-snap-type",baseSnap);else rail.style.removeProperty("scroll-snap-type");
-    delete rail.dataset.wpStageSettling;
-  };
-  rail.addEventListener("pointerdown",event=>{
-    if(event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;
-    cancelAnimationFrame(stageSettleRaf);stageSettleRaf=0;
-    pointerId=event.pointerId;startX=lastX=event.clientX;dragLogical=currentStageLogicalPosition();moved=false;
-    rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");rail.dataset.wpDragDown="1";
-    event.stopImmediatePropagation();
-  },true);
-  document.addEventListener("pointermove",event=>{
-    if(event.pointerId!==pointerId)return;
-    const delta=event.clientX-lastX;lastX=event.clientX;if(!moved&&Math.abs(event.clientX-startX)>4){moved=true;rail.classList.add("wp-stage-dragging")}
-    if(moved){
-      const rect=rail.getBoundingClientRect(),scale=rect.width?rail.clientWidth/rect.width:1,pitch=stageRailGeometry().pitch;
-      if(event.cancelable)event.preventDefault();dragLogical=positionStageRail(dragLogical-delta*scale/pitch);
-    }
-    event.stopImmediatePropagation();
-  },true);
-  const finish=event=>{
-    if(pointerId===null||(event.pointerId!==undefined&&event.pointerId!==pointerId))return;
-    pointerId=null;rail.dataset.wpDragDown="0";rail.classList.remove("wp-stage-dragging");
-    if(moved){
-      if(event.cancelable)event.preventDefault();
-      const from=dragLogical,index=clamp(Math.round(from),0,levels.length-1),duration=Number(rail.dataset.wpStageSettleDuration)||340,start=performance.now();
-      selectStage(index,false);positionStageRail(from);rail.dataset.wpStageSettling="true";
-      const settle=now=>{
-        const progress=clamp((now-start)/duration),eased=progress*progress*(3-2*progress);
-        positionStageRail(from+(index-from)*eased);
-        if(progress<1)stageSettleRaf=requestAnimationFrame(settle);else{stageSettleRaf=0;positionStageRail(index);syncStageCards();restoreRailBehavior()}
-      };
-      stageSettleRaf=requestAnimationFrame(settle);
-      suppressClick=true;setTimeout(()=>{suppressClick=false},0);
-    }else restoreRailBehavior();
-    moved=false;event.stopImmediatePropagation();
-  };
-  document.addEventListener("pointerup",finish,true);document.addEventListener("pointercancel",finish,true);
-  rail.addEventListener("click",event=>{if(!suppressClick)return;suppressClick=false;event.preventDefault();event.stopImmediatePropagation()},true);
 }
 function renderStage(){
   const cleared=save.medals.filter(Boolean).length;
   $("stageSummary").textContent=t("stageSummary",{cleared,bolts:save.bolts});
-  const chapter=chapters[Math.floor(selected/5)];
-  $("chapterKicker").textContent=t("mission",{n:selected+1});
-  $("chapterTitle").textContent=t(chapter.name);$("chapterRule").textContent=t(chapter.rule);
-  ensureStageWindow(selected);
+  stageUI?.refresh(selected);
   renderCabinet();renderWorkshop();
 }
-function selectStage(index,center){
+function selectStage(index){
   selected=clamp(index,0,29);
-  ensureStageWindow(selected);
-  const chapter=chapters[Math.floor(selected/5)];
-  $("chapterKicker").textContent=t("mission",{n:selected+1});$("chapterTitle").textContent=t(chapter.name);$("chapterRule").textContent=t(chapter.rule);
-  if(center)centerSelected();
-}
-function centerSelected(){
-  const rail=$("stageRail"),properties=["scroll-behavior","scroll-snap-type"];
-  const previous=properties.map(key=>[key,rail.style.getPropertyValue(key),rail.style.getPropertyPriority(key)]);
-  // Entry/return restoration is immediate, not the shared smooth user scroll.
-  // Otherwise the correction below reads a moving rail and leaves a first-frame offset.
-  rail.style.setProperty("scroll-behavior","auto","important");
-  rail.style.setProperty("scroll-snap-type","none","important");
-  try{ensureStageWindow(selected);positionStageRail(selected);selectStage(selected,false)}
-  finally{for(const [key,value,priority] of previous){if(value)rail.style.setProperty(key,value,priority);else rail.style.removeProperty(key)}}
 }
 function renderCabinet(){
   $("cabinetSummary").textContent=t("progress",{cleared:save.medals.filter(Boolean).length,charms:save.cabinet.filter(Boolean).length});
@@ -331,7 +219,7 @@ function startMission(index,entry="stage_select"){
   $("resultStagesBtn").disabled=false;$("retryBtn").disabled=false;$("nextBtn").disabled=true;
   track("mission_start",{mission:boundedMetric(index+1,30),entry:missionEntry});
   show("battle");resizeCanvas();renderHud();draw();
-  if(!save.tutorial&&!interfaceValidatorRun){openModal("tutorialPanel",$("tutorialStartBtn"))}
+  if(!save.tutorial){openModal("tutorialPanel",$("tutorialStartBtn"))}
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
@@ -497,7 +385,7 @@ function updateTimingCoach(locked=false,failed=false){
 
 function activeModal(){return["tutorialPanel","leavePanel","pausePanel","resultPanel"].some(id=>!$(id).hidden)}
 function resolvedAutoplayPhase(){return Boolean(run&&["lift","return"].includes(run.phase))}
-function syncBattleModalState(id,open){if(!["tutorialPanel","leavePanel","pausePanel"].includes(id))return;$("battleLive").inert=open;["battleBackBtn","timingMeter","restartBtn"].forEach(buttonId=>{const button=$(buttonId);if(!button)return;button.inert=open;if(open)button.setAttribute("aria-disabled","true");else button.removeAttribute("aria-disabled")})}
+function syncBattleModalState(id,open){if(!["tutorialPanel","leavePanel","pausePanel"].includes(id))return;$("battleLive").inert=open;["battleBackBtn","timingMeter","restartBtn","pauseBtn"].forEach(buttonId=>{const button=$(buttonId);if(!button)return;button.inert=open;if(open)button.setAttribute("aria-disabled","true");else button.removeAttribute("aria-disabled")})}
 function openModal(id,focus){focusReturn=document.activeElement;syncBattleModalState(id,true);$(id).hidden=false;frame?.activate(screen,{covered:true});cancelAnimationFrame(raf);raf=0;resolvedWallAnchor=0;requestAnimationFrame(()=>focus?.focus({preventScroll:true}))}
 function closeModal(id,resume=true){$(id).hidden=true;syncBattleModalState(id,false);frame?.activate(screen,{covered:Boolean(activeModal()||run?.result)});focusReturn?.focus?.({preventScroll:true});focusReturn=null;if(resume)resumeLoop()}
 function resumeLoop(){if(!run||run.result||screen!=="battle"||activeModal())return;cancelAnimationFrame(raf);last=performance.now();if(resolvedAutoplayPhase())resolvedWallAnchor=last-run.phaseTime*1000;raf=requestAnimationFrame(loop)}
@@ -605,16 +493,15 @@ function bind(){
     const next=event.detail?.locale;
     if(window.CARNIVAL_CLAW_LOCALES[next])setLocale(next,false);
   });
-  $("startBtn").addEventListener("click",()=>{track("game_start",{entry:"main"});stageEntry="main";show("stage");setStagePanel("stages")});
+  $("startBtn").addEventListener("click",()=>{track("game_start",{entry:"main"});stageEntry="main";show("stage")});
   $("stageBackBtn").addEventListener("click",()=>{track("main_return",{from:"stages"});stageEntry="main";show("main")});
   $("stagesTab").addEventListener("click",()=>setStagePanel("stages"));
   $("cabinetTab").addEventListener("click",()=>setStagePanel("cabinet"));
   $("workshopTab").addEventListener("click",()=>setStagePanel("workshop"));
-  $("stageRail").addEventListener("keydown",event=>{if(!["ArrowLeft","ArrowRight","Home","End","Enter"," "].includes(event.key))return;event.preventDefault();if(event.key==="Enter"||event.key===" "){if(selected<save.unlocked)startMission(selected,"stage_card");return}const rail=$("stageRail"),baseSnap=rail.style.getPropertyValue("scroll-snap-type"),baseBehavior=rail.style.getPropertyValue("scroll-behavior"),next=event.key==="Home"?0:event.key==="End"?29:selected+(event.key==="ArrowLeft"?-1:1);rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");selectStage(clamp(next,0,29),false);rail.querySelector(`[data-stage-index="${selected}"]`)?.focus({preventScroll:true});positionStageRail(selected);requestAnimationFrame(()=>{if(baseBehavior)rail.style.setProperty("scroll-behavior",baseBehavior);else rail.style.removeProperty("scroll-behavior");if(baseSnap)rail.style.setProperty("scroll-snap-type",baseSnap);else rail.style.removeProperty("scroll-snap-type")})});
-  $("stageRail").addEventListener("wonder:stage-snap",event=>{const index=Number(event.detail?.index);if(Number.isInteger(index)&&levels[index])selectStage(index,false)});
   $("battleBackBtn").addEventListener("click",()=>openModal("leavePanel",$("leaveContinueBtn")));
   $("leaveContinueBtn").addEventListener("click",()=>closeModal("leavePanel"));
   $("leaveStagesBtn").addEventListener("click",()=>{track("battle_return",{from:"battle",destination:"stages",mission:boundedMetric((run?.index??0)+1,30)});stageEntry="battle_return";closeModal("leavePanel",false);show("stage")});
+  $("pauseBtn").addEventListener("click",()=>openModal("pausePanel",$("resumeBtn")));
   $("resumeBtn").addEventListener("click",()=>closeModal("pausePanel"));
   $("tutorialStartBtn").addEventListener("click",()=>{save.tutorial=true;persist();closeModal("tutorialPanel")});
   $("timingMeter").addEventListener("click",()=>attemptLock());
@@ -633,10 +520,27 @@ function bind(){
 }
 function init(){
   frame=window.mountCarnivalFrame();bind();setLocale(locale,false);
-  Promise.all(Object.values(images).map(image=>image.decode?.().catch(()=>{})||Promise.resolve())).finally(()=>setTimeout(()=>{$("loadingPanel").hidden=true;show("main")},350));
+  let started=false;
+  const loadAssets=loader=>{
+    if(started)return;started=true;
+    const assets=Object.values(images);loader?.begin(assets.length);
+    let loaded=0;
+    Promise.all(assets.map(async image=>{
+      if(image.decode)await image.decode();
+      else if(!image.complete)await new Promise((resolve,reject)=>{image.addEventListener("load",resolve,{once:true});image.addEventListener("error",reject,{once:true})});
+      if(!image.naturalWidth)throw new Error("CARNIVAL_CLAW_REQUIRED_ART_FAILED");
+      loader?.assetProgress(++loaded,assets.length);
+    })).then(()=>{show("main");loader?.ready()}).catch(()=>loader?.fail());
+  };
+  const loaderScript=document.querySelector('script[data-wp-game-entry-loader-bootstrap]');
+  if(window.WeightPlayGameEntryLoader)loadAssets(window.WeightPlayGameEntryLoader);
+  else if(loaderScript){
+    loaderScript.addEventListener("load",()=>loadAssets(window.WeightPlayGameEntryLoader),{once:true});
+    loaderScript.addEventListener("error",()=>loadAssets(null),{once:true});
+  }else loadAssets(null);
 }
 window.__CARNIVAL_CLAW_TEST__={
-  levels,startMission,beginDrop,selectStage(index,center=false){selectStage(index,center);return this.stageWindow()},stageWindow(){const rail=$("stageRail");return{selected,start:Number(rail.dataset.wpStageWindowStart),end:Number(rail.dataset.wpStageWindowEnd),pool:Number(rail.dataset.wpStagePoolSize),total:Number(rail.dataset.wpStageTotal),indexes:[...rail.children].map(card=>Number(card.dataset.stageIndex))}},step(seconds){for(let time=0;time<seconds&&!run?.result;time+=.02)update(.02);draw();return this.snapshot()},
+  levels,startMission,beginDrop,selectStage(index,center=false){if(stageUI)stageUI.select(index,{center,notify:true});else selectStage(index);return this.stageWindow()},stageWindow(){const rail=$("stageRail");return{selected:stageUI?.selected??selected,start:Number(rail.dataset.wpStageWindowStart),end:Number(rail.dataset.wpStageWindowEnd),pool:Number(rail.dataset.wpStagePoolSize),total:Number(rail.dataset.wpStageTotal),indexes:[...rail.children].map(card=>Number(card.dataset.stageIndex))}},step(seconds){for(let time=0;time<seconds&&!run?.result;time+=.02)update(.02);draw();return this.snapshot()},
   stepResolvedWall(milliseconds){if(!run||!resolvedAutoplayPhase())return this.snapshot();if(!resolvedWallAnchor)resolvedWallAnchor=performance.now()-run.phaseTime*1000;const wallTime=resolvedWallAnchor+milliseconds;update(.04,wallTime);update(.04,wallTime);draw();return this.snapshot()},
   finishResult(won=true){if(!run)startMission(selected);finish(Boolean(won));return this.snapshot()},
   prepareLift(kind,phaseTime=.2){
@@ -665,6 +569,5 @@ window.__CARNIVAL_CLAW_TEST__={
   solve(){for(const kind of [...remainingTargets()])this.perfectDrop(kind);this.step(1);return this.snapshot()},
   snapshot(){return run?JSON.parse(JSON.stringify({screen,run,save})):null},setSave(value){save={...defaultSave(),...value,upgrades:{...defaultSave().upgrades,...(value.upgrades||{})}};persist();renderMain();renderStage()},getSave(){return JSON.parse(JSON.stringify(save))},getLocale(){return locale},setLocale,show
 };
-installVirtualStageDrag();
 document.addEventListener("DOMContentLoaded",init);
 })();

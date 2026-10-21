@@ -25,7 +25,6 @@
   const localeByRoute={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const palette=["#22dfff","#ff4fcf","#ffbf45","#946cff","#68e56c","#ff786d","#4589ff","#ff6298","#f7d85a"];
   const GAME_VERSION="v18";
-  const STAGE_CARD_POOL_SIZE=9;
   const saveKey="wp-animal-prism-garden-v1";
   const {levels}=window.PRISM_GARDEN_LEVELS;
   const screens=$$(".screen");
@@ -34,7 +33,7 @@
   let unlocked=Math.max(1,Math.min(30,Number(read(saveKey))||1));
   let selected=unlocked-1;
   let level=null,paths={},history=[],activeColor=null,pointerId=null,moves=0,resultClaimed=false,audioContext=null;
-  let stageCardPool=[],stageWindowStart=0,stageSettleRaf=0,cancelStageRailInteraction=()=>{};
+  let stageSelector=null;
   let lastPointerPoint=null,boardCells=[],boardLevel=null,keyboardIndex=0,settleTimer=0,roundGeneration=0;
   const recordsKey="wp-animal-prism-garden-records-v1";
   let records={};
@@ -90,7 +89,6 @@
   function show(id){
     cancelSettlement();stopGesture();
     $("#battle").getAnimations({subtree:true}).forEach(animation=>animation.cancel());
-    if(id!=="stage")cancelStageRailInteraction();
     (__wpNotifyMeasurement(), $("#leavePanel").hidden=true);(__wpNotifyMeasurement(), $("#result").hidden=true);setCovered(false,null);
     screens.forEach(screen=>screen.hidden=screen.id!==id);
     $("#mainGroup").hidden=id!=="main";
@@ -99,7 +97,6 @@
     document.body.classList.toggle("wp-shell-stage-active",id==="stage");
     document.body.classList.toggle("wp-shell-battle-active",id==="battle");
     document.body.classList.toggle("wp-stage-select-active",id==="stage");
-    $("#generalReserve").hidden=id==="main";
     syncBattleHelp(id);
     if(id==="stage")renderStages();
     animate($(id==="stage"?"#stage .stage-workspace":id==="battle"?"#grid":"#main .prism-main-content"),[{opacity:0},{opacity:1}],300);
@@ -137,91 +134,40 @@
     select.addEventListener("change",()=>setLocale(select.value));
     setLocale(locale);
   }
-  function stageWindowLimit(){return Math.max(0,levels.length-Math.min(STAGE_CARD_POOL_SIZE,levels.length))}
-  function desiredStageWindow(index){return Math.max(0,Math.min(stageWindowLimit(),index-Math.floor(Math.min(STAGE_CARD_POOL_SIZE,levels.length)/2)))}
-  function createStageCard(poolIndex){
-    const button=document.createElement("button");
-    button.type="button";button.className="stage-card";button.dataset.wpStagePoolNode=String(poolIndex+1);
-    button.innerHTML='<small class="stage-chapter"></small><strong></strong><span class="stage-size"></span><span class="stage-detail"></span><span class="prism-preview" aria-hidden="true"></span><span class="prism-record"></span>';
-    return button;
+  function selectStage(index){
+    selected=Math.max(0,Math.min(levels.length-1,Math.round(index)));
+    $("#stageTab").disabled=selected>=unlocked;
   }
-  function bindStageCard(button,index){
-    const item=levels[index],locked=index>=unlocked;
-    button.dataset.index=String(index);button.hidden=false;
-    button.className=`stage-card${locked?" locked":""}${records[index]?" cleared":""}`;
-    button.setAttribute("aria-posinset",String(index+1));button.setAttribute("aria-setsize",String(levels.length));
-    button.setAttribute("aria-disabled",String(locked));button.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");
-    const chapterName=chapterCopy("chapterNames",item.chapter),pairs=t("pairs",{n:item.count}),gateCount=t("gates",{n:Object.keys(item.gates).length});
-    button.setAttribute("aria-label",`${t("garden",{n:index+1})}, ${t("chapter",{n:item.chapter})}: ${chapterName}, ${item.size}×${item.size}, ${pairs}, ${gateCount}, ${locked?t("locked"):t("ready")}`);
-    button.querySelector(".stage-chapter").textContent=`${t("chapter",{n:item.chapter})} · ${chapterName}`;
-    button.querySelector("strong").textContent=t("garden",{n:index+1});
-    button.querySelector(".stage-size").textContent=`${item.size}×${item.size}`;
-    button.querySelector(".stage-detail").textContent=`${pairs} · ${gateCount}${locked?` · ${t("locked")}`:""}`;
-    const preview=button.querySelector(".prism-preview");
-    if(preview.dataset.level!==String(index)){
-      preview.dataset.level=String(index);preview.style.setProperty("--size",item.size);preview.replaceChildren();
-      for(let cell=0;cell<item.size*item.size;cell++){
-        const dot=document.createElement("i"),color=Array.from({length:item.count},(_,i)=>i).findIndex(i=>item.ends[i].includes(cell));
-        if(color>=0)dot.style.background=palette[color];preview.append(dot);
-      }
-    }
-    button.querySelector(".prism-record").textContent=records[index]?t("bestMoves",{n:records[index].moves}):"";
+  function stageRecord(index){
+    const item=levels[index],locked=index>=unlocked,gateCount=Object.keys(item.gates).length;
+    const best=records[index];
+    return{
+      id:index+1,
+      kicker:`${t("chapter",{n:item.chapter})} · ${chapterCopy("chapterNames",item.chapter)}`,
+      title:t("garden",{n:index+1}),
+      subtitle:`${item.size}×${item.size}`,
+      status:locked?t("locked"):best?t("bestMoves",{n:best.moves}):"",
+      summary:chapterCopy("chapterMissions",item.chapter),
+      details:[t("pairs",{n:item.count}),t("gates",{n:gateCount}),best?t("bestMoves",{n:best.moves}):""],
+      poster:`/games/animal-prism-garden/stage-previews/stage-${String(index+1).padStart(2,"0")}.svg`,
+      locked,cleared:Boolean(best),
+    };
   }
-  function syncStageCards(){
-    stageCardPool.forEach(button=>{
-      const index=Number(button.dataset.index);bindStageCard(button,index);
-      const current=index===selected;button.tabIndex=current?0:-1;
-      button.classList.toggle("selected",current);button.classList.toggle("is-centered",current);
-      if(current){button.setAttribute("aria-current","true");button.dataset.wpStageRecommended="true"}else{button.removeAttribute("aria-current");delete button.dataset.wpStageRecommended}
-    });
-  }
-  function buildStageCardPool(){
-    const rail=$("#stageGrid"),count=Math.min(STAGE_CARD_POOL_SIZE,levels.length);rail.replaceChildren();stageWindowStart=desiredStageWindow(selected);
-    stageCardPool=Array.from({length:count},(_,offset)=>{const button=createStageCard(offset);bindStageCard(button,stageWindowStart+offset);rail.append(button);return button});
-    rail.dataset.wpStageVirtualized="bounded-recycle";rail.dataset.wpStagePoolSize=String(count);rail.dataset.wpStageTotal=String(levels.length);
-    rail.dataset.wpStageWindowStart=String(stageWindowStart);rail.dataset.wpStageWindowEnd=String(stageWindowStart+count-1);rail.dataset.wpStageRecycleCount="0";
-  }
-  function moveStageWindow(targetStart){
-    const rail=$("#stageGrid"),target=Math.max(0,Math.min(stageWindowLimit(),targetStart));let recycled=0;
-    while(stageWindowStart<target){const card=rail.firstElementChild,anchor=card?.nextElementSibling,before=anchor?.getBoundingClientRect().left;stageWindowStart++;rail.append(card);bindStageCard(card,stageWindowStart+stageCardPool.length-1);recycled++;const after=anchor?.getBoundingClientRect().left;if(Number.isFinite(before)&&Number.isFinite(after))rail.scrollLeft+=after-before}
-    while(stageWindowStart>target){const card=rail.lastElementChild,anchor=card?.previousElementSibling,before=anchor?.getBoundingClientRect().left;stageWindowStart--;rail.prepend(card);bindStageCard(card,stageWindowStart);recycled++;const after=anchor?.getBoundingClientRect().left;if(Number.isFinite(before)&&Number.isFinite(after))rail.scrollLeft+=after-before}
-    stageCardPool=[...rail.children];rail.dataset.wpStageWindowStart=String(stageWindowStart);rail.dataset.wpStageWindowEnd=String(stageWindowStart+stageCardPool.length-1);
-    if(recycled)rail.dataset.wpStageRecycleCount=String(Number(rail.dataset.wpStageRecycleCount||0)+recycled);return recycled;
-  }
-  function stageRailGeometry(){
-    const rail=$("#stageGrid"),cards=[...rail.children],railRect=rail.getBoundingClientRect(),first=cards[0]?.getBoundingClientRect(),second=cards[1]?.getBoundingClientRect();
-    const delta=first&&second?(second.left+second.width/2)-(first.left+first.width/2):0,fallback=(first?.width||264)+(parseFloat(getComputedStyle(rail).columnGap)||22);
-    return{center:railRect.left+railRect.width/2,pitch:Math.abs(delta)||fallback,orientation:Math.sign(delta)||1};
-  }
-  function nearestStageCard(){const geometry=stageRailGeometry();return stageCardPool.reduce((nearest,card)=>{const rect=card.getBoundingClientRect(),distance=Math.abs(rect.left+rect.width/2-geometry.center);return!nearest||distance<nearest.distance?{card,distance}:nearest},null)?.card||null}
-  function currentStageLogicalPosition(){const card=nearestStageCard();if(!card)return selected;const index=Number(card.dataset.index),rect=card.getBoundingClientRect(),geometry=stageRailGeometry();return Math.max(0,Math.min(levels.length-1,index+(geometry.center-(rect.left+rect.width/2))/(geometry.pitch*geometry.orientation)))}
-  function positionStageRail(logicalPosition){
-    const rail=$("#stageGrid"),logical=Math.max(0,Math.min(levels.length-1,logicalPosition)),anchorIndex=Math.round(logical),recycled=moveStageWindow(desiredStageWindow(anchorIndex));if(recycled)syncStageCards();
-    const card=rail.querySelector(`[data-index="${anchorIndex}"]`);if(!card)return logical;card.scrollIntoView({behavior:"auto",block:"nearest",inline:"center"});
-    const geometry=stageRailGeometry(),fraction=logical-anchorIndex;if(Math.abs(fraction)>.0001)rail.scrollLeft+=fraction*geometry.orientation*geometry.pitch;rail.dataset.wpStageDragLogical=logical.toFixed(4);return logical;
-  }
-  function selectStage(index,focus=false){selected=Math.max(0,Math.min(levels.length-1,index));if(!stageCardPool.length)buildStageCardPool();moveStageWindow(desiredStageWindow(selected));positionStageRail(selected);syncStageCards();if(focus)$("#stageGrid").querySelector(`[data-index="${selected}"]`)?.focus({preventScroll:true})}
-  function installVirtualStageDrag(){
-    const rail=$("#stageGrid");if(rail.dataset.wpStageVirtualDrag==="true")return;rail.dataset.wpStageVirtualDrag="true";rail.dataset.wpStageCenterObserver="manual";
-    let owner=null,startX=0,lastX=0,dragLogical=0,moved=false,suppressClick=false;
-    const restore=()=>{rail.style.removeProperty("scroll-behavior");rail.style.removeProperty("scroll-snap-type");delete rail.dataset.wpStageSettling;delete rail.dataset.wpDragDown;rail.classList.remove("wp-stage-dragging")};
-    cancelStageRailInteraction=()=>{owner=null;cancelAnimationFrame(stageSettleRaf);stageSettleRaf=0;restore()};
-    rail.addEventListener("pointerdown",event=>{if(event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;cancelAnimationFrame(stageSettleRaf);stageSettleRaf=0;owner=event.pointerId;startX=lastX=event.clientX;dragLogical=currentStageLogicalPosition();moved=false;rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");rail.dataset.wpDragDown="1";event.stopImmediatePropagation()},true);
-    document.addEventListener("pointermove",event=>{if(event.pointerId!==owner)return;const delta=event.clientX-lastX;lastX=event.clientX;if(!moved&&Math.abs(event.clientX-startX)>4){moved=true;rail.classList.add("wp-stage-dragging")}if(moved){const rect=rail.getBoundingClientRect(),scale=rect.width?rail.clientWidth/rect.width:1;if(event.cancelable)event.preventDefault();dragLogical=positionStageRail(dragLogical-delta*scale/stageRailGeometry().pitch)}event.stopImmediatePropagation()},true);
-    const finish=event=>{if(owner===null||(event.pointerId!==undefined&&event.pointerId!==owner))return;owner=null;delete rail.dataset.wpDragDown;rail.classList.remove("wp-stage-dragging");if(moved){if(event.cancelable)event.preventDefault();const from=dragLogical,index=Math.max(0,Math.min(levels.length-1,Math.round(from))),started=performance.now();selected=index;syncStageCards();positionStageRail(from);rail.dataset.wpStageSettling="true";const settle=now=>{const progress=Math.max(0,Math.min(1,(now-started)/340)),eased=progress*progress*(3-2*progress);positionStageRail(from+(index-from)*eased);if(progress<1&&document.body.dataset.screen==="stage")stageSettleRaf=requestAnimationFrame(settle);else{stageSettleRaf=0;if(document.body.dataset.screen==="stage"){positionStageRail(index);syncStageCards()}restore()}};stageSettleRaf=requestAnimationFrame(settle);suppressClick=true;setTimeout(()=>{suppressClick=false},0)}else restore();moved=false;event.stopImmediatePropagation()};
-    document.addEventListener("pointerup",finish,true);document.addEventListener("pointercancel",finish,true);
-    rail.addEventListener("click",event=>{if(!suppressClick)return;suppressClick=false;event.preventDefault();event.stopImmediatePropagation()},true);
-  }
+  const stageConfig={
+    gameId:"animal-prism-garden",
+    count:levels.length,
+    background:"/assets/lobby-block-atmosphere.svg",
+    stage:stageRecord,
+  };
   function renderStages(){
-    const rail=$("#stageGrid");
-    if(!rail)return;
     const progress=t("progress",{done:records[levels.length-1]?levels.length:Math.max(0,unlocked-1)});
-    $("#progressBadge").textContent=progress;
+    const badge=$("#progressBadge");
+    if(badge)badge.textContent=progress;
     $("#mainProgress").textContent=progress;
-    if(!stageCardPool.length)buildStageCardPool();else{moveStageWindow(desiredStageWindow(selected));syncStageCards()}
-    installVirtualStageDrag();
-    if(document.body.dataset.screen==="stage")requestAnimationFrame(()=>{if(document.body.dataset.screen==="stage")positionStageRail(selected)});
+    $("#stageTab").disabled=selected>=unlocked;
+    stageSelector?.refresh(selected);
   }
+  function attachStageSelector(selector){stageSelector=selector;renderStages()}
   function startLevel(index){
     cancelSettlement();stopGesture();keyboardIndex=levels[index].ends[0][0];
     selected=index;level=levels[index];paths={};history=[];activeColor=null;pointerId=null;moves=0;resultClaimed=false;
@@ -444,9 +390,7 @@
   $("#resultStages").addEventListener("click",()=>{selected=unlocked-1;show("stage")});
   $("#retry").addEventListener("click",()=>__wpReplayStart(() => startLevel(selected)));
   $("#next").addEventListener("click",()=>startLevel(Math.min(29,selected+1)));
-  $("#stageGrid").addEventListener("click",event=>{const card=event.target.closest(".stage-card");if(!card)return;const index=Number(card.dataset.index);selectStage(index);if(index<unlocked)startLevel(index)});
-  $("#stageGrid").addEventListener("keydown",event=>{const card=event.target.closest(".stage-card");if(!card||!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;event.preventDefault();event.stopImmediatePropagation();const current=Number(card.dataset.index),rtl=document.documentElement.dir==="rtl",step=event.key==="ArrowRight"?(rtl?-1:1):(rtl?1:-1),next=event.key==="Home"?0:event.key==="End"?levels.length-1:Math.max(0,Math.min(levels.length-1,current+step));selectStage(next,true)},true);
-  $("#stageTab").addEventListener("click",()=>selectStage(selected,true));
+  $("#stageTab").addEventListener("click",()=>{if(selected<unlocked)startLevel(selected)});
 
   // Permanent content nodes are mounted once; the shared frame retains control ownership.
   const pairs=document.createElement("div");pairs.id="prismPairs";pairs.className="prism-pairs";
@@ -467,10 +411,10 @@
   });
   window.addEventListener("pagehide",()=>{cancelSettlement();stopGesture()});
 
+  window.PRISM_GARDEN_I9=Object.freeze({stageConfig,selected:()=>selected,select:selectStage,start:index=>{if(index<unlocked)startLevel(index)},attach:attachStageSelector});
   initLocale();renderStages();show("main");
   document.addEventListener("DOMContentLoaded",()=>syncBattleHelp(document.body.dataset.screen),{once:true});
   window.addEventListener("load",()=>{
-    $("#loadingPanel")?.classList.add("hidden");
   window.WonderAnalytics?.track?.("game_view",{game_id:"animal-prism-garden",game_version:GAME_VERSION,release_state:"public"});
   },{once:true});
 })();

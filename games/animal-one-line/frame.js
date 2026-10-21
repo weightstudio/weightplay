@@ -22,9 +22,9 @@
     const stageBack = document.getElementById('stageBackBtn');
     const stageTitle = stageHeader?.querySelector('strong');
     const stageSummary = document.getElementById('stageSummary');
-    const stageLesson = stageCanvas?.querySelector('.lesson-panel');
     const stageRail = document.getElementById('stageRail');
     const stageTabs = stageCanvas?.querySelector('.stage-tabs');
+    const tutorial = document.getElementById('tutorial');
     const battle = document.getElementById('battleScreen');
     const oldBattleCanvas = battle?.querySelector('.battle-canvas');
     const oldBattleHeader = oldBattleCanvas?.querySelector('.battle-header');
@@ -39,7 +39,7 @@
       || !frameRoot.contains(stage) || !frameRoot.contains(battle)
       || !mainHeader || !hero || !poster || !copy || !mainTitle || !mainStart || !guide
       || !stage || !stageCanvas || !stageHeader || !stageBack || !stageTitle || !stageSummary
-      || !stageLesson || !stageRail || !stageTabs || !battle || !oldBattleCanvas || !oldBattleHeader
+      || !stageRail || !stageTabs || !tutorial || !battle || !oldBattleCanvas || !oldBattleHeader
       || !battleBack || !battleProgress || battleStats?.length !== 2 || !localeSelect
       || !core || !playUI || !window.WeightPlayStageRailI9 || !options?.stageConfig) {
       throw new Error('ANIMAL_ONE_LINE_I9_FRAME_INPUTS_REQUIRED');
@@ -80,7 +80,7 @@
     stageContent.id = 'oneLineStageContent';
     stageContent.className = 'one-line-stage-content wp-frame-play-content';
     stageContent.dataset.wpFramePlayFill = '';
-    stageContent.append(stageLesson, stageRail, stageInfo);
+    stageContent.append(stageRail, stageInfo);
     stage.dataset.wpFramePlayFill = '';
     stageTabs.dataset.wpFrameNav = '';
     stageTabs.dataset.wpFrameStageNav = '';
@@ -92,7 +92,7 @@
       stageTab.dataset.wpFrameStageSlot = 'stages';
       stageTab.dataset.wpFrameAction = 'secondary';
     }
-    stage.replaceChildren(stageHeader, stageContent, stageTabs);
+    stage.replaceChildren(stageHeader, stageContent, stageTabs, tutorial);
     stage.removeAttribute('data-wp-standard-stage-screen');
     stage.removeAttribute('data-wp-canvas-max-width');
     stage.removeAttribute('data-wp-stage-landscape-width');

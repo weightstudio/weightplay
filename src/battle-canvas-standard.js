@@ -116,7 +116,10 @@
     "animal-hero-trials": ["#battleView", 390, 788, 760, 334],
     "animal-hidden-safari": ["#playPanel", 382, 780, 760, 350],
     "animal-moonlight-heist": [".battle-canvas", 390, 788],
-    "animal-one-line": [".battle-canvas", 390, 788, 760, 334],
+    // Interface 9 moves One Line's logical Canvas to the permanent Battle
+    // scene so the shared header, playfield, and Result overlay share one
+    // transform and clipping boundary.
+    "animal-one-line": ["#battleScreen", 390, 788, 760, 334],
     "animal-orb-fortress": ["#gamePanel", 382, 780],
     "animal-parking-patrol": [".battle-canvas", 390, 844],
     "animal-quiz": [".animal-game", 390, 788],

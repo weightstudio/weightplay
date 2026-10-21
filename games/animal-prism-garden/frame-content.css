@@ -1,9 +1,6 @@
-/* Game content geometry only; never style shared header, guide or settings. */
-#gameFrame [hidden]{display:none!important}
-#main[data-wp-frame-scene]{padding:0;min-height:0}
-.prism-main-content>img{object-fit:contain}
+/* Battle content only; shared I9 owns Main, Guide, Stage and all chrome. */
 #battle .battle-content{grid-template-rows:auto minmax(0,1fr) auto auto;min-height:0;min-width:0}
-#battle .battle-content,#stage .stage-workspace{background:linear-gradient(#06192166,#06192155),url('../../assets/animal-prism-garden-scenery-block-v15.webp') center/cover no-repeat}
+#battle .battle-content{background:linear-gradient(#06192166,#06192155),url('../../assets/animal-prism-garden-scenery-block-v15.webp') center/cover no-repeat}
 #battle .battle-objective,#battle .status{background:#081e28e8;padding:6px 9px;border-radius:3px}
 #battle .grid{min-width:0;max-width:100%;max-height:100%;box-sizing:border-box}
 #battle .prism-board-slot{width:100%;height:100%;min-width:0;min-height:0;container-type:size;display:grid;place-items:center}
@@ -60,15 +57,7 @@
 #battle .result-card{width:min(calc(100% - 8px),620px);padding:24px 12px;border-top:3px solid #8aeccf;background:linear-gradient(145deg,#163847,#101e32)}
 #battle .result-actions{gap:8px}
 #battle .result-actions button{white-space:nowrap}
-#stage .stage-card{position:relative;overflow:hidden;text-align:start}
-#stage .stage-size{justify-self:start;align-self:center}
-#stage .prism-preview{position:absolute;right:18px;top:64px;width:68px;height:68px;display:grid;grid-template-columns:repeat(var(--size),1fr);gap:2px;opacity:.9;pointer-events:none;direction:ltr}
-#stage .prism-preview i{background:#ffffff0e;border-radius:1px}
-#stage .prism-record{font-size:11px;color:#a9f5d9;position:absolute;inset-inline:18px;bottom:34px;white-space:nowrap}
-#stage .stage-card.cleared{border-color:#97e9c9}
-#stage .stage-card.cleared .stage-size{color:#9be4ca}
-#stage .stage-detail{line-height:16px;min-height:32px;align-self:end}
-.prism-sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap!important;pointer-events:none}
+#battle .prism-sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap!important;pointer-events:none}
 @media(max-height:500px) and (orientation:landscape){
  #battle .battle-content{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:32px 28px minmax(0,1fr) 44px;gap:8px}
  #battle .prism-board-slot{grid-column:1;grid-row:1/5}
