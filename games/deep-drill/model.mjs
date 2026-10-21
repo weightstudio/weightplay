@@ -7,10 +7,10 @@ export const HEADS=[
  {id:'plasma',zh:'電漿鑽頭',en:'Plasma',price:1800,power:2.8,color:0xbe91ff,trait:'magma'},
 ];
 export const UPGRADES={power:{base:80,zh:'鑽力',en:'Power'},speed:{base:100,zh:'轉速',en:'Speed'},cooling:{base:90,zh:'衝擊強化',en:'Impact'},cargo:{base:70,zh:'容量',en:'Cargo'},autoPower:{base:85,zh:'自動傷害',en:'Auto Power'},autoSpeed:{base:85,zh:'自動速度',en:'Auto Speed'},helperPower:{base:100,zh:'助手訓練',en:'Helper Power'}};
-export const AUTO={drill:{price:140,zh:'強化伺服',en:'Auto Drill'},cool:{price:220,zh:'高速洩壓',en:'Auto Vent'},sell:{price:400,zh:'自動出售',en:'Auto Sell'},smart:{price:520,min:6,zh:'導航加速',en:'Smart Pilot'}};
+export const AUTO={drill:{price:140,zh:'強化伺服',en:'Auto Drill'},cool:{price:220,zh:'高速洩壓',en:'Auto Vent'},sell:{price:400,zh:'即時輸送',en:'Auto Sell'},smart:{price:520,min:6,zh:'鑽探加速',en:'Smart Pilot'}};
 const finite=(x,d=0)=>Number.isFinite(Number(x))?Number(x):d;
 const int=(x,min,max)=>Math.max(min,Math.min(max,Math.floor(finite(x))));
-export function normalize(raw={}){if(!raw||typeof raw!=='object')raw={};const base={schema:4,coins:int(raw.coins,0,1e9),best:int(raw.best,0,3000),unlocked:int(raw.unlocked||1,1,30),
+export function normalize(raw={}){if(!raw||typeof raw!=='object')raw={};const base={schema:5,coins:int(raw.coins,0,1e9),best:int(raw.best,0,3000),unlocked:int(raw.unlocked||1,1,30),
  cleared:[...new Set((Array.isArray(raw.cleared)?raw.cleared:[]).map(x=>int(x,0,30)).filter(x=>x>0))],
  heads:[0,...[1,2,3].filter(x=>Array.isArray(raw.heads)&&raw.heads.includes(x))],
  head:Array.isArray(raw.heads)&&raw.heads.includes(int(raw.head,0,3))?int(raw.head,0,3):0,
@@ -44,8 +44,8 @@ export function settle(save,r,reason){
  if(r.ended)return false;r.ended=true;r.reason=reason;r.clear=reason==='complete'&&goalMet(r);
  const fraction=['pressure','hull'].includes(reason)?rescueFraction(save):1;
  const first=r.clear&&!save.cleared.includes(r.stage.id);
- const earned=Math.floor(r.value*fraction)+(r.clear?(first?60+r.stage.id*12:25):0);r.banked+=earned;r.finalEarned=earned;
- save.coins=Math.min(1e9,save.coins+earned);save.best=Math.max(save.best,(r.stage.id-1)*100+r.depth);
+ const earned=Math.floor(r.value*fraction)+(r.clear?(first?60+r.stage.id*12:25):0);r.banked+=earned;r.finalEarned=r.banked;r.settlementEarned=earned;
+ save.coins=Math.min(1e9,save.coins+earned);save.best=Math.max(save.best,(r.stage.id-1)*100+Math.min(100,Math.floor(r.depth/r.stage.target*100)));
  if(r.clear){if(first)save.cleared.push(r.stage.id);save.unlocked=Math.max(save.unlocked,Math.min(30,r.stage.id+1));}
  settleSystems(save,r,reason,first);
  r.events.push({type:'result',reason});return true;
@@ -53,8 +53,8 @@ export function settle(save,r,reason){
 // Route cells retain damage until they leave the 5×5 field. No render effect owns HP.
 export function cellState(r,row=r.row,lane=r.lane){
  const kind=row===r.row?runSeams(r)[lane]:seams(r.stage,row)[lane];
- const id=`${row}:${lane}`,seal=r.stage.checkpoint&&row===19;
- const max=Math.round(90*(seal?1.25+r.stage.arc*.15:(1+r.stage.arc*.65+row*.025)*ROCKS[kind].hard));
+ const id=`${row}:${lane}`,seal=r.stage.checkpoint&&row===r.stage.layers-1;
+ const max=Math.round(90*(seal?1.25+r.stage.arc*.15:(1+r.stage.arc*.65+(row/r.stage.layers*20)*.025)*ROCKS[kind].hard));
  if(!r.tiles[id]||r.tiles[id].kind!==kind)r.tiles[id]={row,lane,kind,max,hp:max,paid:false};
  return r.tiles[id];
 }
@@ -72,11 +72,12 @@ function checkLoad(save,r){
  if(r.hull<=0){settle(save,r,'hull');return;}
  if(r.auto&&r.hull<=20){settle(save,r,'service');return;}
  if(r.pressure>=100){settle(save,r,'pressure');return;}
- if(r.cargo>=capacity(save)){if(save.auto.sell){save.coins=Math.min(1e9,save.coins+r.value);r.banked+=r.value;bankMaterials(save,r);bankSaleStats(save,r,r.value);r.value=0;r.cargo=0;r.events.push({type:'sold'});}else settle(save,r,'full');}
+ if(r.cargo>=capacity(save)){save.coins=Math.min(1e9,save.coins+r.value);r.banked+=r.value;bankMaterials(save,r);bankSaleStats(save,r,r.value);r.value=0;r.cargo=0;r.docking=save.auto.sell?0:1.5;r.drilling=false;r.events.push({type:'sold'});}
 }
 function advanceRow(save,r){r.row++;r.depth=r.row*5;r.progress=0;if(r.stage.pressure)r.pressure=Math.min(100,r.pressure+10);checkLoad(save,r);if(!r.ended&&r.depth>=r.stage.target)settle(save,r,'complete');}
 export function tick(save,r,dt,held){
  if(r.ended||r.paused)return;dt=Math.max(0,Math.min(.05,finite(dt)));
+ if(r.docking>0){r.docking=Math.max(0,r.docking-dt);r.time+=dt;r.drilling=false;r.pilotStatus='礦艙輸送中';return;}
  const head=HEADS[save.head],up=save.upgrades,intent=stepSystems(save,r,dt,held);r.hitTTL=Math.max(0,r.hitTTL-dt);automaticTool(save,r,cellState(r));
  if(r.beamTarget){const target=r.beamTarget;r.beamTarget=null;const cell=cellState(r,target.row,target.lane);cell.hp=0;rewards(save,r,cell,true);r.events.push({type:'beam',lane:target.lane,row:target.row-r.row});checkLoad(save,r);if(!r.ended&&target.row===r.row&&target.lane===r.lane)advanceRow(save,r);return;}
  r.autoCooling=r.smartVenting;

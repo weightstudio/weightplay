@@ -29,6 +29,21 @@ const gameplayTags={
  hi:['टाइल का मिलान','एक जैसे जोड़े हटाना','बोर्ड साफ़ करने की पहेली'],
  ar:['مطابقة البلاطات','إزالة الأزواج المتطابقة','أحجية لإخلاء اللوحة'],
 };
+const relatedCopy={
+ en:{heading:'More solitaire games',klondike:'Build four suits from Ace to King.',spider:'Arrange descending runs to clear the board.'},
+ 'zh-Hant':{heading:'更多接龍遊戲',klondike:'從 A 到 K 排出四種花色。',spider:'排好遞減牌列以清空牌面。'},
+ 'zh-Hans':{heading:'更多接龙游戏',klondike:'从 A 到 K 排出四种花色。',spider:'排好递减牌列以清空牌面。'},
+ ja:{heading:'ほかのソリティア',klondike:'AからKまで4つのスートをそろえます。',spider:'降順の列を作って盤面を空にします。'},
+ ko:{heading:'다른 솔리테어 게임',klondike:'A부터 K까지 네 무늬를 완성하세요.',spider:'내림차순 열을 완성해 보드를 비우세요.'},
+ es:{heading:'Más juegos de solitario',klondike:'Completa los cuatro palos del As al Rey.',spider:'Ordena secuencias descendentes para vaciar el tablero.'},
+ 'pt-BR':{heading:'Mais jogos de paciência',klondike:'Complete os quatro naipes do Ás ao Rei.',spider:'Organize sequências decrescentes para limpar o tabuleiro.'},
+ fr:{heading:'Autres jeux de solitaire',klondike:'Formez les quatre couleurs de l’As au Roi.',spider:'Formez des suites décroissantes pour vider le plateau.'},
+ de:{heading:'Weitere Solitärspiele',klondike:'Lege die vier Farben vom Ass bis zum König.',spider:'Ordne absteigende Reihen, um das Spielfeld zu leeren.'},
+ it:{heading:'Altri giochi di solitario',klondike:'Completa i quattro semi dall’Asso al Re.',spider:'Ordina sequenze decrescenti per liberare il tavolo.'},
+ ru:{heading:'Другие пасьянсы',klondike:'Соберите четыре масти от туза до короля.',spider:'Составляйте нисходящие последовательности, чтобы очистить поле.'},
+ hi:{heading:'और सॉलिटेयर गेम',klondike:'इक्का से बादशाह तक चारों सूट पूरे करें।',spider:'बोर्ड साफ़ करने के लिए घटते क्रम बनाएँ।'},
+ ar:{heading:'ألعاب سوليتير أخرى',klondike:'رتّب الأنواع الأربعة من الآس إلى الملك.',spider:'رتّب سلاسل تنازلية لإخلاء اللوح.'},
+};
 const hintRule={
  en:'Hint searches for a clearing path within a fixed search budget. If it reaches that limit, the board has not been proven impossible.',
  'zh-Hant':'提示會在固定搜尋上限內尋找可清盤的步驟。若達到上限，並不代表已證明牌局無解。',
@@ -75,6 +90,6 @@ const progression={
  ar:'أخلِ اللوح لفتح المرحلة التالية من أصل 30 مرحلة. يمكنك إعادة المراحل المكتملة. يُحفظ التقدم في هذا المتصفح عند توفر التخزين.',
 };
 const keys=['startGame','guide','settings','language','sound'];
-export const MAHJONG_MAIN_COPY=Object.freeze(Object.fromEntries(CAMPAIGN_LOCALES.map(l=>[l,Object.freeze({...Object.fromEntries(labels[l].split('|').map((v,i)=>[keys[i],v])),starsRule:stars[l],hintRule:hintRule[l],progression:progression[l]})])));
+export const MAHJONG_MAIN_COPY=Object.freeze(Object.fromEntries(CAMPAIGN_LOCALES.map(l=>[l,Object.freeze({...Object.fromEntries(labels[l].split('|').map((v,i)=>[keys[i],v])),...relatedCopy[l],starsRule:stars[l],hintRule:hintRule[l],progression:progression[l]})])));
 export function mahjongMainCopy(locale){const row=MAHJONG_MAIN_COPY[locale];if(!row)throw new Error('Unsupported Main locale');return row;}
 export function mahjongMainTags(locale){const row=gameplayTags[locale];if(!row)throw new Error('Unsupported Main locale');return row;}

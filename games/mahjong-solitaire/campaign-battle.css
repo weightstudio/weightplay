@@ -1,24 +1,22 @@
 @import './campaign-board.css';
 @import './campaign-result.css';
 .mjc-battle[hidden],.mjc-battle [hidden]{display:none!important}
-.mjc-battle{position:fixed;inset:0;background:#071c23;color:#fff1d2;font-family:system-ui;overscroll-behavior:none;overflow:hidden}
+.mjc-battle{position:relative;min-width:0;min-height:0;overflow:hidden;color:#fff1d2;font-family:system-ui}
 .mjc-battle *{box-sizing:border-box}
-.mjc-battle-canvas{position:relative;width:min(100%,920px);margin:auto;overflow:hidden;background:linear-gradient(#102c32dd,#0a232af0),url('../../assets/mahjong-solitaire-cover-v1.webp') center/cover}
-.mjc-battle-logical{position:absolute;left:0;top:0;transform-origin:top left}
-.mjc-battle-live{height:100%;display:grid;grid-template-rows:76px minmax(0,1fr) 80px 56px;gap:8px;padding:10px}
-.mjc-battle header{display:grid;grid-template-columns:48px minmax(0,1fr);gap:4px 12px;align-items:center;min-width:0}
-.mjc-battle header>div{min-width:0;flex:1}
-.mjc-battle h2{font-size:20px;line-height:1.2;margin:0}
-.mjc-battle header p{font-size:13px;line-height:1.3;margin:4px 0 0}
-.mjc-pair-progress{grid-column:1/-1;display:flex;align-items:center;gap:8px;min-height:18px;font-size:11px;line-height:14px;color:#bdddcf;font-variant-numeric:tabular-nums}
-.mjc-pair-progress>span{flex:none;max-width:100%;overflow-wrap:anywhere}
-.mjc-pair-progress progress{appearance:none;display:block;min-width:24px;width:64px;height:4px;border:0;border-radius:4px;overflow:hidden;background:#062c2b}
+.mjc-battle-content{position:relative;min-width:0;min-height:0;overflow:hidden}
+.mjc-battle-info{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:8px;min-width:0;color:#fff1d2}
+.mjc-battle-heading{min-width:0;overflow:hidden}
+.mjc-battle-heading h2{font-size:14px;line-height:1.15;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mjc-battle-heading p{font-size:11px;line-height:1.2;margin:3px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mjc-pair-progress{min-width:0;display:flex;align-items:center;justify-content:flex-end;gap:6px;font-size:10px;line-height:1.2;color:#dce8d8;font-variant-numeric:tabular-nums}
+.mjc-pair-progress>span{min-width:0;max-width:100%;overflow-wrap:anywhere}
+.mjc-pair-progress progress{appearance:none;flex:none;display:block;width:44px;height:4px;border:0;border-radius:4px;overflow:hidden;background:#062c2b}
 .mjc-pair-progress progress::-webkit-progress-bar{background:#062c2b}
 .mjc-pair-progress progress::-webkit-progress-value{background:#e7ce86}
 .mjc-pair-progress progress::-moz-progress-bar{background:#e7ce86}
-.mjc-battle-canvas[data-composition=wide] .mjc-pair-progress{flex-wrap:wrap;gap:3px}
-.mjc-back{flex:0 0 48px;width:48px;height:48px;border:0;border-radius:12px;background:#f8fafc;color:#247795;font:28px system-ui;display:grid;place-items:center}
-.mjc-battle-feedback{font-size:14px;line-height:1.5;overflow:auto;overscroll-behavior:contain;padding:2px 4px;color:#dbe8d8}
+.mjc-back{flex:0 0 44px;width:44px;height:44px;border:0;border-radius:12px;background:#f8fafc;color:#247795;font:26px system-ui;display:grid;place-items:center}
+.mjc-battle-live{height:100%;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) 80px 56px;gap:8px;padding:10px}
+.mjc-battle-feedback{min-width:0;min-height:0;font-size:14px;line-height:1.5;overflow:auto;overscroll-behavior:contain;padding:2px 4px;color:#dbe8d8}
 .mjc-feedback-message{height:36px;overflow:auto;font-size:13px;line-height:18px}
 .mjc-rule-cues{display:flex;gap:8px;align-items:center;height:38px;overflow:auto;direction:ltr}
 .mjc-rule-group{display:flex;gap:2px;padding:2px 4px;border:1px solid #c7aa7060;border-radius:8px;background:#102c32;flex:none}
@@ -29,21 +27,19 @@
 .mjc-rule-chip[data-status=next]{opacity:1;outline:2px solid #ffe08a;border-radius:5px}
 .mjc-rule-chip[data-status=done]{opacity:.9}.mjc-rule-chip[data-status=done] b{color:#9ff3d3}
 .mjc-rule-basic{font-size:11px;line-height:15px;direction:inherit}
-.mjc-battle-canvas[data-composition=wide] .mjc-rule-cues{height:auto;min-height:38px;flex-wrap:wrap}
 .mjc-battle-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.mjc-battle-actions button{height:56px;border:1px solid #c7aa70;border-radius:12px;background:linear-gradient(#f6dea7,#d7b77a);color:#203c33;font:700 17px system-ui}
+.mjc-battle-actions button{min-width:0;height:56px;border:1px solid #c7aa70;border-radius:12px;background:linear-gradient(#f6dea7,#d7b77a);color:#203c33;font:700 16px system-ui;overflow-wrap:anywhere}
 .mjc-battle-actions button:disabled{opacity:.45}
-.mjc-battle-reserve{height:56px;width:min(100%,920px);margin:auto;background:#17243a;pointer-events:none}
-.mjc-battle-canvas[data-composition=wide] .mjc-battle-live{grid-template-columns:174px minmax(0,1fr);grid-template-rows:120px minmax(0,1fr) 56px;gap:10px}
-.mjc-battle-canvas[data-composition=wide] header>div{display:contents}
-.mjc-battle-canvas[data-composition=wide] header h2{grid-column:2;font-size:18px}
-.mjc-battle-canvas[data-composition=wide] header p{grid-column:1/-1;margin:0}
-.mjc-battle-canvas[data-composition=wide] header{grid-column:1;grid-row:1;align-items:flex-start}
-.mjc-battle-canvas[data-composition=wide] .mjc-battle-board{grid-column:2;grid-row:1/4}
-.mjc-battle-canvas[data-composition=wide] .mjc-battle-feedback{grid-column:1;grid-row:2}
-.mjc-battle-canvas[data-composition=wide] .mjc-battle-actions{grid-column:1;grid-row:3;gap:8px}
-.mjc-battle-canvas[data-composition=wide] .mjc-battle-actions button{font-size:14px}
 .mjc-leave{position:absolute;max-width:calc(100% - 24px);max-height:calc(100% - 24px);width:340px;overflow:auto;padding:22px;border:1px solid #d2b773;border-radius:18px;background:#173e38;color:#fff3d8;font-family:system-ui}
 .mjc-leave::backdrop{background:#041718d9}
 .mjc-leave p{line-height:1.5;font-size:15px}
 .mjc-leave button{display:block;width:100%;min-height:48px;margin-top:10px;border-radius:10px;border:1px solid #cbb887;background:#e9d292;color:#213e33;font:700 15px system-ui;padding:8px}
+@media (min-aspect-ratio:13/10){
+ .mjc-battle-live{grid-template-columns:174px minmax(0,1fr);grid-template-rows:minmax(0,1fr) 56px;gap:10px}
+ .mjc-battle-board{grid-column:2;grid-row:1/3}
+ .mjc-battle-feedback{grid-column:1;grid-row:1}
+ .mjc-battle-actions{grid-column:1;grid-row:2;gap:8px}
+ .mjc-battle-actions button{font-size:14px}
+ .mjc-rule-cues{height:auto;min-height:38px;flex-wrap:wrap}
+ .mjc-pair-progress{flex-wrap:wrap;gap:3px}
+}

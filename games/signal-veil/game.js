@@ -24,8 +24,8 @@
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   const GAME_ID = "signal-veil";
-  const GAME_VERSION = "v16";
-  const INTERFACE_VERSION = 7;
+  const GAME_VERSION = "v17";
+  const INTERFACE_VERSION = 9;
   const SAVE_KEY = "weightplay-signal-veil-v1";
   const LOCALE_PATHS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const PATH_LOCALES = Object.fromEntries(Object.entries(LOCALE_PATHS).map(([key,value]) => [value,key]));
@@ -579,6 +579,15 @@
     if (panel) setTimeout(()=>panel.querySelector("button:not([disabled])")?.focus(),0);
     else canvas.focus({preventScroll:true});
   }
+  nodes.result.addEventListener("keydown",event=>{
+    if(event.key!=="Tab"||nodes.result.hidden)return;
+    const focusable=[...nodes.result.querySelectorAll("button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex='-1'])")]
+      .filter(item=>!item.hidden&&item.getClientRects().length);
+    if(!focusable.length){event.preventDefault();nodes.result.focus({preventScroll:true});return;}
+    const first=focusable[0],last=focusable[focusable.length-1];
+    if(event.shiftKey&&(document.activeElement===first||!nodes.result.contains(document.activeElement))){event.preventDefault();last.focus();}
+    else if(!event.shiftKey&&(document.activeElement===last||!nodes.result.contains(document.activeElement))){event.preventDefault();first.focus();}
+  });
   function showDialogue(index) {
     if(index===0&&state.bossDefeated){
       let lineKey="chapter2After";

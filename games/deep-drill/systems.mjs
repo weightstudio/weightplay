@@ -3,7 +3,7 @@ import {REGIONS,MODULES,CREW,TOOLS,ACHIEVEMENTS,EXPEDITION_EVENTS} from './conte
 const bounded=(v,max=1e9)=>Math.max(0,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):0)));
 const unique=(value,keys)=>[...new Set((Array.isArray(value)?value:[]).filter(x=>keys.includes(x)))];
 export function migrate(s,raw){
- s.schema=4;s.toolBudget=[0,1,3,5].includes(raw.toolBudget)?raw.toolBudget:0;s.helpers=bounded(raw.helpers,3);s.materials=Object.fromEntries(['copper','crystal','salvage','core'].map(k=>[k,bounded(raw.materials?.[k])]));
+ s.schema=5;s.toolBudget=[0,1,3,5].includes(raw.toolBudget)?raw.toolBudget:0;s.helpers=bounded(raw.helpers,3);s.materials=Object.fromEntries(['copper','crystal','salvage','core'].map(k=>[k,bounded(raw.materials?.[k])]));
  s.modules=unique(raw.modules,Object.keys(MODULES));s.equipped=unique(raw.equipped,s.modules).slice(0,2);
  s.crew=unique(raw.crew,Object.keys(CREW));s.activeCrew=s.crew.includes(raw.activeCrew)?raw.activeCrew:null;
  s.tools=Object.fromEntries(Object.keys(TOOLS).map(k=>[k,raw.tools?bounded(raw.tools[k],99):['coolant','beam'].includes(k)?2:0]));
@@ -11,6 +11,7 @@ export function migrate(s,raw){
  s.claimed=unique(raw.claimed,ACHIEVEMENTS.map(a=>a.id));s.discovered=unique(raw.discovered,Object.keys(ROCKS));
  s.relics=unique([...(Array.isArray(raw.relics)?raw.relics:[]),...s.cleared.filter(id=>id%5===0).map(id=>id/5-1)],REGIONS.map((_,i)=>i));
  s.records={};for(const [id,record] of Object.entries(raw.records||{})){if(+id>=1&&+id<=30&&record&&typeof record==='object')s.records[id]={stars:bounded(record.stars,3),time:bounded(record.time,36000)};}
+ s.recordsV5={};for(const [id,r] of Object.entries(raw.recordsV5||{}))if(+id>=1&&+id<=30&&r&&typeof r==='object')s.recordsV5[id]={stars:bounded(r.stars,3),time:bounded(r.time,36000)};
  s.ending=s.cleared.includes(30);s.auto.smart=raw.auto?.smart===true;
  s.policy=['safe','value','mission'].includes(raw.policy)?raw.policy:'mission';
  if(s.cleared.length)s.unlocked=Math.min(30,Math.max(s.unlocked,Math.max(...s.cleared)+1));
@@ -37,10 +38,10 @@ export function systemBuy(s,type,key){
 export function equipModule(s,id){if(!s.modules.includes(id))return false;if(s.equipped.includes(id))s.equipped=s.equipped.filter(x=>x!==id);else{if(s.equipped.length>=2)s.equipped.shift();s.equipped.push(id);}return true;}
 export function metric(s,key){return ({heads:s.heads.length,relics:s.relics.length,modules:s.modules.length,depth:s.best,clears:s.cleared.length})[key]??s.total[key]??0;}
 export function claimAchievement(s,id){const a=ACHIEVEMENTS.find(a=>a.id===id);if(!a||s.claimed.includes(id)||metric(s,a.metric)<a.target)return false;s.claimed.push(id);s.coins=Math.min(1e9,s.coins+a.reward);return true;}
-export function initializeRun(s,r){return Object.assign(r,{time:0,hull:100,buff:0,frost:0,toolsUsed:0,toolCooldown:0,
+export function initializeRun(s,r){return Object.assign(r,{time:0,docking:0,hull:100,buff:0,frost:0,toolsUsed:0,toolCooldown:0,
  materials:{copper:0,crystal:0,salvage:0,core:0},bankedMaterials:{copper:0,crystal:0,salvage:0,core:0},bankedOre:0,finalEarned:0,autoThink:0,plannedRow:-1,toolAllowance:s.toolBudget,abilityCooldowns:{beam:0,blast:0,repair:0,coolant:0},pilotStatus:"自動探礦",smartVenting:false,forceBreak:false,drilling:false,triggered:[],
  seal:r.stage.checkpoint?{phase:0,time:0,usedVents:0,hitFlash:0}:null});}
-export function activeSeal(r){return Boolean(r.seal&&r.row===19&&r.seal.phase<3);}
+export function activeSeal(r){return Boolean(r.seal&&r.row===r.stage.layers-1&&r.seal.phase<3);}
 export function sealState(r){
  if(!activeSeal(r))return null;const b=r.seal,a=r.stage.arc;
  const targets=[[0,2,1],[1,0,2],[0,1,2],[2,0,1],[0,1,2],[1,2,0]];
@@ -68,15 +69,15 @@ export function bankSaleStats(s,r,coins){s.total.ore=Math.min(1e9,s.total.ore+r.
 export function rescueFraction(s){return equipped(s,'beacon')||s.activeCrew==='bubble'?.9:.65;}
 export function settleSystems(s,r,reason,first){
  bankMaterials(s,r,['pressure','hull'].includes(reason)?rescueFraction(s):1);
- s.total.trips++;bankSaleStats(s,r,r.finalEarned);s.total.vents+=r.stats.vent;
- if(r.clear){const stars=1+(r.hull>=60?1:0)+(r.toolsUsed===0?1:0),old=s.records[r.stage.id];s.records[r.stage.id]={stars:Math.max(old?.stars||0,stars),time:Math.min(old?.time||36000,Math.ceil(r.time))};
+ s.total.trips++;bankSaleStats(s,r,r.settlementEarned);s.total.vents+=r.stats.vent;
+ if(r.clear){const stars=1+(r.hull>=60?1:0)+(r.toolsUsed===0?1:0),old=s.recordsV5[r.stage.id];s.recordsV5[r.stage.id]={stars:Math.max(old?.stars||0,stars),time:Math.min(old?.time||36000,Math.ceil(r.time))};
   if(r.stage.checkpoint&&!s.relics.includes(r.stage.arc)){s.relics.push(r.stage.arc);s.materials.core++;r.events.push({type:'relic',text:`取得遺物：${REGIONS[r.stage.arc].relic}`});}
   if(r.stage.id===30)s.ending=true;
  }
 }
 export function useTool(s,r,key,target={row:r?.row,lane:r?.lane}){
  if(!r||r.ended||r.paused||!Object.hasOwn(TOOLS,key)||r.toolCooldown>0||s.tools[key]<=0||s.unlocked<TOOLS[key].min)return false;
- if(['blast','beam'].includes(key)){if(!Number.isInteger(target.row)||!Number.isInteger(target.lane)||target.lane<0||target.lane>4||target.row<r.row||target.row>Math.min(19,r.row+4)||r.stage.checkpoint&&target.row===19||r.tiles[`${target.row}:${target.lane}`]?.hp===0||r.beamTarget)return false;}
+ if(['blast','beam'].includes(key)){if(!Number.isInteger(target.row)||!Number.isInteger(target.lane)||target.lane<0||target.lane>4||target.row<r.row||target.row>Math.min(r.stage.layers-1,r.row+4)||r.stage.checkpoint&&target.row===r.stage.layers-1||r.tiles[`${target.row}:${target.lane}`]?.hp===0||r.beamTarget)return false;}
  if(key==='coolant'&&r.pressure<1)return false;
  if(key==='repair'&&r.hull>=100&&r.pressure<1)return false;
  s.tools[key]--;s.total.tools++;r.toolsUsed++;r.toolCooldown=.7;
@@ -95,8 +96,8 @@ export function onOre(s,r,kind,gentle,hitRow=r.row){
  if(kind==='I')r.frost=4;if(kind==='E')r.buff=equipped(s,'coil')?12:6;
  if(kind==='W')r.pressure=Math.max(0,r.pressure-23);
  if(kind==='W'&&s.activeCrew==='moss'){r.hull=Math.min(100,r.hull+6);}
- if(r.stage.checkpoint&&r.row===19)r.events.push({type:'seal-start',text:`發現${REGIONS[r.stage.arc].seal}：${REGIONS[r.stage.arc].hint}`});
- const event=EXPEDITION_EVENTS[r.stage.id];if(event&&r.row===event.row&&!r.triggered.includes(event.kind)){
+ if(r.stage.checkpoint&&r.row===r.stage.layers-1)r.events.push({type:'seal-start',text:`發現${REGIONS[r.stage.arc].seal}：${REGIONS[r.stage.arc].hint}`});
+ const event=EXPEDITION_EVENTS[r.stage.id];if(event&&r.row===Math.floor(event.row/20*r.stage.layers)&&!r.triggered.includes(event.kind)){
   r.triggered.push(event.kind);if(event.kind==='cache')s.tools.coolant=Math.min(99,s.tools.coolant+1);
   if(event.kind==='spring'){r.pressure=Math.max(0,r.pressure-30);}
   if(event.kind==='gas')r.pressure=Math.min(90,r.pressure+30);if(event.kind==='quake')r.hull=Math.max(1,r.hull-12);if(event.kind==='energy')r.buff=12;
@@ -123,20 +124,18 @@ export function stepSystems(s,r,dt,held){
  for(const k of Object.keys(r.abilityCooldowns))r.abilityCooldowns[k]=Math.max(0,r.abilityCooldowns[k]-dt);
  if(activeSeal(r)){r.seal.time+=dt;r.seal.hitFlash=Math.max(0,r.seal.hitFlash-dt);}
  if(!r.auto)return held;
- const state=sealState(r);r.autoThink-=dt;
- if(r.autoThink<=0&&(r.plannedRow!==r.row||state)){
-  r.autoThink=.18;r.plannedRow=r.row;const lane=planLane(s,r);
-  if(lane!==r.lane){r.lane=lane;r.progress=0;r.held=0;r.pulse=0;}
- }
+ const state=sealState(r);
  const needsVent=r.stage.goal==='vent'||r.stage.goal==='mastery'||(state&&(r.stage.arc===4||(r.stage.arc===5&&state.phase===2)));
- if(r.pressure>=(needsVent?24:70))r.smartVenting=true;
+ const threshold=runSeams(r)[r.lane]==='D'?32:needsVent?24:70;
+ if(r.pressure>=threshold)r.smartVenting=true;
  if(r.pressure<4)r.smartVenting=false;
  if(r.smartVenting){r.pilotStatus='自動洩壓 · 保護機殼';return false;}
  if(state&&r.stage.arc===1&&r.seal.needsRelease){r.pilotStatus='泵閥回彈中';return false;}
  if(state&&r.stage.arc===2&&!state.open){r.pilotStatus='等待封印冷卻窗';return false;}
  const crystal=runSeams(r)[r.lane]==='X'||state&&(r.stage.arc===3||r.stage.arc===5&&state.phase===1);
  if(crystal&&r.held>.6){r.pilotStatus='晶體脈衝保護';return false;}
- r.pilotStatus=state?'自動破解封印':r.buff>0?'能量加速！':'自動探礦 · 任務優先';
+ if(state&&r.lane!==state.lane){r.pilotStatus='封印弱點：請用左右鍵對準';return false;}
+ r.pilotStatus=state?'自動破解封印':r.buff>0?'能量加速！':`固定第 ${r.lane+1} 路 · 自動下鑽`;
  return true;
 }
 export function automaticTool(s,r,cell){

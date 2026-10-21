@@ -33,7 +33,7 @@ export const ACHIEVEMENTS=[
  {id:'heads',name:'換裝專家',desc:'擁有全部四種鑽頭',reward:350,metric:'heads',target:4},
  {id:'seal',name:'失落文明',desc:'取得三枚封印遺物',reward:300,metric:'relics',target:3},
  {id:'craft',name:'改裝大師',desc:'製作四件不同的模組',reward:300,metric:'modules',target:4},
- {id:'deep',name:'兩千公尺',desc:'抵達深度 2000m',reward:400,metric:'depth',target:2000},
+ {id:'deep',name:'深層勘探者',desc:'遠征進度抵達第 20 區',reward:400,metric:'depth',target:2000},
  {id:'end',name:'點亮地心',desc:'完成三十區主線',reward:1200,metric:'clears',target:30},
 ];
 export const EXPEDITION_EVENTS={

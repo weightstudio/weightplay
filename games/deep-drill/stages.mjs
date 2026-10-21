@@ -20,7 +20,7 @@ const rows = [
  ['地心之鑰','Heart of the Earth','mastery','XWL',8],
 ];
 export const STAGES = rows.map(([zh,en,goal,pattern,quota],i)=>({id:i+1,zh,en,goal,pattern,quota,
- target:100, arc:Math.floor(i/5), checkpoint:i%5===4, pressure:i>=20, shift:i>=25,
+ layers:[64,72,80,88,96][i%5]+Math.floor(i/5)*16+(i===29?16:0), target:([64,72,80,88,96][i%5]+Math.floor(i/5)*16+(i===29?16:0))*5, arc:Math.floor(i/5), checkpoint:i%5===4, pressure:i>=20, shift:i>=25,
  decision:['路線與收益','水道與鑽力','熔岩與機殼','短按與完整度','洩壓與補給','多規則地心遠征'][Math.floor(i/5)]}));
 export const ROCKS = Object.freeze({
  S:{zh:'岩石',en:'Stone',color:0x647182,value:3,hard:1,weight:1},
@@ -47,5 +47,17 @@ export function seams(stage,row){
  const n=(Math.floor(row/(stage.shift?1:2))+stage.id)%3;
  const core=out.slice(n).concat(out.slice(0,n));
  // Preserve every authored mission route, with two deterministic outer seams.
- return [row%4===0?'C':'S',...core,row%3===0?'W':row%2?'G':'S'];
+ const band=routeBand(stage,row),result=band?Array(5).fill(band):[row%4===0?'C':'S',...core,row%3===0?'W':row%2?'G':'S'];
+ if(stage.goal==='safe'&&result[2]==='L')result[2]='S';return result;
 }
+
+export function routeBand(stage,row){
+ const part=Math.min(3,Math.floor(row/stage.layers*4)),phase=row%8;
+ const mission={copper:'C',gold:'G',cargo:'C',balanced:phase===0?'C':'G',coolant:'W',crystal:'X',quality:'X',mastery:'X'}[stage.goal];
+ if((phase===0||phase===4)&&mission)return mission;
+ if(phase===3&&stage.arc>0)return 'W';
+ if(phase===6&&stage.goal==='mastery')return 'W';
+ if(phase===6&&part===2)return stage.arc>=3?'E':'G';
+ return null;
+}
+export const sectionName=r=>['入礦勘探','富集礦帶','深層硬岩','封層突破'][Math.min(3,Math.floor(r.row/r.stage.layers*4))];

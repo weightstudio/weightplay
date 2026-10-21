@@ -1,6 +1,23 @@
 body.crazy-eights-royal-table .card-game-battle {
   background: #073d30 url('../../assets/card-table/emerald-table-v1.webp') center / cover no-repeat;
 }
+body.crazy-eights-royal-table #cardGameHand {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 5px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  scrollbar-width: thin;
+}
+body.crazy-eights-royal-table #cardGameHand .playing-card {
+  box-sizing: border-box;
+  flex: 0 0 44px;
+  width: 44px;
+  min-width: 44px;
+}
 body.crazy-eights-royal-table .card-table-center {
   background: #003a2b50;
   border: 1px solid #dab96b99;

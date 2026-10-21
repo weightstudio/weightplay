@@ -48,3 +48,36 @@
 
 /* All persistent pause targets retain physical touch size. */
 .depth-strip button{min-height:44px!important;height:44px!important}
+
+/* v5 centered mine, outside objective and one compact 44px action row. */
+#battleContent{grid-template-columns:minmax(0,1fr);grid-template-rows:44px 38px minmax(220px,1fr) 28px 18px 44px;gap:4px;padding:0 10px 4px}
+.depth-strip{grid-column:1;grid-row:1}.mission-track{grid-column:1;grid-row:2;min-width:0}
+.mission-track .mission-hud{position:static;box-sizing:border-box;min-height:38px;height:38px;padding:3px 7px;border:0;border-radius:0;background:#112a35;grid-template-columns:minmax(0,1fr) auto;gap:0 6px}
+.mission-hud span,.mission-hud small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10px;line-height:15px}.mission-hud strong{font-size:11px;line-height:15px}.mission-hud small{line-height:15px}
+.mine{grid-column:1;grid-row:3;min-height:0;overflow:hidden}.telemetry{grid-column:1;grid-row:4;min-height:0;font-size:9px}.meter-label{font-size:9px}.meters progress{height:4px}.pressure-line{height:10px;font-size:9px;line-height:10px}
+.notice{grid-column:1;grid-row:5;height:18px;min-height:18px;max-height:18px;line-height:18px;font-size:10px}
+.controls{grid-column:1;grid-row:6;display:grid;grid-template-columns:44px minmax(66px,1fr) minmax(66px,1fr) 44px;gap:6px}
+.controls button,.controls #drill{width:100%;height:44px;min-height:44px;padding:0 8px;font-size:13px;border-radius:9px}
+.controls #left{grid-column:1}.controls #drill{grid-column:2}.controls #right{grid-column:4}
+.utility-row{display:contents}.utility-row #return{grid-column:1;grid-row:6;width:calc((100% - 106px)/2);height:44px;min-height:44px;margin-left:calc(50% + 3px);z-index:2;font-size:12px;padding:0 4px}
+#mining-label{display:none}.cell-name{font-size:9px}.tile-target:disabled{opacity:.55}.tile-target.mined .cell-name{opacity:.5}
+@media(max-height:500px) and (orientation:landscape){
+ #battleContent{grid-template-columns:minmax(0,1fr) 180px;grid-template-rows:44px 38px 28px minmax(18px,1fr) 94px;gap:4px;padding:0 8px 4px}
+ .mine{grid-column:1;grid-row:1/6}.depth-strip{grid-column:2;grid-row:1}.mission-track{grid-column:2;grid-row:2}.telemetry{grid-column:2;grid-row:3}.notice{grid-column:2;grid-row:4}
+ .controls{grid-column:2;grid-row:5;grid-template-columns:44px minmax(44px,1fr) 44px;grid-template-rows:44px 44px;gap:6px}
+ .controls #left{grid-column:1;grid-row:1}.controls #drill{grid-column:2;grid-row:1}.controls #right{grid-column:3;grid-row:1}
+ .utility-row #return{grid-column:2;grid-row:5;align-self:end;justify-self:center;margin:0;width:100%;height:44px}
+}
+
+.utility-row{display:none}.controls #return{grid-column:3;grid-row:1;width:100%;height:44px;min-height:44px;margin:0;padding:0 8px;font-size:12px}
+@media(max-height:500px) and (orientation:landscape){.controls #return{grid-column:1/4;grid-row:2}}
+
+.tile-target.past .cell-name,.tile-target.past .cell-hp{visibility:hidden}
+
+.meter-label{display:flex;justify-content:space-between;gap:4px}.meter-label span{white-space:nowrap}.meter-label span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis}
+@media(max-height:500px) and (orientation:landscape){
+ .depth-strip{display:grid;grid-template-columns:minmax(0,1fr) 44px;grid-template-rows:16px 28px;gap:0 4px}
+ .depth-strip>div{grid-column:1;grid-row:2;min-width:0}.depth-strip small{display:none}.depth-strip strong{white-space:nowrap;font-size:18px}
+ .depth-strip #hullLabel{grid-column:1;grid-row:1;margin:0;justify-self:start;font-size:9px}
+ .depth-strip button{grid-column:2;grid-row:1/3;width:44px;padding:0;font-size:10px;white-space:nowrap}
+}

@@ -11,6 +11,8 @@
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#071923">
   <meta name="robots" content="index,follow">
+  <meta name="weightplay-game-version" content="v17">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="Complete 57 story missions across six connected regions, reveal hidden threats with Neural Vision, recover equipment, and decide the future of a lunar refugee sanctuary.">
   <meta property="og:site_name" content="WeightPlay">
   <meta property="og:type" content="website">
@@ -42,11 +44,11 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
   <link rel="stylesheet" href="style.css?v=20260827-mobile-movement-surface-v11">
   <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260911-sound-control">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-signal-veil-v17-i9">
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-<body data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
+<body data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-wp-main-start-only="true" data-wp-combined-sound="true" data-runtime-localize="off">
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <span class="atlas-icon icon-device" aria-hidden="true"></span>
@@ -211,12 +213,12 @@
           <button id="continueButton" class="primary" type="button" data-t="continue">Continue</button>
           <button id="confirmLeaveButton" type="button" data-t="returnMain">Return to Main</button>
         </section>
-        <section id="resultPanel" class="panel result-panel" role="dialog" aria-modal="true" hidden>
+        <section id="resultPanel" class="panel result-panel" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" hidden>
           <span class="result-device atlas-icon icon-device"></span>
           <p class="kicker" data-t="demoComplete">CHAPTER COMPLETE</p>
-          <h2 data-t="resultTitle">The veil is broken.</h2>
+          <h2 id="resultTitle" data-t="resultTitle">The veil is broken.</h2>
           <blockquote data-t="bossQuote">“We are not invading.”</blockquote>
-          <p data-t="resultText">The Commander's device exposes hidden Lizard People among ordinary humans. The signal points beyond Earth.</p>
+          <p id="resultText" data-t="resultText">The Commander's device exposes hidden Lizard People among ordinary humans. The signal points beyond Earth.</p>
           <strong data-t="ending">Earth was only the beginning.</strong>
           <div class="result-actions">
             <button id="continueExplore" class="primary" type="button" data-t="explore">Continue Exploring</button>
@@ -237,9 +239,9 @@
   <script src="guide-locales.js"></script>
   <script src="state-store.js"></script>
   <script src="quest-data.js"></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-signal-veil-v17-i9"></script>
   <script src="frame.js"></script>
-  <script defer src="game.js?v=20260912-poster-source-v16&wp-audio=1.0.0"></script>
+  <script defer src="game.js?v=20261021-signal-veil-v17-i9&wp-audio=1.0.0"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
 </body>
 </html>

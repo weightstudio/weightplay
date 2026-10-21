@@ -126,7 +126,6 @@
   stageProfile?.remove();
   nodes.stageHeading?.setAttribute("data-wp-frame-title", "");
   nodes.stagePanel?.querySelector(".stage-tabs")?.setAttribute("data-wp-frame-nav", "");
-  nodes.assistBtn?.removeAttribute("data-wp-battle-utility");
   if (nodes.battleLive && nodes.assistBtn) nodes.battleLive.append(nodes.assistBtn);
   const gameShell = window.WeightPlayScreenFrame.mount({
     root: frameRoot,
@@ -153,7 +152,6 @@
     sharedSettingsPanel?.classList.add("wp-shell-settings-popover");
     sharedSettingsPanel?.querySelector(".wp-frame-sound")?.classList.add("wp-shell-combined-sound-row");
   }
-  nodes.lobbyReturn?.querySelector(".wp-frame-back-icon")?.append("←");
   const canvas = $("gameCanvas");
   const ARENA_KEYBOARD_SHORTCUTS = "ArrowLeft ArrowRight Space Enter";
   canvas.dataset.runtimeLocalize = "off";
@@ -1339,6 +1337,7 @@
     const guide = document.querySelector(".game-page-info");
     if (!guide) return;
     if (actualLocale === "es") {
+      const relatedSection = guide.querySelector(".game-info-related-section");
       guide.setAttribute("aria-label", "Información del juego Fortaleza de Orbes Animal");
       guide.innerHTML = `
         <div class="game-info-hero">
@@ -1355,6 +1354,7 @@
           <div class="game-info-section game-info-parent"><h3>Información del jugador y guardado</h3><p>El navegador guarda localmente la mejor ruta desbloqueada, las Piedras Estelares, el número de partidas y los niveles de las cuatro salas. No se necesita una cuenta. Borrar los datos del sitio puede eliminar el progreso. Las repeticiones con Diamantes son opcionales y muestran el saldo antes y después. El Informe de habilidades describe únicamente la partida; no es una medición formal.</p></div>
           <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuál es el objetivo de una ruta?</dt><dd>Protege el núcleo durante tres oleadas. Superar la tercera guarda la ruta, entrega Piedras Estelares y desbloquea la siguiente.</dd></div><div><dt>¿Todas las rutas usan el mismo jefe?</dt><dd>No. Cada quinta ruta tiene un jefe regional distinto; las demás terminan con formaciones de élite diseñadas para esa ruta.</dd></div><div><dt>¿Por qué mi orbe atravesó a un enemigo lunar?</dt><dd>El contorno discontinuo indica una fase intangible. Espera a que el enemigo vuelva a ser sólido.</dd></div><div><dt>¿Qué hacen los pilares espejo?</dt><dd>Son superficies de rebote dentro de la arena. Los pilares avanzados se mueven y cambian las trayectorias disponibles.</dd></div><div><dt>¿Necesito Diamantes para terminar?</dt><dd>No. Solo sirven para repetir una vez las tres bendiciones de una oleada tras una confirmación.</dd></div><div><dt>¿Qué ocurre tras fallar?</dt><dd>La incursión termina, pero conservas las Piedras Estelares obtenidas y la mejor ruta desbloqueada.</dd></div></dl></div>
         </div>`;
+      if (relatedSection) guide.append(relatedSection);
       return;
     }
     const replacements = actualLocale === "ja"

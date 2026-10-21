@@ -1,6 +1,6 @@
-import {mountMahjongCampaign} from './campaign-app.mjs';
-import {createCampaignMainView} from './campaign-main-view.mjs?v=20261010-mahjong-runtime-guide-tags-v1';
-import {createCampaignSettings} from './campaign-settings.mjs';
+import {mountMahjongCampaign} from './campaign-app.mjs?v=20261021-mahjong-v16-i9';
+import {createCampaignMainView} from './campaign-main-view.mjs?v=20261021-mahjong-v16-i9';
+import {createCampaignSettings} from './campaign-settings.mjs?v=20261021-mahjong-v16-i9';
 import {createCampaignAudio} from './campaign-audio.mjs';
 import {CAMPAIGN_LOCALES} from './campaign-copy.mjs';
 import {applyCampaignMetadata} from './campaign-metadata.mjs';
@@ -33,7 +33,7 @@ export function mountMahjongEntry({container,locale,storage,titles}) {
   if(name==='stage_return'&&!details.completed&&measurementRound){measurementEnded=true;measurementOutcome='abandon';}
   notifyMeasurement();
   const width=innerWidth,height=innerHeight,viewport=height<=430?'short-landscape':width<=480?'phone':width<=900?(height>width?'tablet-portrait':'tablet-landscape'):(height>width?'desktop-portrait':'desktop-landscape');
-  window.WonderAnalytics?.track?.(name,{...details,game_id:'mahjong-solitaire',game_version:'v15',interface_version:'6',locale:currentLocale,viewport_bucket:viewport,input_type:inputType});
+  window.WonderAnalytics?.track?.(name,{...details,game_id:'mahjong-solitaire',game_version:'v16',interface_version:'9',locale:currentLocale,viewport_bucket:viewport,input_type:inputType});
  };
  const setLocale=l=>{
   if(!CAMPAIGN_LOCALES.includes(l))throw new Error('Unsupported locale');const changed=currentLocale!==l;currentLocale=l;
@@ -48,10 +48,10 @@ export function mountMahjongEntry({container,locale,storage,titles}) {
   }
   try{storage.setItem('weightPlayLocale',l)}catch{}main?.refresh();
  };
- const mainSettings=createCampaignSettings({locale:()=>currentLocale,setLocale,sound}),stageSettings=createCampaignSettings({locale:()=>currentLocale,sound,allowLanguage:false});
- main=createCampaignMainView({locale:()=>currentLocale,title:l=>titles[l],lobbyHref:l=>`/${segments[CAMPAIGN_LOCALES.indexOf(l)]}/`,progress:()=>app?.session.snapshot().progress||{unlocked:1},settings:mainSettings.root});
- container.append(main.root,main.guide);
- app=mountMahjongCampaign({main:main.root,guide:main.guide,startButton:main.startButton,locale:()=>currentLocale,storage,mainSettings,stageSettings,onMain:()=>main.refresh(),sound,onEvent,onState:notifyMeasurement});
+ const mainSettings=createCampaignSettings({locale:()=>currentLocale,setLocale,sound});mainSettings.root.hidden=true;mainSettings.root.setAttribute('aria-hidden','true');
+ main=createCampaignMainView({locale:()=>currentLocale,title:l=>titles[l],lobbyHref:l=>`/${segments[CAMPAIGN_LOCALES.indexOf(l)]}/`,progress:()=>app?.session.snapshot().progress||{unlocked:1}});
+ container.append(mainSettings.root,main.root);
+ app=mountMahjongCampaign({container,main:main.root,guide:main.guide,startButton:main.startButton,locale:()=>currentLocale,storage,mainSettings,onMain:()=>main.refresh(),sound,onEvent,onState:notifyMeasurement});
  setLocale(currentLocale);main.refresh();notifyMeasurement();
  document.addEventListener('visibilitychange',()=>{if(document.hidden)sound.stop()},{signal:lifetime.signal});
  async function dispose(){if(disposed)return;disposed=true;lifetime.abort();app.dispose();main.dispose();await sound.dispose();}

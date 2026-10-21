@@ -2480,3 +2480,29 @@ html body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #b
     grid-template-columns: minmax(0, 1fr) !important;
   }
 }
+
+/* I9 Main keeps the authored poster and copy while clearing the legacy panel skin. */
+html body[data-wp-game-id="animal-orb-fortress"][data-wp-interface-version="9"] [data-wp-frame="2"]
+  [data-wp-frame-scene="main"].menu-panel {
+  box-shadow: none !important;
+}
+
+html body[data-wp-game-id="animal-orb-fortress"][data-wp-interface-version="9"] [data-wp-frame="2"]
+  [data-wp-frame-scene="main"].menu-panel::before {
+  content: none !important;
+  background: none !important;
+  background-image: none !important;
+  opacity: 1 !important;
+}
+
+html body[data-wp-game-id="animal-orb-fortress"][data-wp-interface-version="9"] [data-wp-frame="2"]
+  [data-wp-frame-scene="main"] [data-wp-frame-copy] > :is(span, strong) {
+  color: var(--wp-ui-text) !important;
+  text-shadow: none !important;
+}
+
+html body[data-wp-game-id="animal-orb-fortress"][data-wp-interface-version="9"] [data-wp-frame="2"]
+  [data-wp-frame-scene="main"] .brand > span {
+  color: var(--wp-ui-text) !important;
+  text-shadow: none !important;
+}
