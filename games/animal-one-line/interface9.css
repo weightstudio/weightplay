@@ -23,6 +23,18 @@ body[data-game-id="animal-one-line"] [data-wp-frame-scene="main"] .wp-standard-m
   object-fit: contain;
 }
 
+/* Match the shared Main surface and content text tokens. */
+html.wp-frame-main-flow {
+  background: transparent;
+}
+body[data-game-id="animal-one-line"] [data-wp-frame-scene="main"] .wp-standard-main-copy > small {
+  color: #f8fafc;
+}
+body[data-game-id="animal-one-line"] [data-wp-frame-scene="main"] #mainProgress.main-progress {
+  background: transparent;
+  color: #f8fafc;
+}
+
 body[data-game-id="animal-one-line"] [data-wp-frame-scene="battle"][data-wp-logical-battle-canvas] > [data-wp-frame-content="battle"] {
   box-sizing: border-box !important;
   width: 100% !important;

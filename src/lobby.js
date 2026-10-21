@@ -1606,7 +1606,7 @@ async function loadGameStats() {
   }
 }
 
-function openGame(game, title, ageLabel) {
+function openGame(game, title, ageLabel, card = null) {
   window.WeightPlayAudio?.play("ui.click");
   window.WonderAnalytics?.track("game_open", {
     game_id: game.id,
@@ -1617,7 +1617,9 @@ function openGame(game, title, ageLabel) {
     from_library: activeLibrary,
   });
   const gameUrl = new URL(game.href, document.baseURI);
-  window.location.href = new URL(i18n.localizedPath(i18n.actualLocale(), `${gameUrl.pathname}${gameUrl.search}${gameUrl.hash}`), gameUrl.origin).href;
+  const targetUrl = new URL(i18n.localizedPath(i18n.actualLocale(), `${gameUrl.pathname}${gameUrl.search}${gameUrl.hash}`), gameUrl.origin).href;
+  if (window.WeightPlayGameEntryLoader?.navigateTo?.({ url: targetUrl, gameId: game.id, title, anchor: card })) return;
+  window.location.href = targetUrl;
 }
 
 function cardMatchesFilterState(card, state) {
@@ -1740,12 +1742,12 @@ function createGameCard(game) {
     card.tabIndex = 0;
     card.setAttribute("role", "link");
     card.addEventListener("click", () => {
-      openGame(game, title, ageLabel);
+      openGame(game, title, ageLabel, card);
     });
     card.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
-        openGame(game, title, ageLabel);
+        openGame(game, title, ageLabel, card);
       }
     });
   } else {
@@ -3379,7 +3381,7 @@ renderLobby();
 loadGameStats();
 if (!isKidsLobby && !document.querySelector('[data-wp-game-entry-loader-bootstrap="true"]')) {
   const entryLoaderScript = document.createElement("script");
-  entryLoaderScript.src = "/src/game-entry-loader.js?v=20261020-single-loading-label1";
+  entryLoaderScript.src = "/src/game-entry-loader.js?v=20261021-lobby-card-entry1";
   entryLoaderScript.dataset.wpGameEntryLoaderBootstrap = "true";
   document.head.append(entryLoaderScript);
 }

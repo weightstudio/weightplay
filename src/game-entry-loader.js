@@ -7,6 +7,7 @@
   const gamePath = Boolean(GAME_ID);
   let selectedGameId = GAME_ID;
   let selectedAnchor = null;
+  let selectedTitle = "";
 
   if (document.documentElement.dataset.wpGameEntryLoaderInstalled === "true") return;
   document.documentElement.dataset.wpGameEntryLoaderInstalled = "true";
@@ -38,6 +39,7 @@
     };
     const titles = window.WEIGHTPLAY_GAME_TITLES?.[selectedGameId] || {};
     const name = Object.entries(titles).find(([key]) => key.toLowerCase() === locale)?.[1]
+      || selectedTitle
       || (gamePath ? document.querySelector('[data-wp-game-title]')?.textContent.trim() : selectedAnchor?.querySelector('h2,h3,.game-name,.game-title')?.textContent.trim())
       || titles.en || ({'zh-hant':'遊戲','zh-hans':'游戏',ja:'ゲーム',ko:'게임',ar:'اللعبة'}[locale] || 'game');
     return (bundles[locale] || ["Loading {game}…", "Game could not be loaded", "Some game resources could not be loaded. Retry or return to the lobby.", "Retry", "Back to lobby", "Cancel", "Opening {game}…", "Loaded {loaded}/{total} resources"])
@@ -360,6 +362,21 @@
         failNavigation();
       });
   };
+  const startLobbyNavigation = ({ url, gameId, title, anchor } = {}) => {
+    if (active) return false;
+    let target;
+    try { target = new URL(url, window.location.href); } catch { return false; }
+    const match = target.pathname.match(/\/games\/([a-z0-9-]+)(?:\/(?:index\.html)?)?$/);
+    if (target.origin !== window.location.origin || !match || (gameId && match[1] !== gameId)) return false;
+    selectedGameId = match[1];
+    selectedAnchor = anchor instanceof Element ? anchor : null;
+    selectedTitle = String(title || "").trim();
+    active = true;
+    targetUrl = target.href;
+    overlayState = makeOverlay({ titleText: copy()[6], cancel: () => reset({ restoreFocus: true }) });
+    navigate();
+    return true;
+  };
   function onLobbyKeydown(event) {
     if (active && event.key === "Escape") {
       event.preventDefault();
@@ -375,15 +392,10 @@
     const match = url.pathname.match(/\/games\/([a-z0-9-]+)(?:\/(?:index\.html)?)?$/);
     if (!['http:', 'https:'].includes(url.protocol) || url.origin !== window.location.origin || !match || anchor.relList.contains('external')) return;
     event.preventDefault();
-    if (active) return;
-    selectedGameId = match[1];
-    selectedAnchor = anchor;
-    active = true;
-    targetUrl = url.href;
-    overlayState = makeOverlay({ titleText: copy()[6], cancel: () => reset({ restoreFocus: true }) });
-    navigate();
+    startLobbyNavigation({ url: url.href, gameId: match[1], title: anchor.querySelector('h2,h3,.game-name,.game-title')?.textContent, anchor });
   };
   document.addEventListener("click", onClick, true);
+  window.WeightPlayGameEntryLoader = Object.freeze({ navigateTo: startLobbyNavigation });
   window.addEventListener("pagehide", () => {
     window.clearTimeout(navTimer);
     navigationProbe?.abort();

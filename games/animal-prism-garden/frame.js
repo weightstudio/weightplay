@@ -61,8 +61,9 @@
     stageNav.dataset.wpFrameStageNav = '';
     if (stageAction) {
       stageAction.dataset.wpFrameStageSlot = 'stages';
-      stageAction.dataset.wpFrameAction = 'primary';
-      stageAction.removeAttribute('aria-current');
+      stageAction.dataset.wpFrameAction = 'tab';
+      stageAction.setAttribute('aria-pressed', 'true');
+      stageAction.setAttribute('aria-current', 'page');
     }
     stage.removeAttribute('data-wp-standard-stage-screen');
     stage.removeAttribute('data-wp-logical-stage-canvas');

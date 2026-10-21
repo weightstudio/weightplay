@@ -15,6 +15,7 @@
     const copy = hero?.querySelector('.main-copy');
     const mainTitle = mainHeader?.querySelector('[data-one-line-i18n="title"]');
     const mainStart = document.getElementById('startBtn');
+    const mainProgress = copy?.querySelector('.main-progress');
     const guide = document.querySelector('.game-page-info-static');
     const stage = document.getElementById('stageScreen');
     const stageCanvas = stage?.querySelector('.stage-canvas');
@@ -37,7 +38,7 @@
 
     if (!frameRoot || !main || !frameRoot.contains(main) || !frameRoot.contains(guide)
       || !frameRoot.contains(stage) || !frameRoot.contains(battle)
-      || !mainHeader || !hero || !poster || !copy || !mainTitle || !mainStart || !guide
+      || !mainHeader || !hero || !poster || !copy || !mainTitle || !mainStart || !mainProgress || !guide
       || !stage || !stageCanvas || !stageHeader || !stageBack || !stageTitle || !stageSummary
       || !stageRail || !stageTabs || !tutorial || !battle || !oldBattleCanvas || !oldBattleHeader
       || !battleBack || !battleProgress || battleStats?.length !== 2 || !localeSelect
@@ -59,6 +60,7 @@
       summary.classList.add('wp-standard-main-summary');
       summary.dataset.wpFrameSummary = '';
     }
+    mainProgress.classList.add('wp-standard-main-progress');
     mainTitle.dataset.wpFrameTitle = '';
     mainStart.dataset.wpFrameAction = 'primary';
     mainStart.dataset.wpMainStart = '';

@@ -136,7 +136,6 @@
   }
   function selectStage(index){
     selected=Math.max(0,Math.min(levels.length-1,Math.round(index)));
-    $("#stageTab").disabled=selected>=unlocked;
   }
   function stageRecord(index){
     const item=levels[index],locked=index>=unlocked,gateCount=Object.keys(item.gates).length;
@@ -164,7 +163,6 @@
     const badge=$("#progressBadge");
     if(badge)badge.textContent=progress;
     $("#mainProgress").textContent=progress;
-    $("#stageTab").disabled=selected>=unlocked;
     stageSelector?.refresh(selected);
   }
   function attachStageSelector(selector){stageSelector=selector;renderStages()}
@@ -390,8 +388,6 @@
   $("#resultStages").addEventListener("click",()=>{selected=unlocked-1;show("stage")});
   $("#retry").addEventListener("click",()=>__wpReplayStart(() => startLevel(selected)));
   $("#next").addEventListener("click",()=>startLevel(Math.min(29,selected+1)));
-  $("#stageTab").addEventListener("click",()=>{if(selected<unlocked)startLevel(selected)});
-
   // Permanent content nodes are mounted once; the shared frame retains control ownership.
   const pairs=document.createElement("div");pairs.id="prismPairs";pairs.className="prism-pairs";
   $("#objective").after(pairs);
