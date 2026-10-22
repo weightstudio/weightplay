@@ -1,5 +1,13 @@
 (() => {
   "use strict";
+  // Required shared owners must exist before any partial game initialization.
+  // Resource failures retain the shared Retry/Back dialog and cannot enable Start.
+  if (!window.WeightPlayScreenFrame?.mount || !window.WeightPlayPlayUI?.mountStage
+      || !window.HeroTrialsStageConfig?.create || !window.WeightPlayJoystick?.create) {
+    const start=document.getElementById('startBtn');if(start)start.disabled=true;
+    window.WeightPlayGameEntryLoader?.fail(undefined,()=>location.reload());
+    return;
+  }
   const practiceRequested = location.protocol==="http:"
     && ["localhost","127.0.0.1","[::1]"].includes(location.hostname)
     && new URLSearchParams(location.search).get("practice")==="1";
@@ -987,9 +995,10 @@
     else if(restoreFocus&&activeScene==='stage')$('#teamBtn')?.focus({preventScroll:true});
   }
 
-  function focusStage() {
+  function focusStage(stage = null) {
     sceneFrame("stage", () => {
-      sharedStage?.select(sharedStage.selected,{focus:true});
+      const index = stage === null ? sharedStage?.selected : Math.max(0, Math.min(TRIAL_COUNT - 1, Number(stage) - 1));
+      sharedStage?.select(index,{focus:true});
     });
   }
 
@@ -2203,23 +2212,8 @@
 
   const localeSelect = $("#locale") || $("#localeSelect");
   localeSelect.value = locale;
-  localeSelect.onchange = (event) => {
-    const requested = canonicalLocale(event.target.value);
-    window.WonderI18n?.setLocale?.(requested);
-    writeStorage("weightPlayLocale", requested);
-    const prefix = localeRoutePrefixes[requested] || "en";
-    const targetPath = `/${prefix}/games/animal-hero-trials/`;
-    if (location.pathname !== targetPath) {
-      window.location.assign(targetPath + location.search + location.hash);
-      return;
-    }
-    locale = requested;
-    if (!ownedLocales.has(requested) && window.WeightPlayGameRuntimeLocalizer?.locale !== requested) {
-      window.location.reload();
-      return;
-    }
-    localize();
-  };
+  // Shared Settings owns verified same-game locale navigation. The legacy
+  // select remains hidden source markup; it must not initiate a second route.
   const soundToggle = $("#soundToggle");
   if (soundToggle) {
     soundToggle.addEventListener("keydown", (event) => {
@@ -2508,7 +2502,7 @@
     $('#startBtn').setAttribute('data-wp-frame-action','primary');
     $('.main-copy h1').hidden=true;
     const retained=document.createElement('div');retained.hidden=true;retained.append($('#soundToggle'),$('.locale'));$('#main').append(retained);
-    sharedFrame=window.WeightPlayScreenFrame.mount({root:$('#main'),localeSelect:$('#localeSelect'),playUI:true,
+    sharedFrame=window.WeightPlayScreenFrame.mount({root:$('#main'),playUI:true,
       scenes:{main:{root:views.main,header:views.main.querySelector('header'),content:mainContent},
         stage:{root:views.stage,header:views.stage.querySelector('header'),content:stageContent},
         battle:{root:views.battle,header:views.battle.querySelector('header'),content:$('.canvas-wrap'),headerInfo:$('.health')}}});
@@ -2536,7 +2530,7 @@
           locked,cleared:d.stage<unlocked};}});
     sharedStage=window.WeightPlayPlayUI.mountStage({page:stageContent,rail:$('#stageRail'),config,selected:Math.min(TRIAL_COUNT,unlocked)-1,
       onStart:index=>startTrial(index+1),isActive:()=>activeScene==='stage'});
-    sharedFrame.activate('main');
+    show('main');
   }
   localize();
   if(practiceRequested) import("../../src/game-local-practice.mjs").then(({LocalPractice})=>{

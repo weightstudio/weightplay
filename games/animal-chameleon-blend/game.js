@@ -1,24 +1,15 @@
-(async () => {
+(() => {
   "use strict";
 
-  const entryLoader = await new Promise((resolve) => {
-    const current = window.WeightPlayGameEntryLoader;
-    if (current?.isActive) {
-      resolve(current);
-      return;
-    }
-    const bootstrap = document.querySelector('script[data-wp-game-entry-loader-bootstrap]')
-      || document.querySelector('script[src*="/game-entry-loader.js"]');
-    if (!bootstrap) {
-      resolve(null);
-      return;
-    }
-    const finish = () => resolve(window.WeightPlayGameEntryLoader?.isActive ? window.WeightPlayGameEntryLoader : null);
-    bootstrap.addEventListener("load", finish, {once: true});
-    bootstrap.addEventListener("error", () => resolve(null), {once: true});
-    if (window.WeightPlayGameEntryLoader?.isActive) finish();
-  });
-  entryLoader?.begin?.(1);
+  const entryLoader = window.WeightPlayGameEntryLoader;
+  const startButton = document.getElementById('start-game');
+  startButton.disabled = true;
+  if (!entryLoader?.begin || !window.WeightPlayScreenFrame?.mount
+      || !window.WeightPlayPlayUI?.mountStage || !window.ChameleonStageConfig?.create) {
+    entryLoader?.fail(undefined, () => location.reload());
+    return;
+  }
+  entryLoader.begin(3);
 
   const $ = (id) => document.getElementById(id);
   const app = $("app");
@@ -28,7 +19,7 @@
   const battleScreen = $("battle-screen");
   const battleBack = $("battle-back");
   const resultScreen = $("result-screen");
-  const guide = document.querySelector("#main-screen + [data-wp-game-guide]");
+  const guide = document.querySelector("[data-wp-preserve-static-guide]");
   let frame = null;
   let stageUI = null;
   let stageProgress = null;
@@ -328,7 +319,6 @@
 
     frame=window.WeightPlayScreenFrame.mount({
       root:app,
-      localeSelect:$("localeSelect"),
       playUI:true,
       scenes:{
         main:{root:mainScreen,header:mainHeader,content:mainContent},
@@ -343,11 +333,8 @@
       rail:stageRail,
       selected:selectedStage,
       isActive:()=>frame.active==="stage",
-      config:{
+      config:window.ChameleonStageConfig.create({
         count:profiles.length,
-        gameId:"animal-chameleon-blend",
-        poster:"/games/animal-chameleon-blend/assets/animal-chameleon-blend-cover.webp",
-        background:"/games/animal-chameleon-blend/assets/animal-chameleon-blend-background.png",
         stage(index){
           const stage=index+1;
           const profile=profiles[index];
@@ -362,10 +349,9 @@
             cleared:stage<=best,
             summary:t(0)+" · "+t(16),
             details:[t(12)+" "+profile.need+"/"+profile.rounds,profile.sequence+" "+t(19)+" · "+(profile.reverse?t(14):t(15)),profile.preview.toFixed(1)+"s / "+profile.choose.toFixed(1)+"s"],
-            poster:"/games/animal-chameleon-blend/assets/animal-chameleon-blend-cover.webp",
           };
         },
-      },
+      }),
       onSelect(index){selectedStage=index;},
       onStart(index){start(index+1);},
     });
@@ -375,7 +361,6 @@
     $('main-progress').textContent=`${common(8)}: ${best} / 30`;
     if(stageProgress)stageProgress.textContent=`${common(8)}: ${best} / 30`;
     document.querySelector('[data-m5-lede]').textContent=t(0)+' · '+t(16);
-    document.querySelector('#main-screen + [data-wp-game-guide] [data-m5-guide]')?.replaceChildren(document.createTextNode(`${t(4)} → ${t(2)} → ${t(3)}. ${t(15)} / ${t(14)}.`));
   }
   function stageCards(){
     stageUI?.refresh(selectedStage);
@@ -473,17 +458,26 @@
   document.addEventListener('visibilitychange',()=>{lastTime=performance.now();});
   window.addEventListener('pagehide',()=>{cancelAnimationFrame(frameId);audio?.stop();});
   window.addEventListener('pageshow',e=>{if(e.persisted&&state.screen==='battle'){lastTime=performance.now();frameId=requestAnimationFrame(tick);}});
-  const atlasImage=new Image();
-  atlasImage.addEventListener('load',()=>{
-    const canvas=$('arena'),ctx=canvas?.getContext('2d');
-    if(ctx)ctx.drawImage(atlasImage,0,0,canvas.width,canvas.height);
-    entryLoader?.assetProgress?.(1,1);
-    entryLoader?.ready?.();
-  },{once:true});
-  atlasImage.addEventListener('error',()=>entryLoader?.fail?.(),{once:true});
-  atlasImage.src='assets/animal-chameleon-blend-background.png';
+  const localeSource=$('localeSelect')?.closest('label');if(localeSource)localeSource.hidden=true;
   mountSharedPlayUI();
   selectedStage=best;
   updateProgress();stageCards();show('main');
+
+  const abortEntry=new AbortController();let failed=false,loaded=0;
+  const failEntry=()=>{if(failed||abortEntry.signal.aborted)return;failed=true;clearTimeout(entryTimeout);entryLoader.fail(undefined,()=>location.reload());};
+  const entryTimeout=setTimeout(failEntry,20000);
+  const waitImage=image=>new Promise((resolve,reject)=>{
+    const settled=()=>{image.removeEventListener('load',settled);image.removeEventListener('error',settled);if(image.naturalWidth){if(!failed&&!abortEntry.signal.aborted)entryLoader.assetProgress(++loaded,3);resolve(image);}else reject(new Error('ENTRY_IMAGE_FAILED'));};
+    if(image.complete){settled();return;}
+    image.addEventListener('load',settled,{once:true,signal:abortEntry.signal});image.addEventListener('error',settled,{once:true,signal:abortEntry.signal});
+  });
+  const backdrop=new Image();backdrop.src='/games/animal-chameleon-blend/assets/animal-chameleon-blend-background.png';
+  const atlas=new Image();atlas.src='/games/animal-chameleon-blend/assets/animal-chameleon-blend-atlas.png';
+  Promise.all([waitImage(document.querySelector('.m5-cover')),waitImage(backdrop),waitImage(atlas)]).then(()=>{
+    if(failed||abortEntry.signal.aborted)return;
+    const canvas=$('arena'),ctx=canvas?.getContext('2d');if(!ctx)throw new Error('CANVAS_UNAVAILABLE');
+    ctx.drawImage(backdrop,0,0,canvas.width,canvas.height);clearTimeout(entryTimeout);startButton.disabled=false;entryLoader.ready();
+  }).catch(failEntry);
+  addEventListener('pagehide',()=>{clearTimeout(entryTimeout);abortEntry.abort();},{once:true});
 
 })();

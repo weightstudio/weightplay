@@ -13,4 +13,8 @@
 #resultModal>section{height:318px;grid-template-rows:minmax(0,90px) auto minmax(40px,1fr) 48px}#resultFx{max-height:100%}
 @media(max-height:500px){.modal{align-items:start}.modal>section{align-self:start}}
 
+/* Overlays belong below the shared header, including short logical Canvases. */
+.modal{padding-block-start:calc(var(--wp-frame-header-height,56px) + 16px)}
+.modal>section,#resultModal>section{max-height:calc(100% - var(--wp-frame-header-height,56px) - 32px)}
+
 .hero-main-poster>img{display:block;width:100%;height:100%;aspect-ratio:1;object-fit:contain;border-radius:inherit}
