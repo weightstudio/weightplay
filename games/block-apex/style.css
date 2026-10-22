@@ -108,3 +108,11 @@
  .apex-modal p,.apex-goal-results{font-size:13px;margin-bottom:8px}
 }
 @media(prefers-reduced-motion:reduce){.apex-drive-controls button{transition:none}}
+
+/* Block Apex keeps the shared Main Help hit area at the Interface 9 minimum. */
+body[data-wp-game-id="block-apex"] .wp-tutorial-button {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+}
