@@ -1,3 +1,5 @@
+import { plans, satisfied, allowedPair as legalPair } from './puzzles.mjs';
+import { createHabitatRenderer } from './habitat-3d.mjs';
 (function () {
   "use strict";
 
@@ -42,47 +44,6 @@
     locales[localeKey].stages = values.stages;
   });
 
-  const habitatSets = [
-    { name: "blueprint1", hint: "hint1", solution: ["pond", "reed", "nest", "meadow"], rules: [{ key: "ruleTopLeft", a: "pond" }, { key: "ruleTouch", a: "pond", b: "reed" }, { key: "ruleBelow", a: "meadow", b: "reed" }] },
-    { name: "blueprint2", hint: "hint2", solution: ["fern", "canopy", "burrow", "stream"], rules: [{ key: "ruleTopLeft", a: "fern" }, { key: "ruleTouch", a: "fern", b: "canopy" }, { key: "ruleBelow", a: "stream", b: "canopy" }] },
-    { name: "blueprint3", hint: "hint3", solution: ["lantern", "moss", "dusk", "pool"], rules: [{ key: "ruleTopLeft", a: "lantern" }, { key: "ruleTouch", a: "lantern", b: "moss" }, { key: "ruleBelow", a: "pool", b: "moss" }] }
-  ];
-  const starts = [[1, 2, 0, 3], [2, 0, 3, 1], [3, 2, 1, 0], [1, 3, 2, 0], [2, 3, 0, 1]];
-  const chapterModes = ["open", "adjacent", "diagonal", "anchor", "budget", "master"];
-  const modeLabels = {
-    en: ["Open exchange", "Neighbour exchange", "Diagonal exchange", "Anchored habitat", "Four-swap budget", "Anchored diagonal mastery"],
-    "zh-Hant": ["自由交換", "相鄰交換", "對角交換", "固定棲地", "四次交換限制", "固定對角挑戰"],
-    "zh-Hans": ["自由交换", "相邻交换", "对角交换", "固定栖地", "四次交换限制", "固定对角挑战"],
-    ja: ["自由交換", "隣接交換", "対角交換", "固定ハビタット", "4回交換制限", "固定対角マスター"],
-    ko: ["자유 교환", "인접 교환", "대각선 교환", "고정 서식지", "4회 교환 제한", "고정 대각선 숙련"],
-    es: ["Intercambio libre", "Intercambio vecino", "Intercambio diagonal", "Hábitat anclado", "Límite de cuatro intercambios", "Maestría diagonal anclada"],
-    "pt-BR": ["Troca livre", "Troca vizinha", "Troca diagonal", "Habitat ancorado", "Limite de quatro trocas", "Mestria diagonal ancorada"],
-    fr: ["Échange libre", "Échange voisin", "Échange diagonal", "Habitat ancré", "Limite de quatre échanges", "Maîtrise diagonale ancrée"],
-    de: ["Freier Tausch", "Nachbartausch", "Diagonaltausch", "Verankertes Habitat", "Vier-Tausch-Limit", "Verankerte Diagonalmeisterschaft"],
-    it: ["Scambio libero", "Scambio adiacente", "Scambio diagonale", "Habitat ancorato", "Limite di quattro scambi", "Maestria diagonale ancorata"],
-    ru: ["Свободный обмен", "Соседний обмен", "Диагональный обмен", "Закреплённая среда", "Лимит: четыре обмена", "Закреплённая диагональ"],
-    hi: ["स्वतंत्र अदला-बदली", "पड़ोसी अदला-बदली", "तिरछी अदला-बदली", "स्थिर आवास", "चार अदला-बदली सीमा", "स्थिर तिरछी महारत"],
-    ar: ["تبديل حر", "تبديل متجاور", "تبديل قطري", "موطن مثبت", "حد أربعة تبديلات", "إتقان قطري مثبت"]
-  };
-  const plans = Array.from({ length: 30 }, (_, index) => {
-    const set = habitatSets[index % habitatSets.length];
-    const chapter = Math.floor(index / 5);
-    const order = chapter === 2 ? (index % 2 ? [0, 2, 1, 3] : [3, 1, 2, 0]) : chapter === 3 ? starts[0] : chapter === 5 ? [3, 1, 2, 0] : starts[(index + chapter) % starts.length];
-    return {
-      id: index + 1,
-      name: set.name,
-      hint: set.hint,
-      chapter: chapter + 1,
-      checkpoint: (index + 1) % 5 === 0,
-      mode: chapterModes[chapter],
-      lockedSlot: chapter === 3 ? 3 : chapter === 5 ? 2 : -1,
-      maxSwaps: chapter >= 4 ? 4 : 0,
-      tiles: order.map((slot) => set.solution[slot]),
-      solution: [...set.solution],
-      rules: set.rules
-    };
-  });
-
   let locale = routeLocale || safeStorage.get("weightPlayLocale", "") || safeStorage.get("weightplay-habitat-blueprint-locale", "") || "en";
   locale = normalizeLocale(locale);
   if (!locales[locale]) locale = "en";
@@ -91,8 +52,20 @@
   let tiles = [];
   let selected = [];
   let swaps = 0;
-  let sessionSwaps = 0;
-  let solved = new Set(savedSolved);
+  let history = [], boardRenderer = null, busy = false, completed = false;
+  const progressKey = 'weightplay-habitat-blueprint-progress-v19';
+  const themeKey = 'weightplay-habitat-blueprint-theme-v1';
+  let progress = {solved:savedSolved,best:{}};
+  try { const saved=JSON.parse(safeStorage.get(progressKey,'null')); if(saved&&Array.isArray(saved.solved)) progress={solved:saved.solved.filter(n=>Number.isInteger(n)&&n>=0&&n<30),best:saved.best||{}}; } catch {}
+  let theme={owned:false,night:false}, purchaseBusy=false;
+  try { const saved=JSON.parse(safeStorage.get(themeKey,'null')); if(saved)theme=saved; } catch {}
+  // A pending receipt survives interruption between the two local writes.
+  // A successful debit delivers the item; a failed debit never grants it.
+  if(theme.pending) {
+    theme={owned:window.WeightPlayWallet.read().diamonds===theme.after,night:window.WeightPlayWallet.read().diamonds===theme.after};
+    try {localStorage.setItem(themeKey,JSON.stringify(theme));}catch{}
+  }
+  let solved = new Set(progress.solved);
   let feedback = "";
   let currentScreen = "main";
   let stageController = null;
@@ -108,8 +81,9 @@
   const copy = (key, vars = {}) => Object.entries(vars).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, String(value)), (locales[locale] || locales.en)[key] || locales.en[key] || key);
   const tileName = (type) => type ? copy(`tile${type[0].toUpperCase()}${type.slice(1)}`) : "";
   const announce = (name, data = {}) => { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `habitat_blueprint_${name}`, plan: planIndex + 1, swaps, ...data }); };
-  const bestValue = () => Number(localStorage.getItem("weightplay-habitat-blueprint-best-v1") || 0) || "—";
-  const solvedPlan = () => tiles.every((tile, index) => tile === plans[planIndex].solution[index]);
+  const bestValue = () => progress.best[planIndex+1] || '—';
+  const sound = event => window.WeightPlayAudio?.play?.(event);
+  const solvedPlan = () => plans[planIndex].rules.every(rule=>satisfied(rule,tiles,plans[planIndex].cols));
   const highestUnlockedIndex = () => Math.min(plans.length - 1, Math.max(0, solved.size ? Math.max(...solved) + 1 : 0));
   const stageConfig = window.HabitatBlueprintStageConfig({
     plans,
@@ -257,6 +231,7 @@
     const previous = currentScreen;
     if (screen === "stage" && previous === "main") selectedStageIndex = highestUnlockedIndex();
     currentScreen = screen;
+    boardRenderer?.setActive(screen === "battle");
     const inBattle = screen === "battle" || screen === "result";
     document.querySelectorAll("[data-screen]").forEach((node) => {
       if (node === document.body || node === document.documentElement) return;
@@ -295,7 +270,9 @@
       $("soundBtn").textContent = soundEnabled ? copy("on") : copy("off");
       $("soundBtn").setAttribute("aria-pressed", String(soundEnabled));
     }
-    if ($("best")) $("best").textContent = copy("best", { best: bestValue() });
+    if ($("best")) $("best").textContent = copy("best", {count:solved.size});
+    $("mainProgress").lastElementChild.textContent = ` · ${solved.size}/30`;
+    renderTheme();
     renderStages();
     renderBattle();
     renderResult();
@@ -303,8 +280,10 @@
   }
 
   function startPlan(index, fromStage = false) {
+    if (!Number.isInteger(index) || !plans[index]) return;
     clearSettlement();
     restoreBattleCoverage();
+    busy=false; completed=false; history=[];
     planIndex = index;
     selectedStageIndex = index;
     syncStageAction();
@@ -312,106 +291,119 @@
     selected = [];
     swaps = 0;
     feedback = "";
-    if (index === 0 || fromStage) sessionSwaps = 0;
+
     show("battle");
     renderBattle();
     window.WeightPlayAudio?.play?.("game.start");
     announce("start");
   }
   function renderRules() {
-    const root = $("rules");
-    root.replaceChildren();
-    plans[planIndex].rules.forEach((rule) => {
-      const item = document.createElement("li");
-      item.textContent = copy(rule.key, { a: tileName(rule.a), b: tileName(rule.b) });
-      root.appendChild(item);
+    const root=$('rules'), plan=plans[planIndex];
+    if(root.children.length!==plan.rules.length) root.replaceChildren(...plan.rules.map(()=>document.createElement('li')));
+    plan.rules.forEach((rule,index)=>{
+      const ok=satisfied(rule,tiles,plan.cols), item=root.children[index];
+      item.classList.toggle('satisfied',ok);item.dataset.satisfied=String(ok);
+      item.textContent=`${ok?'✓':'○'} ${copy(rule.key,{a:tileName(rule.a),b:tileName(rule.b)})}`;
     });
   }
-  function allowedPair(first, second, plan = plans[planIndex]) {
-    if (first === plan.lockedSlot || second === plan.lockedSlot) return false;
-    const rowGap = Math.abs(Math.floor(first / 2) - Math.floor(second / 2));
-    const colGap = Math.abs((first % 2) - (second % 2));
-    if (plan.mode === "adjacent") return rowGap + colGap === 1;
-    if (plan.mode === "diagonal" || plan.mode === "master") return rowGap === 1 && colGap === 1;
-    return true;
-  }
-  function renderBattle() {
-    if (!$("habitatGrid") || currentScreen !== "battle") return;
-    const plan = plans[planIndex];
-    $("planTitle").textContent = `${planIndex + 1}. ${copy(plan.name)}${plan.checkpoint ? " ★" : ""}`;
-    $("progressPill").textContent = `${planIndex + 1} / ${plans.length}`;
-    $("prompt").textContent = `${copy("prompt")} · ${(modeLabels[locale] || modeLabels.en)[plan.chapter - 1]}`;
+  function allowedPair(a,b,plan=plans[planIndex]) {return legalPair(a,b,plan);}
+  function renderBattle(animate=false) {
+    if(currentScreen!=='battle')return;
+    const plan=plans[planIndex], root=$('habitatGrid'), matches=plan.rules.filter(r=>satisfied(r,tiles,plan.cols)).length;
+    $('planTitle').textContent=`${plan.id}. ${copy(plan.name)}`;
+    $('progressPill').textContent=copy('moves',{n:swaps});
+    $('prompt').textContent=copy(plan.hint);
+    $('clueProgress').textContent=copy('clues',{n:matches,total:plan.rules.length})+(plan.maxSwaps?` · ${copy('budget',{n:plan.maxSwaps})}`:'');
     renderRules();
-    $("selection").textContent = selected.length ? copy("selection", { names: selected.map((index) => tileName(tiles[index])).join(locale === "zh-Hant" ? "、" : " + ") }) : copy("selectionPrompt");
-    const root = $("habitatGrid");
-    root.replaceChildren();
-    tiles.forEach((type, index) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = `habitat-tile ${type}${index === plan.lockedSlot ? " locked" : ""}`;
-      button.dataset.slot = String(index);
-      button.dataset.tile = type;
-      button.disabled = index === plan.lockedSlot;
-      button.setAttribute("aria-pressed", String(selected.includes(index)));
-      button.innerHTML = `<span class="tile-icon" aria-hidden="true">${{ pond: "◈", reed: "⌁", nest: "◌", meadow: "✿", canopy: "♧", stream: "≈", burrow: "⌂", fern: "❧", dusk: "☾", pool: "◇", moss: "❋", lantern: "✦" }[type]}</span><strong>${tileName(type)}</strong><small>${index === plan.lockedSlot ? "🔒 · " : ""}${copy("slot", { count: index + 1 }) === "slot" ? `Slot ${index + 1}` : copy("slot", { count: index + 1 })}</small>`;
-      button.addEventListener("click", () => {
-        if (selected.includes(index)) selected = selected.filter((item) => item !== index);
-        else if (selected.length < 2) selected = [...selected, index];
-        else selected = [selected[1], index];
-        renderBattle();
+    $('selection').textContent=selected.length?copy('selection',{names:selected.map(i=>tileName(tiles[i])).join(' + ')}):copy('selectionPrompt');
+    root.style.setProperty('--habitat-cols',plan.cols);
+    const existing=root.querySelectorAll('.habitat-tile');
+    if(existing.length!==tiles.length){
+      existing.forEach(n=>n.remove());
+      tiles.forEach((_,index)=>{
+        const button=document.createElement('button');button.type='button';button.className='habitat-tile';button.dataset.slot=index;
+        button.innerHTML='<span class="tile-number" aria-hidden="true"></span><span class="tile-caption"><strong></strong><small></small></span>';
+        button.addEventListener('click',()=>{
+          if(busy||completed||index===plans[planIndex].lockedSlot)return;
+          if(selected.includes(index))selected=selected.filter(n=>n!==index);
+          else selected=selected.length<2?[...selected,index]:[selected[1],index];
+          sound('feedback.hint');renderBattle();
+        });root.append(button);
       });
-      root.appendChild(button);
+    }
+    const exhausted=Boolean(plan.maxSwaps&&swaps>=plan.maxSwaps&&!completed);
+    root.querySelectorAll('.habitat-tile').forEach((button,index)=>{
+      button.dataset.tile=tiles[index];button.classList.toggle('locked',index===plan.lockedSlot);
+      button.disabled=index===plan.lockedSlot||busy||completed;
+      button.setAttribute('aria-pressed',String(selected.includes(index)));
+      button.querySelector('.tile-number').textContent=index===plan.lockedSlot?'▣':String(index+1);
+      button.querySelector('strong').textContent=tileName(tiles[index]);
+      button.querySelector('small').textContent=index===plan.lockedSlot?copy('lockedTile'):'';
+      button.setAttribute('aria-label',`${index+1}. ${tileName(tiles[index])}${index===plan.lockedSlot?` · ${copy('lockedTile')}`:''}`);
     });
-    $("swapBtn").disabled = selected.length !== 2 || !allowedPair(selected[0], selected[1], plan);
-    $("status").textContent = feedback ? copy(feedback) : "";
-    $("status").className = feedback === "correct" ? "status good" : feedback === "wrong" ? "status try" : "status";
+    $('swapBtn').disabled=selected.length!==2||!allowedPair(...selected)||busy||completed||exhausted;
+    $('undoBtn').disabled=!history.length||busy||completed;
+    $('resetBtn').disabled=busy||completed;
+    $('status').textContent=exhausted?copy('exhausted'):feedback?copy(feedback):'';
+    $('status').className=`status ${exhausted?'try':completed?'good':''}`;
+    root.classList.toggle('settled',completed);
+    boardRenderer?.update(tiles,selected,{animate,night:theme.night});
+  }
+  function saveClear() {
+    const next={solved:[...new Set([...solved,planIndex])].sort((a,b)=>a-b),best:{...progress.best,[planIndex+1]:Math.min(progress.best[planIndex+1]||Infinity,swaps)}};
+    try {
+      localStorage.setItem(progressKey,JSON.stringify(next));progress=next;solved.add(planIndex);
+      window.WonderAnalytics?.completeStage?.(plans[planIndex].id);return true;
+    }catch {feedback='saveError';return false;}
   }
   function swapSelected() {
-    if (selected.length !== 2) return;
-    const [first, second] = selected;
-    if (!allowedPair(first, second)) return;
-    [tiles[first], tiles[second]] = [tiles[second], tiles[first]];
-    selected = [];
-    swaps += 1;
-    sessionSwaps += 1;
-    if (plans[planIndex].maxSwaps && swaps > plans[planIndex].maxSwaps && !solvedPlan()) {
-      tiles = [...plans[planIndex].tiles];
-      swaps = 0;
-      feedback = "wrong";
-      renderBattle();
-      return;
-    }
-    feedback = solvedPlan() ? "correct" : "wrong";
-    announce("swap", { solved: solvedPlan() });
-    if (solvedPlan()) {
-      solved.add(planIndex);
-      safeStorage.set("weightplay-habitat-blueprint-solved-v8", [...solved].sort((a, b) => a - b).join(","));
-      renderBattle();
-      scheduleSettlement(() => { show("result"); renderResult(); }, 320);
-    } else renderBattle();
+    const plan=plans[planIndex];
+    if(busy||completed||selected.length!==2||!allowedPair(...selected)||(plan.maxSwaps&&swaps>=plan.maxSwaps))return;
+    const [a,b]=selected;history.push([...tiles]);[tiles[a],tiles[b]]=[tiles[b],tiles[a]];
+    selected=[];swaps++;busy=true;completed=solvedPlan();feedback='';
+    if(completed){saveClear();sound('result.win');}else sound(plan.maxSwaps&&swaps>=plan.maxSwaps?'result.lose':'board.move');
+    renderBattle(true);
+    scheduleSettlement(()=>{busy=false;if(completed)show('result');else renderBattle();},completed?650:290);
   }
-  function resultCopy(best) {
-    return copy("resultText", { count: "__COUNT__", best }).replace(/\b3\b/g, String(plans.length)).replace("__COUNT__", String(solved.size));
+  function undoMove(){
+    if(busy||completed||!history.length)return;
+    tiles=history.pop();swaps=Math.max(0,swaps-1);selected=[];feedback='';sound('board.undo');renderBattle(true);
   }
   function renderResult() {
-    if (!$("resultText")) return;
-    const complete = solved.size === plans.length;
-    const hasNext = planIndex < plans.length - 1;
-    $("resultTitle").textContent = complete ? copy("resultTitle") : copy("resultLevel");
-    $("resultText").textContent = resultCopy(bestValue());
-    $("resultMapBtn").hidden = false;
-    $("nextBtn").hidden = false;
-    $("nextBtn").textContent = copy("nextStage");
-    $("nextBtn").disabled = !hasNext;
-    $("nextBtn").setAttribute("aria-disabled", String(!hasNext));
-    $("replayBtn").hidden = false;
-    $("replayBtn").disabled = false;
-    $("replayBtn").textContent = copy("replay");
-    if (complete) {
-      const old = Number(localStorage.getItem("weightplay-habitat-blueprint-best-v1") || 0);
-      if (!old || sessionSwaps < old) localStorage.setItem("weightplay-habitat-blueprint-best-v1", String(sessionSwaps));
-      $("resultText").textContent = resultCopy(Math.min(old || sessionSwaps, sessionSwaps));
+    if(!$('resultText'))return;
+    $('resultTitle').textContent=solved.size===plans.length?copy('resultTitle'):copy('resultLevel');
+    $('resultText').textContent=copy('resultReport',{stage:planIndex+1,moves:swaps,best:bestValue(),count:solved.size})+(feedback==='saveError'?` ${copy('saveError')}`:'');
+    $('nextBtn').disabled=planIndex>=plans.length-1;$('nextBtn').setAttribute('aria-disabled',String(planIndex>=plans.length-1));
+    $('nextBtn').textContent=copy('nextStage');$('replayBtn').textContent=copy('replay');
+    $('best').textContent=copy('best',{count:solved.size});
+    $('mainProgress').lastElementChild.textContent=` · ${solved.size}/30`;
+  }
+  function renderTheme(message=''){
+    $('themeBtn').textContent=copy('themeTitle');
+    $('themeTitle').textContent=copy('themeTitle');$('themeDescription').textContent=copy('themeDescription');
+    $('themeBalance').textContent=String(window.WeightPlayWallet.read().diamonds);
+    $('themePurchaseLabel').textContent=copy(theme.owned?(theme.night?'dayTheme':'nightTheme'):'buyTheme');
+    $('themePurchase').disabled=purchaseBusy||(!theme.owned&&window.WeightPlayWallet.read().diamonds<20);
+    $('themeConfirm').textContent=copy('confirmPurchase');$('themeCancel').textContent=copy('cancel');
+    $('themeClose').textContent=copy('close');$('themeStatus').textContent=message?copy(message):'';
+    $('themeCostIcon').hidden=theme.owned;
+  }
+  function buyTheme(){
+    if(purchaseBusy||theme.owned)return;
+    const wallet=window.WeightPlayWallet,before=wallet.read();
+    if(before.diamonds<20){renderTheme('insufficient');return;}
+    purchaseBusy=true;renderTheme();const old={...theme};let charged=false;
+    try{
+      localStorage.setItem(themeKey,JSON.stringify({pending:true,before:before.diamonds,after:before.diamonds-20}));
+      if(!wallet.spendDiamonds(20))throw new Error('INSUFFICIENT');charged=true;
+      theme={owned:true,night:true};localStorage.setItem(themeKey,JSON.stringify(theme));
+      sound('shop.purchase');
+    }catch{
+      theme=old;
+      try {if(charged)wallet.save(before);localStorage.setItem(themeKey,JSON.stringify(old));}catch{}
+      purchaseBusy=false;$('themeConfirmation').hidden=true;renderTheme('saveError');return;
     }
+    purchaseBusy=false;$('themeConfirmation').hidden=true;renderTheme('themeReady');
   }
   function nextPlan() {
     const nextIndex = planIndex + 1;
@@ -427,12 +419,22 @@
     $("nextBtn")?.addEventListener("click", nextPlan);
     $("replayBtn")?.addEventListener("click", () => startPlan(planIndex));
     $("swapBtn")?.addEventListener("click", swapSelected);
+    $('undoBtn').addEventListener('click',undoMove);
+    $('themeBtn').addEventListener('click',()=>{renderTheme();$('themeDialog').showModal();});
+    $('themeClose').addEventListener('click',()=>{$('themeConfirmation').hidden=true;$('themeDialog').close();});
+    $('themeCancel').addEventListener('click',()=>{$('themeConfirmation').hidden=true;});
+    $('themeConfirm').addEventListener('click',buyTheme);
+    $('themePurchase').addEventListener('click',()=>{
+      if(!theme.owned){$('themeConfirmation').hidden=false;return;}
+      const next={owned:true,night:!theme.night};try{localStorage.setItem(themeKey,JSON.stringify(next));theme=next;renderTheme();}catch{renderTheme('saveError');}
+    });
     $("resetBtn")?.addEventListener("click", () => {
       clearSettlement();
       tiles = [...plans[planIndex].tiles];
       selected = [];
-      swaps = 0;
+      swaps = 0; history=[]; busy=false; completed=false;
       feedback = "";
+      sound("board.undo");
       renderBattle();
       announce("reset");
     });
@@ -440,7 +442,7 @@
     $("battleBackBtn")?.addEventListener("click", () => {
       if (currentScreen === "result") { clearSettlement(); show("stage"); renderStages(); return; }
       if (currentScreen !== "battle") return;
-      if (swaps > 0 || settlementCallback) openLeave();
+      if (swaps > 0 || selected.length || settlementCallback) openLeave();
       else { clearSettlement(); show("stage"); renderStages(); }
     });
     $("localeSelect")?.addEventListener("change", (event) => {
@@ -466,6 +468,12 @@
   function boot() {
     $("app").hidden = false;
     frame = window.mountHabitatBlueprintFrame();
+    frame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup().add($('themeBtn')));
+    boardRenderer=createHabitatRenderer($('habitatGrid'),(unavailable=true)=>{
+      $('habitatGrid').classList.toggle('render-fallback',unavailable);$('renderNotice').hidden=!unavailable;$('renderNotice').textContent=copy('renderFallback');
+    });
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseSettlement();else if(leaveModal?.hidden)resumeSettlement();});
+    window.addEventListener('pagehide',event=>{clearSettlement();if(!event.persisted)boardRenderer?.dispose();});
     ensureLeaveDialog();
     bind();
     if ($("localeSelect")) $("localeSelect").value = locale;
@@ -481,7 +489,7 @@
     plans,
     startPlan,
     allowedPair,
-    getState: () => ({ planIndex, tiles: [...tiles], solved: [...solved], swaps, screen: currentScreen, stagePoolSize: $("stageList")?.querySelectorAll(":scope > [data-wp-stage-pool-node]").length || 0 }),
+    getState: () => ({ completed,busy,history:history.length,renderer:boardRenderer?.stats(),theme:{...theme}, planIndex, tiles: [...tiles], solved: [...solved], swaps, screen: currentScreen, stagePoolSize: $("stageList")?.querySelectorAll(":scope > [data-wp-stage-pool-node]").length || 0 }),
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true });
   else boot();

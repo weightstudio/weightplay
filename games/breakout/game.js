@@ -13,7 +13,7 @@ try{if(location.pathname.startsWith('/games/'))locale=localStorage.getItem('weig
 if(!LOCALES.includes(locale))locale='en';
 let t=copy(locale),screen='main',selected=save.highestUnlocked-1,run=null,scene=null,raf=0,last=0,accumulator=0;
 let practice=false,practiceRequested=new URLSearchParams(location.search).get('practice')==='1',busy=false,paused=false,settled=false,graphicsLost=false;
-let keys=new Set(),pointer=null,returnFocus=null,resultSaved=false,tab='stages',previews=null,hudKey='';
+let keys=new Set(),pointer=null,returnFocus=null,resultSaved=false,tab='stages',previews=null,hudKey='',entryRendered=false;
 const reduced=matchMedia('(prefers-reduced-motion: reduce)'),audio=window.WeightPlayAudio?.createScope();
 const cues={serve:'projectile.launch',bounce:'sport.bounce',wall:'sport.bounce',gate:'impact.metal',armour:'impact.metal',break:'impact.glass',blast:'explosion.small',charge:'mechanism.unlock',pulse:'magic.cast','core-open':'alert.boss','core-hit':'magic.hit',miss:'player.hurt',win:'result.win',lose:'result.lose'};
 window.WeightPlayAudio?.preload(['game.start','ui.click','feedback.error',...new Set(Object.values(cues))]);
@@ -32,6 +32,9 @@ function tick(now){raf=0;if(screen!=='battle'||!run||settled||isBlocked()){stop(
   const events=drainEvents(run),major=events.some(e=>e.type==='blast'||e.type==='win'||e.type==='lose');
   for(const event of events){scene?.effect(event);if(cues[event.type]&&(!major||['blast','win','lose'].includes(event.type)))sound(cues[event.type]);}
   scene?.render(run,dt);hud();
+  // Direct practice may enter Battle before the shared Main readiness bridge.
+  // Notify the shared loader only after this engine has actually drawn a frame.
+  if(scene&&!entryRendered&&window.WeightPlayGameEntryLoader?.ready){window.WeightPlayGameEntryLoader.ready();entryRendered=true;}
   if(run.status==='won'||run.status==='lost'){finish();return;}startLoop();
 }
 function fitCourt(){if(!run||!scene||screen!=='battle')return;const r=$('board').getBoundingClientRect();if(r.width<2||r.height<2)return;
@@ -167,5 +170,5 @@ listen(window,'pagehide',e=>{stop();if(!e.persisted){scene?.dispose();audio?.dis
 listen(window,'pageshow',e=>{if(e.persisted&&screen==='battle'&&!settled){paused=true;openDialog('pauseDialog');}});
 const courtObserver=new ResizeObserver(()=>fitCourt());courtObserver.observe($('board'));
 localize();switchScreen('main');
-window.WPBreakoutDiagnostics=Object.freeze({snapshot:()=>({screen,status:run?.status,stage:run?.level.id,score:run?.score,lives:run?.lives,elapsed:run?.elapsed,paused,practice,raf:raf?1:0,geometry:run?{width:run.width,height:run.height}:null,render:scene?.metrics(),audio:audio?.stats()})});
+window.WPBreakoutDiagnostics=Object.freeze({snapshot:()=>({screen,status:run?.status,stage:run?.level.id,score:run?.score,lives:run?.lives,elapsed:run?.elapsed,paused,practice,raf:raf?1:0,geometry:run?{width:run.width,height:run.height}:null,ball:run?{...run.ball}:null,paddle:run?{x:run.paddle,width:run.paddleWidth}:null,render:scene?.metrics(),audio:audio?.stats()})});
 await LocalPractice.register({gameId:'breakout',stageIds:LEVELS.map(l=>l.id),enable:enabled=>{practice=enabled;frame.stageUI.refresh(selected);if(!enabled&&practiceRequested){stop();switchScreen('main');}},startStage:id=>startStage(Number(id)-1)});

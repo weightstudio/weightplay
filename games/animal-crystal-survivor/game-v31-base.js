@@ -1,4 +1,26 @@
 ﻿(() => {
+  // Fail before constructing game state when the shared screen/input owner
+  // failed to load. The ordinary entry supplies the shared recovery renderer.
+  const readyStylePaths = new Set();
+  const inspectStyle = sheet => {
+    try {
+      const rules = sheet.cssRules;
+      if (!rules.length) return;
+      if (sheet.href) readyStylePaths.add(new URL(sheet.href).pathname);
+      for (const rule of rules) if (rule.styleSheet) inspectStyle(rule.styleSheet);
+    } catch { /* Missing required styles fail the same shared readiness gate. */ }
+  };
+  for (const sheet of document.styleSheets) inspectStyle(sheet);
+  const requiredStyles = ['style.css', 'style-v31-base.css', 'interface-7-cleanup.css']
+    .map(file => '/games/animal-crystal-survivor/' + file)
+    .concat(['/src/game-screen-frame.css', '/src/game-play-ui.css', '/src/interface9-shared-screens.css', '/src/battle-canvas-standard.css']);
+  const stylesReady = requiredStyles.every(suffix => [...readyStylePaths].some(path => path.endsWith(suffix)));
+  if (!stylesReady || !window.WeightPlayScreenFrame?.mount || !window.WeightPlayPlayUI?.mountStage
+      || !window.WeightPlayStageRailI9?.attachLogical || !window.WeightPlayJoystick?.create
+      || !window.CrystalTalents?.copy || typeof window.DungeonVentureStageConfig !== 'function') {
+    window.WeightPlayGameEntryLoader?.fail(undefined, () => location.reload());
+    return;
+  }
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -1556,17 +1578,24 @@
 
   let preloadGeneration = 0;
   function preload() {
+    nodes.startBtn.disabled = true;
+    const entryLoader = window.WeightPlayGameEntryLoader;
+    if (!entryLoader?.isActive) {
+      // Frame owns loading the shared component. Its asynchronous bootstrap
+      // must finish before this engine can report measured readiness/failure.
+      document.querySelector('script[data-wp-game-entry-loader-bootstrap]')
+        ?.addEventListener('load', () => preload(), { once: true });
+      return;
+    }
     const generation = ++preloadGeneration;
     const entries = Object.entries(assetPaths);
-    const entryLoader = window.WeightPlayGameEntryLoader?.isActive === true
-      ? window.WeightPlayGameEntryLoader : null;
     let done = 0;
     let settled = false;
     const failures = [];
     entryLoader?.begin(entries.length);
     const finish = () => {
       if (settled || generation !== preloadGeneration) return;
-      if (entryLoader && failures.length) {
+      if (failures.length) {
         settled = true;
         entryLoader.fail(undefined, () => preload());
         return;
@@ -1576,6 +1605,7 @@
       nodes.loadingFill.style.width = "100%";
       nodes.loadingPanel.classList.add("hidden");
       draw();
+      nodes.startBtn.disabled = false;
       entryLoader?.ready();
       track("game_ready", { prototype: true });
     };
@@ -1600,7 +1630,6 @@
       };
       images[key] = image(src, () => settle(true), () => settle(false));
     });
-    if (!entryLoader) window.setTimeout(finish, 1600);
   }
 
   function setLocale(next) {
@@ -1895,14 +1924,14 @@
     return rule;
   }
 
-  function showStageSelection(shouldScroll = true) {
+  function showStageSelection(shouldScroll = true, selectedStage = save.selectedStage) {
     runToken += 1;
     clearInput();
     setUpgradeModalOpen(false, false);
     state.mode = "stage";
     show(nodes.stagePanel);
     refreshStageBlockRewardStates();
-    stageBrowseStage = Math.max(1, Math.min(STAGE_COUNT, save.unlockedStage));
+    stageBrowseStage = Math.max(1, Math.min(STAGE_COUNT, Number(selectedStage) || 1));
     setStagePage("stages");
     renderStageSelector(shouldScroll);
     requestAnimationFrame(() => nodes.stageRail.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true }));
@@ -3595,7 +3624,7 @@
   nodes.startBtn.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
-  nodes.startBtn.addEventListener("click", () => showStageSelection(true));
+  nodes.startBtn.addEventListener("click", () => showStageSelection(true, save.unlockedStage));
   nodes.stageBackBtn.addEventListener("click", () => {
     track("return_session", { from_screen: "stage" });
     state.mode = "menu";

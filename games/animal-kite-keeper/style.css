@@ -1,162 +1,115 @@
-/* Kite Keeper owns the flight puzzle and its markers; the shared I9 frame
-   owns page backgrounds, headers, settings, Stage cards and Stage gestures. */
-:root {
-  color-scheme: dark;
-  font-family: ui-rounded, "Avenir Next", system-ui, sans-serif;
-  --kite-ink: #17324a;
-  --kite-cream: #f4fbfa;
-  --kite-accent: #3eb9bf;
-  --kite-line: #7cced0;
-}
+/* Game content only. The shared I9 frame owns headers, Stage and page geometry. */
+:root { color-scheme: light; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #24483f; background: #f3f3e9; }
 * { box-sizing: border-box; }
+body { margin: 0; }
 [hidden] { display: none !important; }
-body { min-width: 320px; margin: 0; }
-button, select { font: inherit; }
-button { cursor: pointer; }
-.screen { width: 100%; min-width: 0; margin: 0; }
-.battle-screen { position: relative; min-height: 0; color: #f6fbff; }
-.battle-content {
-  width: 100%; height: 100%; min-height: 0; overflow: hidden;
-  display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto;
-  gap: 8px; padding: 8px 12px;
+button, a { -webkit-tap-highlight-color: transparent; }
+button { font: inherit; cursor: pointer; }
+button:disabled { cursor: default; }
+button:focus-visible, a:focus-visible, .flight-board:focus-visible { outline: 3px solid #178c93; outline-offset: 3px; }
+.screen { position: relative; }
+.main-hero { display: grid; gap: 20px; }
+.main-poster { width: 100%; height: auto; object-fit: contain; }
+.main-copy { text-align: center; }
+.main-copy p { margin: 12px auto; }
+.eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+.subtitle { font-size: 18px; line-height: 1.5; }
+.primary { color: white; background: #28796a; border: 1px solid #266958; border-radius: 16px; min-height: 52px; font-weight: 800; padding: 12px 22px; }
+.guide-layout { display: grid; grid-template-columns: 120px 1fr; gap: 24px; align-items: center; }
+.guide-character { width: 120px; height: 180px; object-fit: contain; }
+.main-progress, .best { color: #536b62; font-size: 14px; }
+.battle-content { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0,1fr) auto; align-content: center; gap: 9px; padding: 14px 12px 10px; width: 100%; height: 100%; min-height: 0; overflow: hidden; background: linear-gradient(170deg,#f4f0df,#e2efea 58%,#c8ded8); }
+.flight-objective { text-align: center; min-width: 0; }
+.flight-objective p { margin: 0; font-size: 15px; font-weight: 750; line-height: 1.4; }
+.flight-objective #currentRule { margin-top: 4px; color: #5c756c; font-size: 12px; font-weight: 500; }
+.flight-hud { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; min-height: 30px; }
+.flight-hud strong { padding: 6px 12px; font-size: 12px; font-variant-numeric: tabular-nums; border: 1px solid #ccdbcc; background: #ffffff9e; border-radius: 20px; }
+#assisted { font-size: 11px; color: #626c6a; }
+.sky-window { position: relative; min-height: 0; width: 100%; aspect-ratio: 1; align-self: center; justify-self: center; max-height: 100%; }
+.flight-board { width: 100%; height: 100%; position: relative; touch-action: none; border-radius: 28px; outline-offset: -4px; }
+.flight-board canvas { display: block; width: 100%; height: 100%; border-radius: inherit; }
+#boardLabels { position: absolute; inset: 0; pointer-events: none; }
+.lantern-number { position: absolute; transform: translate(-50%,-50%); width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: #fff1c4; color: #88582b; border: 2px solid #b39255; font: 800 12px/1 system-ui; box-shadow: 0 2px 5px #364c3e33; }
+.lantern-number.next-light { background: #ffda75; border-color: #88612e; color: #65461f; }
+.sky-error { position: absolute; inset: 0; display: grid; place-content: center; padding: 28px; text-align: center; border-radius: 24px; background: #eef3e9f5; z-index: 3; }
+.sky-error button, .battle-actions button { min-height: 44px; color: #345d53; border: 1px solid #afc8bd; border-radius: 12px; background: #ffffffa8; font-size: 13px; font-weight: 700; padding: 8px 12px; }
+.flight-controls { display: grid; gap: 8px; min-width: 0; }
+.flight-caption { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; color: #597469; font-variant-numeric: tabular-nums; }
+.wind-grid { direction: ltr; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); grid-template-rows: repeat(2,48px); gap: 6px; }
+.wind-grid button { display: flex; gap: 8px; align-items: center; justify-content: center; min-height: 48px; color: #fff9e6; border: 1px solid #317263; border-radius: 14px; background: linear-gradient(#478f7f,#2e7364); box-shadow: 0 3px 0 #245e53; font-size: 13px; font-weight: 750; transition: filter 100ms, transform 100ms, box-shadow 100ms; }
+.wind-grid [data-wind=north] { grid-area: 1 / 2; }
+.wind-grid [data-wind=west] { grid-area: 2 / 1; }
+.wind-grid [data-wind=south] { grid-area: 2 / 2; }
+.wind-grid [data-wind=east] { grid-area: 2 / 3; }
+.wind-arrow { font-size: 23px; line-height: 1; font-weight: 500; }
+.wind-grid button:active { transform: translateY(2px); box-shadow: 0 1px 0 #245e53; }
+.wind-grid button:disabled { filter: saturate(.45); opacity: .62; }
+.wind-grid button.hinted { outline: 3px solid #efbd5d; outline-offset: 2px; }
+.battle-actions { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+.battle-actions button:disabled { color: #8b9d94; border-color: #c5d5cd; }
+.status { margin: 0; min-height: 34px; line-height: 1.35; font-size: 12px; text-align: center; color: #79502c; }
+.board-legend { margin: 0; text-align: center; color: #62776c; font-size: 10px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.kite-overlay { position: absolute; inset: 0; display: grid; place-items: center; z-index: 80; padding: 20px; background: #143e34b8; backdrop-filter: blur(9px); overflow: auto; }
+.dialog-card { width: min(100%,420px); padding: 26px; border-radius: 26px; background: #faf7e9; border: 1px solid #fff7cf; box-shadow: 0 16px 60px #173a3b33; text-align: center; color: #31584b; }
+.dialog-card h2 { font-size: 24px; margin: 8px 0 12px; }
+.dialog-card p { font-size: 14px; line-height: 1.6; margin: 8px 0; }
+.dialog-card button { min-height: 48px; border: 1px solid #adc7b6; background: #f2f2e6; color: #365f50; border-radius: 13px; padding: 10px 16px; font-size: 14px; font-weight: 750; }
+.dialog-card .primary { background: #317d67; color: #fff9e8; border-color: #317d67; }
+.result-character { width: 96px; height: 144px; object-fit: contain; }
+.dialog-card .result-stars { color: #b88b31; font-size: 32px; letter-spacing: 6px; line-height: 1.2; }
+.result-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 20px; }
+.result-actions #nextBtn { grid-column: 2; grid-row: 1; }
+.result-actions #replayBtn { grid-column: 1 / -1; }
+.leave-card button { display: block; width: 100%; margin-top: 12px; }
+.dialog-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.dialog-heading h2 { margin: 0; font-size: 22px; }
+.dialog-heading button { min-width: 44px; flex-shrink: 0; }
+.equipment-card { max-height: 100%; overflow: auto; text-align: start; }
+.equipment-card > p { color: #617269; }
+.equipment-card .wallet { text-align: end; font-size: 20px; color: #347b8b; }
+.equipment-item { display: grid; grid-template-columns: 32px minmax(0,1fr) auto; gap: 10px; align-items: center; padding: 12px 0; border-top: 1px solid #d6dfcc; }
+.equipment-item strong { font-size: 14px; }
+.equipment-item button { font-size: 12px; max-width: 160px; }
+.equipment-item button:disabled { opacity: .62; }
+.skin-swatch { width: 26px; height: 26px; border-radius: 6px; border: 2px solid #ffffff; background: linear-gradient(45deg,#218e82 50%,#ffd67b 50%); box-shadow: 0 1px 5px #315c4633; }
+.skin-coral .skin-swatch { background: linear-gradient(45deg,#f18373 50%,#ffdc94 50%); }
+.skin-moon .skin-swatch { background: linear-gradient(45deg,#678be4 50%,#e3edff 50%); }
+.skin-gold .skin-swatch { background: linear-gradient(45deg,#e9b849 50%,#fff3bc 50%); }
+.skin-aurora .skin-swatch { background: linear-gradient(45deg,#56e6cc 50%,#a69af2 50%); }
+.light-flight { position: fixed; width: 12px; height: 12px; background: #ffe8a0; border: 2px solid #d7aa42; border-radius: 3px; box-shadow: 0 0 12px #fff6bd; pointer-events: none; z-index: 120; }
+.save-warning { position: fixed; z-index: 150; inset-inline: 12px; bottom: 8px; margin: 0; padding: 10px; background: #fff3ce; border: 1px solid #cdb475; border-radius: 10px; color: #6b532c; font-size: 12px; text-align: center; }
+@media (min-width:700px) {
+  .battle-content { grid-template-columns: minmax(0,1fr) 240px; grid-template-rows: auto auto minmax(0,1fr); gap: 10px 20px; padding: 20px; }
+  .flight-objective { grid-column: 2; grid-row: 1; align-self: end; }
+  .flight-hud { grid-column: 2; grid-row: 2; }
+  .sky-window { grid-column: 1; grid-row: 1 / 4; }
+  .flight-controls { grid-column: 2; grid-row: 3; align-self: start; }
+  .flight-caption { display: grid; text-align: center; }
+  .wind-grid { grid-template-rows: repeat(2,52px); }
+  .wind-grid button { gap: 4px; font-size: 11px; }
+  .battle-actions { gap: 5px; }
+  .battle-actions button { padding-inline: 6px; font-size: 12px; }
 }
-.prompt {
-  min-width: 0; margin: 0; padding: 8px 12px;
-  border: 1px solid #9bdadd66; border-radius: 12px;
-  background: #0a2637d9; color: #efffff; font-weight: 750;
-  line-height: 1.35; text-align: center;
+@media (min-width:700px) and (max-height:760px) {
+  .battle-content { padding: 8px 14px; grid-template-columns: minmax(0,1fr) 272px; gap: 6px 16px; }
+  .sky-window { width: min(100%,310px); }
+  .flight-objective p { font-size: 14px; }
+  .flight-objective #currentRule { font-size: 11px; }
+  .flight-hud { gap: 6px; min-height: 24px; }
+  .flight-hud strong { padding: 3px 8px; font-size: 11px; }
+  .wind-grid { grid-template-rows: repeat(2,44px); gap: 4px; }
+  .wind-grid button { min-height: 44px; }
+  .flight-controls { gap: 6px; }
+  .status { min-height: 28px; font-size: 11px; }
+  .board-legend { font-size: 9px; }
+  .dialog-card { padding: 18px 22px; }
+  .result-card { display: grid; grid-template-columns: 100px 1fr; column-gap: 16px; width: min(100%,580px); }
+  .result-character { grid-row: 1 / 6; align-self: center; }
+  .result-card h2 { font-size: 21px; margin: 3px 0; }
+  .result-card p { margin: 2px 0; }
+  .result-actions { grid-column: 2; grid-template-columns: repeat(3,minmax(0,1fr)); margin-top: 10px; }
+  .result-actions #replayBtn { grid-column: 3; grid-row: 1; }
+  .result-actions button { padding-inline: 7px; }
 }
-.flight-card, .choice-card {
-  min-width: 0; border: 2px solid #7cced0; border-radius: 18px;
-  background: #102d40e8; box-shadow: 0 5px 0 #071b2b;
-}
-.flight-card {
-  width: min(100%, 720px); min-height: 0; margin: 0 auto; padding: 10px;
-  display: flex; flex-direction: column; align-self: stretch;
-}
-.flight-head {
-  display: flex; justify-content: space-between; align-items: center; gap: 12px;
-  min-height: 28px; color: #d3f4f3; font-size: .9rem; font-weight: 800;
-}
-.flight-head strong { color: #fff; font-variant-numeric: tabular-nums; }
-.flight-board {
-  position: relative; width: min(100%, 640px); min-height: 120px; flex: 1 1 auto;
-  aspect-ratio: 1.8; align-self: center; overflow: hidden; margin: 7px 0;
-  border: 2px solid #9bdadd; border-radius: 16px;
-  background-image: linear-gradient(180deg, #11374a30, #eef8ed66 76%),
-    url("assets/animal-kite-keeper-background-block-v1.webp");
-  background-position: center; background-size: cover;
-}
-.flight-board::before, .flight-board::after {
-  position: absolute; content: ""; border-radius: 50%; background: #fff8;
-  filter: blur(1px); pointer-events: none;
-}
-.flight-board::before { width: 130px; height: 44px; left: 12%; top: 22%; }
-.flight-board::after { width: 160px; height: 50px; right: 5%; bottom: 19%; }
-.wind-line {
-  position: absolute; height: 3px; border-radius: 3px;
-  background: #6eb7c0aa; transform-origin: left center;
-}
-.line-a { width: 43%; left: 7%; top: 32%; transform: rotate(13deg); }
-.line-b { width: 41%; left: 48%; top: 64%; transform: rotate(-12deg); }
-.dock-marker, .kite-marker {
-  position: absolute; display: grid; place-items: center;
-  transition: left 180ms cubic-bezier(.2,.7,.25,1), top 180ms cubic-bezier(.2,.7,.25,1);
-}
-.dock-marker {
-  width: 54px; height: 54px; left: 76%; top: 16%; border-radius: 50%;
-  background: #ffe6a8dd; box-shadow: 0 0 0 7px #fff6;
-}
-.kite-marker {
-  width: 54px; height: 54px; left: 7%; top: 70%;
-  transform: translate(-50%, -50%);
-}
-.atlas-prop {
-  display: block; width: 100%; height: 100%;
-  background-image: url("assets/animal-kite-keeper-kite-atlas-block-v1.webp");
-  background-repeat: no-repeat; background-size: 200% 200%; background-color: transparent;
-}
-.atlas-kite, .atlas-dock, .atlas-compass { height: auto; aspect-ratio: 3 / 2; align-self: center; }
-.atlas-kite { background-position: 0 0; }
-.atlas-gust {
-  position: absolute; width: 104px; height: 70px; left: 47%; top: 23%;
-  opacity: .72; background-position: 100% 0; filter: drop-shadow(0 4px 6px #2b6f7c44);
-}
-.atlas-dock { background-position: 0 100%; }
-.atlas-compass {
-  position: absolute; width: 48px; right: 4%; bottom: 5%;
-  background-position: 100% 100%; opacity: .82; filter: drop-shadow(0 3px 4px #17324a55);
-}
-.position, .gusts { margin: 2px 0 0; color: #d3f4f3; font-size: .84rem; font-weight: 750; text-align: center; }
-.choice-card { width: min(100%, 720px); margin: 0 auto; padding: 8px 12px; }
-.choice-card h2 { margin: 0 0 3px; color: #fff; font-size: 1rem; text-align: center; }
-.choice-help { margin: 0 0 6px; color: #d3f4f3; font-size: .86rem; text-align: center; }
-.wind-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
-.wind-card {
-  min-width: 0; min-height: 46px; padding: 4px 8px;
-  border: 2px solid #79cbd0; border-radius: 12px;
-  background: #f4fbfa; color: #1c5868; font-weight: 800;
-}
-.wind-card:hover:not(:disabled), .wind-card:focus-visible { border-color: #b7fff7; outline: 2px solid #b7fff7; outline-offset: 2px; }
-.wind-card:disabled { opacity: .58; cursor: default; }
-.wind-card[aria-pressed="true"] { background: #d5efed; box-shadow: inset 0 0 0 2px #fff; }
-.wind-card > span { display: inline-block; margin-inline-end: 6px; font-size: 1.15rem; line-height: 1; }
-.selection { min-height: 20px; margin: 5px 0 0; color: #a8fff0; font-weight: 800; text-align: center; }
-.battle-actions { display: grid; grid-template-columns: minmax(0, 1fr); width: min(100%, 420px); margin: 0 auto; }
-.primary, .secondary {
-  min-width: 0; min-height: 46px; padding: 8px 12px;
-  border: 2px solid #7cced0; border-radius: 12px;
-  background: #16384b; color: #f8ffff; font-weight: 850;
-}
-.primary { background: #167c72; border-color: #9ce7d8; }
-.primary:hover:not(:disabled), .secondary:hover:not(:disabled) { filter: brightness(1.12); }
-.primary:disabled, .secondary:disabled { opacity: .58; cursor: default; }
-.status { min-height: 20px; margin: 0; color: #d3f4f3; font-weight: 800; text-align: center; }
-.status.try { color: #ffd0a7; }
-.status.good { color: #a8fff0; }
-.result-layer {
-  position: absolute; z-index: 30; inset: 0; padding: 16px;
-  display: grid; place-items: center; overflow: auto;
-  background: #031723c9; backdrop-filter: blur(5px);
-}
-.result-card {
-  width: min(100%, 460px); max-height: 100%; overflow: auto;
-  display: grid; justify-items: center; gap: 8px;
-  padding: 18px; border: 2px solid #8ce5db; border-radius: 20px;
-  background: #0d2c3beF; color: #f8ffff; text-align: center;
-  box-shadow: 0 8px 0 #061b28;
-}
-.result-card .eyebrow { margin: 0; color: #a8fff0; font-size: .8rem; font-weight: 900; }
-.result-character { width: min(90px, 18vh); height: min(112px, 22vh); object-fit: contain; }
-.result-card h2 { margin: 0; font-size: clamp(1.35rem, 5vw, 2rem); line-height: 1.12; }
-.result-text { min-height: 24px; margin: 0; color: #d3f4f3; line-height: 1.45; }
-.result-actions { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr); gap: 7px; }
-:focus-visible { outline: 3px solid #b7fff7; outline-offset: 3px; }
-@media (min-width: 700px) {
-  .battle-content { grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr); grid-template-rows: auto minmax(0, 1fr) auto auto; }
-  .prompt { grid-column: 1 / -1; }
-  .flight-card { grid-column: 1; grid-row: 2 / 5; }
-  .choice-card { grid-column: 2; grid-row: 2; align-self: center; }
-  .battle-actions { grid-column: 2; grid-row: 3; width: 100%; }
-  .status { grid-column: 2; grid-row: 4; align-self: center; }
-  .wind-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .result-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .result-actions button { min-height: 52px; }
-}
-@media (max-height: 500px) and (orientation: landscape) {
-  .battle-content { gap: 5px; padding: 4px 8px; }
-  .prompt { padding: 5px 8px; font-size: .8rem; line-height: 1.2; }
-  .flight-card { padding: 6px; }
-  .flight-board { min-height: 80px; margin: 4px 0; }
-  .choice-card { padding: 6px 8px; }
-  .choice-help { margin-bottom: 3px; font-size: .76rem; }
-  .wind-card { min-height: 44px; padding: 2px; font-size: .875rem; }
-  .battle-actions .secondary { min-height: 44px; }
-  .result-layer { padding: 8px; }
-  .result-card { gap: 4px; padding: 8px; }
-  .result-character { width: 52px; height: 58px; }
-  .result-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
-}
+@media (prefers-reduced-motion:reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }

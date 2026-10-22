@@ -2,6 +2,7 @@
 window.DungeonVentureStageConfig = ({stages, save, text, regionName, stageName, stageRule, enemyLesson, modeObjective, rewardState}) => ({
   gameId:'animal-crystal-survivor',count:stages.length,
   poster:'/assets/animal-crystal-survivor-otter-cover-v26.webp',
+  background:'/assets/lobby-block-atmosphere.svg',
   stage(index) {
     const item=stages[index], state=save(), locked=item.number>state.unlockedStage;
     const cleared=state.completedStages.includes(item.number);

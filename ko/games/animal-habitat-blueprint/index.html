@@ -26,7 +26,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-habitat-blueprint" />
-  <meta name="weightplay-game-version" content="v18" />
+  <meta name="weightplay-game-version" content="v19" />
   <meta name="weightplay-interface-version" content="9" />
   <meta name="weightplay-scene-controls" content="immutable" />
   <meta name="theme-color" content="#294a55" />
@@ -36,8 +36,8 @@
   <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261016-shared-play1" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20261020-shared-play1" />
   <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261020-habitat-blueprint-i9-play-ui1-battle-background1" />
-  <link rel="stylesheet" href="art.css?v=20261020-habitat-blueprint-i9-art-content1" />
-  <link rel="stylesheet" href="style.css?v=20261020-habitat-blueprint-i9-short-landscape2" /><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
+  <link rel="stylesheet" href="art.css?v=20261022-habitat19" />
+  <link rel="stylesheet" href="style.css?v=20261022-habitat19" /><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261020-habitat-blueprint-i9-shared-frame1">
   <meta name="description" content="네 서식지 타일을 바꿔 모든 이웃 단서를 만족시키고 동물들의 차분한 집을 완성하세요." />
@@ -55,7 +55,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-runtime-localize="off" data-wp-game-id="animal-habitat-blueprint" data-wp-audience="general" data-screen="main" data-wp-game-version="v18" data-wp-interface-version="9">
+<body data-runtime-localize="off" data-wp-game-id="animal-habitat-blueprint" data-wp-audience="general" data-screen="main" data-wp-game-version="v19" data-wp-interface-version="9">
   <div id="loading" class="screen loading-screen"><div class="loader-mark">⌂</div><p data-i18n="loading">서식지 설계도를 펼치는 중…</p></div>
   <main id="app" data-wp-frame-root data-wp-play-ui="1" hidden>
     <section id="mainScreen" class="screen main-screen" data-screen="main">
@@ -67,14 +67,14 @@
         </select>
       </header>
       <div id="mainContent" class="main-content">
-        <img class="main-poster" data-wp-frame-poster src="assets/animal-habitat-blueprint-cover-v2.webp" alt="서식지 타일 추리 게임 이미지" width="1536" height="1024" />
+        <img class="main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-habitat-blueprint.webp" alt="서식지 타일 추리 게임 이미지" width="1536" height="1024" />
         <div class="main-copy" data-wp-frame-copy>
           <p class="eyebrow" data-i18n="world">모스라이트 야외 관측소</p>
-          <p class="intro main-summary" data-i18n="intro" data-wp-frame-summary>네 서식지 타일을 배열해 동물의 작은 집에 알맞은 이웃을 만들어 보세요.</p>
+          <p class="intro main-summary" data-i18n="intro" data-wp-frame-summary>작은 살아 있는 서식지를 만드세요. 단서를 읽고 두 조각을 바꿔 각 집의 자리를 찾으세요.</p>
           <div id="mainProgress" class="main-progress" data-wp-frame-progress role="status" aria-live="polite"><strong data-i18n="chapter">서식지 계획</strong><span>&nbsp;30 stages · 6 chapters</span></div>
           <div class="main-actions"><button id="startBtn" class="primary" type="button" data-wp-main-start data-i18n="start">설계도 열기</button><button id="mapBtn" class="secondary" type="button" data-i18n="choose">계획 선택</button></div>
           <p class="eyebrow" data-i18n="kicker">차분한 계획 퍼즐</p>
-          <p id="best" class="best" data-i18n="best">최고: {best}회 교환</p>
+          <p id="best" class="best" data-i18n="best">복원한 서식지 {count}/30</p>
         </div>
       </div>
     </section>
@@ -88,39 +88,42 @@
       <div id="battleContent">
         <div id="battleStats" hidden><strong id="planTitle">Pondside plan</strong><span id="progressPill" class="pill">1 / 30</span></div>
         <div id="battleLive">
-          <p class="eyebrow" data-i18n="round">블루프린트</p><p id="prompt" class="prompt"></p><ol id="rules" class="rules" aria-live="polite"></ol>
+          <p id="clueProgress" class="eyebrow"></p><p id="prompt" class="prompt"></p><ol id="rules" class="rules" aria-live="polite"></ol>
           <p id="selection" class="selection" aria-live="polite"></p><div id="habitatGrid" class="habitat-grid" role="group" aria-label="Habitat tiles"></div>
-          <div class="battle-actions"><button id="swapBtn" class="primary" type="button" data-wp-primary-action data-wp-frame-action="primary" data-i18n="swap" disabled>선택 교환</button><button id="resetBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="reset">계획 초기화</button></div>
-          <p id="status" class="status" role="status" aria-live="polite"></p>
+          <div class="battle-actions"><button id="swapBtn" class="primary" type="button" data-wp-primary-action data-wp-frame-action="primary" data-i18n="swap" disabled>선택 교환</button><button id="undoBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="undo">되돌리기</button><button id="resetBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="reset">계획 초기화</button></div>
+          <p id="renderNotice" hidden role="status"></p><p id="status" class="status" role="status" aria-live="polite"></p>
         </div>
-        <section id="resultScreen" class="result-substate" data-screen="result" hidden aria-labelledby="resultTitle"><img class="guide-art result-guide-art" src="assets/animal-habitat-blueprint-guide-v1.webp" alt="" aria-hidden="true" width="1024" height="1536" /><div class="result-icon">⌂</div><p class="eyebrow" data-i18n="finished">계획 완료</p><h2 id="resultTitle" data-i18n="resultTitle">모든 서식지가 잘 맞아요!</h2><p id="resultText" class="intro"></p><div class="result-actions"><button id="resultMapBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="resultStages">스테이지</button><button id="nextBtn" class="primary" type="button" data-wp-frame-action="primary" data-i18n="nextStage">다음 스테이지</button><button id="replayBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="replay">다시 플레이</button></div></section>
+        <section id="resultScreen" class="result-substate" data-screen="result" hidden aria-labelledby="resultTitle"><img class="guide-art result-guide-art" src="/assets/weightplay-character-moss-shell-turtle-block-v1.webp" alt="" aria-hidden="true" width="1024" height="1536" /><div class="result-icon" aria-hidden="true">✓</div><p class="eyebrow" data-i18n="finished">계획 완료</p><h2 id="resultTitle" data-i18n="resultTitle">모든 서식지가 잘 맞아요!</h2><p id="resultText" class="intro"></p><div class="result-actions"><button id="resultMapBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="resultStages">스테이지</button><button id="nextBtn" class="primary" type="button" data-wp-frame-action="primary" data-i18n="nextStage">다음 스테이지</button><button id="replayBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="replay">다시 플레이</button></div></section>
       </div>
     </section>
     <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-copy-aria-label="guideAria" aria-label="서식지 블루프린트 게임 정보">
       <div class="game-info-hero">
-        <div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay 오리지널 게임 가이드</span><h2 data-copy="title" data-wp-game-title data-runtime-localize="off">서식지 타일 추리</h2><p data-copy="guideIntro">네 서식지 타일을 교환해 모든 이웃 단서를 맞추고 동물들의 차분하고 연결된 집을 만들어 보세요.</p></div>
+        <div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay 오리지널 게임 가이드</span><h2 data-copy="title" data-wp-game-title data-runtime-localize="off">서식지 타일 추리</h2><p data-copy="guideIntro">작은 살아 있는 서식지를 만드세요. 단서를 읽고 두 조각을 바꿔 각 집의 자리를 찾으세요.</p></div>
         <div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">게임플레이</span><strong data-copy="guideGameplayValue">서식지 조건 퍼즐</strong></div><div class="game-info-fact"><span data-copy="guideGenre">장르</span><strong data-copy="guideGenreValue">퍼즐 · 논리 · 공간 계획 · 가족 · 동물</strong></div></div>
       </div>
       <div class="game-info-sections">
-        <article class="game-info-section"><h3 data-copy="guidePlansTitle">서식지 계획</h3><p data-copy="guidePlansIntro">네 서식지 타일을 교환해 모든 이웃 단서를 맞추고 동물들의 차분하고 연결된 집을 만들어 보세요. 맞닿음, 떨어짐, 위아래 단서를 함께 사용하세요. 모든 계획은 다시 시도할 수 있습니다.</p><ol><li data-copy="guideHow1">세 가지 현장 메모를 읽으세요.</li><li data-copy="guideHow2">타일 두 개를 선택해 교환하세요.</li><li data-copy="guideHow3">배열이 맞지 않으면 안전하게 초기화하세요.</li></ol></article>
+        <article class="game-info-section"><h3 data-copy="guidePlansTitle">서식지 계획</h3><p data-copy="guidePlansIntro">작은 살아 있는 서식지를 만드세요. 단서를 읽고 두 조각을 바꿔 각 집의 자리를 찾으세요. 두 서식지를 선택한 뒤 교환하세요. 네 조각 중 아무 두 조각이나 교환하세요. 여섯 조각에서 방향과 행 단서를 조합하세요.</p><ol><li data-copy="guideHow1">여섯 조각에서 방향과 행 단서를 조합하세요.</li><li data-copy="guideHow2">두 서식지를 선택한 뒤 교환하세요.</li><li data-copy="guideHow3">표시된 횟수 안에 해결하세요. 되돌리기는 무료입니다.</li></ol></article>
         <article class="game-info-section"><h3 data-copy="guideCluesTitle">현장 메모 이해하기</h3><p data-copy="guideCluesBody">맞닿음, 떨어짐, 위아래 단서를 함께 사용하세요. 모든 계획은 다시 시도할 수 있습니다.</p></article>
-        <article class="game-info-section"><h3 data-copy="guideCampaignTitle">6개 챕터와 30개 스테이지</h3><p data-copy="guideCampaignBody">30개 스테이지 · 6개 챕터</p></article>
-        <article class="game-info-section"><h3 data-copy="guideStrategyTitle">안정적인 풀이 방법</h3><p data-copy="guideStrategyBody">맞닿음, 떨어짐, 위아래 단서를 함께 사용하세요. 모든 계획은 다시 시도할 수 있습니다.</p><p data-copy="guideStrategyBody2">배열이 맞지 않으면 안전하게 초기화하세요.</p></article>
-        <article class="game-info-section"><h3 data-copy="guideControlsTitle">조작, 피드백, 복구</h3><p data-copy="guideControlsBody">세 가지 현장 메모를 읽으세요. 타일 두 개를 선택해 교환하세요. 배열이 맞지 않으면 안전하게 초기화하세요.</p></article>
-        <article class="game-info-section"><h3 data-copy="guideResultsTitle">결과와 저장</h3><p data-copy="guideResults">30개 스테이지 · 6개 챕터. 예. 이 브라우저에만 저장됩니다.</p></article>
-        <article class="game-info-section"><h3 data-copy="guideTipsTitle">실용적인 팁</h3><ul><li data-copy="guideTip1">세 가지 현장 메모를 읽으세요.</li><li data-copy="guideTip2">타일 두 개를 선택해 교환하세요.</li><li data-copy="guideTip3">맞닿음, 떨어짐, 위아래 단서를 함께 사용하세요. 모든 계획은 다시 시도할 수 있습니다.</li><li data-copy="guideTip4">배열이 맞지 않으면 안전하게 초기화하세요.</li><li data-copy="guideTip5">예. 이 브라우저에만 저장됩니다.</li></ul></article>
-        <article class="game-info-section"><h3 data-copy="faqTitle">자주 묻는 질문</h3><dl><div><dt data-copy="faqProgressQuestion">진행 상황이 저장되나요?</dt><dd data-copy="faqProgressAnswer">예. 이 브라우저에만 저장됩니다.</dd></div><div><dt data-copy="faqMistakeQuestion">잘못 교환하면 스테이지가 끝나나요?</dt><dd data-copy="faqMistakeAnswer">아니요. 계속 배열하거나 시작 배치로 초기화할 수 있어요.</dd></div><div><dt data-copy="faqTouchQuestion">모서리만 닿아도 이웃인가요?</dt><dd data-copy="faqTouchAnswer">아니요. 두 서식지가 한 변을 완전히 공유해야 해요.</dd></div><div><dt data-copy="faqChaptersQuestion">후반 챕터에서는 무엇이 달라지나요?</dt><dd data-copy="faqChaptersAnswer">교환 제한, 대각선 이동, 고정 서식지와 네 번 교환 제한이 추가돼요.</dd></div></dl></article>
+        <article class="game-info-section"><h3 data-copy="guideCampaignTitle">6개 챕터와 30개 스테이지</h3><p data-copy="guideCampaignBody">첫 현장 노트: 네 조각 중 아무 두 조각이나 교환하세요. 이웃의 길: 변을 공유하는 조각만 교환할 수 있습니다. 넓은 세상: 여섯 조각에서 방향과 행 단서를 조합하세요. 보호 구역: 한 서식지는 고정됩니다. 주변을 계획하세요. 신중한 계획: 표시된 횟수 안에 해결하세요. 되돌리기는 무료입니다. 순찰대의 달인: 여섯 조각, 인접 교환, 제한 횟수의 종합 도전.</p></article>
+        <article class="game-info-section"><h3 data-copy="guideStrategyTitle">안정적인 풀이 방법</h3><p data-copy="guideStrategyBody">변을 공유하는 조각만 교환할 수 있습니다. 한 서식지는 고정됩니다. 주변을 계획하세요. 표시된 횟수 안에 해결하세요. 되돌리기는 무료입니다.</p><p data-copy="guideStrategyBody2">배열이 맞지 않으면 안전하게 초기화하세요.</p></article>
+        <article class="game-info-section"><h3 data-copy="guideControlsTitle">조작, 피드백, 복구</h3><p data-copy="guideControlsBody">두 서식지를 선택한 뒤 교환하세요. 변을 공유하는 조각만 교환할 수 있습니다. 표시된 횟수 안에 해결하세요. 되돌리기는 무료입니다.</p></article>
+        <article class="game-info-section"><h3 data-copy="guideResultsTitle">결과와 저장</h3><p data-copy="guideResults">예. 이 브라우저에만 저장됩니다. 달빛: 푸른 저녁 색상을 영구 해제합니다. 외형만 바뀌며 모든 퍼즐은 무료입니다.</p></article>
+        <article class="game-info-section"><h3 data-copy="guideTipsTitle">실용적인 팁</h3><ul><li data-copy="guideTip1">두 서식지를 선택한 뒤 교환하세요.</li><li data-copy="guideTip2">타일 두 개를 선택해 교환하세요.</li><li data-copy="guideTip3">여섯 조각에서 방향과 행 단서를 조합하세요.</li><li data-copy="guideTip4">표시된 횟수 안에 해결하세요. 되돌리기는 무료입니다.</li><li data-copy="guideTip5">예. 이 브라우저에만 저장됩니다.</li></ul></article>
+        <article class="game-info-section"><h3 data-copy="faqTitle">자주 묻는 질문</h3><dl><div><dt data-copy="faqProgressQuestion">진행 상황이 저장되나요?</dt><dd data-copy="faqProgressAnswer">예. 이 브라우저에만 저장됩니다.</dd></div><div><dt data-copy="faqMistakeQuestion">잘못 교환하면 스테이지가 끝나나요?</dt><dd data-copy="faqMistakeAnswer">횟수를 모두 사용했습니다. 되돌리거나 초기화하세요.</dd></div><div><dt data-copy="faqTouchQuestion">모서리만 닿아도 이웃인가요?</dt><dd data-copy="faqTouchAnswer">아니요. 두 서식지가 한 변을 완전히 공유해야 해요.</dd></div><div><dt data-copy="faqChaptersQuestion">후반 챕터에서는 무엇이 달라지나요?</dt><dd data-copy="faqChaptersAnswer">첫 현장 노트: 네 조각 중 아무 두 조각이나 교환하세요. 이웃의 길: 변을 공유하는 조각만 교환할 수 있습니다. 넓은 세상: 여섯 조각에서 방향과 행 단서를 조합하세요. 보호 구역: 한 서식지는 고정됩니다. 주변을 계획하세요. 신중한 계획: 표시된 횟수 안에 해결하세요. 되돌리기는 무료입니다. 순찰대의 달인: 여섯 조각, 인접 교환, 제한 횟수의 종합 도전.</dd></div></dl></article>
       </div>
     </section>
   </main>
+  <button id="themeBtn" type="button" data-wp-frame-action="secondary"></button>
+  <dialog id="themeDialog" aria-labelledby="themeTitle"><h2 id="themeTitle"></h2><p id="themeDescription"></p><p class="theme-balance"><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt=""><strong id="themeBalance"></strong></p><button id="themePurchase" data-wp-frame-action="primary"><img id="themeCostIcon" src="/assets/weightplay-diamond.svg" width="22" height="22" alt=""><span id="themePurchaseLabel"></span></button><div id="themeConfirmation" hidden><button id="themeConfirm" data-wp-frame-action="primary"></button><button id="themeCancel" data-wp-frame-action="secondary"></button></div><p id="themeStatus" role="status"></p><button id="themeClose" data-wp-frame-action="secondary"></button></dialog>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
   <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
   <script src="../../src/battle-canvas-standard.js?v=20261020-shared-play1"></script>
   <script src="../../src/game-play-ui.js?v=20261020-habitat-blueprint-i9-play-ui1"></script>
-  <script src="locales.js?v=20260924-habitat-blueprint-v14-arabic-guide"></script>
-  <script src="stage-config.js?v=20261020-habitat-blueprint-i9-stage-config1"></script>
-  <script src="frame.js?v=20261020-habitat-blueprint-i9-shared-frame1"></script>
-  <script src="game.js?v=20261020-habitat-blueprint-i9-shared-frame1"></script>
+  <script src="/src/wallet.js"></script>
+  <script src="locales.js?v=20261022-habitat19"></script>
+  <script src="stage-config.js?v=20261022-habitat19"></script>
+  <script src="frame.js?v=20261022-habitat19"></script>
+  <script type="module" src="game.js?v=20261022-habitat19"></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>

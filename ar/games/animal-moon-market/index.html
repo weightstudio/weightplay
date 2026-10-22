@@ -26,7 +26,7 @@
   <meta name="weightplay-scene-controls" content="immutable">
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-moon-market">
-  <meta name="weightplay-game-version" content="v16">
+  <meta name="weightplay-game-version" content="v17">
   <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="خطط لثلاثين ليلة محفوظة مع ترتيب الرفوف وقواعد المساعدين والجولات المتعددة." />
   <meta name="theme-color" content="#0b202b">
@@ -34,8 +34,8 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261018-interface9-lifecycle-sync-v2">
   <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261019-animal-moon-market-v16-i9-v1">
-  <link rel="stylesheet" href="interface-9.css?v=20261019-animal-moon-market-v16-i9-v1">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261022-moon-market-v17">
+  <link rel="stylesheet" href="interface-9.css?v=20261022-moon-market-v17">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="إدارة سوق القمر | WeightPlay" />
@@ -50,7 +50,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-runtime-localize="off" data-wp-game-id="animal-moon-market" data-wp-game-version="v16" data-wp-interface-version="9" data-wp-audience="general" data-wp-game-owned-guide="true" data-screen="main">
+<body data-runtime-localize="off" data-wp-game-id="animal-moon-market" data-wp-game-version="v17" data-wp-interface-version="9" data-wp-audience="general" data-wp-game-owned-guide="true" data-screen="main">
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap" data-wp-game-title data-runtime-localize="off">إدارة سوق القمر</h1>
   <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
     <section id="mainScreen" class="screen main-screen active" data-screen="main">
@@ -73,7 +73,7 @@
         </div>
         <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة سوق القمر">
 
-    <div class="game-info-hero"><img id="orlaGuide" src="assets/animal-moon-market-orla-guide-v1.png" alt="أورلا، مساعدة السوق بقبعة القمر" width="96" height="96">
+    <div class="game-info-hero"><img id="orlaGuide" src="/assets/weightplay-character-moon-cap-owl-block-v1.webp" alt="أورلا، مساعدة السوق بقبعة القمر" width="96" height="96">
       <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2 data-wp-game-title data-runtime-localize="off">إدارة سوق القمر</h2><p>خطط لثلاثين ليلة محفوظة مع ترتيب الرفوف وقواعد المساعدين والجولات المتعددة.</p></div>
 
       <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>إدارة الطلب على الرفوف والمساعدين</strong></div><div class="game-info-fact"><span>النوع</span><strong>إدارة · تخطيط · عائلية · حيوانات</strong></div></div>
@@ -100,10 +100,12 @@
         <strong class="stage-frame-title" data-wp-frame-title hidden>Choose a market night</strong>
       </header>
       <div id="stageWorkspace" class="stage-workspace">
+        <section id="marketShop" class="market-shop" aria-labelledby="shopTitle" hidden><div class="shop-heading"><h2 id="shopTitle"></h2><div id="shopBalance"></div></div><div id="shopItems"></div><p id="shopMessage" role="status" aria-live="polite"></p></section>
         <div id="stageGrid" class="stage-rail" data-wp-stage-rail role="listbox" aria-label="Market stages"></div>
       </div>
       <nav id="stageTabs" class="stage-tabs" data-wp-frame-nav aria-label="Stages">
         <button id="stageTabButton" type="button" role="tab" aria-selected="true" aria-pressed="true" data-copy="stages">Stages</button>
+        <button id="shopTabButton" type="button" role="tab" aria-selected="false" aria-pressed="false" data-wp-tab-slot="right"></button>
       </nav>
     </section>
 
@@ -113,27 +115,18 @@
         <strong class="battle-frame-title" data-wp-frame-title hidden>Tonight's forecast</strong>
       </header>
       <div id="battleWorkspace" class="battle-workspace">
-        <div id="battleLive" class="battle-live">
-          <span class="eyebrow" id="shiftLabel">Stage 1 / 30</span>
-          <span class="round-progress" id="roundLabel">Round 1 / 1</span>
-          <span class="status" id="forecast">Demand: Berries + Lanterns</span>
-          <p id="ruleText" class="rule-card"></p>
-          <div class="workspace">
-            <div>
-              <div class="canvas-wrap"><canvas id="marketCanvas" width="900" height="700" aria-label="لوحة تخطيط رفوف سوق القمر"></canvas></div>
-              <img id="propsAtlas" class="props-atlas" src="assets/animal-moon-market-props-atlas-v1.png" alt="Moon Market props: lanterns, berries, acorns, and market tools" width="900" height="300">
-            </div>
-            <div>
-              <div class="choice-group"><div class="choice-label" data-copy="shelfOne">Shelf one</div><div id="shelfOneChoices" class="choices" role="group" aria-label="Shelf one choices"></div></div>
-              <div class="choice-group"><div class="choice-label" data-copy="shelfTwo">Shelf two</div><div id="shelfTwoChoices" class="choices" role="group" aria-label="Shelf two choices"></div></div>
-              <div class="choice-group"><div class="choice-label" data-copy="helpers">Helper jobs</div><div id="helperGrid" class="helper-grid" role="group" aria-label="Helper jobs"></div></div>
-              <div class="actions">
-                <button id="openButton" class="primary" type="button" data-wp-frame-action="primary" data-wp-primary-action data-copy="open">Open market</button>
-                <button id="resetButton" class="secondary" type="button" data-wp-frame-action="secondary" data-copy="reset">Reset plan</button>
-              </div>
-            </div>
-          </div>
+        <div id="battleLive" class="battle-live" data-phase="plan">
+          <span id="shiftLabel"></span><span id="roundLabel"></span>
+          <div class="market-top"><div id="forecast" class="forecast"></div><div class="market-ledger"><img src="assets/coin-v17.webp" alt="" width="28" height="28"><strong id="coinHud">0</strong><button id="helpButton" type="button" aria-label="How to play">?</button></div></div>
+          <div id="playArea" class="play-area"><canvas id="marketCanvas" tabindex="0" aria-label="لوحة تخطيط رفوف سوق القمر"></canvas><div class="market-sign"><span id="marketPhase"></span><small id="ruleText"></small></div><div id="orderCard" class="order-card" hidden><span id="orderLabel"></span><div><img id="orderImage" alt="" width="48" height="48"><strong id="orderName"></strong><b id="customerCount"></b></div><progress id="patience" max="1" value="1"></progress></div><span id="serviceScore" class="service-score" hidden></span><div id="burstLayer" aria-hidden="true"></div></div>
+          <div id="planControls" class="plan-controls"><div class="stall-controls">
+            <div class="stall-control"><button type="button" id="stall0" class="stall-product" data-side="0"><b class="stall-number">Ⅰ</b><img alt="" width="48" height="48"><span></span><strong></strong></button><div class="quantity" data-quantity="0"><button type="button" data-delta="-1">−</button><output id="stock0">2</output><button type="button" data-delta="1">+</button></div></div>
+            <div class="stall-control"><button type="button" id="stall1" class="stall-product" data-side="1"><b class="stall-number">Ⅱ</b><img alt="" width="48" height="48"><span></span><strong></strong></button><div class="quantity" data-quantity="1"><button type="button" data-delta="-1">−</button><output id="stock1">2</output><button type="button" data-delta="1">+</button></div></div>
+          </div><div id="helperGrid" class="helper-grid"><button id="helperOrla" type="button" data-helper="orla"><img src="/assets/weightplay-character-moon-cap-owl-block-v1.webp" alt="" width="44" height="44"><span></span><b></b></button><button id="helperRux" type="button" data-helper="rux"><img src="/assets/weightplay-character-gear-horn-rhino-block-v1.webp" alt="" width="44" height="44"><span></span><b></b></button></div></div>
+          <p id="planStatus" class="market-status" role="status" aria-live="polite"></p>
+          <div class="market-actions"><button id="resetButton" class="secondary" type="button" data-wp-frame-action="secondary"></button><button id="openButton" class="primary" type="button" data-wp-frame-action="primary" data-wp-primary-action></button><button id="restockButton" class="secondary" type="button" data-wp-frame-action="secondary" hidden></button></div>
         </div>
+        <section id="helpModal" class="moon-battle-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="moon-dialog-card"><h2 id="helpTitle"></h2><p id="helpCopy"></p><button id="helpClose" type="button" class="primary" data-wp-frame-action="primary"></button></div></section>
         <section id="leaveModal" class="moon-battle-modal" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveCopy" hidden>
           <div class="moon-dialog-card"><h2 id="leaveTitle">Leave this stage?</h2><p id="leaveCopy"></p><div class="leave-actions">
             <button id="leaveContinue" class="primary" type="button" data-wp-frame-action="primary">Continue playing</button>
@@ -141,7 +134,7 @@
           </div></div>
         </section>
         <div id="resultCard" class="result-card" data-wp-battle-substate="result" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultCopy">
-          <div class="result-head"><div><div class="eyebrow" id="resultEyebrow">Planning note</div><h2 id="resultTitle">Ready?</h2><p id="resultCopy"></p></div><span id="marketMark" class="fact" data-copy="stage">Stage</span></div>
+          <div class="result-head"><div><div class="eyebrow" id="resultEyebrow">Planning note</div><h2 id="resultTitle">Ready?</h2><p id="resultCopy"></p></div><span id="resultStars" aria-label="Stars"></span><span id="marketMark" class="fact" data-copy="stage">Stage</span></div>
           <div class="result-actions">
             <button id="stagesButton" class="secondary" type="button" data-wp-frame-action="secondary" data-copy="stages">Stages</button>
             <button id="nextButton" class="primary" type="button" data-wp-frame-action="primary">Next stage</button>
@@ -153,6 +146,7 @@
   </div>
 
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/wallet.js"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
@@ -160,9 +154,9 @@
   <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="../../src/game-screen-frame.js?v=20261018-interface9-lifecycle-sync-v2"></script>
-  <script src="stage-config.js?v=20261019-animal-moon-market-v16-i9-v1"></script>
-  <script src="frame.js?v=20261019-animal-moon-market-v16-i9-v1"></script>
-  <script type="module" src="game.js?v=20261019-animal-moon-market-v16-i9-v1"></script>
+  <script src="stage-config.js?v=20261022-moon-market-v17"></script>
+  <script src="frame.js?v=20261022-moon-market-v17"></script>
+  <script type="module" src="game.js?v=20261022-moon-market-v17"></script>
 <script src="/src/runtime-locales/ar.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>

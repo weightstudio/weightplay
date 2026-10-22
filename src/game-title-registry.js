@@ -2450,8 +2450,8 @@ window.WEIGHTPLAY_GAME_TITLES = {
   "animal-cloudhook-courier": {
     "__localizedExact": true,
     "en": "Cloudhook Courier",
-    "zh-Hant": "Cloudhook Courier",
-    "zh-Hans": "Cloudhook Courier",
+    "zh-Hant": "雲鉤快遞",
+    "zh-Hans": "云钩快递",
     "ja": "Cloudhook Courier",
     "ko": "Cloudhook Courier",
     "es": "Cloudhook Courier",

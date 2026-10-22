@@ -14,6 +14,12 @@
     const mainAnnouncement = main.querySelector("#coming");
     const mainTagline = main.querySelector("#tagline");
     const mainSummary = main.querySelector("#objective");
+    const mainTitleGroup = mainTitle.parentElement;
+    if (mainTitleGroup !== mainHeader) {
+      mainTitleGroup.replaceWith(mainTitle);
+      mainCopy.prepend(mainTitleGroup);
+      mainTitleGroup.hidden = true;
+    }
     const stageHeader = stage.querySelector("header");
     const battleHeader = battle.querySelector("header");
     const localeSelect = $("localeSelect");
@@ -24,6 +30,7 @@
     mainTitle.dataset.wpFrameTitle = "";
     main.querySelector(".poster").dataset.wpFramePoster = "";
     mainSummary.dataset.wpFrameSummary = "";
+    $("mainProgress").dataset.wpFrameProgress = "";
     $("startBtn").dataset.wpFrameAction = "primary";
 
     const stageBack = $("stageBack");
@@ -33,7 +40,7 @@
     stageHeader.replaceChildren(stageBack, stageTitle);
     const stageWorkspace = $("stageWorkspace");
     const stageRail = $("stageGrid");
-    stageWorkspace.replaceChildren(stageRail);
+    const stageSelector = $("stageSelector");
     const stageTab = $("stageTab");
     stage.querySelector(".stage-tabs").dataset.wpFrameNav = "";
 
@@ -46,9 +53,12 @@
     const leave = $("leaveOverlay");
     const battleLive = document.createElement("div");
     battleLive.className = "battle-live";
+    const flightLayout = document.createElement("div");
+    flightLayout.className = "battle-layout";
     for (const node of [...battle.children]) {
-      if (node !== battleHeader && node !== result && node !== leave) battleLive.append(node);
+      if (node !== battleHeader && node !== result && node !== leave) flightLayout.append(node);
     }
+    battleLive.append(flightLayout);
     battle.append(battleLive);
 
     const frame = window.WeightPlayScreenFrame.mount({
@@ -75,7 +85,7 @@
     frame.battleTopUI.add(battleInfo);
 
     const stageUI = window.WeightPlayPlayUI.mountStage({
-      page: stageWorkspace,
+      page: stageSelector,
       rail: stageRail,
       config: window.createCloudhookCourierStageConfig(bridge),
       selected: bridge.getSelectedStage(),
@@ -89,7 +99,12 @@
 
     stageTab.dataset.wpFrameAction = "tab";
     stageTab.setAttribute("aria-pressed", "true");
-    frame.commonDownButton.clear().add(stageTab);
+    const equipmentTab = $("equipmentTab");
+    equipmentTab.dataset.wpFrameAction = "tab";
+    frame.commonDownButton.clear().add(stageTab).add(equipmentTab);
+    stageTab.parentElement.dataset.wpFrameStageNav = "";
+    stageTab.style.gridColumn = "2";
+    equipmentTab.style.gridColumn = "3";
     window.addEventListener("wonder:locale-change", syncStageInfo);
 
     const syncMainTitle = () => {
@@ -115,6 +130,7 @@
       guideObserver.disconnect();
       window.removeEventListener("wonder:locale-change", syncMainTitle);
       window.removeEventListener("wonder:locale-change", moveGuideIntoMain);
+      window.removeEventListener("wonder:locale-change", syncStageInfo);
       stageUI.destroy();
       frame.destroy();
     }, { once: true });

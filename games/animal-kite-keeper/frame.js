@@ -47,7 +47,7 @@
 
     const familyNav = document.getElementById("routeFamilyNav");
     const familyButtons = [...familyNav.querySelectorAll("[data-route-family]")];
-    familyNav.setAttribute("aria-label", "Sky route families");
+    familyNav.setAttribute("aria-label", "Sky routes and equipment");
     frame.commonDownButton.clear();
     familyButtons.forEach(button => {
       button.dataset.wpFrameAction = "tab";

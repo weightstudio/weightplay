@@ -18,11 +18,12 @@
   __wpNotifyMeasurement();
 import {ChessSession} from './full-rules.mjs';
 import {mountChessFrame} from './frame.mjs?v=20261022-chess-i9-frame1';
+import {createChessStageConfig} from './stage-config.mjs?v=20261022-chess-i9-stage-config1';
 import {ChessAI} from './ai-client.mjs';
 import {ChessBoard3D} from './board-3d.mjs?v=20260909-knight-v17';
 import {chessLocales} from './full-locales.mjs';
 import {boardLocales,squareDescription} from './board-locales.mjs';
-import {challenges,challengePassed,challengeOutcome,loadChallengeProgress,unlockChallenge,recordChallengeClear} from './challenges.mjs';
+import {challenges,challengePassed,challengeOutcome,loadChallengeProgress,recordChallengeClear} from './challenges.mjs';
 import {challengeLocales} from './challenge-locales.mjs';
 import {campaignLocales} from './campaign-locales.mjs';
 import {tacticsLocales} from './tactics-locales.mjs';
@@ -95,15 +96,8 @@ const languageNames={en:'English','zh-Hant':'繁體中文','zh-Hans':'简体中�
 for(const key of Object.keys(chessLocales)){const o=document.createElement('option');o.value=key;o.textContent=languageNames[key];$('locale').append(o);}$('locale').value=locale;$('locale').onchange=()=>{locale=$('locale').value;try{localStorage.setItem('weightPlayLocale',locale);}catch{}localize();window.dispatchEvent(new CustomEvent('wonder:locale-change'));window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));};
 function stop(){sharedSettingsPaused=false;epoch++;ai.cancel();busy=false;selected=null;promotion=null;for(const button of $('controls').querySelectorAll('button'))button.disabled=false;if($('promotion').open)$('promotion').close();view?.dispose();view=null;}
 function stageDefaultIndex(){return Math.min(challenges.length-1,Math.max(0,...progress.cleared));}
-function buildStageConfig(){
- const copy=stageLocales[locale];
- return {count:challenges.length,poster:'/assets/chess-cover-v1.webp',background:'/assets/lobby-block-atmosphere.svg',stage(index){
-  const challenge=challenges[index],cleared=progress.cleared.includes(challenge.id),unlocked=unlockChallenge(progress,challenge.id),state=cleared?'cleared':unlocked?'ready':'locked';
-  return {id:challenge.id,kicker:`${copy.stage} ${challenge.id}`,title:text(challenge.kind),status:copy[state],summary:copy.challengeSummary,details:[copy.challengeDetails],locked:!unlocked,cleared};
- }};
-}
 function refreshStageSelector(selected=stageDefaultIndex()){
- const config=buildStageConfig(),page=$('chessStagePage'),rail=$('stageRail'),index=Math.max(0,Math.min(config.count-1,Number.isInteger(selected)?selected:stageDefaultIndex()));
+ const config=createChessStageConfig({locale,progress,kindLabel:text}),page=$('chessStagePage'),rail=$('stageRail'),index=Math.max(0,Math.min(config.count-1,Number.isInteger(selected)?selected:stageDefaultIndex()));
  rail.setAttribute('aria-label',stageLocales[locale].select);
  if(!stageController)stageController=window.WeightPlayPlayUI.mountStage({page,rail,config,selected:index,onSelect:()=>{},onStart(stageIndex){begin(false,challenges[stageIndex].id);},isActive:()=>!$('stages').hidden});
  else stageController.setConfig(config,index);

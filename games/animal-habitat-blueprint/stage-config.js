@@ -18,7 +18,7 @@
   };
   window.HabitatBlueprintStageConfig = ({ plans, solved, highestUnlockedIndex, copy, tileName, getLocale }) => ({
     count: plans.length,
-    poster: '/games/animal-habitat-blueprint/assets/animal-habitat-blueprint-cover-v2.webp',
+    poster: '/assets/interface7-redrawn/animal-habitat-blueprint.webp',
     background: '/assets/lobby-block-atmosphere.svg',
     stage(index) {
       const plan = plans[index];

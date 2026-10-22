@@ -24705,6 +24705,99 @@
     };
   }
 
+  // Deep Sea Salvage v11: game-owned copy on the shared Guide surface.
+  const deepSeaV11Guide = {
+  "en": {
+    "sonar": "Tap in the green band. One attempt per dive; a miss keeps the base payout.",
+    "collection": "Museum focus: one new accessible exhibit within 3 dives.",
+    "livery": "Permanent violet hull and mint lamps. Appearance only; retained through research and resets.",
+    "event": "An eligible event contract is guaranteed within 5 matching dives."
+  },
+  "zh-Hant": {
+    "sonar": "指針進入綠色區時點擊。每趟一次；失準仍保留基本收益。",
+    "collection": "博物館航線：每 3 趟內保證找到一件目前深度可取得的新收藏。",
+    "livery": "永久紫色船殼與薄荷燈光，僅改變外觀；研究重啟與重設後保留。",
+    "event": "符合條件的事件合約，最多 5 趟相符航線保證觸發。"
+  },
+  "zh-Hans": {
+    "sonar": "指针进入绿色区时点击。每趟一次；失准仍保留基本收益。",
+    "collection": "博物馆航线：每 3 趟内保证找到一件当前深度可取得的新收藏。",
+    "livery": "永久紫色船壳与薄荷灯光，仅改变外观；研究重启与重置后保留。",
+    "event": "符合条件的事件合约，最多 5 趟相符航线保证触发。"
+  },
+  "ja": {
+    "sonar": "針が緑の範囲に入ったらタップ。1潜航1回。失敗しても基本収入は維持。",
+    "collection": "博物館重視なら3回以内に現在の深度で入手可能な新展示品を保証。",
+    "livery": "紫の船体とミント色のライト。見た目のみ。研究やリセット後も永久に保持。",
+    "event": "条件を満たすイベント契約は対応する潜航5回以内に発生。"
+  },
+  "ko": {
+    "sonar": "바늘이 초록 구간에 오면 누르세요. 잠수당 1회. 실패해도 기본 수익은 유지됩니다.",
+    "collection": "박물관 항로: 3회 이내에 현재 수심에서 얻을 수 있는 새 전시품을 보장합니다.",
+    "livery": "보라색 선체와 민트 조명. 외형 전용이며 연구와 초기화 후에도 영구 보유합니다.",
+    "event": "조건을 충족한 이벤트 계약은 일치하는 잠수 5회 이내에 발생합니다."
+  },
+  "es": {
+    "sonar": "Pulsa en la banda verde. Un intento por inmersión; fallar conserva el ingreso base.",
+    "collection": "Museo: una nueva pieza accesible garantizada en 3 inmersiones.",
+    "livery": "Casco violeta y luces menta permanentes. Solo aspecto; se conserva tras investigación y reinicios.",
+    "event": "Un evento de contrato elegible se garantiza en 5 inmersiones coincidentes."
+  },
+  "pt-BR": {
+    "sonar": "Toque na faixa verde. Uma tentativa por mergulho; errar mantém a renda base.",
+    "collection": "Museu: uma nova peça acessível garantida em até 3 mergulhos.",
+    "livery": "Casco violeta e luzes menta permanentes. Apenas visual; mantido após pesquisa e reinícios.",
+    "event": "Um evento de contrato elegível é garantido em 5 mergulhos correspondentes."
+  },
+  "fr": {
+    "sonar": "Appuyez dans la zone verte. Un essai par plongée ; un échec conserve le revenu de base.",
+    "collection": "Musée : une nouvelle pièce accessible garantie en 3 plongées.",
+    "livery": "Coque violette et phares menthe permanents. Apparence uniquement ; conservée après recherche et réinitialisation.",
+    "event": "Un événement de contrat admissible est garanti en 5 plongées correspondantes."
+  },
+  "de": {
+    "sonar": "Im grünen Bereich tippen. Ein Versuch pro Tauchgang; bei Fehlschlag bleibt der Grundverdienst.",
+    "collection": "Museum: ein neues erreichbares Exponat innerhalb von 3 Tauchgängen garantiert.",
+    "livery": "Dauerhafter violetter Rumpf und mintfarbene Lampen. Nur Aussehen; bleibt nach Forschung und Zurücksetzen erhalten.",
+    "event": "Ein passendes Auftragsereignis ist innerhalb von 5 passenden Tauchgängen garantiert."
+  },
+  "it": {
+    "sonar": "Tocca nella fascia verde. Un tentativo per immersione; un errore mantiene il ricavo base.",
+    "collection": "Museo: un nuovo reperto accessibile garantito entro 3 immersioni.",
+    "livery": "Scafo viola e luci menta permanenti. Solo aspetto; mantenuta dopo ricerca e ripristino.",
+    "event": "Un evento di contratto idoneo è garantito entro 5 immersioni corrispondenti."
+  },
+  "ru": {
+    "sonar": "Нажмите в зелёной зоне. Одна попытка за спуск; промах сохраняет базовый доход.",
+    "collection": "Музей: новый доступный экспонат гарантирован за 3 спуска.",
+    "livery": "Фиолетовый корпус и мятные огни навсегда. Только внешность; сохраняется после исследования и сброса.",
+    "event": "Подходящее событие контракта гарантировано за 5 соответствующих спусков."
+  },
+  "hi": {
+    "sonar": "हरे क्षेत्र में टैप करें। हर गोते में एक प्रयास; चूकने पर मूल आय मिलती है।",
+    "collection": "संग्रहालय: 3 गोतों के भीतर उपलब्ध गहराई की एक नई वस्तु निश्चित।",
+    "livery": "स्थायी बैंगनी ढांचा और मिंट रोशनी। केवल रूप; शोध और रीसेट के बाद भी रहेगा।",
+    "event": "पात्र अनुबंध घटना 5 मेल खाते गोतों के भीतर निश्चित है।"
+  },
+  "ar": {
+    "sonar": "اضغط داخل الشريط الأخضر. محاولة واحدة لكل غوص؛ الإخفاق يحفظ الدخل الأساسي.",
+    "collection": "المتحف: قطعة جديدة متاحة مضمونة خلال 3 غوصات.",
+    "livery": "هيكل بنفسجي وأضواء نعناعية دائمة. للمظهر فقط؛ يبقى بعد البحث وإعادة الضبط.",
+    "event": "حدث العقد المؤهل مضمون خلال 5 غوصات مطابقة."
+  }
+};
+  for (const [locale, copy] of Object.entries(deepSeaV11Guide)) {
+    const prior = { ...games["animal-deep-sea-salvage"], ...(localizedGames[locale]?.["animal-deep-sea-salvage"] || {}) };
+    localizedGames[locale] ||= {};
+    localizedGames[locale]["animal-deep-sea-salvage"] = {
+      ...prior, hideScoreBands:true,
+      how: [copy.sonar, ...prior.how.slice(1)],
+      systems: [...prior.systems, copy.collection, copy.event, copy.livery],
+      designNote: copy.sonar + ' ' + copy.collection,
+      parent: prior.faq[prior.faq.length - 1][1] + ' ' + copy.livery,
+    };
+  }
+
   const deepSeaSalvageGenres = {
     en: ["Simulation", "Strategy", "Idle", "Animal"],
     "zh-Hant": ["模擬", "策略", "放置", "動物"],

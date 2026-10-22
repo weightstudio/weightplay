@@ -684,6 +684,7 @@
   const dictionaries = Object.fromEntries(localeCodes.map((code) => [code, { ...base, ...(compact[code] || {}), ...(focusTranslations[code] || {}) }]));
   dictionaries.en = { ...base };
   dictionaries["zh-Hant"] = { ...base, ...zhHant, ...focusTranslations["zh-Hant"] };
+  for (const code of localeCodes) Object.assign(dictionaries[code], focusTranslations[code], window.DEEP_SEA_REBUILD_COPY?.[code]);
 
   const pathMatch = window.location.pathname.match(/^\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)(?:\/|$)/u);
   const stored = (() => {

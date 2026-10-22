@@ -2578,7 +2578,7 @@
       if (view.refreshTimer) clearTimeout(view.refreshTimer);
     };
     const showCardGameReturnDialog = () => {
-      if (id === "speed" && battle.querySelector('[data-card-game-return-confirm]')) return;
+      if ((id === "speed" || id === "war") && battle.querySelector('[data-card-game-return-confirm]')) return;
       const returnCopy = (id === "spades" || id === "hearts") ? SPADES_RETURN_COPY : GO_FISH_RETURN_COPY;
       const copy = returnCopy[currentLocale()] || returnCopy.en;
       const trigger = document.querySelector("#battleBackBtn");
@@ -2662,7 +2662,8 @@
     };
     battle.addEventListener("click", clickHandler);
     document.querySelector("#battleBackBtn")?.addEventListener("click", (event) => {
-      if ((id === "speed" || id === "go-fish" || (ownsI9ResultFocus && (id === "spades" || id === "hearts"))) && result.hidden) {
+      const liveWar = id === "war" && actions.querySelector('[data-action="flip"]:enabled');
+      if ((liveWar || id === "speed" || id === "go-fish" || (ownsI9ResultFocus && (id === "spades" || id === "hearts"))) && result.hidden) {
         event.stopImmediatePropagation();
         event.stopPropagation();
         showCardGameReturnDialog();

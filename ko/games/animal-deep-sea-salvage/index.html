@@ -6,7 +6,7 @@
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/ko/games/animal-deep-sea-salvage/" />
-    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-deep-sea-salvage/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/games/animal-deep-sea-salvage/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-deep-sea-salvage/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-deep-sea-salvage/" />
     <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-deep-sea-salvage/" />
@@ -19,21 +19,21 @@
     <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-deep-sea-salvage/" />
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-deep-sea-salvage/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-deep-sea-salvage/" />
-    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-deep-sea-salvage/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/games/animal-deep-sea-salvage/" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="noindex,nofollow" />
     <meta name="theme-color" content="#061c32" />
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-id" content="animal-deep-sea-salvage" />
-    <meta name="weightplay-game-version" content="v10" />
+    <meta name="weightplay-game-version" content="v11" />
     <meta name="weightplay-interface-version" content="9" />
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="‘심해 인양 회사’는 ROV를 깊은 바다로 보내 인양품을 판매하고 희귀 발견물을 성장하는 박물관에 보관하는 오리지널 브라우저 방치 게임입니다." />
     <title>심해 인양 회사 | WeightPlay</title>
     <link rel="icon" href="../../assets/weightplay-logo.png" />
-    <link rel="stylesheet" href="style.css?v=20260907-deep-sea-poster-v5" />
-    <link rel="stylesheet" href="art.css?v=20260921-deep-sea-block-scene-v1" />
+    <link rel="stylesheet" href="style.css?v=20261022-deep-sea-v11-rebuild1" />
+    <link rel="stylesheet" href="art.css?v=20261022-deep-sea-v11-rebuild1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" />
 
@@ -80,20 +80,19 @@
 }
     </script>
   </head>
-  <body data-audience="general" data-wp-game-age-tags="13,teen,adult,family" data-wp-game-id="animal-deep-sea-salvage" data-wp-game-version="v10" data-wp-interface-version="9" data-wp-audience="general" data-runtime-localize="off" data-screen="main">
+  <body data-audience="general" data-wp-game-age-tags="13,teen,adult,family" data-wp-game-id="animal-deep-sea-salvage" data-wp-game-version="v11" data-wp-interface-version="9" data-wp-audience="general" data-runtime-localize="off" data-screen="main">
     <main id="app" class="app" data-screen="main">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">심해 인양 회사</h1>
       <header class="topbar wp-shell-header wp-main-shell-header">
         <a class="back-link wp-shell-return" data-wp-return="main" href="/" data-i18n-aria="backLobby" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
-        <strong class="wp-shell-main-title" data-runtime-localize="off">심해 인양 회사</strong>
+        <strong id="gameTitle" class="wp-shell-main-title" data-runtime-localize="off">심해 인양 회사</strong>
         <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" data-i18n-aria="language" aria-label="Language"></select></label>
       </header>
 
       <section id="mainLanding" class="wp-standard-main-screen" aria-labelledby="gameTitle">
         <div class="wp-standard-main-composition">
-          <div class="wp-standard-main-poster"><img class="main-poster" src="assets/animal-deep-sea-salvage-cover.webp" data-i18n-alt="posterAlt" alt="심해 인양 회사 게임 이미지" draggable="false" /></div>
+          <div class="wp-standard-main-poster"><img class="main-poster" src="../../assets/interface7-redrawn/animal-deep-sea-salvage.webp" data-i18n-alt="posterAlt" alt="심해 인양 회사 게임 이미지" draggable="false" /></div>
           <div class="wp-standard-main-copy">
-            <span class="eyebrow" data-i18n="eyebrow">WEIGHTPLAY · IDLE EXPEDITION</span>
-            <h1 id="gameTitle" data-runtime-localize="off">심해 인양 회사</h1>
             <p class="main-summary" data-i18n="summary">Dispatch ROVs, sell salvage, and explore deeper sea zones to build a living museum.</p>
             <p class="main-progress wp-standard-main-progress" data-wp-main-progress data-i18n="mainProgress">Your automatic expedition is ready.</p>
             <button id="startGameButton" class="primary standard-main-start" type="button" data-wp-main-start data-i18n="startGame">Start Game</button>
@@ -102,42 +101,45 @@
       </section>
 
       <section id="gameDashboard" hidden>
-      <section class="hero-grid" aria-labelledby="dashboardHeading">
-        <div class="hero-copy">
-          <span class="eyebrow" data-i18n="liveExpedition">LIVE EXPEDITION</span>
-          <h2 id="dashboardHeading" data-i18n="dashboardTitle">Deep-sea operations</h2>
-          <p data-i18n="dashboardCopy">Watch the ROV work, then reinvest each return into a deeper expedition.</p>
-          <div class="hero-actions"><button id="dispatchButton" class="primary" type="button" data-i18n="dispatch">Dispatch ROV</button><button id="quickDiveButton" class="secondary" type="button" data-i18n="quickDive">Quick dive</button></div>
-          <section id="diveFocusPanel" class="dive-focus" aria-labelledby="diveFocusLabel">
-            <div class="focus-heading"><span id="diveFocusLabel" class="section-kicker" data-i18n="diveFocusLabel">DIVE FOCUS</span><strong id="diveFocusStatus">Balanced</strong></div>
-            <p id="diveFocusCopy" data-i18n="diveFocusCopy">Choose what the next ROV dive should prioritise.</p>
-            <div class="focus-options" role="group" data-i18n-aria="diveFocusLabel" aria-label="Dive focus">
-              <button type="button" class="focus-option active" data-focus="balanced" aria-pressed="true"><strong data-i18n="focusBalanced">Balanced</strong><small data-i18n="focusBalancedShort">Steady mix</small></button>
-              <button type="button" class="focus-option" data-focus="value" aria-pressed="false"><strong data-i18n="focusValue">Value</strong><small data-i18n="focusValueShort">Sale-ready haul</small></button>
-              <button type="button" class="focus-option" data-focus="museum" aria-pressed="false"><strong data-i18n="focusMuseum">Museum</strong><small data-i18n="focusMuseumShort">Rare discoveries</small></button>
-            </div>
+      <div class="company-bar">
+        <div class="company-funds"><img data-object="coin" alt="" width="36" height="36"><span><small data-i18n="funds">Funds</small><strong id="fundsValue">120</strong></span></div>
+        <div><small data-i18n="depth">Max depth</small><strong><span id="depthValue">120</span>m</strong></div>
+        <div><small data-i18n="robots">ROV team</small><strong id="robotsValue">1</strong></div>
+        <div><small data-i18n="multiplier">Multiplier</small><strong id="multiplierValue">×1.0</strong></div>
+        <button id="returnMainButton" class="text-button" type="button" data-i18n="returnPort">Return to port</button>
+      </div>
+      <div class="expedition-grid">
+        <section class="ocean-card" aria-labelledby="sceneHeading">
+          <div class="card-heading"><div><span class="section-kicker" data-i18n="liveExpedition">LIVE EXPEDITION</span><h2 id="sceneHeading"><span id="zoneName"></span><small id="zoneDepth"></small></h2></div><span id="diveStateBadge" class="state-badge"></span></div>
+          <div class="ocean-stage">
+            <canvas id="oceanCanvas" width="640" height="500" role="img" data-i18n-aria="sceneLabel" aria-label="Deep sea salvage expedition"></canvas>
+            <div class="scene-readout"><span data-i18n="depthMeter">Depth</span><strong id="currentDepthValue">0m</strong><small><span data-i18n="targetDepth">Target</span> <b id="targetDepthValue">120m</b></small></div>
+            <div id="sceneError" class="scene-error" hidden><p data-i18n="sceneUnavailable">The 3D view could not start. Your company is saved.</p><button id="retrySceneButton" class="secondary" type="button" data-i18n="retryScene">Retry view</button></div>
+            <div class="scene-caption"><span class="live-dot" aria-hidden="true"></span><span data-i18n="crewCallsign">NORI · SALVAGE 01</span><span id="cargoValue"></span></div>
+          </div>
+          <div class="dive-progress-wrap"><div class="progress-label"><span id="diveStatus"></span><strong id="progressValue">0%</strong></div><div class="progress-track"><i id="progressFill"></i></div></div>
+          <div class="haul-receipt" aria-live="polite"><img id="haulImage" data-object="compass" width="44" height="44" alt=""><div><small id="haulLabel" data-i18n="nextDrop">Next find</small><strong id="nextDropValue"></strong><span id="haulDetail"></span></div><strong id="haulValue"></strong></div>
+          <div id="eventBanner" class="event-banner" hidden><span><b id="eventTitle"></b><small id="eventCopy"></small></span><strong id="eventBonusValue"></strong></div>
+        </section>
+        <aside class="operations-controls">
+          <section class="sonar-console" aria-labelledby="sonarTitle">
+            <div class="focus-heading"><span id="sonarTitle" class="section-kicker" data-i18n="sonarTitle">SONAR LOCK</span><strong id="sonarState"></strong></div>
+            <div class="sonar-track" aria-hidden="true"><span class="sonar-target"></span><i id="sonarNeedle"></i></div>
+            <button id="quickDiveButton" class="primary sonar-button" type="button" data-i18n="sonarPulse">Lock signal</button>
+            <p id="sonarHint" class="bounded-hint"></p>
           </section>
-        </div>
-        <div class="stat-grid" data-i18n-aria="statsLabel" aria-label="Company stats">
-          <div class="stat-card"><span data-i18n="funds">Funds</span><strong id="fundsValue">0</strong><small data-i18n="credits">credits</small></div>
-          <div class="stat-card"><span data-i18n="depth">Max depth</span><strong id="depthValue">0</strong><small data-i18n="metres">m</small></div>
-          <div class="stat-card"><span data-i18n="robots">ROV team</span><strong id="robotsValue">1</strong><small>ROV</small></div>
-          <div class="stat-card"><span data-i18n="multiplier">multiplier</span><strong id="multiplierValue">×1.0</strong><small data-i18n="eventBonus">crew bonus</small></div>
-        </div>
-      </section>
-
-      <section class="ocean-card" aria-labelledby="sceneHeading">
-        <div class="card-heading"><div><span class="section-kicker" data-i18n="zone">Sea zone</span><h2 id="sceneHeading"><span id="zoneName">Harbour Edge</span><small id="zoneDepth">0–120m</small></h2></div><span id="diveStateBadge" class="state-badge" data-state="diving">Diving</span></div>
-        <div class="ocean-stage">
-          <canvas id="oceanCanvas" width="960" height="560" role="img" data-i18n-aria="sceneLabel" aria-label="Animated deep sea salvage scene"></canvas>
-          <div class="depth-scale" aria-hidden="true"><span>0m</span><span>400m</span><span>800m</span><span>1200m</span><span>1600m</span><span>2000m</span></div>
-          <div class="scene-readout"><span data-i18n="targetDepth">Target depth</span><strong id="targetDepthValue">0m</strong><small id="nextDropValue">Next find · —</small></div>
-          <div id="eventBanner" class="event-banner" hidden><span class="event-spark" aria-hidden="true">✦</span><span><b id="eventTitle"></b><small id="eventCopy"></small></span><strong id="eventBonusValue"></strong></div>
-        </div>
-        <div class="dive-progress-wrap"><div class="progress-label"><span data-i18n="progress">Dive progress</span><strong id="progressValue">0%</strong></div><div class="progress-track"><i id="progressFill"></i></div><div class="dive-meta"><span><b data-i18n="diveState">Dive status</b><strong id="diveStatus">Diving</strong></span><span><b data-i18n="cargo">Cargo</b><strong id="cargoValue">0/4</strong></span><span><b data-i18n="depthMeter">Depth meter</b><strong id="currentDepthValue">0m</strong></span></div></div>
-      </section>
-
-      <section class="loop-strip"><div><span class="section-kicker" data-i18n="autoLoop">Automatic salvage loop</span><p data-i18n="autoLoopCopy">A new ROV dive begins as soon as the previous one returns.</p></div><button id="collectButton" class="collect-button" type="button" data-i18n="collect">Collect</button></section>
+          <section id="diveFocusPanel" class="dive-focus" aria-labelledby="diveFocusLabel">
+            <div class="focus-heading"><span id="diveFocusLabel" class="section-kicker" data-i18n="nextExpedition">NEXT EXPEDITION</span><strong id="diveFocusStatus"></strong></div>
+            <div class="focus-options" role="group" data-i18n-aria="diveFocusLabel">
+              <button type="button" class="focus-option" data-focus="balanced" aria-pressed="true"><strong data-i18n="focusBalanced">Balanced</strong></button>
+              <button type="button" class="focus-option" data-focus="value" aria-pressed="false"><strong data-i18n="focusValue">Value</strong></button>
+              <button type="button" class="focus-option" data-focus="museum" aria-pressed="false"><strong data-i18n="focusMuseum">Museum</strong></button>
+            </div><p id="diveFocusCopy"></p>
+          </section>
+          <section class="active-contract" aria-labelledby="contractTitle"><div class="focus-heading"><span class="section-kicker" data-i18n="currentContract">CURRENT CONTRACT</span><strong id="activeContractCount"></strong></div><h3 id="contractTitle"></h3><p id="contractRequirement"></p><div class="mission-bar"><i id="activeContractProgress"></i></div><div class="contract-actions"><span id="contractReward"></span><button id="contractAction" class="secondary" type="button"></button></div></section>
+        </aside>
+      </div>
+      <section class="loop-strip"><span><span class="live-dot" aria-hidden="true"></span> <span data-i18n="autoLoop">Automatic salvage loop</span></span><button id="collectButton" class="collect-button" type="button" data-i18n="collectOffline">Collect offline earnings</button><button id="dispatchButton" class="text-button" type="button" data-i18n="pauseExpedition">Pause expedition</button></section>
 
       <nav class="tab-nav" data-i18n-aria="sectionsLabel" aria-label="Game sections"><button class="tab-button active" type="button" data-tab="explore" data-i18n="explore">Explore</button><button class="tab-button" type="button" data-tab="upgrades" data-i18n="upgrades">Upgrades</button><button class="tab-button" type="button" data-tab="robots" data-i18n="robotsTab">ROVs</button><button class="tab-button" type="button" data-tab="museum" data-i18n="museum">Museum</button><button class="tab-button" type="button" data-tab="missions" data-i18n="missions">Missions</button><button class="tab-button" type="button" data-tab="achievements" data-i18n="achievements">Achievements</button><button class="tab-button" type="button" data-tab="technology" data-i18n="technology">Technology</button><button class="tab-button" type="button" data-tab="settings" data-i18n="settings">Settings</button></nav>
 
@@ -149,15 +151,15 @@
 
       <section id="panel-upgrades" class="tab-panel" data-panel="upgrades" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="effect">Effect</span><h2 data-i18n="upgrades">Upgrades</h2></div><span class="upgrade-note" data-i18n="funds">Funds</span></div><div id="upgradeList" class="upgrade-list"></div></section>
 
-      <section id="panel-robots" class="tab-panel" data-panel="robots" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="robotBay">Robot bay</span><h2 data-i18n="robotsTab">ROVs</h2></div><span id="robotCount" class="muted-count"></span></div><p class="panel-intro" data-i18n="robotCopy">Configure the crew that dives together. Unlock specialised ROVs as the company reaches deeper water.</p><div id="robotList" class="robot-list"></div></section>
+      <section id="panel-robots" class="tab-panel" data-panel="robots" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="robotBay">Robot bay</span><h2 data-i18n="robotsTab">ROVs</h2></div><span id="robotCount" class="muted-count"></span></div><p class="panel-intro" data-i18n="robotCopy">Configure the crew that dives together. Unlock specialised ROVs as the company reaches deeper water.</p><div id="robotList" class="robot-list"></div><div id="liveryShop" class="livery-shop"></div></section>
 
       <section id="panel-museum" class="tab-panel" data-panel="museum" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="museumCopy">Every first discovery is kept in the captain's museum.</span><h2 data-i18n="museum">Museum</h2></div><span id="museumCount" class="muted-count"></span></div><div id="museumGrid" class="museum-grid"></div></section>
 
-      <section id="panel-missions" class="tab-panel" data-panel="missions" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="missionProgress">Mission progress</span><h2 data-i18n="missions">Missions</h2></div><span id="missionCount" class="muted-count"></span></div><div class="subpanel-heading"><h3 data-i18n="dailyMissions">Daily missions</h3><span id="dailyMissionCount" class="muted-count"></span></div><div id="dailyMissionList" class="mission-list"></div><div class="subpanel-heading"><h3 data-i18n="generalMissions">Company missions</h3></div><div id="missionList" class="mission-list"></div><div class="subpanel-heading"><h3 data-i18n="generalMissions">Campaign contracts</h3><span id="contractCount" class="muted-count"></span></div><div id="contractList" class="mission-list"></div></section>
+      <section id="panel-missions" class="tab-panel" data-panel="missions" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="missionProgress">Mission progress</span><h2 data-i18n="missions">Missions</h2></div><span id="missionCount" class="muted-count"></span></div><div class="subpanel-heading"><h3 data-i18n="dailyMissions">Daily missions</h3><span id="dailyMissionCount" class="muted-count"></span></div><div id="dailyMissionList" class="mission-list"></div><div class="subpanel-heading"><h3 data-i18n="generalMissions">Company missions</h3></div><div id="missionList" class="mission-list"></div><div class="subpanel-heading"><h3 data-i18n="campaignContracts">Campaign contracts</h3><span id="contractCount" class="muted-count"></span></div><div id="contractList" class="mission-list"></div></section>
 
       <section id="panel-achievements" class="tab-panel" data-panel="achievements" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="achievementProgress">Achievement progress</span><h2 data-i18n="achievements">Achievements</h2></div><span id="achievementCount" class="muted-count"></span></div><div id="achievementList" class="achievement-list"></div></section>
 
-      <section id="panel-technology" class="tab-panel" data-panel="technology" hidden><div class="tech-card"><div class="tech-icon" aria-hidden="true">✦</div><div><span class="section-kicker" data-i18n="technology">Technology</span><h2 data-i18n="prestige">Start abyss research</h2><p id="techCopy" data-i18n="techLocked">Deep abyss research unlocks at 760m and 3,000 credits sold.</p><div class="tech-stats"><span><b data-i18n="techPoints">Research points</b><strong id="researchValue">0</strong></span><span><b data-i18n="multiplier">multiplier</b><strong id="researchMultiplier">×1.0</strong></span></div><button id="prestigeButton" class="primary" type="button" data-i18n="prestige" disabled>Start abyss research</button></div></div><div id="techUpgradeList" class="tech-upgrade-list"></div><p class="tech-footnote" data-i18n="prestigeCopy">Reset cash and normal upgrades, keep the museum, and gain a permanent sale multiplier.</p></section>
+      <section id="panel-technology" class="tab-panel" data-panel="technology" hidden><div class="tech-card"><div class="tech-icon" aria-hidden="true"><img data-object="research" width="64" height="64" alt=""></div><div><span class="section-kicker" data-i18n="technology">Technology</span><h2 data-i18n="prestige">Start abyss research</h2><p id="techCopy" data-i18n="techLocked">Deep abyss research unlocks at 760m and 3,000 credits sold.</p><div class="tech-stats"><span><b data-i18n="techPoints">Research points</b><strong id="researchValue">0</strong></span><span><b data-i18n="multiplier">multiplier</b><strong id="researchMultiplier">×1.0</strong></span></div><button id="prestigeButton" class="primary" type="button" data-i18n="prestige" disabled>Start abyss research</button></div></div><div id="techUpgradeList" class="tech-upgrade-list"></div><p class="tech-footnote" data-i18n="prestigeCopy">Reset cash and normal upgrades, keep the museum, and gain a permanent sale multiplier.</p></section>
 
       <section id="panel-settings" class="tab-panel" data-panel="settings" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="preferences">Preferences</span><h2 data-i18n="settings">Settings</h2></div></div><p class="panel-intro" data-i18n="settingsCopy">Tune the presentation without changing the company balance.</p><div id="settingsList" class="settings-list"></div><div class="setting-row setting-reset-row"><span><strong data-i18n="reset">Reset save</strong><small data-i18n="resetConfirm">Reset this local save? This cannot be undone.</small></span><button id="resetButton" class="secondary" type="button" data-i18n="reset">Reset save</button></div></section>
 
@@ -165,7 +167,7 @@
       </section>
     </main>
 
-    <div id="offlineModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="offlineTitle" hidden><div class="modal-card"><span class="modal-icon" aria-hidden="true">✦</span><h2 id="offlineTitle" data-i18n="offlineTitle">Welcome back, captain</h2><p data-i18n="offlineCopy">Your crew kept working while you were away.</p><strong id="offlineValue" class="offline-value">+0 credits</strong><button id="offlineCollectButton" class="primary" type="button" data-i18n="collectOffline">Collect offline earnings</button><button id="offlineCloseButton" class="text-button" type="button" data-i18n="close">Close</button></div></div>
+    <div id="offlineModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="offlineTitle" hidden><div class="modal-card"><img data-object="crate" width="64" height="64" alt=""><h2 id="offlineTitle" data-i18n="offlineTitle">Welcome back, captain</h2><p data-i18n="offlineCopy">Your crew kept working while you were away.</p><strong id="offlineValue" class="offline-value">+0 credits</strong><button id="offlineCollectButton" class="primary" type="button" data-i18n="collectOffline">Collect offline earnings</button><button id="offlineCloseButton" class="text-button" type="button" data-i18n="close">Close</button></div></div>
     <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
     <noscript><p class="no-script">This game needs JavaScript to run its automatic salvage loop.</p></noscript>
     <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
@@ -173,8 +175,10 @@
     <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
     <script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-    <script src="locales.js?v=20261020-deep-sea-v10-locale-root1"></script>
-    <script src="game.js?v=20261020-deep-sea-v10-i9-main1"></script>
+    <script src="../../src/wallet.js"></script>
+    <script src="rebuild-locales.js?v=20261022-deep-sea-v11-rebuild1"></script>
+    <script src="locales.js?v=20261022-deep-sea-v11-rebuild1"></script>
+    <script type="module" src="game.js?v=20261022-deep-sea-v11-rebuild1"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
     <section class="game-page-info game-page-info-static" aria-label="심해 인양 회사 게임 정보">
@@ -188,16 +192,19 @@
     <div class="game-info-sections">
       <div class="game-info-section"><h3>세계와 목표</h3><p>작은 연구선은 항구 외곽에서 친근한 ROV 한 대로 시작합니다. 자동 잠수는 목표 수심에 도달해 해저를 탐색하고, 선체 강화나 새 해역의 비용을 마련할 화물을 가져옵니다.</p></div>
       <div class="game-info-section"><h3>게임 시스템</h3><p>자동 잠수는 잠수 중·탐색 중·귀환 중 단계를 차례로 진행합니다. 화물에는 무게와 인양 시간이 있으며 일반 물품은 자동 판매되고 수집품은 박물관에 남습니다. 일곱 가지 해역 이벤트가 추가 보너스를 제공합니다.</p>
-<p>선체 업그레이드 8종, 영입 가능한 ROV 3종, 수심 해역 7곳, 일일·회사 임무, 업적과 영구 연구 5종이 매 귀환의 다음 선택을 만듭니다. 제한된 오프라인 계산으로 자리를 비워도 회사가 운영됩니다.</p></div>
-      <div class="game-info-section"><h3>게임 방법</h3><ol><li>실시간 ROV 장면을 보며 첫 잠수를 기다리거나 ‘빠른 잠수’로 보상을 바로 시험합니다.</li><li>‘업그레이드’와 ‘ROV’에서 자금을 사용하고 해금된 해역을 선택합니다. 화물은 적재 중량 제한을 따릅니다.</li><li>‘박물관’에서 수집 목표를 확인하고 ‘임무’에서 보상을 받으며 ‘업적’에서 장기 보상을 수령합니다.</li><li>심연 조건을 달성하면 연구를 시작합니다. 현금과 일반 업그레이드는 초기화되지만 박물관과 업적은 유지되고 영구 보너스를 얻습니다.</li></ol></div>
+<p>선체 업그레이드 8종, 영입 가능한 ROV 3종, 수심 해역 7곳, 일일·회사 임무, 업적과 영구 연구 5종이 매 귀환의 다음 선택을 만듭니다. 제한된 오프라인 계산으로 자리를 비워도 회사가 운영됩니다.</p>
+<p>박물관 항로: 3회 이내에 현재 수심에서 얻을 수 있는 새 전시품을 보장합니다.</p>
+<p>조건을 충족한 이벤트 계약은 일치하는 잠수 5회 이내에 발생합니다.</p>
+<p>보라색 선체와 민트 조명. 외형 전용이며 연구와 초기화 후에도 영구 보유합니다.</p></div>
+      <div class="game-info-section"><h3>게임 방법</h3><ol><li>바늘이 초록 구간에 오면 누르세요. 잠수당 1회. 실패해도 기본 수익은 유지됩니다.</li><li>‘업그레이드’와 ‘ROV’에서 자금을 사용하고 해금된 해역을 선택합니다. 화물은 적재 중량 제한을 따릅니다.</li><li>‘박물관’에서 수집 목표를 확인하고 ‘임무’에서 보상을 받으며 ‘업적’에서 장기 보상을 수령합니다.</li><li>심연 조건을 달성하면 연구를 시작합니다. 현금과 일반 업그레이드는 초기화되지만 박물관과 업적은 유지되고 영구 보너스를 얻습니다.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>초반에는 잠수 시간과 판매 가치를 올려 순환을 빠르게 회수하세요.</li><li>깊은 해역을 고르기 전에 압력 선체를 강화해 최대 수심을 해금 기준까지 올리세요.</li><li>화물칸과 집게팔은 한 번의 가치를 높이고, 소나 배열은 희귀품 깊이에 도달한 뒤 특히 유용합니다.</li><li>박물관과 심연 연구를 장기 목표로 삼으세요. 단기 자금으로 해역을 열고 영구 연구로 다음 원정을 가속합니다.</li></ul></div>
       <div class="game-info-section"><h3>진행과 난이도</h3><p>항구 외곽에서 자동 순환과 기본 업그레이드를 익힙니다. 난파선 지대, 심해 협곡, 자정 해역, 해저 화산, 고대 유적, 미지의 심연으로 갈수록 가치와 투자 판단이 커지고, 연구 초기화가 성과를 영구 성장으로 바꿉니다.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>화면 중앙에 핵심 결정을 두어 ROV의 작업과 귀환 결과를 읽고 다음 투자를 고르게 했습니다. 고정 논리 Canvas는 세로형 휴대폰과 데스크톱에 비례 대응하며 LocalStorage와 제한된 계산으로 서버 없이도 방치 리듬을 유지합니다.</p></div>
-      <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>이 일반 브라우저 게임에는 계정, 구매, 채팅, 순위표, 멀티플레이나 광고가 없습니다. 회사 진행, 박물관, 임무 보상과 연구는 이 브라우저에만 저장되며 사이트 데이터를 지우면 사라질 수 있습니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>바늘이 초록 구간에 오면 누르세요. 잠수당 1회. 실패해도 기본 수익은 유지됩니다. 박물관 항로: 3회 이내에 현재 수심에서 얻을 수 있는 새 전시품을 보장합니다.</p></div>
+      <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>예. 계정 없이 이 브라우저의 LocalStorage에 저장됩니다. 보라색 선체와 민트 조명. 외형 전용이며 연구와 초기화 후에도 영구 보유합니다.</p></div>
       <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>잠수로 어떻게 돈을 버나요?</dt><dd>ROV가 수심에 따라 다른 무게와 가치의 인양품을 가져옵니다. 일반품은 자동 판매되고 수집품은 박물관에 남아 보너스를 줍니다.</dd></div><div><dt>더 깊은 해역에는 어떻게 가나요?</dt><dd>압력 선체나 수심 연구를 강화해 최대 수심을 해금 기준까지 올린 뒤 ‘탐사’에서 선택하세요.</dd></div><div><dt>자리를 비우면 어떻게 되나요?</dt><dd>돌아오면 최대 8시간의 자동 잠수를 계산해 오프라인 수익 창에서 한 번에 받을 수 있습니다.</dd></div><div><dt>심연 연구는 무엇을 초기화하나요?</dt><dd>조건을 충족하면 현금과 일반 업그레이드가 초기화되지만 박물관과 업적은 유지되고 영구 기술을 얻습니다.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>예. 계정 없이 이 브라우저의 LocalStorage에 저장됩니다.</dd></div></dl></div>
 
     </div>
   </section>
-<script src="../../src/game-page-info.js?v=20261020-deep-sea-v10-i9-guide-genres1"></script>
+<script src="../../src/game-page-info.js?v=20261022-deep-sea-v11-guide1"></script>
   </body>
 </html>

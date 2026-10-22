@@ -25,16 +25,15 @@
     <meta name="robots" content="noindex,nofollow" />
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="weightplay-game-id" content="animal-cloudhook-courier" />
+    <meta name="weightplay-game-version" content="v23" /><meta name="weightplay-interface-version" content="9" /><meta name="weightplay-game-id" content="animal-cloudhook-courier" />
     <title>Cloudhook Courier | WeightPlay</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%2378e2dc'/%3E%3Cpath d='M18 36c12-22 22-22 28-8' fill='none' stroke='%23071627' stroke-width='6'/%3E%3C/svg%3E" />
     <link rel="stylesheet" href="/src/game-page-info.css" />
     <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261018-interface9-lifecycle-sync-v2" />
     <link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20260820-wide-envelope-cache-v3" />
-    <link rel="stylesheet" href="/games/animal-cloudhook-courier/style.css?v=20261020-cloudhook-v22-i9-common-stage-bg1" />
-    <link rel="stylesheet" href="/games/animal-cloudhook-courier/responsive.css?v=20260923-cloudhook-frame-content-v16" />
+    <link rel="stylesheet" href="/games/animal-cloudhook-courier/style.css?v=20261022-cloudhook-v23" />
+    <link rel="stylesheet" href="/games/animal-cloudhook-courier/responsive.css?v=20261022-cloudhook-v23" />
     <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
-    <style id="cloudhook-battle-substates">.battle-screen{position:relative}.battle-screen>.battle-live{display:contents}.battle-screen>.result-screen{position:absolute;inset:0;z-index:4;width:auto;min-height:0;height:100%;display:grid;place-items:center;padding:clamp(14px,3vw,24px);background:#0d2438;border-radius:22px}.battle-screen>.result-screen[hidden],.leave-overlay[hidden]{display:none!important}.leave-overlay{position:absolute;inset:0;z-index:5;display:grid;place-items:center;padding:clamp(14px,3vw,24px);background:#061321b8;border-radius:22px}.leave-card{width:min(100%,560px);padding:clamp(22px,5vw,42px);border:1px solid var(--line);border-radius:22px;background:#102b42;box-shadow:0 22px 60px #020913aa}.leave-card h2{margin:5px 0 10px;font-size:clamp(1.55rem,4vw,2.35rem)}.leave-copy{margin:0;color:var(--muted);line-height:1.6}.leave-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:22px}.result-open>.battle-live,.leave-open>.battle-live{visibility:hidden;pointer-events:none}.battle-screen>.result-screen .result-card{max-height:100%;overflow:auto}@media(max-width:520px){.leave-actions{grid-template-columns:1fr}}</style>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta name="description" content="Cloudhook Courier ist ein originelles Momentum-Plattformspiel. Führe einen Wolkenmarder durch die Ringe des Polarlichts, befestige ihn an beweglichen..." />
@@ -77,15 +76,15 @@
 }
     </script>
   </head>
-  <body data-game-id="animal-cloudhook-courier" data-wp-game-id="animal-cloudhook-courier" data-wp-game-version="v22" data-wp-interface-version="9" data-screen="main" data-wp-combined-sound="true" data-runtime-localize="off">
+  <body data-game-id="animal-cloudhook-courier" data-wp-game-id="animal-cloudhook-courier" data-wp-game-version="v23" data-wp-interface-version="9" data-screen="main" data-wp-combined-sound="true" data-runtime-localize="off">
     <main class="shell" id="app" data-wp-frame-root>
       <section id="mainScreen" class="screen main-screen" data-screen="main">
         <header class="topbar" data-wp-shell-header="main"><a class="brand-back" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt="" /></a><div><p class="eyebrow" id="eyebrow"></p><h1 id="title">Cloudhook Courier</h1></div><label class="locale"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></header>
-        <div class="main-grid"><div><p class="coming" id="coming"></p><p class="lede" id="tagline"></p><div class="poster cloudhook-poster" aria-label="Cloudhook Courier cover"><img class="wonder-main-cover main-cover" src="/games/animal-cloudhook-courier/cover-block-v1.webp" alt="Spielgrafik zu Cloudhook Courier" /><span class="poster-ring ring-a"></span><span class="poster-ring ring-b"></span><span class="poster-courier">✦</span><span class="poster-lantern">⌂</span></div></div><div class="main-copy"><p class="objective" id="objective"></p><button id="startBtn" class="primary" type="button"></button></div></div>
+        <div class="main-grid"><div><p class="coming" id="coming"></p><p class="lede" id="tagline"></p><div class="poster cloudhook-poster" aria-label="Cloudhook Courier cover"><img class="wonder-main-cover main-cover" src="/assets/interface7-redrawn/animal-cloudhook-courier.webp" alt="Spielgrafik zu Cloudhook Courier" /><span class="poster-ring ring-a"></span><span class="poster-ring ring-b"></span><span class="poster-courier">✦</span><span class="poster-lantern">⌂</span></div></div><div class="main-copy"><p class="objective" id="objective"></p><p id="mainProgress"></p><button id="startBtn" class="primary" type="button"></button></div></div>
       </section>
-      <section id="stageScreen" class="screen stage-screen" data-screen="stage" hidden><header class="section-head" data-wp-shell-header="stage"><button class="icon-btn" id="stageBack" data-wp-return="main" type="button" aria-label="Back to Main">←</button><h2 id="stageTitle"></h2></header><div class="stage-workspace" id="stageWorkspace"><div id="stageGrid" aria-label="Stage selector"></div></div><nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page" id="stageTab"></button></nav></section>
-      <section id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden><header class="section-head battle-head" data-wp-shell-header="battle"><button class="icon-btn" id="battleBack" data-wp-return="battle" type="button" aria-label="Back to Stages">←</button><h2 id="battleTitle"></h2><div class="hud"><span id="scoreLabel"></span><span id="timeLabel"></span></div></header><p class="battle-status" id="battleStatus" aria-live="polite"></p><p class="parcel-objective" id="parcelObjective" aria-live="polite"></p><p class="tether-state" id="tetherState" aria-live="polite"></p><div class="canvas-wrap"><canvas id="gameCanvas" width="960" height="540" aria-label="Cloudhook Courier play area"></canvas></div><div class="touch-controls" aria-label="Game controls"><button class="control" id="nudgeLeft" type="button">◀</button><button class="control tether" id="tetherBtn" data-wp-primary-action type="button"></button><button class="control" id="nudgeRight" type="button">▶</button></div><p class="control-hint" id="controlHint"></p><button class="restart" id="restartBtn" type="button"></button></section>
-      <section id="resultScreen" class="screen result-screen" data-screen="result" hidden><div class="result-card"><p class="eyebrow" id="resultEyebrow"></p><h2 id="resultTitle"></h2><p class="result-copy" id="resultCopy"></p><div class="stats"><span id="resultScore"></span><span id="resultTime"></span><span id="resultBest"></span></div><div class="result-actions"><button id="nextBtn" class="primary" type="button"></button><button id="retryBtn" class="secondary" type="button"></button><button id="resultStagesBtn" class="secondary" type="button"></button></div></div></section>
+      <section id="stageScreen" class="screen stage-screen" data-screen="stage" hidden><header class="section-head" data-wp-shell-header="stage"><button class="icon-btn" id="stageBack" data-wp-return="main" type="button" aria-label="Back to Main">←</button><h2 id="stageTitle"></h2></header><div class="stage-workspace" id="stageWorkspace"><div id="stageSelector"><div id="stageGrid" aria-label="Stage selector"></div></div><section id="equipmentPanel" hidden data-wp-scroll-owner><h2 id="equipmentTitle"></h2><p id="equipmentNote"></p><p class="wallet"><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt="" /><span id="walletBalance"></span></p><div id="equipmentCards"></div><p id="equipmentMessage" role="status"></p></section></div><nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page" id="stageTab"></button><button type="button" id="equipmentTab"></button></nav></section>
+      <section id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden><header class="section-head battle-head" data-wp-shell-header="battle"><button class="icon-btn" id="battleBack" data-wp-return="battle" type="button" aria-label="Back to Stages">←</button><h2 id="battleTitle"></h2><div class="hud"><span id="scoreLabel"></span><span id="timeLabel"></span></div></header><p class="battle-status" id="battleStatus" aria-live="polite"></p><p class="parcel-objective" id="parcelObjective" aria-live="polite"></p><div class="canvas-wrap"><canvas id="gameCanvas" width="720" height="1080" tabindex="0" aria-label="Cloudhook Courier play area"></canvas></div><div class="touch-controls" aria-label="Game controls"><button class="control" id="nudgeLeft" type="button">◀</button><button class="control tether" id="tetherBtn" data-wp-primary-action type="button"></button><button class="control" id="nudgeRight" type="button">▶</button></div><p class="control-hint" id="controlHint"></p><div class="flight-utilities"><button class="restart" id="restartBtn" type="button"></button><button id="helpBtn" type="button"></button></div></section>
+      <section id="resultScreen" class="screen result-screen" data-screen="result" hidden><div class="result-card"><p class="eyebrow" id="resultEyebrow"></p><h2 id="resultTitle"></h2><p class="result-copy" id="resultCopy"></p><div class="stats"><span id="resultScore"></span><span id="resultTime"></span><span id="resultBest"></span></div><div class="result-actions"><button id="resultStagesBtn" class="secondary" type="button"></button><button id="nextBtn" class="primary" type="button"></button><button id="retryBtn" class="secondary" type="button"></button></div></div></section>
     </main>
     <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
     <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
@@ -96,6 +95,8 @@
     <script src="/games/animal-cloudhook-courier/locales.js?v=20260829-cloudhook-parcel-progress-v12"></script>
     <script src="/games/animal-cloudhook-courier/locales-i9.js?v=20261019-cloudhook-i9-copy-v1"></script>
     <script src="/src/battle-canvas-standard.js?v=20260820-wide-envelope-cache-v3"></script>
+    <script src="/games/animal-cloudhook-courier/guide-v23.js?v=23"></script>
+    <script src="/src/wallet.js"></script>
     <section class="game-page-info game-page-info-static" aria-label="Informationen zu Cloudhook Courier">
 
     <div class="game-info-hero">
@@ -118,13 +119,16 @@
     </div>
   </section>
 <script src="/src/game-page-info.js?v=20260821-cloudhook-guide-v10"></script>
-    <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-    <script src="/games/animal-cloudhook-courier/stage-config.js?v=20261020-cloudhook-i9-common-stage-bg1"></script>
+    <script src="/src/game-title-registry.js?v=20261022-cloudhook-chinese-title" data-wp-game-title-registry></script>
+    <script src="/games/animal-cloudhook-courier/stage-config.js?v=20261022-cloudhook-v23"></script>
     <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
     <script src="/src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
     <script src="/src/game-screen-frame.js?v=20261018-interface9-lifecycle-sync-v2"></script>
-    <script src="/games/animal-cloudhook-courier/frame.js?v=20261019-cloudhook-i9-frame-v2"></script>
-    <script src="/games/animal-cloudhook-courier/game.js?v=20261019-cloudhook-v22-i9-frame-v1"></script>
+    <script src="/games/animal-cloudhook-courier/frame.js?v=20261022-cloudhook-v23"></script>
+    <script src="/games/animal-cloudhook-courier/copy-v23.js?v=23"></script>
+    <script src="/games/animal-cloudhook-courier/routes.js?v=23"></script>
+    <script src="/games/animal-cloudhook-courier/flight.js?v=23"></script>
+    <script src="/games/animal-cloudhook-courier/game.js?v=20261022-cloudhook-v23"></script>
     <script id="cloudhook-block-asset-upgrade-v1">
       (() => { document.documentElement.dataset.wpVoxelAssetSet = 'cloudhook-block-v1'; })();
     </script>

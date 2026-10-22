@@ -66,8 +66,11 @@ button:disabled { cursor: not-allowed; opacity: .56; }
 .status.good { color: #9ff3d6; }
 .status.try { color: #ffd28a; }
 .habitat-grid {
+  position: relative;
+  isolation: isolate;
+  direction: ltr;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--habitat-cols, 2), minmax(0, 1fr));
   grid-template-rows: repeat(2, minmax(0, 1fr));
   gap: 8px;
   min-width: 0;
@@ -75,10 +78,12 @@ button:disabled { cursor: not-allowed; opacity: .56; }
   margin: 0;
 }
 .habitat-tile {
+  position: relative;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-template-rows: auto auto;
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-content: end;
+  align-items: end;
   column-gap: 10px;
   min-width: 0;
   min-height: 0;
@@ -108,7 +113,23 @@ button:disabled { cursor: not-allowed; opacity: .56; }
 }
 .habitat-tile strong { min-width: 0; overflow-wrap: anywhere; font-size: .98rem; }
 .habitat-tile small { min-width: 0; margin-top: 4px; color: var(--wp-ui-muted, #a4bdb9); overflow-wrap: anywhere; }
-.battle-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; min-width: 0; }
+.battle-actions { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 8px; min-width: 0; }
+.battle-actions > button { min-width:0; padding-inline:8px; }
+.habitat-grid.settled .habitat-tile { border-color:#a8d5a1; }
+.habitat-tile:disabled { opacity:1; }
+.rules { list-style:none; padding-inline:10px; }
+.rules .satisfied { color:#c8e3a4; }
+#themeDialog { width:min(440px,calc(100vw - 28px)); color:var(--wp-ui-text); background:var(--wp-ui-surface); border:1px solid var(--wp-ui-line); border-radius:var(--wp-ui-radius); padding:22px; }
+#themeDialog::backdrop { background:#081523d9; }
+#themeDialog h2 { margin-top:0; }
+#themeDialog p { line-height:1.5; }
+#themeDialog button { min-height:44px; margin-block:4px; }
+#themePurchase, .theme-balance { display:flex; align-items:center; justify-content:center; gap:8px; }
+#themePurchase { width:100%; }
+#themeConfirmation { padding-top:12px; }
+#themeConfirm { width:100%; }
+#themeStatus:empty, #status:empty { display:none; }
+#renderNotice { font-size:.8rem; margin:0; }
 
 #resultScreen:not([hidden]) {
   display: grid;

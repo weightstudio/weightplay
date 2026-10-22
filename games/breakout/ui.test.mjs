@@ -61,8 +61,9 @@ try{
   for(const [width,height]of [[390,844],[612,876],[844,390],[1280,720],[1920,1080]]){
     await page.setViewportSize({width,height});await page.waitForTimeout(150);
     const result=await page.locator('#resultScreen .result-actions button').evaluateAll(buttons=>buttons.map(e=>{const r=e.getBoundingClientRect();return {w:r.width,h:r.height,bottom:r.bottom,hit:e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))};}));
-    assert(result.every(b=>b.h>=44&&b.bottom<=height+1&&b.hit),`Result targets ${width}: ${JSON.stringify(result)}`);
     await capture(page,`${width}x${height}-result`);
+    assert(result.every(b=>b.h>=44&&b.bottom<=height+1&&b.hit),`Result targets ${width}: ${JSON.stringify(result)}`);
+    assert(await page.locator('#resultTitle').evaluate(e=>{const r=e.getBoundingClientRect();return [r.y+2,r.bottom-2].every(y=>e.contains(document.elementFromPoint(r.x+r.width/2,y)));}),`Result heading unobstructed ${width}`);
   }
   await page.reload();await page.waitForFunction(()=>window.WPBreakoutDiagnostics);assert.equal(await page.evaluate(()=>window.WeightPlayWallet.read().diamonds),5);
   for(const locale of ['en','zh-tw','zh-cn','ja','ko','es','pt-br','fr','de','it','ru','hi','ar']){

@@ -18,7 +18,7 @@
         const stage = stages[index];
         const chapter = Math.floor(index / 5);
         const chapterNames = t("chapterNames");
-        const locked = index >= state.unlocked;
+        const locked = !state.practice && index >= state.unlocked;
         const cleared = state.cleared.has(index);
         const rounds = stage.rounds.map((round, roundIndex) => {
           const demand = round.demand.map((good) => t(good)).join(" + ");
@@ -29,7 +29,7 @@
           kicker: t("chapter") + " " + (chapter + 1) + " · " + chapterNames[chapter],
           title: t("stage") + " " + (index + 1),
           subtitle: stage.rounds.length + " " + t("round"),
-          status: locked ? t("locked") : cleared ? t("cleared") : "",
+          status: locked ? t("locked") : cleared ? `${t("cleared")} ${"★".repeat(state.best?.[index] || 0)}` : "",
           summary: rounds[0] || "",
           details: rounds,
           locked,

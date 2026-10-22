@@ -6,7 +6,7 @@
     const posterPositions = [52, 65, 41, 57, 69, 47];
     return {
       count: bridge.count,
-      poster: "/games/animal-cloudhook-courier/cover-block-v1.webp",
+      poster: "/assets/interface7-redrawn/animal-cloudhook-courier.webp",
       background: "/assets/lobby-block-atmosphere.svg",
       stage(index) {
         const meta = bridge.stageMeta(index);
@@ -27,7 +27,7 @@
           details: [meta.objective, meta.warning, meta.result, best ? status : ""].filter(Boolean),
           locked: !open,
           cleared: Boolean(best),
-          poster: "/games/animal-cloudhook-courier/cover-block-v1.webp",
+          poster: "/assets/interface7-redrawn/animal-cloudhook-courier.webp",
           posterPosition: "50% " + posterPositions[Math.floor(index / 5)] + "%",
         };
       },

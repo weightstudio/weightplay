@@ -71,13 +71,20 @@
         syncStageInfo();
       },
       onStart: (index) => bridge.startStage(index),
-      isActive: () => frame.active === "stage",
+      isActive: () => frame.active === "stage" && $("marketShop").hidden,
     });
+
+    // Secondary content shares the Stage workspace; it is not rail source copy.
+    $("stageWorkspace").append($("marketShop"));
 
     const stageTab = $("stageTabButton");
     stageTab.dataset.wpFrameAction = "tab";
     stageTab.setAttribute("aria-pressed", "true");
-    frame.commonDownButton.clear().add(stageTab);
+    stageTab.dataset.wpFrameStageSlot = "stages";
+    const shopTab = $("shopTabButton");
+    shopTab.dataset.wpFrameAction = "tab";
+    shopTab.dataset.wpFrameStageSlot = "equipment";
+    frame.commonDownButton.clear().add(stageTab).add(shopTab);
     syncStageInfo();
     frame.activate("main");
 

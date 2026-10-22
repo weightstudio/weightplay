@@ -26,7 +26,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-habitat-blueprint" />
-  <meta name="weightplay-game-version" content="v18" />
+  <meta name="weightplay-game-version" content="v19" />
   <meta name="weightplay-interface-version" content="9" />
   <meta name="weightplay-scene-controls" content="immutable" />
   <meta name="theme-color" content="#294a55" />
@@ -36,8 +36,8 @@
   <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261016-shared-play1" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20261020-shared-play1" />
   <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261020-habitat-blueprint-i9-play-ui1-battle-background1" />
-  <link rel="stylesheet" href="art.css?v=20261020-habitat-blueprint-i9-art-content1" />
-  <link rel="stylesheet" href="style.css?v=20261020-habitat-blueprint-i9-short-landscape2" /><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
+  <link rel="stylesheet" href="art.css?v=20261022-habitat19" />
+  <link rel="stylesheet" href="style.css?v=20261022-habitat19" /><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261020-habitat-blueprint-i9-shared-frame1">
   <meta name="description" content="Troque quatro peças de habitat para cumprir todas as pistas vizinhas e criar um lar conectado." />
@@ -55,7 +55,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-runtime-localize="off" data-wp-game-id="animal-habitat-blueprint" data-wp-audience="general" data-screen="main" data-wp-game-version="v18" data-wp-interface-version="9">
+<body data-runtime-localize="off" data-wp-game-id="animal-habitat-blueprint" data-wp-audience="general" data-screen="main" data-wp-game-version="v19" data-wp-interface-version="9">
   <div id="loading" class="screen loading-screen"><div class="loader-mark">⌂</div><p data-i18n="loading">Abrindo os planos do habitat…</p></div>
   <main id="app" data-wp-frame-root data-wp-play-ui="1" hidden>
     <section id="mainScreen" class="screen main-screen" data-screen="main">
@@ -67,14 +67,14 @@
         </select>
       </header>
       <div id="mainContent" class="main-content">
-        <img class="main-poster" data-wp-frame-poster src="assets/animal-habitat-blueprint-cover-v2.webp" alt="Imagem do jogo Lógica de Peças de Habitat" width="1536" height="1024" />
+        <img class="main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-habitat-blueprint.webp" alt="Imagem do jogo Lógica de Peças de Habitat" width="1536" height="1024" />
         <div class="main-copy" data-wp-frame-copy>
           <p class="eyebrow" data-i18n="world">Estação de campo Luz-de-Musgo</p>
-          <p class="intro main-summary" data-i18n="intro" data-wp-frame-summary>Organize quatro peças de habitat para que cada lar animal tenha o vizinho certo.</p>
+          <p class="intro main-summary" data-i18n="intro" data-wp-frame-summary>Construa um pequeno habitat vivo. Leia as pistas, troque duas peças e encontre o lugar de cada lar.</p>
           <div id="mainProgress" class="main-progress" data-wp-frame-progress role="status" aria-live="polite"><strong data-i18n="chapter">Planos de habitat</strong><span>&nbsp;30 stages · 6 chapters</span></div>
           <div class="main-actions"><button id="startBtn" class="primary" type="button" data-wp-main-start data-i18n="start">Abrir um plano</button><button id="mapBtn" class="secondary" type="button" data-i18n="choose">Escolher um plano</button></div>
           <p class="eyebrow" data-i18n="kicker">Um quebra-cabeça de planejamento tranquilo</p>
-          <p id="best" class="best" data-i18n="best">Melhor: {best} trocas</p>
+          <p id="best" class="best" data-i18n="best">Habitats restaurados: {count}/30</p>
         </div>
       </div>
     </section>
@@ -88,39 +88,42 @@
       <div id="battleContent">
         <div id="battleStats" hidden><strong id="planTitle">Pondside plan</strong><span id="progressPill" class="pill">1 / 30</span></div>
         <div id="battleLive">
-          <p class="eyebrow" data-i18n="round">Plano</p><p id="prompt" class="prompt"></p><ol id="rules" class="rules" aria-live="polite"></ol>
+          <p id="clueProgress" class="eyebrow"></p><p id="prompt" class="prompt"></p><ol id="rules" class="rules" aria-live="polite"></ol>
           <p id="selection" class="selection" aria-live="polite"></p><div id="habitatGrid" class="habitat-grid" role="group" aria-label="Habitat tiles"></div>
-          <div class="battle-actions"><button id="swapBtn" class="primary" type="button" data-wp-primary-action data-wp-frame-action="primary" data-i18n="swap" disabled>Trocar selecionadas</button><button id="resetBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="reset">Redefinir plano</button></div>
-          <p id="status" class="status" role="status" aria-live="polite"></p>
+          <div class="battle-actions"><button id="swapBtn" class="primary" type="button" data-wp-primary-action data-wp-frame-action="primary" data-i18n="swap" disabled>Trocar selecionadas</button><button id="undoBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="undo">Desfazer</button><button id="resetBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="reset">Redefinir plano</button></div>
+          <p id="renderNotice" hidden role="status"></p><p id="status" class="status" role="status" aria-live="polite"></p>
         </div>
-        <section id="resultScreen" class="result-substate" data-screen="result" hidden aria-labelledby="resultTitle"><img class="guide-art result-guide-art" src="assets/animal-habitat-blueprint-guide-v1.webp" alt="" aria-hidden="true" width="1024" height="1536" /><div class="result-icon">⌂</div><p class="eyebrow" data-i18n="finished">Plano concluído</p><h2 id="resultTitle" data-i18n="resultTitle">Todos os habitats combinam!</h2><p id="resultText" class="intro"></p><div class="result-actions"><button id="resultMapBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="resultStages">Fases</button><button id="nextBtn" class="primary" type="button" data-wp-frame-action="primary" data-i18n="nextStage">Próxima fase</button><button id="replayBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="replay">Jogar novamente</button></div></section>
+        <section id="resultScreen" class="result-substate" data-screen="result" hidden aria-labelledby="resultTitle"><img class="guide-art result-guide-art" src="/assets/weightplay-character-moss-shell-turtle-block-v1.webp" alt="" aria-hidden="true" width="1024" height="1536" /><div class="result-icon" aria-hidden="true">✓</div><p class="eyebrow" data-i18n="finished">Plano concluído</p><h2 id="resultTitle" data-i18n="resultTitle">Todos os habitats combinam!</h2><p id="resultText" class="intro"></p><div class="result-actions"><button id="resultMapBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="resultStages">Fases</button><button id="nextBtn" class="primary" type="button" data-wp-frame-action="primary" data-i18n="nextStage">Próxima fase</button><button id="replayBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="replay">Jogar novamente</button></div></section>
       </div>
     </section>
     <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-copy-aria-label="guideAria" aria-label="Informações do jogo Plano do Habitat">
       <div class="game-info-hero">
-        <div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">Guia de jogo original do WeightPlay</span><h2 data-copy="title" data-wp-game-title data-runtime-localize="off">Lógica de Peças de Habitat</h2><p data-copy="guideIntro">Troque quatro peças de habitat para cumprir todas as pistas de vizinhança e criar um lar calmo e conectado para os animais.</p></div>
+        <div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">Guia de jogo original do WeightPlay</span><h2 data-copy="title" data-wp-game-title data-runtime-localize="off">Lógica de Peças de Habitat</h2><p data-copy="guideIntro">Construa um pequeno habitat vivo. Leia as pistas, troque duas peças e encontre o lugar de cada lar.</p></div>
         <div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">Jogabilidade</span><strong data-copy="guideGameplayValue">Quebra-cabeça de condições do habitat</strong></div><div class="game-info-fact"><span data-copy="guideGenre">Gênero</span><strong data-copy="guideGenreValue">Quebra-cabeça · Lógica · Planejamento espacial · Família · Animais</strong></div></div>
       </div>
       <div class="game-info-sections">
-        <article class="game-info-section"><h3 data-copy="guidePlansTitle">Planos de habitat</h3><p data-copy="guidePlansIntro">Troque quatro peças de habitat para cumprir todas as pistas de vizinhança e criar um lar calmo e conectado para os animais. Use juntas as pistas de vizinhança, separação e posição vertical; todo plano pode ser recuperado.</p><ol><li data-copy="guideHow1">Leia as três notas de campo.</li><li data-copy="guideHow2">Selecione duas peças e troque-as.</li><li data-copy="guideHow3">Redefina com segurança quando a disposição não estiver certa.</li></ol></article>
+        <article class="game-info-section"><h3 data-copy="guidePlansTitle">Planos de habitat</h3><p data-copy="guidePlansIntro">Construa um pequeno habitat vivo. Leia as pistas, troque duas peças e encontre o lugar de cada lar. Escolha dois habitats e troque. Quatro habitats; troque quaisquer dois. Seis habitats: combine pistas de direção e linha.</p><ol><li data-copy="guideHow1">Seis habitats: combine pistas de direção e linha.</li><li data-copy="guideHow2">Escolha dois habitats e troque.</li><li data-copy="guideHow3">Resolva dentro do limite. Desfazer é sempre grátis.</li></ol></article>
         <article class="game-info-section"><h3 data-copy="guideCluesTitle">Entenda as notas de campo</h3><p data-copy="guideCluesBody">Use juntas as pistas de vizinhança, separação e posição vertical; todo plano pode ser recuperado.</p></article>
-        <article class="game-info-section"><h3 data-copy="guideCampaignTitle">Trinta fases em seis capítulos</h3><p data-copy="guideCampaignBody">30 fases · 6 capítulos</p></article>
-        <article class="game-info-section"><h3 data-copy="guideStrategyTitle">Um método confiável</h3><p data-copy="guideStrategyBody">Use juntas as pistas de vizinhança, separação e posição vertical; todo plano pode ser recuperado.</p><p data-copy="guideStrategyBody2">Redefina com segurança quando a disposição não estiver certa.</p></article>
-        <article class="game-info-section"><h3 data-copy="guideControlsTitle">Controles, retorno e recuperação</h3><p data-copy="guideControlsBody">Leia as três notas de campo. Selecione duas peças e troque-as. Redefina com segurança quando a disposição não estiver certa.</p></article>
-        <article class="game-info-section"><h3 data-copy="guideResultsTitle">Resultados e salvamento</h3><p data-copy="guideResults">30 fases · 6 capítulos. Sim, somente neste navegador.</p></article>
-        <article class="game-info-section"><h3 data-copy="guideTipsTitle">Dicas práticas</h3><ul><li data-copy="guideTip1">Leia as três notas de campo.</li><li data-copy="guideTip2">Selecione duas peças e troque-as.</li><li data-copy="guideTip3">Use juntas as pistas de vizinhança, separação e posição vertical; todo plano pode ser recuperado.</li><li data-copy="guideTip4">Redefina com segurança quando a disposição não estiver certa.</li><li data-copy="guideTip5">Sim, somente neste navegador.</li></ul></article>
-        <article class="game-info-section"><h3 data-copy="faqTitle">Perguntas frequentes</h3><dl><div><dt data-copy="faqProgressQuestion">O progresso é salvo?</dt><dd data-copy="faqProgressAnswer">Sim, somente neste navegador.</dd></div><div><dt data-copy="faqMistakeQuestion">Uma troca errada encerra a fase?</dt><dd data-copy="faqMistakeAnswer">Não. Continue organizando ou restaure a disposição inicial.</dd></div><div><dt data-copy="faqTouchQuestion">Encostar só pelo canto conta como vizinhança?</dt><dd data-copy="faqTouchAnswer">Não. Os habitats precisam compartilhar uma borda inteira.</dd></div><div><dt data-copy="faqChaptersQuestion">O que muda nos capítulos seguintes?</dt><dd data-copy="faqChaptersAnswer">Entram restrições, movimentos diagonais, habitats fixos e limite de quatro trocas.</dd></div></dl></article>
+        <article class="game-info-section"><h3 data-copy="guideCampaignTitle">Trinta fases em seis capítulos</h3><p data-copy="guideCampaignBody">Primeiras anotações: Quatro habitats; troque quaisquer dois. Caminhos vizinhos: Só peças que dividem uma borda podem trocar. Horizontes amplos: Seis habitats: combine pistas de direção e linha. Habitat protegido: Um habitat é fixo. Planeje ao redor dele. Planejamento cuidadoso: Resolva dentro do limite. Desfazer é sempre grátis. Mestre da reserva: Seis habitats, trocas adjacentes e limite de movimentos.</p></article>
+        <article class="game-info-section"><h3 data-copy="guideStrategyTitle">Um método confiável</h3><p data-copy="guideStrategyBody">Só peças que dividem uma borda podem trocar. Um habitat é fixo. Planeje ao redor dele. Resolva dentro do limite. Desfazer é sempre grátis.</p><p data-copy="guideStrategyBody2">Redefina com segurança quando a disposição não estiver certa.</p></article>
+        <article class="game-info-section"><h3 data-copy="guideControlsTitle">Controles, retorno e recuperação</h3><p data-copy="guideControlsBody">Escolha dois habitats e troque. Só peças que dividem uma borda podem trocar. Resolva dentro do limite. Desfazer é sempre grátis.</p></article>
+        <article class="game-info-section"><h3 data-copy="guideResultsTitle">Resultados e salvamento</h3><p data-copy="guideResults">Sim, somente neste navegador. Luar: paleta azul noturna permanente. Apenas aparência; todos os quebra-cabeças são gratuitos.</p></article>
+        <article class="game-info-section"><h3 data-copy="guideTipsTitle">Dicas práticas</h3><ul><li data-copy="guideTip1">Escolha dois habitats e troque.</li><li data-copy="guideTip2">Selecione duas peças e troque-as.</li><li data-copy="guideTip3">Seis habitats: combine pistas de direção e linha.</li><li data-copy="guideTip4">Resolva dentro do limite. Desfazer é sempre grátis.</li><li data-copy="guideTip5">Sim, somente neste navegador.</li></ul></article>
+        <article class="game-info-section"><h3 data-copy="faqTitle">Perguntas frequentes</h3><dl><div><dt data-copy="faqProgressQuestion">O progresso é salvo?</dt><dd data-copy="faqProgressAnswer">Sim, somente neste navegador.</dd></div><div><dt data-copy="faqMistakeQuestion">Uma troca errada encerra a fase?</dt><dd data-copy="faqMistakeAnswer">Limite atingido. Desfaça uma troca ou reinicie.</dd></div><div><dt data-copy="faqTouchQuestion">Encostar só pelo canto conta como vizinhança?</dt><dd data-copy="faqTouchAnswer">Não. Os habitats precisam compartilhar uma borda inteira.</dd></div><div><dt data-copy="faqChaptersQuestion">O que muda nos capítulos seguintes?</dt><dd data-copy="faqChaptersAnswer">Primeiras anotações: Quatro habitats; troque quaisquer dois. Caminhos vizinhos: Só peças que dividem uma borda podem trocar. Horizontes amplos: Seis habitats: combine pistas de direção e linha. Habitat protegido: Um habitat é fixo. Planeje ao redor dele. Planejamento cuidadoso: Resolva dentro do limite. Desfazer é sempre grátis. Mestre da reserva: Seis habitats, trocas adjacentes e limite de movimentos.</dd></div></dl></article>
       </div>
     </section>
   </main>
+  <button id="themeBtn" type="button" data-wp-frame-action="secondary"></button>
+  <dialog id="themeDialog" aria-labelledby="themeTitle"><h2 id="themeTitle"></h2><p id="themeDescription"></p><p class="theme-balance"><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt=""><strong id="themeBalance"></strong></p><button id="themePurchase" data-wp-frame-action="primary"><img id="themeCostIcon" src="/assets/weightplay-diamond.svg" width="22" height="22" alt=""><span id="themePurchaseLabel"></span></button><div id="themeConfirmation" hidden><button id="themeConfirm" data-wp-frame-action="primary"></button><button id="themeCancel" data-wp-frame-action="secondary"></button></div><p id="themeStatus" role="status"></p><button id="themeClose" data-wp-frame-action="secondary"></button></dialog>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
   <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
   <script src="../../src/battle-canvas-standard.js?v=20261020-shared-play1"></script>
   <script src="../../src/game-play-ui.js?v=20261020-habitat-blueprint-i9-play-ui1"></script>
-  <script src="locales.js?v=20260924-habitat-blueprint-v14-arabic-guide"></script>
-  <script src="stage-config.js?v=20261020-habitat-blueprint-i9-stage-config1"></script>
-  <script src="frame.js?v=20261020-habitat-blueprint-i9-shared-frame1"></script>
-  <script src="game.js?v=20261020-habitat-blueprint-i9-shared-frame1"></script>
+  <script src="/src/wallet.js"></script>
+  <script src="locales.js?v=20261022-habitat19"></script>
+  <script src="stage-config.js?v=20261022-habitat19"></script>
+  <script src="frame.js?v=20261022-habitat19"></script>
+  <script type="module" src="game.js?v=20261022-habitat19"></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/pt-br.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
