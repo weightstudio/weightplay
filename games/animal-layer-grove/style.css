@@ -7,10 +7,6 @@ button,a,select{font:inherit}
 [hidden]{display:none!important}
 .screen{width:min(100%,920px);margin-inline:auto}
 #mainScreen{padding:0}
-#stageScreen .stage-canvas{position:relative;display:grid;grid-template-rows:var(--wp-frame-play-header-height,48px) minmax(0,1fr) 56px;gap:0;width:100%;min-height:100%}
-#stageScreen .stage-tabs{grid-row:3;display:flex;align-items:center;justify-content:center;gap:8px;margin:0;padding:4px}
-#stageScreen .stage-tabs>button{flex:1}
-#stageScreen .stage-rail{min-height:0;align-self:stretch}
 #battleScreen .battle-canvas{position:relative;display:grid;grid-template-rows:var(--wp-frame-play-header-height,48px) minmax(0,1fr);gap:0;width:100%;min-height:100%;container-type:size;container-name:grove-battle}
 #battleScreen .battle-tools{display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;overflow:hidden}
 #battleScreen .battle-tools>span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:700;color:var(--wp-ui-text)}
@@ -59,8 +55,8 @@ button,a,select{font:inherit}
 
 
 /* Existing Battle-owned dialogs and three persistent Result destinations. */
-#battleScreen :is(.result-panel,.leave-panel){position:absolute;z-index:300;inset:0;display:flex;overflow:auto;padding:16px;background:var(--wp-ui-surface);touch-action:pan-y;overscroll-behavior:contain}
-#battleScreen :is(.result-panel,.leave-panel)[hidden]{display:none!important}
+#battleScreen :is(.result-view,.leave-panel){position:absolute;z-index:300;inset:0;display:flex;overflow:auto;padding:16px;background:var(--wp-ui-surface);touch-action:pan-y;overscroll-behavior:contain}
+#battleScreen :is(.result-view,.leave-panel)[hidden]{display:none!important}
 #battleScreen :is(.result-card,.leave-card){flex:0 0 auto;width:100%;max-width:620px;margin:auto;padding:16px;border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-background);color:var(--wp-ui-text);text-align:center}
 #battleScreen :is(.result-card,.leave-card) h2{margin:8px 0;font-size:24px;line-height:1.3}
 #battleScreen :is(.result-card,.leave-card) p{margin:12px 0;font-size:15px;line-height:1.5;overflow-wrap:anywhere}
@@ -71,9 +67,9 @@ button,a,select{font:inherit}
 #battleScreen .result-card>span{display:none}
 #battleScreen .result-actions{display:grid;grid-template-rows:44px 52px 44px;gap:12px;margin-top:16px}
 #battleScreen .leave-actions{display:grid;grid-template-rows:52px 44px;gap:12px;margin-top:16px}
-#battleScreen .battle-canvas[data-substate="result"]>.panel-head{visibility:hidden;pointer-events:none}
+#battleScreen .result-view{position:relative;inset:auto;grid-row:2;grid-column:1;min-height:0;max-height:100%;width:100%;height:100%}
 @media(max-height:480px){
- #battleScreen :is(.result-panel,.leave-panel){padding:8px}
+ #battleScreen :is(.result-view,.leave-panel){padding:8px}
  #battleScreen :is(.result-card,.leave-card){padding:8px}
  #battleScreen .result-card>.keeper-result{display:block;width:auto;height:min(68px,17vh);max-width:100%;margin:0 auto;object-fit:contain}
  #battleScreen :is(.result-card,.leave-card) h2{margin:2px 0;font-size:20px;line-height:1.15}
@@ -85,22 +81,12 @@ button,a,select{font:inherit}
  #battleScreen .leave-actions{grid-template-rows:52px 44px;gap:8px;margin-top:8px}
 }
 #battleScreen button:focus-visible{outline:2px solid var(--wp-ui-gold);outline-offset:2px}
-.loading-screen{position:fixed;inset:0;z-index:500;display:grid;place-content:center;gap:8px;background:var(--wp-ui-background);color:var(--wp-ui-text)}
-.loading-screen.is-ready{display:none}
 #battleScreen :is(.primary-btn,.secondary-btn){display:flex;align-items:center;justify-content:center;width:100%;min-width:0;box-sizing:border-box;margin:0;padding:0 12px;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-button-image);color:var(--wp-ui-text);font:700 14px/1.2 system-ui;white-space:nowrap;cursor:pointer;touch-action:manipulation;box-shadow:0 3px 0 var(--wp-ui-shadow)}
 #battleScreen .primary-btn{height:52px;padding-inline:16px;background:var(--wp-ui-gold);color:var(--wp-ui-background);font-size:16px}
 #battleScreen .secondary-btn{height:44px}
 #battleScreen :is(.primary-btn,.secondary-btn):disabled{opacity:.4;cursor:not-allowed}
 #battleScreen :is(.primary-btn,.secondary-btn,.order-btn,.layer-inspect):not(:disabled):hover{filter:brightness(1.08)}
 #battleScreen :is(.primary-btn,.secondary-btn,.order-btn,.layer-inspect):not(:disabled):active{filter:brightness(.9)}
-#stageScreen .stage-card{padding:0;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface);color:var(--wp-ui-text);cursor:pointer}
-#stageScreen .stage-card [data-wp-item-content]{width:100%;height:100%;gap:8px;padding:16px}
-#stageScreen .stage-card [data-wp-item-content]>strong{font-size:15px;line-height:1.3}
-#stageScreen .stage-card [data-wp-item-content]>span{font-size:20px;line-height:1.3;font-weight:800}
-#stageScreen .stage-card [data-wp-item-content]>small{font-size:13px;line-height:1.3;color:var(--wp-ui-muted)}
-#stageScreen .stage-card[aria-current="true"]{border-color:var(--wp-ui-gold)}
-#stageScreen .stage-card[aria-disabled="true"]{opacity:.6;cursor:not-allowed}
-#stageScreen .stage-tabs>button{height:44px;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-active);color:var(--wp-ui-text);font-weight:700}
 @media(prefers-reduced-motion:reduce){#battleScreen .puzzle-cell{transition:none}}
 
 /* v13: visual children animate, control rectangles never do. */
@@ -141,4 +127,13 @@ button,a,select{font:inherit}
  #battleScreen .puzzle-goals{grid-column:3;grid-row:1;grid-template-rows:18px 188px minmax(0,1fr)}
  #battleScreen #clueList{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(4,44px)}
  #battleScreen .battle-actions{grid-column:1 / -1;grid-row:2}
+}
+
+/* Result remains in the shared Battle content track. On short canvases,
+   secondary copy and the three decisions use separate columns. */
+@container grove-battle (height <= 700px){
+ #battleScreen .result-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,.7fr);column-gap:16px;max-width:800px}
+ #battleScreen .result-card>*{grid-column:1}
+ #battleScreen .result-card>.keeper-result{display:none}
+ #battleScreen .result-card>.result-actions{grid-column:2;grid-row:1 / span 8;align-self:center;margin-top:0}
 }
