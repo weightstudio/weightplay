@@ -48,6 +48,14 @@
     isActive: () => root.dataset.screen === "stage" && !$("stageScreen").hidden,
   });
 
+  const stageTabButton = $("stageTabButton");
+  stageTabButton.dataset.wpFrameAction = "tab";
+  stageTabButton.setAttribute("aria-pressed", "true");
+  frame.commonDownButton.clear().add(stageTabButton);
+  stageTabButton.addEventListener("click", () => {
+    stageSelector.select(gameStage.selectedIndex(), { source: "tab" });
+  });
+
   const sync = () => {
     const scene = root.dataset.screen || "main";
     if (!["main", "stage", "battle"].includes(scene)) return;

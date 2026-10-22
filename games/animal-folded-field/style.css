@@ -44,7 +44,7 @@ button { color: inherit; }
 .setting-row select { min-width: 132px; border: 1px solid var(--line); border-radius: 10px; padding: 7px; color: var(--ink); background: #fff; }
 
 .hero-grid { display: grid; grid-template-columns: minmax(300px, .9fr) minmax(0, 1.1fr); gap: clamp(28px, 6vw, 84px); align-items: center; max-width: 980px; margin: 34px auto 46px; }
-.field-poster { position: relative; aspect-ratio: 1; max-width: 470px; overflow: hidden; border-radius: 34px; background: #173b3a; box-shadow: 0 24px 60px rgba(21, 70, 56, .24); }
+.field-poster { position: relative; aspect-ratio: 1; max-width: 470px; overflow: hidden; border-radius: 34px; background: transparent; box-shadow: none; }
 .field-poster-image { display: block; width: 100%; height: 100%; object-fit: cover; }
 .kicker, .eyebrow { margin: 0 0 8px; color: var(--green); font-size: 13px; letter-spacing: .11em; text-transform: uppercase; font-weight: 900; }
 h1, h2, h3, p { margin-top: 0; }
@@ -252,15 +252,6 @@ html[dir="rtl"] #mainScreen .wp-shell-settings-popover {
 
 #gameGuide { display: none; }
 body[data-screen="main"] #gameGuide { display: block; }
-#gameGuide.game-page-info {
-  width: min(calc(100% - 36px), 860px);
-  margin: 0 auto 28px;
-  padding: 16px 18px;
-  border: 1px solid #cfe2d8;
-  border-radius: 18px;
-  background: #e8f1ea;
-  box-shadow: 0 12px 30px rgba(27, 71, 61, .1);
-}
 
 #battleScreen .battle-content { width: min(100%, 780px); min-height: 0; flex: 1; margin: 28px auto 0; overflow-y: auto; overscroll-behavior-y: contain; touch-action: pan-y; }
 #battleScreen .battle-actions { justify-content: flex-end; }
@@ -365,12 +356,11 @@ body[data-screen="main"] #gameGuide { display: block; }
    the live HUD/board/footer without exposing a Main destination. */
 #battleScreen[data-battle-state="result"] .battle-canvas {
   display: grid;
-  grid-template-rows: minmax(0, 1fr);
   row-gap: 0;
 }
 #battleScreen[data-battle-state="result"] #resultScreen {
   display: grid;
-  grid-row: 1;
+  grid-row: 2;
   min-width: 0;
   min-height: 0;
   width: 100%;
@@ -397,51 +387,16 @@ body[data-screen="main"] #gameGuide { display: block; }
   min-width: 0;
   min-height: 52px;
 }
+@media (min-width: 700px) and (orientation: landscape) and (max-height: 560px) {
+  #battleScreen[data-battle-state="result"] #resultScreen .result-card { padding: 12px 18px; }
+  #battleScreen[data-battle-state="result"] #resultScreen .result-emblem { width: 52px; height: 52px; margin-bottom: 6px; font-size: 30px; }
+  #battleScreen[data-battle-state="result"] #resultScreen .result-card h2 { margin-bottom: 6px; }
+  #battleScreen[data-battle-state="result"] #resultScreen .result-badges { margin: 6px 0 10px; gap: 6px; }
+  #battleScreen[data-battle-state="result"] #resultScreen .result-badge { padding: 5px 8px; }
+}
 #battleScreen[data-battle-state="result"] #resultPrimaryBtn:disabled {
   cursor: not-allowed;
   opacity: .48;
-}
-
-/* Folded Field keeps the shared Interface 7 skin's rounded Guide and the
-   canonical 420px compact-landscape Main poster. These scoped declarations
-   outrank the token skin without altering other games. */
-@layer wp-frame-contract {
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .game-page-info {
-    border-radius:24px !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .game-info-sections {
-    display:grid !important;
-    grid-template-columns:minmax(0, 1.3fr) minmax(280px, 0.7fr) !important;
-  }
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .game-page-info .game-info-section,
-  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .game-page-info .game-info-fact {
-    border-radius:16px !important;
-  }
-  @media (min-width:700px) and (orientation:landscape) and (max-height:560px) {
-    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .wp-standard-main-composition {
-      --wp-main-landscape-poster-size:420px !important;
-    }
-    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .wp-standard-main-poster,
-    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .wp-standard-main-poster-media,
-    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .wp-standard-main-poster-media > img,
-    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .wp-standard-main-poster > img {
-      width:420px !important;
-      min-width:420px !important;
-      max-width:420px !important;
-      height:420px !important;
-      min-height:420px !important;
-      max-height:420px !important;
-    }
-  }
-}
-
-/* Honor the shared 720px Guide breakpoint; no Main/Stage/Battle geometry change. */
-@layer wp-frame-contract {
-  @media (max-width:720px) {
-    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .game-info-sections {
-      grid-template-columns:minmax(0, 1fr) !important;
-    }
-  }
 }
 
 /* Game-owned puzzle content; shared frame and uniform Canvas scaler retain ownership. */

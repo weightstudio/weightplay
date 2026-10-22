@@ -81,6 +81,12 @@ var FoldedFieldPuzzle = (function () {
   const localeList = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const rtlLocales = new Set(["ar"]);
   const state = { locale: "en", screen: "main", round: 0, stageSelection: 0, pattern: [], flips: 0, cleared: [], history: [], hints: 0, preview: -1, solved: false, progress: { best: {}, stars: {}, tutorial: false }, sound: !window.WeightPlayAudio.isMuted() };
+  window.addEventListener("weightplay:castle-reward", (event) => {
+    if (event.detail?.gameId !== "animal-folded-field" || state.screen !== "result") return;
+    queueMicrotask(() => {
+      if (state.screen === "result") window.WeightPlayCastle?.dismissRewardNotice?.("animal-folded-field");
+    });
+  });
   window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
   const $ = (id) => document.getElementById(id);
   const safeGet = (key, fallback) => {
@@ -366,6 +372,7 @@ var FoldedFieldPuzzle = (function () {
   };
 
   const show = (screen) => {
+    if (screen === "result") window.WeightPlayCastle?.dismissRewardNotice?.("animal-folded-field");
     state.screen = screen;
     const loading = $("loadingPanel");
     if (loading) loading.hidden = true;

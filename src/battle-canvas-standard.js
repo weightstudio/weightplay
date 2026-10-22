@@ -56,7 +56,7 @@
     // Folded Field publishes the logical Battle attribute on its permanent
     // outer screen. Keep that owner on the wide envelope so flap feedback
     // cannot reapply the portrait scale to the inner board.
-    "animal-folded-field": ["#battleScreen", 390, 788, 760, 334],
+    "animal-folded-field": ["[data-wp-battle-canvas-root]", 390, 788, 760, 334],
     // Twin Switchyard keeps its game-local physical fallback controls, while
     // the native 960x540 playfield also needs the complete wide envelope.
     "animal-twin-switchyard": ["#battleScreen", 390, 788, 760, 334],
