@@ -1,5 +1,8 @@
 (async () => {
   "use strict";
+  const requiredStyles=['/games/animal-skyspire-drop/style.css','/games/animal-skyspire-drop/style-interface9.css','/src/game-ui-theme.css','/src/game-screen-frame.css','/src/game-play-ui.css','/src/interface9-shared-screens.css','/src/battle-canvas-standard.css'];
+  const loadedStyles=[...document.styleSheets].filter(sheet=>{try{return sheet.href&&sheet.cssRules.length>0}catch{return false}}).map(sheet=>new URL(sheet.href).pathname);
+  if(!window.WeightPlayScreenFrame?.mount||!window.WeightPlayPlayUI?.mountStage||!window.WeightPlayStageRailI9?.attachLogical||!window.WeightPlayBattleCanvas?.sync||!requiredStyles.every(suffix=>loadedStyles.some(path=>path.endsWith(suffix))))throw new Error('SKYSPIRE_SHARED_ENTRY_DEPENDENCY_UNAVAILABLE');
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -18,8 +21,8 @@
   window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
   __wpNotifyMeasurement();
 
-  const {Skyspire3D}=await import("./skyspire-3d.js?v=20260908-art-v18");
-  const {createSkyspireDropStageConfig}=await import("./stage-config.mjs?v=20261018-i9");
+  const {Skyspire3D}=await import("./skyspire-3d.js?v=20261022-skyspire-i9-entry1");
+  const {createSkyspireDropStageConfig}=await import("./stage-config.mjs?v=20261022-skyspire-i9-entry1");
   let view3d=null;
   document.body.dataset.runtimeLocalize="off";
   const LOCALES=window.SKYDROP_LOCALES;
@@ -167,7 +170,7 @@
   const stageConfig=createSkyspireDropStageConfig({stages,getSave:()=>save,text:(key,params)=>t(key,params)});
   function renderStages(){
     refreshStageLocale();
-    stageIndex=Math.max(0,Math.min(stages.length-1,Math.max(stageIndex,save.unlocked-1)));
+    stageIndex=Math.max(0,Math.min(stages.length-1,stageIndex));
     els.stageSummary.textContent=`${Math.min(save.unlocked,30)} / 30 · ★ ${Object.values(save.stars).reduce((sum,n)=>sum+Number(n||0),0)}`;
     if(!stageController){
       stageController=window.WeightPlayPlayUI.mountStage({page:els.towerPanel,rail:els.stageRail,config:stageConfig,selected:stageIndex,onSelect:index=>{stageIndex=index},onStart:index=>{track("stage_select",{stage:index+1,input_type:"card",unlocked:save.unlocked});startBattle(index)},isActive:()=>screen==="stage"&&activeTab==="towers"});
@@ -311,7 +314,7 @@
   els.resultMap.addEventListener("click",()=>{if(!els.resultModal.hidden&&!resultActionClaimed)track("map_return",{source:"result",stage:stageIndex+1,outcome:run?.result?.win?"win":"fail"})},{capture:true});
   els.next.addEventListener("click",()=>{if(!els.resultModal.hidden&&!resultActionClaimed)track("next_stage",{from_stage:stageIndex+1,stage:stageIndex+2,outcome:run?.result?.win?"win":"fail"})},{capture:true});
 
-  els.start.addEventListener("click",()=>{setScreen("stage");track("game_start_menu")});els.stageBack.addEventListener("click",()=>setScreen("main"));els.racesTab.addEventListener("click",()=>setTab("towers"));els.forgeTab.addEventListener("click",()=>setTab("forge"));els.battleBack.addEventListener("click",()=>{if(!run||run.ended){setScreen("stage");return}(__wpNotifyMeasurement(), run.paused=true);openBattleModal(els.leaveModal,els.leaveContinue,els.battleBack)});els.leaveContinue.addEventListener("click",continueLeave);els.leaveStage.addEventListener("click",()=>{closeBattleModal(els.leaveModal,{restore:false});run=null;stageIndex=Math.max(stageIndex,Math.min(29,save.unlocked-1));setScreen("stage")});els.battleHelp.addEventListener("click",()=>{if(!run)return;(__wpNotifyMeasurement(), run.paused=true);openBattleModal(els.helpModal,els.helpClose,els.battleHelp)});els.helpClose.addEventListener("click",closeHelp);els.helpModal.addEventListener("keydown",event=>trapBattleModal(event,closeHelp));els.leaveModal.addEventListener("keydown",event=>trapBattleModal(event,continueLeave));els.resultModal.addEventListener("keydown",trapBattleModal);els.retry.addEventListener("click",()=>{if(claimResultAction())__wpReplayStart(() => startBattle(stageIndex,{skipTutorial:true}))});els.resultMap.addEventListener("click",()=>{if(!claimResultAction())return;closeBattleModal(els.resultModal,{restore:false});run=null;stageIndex=Math.max(stageIndex,Math.min(29,save.unlocked-1));setScreen("stage")});els.next.addEventListener("click",()=>{if(claimResultAction())startBattle(Math.min(29,stageIndex+1),{skipTutorial:true})});els.auraButton.addEventListener("click",()=>{if(save.aura)return;if(window.WeightPlayWallet?.spendDiamonds?.(10)){save.aura=true;els.forgeFeedback.textContent="";persist();renderForge()}else els.forgeFeedback.textContent=`${t("auraTitle")} · ${t("auraBuy")}`});
+  els.start.addEventListener("click",()=>{stageIndex=Math.min(stages.length-1,Math.max(0,save.unlocked-1));setScreen("stage");track("game_start_menu")});els.stageBack.addEventListener("click",()=>setScreen("main"));els.racesTab.addEventListener("click",()=>setTab("towers"));els.forgeTab.addEventListener("click",()=>setTab("forge"));els.battleBack.addEventListener("click",()=>{if(!run||run.ended){setScreen("stage");return}(__wpNotifyMeasurement(), run.paused=true);openBattleModal(els.leaveModal,els.leaveContinue,els.battleBack)});els.leaveContinue.addEventListener("click",continueLeave);els.leaveStage.addEventListener("click",()=>{closeBattleModal(els.leaveModal,{restore:false});run=null;setScreen("stage")});els.battleHelp.addEventListener("click",()=>{if(!run)return;(__wpNotifyMeasurement(), run.paused=true);openBattleModal(els.helpModal,els.helpClose,els.battleHelp)});els.helpClose.addEventListener("click",closeHelp);els.helpModal.addEventListener("keydown",event=>trapBattleModal(event,closeHelp));els.leaveModal.addEventListener("keydown",event=>trapBattleModal(event,continueLeave));els.resultModal.addEventListener("keydown",trapBattleModal);els.retry.addEventListener("click",()=>{if(claimResultAction())__wpReplayStart(() => startBattle(stageIndex,{skipTutorial:true}))});els.resultMap.addEventListener("click",()=>{if(!claimResultAction())return;closeBattleModal(els.resultModal,{restore:false});run=null;setScreen("stage")});els.next.addEventListener("click",()=>{if(claimResultAction())startBattle(Math.min(29,stageIndex+1),{skipTutorial:true})});els.auraButton.addEventListener("click",()=>{if(save.aura)return;if(window.WeightPlayWallet?.spendDiamonds?.(10)){save.aura=true;els.forgeFeedback.textContent="";persist();renderForge()}else els.forgeFeedback.textContent=`${t("auraTitle")} · ${t("auraBuy")}`});
   els.start.addEventListener("click",()=>focusScreenOwner("stage"));
   els.stageBack.addEventListener("click",()=>focusScreenOwner("main"));
   els.battleBack.addEventListener("click",()=>{if(!run||run.ended)focusScreenOwner("stage")});
@@ -319,7 +322,20 @@
   els.resultMap.addEventListener("click",()=>focusScreenOwner("stage"));
   window.addEventListener("resize",syncArenaSize,{passive:true});if("ResizeObserver"in window){resizeObserver=new ResizeObserver(syncArenaSize);resizeObserver.observe(els.arenaWrap)}
 
-  function preload(){return Skyspire3D.loadAssets()}
+  async function preload(){
+    const loader=window.WeightPlayGameEntryLoader;
+    if(!loader?.isActive)throw new Error('SKYSPIRE_SHARED_ENTRY_LOADER_REQUIRED');
+    const total=Skyspire3D.assetCount+2;let completed=0;
+    loader.begin(total);
+    const progress=count=>{completed+=count;loader.assetProgress(completed,total)};
+    const poster=els.mainScreen.querySelector('[data-wp-frame-poster]');
+    const stagePoster=new Image();stagePoster.src=stageConfig.poster;
+    await Promise.all([
+      Skyspire3D.loadAssets().then(()=>progress(Skyspire3D.assetCount)),
+      poster.decode().then(()=>progress(1)),
+      stagePoster.decode().then(()=>progress(1)),
+    ]);
+  }
   window.__animalSkyspireDropSmoke={stages,startBattle:(index=0)=>startBattle(index,{skipTutorial:true}),snapshot:()=>run?{stage:run.stage.index,current:run.current,rotation:run.rotation,rotationTarget:run.rotationTarget,height:run.height,velocity:run.velocity,renderer:view3d?.stats()??null,sector:sectorAtPlayer(currentRing()),gapDelta:currentRing()?signedAngle(run.rotation,normAngle(PLAYER_ANGLE-ringAngle(currentRing())-currentRing().gap)):0,bounce:run.bounce,transition:run.transition,departing:run.departing?{...run.departing}:null,combo:run.combo,bestCombo:run.bestCombo,power:run.power,shield:run.shield,elapsed:run.elapsed,paused:run.paused,ended:run.ended,result:run.result,screen,keys:[...run.keys]}:null,rotateToGap:()=>{const ring=currentRing();if(!ring)return false;run.rotation=run.rotationTarget=normAngle(PLAYER_ANGLE-ringAngle(ring)-ring.gap);return true},rotateToHazard:()=>{const ring=currentRing();if(!ring)return false;run.rotation=run.rotationTarget=normAngle(PLAYER_ANGLE-ringAngle(ring)-ring.hazard);return true},setPower:value=>{if(!run)return false;run.power=Boolean(value);return true},setShield:value=>{if(!run)return false;run.shield=Math.max(0,Math.trunc(Number(value)||0));return true},forceLanding:()=>{if(!run||run.ended)return false;run.bounce=1;land();return true},forceWin:()=>{if(!run)return;run.current=run.stage.ringCount;finish(true)},forceFail:()=>{if(!run)return;finish(false)},step:(seconds=.1,render=true)=>{for(let left=Math.min(1,Math.max(0,seconds));left>0&&!run.ended;left-=.016)update(Math.min(.016,left));if(render)draw()},save:()=>JSON.parse(JSON.stringify(save)),setSave:value=>{save=normalizeSave(value);persist();renderMainProgress();renderStages();renderForge()}};
   window.__animalSkyspireDropSmoke.rotateToFragile=()=>{const ring=currentRing();if(!ring?.fragile)return false;for(let index=0;index<360;index++){const local=index*TAU/360;if(angleDistance(local,ring.gap)<=ring.gapWidth/2||angleDistance(local,ring.hazard)<=hazardWidthAt(ring)/2||ring.hazard2!==null&&angleDistance(local,ring.hazard2)<=hazardWidthAt(ring,true)/2)continue;run.rotation=run.rotationTarget=normAngle(PLAYER_ANGLE-ringAngle(ring)-local);return true}return false};
   screenFrame=window.WeightPlayScreenFrame.mount({root:els.gameFrame,localeSelect:els.localeSelect,playUI:true,scenes:{main:{root:els.mainScreen,header:els.mainScreen.querySelector("header"),content:els.mainScreen.querySelector("[data-wp-frame-content=main]")},stage:{root:els.stageScreen,header:els.stageScreen.querySelector("header"),content:els.stageContent},battle:{root:els.battleScreen,header:els.battleScreen.querySelector("header"),content:els.battleContent,headerInfo:els.battleInfo}}});
@@ -327,5 +343,5 @@
   const battleInfoGroup=window.WeightPlayScreenFrame.createGroup();[...els.battleInfo.children].forEach(node=>battleInfoGroup.add(node));battleInfoGroup.add(els.battleHelp);screenFrame.battleTopUI.add(battleInfoGroup);
   screenFrame.commonDownButton.add(els.racesTab).add(els.forgeTab);
   screenFrame.activate("main");
-  ensureCompletePublicGuide();initLocale();applyLocale();window.addEventListener("DOMContentLoaded",()=>setTimeout(()=>{ensureCompletePublicGuide();applyLocale()},0),{once:true});await preload();els.loading.hidden=true;syncArenaSize();renderMainProgress();renderStages();renderForge();
-})().catch(error=>{console.error(error);const loading=document.getElementById("loadingPanel");if(loading){loading.setAttribute("role","alert");loading.textContent=document.documentElement.lang.startsWith("zh")?"3D 載入失敗，請重新整理頁面。":"3D could not load. Please reload this page."}});
+  ensureCompletePublicGuide();initLocale();applyLocale();window.addEventListener("DOMContentLoaded",()=>setTimeout(()=>{ensureCompletePublicGuide();applyLocale()},0),{once:true});await preload();syncArenaSize();renderMainProgress();renderStages();renderForge();await new Promise(requestAnimationFrame);els.loading.hidden=true;els.start.disabled=false;window.WeightPlayGameEntryLoader.ready();
+})().catch(error=>{console.error(error);window.__weightPlayGameEntryPendingFailure='animal-skyspire-drop';window.WeightPlayGameEntryLoader?.fail(undefined,()=>location.reload());});

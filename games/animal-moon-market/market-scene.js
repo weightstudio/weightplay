@@ -32,10 +32,6 @@ export class MarketScene {
       const a = this.animal(['fox', 'bunny', 'bear', 'fox'][i]); a.scale.setScalar(i ? .7 : .94);
       this.world.add(a); return a;
     });
-    this.hits = this.stalls.map((stall, i) => {
-      const hit = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 3.5), new THREE.MeshBasicMaterial({ visible: false }));
-      hit.position.set(i ? 2.35 : -2.35, 1.5, .65); hit.userData.side = i; this.world.add(hit); return hit;
-    });
     this.down = null;
     this.pointerDown = e => { if (e.isPrimary && e.button === 0) this.down = [e.clientX, e.clientY]; };
     this.pointerUp = e => {
@@ -45,8 +41,8 @@ export class MarketScene {
       const r = canvas.getBoundingClientRect();
       this.pointer.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1);
       this.ray.setFromCamera(this.pointer, this.camera);
-      const hit = this.ray.intersectObjects(this.hits)[0];
-      if (hit) this.onStall(hit.object.userData.side, { x: e.clientX, y: e.clientY });
+      const hit = this.ray.intersectObjects(this.stalls.map(s => s.g), true)[0];
+      if (hit) { let object=hit.object;while(object.parent && object.userData.side===undefined)object=object.parent;this.onStall(object.userData.side, { x: e.clientX, y: e.clientY }); }
     };
     this.pointerCancel = () => { this.down = null; };
     canvas.addEventListener('pointerdown', this.pointerDown);
@@ -125,7 +121,7 @@ export class MarketScene {
     for(const sx of [-.39,.39])this.block(g,x+s*sx,y,z,s*.1,s,s*.85,'#eabb63');
   }
   buildStall(x,index) {
-    const g=this.group(this.world,x,0,-.55), canopy=[];
+    const g=this.group(this.world,x,0,-.55), canopy=[];g.userData.side=index;
     this.block(g,0,.27,0,3.55,.35,2.2,'#4f3f48');
     this.block(g,0,.78,0,3.25,1.05,1.7,'#a46e4a');
     for(let i=0;i<7;i++)this.block(g,(i-3)*.46,.79,.9,.43,.9,.12,i%2?'#b58254':'#bc8b5e');
@@ -201,6 +197,8 @@ export class MarketScene {
 
   update(run, save) {
     this.gold=save.goldEnabled;
+    this.material('#ffd08a',true).emissiveIntensity=save.goldEnabled ? 1.1 : .55;
+    this.sun.color.set(save.goldEnabled ? '#ffce83' : '#ffe4b1');
     for(const [i,stall] of this.stalls.entries()) {
       stall.canopy.forEach((m,n)=>{m.material=this.material(save.goldEnabled?(n%4<2?'#d6a14f':'#f3ce80'):(n%4<2?'#715596':'#a484c8'));});
       for(const [kind,v] of Object.entries(stall.variants)) {
@@ -219,15 +217,20 @@ export class MarketScene {
     const r=this.canvas.parentElement.getBoundingClientRect(); if(!r.width||!r.height)return;
     this.renderer.setSize(r.width,r.height,false);
     const aspect=r.width/r.height, width=Math.max(11.7,9.3*aspect), height=width/aspect;
-    Object.assign(this.camera,{left:-width/2,right:width/2,top:height/2,bottom:-height/2});this.camera.updateProjectionMatrix();
+    const verticalCenter=aspect<1?1.8:.25;
+    Object.assign(this.camera,{left:-width/2,right:width/2,top:height/2+verticalCenter,bottom:-height/2+verticalCenter});this.camera.updateProjectionMatrix();
   }
   draw() { if(!this.disposed)this.renderer.render(this.scene,this.camera); }
   setActive(active) {
-    this.active=active; this.down=null;
+    if(this.active!==active)this.down=null;this.active=active;
     if(!active){cancelAnimationFrame(this.raf);this.raf=0;this.last=0;this.flash=[0,0];this.arrival=0;return;}
     this.resize();if(!this.raf&&!this.paused){this.last=0;this.raf=requestAnimationFrame(t=>this.tick(t));}
   }
-  setPaused(paused) { this.paused=paused;this.setActive(this.active); }
+  setPaused(paused) {
+    if(this.paused===paused)return;
+    this.paused=paused;this.down=null;cancelAnimationFrame(this.raf);this.raf=0;this.last=0;
+    if(!paused&&this.active)this.raf=requestAnimationFrame(t=>this.tick(t));
+  }
   tick(t) {
     this.raf=0;if(!this.active||this.paused||this.disposed)return;
     const dt=this.last?Math.min(.1,(t-this.last)/1000):0;this.last=t;this.clock+=dt;
@@ -246,7 +249,7 @@ export class MarketScene {
   dispose() {
     if(this.disposed)return;this.setActive(false);this.disposed=true;this.resizeObserver.disconnect();
     this.canvas.removeEventListener('pointerdown',this.pointerDown);this.canvas.removeEventListener('pointerup',this.pointerUp);this.canvas.removeEventListener('pointercancel',this.pointerCancel);
-    this.box.dispose();this.materials.forEach(m=>m.dispose());this.hits.forEach(h=>{h.geometry.dispose();h.material.dispose();});
+    this.box.dispose();this.materials.forEach(m=>m.dispose());
     this.textures.forEach(t=>t.dispose());this.sun.shadow.map?.dispose();this.renderer.dispose();this.scene.clear();
   }
 }

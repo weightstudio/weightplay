@@ -1,246 +1,59 @@
-(function(){
-  "use strict";
-  const COPY = window.WPTwinLocales.locales;
-  const ORDER = window.WPTwinLocales.order;
-  const $ = (selector) => document.querySelector(selector);
-  const canvas = $("#gameCanvas");
-  const stageGrid = $("#stageGrid");
-  const ctx = canvas.getContext("2d");
-  const W = canvas.width; const H = canvas.height;
-  // The authored routes place a direct step as high as 220 logical pixels
-  // above a lane floor. Keep a generous margin so a shared Jump can reach it
-  // even with 30fps phone updates instead of leaving the stage unwinnable.
-  // Give the shared jump enough vertical clearance for the tallest authored
-  // platform. The old impulse only barely cleared Stage 2 and left later
-  // upper-lane shards unreachable after the Canvas was scaled on phones.
-  const JUMP_VELOCITY = -660;
-  const battleBackground = new Image();
-  battleBackground.decoding = "async";
-  battleBackground.src = "battle-bg-v2.webp";
-  const twinSprites = new Image();
-  twinSprites.decoding = "async";
-  twinSprites.src = "twin-sprites-v2.webp";
-  const twinProps = new Image();
-  twinProps.decoding = "async";
-  twinProps.src = "twin-props-v2.webp";
-  const stages = [
-    // Stage 1 keeps both lanes and the same three-shard/two-gate rules, but
-    // brings the upper platforms into a readable synchronized jump window.
-    { floors:[430,330], platforms:[[{x:245,y:360,w:145,h:16},{x:470,y:330,w:220,h:16}],[{x:200,y:260,w:135,h:16},{x:390,y:235,w:235,h:16}]], shards:[{lane:0,x:305,y:325},{lane:1,x:265,y:225},{lane:0,x:735,y:400}], switches:[], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[],[]] },
-    { floors:[430,330], platforms:[[{x:230,y:350,w:120,h:16},{x:455,y:300,w:135,h:16},{x:700,y:360,w:120,h:16}],[{x:260,y:255,w:110,h:16},{x:540,y:195,w:140,h:16}]], shards:[{lane:0,x:270,y:315},{lane:1,x:315,y:220},{lane:0,x:520,y:265}], switches:[{lane:1,x:620,y:160}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[{x:620,y:404,w:64,h:26}],[]] },
-    { floors:[430,330], platforms:[[{x:260,y:335,w:110,h:16},{x:500,y:255,w:130,h:16},{x:720,y:350,w:110,h:16}],[{x:210,y:245,w:120,h:16},{x:430,y:180,w:130,h:16},{x:675,y:235,w:125,h:16}]], shards:[{lane:0,x:295,y:300},{lane:1,x:475,y:145},{lane:0,x:755,y:315}], switches:[{lane:0,x:585,y:205}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ ],[{x:600,y:300,w:60,h:24}]] },
-    { floors:[430,330], platforms:[[{x:215,y:360,w:110,h:16},{x:420,y:300,w:115,h:16},{x:635,y:235,w:115,h:16},{x:785,y:350,w:90,h:16}],[{x:270,y:245,w:120,h:16},{x:500,y:150,w:130,h:16},{x:730,y:245,w:115,h:16}]], shards:[{lane:0,x:250,y:325},{lane:1,x:560,y:115},{lane:0,x:680,y:200}], switches:[{lane:1,x:765,y:210}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[{x:350,y:405,w:48,h:25}], [{x:385,y:305,w:48,h:25}]] },
-    { floors:[430,330], platforms:[[{x:230,y:350,w:120,h:16},{x:465,y:270,w:120,h:16},{x:660,y:345,w:110,h:16}],[{x:185,y:255,w:120,h:16},{x:380,y:175,w:125,h:16},{x:610,y:235,w:125,h:16},{x:790,y:170,w:80,h:16}]], shards:[{lane:0,x:280,y:315},{lane:1,x:425,y:140},{lane:1,x:650,y:200}], switches:[{lane:0,x:715,y:300},{lane:1,x:815,y:125}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:360,y:405,w:64,h:25}], [{x:540,y:305,w:58,h:25}]] },
-    { floors:[430,330], platforms:[[{x:200,y:360,w:115,h:16},{x:395,y:285,w:115,h:16},{x:590,y:210,w:115,h:16},{x:785,y:335,w:90,h:16}],[{x:230,y:245,w:110,h:16},{x:420,y:155,w:125,h:16},{x:625,y:245,w:110,h:16},{x:785,y:135,w:90,h:16}]], shards:[{lane:0,x:250,y:325},{lane:1,x:465,y:120},{lane:0,x:650,y:165}], switches:[{lane:0,x:645,y:175},{lane:1,x:820,y:90}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:330,y:405,w:62,h:25},{x:705,y:405,w:60,h:25}], [{x:350,y:305,w:62,h:25},{x:570,y:305,w:60,h:25}]] },
-    // Arc 2: authored zigzags and offset shelves. Each map changes both the
-    // shared jump/landing decision and the relative shard or hazard route.
-    { floors:[430,330], platforms:[[{x:190,y:365,w:110,h:16},{x:390,y:300,w:125,h:16},{x:620,y:355,w:125,h:16}],[{x:230,y:260,w:125,h:16},{x:485,y:205,w:130,h:16},{x:710,y:255,w:110,h:16}]], shards:[{lane:0,x:245,y:330},{lane:1,x:290,y:225},{lane:0,x:785,y:400}], switches:[], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:530,y:405,w:52,h:25}],[]] },
-    { floors:[430,330], platforms:[[{x:210,y:350,w:130,h:16},{x:445,y:285,w:120,h:16},{x:695,y:350,w:125,h:16}],[{x:190,y:250,w:115,h:16},{x:415,y:195,w:135,h:16},{x:665,y:235,w:135,h:16}]], shards:[{lane:1,x:255,y:215},{lane:0,x:500,y:250},{lane:0,x:770,y:315}], switches:[{lane:1,x:735,y:200}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[],[{x:565,y:305,w:54,h:25}]] },
-    { floors:[430,330], platforms:[[{x:235,y:355,w:120,h:16},{x:470,y:305,w:130,h:16},{x:725,y:350,w:105,h:16}],[{x:205,y:255,w:125,h:16},{x:445,y:210,w:120,h:16},{x:685,y:255,w:125,h:16}]], shards:[{lane:0,x:290,y:325},{lane:1,x:500,y:175},{lane:1,x:760,y:220}], switches:[], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:610,y:405,w:58,h:25}],[]] },
-    // Offset Relay checkpoint: the high pickup and low switch demand separate
-    // safe landings before the paired exit can be completed.
-    { floors:[430,330], platforms:[[{x:205,y:355,w:125,h:16},{x:440,y:285,w:130,h:16},{x:700,y:345,w:120,h:16}],[{x:190,y:250,w:120,h:16},{x:425,y:190,w:130,h:16},{x:675,y:235,w:140,h:16}]], shards:[{lane:0,x:265,y:325},{lane:1,x:490,y:155},{lane:0,x:755,y:310}], switches:[{lane:1,x:760,y:200},{lane:0,x:650,y:315}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:355,y:405,w:52,h:25}],[{x:575,y:305,w:52,h:25}]] },
-    // Arc 3: hazards and switches shift between lanes while both couriers
-    // continue to obey one shared movement command.
-    { floors:[430,330], platforms:[[{x:205,y:355,w:120,h:16},{x:430,y:300,w:125,h:16},{x:675,y:355,w:140,h:16}],[{x:250,y:250,w:125,h:16},{x:500,y:200,w:125,h:16},{x:735,y:245,w:100,h:16}]], shards:[{lane:1,x:300,y:215},{lane:0,x:475,y:265},{lane:1,x:770,y:210}], switches:[], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:570,y:405,w:58,h:25}],[]] },
-    { floors:[430,330], platforms:[[{x:190,y:355,w:125,h:16},{x:425,y:290,w:135,h:16},{x:690,y:350,w:130,h:16}],[{x:215,y:245,w:130,h:16},{x:465,y:185,w:135,h:16},{x:715,y:235,w:110,h:16}]], shards:[{lane:0,x:255,y:325},{lane:1,x:515,y:150},{lane:0,x:755,y:400}], switches:[{lane:1,x:745,y:205}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:600,y:405,w:55,h:25}],[]] },
-    { floors:[430,330], platforms:[[{x:220,y:355,w:125,h:16},{x:455,y:280,w:125,h:16},{x:690,y:350,w:130,h:16}],[{x:180,y:255,w:120,h:16},{x:405,y:195,w:135,h:16},{x:655,y:250,w:145,h:16}]], shards:[{lane:1,x:235,y:225},{lane:0,x:505,y:245},{lane:1,x:725,y:215}], switches:[], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[],[{x:555,y:305,w:56,h:25}]] },
-    { floors:[430,330], platforms:[[{x:190,y:360,w:125,h:16},{x:425,y:295,w:130,h:16},{x:675,y:350,w:140,h:16}],[{x:230,y:245,w:125,h:16},{x:470,y:185,w:130,h:16},{x:710,y:235,w:120,h:16}]], shards:[{lane:0,x:250,y:330},{lane:1,x:515,y:150},{lane:1,x:750,y:200}], switches:[{lane:0,x:725,y:315},{lane:1,x:300,y:210}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:350,y:405,w:52,h:25}],[{x:610,y:305,w:52,h:25}]] },
-    // Redline Pair checkpoint: both red hazard rows have a visible, reachable
-    // shelf route; the counterplay is spacing the same jump between lanes.
-    { floors:[430,330], platforms:[[{x:190,y:360,w:125,h:16},{x:430,y:290,w:130,h:16},{x:685,y:350,w:130,h:16}],[{x:220,y:245,w:130,h:16},{x:470,y:185,w:130,h:16},{x:715,y:235,w:120,h:16}]], shards:[{lane:0,x:255,y:330},{lane:1,x:520,y:150},{lane:0,x:750,y:315}], switches:[{lane:1,x:755,y:200}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:345,y:405,w:56,h:25}],[{x:600,y:305,w:56,h:25}]] },
-    // Arc 4: paired fixed switches are placed at different points in the
-    // shared route; all switches must be reached before the gates open.
-    { floors:[430,330], platforms:[[{x:200,y:360,w:120,h:16},{x:435,y:290,w:125,h:16},{x:680,y:350,w:135,h:16}],[{x:240,y:245,w:125,h:16},{x:485,y:190,w:130,h:16},{x:720,y:235,w:115,h:16}]], shards:[{lane:0,x:260,y:330},{lane:1,x:520,y:155},{lane:0,x:755,y:315}], switches:[{lane:0,x:380,y:400},{lane:1,x:680,y:205}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[],[{x:575,y:305,w:52,h:25}]] },
-    { floors:[430,330], platforms:[[{x:195,y:355,w:130,h:16},{x:445,y:285,w:125,h:16},{x:700,y:345,w:130,h:16}],[{x:190,y:245,w:125,h:16},{x:430,y:185,w:135,h:16},{x:690,y:230,w:135,h:16}]], shards:[{lane:1,x:245,y:215},{lane:0,x:500,y:250},{lane:0,x:755,y:400}], switches:[{lane:1,x:350,y:210}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:605,y:405,w:54,h:25}],[]] },
-    { floors:[430,330], platforms:[[{x:220,y:355,w:120,h:16},{x:455,y:295,w:130,h:16},{x:705,y:350,w:125,h:16}],[{x:200,y:250,w:125,h:16},{x:445,y:190,w:130,h:16},{x:700,y:240,w:130,h:16}]], shards:[{lane:0,x:270,y:325},{lane:1,x:500,y:155},{lane:1,x:750,y:205}], switches:[{lane:0,x:380,y:400},{lane:1,x:760,y:210}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[{x:565,y:405,w:54,h:25}],[]] },
-    { floors:[430,330], platforms:[[{x:190,y:365,w:125,h:16},{x:430,y:295,w:130,h:16},{x:690,y:350,w:130,h:16}],[{x:225,y:250,w:130,h:16},{x:475,y:185,w:130,h:16},{x:720,y:235,w:115,h:16}]], shards:[{lane:0,x:250,y:335},{lane:1,x:525,y:150},{lane:0,x:755,y:315}], switches:[{lane:0,x:360,y:400},{lane:1,x:690,y:205}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:600,y:405,w:54,h:25}],[{x:370,y:305,w:52,h:25}]] },
-    // Signal Reunion checkpoint: switches are lane-specific pickups, but no
-    // hidden ordering rule is applied; reach both, collect all shards, reunite.
-    { floors:[430,330], platforms:[[{x:205,y:355,w:125,h:16},{x:445,y:285,w:130,h:16},{x:700,y:345,w:130,h:16}],[{x:215,y:245,w:130,h:16},{x:465,y:185,w:135,h:16},{x:710,y:230,w:125,h:16}]], shards:[{lane:0,x:265,y:325},{lane:1,x:515,y:150},{lane:0,x:755,y:310}], switches:[{lane:0,x:380,y:400},{lane:1,x:675,y:200}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:585,y:405,w:54,h:25}],[{x:370,y:305,w:54,h:25}]] },
-    // Arc 5: high/low route synthesis combines shelf order with fixed hazards.
-    { floors:[430,330], platforms:[[{x:185,y:365,w:120,h:16},{x:420,y:290,w:135,h:16},{x:680,y:350,w:135,h:16}],[{x:230,y:245,w:125,h:16},{x:480,y:180,w:135,h:16},{x:720,y:235,w:115,h:16}]], shards:[{lane:1,x:280,y:210},{lane:0,x:490,y:255},{lane:1,x:760,y:200}], switches:[], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:340,y:405,w:52,h:25}],[]] },
-    { floors:[430,330], platforms:[[{x:205,y:355,w:125,h:16},{x:445,y:285,w:135,h:16},{x:700,y:345,w:130,h:16}],[{x:185,y:250,w:125,h:16},{x:430,y:185,w:135,h:16},{x:680,y:235,w:145,h:16}]], shards:[{lane:0,x:260,y:325},{lane:1,x:480,y:155},{lane:0,x:755,y:310}], switches:[{lane:1,x:745,y:205}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[],[{x:565,y:305,w:56,h:25}]] },
-    { floors:[430,330], platforms:[[{x:195,y:360,w:125,h:16},{x:435,y:285,w:135,h:16},{x:690,y:350,w:135,h:16}],[{x:225,y:250,w:125,h:16},{x:470,y:185,w:135,h:16},{x:710,y:230,w:125,h:16}]], shards:[{lane:0,x:250,y:330},{lane:1,x:520,y:155},{lane:1,x:755,y:200}], switches:[], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:590,y:405,w:52,h:25}],[]] },
-    { floors:[430,330], platforms:[[{x:185,y:360,w:125,h:16},{x:425,y:290,w:135,h:16},{x:680,y:350,w:140,h:16}],[{x:215,y:245,w:130,h:16},{x:460,y:180,w:135,h:16},{x:705,y:230,w:130,h:16}]], shards:[{lane:1,x:265,y:210},{lane:0,x:485,y:260},{lane:0,x:755,y:315}], switches:[{lane:0,x:360,y:400}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:335,y:405,w:52,h:25}],[{x:605,y:305,w:52,h:25}]] },
-    // High/Low Crossing checkpoint: all three pickup heights, two lanes, and
-    // both fixed danger cues must be read before the final paired approach.
-    { floors:[430,330], platforms:[[{x:195,y:360,w:125,h:16},{x:435,y:285,w:135,h:16},{x:690,y:345,w:135,h:16}],[{x:215,y:245,w:130,h:16},{x:470,y:180,w:135,h:16},{x:710,y:230,w:125,h:16}]], shards:[{lane:0,x:255,y:330},{lane:1,x:520,y:150},{lane:0,x:755,y:310}], switches:[{lane:0,x:360,y:400},{lane:1,x:665,y:195}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:585,y:405,w:54,h:25}],[{x:365,y:305,w:54,h:25}]] },
-    // Arc 6: authored terminal routes revisit safe ground and synthesize the
-    // full shard / switch / landing / paired-exit contract.
-    { floors:[430,330], platforms:[[{x:205,y:355,w:125,h:16},{x:445,y:290,w:130,h:16},{x:700,y:350,w:130,h:16}],[{x:185,y:250,w:125,h:16},{x:430,y:190,w:135,h:16},{x:690,y:240,w:140,h:16}]], shards:[{lane:0,x:260,y:325},{lane:1,x:480,y:160},{lane:0,x:755,y:315}], switches:[], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:365,y:405,w:52,h:25}],[]] },
-    { floors:[430,330], platforms:[[{x:190,y:360,w:130,h:16},{x:435,y:285,w:135,h:16},{x:690,y:345,w:140,h:16}],[{x:220,y:245,w:130,h:16},{x:470,y:180,w:135,h:16},{x:715,y:235,w:120,h:16}]], shards:[{lane:1,x:275,y:210},{lane:0,x:500,y:255},{lane:1,x:760,y:200}], switches:[{lane:1,x:350,y:205}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:600,y:405,w:56,h:25}],[]] },
-    { floors:[430,330], platforms:[[{x:205,y:355,w:125,h:16},{x:445,y:290,w:130,h:16},{x:700,y:345,w:130,h:16}],[{x:190,y:250,w:125,h:16},{x:435,y:185,w:135,h:16},{x:690,y:235,w:140,h:16}]], shards:[{lane:0,x:255,y:325},{lane:1,x:485,y:155},{lane:0,x:755,y:310}], switches:[{lane:0,x:365,y:400},{lane:1,x:750,y:205}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[],[{x:575,y:305,w:56,h:25}]] },
-    { floors:[430,330], platforms:[[{x:185,y:365,w:125,h:16},{x:430,y:290,w:135,h:16},{x:690,y:350,w:135,h:16}],[{x:220,y:245,w:125,h:16},{x:465,y:180,w:135,h:16},{x:710,y:230,w:130,h:16}]], shards:[{lane:0,x:250,y:335},{lane:1,x:510,y:150},{lane:0,x:755,y:315}], switches:[{lane:0,x:365,y:400},{lane:1,x:680,y:200}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:590,y:405,w:54,h:25}],[{x:365,y:305,w:54,h:25}]] },
-    // Last Light checkpoint: terminal paired-switch route with a deliberate
-    // clean final shelf; Stage 30 is the last unlockable card.
-    { floors:[430,330], platforms:[[{x:195,y:360,w:125,h:16},{x:435,y:285,w:135,h:16},{x:690,y:345,w:135,h:16}],[{x:215,y:245,w:130,h:16},{x:470,y:180,w:135,h:16},{x:710,y:230,w:130,h:16}]], shards:[{lane:0,x:255,y:330},{lane:1,x:520,y:150},{lane:0,x:755,y:310}], switches:[{lane:0,x:360,y:400},{lane:1,x:665,y:195}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:585,y:405,w:54,h:25}],[{x:365,y:305,w:54,h:25}]] },
-  ];
-  let locale = "en"; let current = 0; let state = null; let axis = 0; let hidden = false; let last = 0; let raf = 0; let stageSelector = null;
-
-  const text = (key) => (COPY[locale] && COPY[locale][key]) || COPY.en[key] || key;
-  const STATIC_SHELL_COPY = {
-    en: { mainBack: "Back to WeightPlay", stageSections: "Stage sections" },
-    "zh-Hant": { mainBack: "返回 WeightPlay", stageSections: "階段區段" },
-    "zh-Hans": { mainBack: "返回 WeightPlay", stageSections: "阶段区段" },
-    ja: { mainBack: "WeightPlayへ戻る", stageSections: "ステージのセクション" },
-    ko: { mainBack: "WeightPlay로 돌아가기", stageSections: "스테이지 섹션" },
-    es: { mainBack: "Volver a WeightPlay", stageSections: "Secciones de fases" },
-    "pt-BR": { mainBack: "Voltar ao WeightPlay", stageSections: "Seções das fases" },
-    fr: { mainBack: "Retour à WeightPlay", stageSections: "Sections des niveaux" },
-    de: { mainBack: "Zurück zu WeightPlay", stageSections: "Stufenbereiche" },
-    it: { mainBack: "Torna a WeightPlay", stageSections: "Sezioni delle fasi" },
-    ru: { mainBack: "Вернуться в WeightPlay", stageSections: "Разделы этапа" },
-    hi: { mainBack: "WeightPlay पर वापस जाएँ", stageSections: "स्टेज सेक्शन" },
-    ar: { mainBack: "العودة إلى WeightPlay", stageSections: "أقسام المرحلة" },
-  };
-  const shellText = (key) => (STATIC_SHELL_COPY[locale] || STATIC_SHELL_COPY.en)[key];
-  const CHECKPOINT_LABEL = {
-    en: "Checkpoint", "zh-Hant": "檢查點", "zh-Hans": "检查点", ja: "チェックポイント", ko: "체크포인트",
-    es: "Punto de control", "pt-BR": "Marco", fr: "Point de contrôle", de: "Kontrollpunkt", it: "Checkpoint",
-    ru: "Контрольная точка", hi: "चेकपॉइंट", ar: "نقطة تحقق",
-  };
-  const storage = (key, fallback="") => { try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; } };
-  const save = (key, value) => { try { localStorage.setItem(key, String(value)); } catch {} };
-  const unlockKey = "weightplay_twinswitch_unlocked";
-  const bestKey = (index) => `weightplay_twinswitch_best_${index}`;
-  const unlocked = () => Math.min(stages.length, Math.max(1, Number(storage(unlockKey, 1)) || 1));
-  const setScreen = (screen) => {
-    const scene = screen === "result" ? "battle" : screen;
-    $("#mainScreen").hidden = scene !== "main";
-    $("#stageScreen").hidden = scene !== "stage";
-    $("#battleScreen").hidden = scene !== "battle";
-    $("#resultScreen").hidden = screen !== "result";
-    $("#battlePlayContent").inert = screen === "result";
-    document.body.dataset.screen = screen;
-    if (scene === "main") updateMainProgress();
-    window.TwinSwitchyardFrame?.frame.activate(scene);
-  };
-  const beep = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
-  // Bodies spawn with their feet exactly on the lane floor. Marking that
-  // contact immediately keeps the first Jump input deterministic instead of
-  // dropping the request during the handful of frames before physics settles.
-  const makeBody = (lane) => ({ lane, x:92, y:stages[current].floors[lane]-30, vx:0, vy:0, w:28, h:30, ground:true, color:lane===0?"#c98169":"#e3e0d5" });
-  const reset = () => { state={time:0,moves:0,score:0,done:false,success:false,shards:new Set(),switches:new Set(),jumpQueued:false,routeHintShown:false,messageKey:"ready",lastAction:"ready",actionFlash:0,landed:[0,0],bodies:[makeBody(0),makeBody(1)]}; axis=0; };
-  const rect = (body) => ({x:body.x-body.w/2,y:body.y-body.h,w:body.w,h:body.h});
-  const overlaps = (a,b) => a.x < b.x+b.w && a.x+a.w > b.x && a.y < b.y+b.h && a.y+a.h > b.y;
-  // The art is intentionally larger than the collision body for phone
-  // readability. Use a matching pickup radius so a visibly touching courier
-  // cannot pass through a shard between two animation frames.
-  const bodyNear = (body, point) => Math.hypot(body.x-point.x, (body.y-body.h/2)-point.y)<78;
-  const stageData = () => stages[current];
-  const announce = (key) => { state.messageKey=key; $("#battleStatus").textContent=text(key); };
-  const allShards = () => state.shards.size >= stageData().shards.length;
-  const gatesOpen = () => state.switches.size >= stageData().switches.length;
-  const exitCount = () => stageData().gates.reduce((count,gate,index)=>count+(state.bodies[index].x>gate.x&&Math.abs((state.bodies[index].y-state.bodies[index].h/2)-gate.y)<70?1:0),0);
-  const physicsBody = (body, dt) => {
-    const data=stageData(); const previousX=body.x; const previousBottom=body.y;
-    body.vx=axis*185; body.x+=body.vx*dt; body.x=Math.max(25,Math.min(W-25,body.x));
-    const wallList=(data.walls?.[body.lane])||[]; if(wallList.some((wall)=>overlaps(rect(body),wall))) { body.x=previousX; body.vx=0; }
-    const wasGrounded=body.ground; body.vy+=850*dt; body.y+=body.vy*dt; body.ground=false;
-    const floor=data.floors[body.lane]; if(body.y>=floor){body.y=floor;body.vy=0;body.ground=true;}
-    data.platforms[body.lane].forEach((platform)=>{const r=rect(body);const crossed=previousBottom<=platform.y && body.y>=platform.y;const horizontal=body.x+body.w/2>platform.x&&body.x-body.w/2<platform.x+platform.w;if(body.vy>=0&&crossed&&horizontal){body.y=platform.y;body.vy=0;body.ground=true;}});
-    if(!wasGrounded&&body.ground){state.landed[body.lane]=.22;state.actionFlash=Math.max(state.actionFlash,.12);}
-    if(body.y>H+80) state.failed=true;
-    if((data.hazards[body.lane]||[]).some((hazard)=>overlaps(rect(body),hazard))) state.failed=true;
-  };
-  const update = (dt) => {
-    if(!state||state.done||hidden)return; state.time+=dt; physicsBody(state.bodies[0],dt); physicsBody(state.bodies[1],dt);
-    const data=stageData(); data.shards.forEach((shard,index)=>{if(!state.shards.has(index)&&state.bodies.some((body)=>body.lane===shard.lane&&bodyNear(body,shard))){state.shards.add(index);state.score+=100;state.moves+=1;state.messageKey="shardCollect";announce("shardCollect");beep("board.rotate");if(current===0&&state.shards.size===2&&!state.routeHintShown){state.routeHintShown=true;announce("routeHint");}}});
-    data.switches.forEach((sw,index)=>{if(!state.switches.has(index)&&state.bodies.some((body)=>body.lane===sw.lane&&bodyNear(body,sw))){state.switches.add(index);state.moves+=1;announce("switchOpen");beep("board.rotate");}});
-    if(state.failed){finish(false);return;}
-    const exitsReady=allShards()&&gatesOpen(); const atExit=data.gates.every((gate,index)=>state.bodies[index].x>gate.x&&Math.abs((state.bodies[index].y-state.bodies[index].h/2)-gate.y)<70); if(exitsReady&&atExit){state.score+=Math.max(0,500-Math.floor(state.time*8));finish(true);return;}
-    state.actionFlash=Math.max(0,state.actionFlash-dt);
-    state.landed=state.landed.map((value)=>Math.max(0,value-dt));
-  };
-  const finish=(success)=>{if(!state||state.done)return;state.done=true;state.success=success;const best=Number(storage(bestKey(current),0))||0;if(success&&(!best||state.moves<best))save(bestKey(current),state.moves);if(success&&current+1<stages.length)save(unlockKey,Math.max(unlocked(),current+2));beep(success ? "result.win" : "result.lose",.16);renderResult();setScreen("result");};
-  const draw = () => {
-    const data=stageData();
-    if (battleBackground.complete && battleBackground.naturalWidth > 0) {
-      ctx.drawImage(battleBackground, 0, 0, W, H);
-      ctx.fillStyle="#07152240";ctx.fillRect(0,0,W,H);
-    } else {
-      const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,"#274459");bg.addColorStop(1,"#071522");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-    }
-    ctx.fillStyle="#ffd27712";ctx.fillRect(0,0,W,74);ctx.fillStyle="#78e2dc18";ctx.fillRect(0,74,W,6);
-    // A stable, icon-led objective strip keeps Stage 1 understandable without
-    // moving the controls or covering either lane. It also exposes the shared
-    // input result at the moment it happens instead of explaining it later.
-    const actionGlyph=state?.lastAction==="left"?"◀  ◀":state?.lastAction==="right"?"▶  ▶":state?.lastAction==="jump"?"↥  ↥":"↔  ↔";
-    ctx.save();ctx.font="700 22px system-ui,sans-serif";ctx.textBaseline="middle";
-    ctx.fillStyle=state?.actionFlash>0?"#fff1b8":"#d9e9f4";ctx.fillText(actionGlyph,24,37);
-    ctx.fillStyle="#ffd277";ctx.fillText(`✦ ${state?.shards.size||0}/${data.shards.length}`,190,37);
-    ctx.fillStyle=exitCount()===2?"#78e2dc":"#a8bcc8";ctx.fillText(`◎ ${exitCount()}/2`,340,37);
-    ctx.fillStyle="#78e2dc";ctx.fillText("1",888,24);ctx.fillStyle="#ffd277";ctx.fillText("2",888,52);ctx.restore();
-    const drawProp=(image,sx,sy,sw,sh,dx,dy,dw,dh)=>{if(!(image.complete&&image.naturalWidth>0))return false;ctx.drawImage(image,sx,sy,sw,sh,dx,dy,dw,dh);return true;};
-    // Paint the upper lane first. Both floors share the lower canvas region,
-    // so drawing lane 0 first let the upper fill cover lane 0's floor line and
-    // made the lower characters look detached on a narrow screen.
-    for(let lane=1;lane>=0;lane-=1){const floor=data.floors[lane];ctx.fillStyle=lane===0?"#19445b":"#3d3f4e";ctx.fillRect(0,floor,W,H-floor);if(state?.actionFlash>0){ctx.fillStyle=lane===0?"#78e2dc12":"#ffd27712";ctx.fillRect(0,floor-100,W,100);}ctx.strokeStyle=lane===0?"#78e2dc":"#ffd277";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(0,floor);ctx.lineTo(W,floor);ctx.stroke();ctx.fillStyle=lane===0?"#78e2dc":"#ffd277";ctx.font="800 20px system-ui,sans-serif";ctx.fillText(lane===0?"1":"2",16,floor-16);data.platforms[lane].forEach((platform)=>{ctx.fillStyle=lane===0?"#4d8991":"#a07962";ctx.fillRect(platform.x,platform.y,platform.w,platform.h);ctx.fillStyle="#ffffff55";ctx.fillRect(platform.x,platform.y,platform.w,4);});(data.hazards[lane]||[]).forEach((hazard)=>{const spriteWidth=Math.max(hazard.w+34,Math.round((hazard.h+50)*1.5));const spriteHeight=Math.round(spriteWidth/1.5);const spriteX=hazard.x+hazard.w/2-spriteWidth/2;const spriteY=hazard.y+hazard.h-spriteHeight+3;const hazardDrawn=drawProp(twinProps,768,512,768,512,spriteX,spriteY,spriteWidth,spriteHeight);if(!hazardDrawn){ctx.save();ctx.shadowColor="#ff536d";ctx.shadowBlur=12;ctx.fillStyle="#df4055";ctx.beginPath();for(let x=hazard.x;x<=hazard.x+hazard.w;x+=13){ctx.lineTo(x,hazard.y+hazard.h);ctx.lineTo(x+6,hazard.y);}ctx.lineTo(hazard.x+hazard.w,hazard.y+hazard.h);ctx.closePath();ctx.fill();ctx.restore();}ctx.fillStyle="#ff536d99";ctx.fillRect(hazard.x-3,hazard.y+hazard.h-4,hazard.w+6,4);});}
-    data.shards.forEach((shard,index)=>{if(state?.shards.has(index))return;if(!drawProp(twinProps,512,0,512,512,shard.x-28,shard.y-38,56,76)){ctx.fillStyle=shard.lane===0?"#ffd277":"#78e2dc";ctx.save();ctx.translate(shard.x,shard.y);ctx.rotate(Math.PI/4);ctx.fillRect(-9,-9,18,18);ctx.restore();}});
-    data.switches.forEach((sw,index)=>{if(!drawProp(twinProps,0,0,512,512,sw.x-35,sw.y-38,70,70)){ctx.fillStyle=state?.switches.has(index)?"#78e2dc":"#ffd277";ctx.fillRect(sw.x-12,sw.y-25,24,25);ctx.fillStyle="#071627";ctx.fillRect(sw.x-3,sw.y-19,6,13);}});
-    data.gates.forEach((gate,index)=>{const open=gatesOpen();if(!drawProp(twinProps,0,512,768,512,gate.x-54,gate.y-48,108,96)){ctx.strokeStyle=open?"#78e2dc":"#a36d78";ctx.lineWidth=7;ctx.beginPath();ctx.arc(gate.x,gate.y,27,Math.PI,0);ctx.lineTo(gate.x+27,gate.y+34);ctx.moveTo(gate.x-27,gate.y);ctx.lineTo(gate.x-27,gate.y+34);ctx.stroke();}});
-    if(state)state.bodies.forEach((body,index)=>{
-      // Keep a visible foot/shadow anchor on the actual collision floor. The
-      // old draw transform placed the source crop 28 logical pixels below the
-      // body, which made the characters look flattened and detached on phones.
-      ctx.save();
-      ctx.fillStyle="#07152299";
-      ctx.beginPath();
-      ctx.ellipse(body.x,body.y+2,state.landed[index]>0?30:22,state.landed[index]>0?9:6,0,0,Math.PI*2);
-      ctx.fill();
-      ctx.translate(body.x,body.y);
-      const actor = index===0
-        // Crop the transparent portrait margins instead of scaling the whole
-        // two-character sheet into a tiny, flattened thumbnail. Both crops
-        // finish at the visible feet so the art and the floor share one anchor.
-        ? { sx:20, sy:120, sw:730, sh:860, dw:130, dh:154 }
-        : { sx:780, sy:0, sw:756, sh:1000, dw:128, dh:169 };
-      if(!drawProp(twinSprites,actor.sx,actor.sy,actor.sw,actor.sh,-actor.dw/2,-actor.dh,actor.dw,actor.dh)){
-        ctx.fillStyle=body.color;
-        ctx.beginPath();
-        ctx.ellipse(0,-body.h/2,body.w/2,body.h/2,0,0,Math.PI*2);
-        ctx.fill();
-        ctx.fillStyle=index===0?"#ffd39b":"#65778c";
-        ctx.beginPath();
-        ctx.arc(index===0?9:7,-body.h-8,9,0,Math.PI*2);
-        ctx.fill();
-        ctx.fillStyle="#071627";
-        ctx.beginPath();
-        ctx.arc(index===0?12:10,-body.h-10,2.5,0,Math.PI*2);
-        ctx.fill();
-      }
-      ctx.restore();
-    });
-  };
-  const updateHud=()=>{if(!state)return;const score=$("#scoreLabel"),shards=$("#shardLabel"),number=(value)=>new Intl.NumberFormat(locale).format(value);score.querySelector("small").textContent=text("score");score.querySelector("strong").textContent=number(state.score);score.setAttribute("aria-label",`${text("score")}: ${number(state.score)}`);shards.querySelector("small").textContent=text("shards");shards.querySelector("strong").textContent=`${number(state.shards.size)}/${number(stageData().shards.length)}`;shards.setAttribute("aria-label",`${text("shards")}: ${number(state.shards.size)}/${number(stageData().shards.length)}`);$("#controlHint").textContent=text("controlHint");canvas.dataset.gameVersion="18";canvas.dataset.currentStage=String(current+1);canvas.dataset.totalStages=String(stages.length);canvas.dataset.moves=String(state.moves);canvas.dataset.shards=String(state.shards.size);canvas.dataset.action=state.lastAction;canvas.dataset.exits=String(exitCount());canvas.dataset.time=String(state.time);canvas.dataset.player0x=String(state.bodies[0].x);canvas.dataset.player0y=String(state.bodies[0].y-state.bodies[0].h/2);canvas.dataset.player1x=String(state.bodies[1].x);canvas.dataset.player1y=String(state.bodies[1].y-state.bodies[1].h/2);};
-  const renderResult=()=>{const best=Number(storage(bestKey(current),0))||0;$("#resultEyebrow").textContent=`${text("stage")} ${current+1}`;$("#resultTitle").textContent=text(state.success?"success":"failure");$("#resultCopy").textContent=text(state.success?(current===stages.length-1?"final":"successCopy"):"failureCopy");$("#resultScore").innerHTML=`<span>${text("scoreStat")}</span><strong>${state.score}</strong>`;$("#resultMoves").innerHTML=`<span>${text("movesStat")}</span><strong>${state.moves}</strong>`;$("#resultBest").innerHTML=`<span>${text("bestStat")}</span><strong>${best||"—"}</strong>`;$("#nextBtn").textContent=text("next");$("#nextBtn").disabled=current+1>=unlocked();$("#retryBtn").textContent=text("retry");$("#resultStagesBtn").textContent=text("stages");};
-  const stageTitle=(index)=>`${text("stage")} ${new Intl.NumberFormat(locale).format(index+1)}`;
-  const updateMainProgress=()=>{const progress=$("#mainProgress");if(!progress)return;const number=(value)=>new Intl.NumberFormat(locale).format(value);progress.textContent=`${text("stage")} ${number(unlocked())} / ${number(stages.length)}`;};
-  const updateStageInfo=()=>{const title=$("#stageTitle"),progress=$("#stageProgress"),number=(value)=>new Intl.NumberFormat(locale).format(value);title.textContent=stageTitle(current);progress.textContent=`${number(unlocked())}/${number(stages.length)}`;progress.setAttribute("aria-label",`${text("stageHelp")}: ${number(unlocked())}/${number(stages.length)}`);updateMainProgress();};
-  const stageRecord=(index)=>{const open=index<unlocked(),best=Number(storage(bestKey(index),0))||0,checkpoint=(index+1)%5===0;return{id:index+1,kicker:checkpoint?(CHECKPOINT_LABEL[locale]||CHECKPOINT_LABEL.en):"",title:stageTitle(index),subtitle:best?`${text("bestStat")}: ${best}`:"",status:open?"":text("stageHelp"),summary:open?text("objective"):text("stageHelp"),details:[text("objective"),best?`${text("bestStat")}: ${best}`:"",checkpoint?text("stage"):""],poster:"/games/animal-twin-switchyard/cover-v2.webp",posterPosition:"center",locked:!open,cleared:index<unlocked()-1};};
-  const renderStages=()=>{if(!stageSelector)stageSelector=window.WeightPlayPlayUI.mountStage({page:$("#stageWorkspace"),rail:stageGrid,config:{count:stages.length,poster:"/games/animal-twin-switchyard/cover-v2.webp",background:"/games/animal-twin-switchyard/battle-bg-v2.webp",stage:stageRecord},selected:current,isActive:()=>document.body.dataset.screen==="stage",onSelect(index){current=index;updateStageInfo();},onStart(index){if(index<unlocked())startStage(index);}});else stageSelector.refresh(current);updateStageInfo();$("#stageTab").setAttribute("aria-label",shellText("stageSections"));$("#stageHelp").textContent=text("stageHelp");};
-  const startStage=(index)=>{current=Math.max(0,Math.min(unlocked()-1,index));stageSelector?.refresh(current);reset();$("#battleStatus").textContent=text("ready");canvas.setAttribute("aria-label",text("ariaCanvas"));$("#leftBtn").setAttribute("aria-label",text("ariaLeft"));$("#rightBtn").setAttribute("aria-label",text("ariaRight"));setScreen("battle");beep("game.start");};
-  const refresh=()=>{document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";window.WonderI18n?.setLocale?.(locale,{navigate:false});$("#coming").textContent=text("coming");$("#languageLabel").textContent=text("language");$("#tagline").textContent=text("objective");$("#guideTitle").textContent=text("guideTitle");$("#guideBody").textContent=text("guideBody");$("#guideControls").textContent=text("guideControls");$("#startBtn").textContent=text("start");$("#stageTab").setAttribute("aria-label",shellText("stageSections"));$("#stageTab").textContent=text("stageMap");$("#jumpBtn").textContent=text("jump");$("#restartBtn").setAttribute("aria-label",text("restart"));$("#restartBtn").setAttribute("title",text("restart"));renderStages();if(state&&["battle","result"].includes(document.body.dataset.screen)){$("#battleStatus").textContent=text(state.messageKey||"ready");updateHud();}if(state&&document.body.dataset.screen==="result")renderResult();window.TwinSwitchyardFrame?.frame.refresh();};
-  const stageScreen=()=>{if(document.body.dataset.screen==="main")current=Math.max(0,Math.min(stages.length-1,unlocked()-1));renderStages();stageSelector?.refresh(current);setScreen("stage");};
-  $("#startBtn").addEventListener("click",stageScreen);$("#stageBack").addEventListener("click",()=>setScreen("main"));$("#battleBack").addEventListener("click",stageScreen);$("#restartBtn").addEventListener("click",()=>startStage(current));$("#retryBtn").addEventListener("click",()=>startStage(current));$("#nextBtn").addEventListener("click",()=>{if(!$("#nextBtn").disabled)startStage(current+1);});$("#resultStagesBtn").addEventListener("click",()=>{current=unlocked()-1;stageScreen();});
-  const markAction=(action)=>{if(!state||state.done)return;state.lastAction=action;state.actionFlash=.22;};
-  const pressAxis=(direction)=>{if(!state||state.done)return;axis=direction;state.moves+=1;markAction(direction<0?"left":"right");};
-  const releaseAxis=(direction)=>{if(axis===direction)axis=0;};
-  const queueJump=()=>{if(state&&!state.done){state.jumpQueued=true;state.moves+=1;markAction("jump");}};
-  const hold=(button,down,up)=>{button.addEventListener("pointerdown",(event)=>{event.preventDefault();button.setPointerCapture?.(event.pointerId);down();});["pointerup","pointercancel","lostpointercapture"].forEach((name)=>button.addEventListener(name,(event)=>{event.preventDefault();up();}));};
-  hold($("#leftBtn"),()=>pressAxis(-1),()=>releaseAxis(-1));
-  hold($("#rightBtn"),()=>pressAxis(1),()=>releaseAxis(1));
-  $("#jumpBtn").addEventListener("pointerdown",(event)=>{event.preventDefault();queueJump();});
-  document.addEventListener("keydown",(event)=>{if(document.body.dataset.screen!=="battle")return;const left=event.key==="ArrowLeft"||event.key.toLowerCase()==="a";const right=event.key==="ArrowRight"||event.key.toLowerCase()==="d";if(left||right||event.key===" "||event.key==="ArrowUp"||event.key.toLowerCase()==="r")event.preventDefault();if(left){axis=-1;if(!event.repeat&&state){state.moves+=1;markAction("left");}}if(right){axis=1;if(!event.repeat&&state){state.moves+=1;markAction("right");}}if((event.key===" "||event.key==="ArrowUp")&&!event.repeat&&state&&!state.done){state.jumpQueued=true;state.moves+=1;markAction("jump");}if(event.key.toLowerCase()==="r")startStage(current);});document.addEventListener("keyup",(event)=>{if((event.key==="ArrowLeft"||event.key.toLowerCase()==="a")&&axis<0)axis=0;if((event.key==="ArrowRight"||event.key.toLowerCase()==="d")&&axis>0)axis=0;});document.addEventListener("visibilitychange",()=>{hidden=document.hidden;last=performance.now();});
-  const tick=(now)=>{const dt=Math.min(.032,Math.max(0,(now-last)/1000||0));last=now;if(!hidden){if(state&&!state.done){state.bodies.forEach((body)=>{if(state.jumpQueued&&body.ground){body.vy=JUMP_VELOCITY;body.ground=false;beep("board.move",.04);} });state.jumpQueued=false;update(dt);}draw();updateHud();}raf=requestAnimationFrame(tick);};
-   const routeLocale=document.documentElement.lang;locale=COPY[routeLocale]?routeLocale:storage("weightPlayLocale","en");if(!COPY[locale])locale="en";$("#localeSelect").innerHTML=ORDER.map((code)=>`<option value="${code}">${code}</option>`).join("");$("#localeSelect").value=locale;$("#localeSelect").addEventListener("change",(event)=>{locale=event.target.value;save("weightPlayLocale",locale);refresh();});window.WeightPlayAudio.setEnabled(storage("weightplay_sound","on")!=="off");reset();refresh();setScreen("main");last=performance.now();raf=requestAnimationFrame(tick);
-  const inlineGuide = document.querySelector("#mainScreen .guide");
-  inlineGuide?.classList.remove("guide");
-  inlineGuide?.classList.add("main-howto");
-  const cleanGeneralGuide = () => document.querySelectorAll(".game-page-info .game-info-fact").forEach((fact) => {
-    if (/skills trained/i.test(fact.textContent || "")) fact.remove();
-  });
-  cleanGeneralGuide();
-  window.addEventListener("load", cleanGeneralGuide, { once: true });
-})();
+import {stages} from './stages.mjs';
+import {createRun,requestJump,stepRun,STEP} from './simulation.mjs';
+import {Signal3D} from './signal-3d.mjs';
+import {createStageConfig} from './stage-config.mjs';
+import {extra} from './rebuild-copy.mjs';
+import {LocalPractice} from '../../src/game-local-practice.mjs';
+const $=s=>document.querySelector(s),COPY=window.WPTwinLocales.locales;
+const canvas=$('#gameCanvas'),frame=window.TwinSwitchyardFrame.frame;
+const practiceRequested=new URLSearchParams(location.search).get('practice')==='1';
+const read=(key,fallback='')=>{try{return localStorage.getItem(key)??fallback;}catch{return fallback;}};
+const write=(key,value)=>{if(practiceRequested)return false;try{localStorage.setItem(key,String(value));return true;}catch{return false;}};
+const unlockKey='weightplay_twinswitch_unlocked',bestKey=i=>`weightplay_twinswitch_best_${i}`;
+let locale=COPY[document.documentElement.lang]?document.documentElement.lang:read('weightPlayLocale','en');if(!COPY[locale])locale='en';
+const text=k=>COPY[locale]?.[k]??COPY.en[k]??k,ex=k=>extra(locale,k),number=n=>new Intl.NumberFormat(locale).format(n);
+const unlocked=()=>LocalPractice.enabled?stages.length:Math.max(1,Math.min(stages.length,Math.floor(Number(read(unlockKey,1))||1)));
+const best=i=>Number(read(bestKey(i),0))||0,title=i=>`${text('stage')} ${number(i+1)}`;
+const sound=cue=>window.WeightPlayAudio?.play(cue);
+let current=0,state=null,renderer=null,selector=null,screen='main',raf=0,last=0,accumulator=0,resultDelay=0,savingFailed=false;
+let wasSettings=false;
+let axis=0,held=new Set(),touch=new Map(),generation=0,disposed=false,contextLost=false;
+let equipped=read('weightplay_twinswitch_trim','classic'),owned=read('weightplay_twinswitch_aurora')==='1',preview=false;
+const reducedQuery=matchMedia('(prefers-reduced-motion: reduce)'),reduce=()=>reducedQuery.matches||document.documentElement.dataset.wpMotion==='reduced';
+const effects=new Set(),events=new AbortController(),listen=(node,name,fn,options={})=>node.addEventListener(name,fn,{...options,signal:events.signal});
+function clearInput(){held.clear();touch.clear();axis=0;for(const b of state?.bodies||[])b.buffer=0;document.querySelectorAll('.control').forEach(b=>b.removeAttribute('data-held'));}
+function clearEffects(){for(const e of effects){e.cancel?.();e.remove?.();}effects.clear();}
+function pulse(node){if(!node||reduce())return;const a=node.animate([{filter:'brightness(1.65)'},{filter:'brightness(1)'}],{duration:230});effects.add(a);a.finished.catch(()=>{}).finally(()=>effects.delete(a));}
+function flyShard(e){if(reduce()||!renderer){pulse($('#shardLabel'));return;}const start=renderer.project(e.lane,e.x,e.y),target=$('#shardLabel').getBoundingClientRect(),dot=document.createElement('span');dot.className='signal-flight';dot.style.left=`${start.x}px`;dot.style.top=`${start.y}px`;document.body.append(dot);effects.add(dot);const a=dot.animate([{transform:'translate(-50%,-50%) rotate(45deg) scale(1)',opacity:1},{transform:`translate(${target.x+target.width/2-start.x}px,${target.y+target.height/2-start.y}px) rotate(225deg) scale(.35)`,opacity:.2}],{duration:500,easing:'cubic-bezier(.2,.7,.3,1)'});effects.add(a);a.finished.then(()=>pulse($('#shardLabel'))).catch(()=>{}).finally(()=>{dot.remove();effects.delete(dot);effects.delete(a);});}
+function announce(key){if(state)state.message=key;$('#battleStatus').textContent=text(key);}
+function updateProgress(){$('#mainProgress').textContent=`${text('stage')} ${number(Math.min(stages.length,Number(read(unlockKey,1))||1))} / ${number(stages.length)}`;}
+function show(next){generation++;clearInput();clearEffects();screen=next;const scene=next==='result'?'battle':next;for(const name of ['main','stage','battle'])$(`#${name}Screen`).hidden=name!==scene;$('#resultScreen').hidden=next!=='result';$('#battlePlayContent').inert=next==='result';document.body.dataset.screen=next;frame.activate(scene);if(next==='main')updateProgress();if(next!=='battle'&&next!=='result')window.WeightPlayAudio?.stopAll?.();last=performance.now();accumulator=0;}
+function renderStages(){if(!selector)selector=window.WeightPlayPlayUI.mountStage({page:$('#stageWorkspace'),rail:$('#stageGrid'),config:createStageConfig({stages,text,title,best,unlocked,checkpoint:index=>`${number(Math.floor(index/5)+1)} / 6`}),selected:current,isActive:()=>screen==='stage'&&!$('#stageWorkspace').hidden,onSelect(i){current=i;updateStageInfo();},onStart:i=>startStage(i)});else selector.refresh(current);updateStageInfo();}
+function updateStageInfo(){$('#stageTitle').textContent=title(current);$('#stageProgress').textContent=`${number(unlocked())}/${number(stages.length)}`;updateProgress();}
+function stageScreen(){if(screen==='main')current=Math.min(29,unlocked()-1);setTab(false);renderStages();show('stage');}
+async function startStage(index){const token=++generation;if(practiceRequested&&(!LocalPractice.enabled||!await LocalPractice.validate()))return;if(disposed||token!==generation)return;current=Math.max(0,Math.min(unlocked()-1,index));try{renderer??=new Signal3D(canvas);renderer.load(stages[current]);renderer.trim=equipped==='aurora';contextLost=false;$('#graphicsError').hidden=true;}catch(error){console.error('Twin renderer initialization failed',error);graphicsFailure();return;}state=createRun(stages[current]);savingFailed=false;resultDelay=0;selector?.refresh(current);announce('ready');show('battle');updateHud();sound('game.start');renderer.render(state,STEP,reduce());canvas.focus({preventScroll:true});}
+function graphicsFailure(){contextLost=true;clearInput();show('battle');$('#graphicsError').hidden=false;$('#graphicsErrorText').textContent=ex('graphics');$('#graphicsReload').textContent=text('retry');}
+listen($('#graphicsReload'),'click',()=>location.reload());
+function updateHud(){if(!state)return;$('#scoreLabel small').textContent=ex('switches');$('#scoreLabel strong').textContent=`${number(state.switches.size)}/${number(state.stage.switches.length)}`;$('#shardLabel small').textContent=ex('signals');$('#shardLabel strong').textContent=`${number(state.shards.size)}/3`;$('#routeMeter').value=state.bodies[0].x/935;$('#routeDistance').textContent=`${Math.round(state.bodies[0].x/935*100)}%`;$('#exitStatus').textContent=`${ex('exit')} ${number(state.exits)}/2`;Object.assign(canvas.dataset,{gameVersion:'19',currentStage:String(current+1),totalStages:'30',moves:String(state.moves),shards:String(state.shards.size),switches:String(state.switches.size),exits:String(state.exits),time:String(state.time),player0x:String(state.bodies[0].x),player0y:String(state.bodies[0].y),player1x:String(state.bodies[1].x),player1y:String(state.bodies[1].y)});}
+function finish(){clearInput();sound(state.success?'result.win':'result.lose');if(state.success&&!practiceRequested){const old=best(current),bestSaved=old&&old<=state.moves||write(bestKey(current),state.moves),progressSaved=write(unlockKey,Math.max(unlocked(),Math.min(30,current+2)));savingFailed=!bestSaved||!progressSaved;if(!savingFailed)window.WonderAnalytics?.completeStage?.(current+1);}resultDelay=state.success?.65:.42;}
+function result(){$('#resultEyebrow').textContent=title(current);$('#resultTitle').textContent=state.success&&current===29?ex('final'):text(state.success?'success':'failure');$('#resultCopy').textContent=savingFailed?ex('saveFail'):state.success?`${ex('signals')} 3/3 · ${ex('switches')} ${state.switches.size}/${state.stage.switches.length} · ${ex('exit')} 2/2`:`${String(state.failureLane+1).padStart(2,'0')} · ${text('failureCopy')}`;for(const [id,label,value]of [['resultScore','score',state.score],['resultMoves','movesStat',state.moves],['resultBest','bestStat',best(current)]]){const n=$(`#${id}`);n.replaceChildren(document.createTextNode(text(label)));const strong=document.createElement('strong');strong.textContent=number(value);n.append(strong);}$('#resultStagesBtn').textContent=text('stageMap');$('#nextBtn').textContent=text('next');$('#retryBtn').textContent=text('retry');$('#nextBtn').disabled=!state.success||current===29||savingFailed;show('result');if(!reduce()){const a=$('#resultScreen .result-card').animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}],{duration:200,easing:'ease-out'});effects.add(a);a.finished.catch(()=>{}).finally(()=>effects.delete(a));}$('#retryBtn').focus({preventScroll:true});updateProgress();}
+function consumeEvents(){const heard=new Set();for(const e of state.events){renderer.burst(e,reduce());if(e.type==='shard'){flyShard(e);announce('shardCollect');}if(e.type==='switch'){announce('switchOpen');pulse($('#scoreLabel'));}const cue={jump:'movement.jump',land:'movement.land',shard:'reward.collect',switch:'mechanism.unlock',gate:'mechanism.unlock',hit:'impact.soft',reject:'feedback.error'}[e.type];if(cue&&!heard.has(cue)){sound(cue);heard.add(cue);}}state.events.length=0;}
+function tick(now){const dt=Math.min(.05,(now-last)/1000||0);last=now;const settings=!!document.querySelector('.wp-frame-popover:not([hidden])');if(wasSettings&&!settings&&state)announce(state.message||'ready');wasSettings=settings;if((screen==='battle'||screen==='result')&&state&&!document.hidden&&!contextLost){if(settings){clearInput();$('#battleStatus').textContent=ex('paused');}else if(screen==='battle'){if(!state.done){accumulator+=dt;while(accumulator>=STEP&&!state.done){stepRun(state,axis);accumulator-=STEP;}consumeEvents();if(state.done)finish();updateHud();}else if(resultDelay>0){resultDelay-=dt;if(resultDelay<=0)result();}}renderer.render(state,dt,reduce());}if(!disposed)raf=requestAnimationFrame(tick);}
+function movement(){const left=held.has('left')||[...touch.values()].includes(-1),right=held.has('right')||[...touch.values()].includes(1),next=Number(right)-Number(left);if(next&&next!==axis&&state&&!state.done){state.moves++;state.action=next<0?'left':'right';}axis=next;}
+function jump(){if(screen!=='battle'||state?.done||contextLost)return;requestJump(state);pulse($('#jumpBtn'));}
+for(const [id,dir]of [['leftBtn',-1],['rightBtn',1]]){const b=$(`#${id}`);listen(b,'pointerdown',e=>{if(screen!=='battle')return;e.preventDefault();b.setPointerCapture(e.pointerId);touch.set(e.pointerId,dir);b.dataset.held='true';movement();});for(const name of ['pointerup','pointercancel','lostpointercapture'])listen(b,name,e=>{touch.delete(e.pointerId);b.removeAttribute('data-held');movement();});}
+listen($('#jumpBtn'),'pointerdown',e=>{e.preventDefault();jump();});
+listen(document,'keydown',e=>{if(screen!=='battle'||document.querySelector('.wp-frame-popover:not([hidden])'))return;const k=e.key.toLowerCase(),dir=['arrowleft','a'].includes(k)?'left':['arrowright','d'].includes(k)?'right':null;if(dir||[' ','arrowup','w','r'].includes(k))e.preventDefault();if(dir){held.add(dir);movement();}if(!e.repeat&&[' ','arrowup','w'].includes(k))jump();if(!e.repeat&&k==='r')startStage(current);});
+listen(document,'keyup',e=>{const k=e.key.toLowerCase();if(['arrowleft','a'].includes(k))held.delete('left');if(['arrowright','d'].includes(k))held.delete('right');movement();});listen(window,'blur',clearInput);listen(document,'visibilitychange',()=>{clearInput();last=performance.now();accumulator=0;});
+listen(canvas,'webglcontextlost',e=>{e.preventDefault();contextLost=true;clearInput();$('#battleStatus').textContent=ex('graphics');graphicsFailure();});listen(canvas,'webglcontextrestored',()=>{if(!disposed)location.reload();});
+listen($('#startBtn'),'click',stageScreen);listen($('#stageBack'),'click',()=>show('main'));listen($('#battleBack'),'click',stageScreen);for(const id of ['restartBtn','retryBtn'])listen($(`#${id}`),'click',()=>startStage(current));listen($('#nextBtn'),'click',()=>{if(!$('#nextBtn').disabled)startStage(current+1);});listen($('#resultStagesBtn'),'click',stageScreen);
+function setTab(gear){$('#stageWorkspace').hidden=gear;$('#gearWorkspace').hidden=!gear;$('#stageTab').setAttribute('aria-pressed',String(!gear));$('#gearTab').setAttribute('aria-pressed',String(gear));if(gear)renderGear();}
+listen($('#stageTab'),'click',()=>setTab(false));listen($('#gearTab'),'click',()=>setTab(true));
+function renderGear(){$('#gearTab').textContent=ex('gear');$('#gearTitle').textContent=ex('look');$('#gearDescription').textContent=ex('description');$('#gearBalance').textContent=number(window.WeightPlayWallet?.read().diamonds||0);$('#classicBtn').textContent=equipped==='classic'?`${ex('free')} · ${ex('equipped')}`:ex('free');$('#previewBtn').textContent=ex('preview');$('#gearBuy').textContent=owned?(equipped==='aurora'?ex('equipped'):ex('equip')):ex('buy');$('#gearBuy').disabled=equipped==='aurora'&&owned||practiceRequested;$('#gearModel').dataset.trim=preview||equipped==='aurora'?'aurora':'classic';$('#gearOwnership').textContent=owned?ex('owned'):'';}
+listen($('#previewBtn'),'click',()=>{preview=!preview;renderGear();pulse($('#gearModel'));sound('ui.click');});listen($('#classicBtn'),'click',()=>{if(!write('weightplay_twinswitch_trim','classic')){if(!practiceRequested)$('#gearNotice').textContent=ex('saveFail');return;}equipped='classic';preview=false;renderGear();sound('ui.click');});
+listen($('#gearBuy'),'click',()=>{if(practiceRequested)return;const wallet=window.WeightPlayWallet;if(!owned){if(wallet.read().diamonds<5){$('#gearNotice').textContent=ex('low');pulse($('#gearBalance'));sound('feedback.error');return;}if(!write('weightplay_twinswitch_aurora','1')){$('#gearNotice').textContent=ex('saveFail');return;}try{if(!wallet.spendDiamonds(5)){localStorage.removeItem('weightplay_twinswitch_aurora');$('#gearNotice').textContent=ex('low');return;}owned=true;}catch{localStorage.removeItem('weightplay_twinswitch_aurora');$('#gearNotice').textContent=ex('saveFail');return;}}if(write('weightplay_twinswitch_trim','aurora')){equipped='aurora';preview=false;$('#gearNotice').textContent=ex('equipped');sound('shop.purchase');pulse($('#gearModel'));}else $('#gearNotice').textContent=ex('saveFail');renderGear();});
+function refresh(){document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';window.WonderI18n?.setLocale?.(locale,{navigate:false});for(const [id,key]of [['coming','coming'],['languageLabel','language'],['tagline','objective'],['guideTitle','guideTitle'],['guideBody','guideBody'],['guideControls','guideControls'],['startBtn','start'],['stageTab','stageMap'],['jumpBtn','jump'],['controlHint','controlHint']])$(`#${id}`).textContent=text(key);for(const [id,key]of [['leftBtn','ariaLeft'],['rightBtn','ariaRight'],['restartBtn','restart']])$(`#${id}`).setAttribute('aria-label',text(key));$('#exitStatus').textContent=ex('exit');$('#gearTab').textContent=ex('gear');canvas.setAttribute('aria-label',text('ariaCanvas'));renderStages();renderGear();updateHud();frame.refresh();}
+$('#localeSelect').value=locale;listen($('#localeSelect'),'change',e=>{locale=e.target.value;write('weightPlayLocale',locale);refresh();if(screen==='result')result();});listen(window,'pagehide',e=>{clearInput();clearEffects();window.WeightPlayAudio?.stopAll?.();if(e.persisted)return;disposed=true;generation++;cancelAnimationFrame(raf);events.abort();renderer?.dispose();selector?.destroy?.();});listen(window,'pageshow',()=>{last=performance.now();accumulator=0;});
+window.WeightPlayAudio?.preload?.(['game.start','movement.jump','movement.land','reward.collect','mechanism.unlock','impact.soft','result.win','result.lose','feedback.error','shop.purchase']);
+refresh();$('#startBtn').disabled=false;show('main');last=performance.now();raf=requestAnimationFrame(tick);
+LocalPractice.register({gameId:'animal-twin-switchyard',stageIds:stages.map((_,i)=>i+1),enable:()=>renderStages(),startStage:id=>startStage(Number(id)-1)});

@@ -11,7 +11,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-version" content="v23">
-  <meta name="weightplay-interface-version" content="9">
+  <meta name="weightplay-interface-version" content="6">
   <title>スカイスパイア・ドロップ | WeightPlay</title>
   <meta name="description" content="水晶の尖塔を回してフィアを30回の降下へ導き、動く隙間に合わせましょう。呪われたリングに止められる前にコメットブレイクをためます。" />
   <meta property="og:site_name" content="WeightPlay" />
@@ -40,17 +40,18 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-skyspire-drop/" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"スカイスパイア・ドロップ","url":"https://weightplay.com/ja/games/animal-skyspire-drop/","image":"https://weightplay.com/assets/animal-skyspire-drop/cover.png","description":"水晶の尖塔を回してフィアを30回の降下へ導き、動く隙間に合わせましょう。呪われたリングに止められる前にコメットブレイクをためます。","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"ja","isAccessibleForFree":true,"genre":["回転する尖塔の降下","動く隙間への位置合わせ","コメットブレイクのチャージ"],"audience":{"@type":"Audience","audienceType":"General players","suggestedMinAge":13},"alternateName":"Skyspire Drop"}</script>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <link rel="stylesheet" href="style.css?v=20261018-i9-main-contract">
+  <link rel="stylesheet" href="style.css?v=20261022-skyspire-i9-entry1">
   <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20261018-interface9-theme1">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1">
-  <link rel="stylesheet" href="style-interface9.css?v=20261018-skyspire-result-fit1">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
+  <link rel="stylesheet" href="style-interface9.css?v=20261022-skyspire-i9-entry1">
   <link rel="stylesheet" href="/src/loading-screen.css?v=20261017-shared-dark-loader1">
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-skyspire-drop.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
+<link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20261022-shared-battle-canvas1">
 </head>
-<body data-screen="main" data-wp-game-id="animal-skyspire-drop" data-wp-interface-version="9" data-wp-game-version="v23" data-runtime-localize="off" data-wp-game-owned-guide>
+<body data-screen="main" data-wp-game-id="animal-skyspire-drop" data-wp-interface-version="6" data-wp-interface-candidate="9" data-wp-game-version="v23" data-runtime-localize="off" data-wp-game-owned-guide>
   <div id="loadingPanel" class="loading-panel"><img src="../../assets/animal-skyspire-drop/fia-orb.webp" alt=""><strong data-t="loading">天空塔を開いています…</strong></div>
 
   <div id="gameFrame" class="main-group" data-wp-frame-root>
@@ -66,7 +67,7 @@
         <div class="main-copy" data-wp-frame-copy>
           <p data-t="objective" data-wp-frame-summary>塔を回して救援ゲートへ到達しよう。</p>
           <span id="mainProgress" data-wp-frame-progress>0 / 30</span>
-          <button id="start" class="primary" type="button" data-wp-frame-action="primary" data-t="start">ゲーム開始</button>
+          <button id="start" class="primary" type="button" disabled data-wp-main-start data-wp-frame-action="primary" data-t="start">ゲーム開始</button>
         </div>
       </section>
     </main>
@@ -112,7 +113,7 @@
         <div id="battleInfo"><div class="tower-block"><small id="towerLabel"></small><strong id="depthValue">0 / 10</strong></div><div class="battle-status"><span><b data-t="combo">連続</b><strong id="comboValue">0</strong></span><span><b data-t="time">時間</b><strong id="timeValue">0.0</strong></span><span><b data-t="shield">シールド</b><strong id="shieldValue">0</strong></span></div></div>
         <div id="battleLive" class="battle-live">
         <p id="objective" class="objective-row" data-t="objective">塔を回して救援ゲートへ到達しよう。</p>
-        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="720" height="960" tabindex="0" aria-label="回転するクリスタル天空塔" aria-keyshortcuts="ArrowLeft ArrowRight A D" data-t-aria="arenaLabel"></canvas><div class="control-cue" data-t="controlCue">左右にドラッグして回転</div><div id="powerBadge" class="power-badge"><span data-t="cometBreak">彗星ブレイク</span><strong id="powerValue">0 / 3</strong></div></div>
+        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" data-wp-primary-action="rotate" width="720" height="960" tabindex="0" aria-label="回転するクリスタル天空塔" aria-keyshortcuts="ArrowLeft ArrowRight A D" data-t-aria="arenaLabel"></canvas><div class="control-cue" data-t="controlCue">左右にドラッグして回転</div><div id="powerBadge" class="power-badge"><span data-t="cometBreak">彗星ブレイク</span><strong id="powerValue">0 / 3</strong></div></div>
         <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
         </div>
         <div id="battleUtilitySource" hidden><button id="battleHelp" type="button" aria-label="遊び方" data-t-aria="howTitle">?</button></div>
@@ -125,7 +126,7 @@
 
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script src="../../src/edge-guard.js"></script><script src="../../src/game-page-info.js?v=20261018-guide-official-title1"></script><script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script><script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script><script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script><script src="locales.js?v=20261018-i9"></script><script src="game.js?v=20261018-i9-guide-ar-label1&wp-audio=1.0.0"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script src="../../src/edge-guard.js"></script><script src="../../src/game-page-info.js?v=20261018-guide-official-title1"></script><script src="/src/game-entry-loader.js?v=20261020-single-loading-label1"></script><script src="/src/battle-canvas-standard.js?v=20261022-shared-battle-canvas-restore-mode-v1" data-wp-battle-standard></script><script src="../../src/game-screen-frame.js?v=20261022-interface9-playui-auto-mount-v1"></script><script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script><script src="../../src/game-play-ui.js?v=20261021-shared-play1"></script><script src="locales.js?v=20261018-i9"></script><script src="game.js?v=20261022-skyspire-i9-entry1&wp-audio=1.0.0"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="スカイスパイア・ドロップ";document.title="スカイスパイア・ドロップ | WeightPlay";},{once:true});</script>
 </body>
 </html>

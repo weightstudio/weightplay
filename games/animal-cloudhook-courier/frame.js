@@ -94,7 +94,7 @@
         syncStageInfo();
       },
       onStart: (index) => bridge.startStage(index, "stage_card"),
-      isActive: () => frame.active === "stage",
+      isActive: () => frame.active === "stage" && !stageSelector.hidden,
     });
 
     stageTab.dataset.wpFrameAction = "tab";

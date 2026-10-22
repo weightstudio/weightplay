@@ -7,6 +7,7 @@ const clamp=THREE.MathUtils.clamp;
 
 // One renderer per live Battle. Geometry/material ownership never escapes this object.
 export class Skyspire3D {
+  static get assetCount(){return Object.keys(assetNames).length;}
   static loadAssets(){
     return assetPromise ||= Promise.all(Object.entries(assetNames).map(([key,file])=>new Promise((resolve,reject)=>{
       const img=new Image();const timer=setTimeout(()=>{img.onload=img.onerror=null;img.src='';reject(new Error(`Skyspire art timed out: ${key}`));},15000);

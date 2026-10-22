@@ -14,7 +14,7 @@ button { cursor: pointer; }
 [hidden] { display: none !important; }
 
 .screen-root { width: min(100%, 920px); min-height: 100dvh; margin: 0 auto; }
-.screen-root > .screen { min-height: 100dvh; }
+.screen-root > .screen:not(.main-screen) { min-height: 100dvh; }
 
 .main-grid { align-items: center; gap: 20px; }
 .twin-poster { position: relative; overflow: hidden; aspect-ratio: 1; }
@@ -30,6 +30,7 @@ button { cursor: pointer; }
 .guide p { margin: 5px 0; font-size: .88rem; }
 
 .stage-workspace { position: relative; width: 100%; height: 100%; min-width: 0; min-height: 0; }
+.stage-content { position:relative; width:100%; height:100%; min-height:0; overflow:hidden; }
 .stage-stat { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .battle-content { position: relative; display: flex; width: 100%; height: 100%; min-width: 0; min-height: 0; overflow: hidden; }
@@ -86,3 +87,39 @@ button { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }
+/* v19: only the game-owned play content; shared frame/card geometry stays shared. */
+.battle-play-content{gap:0;background:#102331;position:relative}
+.battle-status{height:30px;min-height:30px;line-height:30px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;padding:0 12px;background:#102331}
+.canvas-wrap{position:relative;display:block;padding:0;border:0;border-radius:0;min-height:0;flex:1;background:#102f3b}
+.canvas-wrap canvas{width:100%;height:100%;max-height:none;aspect-ratio:auto;object-fit:initial;border-radius:0;outline:none;background:transparent}
+.lane-label{position:absolute;left:12px;top:10px;pointer-events:none;color:#85f8e8;background:#102b3bdd;border:1px solid #4ce0cf55;border-radius:6px;padding:4px 8px;font:800 12px/1.2 system-ui;letter-spacing:2px}
+.lane-label-1{top:calc(50% + 10px);color:#ffdc96;border-color:#ffc97855}
+.canvas-wrap:has(canvas[data-lane-layout="stack"])::after{content:"";position:absolute;top:50%;left:0;right:0;height:2px;background:#6c859e55;pointer-events:none}
+.canvas-wrap:has(canvas[data-lane-layout="side"]) .lane-label-1{top:10px;left:calc(50% + 12px)}
+.canvas-wrap:has(canvas[data-lane-layout="side"])::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:#6c859e55;pointer-events:none}
+.route-progress{display:flex;align-items:center;gap:9px;height:24px;flex:0 0 24px;padding:0 12px;color:#adc6cf;font:600 10px/1 system-ui;direction:ltr;background:#102331}
+.route-progress progress{flex:1;min-width:0;max-width:none;height:4px;border:0;border-radius:4px;overflow:hidden;background:#2a4354;accent-color:#75e0ce}
+.route-progress progress::-webkit-progress-bar{background:#2a4354}.route-progress progress::-webkit-progress-value{background:#75e0ce}
+.battle-actions{padding:8px 12px;gap:10px;justify-content:space-between;background:#132c3b}
+.touch-controls{display:grid;grid-template-columns:58px 58px minmax(110px,1fr);width:100%;max-width:650px;gap:8px;direction:ltr}
+#leftBtn{grid-column:1;grid-row:1}#rightBtn{grid-column:2;grid-row:1}#jumpBtn{grid-column:3;grid-row:1}
+.control,.restart{height:52px;min-height:52px;padding:0 8px;border-width:1px;touch-action:none;user-select:none;-webkit-user-select:none;border-radius:10px;box-shadow:0 3px 0 #081a24}
+.control[data-held],.control:active,.restart:active{transform:translateY(2px);filter:brightness(1.25);box-shadow:0 1px 0 #081a24}
+.jump{background:#73e5d3;color:#0a353b;border-color:#a7f3e7;box-shadow:0 3px 0 #278c8a}
+.control-hint{font-size:10px;line-height:16px;height:20px;background:#132c3b;color:#90afb9}
+.signal-flight{position:fixed;z-index:2000;width:16px;height:16px;border:2px solid #fff2ad;background:#ffd16f;box-shadow:0 0 12px #ffcb7077;pointer-events:none}
+.gear-workspace{height:100%;overflow:auto;padding:20px;display:grid;place-items:center}
+.gear-card{width:min(100%,430px);background:var(--wp-ui-surface,#142d3d);border:1px solid var(--wp-ui-line,#3c626d);border-radius:16px;padding:22px;color:var(--wp-ui-text,#f4fafb);text-align:center}
+.gear-card h2{margin:8px 0 18px}.gear-card p{font-size:14px;line-height:1.5}.gear-wallet{display:flex;justify-content:center;align-items:center;gap:8px}.gear-wallet img{width:24px;height:24px}
+.gear-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.gear-card button{min-height:44px;border:1px solid var(--wp-ui-line,#4f767d);border-radius:8px;padding:8px 12px;color:inherit;background:var(--wp-ui-button,#254b58)}.gear-card button:disabled{opacity:.55}#gearBuy{background:#356e67}#classicBtn{width:100%}#gearNotice{min-height:21px;color:#f7d291}
+.signal-swatch{display:flex;gap:28px;justify-content:center;align-items:center;height:100px;background:#0b1b2b;border-radius:12px;border:1px solid #385267}
+.signal-swatch span{width:58px;height:64px;border:8px solid #b49668;border-bottom-width:5px;box-shadow:inset 0 0 0 2px #87eddb,0 0 22px #4ce0cf44;background:#1a686b}
+.signal-swatch span+span{box-shadow:inset 0 0 0 2px #ffe2ad,0 0 22px #ffc97844;background:#6b5536}
+.signal-swatch[data-trim="aurora"] span{box-shadow:inset 0 0 0 2px #dbb7ff,0 0 22px #bf84ff77;background:#634380}
+@media(max-height:520px) and (orientation:landscape){.battle-status{display:block;height:22px;min-height:22px;line-height:22px}.control-hint{display:none}.battle-actions{padding:6px 12px}.control,.restart{height:44px;min-height:44px}.touch-controls{grid-template-columns:56px 56px minmax(110px,220px);width:auto;gap:8px}.route-progress{height:18px;flex-basis:18px}.gear-workspace{padding:10px}.gear-card{padding:12px}.signal-swatch{height:70px}}
+@media(prefers-reduced-motion:reduce){.control:active,.control[data-held]{transform:none}.signal-flight{display:none}}
+.gear-art{display:block;width:112px;height:112px;object-fit:cover;border-radius:10px;margin:0 auto 12px}
+@media(max-height:520px){.gear-art{display:none}}
+.gear-workspace{align-items:safe center}
+.graphics-error{position:absolute;inset:20px;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#102736f5;color:#f5f3e2;text-align:center;padding:20px;border:1px solid #7da6ad;border-radius:12px}
+.graphics-error button{min-width:120px;min-height:44px;border:1px solid #b9ffe8;border-radius:8px;background:#76dfcf;color:#102c3b;font:700 16px system-ui}

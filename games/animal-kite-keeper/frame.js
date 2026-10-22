@@ -46,9 +46,13 @@
     frame.battleTopUI.add(window.WeightPlayScreenFrame.createGroup().add(routeTitle).add(progressPill));
 
     const familyNav = document.getElementById("routeFamilyNav");
+    familyNav.dataset.wpFrameStageNav = "";
     const familyButtons = [...familyNav.querySelectorAll("[data-route-family]")];
     familyNav.setAttribute("aria-label", "Sky routes and equipment");
     frame.commonDownButton.clear();
+    const emptyTeamSlot = document.createElement("span");
+    emptyTeamSlot.setAttribute("aria-hidden", "true");
+    frame.commonDownButton.add(emptyTeamSlot);
     familyButtons.forEach(button => {
       button.dataset.wpFrameAction = "tab";
       frame.commonDownButton.add(button);

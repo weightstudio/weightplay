@@ -18,16 +18,16 @@ export class SkyScene {
     this.renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.32;
+    this.renderer.toneMappingExposure = 1.05;
     this.renderer.setClearColor(0x000000, 0);
     this.renderer.domElement.setAttribute('aria-hidden', 'true');
     host.prepend(this.renderer.domElement);
     this.scene = new THREE.Scene();
     this.camera = new THREE.OrthographicCamera(-2.85, 2.85, 2.85, -2.85, .1, 80);
-    this.camera.position.set(0, 10, 4.5); this.camera.lookAt(0, .05, 0);
-    this.scene.add(new THREE.HemisphereLight(0xe6f9ff, 0x406c68, 2.5));
-    const sun = new THREE.DirectionalLight(0xffe6b0, 3.6); sun.position.set(-4, 9, 5); this.scene.add(sun);
-    const rim = new THREE.DirectionalLight(0x9dc8ef, 1.7); rim.position.set(4, 4, -6); this.scene.add(rim);
+    this.camera.position.set(0, 9, 6.4); this.camera.lookAt(0, -.05, 0);
+    this.scene.add(new THREE.HemisphereLight(0xe6f9ff, 0x304b47, 1.2));
+    const sun = new THREE.DirectionalLight(0xffe6b0, 2.8); sun.position.set(-4, 9, 5); this.scene.add(sun);
+    const rim = new THREE.DirectionalLight(0x9dc8ef, .9); rim.position.set(4, 4, -6); this.scene.add(rim);
     this.route = new THREE.Group(); this.scene.add(this.route);
     this.kite = this.buildKite(); this.scene.add(this.kite);
     this.landing = new THREE.Group();
@@ -79,7 +79,7 @@ export class SkyScene {
       const bow = this.box(node, [0, 0, .025], [.13, .018, .055], `cloth${i % 3}`, palettes.meadow[i % 3]); bow.rotation.y = i % 2 ? .35 : -.35;
       this.tail.add(node);
     }
-    kite.scale.setScalar(.9); return kite;
+    kite.scale.setScalar(1.05); return kite;
   }
   skin(name) { const colors = palettes[name] || palettes.meadow; colors.forEach((color, i) => this.material.get(`cloth${i}`).color.setHex(color)); this.render(); }
   buildLantern(parent, point, dock = false) {
@@ -99,11 +99,11 @@ export class SkyScene {
     return group;
   }
   setStage(stage, state, skin) {
-    this.cancel(); this.route.clear(); this.stage = stage; this.sparks = [];
+    this.cancel(); this.route.traverse(node => { if (node.isInstancedMesh) node.dispose(); }); this.route.clear(); this.stage = stage; this.sparks = [];
     const matrix = new THREE.Matrix4(), color = new THREE.Color();
     const tiles = new THREE.InstancedMesh(this.roundedTile(), this.mat('tiles', 0xffffff), 25);
     const foundations = new THREE.InstancedMesh(this.geo('box', () => new THREE.BoxGeometry(1, 1, 1)), this.mat('stone', 0x52716b), 25);
-    const chapterColor = [0xa9cdb7, 0xb2d6cc, 0xa7cdd2, 0xbfc6db, 0xc4cbdc, 0xb5d5cf][stage.chapter];
+    const chapterColor = [0x80b29a, 0x80bbae, 0x82b5c3, 0xa0abc9, 0xaca4c6, 0x80b6aa][stage.chapter];
     for (let y = 0; y < 5; y++) for (let x = 0; x < 5; x++) {
       const index = y * 5 + x;
       matrix.makeTranslation(x - 2, .04, y - 2); tiles.setMatrixAt(index, matrix);
@@ -118,6 +118,12 @@ export class SkyScene {
       }
     }
     this.route.add(tiles, foundations);
+    const inlay = new THREE.InstancedMesh(this.geo('box', () => new THREE.BoxGeometry(1, 1, 1)), this.mat('inlay', 0xcee0bf), 50);
+    for (let y = 0; y < 5; y++) for (let x = 0; x < 5; x++) for (let side = 0; side < 2; side++) {
+      matrix.compose(new THREE.Vector3(x - 2 + (side ? .30 : -.30), .174, y - 2 - .30), new THREE.Quaternion(), new THREE.Vector3(.055, .008, .055));
+      inlay.setMatrixAt((y * 5 + x) * 2 + side, matrix);
+    }
+    this.route.add(inlay);
     // Inlaid perimeter and the stepped lower island keep the board spatially legible.
     for (const sign of [-1, 1]) {
       this.box(this.route, [sign * 2.47, -.03, 0], [.035, .07, 4.96], 'trim', 0xd2b875);
@@ -125,6 +131,11 @@ export class SkyScene {
     }
     this.box(this.route, [0, -.4, 0], [4.3, .25, 4.3], 'lowerStone', 0x456862);
     this.box(this.route, [.2, -.61, -.05], [3.3, .24, 3.1], 'lowerStone', 0x456862);
+    for (let i = 0; i < 5; i++) {
+      const x = -.9 + i * .45;
+      this.box(this.route, [x, -.34 - (i % 3) * .08, 2.19], [.18, .25, .16], 'vine', 0x3d8461);
+      this.box(this.route, [x + .06, -.5 - (i % 3) * .08, 2.18], [.23, .12, .20], 'vineTip', 0x73a875);
+    }
     this.dock = this.buildLantern(this.route, stage.dock, true);
     this.sparks = stage.sparks.map(point => this.buildLantern(this.route, point));
     for (const current of stage.currents) {
@@ -208,6 +219,7 @@ export class SkyScene {
   dispose() {
     this.cancel(); this.resize.disconnect(); this.reduced.removeEventListener('change', this.motionHandler);
     this.renderer.domElement.removeEventListener('webglcontextlost', this.lossHandler);
+    this.route.traverse(node => { if (node.isInstancedMesh) node.dispose(); });
     this.geometry.forEach(geometry => geometry.dispose()); this.material.forEach(material => material.dispose());
     this.renderer.dispose(); this.renderer.forceContextLoss(); this.renderer.domElement.remove();
   }

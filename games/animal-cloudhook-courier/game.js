@@ -1,10 +1,12 @@
 /* Cloudhook Courier v23: one flight state, one input owner, finite feedback. */
+import {LocalPractice as Practice} from '/src/game-local-practice.mjs';
 (async () => {
   'use strict';
   const GAME_VERSION = "v23";
   const INTERFACE_VERSION = 9;
   const F=window.CloudhookFlight,R=window.CloudhookRoutes,ID='animal-cloudhook-courier';
   const $=id=>document.getElementById(id),abort=new AbortController();
+  $('startBtn').disabled=true;
   const on=(node,event,fn,options={})=>node.addEventListener(event,fn,{...options,signal:abort.signal});
   const configs=R.authoredStages.map(F.route),canvas=$('gameCanvas'),ctx=canvas.getContext('2d');
   const read=(key,fallback='')=>{try{return localStorage.getItem(key)??fallback;}catch{return fallback;}};
@@ -16,7 +18,7 @@
   const allowed=()=>['standard',...(cleared()>=5?['mastery']:[]),...(equipment.aurora===true?['aurora']:[])];
   if(!allowed().includes(equipment.selected))equipment.selected='standard';
   let locale=document.documentElement.lang||'en',currentStage=0,state=null,scene='main',modal=null,returnFocus=null;
-  let practice=false,localPractice=null,frame=null,raf=0,last=0,fxTime=0,effects=[],flights=[],axis=0,held=false,focused=true;
+  let practice=false,localPractice=Practice,frame=null,raf=0,last=0,fxTime=0,effects=[],flights=[],axis=0,held=false,focused=true;
   let renderer={scale:1,x:0,y:0,rotated:false},statusCache='',saveMessage='',purchaseBusy=false;
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const text=key=>window.WPCloudhookLocales.locales[locale]?.[key]??window.WPCloudhookLocales.locales.en[key]??key;
@@ -25,7 +27,7 @@
   const formatTime=n=>`${Math.max(0,n).toFixed(1)} ${locale.startsWith('zh')?'秒':'s'}`;
   function stageMeta(index=currentStage){
     let row=(locale.startsWith('zh')?R.STAGE_META_ZH:locale==='ar'?R.STAGE_META_AR:R.STAGE_META_EN)[index];
-    if(locale==='zh-Hans')row=row.map(s=>window.WonderI18n?.simplifyChineseText?.(s)||s);
+    if(locale==='zh-Hans')row=row.map(s=>window.WPCloudhookSimplify?.(s)||window.WonderI18n?.simplifyChineseText?.(s)||s);
     return Object.fromEntries(['arc','title','objective','warning','result'].map((k,i)=>[k,row[i]]));
   }
   const audio=window.WeightPlayAudio?.createScope?.(ID);
@@ -56,6 +58,7 @@
   function closeDialog(){modal=null;dialog.hidden=true;clearInput();returnFocus?.focus?.({preventScroll:true});}
   function openDialog(kind){
     clearInput();returnFocus=document.activeElement;modal=kind;const leave=R.LEAVE_COPY[locale]||R.LEAVE_COPY.en;
+    if(kind==='buy')$('equipmentMessage').textContent='';
     $('dialogTitle').textContent=kind==='leave'?leave.title:kind==='buy'?text('aurora'):text('help');
     $('dialogCopy').textContent=kind==='leave'?leave.body:kind==='buy'?`${text('price')} · ${text('cosmetic')}`:text('helpBody');
     $('dialogCancel').textContent=kind==='leave'?leave.continue:text('cancel');
@@ -104,6 +107,8 @@
     if(background.complete&&background.naturalWidth){const scale=Math.max(w/background.width,h/background.height);ctx.drawImage(background,(w-background.width*scale)/2,(h-background.height*scale)/2,background.width*scale,background.height*scale);}
     ctx.fillStyle='#061d3240';ctx.fillRect(0,0,w,h);
     const rotated=w/h>1.25,scale=Math.min(w/(rotated?F.H:F.W),h/(rotated?F.W:F.H));renderer={scale,x:(w-(rotated?F.H:F.W)*scale)/2,y:(h-(rotated?F.W:F.H)*scale)/2,rotated};
+    $('nudgeLeft').textContent=rotated?'▲':'◀';$('nudgeRight').textContent=rotated?'▼':'▶';
+    $('nudgeLeft').setAttribute('aria-label',text(rotated?'up':'ariaLeft'));$('nudgeRight').setAttribute('aria-label',text(rotated?'down':'ariaRight'));
     const s=state||F.create(configs[currentStage]),cfg=configs[currentStage],anchors=cfg.anchors.map((_,i)=>F.anchor(cfg,i,s.time));
     path([...anchors,F.goal(cfg,s.time)],'#d0e7ed44',3,[7,12]);for(const storm of cfg.storms)sprite(6,storm.x,storm.y,104);
     anchors.forEach((a,i)=>{sprite(3,a.x,a.y,74,0,i<s.target?.45:1);if(i===s.target&&!s.done)ring(a,46,'#92f5ffb0',3);});
@@ -165,15 +170,27 @@
   on(document,'keydown',e=>{
     const panel=modal?dialog:!result.hidden?result:null;
     if(panel){if(e.key==='Tab'){const buttons=[...panel.querySelectorAll('button:not(:disabled)')],first=buttons[0],lastButton=buttons.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();lastButton.focus();}else if(!e.shiftKey&&document.activeElement===lastButton){e.preventDefault();first.focus();}}if(e.key==='Escape'&&modal){e.preventDefault();closeDialog();}return;}
-    if(!active()||e.target.closest('select,input,textarea,.wp-frame-popover'))return;if(['Space','ArrowLeft','ArrowRight','KeyR','Escape'].includes(e.code))e.preventDefault();if(e.repeat)return;
-    if(e.code==='Space')tether(true);if(e.code==='ArrowLeft')axis=-1;if(e.code==='ArrowRight')axis=1;if(e.code==='KeyR')void startStage(currentStage,'retry');if(e.code==='Escape')openDialog('leave');
+    if(!active()||e.target.closest('select,input,textarea,.wp-frame-popover'))return;if(['Space','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','KeyR','Escape'].includes(e.code))e.preventDefault();if(e.repeat)return;
+    if(e.code==='Space')tether(true);if(e.code==='ArrowLeft'||renderer.rotated&&e.code==='ArrowUp')axis=-1;if(e.code==='ArrowRight'||renderer.rotated&&e.code==='ArrowDown')axis=1;if(e.code==='KeyR')void startStage(currentStage,'retry');if(e.code==='Escape')openDialog('leave');
   });
-  on(document,'keyup',e=>{if(e.code==='Space'){e.preventDefault();if(held)tether(false);}if(['ArrowLeft','ArrowRight'].includes(e.code))axis=0;});on(window,'blur',()=>{focused=false;clearInput();});on(window,'focus',()=>{focused=true;last=performance.now();});on(document,'visibilitychange',()=>{clearInput();last=performance.now();});
+  on(document,'keyup',e=>{if(e.code==='Space'){e.preventDefault();if(held)tether(false);}if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.code))axis=0;});on(window,'blur',()=>{focused=false;clearInput();});on(window,'focus',()=>{focused=true;last=performance.now();});on(document,'visibilitychange',()=>{clearInput();last=performance.now();});
   on(window,'weightplay:interaction-state',()=>{if(settingsOpen())clearInput();last=performance.now();});on($('localeSelect'),'change',()=>{window.WonderI18n?.setLocale?.($('localeSelect').value);});on(window,'wonder:locale-change',refresh);
   on(window,'pagehide',e=>{if(e.persisted){clearInput();return;}cancelAnimationFrame(raf);abort.abort();effects=[];flights=[];audio?.dispose?.();});
   refresh();setScene('main');raf=requestAnimationFrame(tick);
+  // Own readiness for the actual entry images, including direct practice entry.
+  // The shared frame supplies the only loading renderer and its recovery UI.
+  try{
+    if(!window.WeightPlayGameEntryLoader?.begin){
+      const script=document.querySelector('script[src*="/game-entry-loader.js"]');
+      if(!script)throw Error('Shared entry loader unavailable');
+      await new Promise((resolve,reject)=>{script.addEventListener('load',resolve,{once:true,signal:abort.signal});script.addEventListener('error',reject,{once:true,signal:abort.signal});});
+    }
+    const loader=window.WeightPlayGameEntryLoader,required=[atlas,background,document.querySelector('[data-wp-frame-poster] img')].filter(Boolean);let loaded=0;
+    loader.begin(required.length);
+    await Promise.all(required.map(async image=>{await image.decode();loader.assetProgress(++loaded,required.length);}));
+    $('startBtn').disabled=false;await new Promise(requestAnimationFrame);loader.ready();
+  }catch{window.WeightPlayGameEntryLoader?.fail?.();return;}
   if(location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)){
-    ({LocalPractice:localPractice}=await import('/src/game-local-practice.mjs'));
     await localPractice.register({gameId:ID,stageIds:configs.map((_,i)=>String(i+1)),enable:value=>{practice=value;frame.stageUI.refresh(currentStage);},startStage:id=>startStage(Number(id)-1,'practice')});
   }
 })();

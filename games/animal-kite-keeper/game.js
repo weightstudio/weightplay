@@ -21,7 +21,8 @@ try {
 const audio = window.WeightPlayAudio?.createScope?.();
 window.WeightPlayAudio?.preload?.(['game.start', 'board.move', 'reward.collect', 'result.win', 'feedback.error', 'feedback.hint', 'reward.unlock', 'shop.purchase']);
 const sound = event => audio?.play(event), host = window.mountKiteKeeperFrame();
-let screen = 'main', overlay = null, returnFocus = null, selected = STAGES.findIndex(route => !save.solved.includes(route.id));
+$('mainProgress').after($('saveWarning'));
+let screen = 'main', stageTab = 'stages', overlay = null, returnFocus = null, selected = STAGES.findIndex(route => !save.solved.includes(route.id));
 if (selected < 0) selected = 0;
 let stage = STAGES[selected], state = createState(stage), history = [], trail = [], assisted = false, busy = false;
 let scene = null, generation = 0, purchasing = false, pointer = null, suppressPointer = false;
@@ -41,10 +42,10 @@ function animate(node, frames, duration = 160) {
   animation.finished.catch(() => {}).finally(() => effects.delete(animation));
 }
 function cancelEffects() { effects.forEach(animation => animation.cancel()); effects.clear(); document.querySelectorAll('.light-flight').forEach(node => node.remove()); }
-function status(key, values = {}) { $('status').textContent = key ? copy(key, values) : ''; }
+function status(key, values = {}) { $('status').textContent = key ? copy(key, values) : writable ? '' : copy('storageError'); }
 function sceneChange(next) {
   generation++; busy = false; scene?.cancel(); cancelEffects(); closeOverlay(false); screen = next; host.activate(next);
-  $('battleContent').inert = false; $('stageWorkspace').inert = false; syncPause(); updateProgress();
+  $('battleContent').inert = false; $('stageWorkspace').inert = false; if (next === 'stage') selectStageTab('stages'); syncPause(); updateProgress();
   animate($(next === 'main' ? 'mainHero' : next === 'stage' ? 'stageWorkspace' : 'battleContent'), [{ opacity: .55 }, { opacity: 1 }]);
 }
 function stageName(route) { return `${copy('chapterNames')[route.chapter]} · ${route.id}`; }
@@ -59,8 +60,9 @@ function stageRecord(index) {
 const rail = window.WeightPlayPlayUI.mountStage({
   page: $('stageWorkspace'), rail: $('stageList'), selected,
   config: { count: STAGES.length, poster: '/games/animal-kite-keeper/assets/animal-kite-keeper-cover-block-v1.webp', background: '/assets/lobby-block-atmosphere.svg', stage: stageRecord },
-  onSelect(index) { selected = index; updateProgress(); }, onStart: startRoute, isActive: () => screen === 'stage' && !overlay,
+  onSelect(index) { selected = index; updateProgress(); }, onStart: startRoute, isActive: () => screen === 'stage' && stageTab === 'stages' && !overlay,
 });
+$('stageWorkspace').append($('equipmentScreen'));
 function updateProgress() {
   $('mainProgress').textContent = copy('completeCount', { count: save.solved.length }); $('best').textContent = copy('stars', { count: totalStars() });
   host.stageProgress.textContent = `${selected + 1} / 30`; host.routeTitle.textContent = stageName(stage); host.progressPill.textContent = `${state.moves} / ${stage.budget}`; storageWarning();
@@ -91,7 +93,7 @@ function startRoute(index) {
 function renderBattle() {
   updateProgress(); $('prompt').textContent = objective(stage); $('currentRule').textContent = stage.currents.length ? copy('current') : copy('par', { count: stage.par });
   $('gusts').textContent = copy('gustBudget', { used: state.moves, max: stage.budget });
-  $('lights').textContent = copy('lanterns', { used: state.mask.toString(2).replace(/0/g, '').length, max: stage.sparks.length }); $('lights').hidden = !stage.sparks.length;
+  $('lightCount').textContent = copy('lanterns', { used: state.mask.toString(2).replace(/0/g, '').length, max: stage.sparks.length }); $('lights').hidden = !stage.sparks.length;
   $('par').textContent = copy('par', { count: stage.par }); $('position').textContent = copy('position', { x: state.point[0] + 1, y: state.point[1] + 1 });
   $('flightBoard').setAttribute('aria-label', `${copy('ariaKite')}. ${$('position').textContent}. ${copy('legend')}`); $('assisted').hidden = !assisted;
   for (const button of $('windGrid').querySelectorAll('button')) button.disabled = busy || state.won || state.failed;
@@ -128,7 +130,7 @@ function finishRoute() {
   if (stored && availableSkins(save).length > previousUnlocks) sound('reward.unlock');
   const stars = starRating(stage, state, assisted); $('resultTitle').textContent = copy(save.solved.length === 30 ? 'finished' : 'resultTitle');
   $('resultStars').textContent = '★'.repeat(stars) + '☆'.repeat(3 - stars); $('resultStars').setAttribute('aria-label', `${stars} / 3`);
-  $('resultText').textContent = copy('resultSummary', { moves: state.moves, stars }); $('resultBest').textContent = copy('savedBest', { count: save.records[stage.id].best }); $('nextBtn').hidden = stage.id === 30;
+  $('resultText').textContent = copy('resultSummary', { moves: state.moves, stars }); $('resultBest').textContent = writable ? copy('savedBest', { count: save.records[stage.id].best }) : copy('storageError'); $('nextBtn').hidden = stage.id === 30;
   openOverlay('resultScreen', $('nextBtn').hidden ? $('replayBtn') : $('nextBtn')); sound('result.win'); updateProgress();
 }
 function undo() {
@@ -153,13 +155,18 @@ function closeOverlay(restore = true) {
   if (restore && returnFocus?.isConnected) returnFocus.focus({ preventScroll: true });
 }
 function toStage() { sceneChange('stage'); rail.refresh(selected); }
-function showEquipment() { $('shopStatus').textContent = ''; renderEquipment(); openOverlay('equipmentScreen', $('equipmentClose')); }
+function selectStageTab(tab) {
+  stageTab = tab; $('stageWorkspace').dataset.kiteTab = tab; $('equipmentScreen').hidden = tab !== 'equipment'; $('stageList').inert = tab !== 'stages';
+  host.familyButtons.forEach(button => { button.setAttribute('aria-pressed', String(button.dataset.routeFamily === tab)); button.classList.toggle('is-active', button.dataset.routeFamily === tab); });
+  if (tab === 'equipment') { $('shopStatus').textContent = writable ? '' : copy('storageError'); renderEquipment(); } else rail.refresh(selected);
+}
 function walletBalance() { return window.WeightPlayWallet?.read?.().diamonds || 0; }
 function renderEquipment() {
   $('walletBalance').textContent = String(walletBalance()); const available = availableSkins(save);
   $('equipmentList').replaceChildren(...SKINS.map((skin, i) => {
     const row = document.createElement('div'); row.className = `equipment-item skin-${skin}`;
-    const swatch = document.createElement('span'); swatch.className = 'skin-swatch'; swatch.setAttribute('aria-hidden', 'true');
+    const swatch = document.createElement('img'); swatch.className = 'skin-preview'; swatch.alt = ''; swatch.width = 224; swatch.height = 224;
+    swatch.src = new URL(`./assets/equipment/kite-${skin}.png`, import.meta.url).href;
     const name = document.createElement('strong'); name.textContent = copy('skinNames')[i];
     const action = document.createElement('button'); action.type = 'button'; action.dataset.skin = skin;
     action.textContent = skin === save.skin ? copy('equipped') : available.includes(skin) ? copy('equip') : skin === 'aurora' ? copy('buy') : copy('unlockAt', { count: [0, 5, 15, 30][i] });
@@ -201,10 +208,11 @@ on($('battleBack'), 'click', () => { if (state.moves || busy) openOverlay('leave
 on($('windGrid'), 'click', event => { const button = event.target.closest('[data-wind]'); if (button) chooseWind(button.dataset.wind); });
 on($('undoBtn'), 'click', undo); on($('hintBtn'), 'click', hint); on($('resetBtn'), 'click', () => { if (!paused()) startRoute(selected); });
 on($('replayBtn'), 'click', () => startRoute(selected)); on($('nextBtn'), 'click', () => { if (selected < 29) startRoute(selected + 1); }); on($('resultStagesBtn'), 'click', toStage);
-on($('stayBtn'), 'click', () => closeOverlay()); on($('leaveBtn'), 'click', toStage); on($('equipmentClose'), 'click', () => closeOverlay());
-on($('retrySky'), 'click', () => { scene?.dispose(); scene = null; if (ensureScene()) scene.setStage(stage, state, save.skin); syncPause(); renderBattle(); });
-host.familyButtons.forEach(button => on(button, 'click', () => button.dataset.routeFamily === 'equipment' ? showEquipment() : rail.refresh(selected)));
+on($('stayBtn'), 'click', () => closeOverlay()); on($('leaveBtn'), 'click', toStage); on($('equipmentClose'), 'click', () => selectStageTab('stages'));
+on($('retrySky'), 'click', () => { scene?.dispose(); scene = null; if (ensureScene()) { scene.setStage(stage, state, save.skin); if (state.won) finishRoute(); } syncPause(); renderBattle(); });
+host.familyButtons.forEach(button => on(button, 'click', () => selectStageTab(button.dataset.routeFamily)));
 on(document, 'keydown', event => {
+  if (screen === 'stage' && stageTab === 'equipment' && event.key === 'Escape') { selectStageTab('stages'); host.familyButtons[0].focus(); return; }
   if (overlay) {
     if (event.key === 'Escape') { event.preventDefault(); overlay === 'resultScreen' ? toStage() : closeOverlay(); }
     if (event.key === 'Tab') {
@@ -226,11 +234,11 @@ on($('flightBoard'), 'pointerup', event => {
 });
 on($('flightBoard'), 'pointercancel', () => { pointer = null; }); on(window, 'weightplay:interaction-state', syncPause);
 on(document, 'visibilitychange', () => { pointer = null; cancelEffects(); syncPause(); });
-on(window, 'storage', event => { if (event.key === SAVE_KEY || event.key === LEGACY_SOLVED_KEY) { save = normalizeSave(readJSON(SAVE_KEY, save), [...save.solved, ...legacyIds()]); updateProgress(); } if (overlay === 'equipmentScreen') renderEquipment(); });
+on(window, 'storage', event => { if (event.key === SAVE_KEY || event.key === LEGACY_SOLVED_KEY) { save = normalizeSave(readJSON(SAVE_KEY, save), [...save.solved, ...legacyIds()]); updateProgress(); } if (screen === 'stage' && stageTab === 'equipment') renderEquipment(); });
 on($('localeSelect'), 'change', event => {
   const next = event.target.value, target = Object.entries(routeLocales).find(([, key]) => key === next)?.[0]; if (!target || next === locale) return;
   const preview = new URLSearchParams(location.search).getAll('preview'); location.assign(`/${target}/games/animal-kite-keeper/index.html${preview.length === 1 && preview[0] === '1' ? '?preview=1' : ''}`);
 });
 on(window, 'pagehide', event => { scene?.setPaused(true); audio?.stop(); cancelEffects(); if (!event.persisted) { generation++; scene?.dispose(); rail.destroy?.(); host.frame.destroy?.(); audio?.dispose(); abort.abort(); } });
 on(window, 'pageshow', syncPause);
-localize(); host.activate('main'); storageWarning();
+localize(); host.activate('main'); storageWarning(); $('startBtn').disabled = false; document.body.setAttribute('aria-busy', 'false');

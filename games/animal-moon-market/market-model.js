@@ -107,7 +107,8 @@ export function restock(run) {
   const side = run.plan.shelf.indexOf(run.orders[run.customer]);
   if (side < 0 || run.plan.stock[side] >= 6) return 'full';
   if (run.restocks > 0) run.restocks--;
-  else if (run.earned >= 4) { run.earned -= 4; run.spent += 4; }
+  // One successful sale always funds recovery, including consecutive late-game orders.
+  else if (run.earned >= 3) { run.earned -= 3; run.spent += 3; }
   else return 'noCoins';
   run.plan.stock[side] = Math.min(6, run.plan.stock[side] + 2);
   return null;

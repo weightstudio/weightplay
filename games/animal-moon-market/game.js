@@ -82,19 +82,20 @@ function render() {
   demandDOM(f);$('coinHud').textContent=run.earned;$('coinHud').parentElement.setAttribute('aria-label',`${t('earned')}: ${run.earned}`);
   $('marketPhase').textContent=t(serving?'serve':'plan');$('ruleText').textContent=compactRule(f);$('ruleText').title=ruleText(f);
   for(let i=0;i<2;i++) {
-    const b=$('stall'+i),good=run.plan.shelf[i];b.dataset.product=good;b.querySelector('img').src=art(good);b.querySelector('span').textContent=t(good);b.querySelector('strong').textContent=serving?`×${run.plan.stock[i]}`:'↻';
+    const b=$('stall'+i),good=run.plan.shelf[i];b.disabled=run.phase==='round';b.dataset.product=good;b.querySelector('img').src=art(good);b.querySelector('span').textContent=t(good);b.querySelector('strong').textContent=serving?`×${run.plan.stock[i]}`:'↻';
     b.setAttribute('aria-label',`${i+1}. ${t(good)} · ${serving?t('tapStall'):t('cycleGood')} · ${run.plan.stock[i]}`);
     $('stock'+i).textContent=run.plan.stock[i];
-    document.querySelector(`[data-quantity="${i}"] [data-delta="-1"]`).disabled=run.plan.stock[i]<=1;
-    document.querySelector(`[data-quantity="${i}"] [data-delta="1"]`).disabled=run.plan.stock[i]>=6||run.plan.stock[0]+run.plan.stock[1]>=f.budget;
+    document.querySelector(`[data-quantity="${i}"] [data-delta="-1"]`).disabled=run.phase!=='plan'||run.plan.stock[i]<=1;
+    document.querySelector(`[data-quantity="${i}"] [data-delta="1"]`).disabled=run.phase!=='plan'||run.plan.stock[i]>=6||run.plan.stock[0]+run.plan.stock[1]>=f.budget;
   }
   for(const helper of HELPERS) {
-    const b=$(helper.id==='orla'?'helperOrla':'helperRux');b.querySelector('span').textContent=t(helper.copy);b.querySelector('b').textContent=t(run.plan.jobs[helper.id]);b.dataset.job=run.plan.jobs[helper.id];
+    const b=$(helper.id==='orla'?'helperOrla':'helperRux');b.disabled=run.phase!=='plan';b.querySelector('span').textContent=t(helper.copy);b.querySelector('b').textContent=t(run.plan.jobs[helper.id]);b.dataset.job=run.plan.jobs[helper.id];
     b.setAttribute('aria-label',`${t(helper.copy)}: ${t(run.plan.jobs[helper.id])} · ${t('switchJob')}`);
   }
   $('orderCard').hidden=!serving;$('serviceScore').hidden=!serving;$('openButton').hidden=serving;$('resetButton').hidden=serving;$('restockButton').hidden=!serving;
-  $('openButton').textContent=t(run.phase==='round'?'nextRound':'open');$('resetButton').textContent=t('reset');
+  $('openButton').textContent=t(run.phase==='round'?'nextRound':'open');$('resetButton').textContent=t('reset');$('resetButton').disabled=run.phase!=='plan';
   $('restockButton').textContent=t(run.restocks?'freeRestock':'restock');
+  $('restockButton').disabled=serving&&run.plan.stock[run.plan.shelf.indexOf(run.orders[run.customer])]>=6;
   if(serving){
     const good=run.orders[run.customer];$('orderImage').src=art(good);$('orderName').textContent=t(good);$('orderName').dataset.good=good;$('orderLabel').textContent=t('order');$('customerCount').textContent=`${run.customer+1}/${run.orders.length}`;
     $('serviceScore').textContent=`${t('misses')} ${run.mistakes}/3`;$('patience').hidden=!run.patienceLimit;
@@ -116,7 +117,7 @@ function actStall(side,origin) {
   if(run.phase==='plan') {run.plan.shelf[side]=GOODS[(GOODS.indexOf(run.plan.shelf[side])+1)%GOODS.length];render();scene.pulse(side);sound('board.move');return;}
   if(run.phase!=='serve')return;
   const result=serve(run,side);nextInputAt=performance.now()+180;
-  if(result.kind==='served') {sound('reward.coin');scene.pulse(side);scene.arrive();render();reward(side,result.coins,origin);if(run.phase==='won')showResult(true);else if(run.phase==='round'){sound('checkpoint');render();}}
+  if(result.kind==='served') {sound('reward.coin');scene.pulse(side);scene.arrive();render();reward(side,result.coins,origin);if(run.phase==='won')showResult(true);else if(run.phase==='round'){sound('game.checkpoint');render();}}
   else {sound('feedback.error');render();status(t(result.kind),'error');animate($('stall'+side),[{transform:'translateX(0)'},{transform:'translateX(-4px)'},{transform:'translateX(4px)'},{transform:'translateX(0)'}],{duration:160});if(run.phase==='lost')showResult(false);}
 }
 function tick(dt) {
@@ -128,7 +129,7 @@ function commitWin() {
   if(practiceRun){run.settled=true;return true;}
   if(run.settled)return true;
   const candidate=settle(readSave(localStorage),run);if(!candidate)return false;
-  try {writeSave(localStorage,candidate);save=candidate;run.settled=true;syncSave();track('market_stage_complete',{stage:run.stage+1,stars:rating(run),coins:run.earned});return true;}
+  try {writeSave(localStorage,candidate);save=candidate;run.settled=true;syncSave();track('market_stage_complete',{stage:run.stage+1,stars:rating(run),coins:run.earned});window.WonderAnalytics?.completeStage?.(run.stage+1);return true;}
   catch{return false;}
 }
 function showResult(won) {
@@ -138,7 +139,7 @@ function showResult(won) {
   $('resultStars').textContent=won?'★'.repeat(rating(run))+'☆'.repeat(3-rating(run)):'☆ ☆ ☆';
   $('marketMark').textContent=`${t('stage')} ${run.stage+1} · ${t('misses')} ${run.mistakes} · ${t(saveFailed?'notSaved':'saved')}`;
   if(practiceRun||!won)$('marketMark').textContent=`${t('stage')} ${run.stage+1} · ${t('misses')} ${run.mistakes}`;
-  $('stagesButton').textContent=t('stages');$('replayButton').textContent=t('replay');$('nextButton').textContent=t(saveFailed?'retry':run.stage===29?'stages':'nextStage');
+  $('stagesButton').textContent=t('stages');$('replayButton').textContent=t('replay');$('nextButton').textContent=t(saveFailed?'retrySave':run.stage===29?'cleared':'nextStage');
   $('nextButton').disabled=!won;$('resultCard').dataset.outcome=won?'won':'lost';
   showModal('resultCard',won?'nextButton':'replayButton');sound(won?'result.win':'result.lose');
 }
@@ -148,13 +149,19 @@ function shopTab(shop) {
   for(const [id,selected] of [['stageTabButton',!shop],['shopTabButton',shop]]){$(id).setAttribute('aria-selected',String(selected));$(id).setAttribute('aria-pressed',String(selected));}
   if(shop)renderShop();else stageUI?.refresh(state.stage);
 }
+function diamondAmount(amount) {
+  const node=document.createElement('span');node.className='market-diamonds';
+  const icon=document.createElement('img');icon.src='/assets/weightplay-diamond.svg';icon.alt='';icon.width=20;icon.height=20;
+  node.append(icon,document.createTextNode(String(amount)));return node;
+}
 function renderShop() {
-  save=readSave(localStorage);syncSave();$('shopTitle').textContent=t('shop');$('shopBalance').textContent=`${save.coins} ${t('coins')} · ◆ ${window.WeightPlayWallet.read().diamonds}`;
+  save=readSave(localStorage);syncSave();$('shopTitle').textContent=t('shop');$('shopBalance').replaceChildren(document.createTextNode(`${save.coins} ${t('coins')} · `),diamondAmount(window.WeightPlayWallet.read().diamonds));
   for(const id of ['bell','crate','gold']) {
     let card=$('upgrade-'+id);
     if(!card){card=document.createElement('article');card.id='upgrade-'+id;card.className='shop-item';card.innerHTML=`<img src="${art(id==='gold'?'lanterns':id)}" alt=""><div><h3></h3><p></p><small></small></div><button type="button" data-upgrade="${id}"></button>`;$('shopItems').append(card);card.querySelector('button').addEventListener('click',()=>purchase(id));}
     card.querySelector('h3').textContent=t(id+'Name');card.querySelector('p').textContent=t(id+'Desc');
-    const owned=save.upgrades[id],button=card.querySelector('button');card.querySelector('small').textContent=owned?t('owned'):`${UPGRADE_COST[id]} ${id==='gold'?'◆':t('coins')}`;
+    const owned=save.upgrades[id],button=card.querySelector('button'),cost=card.querySelector('small');
+    cost.replaceChildren(owned?document.createTextNode(t('owned')):id==='gold'?diamondAmount(UPGRADE_COST[id]):document.createTextNode(`${UPGRADE_COST[id]} ${t('coins')}`));
     button.textContent=owned?(id==='gold'?t(save.goldEnabled?'using':'use'):t('owned')):t('buy');button.disabled=state.practice||(owned&&id!=='gold');
     if(id==='gold')button.setAttribute('aria-pressed',String(save.goldEnabled));
   }
@@ -188,9 +195,9 @@ for(let i=0;i<2;i++)$('stall'+i).addEventListener('click',()=>actStall(i));
 $('marketCanvas').addEventListener('keydown',e=>{if(e.key==='1'||e.key==='2'){e.preventDefault();actStall(Number(e.key)-1);}});
 for(const n of document.querySelectorAll('.quantity'))n.addEventListener('click',e=>{const b=e.target.closest('[data-delta]');if(!b||blocked||run.phase!=='plan')return;const side=Number(n.dataset.quantity);const next=run.plan.stock[side]+Number(b.dataset.delta);if(next<1||next>6||next+run.plan.stock[1-side]>forecast(run.stage,run.round).budget)return;run.plan.stock[side]=next;render();scene.pulse(side);sound('board.move');});
 for(const id of ['helperOrla','helperRux'])$(id).addEventListener('click',()=>{if(blocked||run.phase!=='plan')return;[run.plan.jobs.orla,run.plan.jobs.rux]=[run.plan.jobs.rux,run.plan.jobs.orla];render();sound('board.move');});
-$('openButton').addEventListener('click',()=>{if(blocked)return;if(run.phase==='round'){nextRound(run);render();sound('checkpoint');return;}const error=openMarket(run,save.upgrades);if(error){status(t(error),'error');sound('feedback.error');return;}render();scene.arrive();sound('game.start');});
+$('openButton').addEventListener('click',()=>{if(blocked)return;if(run.phase==='round'){nextRound(run);nextInputAt=0;render();sound('game.checkpoint');return;}const error=openMarket(run,save.upgrades);if(error){status(t(error),'error');sound('feedback.error');return;}render();scene.arrive();sound('game.start');});
 $('resetButton').addEventListener('click',()=>{if(blocked||run.phase!=='plan')return;run.plan=makePlan(run.stage,run.round);render();sound('board.move');});
-$('restockButton').addEventListener('click',()=>{if(blocked)return;const error=restock(run);render();status(error?t(error):t('ready'),error?'error':'success');sound(error?'feedback.error':'upgrade');});
+$('restockButton').addEventListener('click',()=>{if(blocked)return;const error=restock(run);render();status(error?t(error):t('ready'),error?'error':'success');sound(error?'feedback.error':'reward.collect');});
 $('stagesButton').addEventListener('click',()=>setScreen('stage'));$('replayButton').addEventListener('click',()=>startStage(run.stage));
 $('nextButton').addEventListener('click',()=>{if(run.phase!=='won')return;if(saveFailed){showResult(true);return;}if(run.stage===29)setScreen('stage');else startStage(run.stage+1);});
 for(const id of ['helpModal','leaveModal','resultCard'])$(id).addEventListener('keydown',e=>{if(e.key!=='Tab')return;const buttons=[...$(id).querySelectorAll('button:not([disabled])')],first=buttons[0],last=buttons.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}});
@@ -203,5 +210,20 @@ const coverObserver=new MutationObserver(updatePause);coverObserver.observe($('g
 document.addEventListener('visibilitychange',updatePause);window.addEventListener('pageshow',()=>{updatePause();if(screen==='battle')scene?.setActive(true);});
 window.addEventListener('pagehide',event=>{cancelEffects();audio.stop();scene?.setActive(false);if(event.persisted)return;disposed=true;coverObserver.disconnect();document.removeEventListener('visibilitychange',updatePause);scene?.dispose();audio.dispose();});
 $('marketCanvas').addEventListener('webglcontextlost',e=>{e.preventDefault();scene?.setActive(false);window.WeightPlayGameEntryLoader?.fail?.(t('retryHint'),()=>location.reload());});
-LocalPractice.register({gameId:'animal-moon-market',stageIds:STAGES.map((_,i)=>i+1),enable:enabled=>{state.practice=enabled;stageUI.refresh(state.stage);},startStage:id=>startStage(Number(id)-1)});
 applyCopy();setScreen('main');
+// Own readiness explicitly: authenticated deep entries may leave Main before
+// the shared automatic Main observer sees the poster finish loading.
+const bootAssets=[...new Set([$('posterImage').src,$('orlaGuide').src,...HELPERS.map(h=>h.art),...['berries','lanterns','acorns','coin','bell','crate'].map(art)])];
+const loader=window.WeightPlayGameEntryLoader;loader?.begin?.(bootAssets.length);
+try {
+  let loaded=0;
+  await Promise.all(bootAssets.map(src=>new Promise((resolve,reject)=>{
+    const image=new Image();const timeout=setTimeout(()=>reject(new Error('MARKET_ASSET_TIMEOUT')),15000);
+    image.onload=()=>{clearTimeout(timeout);loader?.assetProgress?.(++loaded,bootAssets.length);resolve();};
+    image.onerror=()=>{clearTimeout(timeout);reject(new Error('MARKET_ASSET_FAILED'));};image.src=src;
+  })));
+  if(!disposed){
+    scene=new MarketScene($('marketCanvas'),actStall,tick);loader?.ready?.();
+    LocalPractice.register({gameId:'animal-moon-market',stageIds:STAGES.map((_,i)=>i+1),enable:enabled=>{state.practice=enabled;stageUI.refresh(state.stage);},startStage:id=>startStage(Number(id)-1)});
+  }
+} catch { if(!disposed)loader?.fail?.(undefined,()=>location.reload()); }

@@ -15,7 +15,7 @@
     .map(file => '/games/animal-crystal-survivor/' + file)
     .concat(['/src/game-screen-frame.css', '/src/game-play-ui.css', '/src/interface9-shared-screens.css', '/src/battle-canvas-standard.css']);
   const stylesReady = requiredStyles.every(suffix => [...readyStylePaths].some(path => path.endsWith(suffix)));
-  if (!stylesReady || !window.WeightPlayScreenFrame?.mount || !window.WeightPlayPlayUI?.mountStage
+  if (!stylesReady || !window.WeightPlayBattleCanvas?.sync || !window.WeightPlayScreenFrame?.mount || !window.WeightPlayPlayUI?.mountStage
       || !window.WeightPlayStageRailI9?.attachLogical || !window.WeightPlayJoystick?.create
       || !window.CrystalTalents?.copy || typeof window.DungeonVentureStageConfig !== 'function') {
     window.WeightPlayGameEntryLoader?.fail(undefined, () => location.reload());
@@ -1163,6 +1163,19 @@
   let battleSuspended = false;
   let resultActionClaimed = false;
   let resultStageCleared = false;
+  let runBlockRewardCredited = false;
+  const renderResultBlockReward = () => {
+    const icon = window.ShowResultGet?.(GAME_ID, resultStageCleared && runBlockRewardCredited);
+    if (icon) queueMicrotask(() => {
+      if (icon.isConnected && state.mode === 'result') window.WeightPlayCastle?.dismissRewardNotice?.(GAME_ID);
+    });
+  };
+  window.addEventListener('weightplay:castle-reward', event => {
+    if (event.detail?.gameId !== GAME_ID || event.detail?.completionId !== `stage-${state.stage}`
+        || !['running', 'ending', 'result'].includes(state.mode)) return;
+    runBlockRewardCredited = true;
+    if (state.mode === 'result') renderResultBlockReward();
+  });
   let lastInputType = "unknown";
   let stageSelector = null;
   let stageBrowseStage = Math.max(1, Math.min(STAGE_COUNT, save.selectedStage));
@@ -1980,6 +1993,7 @@
   }
 
   async function startRun(entry = "stage_select") {
+    runBlockRewardCredited = false;
     releaseRenderer();
     const request = rendererRequest;
     clearInput();
@@ -2878,7 +2892,7 @@
     const win=reason!=="fail"&&state.player.hp>0&&objectiveComplete();
     presentBattle(win?"victory":"defeat",t(win?"stageClear":"runFailed"),runeCopy().settling,2,reason);
 
-    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+    __wpMeasurement.ended = true; __wpMeasurement.outcome = win ? "complete" : "fail"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
   function settleRun(reason) {
     if (state.mode === "result") return;
@@ -2933,8 +2947,11 @@
       outcome: stageCleared ? "complete" : "fail",
       prototype: true,
     });
-    if (blockReward?.credited === true) stageBlockRewardStates.set(state.stage, "collected");
-    window.ShowResultGet?.(GAME_ID, blockReward?.credited === true);
+    if (blockReward?.credited === true) {
+      stageBlockRewardStates.set(state.stage, "collected");
+      runBlockRewardCredited = true;
+    }
+    renderResultBlockReward();
   }
 
   let resultReadyAt = 0;

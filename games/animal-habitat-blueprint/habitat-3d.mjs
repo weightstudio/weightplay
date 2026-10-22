@@ -85,7 +85,8 @@ export function createHabitatRenderer(host, onUnavailable) {
     // Shared Battle Canvas may transform the entire logical canvas. Use local
     // layout coordinates so that CSS scale is applied exactly once.
     const width=host.clientWidth,height=host.clientHeight;if(width<2||height<2)return;
-    if(canvas.clientWidth!==width||canvas.clientHeight!==height||canvas.width!==Math.round(width*renderer.getPixelRatio()))renderer.setSize(width,height,false);
+    const ratio=renderer.getPixelRatio();
+    if(canvas.width!==Math.floor(width*ratio)||canvas.height!==Math.floor(height*ratio))renderer.setSize(width,height,false);
     renderer.setScissorTest(false);renderer.clear();renderer.setScissorTest(true);renderer.setScissor(0,0,width,height);
     const p=duration?Math.min(1,(now-start)/duration):1, ease=1-Math.pow(1-p,3);
     const buttons=[...host.querySelectorAll('.habitat-tile')];

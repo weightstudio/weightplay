@@ -1,5 +1,5 @@
 const POSTER = "/assets/animal-skyspire-drop/cover.webp";
-const BACKGROUND = "/assets/animal-skyspire-drop/spire-bg.webp";
+const BACKGROUND = "/assets/lobby-block-atmosphere.svg";
 
 export function createSkyspireDropStageConfig({ stages, getSave, text }) {
   if (!Array.isArray(stages) || typeof getSave !== "function" || typeof text !== "function") {

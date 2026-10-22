@@ -24,7 +24,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v18">
+  <meta name="weightplay-game-version" content="v19">
   <meta name="weightplay-interface-version" content="9">
   <title>Guardián de Cometas | WeightPlay</title>
   <link rel="stylesheet" href="style.css?v=20261022-kite-keeper-v19-sky1">
@@ -77,7 +77,7 @@
 }
     </script>
   </head>
-<body data-runtime-localize="off" data-wp-game-id="animal-kite-keeper" data-wp-game-version="v18" data-wp-interface-version="9" data-wp-audience="general" data-wp-combined-sound="true" aria-busy="true">
+<body data-runtime-localize="off" data-wp-game-id="animal-kite-keeper" data-wp-game-version="v19" data-wp-interface-version="9" data-wp-audience="general" data-wp-combined-sound="true" aria-busy="true">
   <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
     <main id="mainScreen" class="screen main-screen" data-screen="main">
       <header class="main-header">
@@ -86,12 +86,12 @@
       </header>
       <div id="mainContent" class="main-content">
         <section id="mainHero" class="main-hero">
-          <img class="main-poster" data-wp-frame-poster src="assets/animal-kite-keeper-cover-block-v1.webp" alt="Imagen del juego Guardián de Cometas" width="1536" height="1024">
+          <img class="main-poster" data-wp-frame-poster src="assets/animal-kite-keeper-cover-block-v1.webp" alt="Imagen del juego Guardián de Cometas" width="1254" height="1254">
           <div class="main-copy" data-wp-frame-copy>
             <p class="eyebrow" data-runtime-localize="off">Kite Keeper</p>
             <p class="subtitle" data-wp-frame-summary data-i18n="subtitle">Choose the wind. Find the lantern dock.</p>
-            <p id="mainProgress" class="main-progress" data-wp-frame-progress>30 sky routes · 3 gusts each</p>
-            <button id="startBtn" class="primary" data-wp-main-start data-wp-frame-action="primary" type="button" data-i18n="start">Start Game</button>
+            <p id="mainProgress" class="main-progress" data-wp-frame-progress>30 sky routes · 6 chapters</p>
+            <button id="startBtn" class="primary" data-wp-main-start data-wp-frame-action="primary" type="button" data-i18n="start" disabled>Start Game</button>
             <p id="best" class="best" data-i18n="best" data-i18n-vars="count">Best checks: —</p>
           </div>
         </section>
@@ -116,11 +116,11 @@
         <button type="button" data-route-family="stages" data-i18n="stages">Stages</button>
         <button type="button" data-route-family="equipment" data-i18n="equipment">Equipment</button>
       </nav>
-      <section id="equipmentScreen" class="kite-overlay" role="dialog" aria-modal="true" aria-labelledby="equipmentTitle" hidden>
+      <section id="equipmentScreen" class="equipment-workspace" role="region" aria-labelledby="equipmentTitle" hidden>
         <div class="dialog-card equipment-card">
           <div class="dialog-heading"><h2 id="equipmentTitle" data-i18n="equipment">Equipment</h2><button id="equipmentClose" type="button" data-i18n="closePanel">Close</button></div>
           <p data-i18n="equipmentHelp">Permanent kite colors. All routes and hints are free; colors do not change the puzzle.</p>
-          <p class="wallet"><span class="diamond" aria-hidden="true">◆</span> <strong id="walletBalance">0</strong></p>
+          <p class="wallet"><img src="/assets/weightplay-diamond.svg" alt="" width="24" height="24"> <strong id="walletBalance">0</strong></p>
           <div id="equipmentList"></div><p id="shopStatus" role="status"></p>
         </div>
       </section>
@@ -133,7 +133,7 @@
       </header>
       <div id="battleContent" class="battle-content">
         <div class="flight-objective"><p id="prompt"></p><p id="currentRule"></p></div>
-        <div class="flight-hud"><strong id="gusts"></strong><strong id="lights"></strong><span id="assisted" data-i18n="assisted" hidden>Assisted flight</span></div>
+        <div class="flight-hud"><strong id="gusts"></strong><strong id="lights"><img src="assets/equipment/lantern.png" alt="" width="24" height="24"><span id="lightCount"></span></strong><span id="assisted" data-i18n="assisted" hidden>Assisted flight</span></div>
         <div class="sky-window">
           <div id="flightBoard" class="flight-board" role="img" tabindex="0" aria-label="Kite flight board"><div id="boardLabels" aria-hidden="true"></div></div>
           <div id="skyError" class="sky-error" role="alert" hidden><p data-i18n="renderError">The sky could not load.</p><button id="retrySky" type="button" data-i18n="retry">Retry</button></div>

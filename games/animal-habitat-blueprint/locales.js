@@ -236,8 +236,10 @@
     copy.guideHow1=copy.habitatHint3;copy.guideHow2=copy.prompt;copy.guideHow3=copy.habitatHint5;
     copy.guideCampaignBody=[1,2,3,4,5,6].map(n=>`${copy['habitatChapter'+n]}: ${copy['habitatHint'+n]}`).join(' ');
     copy.guideStrategyBody=`${copy.habitatHint2} ${copy.habitatHint4} ${copy.habitatHint5}`;
-    copy.guideControlsBody=`${copy.prompt} ${copy.habitatHint2} ${copy.habitatHint5}`;
+    copy.guideControlsBody=`${copy.prompt} ${copy.undo}. ${copy.habitatHint5}`;
+    copy.guideCluesBody=['clueTouch','clueApart','clueBelow','clueLeft','clueRow'].map(key=>copy[key].replaceAll('{a}',copy.tilePond).replaceAll('{b}',copy.tileReed)).join(' ');
     copy.guideTip1=copy.prompt;
+    copy.guideTip5=copy.themeDescription;
     copy.guideTip3=copy.habitatHint3;copy.guideTip4=copy.habitatHint5;
     copy.faqChaptersAnswer=copy.guideCampaignBody;copy.faqMistakeAnswer=copy.exhausted;
     copy.guideResults=`${copy.faqProgressAnswer} ${copy.themeDescription}`;
@@ -251,3 +253,22 @@
     guideResults:'A completed blueprint records its stable stage number and your lowest swap count for that particular plan. Earlier cleared stages remain cleared after this update. Continue with Next Stage, replay to improve your result, or return to the stage list. The last stage leaves Next Stage disabled. Progress is saved in this browser only; clearing browser data or moving to another device does not transfer it. The optional Moonlight theme costs 20 shared diamonds once and permanently changes the habitats to blue evening lighting. It provides no puzzle advantage. You can switch back to daylight at any time. The price, balance, and permanent effect appear before confirmation.',
   });
 })();
+
+Object.assign(window.HABITAT_BLUEPRINT_LOCALES['zh-Hant'], {
+  guidePlansIntro:'每張藍圖都是一座等待復育的小型棲地。前十關使用四塊拼片，後續擴大為六塊。先閱讀野外筆記，再選取兩塊拼片並按下交換；每次移動後，線索旁的勾選會即時更新。必須讓所有條件同時成立，才算完成這張藍圖。遊戲沒有倒數計時，可以慢慢比較位置，不必急著試出答案。',
+  guideHow1:'先讀完整份線索，找出同時出現在多個條件中的棲地。',
+  guideHow2:'選取兩塊拼片，確認名稱與亮起的邊框，再按下交換。',
+  guideHow3:'觀察哪些線索變成勾選；需要時復原一步，或重設整張藍圖。',
+  guideCluesBody:'「共用一條邊」指上下或左右相鄰，只碰到角落不算。「不共用邊」則要求避開這種接觸。「正下方」代表同一欄的下一列；「緊鄰左側」代表同一列中緊接的左邊。「同一列」不要求緊貼，只要水平位置相同即可。方向始終以眼前的棋盤為準，即使切換成由右向左閱讀的語言，也不會翻轉拼片座標。',
+  guideStrategyBody:'先從方向最明確的條件下手。例如一塊必須在另一塊正下方，就能把它們想成一組上下排列的棲地。再用相鄰、分離或同列條件排除其餘可能。單一綠色勾選只表示目前符合那條線索，不代表相關拼片已經在最終位置；選下一步以前，仍要一起看所有條件。',
+  guideStrategyBody2:'相鄰交換章節限制的是移動方式，線索本身的意思不變。有時必須先把棲地移到中間位置，才能送到目的地。保護區會固定其中一塊，虛線邊框與文字會提醒你。限步章節則會顯示本關交換上限；用完步數時，棋盤會留在原位，讓你檢查錯誤，再決定復原或重來。復原也會退回交換次數，而且不消耗鑽石。',
+  guideControlsBody:'滑鼠、觸控與鍵盤都可操作。點一下拼片選取，再點一次取消；選第三塊時會替換較早選取的一塊。鍵盤可用 Tab 移動焦點，再按 Enter 或空白鍵選取。復原會回到上一步，重設會回到這關最初的排列。離開已變動的棋盤前會要求確認，已通關紀錄仍然保留。音效由共用設定控制，裝置啟用減少動態效果時會省略交換動畫。',
+  guideResults:'完成藍圖後會記錄關卡編號，以及這一關最少使用的交換次數。可從結算繼續下一關、重玩改善成績，或返回關卡地圖。第三十關完成後，下一關按鈕會停用。舊版已通關的進度會保留，舊版整段遊戲的總交換紀錄不會誤當成單關最佳。資料只存在這個瀏覽器，清除瀏覽資料或換裝置都不會自動轉移。可選的月光外觀只需花費二十顆共用鑽石解鎖一次，永久換成藍色夜景；它不提供解題優勢，也不限制任何關卡。購買前會顯示餘額、價格與永久效果，之後可隨時切回日光。',
+  guideTip1:'把方向條件先想成一組拼片，再安排其他鄰居。',
+  guideTip2:'注意線索說的是共用邊，還是只要求同一列。',
+  guideTip3:'每次交換後重新檢查所有條件，不要只追著單一勾選走。',
+  guideTip4:'限步關卡可以先規劃路徑；復原不會消耗額外資源。',
+  guideTip5:'小螢幕上可用拼片名稱與選取文字確認目標，不必只靠模型辨識。',
+  faqProgressAnswer:'會。通關編號與每關最佳交換次數都保存在這個瀏覽器，舊版通關進度也會保留。',
+  faqMistakeAnswer:'一般關卡可以繼續調整。限步關卡用完步數後會暫停交換，但仍可免費復原或重設。',
+});

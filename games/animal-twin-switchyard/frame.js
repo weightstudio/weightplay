@@ -41,7 +41,7 @@
     playUI: true,
     scenes: {
       main: { root: main, header: mainHeader, content: main.querySelector(".main-grid") },
-      stage: { root: stage, header: stageHeader, content: document.getElementById("stageWorkspace") },
+      stage: { root: stage, header: stageHeader, content: document.getElementById("stageContent") },
       battle: { root: battle, header: battleHeader, content: battle.querySelector(".battle-content") },
     },
   });
@@ -58,7 +58,7 @@
   const stageButton = document.getElementById("stageTab");
   stageButton.dataset.wpFrameAction = "tab";
   stageButton.setAttribute("aria-pressed", "true");
-  frame.commonDownButton.clear().add(stageButton);
+  frame.commonDownButton.clear().add(stageButton).add(document.getElementById("gearTab"));
 
   frame.activate("main");
   window.TwinSwitchyardFrame = Object.freeze({ frame, stageTitle, stageProgress });

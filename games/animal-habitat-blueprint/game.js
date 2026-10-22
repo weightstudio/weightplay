@@ -265,6 +265,7 @@ import { createHabitatRenderer } from './habitat-3d.mjs';
     $("closeSettings")?.setAttribute("aria-label", copy("close"));
     $("localeSelect")?.setAttribute("aria-label", copy("language"));
     if ($("localeSelect")) $("localeSelect").value = locale;
+    $('habitatGrid').setAttribute('aria-label',copy('chapter'));
     if ($("soundBtn")) {
       const soundEnabled = !Boolean(window.WeightPlayAudio?.isMuted?.());
       $("soundBtn").textContent = soundEnabled ? copy("on") : copy("off");
@@ -390,6 +391,8 @@ import { createHabitatRenderer } from './habitat-3d.mjs';
   }
   function buyTheme(){
     if(purchaseBusy||theme.owned)return;
+    // Another local tab may already have unlocked this permanent item.
+    try {const saved=JSON.parse(localStorage.getItem(themeKey)||'null');if(saved?.owned){theme=saved;$('themeConfirmation').hidden=true;renderTheme('themeReady');return;}}catch{}
     const wallet=window.WeightPlayWallet,before=wallet.read();
     if(before.diamonds<20){renderTheme('insufficient');return;}
     purchaseBusy=true;renderTheme();const old={...theme};let charged=false;
@@ -473,7 +476,13 @@ import { createHabitatRenderer } from './habitat-3d.mjs';
       $('habitatGrid').classList.toggle('render-fallback',unavailable);$('renderNotice').hidden=!unavailable;$('renderNotice').textContent=copy('renderFallback');
     });
     document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseSettlement();else if(leaveModal?.hidden)resumeSettlement();});
-    window.addEventListener('pagehide',event=>{clearSettlement();if(!event.persisted)boardRenderer?.dispose();});
+    window.addEventListener('pagehide',event=>{
+      if(event.persisted){pauseSettlement();boardRenderer?.setActive(false);}
+      else {clearSettlement();boardRenderer?.dispose();}
+    });
+    window.addEventListener('pageshow',event=>{
+      if(event.persisted){boardRenderer?.setActive(currentScreen==='battle');if(leaveModal?.hidden)resumeSettlement();}
+    });
     ensureLeaveDialog();
     bind();
     if ($("localeSelect")) $("localeSelect").value = locale;
