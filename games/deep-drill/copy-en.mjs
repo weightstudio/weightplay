@@ -184,7 +184,7 @@ const DATA={
  "返回主畫面": "Back to Main",
  "暫停並返回": "Pause and return",
  "五乘五礦脈": "Five by five mining grid",
- "礦區與工坊": "Areas and Workshop",
+ "礦區與工坊": "Areas",
  "未觸碰熔岩": "No magma touched",
  "短按保完整": "Short pulses preserve crystals",
  "自動洩壓中": "Auto venting",

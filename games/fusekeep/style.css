@@ -33,7 +33,7 @@
 
 /* Owner-requested stable battle controls and responsive world viewport. */
 #battleContent{position:relative;grid-template-rows:44px minmax(0,1fr) 44px 24px;gap:5px}
-#battleContent .battle-utilities{position:absolute;z-index:10;inset-block-start:0;inset-inline-end:4px;width:92px;height:48px;grid-template-columns:repeat(2,44px);gap:4px;justify-content:end}
+#battleContent .battle-utilities{display:grid;grid-auto-flow:column;position:absolute;z-index:10;inset-block-start:0;inset-inline-end:4px;width:92px;height:48px;grid-template-columns:repeat(2,44px);gap:4px;justify-content:end}
 #battleHud{padding-inline-end:104px}
 #battleContent #commands{grid-row:3;grid-template-rows:44px;gap:0;overflow:visible}
 #battleContent .health-line{grid-row:4;min-height:24px}
@@ -42,7 +42,7 @@
 #battleContent[data-wide=true] #battleHud{grid-column:1;grid-row:1;padding-inline-end:0}
 #battleContent[data-wide=true] #arenaFrame{grid-column:1;grid-row:2}
 #battleContent[data-wide=true] .health-line{grid-column:1;grid-row:3}
-#battleContent[data-wide=true] .battle-utilities{inset-inline-end:0;width:92px}
+#battleContent[data-wide=true] .battle-utilities{inset-inline-end:0;width:92px;grid-template-columns:repeat(2,44px);grid-template-rows:44px;gap:4px}
 #battleContent[data-wide=true] #commands{grid-column:2;grid-row:1/4;grid-template-rows:auto;align-content:start;padding-block-start:104px;overflow:visible}
 #battleContent[data-wide=true] .action-row{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(3,44px)}
 #battleContent[data-wide=true] #feedback{inset-inline-start:8px;inset-inline-end:190px;bottom:31px}

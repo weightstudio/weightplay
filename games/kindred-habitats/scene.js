@@ -297,12 +297,13 @@ export function createScene(container) {
   function pagehide() {suspended=true;cancelAnimationFrame(frame);frame=0;previous=0;}
   function pageshow() {suspended=false;visibility();}
   function error() {showStatus('renderError');}
-  let loading;
+  let loading, importAttempt = 0;
   async function initialize() {
     if(!alive)return;
     retry.disabled=true;showStatus('loading');
     try {
-      THREE ||= await import(ENGINE);if(!alive)return;
+      // Failed dynamic imports are retained in the document module map; retry with a fresh URL.
+      THREE ||= await import(`${ENGINE}?retry=${++importAttempt}`);if(!alive)return;
       if(renderer) {renderer.domElement.removeEventListener('webglcontextlost',lost);renderer.domElement.removeEventListener('webglcontextrestored',restored);dropWorld();box?.dispose();renderer.dispose();renderer.domElement.remove();}
       renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'low-power',preserveDrawingBuffer:false});
       renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1;

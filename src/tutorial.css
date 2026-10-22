@@ -304,10 +304,6 @@ body:has([data-screen="stage"]:not(.hidden):not(.is-hidden):not([hidden])) .wp-t
   body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-head strong {
     font-size: clamp(1rem, 3.6vw, 1.35rem);
   }
-  body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-close {
-    width: 32px;
-    height: 32px;
-  }
   body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-steps {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 6px;
@@ -332,7 +328,6 @@ body:has([data-screen="stage"]:not(.hidden):not(.is-hidden):not([hidden])) .wp-t
     font-size: .70rem;
     line-height: 1.15;
   }
-  body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-action { min-height: 40px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -340,4 +335,10 @@ body:has([data-screen="stage"]:not(.hidden):not(.is-hidden):not([hidden])) .wp-t
   .wp-tutorial-card {
     animation-duration: 0.01ms !important;
   }
+}
+
+/* Keep Wildwood’s Main help affordance inside the shared 44px touch target. */
+body[data-wp-game-id="animal-wildwood-raid"] .wp-tutorial-button {
+  width: 44px;
+  height: 44px;
 }

@@ -17,7 +17,8 @@ export function mountPlayScreens(){
     <section id="missionPane" role="tabpanel" aria-labelledby="missionTab"><div id="stageRail" data-wp-stage-rail></div></section>
     <section id="deckPane" role="tabpanel" aria-labelledby="deckTab" hidden inert><p data-t="deckHint"></p><p data-t="collectionHint"></p><p id="deckCount"></p><div id="deckGrid"></div><p id="deckMessage" class="bounded-message" role="status" aria-live="polite"></p></section>
    </div>
-   <nav id="stageNav" data-wp-frame-stage-nav role="tablist"><button id="deckTab" type="button" role="tab" aria-controls="deckPane" aria-selected="false" tabindex="-1" data-wp-frame-stage-slot="team" data-wp-frame-action="tab" data-t="deck"></button><button id="missionTab" type="button" role="tab" aria-controls="missionPane" aria-selected="true" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" data-t="campaign"></button></nav>
+   <nav id="stageNav" data-wp-frame-nav data-wp-frame-stage-nav role="tablist"></nav>
+   <div id="stageTabSeeds" hidden><button id="deckTab" type="button" role="tab" aria-controls="deckPane" aria-selected="false" tabindex="-1" data-wp-frame-stage-slot="team" data-wp-frame-action="tab" data-t="deck"></button><button id="missionTab" type="button" role="tab" aria-controls="missionPane" aria-selected="true" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" data-t="campaign"></button></div>
   </div>
  </section>
  <section id="battleScreen" hidden>
