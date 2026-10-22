@@ -15,18 +15,15 @@
   });
 
   (async () => {
-    if (!window.WeightPlayStageV6) {
-      await load(new URL("../../src/stage-virtualization-standard.js?v=20260924-interface7-fix2", source).href, "lantern-stage-v7");
-    }
-    await load(here("interface-7-compat.js?v=20260924-interface7-fix2"), "lantern-compat-v7");
-    await load(here("game-v11-base.js?v=20260912-animal-lantern-guides-v11-block-campaign&wp-audio=1.0.0&wp-interface7=2"), "lantern-v11-base");
+    await load(here("interface-7-compat.js?v=20261022-animal-lantern-guides-v12-i9"), "lantern-compat-i9");
+    await load(here("game-v11-base.js?v=20261022-animal-lantern-guides-v12-i9&wp-audio=1.0.0&wp-interface9=1"), "lantern-v12-base");
   })().catch((error) => {
-    console.error("[Animal Lantern Guides] Interface 7 loader failed", error);
-    if (!document.querySelector('script[data-wp-loader="lantern-v11-fallback"]')) {
+    console.error("[Animal Lantern Guides] Interface 9 loader failed", error);
+    if (!document.querySelector('script[data-wp-loader="lantern-v12-fallback"]')) {
       const fallback = document.createElement("script");
-      fallback.src = here("game-v11-base.js?v=20260912-animal-lantern-guides-v11-block-campaign&wp-audio=1.0.0&wp-interface7=2");
+      fallback.src = here("game-v11-base.js?v=20261022-animal-lantern-guides-v12-i9&wp-audio=1.0.0&wp-interface9=1");
       fallback.async = false;
-      fallback.dataset.wpLoader = "lantern-v11-fallback";
+      fallback.dataset.wpLoader = "lantern-v12-fallback";
       document.head.append(fallback);
     }
   });

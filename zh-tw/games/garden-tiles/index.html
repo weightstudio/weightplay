@@ -45,7 +45,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
   <meta name="twitter:title" content="寵物花園方塊 | WeightPlay" />
     <meta name="twitter:description" content="《花園方塊》是動物圖案記憶配對遊戲，收錄 30 個可存檔挑戰。翻開方塊找出相同圖案；六個章節加入不同規則，關卡沒有倒數計時。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/garden-tiles.webp" />
@@ -150,7 +150,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-garden-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
+          script.src = "../../src/game-page-info.js?v=20261001-garden-tiles-text140-v1";
           script.dataset.gardenGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -167,7 +167,7 @@
       })();
     </script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
 <section class="game-page-info game-page-info-static" aria-label="寵物花園方塊 遊戲資訊">
 
     <div class="game-info-hero">
@@ -195,7 +195,7 @@
       <div class="game-info-section"><h3>開發設計理念</h3><p>本作用不同記憶要求增加難度，而不是加入緊張倒數。關卡與遊戲畫面使用單一等比例縮放的響應式畫布填滿安全視窗，短橫向螢幕會切換到相容的橫向邏輯範圍。原生按鈕支援觸控和鍵盤，失誤圖案保留足夠時間，切到背景時也會暫停提示時間。預覽、薄霧、微風與遊行分別練習不同的觀察方式，同時維持 Kids 遊戲的平靜節奏。</p></div>
       <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>本作適合 6+ 與親子遊玩。星星與技能報告只整理本次本機遊戲的配對、步數、重試和星星，不是智力測驗、診斷、發展評估，也不會和其他孩子比較。Kids 版本沒有廣告、登入、聊天或購買要求。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>共有多少挑戰？</dt><dd>共有六篇 30 關，檢查點位於第 5、10、15、20、25、30 關。</dd></div><div><dt>遊戲有倒數嗎？</dt><dd>沒有。花園薄霧只會讓單次第一張牌在短暫時間後蓋回。</dd></div><div><dt>為什麼後期卡牌會移動？</dt><dd>調皮微風會在失誤後移動未完成牌；花園遊行則在成功後輪轉。</dd></div><div><dt>星星怎麼計算？</dt><dd>依完整兩張牌嘗試次數計算；只要清完牌面就能繼續。</dd></div><div><dt>進度會保存嗎？</dt><dd>已解鎖關卡與最佳星星會保存在目前瀏覽器。</dd></div><div><dt>手機和鍵盤都能玩嗎？</dt><dd>可以，牌卡使用支援觸控、滑鼠與鍵盤的原生按鈕。</dd></div><div><dt>需要付費或會顯示廣告嗎？</dt><dd>不需要帳號或購買；Kids 版本也不會發出廣告請求。</dd></div><div><dt>技能報告是正式測驗嗎？</dt><dd>不是，只是本次完成關卡的遊戲摘要。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相關遊戲</h3><p>因為這款遊戲會練習 記憶，也可以試試這些遊戲：</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="star-memory" href="/zh-tw/games/star-memory/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/star-memory.webp" data-final-src="/assets/weightplay-logo.png" alt="星星翻牌" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">星星翻牌</strong><span>《動物星星翻牌》是一段有 30 關的夜空圖片配對旅程。</span></span></a><a class="game-info-related-card" data-game-id="animal-quiz" href="/zh-tw/games/animal-quiz/"><span class="game-info-related-poster"><img src="/assets/animal-quiz/cover-block-v1.png" data-final-src="/assets/weightplay-logo.png" alt="小博士" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">小博士</strong><span>《動物小博士》是一款免費雙語 Kids 知識遊戲，共有 30 個可存檔關卡，每關包含十種不重複的動物。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><p>因為這款遊戲會練習 記憶，也可以試試這些遊戲：</p><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/star-memory/"><img src="/assets/interface7-redrawn/star-memory.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>星星翻牌</strong><span>《動物星星翻牌》是一段有 30 關的夜空圖片配對旅程。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-quiz/"><img src="/assets/animal-quiz/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>小博士</strong><span>《動物小博士》是一款免費雙語 Kids 知識遊戲，共有 30 個可存檔關卡，每關包含十種不重複的動物。</span></span></a></div></div>
     </div>
   </section>
 </body>

@@ -29,6 +29,24 @@ body.spades-royal-table #cardGameActions [data-action="bid"] {
   background:linear-gradient(160deg,#173d46,#071e2d); color:#ffe6ae;
   font:700 16px/1 Georgia,serif; box-shadow:inset 0 1px #fff3,0 3px 6px #0004;
 }
+@media (max-width:699px) and (orientation:portrait) {
+  body[data-wp-card-game="spades"] #cardGameActions > .card-choice-panel {
+    display:grid;
+    grid-template-columns:repeat(7,minmax(48px,1fr));
+    justify-content:center;
+    gap:4px;
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+  }
+  body[data-wp-card-game="spades"] #cardGameActions > .card-choice-panel button {
+    width:100%;
+    min-width:0;
+    min-height:44px;
+    box-sizing:border-box;
+    padding:4px 2px;
+  }
+}
 body.spades-royal-table #cardGameActions [data-action="bid"]:hover,
 body.spades-royal-table #cardGameActions [data-action="bid"]:focus-visible {
   outline:2px solid #ffe6ae; outline-offset:-3px; background:#24505a;
@@ -43,6 +61,13 @@ body.spades-royal-table #resultOverlay .result-card {
   box-shadow:inset 0 0 0 4px #d6b56e18,0 20px 60px #0009;
 }
 body.spades-royal-table .result-card h2 {color:#ffe6ab;text-shadow:0 2px 12px #eab65233;}
+body[data-wp-card-game="spades"][data-wp-interface-version="9"] #battleScreen .battle-canvas[data-wp-logical-battle-canvas] { position: relative; }
+body[data-wp-card-game="spades"][data-wp-interface-version="9"].wp-shell-main-active #mainProgress > strong,
+body[data-wp-card-game="spades"][data-wp-interface-version="9"].wp-shell-main-active #mainProgress > span {
+  color: #f8fafc !important;
+}
+body[data-wp-card-game="spades"][data-wp-interface-version="9"] #battleScreen .battle-canvas[data-wp-logical-battle-canvas] > #resultOverlay { position: absolute; inset: 0; overflow: auto; }
+body[data-wp-card-game="spades"][data-wp-interface-version="9"] #resultOverlay .result-card { max-height: 100%; overflow: auto; }
 body.spades-royal-table .result-actions button,
 body.spades-royal-table .main-actions button {
   border:1px solid #c7aa68;border-radius:12px;padding:12px 16px;

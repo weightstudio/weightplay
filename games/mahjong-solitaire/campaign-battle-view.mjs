@@ -1,4 +1,4 @@
-import {mountCampaignBoard} from './campaign-board.mjs';
+import {mountCampaignBoard} from './campaign-board.mjs?v=20261022-mahjong-v16-i9-battle-lifecycle';
 import {createCampaignResultView} from './campaign-result-view.mjs?v=20261021-mahjong-v16-i9';
 import {campaignCopy,campaignFaceLabel} from './campaign-copy.mjs';
 import {mahjongStageName} from './campaign-names.mjs';
@@ -7,7 +7,7 @@ import {campaignPairProgress} from './campaign-progress-copy.mjs';
 
 export function createCampaignBattleView({session,locale,onStages,sound}) {
  const root=document.createElement('section');root.className='mjc-battle';root.dataset.screen='battle';root.dataset.wpBattleCanvasRoot='';root.dataset.wpLogicalBattleCanvas='responsive';
- root.dataset.wpCanvasMaxWidth='920';root.dataset.wpBattleMinWidth='390';root.dataset.wpBattleMinHeight='620';root.dataset.wpBattleLandscapeWidth='760';root.dataset.wpBattleLandscapeHeight='334';root.hidden=true;
+ root.dataset.wpFrameBattleControlSize='48';root.dataset.wpCanvasMaxWidth='920';root.dataset.wpBattleMinWidth='390';root.dataset.wpBattleMinHeight='620';root.dataset.wpBattleLandscapeWidth='760';root.dataset.wpBattleLandscapeHeight='334';root.hidden=true;
  root.innerHTML='<header><button type="button" class="mjc-back" data-wp-return="battle">←</button><h2 data-wp-frame-title hidden></h2></header><div class="mjc-battle-content"><div class="mjc-battle-info" data-wp-frame-info><div class="mjc-battle-heading"><h2></h2><p></p></div><div class="mjc-pair-progress"><span></span><progress></progress></div></div><div class="mjc-battle-live"><div class="mjc-battle-board"></div><div class="mjc-battle-feedback"><div class="mjc-feedback-message" role="status"></div><div class="mjc-rule-cues"></div></div><div class="mjc-battle-actions"><button type="button" data-action="hint"></button><button type="button" data-action="undo"></button></div></div><dialog class="mjc-leave"><h2></h2><p></p><button type="button" data-continue></button><button type="button" data-leave></button></dialog></div>';
  const header=root.querySelector('header'),content=root.querySelector('.mjc-battle-content'),headerInfo=root.querySelector('.mjc-battle-info'),frameTitle=header.querySelector('[data-wp-frame-title]'),live=root.querySelector('.mjc-battle-live'),host=root.querySelector('.mjc-battle-board'),dialog=root.querySelector('dialog'),back=root.querySelector('.mjc-back');
  const feedback=root.querySelector('.mjc-battle-feedback'),message=feedback.querySelector('.mjc-feedback-message'),cues=feedback.querySelector('.mjc-rule-cues');
@@ -19,7 +19,7 @@ export function createCampaignBattleView({session,locale,onStages,sound}) {
  function render(){
   if(disposed)throw new Error('Battle view disposed');
   const s=session.snapshot(),c=campaignCopy(locale());root.hidden=s.screen!=='battle';
-  if(root.hidden){lastStage=null;boardView?.setActive(false);boardView?.clearEffects();return;}
+  if(root.hidden){lastStage=null;boardView?.setActive(false);boardView?.clearEffects();result.render(s);return;}
   const enteringStage=lastStage!==s.stage;lastStage=s.stage;
   root.dir=locale()==='ar'?'rtl':'ltr';
   frameTitle.textContent=`${c.stage} ${s.stage} · ${mahjongStageName(locale(),s.stage)}`;

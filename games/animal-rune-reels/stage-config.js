@@ -1,0 +1,27 @@
+/* Localized Rune Reels mission records for the shared Interface 9 selector. */
+(() => {
+  "use strict";
+
+  window.createAnimalRuneReelsStageConfig = ({ missions, describe }) => ({
+    count: missions.length,
+    poster: "/assets/animal-rune-reels/block-v1/cover-block-v1.webp",
+    background: "/assets/lobby-block-atmosphere.svg",
+    stage(index) {
+      const mission = missions[index];
+      const view = describe(mission);
+      return {
+        id: mission.id,
+        kicker: view.kicker,
+        title: view.title,
+        subtitle: view.subtitle,
+        status: view.status,
+        summary: view.summary,
+        details: view.details,
+        locked: mission.locked,
+        cleared: view.cleared,
+        poster: view.poster,
+        posterPosition: "50% 50%",
+      };
+    },
+  });
+})();

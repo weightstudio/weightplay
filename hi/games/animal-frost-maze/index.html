@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide />
     <link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-shell-standard />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
     <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
     <script defer src="mastery.js?v=20260908-mastery-v15"></script>
     <script defer src="game.js?v=20261021-frost-i9"></script><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
@@ -64,9 +64,11 @@
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
         <div id="main-content" class="main-content">
           <img class="five-game-cover main-cover" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-frost-maze.webp" alt="" aria-hidden="true" />
-          <p class="lede main-summary" data-wp-frame-summary>Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
-          <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress>Best rooms: 0</p>
-          <button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button>
+          <div class="main-copy" data-wp-frame-copy>
+            <p class="lede main-summary" data-wp-frame-summary>Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
+            <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress>Best rooms: 0</p>
+            <button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button>
+          </div>
         </div>
       </section>
       <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
@@ -121,12 +123,12 @@
       <div class="game-info-section"><h3>डिज़ाइन नोट</h3><p>बर्फ़ बदलने से रास्ता बदलता है और एक चाल खर्च होती है: बर्फ़ तोड़ने से रास्ता खुलता है, जबकि नई दीवार पीछा करने वाले का मार्ग मोड़ती है। पहले 20 कमरे आठ चालों वाली पीछा गति को पढ़ना आसान बनाते हैं; कमरा 21–30 में हर सफल बदलाव भी समय का हिस्सा बन जाता है। आखिरी पाँच कमरों में सुनहरा शुरुआती खाना दिखता है, इसलिए आखिरी बेरी लेना हमेशा अंतिम कदम नहीं होता।</p></div>
       <div class="game-info-section game-info-parent"><h3>खिलाड़ी और सेव जानकारी</h3><p>सबसे आगे पूरा किया गया कमरा और हर कमरे का सर्वश्रेष्ठ सितारा-परिणाम इसी ब्राउज़र में सहेजा जाता है। साइट डेटा मिटाने पर ये रिकॉर्ड हट जाते हैं।</p></div>
       <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>मुझे क्या इकट्ठा करना है?</dt><dd>कमरे की सभी बेरी लें। कमरा 26–30 में आखिरी बेरी के बाद सुनहरे शुरुआती खाने पर लौटें।</dd></div><div><dt>पीछा करने वाला कब चलता है?</dt><dd>हर आठ सफल एक-खाने की चाल के बाद वह एक कदम चलता है। कमरा 21 से बर्फ़ तोड़ने या बनाने की सफल क्रिया भी उसे चलाती है; रुकी हुई चाल और अमान्य बदलाव नहीं।</dd></div><div><dt>बर्फ़ की दीवार बनाने से क्या होता है?</dt><dd>आगे का खाली खाना सही हो तो वहाँ छोटी दीवार बनती है और पीछा करने वाले का रास्ता बदलता है। कमरा 21–30 में यह सफल बदलाव उसे एक कदम भी चलाता है।</dd></div><div><dt>कमरा 21–25 में क्या बदलता है?</dt><dd>बर्फ़ का हर सफल बदलाव पीछा करने वाले को चलाता है, इसलिए दीवार तोड़ने या बनाने से भूलभुलैया और पीछा करने का समय दोनों बदलते हैं। अमान्य बदलाव उसे नहीं चलाते।</dd></div><div><dt>कमरे के सितारे कैसे मिलते हैं?</dt><dd>कमरा पूरा करने पर एक सितारा मिलता है। बदलावों की सीमा और स्क्रीन पर दिखाया गया चालों का लक्ष्य पूरा करने पर एक-एक और मिलता है। कमरा 1–20 में चार और 21–30 में दो तक बदलाव करें। लक्ष्य चूकने पर भी कमरा पूरा होता है।</dd></div><div><dt>किस कमरे में शुरुआत पर लौटना है?</dt><dd>कमरा 26–30 में। सारी बेरी लेकर सुनहरे शुरुआती खाने पर लौटें, तभी कमरा पूरा होगा।</dd></div><div><dt>कौन-सी प्रगति सहेजी जाती है?</dt><dd>सबसे आगे पूरा किया गया कमरा और हर कमरे का सर्वश्रेष्ठ सितारा इसी ब्राउज़र में रहता है। साइट डेटा मिटाने पर हट जाता है; उपकरणों के बीच साझा नहीं होता।</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>मिलते-जुलते खेल</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-unblock" data-related-game="animal-unblock" href="/hi/games/animal-unblock/"><img src="/assets/interface7-redrawn/animal-unblock.webp" alt="Unblock Trail" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-runtime-localize="off">Unblock Trail</strong><span data-frost-related-description>Slide horizontal and vertical blocks along their lanes to clear a path to the exit.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>मिलते-जुलते खेल</h3><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>क्रेटबाउंड</strong><span>30 हस्तनिर्मित आकाश-गोदामों में चलें, संदूक धकेलें और खींचें, तथा बर्फीली पटरियों, संकेतों और चुंबकों को सुलझाएँ।</span></span></a></div></div>
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+    <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
     <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
     <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
     <script src="stage-config.js?v=20261021-frost-i9"></script>

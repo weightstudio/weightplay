@@ -457,7 +457,7 @@
       return escape(value);
     };
     const paragraph = key => '<p>' + escape(c[key]) + '</p>';
-    const section = (heading, body) => '<div class="game-info-section"><h3>' + escape(c[heading]) + '</h3>' + body + '</div>';
+    const section = (heading, body, related = false) => '<div class="game-info-section' + (related ? ' game-info-related-section' : '') + '"' + (related ? ' data-wp-guide-related-interface="9"' : '') + '><h3>' + escape(c[heading]) + '</h3>' + body + '</div>';
     const faq = [['faqQuestion','faqAnswer'],['faqUnusedQuestion','faqUnusedAnswer'],['faqHintQuestion','faqHintAnswer'],['faqTimerQuestion','faqTimerAnswer'],['faqSluiceQuestion','faqSluiceAnswer']]
       .map(([q,a]) => '<div><dt>' + escape(c[q]) + '</dt><dd>' + escape(c[a]) + '</dd></div>').join('');
     const related = cards.map(card => '<a class="game-info-related-card" data-wp-related-id="' + card.id + '" href="/' + routes[code] + '/games/' + card.id + '/"><img src="' + card.cover + '" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>' + title(card.id) + '</strong><span>' + escape(c[card.description]) + '</span></span></a>').join('');
@@ -467,7 +467,7 @@
       + section('guideOverviewTitle', paragraph('guideOverview')) + section('guideRulesTitle', core)
       + section('guideProgressTitle', paragraph('guideProgress')) + section('guideDesignTitle', paragraph('guideDesign'))
       + section('guideSaveTitle', paragraph('guideSave')) + section('faqTitle', '<dl>' + faq + '</dl>')
-      + section('relatedTitle', paragraph('relatedIntro') + '<div class="game-info-related">' + related + '</div>') + '</div>';
+      + section('relatedTitle', paragraph('relatedIntro') + '<div class="game-info-related">' + related + '</div>', true) + '</div>';
   }
   function html(code) {
     if (!copy[code]) return '';

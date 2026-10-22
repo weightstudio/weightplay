@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="zh-Hans">
 <head>
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <base href="/games/animal-nest-weigh/" />
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer charset="utf-8"></script>
     <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-nest-weigh/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-nest-weigh/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-nest-weigh/" />
@@ -21,10 +21,10 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-nest-weigh/" />
     <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
   <script src="../../src/weightplay-audio.js?v=1.0.0-nest-weigh-v7-i8"></script>
-  <script src="/src/shared-interface-bootstrap.js?v=20261017-shared-dark-loader1" data-wp-shared-interface="7"></script>
+  <script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-version" content="v8">
   <meta name="weightplay-interface-version" content="9">
@@ -37,7 +37,9 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
   <link rel="stylesheet" href="../../src/game-ui-theme.css">
   <link rel="stylesheet" href="style.css?v=20261014-nest-v8-i9-result-slots">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="巢材称重 | WeightPlay" />
@@ -77,9 +79,7 @@
   }
 }
     </script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
+  </head>
 <body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-nest-weigh" data-wp-game-version="v8" data-screen="main" data-wp-banner-ads="false" data-wp-game-owned-guide>
   <section id="loadingPanel" class="loading-panel" aria-live="polite" aria-busy="true">
     <div class="loading-card"><strong data-copy="title">Nest Weigh-In</strong><span data-copy="loading">Getting the nest table ready…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
@@ -126,8 +126,7 @@
       <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>共有多少课？</dt><dd>共有 30 课具名、可重玩的课程，分成六段；第 5、10、15、20、25、30 课是检查点。</dd></div><div><dt>后面的课程如何变化？</dt><dd>托盘会从三个增加到七个，需求加入第二顺位，部分课程也要求先完成更多可见比较。</dd></div><div><dt>应该怎样选择比较配对？</dt><dd>先比较能够夹住指定排序位置的两个托盘，再记住可见结果，逐步建立顺序。</dd></div><div><dt>答错后会怎样？</dt><dd>课程仍可再次尝试。你可以重置比较或改选另一个托盘，不会失去已解锁课程。</dd></div><div><dt>进度会保存吗？</dt><dd>已解锁课程与最佳比较结果只保存在当前浏览器。</dd></div><div><dt>会显示准确的重量数字吗？</dt><dd>不会。每次称量只显示两个托盘中哪一个更重。整理屏幕上保留的比较结果，就能推理出指定名次。</dd></div><div><dt>为什么不能重复称量同一对？</dt><dd>已比较的结果会留在屏幕上，重复称量不会增加新线索。请改选能缩小目标名次范围的另一对巢材。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-balance-grove" href="/zh-cn/games/animal-balance-grove/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-balance-grove.webp" data-final-src="/assets/weightplay-logo.png" alt="平衡林地" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">平衡林地</strong><span>《平衡林地》是一款平静的三座森林小桥益智游戏，通过选择有名字的石头让桥保持稳定。</span></span></a></div></div>
     </div>
-  <button id="tutorialOpenBtn" class="nest-tutorial-replay" type="button" data-copy="tutorialOpen">Replay how to play</button>
-</section>
+  </section>
       <div class="locale-source" hidden aria-hidden="true"><select id="localeSelect" aria-label="Choose a language">
         <option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option>
       </select></div>
@@ -236,13 +235,13 @@
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/stage-virtualization-standard.js"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
   <script src="locales.js?v=20261013-nest-workshop"></script>
   <script src="game-data.js?v=20261013-nest-workshop"></script>
   <script src="deduction.js?v=20261013-nest-workshop"></script>
   <script src="game.js?v=20261014-guide-i9-v8"></script>
   <script src="tutorial.js?v=20261013-nest-workshop"></script>
-<script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
+<script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-cn.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>

@@ -57,7 +57,8 @@
       targets: network.map((row) => row.reduce((sum, weight, valve) => sum + weight * solution[valve], 0)) };
   });
   const flowFor = (values, meadow = meadows[state.meadow]) => meadow.network.map((row) => row.reduce((sum, weight, index) => sum + weight * values[index], 0));
-  const state = { locale: "en", meadow: 0, values: [0, 0, 0], tries: 0, sessionTries: 0, sound: true, screen: "main", resultOpen: false, leaveOpen: false, moves: 0, history: [], hintUsed: false, hintedValve: -1, sessionCleared: new Set() };
+  const state = { locale: "en", meadow: 0, values: [0, 0, 0], tries: 0, sessionTries: 0, screen: "main", resultOpen: false, leaveOpen: false, moves: 0, history: [], hintUsed: false, hintedValve: -1, sessionCleared: new Set() };
+  let frame = null, stageController = null, stageTab = null;
   const progressKey = 'weightplay-animal-dewline-garden-v2';
   let progress = {};
   try { const saved = JSON.parse(localStorage.getItem(progressKey)); if (saved && typeof saved === 'object' && !Array.isArray(saved)) progress = Object.fromEntries(Object.entries(saved).filter(([key, value]) => /^\d+$/.test(key) && +key < meadows.length && Number.isInteger(value) && value >= 1 && value <= 3)); } catch (_) {}
@@ -82,30 +83,24 @@
   const writeBest = (value) => { try { const old = readBest(); if (!old || value < old) localStorage.setItem("weightplay-animal-dewline-best-v1", String(value)); } catch (_) {} };
   const refreshMainBest = () => { const node = $("bestValue"); if (node) node.textContent = readBest() || t("noBest"); document.querySelectorAll('[data-copy="progress"]').forEach((item) => item.textContent = `★ ${Object.keys(progress).length} / ${meadows.length}`); };
 
-  const installInterface7Cleanup = () => {
-    if (!document.querySelector('link[data-dewline-interface7]')) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = '/games/animal-dewline/interface-7-cleanup.css?v=20261010-dewline-stage-hidden-v1';
-      link.dataset.dewlineInterface7 = '';
-      document.head.append(link);
-    }
+  const setupSharedScreens = () => {
     [document.querySelector('.nori-guide'), document.querySelector('.hero-copy > .kicker'), document.querySelector('.hero-copy > h1[data-wp-game-title]'), document.querySelector('.best-line'), $('mapBtn')].filter(Boolean).forEach((node) => { node.hidden = true; });
     $('startBtn')?.classList.add('wp-standard-main-start');
-    $('stageList')?.setAttribute('role', 'group');
-    if ($('stageBackBtn')) { $('stageBackBtn').removeAttribute('data-copy'); $('stageBackBtn').textContent = '←'; $('stageBackBtn').setAttribute('aria-label', t('back')); }
-    if ($('battleBackBtn')) { $('battleBackBtn').removeAttribute('data-copy'); $('battleBackBtn').textContent = '←'; $('battleBackBtn').setAttribute('aria-label', t('returnStage')); }
-    $('battleHeading').hidden = true;
-    if ($('battleSettingsBtn')) { $('battleSettingsBtn').hidden = true; $('battleSettingsBtn').tabIndex = -1; }
+    $('stageList')?.setAttribute('role', 'list');
+
+    const stageInfo = $('stageInfo'), stageContent = $('stageContent');
+    const battleInfo = $('battleInfo'), battleContent = $('battleContent');
+    if (stageInfo && stageContent && !stageContent.contains(stageInfo)) stageContent.prepend(stageInfo);
+    if (battleInfo && battleContent && !battleContent.contains(battleInfo)) battleContent.prepend(battleInfo);
 
     const result = $('resultScreen'), battle = $('battleScreen');
     if (result && battle && result.parentElement !== battle) {
       result.removeAttribute('data-screen');
       result.classList.add('battle-result-substate');
+      result.setAttribute('data-wp-frame-result-screen', '');
+      result.querySelector('.result-card')?.setAttribute('data-wp-frame-result-card', '');
       battle.append(result);
     }
-    const resultActions = result?.querySelector('.result-actions');
-    if (resultActions && $('resultMapBtn') && $('resultPrimaryBtn') && $('resultHomeBtn')) resultActions.append($('resultMapBtn'), $('resultPrimaryBtn'), $('resultHomeBtn'));
     $('resultHomeBtn')?.setAttribute('data-copy', 'replay');
 
     if (!$('dewlineLeaveModal') && battle) {
@@ -131,7 +126,6 @@
         else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
       });
     }
-    window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));
   };
 
   const setResultOpen = (open) => {
@@ -150,6 +144,11 @@
     ["main", "stage", "battle"].forEach((name) => { $(`${name}Screen`).hidden = name !== screen; });
     document.body.dataset.screen = screen;
     window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));
+    frame?.activate(screen);
+    if (screen === "stage") {
+      renderStages();
+      stageController?.refresh(state.meadow);
+    }
     if (screen === "main") {
       refreshMainBest();
       requestAnimationFrame(() => { if (state.screen === "main") refreshMainBest(); });
@@ -185,9 +184,6 @@
     }
     $("localeSelect").value = state.locale;
     $("localeSelect").setAttribute("aria-label", t("language"));
-    $("settingsBtn").setAttribute("aria-label", t("settings"));
-    [$("stageSettingsBtn"), $("battleSettingsBtn")].filter(Boolean).forEach((node) => node.setAttribute("aria-label", t("settings")));
-    $("soundBtn").textContent = state.sound ? t("soundOn") : t("soundOff");
     $("bestValue").textContent = readBest() || t("noBest");
     if ($('stageBackBtn')) $('stageBackBtn').setAttribute('aria-label', t('back'));
     if ($('battleBackBtn')) $('battleBackBtn').setAttribute('aria-label', t('returnStage'));
@@ -195,22 +191,17 @@
     if ($('dewlineLeaveText')) $('dewlineLeaveText').textContent = t('leaveText');
     if ($('dewlineLeaveContinue')) $('dewlineLeaveContinue').textContent = t('continue');
     if ($('dewlineLeaveStage')) $('dewlineLeaveStage').textContent = t('returnStage');
-    if (state.screen === "stage") renderStages();
+    if (stageTab) { stageTab.textContent = t('stages'); stageTab.setAttribute('aria-label', t('stages')); }
+    if (state.screen === "stage") { renderStages(); stageController?.refresh(state.meadow); }
     if (state.screen === "battle" && !state.resultOpen) renderBattle();
     if (state.resultOpen) renderResult();
     refreshMainBest();
   };
 
   const renderStages = () => {
-    $("stageList").replaceChildren(...meadows.map((meadow, index) => {
-      const button = document.createElement("button");
-      button.type = "button"; button.className = "stage-card"; button.dataset.meadow = index; button.dataset.wpStageCard = '';
-      if (index === state.meadow) button.dataset.wpStageRecommended = 'true';
-      button.innerHTML = `<span data-wp-item-content><strong>${t("round", { n: index + 1, total: meadows.length })}</strong><span>${t(meadow.titleKey)}</span><small>${progress[index] ? '★'.repeat(progress[index]) + '☆'.repeat(3-progress[index]) : t('gardenGoal')}</small></span>`;
-      button.addEventListener("click", () => startMeadow(index));
-      return button;
-    }));
-    window.dispatchEvent(new CustomEvent('weightplay:stage-sync', { detail: { rail: $('stageList') } }));
+    const count = Object.keys(progress).length;
+    const node = $('stageProgress');
+    if (node) node.textContent = '★ ' + count + ' / ' + meadows.length;
   };
 
   const renderBattle = () => {
@@ -312,13 +303,13 @@
     if (state.screen !== 'battle' || state.resultOpen || state.leaveOpen) return;
     if (!battleHasProgress()) { show('stage'); renderStages(); return; }
     state.leaveOpen = true;
-    const modal = $('dewlineLeaveModal'), content = $('battleScreen')?.querySelector('.battle-content'), header = $('battleScreen')?.querySelector('.battle-header');
+    const modal = $('dewlineLeaveModal'), content = $('battleScreen')?.querySelector('.battle-content'), header = $('battleScreen')?.querySelector('[data-wp-frame-header="battle"]');
     if (content) content.inert = true; if (header) header.inert = true;
     if (modal) modal.hidden = false;
     __wpNotifyMeasurement(); requestAnimationFrame(() => $('dewlineLeaveContinue')?.focus({ preventScroll: true }));
   }
   function closeLeaveDialog(restoreFocus = true) {
-    const modal = $('dewlineLeaveModal'), content = $('battleScreen')?.querySelector('.battle-content'), header = $('battleScreen')?.querySelector('.battle-header');
+    const modal = $('dewlineLeaveModal'), content = $('battleScreen')?.querySelector('.battle-content'), header = $('battleScreen')?.querySelector('[data-wp-frame-header="battle"]');
     state.leaveOpen = false; if (modal) modal.hidden = true;
     if (content) content.inert = state.resultOpen; if (header) header.inert = state.resultOpen;
     __wpNotifyMeasurement(); if (restoreFocus && state.screen === 'battle' && !state.resultOpen) $('battleBackBtn')?.focus({ preventScroll: true });
@@ -343,16 +334,53 @@
   $("stageBackBtn").addEventListener("click", () => show("main"));
   $("battleBackBtn").addEventListener("click", requestBattleLeave);
   $("checkBtn").addEventListener("click", checkFlow); $("resetBtn").addEventListener("click", function (...args) { return __wpReplayStart(() => resetValves.apply(this, args)); });
-  const toggleSettings = () => { const panel = $("settingsPanel"); panel.hidden = !panel.hidden; [$("settingsBtn"), $("stageSettingsBtn")].filter(Boolean).forEach((node) => node.setAttribute("aria-expanded", String(!panel.hidden))); };
-  [$("settingsBtn"), $("stageSettingsBtn")].filter(Boolean).forEach((node) => node.addEventListener("click", toggleSettings));
-  $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; applyLocale(); track("sound", { enabled: state.sound }); });
   window.addEventListener("weightplay:shell-sync", () => { if (state.screen === "main") refreshMainBest(); });
   $("localeSelect").addEventListener("change", (event) => { state.locale = copy[event.target.value] ? event.target.value : "en"; try { localStorage.setItem("weightplayLocale", state.locale); } catch (_) {} applyLocale(); track("locale", { locale: state.locale }); });
   try { const saved = localStorage.getItem("weightplayLocale"); if (saved && copy[saved]) state.locale = saved; } catch (_) {}
   const routeSegment = location.pathname.split('/').filter(Boolean)[0]?.toLowerCase();
   const routeLocale = {'zh-tw':'zh-Hant','zh-cn':'zh-Hans','pt-br':'pt-BR'}[routeSegment] || routeSegment;
   if (copy[routeLocale]) state.locale = routeLocale;
-  installInterface7Cleanup();
+  setupSharedScreens();
+  frame = window.WeightPlayScreenFrame?.mount({root:$('gameFrame'),localeSelect:$('localeSelect'),playUI:true,scenes:{
+    main:{root:$('mainScreen'),header:$('mainScreen').querySelector('header'),content:$('mainScreen').querySelector('.hero-grid')},
+    stage:{root:$('stageScreen'),header:$('stageScreen').querySelector('header'),content:$('stageContent'),headerInfo:$('stageInfo')},
+    battle:{root:$('battleScreen'),header:$('battleScreen').querySelector('header'),content:$('battleContent'),headerInfo:$('battleInfo')},
+  }});
+  if (!frame) throw new Error('DEWLINE_SHARED_FRAME_REQUIRED');
+  stageTab=document.createElement('button');
+  stageTab.type='button';
+  stageTab.dataset.wpFrameAction='tab';
+  stageTab.dataset.wpFrameStageSlot='stages';
+  stageTab.setAttribute('role','tab');
+  stageTab.setAttribute('aria-selected','true');
+  stageTab.setAttribute('aria-current','page');
+  stageTab.setAttribute('aria-controls','stageContent');
+  stageTab.textContent=t('stages');
+  stageTab.addEventListener('click',()=>{renderStages();stageController?.refresh(state.meadow);});
+  frame.commonDownButton.add(stageTab);
+  const stagePoster='/games/animal-dewline/assets/animal-dewline-cover.png';
+  const stageConfig=Object.freeze({
+    gameId:'animal-dewline',count:meadows.length,poster:stagePoster,background:'/assets/lobby-block-atmosphere.svg',
+    stage(index){
+      const meadow=meadows[index];
+      if(!meadow)throw new RangeError('DEWLINE_STAGE_INDEX:' + index);
+      const stars=progress[index]||0;
+      const objective=t(meadow.chapter?'gardenLink':'gardenGoal');
+      return {
+        id:index+1,kicker:t('round',{n:index+1,total:meadows.length}),title:t(meadow.titleKey),
+        subtitle:objective,status:stars?'★'.repeat(stars)+'☆'.repeat(3-stars):t('gardenGoal'),
+        summary:t('gardenGoal'),details:[objective],locked:false,cleared:Boolean(stars),poster:stagePoster,
+      };
+    },
+  });
+  stageController=window.WeightPlayPlayUI?.mountStage({
+    page:$('stageContent'),rail:$('stageList'),config:stageConfig,selected:state.meadow,
+    onSelect(index){state.meadow=index;renderStages();},
+    onStart(index){startMeadow(index);},
+    isActive:()=>state.screen==='stage',
+  });
+  if(!stageController)throw new Error('DEWLINE_SHARED_STAGE_REQUIRED');
+  frame.activate('main');
   window.setTimeout(() => { $("loadingPanel").hidden = true; show("main"); applyLocale(); track("main_ready"); }, 260);
   window.__ANIMAL_DEWLINE_TEST__ = { meadows, flowFor, startSession, startMeadow, changeValve, checkFlow, getState: () => ({ ...state, values: [...state.values] }) };
 })();

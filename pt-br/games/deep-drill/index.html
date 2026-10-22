@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+
+    <base href="/games/deep-drill/" />
+    <link rel="canonical" href="https://weightplay.com/pt-br/games/deep-drill/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/deep-drill/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/deep-drill/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/deep-drill/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/deep-drill/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/deep-drill/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/deep-drill/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/deep-drill/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/deep-drill/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/deep-drill/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/deep-drill/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/deep-drill/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/deep-drill/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/deep-drill/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/deep-drill/" />
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+ <meta name="robots" content="noindex,nofollow" /><meta name="theme-color" content="#0b1824">
+ <meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="7"><meta name="weightplay-interface-version" content="9">
+ <title>Deep Drill | WeightPlay</title>
+ <link rel="icon" href="/assets/weightplay-logo.png">
+ <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><link rel="stylesheet" href="/src/game-play-ui.css">
+ <link rel="stylesheet" href="/src/stage-rail-i9.css"><link rel="stylesheet" href="/src/interface9-shared-screens.css">
+ <link rel="stylesheet" href="style.css">
+ <script src="/src/weightplay-audio.js"></script><script src="/src/game-layout-config.js"></script>
+ <script defer src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script><script defer src="/src/stage-rail-i9.js"></script><script defer src="/src/game-play-ui.js"></script>
+ <script type="module" src="game.mjs"></script>
+  <meta name="description" content="Drill deeper, recover ore, upgrade your rig and unlock automatic drilling." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Deep Drill | WeightPlay" />
+    <meta property="og:description" content="Drill deeper, recover ore, upgrade your rig and unlock automatic drilling." />
+    <meta property="og:url" content="https://weightplay.com/pt-br/games/deep-drill/" />
+    <meta property="og:image" content="https://weightplay.com/games/deep-drill/art/poster.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Deep Drill | WeightPlay" />
+    <meta name="twitter:description" content="Drill deeper, recover ore, upgrade your rig and unlock automatic drilling." />
+    <meta name="twitter:image" content="https://weightplay.com/games/deep-drill/art/poster.png" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Deep Drill",
+  "url": "https://weightplay.com/pt-br/games/deep-drill/",
+  "image": "https://weightplay.com/games/deep-drill/art/poster.png",
+  "description": "Drill deeper, recover ore, upgrade your rig and unlock automatic drilling.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com"
+  },
+  "inLanguage": "pt-BR",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Any modern web browser",
+  "genre": [
+    "Strategy",
+    "Adventure",
+    "Animal Games"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players"
+  }
+}
+    </script>
+  </head>
+<body data-wp-game-id="deep-drill" data-audience="general" data-screen="main" data-wp-game-owned-guide>
+<div id="app" data-wp-frame-root>
+ <select id="localeSelect" hidden aria-label="語言"><option value="zh-Hant">繁體中文</option></select>
+ <section id="main" class="scene main-scene">
+  <header><a data-wp-return="main" href="/index.html" aria-label="返回大廳">← W</a><strong data-wp-frame-title>地心鑽探</strong></header>
+  <main id="mainContent">
+   <img class="cover" data-wp-frame-poster src="art/poster.png" alt="Imagem do jogo Deep Drill">
+   <div class="intro" data-wp-frame-copy>
+    <span class="eyebrow">DEEP DRILL / HEARTLIGHT EXPEDITION</span><h1>Deep Drill</h1>
+    <p class="lead" data-wp-frame-summary>自動挖到底，越升級越痛快。</p>
+    <p class="summary">六大礦域，深入地心的長程遠征。改裝鑽機、招募夥伴、破解失落文明的六道封印，點亮沉睡的地心燈塔。</p>
+    <p id="mainProgress" class="main-progress" data-wp-frame-progress aria-live="polite"></p>
+    <button id="start" class="primary" data-wp-frame-action="primary">開始探礦</button>
+    <small class="preview-label">30 區主線 · 6 座封印 · 鑽頭改裝與智慧自動化</small>
+   </div>
+  </main>
+  <section class="guide"><h2>從一顆礦石，到整座地下世界</h2><div class="guide-grid">
+   <article><b>01 / 下鑽</b><p>出發就自動鑽探！5×5 礦地、固定路線下鑽與自動洩壓。你只要選升級，破地越來越快。</p></article>
+   <article><b>02 / 返航</b><p>隨時帶礦返航並出售。滿載會自動運回後繼續；機殼耗盡或高壓救援只能保住 65% 的礦物收益。</p></article>
+   <article><b>03 / 改裝</b><p>用收益換鑽頭、升級鑽力、轉速與礦艙。備用工具預設不消耗，可在工坊授權每趟上限。</p></article>
+  </div><p>30 次探勘，逐步遇見冷泉、熔岩、脆弱水晶與高壓岩層。完成當關目標並抵達當關終點，解鎖下一區。</p></section>
+ </section>
+ <section id="stage" class="scene play-scene" hidden>
+  <header><button data-wp-return="stage" aria-label="返回主畫面">←</button><strong data-wp-frame-title></strong></header>
+  <div id="stageContent"><div id="stagePage"><div id="stageRail"></div></div></div>
+ </section>
+ <section id="battle" class="scene play-scene" data-wp-battle-canvas-root data-wp-logical-battle-canvas="390x720" data-wp-battle-min-width="390" data-wp-battle-min-height="720" data-wp-battle-landscape-width="844" data-wp-battle-landscape-height="390" hidden>
+  <header><button data-wp-return="battle" aria-label="暫停並返回">←</button><strong data-wp-frame-title></strong></header>
+  <div id="battleContent">
+   <div class="depth-strip"><div><small id="zoneName">表層礦脈</small><strong><span id="depth">0</span><span class="unit"> / <span id="depthTarget">100</span> m</span></strong></div><span id="hullLabel">機殼 100%</span><button id="pause" class="subtle">暫停</button></div>
+   <div class="mission-track"><div class="mission-hud"><span id="missionGoal"></span><strong id="missionProgress"></strong><small id="sealCue"></small></div></div>
+   <div class="mine"><canvas id="world" aria-label="五條礦脈的 3D 礦井"></canvas><div class="scene-vignette"></div><div id="tileTargets" class="tile-targets" aria-label="五乘五礦脈"></div><div id="breakGain" aria-hidden="true"></div><div id="hitNumber" aria-hidden="true"></div><div id="mining-label">選擇礦脈</div><div id="oreFlight" aria-hidden="true"></div><div id="renderError" hidden>3D 畫面無法啟動，請使用支援 WebGL 的瀏覽器。<button onclick="location.reload()">重新載入</button></div></div>
+   <div class="telemetry"><div class="meter-label"><span id="miningPower">鑽擊待命</span><span id="cargoLabel">礦艙 0 / 32</span></div><div class="meters"><progress id="cargoBar" max="32" value="0"></progress></div><div class="pressure-line" id="pressureLine" hidden><span id="pressureLabel">壓力</span><progress id="pressureBar" max="100" value="0"></progress></div></div>
+   <div id="seams" class="seams"><button data-lane="0"></button><button data-lane="1"></button><button data-lane="2"></button></div>
+   <div class="drill-progress"><div id="rockProgress"></div></div>
+   <p id="notice" class="notice" role="status" aria-live="polite">強化鑽機，越挖越快</p>
+   <div class="controls"><button id="left" aria-label="左側礦脈">←</button><button id="drill" class="primary">升級</button><button id="return" class="subtle">返航</button><button id="right" aria-label="右側礦脈">→</button></div>
+   <div class="tool-row" hidden><button data-tool="beam" title="啟動後點選一格普通地磚，快捷鍵 4"><img alt="" id="tool-beam"><span>光束 <b id="count-beam">2</b></span></button><button data-tool="coolant" title="降低壓力，快捷鍵 1"><img alt="" id="tool-coolant"><span>洩壓 <b id="count-coolant">2</b></span></button><button data-tool="blast" title="打通普通岩層，快捷鍵 2"><img alt="" id="tool-blast"><span>鑽彈 <b id="count-blast">0</b></span></button><button data-tool="repair" title="修復機殼，快捷鍵 3"><img alt="" id="tool-repair"><span>修補 <b id="count-repair">0</b></span></button></div>
+   <div class="utility-row"><button hidden id="helpersToggle" class="subtle">助手：未僱用</button><button hidden id="autoToggle" class="subtle" disabled>自動：未購買</button></div>
+   <div id="result" class="overlay" data-wp-result-audit hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="panel expedition-panel"><small>EXPEDITION REPORT</small><h2 id="resultTitle">返航成功</h2><p id="resultText"></p><div class="earnings"><small>本趟入帳</small><strong id="resultCoins">0</strong></div><p id="resultTip"></p><div class="panel-actions"><button id="retry" class="primary">再探一次</button><button id="next" class="primary" hidden>下一區</button><button id="backStages">礦區與工坊</button></div></div></div>
+   <div id="pausePanel" class="overlay" hidden role="dialog" aria-modal="true" aria-labelledby="pauseTitle"><div class="panel"><small>RIG ON STANDBY</small><h2 id="pauseTitle">鑽機待命中</h2><p>本次鑽探已暫停。</p><div class="panel-actions"><button id="resume" class="primary">繼續鑽探</button><button id="exitRun">返航出售並離開</button></div></div></div>
+  </div>
+ </section>
+ <div id="workshop" class="overlay" hidden role="dialog" aria-modal="true" aria-labelledby="shopTitle"><div class="panel shop-panel"><div class="shop-heading"><div><small>EXPEDITION BASE</small><h2 id="shopTitle">遠征基地</h2></div><button id="closeShop" aria-label="關閉工坊">×</button></div><div class="wallet"><span>可用金幣</span><strong id="shopCoins">0</strong></div><div id="materials" class="materials"></div><nav class="shop-tabs" aria-label="基地功能"><button data-tab="rig" aria-pressed="true">鑽機</button><button data-tab="modules">模組</button><button data-tab="crew">夥伴</button><button data-tab="records">檔案</button></nav><p id="shopNotice" class="notice" role="status">選擇鑽頭或升級項目</p><div id="shopItems"></div></div></div>
+ <div id="briefing" class="overlay" hidden role="dialog" aria-modal="true" aria-labelledby="briefTitle"><div class="panel briefing-panel"><img class="brief-portrait" src="/assets/weightplay-character-spark-paw-fox-block-v1.webp" alt="菲亞，遠征鑽機駕駛"><small id="briefRegion"></small><h2 id="briefTitle"></h2><p id="briefStory"></p><div class="brief-objective"><b id="briefGoal"></b><p id="briefAdvice"></p></div><p id="briefLoadout"></p><div class="panel-actions"><button id="launch" class="primary">部署鑽機</button><button id="briefCancel">返回礦區</button></div></div></div>
+ <div id="saveWarning" class="save-warning" role="status" hidden>此瀏覽器無法儲存進度，請保持此頁開啟。</div>
+</div>
+<script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/runtime-locales/pt-br.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+<section class="game-page-info game-page-info-static" aria-label="Informações de Deep Drill">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Deep Drill</h2><p>Drill deeper, recover ore, upgrade your rig and unlock automatic drilling.</p></div>
+
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Mining &amp; Upgrades</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Strategy · Adventure · Animal Games</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+
+
+
+
+
+
+
+      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+
+    </div>
+  </section>
+</body></html>

@@ -324,8 +324,10 @@
   };
   const $ = (id) => document.getElementById(id);
   const screens = { main: $("mainScreen"), stages: $("stageScreen"), battle: $("battleScreen"), result: $("resultScreen") };
-  // Mount settlement once inside the permanent Battle Canvas.
-  document.querySelector("#battleScreen .battle-canvas").append(screens.result);
+  const stageIsActive = () => !screens.stages.hidden && window.BalanceGroveScreenFrame?.active === "stage";
+  const battleContent = $("battleContent");
+  let stageSelector = null;
+  let selectedStage = 0;
   const t = (key, vars) => {
     const table = copy[state.locale] || copy.en || {};
     let value = table[key] || (copy.en && copy.en[key]) || key;
@@ -341,15 +343,13 @@
   const writeBest = (value) => { try { const current = readBest(); if (!current || value < current) localStorage.setItem("weightplay-animal-balance-grove-best-v1", String(value)); } catch (error) { state.storage = false; } };
   const show = (name) => {
     Object.keys(screens).forEach((key) => { screens[key].hidden = key === "battle" ? !["battle", "result"].includes(name) : key !== name; });
-    document.querySelector("#battleScreen .battle-content").hidden = name === "result";
+    battleContent.hidden = name === "result";
     const scene = name === "stages" ? "stage" : name === "result" ? "battle" : name;
-    const activePlay = scene === "stage" || scene === "battle";
-    document.body.dataset.screen = scene;
-    document.documentElement.classList.toggle("wp-active-play", activePlay);
-    document.body.classList.toggle("wp-active-play", activePlay);
-    if (activePlay) window.scrollTo(0, 0);
+    if (scene !== "stage") stageSelector?.cancel?.();
+    if (scene !== "battle") $("leaveConfirm").hidden = true;
+    window.BalanceGroveScreenFrame.activate(scene);
 
-    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle","stages":"stage"})[name] ?? null;
+    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",result:"battle",stages:"stage"})[name] ?? null;
       if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
@@ -361,16 +361,8 @@
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { const text = t(node.dataset.copy); if (node.hasAttribute("data-wp-return")) node.setAttribute("aria-label", text); else node.textContent = text; });
     $("localeSelect").value = state.locale;
-    $("soundBtn").textContent = state.sound ? t("soundOn") : t("soundOff");
-    $("settingsBtn").setAttribute("aria-label", t("settings"));
-    $("settingsPanel").setAttribute("aria-label", t("settings"));
     $("localeSelect").setAttribute("aria-label", t("language"));
     document.querySelector(".wp-shell-return")?.setAttribute("aria-label", t("lobbyReturn"));
-    $("stageInfoBtn").setAttribute("aria-label", guideCopy.stageHelp);
-    $("stageInfoBtn").setAttribute("title", guideCopy.stageHelp);
-    $("battleInfoBtn").setAttribute("aria-label", guideCopy.stageHelp);
-    $("battleInfoBtn").setAttribute("title", guideCopy.stageHelp);
-    document.querySelector(".stage-tabs")?.setAttribute("aria-label", guideCopy.stageSections);
     $("tokenTray").setAttribute("aria-label", t("chooseStone"));
     document.querySelector(".scale").setAttribute("aria-label", t("scaleLabel"));
     $("bestValue").textContent = readBest() || t("noBest");
@@ -446,9 +438,27 @@
     stage.avoid ? t("avoidRule", { n: stage.avoid }) : ""
   ].filter(Boolean).join(" · ");
   const renderStages = () => {
-    $("stageList").innerHTML = stages.map((stage, index) => `<button class="stage-card" type="button" data-stage="${index}" ${index > unlocked() ? "disabled" : ""}><span class="stage-number">${t("round", { n: index + 1, total: stages.length })}</span><h3>${stageName(index)}</h3><p>${ruleText(stage)}</p><span class="stage-chip">${progress.cleared.includes(index) ? "★".repeat(progress.stars[index]) : index > unlocked() ? t("locked") : stage.checkpoint ? t("checkpoint") : t("stageReady")}</span></button>`).join("");
-    $("stageList").querySelectorAll("[data-stage]").forEach(button => button.addEventListener("click", () => startStage(Number(button.dataset.stage))));
+    $("stageSummary").textContent = t("round", { n: selectedStage + 1, total: stages.length });
+    $("stageSummary").setAttribute("aria-label", $("stageSummary").textContent);
+    if (!stageSelector) {
+      stageSelector = window.WeightPlayPlayUI.mountStage({
+        page: $("stageContent"),
+        rail: $("stageList"),
+        config: window.BalanceGroveStageConfig({ stages, progress, unlocked, text: t, stageName, ruleText }),
+        selected: selectedStage,
+        onSelect(index) {
+          selectedStage = index;
+          $("stageSummary").textContent = t("round", { n: index + 1, total: stages.length });
+          $("stageSummary").setAttribute("aria-label", $("stageSummary").textContent);
+        },
+        onStart: startStage,
+        isActive: stageIsActive,
+      });
+    } else stageSelector.refresh(selectedStage);
   };
+  window.BalanceGroveStageTab?.addEventListener("click", () => {
+    if (stageIsActive()) stageSelector?.refresh(selectedStage);
+  });
   const ensureBattleUI = () => {
     if ($("hintBtn")) return;
     const hint = document.createElement("button");
@@ -475,7 +485,6 @@
     const stage = stages[state.stage];
     const values = state.selected.map(index => stage.pieces[index][1]);
     const outcome = window.BalanceGroveRules.evaluate(values, stage.target, stage);
-    $("battleHeading").textContent = stageName(state.stage);
     $("roundLabel").textContent = t("round", { n: state.stage + 1, total: stages.length });
     $("battleHint").textContent = ruleText(stage);
     $("leftGoal").textContent = t("target", { n: stage.target });
@@ -534,9 +543,31 @@
     $("resultReplayBtn").textContent = t("replay");
     $("resultPrimaryBtn").onclick = final ? () => { show("stages"); renderStages(); } : () => startStage(state.stage + 1);
   };
-  const startSession = () => { state.sessionChecks = 0; state.sessionClears = []; track("session_start"); show("stages"); renderStages(); track("stage_map", { source: "start" }); };
+  const closeLeaveConfirm = () => {
+    $("leaveConfirm").hidden = true;
+    $("battleBackBtn").focus({ preventScroll: true });
+  };
+  const requestBattleReturn = () => {
+    if (!screens.result.hidden) {
+      selectedStage = state.stage;
+      show("stages");
+      renderStages();
+      return;
+    }
+    $("leaveConfirm").hidden = false;
+    $("continueBattle").focus({ preventScroll: true });
+  };
+  const returnToStage = () => {
+    $("leaveConfirm").hidden = true;
+    selectedStage = state.stage;
+    show("stages");
+    renderStages();
+  };
+  const startSession = () => { state.sessionChecks = 0; state.sessionClears = []; selectedStage = Math.min(unlocked(), stages.length - 1); track("session_start"); show("stages"); renderStages(); track("stage_map", { source: "start" }); };
   const startStage = index => {
     if (!Number.isInteger(index) || index < 0 || index > unlocked()) return;
+    selectedStage = index;
+    $("leaveConfirm").hidden = true;
     state.stage = index; state.selected = []; state.checks = 0; state.hints = 0;
     show("battle"); renderBattle(); track("stage_start", { stage: index + 1 });
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
@@ -569,7 +600,7 @@
     if (state.stage === stages.length - 1) track("session_complete", { checks: state.sessionChecks });
     state.selected = []; show("result"); renderResult();
   };
-  $("startBtn").addEventListener("click", startSession); $("mapBtn").addEventListener("click", () => { show("stages"); renderStages(); track("stage_map"); }); $("stageBackBtn").addEventListener("click", () => { show("main"); applyLocale(); }); $("battleBackBtn").addEventListener("click", () => { show("stages"); renderStages(); }); $("resultMapBtn").addEventListener("click", () => { show("stages"); renderStages(); }); $("resultHomeBtn").addEventListener("click", () => { show("main"); applyLocale(); }); $("checkBtn").addEventListener("click", checkBalance); $("clearBtn").addEventListener("click", clearTokens); $("settingsBtn").addEventListener("click", () => { const panel = $("settingsPanel"); panel.hidden = !panel.hidden; $("settingsBtn").setAttribute("aria-expanded", String(!panel.hidden)); }); $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; applyLocale(); track("sound", { enabled: state.sound }); }); $("localeSelect").addEventListener("change", (event) => { const next = normalizeLocale(event.target.value); if (window.WonderI18n?.setLocale) { window.WonderI18n.setLocale(next); return; } setLocale(next); });
+  $("startBtn").addEventListener("click", startSession); $("stageBackBtn").addEventListener("click", () => { show("main"); applyLocale(); }); $("battleBackBtn").addEventListener("click", requestBattleReturn); $("continueBattle").addEventListener("click", closeLeaveConfirm); $("returnToMap").addEventListener("click", returnToStage); $("leaveConfirm").addEventListener("click", (event) => { if (event.target === $("leaveConfirm")) closeLeaveConfirm(); }); document.addEventListener("keydown", (event) => { if ($("leaveConfirm").hidden) return; if (event.key === "Escape") { event.preventDefault(); closeLeaveConfirm(); } else if (event.key === "Tab") { const actions = [$("continueBattle"), $("returnToMap")]; const active = actions.indexOf(document.activeElement); if (event.shiftKey && active <= 0) { event.preventDefault(); actions.at(-1).focus(); } else if (!event.shiftKey && active === actions.length - 1) { event.preventDefault(); actions[0].focus(); } } }, true); $("resultMapBtn").addEventListener("click", () => { selectedStage = state.stage; show("stages"); renderStages(); }); $("resultHomeBtn").addEventListener("click", () => { show("main"); applyLocale(); }); $("checkBtn").addEventListener("click", checkBalance); $("clearBtn").addEventListener("click", clearTokens); $("localeSelect").addEventListener("change", (event) => { const next = normalizeLocale(event.target.value); if (window.WonderI18n?.setLocale) { window.WonderI18n.setLocale(next); return; } setLocale(next); });
   window.addEventListener?.("wonder:locale-change", (event) => setLocale(event.detail?.locale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang));
   window.addEventListener?.("weightplay:audio-volume-change", () => { syncSoundState(); applyLocale(); });
   let guideRefreshPending = false;
@@ -582,5 +613,28 @@
     window.requestAnimationFrame(() => { guideRefreshPending = false; applyTextGrowthGuide(); });
   }).observe(document.body, { childList: true, characterData: true, subtree: true });
   try { const saved = localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale"); if (!routedLocale && saved) state.locale = normalizeLocale(saved); } catch (error) { state.storage = false; }
-  window.setTimeout(() => { $("loadingPanel").hidden = true; screens.main.hidden = false; applyLocale(); track("main_ready"); }, 420);
+  show("main");
+  applyLocale();
+  track("main_ready");
+  let entryReadyStarted = false;
+  const waitForImage = image => new Promise((resolve, reject) => {
+    if (!image) { resolve(); return; }
+    const decode = () => {
+      if (!image.naturalWidth) { reject(new Error("Balance Grove poster did not load.")); return; }
+      if (typeof image.decode === "function") image.decode().then(resolve, reject);
+      else resolve();
+    };
+    if (image.complete) decode();
+    else { image.addEventListener("load", decode, { once: true }); image.addEventListener("error", () => reject(new Error("Balance Grove poster did not load.")), { once: true }); }
+  });
+  const finishEntry = () => {
+    if (entryReadyStarted) return;
+    entryReadyStarted = true;
+    Promise.all([$("mainContent").querySelector(".cover"), $("mainContent").querySelector(".taro-guide")].map(waitForImage))
+      .then(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))))
+      .then(() => { document.body.setAttribute("aria-busy", "false"); window.WeightPlayGameEntryLoader?.ready?.(); })
+      .catch(error => { console.error("Balance Grove entry failed", error); window.WeightPlayGameEntryLoader?.fail?.(error.message, () => window.location.reload()); });
+  };
+  window.addEventListener("load", finishEntry, { once: true });
+  if (document.readyState === "complete") finishEntry();
 }());

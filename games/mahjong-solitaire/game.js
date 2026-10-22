@@ -1,6 +1,6 @@
 (() => {
   const base = document.currentScript.src;
-  import(new URL('campaign-entry.mjs?v=20261021-mahjong-v16-i9-stage-nav-guide-alt',base).href).then(({mountMahjongEntry}) => {
+   import(new URL('campaign-entry.mjs?v=20261022-mahjong-v16-i9-battle-lifecycle',base).href).then(({mountMahjongEntry}) => {
     const container=document.querySelector('#mahjongCampaign'),placeholder=container?.querySelector('[data-mjc-static]');
     if(!container||!placeholder)throw new Error('Campaign locale shell missing');
     let storage;try{storage=window.localStorage}catch{storage={getItem(){throw Error('Unavailable')},setItem(){throw Error('Unavailable')}}}

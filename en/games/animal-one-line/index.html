@@ -70,7 +70,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
   <link rel="stylesheet" href="style.css?v=20261013-one-line-block-v24" />
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 
@@ -116,7 +116,7 @@
       <div class="game-info-section"><h3>Developer Design Note</h3><p>One Line is a route-planning puzzle rather than a freehand accuracy test. Large cells and interpolated pointer sampling make the same rules practical with a mouse or a finger, while the no-repeat and fill-every-cell conditions keep success focused on reasoning. A responsive logical Canvas fills the complete safe Stage and Battle height with one uniform scale and stable anchors; this game has no bottom reserve.</p></div>
       <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>One Line is a general-audience route-planning puzzle for family play. It requires no account and stores progress only in the current browser. Stars and the Result summary are playful feedback, not a formal ability, medical, or school assessment.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Can I visit a cell twice?</dt><dd>No. Stepping into the immediately previous cell undoes one move and the attempt continues. Any other previously visited cell is rejected without ending the attempt.</dd></div><div><dt>Can I move diagonally?</dt><dd>No. Each move must enter an open cell that shares an edge with the current cell.</dd></div><div><dt>Can I let go before the board is complete?</dt><dd>Yes. Releasing your finger or the mouse pauses the unfinished route, which stays on the board. Entering the last open cell completes the stage immediately; no release is needed.</dd></div><div><dt>Do I have to move quickly?</dt><dd>No. You can pause on the current cell while planning.</dd></div><div><dt>What does Show Hint do?</dt><dd>It highlights the next cell in one possible complete route. Using a hint limits that attempt to two stars.</dd></div><div><dt>Does progress save?</dt><dd>Yes. Unlocks, clears, stars, and best times are stored locally in this browser.</dd></div><div><dt>How many stages are included?</dt><dd>There are 30 original grid puzzles across six five-stage chapters.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>More Related Games</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-sunbeam-garden" href="/en/games/animal-sunbeam-garden/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-sunbeam-garden.webp" data-final-src="/assets/weightplay-logo.png" alt="Sunbeam Garden: Mirror Paths" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Sunbeam Garden: Mirror Paths</strong><span>Rotate mirrors, trace a real sunbeam cell by cell, and wake each plant across 30 gardens.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Related Games</h3><div class="game-info-related"><a class="game-info-related-card" href="/en/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Cratebound</strong><span>Walk, push, and pull rune cargo through thirty authored sky-ark warehouses.</span></span></a><a class="game-info-related-card" href="/en/games/animal-sunbeam-garden/"><img src="/assets/interface7-redrawn/animal-sunbeam-garden.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Sunbeam Garden: Mirror Paths</strong><span>Rotate mirrors, trace a real sunbeam cell by cell, and wake each plant across 30 gardens.</span></span></a></div></div>
     </div>
   </section>
 
@@ -152,13 +152,13 @@
 
   <section id="tutorial" class="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialClose" type="button" aria-label="Close">×</button><img src="../../assets/weightplay-character-rainbow-hop-rabbit-block-v1.webp" alt=""/><h2 id="tutorialTitle" data-one-line-i18n="tutorialTitle">Fill every cell with one line.</h2><ol><li data-one-line-i18n="tutorial1">Start on the glowing paw, then tap or drag through neighboring cells.</li><li data-one-line-i18n="tutorial2">You may release at any time; your route stays on the board.</li><li data-one-line-i18n="tutorial3">Move back over the previous cell to undo. Fill every open cell without crossing your route.</li></ol><button id="tutorialStart" class="primary-action" type="button" data-one-line-i18n="tutorialStart">Start Playing</button></div></section>
 
-<script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="../../src/i18n-es.js?v=20260719-one-line1"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
+<script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="../../src/i18n-es.js?v=20260719-one-line1"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
 <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-<script src="/src/game-screen-frame.js?v=20261021-i9-battle-root-selector-v2" data-wp-frame-script></script>
+<script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
 <script src="/src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
 <script src="/src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
 <script src="/games/animal-one-line/frame.js?v=20261021-animal-one-line-i9-candidate5"></script>
-<script src="grid-game.js?v=20261021-one-line-i9-candidate1"></script>
+<script src="grid-game.js?v=20261010-one-line-runtime-copy-r2"></script>
 <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
   <script src="/src/edge-guard.js"></script>
 </body>

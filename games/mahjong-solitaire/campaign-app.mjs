@@ -1,6 +1,6 @@
 import {createMahjongSession} from './campaign-session.mjs';
 import {createCampaignStageView} from './campaign-stage-view.mjs?v=20261021-mahjong-v16-i9-stage-nav';
-import {createCampaignBattleView} from './campaign-battle-view.mjs?v=20261021-mahjong-v16-i9-stage-nav';
+import {createCampaignBattleView} from './campaign-battle-view.mjs?v=20261022-mahjong-v16-i9-battle-lifecycle';
 
 // Mount once from the replacement entry. The shared Frame owns scene controls,
 // settings and play layout; the campaign session remains the state owner.
@@ -22,6 +22,7 @@ export function mountMahjongCampaign({container,main,guide,startButton,locale,st
   sound?.stop?.();const state=session.snapshot();body.dataset.screen=state.screen;
   main.hidden=state.screen!=='main';guide.hidden=state.screen!=='main';
   stageView.root.hidden=state.screen!=='stage';battleView.root.hidden=state.screen!=='battle';
+  if(state.screen!=='battle')win.WeightPlayBattleCanvas?.sync?.();
   frame.activate(state.screen);
   if(state.screen==='stage')stageView.refresh();
   // Always notify Battle so leaving cancels the previous board's effects.

@@ -298,12 +298,13 @@
   };
   const RUNTIME_LOCALE_SEGMENTS = { "zh-Hant":"zh-tw", "zh-Hans":"zh-cn", ja:"ja", ko:"ko", es:"es", "pt-BR":"pt-br", fr:"fr", de:"de", it:"it", ru:"ru", hi:"hi", ar:"ar" };
   const SHARED_SRC_BASE = new URL("../../src/", document.currentScript?.src || location.href);
-  const isInterfaceValidation = new URLSearchParams(window.location.search).get("qa") === "interface-validator";
   const runtimeCatalogLoads = new Map();
-  let locale = "en", screen = "main", stageIndex = 0, run = null, audio = null, centeredTimer = 0, resultDecisionCommitted = false;
+  let locale = "en", screen = "main", stageIndex = 0, run = null, audio = null, resultDecisionCommitted = false;
   let sharedFrame = null;
+  let sharedStageUI = null;
   let pendingMatch = null, rewardBeatTimer = 0, windowFocused = document.hasFocus();
   let save = loadSave();
+  let selectedStageIndex = Math.max(0, Math.min(29, (save.unlocked || 1) - 1));
 
   function starOutlookLabel() { return STAR_OUTLOOK_LABELS[locale] || STAR_OUTLOOK_LABELS.en; }
   function rewardBeatText(key) { return (REWARD_BEATS[locale] || REWARD_BEATS.en)[key] || REWARD_BEATS.en[key]; }
@@ -816,7 +817,6 @@
     fitCanvas();
     if (next === "stage") {
       renderStages();
-      requestAnimationFrame(centerUnlocked);
       track("stage_open", { stage: save.unlocked, unlocked_count: save.unlocked, cleared_count: Object.keys(save.stars).filter(k => save.stars[k] > 0).length, input_type: previous === "main" ? "start" : "return" });
     }
     if (next === "main" && previous !== "main") track("return_session", { from_screen: previous });
@@ -844,96 +844,32 @@
       trayCap: index >= 23 ? 6 : 7,
     };
   }
+  function stageDisplayAt(index) {
+    const c = stageConfig(index), locked = index + 1 > save.unlocked, stars = save.stars[index] || 0;
+    const chapter = t(CHAPTERS[c.chapter]);
+    const pieces = t("pieces", { n: c.types * c.sets * 3 });
+    const best = Object.prototype.hasOwnProperty.call(save.best, index) ? save.best[index] : 0;
+    const status = locked ? t("locked") : stars ? `${"★".repeat(stars)} · ${t("best", { n: best })}` : "◇◇◇";
+    return {
+      id: index + 1,
+      kicker: t("stage", { n: index + 1 }),
+      title: chapter,
+      subtitle: pieces,
+      status,
+      summary: `${chapter} · ${pieces}`,
+      details: [chapter, pieces, ...(locked ? [t("locked")] : stars ? [status] : [])],
+      locked,
+      cleared: stars > 0,
+      poster: "/assets/interface7-redrawn/animal-triple-match.webp",
+    };
+  }
   function renderStages() {
-    if (!els.stageRail) return;
     const cleared = Object.keys(save.stars).filter(k => save.stars[k] > 0).length;
     const totalStars = Object.values(save.stars).reduce((a, b) => a + (+b || 0), 0);
     els.stageSummary.textContent = `${t("stage", { n: Math.min(30, save.unlocked) })} · ${t("cleared")} ${cleared}/30 · ${t("stars")} ${totalStars}`;
     els.stageSummary.setAttribute("aria-label", `${t("stage", { n: Math.min(30, save.unlocked) })}; ${t("cleared")} ${cleared} / 30; ${t("stars")} ${totalStars}`);
-    els.stageRail.innerHTML = Array.from({ length: 30 }, (_, i) => {
-      const c = stageConfig(i), locked = i + 1 > save.unlocked, stars = save.stars[i] || 0;
-      return `<button class="stage-card${locked ? " locked" : ""}" data-stage="${i}" type="button" aria-disabled="${locked}" aria-keyshortcuts="ArrowLeft ArrowRight Home End">
-        <b>${t("stage", { n: i + 1 })}</b><span>${t(CHAPTERS[c.chapter])}<br>${t("pieces", { n: c.types * c.sets * 3 })}</span>
-        <small>${locked ? `◆ ${t("locked")}` : stars ? `${"★".repeat(stars)} · ${t("best", { n: Object.prototype.hasOwnProperty.call(save.best, i) ? save.best[i] : 0 })}` : "◇◇◇"}</small></button>`;
-    }).join("");
-    syncCentered();
+    sharedStageUI?.refresh(selectedStageIndex);
   }
-  function centerStageCard(card, behavior = "smooth") {
-    if (!card || !els.stageRail) return;
-    const railRect = els.stageRail.getBoundingClientRect();
-    const cardRect = card.getBoundingClientRect();
-    const scale = railRect.width / Math.max(1, els.stageRail.clientWidth);
-    const renderedDelta = cardRect.left + cardRect.width / 2 - (railRect.left + railRect.width / 2);
-    const left = els.stageRail.scrollLeft + renderedDelta / Math.max(.01, scale);
-    if (behavior === "auto") {
-      const previousBehavior = els.stageRail.style.getPropertyValue("scroll-behavior");
-      const previousPriority = els.stageRail.style.getPropertyPriority("scroll-behavior");
-      els.stageRail.style.setProperty("scroll-behavior", "auto", "important");
-      els.stageRail.scrollLeft = left;
-      if (previousBehavior) els.stageRail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
-      else els.stageRail.style.removeProperty("scroll-behavior");
-      return;
-    }
-    els.stageRail.scrollTo({ left, behavior });
-  }
-  function centerUnlocked() {
-    const target = els.stageRail.querySelector(`[data-stage="${Math.max(0, save.unlocked - 1)}"]`);
-    centerStageCard(target, "auto");
-    setTimeout(() => {
-      syncCentered();
-      els.stageRail.querySelector(".stage-card[aria-current='true']")?.focus({ preventScroll: true });
-    }, 30);
-  }
-  function syncCentered() {
-    if (!els.stageRail || els.stageScreen.hidden) return;
-    const railRect = els.stageRail.getBoundingClientRect();
-    const center = railRect.left + railRect.width / 2;
-    let best = null, distance = Infinity;
-    els.stageRail.querySelectorAll(".stage-card").forEach(card => {
-      const r = card.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - center);
-      card.classList.remove("is-centered");
-      if (d < distance) { distance = d; best = card; }
-    });
-    els.stageRail.querySelectorAll(".stage-card").forEach(card => {
-      const active = card === best;
-      card.classList.toggle("is-centered", active);
-      card.setAttribute("aria-current", String(active));
-      card.tabIndex = active ? 0 : -1;
-    });
-    const chapter = Math.floor(+(best?.dataset.stage || 0) / 5);
-    els.chapterName.textContent = t(CHAPTERS[chapter]);
-  }
-  els.stageRail.addEventListener("scroll", () => { clearTimeout(centeredTimer); centeredTimer = setTimeout(syncCentered, 80); }, { passive: true });
-  els.stageRail.addEventListener("click", event => {
-    const card = event.target.closest?.(".stage-card");
-    if (!card || card.getAttribute("aria-disabled") === "true") return;
-    track("stage_select", { stage: +card.dataset.stage + 1, input_type: event.detail === 0 ? "keyboard" : "pointer" });
-    startBattle(+card.dataset.stage);
-  });
-  els.stageRail.addEventListener("keydown", event => {
-    const card = event.target.closest?.(".stage-card");
-    if (!card) return;
-    const cards = [...els.stageRail.querySelectorAll(".stage-card")];
-    const current = cards.indexOf(card);
-    const rtl = document.documentElement.dir === "rtl";
-    let next = null;
-    if (event.key === "Home") next = 0;
-    else if (event.key === "End") next = cards.length - 1;
-    else if (event.key === "ArrowRight") next = current + (rtl ? -1 : 1);
-    else if (event.key === "ArrowLeft") next = current + (rtl ? 1 : -1);
-    if (next == null) return;
-    event.preventDefault();
-    const target = cards[Math.max(0, Math.min(cards.length - 1, next))];
-    cards.forEach(item => {
-      const active = item === target;
-      item.classList.toggle("is-centered", active);
-      item.setAttribute("aria-current", String(active));
-      item.tabIndex = active ? 0 : -1;
-    });
-    centerStageCard(target, "auto");
-    target.focus({ preventScroll: true });
-    els.chapterName.textContent = t(CHAPTERS[Math.floor(+target.dataset.stage / 5)]);
-  });
 
   function rng(seed) { let value = seed >>> 0; return () => ((value = Math.imul(value ^ value >>> 15, 1 | value), value ^= value + Math.imul(value ^ value >>> 7, 61 | value), ((value ^ value >>> 14) >>> 0) / 4294967296)); }
   function shuffle(list, random) { for (let i = list.length - 1; i > 0; i--) { const j = Math.floor(random() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; } return list; }
@@ -958,6 +894,7 @@
     cancelPendingMatch();
     clearRewardBeat();
     stageIndex = Math.max(0, Math.min(29, index));
+    selectedStageIndex = stageIndex;
     const config = stageConfig(stageIndex);
     run = { config, pieces: buildPieces(stageIndex), tray: [], history: [], matches: 0, moves: 0, peakTray: 0, lastTrayId: null, tools: { undo: 2, magnet: 2, shuffle: 2 }, ended: false, paused: false };
     [els.tutorialModal, els.firstPlanModal, els.leaveModal, els.resultModal].forEach(modal => (__wpNotifyMeasurement(), modal.hidden = true));
@@ -975,7 +912,7 @@
     // without optional onboarding layers intercepting its hit-test probes.
     // The Help button still exposes the same tutorial for an explicit player
     // request; normal starts keep the existing first-run onboarding flow.
-    const suppressOnboarding = skipTutorial || isInterfaceValidation;
+    const suppressOnboarding = skipTutorial;
     if (!save.tutorial && !suppressOnboarding) { (__wpNotifyMeasurement(), run.paused = true); openModal(els.tutorialModal, els.tutorialClose); }
     else if (!suppressOnboarding) showFirstPlan();
     track("game_start", { stage: stageIndex + 1 });
@@ -987,7 +924,7 @@
     const sprites = ["acorn", "moon-cup", "shell-compass", "berry-brooch",
       "cloud-jar", "prism-flower", "star-telescope", "leaf-locket",
       "coral-music-box", "bee-bell", "mushroom-lamp", "crystal-feather"];
-    return `background-image:url("../../assets/animal-triple-match-${sprites[type]}-block-v22.webp");background-position:center;background-size:contain;background-repeat:no-repeat;`;
+    return `background-image:url("/assets/animal-triple-match-${sprites[type]}-block-v22.webp");background-position:center;background-size:contain;background-repeat:no-repeat;`;
   }
   const ITEM_NAMES_GAME_LOCALE = {
     "zh-Hans": ["橡果灯笼","月亮杯","贝壳罗盘","浆果胸针","云朵罐","棱镜花","星星望远镜","叶片吊坠","珊瑚音乐盒","蜜蜂铃铛","蘑菇灯"],
@@ -1401,7 +1338,17 @@
   };
 
   initLocale();
-  if (window.mountTripleMatchFrame) sharedFrame = window.mountTripleMatchFrame();
   installLocaleOwnerObservers(); applyLocale(); renderMainProgress(); renderStages();
+  window.__animalTripleMatch = Object.freeze({
+    stageDisplayAt,
+    selectedStage: () => selectedStageIndex,
+    setSelectedStage(index) { selectedStageIndex = Math.max(0, Math.min(29, Math.round(index))); },
+    startStage(index, event) {
+      track("stage_select", { stage: index + 1, input_type: event?.detail === 0 ? "keyboard" : "pointer" });
+      startBattle(index);
+    },
+    attachStageUI(api) { sharedStageUI = api; renderStages(); },
+    attachFrame(frame) { sharedFrame = frame; },
+  });
   Promise.all([...document.images].map(img => img.complete ? Promise.resolve() : new Promise(resolve => { img.addEventListener("load", resolve, { once: true }); img.addEventListener("error", resolve, { once: true }); }))).then(() => { els.loadingPanel.hidden = true; els.loadingPanel.setAttribute("aria-busy", "false"); });
 })();

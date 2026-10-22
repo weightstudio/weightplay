@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide />
     <link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-shell-standard />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
     <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
     <script defer src="mastery.js?v=20260908-mastery-v15"></script>
     <script defer src="game.js?v=20261021-frost-i9"></script><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
@@ -64,9 +64,11 @@
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
         <div id="main-content" class="main-content">
           <img class="five-game-cover main-cover" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-frost-maze.webp" alt="" aria-hidden="true" />
-          <p class="lede main-summary" data-wp-frame-summary>Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
-          <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress>Best rooms: 0</p>
-          <button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button>
+          <div class="main-copy" data-wp-frame-copy>
+            <p class="lede main-summary" data-wp-frame-summary>Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
+            <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress>Best rooms: 0</p>
+            <button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button>
+          </div>
         </div>
       </section>
       <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
@@ -121,12 +123,12 @@
       <div class="game-info-section"><h3>Designnotiz</h3><p>Eisänderungen verändern den Weg und kosten einen Zug: Zerstörtes Eis öffnet eine Spur, eine gebaute Wand lenkt den Wanderer um. Die ersten 20 Räume machen den Rhythmus von acht Schritten lesbar; in Raum 21–30 zählt jede erfolgreiche Änderung zusätzlich zum Timing. In den letzten fünf Räumen ist das goldene Startfeld sichtbar, denn nach der letzten Beere kann noch ein Rückweg nötig sein.</p></div>
       <div class="game-info-section game-info-parent"><h3>Spieler- und Speicherhinweise</h3><p>Der beste abgeschlossene Raum und das beste Stern-Ergebnis je Raum werden in diesem Browser gespeichert. Beim Löschen der Websitedaten gehen diese Einträge verloren.</p></div>
       <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Was muss ich sammeln?</dt><dd>Sammle alle Beeren im Raum. In Raum 26–30 musst du nach der letzten Beere zum goldenen Startfeld zurückkehren.</dd></div><div><dt>Wann bewegt sich der Wanderer?</dt><dd>Nach jeweils acht erfolgreichen Schritten rückt er ein Feld vor. Ab Raum 21 löst auch jede erfolgreiche Eisänderung eine Bewegung aus; blockierte Schritte und ungültige Änderungen nicht.</dd></div><div><dt>Was bewirkt Eis bauen?</dt><dd>Wenn das freie Feld vor dir geeignet ist, setzt du dort eine kurze Wand und änderst den Weg des Wanderers. In Raum 21–30 bewegt ihn die erfolgreiche Änderung ebenfalls.</dd></div><div><dt>Was ist in Raum 21–25 anders?</dt><dd>Jede erfolgreiche Eisänderung bewegt den Wanderer. Eine Wand zu brechen oder zu bauen verändert also Labyrinth und Verfolgungstempo zugleich. Ungültige Änderungen bewegen ihn nicht.</dd></div><div><dt>Wie bekomme ich Sterne?</dt><dd>Für den Abschluss gibt es einen Stern. Erreichst du das Änderungsziel und das angezeigte Schrittziel des Raums, gibt es je einen weiteren. Das Änderungsziel liegt in Raum 1–20 bei höchstens vier und in Raum 21–30 bei höchstens zwei. Ein verfehltes Ziel verhindert den Abschluss nicht.</dd></div><div><dt>In welchen Räumen muss ich zum Start zurück?</dt><dd>In Raum 26–30. Sammle alle Beeren und gehe dann zum goldenen Startfeld zurück, um den Raum abzuschließen.</dd></div><div><dt>Welcher Fortschritt wird gespeichert?</dt><dd>Der beste abgeschlossene Raum und die besten Sterne je Raum bleiben in diesem Browser. Das Löschen der Websitedaten entfernt sie; zwischen Geräten werden sie nicht synchronisiert.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-unblock" data-related-game="animal-unblock" href="/de/games/animal-unblock/"><img src="/assets/interface7-redrawn/animal-unblock.webp" alt="Unblock Trail" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-runtime-localize="off">Unblock Trail</strong><span data-frost-related-description>Slide horizontal and vertical blocks along their lanes to clear a path to the exit.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" href="/de/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Fracht</strong><span>Laufe, schiebe und ziehe Runenfracht durch 30 handgebaute Himmelslager.</span></span></a></div></div>
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+    <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
     <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
     <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
     <script src="stage-config.js?v=20261021-frost-i9"></script>

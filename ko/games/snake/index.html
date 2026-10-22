@@ -3,12 +3,32 @@
 <head>
 
     <base href="/games/snake/" />
+  <section class="game-page-info game-page-info-static" aria-label="스네이크 게임 정보">
 
-    <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>스네이크</h2><p>격자에서 자라나는 뱀을 조종해 먹이를 모으고 몸통과 Gate·Orbit 장애물을 피하세요. 보드 가장자리는 반대편으로 이어지며, 장애물이나 자신의 몸에 닿으면 런이 끝납니다.</p></div>
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>격자 스네이크 아케이드</span><span>무한 생존</span><span>경로 계획</span></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>격자 생존 아케이드</strong></div><div class="game-info-fact"><span>장르</span><strong>아케이드</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉽게 시작해 점점 도전적으로</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>한 판 약 1~4분</strong></div></div>
+    </div>
 
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>세계와 목표</h3><p>작은 별뱀이 밤의 격자에서 깨어납니다. 먹이 하나를 먹을 때마다 몸이 길어지고, 안전한 회전이 다음 공간 판단이 됩니다.</p></div>
+      <div class="game-info-section"><h3>게임 시스템</h3><p>뱀은 시간에 맞춰 격자를 이동합니다. 먹이를 먹으면 몸과 점수가 늘고, 런이 진행되며 이동 속도도 빨라집니다. 보드의 네 가장자리는 반대편으로 이어집니다.</p>
+<p>Open에는 장애물 칸이 없습니다. Gate와 Orbit에는 들어갈 수 없는 장애물 칸이 보입니다. 장애물이나 자신의 몸에 닿으면 런이 끝납니다. 먹이 목표에 도달하면 보너스가 바로 더해지고 플레이는 계속됩니다.</p></div>
+      <div class="game-info-section"><h3>게임 방법</h3><ol><li>데스크톱은 방향키나 WASD, 터치 화면은 방향 버튼이나 보드 스와이프를 사용하세요.</li><li>다음 칸에 도착하기 전에 회전하세요. 정반대 방향 입력은 무시되므로 가능한 코너를 계획해야 합니다.</li><li>먹이를 모으면 몸이 길어지고 점수가 오릅니다. 정해진 먹이 개수로 끝나지 않으며 런이 바뀔 때 목표가 높아집니다.</li><li>다시 하기를 눌러 새 런을 시작하세요. 로컬 최고 점수는 이 브라우저에 남습니다.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>먹이뿐 아니라 그 다음 코너를 돌 수 있는지도 살펴보세요.</li><li>지름길이 통로를 막는다면 돌아가는 길이 더 안전할 수 있습니다.</li><li>Gate와 Orbit의 장애물 칸은 벽처럼 생각하고, 회전 뒤 두 칸도 확인하세요.</li><li>몸이 길어지고 속도가 빨라질수록 회전할 공간을 넉넉히 남기세요.</li></ul></div>
+      <div class="game-info-section"><h3>진행과 난이도</h3><p>런마다 Open, Gate, Orbit 보드 패턴이 바뀝니다. Open에는 장애물이 없고 Gate와 Orbit의 장애물은 가능한 회전 경로를 바꿉니다.</p>
+<p>먹이를 먹을 때마다 몸이 길어지고 런 중 속도가 빨라지며 다음 런의 목표도 높아집니다. 목표 먹이에 도달하면 보너스가 더해지고 런은 계속됩니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>스네이크는 WeightPlay 고유의 별뱀, 밤의 격자, 먹이 불꽃, 반응형 외곽, 13개 언어 조작 표시와 연속 생존 루프를 사용합니다.</p></div>
+      <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>최고 점수와 플레이 횟수는 이 브라우저에 저장되며, 진행 중인 런은 저장되지 않습니다. 계정은 필요하지 않습니다.</p></div>
+      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>보드 가장자리에 닿으면 끝나나요?</dt><dd>아니요. 한쪽 가장자리로 나가면 반대편에서 나타납니다.</dd></div><div><dt>무엇에 부딪히면 런이 끝나나요?</dt><dd>진입할 수 없는 장애물 칸이나 자신의 몸에 닿으면 끝납니다.</dd></div><div><dt>뱀은 어떻게 자라나요?</dt><dd>먹이를 하나 먹을 때마다 몸이 한 칸 늘고 점수가 오르며 회전 공간은 줄어듭니다.</dd></div><div><dt>보드 패턴이 매번 같나요?</dt><dd>Open, Gate, Orbit가 번갈아 나오며 Gate와 Orbit에는 보이는 장애물이 있습니다.</dd></div><div><dt>목표에 도달하면 어떻게 되나요?</dt><dd>목표 먹이를 먹으면 보너스가 바로 더해지고 런은 계속됩니다.</dd></div><div><dt>무엇이 저장되나요?</dt><dd>최고 점수와 플레이 횟수는 이 브라우저에 저장되며, 진행 중인 런은 저장되지 않습니다.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/block-blast/"><img src="/assets/interface7-redrawn/block-blast.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>블록 블라스트</strong><span>세 가지 모양을 8×8 보드에 놓고 완성된 행과 열을 지우세요.</span></span></a><a class="game-info-related-card" href="/ko/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>프리즘 대대</strong><span>포탑은 자동으로 발사합니다.</span></span></a></div></div>
+    </div>
+  </section>
+<script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-<script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+<script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <link rel="canonical" href="https://weightplay.com/ko/games/snake/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/snake/" />
@@ -33,10 +53,12 @@
     <title>스네이크 | WeightPlay</title>
     <link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260926-snake-v32-battle-envelope">
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260910-snake-compact-main-v30">
-    <link rel="stylesheet" href="art.css?v=20261018-snake-v34">
+    <link rel="stylesheet" href="art.css?v=20261015-snake-v33-board-feedback">
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260928-snake-tutorial1">
-    <meta name="description" content="격자에서 자라나는 뱀을 조종해 먹이를 모으고 몸통과 Gate·Orbit 장애물을 피하세요. 보드 가장자리는 반대편으로 이어지며, 장애물이나 자신의 몸에 닿으면 런이 끝납니다." />
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <meta name="description" content="격자에서 자라나는 뱀을 조종해 먹이를 모으고 몸통과 Gate·Orbit 장애물을 피하세요. 보드 가장자리는 반대편으로 이어지며, 장애물이나 자신의 몸에 닿으면 런이 끝납니다." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="스네이크 | WeightPlay" />
@@ -52,6 +74,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "스네이크",
+  "alternateName": "Snake",
   "url": "https://weightplay.com/ko/games/snake/",
   "image": "https://weightplay.com/assets/interface7-redrawn/snake.webp",
   "description": "격자에서 자라나는 뱀을 조종해 먹이를 모으고 몸통과 Gate·Orbit 장애물을 피하세요. 보드 가장자리는 반대편으로 이어지며, 장애물이나 자신의 몸에 닿으면 런이 끝납니다.",
@@ -64,19 +87,15 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "아케이드",
-    "Browser Game"
+    "아케이드"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players"
-  },
-  "alternateName": "Snake"
+  }
 }
     </script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
+  </head>
 <body><main id="popularArcade" class="popular-arcade"><header class="arcade-header"><div><div id="eyebrow" class="eyebrow">인기 게임 컬렉션</div><h1 id="gameTitle">스네이크</h1><p id="gameTagline" class="tagline">먹이를 모으고 회전 공간을 남겨 보이는 장애물을 피하세요.</p></div><label class="locale-picker"><span id="languageLabel">언어</span><select id="localeSelect"></select></label></header><section id="mainScreen" class="screen"><div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"><strong>목표:</strong> 뱀을 먹이로 이끌고 계속 이동하세요.</p><p id="mainInstruction" class="tagline">보드를 탭하거나 방향을 선택해 시작한 뒤 먹이를 향해 틀고, 가장자리에서 반대편으로 넘어가며 몸과 장애물 칸을 피하세요.</p><div id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong>목표</strong><span>뱀을 먹이로 이끌고 계속 이동하세요.</span></div><button id="startBtn" class="primary">게임 시작</button></div><div class="preview-art" aria-hidden="true">◉</div></div></section><section id="battleScreen" class="screen" data-wp-logical-battle-canvas hidden><div class="arcade-panel battle-panel"><div class="battle-top"><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary" data-wp-battle-utility>힌트</button><button id="restartBtn" class="secondary">다시 시작</button></div></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></section><div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div><section id="resultScreen" class="screen" hidden><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary">다시 플레이</button><button id="homeBtn" class="secondary">메인으로</button></div></div></section><footer class="arcade-footer" id="footerText">스네이크 · 인기 게임 컬렉션</footer></main>
     <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
       <div class="loading-card"><strong>스네이크</strong><span>Preparing your game…</span><div class="loading-track"><i></i></div></div>
@@ -129,30 +148,8 @@
     </script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/tutorial.js?v=20261004-snake-text-growth-140-tutorial-v1"></script>
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261006-interface7-physical-header-targets-v4" data-wp-shell-standard />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-    <script src="../../src/popular-games-batch.js?v=20261018-snake-text-growth-140-v34"></script><script type="module" src="/games/snake/game.js?v=20261018-snake-v34"></script><section class="game-page-info game-page-info-static" aria-label="스네이크 게임 정보">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>스네이크</h2><p>격자에서 자라나는 뱀을 조종해 먹이를 모으고 몸통과 Gate·Orbit 장애물을 피하세요. 보드 가장자리는 반대편으로 이어지며, 장애물이나 자신의 몸에 닿으면 런이 끝납니다.</p></div>
-      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>격자 스네이크 아케이드</span><span>무한 생존</span><span>경로 계획</span></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>격자 생존 아케이드</strong></div><div class="game-info-fact"><span>장르</span><strong>아케이드</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉽게 시작해 점점 도전적으로</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>한 판 약 1~4분</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>세계와 목표</h3><p>작은 별뱀이 밤의 격자에서 깨어납니다. 먹이 하나를 먹을 때마다 몸이 길어지고, 안전한 회전이 다음 공간 판단이 됩니다.</p></div>
-      <div class="game-info-section"><h3>게임 시스템</h3><p>뱀은 시간에 맞춰 격자를 이동합니다. 먹이를 먹으면 몸과 점수가 늘고, 런이 진행되며 이동 속도도 빨라집니다. 보드의 네 가장자리는 반대편으로 이어집니다.</p>
-<p>Open에는 장애물 칸이 없습니다. Gate와 Orbit에는 들어갈 수 없는 장애물 칸이 보입니다. 장애물이나 자신의 몸에 닿으면 런이 끝납니다. 먹이 목표에 도달하면 보너스가 바로 더해지고 플레이는 계속됩니다.</p></div>
-      <div class="game-info-section"><h3>게임 방법</h3><ol><li>데스크톱은 방향키나 WASD, 터치 화면은 방향 버튼이나 보드 스와이프를 사용하세요.</li><li>다음 칸에 도착하기 전에 회전하세요. 정반대 방향 입력은 무시되므로 가능한 코너를 계획해야 합니다.</li><li>먹이를 모으면 몸이 길어지고 점수가 오릅니다. 정해진 먹이 개수로 끝나지 않으며 런이 바뀔 때 목표가 높아집니다.</li><li>다시 하기를 눌러 새 런을 시작하세요. 로컬 최고 점수는 이 브라우저에 남습니다.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>먹이뿐 아니라 그 다음 코너를 돌 수 있는지도 살펴보세요.</li><li>지름길이 통로를 막는다면 돌아가는 길이 더 안전할 수 있습니다.</li><li>Gate와 Orbit의 장애물 칸은 벽처럼 생각하고, 회전 뒤 두 칸도 확인하세요.</li><li>몸이 길어지고 속도가 빨라질수록 회전할 공간을 넉넉히 남기세요.</li></ul></div>
-      <div class="game-info-section"><h3>진행과 난이도</h3><p>런마다 Open, Gate, Orbit 보드 패턴이 바뀝니다. Open에는 장애물이 없고 Gate와 Orbit의 장애물은 가능한 회전 경로를 바꿉니다.</p>
-<p>먹이를 먹을 때마다 몸이 길어지고 런 중 속도가 빨라지며 다음 런의 목표도 높아집니다. 목표 먹이에 도달하면 보너스가 더해지고 런은 계속됩니다.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>스네이크는 WeightPlay 고유의 별뱀, 밤의 격자, 먹이 불꽃, 반응형 외곽, 13개 언어 조작 표시와 연속 생존 루프를 사용합니다.</p></div>
-      <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>최고 점수와 플레이 횟수는 이 브라우저에 저장되며, 진행 중인 런은 저장되지 않습니다. 계정은 필요하지 않습니다.</p></div>
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>보드 가장자리에 닿으면 끝나나요?</dt><dd>아니요. 한쪽 가장자리로 나가면 반대편에서 나타납니다.</dd></div><div><dt>무엇에 부딪히면 런이 끝나나요?</dt><dd>진입할 수 없는 장애물 칸이나 자신의 몸에 닿으면 끝납니다.</dd></div><div><dt>뱀은 어떻게 자라나요?</dt><dd>먹이를 하나 먹을 때마다 몸이 한 칸 늘고 점수가 오르며 회전 공간은 줄어듭니다.</dd></div><div><dt>보드 패턴이 매번 같나요?</dt><dd>Open, Gate, Orbit가 번갈아 나오며 Gate와 Orbit에는 보이는 장애물이 있습니다.</dd></div><div><dt>목표에 도달하면 어떻게 되나요?</dt><dd>목표 먹이를 먹으면 보너스가 바로 더해지고 런은 계속됩니다.</dd></div><div><dt>무엇이 저장되나요?</dt><dd>최고 점수와 플레이 횟수는 이 브라우저에 저장되며, 진행 중인 런은 저장되지 않습니다.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/block-blast/"><img src="/assets/interface7-redrawn/block-blast.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>블록 블라스트</strong><span>세 가지 모양을 8×8 보드에 놓고 완성된 행과 열을 지우세요.</span></span></a><a class="game-info-related-card" href="/ko/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>프리즘 대대</strong><span>포탑은 자동으로 발사합니다.</span></span></a></div></div>
-    </div>
-  </section>
-</body>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+    <script src="../../src/popular-games-batch.js?v=20261015-snake-text-growth-140-v33-board-feedback"></script><script type="module" src="/games/snake/game.js?v=20261015-snake-v33-board-feedback"></script></body>
 </html>

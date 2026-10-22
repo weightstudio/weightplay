@@ -22,9 +22,9 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-folded-field/" />
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#e8f4ef">
-  <meta name="weightplay-game-version" content="v12">
+  <meta name="weightplay-game-version" content="v13">
   <meta name="weightplay-interface-version" content="6">
   <meta name="description" content="コケガメのタロウと3つの野原パズルに挑戦。連動するフラップを動かして目標の模様を作ります。制限時間はありません。" />
   <meta property="og:site_name" content="WeightPlay" />
@@ -40,13 +40,15 @@
   <title>フォールド・フィールド | WeightPlay</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="/src/game-page-info.css?v=20261014-guide-related-i9-v1">
-    <link rel="stylesheet" href="style.css?v=20260911-folded-field-main-map-v9">
+    <link rel="stylesheet" href="style.css?v=20261022-folded-field-v13-i9">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"フォールド・フィールド","url":"https://weightplay.com/ja/games/animal-folded-field/","image":"https://weightplay.com/games/animal-folded-field/assets/animal-folded-field-cover.png","description":"コケガメのタロウと3つの野原パズルに挑戦。連動するフラップを動かして目標の模様を作ります。制限時間はありません。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["連動フラップパズル","模様の計画","空間ロジック","動物パズル"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":6},"alternateName":"Folded Field"}</script>
-  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-
+  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/stage-rail-i9.css?v=20261016-shared-play1">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
+  <link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20261022-shared-battle-canvas-restore-mode-v1">
 </head>
-<body data-wp-game-owned-guide="true" data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-folded-field" data-wp-game-version="v12" data-wp-interface-version="6" data-screen="main">
+<body data-wp-game-owned-guide="true" data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-folded-field" data-wp-game-version="v13" data-wp-interface-version="6" data-wp-interface-candidate="9" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><span class="loading-mark" aria-hidden="true">◒</span><strong data-copy="loading">野帳を開いています…</strong><div class="loading-track"><i></i></div></div>
   </section>
@@ -71,8 +73,8 @@
       <div class="hero-copy main-copy">
         <p class="kicker" data-copy="kicker">モスシェル・タロウの野原パズル</p>
         <h1 class="hero-title" data-copy="title">おりたたみ野原</h1>
-        <p class="intro" data-copy="intro">つながった葉っぱをタップして、動物の足あとをそろえよう。</p>
-        <p class="summary wp-standard-main-summary" data-copy="summary">目標の模様を読み、連動する葉を動かして、落ち着いて次の手を考えます。</p>
+        <p class="intro" data-copy="intro">各葉を小さな目標の矢印に合わせよう。ボタンの数字の葉が一緒に反転します。</p>
+        <p class="summary wp-standard-main-summary" data-copy="summary">30の葉っぱパズル。連動を確かめ、元に戻しながら最短手順を探そう。</p>
         <p id="mainProgress" class="progress wp-standard-main-progress" role="status" aria-live="polite" data-wp-main-progress data-copy="progress">進行：{count} ページ · タイマーなし</p>
         <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">折りはじめる</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">野原マップ</button></div>
         <p class="best-line"><span data-copy="best">ベスト</span>: <strong id="bestValue">Not yet</strong></p>
@@ -81,32 +83,34 @@
   </main>
 
   <section id="gameGuide" class="game-page-info game-page-info-static guide-card" data-wp-game-guide data-runtime-localize="off" data-copy-aria-label="guideAria" aria-label="おりたたみ野原のゲーム情報" aria-labelledby="guideTitle">
-    <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="kicker">モスシェル・タロウの野原パズル</span><h2 id="guideTitle" data-copy="guideTitle">遊び方</h2><p data-copy="summary">目標の模様を読み、連動する葉を動かして、落ち着いて次の手を考えます。</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">ゲーム内容</span><strong data-copy="guideGameplayValue">折りたたみパターンパズル</strong></div><div class="game-info-fact"><span data-copy="guideGenre">ジャンル</span><strong data-copy="guideGenreValue">パズル</strong></div><div class="game-info-fact"><span data-copy="best">ベスト</span><strong data-copy="stages">野原マップ</strong></div><div class="game-info-fact"><span data-copy="language">言語</span><strong data-copy="title">おりたたみ野原</strong></div></div></div>
+    <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="kicker">モスシェル・タロウの野原パズル</span><h2 id="guideTitle" data-copy="guideTitle">遊び方</h2><p data-copy="summary">30の葉っぱパズル。連動を確かめ、元に戻しながら最短手順を探そう。</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">ゲーム内容</span><strong data-copy="guideGameplayValue">折りたたみパターンパズル</strong></div><div class="game-info-fact"><span data-copy="guideGenre">ジャンル</span><strong data-copy="guideGenreValue">パズル</strong></div><div class="game-info-fact"><span data-copy="best">ベスト</span><strong data-copy="stages">野原マップ</strong></div><div class="game-info-fact"><span data-copy="language">言語</span><strong data-copy="title">おりたたみ野原</strong></div></div></div>
     <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>連動フラップパズル</span><span>模様の計画</span><span>空間ロジック</span><span>動物パズル</span></div>
-    <div class="game-info-sections"><article class="game-info-section"><h3 data-copy="guideTitle">遊び方</h3><ol><li data-copy="guideOne">目標カードで葉っぱの向きを確認します。</li><li data-copy="guideTwo">タップすると、その葉と隣の葉が変わります。</li><li data-copy="guideThree">違う模様は残るので、次の折り方を考えられます。</li></ol></article><article class="game-info-section"><h3 data-copy="progressGuideTitle">3ページの進行</h3><p data-copy="progressGuideText">野帳は3ページで、最初の2ページにはそれぞれ3枚、最後のページには4枚の葉があります。最初から野原マップの全ページを自由に選べます。クリア後はリプレイ、または次のページがあれば続行を選べます。マップのページを開くために先のページをクリアする必要はありません。</p></article><article class="game-info-section"><h3 data-copy="strategyTitle">確認前に計画する</h3><p data-copy="strategyText">タップすると選んだ葉と隣の葉が同時に反転します。現在の模様と目標カードを比べ、つながりを計画しましょう。リセットで新しい手順を試せます。タイマーはありません。</p></article><article class="game-info-section"><h3 data-copy="resultTitle">ページクリア</h3><p data-copy="resultGuideText">結果画面にはクリアしたページが表示され、次のページ、野原マップ、リプレイを選べます。ベストの折り数はこのブラウザにだけ保存されます。</p></article><article class="game-info-section"><h3 data-copy="fieldStoryTitle">苔殻タロウの野原ノート</h3><p data-copy="fieldStoryText">苔殻タロウと一緒に、3つの動物の足跡を開きましょう。葉を「上げる／しまう」模様を目標カードに合わせます。考えている間も目標は表示されたままです。</p></article><article class="game-info-section"><h3 data-copy="linkedRuleTitle">1枚動かすと隣も変わる</h3><p data-copy="linkedRuleText">葉を1枚タップすると、その葉と循環する次の葉が切り替わります。一番右の葉は左端につながっています。すべての葉が目標と一致するとクリアです。間違えても模様は盤面に残ります。</p></article><article class="game-info-section"><h3 data-copy="designNoteTitle">連動する葉のしくみ</h3><p data-copy="designNoteText">最初の2ページは葉が3枚、最後のページは4枚です。最後に1枚増えることで、端の計画が大切になります。右端の操作は左端も変えます。時間制限はないので、タップごとに模様を確かめてから判定できます。</p></article><article class="game-info-section game-info-save"><h3 data-copy="playerSaveTitle">プレイヤーとセーブ情報</h3><p data-copy="playerSaveText">アカウントは不要です。このブラウザでローカル保存が使える場合、保存されるのは最高の折り回数だけです。クリアバッジと途中の模様は再読み込みで初期化され、クラウドセーブはありません。</p></article><article class="game-info-section"><h3 data-copy="faqTitle">よくある質問</h3><dl><div><dt data-copy="faqProgressQuestion">進行状況は保存されますか？</dt><dd data-copy="faqProgressAnswer">ローカル保存が利用できる場合、このブラウザーに保存するのは最少の折り数だけです。クリア済みページのバッジとプレイ中の模様は再読み込みでリセットされます。アカウントやクラウドセーブはありません。</dd></div><div><dt data-copy="faqPagesQuestion">ページはいくつありますか？</dt><dd data-copy="faqPagesAnswer">作り込まれた野帳は3つのつながったページで構成されています。</dd></div><div><dt data-copy="faqTapQuestion">1回のタップで何が変わりますか？</dt><dd data-copy="faqTapAnswer">タップすると選んだ葉と循環する次の葉が切り替わります。一番右は左端につながっています。</dd></div><div><dt data-copy="faqTimerQuestion">タイマーはありますか？</dt><dd data-copy="faqTimerAnswer">ありません。次の折り方を考えている間も、違う模様は表示されたままです。</dd></div><div><dt data-copy="faqWrongQuestion">間違えて判定すると手数を消費しますか？</dt><dd data-copy="faqWrongAnswer">いいえ。模様は表示されたままで、判定しても葉を動かす手数は消費しません。</dd></div><div><dt data-copy="faqResetQuestion">リセットするとベスト記録は消えますか？</dt><dd data-copy="faqResetAnswer">いいえ。リセットで戻るのは現在のページの初期模様と折り回数です。保存済みのベスト記録は変わりません。</dd></div><div><dt data-copy="faqMapQuestion">前のページをクリアしないと次を選べませんか？</dt><dd data-copy="faqMapAnswer">いいえ。最初から野原マップで3ページのどれでも選べます。</dd></div></dl></article><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>関連ゲームをもっと見る</h3><p data-copy="relatedIntro">模様を読んでから動くパズルが好きなら、こちらのWeightPlayゲームもどうぞ。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-one-line" href="/ja/games/animal-one-line/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-one-line.webp" data-final-src="/assets/weightplay-logo.png" alt="One Line" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">One Line</strong><span data-copy="relatedOneDescription">壁や動く影を避けながら、作られた道を一本の連続線でたどります。</span></span></a><a class="game-info-related-card" data-game-id="animal-bamboo-pipes" href="/ja/games/animal-bamboo-pipes/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" data-final-src="/assets/weightplay-logo.png" alt="パンコの竹水路" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">パンコの竹水路</strong><span data-copy="relatedTwoDescription">つながった竹パイプを回し、切れ目なく泉から花の池へ水を通します。</span></span></a></div></div></div>
+    <div class="game-info-sections"><article class="game-info-section"><h3 data-copy="guideTitle">遊び方</h3><ol><li data-copy="guideOne">各葉の番号と目標矢印を見て、すべて合わせよう。</li><li data-copy="guideTwo">数字のボタンは書かれた葉だけを反転します。ホバーやフォーカスで予告。</li><li data-copy="guideThree">全部一致すると自動クリア。戻す操作とヒントも使えます。</li></ol></article><article class="game-info-section"><h3 data-copy="progressGuideTitle">30のステージ</h3><p data-copy="progressGuideText">クリアすると次へ。輪、橋、3枚反転を6つのエリアで学べます。</p></article><article class="game-info-section"><h3 data-copy="strategyTitle">ヒント</h3><p data-copy="strategyText">全部一致すると自動クリア。戻す操作とヒントも使えます。</p></article><article class="game-info-section"><h3 data-copy="resultTitle">道が開いた</h3><p data-copy="resultGuideText">全部一致すると自動クリア。戻す操作とヒントも使えます。</p></article><article class="game-info-section"><h3 data-copy="fieldStoryTitle">苔殻タロウの野原ノート</h3><p data-copy="fieldStoryText">クリアすると次へ。輪、橋、3枚反転を6つのエリアで学べます。</p></article><article class="game-info-section"><h3 data-copy="linkedRuleTitle">2枚反転</h3><p data-copy="linkedRuleText">数字のボタンは書かれた葉だけを反転します。ホバーやフォーカスで予告。</p></article><article class="game-info-section"><h3 data-copy="designNoteTitle">連動する葉のしくみ</h3><p data-copy="designNoteText">クリアすると次へ。輪、橋、3枚反転を6つのエリアで学べます。</p></article><article class="game-info-section game-info-save"><h3 data-copy="playerSaveTitle">プレイヤーとセーブ情報</h3><p data-copy="playerSaveText">クリア、星、各ステージの最少手数をこのブラウザーに保存。途中の盤面は再読込でリセット。アカウントやクラウド保存はありません。</p></article><article class="game-info-section"><h3 data-copy="faqTitle">よくある質問</h3><dl><div><dt data-copy="faqProgressQuestion">進行状況は保存されますか？</dt><dd data-copy="faqProgressAnswer">クリア、星、各ステージの最少手数をこのブラウザーに保存。途中の盤面は再読込でリセット。アカウントやクラウド保存はありません。</dd></div><div><dt data-copy="faqPagesQuestion">ページはいくつありますか？</dt><dd data-copy="faqPagesAnswer">クリアすると次へ。輪、橋、3枚反転を6つのエリアで学べます。</dd></div><div><dt data-copy="faqTapQuestion">1回のタップで何が変わりますか？</dt><dd data-copy="faqTapAnswer">数字のボタンは書かれた葉だけを反転します。ホバーやフォーカスで予告。</dd></div><div><dt data-copy="faqTimerQuestion">タイマーはありますか？</dt><dd data-copy="faqTimerAnswer">ありません。次の折り方を考えている間も、違う模様は表示されたままです。</dd></div><div><dt data-copy="faqWrongQuestion">ヒント</dt><dd data-copy="faqWrongAnswer">ヒントで道が開きました。ヒントなしでもう一度挑戦しよう。</dd></div><div><dt data-copy="faqResetQuestion">リセットするとベスト記録は消えますか？</dt><dd data-copy="faqResetAnswer">クリア、星、各ステージの最少手数をこのブラウザーに保存。途中の盤面は再読込でリセット。アカウントやクラウド保存はありません。</dd></div><div><dt data-copy="faqMapQuestion">前のページをクリアしないと次を選べませんか？</dt><dd data-copy="faqMapAnswer">クリアすると次へ。輪、橋、3枚反転を6つのエリアで学べます。</dd></div></dl></article><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>More Related Games</h3><p data-copy="relatedIntro">模様を読んでから動くパズルが好きなら、こちらのWeightPlayゲームもどうぞ。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-one-line" href="/en/games/animal-one-line/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-one-line.webp" data-final-src="/assets/weightplay-logo.png" alt="フォールド・フィールドのゲーム画像" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">One Line</strong><span data-copy="relatedOneDescription">壁や動く影を避けながら、作られた道を一本の連続線でたどります。</span></span></a><a class="game-info-related-card" data-game-id="animal-bamboo-pipes" href="/en/games/animal-bamboo-pipes/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" data-final-src="/assets/weightplay-logo.png" alt="Panko&#39;s Bamboo Waterway" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Panko&#39;s Bamboo Waterway</strong><span data-copy="relatedTwoDescription">つながった竹パイプを回し、切れ目なく泉から花の池へ水を通します。</span></span></a></div></div></div>
   </section>
 
-  <section id="stageScreen" class="screen panel-screen stage-screen" data-screen="stage" data-wp-standard-stage-screen hidden aria-labelledby="stageHeading" style="--wp-stage-art:url('/games/animal-folded-field/assets/animal-folded-field-cover.png')">
+  <section id="stageScreen" class="screen panel-screen stage-screen" data-screen="stage" data-wp-standard-stage-screen hidden aria-labelledby="stageHeading">
     <div class="stage-canvas" data-wp-canvas-max-width="920" style="--wp-stage-art:url('/games/animal-folded-field/assets/animal-folded-field-cover.png')">
-      <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">戻る</button><h2 id="stageHeading" data-copy="stages">野原マップ</h2><button id="stageInfoBtn" class="icon-btn panel-utility" type="button" data-wp-battle-utility data-copy-aria-label="mapIntro" aria-label="野原のページを選びます。ページごとに折り方が増えます。" title="Field map help">i</button></header>
-      <p class="panel-intro" data-copy="mapIntro">野原のページを選びます。ページごとに折り方が増えます。</p>
-      <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail role="list"></div>
-      <nav class="stage-tabs" data-copy-aria-label="stageSections" aria-label="stageSections"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">野原マップ</button><span aria-hidden="true"></span></nav>
+      <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">戻る</button><h2 id="stageHeading" data-copy="stages">野原マップ</h2></header>
+      <div id="stageSelectionPage" class="stage-selection-page">
+        <p class="panel-intro" data-copy="mapIntro">野原のページを選びます。ページごとに折り方が増えます。</p>
+        <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div>
+      </div>
     </div>
     <div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
   </section>
 
-  <section id="battleScreen" class="screen panel-screen battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden aria-labelledby="battleHeading">
-    <div class="battle-canvas" data-wp-canvas-max-width="920" style="--wp-battle-art:url('/games/animal-folded-field/assets/animal-folded-field-background.png')">
-      <header id="battleHud" class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">戻る</button><div><h2 id="battleHeading" data-copy="title">おりたたみ野原</h2><p id="roundLabel" class="round-label"></p></div><div class="panel-head-actions"><span class="check-pill"><span data-copy="flips">折り数</span> <b id="flipCount">0</b></span><button id="battleInfoBtn" class="icon-btn panel-utility" type="button" data-wp-battle-utility data-copy-aria-label="moveHint" aria-label="タップで二つの葉が変わります。道は画面に残ります。" title="Field help">i</button></div></header>
+  <section id="battleScreen" class="screen panel-screen battle-screen" data-screen="battle" data-wp-standard-battle-screen hidden aria-labelledby="battleHeading">
+    <div class="battle-canvas" data-wp-canvas-max-width="920" data-wp-logical-battle-canvas style="--wp-battle-art:url('/games/animal-folded-field/assets/animal-folded-field-background.png')">
+      <header id="battleHud" class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">戻る</button><h2 id="battleHeading" data-copy="title">おりたたみ野原</h2></header>
       <div id="battleContent" class="battle-content">
-        <div class="goal-card"><div><span class="eyebrow" data-copy="targetPattern">目標の道</span><h3 id="roundTitle"></h3></div><p id="roundHint"></p></div>
-        <div class="pattern-summary"><span data-copy="targetPattern">目標の道</span><div id="targetPattern" class="pattern-row" role="img" aria-label="Target trail"></div></div>
-        <div class="pattern-summary current-summary"><span data-copy="currentPattern">いまの野原</span><div id="currentPattern" class="pattern-row" role="img" aria-label="Your field"></div><strong id="alignedCount" class="aligned-count"></strong></div>
+        <div id="battleFrameInfo" class="battle-frame-info"><p id="roundLabel" class="round-label"></p><span class="check-pill"><span data-copy="flips">折り数</span> <b id="flipCount">0</b></span></div>
+        <div class="goal-card"><div><span class="eyebrow" data-copy="targetPattern">目標の矢印</span><h3 id="roundTitle"></h3></div><p id="roundHint"></p></div>
+        <div class="pattern-summary"><span data-copy="targetPattern">目標の矢印</span><div id="targetPattern" class="pattern-row" role="img" aria-label="Target trail"></div></div>
+        <div class="pattern-summary current-summary"><span data-copy="currentPattern">今の葉</span><div id="currentPattern" class="pattern-row" role="img" aria-label="Your field"></div><strong id="alignedCount" class="aligned-count"></strong></div>
         <div id="flapBoard" class="flap-board" role="group" aria-label="Field flaps"></div>
         <p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p>
-        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">野原を確認</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">折りをリセット</button></div>
-        <p class="move-hint" data-copy="moveHint">タップで二つの葉が変わります。道は画面に残ります。</p>
+        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">確認</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">やり直す</button></div>
+        <p class="move-hint" data-copy="moveHint">全部一致すると自動クリア。戻す操作とヒントも使えます。</p>
       </div>
       <section id="resultScreen" class="result-substate" data-screen="result" hidden aria-labelledby="resultHeading">
         <div class="result-card"><div class="result-emblem" aria-hidden="true">✦</div><p class="kicker" data-copy="resultKicker">野帳の一ページ</p><h2 id="resultHeading"></h2><p id="resultText"></p><div id="resultBadges" class="result-badges" aria-label="Cleared field pages"></div><div class="result-actions"><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="resultStages">ステージ</button><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultHomeBtn" class="secondary-btn" type="button" data-copy="replay">リプレイ</button></div></div>
@@ -122,9 +126,15 @@
   <script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="locales.js?v=20261003-folded-field-text140-v1"></script>
-  <script src="game.js?v=20261018-folded-field-v12-audio-identity&wp-audio=1.0.0"></script>
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
+  <script src="stage-config.js?v=20261022-folded-field-v13-i9-stage-config"></script>
+  <script src="game.js?v=20261022-folded-field-v13-i9&wp-audio=1.0.0"></script>
+  <script src="/src/game-page-info.js?v=20261003-folded-field-text140-v1"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+  <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+  <script src="/src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+  <script src="/src/battle-canvas-standard.js?v=20261022-shared-battle-canvas-restore-mode-v1"></script>
+  <script src="frame.js?v=20261022-folded-field-v13-i9-frame"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="フォールド・フィールド";document.title="フォールド・フィールド | WeightPlay";},{once:true});</script>
-  <script src="/src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
 </body>
 </html>

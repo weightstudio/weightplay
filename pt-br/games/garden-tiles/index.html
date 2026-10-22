@@ -45,7 +45,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
   <meta name="twitter:title" content="Pet Garden Tiles | WeightPlay" />
     <meta name="twitter:description" content="Peças do Jardim Animal é um jogo de memória com 30 desafios salvos. Vire as peças para encontrar pares; seis capítulos mudam as regras e não há cronômetro por fase." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/garden-tiles.webp" />
@@ -150,7 +150,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-garden-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
+          script.src = "../../src/game-page-info.js?v=20261001-garden-tiles-text140-v1";
           script.dataset.gardenGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -167,7 +167,7 @@
       })();
     </script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Informações de Pet Garden Tiles">
 
     <div class="game-info-hero">
@@ -195,7 +195,7 @@
       <div class="game-info-section"><h3>Nota de design</h3><p>A dificuldade cresce com mudanças nas exigências de memória, não com uma contagem regressiva estressante. A seleção e a partida ocupam a área segura com um único Canvas responsivo em escala uniforme; telas horizontais baixas usam uma área lógica horizontal compatível. Botões nativos funcionam por toque e teclado, pares incorretos ficam visíveis tempo suficiente para aprender e o tempo de resposta pausa quando a página fica oculta. Prévia da manhã, Névoa do jardim, Brisa brincalhona e Desfile dos animais exercitam maneiras diferentes de lembrar sem perder o ritmo tranquilo.</p></div>
       <div class="game-info-section game-info-parent"><h3>Nota para famílias</h3><p>Pet Garden Tiles é destinado a maiores de 6 anos e para brincadeiras em família. As estrelas e o Relatório de habilidades resumem apenas a corrida local atual; não são um teste de inteligência, diagnóstico, avaliação de desenvolvimento ou comparação com outras crianças. A versão Kids não possui anúncios, login, chat ou solicitação de compra.</p></div>
       <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Quantos desafios existem?</dt><dd>São 30 em seis capítulos, com pontos de verificação em 5, 10, 15, 20, 25 e 30.</dd></div><div><dt>O Pet Garden Tiles é cronometrado?</dt><dd>Não. Garden Mist fecha a primeira carta escolhida após um curto período de tempo, mas nenhum nível tem contagem regressiva.</dd></div><div><dt>Por que as cartas se movem?</dt><dd>Playful Gust move cartas incomparáveis ​​​​após uma falha; Garden Parade os alterna após uma partida.</dd></div><div><dt>Como as estrelas são calculadas?</dt><dd>As estrelas usam tentativas completas de duas cartas. Cada tabuleiro limpo progride.</dd></div><div><dt>Is progress saved?</dt><dd>Sim. Os desbloqueios e as melhores estrelas permanecem neste navegador.</dd></div><div><dt>Suporta telefones e teclados?</dt><dd>Sim. Os botões de cartão nativos funcionam com controles de toque, ponteiro e teclado.</dd></div><div><dt>É gratuito e sem anúncios?</dt><dd>Sim. Não precisa de conta ou compra e a versão Kids não faz solicitação de publicidade.</dd></div><div><dt>O Relatório de Habilidades é um teste formal?</dt><dd>Não. Ele apenas relata pares, movimentos, novas tentativas e estrelas do desafio concluído.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Mais jogos relacionados</h3><p>Como este jogo pratica Memória, experimente estes:</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="star-memory" href="/pt-br/games/star-memory/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/star-memory.webp" data-final-src="/assets/weightplay-logo.png" alt="Memória de Estrela" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Memória de Estrela</strong><span>Memória de Estrela Animal é uma jornada de 30 fases para religar constelações de animais no céu noturno.</span></span></a><a class="game-info-related-card" data-game-id="animal-quiz" href="/pt-br/games/animal-quiz/"><span class="game-info-related-poster"><img src="/assets/animal-quiz/cover-block-v1.png" data-final-src="/assets/weightplay-logo.png" alt="Questionário sobre" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Questionário sobre</strong><span>Animal Quiz é um jogo de conhecimento infantil bilíngue gratuito com 30 fases salvas e dez animais diferentes em cada fase.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><p>Como este jogo pratica Memória, experimente estes:</p><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/star-memory/"><img src="/assets/interface7-redrawn/star-memory.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Memória de Estrela</strong><span>Memória de Estrela Animal é uma jornada de 30 fases para religar constelações de animais no céu noturno.</span></span></a><a class="game-info-related-card" href="/pt-br/games/animal-quiz/"><img src="/assets/animal-quiz/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Questionário sobre</strong><span>Animal Quiz é um jogo de conhecimento infantil bilíngue gratuito com 30 fases salvas e dez animais diferentes em cada fase.</span></span></a></div></div>
     </div>
   </section>
 </body>

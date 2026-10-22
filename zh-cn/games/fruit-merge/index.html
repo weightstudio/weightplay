@@ -49,12 +49,11 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><meta name="twitter:title" content="合成塔 | WeightPlay" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><meta name="twitter:title" content="合成塔 | WeightPlay" />
     <meta name="twitter:description" content="《合成高塔》包含自由计分和 30 个物理挑战关卡。六个章节会改变空间、风向、重力、投放顺序或目标规则，合并动物球即可晋级。" />
-    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/fruit-merge.webp" /><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/fruit-merge.webp" /><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
   <body>
     <main class="fruit-game" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="360">
@@ -193,7 +192,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-merge-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
+          script.src = "../../src/game-page-info.js?v=20261001-fruit-merge-text140-v1";
           script.dataset.mergeGameInfo = "idle";
           document.body.appendChild(script);
         };
@@ -208,7 +207,7 @@
         else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
 <section class="game-page-info game-page-info-static" aria-label="合成塔 游戏信息">
 
     <div class="game-info-hero">
@@ -235,7 +234,7 @@
       <div class="game-info-section"><h3>开发设计理念</h3><p>游戏使用固定 720×1040 Matter.js 棋盘，放在等比缩放的 Kids Canvas 内，因此手机与电脑的物理条件相同。30 关透过可执行的瞄准、力、重力、队列变化与五种成功条件建立深度，不是只提高分数。Kids 版本不发出广告请求，进度只留在目前浏览器。</p></div>
       <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>本游戏建议 6+ 与家庭玩家。后期会要求预测移动、记住固定队列并适应物理条件变化。技能报告只是本局游戏的友善整理，不是智力测验、诊断、发展评量或学校成绩。</p></div>
       <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>一共有几个挑战？</dt><dd>共有 30 关，并在第 5、10、15、20、25、30 关设置祭典检查关。</dd></div><div><dt>挑战模式和自由模式有什么不同？</dt><dd>挑战模式有目标、落球额度、存档解锁与指定物理规则；自由模式没有落球上限。</dd></div><div><dt>河流气流怎么运作？</dt><dd>它会对箱内移动中的球施加方向周期变化的侧向力。</dd></div><div><dt>山岳重力改变什么？</dt><dd>Matter.js 重力提高，球会更快落地，也更难依靠缓慢滚动修正。</dd></div><div><dt>固定队列是什么？</dt><dd>动物会依照已知的老鼠、兔兔与狐狸节奏出现，方便提前规划。</dd></div><div><dt>挑战进度会保存吗？</dt><dd>会，解锁、完成、选择与最佳分数会留在目前浏览器。</dd></div><div><dt>手机和电脑都能玩吗？</dt><dd>可以，支持触控、鼠标与键盘操作。</dd></div><div><dt>需要登录或付费吗？</dt><dd>不需要；Kids 版本免费、免登录且不发出广告请求。</dd></div><div><dt>技能报告是正式测验吗？</dt><dd>不是，它只整理本局游戏结果。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><p>因为这款游戏会练习 逻辑，也可以试试这些游戏：</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="snack-blocks" href="/zh-cn/games/snack-blocks/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/snack-blocks.webp" data-final-src="/assets/weightplay-logo.png" alt="零食方块" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">零食方块</strong><span>动物零食方块共有 30 个可存档关卡。</span></span></a><a class="game-info-related-card" data-game-id="animal-bubble-safari" href="/zh-cn/games/animal-bubble-safari/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-bubble-safari.webp" data-final-src="/assets/weightplay-logo.png" alt="泡泡探险" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">泡泡探险</strong><span>《动物泡泡探险》是一款免费双语 Kids 瞄准益智游戏，共有 30 个可保存关卡与六次草原检查。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><p>因为这款游戏会练习 逻辑，也可以试试这些游戏：</p><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-skyspire-drop/"><img src="/assets/interface7-redrawn/animal-skyspire-drop.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>天塔坠击</strong><span>旋转水晶环塔，引导菲亚穿越 30 座天空尖塔，对准安全缺口，并在诅咒区域终止坠落前蓄满彗星破击。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/snack-blocks/"><img src="/assets/interface7-redrawn/snack-blocks.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>零食方块</strong><span>动物零食方块共有 30 个可存档关卡。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-bubble-safari/"><img src="/assets/interface7-redrawn/animal-bubble-safari.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>泡泡探险</strong><span>《动物泡泡探险》是一款免费双语 Kids 瞄准益智游戏，共有 30 个可保存关卡与六次草原检查。</span></span></a></div></div>
     </div>
   </section>
 </body>

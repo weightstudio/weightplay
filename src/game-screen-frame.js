@@ -180,7 +180,7 @@
     }
     if (!document.querySelector('script[src*="battle-canvas-standard.js"]')) {
       const script = document.createElement("script");
-      script.src = `${new URL("battle-canvas-standard.js", sharedAssetBase).href}?v=20261021-shared-battle-canvas-config-v1`;
+      script.src = `${new URL("battle-canvas-standard.js", sharedAssetBase).href}?v=20261022-shared-battle-canvas-restore-mode-v1`;
       script.dataset.wpBattleStandard = "true";
       document.body.append(script);
     }
@@ -517,7 +517,10 @@
         for (const node of [entry.root,entry.header]) {
           // Leave a small rounding margin so transformed Canvas headers still
           // expose a physical 44px minimum hit target at fractional scales.
-          for (const key of ['--wp-frame-control-size','--wp-frame-control-size-physical','--wp-frame-physical-control-size','--wp-frame-lobby-return-width'])node.style.setProperty(key,`${44.25*inverse}px`,'important');
+          const requestedBattleControlSize=Number.parseFloat(entries.battle.root.dataset.wpFrameBattleControlSize||'');
+          const physicalControlSize=name==='battle'&&logicalBattleActionRoot&&Number.isFinite(requestedBattleControlSize)&&requestedBattleControlSize>0
+            ? Math.max(requestedBattleControlSize,requestedBattleControlSize*inverse) : 44.25*inverse;
+          for (const key of ['--wp-frame-control-size','--wp-frame-control-size-physical','--wp-frame-physical-control-size','--wp-frame-lobby-return-width'])node.style.setProperty(key,`${physicalControlSize}px`,'important');
           node.style.setProperty('--wp-frame-header-height',`${56*inverse}px`,'important');
           node.style.setProperty('--wp-play-unit',`${inverse}px`);
           node.style.setProperty('--wp-play-control',`${48*inverse}px`);
@@ -533,6 +536,14 @@
       }
     }
     const schedulePlayLayout=()=>{if(playUI&&!playLayoutFrame)playLayoutFrame=requestAnimationFrame(syncPlayLayout);};
+    if (logicalBattleActionRoot) listen(logicalBattleActionRoot, 'transitionend', event => {
+      if (active !== 'battle' || event.target !== logicalBattleActionRoot || event.propertyName !== 'opacity') return;
+      // Battle Canvas activation can begin at opacity 0. Its first synchronous
+      // fit then correctly ignores the not-yet-visible root; settle the shared
+      // canvas and its physical header track when the scene transition ends.
+      window.WeightPlayBattleCanvas?.sync?.();
+      syncPlayLayout();
+    });
     const playResize=playUI ? new ResizeObserver(schedulePlayLayout) : null;
     if(playUI){
       for(const name of ['stage','battle'])if(entries[name])playResize.observe(entries[name].root);
@@ -620,6 +631,7 @@
         if(playUI&&['stage','battle'].includes(name)) {
           if(playLayoutFrame)cancelAnimationFrame(playLayoutFrame);
           playLayoutFrame=0;
+          if(name==='battle'&&entries.battle.root.hasAttribute('data-wp-frame-battle-control-size'))window.WeightPlayBattleCanvas?.sync?.();
           // Install the scene's physical control/canvas geometry before the
           // transition returns to its caller and before the next paint. Resize
           // observers continue to schedule later viewport changes.
@@ -731,7 +743,7 @@
       // row or intercept events over the play surface.
       if (oldHeader && oldHeader !== headerInfo && !oldHeader.children.length) oldHeader.remove();
     }
-    const frame=mount({root,scenes,localeSelect});
+    const frame=mount({root,scenes,localeSelect,playUI:document.body?.dataset.wpPlayUi==='1'});
     const visible=node=>node&&!node.hidden&&!node.classList.contains('is-hidden')&&getComputedStyle(node).display!=='none';
     const activate=target=>{
       const name=typeof target==='string'?target:Object.keys(scenes).find(k=>scenes[k].root===target);
@@ -953,6 +965,7 @@
           : gameId === "animal-footprint-folio" ? "20260913-footprint-folio-interface7-guide-v1"
           : gameId === "casino" ? "20260901-casino-locale-v18d"
           : gameId === "freecell-solitaire" ? "20260905-freecell-es-guide-v30"
+          : gameId === "yukon-solitaire" ? "20261014-guide-related-i9-v1"
           : gameId === "sliding-15" ? "20261010-sliding15-static-guide-r1"
           : "20260817-bus-jam-guide-v12";
       script.src = `${new URL("game-page-info.js", sharedAssetBase).href}?v=${gameInfoCacheTag}`;

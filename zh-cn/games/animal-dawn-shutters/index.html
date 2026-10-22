@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="zh-Hans">
 <head>
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script data-wp-route-locale-init>(function(){const map={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const segment=window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();const locale=map[segment]||"zh-Hans";window.__WEIGHTPLAY_ROUTE_LOCALE__=locale;document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";try{localStorage.setItem("wp-locale",locale);localStorage.setItem("weightPlayLocale",locale);}catch{}})();</script>
     <base href="/games/animal-dawn-shutters/" />
+  <script src="/src/game-page-info.js?v=20261022-guide-static-card-render-v1" defer></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-dawn-shutters/" />
@@ -26,12 +26,18 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-game-id" content="animal-dawn-shutters">
   <meta name="weightplay-audience" content="general">
-    <meta name="weightplay-game-version" content="v5">
-  <meta name="weightplay-interface-version" content="6">
+    <meta name="weightplay-game-version" content="v7">
+  <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="把每扇动物窗调到正确晨光，打开安静的小屋。" />
   <title>晨光百叶窗 | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260913-dawn-shutters-v5-guide-depth">
+  <link rel="stylesheet" href="style.css?v=20261022-dawn-shutters-v7-i9-v1">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
+  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
+  <link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20261022-shared-battle-canvas-restore-mode-v1">
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/stage-rail-i9.css?v=20261016-shared-play1">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="晨光百叶窗 | WeightPlay" />
@@ -73,41 +79,97 @@
   }
 }
     </script>
-    <link rel="stylesheet" href="/src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
-<body data-audience="general" data-wp-audience="general" data-runtime-localize="off" data-wp-game-id="animal-dawn-shutters" data-wp-game-version="v5" data-wp-game-owned-guide="true" data-screen="main">
-  <div id="app">
-    <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-standard-main-screen data-wp-main-screen>
+  </head>
+<body data-audience="general" data-wp-audience="general" data-runtime-localize="off" data-wp-game-id="animal-dawn-shutters" data-wp-game-version="v7" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-screen="main">
+  <div id="app" data-wp-frame-root data-wp-play-ui="1">
+    <main id="mainScreen" class="screen main-screen wp-standard-main-screen" data-screen="main" data-wp-standard-main-screen data-wp-main-screen>
       <header class="topbar main-header">
         <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" data-copy-aria-label="backHome" aria-label="返回 WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"></a>
-        <strong class="wp-shell-main-title" id="main-header-title" data-copy="title">晨光百叶窗</strong>
-        <div class="topbar-actions"><button id="mainSettingsBtn" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-expanded="false" aria-controls="settingsPanel">⚙ <span data-copy="settings">设置</span></button></div>
+        <strong class="wp-shell-main-title" id="main-header-title" data-wp-frame-title data-copy="title">晨光百叶窗</strong>
       </header>
-      <div class="main-content">
-        <img class="cover-art main-cover" src="assets/animal-dawn-shutters-cover-v2.png" alt="" aria-hidden="true" draggable="false">
-        <div class="main-copy">
+      <div id="mainWorkspace" class="wp-standard-main-composition">
+          <div class="wp-standard-main-poster"><img class="cover-art main-cover wp-standard-main-poster-media" data-wp-frame-poster src="assets/animal-dawn-shutters-cover-v2.png" alt="" aria-hidden="true" draggable="false"></div>
+          <div class="wp-standard-main-copy main-content main-copy" data-wp-frame-copy>
           <p class="eyebrow" data-copy="kicker">苔壳塔罗的晨光房间</p>
           <h1 data-copy="title">晨光百叶窗</h1>
-          <p class="lede" data-copy="intro">调整三扇百叶窗，让房间接住指定的晨光。</p>
+          <p class="lede" data-wp-frame-summary data-copy="intro">调整三扇百叶窗，让房间接住指定的晨光。</p>
           <p id="mainSummary" class="main-summary" data-copy="summary">六个晨光弧线，三十间安静房间，一次做出一个光线决定。</p>
-          <p id="mainProgress" class="main-progress" role="status" aria-live="polite"></p>
-          <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">开始游戏</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">关卡</button></div>
-        </div>
+          <p id="mainProgress" class="main-progress" data-wp-frame-progress role="status" aria-live="polite"></p>
+          <div class="hero-actions"><button id="startBtn" class="primary-btn wp-standard-main-start" type="button" data-wp-frame-action="primary" data-wp-main-start data-copy="start">开始游戏</button></div>
+          </div>
       </div>
       <section id="settingsPanel" class="settings-panel wp-shell-settings-popover" role="dialog" hidden aria-labelledby="settingsHeading"><div class="settings-head"><h2 id="settingsHeading" data-copy="settings">设置</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">关闭</button></div><label class="setting-row"><span data-copy="language">语言</span><select id="languageSelect" data-copy-aria-label="language" aria-label="语言"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label><button id="soundBtn" class="secondary-btn setting-sound" data-sound-toggle type="button" aria-pressed="true"></button></section>
     </main>
-    <section id="gameGuide" class="game-page-info game-page-info-static" data-screen="main" data-wp-game-guide data-runtime-localize="off" aria-label="晨光百叶窗游戏信息"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>晨光百叶窗</h2><p>读懂指定晨光，调整三扇独立百叶窗，跨越六个五房间晨光弧线，温柔唤醒动物房间。</p><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>光线校准益智游戏</span><span>三段式百叶窗益智题</span></div></div><div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>光线校准</strong></div><div class="game-info-fact"><span>流程</span><strong>30 间房间・6 个弧线</strong></div><div class="game-info-fact"><span>操作</span><strong>触控或鼠标</strong></div></div></div><div class="game-info-sections" data-wp-guide-depth="true"><div class="game-info-section"><h3>玩法</h3><ol><li>比较目标光条与三扇百叶窗。</li><li>点击百叶窗，在关闭、细缝与打开之间循环。</li><li>错误尝试会保留在画面上，慢慢调整再试一次。</li></ol></div><div class="game-info-section"><h3>结果与保存</h3><p>六个五房间弧线共 30 房。完成一房会解锁下一房，已完成房间仍可重玩。本地存储可用时，进度只保存在此浏览器；完成第 30 房也会记录该房点击数作为最佳成绩。</p></div><div class="game-info-section"><h3>小提示</h3><p>从左到右阅读三条光线。每扇百叶窗都会在关闭、细缝与打开间循环，错误检查不会藏起你尝试的光型。</p></div><div class="game-info-section"><h3>房间任务</h3><p>每个房间都要调整三扇独立百叶窗，对上三条指定晨光。画面上的目标就是规则，没有藏起来的倒计时。</p></div><div class="game-info-section"><h3>三种光线状态</h3><p>关闭不会透光，细缝提供窄幅的中间亮度，打开则是最宽的光。从左到右比较三个位置，三个数值都符合才算完成。</p></div><div class="game-info-section"><h3>流程与重玩</h3><p>30 间原创房间分成六个五房间晨光弧线。完成一间只会开启下一间；已完成的房间会留在晨光地图中供重玩。</p></div><div class="game-info-section"><h3>修正循环</h3><p>检查错误时，三扇窗的设置都会保留，画面只显示一般提示，不会指出要改哪一扇。重新比较每条光线，调整一扇窗后再检查。重置会让当前房间的三扇窗都关闭；已完成房间仍会保留。</p></div><div class="game-info-section"><h3>保存范围</h3><p>本地存储可用时，已完成的房间会保存在这个浏览器。完成第 30 房时，也会记录该房的点击数作为最佳成绩；这些数据不会同步到其他设备，清除网站数据可能会移除进度。</p></div><div class="game-info-section"><h3>第 1 房示例</h3><p>第 1 房开始时三扇窗都关闭。目标从左到右是“打开、细缝、关闭”：点第 1 扇两下、第 2 扇一下，第 3 扇保持关闭。三次点击就能对上三条光线。</p></div><div class="game-info-section"><h3>常见问题</h3><dl><div><dt>共有多少间房间？</dt><dd>共有 30 间原创房间，分成六个五房间的晨光弧线。</dd></div><div><dt>三种光线状态代表什么？</dt><dd>关闭没有光，细缝是窄幅的中间亮度，打开提供最宽的光。</dd></div><div><dt>检查错误时会怎样？</dt><dd>提示只会说房间尚未完成，不会指出要改哪一扇窗。设置会留在画面上，你可以重新比较光线、调整一扇窗后再检查。</dd></div><div><dt>房间如何解锁？</dt><dd>正确完成一间会开启下一间，已完成房间会留在晨光地图中供重玩。</dd></div><div><dt>进度保存在哪里？</dt><dd>本地存储可用时，已完成的房间会保存在这个浏览器。完成第 30 房时，也会记录该房点击数作为最佳成绩；进度不会同步到其他设备。</dd></div></dl></div><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><p>再试试 WeightPlay 另一款依靠清楚信号与细心观察的益智游戏。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-signal-scout" href="/zh-cn/games/animal-signal-scout/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-signal-scout.webp" data-final-src="/assets/weightplay-logo.png" alt="巡逻讯号配对" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">巡逻讯号配对</strong><span>读懂三张侦察笔记，把动物配对到信号颜色，再按可见巡逻顺序点击。</span></span></a><a class="game-info-related-card" data-game-id="lights-out" href="/zh-cn/games/lights-out/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/lights-out.webp" data-final-src="/assets/weightplay-logo.png" alt="熄灯游戏" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">熄灯游戏</strong><span>点击一格及相邻格，关掉所有灯并挑战最少步数。</span></span></a></div></div></div></section>
-    <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden><div class="stage-canvas"><header class="panel-head"><button id="stageBackBtn" class="back-btn" data-wp-return="stage" type="button" data-copy="back">返回</button><h2 data-copy="stages">关卡</h2><button id="stageInfoBtn" class="utility-button panel-utility" type="button" data-copy-aria-label="help" aria-label="晨光地图说明">i</button></header><p class="panel-intro" data-copy="mapIntro">六个晨光弧线从简单对比逐步加入混合光型。完成房间即可开启下一间。</p><div class="stage-support"><img src="assets/animal-dawn-shutters-taro-guide-v1.png" alt="" aria-hidden="true"><p data-copy="guideThree">错误尝试会保留在画面上，慢慢调整再试一次。</p></div><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" data-copy-aria-label="stages" aria-label="关卡"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">关卡</button><span aria-hidden="true"></span></nav></div></section>
-    <section id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden><div class="battle-canvas"><header class="panel-head"><button id="battleBackBtn" class="back-btn" data-wp-return="battle" type="button" data-copy="back">返回</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="utility-button panel-utility" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound" aria-label="音效">♫</button></header><div id="battlePanel"><div class="mission-row"><div><p class="eyebrow" data-copy="roomKicker">晨光房间</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div><div class="target-card"><span data-copy="target">指定晨光</span><div id="targetBars" class="light-bars" data-copy-aria-label="target" aria-label="指定晨光"></div></div><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div id="shutterBoard" class="shutter-board" data-copy-aria-label="shutters" aria-label="晨光百叶窗"></div><p class="move-hint" data-copy="moveHint">点击每扇百叶窗循环光线。没有计时。</p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">检查房间</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">重设百叶窗</button></div></div><div id="resultPanel" class="result-panel" hidden><div class="result-character"><img src="assets/animal-dawn-shutters-taro-guide-v1.png" alt="" aria-hidden="true"></div><p class="eyebrow" data-copy="resultKicker">房间结果</p><h2 id="resultHeading"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">关卡</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">回到开始</button></div></div></div></section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-screen="main" data-wp-game-guide data-runtime-localize="off" aria-label="晨光百叶窗游戏信息"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>晨光百叶窗</h2><p>读懂指定晨光，调整三扇独立百叶窗，跨越六个五房间晨光弧线，温柔唤醒动物房间。</p><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>光线校准益智游戏</span><span>三段式百叶窗益智题</span></div></div><div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>光线校准</strong></div><div class="game-info-fact"><span>流程</span><strong>30 间房间・6 个弧线</strong></div><div class="game-info-fact"><span>操作</span><strong>触控或鼠标</strong></div></div></div><div class="game-info-sections" data-wp-guide-depth="true"><div class="game-info-section"><h3>玩法</h3><ol><li>比较目标光条与三扇百叶窗。</li><li>点击百叶窗，在关闭、细缝与打开之间循环。</li><li>错误尝试会保留在画面上，慢慢调整再试一次。</li></ol></div><div class="game-info-section"><h3>结果与保存</h3><p>六个五房间弧线共 30 房。完成一房会解锁下一房，已完成房间仍可重玩。本地存储可用时，进度只保存在此浏览器；完成第 30 房也会记录该房点击数作为最佳成绩。</p></div><div class="game-info-section"><h3>小提示</h3><p>从左到右阅读三条光线。每扇百叶窗都会在关闭、细缝与打开间循环，错误检查不会藏起你尝试的光型。</p></div><div class="game-info-section"><h3>房间任务</h3><p>每个房间都要调整三扇独立百叶窗，对上三条指定晨光。画面上的目标就是规则，没有藏起来的倒计时。</p></div><div class="game-info-section"><h3>三种光线状态</h3><p>关闭不会透光，细缝提供窄幅的中间亮度，打开则是最宽的光。从左到右比较三个位置，三个数值都符合才算完成。</p></div><div class="game-info-section"><h3>流程与重玩</h3><p>30 间原创房间分成六个五房间晨光弧线。完成一间只会开启下一间；已完成的房间会留在晨光地图中供重玩。</p></div><div class="game-info-section"><h3>修正循环</h3><p>检查错误时，三扇窗的设置都会保留，画面只显示一般提示，不会指出要改哪一扇。重新比较每条光线，调整一扇窗后再检查。重置会让当前房间的三扇窗都关闭；已完成房间仍会保留。</p></div><div class="game-info-section"><h3>保存范围</h3><p>本地存储可用时，已完成的房间会保存在这个浏览器。完成第 30 房时，也会记录该房的点击数作为最佳成绩；这些数据不会同步到其他设备，清除网站数据可能会移除进度。</p></div><div class="game-info-section"><h3>第 1 房示例</h3><p>第 1 房开始时三扇窗都关闭。目标从左到右是“打开、细缝、关闭”：点第 1 扇两下、第 2 扇一下，第 3 扇保持关闭。三次点击就能对上三条光线。</p></div><div class="game-info-section"><h3>常见问题</h3><dl><div><dt>共有多少间房间？</dt><dd>共有 30 间原创房间，分成六个五房间的晨光弧线。</dd></div><div><dt>三种光线状态代表什么？</dt><dd>关闭没有光，细缝是窄幅的中间亮度，打开提供最宽的光。</dd></div><div><dt>检查错误时会怎样？</dt><dd>提示只会说房间尚未完成，不会指出要改哪一扇窗。设置会留在画面上，你可以重新比较光线、调整一扇窗后再检查。</dd></div><div><dt>房间如何解锁？</dt><dd>正确完成一间会开启下一间，已完成房间会留在晨光地图中供重玩。</dd></div><div><dt>进度保存在哪里？</dt><dd>本地存储可用时，已完成的房间会保存在这个浏览器。完成第 30 房时，也会记录该房点击数作为最佳成绩；进度不会同步到其他设备。</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>相关游戏</h3><p>再试试 WeightPlay 另一款依靠清楚信号与细心观察的益智游戏。</p><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-signal-scout/"><img src="/assets/interface7-redrawn/animal-signal-scout.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>巡逻讯号配对</strong><span>读懂三张侦察笔记，把动物配对到信号颜色，再按可见巡逻顺序点击。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>熄灯游戏</strong><span>点击一格及相邻格，关掉所有灯并挑战最少步数。</span></span></a></div></div></div></section>
+    <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-frame-logical-header="stage" data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="/assets/lobby-block-atmosphere.svg" hidden>
+        <header class="panel-head">
+          <button id="stageBackBtn" class="back-btn" data-wp-return="stage" type="button" data-copy="back">返回</button>
+          <h2 data-copy="stages">关卡</h2>
+        </header>
+        <div id="stageWorkspace" class="stage-workspace">
+          <span id="stageProgress"></span>
+          <div id="stageSelectionPage" class="stage-selection-page">
+            <div id="stageRail" data-wp-stage-rail></div>
+          </div>
+        </div>
+        <nav class="stage-tabs" data-wp-frame-nav data-copy-aria-label="stages" aria-label="关卡">
+          <button type="button" aria-current="page" data-copy="stages">关卡</button>
+        </nav>
+    </section>
+    <section id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-frame-battle-control-size data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
+        <header class="panel-head">
+          <button id="battleBackBtn" class="back-btn" data-wp-return="battle" type="button" data-copy="back">返回</button>
+          <h2 id="battleHeading"></h2>
+        </header>
+        <div id="battleWorkspace" class="battle-workspace">
+          <div id="battlePanel">
+            <strong id="battleRoomProgress"></strong><span id="progressBadge" class="progress-badge"></span>
+            <div class="mission-row">
+              <div>
+                <p class="eyebrow" data-copy="roomKicker">晨光房间</p>
+                <p id="roundHint" class="panel-intro"></p>
+              </div>
+            </div>
+            <div class="target-card">
+              <span data-copy="target">指定晨光</span>
+              <div id="targetBars" class="light-bars" data-copy-aria-label="target" aria-label="指定晨光"></div>
+            </div>
+            <p id="battleStatus" class="feedback" role="status" aria-live="polite"></p>
+            <div id="shutterBoard" class="shutter-board" data-copy-aria-label="shutters" aria-label="晨光百叶窗"></div>
+            <p class="move-hint" data-copy="moveHint">点击每扇百叶窗循环光线。没有计时。</p>
+            <div class="battle-actions">
+              <button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">检查房间</button>
+              <button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">重设百叶窗</button>
+            </div>
+          </div>
+          <div id="resultPanel" class="result-panel" hidden>
+            <div class="result-character"><img src="assets/animal-dawn-shutters-taro-guide-v1.png" alt="" aria-hidden="true"></div>
+            <p class="eyebrow" data-copy="resultKicker">房间结果</p>
+            <h2 id="resultHeading"></h2>
+            <p id="resultText"></p>
+            <div id="resultStats" class="result-stats"></div>
+            <div class="result-actions">
+              <button id="resultPrimaryBtn" class="primary-btn" type="button"></button>
+              <button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">关卡</button>
+              <button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">回到开始</button>
+            </div>
+          </div>
+        </div>
+    </section>
     <div class="stage-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
     <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script><script>window.WONDER_SITE?.localization&&(window.WONDER_SITE.localization.useLocaleRoutes=false);</script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/zh-cn.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script>window.WONDER_SITE?.localization&&(window.WONDER_SITE.localization.useLocaleRoutes=false);</script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-cn.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
-  <script src="locales.js?v=20261003-dawn-shutters-textgrowth140"></script><script src="game.js?v=20261003-dawn-shutters-textgrowth140"></script>
-  <script src="/src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="locales.js?v=20261003-dawn-shutters-textgrowth140"></script>
+  <script src="stage-config.js?v=20261022-dawn-shutters-v7-i9-v1"></script>
+  <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+  <script src="/src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="/src/game-screen-frame.js?v=20261022-shared-battle-transition-settle-v1"></script>
+  <script src="/src/battle-canvas-standard.js?v=20261022-shared-battle-canvas-restore-mode-v1"></script>
+  <script src="game.js?v=20261022-dawn-shutters-v7-i9-v1"></script>
+  <script src="frame.js?v=20261022-dawn-shutters-v7-i9-v1"></script>
 </body>
 </html>

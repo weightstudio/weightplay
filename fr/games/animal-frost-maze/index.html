@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide />
     <link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-shell-standard />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
     <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
     <script defer src="mastery.js?v=20260908-mastery-v15"></script>
     <script defer src="game.js?v=20261021-frost-i9"></script><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
@@ -64,9 +64,11 @@
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
         <div id="main-content" class="main-content">
           <img class="five-game-cover main-cover" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-frost-maze.webp" alt="" aria-hidden="true" />
-          <p class="lede main-summary" data-wp-frame-summary>Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
-          <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress>Best rooms: 0</p>
-          <button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button>
+          <div class="main-copy" data-wp-frame-copy>
+            <p class="lede main-summary" data-wp-frame-summary>Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
+            <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress>Best rooms: 0</p>
+            <button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button>
+          </div>
         </div>
       </section>
       <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
@@ -121,12 +123,12 @@
       <div class="game-info-section"><h3>Note de conception</h3><p>Modifier la glace change le parcours et a un coût : la briser ouvre un passage, la construire dévie le rôdeur. Les 20 premières salles rendent lisible son rythme de huit déplacements ; dans les salles 21 à 30, chaque modification réussie compte aussi dans le timing. Les cinq dernières montrent la case de départ dorée : ramasser la dernière baie n’est donc pas toujours le dernier geste.</p></div>
       <div class="game-info-section game-info-parent"><h3>Informations du joueur et sauvegarde</h3><p>La meilleure salle terminée et le meilleur résultat d’étoiles de chaque salle sont conservés dans ce navigateur. Effacer les données du site supprime ces records.</p></div>
       <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Que dois-je ramasser ?</dt><dd>Ramassez toutes les baies de la salle. Dans les salles 26 à 30, revenez à la case de départ dorée après la dernière baie.</dd></div><div><dt>Quand le rôdeur avance-t-il ?</dt><dd>Il avance après huit déplacements réussis d’une case. À partir de la salle 21, chaque destruction ou construction de glace réussie le fait aussi avancer ; les mouvements bloqués et modifications invalides ne le font pas.</dd></div><div><dt>Que fait Construire de la glace ?</dt><dd>Cette action pose un mur court dans la case libre devant vous, si elle est valide, et modifie le parcours du rôdeur. Dans les salles 21 à 30, cette modification réussie le fait aussi avancer.</dd></div><div><dt>Qu’est-ce qui change dans les salles 21 à 25 ?</dt><dd>Chaque modification de glace réussie fait avancer le rôdeur : briser ou construire un mur change donc le labyrinthe et le rythme de la poursuite. Une modification invalide ne le déplace pas.</dd></div><div><dt>Comment gagner des étoiles ?</dt><dd>Terminer rapporte une étoile. Atteindre la limite de modifications et l’objectif de pas affiché rapporte une étoile supplémentaire pour chaque objectif. La limite est de quatre modifications dans les salles 1 à 20 et de deux dans les salles 21 à 30. Rater un objectif n’empêche pas la réussite.</dd></div><div><dt>Dans quelles salles faut-il revenir au départ ?</dt><dd>Dans les salles 26 à 30. Ramassez toutes les baies, puis revenez à la case dorée pour terminer.</dd></div><div><dt>Quelle progression est sauvegardée ?</dt><dd>La meilleure salle terminée et le meilleur nombre d’étoiles de chaque salle restent dans ce navigateur. Effacer les données du site les supprime ; elles ne sont pas synchronisées entre appareils.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Jeux associés</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-unblock" data-related-game="animal-unblock" href="/fr/games/animal-unblock/"><img src="/assets/interface7-redrawn/animal-unblock.webp" alt="Unblock Trail" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-runtime-localize="off">Unblock Trail</strong><span data-frost-related-description>Slide horizontal and vertical blocks along their lanes to clear a path to the exit.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Jeux associés</h3><div class="game-info-related"><a class="game-info-related-card" href="/fr/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Cargaison</strong><span>Marchez, poussez et tirez des cargaisons runiques dans 30 entrepôts célestes conçus à la main.</span></span></a></div></div>
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+    <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
     <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
     <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
     <script src="stage-config.js?v=20261021-frost-i9"></script>

@@ -103,8 +103,14 @@ export function mountCampaignBoard(host,initial,{onTile,faceLabel,blockLabel,ord
  const observer=new win.ResizeObserver(fit);let observing=false;
  const setActive=active=>{
   if(disposed)return;
-  if(active&&!observing){observing=true;observer.observe(host);fit();}
-  else if(!active&&observing){observing=false;observer.unobserve(host);clearEffects();}
+   if(active){
+    host.classList.add('mjc-board-host');
+    if(!observing){observing=true;observer.observe(host);fit();}
+   }else{
+    host.classList.remove('mjc-board-host');
+    if(observing){observing=false;observer.unobserve(host);}
+    clearEffects();
+   }
  };
  setActive(true);
  const dispose=()=>{if(disposed)return;disposed=true;observer.disconnect();observing=false;clearEffects();abort.abort();nodes.clear();board.remove();host.classList.remove('mjc-board-host');delete host.dataset.tileWidth;};

@@ -1,82 +1,118 @@
-/* Game content binding only. Header, preferences and skin belong to the shared core. */
+/* Triple Match supplies game content; shared Frame and Play UI own all chrome and Stage geometry. */
 (() => {
-  "use strict";
-  let frame;
-  window.mountTripleMatchFrame = () => {
-    if (frame) return frame;
-    const root = document.getElementById("gameFrame");
-    const main = document.getElementById("mainScreen");
-    const stage = document.getElementById("stageScreen");
-    const battle = document.querySelector(".logical-canvas.battle-canvas");
-    const mainHeader = main.querySelector(".main-header");
-    const stageHeader = stage.querySelector(".stage-header");
-    const battleHeader = battle.querySelector(".battle-header");
-    const mainContent = main.querySelector(".main-hero");
-    const battleContent = document.getElementById("battleLive");
-    const feedback = document.getElementById("feedback");
-    feedback.classList.add("battle-feedback");
-    feedback.setAttribute("role", "status");
-    feedback.setAttribute("aria-atomic", "true");
-    feedback.tabIndex = 0;
-    const trayCounter = document.createElement("b");
-    trayCounter.id = "trayCounter";
-    trayCounter.className = "tray-counter";
-    trayCounter.setAttribute("aria-hidden", "true");
-    document.querySelector(".tray-wrap").append(trayCounter);
-    document.querySelector("#magnetBtn .tool-icon").textContent = "⌕";
-    document.querySelector("#shuffleBtn .tool-icon").textContent = "⇄";
-    battleContent.querySelectorAll(".tool-icon").forEach(icon => icon.setAttribute("aria-hidden", "true"));
-    const localeSelect = document.getElementById("localeSelect");
-    if (!window.WeightPlayScreenFrame || !mainHeader || !stageHeader || !battleHeader) {
-      throw new Error("TRIPLE_MATCH_SHARED_FRAME_REQUIRED");
-    }
-    root.setAttribute("data-wp-frame-root", "");
-    mainHeader.querySelector("[data-wp-game-title]").setAttribute("data-wp-frame-title", "");
-    const stageTitle = stageHeader.querySelector("strong");
-    stageTitle.setAttribute("data-wp-frame-title", "");
-    stageTitle.hidden = true;
-    const battleTitle = document.createElement("strong");
-    battleTitle.setAttribute("data-wp-frame-title", "");
-    battleHeader.append(battleTitle);
-    const retainedLocale = document.createElement("div");
-    retainedLocale.hidden = true;
-    retainedLocale.append(localeSelect);
-    root.append(retainedLocale);
-    mainHeader.querySelector(".locale-control")?.remove();
-    mainContent.querySelector(".poster").setAttribute("data-wp-frame-poster", "");
-    const copy = mainContent.querySelector(".main-copy");
-    copy.setAttribute("data-wp-frame-copy", "");
-    copy.querySelector("h1").hidden = true;
-    copy.querySelector('[data-t="pitch"]').setAttribute("data-wp-frame-summary", "");
-    document.getElementById("mainProgress").setAttribute("data-wp-frame-progress", "");
-    document.getElementById("startBtn").setAttribute("data-wp-frame-action", "primary");
-    const stageContent = document.createElement("div");
-    stageContent.className = "triple-stage-content";
-    const nav = stage.querySelector(".stage-tabs");
-    [...stage.children].filter(node => node !== stageHeader && node !== nav)
-      .forEach(node => stageContent.append(node));
-    stageHeader.after(stageContent);
-    nav.setAttribute("data-wp-frame-nav", "");
-    nav.querySelectorAll("button").forEach(node => node.setAttribute("data-wp-frame-action", "tab"));
-    root.querySelectorAll(".dialog-card button").forEach(node => {
-      node.setAttribute("data-wp-frame-action", node.classList.contains("primary") ? "primary" : "secondary");
-    });
-    // Preserve game-owned values and listeners; move them, never clone them.
-    const hud = battleHeader.querySelector(".hud");
-    battleContent.prepend(hud);
-    const context = battleHeader.querySelector(".battle-title");
-    context.setAttribute("data-wp-frame-info-context", "");
-    context.className = "triple-battle-context";
-    context.append(document.getElementById("helpBtn"));
-    battleContent.prepend(context);
-    retainedLocale.append(document.getElementById("soundBtn"));
-    battle.prepend(battleHeader);
-    frame = window.WeightPlayScreenFrame.mount({root, localeSelect, scenes: {
-      main: {root: main, header: mainHeader, content: mainContent},
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const root = $('gameFrame');
+  const main = $('mainScreen');
+  const stage = $('stageScreen');
+  const battle = document.querySelector('.logical-canvas.battle-canvas');
+  const game = window.__animalTripleMatch;
+  const locale = $('localeSelect');
+  const hero = main?.querySelector('.main-hero');
+  const copy = hero?.querySelector('.main-copy');
+  const poster = hero?.querySelector('.poster');
+  const mainHeader = main?.querySelector('.main-header');
+  const stageHeader = stage?.querySelector('.stage-header');
+  const battleContent = $('battleLive');
+  const battleHeader = battleContent?.querySelector('.battle-header');
+  const stageRail = $('stageRail');
+  const stageSummary = $('stageSummary');
+  const stageBack = $('stageBack');
+  const stageTitle = stageHeader?.querySelector('strong');
+  if (!root || !main || !stage || !battle || !game || !locale || !hero || !copy || !poster
+      || !mainHeader || !stageHeader || !battleHeader || !battleContent || !stageRail || !stageSummary
+      || !stageBack || !stageTitle || !window.WeightPlayScreenFrame
+      || !window.WeightPlayPlayUI || !window.createAnimalTripleMatchStageConfig) {
+    throw new Error('TRIPLE_MATCH_I9_SHARED_FRAME_REQUIRED');
+  }
+
+  const mainTitle = mainHeader.querySelector('[data-wp-game-title]');
+  mainTitle?.setAttribute('data-wp-frame-title', '');
+  hero.classList.remove('main-hero');
+  copy.dataset.wpFrameCopy = '';
+  copy.querySelector('h1')?.setAttribute('hidden', '');
+  copy.querySelector('[data-t="pitch"]')?.setAttribute('data-wp-frame-summary', '');
+  poster.dataset.wpFramePoster = '';
+  $('mainProgress').dataset.wpFrameProgress = '';
+  $('startBtn').dataset.wpFrameAction = 'primary';
+
+  const hiddenLocale = document.createElement('div');
+  hiddenLocale.hidden = true;
+  hiddenLocale.append(locale, $('soundBtn'));
+  locale.closest('.locale-control')?.remove();
+  root.append(hiddenLocale);
+
+  stageTitle.hidden = true;
+  stageTitle.dataset.wpFrameTitle = '';
+  const stageContent = document.createElement('div');
+  stageContent.className = 'triple-stage-content';
+  stage.querySelector('.stage-tabs')?.remove();
+  [...stage.children].filter(node => node !== stageHeader).forEach(node => stageContent.append(node));
+  stageHeader.after(stageContent);
+
+  const battleTitle = battleHeader.querySelector('.battle-title');
+  const hud = battleHeader.querySelector('.hud');
+  const hudStats = [...(hud?.children || [])];
+  battleTitle.querySelectorAll('[data-wp-frame-stat]').forEach(node => node.removeAttribute('data-wp-frame-stat'));
+  const help = $('helpBtn');
+  const battleFrameTitle = document.createElement('strong');
+  battleFrameTitle.hidden = true;
+  battleFrameTitle.dataset.wpFrameTitle = '';
+  battleHeader.append(battleFrameTitle);
+  const battleInfo = document.createElement('div');
+  battleInfo.append(battleTitle, ...hudStats);
+  hud.remove();
+  battleContent.prepend(battleInfo);
+  battleContent.querySelector('.tools')?.append(help);
+  help.dataset.wpFrameAction = 'secondary';
+  battleHeader.remove();
+  battle.prepend(battleHeader);
+
+  const frame = window.WeightPlayScreenFrame.mount({
+    root,
+    localeSelect: locale,
+    playUI: true,
+    scenes: {
+      main: {root: main, header: mainHeader, content: hero},
       stage: {root: stage, header: stageHeader, content: stageContent},
-      battle: {root: battle, header: battleHeader, content: battleContent, headerInfo: hud},
-    }});
-    frame.activate("main");
-    return frame;
+      battle: {root: battle, header: battleHeader, content: battleContent, headerInfo: battleInfo},
+    },
+  });
+  const stageGroup = window.WeightPlayScreenFrame.createGroup().add(stageSummary);
+  frame.stageTopUI.add(stageGroup);
+  const battleGroup = window.WeightPlayScreenFrame.createGroup().add(battleTitle);
+  hudStats.forEach(stat => battleGroup.add(stat));
+  frame.battleTopUI.add(battleGroup);
+
+  const stageUI = window.WeightPlayPlayUI.mountStage({
+    page: stageContent,
+    rail: stageRail,
+    config: window.createAnimalTripleMatchStageConfig(game),
+    selected: game.selectedStage(),
+    onSelect: index => game.setSelectedStage(index),
+    onStart: (index, event) => game.startStage(index, event),
+    isActive: () => document.body.dataset.screen === 'stage',
+  });
+  game.attachStageUI(stageUI);
+  game.attachFrame(frame);
+
+  const modals = ['tutorialModal', 'firstPlanModal', 'leaveModal', 'resultModal'].map($);
+  const sync = () => {
+    const scene = document.body.dataset.screen || 'main';
+    const covered = scene === 'battle' && modals.some(node => !node.hidden);
+    battleContent.inert = scene !== 'battle' || covered;
+    frame.activate(scene, {covered});
   };
+  const observer = new MutationObserver(sync);
+  observer.observe(document.body, {attributes:true, attributeFilter:['data-screen']});
+  modals.forEach(node => observer.observe(node, {attributes:true, attributeFilter:['hidden']}));
+  window.addEventListener('pagehide', event => {
+    if (event.persisted) return;
+    observer.disconnect();
+    game.attachStageUI(null);
+    game.attachFrame(null);
+    stageUI.destroy();
+    frame.destroy();
+  });
+  sync();
 })();

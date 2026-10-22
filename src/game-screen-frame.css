@@ -2,16 +2,16 @@
 /* Explicit frames inside a scaled Battle may opt into the existing physical
    control track. Keep scaling compensation in the shared owner, not game CSS. */
 @layer wp-frame-contract {
-  html body [data-wp-frame="2"] [data-wp-frame-logical-header="stage"],
-  html body [data-wp-frame="2"] [data-wp-frame-logical-header="stage"] .wp-frame-header {
+  html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-logical-header="stage"],
+  html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-logical-header="stage"] .wp-frame-header {
     --wp-frame-physical-control-size:var(--wp-frame-control-size-physical,48px) !important;
     --wp-frame-play-header-height:var(--wp-frame-physical-control-size) !important;
     --wp-frame-header-height:var(--wp-frame-physical-control-size) !important;
     --wp-frame-control-size:var(--wp-frame-physical-control-size) !important;
     --wp-frame-lobby-return-width:var(--wp-frame-physical-control-size) !important;
   }
-  html body [data-wp-frame="2"] [data-wp-frame-logical-header="battle"],
-  html body [data-wp-frame="2"] [data-wp-frame-logical-header="battle"] .wp-frame-header {
+  html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-logical-header="battle"],
+  html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-logical-header="battle"] .wp-frame-header {
     --wp-frame-play-header-height:var(--wp-frame-physical-control-size,48px) !important;
     --wp-frame-header-height:var(--wp-frame-physical-control-size,48px) !important;
     --wp-frame-control-size:var(--wp-frame-physical-control-size,48px) !important;
@@ -19,7 +19,7 @@
   }
   /* Explicit Interface 9 consumers mark the header itself. Keep its control
      and header tracks on the same physical-pixel sizing used by logical Canvas. */
-  html body [data-wp-frame="2"] [data-wp-frame-header="battle"] {
+  html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-header="battle"] {
     --wp-frame-physical-control-size:var(--wp-frame-control-size-physical,48px) !important;
     --wp-frame-play-header-height:var(--wp-frame-physical-control-size) !important;
     --wp-frame-header-height:var(--wp-frame-physical-control-size) !important;
@@ -58,16 +58,16 @@ html body [data-wp-preferences] .wp-frame-settings-icon {display:block!important
 /* The explicit frame owns its icon span; legacy compatibility must not add another. */
 html body [data-wp-preferences] .wp-frame-settings::before {content:none!important;display:none!important}
 /* Optional Battle information replaces the visible title, not the frame. */
-html body [data-wp-frame="2"] .wp-frame-header [data-wp-frame-title][hidden] {display:none!important}
-html body [data-wp-frame="2"] [data-wp-frame-info] {grid-column:2!important;grid-row:1!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-template-rows:1fr!important;gap:4px!important;position:relative!important;inset:auto!important;width:100%!important;min-width:0!important;max-width:none!important;height:48px!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;direction:inherit}
-html body [data-wp-frame="2"] [data-wp-frame-info]::before {display:none!important}
-html body [data-wp-frame="2"] [data-wp-frame-info] {grid-template-columns:repeat(var(--wp-frame-stat-count,3),minmax(0,1fr))!important}
-html body [data-wp-frame="2"] [data-wp-frame-stat] {display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-width:0!important;margin:0!important;padding:0 2px!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;gap:3px!important}
-html body [data-wp-frame="2"] [data-wp-frame-info] [data-wp-frame-stat-text] {display:block!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;text-align:center!important}
-html body [data-wp-frame="2"] [data-wp-frame-stat] :is(span,b,strong) {display:block!important;max-width:100%!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:600 11px/1.2 system-ui!important;color:var(--wp-ui-muted)!important}
-html body [data-wp-frame="2"] [data-wp-frame-stat] :is(b,strong) {font-size:14px!important;font-weight:800!important;font-variant-numeric:tabular-nums;color:var(--wp-ui-text)!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-header [data-wp-frame-title][hidden] {display:none!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-info] {grid-column:2!important;grid-row:1!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-template-rows:1fr!important;gap:4px!important;position:relative!important;inset:auto!important;width:100%!important;min-width:0!important;max-width:none!important;height:48px!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;direction:inherit}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-info]::before {display:none!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-info] {grid-template-columns:repeat(var(--wp-frame-stat-count,3),minmax(0,1fr))!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-stat] {display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-width:0!important;margin:0!important;padding:0 2px!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;gap:3px!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-info] [data-wp-frame-stat-text] {display:block!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;text-align:center!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-stat] :is(span,b,strong) {display:block!important;max-width:100%!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:600 11px/1.2 system-ui!important;color:var(--wp-ui-muted)!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-stat] :is(b,strong) {font-size:14px!important;font-weight:800!important;font-variant-numeric:tabular-nums;color:var(--wp-ui-text)!important}
 /* HUD images are presentation, never a game-local header-size override. */
-html body [data-wp-frame="2"] [data-wp-frame-stat] img {width:22px!important;height:22px!important;object-fit:contain!important;flex:none!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-stat] img {width:22px!important;height:22px!important;object-fit:contain!important;flex:none!important}
 /* The guide is outside the play canvas, but belongs to the same shared skin. */
 html body:has([data-wp-frame="2"][data-wp-frame-active="main"]) [data-weightplay-version] {display:none!important}
 html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-page-info {padding:16px!important}
@@ -118,7 +118,7 @@ html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not
    radius. */
 /* One protected frame. Game CSS may style content, never these shared slots. */
 html body:has([data-wp-frame="2"]) { background:var(--wp-ui-background-image) center top/1440px 960px repeat var(--wp-ui-background)!important; color:var(--wp-ui-text); }
-html body [data-wp-frame="2"] .wp-frame-header {
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-header {
  box-sizing:border-box!important; display:grid!important; position:relative!important; z-index:100!important; isolation:isolate!important;
  grid-template-columns:var(--wp-frame-lobby-return-width) minmax(0,1fr) var(--wp-frame-lobby-return-width)!important;
  grid-template-rows:var(--wp-frame-control-size)!important; align-items:center!important; align-content:center!important; gap:var(--wp-frame-header-gap)!important;
@@ -128,8 +128,8 @@ html body [data-wp-frame="2"] .wp-frame-header {
  border:0!important; border-radius:var(--wp-ui-radius)!important; overflow:visible!important;
  box-shadow:inset 0 2px 0 var(--wp-ui-highlight),0 3px 0 var(--wp-ui-shadow)!important;
 }
-html body [data-wp-frame="2"] .wp-frame-header[hidden] {display:none!important}
-html body [data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings) {
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-header[hidden] {display:none!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) :is(.wp-frame-return,.wp-frame-settings) {
  box-sizing:border-box!important; display:flex!important; align-items:center!important; justify-content:center!important; flex:none!important;
  position:static!important; transform:none!important; margin:0!important; width:var(--wp-frame-control-size)!important;
  min-width:var(--wp-frame-control-size)!important; max-width:none!important; height:var(--wp-frame-control-size)!important;
@@ -138,25 +138,25 @@ html body [data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings) {
  color:var(--wp-ui-text)!important; box-shadow:inset 0 2px 0 var(--wp-ui-highlight),0 3px 0 var(--wp-ui-shadow)!important;
  font:800 20px/1 system-ui!important; text-decoration:none!important; cursor:pointer; touch-action:manipulation;
 }
-html body [data-wp-frame="2"] .wp-frame-return[data-wp-return="main"] {width:var(--wp-frame-lobby-return-width)!important;min-width:var(--wp-frame-lobby-return-width)!important}
-html body [data-wp-frame="2"] :is(.wp-frame-back-icon,.wp-frame-settings-icon) {display:block!important;flex:none;width:24px!important;height:24px!important;background:var(--wp-ui-text)!important;mask:var(--wp-ui-back-image) center/contain no-repeat}
-html body [data-wp-frame="2"] .wp-frame-back-icon {font-size:0!important;color:transparent!important}
-html body [data-wp-frame="2"] .wp-frame-settings-icon {mask-image:var(--wp-ui-settings-image)}
-html body [data-wp-frame="2"] [data-wp-return="main"] .wp-frame-back-icon {width:20px!important;height:20px!important}
-html body [data-wp-frame="2"] .wp-frame-lobby-logo {content:var(--wp-ui-lobby-logo-image);display:block!important;position:static!important;flex:0 0 26px!important;width:26px!important;height:26px!important;min-width:0!important;max-width:none!important;margin:0!important;padding:0!important;object-fit:contain!important;border:0!important;border-radius:0!important;background:none!important;transform:none!important;opacity:1!important;filter:none!important}
-html body [data-wp-frame="2"] [data-wp-frame-title] {
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-return[data-wp-return="main"] {width:var(--wp-frame-lobby-return-width)!important;min-width:var(--wp-frame-lobby-return-width)!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) :is(.wp-frame-back-icon,.wp-frame-settings-icon) {display:block!important;flex:none;width:24px!important;height:24px!important;background:var(--wp-ui-text)!important;mask:var(--wp-ui-back-image) center/contain no-repeat}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-back-icon {font-size:0!important;color:transparent!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-settings-icon {mask-image:var(--wp-ui-settings-image)}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-return="main"] .wp-frame-back-icon {width:20px!important;height:20px!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-lobby-logo {content:var(--wp-ui-lobby-logo-image);display:block!important;position:static!important;flex:0 0 26px!important;width:26px!important;height:26px!important;min-width:0!important;max-width:none!important;margin:0!important;padding:0!important;object-fit:contain!important;border:0!important;border-radius:0!important;background:none!important;transform:none!important;opacity:1!important;filter:none!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-title] {
  grid-column:2!important;grid-row:1!important;align-self:center!important;position:static!important;transform:none!important;
  margin:0!important;padding:0!important;min-width:0!important;width:100%!important;height:auto!important;
  font:800 var(--wp-frame-title-size)/1.2 system-ui,sans-serif!important;text-align:center!important;
  color:var(--wp-ui-text)!important;text-shadow:none!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
 }
-html body [data-wp-frame="2"] .wp-frame-return {grid-column:1!important;grid-row:1!important;justify-self:start}
-html body [data-wp-frame="2"] .wp-frame-utility {grid-column:3;grid-row:1;justify-self:end;position:relative}
-html body [data-wp-frame="2"] .wp-frame-popover {position:absolute;right:0;top:56px;width:min(280px,calc(100vw - 40px));box-sizing:border-box;padding:12px;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface);color:var(--wp-ui-text);box-shadow:0 5px 0 var(--wp-ui-shadow);direction:initial}
-html body [data-wp-frame="2"] .wp-frame-popover[hidden],html body [data-wp-frame="2"] .wp-frame-popover > [hidden] {display:none!important}
-html body [data-wp-frame="2"] .wp-frame-popover > :is(label,div) {display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px}
-html body [data-wp-frame="2"] .wp-frame-popover span {font:600 14px/1.2 system-ui;color:var(--wp-ui-text);white-space:nowrap}
-html body [data-wp-frame="2"] .wp-frame-popover select {min-width:0;max-width:160px;height:44px;font-size:14px;color:var(--wp-ui-text);background:var(--wp-ui-header)}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-return {grid-column:1!important;grid-row:1!important;justify-self:start}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-utility {grid-column:3;grid-row:1;justify-self:end;position:relative}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-popover {position:absolute;right:0;top:56px;width:min(280px,calc(100vw - 40px));box-sizing:border-box;padding:12px;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface);color:var(--wp-ui-text);box-shadow:0 5px 0 var(--wp-ui-shadow);direction:initial}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-popover[hidden],html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-popover > [hidden] {display:none!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-popover > :is(label,div) {display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-popover span {font:600 14px/1.2 system-ui;color:var(--wp-ui-text);white-space:nowrap}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-popover select {min-width:0;max-width:160px;height:44px;font-size:14px;color:var(--wp-ui-text);background:var(--wp-ui-header)}
 html body [data-wp-preferences] .wp-frame-popover {position:absolute!important;inset:var(--wp-frame-popover-top,56px) 0 auto auto!important;display:block!important;width:min(280px,calc(100vw - 40px))!important;min-width:0!important;height:auto!important;max-height:calc(100dvh - 100px)!important;overflow:auto!important;box-sizing:border-box!important;margin:0!important;padding:12px!important;border:2px solid var(--wp-ui-line)!important;border-radius:3px!important;background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important;box-shadow:0 5px 0 var(--wp-ui-shadow)!important;transform:scale(var(--wp-frame-popover-scale,1))!important;transform-origin:top right!important;direction:initial}
 html body [data-wp-preferences] .wp-frame-popover > :is(label,div) {display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;min-height:48px!important;margin:0!important;padding:0!important;background:none!important;border:0!important}
 html body [data-wp-preferences] .wp-frame-popover span {color:var(--wp-ui-text)!important;font:600 14px/1.3 system-ui!important;white-space:nowrap!important}
@@ -170,74 +170,75 @@ html body [data-wp-preferences] .wp-frame-sound[aria-checked="true"] {background
 html body [data-wp-preferences] .wp-frame-sound[aria-checked="true"] .wp-frame-sound-icon {background:var(--wp-ui-gold)!important;mask-image:var(--wp-ui-sound-on-image)!important}
 html body [data-wp-preferences] .wp-frame-sound[aria-checked="true"] .wp-frame-sound-state {color:var(--wp-ui-text)!important}
 html body [data-wp-preferences] .wp-frame-popover[hidden],html body [data-wp-preferences] .wp-frame-popover > [hidden] {display:none!important}
-html body [data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings,[data-wp-frame-action]):hover {filter:brightness(1.12)}
-html body [data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings,[data-wp-frame-action]):active {filter:brightness(.9)}
-html body [data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings,.wp-frame-sound,[data-wp-frame-action]):focus-visible {outline:3px solid var(--wp-ui-gold);outline-offset:2px}
-html body [data-wp-frame="2"] [data-wp-frame-scene] {box-sizing:border-box;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) :is(.wp-frame-return,.wp-frame-settings,[data-wp-frame-action]):hover {filter:brightness(1.12)}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) :is(.wp-frame-return,.wp-frame-settings,[data-wp-frame-action]):active {filter:brightness(.9)}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) :is(.wp-frame-return,.wp-frame-settings,.wp-frame-sound,[data-wp-frame-action]):focus-visible {outline:3px solid var(--wp-ui-gold);outline-offset:2px}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-scene] {box-sizing:border-box;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important}
 /* Stage poster art is a shared scene background, not a game-local surface.
    Keep it above the frame's opaque scene token while retaining the scrim. */
-html body [data-wp-frame="2"] [data-wp-frame-scene].wp-stage-art-shell {background-color:#17243a!important;background-image:var(--wp-stage-scrim),var(--wp-stage-art)!important;background-position:center,center!important;background-size:cover,cover!important;background-repeat:no-repeat!important}
-html body [data-wp-frame="2"] [data-wp-frame-scene="main"] {display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto auto!important;width:100%!important;max-width:var(--wp-main-width)!important;padding:8px!important;gap:12px!important;margin:0 auto!important;overflow:visible!important;background:transparent!important}
-html body [data-wp-frame="2"] [data-wp-frame-content] {min-width:0;min-height:0}
-html body [data-wp-frame="2"] [data-wp-frame-content="main"] {display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
-html body [data-wp-frame="2"] [data-wp-frame-poster] {width:100%!important;height:auto!important;aspect-ratio:1;object-fit:contain;margin:0!important;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;box-shadow:none!important;box-sizing:border-box}
-html body [data-wp-frame="2"] [data-wp-frame-copy] {display:flex!important;flex-direction:column!important;justify-content:center;gap:12px;padding:4px!important;min-width:0;border:0!important;background:none!important;box-shadow:none!important}
-html body [data-wp-frame="2"] [data-wp-frame-summary] {font:600 16px/1.5 system-ui!important;color:var(--wp-ui-text)!important}
-html body [data-wp-frame="2"] [data-wp-frame-progress] {display:grid;place-items:center;min-height:40px!important;margin:0!important;padding:4px!important;border:1px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;font:600 14px/1.2 system-ui!important;color:var(--wp-ui-muted)!important;background:var(--wp-ui-background)!important}
-html body [data-wp-frame="2"] [data-wp-frame-action] {display:flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box;min-height:44px!important;height:44px!important;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;background:var(--wp-ui-button-image)!important;color:var(--wp-ui-text)!important;font:700 14px/1.2 system-ui!important;padding:0 10px!important;box-shadow:inset 0 2px 0 var(--wp-ui-highlight),0 3px 0 var(--wp-ui-shadow)!important;cursor:pointer}
-html body [data-wp-frame="2"] [data-wp-frame-action][hidden] {display:none!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-scene].wp-stage-art-shell {background-color:#17243a!important;background-image:var(--wp-stage-scrim),var(--wp-stage-art)!important;background-position:center,center!important;background-size:cover,cover!important;background-repeat:no-repeat!important}
+html body.wp-frame-main-active #mainPage.page {background:transparent!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-scene="main"] {display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto auto!important;width:100%!important;max-width:var(--wp-main-width)!important;padding:8px!important;gap:12px!important;margin:0 auto!important;overflow:visible!important;background:transparent!important;box-shadow:none!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-content] {min-width:0;min-height:0}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-content="main"] {display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-poster] {width:100%!important;height:auto!important;aspect-ratio:1;object-fit:contain;margin:0!important;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;box-shadow:none!important;box-sizing:border-box}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-copy] {display:flex!important;flex-direction:column!important;justify-content:center;gap:12px;padding:4px!important;min-width:0;border:0!important;background:none!important;box-shadow:none!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-summary] {font:600 16px/1.5 system-ui!important;color:var(--wp-ui-text)!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-progress] {display:grid;place-items:center;min-height:40px!important;margin:0!important;padding:4px!important;border:1px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;font:600 14px/1.2 system-ui!important;color:var(--wp-ui-muted)!important;background:var(--wp-ui-background)!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-action] {display:flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box;min-height:44px!important;height:44px!important;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;background:var(--wp-ui-button-image)!important;color:var(--wp-ui-text)!important;font:700 14px/1.2 system-ui!important;padding:0 10px!important;box-shadow:inset 0 2px 0 var(--wp-ui-highlight),0 3px 0 var(--wp-ui-shadow)!important;cursor:pointer}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-action][hidden] {display:none!important}
 /* Stage navigation sits inside a scaled logical Canvas. Keep its shared hit area physical-size consistent. */
-html body [data-wp-frame="2"] [data-wp-logical-stage-canvas] :is([data-wp-frame-nav],[data-wp-frame-stage-nav]) [data-wp-frame-action] {
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-logical-stage-canvas] :is([data-wp-frame-nav],[data-wp-frame-stage-nav]) [data-wp-frame-action] {
   height:var(--wp-frame-control-size-physical,44px)!important;
   min-height:var(--wp-frame-control-size-physical,44px)!important;
   max-height:var(--wp-frame-control-size-physical,44px)!important;
   font-size:calc(14px * var(--wp-stage-canvas-inverse-scale,1))!important;
   padding-inline:calc(10px * var(--wp-stage-canvas-inverse-scale,1))!important;
 }
-html body [data-wp-frame="2"] [data-wp-frame-action="primary"] {width:100%!important;height:52px!important;min-height:52px!important;background:var(--wp-ui-gold)!important;color:#302717!important;font-size:16px!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-action="primary"] {width:100%!important;height:52px!important;min-height:52px!important;background:var(--wp-ui-gold)!important;color:#302717!important;font-size:16px!important}
 /* Explicit logical-Canvas content opt-in; preserve physical action readability.
    The canonical Battle scaler owns the factor. Unmarked consumers are unchanged. */
-html body [data-wp-frame="2"] [data-wp-frame-logical-actions="battle"] [data-wp-frame-action] {
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-logical-actions="battle"] [data-wp-frame-action] {
   height:calc(44px * var(--wp-battle-canvas-inverse-scale, 1))!important;
   min-height:calc(44px * var(--wp-battle-canvas-inverse-scale, 1))!important;
   max-height:none!important;
   font-size:calc(14px * var(--wp-battle-canvas-inverse-scale, 1))!important;
   padding-inline:calc(10px * var(--wp-battle-canvas-inverse-scale, 1))!important;
 }
-html body [data-wp-frame="2"] [data-wp-frame-action="tab"][aria-pressed="true"] {background:var(--wp-ui-active)!important}
-html body [data-wp-frame="2"] [data-wp-frame-scene="stage"],html body [data-wp-frame="2"] [data-wp-frame-scene="battle"] {--wp-frame-header-height:var(--wp-frame-play-header-height);--wp-frame-header-padding:0px;--wp-frame-rows:var(--wp-frame-header-height) minmax(0,1fr);display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:var(--wp-frame-rows)!important;gap:8px!important;padding:0 8px 8px!important}
-html body [data-wp-frame="2"] [data-wp-frame-scene="stage"] > .wp-frame-header,html body [data-wp-frame="2"] [data-wp-frame-scene="battle"] > .wp-frame-header {width:calc(100% + 16px)!important;margin-inline:-8px!important}
-html body [data-wp-frame="2"] [data-wp-frame-scene="stage"] {--wp-frame-rows:var(--wp-frame-header-height) minmax(0,1fr) 56px}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-action="tab"][aria-pressed="true"] {background:var(--wp-ui-active)!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-scene="stage"],html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-scene="battle"] {--wp-frame-header-height:var(--wp-frame-play-header-height);--wp-frame-header-padding:0px;--wp-frame-rows:var(--wp-frame-header-height) minmax(0,1fr);display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:var(--wp-frame-rows)!important;gap:8px!important;padding:0 8px 8px!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-scene="stage"] > .wp-frame-header,html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-scene="battle"] > .wp-frame-header {width:calc(100% + 16px)!important;margin-inline:-8px!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-scene="stage"] {--wp-frame-rows:var(--wp-frame-header-height) minmax(0,1fr) 56px}
 /* Opt-in persistent Stage navigation; absent preparation categories stay empty. */
-html body [data-wp-frame="2"] [data-wp-frame-stage-nav] {display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;padding:6px!important;height:56px!important;box-sizing:border-box!important;min-width:0;align-items:center;background:var(--wp-ui-surface);border-top:1px solid var(--wp-ui-line)}
-html body [data-wp-frame="2"] [data-wp-frame-stage-slot="stages"] {grid-column:2!important}
-html body [data-wp-frame="2"] [data-wp-frame-stage-slot="equipment"] {grid-column:3!important}
-html body [data-wp-frame="2"] [data-wp-frame-content="stage"],html body [data-wp-frame="2"] [data-wp-frame-content="battle"] {grid-row:2;grid-column:1}
-html body [data-wp-frame="2"] [data-wp-frame-nav] {grid-row:3!important;display:flex!important;align-items:center!important;gap:12px!important;padding:4px!important;margin:0!important;border:0!important;background:var(--wp-ui-surface)!important}
-html body [data-wp-frame="2"] [data-wp-frame-nav] > * {flex:1!important}
-html body [data-wp-frame="2"] [data-wp-frame-nav][data-wp-frame-stage-nav] {display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;padding:6px!important}
-html body [data-wp-frame="2"] [data-wp-frame-nav][data-wp-frame-stage-nav] > * {flex:none!important;min-width:0!important}
-html body [data-wp-frame="2"] [data-wp-frame-scene].hidden {display:none!important}
-@media(min-width:700px) {html body [data-wp-frame="2"] [data-wp-frame-content="main"] {grid-template-columns:var(--wp-main-poster-size) minmax(0,1fr)!important}}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-stage-nav] {display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;padding:6px!important;height:56px!important;box-sizing:border-box!important;min-width:0;align-items:center;background:var(--wp-ui-surface);border-top:1px solid var(--wp-ui-line)}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-stage-slot="stages"] {grid-column:2!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-stage-slot="equipment"] {grid-column:3!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-content="stage"],html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-content="battle"] {grid-row:2;grid-column:1}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-nav] {grid-row:3!important;display:flex!important;align-items:center!important;gap:12px!important;padding:4px!important;margin:0!important;border:0!important;background:var(--wp-ui-surface)!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-nav] > * {flex:1!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-nav][data-wp-frame-stage-nav] {display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;padding:6px!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-nav][data-wp-frame-stage-nav] > * {flex:none!important;min-width:0!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-scene].hidden {display:none!important}
+@media(min-width:700px) {html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-content="main"] {grid-template-columns:var(--wp-main-poster-size) minmax(0,1fr)!important}}
 /* Full-Canvas play consumers reclaim the former title gap. The shared frame,
    rather than a game-local header override, owns this declared composition. */
-html body [data-wp-frame="2"] [data-wp-frame-scene][data-wp-frame-play-fill] {gap:0!important;padding:0!important}
-html body [data-wp-frame="2"] [data-wp-frame-scene][data-wp-frame-play-fill] > .wp-frame-header {width:100%!important;margin-inline:0!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-scene][data-wp-frame-play-fill] {gap:0!important;padding:0!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-scene][data-wp-frame-play-fill] > .wp-frame-header {width:100%!important;margin-inline:0!important}
 
 /* Hidden state and reserved groups belong to the shared contract. */
-html body [data-wp-frame="2"] [data-wp-frame-scene]:is(.is-hidden,[hidden]) {display:none!important}
-html body [data-wp-frame="2"] [data-wp-frame-content] {position:relative!important;inset:auto!important;width:100%!important;min-width:0!important;min-height:0!important;box-sizing:border-box!important}
-html body [data-wp-frame="2"][data-wp-frame-adapted] [data-wp-frame-content="stage"] {grid-row:2!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
-html body [data-wp-frame="2"] .wp-frame-stage-context {flex:none;font:600 13px/1.35 system-ui}
-html body [data-wp-frame="2"] .wp-frame-stage-context:empty {display:none}
-html body [data-wp-frame="2"][data-wp-frame-adapted] [data-wp-frame-content="stage"] > :is(.stage-page,.stage-view-panel,.stage-pane):not([hidden]):not(.is-hidden) {min-height:0!important;flex:1!important}
-html body [data-wp-frame="2"][data-wp-frame-adapted] [data-wp-frame-content="stage"] > .profile-grid {flex:none!important;height:auto!important}
-html body [data-wp-frame="2"] [data-wp-frame-poster] {aspect-ratio:1!important;max-height:none!important;max-width:100%!important;object-fit:contain!important}
-html body [data-wp-frame="2"][data-wp-frame-active="main"] {position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-scene]:is(.is-hidden,[hidden]) {display:none!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-content] {position:relative!important;inset:auto!important;width:100%!important;min-width:0!important;min-height:0!important;box-sizing:border-box!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-frame-adapted] [data-wp-frame-content="stage"] {grid-row:2!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-stage-context {flex:none;font:600 13px/1.35 system-ui}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-stage-context:empty {display:none}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-frame-adapted] [data-wp-frame-content="stage"] > :is(.stage-page,.stage-view-panel,.stage-pane):not([hidden]):not(.is-hidden) {min-height:0!important;flex:1!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-frame-adapted] [data-wp-frame-content="stage"] > .profile-grid {flex:none!important;height:auto!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-poster] {aspect-ratio:1!important;max-height:none!important;max-width:100%!important;object-fit:contain!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-frame-active="main"] {position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}
 html body:has([data-wp-frame="2"]) > .sound-toggle {display:none!important}
-html body [data-wp-frame="2"] .wp-frame-play-content {display:flex!important;flex-direction:column!important;gap:6px;overflow:hidden!important}
-html body [data-wp-frame="2"] .wp-frame-play-content > :is(.battle-layout,.prep-area,.combat-area) {flex:1;min-height:0}
-html body [data-wp-frame="2"] [data-wp-frame-action="tab"][aria-selected="true"] {background:var(--wp-ui-active)!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-play-content {display:flex!important;flex-direction:column!important;gap:6px;overflow:hidden!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) .wp-frame-play-content > :is(.battle-layout,.prep-area,.combat-area) {flex:1;min-height:0}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-action="tab"][aria-selected="true"] {background:var(--wp-ui-active)!important}
 }
 /* Frame v2 keeps one canonical wide-layout Main poster size at every viewport.
    The shared content track wins over unlayered legacy game layouts, and the

@@ -26,17 +26,21 @@ function ensureTags(guide, copy) {
     const heading = guide.querySelector('h2');
     heading?.insertAdjacentElement('afterend', wrap);
   }
+  wrap.dataset.wpGameplayTags = VERSION;
+  wrap.dataset.runtimeLocalize = 'off';
   wrap.replaceChildren(...copy.tags.map(tag => text('span', tag)));
 }
 
 function ensureRelated(guide, locale, copy) {
   let section = guide.querySelector('[data-hexa-growth-related]');
+  const sections = guide.querySelector('.game-info-sections') || guide;
   if (!section) {
     section = document.createElement('div');
-    section.dataset.hexaGrowthRelated = VERSION;
-    section.className = 'game-info-section';
-    guide.append(section);
+    sections.append(section);
   }
+  section.dataset.hexaGrowthRelated = VERSION;
+  section.dataset.runtimeLocalize = 'off';
+  section.classList.add('game-info-section', 'game-info-related-section');
   section.replaceChildren();
   section.append(text('h3', copy.relatedTitle), text('p', copy.relatedIntro));
   const cards = document.createElement('div');
@@ -44,13 +48,17 @@ function ensureRelated(guide, locale, copy) {
   for (const item of RELATED) {
     const a = document.createElement('a');
     a.className = 'game-info-related-card';
-    a.dataset.wpRelatedId = item.id;
+    a.dataset.gameId = item.id;
     a.href = `/${routeFor(locale)}/games/${item.id}/`;
     const img = document.createElement('img');
-    img.src = item.image; img.alt = ''; img.width = 320; img.height = 320; img.loading = 'lazy'; img.decoding = 'async';
+    img.src = item.image; img.dataset.finalSrc = '/assets/weightplay-logo.png';
+    img.alt = titleFor(item.id, locale); img.width = 320; img.height = 320; img.loading = 'lazy'; img.decoding = 'async';
+    const poster = document.createElement('span'); poster.className = 'game-info-related-poster';
+    poster.append(img);
     const span = document.createElement('span'); span.className = 'game-info-related-copy';
-    span.append(text('strong', titleFor(item.id, locale)), text('span', copy.related[item.id]));
-    a.append(img, span); cards.append(a);
+    const title = text('strong', titleFor(item.id, locale)); title.dataset.runtimeLocalize = 'off';
+    span.append(title, text('span', copy.related[item.id]));
+    a.append(poster, span); cards.append(a);
   }
   section.append(cards);
 }

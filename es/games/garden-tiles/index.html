@@ -45,7 +45,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
   <meta name="twitter:title" content="Fichas del Jardín Animal | WeightPlay" />
     <meta name="twitter:description" content="Fichas del Jardín Animal es un juego de memoria con 30 retos guardados. Voltea fichas para hallar parejas; seis capítulos incorporan cambios de reglas y no hay límite de tiempo por nivel." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/garden-tiles.webp" />
@@ -150,7 +150,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-garden-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
+          script.src = "../../src/game-page-info.js?v=20261001-garden-tiles-text140-v1";
           script.dataset.gardenGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -167,7 +167,7 @@
       })();
     </script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Información de Fichas del Jardín Animal">
 
     <div class="game-info-hero">
@@ -195,7 +195,7 @@
       <div class="game-info-section"><h3>Nota de diseño</h3><p>La dificultad cambia mediante distintas exigencias de memoria, no con una cuenta atrás para todo el nivel. Un lienzo fijo de 390 por 788 mantiene estable el tablero; los botones nativos admiten controles táctiles y de teclado, los fallos quedan visibles el tiempo suficiente para aprender y la pausa por pestaña oculta detiene la retroalimentación. La Vista previa matinal, la Niebla del jardín, la Ráfaga juguetona y el Desfile del jardín ejercitan formas distintas de recordar sin perder un ritmo tranquilo para jugar en familia.</p></div>
       <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Este juego está pensado para mayores de 6 años y para jugar en familia. Las estrellas y el Informe de habilidades resumen únicamente la partida local; no son una prueba de inteligencia, un diagnóstico, una evaluación del desarrollo ni una comparación con otros niños. La versión infantil no tiene anuncios, inicio de sesión, chat ni solicitudes de compra.</p></div>
       <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántos desafíos hay?</dt><dd>Hay 30 en seis capítulos, con puntos de control en 5, 10, 15, 20, 25 y 30.</dd></div><div><dt>¿Los niveles de Fichas del Jardín Animal tienen cronómetro?</dt><dd>No. La Niebla del jardín cierra la primera carta elegida después de un breve intervalo, pero ningún nivel tiene cuenta atrás.</dd></div><div><dt>¿Por qué se mueven las cartas?</dt><dd>La Ráfaga juguetona cambia de sitio solo las cartas sin pareja después de un intento fallido; el Desfile del jardín mueve las restantes después de acertar una pareja.</dd></div><div><dt>¿Cómo se calculan las estrellas?</dt><dd>Las estrellas utilizan intentos completos de dos cartas. Cada tablero despejado progresa.</dd></div><div><dt>¿Se guarda el progreso?</dt><dd>Sí. Los desbloqueos y las mejores estrellas permanecen en este navegador.</dd></div><div><dt>¿Es compatible con teléfonos y teclados?</dt><dd>Sí. Los botones de la tarjeta nativa funcionan con controles táctiles, de puntero y de teclado.</dd></div><div><dt>¿Es gratis y sin publicidad?</dt><dd>Sí. No necesita cuenta ni compra y la versión Kids no realiza ninguna solicitud de publicidad.</dd></div><div><dt>¿Es el Informe de Habilidades una prueba formal?</dt><dd>No. Solo informa pares, movimientos, reintentos y estrellas del desafío completado.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Más juegos relacionados</h3><p>Practica Memoria de otra manera.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="star-memory" href="/es/games/star-memory/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/star-memory.webp" data-final-src="/assets/weightplay-logo.png" alt="Memoria Estelar" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Memoria Estelar</strong><span>Memoria Estelar es un recorrido de 30 niveles de parejas por el cielo nocturno.</span></span></a><a class="game-info-related-card" data-game-id="animal-quiz" href="/es/games/animal-quiz/"><span class="game-info-related-poster"><img src="/assets/animal-quiz/cover-block-v1.png" data-final-src="/assets/weightplay-logo.png" alt="Cuestionario" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Cuestionario</strong><span>Cuestionario es un juego bilingüe gratuito de conocimientos sobre animales para niños, con 30 niveles guardados y diez animales distintos en cada uno.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><p>Practica Memoria de otra manera.</p><div class="game-info-related"><a class="game-info-related-card" href="/es/games/star-memory/"><img src="/assets/interface7-redrawn/star-memory.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Memoria Estelar</strong><span>Memoria Estelar es un recorrido de 30 niveles de parejas por el cielo nocturno.</span></span></a><a class="game-info-related-card" href="/es/games/animal-quiz/"><img src="/assets/animal-quiz/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Cuestionario</strong><span>Cuestionario es un juego bilingüe gratuito de conocimientos sobre animales para niños, con 30 niveles guardados y diez animales distintos en cada uno.</span></span></a></div></div>
     </div>
   </section>
 </body>

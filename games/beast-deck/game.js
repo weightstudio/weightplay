@@ -28,7 +28,9 @@
   (__wpNotifyMeasurement(), resultDialog?.setAttribute("aria-describedby", "resultText resultRewards resultUnlock"));
 
   const GAME_ID = "beast-deck";
-  document.body.dataset.gameVersion = 'v24';
+  document.body.dataset.gameVersion = 'v25';
+  document.body.dataset.wpGameVersion = 'v25';
+  document.body.dataset.wpInterfaceVersion = '9';
   const saveKey = "weightplay_beast_deck_v1";
   const localeKey = "weightPlayLocale";
   const storageSession = new Map();
@@ -275,7 +277,8 @@
     const missionView = stagePanel.querySelector('[data-stage-view="missions"]');
     const deckView = stagePanel.querySelector('[data-stage-view="deck"]');
     const shopView = stagePanel.querySelector('[data-stage-view="shop"]');
-    missionView.append(stageSelect);
+    missionView.append(nodes.stageGrid);
+    stageSelect?.remove();
     nodes.startBtn.remove();
     deckView.append(progressPanel, profilePanel, controlChips, collectionPanel);
     shopView.append(diamondShop);
@@ -307,6 +310,7 @@
   }
 
   let screenFrame;
+  let stageUI;
   function syncScene(next) {
     clearDiamondPackConfirmation();
     const owners = { main: nodes.menuPanel, stage: nodes.stagePanel, battle: nodes.gamePanel };
@@ -319,7 +323,12 @@
       document.body.classList.toggle(`wp-shell-${name}-active`, active);
     }
     document.body.dataset.screen = next;
-    screenFrame?.activate(next);
+    screenFrame?.activate(next, {
+      covered: next === "battle" && (
+        !nodes.resultPanel.classList.contains("hidden")
+        || !nodes.leavePanel.classList.contains("hidden")
+      ),
+    });
     document.body.classList.toggle("wp-standard-stage-page", next === "stage");
     document.body.classList.toggle("wp-stage-select-active", next === "stage");
     document.documentElement.classList.toggle("wp-stage-select-active", next === "stage");
@@ -349,8 +358,15 @@
       button.setAttribute("aria-pressed", String(isActive));
     });
     nodes.stagePanel.querySelectorAll("[data-stage-view]").forEach((view) => {
-      view.classList.toggle("is-active", view.dataset.stageView === tabName);
+      const active = view.dataset.stageView === tabName;
+      view.classList.toggle("is-active", active);
+      view.setAttribute("aria-hidden", String(!active));
+      view.hidden = !active;
+      view.style.setProperty("display", active ? "grid" : "none", "important");
     });
+    if (tabName === "missions" && stageUI) {
+      stageUI.refresh(Math.max(0, Math.min(maxMission, Number(profile.selectedMission) || 1) - 1));
+    }
     if (tabName === "missions") requestAnimationFrame(scrollStageToSelected);
   }
 
@@ -2295,9 +2311,78 @@
     nodes.profileBestText.textContent = String(profile.bestMission);
     nodes.profileBonusText.textContent = t("profileBonus", { hp: levelHpBonus() });
     nodes.startBtn.textContent = `${t("startRun")} · ${t("missionLabel", { mission: profile.selectedMission })}`;
-    ensureStageWindow(browsedMission || profile.selectedMission);
-    updateStageSelectionUI();
-    scrollStageToSelected();
+    if (stageUI) {
+      stageUI.refresh(Math.max(0, Math.min(maxMission, Number(profile.selectedMission) || 1) - 1));
+    } else {
+      ensureStageWindow(browsedMission || profile.selectedMission);
+      updateStageSelectionUI();
+      scrollStageToSelected();
+    }
+  }
+
+  function mountSharedMissionStageUI() {
+    const missionPage = nodes.stagePanel.querySelector('[data-stage-view="missions"]');
+    if (!missionPage || !nodes.stageGrid || !window.WeightPlayPlayUI) throw new Error("BEAST_DECK_I9_STAGE_UI_REQUIRED");
+    nodes.stageGrid.className = "wp-stage-i9-rail";
+    nodes.stageGrid.replaceChildren();
+    stageUI = window.WeightPlayPlayUI.mountStage({
+      page: missionPage,
+      rail: nodes.stageGrid,
+      config: {
+        gameId: GAME_ID,
+        poster: "/assets/interface7-redrawn/beast-deck.webp",
+        background: "/assets/lobby-block-atmosphere.svg",
+        count: maxMission,
+        stage(index) {
+          const missionId = index + 1;
+          const unlocked = missionId <= profile.unlockedMission;
+          const cleared = missionId < profile.unlockedMission;
+          const selected = missionId === profile.selectedMission;
+          const gear = profile.equippedGear
+            ? `${gearName(profile.equippedGear)} ${t("gearRank", { rank: gearRank(profile.equippedGear), maxRank: maxGearRank })}`
+            : t("noGear");
+          const details = unlocked ? [
+            t("missionReward", { xp: getMission(missionId).xp }),
+            t("missionCoins", { coins: missionCoinReward(missionId) }),
+            t("loadoutReady", { cards: profile.equippedCards.length, max: maxEquippedCards, gear }),
+          ] : [t("lockedMission")];
+          return {
+            id: missionId,
+            kicker: t("missionLabel", { mission: missionId }),
+            title: unlocked ? missionTitle(missionId) : t("lockedMission"),
+            subtitle: unlocked ? missionSubtitle(missionId) : "",
+            status: unlocked ? (selected ? t("missionSelectedCard") : t("startMissionCard")) : t("lockedMission"),
+            summary: unlocked ? missionScout(missionId) : t("lockedMission"),
+            details,
+            poster: "/assets/interface7-redrawn/beast-deck.webp",
+            locked: !unlocked,
+            cleared,
+          };
+        },
+      },
+      selected: Math.max(0, Math.min(maxMission, Number(profile.selectedMission) || 1) - 1),
+      onSelect(index) {
+        const missionId = index + 1;
+        if (missionId > profile.unlockedMission) return;
+        profile.selectedMission = missionId;
+        browsedMission = missionId;
+        saveLocalState();
+      },
+      onStart(index) {
+        const missionId = index + 1;
+        if (missionId > profile.unlockedMission) return;
+        profile.selectedMission = missionId;
+        browsedMission = missionId;
+        saveLocalState();
+        startRun();
+      },
+      isActive: () => screenFrame?.active === "stage" && missionPage.classList.contains("is-active"),
+    });
+    nodes.stagePanel.querySelectorAll("[data-stage-view]").forEach((view) => {
+      const active = view.dataset.stageView === "missions";
+      view.hidden = !active;
+      view.style.setProperty("display", active ? "grid" : "none", "important");
+    });
   }
 
   function stageWindowLimit() {
@@ -2399,6 +2484,7 @@
   }
 
   function ensureStageWindow(mission) {
+    if (stageUI) return;
     if (!stageCardPool.length) buildStageCardPool();
     moveStageWindow(desiredStageWindow(mission));
     stageCardPool.forEach((button) => bindStageCard(button, Number(button.dataset.mission)));
@@ -2407,6 +2493,10 @@
   function updateStageSelectionUI() {
     if (!nodes.stageGrid) return;
     nodes.startBtn.textContent = `${t("startRun")} · ${t("missionLabel", { mission: profile.selectedMission })}`;
+    if (stageUI) {
+      stageUI.refresh(Math.max(0, Math.min(maxMission, Number(profile.selectedMission) || 1) - 1));
+      return;
+    }
     if (nodes.selectedMissionSummary) {
       const missionLabel = t("missionLabel", { mission: profile.selectedMission });
       const xp = getMission(profile.selectedMission).xp;
@@ -2436,6 +2526,10 @@
 
   function scrollStageToSelected() {
     if (!nodes.stageGrid) return;
+    if (stageUI) {
+      stageUI.refresh(Math.max(0, Math.min(maxMission, Number(profile.selectedMission) || 1) - 1));
+      return;
+    }
     ensureStageWindow(browsedMission || profile.selectedMission);
     const selected = nodes.stageGrid.querySelector(`.stage-card[data-mission="${browsedMission || profile.selectedMission}"]`);
     if (!selected) return;
@@ -4085,12 +4179,12 @@
   function init() {
     installStandardStageFlow();
     if (window.mountBeastDeckFrame) screenFrame = window.mountBeastDeckFrame();
-    buildStageCardPool();
-    installVirtualStageDrag();
+    if (!screenFrame || !window.WeightPlayPlayUI) throw new Error("BEAST_DECK_I9_SHARED_UI_REQUIRED");
     syncScene("main");
     dockMainUtilities();
     loadLocalState();
     translateUI();
+    mountSharedMissionStageUI();
     renderProgressUI();
     updateDiamondShopUI();
 
@@ -4220,6 +4314,7 @@
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
     nodes.stageGrid.addEventListener("keydown", (event) => {
+      if (stageUI) return;
       const card = event.target.closest(".stage-card");
       if (!card) return;
       if (event.key === "Home" || event.key === "End" || event.key === "ArrowLeft" || event.key === "ArrowRight") {

@@ -45,7 +45,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
   <meta name="twitter:title" content="Pet Garden Tiles | WeightPlay" />
     <meta name="twitter:description" content="Garden Tiles는 동물 그림 기억 짝맞추기 게임으로 저장 가능한 챌린지 30개를 제공합니다. 타일을 뒤집어 같은 그림을 찾으세요. 6개 챕터마다 규칙이 바뀌며 시간 제한은 없습니다." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/garden-tiles.webp" />
@@ -150,7 +150,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-garden-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
+          script.src = "../../src/game-page-info.js?v=20261001-garden-tiles-text140-v1";
           script.dataset.gardenGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -167,7 +167,7 @@
       })();
     </script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Pet Garden Tiles 게임 정보">
 
     <div class="game-info-hero">
@@ -195,7 +195,7 @@
       <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>긴장시키는 제한 시간이 아니라 기억 방법의 변화로 난이도가 높아집니다. 스테이지와 플레이 화면은 하나의 반응형 캔버스를 안전한 화면에 맞춰 같은 비율로 확대·축소하며, 높이가 낮은 가로 화면에서는 알맞은 가로 논리 영역으로 전환합니다. 큰 버튼은 터치와 키보드를 지원하고, 틀린 카드는 배울 수 있을 만큼 보이며, 페이지를 벗어난 동안에는 피드백 시간이 멈춥니다. 아침 미리보기, 정원 안개, 장난바람, 동물 행진은 차분한 흐름 속에서 서로 다른 기억 방법을 연습하게 합니다.</p></div>
       <div class="game-info-section game-info-parent"><h3>보호자 안내</h3><p>Pet Garden Tiles는 6세 이상 및 가족 놀이용으로 제작되었습니다. 스타와 스킬 보고서는 현재 로컬 실행만을 요약합니다. 이는 지능 테스트, 진단, 발달 평가 또는 다른 어린이와의 비교가 아닙니다. Kids 빌드에는 광고, 로그인, 채팅 또는 구매 요청이 없습니다.</p></div>
       <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>얼마나 많은 도전 과제가 있나요?</dt><dd>총 6개 챕터에 30개가 있으며 체크포인트는 5, 10, 15, 20, 25, 30입니다.</dd></div><div><dt>애완동물 정원 타일은 시간 제한이 있나요?</dt><dd>아니요. Garden Mist는 짧은 시간이 지난 후 처음 선택한 카드 1장을 닫지만, 카운트다운이 있는 레벨은 없습니다.</dd></div><div><dt>카드는 왜 움직이는 걸까요?</dt><dd>장난스러운 돌풍은 빗나간 후 타의 추종을 불허하는 카드를 이동합니다. 가든 퍼레이드는 경기 후 회전합니다.</dd></div><div><dt>별은 어떻게 계산되나요?</dt><dd>스타는 완전한 두 장의 카드 시도를 사용합니다. 클리어된 모든 보드가 진행됩니다.</dd></div><div><dt>Is progress saved?</dt><dd>그렇습니다. 잠금 해제된 별표와 최고의 별표는 이 브라우저에 남아 있습니다.</dd></div><div><dt>휴대폰과 키보드를 지원하나요?</dt><dd>그렇습니다. 기본 카드 버튼은 터치, 포인터 및 키보드 컨트롤과 함께 작동합니다.</dd></div><div><dt>무료이고 광고도 없나요?</dt><dd>그렇습니다. 계정이나 구매가 필요하지 않으며 Kids 빌드는 광고 요청을 하지 않습니다.</dd></div><div><dt>스킬 리포트는 정식 테스트인가요?</dt><dd>아니요. 완료된 챌린지의 쌍, 이동, 재시도 및 별표만 보고됩니다.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>더 많은 관련 게임</h3><p>메모리을(를) 다른 방식으로 연습해 보세요.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="star-memory" href="/ko/games/star-memory/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/star-memory.webp" data-final-src="/assets/weightplay-logo.png" alt="별 메모리" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">별 메모리</strong><span>동물별 메모리는 밤하늘에서 동물 별자리를 다시 잇는 30단계 그림 맞추기 여행입니다.</span></span></a><a class="game-info-related-card" data-game-id="animal-quiz" href="/ko/games/animal-quiz/"><span class="game-info-related-poster"><img src="/assets/animal-quiz/cover-block-v1.png" data-final-src="/assets/weightplay-logo.png" alt="퀴즈" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">퀴즈</strong><span>동물 퀴즈는 30개의 저장된 스테이지와 각 스테이지마다 10가지의 다른 동물이 포함된 무료 이중 언어 어린이 지식 게임입니다.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><p>메모리을(를) 다른 방식으로 연습해 보세요.</p><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/star-memory/"><img src="/assets/interface7-redrawn/star-memory.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>별 메모리</strong><span>동물별 메모리는 밤하늘에서 동물 별자리를 다시 잇는 30단계 그림 맞추기 여행입니다.</span></span></a><a class="game-info-related-card" href="/ko/games/animal-quiz/"><img src="/assets/animal-quiz/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>퀴즈</strong><span>동물 퀴즈는 30개의 저장된 스테이지와 각 스테이지마다 10가지의 다른 동물이 포함된 무료 이중 언어 어린이 지식 게임입니다.</span></span></a></div></div>
     </div>
   </section>
 </body>

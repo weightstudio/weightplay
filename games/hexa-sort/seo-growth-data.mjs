@@ -1,4 +1,4 @@
-export const VERSION = '1.3.0';
+export const VERSION = '1.4.0';
 export const RELATED = [
   { id: 'animal-color-springs', image: '/assets/animal-color-springs/cover-block-v1.png' },
   { id: 'animal-color-link', image: '/assets/animal-color-link/cover-block-v1.png' },

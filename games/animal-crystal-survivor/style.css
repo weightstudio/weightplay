@@ -1,7 +1,7 @@
 /* Dungeon Venture v31 source preservation + Interface 7 compatibility cleanup.
    The authored v31 stylesheet is kept byte-for-byte in style-v31-base.css. */
 @import url("./style-v31-base.css?v=20260924-interface7-base");
-@import url("./interface-7-cleanup.css?v=20260929-crystal-interface8-v38");
+@import url("./interface-7-cleanup.css?v=20261022-crystal-i9-candidate-v50");
 
 /* Player health follows the projected head; no bottom-corner health panel. */
 #gamePanel .player-health {

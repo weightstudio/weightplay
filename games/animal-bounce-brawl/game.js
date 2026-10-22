@@ -234,11 +234,29 @@ const frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect:$('lo
   stage:{root:$('stage-screen'),header:$('stage-screen').querySelector('header'),content:$('stage-content')},
   battle:{root:$('battle-screen'),header:$('battle-screen').querySelector('header'),content:$('battle-content'),headerInfo:$('battle-info')}
 }});
+const entryLoaderScript=document.querySelector('script[data-wp-game-entry-loader-bootstrap]');
+const entryLoaderPromise=(()=>{
+  const loader=window.WeightPlayGameEntryLoader;
+  if(typeof loader?.begin==='function'){loader.begin();return Promise.resolve(loader);}
+  if(!entryLoaderScript)return Promise.resolve(null);
+  return new Promise(resolve=>{
+    const ready=()=>{const api=window.WeightPlayGameEntryLoader;api?.begin?.();resolve(api||null);};
+    entryLoaderScript.addEventListener('load',ready,{once:true});
+    entryLoaderScript.addEventListener('error',()=>resolve(null),{once:true});
+  });
+})();
+void engineReady.then(async()=>{
+  const loader=await entryLoaderPromise;
+  if(!loader)return;
+  if(importFailure)loader.fail();
+  else loader.ready();
+});
 const stageSummary=document.createElement('span');
 const stageGroup=window.WeightPlayScreenFrame.createGroup();stageGroup.add(stageSummary);frame.stageTopUI.add(stageGroup);
 const battleGroup=window.WeightPlayScreenFrame.createGroup();battleGroup.add($('arena-label')).add($('round-time'));frame.battleTopUI.add(battleGroup);
-const practiceButton=document.createElement('button');practiceButton.id='practice-start';practiceButton.textContent=t('practice');practiceButton.addEventListener('click',()=>startArena(1,true));frame.commonDownButton.add(practiceButton);
-const stagesTab=document.createElement('button');stagesTab.textContent=stageCopy.tab;stagesTab.setAttribute('aria-current','page');frame.commonDownButton.add(stagesTab);
+const stageNavigation=frame.commonDownButton.element;stageNavigation.dataset.wpFrameStageNav='';stageNavigation.setAttribute('aria-label',stageCopy.nav);
+const practiceButton=document.createElement('button');practiceButton.type='button';practiceButton.id='practice-start';practiceButton.textContent=t('practice');practiceButton.addEventListener('click',()=>startArena(1,true));frame.commonDownButton.add(practiceButton);
+const stagesTab=document.createElement('button');stagesTab.type='button';stagesTab.dataset.wpFrameAction='tab';stagesTab.dataset.wpFrameStageSlot='stages';stagesTab.textContent=stageCopy.tab;stagesTab.setAttribute('aria-current','page');stagesTab.setAttribute('aria-pressed','true');frame.commonDownButton.add(stagesTab);
 const stageConfig={gameId:GAME_ID,count:CHAPTER_SIZE,poster:POSTER,background:POSTER,stage(i){let rewardState='unknown';try{const saved=window.WeightPlayCastle?.read();if(saved)rewardState=saved.completions?.[`${GAME_ID}:stage-${i+1}`]?'collected':'not-collected';}catch{}return {id:i+1,kicker:`${stageLabel(i)} / ${CHAPTER_SIZE}${ENCOUNTERS[i].boss?' · '+chapterText('boss'):''}`,title:stageName(i),subtitle:stageLesson(i),status:progress.stars[i]?'★'.repeat(progress.stars[i]):`${i+1} / ${CHAPTER_SIZE}`,summary:stageLesson(i),details:[t('goal'),t('controls')],locked:i>=progress.unlocked,cleared:progress.stars[i]>0,poster:POSTER,rewardState};}};
 window.addEventListener('weightplay:castle-ready',()=>{if(state.screen==='stage')stageController?.refresh(selected);});
 
@@ -261,7 +279,7 @@ function show(screen){
   frame.activate(screen==='result'?'battle':screen,{covered:screen==='result'});
   if(screen!=='battle'&&screen!=='result'){state.generation++;joystick?.destroy();joystick=null;world?.dispose();world=null;$('hit-numbers').replaceChildren();}
   if(screen==='stage'){
-    updateProgress();selected=progress.unlocked-1;
+    updateProgress();
     if(!stageController)stageController=window.WeightPlayPlayUI.mountStage({page:$('stage-content'),rail:$('stage-list'),config:stageConfig,selected,onSelect:i=>{selected=i;},onStart:i=>startArena(i+1),isActive:()=>state.screen==='stage'});
     else stageController.refresh(selected);
   }else stageController?.cancel();
@@ -568,5 +586,4 @@ window.addEventListener('weightplay:interaction-state',()=>{clearInput();const o
 $('localeSelect').value=locale;$('localeSelect').addEventListener('change',()=>{const segments={'zh-Hant':'zh-tw','zh-Hans':'zh-cn','pt-BR':'pt-br'};const value=$('localeSelect').value;try{localStorage.setItem('weightPlayLocale',value);}catch{}location.href=`/${segments[value]||value}/games/${GAME_ID}/`;});
 window.addEventListener('pagehide',()=>{state.generation++;stopLoop();joystick?.destroy();joystick=null;world?.dispose();world=null;});
 window.addEventListener('pageshow',event=>{if(event.persisted){state.mode='idle';show('main');}});
-const loader=$('loadingPanel');if(loader){loader.hidden=true;loader.classList.add('hidden');}
 updateProgress();show('main');

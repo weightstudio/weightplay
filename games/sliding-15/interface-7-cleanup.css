@@ -1,11 +1,15 @@
-/* Sliding 15 — Interface 7 content-only cleanup.
-   Cross-game Main/Stage/Battle frame, header, tab, Canvas and reserve geometry
-   belong to the shared Interface 7 implementation. This file styles only
+/* Sliding 15 — Interface 9 game-owned overlays and content details.
+   Cross-game Main/Stage/Battle frame, header, Canvas and reserve geometry
+   belong to the shared Interface 9 implementation. This file styles only
    Sliding 15 content and Battle-owned overlays. */
 
 body[data-logic-game="sliding-15"] #logicStage .sliding-15-stage-card.is-centered {
   border-color: #7cc7ff;
   box-shadow: 0 0 0 3px rgba(124,199,255,.24), 0 0 24px rgba(124,199,255,.28), 0 16px 34px rgba(0,0,0,.3);
+}
+
+body[data-wp-game-id="sliding-15"] .wp-standard-main-progress {
+  color: #f8fafc;
 }
 
 body[data-logic-game="sliding-15"] #stageStatus {

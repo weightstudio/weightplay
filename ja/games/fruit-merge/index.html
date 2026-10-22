@@ -49,12 +49,11 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><meta name="twitter:title" content="フルーツ合体どうぶつ園 | WeightPlay" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><meta name="twitter:title" content="フルーツ合体どうぶつ園 | WeightPlay" />
     <meta name="twitter:description" content="Merge Towerは自由プレイのスコアモードと30の物理チャレンジを収録。6章で空間、風、重力、落下順、目標ルールが変化し、動物ボールを合体させて進みます。" />
-    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/fruit-merge.webp" /><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/fruit-merge.webp" /><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
   <body>
     <main class="fruit-game" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="360">
@@ -194,7 +193,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-merge-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
+          script.src = "../../src/game-page-info.js?v=20261001-fruit-merge-text140-v1";
           script.dataset.mergeGameInfo = "idle";
           document.body.appendChild(script);
         };
@@ -209,7 +208,7 @@
         else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
 <section class="game-page-info game-page-info-static" aria-label="フルーツ合体どうぶつ園 ゲーム情報">
 
     <div class="game-info-hero">
@@ -233,7 +232,7 @@
       <div class="game-info-section"><h3>開発者メモ</h3><p>720×1040の物理ボードをKids Canvas内で同じ比率で表示するため、スマートフォンとデスクトップで同じ盤面ルールを使います。30の課題は、狙い、風、重力、出現順、5種類の目標を段階的に組み合わせます。Kids版は広告リクエストを送らず、進行はこのブラウザーだけに保存します。</p></div>
       <div class="game-info-section game-info-parent"><h3>保護者向け</h3><p>6歳以上の家族向けゲームです。後半はボールの動きの予測、固定された出現順の記憶、変化する物理条件への対応を練習します。スキルレポートはプレイ結果の要約であり、知能検査、診断、発達評価、学校の成績ではありません。</p></div>
       <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>チャレンジはいくつありますか？</dt><dd>30面あり、5、10、15、20、25、30面がチェックポイントです。6章で物理ルールと目標が変化します。</dd></div><div><dt>Free Playとチャレンジの違いは？</dt><dd>チャレンジは目標、落下回数、保存される解放状況、各面の物理ルールがあります。Free Playには落下回数の上限がありません。</dd></div><div><dt>ボールが横へ動くのはなぜですか？</dt><dd>River Windの面では、箱の中を移動するボールに向きが交互に変わる横風が加わります。</dd></div><div><dt>Fixed Queueでは何が固定されますか？</dt><dd>ネズミ、ウサギ、キツネの順にボールが出るため、数回先まで置き場所を考えられます。</dd></div><div><dt>重力が強い面ではどうなりますか？</dt><dd>ボールが速く落ちるため、着地後の動きを見越して空間を作る必要があります。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>チャレンジの解放、クリア、選択中の面、最高スコアがこのブラウザーに保存されます。Free Playの記録は別です。</dd></div><div><dt>スマートフォンでも遊べますか？</dt><dd>はい。タッチ、ポインター、左右キー、Space、Enterに対応しています。</dd></div><div><dt>ログインや購入は必要ですか？</dt><dd>必要ありません。Kids版は広告を表示するためのリクエストも送りません。</dd></div><div><dt>スキルレポートは正式なテストですか？</dt><dd>いいえ。現在のプレイ結果をまとめるものです。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>関連ゲームをもっと見る</h3><p>このゲームでは論理力を練習するので、こちらもどうぞ：</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="snack-blocks" href="/ja/games/snack-blocks/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/snack-blocks.webp" data-final-src="/assets/weightplay-logo.png" alt="おやつブロック" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">おやつブロック</strong><span>おやつブロックは、7×10の盤面で隣り合うおやつを入れ替えるマッチ3パズルです。</span></span></a><a class="game-info-related-card" data-game-id="animal-bubble-safari" href="/ja/games/animal-bubble-safari/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-bubble-safari.webp" data-final-src="/assets/weightplay-logo.png" alt="バブルサファリ" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">バブルサファリ</strong><span>どうぶつバブルサファリは、狙いと壁反射を使ってバブルをつなぎ、サファリの仲間を助けるシューティングパズルを楽しめるWeightPlayオリジナル作品です。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><p>このゲームでは論理力を練習するので、こちらもどうぞ：</p><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-skyspire-drop/"><img src="/assets/interface7-redrawn/animal-skyspire-drop.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>スカイスパイア・ドロップ</strong><span>クリスタルのリング塔を回して、フィアを30のスカイスパイアへ導きます。</span></span></a><a class="game-info-related-card" href="/ja/games/snack-blocks/"><img src="/assets/interface7-redrawn/snack-blocks.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>おやつブロック</strong><span>おやつブロックは、7×10の盤面で隣り合うおやつを入れ替えるマッチ3パズルです。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-bubble-safari/"><img src="/assets/interface7-redrawn/animal-bubble-safari.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>バブルサファリ</strong><span>どうぶつバブルサファリは、狙いと壁反射を使ってバブルをつなぎ、サファリの仲間を助けるシューティングパズルを楽しめるWeightPlayオリジナル作品です。</span></span></a></div></div>
     </div>
   </section>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="フルーツ合体どうぶつ園";document.title="フルーツ合体どうぶつ園 | WeightPlay";},{once:true});</script>

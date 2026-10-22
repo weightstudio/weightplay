@@ -142,17 +142,9 @@
   "alternateName": "Animal Putt Trails"
 }
     </script>
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-shared-frame-v1" data-wp-frame-style>
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-style>
   <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <meta property="og:site_name" content="WeightPlay" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Trilhas de Putt Animal | WeightPlay" />
-    <meta property="og:url" content="https://weightplay.com/pt-br/games/animal-putt-trails/" />
-    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Trilhas de Putt Animal | WeightPlay" />
-    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
   <style data-wp-animal-putt-i9-main-fit>
     #mainScreen #startButton { min-height:52px !important; box-sizing:border-box !important; }
     body[data-screen="stage"] > .game-page-info,
@@ -183,7 +175,15 @@
       #mainScreen .progress { min-height:40px !important; margin:.3rem 0 .6rem !important; }
     }
   </style>
-</head>
+  <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Trilhas de Putt Animal | WeightPlay" />
+    <meta property="og:url" content="https://weightplay.com/pt-br/games/animal-putt-trails/" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Trilhas de Putt Animal | WeightPlay" />
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
+  </head>
 <body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v21" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">Animal Putt Trails</strong><span data-copy="loading">Preparing the trail…</span><div class="loading-track"><i></i></div></div></section>
   <div class="shell" data-wp-frame-root>
@@ -215,8 +215,10 @@
         <header class="battle-head"><button id="battleBack" type="button" data-wp-return="battle" data-aria="back" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong></header>
         <div id="puttBattleLive" class="putt-battle-live wp-frame-play-content">
           <div id="puttHudSource" hidden><span id="holeInfo"><span id="holeTitle">Meadow Gate</span><span aria-hidden="true"> · </span><span id="parLabel">Par 3</span></span><span id="strokeLabel">Strokes 0</span><span id="acornLabel">Acorns 0</span></div>
-          <div class="canvas-wrap"><canvas id="courseCanvas" width="960" height="720" tabindex="0" data-aria="course" aria-describedby="battleHelp" aria-label="Animal Putt Trails course"></canvas><button id="aimAction" type="button" data-wp-primary-action aria-label="Drag back from the ball, then release.">◎</button></div>
-          <p id="battleHelp" class="battle-help" role="status" aria-live="polite"></p>
+          <div class="putt-workspace"><div class="putt-mission"><strong id="puttObjective"></strong><span id="puttLesson"></span></div>
+          <div class="canvas-wrap"><canvas id="courseCanvas" width="960" height="720" tabindex="0" data-aria="course" aria-describedby="battleHelp" aria-label="Animal Putt Trails course"></canvas></div>
+          <div class="putt-controls"><label for="puttPower"><span id="puttPowerLabel"></span><output id="puttPowerValue" for="puttPower">50%</output></label><input id="puttPower" type="range" min="8" max="100" value="50" step="1"><button id="aimAction" type="button" class="primary" data-wp-primary-action></button></div>
+          <p id="battleHelp" class="battle-help" role="status" aria-live="polite"></p></div>
         </div>
         <section id="resultCard" class="result-card" data-wp-battle-substate="result" role="dialog" aria-modal="true" hidden><div><div class="eyebrow" data-copy="clear">Trail clear</div><h2 id="resultTitle">Nice line!</h2><p id="resultCopy"></p><div class="result-actions"><button id="mapButton" class="secondary" type="button" data-copy="map">Trail map</button><button id="nextButton" class="primary" type="button" data-copy="next">Next hole</button><button id="retryButton" class="secondary" type="button" data-copy="retry">Retry hole</button></div></div></section>
         <section id="puttLeaveDialog" class="putt-leave-layer" role="dialog" aria-modal="true" aria-labelledby="puttLeaveTitle" aria-describedby="puttLeaveText" hidden><div class="putt-leave-card"><h2 id="puttLeaveTitle">Leave this hole?</h2><p id="puttLeaveText"></p><div class="putt-leave-actions"><button id="puttLeaveContinue" class="primary" type="button">Continue playing</button><button id="puttLeaveStages" class="secondary" type="button">Return to Stages</button></div></div></section>
@@ -226,9 +228,9 @@
   <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1" data-wp-frame-script></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
   <script src="game.js?v=20261017-animal-putt-trails-v21-i9"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/pt-br.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <section class="game-page-info game-page-info-static" aria-label="Informações de Trilhas de Putt Animal">
@@ -256,6 +258,6 @@
     </div>
   </section>
 <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
-<script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
+<script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
 </body>
 </html>

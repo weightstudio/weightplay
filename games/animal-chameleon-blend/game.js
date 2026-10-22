@@ -1,276 +1,38 @@
-(() => {
-  const anchor = document.currentScript;
-  const stageScreen = document.getElementById("stage-screen");
-  const stageRail = document.getElementById("stage-list");
-  const battleScreen = document.getElementById("battle-screen");
-  const battleBack = document.getElementById("battle-back");
-  const resultScreen = document.getElementById("result-screen");
+(async () => {
+  "use strict";
 
-  const cleanup = document.createElement("link");
-  cleanup.rel = "stylesheet";
-  cleanup.href = "interface-7-cleanup.css?v=20260922-i7-cleanup2";
-  document.head.append(cleanup);
-
-  const stageNav = document.querySelector("#stage-screen .m5-stage-tabs");
-  if (stageNav) {
-    stageNav.setAttribute("data-wp-frame-stage-nav", "");
-    stageNav.querySelector("button")?.setAttribute("data-wp-frame-stage-slot", "stages");
-  }
-
-  // Give Stage one explicit workspace so the selector can use the shared
-  // 38% upper-middle anchor without depending on the legacy I6 grid row.
-  if (stageScreen && stageRail && stageRail.parentElement === stageScreen) {
-    const workspace = document.createElement("div");
-    workspace.className = "wp-chameleon-stage-workspace";
-    workspace.setAttribute("data-wp-stage-workspace", "");
-    stageRail.before(workspace);
-    workspace.append(stageRail);
-  }
-
-  /*
-   * Chameleon Blend owns 30 stages. Interface 7 forbids one permanent DOM card
-   * per campaign stage, so intercept the legacy renderer before it materializes
-   * its 30-button HTML and expose a fixed nine-node virtual rail instead.
-   * The shared Stage script still owns Canvas sizing/artwork, while this rail
-   * declares one local drag owner and opts out of the shared drag writer.
-   */
-  function installVirtualStageRail() {
-    if (!stageRail) return;
-    const descriptor = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML");
-    if (!descriptor?.get || !descriptor?.set) return;
-
-    const CARD_WIDTH = 264;
-    const CARD_HEIGHT = 190;
-    const CARD_GAP = 12;
-    const STEP = CARD_WIDTH + CARD_GAP;
-    const POOL_SIZE = 9;
-    let totalStages = 30;
-    let highestUnlocked = 1;
-    let currentStage = 1;
-    let poolStart = 1;
-    let pool = [];
-    let spacer = null;
-    let activeBridge = null;
-    let pointerId = null;
-    let pointerStartX = 0;
-    let pointerStartScroll = 0;
-    let pointerMoved = false;
-    let suppressClick = false;
-    let settleFrame = 0;
-
-    const nativeQuerySelectorAll = stageRail.querySelectorAll.bind(stageRail);
-    stageRail.dataset.wpStageVirtualDrag = "true";
-    stageRail.dataset.wpStageCenterObserver = "manual";
-
-    const localeGame = () => window.WeightPlayMarketFiveLocale?.game?.() || {};
-    const stageWord = () => window.wpMarketCommon?.(9) || "Stage";
-    const clampStage = (stage) => Math.max(1, Math.min(totalStages, Math.round(stage || 1)));
-    const stageName = (stage) => localeGame().stageNames?.[stage - 1] || `${stageWord()} ${stage}`;
-    const arcName = (stage) => localeGame().arcNames?.[Math.floor((stage - 1) / 5)] || "";
-
-    function ensurePool() {
-      if (spacer) return;
-      descriptor.set.call(stageRail, "");
-      spacer = document.createElement("div");
-      spacer.className = "wp-chameleon-stage-virtual-spacer";
-      stageRail.append(spacer);
-      pool = Array.from({ length: POOL_SIZE }, () => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "m5-stage-card stage-card";
-        const title = document.createElement("span");
-        const detail = document.createElement("small");
-        button.append(title, detail);
-        spacer.append(button);
-        return button;
-      });
+  const entryLoader = await new Promise((resolve) => {
+    const current = window.WeightPlayGameEntryLoader;
+    if (current?.isActive) {
+      resolve(current);
+      return;
     }
-
-    function railPadding() {
-      return Math.max(24, ((stageRail.clientWidth || 390) - CARD_WIDTH) / 2);
+    const bootstrap = document.querySelector('script[data-wp-game-entry-loader-bootstrap]')
+      || document.querySelector('script[src*="/game-entry-loader.js"]');
+    if (!bootstrap) {
+      resolve(null);
+      return;
     }
+    const finish = () => resolve(window.WeightPlayGameEntryLoader?.isActive ? window.WeightPlayGameEntryLoader : null);
+    bootstrap.addEventListener("load", finish, {once: true});
+    bootstrap.addEventListener("error", () => resolve(null), {once: true});
+    if (window.WeightPlayGameEntryLoader?.isActive) finish();
+  });
+  entryLoader?.begin?.(1);
 
-    function targetScroll(stage) {
-      const padding = railPadding();
-      return Math.max(0, padding + (clampStage(stage) - 1) * STEP + CARD_WIDTH / 2 - (stageRail.clientWidth || 390) / 2);
-    }
-
-    function centerFromScroll() {
-      const padding = railPadding();
-      const center = stageRail.scrollLeft + (stageRail.clientWidth || 390) / 2;
-      return clampStage((center - padding - CARD_WIDTH / 2) / STEP + 1);
-    }
-
-    function bindPool(center = currentStage) {
-      ensurePool();
-      currentStage = clampStage(center);
-      const maximumStart = Math.max(1, totalStages - POOL_SIZE + 1);
-      poolStart = Math.max(1, Math.min(maximumStart, currentStage - Math.floor(POOL_SIZE / 2)));
-      const padding = railPadding();
-      spacer.style.width = `${padding * 2 + totalStages * CARD_WIDTH + Math.max(0, totalStages - 1) * CARD_GAP}px`;
-      spacer.style.height = "206px";
-
-      pool.forEach((button, poolIndex) => {
-        const stage = poolStart + poolIndex;
-        const valid = stage <= totalStages;
-        button.hidden = !valid;
-        if (!valid) return;
-        const available = stage <= highestUnlocked;
-        const centered = stage === currentStage;
-        button.dataset.stage = String(stage);
-        button.dataset.index = String(stage - 1);
-        button.style.left = `${padding + (stage - 1) * STEP}px`;
-        button.style.top = "8px";
-        button.disabled = !available;
-        button.setAttribute("aria-disabled", String(!available));
-        button.setAttribute("aria-posinset", String(stage));
-        button.setAttribute("aria-setsize", String(totalStages));
-        button.toggleAttribute("data-wp-enter-battle", available);
-        button.classList.toggle("recommended", stage === highestUnlocked);
-        button.classList.toggle("is-centered", centered);
-        button.setAttribute("aria-current", centered ? "true" : "false");
-        button.firstElementChild.textContent = `${stageWord()} ${stage}`;
-        button.lastElementChild.textContent = available
-          ? [stageName(stage), arcName(stage)].filter(Boolean).join(" · ")
-          : "🔒";
-      });
-    }
-
-    function layoutRail({ center = false } = {}) {
-      const stage = currentStage;
-      bindPool(stage);
-      if (center && stageRail.getClientRects().length) stageRail.scrollLeft = targetScroll(stage);
-    }
-
-    function settleTo(stage) {
-      stage = clampStage(stage);
-      if (settleFrame) cancelAnimationFrame(settleFrame);
-      const from = stageRail.scrollLeft;
-      const to = targetScroll(stage);
-      const distance = to - from;
-      if (Math.abs(distance) < 1) {
-        stageRail.scrollLeft = to;
-        bindPool(stage);
-        return;
-      }
-      const started = performance.now();
-      const duration = Math.min(480, Math.max(240, Math.abs(distance) * 1.35));
-      const animate = (now) => {
-        const progress = Math.max(0, Math.min(1, (now - started) / duration));
-        const eased = 1 - Math.pow(1 - progress, 2);
-        stageRail.scrollLeft = from + distance * eased;
-        bindPool(centerFromScroll());
-        if (progress < 1) {
-          settleFrame = requestAnimationFrame(animate);
-          return;
-        }
-        settleFrame = 0;
-        stageRail.scrollLeft = to;
-        bindPool(stage);
-        stageRail.dispatchEvent(new CustomEvent("wonder:stage-snap", { detail: { index: stage - 1 } }));
-      };
-      settleFrame = requestAnimationFrame(animate);
-    }
-
-    function refreshFromLegacyMarkup(markup) {
-      const source = String(markup || "");
-      const stageCount = source.match(/data-stage="\d+"/g)?.length || totalStages;
-      const unlockedCount = source.match(/data-wp-enter-battle/g)?.length || 1;
-      totalStages = Math.max(1, stageCount);
-      highestUnlocked = Math.max(1, Math.min(totalStages, unlockedCount));
-      activeBridge = document.createElement("button");
-      activeBridge.type = "button";
-      const stageVisible = Boolean(stageScreen && !stageScreen.hidden && stageScreen.getClientRects().length);
-      if (!stageVisible) currentStage = highestUnlocked;
-      bindPool(currentStage);
-      requestAnimationFrame(() => layoutRail({ center: stageVisible }));
-    }
-
-    Object.defineProperty(stageRail, "innerHTML", {
-      configurable: true,
-      get() { return descriptor.get.call(stageRail); },
-      set(value) {
-        const source = String(value ?? "");
-        if (!source.includes("m5-stage-card")) {
-          descriptor.set.call(stageRail, source);
-          spacer = null;
-          pool = [];
-          return;
-        }
-        refreshFromLegacyMarkup(source);
-      },
-    });
-
-    stageRail.querySelectorAll = function (selector) {
-      if (selector === "button:not(:disabled)" && activeBridge) return [activeBridge];
-      return nativeQuerySelectorAll(selector);
-    };
-
-    stageRail.addEventListener("pointerdown", (event) => {
-      if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
-      if (settleFrame) {
-        cancelAnimationFrame(settleFrame);
-        settleFrame = 0;
-      }
-      pointerId = event.pointerId;
-      pointerStartX = event.clientX;
-      pointerStartScroll = stageRail.scrollLeft;
-      pointerMoved = false;
-      suppressClick = false;
-    }, true);
-
-    stageRail.addEventListener("pointermove", (event) => {
-      if (event.pointerId !== pointerId) return;
-      const rect = stageRail.getBoundingClientRect();
-      const scale = rect.width > 0 ? stageRail.clientWidth / rect.width : 1;
-      const delta = event.clientX - pointerStartX;
-      if (Math.abs(delta) > 4 && !pointerMoved) {
-        pointerMoved = true;
-        try { stageRail.setPointerCapture(event.pointerId); } catch { /* optional */ }
-      }
-      stageRail.scrollLeft = pointerStartScroll - delta * scale;
-      bindPool(centerFromScroll());
-      if (event.cancelable) event.preventDefault();
-    }, true);
-
-    const finishPointer = (event) => {
-      if (event.pointerId !== pointerId) return;
-      try { stageRail.releasePointerCapture(event.pointerId); } catch { /* optional */ }
-      pointerId = null;
-      if (pointerMoved) suppressClick = true;
-      settleTo(centerFromScroll());
-    };
-    stageRail.addEventListener("pointerup", finishPointer, true);
-    stageRail.addEventListener("pointercancel", finishPointer, true);
-
-    stageRail.addEventListener("click", (event) => {
-      const button = event.target?.closest?.(".m5-stage-card");
-      if (!button || !stageRail.contains(button)) return;
-      if (suppressClick) {
-        suppressClick = false;
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        return;
-      }
-      if (button.disabled || button.getAttribute("aria-disabled") === "true") return;
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      if (!activeBridge) return;
-      activeBridge.dataset.stage = button.dataset.stage;
-      activeBridge.click();
-    }, true);
-
-    window.addEventListener("weightplay:shell-sync", () => {
-      if (!stageScreen || stageScreen.hidden) return;
-      currentStage = highestUnlocked;
-      requestAnimationFrame(() => layoutRail({ center: true }));
-    });
-    window.addEventListener("weightplay:market-locale-change", () => requestAnimationFrame(() => layoutRail({ center: true })));
-    window.addEventListener("resize", () => requestAnimationFrame(() => layoutRail({ center: true })), { passive: true });
-  }
-
-  installVirtualStageRail();
-
+  const $ = (id) => document.getElementById(id);
+  const app = $("app");
+  const mainScreen = $("main-screen");
+  const stageScreen = $("stage-screen");
+  const stageRail = $("stage-list");
+  const battleScreen = $("battle-screen");
+  const battleBack = $("battle-back");
+  const resultScreen = $("result-screen");
+  const guide = document.querySelector("#main-screen + [data-wp-game-guide]");
+  let frame = null;
+  let stageUI = null;
+  let stageProgress = null;
+  let selectedStage = 0;
   let battlePaused = false;
   function pauseBattleClock() { battlePaused = true; }
   function resumeBattleClock() { battlePaused = false; }
@@ -418,7 +180,6 @@
 
   // This game owns one explicit state machine. Shared frame, audio and locale
   // services remain the platform's responsibility; no shared game loop is loaded.
-  const $ = id => document.getElementById(id);
   const gameText = () => window.WeightPlayMarketFiveLocale?.game?.() || {};
   const common = i => window.wpMarketCommon?.(i) || ['Language','Start Game','Stages','Back','Back','Retry','Next Stage','How to Play','Best','Stage','Goal reached','Try again'][i];
   const copy = {
@@ -469,8 +230,6 @@
   $('battle-status').replaceChildren(coach,progress);
   const board=document.createElement('div'); board.id='blend-board'; board.setAttribute('aria-live','polite');
   $('arena').after(board);
-  const hud=document.createElement('div');hud.className='blend-hud';
-  $('stage-label').before(hud);hud.append($('stage-label'),$('score-label'));
   const clue=document.createElement('div');clue.className='blend-clue';
   const clueIndex=document.createElement('span');clueIndex.className='blend-clue-index';
   const cluePair=document.createElement('strong');cluePair.className='blend-clue-pair';
@@ -498,27 +257,144 @@
   const audio=window.WeightPlayAudio?.createScope?.();
   window.WeightPlayAudio?.preload?.(['game.start','puzzle.match','feedback.error','result.win','result.lose']);
   function sound(id){audio?.play(id);}
+  function mountSharedPlayUI(){
+    const mainHeader=mainScreen.querySelector("header");
+    const mainTitle=mainHeader?.querySelector(".m5-title");
+    const cover=mainScreen.querySelector(".m5-cover");
+    const copyPane=mainScreen.querySelector(".m5-copy");
+    let mainContent=mainScreen.querySelector(":scope > .m5-main-content");
+    if(!mainContent){
+      mainContent=document.createElement("div");
+      mainContent.className="m5-main-content";
+      mainHeader?.after(mainContent);
+    }
+    if(cover&&cover.parentElement!==mainContent)mainContent.append(cover);
+    if(copyPane&&copyPane.parentElement!==mainContent)mainContent.append(copyPane);
+    mainTitle?.setAttribute("data-wp-frame-title","");
+    cover?.setAttribute("data-wp-frame-poster","");
+    copyPane?.setAttribute("data-wp-frame-copy","");
+    copyPane?.querySelector(".m5-lede")?.setAttribute("data-wp-frame-summary","");
+    copyPane?.querySelector("#main-progress")?.setAttribute("data-wp-frame-progress","");
+
+    const stageHeader=stageScreen.querySelector("header");
+    stageHeader?.querySelector("h2")?.setAttribute("data-wp-frame-title","");
+    let stageWorkspace=stageScreen.querySelector(":scope > [data-wp-stage-workspace]");
+    if(!stageWorkspace){
+      stageWorkspace=document.createElement("div");
+      stageWorkspace.className="wp-chameleon-stage-workspace";
+      stageWorkspace.setAttribute("data-wp-stage-workspace","");
+      stageRail.before(stageWorkspace);
+      stageWorkspace.append(stageRail);
+    }
+    const stageInfo=document.createElement("div");
+    stageProgress=document.createElement("span");
+    stageInfo.append(stageProgress);
+    stageWorkspace.insertBefore(stageInfo,stageRail);
+    const stageNav=stageScreen.querySelector(".m5-stage-tabs");
+    stageNav?.setAttribute("data-wp-frame-nav","");
+    stageNav?.setAttribute("data-wp-frame-stage-nav","");
+    stageNav?.setAttribute("data-wp-play-actions","");
+    const stageTab=stageNav?.querySelector("button");
+    if(stageTab){
+      stageTab.setAttribute("data-wp-frame-stage-slot","stages");
+      stageTab.setAttribute("data-wp-frame-action","tab");
+      stageTab.setAttribute("aria-pressed","true");
+      stageTab.setAttribute("aria-selected","true");
+    }
+
+    const battleHeader=battleScreen.querySelector("header");
+    let battleTitle=battleHeader.querySelector("[data-wp-frame-title]");
+    if(!battleTitle){
+      battleTitle=document.createElement("strong");
+      battleTitle.hidden=true;
+      battleTitle.setAttribute("data-wp-frame-title","");
+      battleHeader.append(battleTitle);
+    }
+    const battleContent=document.createElement("div");
+    battleContent.className="m5-battle-content";
+    const battleInfo=document.createElement("div");
+    battleInfo.className="blend-hud";
+    battleInfo.append($("stage-label"),$("score-label"));
+    battleContent.append(battleInfo);
+    for(const node of [
+      $("battle-status"),
+      battleScreen.querySelector(".m5-canvas-wrap"),
+      $("battle-controls"),
+      battleScreen.querySelector(".m5-hint"),
+    ]){
+      if(node)battleContent.append(node);
+    }
+    battleHeader.after(battleContent);
+
+    frame=window.WeightPlayScreenFrame.mount({
+      root:app,
+      localeSelect:$("localeSelect"),
+      playUI:true,
+      scenes:{
+        main:{root:mainScreen,header:mainHeader,content:mainContent},
+        stage:{root:stageScreen,header:stageHeader,content:stageWorkspace,headerInfo:stageInfo},
+        battle:{root:battleScreen,header:battleHeader,content:battleContent,headerInfo:battleInfo},
+      },
+    });
+    const names=gameText().stageNames||[];
+    const arcs=gameText().arcNames||[];
+    stageUI=window.WeightPlayPlayUI.mountStage({
+      page:stageWorkspace,
+      rail:stageRail,
+      selected:selectedStage,
+      isActive:()=>frame.active==="stage",
+      config:{
+        count:profiles.length,
+        gameId:"animal-chameleon-blend",
+        poster:"/games/animal-chameleon-blend/assets/animal-chameleon-blend-cover.webp",
+        background:"/games/animal-chameleon-blend/assets/animal-chameleon-blend-background.png",
+        stage(index){
+          const stage=index+1;
+          const profile=profiles[index];
+          const locked=stage>Math.min(profiles.length,best+1);
+          return{
+            id:stage,
+            kicker:[arcs[Math.floor(index/5)],common(9)+" "+stage].filter(Boolean).join(" · "),
+            title:names[index]||common(9)+" "+stage,
+            subtitle:t(13)+" "+profile.need+"/"+profile.rounds,
+            status:locked?"🔒":stage<=best?common(8)+" "+stage:t(17),
+            locked,
+            cleared:stage<=best,
+            summary:t(0)+" · "+t(16),
+            details:[t(12)+" "+profile.need+"/"+profile.rounds,profile.sequence+" "+t(19)+" · "+(profile.reverse?t(14):t(15)),profile.preview.toFixed(1)+"s / "+profile.choose.toFixed(1)+"s"],
+            poster:"/games/animal-chameleon-blend/assets/animal-chameleon-blend-cover.webp",
+          };
+        },
+      },
+      onSelect(index){selectedStage=index;},
+      onStart(index){start(index+1);},
+    });
+  }
+
   function updateProgress(){
     $('main-progress').textContent=`${common(8)}: ${best} / 30`;
+    if(stageProgress)stageProgress.textContent=`${common(8)}: ${best} / 30`;
     document.querySelector('[data-m5-lede]').textContent=t(0)+' · '+t(16);
     document.querySelector('#main-screen + [data-wp-game-guide] [data-m5-guide]')?.replaceChildren(document.createTextNode(`${t(4)} → ${t(2)} → ${t(3)}. ${t(15)} / ${t(14)}.`));
   }
   function stageCards(){
-    const unlocked=Math.min(30,best+1);
-    stageRail.innerHTML=profiles.map((p,i)=>`<button class="m5-stage-card stage-card" data-stage="${i+1}" ${i<unlocked?'data-wp-enter-battle':'disabled'}><span>${i+1}</span></button>`).join('');
-    stageRail.querySelectorAll('button:not(:disabled)').forEach(b=>b.addEventListener('click',()=>start(Number(b.dataset.stage))));
+    stageUI?.refresh(selectedStage);
   }
   function show(screen){
-    if(screen!=='battle'&&state.screen==='battle'&&measurement.started&&!measurement.ended){measurement.ended=true;measurement.outcome='abandon';}
+    if(screen!=="battle"&&state.screen==="battle"&&measurement.started&&!measurement.ended){measurement.ended=true;measurement.outcome="abandon";}
     cancelAnimationFrame(frameId);state.screen=screen;document.body.dataset.screen=screen;
-    for(const name of ['main','stage','battle']){const node=$(`${name}-screen`);node.hidden=name!==screen;node.classList.toggle('active',name===screen);}
-    if(screen!=='battle'){resultScreen.hidden=true;audio?.stop();}
-    window.dispatchEvent(new CustomEvent(screen==='battle'?'weightplay:battle-open':'weightplay:shell-sync'));
-    if(screen==='battle'){lastTime=performance.now();frameId=requestAnimationFrame(tick);}
+    for(const name of ["main","stage","battle"]){const node=$(name+"-screen");node.hidden=name!==screen;node.classList.toggle("active",name===screen);}
+    if(guide){guide.hidden=screen!=="main";guide.inert=screen!=="main";guide.setAttribute("aria-hidden",String(screen!=="main"));}
+    if(screen!=="battle"){resultScreen.hidden=true;audio?.stop();}
+    frame?.activate(screen);
+    if(screen==="stage")stageCards();
+    window.dispatchEvent(new CustomEvent(screen==="battle"?"weightplay:battle-open":"weightplay:shell-sync"));
+    if(screen==="battle"){lastTime=performance.now();frameId=requestAnimationFrame(tick);}
     observeMeasurement();
   }
   function start(stage){
     if(stage>Math.min(30,best+1)||stage<1)return;
+    selectedStage=stage-1;stageCards();
     state={screen:'battle',stage,round:1,wins:0,phase:'ready',color:-1,pattern:-1,entry:0,preview:0,timer:0,correct:false};
     Object.assign(measurement,{roundKey:{},started:true,ended:false,restart:false,outcome:'complete'});
     battlePaused=false;resultScreen.hidden=true;show('battle');render();sound('game.start');
@@ -593,14 +469,21 @@
   $('retry').addEventListener('click',()=>{board.inert=false;start(state.stage);});
   $('next').addEventListener('click',()=>{if(!$('next').disabled){board.inert=false;start(state.stage+1);}});
   window.addEventListener('keydown',e=>{if(state.screen!=='battle'||!resultScreen.hidden||battlePaused||e.repeat||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;const actions={'1':'color-0','2':'color-1','3':'color-2','4':'pattern-0','5':'pattern-1','6':'pattern-2'};if(actions[e.key]){e.preventDefault();act(actions[e.key]);}});
-  window.addEventListener('weightplay:market-locale-change',()=>{updateProgress();stageCards();if(state.screen==='battle')render();});
+  window.addEventListener('weightplay:market-locale-change',()=>{updateProgress();stageCards();frame?.refresh();if(state.screen==='battle')render();});
   document.addEventListener('visibilitychange',()=>{lastTime=performance.now();});
   window.addEventListener('pagehide',()=>{cancelAnimationFrame(frameId);audio?.stop();});
   window.addEventListener('pageshow',e=>{if(e.persisted&&state.screen==='battle'){lastTime=performance.now();frameId=requestAnimationFrame(tick);}});
-  const atlasImage=new Image();atlasImage.src='assets/animal-chameleon-blend-background.png';
-  atlasImage.addEventListener('load',()=>{const c=$('arena'),ctx=c.getContext('2d');ctx.drawImage(atlasImage,0,0,c.width,c.height);});
+  const atlasImage=new Image();
+  atlasImage.addEventListener('load',()=>{
+    const canvas=$('arena'),ctx=canvas?.getContext('2d');
+    if(ctx)ctx.drawImage(atlasImage,0,0,canvas.width,canvas.height);
+    entryLoader?.assetProgress?.(1,1);
+    entryLoader?.ready?.();
+  },{once:true});
+  atlasImage.addEventListener('error',()=>entryLoader?.fail?.(),{once:true});
+  atlasImage.src='assets/animal-chameleon-blend-background.png';
+  mountSharedPlayUI();
+  selectedStage=best;
   updateProgress();stageCards();show('main');
-  const hideLoading=()=>{$('loadingPanel')?.classList.add('hidden');$('loadingPanel')?.setAttribute('hidden','');};
-  if(document.readyState==='complete')hideLoading();else window.addEventListener('load',hideLoading,{once:true});
 
 })();

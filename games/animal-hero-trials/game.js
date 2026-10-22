@@ -492,8 +492,6 @@
   let rerollConfirmGeneration = 0;
   let pointer = null;
   let moveTarget = null;
-  let stageSelectionFrame = 0;
-  let stageRailController = null;
   let backgroundSuspended = false;
   let windowHasFocus = document.hasFocus();
   let quitSuspended = false;
@@ -965,7 +963,7 @@
   }
 
   function renderStages() {
-    sharedStage?.refresh(Math.min(TRIAL_COUNT,unlocked)-1);
+    if(sharedStage)sharedStage.refresh(sharedStage.selected);
   }
 
   function setHeroPanel(open, restoreFocus=true) {
@@ -976,55 +974,9 @@
     else if(restoreFocus&&activeScene==='stage')$('#teamBtn')?.focus({preventScroll:true});
   }
 
-  function updateCenteredStageCard() {
-    stageSelectionFrame=0;
-    const rail=$("#stageRail");
-    if(!rail||!rail.getClientRects().length)return;
-    if(rail.dataset.wpStageCenterObserver==="manual")return;
-    const railRect=rail.getBoundingClientRect();
-    const center=railRect.left+railRect.width/2;
-    const cards=[...rail.querySelectorAll(".stage-card")];
-    const centered=cards.reduce((best,card)=>{
-      const rect=card.getBoundingClientRect();
-      const distance=Math.abs(rect.left+rect.width/2-center);
-      return !best||distance<best.distance?{card,distance}:best
-    },null)?.card||null;
-    cards.forEach((card)=>{
-      const active=card===centered;
-      card.classList.toggle("is-browsed",active);
-      card.tabIndex=active?0:-1;
-      if(active)card.setAttribute("aria-current","true");
-      else card.removeAttribute("aria-current");
-    });
-  }
-
-  function scheduleCenteredStageCard() {
-    cancelAnimationFrame(stageSelectionFrame);
-    stageSelectionFrame=sceneFrame("stage", updateCenteredStageCard);
-  }
-
-  function setStageTabStop(card, focus = false) {
-    if (!card) return;
-    if(sharedStage){sharedStage.select(Number(card.dataset.stage)-1,{focus});return;}
-    $$("#stageRail .stage-card").forEach((item) => { item.tabIndex = item === card ? 0 : -1; });
-    if (focus) {
-      card.scrollIntoView({ block: "nearest", inline: "center" });
-      card.focus({ preventScroll: true });
-      scheduleCenteredStageCard();
-    }
-  }
-
   function focusStage() {
     sceneFrame("stage", () => {
-      if(sharedStage){sharedStage.select(Math.min(TRIAL_COUNT,unlocked)-1,{focus:true});return;}
-      const rail=$("#stageRail");
-      stageRailController?.center(Math.min(TRIAL_COUNT,unlocked)-1);
-      const card=rail.querySelector(`[data-stage="${Math.min(TRIAL_COUNT,unlocked)}"]`);
-      if(rail.dataset.wpStageVirtualizationInstalled==="true") {
-        card?.focus({preventScroll:true});
-        return;
-      }
-      setStageTabStop(card,true);
+      sharedStage?.select(sharedStage.selected,{focus:true});
     });
   }
 
@@ -2139,7 +2091,35 @@
       u.aura.material.color.set(isHero?(run.guard>0?'#89e7ff':run.counter>0?'#ffe28b':'#7de7cf'):data.warning>0?'#ffc874':data.open>0?'#91ffd1':data.guard>0?'#8ad7f4':'#a09cc1');
     }
     let contextLost=false;
-    surface.addEventListener('webglcontextlost',event=>{event.preventDefault();contextLost=true;suspendBackgroundBattle();const panel=$('#loadingPanel');panel?.classList.remove('hidden');if(panel)panel.textContent=localizedValue('Graphics interrupted. Reload to recover; saved progress is safe.','畫面暫時中斷，重新載入即可恢復；永久進度已保留。','Gráficos interrumpidos. Recarga; tu progreso está guardado.','توقفت الرسومات. أعد التحميل؛ تقدمك محفوظ.');});
+    surface.addEventListener('webglcontextlost',event=>{
+      event.preventDefault();contextLost=true;suspendBackgroundBattle();
+      let panel=$('#graphicsRecoveryModal');
+      if(!panel){
+        panel=document.createElement('div');panel.id='graphicsRecoveryModal';panel.className='modal hidden';panel.style.position='absolute';
+        panel.setAttribute('role','alertdialog');panel.setAttribute('aria-modal','true');
+        panel.setAttribute('aria-labelledby','graphicsRecoveryTitle');panel.setAttribute('aria-describedby','graphicsRecoveryCopy');
+        const section=document.createElement('section');
+        const title=document.createElement('h2');title.id='graphicsRecoveryTitle';
+        title.textContent=localizedValue('Graphics interrupted','畫面暫時中斷','Gráficos interrumpidos','توقفت الرسومات');
+        const copy=document.createElement('p');copy.id='graphicsRecoveryCopy';
+        copy.textContent=localizedValue('Reload to recover. Your saved progress is safe.','重新載入即可恢復；永久進度已保留。','Recarga para recuperar la arena. Tu progreso está guardado.','أعد التحميل لاستعادة الساحة. تقدمك محفوظ.');
+        const actions=document.createElement('div');actions.className='modal-actions';
+        const retry=document.createElement('button');retry.type='button';retry.textContent=localizedValue('Reload','重新載入','Recargar','إعادة التحميل');retry.onclick=()=>location.reload();
+        const back=document.createElement('button');back.type='button';back.textContent=returnLabels[locale]||returnLabels.en;
+        back.onclick=()=>location.assign(`/${localeRoutePrefixes[locale]||'en'}/`);
+        actions.append(retry,back);section.append(title,copy,actions);panel.append(section);
+        panel.addEventListener('keydown',keyEvent=>{
+          keyEvent.stopPropagation();
+          if(keyEvent.key==='Escape'){keyEvent.preventDefault();return;}
+          if(keyEvent.key!=='Tab')return;
+          const buttons=[...panel.querySelectorAll('button:not(:disabled)')];
+          if(keyEvent.shiftKey&&document.activeElement===buttons[0]){keyEvent.preventDefault();buttons.at(-1)?.focus();}
+          else if(!keyEvent.shiftKey&&document.activeElement===buttons.at(-1)){keyEvent.preventDefault();buttons[0]?.focus();}
+        });
+        views.battle.append(panel);
+      }
+      panel.classList.remove('hidden');panel.querySelector('button')?.focus({preventScroll:true});
+    });
     surface.addEventListener('webglcontextrestored',()=>location.reload());
     function resize(w,h){width=w;height=h;camera.left=-w/2;camera.right=w/2;camera.top=h/2;camera.bottom=-h/2;camera.updateProjectionMatrix();renderer.setSize(w,h,false);ground();}
     function render(state){
@@ -2239,33 +2219,6 @@
     };
   }
   $("#startBtn").addEventListener("keydown", (event) => { if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault(); });
-  $("#stageRail").addEventListener("keydown", (event) => {
-    if(sharedStage)return;
-    const card = event.target.closest(".stage-card");
-    if (!card) return;
-    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
-      event.preventDefault();
-      return;
-    }
-    const cards = $$("#stageRail .stage-card");
-    const current = cards.indexOf(card);
-    const targetIndex = event.key === "ArrowRight"
-      ? Math.min(cards.length - 1, current + 1)
-      : event.key === "ArrowLeft"
-        ? Math.max(0, current - 1)
-        : event.key === "Home"
-          ? 0
-          : event.key === "End"
-            ? cards.length - 1
-            : -1;
-    if (targetIndex < 0) return;
-    event.preventDefault();
-    setStageTabStop(cards[targetIndex], true);
-  });
-  $("#stageRail").addEventListener("focusin", (event) => {
-    const card = event.target.closest(".stage-card");
-    if (card) setStageTabStop(card);
-  });
   $("#startBtn").onclick = () => { playSound("ui.click"); show("stage"); focusStage(); };
   $("#stageBack").onclick = () => { playSound("ui.click"); show("main"); focusMain(); };
   $("#battleBack").onclick = openQuitDecision;
@@ -2338,9 +2291,6 @@
   const stagePreparation = $("#stageView");
   const progressCard = $(".progress-card");
   const stageRail = $("#stageRail");
-  stageRail?.addEventListener("scroll",scheduleCenteredStageCard,{passive:true});
-  stageRail?.addEventListener("wonder:stage-snap",scheduleCenteredStageCard);
-  addEventListener("resize",scheduleCenteredStageCard);
   if (stagePreparation && progressCard && stageRail && !stagePreparation.contains(progressCard)) {
     stagePreparation.insertBefore(progressCard, stageRail);
   }
@@ -2427,16 +2377,24 @@
   combatActions.append($('#skillBtn'),dodgeButton);canvas.parentElement.append(combatActions);
   canvas.parentElement.append($('#battleHelp'));
   const startButton=$('#startBtn');startButton.disabled=true;
+  let rendererFailure=null,entryLoaderStarted=false;
+  const entryLoaderScript=document.querySelector('script[data-wp-game-entry-loader-bootstrap]');
+  function syncEntryLoader(){
+    const loader=window.WeightPlayGameEntryLoader;
+    if(!loader)return;
+    if(!entryLoaderStarted){loader.begin(1);entryLoaderStarted=true;}
+    if(rendererFailure){loader.fail(undefined,()=>location.reload());return;}
+    if(rendererReady){loader.assetProgress(1,1);loader.ready();}
+  }
+  entryLoaderScript?.addEventListener('load',syncEntryLoader,{once:true});
+  syncEntryLoader();
   import('../animal-skyspire-drop/vendor/three/three.module.min.js').then(THREE=>{
     world3d=createBattle3D(THREE);rendererReady=true;startButton.disabled=false;
     document.body.dataset.heroRenderer=`three-${THREE.REVISION}`;
-    fitBattleWorld();$('#loadingPanel')?.classList.add('hidden');
-    window.WeightPlayGameEntryLoader?.ready?.();
+    fitBattleWorld();syncEntryLoader();
   }).catch(error=>{
     console.error('HERO_TRIALS_3D_INITIALIZATION',error);
-    const panel=$('#loadingPanel');panel?.classList.remove('hidden');
-    if(panel){panel.replaceChildren();const message=document.createElement('p');message.textContent=localizedValue('The 3D arena could not load. Your saved progress is safe.','3D 戰場無法載入，永久進度已保留。','No se pudo cargar la arena 3D. Tu progreso está guardado.','تعذر تحميل الساحة. تقدمك محفوظ.');const retry=document.createElement('button');retry.textContent=localizedValue('Retry','重新載入','Reintentar','إعادة المحاولة');retry.onclick=()=>location.reload();const back=document.createElement('a');back.href=`/${localeRoutePrefixes[locale]||'en'}/`;back.textContent=returnLabels[locale]||returnLabels.en;panel.append(message,retry,back);}
-    window.WeightPlayGameEntryLoader?.fail?.(String(error),()=>location.reload());
+    rendererFailure=error;syncEntryLoader();
   });
   addEventListener('pagehide',event=>{if(!event.persisted){joystick?.destroy();world3d?.dispose();world3d=null;}});
   // Test instrumentation is supplied by a controlled local harness, never a

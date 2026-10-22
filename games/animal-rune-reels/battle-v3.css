@@ -1,19 +1,16 @@
 /* Animal Rune Reels V3: summon roster, downward reels, centered party and stable summoner combat. */
 .v3-stage{grid-template-rows:52px 44px minmax(0,1fr) 56px;padding:10px 12px;gap:8px;background:linear-gradient(#101842d9,#101842e8),url('../../assets/animal-rune-reels/block-v1/arena-block-v1.webp') center/cover}
-.stage-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.stage-tabs button{border:1px solid #53609a;border-radius:10px;background:#111943;color:#aeb9e8;font-weight:850;font-size:.72rem}.stage-tabs button.active{color:#fff;border-color:#79e7ff;background:#263477;box-shadow:0 0 12px #4ddfff55}.management-panel{min-height:0;overflow:hidden}.management-panel[hidden]{display:none!important}#stagesPanel{display:grid;grid-template-rows:44px minmax(0,1fr);gap:6px}.v3-stage .progress-card{min-height:44px;padding:7px 12px}.v3-stage .stage-rail{min-height:0;align-items:center;padding:4px calc(50% - 132px);gap:18px;cursor:grab;overscroll-behavior-x:contain;scroll-behavior:smooth;touch-action:pan-y}.v3-stage .stage-rail.dragging{cursor:grabbing;scroll-behavior:auto}.v3-stage .stage-card{box-sizing:border-box;flex:0 0 264px;width:264px;height:190px;padding:9px;grid-template-rows:18px 27px 75px 22px 30px!important}.stage-enemy-preview{display:flex;justify-content:center;align-items:end;gap:2px;overflow:hidden;background:radial-gradient(circle at 50% 100%,#7868db55,transparent 68%);border-radius:10px}.stage-enemy-preview img{width:78px;height:72px;object-fit:contain;filter:drop-shadow(0 5px 4px #000b)}.stage-enemy-preview[data-count="2"] img{width:66px}.stage-enemy-preview[data-count="3"] img{width:54px}.stage-card h3,.stage-card p{margin:0}.monster-chip{display:flex;justify-content:space-between}.monster-count{color:#ffe36d;font-weight:950}
+.stage-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.stage-tabs button{border:1px solid #53609a;border-radius:10px;background:#111943;color:#aeb9e8;font-weight:850;font-size:.72rem}.stage-tabs button.active{color:#fff;border-color:#79e7ff;background:#263477;box-shadow:0 0 12px #4ddfff55}.management-panel{min-height:0;overflow:hidden}.management-panel[hidden]{display:none!important}.v3-stage .progress-card{min-height:44px;padding:7px 12px}.stage-enemy-preview{display:flex;justify-content:center;align-items:end;gap:2px;overflow:hidden;background:radial-gradient(circle at 50% 100%,#7868db55,transparent 68%);border-radius:10px}.stage-enemy-preview img{width:78px;height:72px;object-fit:contain;filter:drop-shadow(0 5px 4px #000b)}.stage-enemy-preview[data-count="2"] img{width:66px}.stage-enemy-preview[data-count="3"] img{width:54px}.monster-chip{display:flex;justify-content:space-between}.monster-count{color:#ffe36d;font-weight:950}
 .team-summary{height:48px;display:grid;grid-template-columns:1fr auto;align-items:center;padding:6px 10px;border-radius:12px;background:#111943dd}.team-summary span:last-child{grid-column:1/3;color:#92eaff;font-size:.7rem}.roster-grid{height:calc(100% - 54px);overflow:auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;padding:2px}.roster-card{position:relative;min-height:128px;border:2px solid #445184;border-radius:14px;background:#10183f;color:#fff;padding:6px;display:grid;grid-template-rows:72px auto auto;justify-items:center}.roster-card img{width:72px;height:72px;object-fit:contain}.roster-card b{font-size:.72rem}.roster-card small{font-size:.6rem;color:#aeb9e8}.roster-card.locked{filter:grayscale(1);opacity:.55}.roster-card.active{border-color:#64efc0;box-shadow:0 0 13px #52dfaa}.roster-card .active-dot{position:absolute;right:5px;top:5px;width:17px;height:17px;border-radius:50%;background:#43d99e;display:grid;place-items:center;font-size:.65rem}.summon-panel{text-align:center;overflow:auto;padding:10px 14px}.summon-orb img{width:112px;height:112px;object-fit:contain;filter:drop-shadow(0 0 24px #a34dff)}.summon-panel h3{margin:4px}.summon-panel p{max-width:430px;margin:6px auto;color:#bdc7ee}.coin-bank{display:flex;justify-content:center;gap:12px;margin:12px;font-size:1.15rem}.coin-bank b{color:#ffd359}.summon-panel .primary{min-width:220px}.summon-panel .primary small{display:block}.rune-guide{height:100%;overflow:auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;padding:2px}.rune-guide-card{border:1px solid #4d5b92;border-radius:12px;background:#10183f;padding:6px;text-align:center}.rune-guide-card img{width:64px;height:64px;object-fit:contain}.rune-guide-card b{display:block;font-size:.68rem}.rune-guide-card small{display:block;color:#b9c3ea;font-size:.56rem;line-height:1.25}
-.v3-battle{grid-template-rows:48px minmax(0,1fr) 218px;overflow:hidden}.v3-battle .arena{isolation:isolate;min-height:0;background:url('../../assets/animal-rune-reels/block-v1/arena-block-v1.webp') center/cover}.enemy-squad{position:absolute;z-index:3;top:5%;left:50%;width:min(72%,560px);transform:translateX(-50%);display:flex;justify-content:center;align-items:end;gap:5px;direction:ltr}.enemy-unit{width:min(31%,155px);text-align:center}.enemy-unit img{width:100%;height:min(19vh,130px);object-fit:contain;filter:drop-shadow(0 8px 7px #000c)}.enemy-unit .enemy-name{font-size:.58rem;text-shadow:0 2px 3px #000}.enemy-unit .hpbar{height:15px;border-width:1px}.enemy-unit .hpbar span{font-size:.56rem;line-height:13px}.enemy-unit.defeated{opacity:.2;filter:grayscale(1)}.enemy-hit{animation:enemyHit .32s ease-out}@keyframes enemyHit{25%,75%{transform:translateX(-4px);filter:brightness(1.6)}50%{transform:translateX(4px)}}
-.summoner-field{position:absolute;z-index:4;left:50%;bottom:4px;transform:translateX(-50%);width:min(92%,700px);height:44%;direction:ltr}.summoner{position:absolute;z-index:1;left:50%;bottom:50px;transform:translateX(-50%);width:84px;height:104px;object-fit:contain;filter:drop-shadow(0 6px 5px #000b);opacity:.88}.summoner-field .party-heroes{position:absolute;z-index:2;left:50%;bottom:47px;transform:translateX(-50%);width:min(70%,430px);display:flex;justify-content:center;align-items:end;gap:10px}.party-hero{position:relative;width:30%;max-width:116px;text-align:center;transition:transform .2s,filter .2s}.party-hero img{width:100%;height:88px;object-fit:contain;filter:drop-shadow(0 6px 5px #000)}.party-hero small{position:absolute;left:2px;right:2px;bottom:0;padding:1px;border-radius:6px;background:#080d29e8;font-size:.52rem}.party-hero.active{transform:translateY(-10px) scale(1.08);filter:drop-shadow(0 0 14px #ffe36a)}.party-hero.attack-launch{animation:heroLaunch .65s ease-in-out}@keyframes heroLaunch{45%{transform:translateY(-45px) scale(1.18)}100%{transform:none}}.summoner-hud{position:absolute;z-index:3;left:0;right:0;bottom:0}.summoner-hp{width:100%;height:23px}.summoner-hp i{background:linear-gradient(90deg,#22d48a,#78f3bd)}.team-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:3px}.team-metrics span{display:flex;justify-content:center;gap:4px;padding:2px;border-radius:6px;background:#07102edc;font-size:.58rem}.team-metrics i{font-style:normal;color:#a7b5e6}.summoner-hit .summoner{animation:summonerHit .32s ease-out}@keyframes summonerHit{25%,75%{transform:translateX(calc(-50% - 4px))}50%{transform:translateX(calc(-50% + 4px))}}.damage-vignette{position:absolute;inset:0;z-index:9;background:radial-gradient(circle,transparent 48%,#ff274f77);animation:vignette .38s forwards}@keyframes vignette{to{opacity:0}}
+.v3-battle{grid-template-rows:48px minmax(0,1fr) 218px;overflow:hidden}.v3-battle .arena{isolation:isolate;min-height:0;background:url('../../assets/animal-rune-reels/block-v1/arena-block-v1.webp') center/cover}.enemy-squad{position:absolute;z-index:3;top:5%;left:50%;width:min(72%,560px);transform:translateX(-50%);display:flex;justify-content:center;align-items:end;gap:5px;direction:ltr}.enemy-unit{width:min(31%,155px);text-align:center}.enemy-unit img{width:100%;height:min(19vh,130px);object-fit:contain;filter:drop-shadow(0 8px 7px #000c)}.enemy-unit .enemy-name{font-size:.58rem;text-shadow:0 2px 3px #000}.enemy-unit .hpbar{height:15px;border-width:1px}.enemy-unit .hpbar span{font-size:.56rem;line-height:13px}.enemy-unit.defeated{opacity:.2;filter:grayscale(1)}.enemy-hit{animation:enemyHit .32s ease-out}@keyframes enemyHit{25%, 75%{transform:translateX(-4px);filter:brightness(1.6)}50%{transform:translateX(4px)}}
+.summoner-field{position:absolute;z-index:4;left:50%;bottom:4px;transform:translateX(-50%);width:min(92%,700px);height:44%;direction:ltr}.summoner{position:absolute;z-index:1;left:50%;bottom:50px;transform:translateX(-50%);width:84px;height:104px;object-fit:contain;filter:drop-shadow(0 6px 5px #000b);opacity:.88}.summoner-field .party-heroes{position:absolute;z-index:2;left:50%;bottom:47px;transform:translateX(-50%);width:min(70%,430px);display:flex;justify-content:center;align-items:end;gap:10px}.party-hero{position:relative;width:30%;max-width:116px;text-align:center;transition:transform .2s,filter .2s}.party-hero img{width:100%;height:88px;object-fit:contain;filter:drop-shadow(0 6px 5px #000)}.party-hero small{position:absolute;left:2px;right:2px;bottom:0;padding:1px;border-radius:6px;background:#080d29e8;font-size:.52rem}.party-hero.active{transform:translateY(-10px) scale(1.08);filter:drop-shadow(0 0 14px #ffe36a)}.party-hero.attack-launch{animation:heroLaunch .65s ease-in-out}@keyframes heroLaunch{45%{transform:translateY(-45px) scale(1.18)}100%{transform:none}}.summoner-hud{position:absolute;z-index:3;left:0;right:0;bottom:0}.summoner-hp{width:100%;height:23px}.summoner-hp i{background:linear-gradient(90deg,#22d48a,#78f3bd)}.team-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:3px}.team-metrics span{display:flex;justify-content:center;gap:4px;padding:2px;border-radius:6px;background:#07102edc;font-size:.58rem}.team-metrics i{font-style:normal;color:#a7b5e6}.summoner-hit .summoner{animation:summonerHit .32s ease-out}@keyframes summonerHit{25%, 75%{transform:translateX(calc(-50% - 4px))}50%{transform:translateX(calc(-50% + 4px))}}.damage-vignette{position:absolute;inset:0;z-index:9;background:radial-gradient(circle,transparent 48%,#ff274f77);animation:vignette .38s forwards}@keyframes vignette{to{opacity:0}}
 .phase-banner{position:absolute;z-index:11;left:50%;top:49%;transform:translate(-50%,-50%);min-width:min(84%,470px);padding:9px 14px;border:1px solid #ffffff88;border-radius:14px;background:#080d2af2;box-shadow:0 8px 28px #000b,0 0 24px var(--phase-color,#83eaff);text-align:center}.phase-banner small{display:block;color:var(--phase-color);font-weight:900}.phase-banner strong{display:block;font-size:1.2rem;margin-top:2px}.multiplier-chip{position:absolute;z-index:12;left:50%;top:58%;transform:translate(-50%,-50%);padding:9px 18px;border-radius:999px;background:#25145bea;border:2px solid #ffe06b;color:#fff;font-size:1.3rem;font-weight:1000;box-shadow:0 0 22px #a56eff}.multiplier-chip.fly{animation:multiplierFly .75s ease-in forwards}@keyframes multiplierFly{to{left:88%;top:91%;transform:translate(-50%,-50%) scale(.55);opacity:.35}}.magic-projectile{position:absolute;z-index:10;width:38px;height:16px;border-radius:50%;background:linear-gradient(90deg,#fff,#ffd35a,#ff6a42);box-shadow:0 0 20px #ffc54f;animation:magicShot .52s ease-in forwards}@keyframes magicShot{from{left:48%;top:73%}to{left:50%;top:20%;transform:scale(.35)}}.damage-number{position:absolute;z-index:12;left:50%;top:23%;font-size:1.45rem;font-weight:1000;color:#fff39a;text-shadow:0 2px 4px #000;animation:damageFloat .72s forwards}@keyframes damageFloat{to{transform:translateY(-44px) scale(1.15);opacity:0}}
-.v3-battle .reel-console{position:relative;min-height:0;padding:4px 10px 8px;border-top:1px solid #5766a5;background:linear-gradient(#101745,#080d28)}.v3-battle .combo{height:22px;line-height:22px}.v3-battle .reels{direction:ltr;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:650px}.v3-battle .reel{--reel-height:96px;height:96px;border:3px solid #6574b5;border-radius:17px;overflow:hidden;position:relative;contain:paint;background:linear-gradient(#05091e,#182456,#05091e)}.reel-strip{position:absolute;left:0;right:0;top:0;will-change:transform}.reel-cell{height:var(--reel-height);display:grid;place-items:center}.reel-cell img{width:82px;height:82px;object-fit:contain}.reel.spinning{border-color:#73e7ff;box-shadow:0 0 13px #4de7ff66}.reel.line-win{border-color:#ffe466;animation:lineGlow 1s ease-in-out;box-shadow:0 0 20px #ffd94f,inset 0 0 18px #ffe06a77}@keyframes lineGlow{50%{filter:brightness(1.45);box-shadow:0 0 34px #fff18f,inset 0 0 24px #ffe06a}}.v3-battle .battle-actions{max-width:650px;margin:5px auto 0;display:grid;grid-template-columns:2fr 1fr;gap:7px}.v3-battle .spin,.auto-btn{height:54px;border:0;border-radius:14px;color:#fff;font-weight:900;display:flex;flex-direction:column;align-items:center;justify-content:center}.auto-btn{background:#24315f;border:1px solid #6675ad}.auto-btn.on{background:linear-gradient(135deg,#0c9b8d,#29d69d);box-shadow:0 0 14px #38e2aa77}.auto-btn small,.spin small{font-size:.62rem}
+.v3-battle .reel-console{position:relative;min-height:0;padding:4px 10px 8px;border-top:1px solid #5766a5;background:linear-gradient(#101745,#080d28)}.v3-battle .combo{height:22px;line-height:22px}.v3-battle .reels{direction:ltr;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:650px}.v3-battle .reel{--reel-height:96px;height:96px;border:3px solid #6574b5;border-radius:17px;overflow:hidden;position:relative;contain:paint;background:linear-gradient(#05091e,#182456,#05091e)}.reel-strip{position:absolute;left:0;right:0;top:0;will-change:transform}.reel-cell{height:var(--reel-height);display:grid;place-items:center}.reel-cell img{width:82px;height:82px;object-fit:contain}.reel.spinning{border-color:#73e7ff;box-shadow:0 0 13px #4de7ff66}.reel.line-win{border-color:#ffe466;animation:lineGlow 1s ease-in-out;box-shadow:0 0 20px #ffd94f,inset 0 0 18px #ffe06a77}@keyframes lineGlow{50%{filter:brightness(1.45);box-shadow:0 0 34px #fff18f,inset 0 0 24px #ffe06a}}.v3-battle .battle-actions{max-width:650px;margin:5px auto 0;display:grid;grid-template-columns:2fr 1fr;gap:7px}.v3-battle .spin, .auto-btn{height:54px;border:0;border-radius:14px;color:#fff;font-weight:900;display:flex;flex-direction:column;align-items:center;justify-content:center}.auto-btn{background:#24315f;border:1px solid #6675ad}.auto-btn.on{background:linear-gradient(135deg,#0c9b8d,#29d69d);box-shadow:0 0 14px #38e2aa77}.auto-btn small, .spin small{font-size:.62rem}
 .global-modal{position:fixed;inset:0;z-index:120;background:#030616e8;display:grid;place-items:center;padding:16px}.character-card{position:relative;width:min(92vw,420px);max-height:90vh;overflow:auto;text-align:center;padding:20px;border:1px solid #8875e9;border-radius:22px;background:linear-gradient(160deg,#222b67,#10163b);box-shadow:0 20px 60px #000}.character-card>img{width:150px;height:150px;object-fit:contain}.character-card h2{margin:3px}.character-card p{color:#ccd4f6}.character-card button:not(.modal-close){width:100%;margin-top:7px}.modal-close{position:absolute;right:8px;top:8px;width:38px;height:38px;border:0;border-radius:50%;background:#11183f;color:#fff;font-size:1.4rem}.duplicate-progress{padding:8px;border-radius:10px;background:#0b1235;color:#ffe06a}
 #summonResult{inset:0 0 var(--wp-ad-reserve-height, 0px);width:min(100%,920px);margin:0 auto}
 @media(max-width:560px){.v3-stage{padding:7px 8px;gap:6px}.stage-tabs{height:40px}.roster-grid{grid-template-columns:repeat(3,1fr)}.roster-card{min-height:112px}.roster-card img{width:62px;height:62px}.rune-guide{grid-template-columns:repeat(2,1fr)}.v3-battle{grid-template-rows:48px minmax(0,1fr) 206px}.enemy-squad{width:88%;top:7%}.enemy-unit img{height:min(16vh,108px)}.summoner-field{width:96%;height:43%}.summoner{width:72px;height:90px}.summoner-field .party-heroes{width:76%;gap:2px}.party-hero img{height:72px}.summoner-hp{height:22px}.team-metrics span{font-size:.5rem}.v3-battle .reel{--reel-height:84px;height:84px}.reel-cell img{width:72px;height:72px}.phase-banner{top:45%}.multiplier-chip{top:56%}}
-@media(max-height:520px) and (orientation:landscape){.v3-stage{grid-template-columns:1fr;grid-template-rows:44px 38px minmax(0,1fr) 48px}.v3-stage .stage-card{height:190px}.rune-guide{grid-template-columns:repeat(5,1fr)}.v3-battle{grid-template-columns:1.3fr .7fr;grid-template-rows:44px minmax(0,1fr)}.v3-battle .battle-head{grid-column:1/3}.v3-battle .arena{grid-column:1}.v3-battle .reel-console{grid-column:2;grid-row:2;display:grid;grid-template-rows:18px minmax(0,1fr) 48px;align-content:center}.v3-battle .reel{--reel-height:76px;height:76px}.reel-cell img{width:64px;height:64px}.summoner-field{height:46%}.party-hero img{height:54px}.summoner{height:66px}.enemy-unit img{height:24vh}.team-metrics i{display:none}.phase-banner{top:45%;padding:5px}.multiplier-chip{top:58%}}
-@media(prefers-reduced-motion:reduce){.enemy-hit,.summoner-hit .summoner,.party-hero.attack-launch,.line-win,.magic-projectile,.damage-number{animation-duration:.01ms!important}}
-
-/* V3 visual polish overrides. */
-.v3-stage .stage-card .monster-chip{box-sizing:border-box;height:30px;padding:5px 8px;display:flex;align-items:center;justify-content:space-between}
+@media(max-height:520px) and (orientation:landscape){.v3-stage{grid-template-columns:1fr;grid-template-rows:44px 38px minmax(0,1fr) 48px}.rune-guide{grid-template-columns:repeat(5,1fr)}.v3-battle{grid-template-columns:1.3fr .7fr;grid-template-rows:44px minmax(0,1fr)}.v3-battle .battle-head{grid-column:1/3}.v3-battle .arena{grid-column:1}.v3-battle .reel-console{grid-column:2;grid-row:2;display:grid;grid-template-rows:18px minmax(0,1fr) 48px;align-content:center}.v3-battle .reel{--reel-height:76px;height:76px}.reel-cell img{width:64px;height:64px}.summoner-field{height:46%}.party-hero img{height:54px}.summoner{height:66px}.enemy-unit img{height:24vh}.team-metrics i{display:none}.phase-banner{top:45%;padding:5px}.multiplier-chip{top:58%}}
+@media(prefers-reduced-motion:reduce){.enemy-hit, .summoner-hit .summoner, .party-hero.attack-launch, .line-win, .magic-projectile, .damage-number{animation-duration:.01ms!important}}
 .rune-guide{grid-auto-rows:minmax(132px,auto)}
 .magic-projectile{left:var(--shot-x,50%);top:72%;width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 8%,#fff27b 18%,#ff8b32 48%,#9d35ff 72%,transparent 74%);box-shadow:0 0 14px #fff,0 0 30px #ffb23f,0 0 46px #a24fff;animation:magicShotV3 .6s cubic-bezier(.22,.8,.32,1) forwards}
 .magic-projectile::before{content:"";position:absolute;right:55%;top:14px;width:110px;height:14px;border-radius:50%;background:linear-gradient(90deg,transparent,#a56cff88,#ffdc66dd);filter:blur(2px);transform-origin:right center}
@@ -24,10 +21,8 @@
 @keyframes damageFloatV3{from{transform:translate(-50%,0) scale(.82);opacity:1}to{transform:translate(-50%,-44px) scale(1.18);opacity:0}}
 
 /* V3.1: fixed Stage collections, first-person combat, target selection, and phase feedback. */
-html,body,#app,.v3-stage,.v3-battle,.v3-stage *,.v3-battle *,.global-modal *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+html, body, #app, .v3-stage, .v3-battle, .v3-stage *, .v3-battle *, .global-modal *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 img{-webkit-user-drag:none}
-.v3-stage .stage-rail{scroll-behavior:auto}
-.v3-stage .stage-rail.wp-stage-dragging{cursor:grabbing}
 .wp-stage-physical-reserve[data-wp-stage-reserve-active]{background:#070b20}.v3-stage .screen-head>.icon-btn{width:48px;height:48px}
 .roster-grid{height:calc(100% - 54px);grid-template-columns:repeat(auto-fill,144px);grid-auto-rows:142px;justify-content:center;align-content:start;gap:10px;padding:4px 6px 14px}
 .roster-card{box-sizing:border-box;width:144px;height:142px;min-height:0;grid-template-rows:76px 22px 22px;padding:7px}
@@ -38,19 +33,19 @@ img{-webkit-user-drag:none}
 .ultimate-detail{margin:12px 0;padding:12px 14px;border:1px solid #7d6fe0;border-radius:14px;background:#090f31;text-align:start}.ultimate-detail small{display:block;color:#91eaff;font-weight:900}.ultimate-detail strong{display:block;margin-top:4px;color:#ffe17c;font-size:1.1rem}.ultimate-detail p{margin:7px 0 0!important;line-height:1.5}
 
 .enemy-unit{position:relative;appearance:none;border:0;padding:0;background:transparent;color:#fff;cursor:crosshair;border-radius:16px;transition:filter .18s,transform .18s}.enemy-unit:not(.defeated):hover{filter:brightness(1.12)}.enemy-unit.targeted{filter:drop-shadow(0 0 12px #ff405f)}
-.target-marker{position:absolute;z-index:4;left:50%;top:38%;width:54px;height:54px;transform:translate(-50%,-50%) scale(.75);border:3px solid #ff466c;border-radius:50%;opacity:0;pointer-events:none;box-shadow:0 0 0 2px #23030baa,0 0 18px #ff335f}.target-marker::before,.target-marker::after{content:"";position:absolute;background:#fff1f4;box-shadow:0 0 8px #ff3158}.target-marker::before{left:50%;top:-9px;width:3px;height:66px;transform:translateX(-50%)}.target-marker::after{top:50%;left:-9px;width:66px;height:3px;transform:translateY(-50%)}.enemy-unit.targeted .target-marker{opacity:1;animation:targetLock 1.2s ease-in-out infinite}
+.target-marker{position:absolute;z-index:4;left:50%;top:38%;width:54px;height:54px;transform:translate(-50%,-50%) scale(.75);border:3px solid #ff466c;border-radius:50%;opacity:0;pointer-events:none;box-shadow:0 0 0 2px #23030baa,0 0 18px #ff335f}.target-marker::before, .target-marker::after{content:"";position:absolute;background:#fff1f4;box-shadow:0 0 8px #ff3158}.target-marker::before{left:50%;top:-9px;width:3px;height:66px;transform:translateX(-50%)}.target-marker::after{top:50%;left:-9px;width:66px;height:3px;transform:translateY(-50%)}.enemy-unit.targeted .target-marker{opacity:1;animation:targetLock 1.2s ease-in-out infinite}
 @keyframes targetLock{50%{transform:translate(-50%,-50%) scale(.92);box-shadow:0 0 0 5px #ff315522,0 0 28px #ff335f}}
 .summoner-field{height:42%}.summoner-field .party-heroes{bottom:47px;width:min(76%,480px)}
 .party-hero.attack-boosted small{color:#72ff9f;border:1px solid #38df72;background:#052414ee;box-shadow:0 0 12px #31e86d99;font-size:.62rem}.party-hero.attack-boosted img{filter:drop-shadow(0 0 12px #3cff7d) drop-shadow(0 7px 5px #000)}
-.party-hero.attack-launch::after,.party-hero.support-cast::after{content:"";position:absolute;z-index:-1;inset:15% 0 0;border-radius:50%;background:radial-gradient(circle,var(--hero-aura,#7effa4) 0,transparent 68%);filter:blur(5px);animation:heroAura .55s ease-out}
+.party-hero.attack-launch::after, .party-hero.support-cast::after{content:"";position:absolute;z-index:-1;inset:15% 0 0;border-radius:50%;background:radial-gradient(circle,var(--hero-aura,#7effa4) 0,transparent 68%);filter:blur(5px);animation:heroAura .55s ease-out}
 @keyframes heroAura{from{opacity:0;transform:scale(.35)}50%{opacity:1}to{opacity:.2;transform:scale(1.45)}}
-.team-metrics .defense-buffed{border-color:#43ee82;background:#06351ddd;box-shadow:0 0 13px #3cff7b}.team-metrics .defense-buffed i,.team-metrics .defense-buffed b{color:#72ff9f;font-weight:1000}
+.team-metrics .defense-buffed{border-color:#43ee82;background:#06351ddd;box-shadow:0 0 13px #3cff7b}.team-metrics .defense-buffed i, .team-metrics .defense-buffed b{color:#72ff9f;font-weight:1000}
 .reel.effect-active{z-index:3;border-color:var(--effect-color,#7effa5);box-shadow:0 0 8px #fff,inset 0 0 22px var(--effect-color,#7effa5),0 0 30px var(--effect-color,#7effa5);animation:runePower 1s ease-in-out infinite}.reel.effect-active .reel-cell img{filter:drop-shadow(0 0 12px var(--effect-color,#7effa5)) brightness(1.35);animation:runeLift .65s ease-in-out infinite alternate}
 @keyframes runePower{50%{filter:brightness(1.45)}}@keyframes runeLift{to{transform:translateY(-4px) scale(1.08)}}
 
 .magic-projectile{width:58px;height:30px;border-radius:70% 35% 70% 35%;background:radial-gradient(circle at 68% 46%,#fff 0 8%,var(--spell-color,#ffb640) 20% 48%,#6e36ff 72%,transparent 74%);box-shadow:0 0 16px #fff,0 0 32px var(--spell-color,#ffb640),0 0 58px var(--spell-color,#ffb640);filter:saturate(1.35);animation:magicShotV31 .72s cubic-bezier(.18,.72,.22,1) forwards}.magic-projectile::before{right:70%;top:5px;width:150px;height:22px;background:linear-gradient(90deg,transparent,var(--spell-color,#ffb640),white);filter:blur(4px)}.magic-projectile::after{inset:-13px;border:3px solid var(--spell-color,#ffb640);border-left-color:transparent;border-bottom-color:#fff;animation:orbSpin .22s linear infinite}
 @keyframes magicShotV31{from{left:var(--shot-x,50%);top:72%;transform:translate(-50%,-50%) scale(.25) rotate(-16deg)}35%{transform:translate(-50%,-50%) scale(1.35) rotate(10deg)}78%{filter:brightness(1.7) saturate(1.5)}to{left:var(--target-x,50%);top:var(--target-y,20%);transform:translate(-50%,-50%) scale(.7) rotate(34deg)}}
-.impact-burst{position:absolute;z-index:11;left:var(--impact-x);top:var(--impact-y);width:24px;height:24px;border:5px solid #fff;border-radius:50%;box-shadow:0 0 16px #fff,0 0 44px var(--spell-color);animation:impactBurst .68s ease-out forwards}.impact-burst::before,.impact-burst::after{content:"";position:absolute;inset:-20px;border:3px solid var(--spell-color);transform:rotate(45deg)}.impact-burst::after{transform:rotate(0);border-radius:50%}
+.impact-burst{position:absolute;z-index:11;left:var(--impact-x);top:var(--impact-y);width:24px;height:24px;border:5px solid #fff;border-radius:50%;box-shadow:0 0 16px #fff,0 0 44px var(--spell-color);animation:impactBurst .68s ease-out forwards}.impact-burst::before, .impact-burst::after{content:"";position:absolute;inset:-20px;border:3px solid var(--spell-color);transform:rotate(45deg)}.impact-burst::after{transform:rotate(0);border-radius:50%}
 .impact-spark{position:absolute;z-index:11;left:var(--impact-x);top:var(--impact-y);width:28px;height:5px;border-radius:99px;background:linear-gradient(90deg,#fff,var(--spell-color),transparent);transform-origin:left center;animation:impactSpark .65s ease-out forwards}
 @keyframes impactBurst{from{transform:translate(-50%,-50%) scale(.2);opacity:1}to{transform:translate(-50%,-50%) scale(3.6);opacity:0}}@keyframes impactSpark{from{transform:rotate(var(--spark-angle)) translateX(4px) scaleX(.35);opacity:1}to{transform:rotate(var(--spark-angle)) translateX(75px) scaleX(1.25);opacity:0}}
 .support-aura{position:absolute;z-index:8;left:50%;bottom:15%;width:62%;height:34%;transform:translateX(-50%);border-radius:50%;filter:blur(1px);animation:supportAura .7s ease-out forwards}.shield-aura{border:5px solid #60eaff;box-shadow:inset 0 0 35px #43e4ff88,0 0 30px #43e4ff}.heal-aura{background:radial-gradient(circle,#8effae77,transparent 68%)}
@@ -59,34 +54,31 @@ img{-webkit-user-drag:none}
 @keyframes healWave{from{opacity:0;transform:translateX(-50%) scale(.2)}45%{opacity:1}to{opacity:0;transform:translateX(-50%) scale(1.18)}}@keyframes hpHeal{50%{filter:brightness(1.5)}}@keyframes healDelta{from{opacity:1;transform:translateY(4px) scale(1)}72%{opacity:1;transform:translateY(-8px) scale(1.08)}to{opacity:0;transform:translateY(-22px) scale(1.18)}}
 .shield-dome{position:absolute;z-index:7;left:50%;bottom:4%;width:78%;height:39%;transform:translateX(-50%);border:5px solid #70e9ff;border-bottom-width:2px;border-radius:50% 50% 12% 12%;background:linear-gradient(135deg,#71ecff33,transparent 55%,#b788ff33);box-shadow:inset 0 0 42px #62e7ff66,0 0 34px #4adfff;animation:shieldRise .78s ease-out forwards}
 @keyframes shieldRise{from{opacity:0;transform:translateX(-50%) translateY(40px) scale(.6)}45%{opacity:1}to{opacity:.35;transform:translateX(-50%) translateY(0) scale(1)}}
-.coin-shower,.focus-field{position:absolute;z-index:8;inset:20% 18%;pointer-events:none;animation:supportAura .65s ease-out}.coin-shower{background:radial-gradient(circle at 15% 20%,#fff 0 2%,#ffd64f 3% 6%,transparent 7%),radial-gradient(circle at 80% 35%,#fff 0 2%,#ffd64f 3% 7%,transparent 8%),radial-gradient(circle at 50% 70%,#fff 0 2%,#ffd64f 3% 8%,transparent 9%);filter:drop-shadow(0 0 8px #ffcc42)}.focus-field{border:4px solid #63edff;border-radius:50%;box-shadow:inset 0 0 45px #50e7ff77,0 0 32px #4eeaff}
+.coin-shower, .focus-field{position:absolute;z-index:8;inset:20% 18%;pointer-events:none;animation:supportAura .65s ease-out}.coin-shower{background:radial-gradient(circle at 15% 20%,#fff 0 2%,#ffd64f 3% 6%,transparent 7%),radial-gradient(circle at 80% 35%,#fff 0 2%,#ffd64f 3% 7%,transparent 8%),radial-gradient(circle at 50% 70%,#fff 0 2%,#ffd64f 3% 8%,transparent 9%);filter:drop-shadow(0 0 8px #ffcc42)}.focus-field{border:4px solid #63edff;border-radius:50%;box-shadow:inset 0 0 45px #50e7ff77,0 0 32px #4eeaff}
 .summoner-hud.player-hit{animation:hudHit .5s ease-out}.player-damage{position:absolute;z-index:12;left:84%;bottom:8%;color:#ff9aae;font-size:1.8rem;font-weight:1000;text-shadow:0 2px 4px #000,0 0 20px #ff315d;animation:damageFloatV3 .65s forwards}
-@keyframes hudHit{25%,75%{filter:brightness(1.8) drop-shadow(-5px 0 #ff315d)}50%{filter:brightness(.7) drop-shadow(5px 0 #ff315d)}}
+@keyframes hudHit{25%, 75%{filter:brightness(1.8) drop-shadow(-5px 0 #ff315d)}50%{filter:brightness(.7) drop-shadow(5px 0 #ff315d)}}
 
 @media(max-width:560px){.rune-guide{display:flex}.rune-guide-card{width:100%;height:110px;flex-basis:110px;grid-template-columns:76px minmax(0,1fr);padding:8px 10px}.rune-guide-card img{width:72px;height:72px}.rune-guide-card b{font-size:.96rem}.rune-guide-card small{font-size:.76rem}.target-marker{width:43px;height:43px}.target-marker::before{height:55px}.target-marker::after{width:55px}.summoner-field .party-heroes{width:82%}}
-@media(max-height:520px) and (orientation:landscape){.v3-stage{grid-template-columns:minmax(0,1fr);grid-template-rows:44px 38px minmax(0,1fr)}.v3-stage .screen-head{grid-column:1;grid-row:1}.v3-stage .stage-tabs{grid-column:1;grid-row:2}.v3-stage .management-panel{grid-column:1;grid-row:3}.v3-stage #enterBattle{display:none}.v3-stage #stagesPanel{grid-template-rows:minmax(0,1fr)}.v3-stage .stage-rail{grid-column:auto;grid-row:auto}.rune-guide{display:flex;align-items:center}.summoner-field{height:48%}.summoner-field .party-heroes{width:82%}.enemy-unit img{height:23vh}}
-@media(prefers-reduced-motion:reduce){.target-marker,.reel.effect-active,.reel.effect-active .reel-cell img,.impact-burst,.impact-spark,.support-aura,.heal-wave,.shield-dome,.coin-shower,.focus-field,.player-damage{animation-duration:.01ms!important}}
-
-/* V3.2: stable Stage tab ownership and scale-safe combat effect anchors. */
-.v3-stage>.screen-head{grid-row:1}.v3-stage>.stage-tabs{grid-row:2}.v3-stage>.management-panel{grid-row:3;align-self:stretch;margin:0}.v3-stage>#enterBattle{grid-row:4}
-.v3-stage #packPanel,.v3-stage #summonPanel,.v3-stage #runesPanel{align-content:start}
+@media(max-height:520px) and (orientation:landscape){.v3-stage{grid-template-columns:minmax(0,1fr);grid-template-rows:44px 38px minmax(0,1fr)}.v3-stage .screen-head{grid-column:1;grid-row:1}.v3-stage .stage-tabs{grid-column:1;grid-row:2}.v3-stage .management-panel{grid-column:1;grid-row:3}.rune-guide{display:flex;align-items:center}.summoner-field{height:48%}.summoner-field .party-heroes{width:82%}.enemy-unit img{height:23vh}}
+@media(prefers-reduced-motion:reduce){.target-marker, .reel.effect-active, .reel.effect-active .reel-cell img, .impact-burst, .impact-spark, .support-aura, .heal-wave, .shield-dome, .coin-shower, .focus-field, .player-damage{animation-duration:.01ms!important}}.v3-stage>.management-panel{grid-row:3;align-self:stretch;margin:0}
+.v3-stage #packPanel, .v3-stage #summonPanel, .v3-stage #runesPanel{align-content:start}
 .upgrade-progress{padding:9px 10px;border-radius:11px;background:#0b1235;color:#ffe06a;text-align:start}.upgrade-progress>span{display:block;font-weight:900}.upgrade-progress>i{display:block;height:10px;margin-top:7px;overflow:hidden;border:1px solid #6573b2;border-radius:999px;background:#05091e}.upgrade-progress>i>b{display:block;width:var(--upgrade-progress,0%);height:100%;border-radius:inherit;background:linear-gradient(90deg,#6e50ff,#65e8ff,#ffe371);box-shadow:0 0 12px #67eaff;transition:width .25s ease}
 .enemy-unit .hpbar{display:block;width:100%;margin-top:2px}.enemy-unit .enemy-name{display:none}
 .magic-projectile{animation-name:magicShotV32;clip-path:polygon(0 42%,58% 0,100% 42%,64% 100%,25% 76%)}
 .magic-projectile::before{content:"";position:absolute}.magic-projectile::after{content:"";position:absolute}
 @keyframes magicShotV32{from{left:var(--shot-x,50%);top:var(--shot-y,72%);transform:translate(-50%,-50%) scale(.22) rotate(-18deg)}32%{transform:translate(-50%,-50%) scale(1.28) rotate(8deg)}78%{filter:brightness(1.75) saturate(1.55)}to{left:var(--target-x,50%);top:var(--target-y,20%);transform:translate(-50%,-50%) scale(.72) rotate(30deg)}}
 .magic-projectile.spell-lion{clip-path:polygon(0 45%,56% 0,100% 48%,60% 100%,25% 72%)}.magic-projectile.spell-turtle{border-radius:50%;clip-path:none}.magic-projectile.spell-rabbit{clip-path:polygon(0 50%,36% 20%,50% 0,64% 20%,100% 50%,64% 78%,50% 100%,36% 78%)}.magic-projectile.spell-panda{clip-path:polygon(0 30%,45% 0,100% 28%,76% 100%,24% 100%)}.magic-projectile.spell-fox{clip-path:polygon(0 55%,36% 0,100% 35%,72% 72%,38% 100%)}.magic-projectile.spell-owl{clip-path:polygon(0 50%,25% 12%,50% 36%,75% 12%,100% 50%,50% 100%)}.magic-projectile.spell-otter{border-radius:60% 18% 60% 18%;clip-path:none}.magic-projectile.spell-rhino{clip-path:polygon(0 38%,72% 0,100% 50%,72% 100%,0 70%)}
-.magic-projectile,.magic-projectile[class*="spell-"]{clip-path:none;border-radius:72% 30% 68% 34%;background:radial-gradient(ellipse at 72% 48%,#fff 0 10%,#fff7a8 12%,var(--spell-color,#ffb640) 30% 58%,#6e36ff 75%,transparent 78%)}
-.ultimate-projectile{width:92px;height:54px;filter:saturate(1.65) brightness(1.2);box-shadow:0 0 20px #fff,0 0 46px var(--spell-color),0 0 86px var(--spell-color);animation-duration:.86s}.ultimate-projectile::after{inset:-22px;border-width:5px}.ultimate-sigil{position:absolute;z-index:9;left:var(--cast-x);top:var(--cast-y);width:92px;height:92px;border:4px solid var(--spell-color);border-radius:50%;box-shadow:inset 0 0 30px var(--spell-color),0 0 38px var(--spell-color);transform:translate(-50%,-50%);animation:ultimateSigil .9s ease-out forwards}.ultimate-sigil::before,.ultimate-sigil::after{content:"";position:absolute;inset:12px;border:3px solid #fff;border-radius:18%;transform:rotate(45deg)}.ultimate-sigil::after{inset:-14px;border-color:var(--spell-color);border-radius:50%;transform:none}.ultimate-flash{position:absolute;z-index:6;inset:0;background:radial-gradient(circle at var(--cast-x) var(--cast-y),#fff8,var(--spell-color) 12%,transparent 48%);mix-blend-mode:screen;animation:ultimateFlash .9s ease-out forwards}@keyframes ultimateSigil{from{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(-40deg)}45%{opacity:1;transform:translate(-50%,-50%) scale(1.16) rotate(12deg)}to{opacity:0;transform:translate(-50%,-50%) scale(1.55) rotate(60deg)}}@keyframes ultimateFlash{from{opacity:0}35%{opacity:.72}to{opacity:0}}
-.impact-burst.ultimate-impact{width:38px;height:38px;border-width:8px}.impact-burst.ultimate-impact::before,.impact-burst.ultimate-impact::after{inset:-30px;border-width:5px}
+.magic-projectile, .magic-projectile[class*="spell-"]{clip-path:none;border-radius:72% 30% 68% 34%;background:radial-gradient(ellipse at 72% 48%,#fff 0 10%,#fff7a8 12%,var(--spell-color,#ffb640) 30% 58%,#6e36ff 75%,transparent 78%)}
+.ultimate-projectile{width:92px;height:54px;filter:saturate(1.65) brightness(1.2);box-shadow:0 0 20px #fff,0 0 46px var(--spell-color),0 0 86px var(--spell-color);animation-duration:.86s}.ultimate-projectile::after{inset:-22px;border-width:5px}.ultimate-sigil{position:absolute;z-index:9;left:var(--cast-x);top:var(--cast-y);width:92px;height:92px;border:4px solid var(--spell-color);border-radius:50%;box-shadow:inset 0 0 30px var(--spell-color),0 0 38px var(--spell-color);transform:translate(-50%,-50%);animation:ultimateSigil .9s ease-out forwards}.ultimate-sigil::before, .ultimate-sigil::after{content:"";position:absolute;inset:12px;border:3px solid #fff;border-radius:18%;transform:rotate(45deg)}.ultimate-sigil::after{inset:-14px;border-color:var(--spell-color);border-radius:50%;transform:none}.ultimate-flash{position:absolute;z-index:6;inset:0;background:radial-gradient(circle at var(--cast-x) var(--cast-y),#fff8,var(--spell-color) 12%,transparent 48%);mix-blend-mode:screen;animation:ultimateFlash .9s ease-out forwards}@keyframes ultimateSigil{from{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(-40deg)}45%{opacity:1;transform:translate(-50%,-50%) scale(1.16) rotate(12deg)}to{opacity:0;transform:translate(-50%,-50%) scale(1.55) rotate(60deg)}}@keyframes ultimateFlash{from{opacity:0}35%{opacity:.72}to{opacity:0}}
+.impact-burst.ultimate-impact{width:38px;height:38px;border-width:8px}.impact-burst.ultimate-impact::before, .impact-burst.ultimate-impact::after{inset:-30px;border-width:5px}
 .support-aura{left:var(--cast-x,50%);top:var(--cast-y,72%);bottom:auto;width:180px;height:100px;transform:translate(-50%,-50%);animation-name:anchoredAura}.support-aura.ultimate-aura{width:260px;height:150px;border-width:8px;box-shadow:inset 0 0 55px var(--spell-color,#62eaff),0 0 56px var(--spell-color,#62eaff)}
 @keyframes anchoredAura{from{opacity:0;transform:translate(-50%,-50%) scale(.2)}48%{opacity:1;transform:translate(-50%,-50%) scale(1)}to{opacity:0;transform:translate(-50%,-50%) scale(1.45)}}
-.focus-field,.luck-field,.echo-pulse{position:absolute;z-index:8;inset:auto;left:var(--effect-x,50%);top:var(--effect-y,65%);width:var(--effect-w,62%);height:var(--effect-h,30%);transform:translate(-50%,-50%);pointer-events:none;border-radius:50%;animation:anchoredField .78s ease-out forwards}.focus-field{border:4px solid #63edff;box-shadow:inset 0 0 45px #50e7ff77,0 0 32px #4eeaff}.luck-field{border:5px double #ffe36b;background:radial-gradient(circle,#fff8 0 3%,#ffe77855 4% 16%,transparent 55%);box-shadow:inset 0 0 32px #ffe76e77,0 0 34px #ffd74e}.echo-pulse{width:84px;height:84px;border:6px double #ffbd59;box-shadow:0 0 20px #fff,0 0 44px #ff9f35}
+.focus-field, .luck-field, .echo-pulse{position:absolute;z-index:8;inset:auto;left:var(--effect-x,50%);top:var(--effect-y,65%);width:var(--effect-w,62%);height:var(--effect-h,30%);transform:translate(-50%,-50%);pointer-events:none;border-radius:50%;animation:anchoredField .78s ease-out forwards}.focus-field{border:4px solid #63edff;box-shadow:inset 0 0 45px #50e7ff77,0 0 32px #4eeaff}.luck-field{border:5px double #ffe36b;background:radial-gradient(circle,#fff8 0 3%,#ffe77855 4% 16%,transparent 55%);box-shadow:inset 0 0 32px #ffe76e77,0 0 34px #ffd74e}.echo-pulse{width:84px;height:84px;border:6px double #ffbd59;box-shadow:0 0 20px #fff,0 0 44px #ff9f35}
 @keyframes anchoredField{from{opacity:0;transform:translate(-50%,-50%) scale(.16)}48%{opacity:1;transform:translate(-50%,-50%) scale(1)}to{opacity:0;transform:translate(-50%,-50%) scale(1.08)}}
 .coin-flight{position:absolute;z-index:30;left:var(--coin-x);top:var(--coin-y);width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 8px #ffd84d);pointer-events:none;animation:coinToBank .85s cubic-bezier(.32,.05,.24,1) var(--coin-delay,0ms) forwards}@keyframes coinToBank{from{opacity:0;transform:translate(-50%,-50%) scale(.35) rotate(0)}22%{opacity:1;transform:translate(-50%,-85%) scale(1.2) rotate(160deg)}to{opacity:1;left:var(--bank-x);top:var(--bank-y);transform:translate(-50%,-50%) scale(.45) rotate(720deg)}}
 .team-metrics .coin-received{color:#ffe36b;background:#4a310bdd;box-shadow:0 0 18px #ffd84d;animation:coinBankPulse .55s ease-out}@keyframes coinBankPulse{50%{transform:scale(1.12);filter:brightness(1.55)}}
-@media(max-height:520px) and (orientation:landscape){.v3-stage>.screen-head{grid-row:1}.v3-stage>.stage-tabs{grid-row:2}.v3-stage>.management-panel{grid-row:3}.v3-stage>#enterBattle{grid-row:3}.support-aura{width:150px;height:72px}.ultimate-projectile{width:72px;height:42px}}
-@media(prefers-reduced-motion:reduce){.magic-projectile,.ultimate-sigil,.ultimate-flash,.focus-field,.luck-field,.echo-pulse,.coin-flight{animation-duration:.01ms!important;animation-delay:0ms!important}}
+@media(max-height:520px) and (orientation:landscape){.v3-stage>.management-panel{grid-row:3}.support-aura{width:150px;height:72px}.ultimate-projectile{width:72px;height:42px}}
+@media(prefers-reduced-motion:reduce){.magic-projectile, .ultimate-sigil, .ultimate-flash, .focus-field, .luck-field, .echo-pulse, .coin-flight{animation-duration:.01ms!important;animation-delay:0ms!important}}
 
 /* V3.3: Stage-owned hero details use a true short-landscape composition. */
 @media(max-height:430px) and (orientation:landscape){
@@ -103,14 +95,12 @@ img{-webkit-user-drag:none}
 
 /* V4: mission tracks, item inventory, rarity summons and material rune growth. */
 .stage-tabs{grid-template-columns:repeat(5,minmax(0,1fr))}
-#stagesPanel{grid-template-rows:36px 44px minmax(0,1fr);gap:6px}
 .mission-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .mission-tabs button{border:1px solid #4f5d97;border-radius:9px;background:#0c1439;color:#bac5ef;font-size:.72rem;font-weight:900}
 .mission-tabs button.active{border-color:#ffe06b;color:#fff;background:#403072;box-shadow:0 0 12px #b16dff66}
-.v3-stage .stage-card{height:210px;grid-template-rows:18px 27px 70px 38px 18px 30px!important}
 .mission-schedule{font-size:.58rem;line-height:18px;color:#ffe08a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.resource-bank,.summon-bank{height:46px;display:flex;justify-content:center;gap:28px;align-items:center;margin-bottom:8px;border-radius:12px;background:#111943dd}
-.resource-bank span,.summon-bank span{display:flex;gap:8px;align-items:center}.resource-bank i,.summon-bank i{font-style:normal;color:#afbbe8}.resource-bank b,.summon-bank b{color:#ffe06b;font-size:1.15rem}
+.resource-bank, .summon-bank{height:46px;display:flex;justify-content:center;gap:28px;align-items:center;margin-bottom:8px;border-radius:12px;background:#111943dd}
+.resource-bank span, .summon-bank span{display:flex;gap:8px;align-items:center}.resource-bank i, .summon-bank i{font-style:normal;color:#afbbe8}.resource-bank b, .summon-bank b{color:#ffe06b;font-size:1.15rem}
 #runesPanel{display:grid;grid-template-rows:auto minmax(0,1fr);gap:6px}
 #runesPanel[hidden]{display:none!important}
 .rune-material-bank{box-sizing:border-box;min-height:48px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:5px 7px;border:1px solid #4d5b92;border-radius:12px;background:#111943dd}
@@ -120,8 +110,8 @@ img{-webkit-user-drag:none}
 .rune-material-bank b{color:#ffe06b;font-size:.84rem;white-space:nowrap}
 .material-grid{height:calc(100% - 54px);overflow:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:112px;gap:10px;padding:4px}
 .material-card{display:grid;grid-template-columns:78px minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px;border:1px solid #53619b;border-radius:14px;background:#10183f}
-.material-card img{width:74px;height:74px;object-fit:contain}.material-card div{min-width:0}.material-card b,.material-card small{display:block}.material-card small{margin-top:5px;color:#bdc8ef;font-size:.7rem;line-height:1.35}.material-card strong{color:#ffe06b;font-size:1.1rem}
-.hero-stars,.character-stars{color:#ffe06b;letter-spacing:.08em;text-shadow:0 0 9px #ffb52f}.roster-card .hero-stars{font-size:.68rem;line-height:18px}.character-stars{font-size:1.2rem}
+.material-card img{width:74px;height:74px;object-fit:contain}.material-card div{min-width:0}.material-card b, .material-card small{display:block}.material-card small{margin-top:5px;color:#bdc8ef;font-size:.7rem;line-height:1.35}.material-card strong{color:#ffe06b;font-size:1.1rem}
+.hero-stars, .character-stars{color:#ffe06b;letter-spacing:.08em;text-shadow:0 0 9px #ffb52f}.roster-card .hero-stars{font-size:.68rem;line-height:18px}.character-stars{font-size:1.2rem}
 .summon-panel{padding:4px 8px}.summon-pools{height:calc(100% - 54px);display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:12px;overflow:auto;padding:6px}
 .summon-pools article{box-sizing:border-box;flex:0 0 248px;width:248px;height:252px;display:grid;grid-template-rows:100px auto auto 56px;align-content:center;justify-items:center;padding:12px;border:2px solid #53619b;border-radius:18px;background:linear-gradient(160deg,#222d6c,#10163d)}
 .summon-pools article:last-child{border-color:#b978ff;box-shadow:inset 0 0 30px #8e51ff33}.summon-pools img{width:96px;height:96px;object-fit:contain}.summon-pools h3{margin:2px}.summon-pools p{margin:4px 0 9px;color:#ffe08a}.summon-pools .primary{min-width:0;width:100%;min-height:52px}.summon-pools .primary small{display:block;color:#fff4a8}
@@ -130,7 +120,7 @@ img{-webkit-user-drag:none}
 .stage-name em{font-style:normal;color:#ffe06b;font-size:.62rem;font-weight:900}.reward-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:12px 0}.reward-details span{display:flex;justify-content:space-between;gap:7px;padding:9px;border-radius:10px;background:#0a1132;color:#cbd5fa;font-size:.75rem}.reward-details b{color:#ffe06b}
 @media(max-width:560px){.stage-tabs button{font-size:.62rem}.material-grid{grid-template-columns:1fr;grid-auto-rows:94px}.material-card{grid-template-columns:64px minmax(0,1fr) auto}.material-card img{width:60px;height:60px}.summon-pools{gap:7px}.summon-pools article{grid-template-rows:78px auto auto 52px;padding:7px}.summon-pools img{width:76px;height:76px}.summon-pools h3{font-size:.82rem}.summon-pools p{font-size:.62rem}.rune-guide-card{height:150px;flex-basis:150px}}
 @media(max-width:560px){.rune-material-bank{grid-template-columns:repeat(2,minmax(0,1fr));min-height:76px}.rune-material-bank i{font-size:.64rem}}
-@media(max-height:520px) and (orientation:landscape){#stagesPanel{grid-template-rows:34px minmax(0,1fr)}#stagesPanel .progress-card{display:none}.v3-stage .stage-card{height:210px}.material-grid{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(0,1fr)}.material-card{grid-template-columns:52px minmax(0,1fr);padding:7px}.material-card img{width:50px;height:50px}.material-card strong{grid-column:1/3}.summon-pools article{grid-template-columns:78px 1fr;grid-template-rows:auto auto 50px;text-align:start}.summon-pools img{grid-row:1/4}.summon-pools .primary{grid-column:2}.rune-guide-card{flex-basis:132px;height:132px}}
+@media(max-height:520px) and (orientation:landscape){.material-grid{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(0,1fr)}.material-card{grid-template-columns:52px minmax(0,1fr);padding:7px}.material-card img{width:50px;height:50px}.material-card strong{grid-column:1/3}.summon-pools article{grid-template-columns:78px 1fr;grid-template-rows:auto auto 50px;text-align:start}.summon-pools img{grid-row:1/4}.summon-pools .primary{grid-column:2}.rune-guide-card{flex-basis:132px;height:132px}}
 @media(max-height:520px) and (orientation:landscape){.rune-material-bank{grid-template-columns:repeat(4,minmax(0,1fr));min-height:44px;padding:3px 6px}.rune-material-bank span{grid-template-columns:22px minmax(0,1fr) auto}.rune-material-bank img{width:22px;height:22px}}
 
 /* V5: five-slot formation, explicit rune transfers, stable Battle framing and wave changes. */
@@ -138,17 +128,17 @@ img{-webkit-user-drag:none}
 .stage-rift-mark{display:grid;place-items:center;min-height:0}.stage-rift-mark img{width:68px;height:68px;object-fit:contain;filter:drop-shadow(0 0 14px #aa77ff)}
 .team-formation{height:92px;display:grid;grid-template-rows:68px 18px;gap:3px}.team-slots{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.team-slot{position:relative;min-width:0;display:grid;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:4px;padding:4px;border:2px dashed #59679b;border-radius:12px;background:#0b1235;color:#afbae6;overflow:hidden}.team-slot img{width:42px;height:54px;object-fit:contain}.team-slot b{overflow:hidden;text-overflow:ellipsis;font-size:.62rem}.team-slot.filled{border-style:solid;border-color:#5c70af;background:#131d4d;color:#fff}.team-slot.leader-slot::after{content:'★';position:absolute;right:4px;top:2px;color:#ffe26b;text-shadow:0 0 8px #ffb52f}.team-slot.selected{border-color:#7affbb;box-shadow:0 0 16px #5cff9a,inset 0 0 16px #45e38a55}.team-formation p{margin:0;text-align:center;color:#95eaff;font-size:.68rem;line-height:18px}.team-summary{height:44px}.roster-grid{height:calc(100% - 144px);grid-auto-rows:154px}.roster-card{height:154px;grid-template-rows:68px 18px 20px 18px;gap:1px;padding:7px}.roster-card img{width:68px;height:68px}.roster-card b{line-height:20px}.roster-card small{line-height:18px;transform:translateY(-2px)}
 .leader-detail{margin:10px 0;padding:11px 14px;border:1px solid #4ed7aa;border-radius:14px;background:#081e2b;text-align:start}.leader-detail small{display:block;color:#78f2c2;font-weight:900}.leader-detail strong{display:block;margin-top:4px;color:#ffe17c;font-size:1.05rem}.leader-detail p{margin:6px 0 0!important;line-height:1.45}.rune-guide-card{flex-basis:206px;height:206px;grid-template-rows:24px 20px 34px minmax(0,1fr) 36px}.rune-guide-card img{grid-row:1/6}.rune-guide-card small{grid-row:3}.rune-values{grid-column:2;grid-row:4;display:grid;grid-template-columns:auto 1fr;gap:2px 7px;align-content:center;text-align:start;font-size:.61rem}.rune-values strong{color:#8feaff}.rune-values i{font-style:normal;color:#fff}.rune-guide-card button{grid-row:5}
-#characterModal .character-card{padding:14px 20px}#characterModal .character-card>img{width:120px;height:120px}#characterModal .character-stars{font-size:1rem;line-height:18px}#characterModal h2{margin:1px;font-size:1.35rem;line-height:1.2}#characterModal #characterStats{margin:3px 0;font-size:.8rem}#characterModal .ultimate-detail,#characterModal .leader-detail{margin:6px 0;padding:8px 11px}#characterModal .ultimate-detail strong,#characterModal .leader-detail strong{font-size:.96rem}#characterModal .ultimate-detail p,#characterModal .leader-detail p{margin-top:3px!important;font-size:.76rem;line-height:1.3}#characterModal .upgrade-progress{padding:7px 9px}#characterModal .character-card button:not(.modal-close){min-height:44px;margin-top:5px}
+#characterModal .character-card{padding:14px 20px}#characterModal .character-card>img{width:120px;height:120px}#characterModal .character-stars{font-size:1rem;line-height:18px}#characterModal h2{margin:1px;font-size:1.35rem;line-height:1.2}#characterModal #characterStats{margin:3px 0;font-size:.8rem}#characterModal .ultimate-detail, #characterModal .leader-detail{margin:6px 0;padding:8px 11px}#characterModal .ultimate-detail strong, #characterModal .leader-detail strong{font-size:.96rem}#characterModal .ultimate-detail p, #characterModal .leader-detail p{margin-top:3px!important;font-size:.76rem;line-height:1.3}#characterModal .upgrade-progress{padding:7px 9px}#characterModal .character-card button:not(.modal-close){min-height:44px;margin-top:5px}
 .v3-battle .battle-head{position:relative;z-index:25;grid-template-columns:52px minmax(0,1fr) 52px;background:#080e2d;border-bottom:1px solid #44558f;box-shadow:0 4px 14px #0009}.v3-battle .stage-name{min-width:0;display:flex;align-items:center;justify-content:center;gap:10px;text-align:center}.v3-battle .stage-name strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.v3-battle .stage-name em{flex:none}.v3-battle .speed-btn{box-sizing:border-box;width:48px;height:48px;align-self:center;justify-self:center;border:1px solid #6f7fbc;border-radius:12px;background:#17224f;color:#dce7ff;font-weight:1000;font-size:.82rem;line-height:1;box-shadow:inset 0 0 10px #33468a66}.v3-battle .speed-btn.speed-2x{border-color:#69e9ff;background:#164b66;color:#fff;box-shadow:0 0 14px #39dfff88,inset 0 0 12px #44dcff55}.v3-battle .arena{overflow:hidden;background-position:center}.enemy-squad{width:min(82%,650px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:12px}.enemy-unit{box-sizing:border-box;width:100%;min-width:0;overflow:visible}.enemy-unit img{display:block;width:100%;max-width:148px;height:min(18vh,126px);margin:auto;object-fit:contain;object-position:center bottom}.enemy-unit .hpbar{max-width:148px;margin-inline:auto}.summoner-field .party-heroes{width:min(91%,610px);gap:4px}.party-hero{width:min(19%,92px)}.party-hero img{height:78px}
 .rune-flight{position:absolute;z-index:45;left:0;top:0;width:38px;height:38px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 0 8px #fff) drop-shadow(0 0 15px var(--effect-color,#66eaff));animation:runeTransfer .72s cubic-bezier(.18,.74,.22,1) var(--rune-flight-delay,0ms) forwards}.rune-flight-attack{--effect-color:#ff9b42}.rune-flight-defense{--effect-color:#68dfff}@keyframes runeTransfer{from{opacity:.2;transform:translate(calc(var(--rune-from-x) - 19px),calc(var(--rune-from-y) - 19px)) scale(.35) rotate(0)}25%{opacity:1}to{opacity:1;transform:translate(calc(var(--rune-to-x) - 19px),calc(var(--rune-to-y) - 19px)) scale(.72) rotate(540deg)}}.metric-impact{animation:metricImpact .3s ease-out}@keyframes metricImpact{50%{transform:scale(1.22);filter:brightness(1.8)}}
-.magic-projectile,.magic-projectile[class*="spell-"]{width:46px;height:46px;clip-path:none;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff 0 8%,#fff7a8 13%,var(--spell-color,#ffb640) 31% 62%,#6634d7 76%,transparent 79%);animation-name:magicShotV5;box-shadow:0 0 14px #fff,0 0 28px var(--spell-color,#ffb640)}.magic-projectile::before,.magic-projectile::after{display:none!important}.magic-projectile.ultimate-projectile{width:62px;height:62px}.magic-projectile.impacting{animation:projectileImpact .24s ease-out forwards}@keyframes magicShotV5{from{left:var(--shot-x,50%);top:var(--shot-y,72%);transform:translate(-50%,-50%) scale(.35)}35%{transform:translate(-50%,-50%) scale(1.08)}to{left:var(--target-x,50%);top:var(--target-y,20%);transform:translate(-50%,-50%) scale(.72)}}@keyframes projectileImpact{from{left:var(--target-x,50%);top:var(--target-y,20%);opacity:1;transform:translate(-50%,-50%) scale(.72)}to{left:var(--target-x,50%);top:var(--target-y,20%);opacity:0;transform:translate(-50%,-50%) scale(2.3)}}
+.magic-projectile, .magic-projectile[class*="spell-"]{width:46px;height:46px;clip-path:none;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff 0 8%,#fff7a8 13%,var(--spell-color,#ffb640) 31% 62%,#6634d7 76%,transparent 79%);animation-name:magicShotV5;box-shadow:0 0 14px #fff,0 0 28px var(--spell-color,#ffb640)}.magic-projectile::before, .magic-projectile::after{display:none!important}.magic-projectile.ultimate-projectile{width:62px;height:62px}.magic-projectile.impacting{animation:projectileImpact .24s ease-out forwards}@keyframes magicShotV5{from{left:var(--shot-x,50%);top:var(--shot-y,72%);transform:translate(-50%,-50%) scale(.35)}35%{transform:translate(-50%,-50%) scale(1.08)}to{left:var(--target-x,50%);top:var(--target-y,20%);transform:translate(-50%,-50%) scale(.72)}}@keyframes projectileImpact{from{left:var(--target-x,50%);top:var(--target-y,20%);opacity:1;transform:translate(-50%,-50%) scale(.72)}to{left:var(--target-x,50%);top:var(--target-y,20%);opacity:0;transform:translate(-50%,-50%) scale(2.3)}}
 .magic-projectile.group-projectile{width:76px;height:76px;box-shadow:0 0 18px #fff,0 0 42px var(--spell-color,#ffb640),0 0 72px var(--spell-color,#ffb640)}.group-damage{color:#fff4a8;text-shadow:0 2px 4px #000,0 0 15px var(--spell-color,#ffe06b)}
-.wave-transition{position:absolute;z-index:40;inset:0;display:grid;place-items:center;pointer-events:none;background:radial-gradient(circle,#3d2b7acc,transparent 66%)}.wave-transition span{padding:16px 32px;border-block:2px solid #a7f5ff;color:#fff;font-size:clamp(2rem,8vw,4.5rem);font-weight:1000;font-style:italic;text-shadow:0 0 12px #61eaff,0 0 35px #9d63ff;animation:waveSweep 1.2s ease-in-out forwards}@keyframes waveSweep{from{opacity:0;transform:translateX(-75vw) skewX(-10deg) scale(.8)}35%{opacity:1;transform:translateX(0) skewX(-10deg) scale(1.08)}70%{opacity:1;transform:translateX(0) skewX(-10deg) scale(1)}to{opacity:0;transform:translateX(75vw) skewX(-10deg) scale(.85)}}.arena.wave-out .enemy-squad,.arena.wave-out .summoner-field{animation:waveFadeOut .38s ease-in forwards}.arena.wave-in .enemy-squad,.arena.wave-in .summoner-field{animation:waveFadeIn .6s ease-out forwards}@keyframes waveFadeOut{to{opacity:0;filter:blur(8px);transform:translateX(-50%) scale(.94)}}@keyframes waveFadeIn{from{opacity:0;filter:blur(10px)}to{opacity:1;filter:none}}
+.wave-transition{position:absolute;z-index:40;inset:0;display:grid;place-items:center;pointer-events:none;background:radial-gradient(circle,#3d2b7acc,transparent 66%)}.wave-transition span{padding:16px 32px;border-block:2px solid #a7f5ff;color:#fff;font-size:clamp(2rem,8vw,4.5rem);font-weight:1000;font-style:italic;text-shadow:0 0 12px #61eaff,0 0 35px #9d63ff;animation:waveSweep 1.2s ease-in-out forwards}@keyframes waveSweep{from{opacity:0;transform:translateX(-75vw) skewX(-10deg) scale(.8)}35%{opacity:1;transform:translateX(0) skewX(-10deg) scale(1.08)}70%{opacity:1;transform:translateX(0) skewX(-10deg) scale(1)}to{opacity:0;transform:translateX(75vw) skewX(-10deg) scale(.85)}}.arena.wave-out .enemy-squad, .arena.wave-out .summoner-field{animation:waveFadeOut .38s ease-in forwards}.arena.wave-in .enemy-squad, .arena.wave-in .summoner-field{animation:waveFadeIn .6s ease-out forwards}@keyframes waveFadeOut{to{opacity:0;filter:blur(8px);transform:translateX(-50%) scale(.94)}}@keyframes waveFadeIn{from{opacity:0;filter:blur(10px)}to{opacity:1;filter:none}}
 @media(max-width:560px){.team-slots{gap:3px}.team-slot{grid-template-columns:1fr;padding:2px;justify-items:center}.team-slot img{width:42px;height:54px}.team-slot b{display:none}.roster-grid{grid-template-columns:repeat(2,144px);justify-content:center}.rune-guide-card{height:202px;flex-basis:202px;grid-template-columns:72px minmax(0,1fr)}.rune-guide-card img{width:68px;height:68px}.enemy-squad{width:94%;gap:4px}.enemy-unit img{height:min(15vh,104px)}.party-hero img{height:66px}.party-hero small{font-size:.47rem}}
 @media(max-height:520px) and (orientation:landscape){.team-formation{height:76px;grid-template-rows:58px 15px}.team-slot img{height:46px}.team-summary{height:36px}.roster-grid{height:calc(100% - 118px);grid-auto-rows:126px}.roster-card{height:126px;grid-template-rows:58px 16px 18px 16px}.roster-card img{width:58px;height:58px}.rune-guide-card{height:176px;flex-basis:176px}.enemy-unit img{height:20vh}.party-hero img{height:50px}}
 @media(max-height:430px) and (orientation:landscape){#characterModal .character-card{grid-template-columns:160px minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto auto;align-content:start}#characterModal #characterArt{grid-column:1;grid-row:1}#characterModal #characterStars{grid-column:1;grid-row:2}#characterModal #characterName{grid-column:1;grid-row:3}#characterModal #characterStats{grid-column:1;grid-row:4}#characterModal .ultimate-detail{grid-column:2;grid-row:1;margin:0}#characterModal .leader-detail{grid-column:3;grid-row:1;margin:0;padding-inline-end:42px}#characterModal #duplicateProgress{grid-column:2 / 4;grid-row:2}#characterModal #equipBtn{grid-column:2;grid-row:3}#characterModal #upgradeBtn{grid-column:3;grid-row:3}}
 @media(max-height:430px) and (orientation:landscape){#summonResult{padding:8px}#summonResult .character-card{box-sizing:border-box;width:min(100%,640px);height:100%;max-height:100%;overflow:hidden;display:grid;grid-template-columns:140px minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr) auto;align-items:center;gap:4px 12px;padding:10px 14px}#summonResult .character-card>span{grid-column:2;grid-row:1}#summonResult .character-card>img{grid-column:1;grid-row:1 / 5;width:140px;height:140px}#summonResult .character-card>h2{grid-column:2;grid-row:2}#summonResult .character-card>p{grid-column:2;grid-row:3;min-height:0;overflow:auto;margin:2px 0}#summonResult .character-card>button{grid-column:2;grid-row:4;margin-top:0}}
-@media(prefers-reduced-motion:reduce){.rune-flight,.metric-impact,.wave-transition span,.arena.wave-out .enemy-squad,.arena.wave-out .summoner-field,.arena.wave-in .enemy-squad,.arena.wave-in .summoner-field{animation-duration:.01ms!important;animation-delay:0ms!important}}
+@media(prefers-reduced-motion:reduce){.rune-flight, .metric-impact, .wave-transition span, .arena.wave-out .enemy-squad, .arena.wave-out .summoner-field, .arena.wave-in .enemy-squad, .arena.wave-in .summoner-field{animation-duration:.01ms!important;animation-delay:0ms!important}}
 
 /* V6: smoother combat timing, centered live squads and clearer team information. */
 .roster-grid{grid-auto-rows:178px}
@@ -163,10 +153,10 @@ img{-webkit-user-drag:none}
 .enemy-squad{width:min(calc(var(--enemy-count,3)*180px),82%,650px);grid-template-columns:repeat(var(--enemy-count,3),minmax(0,1fr))}
 .enemy-unit.defeated{display:block;visibility:hidden;pointer-events:none}
 .enemy-cd{position:absolute;z-index:5;left:3px;bottom:17px;min-width:42px;padding:3px 7px;border:1px solid #79e7ff;border-radius:999px;background:#07122bea;color:#bff8ff;font-size:.68rem;font-weight:1000;line-height:1;letter-spacing:.03em;box-shadow:0 0 12px #36dff477;text-shadow:0 1px 3px #000}
-.enemy-unit.enemy-ready .enemy-cd,.enemy-unit.enemy-attacking .enemy-cd{border-color:#ffdf69;background:#4a1b16ee;color:#fff3a8;box-shadow:0 0 16px #ff7a3d}
+.enemy-unit.enemy-ready .enemy-cd, .enemy-unit.enemy-attacking .enemy-cd{border-color:#ffdf69;background:#4a1b16ee;color:#fff3a8;box-shadow:0 0 16px #ff7a3d}
 .enemy-unit.enemy-attacking{animation:enemyAttackStep .92s cubic-bezier(.2,.7,.25,1)}
 .enemy-intent{position:absolute;z-index:6;left:50%;top:-24px;max-width:142px;transform:translateX(-50%);padding:3px 7px;border:1px solid #8fdcff;border-radius:999px;background:#07142eee;color:#dffaff;font-size:.58rem;font-weight:900;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 0 10px #40cfff44}
-.enemy-intent.intent-heavy,.enemy-intent.intent-corrupt{border-color:#ff9e73;color:#ffe0c9;background:#42131fee}
+.enemy-intent.intent-heavy, .enemy-intent.intent-corrupt{border-color:#ff9e73;color:#ffe0c9;background:#42131fee}
 .enemy-intent.intent-shield{border-color:#6be7ff;color:#d9fbff}
 .enemy-intent.intent-heal{border-color:#6ff0a4;color:#dfffe9;background:#073327ee}
 .v3-battle .reel{padding:0;color:inherit}
@@ -180,43 +170,24 @@ img{-webkit-user-drag:none}
 .tactics-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
 .tactics-actions button{min-width:0;min-height:max(44px,calc(45px / var(--wp-battle-canvas-scale,1)));padding:4px;border:1px solid #7382bc;border-radius:11px;background:#202b58;color:#fff;font-size:.7rem;font-weight:900;line-height:1.1;cursor:pointer}
 .tactics-actions .tactic-accept{border-color:#ffe16c;background:linear-gradient(135deg,#6f4aff,#a74fff);box-shadow:0 0 13px #795cff66}
-.tactics-actions button:disabled,.auto-btn:disabled{cursor:not-allowed;filter:grayscale(.65);opacity:.46}
-@keyframes enemyAttackStep{0%,100%{transform:none}34%{transform:translateY(18px) scale(1.08);filter:brightness(1.35) drop-shadow(0 0 14px #ff724d)}62%{transform:translateY(12px) scale(1.04)}}
+.tactics-actions button:disabled, .auto-btn:disabled{cursor:not-allowed;filter:grayscale(.65);opacity:.46}
+@keyframes enemyAttackStep{0%, 100%{transform:none}34%{transform:translateY(18px) scale(1.08);filter:brightness(1.35) drop-shadow(0 0 14px #ff724d)}62%{transform:translateY(12px) scale(1.04)}}
 .party-hero.active{transform:none;filter:drop-shadow(0 0 14px #ffe36a)}
 .party-hero.attack-launch{animation:heroLaunchV7 1.04s both}
 .party-hero.attack-launch.ultimate-cast{animation-duration:1.32s}
 @keyframes heroLaunchV7{0%{transform:none;animation-timing-function:cubic-bezier(.22,.65,.25,1)}42%{transform:translateY(-26px) scale(1.12);animation-timing-function:cubic-bezier(.2,0,.25,1)}100%{transform:none}}
 .summoner-hp.player-hit{animation:playerHpHit .65s ease-out}
-@keyframes playerHpHit{0%,100%{border-color:#dce5ff;box-shadow:none}20%,65%{border-color:#ff315d;box-shadow:0 0 0 3px #ff315d,0 0 24px #ff214fcc}42%{border-color:#fff;box-shadow:0 0 0 2px #fff,0 0 30px #ff315d}}
+@keyframes playerHpHit{0%, 100%{border-color:#dce5ff;box-shadow:none}20%, 65%{border-color:#ff315d;box-shadow:0 0 0 3px #ff315d,0 0 24px #ff214fcc}42%{border-color:#fff;box-shadow:0 0 0 2px #fff,0 0 30px #ff315d}}
 .summoner-hud.player-hit{animation:none}
-.summon-bank img,.resource-bank img{width:27px;height:27px;object-fit:contain;filter:drop-shadow(0 0 7px #ffe36b)}
+.summon-bank img, .resource-bank img{width:27px;height:27px;object-fit:contain;filter:drop-shadow(0 0 7px #ffe36b)}
 .summon-bank i{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 @media(max-width:560px){.roster-grid{grid-auto-rows:178px}.enemy-squad{width:min(calc(var(--enemy-count,3)*150px),94%)}}
 @media(max-width:560px){.enemy-intent{top:-20px;max-width:102px;font-size:.48rem;padding:3px 5px}.tactics-copy{font-size:.58rem}.tactics-copy span{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tactics-rune-help{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.56rem;line-height:1.05}.tactics-actions button{font-size:.62rem}}
 @media(min-width:561px){.roster-grid{grid-auto-rows:154px}.roster-card{height:154px;grid-template-rows:50px 15px 18px 16px 28px}.roster-card img{width:50px;height:50px}}
 @media(max-height:520px) and (orientation:landscape){.roster-grid{grid-auto-rows:166px}.roster-card{height:166px;grid-template-rows:54px 16px 18px 17px 28px}.roster-card img{width:54px;height:54px}}
-@media(max-height:520px) and (orientation:landscape){.v3-stage #stagesPanel{grid-template-columns:132px minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:8px}.v3-stage #stagesPanel .mission-tabs{grid-column:1;grid-row:1;grid-template-columns:1fr;grid-template-rows:repeat(3,minmax(44px,1fr));gap:6px}.v3-stage #stagesPanel .stage-rail{grid-column:2;grid-row:1;padding-inline:calc(50% - 132px)}.v3-stage #stagesPanel .stage-card{height:190px}}
+@media(max-height:520px) and (orientation:landscape){}
 
 @media(max-height:520px) and (orientation:landscape){
-  body.wp-stage-select-active .v3-stage #stagesPanel{
-    display:grid!important;
-    grid-template-columns:132px minmax(0,1fr)!important;
-    grid-template-rows:minmax(0,1fr)!important;
-    gap:8px!important;
-  }
-  body.wp-stage-select-active .v3-stage #stagesPanel .mission-tabs{
-    grid-column:1!important;
-    grid-row:1!important;
-    z-index:2;
-  }
-  body.wp-stage-select-active .v3-stage #stagesPanel .stage-rail{
-    grid-column:2!important;
-    grid-row:1!important;
-    width:100%!important;
-    min-width:0!important;
-    max-width:100%!important;
-    clip-path:inset(0);
-  }
 }
 
 /* V8: keep persistent Battle actions above the shared 44px touch floor after
@@ -230,8 +201,8 @@ img{-webkit-user-drag:none}
 @media(max-height:520px) and (orientation:landscape){.v3-battle .correction-recap{margin:0;min-height:16px;font-size:.5rem;line-height:16px}}
 @media(max-height:520px) and (orientation:landscape){.tactics-panel{width:100%;max-width:none;justify-self:stretch;grid-template-rows:44px;margin:0}.tactics-copy{display:none}.tactics-actions{width:100%;height:44px;gap:3px}.tactics-actions button{min-width:44px;min-height:44px;padding:2px;font-size:.54rem}.enemy-intent{top:-17px;max-width:92px;font-size:.45rem}.v3-battle .reel.selected{box-shadow:0 0 0 1px #8d67ff,0 0 12px #ffe66caa}}
 @media(prefers-reduced-motion:reduce){
-  .party-hero.attack-launch,.enemy-unit.enemy-attacking,.summoner-hp.player-hit{animation-duration:.01ms!important}
-  .loader-orb,.enemy-unit.targeted .target-marker,.reel.effect-active,.reel.effect-active .reel-cell img{animation:none!important}
+  .party-hero.attack-launch, .enemy-unit.enemy-attacking, .summoner-hp.player-hit{animation-duration:.01ms!important}
+  .loader-orb, .enemy-unit.targeted .target-marker, .reel.effect-active, .reel.effect-active .reel-cell img{animation:none!important}
 }
 
 /* The first-turn coach is an additional Battle row, not an overlay. Reserve
@@ -250,14 +221,13 @@ img{-webkit-user-drag:none}
   .party-hero.attack-launch{animation-duration:.5s!important}
   .enemy-unit.enemy-attacking{animation-duration:.32s!important}
   .summoner-hp.player-hit{animation-duration:.32s!important}
-  .damage-number,.player-damage{animation-duration:.44s!important}
-  .impact-burst,.impact-spark,.damage-vignette{animation-duration:.28s!important}
+  .damage-number, .player-damage{animation-duration:.44s!important}
+  .impact-burst, .impact-spark, .damage-vignette{animation-duration:.28s!important}
 }
 
 /* v74 block-v1 effects: the ten combat effect families use square pieces,
    stepped masks and hard planar edges throughout the Rune Reels world. */
-.magic-projectile,
-.magic-projectile[class*="spell-"]{
+.magic-projectile, .magic-projectile[class*="spell-"]{
   width:48px!important;
   height:30px!important;
   border:3px solid #fff9c7!important;
@@ -300,7 +270,7 @@ img{-webkit-user-drag:none}
   background:transparent!important;
   box-shadow:0 0 0 6px var(--spell-color),0 0 30px var(--spell-color)!important;
 }
-.impact-burst::before,.impact-burst::after{
+.impact-burst::before, .impact-burst::after{
   inset:-22px!important;
   border:4px solid var(--spell-color)!important;
   border-radius:0!important;
@@ -325,7 +295,7 @@ img{-webkit-user-drag:none}
   background:repeating-linear-gradient(45deg,transparent 0 10px,color-mix(in srgb,var(--spell-color) 34%,transparent) 10px 18px)!important;
   box-shadow:inset 0 0 0 8px #ffffff66,0 0 32px var(--spell-color)!important;
 }
-.ultimate-sigil::before,.ultimate-sigil::after{
+.ultimate-sigil::before, .ultimate-sigil::after{
   inset:15px!important;
   border:4px solid #fff!important;
   border-radius:0!important;
@@ -339,8 +309,7 @@ img{-webkit-user-drag:none}
   clip-path:polygon(0 25%,25% 25%,25% 0,75% 0,75% 25%,100% 25%,100% 75%,75% 75%,75% 100%,25% 100%,25% 75%,0 75%)!important;
 }
 
-.party-hero.attack-launch::after,.party-hero.support-cast::after,
-.support-aura{
+.party-hero.attack-launch::after, .party-hero.support-cast::after, .support-aura{
   border-radius:0!important;
   clip-path:polygon(0 20%,12% 20%,12% 0,88% 0,88% 20%,100% 20%,100% 80%,88% 80%,88% 100%,12% 100%,12% 80%,0 80%)!important;
   background:repeating-linear-gradient(90deg,transparent 0 13px,color-mix(in srgb,var(--hero-aura,#7effa4) 62%,transparent) 13px 24px)!important;
@@ -387,58 +356,6 @@ img{-webkit-user-drag:none}
   grid-template-columns:minmax(0,1fr)!important;
   grid-template-rows:64px minmax(0,1fr) 64px!important;
   gap:8px!important;
-}
-.v3-stage>.screen-head{
-  grid-column:1!important;
-  grid-row:1!important;
-  min-width:0;
-}
-.v3-stage>.stage-workspace{
-  grid-column:1!important;
-  grid-row:2!important;
-  min-width:0;
-  min-height:0;
-  overflow:hidden;
-}
-.v3-stage>.stage-tabs{
-  grid-column:1!important;
-  grid-row:3!important;
-  box-sizing:border-box;
-  height:64px!important;
-  display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:8px!important;
-  padding:6px!important;
-  border:1px solid #53609a;
-  border-radius:14px;
-  background:#090f2de8;
-}
-.v3-stage>.stage-tabs button{
-  box-sizing:border-box;
-  min-width:0;
-  min-height:44px;
-  font-size:.78rem;
-}
-.v3-stage .stage-workspace>#stagesPanel{
-  box-sizing:border-box;
-  width:100%;
-  height:100%;
-  display:grid;
-  grid-template-columns:minmax(0,1fr);
-  grid-template-rows:44px 44px minmax(0,1fr) 52px;
-  gap:6px;
-}
-.v3-stage .stage-workspace>#stagesPanel[hidden],
-.v3-stage .stage-workspace>#stagesPanel[hidden] #enterBattle{display:none!important}
-.v3-stage #stagesPanel>.mission-tabs{grid-column:1;grid-row:1}
-.v3-stage #stagesPanel>.progress-card{grid-column:1;grid-row:2}
-.v3-stage #stagesPanel>.stage-rail{grid-column:1;grid-row:3}
-.v3-stage #stagesPanel>#enterBattle{
-  grid-column:1;
-  grid-row:4;
-  box-sizing:border-box;
-  width:100%;
-  min-height:48px;
 }
 .stage-management-workspace{
   box-sizing:border-box;
@@ -491,147 +408,15 @@ img{-webkit-user-drag:none}
     grid-template-rows:56px minmax(0,1fr) 48px!important;
     gap:4px!important;
   }
-  .v3-stage>.stage-tabs{
-    height:48px!important;
-    padding:2px 6px!important;
-    gap:6px!important;
-  }
-  .v3-stage .stage-workspace>#stagesPanel,
-  body.wp-stage-select-active .v3-stage .stage-workspace>#stagesPanel{
-    display:grid!important;
-    grid-template-columns:132px minmax(0,1fr) 132px!important;
-    grid-template-rows:minmax(0,1fr)!important;
-    gap:8px!important;
-  }
-  .v3-stage #stagesPanel>.mission-tabs,
-  body.wp-stage-select-active .v3-stage #stagesPanel>.mission-tabs{
-    grid-column:1!important;
-    grid-row:1!important;
-    grid-template-columns:1fr!important;
-    grid-template-rows:repeat(3,minmax(44px,1fr))!important;
-  }
-  .v3-stage #stagesPanel>.progress-card{display:none!important}
-  .v3-stage #stagesPanel>.stage-rail,
-  body.wp-stage-select-active .v3-stage #stagesPanel>.stage-rail{
-    grid-column:2!important;
-    grid-row:1!important;
-    width:100%!important;
-    min-width:0!important;
-    max-width:100%!important;
-    padding-inline:calc(50% - 132px)!important;
-    clip-path:inset(0);
-  }
-  .v3-stage #stagesPanel>#enterBattle{
-    display:block!important;
-    grid-column:3!important;
-    grid-row:1!important;
-    align-self:end;
-    min-height:48px;
-  }
   .stage-management-workspace{grid-template-rows:44px minmax(0,1fr)}
 }
 
 /* V7.1: short landscape keeps the explicit Stage-to-Battle decision visible. */
 @media(max-height:520px) and (orientation:landscape){
   .v3-stage{grid-template-columns:minmax(0,1fr) 180px;grid-template-rows:44px 38px minmax(0,1fr)}
-  .v3-stage>.screen-head,.v3-stage>.stage-tabs{grid-column:1/-1}
   .v3-stage>.management-panel{grid-column:1/-1;grid-row:3}
-  .v3-stage>#stagesPanel{grid-column:1;grid-row:3}
-  .v3-stage>#enterBattle{display:block;grid-column:2;grid-row:3;align-self:end;min-height:48px}
-}
-
-/* The shared Stage audit marks the screen active on body. Retired landscape
-   rules must never resurrect the hidden Stages workspace above Team/Equipment. */
-body.wp-stage-select-active .v3-stage .stage-workspace>#stagesPanel[hidden],
-body.wp-stage-select-active .v3-stage .stage-workspace>#stagesPanel[hidden] #enterBattle{
-  display:none!important;
-}
-
-.v3-stage .stage-card p .team-payoff{
-  display:block;
-  margin-top:3px;
-  color:#ffe06b;
-  font-size:.62rem;
-  line-height:1.15;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-/* V7.2: keep the new plan cue inside the card's fixed content row. The
-   summary and plan are deliberately two single-line owners so long locale
-   strings cannot push the plan below the parent clip. */
-.v3-stage .stage-card p{
-  display:block;
-  height:38px;
-  line-height:18px;
-  overflow:hidden;
-  overflow-wrap:normal;
-  white-space:normal;
-}
-.v3-stage .stage-card p .stage-summary{
-  display:block;
-  min-width:0;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-.v3-stage .stage-card p .team-payoff{
-  height:18px;
-  margin-top:1px;
-  line-height:18px;
-  max-width:100%;
-}
-
-/* V7.3: cards without a schedule must not reserve an empty grid row between
-   the plan cue and the status footer. The plan owns two bounded lines so the
-   next enemy intent remains readable instead of ending at a single-line
-   ellipsis. Scheduled cards keep their optional row and get the same space. */
-.v3-stage .stage-card:not(.has-schedule){
-  height:228px!important;
-  grid-template-rows:18px 27px 70px 54px 30px!important;
-}
-.v3-stage .stage-card.has-schedule{
-  height:246px!important;
-  grid-template-rows:18px 27px 70px 54px 18px 30px!important;
-}
-.v3-stage .stage-card p{
-  height:54px;
-}
-.v3-stage .stage-card p .team-payoff{
-  height:36px;
-  margin-top:0;
-  white-space:normal;
-  overflow-wrap:anywhere;
-  text-overflow:clip;
-}
-
-/* V7.4: the shared Stage baseline caps every card at 190px. Rune Reels owns
-   a taller portrait envelope so the two-line decision plan is fully visible;
-   compact landscape keeps the established 190px rail contract. */
-body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card:not(.has-schedule){
-  height:228px!important;
-  min-height:228px!important;
-  max-height:228px!important;
-}
-body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.has-schedule{
-  height:246px!important;
-  min-height:246px!important;
-  max-height:246px!important;
 }
 @media(max-height:520px) and (orientation:landscape){
-  body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card:not(.has-schedule){
-    height:190px!important;
-    min-height:190px!important;
-    max-height:190px!important;
-    grid-template-rows:18px 27px 60px 36px 30px!important;
-  }
-  body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.has-schedule{
-    height:190px!important;
-    min-height:190px!important;
-    max-height:190px!important;
-    grid-template-rows:18px 27px 55px 36px 18px 18px!important;
-  }
 }
 
 /* v68: tactical choices stay readable and keep their own geometry. The prior
@@ -644,8 +429,7 @@ body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.ha
   grid-template-rows:auto auto;
   line-height:1.2;
 }
-.tactics-copy span,
-.tactics-rune-help{
+.tactics-copy span, .tactics-rune-help{
   overflow:visible;
   text-overflow:clip;
   white-space:normal;
@@ -658,8 +442,7 @@ body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.ha
 
 @media(max-width:560px){
   .tactics-copy{font-size:.7rem;line-height:1.2}
-  .tactics-copy span,
-  .tactics-rune-help{
+  .tactics-copy span, .tactics-rune-help{
     display:block;
     overflow:visible;
     text-overflow:clip;
@@ -738,9 +521,7 @@ body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.ha
   margin-inline:0;
 }
 @media(min-height:521px){
-  .v3-battle,
-  .v3-battle.tactics-active,
-  .v3-battle.first-turn-coach-active{
+  .v3-battle, .v3-battle.tactics-active, .v3-battle.first-turn-coach-active{
     grid-template-rows:56px minmax(0,1fr) 280px;
   }
   .v3-battle .reel-console{
@@ -758,8 +539,7 @@ body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.ha
   .v3-battle .first-turn-coach{grid-row:2;box-sizing:border-box;height:30px;min-height:30px;margin:0;padding:4px 8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .v3-battle .first-turn-coach[hidden]{display:block!important;visibility:hidden}
   .v3-battle .reels{grid-row:3;height:96px;align-self:start}
-  .v3-battle .tactics-panel,
-  .v3-battle .battle-actions{grid-row:4;align-self:center;margin:0 auto}
+  .v3-battle .tactics-panel, .v3-battle .battle-actions{grid-row:4;align-self:center;margin:0 auto}
   .v3-battle .tactics-panel{
     box-sizing:border-box;
     height:108px;
@@ -774,8 +554,7 @@ body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.ha
     grid-template-rows:26px 26px;
     overflow:hidden;
   }
-  .v3-battle .tactics-copy span,
-  .v3-battle .tactics-rune-help{
+  .v3-battle .tactics-copy span, .v3-battle .tactics-rune-help{
     display:block;
     min-width:0;
     overflow:hidden;
@@ -802,8 +581,7 @@ body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.ha
   .v3-battle .first-turn-coach{grid-row:2;box-sizing:border-box;height:28px;min-height:28px;margin:0;padding:2px 6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .v3-battle .first-turn-coach[hidden]{display:block!important;visibility:hidden}
   .v3-battle .reels{grid-row:3;height:76px}
-  .v3-battle .tactics-panel,
-  .v3-battle .battle-actions{grid-row:4;align-self:center;margin:0}
+  .v3-battle .tactics-panel, .v3-battle .battle-actions{grid-row:4;align-self:center;margin:0}
   .v3-battle .tactics-panel{
     box-sizing:border-box;
     height:100%;
@@ -812,8 +590,7 @@ body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.ha
     overflow:hidden;
   }
   .v3-battle .tactics-copy{box-sizing:border-box;height:40px;min-height:0;grid-template-rows:19px 19px;overflow:hidden}
-  .v3-battle .tactics-copy span,
-  .v3-battle .tactics-rune-help{
+  .v3-battle .tactics-copy span, .v3-battle .tactics-rune-help{
     display:block;
     overflow:hidden;
     text-overflow:ellipsis;
@@ -902,7 +679,7 @@ body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.ha
   background:linear-gradient(180deg,#ff4f7140 0 26%,transparent 42%,#170b2ee8 70% 100%);
   filter:drop-shadow(0 0 10px #ff496d);
 }
-.enemy-intent,.enemy-cd{
+.enemy-intent, .enemy-cd{
   border-radius:4px;
   box-shadow:0 3px 0 #05091c,0 0 12px #40cfff55;
 }
@@ -931,7 +708,7 @@ body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.ha
   color:#fff4c7;
   box-shadow:0 2px 0 #020617;
 }
-.party-hero.attack-launch::after,.party-hero.support-cast::after{
+.party-hero.attack-launch::after, .party-hero.support-cast::after{
   inset:12px 7px 5px!important;
   border:0!important;
   border-radius:0!important;
@@ -999,7 +776,7 @@ body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.ha
   border-color:#ffe986;
   box-shadow:inset 0 0 0 2px #7454e8,inset 0 0 24px #8057ff77,0 5px 0 #040719,0 0 18px #ffe36c;
 }
-.v3-battle .spin,.auto-btn,.tactics-actions button{
+.v3-battle .spin, .auto-btn, .tactics-actions button{
   border-radius:6px;
   box-shadow:inset 0 0 0 2px #ffffff12,0 4px 0 #040719;
 }
@@ -1020,7 +797,7 @@ body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.ha
   overflow:hidden;
   contain:paint;
 }
-.magic-projectile,.magic-projectile[class*="spell-"]{
+.magic-projectile, .magic-projectile[class*="spell-"]{
   width:34px!important;
   height:22px!important;
   border-width:2px!important;
@@ -1032,7 +809,7 @@ body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.ha
 .impact-burst{
   animation:blockImpactCompact .46s ease-out forwards!important;
 }
-.impact-burst::before,.impact-burst::after{inset:-13px!important;border-width:3px!important}
+.impact-burst::before, .impact-burst::after{inset:-13px!important;border-width:3px!important}
 .impact-burst::after{inset:-21px!important}
 .impact-spark{
   width:25px!important;
@@ -1142,7 +919,7 @@ body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.ha
   .enemy-unit img{height:min(21vh,82px)}
   .ultimate-flash{width:64px!important;height:64px!important}
   .ultimate-sigil{width:44px!important;height:44px!important}
-  .support-aura,.support-aura.ultimate-aura{width:112px!important;height:58px!important}
+  .support-aura, .support-aura.ultimate-aura{width:112px!important;height:58px!important}
 }
 
 
@@ -1153,15 +930,6 @@ body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.ha
   --rune-stage-bottom:10px;
   padding:0 var(--rune-stage-edge) var(--rune-stage-bottom)!important;
 }
-.v3-stage>.screen-head.wp-stage-shell-header{
-  width:calc(100% + var(--rune-stage-edge) + var(--rune-stage-edge))!important;
-  margin-inline:calc(0px - var(--rune-stage-edge))!important;
-}
-.v3-stage .stage-workspace>#stagesPanel{
-  grid-template-rows:44px minmax(0,1fr) 52px;
-}
-.v3-stage #stagesPanel>.stage-rail{grid-row:2}
-.v3-stage #stagesPanel>#enterBattle{grid-row:3}
 @media(max-width:560px){
   .v3-stage{--rune-stage-edge:8px;--rune-stage-bottom:7px}
 }

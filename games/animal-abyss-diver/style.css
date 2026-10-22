@@ -96,3 +96,30 @@
   .controls button { font-size: .68rem; }
   .result { padding: 10px; }
 }
+
+/* Keep the separate first-clear Castle reward from covering Result actions. */
+body:has(.wpb-toast[data-wpb-reward-game="animal-abyss-diver"]) #battleShell #result {
+  padding-bottom: max(112px, min(128px, 28vh));
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  body:has(.wpb-toast[data-wpb-reward-game="animal-abyss-diver"]) #battleShell #result #resultSummary {
+    align-content: start;
+    gap: 5px;
+    padding-top: 42px;
+  }
+  body:has(.wpb-toast[data-wpb-reward-game="animal-abyss-diver"]) #battleShell #resultTitle {
+    font-size: 1.25rem;
+    line-height: 1.1;
+  }
+  body:has(.wpb-toast[data-wpb-reward-game="animal-abyss-diver"]) #battleShell #resultCopy {
+    font-size: .9rem;
+    line-height: 1.1;
+  }
+  body:has(.wpb-toast[data-wpb-reward-game="animal-abyss-diver"]) #battleShell #resultRewards span {
+    min-height: 34px;
+    padding: 3px;
+    font-size: .78rem;
+    line-height: 1.1;
+  }
+}

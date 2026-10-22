@@ -9,7 +9,7 @@ import {
 } from "./cascade-core.js?v=20261017-terrain-bird-v23";
 import { CastleCascade2D } from "./castle-cascade-2d.js?v=20261017-terrain-bird-v23";
 import { SIEGE_LEVELS, siegeSnapshot, siegeRemaining } from "./siege-core.js?v=20261017-terrain-bird-v23";
-import { createCastleCascadeStageConfig } from "./stage-config.js";
+import { createCastleCascadeStageConfig } from "./stage-config.js?v=20261022-castle-cascade-i9-shared-background1";
 
 const GAME_ID = "castle-cascade";
 const SAVE_KEY = "wp-castle-cascade";

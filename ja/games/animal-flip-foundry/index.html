@@ -27,14 +27,16 @@
     <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-flip-foundry" /><meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="ひと振りでクリスタル容器を発射し、力加減を調整して6章24面の工房ルートに着地します。" />
     <title>フリップ工房 | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20261021-animal-flip-foundry-i9" />
+    <link rel="stylesheet" href="style.css?v=20260903-animal-flip-foundry-stage-hit-target-v14" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(27,38,58,.20),rgba(27,38,58,.68)),url("assets/animal-flip-foundry-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
-    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
     <script defer src="game.js?v=20261021-animal-flip-foundry-i9"></script>
     <meta property="og:description" content="ひと振りでクリスタル容器を発射し、力加減を調整して6章24面の工房ルートに着地します。" />
     <meta name="twitter:description" content="ひと振りでクリスタル容器を発射し、力加減を調整して6章24面の工房ルートに着地します。" />
-    <meta property="og:site_name" content="WeightPlay" />
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="フリップ工房 | WeightPlay" />
     <meta property="og:url" content="https://weightplay.com/ja/games/animal-flip-foundry/" />
@@ -42,28 +44,55 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="フリップ工房 | WeightPlay" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"フリップ工房","alternateName":"Flip Foundry","url":"https://weightplay.com/ja/games/animal-flip-foundry/","image":"https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp","description":"ひと振りでクリスタル容器を発射し、力加減を調整して6章24面の工房ルートに着地します。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["スワイプ発射","力加減の調整","物理アーケード","精密着地"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "フリップ工房",
+  "alternateName": "Flip Foundry",
+  "url": "https://weightplay.com/ja/games/animal-flip-foundry/",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp",
+  "description": "ひと振りでクリスタル容器を発射し、力加減を調整して6章24面の工房ルートに着地します。",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com"
+  },
+  "inLanguage": "ja",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Any modern web browser",
+  "genre": [
+    "スワイプ発射",
+    "力加減の調整",
+    "物理アーケード",
+    "精密着地"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players",
+    "suggestedMinAge": 9
+  }
+}
+    </script>
+  </head>
   <body data-wp-game-version="v17" data-wp-interface-version="9" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>フリップ工房</strong><span>Preparing the foundry…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-flip-foundry" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main" data-wp-frame-scene="main">
         <header class="main-header" data-wp-frame-header="main"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-wp-frame-title="" data-five-copy="title">フリップ工房</h1><label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header><div id="main-content" data-wp-frame-content="main"><img class="five-game-cover main-cover" data-wp-frame-poster="" src="assets/animal-flip-foundry-cover.png" alt="" aria-hidden="true" />
-        <div data-wp-frame-copy><p class="lede main-summary" data-wp-frame-summary="">上にドラッグし、点線を光る足場に合わせて離そう。</p>
+        <div data-wp-frame-copy><p class="lede main-summary" data-wp-frame-summary="">Drag UP anywhere. Follow the dotted arc, then release on the glowing platform.</p>
         <p id="main-progress" class="progress main-progress" data-wp-frame-progress="" data-wp-main-progress>Best streak: 0</p><button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button></div></div>
       </section>
       <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('/games/animal-flip-foundry/assets/animal-flip-foundry-cover.png')" hidden data-wp-frame-scene="stage"><header class="stage-header" data-wp-frame-header="stage"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2 data-wp-frame-title="">Foundry Chapters</h2></header><div id="stage-content" class="stage-content" data-wp-frame-content="stage"><div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div></div><nav class="stage-tabs" data-wp-frame-nav="" aria-label="Stage sections"><button type="button" data-wp-frame-action="tab" aria-current="page">Stages</button></nav></section>
-      <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden data-wp-frame-scene="battle"><header class="battle-header" data-wp-frame-header="battle"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Stages">←</button><strong data-wp-frame-title hidden>Flip Foundry</strong><button id="reset-surface" class="battle-reset" data-wp-battle-utility data-wp-primary-action type="button" aria-label="Retry">Retry</button></header><div id="battle-play-content" class="wp-frame-play-content" data-wp-frame-content="battle"><div id="battle-info" data-wp-frame-info><span><small id="chapter-stat-label">チャプター</small><strong id="surface-label">チャプター 1 · 足場 1 / 4</strong></span><span><small id="streak-stat-label">連続</small><strong id="streak-label">0</strong></span><span><small id="best-stat-label">最高</small><strong id="best-streak-label">0</strong></span></div><p id="battle-status" class="battle-status">Swipe upward from the canister.</p><div class="arena-frame"><canvas id="arena" width="960" height="560" aria-label="Flip Foundry play area"></canvas></div><div class="touch-hint">Swipe up. Shorter swipes stay low; longer swipes climb farther.</div></div><section id="result-screen" class="screen result" data-wp-result-screen data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden><h2 id="result-title">Landing failed</h2><p id="result-copy"></p><div class="result-actions"><button id="to-stages" data-wp-frame-action="secondary">Stages</button><button id="next" data-wp-frame-action="secondary">Next Surface</button><button id="retry" class="primary" data-wp-frame-action="primary">Retry</button></div></section></section><div class="battle-ad-reserve" aria-hidden="true"></div>
+      <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden data-wp-frame-scene="battle"><header class="battle-header" data-wp-frame-header="battle"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Stages">←</button><strong data-wp-frame-title hidden>Flip Foundry</strong><button id="reset-surface" class="battle-reset" data-wp-battle-utility data-wp-primary-action type="button" aria-label="Retry">Retry</button></header><div id="battle-play-content" class="wp-frame-play-content" data-wp-frame-content="battle"><div id="battle-info" data-wp-frame-info><span><small id="chapter-stat-label">Chapter</small><strong id="surface-label">Chapter 1 · Platform 1 / 4</strong></span><span><small id="streak-stat-label">STREAK</small><strong id="streak-label">0</strong></span><span><small id="best-stat-label">BEST</small><strong id="best-streak-label">0</strong></span></div><p id="battle-status" class="battle-status">Swipe upward from the canister.</p><div class="arena-frame"><canvas id="arena" width="960" height="560" aria-label="Flip Foundry play area"></canvas></div><div class="touch-hint">Swipe up. Shorter swipes stay low; longer swipes climb farther.</div></div><section id="result-screen" class="screen result" data-wp-result-screen data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden><h2 id="result-title">Landing failed</h2><p id="result-copy"></p><div class="result-actions"><button id="to-stages" data-wp-frame-action="secondary">Stages</button><button id="next" data-wp-frame-action="secondary">Next Surface</button><button id="retry" class="primary" data-wp-frame-action="primary">Retry</button></div></section></section><div class="battle-ad-reserve" aria-hidden="true"></div>
     </main>
-    <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+    <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
     <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
     <script src="../../src/five-new-games-locale.js?v=20261003-flip-foundry-text140-v1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
     <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
     <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
@@ -80,13 +109,13 @@
 <p>面ごとに決められた力の範囲に、放すときのスワイプを合わせるのが課題です。失敗した面は調整して再挑戦できます。</p></div>
       <div class="game-info-section"><h3>ゲームの仕組み</h3><p>容器を押さえ、途切れない上向きのジェスチャーでドラッグします。スワイプの長さで発射の力と飛び方が変わり、放したときに現在の面で許可された力の範囲内か判定されます。</p>
 <p>着地に成功すると次の面へ進み、連勝が続きます。失敗したら「再挑戦」で同じ面を再挑戦するか、「チャプター」でマップに戻ります。</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>工房マップで章を選び、準備表示を待ちます。</li><li>上にドラッグして狙う</li><li>上にドラッグし、点線を光る足場に合わせて離そう。</li><li>失敗したら「再挑戦」を選び、力を調整します。4つの面に成功すると章をクリアします。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>上にドラッグし、点線を光る足場に合わせて離そう。</li><li>届かなかった。もっと長くドラッグ。</li><li>飛びすぎ。短くドラッグ。</li></ul></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>工房マップで章を選び、準備表示を待ちます。</li><li>容器を押さえ、ひと続きの上向きジェスチャーでドラッグします。長さによって発射の力が変わります。</li><li>放して発射します。成功するかは、放したときの力が現在の面の許容範囲に入るかで決まります。</li><li>失敗したら「再挑戦」を選び、力を調整します。4つの面に成功すると章をクリアします。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>まず安定した上向きのスワイプを試し、着地結果から現在の面に合う力の範囲を探ります。</li><li>失敗したらスワイプの長さを少し変えて結果を比べます。面までの距離は成功判定に影響しません。</li><li>ジェスチャーをなるべく垂直に保ち、面の結果を見ながら力を調整します。</li></ul></div>
       <div class="game-info-section"><h3>進行と難易度</h3><p>工房は6章構成で、各章に4つの面があります。着地に成功すると次の面へ進み連勝が続きます。失敗した場合は同じ面を再挑戦するか、章マップに戻れます。</p></div>
       <div class="game-info-section"><h3>開発者メモ</h3><p>スケッチホイール・ラリーでは描いた車輪が地形での走り方を変えますが、フリップ工房では上向きのスワイプを調整し、放したときの力を現在の面の許容範囲に合わせます。タッチとマウスは同じ操作で、着地結果を見て同じ面の次の試行を調整できます。</p></div>
       <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>フリップ工房は短時間で遊べる一般向けブラウザーゲームで、アカウントや購入は不要です。保存されるのはこのブラウザー内の最高連勝数のみです。現在の連勝数はプレイ中だけ有効で、サイトデータを消去すると最高記録も消えることがあります。WeightPlayはプライバシーポリシーに記載のとおり、ページやゲームの利用状況を分析に使う場合があります。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>容器はどうやって発射しますか？</dt><dd>上にドラッグし、点線を光る足場に合わせて離そう。</dd></div><div><dt>着地の成功はどう決まりますか？</dt><dd>上にドラッグし、点線を光る足場に合わせて離そう。</dd></div><div><dt>マウスでも遊べますか？</dt><dd>はい。マウスのドラッグとタッチのスワイプは同じ操作です。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>最高連勝数のみがこのブラウザーに保存されます。現在の連勝数はプレイ中だけ有効です。</dd></div><div><dt>1章にはいくつの面がありますか？</dt><dd>6章それぞれに工房の面が4つあります。着地に成功すると次へ進み、失敗した面は再挑戦できます。</dd></div><div><dt>失敗したら何を調整しますか？</dt><dd>届かなかった。もっと長くドラッグ。 飛びすぎ。短くドラッグ。</dd></div><div><dt>同じ足場を再挑戦できますか？</dt><dd>はい。失敗後に「再挑戦」を選ぶと同じ足場からやり直せます。「チャプター」でマップに戻れます。</dd></div><div><dt>連続記録は何を数えますか？</dt><dd>今回のプレイで成功した直立着地の連続数です。最高記録はこのブラウザーに保存されます。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>関連ゲームをもっと見る</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-bounce-brawl" href="/ja/games/animal-bounce-brawl/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" data-final-src="/assets/weightplay-logo.png" alt="バウンス乱闘" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">バウンス乱闘</strong><span>バウンスのタイミングを読み、フォームツールを選び、楽しい物理アリーナでライバルのバランスを崩します。</span></span></a></div></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>容器はどうやって発射しますか？</dt><dd>容器を押さえて上へドラッグします。スワイプの長さで発射の力が変わります。</dd></div><div><dt>着地の成功はどう決まりますか？</dt><dd>放したときの力が現在の面の許容範囲に入る必要があります。回転は視覚的なフィードバックで、角度は別途判定されません。</dd></div><div><dt>マウスでも遊べますか？</dt><dd>はい。マウスのドラッグとタッチのスワイプは同じ操作です。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>最高連勝数のみがこのブラウザーに保存されます。現在の連勝数はプレイ中だけ有効です。</dd></div><div><dt>1章にはいくつの面がありますか？</dt><dd>6章それぞれに工房の面が4つあります。着地に成功すると次へ進み、失敗した面は再挑戦できます。</dd></div><div><dt>失敗したら何を調整しますか？</dt><dd>スワイプの長さを少し変えて放すときの力を調整し、同じ面で結果を比べます。</dd></div><div><dt>同じ足場を再挑戦できますか？</dt><dd>はい。失敗後に「再挑戦」を選ぶと同じ足場からやり直せます。「チャプター」でマップに戻れます。</dd></div><div><dt>連続記録は何を数えますか？</dt><dd>今回のプレイで成功した直立着地の連続数です。最高記録はこのブラウザーに保存されます。</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-sketchwheel-rally/"><img src="/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>スケッチホイール・ラリー</strong><span>次の地形に合わせて車輪を描き、測定された形がレースに与える影響を見て、コースが変わったら描き直します。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-bounce-brawl/"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>バウンス乱闘</strong><span>バウンスのタイミングを読み、フォームツールを選び、楽しい物理アリーナでライバルのバランスを崩します。</span></span></a></div></div>
     </div>
   </section>
 <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>

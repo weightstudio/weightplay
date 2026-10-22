@@ -171,4 +171,20 @@
  ar:['الفحوص','★★★ أول محاولة بلا تلميح · ★★ إعادة بلا تلميح · ★ مع تلميح']
  };
  for(const [locale,[checksLabel,starRule]] of Object.entries(rows)) Object.assign(window.BALANCE_LOCALES[locale],{checksLabel,starRule});
+ const leaveCopy={
+  en:{leaveTitle:"Leave this round?",leaveBody:"Your selected stones and check count remain if you continue. Returning to the grove map ends this round.",continueBattle:"Continue playing",returnToMap:"Return to grove map"},
+  'zh-Hant':{leaveTitle:"要離開這回合嗎？",leaveBody:"繼續會保留目前選取的石頭與檢查次數；返回林地地圖會結束這回合。",continueBattle:"繼續遊玩",returnToMap:"返回林地地圖"},
+  'zh-Hans':{leaveTitle:"要离开这一回合吗？",leaveBody:"继续会保留当前选取的石头与检查次数；返回林地地图会结束这一回合。",continueBattle:"继续游玩",returnToMap:"返回林地地图"},
+  ja:{leaveTitle:"このラウンドを終了しますか？",leaveBody:"続けると選択中の石と確認回数を保てます。森のマップに戻るとこのラウンドは終了します。",continueBattle:"プレイを続ける",returnToMap:"森のマップへ戻る"},
+  ko:{leaveTitle:"이번 라운드를 나갈까요?",leaveBody:"계속하면 선택한 돌과 확인 횟수가 유지됩니다. 숲 지도에 돌아가면 이번 라운드가 끝납니다.",continueBattle:"계속 플레이",returnToMap:"숲 지도로 돌아가기"},
+  es:{leaveTitle:"¿Salir de esta ronda?",leaveBody:"Si continúas, conservarás las piedras elegidas y el número de intentos. Volver al mapa del bosque terminará esta ronda.",continueBattle:"Seguir jugando",returnToMap:"Volver al mapa"},
+  'pt-BR':{leaveTitle:"Sair desta rodada?",leaveBody:"Se continuar, as pedras selecionadas e o número de tentativas serão mantidos. Voltar ao mapa encerra esta rodada.",continueBattle:"Continuar jogando",returnToMap:"Voltar ao mapa"},
+  fr:{leaveTitle:"Quitter cette manche ?",leaveBody:"En continuant, vos pierres choisies et le nombre d’essais seront conservés. Le retour à la carte termine cette manche.",continueBattle:"Continuer à jouer",returnToMap:"Retourner à la carte"},
+  de:{leaveTitle:"Diese Runde verlassen?",leaveBody:"Wenn du weiterspielst, bleiben deine ausgewählten Steine und die Anzahl der Prüfungen erhalten. Die Rückkehr zur Karte beendet diese Runde.",continueBattle:"Weiter spielen",returnToMap:"Zur Karte zurück"},
+  it:{leaveTitle:"Vuoi uscire da questo turno?",leaveBody:"Se continui, le pietre selezionate e il numero di verifiche resteranno invariati. Tornare alla mappa terminerà il turno.",continueBattle:"Continua a giocare",returnToMap:"Torna alla mappa"},
+  ru:{leaveTitle:"Выйти из этого раунда?",leaveBody:"Если продолжить, выбранные камни и число проверок сохранятся. Возврат к карте завершит раунд.",continueBattle:"Продолжить игру",returnToMap:"Вернуться к карте"},
+  hi:{leaveTitle:"क्या इस राउंड से बाहर निकलें?",leaveBody:"जारी रखने पर चुने हुए पत्थर और जाँच की संख्या बनी रहेगी। वन-मानचित्र पर लौटने से यह राउंड समाप्त हो जाएगा।",continueBattle:"खेल जारी रखें",returnToMap:"वन-मानचित्र पर लौटें"},
+  ar:{leaveTitle:"هل تريد مغادرة هذه الجولة؟",leaveBody:"سيؤدي المتابعة إلى الاحتفاظ بالحجارة المختارة وعدد الفحوص. الرجوع إلى خريطة الغابة ينهي هذه الجولة.",continueBattle:"متابعة اللعب",returnToMap:"العودة إلى خريطة الغابة"}
+ };
+ for(const [locale,copy] of Object.entries(leaveCopy)) Object.assign(window.BALANCE_LOCALES[locale],copy);
 })();

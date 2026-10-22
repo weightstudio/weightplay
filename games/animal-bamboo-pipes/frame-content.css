@@ -13,7 +13,6 @@
   #battle .battle-objective{grid-column:1;grid-row:1;width:100%;height:auto;align-self:center}
   #battle .tools{grid-column:1;grid-row:2;width:100%}
 }
-#battle .battle-panel,#stage #rail{background:linear-gradient(#06192166,#06192155),url('../../assets/animal-bamboo-pipes-scenery-block-v20.webp') center/cover no-repeat}
 #battle .pipe{background:#23463d;border:1px solid #496756}
 #battle .pipe::before{inset:0;background-position:center;background-size:contain;background-repeat:no-repeat}
 #battle .pipe[data-shape="s"]::before{background-image:url('../../assets/animal-bamboo-pipes-straight-block-v20.webp')}

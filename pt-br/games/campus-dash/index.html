@@ -46,7 +46,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261015-campus-dash-i9-guide" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
   <meta name="twitter:title" content="Safari Dash | WeightPlay" />
     <meta name="twitter:description" content="Safari Dash é um corredor animal de três pistas com 30 rotas salvas em seis regiões. Spark Paw Fox restaura estrelas-guia enquanto as cartas anunciam..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/campus-dash/cover-block-v1.png" />
@@ -159,7 +159,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-dash-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261015-campus-dash-i9-guide";
+          script.src = "../../src/game-page-info.js?v=20261001-campus-dash-text140-v1";
           script.dataset.dashGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -176,7 +176,7 @@
       })();
     </script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
 <script src="/src/runtime-locales/pt-br.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Informações de Safari Dash">
@@ -202,7 +202,7 @@
       <div class="game-info-section"><h3>Nota de design</h3><p>Três pistas mantêm as escolhas legíveis no celular e cada entrada move exatamente uma pista. A profundidade vem de mudanças de informação: portões alteram a leitura espacial, estrelas alteram risco e recompensa, lama altera a recuperação e os objetivos alteram o que significa vencer. A versão Kids não solicita anúncios.</p></div>
       <div class="game-info-section game-info-parent"><h3>Nota para famílias</h3><p>O Skill Report usa apenas evidências da corrida atual: mudanças de pista, estrelas, colisões e melhor combo. Não é diagnóstico, avaliação de desenvolvimento nem comparação. A versão Kids não tem anúncios nem login.</p></div>
       <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Quantas rotas existem?</dt><dd>São 30 rotas em seis regiões, com Guardian Checks nas rotas 5, 10, 15, 20, 25 e 30.</dd></div><div><dt>Todas as rotas têm o mesmo objetivo?</dt><dd>Não. Há objetivos de chegada, estrelas, combo, corrida limpa e pontuação.</dd></div><div><dt>O que Sticky Mud faz?</dt><dd>Uma colisão em poça reduz pontos e desacelera brevemente a próxima mudança de pista.</dd></div><div><dt>Como funcionam os Two-Lane Gates?</dt><dd>Dois obstáculos chegam juntos e deixam uma pista de fuga; algumas rotas marcam a abertura com uma estrela.</dd></div><div><dt>O progresso é salvo?</dt><dd>Rotas abertas e concluídas, a rota escolhida e o Top 5 local ficam neste navegador.</dd></div><div><dt>Funciona no celular e no computador?</dt><dd>Sim. Celular usa toques e deslizes; desktop usa A, D e as setas.</dd></div></dl></div>
-
+      <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><p>Como este jogo pratica Reação, experimente estes:</p><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/animal-bounce-brawl/"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Briga de Rebotes</strong><span>Cronometre seus saltos, escolha ferramentas de espuma e desequilibre o rival em uma divertida arena de física.</span></span></a><a class="game-info-related-card" href="/pt-br/games/animal-skyspire-drop/"><img src="/assets/interface7-redrawn/animal-skyspire-drop.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Queda na Torre</strong><span>Gire os anéis de cristal para guiar Fia por 30 torres celestes, alinhe aberturas seguras e carregue o Quebra-Cometa antes que setores amaldiçoados encerrem a descida.</span></span></a><a class="game-info-related-card" href="/pt-br/games/snack-blocks/"><img src="/assets/interface7-redrawn/snack-blocks.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Blocos de lanche</strong><span>Planeje cada troca em 30 etapas salvas.</span></span></a></div></div>
     </div>
   </section>
 </body>

@@ -1,4 +1,4 @@
-import {mountMahjongCampaign} from './campaign-app.mjs?v=20261021-mahjong-v16-i9-stage-nav';
+import {mountMahjongCampaign} from './campaign-app.mjs?v=20261022-mahjong-v16-i9-battle-lifecycle';
 import {createCampaignMainView} from './campaign-main-view.mjs?v=20261021-mahjong-v16-i9-guide-alt';
 import {createCampaignSettings} from './campaign-settings.mjs?v=20261021-mahjong-v16-i9';
 import {createCampaignAudio} from './campaign-audio.mjs';

@@ -2227,7 +2227,7 @@
       title: "Bounce Brawl", age: "9+", difficulty: "Easy to Challenging", time: "2-5 minutes per arena",
       gameplay: "Soft Physics Knockback Arena", genre: ["Action", "Arcade", "Animal"], skills: ["Timing", "Reaction", "Spatial Awareness"],
       showSkills: false, showRelatedSkill: false, hideScoreBands: true, hideRecommendedAge: true,
-      relatedIds: ["animal-sketchwheel-rally", "animal-prism-breakers", "animal-cratebound"],
+      relatedIds: ["animal-bus-jam", "animal-bamboo-pipes"],
       intro: "Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena.",
       story: ["A friendly foam challenger meets a rival in six toy arenas. Each arena changes the spacing, platforms, or rival rhythm while keeping the goal readable: create contact on your terms."],
       systems: ["Arrow keys or visible controls move your character. Space performs the bounce-strike, and the tool buttons change the active foam tool.", "Hits create visible knockback and a brief impact effect. Win by reducing the rival's energy; lose by exhausting your own energy or letting the arena timer run out."],
@@ -11696,23 +11696,42 @@
         }
         const title = window.WEIGHTPLAY_GAME_TITLES[id][locale()];
         const href = gameHref(id);
-        const poster = window.WEIGHTPLAY_INTERFACE7_POSTERS[id];
-        if (!poster?.startsWith("/")) {
+        const posterUrl = window.WEIGHTPLAY_INTERFACE7_POSTERS[id];
+        if (!posterUrl?.startsWith("/")) {
           card.remove();
           return;
         }
         card.href = href;
         card.dataset.gameId = id;
-        const name = card.querySelector("strong");
-        if (name) name.textContent = title;
-        const image = card.querySelector("img");
-        if (image) {
-          image.src = poster;
-          image.alt = `${title} game poster`;
-          image.dataset.finalSrc = assetHref("weightplay-logo.png");
-          image.width = 320;
-          image.height = 320;
+        let poster = [...card.children].find((node) => node.classList.contains("game-info-related-poster"));
+        const directImage = [...card.children].find((node) => node.tagName === "IMG");
+        if (!poster) {
+          poster = document.createElement("span");
+          poster.className = "game-info-related-poster";
+          if (directImage) poster.append(directImage);
+          card.prepend(poster);
         }
+        let image = poster.querySelector("img");
+        if (!image) {
+          image = document.createElement("img");
+          poster.append(image);
+        }
+        let copy = [...card.children].find((node) => node.classList.contains("game-info-related-copy"));
+        if (!copy) {
+          copy = document.createElement("span");
+          copy.className = "game-info-related-copy";
+          for (const node of [...card.childNodes]) if (node !== poster) copy.append(node);
+          card.append(copy);
+        }
+        const name = copy.querySelector("strong");
+        if (name) name.textContent = title;
+        image.src = posterUrl;
+        image.alt = `${title} game poster`;
+        image.dataset.finalSrc = assetHref("weightplay-logo.png");
+        image.width = 320;
+        image.height = 320;
+        image.loading = "lazy";
+        image.decoding = "async";
       });
       if (!relatedSection.querySelector(".game-info-related-card")) {
         relatedSection.remove();

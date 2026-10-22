@@ -1,7 +1,7 @@
 <!doctype html><html lang="ja"><head>
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 
     <base href="/games/reversi/" />
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/ja/games/reversi/" />
@@ -19,7 +19,10 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/reversi/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/reversi/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/reversi/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><title>リバーシ | WeightPlay</title><link rel="stylesheet" href="../../src/classic-logic-lab.css?v=20260909-reversi-v16"><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1"><link rel="stylesheet" href="/games/reversi/royal-board.css?v=20260908-v14">  <meta name="description" content="リバーシは8×8の戦略ボードゲームです。相手の石を挟んで返し、最後にAIより多くの石を残しましょう。" />
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><title>リバーシ | WeightPlay</title><link rel="stylesheet" href="../../src/classic-logic-lab.css?v=20260909-reversi-v16"><link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-reversi-v16"><link rel="stylesheet" href="/games/reversi/royal-board.css?v=20260908-v14">  <script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
+
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <meta name="description" content="リバーシは8×8の戦略ボードゲームです。相手の石を挟んで返し、最後にAIより多くの石を残しましょう。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="リバーシ | WeightPlay" />
@@ -60,11 +63,8 @@
   }
 }
     </script>
-    <script src="/src/shared-interface-bootstrap.js?v=20261017-shared-dark-loader1" data-wp-shared-interface="7"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-</head><body>
-    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">リバーシ</h1><div id="logicApp"></div><script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="../../src/analytics.js?v=20261002-tabletop-reward-exclusion-v1"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/classic-logic-lab.js?v=20260909-reversi-v16&wp-audio=1.0.0"></script><script src="game.js?v=20260909-reversi-v16"></script><script src="analytics-ownership.js?v=20260909-reversi-v16"></script><section class="game-page-info game-page-info-static" aria-label="リバーシ ゲーム情報" data-wp-game-guide>
+  </head><body data-wp-game-version="v17" data-wp-interface-version="6" data-wp-interface-candidate="9">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">リバーシ</h1><div id="logicApp"></div><script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script><script src="../../src/analytics.js?v=20261002-tabletop-reward-exclusion-v1"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/classic-logic-lab.js?v=20260909-reversi-v16&wp-audio=1.0.0"></script><script src="game.js?v=20260909-reversi-v16"></script><script src="analytics-ownership.js?v=20260909-reversi-v16"></script><section class="game-page-info game-page-info-static" aria-label="リバーシ ゲーム情報" data-wp-game-guide>
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>リバーシ</h2><p>リバーシは8×8の戦略ボードゲームです。相手の石を挟んで返し、最後にAIより多くの石を残しましょう。</p></div>
@@ -84,11 +84,11 @@
       <div class="game-info-section"><h3>開発者メモ</h3><p>リバーシは見やすい8×8盤、合法手の明示、方針が分かる3段階AI、助言型ヒント、局面フィードバックで、戦略を見える形にします。</p></div>
       <div class="game-info-section game-info-parent"><h3>プレイヤー、端末、保存情報</h3><p>言語と音の設定はこのブラウザに残る場合があります。現在の対局盤面は再読み込み後に保存されません。アカウント、購入、クラウド保存、オンライン対局は不要です。サイトデータの削除でローカル設定が消える場合があります。</p></div>
       <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>合法手とは？</dt><dd>空きマスに置き、新しい石と自分の石の間に相手の石を1個以上挟む手です。</dd></div><div><dt>挟んだ石は？</dt><dd>挟まれた方向の石が自分の色に返ります。</dd></div><div><dt>ヒントは何をしますか？</dt><dd>ヒントは盤面の順番で最初に見つかった合法手を示すだけです。最善手を選んだり、代わりに石を置いたりはしません。</dd></div><div><dt>AIの難易度は？</dt><dd>かんたんは今すぐ返す石が最も少ない手、ふつうは最も多い手を選びます。むずかしいは返す数、角、辺を評価し、空いた角の隣を減点します。必ず最善手になるわけではありません。</dd></div><div><dt>勝敗はどう決まりますか？</dt><dd>一方に合法手がなければ自動的にパスします。双方とも打てなくなったら石を数え、多い方が勝ちます。</dd></div><div><dt>Undoで手を戻せますか？</dt><dd>いいえ。現在のUndoは通知を出すだけで、盤面や手は戻しません。最初からやり直すにはReplayを使ってください。</dd></div><div><dt>打てる場所がないときは？</dt><dd>その側は自動的にパスします。もう一方が打てるなら対局は続き、双方とも打てなくなると結果が表示されます。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>関連ゲームをもっと見る</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="lights-out" href="/ja/games/lights-out/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/lights-out.webp" data-final-src="/assets/weightplay-logo.png" alt="ライツアウト" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">ライツアウト</strong><span>ライツアウトは、マスと上下左右の隣を切り替えてすべての灯りを消す5×5の定番パズルです。</span></span></a><a class="game-info-related-card" data-game-id="sliding-15" href="/ja/games/sliding-15/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/sliding-15.webp" data-final-src="/assets/weightplay-logo.png" alt="スライディング15" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">スライディング15</strong><span>30の保存ステージから選び、クラシック・蛇行・列・アンカー・迂回の目標に挑戦します。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ライツアウト</strong><span>ライツアウトは、マスと上下左右の隣を切り替えてすべての灯りを消す5×5の定番パズルです。</span></span></a><a class="game-info-related-card" href="/ja/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>スライディング15</strong><span>30の保存ステージから選び、クラシック・蛇行・列・アンカー・迂回の目標に挑戦します。</span></span></a></div></div>
     </div>
   </section><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="リバーシ";document.title="リバーシ | WeightPlay";},{once:true});</script>
 </body></html>

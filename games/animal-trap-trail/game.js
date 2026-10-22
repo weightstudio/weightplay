@@ -14,13 +14,15 @@
   __wpNotifyMeasurement();
 
   const $ = (id) => document.getElementById(id);
-  const GAME_VERSION = 20;
+  const GAME_VERSION = 21;
   const loadingPanel = $("loadingPanel");
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
   const canvas = $("arena");
   let trailRenderer = null, rendererPromise = null, renderClosed = false;
   const rendererScript = document.currentScript?.src || document.baseURI;
   const state = { stage: 1, chapter: 1, room: 1, screen: "main", deaths: 0, bestRoom: Number(localStorage.getItem("wp-trail-best-stage") || localStorage.getItem("wp-trail-best-room") || 0), keys: new Set(), tap: null, player: null, raf: 0, last: 0, pulse: 0, jumpBuffer: 0, timingCue: "", statusKey: "", resultKind: "room" };
+  let screenFrame = null, stageSummary = null, stageController = null;
+  let selectedStageIndex = null;
   // One simulation/input owner; the camera never changes collision coordinates.
   Object.assign(state, { coyote: 0, elapsed: 0, recovery: 0,
     failureX: 0, failureY: 0, pulseTime: 0, feedbackTime: 0, camera: 0, accumulator: 0 });
@@ -100,7 +102,7 @@
     document.querySelector('#battle-screen [data-wp-return="battle"]')?.focus();
   }
   $("trail-continue").addEventListener("click",closeLeave);
-  $("trail-exit").addEventListener("click",()=>{closeLeave();state.confirmedExit=true;show("stage");stageCards();state.confirmedExit=false;});
+  $("trail-exit").addEventListener("click",()=>{closeLeave();state.confirmedExit=true;show("stage");state.confirmedExit=false;});
   leavePanel.addEventListener("keydown",e=>{
     if(e.key==="Escape"){e.preventDefault();closeLeave();}
     if(e.key==="Tab"){e.preventDefault();(document.activeElement===$("trail-continue")?$("trail-exit"):$("trail-continue")).focus();}
@@ -309,6 +311,28 @@
   function chapterLabel(number) { return format(copy().chapter, { n: number }); }
   function roomLabel(number) { return format(copy().room, { n: number }); }
   function deathLabel(number) { return format(copy().deaths, { n: number }); }
+  function updateStageSummary() {
+    if (stageSummary) stageSummary.textContent = format(copy().progress, { bestRoom: state.bestRoom, deaths: state.deaths });
+  }
+  function ensureStageSelector() {
+    if (!stageController) {
+      if (!window.WeightPlayPlayUI || !window.AnimalTrapTrailStageConfig) throw new Error("SHARED_PLAY_UI_MISSING");
+      stageController = window.WeightPlayPlayUI.mountStage({
+        page: $("stageWorkspace"), rail: $("stage-list"),
+        config: window.AnimalTrapTrailStageConfig({
+          getStage: stageFor, getBestStage: () => state.bestRoom, getUnlockedStage: maxUnlockedStage,
+          chapterLabel, stageName, stageObjective,
+        }),
+        selected: selectedStageIndex ?? maxUnlockedStage() - 1,
+        isActive: () => state.screen === "stage" && screenFrame?.active === "stage",
+        onSelect(index) { selectedStageIndex = index; updateStageSummary(); },
+        onStart(index) { startStage(index + 1); },
+      });
+    } else {
+      stageController.refresh(selectedStageIndex ?? maxUnlockedStage() - 1);
+    }
+    return stageController;
+  }
   function setText(id, value) { const element = $(id); if (element && element.textContent !== value) element.textContent = value; }
   function updateMainProgress() { setText("main-progress", format(copy().progress, { bestRoom: state.bestRoom, deaths: state.deaths })); }
   function guidedTimingKey() {
@@ -367,14 +391,17 @@
     const touchHint = document.querySelector(".touch-hint"); if (touchHint) touchHint.textContent = stageTouchHintCopy[currentLocale()] || c.touchHint;
     const battleStatus = $("battle-status"); if (battleStatus) battleStatus.setAttribute("aria-live", "polite");
     updateMainProgress(); updateBattleText(); trailFeedback();
-    if (state.screen === "stage") stageCards();
+    updateStageSummary();
+    if (state.screen === "stage") ensureStageSelector().refresh(selectedStageIndex ?? maxUnlockedStage() - 1);
     renderResult();
   }
 
   function show(name) {
     if(name === "stage" && state.screen === "battle" && !state.confirmedExit) {openLeave();return;}
+    const previousScreen = state.screen;
+    if (name !== "stage") stageController?.cancel();
     clearInput(); state.screen = name;
-    stageRail?.center(maxUnlockedStage() - 1);
+    if (name === "stage" && previousScreen === "main") selectedStageIndex = maxUnlockedStage() - 1;
     document.body.dataset.screen = name === "result" ? "battle" : name;
     const guide = document.querySelector(".game-page-info-static");
     if (guide) guide.hidden = name !== "main";
@@ -387,7 +414,12 @@
       el.hidden = !on;
       el.classList.toggle("active", on);
     });
-    if (name === "stage") window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
+    screenFrame?.activate(name === "result" ? "battle" : name, { covered: name === "result" });
+    if (name === "stage") {
+      ensureStageSelector().refresh(selectedStageIndex ?? maxUnlockedStage() - 1);
+      updateStageSummary();
+      window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
+    }
     if (name === "battle") (__wpNotifyMeasurement(), result?.setAttribute("hidden", ""));
     if (name === "battle") { ensureRenderer(); state.last = performance.now(); state.raf = requestAnimationFrame(frame); }
 
@@ -396,29 +428,6 @@
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
-  let stageRail = null;
-  function stageCards() {
-    const rail = $("stage-list");
-    if (!stageRail && window.WeightPlayStageV6) {
-      stageRail = window.WeightPlayStageV6.install(rail, {
-        total: campaignStages.length, poolSize: 9,
-        initialIndex: () => maxUnlockedStage() - 1,
-        bind(card, index) {
-          const stage = stageFor(index + 1), locked = stage.id > maxUnlockedStage();
-          card.className = `stage-card${locked ? " locked" : ""}`;
-          card.dataset.stage = String(stage.id);
-          card.dataset.wpEnterBattle = "";
-          card.setAttribute("aria-disabled", String(locked));
-          card.setAttribute("aria-label", `${stage.id}. ${stageName(stage.id)}: ${stageObjective(stage.id)}`);
-          card.innerHTML = `<strong>${stage.id}. ${stageName(stage.id)}${stage.checkpoint ? " · ★" : ""}</strong><small>${stageObjective(stage.id)}</small><em>${locked ? "◇" : stage.id <= state.bestRoom ? "✓" : "→"} ${chapterLabel(stage.arc)}</em>`;
-        },
-        activate: index => startStage(index + 1),
-      });
-    }
-    stageRail?.refresh();
-    if (state.screen === "stage") stageRail?.center(maxUnlockedStage() - 1);
-  }
-  window.addEventListener("pagehide", () => stageRail?.destroy(), { once: true });
   function resetRoom() {
     state.player = { x: 76, y: 390, vy: 0, vx: 0, facing: 1, grounded: false };
     state.keys.clear(); state.tap = null;
@@ -430,6 +439,8 @@
   function startStage(stageId = 1) {
     const stage = stageFor(stageId);
     if (stage.id > maxUnlockedStage()) return;
+    selectedStageIndex = stage.id - 1;
+    stageController?.select(selectedStageIndex, { center: true, notify: false });
     state.stage = stage.id; state.chapter = stage.arc; state.room = stage.room; state.statusKey = ""; resetRoom(); show("battle");
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
@@ -536,7 +547,7 @@
   function renderMessage(failed = false) {
     if (renderClosed) return;
     clearInput(); state.renderPaused = true;
-    if (!renderPanel) { renderPanel=document.createElement("div"); renderPanel.className="trail-render-state"; $("battle-screen").append(renderPanel); }
+    if (!renderPanel) { renderPanel=document.createElement("div"); renderPanel.className="trail-render-state"; $("battle-content").append(renderPanel); }
     renderPanel.hidden=false; renderPanel.replaceChildren();
     const words=renderCopy[currentLocale()]||renderCopy.en;
     const text=document.createElement("p");text.textContent=words[failed?1:0];text.setAttribute("role","status");renderPanel.append(text);
@@ -605,7 +616,7 @@
     button.addEventListener("click", e => { if (e.detail === 0) { if (key === "Pulse") pulse(); else { pressKey(key,true); pressKey(key,false); } } });
   });
   $("battle-pulse")?.addEventListener("click", pulse);
-  $("start-game").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", () => show(b.dataset.back))); $("retry").addEventListener("click", () => { state.statusKey = ""; resetRoom(); show("battle");
+  $("start-game").addEventListener("click", () => show("stage")); document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", () => show(b.dataset.back))); $("retry").addEventListener("click", () => { state.statusKey = ""; resetRoom(); show("battle");
       __wpMeasurement.roundKey = {}; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.restart = true; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
-}); $("next").addEventListener("click", () => startStage(state.stage >= campaignStages.length ? campaignStages.length : state.stage + 1)); $("to-stages").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("#localeSelect").forEach((select) => select.addEventListener("change", () => window.setTimeout(applyCopy, 0))); stageCards(); resetRoom(); applyCopy(); show("main");
+}); $("next").addEventListener("click", () => startStage(state.stage >= campaignStages.length ? campaignStages.length : state.stage + 1)); $("to-stages").addEventListener("click", () => show("stage")); document.querySelectorAll("#localeSelect").forEach((select) => select.addEventListener("change", () => window.setTimeout(applyCopy, 0))); resetRoom(); const mountedFrame = window.mountAnimalTrapTrailFrame(); screenFrame = mountedFrame.frame; stageSummary = mountedFrame.stageSummary; applyCopy(); show("main");
 })();

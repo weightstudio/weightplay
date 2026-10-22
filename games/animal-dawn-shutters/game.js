@@ -84,79 +84,8 @@
   ];
   const levels = ["closed", "slit", "open"];
   const completedStorageKey = "weightplay-animal-dawn-shutters-completed";
-  const state = { locale: "en", screen: "main", round: 0, values: [0, 0, 0], moves: 0, completed: [], sound: true, settled: false, hinted: -1, bestRooms: {} };
+  const state = { locale: "en", screen: "main", round: 0, stageSelection: 0, values: [0, 0, 0], moves: 0, completed: [], settled: false, hinted: -1, bestRooms: {} };
   const $ = (id) => document.getElementById(id);
-  // Interface 7 is injected after the game stylesheet and intentionally uses
-  // compact 3px tokens. Dawn Shutters keeps its authored guide cards readable
-  // and its compact-landscape controls stationary with a local compatibility
-  // layer that is appended after the shared skin has loaded.
-  const installInterfaceCompatibility = () => {
-    if (document.getElementById("dawnShuttersInterfaceCompatibility")) return;
-    const style = document.createElement("style");
-    style.id = "dawnShuttersInterfaceCompatibility";
-    style.textContent = `
-      @layer wp-frame-contract {
-      html body #gameGuide.game-page-info.game-page-info-static {
-        border-radius: 18px !important;
-        padding: 16px 18px !important;
-        background: #e8f1ea !important;
-        border: 1px solid #eadfc9 !important;
-        box-shadow: 0 8px 20px #73552b14 !important;
-      }
-      html body #gameGuide.game-page-info.game-page-info-static .game-info-sections {
-        display: grid !important;
-        grid-template-columns: minmax(0, 1fr) !important;
-        gap: 12px !important;
-        margin-top: 18px !important;
-      }
-      html body #gameGuide.game-page-info.game-page-info-static .game-info-section {
-        min-width: 0 !important;
-        padding: 16px !important;
-        border: 1px solid #c8ddca !important;
-        border-radius: 16px !important;
-        background: #f8fff8 !important;
-        color: #24324a !important;
-      }
-      html body #gameGuide.game-page-info.game-page-info-static :is(h2, h3, p, li, dt, dd, strong) {
-        color: #24324a !important;
-      }
-      html body #gameGuide.game-page-info.game-page-info-static .game-info-kicker {
-        color: #5b6475 !important;
-      }
-      html body #gameGuide.game-page-info.game-page-info-static .game-info-related-copy span {
-        color: #48556b !important;
-      }
-      html body #gameGuide.game-page-info.game-page-info-static .game-info-fact {
-        background: #f8fff8 !important;
-        border: 1px solid #c8ddca !important;
-        color: #24324a !important;
-      }
-      html body #gameGuide.game-page-info.game-page-info-static .game-info-fact span {
-        color: #5b6475 !important;
-      }
-      html body #mainScreen .main-copy .lede,
-      html body #mainScreen .main-copy .main-summary {
-        color: #e9eef5 !important;
-      }
-      #mainScreen #mainSettingsBtn { display: none !important; }
-      #battleScreen #resultPanel[hidden] {
-        display: none !important;
-        pointer-events: none !important;
-      }
-      }
-    `;
-    const legacySettings = $("mainSettingsBtn");
-    if (legacySettings) {
-      legacySettings.classList.remove("wp-shell-settings-button");
-      legacySettings.removeAttribute("data-wp-settings");
-      legacySettings.hidden = true;
-      legacySettings.setAttribute("aria-hidden", "true");
-      legacySettings.tabIndex = -1;
-    }
-    // Keep this after dynamically injected shared stylesheets in document
-    // order; the local rules are intentionally the final compatibility layer.
-    (document.body || document.head).append(style);
-  };
   const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
   const ensureGuideDepth = () => {
@@ -195,101 +124,24 @@
   const copy = (key, vars = {}) => { const dictionary = localeMap[state.locale] || localeMap.en || {}; let value = dictionary[key] || localeMap.en[key] || key; Object.entries(vars).forEach(([name, replacement]) => { value = value.replace(new RegExp("\\{" + name + "\\}", "g"), String(replacement)); }); return value; };
   const bestTotal = () => Number(safeGet("weightplay-animal-dawn-shutters-best", "0")) || 0;
   const showToast = (message) => { $("toast").textContent = message; $("toast").classList.add("visible"); window.clearTimeout(showToast.timer); showToast.timer = window.setTimeout(() => $("toast").classList.remove("visible"), 1800); };
-  const applyText = () => { ensureGuideDepth(); document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = copy(node.dataset.copy); }); document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", copy(node.dataset.copyAriaLabel))); $("mainSettingsBtn").setAttribute("aria-label", copy("settings")); $("soundBtn").textContent = state.sound ? copy("soundOn") : copy("soundOff"); $("battleSoundBtn").setAttribute("aria-label", copy("sound")); $("mainProgress").textContent = copy("progress", { count: state.completed.length }); if (state.screen === "stage") renderStages(); if (state.screen === "battle") renderBattle(); };
+  const applyText = () => {
+    ensureGuideDepth();
+    document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = copy(node.dataset.copy); });
+    document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", copy(node.dataset.copyAriaLabel)));
+    $("mainProgress").textContent = copy("progress", { count: state.completed.length });
+    syncStageConfig();
+    if (state.screen === "battle") renderBattle();
+  };
   const setScreen = (screen) => {
     if ($('leaveDialog')?.open) $('leaveDialog').close();
     $('battleScreen').getAnimations({subtree:true}).forEach(animation => animation.cancel());
-    state.screen = screen; document.body.dataset.screen = screen; ["main", "stage", "battle"].forEach((name) => { const element = $(name + "Screen"); element.hidden = name !== screen; element.inert = name !== screen; element.classList.toggle("active", name === screen); }); const guide = $("gameGuide"); if (guide) guide.hidden = screen !== "main"; const stageReserve = document.querySelector(".stage-ad-reserve"); if (stageReserve) stageReserve.hidden = screen !== "stage"; const battleReserve = document.querySelector(".battle-ad-reserve"); if (battleReserve) battleReserve.hidden = screen !== "battle"; if (screen === "main") applyText(); if (screen === "stage") renderStages(); if (screen === "battle") renderBattle(); window.scrollTo(0, 0);
+    state.screen = screen; document.body.dataset.screen = screen; ["main", "stage", "battle"].forEach((name) => { const element = $(name + "Screen"); element.hidden = name !== screen; element.inert = name !== screen; element.classList.toggle("active", name === screen); }); const guide = $("gameGuide"); if (guide) guide.hidden = screen !== "main"; const stageReserve = document.querySelector(".stage-ad-reserve"); if (stageReserve) stageReserve.hidden = screen !== "stage"; const battleReserve = document.querySelector(".battle-ad-reserve"); if (battleReserve) battleReserve.hidden = screen !== "battle"; if (screen === "main") applyText(); if (screen === "stage") syncStageConfig(); if (screen === "battle") renderBattle(); window.WeightPlayDawnFrame?.sync?.(); window.scrollTo(0, 0);
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
       if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 };
   const stageUnlocked = (index) => index === 0 || state.completed.includes(index - 1);
-  const bindStageRail = () => {
-    const rail = $("stageList");
-    if (!rail || rail.dataset.dragGuardBound === "true") return;
-    rail.dataset.dragGuardBound = "true";
-    let pointerId = null;
-    let startX = 0;
-    let startScroll = 0;
-    let moved = false;
-    let suppressNextClick = false;
-    let suppressClickTimer = 0;
-    let previousScrollBehavior = "";
-    let previousSnapType = "";
-    rail.addEventListener("pointerdown", (event) => {
-      if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
-      pointerId = event.pointerId;
-      startX = event.clientX;
-      startScroll = rail.scrollLeft;
-      moved = false;
-      rail.dataset.dragging = "false";
-      previousScrollBehavior = rail.style.getPropertyValue("scroll-behavior");
-      previousSnapType = rail.style.getPropertyValue("scroll-snap-type");
-      rail.style.setProperty("scroll-behavior", "auto", "important");
-      rail.style.setProperty("scroll-snap-type", "none", "important");
-    });
-    document.addEventListener("pointermove", (event) => {
-      if (event.pointerId !== pointerId) return;
-      const delta = event.clientX - startX;
-      if (!moved && Math.abs(delta) > 4) {
-        moved = true;
-        rail.dataset.dragging = "true";
-        rail.classList.add("stage-dragging");
-        try { rail.setPointerCapture?.(event.pointerId); } catch (_error) {}
-      }
-      if (!moved) return;
-      if (event.cancelable) event.preventDefault();
-      const railRect = rail.getBoundingClientRect();
-      const coordinateScale = railRect.width > 0 ? rail.clientWidth / railRect.width : 1;
-      const maximum = Math.max(0, rail.scrollWidth - rail.clientWidth);
-      rail.scrollLeft = Math.max(0, Math.min(maximum, startScroll - delta * coordinateScale));
-    });
-    const finishPointer = (event = {}) => {
-      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
-      const didMove = moved;
-      pointerId = null;
-      moved = false;
-      rail.dataset.dragging = "false";
-      rail.classList.remove("stage-dragging");
-      try { if (rail.hasPointerCapture?.(event.pointerId)) rail.releasePointerCapture(event.pointerId); } catch (_error) {}
-      if (previousScrollBehavior) rail.style.setProperty("scroll-behavior", previousScrollBehavior);
-      else rail.style.removeProperty("scroll-behavior");
-      if (previousSnapType) rail.style.setProperty("scroll-snap-type", previousSnapType);
-      else rail.style.removeProperty("scroll-snap-type");
-      if (!didMove) return;
-      if (event.cancelable) event.preventDefault();
-      if (rail.contains(document.activeElement)) document.activeElement?.blur?.();
-      suppressNextClick = true;
-      window.clearTimeout(suppressClickTimer);
-      suppressClickTimer = window.setTimeout(() => { suppressNextClick = false; }, 0);
-      const railRect = rail.getBoundingClientRect();
-      const cards = [...rail.querySelectorAll("[data-stage]")];
-      const nearest = cards.reduce((best, card) => {
-        if (!best) return card;
-        const cardDistance = Math.abs((card.getBoundingClientRect().left + card.getBoundingClientRect().width / 2) - (railRect.left + railRect.width / 2));
-        const bestDistance = Math.abs((best.getBoundingClientRect().left + best.getBoundingClientRect().width / 2) - (railRect.left + railRect.width / 2));
-        return cardDistance < bestDistance ? card : best;
-      }, null);
-      if (nearest) {
-        const target = rail.scrollLeft + (nearest.getBoundingClientRect().left + nearest.getBoundingClientRect().width / 2) - (railRect.left + railRect.width / 2);
-        const maximum = Math.max(0, rail.scrollWidth - rail.clientWidth);
-        rail.scrollTo({ left: Math.max(0, Math.min(maximum, target)), behavior: "smooth" });
-      }
-    };
-    rail.addEventListener("pointerup", finishPointer, true);
-    rail.addEventListener("pointercancel", finishPointer, true);
-    document.addEventListener("pointerup", finishPointer, true);
-    document.addEventListener("pointercancel", finishPointer, true);
-    rail.addEventListener("click", (event) => {
-      if (!suppressNextClick) return;
-      suppressNextClick = false;
-      window.clearTimeout(suppressClickTimer);
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    }, true);
-  };
   // Every chapter has an invertible three-state mechanism. All 27 light
   // patterns remain reachable, including saves made before this rework.
   const chapterLinks = [[], [[0,1]], [[0,1],[1,2]], [[0,1],[1,2],[2,0]], [[0,2],[2,1]], [[0,2],[2,1],[1,0]]];
@@ -310,25 +162,54 @@
     return [];
   };
   const levelName = (value) => copy(levels[value]);
-  const barMarkup = (value, extra = "") => `<span class="light-bar ${extra} level-${value}" aria-hidden="true"><i></i><i></i><i></i></span>`;
   const starsFor = (moves, room) => moves <= solve([0,0,0], room).length ? 3 : moves <= solve([0,0,0], room).length + 2 ? 2 : 1;
-  const renderStages = () => {
-    const rail = $('stageList'); bindStageRail();
-    rail.innerHTML = rounds.map((round, index) => {
-      const done = state.completed.includes(index), unlocked = stageUnlocked(index), best = state.bestRooms[index];
-      const stars = Number.isInteger(best) ? '★'.repeat(starsFor(best,index)) + '☆'.repeat(3-starsFor(best,index)) : '';
-      return `<button class="stage-card${done ? ' complete' : ''}" type="button" data-stage="${index}" ${unlocked ? '' : 'disabled'}>
-        <span class="stage-number">${copy('round',{number:index+1,total:rounds.length})}</span>
-        <strong>${copy('chapterLabel',{number:Math.floor(index/5)+1})}</strong>
-        <span class="stage-pattern" aria-hidden="true">${round.target.map((v) => barMarkup(v)).join('')}</span>
-        <span class="stage-rule">${copy(linksFor(index).length ? 'linked' : 'independent')}</span>
-        <b>${stars || (done ? copy('completed') : unlocked ? copy('readyStage') : copy('lockedStage'))}</b></button>`;
-    }).join('');
-    rail.querySelectorAll('[data-stage]').forEach(button => button.addEventListener('click', () => startRound(Number(button.dataset.stage))));
-    const next = rounds.findIndex((_,index) => !state.completed.includes(index));
-    const card = rail.querySelector(`[data-stage="${next < 0 ? 29 : next}"]`);
-    if (card) rail.scrollLeft = card.offsetLeft - (rail.clientWidth-card.offsetWidth)/2;
+  const syncStageConfig = () => {
+    const config = window.createAnimalDawnShuttersStageConfig({
+      rounds,
+      describe(index) {
+        const round = rounds[index];
+        const cleared = state.completed.includes(index);
+        const locked = !stageUnlocked(index);
+        const best = state.bestRooms[index];
+        const starCount = Number.isInteger(best) ? starsFor(best, index) : 0;
+        const stars = starCount ? `${"★".repeat(starCount)}${"☆".repeat(3 - starCount)}` : "";
+        const status = [copy(cleared ? "completed" : locked ? "lockedStage" : "readyStage"), stars].filter(Boolean).join(" · ");
+        const target = round.target.map(levelName).join(" · ");
+        const details = [
+          `${copy("target")}: ${target}`,
+          copy(linksFor(index).length ? "linked" : "independent"),
+          copy("par", { count: solve([0, 0, 0], index).length }),
+        ];
+        if (Number.isInteger(best)) details.push(copy("moves", { count: best }));
+        return {
+          kicker: copy("round", { number: index + 1, total: rounds.length }),
+          title: copy(round.name),
+          subtitle: copy("chapterLabel", { number: Math.floor(index / 5) + 1 }),
+          status,
+          summary: copy(round.hint),
+          details,
+          locked,
+          cleared,
+        };
+      },
+    });
+    const progress = $("stageProgress");
+    if (progress) progress.textContent = copy("progress", { count: state.completed.length });
+    window.WeightPlayDawnFrame?.updateStage?.(config, state.stageSelection);
+    return config;
   };
+  window.WeightPlayDawnStage = Object.freeze({
+    config: syncStageConfig,
+    selectedIndex: () => state.stageSelection,
+    select(index, meta = {}) {
+      state.stageSelection = Math.max(0, Math.min(rounds.length - 1, Number(index) || 0));
+      if (meta.locked && meta.source === "activation") showToast(copy("lockedStage"));
+    },
+    start(index) {
+      if (!stageUnlocked(index)) { showToast(copy("lockedStage")); return; }
+      startRound(index);
+    },
+  });
   const ensurePlaySurface = () => {
     if ($('roomScene')) return;
     const scene = document.createElement('div'); scene.id = 'roomScene'; scene.setAttribute('aria-hidden','true');
@@ -360,6 +241,7 @@
     ensurePlaySurface();
     const round = rounds[state.round], count = state.values.filter((value,index) => value === round.target[index]).length;
     $('battleHeading').textContent = copy('round',{number:state.round+1,total:rounds.length});
+    $('battleRoomProgress').textContent = copy('round',{number:state.round+1,total:rounds.length});
     $('roundHint').textContent = copy('mission');
     $('progressBadge').textContent = copy('liveMatch',{count});
     $('progressBadge').dataset.complete = String(count === 3);
@@ -400,6 +282,7 @@
     if (!Number.isInteger(state.bestRooms[state.round]) || total < state.bestRooms[state.round]) state.bestRooms[state.round] = total;
     safeSet('weightplay-animal-dawn-shutters-room-bests',JSON.stringify(state.bestRooms));
     if (!state.completed.includes(state.round)) { state.completed.push(state.round); saveCompleted(); }
+    syncStageConfig();
     $('battlePanel').hidden = true; $('battlePanel').inert = true; $('resultPanel').hidden = false; $('resultPanel').inert = false;
     $('resultHeading').textContent = copy(final ? 'finishTitle' : 'resultTitle');
     $('resultText').textContent = copy(final ? 'finishText' : 'roomCleared',{number:state.round+1});
@@ -423,7 +306,7 @@
     }
   };
   const startRound = (index) => {
-    state.round = Math.max(0,Math.min(rounds.length-1,index)); state.values = [0,0,0]; state.moves = 0; state.hinted = -1; state.settled = false;
+    state.round = Math.max(0,Math.min(rounds.length-1,index)); state.stageSelection = state.round; state.values = [0,0,0]; state.moves = 0; state.hinted = -1; state.settled = false;
     window.WeightPlayScreenFrame?.showResultGet?.('animal-dawn-shutters',false);
     setScreen('battle'); $('battleStatus').textContent = copy('ready');
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = 'complete'; __wpMeasurement.screen = 'battle'; __wpNotifyMeasurement();
@@ -434,14 +317,14 @@
     if (!dialog) {
       dialog = document.createElement('dialog'); dialog.id = 'leaveDialog';
       dialog.innerHTML = '<h2 id="leaveTitle"></h2><p id="leaveCopy"></p><button id="continueBtn" class="primary-btn" type="button"></button><button id="leaveBtn" class="secondary-btn" type="button"></button>';
-      $('battleScreen').querySelector('.battle-canvas').append(dialog);
+      $('battleScreen').append(dialog);
       $('continueBtn').onclick = () => dialog.close();
       $('leaveBtn').onclick = () => { dialog.close(); setScreen('stage'); };
-      dialog.addEventListener('close',() => { state.paused = false; if (state.screen === 'battle') $('battleBackBtn').focus({preventScroll:true}); });
+      dialog.addEventListener('close',() => { state.paused = false; window.WeightPlayDawnFrame?.sync?.(); if (state.screen === 'battle') $('battleBackBtn').focus({preventScroll:true}); });
     }
     $('leaveTitle').textContent = copy('leaveTitle'); $('leaveCopy').textContent = copy('leaveCopy',{number:state.round+1});
     $('continueBtn').textContent = copy('continue'); $('leaveBtn').textContent = copy('stages');
-    dialog.setAttribute('aria-labelledby','leaveTitle'); state.paused = true; dialog.showModal(); $('continueBtn').focus();
+    dialog.setAttribute('aria-labelledby','leaveTitle'); state.paused = true; dialog.showModal(); window.WeightPlayDawnFrame?.sync?.(); $('continueBtn').focus();
   };
   const localeRoute = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const applyLocale = (locale) => {
@@ -450,7 +333,7 @@
     safeSet("weightPlayLocale", state.locale);
     const route = location.pathname.match(/^\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\/games\/animal-dawn-shutters\/?$/);
     if (route && route[1] !== localeRoute[state.locale]) {
-      location.assign(`/${localeRoute[state.locale]}/games/animal-dawn-shutters/${location.search}${location.hash}`);
+      location.assign(`/${localeRoute[state.locale]}/games/animal-dawn-shutters/`);
       return;
     }
     document.documentElement.lang = state.locale;
@@ -458,7 +341,7 @@
     $("languageSelect").value = state.locale;
     applyText();
   };
-  const bind = () => { $("startBtn").addEventListener("click", () => setScreen("stage")); $("mapBtn").addEventListener("click", () => setScreen("stage")); $("mainSettingsBtn")?.addEventListener("click", () => { const open = $("settingsPanel").hidden; $("settingsPanel").hidden = !open; $("mainSettingsBtn").setAttribute("aria-expanded", String(open)); }); $("closeSettingsBtn")?.addEventListener("click", () => { $("settingsPanel").hidden = true; $("mainSettingsBtn")?.setAttribute("aria-expanded", "false"); }); $("stageBackBtn").addEventListener("click", () => setScreen("main")); $("stageInfoBtn").addEventListener("click", () => showToast(copy("mapIntro"))); $("battleBackBtn").addEventListener("click", requestLeave); $("checkBtn").addEventListener("click", checkRound); $("resetBtn").addEventListener("click", function (...args) { return __wpReplayStart(() => resetRound.apply(this, args)); }); $("resultMapBtn").addEventListener("click", () => setScreen("stage"));  [$('soundBtn'), $('battleSoundBtn')].forEach((button) => button.addEventListener("click", () => { state.sound = !state.sound; safeSet("weightplay-animal-dawn-shutters-sound", state.sound ? "on" : "off"); applyText(); })); $("languageSelect").addEventListener("change", (event) => applyLocale(event.target.value)); };
+  const bind = () => { $("startBtn").addEventListener("click", () => setScreen("stage")); $("stageBackBtn").addEventListener("click", () => setScreen("main")); $("battleBackBtn").addEventListener("click", requestLeave); $("checkBtn").addEventListener("click", checkRound); $("resetBtn").addEventListener("click", function (...args) { return __wpReplayStart(() => resetRound.apply(this, args)); }); $("resultMapBtn").addEventListener("click", () => setScreen("stage")); $("languageSelect").addEventListener("change", (event) => applyLocale(event.target.value)); };
   // Shared, committed rewards retain their canonical marker. Remove only
   // this game's duplicate toast after the shared Result feedback is mounted.
   window.addEventListener('weightplay:castle-reward', event => {
@@ -469,14 +352,14 @@
       if (marker) window.WeightPlayCastle?.dismissRewardNotice?.('animal-dawn-shutters');
     });
   });
-  const init = () => { installInterfaceCompatibility();
-    const battle = $('battleScreen');
+  const init = () => {
     for (const id of ['stageBackBtn','battleBackBtn']) {
       const button = $(id); button.removeAttribute('data-copy'); button.dataset.copyAriaLabel = 'back'; button.textContent = '←';
     }
-    battle.dataset.wpBattleMinWidth = '390'; battle.dataset.wpBattleMinHeight = '788';
-    battle.dataset.wpBattleLandscapeWidth = '760'; battle.dataset.wpBattleLandscapeHeight = '334'; state.sound = safeGet("weightplay-animal-dawn-shutters-sound", "on") !== "off"; state.completed = loadCompleted();
+    state.completed = loadCompleted();
     try { const saved = JSON.parse(safeGet('weightplay-animal-dawn-shutters-room-bests','{}')); if (saved && !Array.isArray(saved) && typeof saved === 'object') state.bestRooms = Object.fromEntries(Object.entries(saved).filter(([room,moves]) => /^([0-9]|[12][0-9])$/.test(room) && Number.isInteger(moves) && moves >= 0)); } catch {}
+    const nextStage = rounds.findIndex((_, index) => !state.completed.includes(index));
+    state.stageSelection = nextStage < 0 ? rounds.length - 1 : nextStage;
     bind(); const routeLocale = document.documentElement.lang; const initialLocale = localeList.includes(routeLocale) && localeMap[routeLocale] ? routeLocale : safeGet("weightplay-locale", "en"); applyLocale(initialLocale); resetRound(); setScreen("main"); };
   init();
 }());

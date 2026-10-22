@@ -243,6 +243,10 @@
       ui.mainProgress.textContent = gameId === "maze"
         ? `${tr("progress")}: ${cleared}/${total}`
         : `${tr("wave")}: ${state.level}`;
+      if (gameId === "maze" && document.body.dataset.wpInterfaceVersion === "9") {
+        ui.mainProgress.hidden = false;
+        ui.mainProgress.removeAttribute("aria-hidden");
+      }
     }
     if (ui.progressLabel && ui.progress) { const total = state.maze?.pelletTotal || 0; const cleared = total ? total - state.maze.pellets.size : 0; ui.progressLabel.textContent = tr("progress"); ui.progress.textContent = gameId === "maze" && total ? `${cleared}/${total}` : "—"; }
     if (gameId === "maze") ui.power.textContent = state.maze && state.maze.power > 0 ? `${Math.ceil(state.maze.power / 1000)}s` : tr("powerEmpty");

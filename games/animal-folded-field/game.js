@@ -80,7 +80,7 @@ var FoldedFieldPuzzle = (function () {
   const localeMap = window.FOLDED_FIELD_LOCALES || { en: {} };
   const localeList = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const rtlLocales = new Set(["ar"]);
-  const state = { locale: "en", screen: "main", round: 0, pattern: [], flips: 0, cleared: [], history: [], hints: 0, preview: -1, solved: false, progress: { best: {}, stars: {}, tutorial: false }, sound: !window.WeightPlayAudio.isMuted() };
+  const state = { locale: "en", screen: "main", round: 0, stageSelection: 0, pattern: [], flips: 0, cleared: [], history: [], hints: 0, preview: -1, solved: false, progress: { best: {}, stars: {}, tutorial: false }, sound: !window.WeightPlayAudio.isMuted() };
   window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
   const $ = (id) => document.getElementById(id);
   const safeGet = (key, fallback) => {
@@ -160,6 +160,35 @@ var FoldedFieldPuzzle = (function () {
   const escapeHTML = (value) => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const levelTitle = (round, index) => copy(round.title) + ' · ' + (index + 1);
   const unlocked = () => Math.min(rounds.length - 1, state.cleared.length ? Math.max(...state.cleared) + 1 : 0);
+  const describeStage = (index) => {
+    const round = rounds[index];
+    const cleared = state.cleared.includes(index);
+    const locked = index > unlocked();
+    const stars = state.progress.stars[index] || 0;
+    const best = state.progress.best[index] || 0;
+    return {
+      id: round.id,
+      kicker: copy("round", { number: index + 1, total: rounds.length }),
+      title: levelTitle(round, index),
+      subtitle: copy(round.hint),
+      status: locked ? copy("locked")
+        : cleared ? "★".repeat(stars || 1) + " · " + copy("badgeComplete")
+          : copy("stageReady"),
+      summary: copy("campaignProgress", { done: state.cleared.length, total: rounds.length }),
+      details: [
+        copy("parGoal", { par: round.par }),
+        best ? copy("resultScore", { moves: best, par: round.par }) : copy("noBest"),
+      ],
+      locked,
+      cleared,
+    };
+  };
+  window.WeightPlayFoldedFieldStage = Object.freeze({
+    config: () => window.createAnimalFoldedFieldStageConfig({ rounds, describe: describeStage }),
+    selectedIndex: () => state.stageSelection,
+    select(index) { state.stageSelection = index; },
+    start(index) { if (index <= unlocked()) startRound(index); },
+  });
   const saveProgress = () => safeSet('weightplay-folded-field-campaign-v1', JSON.stringify({ ...state.progress, cleared: state.cleared }));
   const loadProgress = () => {
     try {
@@ -275,6 +304,7 @@ var FoldedFieldPuzzle = (function () {
     leaveDialogOpen = false;
     leaveDialog.hidden = true;
     setBattleCovered(false);
+    window.WeightPlayFoldedFieldFrame?.sync();
     if (resume) resumeSettlement();
     if (restoreFocus) $("battleBackBtn")?.focus({ preventScroll: true });
   };
@@ -331,6 +361,7 @@ var FoldedFieldPuzzle = (function () {
     leaveDialogOpen = true;
     setBattleCovered(true);
     dialog.hidden = false;
+    window.WeightPlayFoldedFieldFrame?.sync();
     window.requestAnimationFrame(() => dialog.querySelector("[data-leave-stay]")?.focus({ preventScroll: true }));
   };
 
@@ -359,7 +390,7 @@ var FoldedFieldPuzzle = (function () {
     document.body.dataset.screen = screen === "result" ? "battle" : screen;
     document.body.dataset.battleSubstate = screen === "result" ? "result" : "";
     if (screen === "main") renderMain();
-    if (screen === "stage") renderStages();
+    if (screen === "stage") window.WeightPlayFoldedFieldFrame?.refreshStage(state.stageSelection);
     if (screen === "battle") renderBattle();
     if (screen === "result") renderResult();
     window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
@@ -375,16 +406,6 @@ var FoldedFieldPuzzle = (function () {
     setText($("bestValue"), getBest() ? String(getBest()) : "noBest");
     const start = $("startBtn");
     if (start) start.textContent = START_COPY[state.locale] || START_COPY.en;
-  };
-  const renderStages = () => {
-    const list = $('stageList'); if (!list) return;
-    list.innerHTML = rounds.map((round,index) => {
-      const done = state.cleared.includes(index), locked = index > unlocked();
-      const stars = state.progress.stars[index] || 0;
-      return `<button class="stage-card${done?' is-cleared':''}" type="button" data-stage="${index}" aria-disabled="${locked}" aria-label="${escapeHTML(levelTitle(round,index))}"><span class="stage-number">${copy('round',{number:index+1,total:rounds.length})}</span><h3>${escapeHTML(levelTitle(round,index))}</h3><p>${escapeHTML(copy(round.hint))}</p><span class="stage-chip">${locked?copy('locked'):done?'★'.repeat(stars)+' · '+copy('badgeComplete'):copy('stageReady')}</span></button>`;
-    }).join('');
-    const selected = list.querySelector(`[data-stage="${unlocked()}"]`);
-    if (selected) list.scrollLeft = selected.offsetLeft - list.clientWidth/2 + selected.clientWidth/2;
   };
   const patternMarkup = (pattern, target) => pattern.map((value,index) => {
     const match = target && value === target[index];
@@ -464,6 +485,7 @@ var FoldedFieldPuzzle = (function () {
     cancelSettlement();
     if (leaveDialogOpen) closeLeaveDialog({ resume: false, restoreFocus: false });
     state.round = Math.max(0, Math.min(rounds.length - 1, number));
+    state.stageSelection = state.round;
     state.pattern = rounds[state.round].initial.slice();
     state.flips = 0; state.history = []; state.hints = 0; state.hintMove = -1; state.solved = false; state.preview = -1;
     if ($("flapBoard")) $("flapBoard").dataset.round = "";
@@ -508,18 +530,12 @@ var FoldedFieldPuzzle = (function () {
     const sound = $("soundBtn");
     if (sound) sound.textContent = copy(state.sound ? "soundOn" : "soundOff");
     renderMain();
-    if (state.screen === "stage") renderStages();
+    if (state.screen === "stage") window.WeightPlayFoldedFieldFrame?.refreshStage(state.stageSelection);
     if (state.screen === "battle") renderBattle();
     if (state.screen === "result") renderResult();
     refreshLeaveDialog();
   };
   const bind = () => {
-    document.addEventListener("click", (event) => {
-      const card = event.target?.closest?.("#stageList [data-stage]");
-      if (!card || state.screen !== "stage") return;
-      const index = Number(card.dataset.stage);
-      if (index <= unlocked()) startRound(index);
-    }, true);
     $("startBtn").addEventListener("click", () => show("stage"));
     $("stageBackBtn").addEventListener("click", () => show("main"));
     $("battleBackBtn").addEventListener("click", (event) => {
@@ -543,7 +559,8 @@ var FoldedFieldPuzzle = (function () {
     $('hintBtn').addEventListener('click',requestHint);
     $("checkBtn").addEventListener("click", clearRound);
     $("resultMapBtn").addEventListener("click", () => {
-      state.round = unlocked();
+      state.stageSelection = unlocked();
+      window.WeightPlayFoldedFieldFrame?.selectStage(state.stageSelection);
       show("stage");
     });
     $("resultHomeBtn").addEventListener("click", () => {
@@ -563,17 +580,16 @@ var FoldedFieldPuzzle = (function () {
   };
   const boot = () => {
     installInterfaceCompatibility();
-    // Declare the taller authored content to the existing shared scaler.
-    // One uniform transform fits the whole six-leaf field in short landscape.
-    $('battleScreen').dataset.wpBattleLandscapeHeight = '460';
+    // The shared scaler owns the actual logical Battle Canvas.
+    const battleCanvas = document.querySelector("#battleScreen .battle-canvas");
+    if (battleCanvas) battleCanvas.dataset.wpBattleLandscapeHeight = "460";
     // Establish arrow-only content once, before the shared frame mounts.
     ['stageBackBtn','battleBackBtn'].forEach(id => {
       const button = $(id); button.removeAttribute('data-copy'); button.textContent = '←';
       button.setAttribute('aria-label', copy('back'));
     });
-    // Keep persistent game actions outside the independently scrolling field;
-    // frame/header geometry remains wholly owned by the shared Interface 7 runtime.
-    const canvas = document.querySelector("#battleScreen .battle-canvas");
+    // Keep game actions in the shared Canvas action lane, outside its scrolling field.
+    const canvas = battleCanvas;
     const actions = canvas?.querySelector(".battle-actions");
     if (canvas && actions) canvas.append(actions);
     ensureLeaveDialog();

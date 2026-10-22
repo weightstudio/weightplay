@@ -49,12 +49,11 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261015-animal-rescue-i9-guide" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><meta name="twitter:title" content="구조 트레일 | WeightPlay" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><meta name="twitter:title" content="구조 트레일 | WeightPlay" />
     <meta name="twitter:description" content="동물을 집까지 안내하는 저장형 5×5 경로 퍼즐 30개입니다. 여섯 지역에 과일 목표, 두 번의 이동 비용이 드는 진흙, 열쇠 문, 한 번만 지나는 칸이 추가되며 시간 제한은 없습니다." />
-    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rescue.webp" /><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rescue.webp" /><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
   <body data-tutorial-auto-show="false" data-wp-combined-sound="true">
     <main class="rescue-game" data-play-viewport data-no-mobile-immersive="true" data-wp-canvas-max-width="920" data-runtime-localize="off">
@@ -171,13 +170,13 @@
       })();
     </script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20261016-animal-rescue-replay-hud-140&wp-audio=1.0.0"></script>
+    <script src="game.js?v=20261001-animal-rescue-text140-v2&wp-audio=1.0.0"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
           if (document.querySelector("script[data-rescue-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261015-animal-rescue-i9-guide";
+          script.src = "../../src/game-page-info.js?v=20261001-animal-rescue-text140-v2";
           script.dataset.rescueGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -193,7 +192,7 @@
         else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
 <script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="구조 트레일 게임 정보">

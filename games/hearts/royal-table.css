@@ -49,3 +49,13 @@ body.hearts-royal-table .hearts-penalty-badge {
 body.hearts-royal-table .playing-card.hearts-card-arrival {animation:hearts-card-arrival 180ms ease-out;}
 @keyframes hearts-card-arrival {from{opacity:.55;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
 @media(prefers-reduced-motion:reduce){body.hearts-royal-table .playing-card {animation:none!important;transition:none!important;}}
+
+body[data-wp-game-id="hearts"][data-wp-interface-version="9"] .main-progress :is(strong, span) {
+  color: #f8fafc !important;
+}
+
+@media (min-width: 700px) and (max-height: 560px) {
+  body[data-wp-game-id="hearts"][data-wp-interface-version="9"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px;
+  }
+}

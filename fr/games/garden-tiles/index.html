@@ -45,7 +45,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
   <meta name="twitter:title" content="Pet Garden Tiles | WeightPlay" />
     <meta name="twitter:description" content="Tuiles du jardin animal est un jeu de mémoire avec 30 défis sauvegardés. Retournez les tuiles pour trouver les paires ; six chapitres changent les règles et les niveaux sont sans chronomètre." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/garden-tiles.webp" />
@@ -150,7 +150,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-garden-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20261014-guide-related-i9-v1";
+          script.src = "../../src/game-page-info.js?v=20261001-garden-tiles-text140-v1";
           script.dataset.gardenGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -167,7 +167,7 @@
       })();
     </script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Informations sur Pet Garden Tiles">
 
     <div class="game-info-hero">
@@ -195,7 +195,7 @@
       <div class="game-info-section"><h3>Note de conception</h3><p>La difficulté augmente en faisant varier les besoins de mémorisation, et non avec un compte à rebours stressant. La sélection et la partie remplissent la zone sûre au moyen d’un canevas adaptatif mis à l’échelle uniformément ; un espace logique horizontal compatible est utilisé sur les écrans larges de faible hauteur. Les boutons natifs fonctionnent au toucher et au clavier, les paires incorrectes restent visibles assez longtemps pour apprendre et le temps de retour est suspendu lorsque la page est masquée. Aperçu du matin, Brume du jardin, Brise joueuse et Parade des animaux font travailler différentes formes de mémoire dans un rythme calme.</p></div>
       <div class="game-info-section game-info-parent"><h3>Note aux parents</h3><p>Pet Garden Tiles est destiné aux enfants de 6 ans et plus et aux jeux en famille. Les étoiles et le rapport de compétences résument uniquement la course locale en cours ; il ne s’agit pas d’un test d’intelligence, d’un diagnostic, d’une évaluation du développement ou d’une comparaison avec d’autres enfants. La version Kids ne contient pas de publicité, de connexion, de chat ou de demande d&#39;achat.</p></div>
       <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Combien y a-t-il de défis ?</dt><dd>Il y en a 30 répartis en six chapitres, avec des points de contrôle aux niveaux 5, 10, 15, 20, 25 et 30.</dd></div><div><dt>Les tuiles de jardin pour animaux de compagnie sont-elles chronométrées ?</dt><dd>Non. Garden Mist ferme une carte choisie en premier après une courte fenêtre, mais aucun niveau n&#39;a de compte à rebours.</dd></div><div><dt>Pourquoi les cartes bougent-elles ?</dt><dd>Playful Gust déplace les cartes inégalées après un échec ; Garden Parade les fait tourner après un match.</dd></div><div><dt>Comment sont calculées les étoiles ?</dt><dd>Les étoiles utilisent des tentatives complètes à deux cartes. Chaque tableau effacé progresse.</dd></div><div><dt>Is progress saved?</dt><dd>Oui. Les déverrouillages et les meilleures étoiles restent dans ce navigateur.</dd></div><div><dt>Est-ce qu&#39;il prend en charge les téléphones et les claviers ?</dt><dd>Oui. Les boutons de carte natifs fonctionnent avec les commandes tactiles, du pointeur et du clavier.</dd></div><div><dt>Est-ce gratuit et sans publicité ?</dt><dd>Oui. Il ne nécessite aucun compte ni achat et la version Kids ne fait aucune demande de publicité.</dd></div><div><dt>Le rapport de compétences est-il un test formel ?</dt><dd>Non. Il ne rapporte que les paires, les mouvements, les tentatives et les étoiles du défi terminé.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Plus de jeux associés</h3><p>Pour continuer à exercer Mémoire, essayez aussi :</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="star-memory" href="/fr/games/star-memory/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/star-memory.webp" data-final-src="/assets/weightplay-logo.png" alt="Mémoire d&#39;étoile" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Mémoire d&#39;étoile</strong><span>Mémoire d&#39;étoile animale est un voyage de 30 niveaux pour reconnecter les constellations animales dans le ciel nocturne.</span></span></a><a class="game-info-related-card" data-game-id="animal-quiz" href="/fr/games/animal-quiz/"><span class="game-info-related-poster"><img src="/assets/animal-quiz/cover-block-v1.png" data-final-src="/assets/weightplay-logo.png" alt="Quiz sur les" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Quiz sur les</strong><span>Animal Quiz est un jeu de connaissances bilingue gratuit pour enfants avec 30 étapes enregistrées et dix animaux différents à chaque étape.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Jeux associés</h3><p>Pour continuer à exercer Mémoire, essayez aussi :</p><div class="game-info-related"><a class="game-info-related-card" href="/fr/games/star-memory/"><img src="/assets/interface7-redrawn/star-memory.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Mémoire d&#39;étoile</strong><span>Mémoire d&#39;étoile animale est un voyage de 30 niveaux pour reconnecter les constellations animales dans le ciel nocturne.</span></span></a><a class="game-info-related-card" href="/fr/games/animal-quiz/"><img src="/assets/animal-quiz/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Quiz sur les</strong><span>Animal Quiz is a free bilingual Kids knowledge game with 30 saved stages and ten different animals in every stage.</span></span></a></div></div>
     </div>
   </section>
 </body>

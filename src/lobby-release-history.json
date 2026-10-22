@@ -329,6 +329,10 @@
       "date": "2026-09-08T04:17:14.305Z",
       "evidence": "canonical-public-catalog"
     },
+    "animal-wildwood-raid": {
+      "date": "2026-10-21T16:15:31.180Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-word-trails": {
       "date": "2026-07-21T00:28:03+08:00",
       "evidence": "git:80fe58d1be86b2d17a1949931a03fea109d8bc26"
@@ -348,6 +352,10 @@
     "beast-tactician": {
       "date": "2026-07-06T21:50:28+08:00",
       "evidence": "git:0bc86363c7aecd54ea6f96b11fbe6efa95af7a1d"
+    },
+    "block-apex": {
+      "date": "2026-10-21T16:15:31.180Z",
+      "evidence": "canonical-public-catalog"
     },
     "block-blast": {
       "date": "2026-08-01T12:46:15+08:00",
@@ -409,6 +417,10 @@
       "date": "2026-06-30T19:58:06+08:00",
       "evidence": "git:c7ed47cc7ba16ad30590b38b58a1026210096cc9"
     },
+    "fusekeep": {
+      "date": "2026-10-21T16:15:31.180Z",
+      "evidence": "canonical-public-catalog"
+    },
     "garden-tiles": {
       "date": "2026-06-30T20:09:06+08:00",
       "evidence": "git:aac6880236f15a35fba53dc5e1bb4d1b5de13a3b"
@@ -468,6 +480,10 @@
     "pong": {
       "date": "2026-09-07T14:32:28+08:00",
       "evidence": "git:532f250998171934287172eda373ad395d851929"
+    },
+    "puppy-haven": {
+      "date": "2026-10-21T16:15:31.180Z",
+      "evidence": "canonical-public-catalog"
     },
     "pyramid-solitaire": {
       "date": "2026-08-11T12:08:54+08:00",

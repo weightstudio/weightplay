@@ -98,6 +98,7 @@
     anchor: L("Anchor tile {tile} stays fixed", "錨定方塊 {tile} 保持固定", "锚定方块 {tile} 保持固定", "アンカータイル{tile}は固定", "앵커 타일 {tile} 고정", "La ficha ancla {tile} no se mueve", "A peça âncora {tile} fica fixa", "La tuile ancre {tile} reste fixe", "Ankerkachel {tile} bleibt fest", "La tessera ancora {tile} resta fissa", "Якорная плитка {tile} неподвижна", "एंकर टाइल {tile} स्थिर", "تبقى البلاطة المرساة {tile} ثابتة"),
     noBacktrack: L("No immediate backtracking", "不可立即走回頭路", "不可立即走回头路", "直前の引き返し禁止", "즉시 되돌리기 금지", "Sin retroceso inmediato", "Sem retorno imediato", "Pas de retour immédiat", "Kein sofortiges Zurück", "Niente ritorno immediato", "Без немедленного возврата", "तुरंत वापस नहीं", "لا عودة فورية"),
     checkpointRule: L("Checkpoint: protect the marked route", "檢查點：守住標記路線", "检查点：守住标记路线", "チェックポイント：印の道を守る", "체크포인트: 표시된 경로 지키기", "Punto de control: protege la ruta marcada", "Checkpoint: proteja a rota marcada", "Point de contrôle : protégez la route marquée", "Checkpoint: Schütze die markierte Route", "Checkpoint: proteggi il percorso segnato", "Контрольная точка: берегите отмеченный маршрут", "चेकपॉइंट: चिह्नित मार्ग बचाएँ", "نقطة تفتيش: احمِ المسار المحدد"),
+    stageLabel: L("Stage {stage}", "第 {stage} 關", "第 {stage} 关", "ステージ{stage}", "스테이지 {stage}", "Fase {stage}", "Fase {stage}", "Étape {stage}", "Stufe {stage}", "Fase {stage}", "Этап {stage}", "चरण {stage}", "المرحلة {stage}"),
     stageTitle: L("Stage {stage} · {arc}", "第 {stage} 關 · {arc}", "第 {stage} 关 · {arc}", "ステージ{stage}・{arc}", "스테이지 {stage} · {arc}", "Fase {stage} · {arc}", "Fase {stage} · {arc}", "Étape {stage} · {arc}", "Stufe {stage} · {arc}", "Fase {stage} · {arc}", "Этап {stage} · {arc}", "चरण {stage} · {arc}", "المرحلة {stage} · {arc}"),
     progress: L("Stage {stage} / 30 · {cleared} cleared", "第 {stage} / 30 關 · 已通關 {cleared} 關", "第 {stage} / 30 关 · 已通关 {cleared} 关", "ステージ {stage} / 30 ・クリア {cleared}", "스테이지 {stage} / 30 · 클리어 {cleared}", "Fase {stage} / 30 · {cleared} superadas", "Fase {stage} / 30 · {cleared} concluídas", "Étape {stage} / 30 · {cleared} réussies", "Stufe {stage} / 30 · {cleared} geschafft", "Fase {stage} / 30 · {cleared} completate", "Этап {stage} / 30 · пройдено: {cleared}", "चरण {stage} / 30 · {cleared} पूरे", "المرحلة {stage} / 30 · المكتمل {cleared}"),
     cleared: L("Cleared", "已通關", "已通关", "クリア済み", "클리어", "Superada", "Concluída", "Réussie", "Geschafft", "Completata", "Пройдено", "पूरा", "مكتملة"),
@@ -935,7 +936,7 @@
       const progress = sliding ? readSlidingProgress() : readCodeProgress();
       const copy = sliding ? slidingCampaignCopy : codeCampaignCopy;
       app.stageProgress.textContent = fillTemplate(text(copy.progress), { stage: Math.min(progress.highestUnlocked, total), cleared: progress.cleared.length });
-      if (!sliding && app.stageUi) {
+      if (app.stageUi) {
         app.stageUi.refresh(Math.max(0, Math.min(total, Number(app.stageSelection) || progress.highestUnlocked) - 1));
         app.stageStatus.textContent = text(copy.saved);
         window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
@@ -1371,9 +1372,37 @@
   window.WPClassicLogic = { mount, config: CONFIG };
   window.__Sliding15Campaign = Object.freeze({
     totalStages: SLIDING_TOTAL_STAGES,
-    stage: (stage) => {
+    stage(stage) {
       const data = slidingStageData(stage);
-      return { stage: data.stage, arc: data.arc.key, mode: data.mode, checkpoint: data.checkpoint, anchorIndex: data.anchorIndex, noBacktrack: data.noBacktrack, goal: data.goal.slice(), start: data.start.slice(), solution: data.solution.slice() };
+      const progress = readSlidingProgress();
+      const cleared = progress.cleared.includes(data.stage);
+      const locked = data.stage > progress.highestUnlocked;
+      const goal = `${text(slidingCampaignCopy.goal)}: ${text(data.modeLabel)}`;
+      const details = [text(data.arc.rule), goal];
+      if (data.checkpoint) details.push(text(slidingCampaignCopy.checkpointRule));
+      if (data.anchorIndex !== null) details.push(fillTemplate(text(slidingCampaignCopy.anchor), { tile: data.goal[data.anchorIndex] }));
+      if (data.noBacktrack) details.push(text(slidingCampaignCopy.noBacktrack));
+      return {
+        id: data.stage,
+        kicker: fillTemplate(text(slidingCampaignCopy.stageLabel), { stage: data.stage }),
+        title: text(data.arc.title),
+        subtitle: text(data.modeLabel),
+        status: cleared ? text(slidingCampaignCopy.cleared) : locked ? text(slidingCampaignCopy.locked) : fillTemplate(text(slidingCampaignCopy.ready), { stage: data.stage }),
+        summary: `${text(data.arc.title)} · ${text(data.arc.rule)}`,
+        details,
+        poster: "/assets/interface7-redrawn/sliding-15.webp",
+        locked,
+        cleared,
+        stage: data.stage,
+        arc: data.arc.key,
+        mode: data.mode,
+        checkpoint: data.checkpoint,
+        anchorIndex: data.anchorIndex,
+        noBacktrack: data.noBacktrack,
+        goal: data.goal.slice(),
+        start: data.start.slice(),
+        solution: data.solution.slice(),
+      };
     },
     progress: () => readSlidingProgress(),
   });

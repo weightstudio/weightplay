@@ -12,6 +12,8 @@
     />
     <meta name="robots" content="index,follow" />
     <meta name="weightplay-audience" content="general" />
+    <meta name="weightplay-game-version" content="v41" />
+    <meta name="weightplay-interface-version" content="9" />
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="theme-color" content="#081a32" />
     <title>Ordinamento esagonale | WeightPlay</title>
@@ -42,12 +44,7 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/hexa-sort/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/hexa-sort/" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
-    <link rel="stylesheet" href="../../src/game-page-info.css" />
-    <link
-      rel="stylesheet"
-      href="../../src/stage-selector-standard.css"
-      data-wp-stage-standard
-    />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link
       rel="stylesheet"
       href="../../src/battle-canvas-standard.css"
@@ -55,8 +52,9 @@
     />
     <link rel="stylesheet" href="../arrow-escape/style.css?v=20260922-hexa-sort-v39-audio1" />
     <link rel="stylesheet" href="style.css?v=20260922-hexa-sort-v39-audio1" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" />
-    <link rel="stylesheet" href="frame-content.css?v=20261011-hexa-feedback-lane-v40-i7-r1" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" />
+    <link rel="stylesheet" href="frame-content.css?v=20261022-hexa-sort-v41-i9-shared-stage1" />
+    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -88,14 +86,15 @@
 }
     </script>
 
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261022-hexa-sort-v41-i9-guide1">
 </head>
-  <body data-wp-game-owned-guide="true"
+  <body class="has-game-page-info" data-wp-game-owned-guide="true"
     data-screen="main"
     data-wp-game-id="hexa-sort"
+    data-wp-game-version="v41"
+    data-wp-interface-version="9"
     data-wp-audience="general"
   >
-    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Ordinamento esagonale</strong><span>Preparazione delle pile…</span><div class="loading-track"><i></i></div></div></section>
     <div id="gameFrame" data-wp-frame-root>
     <div id="mainGroup" class="main-group">
       <main id="main" class="main-canvas">
@@ -108,15 +107,7 @@
             ><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a
           ><strong data-runtime-localize="off">Ordinamento esagonale</strong>
           <div class="main-controls">
-            <button
-              id="soundToggle"
-              class="icon-control"
-              type="button"
-              aria-pressed="true"
-              data-sound-toggle
-            >
-              🔊</button
-            ><label class="locale-control"
+            <label class="locale-control"
               ><span class="sr-only" data-i18n="language">Lingua</span
               ><select id="localeSelect" aria-label="Lingua"></select
             ></label>
@@ -148,28 +139,20 @@
           </div>
         </section>
       </main>
-      <section id="guide" class="game-page-info game-page-info-static" aria-label="Guida di Hexa Sort"><div class="game-info-tags" data-wp-gameplay-tags="1.3.0"><span>Ordinamento colori</span><span>Pile esagonali</span><span>Pianificazione catene</span></div>
-        <h2 data-i18n="howTitle">Come giocare</h2>
-        <div class="game-info-section">
-            <ol>
-              <li data-i18n="how1">Scegli una delle tre pile e poi un esagono vuoto.</li>
-              <li data-i18n="how2">L&#39;intera catena adiacente viene calcolata prima di muovere lo strato superiore.</li>
-              <li data-i18n="how3">Dieci gettoni uguali spariscono e rivelano la catena seguente.</li>
-            </ol>
+      <section id="guide" class="game-page-info game-page-info-static" aria-label="Guida di Hexa Sort" aria-labelledby="guideTitle">
+        <div class="game-info-tags" data-wp-gameplay-tags="1.4.0" data-runtime-localize="off"><span>Ordinamento colori</span><span>Pile esagonali</span><span>Pianificazione catene</span></div>
+        <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-i18n="genre">PUZZLE DI PILE HEXA</span><h2 id="guideTitle" data-i18n="title">Hexa Sort</h2><p data-i18n="pitch">Posiziona pile, unisci i colori superiori e crea catene.</p></div></div>
+        <div class="game-info-sections">
+          <div class="game-info-section"><h3 data-i18n="howTitle">Come giocare</h3><ol><li data-i18n="how1">Scegli una delle tre pile e poi un esagono vuoto.</li><li data-i18n="how2">L&#39;intera catena adiacente viene calcolata prima di muovere lo strato superiore.</li><li data-i18n="how3">Dieci gettoni uguali spariscono e rivelano la catena seguente.</li></ol></div>
+          <div class="game-info-section"><h3 data-i18n="priorityTitle">Priorità: elimina, libera, raggruppa</h3><p data-i18n="priority">Si confronta tutta la catena: prima eliminare dieci, poi liberare celle, infine concentrare i colori uguali.</p></div>
+          <div class="game-info-section"><h3>Domande frequenti</h3><dl><dt>Quanti livelli sono inclusi?</dt><dd>La campagna include 30 livelli realizzati a mano, oltre alla modalità infinita.</dd><dt>Posso spostare una pila dopo averla posizionata?</dt><dd>No. Il posizionamento è definitivo; le sequenze dello stesso colore in cima si risolvono automaticamente.</dd><dt>Quali tessere si possono spostare?</dt><dd>Solo una sequenza continua dello stesso colore in cima a una pila può essere spostata su una pila adiacente.</dd><dt>Quando viene eliminato un colore?</dt><dd>Una pila collegata e risolta viene eliminata quando raggiunge dieci tessere dello stesso colore.</dd><dt>La modalità infinita è casuale?</dt><dd>Le proposte cambiano, ma regole e risultati delle fusioni sono determinati dallo stato attuale.</dd><dt>I progressi vengono salvati?</dt><dd>Sblocchi della campagna, record della modalità infinita e preferenze sono salvati localmente in questo browser.</dd><dt>Quali controlli e dimensioni dello schermo sono supportati?</dt><dd>Quando il gioco li supporta, si possono usare touch, mouse e tastiera. L’interfaccia si adatta con lo stesso layout logico a telefono, orizzontale e desktop.</dd><dt>I progressi vengono trasferiti automaticamente su un altro dispositivo?</dt><dd>No. Al momento vengono salvati solo nella memoria locale del browser, quindi un altro profilo o dispositivo avrà progressi separati, a meno che non venga aggiunto un sistema di account.</dd></dl></div>
+          <div class="game-info-section game-info-related-section" data-hexa-growth-related="1.4.0" data-runtime-localize="off"><h3>Giochi correlati</h3><p>Continua a pianificare colori e spazio con questi puzzle WeightPlay:</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-color-springs" href="/it/games/animal-color-springs/"><span class="game-info-related-poster"><img src="/assets/animal-color-springs/cover-block-v1.png" data-final-src="/assets/weightplay-logo.png" alt="Sorgenti di colori" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Sorgenti di colori</strong><span>Ordina gruppi di colore tra recipienti in 30 puzzle con capacità, sigilli e obiettivi di mosse variabili.</span></span></a><a class="game-info-related-card" data-game-id="animal-color-link" href="/it/games/animal-color-link/"><span class="game-info-related-poster"><img src="/assets/animal-color-link/cover-block-v1.png" data-final-src="/assets/weightplay-logo.png" alt="Color Link Garden" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Color Link Garden</strong><span>Collega i colori uguali senza incrociare i percorsi e riempi 30 giardini con Suggerimento, Annulla e Ripristina.</span></span></a></div></div>
         </div>
-        <div class="game-info-section">
-            <p data-i18n="priority">Si confronta tutta la catena: prima eliminare dieci, poi liberare celle, infine concentrare i colori uguali.</p>
-        </div>
-      <div class="game-info-section"><h3>Domande frequenti</h3><dl><dt>Quanti livelli sono inclusi?</dt><dd>La campagna include 30 livelli realizzati a mano, oltre alla modalità infinita.</dd><dt>Posso spostare una pila dopo averla posizionata?</dt><dd>No. Il posizionamento è definitivo; le sequenze dello stesso colore in cima si risolvono automaticamente.</dd><dt>Quali tessere si possono spostare?</dt><dd>Solo una sequenza continua dello stesso colore in cima a una pila può essere spostata su una pila adiacente.</dd><dt>Quando viene eliminato un colore?</dt><dd>Una pila collegata e risolta viene eliminata quando raggiunge dieci tessere dello stesso colore.</dd><dt>La modalità infinita è casuale?</dt><dd>Le proposte cambiano, ma regole e risultati delle fusioni sono determinati dallo stato attuale.</dd><dt>I progressi vengono salvati?</dt><dd>Sblocchi della campagna, record della modalità infinita e preferenze sono salvati localmente in questo browser.</dd><dt>Quali controlli e dimensioni dello schermo sono supportati?</dt><dd>Quando il gioco li supporta, si possono usare touch, mouse e tastiera. L’interfaccia si adatta con lo stesso layout logico a telefono, orizzontale e desktop.</dd><dt>I progressi vengono trasferiti automaticamente su un altro dispositivo?</dt><dd>No. Al momento vengono salvati solo nella memoria locale del browser, quindi un altro profilo o dispositivo avrà progressi separati, a meno che non venga aggiunto un sistema di account.</dd></dl></div></section>
+      </section>
     </div>
     <section id="stageScreen" class="active-screen" hidden data-runtime-localize="off">
       <div class="stage-shell">
-        <div
-          class="stage-canvas"
-          data-wp-standard-stage-screen
-          data-wp-logical-stage-canvas
-          data-wp-canvas-max-width="920"
-        >
+        <div class="stage-canvas">
           <header class="stage-header">
             <button
               id="stageBack"
@@ -180,35 +163,12 @@
             >
               ←
             </button>
-            <div>
-              <strong data-i18n="chooseStage">Scegli livello</strong
-              ><span id="stageSummary">1 / 30</span>
-            </div>
-            <button id="stageSound" class="icon-control" type="button" hidden>
-              🔊
-            </button>
+            <strong hidden data-wp-frame-title>Hexa Sort</strong>
+            <span id="stageSummary">1 / 30</span>
           </header>
-          <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep"></div>
-          <p class="stage-hint" data-i18n="stageHint">Scegli una missione sbloccata.</p>
-          <button
-            id="enterStage"
-            class="primary stage-enter"
-            type="button"
-            data-wp-enter-battle
-            data-i18n="enter"
-          >Entra</button>
-          <nav class="stage-tabs" aria-label="Navigazione livelli">
-            <button
-              type="button"
-              role="tab"
-              aria-selected="true"
-              tabindex="0"
-              data-wp-stage-tab="stages"
-              data-i18n="chooseStage"
-            >Scegli livello</button>
-          </nav>
+          <div id="stageContent" class="hexa-stage-content"><div id="stageRail" aria-label="Choose a Stage"></div></div>
+          <nav class="stage-tabs" aria-label="Navigazione livelli" data-wp-frame-nav></nav>
         </div>
-        <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
       </div>
     </section>
     <section id="battleScreen" class="active-screen" hidden>
@@ -339,26 +299,24 @@
       </div>
     </section>
     </div>
-    <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
+    <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"hexa-sort"});</script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script>
     <script src="/src/runtime-locales/it.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/edge-guard.js"></script>
-    <script src="game.js?v=20260922-hexa-sort-v39-audio1"></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
-    <script src="frame.js?v=20260922-hexa-sort-v39-audio1"></script>
-    <script
-      src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
-      data-wp-stage-standard
-    ></script>
+    <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
+    <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
+    <script src="game.js?v=20261022-hexa-sort-v41-i9-shared-stage1"></script>
+    <script src="stage-config.js?v=20261022-hexa-sort-v41-i9-shared-stage1"></script>
+    <script src="../../src/game-screen-frame.js?v=20261022-hexa-sort-v41-i9-shared-stage3"></script>
+    <script src="frame.js?v=20261022-hexa-sort-v41-i9-shared-stage3"></script>
     <script
       src="../../src/battle-canvas-standard.js"
       data-wp-battle-standard
     ></script>
-    <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+    <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
     <script src="/src/game-title-registry.js?v=20260804-hexa-release-v26" data-wp-game-title-registry></script>
-    <script type="module" src="/games/hexa-sort/seo-growth.mjs?v=20260923-text130"></script>
-    <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
+    <script type="module" src="/games/hexa-sort/seo-growth.mjs?v=20261022-hexa-i9-guide140"></script>
   </body>
 </html>

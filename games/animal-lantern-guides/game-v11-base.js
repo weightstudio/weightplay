@@ -121,7 +121,9 @@
   let clueVisible = false;
   let resultSuccess = null;
   let bridgeStep = 0, lastWrong = "";
-  let stageVirtualizer = null;
+  let stageRailController = null;
+  let stageBrowseIndex = Math.max(0, Math.min(29, unlocked - 1));
+  let sharedFrame = null;
 
   const settlement = { timer: 0, dueAt: 0, remaining: 0, paused: false, complete: null };
   const resetSettlement = () => {
@@ -190,16 +192,20 @@
       else if (key === "result") node.hidden = !resultMode;
       else node.hidden = key !== name;
     });
+    screens.result.classList.toggle("is-active", resultMode);
     if (screens.battle) {
       if (resultMode) screens.battle.dataset.wpBattleSubstate = "result";
       else delete screens.battle.dataset.wpBattleSubstate;
     }
-    $("settingsPanel").hidden = true;
+    // The shared frame owns Settings visibility.
     $("mainGuide").hidden = name !== "main";
-    [$("settingsBtn"), $("stageSettingsBtn"), $("battleSettingsBtn")].forEach(button => button?.setAttribute("aria-expanded", "false"));
     document.body.dataset.screen = resultMode ? "battle" : name;
+    if (sharedFrame) sharedFrame.activate(resultMode ? "battle" : name, { covered: resultMode });
     window.dispatchEvent(new CustomEvent("weightplay:lantern-scene", { detail: { screen: name } }));
     window.scrollTo(0, 0);
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
+    window.WeightPlayBattleCanvas?.sync?.();
+    window.WeightPlayStageArtwork?.sync?.();
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
       if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -207,15 +213,8 @@
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
   }
 
-  function toggleSettings() {
-    const panel = $("settingsPanel");
-    const opening = panel.hidden;
-    panel.hidden = !opening;
-    [$("settingsBtn"), $("stageSettingsBtn"), $("battleSettingsBtn")].forEach(button => button?.setAttribute("aria-expanded", String(opening)));
-  }
-
   function stageTitle(stage) {
-    return `${text(CHAPTERS[stage.chapter].key)} · ${stage.number}`;
+    return text(stage.checkpoint ? "checkpointName" : "stageName", { n: stage.number });
   }
 
   function applyCopy() {
@@ -223,13 +222,12 @@
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.title = `${text("title")} | WeightPlay`;
     document.querySelector('[data-wp-return="main"]')?.setAttribute("aria-label", text("back"));
-    [$("settingsBtn"), $("stageSettingsBtn"), $("battleSettingsBtn")].forEach(button => button?.setAttribute("aria-label", text("settings")));
     setText("battleBackLabel", text("back")); setText("stageBackLabel", text("back"));
-    setText("eyebrow", text("eyebrow")); setText("title", text("title")); setText("languageLabel", text("language")); setText("settingsLabel", text("settings")); setText("soundBtn", text(soundEnabled ? "soundOn" : "soundOff"));
+    setText("eyebrow", text("eyebrow")); setText("title", text("title"));
     setText("guideBadge", text("guideBadge")); setText("mainHeading", text("mainHeading")); setText("mainBody", text("mainBody")); setText("progressTitle", text("progressTitle")); setText("progressBody", text("progressBody")); setText("startBtn", text("start")); setText("soloNote", text("soloNote"));
     setText("promiseOneTitle", text("scout")); setText("promiseOneBody", text("scoutPromise")); setText("promiseTwoTitle", text("guide")); setText("promiseTwoBody", text("guidePromise")); setText("promiseThreeTitle", text("together")); setText("promiseThreeBody", text("togetherPromise"));
     setText("howTo", text("howTo")); setText("howToBody", text("guideText")); setText("stageBadge", text("stageBadge")); setText("stageTitle", text("stageTitle")); setText("stageHelp", text("stageHelp"));
-    setText("stageOverviewTab", text("stageTitle")); setText("sceneBadge", text("sceneBadge")); setText("scoutRole", text("scoutRole")); setText("scoutHeading", text("scoutHeading")); setText("scoutTask", text("scoutTask")); setText("guideRole", text("guideRole")); setText("guideHeading", text("guideHeading")); setText("guideTask", text("guideTask")); setText("passBtn", text("passClue")); setText("leaveBtn", text("leave")); setText("footer", text("footer")); setText("resultBadge", text("resultBadge")); setText("replayBtn", text("replay")); setText("homeBtn", text("stageMap")); setText("nextBtn", text("nextStage"));
+    setText("sceneBadge", text("sceneBadge")); setText("scoutRole", text("scoutRole")); setText("scoutHeading", text("scoutHeading")); setText("scoutTask", text("scoutTask")); setText("guideRole", text("guideRole")); setText("guideHeading", text("guideHeading")); setText("guideTask", text("guideTask")); setText("passBtn", text("passClue")); setText("leaveBtn", text("leave")); setText("footer", text("footer")); setText("resultBadge", text("resultBadge")); setText("replayBtn", text("replay")); setText("homeBtn", text("stageMap")); setText("nextBtn", text("nextStage"));
     $("localeSelect").value = locale;
     $("localeSelect").setAttribute("aria-label", text("language"));
     $("scoutChoices").setAttribute("aria-label", text("scoutChoicesLabel"));
@@ -259,61 +257,42 @@
   function scene(){window.dispatchEvent(new CustomEvent('wp:block-scene',{detail:{active:document.body.dataset.screen==='battle',colours:['#e4be65','#64cfb0','#a78bfd'],lit:bridgeStep}}));}
   function cue(good=false){try{if(soundEnabled)window.WeightPlayAudio?.play(good ? "feedback.success" : "ui.click");}catch{}}
 
-  function bindStageCard(card, index) {
-    const stage = STAGES[index];
-    if (!stage) return;
-    const locked = stage.number > unlocked;
-    const chapter = CHAPTERS[stage.chapter];
-    const rule = stage.chapter < 5
-      ? text(stage.rule)
-      : ["same","next","previous","missing","blocked"].map(key => text(key)).join(" ");
-    card.type = "button";
-    card.className = "stage-card";
-    card.dataset.stage = String(stage.number);
-    card.dataset.wpStageCard = "";
-    card.dataset.wpStageSource = "lantern-v11-data";
-    if (stage.number === Math.min(unlocked, STAGES.length)) card.dataset.wpStageRecommended = "true";
-    else delete card.dataset.wpStageRecommended;
-    card.setAttribute("aria-disabled", String(locked));
-    card.setAttribute("aria-label", `${stageTitle(stage)}${locked ? ` — ${text("locked")}` : ""}`);
-    card.innerHTML = `<span class="wp-lantern-stage-chapter">${text(chapter.key)}</span><span class="wp-lantern-stage-number"><strong>${stage.checkpoint ? "✦ " : ""}${stage.number}</strong><span>${stage.checkpoint ? text("checkpoint") : text("trail")}</span></span><span class="wp-lantern-stage-rule">${rule}</span><span data-stage-status>${text(locked ? 'stageLocked' : stage.number <= best ? 'stageDone' : 'stageReady')}</span>`;
-  }
-  function ensureStageVirtualizer() {
-    const map = $("chapterMap");
-    if (!map || !window.WeightPlayStageV6) return null;
-    if (stageVirtualizer) return stageVirtualizer;
-    delete map.dataset.wpStageVirtualizationDestroyed;
-    stageVirtualizer = window.WeightPlayStageV6.install(map, {
-      poolSize: 9,
-      total: () => STAGES.length,
-      initialIndex: () => Math.max(0, Math.min(STAGES.length, unlocked) - 1),
-      bind: bindStageCard,
-      activate: (index) => {
-        const stage = STAGES[index];
-        if (stage && stage.number <= unlocked) startStage(index);
-      }
-    });
-    return stageVirtualizer;
-  }
-  function renderStage() {
-    setText("stageProgress", text("stageProgress", { unlocked, total: STAGES.length }));
-    const virtualizer = ensureStageVirtualizer();
-    virtualizer?.refresh?.();
-    virtualizer?.center?.(Math.max(0, Math.min(STAGES.length, unlocked) - 1));
+  const stageConfig = window.createAnimalLanternGuidesStageConfig({
+    stages: STAGES,
+    getProgress: () => ({ unlocked, best }),
+    text,
+  });
+
+  function renderStage({ entry = false } = {}) {
+    if (entry) stageBrowseIndex = Math.max(0, Math.min(STAGES.length, unlocked) - 1);
+    const rail = $("chapterMap");
+    if (!stageRailController) {
+      if (!window.WeightPlayPlayUI?.mountStage) throw new Error("Animal Lantern Guides requires the shared Interface 9 Play UI.");
+      stageRailController = window.WeightPlayPlayUI.mountStage({
+        page: $("stageContent"),
+        rail,
+        config: stageConfig,
+        selected: stageBrowseIndex,
+        onSelect(index) { stageBrowseIndex = index; },
+        onStart(index) { if (index + 1 <= unlocked) startStage(index); },
+        isActive: () => document.body.dataset.screen === "stage",
+      });
+      if (!stageRailController) throw new Error("The shared Interface 9 Stage selector could not initialize Animal Lantern Guides.");
+    } else stageRailController.refresh(stageBrowseIndex);
   }
 
-  function showStage() {
+  function showStage({ preserveSelection = false } = {}) {
+    if (preserveSelection) stageBrowseIndex = stageIndex;
     show("stage");
-    renderStage();
-    const recommended = Math.max(0, Math.min(STAGES.length, unlocked) - 1);
-    const card = $("chapterMap")?.querySelector(`[data-wp-stage-virtual-index="${recommended}"]`);
-    focusNoScroll(card || $("stageBackBtn"));
+    renderStage({ entry: !preserveSelection });
+    const selected = $("chapterMap")?.querySelector('[aria-current="true"]');
+    focusNoScroll(selected || $("stageBackBtn"));
   }
 
   function renderBattle() {
     const stage=STAGES[stageIndex],p=puzzle(),isGuide=phase==='guide'||phase==='settling';
     const step=isGuide?'guide':clueVisible?'pass':'scout';
-    setText('roundLabel',text('round',{n:stage.number,total:30}));setText('meterLabel',text('meter',{n:light}));setText('sceneTitle','');
+    setText('roundLabel',text('round',{n:stage.number,total:30}));setText('meterLabel',text('meter',{n:light}));setText('sceneTitle',stageTitle(stage));
     setText('bridgeProgress',text('step',{n:bridgeStep+(phase==='settling'?1:0),total:stage.signals.length}));
     $('blockWorld').dataset.feedback=phase==='settling'?'success':'';
     $('bridgeTrack').innerHTML=stage.signals.map((_,i)=>`<span class="bridge-tile ${i<bridgeStep+(phase==='settling'?1:0)?'is-lit':''}" aria-hidden="true">${i+1}</span>`).join('');
@@ -374,12 +353,10 @@
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (success ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
   }
 
-  $("startBtn").addEventListener("click", () => best === 0 && unlocked === 1 ? startStage(0) : showStage());
+  $("startBtn").addEventListener("click", showStage);
   $("stageBackBtn").addEventListener("click", () => { show("main"); focusNoScroll($("startBtn")); });
-  $("battleBackBtn").addEventListener("click", showStage); $("leaveBtn").addEventListener("click", showStage); $("homeBtn").addEventListener("click", showStage);
+  $("battleBackBtn").addEventListener("click", () => showStage({ preserveSelection: true })); $("leaveBtn").addEventListener("click", () => showStage({ preserveSelection: true })); $("homeBtn").addEventListener("click", showStage);
   $("replayBtn").addEventListener("click", () => __wpReplayStart(() => startStage(stageIndex))); $("nextBtn").addEventListener("click", () => startStage(Math.min(stageIndex + 1, STAGES.length - 1))); $("passBtn").addEventListener("click", passToGuide);
-  [$("settingsBtn"), $("stageSettingsBtn"), $("battleSettingsBtn")].forEach(button => button?.addEventListener("click", toggleSettings));
-  $("soundBtn").addEventListener("click", () => { soundEnabled = window.WeightPlayAudio.setEnabled(!soundEnabled); applyCopy(); });
   $("localeSelect").addEventListener("change", event => {
     event.stopImmediatePropagation();
     locale = SUPPORTED_LOCALES.includes(event.target.value) ? event.target.value : "en";
@@ -395,9 +372,26 @@
   $("localeSelect").innerHTML = SUPPORTED_LOCALES.map(code => `<option value="${code}">${LOCALE_LABELS[code]}</option>`).join("");
   $('recallBtn').onclick=()=>{if(!coachDetail.hidden||phase!=='guide')return;phase='scout';clueVisible=false;feedbackKey='';lastWrong='';renderBattle();focusNoScroll($('scoutChoices').querySelector('button'));};
   window.addEventListener('wp:block-pick',e=>guideChoice(SYMBOLS[e.detail.index]));window.addEventListener('wp:block-ready',scene);
-  window.addEventListener('pagehide',cancelSettlement);
+  window.addEventListener('pagehide', event => {
+    cancelSettlement();
+    if (event.persisted) return;
+    stageRailController?.destroy();
+    stageRailController = null;
+    sharedFrame?.destroy();
+    sharedFrame = null;
+  });
   const readInterfaceState = () => ({stageIndex,bridgeStep,phase,clueVisible,light,unlocked,best,puzzle:puzzle(),settlementPending:settlementPending()});
   window.__LANTERN_INTERFACE7__={getState:readInterfaceState,pauseSettlement,resumeSettlement,cancelSettlement,settlementPending,showStage,renderStage};
   window.__LANTERN_TEST__={stages:STAGES,getState:readInterfaceState};
+  sharedFrame = window.WeightPlayScreenFrame.mount({
+    root: $("gameFrame"),
+    playUI: true,
+    localeSelect: $("localeSelect"),
+    scenes: {
+      main: { root: $("mainScreen"), header: $("mainHeader"), content: $("mainContent") },
+      stage: { root: $("stageScreen"), header: $("stageHeader"), content: $("stageContent") },
+      battle: { root: $("battleCanvas"), header: $("battleHeader"), content: $("battleContent"), headerInfo: $("battleHeaderInfo") },
+    },
+  });
   applyCopy(); show("main");
 })();

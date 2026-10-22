@@ -2,17 +2,8 @@
   "use strict";
 
   const gameId = "animal-lantern-guides";
-  if (document.body?.dataset.wpGameId !== gameId || window.__LANTERN_INTERFACE7_COMPAT__) return;
-  window.__LANTERN_INTERFACE7_COMPAT__ = true;
-
-  const scriptSource = document.currentScript?.src || location.href;
-  if (!document.querySelector('link[data-wp-lantern-interface7]')) {
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = new URL("interface-7-cleanup.css?v=20260924-interface7-fix2", scriptSource).href;
-    link.dataset.wpLanternInterface7 = "";
-    document.head.append(link);
-  }
+  if (document.body?.dataset.wpGameId !== gameId || window.__LANTERN_INTERFACE9_COMPAT__) return;
+  window.__LANTERN_INTERFACE9_COMPAT__ = true;
 
   const START = {
     en: "Start Game", "zh-Hant": "開始遊戲", "zh-Hans": "开始游戏", ja: "ゲーム開始", ko: "게임 시작",
@@ -91,7 +82,6 @@
 
   if (canvas && result) {
     result.removeAttribute("data-screen");
-    result.dataset.wpBattleSubstate = "result";
     canvas.append(result);
   }
   const actions = result?.querySelector(".result-actions");
@@ -194,15 +184,6 @@
     dialog.hidden = false;
     dialog.querySelector("[data-leave-continue]")?.focus({ preventScroll: true });
   };
-
-  const startButton = document.getElementById("startBtn");
-  document.addEventListener("click", (event) => {
-    if (event.target?.closest?.("#startBtn") !== startButton) return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    // Stage-owning games always route the single Main action through Stage.
-    stagesButton?.click();
-  }, true);
 
   document.addEventListener("click", (event) => {
     if (bypassLeaveGuard || event.target?.closest?.("#battleBackBtn") !== battleBack) return;

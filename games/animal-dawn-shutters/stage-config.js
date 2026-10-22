@@ -1,0 +1,26 @@
+/* Localized Dawn Shutters rooms for the shared Interface 9 selector. */
+(() => {
+  "use strict";
+
+  window.createAnimalDawnShuttersStageConfig = ({ rounds, describe }) => ({
+    count: rounds.length,
+    poster: "/games/animal-dawn-shutters/assets/animal-dawn-shutters-cover-v2.png",
+    background: "/assets/lobby-block-atmosphere.svg",
+    stage(index) {
+      const view = describe(index);
+      return {
+        id: `room-${index + 1}`,
+        kicker: view.kicker,
+        title: view.title,
+        subtitle: view.subtitle,
+        status: view.status,
+        summary: view.summary,
+        details: view.details,
+        locked: view.locked,
+        cleared: view.cleared,
+        poster: "/games/animal-dawn-shutters/assets/animal-dawn-shutters-cover-v2.png",
+        posterPosition: "50% 50%",
+      };
+    },
+  });
+})();

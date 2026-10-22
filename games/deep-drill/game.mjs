@@ -16,23 +16,23 @@ const goalText=s=>s.checkpoint?`解除${REGIONS[s.arc].seal}`:({depth:`前進 ${
 const advice=s=>'鑽機沿選定路線持續向下，左右鍵可手動換路，水晶脈衝與洩壓自動處理。你可隨時升級；庫存工具只按工坊設定的每趟上限使用。'+(s.arc>=2?'深入地層需要更強鑽頭與鑽力；先回打賺取改裝費。':'礦艙滿會自動運回礦物，短暫輸送後繼續深入。');
 // One shared frame owns Return/Settings and Stage actions.
 const sceneSpecs=Object.fromEntries(['main','stage','battle'].map(name=>[name,{root:$(name),header:$(name).querySelector('header'),content:$(name+'Content')}]));
-const frame=WeightPlayScreenFrame.mount({root:$('app'),scenes:sceneSpecs,localeSelect:$('localeSelect'),playUI:true});
+const frame=WeightPlayScreenFrame.mount({root:$('app'),scenes:sceneSpecs,localeSelect:null,playUI:true});
 const stageProgress=document.createElement('span');frame.stageTopUI.add(stageProgress);
 const bank=document.createElement('span');frame.battleTopUI.add(bank);
-const depart=document.createElement('button');depart.id='depart';depart.textContent='開始探勘';depart.className='primary';
 const workshopButton=document.createElement('button');workshopButton.id='openShop';workshopButton.textContent='鑽機工坊';
-frame.commonDownButton.add(depart);frame.commonDownButton.add(workshopButton);
+frame.commonDownButton.add(workshopButton);
 const stageUI=WeightPlayPlayUI.mountStage({page:$('stagePage'),rail:$('stageRail'),selected:stageIndex,isActive:()=>screen==='stage',
  config:{count:30,poster:'/games/deep-drill/art/poster.png',background:'/assets/lobby-block-atmosphere.svg',stage:i=>{
   const s=STAGES[i];return {id:s.id,kicker:`${String(s.id).padStart(2,'0')} / ${arcNames[s.arc]}`,title:s.zh,subtitle:goalText(s),status:s.id>save.unlocked?'尚未解鎖':save.cleared.includes(s.id)?`已完成 · ${(save.recordsV5[s.id]||save.records[s.id])?.stars||1}/3 星`:'準備出發',locked:s.id>save.unlocked,cleared:save.cleared.includes(s.id),summary:goalText(s),details:[s.checkpoint?REGIONS[s.arc].hint:advice(s),`0–${s.target}m · ${s.decision}`,'裝備、材料、夥伴和購買的自動化功能永久保留。']};}},
- onSelect:i=>{stageIndex=i;refreshStage();},onStart:i=>brief(i)});
-function refreshStage(){stageProgress.textContent=`${save.coins.toLocaleString()} 金幣 · ${save.unlocked}/30 區`;depart.disabled=stageIndex>=save.unlocked;}
+ onSelect:i=>{stageIndex=i;refreshStage();},onStart:i=>startRun(i)});
+function refreshStage(){stageProgress.textContent=`${save.coins.toLocaleString()} 金幣 · ${save.unlocked}/30 區`}
+function refreshMainProgress(){const progress=$('mainProgress');if(progress)progress.textContent=`礦區 ${save.unlocked} / ${STAGES.length} · 已完成 ${save.cleared.length} 區`;}
 function show(name){held=false;lastSeam='';if(screen==='stage')stageUI.cancel();screen=name;document.body.dataset.screen=name;
+ if(name==='main')refreshMainProgress();
  for(const s of ['main','stage','battle'])$(s).hidden=s!==name;
  frame.activate(name);if(name==='stage'){stageUI.refresh(save.unlocked-1);stageIndex=save.unlocked-1;refreshStage();}
  world?.resize();}
 function ensureWorld(){if(world)return true;try{world=createWorld($('world'));for(let i=0;i<4;i++)thumbnails[i]=world.thumbnail(i);for(const k of Object.keys(ROCKS))rockImages[k]=world.thumbnail(k);for(const k of Object.keys(MODULES))rockImages[`module:${k}`]=world.thumbnail(`module:${k}`);for(const k of Object.keys(TOOLS))rockImages[`tool:${k}`]=world.thumbnail(`tool:${k}`);REGIONS.forEach((_,i)=>rockImages[`relic:${i}`]=world.thumbnail(`relic:${i}`));for(const key of Object.keys(TOOLS))$('tool-'+key).src=rockImages[`tool:${key}`];return true;}catch(error){console.error('Deep Drill WebGL:',error);$('renderError').hidden=false;return false;}}
-function brief(index){if(index>=save.unlocked)return;stageIndex=index;const s=STAGES[index],region=REGIONS[s.arc];$('briefRegion').textContent=`${s.id}/30 · ${region.name} · 0–${s.target}m`;$('briefTitle').textContent=s.zh;$('briefStory').textContent=region.intro;$('briefGoal').textContent=goalText(s);$('briefAdvice').textContent=s.checkpoint?region.hint:advice(s);$('briefLoadout').textContent=`${HEADS[save.head].zh} · ${save.activeCrew?CREW[save.activeCrew].name+'同行':'菲亞獨行'} · ${save.equipped.length}/2 模組`;$('briefing').hidden=false;$('launch').focus();}
 for(let i=0;i<25;i++){const b=document.createElement('button');b.className='tile-target';b.dataset.cell=i;b.innerHTML='<span class=cell-name></span><span class=cell-hp></span>';b.onclick=()=>{if(!run||run.ended||run.paused)return;const row=run.row+Math.floor(i/5)-2,lane=i%5;if(beamArmed){activateTool('beam',{row,lane});}else if(Math.floor(i/5)===2){selectLane(lane);run.plannedRow=run.row;}else{$('notice').textContent='使用左右鍵手動選路，保持固定向下';}};$('tileTargets').append(b);}
 function startRun(index){beamArmed=false;if(index>=save.unlocked)return;stageIndex=index;run=newRun(save,index);flightCell=hitCell=null;flightTTL=hitTTL=0;$('result').hidden=true;$('pausePanel').hidden=true;show('battle');
  if(!ensureWorld()){run.paused=true;return;}$('notice').textContent=' ';$('zoneName').textContent=`${String(index+1).padStart(2,'0')} · ${run.stage.zh}`;$('depthTarget').textContent=(index+1)*100;
@@ -121,9 +121,8 @@ function objectiveProgress(r){
  }
 }
 function activateTool(key,target){if(key==='beam'&&!target){beamArmed=!beamArmed;$('notice').textContent=beamArmed?'光束已就緒：點選一格普通地磚':'取消光束瞄準';renderHud();return;}if(useTool(save,run,key,target)){beamArmed=false;release();persist();processEvents();renderHud();}else{$('notice').textContent=['blast','beam'].includes(key)&&activeSeal(run)?'封印需要依提示解除，鑽彈無法直接破壞':'沒有可用補給，或目前不需要此工具';sound('feedback.error');}}
-$('start').onclick=()=>{show('stage');};depart.onclick=()=>brief(stageIndex);workshopButton.onclick=shop;
+$('start').onclick=()=>{show('stage');};workshopButton.onclick=shop;
 $('closeShop').onclick=()=>{$('workshop').hidden=true;if(shopPausedRun&&run&&!run.ended){run.paused=false;last=performance.now();shopPausedRun=false;}shopFocus?.focus();};
-$('launch').onclick=()=>{$('briefing').hidden=true;startRun(stageIndex);};$('briefCancel').onclick=()=>{$('briefing').hidden=true;depart.focus();};
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{baseTab=b.dataset.tab;renderShop();$('workshop').querySelector('.panel').scrollTop=0;});
 document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>activateTool(b.dataset.tool));
 $('stage').querySelector('[data-wp-return]').onclick=()=>show('main');
@@ -140,7 +139,7 @@ window.addEventListener('keydown',e=>{
  const modal=[...document.querySelectorAll('.overlay')].find(n=>!n.hidden);
  if(e.key==='Tab'&&modal){const buttons=[...modal.querySelectorAll('button:not(:disabled)')],first=buttons[0],last=buttons.at(-1);
   if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}return;}
- if(e.key==='Escape'){if(!$('briefing').hidden){$('briefCancel').click();return;}if(!$('workshop').hidden)$('closeShop').click();else if(!$('pausePanel').hidden)resume();else pause();return;}
+ if(e.key==='Escape'){if(!$('workshop').hidden)$('closeShop').click();else if(!$('pausePanel').hidden)resume();else pause();return;}
  if(screen!=='battle'||modal||run?.paused||run?.ended||e.target.closest('select,input,.wp-frame-popover'))return;
  if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();selectLane(run.lane+(e.key==='ArrowLeft'?-1:1));return;}
  if(e.code==='Space'&&!e.repeat){e.preventDefault();shop();}

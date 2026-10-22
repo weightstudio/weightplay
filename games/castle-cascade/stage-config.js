@@ -3,7 +3,7 @@ export function createCastleCascadeStageConfig({ levels, sieges, unlocked, text,
   return {
     count: levels.length,
     poster: "/assets/castle-cascade-poster.webp",
-    background: "/games/castle-cascade/assets/castle-cascade-daylight-v2.webp",
+    background: "/assets/lobby-block-atmosphere.svg",
     stage(index) {
       const level = levels[index];
       const siege = sieges[index];

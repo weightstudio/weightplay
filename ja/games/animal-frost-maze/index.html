@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide />
     <link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-shell-standard />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
     <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
     <script defer src="mastery.js?v=20260908-mastery-v15"></script>
     <script defer src="game.js?v=20261021-frost-i9"></script><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
@@ -65,9 +65,11 @@
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
         <div id="main-content" class="main-content">
           <img class="five-game-cover main-cover" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-frost-maze.webp" alt="" aria-hidden="true" />
-          <p class="lede main-summary" data-wp-frame-summary>Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
-          <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress>Best rooms: 0</p>
-          <button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button>
+          <div class="main-copy" data-wp-frame-copy>
+            <p class="lede main-summary" data-wp-frame-summary>Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
+            <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress>Best rooms: 0</p>
+            <button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button>
+          </div>
         </div>
       </section>
       <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
@@ -122,12 +124,12 @@
       <div class="game-info-section"><h3>開発者メモ</h3><p>氷を編集すると道が変わり、その操作にも代償があります。氷を壊せば通路が開き、築けば漂流者の経路が変わります。最初の20ルームは8歩ごとの追跡リズムを読みやすくし、21～30では有効な編集もタイミング判断に加えます。最後の5ルームには開始地点が見えるため、最後のベリーがゴールとは限りません。</p></div>
       <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>最高クリアルームと各ルームの最高星数はこのブラウザーに保存されます。サイトデータを消すと記録も削除されます。</p></div>
       <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>何を集めればよいですか？</dt><dd>ルーム内のベリーをすべて集めます。26～30では最後のベリーを取った後、金色の開始マスへ戻ります。</dd></div><div><dt>漂流者はいつ動きますか？</dt><dd>有効な1マス移動を8回するごとに進みます。ルーム21以降は、有効な氷の破壊・設置でも1歩進みます。移動できない操作や無効な編集では進みません。</dd></div><div><dt>氷を築くとどうなりますか？</dt><dd>前方の空きマスが条件を満たすと短い壁を置き、漂流者の経路を変えます。21～30では有効な設置でも漂流者が1歩進みます。</dd></div><div><dt>ルーム21～25では何が変わりますか？</dt><dd>氷を有効に編集するたび漂流者が進むため、壁を壊すか築くかが迷路と追跡のタイミングを同時に変えます。無効な編集では動きません。</dd></div><div><dt>星はいくつ取れますか？</dt><dd>クリアで1つ。各ルームの氷編集回数と画面に表示される歩数目標を満たすごとに1つ追加されます。編集目標は1～20が4回以内、21～30が2回以内です。目標未達でもクリアできます。</dd></div><div><dt>開始地点に戻る必要があるのは？</dt><dd>ルーム26～30です。すべてのベリーを集めてから、金色の開始マスへ戻るとクリアです。</dd></div><div><dt>どの記録が保存されますか？</dt><dd>最高クリアルームと各ルームの最高星数がこのブラウザーに保存されます。サイトデータを消すと削除され、端末間では共有されません。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-unblock" data-related-game="animal-unblock" href="/ja/games/animal-unblock/"><img src="/assets/interface7-redrawn/animal-unblock.webp" alt="Unblock Trail" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-runtime-localize="off">Unblock Trail</strong><span data-frost-related-description>Slide horizontal and vertical blocks along their lanes to clear a path to the exit.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>クレートバウンド</strong><span>30の手作り天空倉庫を歩き、ルーン貨物を押して引きながら運びます。</span></span></a></div></div>
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+    <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
     <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
     <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
     <script src="stage-config.js?v=20261021-frost-i9"></script>

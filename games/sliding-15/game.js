@@ -5,7 +5,7 @@
   slidingArtLink.href = "art.css?v=20260921-sliding-15-block-scene-v1";
   document.head.appendChild(slidingArtLink);
 
-  const GAME_VERSION = "v18";
+  const GAME_VERSION = "v19";
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const HINT_EXPLANATION = {
     en: "Tile {tile} touches the empty space, so sliding it is a legal move. You still choose whether to move it.",
@@ -52,7 +52,6 @@
   const stageSound = document.querySelector("#stageSound");
   if (stageHeader && stageProgress) stageHeader.insertBefore(stageProgress, stageSound || null);
   stageHeader?.querySelector(".logic-kicker")?.remove();
-  stageHeader?.querySelector("h1")?.remove();
   [...(stageHeader?.children || [])].forEach(node => {
     if (node.tagName === "DIV" && !node.children.length && !node.textContent.trim()) node.remove();
   });
@@ -60,7 +59,6 @@
   document.querySelector("#stageBrowseHint")?.remove();
 
   const battleHeader = document.querySelector("#logicBattle > .logic-battle-header");
-  battleHeader?.querySelector("h1")?.remove();
   document.querySelector(".battle-ad-reserve[data-wp-ad-reserve]")?.remove();
 
   const leaveDialog = document.querySelector("#logicLeave");
@@ -161,4 +159,145 @@
     gameVersion: GAME_VERSION,
     localeCount: LOCALES.length,
   });
+
+  function mountSliding15I9(currentApp) {
+    if (!currentApp || !window.WeightPlayScreenFrame || !window.WeightPlayPlayUI || !window.__Sliding15Campaign) return;
+    const frameRoot = currentApp.root.querySelector(".logic-lab");
+    const mainHeader = currentApp.main.querySelector("header");
+    const mainHero = currentApp.main.querySelector(".logic-hero");
+    const mainPoster = currentApp.main.querySelector(".logic-poster");
+    const mainImage = currentApp.main.querySelector(".main-poster");
+    const mainCopy = currentApp.main.querySelector(".logic-copy");
+    const localeSelect = currentApp.root.querySelector("#localePicker");
+    const localeOwner = localeSelect?.closest("label") || localeSelect;
+    const localeSource = document.createElement("div");
+    localeSource.hidden = true;
+    localeSource.dataset.wpFrameLocaleSource = "";
+    localeSource.setAttribute("aria-hidden", "true");
+    if (localeOwner) localeSource.append(localeOwner);
+    mainHeader.after(localeSource);
+    mainHeader.querySelector(".logic-header-tools")?.remove();
+    currentApp.main.querySelector(".logic-guide")?.remove();
+    currentApp.main.classList.add("wp-standard-main-screen", "wp-standard-main-flow-owner");
+    frameRoot.dataset.wpFrameRoot = "";
+    mainHero.classList.add("wp-standard-main-composition");
+    mainPoster.classList.add("wp-standard-main-poster");
+    mainImage.classList.add("wp-standard-main-poster-media");
+    mainImage.dataset.wpFramePoster = "";
+    mainImage.alt = currentApp.title;
+    mainCopy.classList.add("wp-standard-main-copy");
+    mainCopy.querySelector("h2")?.remove();
+    mainCopy.querySelector("p:not(.logic-kicker)")?.classList.add("wp-standard-main-summary");
+    mainCopy.querySelector("[data-wp-main-progress]")?.classList.add("wp-standard-main-progress");
+    mainCopy.querySelector("[data-wp-main-start]")?.classList.add("wp-standard-main-start");
+    mainHeader.querySelector("h1")?.setAttribute("data-wp-frame-title", "");
+
+    const stageHeader = currentApp.stage.querySelector("header");
+    const stageContent = document.createElement("div");
+    stageContent.className = "logic-stage-content";
+    stageHeader.after(stageContent);
+    for (const node of [...currentApp.stage.children]) if (node !== stageHeader && node !== stageContent) stageContent.append(node);
+    const stageNav = stageContent.querySelector(".stage-tabs");
+    const stagesTab = stageNav?.querySelector("button");
+    const stageNavLabel = stageNav?.getAttribute("aria-label") || "Stages";
+    stageNav?.remove();
+    const stageTitle = currentApp.stage.querySelector("h1");
+    const stageTitleGroup = stageTitle?.parentElement;
+    if (stageTitle) stageHeader.append(stageTitle);
+    stageHeader.append(currentApp.stageProgress);
+    stageTitleGroup?.remove();
+    currentApp.stage.classList.remove("code-breaker-stage-screen", "wp-standard-stage-panel", "wp-stage-art-shell");
+    currentApp.stage.style.removeProperty("--wp-stage-art");
+    currentApp.stage.dataset.wpFramePlayFill = "";
+    stageTitle?.setAttribute("data-wp-frame-title", "");
+    currentApp.stageSound?.remove();
+    currentApp.stageRail.id = "wp-sliding-15-stage-rail";
+    currentApp.stageRail.className = "wp-stage-i9-rail";
+    for (const marker of ["data-wp-stage-v6-auto", "data-wp-stage-v6-total", "data-wp-stage-recommendation", "data-wp-stage-total", "data-wp-stage-settle-duration", "data-wp-stage-settle-easing"]) currentApp.stageRail.removeAttribute(marker);
+
+    const battleHeader = currentApp.battle.querySelector("header");
+    currentApp.battle.classList.add("battle-canvas");
+    currentApp.battle.dataset.wpFramePlayFill = "";
+    currentApp.battle.querySelector("#logicBoard")?.classList.remove("battle-canvas");
+    battleHeader.querySelector("h1")?.setAttribute("data-wp-frame-title", "");
+    currentApp.battleContent = currentApp.battle.querySelector(".logic-battle-wrap");
+    const frame = window.WeightPlayScreenFrame.mount({
+      root: frameRoot,
+      localeSelect,
+      playUI: true,
+      scenes: {
+        main: { root: currentApp.main, header: mainHeader, content: mainHero },
+        stage: { root: currentApp.stage, header: stageHeader, content: stageContent },
+        battle: { root: currentApp.battle, header: battleHeader, content: currentApp.battleContent },
+      },
+    });
+    currentApp.frame = frame;
+    frame.stageTopUI.add(currentApp.stageProgress);
+    frame.battleTopUI.add(currentApp.battleChip);
+
+    const campaign = window.__Sliding15Campaign;
+    const progress = campaign.progress();
+    currentApp.stageSelection = progress.highestUnlocked;
+    currentApp.stageUi = window.WeightPlayPlayUI.mountStage({
+      page: stageContent,
+      rail: currentApp.stageRail,
+      config: {
+        gameId: "sliding-15",
+        poster: mainImage.currentSrc || mainImage.src,
+        background: "/assets/lobby-block-atmosphere.svg",
+        count: campaign.totalStages,
+        stage: index => campaign.stage(index + 1),
+      },
+      selected: progress.highestUnlocked - 1,
+      onSelect: index => { currentApp.stageSelection = index + 1; },
+      onStart: index => { currentApp.stageSelection = index + 1; currentApp.startGame(index + 1); },
+      isActive: () => frame.active === "stage" && !currentApp.stage.hidden,
+    });
+    if (stagesTab) {
+      frame.commonDownButton.element.dataset.wpFrameStageNav = "";
+      frame.commonDownButton.element.setAttribute("role", "tablist");
+      frame.commonDownButton.element.setAttribute("aria-label", stageNavLabel);
+      if (stagesTab) {
+        stagesTab.dataset.wpFrameAction = "tab";
+        stagesTab.dataset.wpFrameStageSlot = "stages";
+        stagesTab.setAttribute("aria-controls", currentApp.stageRail.id);
+        stagesTab.addEventListener("click", () => currentApp.stageRail.querySelector('[aria-current="true"]')?.focus({ preventScroll: true }));
+      }
+      frame.commonDownButton.add(stagesTab);
+    }
+
+    document.body.dataset.wpGameId = "sliding-15";
+    document.body.dataset.wpGameVersion = "v19";
+    document.body.dataset.wpInterfaceVersion = "9";
+    document.body.dataset.wpGameOwnedGuide = "true";
+    let activeScene = "";
+    const leaveDialog = currentApp.root.querySelector("#logicLeave");
+    const syncFrame = () => {
+      const scene = !currentApp.main.hidden ? "main" : !currentApp.stage.hidden ? "stage" : "battle";
+      const covered = scene === "battle" && (!currentApp.result.hidden || !leaveDialog.hidden);
+      if (currentApp.battleContent) {
+        currentApp.battleContent.inert = scene !== "battle" || covered;
+        currentApp.battleContent.setAttribute("aria-hidden", String(scene !== "battle" || covered));
+      }
+      const key = `${scene}:${covered}`;
+      if (key !== activeScene) {
+        frame.activate(scene, { covered });
+        activeScene = key;
+      }
+    };
+    currentApp.root.addEventListener("click", () => queueMicrotask(syncFrame));
+    const frameObserver = new MutationObserver(syncFrame);
+    for (const node of [currentApp.main, currentApp.stage, currentApp.battle, currentApp.result, leaveDialog]) {
+      if (node) frameObserver.observe(node, { attributes: true, attributeFilter: ["hidden"] });
+    }
+    window.addEventListener("pagehide", event => {
+      if (event.persisted) return;
+      frameObserver.disconnect();
+      currentApp.stageUi.destroy();
+      frame.destroy();
+    }, { once: true });
+    syncFrame();
+  }
+
+  mountSliding15I9(app);
 })();

@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide />
     <link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-shell-standard />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
     <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
     <script defer src="mastery.js?v=20260908-mastery-v15"></script>
     <script defer src="game.js?v=20261021-frost-i9"></script><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
@@ -64,9 +64,11 @@
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
         <div id="main-content" class="main-content">
           <img class="five-game-cover main-cover" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-frost-maze.webp" alt="" aria-hidden="true" />
-          <p class="lede main-summary" data-wp-frame-summary>Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
-          <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress>Best rooms: 0</p>
-          <button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button>
+          <div class="main-copy" data-wp-frame-copy>
+            <p class="lede main-summary" data-wp-frame-summary>Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
+            <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress>Best rooms: 0</p>
+            <button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button>
+          </div>
         </div>
       </section>
       <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
@@ -121,12 +123,12 @@
       <div class="game-info-section"><h3>Nota de design</h3><p>Editar o gelo muda a rota e tem um custo: quebrar abre uma passagem, enquanto construir desvia o errante. As primeiras 20 salas deixam claro o ritmo de perseguição de oito passos; nas salas 21–30 cada edição válida também faz parte da decisão de tempo. As cinco salas finais mostram a casa inicial dourada, então pegar a última fruta nem sempre é o último movimento.</p></div>
       <div class="game-info-section game-info-parent"><h3>Informações do jogador e salvamento</h3><p>A melhor sala concluída e o melhor resultado de estrelas de cada sala ficam salvos neste navegador. Limpar os dados do site apaga esses registros.</p></div>
       <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>O que preciso coletar?</dt><dd>Colete todas as frutas da sala. Nas salas 26–30, volte à casa inicial dourada depois de pegar a última fruta.</dd></div><div><dt>Quando o errante se move?</dt><dd>Ele avança a cada oito movimentos válidos de uma casa. A partir da sala 21, cada quebra ou construção de gelo válida também o move; movimentos bloqueados e edições inválidas não.</dd></div><div><dt>O que Construir Gelo faz?</dt><dd>Coloca uma parede curta na casa livre à frente quando o espaço é válido e muda a rota do errante. Nas salas 21–30, a edição válida também o move.</dd></div><div><dt>O que muda nas salas 21–25?</dt><dd>Cada edição de gelo válida faz o errante avançar; quebrar ou construir uma parede muda tanto o labirinto quanto o ritmo da perseguição. Uma edição inválida não o move.</dd></div><div><dt>Como ganho estrelas?</dt><dd>Concluir a sala rende uma estrela. Cumprir o limite de edições e a meta de passos exibida rende mais uma estrela por meta. O limite de edições é quatro nas salas 1–20 e duas nas 21–30. Não atingir uma meta ainda conta como conclusão.</dd></div><div><dt>Em quais salas preciso voltar ao início?</dt><dd>Nas salas 26–30. Colete todas as frutas e volte à casa inicial dourada para concluir a sala.</dd></div><div><dt>Quais dados de progresso ficam salvos?</dt><dd>A melhor sala concluída e as melhores estrelas por sala ficam neste navegador. Limpar os dados do site apaga os registros; eles não sincronizam entre dispositivos.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-unblock" data-related-game="animal-unblock" href="/pt-br/games/animal-unblock/"><img src="/assets/interface7-redrawn/animal-unblock.webp" alt="Unblock Trail" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-runtime-localize="off">Unblock Trail</strong><span data-frost-related-description>Slide horizontal and vertical blocks along their lanes to clear a path to the exit.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Arca de Carga</strong><span>Empurre, puxe e conduza cargas rúnicas por 30 armazéns celestes com gelo, sinais, ímãs e caixas ligadas.</span></span></a></div></div>
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2"></script>
+    <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
     <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
     <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
     <script src="stage-config.js?v=20261021-frost-i9"></script>

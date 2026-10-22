@@ -18,7 +18,6 @@
 
   if (!battle || !back || !confirm || !stay || !leave || !result || !confirmCopy) return;
 
-  document.documentElement.dataset.wpMazeChaseInterface = '7';
   // The old fallback used a portrait reference even on landscape phones,
   // shrinking every touch target to half size. Declare both authored tracks.
   battle.dataset.wpBattleMinWidth = '390';
@@ -26,7 +25,7 @@
   battle.dataset.wpBattleLandscapeWidth = '760';
   battle.dataset.wpBattleLandscapeHeight = '334';
 
-  // Sound belongs only to shared Settings in Interface 7. classic-chase-rocks
+  // Sound belongs only to shared Settings in Interface 9. classic-chase-rocks
   // keeps its disconnected reference for localization, but players no longer
   // get a second Battle audio control.
   if (privateSound) {

@@ -1642,6 +1642,27 @@
     hi: { title: "क्या इस खेल से बाहर जाएँ?", body: "यह अधूरा खेल सहेजा नहीं जाएगा। आपका स्थानीय रिकॉर्ड और अगले खेल का लक्ष्य बना रहेगा।", stay: "खेल जारी रखें", leave: "मुख्य स्क्रीन पर लौटें" },
     ar: { title: "هل تريد مغادرة هذه اللعبة؟", body: "لن تُحفظ هذه الجولة غير المكتملة. سيبقى سجلك المحلي وهدف اللعبة التالية.", stay: "متابعة اللعبة", leave: "العودة إلى الرئيسية" },
   };
+  const SPADES_RETURN_BODY = {
+    en: "Leaving now ends this hand.",
+    "zh-Hant": "現在離開會結束這個牌局。",
+    "zh-Hans": "现在离开会结束这局牌。",
+    ja: "今ここを離れると、この対局は終了します。",
+    ko: "지금 나가면 현재 판이 종료됩니다.",
+    es: "Si sales ahora, esta mano terminará.",
+    "pt-BR": "Se sair agora, esta mão será encerrada.",
+    fr: "En quittant maintenant, cette main prendra fin.",
+    de: "Wenn du jetzt gehst, endet diese Hand.",
+    it: "Uscendo ora, questa mano terminerà.",
+    ru: "Если выйти сейчас, эта раздача завершится.",
+    hi: "अभी बाहर जाने पर यह खेल समाप्त हो जाएगा।",
+    ar: "إذا غادرت الآن، ستنتهي هذه الجولة.",
+  };
+  const SPADES_RETURN_COPY = Object.fromEntries(
+    Object.entries(GO_FISH_RETURN_COPY).map(([locale, copy]) => [
+      locale,
+      { ...copy, body: SPADES_RETURN_BODY[locale] || SPADES_RETURN_BODY.en },
+    ]),
+  );
   const GO_FISH_PROGRESS_COPY = {
     en: { label: "Book progress", copy: "Complete four-of-a-kind books." },
     "zh-Hant": { label: "組牌進度", copy: "完成四張同點數牌的組牌。" },
@@ -2020,7 +2041,7 @@
     const result = document.querySelector("#resultOverlay");
     const resultTitle = document.querySelector("#resultTitle");
     const resultText = document.querySelector("#resultText");
-    const ownsI9ResultFocus = id === "gin-rummy" || (id === "crazy-eights" && /^9(?:\.|$)/u.test(rootElement?.dataset.wpInterfaceVersion || ""));
+    const ownsI9ResultFocus = id === "gin-rummy" || ((id === "crazy-eights" || id === "spades" || id === "hearts" || id === "old-maid") && /^9(?:\.|$)/u.test(rootElement?.dataset.wpInterfaceVersion || ""));
     let i9ResultReturnFocus = null;
     const i9ResultControls = () => [...(result?.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])') || [])]
       .filter((control) => control.getClientRects().length > 0);
@@ -2514,7 +2535,8 @@
       if (view.refreshTimer) clearTimeout(view.refreshTimer);
     };
     const showCardGameReturnDialog = () => {
-      const copy = GO_FISH_RETURN_COPY[currentLocale()] || GO_FISH_RETURN_COPY.en;
+      const returnCopy = (id === "spades" || id === "hearts") ? SPADES_RETURN_COPY : GO_FISH_RETURN_COPY;
+      const copy = returnCopy[currentLocale()] || returnCopy.en;
       const trigger = document.querySelector("#battleBackBtn");
       const tableUi = battle.querySelector(".card-table-ui");
       const wasInert = Boolean(tableUi?.inert);
@@ -2596,7 +2618,7 @@
     };
     battle.addEventListener("click", clickHandler);
     document.querySelector("#battleBackBtn")?.addEventListener("click", (event) => {
-      if (id === "go-fish" && result.hidden) {
+      if ((id === "go-fish" || (ownsI9ResultFocus && (id === "spades" || id === "hearts"))) && result.hidden) {
         event.stopImmediatePropagation();
         event.stopPropagation();
         showCardGameReturnDialog();
@@ -2626,7 +2648,7 @@
       if (ownsI9ResultFocus) window.requestAnimationFrame(restoreI9BattleFocus);
     });
     document.querySelector("#resultClose")?.addEventListener("click", () => {
-      if (id === "old-maid" || id === "hearts") { if (id === "old-maid") oldMaidTrack("back", { source: "result" }); controller.openMain(); }
+      if (id === "old-maid" || id === "hearts") { if (id === "old-maid") oldMaidTrack("back", { source: "result" }); controller.openMain(); if ((id === "hearts" || id === "old-maid") && ownsI9ResultFocus) document.querySelector("#startBtn")?.focus({ preventScroll: true }); }
       else { (__wpNotifyMeasurement(), result.hidden = true); render(); if (ownsI9ResultFocus) window.requestAnimationFrame(restoreI9BattleFocus); }
     });
     document.querySelector("#startBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("old_maid_start", { source: "main" }); game.reset(); controller.openBattle(); });
@@ -2766,6 +2788,10 @@
 
   function makeHearts(controller) {
     const s = { hands: [], scores: [0, 0, 0, 0], penaltyHearts: [0, 0, 0, 0], penaltyQueens: [0, 0, 0, 0], turn: 0, lead: 0, trick: [], heartsBroken: false, phase: "pass", selected: new Set(), passReceived: false, winner: null };
+    let aiTimer = null;
+    let paused = false;
+    const cancelAi = () => { if (aiTimer !== null) clearTimeout(aiTimer); aiTimer = null; };
+    const scheduleAi = () => { cancelAi(); aiTimer = setTimeout(() => { aiTimer = null; if (!paused) aiTurn(); }, 220); };
     const aiNames = heartsShellCopy()?.opponents || ["You", "Orchid", "Mango", "Nova"];
     const legal = (handCards, trick) => {
       const leadSuit = trick[0]?.card.suit;
@@ -2781,12 +2807,15 @@
     };
     const scoreTrick = () => { const hearts = s.trick.filter((entry) => entry.card.suit === "hearts").length; const queen = s.trick.some((entry) => entry.card.suit === "spades" && entry.card.rank === 12) ? 13 : 0; const points = hearts + queen; const winner = trickWinner(s.trick); s.scores[winner] += points; s.penaltyHearts[winner] += hearts; s.penaltyQueens[winner] += queen; if (hearts) s.heartsBroken = true; s.trick = []; s.turn = winner; s.lead = winner; return { points, winner }; };
     const finish = () => { const moon = s.scores.findIndex((score) => score === 26); if (moon >= 0) { s.scores = s.scores.map((score, index) => index === moon ? score - 26 : score + 26); } const playerWon = s.scores[0] === Math.min(...s.scores); const lesson = heartsResultText(s.penaltyHearts[0], s.penaltyQueens[0], moon >= 0); controller.result(playerWon, `${t("score")}: ${s.scores[0]} · ${t("points")}: ${s.scores.join(" / ")} · ${lesson}`); };
-    const play = (player, item) => { const handCards = s.hands[player]; const index = handCards.indexOf(item); if (index < 0) return; const legalCards = legal(handCards, s.trick); if (!legalCards.includes(item)) return; if (!s.trick.length && player === 0 && s.hands[0].length === 13 && !(item.suit === "clubs" && item.rank === 2)) return; handCards.splice(index, 1); s.trick.push({ player, card: item }); if (item.suit === "hearts") s.heartsBroken = true; s.turn = (player + 1) % 4; if (s.trick.length === 4) { scoreTrick(); if (!s.hands.some((cards) => cards.length)) { finish(); return; } } if (s.turn !== 0) setTimeout(() => aiTurn(), 220); };
-    const aiTurn = () => { if (s.phase !== "play" || s.turn === 0) return; const item = chooseAiCard(s.hands[s.turn], legal(s.hands[s.turn], s.trick), "low"); if (item) play(s.turn, item); };
+    const play = (player, item) => { const handCards = s.hands[player]; const index = handCards.indexOf(item); if (index < 0) return; const legalCards = legal(handCards, s.trick); if (!legalCards.includes(item)) return; if (!s.trick.length && player === 0 && s.hands[0].length === 13 && !(item.suit === "clubs" && item.rank === 2)) return; handCards.splice(index, 1); s.trick.push({ player, card: item }); if (item.suit === "hearts") s.heartsBroken = true; s.turn = (player + 1) % 4; if (s.trick.length === 4) { scoreTrick(); if (!s.hands.some((cards) => cards.length)) { finish(); return; } } if (s.turn !== 0) scheduleAi(); };
+    const aiTurn = () => { if (paused || s.phase !== "play" || s.turn === 0) return; const item = chooseAiCard(s.hands[s.turn], legal(s.hands[s.turn], s.trick), "low"); if (item) play(s.turn, item); };
     return {
-      reset() { Object.assign(s, { hands: [[], [], [], []], scores: [0, 0, 0, 0], penaltyHearts: [0, 0, 0, 0], penaltyQueens: [0, 0, 0, 0], turn: 0, lead: 0, trick: [], heartsBroken: false, phase: "pass", selected: new Set(), passReceived: false }); deck().forEach((item, index) => s.hands[index % 4].push(item)); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); },
+      reset() { cancelAi(); paused = false; Object.assign(s, { hands: [[], [], [], []], scores: [0, 0, 0, 0], penaltyHearts: [0, 0, 0, 0], penaltyQueens: [0, 0, 0, 0], turn: 0, lead: 0, trick: [], heartsBroken: false, phase: "pass", selected: new Set(), passReceived: false }); deck().forEach((item, index) => s.hands[index % 4].push(item)); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); },
+      pause() { paused = true; cancelAi(); },
+      resume() { if (!paused) return; paused = false; if (s.phase === "play" && s.turn !== 0) scheduleAi(); },
+      stop() { paused = true; cancelAi(); },
       card(index) { if (s.phase === "pass" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 3) s.selected.add(index); } else if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); },
-      action(action) { if (action === "pass" && s.phase === "pass" && s.selected.size === 3) { const selected = [...s.selected].sort((a, b) => b - a).map((index) => s.hands[0].splice(index, 1)[0]); selected.forEach((item) => s.hands[1].push(item)); const aiPass = s.hands[1].slice(0, 3); aiPass.forEach((item) => s.hands[1].splice(s.hands[1].indexOf(item), 1)); s.hands[0].push(...aiPass); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); s.phase = "play"; s.turn = s.hands.findIndex((cards) => cards.some((item) => item.suit === "clubs" && item.rank === 2)); if (s.turn !== 0) setTimeout(() => aiTurn(), 220); } },
+      action(action) { if (action === "pass" && s.phase === "pass" && s.selected.size === 3) { const selected = [...s.selected].sort((a, b) => b - a).map((index) => s.hands[0].splice(index, 1)[0]); selected.forEach((item) => s.hands[1].push(item)); const aiPass = s.hands[1].slice(0, 3); aiPass.forEach((item) => s.hands[1].splice(s.hands[1].indexOf(item), 1)); s.hands[0].push(...aiPass); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); s.phase = "play"; s.turn = s.hands.findIndex((cards) => cards.some((item) => item.suit === "clubs" && item.rank === 2)); if (s.turn !== 0) scheduleAi(); } },
       view() { const trickHtml = s.trick.map((entry) => `<div>${aiNames[entry.player]} ${cardMarkup(entry.card, 0)}</div>`).join(""); const action = s.phase === "pass" ? `<button class="primary-btn" data-action="pass" ${s.selected.size !== 3 ? "disabled" : ""}>${t("pass")} 3</button>` : `<p class="card-help">${s.heartsBroken ? "♥ " : ""}${t("yourTurn")}</p>`; const shellCopy = heartsShellCopy(); const firstLead = shellCopy?.lead || "2♣ leads the first trick"; const lead = s.hands[0].length === 13 && !s.trick.length ? firstLead : shellCopy?.leadBy ? shellCopy.leadBy.replace("{name}", aiNames[s.lead] || aiNames[0]) : `${aiNames[s.lead] || aiNames[0]} leads`; return { phase: s.phase === "pass" ? t("pass") : (s.heartsBroken ? "♥" : "♥ · " + t("waiting")), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "pass" ? heartsPassText(s.hands[0], s.selected) : heartsText(), score: s.scores[0], opponents: s.hands.slice(1).map((cards, index) => heartsOpponentMarkup(aiNames[index + 1], cards.length, `${t("points")}: ${s.scores[index + 1]}`)).join(""), center: `<div class="card-table-label">${t("table")}</div><div class="table-row">${trickHtml || `<span>${lead}</span>`}</div>`, hand: cardsMarkup(s.hands[0], { selected: s.selected, hidden: false }), actions: action }; },
     };
   }
@@ -2794,13 +2823,20 @@
   function makeSpades(controller) {
     const s = { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], lastTrick: null, phase: "bid", scores: [0, 0] };
     const names = spadesOpponentNames();
+    let aiTimer = null;
+    let paused = false;
+    const cancelAi = () => { if (aiTimer !== null) clearTimeout(aiTimer); aiTimer = null; };
+    const scheduleAi = () => { cancelAi(); aiTimer = setTimeout(() => { aiTimer = null; if (!paused) aiTurn(); }, 180); };
     const legal = (cards) => { const lead = s.trick[0]?.card.suit; const suited = lead ? cards.filter((item) => item.suit === lead) : []; return suited.length ? suited : cards; };
     const finish = () => { const own = s.tricks[0] >= s.bids[0] + s.bids[2]; const enemy = s.tricks[1] >= s.bids[1] + s.bids[3]; const teamBid = s.bids[0] + s.bids[2]; s.scores[0] += own ? 10 * teamBid + Math.max(0, s.tricks[0] - teamBid) : -10 * teamBid; s.scores[1] += enemy ? 10 * (s.bids[1] + s.bids[3]) + Math.max(0, s.tricks[1] - s.bids[1] - s.bids[3]) : -10 * (s.bids[1] + s.bids[3]); const playerWon = s.scores[0] >= s.scores[1]; controller.result(playerWon, spadesResultText(teamBid, s.tricks[0], s.scores[0], s.scores[1], playerWon, own)); };
     const currentWinnerEntry = () => { const winner = trickWinner(s.trick, "spades"); return s.trick.find((entry) => entry.player === winner) || null; };
-    const play = (player, item) => { const cards = s.hands[player]; if (!legal(cards).includes(item)) return; if (!s.trick.length) s.lastTrick = null; cards.splice(cards.indexOf(item), 1); s.trick.push({ player, card: item }); s.turn = (player + 1) % 4; if (s.trick.length === 4) { const winningEntry = currentWinnerEntry(); const winner = winningEntry?.player; s.lastTrick = winningEntry ? { card: winningEntry.card, leadSuit: s.trick[0]?.card.suit } : null; s.tricks[winner % 2 === 0 ? 0 : 1] += 1; s.trick = []; s.turn = winner; if (!s.hands[0].length) { finish(); return; } } if (s.turn !== 0) setTimeout(aiTurn, 180); };
-    const aiTurn = () => { if (s.phase !== "play" || s.turn === 0) return; play(s.turn, chooseAiCard(s.hands[s.turn], legal(s.hands[s.turn]), s.turn % 2 ? "low" : "high")); };
+    const play = (player, item) => { const cards = s.hands[player]; if (!legal(cards).includes(item)) return; if (!s.trick.length) s.lastTrick = null; cards.splice(cards.indexOf(item), 1); s.trick.push({ player, card: item }); s.turn = (player + 1) % 4; if (s.trick.length === 4) { const winningEntry = currentWinnerEntry(); const winner = winningEntry?.player; s.lastTrick = winningEntry ? { card: winningEntry.card, leadSuit: s.trick[0]?.card.suit } : null; s.tricks[winner % 2 === 0 ? 0 : 1] += 1; s.trick = []; s.turn = winner; if (!s.hands[0].length) { finish(); return; } } if (s.turn !== 0) scheduleAi(); };
+    const aiTurn = () => { if (paused || s.phase !== "play" || s.turn === 0) return; play(s.turn, chooseAiCard(s.hands[s.turn], legal(s.hands[s.turn]), s.turn % 2 ? "low" : "high")); };
     return {
-      reset() { Object.assign(s, { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], lastTrick: null, phase: "bid", scores: [0, 0] }); deck().forEach((item, index) => s.hands[index % 4].push(item)); },
+      reset() { cancelAi(); paused = false; Object.assign(s, { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], lastTrick: null, phase: "bid", scores: [0, 0] }); deck().forEach((item, index) => s.hands[index % 4].push(item)); },
+      pause() { paused = true; cancelAi(); },
+      resume() { if (!paused) return; paused = false; if (s.phase === "play" && s.turn !== 0) scheduleAi(); },
+      stop() { paused = true; cancelAi(); },
       card(index) { if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); },
       action(action, selected) { if (s.phase === "bid" && action === "bid") { s.bids[0] = Number(selected); s.bids[1] = 2 + Math.floor(Math.random() * 3); s.bids[2] = 2 + Math.floor(Math.random() * 4); s.bids[3] = 2 + Math.floor(Math.random() * 3); s.phase = "play"; s.turn = 0; } },
       view() {

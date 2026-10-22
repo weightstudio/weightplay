@@ -80,9 +80,10 @@
     "animal-tangram": [".battle", 390, 788, 760, 334],
     "animal-bamboo-pipes": ["#battle", 390, 788, 760, 334],
     "animal-abyss-diver": [".battle-canvas", 390, 788, 760, 334],
-    // Balance Grove's two-column subset tray needs the wide short-landscape
-    // envelope so its Back and Check controls remain physical touch targets.
-    "animal-balance-grove": [".battle-canvas", 390, 788, 760, 334],
+    // Balance Grove's permanent shared Battle scene owns the logical Canvas;
+    // its former inner .battle-canvas wrapper no longer exists after I9.
+    // Keep the two-column subset tray in the wide short-landscape envelope.
+    "animal-balance-grove": ["#battleScreen", 390, 788, 760, 334],
     // Layer Grove's stacked-layer actions must stay reachable in the 1280x720
     // desktop envelope as well as compact landscape.
     "animal-layer-grove": [".battle-canvas", 390, 788, 760, 334],
@@ -273,6 +274,7 @@
   };
 
   const savedStyles = new WeakMap();
+  const savedCanvasModes = new WeakMap();
   const reserveOrigins = new WeakMap();
   let activeRoot = null;
   let activeReserve = null;
@@ -317,7 +319,12 @@
   const restoreRoot = (node) => {
     restore(node);
     clearMainRootGeometry(node);
-    node?.removeAttribute("data-wp-logical-battle-canvas");
+    if (node && savedCanvasModes.has(node)) {
+      const priorMode = savedCanvasModes.get(node);
+      if (priorMode === null) node.removeAttribute("data-wp-logical-battle-canvas");
+      else node.setAttribute("data-wp-logical-battle-canvas", priorMode);
+      savedCanvasModes.delete(node);
+    }
   };
   const restoreReserve = (node) => {
     restore(node);
@@ -414,6 +421,7 @@
     ));
     const logicalWidth = availableWidth / scale;
     const logicalHeight = availableHeight / scale;
+    if (!savedCanvasModes.has(root)) savedCanvasModes.set(root, root.getAttribute("data-wp-logical-battle-canvas"));
     root.setAttribute("data-wp-logical-battle-canvas", `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`);
     const renderedWidth = availableWidth;
     const renderedHeight = availableHeight;

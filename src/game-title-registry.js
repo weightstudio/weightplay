@@ -15,6 +15,38 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "पीच गार्डन शपथ",
     "ar": "عهد حديقة الخوخ"
   },
+  "kindred-habitats": {
+    "__localizedExact": true,
+    "en": "Kindred Habitats",
+    "zh-Hant": "棲旅圖鑑",
+    "zh-Hans": "栖旅图鉴",
+    "ja": "いきものの絆図鑑",
+    "ko": "서식지 친구 도감",
+    "es": "Hábitats en armonía",
+    "pt-BR": "Laços da natureza",
+    "fr": "Compagnons des habitats",
+    "de": "Gefährten der Lebensräume",
+    "it": "Legami della natura",
+    "ru": "Атлас дружбы с природой",
+    "hi": "प्रकृति के साथी",
+    "ar": "رفاق المواطن الطبيعية"
+  },
+  "deep-drill": {
+    "__localizedExact": true,
+    "en": "Deep Drill",
+    "zh-Hant": "地心鑽探",
+    "zh-Hans": "Deep Drill",
+    "ja": "Deep Drill",
+    "ko": "Deep Drill",
+    "es": "Deep Drill",
+    "pt-BR": "Deep Drill",
+    "fr": "Deep Drill",
+    "de": "Deep Drill",
+    "it": "Deep Drill",
+    "ru": "Deep Drill",
+    "hi": "Deep Drill",
+    "ar": "Deep Drill"
+  },
   "fusekeep": {
     "__localizedExact": true,
     "en": "Fusekeep",
@@ -2545,7 +2577,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
   },
   "animal-river-gates": {
     "__localizedExact": true,
-    "en": "River Gates",
+    "en": "River Gate Water Routing",
     "zh-Hant": "河閘水量調度",
     "zh-Hans": "河闸水量调度",
     "ja": "水門の水量配分",
@@ -2942,21 +2974,5 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Мурчащий домик",
     "hi": "म्याऊँ का आशियाना",
     "ar": "بيت الخرخرة"
-  },
-  "kindred-habitats": {
-    "__localizedExact": true,
-    "en": "Kindred Habitats",
-    "zh-Hant": "棲旅圖鑑",
-    "zh-Hans": "栖旅图鉴",
-    "ja": "いきものの絆図鑑",
-    "ko": "서식지 친구 도감",
-    "es": "Hábitats en armonía",
-    "pt-BR": "Laços da natureza",
-    "fr": "Compagnons des habitats",
-    "de": "Gefährten der Lebensräume",
-    "it": "Legami della natura",
-    "ru": "Атлас дружбы с природой",
-    "hi": "प्रकृति के साथी",
-    "ar": "رفاق المواطن الطبيعية"
   }
 };

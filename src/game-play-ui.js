@@ -6,7 +6,7 @@
   const clamp = (n, max) => Math.max(0, Math.min(max, n));
   function mountStage({page, rail, config, selected = 0, onSelect = () => {}, onStart, isActive = () => true}) {
     if (mounted.has(rail)) return mounted.get(rail);
-    if (!page || !rail || !config?.count || typeof config.stage !== 'function' || typeof onStart !== 'function') throw new TypeError('PLAY_UI_STAGE_CONFIG_REQUIRED');
+    if (!page || !rail || !Number.isInteger(config?.count) || config.count < 1 || typeof config.stage !== 'function' || typeof onStart !== 'function') throw new TypeError('PLAY_UI_STAGE_CONFIG_REQUIRED');
     const abort = new AbortController();
     const listen = (node, type, fn) => node.addEventListener(type, fn, {signal:abort.signal});
     const scene = page.closest('[data-wp-frame-scene="stage"]');
@@ -36,7 +36,8 @@
     toggle.setAttribute('aria-controls',details.id); briefing.append(toggle,copy,details); page.append(briefing);
     listen(toggle,'click',() => { details.hidden = !details.hidden; toggle.setAttribute('aria-expanded',String(!details.hidden)); });
     let current = clamp(Math.round(selected),config.count-1), start = 0, closed = false, resizeFrame = 0;
-    const poolSize = Math.min(9,config.count), cards = [];
+    let poolSize = Math.min(9,config.count);
+    const cards = [];
     const desiredStart = index => clamp(Math.round(index)-Math.floor(poolSize/2),config.count-poolSize);
     function bind(card,index) {
       const item = config.stage(index);
@@ -91,26 +92,36 @@
       for (const card of cards) {const box=card.getBoundingClientRect(), delta=g.center-box.left-box.width/2;if(Math.abs(delta)<distance){distance=Math.abs(delta);nearest={index:Number(card.dataset.stageIndex),delta};}}
       return nearest ? clamp(nearest.index+nearest.delta/(g.pitch*g.direction),config.count-1) : current;
     }
-    function select(index,{center=true,focus=false,notify=true}={}) {
+    function select(index,{center=true,focus=false,notify=true,source='programmatic'}={}) {
       current=clamp(Math.round(index),config.count-1); moveWindow(current); sync();
       if(center)position(current);
-      if(notify)onSelect(current);
+      if(notify)onSelect(current,{locked:Boolean(config.stage(current).locked),source});
       if(focus)rail.querySelector('[aria-current="true"]')?.focus({preventScroll:true});
     }
-    function startStage(index,event) { if (!config.stage(index).locked) {select(index);onStart(index,event);} }
-    rail.replaceChildren(); start=desiredStart(current);
-    for(let i=0;i<poolSize;i++) {
-      const card=document.createElement('button');card.type='button';card.className='stage-card';card.dataset.wpStagePoolNode=String(i+1);
+    function createCard(index) {
+      const card=document.createElement('button');card.type='button';card.className='stage-card';card.dataset.wpStagePoolNode=String(index+1);
       const art=document.createElement('i');art.className='wp-stage-i9-card-art';art.setAttribute('aria-hidden','true');
       const content=document.createElement('div');content.dataset.wpItemContent='';
       for(const tag of ['em','strong','span','small'])content.append(document.createElement(tag));card.append(art,content);
-      bind(card,start+i);rail.append(card);cards.push(card);
       listen(card,'click',event => startStage(Number(card.dataset.stageIndex),event));
+      return card;
     }
-    rail.dataset.wpStagePoolSize=String(poolSize);
+    function rebuildPool() {
+      const reusable = cards.length === poolSize ? [...rail.children] : [];
+      poolSize = Math.min(9,config.count);
+      const reusableCards = reusable.length === poolSize ? reusable : [];
+      rail.replaceChildren(); cards.length=0; start=desiredStart(current);
+      for(let i=0;i<poolSize;i++) {
+        const card=reusableCards[i] || createCard(i);card.dataset.wpStagePoolNode=String(i+1);
+        bind(card,start+i);rail.append(card);cards.push(card);
+      }
+      Object.assign(rail.dataset,{wpStagePoolSize:String(poolSize),wpStageTotal:String(config.count),wpStageWindowStart:String(start),wpStageWindowEnd:String(start+poolSize-1),wpStageRecycleCount:'0'});
+    }
+    function startStage(index,event) { select(index,{source:'activation'}); if (!config.stage(index).locked) onStart(index,event); }
+    rebuildPool();
     const drag=window.WeightPlayStageRailI9.attachLogical(rail,{
       readPosition,writePosition:position,pitch:()=>geometry().pitch,direction:()=>geometry().direction,count:()=>config.count,
-      onStart:()=>isActive(),commitIndex:index=>select(index,{center:false}),onSettled:index=>select(index,{focus:false}),
+      onStart:()=>isActive(),commitIndex:index=>select(index,{center:false,source:'drag'}),onSettled:index=>select(index,{focus:false,source:'settled'}),
     });
     listen(rail,'keydown',event => {
       // A focused card can retain focus after its owning Stage scene is hidden.
@@ -119,7 +130,7 @@
       if(!isActive())return;
       if(event.repeat && ['Enter',' '].includes(event.key)){event.preventDefault();return;}
       const next=window.WeightPlayStageRailI9.keyboardIndex(event.key,current+1,config.count,getComputedStyle(rail).direction==='rtl');
-      if(next!==null){event.preventDefault();drag.cancel();select(next-1,{focus:true});}
+      if(next!==null){event.preventDefault();drag.cancel();select(next-1,{focus:true,source:'keyboard'});}
     });
     function layout() {
       resizeFrame=0; if(closed || !page.getClientRects().length || !page.offsetWidth)return;
@@ -138,7 +149,16 @@
     listen(window,'resize',scheduleLayout);listen(window,'weightplay:stage-sync',scheduleLayout);
     listen(window,'weightplay:play-actions-change',scheduleLayout);
     const api=Object.freeze({
-      select, refresh(index=current){
+      select, setConfig(nextConfig,index=current){
+        if(!nextConfig || !Number.isInteger(nextConfig.count) || nextConfig.count<1 || typeof nextConfig.stage!=='function') throw new TypeError('PLAY_UI_STAGE_CONFIG_REQUIRED');
+        drag.cancel();
+        config=nextConfig;
+        current=clamp(Math.round(index),config.count-1);
+        rebuildPool();sync();
+        if(page.getClientRects().length&&page.offsetWidth){if(resizeFrame)cancelAnimationFrame(resizeFrame);resizeFrame=0;layout();}
+        else scheduleLayout();
+        return current;
+      }, refresh(index=current){
         drag.cancel();
         current=clamp(Math.round(index),config.count-1);
         moveWindow(current);
@@ -156,7 +176,16 @@
       destroy(){if(closed)return;closed=true;drag.dispose();resize.disconnect();abort.abort();cancelAnimationFrame(resizeFrame);mounted.delete(rail);},
     });
     listen(window,'pagehide',event=>{if(!event.persisted)api.destroy();});
-    mounted.set(rail,api);sync();scheduleLayout();return api;
+    mounted.set(rail,api);sync();
+    // The first Stage mount occurs after Frame activation, but it still needs
+    // its fitted card geometry before that activation paints. Match refresh()
+    // so initial entry does not leave one frame of default card sizing.
+    if(page.getClientRects().length&&page.offsetWidth){
+      if(resizeFrame)cancelAnimationFrame(resizeFrame);
+      resizeFrame=0;
+      layout();
+    }else scheduleLayout();
+    return api;
   }
   window.WeightPlayPlayUI=Object.freeze({version:1,mountStage});
 })();

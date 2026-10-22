@@ -1,49 +1,38 @@
-/* Game-owned content tracks; shared shell retains geometry and navigation. */
+/* Game-owned Battle content. The shared frame and Play UI own scene geometry. */
 #main-screen[hidden], #stage-screen[hidden], #battle-screen[hidden] { display: none !important; }
-#stage-screen { display: grid !important; grid-template-rows: 48px minmax(0,1fr) 56px !important; align-items: stretch !important; justify-content: stretch !important; padding: 8px !important; }
-#stage-screen > .stage-header { grid-row: 1; align-self: start; width: 100%; }
-#stage-screen > .stage-header :is([data-wp-return="stage"],.wp-shell-settings-button) {
-  width: max(48px, calc(48px * var(--wp-stage-canvas-inverse-scale, 1))) !important;
-  min-width: max(48px, calc(48px * var(--wp-stage-canvas-inverse-scale, 1))) !important;
-  max-width: max(48px, calc(48px * var(--wp-stage-canvas-inverse-scale, 1))) !important;
-  height: max(48px, calc(48px * var(--wp-stage-canvas-inverse-scale, 1))) !important;
-  min-height: max(48px, calc(48px * var(--wp-stage-canvas-inverse-scale, 1))) !important;
-  max-height: max(48px, calc(48px * var(--wp-stage-canvas-inverse-scale, 1))) !important;
-}
-#stage-screen > .stage-header h2 { display: none !important; }
-#stage-screen #stage-list { position: absolute; inset-inline: 0; top: clamp(151px, calc(48px + (100% - 104px) * .38), calc(100% - 159px)); transform: translateY(-50%); width: 100%; max-width: none; padding-inline: max(24px, calc((100% - 264px) / 2)) !important; }
-#stage-screen .stage-tabs { grid-row: 3; align-self: end; }
-#stage-screen #stage-list[data-wp-stage-virtual-drag="true"] { scroll-behavior: auto !important; scroll-snap-type: none !important; }
-#stage-screen .stage-card.is-centered { border: 2px solid #a4ead5 !important; box-shadow: 0 0 18px #a4ead566; }
-#stage-screen .stage-card.locked { color: #cbd8e8; background: #182d44; }
-#stage-screen .stage-card small { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 #trail-leave[hidden] { display: none !important; }
 #trail-leave { position: absolute; inset: 0; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px; background: #0c1728f5; animation: trail-enter 180ms ease-out; }
 #trail-leave > :is(p,button) { width: min(100%,360px); max-width: 100%; text-align: center; }
 #trail-leave > button { min-height: 48px; }
-#battle-screen {
+
+/* This is only the content lane inside the shared logical Battle canvas. */
+#battle-screen { position: relative !important; }
+#battle-content {
+  box-sizing: border-box !important;
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-  grid-template-rows: 48px 64px minmax(160px, 1fr) 56px 64px 40px !important;
+  grid-template-columns: minmax(0,1fr) !important;
+  grid-template-rows: 64px minmax(160px,1fr) 56px 64px 40px !important;
   gap: 8px !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
   padding: 8px !important;
-  background: #091426;
+  overflow: hidden !important;
+  position: relative !important;
 }
-#battle-screen > .battle-header { grid-area: 1 / 1 !important; min-width: 0; }
-#battle-screen .trail-hud { display: flex; justify-content: center; align-items: center; gap: 12px; min-width: 0; overflow: hidden; }
-#battle-screen #room-label { position: static !important; transform: none !important; font-size: 16px; white-space: nowrap; }
-#battle-screen #death-label { position: static !important; transform: none !important; font-size: 13px; white-space: nowrap; }
-#battle-screen #battle-pulse { width: 80px; min-width: 80px; padding: 4px; font-size: 13px; white-space: nowrap; }
-#battle-screen > #battle-status {
-  grid-area: 2 / 1 !important;
+#battle-content > #battle-status {
+  grid-row: 1 !important;
   display: flex; align-items: center; justify-content: center;
-  height: 64px; margin: 0; padding: 8px 12px;
+  min-width: 0; height: 64px; margin: 0; padding: 8px 12px;
   font-size: 15px; line-height: 1.35; text-align: center;
   color: #ecf5ff; background: #172b43; border-inline-start: 3px solid #a4ead5;
   border-radius: 8px; overflow: hidden;
 }
-#battle-screen > #arena {
-  grid-area: 3 / 1 !important;
+#battle-content > #arena {
+  grid-row: 2 !important;
+  box-sizing: border-box !important;
+  display: block !important;
   width: 100% !important; height: 100% !important;
   max-height: none !important; min-height: 0 !important;
   max-width: none !important; aspect-ratio: auto !important;
@@ -55,8 +44,8 @@
 .trail-render-state[hidden] { display: none !important; }
 .trail-render-state { position: absolute; inset: 8px; z-index: 7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 20px; border-radius: 12px; background: #10243aee; color: #f4edda; text-align: center; }
 .trail-render-state button { min-height: 48px; width: min(100%,280px); }
-#battle-screen > .trail-guide {
-  grid-area: 4 / 1; height: 56px; overflow: hidden;
+#battle-content > .trail-guide {
+  grid-row: 3 !important; height: 56px; min-width: 0; overflow: hidden;
   display: grid; grid-template-rows: 24px 24px; gap: 4px;
   padding: 0 8px; color: #cbd8e8;
 }
@@ -64,52 +53,58 @@
 .trail-progress { display: flex; align-items: center; gap: 8px; font-size: 12px; }
 #trail-route { flex: 1; min-width: 0; height: 7px; accent-color: #a4ead5; }
 #trail-distance { width: 4ch; text-align: end; font-variant-numeric: tabular-nums; }
-#battle-screen > .touch-controls {
-  grid-area: 5 / 1 !important; display: grid !important;
+#battle-content > .touch-controls {
+  grid-row: 4 !important; display: grid !important;
   grid-template-columns: 1fr 1fr 1.4fr 1.1fr !important;
   align-content: stretch !important; gap: 8px !important;
-  height: 64px; margin: 0; padding: 0 !important;
+  height: 64px; min-width: 0; margin: 0; padding: 0 !important;
 }
-#battle-screen .touch-controls > button {
+#battle-content .touch-controls > button {
   min-width: 0 !important; width: 100%; height: 64px !important;
   min-height: 44px; padding: 4px !important; font-size: 17px;
   touch-action: none; user-select: none; white-space: nowrap;
   transition: background-color 100ms, box-shadow 100ms, transform 100ms;
 }
-#battle-screen .touch-controls > button.is-held {
+#battle-content .touch-controls > button.is-held {
   background: #3a6677; box-shadow: inset 0 0 0 2px #a4ead5; transform: translateY(2px);
 }
-#battle-screen > .touch-hint {
-  grid-area: 6 / 1 !important; align-self: center !important;
-  height: 40px; padding: 4px !important; margin: 0;
+#battle-content > .touch-hint {
+  grid-row: 5 !important; align-self: center !important;
+  height: 40px; min-width: 0; padding: 4px !important; margin: 0;
   font-size: 12px; line-height: 1.3; color: #cbd8e8;
 }
 #battle-screen #result-screen { background: #071426d9; text-shadow: 0 2px 8px #071426; }
 #battle-screen #result-screen #result-title { color: #ffe0a0; }
 #battle-screen #result-screen:not([hidden]) { animation: trail-enter 180ms ease-out; }
+#battle-screen:has(#result-screen:not([hidden])) > :not(#result-screen) { visibility: hidden; pointer-events: none; }
+#battle-screen:has(#result-screen:not([hidden])) > #battle-content { visibility: visible; pointer-events: none; }
+#battle-screen:has(#result-screen:not([hidden])) #battle-content > :not(#arena) { visibility: hidden; }
+#battle-screen:has(#result-screen:not([hidden])) #battle-content > #arena { visibility: visible; opacity: .45; }
+#battle-screen #result-screen #next:disabled { opacity: .45; cursor: default; }
 #main-screen.active:not([hidden]) :is(.main-poster,.main-summary),
 #stage-screen.active:not([hidden]) #stage-list,
-#battle-screen.active:not([hidden]) > #arena { animation: trail-enter 180ms ease-out; }
-#battle-screen:has(#result-screen:not([hidden])) > :not(#result-screen) { visibility: hidden; pointer-events: none; }
-#battle-screen:has(#result-screen:not([hidden])) > #arena { visibility: visible; opacity: .45; }
-#battle-screen #result-screen #next:disabled { opacity: .45; cursor: default; }
+#battle-screen.active:not([hidden]) #battle-content > #arena { animation: trail-enter 180ms ease-out; }
 @keyframes trail-enter { from { opacity: 0; } to { opacity: 1; } }
+
 @media (max-height: 560px) and (orientation: landscape) {
-  #battle-screen { grid-template-columns: minmax(0,1fr) 220px !important; grid-template-rows: 48px 40px minmax(160px,1fr) 32px !important; gap: 4px !important; }
-  #battle-screen > .battle-header { grid-area: 1 / 1 / 2 / 3 !important; }
-  #battle-screen > #battle-status { grid-area: 2 / 1 / 3 / 3 !important; height: 40px; font-size: 13px; }
-  #battle-screen > #arena { grid-area: 3 / 1 !important; }
-  #battle-screen > .trail-guide { grid-area: 4 / 1; height: 32px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  #battle-content {
+    grid-template-columns: minmax(0,1fr) 220px !important;
+    grid-template-rows: 40px minmax(140px,1fr) 32px !important;
+    gap: 4px !important; padding: 4px !important;
+  }
+  #battle-content > #battle-status { grid-column: 1 / 3 !important; grid-row: 1 !important; height: 40px; font-size: 13px; }
+  #battle-content > #arena { grid-column: 1 !important; grid-row: 2 !important; }
+  #battle-content > .trail-guide { grid-column: 1 !important; grid-row: 3 !important; height: 32px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
   #trailLegend { font-size: 11px; }
   .trail-progress { flex: 1; }
-  #battle-screen > .touch-controls { grid-area: 3 / 2 !important; height: 100%; grid-template-columns: 1fr 1fr !important; grid-template-rows: 1fr 1fr; align-self: stretch; }
-  #battle-screen .touch-controls > button { height: 100% !important; font-size: 14px; }
-  #battle-screen > .touch-hint { grid-area: 4 / 2 !important; height: 32px; font-size: 10px; }
+  #battle-content > .touch-controls { grid-column: 2 !important; grid-row: 2 !important; height: 100%; grid-template-columns: 1fr 1fr !important; grid-template-rows: 1fr 1fr; align-self: stretch; }
+  #battle-content .touch-controls > button { height: 100% !important; font-size: 14px; }
+  #battle-content > .touch-hint { grid-column: 2 !important; grid-row: 3 !important; height: 32px; font-size: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
   #main-screen.active:not([hidden]) :is(.main-poster,.main-summary),
   #stage-screen.active:not([hidden]) #stage-list,
-  #battle-screen.active:not([hidden]) > #arena { animation-duration: 1ms; }
-  #battle-screen .touch-controls > button, #battle-screen .touch-controls > button.is-held { transition: none; transform: none; }
+  #battle-screen.active:not([hidden]) #battle-content > #arena { animation-duration: 1ms; }
+  #battle-content .touch-controls > button, #battle-content .touch-controls > button.is-held { transition: none; transform: none; }
   #battle-screen #result-screen:not([hidden]) { animation-duration: 1ms; }
 }

@@ -15,10 +15,9 @@
   poster.dataset.wpFramePoster = ''; copy.dataset.wpFrameCopy = ''; copy.querySelector('.lead').dataset.wpFrameSummary = '';
   $('#mainProgress').dataset.wpFrameProgress = ''; $('#runeStartBtn').dataset.wpFrameAction = 'primary';
   mainContent.append(poster, copy); main.append(mainContent);
-  const stageContent = $('.stage-workspace'), nav = $('.stage-tabs'); nav.dataset.wpFrameStageNav = '';
+  const stageContent = $('.stage-workspace'), nav = $('.stage-tabs'); nav.dataset.wpFrameNav = ''; nav.dataset.wpFrameStageNav = ''; nav.dataset.wpPlayActions = '';
   for (const button of nav.querySelectorAll('button')) { button.dataset.wpFrameStageSlot = button.dataset.tab; button.dataset.wpFrameAction = 'tab'; }
   stageContent.dataset.wpScrollOwner = ''; stage.dataset.wpStageWorkspace = '';
-  const retiredStage = document.createElement('div'); retiredStage.hidden = true; retiredStage.append($('#enterBattle')); stage.append(retiredStage);
   // Preserve native controls and listeners; their content belongs in the workspace.
   const progress = $('#stagesPanel > .progress-card') || stageHeader.querySelector('.progress-card');
   if (progress) $('#stagesPanel').prepend(progress);
@@ -56,11 +55,22 @@
     card.prepend(prose);
   }
   $('#tutorialClose').dataset.wpTutorialNext = '';
-  const frame = window.WeightPlayScreenFrame.mount({root,localeSelect:locale,scenes:{
+  const frame = window.WeightPlayScreenFrame.mount({root,localeSelect:locale,playUI:true,scenes:{
     main:{root:main,header:mainHeader,content:mainContent},
     stage:{root:stage,header:stageHeader,content:stageContent,headerInfo:stageInfo},
     battle:{root:battle,header:battleHeader,content:battleContent,headerInfo:battleInfo},
   }});
+  const gameStage = window.WeightPlayRuneStage;
+  if (!gameStage || !window.WeightPlayPlayUI) throw Error('RUNE_SHARED_STAGE_API_REQUIRED');
+  const stageSelector = window.WeightPlayPlayUI.mountStage({
+    page:$('#stageSelectionPage'),
+    rail:$('#stageRail'),
+    config:gameStage.config(),
+    selected:gameStage.selectedIndex(),
+    onSelect:index=>gameStage.select(index),
+    onStart:(index,event)=>gameStage.start(index,event),
+    isActive:()=>document.body.dataset.screen==='stage'&&!$('#stagePage').hidden&&!$('#stagesPanel').hidden,
+  });
   const sync = () => {
     const scene = document.body.dataset.screen || 'main';
     if (!['main','stage','battle'].includes(scene)) return;
@@ -76,6 +86,13 @@
   for (const modal of root.querySelectorAll('.modal,.global-modal')) observer.observe(modal,{attributes:true,attributeFilter:['hidden']});
   // The native capture handler persists its locale and owns route navigation.
   main.querySelector('#wp-frame-main-locale')?.addEventListener('change',event=>event.stopPropagation());
-  window.WeightPlayRuneFrame = Object.freeze({sync,frame});
+  window.WeightPlayRuneFrame = Object.freeze({
+    sync,
+    frame,
+    updateStage(config,index){return stageSelector.setConfig(config,index);},
+    selectStage(index,options){return stageSelector.select(index,options);},
+    refreshStage(index){return stageSelector.refresh(index);},
+    cancelStage(){return stageSelector.cancel();},
+  });
   sync();
 })();
