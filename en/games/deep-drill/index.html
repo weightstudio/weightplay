@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-deep-drill-copy="en">
+<head>
+ <base href="/games/deep-drill/">
+    <link rel="canonical" href="https://weightplay.com/en/games/deep-drill/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/deep-drill/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/deep-drill/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/deep-drill/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/deep-drill/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/deep-drill/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/deep-drill/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/deep-drill/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/deep-drill/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/deep-drill/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/deep-drill/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/deep-drill/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/deep-drill/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/deep-drill/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/deep-drill/" />
+    
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+ <meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#0b1824">
+ <meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="9"><meta name="weightplay-interface-version" content="9">
+ <title>Deep Drill | WeightPlay</title>
+ <link rel="icon" href="/assets/weightplay-logo.png">
+ <link rel="stylesheet" href="/src/game-screen-frame.css"><link rel="stylesheet" href="/src/game-play-ui.css">
+ <link rel="stylesheet" href="/src/stage-rail-i9.css"><link rel="stylesheet" href="/src/interface9-shared-screens.css">
+ <link rel="stylesheet" href="style.css">
+ <script src="/src/weightplay-audio.js"></script><script src="/src/game-layout-config.js"></script>
+ <script defer src="/src/game-screen-frame.js"></script><script defer src="/src/stage-rail-i9.js"></script><script defer src="/src/game-play-ui.js"></script>
+ <script type="module" src="game.mjs"></script>
+ <meta name="description" content="Mine deeper through six underground regions. Upgrade drill heads, hire crew and restore the Heartlight Beacon.">
+ <meta property="og:title" content="Deep Drill | WeightPlay">
+ <meta property="og:description" content="Mine deeper through six underground regions. Upgrade drill heads, hire crew and restore the Heartlight Beacon.">
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Deep Drill","description":"Mine deeper through six underground regions. Upgrade drill heads, hire crew and restore the Heartlight Beacon.","inLanguage":"en","url":"https://weightplay.com/en/games/deep-drill/","genre":["Mining","Incremental","Adventure"],"gamePlatform":"Web browser","applicationCategory":"Game","operatingSystem":"Any","isAccessibleForFree":true}</script>
+</head>
+<body data-wp-game-id="deep-drill" data-audience="general" data-screen="main" data-wp-game-owned-guide>
+<div id="app" data-wp-frame-root>
+ <select id="localeSelect" hidden aria-label="Language"><option value="en">English</option></select>
+ <section id="main" class="scene main-scene">
+  <header><a data-wp-return="main" href="/index.html" aria-label="Back to lobby">← W</a><strong data-wp-frame-title>Deep Drill</strong></header>
+  <main id="mainContent">
+   <img class="cover" data-wp-frame-poster src="art/poster.png" alt="A block fox pilots a brass drilling rig through a crystal cavern">
+   <div class="intro" data-wp-frame-copy>
+    <span class="eyebrow">DEEP DRILL / HEARTLIGHT EXPEDITION</span><h1>Deep Drill</h1>
+    <p class="lead" data-wp-frame-summary>Drill deeper. Upgrade faster.</p>
+    <p class="summary">Upgrade your rig, recruit crew and break six seals to restore the Heartlight Beacon.</p>
+    <p id="mainProgress" class="main-progress" data-wp-frame-progress aria-live="polite"></p>
+    <button id="start" class="primary" data-wp-frame-action="primary">Start Drilling</button>
+    <small class="preview-label">30 areas · 6 seals · Drill upgrades and automation</small>
+   </div>
+  </main>
+ </section>
+ <section class="game-page-info guide" data-wp-game-guide>
+   <div class="game-info-title"><h2>From one rock to an underground world</h2></div>
+   <div class="game-info-sections">
+    <section class="game-info-section"><h3>01 / Drill</h3><p>Drilling starts automatically. Steer through a 5×5 view along fixed lanes; pressure vents automatically. Choose upgrades to break through faster.</p></section>
+    <section class="game-info-section"><h3>02 / Return</h3><p>Return and sell your haul whenever you choose. A full hold ships home automatically, then drilling continues. Hull failure or pressure rescue retains only 65% of ore income.</p></section>
+    <section class="game-info-section"><h3>03 / Upgrade</h3><p>Spend coins on drill heads, power, speed and cargo capacity. Backup tools are off by default; set a per-trip allowance in the workshop.</p></section>
+    <section class="game-info-section"><p>Explore 30 expeditions with coolant springs, magma, fragile crystals and high-pressure layers. Complete each objective and reach its endpoint to unlock the next area.</p></section>
+   </div>
+  </section>
+ <section id="stage" class="scene play-scene" data-wp-standard-stage-screen hidden>
+  <header><button data-wp-return="stage" aria-label="Back to Main">←</button><strong data-wp-frame-title></strong></header>
+  <div id="stageContent"><div id="stagePage"><div id="stageRail" data-wp-stage-management-nav></div></div></div>
+ </section>
+ <section id="battle" class="scene play-scene" data-wp-battle-canvas-root data-wp-logical-battle-canvas="390x720" data-wp-battle-min-width="390" data-wp-battle-min-height="720" data-wp-battle-landscape-width="844" data-wp-battle-landscape-height="390" hidden>
+  <header><button data-wp-return="battle" aria-label="Pause and return">←</button><strong data-wp-frame-title></strong></header>
+  <div id="battleContent">
+   <div class="depth-strip"><div><small id="zoneName">Surface seam</small><strong><span id="depth">0</span><span class="unit"> / <span id="depthTarget">100</span> m</span></strong></div><span id="hullLabel">Hull 100%</span><button id="pause" class="subtle">Pause</button></div>
+   <div class="mission-track"><div class="mission-hud"><span id="missionGoal"></span><strong id="missionProgress"></strong><small id="sealCue"></small></div></div>
+   <div class="mine"><canvas id="world" aria-label="3D mine with five lanes"></canvas><div class="scene-vignette"></div><div id="tileTargets" class="tile-targets" aria-label="Five by five mining grid"></div><div id="breakGain" aria-hidden="true"></div><div id="hitNumber" aria-hidden="true"></div><div id="mining-label">Choose a lane</div><div id="oreFlight" aria-hidden="true"></div><div id="renderError" hidden>Unable to start 3D graphics. Please use a WebGL-capable browser.<button onclick="location.reload()">Reload</button></div></div>
+   <div class="telemetry"><div class="meter-label"><span id="miningPower">Drill ready</span><span id="cargoLabel">Cargo 0 / 32</span></div><div class="meters"><progress id="cargoBar" max="32" value="0"></progress></div><div class="pressure-line" id="pressureLine" hidden><span id="pressureLabel">Pressure</span><progress id="pressureBar" max="100" value="0"></progress></div></div>
+   <div id="seams" class="seams"><button data-lane="0"></button><button data-lane="1"></button><button data-lane="2"></button></div>
+   <div class="drill-progress"><div id="rockProgress"></div></div>
+   <p id="notice" class="notice" role="status" aria-live="polite">Upgrade the rig to drill faster</p>
+   <div class="controls"><button id="left" aria-label="Left lane" data-wp-primary-action>←</button><button id="drill" class="primary">Upgrade</button><button id="return" class="subtle">Return</button><button id="right" aria-label="Right lane">→</button></div>
+   <div class="tool-row" hidden><button data-tool="beam" title="Activate, then select an ordinary tile; key 4"><img alt="" id="tool-beam"><span>Beam <b id="count-beam">2</b></span></button><button data-tool="coolant" title="Reduce pressure; key 1"><img alt="" id="tool-coolant"><span>Vent <b id="count-coolant">2</b></span></button><button data-tool="blast" title="Break ordinary rock; key 2"><img alt="" id="tool-blast"><span>Charge <b id="count-blast">0</b></span></button><button data-tool="repair" title="Repair hull; key 3"><img alt="" id="tool-repair"><span>Repair <b id="count-repair">0</b></span></button></div>
+   <div class="utility-row"><button hidden id="helpersToggle" class="subtle">Helpers: none hired</button><button hidden id="autoToggle" class="subtle" disabled>Auto: not purchased</button></div>
+   <div id="result" class="overlay" data-wp-result-audit hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="panel expedition-panel"><small>EXPEDITION REPORT</small><h2 id="resultTitle">Safely home</h2><p id="resultText"></p><div class="earnings"><small>Banked this trip</small><strong id="resultCoins">0</strong></div><p id="resultTip"></p><div class="panel-actions"><button id="retry" class="primary">Drill again</button><button id="next" class="primary" hidden>Next area</button><button id="backStages">Areas and Workshop</button></div></div></div>
+   <div id="pausePanel" class="overlay" hidden role="dialog" aria-modal="true" aria-labelledby="pauseTitle"><div class="panel"><small>RIG ON STANDBY</small><h2 id="pauseTitle">Rig on standby</h2><p>This expedition is paused.</p><div class="panel-actions"><button id="resume" class="primary">Continue drilling</button><button id="exitRun">Return, sell and leave</button></div></div></div>
+  </div>
+ </section>
+ <div id="workshop" class="overlay" hidden role="dialog" aria-modal="true" aria-labelledby="shopTitle"><div class="panel shop-panel"><div class="shop-heading"><div><small>EXPEDITION BASE</small><h2 id="shopTitle">Expedition Base</h2></div><button id="closeShop" aria-label="Close Workshop">×</button></div><div class="wallet"><span>Available coins</span><strong id="shopCoins">0</strong></div><div id="materials" class="materials"></div><nav class="shop-tabs" aria-label="Base tabs"><button data-tab="rig" aria-pressed="true">Rig</button><button data-tab="modules">Modules</button><button data-tab="crew">Crew</button><button data-tab="records">Records</button></nav><p id="shopNotice" class="notice" role="status">Choose a drill head or upgrade</p><div id="shopItems"></div></div></div>
+ <div id="saveWarning" class="save-warning" role="status" hidden>This browser cannot save progress. Please keep this page open.</div>
+</div>
+</body></html>
