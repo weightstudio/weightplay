@@ -62,6 +62,30 @@
   const defaultSave={unlocked:1,stars:{},best:{},shards:0,upgrades:{grip:0,aegis:0,spark:0},tutorial:false,aura:false};
   let lang=detectLocale(),save=loadSave(),stageIndex=Math.max(0,Math.min(29,save.unlocked-1)),run=null,raf=0,lastFrame=0,screen="main",sceneGeneration=0,activeTab="towers",resizeObserver=null,lifecycleSuspended=document.hidden,windowFocused=document.hasFocus(),modalOpener=null,resultActionClaimed=false,forgeDecisionReadyAt={},stageController=null,screenFrame=null;
   const GAME_VERSION="v23";
+  const GAME_ID='animal-skyspire-drop';
+  let runBlockRewardCredited=false;
+  function renderResultReward(){
+    const icon=window.ShowResultGet?.(GAME_ID,run?.result?.win===true&&runBlockRewardCredited);
+    if(icon)queueMicrotask(()=>{if(icon.isConnected&&!els.resultModal.hidden)window.WeightPlayCastle?.dismissRewardNotice?.(GAME_ID)});
+  }
+  window.addEventListener('weightplay:castle-reward',event=>{
+    if(event.detail?.gameId!==GAME_ID||event.detail?.completionId!==`stage-${stageIndex+1}`||screen!=='battle'||!run)return;
+    runBlockRewardCredited=true;if(run.result)renderResultReward();
+  });
+  let sharedSettingsPause=null;
+  function syncSharedSettingsPause(){
+    const panel=document.getElementById('wp-frame-battle-settings');
+    const open=screen==='battle'&&panel&&!panel.hidden;
+    if(open&&run&&!run.ended&&!sharedSettingsPause){
+      sharedSettingsPause={run,wasPaused:run.paused};run.paused=true;
+      run.dragging=false;run.dragPointerId=null;run.keys.clear();cancelAnimationFrame(raf);raf=0;
+      renderHud();draw();__wpNotifyMeasurement();
+    }else if(!open&&sharedSettingsPause){
+      const prior=sharedSettingsPause;sharedSettingsPause=null;
+      if(screen==='battle'&&run===prior.run&&!run.ended&&!prior.wasPaused&&els.helpModal.hidden&&els.leaveModal.hidden&&els.resultModal.hidden){run.paused=false;lastFrame=performance.now();startLoop();}
+      __wpNotifyMeasurement();
+    }
+  }
   const interfaceValidationRun=Boolean(window.__WP_INTERFACE_VALIDATION__);
 
   const TAU=Math.PI*2,PLAYER_ANGLE=-Math.PI/2;
@@ -221,7 +245,7 @@
   function trapBattleModal(event,onEscape){const modal=event.currentTarget;if(event.key==="Escape"&&onEscape){event.preventDefault();onEscape();return}if(event.key!=="Tab")return;const actions=[...modal.querySelectorAll("button:not([hidden]):not(:disabled)")];if(!actions.length)return;const first=actions[0],last=actions.at(-1);if(actions.length===1||(event.shiftKey&&document.activeElement===first)||(!event.shiftKey&&document.activeElement===last)){event.preventDefault();(event.shiftKey?last:first).focus()}}
   function closeHelp(){save.tutorial=true;persist();closeBattleModal(els.helpModal,{resume:true})}
   function continueLeave(){closeBattleModal(els.leaveModal,{resume:true})}
-  function startBattle(index,{skipTutorial=false}={}){unlockSound();stageIndex=Math.max(0,Math.min(29,index));const stage=buildStage(stageIndex);run={stage,current:0,rotation:0,rotationTarget:0,height:2.3,velocity:0,bounce:0.18,transition:0,departing:null,elapsed:0,accum:0,lastHudAt:0,combo:0,bestCombo:0,power:false,shield:save.upgrades.aegis>=2?2:save.upgrades.aegis>=1?1:0,paused:false,ended:false,result:null,lastFeedback:"",firstRotationShown:false,firstRotationFeedbackUntil:0,pendingFeedback:"",dragging:false,dragPointerId:null,lastX:0,keys:new Set(),landings:0,shieldsUsed:0};const first=stage.rings[0];run.rotation=run.rotationTarget=normAngle(PLAYER_ANGLE-first.offset-first.gap-first.gapWidth/2-.3);
+  function startBattle(index,{skipTutorial=false}={}){runBlockRewardCredited=false;unlockSound();stageIndex=Math.max(0,Math.min(29,index));const stage=buildStage(stageIndex);run={stage,current:0,rotation:0,rotationTarget:0,height:2.3,velocity:0,bounce:0.18,transition:0,departing:null,elapsed:0,accum:0,lastHudAt:0,combo:0,bestCombo:0,power:false,shield:save.upgrades.aegis>=2?2:save.upgrades.aegis>=1?1:0,paused:false,ended:false,result:null,lastFeedback:"",firstRotationShown:false,firstRotationFeedbackUntil:0,pendingFeedback:"",dragging:false,dragPointerId:null,lastX:0,keys:new Set(),landings:0,shieldsUsed:0};const first=stage.rings[0];run.rotation=run.rotationTarget=normAngle(PLAYER_ANGLE-first.offset-first.gap-first.gapWidth/2-.3);
     for(let i=0;i<32&&sectorAtPlayer(first)==="hazard";i++)run.rotation=run.rotationTarget=normAngle(run.rotation+.2);
     (__wpNotifyMeasurement(), els.resultModal.hidden=true);(__wpNotifyMeasurement(), els.leaveModal.hidden=true);(__wpNotifyMeasurement(), els.helpModal.hidden=true);setBattleIsolation(false);els.feedback.textContent="";try{ensure3D();view3d.setStage(stage)}catch(error){release3D();console.error(error);setScreen("stage");showGraphicsError();return}setScreen("battle");syncArenaSize();renderHud();track("game_start");if(!save.tutorial&&!skipTutorial&&!interfaceValidationRun){(__wpNotifyMeasurement(), run.paused=true);openBattleModal(els.helpModal,els.helpClose)}else{save.tutorial=true;persist();focusArena()}
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
@@ -272,7 +296,7 @@
 }
   function syncResultActions(won){resultActionClaimed=false;const generation=sceneGeneration,resultOwner=run,canAdvance=won&&stageIndex<29,primary=canAdvance?els.next:els.resultMap;for(const action of [els.resultMap,els.next,els.retry]){action.hidden=false;action.disabled=action===els.next&&!canAdvance;action.classList.toggle("primary",action===primary)}requestAnimationFrame(()=>{if(screen==="battle"&&generation===sceneGeneration&&run===resultOwner&&!els.resultModal.hidden)primary.focus({preventScroll:true})})}
   function claimResultAction(){if(els.resultModal.hidden||resultActionClaimed)return false;resultActionClaimed=true;for(const action of [els.retry,els.resultMap,els.next])action.disabled=true;return true}
-  function showResult(){const r=run.result,nextStage=stages[stageIndex+1];els.resultKicker.textContent=t(r.win?"winKicker":"failKicker");els.resultTitle.textContent=t(r.win?"winTitle":"failTitle");els.resultText.textContent=r.win?t("winText",{n:stageIndex+1,time:r.time}):t("failText");els.nextRule.hidden=!r.win||!nextStage;els.nextRule.textContent=r.win&&nextStage?t("nextRule",{n:stageIndex+2,name:nextStage.name,rule:nextStage.rule}):"";els.resultTime.textContent=`${r.time}s`;els.resultCombo.textContent=String(run.bestCombo);els.resultStars.textContent=r.win?"★".repeat(r.stars):"—";openBattleModal(els.resultModal);syncResultActions(r.win)}
+  function showResult(){const r=run.result,nextStage=stages[stageIndex+1];els.resultKicker.textContent=t(r.win?"winKicker":"failKicker");els.resultTitle.textContent=t(r.win?"winTitle":"failTitle");els.resultText.textContent=r.win?t("winText",{n:stageIndex+1,time:r.time}):t("failText");els.nextRule.hidden=!r.win||!nextStage;els.nextRule.textContent=r.win&&nextStage?t("nextRule",{n:stageIndex+2,name:nextStage.name,rule:nextStage.rule}):"";els.resultTime.textContent=`${r.time}s`;els.resultCombo.textContent=String(run.bestCombo);els.resultStars.textContent=r.win?"★".repeat(r.stars):"—";openBattleModal(els.resultModal);syncResultActions(r.win);renderResultReward()}
   function renderLandingScan(){const sector=sectorAtPlayer(currentRing()),key={gap:"scanGap",safe:"scanSafe",hazard:"scanDanger",fragile:"scanFragile"}[sector]||"scanSafe",actionKey={gap:"scanGapAction",safe:"scanSafeAction",hazard:"scanDangerAction",fragile:"scanFragileAction"}[sector]||"scanSafeAction",verdict=`${t(key)} · ${t(actionKey)}`;els.landingScanLabel.textContent=t("landingScan");els.landingScanValue.textContent=t(key);els.landingScanRule.textContent=t(actionKey);els.landingScan.dataset.sector=sector;els.landingScan.setAttribute("aria-label",`${t("landingScan")}: ${verdict}`);els.arena.setAttribute("aria-label",`${t("arenaLabel")}. ${t("landingScan")}: ${verdict}.`)}
   function renderHud(){if(!run)return;els.objective.textContent=t(currentReverse()?"reversed":"objective");els.towerLabel.textContent=`${t("stage",{n:stageIndex+1})} · ${run.stage.name}`;els.depthValue.textContent=`${Math.min(run.current+1,run.stage.ringCount)} / ${run.stage.ringCount}`;els.comboValue.textContent=String(run.combo);els.timeValue.textContent=run.elapsed.toFixed(1);els.shieldValue.textContent=String(run.shield);els.powerValue.textContent=run.power?t("maxed"):`${Math.min(run.combo,threshold())} / ${threshold()}`;els.powerBadge.classList.toggle("ready",run.power);renderLandingScan()}
 
@@ -325,23 +349,30 @@
   async function preload(){
     const loader=window.WeightPlayGameEntryLoader;
     if(!loader?.isActive)throw new Error('SKYSPIRE_SHARED_ENTRY_LOADER_REQUIRED');
-    const total=Skyspire3D.assetCount+2;let completed=0;
+    const uiImages=new Map();
+    for(const image of els.gameFrame.querySelectorAll('img[src]'))if(!image.closest('.game-page-info')&&(image.hasAttribute('data-wp-frame-poster')||new URL(image.src).pathname.includes('/assets/animal-skyspire-drop/')))uiImages.set(image.src,image);
+    const stagePosterURL=new URL(stageConfig.poster,location.origin).href;
+    if(!uiImages.has(stagePosterURL)){const image=new Image();image.src=stagePosterURL;uiImages.set(stagePosterURL,image)}
+    const total=Skyspire3D.assetCount+uiImages.size;let completed=0;
     loader.begin(total);
     const progress=count=>{completed+=count;loader.assetProgress(completed,total)};
-    const poster=els.mainScreen.querySelector('[data-wp-frame-poster]');
-    const stagePoster=new Image();stagePoster.src=stageConfig.poster;
     await Promise.all([
       Skyspire3D.loadAssets().then(()=>progress(Skyspire3D.assetCount)),
-      poster.decode().then(()=>progress(1)),
-      stagePoster.decode().then(()=>progress(1)),
+      ...[...uiImages.values()].map(image=>image.decode().then(()=>progress(1))),
     ]);
   }
   window.__animalSkyspireDropSmoke={stages,startBattle:(index=0)=>startBattle(index,{skipTutorial:true}),snapshot:()=>run?{stage:run.stage.index,current:run.current,rotation:run.rotation,rotationTarget:run.rotationTarget,height:run.height,velocity:run.velocity,renderer:view3d?.stats()??null,sector:sectorAtPlayer(currentRing()),gapDelta:currentRing()?signedAngle(run.rotation,normAngle(PLAYER_ANGLE-ringAngle(currentRing())-currentRing().gap)):0,bounce:run.bounce,transition:run.transition,departing:run.departing?{...run.departing}:null,combo:run.combo,bestCombo:run.bestCombo,power:run.power,shield:run.shield,elapsed:run.elapsed,paused:run.paused,ended:run.ended,result:run.result,screen,keys:[...run.keys]}:null,rotateToGap:()=>{const ring=currentRing();if(!ring)return false;run.rotation=run.rotationTarget=normAngle(PLAYER_ANGLE-ringAngle(ring)-ring.gap);return true},rotateToHazard:()=>{const ring=currentRing();if(!ring)return false;run.rotation=run.rotationTarget=normAngle(PLAYER_ANGLE-ringAngle(ring)-ring.hazard);return true},setPower:value=>{if(!run)return false;run.power=Boolean(value);return true},setShield:value=>{if(!run)return false;run.shield=Math.max(0,Math.trunc(Number(value)||0));return true},forceLanding:()=>{if(!run||run.ended)return false;run.bounce=1;land();return true},forceWin:()=>{if(!run)return;run.current=run.stage.ringCount;finish(true)},forceFail:()=>{if(!run)return;finish(false)},step:(seconds=.1,render=true)=>{for(let left=Math.min(1,Math.max(0,seconds));left>0&&!run.ended;left-=.016)update(Math.min(.016,left));if(render)draw()},save:()=>JSON.parse(JSON.stringify(save)),setSave:value=>{save=normalizeSave(value);persist();renderMainProgress();renderStages();renderForge()}};
   window.__animalSkyspireDropSmoke.rotateToFragile=()=>{const ring=currentRing();if(!ring?.fragile)return false;for(let index=0;index<360;index++){const local=index*TAU/360;if(angleDistance(local,ring.gap)<=ring.gapWidth/2||angleDistance(local,ring.hazard)<=hazardWidthAt(ring)/2||ring.hazard2!==null&&angleDistance(local,ring.hazard2)<=hazardWidthAt(ring,true)/2)continue;run.rotation=run.rotationTarget=normAngle(PLAYER_ANGLE-ringAngle(ring)-local);return true}return false};
   screenFrame=window.WeightPlayScreenFrame.mount({root:els.gameFrame,localeSelect:els.localeSelect,playUI:true,scenes:{main:{root:els.mainScreen,header:els.mainScreen.querySelector("header"),content:els.mainScreen.querySelector("[data-wp-frame-content=main]")},stage:{root:els.stageScreen,header:els.stageScreen.querySelector("header"),content:els.stageContent},battle:{root:els.battleScreen,header:els.battleScreen.querySelector("header"),content:els.battleContent,headerInfo:els.battleInfo}}});
   const stageInfoGroup=window.WeightPlayScreenFrame.createGroup();stageInfoGroup.add(els.stageSummary);screenFrame.stageTopUI.add(stageInfoGroup);
-  const battleInfoGroup=window.WeightPlayScreenFrame.createGroup();[...els.battleInfo.children].forEach(node=>battleInfoGroup.add(node));battleInfoGroup.add(els.battleHelp);screenFrame.battleTopUI.add(battleInfoGroup);
+  const battleInfoGroup=window.WeightPlayScreenFrame.createGroup();
+  const battleStatus=els.battleInfo.querySelector('.battle-status');
+  battleInfoGroup.add(els.battleInfo.querySelector('.tower-block'));
+  [...battleStatus.children].forEach(node=>battleInfoGroup.add(node));
+  battleStatus.remove();
+  battleInfoGroup.add(els.battleHelp);screenFrame.battleTopUI.add(battleInfoGroup);
   screenFrame.commonDownButton.add(els.racesTab).add(els.forgeTab);
+  window.addEventListener('weightplay:interaction-state',syncSharedSettingsPause);
   screenFrame.activate("main");
   ensureCompletePublicGuide();initLocale();applyLocale();window.addEventListener("DOMContentLoaded",()=>setTimeout(()=>{ensureCompletePublicGuide();applyLocale()},0),{once:true});await preload();syncArenaSize();renderMainProgress();renderStages();renderForge();await new Promise(requestAnimationFrame);els.loading.hidden=true;els.start.disabled=false;window.WeightPlayGameEntryLoader.ready();
 })().catch(error=>{console.error(error);window.__weightPlayGameEntryPendingFailure='animal-skyspire-drop';window.WeightPlayGameEntryLoader?.fail(undefined,()=>location.reload());});

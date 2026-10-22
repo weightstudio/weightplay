@@ -11373,6 +11373,7 @@
   }
 
   function localizedGameContent(id) {
+    if (id === "animal-twin-switchyard") applyTwinV19GuideCorrections();
     if (id === "animal-rune-tactics" && window.WeightPlayRuneTacticsGuideCopy?.[locale()]) {
       return {...games[id], ...window.WeightPlayRuneTacticsGuideCopy[locale()]};
     }
@@ -15716,6 +15717,7 @@
   }
 
   window.WeightPlayGameInfo = {
+    applyTwinV19GuideCorrections,
     render,
     get(gameId) {
       const game = games[gameId];
@@ -24069,6 +24071,34 @@
       ["進度會保存嗎？", "已解鎖關卡與最佳步數會保存在這個瀏覽器中。"],
     ],
   };
+
+  // Twin v19 owns these current rules in every locale. Its floor is continuous;
+  // hazards cause failure, and Equipment now offers an optional diamond cosmetic.
+  const twinV19GuideRules = {
+    en: ["Left/Right or A/D move both couriers. Space, Up, W or Jump makes them jump together.", "Collect all three shards and touch every switch, then bring both couriers to their exits. Touching a red hazard ends the attempt; Retry starts the same stage.", "Thirty stages form six groups of five. Clearing a stage unlocks the next; Stage 30 completes the campaign.", "Equipment offers permanent Aurora signal trim for 5 shared in-game diamonds. Classic is free. The cosmetic never changes movement, difficulty or rewards.", "Progress, best move counts and owned equipment save in this browser. Clearing site data removes the save; progress does not transfer between devices.", "Can the couriers move separately?", "Does progress save?"],
+    "zh-Hant": ["左右鍵或 A/D 同時移動兩位旅者；空白鍵、上方向鍵、W 或「跳躍」讓兩人一起跳。", "收集全部三片光片並觸發所有開關，再帶兩位旅者抵達出口。碰到紅色障礙會結束這次嘗試；重試會重新開始同一關。", "30 關分為六組、每組五關。過關會解鎖下一關；第 30 關是最後一關。", "裝備頁可用 5 顆共用遊戲鑽石購買永久極光訊號飾件，經典外觀免費。造型不會改變移動、難度或獎勵。", "進度、最佳步數與已購裝備保存在目前瀏覽器；清除網站資料會移除存檔，也不會自動跨裝置同步。", "兩位旅者可以分開移動嗎？", "進度會保存嗎？"],
+    "zh-Hans": ["左右键或 A/D 同时移动两位旅者；空格键、上方向键、W 或“跳跃”让两人一起跳。", "收集全部三片光片并触发所有开关，再带两位旅者抵达出口。碰到红色障碍会结束本次尝试；重试会重新开始同一关。", "30 关分为六组，每组五关。过关会解锁下一关；第 30 关是最后一关。", "装备页可用 5 颗共用游戏钻石购买永久极光信号饰件，经典外观免费。造型不会改变移动、难度或奖励。", "进度、最佳步数和已购装备保存在当前浏览器；清除网站数据会移除存档，也不会自动跨设备同步。", "两位旅者可以分开移动吗？", "进度会保存吗？"],
+    ja: ["左右キーまたは A/D で2人を同時に移動します。スペース、上、W、ジャンプボタンで一緒に跳びます。", "光のかけら3個とすべてのスイッチを集め、2人を出口へ導きます。赤い障害物に触れると失敗です。再挑戦で同じステージをやり直せます。", "全30ステージは5つずつ6組に分かれます。クリアすると次が解放され、30が最終ステージです。", "装備ではゲーム共通のダイヤ5個で永久のオーロラ信号飾りを購入できます。クラシックは無料です。外見は移動、難易度、報酬に影響しません。", "進行、最少操作回数、購入した装備はこのブラウザに保存されます。サイトデータを消すと保存も消え、別の端末とは同期されません。", "2人を別々に動かせますか？", "進行は保存されますか？"],
+    ko: ["좌우 방향키 또는 A/D로 두 배달부를 함께 움직입니다. 스페이스, 위 방향키, W 또는 점프 버튼으로 함께 뜁니다.", "빛 조각 3개를 모두 모으고 모든 스위치를 누른 뒤 두 배달부를 출구로 안내하세요. 빨간 장애물에 닿으면 실패하며 재시도로 같은 단계를 다시 시작합니다.", "30개 단계는 5개씩 6개 묶음입니다. 성공하면 다음 단계가 열리며 30단계가 마지막입니다.", "장비에서 공용 게임 다이아몬드 5개로 영구 오로라 신호 장식을 구매할 수 있습니다. 클래식은 무료이며 외형은 이동, 난이도, 보상에 영향을 주지 않습니다.", "진행, 최소 조작 횟수와 구매한 장비는 현재 브라우저에 저장됩니다. 사이트 데이터를 지우면 저장도 삭제되며 다른 기기와 동기화되지 않습니다.", "두 배달부를 따로 움직일 수 있나요?", "진행이 저장되나요?"],
+    es: ["Izquierda/Derecha o A/D mueven a ambos mensajeros. Espacio, Arriba, W o Saltar los hacen saltar juntos.", "Recoge los tres fragmentos y activa todos los interruptores; después lleva a ambos a sus salidas. Tocar un obstáculo rojo termina el intento. Reintentar reinicia el mismo nivel.", "Hay 30 niveles en seis grupos de cinco. Superar uno abre el siguiente; el nivel 30 completa la campaña.", "Equipo ofrece el adorno permanente Aurora por 5 diamantes compartidos del juego. Clásico es gratis. El aspecto no cambia el movimiento, la dificultad ni los premios.", "El progreso, las mejores marcas y el equipo comprado se guardan en este navegador. Borrar los datos del sitio elimina la partida; no se sincroniza entre dispositivos.", "¿Pueden moverse por separado?", "¿Se guarda el progreso?"],
+    "pt-BR": ["Esquerda/Direita ou A/D movem os dois mensageiros. Espaço, Cima, W ou Pular fazem os dois saltarem juntos.", "Colete os três fragmentos e ative todos os interruptores; depois leve os dois às saídas. Tocar um obstáculo vermelho encerra a tentativa. Tentar novamente reinicia a mesma fase.", "São 30 fases em seis grupos de cinco. Vencer libera a próxima; a fase 30 encerra a campanha.", "Equipamento oferece o adorno permanente Aurora por 5 diamantes compartilhados do jogo. Clássico é grátis. O visual não altera movimento, dificuldade ou recompensas.", "Progresso, melhores marcas e equipamentos comprados ficam neste navegador. Limpar os dados do site apaga o jogo salvo; não há sincronização entre dispositivos.", "Eles podem se mover separadamente?", "O progresso é salvo?"],
+    fr: ["Gauche/Droite ou A/D déplacent les deux messagers. Espace, Haut, W ou Saut les font sauter ensemble.", "Ramassez les trois fragments et activez tous les interrupteurs, puis menez les deux messagers aux sorties. Toucher un obstacle rouge termine la tentative. Réessayer relance le même niveau.", "Les 30 niveaux forment six groupes de cinq. Chaque réussite ouvre le suivant ; le niveau 30 termine la campagne.", "Équipement propose la décoration permanente Aurore pour 5 diamants partagés du jeu. Classique est gratuit. L’apparence ne change ni mouvement, ni difficulté, ni récompenses.", "La progression, les meilleurs scores et l’équipement acheté sont conservés dans ce navigateur. Effacer les données du site supprime la sauvegarde ; elle ne se synchronise pas entre appareils.", "Peuvent-ils se déplacer séparément ?", "La progression est-elle sauvegardée ?"],
+    de: ["Links/Rechts oder A/D bewegen beide Kuriere. Leertaste, Oben, W oder Springen lassen beide zusammen springen.", "Sammle alle drei Splitter und aktiviere alle Schalter. Führe dann beide zu den Ausgängen. Ein rotes Hindernis beendet den Versuch; Wiederholen startet dieselbe Stufe neu.", "30 Stufen bilden sechs Gruppen mit je fünf Stufen. Ein Erfolg schaltet die nächste frei; Stufe 30 beendet die Kampagne.", "Ausrüstung bietet den dauerhaften Aurora-Signalschmuck für 5 gemeinsame Spiel-Diamanten. Klassisch ist kostenlos. Das Aussehen verändert weder Bewegung, Schwierigkeit noch Belohnungen.", "Fortschritt, Bestwerte und gekaufte Ausrüstung bleiben in diesem Browser. Das Löschen der Websitedaten entfernt den Spielstand; er wird nicht zwischen Geräten synchronisiert.", "Können sich die Kuriere getrennt bewegen?", "Wird der Fortschritt gespeichert?"],
+    it: ["Sinistra/Destra o A/D muovono entrambi i corrieri. Spazio, Su, W o Salta li fanno saltare insieme.", "Raccogli i tre frammenti e attiva tutti gli interruttori, poi porta entrambi alle uscite. Toccare un ostacolo rosso termina il tentativo. Riprova riavvia lo stesso livello.", "I 30 livelli formano sei gruppi da cinque. Superarne uno sblocca il successivo; il livello 30 conclude la campagna.", "Equipaggiamento offre la decorazione permanente Aurora per 5 diamanti condivisi del gioco. Classico è gratuito. L’aspetto non cambia movimento, difficoltà o premi.", "Progressi, record ed equipaggiamento acquistato restano in questo browser. Cancellare i dati del sito elimina il salvataggio; non viene sincronizzato tra dispositivi.", "I corrieri possono muoversi separatamente?", "I progressi vengono salvati?"],
+    ru: ["Стрелки влево/вправо или A/D двигают обоих курьеров. Пробел, стрелка вверх, W или кнопка прыжка заставляют их прыгнуть вместе.", "Соберите все три осколка и включите все переключатели, затем приведите обоих к выходам. Красное препятствие завершает попытку. Повтор начинает тот же уровень заново.", "В кампании 30 уровней: шесть групп по пять. Победа открывает следующий уровень; уровень 30 завершает кампанию.", "В разделе снаряжения постоянное украшение «Аврора» стоит 5 общих игровых алмазов. Классический вид бесплатен. Внешность не меняет движение, сложность или награды.", "Прогресс, рекорды и купленное снаряжение сохраняются в этом браузере. Очистка данных сайта удаляет сохранение; синхронизации между устройствами нет.", "Можно двигать курьеров отдельно?", "Сохраняется ли прогресс?"],
+    hi: ["बाएँ/दाएँ तीर या A/D दोनों संदेशवाहकों को साथ चलाते हैं। स्पेस, ऊपर तीर, W या कूद बटन से दोनों साथ कूदते हैं।", "तीनों प्रकाश खंड लें और सभी स्विच सक्रिय करें, फिर दोनों को निकास तक पहुँचाएँ। लाल बाधा छूने पर प्रयास समाप्त होता है। फिर कोशिश करने से वही स्तर शुरू होता है।", "30 स्तर पाँच-पाँच के छह समूहों में हैं। सफलता अगला स्तर खोलती है; स्तर 30 अभियान का अंत है।", "उपकरण में स्थायी ऑरोरा सजावट 5 साझा गेम हीरों में मिलती है। क्लासिक रूप मुफ़्त है। सजावट गति, कठिनाई या इनाम नहीं बदलती।", "प्रगति, सर्वोत्तम चाल संख्या और खरीदे उपकरण इसी ब्राउज़र में सहेजे जाते हैं। साइट डेटा मिटाने पर सेव हटता है; दूसरे उपकरणों के साथ सिंक नहीं होता।", "क्या दोनों अलग-अलग चल सकते हैं?", "क्या प्रगति सहेजी जाती है?"],
+    ar: ["يحرك السهمان الأيسر والأيمن أو A/D كلا الساعيين معًا. وتجعلهما المسافة أو السهم لأعلى أو W أو زر القفز يقفزان معًا.", "اجمع الشظايا الثلاث وفعّل جميع المفاتيح، ثم أوصل الساعيين إلى المخرجين. لمس عائق أحمر ينهي المحاولة، وإعادة المحاولة تبدأ المرحلة نفسها.", "تتكون الحملة من 30 مرحلة في ست مجموعات من خمس. النجاح يفتح المرحلة التالية، والمرحلة 30 تنهي الحملة.", "تقدم التجهيزات زينة الشفق الدائمة مقابل 5 ألماسات مشتركة داخل اللعبة. المظهر الكلاسيكي مجاني. الزينة لا تغيّر الحركة أو الصعوبة أو المكافآت.", "يُحفظ التقدم وأفضل عدد للحركات والتجهيزات المشتراة في هذا المتصفح. حذف بيانات الموقع يمحو الحفظ، ولا تجري مزامنته بين الأجهزة.", "هل يمكن تحريك الساعيين بشكل منفصل؟", "هل يُحفظ التقدم؟"]
+  };
+  function applyTwinV19GuideCorrections() {
+  for (const [locale, copy] of Object.entries(twinV19GuideRules)) {
+    const target = locale === "en" ? games["animal-twin-switchyard"]
+      : ((localizedGames[locale] ||= {})["animal-twin-switchyard"] ||= {});
+    Object.assign(target, { systems: copy.slice(0,2), how: [copy[0],copy[1],copy[2]],
+      progression: [copy[2]], parent: `${copy[3]} ${copy[4]}`,
+      faq: [[copy[5],copy[0]],[copy[6],copy[4]]] });
+  }
+  }
+  applyTwinV19GuideCorrections();
 
   // Casino owns the FAQ on every localized route. The generated HTML already
   // carries this copy, so keep the runtime Guide from replacing it with the
