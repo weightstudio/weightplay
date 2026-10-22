@@ -4,7 +4,7 @@
   window.GLYPH_GARDEN_STAGE_CONFIG = Object.freeze({
     gameId: "animal-glyph-garden",
     count: 30,
-    poster: "/games/animal-glyph-garden/assets/animal-glyph-garden-cover.svg",
+    poster: "/assets/interface7-redrawn/animal-glyph-garden.webp",
     background: "/assets/lobby-block-atmosphere.svg",
   });
 })();

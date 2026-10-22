@@ -8,7 +8,7 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-glyph-garden">
-  <meta name="weightplay-game-version" content="v8">
+  <meta name="weightplay-game-version" content="v9">
   <meta name="weightplay-interface-version" content="9">
   <meta name="theme-color" content="#17434b">
   <meta name="description" content="Read shape, colour, and sequence rules across thirty authored mosslight garden stages." />
@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
   <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261020-glyph-garden-i9-v2">
   <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261017-shared-stage-rail1">
-  <link rel="stylesheet" href="style.css?v=20261020-animal-glyph-garden-v7-i9-disabled-controls-repair1">
+  <link rel="stylesheet" href="style.css?v=20261022-glyph-garden-v9">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261020-glyph-garden-i9-v2">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -78,13 +78,13 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="animal-glyph-garden" data-wp-interface-version="9" data-runtime-localize="off" data-wp-battle-layout="native" data-sound-toggle="off">
+<body data-screen="main" data-audience="general" data-wp-game-id="animal-glyph-garden" data-wp-interface-version="9" data-runtime-localize="off" data-sound-toggle="off">
   <div id="app" data-wp-frame-root>
     <main id="mainScreen" data-screen="main">
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Glyph Garden</h1>
       <header class="main-header"><a data-wp-return="main" href="/" aria-label="Return to WeightPlay">←</a><strong data-wp-frame-title>Glyph Garden</strong></header>
-      <div class="main-content">
-        <img id="mainPoster" class="main-poster" data-wp-frame-poster src="assets/animal-glyph-garden-cover.svg" width="900" height="900" alt="">
+      <div class="main-content" data-wp-main-validation-root>
+        <img id="mainPoster" class="main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-glyph-garden.webp" width="1254" height="1254" alt="">
         <section class="wp-standard-main-copy" data-wp-frame-copy>
           <small class="eyebrow" data-i18n="kicker">Mosslight garden</small>
           <p class="summary" data-wp-frame-summary data-i18n="intro">Read shape, colour, and sequence rules across thirty authored mosslight plots.</p>
@@ -92,6 +92,7 @@
           <p id="mainProgress" data-wp-frame-progress data-wp-main-progress aria-live="polite"></p>
           <button id="startBtn" class="wp-standard-main-start" type="button" data-wp-main-start data-i18n="start">Start Game</button>
         </section>
+      </div>
         <section class="game-page-info game-page-info-static" aria-label="Glyph Garden game information">
 
     <div class="game-info-hero">
@@ -102,47 +103,50 @@
 
     <div class="game-info-sections">
       <div class="game-info-section"><h3>World and Mission</h3><p>The mosslight beds have lost their planting pattern before the evening festival. Each stage is one authored plot with a visible request, six tactile glyph choices, and one or more planting steps. Help Taro restore the beds in order. Every fifth plot is a checkpoint that changes the decision rather than merely adding more tiles, and Stage 30 is the festival finale that asks for the full garden vocabulary.</p></div>
-      <div class="game-info-section"><h3>How the Systems Work</h3><p>A request always names the active matching rule. Paired Sprouts asks for both shape and colour. Shape Beds ignores colour, so several tempting colour matches can be wrong. Colour Wells reverses that priority and ignores shape. Sequence Arbor asks for two or three complete matches in order. Switching Paths alternates shape-only and colour-only decisions. Festival Mastery combines all three rule families in longer sequences. A wrong choice never removes progress or spends currency; it produces an immediate explanation and leaves the player free to compare again.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Thirty gardens contain two to six plantings each. Match both attributes, only shape, or only colour as requested. Every fifth clear grants a specimen. Zero mistakes earns three petals; one or two earns two; otherwise one. Replaying keeps your best.</p></div>
       <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose Start Game, then select an unlocked card from the horizontal thirty-stage rail.</li><li>Read the arc name, the active rule, and the number of planting steps before selecting a glyph.</li><li>Compare the visible target with all six choices. Shape-only and colour-only stages deliberately include distractors that match the ignored attribute.</li><li>Select a tile and activate Plant this glyph. A correct sequence step advances to the next request; a wrong choice remains safely retryable.</li><li>Complete the final step to save the clear, unlock the next stage, and open Result with Next Stage, Stages, and Replay actions.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Say the active rule to yourself before comparing tiles; a familiar colour may be irrelevant on a shape-only stage.</li><li>Eliminate choices that fail the required attribute first, then compare the remaining candidates against the target.</li><li>During a sequence, treat every step as a fresh request. The rule may switch even when the target artwork looks similar.</li><li>Replay checkpoints 5, 10, 15, 20, 25, and 30 to practise the exact transition introduced by each arc.</li></ul></div>
-      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Stages 1–5 teach exact two-attribute matching and end with a two-step checkpoint. Stages 6–10 isolate shape, while 11–15 isolate colour, teaching the player to ignore a persuasive but irrelevant clue. Stages 16–20 introduce ordered exact-match sequences. Stages 21–25 switch between shape, colour, and exact rules inside one plot. Stages 26–30 are mastery beds with three- and four-step routes; the final Mosslight Festival combines exact, shape-only, colour-only, and exact matching in that order. Clearing a stage unlocks the next one locally, while every cleared card remains replayable.</p></div>
-      <div class="game-info-section"><h3>Developer Design Note</h3><p>The campaign uses one logical layout across phone, landscape, and desktop sizes. Large native buttons, text labels beside every glyph, visible selected state, rule copy, and non-colour shape silhouettes keep the puzzle understandable without relying on hue alone. The block-style Taro and glyph images carry object identity; CSS supplies layout and selection framing rather than replacing gameplay art.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>Unlocked stages, cleared-stage history, best checks, locale, and sound preference are stored only in this browser. No account or cloud sync is required, and clearing site data or moving to another browser can create a separate save. The game is free, contains no chat or purchase flow, and is a calm entertainment puzzle rather than a formal test of vision or ability.</p></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Stages 1–5 match both clues, 6–10 focus on shape, and 11–15 on colour. Stages 16–25 combine and switch rules; 26–30 finish with longer sequences, up to six plantings.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>Real-time block geometry depicts Taro, raised beds and rune flowers. Shapes and written colour names accompany every choice. The same six silhouettes and exact palette appear on buttons and in the garden.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>Progress and cosmetic ownership stay in this browser. Dawn is free; ten cleared gardens unlock dusk. Moonlight costs eight shared diamonds with confirmation and has no gameplay effect. Clearing browser data removes local progress.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many stages are there?</dt><dd>Thirty authored stages in six arcs, with rule-changing checkpoints every fifth stage.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Related Games</h3><p>Because this game practices , try these next:</p><div class="game-info-related"><a class="game-info-related-card" href="/en/games/block-blast/"><img src="/assets/interface7-redrawn/block-blast.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Block Blast</strong><span>Place three shapes on an 8×8 board and clear complete rows and columns.</span></span></a><a class="game-info-related-card" href="/en/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line</strong><span>One Line is an original 30-stage grid puzzle starring Rainbow Hop Mimi.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>More Related Games</h3><p>Try another puzzle that rewards careful pattern reading and planning.</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="block-blast" href="/en/games/block-blast/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/block-blast.webp" data-final-src="/assets/weightplay-logo.png" alt="Block Blast" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Block Blast</strong><span>Place shapes to clear complete rows and columns.</span></span></a><a class="game-info-related-card" data-game-id="animal-one-line" href="/en/games/animal-one-line/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-one-line.webp" data-final-src="/assets/weightplay-logo.png" alt="One Line" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">One Line</strong><span>Plan one unbroken route through original puzzle boards.</span></span></a></div></div>
     </div>
   </section>
-      </div>
     </main>
     <main id="stageScreen" data-screen="stage" data-wp-logical-stage-canvas hidden>
       <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back">←</button><strong data-wp-frame-title hidden>Choose a plot</strong></header>
-      <div class="stage-content"><section id="stagePage" data-wp-stage-page><div id="stageRail" role="list" aria-label="Garden plots"></div></section></div>
+      <div class="stage-content"><section id="stagePage" data-wp-stage-page><div id="stageRail" role="list" aria-label="Garden plots"></div></section><section id="gardenManagement" hidden></section></div>
     </main>
-    <main id="battleScreen" data-screen="battle" hidden>
+    <main id="battleScreen" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-min-width="390" data-wp-battle-min-height="700" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
       <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back">←</button><strong data-wp-frame-title hidden>Garden plot</strong></header>
       <div class="battle-content wp-frame-play-content">
-        <section class="battle-canvas" data-wp-battle-canvas-root>
+        <section class="battle-canvas">
           <div id="battlePlay">
-            <p id="prompt" class="prompt" aria-live="polite"></p>
-            <section class="request-card"><span data-i18n="request">Garden request</span><div id="targetGlyph" class="glyph target" aria-hidden="true"></div><strong id="targetText"></strong></section>
-            <div id="optionGrid" class="option-grid" role="list" aria-label="Garden tiles"></div>
-            <p id="selection" class="selection" aria-live="polite"></p>
-            <div class="battle-actions"><button id="checkBtn" type="button" data-wp-primary-action data-i18n="check">Plant this tile</button><button id="clearBtn" type="button" data-i18n="reset">Clear choice</button></div>
-            <p id="status" class="status" role="status" aria-live="polite"></p>
+            <section class="garden-field"><div class="garden-field-caption"><span id="gardenCaption"></span><span id="gardenSteps"></span></div><div id="gardenWorld"><p id="gardenFallback" hidden></p></div><button id="gardenPlantBtn" type="button" class="garden-plant-target" data-i18n="check" data-audio-click="off">Plant this tile</button></section>
+            <section class="garden-controls">
+              <section class="request-card"><div id="targetGlyph" class="glyph target" aria-hidden="true"></div><div><p id="prompt" class="prompt" aria-live="polite"></p><strong id="targetText"></strong></div></section>
+              <div id="optionGrid" class="option-grid" role="group" aria-label="Garden tiles"></div>
+              <p id="selection" class="selection" aria-live="polite"></p>
+              <div class="battle-actions"><button id="checkBtn" type="button" data-wp-primary-action data-i18n="check" data-audio-click="off">Plant this tile</button><button id="clearBtn" type="button" data-i18n="reset">Clear choice</button></div>
+              <p id="status" class="status" role="status" aria-live="polite"></p><button id="retrySaveBtn" type="button" data-i18n="retrySave" hidden>Retry save</button>
+            </section>
           </div>
           <section id="resultScreen" class="result-panel" data-screen="result" data-wp-result-audit hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle">
-            <div class="result-icon" aria-hidden="true">✦</div><p class="eyebrow" data-i18n="finished">Plot planted</p><h2 id="resultTitle" data-i18n="resultTitle">A bright little match!</h2><p id="resultText" class="summary"></p>
+            <div class="result-card" data-wp-result-card>
+            <div id="resultFlowers" aria-hidden="true"></div><p id="resultPetals"></p><h2 id="resultTitle" data-i18n="resultTitle">A bright little match!</h2><p id="resultText" class="summary"></p><p id="resultSpecimen" hidden></p>
             <div class="result-actions"><button id="stagesBtn" type="button" data-i18n="choose">Choose a plot</button><button id="nextBtn" type="button" data-wp-primary-action data-i18n="next">Next plot</button><button id="replayBtn" type="button" data-i18n="replay">Replay</button></div>
+            </div>
           </section>
         </section>
-      </div>
     </main>
+    <dialog id="gardenDialog" aria-labelledby="gardenDialogTitle" aria-describedby="gardenDialogBody"><h2 id="gardenDialogTitle"></h2><p id="gardenDialogBody"></p><div><button id="dialogCancel" type="button"></button><button id="dialogConfirm" type="button" data-audio-click="off"></button></div></dialog>
     <label hidden><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
   </div>
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script>window.WONDER_SITE?.localization&&(window.WONDER_SITE.localization.useLocaleRoutes=false);</script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
-  <script src="locales.js?v=20261020-glyph-garden-i9-v2"></script><script src="stage-config.js?v=20261020-glyph-garden-i9-v2"></script>
+  <script src="locales.js?v=20261022-glyph-garden-v9"></script><script src="stage-config.js?v=20261022-glyph-garden-v9"></script><script src="../../src/wallet.js"></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script><script src="../../src/stage-rail-i9.js?v=20261017-shared-stage-rail1"></script><script src="../../src/game-play-ui.js?v=20261020-glyph-garden-i9-v2"></script>
-  <script src="frame.js?v=20261020-animal-glyph-garden-v7-i9-disabled-controls-repair1"></script><script src="../../src/game-page-info.js?v=20261020-animal-glyph-garden-v7-i9-disabled-controls-repair1"></script><script src="/src/game-title-registry.js?v=20261020-animal-glyph-garden-v7-i9-disabled-controls-repair1" data-wp-game-title-registry></script><script src="game.js?v=20261020-animal-glyph-garden-v8-i9-locale-identity-repair1"></script>
+  <script src="frame.js?v=20261022-glyph-garden-v9"></script><script src="../../src/game-page-info.js?v=20261020-animal-glyph-garden-v7-i9-disabled-controls-repair1"></script><script src="/src/game-title-registry.js?v=20261020-animal-glyph-garden-v7-i9-disabled-controls-repair1" data-wp-game-title-registry></script><script type="module" src="game.js?v=20261022-glyph-garden-v9"></script>
 </body>
 </html>

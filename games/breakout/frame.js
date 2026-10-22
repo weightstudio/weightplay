@@ -25,6 +25,7 @@
   const stageRail = stage.querySelector("#stageRail");
   const stageNavigation = stageShell.querySelector(".stage-tabs");
   const stageTab = stageNavigation?.querySelector("button");
+  const equipmentTab = document.getElementById("equipmentTab");
   const battleBack = battleHeader.querySelector('[data-wp-return="battle"]');
 
   if (!mainTitle || !stageBack || !stageProgress || !stageRail || !stageNavigation || !stageTab || !battleBack) {
@@ -94,7 +95,10 @@
   const stageGroup = window.WeightPlayScreenFrame.createGroup();
   stageGroup.add(stageProgress);
   frame.stageTopUI.add(stageGroup);
-  frame.commonDownButton.clear().add(stageTab);
+  equipmentTab.dataset.wpFrameAction = "tab";
+  frame.commonDownButton.clear().add(stageTab).add(equipmentTab);
+  const help = document.createElement("button"); help.id="helpBtn"; help.type="button";
+  battleHeader.querySelector(".wp-frame-popover").append(help);
 
   const stats = {
     stage: document.createElement("span"),
@@ -109,15 +113,21 @@
     controller: null,
     mount({ config, selected, onSelect, onStart }) {
       if (this.controller) return this.controller;
+      const equipmentPanel = document.getElementById("equipmentPanel");
+      equipmentPanel.remove();
+      const catalog = document.createElement("div"); catalog.id="stageCatalog";
+      for (const node of [...stageWorkspace.children]) catalog.append(node);
+      stageWorkspace.append(catalog);
       this.controller = window.WeightPlayPlayUI.mountStage({
-        page: stageWorkspace,
+        page: catalog,
         rail: stageRail,
         config,
         selected,
         onSelect,
         onStart,
-        isActive: () => document.body.dataset.screen === "stage",
+        isActive: () => document.body.dataset.screen === "stage" && document.body.dataset.breakoutStageTab !== "equipment",
       });
+      stageWorkspace.append(equipmentPanel);
       return this.controller;
     },
     refresh(index) {

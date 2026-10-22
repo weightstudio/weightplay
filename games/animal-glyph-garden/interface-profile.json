@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "gameId": "animal-glyph-garden",
-  "interfaceVersion": 6,
+  "interfaceVersion": "9",
   "audience": "general",
   "flow": "MAIN_STAGE_BATTLE",
-  "stage": { "enabled": true, "leftWorkspace": null, "rightWorkspace": null },
-  "components": { "main": 0, "stage": 0, "battle": 0, "result": 0, "accessibility": 0 },
+  "stage": { "enabled": true, "leftWorkspace": "collection", "rightWorkspace": "themes" },
+  "components": { "main": 1, "stage": 1, "battle": 1, "result": 1, "accessibility": 1 },
   "result": "BATTLE_SUBSTATE",
-  "reserve": "GENERAL_56PX",
+  "reserve": "NONE_BANNER_ADS_DISABLED",
   "boundary": "INTERNAL_NOINDEX_NOT_IN_LOBBY"
 }

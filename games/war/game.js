@@ -78,11 +78,14 @@
   info.remove(); frame.battleTopUI.add(group);
   $('#battleUtilityBtn')?.remove();
   const result = $('#resultOverlay'); canvas.append(result);
+  let wasPlaying = false;
   const sync = () => {
     const playing = document.body.dataset.screen === 'battle' && !battle.hidden;
     const covered = playing && !result.hidden;
     frame.activate(playing ? 'battle' : 'main', {covered});
     table.inert = covered || Boolean(battle.querySelector('[data-card-game-return-confirm]'));
+    if (wasPlaying && !playing) requestAnimationFrame(() => start.focus({preventScroll:true}));
+    wasPlaying = playing;
   };
   window.addEventListener('weightplay:shell-sync', sync);
   const resultObserver = new MutationObserver(sync);
@@ -119,7 +122,7 @@
   let wasCovered = false;
   const focusResult = new MutationObserver(() => {
     if (!result.hidden && !wasCovered) requestAnimationFrame(() => resultButtons()[0]?.focus({preventScroll:true}));
-    if (result.hidden && wasCovered) requestAnimationFrame(() => $('#cardGameActions button:not([disabled])')?.focus({preventScroll:true}));
+    if (result.hidden && wasCovered) requestAnimationFrame(() => ($('#cardGameActions button:not([disabled])') || $('#battleBackBtn'))?.focus({preventScroll:true}));
     wasCovered = !result.hidden;
   });
   focusResult.observe(result,{attributes:true,attributeFilter:['hidden']});

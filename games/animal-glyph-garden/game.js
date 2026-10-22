@@ -1,288 +1,698 @@
-(() => {
-  "use strict";
-
-  const $ = (id) => document.getElementById(id);
-  const locales = window.GLYPH_GARDEN_LOCALES || {};
-  const localeMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
-  const GAME_VERSION = "v8";
-  const shapes = ["circle", "triangle", "square", "star", "diamond", "heart"];
-  const colors = ["blue", "gold", "violet", "green", "coral", "amber"];
-  const stageBlueprints = [
-    ["circle", "blue", ["both"]], ["triangle", "gold", ["both"]], ["square", "violet", ["both"]], ["star", "green", ["both"]], ["diamond", "coral", ["both", "both"]],
-    ["heart", "amber", ["shape"]], ["star", "blue", ["shape"]], ["diamond", "gold", ["shape"]], ["circle", "violet", ["shape"]], ["square", "green", ["shape", "shape"]],
-    ["triangle", "coral", ["color"]], ["heart", "blue", ["color"]], ["diamond", "violet", ["color"]], ["star", "amber", ["color"]], ["circle", "gold", ["color", "color"]],
-    ["square", "coral", ["both", "both"]], ["triangle", "green", ["both", "both"]], ["heart", "violet", ["both", "both"]], ["diamond", "amber", ["both", "both"]], ["star", "gold", ["both", "both", "both"]],
-    ["circle", "green", ["shape", "color"]], ["square", "blue", ["color", "shape"]], ["heart", "coral", ["shape", "color"]], ["triangle", "violet", ["color", "shape"]], ["diamond", "green", ["both", "shape", "color"]],
-    ["star", "coral", ["shape", "both", "color"]], ["heart", "gold", ["color", "both", "shape"]], ["circle", "amber", ["both", "color", "shape"]], ["square", "gold", ["shape", "color", "both"]], ["triangle", "blue", ["both", "shape", "color", "both"]],
-  ];
-  const makeTarget = (shape, color, offset) => ({ shape: shapes[(shapes.indexOf(shape) + offset * 2) % shapes.length], color: colors[(colors.indexOf(color) + offset * 3) % colors.length] });
-  const makeOptions = (target, stageIndex, stepIndex) => {
-    const options = [target];
-    for (let offset = 1; options.length < 6; offset += 1) {
-      const item = { shape: shapes[(shapes.indexOf(target.shape) + offset + stageIndex) % shapes.length], color: colors[(colors.indexOf(target.color) + offset + stageIndex + stepIndex) % colors.length] };
-      if (!options.some((candidate) => candidate.shape === item.shape && candidate.color === item.color)) options.push(item);
-    }
-    const rotation = (stageIndex * 2 + stepIndex) % options.length;
-    return options.slice(rotation).concat(options.slice(0, rotation));
-  };
-  const plots = stageBlueprints.map(([shape, color, modes], stageIndex) => {
-    const targets = modes.map((mode, stepIndex) => ({ ...makeTarget(shape, color, stepIndex), mode }));
-    return { arc: Math.floor(stageIndex / 5) + 1, targets, options: targets.map((target, stepIndex) => makeOptions(target, stageIndex, stepIndex)) };
-  });
-  const safeStorage = {
-    get(key, fallback = "") { try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; } },
-    set(key, value) { try { localStorage.setItem(key, value); } catch { /* Private browsing may disable storage. */ } },
-  };
-  const pathLocale = location.pathname.split("/").filter(Boolean).map((value) => localeMap[value.toLowerCase()] || "").find(Boolean);
-  let locale = pathLocale || safeStorage.get("weightPlayLocale", "en");
-  if (!locales[locale]) locale = "en";
-  let plotIndex = 0;
-  let selected = null;
-  let stepIndex = 0;
-  let frameUI = null;
-  let unlocked = Math.max(1, Math.min(plots.length, Number(safeStorage.get("weightplay-glyph-garden-unlocked-v4", "1")) || 1));
-  let solvedValues = [];
-  try { solvedValues = JSON.parse(safeStorage.get("weightplay-glyph-garden-solved-v4", "[]") || "[]"); } catch { solvedValues = []; }
-  const solved = new Set((Array.isArray(solvedValues) ? solvedValues : []).filter((value) => Number.isInteger(value) && value >= 0 && value < plots.length));
-  let checks = 0;
-
+import {
+  STAGES,
+  SHAPES,
+  COLORS,
+  matches,
+  mastery,
+  totalMastery,
+  specimenOwned,
+  loadSave,
+  persistSave,
+  settle,
+  buyMoon,
+  recoverPurchase,
+} from "./garden-core.mjs";
+import { GardenScene } from "./garden-scene.mjs";
+const $ = (id) => document.getElementById(id),
+  locales = window.GLYPH_GARDEN_LOCALES;
+const localeMap = {
+  en: "en",
+  "zh-tw": "zh-Hant",
+  "zh-cn": "zh-Hans",
+  ja: "ja",
+  ko: "ko",
+  es: "es",
+  "pt-br": "pt-BR",
+  fr: "fr",
+  de: "de",
+  it: "it",
+  ru: "ru",
+  hi: "hi",
+  ar: "ar",
+};
+const readLocale = () => {
   try {
-    window.WeightPlayGameRuntimeLocalizer = window.WeightPlayGameRuntimeLocalizer || {};
-    if (Object.isExtensible(window.WeightPlayGameRuntimeLocalizer)) window.WeightPlayGameRuntimeLocalizer["animal-glyph-garden"] = { locales };
-  } catch { /* The game dictionary remains the fallback. */ }
-
-  const copy = (key, vars = {}) => Object.entries(vars).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, String(value)), (locales[locale] || locales.en)[key] || locales.en[key] || key);
-  const label = (item) => `${copy(item.shape)} · ${copy(item.color)}`;
-  const playSound = (id) => window.WeightPlayAudio?.play(id);
-  const announce = (name, data = {}) => {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: `glyph_garden_${name}`, game_version: GAME_VERSION, interface_version: 9, plot: plotIndex + 1, ...data });
+    return localStorage.getItem("weightPlayLocale");
+  } catch {
+    return "en";
+  }
+};
+let locale = localeMap[location.pathname.split("/")[1]] || readLocale() || "en";
+if (!locales[locale]) locale = "en";
+const copy = (key, vars = {}) =>
+  Object.entries(vars).reduce(
+    (s, [k, v]) => s.replaceAll(`{${k}}`, String(v)),
+    locales[locale][key] || locales.en[key] || key,
+  );
+const label = (tile) => `${copy(tile.shape)} · ${copy(tile.color)}`;
+let save = loadSave(localStorage),
+  plotIndex = Math.min(29, save.unlocked - 1),
+  run = null,
+  screen = "main",
+  tabName = "plots",
+  scene = null,
+  frameUI = null,
+  dialogAction = null;
+let audioScope = window.WeightPlayAudio?.createScope?.("glyph-garden");
+const sound = (id) =>
+  audioScope?.play ? audioScope.play(id) : window.WeightPlayAudio?.play(id);
+const lock = (fn) =>
+  navigator.locks
+    ? navigator.locks.request("weightplay-glyph-garden-v9", fn)
+    : Promise.resolve().then(fn);
+const stageName = (i) =>
+  locales[locale].stageNames?.[i] || copy("stageLabel", { number: i + 1 });
+const rule = (t) => copy(`rule${t.mode[0].toUpperCase() + t.mode.slice(1)}`);
+function stageRecord(i) {
+  const s = STAGES[i];
+  if (!s) throw new RangeError("GARDEN_STAGE_INDEX");
+  return {
+    id: i + 1,
+    kicker: copy(`arc${s.arc}`),
+    title: stageName(i),
+    subtitle: copy("stepCount", { count: s.targets.length }),
+    status: save.solved.includes(i)
+      ? "✿".repeat(mastery(save.best[i] ?? 3))
+      : i >= save.unlocked
+        ? copy("locked")
+        : "",
+    summary: s.targets
+      .map(rule)
+      .filter((r, i, a) => a.indexOf(r) === i)
+      .join(" · "),
+    details: [copy("stepCount", { count: s.targets.length })],
+    rewardState: window.WeightPlayCastle?.read
+      ? window.WeightPlayCastle.read().completions[
+          "animal-glyph-garden:stage-" + (i + 1)
+        ]
+        ? "collected"
+        : "not-collected"
+      : "unknown",
+    locked: i >= save.unlocked,
+    cleared: save.solved.includes(i),
   };
-  const bestText = () => safeStorage.get("weightplay-glyph-garden-best-v4", "—") || "—";
-  const stageName = (index) => {
-    const names = (locales[locale] || locales.en).stageNames;
-    return Array.isArray(names) && names[index] ? names[index] : copy("stageLabel", { number: index + 1 });
+}
+function picture(tile, cls = "") {
+  const img = document.createElement("img");
+  img.className = cls;
+  img.alt = "";
+  img.draggable = false;
+  if (scene) img.src = scene.icon(tile);
+  else img.hidden = true;
+  return img;
+}
+function ensureScene() {
+  if (scene) return;
+  try {
+    scene = new GardenScene($("gardenWorld"));
+  } catch (error) {
+    console.warn("GLYPH_GARDEN_WEBGL_UNAVAILABLE", error.name);
+    $("gardenFallback").hidden = false;
+  }
+  scene?.style(save.style);
+}
+function status(message, kind = "") {
+  const el = $("status");
+  el.textContent = message;
+  el.className = `status ${kind}`;
+}
+function refreshProgress() {
+  $("mainProgress").textContent = copy("progressV9", {
+    count: save.solved.length,
+    stars: totalMastery(save),
+  });
+  $("stageProgress").textContent = copy("progressV9", {
+    count: save.solved.length,
+    stars: totalMastery(save),
+  });
+  frameUI?.stageUI.refresh(plotIndex);
+}
+function show(name) {
+  screen = name;
+  document.body.dataset.screen = name;
+  $("mainScreen").hidden = name !== "main";
+  $("stageScreen").hidden = name !== "stage";
+  $("battleScreen").hidden = name !== "battle";
+  frameUI.frame.activate(name);
+  scene?.setVisible(name === "battle");
+  if (name !== "battle") {
+    audioScope?.stop?.();
+    run = null;
+  }
+  $("resultScreen").hidden = true;
+  $("battlePlay").classList.remove("is-complete");
+  $("battlePlay").inert = false;
+  $("battlePlay").hidden = false;
+  refreshProgress();
+}
+function selectTab(name) {
+  tabName = name;
+  for (const b of $("gardenTabs").children)
+    b.setAttribute("aria-pressed", String(b.dataset.tab === name));
+  $("stagePage").classList.toggle("hidden", name !== "plots");
+  $("stagePage").inert = name !== "plots";
+  $("gardenManagement").hidden = name === "plots";
+  if (name === "plots") frameUI.stageUI.refresh(plotIndex);
+  else renderManagement();
+}
+function showStages() {
+  show("stage");
+  selectTab("plots");
+  requestAnimationFrame(() =>
+    $("gardenTabPlots").focus({ preventScroll: true }),
+  );
+}
+function setSelection(index) {
+  if (!run || run.finished || run.saving) return;
+  run.selected = index;
+  [...$("optionGrid").children].forEach((b, i) =>
+    b.setAttribute("aria-pressed", String(i === index)),
+  );
+  $("checkBtn").disabled = index === null;
+  $("clearBtn").disabled = index === null;
+  $("selection").textContent =
+    index === null
+      ? copy("plantHint")
+      : copy("selected", {
+          name: label(STAGES[plotIndex].options[run.step][index]),
+        });
+}
+function renderStep() {
+  const stage = STAGES[plotIndex],
+    target = stage.targets[run.step];
+  $("prompt").textContent = rule(target);
+  $("prompt").dataset.rule = target.mode;
+  $("targetGlyph").replaceChildren(picture(target));
+  $("targetText").textContent =
+    target.mode === "shape"
+      ? copy(target.shape)
+      : target.mode === "color"
+        ? copy(target.color)
+        : label(target);
+  $("targetGlyph").classList.toggle("shape-only", target.mode === "shape");
+  $("targetGlyph").classList.toggle("color-only", target.mode === "color");
+  $("progressPill").textContent = copy("step", {
+    current: run.step + 1,
+    total: stage.targets.length,
+  });
+  frameUI.battleArc.textContent = copy("stageLabel", { number: plotIndex + 1 });
+  $("gardenCaption").textContent = copy(`arc${stage.arc}`);
+  $("gardenSteps").replaceChildren(
+    ...stage.targets.map((_, i) => {
+      const dot = document.createElement("span");
+      dot.textContent = i < run.step ? "✓" : String(i + 1);
+      dot.className = i === run.step ? "current" : i < run.step ? "done" : "";
+      dot.setAttribute("aria-hidden", "true");
+      return dot;
+    }),
+  );
+  [...$("optionGrid").children].forEach((b, i) => {
+    const tile = stage.options[run.step][i];
+    b.replaceChildren(
+      picture(tile),
+      Object.assign(document.createElement("span"), {
+        textContent: label(tile),
+      }),
+    );
+    b.setAttribute("aria-label", label(tile));
+    b.disabled = false;
+    delete b.dataset.feedback;
+  });
+  scene?.focus(run.step);
+  setSelection(null);
+}
+function startPlot(index = plotIndex) {
+  if (index >= save.unlocked || !STAGES[index]) return;
+  plotIndex = index;
+  window.WonderAnalytics?.track?.("stage_start", {
+    stage_id: String(index + 1),
+  });
+  audioScope?.stop?.();
+  sound("game.start");
+  show("battle");
+  ensureScene();
+  scene?.setVisible(true);
+  scene?.style(save.style);
+  scene?.reset(STAGES[index].targets.length);
+  run = {
+    step: 0,
+    selected: null,
+    mistakes: 0,
+    finished: false,
+    saving: false,
+    planted: [],
   };
-  const stageHint = (index) => {
-    const plot = plots[index];
-    return `${copy(`arc${plot.arc}`)} · ${plot.targets.map((target) => copy(`rule${target.mode[0].toUpperCase()}${target.mode.slice(1)}`)).join(" → ")}`;
-  };
-  function stageRecord(index) {
-    const plot = plots[index];
-    if (!plot) throw new RangeError(`GLYPH_GARDEN_STAGE_INDEX:${index}`);
-    const locked = index >= unlocked;
-    const hint = stageHint(index);
-    return {
-      id: index + 1,
-      kicker: copy(`arc${plot.arc}`),
-      title: stageName(index),
-      subtitle: copy("stageLabel", { number: index + 1 }),
-      status: solved.has(index) ? "✓" : locked ? copy("locked") : "",
-      summary: hint,
-      details: [hint],
-      locked,
-      cleared: solved.has(index),
-    };
+  $("gardenFallback").textContent = copy("rendererUnavailable");
+  renderStep();
+  status(copy("plantHint"));
+  $("resultScreen").hidden = true;
+  $("retrySaveBtn").hidden = true;
+  $("optionGrid").firstElementChild.focus({ preventScroll: true });
+}
+function openDialog(title, body, confirm, action) {
+  dialogAction = action;
+  $("gardenDialogTitle").textContent = title;
+  $("gardenDialogBody").textContent = body;
+  $("dialogConfirm").textContent = confirm;
+  $("dialogCancel").textContent = copy("cancel");
+  scene?.stop();
+  audioScope?.stop?.();
+  $("gardenDialog").showModal();
+  $("dialogCancel").focus();
+}
+function closeDialog() {
+  if ($("gardenDialog").open) $("gardenDialog").close();
+  dialogAction = null;
+}
+function leaveBattle() {
+  if (!run || run.finished) {
+    showStages();
+    return;
   }
-  window.GlyphGardenGame = Object.freeze({ stageRecord });
-
-  function shapeGlyph(item, extra = "") {
-    const element = document.createElement("span");
-    element.className = `glyph ${item.shape} ${item.color} ${extra}`;
-    element.setAttribute("aria-hidden", "true");
-    const image = document.createElement("img");
-    image.src = `assets/glyph-${item.shape}-voxel-v1.png`;
-    image.alt = "";
-    image.draggable = false;
-    element.append(image);
-    return element;
+  if (run.saving) return;
+  openDialog(copy("leaveTitle"), copy("leaveBody"), copy("leaveGame"), () => {
+    closeDialog();
+    showStages();
+  });
+  $("dialogCancel").textContent = copy("continueGame");
+}
+function resultFocus() {
+  ($("nextBtn").disabled ? $("replayBtn") : $("nextBtn")).focus({
+    preventScroll: true,
+  });
+}
+async function saveClear() {
+  const current = run;
+  if (!current || current.saving || current.finished) return;
+  current.saving = true;
+  $("retrySaveBtn").disabled = true;
+  try {
+    const result = await lock(() => {
+      const latest = loadSave(localStorage);
+      const settled = settle(latest, plotIndex, current.mistakes);
+      settled.save = persistSave(localStorage, settled.save);
+      return settled;
+    });
+    if (run !== current) return;
+    save = result.save;
+    current.finished = true;
+    const reward = window.WonderAnalytics?.completeStage?.(plotIndex + 1);
+    $("battlePlay").inert = true;
+    $("battlePlay").classList.add("is-complete");
+    $("resultScreen").hidden = false;
+    window.ShowResultGet?.("animal-glyph-garden", reward?.credited === true);
+    if (reward?.credited === true)
+      window.WeightPlayCastle?.dismissRewardNotice?.("animal-glyph-garden");
+    frameUI.frame.activate("battle", { covered: true });
+    $("resultTitle").textContent =
+      plotIndex === 29 ? copy("campaignComplete") : copy("finished");
+    $("resultPetals").textContent =
+      "✿".repeat(result.earned) + "·".repeat(3 - result.earned);
+    $("resultPetals").setAttribute(
+      "aria-label",
+      copy("masteryV9", { stars: result.earned, mistakes: current.mistakes }),
+    );
+    $("resultText").textContent = copy("resultV9", {
+      stars: result.earned,
+      mistakes: current.mistakes,
+      best: result.best,
+    });
+    $("resultFlowers").replaceChildren(
+      ...current.planted.map((t) => picture(t)),
+    );
+    $("resultSpecimen").hidden = !result.specimen;
+    $("resultSpecimen").textContent = copy("collectNew");
+    $("nextBtn").disabled = plotIndex === 29;
+    $("retrySaveBtn").hidden = true;
+    sound("result.win");
+    refreshProgress();
+    resultFocus();
+  } catch {
+    status(copy("saveError"), "bad");
+    $("retrySaveBtn").hidden = false;
+    $("checkBtn").disabled = true;
+    $("clearBtn").disabled = true;
+    $("retrySaveBtn").focus();
+  } finally {
+    current.saving = false;
+    $("retrySaveBtn").disabled = false;
   }
-  function renderMainProgress() {
-    const progress = $("mainProgress");
-    if (progress) progress.textContent = copy("campaignProgress", { unlocked, cleared: solved.size, total: plots.length, best: bestText() });
+}
+function plant() {
+  if (
+    !run ||
+    run.finished ||
+    run.saving ||
+    run.step >= STAGES[plotIndex].targets.length
+  )
+    return;
+  if (run.selected === null) {
+    status(copy("selectFirst"));
+    return;
   }
-  function refreshStage() {
-    frameUI?.stageUI.refresh(plotIndex);
+  const target = STAGES[plotIndex].targets[run.step],
+    chosen = STAGES[plotIndex].options[run.step][run.selected];
+  if (!matches(chosen, target)) {
+    run.mistakes++;
+    const badShape = chosen.shape !== target.shape,
+      badColor = chosen.color !== target.color;
+    const key =
+      target.mode === "shape"
+        ? "wrongShape"
+        : target.mode === "color"
+          ? "wrongColor"
+          : badShape && badColor
+            ? "wrongBoth"
+            : badShape
+              ? "wrongShape"
+              : "wrongColor";
+    status(copy(key), "bad");
+    sound("feedback.error");
+    scene?.reject(run.step);
+    $("optionGrid").children[run.selected].dataset.feedback = "wrong";
+    return;
   }
-  function updateBattleHeader() {
-    const plot = plots[plotIndex];
-    if (!plot || !frameUI) return;
-    frameUI.battleArc.textContent = copy(`arc${plot.arc}`);
-    $("progressPill").textContent = `${plotIndex + 1} / ${plots.length} · ${copy("step", { current: stepIndex + 1, total: plot.targets.length })}`;
+  run.planted.push(chosen);
+  scene?.grow(run.step, chosen);
+  sound("puzzle.match");
+  run.step++;
+  if (run.step === STAGES[plotIndex].targets.length) {
+    scene?.focus(-1);
+    [...$("gardenSteps").children].forEach((dot) => {
+      dot.textContent = "✓";
+      dot.className = "done";
+    });
+    [...$("optionGrid").children].forEach((b) => (b.disabled = true));
+    $("checkBtn").disabled = true;
+    $("clearBtn").disabled = true;
+    saveClear();
+  } else {
+    renderStep();
+    status(copy("sequenceGood"), "good");
+    $("optionGrid").firstElementChild.focus({ preventScroll: true });
   }
-  function applyLocale() {
-    document.documentElement.lang = locale;
-    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
-    document.body.dataset.locale = locale;
-    document.title = `${copy("title")} | WeightPlay`;
-    document.querySelectorAll("[data-glyph-i18n]").forEach((node) => { node.textContent = copy(node.dataset.glyphI18n); });
-    $("mainPoster")?.setAttribute("alt", copy("coverAlt"));
-    const localeSelect = $("localeSelect");
-    if (localeSelect && localeSelect.value !== locale) localeSelect.value = locale;
-    renderMainProgress();
-    refreshStage();
-    renderBattle();
-    renderResult();
-  }
-  function setScreen(screen) {
-    const main = $("mainScreen"), stage = $("stageScreen"), battle = $("battleScreen");
-    const result = screen === "result";
-    main.hidden = screen !== "main";
-    stage.hidden = screen !== "stage";
-    battle.hidden = !(screen === "battle" || result);
-    $("battlePlay").inert = result;
-    $("resultScreen").hidden = !result;
-    document.body.dataset.screen = result ? "battle" : screen;
-    frameUI?.frame.activate(result ? "battle" : screen, { covered: result });
-    if (screen === "stage") refreshStage();
-    if (result) requestAnimationFrame(() => $("resultScreen").querySelector("button:not([hidden])")?.focus({ preventScroll: true }));
-  }
-  function startPlot(index) {
-    if (index >= unlocked) return;
-    plotIndex = index;
-    stepIndex = 0;
-    selected = null;
-    checks = 0;
-    setScreen("battle");
-    renderBattle();
-    playSound("game.start");
-    announce("start", { version: GAME_VERSION });
-  }
-  function renderBattle() {
-    const plot = plots[plotIndex];
-    const root = $("optionGrid");
-    if (!plot || !root) return;
-    const targetRule = plot.targets[stepIndex];
-    updateBattleHeader();
-    $("prompt").textContent = `${copy(`rule${targetRule.mode[0].toUpperCase()}${targetRule.mode.slice(1)}`)} — ${copy("prompt")}`;
-    const requestCard = document.querySelector(".request-card");
-    if (requestCard && !requestCard.querySelector(".taro-guide")) {
-      const taro = document.createElement("img");
-      taro.className = "taro-guide";
-      taro.src = "assets/taro-voxel-v1.png";
-      taro.alt = "";
-      taro.draggable = false;
-      requestCard.prepend(taro);
+}
+function collectionStatus(card, index) {
+  const state = specimenOwned(save, index) ? "collected" : "not-collected";
+  const slot = document.createElement("span");
+  slot.dataset.wpItemCollectionStatus = "";
+  slot.innerHTML =
+    '<span data-wp-item-collection-icon aria-hidden="true"></span><span data-wp-item-collection-label></span>';
+  card.append(slot);
+  window.WeightPlayScreenFrame.setItemCollectionStatus(card, {
+    itemId: `glyph-garden-specimen-${index + 1}`,
+    state,
+    labels: {
+      collected: copy("collected"),
+      "not-collected": copy("notCollected"),
+    },
+  });
+}
+function renderManagement() {
+  ensureScene();
+  const host = $("gardenManagement");
+  host.replaceChildren();
+  const title = document.createElement("h2");
+  title.textContent = copy(tabName);
+  const info = document.createElement("p");
+  info.className = "management-info";
+  info.textContent = copy(
+    tabName === "collection" ? "collectionHelp" : "themeHelp",
+  );
+  host.append(title, info);
+  const grid = document.createElement("div");
+  grid.className = "management-grid";
+  host.append(grid);
+  if (tabName === "collection") {
+    SHAPES.forEach((shape, i) => {
+      const card = document.createElement("article");
+      card.className = "specimen-card";
+      card.append(picture({ shape, color: COLORS[i] }));
+      const h = document.createElement("h3");
+      h.textContent = copy("specimenTitle", { number: i + 1 });
+      const p = document.createElement("p");
+      p.textContent = copy("stageLabel", { number: (i + 1) * 5 });
+      card.append(h, p);
+      collectionStatus(card, i);
+      grid.append(card);
+    });
+  } else {
+    const balance = document.createElement("p");
+    balance.className = "garden-balance";
+    const diamond = document.createElement("img");
+    diamond.src = "/assets/weightplay-diamond.svg";
+    diamond.alt = "";
+    balance.append(
+      diamond,
+      document.createTextNode(
+        copy("balance", { count: window.WeightPlayWallet.read().diamonds }),
+      ),
+    );
+    host.insertBefore(balance, grid);
+    for (const theme of ["dawn", "sunset", "moon"]) {
+      const card = document.createElement("article");
+      card.className = "theme-card";
+      card.dataset.theme = theme;
+      const preview = document.createElement("div");
+      preview.className = "theme-swatch";
+      preview.append(
+        picture({
+          shape: "star",
+          color:
+            theme === "dawn"
+              ? "green"
+              : theme === "sunset"
+                ? "amber"
+                : "violet",
+        }),
+      );
+      const h = document.createElement("h3");
+      h.textContent = copy(theme);
+      const b = document.createElement("button");
+      b.type = "button";
+      b.dataset.themeAction = theme;
+      const owned =
+        theme === "dawn" ||
+        (theme === "sunset" && save.solved.length >= 10) ||
+        (theme === "moon" && save.moon);
+      b.textContent =
+        save.style === theme
+          ? copy("active")
+          : owned
+            ? copy("apply")
+            : theme === "sunset"
+              ? copy("unlockSunset")
+              : copy("buy");
+      b.disabled = save.style === theme || (theme === "sunset" && !owned);
+      b.addEventListener("click", () =>
+        owned ? applyStyle(theme) : purchaseDialog(),
+      );
+      card.append(preview, h, b);
+      grid.append(card);
     }
-    const target = $("targetGlyph");
-    target.replaceChildren(shapeGlyph(targetRule));
-    target.setAttribute("aria-label", label(targetRule));
-    $("targetText").textContent = label(targetRule);
-    root.replaceChildren();
-    plot.options[stepIndex].forEach((item, index) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "option-card";
-      button.setAttribute("role", "listitem");
-      button.setAttribute("aria-pressed", String(index === selected));
-      button.setAttribute("aria-label", label(item));
-      button.append(shapeGlyph(item));
-      const text = document.createElement("span");
-      text.textContent = label(item);
-      button.append(text);
-      button.addEventListener("click", () => {
-        selected = index;
-        renderBattle();
-        announce("select", { option: index + 1, step: stepIndex + 1 });
-      });
-      root.append(button);
-    });
-    $("selection").textContent = selected === null ? "" : copy("selected", { name: label(plot.options[stepIndex][selected]) });
-    $("checkBtn").disabled = selected === null;
-    $("clearBtn").disabled = selected === null;
-    $("status").textContent = "";
-    $("status").className = "status";
   }
-  function check() {
-    if (selected === null) return;
-    checks += 1;
-    const plot = plots[plotIndex];
-    const target = plot.targets[stepIndex];
-    const option = plot.options[stepIndex][selected];
-    const correct = target.mode === "shape" ? option.shape === target.shape : target.mode === "color" ? option.color === target.color : option.shape === target.shape && option.color === target.color;
-    if (correct && stepIndex + 1 < plot.targets.length) {
-      stepIndex += 1;
-      selected = null;
-      playSound("ui.click");
-      announce("step", { checks, step: stepIndex + 1 });
-      renderBattle();
-      $("status").textContent = copy("sequenceGood");
-      $("status").className = "status good";
-      return;
+  const notice = document.createElement("p");
+  notice.id = "managementStatus";
+  notice.role = "status";
+  host.append(notice);
+}
+async function applyStyle(style) {
+  try {
+    save = await lock(() =>
+      persistSave(localStorage, {
+        ...recoverPurchase(localStorage, window.WeightPlayWallet),
+        style,
+      }),
+    );
+    scene?.style(save.style);
+    renderManagement();
+  } catch {
+    $("managementStatus").textContent = copy("saveError");
+  }
+}
+function purchaseDialog() {
+  openDialog(
+    copy("confirmTitle"),
+    copy("confirmBody"),
+    copy("confirm"),
+    async () => {
+      const button = $("dialogConfirm");
+      button.disabled = true;
+      $("dialogCancel").disabled = true;
+      try {
+        const result = await lock(() =>
+          buyMoon(localStorage, window.WeightPlayWallet),
+        );
+        save = result.save;
+        closeDialog();
+        renderManagement();
+        if (result.status === "insufficient")
+          $("managementStatus").textContent = copy("insufficient");
+        else {
+          scene?.style(save.style);
+          sound("shop.purchase");
+        }
+      } catch {
+        $("gardenDialogBody").textContent = copy("saveError");
+      } finally {
+        button.disabled = false;
+        $("dialogCancel").disabled = false;
+      }
+    },
+  );
+}
+function applyLocale() {
+  document.documentElement.lang = locale;
+  document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+  $("localeSelect").value = locale;
+  document.querySelectorAll("[data-i18n],[data-glyph-i18n]").forEach((el) => {
+    const key = el.dataset.glyphI18n || el.dataset.i18n;
+    el.dataset.glyphI18n = key;
+    el.removeAttribute("data-i18n");
+    el.textContent = copy(key);
+  });
+  document.querySelector("#mainScreen [data-wp-frame-title]").textContent =
+    copy("title");
+  document.title = `${copy("title")} | WeightPlay`;
+  $("optionGrid").setAttribute("aria-label", copy("request"));
+  refreshProgress();
+}
+const stageProgress = document.createElement("span");
+stageProgress.id = "stageProgress";
+frameUI = window.GlyphGardenI9Frame.mount({
+  localeSelect: $("localeSelect"),
+  stageRecord,
+  selected: plotIndex,
+  onSelect: (i) => {
+    plotIndex = i;
+  },
+  onStart: (i) => startPlot(i),
+  isStageActive: () => screen === "stage" && tabName === "plots",
+});
+frameUI.frame.stageTopUI.add(stageProgress);
+const tabs = document.createElement("div");
+tabs.id = "gardenTabs";
+tabs.dataset.wpFrameGroup = "";
+for (const key of ["collection", "plots", "themes"]) {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.dataset.tab = key;
+  b.dataset.wpFrameAction = "tab";
+  b.dataset.glyphI18n = key;
+  b.id = key === "plots" ? "gardenTabPlots" : `gardenTab${key}`;
+  b.setAttribute("aria-pressed", String(key === "plots"));
+  b.addEventListener("click", () => selectTab(key));
+  tabs.append(b);
+}
+frameUI.frame.commonDownButton.add(tabs);
+for (let i = 0; i < 6; i++) {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "option-card";
+  b.setAttribute("aria-pressed", "false");
+  b.addEventListener("click", () => {
+    delete b.dataset.feedback;
+    setSelection(i);
+  });
+  $("optionGrid").append(b);
+}
+$("startBtn").addEventListener("click", showStages);
+$("stageBackBtn").addEventListener("click", () => {
+  show("main");
+  $("startBtn").focus();
+});
+$("battleBackBtn").addEventListener("click", leaveBattle);
+$("checkBtn").addEventListener("click", plant);
+$("clearBtn").addEventListener("click", () => {
+  setSelection(null);
+  status(copy("plantHint"));
+});
+$("gardenPlantBtn").addEventListener("click", plant);
+$("nextBtn").addEventListener("click", () => startPlot(plotIndex + 1));
+$("replayBtn").addEventListener("click", () => startPlot(plotIndex));
+$("stagesBtn").addEventListener("click", showStages);
+$("retrySaveBtn").addEventListener("click", saveClear);
+$("dialogCancel").addEventListener("click", closeDialog);
+$("dialogConfirm").addEventListener("click", () => dialogAction?.());
+$("gardenDialog").addEventListener("cancel", (event) => {
+  event.preventDefault();
+  if (!$("dialogCancel").disabled) closeDialog();
+});
+$("localeSelect").addEventListener("change", (event) => {
+  locale = event.target.value;
+  try {
+    localStorage.setItem("weightPlayLocale", locale);
+  } catch {}
+  applyLocale();
+});
+document.addEventListener("keydown", (event) => {
+  if ($("gardenDialog").open) return;
+  if (event.key === "Escape" && screen === "battle" && !run?.saving) {
+    event.preventDefault();
+    leaveBattle();
+  }
+  if (event.key === "Tab" && !$("resultScreen").hidden) {
+    const buttons = [
+      ...$("resultScreen").querySelectorAll("button:not(:disabled)"),
+    ];
+    const first = buttons[0],
+      last = buttons.at(-1);
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
     }
-    if (correct) {
-      solved.add(plotIndex);
-      unlocked = Math.max(unlocked, Math.min(plots.length, plotIndex + 2));
-      safeStorage.set("weightplay-glyph-garden-unlocked-v4", String(unlocked));
-      safeStorage.set("weightplay-glyph-garden-solved-v4", JSON.stringify([...solved].sort((a, b) => a - b)));
-      const oldBest = Number(safeStorage.get("weightplay-glyph-garden-best-v4", "0"));
-      if (!oldBest || checks < oldBest) safeStorage.set("weightplay-glyph-garden-best-v4", String(checks));
-      $("status").textContent = copy("correct");
-      $("status").className = "status good";
-      announce("correct", { checks, step: stepIndex + 1 });
-      window.setTimeout(() => {
-        setScreen("result");
-        renderMainProgress();
-        refreshStage();
-        renderResult();
-      }, 280);
-      return;
-    }
-    $("status").textContent = copy("wrong");
-    $("status").className = "status try";
-    announce("wrong", { checks, step: stepIndex + 1 });
   }
-  function renderResult() {
-    if (!$("resultText")) return;
-    const complete = solved.size === plots.length;
-    $("resultTitle").textContent = plotIndex === plots.length - 1 && complete ? copy("campaignComplete") : copy("finished");
-    $("resultText").textContent = copy("resultText", { count: solved.size, total: plots.length, stage: plotIndex + 1 });
-    $("nextBtn").hidden = plotIndex + 1 >= plots.length;
-    $("stagesBtn").hidden = false;
-    $("replayBtn").hidden = false;
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    scene?.stop();
+    audioScope?.stop?.();
+  } else scene?.resize();
+});
+window.addEventListener("storage", (event) => {
+  if (
+    event.key?.startsWith("weightplay-glyph-garden") ||
+    event.key === "weightplayWallet"
+  ) {
+    save = loadSave(localStorage);
+    refreshProgress();
+    if (screen === "stage" && tabName !== "plots") renderManagement();
   }
-  function next() {
-    const nextIndex = plotIndex + 1;
-    if (nextIndex < plots.length) startPlot(nextIndex);
-    else setScreen("stage");
+});
+window.addEventListener("pagehide", (event) => {
+  scene?.stop();
+  audioScope?.stop?.();
+  if (!event.persisted) {
+    scene?.destroy();
+    audioScope?.dispose?.();
   }
-  function bind() {
-    $("startBtn").addEventListener("click", () => { setScreen("stage"); refreshStage(); });
-    $("stageBackBtn").addEventListener("click", () => setScreen("main"));
-    $("battleBackBtn").addEventListener("click", () => setScreen("stage"));
-    $("checkBtn").addEventListener("click", check);
-    $("clearBtn").addEventListener("click", () => { selected = null; renderBattle(); });
-    $("nextBtn").addEventListener("click", next);
-    $("stagesBtn").addEventListener("click", () => setScreen("stage"));
-    $("replayBtn").addEventListener("click", () => startPlot(plotIndex));
-    $("localeSelect").addEventListener("change", (event) => {
-      const nextLocale = event.target.value;
-      if (!locales[nextLocale]) return;
-      locale = nextLocale;
-      safeStorage.set("weightPlayLocale", locale);
-      applyLocale();
-    });
-    window.addEventListener("weightplay:audio-volume-change", applyLocale);
-  }
-  function boot() {
-    document.querySelectorAll("[data-i18n]").forEach((node) => {
-      node.dataset.glyphI18n = node.dataset.i18n;
-      node.removeAttribute("data-i18n");
-    });
-    frameUI = window.GlyphGardenI9Frame.mount({
-      localeSelect: $("localeSelect"),
-      stageRecord,
-      selected: plotIndex,
-      onSelect: (index) => { plotIndex = index; },
-      onStart: startPlot,
-      isStageActive: () => frameUI?.frame.active === "stage",
-    });
-    bind();
-    window.WeightPlayAudio?.preload?.(["game.start", "ui.click"]);
-    applyLocale();
-    setScreen("main");
-    announce("loaded");
-  }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true });
-  else boot();
-})();
+});
+window.addEventListener("pageshow", () => scene?.resize());
+window.GlyphGardenGame = Object.freeze({
+  stageRecord,
+  diagnostics: () => ({
+    version: "v9",
+    screen,
+    step: run?.step ?? null,
+    renderer: scene?.stats() || null,
+  }),
+});
+window.WeightPlayAudio?.preload?.([
+  "puzzle.match",
+  "feedback.error",
+  "result.win",
+  "shop.purchase",
+]);
+applyLocale();
+show("main");
+lock(() => recoverPurchase(localStorage, window.WeightPlayWallet))
+  .then((recovered) => {
+    save = recovered;
+    refreshProgress();
+  })
+  .catch(() => {
+    $("mainProgress").textContent = copy("saveError");
+  });

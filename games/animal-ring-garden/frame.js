@@ -1,3 +1,4 @@
+import './game.js?v=20261022-animal-ring-garden-v24-conservatory';
 /* Ring Garden supplies localized records and game actions; the shared frame
    owns Main, Stage, Battle headers, card geometry, and Stage gestures. */
 (() => {
@@ -79,6 +80,13 @@
     battleGroup.add(battleName);
     battleGroup.add(battleTurns);
     frame.battleTopUI.add(battleGroup);
+
+    const collectionButton = document.createElement('button');
+    collectionButton.id = 'collection-button';
+    collectionButton.type = 'button';
+    collectionButton.textContent = game.collectionLabel();
+    collectionButton.addEventListener('click', game.openCollection);
+    frame.commonDownButton.add(collectionButton);
 
     stageUI = window.WeightPlayPlayUI.mountStage({
       page: byId("stageWorkspace"),

@@ -1,176 +1,670 @@
-/* Glyph Garden owns puzzle content; the shared frame owns every screen shell. */
+/* Content only. Main, Stage rail and chrome belong to the shared I9 frame. */
 .facts {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 6px 12px;
 }
-
 .facts > span {
   display: inline-flex;
-  align-items: center;
 }
-
-#battleScreen { color: var(--wp-ui-text, #f5fbff); }
+#battleScreen {
+  color: var(--wp-ui-text, #f5fbff);
+}
 .battle-content {
   box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
-  min-width: 0;
-  min-height: 0;
-  padding: 10px 14px;
-  overflow: hidden;
-}
-.battle-canvas {
-  box-sizing: border-box;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: min(100%, 920px);
   height: 100%;
   min-width: 0;
   min-height: 0;
-  margin: 0 auto;
-  padding: 12px;
+  padding: 0;
   overflow: hidden;
-  border: 1px solid var(--wp-ui-line, #527782);
-  border-radius: var(--wp-ui-radius, 16px);
-  background: rgba(5, 27, 39, .58);
+}
+.battle-canvas {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  container-type: size;
 }
 #battlePlay {
-  box-sizing: border-box;
   display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
-  align-content: center;
-  gap: 10px;
-  width: min(100%, 780px);
-  max-height: 100%;
+  grid-template-rows: minmax(180px, 1fr) 340px;
+  height: 100%;
   min-width: 0;
-  margin: auto;
+  min-height: 0;
+  gap: 0;
 }
-.prompt, .selection, .status { margin: 0; text-align: center; }
-.prompt { min-height: 24px; font-weight: 750; color: var(--wp-ui-text, #f5fbff); }
-.request-card {
-  display: grid;
-  grid-template-columns: auto minmax(48px, 72px) minmax(0, 1fr);
-  align-items: center;
-  gap: 12px;
-  min-height: 84px;
-  padding: 8px 14px;
-  border: 1px solid var(--wp-ui-line, #527782);
-  border-radius: 12px;
-  background: var(--wp-ui-surface, #102e3b);
-  color: var(--wp-ui-text, #f5fbff);
-  font-weight: 700;
+.garden-field {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #bfd7b2;
 }
-.request-card > span { color: var(--wp-ui-muted, #bfd0d3); }
-.request-card > strong { min-width: 0; font-size: clamp(16px, 2vw, 21px); text-align: end; }
-.taro-guide { display: block; width: 64px; height: 64px; object-fit: contain; }
-.glyph { display: grid; place-items: center; width: 64px; height: 64px; min-width: 0; overflow: hidden; border: 2px solid currentColor; border-radius: 12px; background: rgba(11, 33, 45, .78); }
-.glyph img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.glyph.blue { color: #8fd7ff; }
-.glyph.gold, .glyph.amber { color: #f7cf68; }
-.glyph.violet { color: #d1a8ff; }
-.glyph.green { color: #9ae4ad; }
-.glyph.coral { color: #ffab98; }
-.option-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 10px; min-height: 0; }
-.option-card {
+#gardenWorld {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 30% 20%,
+    #e2edc9,
+    #afcaa4 65%,
+    #799d87
+  );
+  overflow: hidden;
+}
+#gardenWorld[data-style="sunset"] {
+  background: radial-gradient(
+    ellipse at 30% 20%,
+    #f4dab0,
+    #c6aaa0 65%,
+    #847c92
+  );
+}
+#gardenWorld[data-style="moon"] {
+  background: radial-gradient(
+    ellipse at 30% 20%,
+    #789ba8,
+    #465b80 65%,
+    #293b59
+  );
+}
+#gardenWorld canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.garden-field-caption {
+  position: absolute;
+  top: 12px;
+  inset-inline: 14px;
+  z-index: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 10px;
-  min-width: 0;
-  min-height: 72px;
-  padding: 8px;
-  border: 2px solid var(--wp-ui-line, #527782);
-  border-radius: 12px;
-  background: var(--wp-ui-background, #0b202b);
-  color: var(--wp-ui-text, #f5fbff);
-  font: 700 15px/1.2 system-ui, sans-serif;
-  cursor: pointer;
-  touch-action: manipulation;
+  pointer-events: none;
+  color: #244c3e;
+  font: 700 13px/1.2 system-ui;
 }
-.option-card[aria-pressed="true"] { border-color: var(--wp-i9-focus, #9ff3d6); background: var(--wp-ui-active, #14515a); box-shadow: inset 0 0 0 2px var(--wp-i9-focus, #9ff3d6); }
-.option-card .glyph { width: clamp(40px, 8vh, 68px); height: clamp(40px, 8vh, 68px); flex: 0 0 auto; }
-.option-card > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-.selection, .status { min-height: 20px; font-size: 14px; line-height: 20px; }
-.status.good { color: #99e6ad; }
-.status.try { color: #ffd28b; }
-.battle-actions, .result-actions { display: flex; justify-content: center; gap: 10px; }
-.battle-actions > button, .result-actions > button {
-  box-sizing: border-box;
-  min-width: 150px;
-  min-height: 46px;
-  padding: 8px 14px;
-  border: 2px solid var(--wp-ui-line, #527782);
-  border-radius: 4px;
-  background: var(--wp-ui-button-image, #163640);
-  color: var(--wp-ui-text, #f5fbff);
-  font: 750 15px/1.2 system-ui, sans-serif;
-  cursor: pointer;
-  touch-action: manipulation;
+#gardenCaption {
+  max-width: 55%;
+  background: #f6f6dcde;
+  border: 1px solid #ffffffe0;
+  border-radius: 20px;
+  padding: 6px 12px;
 }
-.battle-actions [data-wp-primary-action], .result-actions [data-wp-primary-action] { background: var(--wp-ui-active, #14515a); border-color: var(--wp-i9-focus, #9ff3d6); }
-.battle-actions > button:disabled {
-  background: #102930;
-  border-color: #3c5961;
-  color: #8fa6ab;
-  cursor: not-allowed;
+#gardenSteps {
+  display: flex;
+  gap: 5px;
 }
-.result-panel {
+#gardenSteps span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #eef0dca8;
+  color: #536958;
+  border: 1px solid #8da382;
+}
+.garden-field #gardenSteps .current {
+  background: #fff1ae;
+  color: #3e553c;
+  border-color: #fff9da;
+  box-shadow: 0 0 0 3px #fff5c050;
+}
+#gardenSteps .done {
+  background: #4c7757;
+  color: white;
+}
+.garden-plant-target {
   position: absolute;
-  inset: 8%;
-  z-index: 3;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 18px;
+  min-height: 38px;
+  max-width: 85%;
+  white-space: nowrap;
+  border: 1px solid #fff7d0;
+  border-radius: 20px;
+  background: #edf4d9e8;
+  color: #274b3b;
+  font: 700 13px/1.2 system-ui;
+  cursor: pointer;
+  box-shadow: 0 3px 9px #2447322b;
+}
+.garden-controls {
+  box-sizing: border-box;
+  padding: 10px 14px 8px;
+  display: grid;
+  grid-template-rows: 56px 146px 20px 44px 28px;
+  gap: 4px;
+  min-width: 0;
+  background: linear-gradient(150deg, #193e3a, #142e35);
+  border-top: 2px solid #b0c397;
+}
+.request-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 0 8px;
+  background: #264b47;
+  border: 1px solid #56726a;
+  border-radius: 10px;
+}
+.request-card > div:last-child {
+  min-width: 0;
+}
+.prompt {
+  margin: 0;
+  color: #bfd8c5;
+  font: 600 12px/1.25 system-ui;
+}
+#targetText {
+  display: block;
+  font: 750 18px/1.3 system-ui;
+  color: #fff8d5;
+  overflow-wrap: anywhere;
+}
+.glyph {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+}
+.glyph img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.shape-only img {
+  filter: grayscale(1);
+}
+.color-only {
+  border-radius: 50%;
+  overflow: hidden;
+}
+.color-only img {
+  transform: scale(1.2);
+}
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, 1fr);
+  gap: 6px;
+  min-width: 0;
+  min-height: 0;
+}
+.option-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  padding: clamp(18px, 4vw, 36px);
-  border: 2px solid var(--wp-ui-line, #527782);
-  border-radius: 16px;
-  background: var(--wp-ui-surface, #102e3b);
-  color: var(--wp-ui-text, #f5fbff);
+  min-width: 0;
+  min-height: 0;
+  gap: 0;
+  padding: 2px 4px;
+  border: 1px solid #66847c;
+  border-radius: 10px;
+  background: linear-gradient(#345b54, #28483f);
+  color: #f1f1d8;
+  font: 650 11px/1.2 system-ui;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    background 120ms,
+    border-color 120ms,
+    box-shadow 120ms;
+}
+.option-card img {
+  display: block;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  pointer-events: none;
+}
+.option-card span {
+  min-height: 14px;
   text-align: center;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, .45);
+  overflow-wrap: anywhere;
 }
-.result-panel[hidden] { display: none !important; }
-.result-icon { color: var(--wp-i9-focus, #9ff3d6); font-size: 42px; }
-.result-panel .eyebrow, .result-panel h2, .result-panel .summary { margin: 0; }
-.result-panel h2 { font-size: clamp(22px, 4vw, 32px); }
-.result-panel .summary { max-width: 34em; line-height: 1.5; }
+.option-card[aria-pressed="true"] {
+  border-color: #fff2ad;
+  background: linear-gradient(#587653, #3b5e4c);
+  box-shadow: inset 0 0 0 2px #ffe69a;
+}
+.option-card[data-feedback="wrong"] {
+  border-color: #fcb098;
+  background: #654e43;
+}
+.option-card:active {
+  transform: translateY(1px);
+}
+.selection,
+.status {
+  margin: 0;
+  text-align: center;
+  align-content: center;
+  font: 500 12px/1.2 system-ui;
+  color: #cad7cb;
+  overflow-wrap: anywhere;
+}
+.status.good {
+  color: #d0f2a4;
+}
+.status.bad {
+  color: #ffc8ac;
+}
+.battle-actions {
+  display: grid;
+  grid-template-columns: 1.65fr 1fr;
+  gap: 8px;
+  min-width: 0;
+}
+.battle-actions button,
+#retrySaveBtn {
+  box-sizing: border-box;
+  min-width: 0;
+  height: 44px;
+  border: 1px solid #829888;
+  border-radius: 9px;
+  font: 750 13px/1.15 system-ui;
+  color: #e7edda;
+  background: #345449;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+.battle-actions [data-wp-primary-action] {
+  color: #294e3b;
+  background: linear-gradient(#eff7c3, #b8d78e);
+  border-color: #eff5c4;
+  box-shadow: 0 3px 0 #748c5a;
+}
+#battleScreen button:disabled {
+  opacity: 0.45;
+  cursor: default;
+  box-shadow: none;
+}
+#battleScreen button:focus-visible,
+#gardenManagement button:focus-visible,
+#gardenDialog button:focus-visible {
+  outline: 3px solid #fff3b9;
+  outline-offset: 2px;
+}
+#retrySaveBtn {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #794c3b;
+  color: white;
+  z-index: 3;
+}
+.result-panel {
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 28px 18px;
+  background: radial-gradient(ellipse at 50% 20%, #395e48, #122e35 80%);
+  text-align: center;
+}
+.result-panel h2,
+.result-panel p {
+  margin: 0;
+}
+#resultFlowers {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3px;
+  max-width: 100%;
+}
+#resultFlowers img {
+  width: 48px;
+  height: 60px;
+  object-fit: contain;
+}
+#resultPetals {
+  font: 900 48px/1 system-ui;
+  color: #f4df89;
+  letter-spacing: 10px;
+}
+#resultText {
+  font: 500 15px/1.5 system-ui;
+  max-width: 460px;
+}
+#resultSpecimen {
+  color: #e2f0a8;
+  font-weight: 700;
+}
+.result-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: 8px;
+  width: 100%;
+  max-width: 520px;
+  margin-top: 10px;
+}
+.result-actions button {
+  min-width: 0;
+  min-height: 48px;
+  padding: 6px;
+  border: 1px solid #93ab95;
+  border-radius: 10px;
+  background: #3a5d50;
+  color: #f4f5d8;
+  font: 700 13px/1.2 system-ui;
+  cursor: pointer;
+}
+.result-actions [data-wp-primary-action] {
+  background: #d9eaae;
+  color: #2e5139;
+}
+#gardenManagement {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  z-index: 4;
+  overflow: auto;
+  padding: 24px;
+  background: #122e35;
+  color: #f2f5df;
+  text-align: center;
+  overscroll-behavior: contain;
+}
+#gardenManagement h2 {
+  margin: 0 0 8px;
+  font: 750 22px/1.3 system-ui;
+}
+.management-info {
+  font: 500 14px/1.5 system-ui;
+  margin: 0 auto 20px;
+  max-width: 550px;
+}
+.management-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 700px;
+  margin: auto;
+}
+.specimen-card,
+.theme-card {
+  padding: 14px 8px;
+  border: 1px solid #527568;
+  border-radius: 14px;
+  background: #23483e;
+  min-width: 0;
+}
+.specimen-card > img {
+  width: 68px;
+  height: 80px;
+  object-fit: contain;
+}
+.specimen-card h3,
+.theme-card h3 {
+  font: 700 14px/1.3 system-ui;
+  margin: 8px 0;
+}
+.specimen-card p {
+  font: 500 12px/1.3 system-ui;
+  margin: 8px 0;
+  color: #d0dfc7;
+}
+.specimen-card [data-wp-item-collection-status] {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  font: 600 12px/1.3 system-ui;
+  color: #d7e7b7;
+}
+.specimen-card[data-wp-item-collection-state="not-collected"] > img {
+  filter: grayscale(1);
+  opacity: 0.28;
+}
+.theme-swatch {
+  border-radius: 8px;
+  background: linear-gradient(#dcebc0, #9abd95);
+  height: 92px;
+  display: grid;
+  place-items: center;
+}
+.theme-swatch img {
+  width: 56px;
+  height: 56px;
+}
+.theme-card[data-theme="sunset"] .theme-swatch {
+  background: linear-gradient(#efd3a6, #a28591);
+}
+.theme-card[data-theme="moon"] .theme-swatch {
+  background: linear-gradient(#7e9dad, #334869);
+}
+.theme-card button {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #a4ba8e;
+  border-radius: 8px;
+  background: #c7df9b;
+  color: #244a39;
+  font: 700 12px/1.2 system-ui;
+  padding: 5px;
+  cursor: pointer;
+}
+.theme-card button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.garden-balance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.garden-balance img {
+  width: 24px;
+  height: 24px;
+}
+#managementStatus {
+  font: 600 14px/1.4 system-ui;
+  color: #ffcfaa;
+  min-height: 24px;
+}
+#gardenDialog {
+  box-sizing: border-box;
+  width: min(90%, 420px);
+  max-height: 85%;
+  padding: 24px;
+  border: 1px solid #c4d5a9;
+  border-radius: 18px;
+  background: #20463d;
+  color: #f1f5de;
+  box-shadow: 0 20px 70px #0008;
+}
+#gardenDialog::backdrop {
+  background: #071b20b8;
+  backdrop-filter: blur(4px);
+}
+#gardenDialog h2 {
+  font: 750 22px/1.3 system-ui;
+  margin: 0 0 14px;
+}
+#gardenDialog p {
+  font: 500 15px/1.6 system-ui;
+  margin: 0 0 24px;
+}
+#gardenDialog > div {
+  display: flex;
+  gap: 10px;
+}
+#gardenDialog button {
+  flex: 1;
+  min-height: 48px;
+  border: 1px solid #91a78e;
+  border-radius: 10px;
+  padding: 8px;
+  background: #d8e9ac;
+  color: #264b39;
+  font: 700 14px/1.2 system-ui;
+  cursor: pointer;
+}
+#gardenDialog #dialogCancel {
+  background: #365b4e;
+  color: #edf1db;
+}
+#gardenFallback {
+  position: absolute;
+  inset: 50% 20px auto;
+  text-align: center;
+  color: #244b3a;
+  font: 650 16px/1.5 system-ui;
+}
+/* The shared fitter selects the wide logical envelope as one unit. */
+@container (min-aspect-ratio: 1.5) {
+  #battlePlay {
+    grid-template-columns: minmax(0, 1fr) 340px;
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .garden-controls {
+    border-top: 0;
+    border-inline-start: 2px solid #b0c397;
+    grid-template-rows: 50px minmax(116px, 1fr) 18px 44px 28px;
+    padding: 8px 12px;
+    gap: 3px;
+  }
+  .option-card img {
+    width: 38px;
+    height: 38px;
+  }
+  .garden-field-caption {
+    top: 10px;
+  }
+  .result-panel {
+    gap: 8px;
+    padding: 14px;
+  }
+  #resultFlowers img {
+    width: 38px;
+    height: 40px;
+  }
+  #resultPetals {
+    font-size: 34px;
+  }
+  .result-actions {
+    margin-top: 4px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .option-card {
+    transition: none;
+  }
+  .option-card:active {
+    transform: none;
+  }
+}
+[hidden] {
+  display: none !important;
+}
+#battlePlay.is-complete {
+  grid-template-rows: minmax(180px, 1fr);
+  padding-bottom: 300px;
+  box-sizing: border-box;
+}
+#battlePlay.is-complete .garden-controls,
+#battlePlay.is-complete .garden-plant-target {
+  display: none;
+}
+.result-panel {
+  top: auto;
+  height: 300px;
+  gap: 12px;
+  padding: 18px;
+}
+@container (min-aspect-ratio:1.5) {
+  #battlePlay.is-complete {
+    padding-bottom: 0;
+    grid-template-columns: minmax(0, 1fr) 340px;
+  }
+  .result-panel {
+    top: 0;
+    left: auto;
+    width: 340px;
+    height: 100%;
+    gap: 9px;
+    padding: 14px;
+  }
+  #resultFlowers img {
+    width: 35px;
+    height: 42px;
+  }
+}
 
-@media (max-width: 520px) {
-  .battle-content { padding: 8px; }
-  .battle-canvas { padding: 8px; }
-  #battlePlay { gap: 7px; }
-  .request-card { grid-template-columns: minmax(0, 1fr) auto; min-height: 64px; gap: 8px; padding: 6px 9px; }
-  .request-card > span { grid-column: 1; }
-  .request-card .taro-guide { display: none; }
-  .request-card .glyph { grid-column: 2; grid-row: 1 / span 2; width: 48px; height: 48px; }
-  .request-card > strong { grid-column: 1; grid-row: 2; text-align: start; font-size: 16px; }
-  .option-grid { gap: 6px; }
-  .option-card { flex-direction: column; gap: 4px; padding: 4px; font-size: 12px; }
-  .option-card .glyph { width: clamp(34px, 7vh, 52px); height: clamp(34px, 7vh, 52px); }
-  .battle-actions { gap: 6px; }
-  .battle-actions > button, .result-actions > button { min-width: 0; flex: 1 1 0; padding-inline: 6px; font-size: 13px; }
+#stageScreen .stage-content {
+  position: relative;
 }
-@media (max-height: 500px) and (orientation: landscape) {
-  .battle-content { padding: 3px 8px; }
-  .battle-canvas { padding: 4px 8px; }
-  #battlePlay { grid-template-rows: 16px 44px minmax(0, 1fr) 15px 34px; gap: 3px; width: min(100%, 900px); }
-  .prompt { min-height: 16px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 12px; line-height: 16px; }
-  .request-card { grid-template-columns: auto 34px minmax(0, 1fr); min-height: 44px; padding: 3px 8px; gap: 6px; font-size: 12px; }
-  .request-card .taro-guide { display: none; }
-  .request-card .glyph { width: 34px; height: 34px; }
-  .request-card > strong { font-size: 13px; }
-  .option-grid { gap: 4px; }
-  .option-card { flex-direction: row; gap: 5px; min-height: 0; padding: 3px; font-size: 12px; }
-  .option-card .glyph { width: 34px; height: 34px; }
-  .selection, .status { min-height: 15px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 11px; line-height: 15px; }
-  .battle-actions { gap: 5px; }
-  .battle-actions > button { min-height: 34px; height: 34px; font-size: 12px; }
+.result-panel {
+  display: block;
+  padding: 0;
+  background: transparent;
+  pointer-events: auto;
 }
+.result-card {
+  position: absolute;
+  box-sizing: border-box;
+  inset: auto 0 0;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 18px;
+  background: linear-gradient(#21453f, #122e35);
+  border-top: 2px solid #a5bc91;
+}
+@container (min-aspect-ratio:1.5) {
+  .result-card {
+    inset: 0 0 0 auto;
+    width: 340px;
+    height: 100%;
+    gap: 9px;
+    padding: 14px;
+    border-top: 0;
+    border-inline-start: 2px solid #a5bc91;
+  }
+}
+.result-panel:not([hidden]) .result-card,
+.specimen-card,
+.theme-card,
+#gardenDialog[open] {
+  animation: garden-reveal 180ms ease-out both;
+}
+@keyframes garden-reveal {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .result-panel:not([hidden]) .result-card,
+  .specimen-card,
+  .theme-card,
+  #gardenDialog[open] {
+    animation: none;
+  }
+}
+
+#mainProgress { box-sizing: border-box; }

@@ -5,8 +5,9 @@
 
   const game = () => window.AnimalRingGardenGame;
   window.AnimalRingGardenStageConfig = Object.freeze({
-    get count() { return game()?.stageCount || 4; },
-    poster: "/games/animal-ring-garden/assets/animal-ring-garden-cover.png",
+    gameId: 'animal-ring-garden',
+    get count() { return game()?.stageCount || 30; },
+    poster: "/assets/interface7-redrawn/animal-ring-garden.webp",
     background: "/assets/lobby-block-atmosphere.svg",
     stage(index) {
       const owner = game();
