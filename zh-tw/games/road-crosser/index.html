@@ -6,12 +6,14 @@
     <base href="/games/road-crosser/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-  <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general" />
+  <meta name="weightplay-game-version" content="v21" />
+  <meta name="weightplay-interface-version" content="7" />
   <meta name="description" content="車流過河冒險是 WeightPlay 原創的時機街機遊戲。帶領星行者穿過車流、移動河流與三段逐步收緊的路線。" />
   <link rel="canonical" href="https://weightplay.com/zh-tw/games/road-crosser/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/road-crosser/" />
@@ -29,11 +31,12 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/road-crosser/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/road-crosser/" />
     <title>車流過河冒險 | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260921-road-crosser-v20-guide-contract" />
+  <link rel="stylesheet" href="style.css?v=20261022-road-i9" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261022-road-i9" />
 <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260921-road-crosser-v20-guide-contract" /><meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261022-road-i9" /><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="車流過河冒險 | WeightPlay" />
     <meta property="og:description" content="車流過河冒險是 WeightPlay 原創的時機街機遊戲。帶領星行者穿過車流、移動河流與三段逐步收緊的路線。" />
@@ -47,18 +50,20 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-game-id="road-crosser" data-wp-game-id="road-crosser" data-wp-battle-layout="native" data-wp-combined-sound="true" data-screen="main">
-  <main class="classic-game" id="roadCrosserApp">
-    <h1 class="wp-route-heading" data-copy="title" data-wp-game-title data-runtime-localize="off">車流過河冒險</h1>
+<body data-wp-game-owned-guide="true" data-wp-game-version="v21" data-wp-interface-version="7" data-wp-interface-candidate="9" data-wp-play-ui="1" data-game-id="road-crosser" data-wp-game-id="road-crosser" data-wp-battle-layout="native" data-wp-combined-sound="true" data-screen="main">
+  <main class="classic-game" id="roadCrosserApp" data-wp-frame-root>
+
+    <section id="mainScreen" class="screen main-screen">
     <header class="main-header site-header">
       <a class="main-return" href="/" data-wp-return="main" aria-label="返回 WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
-      <strong data-copy="title" data-wp-game-title data-runtime-localize="off">車流過河冒險</strong>
+      <h1 data-wp-frame-title data-copy="title" data-wp-game-title data-runtime-localize="off">車流過河冒險</h1>
       <label class="locale-control locale-picker"><span data-copy="language">語言</span><select id="localeSelect" aria-label="語言"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
     </header>
 
-    <section id="mainScreen" class="screen main-screen">
-      <div class="hero-card"><img class="main-poster" src="../../assets/road-crosser-cover-v2.webp" alt="《車流過河冒險》遊戲圖片" /><div class="main-copy"><p class="status-pill" data-copy="comingSoon">敬請期待</p><p class="lead main-summary" data-copy="guideIntro">帶領小小星行者穿過車流、河流與移動浮木。三段路線會從清楚的節奏，逐步變成緊湊的時機挑戰。</p><button id="startBtn" class="primary-action" type="button" data-wp-main-start data-copy="start">開始穿越</button></div></div>
-      <section class="game-page-info game-page-info-static" aria-label="車流過河冒險 遊戲資訊">
+      <div class="hero-card" data-wp-frame-content="main"><img class="main-poster" data-wp-frame-poster width="1024" height="1024" src="../../assets/road-crosser-cover-v2.webp" alt="《車流過河冒險》遊戲圖片" /><div class="main-copy" data-wp-frame-copy><p class="lead main-summary" data-wp-frame-summary data-copy="mainIntro">一步步避開車流，踏上浮木，安全穿越三段路線。</p><p id="mainProgress" data-wp-frame-progress></p><button disabled id="startBtn" class="primary-action" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start">開始穿越</button></div></div>
+
+    </section>
+      <section class="game-page-info game-page-info-static" data-wp-game-guide aria-label="車流過河冒險 遊戲資訊">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2 data-wp-game-title data-runtime-localize="off">車流過河冒險</h2><p>星軌過路是 WeightPlay 原創的時機街機遊戲。帶領星行者穿過車流、移動河流與三段逐步收緊的路線。</p></div>
@@ -75,53 +80,24 @@
       <div class="game-info-section"><h3>開發設計理念</h3><p>星軌過路借鑑經典街機的時機穿越概念，但使用 WeightPlay 自有的星行者、夜間路線色彩、障礙配置、文字、操作與幾何。</p></div>
       <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>這款公開遊戲沒有帳號、購買、聊天、排行榜或廣告流程；分數與最佳紀錄只保存在目前瀏覽器。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>什麼情況會結束？</dt><dd>撞到車、掉進河裡，或被水流帶出遊戲區都會結束本局。</dd></div><div><dt>河流會隨機移動嗎？</dt><dd>不會。木頭遵循可看見且可重複判讀的速度節奏。</dd></div><div><dt>支援哪些操作？</dt><dd>方向鍵、WASD、觸控滑動，以及畫面上的手機方向按鈕。</dd></div><div><dt>進度會保存嗎？</dt><dd>只有本機最佳分數會保存在目前瀏覽器。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><p>因為這款遊戲會練習 時機，也可以試試這些遊戲：</p><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/animal-skybridge-rivals/"><img src="/assets/interface7-redrawn/animal-skybridge-rivals.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>天橋爭霸</strong><span>引導菲亞挑戰 30 場雲端競賽，收集青色極光磚、堆疊運送並搶在三名動物對手前完成橋梁。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/alien-defender/"><img src="/assets/interface7-redrawn/alien-defender.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>星際守衛</strong><span>星際守衛是 WeightPlay 原創的 30 關固定畫面射擊遊戲。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-rift-salvage/"><img src="/assets/interface7-redrawn/animal-rift-salvage.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>裂隙回收隊</strong><span>探索 30 個星界區域，收集殘骸強化月輪、救回核心、超越對手，並取回王冠遺物。</span></span></a></div></div>
+
     </div>
   </section>
-    </section>
 
     <section id="battleScreen" class="screen battle-screen" data-wp-logical-battle-canvas data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden aria-label="星軌過路遊戲區">
-      <div class="battle-stage"><div class="battle-hud"><button id="battleBackBtn" class="icon-button" type="button" data-wp-return="battle" data-copy-aria="back" aria-label="回到主頁">←</button><div><span class="hud-label" data-copy="stage">關卡</span><strong id="stageValue">1 / 3</strong></div><div><span class="hud-label" data-copy="score">分數</span><strong id="scoreValue">0</strong></div><div><span class="hud-label" data-copy="best">最高</span><strong id="bestValue">0</strong></div><button id="soundBtn" class="icon-button" type="button" data-wp-battle-utility data-copy-aria="soundOn" aria-label="開啟音效">◒</button><button id="restartBtn" class="icon-button" type="button" data-copy-aria="restart" aria-label="重新開始">↻</button></div><canvas id="gameCanvas" width="920" height="720" tabindex="0" aria-label="星軌過路遊戲區"></canvas><div class="touch-pad" aria-label="方向操作"><button data-move="up" data-copy-aria="up" aria-label="上">↑</button><button data-move="left" data-copy-aria="left" aria-label="左">←</button><button data-move="down" data-copy-aria="down" aria-label="下">↓</button><button data-move="right" data-copy-aria="right" aria-label="右">→</button></div><p id="battleMessage" class="battle-message" aria-live="polite">先讀懂路線。</p></div><div class="play-reserve" data-wp-ad-reserve data-copy="reserve">遊戲空間保留區</div>
+      <header class="battle-hud"><button id="battleBackBtn" type="button" data-wp-return="battle" data-copy-aria="back" aria-label="回到主頁"><span aria-hidden="true">←</span></button><strong hidden data-wp-frame-title></strong></header>
+      <div id="battleInfo"><div><span data-copy="stage">關卡</span><strong id="stageValue">1 / 3</strong></div><div><span data-copy="score">分數</span><strong id="scoreValue">0</strong></div><div><span data-copy="best">最高</span><strong id="bestValue">0</strong></div></div>
+      <div class="battle-stage"><button id="restartBtn" class="icon-button" type="button" data-copy-aria="restart" aria-label="重新開始">↻</button><canvas id="gameCanvas" width="920" height="720" tabindex="0" aria-label="星軌過路遊戲區"></canvas><div class="touch-pad" aria-label="方向操作"><button data-move="up" data-copy-aria="up" aria-label="上">↑</button><button data-move="left" data-copy-aria="left" aria-label="左">←</button><button data-move="down" data-copy-aria="down" aria-label="下">↓</button><button data-move="right" data-copy-aria="right" aria-label="右">→</button></div><p id="battleMessage" class="battle-message" aria-live="polite">先讀懂路線。</p></div>
+    <section id="resultScreen" class="result-view" data-wp-battle-substate="result" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultCopy"><div class="result-card"><p class="result-kicker" data-copy="resultKicker">過路報告</p><h2 id="resultTitle">路線完成</h2><p id="resultCopy"></p><div class="result-stats"><span><b data-copy="score">分數</b><strong id="resultScore">0</strong></span><span><b data-copy="best">最高</b><strong id="resultBest">0</strong></span></div><div class="result-actions"><button id="retryBtn" class="primary-action" type="button" data-copy="retry">再試一次</button><button id="homeBtn" class="secondary-action" type="button" data-copy="home">回到主頁</button></div></div></section>
+      <section id="leaveDialog" class="leave-view" hidden role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveText"><div class="leave-card"><h2 id="leaveTitle"></h2><p id="leaveText"></p><div class="leave-actions"><button id="continueBtn" type="button"></button><button id="leaveBtn" type="button"></button></div></div></section>
     </section>
 
-    <section id="resultScreen" class="screen result-screen" hidden><div class="result-card"><p class="result-kicker" data-copy="resultKicker">過路報告</p><h2 id="resultTitle">路線完成</h2><p id="resultCopy"></p><div class="result-stats"><span><b data-copy="score">分數</b><strong id="resultScore">0</strong></span><span><b data-copy="best">最高</b><strong id="resultBest">0</strong></span></div><div class="result-actions"><button id="retryBtn" class="primary-action" type="button" data-copy="retry">再試一次</button><button id="homeBtn" class="secondary-action" type="button" data-copy="home">回到主頁</button></div></div></section>
-    <footer class="site-footer" data-copy="footer">WeightPlay 擁有者預覽版・原創時機街機</footer>
+
+
   </main>
-  <script src="game.js?v=20260921-road-crosser-v20-guide-contract&wp-audio=1.0.0"></script>
-  <script>
-    (() => {
-      const publicCopy = {
-        en: { status: "Owner preview", note: "Playable preview only; Tester and the new three-pass Gameplay Reviewer gate are still pending." },
-        "zh-Hant": { status: "擁有者預覽", note: "目前僅供試玩；Tester 與新版三次連續 PASS 的 Gameplay Reviewer Gate 尚未完成。" },
-        "zh-Hans": { status: "拥有者预览", note: "目前仅供试玩；Tester 与新版三次连续 PASS 的 Gameplay Reviewer Gate 尚未完成。" },
-        ja: { status: "所有者プレビュー", note: "現在は試遊用です。Tester と新しい3回連続 PASS の Gameplay Reviewer Gate は未完了です。" },
-        ko: { status: "소유자 미리보기", note: "현재는 플레이 미리보기입니다. Tester와 새 3회 연속 PASS Gameplay Reviewer Gate가 아직 완료되지 않았습니다." },
-        es: { status: "Vista previa del propietario", note: "Esta es una vista previa jugable; Tester y la nueva puerta de Gameplay Reviewer de 3 PASS consecutivos siguen pendientes." },
-        "pt-BR": { status: "Prévia do proprietário", note: "Esta é uma prévia jogável; o Tester e o novo Gate de 3 PASS consecutivos do Gameplay Reviewer ainda estão pendentes." },
-        fr: { status: "Aperçu propriétaire", note: "Ceci est un aperçu jouable ; le Tester et le nouveau Gate de 3 PASS consécutifs du Gameplay Reviewer sont encore en attente." },
-        de: { status: "Besitzer-Vorschau", note: "Dies ist eine spielbare Vorschau; Tester und das neue Gameplay-Reviewer-Gate mit 3 aufeinanderfolgenden PASS stehen noch aus." },
-        it: { status: "Anteprima del proprietario", note: "Questa è un'anteprima giocabile; Tester e il nuovo Gate del Gameplay Reviewer con 3 PASS consecutivi sono ancora in sospeso." },
-        ru: { status: "Предпросмотр владельца", note: "Это игровое превью; Tester и новый Gate Gameplay Reviewer с 3 последовательными PASS ещё не завершены." },
-        hi: { status: "मालिक का पूर्वावलोकन", note: "यह खेलने योग्य पूर्वावलोकन है; Tester और 3 लगातार PASS वाला नया Gameplay Reviewer Gate अभी लंबित है।" },
-        ar: { status: "معاينة المالك", note: "هذه معاينة قابلة للعب؛ ما زالت بوابة Tester وبوابة Gameplay Reviewer الجديدة ذات 3 PASS متتالية معلّقة." },
-      };
-      const battleReserve = document.querySelector(".play-reserve");
-      battleReserve?.classList.add("general-reserve", "battle-ad-reserve");
-      if (battleReserve) document.querySelector("#battleScreen")?.after(battleReserve);
-      document.querySelectorAll(".touch-pad button").forEach((button) => button.setAttribute("data-wp-primary-action", ""));
-      const apply = () => {
-        const locale = document.getElementById("localeSelect")?.value || "en";
-        const copy = publicCopy[locale] || publicCopy.en;
-        const status = document.querySelector('[data-copy="comingSoon"]');
-        const note = document.querySelector('[data-copy="comingNote"]');
-        if (status) status.textContent = copy.status;
-        if (note) note.textContent = copy.note;
-      };
-      apply();
-      document.getElementById("localeSelect")?.addEventListener("change", () => requestAnimationFrame(apply));
-    })();
-  </script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script src="/src/game-entry-loader.js?v=20261022-road-i9"></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+  <script src="game.js?v=20261022-road-i9&amp;wp-audio=1.0.0"></script>
 </body>
 </html>

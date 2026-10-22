@@ -29,6 +29,22 @@
   Object.assign(COPY.ru,{retryGoalStage2:"Цель повтора: следи за подсвеченной полосой, дождись окна и доберись до этапа 3.",retryGoalStage3:"Цель повтора: удерживай подсвеченное окно в быстром потоке, затем используй бревно, чтобы добраться до Звёздных ворот."});
   Object.assign(COPY.hi,{retryGoalStage2:"फिर कोशिश का लक्ष्य: उभरी लेन देखें, खाली जगह का इंतज़ार करें और चरण 3 तक पहुँचें।",retryGoalStage3:"फिर कोशिश का लक्ष्य: तेज़ यातायात में उभरी खाली जगह बनाए रखें, फिर नदी के लट्ठे से स्टार गेट तक पहुँचें।"});
   Object.assign(COPY.ar,{retryGoalStage2:"هدف المحاولة التالية: راقب المسار المظلل، انتظر فجوة ثم بلغ المرحلة 3.",retryGoalStage3:"هدف المحاولة التالية: حافظ على الفجوة المظللة وسط السيارات الأسرع، ثم اركب جذع النهر إلى بوابة النجوم."});
+  const MAIN_INTRO={
+    en:'Move one step at a time. Avoid traffic and ride logs across all three routes.',
+    'zh-Hant':'一步步避開車流，踏上浮木，安全穿越三段路線。',
+    'zh-Hans':'一步步避开车流，踏上浮木，安全穿越三段路线。',
+    ja:'一歩ずつ車を避け、丸太に乗って3つの道を渡ろう。',
+    ko:'한 칸씩 차를 피하고 통나무를 타며 세 구간을 건너세요.',
+    es:'Avanza paso a paso. Evita coches y cruza tres rutas sobre troncos.',
+    'pt-BR':'Avance um passo por vez. Desvie dos carros e use troncos nas três rotas.',
+    fr:'Avance pas à pas. Évite les voitures et traverse trois parcours sur les troncs.',
+    de:'Gehe Schritt für Schritt. Meide Autos und überquere drei Routen auf Baumstämmen.',
+    it:'Avanza un passo alla volta. Evita le auto e usa i tronchi sui tre percorsi.',
+    ru:'Шагай по одному шагу. Избегай машин и пересекай три маршрута по брёвнам.',
+    hi:'एक-एक कदम चलें। गाड़ियों से बचें और लट्ठों पर तीन रास्ते पार करें।',
+    ar:'تحرك خطوة خطوة. تجنب السيارات واعبر المسارات الثلاثة على الجذوع.'
+  };
+  for(const [key,text] of Object.entries(MAIN_INTRO))COPY[key].mainIntro=text;
   const ROAD_SESSION_COPY={
     en:{timing:"Watch the highlighted lane. Wait for a gap, then take one step.",crash:"Traffic caught the runner in the highlighted lane. Wait for a gap before the next step."},
     "zh-Hant":{timing:"看清標亮的路線。等出現空檔，再走一步。",crash:"車流在標亮路線抓到星行者了。等空檔再走下一步。"},
@@ -44,28 +60,143 @@
     hi:{timing:"उभरी हुई लेन पर ध्यान दें। खाली जगह का इंतज़ार करें, फिर एक कदम चलें।",crash:"उभरी हुई लेन में यातायात ने रनर को पकड़ लिया। अगले कदम से पहले खाली जगह का इंतज़ार करें।"},
     ar:{timing:"راقب المسار المظلل. انتظر فجوة ثم تحرك خطوة واحدة.",crash:"أمسكت السيارات بالعدّاء في المسار المظلل. انتظر فجوة قبل الخطوة التالية."}
   };
-  const canvas=document.getElementById("gameCanvas"),ctx=canvas.getContext("2d"),$=id=>document.getElementById(id);let locale=document.documentElement.lang||"en";if(!COPY[locale])locale="en";let copy=COPY[locale],screen="main",stage=1,score=0,best=Number(localStorage.getItem("wp-road-crosser-best")||0),raf=0,last=0,world=null,audio=null,sound=!window.WeightPlayAudio.isMuted(),gesture=null;
-  window.addEventListener("weightplay:audio-volume-change", () => { sound = !window.WeightPlayAudio.isMuted(); });
+  const LEAVE_COPY={
+    en:["Leave this run?","Route {n}: leaving discards this run and its score. Your saved best stays.","Continue playing","Return to Main"],
+    "zh-Hant":["離開這趟旅程？","第 {n} 段：離開會捨棄本次旅程與分數，已儲存的最高分會保留。","繼續遊玩","返回主頁"],
+    "zh-Hans":["离开这趟旅程？","第 {n} 段：离开会舍弃本次旅程与分数，已保存的最高分会保留。","继续游玩","返回主页"],
+    ja:["今回の挑戦を終了？","区間 {n}：今回の進行とスコアは失われます。保存済みのベストは残ります。","プレイを続ける","メインに戻る"],
+    ko:["이번 도전을 나갈까요?","구간 {n}: 현재 진행과 점수는 사라집니다. 저장된 최고 기록은 유지됩니다.","계속하기","메인으로"],
+    es:["¿Salir de esta partida?","Tramo {n}: perderás el progreso y la puntuación de esta partida. Tu récord guardado se conserva.","Seguir jugando","Volver al inicio"],
+    "pt-BR":["Sair desta partida?","Trecho {n}: o progresso e a pontuação desta partida serão perdidos. O recorde salvo permanece.","Continuar jogando","Voltar ao início"],
+    fr:["Quitter cette partie ?","Tronçon {n} : la progression et le score de cette partie seront perdus. Le record enregistré reste.","Continuer à jouer","Retour à l’accueil"],
+    de:["Diesen Lauf verlassen?","Abschnitt {n}: Fortschritt und Punkte dieses Laufs gehen verloren. Der gespeicherte Rekord bleibt.","Weiterspielen","Zur Startseite"],
+    it:["Uscire dalla partita?","Tratto {n}: perderai i progressi e il punteggio di questa partita. Il record salvato resta.","Continua a giocare","Torna all’inizio"],
+    ru:["Выйти из забега?","Участок {n}: текущий прогресс и очки будут потеряны. Сохранённый рекорд останется.","Продолжить игру","На главную"],
+    hi:["यह प्रयास छोड़ें?","खंड {n}: इस प्रयास की प्रगति और स्कोर मिटेंगे। सहेजा गया सर्वश्रेष्ठ बना रहेगा।","खेल जारी रखें","मुख्य पृष्ठ पर लौटें"],
+    ar:["مغادرة هذه المحاولة؟","المقطع {n}: ستفقد تقدم هذه المحاولة ونقاطها. سيبقى أفضل رقم محفوظ.","متابعة اللعب","العودة للرئيسية"]
+  };
+  const lifecycle=new AbortController(),listen=(node,type,fn,options={})=>node.addEventListener(type,fn,{...options,signal:lifecycle.signal});
+  let frame,paused=false,leaveOpen=false,ready=false,generation=0,focusFrame=0,assetTimer=0,assetFailed=false;
+  const effects=new Set();
+  function reveal(node){
+    if(!node||document.hidden)return;
+    const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+    const animation=node.animate([{opacity:.6},{opacity:1}],{duration:reduced?60:160,easing:'ease-out'});
+    effects.add(animation);animation.finished.catch(()=>{}).finally(()=>effects.delete(animation));
+  }
+  function cancelEffects(){for(const animation of effects)animation.cancel();effects.clear();}
+
+  const canvas=document.getElementById("gameCanvas"),ctx=canvas.getContext("2d"),$=id=>document.getElementById(id);let locale=document.documentElement.lang||"en";if(!COPY[locale])locale="en";let copy=COPY[locale],screen="main",stage=1,score=0,best=readBest(),raf=0,last=0,world=null,audio=null,sound=!window.WeightPlayAudio.isMuted(),gesture=null;
+  function readBest(){try{return Math.max(0,Number(localStorage.getItem("wp-road-crosser-best"))||0)}catch{return 0}}
+  listen(window,"weightplay:audio-volume-change", () => { sound = !window.WeightPlayAudio.isMuted(); });
   const rows=8,baseX=460,baseY=0;let sessionSteps=0;
-  function t(key){if(key==="roadTiming"||key==="roadCrash"){const field=key==="roadTiming"?"timing":"crash";return ROAD_SESSION_COPY[locale]?.[field]??ROAD_SESSION_COPY.en[field]}return copy[key]??COPY.en[key]??key}function setText(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";copy=COPY[locale]||COPY.en;document.title=`${t("title")} | WeightPlay`;document.querySelectorAll("[data-copy]").forEach(n=>{n.textContent=t(n.dataset.copy)});document.querySelectorAll("[data-copy-aria]").forEach(n=>n.setAttribute("aria-label",t(n.dataset.copyAria)));canvas.setAttribute("aria-label",t("canvasLabel"));$("localeSelect").value=locale;$("soundBtn").setAttribute("aria-label",t(sound?"soundOn":"soundOff"));$("soundBtn").textContent=sound?"◒":"◌";$("battleMessage").textContent=t("ready");$("bestValue").textContent=best;$("resultBest").textContent=best;}
-  let pinFrame=0;
-  function pinViewportTop(active){const root=document.documentElement,body=document.body;root.classList.toggle("wp-active-play",active);root.style.overflow=active?"hidden":"auto";root.style.overscrollBehavior=active?"none":"contain";root.style.touchAction=active?"none":"";body.style.position=active?"fixed":"";body.style.inset=active?"0":"";body.style.width=active?"100%":"";body.style.overflow=active?"hidden":"auto";body.style.overscrollBehavior=active?"none":"contain";body.style.touchAction=active?"none":"pan-y";root.scrollTop=0;body.scrollTop=0;window.scrollTo({left:0,top:0,behavior:"instant"});cancelAnimationFrame(pinFrame);if(active)pinFrame=requestAnimationFrame(()=>{root.scrollTop=0;body.scrollTop=0;window.scrollTo({left:0,top:0,behavior:"instant"});pinFrame=requestAnimationFrame(()=>{root.scrollTop=0;body.scrollTop=0;window.scrollTo({left:0,top:0,behavior:"instant"})})});else pinFrame=requestAnimationFrame(()=>window.scrollTo({left:0,top:0,behavior:"instant"}))}
-  function show(name){screen=name;document.body.dataset.screen=name;["mainScreen","battleScreen","resultScreen"].forEach(id=>$(id).hidden=id!==`${name}Screen`);$("localeSelect").closest(".locale-picker").hidden=name!=="main";$("battleBackBtn").dataset.wpReturn="battle";pinViewportTop(name==="battle"||name==="result");window.dispatchEvent(new Event("weightplay:shell-sync"));}
+  function t(key){if(key==="roadTiming"||key==="roadCrash"){const field=key==="roadTiming"?"timing":"crash";return ROAD_SESSION_COPY[locale]?.[field]??ROAD_SESSION_COPY.en[field]}return copy[key]??COPY.en[key]??key}
+  function setText(){
+    document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";copy=COPY[locale]||COPY.en;
+    const title=window.WEIGHTPLAY_GAME_TITLES?.['road-crosser']?.[locale]||t('title');
+    document.title=title+' | WeightPlay';
+    document.querySelectorAll('[data-copy]').forEach(node=>{if(!node.hasAttribute('data-wp-game-title'))node.textContent=t(node.dataset.copy)});
+    document.querySelectorAll('[data-wp-game-title]').forEach(node=>{node.textContent=title});
+    document.querySelectorAll('[data-copy-aria]').forEach(node=>node.setAttribute('aria-label',t(node.dataset.copyAria)));
+    canvas.setAttribute('aria-label',t('canvasLabel'));$('localeSelect').value=locale;
+    $('battleMessage').textContent=t('ready');$('bestValue').textContent=best;$('resultBest').textContent=best;
+    $('mainProgress').textContent=t('stage')+' 1 / 3';
+    const labels=LEAVE_COPY[locale]||LEAVE_COPY.en;
+    ['leaveTitle','leaveText','continueBtn','leaveBtn'].forEach((id,index)=>{$(id).textContent=labels[index].replace('{n}',stage)});
+    frame?.refresh();
+  }
+  function show(name){
+    ++generation;cancelAnimationFrame(focusFrame);cancelEffects();clearTimeout(flash.timer);gesture=null;
+    screen=name;leaveOpen=false;$('leaveDialog').hidden=true;
+    const owner=name==='result'?'battle':name;
+    document.body.dataset.screen=owner;
+    $('mainScreen').hidden=owner!=='main';$('battleScreen').hidden=owner!=='battle';
+    const result=name==='result';$('resultScreen').hidden=!result;$('resultScreen').inert=!result;
+    document.querySelector('.battle-stage').hidden=result;document.querySelector('.battle-stage').inert=result;
+    document.querySelector('[data-wp-game-guide]').hidden=owner!=='main';
+    $('battleScreen').dataset.substate=result?'result':'play';
+    frame.activate(owner);paused=name!=='battle';
+    reveal(name==='main'?document.querySelector('.hero-card'):result?document.querySelector('.result-card'):document.querySelector('.battle-stage'));
+    const ticket=generation;
+    focusFrame=requestAnimationFrame(()=>{if(ticket!==generation)return;(name==='main'?$('startBtn'):result?$('retryBtn'):canvas).focus({preventScroll:true})});
+  }
+  function syncPause(){
+    const blocked=screen!=='battle'||leaveOpen||document.hidden||Boolean($('battleScreen').querySelector('[data-wp-settings][aria-expanded="true"]'));
+    if(paused===blocked)return;
+    paused=blocked;cancelAnimationFrame(raf);
+    if(!paused){last=performance.now();raf=requestAnimationFrame(loop)}
+  }
+  function askLeave(){
+    if(screen==='result'){show('main');return}
+    if(screen!=='battle'||leaveOpen)return;
+    $('leaveText').textContent=(LEAVE_COPY[locale]||LEAVE_COPY.en)[1].replace('{n}',stage);
+    leaveOpen=true;$('leaveDialog').hidden=false;document.querySelector('.battle-stage').inert=true;
+    syncPause();reveal(document.querySelector('.leave-card'));$('continueBtn').focus({preventScroll:true});
+  }
+  function continueRun(){
+    if(!leaveOpen)return;
+    leaveOpen=false;$('leaveDialog').hidden=true;document.querySelector('.battle-stage').inert=false;
+    syncPause();$('battleBackBtn').focus({preventScroll:true});
+  }
   function beep(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
   function makeWorld(){const traffic=[];const logs=[];const speed=stage===1?42:stage===2?58:76;for(let lane=0;lane<3;lane++){const count=stage===1?2:stage===2?3:4;for(let i=0;i<count;i++)traffic.push({lane:lane+3,x:(i/count)*920+(lane%2?80:0),w:stage===3?92:78,s:(lane%2?-1:1)*(speed+lane*7+(i%2)*10)})}for(let lane=0;lane<2;lane++)for(let i=0;i<stage+2;i++)logs.push({lane:lane+1,x:i*220+(lane?100:0),w:150,s:(lane%2?1:-1)*(35+stage*12+lane*7)});const rocks=stage>1?[{lane:2,x:235,w:42},{lane:4,x:700,w:42}].concat(stage>2?[{lane:5,x:390,w:42}]:[]):[];return{traffic,logs,rocks,player:{x:460,y:7},moveLock:0};}
-  function start(){cancelAnimationFrame(raf);stage=1;score=0;sessionSteps=0;world=makeWorld();show("battle");updateHud();$("battleMessage").textContent=t("roadTiming");canvas.focus({preventScroll:true});last=performance.now();raf=requestAnimationFrame(loop);beep("game.start",.1)}
+  function start(){if(!ready)return;cancelAnimationFrame(raf);stage=1;score=0;sessionSteps=0;world=makeWorld();show("battle");updateHud();$("battleMessage").textContent=t("roadTiming");canvas.focus({preventScroll:true});last=performance.now();raf=requestAnimationFrame(loop);beep("game.start",.1)}
   function updateHud(){$("stageValue").textContent=`${stage} / 3`;$(`scoreValue`).textContent=score;$(`bestValue`).textContent=best}
-  function move(dir){if(screen!=="battle"||!world||world.moveLock>0)return;const p=world.player;const d={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[dir];if(!d)return;const nx=p.x+d[0]*92,ny=p.y+d[1];if(nx<45||nx>875||ny<0||ny>7)return;if(world.rocks.some(r=>r.lane===ny&&Math.abs(r.x-nx)<r.w/2+28)){flash(t("roadRock"));beep("feedback.error",.1);return}p.x=nx;p.y=ny;world.moveLock=.1;score+=2;sessionSteps+=1;updateHud();$("battleMessage").textContent=stage===1&&sessionSteps<=3?t("roadTiming"):t("roadHint");beep("movement.step",.035);if(p.y===0){score+=100*stage;beep("game.checkpoint",.14);if(stage>=3){finish(true);return}stage++;world=makeWorld();$("battleMessage").textContent=t("roadGoal");updateHud()}}
-  function flash(message){$("battleMessage").textContent=message;clearTimeout(flash.timer);flash.timer=setTimeout(()=>{if(screen==="battle")$("battleMessage").textContent=t("roadHint")},900)}
-  function finish(win,reason){cancelAnimationFrame(raf);if(score>best){best=score;localStorage.setItem("wp-road-crosser-best",best)}show("result");$("resultTitle").textContent=t(win?"winTitle":"loseTitle");const retryGoal=stage>=3?t("retryGoalStage3"):stage>=2?t("retryGoalStage2"):"";$("resultCopy").textContent=win?t("winCopy"):[t(reason||"loseCopy"),retryGoal].filter(Boolean).join(" ");$("resultScore").textContent=score;$("resultBest").textContent=best;beep(win ? "result.win" : "result.lose",.16)}
+  function move(dir){if(screen!=="battle"||paused||!world||world.moveLock>0)return;const p=world.player;const d={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[dir];if(!d)return;const nx=p.x+d[0]*92,ny=p.y+d[1];if(nx<45||nx>875||ny<0||ny>7)return;if(world.rocks.some(r=>r.lane===ny&&Math.abs(r.x-nx)<r.w/2+28)){flash(t("roadRock"));beep("feedback.error",.1);return}p.x=nx;p.y=ny;world.moveLock=.1;score+=2;sessionSteps+=1;updateHud();$("battleMessage").textContent=stage===1&&sessionSteps<=3?t("roadTiming"):t("roadHint");beep("movement.step",.035);if(p.y===0){score+=100*stage;beep("game.checkpoint",.14);if(stage>=3){finish(true);return}stage++;world=makeWorld();$("battleMessage").textContent=t("roadGoal");updateHud()}}
+  function flash(message){$("battleMessage").textContent=message;clearTimeout(flash.timer);const ticket=generation;flash.timer=setTimeout(()=>{if(ticket===generation&&screen==="battle"&&!paused)$("battleMessage").textContent=t("roadHint")},900)}
+  function finish(win,reason){cancelAnimationFrame(raf);if(score>best){best=score;(()=>{try{localStorage.setItem("wp-road-crosser-best",best)}catch{}})()}updateHud();show("result");$("resultTitle").textContent=t(win?"winTitle":"loseTitle");const retryGoal=stage>=3?t("retryGoalStage3"):stage>=2?t("retryGoalStage2"):"";$("resultCopy").textContent=win?t("winCopy"):[t(reason||"loseCopy"),retryGoal].filter(Boolean).join(" ");$("resultScore").textContent=score;$("resultBest").textContent=best;beep(win ? "result.win" : "result.lose",.16)}
   function update(dt){if(!world)return;world.moveLock=Math.max(0,world.moveLock-dt);for(const e of [...world.traffic,...world.logs]){e.x+=e.s*dt;if(e.s>0&&e.x>980)e.x=-e.w;if(e.s<0&&e.x<-e.w)e.x=980}const p=world.player,px=p.x;for(const car of world.traffic)if(car.lane===p.y&&Math.abs(car.x-px)<car.w/2+25){finish(false,"roadCrash");return}if(p.y===1||p.y===2){const log=world.logs.find(l=>l.lane===p.y&&Math.abs(l.x-px)<l.w/2+28);if(log){p.x+=log.s*dt}else if(p.y!==7){finish(false,"roadWater");return}if(p.x<15||p.x>905){finish(false,"roadWater");return}}}
   function draw(){const w=920,h=720;ctx.clearRect(0,0,w,h);const scale=Math.min(canvas.clientWidth/920,canvas.clientHeight/720)||1,logicalW=canvas.clientWidth/scale,logicalH=canvas.clientHeight/scale;ctx.save();ctx.setTransform(scale,0,0,scale,0,0);const ox=(logicalW-w)/2,oy=Math.max(0,(logicalH-h)/2);ctx.translate(ox,oy);ctx.fillStyle="#071725";ctx.fillRect(0,0,w,h);const laneH=74,top=56;ctx.fillStyle="#7de6c31a";ctx.fillRect(0,top,w,laneH);ctx.fillStyle="#5eb7c622";ctx.fillRect(0,top+laneH,w,laneH*2);ctx.fillStyle="#151f2b";ctx.fillRect(0,top+laneH*3,w,laneH*3);ctx.fillStyle="#0d2c37";ctx.fillRect(0,top+laneH*6,w,laneH*2);for(let i=0;i<8;i++){ctx.strokeStyle=i===0?"#ffd77d77":"#8bd9d033";ctx.setLineDash([12,10]);ctx.beginPath();ctx.moveTo(0,top+i*laneH);ctx.lineTo(w,top+i*laneH);ctx.stroke()}ctx.setLineDash([]);ctx.fillStyle="#ffd77d";ctx.font="900 22px system-ui";ctx.fillText("✦",22,top+34);ctx.fillStyle="#a8c8ce";ctx.font="700 15px system-ui";ctx.fillText(stage<3?"FIND THE STAR GATE":"FINAL CROSSING",54,top+32);for(const l of world.logs){const y=top+l.lane*laneH+laneH/2;ctx.fillStyle="#a76f4f";ctx.beginPath();ctx.roundRect(l.x-l.w/2,y-17,l.w,34,14);ctx.fill();ctx.fillStyle="#d39a64";ctx.beginPath();ctx.arc(l.x-l.w/2+18,y,7,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(l.x+l.w/2-18,y,7,0,Math.PI*2);ctx.fill()}for(const car of world.traffic){const y=top+car.lane*laneH+laneH/2;ctx.fillStyle=car.lane%2?"#ef786d":"#7de6c3";ctx.beginPath();ctx.roundRect(car.x-car.w/2,y-16,car.w,32,9);ctx.fill();ctx.fillStyle="#071725";ctx.fillRect(car.x-18,y-8,28,9);ctx.fillStyle="#ffd77d";ctx.beginPath();ctx.arc(car.x-car.w/2+15,y+16,6,0,Math.PI*2);ctx.arc(car.x+car.w/2-15,y+16,6,0,Math.PI*2);ctx.fill()}for(const r of world.rocks){const y=top+r.lane*laneH+laneH/2;ctx.fillStyle="#8d9da6";ctx.beginPath();ctx.moveTo(r.x,y-22);ctx.lineTo(r.x+24,y+18);ctx.lineTo(r.x-25,y+18);ctx.closePath();ctx.fill()}const p=world.player,py=top+p.y*laneH+laneH/2;ctx.save();ctx.translate(p.x,py);ctx.fillStyle="#7de6c3";ctx.beginPath();ctx.moveTo(0,-29);ctx.lineTo(26,19);ctx.lineTo(0,29);ctx.lineTo(-26,19);ctx.closePath();ctx.fill();ctx.fillStyle="#ffd77d";ctx.beginPath();ctx.arc(0,-2,10,0,Math.PI*2);ctx.fill();ctx.fillStyle="#08202b";ctx.fillRect(-5,-4,4,4);ctx.fillRect(4,-4,4,4);ctx.restore();ctx.restore()}
-  function loop(now){const dt=Math.min(.04,(now-last)/1000);last=now;if(screen!=="battle")return;update(dt);draw();if(screen==="battle")raf=requestAnimationFrame(loop)}
+  function loop(now){const dt=Math.min(.04,(now-last)/1000);last=now;if(screen!=="battle"||paused)return;update(dt);draw();if(screen==="battle"&&!paused)raf=requestAnimationFrame(loop)}
   function resize(){if(screen!=="battle")return;const r=canvas.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.max(1,Math.round(r.width*dpr));canvas.height=Math.max(1,Math.round(r.height*dpr));draw()}
   function swipe(dir){move(dir)}
-  document.getElementById("startBtn").addEventListener("click",start);document.getElementById("retryBtn").addEventListener("click",start);document.getElementById("homeBtn").addEventListener("click",()=>{cancelAnimationFrame(raf);show("main")});document.getElementById("battleBackBtn").addEventListener("click",()=>{cancelAnimationFrame(raf);show("main")});document.getElementById("restartBtn").addEventListener("click",start);document.getElementById("soundBtn").addEventListener("click",()=>{sound=window.WeightPlayAudio.setEnabled(!sound);setText();beep("ui.click",.05)});document.querySelectorAll("[data-move]").forEach(b=>b.addEventListener("click",()=>move(b.dataset.move)));document.addEventListener("keydown",e=>{const map={arrowup:"up",arrowdown:"down",arrowleft:"left",arrowright:"right",w:"up",a:"left",s:"down",d:"right"},key=e.key.toLowerCase();if(screen!=="battle"||!map[key])return;e.preventDefault();move(map[key])});canvas.addEventListener("pointerdown",e=>{gesture={x:e.clientX,y:e.clientY};canvas.setPointerCapture?.(e.pointerId)});canvas.addEventListener("pointerup",e=>{if(!gesture)return;const dx=e.clientX-gesture.x,dy=e.clientY-gesture.y;gesture=null;if(Math.max(Math.abs(dx),Math.abs(dy))<18)return;swipe(Math.abs(dx)>Math.abs(dy)?(dx>0?"right":"left"):(dy>0?"down":"up"))});document.getElementById("localeSelect").addEventListener("change",e=>{locale=e.target.value;try{localStorage.setItem("weightPlayLocale",locale)}catch{}setText()});window.addEventListener("resize",resize);setText();show("main");
+  const main=$('mainScreen'),battle=$('battleScreen');
+  for(const button of battle.querySelectorAll('button:not([data-wp-return])'))button.dataset.wpFrameAction=button.matches('#retryBtn,#continueBtn')?'primary':'secondary';
+  frame=window.WeightPlayScreenFrame.mount({root:$('roadCrosserApp'),localeSelect:$('localeSelect'),playUI:true,scenes:{
+    main:{root:main,header:main.querySelector('header'),content:main.querySelector('.hero-card')},
+    battle:{root:battle,header:battle.querySelector('header'),content:battle.querySelector('.battle-stage')}
+  }});
+  const group=window.WeightPlayScreenFrame.createGroup();
+  for(const node of [...$('battleInfo').children])group.add(node);
+  $('battleInfo').remove();frame.battleTopUI.add(group);
+  listen($('startBtn'),'click',start);listen($('retryBtn'),'click',start);
+  listen($('homeBtn'),'click',()=>{cancelAnimationFrame(raf);show('main')});
+  listen($('battleBackBtn'),'click',askLeave);listen($('continueBtn'),'click',continueRun);
+  listen($('leaveBtn'),'click',()=>{if(leaveOpen){cancelAnimationFrame(raf);world=null;show('main')}});
+  listen($('restartBtn'),'click',start);
+  for(const button of document.querySelectorAll('[data-move]'))listen(button,'click',()=>move(button.dataset.move));
+  listen(document,'keydown',event=>{
+    const panel=leaveOpen?$('leaveDialog'):screen==='result'?$('resultScreen'):null;
+    if(panel){
+      if(event.key==='Escape'&&leaveOpen){event.preventDefault();continueRun();return}
+      if(event.key==='Tab'){
+        const nodes=[...panel.querySelectorAll('button:not(:disabled)')],first=nodes[0],last=nodes.at(-1);
+        if(!panel.contains(document.activeElement)||(event.shiftKey&&document.activeElement===first)){event.preventDefault();(event.shiftKey?last:first)?.focus()}
+        else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus()}
+      }
+      return;
+    }
+    if(event.target.closest('select,input,textarea'))return;
+    const map={arrowup:'up',arrowdown:'down',arrowleft:'left',arrowright:'right',w:'up',a:'left',s:'down',d:'right'},key=event.key.toLowerCase();
+    if(screen!=='battle'||paused||!map[key])return;event.preventDefault();move(map[key]);
+  });
+  listen(canvas,'pointerdown',event=>{if(screen!=='battle'||paused)return;gesture={x:event.clientX,y:event.clientY};canvas.setPointerCapture?.(event.pointerId)});
+  listen(canvas,'pointercancel',()=>{gesture=null});
+  listen(canvas,'pointerup',event=>{if(!gesture)return;const dx=event.clientX-gesture.x,dy=event.clientY-gesture.y;gesture=null;if(Math.max(Math.abs(dx),Math.abs(dy))<18)return;swipe(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'))});
+  listen($('localeSelect'),'change',event=>{
+    const next=event.target.value;if(!COPY[next]||next===locale)return;
+    try{localStorage.setItem('weightPlayLocale',next)}catch{}
+    const preview=new URL(location.href).searchParams.get('preview')==='1'?'?preview=1':'';
+    location.assign('/'+LOCALE_SEGMENTS[next]+'/games/road-crosser/'+preview);
+  });
+  listen(window,'weightplay:interaction-state',syncPause);
+  listen(window,'resize',resize);
+  listen(document,'visibilitychange',()=>{cancelEffects();syncPause()});
+  listen(window,'pagehide',event=>{cancelAnimationFrame(raf);cancelAnimationFrame(focusFrame);clearTimeout(flash.timer);clearTimeout(assetTimer);cancelEffects();paused=true;gesture=null;if(!event.persisted){frame.destroy();lifecycle.abort()}});
+  listen(window,'pageshow',event=>{if(event.persisted)syncPause()});
+  setText();show('main');
   function finishAtStageForTest(target,reason){stage=Math.min(3,Math.max(1,target));world=makeWorld();updateHud();finish(false,reason)}
-  window.__roadCrosserSmoke={start,move,finish,finishAtStageForTest,snapshot:()=>({screen,stage,score,best,player:world?.player})};
+  window.__roadCrosserSmoke={start,move,finish,finishAtStageForTest,snapshot:()=>({screen,stage,score,best,player:world?{...world.player}:null,traffic:world?.traffic.map(car=>car.x),logs:world?.logs.map(log=>log.x),paused,leaveOpen,ready})};
   // v4 Director repair: make the first crossing teachable without changing
   // the authored three-stage rule set. Stage 1 opens with a readable gap and
   // slightly wider timing forgiveness; later stages retain the original
@@ -74,18 +205,18 @@
   // one-step judgment. Stage 1 uses a slower traffic rhythm, wider logs, and
   // a gentler current; Stages 2 and 3 retain their authored pressure curve.
   function makeWorld(){const traffic=[];const logs=[];const speed=stage===1?20:stage===2?42:50;for(let lane=0;lane<3;lane++){const count=stage===1?2:stage===2?3:4;for(let i=0;i<count;i++){const starter=stage===1?(i===0?120:760):(i/count)*920+(stage===3?60:0)+(lane%2?80:0);traffic.push({lane:lane+3,x:starter,w:stage===3?92:78,s:(lane%2?-1:1)*(speed+lane*7+(i%2)*10)})}}for(let lane=0;lane<2;lane++)for(let i=0;i<stage+2;i++)logs.push({lane:lane+1,x:i*220+(lane?100:0),w:stage===1?220:stage===2?190:200,s:(lane%2?1:-1)*(stage===1?18:stage===2?28:32)});const rocks=stage>1?[{lane:2,x:235,w:42},{lane:4,x:700,w:42}].concat(stage>2?[{lane:5,x:390,w:42}]:[]):[];return{traffic,logs,rocks,player:{x:460,y:7},moveLock:0}}
-  function move(dir){if(screen!=="battle"||!world||world.moveLock>0)return;const p=world.player;const d={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[dir];if(!d)return;const nx=p.x+d[0]*92,ny=p.y+d[1];if(nx<45||nx>875||ny<0||ny>7)return;if(world.rocks.some(r=>r.lane===ny&&Math.abs(r.x-nx)<r.w/2+28)){flash(t("roadRock"));beep("feedback.error",.1);return}p.x=nx;p.y=ny;world.moveLock=.1;score+=2;updateHud();beep("movement.step",.035);if(p.y===0){score+=100*stage;beep("game.checkpoint",.14);if(stage>=3){finish(true);return}stage++;world=makeWorld();$("battleMessage").textContent=t("roadGoal");updateHud()}}
+  function move(dir){if(screen!=="battle"||paused||!world||world.moveLock>0)return;const p=world.player;const d={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[dir];if(!d)return;const nx=p.x+d[0]*92,ny=p.y+d[1];if(nx<45||nx>875||ny<0||ny>7)return;if(world.rocks.some(r=>r.lane===ny&&Math.abs(r.x-nx)<r.w/2+28)){flash(t("roadRock"));beep("feedback.error",.1);return}p.x=nx;p.y=ny;world.moveLock=.1;score+=2;updateHud();beep("movement.step",.035);if(p.y===0){score+=100*stage;beep("game.checkpoint",.14);if(stage>=3){finish(true);return}stage++;world=makeWorld();$("battleMessage").textContent=t("roadGoal");updateHud()}}
   function update(dt){if(!world)return;world.moveLock=Math.max(0,world.moveLock-dt);for(const e of [...world.traffic,...world.logs]){e.x+=e.s*dt;if(e.s>0&&e.x>980)e.x=-e.w;if(e.s<0&&e.x<-e.w)e.x=980}const p=world.player,px=p.x,collisionPadding=stage===1?10:stage===2?18:22;for(const car of world.traffic)if(car.lane===p.y&&Math.abs(car.x-px)<car.w/2+collisionPadding){finish(false,"roadCrash");return}if(p.y===1||p.y===2){const log=world.logs.find(l=>l.lane===p.y&&Math.abs(l.x-px)<l.w/2+(stage===1?24:stage===2?30:28));if(log){p.x+=log.s*dt}else if(p.y!==7){finish(false,"roadWater");return}if(p.x<15||p.x>905){finish(false,"roadWater");return}}}
   // v5 Director repair: the responsive Canvas remains one uniformly scaled
   // logical envelope, while its declared road lanes flex into the complete
   // safe height and the road track expands across the complete logical width.
   // Simulation coordinates stay at the authored 920x8 grid, so balance and
   // outcomes remain identical across viewport classes.
-  function draw(){const baseW=920,baseH=720,cssW=canvas.clientWidth,cssH=canvas.clientHeight;ctx.clearRect(0,0,canvas.width,canvas.height);const scale=Math.min(cssW/baseW,cssH/baseH)||1,logicalW=cssW/scale,logicalH=cssH/scale,laneTop=56,laneH=Math.max(1,(logicalH-laneTop)/8),mapX=x=>x/baseW*logicalW;ctx.save();ctx.setTransform(scale,0,0,scale,0,0);ctx.fillStyle="#071725";ctx.fillRect(0,0,logicalW,logicalH);ctx.fillStyle="#7de6c31a";ctx.fillRect(0,laneTop,logicalW,laneH);ctx.fillStyle="#5eb7c622";ctx.fillRect(0,laneTop+laneH,logicalW,laneH*2);ctx.fillStyle="#151f2b";ctx.fillRect(0,laneTop+laneH*3,logicalW,laneH*3);ctx.fillStyle="#0d2c37";ctx.fillRect(0,laneTop+laneH*6,logicalW,laneH*2);for(let i=0;i<8;i++){ctx.strokeStyle=i===0?"#ffd77d77":"#8bd9d033";ctx.setLineDash([12,10]);ctx.beginPath();ctx.moveTo(0,laneTop+i*laneH);ctx.lineTo(logicalW,laneTop+i*laneH);ctx.stroke()}ctx.setLineDash([]);ctx.fillStyle="#ffd77d";ctx.font="900 22px system-ui";ctx.fillText("★",22,laneTop+34);ctx.fillStyle="#a8c8ce";ctx.font="700 15px system-ui";ctx.fillText(stage<3?"FIND THE STAR GATE":"FINAL CROSSING",54,laneTop+32);for(const l of world.logs){const x=mapX(l.x),y=laneTop+l.lane*laneH+laneH/2;ctx.fillStyle="#a76f4f";ctx.beginPath();ctx.roundRect(x-l.w/2,y-17,l.w,34,14);ctx.fill();ctx.fillStyle="#d39a64";ctx.beginPath();ctx.arc(x-l.w/2+18,y,7,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(x+l.w/2-18,y,7,0,Math.PI*2);ctx.fill()}for(const car of world.traffic){const x=mapX(car.x),y=laneTop+car.lane*laneH+laneH/2;ctx.fillStyle=car.lane%2?"#ef786d":"#7de6c3";ctx.beginPath();ctx.roundRect(x-car.w/2,y-16,car.w,32,9);ctx.fill();ctx.fillStyle="#071725";ctx.fillRect(x-18,y-8,28,9);ctx.fillStyle="#ffd77d";ctx.beginPath();ctx.arc(x-car.w/2+15,y+16,6,0,Math.PI*2);ctx.arc(x+car.w/2-15,y+16,6,0,Math.PI*2);ctx.fill()}for(const r of world.rocks){const x=mapX(r.x),y=laneTop+r.lane*laneH+laneH/2;ctx.fillStyle="#8d9da6";ctx.beginPath();ctx.moveTo(x,y-22);ctx.lineTo(x+24,y+18);ctx.lineTo(x-25,y+18);ctx.closePath();ctx.fill()}const p=world.player,px=mapX(p.x),py=laneTop+p.y*laneH+laneH/2;ctx.save();ctx.translate(px,py);ctx.fillStyle="#7de6c3";ctx.beginPath();ctx.moveTo(0,-29);ctx.lineTo(26,19);ctx.lineTo(0,29);ctx.lineTo(-26,19);ctx.closePath();ctx.fill();ctx.fillStyle="#ffd77d";ctx.beginPath();ctx.arc(0,-2,10,0,Math.PI*2);ctx.fill();ctx.fillStyle="#08202b";ctx.fillRect(-5,-4,4,4);ctx.fillRect(4,-4,4,4);ctx.restore();ctx.restore()}
+  function draw(){const baseW=920,baseH=720,cssW=canvas.clientWidth,cssH=canvas.clientHeight;ctx.clearRect(0,0,canvas.width,canvas.height);const scale=Math.min(cssW/baseW,cssH/baseH)||1,logicalW=cssW/scale,logicalH=cssH/scale,laneTop=56,laneH=Math.max(1,(logicalH-laneTop)/8),mapX=x=>x/baseW*logicalW;ctx.save();ctx.setTransform(scale,0,0,scale,0,0);ctx.fillStyle="#071725";ctx.fillRect(0,0,logicalW,logicalH);ctx.fillStyle="#7de6c31a";ctx.fillRect(0,laneTop,logicalW,laneH);ctx.fillStyle="#5eb7c622";ctx.fillRect(0,laneTop+laneH,logicalW,laneH*2);ctx.fillStyle="#151f2b";ctx.fillRect(0,laneTop+laneH*3,logicalW,laneH*3);ctx.fillStyle="#0d2c37";ctx.fillRect(0,laneTop+laneH*6,logicalW,laneH*2);for(let i=0;i<8;i++){ctx.strokeStyle=i===0?"#ffd77d77":"#8bd9d033";ctx.setLineDash([12,10]);ctx.beginPath();ctx.moveTo(0,laneTop+i*laneH);ctx.lineTo(logicalW,laneTop+i*laneH);ctx.stroke()}ctx.setLineDash([]);ctx.fillStyle="#ffd77d";ctx.font="900 22px system-ui";ctx.fillText("★",22,laneTop+34);ctx.fillStyle="#a8c8ce";ctx.font="700 15px system-ui";for(const l of world.logs){const x=mapX(l.x),y=laneTop+l.lane*laneH+laneH/2;ctx.fillStyle="#a76f4f";ctx.beginPath();ctx.roundRect(x-l.w/2,y-17,l.w,34,14);ctx.fill();ctx.fillStyle="#d39a64";ctx.beginPath();ctx.arc(x-l.w/2+18,y,7,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(x+l.w/2-18,y,7,0,Math.PI*2);ctx.fill()}for(const car of world.traffic){const x=mapX(car.x),y=laneTop+car.lane*laneH+laneH/2;ctx.fillStyle=car.lane%2?"#ef786d":"#7de6c3";ctx.beginPath();ctx.roundRect(x-car.w/2,y-16,car.w,32,9);ctx.fill();ctx.fillStyle="#071725";ctx.fillRect(x-18,y-8,28,9);ctx.fillStyle="#ffd77d";ctx.beginPath();ctx.arc(x-car.w/2+15,y+16,6,0,Math.PI*2);ctx.arc(x+car.w/2-15,y+16,6,0,Math.PI*2);ctx.fill()}for(const r of world.rocks){const x=mapX(r.x),y=laneTop+r.lane*laneH+laneH/2;ctx.fillStyle="#8d9da6";ctx.beginPath();ctx.moveTo(x,y-22);ctx.lineTo(x+24,y+18);ctx.lineTo(x-25,y+18);ctx.closePath();ctx.fill()}const p=world.player,px=mapX(p.x),py=laneTop+p.y*laneH+laneH/2;ctx.save();ctx.translate(px,py);ctx.fillStyle="#7de6c3";ctx.beginPath();ctx.moveTo(0,-29);ctx.lineTo(26,19);ctx.lineTo(0,29);ctx.lineTo(-26,19);ctx.closePath();ctx.fill();ctx.fillStyle="#ffd77d";ctx.beginPath();ctx.arc(0,-2,10,0,Math.PI*2);ctx.fill();ctx.fillStyle="#08202b";ctx.fillRect(-5,-4,4,4);ctx.fillRect(4,-4,4,4);ctx.restore();ctx.restore()}
   // v5.1 Director repair: keep the authored adaptive lane layout, but bind
   // the Canvas backing store to its CSS size so the same uniform scale fills
   // every safe Battle pixel at DPR 1 and high-DPI displays.
-  function drawResponsive(){const baseW=920,baseH=720,cssW=Math.max(1,canvas.clientWidth),cssH=Math.max(1,canvas.clientHeight),dpr=Math.min(2,window.devicePixelRatio||1),targetW=Math.max(1,Math.round(cssW*dpr)),targetH=Math.max(1,Math.round(cssH*dpr));if(canvas.width!==targetW||canvas.height!==targetH){canvas.width=targetW;canvas.height=targetH;drawResponsive();return}ctx.save();ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,canvas.width,canvas.height);ctx.restore();const scale=Math.min(cssW/baseW,cssH/baseH)||1,logicalW=cssW/scale,logicalH=cssH/scale,laneTop=56,laneH=Math.max(1,(logicalH-laneTop)/8),mapX=x=>x/baseW*logicalW;ctx.save();ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);ctx.fillStyle="#071725";ctx.fillRect(0,0,logicalW,logicalH);ctx.fillStyle="#7de6c31a";ctx.fillRect(0,laneTop,logicalW,laneH);ctx.fillStyle="#5eb7c622";ctx.fillRect(0,laneTop+laneH,logicalW,laneH*2);ctx.fillStyle="#151f2b";ctx.fillRect(0,laneTop+laneH*3,logicalW,laneH*3);ctx.fillStyle="#0d2c37";ctx.fillRect(0,laneTop+laneH*6,logicalW,laneH*2);for(let i=0;i<8;i++){ctx.strokeStyle=i===0?"#ffd77d77":"#8bd9d033";ctx.setLineDash([12,10]);ctx.beginPath();ctx.moveTo(0,laneTop+i*laneH);ctx.lineTo(logicalW,laneTop+i*laneH);ctx.stroke()}ctx.setLineDash([]);ctx.fillStyle="#ffd77d";ctx.font="900 22px system-ui";ctx.fillText("\u2605",22,laneTop+34);ctx.fillStyle="#a8c8ce";ctx.font="700 15px system-ui";ctx.fillText(stage<3?"FIND THE STAR GATE":"FINAL CROSSING",54,laneTop+32);for(const l of world.logs){const x=mapX(l.x),y=laneTop+l.lane*laneH+laneH/2;ctx.fillStyle="#a76f4f";ctx.beginPath();ctx.roundRect(x-l.w/2,y-17,l.w,34,14);ctx.fill();ctx.fillStyle="#d39a64";ctx.beginPath();ctx.arc(x-l.w/2+18,y,7,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(x+l.w/2-18,y,7,0,Math.PI*2);ctx.fill()}for(const car of world.traffic){const x=mapX(car.x),y=laneTop+car.lane*laneH+laneH/2;ctx.fillStyle=car.lane%2?"#ef786d":"#7de6c3";ctx.beginPath();ctx.roundRect(x-car.w/2,y-16,car.w,32,9);ctx.fill();ctx.fillStyle="#071725";ctx.fillRect(x-18,y-8,28,9);ctx.fillStyle="#ffd77d";ctx.beginPath();ctx.arc(x-car.w/2+15,y+16,6,0,Math.PI*2);ctx.arc(x+car.w/2-15,y+16,6,0,Math.PI*2);ctx.fill()}for(const r of world.rocks){const x=mapX(r.x),y=laneTop+r.lane*laneH+laneH/2;ctx.fillStyle="#8d9da6";ctx.beginPath();ctx.moveTo(x,y-22);ctx.lineTo(x+24,y+18);ctx.lineTo(x-25,y+18);ctx.closePath();ctx.fill()}const p=world.player,px=mapX(p.x),py=laneTop+p.y*laneH+laneH/2;ctx.save();ctx.translate(px,py);ctx.fillStyle="#7de6c3";ctx.beginPath();ctx.moveTo(0,-29);ctx.lineTo(26,19);ctx.lineTo(0,29);ctx.lineTo(-26,19);ctx.closePath();ctx.fill();ctx.fillStyle="#ffd77d";ctx.beginPath();ctx.arc(0,-2,10,0,Math.PI*2);ctx.fill();ctx.fillStyle="#08202b";ctx.fillRect(-5,-4,4,4);ctx.fillRect(4,-4,4,4);ctx.restore();ctx.restore()}
+  function drawResponsive(){const baseW=920,baseH=720,cssW=Math.max(1,canvas.clientWidth),cssH=Math.max(1,canvas.clientHeight),dpr=Math.min(2,window.devicePixelRatio||1),targetW=Math.max(1,Math.round(cssW*dpr)),targetH=Math.max(1,Math.round(cssH*dpr));if(canvas.width!==targetW||canvas.height!==targetH){canvas.width=targetW;canvas.height=targetH;drawResponsive();return}ctx.save();ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,canvas.width,canvas.height);ctx.restore();const scale=Math.min(cssW/baseW,cssH/baseH)||1,logicalW=cssW/scale,logicalH=cssH/scale,laneTop=56,laneH=Math.max(1,(logicalH-laneTop)/8),mapX=x=>x/baseW*logicalW;ctx.save();ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);ctx.fillStyle="#071725";ctx.fillRect(0,0,logicalW,logicalH);ctx.fillStyle="#7de6c31a";ctx.fillRect(0,laneTop,logicalW,laneH);ctx.fillStyle="#5eb7c622";ctx.fillRect(0,laneTop+laneH,logicalW,laneH*2);ctx.fillStyle="#151f2b";ctx.fillRect(0,laneTop+laneH*3,logicalW,laneH*3);ctx.fillStyle="#0d2c37";ctx.fillRect(0,laneTop+laneH*6,logicalW,laneH*2);for(let i=0;i<8;i++){ctx.strokeStyle=i===0?"#ffd77d77":"#8bd9d033";ctx.setLineDash([12,10]);ctx.beginPath();ctx.moveTo(0,laneTop+i*laneH);ctx.lineTo(logicalW,laneTop+i*laneH);ctx.stroke()}ctx.setLineDash([]);ctx.fillStyle="#ffd77d";ctx.font="900 22px system-ui";ctx.fillText("\u2605",22,laneTop+34);ctx.fillStyle="#a8c8ce";ctx.font="700 15px system-ui";for(const l of world.logs){const x=mapX(l.x),y=laneTop+l.lane*laneH+laneH/2;ctx.fillStyle="#a76f4f";ctx.beginPath();ctx.roundRect(x-l.w/2,y-17,l.w,34,14);ctx.fill();ctx.fillStyle="#d39a64";ctx.beginPath();ctx.arc(x-l.w/2+18,y,7,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(x+l.w/2-18,y,7,0,Math.PI*2);ctx.fill()}for(const car of world.traffic){const x=mapX(car.x),y=laneTop+car.lane*laneH+laneH/2;ctx.fillStyle=car.lane%2?"#ef786d":"#7de6c3";ctx.beginPath();ctx.roundRect(x-car.w/2,y-16,car.w,32,9);ctx.fill();ctx.fillStyle="#071725";ctx.fillRect(x-18,y-8,28,9);ctx.fillStyle="#ffd77d";ctx.beginPath();ctx.arc(x-car.w/2+15,y+16,6,0,Math.PI*2);ctx.arc(x+car.w/2-15,y+16,6,0,Math.PI*2);ctx.fill()}for(const r of world.rocks){const x=mapX(r.x),y=laneTop+r.lane*laneH+laneH/2;ctx.fillStyle="#8d9da6";ctx.beginPath();ctx.moveTo(x,y-22);ctx.lineTo(x+24,y+18);ctx.lineTo(x-25,y+18);ctx.closePath();ctx.fill()}const p=world.player,px=mapX(p.x),py=laneTop+p.y*laneH+laneH/2;ctx.save();ctx.translate(px,py);ctx.fillStyle="#7de6c3";ctx.beginPath();ctx.moveTo(0,-29);ctx.lineTo(26,19);ctx.lineTo(0,29);ctx.lineTo(-26,19);ctx.closePath();ctx.fill();ctx.fillStyle="#ffd77d";ctx.beginPath();ctx.arc(0,-2,10,0,Math.PI*2);ctx.fill();ctx.fillStyle="#08202b";ctx.fillRect(-5,-4,4,4);ctx.fillRect(4,-4,4,4);ctx.restore();ctx.restore()}
   draw=drawResponsive;
   // v13 Director repair: make the Stage 2 teaching river span the full
   // readable route before restoring Stage 3 pressure.
@@ -121,6 +252,10 @@
     car:"/Assets/road-crosser-car.webp",
     rock:"/Assets/road-crosser-rock.webp"
   };
+  const entryLoader=window.WeightPlayGameEntryLoader;
+  entryLoader.begin(Object.keys(roadArtSources).length+1);
+  const failEntry=()=>{if(lifecycle.signal.aborted||ready)return;assetFailed=true;clearTimeout(assetTimer);entryLoader.fail(undefined,()=>location.reload())};
+  assetTimer=setTimeout(failEntry,20000);
   Object.entries(roadArtSources).forEach(([name,src])=>{
     const image=new Image();
     image.decoding="async";
@@ -128,6 +263,20 @@
     image.src=src;
     roadArt[name]=image;
   });
+  let loaded=0;
+  const images=[...Object.values(roadArt),document.querySelector('.main-poster')];
+  const requiredImage=image=>new Promise((resolve,reject)=>{
+    const complete=()=>{cleanup();if(image.naturalWidth>0){loaded++;entryLoader.assetProgress(loaded,images.length);resolve()}else reject(new Error('Required image failed'))};
+    const failed=()=>{cleanup();reject(new Error('Required image failed'))};
+    const cleanup=()=>{image.removeEventListener('load',complete);image.removeEventListener('error',failed)};
+    if(image.complete){complete();return}
+    image.addEventListener('load',complete,{once:true});image.addEventListener('error',failed,{once:true});
+  });
+  Promise.all(images.map(requiredImage)).then(()=>{
+    if(lifecycle.signal.aborted||assetFailed)return;
+    clearTimeout(assetTimer);
+    ready=true;$('startBtn').disabled=false;entryLoader.ready();
+  }).catch(failEntry);
   const roadArtReady=()=>Object.values(roadArt).every(image=>image.complete&&image.naturalWidth>0);
   function drawRoadArt(){
     if(!world||screen!=="battle")return;
@@ -145,7 +294,7 @@
     ctx.fillStyle="rgba(4,14,28,.18)";ctx.fillRect(0,0,logicalW,logicalH);
     ctx.fillStyle="rgba(255,215,125,.10)";ctx.fillRect(0,laneTop,logicalW,laneH);
     for(let i=0;i<8;i++){ctx.strokeStyle=i===0?"#ffd77d88":"#a6e5e044";ctx.lineWidth=i===0?2:1;ctx.setLineDash([12,10]);ctx.beginPath();ctx.moveTo(0,laneTop+i*laneH);ctx.lineTo(logicalW,laneTop+i*laneH);ctx.stroke()}
-    ctx.setLineDash([]);ctx.fillStyle="#ffe09a";ctx.font="900 22px system-ui";ctx.fillText("★",22,laneTop+34);ctx.fillStyle="#d2e7e9";ctx.font="700 15px system-ui";ctx.fillText(stage<3?"FIND THE STAR GATE":"FINAL CROSSING",54,laneTop+32);
+    ctx.setLineDash([]);ctx.fillStyle="#ffe09a";ctx.font="900 22px system-ui";ctx.fillText("★",22,laneTop+34);ctx.fillStyle="#d2e7e9";ctx.font="700 15px system-ui";
     for(const item of world.logs){
       const x=mapX(item.x),y=laneTop+item.lane*laneH+laneH/2,w=item.w+28,h=Math.min(58,laneH*.76);
       ctx.drawImage(roadArt.log,x-w/2,y-h/2,w,h);

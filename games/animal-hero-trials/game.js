@@ -520,7 +520,21 @@
     ar:['العصا أو WASD للحركة · Space للمهارة · Shift للتفادي','تفادَ','الأبطال والإتقان','اختر بطلك','متابعة'],
   };
   const controlText=index=>(controlCopy[locale]||controlCopy.en)[index];
-  const mainPitch={en:'Four heroes. 30 trials. One crown.','zh-Hant':'四位英雄 · 30 場 3D 試煉','zh-Hans':'四位英雄 · 30 场 3D 试炼',ja:'4人の英雄。30の試練。',ko:'네 영웅, 30개의 시련.',es:'Cuatro héroes. 30 pruebas.','pt-BR':'Quatro heróis. 30 desafios.',fr:'Quatre héros. 30 épreuves.',de:'Vier Helden. 30 Prüfungen.',it:'Quattro eroi. 30 prove.',ru:'Четыре героя. 30 испытаний.',hi:'चार नायक। 30 परीक्षाएँ।',ar:'أربعة أبطال. 30 تجربة.'};
+  const mainPitch={
+    en:'Move out of enemy warnings and time your skills to clear each three-room trial.',
+    'zh-Hant':'移動避開敵人預警，把握技能時機，突破每場試煉的三個房間。',
+    'zh-Hans':'移动避开敌人预警，把握技能时机，突破每场试炼的三个房间。',
+    ja:'敵の予告を避け、スキルを使う時機を選んで3部屋の試練を突破しよう。',
+    ko:'적의 경고를 피하고 제때 스킬을 써서 세 방의 시련을 돌파하세요.',
+    es:'Evita los avisos enemigos y usa tus habilidades para superar tres salas.',
+    'pt-BR':'Desvie dos alertas inimigos e use habilidades na hora certa para vencer três salas.',
+    fr:'Évite les zones annoncées et utilise tes pouvoirs au bon moment pour franchir trois salles.',
+    de:'Weiche Warnzonen aus und setze Fähigkeiten gezielt ein, um drei Räume zu schaffen.',
+    it:'Evita gli attacchi annunciati e usa le abilità al momento giusto per superare tre stanze.',
+    ru:'Уходи из зон угрозы и вовремя используй навыки, чтобы пройти три комнаты.',
+    hi:'दुश्मन की चेतावनी से हटें और सही समय पर कौशल चलाकर तीन कमरे पार करें।',
+    ar:'ابتعد عن تحذيرات الأعداء واستخدم مهاراتك في الوقت المناسب لاجتياز ثلاث غرف.'
+  };
 
   function clearMovementInput() {
     Object.keys(keys).forEach((key) => { keys[key] = false; });
@@ -789,7 +803,6 @@
       // cards from the settled unlock state; otherwise a reused Stage scene
       // can show the new unlock beside the prior Trial Marks total.
       localize();
-      updateCenteredStageCard();
     }
     setChoiceModal(false, false);
     closeQuitDecision(false, false);
@@ -2377,25 +2390,40 @@
   combatActions.append($('#skillBtn'),dodgeButton);canvas.parentElement.append(combatActions);
   canvas.parentElement.append($('#battleHelp'));
   const startButton=$('#startBtn');startButton.disabled=true;
-  let rendererFailure=null,entryLoaderStarted=false;
-  const entryLoaderScript=document.querySelector('script[data-wp-game-entry-loader-bootstrap]');
-  function syncEntryLoader(){
-    const loader=window.WeightPlayGameEntryLoader;
-    if(!loader)return;
-    if(!entryLoaderStarted){loader.begin(1);entryLoaderStarted=true;}
-    if(rendererFailure){loader.fail(undefined,()=>location.reload());return;}
-    if(rendererReady){loader.assetProgress(1,1);loader.ready();}
-  }
-  entryLoaderScript?.addEventListener('load',syncEntryLoader,{once:true});
-  syncEntryLoader();
-  import('../animal-skyspire-drop/vendor/three/three.module.min.js').then(THREE=>{
-    world3d=createBattle3D(THREE);rendererReady=true;startButton.disabled=false;
+  const entryLoader=window.WeightPlayGameEntryLoader,entryAbort=new AbortController();
+  let entryFailed=false,entryLoaded=0;
+  entryLoader.begin(2);
+  const failEntry=error=>{
+    if(entryAbort.signal.aborted||entryFailed)return;
+    entryFailed=true;clearTimeout(entryTimeout);
+    console.error('HERO_TRIALS_ENTRY_INITIALIZATION',error);
+    entryLoader.fail(undefined,()=>location.reload());
+  };
+  const entryTimeout=setTimeout(()=>failEntry(new Error('ENTRY_TIMEOUT')),20000);
+  const assetReady=()=>{if(!entryAbort.signal.aborted&&!entryFailed)entryLoader.assetProgress(++entryLoaded,2);};
+  // The explicit frame creates the actual Main poster synchronously below.
+  // Observe that image after mounting rather than a removed legacy placeholder.
+  const posterReady=Promise.resolve().then(()=>new Promise((resolve,reject)=>{
+    const poster=$('.hero-main-poster img');
+    const finish=()=>{
+      poster?.removeEventListener('load',finish);poster?.removeEventListener('error',finish);
+      if(poster?.naturalWidth>0){assetReady();resolve();}else reject(new Error('MAIN_POSTER_FAILED'));
+    };
+    if(!poster||poster.complete){finish();return;}
+    poster.addEventListener('load',finish,{once:true,signal:entryAbort.signal});
+    poster.addEventListener('error',finish,{once:true,signal:entryAbort.signal});
+  }));
+  const rendererEntry=import('../animal-skyspire-drop/vendor/three/three.module.min.js').then(THREE=>{
+    if(entryAbort.signal.aborted||entryFailed)return;
+    world3d=createBattle3D(THREE);rendererReady=true;
     document.body.dataset.heroRenderer=`three-${THREE.REVISION}`;
-    fitBattleWorld();syncEntryLoader();
-  }).catch(error=>{
-    console.error('HERO_TRIALS_3D_INITIALIZATION',error);
-    rendererFailure=error;syncEntryLoader();
+    fitBattleWorld();assetReady();
   });
+  Promise.all([posterReady,rendererEntry]).then(()=>{
+    if(entryAbort.signal.aborted||entryFailed||!rendererReady)return;
+    clearTimeout(entryTimeout);startButton.disabled=false;entryLoader.ready();
+  }).catch(failEntry);
+  addEventListener('pagehide',()=>{clearTimeout(entryTimeout);entryAbort.abort();},{once:true});
   addEventListener('pagehide',event=>{if(!event.persisted){joystick?.destroy();world3d?.dispose();world3d=null;}});
   // Test instrumentation is supplied by a controlled local harness, never a
   // player-facing URL mode. The normal route always uses the reconstructed UI.
@@ -2499,13 +2527,13 @@
         else if(!event.shiftKey&&document.activeElement===buttons.at(-1)){event.preventDefault();buttons[0].focus();}
       }
     },true);
-    const config={gameId:'animal-hero-trials',count:TRIAL_COUNT,poster:'/assets/interface7-redrawn/animal-hero-trials.webp',
+    const config=window.HeroTrialsStageConfig.create({count:TRIAL_COUNT,
       stage(index){const d=trials[index],locked=d.stage>unlocked&&!practiceEnabled;
         return {id:d.stage,kicker:`${localizedValue('Trial','試煉','Prueba','التجربة')} ${d.stage} / ${TRIAL_COUNT}`,
           title:localizedValue(d.titleEn,d.titleZh,d.titleEs,d.titleAr),subtitle:localizedPair(regions[d.region].name),
           status:locked?t('locked'):interpolate('roomsAndMarks',{marks:d.reward}),
           summary:localizedPair(regions[d.region].rule),details:[localizedPair(regions[d.region].rule),d.boss?localizedPair(d.boss.name):interpolate('recommended',{hero:localizedPair(heroNames[d.recommended])})],
-          locked,cleared:d.stage<unlocked};}};
+          locked,cleared:d.stage<unlocked};}});
     sharedStage=window.WeightPlayPlayUI.mountStage({page:stageContent,rail:$('#stageRail'),config,selected:Math.min(TRIAL_COUNT,unlocked)-1,
       onStart:index=>startTrial(index+1),isActive:()=>activeScene==='stage'});
     sharedFrame.activate('main');

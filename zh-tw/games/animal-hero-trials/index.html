@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
   <link rel="stylesheet" href="../../src/play-viewport.css" />
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-  <link rel="stylesheet" href="style.css?v=20261018-hero-reconstruction1" />
+  <link rel="stylesheet" href="style.css?v=20261022-hero-i9-layout2" />
   <link rel="stylesheet" href="progress-cards.css" />
   <style>.canvas-wrap canvas:focus-visible{outline:5px solid #ffd45f;outline-offset:-5px}</style>
   <style>
@@ -82,13 +82,13 @@
         <div class="wp-standard-main-poster"><div class="cover wp-standard-main-poster-media" role="img" aria-label="Animal Hero Trials poster"></div></div>
         <div class="main-copy wp-standard-main-copy">
           <h1 class="wp-standard-main-title" data-t="title" data-wp-game-title data-runtime-localize="off">英雄試煉</h1>
-          <p class="wp-standard-main-summary" data-t="pitch">選擇四位英雄之一，完成 30 個暗影試煉。</p>
+          <p class="wp-standard-main-summary" data-t="pitch">移動避開敵人預警，把握技能時機，突破每場試煉的三個房間。</p>
           <div id="mainProgress" class="wp-standard-main-progress" data-wp-main-progress role="status">進度 1 / 30</div>
           <button id="startBtn" class="primary wp-standard-main-start" data-wp-main-start type="button" data-t="start">開始遊戲</button>
         </div>
       </section>
     </section>
-    <section id="stageView" data-wp-frame-play-fill class="view hidden wp-standard-stage-panel wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-stage-art="/assets/interface7-redrawn/animal-hero-trials.webp" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-hero-trials.webp')">
+    <section id="stageView" data-wp-frame-play-fill class="view hidden wp-standard-stage-panel wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-stage-art="/assets/lobby-block-atmosphere.svg" style="--wp-stage-art:url('/assets/lobby-block-atmosphere.svg')">
       <header class="compact-head wp-standard-stage-heading"><button id="stageBack" class="icon-btn" data-wp-return="stage" type="button" aria-label="返回">&larr;</button></header>
       <div id="heroPicker" class="hero-picker" aria-label="選擇英雄"></div>
       <div class="progress-card"><span><img src="../../assets/animal-hero-trials-icon-trial-gate.png" alt="" aria-hidden="true" /><span class="progress-copy"><b data-t="marks">試煉印記</b><strong id="markCount">0</strong></span></span><button id="masteryBtn" type="button"><img src="../../assets/animal-hero-trials-icon-heart-mastery.png" alt="" aria-hidden="true" /><span data-t="mastery">生命精通</span><b id="masteryLevel">Lv.0</b><small id="masteryCost">全英雄最大生命 +0 → +12 · 需要 5 枚／目前 0 枚印記</small></button></div>
@@ -106,7 +106,7 @@
     <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"animal-hero-trials"});</script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/tutorial.js"></script>
-  <script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script><script src="/src/stage-rail-i9.js?v=20261017-shared1"></script><script src="/src/game-play-ui.js?v=20261017-shared1"></script><script src="/src/virtual-joystick.js?v=1.0.0"></script><script src="game.js?v=20261022-i9-loader-stage1&wp-audio=1.0.0"></script><section class="game-page-info game-page-info-static" aria-label="英雄試煉 遊戲資訊">
+  <script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="/src/game-entry-loader.js?v=20261022-hero-i9-entry2"></script><script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script><script src="/src/stage-rail-i9.js?v=20261017-shared1"></script><script src="/src/game-play-ui.js?v=20261017-shared1"></script><script src="/src/virtual-joystick.js?v=1.0.0"></script><script src="stage-config.js?v=20261022-hero-i9-stage2"></script><script src="game.js?v=20261022-hero-i9-entry3&wp-audio=1.0.0"></script><section class="game-page-info game-page-info-static" data-wp-game-guide data-wp-preserve-static-guide data-runtime-localize="off" aria-label="英雄試煉 遊戲資訊">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2 data-wp-game-title data-runtime-localize="off">英雄試煉</h2><p>《動物英雄試煉》是共有 30 關的動作闖關。四位 WeightPlay 英雄擁有不同生命、速度、射程與主動技能。每個試煉包含三個相連房間、兩次免費祝福選擇，以及一名菁英隊長或區域 Boss。五種敵人逐步加入飛行、衝鋒、遠程與護甲，六個檢查點 Boss 各有不同反制方式；勝利取得的試煉印記可升級永久生命精通。</p></div>
