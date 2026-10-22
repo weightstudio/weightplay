@@ -1,4 +1,7 @@
 /* Game content only. Frame, guide, header and settings belong to shared CSS. */
+
+/* Keep the shared progress slot compact within the frame content box. */
+body[data-wp-game-id="block-apex"] #mainProgress {box-sizing:border-box!important;height:44px!important;min-height:40px!important;max-height:44px!important}
 [hidden]{display:none!important}
 .apex-art{aspect-ratio:1;display:grid;place-items:center;overflow:hidden}
 .apex-art img{display:block;width:100%;height:100%;object-fit:contain}
