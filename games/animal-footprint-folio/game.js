@@ -8,6 +8,8 @@ const audio=window.WeightPlayAudio?.createScope();
 let locale=window.__WEIGHTPLAY_ROUTE_LOCALE__||'en',save,storageOK=true,screen='main',run=null,activeGap=0,stageUI=null,modalKind='',feedbackKey='',shopBusy=false;
 try{save=normalizeSave(JSON.parse(localStorage.getItem(KEY)||'null'));if(!window.__WEIGHTPLAY_ROUTE_LOCALE__)locale=localStorage.getItem('weightPlayLocale')||locale;}catch{save=normalizeSave(null);storageOK=false;}
 if(!COPY[locale])locale='en';
+// The shared official-name adapter follows the effective in-page language.
+if(!window.WonderI18n?.actualLocale)window.WonderI18n={...window.WonderI18n,actualLocale:()=>locale};
 const t=(key,args={})=>{let value=key==='title'?(window.WEIGHTPLAY_GAME_TITLES?.[GAME]?.[locale]||COPY[locale].title):(COPY[locale]?.[key]??COPY.en[key]??key);for(const[k,v]of Object.entries(args))value=value.replaceAll(`{${k}}`,String(v));return value;};
 const level=()=>CASES[(run?.id||1)-1];
 const sound=id=>{if(!document.hidden)audio?.play(id);};
@@ -38,7 +40,7 @@ function applyCopy(){
 }
 function stageConfig(){return {gameId:GAME,count:CASES.length,poster:POSTER,background:'/assets/lobby-block-atmosphere.svg',stage(index){const l=CASES[index],stars=save.stars[index],locked=l.id>unlocked(save);return {id:l.id,kicker:`${t('caseLabel')} ${String(l.id).padStart(2,'0')} / 30`,title:t('region'+l.region),subtitle:rule(l),status:locked?t('locked'):stars?'★'.repeat(stars)+'☆'.repeat(3-stars):t('chooseGap'),summary:t('starsNote'),details:[rule(l),t('chooseGap')],locked,cleared:!!stars,poster:POSTER};}};}
 function openStages(){closeModal(false);setScreen('stage');setTab('cases');const selected=unlocked(save)-1;if(!stageUI)stageUI=window.WeightPlayPlayUI.mountStage({page:$('stagePage'),rail:$('stageRail'),config:stageConfig(),selected,isActive:()=>screen==='stage'&&!$('stagePage').hidden,onStart:i=>startCase(i+1)});else stageUI.refresh(selected);renderShop();}
-function setTab(tab){$('stagePage').hidden=tab!=='cases';$('equipmentPage').hidden=tab!=='equipment';$('casesTab').setAttribute('aria-pressed',String(tab==='cases'));$('equipmentTab').setAttribute('aria-pressed',String(tab==='equipment'));$('casesTab').toggleAttribute('aria-current',tab==='cases');$('equipmentTab').toggleAttribute('aria-current',tab==='equipment');if(tab==='cases')stageUI?.refresh();else{stageUI?.cancel();renderShop();}animate(tab==='cases'?$('stagePage'):$('equipmentPage'),[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}]);}
+function setTab(tab){$('stagePage').hidden=tab!=='cases';$('stagePage').classList.toggle('hidden',tab!=='cases');$('stagePage').inert=tab!=='cases';$('equipmentPage').hidden=tab!=='equipment';$('casesTab').setAttribute('aria-pressed',String(tab==='cases'));$('equipmentTab').setAttribute('aria-pressed',String(tab==='equipment'));$('casesTab').toggleAttribute('aria-current',tab==='cases');$('equipmentTab').toggleAttribute('aria-current',tab==='equipment');if(tab==='cases')stageUI?.refresh();else{stageUI?.cancel();renderShop();}animate(tab==='cases'?$('stagePage'):$('equipmentPage'),[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}]);}
 function startCase(id,replay=false){
   if(!CASES[id-1]||id>unlocked(save))return;
   closeModal(false);run=!replay&&save.run?.id===id?structuredClone(save.run):{id,answers:{},errors:0,hint:false};
@@ -67,7 +69,7 @@ function renderBattle(){
     const key=tokenKey(token);if(cell.dataset.key!==key){cell.querySelector('.track-art').innerHTML=token?mark(token):'<span class="unknown">?</span>';cell.dataset.key=key;}
     cell.querySelector('.track-number').textContent=String(i+1).padStart(2,'0');
     cell.querySelector('.track-caption').textContent=token?label(token):'—';
-    cell.classList.toggle('active-gap',gap&&i===activeGap);cell.classList.toggle('filled',gap&&!!token);cell.classList.toggle('hint-group',run.hint&&((l.kind==='lanes'&&i%2===activeGap%2)||(l.kind==='mirror'&&i===l.length-1-activeGap)||(l.kind==='repeat'&&i%l.pattern.length===activeGap%l.pattern.length)));
+    cell.classList.toggle('active-gap',gap&&i===activeGap);cell.classList.toggle('filled',gap&&!!token);cell.classList.toggle('hint-group',run.hint&&((l.kind==='lanes'&&i%2===activeGap%2)||(l.kind==='mirror'&&i===l.length-1-activeGap)||(['repeat','mixed'].includes(l.kind)&&i%l.pattern.length===activeGap%l.pattern.length)||(l.kind==='turn'&&i<3)));
     cell.setAttribute('aria-label',`${i+1}. ${token?label(token):t('gap')}`);if(gap)cell.setAttribute('aria-pressed',String(i===activeGap));
   }
   const options=optionsFor(l,activeGap);for(let i=0;i<4;i++){const button=$('choices').children[i];if(!button)continue;const token=options[i];button.querySelector('.choice-art').innerHTML=mark(token);button.querySelector('.choice-name').textContent=label(token);button.querySelector('kbd').textContent=String(i+1);button.setAttribute('aria-label',label(token));button.setAttribute('aria-pressed',String(tokenKey(run.answers[activeGap])===tokenKey(token)));}
@@ -92,7 +94,7 @@ function showHint(){if(modalKind||!run)return;run.hint=true;feedbackKey='hint';r
 function renderModal(){
   if(!modalKind)return;const result=modalKind==='result';$('modal').hidden=false;$('modal').dataset.kind=modalKind;
   $('modal').toggleAttribute('data-wp-result-screen',result);document.querySelector('.modal-card').toggleAttribute('data-wp-result-card',result);
-  $('modalTitle').textContent=t(result?'success':'leaveTitle');$('modalKicker').textContent=`${t('caseLabel')} ${run.id} · ${t('region'+level().region)}`;
+  $('modalTitle').textContent=t(result?(run.id===30?'successAll':'success'):'leaveTitle');$('modalKicker').textContent=`${t('caseLabel')} ${run.id} · ${t('region'+level().region)}`;
   $('modalCopy').textContent=result?t('starsNote'):(storageOK?t('leaveCopy'):t('noSave'));$('resultRule').textContent=result?rule():'';
   const stars=run.awarded||save.stars[run.id-1];
   $('resultStars').hidden=!result;$('resultStars').textContent=result?'★'.repeat(stars)+'☆'.repeat(3-stars):'';$('resultStars').setAttribute('aria-label',`${stars} / 3 ★`);$('resultSeal').hidden=!result;

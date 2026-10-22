@@ -1,88 +1,203 @@
-(function () {
-  "use strict";
-  const locales = window.BURROW_BUILDER_LOCALES;
-  const localeKeys = locales.__localeKeys;
-  const rounds = [
-    { slots: ["stone", "leaf", "acorn"], options: ["stone", "leaf", "acorn", "flower"] },
-    { slots: ["wood", "clay", "flower"], options: ["clay", "flower", "wood", "acorn"] },
-    { slots: ["stone", "wood", "acorn"], options: ["acorn", "stone", "wood", "leaf"] }
-  ];
-  const moduleSymbols = { stone: "⬟", leaf: "❧", acorn: "●", flower: "✿", wood: "▰", clay: "◉" };
-  const moduleNames = { en: { stone: "Stone floor", leaf: "Leaf canopy", acorn: "Acorn nest", flower: "Flower nest", wood: "Wood floor", clay: "Clay shelter" }, "zh-Hant": { stone: "石頭地板", leaf: "葉片遮棚", acorn: "橡果巢室", flower: "花朵巢室", wood: "木頭地板", clay: "黏土遮棚" }, "zh-Hans": { stone: "石头地板", leaf: "叶片遮棚", acorn: "橡果巢室", flower: "花朵巢室", wood: "木头地板", clay: "黏土遮棚" }, ja: { stone: "石の床", leaf: "葉の屋根", acorn: "どんぐりの巣", flower: "花の巣", wood: "木の床", clay: "粘土のシェルター" }, ko: { stone: "돌 바닥", leaf: "잎 지붕", acorn: "도토리 둥지", flower: "꽃 둥지", wood: "나무 바닥", clay: "점토 보금자리" }, es: { stone: "Suelo de piedra", leaf: "Techo de hojas", acorn: "Nido de bellota", flower: "Nido de flores", wood: "Suelo de madera", clay: "Refugio de arcilla" }, "pt-BR": { stone: "Piso de pedra", leaf: "Cobertura de folhas", acorn: "Ninho de bolota", flower: "Ninho de flores", wood: "Piso de madeira", clay: "Abrigo de argila" }, fr: { stone: "Sol de pierre", leaf: "Toit de feuilles", acorn: "Nid de gland", flower: "Nid de fleurs", wood: "Sol en bois", clay: "Abri d’argile" }, de: { stone: "Steinboden", leaf: "Blätterdach", acorn: "Eichelnest", flower: "Blumennest", wood: "Holzboden", clay: "Lehmhütte" }, it: { stone: "Pavimento in pietra", leaf: "Tetto di foglie", acorn: "Nido di ghiande", flower: "Nido di fiori", wood: "Pavimento in legno", clay: "Riparo d’argilla" }, ru: { stone: "Каменный пол", leaf: "Крыша из листьев", acorn: "Жёлудевое гнездо", flower: "Цветочное гнездо", wood: "Деревянный пол", clay: "Глиняное укрытие" }, hi: { stone: "पत्थर का फ़र्श", leaf: "पत्तों की छत", acorn: "बलूत घोंसला", flower: "फूलों का घोंसला", wood: "लकड़ी का फ़र्श", clay: "मिट्टी का आश्रय" }, ar: { stone: "أرضية حجرية", leaf: "سقف من الأوراق", acorn: "عش البلوط", flower: "عش الزهور", wood: "أرضية خشبية", clay: "مأوى من الطين" } };
-  const staticGuideCopy = {
-    en: { gameGuideLabel: "Burrow Builder game guide", aria: "Burrow Builder game information", kicker: "WeightPlay Original Game Guide", title: "Burrow Builder", intro: "Choose a habitat module, then place it into the matching burrow plan.", gameplayLabel: "Gameplay", gameplay: "Shelter Construction Puzzle", genreLabel: "Genre", genre: "Puzzle · Construction · Spatial Planning · Family · Animal", faqTitle: "FAQ", faqQuestion: "Is progress saved?", faqAnswer: "Yes, only in this browser." },
-    "zh-Hant": { gameGuideLabel: "地穴建造隊遊戲指南", aria: "地穴建造隊遊戲資訊", kicker: "WeightPlay 原創遊戲指南", title: "地穴建造隊", intro: "選擇棲地模組，再放入相符的地穴藍圖。", gameplayLabel: "玩法", gameplay: "棲地建造益智", genreLabel: "類型", genre: "益智 · 建造 · 空間規劃 · 家庭 · 動物", faqTitle: "常見問題", faqQuestion: "進度會保存嗎？", faqAnswer: "是，只保存在這個瀏覽器中。" },
-    "zh-Hans": { gameGuideLabel: "地穴建造队游戏指南", aria: "地穴建造队游戏信息", kicker: "WeightPlay 原创游戏指南", title: "地穴建造队", intro: "选择栖地模块，再放入相符的地穴蓝图。", gameplayLabel: "玩法", gameplay: "栖地建造益智", genreLabel: "类型", genre: "益智 · 建造 · 空间规划 · 家庭 · 动物", faqTitle: "常见问题", faqQuestion: "进度会保存吗？", faqAnswer: "是，只保存在此浏览器中。" },
-    ja: { gameGuideLabel: "バロービルダー ゲームガイド", aria: "バロービルダー ゲーム情報", kicker: "WeightPlay オリジナルゲームガイド", title: "バロービルダー", intro: "すみかモジュールを選び、合う設計図に置きます。", gameplayLabel: "ゲーム内容", gameplay: "すみか建築パズル", genreLabel: "ジャンル", genre: "パズル · 建築 · 空間計画 · ファミリー · 動物", faqTitle: "よくある質問", faqQuestion: "進行状況は保存されますか？", faqAnswer: "はい、このブラウザにのみ保存されます。" },
-    ko: { gameGuideLabel: "굴 보금자리 만들기 게임 가이드", aria: "굴 보금자리 만들기 게임 정보", kicker: "WeightPlay 오리지널 게임 가이드", title: "굴 보금자리 만들기", intro: "보금자리 모듈을 골라 알맞은 설계도에 놓으세요.", gameplayLabel: "게임플레이", gameplay: "보금자리 건설 퍼즐", genreLabel: "장르", genre: "퍼즐 · 건설 · 공간 계획 · 가족 · 동물", faqTitle: "FAQ", faqQuestion: "진행 상황이 저장되나요?", faqAnswer: "예, 이 브라우저에만 저장됩니다." },
-    es: { gameGuideLabel: "Guía de Constructor de madrigueras", aria: "Información de Constructor de madrigueras", kicker: "Guía de juegos originales de WeightPlay", title: "Constructor de madrigueras", intro: "Elige un módulo y colócalo en el plano de madriguera correcto.", gameplayLabel: "Jugabilidad", gameplay: "Puzzle de construcción", genreLabel: "Género", genre: "Puzle · Construcción · Planificación espacial · Familia · Animal", faqTitle: "Preguntas frecuentes", faqQuestion: "¿Se guarda el progreso?", faqAnswer: "Sí, solo en este navegador." },
-    "pt-BR": { gameGuideLabel: "Guia do Construtor de Tocas", aria: "Construtor de Tocas informações do jogo", kicker: "Guia de jogos originais WeightPlay", title: "Construtor de Tocas", intro: "Escolha um módulo e coloque-o no plano de toca certo.", gameplayLabel: "Gameplay", gameplay: "Puzzle de construção", genreLabel: "Gênero", genre: "Puzzle · Construção · Planejamento espacial · Família · Animal", faqTitle: "Perguntas frequentes", faqQuestion: "O progresso é salvo?", faqAnswer: "Sim, apenas neste navegador." },
-    fr: { gameGuideLabel: "Guide du Bâtisseur de terriers", aria: "Informations sur Bâtisseur de terriers", kicker: "Guide des jeux originaux WeightPlay", title: "Bâtisseur de terriers", intro: "Choisis un module et place-le dans le bon plan de terrier.", gameplayLabel: "Jeu", gameplay: "Puzzle de construction", genreLabel: "Genre", genre: "Puzzle · Construction · Planification spatiale · Famille · Animal", faqTitle: "Questions fréquentes", faqQuestion: "La progression est-elle enregistrée ?", faqAnswer: "Oui, uniquement dans ce navigateur." },
-    de: { gameGuideLabel: "Leitfaden für Bau der Tierhöhle", aria: "Informationen zu Bau der Tierhöhle", kicker: "WeightPlay-Leitfaden für Originalspiele", title: "Bau der Tierhöhle", intro: "Wähle ein Modul und setze es in den passenden Höhlenplan.", gameplayLabel: "Spielweise", gameplay: "Bau-Puzzle", genreLabel: "Genre", genre: "Puzzle · Bauen · Raumplanung · Familie · Tier", faqTitle: "Häufige Fragen", faqQuestion: "Wird der Fortschritt gespeichert?", faqAnswer: "Ja, nur in diesem Browser." },
-    it: { gameGuideLabel: "Guida per Costruttore di tane", aria: "Costruttore di tane informazioni sul gioco", kicker: "Guida ai giochi originali WeightPlay", title: "Costruttore di tane", intro: "Scegli un modulo e posizionalo nel progetto di tana giusto.", gameplayLabel: "Gameplay", gameplay: "Puzzle di costruzione", genreLabel: "Genere", genre: "Puzzle · Costruzione · Pianificazione spaziale · Famiglia · Animale", faqTitle: "Domande frequenti", faqQuestion: "I progressi vengono salvati?", faqAnswer: "Sì, solo in questo browser." },
-    ru: { gameGuideLabel: "Руководство по игре «Строитель нор»", aria: "Строитель нор: информация об игре", kicker: "Руководство по оригинальным играм WeightPlay", title: "Строитель нор", intro: "Выберите модуль и поставьте его в подходящий план норы.", gameplayLabel: "Игровой процесс", gameplay: "Пазл строительства", genreLabel: "Жанр", genre: "Головоломка · Строительство · Пространственное планирование · Семья · Животные", faqTitle: "Частые вопросы", faqQuestion: "Сохраняется ли прогресс?", faqAnswer: "Да, только в этом браузере." },
-    hi: { gameGuideLabel: "बिल बनाने वाले खेल की गाइड", aria: "बिल बनाने वाला खेल की जानकारी", kicker: "WeightPlay मौलिक गेम गाइड", title: "बिल बनाने वाला", intro: "मॉड्यूल चुनकर सही बिल योजना में रखें।", gameplayLabel: "गेमप्ले", gameplay: "निर्माण पहेली", genreLabel: "शैली", genre: "पहेली · निर्माण · स्थानिक योजना · परिवार · पशु", faqTitle: "अक्सर पूछे जाने वाले प्रश्न", faqQuestion: "क्या प्रगति सहेजी जाती है?", faqAnswer: "हाँ, केवल इसी ब्राउज़र में।" },
-    ar: { gameGuideLabel: "دليل لعبة بناء الجحور", aria: "معلومات لعبة بناء الجحور", kicker: "دليل ألعاب WeightPlay الأصلية", title: "بناء الجحور", intro: "اختر وحدة وضعها في مخطط الجحر المناسب.", gameplayLabel: "طريقة اللعب", gameplay: "لغز بناء المأوى", genreLabel: "النوع", genre: "لغز · بناء · تخطيط مكاني · عائلي · حيوانات", faqTitle: "الأسئلة الشائعة", faqQuestion: "هل يُحفظ التقدم؟", faqAnswer: "تبقى أفضل النتائج والتفضيلات في هذا المتصفح فقط." }
-  };
-  const a11yCopy = { en: { mainBack: "Back to WeightPlay", blueprint: "Burrow blueprint" }, "zh-Hant": { mainBack: "返回 WeightPlay", blueprint: "地穴藍圖" }, "zh-Hans": { mainBack: "返回 WeightPlay", blueprint: "地穴蓝图" }, ja: { mainBack: "WeightPlayに戻る", blueprint: "地穴の設計図" }, ko: { mainBack: "WeightPlay로 돌아가기", blueprint: "굴 설계도" }, es: { mainBack: "Volver a WeightPlay", blueprint: "Plano de madriguera" }, "pt-BR": { mainBack: "Voltar ao WeightPlay", blueprint: "Plano da toca" }, fr: { mainBack: "Retour à WeightPlay", blueprint: "Plan du terrier" }, de: { mainBack: "Zurück zu WeightPlay", blueprint: "Höhlenplan" }, it: { mainBack: "Torna a WeightPlay", blueprint: "Progetto della tana" }, ru: { mainBack: "Вернуться в WeightPlay", blueprint: "План норы" }, hi: { mainBack: "WeightPlay पर वापस जाएँ", blueprint: "बिल की योजना" }, ar: { mainBack: "العودة إلى WeightPlay", blueprint: "مخطط الجحر" } };
-  const routeLocaleMap = { en: "en", "zh-tw": "zh-Hant", "zh-hant": "zh-Hant", "zh-cn": "zh-Hans", "zh-hans": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
-  const state = { locale: "en", sound: !window.WeightPlayAudio.isMuted(), roundIndex: 0, placements: 0, completed: 0, selected: null, placed: [] };
-  window.addEventListener("weightplay:audio-volume-change", () => { state.sound = !window.WeightPlayAudio.isMuted(); });
-  const $ = (id) => document.getElementById(id);
-  const safeStorage = { get(key) { try { return window.localStorage.getItem(key); } catch (_) { return null; } }, set(key, value) { try { window.localStorage.setItem(key, value); } catch (_) {} } };
-  function queryLocale() { const q = new URLSearchParams(window.location.search).get("lang"); if (q && locales[q]) return q; const seg = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase(); return routeLocaleMap[seg] || safeStorage.get("weightplay-burrow-locale") || "en"; }
-  function t(key, vars = {}) { const copy = locales[state.locale] || locales.en; const value = copy[key] || locales.en[key] || key; return value.replace(/\{(\w+)\}/g, (_, name) => String(vars[name] ?? "")); }
-  function name(token) { return (moduleNames[state.locale] || moduleNames.en)[token] || token; }
-  function applyStaticGuideLocale() {
-    const guide = document.querySelector("section.game-page-info-static");
-    const copy = staticGuideCopy[state.locale] || staticGuideCopy.en;
-    if ($("gameGuide")) $("gameGuide").setAttribute("aria-label", copy.gameGuideLabel);
-    if (!guide) return;
-    guide.setAttribute("aria-label", copy.aria);
-    const kicker = guide.querySelector(".game-info-kicker");
-    const title = guide.querySelector(".game-info-title h2");
-    const intro = guide.querySelector(".game-info-title p");
-    const facts = guide.querySelectorAll(".game-info-fact");
-    const faq = guide.querySelector(".game-info-section");
-    if (kicker) kicker.textContent = copy.kicker;
-    if (title) title.textContent = copy.title;
-    if (intro) intro.textContent = copy.intro;
-    if (facts[0]) { facts[0].querySelector("span").textContent = copy.gameplayLabel; facts[0].querySelector("strong").textContent = copy.gameplay; }
-    if (facts[1]) { facts[1].querySelector("span").textContent = copy.genreLabel; facts[1].querySelector("strong").textContent = copy.genre; }
-    if (faq) { faq.querySelector("h3").textContent = copy.faqTitle; faq.querySelector("dt").textContent = copy.faqQuestion; faq.querySelector("dd").textContent = copy.faqAnswer; }
+import {LEVELS,coordinate} from './levels.mjs';
+import {TOOLS,SAVE_KEY,createRun,inspectBuild,build,undo,progress,normalizeSave,recordCompletion,unlocked} from './core.mjs';
+import {COPY,currentLocale,levelName} from './copy.mjs';
+import {stageConfig} from './stage-config.mjs';
+import {BurrowRenderer} from './renderer.mjs';
+import {LocalPractice} from '../../src/game-local-practice.mjs';
+
+const $=id=>document.getElementById(id),locale=currentLocale(),c=COPY[locale],tools=Object.keys(TOOLS);
+const abort=new AbortController(),listen=(node,event,fn)=>node.addEventListener(event,fn,{signal:abort.signal});
+const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+let save,storageOK=true;
+try{save=normalizeSave(JSON.parse(localStorage.getItem(SAVE_KEY)||'null'));}catch{save=normalizeSave(null);storageOK=false;}
+let screen='main',run=null,levelIndex=unlocked(save),selected='bed',focused=12,renderer=null,stageUI=null,modal=null,restoreFocus=null,finished=false,practice=false,starting=false;
+let hintCell=null,graphicReady=false;
+const audio=window.WeightPlayAudio.createScope();
+const effects=['game.start','board.move','board.undo','feedback.error','feedback.hint','reward.collect','result.win','shop.purchase'];
+void window.WeightPlayAudio.preload(effects);
+document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';document.title=`${c.title} | WeightPlay`;
+function syncSharedLocale(){if(window.WonderI18n?.actualLocale?.()!==locale)window.WonderI18n?.setLocale(locale,{navigate:false});document.documentElement.dir=locale==='ar'?'rtl':'ltr';frame?.refresh();}
+listen(window,'wonder:i18n-ready',syncSharedLocale);
+document.querySelectorAll('[data-copy]').forEach(node=>node.textContent=c[node.dataset.copy]);
+document.querySelectorAll('[data-copy-aria]').forEach(node=>node.setAttribute('aria-label',c[node.dataset.copyAria]));
+document.querySelector('[data-wp-return="main"]').setAttribute('aria-label',`${c.back} · WeightPlay`);
+$('gameGuide').setAttribute('aria-label',`${c.title} · ${c.how}`);
+$('guideCopy').replaceChildren(...[...c.rules,c.keyboard].map(line=>{const p=document.createElement('p');p.textContent=line;return p;}));
+$('cellGrid').setAttribute('aria-label',`${c.plan} · ${c.keyboard}`);$('toolShelf').setAttribute('aria-label',c.selected);
+
+const sceneSpec=name=>({root:$(name+'View'),header:$(name+'Header'),content:$(name==='main'?'mainContent':name==='stage'?'stageWorkspace':'battleContent')});
+const frame=window.WeightPlayScreenFrame.mount({root:$('app'),playUI:true,scenes:{main:sceneSpec('main'),stage:sceneSpec('stage'),battle:sceneSpec('battle')}});
+syncSharedLocale();
+const stageInfo=document.createElement('span'),battleInfo=document.createElement('span'),materialInfo=document.createElement('span');
+frame.stageTopUI.add(stageInfo);const battleGroup=window.WeightPlayScreenFrame.createGroup();battleGroup.add(battleInfo).add(materialInfo);frame.battleTopUI.add(battleGroup);
+const stagesTab=document.createElement('button'),workshopTab=document.createElement('button');
+stagesTab.type=workshopTab.type='button';stagesTab.textContent=c.stages;workshopTab.textContent=c.workshop;
+stagesTab.dataset.wpFrameAction=workshopTab.dataset.wpFrameAction='tab';
+stagesTab.dataset.wpFrameStageSlot='stages';workshopTab.dataset.wpFrameStageSlot='equipment';
+frame.commonDownButton.add(stagesTab).add(workshopTab);
+
+function warnStorage(){storageOK=false;$('saveStatus').textContent=c.saveError;$('saveStatus').hidden=false;}
+function persist(){if(practice)return;try{localStorage.setItem(SAVE_KEY,JSON.stringify(save));storageOK=true;}catch{warnStorage();}}
+function updateProgress(){const count=save.records.filter(Boolean).length,stars=save.records.reduce((n,r)=>n+(r?.stars||0),0);$('mainProgress').textContent=`${c.progressLabel} ${count}/30 · ${stars}/90 ★`;stageInfo.textContent=`${count}/30 · ${stars}/90 ★`;}
+function feedback(text,error=false){$('feedback').textContent=text;$('feedback').classList.toggle('is-error',error);}
+function config(){return stageConfig({locale,save,practice});}
+function setScene(name){
+  stageUI?.cancel();audio.stop();screen=name;
+  for(const key of ['main','stage','battle'])$(key+'View').hidden=key!==name;
+  $('gameGuide').hidden=name!=='main';$('saveStatus').hidden=storageOK||practice;if(!storageOK)$('saveStatus').textContent=c.saveError;
+  frame.activate(name);renderer?.setActive(name==='battle'&&!document.hidden);updateProgress();
+  if(name==='stage'){showStagePage(false);stageUI?.refresh(levelIndex);}
+}
+function showStagePage(shop){
+  stageUI?.cancel();$('stagePage').hidden=shop;$('workshopPage').hidden=!shop;
+  $('stagePage').classList.toggle('hidden',shop);
+  stagesTab.setAttribute('aria-pressed',String(!shop));workshopTab.setAttribute('aria-pressed',String(shop));
+  if(shop){initializeGraphics();refreshShop();}else stageUI?.refresh(levelIndex);
+}
+function openModal(id){
+  restoreFocus=document.activeElement;modal=id;$(id).hidden=false;
+  $(screen==='battle'?'battleContent':'stageWorkspace').inert=true;
+  frame.activate(screen,{covered:true});
+  document.querySelector('#stageView [data-wp-frame-nav]').inert=screen==='stage';
+  if(id!=='resultView')renderer?.setActive(false);
+  $(id).querySelector('button:not(:disabled)')?.focus({preventScroll:true});
+}
+function closeModal({restore=true}={}){
+  if(!modal)return;$(modal).hidden=true;modal=null;
+  $('battleContent').inert=false;$('stageWorkspace').inert=false;
+  document.querySelector('#stageView [data-wp-frame-nav]').inert=false;
+  frame.activate(screen);renderer?.setActive(screen==='battle'&&!document.hidden);
+  if(restore&&restoreFocus?.isConnected)restoreFocus.focus({preventScroll:true});
+}
+
+const cellButtons=Array.from({length:25},(_,at)=>{
+  const button=document.createElement('button');button.type='button';button.className='cell-hit';button.dataset.cell=coordinate(at);button.tabIndex=-1;
+  listen(button,'click',()=>place(at));listen(button,'focus',()=>{focused=at;renderer?.hover(at,Boolean(run&&inspectBuild(run,at,selected).ok));});
+  listen(button,'pointerenter',()=>{if(!modal&&run)renderer?.hover(at,inspectBuild(run,at,selected).ok);});
+  listen(button,'pointerleave',()=>{if(document.activeElement!==button)renderer?.hover(null);});
+  $('cellGrid').append(button);return button;
+});
+const toolButtons=tools.map((tool,i)=>{
+  const button=document.createElement('button');button.type='button';button.className='tool-button';button.dataset.tool=tool;
+  const image=document.createElement('img');image.alt='';image.width=image.height=96;
+  const label=document.createElement('span');label.className='tool-name';label.textContent=c.tools[i];
+  const cost=document.createElement('span');cost.className='tool-cost';cost.textContent=TOOLS[tool];
+  button.append(image,label,cost);button.setAttribute('aria-label',`${i+1}. ${c.tools[i]} · ${c.timber} ${TOOLS[tool]}`);
+  listen(button,'click',()=>selectTool(tool));$('toolShelf').append(button);return button;
+});
+$('arena').addEventListener('click',event=>{
+  if(!event.detail||event.target.closest('#graphicsStatus'))return;
+  event.stopPropagation();const at=renderer?.pick(event.clientX,event.clientY);if(at!==null&&at!==undefined)place(at);
+},{capture:true,signal:abort.signal});
+function selectTool(tool){if(modal||finished)return;selected=tool;hintCell=null;refreshBoard();feedback(`${c.selected}: ${c.tools[tools.indexOf(tool)]} · ${c.timber} ${TOOLS[tool]}`);}
+function initializeGraphics(){
+  if(renderer)return;
+  try{
+    renderer=new BurrowRenderer($('arena'),{reduced:reduced.matches,onProjection:positions=>positions.forEach((p,i)=>{const el=cellButtons[i];el.style.left=p.x+'px';el.style.top=p.y+'px';el.style.width=p.size+'px';}),
+      onLost:()=>{graphicReady=false;$('graphicsStatus').hidden=false;$('cellGrid').inert=true;},
+      onRestored:()=>{graphicReady=true;$('graphicsStatus').hidden=true;$('cellGrid').inert=false;renderer.resize();}});
+    const icons=renderer.thumbnails();toolButtons.forEach((button,i)=>button.querySelector('img').src=icons[tools[i]]);document.querySelector('.workshop-poster').src=icons.lantern;graphicReady=true;
+  }catch(error){graphicReady=false;$('graphicsStatus').hidden=false;$('cellGrid').inert=true;console.error('Burrow renderer unavailable',error);}
+}
+async function startLevel(index,{practice:requestedPractice=practice}={}){
+  if(starting||index<0||index>=LEVELS.length)return;
+  starting=true;
+  try{
+    if(requestedPractice){if(!await LocalPractice.validate())return;}else if(index>unlocked(save))return;
+    practice=requestedPractice;closeModal({restore:false});finished=false;levelIndex=index;hintCell=null;run=createRun(LEVELS[index]);selected='bed';focused=run.level.solution[0].at;
+    initializeGraphics();setScene('battle');renderer?.setRun(run,save.lantern);renderer?.setActive(!document.hidden);
+    $('chapterLabel').textContent=`${c.chapter} ${run.level.chapter+1} · ${c.chapters[run.level.chapter]}`;
+    $('planTitle').textContent=levelName(run.level,locale);battleInfo.textContent=`${c.plan} ${index+1}/30`;
+    $('objectives').replaceChildren();
+    for(const goal of progress(run).requirements){const tag=document.createElement('div');tag.className='objective';tag.dataset.goal=goal.key;const name=document.createElement('span'),count=document.createElement('b');name.textContent=goal.key==='food'?c.food:c.tools[tools.indexOf(goal.key)];tag.append(name,count);$('objectives').append(tag);}
+    refreshBoard();feedback(index===0?`${c.tools[1]} → C2 · ${c.tools[2]} → C3`:c.buildHint);
+    if(index===0){hintCell=7;cellButtons[7].classList.add('is-hint');}
+    audio.play('game.start');document.querySelector('[data-wp-return="battle"]').focus({preventScroll:true});
+  }finally{starting=false;}
+}
+function refreshBoard(){
+  if(!run)return;const p=progress(run);
+  materialInfo.textContent=`${c.timber} ${run.level.budget-run.spent}/${run.level.budget}`;
+  $('selectedTool').textContent=`${c.tools[tools.indexOf(selected)]} · ${TOOLS[selected]}`;
+  $('starTarget').textContent=`★ ≤ ${run.level.par} · ${run.spent}`;
+  $('starTarget').title=`${c.efficient}: ${run.spent}/${run.level.par}`;
+  for(const goal of p.requirements){const node=$('objectives').querySelector(`[data-goal="${goal.key}"]`);if(node){node.classList.toggle('is-met',goal.met);node.querySelector('b').textContent=`${Math.min(goal.value,goal.target)}/${goal.target}`;}}
+  $('finishButton').disabled=!p.complete||finished;$('undoButton').disabled=!run.history.length||finished;
+  tools.forEach((tool,i)=>{toolButtons[i].setAttribute('aria-pressed',String(selected===tool));toolButtons[i].setAttribute('aria-disabled',String(TOOLS[tool]>run.level.budget-run.spent&&!run.rooms.includes('hall')));});
+  cellButtons.forEach((button,at)=>{
+    const type=run.rooms[at],terrain=run.level.map[at],name=type==='entry'?c.entry:type?c.tools[tools.indexOf(type)]:terrain==='#'?c.rock:terrain==='~'?c.water:c.empty;
+    button.setAttribute('aria-label',`${coordinate(at)} · ${name}${terrain==='*'?` · ${c.relic}`:''}`);
+    button.tabIndex=at===focused?0:-1;button.classList.toggle('is-available',!type&&inspectBuild(run,at,selected).ok);button.classList.toggle('is-hint',at===hintCell);
+  });
+}
+function place(at){
+  if(screen!=='battle'||modal||finished||!graphicReady)return;
+  const result=build(run,at,selected);
+  if(!result.ok){audio.play('feedback.error');const text=result.reason==='budget'?`${c.timber}: ${run.level.budget-run.spent} / ${TOOLS[selected]}`:['gardenWater','nurseryBed','water','dry'].includes(result.reason)?c.rules[1]:result.reason==='connect'?c.rules[0]:`${coordinate(at)} · ${result.reason==='rock'?c.rock:c.selected} · ${c.buildHint}`;feedback(text,true);renderer.hover(at,false);return;}
+  focused=at;hintCell=null;renderer.setCell(at,selected);renderer.hover(null);audio.play(result.relic?'reward.collect':'board.move');refreshBoard();
+  const p=progress(run);feedback(p.complete?c.invite:result.relic?c.relic:c.buildHint);
+  if(levelIndex===0&&run.rooms[7]==='bed'&&!run.rooms[12]){selected='pantry';hintCell=12;refreshBoard();feedback(`${c.tools[2]} → C3`);}
+}
+function undoBuild(){if(!run||modal||finished)return;const action=run.history.at(-1);if(undo(run)){hintCell=null;renderer?.setCell(action.at,action.previous,false);audio.play('board.undo');refreshBoard();feedback(c.buildHint);}}
+function showHint(){
+  if(!run||modal||finished)return;
+  const step=run.level.solution.find(s=>run.rooms[s.at]!==s.tool);
+  audio.play('feedback.hint');
+  if(!step){feedback(c.invite);return;}
+  if(!inspectBuild(run,step.at,step.tool).ok){feedback(c.hintReset);return;}
+  selected=step.tool;hintCell=step.at;refreshBoard();feedback(`${c.hint}: ${c.tools[tools.indexOf(step.tool)]} → ${coordinate(step.at)}`);renderer?.hover(step.at,true);
+}
+function finish(){
+  if(finished||modal||!run||!progress(run).complete)return;
+  finished=true;const p=progress(run);
+  if(!practice){save=recordCompletion(save,levelIndex,run);persist();updateProgress();stageUI?.setConfig(config(),levelIndex);}
+  renderer?.hover(null);renderer?.celebrate();audio.play('result.win');refreshBoard();
+  $('resultStars').replaceChildren();for(let i=0;i<3;i++){const star=document.createElement('span');star.textContent='★';star.className=i<p.stars?'':'unearned';$('resultStars').append(star);}
+  $('resultChecks').replaceChildren();for(const [label,earned] of [[c.finishStar,true],[`${c.efficient} · ≤ ${run.level.par}`,p.efficient],[c.relic,p.relic]]){const row=document.createElement('div');row.className=earned?'earned':'pending';row.textContent=`${earned?'✓':'○'} ${label}`;$('resultChecks').append(row);}
+  $('resultSummary').textContent=`${p.stars}/3 ★ · ${c.timber} ${run.spent}/${run.level.budget}${levelIndex===29?` · ${c.allDone}`:''}`;
+  $('nextButton').textContent=levelIndex===29?c.stages:c.next;openModal('resultView');
+}
+function refreshShop(){
+  const wallet=window.WeightPlayWallet.read(),icon=document.createElement('img');icon.src='/assets/weightplay-diamond.svg';icon.alt='';icon.width=icon.height=24;
+  $('walletBalance').replaceChildren(icon,document.createTextNode(String(wallet.diamonds)));
+  $('buyLantern').disabled=save.lantern||practice;$('buyLantern').textContent=save.lantern?c.owned:c.buy;
+}
+function buyLantern(){
+  if(practice||save.lantern)return;
+  if(window.WeightPlayWallet.read().diamonds<12){closeModal();refreshShop();$('shopStatus').textContent=c.insufficient;audio.play('feedback.error');return;}
+  // Store the promised ownership first. If the shared spend cannot persist,
+  // roll it back; no asynchronous gap permits a second click or partial grant.
+  const prior=JSON.stringify(save),next={...save,lantern:true};
+  try{localStorage.setItem(SAVE_KEY,JSON.stringify(next));if(!window.WeightPlayWallet.spendDiamonds(12)){localStorage.setItem(SAVE_KEY,prior);$('shopStatus').textContent=c.insufficient;return;}save=next;audio.play('shop.purchase');$('shopStatus').textContent=c.purchased;}
+  catch{try{localStorage.setItem(SAVE_KEY,prior);}catch{}warnStorage();$('shopStatus').textContent=c.saveError;}
+  finally{closeModal();refreshShop();}
+}
+
+listen($('startButton'),'click',()=>{setScene('stage');if(!stageUI)stageUI=window.WeightPlayPlayUI.mountStage({page:$('stagePage'),rail:$('stageRail'),config:config(),selected:levelIndex,onSelect:i=>{levelIndex=i;},onStart:i=>void startLevel(i),isActive:()=>screen==='stage'&&!modal&&!$('stagePage').hidden});else stageUI.setConfig(config(),levelIndex);stageUI.pool.find(card=>card.getAttribute('aria-current')==='true')?.focus({preventScroll:true});});
+listen(document.querySelector('[data-wp-return="stage"]'),'click',()=>{setScene('main');$('startButton').focus({preventScroll:true});});
+listen(document.querySelector('[data-wp-return="battle"]'),'click',()=>openModal('leaveDialog'));
+listen(stagesTab,'click',()=>showStagePage(false));listen(workshopTab,'click',()=>showStagePage(true));
+listen($('continueButton'),'click',()=>closeModal());listen($('confirmLeave'),'click',()=>{closeModal({restore:false});setScene('stage');stageUI?.refresh(levelIndex);stagesTab.focus({preventScroll:true});});
+listen($('undoButton'),'click',undoBuild);listen($('restartButton'),'click',()=>void startLevel(levelIndex));listen($('hintButton'),'click',showHint);listen($('finishButton'),'click',finish);
+listen($('nextButton'),'click',()=>{if(levelIndex<29)void startLevel(levelIndex+1);else{closeModal({restore:false});setScene('stage');stagesTab.focus();}});
+listen($('replayButton'),'click',()=>void startLevel(levelIndex));listen($('stageFromResult'),'click',()=>{closeModal({restore:false});setScene('stage');stagesTab.focus({preventScroll:true});});
+listen($('buyLantern'),'click',()=>{if(!save.lantern&&!practice)openModal('shopDialog');});listen($('confirmBuy'),'click',buyLantern);listen($('cancelBuy'),'click',()=>closeModal());listen($('reloadGraphics'),'click',()=>location.reload());
+listen(document,'keydown',event=>{
+  if(modal){const list=[...$(modal).querySelectorAll('button:not(:disabled)')];if(event.key==='Tab'){const current=list.indexOf(document.activeElement),next=event.shiftKey?(current<=0?list.length-1:current-1):(current+1)%list.length;event.preventDefault();list[next]?.focus();}if(event.key==='Escape'&&modal!=='resultView'){event.preventDefault();closeModal();}return;}
+  if(screen!=='battle'||finished||event.target.closest('select,input,.wp-frame-popover'))return;
+  if(event.key==='Escape'){event.preventDefault();openModal('leaveDialog');return;}
+  if(event.repeat&&['Enter',' ','z','Z'].includes(event.key)){event.preventDefault();return;}
+  if(/^[1-6]$/.test(event.key)){selectTool(tools[Number(event.key)-1]);event.preventDefault();return;}
+  if(event.key.toLowerCase()==='z'&&!event.ctrlKey&&!event.metaKey){undoBuild();event.preventDefault();return;}
+  if(event.target.closest('.cell-grid')&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.key)){
+    event.preventDefault();const next={ArrowUp:focused-5,ArrowDown:focused+5,ArrowLeft:focused%5?focused-1:focused,ArrowRight:focused%5<4?focused+1:focused}[event.key];focused=Math.max(0,Math.min(24,next));refreshBoard();cellButtons[focused].focus({preventScroll:true});
   }
-  function applyLocale() {
-    const copy = locales[state.locale] || locales.en;
-    const access = a11yCopy[state.locale] || a11yCopy.en;
-    document.documentElement.lang = state.locale === "zh-Hant" ? "zh-TW" : state.locale; document.documentElement.dir = copy.direction || "ltr";
-    document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
-    applyStaticGuideLocale();
-    $("mainReturn").setAttribute("aria-label", access.mainBack); $("blueprint").setAttribute("aria-label", access.blueprint);
-    $("mainSettingsBtn").setAttribute("aria-label", t("settings")); $("mainSettingsPopover").setAttribute("aria-label", t("settings")); $("homeFromBattle").setAttribute("aria-label", t("home")); $("localeSelect").setAttribute("aria-label", t("language"));
-    $("soundToggle").setAttribute("aria-pressed", String(state.sound)); $("soundToggle").setAttribute("aria-checked", String(state.sound)); $("battleSoundToggle").setAttribute("aria-pressed", String(state.sound)); $("battleSoundToggle").setAttribute("aria-label", t(state.sound ? "soundOn" : "soundOff")); $("battleSoundToggle").textContent = state.sound ? "♪" : "×";
-    if (!$('battleView').hidden) renderRound();
-  }
-  function populateLocales() { const select = $("localeSelect"); localeKeys.forEach((key) => { const option = document.createElement("option"); option.value = key; option.textContent = locales.en.languageNames[key]; select.append(option); }); select.value = state.locale; select.addEventListener("change", () => { state.locale = select.value; safeStorage.set("weightplay-burrow-locale", state.locale); applyLocale(); }); }
-  function tone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
-  function showView(id) { const main = id === "mainView"; const result = id === "resultView"; $("mainView").hidden = !main; $("gameGuide").hidden = !main; $("battleView").hidden = main; $("resultView").hidden = !result; $("leaveDialog").hidden = true; document.body.dataset.screen = main ? "main" : result ? "result" : "battle"; if (main) { $("mainSettingsPopover").hidden = true; $("mainSettingsBtn").setAttribute("aria-expanded", "false"); } window.scrollTo(0, 0); }
-  function resetTransientFeedback() { const feedback = $("feedback"); if (!feedback) return; feedback.textContent = ""; feedback.className = "feedback"; }
-  function start() { resetTransientFeedback(); state.roundIndex = 0; state.placements = 0; state.completed = 0; state.selected = null; state.placed = []; showView("battleView"); renderRound(); }
-  function renderRound() {
-    const round = rounds[state.roundIndex]; $("roundLabel").textContent = t("round", { current: state.roundIndex + 1, total: rounds.length }); $("placementCount").textContent = String(state.placements); $("instruction").textContent = t("instruction");
-    const blueprint = $("blueprint"); blueprint.setAttribute("aria-label", (a11yCopy[state.locale] || a11yCopy.en).blueprint); blueprint.replaceChildren();
-    ["floor", "shelter", "nest"].forEach((slot, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "blueprint-slot"; button.dataset.slot = slot; const token = state.placed[index]; if (token) { button.classList.add("is-filled"); button.innerHTML = `<span class="slot-symbol" aria-hidden="true">${moduleSymbols[token]}</span><span>${name(token)}</span><small>${t("placed")}</small>`; button.disabled = true; } else { button.innerHTML = `<span class="slot-label">${t(slot)}</span><small>${t("missing")}</small>`; button.setAttribute("aria-label", `${t(slot)} — ${t("missing")}`); button.addEventListener("click", () => place(slot, index, button)); } blueprint.append(button); });
-    const moduleGrid = $("moduleGrid"); moduleGrid.replaceChildren(...round.options.map((token) => { const button = document.createElement("button"); button.type = "button"; button.className = "module-card"; button.dataset.module = token; button.disabled = state.placed.includes(token); button.setAttribute("aria-label", t("chooseModule", { module: name(token) })); button.innerHTML = `<span class="module-symbol module-${token}" aria-hidden="true"></span><span>${name(token)}</span>`; if (state.selected === token) button.classList.add("is-selected"); button.addEventListener("click", () => select(token)); return button; }));
-    $("selectionHint").textContent = state.selected ? t("selected", { module: name(state.selected) }) : "";
-  }
-  function select(token) { state.selected = token; $("selectionHint").textContent = t("selected", { module: name(token) }); tone("board.move"); renderRound(); }
-  function place(slot, index, button) { if (!state.selected) { $("feedback").textContent = t("instruction"); button.classList.add("needs-selection"); window.setTimeout(() => button.classList.remove("needs-selection"), 350); return; } state.placements += 1; $("placementCount").textContent = String(state.placements); const correctSlot = ["floor", "shelter", "nest"][rounds[state.roundIndex].slots.indexOf(state.selected)]; if (correctSlot !== slot) { $("feedback").textContent = t("wrong"); $("feedback").className = "feedback is-wrong"; tone("feedback.error"); button.classList.add("is-wrong"); window.setTimeout(() => button.classList.remove("is-wrong"), 420); return; } state.placed[index] = state.selected; state.completed += 1; state.selected = null; $("feedback").textContent = t("correct"); $("feedback").className = "feedback is-correct"; tone("board.move"); renderRound(); if (state.placed.filter(Boolean).length === 3) window.setTimeout(() => { if (state.roundIndex < rounds.length - 1) { state.roundIndex += 1; state.placed = []; $("feedback").textContent = ""; renderRound(); } else finish(); }, 420); }
-  function finish() { const key = "weightplay-burrow-best-placements"; const prior = Number(safeStorage.get(key)); if (!prior || state.placements < prior) safeStorage.set(key, String(state.placements)); $("resultSummary").textContent = t("summary", { count: state.placements }); $("bestCount").textContent = safeStorage.get(key) || String(state.placements); showView("resultView"); }
-  function goHome() { resetTransientFeedback(); showView("mainView"); applyLocale(); }
-  function toggleSound() { state.sound = window.WeightPlayAudio.setEnabled(!state.sound); applyLocale(); }
-  function toggleSettings() { const panel = $("mainSettingsPopover"); const open = panel.hidden; panel.hidden = !open; $("mainSettingsBtn").setAttribute("aria-expanded", String(open)); }
-  function openLeave() { $("leaveDialog").hidden = false; $("continueBtn").focus(); }
-  function closeLeave() { $("leaveDialog").hidden = true; $("homeFromBattle").focus(); }
-  state.locale = queryLocale();
-  document.addEventListener("DOMContentLoaded", () => { populateLocales(); applyLocale(); $("startButton").addEventListener("click", start); $("replayButton").addEventListener("click", start); $("homeFromBattle").addEventListener("click", openLeave); $("leaveBtn").addEventListener("click", openLeave); $("continueBtn").addEventListener("click", closeLeave); $("confirmLeaveBtn").addEventListener("click", goHome); $("homeFromResult").addEventListener("click", goHome); $("mainSettingsBtn").addEventListener("click", toggleSettings); $("soundToggle").addEventListener("click", toggleSound); $("battleSoundToggle").addEventListener("click", toggleSound); });
-  window.BURROW_BUILDER_TEST = { rounds, start, renderRound };
-})();
+});
+listen(document,'visibilitychange',()=>{renderer?.setActive(!document.hidden&&screen==='battle'&&(!modal||modal==='resultView'));if(document.hidden)audio.stop();});
+listen(reduced,'change',()=>{if(renderer)renderer.reduced=reduced.matches;});
+listen(window,'pagehide',event=>{if(event.persisted){renderer?.setActive(false);audio.stop();return;}stageUI?.destroy();renderer?.dispose();audio.dispose();frame.destroy();abort.abort();});
+listen(window,'pageshow',event=>{if(event.persisted){frame.activate(screen,{covered:Boolean(modal)});renderer?.setActive(screen==='battle'&&!modal);}});
+listen(window,'storage',event=>{if(event.key===SAVE_KEY){try{save=normalizeSave(JSON.parse(event.newValue||'null'));updateProgress();if(screen==='stage'){stageUI?.setConfig(config(),levelIndex);refreshShop();}}catch{}}});
+
+setScene('main');$('startButton').disabled=false;
+void LocalPractice.register({gameId:'animal-burrow-builder',stageIds:LEVELS.map(l=>l.id),enable:value=>{practice=value;stageUI?.setConfig(config(),levelIndex);},startStage:id=>startLevel(Number(id)-1,{practice:true})});

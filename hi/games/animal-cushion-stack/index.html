@@ -24,19 +24,19 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#e9f1ff">
-  <meta name="weightplay-game-version" content="v13">
+  <meta name="weightplay-game-version" content="v14">
   <meta name="weightplay-interface-version" content="9">
   <title>कुशन टावर | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261020-interface9-guide">
-  <link rel="stylesheet" href="style.css?v=20261020-cushion-stack-v13-i9">
+  <link rel="stylesheet" href="style.css?v=20261022-cushion-stack-v14">
   <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
   <link rel="stylesheet" href="/src/game-play-ui.css?v=20261020-interface9-play-ui">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <meta name="description" content="अगला मुलायम ब्लॉक चुनकर सुरक्षित चौकी बनाएं।" />
+  <meta name="description" content="30 मचान, तीन कपड़े। अपनी लय खोजें और ऊँचा बनाएँ।" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="कुशन टावर | WeightPlay" />
-    <meta property="og:description" content="अगला मुलायम ब्लॉक चुनकर सुरक्षित चौकी बनाएं।" />
+    <meta property="og:description" content="30 मचान, तीन कपड़े। अपनी लय खोजें और ऊँचा बनाएँ।" />
     <meta property="og:url" content="https://weightplay.com/hi/games/animal-cushion-stack/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-cushion-stack.webp" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -75,7 +75,7 @@
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-cushion-stack" data-wp-game-version="v13" data-wp-interface-version="9" data-screen="main" data-runtime-localize="off">
+<body data-audience="general" data-wp-game-id="animal-cushion-stack" data-wp-game-version="v14" data-wp-interface-version="9" data-screen="main" data-runtime-localize="off">
   <div id="app" data-wp-app data-wp-frame-root>
   <main id="mainScreen" class="screen" data-screen="main">
     <header class="topbar">
@@ -83,58 +83,61 @@
       <h1 data-wp-frame-title data-copy="title">कुशन टावर</h1>
     </header>
     <section class="wp-standard-main-composition" data-wp-frame-content="main">
-      <div class="wp-standard-main-poster"><img class="cover wp-standard-main-poster-media" data-wp-frame-poster src="assets/animal-cushion-stack-cover-v2.png" alt="" aria-hidden="true" width="1254" height="1254" decoding="async"></div>
+      <div class="wp-standard-main-poster"><img class="cover wp-standard-main-poster-media" data-wp-frame-poster src="/assets/interface7-redrawn/animal-cushion-stack.webp" alt="" aria-hidden="true" width="1254" height="1254" decoding="async"></div>
       <div class="wp-standard-main-copy" data-wp-frame-copy>
-        <p class="kicker" data-copy="kicker">Moss Shell Taro's steady-building puzzle</p>
-        <h2 data-copy="title">Cushion Stack</h2>
-        <p class="intro" data-copy="intro">Choose the next soft block and build a safe little lookout for Taro.</p>
-        <p class="summary wp-standard-main-summary" data-wp-frame-summary data-copy="summary">Help Taro build a 30-stage lookout trail, one careful choice at a time.</p>
-        <p id="mainProgress" class="progress wp-standard-main-progress" data-wp-main-progress data-wp-frame-progress role="status" aria-live="polite" data-copy="progress">Progress: 30 stages · no timer</p>
-        <button id="startBtn" class="primary-btn wp-standard-main-start" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start">Start Game</button>
-        <p class="best-line"><span data-copy="best">Best picks</span>: <strong id="bestValue">Not yet</strong></p>
+        <h2 data-copy="title">कुशन टावर</h2>
+        <p class="summary wp-standard-main-summary" data-wp-frame-summary data-copy="summary">30 मचान, तीन कपड़े। अपनी लय खोजें और ऊँचा बनाएँ।</p>
+        <p id="mainProgress" class="progress wp-standard-main-progress" data-wp-main-progress data-wp-frame-progress role="status" aria-live="polite" data-copy="progress">मचान 1 / 30</p>
+        <button id="startBtn" class="primary-btn wp-standard-main-start" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start">ढेर लगाना शुरू करें</button>
+        <p class="best-line"><span data-copy="best">तारे</span>: <strong id="bestValue">Not yet</strong></p>
       </div>
     </section>
   </main>
-  <section class="game-page-info game-page-info-static" aria-label="कुशन टावर गेम की जानकारी" data-wp-game-guide>
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>कुशन टावर</h2><p>अगला मुलायम ब्लॉक चुनकर सुरक्षित चौकी बनाएं।</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>स्थिर ढेर पहेली</strong></div><div class="game-info-fact"><span>शैली</span><strong>Puzzle · Construction · Spatial Planning · Family · Animal</strong></div></div>
-    </div>
-
+  <section class="guide-card game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" aria-labelledby="guideTitle">
+    <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WEIGHTPLAY ORIGINAL GAME</span><h2 id="guideTitle" data-copy="guideTitle">कैसे खेलें</h2><p data-copy="guideIntro">छह अध्यायों में 30 मचान बनाएँ। हवा, बदले हुए निशान और कपड़ों के ऑर्डर सीखें। हर पाँचवाँ स्तर सीखी हुई बातों को जोड़ता है।</p></div><div class="game-info-facts"><div class="game-info-fact"><span>30</span><strong data-copy="factStages">चौकी चुनें</strong></div><div class="game-info-fact"><span>3D</span><strong data-copy="factStack">कुशन छोड़ें</strong></div></div></div>
     <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
+      <div class="game-info-section"><h3 data-copy="guide1">कुशन छोड़ें</h3><p data-copy="guide1Text">सुनहरे निशान पर कुशन छोड़ें या दृश्य में खींचकर छोड़ दें। तीर कुंजियों से निशाना लगाएँ, स्पेस से छोड़ें और 1–3 से कपड़ा चुनें। पारदर्शी झलक हवा का असर दिखाती है। पर्याप्त सहारा चाहिए; तीन चूक पर यह कोशिश खत्म होगी। कोई समय सीमा नहीं है।</p></div>
+      <div class="game-info-section"><h3 data-copy="guide2">माँगा गया कपड़ा</h3><p data-copy="guide2Text">फेल्ट को कम सहारा चाहिए। लिनन पतला है और अधिक मूल अंक देता है। बादल चौड़ा है, पर अधिक सहारा चाहिए। हर कुशन अगली परत को सहारा देता है। ऑर्डर दिखने पर बताया गया कपड़ा चुनें।</p></div>
+      <div class="game-info-section"><h3 data-copy="guide3">चौकी चुनें</h3><p data-copy="guide3Text">छह अध्यायों में 30 मचान बनाएँ। हवा, बदले हुए निशान और कपड़ों के ऑर्डर सीखें। हर पाँचवाँ स्तर सीखी हुई बातों को जोड़ता है।</p></div>
+      <div class="game-info-section"><h3 data-copy="guide4">विराम</h3><p data-copy="guide4Text">अधूरी मीनार मिट जाएगी। स्तर, तारे और कपड़े सुरक्षित रहेंगे। सहेजना उपलब्ध नहीं। खेल सकते हैं, पर नई प्रगति नहीं बचेगी।</p></div>
+      <div class="game-info-section"><h3 data-copy="guide5">तारे</h3><p data-copy="guide5Text">पूरा करने पर एक तारा। कम से कम 40% सटीक लैंडिंग पर दो; बिना चूक और 70% सटीक लैंडिंग पर तीन। लगातार सटीक लैंडिंग से बोनस बढ़ता है। फिर खेलने से रिकॉर्ड नहीं घटता। पुरानी जीत बचती हैं, नए तारे खेलकर कमाएँ।</p></div>
+      <div class="game-info-section"><h3 data-copy="guide6">कपड़ों की कार्यशाला</h3><p data-copy="guide6Text">स्थायी रंग इकट्ठे करें। नियम और अंक नहीं बदलते। खरीदने से पहले कीमत की पुष्टि करें और अपने रंग कभी भी बदलें। बगीचे के कपड़े मुफ्त हैं। सहेजना उपलब्ध न हो तो खरीद बंद रहती है। स्थायी रंग · 12 हीरे</p></div>
     </div>
   </section>
-
   <section id="stageScreen" class="screen" data-screen="stage" hidden aria-labelledby="stageHeading">
-    <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" aria-label="Back">Back</button><h2 id="stageHeading" data-wp-frame-title data-copy="stages">Choose a lookout</h2></header>
-    <div id="stagePage" class="stage-page"><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div></div>
+    <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" aria-label="Back">Back</button><h2 id="stageHeading" data-wp-frame-title data-copy="stages">चौकी चुनें</h2></header>
+    <button id="atelierBtn" type="button" data-copy="studio">कपड़ों की कार्यशाला</button><div id="stagePage" class="stage-page"><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div></div>
+<section id="studioDialog" class="atelier-dialog" role="dialog" aria-modal="true" aria-labelledby="studioTitle" hidden><div class="dialog-card studio-card"><button id="studioClose" class="studio-close" type="button" data-copy="close">बंद करें</button><h2 id="studioTitle" data-copy="studio">कपड़ों की कार्यशाला</h2><p data-copy="studioText">स्थायी रंग इकट्ठे करें। नियम और अंक नहीं बदलते। खरीदने से पहले कीमत की पुष्टि करें और अपने रंग कभी भी बदलें। बगीचे के कपड़े मुफ्त हैं। सहेजना उपलब्ध न हो तो खरीद बंद रहती है।</p><p class="wallet-balance"><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt=""><span data-copy="balance">हीरे</span><b id="diamondBalance">0</b></p><div class="fabric-collection"><article><img id="gardenPreview" alt="" width="160" height="100"><h3 data-copy="garden">बगीचे के कपड़े</h3><p data-copy="free">मुफ्त · हमेशा के लिए</p><button id="gardenBtn" type="button"></button></article><article><img id="moonPreview" alt="" width="160" height="100"><h3 data-copy="moon">चाँदनी के कपड़े</h3><p id="moonDetail"></p><button id="moonBtn" type="button"></button></article></div><p id="studioStatus" role="status"></p></div></section>
   </section>
 
-  <section id="battleScreen" class="screen" data-screen="battle" hidden aria-labelledby="battleHeading">
-    <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" aria-label="Back">Back</button><h2 id="battleHeading" data-wp-frame-title>Cushion Stack</h2><p id="roundLabel" class="round-label"></p><p id="sessionPicksLabel" class="session-picks"><span data-copy="picks">Picks</span> <b id="sessionPicks">0</b></p></header>
+  <section id="battleScreen" class="screen" data-screen="battle" data-wp-battle-landscape-width="844" data-wp-battle-landscape-height="390" hidden aria-labelledby="battleHeading">
+    <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" aria-label="Pause">←</button><h2 id="battleHeading" data-wp-frame-title>Cushion Stack</h2><p id="roundLabel" class="round-label"></p><p id="sessionPicksLabel" class="session-picks"><span data-copy="score">अंक</span> <b id="sessionPicks">0</b></p></header>
     <div id="battleContent" class="battle-content">
       <div id="battlePlay" class="battle-play">
-        <p id="battleHint" class="battle-hint"></p>
-        <div id="tower" class="tower" aria-label="Cushion stack"></div>
-        <div class="choice-head"><h3 data-copy="chooseBlock">Choose the next block</h3><span id="selectionLabel" class="selection-label"></span></div>
-        <div id="choiceTray" class="choice-tray" role="group" aria-label="Choose the next block"></div>
-        <p id="battleStatus" class="battle-status battle-status-stable" role="status" aria-live="polite"></p>
-        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-copy="check">Check stability</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear choice</button><button id="advanceBtn" class="primary-btn" type="button" hidden></button><button id="cloudBraceBtn" class="cloud-brace-btn" type="button" hidden></button></div>
+        <div class="atelier-hud"><div><span id="sceneChapter" class="scene-chapter"></span><strong id="sceneName"></strong></div><div class="tower-count"><span data-copy="layers">परतें</span><b id="layerValue">0 / 4</b></div><button id="helpBtn" type="button" aria-label="How to play">?</button></div>
+        <div class="tower-track" aria-hidden="true"><i id="towerProgress"></i></div>
+        <div id="arena" class="stack-arena" tabindex="0" role="application" aria-label="Cushion stacking scene">
+          <div class="scene-notices"><span id="windValue"></span><span id="chanceValue" aria-label="Chances">●●●</span></div>
+          <div id="contactToast" class="contact-toast" aria-hidden="true"></div>
+          <div id="alignmentMeter" class="alignment-meter"><span data-copy="alignment">संरेखण</span><strong><b id="alignmentValue">0</b>%</strong><div><i id="alignmentFill"></i></div></div>
+        </div>
+        <div class="atelier-controls">
+          <div class="fabric-caption"><span id="fabricRequest"></span><span id="comboValue"></span></div>
+          <div id="choiceTray" class="fabric-tray" role="group" aria-label="Cushion material">
+            <button id="material0" class="material-btn" type="button" aria-pressed="true"><img id="materialArt0" alt="" width="80" height="50"><span><b id="materialName0"></b><small id="materialNote0"></small></span></button>
+            <button id="material1" class="material-btn" type="button" aria-pressed="false"><img id="materialArt1" alt="" width="80" height="50"><span><b id="materialName1"></b><small id="materialNote1"></small></span></button>
+            <button id="material2" class="material-btn" type="button" aria-pressed="false"><img id="materialArt2" alt="" width="80" height="50"><span><b id="materialName2"></b><small id="materialNote2"></small></span></button>
+          </div>
+          <div class="drop-row"><p id="battleStatus" role="status" aria-live="polite"></p><button id="dropBtn" type="button" data-copy="drop">कुशन छोड़ें</button></div>
+        </div>
       </div>
       <section id="resultScreen" class="result-card" data-screen="result" hidden aria-labelledby="resultHeading">
-        <span class="result-spark" aria-hidden="true">✦</span><img class="result-taro" src="assets/animal-cushion-stack-taro-v2.png" alt="" aria-hidden="true" width="1024" height="1536" loading="lazy" decoding="async"><h2 id="resultHeading"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stageMap">Lookout map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="back">Back</button></div>
+        <div class="result-art"><img src="/assets/weightplay-character-moss-shell-turtle-block-v1.webp" alt="" width="160" height="160"></div>
+        <p id="resultKicker" class="result-kicker"></p><h2 id="resultHeading"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p>
+        <div class="result-stats"><div><span data-copy="score">अंक</span><b id="resultScore"></b></div><div><span data-copy="perfect">बिलकुल सही!</span><b id="resultPerfects"></b></div><div><span data-copy="bestScore">सर्वश्रेष्ठ अंक</span><b id="resultBest"></b></div></div>
+        <div class="result-actions"><button id="resultMapBtn" type="button" data-copy="stageMap">चौकी चुनें</button><button id="resultNextBtn" type="button" data-copy="next">अगला</button><button id="resultReplayBtn" type="button" data-copy="replay">फिर खेलें</button></div>
       </section>
+      <section id="playDialog" class="atelier-dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" hidden><div class="dialog-card"><h2 id="dialogTitle"></h2><p id="dialogText"></p><button id="dialogContinue" type="button"></button><button id="dialogLeave" type="button" data-copy="leave" hidden>चौकी चुनें</button></div></section>
     </div>
   </section>
   <label class="locale-source" hidden><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option></select></label>
@@ -146,12 +149,16 @@
   <script src="/src/runtime-locales/hi.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="locales.js?v=20260924-cushion-stack-v8-campaign-copy1"></script>
+  <script src="/games/animal-cushion-stack/atelier-base-copy.js?v=20261022-cushion-stack-v14"></script>
+  <script src="/games/animal-cushion-stack/atelier-locales.js?v=20261022-cushion-stack-v14"></script>
   <script src="/src/stage-rail-i9.js?v=20261020-shared-rail-i9"></script>
   <script src="/src/game-play-ui.js?v=20261020-interface9-play-ui"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
-  <script src="game.js?v=20261020-cushion-stack-v13-i9"></script>
-  <script src="stage-config.js?v=20261020-cushion-stack-v13-i9"></script>
-  <script src="frame.js?v=20261020-cushion-stack-v13-i9-main1"></script>
+  <script src="/src/wallet.js"></script>
+  <script src="/src/game-entry-loader.js?v=20261020-single-loading-label1"></script>
+  <script src="game.js?v=20261022-cushion-stack-v14"></script>
+  <script src="stage-config.js?v=20261022-cushion-stack-v14"></script>
+  <script src="frame.js?v=20261022-cushion-stack-v14"></script>
 </body>
 </html>

@@ -1,6 +1,27 @@
-body.war-royal-table .card-game-battle {
+body.war-royal-table .card-game-board {
   background: #073d30 url('../../assets/card-table/emerald-table-v1.webp') center / cover no-repeat;
 }
+
+/* The shared frame owns the scene, top track and controls. The game supplies
+   only its showdown, explanation and synchronous Flip action. */
+body.war-royal-table [data-wp-frame-copy] > :is(h1,p,small) { margin: 0; }
+body.war-royal-table #battleScreen:not([hidden]) { min-height: 100svh; }
+body.war-royal-table .card-table-ui {
+  grid-template-rows: auto minmax(0,1fr) auto;
+  min-height: 0; min-width: 0; gap: 8px; padding: 4px 0 0;
+}
+body.war-royal-table .card-game-board { min-height: 0; overflow: auto; }
+body.war-royal-table #cardGameStatus { text-align: center; }
+body.war-royal-table #resultOverlay {
+  position: absolute; inset: 0; z-index: 20; box-sizing: border-box;
+  padding: 16px; overflow: auto; display: grid; place-items: center;
+}
+body.war-royal-table #resultOverlay[hidden] { display: none !important; }
+body.war-royal-table #resultOverlay .result-card {
+  box-sizing: border-box; width: min(480px,100%); max-height: 100%; overflow: auto; margin: 0;
+}
+body.war-royal-table #resultOverlay .result-actions { display: grid; gap: 8px; grid-template-columns: 1fr; }
+body.war-royal-table #resultOverlay .result-actions button { min-height: var(--wp-frame-control-size,48px); }
 body.war-royal-table .card-table-center {
   background: #003a2b50;
   border: 1px solid #dab96b99;

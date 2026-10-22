@@ -130,6 +130,14 @@
     ar: ["استعد التاج", "اهزم الحراس المطلوبين ثم وصل إلى التاج.", "أزل الدعامات", "اضغط مجموعة متصلة من لون واحد، راجع المسار ثم أكد.", "احسب أولًا", "يجب أن تتجاوز قوتك قوة العدو. خطط لترتيب الجمع والضرب؛ الأشواك تسبب الخسارة."]
   };
   const tutorials = {
+    "animal-magnet-meadow": {
+      title: Object.fromEntries(Object.entries(window.MAGNET_MEADOW_REBUILD_COPY || {}).map(([lang, copy]) => [lang, copy.ready])),
+      steps: [
+        { icon: "1", ...Object.fromEntries(Object.entries(window.MAGNET_MEADOW_REBUILD_COPY || {}).map(([lang, copy]) => [lang, [copy.goal, copy.incorrect]])) },
+        { icon: "2", ...Object.fromEntries(Object.entries(window.MAGNET_MEADOW_REBUILD_COPY || {}).map(([lang, copy]) => [lang, [copy.ready, copy.helpRule]])) },
+        { icon: "3", ...Object.fromEntries(Object.entries(window.MAGNET_MEADOW_REBUILD_COPY || {}).map(([lang, copy]) => [lang, [copy.check, `${copy.aligned} ${copy.noRoute}`]])) },
+      ],
+    },
     "animal-signal-scout": {
       title: {
         en: "Decode the signal route", "zh-Hant": "解碼訊號路線", "zh-Hans": "解码信号路线", ja: "信号ルートを解読", ko: "신호 경로 해독",

@@ -146,6 +146,13 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
   border:0!important;border-radius:0!important;background:#163640!important;overflow:hidden!important;
 }
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-play-actions][hidden] {display:none!important}
+/* Explicit Stage slots retain their positions when optional actions appear. */
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-play-actions][data-wp-frame-stage-nav] {
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;direction:ltr!important;
+}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-play-actions][data-wp-frame-stage-nav] > :is(button,a) {
+  width:min(100%,calc(168 * var(--wp-play-unit,1px)))!important;justify-self:center!important;
+}
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-play-actions] > :is(button,a),
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-play-actions] > [data-wp-frame-group] > :is(button,a) {
   box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;

@@ -24,19 +24,19 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#e9f1ff">
-  <meta name="weightplay-game-version" content="v13">
+  <meta name="weightplay-game-version" content="v14">
   <meta name="weightplay-interface-version" content="9">
   <title>Cushion Stack | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261020-interface9-guide">
-  <link rel="stylesheet" href="style.css?v=20261020-cushion-stack-v13-i9">
+  <link rel="stylesheet" href="style.css?v=20261022-cushion-stack-v14">
   <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
   <link rel="stylesheet" href="/src/game-play-ui.css?v=20261020-interface9-play-ui">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <meta name="description" content="Choose the next soft block so Taro can build a safe little lookout." />
+  <meta name="description" content="Build 30 cushion towers. Find your rhythm. Land perfectly." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Cushion Stack | WeightPlay" />
-    <meta property="og:description" content="Choose the next soft block so Taro can build a safe little lookout." />
+    <meta property="og:description" content="Build 30 cushion towers. Find your rhythm. Land perfectly." />
     <meta property="og:url" content="https://weightplay.com/en/games/animal-cushion-stack/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-cushion-stack.webp" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -74,7 +74,7 @@
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-cushion-stack" data-wp-game-version="v13" data-wp-interface-version="9" data-screen="main" data-runtime-localize="off">
+<body data-audience="general" data-wp-game-id="animal-cushion-stack" data-wp-game-version="v14" data-wp-interface-version="9" data-screen="main" data-runtime-localize="off">
   <div id="app" data-wp-app data-wp-frame-root>
   <main id="mainScreen" class="screen" data-screen="main">
     <header class="topbar">
@@ -82,54 +82,61 @@
       <h1 data-wp-frame-title data-copy="title">Cushion Stack</h1>
     </header>
     <section class="wp-standard-main-composition" data-wp-frame-content="main">
-      <div class="wp-standard-main-poster"><img class="cover wp-standard-main-poster-media" data-wp-frame-poster src="assets/animal-cushion-stack-cover-v2.png" alt="" aria-hidden="true" width="1254" height="1254" decoding="async"></div>
+      <div class="wp-standard-main-poster"><img class="cover wp-standard-main-poster-media" data-wp-frame-poster src="/assets/interface7-redrawn/animal-cushion-stack.webp" alt="" aria-hidden="true" width="1254" height="1254" decoding="async"></div>
       <div class="wp-standard-main-copy" data-wp-frame-copy>
-        <p class="kicker" data-copy="kicker">Moss Shell Taro's steady-building puzzle</p>
         <h2 data-copy="title">Cushion Stack</h2>
-        <p class="intro" data-copy="intro">Choose the next soft block and build a safe little lookout for Taro.</p>
-        <p class="summary wp-standard-main-summary" data-wp-frame-summary data-copy="summary">Help Taro build a 30-stage lookout trail, one careful choice at a time.</p>
-        <p id="mainProgress" class="progress wp-standard-main-progress" data-wp-main-progress data-wp-frame-progress role="status" aria-live="polite" data-copy="progress">Progress: 30 stages · no timer</p>
+        <p class="summary wp-standard-main-summary" data-wp-frame-summary data-copy="summary">Build 30 cushion towers. Find your rhythm. Land perfectly.</p>
+        <p id="mainProgress" class="progress wp-standard-main-progress" data-wp-main-progress data-wp-frame-progress role="status" aria-live="polite" data-copy="progress">Lookout 1 / 30</p>
         <button id="startBtn" class="primary-btn wp-standard-main-start" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start">Start Game</button>
-        <p class="best-line"><span data-copy="best">Best picks</span>: <strong id="bestValue">Not yet</strong></p>
+        <p class="best-line"><span data-copy="best">Stars collected</span>: <strong id="bestValue">Not yet</strong></p>
       </div>
     </section>
   </main>
   <section class="guide-card game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" aria-labelledby="guideTitle">
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2 id="guideTitle">Cushion Stack</h2><p>Help Taro build a 30-stage lookout trail by reading each support, comparing three soft blocks, and checking one careful choice at a time.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Stability Stack Puzzle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Construction · Spatial Planning · Family · Animal</strong></div></div>
-    </div>
+    <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WEIGHTPLAY ORIGINAL GAME</span><h2 id="guideTitle" data-copy="guideTitle">Make room for a little wonder</h2><p data-copy="guideIntro">Help Moss Shell Taro turn a handful of soft cushions into a sky-high lookout.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>30</span><strong data-copy="factStages">Handcrafted lookouts</strong></div><div class="game-info-fact"><span>3D</span><strong data-copy="factStack">Real cushion stacking</strong></div></div></div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>1. Understand the 30-stage trail</h3><p>Each stage is a layered construction puzzle. The tower area shows the support that is already in place, while the tray offers three possible cushions for the next layer. Your goal is not to build as quickly as possible. Instead, read the support width, compare the choices, and place a cushion that can sit safely inside the support below it. A correct cushion becomes part of the tower and reveals the next decision. Complete every placement in a stage to clear it. The full trail contains 30 stages arranged in six arcs, with a checkpoint every fifth stage.</p><p>The opening stages introduce Meadow, Pond, and Moon towers. Stages 4–30 continue the trail with new support widths and cushion combinations, so check the current evidence rather than memorize one answer for the whole chapter.</p></div>
-      <div class="game-info-section"><h3>2. Read support and cushion widths</h3><p>The support width appears in the Battle hint. Every choice also shows its own width. A safe cushion is narrower than the support and leaves a sensible margin on both sides. A cushion that is wider than the support would overhang, while the smallest option may be too narrow to create the intended stable layer. Compare the numbers first, then use the cushion name, color, and visible size as a second check.</p><p>The tower illustration updates only after a successful check. This keeps the settled layers distinct from the choice you are considering. If the support changes from one layer to the next, read the new value again before choosing; the block that worked on the floor is not automatically right for the middle or top.</p></div>
-      <div class="game-info-section"><h3>3. Choose, check, and recover</h3><p>Select a cushion in the tray, then press <strong>Check stability</strong>. The selected state and status text confirm which cushion is active before the check. A steady choice plays positive feedback and adds the cushion to the tower. A wobbly choice gives calm error feedback, clears the selection, and leaves the current layer unchanged. You lose no life, time, or completed layer, so use the response as information and try another option.</p><p><strong>Clear choice</strong> removes a selection before checking if you change your mind. The lookout map remains available during play, and returning to it does not invent a win. When every placement in a stage is steady, that stage clears and the next stage becomes available. Continue through all 30 stages; clearing Stage 30 presents the final chapter Result with your total picks.</p></div>
-      <div class="game-info-section"><h3>4. Improve your fewest-picks result</h3><p>Your total picks count every checked choice, including wobbly attempts. The best result therefore comes from making each comparison before pressing Check. Start with the support width, rule out the obvious overhang, and then compare the remaining cushions. The best local score records the fewest picks used to complete the full 30-stage chapter; there is no speed bonus and no reason to rush.</p><p>On a replay, look for the decision that caused an extra pick rather than racing through every action. The opening Meadow, Pond, and Moon stages teach the basic margin, centered shapes, and a decorative top; later stages combine these reads across longer towers and checkpoints. This progression rewards careful reading and memory without turning a wrong answer into punishment.</p></div>
-      <div class="game-info-section"><h3>5. Controls, sound, and language</h3><p>All primary actions are ordinary buttons that work with touch, mouse, and keyboard. Keyboard players can move focus with Tab and activate the focused control with Enter or Space. The permanent arrow returns from Battle to the lookout map, while the Main return leads back to the General WeightPlay lobby. The Settings button on Main contains one language selector and one combined Sound switch.</p><p>The language choice supports all thirteen WeightPlay locales, including Arabic right-to-left layout. Sound is optional and mirrors the shared WeightPlay audio preference. Visual selected states, status text, widths, and tower changes continue to communicate the result when sound is muted. If browser storage is unavailable, the game remains playable; only the local best may last for the current visit.</p></div>
-      <div class="game-info-section"><h3>6. Strategy and fair-play notes</h3><p>A reliable strategy is: read the current support, compare every visible width, choose the cushion with a safe centered margin, and check only after the selected label matches your intention. Do not assume that the largest remaining cushion is always correct. Some layers use a snug rectangular cushion, while others use cloud, leaf, moon, or flag shapes with different safe widths.</p><p>Cushion Stack has no timer, life loss, ranking, purchases, ads inside the game canvas, or account requirement. Every puzzle is deterministic, so the same lookout presents the same fair evidence on a replay. The game does not require guessing hidden physics; the displayed support and choice widths are the decision tools. Stop after any lookout or replay the full journey when you want to improve the fewest-picks result.</p></div>
-      <div class="game-info-section game-info-faq"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes. The fewest-picks best is saved only in this browser when storage is available.</dd></div><div><dt>What happens after a wobbly choice?</dt><dd>The current layer stays safe, the selection clears, and you may immediately choose again.</dd></div><div><dt>Do I need to finish quickly?</dt><dd>No. There is no timer; careful comparison is the intended way to play.</dd></div></dl></div>
+      <div class="game-info-section"><h3 data-copy="guide1">Place, feel, repeat</h3><p data-copy="guide1Text">Pick a fabric, line up with the golden landing mark, and drop. The transparent cushion shows where the wind will carry your landing. Enough overlap keeps it on the tower; a perfect alignment builds your combo. Watch the alignment percentage as the cushion moves across the workshop. You can wait for the right moment and tap Drop, or drag anywhere in the scene to position it yourself. Release your finger or mouse to place it. On a keyboard, use the arrow keys to aim, the number keys to choose a fabric, and Space to drop.</p></div>
+      <div class="game-info-section"><h3 data-copy="guide2">Three fabrics. Real choices.</h3><p data-copy="guide2Text">Moss felt accepts a smaller overlap and is a friendly place to start. Golden linen becomes narrower and awards a higher base score, so it rewards careful placement. Rose cloud is wider and can preserve a generous surface for the next layer, but it needs more support underneath. Every successful cushion becomes the support for the next one. There is no secret correct answer: the visible width and actual overlap determine whether it stays. Later lookouts request a particular fabric. That request is shown above the tray, and the requested fabric is selected for you.</p></div>
+      <div class="game-info-section"><h3 data-copy="guide3">A trail worth returning to</h3><p data-copy="guide3Text">The full trail contains 30 stages arranged in six arcs, with a checkpoint every fifth stage. Start with the meadow foundations, discover alternating breezes, follow the lantern trail, build narrow cloud spires, fulfill patchwork orders, and finish the sky palace. Each lookout combines a particular height, movement speed, wind direction and landing pattern. The gold mark may move away from the tower center, so look again before each drop. Completing a lookout unlocks the next one. You can browse later cards before they unlock, and replay any cleared lookout to improve its score and stars.</p></div>
+      <div class="game-info-section"><h3 data-copy="guide4">Take your time</h3><p data-copy="guide4Text">There is no countdown and no need to rush. A missed cushion falls away while your settled layers remain. You have three misses within each attempt; after the third, Replay starts a fresh tower. Opening Help, Pause or Settings stops the live challenge, and switching away from the page pauses it too. Continuing resumes the same tower. Returning to the stage map discards only the unfinished attempt, with a confirmation before you leave. Your earlier clears, best scores, stars and owned fabrics remain saved. Sound and reduced-motion settings are respected throughout the game.</p></div>
+      <div class="game-info-section"><h3 data-copy="guide5">Make a landing your own</h3><p data-copy="guide5Text">Every completed tower earns one star. Perfect landings on at least forty percent of its layers earn a second. To earn all three, finish without a miss and place at least seventy percent of the layers perfectly. Consecutive perfect placements add a growing combo bonus, up to five bonus steps. A steady landing still advances the tower, even when it breaks the combo. Replaying never lowers a saved best score or removes an earned star. Progress is stored in this browser; existing cleared stages from the earlier game are kept, while the new stars begin as fresh challenges.</p></div>
+      <div class="game-info-section"><h3 data-copy="guide6">A small fabric collection</h3><p data-copy="guide6Text">The Fabric studio is on the stage map. Garden fabrics are free and always available. The optional Moonlight palette costs twelve diamonds from your shared WeightPlay wallet and is a permanent collection item. Review the price and confirm once to unlock it, then switch between owned palettes whenever you like. Colors do not change cushion widths, support rules, scores or stage access. The studio shows your balance and ownership. If storage is unavailable, paid purchasing is disabled and the game explains that new progress cannot be saved; the free challenge remains playable.</p></div>
     </div>
-    <figure class="block-atlas-figure"><img class="block-atlas" src="assets/animal-cushion-stack-block-atlas-v2.png" alt="Cushion Stack game artwork" width="1254" height="1254" loading="lazy" decoding="async"><figcaption>Seven soft shapes to build with.</figcaption></figure>
   </section>
-
   <section id="stageScreen" class="screen" data-screen="stage" hidden aria-labelledby="stageHeading">
     <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" aria-label="Back">Back</button><h2 id="stageHeading" data-wp-frame-title data-copy="stages">Choose a lookout</h2></header>
-    <div id="stagePage" class="stage-page"><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div></div>
+    <button id="atelierBtn" type="button" data-copy="studio">Fabric studio</button><div id="stagePage" class="stage-page"><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div></div>
+<section id="studioDialog" class="atelier-dialog" role="dialog" aria-modal="true" aria-labelledby="studioTitle" hidden><div class="dialog-card studio-card"><button id="studioClose" class="studio-close" type="button" data-copy="close">Got it</button><h2 id="studioTitle" data-copy="studio">Fabric studio</h2><p data-copy="studioText">Collect a permanent fabric palette. A new look, with the same fair rules.</p><p class="wallet-balance"><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt=""><span data-copy="balance">Diamond balance</span><b id="diamondBalance">0</b></p><div class="fabric-collection"><article><img id="gardenPreview" alt="" width="160" height="100"><h3 data-copy="garden">Garden fabrics</h3><p data-copy="free">Free · always owned</p><button id="gardenBtn" type="button"></button></article><article><img id="moonPreview" alt="" width="160" height="100"><h3 data-copy="moon">Moonlight fabrics</h3><p id="moonDetail"></p><button id="moonBtn" type="button"></button></article></div><p id="studioStatus" role="status"></p></div></section>
   </section>
 
-  <section id="battleScreen" class="screen" data-screen="battle" hidden aria-labelledby="battleHeading">
-    <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" aria-label="Back">Back</button><h2 id="battleHeading" data-wp-frame-title>Cushion Stack</h2><p id="roundLabel" class="round-label"></p><p id="sessionPicksLabel" class="session-picks"><span data-copy="picks">Picks</span> <b id="sessionPicks">0</b></p></header>
+  <section id="battleScreen" class="screen" data-screen="battle" data-wp-battle-landscape-width="844" data-wp-battle-landscape-height="390" hidden aria-labelledby="battleHeading">
+    <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" aria-label="Pause">←</button><h2 id="battleHeading" data-wp-frame-title>Cushion Stack</h2><p id="roundLabel" class="round-label"></p><p id="sessionPicksLabel" class="session-picks"><span data-copy="score">Score</span> <b id="sessionPicks">0</b></p></header>
     <div id="battleContent" class="battle-content">
       <div id="battlePlay" class="battle-play">
-        <p id="battleHint" class="battle-hint"></p>
-        <div id="tower" class="tower" aria-label="Cushion stack"></div>
-        <div class="choice-head"><h3 data-copy="chooseBlock">Choose the next block</h3><span id="selectionLabel" class="selection-label"></span></div>
-        <div id="choiceTray" class="choice-tray" role="group" aria-label="Choose the next block"></div>
-        <p id="battleStatus" class="battle-status battle-status-stable" role="status" aria-live="polite"></p>
-        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-copy="check">Check stability</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear choice</button><button id="advanceBtn" class="primary-btn" type="button" hidden></button><button id="cloudBraceBtn" class="cloud-brace-btn" type="button" hidden></button></div>
+        <div class="atelier-hud"><div><span id="sceneChapter" class="scene-chapter"></span><strong id="sceneName"></strong></div><div class="tower-count"><span data-copy="layers">Layers</span><b id="layerValue">0 / 4</b></div><button id="helpBtn" type="button" aria-label="How to play">?</button></div>
+        <div class="tower-track" aria-hidden="true"><i id="towerProgress"></i></div>
+        <div id="arena" class="stack-arena" tabindex="0" role="application" aria-label="Cushion stacking scene">
+          <div class="scene-notices"><span id="windValue"></span><span id="chanceValue" aria-label="Chances">●●●</span></div>
+          <div id="contactToast" class="contact-toast" aria-hidden="true"></div>
+          <div id="alignmentMeter" class="alignment-meter"><span data-copy="alignment">Alignment</span><strong><b id="alignmentValue">0</b>%</strong><div><i id="alignmentFill"></i></div></div>
+        </div>
+        <div class="atelier-controls">
+          <div class="fabric-caption"><span id="fabricRequest"></span><span id="comboValue"></span></div>
+          <div id="choiceTray" class="fabric-tray" role="group" aria-label="Cushion material">
+            <button id="material0" class="material-btn" type="button" aria-pressed="true"><img id="materialArt0" alt="" width="80" height="50"><span><b id="materialName0"></b><small id="materialNote0"></small></span></button>
+            <button id="material1" class="material-btn" type="button" aria-pressed="false"><img id="materialArt1" alt="" width="80" height="50"><span><b id="materialName1"></b><small id="materialNote1"></small></span></button>
+            <button id="material2" class="material-btn" type="button" aria-pressed="false"><img id="materialArt2" alt="" width="80" height="50"><span><b id="materialName2"></b><small id="materialNote2"></small></span></button>
+          </div>
+          <div class="drop-row"><p id="battleStatus" role="status" aria-live="polite"></p><button id="dropBtn" type="button" data-copy="drop">Drop cushion</button></div>
+        </div>
       </div>
       <section id="resultScreen" class="result-card" data-screen="result" hidden aria-labelledby="resultHeading">
-        <span class="result-spark" aria-hidden="true">✦</span><img class="result-taro" src="assets/animal-cushion-stack-taro-v2.png" alt="" aria-hidden="true" width="1024" height="1536" loading="lazy" decoding="async"><h2 id="resultHeading"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stageMap">Lookout map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="back">Back</button></div>
+        <div class="result-art"><img src="/assets/weightplay-character-moss-shell-turtle-block-v1.webp" alt="" width="160" height="160"></div>
+        <p id="resultKicker" class="result-kicker"></p><h2 id="resultHeading"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p>
+        <div class="result-stats"><div><span data-copy="score">Score</span><b id="resultScore"></b></div><div><span data-copy="perfect">PERFECT!</span><b id="resultPerfects"></b></div><div><span data-copy="bestScore">Stage best</span><b id="resultBest"></b></div></div>
+        <div class="result-actions"><button id="resultMapBtn" type="button" data-copy="stageMap">Stages</button><button id="resultNextBtn" type="button" data-copy="next">Next stage</button><button id="resultReplayBtn" type="button" data-copy="replay">Replay</button></div>
       </section>
+      <section id="playDialog" class="atelier-dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" hidden><div class="dialog-card"><h2 id="dialogTitle"></h2><p id="dialogText"></p><button id="dialogContinue" type="button"></button><button id="dialogLeave" type="button" data-copy="leave" hidden>Return to stages</button></div></section>
     </div>
   </section>
   <label class="locale-source" hidden><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option></select></label>
@@ -140,12 +147,16 @@
   <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
   <script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
   <script src="locales.js?v=20260924-cushion-stack-v8-campaign-copy1"></script>
+  <script src="/games/animal-cushion-stack/atelier-base-copy.js?v=20261022-cushion-stack-v14"></script>
+  <script src="/games/animal-cushion-stack/atelier-locales.js?v=20261022-cushion-stack-v14"></script>
   <script src="/src/stage-rail-i9.js?v=20261020-shared-rail-i9"></script>
   <script src="/src/game-play-ui.js?v=20261020-interface9-play-ui"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
-  <script src="game.js?v=20261020-cushion-stack-v13-i9"></script>
-  <script src="stage-config.js?v=20261020-cushion-stack-v13-i9"></script>
-  <script src="frame.js?v=20261020-cushion-stack-v13-i9-main1"></script>
+  <script src="/src/wallet.js"></script>
+  <script src="/src/game-entry-loader.js?v=20261020-single-loading-label1"></script>
+  <script src="game.js?v=20261022-cushion-stack-v14"></script>
+  <script src="stage-config.js?v=20261022-cushion-stack-v14"></script>
+  <script src="frame.js?v=20261022-cushion-stack-v14"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@
   if(roots.length!==2||!window.WPCardTablePresentation)return;
   document.body.classList.add('wp-premium-table','war-royal-table');
   document.body.dataset.cardDeck='klondike';
-  document.body.dataset.gameVersion='v14';
+  document.body.dataset.gameVersion=document.body.dataset.wpGameVersion;
   const signatures=new WeakMap();
   function decorate(root) {
     const signature=[...root.querySelectorAll('.playing-card')].map(card=>card.getAttribute('aria-label')).join('|');

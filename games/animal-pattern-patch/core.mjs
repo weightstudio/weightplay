@@ -48,7 +48,7 @@ export function normalizeSave(raw) {
   const save={schema:1,medals,unlocked,skin:raw?.skin==='moon'&&raw?.moonOwned===true?'moon':'jade',moonOwned:raw?.moonOwned===true,run:null};
   const stage=STAGES[cap(raw?.run?.stage,30)-1];
   if(stage && stage.id<=unlocked){
-    const filled=stage.holes.filter(index=>raw.run.filled?.includes(index));
+    const filled=stage.holes.filter(index=>Array.isArray(raw.run.filled)&&raw.run.filled.includes(index));
     if(filled.length<stage.holes.length)save.run={stage:stage.id,filled,mistakes:cap(raw.run.mistakes),hints:cap(raw.run.hints)};
   }
   return save;

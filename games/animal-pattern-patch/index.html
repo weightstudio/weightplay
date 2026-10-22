@@ -45,13 +45,13 @@
   </head>
   <body data-wp-game-id="animal-pattern-patch" data-wp-interface-version="9" data-screen="main">
     <main id="app" data-wp-frame-root>
-      <section id="mainView" data-screen="main">
+      <section id="mainView" class="main-screen" data-screen="main">
         <header><a data-wp-return="main" href="/" aria-label="Back to WeightPlay">←</a><strong data-wp-frame-title data-wp-game-title>Pattern Completion</strong></header>
         <div id="mainContent">
           <img data-wp-frame-poster class="main-poster" src="/assets/interface7-redrawn/animal-pattern-patch.webp" alt="" width="1254" height="1254" fetchpriority="high">
           <div class="main-copy">
             <p data-wp-frame-summary data-copy="subtitle">Find the missing piece. Restore 30 patterns in a little woodland workshop.</p>
-            <div id="mainProgress" data-wp-main-progress></div>
+            <div id="mainProgress" data-wp-main-progress data-wp-frame-progress></div>
             <button id="startButton" data-wp-main-start data-wp-frame-action="primary" data-copy="start">Start Game</button>
           </div>
         </div>
@@ -60,7 +60,7 @@
         <header><button id="stageBack" data-wp-return="stage" data-label="home">←</button><strong data-wp-frame-title hidden></strong></header>
         <div id="stageContent"><div id="stageRail"></div></div>
         <div id="stageInfoSource" hidden><span id="stageProgress"></span></div>
-        <div id="stageActionsSource" hidden><button id="workshopButton" data-copy="workshop">Workshop</button><button id="stagesTab" data-copy="stages">Stages</button></div>
+        <div id="stageActionsSource" hidden><button id="workshopButton" data-copy="workshop">Workshop</button><button id="stagesTab" data-copy="stages" data-wp-frame-action="tab" aria-current="page">Stages</button></div>
         <div id="workshopModal" class="modal-layer" hidden role="dialog" aria-modal="true" aria-labelledby="workshopTitle">
           <div class="workshop-card" data-wp-frame-panel>
             <h2 id="workshopTitle" data-copy="workshop">Workshop</h2>

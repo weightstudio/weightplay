@@ -31,6 +31,7 @@
     ar:['الآثار الأولى','إيقاع متكرر','بحيرة المرآة','دروب متقاطعة','دروب دوارة','التحقيق الأخير','يتكرر النمط كل {n} آثار.','النصفان انعكاس أحدهما للآخر.','اقرأ 1·3·5·7 و2·4·6·8 كمسارين منفصلين.','يدور كل أثر تالٍ بمقدار {dir}.','كرر {n} أشكال مع دوران {dir} كل خطوة.','مخلب','طائر','حافر','ورقة','موجة','نجمة'],
   };
   const actions={en:['Next case','Replay case'],'zh-Hant':['下一案件','重查本案'],'zh-Hans':['下一案件','重查本案'],ja:['次の事件','再調査'],ko:['다음 사건','다시 조사'],es:['Siguiente caso','Repetir caso'],'pt-BR':['Próximo caso','Repetir caso'],fr:['Enquête suivante','Rejouer'],de:['Nächster Fall','Wiederholen'],it:['Prossimo caso','Rigioca'],ru:['Следующее дело','Повторить'],hi:['अगला मामला','फिर खेलें'],ar:['القضية التالية','إعادة القضية']};
+  const finales={en:'All 30 cases solved','zh-Hant':'30 件案件全部解開','zh-Hans':'30 件案件全部解开',ja:'30事件すべて解決',ko:'30개 사건 모두 해결',es:'30 casos resueltos','pt-BR':'30 casos resolvidos',fr:'30 enquêtes résolues',de:'Alle 30 Fälle gelöst',it:'30 casi risolti',ru:'Все 30 дел решены',hi:'सभी 30 मामले हल',ar:'حُلّت القضايا الثلاثون'};
   for(const [locale,row] of Object.entries(words)){
     const copy=window.FOOTPRINT_FOLIO_LOCALES[locale];
     row.split('|').forEach((value,i)=>copy[keys[i]]=value);
@@ -39,5 +40,6 @@
     copy.guide=copy.chooseGap+' '+copy.confirm+'. '+copy.starsNote;
     copy.instruction=copy.chooseGap;copy.resultCopy=copy.success;copy.resultTitle=copy.success;
     [copy.continue,copy.replay]=actions[locale];
+    copy.successAll=finales[locale];
   }
 })();

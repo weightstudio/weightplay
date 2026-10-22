@@ -54,13 +54,30 @@
     [copy.locked, copy.cleared, copy.stageReady] = stateCopy;
     keys.forEach((key, i) => { copy[key] = values[i]; });
     copy.arcNames = arcs[locale];
+    const hints = {
+      en: 'Aim at a fruit, then launch.|Lead moving fruit. Focus freezes the orchard for 3 seconds.|Wait for an opening between the rotating branches.|Wind curves your shot. Follow the golden dotted path.|Line up two orbits to harvest more fruit with one seed.|Read the wind and gaps; numbered fruit must be harvested in order.',
+      'zh-Hant': '瞄準果實，再發射種子。|瞄準移動果實前方；定格能讓果園暫停 3 秒。|等旋轉枝條露出空隙，再發射種子。|風會讓路徑彎曲，沿著金色點線瞄準。|對準內外軌道，用一顆種子連續採收。|判讀風向與空隙；有編號時依序採收。',
+      'zh-Hans': '瞄准果实，再发射种子。|瞄准移动果实前方；定格能让果园暂停 3 秒。|等旋转树枝露出空隙，再发射种子。|风会让路径弯曲，沿着金色点线瞄准。|对准内外轨道，用一颗种子连续采收。|判断风向与空隙；有编号时依序采收。',
+      ja: '果実を狙って種を発射。|動く果実の先を狙い、停止で3秒間固定。|回転する枝の隙間を待って発射。|風で曲がる金色の点線を読みましょう。|二つの軌道を狙い、一粒で連続収穫。|風と隙間を読み、番号順に収穫。',
+      ko: '과일을 조준하고 씨앗을 발사하세요.|이동하는 과일 앞을 겨냥하세요. 정지는 3초입니다.|회전하는 가지의 빈틈을 기다리세요.|바람으로 휘는 금빛 점선을 따라 조준하세요.|두 궤도를 맞춰 씨앗 하나로 연속 수확하세요.|바람과 틈을 읽고 번호순으로 수확하세요.',
+      es: 'Apunta a una fruta y lanza.|Anticípate al fruto. Enfoque congela durante 3 segundos.|Espera una abertura entre las ramas giratorias.|El viento curva el tiro. Sigue los puntos dorados.|Alinea dos órbitas para recoger con una sola semilla.|Lee viento y huecos; recoge los números en orden.',
+      'pt-BR': 'Mire na fruta e lance.|Antecipe a fruta. Foco congela por 3 segundos.|Espere uma abertura entre os galhos giratórios.|O vento curva o tiro. Siga os pontos dourados.|Alinhe duas órbitas para colher com uma semente.|Leia vento e aberturas; siga a ordem dos números.',
+      fr: 'Visez un fruit puis lancez.|Anticipez le fruit. Le focus gèle pendant 3 secondes.|Attendez une ouverture entre les branches.|Le vent courbe le tir. Suivez les points dorés.|Alignez deux orbites pour une récolte en chaîne.|Lisez vent et ouvertures ; suivez les numéros.',
+      de: 'Ziele auf eine Frucht und schieße.|Ziele voraus. Fokus friert den Garten 3 Sekunden ein.|Warte auf eine Lücke zwischen den Ästen.|Wind krümmt den Schuss. Folge den goldenen Punkten.|Richte zwei Bahnen für eine Erntekette aus.|Beachte Wind und Lücken; ernte Nummern der Reihe nach.',
+      it: 'Mira a un frutto e lancia.|Anticipa il frutto. Focus congela per 3 secondi.|Attendi un varco tra i rami rotanti.|Il vento curva il tiro. Segui i punti dorati.|Allinea due orbite per raccogliere con un seme.|Leggi vento e varchi; segui i numeri in ordine.',
+      ru: 'Прицельтесь в плод и запустите семя.|Цельтесь с упреждением. Фокус замораживает на 3 секунды.|Дождитесь просвета между вращающимися ветвями.|Ветер изгибает путь. Следуйте золотым точкам.|Совместите две орбиты для сбора одним семенем.|Учитывайте ветер и просветы; следуйте номерам.',
+      hi: 'फल पर निशाना लगाकर बीज छोड़ें।|फल के आगे निशाना लगाएँ। फोकस 3 सेकंड रोकता है।|घूमती टहनियों के बीच खुली जगह का इंतज़ार करें।|हवा रास्ता मोड़ती है। सुनहरे बिंदु देखें।|एक बीज से चुनने के लिए दो कक्षाएँ मिलाएँ।|हवा और खुली जगह देखें; क्रमांक के अनुसार चुनें।',
+      ar: 'صوّب نحو الثمرة ثم أطلق.|صوّب أمام الثمرة؛ التركيز يجمّدها 3 ثوان.|انتظر فتحة بين الأغصان الدوّارة.|الريح تحني المسار. اتبع النقاط الذهبية.|حاذِ مدارين للحصاد ببذرة واحدة.|اقرأ الريح والفتحات واتبع ترتيب الأرقام.'
+    }[locale].split('|');
+    hints.forEach((hint, i) => { copy[`hint${i + 1}`] = hint; });
     copy.footer = 'WeightPlay · Block Animals';
+    copy.blockReward = { en: 'Block reward +{count}', 'zh-Hant': '獲得 {count} 個方塊', 'zh-Hans': '获得 {count} 个方块', ja: 'ブロック報酬 +{count}', ko: '블록 보상 +{count}', es: 'Bloques ganados: {count}', 'pt-BR': 'Blocos recebidos: {count}', fr: 'Blocs gagnés : {count}', de: 'Block-Belohnung +{count}', it: 'Blocchi ottenuti: {count}', ru: 'Награда: {count} блок', hi: 'ब्लॉक इनाम +{count}', ar: 'مكافأة مكعبات +{count}' }[locale];
     const guide = guides[locale];
     Object.assign(copy, { guideIntro: copy.intro, guideOneTitle: copy.aim, guideOne: guide[0],
       guideTwoTitle: copy.harvest, guideTwo: guide[1], guideThreeTitle: copy.focus, guideThree: guide[2],
       guideResults: guide[3], guideTips: guide[0], guideFocus: guide[1], guideFinish: guide[2],
       faqProgressAnswer: guide[3], chooseOrbit: arcs[locale][0], finishTitle: copy.clearTitle,
-      release: copy.fire, best: copy.shots, orbit: '{current} / {total}',
+      release: copy.fire, orbit: '{current} / {total}',
       start: ({en:'Start Game','zh-Hant':'開始遊戲','zh-Hans':'开始游戏',ja:'ゲーム開始',ko:'게임 시작',es:'Iniciar juego','pt-BR':'Iniciar jogo',fr:'Jouer',de:'Spiel starten',it:'Inizia',ru:'Начать',hi:'खेल शुरू करें',ar:'ابدأ اللعب'})[locale] });
   });
   window.ORBIT_HARVEST_COPY_KEYS = keys;

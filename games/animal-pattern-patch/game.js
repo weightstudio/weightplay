@@ -2,6 +2,11 @@ import {SAVE_KEY,SHAPES,STAGES,tileKey,normalizeSave,newRun,remaining,choose,opt
 import {COPY} from './workshop-copy.mjs';
 import {purchaseMoon,recoverPurchase} from './purchase.mjs';
 const $=id=>document.getElementById(id);
+// Localized route generation owns the static Guide wrapper. Populate the same
+// permanent wrapper from the game's current 13-locale copy on every route.
+const guide=document.querySelector('.game-page-info');
+guide.id='gameGuide';
+guide.innerHTML='<h2 data-wp-game-title></h2><div class="game-info-sections"><section class="game-info-section guide-intro"><img src="/games/animal-pattern-patch/assets/pattern-guide-v17.png" alt="" width="1254" height="1254" loading="lazy"><div><h3 data-copy="how"></h3><p data-copy="howBody"></p></div></section><section class="game-info-section"><h3 data-copy="progress"></h3><p data-copy="medalBody"></p><p data-copy="keyboard"></p></section></div>';
 const old=window.PATTERN_PATCH_LOCALES, locales=old.__localeKeys;
 const segments=['en','zh-tw','zh-cn','ja','ko','es','pt-br','fr','de','it','ru','hi','ar'];
 let locale=locales[segments.indexOf(location.pathname.split('/')[1])]||'en';
@@ -12,6 +17,7 @@ const t=(key,vars={})=>String(COPY[locale]?.[key]??old[locale]?.[key]??COPY.en[k
 const title=()=>window.WEIGHTPLAY_GAME_TITLES?.['animal-pattern-patch']?.[locale]||old[locale].title;
 const name=stage=>stage.name[locale]||`${COPY[locale].arcs[stage.arc]} · ${String(stage.id).padStart(2,'0')}`;
 const rule=stage=>COPY[locale].rules[stage.rule];
+const fraction=(value,total)=>locale==='ar'?`\u2066${value} / ${total}\u2069`:`${value} / ${total}`;
 let save,storageOK=true;
 try{save=normalizeSave(JSON.parse(localStorage.getItem(SAVE_KEY)||'null'));}catch{save=normalizeSave(null);storageOK=false;}
 let purchaseBlocked=false;
@@ -20,7 +26,7 @@ let screen='main',run=null,selectedGap=0,selector=null,modal=null,busy=false,ses
 const animations=new Set(),timers=new Set(),optionButtons=[];
 const reduce=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
 const play=id=>{if(!document.hidden)sound.play(id);};
-function persist(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(save));storageOK=true;return true;}catch{storageOK=false;return false;}}
+function persist(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(save));storageOK=true;return true;}catch{storageOK=false;announce(t('storage'));if(screen==='battle')feedback(t('storage'),'wrong');return false;}}
 function saveRun(){if(run?.status==='playing')save.run={stage:run.stage,filled:[...run.filled],mistakes:run.mistakes,hints:run.hints};persist();}
 function tween(node,frames,duration=180){
   if(!node?.animate)return;
@@ -49,14 +55,14 @@ const infoGroup=window.WeightPlayScreenFrame.createGroup();[...$('battleInfo').c
 frame.commonDownButton.add($('workshopButton'));frame.commonDownButton.add($('stagesTab'));
 const stageConfig={gameId:'animal-pattern-patch',count:STAGES.length,poster:'/assets/interface7-redrawn/animal-pattern-patch.webp',background:'/assets/lobby-block-atmosphere.svg',stage(index){
  const stage=STAGES[index],medals=save.medals[index];
- return {id:stage.id,kicker:`${t('stages')} ${String(stage.id).padStart(2,'0')} / 30`,title:name(stage),subtitle:COPY[locale].arcs[stage.arc],status:stage.id>save.unlocked?t('locked'):save.run?.stage===stage.id?t('resume'):medals[0]?medals.map(v=>v?'✦':'◇').join(' '):stage.checkpoint?t('checkpoint'):'',summary:stage.checkpoint?t('checkpoint'):t('choose'),details:[t('howBody'),t('medalBody')],locked:stage.id>save.unlocked,cleared:medals[0]};
+ return {id:stage.id,kicker:`${t('stages')} ${fraction(String(stage.id).padStart(2,'0'),30)}`,title:name(stage),subtitle:COPY[locale].arcs[stage.arc],status:stage.id>save.unlocked?t('locked'):save.run?.stage===stage.id?t('resume'):medals[0]?medals.map(v=>v?'✦':'◇').join(' '):stage.checkpoint?t('checkpoint'):'',summary:stage.checkpoint?t('checkpoint'):t('choose'),details:[t('howBody'),t('medalBody')],locked:stage.id>save.unlocked,cleared:medals[0]};
 }};
-function updateProgress(){const clears=save.medals.filter(m=>m[0]).length,total=save.medals.flat().filter(Boolean).length;$('mainProgress').textContent=`${t('progress')} ${clears} / 30 · ✦ ${total} / 90`;$('stageProgress').textContent=`${t('progress')} ${clears} / 30`;}
+function updateProgress(){const clears=save.medals.filter(m=>m[0]).length,total=save.medals.flat().filter(Boolean).length;$('mainProgress').textContent=`${t('progress')} ${fraction(clears,30)} · ✦ ${fraction(total,90)}`;$('stageProgress').textContent=`${t('progress')} ${fraction(clears,30)}`;}
 function translate(){
  document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';document.title=`${title()} | WeightPlay`;
  document.querySelectorAll('[data-copy]').forEach(n=>n.textContent=t(n.dataset.copy));document.querySelectorAll('[data-label]').forEach(n=>n.setAttribute('aria-label',t(n.dataset.label)));
  document.querySelectorAll('[data-wp-game-title]').forEach(n=>n.textContent=title());
- $('patternGrid').setAttribute('aria-label',t('patternGrid'));$('optionGrid').setAttribute('aria-label',t('choose'));
+ $('patternGrid').setAttribute('aria-label',`${t('progress')} 3 × 3`);$('optionGrid').setAttribute('aria-label',t('choose'));
  $('localeSelect').value=locale;updateProgress();if(selector&&screen==='stage')selector.refresh();frame.refresh();
  if(run&&screen==='battle'){updateHUD();updateOptionLabels();}
 }
@@ -77,7 +83,7 @@ function changeScene(next){
   requestAnimationFrame(()=>$('stageRail').querySelector('[aria-current="true"]')?.focus({preventScroll:true}));
  }
 }
-function updateHUD(){const stage=STAGES[run.stage-1];$('roundLabel').textContent=`${t('stages')} ${stage.id} / 30`;$('fillCount').textContent=`${run.filled.length} / ${stage.holes.length}`;$('arcLabel').textContent=COPY[locale].arcs[stage.arc];$('stageTitle').textContent=name(stage);$('sealLabel').textContent=stage.checkpoint?t('checkpoint'):'';$('streakLabel').textContent=run.streak>1?`${t('streak')} × ${run.streak}`:'';$('gapLabel').textContent=run.status==='complete'?'✓':`${Math.floor(selectedGap/3)+1} · ${selectedGap%3+1}`;$('runMedals').replaceChildren(...[true,!run.mistakes,!run.hints].map(medalIcon));$('hintButton').disabled=run.status==='complete';}
+function updateHUD(){const stage=STAGES[run.stage-1];$('roundLabel').textContent=`${t('stages')} ${fraction(stage.id,30)}`;$('fillCount').textContent=fraction(run.filled.length,stage.holes.length);$('arcLabel').textContent=COPY[locale].arcs[stage.arc];$('stageTitle').textContent=name(stage);$('sealLabel').textContent=stage.checkpoint?t('checkpoint'):'';$('streakLabel').textContent=run.streak>1?`${t('streak')} × ${run.streak}`:'';$('gapLabel').textContent=run.status==='complete'?'✓':`${Math.floor(selectedGap/3)+1} · ${selectedGap%3+1}`;$('runMedals').replaceChildren(...[true,!run.mistakes,!run.hints].map(medalIcon));$('hintButton').disabled=run.status==='complete';}
 function updateOptionLabels(){for(const button of optionButtons){if(!button._tile)continue;button.setAttribute('aria-label',t('option',{token:tileLabel(button._tile)}));}}
 function renderBoard(){
  const stage=STAGES[run.stage-1];$('patternGrid').replaceChildren();
@@ -91,7 +97,7 @@ function renderBoard(){
 }
 function renderOptions(){
  const options=optionsFor(STAGES[run.stage-1],selectedGap);
- if(!optionButtons.length)for(let i=0;i<4;i++){const button=document.createElement('button');button.type='button';button.className='option-token';button.dataset.option=i;button.addEventListener('click',()=>answer(button._tile,button));optionButtons.push(button);$('optionGrid').append(button);}
+ if(!optionButtons.length)for(let i=0;i<4;i++){const button=document.createElement('button');button.type='button';button.className='option-token';button.dataset.option=i;button.dataset.wpPrimaryAction='';button.setAttribute('aria-keyshortcuts',String(i+1));button.addEventListener('click',()=>answer(button._tile,button));optionButtons.push(button);$('optionGrid').append(button);}
  options.forEach((value,index)=>{const button=optionButtons[index];button._tile=value;button.disabled=false;button.classList.remove('rejected','accepted');button.replaceChildren(art(value));const key=document.createElement('kbd');key.textContent=index+1;key.setAttribute('aria-hidden','true');button.append(key);});updateOptionLabels();
  tween($('optionGrid'),[{opacity:.2},{opacity:1}],160);
 }
@@ -129,13 +135,15 @@ function finish(){
  if(run?.status!=='complete'||modal||screen!=='battle')return;
  clearTimers();const stage=STAGES[run.stage-1];$('resultEyebrow').textContent=`${COPY[locale].arcs[stage.arc]} · ${String(stage.id).padStart(2,'0')}`;$('resultTitle').textContent=t(stage.id===30?'allDone':'complete');$('resultRule').textContent=rule(stage);
  const earned=[true,run.mistakes===0,run.hints===0];$('resultMedals').replaceChildren(...earned.map((value,index)=>{const item=document.createElement('div');item.className=value?'earned':'unearned';item.append(medalIcon(value));const label=document.createElement('span');label.textContent=t(['clear','perfect','unassisted'][index]);item.append(label);return item;}));
- $('resultSummary').textContent=storageOK?`${t('progress')} ${save.medals.filter(m=>m[0]).length} / 30 · ✦ ${save.medals.flat().filter(Boolean).length} / 90`:t('storage');$('nextButton').disabled=stage.id===30||stage.id+1>save.unlocked;
+ $('resultSummary').textContent=storageOK?`${t('progress')} ${fraction(save.medals.filter(m=>m[0]).length,30)} · ✦ ${fraction(save.medals.flat().filter(Boolean).length,90)}`:t('storage');$('nextButton').disabled=stage.id===30||stage.id+1>save.unlocked;
  openModal('resultView');document.body.dataset.battleSubstate='result';play('result.win');$('resultMedals').querySelectorAll('.earned .medal').forEach((n,i)=>tween(n,[{opacity:0,transform:'scale(.65)'},{opacity:1,transform:'scale(1)'}],300+i*90));
 }
 function openModal(id){
  if(modal)return;modal=id;pauseTimers();const el=$(id);el.hidden=false;el.inert=false;
  if(screen==='battle'){$('battleContent').inert=true;frame.activate('battle',{covered:true});}else{$('stageContent').inert=true;frame.activate('stage',{covered:true});}
- tween(el,[{opacity:0},{opacity:1}],180);el.querySelector('button:not(:disabled)')?.focus({preventScroll:true});
+  // Keep the overlay visible to the shared Canvas lifecycle throughout its fade.
+  // A zero-opacity opening would briefly remove the only visible Battle control.
+  tween(el,[{opacity:.12},{opacity:1}],180);el.querySelector('button:not(:disabled)')?.focus({preventScroll:true});
 }
 function closeModal(){if(!modal||modal==='resultView')return;const previous=modal;const el=$(previous);el.hidden=true;el.inert=true;modal=null;$('battleContent').inert=false;$('stageContent').inert=false;frame.activate(screen);resumeTimers();$(previous==='workshopModal'?'workshopButton':previous==='helpDialog'?'helpButton':'homeFromBattle').focus({preventScroll:true});}
 function showShop(){if(screen!=='stage'||modal)return;try{$('walletBalance').textContent=window.WeightPlayWallet.read().diamonds;}catch{$('walletBalance').textContent='—';}$('shopStatus').textContent=purchaseBlocked?t('storage'):save.moonOwned?t('owned'):'';$('purchaseSkin').textContent=save.moonOwned?t(save.skin==='moon'?'jade':'equip'):t('buy');$('purchaseSkin').disabled=purchaseBlocked;openModal('workshopModal');}

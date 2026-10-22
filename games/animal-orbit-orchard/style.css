@@ -9,3 +9,11 @@
 @media(max-width:680px){.hero-card{padding-inline:13px}}
 @media(min-aspect-ratio:13/8) and (max-height:560px){#battleContent{grid-template-columns:minmax(0,1fr) 230px;grid-template-rows:minmax(0,1fr)}.orchard-controls{border-top:0;border-inline-start:1px solid #35505a;padding:12px;align-content:center;gap:9px}.orchard-utility{grid-template-columns:1fr 1fr}.orchard-utility #aimReadout{grid-column:1/-1;grid-row:2}.orchard-utility button{min-height:44px}.fire-row{grid-template-columns:42px minmax(0,1fr) 42px;gap:6px}.fire-row .primary-btn{font-size:12px;padding:6px}.fire-row button{height:48px}#inputHint{font-size:9px}#battleStatus{min-height:36px;max-height:36px}.orchard-overlay{inset:10px 12px auto}.battle-result-substate{padding:12px 20px;gap:8px}.result-guide{width:70px;height:70px}.result-card{justify-content:flex-start;gap:6px}.result-card h2{font-size:22px}.result-card .result-stars{font-size:28px}.result-card p{font-size:12px}.result-actions button{min-height:44px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* Keep game-owned targets physically usable inside the shared logical canvas. */
+#battleScreen{--orchard-control-scale:var(--wp-battle-canvas-inverse-scale,1)}
+#themeDialog{--orchard-control-scale:var(--wp-stage-canvas-inverse-scale,1)}
+#harvestCount,#roundLabel{direction:ltr;unicode-bidi:isolate}
+.orchard-controls button,.orchard-modal-card button,.result-actions button{min-height:max(44px,calc(44px * var(--orchard-control-scale,1)));min-width:calc(44px * var(--orchard-control-scale,1))}
+.fire-row{grid-template-columns:max(48px,calc(44px * var(--orchard-control-scale,1))) minmax(0,1fr) max(48px,calc(44px * var(--orchard-control-scale,1)))}
+.utility-button{font-size:calc(12px * var(--orchard-control-scale,1))}
+@media(min-aspect-ratio:13/8) and (max-height:560px){.fire-row{grid-template-columns:max(44px,calc(44px * var(--orchard-control-scale,1))) minmax(0,1fr) max(44px,calc(44px * var(--orchard-control-scale,1)))}}

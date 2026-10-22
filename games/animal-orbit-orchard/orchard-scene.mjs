@@ -43,6 +43,8 @@ export class OrchardScene {
     this.onLoss = e => { e.preventDefault(); onContextLost(); };
     canvas.addEventListener('webglcontextlost', this.onLoss);
     this.resizeObserver = new ResizeObserver(() => this.resize()); this.resizeObserver.observe(canvas);
+    // Read-only renderer diagnostics; never exposes or changes gameplay state.
+    Object.defineProperty(canvas, 'orchardRendererInfo', { configurable: true, get: () => Object.freeze(this.metrics()) });
     this.resize();
   }
   geo(g) { this.geometries.add(g); return g; }
@@ -297,6 +299,7 @@ export class OrchardScene {
   dispose() {
     if (this.disposed) return; this.disposed = true;
     this.resizeObserver.disconnect(); this.canvas.removeEventListener('webglcontextlost', this.onLoss);
+    delete this.canvas.orchardRendererInfo;
     this.geometries.forEach(g => g.dispose()); this.materials.forEach(m => m.dispose()); this.starsMaterial.dispose();
     this.renderer.dispose(); this.renderer.forceContextLoss(); this.effects.length = 0; this.labels.replaceChildren();
   }

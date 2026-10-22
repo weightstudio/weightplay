@@ -5,6 +5,7 @@ import {BIOMES,OBJECTS} from './levels.mjs';
 export class GardenWorld {
   constructor(canvas,onError) {
     this.canvas=canvas;this.onError=onError;this.geometry=new THREE.BoxGeometry(1,1,1);this.materials=new Map();this.scenes=[];
+    this.instanceMaterial=new THREE.MeshStandardMaterial({color:'#ffffff',roughness:.84,metalness:0});
     this.renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'low-power'});
     this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
     this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.2;
@@ -21,13 +22,13 @@ export class GardenWorld {
     const wood='#9d704c',dark='#59483e',cream='#ffedcb',green=palette.leaf,red=changed==='color'?'#6d9fe0':'#e07b64';
     if(id==='tree') {
       b(wood,0,.8,0,.42,1.6,.45);b('#b48c62',.06,1.1,.2,.14,.7,.08);
-      const leaf=changed==='color'?'#d589af':green;
+      const leaf=changed==='color'?(palette===BIOMES[5]?'#d4af52':'#d589af'):green;
       if(changed==='shape'){for(let i=0;i<3;i++)b(leaf,0,1.45+i*.48,0,2-i*.52,.65,1.65-i*.4);}
       else {b(leaf,0,2.1,0,1.85,1.45,1.55);b(leaf,-.65,1.8,.15,.9,.7,.95);b('#9abd73',.2,2.85,-.1,1,.22,1);}
       if(palette===BIOMES[2])for(const [x,z] of [[-.5,.81],[.5,.81],[.7,.1]])b('#f5b45d',x,2,z,.22,.22,.2);
     } else if(id==='cottage') {
       b('#e8cfaa',0,.7,0,1.65,1.4,1.35);b('#cba780',.83,.65,0,.08,1.3,1.35);
-      const roof=changed==='color'?'#5c97a1':palette.roof;
+      const roof=changed==='color'?([BIOMES[1],BIOMES[4]].includes(palette)?'#dba347':'#5c97a1'):palette.roof;
       for(let i=0;i<4;i++)b(roof,0,1.5+i*.14,0,2.05-i*.38,.19,1.7);
       b(wood,-.24,.43,.7,.45,.86,.08);b('#e9b95f',-.09,.44,.76,.07,.07,.04);
       b('#466c72',.44,.9,.7,.4,.42,.06);b(cream,.44,.9,.75,.045,.42,.04);b(cream,.44,.9,.75,.4,.045,.04);
@@ -40,7 +41,7 @@ export class GardenWorld {
       b('#b6ece5',-.25,.205,.5,.65,.015,.035);b('#b6ece5',.4,.205,-.48,.52,.015,.035);
     } else if(id==='mushrooms') {
       const coords=changed==='count'?[[-.4,0],[.4,-.2],[0,.5]]:[[-.4,0],[.4,-.2]];
-      coords.forEach(([x,z],i)=>{const h=i? .48:.7;b(cream,x,h/2,z,.2,h,.2);b(red,x,h,z,.67,.25,.6);b(red,x,h+.15,z,.43,.12,.4);if(changed!=='shape'){b(cream,x-.15,h+.23,z,.12,.03,.1);b(cream,x+.16,h+.23,z+.1,.12,.03,.1);}});
+      coords.forEach(([x,z],i)=>{const h=i? .48:.7;b(cream,x,h/2,z,.2,h,.2);b(red,x,h,z,changed==='shape'?.4:.67,changed==='shape'?.65:.25,changed==='shape'?.4:.6);b(red,x,h+(changed==='shape'?.4:.15),z,.43,.12,.4);if(changed!=='shape'){b(cream,x-.15,h+.23,z,.12,.03,.1);b(cream,x+.16,h+.23,z+.1,.12,.03,.1);}});
     } else if(id==='flowers') {
       const count=changed==='count'?2:3;
       for(let i=0;i<count;i++){let x=(i-1)*.4,z=i===1?-.18:.14,h=.5+(i%2)*.22;
@@ -60,7 +61,8 @@ export class GardenWorld {
       b('#ba8c51',.36,.65,-.06,.2,.42,.4);b('#f7ecdc',-.4,.7,.04,.18,.42,.22);b('#f7ecdc',.4,.75,.17,.18,.32,.22);
     } else if(id==='mailbox') {
       b(wood,0,.6,0,.16,1.2,.16);b(changed==='color'?'#b98bc1':'#619b9c',0,1.22,0,.65,.45,.52);
-      b(dark,0,1.22,.27,.49,.04,.025);b(changed==='shape'?cream:'#e8a273',.38,1.5,0,.1,.27,.3);
+      b(dark,0,1.22,.27,.49,.04,.025);b('#e8a273',.38,1.5,0,.1,.27,.3);
+      if(changed==='shape'){b(cream,0,1.58,0,.85,.18,.65);b(cream,0,1.75,0,.5,.18,.52);}
     } else if(id==='crate') {
       b(wood,0,.24,0,1,.48,.7);b('#c39664',0,.49,0,1.05,.1,.75);
       for(const x of [-.36,0,.36])b('#b78c61',x,.24,.36,.06,.4,.02);
@@ -90,20 +92,27 @@ export class GardenWorld {
     for(let i=0;i<5;i++)b('#ddd4b7',-.6+i*.15,.09,1.15+i*.49,.65,.13,.35,i%2*.12);
     for(const x of [-4.7,-3.8,-2.9]){b('#a47e54',x,.35,-3.1,.15,.7,.17);}
     b('#c5a16a',-3.8,.45,-3.1,2,.13,.15);
-    const shift=[0,.18,-.15,.08,-.1][level.layout];
     const positions={tree:[-3.9,0,-1.8],cottage:[2.7,0,-2.1],pond:[.1,0,.65],mushrooms:[-4,0,1.8],flowers:[3.4,0,1.6],rabbit:[-.9,0,-2.3],mailbox:[4.8,0,-.15],crate:[-2,0,2.8],sign:[1.8,0,2.9],lantern:[.6,0,-2.2]};
+    // Five authored arrangements rotate small garden features without hiding them behind the tree or house.
+    const front=['mushrooms','crate','sign','flowers'],slots=front.map(id=>positions[id]);
+    front.forEach((id,i)=>{positions[id]=slots[(i+level.layout)%4];});
+    if(level.layout===2||level.layout===4)[positions.rabbit,positions.lantern]=[positions.lantern,positions.rabbit];
+    if(level.biome===4){for(const x of [-5.3,-2.6,3.9,5.2])b('#eff4e9',x,.09,-3.15,.7,.13,.45);}
+    if(level.biome===5){for(const x of [-5.3,-2.5,.3,3.1,5.4]){b('#b38b60',x,.3,-3.55,.12,.6,.12);b('#f4c47b',x,.65,-3.55,.3,.32,.3);}}
     const targets={};
-    for(const id of OBJECTS){const xyz=positions[id];xyz[0]+=id==='tree'?0:shift;const variant=after?level.changes[id]:null;
+    for(const id of OBJECTS){const xyz=positions[id];const variant=after?level.changes[id]:null;
       const model=this.group(g,...xyz,variant==='direction'?Math.PI/2:0);
       if(variant!=='missing')this.model(model,id,variant,p);
       const heights={tree:1.8,cottage:1,pond:.25,mushrooms:.55,flowers:.5,rabbit:1,mailbox:1,crate:.45,sign:.85,lantern:1};
       const v=new THREE.Vector3(xyz[0],heights[id],xyz[2]).project(this.camera);
       targets[id]={x:(v.x+1)*50,y:(1-v.y)*50};
     }
-    // Batch every cuboid by material, including the designed character details.
-    g.updateMatrixWorld(true);const buckets=new Map();g.traverse(m=>{if(!m.isMesh)return;const color=m.material.color.getHex();if(!buckets.has(color))buckets.set(color,{material:m.material,matrices:[]});buckets.get(color).matrices.push(m.matrixWorld.clone());});
+    // Instance colours retain every authored surface with one draw per scene
+    // (plus its shadow pass), rather than a separate draw for every paint colour.
+    g.updateMatrixWorld(true);const instances=[];g.traverse(m=>{if(m.isMesh)instances.push({matrix:m.matrixWorld.clone(),color:m.material.color});});
     scene.remove(g);
-    for(const {material,matrices} of buckets.values()){const mesh=new THREE.InstancedMesh(this.geometry,material,matrices.length);matrices.forEach((m,i)=>mesh.setMatrixAt(i,m));mesh.castShadow=true;mesh.receiveShadow=true;scene.add(mesh);}
+    const mesh=new THREE.InstancedMesh(this.geometry,this.instanceMaterial,instances.length);
+    instances.forEach(({matrix,color},i)=>{mesh.setMatrixAt(i,matrix);mesh.setColorAt(i,color);});mesh.castShadow=true;mesh.receiveShadow=true;scene.add(mesh);
     return {scene,targets};
   }
   load(level){this.clear();this.scenes=[this.build(level,false),this.build(level,true)];return this.scenes.map(s=>s.targets);}
@@ -117,6 +126,6 @@ export class GardenWorld {
     this.canvas.dataset.drawCalls=String(this.renderer.info.render.calls);this.canvas.dataset.triangles=String(this.renderer.info.render.triangles);
     this.canvas.dataset.geometries=String(this.renderer.info.memory.geometries);this.canvas.dataset.textures=String(this.renderer.info.memory.textures);this.canvas.dataset.materials=String(this.materials.size);
   }
-  clear(){for(const {scene} of this.scenes)scene.traverse(o=>{if(o.isInstancedMesh)o.dispose();if(o.shadow?.map)o.shadow.map.dispose();});this.scenes=[];}
-  destroy(){this.canvas.removeEventListener('webglcontextlost',this.lost);this.clear();this.geometry.dispose();this.materials.forEach(m=>m.dispose());this.materials.clear();this.renderer.dispose();this.renderer.forceContextLoss();}
+  clear(){for(const {scene} of this.scenes)scene.traverse(o=>{if(o.isInstancedMesh)o.dispose();if(o.shadow?.map)o.shadow.map.dispose();});this.scenes=[];this.materials.forEach(m=>m.dispose());this.materials.clear();}
+  destroy(){this.canvas.removeEventListener('webglcontextlost',this.lost);this.clear();this.geometry.dispose();this.instanceMaterial.dispose();this.renderer.dispose();this.renderer.forceContextLoss();}
 }

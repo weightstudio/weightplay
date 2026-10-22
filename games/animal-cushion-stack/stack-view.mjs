@@ -37,6 +37,7 @@ export class StackView {
     this.tower=new THREE.Group();this.world.add(this.tower);
     this.blocks=[];this.particles=[];
     this.makeWorld();
+    this.batchScenery();
     this.hoverShadow=this.shadow(this.world,3.7,2.4,.22);this.hoverShadow.position.y=.08;
     this.ghost=this.mesh(this.world,0x63d7b2,0,.06,0,3.4,.045,1.65);
     this.ghost.material=new THREE.MeshBasicMaterial({color:0x63d7b2,transparent:true,opacity:.26,depthWrite:false});
@@ -60,6 +61,25 @@ export class StackView {
   }
   mesh(parent,color,x,y,z,w,h,d) {
     const m=new THREE.Mesh(this.box,this.mat(color));m.position.set(x,y,z);m.scale.set(w,h,d);parent.add(m);return m;
+  }
+  batchScenery() {
+    // Static props share box geometry. Keep the changing floor and animated
+    // character separate; instance only objects with the same material.
+    this.scene.updateMatrixWorld(true);const groups=new Map();
+    this.scenery.traverse(node=>{
+      if(node.isMesh&&node.geometry===this.box&&node!==this.floor){
+        if(!groups.has(node.material))groups.set(node.material,[]);
+        groups.get(node.material).push(node);
+      }
+    });
+    this.batches=[];
+    const inverse=this.scenery.matrixWorld.clone().invert();
+    for(const [material,nodes] of groups){
+      if(nodes.length<2)continue;
+      const batch=new THREE.InstancedMesh(this.box,material,nodes.length);
+      nodes.forEach((node,i)=>{batch.setMatrixAt(i,inverse.clone().multiply(node.matrixWorld));node.removeFromParent();});
+      batch.computeBoundingSphere();this.scenery.add(batch);this.batches.push(batch);
+    }
   }
   fabricTexture() {
     const canvas=document.createElement('canvas');canvas.width=canvas.height=128;const ctx=canvas.getContext('2d');
@@ -88,7 +108,7 @@ export class StackView {
     const m=new THREE.Mesh(this.shadowGeo,this.materials.get(key));m.rotation.x=-Math.PI/2;m.scale.set(w,d,1);parent.add(m);return m;
   }
   makeWorld() {
-    this.floor=this.mesh(this.scenery,0xbfc9a1,0,-.72,0,40,.3,30);
+    this.floor=this.mesh(this.scenery,0xbfc9a1,0,-.72,0,200,.3,200);
     const groundShadow=this.shadow(this.scenery,9,6,.65);groundShadow.position.set(0,-.555,.2);
     // A crafted, layered wooden workbench and stitched rug ground the scene.
     this.mesh(this.scenery,0x8d6552,0,-.32,0,5.4,.45,2.75);
@@ -164,7 +184,7 @@ export class StackView {
   }
   reset(stage, moon) {
     for(const b of this.blocks)this.tower.remove(b);this.blocks=[];this.particles=[];
-    this.flag.visible=false;this.goal=stage.layers;this.moon=moon;
+    this.flag.visible=false;this.goal=stage.layers;this.moon=moon;this.lastTop=0;
     const p=palettes[stage.arc];this.scene.background=new THREE.Color(p.sky);
     this.scene.fog=new THREE.Fog(p.sky,22,48);this.floor.material=this.mat(p.floor);
     this.lastMaterial=-1;this.resize();
@@ -173,11 +193,15 @@ export class StackView {
     const {width:w,height:h}=this.host.getBoundingClientRect();if(w<1||h<1)return;
     this.renderer.setSize(w,h,false);
     const aspect=w/h;
-    const spanY=Math.max((this.goal||4)*.65+3.4,9/aspect);
+    // A short wide screen follows the live landing instead of shrinking a
+    // ten-storey tower to a thumbnail. Horizontal rules remain unchanged.
+    this.followTower=aspect>3;
+    const spanY=Math.max(this.followTower?4.8:(this.goal||4)*.65+3.4,9/aspect);
     this.spanX=spanY*aspect;
     this.camera.left=-this.spanX/2;this.camera.right=this.spanX/2;
     this.camera.top=spanY/2;this.camera.bottom=-spanY/2;
-    const center=(this.goal||4)*.65*.5+.35;
+    const center=this.followTower?Math.max(1.5,(this.lastTop||0)+.6):(this.goal||4)*.65*.5+.35;
+    this.cameraCenter=center;
     this.camera.position.set(0,center+6,20);this.camera.lookAt(0,center,0);this.camera.updateProjectionMatrix();
   }
   inputX(clientX) {
@@ -208,9 +232,15 @@ export class StackView {
       }
     });
     const top=run.placed.length*.65;
+    this.lastTop=top;
+    if(this.followTower){
+      const goal=Math.max(1.5,top+.6);
+      this.cameraCenter=reduced?goal:this.cameraCenter+(goal-this.cameraCenter)*Math.min(1,dt*7);
+      this.camera.position.set(0,this.cameraCenter+6,20);this.camera.lookAt(0,this.cameraCenter,0);
+    }
     const fall=run.phase==='drop'?Math.min(1,run.phaseTime/.34):0;
     this.active.visible=run.phase==='aim'||run.phase==='drop'||run.phase==='miss';
-    this.active.position.set(run.x,top+.4+1.5*(1-fall*fall),0);
+    this.active.position.set(run.x,top+.4+1.5*(1-(reduced&&run.phase==='drop'?1:fall*fall)),0);
     if(run.phase==='drop')this.active.position.x=run.dropX+(run.landingX-run.dropX)*fall;
     if(run.phase==='miss') {
       this.active.position.set(run.landingX,top+.4-run.phaseTime*7,0);
@@ -249,6 +279,7 @@ export class StackView {
   dispose() {
     if(this.disposed)return;this.disposed=true;this.observer.disconnect();
     this.renderer.domElement.removeEventListener('webglcontextlost',this.onContextLost);
+    this.batches.forEach(b=>b.dispose());this.particleMesh.dispose();
     this.geometries.forEach(g=>g.dispose());this.materials.forEach(m=>m.dispose());this.textures.forEach(t=>t.dispose());
     this.renderer.dispose();this.renderer.forceContextLoss();this.renderer.domElement.remove();this.scene.clear();
   }

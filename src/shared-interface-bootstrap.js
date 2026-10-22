@@ -128,7 +128,13 @@
     if (!poster) return;
     const posterImage = findMainPoster();
     if (posterImage) {
-      if (posterImage.getAttribute("src") !== poster) posterImage.src = poster;
+      // A game may recover the registered WebP with its same-name approved
+      // PNG. Preserve that explicit fallback instead of retrying the broken
+      // primary every time shared Main normalization runs.
+      const registeredFallback = posterImage.dataset.wpPosterFallback === poster
+        && /\.webp$/i.test(poster)
+        && posterImage.getAttribute("src") === poster.replace(/\.webp$/i, ".png");
+      if (!registeredFallback && posterImage.getAttribute("src") !== poster) posterImage.src = poster;
       if (posterImage.hasAttribute("srcset")) posterImage.removeAttribute("srcset");
       posterImage.dataset.wpInterface7Poster = "true";
     }

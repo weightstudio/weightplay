@@ -15,7 +15,7 @@
     const localeSelect = document.getElementById('languageSelect');
 
     root.querySelectorAll('button:not([data-wp-return])').forEach((button) => {
-      button.dataset.wpFrameAction = button.classList.contains('primary-btn') ? 'primary' : 'secondary';
+      button.dataset.wpFrameAction ||= button.classList.contains('primary-btn') ? 'primary' : 'secondary';
     });
 
     const frame = window.WeightPlayScreenFrame.mount({

@@ -185,7 +185,7 @@
     $('themeDialog').hidden=false;
     $('themeBalance').textContent=String(window.WeightPlayWallet?.read().diamonds||0);
     $('themeBuyBtn').textContent=copy(ownedTheme()?'useFirefly':'buyTheme');
-    $('themeStatus').textContent=copy(ownedTheme()?'themeOwned':'themeDescription');
+    $('themeStatus').textContent=ownedTheme()?copy('themeOwned'):'';
     $('themeCloseBtn').focus({preventScroll:true});
   }
   function buyTheme() {

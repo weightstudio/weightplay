@@ -77,3 +77,14 @@ export function recordClear(save, run) {
     stars:save.stars.map((v,j)=>j===i?Math.max(v,starsFor(run)):v),
     bests:save.bests.map((v,j)=>j===i?Math.max(v,run.score):v)};
 }
+
+// Progress and ownership are monotonic across tabs; choosing a palette is not.
+export function mergeSaves(local, stored) {
+  return {...local,unlocked:Math.max(local.unlocked,stored.unlocked),
+    cleared:local.cleared.map((v,i)=>v||stored.cleared[i]),
+    stars:local.stars.map((v,i)=>Math.max(v,stored.stars[i])),
+    bests:local.bests.map((v,i)=>Math.max(v,stored.bests[i])),
+    tutorialSeen:local.tutorialSeen||stored.tutorialSeen,
+    moonOwned:local.moonOwned||stored.moonOwned,
+    palette:!local.moonOwned&&stored.moonOwned?stored.palette:local.palette};
+}

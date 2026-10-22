@@ -26,7 +26,8 @@
 
     const frame = window.WeightPlayScreenFrame.mount({
       root,
-      localeSelect,
+      // Shared settings owns locale routing and its confirmation lifecycle.
+      localeSelect: null,
       playUI: true,
       scenes: {
         main: { root: main, header: mainHeader, content: main.querySelector('.hero-card') },
@@ -53,7 +54,9 @@
     const stageTab = document.getElementById('stageTabButton');
     stageTab.dataset.wpFrameAction = 'tab';
     stageTab.setAttribute('aria-pressed', 'true');
-    frame.commonDownButton.clear().add(stageTab);
+    const gardenTab = document.getElementById('gardenBtn');
+    gardenTab.dataset.wpFrameAction = 'tab';
+    frame.commonDownButton.clear().add(stageTab).add(gardenTab);
 
     frame.activate('main');
     window.addEventListener('pagehide', event => {

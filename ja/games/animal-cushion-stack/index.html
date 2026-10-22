@@ -24,19 +24,19 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#e9f1ff">
-  <meta name="weightplay-game-version" content="v13">
+  <meta name="weightplay-game-version" content="v14">
   <meta name="weightplay-interface-version" content="9">
   <title>クッションスタック | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261020-interface9-guide">
-  <link rel="stylesheet" href="style.css?v=20261020-cushion-stack-v13-i9">
+  <link rel="stylesheet" href="style.css?v=20261022-cushion-stack-v14">
   <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
   <link rel="stylesheet" href="/src/game-play-ui.css?v=20261020-interface9-play-ui">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <meta name="description" content="次のやわらかブロックを選び、タロの安全な見張り台を作ろう。" />
+  <meta name="description" content="30の見晴らし台と3つの布地。自分のリズムで積み上げよう。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="クッションスタック | WeightPlay" />
-    <meta property="og:description" content="次のやわらかブロックを選び、タロの安全な見張り台を作ろう。" />
+    <meta property="og:description" content="30の見晴らし台と3つの布地。自分のリズムで積み上げよう。" />
     <meta property="og:url" content="https://weightplay.com/ja/games/animal-cushion-stack/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-cushion-stack.webp" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -75,7 +75,7 @@
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-cushion-stack" data-wp-game-version="v13" data-wp-interface-version="9" data-screen="main" data-runtime-localize="off">
+<body data-audience="general" data-wp-game-id="animal-cushion-stack" data-wp-game-version="v14" data-wp-interface-version="9" data-screen="main" data-runtime-localize="off">
   <div id="app" data-wp-app data-wp-frame-root>
   <main id="mainScreen" class="screen" data-screen="main">
     <header class="topbar">
@@ -83,58 +83,61 @@
       <h1 data-wp-frame-title data-copy="title">クッションスタック</h1>
     </header>
     <section class="wp-standard-main-composition" data-wp-frame-content="main">
-      <div class="wp-standard-main-poster"><img class="cover wp-standard-main-poster-media" data-wp-frame-poster src="assets/animal-cushion-stack-cover-v2.png" alt="" aria-hidden="true" width="1254" height="1254" decoding="async"></div>
+      <div class="wp-standard-main-poster"><img class="cover wp-standard-main-poster-media" data-wp-frame-poster src="/assets/interface7-redrawn/animal-cushion-stack.webp" alt="" aria-hidden="true" width="1254" height="1254" decoding="async"></div>
       <div class="wp-standard-main-copy" data-wp-frame-copy>
-        <p class="kicker" data-copy="kicker">Moss Shell Taro's steady-building puzzle</p>
-        <h2 data-copy="title">Cushion Stack</h2>
-        <p class="intro" data-copy="intro">Choose the next soft block and build a safe little lookout for Taro.</p>
-        <p class="summary wp-standard-main-summary" data-wp-frame-summary data-copy="summary">Help Taro build a 30-stage lookout trail, one careful choice at a time.</p>
-        <p id="mainProgress" class="progress wp-standard-main-progress" data-wp-main-progress data-wp-frame-progress role="status" aria-live="polite" data-copy="progress">Progress: 30 stages · no timer</p>
-        <button id="startBtn" class="primary-btn wp-standard-main-start" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start">Start Game</button>
-        <p class="best-line"><span data-copy="best">Best picks</span>: <strong id="bestValue">Not yet</strong></p>
+        <h2 data-copy="title">クッションスタック</h2>
+        <p class="summary wp-standard-main-summary" data-wp-frame-summary data-copy="summary">30の見晴らし台と3つの布地。自分のリズムで積み上げよう。</p>
+        <p id="mainProgress" class="progress wp-standard-main-progress" data-wp-main-progress data-wp-frame-progress role="status" aria-live="polite" data-copy="progress">見晴らし台 1 / 30</p>
+        <button id="startBtn" class="primary-btn wp-standard-main-start" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start">積み始める</button>
+        <p class="best-line"><span data-copy="best">星</span>: <strong id="bestValue">Not yet</strong></p>
       </div>
     </section>
   </main>
-  <section class="game-page-info game-page-info-static" aria-label="クッションスタック ゲーム情報" data-wp-game-guide>
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>クッションスタック</h2><p>次のやわらかブロックを選び、タロの安全な見張り台を作ろう。</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>安定スタックパズル</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Puzzle · Construction · Spatial Planning · Family · Animal</strong></div></div>
-    </div>
-
+  <section class="guide-card game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" aria-labelledby="guideTitle">
+    <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WEIGHTPLAY ORIGINAL GAME</span><h2 id="guideTitle" data-copy="guideTitle">遊び方</h2><p data-copy="guideIntro">30 の見晴らし台を築こう。全6章で風、ずれた着地点、布地の注文が登場し、5ステージごとに総合チャレンジが待っています。</p></div><div class="game-info-facts"><div class="game-info-fact"><span>30</span><strong data-copy="factStages">見張り台を選ぶ</strong></div><div class="game-info-fact"><span>3D</span><strong data-copy="factStack">クッションを落とす</strong></div></div></div>
     <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
+      <div class="game-info-section"><h3 data-copy="guide1">クッションを落とす</h3><p data-copy="guide1Text">金色の印に合わせて落下ボタンを押すか、画面をドラッグして離します。矢印キーで照準、スペースで落下、数字1〜3で布地を選択。半透明の予測位置で風の影響を確認できます。十分に重なれば成功。3回失敗すると今回の挑戦は終了します。時間制限はありません。</p></div>
+      <div class="game-info-section"><h3 data-copy="guide2">指定の布地</h3><p data-copy="guide2Text">フェルトは置きやすく、リネンは細い代わりに基本点が高く、雲は幅広ですが大きな支えが必要です。置いたクッションが次の土台になります。注文が出たら指定の布地を使います。</p></div>
+      <div class="game-info-section"><h3 data-copy="guide3">見張り台を選ぶ</h3><p data-copy="guide3Text">30 の見晴らし台を築こう。全6章で風、ずれた着地点、布地の注文が登場し、5ステージごとに総合チャレンジが待っています。</p></div>
+      <div class="game-info-section"><h3 data-copy="guide4">一時停止</h3><p data-copy="guide4Text">未完成の塔は失われます。クリア、星、布地は残ります。 保存できません。無料で遊べますが進み具合は残りません。</p></div>
+      <div class="game-info-section"><h3 data-copy="guide5">星</h3><p data-copy="guide5Text">クリアで星1個。4割以上パーフェクトなら星2個。失敗なしで7割以上なら星3個です。連続パーフェクトで加点。再挑戦してもベスト記録は下がりません。旧版のクリアは引き継ぎ、新しい星は改めて獲得します。</p></div>
+      <div class="game-info-section"><h3 data-copy="guide6">布地の工房</h3><p data-copy="guide6Text">永久カラーを集められます。見た目だけが変わり、ルールや得点は同じです。価格を確認して購入し、所有した配色はいつでも切り替えられます。庭園の布地は無料。保存不可の場合は購入できません。 永久カラー · ダイヤ12個</p></div>
     </div>
   </section>
-
   <section id="stageScreen" class="screen" data-screen="stage" hidden aria-labelledby="stageHeading">
-    <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" aria-label="Back">Back</button><h2 id="stageHeading" data-wp-frame-title data-copy="stages">Choose a lookout</h2></header>
-    <div id="stagePage" class="stage-page"><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div></div>
+    <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" aria-label="Back">Back</button><h2 id="stageHeading" data-wp-frame-title data-copy="stages">見張り台を選ぶ</h2></header>
+    <button id="atelierBtn" type="button" data-copy="studio">布地の工房</button><div id="stagePage" class="stage-page"><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div></div>
+<section id="studioDialog" class="atelier-dialog" role="dialog" aria-modal="true" aria-labelledby="studioTitle" hidden><div class="dialog-card studio-card"><button id="studioClose" class="studio-close" type="button" data-copy="close">閉じる</button><h2 id="studioTitle" data-copy="studio">布地の工房</h2><p data-copy="studioText">永久カラーを集められます。見た目だけが変わり、ルールや得点は同じです。価格を確認して購入し、所有した配色はいつでも切り替えられます。庭園の布地は無料。保存不可の場合は購入できません。</p><p class="wallet-balance"><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt=""><span data-copy="balance">ダイヤ残高</span><b id="diamondBalance">0</b></p><div class="fabric-collection"><article><img id="gardenPreview" alt="" width="160" height="100"><h3 data-copy="garden">庭園の布地</h3><p data-copy="free">無料 · ずっと所有</p><button id="gardenBtn" type="button"></button></article><article><img id="moonPreview" alt="" width="160" height="100"><h3 data-copy="moon">月光の布地</h3><p id="moonDetail"></p><button id="moonBtn" type="button"></button></article></div><p id="studioStatus" role="status"></p></div></section>
   </section>
 
-  <section id="battleScreen" class="screen" data-screen="battle" hidden aria-labelledby="battleHeading">
-    <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" aria-label="Back">Back</button><h2 id="battleHeading" data-wp-frame-title>Cushion Stack</h2><p id="roundLabel" class="round-label"></p><p id="sessionPicksLabel" class="session-picks"><span data-copy="picks">Picks</span> <b id="sessionPicks">0</b></p></header>
+  <section id="battleScreen" class="screen" data-screen="battle" data-wp-battle-landscape-width="844" data-wp-battle-landscape-height="390" hidden aria-labelledby="battleHeading">
+    <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" aria-label="Pause">←</button><h2 id="battleHeading" data-wp-frame-title>Cushion Stack</h2><p id="roundLabel" class="round-label"></p><p id="sessionPicksLabel" class="session-picks"><span data-copy="score">スコア</span> <b id="sessionPicks">0</b></p></header>
     <div id="battleContent" class="battle-content">
       <div id="battlePlay" class="battle-play">
-        <p id="battleHint" class="battle-hint"></p>
-        <div id="tower" class="tower" aria-label="Cushion stack"></div>
-        <div class="choice-head"><h3 data-copy="chooseBlock">Choose the next block</h3><span id="selectionLabel" class="selection-label"></span></div>
-        <div id="choiceTray" class="choice-tray" role="group" aria-label="Choose the next block"></div>
-        <p id="battleStatus" class="battle-status battle-status-stable" role="status" aria-live="polite"></p>
-        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-copy="check">Check stability</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear choice</button><button id="advanceBtn" class="primary-btn" type="button" hidden></button><button id="cloudBraceBtn" class="cloud-brace-btn" type="button" hidden></button></div>
+        <div class="atelier-hud"><div><span id="sceneChapter" class="scene-chapter"></span><strong id="sceneName"></strong></div><div class="tower-count"><span data-copy="layers">段数</span><b id="layerValue">0 / 4</b></div><button id="helpBtn" type="button" aria-label="How to play">?</button></div>
+        <div class="tower-track" aria-hidden="true"><i id="towerProgress"></i></div>
+        <div id="arena" class="stack-arena" tabindex="0" role="application" aria-label="Cushion stacking scene">
+          <div class="scene-notices"><span id="windValue"></span><span id="chanceValue" aria-label="Chances">●●●</span></div>
+          <div id="contactToast" class="contact-toast" aria-hidden="true"></div>
+          <div id="alignmentMeter" class="alignment-meter"><span data-copy="alignment">位置合わせ</span><strong><b id="alignmentValue">0</b>%</strong><div><i id="alignmentFill"></i></div></div>
+        </div>
+        <div class="atelier-controls">
+          <div class="fabric-caption"><span id="fabricRequest"></span><span id="comboValue"></span></div>
+          <div id="choiceTray" class="fabric-tray" role="group" aria-label="Cushion material">
+            <button id="material0" class="material-btn" type="button" aria-pressed="true"><img id="materialArt0" alt="" width="80" height="50"><span><b id="materialName0"></b><small id="materialNote0"></small></span></button>
+            <button id="material1" class="material-btn" type="button" aria-pressed="false"><img id="materialArt1" alt="" width="80" height="50"><span><b id="materialName1"></b><small id="materialNote1"></small></span></button>
+            <button id="material2" class="material-btn" type="button" aria-pressed="false"><img id="materialArt2" alt="" width="80" height="50"><span><b id="materialName2"></b><small id="materialNote2"></small></span></button>
+          </div>
+          <div class="drop-row"><p id="battleStatus" role="status" aria-live="polite"></p><button id="dropBtn" type="button" data-copy="drop">クッションを落とす</button></div>
+        </div>
       </div>
       <section id="resultScreen" class="result-card" data-screen="result" hidden aria-labelledby="resultHeading">
-        <span class="result-spark" aria-hidden="true">✦</span><img class="result-taro" src="assets/animal-cushion-stack-taro-v2.png" alt="" aria-hidden="true" width="1024" height="1536" loading="lazy" decoding="async"><h2 id="resultHeading"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stageMap">Lookout map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="back">Back</button></div>
+        <div class="result-art"><img src="/assets/weightplay-character-moss-shell-turtle-block-v1.webp" alt="" width="160" height="160"></div>
+        <p id="resultKicker" class="result-kicker"></p><h2 id="resultHeading"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p>
+        <div class="result-stats"><div><span data-copy="score">スコア</span><b id="resultScore"></b></div><div><span data-copy="perfect">パーフェクト！</span><b id="resultPerfects"></b></div><div><span data-copy="bestScore">ベスト</span><b id="resultBest"></b></div></div>
+        <div class="result-actions"><button id="resultMapBtn" type="button" data-copy="stageMap">見張り台を選ぶ</button><button id="resultNextBtn" type="button" data-copy="next">次のステージ</button><button id="resultReplayBtn" type="button" data-copy="replay">もう一度</button></div>
       </section>
+      <section id="playDialog" class="atelier-dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" hidden><div class="dialog-card"><h2 id="dialogTitle"></h2><p id="dialogText"></p><button id="dialogContinue" type="button"></button><button id="dialogLeave" type="button" data-copy="leave" hidden>見張り台を選ぶ</button></div></section>
     </div>
   </section>
   <label class="locale-source" hidden><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option></select></label>
@@ -147,13 +150,17 @@
   <script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="locales.js?v=20260924-cushion-stack-v8-campaign-copy1"></script>
+  <script src="/games/animal-cushion-stack/atelier-base-copy.js?v=20261022-cushion-stack-v14"></script>
+  <script src="/games/animal-cushion-stack/atelier-locales.js?v=20261022-cushion-stack-v14"></script>
   <script src="/src/stage-rail-i9.js?v=20261020-shared-rail-i9"></script>
   <script src="/src/game-play-ui.js?v=20261020-interface9-play-ui"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
-  <script src="game.js?v=20261020-cushion-stack-v13-i9"></script>
-  <script src="stage-config.js?v=20261020-cushion-stack-v13-i9"></script>
-  <script src="frame.js?v=20261020-cushion-stack-v13-i9-main1"></script>
+  <script src="/src/wallet.js"></script>
+  <script src="/src/game-entry-loader.js?v=20261020-single-loading-label1"></script>
+  <script src="game.js?v=20261022-cushion-stack-v14"></script>
+  <script src="stage-config.js?v=20261022-cushion-stack-v14"></script>
+  <script src="frame.js?v=20261022-cushion-stack-v14"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="クッションスタック";document.title="クッションスタック | WeightPlay";},{once:true});</script>
 </body>
 </html>

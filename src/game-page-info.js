@@ -11966,6 +11966,12 @@
     ) return;
     const game = localizedGame(id);
     if (!game) return;
+    if (id === 'animal-meadow-difference' && window.MEADOW_FIND_LOCALES?.[locale()]) {
+      const copy = window.MEADOW_FIND_LOCALES[locale()];
+      game.title = copy.title;
+      game.intro = copy.subtitle;
+      game.metaDescription = copy.subtitle;
+    }
     const audience = document.querySelector('meta[name="weightplay-audience"]')?.content?.trim().toLowerCase() || "general";
     const identity = guideIdentity(game, audience);
     const isSpaceRocks = id === "space-rocks";

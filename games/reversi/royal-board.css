@@ -58,7 +58,9 @@ body[data-logic-game="reversi"] :is(#logicLeave,#logicResult) {
 body[data-logic-game="reversi"] :is(#logicLeave,#logicResult)[hidden] {display:none!important;}
 body[data-logic-game="reversi"] :is(.logic-leave-card,.logic-result-card) {
  box-sizing:border-box;width:min(460px,100%);max-height:100%;overflow:auto;margin:0;padding:16px;
+ font-size:calc(var(--wp-frame-control-size,44px) * .31818182);line-height:1.4;
 }
+body[data-logic-game="reversi"] :is(.logic-leave-card,.logic-result-card) h2 {font-size:calc(var(--wp-frame-control-size,44px) * .45454546);line-height:1.25;}
 body[data-logic-game="reversi"] :is(.logic-leave-card,.logic-result-card) .logic-result-actions {display:grid;grid-template-columns:1fr;gap:8px;}
 body[data-logic-game="reversi"] :is(.logic-leave-card,.logic-result-card) button {min-height:var(--wp-frame-control-size,44px);}
 @container reversi-battle (min-aspect-ratio:1.2) {

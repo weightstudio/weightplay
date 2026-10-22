@@ -23,118 +23,63 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-footprint-folio/" />
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
   <title>Suites d’empreintes | WeightPlay</title>
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-footprint-folio">
-  <meta name="weightplay-game-version" content="v8">
+  <meta name="weightplay-game-version" content="v9">
   <meta name="weightplay-interface-version" content="9">
   <meta name="weightplay-scene-controls" content="immutable">
-    <link rel="stylesheet" href="style.css?v=20261020-animal-footprint-folio-i9-battle-header-v4">
+    <link rel="stylesheet" href="style.css?v=20261022-folio-v9">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260913-footprint-folio-interface7-guide-v1">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261018-animal-footprint-folio-i9-v1"><link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20261018-animal-footprint-folio-i9-v1"><script src="/src/shared-interface-bootstrap.js?v=20261017-shared-dark-loader1" data-wp-shared-interface="7"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-animal-footprint-folio-i9-v1">
-  <meta name="description" content="Complétez trois fiches visibles en choisissant le marqueur qui respecte chaque suite d’indices." />
+<link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1"><script src="/src/wallet.js"></script>  <meta name="description" content="30 enquêtes en forêt. Suivez les indices et reconstituez les pistes." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Suites d’empreintes | WeightPlay" />
-    <meta property="og:description" content="Complétez trois fiches visibles en choisissant le marqueur qui respecte chaque suite d’indices." />
+    <meta property="og:description" content="30 enquêtes en forêt. Suivez les indices et reconstituez les pistes." />
     <meta property="og:url" content="https://weightplay.com/fr/games/animal-footprint-folio/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-footprint-folio.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Suites d’empreintes | WeightPlay" />
-    <meta name="twitter:description" content="Complétez trois fiches visibles en choisissant le marqueur qui respecte chaque suite d’indices." />
+    <meta name="twitter:description" content="30 enquêtes en forêt. Suivez les indices et reconstituez les pistes." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-footprint-folio.webp" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Suites d’empreintes","alternateName":"Footprint Sequence Logic","url":"https://weightplay.com/fr/games/animal-footprint-folio/","image":"https://weightplay.com/assets/interface7-redrawn/animal-footprint-folio.webp","description":"Complétez trois fiches visibles en choisissant le marqueur qui respecte chaque suite d’indices.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"fr","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Puzzle","Logic","Animal"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":6}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Suites d’empreintes","alternateName":"Footprint Sequence Logic","url":"https://weightplay.com/fr/games/animal-footprint-folio/","image":"https://weightplay.com/assets/interface7-redrawn/animal-footprint-folio.webp","description":"30 enquêtes en forêt. Suivez les indices et reconstituez les pistes.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"fr","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Puzzle","Logic","Animal"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":6}}</script>
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-audience="general" data-wp-game-id="animal-footprint-folio" data-wp-game-version="v8" data-wp-interface-version="9" data-wp-battle-settings="visible" data-wp-game-owned-guide="true" data-screen="main">
-  <main class="shell" id="app" data-wp-frame-root>
-    <section class="screen active main-screen wp-standard-main-screen" id="mainScreen" data-screen="main" aria-labelledby="gameTitle">
-      <header class="topbar main-header wp-main-shell-header">
-        <a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-        <strong class="wp-shell-main-title wp-standard-main-title" data-copy="title" data-wp-game-title data-wp-frame-title data-runtime-localize="off">Suites d’empreintes</strong>
-        <label class="wp-shell-locale-source"><span data-copy="language">Langue</span><select id="locale" aria-label="Language">
+<body data-audience="general" data-wp-game-id="animal-footprint-folio" data-wp-game-version="v9" data-wp-interface-version="9" data-wp-battle-settings="visible" data-wp-game-owned-guide="true" data-runtime-localize="off" data-screen="main">
+<main id="app" data-wp-frame-root data-wp-play-ui="1">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap" data-wp-game-title data-runtime-localize="off">Suites d’empreintes</h1>
+<section id="mainScreen" class="main-screen" data-screen="main">
+<header class="main-header"><a href="../../index.html" data-wp-return="main" aria-label="WeightPlay">←<img src="/assets/weightplay-logo.png" alt="" width="28" height="28"></a><strong data-wp-frame-title data-wp-game-title data-copy="title">Suites d’empreintes</strong><span hidden><select id="locale" aria-label="Language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option>
             <option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option>
             <option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option>
             <option value="hi">हिन्दी</option><option value="ar">العربية</option>
-          </select></label>
-      </header>
-
-      <div class="main-grid wp-standard-main-composition">
-        <div class="poster-wrap wp-standard-main-poster">
-          <img class="poster main-poster wp-standard-main-poster-media" data-wp-frame-poster src="assets/animal-footprint-folio-cover.png" alt="Illustration du jeu Suites d’empreintes">
-        </div>
-        <div class="intro wp-standard-main-copy" data-wp-frame-copy>
-          <p class="eyebrow" data-copy="eyebrow">CARNET DE TERRAIN · 6+</p>
-          <h1 id="gameTitle" class="wp-standard-main-heading" data-copy="title" data-wp-game-title data-runtime-localize="off">Suites d’empreintes</h1>
-          <p class="lede main-summary wp-standard-main-summary" data-wp-frame-summary data-copy="lede">Complétez trois fiches visibles en choisissant le marqueur qui respecte chaque suite d’indices.</p>
-          <div class="fact-row"><span data-copy="fact1">3 fiches</span><span data-copy="fact2">Indices visibles</span><span data-copy="fact3">Reprise douce</span></div>
-          <p class="progress-note wp-standard-main-progress" id="mainProgress" data-wp-main-progress data-wp-frame-progress data-copy="ready">Trois fiches prêtes</p>
-          <div class="button-row">
-            <button class="primary-button wp-standard-main-start" id="startButton" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start">Lancer le jeu</button>
-            <button class="secondary-button" id="guideButton" type="button" data-wp-frame-action="secondary" data-copy="guideButton">Comment jouer</button>
-          </div>
-        </div>
-      </div>
-    </section>
-      <section class="game-page-info game-page-info-static" data-wp-game-guide aria-label="Logique des pistes game information">
-        <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="guideEyebrow">GUIDE RAPIDE</span><h2 data-copy="title" data-wp-game-title data-runtime-localize="off">Suites d’empreintes</h2><p data-copy="lede">Complétez trois fiches visibles en choisissant le marqueur qui respecte chaque suite d’indices.</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="fact1">3 fiches</span><strong data-copy="fact2">Indices visibles</strong></div><div class="game-info-fact"><span data-copy="fact3">Reprise douce</span><strong data-copy="guideButton">Comment jouer</strong></div></div></div>
-        <div class="game-info-sections"><article class="game-info-section"><h3 data-copy="guideEyebrow">GUIDE RAPIDE</h3><p data-copy="guide">Lisez tous les marqueurs visibles. Choisissez celui qui manque pour garder la suite cohérente, puis confirmez votre note.</p></article><article class="game-info-section"><h3 data-copy="chooseMarker">CHOISISSEZ UN MARQUEUR</h3><p data-copy="instruction">Lisez de gauche à droite. Quel marqueur va dans l’espace ouvert ?</p></article><article class="game-info-section"><h3 data-copy="resultEyebrow">CARNET TERMINÉ</h3><p data-copy="resultCopy">Votre carnet d’indices est terminé. Chaque suite visible garde sa piste.</p></article><article class="game-info-section"><h3 data-copy="faq">Questions fréquentes</h3><dl><div><dt data-copy="faqQuestion">La progression est-elle sauvegardée ?</dt><dd data-copy="faqAnswer">Oui, uniquement dans ce navigateur.</dd></div></dl></article></div>
-      </section>
-
-    <section class="screen battle-screen battle-canvas" id="battleScreen" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" aria-labelledby="recordTitle" hidden>
-      <header class="battle-header">
-        <button class="back-button wp-shell-return" id="battleBack" type="button" data-wp-return="battle" aria-label="Back to Main"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><span class="sr-only" data-copy="back">Retour à l’accueil</span></button>
-        <p class="eyebrow" id="recordCount">Record 1 / 3</p>
-        <div class="battle-utility"><div class="score-pill"><span data-copy="solved">Résolues</span> <strong id="solvedCount">0</strong></div></div>
-      </header>
-      <div class="battle-layout">
-        <div class="record-panel">
-          <p class="eyebrow" id="recordEyebrow">FOREST NOTE</p>
-          <h2 id="recordTitle">Dawn edge</h2>
-          <p class="record-instruction" id="recordInstruction">Read left to right. Which marker belongs in the open space?</p>
-          <div class="legend" aria-label="Marker legend">
-            <span><i class="legend-dot known"></i><span data-copy="known">Marqueur connu</span></span>
-            <span><i class="legend-dot gap"></i><span data-copy="gap">Note manquante</span></span>
-          </div>
-        </div>
-        <div class="board-column">
-          <div class="trail-board" id="trailBoard" aria-label="Visible trail sequence"></div>
-          <p class="feedback" id="feedback" aria-live="polite"></p>
-          <div class="choice-area">
-            <p class="eyebrow" data-copy="chooseMarker">CHOISISSEZ UN MARQUEUR</p>
-            <div class="choices" id="choices"></div>
-            <div class="button-row action-row">
-              <button class="primary-button" id="confirmButton" type="button" data-copy="confirm" disabled>Confirmer la note</button>
-              <button class="secondary-button" id="continueButton" type="button" data-copy="continue" hidden>Fiche suivante</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <section class="result-card" id="resultCard" hidden aria-labelledby="resultTitle">
-        <p class="eyebrow" data-copy="resultEyebrow">CARNET TERMINÉ</p>
-        <h2 id="resultTitle">All records resolved</h2>
-        <p id="resultCopy">Your clue folio is complete.</p>
-        <div class="button-row">
-          <button class="primary-button" id="replayButton" type="button" data-copy="replay">Rejouer le carnet</button>
-          <button class="secondary-button" id="homeButton" type="button" data-copy="home">Accueil du carnet</button>
-        </div>
-      </section>
-    </section>
-    <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
-  </main>
-  <script src="locales.js?v=20261020-animal-footprint-folio-i9-start-copy-v1"></script>
-  <script src="/src/game-screen-frame.js?v=20261018-animal-footprint-folio-i9-v1"></script>
-  <script src="/src/battle-canvas-standard.js?v=20261018-animal-footprint-folio-i9-v1"></script>
-  <script src="frame.js?v=20261018-animal-footprint-folio-i9-v1"></script>
-  <script src="game.js?v=20261020-animal-footprint-folio-main-init-v1"></script>
+          </select></span></header>
+<div class="main-grid"><img class="poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-footprint-folio.webp" alt=""><div data-wp-frame-copy><p data-wp-frame-summary data-copy="intro">30 enquêtes en forêt. Suivez les indices et reconstituez les pistes.</p><p id="mainProgress" data-wp-frame-progress></p><button id="startButton" data-wp-main-start data-wp-frame-action="primary" data-copy="start">Lancer le jeu</button><button id="guideButton" data-wp-frame-action="secondary" data-copy="guideButton">Comment jouer</button><p id="storageNotice" role="status" hidden></p></div></div>
+</section>
+<section id="stageScreen" hidden data-wp-standard-stage-screen data-wp-frame-play-fill data-screen="stage">
+<header><button id="stageBack" data-wp-return="stage" type="button" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong></header>
+<div id="stageContent"><div id="stagePage"><div id="stageRail" data-wp-stage-rail role="list"></div></div><div id="equipmentPage" hidden><div class="equipment-heading"><h2 data-copy="equipment">Carnet</h2><span class="wallet"><img src="/assets/weightplay-diamond.svg" alt="" width="24" height="24"><strong id="diamondBalance">0</strong></span></div><div class="ink-cards"><article class="ink-card"><div class="ink-preview day"><img src="/games/animal-footprint-folio/assets/field-notebook-v9.png" alt="" loading="lazy"></div><h3 data-copy="day">Encre du matin</h3><button id="dayButton" data-wp-frame-action="secondary" data-copy="equip">Utiliser</button></article><article class="ink-card"><div class="ink-preview moon"><img src="/games/animal-footprint-folio/assets/field-notebook-v9.png" alt="" loading="lazy"></div><h3 data-copy="moon">Encre lunaire</h3><p data-copy="moonCopy">Encre bleue et carnet de nuit permanents. Les énigmes restent identiques.</p><button id="moonButton" data-wp-frame-action="secondary"><img src="/assets/weightplay-diamond.svg" alt="" width="20" height="20"><span id="moonButtonLabel"></span></button></article></div><p id="shopFeedback" role="status"></p></div></div>
+<nav data-wp-frame-nav class="stage-tabs"><span aria-hidden="true"></span><button id="casesTab" data-wp-frame-action="tab" aria-pressed="true" data-copy="stages">Enquêtes</button><button id="equipmentTab" data-wp-frame-action="tab" aria-pressed="false" data-copy="equipment">Carnet</button></nav>
+</section>
+<section id="battleScreen" class="battle-canvas" hidden data-screen="battle" data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="788" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
+<header class="battle-header"><button id="battleBack" data-wp-return="battle" type="button" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong></header>
+<div id="battleContent" class="battle-layout"><div id="battleInfo"><span id="recordCount"></span><span id="masteryCount"></span></div>
+<section id="notebook" class="notebook" aria-labelledby="recordTitle"><div class="case-heading"><span id="caseNumber"></span><h2 id="recordTitle"></h2><span id="caseBadge" aria-hidden="true">◆</span></div><div class="rule-line"><p id="ruleText"></p><span id="directionKey" dir="ltr"></span></div><div class="trail-board" id="trailBoard" role="group"></div><div class="notebook-footer"><span id="filledCount"></span><span id="readDirection" aria-hidden="true">1 → 2 → 3 → 4</span></div></section>
+<section class="deduction-desk"><div class="feedback-area"><p id="feedback" role="status" aria-live="polite"></p></div><div class="choice-heading"><span id="choiceLabel" data-copy="chooseMarker">CHOISISSEZ UN MARQUEUR</span><button id="hintButton" class="hint-button" type="button" data-copy="hint">Indice</button></div><div id="choices" class="choices"></div><button id="confirmButton" class="confirm-button" type="button" data-copy="confirm" disabled>Confirmer la note</button><p class="quiet-note" id="noteTip" data-copy="chooseGap">Choisissez une case vide, puis une empreinte.</p></section></div>
+<div id="modal" class="folio-modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalCopy"><section class="modal-card"><div id="resultSeal" class="result-seal" aria-hidden="true">✓</div><p id="modalKicker"></p><h2 id="modalTitle"></h2><div id="resultStars" class="result-stars" role="img"></div><p id="modalCopy"></p><p id="resultRule"></p><div id="modalActions" class="modal-actions"></div></section></div>
+</section>
+<section class="game-page-info game-page-info-static" data-wp-game-guide><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="guideEyebrow">GUIDE RAPIDE</span><h2 data-wp-game-title data-copy="title">Suites d’empreintes</h2><p data-copy="intro">30 enquêtes en forêt. Suivez les indices et reconstituez les pistes.</p></div></div><div class="game-info-sections"><article class="game-info-section"><h3 data-copy="guideButton">Comment jouer</h3><p data-copy="guide">Choisissez une case vide, puis une empreinte. Confirmer la note. 3 étoiles sans erreur ni indice. Prenez votre temps.</p></article><article class="game-info-section"><h3 data-copy="hint">Indice</h3><p data-copy="repeatRule">Répétez tous les {n} signes.</p><p data-copy="mirrorRule">Les deux moitiés se reflètent.</p><p data-copy="lanesRule">Lisez séparément 1·3·5·7 et 2·4·6·8.</p><p data-copy="starsNote">3 étoiles sans erreur ni indice. Prenez votre temps.</p></article><article class="game-info-section"><h3 data-copy="faq">Questions fréquentes</h3><dl><dt data-copy="faqQuestion">La progression est-elle sauvegardée ?</dt><dd data-copy="faqAnswer">Oui, uniquement dans ce navigateur.</dd></dl></article></div></section>
+</main>
+<script src="locales.js?v=20261022-folio-v9"></script><script src="expedition-copy.js?v=20261022-folio-v9"></script>
+<script src="/src/game-screen-frame.js?v=20261018-animal-footprint-folio-i9-v1"></script><script src="/src/battle-canvas-standard.js?v=20261018-animal-footprint-folio-i9-v1"></script><script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script><script src="/src/game-play-ui.js?v=20261017-shared-play-spacing1"></script><script src="frame.js?v=20261022-folio-v9"></script><script type="module" src="game.js?v=20261022-folio-v9"></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/fr.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-</body>
-</html>
+</body></html>

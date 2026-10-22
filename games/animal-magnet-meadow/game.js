@@ -1,647 +1,263 @@
-(function () {
-  "use strict";
+import {boards, relationAt, move, solved, solution, normalizeProgress} from './puzzle.mjs';
+import {MeadowScene} from './meadow-scene.mjs';
+import {locales, translate} from './copy.mjs';
+import {ownsAmber, unlockAmber} from './collection.mjs';
 
-  const localeMap = window.MAGNET_MEADOW_LOCALES || {};
-  const localeList = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
-  const interfaceCopy = {
-    en: { start: "Start Game", stages: "Stages", next: "Next Stage", replay: "Replay", leaveTitle: "Leave Stage {stage}?", leaveText: "You will lose the current moonstone positions and {moves} move(s). Completed stages stay saved.", continue: "Continue playing", returnStages: "Return to Stages" },
-    "zh-Hant": { start: "開始遊戲", stages: "關卡", next: "下一關", replay: "重玩", leaveTitle: "離開第 {stage} 關？", leaveText: "目前的月石位置與 {moves} 次移動會被捨棄；已完成的關卡仍會保留。", continue: "繼續遊玩", returnStages: "返回關卡" },
-    "zh-Hans": { start: "开始游戏", stages: "关卡", next: "下一关", replay: "重玩", leaveTitle: "离开第 {stage} 关？", leaveText: "当前月石位置与 {moves} 次移动会被丢弃；已完成的关卡仍会保留。", continue: "继续游玩", returnStages: "返回关卡" },
-    ja: { start: "ゲーム開始", stages: "ステージ", next: "次のステージ", replay: "リプレイ", leaveTitle: "ステージ {stage} を終了しますか？", leaveText: "現在の月石配置と {moves} 回の移動は破棄されます。クリア済みステージは保存されます。", continue: "プレイを続ける", returnStages: "ステージへ戻る" },
-    ko: { start: "게임 시작", stages: "스테이지", next: "다음 스테이지", replay: "다시 하기", leaveTitle: "스테이지 {stage}에서 나갈까요?", leaveText: "현재 달돌 위치와 {moves}번의 이동은 사라집니다. 완료한 스테이지는 저장됩니다.", continue: "계속 플레이", returnStages: "스테이지로 돌아가기" },
-    es: { start: "Iniciar juego", stages: "Etapas", next: "Siguiente etapa", replay: "Repetir", leaveTitle: "¿Salir de la etapa {stage}?", leaveText: "Perderás las posiciones actuales y {moves} movimiento(s). Las etapas completadas seguirán guardadas.", continue: "Seguir jugando", returnStages: "Volver a Etapas" },
-    "pt-BR": { start: "Iniciar jogo", stages: "Fases", next: "Próxima fase", replay: "Repetir", leaveTitle: "Sair da fase {stage}?", leaveText: "As posições atuais e {moves} movimento(s) serão descartados. As fases concluídas continuam salvas.", continue: "Continuar jogando", returnStages: "Voltar às fases" },
-    fr: { start: "Commencer", stages: "Niveaux", next: "Niveau suivant", replay: "Rejouer", leaveTitle: "Quitter le niveau {stage} ?", leaveText: "Les positions actuelles et {moves} déplacement(s) seront perdus. Les niveaux terminés restent enregistrés.", continue: "Continuer à jouer", returnStages: "Retour aux niveaux" },
-    de: { start: "Spiel starten", stages: "Stufen", next: "Nächste Stufe", replay: "Wiederholen", leaveTitle: "Stufe {stage} verlassen?", leaveText: "Aktuelle Mondstein-Positionen und {moves} Zug/Züge gehen verloren. Abgeschlossene Stufen bleiben gespeichert.", continue: "Weiterspielen", returnStages: "Zu den Stufen" },
-    it: { start: "Avvia gioco", stages: "Livelli", next: "Livello successivo", replay: "Rigioca", leaveTitle: "Uscire dal livello {stage}?", leaveText: "Le posizioni attuali e {moves} mossa/e verranno perse. I livelli completati restano salvati.", continue: "Continua a giocare", returnStages: "Torna ai livelli" },
-    ru: { start: "Начать игру", stages: "Уровни", next: "Следующий уровень", replay: "Повторить", leaveTitle: "Покинуть уровень {stage}?", leaveText: "Текущие позиции и {moves} ход(а/ов) будут сброшены. Пройденные уровни сохранятся.", continue: "Продолжить игру", returnStages: "К уровням" },
-    hi: { start: "खेल शुरू करें", stages: "चरण", next: "अगला चरण", replay: "फिर खेलें", leaveTitle: "चरण {stage} छोड़ें?", leaveText: "मौजूदा चंद्र-पत्थर स्थिति और {moves} चाल मिट जाएँगी। पूरे किए चरण सुरक्षित रहेंगे।", continue: "खेल जारी रखें", returnStages: "चरणों पर लौटें" },
-    ar: { start: "ابدأ اللعب", stages: "المراحل", next: "المرحلة التالية", replay: "إعادة اللعب", leaveTitle: "مغادرة المرحلة {stage}؟", leaveText: "ستُفقد مواقع أحجار القمر الحالية و{moves} حركة/حركات، بينما تبقى المراحل المكتملة محفوظة.", continue: "متابعة اللعب", returnStages: "العودة إلى المراحل" }
-  };
+window.MAGNET_MEADOW_REBUILD_COPY=locales;
 
-  Object.entries(interfaceCopy).forEach(([locale, values]) => {
-    const dictionary = localeMap[locale];
-    if (!dictionary) return;
-    dictionary.start = values.start;
-    dictionary.stages = values.stages;
-    dictionary.next = values.next;
-    dictionary.replay = values.replay;
+const $ = id => document.getElementById(id);
+const locale = locales[document.documentElement.lang] ? document.documentElement.lang : 'en';
+const dictionary = window.MAGNET_MEADOW_LOCALES?.[locale] || window.MAGNET_MEADOW_LOCALES.en;
+const copy = (key,values={}) => {
+  if(key==='arc')return `${values.number} / 6`;
+  let text = locales[locale][key] ?? dictionary[key] ?? key;
+  for(const [name,value] of Object.entries(values)) text=String(text).replaceAll(`{${name}}`,value);
+  return text;
+};
+const progressKey='weightplay-animal-magnet-meadow-progress-v17';
+const legacyKey='weightplay-animal-magnet-meadow-completed-v1';
+const readJSON = key => {try{return JSON.parse(localStorage.getItem(key)||'null');}catch{return null;}};
+let progress=normalizeProgress(readJSON(progressKey)||{},readJSON(legacyKey)||[]);
+if(!ownsAmber(localStorage))progress.theme='moon';
+const state={screen:'main',round:0,positions:{},moves:0,selected:'a',history:[],assisted:false,result:false,drag:null};
+let scene, stageController, browseIndex=0, layout, purchaseBusy=false, lastFocus=null;
+const motion=new Set();
+const audio=window.WeightPlayAudio?.createScope();
+const cues=['game.start','board.move','board.undo','feedback.error','feedback.hint','puzzle.match','result.win','shop.purchase'];
+window.WeightPlayAudio?.preload(cues);
+const sound=id=>audio?.play(id);
+const board=()=>boards[state.round];
+const active=()=>state.screen==='battle'&&!state.result&&!document.querySelector('dialog[open]')&&!document.hidden&&!scene?.lost;
+const reduce=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+const unlocked=index=>index===0||Array.from({length:index},(_,i)=>i).every(i=>progress.completed.includes(i));
+const nextIndex=()=>Math.min(boards.length-1,Array.from({length:boards.length},(_,i)=>i).find(i=>!progress.completed.includes(i))??boards.length-1);
+const rewardState=index=>{
+  const claims=window.WeightPlayCastle?.read?.().completions;
+  return claims ? (claims[`animal-magnet-meadow:stage-animal-magnet-meadow-${index+1}`]?'collected':'not-collected') : 'unknown';
+};
+const effect=(element,error=false)=>{
+  const animation=element.animate(error?[{filter:'brightness(1)'},{filter:'brightness(1.6)'},{filter:'brightness(1)'}]:[{opacity:.35},{opacity:1}],{duration:reduce()?70:error?140:160,easing:'ease-out'});
+  motion.add(animation);animation.finished.catch(()=>{}).finally(()=>motion.delete(animation));
+};
+const settle=()=>{cancelDrag();motion.forEach(a=>a.cancel());motion.clear();scene?.settle();audio?.stop();};
+function status(key,values={},kind='') { $('battleStatus').textContent=copy(key,values);$('battleStatus').dataset.kind=kind; }
+function applyCopy() {
+  document.querySelectorAll('[data-copy]').forEach(el=>{const key=el.dataset.copy;if(dictionary[key]||locales[locale][key])el.textContent=copy(key);});
+  document.querySelectorAll('[data-copy-aria-label]').forEach(el=>el.setAttribute('aria-label',copy(el.dataset.copyAriaLabel)));
+  document.querySelectorAll('[data-copy-alt]').forEach(el=>el.alt=copy(el.dataset.copyAlt));
+  $('targetText').setAttribute('aria-label',copy('goal'));
+  $('magnetTrack').setAttribute('aria-label',copy('title'));
+  // Replace obsolete campaign-total and no-purchase claims with current rules in every locale.
+  const guide={guideOne:copy('helpRule'),guideTwo:locales[locale].rules.slice(0,3).join(' '),guideThree:copy('incorrect')+' '+copy('aligned'),guideCampaign:locales[locale].arcs.map((name,i)=>`${i*5+1}–${i*5+5}: ${name}`).join(' · ')+'. '+copy('permanent'),guideMechanics:locales[locale].rules.join(' '),guideProgress:copy('masteryNote')};
+  for(const [key,text]of Object.entries(guide))document.querySelector(`[data-copy="${key}"]`).textContent=text;
+  $('languageSelect').value=locale;
+  updateProgress();
+}
+function updateProgress() {
+  $('mainProgress').textContent=copy('progress',{count:progress.completed.length}).replace('/3','/30');
+  if($('sharedStageProgress'))$('sharedStageProgress').textContent=copy('stageLabel',{n:browseIndex+1});
+}
+applyCopy();
+const frame=window.mountMagnetMeadowFrame();
+function setScreen(name) {
+  window.WeightPlayCastle?.dismissRewardNotice?.('animal-magnet-meadow');
+  settle(); state.screen=name;
+  for(const key of ['main','stage','battle']) $(key+'Screen').hidden=key!==name;
+  $('guideScreen').hidden=name!=='main';
+  document.body.dataset.screen=name;frame.activate(name);scene?.pause(name!=='battle'||state.result);
+  if(name==='stage')renderStages();
+  updateProgress();effect($(name+'Screen'));
+}
+function mechanicLabel(b) {
+  const rules=locales[locale].rules;
+  return [rules[b.relation==='push'?1:0],b.relation==='flip'?rules[2]:'',b.anchors.length?rules[3]:'',b.blocked.length?rules[4]:'',b.stones.length===3?rules[5]:''].filter(Boolean).join(' ');
+}
+function renderStages() {
+  if(!stageController) stageController=window.WeightPlayPlayUI.mountStage({
+    page:$('stageWorkspace'),rail:$('stageList'),config:window.MagnetMeadowStageConfig({rounds:boards,unlocked,completed:index=>progress.completed.includes(index),mastery:index=>progress.stars[index]||0,rewardState,copy:(key,values)=>key==='round'?copy('stageLabel',{n:values.number}):copy(key,values),roundTitle:index=>`${locales[locale].arcs[boards[index].arc-1]} · ${index%5+1}`,roundHint:index=>[mechanicLabel(boards[index]),progress.best[index]?copy('best',{n:progress.best[index]}):''].filter(Boolean).join(' '),mechanicLabel}),
+    selected:browseIndex,isActive:()=>state.screen==='stage',onSelect:index=>{browseIndex=index;updateProgress();},onStart:startRound,
   });
-
-  // Thirty authored boards remain data, not thirty retained Stage nodes.
-  const rounds = [
-    { arc: 1, checkpoint: false, title: "First pull", hint: "Pull one linked pair into place.", mechanic: "basic pull", relation: "pull", boardSize: 6, stones: ["a", "b"], initial: { a: 0, b: 4 }, target: { a: 1, b: 5 } },
-    { arc: 1, checkpoint: false, title: "Quiet push", hint: "Push the partner away from the moving stone.", mechanic: "basic push", relation: "push", boardSize: 6, stones: ["a", "b"], initial: { a: 4, b: 2 }, target: { a: 5, b: 1 } },
-    { arc: 1, checkpoint: false, title: "Two-step pull", hint: "Plan two pulls before checking the pair.", mechanic: "two-step pull", relation: "pull", boardSize: 6, stones: ["a", "b"], initial: { a: 0, b: 3 }, target: { a: 2, b: 5 } },
-    { arc: 1, checkpoint: false, title: "Long meadow", hint: "A longer board gives the pair more room to settle.", mechanic: "long board", relation: "pull", boardSize: 7, stones: ["a", "b"], initial: { a: 1, b: 4 }, target: { a: 3, b: 6 } },
-    { arc: 1, checkpoint: true, title: "First checkpoint", hint: "Use one push to land both stones cleanly.", mechanic: "checkpoint push", relation: "push", boardSize: 7, stones: ["a", "b"], initial: { a: 5, b: 2 }, target: { a: 6, b: 1 } },
-    { arc: 2, checkpoint: false, title: "Polarity dawn", hint: "The first move pulls; the next move will push.", mechanic: "polarity flip", relation: "flip", boardSize: 7, stones: ["a", "b"], initial: { a: 0, b: 5 }, target: { a: 1, b: 6 } },
-    { arc: 2, checkpoint: false, title: "Read the phase", hint: "The phase is pull on the first move.", mechanic: "polarity phase", relation: "flip", boardSize: 7, stones: ["a", "b"], initial: { a: 4, b: 2 }, target: { a: 5, b: 3 } },
-    { arc: 2, checkpoint: false, title: "Return phase", hint: "Two moves make the link change direction.", mechanic: "phase reversal", relation: "flip", boardSize: 8, stones: ["a", "b"], initial: { a: 0, b: 6 }, target: { a: 2, b: 6 } },
-    { arc: 2, checkpoint: false, title: "Edge reversal", hint: "A pull toward the left edge can still be useful.", mechanic: "edge reversal", relation: "flip", boardSize: 8, stones: ["a", "b"], initial: { a: 5, b: 1 }, target: { a: 4, b: 0 } },
-    { arc: 2, checkpoint: true, title: "Phase checkpoint", hint: "Use the phase change to finish the long move.", mechanic: "checkpoint flip", relation: "flip", boardSize: 8, stones: ["a", "b"], initial: { a: 1, b: 5 }, target: { a: 4, b: 5 } },
-    { arc: 3, checkpoint: false, title: "Anchored partner", hint: "The anchored moonstone never moves.", mechanic: "fixed anchor", relation: "pull", boardSize: 7, stones: ["a", "b"], anchors: ["b"], initial: { a: 0, b: 5 }, target: { a: 2, b: 5 } },
-    { arc: 3, checkpoint: false, title: "Anchored lead", hint: "Move the free stone around the fixed lead.", mechanic: "fixed anchor", relation: "pull", boardSize: 7, stones: ["a", "b"], anchors: ["a"], initial: { a: 1, b: 5 }, target: { a: 1, b: 3 } },
-    { arc: 3, checkpoint: false, title: "Anchor turn", hint: "Pull the free stone back beside its anchor.", mechanic: "anchor turn", relation: "pull", boardSize: 7, stones: ["a", "b"], anchors: ["b"], initial: { a: 4, b: 2 }, target: { a: 1, b: 2 } },
-    { arc: 3, checkpoint: false, title: "Wide anchor", hint: "Use the wider board without disturbing the anchor.", mechanic: "wide anchor", relation: "pull", boardSize: 8, stones: ["a", "b"], anchors: ["a"], initial: { a: 6, b: 1 }, target: { a: 6, b: 4 } },
-    { arc: 3, checkpoint: true, title: "Anchor checkpoint", hint: "Keep the anchor safe through a careful pull.", mechanic: "checkpoint anchor", relation: "pull", boardSize: 8, stones: ["a", "b"], anchors: ["b"], initial: { a: 0, b: 4 }, target: { a: 3, b: 4 } },
-    { arc: 4, checkpoint: false, title: "Quiet obstacle", hint: "The blocked dock cannot receive a moonstone.", mechanic: "blocked dock", relation: "pull", boardSize: 7, stones: ["a", "b"], blocked: [2], initial: { a: 0, b: 4 }, target: { a: 1, b: 5 } },
-    { arc: 4, checkpoint: false, title: "Twin barriers", hint: "Read the open route before making a push.", mechanic: "twin barriers", relation: "push", boardSize: 8, stones: ["a", "b"], blocked: [3, 4], initial: { a: 6, b: 1 }, target: { a: 7, b: 0 } },
-    { arc: 4, checkpoint: false, title: "Crossing gap", hint: "The middle gap is blocked; the next dock remains open.", mechanic: "crossing gap", relation: "pull", boardSize: 8, stones: ["a", "b"], blocked: [1, 4], initial: { a: 2, b: 6 }, target: { a: 3, b: 7 } },
-    { arc: 4, checkpoint: false, title: "Edge shelter", hint: "Avoid the shelter dock while pulling toward the edge.", mechanic: "edge shelter", relation: "pull", boardSize: 7, stones: ["a", "b"], blocked: [5], initial: { a: 0, b: 3 }, target: { a: 1, b: 4 } },
-    { arc: 4, checkpoint: true, title: "Obstacle checkpoint", hint: "A clean push completes the barrier arc.", mechanic: "checkpoint obstacle", relation: "push", boardSize: 8, stones: ["a", "b"], blocked: [2, 5], initial: { a: 6, b: 1 }, target: { a: 7, b: 0 } },
-    { arc: 5, checkpoint: false, title: "Three-stone pull", hint: "The second and third stones follow at different distances.", mechanic: "chain pull", relation: "pull", boardSize: 6, stones: ["a", "b", "c"], initial: { a: 0, b: 2, c: 4 }, target: { a: 1, b: 3, c: 5 } },
-    { arc: 5, checkpoint: false, title: "Three-stone push", hint: "A push sends the chain in the opposite direction.", mechanic: "chain push", relation: "push", boardSize: 7, stones: ["a", "b", "c"], initial: { a: 5, b: 3, c: 1 }, target: { a: 6, b: 2, c: 0 } },
-    { arc: 5, checkpoint: false, title: "Short chain", hint: "Keep the three stones separated while pulling.", mechanic: "short chain", relation: "pull", boardSize: 7, stones: ["a", "b", "c"], initial: { a: 0, b: 1, c: 2 }, target: { a: 1, b: 2, c: 4 } },
-    { arc: 5, checkpoint: false, title: "Long chain", hint: "A push moves the far stone two docks at once.", mechanic: "long chain", relation: "push", boardSize: 7, stones: ["a", "b", "c"], initial: { a: 5, b: 4, c: 2 }, target: { a: 6, b: 3, c: 0 } },
-    { arc: 5, checkpoint: true, title: "Chain checkpoint", hint: "One careful pull aligns the full three-stone chain.", mechanic: "checkpoint chain", relation: "pull", boardSize: 7, stones: ["a", "b", "c"], initial: { a: 1, b: 3, c: 5 }, target: { a: 2, b: 4, c: 6 } },
-    { arc: 6, checkpoint: false, title: "Blocked phase", hint: "The polarity changes while the blocked dock stays closed.", mechanic: "flip plus obstacle", relation: "flip", boardSize: 8, stones: ["a", "b"], blocked: [3], initial: { a: 0, b: 5 }, target: { a: 1, b: 6 } },
-    { arc: 6, checkpoint: false, title: "Anchored chain", hint: "Only the free stones respond; the anchor stays fixed.", mechanic: "flip plus anchor", relation: "flip", boardSize: 8, stones: ["a", "b", "c"], anchors: ["c"], initial: { a: 0, b: 2, c: 6 }, target: { a: 1, b: 3, c: 6 } },
-    { arc: 6, checkpoint: false, title: "Chain barrier", hint: "Move the chain without landing on either barrier.", mechanic: "push plus barriers", relation: "push", boardSize: 8, stones: ["a", "b", "c"], blocked: [1, 7], initial: { a: 5, b: 4, c: 2 }, target: { a: 6, b: 3, c: 0 } },
-    { arc: 6, checkpoint: false, title: "Anchored phase", hint: "The free stone follows the current polarity around its anchor.", mechanic: "flip plus anchor", relation: "flip", boardSize: 8, stones: ["a", "b"], anchors: ["b"], initial: { a: 1, b: 5 }, target: { a: 2, b: 5 } },
-    { arc: 6, checkpoint: true, title: "Meadow finale", hint: "One final pull settles the three-stone meadow pattern.", mechanic: "final chain", relation: "flip", boardSize: 9, stones: ["a", "b", "c"], blocked: [3, 6], initial: { a: 0, b: 1, c: 2 }, target: { a: 1, b: 2, c: 4 } }
-  ];
-
-  const firstRound = rounds[0];
-  const completedKey = "weightplay-animal-magnet-meadow-completed-v1";
-  const bestKey = "weightplay-animal-magnet-meadow-best-v9";
-  const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
-  const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
-  const loadCompletedRounds = () => {
-    try {
-      const saved = JSON.parse(safeGet(completedKey, "[]"));
-      if (!Array.isArray(saved)) return [];
-      return [...new Set(saved.filter((index) => Number.isInteger(index) && index >= 0 && index < rounds.length))]
-        .sort((left, right) => left - right);
-    } catch (_error) {
-      return [];
-    }
-  };
-  const state = {
-    locale: "en", screen: "main", round: 0, positions: { ...firstRound.initial }, moves: 0,
-    completed: loadCompletedRounds(), selected: "a", statusKey: "ready", statusStone: null, drag: null,
-    resultActive: false
-  };
-  const $ = (id) => document.getElementById(id);
-  const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
-  const recordCompletedRound = (index) => {
-    if (!Number.isInteger(index) || index < 0 || index >= rounds.length || state.completed.includes(index)) return;
-    state.completed.push(index);
-    state.completed.sort((left, right) => left - right);
-    safeSet(completedKey, JSON.stringify(state.completed));
-  };
-  const transitionVisualUpdate = (update) => {
-    const app = $("app");
-    const startTransition = document.startViewTransition;
-    if (typeof startTransition !== "function") {
-      update();
-      return;
-    }
-    if (visualTransition?.skipTransition) {
-      try { visualTransition.skipTransition(); } catch (_error) {}
-    }
-    const generation = ++visualTransitionGeneration;
-    const previousInert = visualTransition ? visualTransitionPreviousInert : Boolean(app?.inert);
-    visualTransitionPreviousInert = previousInert;
-    if (app) app.inert = true;
-    let committed = false;
-    const commit = () => {
-      if (committed || generation !== visualTransitionGeneration) return;
-      committed = true;
-      if (app) app.inert = previousInert;
-      update();
-    };
-    try {
-      const transition = startTransition.call(document, commit);
-      visualTransition = transition;
-      Promise.resolve(transition.updateCallbackDone).catch(() => {});
-      Promise.resolve(transition.ready).catch(() => {});
-      Promise.resolve(transition.finished).catch(() => {}).finally(() => {
-        if (generation !== visualTransitionGeneration) return;
-        if (!committed) commit();
-        if (app) app.inert = previousInert;
-        visualTransition = null;
-        visualTransitionPreviousInert = null;
-      });
-    } catch (_error) {
-      commit();
-    }
-  };
-
-  const copy = (key, vars = {}) => {
-    const dictionary = localeMap[state.locale] || localeMap.en || {};
-    let value = dictionary[key] || (localeMap.en && localeMap.en[key]) || key;
-    Object.entries(vars).forEach(([name, replacement]) => {
-      value = value.replace(new RegExp("\\{" + name + "\\}", "g"), String(replacement));
-    });
-    return value;
-  };
-  const ui = (key, vars = {}) => {
-    const dictionary = interfaceCopy[state.locale] || interfaceCopy.en;
-    let value = dictionary[key] || interfaceCopy.en[key] || key;
-    Object.entries(vars).forEach(([name, replacement]) => {
-      value = value.replace(new RegExp("\\{" + name + "\\}", "g"), String(replacement));
-    });
-    return value;
-  };
-  const currentRound = () => rounds[state.round];
-  const boardSize = (round = currentRound()) => round.boardSize || 6;
-  const stoneIds = (round = currentRound()) => round.stones || Object.keys(round.initial);
-  const anchors = (round = currentRound()) => round.anchors || [];
-  const blocked = (round = currentRound()) => round.blocked || [];
-  const bestTotal = () => Number(safeGet(bestKey, "0")) || 0;
-  const samePosition = (first, second) => Object.keys(second).every((key) => first[key] === second[key]);
-  const stageUnlocked = (index) => index === 0 || state.completed.includes(index - 1);
-  const highestUnlocked = () => {
-    let index = 0;
-    for (let candidate = 1; candidate < rounds.length; candidate += 1) {
-      if (!stageUnlocked(candidate)) break;
-      index = candidate;
-    }
-    return index;
-  };
-  const roundTitle = (index) => {
-    const round = rounds[index];
-    const key = "roundTitle" + (index + 1);
-    const localized = copy(key);
-    return localized === key ? round.title : localized;
-  };
-  const roundHint = (index) => {
-    const round = rounds[index];
-    const key = "stageHint" + (index + 1);
-    const localized = copy(key);
-    return localized === key ? round.hint : localized;
-  };
-
-  let stageController = null;
-  let stageBrowseIndex = 0;
-  let frame = null;
-  let visualTransition = null;
-  let visualTransitionGeneration = 0;
-  let visualTransitionPreviousInert = null;
-  let battleStatusMotion = null;
-  let battleDirty = false;
-  let leaveOpen = false;
-  let focusBeforeLeave = null;
-  let leaveLayer = null;
-
-  const battleStatusText = () => state.statusKey === "moved" || state.statusKey === "selectStone"
-    ? copy(state.statusKey, { stone: stoneLabel(state.statusStone) })
-    : copy(state.statusKey);
-  const setBattleStatus = (key, stoneId = null) => {
-    state.statusKey = key;
-    state.statusStone = stoneId;
-    const status = $("battleStatus");
-    if (!status) return;
-    status.textContent = battleStatusText();
-    battleStatusMotion?.cancel();
-    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    battleStatusMotion = status.animate(
-      [{ opacity: 0.55 }, { opacity: 1 }],
-      { duration: reduceMotion ? 90 : 140, easing: "ease-out" },
-    );
-    battleStatusMotion.onfinish = () => { battleStatusMotion = null; };
-  };
-
-  const normalizeLegacyChrome = () => {
-    const duplicateTitle = document.querySelector("#mainScreen .hero-copy > h1");
-    if (duplicateTitle) { duplicateTitle.hidden = true; duplicateTitle.setAttribute("aria-hidden", "true"); }
-    const stageTitle = document.querySelector("#stageScreen .panel-head > h2");
-    const stageIntro = document.querySelector("#stageScreen > .stage-canvas > .panel-intro");
-    [stageTitle, stageIntro].forEach((node) => { if (node) { node.hidden = true; node.setAttribute("aria-hidden", "true"); } });
-    const battleHeading = $("battleHeading");
-    if (battleHeading) { battleHeading.hidden = true; battleHeading.setAttribute("aria-hidden", "true"); }
-    const battleSound = $("battleSoundBtn");
-    if (battleSound) {
-      battleSound.hidden = true;
-      battleSound.setAttribute("aria-hidden", "true");
-      battleSound.tabIndex = -1;
-      battleSound.removeAttribute("data-wp-battle-utility");
-    }
-    const result = $("resultPanel");
-    if (result) { result.dataset.wpBattleSubstate = "result"; result.removeAttribute("data-screen"); }
-    const resultStages = $("resultMapBtn");
-    const resultNext = $("resultPrimaryBtn");
-    const resultReplay = $("resultHomeBtn");
-    if (resultReplay) resultReplay.dataset.copy = "replay";
-    const actions = result?.querySelector(".result-actions");
-    if (actions && resultStages && resultNext && resultReplay) actions.append(resultStages, resultNext, resultReplay);
-  };
-
-  const ensureStageController = () => {
-    const rail = $("stageList");
-    const page = $("stageWorkspace");
-    if (!rail || !page || !frame || !window.WeightPlayPlayUI?.mountStage) return null;
-    rail.dir = document.documentElement.dir === "rtl" ? "rtl" : "ltr";
-    rail.setAttribute("aria-label", ui("stages"));
-    if (!stageController) {
-      stageController = window.WeightPlayPlayUI.mountStage({
-        page,
-        rail,
-        config: window.MagnetMeadowStageConfig({
-          rounds,
-          unlocked: stageUnlocked,
-          completed: index => state.completed.includes(index),
-          copy,
-          roundTitle,
-          roundHint,
-          mechanicLabel,
-        }),
-        selected: stageBrowseIndex,
-        isActive: () => state.screen === "stage",
-        onSelect: index => { stageBrowseIndex = index; updateStageProgress(); },
-        onStart: startRound,
-      });
-    }
-    return stageController;
-  };
-
-  const renderStages = () => {
-    if (document.body.dataset.screen !== "stage") return;
-    const controller = ensureStageController();
-    controller?.refresh(stageBrowseIndex);
-    updateStageProgress();
-  };
-
-  const updateStageProgress = () => {
-    const progress = $("sharedStageProgress");
-    if (progress) progress.textContent = copy("round", { number: stageBrowseIndex + 1, total: rounds.length });
-  };
-
-  const updateBattleHud = () => {
-    const stage = $("sharedBattleStage");
-    const moves = $("sharedBattleMoves");
-    if (stage) stage.textContent = copy("round", { number: state.round + 1, total: rounds.length });
-    if (moves) moves.textContent = copy("move", { count: state.moves });
-  };
-
-  const setResultCoveredState = () => {
-    const result = $("resultPanel");
-    const header = document.querySelector("#battleScreen .panel-head");
-    const panel = $("battlePanel");
-    const active = state.screen === "battle" && state.resultActive;
-    document.body.classList.toggle("wp-magnet-result-active", active);
-    if (header) header.inert = active || leaveOpen;
-    if (panel) panel.inert = active || leaveOpen;
-    if (result) result.inert = leaveOpen;
-    if (state.screen === "battle") frame?.activate("battle", { covered: active || leaveOpen });
-  };
-
-  const refreshResult = () => {
-    const final = state.round === rounds.length - 1;
-    const resultNext = $("resultPrimaryBtn");
-    const resultStages = $("resultMapBtn");
-    const resultReplay = $("resultHomeBtn");
-    if (resultStages) resultStages.textContent = ui("stages");
-    if (resultNext) {
-      resultNext.textContent = ui("next");
-      resultNext.disabled = final;
-      resultNext.setAttribute("aria-disabled", String(final));
-    }
-    if (resultReplay) resultReplay.textContent = ui("replay");
-    setResultCoveredState();
-  };
-
-  const refreshLeaveCopy = () => {
-    if (!leaveLayer) return;
-    const title = leaveLayer.querySelector("#magnetLeaveTitle");
-    const text = leaveLayer.querySelector("#magnetLeaveText");
-    const keep = leaveLayer.querySelector("#magnetLeaveContinue");
-    const leave = leaveLayer.querySelector("#magnetLeaveReturn");
-    if (title) title.textContent = ui("leaveTitle", { stage: state.round + 1 });
-    if (text) text.textContent = ui("leaveText", { moves: state.moves });
-    if (keep) keep.textContent = ui("continue");
-    if (leave) leave.textContent = ui("returnStages");
-  };
-
-  const closeLeave = (restoreFocus = true, animate = true) => {
-    if (!leaveOpen || !leaveLayer) return;
-    const update = () => {
-      leaveOpen = false;
-      leaveLayer.hidden = true;
-      document.body.classList.remove("wp-magnet-leave-open");
-      setResultCoveredState();
-      if (restoreFocus) $("battleBackBtn")?.focus({ preventScroll: true });
-      else if (focusBeforeLeave instanceof HTMLElement && focusBeforeLeave.isConnected) focusBeforeLeave.blur();
-      focusBeforeLeave = null;
-    };
-    if (animate) transitionVisualUpdate(update);
-    else update();
-  };
-
-  const openLeave = () => {
-    if (leaveOpen || state.resultActive || !leaveLayer) return;
-    state.drag = null;
-    renderStones();
-    refreshLeaveCopy();
-    focusBeforeLeave = document.activeElement;
-    transitionVisualUpdate(() => {
-      leaveOpen = true;
-      document.body.classList.add("wp-magnet-leave-open");
-      leaveLayer.hidden = false;
-      setResultCoveredState();
-      leaveLayer.querySelector("#magnetLeaveContinue")?.focus({ preventScroll: true });
-    });
-  };
-
-  const createLeaveDialog = () => {
-    const canvas = $("battlePanel");
-    const content = canvas?.parentElement;
-    if (!canvas || !content || leaveLayer) return;
-    leaveLayer = document.createElement("div");
-    leaveLayer.className = "magnet-leave-layer";
-    leaveLayer.hidden = true;
-    leaveLayer.innerHTML = `<section class="magnet-leave-dialog" role="dialog" aria-modal="true" aria-labelledby="magnetLeaveTitle" aria-describedby="magnetLeaveText"><h2 id="magnetLeaveTitle"></h2><p id="magnetLeaveText"></p><div class="magnet-leave-actions"><button id="magnetLeaveContinue" class="primary-btn" type="button"></button><button id="magnetLeaveReturn" class="secondary-btn" type="button"></button></div></section>`;
-    // The gameplay panel becomes inert while this confirmation is open, so
-    // keep the dialog as its sibling inside the shared Battle content slot.
-    content.append(leaveLayer);
-    leaveLayer.querySelector("#magnetLeaveContinue")?.addEventListener("click", () => closeLeave(true));
-    leaveLayer.querySelector("#magnetLeaveReturn")?.addEventListener("click", () => {
-      closeLeave(false);
-      battleDirty = false;
-      enterStage();
-    });
-    refreshLeaveCopy();
-  };
-
-  const applyText = () => {
-    document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = copy(node.dataset.copy); });
-    document.querySelectorAll("[data-copy-aria-label]").forEach((node) => { node.setAttribute("aria-label", copy(node.dataset.copyAriaLabel)); });
-    if ($("mainProgress")) $("mainProgress").textContent = copy("progress", { count: state.completed.length }).replaceAll("/3", "/" + rounds.length);
-    if (state.screen === "stage") renderStages();
-    if (state.screen === "battle" && !state.resultActive) renderBattle();
-    if (state.screen === "battle" && state.resultActive) refreshResult();
-    refreshLeaveCopy();
-    frame?.refresh();
-  };
-
-  const setScreen = (screen, { forceTransition = false } = {}) => {
-    const previousScreen = state.screen;
-    const update = () => {
-      if (leaveOpen) closeLeave(false, false);
-      if (screen !== "stage") stageController?.cancel();
-      if (screen !== "battle") {
-        battleStatusMotion?.cancel();
-        battleStatusMotion = null;
-      }
-      state.screen = screen;
-      document.body.dataset.screen = screen;
-      ["main", "stage", "battle"].forEach((name) => {
-        const element = $(name + "Screen");
-        if (!element) return;
-        element.hidden = name !== screen;
-        element.classList.toggle("active", name === screen);
-      });
-      const guide = $("guideScreen");
-      if (guide) guide.hidden = screen !== "main";
-      frame?.activate(screen, { covered: screen === "battle" && state.resultActive });
-      if (screen === "main") applyText();
-      if (screen === "stage") renderStages();
-      if (screen === "battle" && !state.resultActive) renderBattle();
-      window.scrollTo(0, 0);
-    };
-    if (previousScreen === screen && !forceTransition) update();
-    else transitionVisualUpdate(update);
-  };
-
-  const enterStage = () => {
-    state.resultActive = false;
-    stageBrowseIndex = highestUnlocked();
-    setScreen("stage");
-  };
-
-  const slotLabel = (index) => copy("slot", { number: index + 1 });
-  const stoneLabel = (id) => {
-    const key = "stone" + String(id).toUpperCase();
-    const localized = copy(key);
-    return localized === key ? "Moonstone " + String(id).toUpperCase() : localized;
-  };
-  const mechanicLabel = (round) => {
-    const key = "mechanic_" + round.mechanic.replace(/[^a-z0-9]+/gi, "_");
-    const localized = copy(key);
-    return localized === key ? round.mechanic : localized;
-  };
-  const getSlotFromPointer = (event) => {
-    const rect = $("magnetTrack").getBoundingClientRect();
-    const ratio = clamp((event.clientX - rect.left) / rect.width, 0, 0.999);
-    return Math.floor(ratio * boardSize());
-  };
-  const activeRelation = (round = currentRound()) => round.relation !== "flip" ? round.relation : state.moves % 2 === 0 ? "pull" : "push";
-  const validPositionSet = (positions, round = currentRound()) => {
-    const values = Object.values(positions);
-    return values.every((value) => value >= 0 && value < boardSize(round) && !blocked(round).includes(value)) && new Set(values).size === values.length;
-  };
-
-  const commitMove = (id, destination) => {
-    if (leaveOpen || state.resultActive) return;
-    const round = currentRound();
-    const from = state.positions[id];
-    if (destination === from) return;
-    if (anchors(round).includes(id) || blocked(round).includes(destination)) { setBattleStatus("incorrect"); return; }
-    const direction = Math.sign(destination - from);
-    const response = activeRelation(round) === "pull" ? direction : -direction;
-    const next = { ...state.positions, [id]: destination };
-    let chainIndex = 0;
-    stoneIds(round).forEach((other) => {
-      if (other === id || anchors(round).includes(other)) return;
-      chainIndex += 1;
-      next[other] = clamp(next[other] + response * chainIndex, 0, boardSize(round) - 1);
-    });
-    if (!validPositionSet(next, round)) { setBattleStatus("incorrect"); return; }
-    state.positions = next;
-    state.moves += 1;
-    state.selected = id;
-    battleDirty = true;
-    setBattleStatus("moved", id);
-    renderBattle();
-  };
-
-  function renderStones() {
-    const layer = $("stoneLayer");
-    const round = currentRound();
-    if (!layer) return;
-    layer.innerHTML = stoneIds(round).map((id) => {
-      const selected = state.selected === id;
-      const position = state.positions[id];
-      const left = ((position + 0.5) / boardSize(round)) * 100;
-      const fixed = anchors(round).includes(id);
-      return `<button class="moonstone stone-${id}${selected ? " selected" : ""}${fixed ? " anchored" : ""}" type="button" data-stone="${id}" style="left:${left}%" aria-label="${stoneLabel(id)}" aria-pressed="${selected}"${fixed ? ' disabled aria-disabled="true"' : ""}><span>${String(id).toUpperCase()}</span></button>`;
-    }).join("");
-    layer.querySelectorAll("[data-stone]").forEach((stone) => {
-      const id = stone.dataset.stone;
-      stone.addEventListener("click", () => {
-        if (leaveOpen || state.resultActive) return;
-        state.selected = id;
-        setBattleStatus("selectStone", id);
-        renderBattle();
-      });
-      stone.addEventListener("pointerdown", (event) => {
-        if (leaveOpen || state.resultActive) return;
-        event.preventDefault();
-        state.selected = id;
-        state.drag = { id, destination: state.positions[id] };
-        stone.setPointerCapture?.(event.pointerId);
-        stone.classList.add("dragging");
-      });
-      stone.addEventListener("pointermove", (event) => {
-        if (!state.drag || state.drag.id !== id || leaveOpen) return;
-        state.drag.destination = getSlotFromPointer(event);
-        stone.style.left = (((state.drag.destination + 0.5) / boardSize()) * 100) + "%";
-      });
-      stone.addEventListener("pointerup", (event) => {
-        if (!state.drag || state.drag.id !== id || leaveOpen) return;
-        const destination = state.drag.destination;
-        state.drag = null;
-        stone.releasePointerCapture?.(event.pointerId);
-        commitMove(id, destination);
-      });
-      stone.addEventListener("pointercancel", () => { state.drag = null; renderStones(); });
-    });
+  stageController.refresh(browseIndex);
+}
+function placeNodes(next) {
+  layout=next;
+  next.pads.forEach((point,index)=>{const el=$('slotGrid').children[index];if(el){el.style.left=`${point.x}px`;el.style.top=`${point.y}px`;}});
+  for(const [id,point]of Object.entries(next.stones)){const el=$('stone-'+id);if(el){el.style.left=`${point.x}px`;el.style.top=`${point.y}px`;}}
+}
+function createBoard() {
+  $('slotGrid').replaceChildren();$('stoneLayer').replaceChildren();$('targetText').replaceChildren();
+  for(let index=0;index<board().boardSize;index++) {
+    const el=document.createElement('button');el.type='button';el.className='dock';el.dataset.dock=index;el.dataset.blocked=board().blocked.includes(index);el.textContent=String(index+1);
+    const target=board().stones.find(id=>board().target[id]===index);
+    if(target){const marker=document.createElement('span');marker.className='dock-target';marker.dataset.stone=target;marker.textContent=target.toUpperCase();el.append(marker);}
+    el.setAttribute('aria-label',copy('slot',{number:index+1})+(target?` · ${target.toUpperCase()}`:'')+(board().blocked.includes(index)?` · ${copy('blocked')}`:''));
+    el.addEventListener('click',()=>{if(active())commit(state.selected,index);});
+    el.addEventListener('pointerenter',event=>{if(active()&&!state.drag&&event.pointerType==='mouse')preview(index);});
+    el.addEventListener('focus',()=>{if(active())preview(index);});
+    el.addEventListener('pointerleave',()=>{if(!state.drag)clearPreview();});
+    $('slotGrid').append(el);
   }
-
-  function renderBattle() {
-    if (state.resultActive) return;
-    updateBattleHud();
-    const round = currentRound();
-    const hintKey = "stageHint" + (state.round + 1);
-    const localizedHint = copy(hintKey);
-    if ($("roundHint")) $("roundHint").textContent = (localizedHint === hintKey ? round.hint : localizedHint) + " · " + mechanicLabel(round);
-    const relation = activeRelation(round);
-    if ($("relationBadge")) $("relationBadge").textContent = copy(relation === "pull" ? "relationPull" : "relationPush") + (round.relation === "flip" ? " · " + copy("flip") : "");
-    if ($("targetText")) $("targetText").textContent = stoneIds(round).map((id) => String(id).toUpperCase() + (round.target[id] + 1)).join(" · ");
-    if ($("moveText")) $("moveText").textContent = copy("move", { count: state.moves });
-    if ($("battleStatus")) $("battleStatus").textContent = battleStatusText();
-    const slotGrid = $("slotGrid");
-    slotGrid.style.gridTemplateColumns = "repeat(" + boardSize(round) + ", minmax(0, 1fr))";
-    slotGrid.innerHTML = Array.from({ length: boardSize(round) }, (_, index) => {
-      const isBlocked = blocked(round).includes(index);
-      return `<button class="slot${isBlocked ? " blocked" : ""}" type="button" data-slot="${index}" aria-label="${slotLabel(index)}"${isBlocked ? ' disabled aria-disabled="true"' : ""}><span>${isBlocked ? "×" : index + 1}</span></button>`;
-    }).join("");
-    slotGrid.querySelectorAll("[data-slot]").forEach((slot) => slot.addEventListener("click", () => commitMove(state.selected, Number(slot.dataset.slot))));
-    $("legend").innerHTML = stoneIds(round).map((id) => `<span class="legend-stone stone-${id}">${stoneLabel(id)}${anchors(round).includes(id) ? " · " + copy("fixed") : ""}</span>`).join("");
-    renderStones();
-    $("resultPanel").hidden = true;
-    $("battlePanel").hidden = false;
-    setResultCoveredState();
+  for(const id of board().stones) {
+    const el=document.createElement('button');el.type='button';el.id='stone-'+id;el.className='stone';el.dataset.stone=id;el.dataset.anchor=board().anchors.includes(id);el.textContent=id.toUpperCase();
+    el.addEventListener('pointerdown',event=>{
+      if(!active()||event.button!==0)return;select(id);if(board().anchors.includes(id))return;
+      state.drag={id,pointerId:event.pointerId,element:el,startX:event.clientX,startY:event.clientY,moved:false};el.setPointerCapture(event.pointerId);
+    });
+    el.addEventListener('click',event=>{if(event.detail===0&&active())select(id);});
+    $('stoneLayer').append(el);
+    const chip=document.createElement('span');chip.className='target-chip';chip.dataset.stone=id;chip.textContent=`${id.toUpperCase()} → ${board().target[id]+1}`;$('targetText').append(chip);
   }
-
-  const resetRound = () => {
-    const round = currentRound();
-    state.positions = { ...round.initial };
-    state.moves = 0;
-    state.selected = stoneIds(round).find((id) => !anchors(round).includes(id)) || stoneIds(round)[0];
-    state.resultActive = false;
-    battleDirty = false;
-    setBattleStatus("ready");
-    renderBattle();
-  };
-
-  const showResult = () => {
-    const final = state.round === rounds.length - 1;
-    const total = state.moves;
-    const previousBest = bestTotal();
-    if (final && (!previousBest || total < previousBest)) safeSet(bestKey, String(total));
-    recordCompletedRound(state.round);
-    state.resultActive = true;
-    battleDirty = false;
-    transitionVisualUpdate(() => {
-      $("battlePanel").hidden = true;
-      $("resultPanel").hidden = false;
-      $("resultHeading").textContent = copy(final ? "finishTitle" : "resultTitle");
-      $("resultText").textContent = copy("resultText");
-      $("resultStats").textContent = copy("stats", { moves: total, best: copy("best", { count: final ? Math.min(total, previousBest || total) : bestTotal() || copy("noBest") }) });
-      $("mainProgress").textContent = copy("progress", { count: state.completed.length }).replaceAll("/3", "/" + rounds.length);
-      refreshResult();
-    });
-  };
-
-  const checkRound = () => {
-    if (leaveOpen || state.resultActive) return;
-    if (samePosition(state.positions, currentRound().target)) {
-      setBattleStatus("correct");
-      showResult();
-      return;
-    }
-    setBattleStatus("incorrect");
-  };
-
-  function startRound(index) {
-    if (!stageUnlocked(index) && index !== state.round) return;
-    const leavingResult = state.resultActive;
-    state.round = clamp(index, 0, rounds.length - 1);
-    state.positions = { ...rounds[state.round].initial };
-    state.moves = 0;
-    state.selected = stoneIds(rounds[state.round]).find((id) => !anchors(rounds[state.round]).includes(id)) || stoneIds(rounds[state.round])[0];
-    state.drag = null;
-    state.resultActive = false;
-    battleDirty = false;
-    setBattleStatus("ready");
-    setScreen("battle", { forceTransition: leavingResult });
+}
+function ensureScene() {
+  if(scene)return true;
+  try{scene=new MeadowScene($('magnetTrack'),placeNodes,ready=>{$('renderRecovery').hidden=ready;if(!ready)settle();});return true;}
+  catch(error){$('renderRecovery').hidden=false;console.error('Magnet Meadow renderer unavailable',error);return false;}
+}
+function startRound(index) {
+  if(!unlocked(index))return;
+  state.round=index;state.positions={...board().initial};state.moves=0;state.history=[];state.assisted=false;state.result=false;state.selected=board().stones.find(id=>!board().anchors.includes(id));browseIndex=index;
+  $('battlePanel').hidden=false;$('resultPanel').hidden=true;createBoard();setScreen('battle');
+  if(ensureScene())scene.load(board(),state.positions,progress.theme);
+  window.WonderAnalytics?.track?.('stage_start',{game_id:'animal-magnet-meadow',stage_id:`animal-magnet-meadow-${index+1}`});
+  render(false);status('ready');sound('game.start');$('stone-'+state.selected).focus({preventScroll:true});
+}
+function render(animate=true) {
+  $('sharedBattleStage').textContent=copy('stageLabel',{n:state.round+1});$('sharedBattleMoves').textContent=copy('moves',{n:state.moves});
+  $('battleHeading').textContent=locales[locale].arcs[board().arc-1];
+  $('relationBadge').textContent=(board().relation==='flip'?'⇄ ':'')+copy(relationAt(board(),state.moves)==='pull'?'relationPull':'relationPush');
+  $('relationBadge').title=mechanicLabel(board());
+  $('undoBtn').disabled=!state.history.length;$('checkBtn').dataset.ready=String(solved(board(),state.positions));
+  for(const id of board().stones){const el=$('stone-'+id);el.setAttribute('aria-pressed',String(state.selected===id));el.setAttribute('aria-label',`${id.toUpperCase()} · ${copy('slot',{number:state.positions[id]+1})}${board().anchors.includes(id)?' · '+copy('anchor'):''}`);el.dataset.position=state.positions[id];$('targetText').querySelector(`[data-stone="${id}"]`).dataset.matched=state.positions[id]===board().target[id];}
+  $('magnetTrack').dataset.stage=state.round+1;$('magnetTrack').dataset.moves=state.moves;$('magnetTrack').dataset.relation=relationAt(board(),state.moves);
+  clearPreview();scene?.update(state.positions,state.selected,animate);
+}
+function select(id) {
+  state.selected=id;render(false);status(board().anchors.includes(id)?'anchor':'selected',{id:id.toUpperCase()});
+}
+function clearPreview() {
+  for(const el of $('slotGrid').children){delete el.dataset.candidate;delete el.dataset.invalid;}
+  scene?.preview(null);
+}
+function preview(destination,showStatus=true) {
+  if(!active())return;clearPreview();const next=move(board(),state.positions,state.moves,state.selected,destination);
+  const dock=$('slotGrid').children[destination];if(dock)dock.dataset[next.ok?'candidate':'invalid']='true';
+  if(next.ok){scene?.preview(next.positions);if(showStatus)status('preview',{route:board().stones.map(id=>`${id.toUpperCase()}${next.positions[id]+1}`).join(' · ')});}
+  else if(next.reason!=='same'&&showStatus)status(next.reason,{},'error');
+  return next;
+}
+function commit(id,destination) {
+  if(!active())return;
+  const next=move(board(),state.positions,state.moves,id,destination);
+  if(!next.ok){render();if(next.reason!=='same'){status(next.reason,{},'error');sound('feedback.error');effect($('battleStatus'),true);}return;}
+  state.history.push({positions:{...state.positions},moves:state.moves});state.positions=next.positions;state.moves=next.moves;render();
+  const complete=solved(board(),state.positions);status(complete?'aligned':'selected',{id:state.selected.toUpperCase()},complete?'success':'');sound(complete?'puzzle.match':'board.move');
+}
+function nearest(event) {
+  const rect=$('magnetTrack').getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)return -1;
+  const x=(event.clientX-rect.left)*$('magnetTrack').clientWidth/rect.width,y=(event.clientY-rect.top)*$('magnetTrack').clientHeight/rect.height;
+  const distances=layout.pads.map(p=>Math.hypot(p.x-x,p.y-y));const nearest=distances.indexOf(Math.min(...distances));return distances[nearest]<=76?nearest:-1;
+}
+function cancelDrag() {
+  const drag=state.drag;state.drag=null;
+  if(drag?.element.hasPointerCapture(drag.pointerId))drag.element.releasePointerCapture(drag.pointerId);
+  scene?.settle();clearPreview();
+}
+$('magnetTrack').addEventListener('pointermove',event=>{
+  const drag=state.drag;if(!drag||drag.pointerId!==event.pointerId||!active())return;
+  if(Math.hypot(event.clientX-drag.startX,event.clientY-drag.startY)>6)drag.moved=true;
+  if(!drag.moved)return;
+  const destination=nearest(event);if(destination>=0)preview(destination);else clearPreview();
+  const rect=$('magnetTrack').getBoundingClientRect();scene?.drag(drag.id,(event.clientX-rect.left)*$('magnetTrack').clientWidth/rect.width,(event.clientY-rect.top)*$('magnetTrack').clientHeight/rect.height);
+});
+$('magnetTrack').addEventListener('pointerup',event=>{
+  const drag=state.drag;if(!drag||drag.pointerId!==event.pointerId)return;const destination=nearest(event);state.drag=null;
+  if(drag.element.hasPointerCapture(drag.pointerId))drag.element.releasePointerCapture(drag.pointerId);
+  if(drag.moved&&destination>=0)commit(drag.id,destination);else{render();if(drag.moved)status('outside',{},'error');}
+});
+$('magnetTrack').addEventListener('pointercancel',cancelDrag);
+$('magnetTrack').addEventListener('lostpointercapture',()=>{if(state.drag)cancelDrag();});
+$('magnetTrack').addEventListener('keydown',event=>{
+  if(!active())return;
+  const key=event.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(key)){
+    event.preventDefault();const current=event.target.dataset.dock!==undefined?Number(event.target.dataset.dock):state.positions[state.selected];
+    let destination=current;
+    if(key==='ArrowLeft'||key==='ArrowRight')destination=Math.max(0,Math.min(board().boardSize-1,current+(key==='ArrowRight'?1:-1)));
+    else {const point=layout.pads[current];const candidates=layout.pads.map((p,i)=>({p,i})).filter(({p})=>key==='ArrowDown'?p.y>point.y+20:p.y<point.y-20).sort((a,b)=>(Math.abs(a.p.x-point.x)+Math.abs(a.p.y-point.y))-(Math.abs(b.p.x-point.x)+Math.abs(b.p.y-point.y)));destination=candidates[0]?.i??current;}
+    $('slotGrid').children[destination].focus();
+  }else if(key==='Escape'){event.preventDefault();clearPreview();$('stone-'+state.selected).focus();}
+});
+$('undoBtn').addEventListener('click',()=>{if(!active()||!state.history.length)return;cancelDrag();const old=state.history.pop();state.positions=old.positions;state.moves=old.moves;render();status('ready');sound('board.undo');});
+$('resetBtn').addEventListener('click',()=>{if(active()){startRound(state.round);sound('board.undo');}});
+$('hintBtn').addEventListener('click',()=>{
+  if(!active())return;cancelDrag();const path=solution(board(),state.positions,state.moves);if(!path?.length){status(solved(board(),state.positions)?'aligned':'noRoute');return;}
+  state.assisted=true;state.selected=path[0].id;render(false);preview(path[0].destination,false);status('hintStep',{id:path[0].id.toUpperCase(),n:path[0].destination+1});sound('feedback.hint');
+});
+function persist(next) {
+  try {localStorage.setItem(progressKey,JSON.stringify(next));progress=next;return true;}catch{return false;}
+}
+function finish() {
+  if(!active())return;if(!solved(board(),state.positions)){status('incorrect',{},'error');sound('feedback.error');effect($('battleStatus'),true);return;}
+  const optimal=solution(board()).length;const stars=Math.min(state.assisted?2:3,state.moves===optimal?3:state.moves<=optimal+2?2:1);
+  const latest=normalizeProgress(readJSON(progressKey)||progress,readJSON(legacyKey)||[]);
+  const next={...latest,theme:progress.theme,completed:[...new Set([...latest.completed,state.round])].sort((a,b)=>a-b),best:{...latest.best,[state.round]:Math.min(latest.best[state.round]||Infinity,state.moves)},stars:{...latest.stars,[state.round]:Math.max(latest.stars[state.round]||0,stars)}};
+  if(!persist(next)){status('unsaved',{},'error');sound('feedback.error');return;}
+  state.result=true;settle();scene?.pause(true);$('battlePanel').hidden=true;$('resultPanel').hidden=false;
+  $('resultHeading').textContent=copy(state.round===29?'finish':'complete');$('resultStars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);$('resultStars').setAttribute('aria-label',copy('mastery',{n:stars}));
+  $('resultText').textContent=copy('saved');$('resultStats').replaceChildren();
+  for(const text of [copy('moves',{n:state.moves}),copy('best',{n:progress.best[state.round]}),copy('optimal',{n:optimal})]){const span=document.createElement('span');span.textContent=text;$('resultStats').append(span);}
+  $('resultPrimaryBtn').hidden=state.round===29;updateProgress();effect($('resultPanel'));sound('result.win');$('resultHeading').focus();
+  const reward=window.WonderAnalytics?.completeStage?.(`animal-magnet-meadow-${state.round+1}`);
+  window.WeightPlayScreenFrame?.showResultGet?.('animal-magnet-meadow',reward?.credited===true);
+}
+$('checkBtn').addEventListener('click',finish);
+function openDialog(id) {settle();lastFocus=document.activeElement;$(id).showModal();effect($(id));}
+function closeDialog(id) {$(id).close();lastFocus?.focus({preventScroll:true});}
+function toMap(){state.result=false;browseIndex=nextIndex();setScreen('stage');}
+$('startBtn').addEventListener('click',toMap);$('mapBtn').addEventListener('click',toMap);$('stageTabButton').addEventListener('click',()=>{});
+$('stageBackBtn').addEventListener('click',()=>setScreen('main'));
+$('battleBackBtn').addEventListener('click',()=>{if(state.result||!state.moves)toMap();else openDialog('leaveDialog');});
+$('keepPlayingBtn').addEventListener('click',()=>closeDialog('leaveDialog'));
+$('leaveConfirmBtn').addEventListener('click',()=>{closeDialog('leaveDialog');toMap();});
+$('resultMapBtn').addEventListener('click',toMap);$('resultPrimaryBtn').addEventListener('click',()=>startRound(state.round+1));$('resultHomeBtn').addEventListener('click',()=>startRound(state.round));
+$('reloadBtn').addEventListener('click',()=>location.reload());$('recoveryMapBtn').addEventListener('click',toMap);
+function updateGarden(){
+  const owned=ownsAmber(localStorage);$('walletBalance').textContent=copy('balance',{n:window.WeightPlayWallet?.read().diamonds||0});
+  $('amberLabel').textContent=copy(owned?(progress.theme==='amber'?'equipped':'equip'):'buy');$('moonBtn').textContent=copy('moon')+(progress.theme==='moon'?' ✓':'');
+  $('amberBtn').disabled=purchaseBusy||owned&&progress.theme==='amber';$('purchaseBtn').disabled=purchaseBusy;
+}
+function equip(theme){const next={...progress,theme};if(!persist(next)){$('gardenStatus').textContent=copy('storageError');return;}$('gardenStatus').textContent=copy('equipped');updateGarden();effect($('gardenStatus'));}
+$('gardenBtn').addEventListener('click',()=>{$('purchaseConfirm').hidden=true;$('gardenStatus').textContent='';updateGarden();openDialog('gardenDialog');});
+$('gardenCloseBtn').addEventListener('click',()=>closeDialog('gardenDialog'));
+$('moonBtn').addEventListener('click',()=>equip('moon'));
+$('amberBtn').addEventListener('click',()=>{if(ownsAmber(localStorage))equip('amber');else{$('purchaseConfirm').hidden=false;$('purchaseCancelBtn').focus();}});
+$('purchaseCancelBtn').addEventListener('click',()=>{$('purchaseConfirm').hidden=true;$('amberBtn').focus();});
+$('purchaseBtn').addEventListener('click',async()=>{
+  if(purchaseBusy)return;purchaseBusy=true;updateGarden();
+  const operation=()=>unlockAmber(localStorage,window.WeightPlayWallet);
+  let outcome;try{outcome=navigator.locks?await navigator.locks.request('weightplay-magnet-meadow-amber',operation):operation();}catch{outcome={ok:false,reason:'storageError'};}
+  purchaseBusy=false;$('purchaseConfirm').hidden=true;
+  if(outcome.ok){equip('amber');$('gardenStatus').textContent=copy('purchased');if(!outcome.alreadyOwned)sound('shop.purchase');}
+  else{$('gardenStatus').textContent=copy(outcome.reason);sound('feedback.error');}
+  updateGarden();$('gardenStatus').tabIndex=-1;$('gardenStatus').focus();
+});
+for(const dialog of document.querySelectorAll('dialog'))dialog.addEventListener('close',()=>{lastFocus?.focus({preventScroll:true});});
+document.addEventListener('keydown',event=>{
+  if(event.key==='Tab'&&state.result&&state.screen==='battle'){
+    const buttons=[...$('resultPanel').querySelectorAll('button:not([hidden])')];const first=buttons[0],last=buttons.at(-1);
+    if(event.shiftKey&&(document.activeElement===first||document.activeElement===$('resultHeading'))){event.preventDefault();last.focus();}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
   }
-
-  const applyLocale = (locale, animate = true) => {
-    const update = () => {
-      state.locale = localeList.includes(locale) && localeMap[locale] ? locale : "en";
-      safeSet("weightplay-locale", state.locale);
-      document.documentElement.lang = state.locale;
-      document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
-      if ($("languageSelect")) $("languageSelect").value = state.locale;
-      applyText();
-    };
-    if (animate && frame) transitionVisualUpdate(update);
-    else update();
-  };
-
-  const bind = () => {
-    $("startBtn")?.addEventListener("click", enterStage);
-    $("mapBtn")?.addEventListener("click", enterStage);
-    $("stageBackBtn")?.addEventListener("click", () => setScreen("main"));
-    $("battleBackBtn")?.addEventListener("click", (event) => {
-      if (state.resultActive) return;
-      if (!battleDirty) { enterStage(); return; }
-      event.preventDefault();
-      openLeave();
-    });
-    $("checkBtn")?.addEventListener("click", checkRound);
-    $("resetBtn")?.addEventListener("click", resetRound);
-    $("resultMapBtn")?.addEventListener("click", enterStage);
-    $("resultPrimaryBtn")?.addEventListener("click", () => {
-      if (state.round >= rounds.length - 1) return;
-      startRound(state.round + 1);
-    });
-    $("resultHomeBtn")?.addEventListener("click", () => startRound(state.round));
-    $("languageSelect")?.addEventListener("change", (event) => applyLocale(event.target.value));
-    document.addEventListener("keydown", (event) => {
-      if (!leaveOpen || !leaveLayer) return;
-      if (event.key === "Escape") {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        closeLeave(true);
-        return;
-      }
-      if (event.key !== "Tab") return;
-      const focusables = [...leaveLayer.querySelectorAll("button:not([disabled])")];
-      if (!focusables.length) return;
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
-    }, true);
-  };
-
-  const init = () => {
-    normalizeLegacyChrome();
-    createLeaveDialog();
-    bind();
-    frame = window.mountMagnetMeadowFrame();
-    const routeLocale = document.documentElement.lang;
-    const savedLocale = localeList.includes(routeLocale) && localeMap[routeLocale]
-      ? routeLocale
-      : safeGet("weightplay-locale", "en");
-    applyLocale(savedLocale, false);
-    resetRound();
-    setScreen("main");
-  };
-
-  init();
-}());
+});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)settle();scene?.pause(document.hidden||state.screen!=='battle'||state.result);});
+window.addEventListener('blur',settle);
+window.addEventListener('focus',()=>scene?.pause(document.hidden||state.screen!=='battle'||state.result));
+window.addEventListener('pagehide',event=>{settle();if(!event.persisted){stageController?.destroy?.();scene?.dispose();audio?.dispose();}});
+window.addEventListener('pageshow',()=>scene?.pause(document.hidden||state.screen!=='battle'||state.result));
+window.addEventListener('storage',event=>{if([progressKey,legacyKey].includes(event.key)){progress=normalizeProgress(readJSON(progressKey)||{},readJSON(legacyKey)||[]);updateProgress();if(state.screen==='stage')renderStages();}if($('gardenDialog').open)updateGarden();});
+let tutorialFocus=null;
+window.addEventListener('weightplay:tutorial-open',event=>{if(event.detail.gameId!=='animal-magnet-meadow')return;settle();tutorialFocus=document.activeElement;$('gameFrame').inert=true;$('guideScreen').inert=true;document.querySelector('.wp-tutorial-close')?.focus();});
+window.addEventListener('weightplay:tutorial-close',event=>{if(event.detail.gameId!=='animal-magnet-meadow')return;$('gameFrame').inert=false;$('guideScreen').inert=false;tutorialFocus?.focus({preventScroll:true});});
+document.addEventListener('keydown',event=>{const tutorial=document.querySelector('.wp-tutorial-backdrop');if(!tutorial)return;const first=tutorial.querySelector('.wp-tutorial-close'),last=tutorial.querySelector('.wp-tutorial-action');if(event.key==='Escape'){event.preventDefault();first.click();}else if(event.key==='Tab'){if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}});
+const tutorialStyle=document.createElement('link');tutorialStyle.rel='stylesheet';tutorialStyle.href='/src/tutorial.css';document.head.append(tutorialStyle);
+const tutorialScript=document.createElement('script');tutorialScript.src='/src/tutorial.js?v=20261022-magnet-v17';document.body.append(tutorialScript);
+setScreen('main');

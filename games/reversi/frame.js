@@ -4,8 +4,10 @@
   window.mountReversiI9 = (app, effectsReady) => {
     const loader = window.WeightPlayGameEntryLoader;
     const root = app.root, main = app.main, battle = app.battle;
+    root.querySelector('.logic-lab').className='reversi-scenes';
     const q = selector => root.querySelector(selector);
     const start = q('#startButton'), back = q('#battleBack');
+    back.removeAttribute('data-wp-battle-utility');
     const mainHeader = main.querySelector('header'), battleHeader = battle.querySelector('header');
     const content = q('.logic-battle-wrap'), hero = q('.logic-hero');
     const leave = q('#logicLeave'), stay = q('#leaveContinue'), exit = q('#leaveStages');
@@ -45,6 +47,7 @@
     main.querySelector('.logic-guide')?.remove();
     app.stage.remove();
     app.board.className='reversi-board-host';
+    app.board.setAttribute('role','group');app.board.setAttribute('aria-label',official);
     battle.className = 'reversi-battle'; content.className = 'reversi-play-content';
     const playfield = content.querySelector('.logic-board-panel');
     playfield.className = 'reversi-board-window'; playfield.dataset.wpScrollOwner = '';
@@ -68,7 +71,7 @@
     const sync = () => {
       const blocked = covered !== null;
       leave.hidden = covered !== 'leave'; result.hidden = covered !== 'result';
-      content.inert = blocked; app.board.inert = blocked || ended;
+      content.inert = blocked; app.board.inert = blocked;
       q('#logicHint').disabled = ended;
       frame.activate(scene,{covered:blocked});
       if (guide) {guide.hidden=scene!=='main';guide.inert=scene!=='main';}
@@ -112,6 +115,21 @@
       &&!battle.querySelector('.wp-frame-popover:not([hidden])'))app.getActiveGame()?.resume?.();};
     window.addEventListener('weightplay:interaction-state',()=>battle.querySelector('.wp-frame-popover:not([hidden])')?pause():resume());
     window.addEventListener('blur',pause);window.addEventListener('focus',resume);
+    content.addEventListener('focusin',()=>{
+      if(battle.querySelector('.wp-frame-popover:not([hidden])'))frame.close();
+    });
+    app.board.addEventListener('focusin',event=>{
+      const cell=event.target.closest('.logic-cell');if(!cell)return;
+      app.board.querySelectorAll('.logic-cell').forEach(node=>{node.tabIndex=node===cell?0:-1;});
+    });
+    app.board.addEventListener('keydown',event=>{
+      const cell=event.target.closest('.logic-cell');if(!cell||ended)return;
+      const cells=[...cell.parentElement.children],index=cells.indexOf(cell),rtl=document.documentElement.dir==='rtl';
+      const step={ArrowLeft:rtl?1:-1,ArrowRight:rtl?-1:1,ArrowUp:-8,ArrowDown:8}[event.key];
+      if(step===undefined)return;
+      const next=index+step;if(next<0||next>=64||((event.key==='ArrowLeft'||event.key==='ArrowRight')&&Math.floor(next/8)!==Math.floor(index/8)))return;
+      event.preventDefault();cells[next].focus({preventScroll:true});cells[next].scrollIntoView({block:'nearest',inline:'nearest'});
+    });
     document.addEventListener('visibilitychange',()=>document.hidden?pause():resume());
     sync();
     let settled=false,loaded=0;const abort=new AbortController();

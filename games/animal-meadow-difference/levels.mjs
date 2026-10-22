@@ -40,8 +40,9 @@ const rows = [
   ['Almost a mirror','幾乎一模一樣','mixed','flowers:missing mushrooms:count cottage:shape lantern:count tree:color'],
   ['The grand garden','草地觀察大師','mixed','tree:shape cottage:color pond:count flowers:missing rabbit:direction lantern:count'],
 ];
+const simplifiedNames=['初见小惊喜','好奇心小径','花园小宝藏','再看一眼','春日观察家','睡莲的来信','安静的水岸','水波数数看','水边的路标','池塘小侦探','琥珀色来客','丰收的木箱','回家是哪边？','藏起来的收成','果园守望者','第一盏营灯','暮色中的访客','营地点点名','不见的小包裹','暮光巡守员','冬日悄悄话','雪地里的脚印','霜花盛开时','静悄悄的花园','冬日博物家','花灯邀请函','入夜后的色彩','最后一份礼物','几乎一模一样','草地观察大师'];
 export const LEVELS = Object.freeze(rows.map((row,i)=>Object.freeze({
-  id:i+1, en:row[0], zh:row[1], lesson:row[2], biome:Math.floor(i/5), layout:i%5,
+  id:i+1, en:row[0], zh:row[1], zhHans:simplifiedNames[i], lesson:row[2], biome:Math.floor(i/5), layout:i%5,
   changes:Object.freeze(Object.fromEntries(row[3].split(' ').map(v=>v.split(':')))), checkpoint:(i+1)%5===0,
 })));
 export const SAVE_KEY = 'weightplay-meadow-garden-v13';

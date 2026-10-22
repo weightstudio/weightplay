@@ -1,8 +1,8 @@
 /* Localized authored data for the common Interface 9 Stage selector. */
-window.MagnetMeadowStageConfig = ({ rounds, unlocked, completed, copy, roundTitle, roundHint, mechanicLabel }) => ({
+window.MagnetMeadowStageConfig = ({ rounds, unlocked, completed, mastery, rewardState, copy, roundTitle, roundHint, mechanicLabel }) => ({
   gameId: 'animal-magnet-meadow',
   count: rounds.length,
-  poster: '/games/animal-magnet-meadow/assets/animal-magnet-meadow-cover-v1.png',
+  poster: '/assets/interface7-redrawn/animal-magnet-meadow.webp',
   stage(index) {
     const round = rounds[index];
     const locked = !unlocked(index);
@@ -14,12 +14,13 @@ window.MagnetMeadowStageConfig = ({ rounds, unlocked, completed, copy, roundTitl
       kicker: copy('arc', { number: round.arc }),
       title: copy('round', { number: index + 1, total: rounds.length }),
       subtitle: title,
-      status: locked ? '—' : cleared ? copy('completed') : copy('readyStage'),
+      status: locked ? '—' : cleared ? `${copy('completed')} ${'★'.repeat(mastery?.(index) || 0)}` : copy('readyStage'),
       summary: hint,
       details: [hint, mechanicLabel(round)],
       locked,
       cleared,
-      poster: '/games/animal-magnet-meadow/assets/animal-magnet-meadow-cover-v1.png',
+      rewardState: rewardState(index),
+      poster: '/assets/interface7-redrawn/animal-magnet-meadow.webp',
       posterPosition: 'center',
     };
   },

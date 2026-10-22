@@ -12,9 +12,8 @@ function init() {
   const frame=window.MeadowDifferenceFrame.frame;
   const t=(key,vars={})=>String(dictionaries[locale][key]??dictionaries.en[key]??key).replace(/\{(\w+)\}/g,(_,k)=>vars[k]??'');
   const sound=cue=>window.WeightPlayAudio?.play(cue),reduce=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const traditional='園見驚觀徑寶蓮數標偵豐邊營點員語裡靜燈請後禮樣來個顏';
-  const simplified='园见惊观径宝莲数标侦丰边营点员语里静灯请后礼样来个颜';
-  const title=level=>locale==='en'?level.en:locale==='zh-Hant'?level.zh:locale==='zh-Hans'?[...level.zh].map(c=>traditional.includes(c)?simplified[traditional.indexOf(c)]:c).join(''):`${dictionaries[locale].biomes[level.biome]} ${level.layout+1}`;
+  const title=level=>locale==='en'?level.en:locale==='zh-Hant'?level.zh:locale==='zh-Hans'?level.zhHans:`${dictionaries[locale].biomes[level.biome]} ${level.layout+1}`;
+  const paused=()=>Boolean(modal||document.hidden||document.querySelector('.wp-frame-popover:not([hidden])'));
   const persist=()=>{saveOK=storage.set(SAVE_KEY,JSON.stringify(save));};
   function updateMain(){const done=save.stars.filter(Boolean).length;$('mainBestCount').textContent=`${done} / 30`;$('stageProgress').textContent=`${t('best')} ${done} / 30`;}
   function translate(){
@@ -25,7 +24,13 @@ function init() {
     $('homeFromStage').setAttribute('aria-label',t('home'));$('homeFromBattle').setAttribute('aria-label',t('stages'));
     $('beforeGarden').setAttribute('aria-label',t('before'));$('afterGarden').setAttribute('aria-label',t('after'));updateMain();frame.refresh?.();
   }
-  function render(){cancelAnimationFrame(renderFrame);renderFrame=requestAnimationFrame(()=>{if(screen==='battle'&&world)world.render([$('beforeGarden'),$('afterGarden')]);});}
+  function render(){cancelAnimationFrame(renderFrame);renderFrame=requestAnimationFrame(()=>{
+    if(screen!=='battle'||!world)return;
+    const layout=$('compareLayout'),wide=matchMedia('(min-aspect-ratio:1/1)').matches,gap=parseFloat(getComputedStyle(layout).gap)||14;
+    const width=wide?Math.min((layout.clientWidth-gap)/2,layout.clientHeight*1.5):Math.min(layout.clientWidth,(layout.clientHeight-gap)*.75);
+    for(const id of ['beforePanel','afterPanel'])$(id).style.maxWidth=`${Math.max(1,width)}px`;
+    world.render([$('beforeGarden'),$('afterGarden')]);
+  });}
   const resize=new ResizeObserver(render);resize.observe($('compareLayout'));
   function cancelEffects(){clearTimeout(finishTimer);finishTimer=0;document.querySelectorAll('.garden-particle,.tap-echo').forEach(n=>n.remove());document.querySelectorAll('.is-hint').forEach(n=>n.classList.remove('is-hint'));}
   function changeScreen(next){
@@ -50,7 +55,15 @@ function init() {
       panel.replaceChildren();OBJECTS.forEach((id,index)=>{const point=targets[side][id],button=document.createElement('button');
         button.type='button';button.className='garden-target';button.dataset.object=id;button.style.left=`${point.x}%`;button.style.top=`${point.y}%`;
         button.setAttribute('aria-label',`${t(side?'after':'before')} · ${dictionaries[locale].objects[index]}`);
-        button.addEventListener('click',()=>pick(id,button));panel.append(button);
+        button.addEventListener('click',event=>{
+          // Enlarged touch targets may touch on small screens. Resolve a pointer
+          // to the nearest projected object instead of letting DOM order steal it.
+          const target=event.detail===0?button:[...panel.children].reduce((best,node)=>{
+            const r=node.getBoundingClientRect(),distance=Math.hypot(event.clientX-r.x-r.width/2,event.clientY-r.y-r.height/2);
+            return distance<best.distance?{node,distance}:best;
+          },{node:button,distance:Infinity}).node;
+          pick(target.dataset.object,target);
+        });panel.append(button);
       });
     });
   }
@@ -70,16 +83,16 @@ function init() {
     for(let i=0;i<6;i++){const p=document.createElement('i');p.className='garden-particle';p.style.setProperty('--dx',`${Math.cos(i*Math.PI/3)*35}px`);p.style.setProperty('--dy',`${Math.sin(i*Math.PI/3)*35-12}px`);p.style.setProperty('--turn',`${i*47}deg`);button.append(p);p.addEventListener('animationend',()=>p.remove(),{once:true});}
   }
   function pick(id,button){
-    if(screen!=='battle'||modal||pendingFinish||document.hidden||run.settled||document.querySelector('.wp-frame-popover:not([hidden])'))return;
+    if(screen!=='battle'||paused()||pendingFinish||run.settled)return;
     const result=choose(run,id);if(result==='ignored')return;
     $('feedback').className=`feedback ${result==='miss'?'is-wrong':'is-success'}`;$('feedback').textContent=t(result==='miss'?'wrong':'correct');
     sound(result==='miss'?'feedback.error':'feedback.success');
     if(result==='miss')echo(button,'miss');else document.querySelectorAll(`.garden-target[data-object="${id}"]`).forEach(n=>{n.classList.remove('is-hint');n.classList.add('is-found');n.setAttribute('aria-pressed','true');n.setAttribute('aria-disabled','true');echo(n,'success');});
     if(result==='complete'){pendingFinish=true;scheduleFinish();}updateHUD();
   }
-  function scheduleFinish(){clearTimeout(finishTimer);if(pendingFinish&&!modal&&!document.hidden)finishTimer=setTimeout(finish,reduce()?180:720);}
+  function scheduleFinish(){clearTimeout(finishTimer);if(pendingFinish&&!paused())finishTimer=setTimeout(finish,reduce()?180:720);}
   function finish(){
-    if(!pendingFinish||modal||document.hidden)return;
+    if(!pendingFinish||paused())return;
     const stars=settle(run,save);if(stars===null)return;pendingFinish=false;persist();updateMain();
     $('resultStars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);$('resultSummary').textContent=t('summary',{total:run.found.length});
     $('resultMisses').textContent=String(run.mistakes);$('resultHints').textContent=String(run.hints);$('saveNotice').hidden=saveOK;$('saveNotice').textContent=t('saveWarning');
@@ -95,13 +108,19 @@ function init() {
   function closeModal(){modal='';$('leaveConfirm').hidden=true;$('battleView').querySelector('.battle-workspace').inert=false;frame.activate('battle',{covered:run?.settled});focusBefore?.focus();scheduleFinish();}
   function renderFailure(){cancelEffects();if(screen==='battle'&&!modal)openModal('error');}
   function trap(event,container){if(event.key!=='Tab')return;const items=[...container.querySelectorAll('button:not([disabled])')].filter(n=>!n.hidden);if(!items.length)return;const at=items.indexOf(document.activeElement);if(event.shiftKey&&at<=0){event.preventDefault();items.at(-1).focus();}else if(!event.shiftKey&&at===items.length-1){event.preventDefault();items[0].focus();}}
-  listen($('hintButton'),'click',()=>{if(modal||run.settled||pendingFinish||run.hints>=2)return;const id=Object.keys(run.level.changes).find(id=>!run.found.includes(id));if(!id)return;run.hints++;updateHUD();document.querySelectorAll('.is-hint').forEach(n=>n.classList.remove('is-hint'));document.querySelectorAll(`.garden-target[data-object="${id}"]`).forEach(n=>n.classList.add('is-hint'));$('feedback').textContent=t('hint');sound('feedback.hint');});
+  listen($('hintButton'),'click',()=>{if(paused()||run.settled||pendingFinish||run.hints>=2)return;const id=Object.keys(run.level.changes).find(id=>!run.found.includes(id));if(!id)return;run.hints++;updateHUD();document.querySelectorAll('.is-hint').forEach(n=>n.classList.remove('is-hint'));document.querySelectorAll(`.garden-target[data-object="${id}"]`).forEach(n=>n.classList.add('is-hint'));$('feedback').textContent=t('hint');sound('feedback.hint');});
   listen($('helpButton'),'click',()=>openModal('help'));listen($('startButton'),'click',()=>{selected=save.unlocked-1;changeScreen('stage');});listen($('stageTab'),'click',()=>stageUI?.refresh(selected));
   listen($('homeFromStage'),'click',()=>changeScreen('main'));listen($('homeFromBattle'),'click',()=>run?.settled?changeScreen('stage'):openModal('leave'));
-  listen($('continuePlaying'),'click',()=>{if(modal==='error'){closeModal();world?.destroy();world=null;start(selected);}else closeModal();});listen($('leaveBattle'),'click',()=>{closeModal();changeScreen('stage');});
+  listen($('continuePlaying'),'click',()=>{if(modal==='error'){
+    closeModal();world?.destroy();world=null;
+    // A lost WebGL context belongs to its canvas. Retry on a fresh canvas so
+    // recovery does not accidentally request that same permanently lost context.
+    const canvas=$('sceneCanvas');canvas.replaceWith(canvas.cloneNode(false));start(selected);
+  }else closeModal();});listen($('leaveBattle'),'click',()=>{closeModal();changeScreen('stage');});
   listen($('homeFromResult'),'click',()=>{selected=save.unlocked-1;changeScreen('stage');});listen($('replayButton'),'click',()=>start(selected));listen($('nextButton'),'click',()=>start(selected+1));
   listen(document,'keydown',e=>{if(modal){if(e.key==='Escape'&&modal!=='error'){e.preventDefault();closeModal();}trap(e,$('leaveConfirm'));}else if(run?.settled&&screen==='battle')trap(e,$('resultView'));});
   listen(document,'visibilitychange',()=>{if(document.hidden)cancelEffects();else{scheduleFinish();render();}});
+  listen(window,'weightplay:interaction-state',scheduleFinish);
   listen($('localeSelect'),'change',()=>{const next=$('localeSelect').value;if(!dictionaries[next])return;locale=next;storage.set('weightPlayLocale',locale);window.WonderI18n?.setLocale?.(locale,{navigate:false,dispatch:false});const segment=Object.keys(segments).find(k=>segments[k]===locale);const preview=new URLSearchParams(location.search).get('preview')==='1'?'?preview=1':'';history.replaceState(history.state,'',`/${segment}/games/animal-meadow-difference/${preview}`);translate();});
   listen(window,'pagehide',e=>{if(e.persisted)return;cancelEffects();cancelAnimationFrame(renderFrame);resize.disconnect();stageUI?.destroy?.();world?.destroy();abort.abort();});
   window.WeightPlayAudio?.preload(['game.start','feedback.success','feedback.error','feedback.hint','result.win']);translate();changeScreen('main');window.WeightPlayGameEntryLoader?.ready?.();

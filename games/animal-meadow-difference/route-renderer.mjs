@@ -8,7 +8,7 @@ export function renderMeadowRoute(locale){
   const c=context.window.MEADOW_FIND_LOCALES[locale];if(!c)throw new Error('MEADOW_ROUTE_LOCALE');
   return fs.readFileSync(new URL('index.html',root),'utf8')
     .replace(/<script data-wp-locale-route>[\s\S]*?<\/script>/,'')
-    .replace('<html lang="en" dir="ltr">',`<html lang="${locale}" dir="${locale==='ar'?'rtl':'ltr'}">`)
+    .replace(/<html[^>]*>/,`<html lang="${locale}" dir="${locale==='ar'?'rtl':'ltr'}" data-wp-official-name>`)
     .replace(/<title>.*?<\/title>/,`<title>${escape(c.title)} | WeightPlay</title>`)
     .replace(/(<meta name="description" content=")[^"]*(">)/,`$1${escape(c.subtitle)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*("\s*\/>)/,`$1https://weightplay.com/${segments[locale]}/games/animal-meadow-difference/$2`)

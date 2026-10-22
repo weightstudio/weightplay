@@ -1320,7 +1320,25 @@
         : currentMoves < move.beforeMoves ? "mobilityDown" : "mobilitySteady";
       return fillTemplate(text(reversiPayoff[key]), { count: currentMoves });
     }
-    function render() { board.replaceChildren(); const moves = new Set(legal(player)); for (let i = 0; i < 64; i += 1) { const b = cell("", `${boardState[i] === 1 ? "black" : boardState[i] === 2 ? "white" : ""} ${moves.has(i) && !locked ? "legal" : ""}`, `Row ${Math.floor(i / 8) + 1}, Column ${(i % 8) + 1}`, () => play(i)); if (boardState[i]) { const disc = document.createElement("span"); disc.className = "disc"; b.append(disc); } board.append(b); } setChip(`${t("player")}: ${boardState.filter((v) => v === 1).length} · ${t("opponent")}: ${boardState.filter((v) => v === 2).length}`); }
+    function render() {
+      const moves = new Set(legal(player));
+      if (board.children.length !== 64) {
+        board.replaceChildren();
+        for (let i = 0; i < 64; i += 1) board.append(cell("", "", `Row ${Math.floor(i / 8) + 1}, Column ${(i % 8) + 1}`, () => play(i)));
+      }
+      for (let i = 0; i < 64; i += 1) {
+        const button = board.children[i], color = boardState[i];
+        button.className = `logic-cell ${color === 1 ? "black" : color === 2 ? "white" : ""} ${moves.has(i) && !locked ? "legal" : ""}`;
+        button.disabled = ended;
+        button.setAttribute("aria-disabled", String(ended || locked || !moves.has(i)));
+        if (button.dataset.discColor !== String(color)) {
+          button.replaceChildren();
+          if (color) { const disc = document.createElement("span"); disc.className = "disc"; button.append(disc); }
+          button.dataset.discColor = String(color);
+        }
+      }
+      setChip(`${t("player")}: ${boardState.filter((v) => v === 1).length} · ${t("opponent")}: ${boardState.filter((v) => v === 2).length}`);
+    }
     function play(i) { if (paused || stopped || ended || locked || !legal(player).includes(i)) return; const beforeMoves = legal(player).length; boardState[i] = 1; flips(i, 1).forEach((n) => { boardState[n] = 1; }); const corner = cornerTraps.get(i); playerPayoff = { index: i, beforeMoves, afterMoves: legal(player).length, cornerOpen: corner !== undefined && boardState[corner] === 0 }; locked = true; render(); scheduleAi(); }
     function hardScore(i) { const row = Math.floor(i / 8), col = i % 8; let score = flips(i, 2).length * 4 + 12 - Math.abs(row - 3.5) - Math.abs(col - 3.5); if (corners.has(i)) score += 1000; else if (edges.has(i)) score += 120; const corner = cornerTraps.get(i); if (corner !== undefined && !boardState[corner]) score -= 240; return score; }
     function chooseAiMove(moves) { const ranked = moves.map((index) => ({ index, captures: flips(index, 2).length, hard: hardScore(index) })); ranked.sort((a, b) => difficulty === "easy" ? a.captures - b.captures || b.index - a.index : difficulty === "medium" ? b.captures - a.captures || a.index - b.index : b.hard - a.hard || b.captures - a.captures || a.index - b.index); return ranked[0]; }

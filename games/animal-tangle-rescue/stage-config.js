@@ -2,12 +2,14 @@
 (() => {
   'use strict';
   const scriptUrl = document.currentScript?.src || document.baseURI;
-  const poster = new URL('/assets/interface7-redrawn/animal-tangle-rescue.webp', scriptUrl).href;
+  const poster = () => new URL(document.querySelector('[data-wp-frame-poster]')?.dataset.fallbackUsed
+    ? '/assets/interface7-redrawn/animal-tangle-rescue.png'
+    : '/assets/interface7-redrawn/animal-tangle-rescue.webp', scriptUrl).href;
   const background = new URL('../../assets/lobby-block-atmosphere.svg', scriptUrl).href;
   window.TangleRescueStageConfig = Object.freeze({
     gameId: 'animal-tangle-rescue',
     get count() { return window.AnimalTangleRescueI9?.stageCount || 30; },
-    poster,
+    get poster() { return poster(); },
     background,
     stage(index) {
       const record = window.AnimalTangleRescueI9?.stageRecord(index);
@@ -20,7 +22,7 @@
         status: record.status,
         summary: record.summary,
         details: [record.hint],
-        poster,
+        poster: poster(),
         locked: record.locked,
         cleared: record.cleared,
       };

@@ -1,11 +1,17 @@
 import {STAGES,DIRECTIONS,SEALS,CAMPAIGN_KEY,candidates,matches,normalizeSave,unlocked,rating,settle,wrap} from './puzzles.mjs?v=26';
 import {createCanopyScene} from './canopy-scene.mjs?v=26';
+import {purchaseAurora} from './purchase.mjs?v=26';
 
 const $=id=>document.getElementById(id);
 const copy=window.CANOPY_COMPASS_LOCALES;
 const routes={en:'en','zh-tw':'zh-Hant','zh-cn':'zh-Hans',ja:'ja',ko:'ko',es:'es','pt-br':'pt-BR',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'};
 const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}};
-const state={locale:routes[location.pathname.split('/')[1]]||'en',screen:'main',stage:0,phase:0,selected:-1,notes:new Set(),noteMode:false,hintIndex:-1,hinted:[],mistakes:0,hints:0,trail:[],pending:null,save:normalizeSave(read(CAMPAIGN_KEY,{}))};
+const initialLocale=()=>{
+  const routed=routes[location.pathname.split('/')[1]];if(routed)return routed;
+  try{const saved=localStorage.getItem('weightPlayLocale')||localStorage.getItem('wp-locale');if(copy[saved])return saved;}catch{}
+  return 'en';
+};
+const state={locale:initialLocale(),screen:'main',stage:0,phase:0,selected:-1,notes:new Set(),noteMode:false,hintIndex:-1,hinted:[],mistakes:0,hints:0,trail:[],pending:null,save:normalizeSave(read(CAMPAIGN_KEY,{}))};
 const labels=key=>copy[state.locale]?.[key]||copy.en[key];
 const t=(key,vars={})=>Object.entries(vars).reduce((s,[k,v])=>s.replaceAll(`{${k}}`,String(v)),String(labels(key)??key));
 const dir=i=>labels('bearings')[wrap(i)];
@@ -25,7 +31,7 @@ const stage=()=>STAGES[state.stage];
 const phase=()=>stage().phases[state.phase];
 const previous=()=>state.trail.at(-1)??0;
 const settingsOpen=()=>!!document.querySelector('[data-wp-settings][aria-expanded="true"]');
-const isPlaying=()=>state.screen==='battle'&&$('result').hidden&&!modalKind&&!document.hidden&&!settingsOpen()&&!state.pending;
+const isPlaying=()=>state.screen==='battle'&&$('result').hidden&&$('renderError').hidden&&!modalKind&&!document.hidden&&!settingsOpen()&&!state.pending;
 const announce=(message,tone='')=>{$('status').textContent=message;$('status').dataset.tone=tone;};
 function notify(message){$('toast').textContent=message;$('toast').classList.add('visible');clearTimeout(notify.timer);notify.timer=setTimeout(()=>$('toast').classList.remove('visible'),2600);}
 
@@ -48,7 +54,7 @@ function updateProgress(){
 }
 function clearPending(){clearTimeout(transitionTimer);transitionTimer=0;state.pending=null;}
 function syncActivity(){
-  const covered=!!modalKind||document.hidden||settingsOpen();
+  const covered=!!modalKind||document.hidden||settingsOpen()||!$('renderError').hidden;
   scene?.setActive(state.screen==='battle'&&$('result').hidden&&!covered);
   if(covered){
     if(state.pending&&transitionTimer)state.pending.remaining=Math.max(0,state.pending.deadline-performance.now());
@@ -62,6 +68,7 @@ function syncActivity(){
 }
 function showScreen(name){
   clearPending();clearTimeout(feedbackTimer);audio?.stop();
+  clearTimeout(notify.timer);$('toast').textContent='';$('toast').classList.remove('visible');
   if(modalKind)closeModal(false);
   state.screen=name;document.body.dataset.screen=name;document.body.removeAttribute('data-wp-canopy-result');
   ['main','stage','battle'].forEach(s=>$(`${s}Screen`).hidden=s!==name);
@@ -124,7 +131,7 @@ function renderBoard(){
 function ensureScene(){
   if(scene)return;
   try{
-    scene=createCanopyScene($('scene'),points=>points.forEach((p,i)=>{const b=$(`perch${i}`);b.style.left=`${p.x}px`;b.style.top=`${p.y}px`;}),()=>{$('renderError').hidden=false;$('boardControls').inert=true;});
+    scene=createCanopyScene($('scene'),points=>points.forEach((p,i)=>{const b=$(`perch${i}`);b.style.left=`${p.x}px`;b.style.top=`${p.y}px`;}),()=>{$('renderError').hidden=false;$('boardControls').inert=true;syncActivity();});
     scene.setTheme(appearance.theme==='aurora');
   }catch(error){$('renderError').hidden=false;$('boardControls').inert=true;console.error('Canopy renderer unavailable',error);}
 }
@@ -222,15 +229,10 @@ function saveAppearance(next){localStorage.setItem(APPEARANCE_KEY,JSON.stringify
 async function buyOrEquip(){
   if(buying)return;buying=true;renderShop();
   const transaction=()=>{
-    const saved=read(APPEARANCE_KEY,{owned:false,theme:'classic'});
-    if(saved?.owned===true){saveAppearance({owned:true,theme:'aurora'});return;}
-    const wallet=window.WeightPlayWallet;if(!wallet||wallet.read().diamonds<12){notify(t('insufficient'));return;}
-    // Reserve enough storage before charging. Any synchronous delivery failure
-    // refunds through the shared wallet; the game never writes wallet storage.
-    localStorage.setItem(APPEARANCE_KEY,JSON.stringify({owned:false,theme:'classic',reserved:'................................'}));
-    if(!wallet.spendDiamonds(12)){notify(t('insufficient'));return;}
-    try{saveAppearance({owned:true,theme:'aurora'});sound('reward.upgrade');}
-    catch(error){wallet.addDiamonds(12);throw error;}
+    const result=purchaseAurora(localStorage,window.WeightPlayWallet,APPEARANCE_KEY);
+    if(result.status==='insufficient'){notify(t('insufficient'));return;}
+    appearance=result.appearance;scene?.setTheme(true);
+    if(result.status==='purchased')sound('reward.upgrade');
   };
   try{if(navigator.locks)await navigator.locks.request('weightplay-canopy-cosmetic',transaction);else transaction();}
   catch{notify(t('saveError'));}
@@ -245,6 +247,7 @@ function applyLocale(){
   for(const node of document.querySelectorAll('[data-copy]'))node.textContent=t(node.dataset.copy);
   $('localeSelect').value=state.locale;
   for(const id of ['stageBack','battleBack'])$(id).setAttribute('aria-label',t('back'));
+  $('battleScreen').setAttribute('aria-label',t('compassLabel'));
   $('board').setAttribute('aria-label',t('directionChoices'));$('compass').setAttribute('aria-label',t('compassLabel'));
   $('boardControls').setAttribute('aria-label',t('directionChoices'));
   $('notesBtn').setAttribute('aria-label',t('notes'));$('hintBtn').setAttribute('aria-label',t('hintAction'));$('helpBtn').setAttribute('aria-label',t('helpAction'));
@@ -275,7 +278,7 @@ $('resultMap').addEventListener('click',()=>{$('battleBack').disabled=false;show
 $('resultHome').addEventListener('click',()=>{$('battleBack').disabled=false;startStage(state.stage);});
 $('resultPrimary').addEventListener('click',()=>{if(stage().id<30){$('battleBack').disabled=false;startStage(state.stage+1);}});
 $('renderRetry').addEventListener('click',()=>location.reload());
-$('scene').addEventListener('canopy-render-restored',()=>{$('renderError').hidden=true;$('boardControls').inert=false;renderBoard();});
+$('scene').addEventListener('canopy-render-restored',()=>{$('renderError').hidden=true;$('boardControls').inert=false;renderBoard();syncActivity();});
 document.addEventListener('keydown',event=>{
   const dialog=modalKind?$('gameModal'):!$('result').hidden?$('result'):null;
   if(dialog){
@@ -314,7 +317,19 @@ const collectionButton=$('collectionBtn'),stageTab=$('stageTab');
 frame.commonDownButton.clear().add(collectionButton).add(stageTab);
 // Shared loader waits for actual Main image decoding and the rendered Start.
 $('app').hidden=false;showScreen('main');applyLocale();
-Promise.all([...$('mainScreen').querySelectorAll('img')].map(img=>img.decode())).then(()=>{$('loadingPanel').hidden=true;}).catch(()=>{
+function mainImageReady(img){
+  return new Promise((resolve,reject)=>{
+    const clear=()=>{img.removeEventListener('load',loaded);img.removeEventListener('error',failed);};
+    const loaded=()=>{clear();resolve();};
+    const failed=()=>{clear();reject(new Error('Main image unavailable'));};
+    if(img.complete){img.naturalWidth>0?resolve():failed();return;}
+    img.addEventListener('load',loaded);img.addEventListener('error',failed);
+  });
+}
+// Bootstrap may replace the poster source while it is loading. Listen for the
+// current image's actual load instead of treating an aborted old decode as failure.
+Promise.all([...$('mainScreen').querySelectorAll('img')].map(mainImageReady)).then(()=>{requestAnimationFrame(()=>{$('loadingPanel').hidden=true;});}).catch(()=>{
+  $('loadingPanel').classList.add('has-error');
   $('loadingPanel').textContent=t('renderError');
   const retry=document.createElement('button');retry.textContent=t('retryAction');retry.addEventListener('click',()=>location.reload());$('loadingPanel').append(retry);
 });

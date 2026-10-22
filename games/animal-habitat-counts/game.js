@@ -273,19 +273,21 @@
   }
   function openDialog(id,focus){
     closeDialog(false);dialogReturn=document.activeElement;activeDialog=$(id);activeDialog.hidden=false;
+    $(state.screen+'Screen').querySelectorAll(':scope > header,:scope > nav').forEach(node=>node.inert=true);
     if(state.screen==='battle'){$('battlePanel').inert=true;scene?.setActive(false);}
     if(state.screen==='stage'){$('stageWorkspace').inert=true;$('themesBtn').inert=true;}
     focus?.focus({preventScroll:true});
   }
   function closeDialog(restore=true){
     if(!activeDialog)return;activeDialog.hidden=true;activeDialog=null;
+    ['stageScreen','battleScreen'].forEach(id=>$(id).querySelectorAll(':scope > header,:scope > nav').forEach(node=>node.inert=false));
     $('battlePanel').inert=state.resultVisible;$('stageWorkspace').inert=false;if($('themesBtn'))$('themesBtn').inert=false;
     if(restore&&dialogReturn?.isConnected)dialogReturn.focus({preventScroll:true});
     scene?.setActive(state.screen==='battle');
   }
   function openLeave(){if(state.resultVisible)return returnToStages();saveProgress();openDialog('leaveDialog',$('continueBtn'));}
   function returnToStages(){closeDialog(false);$('resultPanel').hidden=true;setScreen('stage');state.resultVisible=false;stageSelector?.select(state.selectedStage,{focus:true,notify:false});}
-  function openThemes(){renderThemes();openDialog('themeDialog',$('themeCloseBtn'));}
+  function openThemes(){$('themeStatus').textContent='';renderThemes();openDialog('themeDialog',$('themeCloseBtn'));}
   function renderThemes(){
     let diamonds=0;try{diamonds=window.WeightPlayWallet?.read().diamonds||0;}catch{}
     $('themeBalance').textContent=x('balance',{count:diamonds});

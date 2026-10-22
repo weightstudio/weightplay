@@ -43,6 +43,7 @@
   const recoverPoster = () => {
     if (!poster || poster.dataset.fallbackUsed) return;
     poster.dataset.fallbackUsed = 'true';
+    poster.dataset.wpPosterFallback = '/assets/interface7-redrawn/animal-tangle-rescue.webp';
     poster.src = '/assets/interface7-redrawn/animal-tangle-rescue.png';
   };
   poster?.addEventListener('error', recoverPoster);

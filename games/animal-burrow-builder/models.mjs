@@ -97,7 +97,8 @@ export function createModels() {
       const x=i%5-2,z=Math.floor(i/5)-2,t=map[i];
       box(g,x,-.075,z,.965,.13,.965,t==='~'?'water':'wood');
       if(t==='#'){
-        box(g,x,.18,z,.88,.4,.86,'rock',.08);box(g,x-.1,.4,z-.12,.64,.22,.63,'moss',-.06);
+        const height=.28+(i%3)*.08;
+        box(g,x,height/2,z,.86,height,.84,'rock',.04*(i%3));box(g,x-.1,height+.035,z-.12,.64,.07,.63,'moss',-.06);
         box(g,x+.25,.04,z+.3,.3,.17,.3,'rock',.2);
       } else if(t==='~') {
         for(let k=0;k<3;k++)box(g,x-.2+k*.18,.002,z-.25+k*.2,.25,.012,.025,'cream');
@@ -113,6 +114,13 @@ export function createModels() {
       box(g,x,-.47,z,.45,.19,.08,i%2?'wood':'light');
       if(i<6&&i!==2&&i!==3){box(g,x,.05,z,.4,.35,.35,'green');box(g,x+.15,.21,z,.27,.25,.27,'leaf');}
     }
+    for(let i=0;i<5;i++){
+      const x=i-2;
+      box(g,x,-.65,2.76,.96,.035,.02,'wood');box(g,x+.25,-.43,2.765,.16,.06,.02,'light');
+      box(g,-2.76,-.58,x,.02,.03,.9,'wood');
+      for(const side of [-1,1]){const z=i-2.2;box(g,side*2.68,-.02,z,.1,.29,.1,'green');box(g,side*2.7,.09,z+.06,.21,.06,.13,'leaf',.5);}
+    }
+    for(const [x,z] of [[-2.65,2.55],[2.65,1.5],[-2.6,-1.7]]){box(g,x,.02,z,.065,.26,.065,'cream');box(g,x,.17,z,.26,.095,.24,'orange');box(g,x+.06,.225,z,.06,.02,.06,'cream');}
     return bake(g);
   }
   return {box,material,geometry,bake,room,rabbit,terrain,dispose(){geometry.dispose();materials.forEach(m=>m.dispose());materials.clear();}};

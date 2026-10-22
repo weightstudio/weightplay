@@ -1,11 +1,17 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
 
     <base href="/games/animal-burrow-builder/" />
-    <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-    <link rel="canonical" href="https://weightplay.com/en/games/animal-burrow-builder/" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-version" content="v7">
+  <meta name="weightplay-interface-version" content="9">
+  <meta name="description" content="Build a little home. Make room for a whole woodland." />
+  <title>Burrow Builder | WeightPlay</title>
+  <link rel="canonical" href="https://weightplay.com/en/games/animal-burrow-builder/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-burrow-builder/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-burrow-builder/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-burrow-builder/" />
@@ -20,29 +26,30 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-burrow-builder/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-burrow-builder/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-burrow-builder/" />
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="robots" content="noindex,nofollow,noarchive" />
-    <meta name="weightplay-audience" content="general">
-    <meta name="weightplay-game-version" content="v5">
-    <meta name="description" content="Choose a habitat module, then place it into the matching burrow plan." />
-    <title>Burrow Builder | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260913-burrow-builder-v5-main-interface-repair">
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260903-burrow-builder-guide-v1">
-    <script src="locales.js?v=20260831-burrow-builder-art-v3" defer></script>
-    <script src="game.js?v=20260903-burrow-builder-static-guide-v3" defer></script>
-    <script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
-<link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
-<link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+    <script src="/src/weightplay-audio.js?v=1.0.0&amp;burrow=v7"></script>
+  <script src="/src/wallet.js"></script>
+  <script src="/src/game-layout-config.js?v=20260919-banner1"></script>
+  <link rel="stylesheet" href="/src/game-page-info.css?v=20261022-burrow-v7">
+  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261022-burrow-v7">
+  <link rel="stylesheet" href="/src/stage-rail-i9.css?v=20261022-burrow-v7">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261022-burrow-v7">
+  <link rel="stylesheet" href="/games/animal-burrow-builder/style.css?v=20261022-burrow-v7">
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" defer></script>
+  <script src="/src/stage-rail-i9.js?v=20261022-burrow-v7" defer></script>
+  <script src="/src/game-play-ui.js?v=20261022-burrow-v7" defer></script>
+  <script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
+  <script type="module" src="/games/animal-burrow-builder/game.js?v=20261022-burrow-v7"></script>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Burrow Builder | WeightPlay" />
-    <meta property="og:description" content="Choose a habitat module, then place it into the matching burrow plan." />
+    <meta property="og:description" content="Build a little home. Make room for a whole woodland." />
     <meta property="og:url" content="https://weightplay.com/en/games/animal-burrow-builder/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-burrow-builder.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Burrow Builder | WeightPlay" />
-    <meta name="twitter:description" content="Choose a habitat module, then place it into the matching burrow plan." />
+    <meta name="twitter:description" content="Build a little home. Make room for a whole woodland." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-burrow-builder.webp" />
     <script type="application/ld+json">
 {
@@ -75,55 +82,47 @@
 }
     </script>
   </head>
-  <body>
-    <main class="app-shell" id="app">
-      <section id="mainView" class="screen main-screen" aria-labelledby="mainTitle">
-        <header class="main-header wp-main-shell-header">
-          <a id="mainReturn" class="home-link wp-shell-return" data-wp-return="main" data-copy-aria="mainBack" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-          <div class="header-title"><strong data-copy="title">Burrow Builder</strong></div>
-          <button id="mainSettingsBtn" class="icon-button wp-shell-legacy-control" hidden type="button" aria-expanded="false" aria-controls="mainSettingsPopover" aria-label="Settings">⚙<span class="sr-only" data-copy="settings">Settings</span></button>
-          <div id="mainSettingsPopover" class="wp-shell-settings-popover" role="dialog" aria-label="Settings" hidden>
-            <div class="settings-row"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"></select></div>
-            <div class="settings-row"><span data-copy="soundOn">Sound on</span><button id="soundToggle" class="sound-switch wp-shell-sound-row" data-sound-toggle type="button" role="switch" aria-checked="true" aria-pressed="true"><span class="sound-knob" aria-hidden="true"></span><span class="sr-only" data-copy="soundOn">Sound on</span></button></div>
-          </div>
-        </header>
-        <div class="hero-card">
-          <img class="main-poster" src="assets/animal-burrow-builder-cover.png" alt="" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
-          <div class="hero-copy"><p class="eyebrow" data-copy="eyebrow">A calm shelter-planning puzzle</p><h1 id="mainTitle" data-copy="title">Burrow Builder</h1><p class="main-summary" data-copy="subtitle">Choose each habitat module, then place it in the matching burrow plan.</p><div class="main-progress" data-wp-main-progress data-copy="facts">Three short plans · no timer · calm retry</div><button class="primary-button" id="startButton" data-wp-main-start type="button" data-copy="start">Start building</button></div>
-        </div>
-      </section>
-      <details id="gameGuide" class="guide-card game-page-info" data-wp-game-guide aria-label="Burrow Builder game guide"><summary data-copy="how">How to play</summary><p data-copy="howBody">Tap a module, then tap the blueprint slot where it belongs. Correct pieces lock in. A wrong slot is harmless, so look again and try another place.</p></details>
-      <section id="battleView" class="screen battle-screen battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden aria-labelledby="battleTitle">
-        <header class="battle-header"><button class="back-button" id="homeFromBattle" data-wp-return="battle" type="button" aria-label="Home"><span aria-hidden="true">←</span><span class="sr-only" data-copy="home">Home</span></button><div class="header-title"><strong id="battleTitle" data-copy="battleTitle">Build the burrow</strong></div><button class="icon-button battle-utility utility-button" data-wp-battle-utility id="battleSoundToggle" type="button" aria-label="Sound" aria-pressed="true">♪</button></header>
-        <div class="battle-content"><div class="status-row"><span id="roundLabel"></span><span><strong id="placementCount">0</strong> <span data-copy="placements">placements</span></span></div><p id="instruction" class="instruction" data-copy="instruction">Choose a module, then place it in the matching slot.</p><div id="blueprint" class="blueprint" data-copy-aria="blueprint" aria-label="Burrow blueprint"></div><div class="module-heading"><span data-copy="modules">Habitat modules</span><span id="selectionHint" class="selection-hint" aria-live="polite"></span></div><div id="moduleGrid" class="module-grid"></div><p id="feedback" class="feedback" role="status" aria-live="polite"></p><button id="leaveBtn" class="text-button" type="button" data-copy="home">Home</button></div>
-        <section id="leaveDialog" class="leave-dialog" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><h2 id="leaveTitle" data-copy="leaveTitle">Leave this plan?</h2><p data-copy="leaveBody">Your current placements will be lost, but your best build stays saved.</p><div class="result-actions"><button id="continueBtn" class="primary-button" type="button" data-copy="continue">Continue</button><button id="confirmLeaveBtn" class="secondary-button" type="button" data-copy="confirmLeave">Return to Home</button></div></section>
-        <section id="resultView" class="result-screen" hidden aria-labelledby="resultTitle"><div class="result-card"><img class="result-character" src="assets/animal-burrow-builder-taro.png" alt="" aria-hidden="true" width="1024" height="1536"><div class="result-icon" aria-hidden="true">✦</div><p class="eyebrow" data-copy="completeEyebrow">Shelter complete</p><h2 id="resultTitle" data-copy="complete">A cosy place to rest.</h2><p id="resultSummary"></p><p class="best-line"><span data-copy="best">Best placements</span>: <strong id="bestCount">—</strong></p><div class="result-actions"><button class="primary-button" id="replayButton" type="button" data-copy="replay">Build again</button><button class="secondary-button" id="homeFromResult" type="button" data-copy="home">Home</button></div></div></section>
-      </section>
-      <div class="general-reserve battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
-      <footer><span data-copy="footer">Internal prototype · no public lobby or sitemap entry</span></footer>
-    </main>
-  <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
-<section class="game-page-info game-page-info-static" aria-label="Burrow Builder game information">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Burrow Builder</h2><p>Choose a habitat module, then place it into the matching burrow plan.</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Shelter Construction Puzzle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Construction · Spatial Planning · Family · Animal</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
+<body data-wp-game-id="animal-burrow-builder" data-wp-interface-version="9" data-wp-play-ui="1">
+<main id="app" data-wp-frame-root>
+  <section id="mainView" class="main-screen" data-screen="main" aria-labelledby="mainTitle">
+    <header id="mainHeader"><a data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span>←</span></a><strong data-wp-frame-title data-copy="title">Burrow Builder</strong></header>
+    <div id="mainContent">
+      <img data-wp-frame-poster class="main-poster" src="/assets/interface7-redrawn/animal-burrow-builder.webp" width="1254" height="1254" alt="" fetchpriority="high">
+      <div data-wp-frame-copy>
+        <h1 id="mainTitle" class="main-copy-title" data-copy="title">Burrow Builder</h1>
+        <p data-wp-frame-summary data-copy="subtitle">Build a little home. Make room for a whole woodland.</p>
+        <div data-wp-frame-progress><span id="mainProgress"></span></div>
+        <button id="startButton" data-wp-main-start data-wp-frame-action="primary" data-copy="start" type="button" disabled>Start Game</button>
+      </div>
     </div>
   </section>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true" aria-label="Burrow Builder · How to play"><details><summary>How to play</summary><div class="game-info-hero"><div class="game-info-title"><h2>Burrow Builder</h2><p>Build a little home. Make room for a whole woodland.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>Stages</span><strong>30 handcrafted plans · no timer</strong></div><div class="game-info-fact"><span>Three-star target</span><strong>90 ★</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>How to play</h3><div id="guideCopy"><p>Every room must connect to the entrance through an edge. Tunnels are cheap and can be upgraded, paying only the difference.</p><p>Place pantries directly beside bedrooms. Gardens need a neighbouring stream; bridges are the only way to build on water. Nurseries must touch a bedroom.</p><p>Complete the checklist, then invite the residents. Earn extra stars by building over the crystal and staying within the timber target. Undo and restart are free; hints never spend diamonds.</p><p>Arrow keys: move · Enter: build · 1–6: tools · Z: undo</p></div></div><div class="game-info-section"><h3>Three-star target</h3><ul><li>A complete home</li><li>Within timber target</li><li>Unearth the crystal</li></ul></div><div class="game-info-section"><h3>Workshop</h3><p>A permanent lavender lantern finish for this game. Decorative only. Costs 12 diamonds from your shared wallet.</p></div><div class="game-info-section"><h3>Homes completed</h3><dl><dt>Homes completed</dt><dd>Completed homes, stars and your lantern finish are saved in this browser. Unfinished builds restart when you leave. No account is needed.</dd></dl></div><div data-wp-guide-related hidden></div></div></details></section>
+  <section id="stageView" data-screen="stage" data-wp-frame-play-fill data-wp-stage-art="/assets/interface7-redrawn/animal-burrow-builder.webp" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-burrow-builder.webp')" hidden>
+    <header id="stageHeader"><button data-wp-return="stage" type="button" data-copy-aria="back"><span>←</span></button><strong data-wp-frame-title data-copy="title">Burrow Builder</strong></header>
+    <div id="stageWorkspace">
+      <div id="stagePage"><div id="stageRail"></div></div>
+      <section id="workshopPage" class="workshop-page" hidden><div class="workshop-card">
+        <img class="workshop-poster" src="/assets/interface7-redrawn/animal-burrow-builder.webp" alt="" width="1254" height="1254" loading="lazy">
+        <div><p class="eyebrow" data-copy="workshop">Workshop</p><h2 data-copy="lantern">Starlight lanterns</h2><p data-copy="shopBody">A permanent lavender lantern finish for this game. Decorative only. Costs 12 diamonds from your shared wallet.</p><p id="walletBalance"></p><button id="buyLantern" class="gold-button" type="button" data-copy="buy">Buy · 12</button><p id="shopStatus" role="status"></p></div>
+      </div></section>
+    </div>
+    <nav data-wp-frame-nav data-wp-frame-stage-nav></nav>
+    <div id="shopDialog" class="dialog-shade" hidden><section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="shopTitle"><h2 id="shopTitle" data-copy="confirmBuy">Spend 12 diamonds?</h2><p data-copy="shopBody">A permanent lavender lantern finish for this game. Decorative only. Costs 12 diamonds from your shared wallet.</p><button id="confirmBuy" class="gold-button" type="button" data-copy="buy">Buy · 12</button><button id="cancelBuy" class="quiet-button" type="button" data-copy="back">Back</button></section></div>
+  </section>
+  <section id="battleView" data-screen="battle" data-wp-frame-play-fill data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="780" data-wp-battle-landscape-width="844" data-wp-battle-landscape-height="390" hidden>
+    <header id="battleHeader"><button data-wp-return="battle" type="button" data-copy-aria="back"><span>←</span></button><strong data-wp-frame-title data-copy="title">Burrow Builder</strong></header>
+    <div id="battleContent" class="build-workspace">
+      <section class="build-brief"><div class="plan-heading"><span id="chapterLabel" class="eyebrow"></span><h2 id="planTitle"></h2></div><div id="objectives" class="objectives" aria-live="polite"></div></section>
+      <div id="arena" class="arena"><div id="cellGrid" class="cell-grid" role="group"></div><div id="graphicsStatus" class="graphics-status" hidden><p data-copy="graphicsError">The 3D scene is unavailable. Try reloading or enabling hardware acceleration.</p><button id="reloadGraphics" class="gold-button" data-copy="reload" type="button">Reload</button></div></div>
+      <section class="build-desk"><div class="desk-heading"><span id="selectedTool"></span><span id="starTarget"></span></div><div id="toolShelf" class="tool-shelf" role="group"></div><p id="feedback" class="feedback" role="status"></p><div class="build-actions"><button id="undoButton" type="button" class="quiet-button" data-copy="undo">Undo</button><button id="restartButton" type="button" class="quiet-button" data-copy="restart">Restart</button><button id="hintButton" type="button" class="quiet-button" data-copy="hint">Hint</button><button id="finishButton" class="gold-button" type="button" data-copy="invite">Invite residents</button></div></section>
+    </div>
+    <div id="leaveDialog" class="dialog-shade" hidden><section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">Leave this build?</h2><p data-copy="leaveBody">This unfinished build will be cleared. Completed homes stay saved.</p><button id="continueButton" class="gold-button" data-copy="continue" type="button">Continue</button><button id="confirmLeave" class="quiet-button" type="button" data-copy="back">Back</button></section></div>
+    <div id="resultView" class="dialog-shade result-shade" hidden><section class="dialog-card result-card" role="dialog" aria-modal="true" aria-labelledby="resultTitle"><p class="eyebrow" data-copy="cleared">Home complete</p><h2 id="resultTitle" data-copy="complete">Welcome home!</h2><div id="resultStars" class="result-stars" aria-hidden="true"></div><div id="resultChecks" class="result-checks"></div><p id="resultSummary"></p><button id="nextButton" class="gold-button" type="button" data-copy="next">Next home</button><div class="result-secondary"><button id="replayButton" class="quiet-button" type="button" data-copy="replay">Build again</button><button id="stageFromResult" class="quiet-button" type="button" data-copy="stages">Stages</button></div></section></div>
+  </section>
+  <p id="saveStatus" class="save-status" role="status" hidden></p>
+</main>
+<script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
 </body>
 </html>

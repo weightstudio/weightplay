@@ -2539,6 +2539,20 @@
           return;
         }
       }
+      // War has one permanent reveal control. A settlement changes its label
+      // and enabled state, not the native button holding keyboard focus.
+      if (id === "war" && node === actions) {
+        const template = document.createElement('template');
+        template.innerHTML = markup;
+        const next = template.content.querySelector('button[data-action="flip"]');
+        const live = node.querySelector('button[data-action="flip"]');
+        if (next && live && [...node.children].filter(child => child !== quickGuide).length === 1 && template.content.children.length === 1) {
+          live.textContent = next.textContent;
+          live.disabled = next.disabled;
+          live.className = next.className;
+          return;
+        }
+      }
       if (id !== "speed" || speedRenderMarkup.get(node) !== markup) {
         node.innerHTML = markup;
         if (id === "speed") speedRenderMarkup.set(node, markup);

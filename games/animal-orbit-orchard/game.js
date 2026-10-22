@@ -1,5 +1,6 @@
 import { STAGES, SAVE_KEY, LEGACY_KEY, STEP, wrap, createRun, launch, focus, step, normalizeSave, recordClear, starsFor } from './orchard-model.mjs';
 import { LocalPractice } from '../../src/game-local-practice.mjs';
+import { ownsAurora, purchaseAurora } from './orchard-economy.mjs';
 
 const $ = id => document.getElementById(id);
 const locales = window.ORBIT_ORCHARD_LOCALES;
@@ -13,24 +14,19 @@ let frame, rail, scene, run, screen = 'main', selected = save.highestUnlocked - 
 let raf = 0, last = 0, accumulator = 0, visualTime = 0, finishAt = 0, starting = false, generation = 0;
 let modal = null, modalReturn = null, practice = false, practiceRun = false, storageFailed = false, themeBusy = false;
 let sceneFailed = false, statusKey = 'ready', statusVars = {}, heldDirection = 0;
+let rewardAmount = 0;
 const held = new Set();
 const abort = new AbortController();
 const listen = (target, name, handler, opts = {}) => target.addEventListener(name, handler, { ...opts, signal: abort.signal });
 const t = (key, vars = {}) => String(locales[locale]?.[key] ?? locales.en[key] ?? key).replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ''));
 const stars = () => Object.values(save.stars).reduce((a, b) => a + b, 0);
 const playSound = id => window.WeightPlayAudio?.play(id);
-function status(key, vars = {}) { statusKey = key; statusVars = vars; $('battleStatus').textContent = t(key, vars); }
+function setText(id, value) { const node = $(id); if (node.textContent !== value) node.textContent = value; }
+function status(key, vars = {}) { statusKey = key; statusVars = vars; setText('battleStatus', t(key, vars)); }
 function settingsOpen() { return Boolean(document.querySelector('#battleScreen [data-wp-settings][aria-expanded="true"]')); }
 function active() { return screen === 'battle' && !modal && !document.hidden && !settingsOpen() && !sceneFailed; }
 function themeOwned() {
-  const record = read('weightplay-orbit-aurora-v1');
-  if (record?.owned) return true;
-  // A completed wallet debit with an interrupted entitlement write is recoverable.
-  if (record?.pending && Number.isFinite(record.before) && window.WeightPlayWallet?.read().diamonds === record.before - 8) {
-    try { localStorage.setItem('weightplay-orbit-aurora-v1', JSON.stringify({ owned: true })); } catch { /* Journal remains recoverable. */ }
-    return true;
-  }
-  return false;
+  try { return ownsAurora(localStorage, window.WeightPlayWallet); } catch { return false; }
 }
 let aurora = themeOwned();
 async function ensureScene(token = generation) {
@@ -78,11 +74,11 @@ async function startStage(index) {
   starting = true; const token = ++generation;
   try {
     if (practice && !await LocalPractice.validate()) return;
-    practiceRun = practice; selected = index;
+    practiceRun = practice; selected = index; rewardAmount = 0;
     await ensureScene(token);
     if (token !== generation) return;
     sceneFailed = false; run = createRun(stage); accumulator = 0; visualTime = 0; finishAt = 0;
-    scene.setStage(stage); status('ready'); setScreen('battle'); updateHud();
+    scene.setStage(stage); status(stage.ordered ? 'order' : `hint${stage.arc}`); setScreen('battle'); updateHud();
     $('orchardCanvas').focus({ preventScroll: true });
     playSound('game.start');
   } catch (error) { console.error('ORCHARD_RENDER_FAILED', error); setScreen('battle'); showSceneError(); }
@@ -110,7 +106,7 @@ function tick(now) {
       if (event.type === 'harvest') { playSound(event.chain > 1 ? 'puzzle.clear' : 'reward.collect'); status(event.chain > 1 ? 'chain' : 'ready', { count: event.chain }); }
       if (event.type === 'block') { playSound('impact.wood'); status('block'); }
       if (event.type === 'miss' || event.type === 'order') { playSound('feedback.error'); status(event.type); }
-      if (event.type === 'focus') { playSound('magic.cast'); status('focused', { time: '3.0' }); }
+      if (event.type === 'focus') { playSound('magic.cast'); status('ready'); }
       if (event.type === 'complete') { finishAt = visualTime + .65; playSound('result.win'); }
     }
     if (finishAt && visualTime >= finishAt) { finish(); return; }
@@ -120,22 +116,21 @@ function tick(now) {
 }
 function updateHud() {
   if (!run) return;
-  $('roundLabel').textContent = `${run.stage.id} / ${STAGES.length}`;
-  $('releaseCount').textContent = String(run.shots);
-  $('harvestCount').textContent = `${run.harvested.length} / ${run.stage.targets.length}`;
-  $('stageArc').textContent = locales[locale].arcNames[run.stage.arc - 1];
-  $('parLabel').textContent = t('par', { par: run.stage.par });
-  $('aimReadout').textContent = `${Math.round(wrap(run.aim))}°`;
+  setText('roundLabel', `${run.stage.id} / ${STAGES.length}`);
+  setText('releaseCount', String(run.shots));
+  setText('harvestCount', `${run.harvested.length} / ${run.stage.targets.length}`);
+  setText('stageArc', locales[locale].arcNames[run.stage.arc - 1]);
+  setText('parLabel', t('par', { par: run.stage.par }));
+  setText('aimReadout', `${Math.round(wrap(run.aim))}°`);
   $('focusBtn').disabled = !active() || run.stage.id < 6 || run.focusUsed;
   $('focusBtn').title = t(run.stage.id < 6 ? 'focusLocked' : run.focusUsed ? 'focusSpent' : 'focus');
-  $('focusText').textContent = run.focusLeft > 0 ? t('focused', { time: run.focusLeft.toFixed(1) }) : t('focus');
+  setText('focusText', run.focusLeft > 0 ? t('focused', { time: run.focusLeft.toFixed(1) }) : t(run.focusUsed ? 'focusSpent' : 'focus'));
   $('focusBtn').classList.toggle('is-active', run.focusLeft > 0);
   $('fireBtn').disabled = !active() || run.complete || Boolean(run.projectile) || run.cooldown > 0;
   $('battleContent').classList.toggle('is-frozen', run.focusLeft > 0);
   $('practiceLabel').hidden = !practiceRun;
   $('pauseVeil').hidden = !document.hidden && !settingsOpen();
-  $('battleStatus').textContent = t(statusKey, statusVars);
-  if (run.focusLeft <= 0 && statusKey === 'focused') status('ready');
+  setText('battleStatus', t(statusKey, statusVars));
 }
 function finish() {
   finishAt = 0;
@@ -146,7 +141,10 @@ function finish() {
     try { localStorage.setItem(SAVE_KEY, JSON.stringify(save)); storageFailed = false; }
     catch { storageFailed = true; }
     if (newlyUnlocked) playSound('reward.unlock');
-    if (!storageFailed) window.WonderAnalytics?.completeStage?.(run.stage.id);
+    if (!storageFailed) {
+      const reward = window.WonderAnalytics?.completeStage?.(run.stage.id);
+      rewardAmount = reward?.credited === true ? Number(reward.amount) || 1 : 0;
+    }
   }
   setScreen('result'); renderResult(); $('resultNextBtn').disabled ? $('resultReplayBtn').focus() : $('resultNextBtn').focus();
 }
@@ -157,18 +155,27 @@ function renderResult() {
   $('bestValue').textContent = String(practiceRun ? run.shots : save.best[run.stage.id] || run.shots);
   $('saveWarning').hidden = !storageFailed && !practiceRun; $('saveWarning').textContent = t(practiceRun ? 'practice' : 'saveError');
   $('resultNextBtn').disabled = run.stage.id === STAGES.length;
+  $('resultReward').hidden = !rewardAmount;
+  $('resultReward').textContent = t('blockReward', { count: rewardAmount });
+  presentReward();
+}
+function presentReward() {
+  if (screen !== 'result') return;
+  const icon = window.WeightPlayScreenFrame.showResultGet('animal-orbit-orchard', rewardAmount > 0);
+  if (icon) window.WeightPlayCastle?.dismissRewardNotice?.('animal-orbit-orchard');
 }
 function clearHeld() { held.clear(); heldDirection = 0; }
 function openModal(id) {
   if (modal || (screen !== 'battle' && screen !== 'stage')) return;
   clearHeld(); modalReturn = document.activeElement; modal = $(id); modal.hidden = false;
-  if (screen === 'battle') $('battleContent').inert = true;
-  modal.querySelector('button:not([disabled])')?.focus();
+  if (screen === 'battle') { stopLoop(); $('battleContent').inert = true; }
+  modal.tabIndex = -1; modal.focus({ preventScroll: true }); modal.querySelector('.orchard-modal-card').scrollTop = 0;
 }
 function closeModal() {
   if (modal?.id === 'sceneError') return;
   if (!modal) return; modal.hidden = true; modal = null; $('battleContent').inert = false;
   modalReturn?.focus({ preventScroll: true }); last = 0; accumulator = 0;
+  if (screen === 'battle' && !sceneFailed) startLoop();
 }
 function fire() { if (active() && run) launch(run); }
 function trap(event, container) {
@@ -176,7 +183,7 @@ function trap(event, container) {
   const nodes = [...container.querySelectorAll('button:not([disabled]),[tabindex="0"]')].filter(n => !n.hidden);
   if (!nodes.length) return;
   const first = nodes[0], end = nodes.at(-1);
-  if (event.shiftKey && document.activeElement === first) { event.preventDefault(); end.focus(); }
+  if (event.shiftKey && (document.activeElement === first || document.activeElement === container)) { event.preventDefault(); end.focus(); }
   else if (!event.shiftKey && document.activeElement === end) { event.preventDefault(); first.focus(); }
 }
 function renderTheme() {
@@ -187,17 +194,10 @@ function renderTheme() {
 async function buyTheme() {
   if (themeBusy || practice || aurora) return; themeBusy = true;
   const purchase = () => {
-    if (themeOwned()) { aurora = true; return; }
-    const wallet = window.WeightPlayWallet, before = wallet.read().diamonds;
-    const journal = read('weightplay-orbit-aurora-v1');
-    if (journal?.pending && journal.before !== before) { $('themeNotice').textContent = t('saveError'); return; }
-    if (before < 8) { $('themeNotice').textContent = t('insufficient'); return; }
     try {
-      localStorage.setItem('weightplay-orbit-aurora-v1', JSON.stringify({ pending: true, before }));
-      if (!wallet.spendDiamonds(8)) { localStorage.removeItem('weightplay-orbit-aurora-v1'); $('themeNotice').textContent = t('insufficient'); return; }
-      // If this final write fails, the durable pending receipt proves the debit.
-      aurora = true; localStorage.setItem('weightplay-orbit-aurora-v1', JSON.stringify({ owned: true }));
-      playSound('shop.purchase');
+      const result = purchaseAurora(localStorage, window.WeightPlayWallet); aurora = result.owned;
+      if (result.status === 'purchased') playSound('shop.purchase');
+      else if (!result.owned) { $('themeNotice').textContent = t(result.status); playSound('feedback.error'); }
     } catch { $('themeNotice').textContent = t('saveError'); }
   };
   try { if (navigator.locks) await navigator.locks.request('weightplay-orbit-aurora-purchase', purchase); else purchase(); }
@@ -235,7 +235,7 @@ function init() {
   listen($('pauseRestart'), 'click', () => { closeModal(); startStage(selected); });
   listen($('resultMapBtn'), 'click', openMap); listen($('resultNextBtn'), 'click', () => startStage(selected + 1));
   listen($('resultReplayBtn'), 'click', () => startStage(selected)); listen($('buyTheme'), 'click', buyTheme);
-  listen($('retry3d'), 'click', () => { scene?.dispose(); scene = null; sceneFailed = false; $('sceneError').hidden = true; startStage(selected); });
+  listen($('retry3d'), 'click', () => { stopLoop(); scene?.dispose(); scene = null; location.reload(); });
   listen($('errorStages'), 'click', () => { $('sceneError').hidden = true; openMap(); });
   const canvas = $('orchardCanvas'); let pointer = null;
   const aimAt = event => { if (!active() || !run || run.complete) return; const a = scene?.aim(event.clientX, event.clientY); if (a !== null && a !== undefined) run.aim = wrap(a); };
@@ -250,6 +250,7 @@ function init() {
     listen(button, 'click', e => { if (e.detail === 0 && active()) run.aim = wrap(run.aim + direction * 2); });
   }
   listen(document, 'keydown', e => {
+    if (e.defaultPrevented) return;
     if (modal) { if (e.key === 'Escape') { e.preventDefault(); closeModal(); } else trap(e, modal); return; }
     if (screen === 'result') { trap(e, $('resultScreen')); return; }
     if (!active()) return;
@@ -261,8 +262,15 @@ function init() {
   listen(document, 'keyup', e => held.delete(e.key));
   listen(window, 'blur', clearHeld);
   listen(document, 'visibilitychange', () => { clearHeld(); last = 0; accumulator = 0; if (document.hidden) stopLoop(); else startLoop(); });
-  listen(window, 'weightplay:interaction-state', () => { clearHeld(); last = 0; accumulator = 0; });
+  listen(window, 'weightplay:interaction-state', () => {
+    clearHeld(); last = 0; accumulator = 0;
+    if (screen === 'battle') { updateHud(); if (settingsOpen()) stopLoop(); else if (!modal && !sceneFailed) startLoop(); }
+  });
   listen(window, 'weightplay:shell-sync', progress);
+  listen(window, 'weightplay:castle-reward', event => {
+    if (event.detail?.gameId === 'animal-orbit-orchard') queueMicrotask(presentReward);
+  });
+  listen(window, 'weightplay:castle-ready', presentReward);
   listen(window, 'pagehide', () => { generation++; stopLoop(); scene?.dispose(); scene = null; rail?.cancel(); });
   listen(window, 'pageshow', e => { if (e.persisted && screen === 'battle') startStage(selected); });
   applyCopy(); $('app').hidden = false; $('loadingPanel').hidden = true; setScreen('main');
