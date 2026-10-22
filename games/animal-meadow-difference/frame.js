@@ -7,6 +7,7 @@
     const root = $("gameFrame");
     const main = $("mainScreen");
     const battle = $("battleView");
+    const stage = $("stageView");
     if (!root || !main || !battle || !window.WeightPlayScreenFrame || root.dataset.wpFrame) return;
 
     const mainHeader = main.querySelector(".main-header");
@@ -22,6 +23,7 @@
       playUI: true,
       scenes: {
         main: { root: main, header: mainHeader, content: mainContent },
+        stage: { root: stage, header: stage.querySelector('header'), content: $("stageContent") },
         battle: { root: battle, header: battleHeader, content: battleContent, headerInfo },
       },
     });
@@ -29,6 +31,8 @@
     const battleGroup = window.WeightPlayScreenFrame.createGroup();
     battleGroup.add($("roundLabel")).add($("checkCountTop").closest(".battle-checks-hud"));
     frame.battleTopUI.add(battleGroup);
+    frame.stageTopUI.add($("stageProgress"));
+    frame.commonDownButton.add($("stageTab"));
 
     frame.activate("main");
     window.MeadowDifferenceFrame = Object.freeze({ frame, battleGroup });

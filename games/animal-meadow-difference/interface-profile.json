@@ -3,9 +3,9 @@
   "gameId": "animal-meadow-difference",
   "audience": "general",
   "interfaceVersion": 9,
-  "flow": "MAIN_BATTLE",
+  "flow": "MAIN_STAGE_BATTLE",
   "stage": {
-    "enabled": false,
+    "enabled": true,
     "leftWorkspace": null,
     "rightWorkspace": null
   }

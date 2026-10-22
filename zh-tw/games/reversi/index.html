@@ -19,10 +19,10 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/reversi/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/reversi/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/reversi/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><title>黑白棋 | WeightPlay</title><link rel="stylesheet" href="../../src/classic-logic-lab.css?v=20260909-reversi-v16"><link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-reversi-v16"><link rel="stylesheet" href="/games/reversi/royal-board.css?v=20260908-v14">  <script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><title>黑白棋 | WeightPlay</title><link rel="stylesheet" href="../../src/classic-logic-lab.css?v=20260904-reversi-arabic-settings-v12"><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1"><link rel="stylesheet" href="/games/reversi/royal-board.css?v=20261022-reversi-i9-content1">  <script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
 
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <meta name="description" content="黑白棋是一款 8×8 策略棋盤遊戲：放置棋子夾住對手棋子，翻轉棋串，最後以比電腦更多的棋子獲勝。" />
+
+<link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1"><link rel="stylesheet" href="/src/game-entry-loader.css?v=20261017-shared-dark-loader1"><link rel="stylesheet" href="/src/battle-canvas-standard.css"><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">  <meta name="description" content="黑白棋是一款 8×8 策略棋盤遊戲：放置棋子夾住對手棋子，翻轉棋串，最後以比電腦更多的棋子獲勝。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="黑白棋 | WeightPlay" />
@@ -63,8 +63,8 @@
   }
 }
     </script>
-  </head><body data-wp-game-version="v17" data-wp-interface-version="6" data-wp-interface-candidate="9">
-    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">黑白棋</h1><div id="logicApp"></div><script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script><script src="../../src/analytics.js?v=20261002-tabletop-reward-exclusion-v1"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/classic-logic-lab.js?v=20260909-reversi-v16&wp-audio=1.0.0"></script><script src="game.js?v=20260909-reversi-v16"></script><script src="analytics-ownership.js?v=20260909-reversi-v16"></script><section class="game-page-info game-page-info-static" aria-label="黑白棋 遊戲資訊" data-wp-game-guide>
+  </head><body data-wp-game-id="reversi" data-wp-game-owned-guide="true" data-wp-game-version="v17" data-wp-interface-version="6" data-wp-interface-candidate="9">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">黑白棋</h1><div id="logicApp" data-wp-frame-root></div><script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="../../src/analytics.js?v=20261002-tabletop-reward-exclusion-v1"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="/src/game-entry-loader.js?v=20261017-shared-dark-loader1"></script><script src="/src/battle-canvas-standard.js"></script><script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script><script src="frame.js?v=20261022-reversi-i9-frame1"></script><script src="../../src/classic-logic-lab.js?v=20261022-reversi-i9-pause1&wp-audio=1.0.0"></script><section class="game-page-info game-page-info-static" aria-label="黑白棋 遊戲資訊" data-wp-game-guide>
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>黑白棋</h2><p>黑白棋是一款 8×8 策略棋盤遊戲：放置棋子夾住對手棋子，翻轉棋串，最後以比電腦更多的棋子獲勝。</p></div>
@@ -86,7 +86,7 @@
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>什麼是合法落子？</dt><dd>把棋子放在空格，讓至少一串對手棋子被新棋子與己方棋子夾住。</dd></div><div><dt>被夾住的棋子會怎樣？</dt><dd>它們會在每個被夾住的方向翻成你的顏色。</dd></div><div><dt>提示會做什麼？</dt><dd>提示只標示按棋盤順序找到的第一個合法空格，不會選出最佳走法，也不會替你落子。</dd></div><div><dt>三種電腦難度有何不同？</dt><dd>簡單會選擇當下翻轉最少棋子的走法，中等選最多的。困難依翻轉數、角落與邊線加分，並對靠近空角的格子扣分；這是評分法，不保證每步最佳。</dd></div><div><dt>如何決定勝負？</dt><dd>一方沒有合法走法時會自動跳過。雙方都不能走時，遊戲計算棋子；較多者獲勝。</dd></div><div><dt>復原會撤回棋步嗎？</dt><dd>不會。目前的復原按鈕只播報復原，不會還原棋盤或撤回棋步。可使用再玩一次重新開始。</dd></div><div><dt>一方無棋可下時會怎樣？</dt><dd>遊戲會自動跳過該方；若另一方仍有合法走法，對局繼續。雙方都不能走時才顯示結果。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>熄燈遊戲</strong><span>熄燈遊戲是經典 5×5 開關益智遊戲：按下一格與其上下左右鄰格，關掉全部燈光。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>十五滑塊</strong><span>從 30 個已儲存關卡中選擇，挑戰經典、蛇形、直欄、錨點與繞行目標。</span></span></a></div></div>
     </div>
-  </section><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  </section><script src="game.js?v=20261022-reversi-i9-entry1"></script><script src="analytics-ownership.js?v=20260909-reversi-v16"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body></html>

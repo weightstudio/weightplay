@@ -4,7 +4,7 @@
   window.HabitatCountsStageConfig = (game) => ({
     gameId: 'animal-habitat-counts',
     count: game.stageCount,
-    poster: '/games/animal-habitat-counts/assets/animal-habitat-counts-cover.svg',
+    poster: '/assets/interface7-redrawn/animal-habitat-counts.webp',
     background: '/assets/lobby-block-atmosphere.svg',
     stage(index) {
       const stage = game.stageRecord(index);

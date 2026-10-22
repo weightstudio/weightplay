@@ -24,13 +24,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v13">
+  <meta name="weightplay-game-version" content="v14">
   <meta name="weightplay-interface-version" content="9">
+  <link rel="preload" as="image" href="assets/rescue-animals-v14.webp">
   <meta name="description" content="つるの端点を2つ入れ替え、救助の道を正しいすみかへつなごう。" />
   <title>つるほどきレスキュー | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261019-guide-no-legacy-stage-css-v1">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20261017-shared-play-canvas1">
-  <link rel="stylesheet" href="style.css?v=20261021-tangle-rescue-v12-main-summary-stage-tab-v4">
+  <link rel="stylesheet" href="style.css?v=20261022-tangle-v14">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
   <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261017-interface9-guide-theme1">
@@ -77,7 +78,7 @@
 }
     </script>
   </head>
-<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-tangle-rescue" data-wp-game-version="v13" data-screen="main" data-wp-interface-version="9">
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-tangle-rescue" data-wp-game-version="v14" data-screen="main" data-wp-interface-version="9">
   <div id="app" data-wp-frame-root data-wp-game-shell-root data-wp-play-ui="1" hidden>
     <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-main-screen>
       <div class="main-canvas" data-wp-standard-main-screen data-wp-logical-main-canvas>
@@ -86,7 +87,7 @@
           <div class="header-title"><strong class="wp-shell-main-title" data-copy="title" data-wp-frame-title data-wp-game-title>つるほどきレスキュー</strong></div>
         </header>
         <section class="hero-card">
-          <img class="cover-art main-poster" src="assets/animal-tangle-rescue-cover.webp" data-wp-frame-poster alt="" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
+          <img class="cover-art main-poster" src="/assets/interface7-redrawn/animal-tangle-rescue.webp" data-wp-frame-poster alt="" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
           <div class="hero-copy">
             <p class="eyebrow" data-copy="kicker">苔殻タロの救助マップ</p>
             <h1 data-copy="title">つるほどきレスキュー</h1>
@@ -133,28 +134,28 @@
       <div id="stageWorkspace">
         <div id="stageList" data-wp-stage-rail></div>
       </div>
-      <nav data-wp-frame-nav data-wp-frame-stage-nav data-copy-aria-label="map" aria-label="救助マップ"><button id="stageTab" type="button" data-wp-frame-action="tab" data-wp-frame-stage-slot="stages" data-copy="map" aria-current="page">救助マップ</button></nav>
+      <nav data-wp-frame-nav data-wp-frame-stage-nav data-copy-aria-label="map" aria-label="救助マップ"><button id="themeBtn" type="button" data-wp-frame-action="secondary" data-wp-frame-stage-slot="team" data-copy="theme">Board style</button><button id="stageTab" type="button" data-wp-frame-action="tab" data-wp-frame-stage-slot="stages" data-copy="map" aria-current="page">救助マップ</button></nav>
+      <div id="themeDialog" class="dialog-backdrop" hidden><section class="dialog-card theme-card" role="dialog" aria-modal="true" aria-labelledby="themeTitle"><button id="themeCloseBtn" type="button" class="dialog-close" data-copy-aria-label="close" aria-label="閉じる">×</button><h2 id="themeTitle" data-copy="themeName">Firefly Grove</h2><div class="theme-preview" aria-hidden="true"><span></span><span></span><span></span></div><p data-copy="themeDescription"></p><div class="theme-wallet"><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt=""><strong id="themeBalance">0</strong></div><p id="themeStatus" role="status"></p><button id="themeBuyBtn" class="primary-btn" type="button" data-copy="buyTheme"></button><button id="themeDefaultBtn" class="secondary-btn" type="button" data-copy="defaultTheme"></button></section></div>
     </section>
 
-    <section id="battleScreen" class="screen" data-screen="battle" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="788" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
+    <section id="battleScreen" class="screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="788" data-wp-battle-landscape-width="844" data-wp-battle-landscape-height="390" hidden>
       <header class="panel-head battle-header"><button id="battleBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="battle" type="button" data-copy-aria-label="map" aria-label="救助マップ"><span aria-hidden="true">←</span></button><h2 id="battleHeading" data-wp-frame-title></h2></header>
       <div class="battle-canvas">
         <div id="battlePlayLayer" class="battle-play-layer">
-        <div class="mission-row"><div><p class="eyebrow" data-copy="boardKicker">救助盤面</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
-        <section class="tangle-board" aria-labelledby="boardTitle"><h3 id="boardTitle" class="sr-only" data-copy="boardTitle">つるの端点盤</h3><div class="board-labels"><span data-copy="endpoints">つるの端</span><span data-copy="shelters">すみか</span></div><div id="boardDiagram" class="board-diagram"></div></section>
+        <div class="mission-row"><p id="roundHint"></p><div class="move-stats"><span><small data-copy="movesLabel">Swaps</small><strong id="moveCount">0</strong></span><span><small data-copy="parLabel">Perfect</small><strong id="parCount">2</strong></span></div><span id="progressBadge" class="progress-badge"></span></div>
+        <section class="tangle-board" aria-labelledby="boardTitle"><h3 id="boardTitle" class="sr-only" data-copy="boardTitle">つるの端点盤</h3><div class="board-labels"><span data-copy="endpoints">つるの端</span><div id="rescueMeter" class="rescue-meter" role="img"><i></i></div><span data-copy="shelters">すみか</span></div><div id="boardDiagram" class="board-diagram" dir="ltr"></div></section>
         <p id="battleStatus" class="feedback" role="status" aria-live="polite"></p>
-        <p class="move-hint" data-copy="moveHint">2つの端を選んで入れ替えます。制限時間はありません。</p>
-        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">救助を確認</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">盤面をリセット</button><button id="leaveBtn" class="text-btn" type="button" data-copy="leave">盤面を離れる</button></div>
+        <div class="battle-actions"><button id="undoBtn" class="secondary-btn" type="button" data-copy="undo">Undo</button><button id="hintBtn" class="secondary-btn" type="button" data-copy="hint">Hint</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">盤面をリセット</button><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">救助を確認</button></div>
         </div>
         <section id="resultScreen" class="result-state" data-screen="result" hidden>
           <div class="result-canvas">
-            <div class="result-card"><div class="result-character" aria-hidden="true"><img src="assets/animal-tangle-rescue-guide.webp?v=20260924-tangle-v10-guide-webp-768" alt="" width="768" height="1152"></div><p class="eyebrow" data-copy="successKicker">道がつながった</p><h1 id="resultHeading" tabindex="-1"></h1><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultStagesBtn" class="secondary-btn" type="button" data-copy="stages">救助マップ</button><button id="nextStageBtn" class="primary-btn" type="button" data-copy="nextStage">次の盤面</button><button id="retryBtn" class="text-btn" type="button" data-copy="replay">この盤面を再挑戦</button></div></div>
+            <div class="result-card"><div class="result-character" aria-hidden="true"><img src="/assets/weightplay-character-moss-shell-turtle-block-v1.webp" alt="" width="1254" height="1254"></div><p class="eyebrow" data-copy="successKicker">道がつながった</p><h1 id="resultHeading" tabindex="-1"></h1><div id="resultStars" class="result-stars" role="img"></div><p id="resultText"></p><div id="rescuedAnimals" class="rescued-animals" aria-hidden="true"></div><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultStagesBtn" class="secondary-btn" type="button" data-copy="stages">救助マップ</button><button id="nextStageBtn" class="primary-btn" type="button" data-copy="nextStage">次の盤面</button><button id="retryBtn" class="secondary-btn" type="button" data-copy="replay">この盤面を再挑戦</button></div></div>
           </div>
         </section>
+        <div id="leaveDialog" class="dialog-backdrop" hidden><div class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">この盤面を離れますか？</h2><p id="leaveText"></p><div class="dialog-actions"><button id="cancelLeaveBtn" class="primary-btn" type="button" data-copy="stay">残る</button><button id="confirmLeaveBtn" class="secondary-btn" type="button" data-copy="leaveConfirm">離れる</button></div></div></div>
       </div>
     </section>
   </div>
-  <div id="leaveDialog" class="dialog-backdrop" hidden><div class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">この盤面を離れますか？</h2><p data-copy="leaveText">現在の交換は消えますが、完了した盤面は保存されます。</p><div class="dialog-actions"><button id="cancelLeaveBtn" class="secondary-btn" type="button" data-copy="stay">残る</button><button id="confirmLeaveBtn" class="primary-btn" type="button" data-copy="leaveConfirm">離れる</button></div></div></div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
@@ -162,14 +163,18 @@
   <script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="locales.js?v=20261018-tangle-rescue-i9-candidate1"></script>
+  <script src="rescue-copy.js?v=20261022-tangle-v14"></script>
+  <script src="puzzle-model.js?v=20261022-tangle-v14"></script>
+  <script src="board-view.js?v=20261022-tangle-v14"></script>
+  <script src="/src/wallet.js?v=20261022-tangle-v14"></script>
   <script src="../../src/stage-rail-i9.js?v=20261017-shared-stage-rail1"></script>
   <script src="/src/game-entry-loader.js?v=20261018-entry-readiness-bridge2"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-ui1"></script>
-  <script src="stage-config.js?v=20261020-tangle-rescue-i9-shared-surfaces-v1"></script>
+  <script src="stage-config.js?v=20261022-tangle-v14"></script>
   <script src="frame.js?v=20261021-tangle-rescue-v13-stage-tab-v1"></script>
-  <script src="game.js?v=20261021-tangle-rescue-v13-summary-stage-tab-v1"></script>
+  <script src="game.js?v=20261022-tangle-v14"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="つるほどきレスキュー";document.title="つるほどきレスキュー | WeightPlay";},{once:true});</script>
 </body>
 </html>

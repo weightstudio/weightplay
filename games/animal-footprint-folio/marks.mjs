@@ -1,0 +1,10 @@
+// Intrinsic puzzle notation. These flat ink symbols are not character artwork.
+const shapes={
+ paw:'<path d="M23 35c-7 0-13 8-12 15 1 8 11 5 19 5s18 3 19-5c1-7-5-15-12-15-4-3-10-3-14 0Z"/><ellipse cx="13" cy="27" rx="6" ry="9" transform="rotate(-20 13 27)"/><ellipse cx="27" cy="18" rx="6" ry="9"/><ellipse cx="42" cy="20" rx="6" ry="9" transform="rotate(16 42 20)"/><ellipse cx="52" cy="32" rx="5" ry="8" transform="rotate(25 52 32)"/>',
+ bird:'<path d="M30 52V12m0 22L12 16m18 18 19-18m-19 26-12 9" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>',
+ hoof:'<path d="M26 8C9 9 8 28 8 42c0 10 11 16 19 10V10Zm11 0c17 1 18 20 18 34 0 10-11 16-19 10V10Z"/>',
+ leaf:'<path d="M53 7C26 5 9 14 9 34c0 12 9 20 20 20C48 53 55 30 53 7Z"/><path d="m15 49 29-30m-13 15 1-12m-1 12 12 1" stroke="var(--mark-paper,#f3e5c8)" stroke-width="3" fill="none" stroke-linecap="round"/>',
+ wave:'<path d="M6 22c9-14 17 14 26 0s17 14 26 0M6 40c9-14 17 14 26 0s17 14 26 0" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>',
+ star:'<path d="m32 5 8 18 19 2-15 13 4 20-16-10-17 10 5-20L5 25l20-2Z"/>',
+};
+export function mark(token){return `<svg class="track-mark mark-${token.symbol}" viewBox="0 0 64 64" aria-hidden="true" style="--turn:${token.turn*90}deg">${shapes[token.symbol]}</svg>`;}

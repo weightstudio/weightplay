@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="de">
+<html lang="de" dir="ltr">
   <head>
-
+    
     <base href="/games/animal-meadow-difference/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
@@ -22,142 +22,85 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-meadow-difference/" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="robots" content="noindex,nofollow" />
+    <meta name="robots" content="noindex,nofollow,noarchive">
     <meta name="weightplay-audience" content="general">
     <meta name="weightplay-scene-controls" content="immutable">
     <meta name="weightplay-game-id" content="animal-meadow-difference">
-    <meta name="weightplay-game-version" content="v12">
+    <meta name="weightplay-game-version" content="v13">
     <meta name="weightplay-interface-version" content="9">
     <meta name="weightplay-game-status" content="planned">
-    <meta name="description" content="Meadow Find is a calm three-round observation puzzle about comparing two visible meadow panels. Each round keeps the evidence on screen: read the rows,..." />
-    <title>Meadow Find | WeightPlay</title>
+    <meta name="description" content="Zwei kleine Gärten voller Überraschungen. Vergleiche und finde jeden Unterschied.">
+    <title>Wiesenblick | WeightPlay</title>
     <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide>
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard>
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-shell-standard>
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
-    <link rel="stylesheet" href="style.css?v=20261020-meadow-i9-main-copy1">
+    <link rel="stylesheet" href="style.css?v=20261022-meadow-garden-v13">
+    <link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play-spacing1">
     <script src="locales.js?v=20261018-meadow-i9-frame-v1" defer></script>
-    <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" defer></script>
-    <script src="game.js?v=20261020-meadow-i9-result-canvas2" defer></script>
-    <script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
+    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" defer></script>
+    <script src="garden-copy.js?v=20261022-meadow-garden-v13" defer></script>
+    <script src="/src/shared-interface-bootstrap.js?v=20261017-shared-dark-loader1" data-wp-shared-interface="7"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <meta property="og:site_name" content="WeightPlay" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Meadow Find | WeightPlay" />
-    <meta property="og:description" content="Meadow Find is a calm three-round observation puzzle about comparing two visible meadow panels. Each round keeps the evidence on screen: read the rows,..." />
-    <meta property="og:url" content="https://weightplay.com/de/games/animal-meadow-difference/" />
-    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-meadow-difference.webp" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Meadow Find | WeightPlay" />
-    <meta name="twitter:description" content="Meadow Find is a calm three-round observation puzzle about comparing two visible meadow panels. Each round keeps the evidence on screen: read the rows,..." />
-    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-meadow-difference.webp" />
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoGame",
-  "name": "Meadow Find",
-  "url": "https://weightplay.com/de/games/animal-meadow-difference/",
-  "image": "https://weightplay.com/assets/interface7-redrawn/animal-meadow-difference.webp",
-  "description": "Meadow Find is a calm three-round observation puzzle about comparing two visible meadow panels. Each round keeps the evidence on screen: read the rows,...",
-  "publisher": {
-    "@type": "Organization",
-    "name": "WeightStudio",
-    "url": "https://weightplay.com"
-  },
-  "inLanguage": "de",
-  "isAccessibleForFree": true,
-  "operatingSystem": "Any modern web browser",
-  "genre": [
-    "Puzzle",
-    "Observation",
-    "Visual Reasoning",
-    "Family",
-    "Animal"
-  ],
-  "audience": {
-    "@type": "PeopleAudience",
-    "audienceType": "General players",
-    "suggestedMinAge": 6
-  }
-}
-    </script>
-  </head>
-    <body data-audience="general" data-wp-game-id="animal-meadow-difference" data-wp-game-version="v12" data-wp-interface-version="9" data-screen="main" data-has-stage="false">
+</head>
+    <body data-audience="general" data-wp-game-id="animal-meadow-difference" data-wp-game-version="v13" data-wp-interface-version="9" data-screen="main" data-has-stage="true">
     <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
     <main class="app-shell screen main-screen" id="mainScreen" data-screen="main" aria-labelledby="mainTitle">
-    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Meadow Find</h1>
       <header class="main-header topbar wp-main-shell-header" data-wp-shell-header="main">
         <a class="main-return home-link" data-wp-return="main" data-meadow-copy="backToLobby" href="/" aria-label="Zurück zu WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-        <strong id="mainTitle" class="wp-shell-main-title" data-wp-frame-title data-wp-game-title data-copy="title">Meadow Find</strong>
+        <strong id="mainTitle" class="wp-shell-main-title" data-wp-frame-title data-wp-game-title data-copy="title">Wiesenblick</strong>
         <label class="locale-source"><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
       <section class="view is-active main-content" id="mainView" aria-labelledby="mainTitle">
         <div class="hero-card">
-          <img class="cover-art main-poster" src="assets/animal-meadow-difference-cover.png" alt="" aria-hidden="true" data-wp-frame-poster>
+          <img class="cover-art main-poster" src="/assets/interface7-redrawn/animal-meadow-difference.webp" alt="" aria-hidden="true" data-wp-frame-poster>
           <div class="hero-copy">
-            <p class="lede main-summary" data-copy="subtitle" data-wp-frame-summary>Compare two visible meadow panels and find one changed tile.</p>
-            <p class="facts" data-copy="facts">Three short rounds · no timer · no lives</p>
-            <p class="main-progress" id="mainProgress" data-wp-frame-progress><span data-copy="best">Best checks</span>: <strong id="mainBestCount">—</strong></p>
-            <button class="primary-button" id="startButton" type="button" data-wp-main-start data-wp-frame-action="primary" data-meadow-copy="start" data-runtime-localize="off">Spiel starten</button>
+            <p class="lede main-summary" data-copy="subtitle" data-wp-frame-summary>Zwei kleine Gärten voller Überraschungen. Vergleiche und finde jeden Unterschied.</p>
+            <p class="facts" data-copy="facts">30 Gärten · 6 Welten · Ohne Zeitdruck</p>
+            <p class="main-progress" id="mainProgress" data-wp-frame-progress><span data-copy="best">Erkundete Gärten</span>: <strong id="mainBestCount">0 / 30</strong></p>
+            <button class="primary-button" id="startButton" type="button" data-wp-main-start data-wp-frame-action="primary" data-meadow-copy="start" data-runtime-localize="off">Start Game</button>
           </div>
         </div>
       </section>
 
-    <section class="game-page-info game-page-info-static" aria-label="Informationen zu Meadow Find" data-wp-game-guide>
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Meadow Find</h2><p>Meadow Find is a calm three-round observation puzzle about comparing two visible meadow panels. Each round keeps the evidence on screen: read the rows, notice the one changed tile on the right, and choose it without racing a timer. The small format is deliberate, but the complete loop still gives players a clear way to inspect, predict, test, recover from a wrong tap, and replay a familiar visual challenge.</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Visible difference observation</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Observation · Visual Reasoning · Family · Animal</strong></div><div class="game-info-fact"><span>Schwierigkeit</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Geschätzte Zeit</span><strong>2-6 minutes per round</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Welt und Mission</h3><p>Orla keeps a field notebook for a meadow that changes in small, friendly ways. A leaf may turn into a flower, a pebble may move, or a patch of color may take a different shape. The left panel is the earlier note and the right panel is the current note, so every answer can be explained by pointing to a visible row and tile rather than remembering a hidden state.</p>
-<p>The three rounds use the same readable comparison language while changing the arrangement of the objects. This lets a first-time player learn the task once and then apply it again with a fresh pattern. Wrong taps do not erase the round or punish curiosity; they simply invite another look at the two panels.</p></div>
-      <div class="game-info-section"><h3>Spielsysteme</h3><p>Both meadow panels remain visible in Battle. The left panel is a reference and the right panel is the answer surface. Each grid keeps the same row and column rhythm, while the changed tile is authored so one candidate is supported by the complete pair of panels.</p>
-<p>Select a tile on the right with touch, mouse, or keyboard. The selected tile receives a clear focus state, the feedback line announces whether the comparison is correct, and the check count records the number of observations used. The game never requires a fast reaction or a blind guess.</p>
-<p>A wrong tap leaves the current round open. Read the feedback, compare the neighboring shapes and colors again, and choose another tile. A correct tap locks that round and prepares the next one without hiding the evidence that made the answer fair.</p>
-<p>After the third correct tile, Result summarizes the careful search and keeps Replay and Home together. Replay starts the same authored three-round folio from a clean state; Home returns to Main, where the Guide and Settings remain available. The best check count and sound preference are stored only in this browser.</p></div>
-      <div class="game-info-section"><h3>So wird gespielt</h3><ol><li>Start from Main and read the short summary before entering the Battle Canvas.</li><li>Compare the two visible panels row by row, scanning the same position on the left and right.</li><li>On the right panel, tap or focus the tile whose shape, color, or object differs from the reference.</li><li>If the feedback asks for another look, keep the same round open and compare the surrounding tiles before trying again.</li><li>When the tile is correct, continue to the next round. Finish all three rounds, then choose Replay or Home from Result.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Strategietipps</h3><ul><li>Use a consistent scan: start at the top-left, move across one row, then continue downward. A steady path prevents a changed corner tile from being skipped.</li><li>Compare object identity and placement separately. First ask whether the same kind of meadow object appears, then check its color, orientation, and neighboring space.</li><li>The changed tile is supported by both panels. If one candidate seems plausible, confirm it against the row before and after it instead of tapping immediately.</li><li>A wrong check is useful information, not a reset. Keep the current row in view, name what you already ruled out, and change only the part of your comparison that the feedback challenges.</li><li>On a phone, let the two panels settle before scanning. The responsive Battle Canvas keeps the grids and the answer controls visible together, so a careful method works at every supported viewport.</li></ul></div>
-      <div class="game-info-section"><h3>Fortschritt und Schwierigkeit</h3><p>Round 1 introduces the comparison habit with a clear single-tile change and generous visual spacing. It teaches that the right panel is the answer surface while the left panel remains evidence.</p>
-<p>Round 2 keeps the same rules but changes the meadow vocabulary and the location of the difference. Players must use the row rhythm instead of memorizing a button position from the first round.</p>
-<p>Round 3 completes the observation loop with a new arrangement and a slightly less obvious neighboring pattern. The authored endpoint is still fair: the changed tile can be verified by comparing the full panels.</p>
-<p>The campaign is intentionally three rounds long. There are no hidden stages, lives, timers, purchases, or score multipliers behind the Guide. Replay is the way to practice a different scan order or improve the saved check count, while the Result screen makes the next choice explicit.</p></div>
-      <div class="game-info-section"><h3>Designnotiz</h3><p>Meadow Find is designed as a readable visual reasoning exercise rather than a speed test. Fixed rows make every answer explainable, the highlighted answer panel keeps attention on the active decision, and wrong-answer feedback preserves the evidence instead of sending the player to an unrelated puzzle. The responsive logical Canvas uses one uniform comparison layout across phone, short landscape, and desktop views, with touch, mouse, and keyboard activation sharing the same round state.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Meadow Find is free to play in the browser and requires no account, purchase, chat, or network service. The best check count and sound preference stay in this browser only; clearing site data or changing browsers may remove the local record. Its observations are playful practice, not a standardized ability, medical, or school assessment.</p></div>
-      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>What am I looking for?</dt><dd>Compare the left reference panel with the right answer panel and find the one tile whose object, color, or shape changed.</dd></div><div><dt>Can I tap more than once?</dt><dd>Yes. A wrong tap leaves the round open and gives you another chance to compare; only the correct tile advances the round.</dd></div><div><dt>Is there a timer?</dt><dd>No. The panels stay visible while you scan, and the game rewards a careful comparison rather than speed.</dd></div><div><dt>Can I play on a phone?</dt><dd>Yes. The same visible right-panel tiles work with touch, mouse, and keyboard focus across the responsive Battle Canvas.</dd></div><div><dt>How many rounds are included?</dt><dd>There are three authored observation rounds. The third correct tile opens Result, where Replay and Home are available.</dd></div><div><dt>Is progress saved?</dt><dd>The best check count and sound preference are stored only in this browser. No account or cloud save is required.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section class="game-page-info game-page-info-static" data-wp-game-guide data-game-owned-guide data-wp-preserve-static-guide data-runtime-localize="off" aria-label="Wiesenblick">
+      <div class="game-info-hero"><div class="game-info-title"><h2 data-copy="title">Wiesenblick</h2><p data-copy="subtitle">Zwei kleine Gärten voller Überraschungen. Vergleiche und finde jeden Unterschied.</p></div></div>
+      <div class="game-info-sections"><div class="game-info-section"><h3 data-copy="how">So geht’s</h3><p data-copy="howBody">Vergleiche Farben, Formen, Mengen, Richtungen und fehlende Dinge. Tippe auf einen Garten, um beide zu markieren. Vergrößern zeigt die Details.</p></div><div class="game-info-section"><h3 data-copy="best">Erkundete Gärten</h3><p data-copy="saveBody">Ein Abschluss öffnet den nächsten Garten. Fortschritt und beste Sterne bleiben in diesem Browser. Zwei Hinweise pro Garten zeigen nur einen Bereich.</p></div><div class="game-info-section"><h3 data-copy="completeEyebrow">Beobachtung abgeschlossen</h3><p data-copy="starBody">Drei Sterne ohne Fehler oder Hinweise; zwei mit höchstens drei Fehlern und einem Hinweis. Jeder Abschluss gibt einen Stern und öffnet den nächsten. Keine Uhr oder Leben.</p></div></div>
+    </section>
     </main>
+
+    <section id="stageView" class="screen stage-screen" data-screen="stage" hidden>
+      <header data-wp-shell-header="stage"><button id="homeFromStage" type="button" data-wp-return="stage" aria-label="Home">←</button></header>
+      <main id="stageContent" data-wp-shell-content="stage"><div id="stageRail"></div></main>
+      <div hidden><span id="stageProgress"></span><button id="stageTab" type="button" data-copy="stages">Level</button></div>
+    </section>
 
       <section class="view screen battle-screen battle-canvas" id="battleView" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" hidden>
         <header class="screen-head battle-header" data-wp-shell-header="battle">
           <button class="quiet-button" id="homeFromBattle" type="button" data-wp-return="battle" aria-label="Home">←</button>
           <strong id="battleFrameTitle" data-wp-frame-title hidden>Meadow Find</strong>
-          <div class="battle-header-info" id="battleHeaderInfo"><p class="eyebrow" id="roundLabel">Round 1 of 3</p><span class="battle-checks-hud" aria-live="polite"><strong id="checkCountTop">0</strong> <span data-copy="checks">checks</span></span></div>
+          <div class="battle-header-info" id="battleHeaderInfo"><span id="roundLabel">01 / 30</span><span class="battle-checks-hud"><span data-copy="found">Gefunden</span> <strong id="checkCountTop">0 / 3</strong></span></div>
         </header>
         <main class="battle-workspace" data-wp-shell-content="battle">
           <div class="round-content" id="roundContent">
-          <p class="instruction" id="instruction" data-copy="instruction">Find the one tile that changed on the right.</p>
-          <div class="compare-layout">
-            <div class="compare-panel" id="beforePanel"><div class="panel-label" data-copy="before">Before</div><div class="difference-grid" id="beforeGrid" aria-hidden="true"></div></div>
-            <div class="compare-arrow" aria-hidden="true">→</div>
-            <div class="compare-panel answer-panel" id="afterPanel"><div class="panel-label" data-copy="after">After — choose here</div><div class="difference-grid" id="afterGrid"></div></div>
+          <div class="garden-brief"><div><span class="garden-biome" id="biomeName"></span><h1 id="gardenName"></h1></div><div id="discoveryDots" class="discovery-dots" aria-hidden="true"></div></div>
+          <p class="instruction" id="instruction">Find every difference. Tap either garden.</p>
+          <div id="compareLayout" class="compare-layout" data-wp-primary-play-surface>
+            <canvas id="sceneCanvas" aria-hidden="true"></canvas>
+            <div class="compare-panel" id="beforePanel"><div class="panel-label"><span data-copy="before">Garten A</span><span class="panel-mark" aria-hidden="true">01</span></div><div class="garden-viewport" id="beforeGarden" role="group"></div></div>
+            <div class="compare-panel" id="afterPanel"><div class="panel-label"><span data-copy="after">Garten B</span><span class="panel-mark" aria-hidden="true">02</span></div><div class="garden-viewport" id="afterGarden" role="group"></div></div>
           </div>
-          <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
+          <div class="garden-footer"><p class="feedback" id="feedback" role="status" aria-live="polite"></p><div class="garden-tools"><button id="hintButton" type="button"><span aria-hidden="true">✧</span> <span data-copy="hint">Hinweis</span> <b id="hintCount">2</b></button><button id="helpButton" type="button" data-copy="how">So geht’s</button></div></div>
           </div>
         <section class="view result-screen result-overlay" id="resultView" data-wp-battle-substate="result" data-wp-result-screen aria-labelledby="resultTitle" hidden>
           <div class="result-card" data-wp-result-card>
-            <div class="result-icon" aria-hidden="true">✦</div>
-            <img class="guide-art" src="assets/animal-meadow-difference-orla.png" alt="" aria-hidden="true">
-            <p class="eyebrow" data-copy="completeEyebrow">Observation complete</p>
-            <h2 id="resultTitle" data-copy="complete">A careful meadow search.</h2>
-            <p id="resultSummary">Three changed tiles found.</p>
-            <p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestCount">—</strong></p>
-            <div class="result-actions"><button class="secondary-button" id="homeFromResult" type="button" data-copy="home" data-wp-frame-action="secondary">Home</button><button class="primary-button" id="replayButton" type="button" data-copy="replay" data-wp-frame-action="primary">Replay</button></div>
+            <img class="result-poster" src="/assets/interface7-redrawn/animal-meadow-difference.webp" alt="" aria-hidden="true">
+            <div class="result-stars" id="resultStars" aria-hidden="true">★ ★ ★</div>
+            <p class="eyebrow" data-copy="completeEyebrow">Beobachtung abgeschlossen</p>
+            <h2 id="resultTitle" data-copy="complete">Gut beobachtet!</h2>
+            <p id="resultSummary"></p><div class="result-stats"><span><b id="resultMisses">0</b><span data-copy="misses">Fehler</span></span><span><b id="resultHints">0</b><span data-copy="hint">Hinweis</span></span></div>
+            <p class="save-notice" id="saveNotice" hidden></p>
+            <div class="result-actions"><button class="secondary-button" id="homeFromResult" type="button" data-copy="stages" data-wp-frame-action="secondary">Level</button><button class="primary-button" id="nextButton" type="button" data-copy="next" data-wp-frame-action="primary">Nächster Garten</button><button class="secondary-button" id="replayButton" type="button" data-copy="replay" data-wp-frame-action="secondary">Noch einmal</button></div>
           </div>
         </section>
         </main>
@@ -166,8 +109,8 @@
             <h2 id="leaveTitle">Leave this round?</h2>
             <p id="leaveBody">Your unfinished meadow search will be discarded. Saved best checks stay safe.</p>
             <div class="leave-confirm-actions">
-              <button class="primary-button" id="continuePlaying" type="button" data-wp-frame-action="primary">Continue Playing</button>
-              <button class="secondary-button" id="leaveBattle" type="button" data-wp-frame-action="secondary">Leave Battle</button>
+              <button class="primary-button" id="continuePlaying" type="button" data-copy="continue" data-wp-frame-action="primary">Weitersuchen</button>
+              <button class="secondary-button" id="leaveBattle" type="button" data-copy="leave" data-wp-frame-action="secondary">Zur Levelauswahl</button>
             </div>
           </div>
         </section>
@@ -176,10 +119,9 @@
     </div>
     <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard defer></script>
-    <script src="frame.js?v=20261020-meadow-i9-header-slot1" defer></script>
-  <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/runtime-locales/de.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-</body>
+    <script src="/src/stage-rail-i9.js?v=20261017-shared-play-spacing1" defer></script>
+    <script src="/src/game-play-ui.js?v=20261022-shared-play-ui-sync-mount-v1" defer></script>
+    <script src="frame.js?v=20261022-meadow-garden-v13" defer></script>
+    <script type="module" src="game.js?v=20261022-meadow-garden-v13"></script>
+  </body>
 </html>

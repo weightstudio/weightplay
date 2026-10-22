@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   const scriptUrl = document.currentScript?.src || document.baseURI;
-  const poster = new URL('assets/animal-tangle-rescue-cover.webp', scriptUrl).href;
+  const poster = new URL('/assets/interface7-redrawn/animal-tangle-rescue.webp', scriptUrl).href;
   const background = new URL('../../assets/lobby-block-atmosphere.svg', scriptUrl).href;
   window.TangleRescueStageConfig = Object.freeze({
     gameId: 'animal-tangle-rescue',

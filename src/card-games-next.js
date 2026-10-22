@@ -2517,6 +2517,28 @@
     };
     const speedRenderMarkup = new WeakMap();
     const writeRenderedMarkup = (node, markup) => {
+      const previous = speedRenderMarkup.get(node);
+      // A new center card can change legality without changing any hand card.
+      // Preserve the real hand buttons (and any held pointer/focus) in that
+      // case; the game-owned deck decoration must also survive this update.
+      if (id === "speed" && node === hand && previous && previous !== markup) {
+        const oldTemplate = document.createElement('template'), nextTemplate = document.createElement('template');
+        oldTemplate.innerHTML = previous; nextTemplate.innerHTML = markup;
+        const oldCards = [...oldTemplate.content.children], nextCards = [...nextTemplate.content.children];
+        if (oldCards.length === nextCards.length && node.children.length === nextCards.length
+            && oldCards.every((card, index) => card.textContent === nextCards[index].textContent)) {
+          nextCards.forEach((card, index) => {
+            const live = node.children[index];
+            live.classList.toggle('card-speed-legal', card.classList.contains('card-speed-legal'));
+            live.setAttribute('aria-label', card.getAttribute('aria-label'));
+            live.disabled = card.disabled;
+            if (card.hasAttribute('data-runtime-localize')) live.setAttribute('data-runtime-localize', 'off');
+            else live.removeAttribute('data-runtime-localize');
+          });
+          speedRenderMarkup.set(node, markup);
+          return;
+        }
+      }
       if (id !== "speed" || speedRenderMarkup.get(node) !== markup) {
         node.innerHTML = markup;
         if (id === "speed") speedRenderMarkup.set(node, markup);
@@ -3492,7 +3514,7 @@
       isPaused() { return s.paused; },
       card(index) { if (s.over || s.paused) return; const item = s.hand[index]; const centerIndex = s.centers.findIndex((centerCard) => canPlay(item, centerCard)); if (centerIndex < 0) return; s.hand.splice(index, 1); replaceCenter(centerIndex, item); s.lastPlayerAt = Date.now(); refill(s.hand, s.stock); finishIfDone(); },
       action() {},
-      view() { const legalCount = s.hand.filter((item) => s.centers.some((centerCard) => canPlay(item, centerCard))).length; const handMarkup = s.hand.map((item, index) => { const legal = s.centers.some((centerCard) => canPlay(item, centerCard)); return cardMarkup(item, index, { className: legal ? "card-speed-legal" : "", ariaLabel: legal ? speedLegalLabel(item) : undefined, runtimeLocalizeOff: legal }); }).join(""); return { phase: TITLES.speed[currentLocale()] || TITLES.speed.en, status: t("yourTurn"), help: speedCoachText(legalCount), score: s.hand.length + s.stock.length, opponents: opponentMarkup("AI", s.aiHand.length + s.aiStock.length), center: `<div class="card-speed-lane"><div class="card-speed-pile">${cardMarkup(s.centers[0], 0)}</div><div class="card-speed-pile">${cardMarkup(s.centers[1], 0)}</div></div>`, hand: handMarkup, actions: `<span class="card-help">${s.stock.length} ${t("stock")} · ${s.aiStock.length} ${t("cards")} ${t("waiting")}</span>` }; }
+      view() { const legalCount = s.hand.filter((item) => s.centers.some((centerCard) => canPlay(item, centerCard))).length; const handMarkup = s.hand.map((item, index) => { const legal = s.centers.some((centerCard) => canPlay(item, centerCard)); return cardMarkup(item, index, { className: legal ? "card-speed-legal" : "", ariaLabel: legal ? speedLegalLabel(item) : undefined, runtimeLocalizeOff: legal }); }).join(""); return { phase: t("cards"), status: t("yourTurn"), help: speedCoachText(legalCount), score: s.hand.length + s.stock.length, opponents: opponentMarkup("AI", s.aiHand.length + s.aiStock.length), center: `<div class="card-speed-lane"><div class="card-speed-pile">${cardMarkup(s.centers[0], 0)}</div><div class="card-speed-pile">${cardMarkup(s.centers[1], 0)}</div></div>`, hand: handMarkup, actions: `<span class="card-help">${s.stock.length} ${t("stock")} · ${s.aiStock.length} ${t("cards")} ${t("waiting")}</span>` }; }
     };
   }
 

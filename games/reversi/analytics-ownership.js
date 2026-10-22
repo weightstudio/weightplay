@@ -2,8 +2,8 @@
   "use strict";
 
   const GAME_ID = "reversi";
-  const GAME_VERSION = "v16";
-  const INTERFACE_VERSION = "6";
+  const GAME_VERSION = document.body.dataset.wpGameVersion || "v17";
+  const INTERFACE_VERSION = document.body.dataset.wpInterfaceVersion || "6";
   const EVENTS = new Set([
     "preview_open",
     "game_start",

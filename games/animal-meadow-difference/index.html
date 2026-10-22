@@ -26,23 +26,24 @@
     <meta name="weightplay-audience" content="general">
     <meta name="weightplay-scene-controls" content="immutable">
     <meta name="weightplay-game-id" content="animal-meadow-difference">
-    <meta name="weightplay-game-version" content="v12">
+    <meta name="weightplay-game-version" content="v13">
     <meta name="weightplay-interface-version" content="9">
     <meta name="weightplay-game-status" content="planned">
-    <meta name="description" content="Compare two visible meadow panels and find one changed tile in each calm observation round.">
+    <meta name="description" content="Explore 30 tiny 3D gardens. Compare two living dioramas and discover differences in colour, shape, quantity and direction at your own pace.">
     <title>Meadow Find | WeightPlay</title>
     <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide>
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-shell-standard>
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
-    <link rel="stylesheet" href="style.css?v=20261020-meadow-i9-main-copy1">
+    <link rel="stylesheet" href="style.css?v=20261022-meadow-garden-v13">
+    <link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play-spacing1">
     <script src="locales.js?v=20261018-meadow-i9-frame-v1" defer></script>
     <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" defer></script>
-    <script src="game.js?v=20261020-meadow-i9-result-canvas2" defer></script>
+    <script src="garden-copy.js?v=20261022-meadow-garden-v13" defer></script>
     <script src="/src/shared-interface-bootstrap.js?v=20261017-shared-dark-loader1" data-wp-shared-interface="7"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-    <body data-audience="general" data-wp-game-id="animal-meadow-difference" data-wp-game-version="v12" data-wp-interface-version="9" data-screen="main" data-has-stage="false">
+    <body data-audience="general" data-wp-game-id="animal-meadow-difference" data-wp-game-version="v13" data-wp-interface-version="9" data-screen="main" data-has-stage="true">
     <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
     <main class="app-shell screen main-screen" id="mainScreen" data-screen="main" aria-labelledby="mainTitle">
       <header class="main-header topbar wp-main-shell-header" data-wp-shell-header="main">
@@ -52,47 +53,54 @@
       </header>
       <section class="view is-active main-content" id="mainView" aria-labelledby="mainTitle">
         <div class="hero-card">
-          <img class="cover-art main-poster" src="assets/animal-meadow-difference-cover.png" alt="" aria-hidden="true" data-wp-frame-poster>
+          <img class="cover-art main-poster" src="/assets/interface7-redrawn/animal-meadow-difference.webp" alt="" aria-hidden="true" data-wp-frame-poster>
           <div class="hero-copy">
-            <p class="lede main-summary" data-copy="subtitle" data-wp-frame-summary>Compare two visible meadow panels and find one changed tile.</p>
-            <p class="facts" data-copy="facts">Three short rounds · no timer · no lives</p>
-            <p class="main-progress" id="mainProgress" data-wp-frame-progress><span data-copy="best">Best checks</span>: <strong id="mainBestCount">—</strong></p>
+            <p class="lede main-summary" data-copy="subtitle" data-wp-frame-summary>Two tiny gardens. A world of little differences. Explore, compare and find every surprise.</p>
+            <p class="facts" data-copy="facts">30 gardens · 6 worlds · Take your time</p>
+            <p class="main-progress" id="mainProgress" data-wp-frame-progress><span data-copy="best">Gardens explored</span>: <strong id="mainBestCount">0 / 30</strong></p>
             <button class="primary-button" id="startButton" type="button" data-wp-main-start data-wp-frame-action="primary" data-meadow-copy="start" data-runtime-localize="off">Start Game</button>
           </div>
         </div>
       </section>
 
-    <section class="game-page-info game-page-info-static" data-wp-game-guide aria-label="Meadow Find game information">
-      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Meadow Find</h2><p>Compare two visible meadow panels and tap the one changed tile in each calm observation round.</p></div></div>
-        <div class="game-info-sections"><div class="game-info-section"><h3>How to play</h3><ol><li>Compare the two visible meadow panels row by row.</li><li>Tap the changed tile on the right; wrong taps simply invite another look.</li><li>Complete all three rounds to see your checks and replay.</li></ol></div><div class="game-info-section"><h3>Progress and saves</h3><p>There is no timer or lives. Your best check count is saved only in this browser.</p></div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></div>
+    <section class="game-page-info game-page-info-static" data-wp-game-guide data-game-owned-guide data-wp-preserve-static-guide data-runtime-localize="off" aria-label="Meadow Find game information">
+      <div class="game-info-hero"><div class="game-info-title"><h2 data-copy="title">Meadow Find</h2><p data-copy="subtitle">Two tiny gardens. A world of little differences.</p></div></div>
+      <div class="game-info-sections"><div class="game-info-section"><h3 data-copy="how">How to play</h3><p data-copy="howBody">Compare the gardens and tap a changed object in either view.</p></div><div class="game-info-section"><h3 data-copy="best">Gardens explored</h3><p data-copy="saveBody">Progress and best stars are saved in this browser.</p></div><div class="game-info-section"><h3 data-copy="completeEyebrow">Observation complete</h3><p data-copy="starBody">Find every difference to unlock the next garden.</p></div></div>
     </section>
     </main>
+
+    <section id="stageView" class="screen stage-screen" data-screen="stage" hidden>
+      <header data-wp-shell-header="stage"><button id="homeFromStage" type="button" data-wp-return="stage" aria-label="Home">←</button><strong data-wp-frame-title data-copy="title" hidden>Meadow Find</strong></header>
+      <main id="stageContent" data-wp-shell-content="stage"><div id="stageRail"></div></main>
+      <div hidden><span id="stageProgress"></span><button id="stageTab" type="button" data-copy="stages">Stages</button></div>
+    </section>
 
       <section class="view screen battle-screen battle-canvas" id="battleView" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" hidden>
         <header class="screen-head battle-header" data-wp-shell-header="battle">
           <button class="quiet-button" id="homeFromBattle" type="button" data-wp-return="battle" aria-label="Home">←</button>
           <strong id="battleFrameTitle" data-wp-frame-title hidden>Meadow Find</strong>
-          <div class="battle-header-info" id="battleHeaderInfo"><p class="eyebrow" id="roundLabel">Round 1 of 3</p><span class="battle-checks-hud" aria-live="polite"><strong id="checkCountTop">0</strong> <span data-copy="checks">checks</span></span></div>
+          <div class="battle-header-info" id="battleHeaderInfo"><span id="roundLabel">01 / 30</span><span class="battle-checks-hud"><span data-copy="found">Found</span> <strong id="checkCountTop">0 / 3</strong></span></div>
         </header>
         <main class="battle-workspace" data-wp-shell-content="battle">
           <div class="round-content" id="roundContent">
-          <p class="instruction" id="instruction" data-copy="instruction">Find the one tile that changed on the right.</p>
-          <div class="compare-layout">
-            <div class="compare-panel" id="beforePanel"><div class="panel-label" data-copy="before">Before</div><div class="difference-grid" id="beforeGrid" aria-hidden="true"></div></div>
-            <div class="compare-arrow" aria-hidden="true">→</div>
-            <div class="compare-panel answer-panel" id="afterPanel"><div class="panel-label" data-copy="after">After — choose here</div><div class="difference-grid" id="afterGrid"></div></div>
+          <div class="garden-brief"><div><span class="garden-biome" id="biomeName"></span><h1 id="gardenName"></h1></div><div id="discoveryDots" class="discovery-dots" aria-hidden="true"></div></div>
+          <p class="instruction" id="instruction">Find every difference. Tap either garden.</p>
+          <div id="compareLayout" class="compare-layout" data-wp-primary-play-surface>
+            <canvas id="sceneCanvas" aria-hidden="true"></canvas>
+            <div class="compare-panel" id="beforePanel"><div class="panel-label"><span data-copy="before">Garden A</span><span class="panel-mark" aria-hidden="true">01</span></div><div class="garden-viewport" id="beforeGarden" role="group"></div></div>
+            <div class="compare-panel" id="afterPanel"><div class="panel-label"><span data-copy="after">Garden B</span><span class="panel-mark" aria-hidden="true">02</span></div><div class="garden-viewport" id="afterGarden" role="group"></div></div>
           </div>
-          <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
+          <div class="garden-footer"><p class="feedback" id="feedback" role="status" aria-live="polite"></p><div class="garden-tools"><button id="hintButton" type="button"><span aria-hidden="true">✧</span> <span data-copy="hint">Hint</span> <b id="hintCount">2</b></button><button id="helpButton" type="button" data-copy="how">How to play</button></div></div>
           </div>
         <section class="view result-screen result-overlay" id="resultView" data-wp-battle-substate="result" data-wp-result-screen aria-labelledby="resultTitle" hidden>
           <div class="result-card" data-wp-result-card>
-            <div class="result-icon" aria-hidden="true">✦</div>
-            <img class="guide-art" src="assets/animal-meadow-difference-orla.png" alt="" aria-hidden="true">
+            <img class="result-poster" src="/assets/interface7-redrawn/animal-meadow-difference.webp" alt="" aria-hidden="true">
+            <div class="result-stars" id="resultStars" aria-hidden="true">★ ★ ★</div>
             <p class="eyebrow" data-copy="completeEyebrow">Observation complete</p>
             <h2 id="resultTitle" data-copy="complete">A careful meadow search.</h2>
-            <p id="resultSummary">Three changed tiles found.</p>
-            <p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestCount">—</strong></p>
-            <div class="result-actions"><button class="secondary-button" id="homeFromResult" type="button" data-copy="home" data-wp-frame-action="secondary">Home</button><button class="primary-button" id="replayButton" type="button" data-copy="replay" data-wp-frame-action="primary">Replay</button></div>
+            <p id="resultSummary"></p><div class="result-stats"><span><b id="resultMisses">0</b><span data-copy="misses">Misses</span></span><span><b id="resultHints">0</b><span data-copy="hint">Hint</span></span></div>
+            <p class="save-notice" id="saveNotice" hidden></p>
+            <div class="result-actions"><button class="secondary-button" id="homeFromResult" type="button" data-copy="stages" data-wp-frame-action="secondary">Stages</button><button class="primary-button" id="nextButton" type="button" data-copy="next" data-wp-frame-action="primary">Next garden</button><button class="secondary-button" id="replayButton" type="button" data-copy="replay" data-wp-frame-action="secondary">Replay</button></div>
           </div>
         </section>
         </main>
@@ -101,8 +109,8 @@
             <h2 id="leaveTitle">Leave this round?</h2>
             <p id="leaveBody">Your unfinished meadow search will be discarded. Saved best checks stay safe.</p>
             <div class="leave-confirm-actions">
-              <button class="primary-button" id="continuePlaying" type="button" data-wp-frame-action="primary">Continue Playing</button>
-              <button class="secondary-button" id="leaveBattle" type="button" data-wp-frame-action="secondary">Leave Battle</button>
+              <button class="primary-button" id="continuePlaying" type="button" data-copy="continue" data-wp-frame-action="primary">Keep looking</button>
+              <button class="secondary-button" id="leaveBattle" type="button" data-copy="leave" data-wp-frame-action="secondary">Back to stages</button>
             </div>
           </div>
         </section>
@@ -111,6 +119,9 @@
     </div>
     <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard defer></script>
-    <script src="frame.js?v=20261020-meadow-i9-header-slot1" defer></script>
+    <script src="/src/stage-rail-i9.js?v=20261017-shared-play-spacing1" defer></script>
+    <script src="/src/game-play-ui.js?v=20261022-shared-play-ui-sync-mount-v1" defer></script>
+    <script src="frame.js?v=20261022-meadow-garden-v13" defer></script>
+    <script type="module" src="game.js?v=20261022-meadow-garden-v13"></script>
   </body>
 </html>

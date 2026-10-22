@@ -54,6 +54,7 @@ body.speed-royal-table .card-game-player-header strong {flex-shrink:0;}
 body.speed-royal-table #resultOverlay .result-card {background:radial-gradient(ellipse at top,#254d42,#071e22);border-color:#d7b96f;}
 /* Main/header geometry belongs to the shared frame. These tracks contain
    only the game's table, stock/help and Result content. */
+body.speed-royal-table [data-wp-frame-copy] > :is(h1,p,small) {margin:0;}
 body.speed-royal-table .card-table-ui {
  grid-template-rows:minmax(0,1fr) auto;gap:8px;padding:4px 0 0;
  min-height:0;min-width:0;

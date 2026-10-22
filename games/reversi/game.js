@@ -1,13 +1,19 @@
-window.WPClassicLogic?.mount("reversi");
-
-import(new URL('disc-effects.mjs?v=20260909-reversi-v16', document.currentScript.src))
-  .then(({installDiscEffects}) => installDiscEffects(document.querySelector('#logicBoard')))
-  .catch(error => console.warn('Reversi visual feedback unavailable', error));
+(() => {
+  const loader=window.WeightPlayGameEntryLoader;
+  const styles=[...document.styleSheets].some(sheet=>{if(!sheet.href?.includes('/games/reversi/royal-board.css'))return false;try{return sheet.cssRules.length>0;}catch{return false;}});
+  if(!loader?.begin||!window.WeightPlayScreenFrame?.mount||!window.WeightPlayBattleCanvas||!window.WPClassicLogic?.mount||!window.mountReversiI9||!styles){loader?.fail(undefined,()=>location.reload());return;}
+  loader.begin(3);
+  const app=window.WPClassicLogic.mount('reversi');
+  app.main.querySelector('#startButton').disabled=true;
+  const effectsReady=import(new URL('disc-effects.mjs?v=20260909-reversi-v16',document.currentScript.src)).then(({installDiscEffects})=>{
+    installDiscEffects(app.board);
+    window.addEventListener('pageshow',event=>{if(event.persisted)installDiscEffects(app.board);});
+  });
 
 (() => {
   "use strict";
 
-  const GAME_VERSION = "v16";
+  const GAME_VERSION = document.body.dataset.wpGameVersion || "v17";
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const ROUTE_LOCALES = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const CELL_LABELS = {
@@ -228,3 +234,6 @@ if (reversiUndo) {
   reversiUndo.setAttribute("aria-hidden", "true");
   reversiUndo.dataset.logicAction = "unsupported";
 }
+
+  window.mountReversiI9(app,effectsReady);
+})();

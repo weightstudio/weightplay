@@ -22,13 +22,14 @@
   const stageHeading = document.getElementById('stageHeading');
   stageHeading.hidden = false;
   stageHeading.removeAttribute('hidden');
-  frame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup().add(stageHeading));
+  frame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup().add(stageHeading).add(document.getElementById('atelierBtn')));
 
   const battleHeading = document.getElementById('battleHeading');
   battleHeading.hidden = false;
   battleHeading.removeAttribute('hidden');
   const battleGroup = window.WeightPlayScreenFrame.createGroup();
-  battleGroup.add(battleHeading).add(document.getElementById('roundLabel')).add(document.getElementById('sessionPicksLabel'));
+  battleGroup.add(document.getElementById('roundLabel')).add(document.getElementById('sessionPicksLabel'));
+  battleHeading.hidden = true;
   frame.battleTopUI.add(battleGroup);
 
   const selector = window.WeightPlayPlayUI.mountStage({

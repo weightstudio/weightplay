@@ -7,8 +7,11 @@
   document.body.dataset.gameVersion=document.body.dataset.wpGameVersion;
   document.body.dataset.cardDeck='klondike';
   const signatures=new WeakMap();
+  const identity=card=>card.dataset.deckRank
+    ? card.dataset.deckRank+(card.querySelector('.rank.top')?.dataset.suit||'')
+    : card.textContent.trim();
   function decorate(root) {
-    const signature=[...root.querySelectorAll('.playing-card')].map(card=>card.getAttribute('aria-label')).join('|');
+    const signature=[...root.querySelectorAll('.playing-card')].map(identity).join('|');
     const previous=signatures.get(root);
     const changed=previous!==undefined&&previous!==signature;
     const priorLabels=new Set((previous||'').split('|'));
@@ -18,7 +21,7 @@
       if(!match)return; // Unknown/localized content is preserved, never guessed.
       const [,rank,suit]=match;
       card.classList.add('classic-card','front');
-      if(changed&&!priorLabels.has(card.getAttribute('aria-label')))card.classList.add('speed-card-arrival');
+      if(changed&&!priorLabels.has(identity(card)))card.classList.add('speed-card-arrival');
       const corners=['top','bottom'].map(position=>{
         const node=document.createElement('span');node.className='rank '+position;node.textContent=rank;return node;
       });

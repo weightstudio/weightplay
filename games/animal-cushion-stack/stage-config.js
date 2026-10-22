@@ -4,7 +4,7 @@
   window.AnimalCushionStackStageConfig = Object.freeze({
     gameId: 'animal-cushion-stack',
     get count() { return window.AnimalCushionStackI9?.stageCount || 30; },
-    poster: '/games/animal-cushion-stack/assets/animal-cushion-stack-cover-v2.png',
+    poster: '/assets/interface7-redrawn/animal-cushion-stack.webp',
     background: '/assets/lobby-block-atmosphere.svg',
     stage(index) {
       const record = window.AnimalCushionStackI9?.stageRecord(index);

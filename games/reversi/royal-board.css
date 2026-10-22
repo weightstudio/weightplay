@@ -20,3 +20,47 @@
 .logic-reversi-board .black .disc {background:radial-gradient(circle at 32% 23%,#64737d 0%,#23343d 27%,#081216 68%);box-shadow:inset 0 -3px 1px #000,0 3px 4px #0009;}
 .logic-reversi-board .white .disc {background:radial-gradient(circle at 32% 23%,#fffefa 0%,#f7ecd3 40%,#b7ab91 95%);box-shadow:inset 0 -3px 1px #8e846e,0 3px 4px #0008;}
 @media(orientation:landscape) and (max-height:430px){.logic-reversi-board{border-width:3px;padding:3px;gap:1px;}}
+
+/* The common frame owns all Main/header/canvas geometry. Only the game's
+   playfield, optional explanations and action content live here. */
+body[data-logic-game="reversi"] #logicBattle {container:reversi-battle / size;}
+.reversi-main-copy > :is(h2,p) {margin:0;}
+body[data-logic-game="reversi"] .reversi-play-content {
+ display:grid;grid-template-columns:minmax(0,1fr);
+ grid-template-rows:min(100cqw,calc(100cqh - 2 * var(--wp-frame-control-size,48px) - 80px)) minmax(0,1fr);
+ gap:8px;min-width:0;min-height:0;width:100%;height:100%;container-type:size;
+}
+.reversi-board-window {min-width:0;min-height:0;overflow:auto;overscroll-behavior:contain;touch-action:pan-x pan-y;container-type:size;}
+body[data-logic-game="reversi"] #logicBoard {
+ display:block;width:min(100cqw,max(100cqh,calc(8 * var(--wp-frame-control-size,44px) + 11px)));
+ min-width:calc(8 * var(--wp-frame-control-size,44px) + 11px);
+ min-height:0;margin-inline:auto;padding:0;border:0;background:none;box-shadow:none;
+}
+body[data-logic-game="reversi"] #logicBoard > .reversi-board-panel {display:block;width:100%;min-height:0;margin:0;padding:0;}
+body[data-logic-game="reversi"] #logicBoard .logic-reversi-board {
+ width:100%;max-width:none;aspect-ratio:1;grid-template-columns:repeat(8,minmax(0,1fr));
+ grid-template-rows:repeat(8,minmax(0,1fr));gap:1px;padding:0;border-width:2px;
+}
+.reversi-notes {display:grid;grid-template-rows:minmax(0,1fr) auto;gap:8px;min-width:0;min-height:0;}
+.reversi-game-info {--reversi-text-size:calc(var(--wp-frame-control-size,44px) * .31818182);min-height:0;min-width:0;overflow:auto;overscroll-behavior:contain;touch-action:pan-y;}
+.reversi-game-info > :is(p,div) {margin:0 0 8px;}
+body[data-logic-game="reversi"] .reversi-game-info :is(.logic-tutorial,.logic-status-line,.logic-live) {
+ width:100%;height:auto;min-height:0;max-height:none;white-space:normal;overflow:visible;
+ font-size:var(--reversi-text-size);line-height:1.4;
+}
+.reversi-game-info .logic-board-toolbar select {min-height:var(--wp-frame-control-size,44px);max-width:100%;font-size:var(--reversi-text-size);}
+.reversi-notes .logic-action-row {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;min-width:0;}
+.reversi-notes .logic-action-row button {min-height:var(--wp-frame-control-size,44px);}
+body[data-logic-game="reversi"] :is(#logicLeave,#logicResult) {
+ position:absolute;inset:0;z-index:30;display:grid;place-items:center;
+ box-sizing:border-box;padding:16px;overflow:auto;
+}
+body[data-logic-game="reversi"] :is(#logicLeave,#logicResult)[hidden] {display:none!important;}
+body[data-logic-game="reversi"] :is(.logic-leave-card,.logic-result-card) {
+ box-sizing:border-box;width:min(460px,100%);max-height:100%;overflow:auto;margin:0;padding:16px;
+}
+body[data-logic-game="reversi"] :is(.logic-leave-card,.logic-result-card) .logic-result-actions {display:grid;grid-template-columns:1fr;gap:8px;}
+body[data-logic-game="reversi"] :is(.logic-leave-card,.logic-result-card) button {min-height:var(--wp-frame-control-size,44px);}
+@container reversi-battle (min-aspect-ratio:1.2) {
+ body[data-logic-game="reversi"] .reversi-play-content {grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);}
+}

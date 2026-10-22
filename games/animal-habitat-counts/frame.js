@@ -14,7 +14,7 @@
     const battleCanvas = battle.querySelector('.battle-canvas');
     const localeSelect = document.getElementById('languageSelect');
 
-    root.querySelectorAll('button:not([data-wp-return])').forEach((button) => {
+    root.querySelectorAll('button.primary-btn, button.secondary-btn').forEach((button) => {
       button.dataset.wpFrameAction = button.classList.contains('primary-btn') ? 'primary' : 'secondary';
     });
 
@@ -59,6 +59,13 @@
     stagesTab.textContent = game.stageTabLabel();
     stagesTab.addEventListener('click', () => selector.select(game.selectedStage, { focus: true, notify: false }));
     frame.commonDownButton.add(stagesTab);
+    const themesButton = document.createElement('button');
+    themesButton.id = 'themesBtn';
+    themesButton.type = 'button';
+    themesButton.dataset.experience = 'theme';
+    themesButton.textContent = game.experienceCopy('theme');
+    themesButton.addEventListener('click', game.openThemes);
+    frame.commonDownButton.add(themesButton);
     game.setFrame(frame);
     frame.activate(game.screen);
     window.addEventListener('pagehide', (event) => {

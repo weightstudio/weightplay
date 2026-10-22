@@ -1,476 +1,244 @@
-(function () {
-  "use strict";
-
-  const localeMap = window.TANGLE_RESCUE_LOCALES || {};
-  const localeList = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
-  const tokenMeta = {
-    foxA: { copy: "animalFox", color: "#5c9ccc", suffix: " A", marker: "●", dash: "" },
-    badgerA: { copy: "animalBadger", color: "#ca7b62", suffix: " A", marker: "■", dash: "12 5" },
-    otterA: { copy: "animalOtter", color: "#6ca878", suffix: " A", marker: "▲", dash: "2 5" },
-    hareA: { copy: "animalHare", color: "#a56eae", suffix: " A", marker: "◆", dash: "12 3 2 3" },
-    foxB: { copy: "animalFox", color: "#3c79b8", suffix: " B", marker: "★", dash: "5 3" },
-    badgerB: { copy: "animalBadger", color: "#a45a49", suffix: " B", marker: "✚", dash: "2 3 9 3" },
-  };
-  // Authored 30-board campaign: six arcs and five boards per arc. The later arcs
-  // deliberately use repeated animal families with A/B endpoint identities so
-  // the six-endpoint permutation remains readable in every existing locale.
-  const boards = [
-    { arc: 1, checkpoint: false, title: "Creek braid", hint: "Read four endpoints before making the first rescue swap.", target: ["foxA", "badgerA", "otterA", "hareA"], start: ["otterA", "hareA", "foxA", "badgerA"] },
-    { arc: 1, checkpoint: false, title: "Fern turn", hint: "A second four-endpoint braid needs a different swap order.", target: ["badgerA", "foxA", "hareA", "otterA"], start: ["hareA", "otterA", "badgerA", "foxA"] },
-    { arc: 1, checkpoint: false, title: "Moon crossing", hint: "Two exchanges untangle the crossing paths.", target: ["hareA", "otterA", "badgerA", "foxA"], start: ["badgerA", "hareA", "foxA", "otterA"] },
-    { arc: 1, checkpoint: false, title: "Quiet shelter", hint: "The shelter order is not the same as the endpoint order.", target: ["foxA", "otterA", "badgerA", "hareA"], start: ["badgerA", "foxA", "hareA", "otterA"] },
-    { arc: 1, checkpoint: true, title: "First rescue checkpoint", hint: "Complete the first four-endpoint rescue arc.", target: ["otterA", "foxA", "hareA", "badgerA"], start: ["hareA", "badgerA", "otterA", "foxA"] },
-
-    { arc: 2, checkpoint: false, title: "Fifth trail", hint: "A fifth endpoint adds one more route to read.", target: ["foxA", "badgerA", "otterA", "hareA", "foxB"], start: ["foxB", "otterA", "foxA", "badgerA", "hareA"] },
-    { arc: 2, checkpoint: false, title: "Locked fern", hint: "The second endpoint is already safe; leave it untouched.", lockedRows: [1], target: ["badgerA", "foxB", "hareA", "otterA", "foxA"], start: ["hareA", "foxB", "badgerA", "foxA", "otterA"] },
-    { arc: 2, checkpoint: false, title: "Long crossing", hint: "Follow the longer route before checking the five shelters.", target: ["foxB", "otterA", "badgerA", "foxA", "hareA"], start: ["badgerA", "foxA", "hareA", "otterA", "foxB"] },
-    { arc: 2, checkpoint: false, title: "Safe first row", hint: "The first row is solved; untangle the remaining four.", lockedRows: [0], target: ["hareA", "foxA", "foxB", "badgerA", "otterA"], start: ["hareA", "otterA", "foxA", "foxB", "badgerA"] },
-    { arc: 2, checkpoint: true, title: "Fifth-trail checkpoint", hint: "Finish the fifth-endpoint rescue without disturbing safe rows.", target: ["otterA", "hareA", "badgerA", "foxB", "foxA"], start: ["foxA", "badgerA", "otterA", "hareA", "foxB"] },
-
-    { arc: 3, checkpoint: false, title: "Hidden shelter", hint: "One shelter is a decoy; infer its animal from the routes.", decoyRows: [2], target: ["foxB", "badgerA", "otterA", "hareA", "foxA"], start: ["otterA", "foxA", "foxB", "badgerA", "hareA"] },
-    { arc: 3, checkpoint: false, title: "Bramble pair", hint: "Five animals cross twice before reaching their shelters.", target: ["badgerA", "otterA", "foxA", "foxB", "hareA"], start: ["foxB", "hareA", "badgerA", "otterA", "foxA"] },
-    { arc: 3, checkpoint: false, title: "Locked moon", hint: "The first row is complete; solve around the locked shelter.", lockedRows: [0], decoyRows: [3], target: ["hareA", "foxB", "badgerA", "otterA", "foxA"], start: ["hareA", "otterA", "foxA", "badgerA", "foxB"] },
-    { arc: 3, checkpoint: false, title: "Two decoys", hint: "Two shelters hide their labels; the endpoints reveal the route.", decoyRows: [1, 4], target: ["foxA", "hareA", "foxB", "badgerA", "otterA"], start: ["badgerA", "foxA", "otterA", "foxB", "hareA"] },
-    { arc: 3, checkpoint: true, title: "Decoy checkpoint", hint: "Complete the hidden-shelter arc with every path connected.", decoyRows: [0, 3], target: ["otterA", "foxB", "foxA", "hareA", "badgerA"], start: ["foxA", "badgerA", "otterA", "foxB", "hareA"] },
-
-    { arc: 4, checkpoint: false, title: "Sixth endpoint", hint: "Six endpoints make the route graph wider.", target: ["foxA", "badgerA", "otterA", "hareA", "foxB", "badgerB"], start: ["badgerB", "foxB", "foxA", "otterA", "hareA", "badgerA"] },
-    { arc: 4, checkpoint: false, title: "Fixed fern", hint: "The second shelter is already correct; keep it fixed.", lockedRows: [1], decoyRows: [4], target: ["badgerB", "foxA", "hareA", "otterA", "badgerA", "foxB"], start: ["hareA", "foxA", "badgerB", "foxB", "otterA", "badgerA"] },
-    { arc: 4, checkpoint: false, title: "Six-way crossing", hint: "Untangle six routes without relying on a single cycle.", target: ["otterA", "badgerB", "foxB", "foxA", "badgerA", "hareA"], start: ["foxB", "hareA", "badgerA", "otterA", "foxA", "badgerB"] },
-    { arc: 4, checkpoint: false, title: "Moon lock", hint: "The first shelter is safe while two routes cross behind it.", lockedRows: [0], decoyRows: [1, 3], target: ["hareA", "foxB", "badgerA", "badgerB", "otterA", "foxA"], start: ["hareA", "otterA", "badgerB", "foxA", "foxB", "badgerA"] },
-    { arc: 4, checkpoint: true, title: "Six-endpoint checkpoint", hint: "Finish the first full six-endpoint rescue arc.", target: ["foxB", "otterA", "badgerB", "hareA", "foxA", "badgerA"], start: ["badgerA", "foxA", "foxB", "otterA", "hareA", "badgerB"] },
-
-    { arc: 5, checkpoint: false, title: "Shelter shuffle", hint: "Two decoy shelters make the swap order less obvious.", decoyRows: [0, 5], target: ["badgerA", "foxA", "badgerB", "otterA", "foxB", "hareA"], start: ["foxB", "hareA", "badgerA", "foxA", "badgerB", "otterA"] },
-    { arc: 5, checkpoint: false, title: "Long fern braid", hint: "Six routes must be resolved while every row remains selectable.", target: ["otterA", "foxB", "hareA", "badgerA", "foxA", "badgerB"], start: ["foxA", "badgerA", "otterA", "badgerB", "foxB", "hareA"] },
-    { arc: 5, checkpoint: false, title: "Locked moon pair", hint: "The first row is safe; a decoy hides one target in the middle.", lockedRows: [0], decoyRows: [2, 4], target: ["foxA", "badgerB", "otterA", "foxB", "badgerA", "hareA"], start: ["foxA", "hareA", "badgerA", "otterA", "badgerB", "foxB"] },
-    { arc: 5, checkpoint: false, title: "Far shelters", hint: "Keep the endpoints readable while the far shelters swap places.", decoyRows: [1, 5], target: ["hareA", "otterA", "foxA", "badgerB", "foxB", "badgerA"], start: ["badgerB", "foxB", "hareA", "badgerA", "foxA", "otterA"] },
-    { arc: 5, checkpoint: true, title: "Shuffle checkpoint", hint: "A clean six-way permutation completes the fifth arc.", target: ["badgerB", "otterA", "foxB", "foxA", "hareA", "badgerA"], start: ["foxA", "badgerA", "otterA", "hareA", "badgerB", "foxB"] },
-
-    { arc: 6, checkpoint: false, title: "Final creek", hint: "The last arc combines six endpoints and a hidden shelter.", decoyRows: [2], target: ["foxA", "foxB", "badgerA", "otterA", "badgerB", "hareA"], start: ["hareA", "badgerB", "foxA", "foxB", "badgerA", "otterA"] },
-    { arc: 6, checkpoint: false, title: "Final locked fern", hint: "Leave the first shelter safe while solving the five remaining rows.", lockedRows: [0], decoyRows: [3, 4], target: ["badgerA", "hareA", "foxB", "badgerB", "otterA", "foxA"], start: ["badgerA", "foxA", "otterA", "hareA", "foxB", "badgerB"] },
-    { arc: 6, checkpoint: false, title: "Bramble finale", hint: "Every route crosses; use the endpoint colors as your guide.", decoyRows: [0, 5], target: ["otterA", "badgerB", "foxA", "hareA", "foxB", "badgerA"], start: ["foxB", "otterA", "badgerA", "foxA", "badgerB", "hareA"] },
-    { arc: 6, checkpoint: false, title: "Last moon turn", hint: "A final locked row narrows the valid rescue sequence.", lockedRows: [1], target: ["hareA", "foxA", "badgerB", "foxB", "badgerA", "otterA"], start: ["badgerA", "foxA", "hareA", "otterA", "foxB", "badgerB"] },
-    { arc: 6, checkpoint: true, title: "Taro's rescue finale", hint: "Connect every endpoint and open all six shelters.", decoyRows: [1, 4], target: ["foxB", "badgerB", "otterA", "foxA", "hareA", "badgerA"], start: ["badgerA", "foxA", "foxB", "badgerB", "otterA", "hareA"] },
-  ];
-  const state = { locale: "en", screen: "main", board: 0, selectedStage: 0, current: [], selected: -1, swaps: 0, completed: [], errorRows: [], best: {}, statusKey: "ready", statusVars: {}, statusError: false };
-  let stageSelector = null;
-  let screenFrame = null;
-  let screenTransitionTimer = 0;
-  let screenTransitionGeneration = 0;
-  let dialogTransitionTimer = 0;
-  let guideTransitionTimer = 0;
-  let hasRenderedScreen = false;
-  const $ = (id) => document.getElementById(id);
-  const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
-  const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
-  const normalizeLocale = (value) => localeList.includes(value) && localeMap[value] ? value : "";
-  const initialLocale = () => normalizeLocale(window.WonderI18n?.actualLocale?.() || window.WonderI18n?.localeFromPath?.() || document.documentElement.lang || safeGet("weightPlayLocale", safeGet("weightplay-locale", "en"))) || "en";
+/* Tangle Rescue v14: scene/save controller. Rules and board input are separate. */
+(() => {
+  'use strict';
+  const { boards, tokens, minimumMoves, hintPair, exchange, rating, cleanCompleted } = window.TanglePuzzle;
+  const dictionaries = window.TANGLE_RESCUE_LOCALES;
+  const $ = id => document.getElementById(id);
+  const read = (key, fallback) => { try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; } };
+  const write = (key, value) => { try { localStorage.setItem(key, value); return true; } catch { return false; } };
+  const json = (key, fallback) => { try { return JSON.parse(read(key, JSON.stringify(fallback))); } catch { return fallback; } };
+  const state = { locale: 'en', screen: 'main', board: 0, selectedStage: 0, current: [], selected: -1,
+    swaps: 0, history: [], hint: [], hints: 0, errorRows: [], completed: cleanCompleted(json('weightplay-animal-tangle-rescue-completed', [])),
+    statusKey: 'ready', statusVars: {}, statusError: false, dialog: false, settled: false };
+  let selector = null, frame = null, transition = 0, generation = 0, dialogReturn = null;
+  const audio = window.WeightPlayAudio?.createScope();
+  const sound = id => audio?.play(id);
   const copy = (key, vars = {}) => {
-    const dictionary = localeMap[state.locale] || localeMap.en || {};
-    let value = dictionary[key] || (localeMap.en && localeMap.en[key]) || key;
-    Object.entries(vars).forEach(([name, replacement]) => { value = value.replace(new RegExp("\\{" + name + "\\}", "g"), String(replacement)); });
+    let value = dictionaries[state.locale]?.[key] ?? dictionaries.en?.[key] ?? key;
+    for (const [key, val] of Object.entries(vars)) value = value.replaceAll(`{${key}}`, String(val));
     return value;
   };
-  const bestKey = () => "weightplay-animal-tangle-rescue-best-" + state.board;
-  const bestForBoard = () => Number(safeGet(bestKey(), "0")) || 0;
-  const titleForAnimal = (animalKey) => {
-    const meta = tokenMeta[animalKey] || { copy: animalKey, suffix: "" };
-    return copy(meta.copy) + (meta.suffix || "");
-  };
-  const indexForAnimal = (animalKey) => Object.keys(tokenMeta).indexOf(animalKey);
-  const lockedRows = (board = boards[state.board]) => board.lockedRows || [];
-  const decoyRows = (board = boards[state.board]) => board.decoyRows || [];
-  const analytics = (eventName, details = {}) => {
-    try { window.gtag?.("event", eventName, { game_id: "animal-tangle-rescue", game_version: document.querySelector('meta[name="weightplay-game-version"]')?.content || "unknown", ...details }); } catch (_error) {}
-    window.__tangleRescueEvents = window.__tangleRescueEvents || [];
-    window.__tangleRescueEvents.push({ eventName, ...details });
-  };
-  const playTone = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
-  const showToast = (message) => { $("toast").textContent = message; $("toast").classList.add("visible"); window.clearTimeout(showToast.timer); showToast.timer = window.setTimeout(() => $("toast").classList.remove("visible"), 1800); };
-  const mountResultSubstate = () => {
-    const battleCanvas = document.querySelector("#battleScreen .battle-canvas");
-    const resultScreen = $("resultScreen");
-    if (!battleCanvas || !resultScreen) return;
-    if (resultScreen.parentElement !== battleCanvas) battleCanvas.append(resultScreen);
-    if ($("battlePlayLayer")) return;
-
-    const playLayer = document.createElement("div");
-    playLayer.id = "battlePlayLayer";
-    playLayer.className = "battle-play-layer";
-    Array.from(battleCanvas.childNodes).forEach((node) => {
-      if (node !== resultScreen) playLayer.append(node);
-    });
-    battleCanvas.prepend(playLayer);
-  };
-  const applyScreen = (screen) => {
-    state.screen = screen;
-    const activeScreen = screen === "result" ? "battle" : screen;
-    const showingResult = screen === "result";
-    document.body.dataset.screen = activeScreen;
-    ["main", "stage", "battle"].forEach((name) => {
-      const element = $(name + "Screen");
-      if (!element) return;
-      element.hidden = name !== activeScreen;
-      element.classList.toggle("active", name === activeScreen);
-    });
-    const playLayer = $("battlePlayLayer");
-    const resultScreen = $("resultScreen");
-    if (playLayer) {
-      playLayer.hidden = showingResult;
-      playLayer.inert = showingResult;
-      playLayer.setAttribute("aria-hidden", String(showingResult));
+  const animalName = token => copy(tokens[token].copy) + (boards[state.board].target.length > 4 ? ` ${tokens[token].suffix}` : '');
+  const highestUnlocked = () => Math.min(boards.length-1, state.completed.reduce((max, row) => Math.max(max,row+1), 0));
+  const isUnlocked = row => row === 0 || state.completed.includes(row-1);
+  const canInput = () => state.screen === 'battle' && !state.dialog && !state.settled && !document.hidden && !transition;
+  const bestFor = row => Math.max(0, Number(read(`weightplay-animal-tangle-rescue-best-${row}`, '0')) || 0);
+  const starsFor = row => Math.min(3, Math.max(0, Number(read(`weightplay-animal-tangle-rescue-stars-${row}`, '0')) || 0));
+  function status(key, vars = {}, error = false) { state.statusKey=key; state.statusVars=vars; state.statusError=error; }
+  function stageRecord(row) {
+    const board = boards[row]; if (!board) return null;
+    const stars = starsFor(row);
+    return { id:row+1, arc:board.arc, checkpoint:board.checkpoint,
+      title:copy(`boardTitle${row+1}`), hint:copy(`boardHint${row+1}`),
+      kicker:copy('round',{number:row+1,total:boards.length}),
+      summary:copy('masteryGuide'), status:state.completed.includes(row) ? `${copy('completed')} ${'★'.repeat(stars)}` : isUnlocked(row) ? copy('readyStage') : '—',
+      locked:!isUnlocked(row), cleared:state.completed.includes(row) };
+  }
+  function refreshText() {
+    document.querySelectorAll('[data-copy]').forEach(node => node.textContent=copy(node.dataset.copy));
+    document.querySelectorAll('[data-copy-aria-label]').forEach(node => node.setAttribute('aria-label',copy(node.dataset.copyAriaLabel)));
+    $('mainProgress').textContent=copy('progress',{count:state.completed.length,total:boards.length});
+    if (state.screen==='stage') selector?.refresh(state.selectedStage);
+    if (state.screen==='battle') render();
+  }
+  function locale(value) {
+    state.locale=dictionaries[value] ? value : 'en';
+    document.documentElement.lang=state.locale; document.documentElement.dir=state.locale==='ar'?'rtl':'ltr';
+    $('languageSelect').value=state.locale; refreshText();
+  }
+  function settleMotion() { boardView.settle(); audio?.stop(); }
+  function applyScreen(next) {
+    state.screen=next;
+    const scene=next==='result'?'battle':next;
+    document.body.dataset.screen=scene;
+    ['main','stage','battle'].forEach(name => { const node=$(name+'Screen'); node.hidden=name!==scene; node.inert=name!==scene; node.classList.toggle('active',name===scene); });
+    $('guideScreen').hidden=scene!=='main';
+    $('battlePlayLayer').hidden=next==='result'; $('battlePlayLayer').inert=next==='result';
+    $('resultScreen').hidden=next!=='result'; $('resultScreen').inert=next!=='result';
+    $('resultScreen').classList.toggle('active',next==='result');
+    frame?.activate(scene,{covered:next==='result'});
+    if(next==='main') refreshText();
+    if(next==='stage') { selector?.refresh(state.selectedStage); $('stageBackBtn').focus({preventScroll:true}); }
+    if(next==='battle') { render(); $('boardDiagram').querySelector('[data-endpoint]:not(:disabled)')?.focus({preventScroll:true}); }
+    if(next==='result') { $('resultScreen').scrollTop=0; $('resultHeading').focus({preventScroll:true}); }
+    window.scrollTo(0,0);
+  }
+  function setScreen(next) {
+    clearTimeout(transition); transition=0; generation+=1; settleMotion();
+    $('app').inert=false; $('app').classList.remove('scene-exiting');
+    if(state.screen===next || matchMedia('(prefers-reduced-motion: reduce)').matches) { applyScreen(next); return; }
+    const ticket=generation;
+    $('app').inert=true; $('app').classList.add('scene-exiting');
+    transition=setTimeout(() => {
+      if(ticket!==generation)return;
+      transition=0; $('app').inert=false; $('app').classList.remove('scene-exiting'); applyScreen(next);
+    },110);
+  }
+  function render(motion=[]) {
+    const board=boards[state.board], count=state.current.filter((token,row)=>token===board.target[row]).length;
+    $('battleHeading').textContent=copy('round',{number:state.board+1,total:boards.length});
+    $('roundHint').textContent=stageRecord(state.board).title;
+    $('progressBadge').textContent=copy('liveConnected',{count,total:board.target.length});
+    $('moveCount').textContent=String(state.swaps);
+    $('parCount').textContent=String(minimumMoves(board.start,board.target));
+    $('rescueMeter').style.setProperty('--progress',`${count/board.target.length*100}%`);
+    $('rescueMeter').setAttribute('aria-label',copy('liveConnected',{count,total:board.target.length}));
+    $('battleStatus').textContent=copy(state.statusKey,state.statusVars);
+    $('battleStatus').classList.toggle('error',state.statusError);
+    $('undoBtn').disabled=state.history.length===0;
+    $('hintBtn').disabled=count===board.target.length;
+    $('checkBtn').classList.toggle('rescue-ready',count===board.target.length);
+    $('checkBtn').textContent=copy(count===board.target.length?'rescueNow':'check');
+    boardView.update(board,state,copy,motion);
+  }
+  function select(row) {
+    if(!canInput()||(boards[state.board].lockedRows||[]).includes(row))return;
+    if(state.selected===row) { cancelSelection();return; }
+    if(state.selected>=0) { swap(state.selected,row);return; }
+    state.selected=row; state.hint=[]; state.errorRows=[]; status('selectSecond'); render();
+  }
+  function cancelSelection() { state.selected=-1; state.hint=[]; status('ready'); if(state.screen==='battle')render(); }
+  function swap(first,second) {
+    if(!canInput())return;
+    const next=exchange(state.current,boards[state.board],first,second); if(!next)return;
+    const before=state.current.filter((t,i)=>t===boards[state.board].target[i]).length;
+    state.history.push(state.current.slice());
+    state.current=next; state.swaps+=1; state.selected=-1; state.hint=[]; state.errorRows=[];
+    const after=state.current.filter((t,i)=>t===boards[state.board].target[i]).length;
+    status(after===next.length?'allHome':'swapped',{first:animalName(next[first]),second:animalName(next[second])});
+    sound(after>before?'puzzle.match':'board.move'); render([first,second]);
+  }
+  function undo() {
+    if(!canInput()||!state.history.length)return;
+    state.current=state.history.pop(); state.swaps=state.history.length; state.selected=-1; state.hint=[]; state.errorRows=[];
+    status('undoDone'); sound('board.undo'); render(state.current.map((_,row)=>row));
+  }
+  function hint() {
+    if(!canInput())return;
+    const pair=hintPair(state.current,boards[state.board]); if(!pair.length)return;
+    // Repeated viewing of the same hint does not inflate the hint count.
+    if(state.hint.join()!==pair.join())state.hints+=1;
+    state.selected=-1; state.hint=pair; state.errorRows=[];
+    status('hintPair',{first:pair[0]+1,second:pair[1]+1}); sound('feedback.hint'); render();
+  }
+  function reset() {
+    if(!canInput())return;
+    state.current=boards[state.board].start.slice(); state.history=[]; state.swaps=0; state.hints=0;
+    state.selected=-1; state.hint=[]; state.errorRows=[]; status('resetDone'); render(state.current.map((_,row)=>row));
+  }
+  function startBoard(row) {
+    if(!Number.isInteger(row)||row<0||row>=boards.length||!isUnlocked(row))return;
+    state.board=row; state.selectedStage=row; state.current=boards[row].start.slice();
+    state.swaps=0; state.history=[]; state.hints=0; state.hint=[]; state.selected=-1; state.errorRows=[]; state.settled=false;
+    status('ready'); applyTheme(); setScreen('battle'); sound('game.start');
+  }
+  function check() {
+    if(!canInput())return;
+    const board=boards[state.board];
+    state.errorRows=state.current.map((token,row)=>token===board.target[row]?-1:row).filter(row=>row>=0);
+    if(state.errorRows.length) { status('incorrectRows',{rows:state.errorRows.map(row=>row+1).join(', ')},true); sound('feedback.error'); render();return; }
+    state.settled=true;
+    if(!state.completed.includes(state.board))state.completed.push(state.board);
+    const saved=write('weightplay-animal-tangle-rescue-completed',JSON.stringify(state.completed));
+    const best=bestFor(state.board), nextBest=best?Math.min(best,state.swaps):state.swaps;
+    write(`weightplay-animal-tangle-rescue-best-${state.board}`,String(nextBest));
+    const stars=rating(state.swaps,minimumMoves(board.start,board.target),state.hints);
+    write(`weightplay-animal-tangle-rescue-stars-${state.board}`,String(Math.max(stars,starsFor(state.board))));
+    $('resultHeading').textContent=copy(state.completed.length===boards.length?'campaignComplete':'resultTitle');
+    $('resultText').textContent=copy(!saved?'saveUnavailable':stars===3?'perfectRescue':'rescueComplete');
+    $('resultStats').textContent=copy('stats',{moves:copy('placements',{count:state.swaps}),best:copy('placements',{count:nextBest})});
+    $('resultStars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);
+    $('resultStars').setAttribute('aria-label',copy('starsEarned',{count:stars}));
+    $('rescuedAnimals').innerHTML=board.target.map(token=>`<span class="rescued-token">${boardView.sprite(token)}</span>`).join('');
+    $('nextStageBtn').disabled=state.board===boards.length-1;
+    setScreen('result'); sound('puzzle.clear');
+  }
+  function openLeave(event) {
+    if(state.screen==='result') { state.selectedStage=highestUnlocked();setScreen('stage');return; }
+    if(!canInput())return;
+    state.dialog=true; dialogReturn=event?.currentTarget || $('battleBackBtn'); settleMotion();
+    $('battlePlayLayer').inert=true;
+    $('battleScreen').querySelector('header').inert=true;
+    $('leaveText').textContent=copy('leaveBoardText',{number:state.board+1,moves:state.swaps});
+    $('leaveDialog').hidden=false; $('cancelLeaveBtn').focus({preventScroll:true});
+  }
+  function closeLeave(leave=false) {
+    $('leaveDialog').hidden=true; state.dialog=false; $('battlePlayLayer').inert=false;
+    $('battleScreen').querySelector('header').inert=false;
+    if(leave) { state.selectedStage=state.board;setScreen('stage'); }
+    else dialogReturn?.focus({preventScroll:true});
+  }
+  function trap(event,node) {
+    if(event.key!=='Tab')return;
+    const focusable=[...node.querySelectorAll('button:not(:disabled),[tabindex="0"]')].filter(el=>el.getClientRects().length);
+    if(!focusable.length)return;
+    const index=focusable.indexOf(document.activeElement);
+    if(index<0 || (!event.shiftKey&&index===focusable.length-1) || (event.shiftKey&&index===0)) {
+      event.preventDefault();focusable[event.shiftKey?focusable.length-1:0].focus();
     }
-    if (resultScreen) {
-      resultScreen.hidden = !showingResult;
-      resultScreen.classList.toggle("active", showingResult);
+  }
+  const THEME_KEY='weightplay-tangle-firefly-v1', THEME_ACTIVE='weightplay-tangle-theme';
+  const ownedTheme=()=>read(THEME_KEY,'')==='owned';
+  function applyTheme() { $('battlePlayLayer').dataset.theme=ownedTheme()&&read(THEME_ACTIVE,'')==='firefly'?'firefly':'forest'; }
+  function themePanel() {
+    [...$('stageScreen').children].forEach(node=>{if(node!==$('themeDialog'))node.inert=true;});
+    $('themeDialog').hidden=false;
+    $('themeBalance').textContent=String(window.WeightPlayWallet?.read().diamonds||0);
+    $('themeBuyBtn').textContent=copy(ownedTheme()?'useFirefly':'buyTheme');
+    $('themeStatus').textContent=copy(ownedTheme()?'themeOwned':'themeDescription');
+    $('themeCloseBtn').focus({preventScroll:true});
+  }
+  function buyTheme() {
+    if(!ownedTheme()) {
+      if((window.WeightPlayWallet?.read().diamonds||0)<40) { $('themeStatus').textContent=copy('notEnough');sound('feedback.error');return; }
+      // Check persistence before charging; failed wallet writes cannot grant the theme.
+      if(!write(THEME_KEY,'pending')) { $('themeStatus').textContent=copy('saveUnavailable');return; }
+      try {
+        if(!window.WeightPlayWallet.spendDiamonds(40)) { localStorage.removeItem(THEME_KEY);return; }
+        if(!write(THEME_KEY,'owned')) { window.WeightPlayWallet.addDiamonds(40);localStorage.removeItem(THEME_KEY);$('themeStatus').textContent=copy('saveUnavailable');return; }
+      } catch { $('themeStatus').textContent=copy('saveUnavailable');return; }
+      sound('shop.purchase');
     }
-    $("guideScreen").hidden = activeScreen !== "main";
-    if (activeScreen === "main") applyText();
-    if (activeScreen === "stage") stageSelector?.refresh(state.selectedStage);
-    if (screen === "battle") renderBattle();
-    screenFrame?.activate(activeScreen, { covered: showingResult });
-    if (showingResult) {
-      if (resultScreen) resultScreen.scrollTop = 0;
-      $("resultHeading").focus({ preventScroll: true });
-    }
-    window.scrollTo(0, 0);
-    hasRenderedScreen = true;
+    write(THEME_ACTIVE,'firefly');applyTheme();themePanel();$('themeStatus').textContent=copy('themeActive');
+  }
+  const boardView=window.TangleBoardView($('boardDiagram'),{select,swap,cancel:cancelSelection,canInput,
+    focus(row){state.selected=row;state.hint=[];status('dragToSwap');render();}});
+  $('startBtn').onclick=()=>setScreen('stage');$('guideStartBtn').onclick=()=>setScreen('stage');
+  $('stageBackBtn').onclick=()=>setScreen('main');$('battleBackBtn').onclick=openLeave;
+  $('checkBtn').onclick=check;$('resetBtn').onclick=reset;$('undoBtn').onclick=undo;$('hintBtn').onclick=hint;
+  $('cancelLeaveBtn').onclick=()=>closeLeave();$('confirmLeaveBtn').onclick=()=>closeLeave(true);
+  $('stageTab').onclick=()=>selector?.select(state.selectedStage,{focus:true});
+  $('resultStagesBtn').onclick=()=>{state.selectedStage=highestUnlocked();setScreen('stage');};
+  $('retryBtn').onclick=()=>startBoard(state.board);
+  $('nextStageBtn').onclick=()=>{if(state.board<boards.length-1)startBoard(state.board+1);};
+  $('themeBtn').onclick=themePanel;$('themeCloseBtn').onclick=()=>{
+    $('themeDialog').hidden=true; [...$('stageScreen').children].forEach(node=>node.inert=false); $('themeBtn').focus();
   };
-  const outgoingLayers = (screen) => {
-    if (state.screen === "result") return [$("resultScreen")];
-    if (state.screen === "battle" && screen === "result") return [$("battlePlayLayer")];
-    if (state.screen === "main") return [$("mainScreen"), $("guideScreen")].filter((node) => node && !node.hidden);
-    return [$(state.screen + "Screen")].filter(Boolean);
-  };
-  const setScreen = (screen) => {
-    if (screenTransitionTimer) {
-      window.clearTimeout(screenTransitionTimer);
-      screenTransitionTimer = 0;
-      screenTransitionGeneration += 1;
-      document.querySelectorAll(".scene-exiting").forEach((node) => {
-        node.classList.remove("scene-exiting");
-        node.inert = false;
-        node.removeAttribute("aria-hidden");
-      });
-      $("app").inert = false;
-    }
-    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    if (!hasRenderedScreen || state.screen === screen || reducedMotion) {
-      applyScreen(screen);
-      return;
-    }
-    const generation = ++screenTransitionGeneration;
-    const app = $("app");
-    const exiting = outgoingLayers(screen);
-    app.inert = true;
-    exiting.forEach((node) => {
-      node.classList.add("scene-exiting");
-      node.inert = true;
-      node.setAttribute("aria-hidden", "true");
-    });
-    screenTransitionTimer = window.setTimeout(() => {
-      if (generation !== screenTransitionGeneration) return;
-      screenTransitionTimer = 0;
-      exiting.forEach((node) => {
-        node.classList.remove("scene-exiting");
-        node.inert = false;
-        node.removeAttribute("aria-hidden");
-      });
-      app.inert = false;
-      applyScreen(screen);
-    }, 110);
-  };
-  window.addEventListener("pagehide", () => {
-    window.clearTimeout(screenTransitionTimer);
-    window.clearTimeout(dialogTransitionTimer);
-    window.clearTimeout(guideTransitionTimer);
-    screenTransitionTimer = 0;
-    dialogTransitionTimer = 0;
-    guideTransitionTimer = 0;
-    screenTransitionGeneration += 1;
-    document.querySelectorAll(".scene-exiting").forEach((node) => {
-      node.classList.remove("scene-exiting");
-      node.inert = false;
-      node.removeAttribute("aria-hidden");
-    });
-    $("app").inert = false;
-    const dialog = $("leaveDialog");
-    dialog.classList.remove("dialog-exiting");
-    dialog.inert = false;
-    const guide = $("guideScreen");
-    const guideCanvas = guide.querySelector(".guide-canvas");
-    guideCanvas.classList.remove("guide-exiting");
-    guideCanvas.inert = false;
-    guideCanvas.removeAttribute("aria-hidden");
-  }, { once: true });
-  const routeColor = (animalKey) => tokenMeta[animalKey]?.color || "#5c9ccc";
-  const routePath = (fromRow, toRow, width, height) => {
-    const left = 112;
-    const right = width - 112;
-    const startY = ((fromRow + 0.5) / boards[state.board].target.length) * height;
-    const endY = ((toRow + 0.5) / boards[state.board].target.length) * height;
-    const bend = Math.max(36, (right - left) * 0.28);
-    return `M ${left} ${startY} C ${left + bend} ${startY}, ${right - bend} ${endY}, ${right} ${endY}`;
-  };
-  const renderBoard = ({ selectedRow = -1, releasedRow = -1, swappedRows = [], reset = false } = {}) => {
-    const board = boards[state.board];
-    const diagram = $("boardDiagram");
-    const height = Math.max(292, state.current.length * 62 + 16);
-    const width = Math.max(diagram.clientWidth || 640, 320);
-    diagram.style.minHeight = height + "px";
-    const paths = state.current.map((animalKey, row) => {
-      const targetRow = board.target.indexOf(animalKey);
-      const dash = tokenMeta[animalKey]?.dash;
-      const motion = swappedRows.includes(row) ? ' class="swap-ack"' : "";
-      return `<path${motion} d="${routePath(row, targetRow, width, height)}" stroke="${routeColor(animalKey)}"${dash ? ` stroke-dasharray="${dash}"` : ""}></path>`;
-    }).join("");
-    const rows = state.current.map((animalKey, row) => {
-      const animalIndex = Math.max(0, indexForAnimal(animalKey));
-      const animalMarker = tokenMeta[animalKey]?.marker || "●";
-      const selected = state.selected === row;
-      const targetKey = board.target[row];
-      const targetMarker = tokenMeta[targetKey]?.marker || "●";
-      const locked = lockedRows(board).includes(row);
-      const decoy = decoyRows(board).includes(row);
-      const needsRecheck = state.errorRows.includes(row);
-      const motion = selectedRow === row ? " selection-ack"
-        : releasedRow === row ? " release-ack"
-          : swappedRows.includes(row) ? " swap-ack"
-            : reset ? " reset-ack" : "";
-      const shelter = decoy
-        ? `<span><strong>?</strong><small>${copy("shelter", { number: row + 1 })}</small></span><span class="shelter-route-cue" role="img" aria-label="${copy("decoyTrailCue", { number: row + 1 })}" style="--tangle-route-color:${routeColor(targetKey)}">${targetMarker}</span>`
-        : `<span><strong>${titleForAnimal(targetKey)}</strong><small>${copy("shelter", { number: row + 1 })}</small></span><span class="shelter-icon" aria-hidden="true">⌂</span>`;
-      const rowClass = `board-row${locked ? " locked-row" : ""}${needsRecheck ? " needs-recheck" : ""}`;
-      const invalidAttrs = needsRecheck ? ' aria-invalid="true" aria-describedby="battleStatus"' : "";
-      return `<div class="${rowClass}"><button class="endpoint-card${selected ? " selected" : ""}${motion}${locked ? " locked" : ""}" type="button" data-endpoint="${row}" aria-pressed="${selected}" aria-label="${copy("swapName", { number: row + 1 })}: ${titleForAnimal(animalKey)}${locked ? " — locked" : ""}${selected ? " — " + copy("selected") : ""}"${invalidAttrs}${locked ? " disabled aria-disabled=\"true\"" : ""}><span class="paw-chip paw-${animalIndex}">${animalMarker}</span><span><strong>${titleForAnimal(animalKey)}</strong><small>${locked ? "LOCKED" : copy("current")}</small></span></button><span class="board-dot" aria-hidden="true"></span><div class="shelter-card${decoy ? " decoy" : ""}">${shelter}</div></div>`;
-    }).join("");
-    diagram.innerHTML = `<svg class="route-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" aria-hidden="true">${paths}</svg>${rows}`;
-    diagram.querySelectorAll("[data-endpoint]").forEach((button) => button.addEventListener("click", () => selectEndpoint(Number(button.dataset.endpoint))));
-  };
-  const isStageUnlocked = (index) => index === 0 || state.completed.includes(index - 1);
-  const highestUnlockedStage = () => Math.min(boards.length - 1,
-    state.completed.reduce((highest, completedIndex) => Math.max(highest, completedIndex + 1), 0));
-  const stageRecord = (index) => {
-    const board = boards[index];
-    if (!board) return null;
-    const done = state.completed.includes(index);
-    const unlocked = isStageUnlocked(index);
-    const titleKey = "boardTitle" + (index + 1);
-    const hintKey = "boardHint" + (index + 1);
-    const localizedTitle = copy(titleKey);
-    const localizedHint = copy(hintKey);
-    return {
-      id: index + 1,
-      arc: board.arc,
-      checkpoint: Boolean(board.checkpoint),
-      title: localizedTitle === titleKey ? board.title : localizedTitle,
-      hint: localizedHint === hintKey ? board.hint : localizedHint,
-      kicker: copy("round", { number: index + 1, total: boards.length }),
-      summary: copy("mapIntro"),
-      status: done ? copy("completed") : unlocked ? copy("readyStage") : "—",
-      locked: !unlocked,
-      cleared: done,
-    };
-  };
-  const renderBattle = (motion = {}) => {
-    const board = boards[state.board];
-    $("battleHeading").textContent = copy("round", { number: state.board + 1, total: boards.length });
-    const titleKey = "boardTitle" + (state.board + 1);
-    const hintKey = "boardHint" + (state.board + 1);
-    const localizedTitle = copy(titleKey);
-    const localizedHint = copy(hintKey);
-    $("roundHint").textContent = `${localizedTitle === titleKey ? board.title : localizedTitle} · ${localizedHint === hintKey ? board.hint : localizedHint}`;
-    $("progressBadge").textContent = copy("progressBadge", { count: state.completed.length, total: boards.length });
-    $("battleStatus").textContent = copy(state.statusKey, state.statusVars);
-    $("battleStatus").classList.toggle("error", state.statusError);
-    renderBoard(motion);
-  };
-  const renderResult = (moves) => {
-    const final = state.completed.length === boards.length;
-    const oldBest = bestForBoard();
-    const best = !oldBest || moves < oldBest ? moves : oldBest;
-    if (!oldBest || moves < oldBest) safeSet(bestKey(), String(moves));
-    $("resultHeading").textContent = copy(final ? "finalTitle" : "resultTitle");
-    // The legacy finalText says “three”; v6 has thirty boards, so use neutral
-    // result copy for the final board as well.
-    $("resultText").textContent = copy("resultText");
-    $("resultStats").textContent = copy("stats", { moves: copy("placements", { count: moves }), best: copy("placements", { count: best }) });
-    const canNext = state.board + 1 < boards.length && state.completed.includes(state.board);
-    $("nextStageBtn").disabled = !canNext;
-    $("nextStageBtn").onclick = () => { if (canNext) startBoard(state.board + 1); };
-    $("retryBtn").onclick = () => startBoard(state.board);
-    setScreen("result");
-  };
-  const selectEndpoint = (row) => {
-    if (lockedRows().includes(row)) return;
-    if (state.selected < 0) {
-      state.selected = row;
-      state.errorRows = [];
-      state.statusKey = "selectSecond";
-      state.statusVars = {};
-      state.statusError = false;
-      analytics("tangle_endpoint_selected", { row });
-      renderBattle({ selectedRow: row });
-      return;
-    }
-    if (state.selected === row) {
-      state.selected = -1;
-      state.statusKey = "ready";
-      state.statusVars = {};
-      state.statusError = false;
-      renderBattle({ releasedRow: row });
-      return;
-    }
-    const first = state.selected;
-    const firstName = titleForAnimal(state.current[first]);
-    const secondName = titleForAnimal(state.current[row]);
-    [state.current[first], state.current[row]] = [state.current[row], state.current[first]];
-    state.selected = -1;
-    state.swaps += 1;
-    state.errorRows = [];
-    state.statusKey = "swapped";
-    state.statusVars = { first: firstName, second: secondName };
-    state.statusError = false;
-    analytics("tangle_endpoint_swapped", { first, second: row, swaps: state.swaps });
-    playTone("board.move");
-    $("battleStatus").textContent = copy(state.statusKey, state.statusVars);
-    renderBoard({ swappedRows: [first, row] });
-    $("battleStatus").classList.remove("error");
-  };
-  const checkBoard = () => {
-    const board = boards[state.board];
-    if (state.current.every((value, index) => value === board.target[index])) {
-      state.errorRows = [];
-      if (!state.completed.includes(state.board)) state.completed.push(state.board);
-      safeSet("weightplay-animal-tangle-rescue-completed", JSON.stringify(state.completed));
-      analytics("tangle_board_completed", { board: state.board, swaps: state.swaps });
-      playTone("puzzle.clear");
-      renderResult(state.swaps);
-      return;
-    }
-    analytics("tangle_board_checked", { board: state.board, correct: false, swaps: state.swaps });
-    state.errorRows = board.target
-      .map((target, row) => state.current[row] === target ? -1 : row)
-      .filter((row) => row >= 0);
-    state.statusKey = "incorrectRows";
-    state.statusVars = { rows: state.errorRows.map((row) => row + 1).join(", ") };
-    state.statusError = true;
-    renderBattle();
-  };
-  const resetBoard = () => { state.current = boards[state.board].start.slice(); state.selected = -1; state.swaps = 0; state.errorRows = []; state.statusKey = "ready"; state.statusVars = {}; state.statusError = false; analytics("tangle_board_reset", { board: state.board }); renderBattle({ reset: true }); };
-  const startBoard = (index) => {
-    const boardIndex = Math.max(0, Math.min(boards.length - 1, Number(index) || 0));
-    if (!isStageUnlocked(boardIndex)) return;
-    state.board = boardIndex;
-    state.selectedStage = boardIndex;
-    state.current = boards[state.board].start.slice();
-    state.selected = -1;
-    state.swaps = 0;
-    state.errorRows = [];
-    state.statusKey = "ready";
-    state.statusVars = {};
-    state.statusError = false;
-    analytics("tangle_board_started", { board: state.board });
-    setScreen("battle");
-  };
-  const applyText = () => {
-    document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = copy(node.dataset.copy); });
-    document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", copy(node.dataset.copyAriaLabel)));
-    $("mainProgress").textContent = copy("progress", { count: state.completed.length, total: boards.length });
-    if (state.screen === "stage") stageSelector?.refresh(state.selectedStage);
-    if (state.screen === "battle") renderBattle();
-  };
-  const applyLocale = (locale) => { state.locale = normalizeLocale(locale) || "en"; safeSet("weightplay-locale", state.locale); safeSet("weightPlayLocale", state.locale); document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr"; $("languageSelect").value = state.locale; applyText(); };
-  const openLeaveDialog = () => { const dialog = $("leaveDialog"); window.clearTimeout(dialogTransitionTimer); dialog.classList.remove("dialog-exiting"); dialog.inert = false; dialog.hidden = false; $("cancelLeaveBtn").focus(); };
-  const closeLeaveDialog = (after = () => $("leaveBtn").focus()) => {
-    const dialog = $("leaveDialog");
-    if (dialog.hidden) { after(); return; }
-    window.clearTimeout(dialogTransitionTimer);
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
-      dialog.classList.remove("dialog-exiting");
-      dialog.hidden = true;
-      dialog.inert = false;
-      after();
-      return;
-    }
-    dialog.classList.add("dialog-exiting");
-    dialog.inert = true;
-    dialogTransitionTimer = window.setTimeout(() => {
-      dialogTransitionTimer = 0;
-      dialog.classList.remove("dialog-exiting");
-      dialog.hidden = true;
-      dialog.inert = false;
-      after();
-    }, 110);
-  };
-  const bind = () => {
-    $("startBtn").addEventListener("click", () => setScreen("stage"));
-    $("guideStartBtn").addEventListener("click", () => setScreen("stage"));
-    $("stageBackBtn").addEventListener("click", () => setScreen("main"));
-    $("battleBackBtn").addEventListener("click", () => setScreen("stage"));
-    $("stageTab").addEventListener("click", () => {
-      stageSelector?.select(state.selectedStage, { focus: true });
-      $("stageList").querySelector('[aria-current="true"]')?.focus({ preventScroll: true });
-    });
-    $("checkBtn").addEventListener("click", checkBoard);
-    $("resetBtn").addEventListener("click", resetBoard);
-    $("leaveBtn").addEventListener("click", openLeaveDialog);
-    $("cancelLeaveBtn").addEventListener("click", () => closeLeaveDialog());
-    $("confirmLeaveBtn").addEventListener("click", () => closeLeaveDialog(() => setScreen("stage")));
-    $("resultStagesBtn").addEventListener("click", () => {
-      state.selectedStage = highestUnlockedStage();
-      setScreen("stage");
-      stageSelector?.select(state.selectedStage, { focus: true });
-      $("stageList").querySelector('[aria-current="true"]')?.focus({ preventScroll: true });
-    });
-    $("languageSelect").addEventListener("change", (event) => { const requested = normalizeLocale(event.target.value) || "en"; try { window.WonderI18n?.setLocale?.(requested); } catch (_error) {} applyLocale(requested); });
-    const guide = $("guideScreen");
-    const guideCanvas = guide.querySelector(".guide-canvas");
-    guide.querySelector("summary").addEventListener("click", (event) => {
-      if (!guide.open) return;
-      event.preventDefault();
-      if (guideTransitionTimer) return;
-      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
-        guide.open = false;
-        return;
-      }
-      guideCanvas.classList.add("guide-exiting");
-      guideCanvas.inert = true;
-      guideCanvas.setAttribute("aria-hidden", "true");
-      guideTransitionTimer = window.setTimeout(() => {
-        guideTransitionTimer = 0;
-        guide.open = false;
-        guideCanvas.classList.remove("guide-exiting");
-        guideCanvas.inert = false;
-        guideCanvas.removeAttribute("aria-hidden");
-      }, 170);
-    });
-  };
-  const init = () => {
-    try { const saved = JSON.parse(safeGet("weightplay-animal-tangle-rescue-completed", "[]")); state.completed = Array.isArray(saved) ? saved.filter((index) => Number.isInteger(index) && index >= 0 && index < boards.length) : []; } catch (_error) { state.completed = []; }
-    state.selectedStage = highestUnlockedStage();
-    mountResultSubstate();
-    bind();
-    window.addEventListener("wonder:locale-change", (event) => applyLocale(event.detail?.locale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang));
-    applyLocale(initialLocale());
-    window.setTimeout(() => { $("app").hidden = false; setScreen("main"); }, 90);
-  };
-  window.AnimalTangleRescueI9 = Object.freeze({
-    get activeScene() { return state.screen === "result" ? "battle" : state.screen; },
-    get isResult() { return state.screen === "result"; },
-    get selectedStage() { return state.selectedStage; },
-    get stageCount() { return boards.length; },
-    get screen() { return state.screen; },
-    stageRecord,
-    setStageSelector(selector) {
-      stageSelector = selector;
-      stageSelector?.refresh(state.selectedStage);
-    },
-    selectStage(index) { state.selectedStage = Math.max(0, Math.min(boards.length - 1, Number(index) || 0)); },
-    startBoard,
-    setFrame(frame) {
-      screenFrame = frame;
-      frame?.activate(this.activeScene, { covered: this.isResult });
-    },
+  $('languageSelect').addEventListener('change',event=>window.WonderI18n?.setLocale(event.target.value));
+  $('themeBuyBtn').onclick=buyTheme;
+  $('themeDefaultBtn').onclick=()=>{write(THEME_ACTIVE,'forest');applyTheme();$('themeStatus').textContent=copy('themeActive');};
+  document.addEventListener('keydown',event=>{
+    if(!$('themeDialog').hidden){if(event.key==='Escape')$('themeCloseBtn').click();else trap(event,$('themeDialog'));return;}
+    if(state.dialog){if(event.key==='Escape'){event.preventDefault();closeLeave();}else trap(event,$('leaveDialog'));return;}
+    if(state.screen==='result')trap(event,$('resultScreen'));
+    if(canInput()&&(event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='z'){event.preventDefault();undo();}
   });
-  init();
-}());
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)settleMotion();else if(state.screen==='battle')boardView.trace();});
+  window.addEventListener('pagehide',()=>{
+    clearTimeout(transition);transition=0;generation+=1;$('app').inert=false;$('app').classList.remove('scene-exiting');settleMotion();
+  });
+  window.addEventListener('pageshow',()=>{if(state.screen==='battle')boardView.trace();});
+  window.addEventListener('wonder:locale-change',event=>locale(event.detail?.locale||document.documentElement.lang));
+  window.AnimalTangleRescueI9=Object.freeze({
+    get activeScene(){return state.screen==='result'?'battle':state.screen;},get isResult(){return state.screen==='result';},
+    get selectedStage(){return state.selectedStage;},get stageCount(){return boards.length;},get screen(){return state.screen;},
+    stageRecord,startBoard,
+    selectStage(row){state.selectedStage=Math.max(0,Math.min(boards.length-1,row));},
+    setStageSelector(value){selector=value;selector.refresh(state.selectedStage);},
+    setFrame(value){frame=value;frame.activate(this.activeScene,{covered:this.isResult});},
+  });
+  state.selectedStage=highestUnlocked();
+  locale(window.WonderI18n?.actualLocale?.()||document.documentElement.lang||'en');
+  $('app').hidden=false;applyTheme();applyScreen('main');
+  window.WeightPlayAudio?.preload(['game.start','board.move','board.undo','puzzle.match','puzzle.clear','feedback.hint','feedback.error','shop.purchase']);
+})();

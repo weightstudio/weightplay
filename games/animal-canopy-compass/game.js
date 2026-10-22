@@ -1,557 +1,320 @@
-(function () {
-  "use strict";
+import {STAGES,DIRECTIONS,SEALS,CAMPAIGN_KEY,candidates,matches,normalizeSave,unlocked,rating,settle,wrap} from './puzzles.mjs?v=26';
+import {createCanopyScene} from './canopy-scene.mjs?v=26';
 
-  const copy = window.CANOPY_COMPASS_LOCALES || {};
-  const standardStartLabels = { en: "Start Game", "zh-Hant": "開始遊戲", "zh-Hans": "开始游戏", ja: "ゲーム開始", ko: "게임 시작", es: "Iniciar juego", "pt-BR": "Iniciar jogo", fr: "Commencer le jeu", de: "Spiel starten", it: "Inizia gioco", ru: "Начать игру", hi: "खेल शुरू करें", ar: "ابدأ اللعبة" };
-  Object.entries(standardStartLabels).forEach(([locale, label]) => { if (copy[locale]) copy[locale].start = label; });
-  const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
-  const routeLocaleMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
-  const ruleOffsets = { hold: 0, cw: 1, ccw: 3, opposite: 2 };
-  const rounds = [
-    { arc: 1, phases: [["E", "hold"]] },
-    { arc: 1, phases: [["S", "hold"]] },
-    { arc: 1, phases: [["W", "cw"]] },
-    { arc: 1, phases: [["N", "ccw"]] },
-    { arc: 1, checkpoint: 1, phases: [["E", "hold"], ["S", "cw"]] },
-    { arc: 2, phases: [["N", "cw"]] },
-    { arc: 2, phases: [["E", "ccw"]] },
-    { arc: 2, phases: [["S", "opposite"]] },
-    { arc: 2, phases: [["W", "cw"]] },
-    { arc: 2, checkpoint: 2, phases: [["E", "opposite"], ["S", "ccw"]] },
-    { arc: 3, phases: [["N", "opposite"]] },
-    { arc: 3, phases: [["E", "cw"]] },
-    { arc: 3, phases: [["W", "ccw"]] },
-    { arc: 3, phases: [["S", "opposite"]] },
-    { arc: 3, checkpoint: 3, phases: [["E", "opposite"], ["W", "cw"], ["S", "ccw"]] },
-    { arc: 4, phases: [["E", "hold"], ["N", "ccw"]] },
-    { arc: 4, phases: [["N", "cw"], ["W", "hold"]] },
-    { arc: 4, phases: [["S", "opposite"], ["E", "cw"]] },
-    { arc: 4, phases: [["N", "hold"], ["W", "opposite"]] },
-    { arc: 4, checkpoint: 4, phases: [["E", "hold"], ["S", "cw"], ["N", "opposite"]] },
-    { arc: 5, phases: [["W", "cw"], ["E", "opposite"]] },
-    { arc: 5, phases: [["S", "ccw"], ["N", "hold"]] },
-    { arc: 5, phases: [["W", "opposite"], ["E", "ccw"]] },
-    { arc: 5, phases: [["S", "hold"], ["N", "cw"], ["E", "opposite"]] },
-    { arc: 5, checkpoint: 5, phases: [["W", "ccw"], ["N", "hold"], ["E", "opposite"]] },
-    { arc: 6, phases: [["E", "opposite"], ["N", "cw"]] },
-    { arc: 6, phases: [["W", "ccw"], ["S", "opposite"]] },
-    { arc: 6, phases: [["N", "hold"], ["E", "opposite"], ["W", "ccw"]] },
-    { arc: 6, phases: [["E", "cw"], ["W", "hold"], ["S", "opposite"]] },
-    { arc: 6, checkpoint: 6, finale: true, phases: [["E", "hold"], ["W", "cw"], ["N", "opposite"]] },
-  ].map((round, index) => ({
-    ...round,
-    id: index + 1,
-    phases: round.phases.map(([mark, rule]) => ({ mark: ["N", "E", "S", "W"].indexOf(mark), rule })),
+const $=id=>document.getElementById(id);
+const copy=window.CANOPY_COMPASS_LOCALES;
+const routes={en:'en','zh-tw':'zh-Hant','zh-cn':'zh-Hans',ja:'ja',ko:'ko',es:'es','pt-br':'pt-BR',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'};
+const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}};
+const state={locale:routes[location.pathname.split('/')[1]]||'en',screen:'main',stage:0,phase:0,selected:-1,notes:new Set(),noteMode:false,hintIndex:-1,hinted:[],mistakes:0,hints:0,trail:[],pending:null,save:normalizeSave(read(CAMPAIGN_KEY,{}))};
+const labels=key=>copy[state.locale]?.[key]||copy.en[key];
+const t=(key,vars={})=>Object.entries(vars).reduce((s,[k,v])=>s.replaceAll(`{${k}}`,String(v)),String(labels(key)??key));
+const dir=i=>labels('bearings')[wrap(i)];
+const symbols=['☀','☾','❧','✦'];
+const badgeFiles=['dawn-lantern','crosswind-bell','mirror-moth','echo-heron','high-bough-kite','moon-canopy-guide'];
+const COVER='/games/animal-canopy-compass/assets/v26/canopy-cover.webp';
+const APPEARANCE_KEY='weightplay-canopy-appearance-v1';
+let appearance=read(APPEARANCE_KEY,{owned:false,theme:'classic'});
+if(!appearance||typeof appearance!=='object')appearance={owned:false,theme:'classic'};
+appearance.owned=appearance.owned===true;
+appearance.theme=appearance.owned&&appearance.theme==='aurora'?'aurora':'classic';
+let frame,rail,scene,selectedStage=unlocked(state.save)-1,transitionTimer=0,feedbackTimer=0,modalReturn=null,modalKind=null,buying=false;
+const audio=window.WeightPlayAudio?.createScope?.();
+const sound=id=>audio?.play(id);
+window.WeightPlayAudio?.preload(['board.rotate','feedback.success','feedback.error','feedback.hint','result.win','game.start','reward.upgrade']);
+const stage=()=>STAGES[state.stage];
+const phase=()=>stage().phases[state.phase];
+const previous=()=>state.trail.at(-1)??0;
+const settingsOpen=()=>!!document.querySelector('[data-wp-settings][aria-expanded="true"]');
+const isPlaying=()=>state.screen==='battle'&&$('result').hidden&&!modalKind&&!document.hidden&&!settingsOpen()&&!state.pending;
+const announce=(message,tone='')=>{$('status').textContent=message;$('status').dataset.tone=tone;};
+function notify(message){$('toast').textContent=message;$('toast').classList.add('visible');clearTimeout(notify.timer);notify.timer=setTimeout(()=>$('toast').classList.remove('visible'),2600);}
+
+function clueText(clue){
+  const vars={from:dir(clue.kind.startsWith('echo')?previous():clue.from||0),turn:t(clue.steps<0?'counterclockwise':'clockwise'),steps:Math.abs(clue.steps||0),seal:labels('seals')[clue.seal||0],axis:labels('axes')[clue.axis==='horizontal'?1:0]};
+  return t(`${clue.kind}Clue`,vars);
+}
+function persist(){
+  const other=normalizeSave(read(CAMPAIGN_KEY,{}));
+  state.save.completed=[...new Set([...state.save.completed,...other.completed])].sort((a,b)=>a-b);
+  state.save.badges=[...new Set([...state.save.badges,...other.badges])].sort((a,b)=>a-b);
+  Object.entries(other.masteryV26).forEach(([id,stars])=>state.save.masteryV26[id]=Math.max(stars,state.save.masteryV26[id]||0));
+  state.save.bests={...other.bests,...state.save.bests};
+  try{localStorage.setItem(CAMPAIGN_KEY,JSON.stringify(state.save));return true;}catch{notify(t('saveError'));return false;}
+}
+function updateProgress(){
+  $('progress').textContent=t('progress',{count:state.save.completed.length,unlocked:unlocked(state.save)});
+  $('stageCompletionValue').textContent=`${state.save.completed.length}/30`;
+  $('stageSelectionValue').textContent=t('round',{number:selectedStage+1,total:30});
+}
+function clearPending(){clearTimeout(transitionTimer);transitionTimer=0;state.pending=null;}
+function syncActivity(){
+  const covered=!!modalKind||document.hidden||settingsOpen();
+  scene?.setActive(state.screen==='battle'&&$('result').hidden&&!covered);
+  if(covered){
+    if(state.pending&&transitionTimer)state.pending.remaining=Math.max(0,state.pending.deadline-performance.now());
+    clearTimeout(transitionTimer);transitionTimer=0;return;
+  }
+  if(state.pending&&!transitionTimer){
+    const remaining=state.pending.remaining??Math.max(0,state.pending.deadline-performance.now());
+    state.pending.remaining=null;state.pending.deadline=performance.now()+remaining;
+    transitionTimer=setTimeout(advancePhase,remaining);
+  }
+}
+function showScreen(name){
+  clearPending();clearTimeout(feedbackTimer);audio?.stop();
+  if(modalKind)closeModal(false);
+  state.screen=name;document.body.dataset.screen=name;document.body.removeAttribute('data-wp-canopy-result');
+  ['main','stage','battle'].forEach(s=>$(`${s}Screen`).hidden=s!==name);
+  $('battleContent').inert=false;$('battleContent').hidden=false;$('result').hidden=true;
+  $('gameGuide').hidden=name!=='main';$('gameGuide').setAttribute('aria-hidden',String(name!=='main'));
+  frame.activate(name);
+  if(name==='stage'){selectedStage=unlocked(state.save)-1;renderStages();}
+  scene?.setActive(name==='battle');
+  updateProgress();window.scrollTo(0,0);
+  window.dispatchEvent(new Event('weightplay:stage-sync'));
+}
+function stageRecord(index){
+  const s=STAGES[index],name=labels('mechanics')[s.arc-1],stars=state.save.masteryV26[s.id]||0;
+  const done=state.save.completed.includes(s.id),locked=s.id>unlocked(state.save);
+  const status=locked?t('lockedStage'):stars?'★'.repeat(stars)+'☆'.repeat(3-stars):done?t('complete'):s.checkpoint?t('checkpoint'):t('readyStage');
+  const objective=t('stageObjective',{count:s.phases.length});
+  return{id:s.id,kicker:t('round',{number:s.id,total:30}),title:name,subtitle:objective,status,summary:`${name} · ${objective}`,details:[objective,t('selectPrompt'),status],poster:COVER,posterPosition:'center',locked,cleared:done};
+}
+function renderStages(){
+  if(!rail)rail=window.WeightPlayPlayUI.mountStage({page:$('stageContent'),rail:$('stageList'),selected:selectedStage,config:{count:30,poster:COVER,background:'/assets/lobby-block-atmosphere.svg',stage:stageRecord},onSelect:index=>{selectedStage=index;updateProgress();},onStart:startStage,isActive:()=>state.screen==='stage'});
+  else rail.refresh(selectedStage);
+}
+function renderClues(){
+  const p=phase();
+  for(let i=0;i<3;i++){
+    const card=$(`clue${i}`),clue=p.clues[i];card.hidden=!clue;
+    card.classList.remove('violated','inspected');
+    if(clue){card.querySelector('small').textContent=t('clueLabel',{n:i+1});card.querySelector('p').textContent=clueText(clue);}
+  }
+  $('clueText').textContent=labels('mechanics')[stage().arc-1];
+  $('hint').textContent=t('phaseProgress',{current:state.phase+1,total:stage().phases.length});
+}
+function renderTrail(){
+  $('trail').replaceChildren(...stage().phases.map((_,i)=>{
+    const bead=document.createElement('span');bead.className=i<state.trail.length?'trail-lit':i===state.phase?'trail-current':'';
+    bead.textContent=i<state.trail.length?dir(state.trail[i]):String(i+1);
+    return bead;
   }));
-  const names = ["north", "east", "south", "west"];
-  const campaignKey = "weightplay-animal-canopy-compass-campaign-v1";
-  const badgeArtFiles = { 1: "dawn-lantern.png", 2: "crosswind-bell.png", 3: "mirror-moth.png", 4: "echo-heron.png", 5: "high-bough-kite.png", 6: "moon-canopy-guide.png" };
-  const $ = (id) => document.getElementById(id);
-  const normalizeLocale = (value) => {
-    if (value === "zh-TW") return "zh-Hant";
-    if (value === "zh-CN") return "zh-Hans";
-    if (value?.toLowerCase?.().startsWith("pt")) return "pt-BR";
-    if (supportedLocales.includes(value)) return value;
-    const short = value?.split?.("-")?.[0];
-    return supportedLocales.includes(short) ? short : "en";
-  };
-  const routeSegment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
-  const routeLocale = routeLocaleMap[routeSegment] || window.__WEIGHTPLAY_ROUTE_LOCALE__;
-  const savedLocale = (() => { try { return localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale") || localStorage.getItem("wp-locale"); } catch (_) { return null; } })();
-  const get = (key, fallback = "") => { try { return localStorage.getItem(key) || fallback; } catch (_) { return fallback; } };
-  const set = (key, value) => { try { localStorage.setItem(key, value); } catch (_) {} };
-  const loadCampaign = () => {
-    try {
-      const saved = JSON.parse(get(campaignKey, "null"));
-      if (!saved || saved.schema !== 1) return { completed: [], bests: {}, badges: [] };
-      const candidates = [...new Set((Array.isArray(saved.completed) ? saved.completed : []).map(Number).filter((id) => Number.isInteger(id) && id >= 1 && id <= rounds.length))].sort((a, b) => a - b);
-      const completed = [];
-      for (const id of candidates) { if (id !== completed.length + 1) break; completed.push(id); }
-      const bests = {};
-      if (saved.bests && typeof saved.bests === "object") Object.entries(saved.bests).forEach(([id, turns]) => {
-        if (/^([1-9]|[12][0-9]|30)$/.test(id) && Number.isInteger(turns) && turns >= 0 && turns < 10000) bests[id] = turns;
-      });
-      const badges = rounds.filter((round) => round.checkpoint && completed.includes(round.id) && Array.isArray(saved.badges) && saved.badges.includes(round.id)).map((round) => round.id);
-      return { completed, bests, badges };
-    } catch (_) { return { completed: [], bests: {}, badges: [] }; }
-  };
-  const savedCampaign = loadCampaign();
-  const state = { locale: normalizeLocale(routeLocale || window.WonderI18n?.localeFromPath?.() || savedLocale || document.documentElement.lang), screen: "main", round: 0, phase: 0, direction: 0, turns: 0, completed: savedCampaign.completed, bests: savedCampaign.bests, badges: savedCampaign.badges, mistakes: 0, sound: true };
-  let stageRailController = null;
-  let stageSelectionIndex = 0;
-  let leaveDialogOpen = false;
-  let leaveDialog = null;
-  let leaveKeep = null;
-  let leaveExit = null;
-  let pendingBattleFrame = 0;
-  let resultFocusFrame = 0;
-  let battleFeedbackTimer = 0;
-  let sharedFrame = null;
-  const app = $("app");
-
-  const t = (key, vars = {}) => {
-    let value = (copy[state.locale] || copy.en || {})[key] || (copy.en || {})[key] || key;
-    Object.entries(vars).forEach(([name, replacement]) => { value = value.replace(new RegExp("\\{" + name + "\\}", "g"), String(replacement)); });
-    return value;
-  };
-
-  const leaveCopy = {
-    en: { title: "Leave this lookout?", body: "Lookout {round} · Echo {phase}/{total}: leaving discards this temporary Echo progress and your {turns} turn(s). Cleared lookouts, bests, and badges stay saved.", keep: "Continue playing", leave: "Return to Canopy map" },
-    "zh-Hant": { title: "要離開目前瞭望點嗎？", body: "瞭望點 {round}・回聲 {phase}/{total}：離開會捨棄目前這段暫時回聲進度與 {turns} 次操作；已完成瞭望點、最佳成績與徽章會保留。", keep: "繼續遊玩", leave: "返回樹冠地圖" },
-    "zh-Hans": { title: "要离开当前瞭望点吗？", body: "瞭望点 {round}・回声 {phase}/{total}：离开会舍弃当前这段临时回声进度与 {turns} 次操作；已完成瞭望点、最佳成绩与徽章会保留。", keep: "继续游玩", leave: "返回树冠地图" },
-    ja: { title: "この見張り台を離れますか？", body: "見張り台 {round}・エコー {phase}/{total}：離れると現在の一時的なエコー進行と {turns} 手が破棄されます。クリア済みの見張り台、ベスト、バッジは保存されます。", keep: "プレイを続ける", leave: "樹冠マップへ戻る" },
-    ko: { title: "현재 전망대를 나갈까요?", body: "전망대 {round} · 에코 {phase}/{total}: 나가면 현재 임시 에코 진행과 {turns}회 조작이 사라집니다. 완료한 전망대, 최고 기록, 배지는 저장됩니다.", keep: "계속 플레이", leave: "수관 지도로 돌아가기" },
-    es: { title: "¿Salir de este mirador?", body: "Mirador {round} · Eco {phase}/{total}: al salir se descartan este progreso temporal y {turns} turno(s). Los miradores superados, récords e insignias permanecen guardados.", keep: "Seguir jugando", leave: "Volver al mapa" },
-    "pt-BR": { title: "Sair deste mirante?", body: "Mirante {round} · Eco {phase}/{total}: sair descarta este progresso temporário e {turns} jogada(s). Mirantes concluídos, recordes e emblemas continuam salvos.", keep: "Continuar jogando", leave: "Voltar ao mapa" },
-    fr: { title: "Quitter ce poste ?", body: "Poste {round} · Écho {phase}/{total} : quitter abandonne cette progression temporaire et {turns} action(s). Les postes terminés, records et badges restent enregistrés.", keep: "Continuer à jouer", leave: "Retour à la carte" },
-    de: { title: "Diesen Aussichtspunkt verlassen?", body: "Aussichtspunkt {round} · Echo {phase}/{total}: Beim Verlassen gehen dieser temporäre Fortschritt und {turns} Zug/Züge verloren. Abgeschlossene Aussichtspunkte, Bestwerte und Abzeichen bleiben gespeichert.", keep: "Weiterspielen", leave: "Zur Karte zurück" },
-    it: { title: "Lasciare questo punto di osservazione?", body: "Punto {round} · Eco {phase}/{total}: uscendo perderai questo progresso temporaneo e {turns} mossa/e. Punti completati, record e distintivi restano salvati.", keep: "Continua a giocare", leave: "Torna alla mappa" },
-    ru: { title: "Покинуть эту смотровую точку?", body: "Точка {round} · Эхо {phase}/{total}: при выходе текущий временный прогресс и ходы ({turns}) будут сброшены. Пройденные точки, рекорды и значки сохранятся.", keep: "Продолжить игру", leave: "Вернуться к карте" },
-    hi: { title: "क्या इस चौकी से बाहर जाएँ?", body: "चौकी {round} · इको {phase}/{total}: बाहर जाने पर यह अस्थायी प्रगति और {turns} चालें हट जाएँगी। पूरी की गई चौकियाँ, सर्वश्रेष्ठ स्कोर और बैज सुरक्षित रहेंगे।", keep: "खेल जारी रखें", leave: "मानचित्र पर लौटें" },
-    ar: { title: "مغادرة نقطة المراقبة؟", body: "نقطة {round} · الصدى {phase}/{total}: ستؤدي المغادرة إلى إلغاء هذا التقدم المؤقت و{turns} حركة. تبقى النقاط المكتملة وأفضل النتائج والشارات محفوظة.", keep: "متابعة اللعب", leave: "العودة إلى الخريطة" },
-  };
-
-  const battleCanvas = () => document.querySelector(".battle-canvas");
-  const clearBattleFeedback = () => {
-    if (battleFeedbackTimer) window.clearTimeout(battleFeedbackTimer);
-    battleFeedbackTimer = 0;
-    battleCanvas()?.classList.remove("wp-canopy-correct", "wp-canopy-wrong");
-  };
-  const showBattleFeedback = (className, duration) => {
-    clearBattleFeedback();
-    const canvas = battleCanvas();
-    if (!canvas) return;
-    canvas.classList.add(className);
-    battleFeedbackTimer = window.setTimeout(() => {
-      battleFeedbackTimer = 0;
-      canvas.classList.remove(className);
-    }, duration);
-  };
-  const battleContent = () => document.querySelector(".battle-content");
-  const battleHeader = () => $("battleBack")?.closest("header");
-  const setBattleCovered = (active, hideContent = false, keepSettingsReachable = false) => {
-    const content = battleContent();
-    if (content) {
-      content.inert = active;
-      content.hidden = hideContent && active;
-      if (!active) content.hidden = false;
-    }
-    const header = battleHeader();
-    if (header) header.inert = active && !keepSettingsReachable;
-    if ($("battleBack")) $("battleBack").disabled = active;
-  };
-  const setResultActive = (active) => {
-    clearBattleFeedback();
-    document.body.toggleAttribute("data-wp-canopy-result", active);
-    const result = $("result");
-    if (result) {
-      result.hidden = !active;
-      result.classList.toggle("hidden", !active);
-    }
-    setBattleCovered(active, true, active);
-    sharedFrame?.activate("battle");
-  };
-
-  const ensureLeaveDialog = () => {
-    if (leaveDialog || !battleCanvas()) return;
-    leaveDialog = document.createElement("section");
-    leaveDialog.className = "wp-canopy-leave";
-    leaveDialog.hidden = true;
-    leaveDialog.setAttribute("role", "dialog");
-    leaveDialog.setAttribute("aria-modal", "true");
-    leaveDialog.setAttribute("aria-labelledby", "canopyLeaveTitle");
-    leaveDialog.setAttribute("aria-describedby", "canopyLeaveText");
-    leaveDialog.innerHTML = `<div class="wp-canopy-leave-card"><h2 id="canopyLeaveTitle"></h2><p id="canopyLeaveText"></p><div class="wp-canopy-leave-actions"><button id="canopyLeaveKeep" class="primary-btn" type="button"></button><button id="canopyLeaveExit" class="secondary-btn" type="button"></button></div></div>`;
-    battleCanvas().append(leaveDialog);
-    leaveKeep = $("canopyLeaveKeep");
-    leaveExit = $("canopyLeaveExit");
-    leaveKeep.addEventListener("click", () => closeLeaveDialog(true));
-    leaveExit.addEventListener("click", () => {
-      closeLeaveDialog(false);
-      setScreen("stage");
-    });
-  };
-  const openLeaveDialog = () => {
-    ensureLeaveDialog();
-    if (!leaveDialog || leaveDialogOpen) return;
-    if (pendingBattleFrame) {
-      cancelAnimationFrame(pendingBattleFrame);
-      pendingBattleFrame = 0;
-    }
-    const labels = leaveCopy[state.locale] || leaveCopy.en;
-    const round = rounds[state.round];
-    $("canopyLeaveTitle").textContent = labels.title;
-    $("canopyLeaveText").textContent = labels.body
-      .replace("{round}", String(round.id))
-      .replace("{phase}", String(Math.min(state.phase + 1, round.phases.length)))
-      .replace("{total}", String(round.phases.length))
-      .replace("{turns}", String(state.turns));
-    leaveKeep.textContent = labels.keep;
-    leaveExit.textContent = labels.leave;
-    leaveDialogOpen = true;
-    setBattleCovered(true, false);
-    leaveDialog.hidden = false;
-    leaveKeep.focus({ preventScroll: true });
-  };
-  function closeLeaveDialog(restoreFocus) {
-    if (!leaveDialogOpen || !leaveDialog) return;
-    leaveDialogOpen = false;
-    leaveDialog.hidden = true;
-    setBattleCovered(false, false);
-    if (restoreFocus) $("battleBack")?.focus({ preventScroll: true });
+}
+function renderBoard(){
+  const p=phase();
+  $('board').dataset.mode=state.noteMode?'notes':'choose';
+  const blocked=!!state.pending;
+  for(let i=0;i<8;i++){
+    const b=$(`perch${i}`),excluded=state.notes.has(i),chosen=state.selected===i;
+    b.classList.toggle('selected',chosen);b.classList.toggle('excluded',excluded);b.classList.toggle('hinted',state.hinted.includes(i));
+    b.classList.toggle('lit',blocked&&chosen);
+    b.setAttribute('aria-pressed',String(state.noteMode?excluded:chosen));
+    b.setAttribute('aria-label',`${dir(i)} · ${labels('seals')[p.seals[i]]}${excluded?' · ×':''}`);
+    b.querySelector('.perch-direction').textContent=dir(i);b.querySelector('.perch-symbol').textContent=symbols[p.seals[i]];
+    b.dataset.seal=SEALS[p.seals[i]];
   }
-  const renderBadgeReward = (checkpoint) => {
-    const file = badgeArtFiles[checkpoint];
-    const panel = $("badgeReward");
-    const image = $("badgeRewardImage");
-    const label = $("badgeRewardLabel");
-    if (!file) {
-      panel.hidden = true;
-      image.removeAttribute("src");
-      image.alt = "";
-      label.textContent = "";
-      return;
-    }
-    const badgeName = t("badge" + checkpoint);
-    image.src = `assets/checkpoint-badges/${file}`;
-    image.alt = badgeName;
-    label.textContent = t("badgeEarned", { badge: badgeName });
-    panel.hidden = false;
-  };
-  const showToast = (message) => {
-    const toast = $("toast");
-    toast.textContent = message;
-    toast.classList.add("visible");
-    clearTimeout(showToast.timer);
-    showToast.timer = setTimeout(() => toast.classList.remove("visible"), 1600);
-  };
-  const revealResultAction = () => {
-    cancelAnimationFrame(resultFocusFrame);
-    resultFocusFrame = window.requestAnimationFrame(() => {
-      resultFocusFrame = 0;
-      const next = $("resultPrimary");
-      const action = next?.disabled ? $("resultHome") : next;
-      if (!action || $("result").hidden) return;
-      action.focus({ preventScroll: true });
-      const panel = $("result");
-      const panelRect = panel.getBoundingClientRect();
-      const actionRect = action.getBoundingClientRect();
-      const inset = 12;
-      if (actionRect.bottom > panelRect.bottom - inset) panel.scrollTop += actionRect.bottom - panelRect.bottom + inset;
-      else if (actionRect.top < panelRect.top + inset) panel.scrollTop -= panelRect.top + inset - actionRect.top;
-    });
-  };
-  const setScreen = (name) => {
-    if (leaveDialogOpen) closeLeaveDialog(false);
-    if (state.screen === "battle" && name !== "battle") setResultActive(false);
-    state.screen = name;
-    app.hidden = false;
-    document.body.dataset.screen = name;
-    ["main", "stage", "battle"].forEach((screen) => { $(`${screen}Screen`).hidden = screen !== name; });
-    $("gameGuide").hidden = name !== "main";
-    $("gameGuide").setAttribute("aria-hidden", String(name !== "main"));
-    sharedFrame?.activate(name);
-    if (name === "stage") {
-      renderStages();
-    }
-    window.dispatchEvent(new Event("weightplay:stage-sync"));
-    if (name === "battle") {
-      renderBattle();
-      window.WeightPlayBattleCanvas?.sync?.();
-    }
-    if (name === "main") applyLocale();
-    window.scrollTo(0, 0);
-  };
-  const applyLocale = () => {
-    document.documentElement.lang = state.locale === "zh-Hant" ? "zh-TW" : state.locale;
-    document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
-    document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
-    $("localeSelect").setAttribute("aria-label", t("language"));
-    $("localeSelect").value = state.locale;
-    $("stageBack").setAttribute("aria-label", t("back"));
-    $("battleBack").setAttribute("aria-label", t("back"));
-    $("stageScreen").setAttribute("aria-label", t("map"));
-    $("battleScreen").setAttribute("aria-label", t("title"));
-    $("directionRack").setAttribute("aria-label", t("directionChoices"));
-    $("mainBack").setAttribute("aria-label", t("lobbyReturn"));
-    const route = { en:"en", "zh-Hant":"zh-tw", "zh-Hans":"zh-cn", ja:"ja", ko:"ko", es:"es", "pt-BR":"pt-br", fr:"fr", de:"de", it:"it", ru:"ru", hi:"hi", ar:"ar" }[state.locale] || "en";
-    $("mainBack").href = `/${route}/`;
-    document.querySelector(".stage-tabs")?.setAttribute("aria-label", t("stageSections"));
-    updateProgress();
-    if ($("resultHome")) $("resultHome").textContent = t("replay");
-    if (state.screen === "stage") renderStages();
-    if (state.screen === "battle" && state.phase < rounds[state.round].phases.length) renderBattle();
-    sharedFrame?.refresh();
-  };
-  const unlockedCount = () => {
-    let count = 1;
-    while (count < rounds.length && state.completed.includes(count)) count += 1;
-    return count;
-  };
-  const highestUnlockedIndex = () => Math.min(rounds.length - 1, unlockedCount() - 1);
-  const updateProgress = () => {
-    $("progress").textContent = t("progress", { count: state.completed.length, unlocked: unlockedCount() });
-    updateStageHeader();
-  };
-  const saveCampaign = () => set(campaignKey, JSON.stringify({ schema: 1, completed: state.completed, bests: state.bests, badges: state.badges }));
-  const updateStageHeader = () => {
-    const selected = $("stageSelectionValue");
-    const progress = $("stageCompletionValue");
-    if (selected) selected.textContent = t("round", { number: stageSelectionIndex + 1, total: rounds.length });
-    if (progress) progress.textContent = `${state.completed.length}/${rounds.length}`;
-  };
-  const stageRecord = (index) => {
-    const round = rounds[index];
-    const unlocked = index <= highestUnlockedIndex();
-    const complete = state.completed.includes(round.id);
-    const objective = t("stageObjective", { count: round.phases.length });
-    const status = complete ? t("complete") : !unlocked ? t("lockedStage") : round.checkpoint ? t("checkpoint") : t("readyStage");
-    const arc = t("arc" + round.arc);
-    return {
-      id: round.id,
-      kicker: t("round", { number: round.id, total: rounds.length }),
-      title: arc,
-      subtitle: objective,
-      status,
-      summary: [arc, objective, status].join(" · "),
-      details: [objective, round.checkpoint ? t("checkpoint") : "", status],
-      poster: "/games/animal-canopy-compass/assets/animal-canopy-compass-cover.png",
-      posterPosition: "center",
-      locked: !unlocked,
-      cleared: complete,
-    };
-  };
-  const renderStages = () => {
-    const rail = $("stageList");
-    if (!window.WeightPlayPlayUI?.mountStage || !sharedFrame?.stageTopUI) {
-      rail.replaceChildren();
-      const unavailable = document.createElement("p");
-      unavailable.className = "stage-rail-error";
-      unavailable.textContent = t("stageControllerUnavailable");
-      rail.append(unavailable);
-      return;
-    }
-    if (!stageRailController) {
-      stageRailController = window.WeightPlayPlayUI.mountStage({
-        page: $("stageContent"),
-        rail,
-        selected: stageSelectionIndex,
-        config: {
-          count: rounds.length,
-          poster: "/games/animal-canopy-compass/assets/animal-canopy-compass-cover.png",
-          background: "/games/animal-canopy-compass/assets/animal-canopy-compass-background.png",
-          stage: stageRecord,
-        },
-        onSelect: (index) => {
-          stageSelectionIndex = index;
-          updateStageHeader();
-        },
-        onStart: (index) => startRound(index),
-        isActive: () => state.screen === "stage" && !$("stageScreen").hidden,
-      });
-      if (!stageRailController) {
-        const unavailable = document.createElement("p");
-        unavailable.className = "stage-rail-error";
-        unavailable.textContent = t("stageControllerUnavailable");
-        rail.append(unavailable);
-        return;
-      }
-    } else {
-      stageRailController.refresh(stageSelectionIndex);
-    }
-    updateStageHeader();
-  };
-  const renderDirectionButtons = () => {
-    const rack = $("directionRack");
-    const focusedDirection = document.activeElement?.dataset?.directionIndex;
-    rack.replaceChildren();
-    names.forEach((name, index) => {
-      const button = document.createElement("button");
-      button.className = `direction${state.direction === index ? " active" : ""}`;
-      button.type = "button";
-      button.textContent = t(name);
-      button.dataset.directionIndex = String(index);
-      button.setAttribute("aria-pressed", String(state.direction === index));
-      button.addEventListener("click", () => { state.direction = index; state.turns += 1; renderBattle(); $("status").textContent = t("changed", { direction: t(name) }); });
-      rack.append(button);
-    });
-    if (focusedDirection !== undefined) rack.querySelector(`[data-direction-index="${focusedDirection}"]`)?.focus({ preventScroll: true });
-  };
-  const renderBattle = () => {
-    const round = rounds[state.round];
-    const phase = round.phases[state.phase];
-    const canvas = battleCanvas();
-    const preservedScrollTop = canvas?.scrollTop || 0;
-    setResultActive(false);
-    $("roundLabel").textContent = t("round", { number: round.id, total: rounds.length });
-    $("hint").textContent = t("arc" + round.arc) + " · " + t("phaseProgress", { current: state.phase + 1, total: round.phases.length });
-    $("badge").textContent = `${state.completed.length}/${rounds.length}`;
-    const ruleKey = { hold: "ruleDirect", cw: "ruleClockwise", ccw: "ruleCounterclockwise", opposite: "ruleOpposite" }[phase.rule];
-    $("clueText").textContent = t(ruleKey, { mark: t(names[phase.mark]) });
-    $("compass").className = `compass direction-${state.direction}`;
-    $("compass").setAttribute("aria-label", t("compassLabel"));
-    $("facing").textContent = t("facing", { direction: t(names[state.direction]) });
-    renderDirectionButtons();
-    $("result").hidden = true;
-    $("checkBtn").disabled = false;
-    $("resetBtn").disabled = false;
-    if (canvas) canvas.scrollTop = preservedScrollTop;
-  };
-  const startRound = (index) => {
-    const selected = Math.max(0, Math.min(rounds.length - 1, index));
-    if (selected > highestUnlockedIndex()) { showToast(t("lockedStage")); return; }
-    stageSelectionIndex = selected;
-    state.round = selected;
-    state.phase = 0;
-    state.direction = 0;
-    state.turns = 0;
-    state.mistakes = 0;
-    setScreen("battle");
-    $("status").textContent = t("ready");
-  };
-  const startSession = () => { stageSelectionIndex = highestUnlockedIndex(); setScreen("stage"); };
-  const check = () => {
-    const round = rounds[state.round];
-    const phase = round.phases[state.phase];
-    const canvas = battleCanvas();
-    const preservedScrollTop = canvas?.scrollTop || 0;
-    const target = (phase.mark + ruleOffsets[phase.rule]) % names.length;
-    if (state.direction !== target) {
-      state.mistakes += 1;
-      $("status").textContent = t("wrong");
-      showBattleFeedback("wp-canopy-wrong", 260);
-      if (document.activeElement === $("checkBtn")) $("checkBtn").blur();
-      if (canvas) {
-        canvas.scrollTop = preservedScrollTop;
-        cancelAnimationFrame(pendingBattleFrame);
-        pendingBattleFrame = window.requestAnimationFrame(() => {
-          pendingBattleFrame = 0;
-          if (state.screen === "battle" && !leaveDialogOpen && $("result").hidden) canvas.scrollTop = preservedScrollTop;
-        });
-      }
-      return;
-    }
-    state.phase += 1;
-    if (state.phase < round.phases.length) {
-      renderBattle();
-      showBattleFeedback("wp-canopy-correct", 360);
-      $("status").textContent = t("correct");
-      return;
-    }
-    if (!state.completed.includes(round.id)) state.completed = [...state.completed, round.id].sort((a, b) => a - b);
-    const previousBest = state.bests[round.id];
-    if (previousBest === undefined || state.turns < previousBest) state.bests[round.id] = state.turns;
-    if (round.checkpoint && !state.badges.includes(round.id)) state.badges = [...state.badges, round.id];
-    saveCampaign();
-    updateProgress();
-    $("badge").textContent = `${state.completed.length}/${rounds.length}`;
-    stageSelectionIndex = highestUnlockedIndex();
-    stageRailController?.refresh(stageSelectionIndex);
-    updateStageHeader();
-    $("status").textContent = t("correct");
-    $("checkBtn").disabled = true;
-    $("resetBtn").disabled = true;
-    const final = round.finale === true;
-    $("resultTitle").textContent = final ? t("finaleTitle") : round.checkpoint ? t("checkpoint") + " · " + t("complete") : t("complete");
-    $("resultText").textContent = final ? t("finaleText") : t("stageClear");
-    $("resultProgress").textContent = t("resultProgress", { count: state.completed.length, total: rounds.length });
-    renderBadgeReward(round.checkpoint || (final ? 6 : 0));
-    $("stats").textContent = t("stats", { turns: state.turns, best: state.bests[round.id] ?? state.turns }) + ` · ${state.mistakes === 0 ? "★" : "✦"} ${state.mistakes}`;
-    $("resultPrimary").textContent = t("nextStage");
-    $("resultPrimary").disabled = final;
-    $("resultPrimary").hidden = final;
-    $("resultPrimary").onclick = final ? null : () => startRound(state.round + 1);
-    $("resultHome").textContent = t("replay");
-    $("result").hidden = false;
-    setResultActive(true);
-    revealResultAction();
-  };
-
-  $("startBtn").addEventListener("click", startSession);
-  $("stageBack").addEventListener("click", () => setScreen("main"));
-  $("battleBack").addEventListener("click", () => {
-    if (!$("result").hidden) return;
-    if (state.turns > 0 || state.phase > 0) openLeaveDialog();
-    else setScreen("stage");
-  });
-  $("checkBtn").addEventListener("click", check);
-  $("resetBtn").addEventListener("click", () => { state.direction = 0; state.turns += 1; renderBattle(); $("status").textContent = t("ready"); });
-  $("resultMap").addEventListener("click", () => setScreen("stage"));
-  $("resultHome").addEventListener("click", () => startRound(state.round));
-  $("localeSelect").addEventListener("change", (event) => {
-    state.locale = normalizeLocale(event.target.value);
-    set("weightPlayLocale", state.locale); set("weightplayLocale", state.locale); set("wp-locale", state.locale);
-    applyLocale();
-  });
-  document.addEventListener("keydown", (event) => {
-    if (leaveDialogOpen) {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        closeLeaveDialog(true);
-        return;
-      }
-      if (event.key === "Tab") {
-        const actions = [leaveKeep, leaveExit].filter(Boolean);
-        if (!actions.length) return;
-        const current = actions.indexOf(document.activeElement);
-        event.preventDefault();
-        const delta = event.shiftKey ? -1 : 1;
-        actions[(current + delta + actions.length) % actions.length].focus();
-      }
-      return;
-    }
-    if (state.screen !== "battle" || !$("result").hidden) return;
-    if ((event.key === "Enter" || event.key === " ") && document.activeElement === $("compass")) { event.preventDefault(); check(); return; }
-    const directionMap = { ArrowUp: 0, ArrowRight: 1, ArrowDown: 2, ArrowLeft: 3 };
-    if (!(event.key in directionMap)) return;
-    event.preventDefault();
-    state.direction = directionMap[event.key];
-    state.turns += 1;
-    renderBattle();
-    $("status").textContent = t("changed", { direction: t(names[state.direction]) });
-  });
-  window.addEventListener("pagehide", () => {
-    stageRailController?.destroy();
-    cancelAnimationFrame(pendingBattleFrame);
-    cancelAnimationFrame(resultFocusFrame);
-  }, { once: true });
-  sharedFrame = window.WeightPlayScreenFrame?.mount?.({
-    root: app,
-    localeSelect: $("localeSelect"),
-    scenes: {
-      main: { root: $("mainScreen"), header: $("mainHeader"), content: $("mainContent") },
-      stage: { root: $("stageScreen"), header: $("stageHeader"), content: $("stageContent") },
-      battle: { root: $("battleScreen"), header: $("battleHeader"), content: $("battleContent"), headerInfo: $("battleHeaderInfo") },
-    },
-    playUI: true,
-  }) || null;
-  document.documentElement.dataset.wpSharedInterface = "9";
-  if (sharedFrame?.stageTopUI && sharedFrame?.battleTopUI && sharedFrame?.commonDownButton) {
-    const createFrameStat = (labelKey, id) => {
-      const node = document.createElement("div");
-      const caption = document.createElement("small");
-      caption.dataset.copy = labelKey;
-      caption.textContent = t(labelKey);
-      const value = document.createElement("strong");
-      value.id = id;
-      node.append(caption, value);
-      return node;
-    };
-    const stageGroup = window.WeightPlayScreenFrame.createGroup()
-      .add(createFrameStat("stageSections", "stageSelectionValue"))
-      .add(createFrameStat("complete", "stageCompletionValue"));
-    sharedFrame.stageTopUI.add(stageGroup);
-    const battleGroup = window.WeightPlayScreenFrame.createGroup();
-    [...$("battleHeaderInfo").children].forEach((field) => battleGroup.add(field));
-    $("battleHeaderInfo").replaceChildren();
-    sharedFrame.battleTopUI.add(battleGroup);
-    const stageTab = document.querySelector(".stage-tabs button");
-    if (stageTab) {
-      stageTab.dataset.wpFrameAction = "tab";
-      stageTab.setAttribute("aria-pressed", "true");
-      sharedFrame.commonDownButton.clear().add(stageTab);
-    }
-    sharedFrame.activate("main");
+  $('notesBtn').setAttribute('aria-pressed',String(state.noteMode));
+  $('checkBtn').disabled=blocked||state.selected<0||state.noteMode;
+  $('hintBtn').disabled=blocked;
+  $('notesBtn').disabled=blocked;
+  $('facing').textContent=state.selected<0?'—':dir(state.selected);
+  scene?.select(state.selected,[...state.notes],state.hinted,blocked?state.selected:-1);
+}
+function ensureScene(){
+  if(scene)return;
+  try{
+    scene=createCanopyScene($('scene'),points=>points.forEach((p,i)=>{const b=$(`perch${i}`);b.style.left=`${p.x}px`;b.style.top=`${p.y}px`;}),()=>{$('renderError').hidden=false;$('boardControls').inert=true;});
+    scene.setTheme(appearance.theme==='aurora');
+  }catch(error){$('renderError').hidden=false;$('boardControls').inert=true;console.error('Canopy renderer unavailable',error);}
+}
+function startStage(index){
+  if(index<0||index>=30||index>=unlocked(state.save))return;
+  state.stage=index;state.phase=0;state.selected=-1;state.notes.clear();state.noteMode=false;state.hintIndex=-1;state.hinted=[];state.mistakes=0;state.hints=0;state.trail=[];
+  showScreen('battle');ensureScene();
+  $('roundLabel').textContent=t('round',{number:index+1,total:30});
+  $('badge').textContent='0/'+stage().phases.length;
+  $('board').classList.remove('answer-wrong','answer-right');
+  renderClues();renderTrail();renderBoard();announce(t('selectPrompt'));
+  $('compass').focus({preventScroll:true});sound('game.start');
+}
+function choose(index){
+  if(!isPlaying())return;
+  if(state.noteMode){state.notes.has(index)?state.notes.delete(index):state.notes.add(index);announce(t('notePrompt'));}
+  else{
+    state.selected=index;state.notes.delete(index);announce(`${dir(index)} · ${labels('seals')[phase().seals[index]]}`);sound('board.rotate');
   }
-  setTimeout(() => { $("loadingPanel").hidden = true; setScreen("main"); applyLocale(); }, 120);
-}());
+  renderBoard();
+}
+function check(){
+  if(!isPlaying())return;
+  if(state.selected<0||state.noteMode){announce(t('chooseFirst'));return;}
+  const mismatch=phase().clues.findIndex(clue=>!matches(clue,state.selected,phase(),previous()));
+  if(mismatch>=0){
+    state.mistakes++;announce(t('wrongDetail',{n:mismatch+1}),'error');
+    for(let i=0;i<3;i++)$(`clue${i}`).classList.toggle('violated',i===mismatch);
+    $('board').classList.remove('answer-wrong');void $('board').offsetWidth;$('board').classList.add('answer-wrong');
+    clearTimeout(feedbackTimer);feedbackTimer=setTimeout(()=>$('board').classList.remove('answer-wrong'),260);sound('feedback.error');return;
+  }
+  state.pending={direction:state.selected,deadline:performance.now()+(matchMedia('(prefers-reduced-motion: reduce)').matches?160:600)};
+  $('board').classList.add('answer-right');announce(t('correct'),'success');renderBoard();sound('feedback.success');syncActivity();
+}
+function advancePhase(){
+  transitionTimer=0;if(!state.pending)return;
+  if(modalKind||document.hidden||settingsOpen()){syncActivity();return;}
+  state.trail.push(state.pending.direction);state.pending=null;state.phase++;
+  $('badge').textContent=`${state.phase}/${stage().phases.length}`;renderTrail();$('board').classList.remove('answer-right');
+  if(state.phase===stage().phases.length){finish();return;}
+  state.selected=-1;state.notes.clear();state.noteMode=false;state.hinted=[];state.hintIndex=-1;
+  renderClues();renderBoard();announce(t('selectPrompt'));
+  $('clueCards').classList.remove('clues-enter');void $('clueCards').offsetWidth;$('clueCards').classList.add('clues-enter');
+}
+function hint(){
+  if(!isPlaying())return;
+  state.hints++;state.hintIndex=(state.hintIndex+1)%phase().clues.length;
+  state.hinted=candidates(phase(),previous(),[phase().clues[state.hintIndex]]);
+  for(let i=0;i<3;i++)$(`clue${i}`).classList.toggle('inspected',i===state.hintIndex);
+  renderBoard();announce(t('hintDetail',{n:state.hintIndex+1}));sound('feedback.hint');
+}
+function finish(){
+  const stars=rating(state.mistakes,state.hints),s=stage();
+  state.save=settle(state.save,s.id,state.mistakes,state.hints);const saved=persist();updateProgress();
+  $('resultTitle').textContent=t(`rank${stars}`);
+  $('resultText').textContent=s.id===30?t('finaleText'):t('stageClear');
+  $('resultStars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);
+  $('resultStars').setAttribute('aria-label',`${stars}/3`);
+  $('resultProgress').textContent=t('resultProgress',{count:state.save.completed.length,total:30});
+  $('stats').textContent=t('statsDetail',{stars,mistakes:state.mistakes,hints:state.hints});
+  $('saveWarning').hidden=saved;$('saveWarning').textContent=t('saveError');
+  $('badgeReward').hidden=!s.checkpoint;
+  if(s.checkpoint){$('badgeRewardImage').src=`/games/animal-canopy-compass/assets/checkpoint-badges/${badgeFiles[s.arc-1]}.png`;$('badgeRewardImage').alt=t('badge'+s.arc);$('badgeRewardLabel').textContent=t('badgeEarned',{badge:t('badge'+s.arc)});}
+  $('resultPrimary').disabled=s.id===30;$('resultPrimary').hidden=false;
+  $('battleContent').inert=true;$('battleContent').hidden=true;$('result').hidden=false;
+  $('battleBack').disabled=true;document.body.setAttribute('data-wp-canopy-result','');scene?.setActive(false);
+  (s.id===30?$('resultHome'):$('resultPrimary')).focus({preventScroll:true});sound('result.win');
+}
+function openModal(kind){
+  if(modalKind)return;modalReturn=document.activeElement;modalKind=kind;
+  $('modalTitle').textContent=kind==='help'?t('helpAction'):kind==='shop'?t('collection'):t('back');
+  $('modalHelp').hidden=kind!=='help';$('modalShop').hidden=kind!=='shop';$('modalLeave').hidden=kind!=='leave';
+  if(kind==='leave'){
+    $('leaveText').textContent=t('leaveMessage',{stage:stage().id,phase:state.phase+1});
+    $('leaveKeep').textContent=t('continueAction');$('leaveExit').textContent=t('map');
+  }
+  if(kind==='shop')renderShop();
+  $('gameModal').hidden=false;
+  const root=$(`${state.screen}Screen`);root.inert=true;syncActivity();
+  (kind==='leave'?$('leaveKeep'):$('modalClose')).focus({preventScroll:true});
+}
+function closeModal(restore=true){
+  if(!modalKind)return;$('gameModal').hidden=true;modalKind=null;
+  $(`${state.screen}Screen`).inert=false;
+  if(restore&&modalReturn?.isConnected)modalReturn.focus({preventScroll:true});
+  syncActivity();
+}
+function renderShop(){
+  $('walletBalance').textContent=t('balance',{n:window.WeightPlayWallet?.read().diamonds||0});
+  $('classicButton').textContent=t(appearance.theme==='classic'?'equipped':'equip');
+  $('auroraButton').textContent=t(appearance.theme==='aurora'?'equipped':appearance.owned?'equip':'buy');
+  $('classicButton').disabled=appearance.theme==='classic';$('auroraButton').disabled=appearance.theme==='aurora'||buying;
+}
+function saveAppearance(next){localStorage.setItem(APPEARANCE_KEY,JSON.stringify(next));appearance=next;scene?.setTheme(next.theme==='aurora');}
+async function buyOrEquip(){
+  if(buying)return;buying=true;renderShop();
+  const transaction=()=>{
+    const saved=read(APPEARANCE_KEY,{owned:false,theme:'classic'});
+    if(saved?.owned===true){saveAppearance({owned:true,theme:'aurora'});return;}
+    const wallet=window.WeightPlayWallet;if(!wallet||wallet.read().diamonds<12){notify(t('insufficient'));return;}
+    // Reserve enough storage before charging. Any synchronous delivery failure
+    // refunds through the shared wallet; the game never writes wallet storage.
+    localStorage.setItem(APPEARANCE_KEY,JSON.stringify({owned:false,theme:'classic',reserved:'................................'}));
+    if(!wallet.spendDiamonds(12)){notify(t('insufficient'));return;}
+    try{saveAppearance({owned:true,theme:'aurora'});sound('reward.upgrade');}
+    catch(error){wallet.addDiamonds(12);throw error;}
+  };
+  try{if(navigator.locks)await navigator.locks.request('weightplay-canopy-cosmetic',transaction);else transaction();}
+  catch{notify(t('saveError'));}
+  finally{buying=false;renderShop();}
+}
+function buildGuide(){
+  const guide=$('gameGuide');guide.querySelector('[data-guide-summary]').textContent=t('summary');
+  for(const node of guide.querySelectorAll('[data-copy]'))node.textContent=t(node.dataset.copy);
+}
+function applyLocale(){
+  document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==='ar'?'rtl':'ltr';
+  for(const node of document.querySelectorAll('[data-copy]'))node.textContent=t(node.dataset.copy);
+  $('localeSelect').value=state.locale;
+  for(const id of ['stageBack','battleBack'])$(id).setAttribute('aria-label',t('back'));
+  $('board').setAttribute('aria-label',t('directionChoices'));$('compass').setAttribute('aria-label',t('compassLabel'));
+  $('boardControls').setAttribute('aria-label',t('directionChoices'));
+  $('notesBtn').setAttribute('aria-label',t('notes'));$('hintBtn').setAttribute('aria-label',t('hintAction'));$('helpBtn').setAttribute('aria-label',t('helpAction'));
+  $('modalClose').setAttribute('aria-label',t('close'));$('stageScreen').setAttribute('aria-label',t('map'));
+  $('mainBack').setAttribute('aria-label',t('lobbyReturn'));
+  const route=Object.entries(routes).find(([,l])=>l===state.locale)?.[0]||'en';$('mainBack').href=`/${route}/`;
+  buildGuide();updateProgress();frame.refresh();
+}
+
+for(let i=0;i<8;i++){
+  const b=document.createElement('button');b.type='button';b.id=`perch${i}`;b.className='perch';b.dataset.directionIndex=String(i);
+  b.innerHTML='<span class="perch-symbol" aria-hidden="true"></span><span class="perch-direction"></span><span class="perch-cross" aria-hidden="true">×</span>';
+  b.addEventListener('click',()=>choose(i));$('boardControls').append(b);
+}
+$('startBtn').addEventListener('click',()=>showScreen('stage'));
+$('stageBack').addEventListener('click',()=>showScreen('main'));
+$('battleBack').addEventListener('click',()=>openModal('leave'));
+$('checkBtn').addEventListener('click',check);$('hintBtn').addEventListener('click',hint);
+$('notesBtn').addEventListener('click',()=>{if(!isPlaying())return;state.noteMode=!state.noteMode;renderBoard();announce(t(state.noteMode?'notePrompt':'selectPrompt'));});
+$('helpBtn').addEventListener('click',()=>openModal('help'));
+$('collectionBtn').addEventListener('click',()=>openModal('shop'));
+$('modalClose').addEventListener('click',()=>closeModal());
+$('leaveKeep').addEventListener('click',()=>closeModal());
+$('leaveExit').addEventListener('click',()=>{closeModal(false);$('battleBack').disabled=false;showScreen('stage');});
+$('classicButton').addEventListener('click',()=>{try{saveAppearance({...appearance,theme:'classic'});renderShop();}catch{notify(t('saveError'));}});
+$('auroraButton').addEventListener('click',buyOrEquip);
+$('resultMap').addEventListener('click',()=>{$('battleBack').disabled=false;showScreen('stage');});
+$('resultHome').addEventListener('click',()=>{$('battleBack').disabled=false;startStage(state.stage);});
+$('resultPrimary').addEventListener('click',()=>{if(stage().id<30){$('battleBack').disabled=false;startStage(state.stage+1);}});
+$('renderRetry').addEventListener('click',()=>location.reload());
+$('scene').addEventListener('canopy-render-restored',()=>{$('renderError').hidden=true;$('boardControls').inert=false;renderBoard();});
+document.addEventListener('keydown',event=>{
+  const dialog=modalKind?$('gameModal'):!$('result').hidden?$('result'):null;
+  if(dialog){
+    if(event.key==='Escape'&&modalKind){event.preventDefault();closeModal();}
+    if(event.key==='Tab'){
+      const targets=[...dialog.querySelectorAll('button:not(:disabled),a[href]')].filter(n=>n.getClientRects().length);
+      const current=targets.indexOf(document.activeElement),next=(current+(event.shiftKey?-1:1)+targets.length)%targets.length;
+      event.preventDefault();targets[next]?.focus();
+    }return;
+  }
+  if(!isPlaying()||event.altKey||event.ctrlKey||event.metaKey)return;
+  if(event.key.startsWith('Arrow')){
+    if(document.activeElement?.closest('.wp-frame-utility'))return;
+    event.preventDefault();const delta=event.key==='ArrowRight'||event.key==='ArrowDown'?1:-1;
+    choose(state.selected<0?(delta>0?0:7):wrap(state.selected+delta));
+  }else if((event.key==='Enter'&&document.activeElement?.closest('#board'))||(event.key===' '&&document.activeElement===$('compass'))){event.preventDefault();check();}
+});
+document.addEventListener('visibilitychange',syncActivity);
+const settingsObserver=new MutationObserver(syncActivity);settingsObserver.observe($('app'),{subtree:true,attributes:true,attributeFilter:['aria-expanded']});
+window.addEventListener('storage',event=>{
+  if(event.key===CAMPAIGN_KEY){state.save=normalizeSave(read(CAMPAIGN_KEY,state.save));updateProgress();if(state.screen==='stage')rail?.refresh(selectedStage);}
+  if(event.key===APPEARANCE_KEY){const saved=read(APPEARANCE_KEY,appearance);if(saved?.owned===true)appearance={owned:true,theme:saved.theme==='aurora'?'aurora':'classic'};scene?.setTheme(appearance.theme==='aurora');if(modalKind==='shop')renderShop();}
+  if(modalKind==='shop'&&event.key===window.WeightPlayWallet?.key)renderShop();
+});
+window.addEventListener('pagehide',event=>{
+  if(event.persisted){scene?.setActive(false);clearTimeout(transitionTimer);transitionTimer=0;audio?.stop();return;}
+  clearPending();clearTimeout(feedbackTimer);clearTimeout(notify.timer);settingsObserver.disconnect();rail?.destroy();scene?.dispose();audio?.dispose();
+});
+window.addEventListener('pageshow',event=>{if(event.persisted)syncActivity();});
+
+frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect:$('localeSelect'),scenes:{main:{root:$('mainScreen'),header:$('mainHeader'),content:$('mainContent')},stage:{root:$('stageScreen'),header:$('stageHeader'),content:$('stageContent')},battle:{root:$('battleScreen'),header:$('battleHeader'),content:$('battleContent'),headerInfo:$('battleHeaderInfo')}},playUI:true});
+function stat(label,id){const node=document.createElement('div'),caption=document.createElement('small'),value=document.createElement('strong');caption.dataset.copy=label;value.id=id;node.append(caption,value);return node;}
+frame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup().add(stat('stageSections','stageSelectionValue')).add(stat('complete','stageCompletionValue')));
+const battleGroup=window.WeightPlayScreenFrame.createGroup();[...$('battleHeaderInfo').children].forEach(n=>battleGroup.add(n));frame.battleTopUI.add(battleGroup);
+const collectionButton=$('collectionBtn'),stageTab=$('stageTab');
+frame.commonDownButton.clear().add(collectionButton).add(stageTab);
+// Shared loader waits for actual Main image decoding and the rendered Start.
+$('app').hidden=false;showScreen('main');applyLocale();
+Promise.all([...$('mainScreen').querySelectorAll('img')].map(img=>img.decode())).then(()=>{$('loadingPanel').hidden=true;}).catch(()=>{
+  $('loadingPanel').textContent=t('renderError');
+  const retry=document.createElement('button');retry.textContent=t('retryAction');retry.addEventListener('click',()=>location.reload());$('loadingPanel').append(retry);
+});

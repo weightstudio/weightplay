@@ -1,0 +1,133 @@
+/* Stable board nodes: input never depends on an animation completing. */
+(() => {
+  'use strict';
+  const NS = 'http://www.w3.org/2000/svg';
+  const { tokens } = window.TanglePuzzle;
+  const sprite = (token) => `<span class="animal-portrait animal-${tokens[token].family}" aria-hidden="true"></span>`;
+  window.TangleBoardView = function createBoardView(host, handlers) {
+    let board, state, copy, nodes = [], paths = [], drag = null, frame = 0, blockedClick = false;
+    let previous = [];
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('class', 'route-svg'); svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('viewBox', '0 0 1000 1000'); svg.setAttribute('preserveAspectRatio', 'none');
+    const name = token => copy(tokens[token].copy) + (board.target.length > 4 ? ` ${tokens[token].suffix}` : '');
+    const cancelDrag = () => {
+      if (drag?.button.hasPointerCapture(drag.id)) drag.button.releasePointerCapture(drag.id);
+      drag = null; host.classList.remove('is-dragging');
+      nodes.forEach(node => node.button.classList.remove('drop-target', 'drag-origin'));
+    };
+    function trace() {
+      frame = 0;
+      if (!board || host.offsetWidth === 0) return;
+      const box = host.getBoundingClientRect();
+      if (!box.width || !box.height) return;
+      const scale = box.height / host.clientHeight;
+      const fullHeight = host.scrollHeight * scale;
+      svg.style.height = `${host.scrollHeight}px`;
+      paths.forEach((group, row) => {
+        const start = nodes[row].button.getBoundingClientRect();
+        const target = nodes[board.target.indexOf(state.current[row])].shelter.getBoundingClientRect();
+        const x1 = (start.right - box.left - 4) / box.width * 1000;
+        const x2 = (target.left - box.left + 4) / box.width * 1000;
+        const y1 = (start.top + start.height / 2 - box.top + host.scrollTop*scale) / fullHeight * 1000;
+        const y2 = (target.top + target.height / 2 - box.top + host.scrollTop*scale) / fullHeight * 1000;
+        const bend = (x2 - x1) * .44;
+        const path = `M ${x1} ${y1} C ${x1+bend} ${y1},${x2-bend} ${y2},${x2} ${y2}`;
+        group.querySelectorAll('path').forEach(node => node.setAttribute('d', path));
+      });
+    }
+    function scheduleTrace() { cancelAnimationFrame(frame); frame = requestAnimationFrame(trace); }
+    function build(nextBoard) {
+      cancelDrag(); board = nextBoard; previous = []; nodes = []; paths = [];
+      host.replaceChildren(svg); svg.replaceChildren();
+      host.style.setProperty('--rows', board.target.length);
+      board.target.forEach((target, row) => {
+        const group = document.createElementNS(NS, 'g');
+        group.innerHTML = '<path class="vine-shadow"/><path class="vine-body"/><path class="vine-light"/><path class="vine-flow" pathLength="100"/>';
+        group.dataset.route = row; svg.append(group); paths.push(group);
+        const line = document.createElement('div'); line.className = 'board-row';
+        const button = document.createElement('button');
+        button.type = 'button'; button.className = 'endpoint-card'; button.dataset.endpoint = row;
+        const shelter = document.createElement('div'); shelter.className = 'shelter-card'; shelter.dataset.shelter = row;
+        line.append(button, shelter); host.append(line); nodes.push({line, button, shelter});
+        button.addEventListener('click', event => {
+          if (blockedClick && event.detail !== 0) { blockedClick = false; return; }
+          handlers.select(row);
+        });
+        button.addEventListener('keydown', event => {
+          if (event.key === 'Escape') { handlers.cancel(); return; }
+          if (!['ArrowDown','ArrowUp','Home','End'].includes(event.key)) return;
+          event.preventDefault();
+          const available = nodes.filter(node => !node.button.disabled);
+          const index = available.findIndex(node => node.button === button);
+          const next = event.key === 'Home' ? 0 : event.key === 'End' ? available.length-1 :
+            (index + (event.key === 'ArrowDown' ? 1 : -1) + available.length) % available.length;
+          available[next]?.button.focus({ preventScroll: true });
+        });
+        button.addEventListener('pointerdown', event => {
+          if (!handlers.canInput() || button.disabled || (event.pointerType === 'mouse' && event.button !== 0)) return;
+          blockedClick = false;
+          drag = { id: event.pointerId, row, x: event.clientX, y: event.clientY, button, moved: false, target: -1 };
+          button.setPointerCapture(event.pointerId);
+        });
+        button.addEventListener('pointermove', event => {
+          if (!drag || drag.id !== event.pointerId) return;
+          if (Math.hypot(event.clientX-drag.x, event.clientY-drag.y) < 9 && !drag.moved) return;
+          if (!drag.moved) { drag.moved = true; handlers.focus(row); }
+          host.classList.add('is-dragging'); button.classList.add('drag-origin');
+          const target = document.elementFromPoint(event.clientX, event.clientY)?.closest('[data-endpoint]');
+          drag.target = target && host.contains(target) && !target.disabled ? Number(target.dataset.endpoint) : -1;
+          nodes.forEach((node, index) => node.button.classList.toggle('drop-target', index === drag.target && index !== row));
+        });
+        button.addEventListener('pointerup', event => {
+          if (!drag || drag.id !== event.pointerId) return;
+          const { moved, target } = drag; cancelDrag();
+          if (moved) { blockedClick = true; if (target >= 0 && target !== row) handlers.swap(row, target); else handlers.cancel(); }
+        });
+        button.addEventListener('pointercancel', () => { const moved = drag?.moved; cancelDrag(); if (moved) handlers.cancel(); });
+        button.addEventListener('lostpointercapture', () => { if (drag) { cancelDrag(); handlers.cancel(); } });
+      });
+    }
+    function update(nextBoard, nextState, translate, motion = []) {
+      copy = translate; state = nextState;
+      if (board !== nextBoard) build(nextBoard);
+      nodes.forEach(({line, button, shelter}, row) => {
+        const token = state.current[row], target = board.target[row];
+        const correct = token === target, locked = (board.lockedRows || []).includes(row);
+        const hidden = (board.decoyRows || []).includes(row) && !correct;
+        const selected = state.selected === row;
+        const caption = name(token);
+        const contents = `${sprite(token)}<span class="token-name">${caption}</span><span class="token-mark">${tokens[token].marker}</span><span class="token-state">${locked ? '◆' : correct ? '✓' : row+1}</span>`;
+        if (button.innerHTML !== contents) button.innerHTML = contents;
+        const destination = `<span class="shelter-roof" aria-hidden="true"></span>${hidden ? '<span class="hidden-animal" aria-hidden="true">?</span>' : sprite(target)}<span class="token-name">${hidden ? copy('mystery') : name(target)}</span><span class="token-mark">${tokens[target].marker}</span><span class="token-state">${correct ? '✓' : row+1}</span>`;
+        if (shelter.innerHTML !== destination) shelter.innerHTML = destination;
+        button.style.setProperty('--animal-color', tokens[token].color);
+        shelter.style.setProperty('--animal-color', tokens[target].color);
+        button.disabled = locked;
+        button.classList.toggle('selected', selected); button.classList.toggle('locked', locked);
+        button.classList.toggle('hinted', state.hint.includes(row));
+        button.setAttribute('aria-pressed', String(selected));
+        button.setAttribute('aria-label', `${copy('swapName',{number:row+1})}: ${caption}${locked ? ` · ${copy('locked')}` : ''}${correct ? ` · ${copy('connected')}` : ''}`);
+        button.setAttribute('aria-invalid', String(state.errorRows.includes(row)));
+        shelter.setAttribute('aria-label', `${copy('shelter',{number:row+1})}: ${hidden ? copy('mystery') : name(target)}`);
+        line.classList.toggle('connected', correct); line.classList.toggle('needs-recheck', state.errorRows.includes(row));
+        paths[row].style.setProperty('--vine-color', tokens[token].color);
+        paths[row].classList.toggle('route-selected', selected || state.hint.includes(row));
+        paths[row].classList.toggle('route-connected', correct);
+        if (motion.includes(row) && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          button.querySelector('.animal-portrait')?.animate([{opacity:.35,transform:'translateY(5px)'},{opacity:1,transform:'translateY(0)'}], {duration:220,easing:'ease-out'});
+          if (correct && previous[row] !== token) shelter.animate([{filter:'brightness(1.7)'},{filter:'brightness(1)'}],{duration:600});
+        }
+      });
+      svg.classList.toggle('has-selection', state.selected >= 0 || state.hint.length > 0);
+      previous = state.current.slice();
+      // Selected vines draw above their neighbours while hit targets stay fixed.
+      paths.filter((path,row) => state.selected === row || state.hint.includes(row)).forEach(path => svg.append(path));
+      scheduleTrace();
+    }
+    const observer = new ResizeObserver(scheduleTrace); observer.observe(host);
+    return { update, trace: scheduleTrace, cancel: cancelDrag, sprite,
+      settle() { cancelDrag(); host.getAnimations({subtree:true}).forEach(animation => animation.cancel()); },
+      destroy() { cancelDrag(); observer.disconnect(); cancelAnimationFrame(frame); host.replaceChildren(); } };
+  };
+})();
