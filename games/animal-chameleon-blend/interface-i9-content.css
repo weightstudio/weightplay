@@ -17,11 +17,14 @@ body[data-wp-game-id="animal-chameleon-blend"] .m5-main-content {
   }
 }
 
+body[data-wp-game-id="animal-chameleon-blend"] .blend-main-copy { grid-area: copy; }
+
 body[data-wp-game-id="animal-chameleon-blend"] .m5-battle-content {
+  --blend-control-height: max(44px, var(--wp-frame-control-size, 44px));
   box-sizing: border-box;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: 66px minmax(0, 1fr) 172px 38px;
+  grid-template-rows: 66px minmax(0, 1fr) calc(3 * var(--blend-control-height) + 40px) 38px;
   gap: 0;
   width: 100%;
   height: 100%;
@@ -143,7 +146,7 @@ body[data-wp-game-id="animal-chameleon-blend"] .blend-timer i { display: block; 
 body[data-wp-game-id="animal-chameleon-blend"] #battle-controls {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: 56px 56px 44px;
+  grid-template-rows: calc(12px + var(--blend-control-height)) calc(12px + var(--blend-control-height)) var(--blend-control-height);
   gap: 4px;
   box-sizing: border-box;
   padding: 4px 12px;
@@ -152,14 +155,14 @@ body[data-wp-game-id="animal-chameleon-blend"] #battle-controls {
   background: #10272e;
 }
 
-body[data-wp-game-id="animal-chameleon-blend"] #battle-controls fieldset { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: 12px 44px; gap: 0 6px; margin: 0; padding: 0; min-width: 0; border: 0; }
+body[data-wp-game-id="animal-chameleon-blend"] #battle-controls fieldset { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: 12px var(--blend-control-height); gap: 0 6px; margin: 0; padding: 0; min-width: 0; border: 0; }
 body[data-wp-game-id="animal-chameleon-blend"] #battle-controls legend { grid-column: 1 / -1; color: #a4c4bf; font: 650 11px/12px system-ui, sans-serif; margin: 0; padding: 0; }
 body[data-wp-game-id="animal-chameleon-blend"] #battle-controls button {
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
-  height: 44px;
-  min-height: 44px;
+  height: var(--blend-control-height);
+  min-height: var(--blend-control-height);
   padding: 3px 5px;
   border: 1px solid #5f8f87;
   border-radius: 10px;
@@ -251,9 +254,9 @@ body[data-wp-game-id="animal-chameleon-blend"] .wp-chameleon-leave-card p { font
 body[data-wp-game-id="animal-chameleon-blend"] .wp-chameleon-leave-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 body[data-wp-game-id="animal-chameleon-blend"] .wp-chameleon-leave-actions > button {
   box-sizing: border-box;
-  height: 44px;
-  min-height: 44px;
-  max-height: 44px;
+  height: max(44px, var(--wp-frame-control-size,44px));
+  min-height: max(44px, var(--wp-frame-control-size,44px));
+  max-height: max(44px, var(--wp-frame-control-size,44px));
   padding: 0 10px;
   border: 1px solid #83d9e45c;
   border-radius: 12px;

@@ -2041,7 +2041,7 @@
     const result = document.querySelector("#resultOverlay");
     const resultTitle = document.querySelector("#resultTitle");
     const resultText = document.querySelector("#resultText");
-    const ownsI9ResultFocus = id === "gin-rummy" || ((id === "crazy-eights" || id === "spades" || id === "hearts" || id === "old-maid") && /^9(?:\.|$)/u.test(rootElement?.dataset.wpInterfaceVersion || ""));
+    const ownsI9ResultFocus = id === "speed" || id === "gin-rummy" || ((id === "crazy-eights" || id === "spades" || id === "hearts" || id === "old-maid") && /^9(?:\.|$)/u.test(rootElement?.dataset.wpInterfaceVersion || ""));
     let i9ResultReturnFocus = null;
     const i9ResultControls = () => [...(result?.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])') || [])]
       .filter((control) => control.getClientRects().length > 0);
@@ -2515,13 +2515,20 @@
       refresh() { render(); },
       beep(name = "place") { playCardGameCue(name); },
     };
+    const speedRenderMarkup = new WeakMap();
+    const writeRenderedMarkup = (node, markup) => {
+      if (id !== "speed" || speedRenderMarkup.get(node) !== markup) {
+        node.innerHTML = markup;
+        if (id === "speed") speedRenderMarkup.set(node, markup);
+      }
+    };
     const render = () => {
       if (!game) return;
       const view = game.view() || {};
-      opponents.innerHTML = view.opponents || "";
-      center.innerHTML = view.center || "";
-      hand.innerHTML = view.hand || "";
-      actions.innerHTML = view.actions || "";
+      writeRenderedMarkup(opponents, view.opponents || "");
+      writeRenderedMarkup(center, view.center || "");
+      writeRenderedMarkup(hand, view.hand || "");
+      writeRenderedMarkup(actions, view.actions || "");
       if (id === "hearts" && heartsShellCopy()) {
         [opponents, center, hand, actions, status, statusText].forEach((node) => node?.setAttribute("data-runtime-localize", "off"));
       }
@@ -2535,6 +2542,7 @@
       if (view.refreshTimer) clearTimeout(view.refreshTimer);
     };
     const showCardGameReturnDialog = () => {
+      if (id === "speed" && battle.querySelector('[data-card-game-return-confirm]')) return;
       const returnCopy = (id === "spades" || id === "hearts") ? SPADES_RETURN_COPY : GO_FISH_RETURN_COPY;
       const copy = returnCopy[currentLocale()] || returnCopy.en;
       const trigger = document.querySelector("#battleBackBtn");
@@ -2618,7 +2626,7 @@
     };
     battle.addEventListener("click", clickHandler);
     document.querySelector("#battleBackBtn")?.addEventListener("click", (event) => {
-      if ((id === "go-fish" || (ownsI9ResultFocus && (id === "spades" || id === "hearts"))) && result.hidden) {
+      if ((id === "speed" || id === "go-fish" || (ownsI9ResultFocus && (id === "spades" || id === "hearts"))) && result.hidden) {
         event.stopImmediatePropagation();
         event.stopPropagation();
         showCardGameReturnDialog();
@@ -2648,7 +2656,7 @@
       if (ownsI9ResultFocus) window.requestAnimationFrame(restoreI9BattleFocus);
     });
     document.querySelector("#resultClose")?.addEventListener("click", () => {
-      if (id === "old-maid" || id === "hearts") { if (id === "old-maid") oldMaidTrack("back", { source: "result" }); controller.openMain(); if ((id === "hearts" || id === "old-maid") && ownsI9ResultFocus) document.querySelector("#startBtn")?.focus({ preventScroll: true }); }
+      if (id === "speed" || id === "old-maid" || id === "hearts") { if (id === "old-maid") oldMaidTrack("back", { source: "result" }); controller.openMain(); if (ownsI9ResultFocus) document.querySelector("#startBtn")?.focus({ preventScroll: true }); }
       else { (__wpNotifyMeasurement(), result.hidden = true); render(); if (ownsI9ResultFocus) window.requestAnimationFrame(restoreI9BattleFocus); }
     });
     document.querySelector("#startBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("old_maid_start", { source: "main" }); game.reset(); controller.openBattle(); });
@@ -2735,12 +2743,39 @@
     // row on a timer replaces the visible Flip button while a click is being
     // dispatched, so keep the polling loop only for games with delayed AI or
     // other asynchronous state transitions.
-    const battleRenderTimer = id === "war" || id === "go-fish" ? null : window.setInterval(() => {
-      if (!battle.hidden) render();
-    }, 180);
+    const pollBattle = () => { if (!battle.hidden && !(id === "speed" && game.isPaused?.())) render(); };
+    let battleRenderTimer = id === "war" || id === "go-fish" ? null : window.setInterval(pollBattle, 180);
     window.addEventListener("beforeunload", () => {
       if (battleRenderTimer !== null) window.clearInterval(battleRenderTimer);
+      if (id === "speed") battleRenderTimer = null;
     }, { once: true });
+    if (id === "speed") {
+      const pauseSpeed = () => { if (controller.isBattleActive() && result.hidden) game.pause(); };
+      const resumeSpeed = () => {
+        if (!document.hidden && document.hasFocus() && controller.isBattleActive()
+            && result.hidden && !battle.querySelector('[data-card-game-return-confirm]')
+            && !battle.querySelector('.wp-frame-popover:not([hidden])')) {
+          game.resume();
+        }
+      };
+      window.addEventListener('blur', pauseSpeed);
+      window.addEventListener('focus', resumeSpeed);
+      window.addEventListener('weightplay:interaction-state', () => {
+        if (battle.querySelector('.wp-frame-popover:not([hidden])')) pauseSpeed();
+        else resumeSpeed();
+      });
+      document.addEventListener('visibilitychange', () => document.hidden ? pauseSpeed() : resumeSpeed());
+      window.addEventListener('pagehide', () => {
+        pauseSpeed();
+        if (battleRenderTimer !== null) window.clearInterval(battleRenderTimer);
+        battleRenderTimer = null;
+      });
+      window.addEventListener('pageshow', event => {
+        if (!event.persisted) return;
+        if (battleRenderTimer === null) battleRenderTimer = window.setInterval(pollBattle, 180);
+        resumeSpeed();
+      });
+    }
     let mainControlAttempts = 0;
     const mainControlsRequired = !((id === "gin-rummy" && /^9(?:\.|$)/u.test(document.body?.dataset.wpInterfaceVersion || "")) || document.body?.dataset.wpMainStartOnly === "true");
     const mainControlTimer = mainControlsRequired ? window.setInterval(() => { ensureMainControls(); mainControlAttempts += 1; if (document.querySelector("[data-card-main-controls]") || mainControlAttempts > 40) window.clearInterval(mainControlTimer); }, 50) : null;
@@ -3399,13 +3434,18 @@
   }
 
   function makeSpeedFixed(controller) {
-    const s = { hand: [], stock: [], aiHand: [], aiStock: [], centers: [], waste: [], timer: null, over: false, lastPlayerAt: 0 };
+    const s = { hand: [], stock: [], aiHand: [], aiStock: [], centers: [], waste: [], timer: null, over: false, lastPlayerAt: 0, paused: false, pausedAt: 0, dueAt: 0, remaining: 850 };
+    const schedule = (delay = 850) => {
+      clearTimeout(s.timer);
+      s.dueAt = Date.now() + delay;
+      s.timer = setTimeout(aiLoop, delay);
+    };
     const canPlay = (item, centerCard) => item && centerCard && (item.rank === centerCard.rank + 1 || item.rank === centerCard.rank - 1 || (item.rank === 1 && centerCard.rank === 13) || (item.rank === 13 && centerCard.rank === 1));
     const refill = (hand, stock) => { while (hand.length < 5 && stock.length) hand.push(stock.pop()); };
     const replaceCenter = (index, item) => { if (s.centers[index]) s.waste.push(s.centers[index]); s.centers[index] = item; };
     const finishIfDone = () => { const playerEmpty = !s.hand.length && !s.stock.length; const aiEmpty = !s.aiHand.length && !s.aiStock.length; if (playerEmpty || aiEmpty) { s.over = true; clearTimeout(s.timer); controller.result(playerEmpty, `${t("cards")}: ${s.hand.length + s.stock.length} / ${s.aiHand.length + s.aiStock.length}`); } };
     const aiLoop = () => {
-      if (s.over || !controller.isBattleActive()) return;
+      if (s.over || s.paused || !controller.isBattleActive()) return;
       const candidates = s.aiHand.flatMap((item, index) => s.centers.flatMap((centerCard, centerIndex) => canPlay(item, centerCard) ? [{ index, centerIndex, item }] : []));
       if (candidates.length) {
         const playerIsActive = Date.now() - s.lastPlayerAt < 1500;
@@ -3442,11 +3482,15 @@
         }
       }
       finishIfDone();
-      if (!s.over) s.timer = setTimeout(aiLoop, 850);
+      if (!s.over) schedule();
     };
     return {
-      reset() { const cards = deck(); Object.assign(s, { hand: cards.splice(0, 5), stock: cards.splice(0, 20), aiHand: cards.splice(0, 5), aiStock: cards.splice(0, 20), centers: cards.splice(0, 2), waste: [], over: false, lastPlayerAt: Date.now() }); clearTimeout(s.timer); s.timer = setTimeout(aiLoop, 850); },
-      card(index) { if (s.over) return; const item = s.hand[index]; const centerIndex = s.centers.findIndex((centerCard) => canPlay(item, centerCard)); if (centerIndex < 0) return; s.hand.splice(index, 1); replaceCenter(centerIndex, item); s.lastPlayerAt = Date.now(); refill(s.hand, s.stock); finishIfDone(); },
+      reset() { clearTimeout(s.timer); const cards = deck(); Object.assign(s, { hand: cards.splice(0, 5), stock: cards.splice(0, 20), aiHand: cards.splice(0, 5), aiStock: cards.splice(0, 20), centers: cards.splice(0, 2), waste: [], over: false, lastPlayerAt: Date.now(), paused: false, pausedAt: 0, remaining: 850 }); schedule(); },
+      pause() { if (s.over || s.paused) return; s.paused = true; s.pausedAt = Date.now(); s.remaining = Math.max(0, s.dueAt - s.pausedAt); clearTimeout(s.timer); },
+      resume() { if (s.over || !s.paused) return; s.lastPlayerAt += Date.now() - s.pausedAt; s.paused = false; schedule(s.remaining); },
+      stop() { clearTimeout(s.timer); s.over = true; s.paused = false; },
+      isPaused() { return s.paused; },
+      card(index) { if (s.over || s.paused) return; const item = s.hand[index]; const centerIndex = s.centers.findIndex((centerCard) => canPlay(item, centerCard)); if (centerIndex < 0) return; s.hand.splice(index, 1); replaceCenter(centerIndex, item); s.lastPlayerAt = Date.now(); refill(s.hand, s.stock); finishIfDone(); },
       action() {},
       view() { const legalCount = s.hand.filter((item) => s.centers.some((centerCard) => canPlay(item, centerCard))).length; const handMarkup = s.hand.map((item, index) => { const legal = s.centers.some((centerCard) => canPlay(item, centerCard)); return cardMarkup(item, index, { className: legal ? "card-speed-legal" : "", ariaLabel: legal ? speedLegalLabel(item) : undefined, runtimeLocalizeOff: legal }); }).join(""); return { phase: TITLES.speed[currentLocale()] || TITLES.speed.en, status: t("yourTurn"), help: speedCoachText(legalCount), score: s.hand.length + s.stock.length, opponents: opponentMarkup("AI", s.aiHand.length + s.aiStock.length), center: `<div class="card-speed-lane"><div class="card-speed-pile">${cardMarkup(s.centers[0], 0)}</div><div class="card-speed-pile">${cardMarkup(s.centers[1], 0)}</div></div>`, hand: handMarkup, actions: `<span class="card-help">${s.stock.length} ${t("stock")} · ${s.aiStock.length} ${t("cards")} ${t("waiting")}</span>` }; }
     };

@@ -152,6 +152,7 @@
   // Result remains a Battle substate, but live HUD/controls must become inert
   // while the three persistent Result actions own interaction.
   if (resultScreen && battleScreen) {
+    let wasResultActive = false;
     const resultCovered = [
       battleScreen.querySelector(".m5-battle-header"),
       battleScreen.querySelector(".m5-status"),
@@ -163,7 +164,20 @@
       const active = !resultScreen.hidden;
       document.body.classList.toggle("wp-chameleon-result-active", active);
       resultCovered.forEach((node) => node.toggleAttribute("inert", active));
+      if (active && !wasResultActive) {
+        ($( 'next' ).disabled ? $('retry') : $('next')).focus({preventScroll:true});
+      } else if (!active && wasResultActive && frame?.active === 'battle') {
+        $('blend-lock')?.focus({preventScroll:true});
+      }
+      wasResultActive = active;
     };
+    resultScreen.addEventListener('keydown',event=>{
+      if(event.key!=='Tab'||resultScreen.hidden)return;
+      const actions=[$('to-stages'),$('next'),$('retry')].filter(node=>!node.disabled);
+      if(!resultScreen.contains(document.activeElement)){event.preventDefault();actions[0]?.focus();}
+      else if(event.shiftKey&&document.activeElement===actions[0]){event.preventDefault();actions.at(-1).focus();}
+      else if(!event.shiftKey&&document.activeElement===actions.at(-1)){event.preventDefault();actions[0].focus();}
+    });
     new MutationObserver(syncResultOwnership).observe(resultScreen, { attributes: true, attributeFilter: ["hidden"] });
     syncResultOwnership();
   }
@@ -189,6 +203,7 @@
     ar: ['تذكّر اللون والموطن','احفظ هذا الزوج','اختر اللون ثم الموطن','تأكيد الزوج','شاهد وتذكّر','التحدي التالي','نجح التمويه!','هذا هو الزوج الصحيح','اللون','الموطن','زوجك','اختر الاثنين قبل التأكيد','الجولات الصحيحة','الهدف','بالترتيب العكسي','بالترتيب نفسه','الآن أعد تكوين الزوج','ابدأ عندما تكون مستعدًا','انتهى الوقت','الجولة']
   };
   const t = i => (copy[localeKey()] || copy.en)[i];
+  const resultActionCopy={en:'See results','zh-Hant':'查看結果','zh-Hans':'查看结果',ja:'結果を見る',ko:'결과 보기',es:'Ver resultados','pt-BR':'Ver resultado',fr:'Voir le résultat',de:'Ergebnis ansehen',it:'Vedi risultato',ru:'Посмотреть результат',hi:'परिणाम देखें',ar:'عرض النتيجة'};
   const colors = ['#78e79b','#ff968c','#7ccfff'];
   const shapes = ['●','◆','▲'];
   const patterns = ['🍃','🌸','🌊'];
@@ -249,6 +264,8 @@
   window.WeightPlayAudio?.preload?.(['game.start','puzzle.match','feedback.error','result.win','result.lose']);
   function sound(id){audio?.play(id);}
   function mountSharedPlayUI(){
+    mainScreen.classList.remove('m5-main');
+    startButton.setAttribute('data-wp-frame-action','primary');
     const mainHeader=mainScreen.querySelector("header");
     const mainTitle=mainHeader?.querySelector(".m5-title");
     const cover=mainScreen.querySelector(".m5-cover");
@@ -264,8 +281,11 @@
     mainTitle?.setAttribute("data-wp-frame-title","");
     cover?.setAttribute("data-wp-frame-poster","");
     copyPane?.setAttribute("data-wp-frame-copy","");
+    copyPane?.classList.remove('m5-copy');
+    copyPane?.classList.add('blend-main-copy');
     copyPane?.querySelector(".m5-lede")?.setAttribute("data-wp-frame-summary","");
     copyPane?.querySelector("#main-progress")?.setAttribute("data-wp-frame-progress","");
+    copyPane?.querySelector("#main-progress")?.classList.remove('m5-progress');
 
     const stageHeader=stageScreen.querySelector("header");
     stageHeader?.querySelector("h2")?.setAttribute("data-wp-frame-title","");
@@ -373,6 +393,8 @@
     if(screen!=="battle"){resultScreen.hidden=true;audio?.stop();}
     frame?.activate(screen);
     if(screen==="stage")stageCards();
+    if(screen==='main')startButton.focus({preventScroll:true});
+    if(screen==='stage')stageUI?.select(selectedStage,{focus:true});
     window.dispatchEvent(new CustomEvent(screen==="battle"?"weightplay:battle-open":"weightplay:shell-sync"));
     if(screen==="battle"){lastTime=performance.now();frameId=requestAnimationFrame(tick);}
     observeMeasurement();
@@ -414,7 +436,7 @@
     colorLegend.textContent=`1 · ${t(8)}`;patternLegend.textContent=`2 · ${t(9)}`;
     for(const b of controls){const color=b.dataset.action.startsWith('color'),i=Number(b.dataset.action.slice(-1));b.textContent=`${color?shapes[i]:patterns[i]} ${color?(gameText().colors?.[i]||shapes[i]):(gameText().patterns?.[i]||patterns[i])}`;b.disabled=phase!=='choose';b.setAttribute('aria-pressed',String((color?state.color:state.pattern)===i));}
     lock.disabled=phase==='preview'||(phase==='choose'&&(state.color<0||state.pattern<0));
-    lock.textContent=phase==='ready'?`▶ ${t(4)}`:phase==='preview'?`◉ ${t(1)}`:phase==='feedback'? (state.round>=p.rounds?common(10):t(5)):`3 · ${t(3)}`;
+    lock.textContent=phase==='ready'?`▶ ${t(4)}`:phase==='preview'?`◉ ${t(1)}`:phase==='feedback'? (state.round>=p.rounds?(resultActionCopy[localeKey()]||resultActionCopy.en):t(5)):`3 · ${t(3)}`;
     let pair=null;
     if(phase==='preview')pair=targets()[state.preview];
     else if(phase==='feedback')pair=answers()[Math.min(state.entry,p.sequence-1)];
@@ -458,7 +480,8 @@
   document.addEventListener('visibilitychange',()=>{lastTime=performance.now();});
   window.addEventListener('pagehide',()=>{cancelAnimationFrame(frameId);audio?.stop();});
   window.addEventListener('pageshow',e=>{if(e.persisted&&state.screen==='battle'){lastTime=performance.now();frameId=requestAnimationFrame(tick);}});
-  const localeSource=$('localeSelect')?.closest('label');if(localeSource)localeSource.hidden=true;
+  const localeSource=$('localeSelect')?.closest('label');
+  if(localeSource){const retained=document.createElement('div');retained.hidden=true;retained.dataset.wpFrameLocaleSource='';retained.append(localeSource);app.append(retained);}
   mountSharedPlayUI();
   selectedStage=best;
   updateProgress();stageCards();show('main');
