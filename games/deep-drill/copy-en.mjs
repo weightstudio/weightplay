@@ -8,7 +8,7 @@ const DATA={
  "出發就自動鑽探！5×5 礦地、固定路線下鑽與自動洩壓。你只要選升級，破地越來越快。": "Drilling starts automatically. Steer through a 5×5 view along fixed lanes; pressure vents automatically. Choose upgrades to break through faster.",
  "水晶記錄著地底文明的片段。鑽機會用短促脈衝保持晶體完整；強化鑽力能更快穿過晶層。": "Crystals hold fragments of an underground civilization. The rig uses short pulses to preserve them; more power cuts through crystal layers faster.",
  "累積至少 20% 壓力，鬆開完成一次洩壓，再鑽擊亮起的閥門。每一層都要重新洩壓。": "Build at least 20% pressure, release to vent, then drill the glowing valve. Vent again for each phase.",
- "地底傳來一段失落的求救訊號。菲亞決定駕駛小鑽機，尋找三千公尺深處的古老能源站。": "A lost signal rises from below. Fia takes her little rig in search of an ancient power station three thousand meters underground.",
+ "地底傳來一段失落的求救訊號。菲亞決定駕駛小鑽機，沿著真正的礦層，尋找地底深處的古老能源站。": "A lost signal rises from below. Fia follows the real rock layers in search of an ancient underground power station.",
  "完整的水晶重建了一張地圖。燈塔曾維持地底與森林的季節循環，如今只剩最後的閘門。": "Intact crystals reconstruct a map. The beacon once sustained the seasons below ground and in the forest. Only the final gate remains.",
  "廢棄機城的瓦斯仍在礦層裡流動。鑽機會自動停下洩壓；升級與修補破損機殼後再前進。": "Gas still flows through the abandoned machine city. The rig pauses to vent automatically. Upgrade and repair the hull before pushing deeper.",
  "用收益換鑽頭、升級鑽力、轉速與礦艙。備用工具預設不消耗，可在工坊授權每趟上限。": "Spend coins on drill heads, power, speed and cargo capacity. Backup tools are off by default; set a per-trip allowance in the workshop.",
@@ -683,6 +683,7 @@ const PATTERNS={
  }
 };
 const NESTED=[
+ {"pattern":"^([\\s\\S]*?) · (\\d+)/3 勘探星$","value":"{0} · {1}/3 survey stars"},
  {
   "pattern": "^固定(\\d+)路$",
   "value": "Lane {0}"
@@ -740,6 +741,14 @@ function translate(value){
  return result;
 }
 export function text(key,args={}){
+ if(key==='long.resume')return 'Resume from '+args.depth+'m';
+ if(key==='long.stop')return 'Survey stop '+args.section+'/50 · Haul banked; hull serviced';
+ if(key==='long.section')return 'Sector '+args.section+'/50 · Next stop '+args.stop+'m';
+ if(key==='long.title')return 'Long expeditions';
+ if(key==='long.guide')return 'Each area has 50 real-distance sectors. Survey stops bank your haul, service the hull and save your return point. Reload resumes only a stop you have reached.';
+ if(key==='long.savedTitle')return 'Saved survey stop';
+ if(key==='long.saved')return 'This expedition resumed from '+args.depth+'m already travelled.';
+
  if(key==='pauseAction')return 'Pause';
  if(key==='data')return translate(args.legacy);
  if(key==='description')return 'Mine deeper through six underground regions. Upgrade drill heads, hire crew and restore the Heartlight Beacon.';

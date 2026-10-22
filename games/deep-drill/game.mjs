@@ -26,7 +26,7 @@ const workshopButton=document.createElement('button');workshopButton.id='openSho
 frame.commonDownButton.add(workshopButton);
 const stageUI=WeightPlayPlayUI.mountStage({page:$('stagePage'),rail:$('stageRail'),selected:stageIndex,isActive:()=>screen==='stage',
  config:{count:30,poster:'/games/deep-drill/art/poster.png',background:'/assets/lobby-block-atmosphere.svg',stage:i=>{
-  const s=STAGES[i];return {id:s.id,kicker:`${String(s.id).padStart(2,'0')} / ${arcNames[s.arc]}`,title:deepText('data',s.zh),subtitle:goalText(s),status:s.id>save.unlocked?deepText("g16",'尚未解鎖'):save.cleared.includes(s.id)?deepText("g17",`已完成 · ${(save.recordsV5[s.id]||save.records[s.id])?.stars||1}/3 星`):deepText("g18",'準備出發'),locked:s.id>save.unlocked,cleared:save.cleared.includes(s.id),summary:goalText(s),details:[s.checkpoint?deepText('data',REGIONS[s.arc].hint):advice(s),deepText('data',`0–${s.target}m · ${s.decision}`),deepText("g19",'裝備、材料、夥伴和購買的自動化功能永久保留。')]};}},
+  const s=STAGES[i];return {id:s.id,kicker:`${String(s.id).padStart(2,'0')} / ${arcNames[s.arc]}`,title:deepText('data',s.zh),subtitle:goalText(s),status:save.journeys[s.id]?deepText('long.resume',String(save.journeys[s.id].row*5)+'m 停靠點續行',{depth:save.journeys[s.id].row*5}):s.id>save.unlocked?deepText("g16",'尚未解鎖'):save.cleared.includes(s.id)?deepText("g17",`已完成 · ${(save.recordsV10[s.id]||save.recordsV5[s.id]||save.records[s.id])?.stars||1}/3 星`):deepText("g18",'準備出發'),locked:s.id>save.unlocked,cleared:save.cleared.includes(s.id),summary:goalText(s),details:[s.checkpoint?deepText('data',REGIONS[s.arc].hint):advice(s),deepText('data',`0–${s.target}m · ${s.decision}`),deepText("g19",'裝備、材料、夥伴和購買的自動化功能永久保留。')]};}},
  onSelect:i=>{stageIndex=i;refreshStage();},onStart:i=>startRun(i)});
 function refreshStage(){stageProgress.textContent=deepText("g20",`${save.coins.toLocaleString()} 金幣 · ${save.unlocked}/30 區`)}
 function refreshMainProgress(){const progress=$('mainProgress');if(progress)progress.textContent=deepText("g21",`礦區 ${save.unlocked} / ${STAGES.length} · 已完成 ${save.cleared.length} 區`);}
@@ -48,7 +48,7 @@ function finish(reason){if(!run||run.ended)return;settle(save,run,reason);proces
 function result(){release();persist();$('pausePanel').hidden=true;$('result').hidden=false;
  const won=run.clear,reason=run.reason;
  $('resultTitle').textContent=won&&run.stage.id===30?deepText("g23",'地心燈塔已點亮'):won?deepText("g24",'礦區突破！'):['pressure','hull'].includes(reason)?deepText("g25",'緊急救援完成'):reason==='full'?deepText("g26",'礦艙滿載，安全返航'):reason==='complete'?deepText("g27",'抵達終點，目標未完成'):deepText("g28",'返航成功');
- $('resultText').textContent=deepText("g29",`抵達 ${run.depth}m · ${run.stage.zh} · ${run.time.toFixed(1)} 秒\n${goalText(run.stage)}${won?` · ${save.recordsV5[run.stage.id]?.stars||1}/3 勘探星`:''}\n材料：銅 ${run.bankedMaterials.copper} · 晶 ${run.bankedMaterials.crystal} · 零件 ${run.bankedMaterials.salvage}`);
+ $('resultText').textContent=deepText("g29",`抵達 ${run.depth}m · ${run.stage.zh} · ${run.time.toFixed(1)} 秒\n${goalText(run.stage)}${won?` · ${save.recordsV10[run.stage.id]?.stars||1}/3 勘探星`:''}\n材料：銅 ${run.bankedMaterials.copper} · 晶 ${run.bankedMaterials.crystal} · 零件 ${run.bankedMaterials.salvage}`);
  $('resultCoins').textContent=`+ ${run.banked.toLocaleString()}`;
  $('resultTip').textContent=['pressure','hull'].includes(reason)?deepText("g30",'救援隊已回收部分收益。升級鑽頭與鑽力後再深入。'):won&&run.stage.checkpoint?deepText("g31",`${REGIONS[run.stage.arc].discovery}\n遺物已存入文明檔案。`):won?deepText("g32",'礦物與材料已入庫，下一區已解鎖。到基地製作模組、邀請夥伴或領取成就獎勵。'):reason==='complete'?deepText("g33",'已出售全部礦物。查看任務進度，換條路線再試。'):reason==='full'?deepText("g34",'收益已全部帶回。升級礦艙，下一次就能挖得更遠。'):reason==='service'?deepText("g35",'低機殼自動保全返航，收益完整帶回。升級鑽頭後再挑戰。'):deepText("g36",'收益已入庫。升級鑽力與轉速，回打也能持續成長。');
  $('next').hidden=!won||run.stage.id===30;$('retry').hidden=won&&run.stage.id<30;
@@ -62,20 +62,21 @@ function processEvents(){if(!run)return;for(const e of run.events.splice(0)){
   $('battleContent').classList.remove('collecting');void $('oreFlight').offsetWidth;$('battleContent').classList.add('collecting');lastSeam='';}
  if(e.type==='hit'&&!e.seal){world?.contact(e.lane,reduced.matches);hitCell={row:e.worldRow??run.row+(e.row||0),lane:e.lane};hitTTL=.28;positionFeedback();const n=$('hitNumber');n.textContent=`−${e.damage}`;n.classList.remove('hit-pop');void n.offsetWidth;n.classList.add('hit-pop');}
  if(e.type==='beam'){world?.beam(e.lane,relativeRow,reduced.matches);sound('impact.metal');}
+ if(e.type==='checkpoint'){persist();$('notice').textContent=deepText('long.stop','停靠 '+e.section+'/50 · 收益入庫，機殼已保養',{section:e.section});sound('game.checkpoint');}
  if(e.type==='sold'){persist();$('notice').textContent=save.auto.sell?deepText("g41",'即時輸送完成'): deepText("g42",'礦艙自動運回 · 稍後繼續下鑽');sound('reward.coin');}
  if(e.type==='tool'){persist();$('notice').textContent=deepText('data',e.text);if(e.key!=='beam')sound(e.key==='blast'?'explosion.small':e.key==='repair'?'mechanism.screw':'water.splash');}
  if(e.type==='discovery'||e.type==='relic'){persist();$('notice').textContent=deepText('data',e.text);sound('game.checkpoint');}
  if(e.type==='hurt'){damageTTL=.3;$('notice').textContent=deepText('data',e.text);sound('player.hurt');}
  if(e.type==='seal-block'){$('notice').textContent=deepText('data',e.text);sound('combat.block');}
  if(e.type==='seal-start'){$('notice').textContent=deepText('data',e.text);sound('alert.boss');}
- if(e.type==='seal-hit'){$('notice').textContent=deepText('data',e.text);world?.burst(e.lane,REGIONS[run.stage.arc].color,reduced.matches,relativeRow);sound(e.phase===3?'combat.shield.break':'impact.metal');lastSeam='';}
+ if(e.type==='seal-hit'){$('notice').textContent=deepText('data',e.text);world?.burst(e.lane,REGIONS[run.stage.arc].color,reduced.matches,relativeRow,true);sound(e.phase===3?'combat.shield.break':'impact.metal');lastSeam='';}
  if(e.type==='result')result();
  }}
-function renderHud(){if(!run)return;document.body.classList.toggle('battle-paused',run.paused||run.ended);$('depthTarget').textContent=run.stage.target;const seal=sealState(run),kinds=runSeams(run),key=`${run.row}-${run.lane}-${kinds.join('')}`;
+function renderHud(){if(!run)return;document.body.classList.toggle('battle-paused',run.paused||run.ended);$('depthTarget').textContent=run.stage.target;const sector=Math.min(50,Math.floor(run.row/run.stage.sectionLayers)+1),stop=Math.min(run.stage.target,sector*run.stage.sectionLayers*5);const seal=sealState(run),kinds=runSeams(run),key=`${run.row}-${run.lane}-${kinds.join('')}`;
  $('depth').textContent=run.depth;$('miningPower').textContent=deepText("g43",`${run.docking>0?'輸送中':run.smartVenting?'洩壓中':`固定${run.lane+1}路`} · 助手${save.helpers}`);$('hullLabel').textContent=deepText("g44",`機殼 ${Math.ceil(run.hull)}%`);$('hullLabel').style.color=run.hull<35?'#ff9375':'';
  $('cargoLabel').textContent=deepText("g45",`礦艙 ${run.cargo}/${capacity(save)} · ${run.value} 金`);$('cargoBar').max=capacity(save);$('cargoBar').value=run.cargo;
  $('pressureLabel').textContent=deepText("g46",`壓力 ${Math.round(run.pressure)}%`);$('pressureBar').value=run.pressure;
- $('pressureLine').hidden=!(run.stage.pressure||run.pressure>0);$('missionGoal').textContent=goalText(run.stage);$('missionProgress').textContent=objectiveProgress(run);$('sealCue').textContent=deepText('data',seal?deepText("g47",`弱點第${seal.lane+1}路 · ${seal.status}`):run.buff>0?deepText("g48",'能量增幅啟動'):run.frost>0?deepText("g49",'冰層阻力：暫時減速'):run.stage.checkpoint?deepText("g50",`${run.stage.target-5}m 處有地層封印`):sectionName(run));document.body.classList.toggle('seal-active',Boolean(seal));
+ $('pressureLine').hidden=!(run.stage.pressure||run.pressure>0);$('missionGoal').textContent=goalText(run.stage);$('missionProgress').textContent=objectiveProgress(run);$('sealCue').textContent=deepText('data',seal?deepText("g47",`弱點第${seal.lane+1}路 · ${seal.status}`):run.buff>0?deepText("g48",'能量增幅啟動'):run.frost>0?deepText("g49",'冰層阻力：暫時減速'):run.stage.checkpoint?deepText("g50",`${run.stage.target-5}m 處有地層封印`):deepText('long.section','區段 '+sector+'/50 · 下一停靠 '+stop+'m',{section:sector,stop}));document.body.classList.toggle('seal-active',Boolean(seal));
  for(const key of Object.keys(TOOLS)){$('count-'+key).textContent=save.tools[key];const button=document.querySelector(`[data-tool="${key}"]`);button.disabled=!save.tools[key]||run.paused||run.ended||run.toolCooldown>0||(['blast','beam'].includes(key)&&activeSeal(run));}
  $('rockProgress').style.width=`${Math.min(100,run.progress*100)}%`;
  $('helpersToggle').disabled=!save.helpers;$('helpersToggle').textContent=save.helpers?deepText("g51",`助手：${run.helpersOn?'工作中':'暫停'} ×${save.helpers}`):deepText("g52",'助手：未僱用');
@@ -113,7 +114,7 @@ function renderShop(){
   const span=document.createElement('span'),img=new Image();img.src=rockImages[icon];img.alt='';span.append(img,document.createTextNode(`${label} ${save.materials[key]}`));$('materials').append(span);
  }
  document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===baseTab)));
- renderBase({s:save,tab:baseTab,root:$('shopItems'),images,onChange:()=>{persist();renderShop();refreshStage();},feedback:(text,ok)=>{$('shopNotice').textContent=text;sound(ok?'shop.purchase':'feedback.error');}});
+ renderBase({s:save,run,tab:baseTab,root:$('shopItems'),images,onChange:()=>{persist();renderShop();refreshStage();},feedback:(text,ok)=>{$('shopNotice').textContent=text;sound(ok?'shop.purchase':'feedback.error');}});
 }
 function objectiveProgress(r){
  if(r.stage.checkpoint)return deepText("g71",`${r.seal.phase}/3 封印`);

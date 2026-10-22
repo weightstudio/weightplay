@@ -5,7 +5,7 @@ import {HEADS,UPGRADES,AUTO,buy,upgradeCost} from './model.mjs';
 import {REGIONS,MODULES,CREW,TOOLS,ACHIEVEMENTS} from './content.mjs';
 import {ROCKS} from './stages.mjs';
 import {equipModule,claimAchievement,metric} from './systems.mjs';
-export function renderBase({s,tab,root,images,onChange,feedback}){
+export function renderBase({s,run=null,tab,root,images,onChange,feedback}){
  root.replaceChildren();
  const title=text=>{const h=document.createElement('h3');h.textContent=text;root.append(h);};
  const copy=(name,text)=>{const div=document.createElement('section');div.className='archive-copy';const h=document.createElement('h3'),p=document.createElement('p');h.textContent=name;p.textContent=text;div.append(h,p);root.append(div);};
@@ -16,6 +16,8 @@ export function renderBase({s,tab,root,images,onChange,feedback}){
  }
  function purchase(type,key){if(buy(s,type,key)){onChange();feedback(deepText("b0",'改裝完成，裝備與補給已保存'),true);}else feedback(type==='fabricate'?deepText("b1",'回收零件不足、補給已滿，或尚未解鎖對應礦區'):type==='module'?deepText("b2",'需要足夠金幣、銅礦與水晶，並解鎖對應礦區'):deepText("b3",'金幣不足，或尚未解鎖對應礦區'),false);}
  if(tab==='rig'){
+  copy(deepText('long.title','長程勘探'),deepText('long.guide','每關五十個實際路程區段；抵達停靠點會運回收益、保養機殼並保存續行。重載只恢復已抵達的停靠點。'));
+  if(run?.resumeDepth)copy(deepText('long.savedTitle','已保存的停靠點'),deepText('long.saved','由已抵達的 '+run.resumeDepth+'m 停靠點續行',{depth:run.resumeDepth}));
   title(deepText("b4",'01 / 鑽頭：越深越需要強力鑽機'));HEADS.forEach((h,i)=>card({image:images[i],name:deepText('data',h.zh),desc:[deepText("b5",'可靠的起步鑽頭 · 均衡型'),deepText("b6",'一般岩石鑽速額外 +40% · 減少玄武岩磨損'),deepText("b7",'水晶收入 +60% · 基礎鑽力 ×2.1'),deepText("b8",'熔岩機殼傷害大幅降低 · 基礎鑽力 ×2.8')][i],label:s.head===i?deepText("b9",'已裝備'):s.heads.includes(i)?deepText("b10",'裝備'):deepText("b11",`${h.price} 金`),disabled:s.head===i,id:`head-${i}`,action:()=>purchase('head',i)}));
   title(deepText("b12",'02 / 永久升級'));Object.entries(UPGRADES).forEach(([k,u],i)=>card({image:images[`module:${['scanner','coil','exchanger','compressor'][i]}`],name:deepText('data',`${u.zh} Lv.${s.upgrades[k]}`),desc:{power:deepText("b13",'每級 +25% 基礎鑽擊傷害'),speed:deepText("b14",'每級 +12% 轉速'),cooling:deepText("b15",'每級傷害 +12% · 保留舊散熱等級'),cargo:deepText("b16",'每級增加 12 格礦艙'),autoPower:deepText("b17",'自動鑽掘每級傷害 +20%'),autoSpeed:deepText("b18",'自動鑽掘每級頻率 +18%'),helperPower:deepText("b19",'每級助手傷害 +25%')}[k],label:s.upgrades[k]>=20?deepText("b20",'已滿級'):deepText("b21",`${upgradeCost(s,k)} 金`),disabled:s.upgrades[k]>=20,id:`upgrade-${k}`,action:()=>purchase('upgrade',k)}));
   title(deepText("b22",'03 / 自動化'));Object.entries(AUTO).forEach(([k,a])=>card({image:images[`module:${k==='drill'?'coil':k==='cool'?'exchanger':k==='smart'?'scanner':'compressor'}`],name:deepText('data',a.zh),desc:{drill:deepText("b23",'基本自動鑽探免費；伺服強化再加 25% 傷害，保留舊自動鑽掘投資'),cool:deepText("b24",'基本安全洩壓免費；強化後洩壓速度由 32 提升至 48 / 秒'),sell:deepText("b25",'基本輸送滿艙停靠 1.5 秒；升級後即時運回，不需停靠'),smart:deepText("b26",'固定路線自動下鑽；第 6 區可加裝鑽探加速，鑽探頻率再加 12%')}[k],label:s.auto[k]?deepText("b27",'已購買'):deepText("b28",`${a.price} 金`),disabled:s.auto[k],id:`auto-${k}`,action:()=>purchase('auto',k)}));

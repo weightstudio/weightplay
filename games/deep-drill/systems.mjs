@@ -3,7 +3,7 @@ import {REGIONS,MODULES,CREW,TOOLS,ACHIEVEMENTS,EXPEDITION_EVENTS} from './conte
 const bounded=(v,max=1e9)=>Math.max(0,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):0)));
 const unique=(value,keys)=>[...new Set((Array.isArray(value)?value:[]).filter(x=>keys.includes(x)))];
 export function migrate(s,raw){
- s.schema=5;s.toolBudget=[0,1,3,5].includes(raw.toolBudget)?raw.toolBudget:0;s.helpers=bounded(raw.helpers,3);s.materials=Object.fromEntries(['copper','crystal','salvage','core'].map(k=>[k,bounded(raw.materials?.[k])]));
+ s.schema=6;s.toolBudget=[0,1,3,5].includes(raw.toolBudget)?raw.toolBudget:0;s.helpers=bounded(raw.helpers,3);s.materials=Object.fromEntries(['copper','crystal','salvage','core'].map(k=>[k,bounded(raw.materials?.[k])]));
  s.modules=unique(raw.modules,Object.keys(MODULES));s.equipped=unique(raw.equipped,s.modules).slice(0,2);
  s.crew=unique(raw.crew,Object.keys(CREW));s.activeCrew=s.crew.includes(raw.activeCrew)?raw.activeCrew:null;
  s.tools=Object.fromEntries(Object.keys(TOOLS).map(k=>[k,raw.tools?bounded(raw.tools[k],99):['coolant','beam'].includes(k)?2:0]));
@@ -12,10 +12,34 @@ export function migrate(s,raw){
  s.relics=unique([...(Array.isArray(raw.relics)?raw.relics:[]),...s.cleared.filter(id=>id%5===0).map(id=>id/5-1)],REGIONS.map((_,i)=>i));
  s.records={};for(const [id,record] of Object.entries(raw.records||{})){if(+id>=1&&+id<=30&&record&&typeof record==='object')s.records[id]={stars:bounded(record.stars,3),time:bounded(record.time,36000)};}
  s.recordsV5={};for(const [id,r] of Object.entries(raw.recordsV5||{}))if(+id>=1&&+id<=30&&r&&typeof r==='object')s.recordsV5[id]={stars:bounded(r.stars,3),time:bounded(r.time,36000)};
+ s.journeyTools={};for(const [id,count] of Object.entries(raw.journeyTools||{}))if(+id>=1&&+id<=30)s.journeyTools[id]=bounded(count);
+ s.recordsV10={};for(const [id,r] of Object.entries(raw.recordsV10||{}))if(+id>=1&&+id<=30&&r&&typeof r==='object')s.recordsV10[id]={stars:bounded(r.stars,3),time:bounded(r.time,1e7)};
+ s.journeys={};for(const [id,j] of Object.entries(raw.journeys||{})){
+  const stage=STAGES[Number(id)-1];if(!stage||!j||j.version!==10||j.stageId!==stage.id||!Number.isInteger(j.row)||j.row<=0||j.row>=stage.layers||j.row%stage.sectionLayers!==0)continue;
+  const stats=Object.fromEntries(['copper','gold','crystal','coolant','quality','vent','magma'].map(k=>[k,bounded(j.stats?.[k],j.row*5)]));
+  if(stage.goal==='safe'&&stats.magma)continue;
+  s.journeys[id]={version:10,stageId:stage.id,row:j.row,lane:bounded(j.lane,4),time:bounded(j.time,1e7),toolsUsed:bounded(j.toolsUsed),stats,triggered:unique(j.triggered,Object.values(EXPEDITION_EVENTS).map(e=>e.kind))};
+ }
+ const eventKeys=Object.entries(EXPEDITION_EVENTS).map(([id,e])=>id+':'+e.kind);
+ s.eventClaims=unique([...(Array.isArray(raw.eventClaims)?raw.eventClaims:[]),...s.cleared.filter(id=>EXPEDITION_EVENTS[id]).map(id=>id+':'+EXPEDITION_EVENTS[id].kind)],eventKeys);
+ for(const [id,j] of Object.entries(s.journeys))s.journeyTools[id]=Math.max(s.journeyTools[id]||0,j.toolsUsed);
  s.ending=s.cleared.includes(30);s.auto.smart=raw.auto?.smart===true;
  s.policy=['safe','value','mission'].includes(raw.policy)?raw.policy:'mission';
  if(s.cleared.length)s.unlocked=Math.min(30,Math.max(s.unlocked,Math.max(...s.cleared)+1));
  return s;
+}
+// Only a genuinely reached, banked section boundary is resumable.
+export function restoreJourney(s,r){
+ r.journeyToolsUsed=s.journeyTools[r.stage.id]||0;
+ r.triggered=s.eventClaims.filter(id=>id.startsWith(r.stage.id+':')).map(id=>id.split(':')[1]);
+ const j=s.journeys[r.stage.id];if(!j)return r;
+ r.row=j.row;r.depth=j.row*5;r.lane=j.lane;r.time=j.time;r.stats={...j.stats};r.triggered=[...new Set([...r.triggered,...j.triggered])];r.bankedVents=j.stats.vent;r.resumeDepth=r.depth;
+ return r;
+}
+export function saveJourney(s,r){
+ if(r.row<=0||r.row>=r.stage.layers||r.row%r.stage.sectionLayers||r.stage.goal==='safe'&&r.stats.magma)return;
+ const previous=s.journeys[r.stage.id];if(previous&&previous.row>r.row)return;
+ s.journeys[r.stage.id]={version:10,stageId:r.stage.id,row:r.row,lane:r.lane,time:Math.ceil(r.time),toolsUsed:r.journeyToolsUsed,stats:{...r.stats},triggered:[...r.triggered]};
 }
 export const equipped=(s,id)=>s.equipped?.includes(id);
 export function extraCapacity(s){return (equipped(s,'compressor')?24:0)+(s.activeCrew==='bubble'?10:0);}
@@ -38,7 +62,7 @@ export function systemBuy(s,type,key){
 export function equipModule(s,id){if(!s.modules.includes(id))return false;if(s.equipped.includes(id))s.equipped=s.equipped.filter(x=>x!==id);else{if(s.equipped.length>=2)s.equipped.shift();s.equipped.push(id);}return true;}
 export function metric(s,key){return ({heads:s.heads.length,relics:s.relics.length,modules:s.modules.length,depth:s.best,clears:s.cleared.length})[key]??s.total[key]??0;}
 export function claimAchievement(s,id){const a=ACHIEVEMENTS.find(a=>a.id===id);if(!a||s.claimed.includes(id)||metric(s,a.metric)<a.target)return false;s.claimed.push(id);s.coins=Math.min(1e9,s.coins+a.reward);return true;}
-export function initializeRun(s,r){return Object.assign(r,{time:0,docking:0,hull:100,buff:0,frost:0,toolsUsed:0,toolCooldown:0,
+export function initializeRun(s,r){return Object.assign(r,{time:0,journeyToolsUsed:0,bankedVents:0,resumeDepth:0,docking:0,hull:100,buff:0,frost:0,toolsUsed:0,toolCooldown:0,
  materials:{copper:0,crystal:0,salvage:0,core:0},bankedMaterials:{copper:0,crystal:0,salvage:0,core:0},bankedOre:0,finalEarned:0,autoThink:0,plannedRow:-1,toolAllowance:s.toolBudget,abilityCooldowns:{beam:0,blast:0,repair:0,coolant:0},pilotStatus:"自動探礦",smartVenting:false,forceBreak:false,drilling:false,triggered:[],
  seal:r.stage.checkpoint?{phase:0,time:0,usedVents:0,hitFlash:0}:null});}
 export function activeSeal(r){return Boolean(r.seal&&r.row===r.stage.layers-1&&r.seal.phase<3);}
@@ -65,12 +89,12 @@ export function sealContact(s,r){
  return b.phase>=3;
 }
 export function bankMaterials(s,r,fraction=1){for(const key of Object.keys(r.materials)){const value=Math.floor(r.materials[key]*fraction);s.materials[key]=Math.min(1e9,s.materials[key]+value);r.bankedMaterials[key]+=value;r.materials[key]=0;}}
-export function bankSaleStats(s,r,coins){s.total.ore=Math.min(1e9,s.total.ore+r.mined-r.bankedOre);r.bankedOre=r.mined;s.total.earned=Math.min(1e9,s.total.earned+coins);}
+export function bankSaleStats(s,r,coins){s.total.ore=Math.min(1e9,s.total.ore+r.mined-r.bankedOre);r.bankedOre=r.mined;s.total.earned=Math.min(1e9,s.total.earned+coins);s.total.vents=Math.min(1e9,s.total.vents+Math.max(0,r.stats.vent-r.bankedVents));r.bankedVents=r.stats.vent;}
 export function rescueFraction(s){return equipped(s,'beacon')||s.activeCrew==='bubble'?.9:.65;}
 export function settleSystems(s,r,reason,first){
  bankMaterials(s,r,['pressure','hull'].includes(reason)?rescueFraction(s):1);
- s.total.trips++;bankSaleStats(s,r,r.settlementEarned);s.total.vents+=r.stats.vent;
- if(r.clear){const stars=1+(r.hull>=60?1:0)+(r.toolsUsed===0?1:0),old=s.recordsV5[r.stage.id];s.recordsV5[r.stage.id]={stars:Math.max(old?.stars||0,stars),time:Math.min(old?.time||36000,Math.ceil(r.time))};
+ s.total.trips++;bankSaleStats(s,r,r.settlementEarned);
+ if(r.clear){delete s.journeys[r.stage.id];delete s.journeyTools[r.stage.id];const stars=1+(r.hull>=60?1:0)+(r.journeyToolsUsed===0?1:0),old=s.recordsV10[r.stage.id];s.recordsV10[r.stage.id]={stars:Math.max(old?.stars||0,stars),time:Math.min(old?.time??1e7,Math.ceil(r.time))};
   if(r.stage.checkpoint&&!s.relics.includes(r.stage.arc)){s.relics.push(r.stage.arc);s.materials.core++;r.events.push({type:'relic',text:`取得遺物：${REGIONS[r.stage.arc].relic}`});}
   if(r.stage.id===30)s.ending=true;
  }
@@ -80,7 +104,7 @@ export function useTool(s,r,key,target={row:r?.row,lane:r?.lane}){
  if(['blast','beam'].includes(key)){if(!Number.isInteger(target.row)||!Number.isInteger(target.lane)||target.lane<0||target.lane>4||target.row<r.row||target.row>Math.min(r.stage.layers-1,r.row+4)||r.stage.checkpoint&&target.row===r.stage.layers-1||r.tiles[`${target.row}:${target.lane}`]?.hp===0||r.beamTarget)return false;}
  if(key==='coolant'&&r.pressure<1)return false;
  if(key==='repair'&&r.hull>=100&&r.pressure<1)return false;
- s.tools[key]--;s.total.tools++;r.toolsUsed++;r.toolCooldown=.7;
+ s.tools[key]--;s.total.tools++;r.toolsUsed++;r.journeyToolsUsed++;s.journeyTools[r.stage.id]=r.journeyToolsUsed;r.toolCooldown=.7;
  if(key==='coolant'){r.pressure=Math.max(0,r.pressure-20);}
  if(key==='repair'){r.hull=Math.min(100,r.hull+40);r.pressure=Math.max(0,r.pressure-25);}
  if(['blast','beam'].includes(key))r.beamTarget={...target};
@@ -97,8 +121,13 @@ export function onOre(s,r,kind,gentle,hitRow=r.row){
  if(kind==='W')r.pressure=Math.max(0,r.pressure-23);
  if(kind==='W'&&s.activeCrew==='moss'){r.hull=Math.min(100,r.hull+6);}
  if(r.stage.checkpoint&&r.row===r.stage.layers-1)r.events.push({type:'seal-start',text:`發現${REGIONS[r.stage.arc].seal}：${REGIONS[r.stage.arc].hint}`});
- const event=EXPEDITION_EVENTS[r.stage.id];if(event&&r.row===Math.floor(event.row/20*r.stage.layers)&&!r.triggered.includes(event.kind)){
-  r.triggered.push(event.kind);if(event.kind==='cache')s.tools.coolant=Math.min(99,s.tools.coolant+1);
+}
+export function triggerExpeditionEvent(s,r){
+ const event=EXPEDITION_EVENTS[r.stage.id];if(event&&r.row>=Math.floor(event.row/20*r.stage.layers)&&!r.triggered.includes(event.kind)){
+  r.triggered.push(event.kind);const claim=r.stage.id+':'+event.kind;
+  if(s.eventClaims.includes(claim))return;
+  // Inventory and this receipt live in the same atomic saved JSON, independent of last safe row.
+  s.eventClaims.push(claim);if(event.kind==='cache')s.tools.coolant=Math.min(99,s.tools.coolant+1);
   if(event.kind==='spring'){r.pressure=Math.max(0,r.pressure-30);}
   if(event.kind==='gas')r.pressure=Math.min(90,r.pressure+30);if(event.kind==='quake')r.hull=Math.max(1,r.hull-12);if(event.kind==='energy')r.buff=12;
   r.events.push({type:'discovery',text:event.text});
