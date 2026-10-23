@@ -892,6 +892,82 @@
     eco,
     stars: rescueStars,
   });
+  const rescueLabels = {
+      en: "Restore|Rescue|Shelter|Supplies|Undo|Evacuate|Actions|Saved|Restored|Storm in|Base|Exposed|Protected|Connect a restored neighbour first.|Not enough supplies.|Completed|Otter,Fox,Turtle,Owl|Restore C2 to collect supplies and open rescue routes.|Habitat restored. New route open.|Wildlife is safe.|Supplies +3.|Shelter built.|Storm: exposed wildlife loses 1 health.|Rescue incomplete|The valley lives again|Choose a tile, then an action.|Calm weather",
+      "zh-tw":
+        "復育|救援|庇護所|補給|撤銷|撤離結算|剩餘行動|已救援|已復育|風暴倒數|營地|暴露中|已保護|先復育相鄰地塊，連通救援路線。|補給不足，先按補給。|已完成|水獺,狐狸,陸龜,貓頭鷹|先復育 C2 補給箱，取得補給並打開救援路線。|棲地恢復了，新的救援路線已連通。|動物平安回家了。|補給送達：+3。|庇護所完成，動物受到保護。|風暴來襲：未保護動物失去 1 體力。|救援尚未完成|這片土地，再次有了生命|點選地塊，再選擇行動。|天氣穩定",
+      "zh-cn":
+        "复育|救援|庇护所|补给|撤销|撤离结算|剩余行动|已救援|已复育|风暴倒数|营地|暴露中|已保护|先复育相邻地块，连通救援路线。|补给不足，先按补给。|已完成|水獭,狐狸,陆龟,猫头鹰|先复育 C2 补给箱，取得补给并打开救援路线。|栖地恢复，新路线已连通。|动物平安回家。|补给送达：+3。|庇护所完成。|风暴：未保护动物失去 1 体力。|救援尚未完成|这片土地，再次有了生命|点选地块，再选择行动。|天气稳定",
+      ja: "再生|救助|避難所|物資|戻す|撤収|残り行動|救助|再生|嵐まで|基地|危険|保護|隣のマスを再生して道をつなごう。|物資不足。補給しよう。|完了|カワウソ,キツネ,カメ,フクロウ|まず C2 の補給箱を再生しよう。|生息地と道が復活！|動物を救助！|物資 +3。|避難所が完成。|嵐：保護されていない動物の体力−1。|救助未完了|谷に命が戻った|マスを選び、行動を選ぼう。|穏やかな天気",
+      ko: "복원|구조|보호소|보급품|되돌리기|철수|남은 행동|구조|복원|폭풍까지|기지|노출|보호|인접 타일을 먼저 복원하세요.|보급품 부족. 보급하세요.|완료|수달,여우,거북,부엉이|먼저 C2 보급 상자를 복원하세요.|서식지와 길 복원!|구조 성공!|보급품 +3.|보호소 완성.|폭풍: 노출 동물 체력−1.|구조 미완료|계곡에 돌아온 생명|타일을 고르고 행동하세요.|맑음",
+      es: "Restaurar|Rescatar|Refugio|Suministros|Deshacer|Evacuar|Acciones|Rescatados|Restauradas|Tormenta en|Base|Expuesto|Protegido|Restaura una casilla vecina primero.|Faltan suministros.|Completado|Nutria,Zorro,Tortuga,Búho|Restaura la caja C2 para abrir rutas.|Hábitat y ruta restaurados.|Animal a salvo.|Suministros +3.|Refugio listo.|Tormenta: fauna expuesta pierde 1 salud.|Rescate incompleto|El valle vuelve a vivir|Elige casilla y acción.|Tiempo tranquilo",
+      "pt-br":
+        "Restaurar|Resgatar|Abrigo|Suprimentos|Desfazer|Evacuar|Ações|Resgatados|Restaurados|Tempestade em|Base|Exposto|Protegido|Restaure um terreno vizinho primeiro.|Faltam suprimentos.|Concluído|Lontra,Raposa,Tartaruga,Coruja|Restaure a caixa C2 para abrir rotas.|Habitat e rota restaurados.|Animal a salvo.|Suprimentos +3.|Abrigo pronto.|Tempestade: animais expostos perdem 1 saúde.|Resgate incompleto|O vale vive de novo|Escolha terreno e ação.|Tempo calmo",
+      fr: "Restaurer|Sauver|Abri|Provisions|Annuler|Évacuer|Actions|Sauvés|Restaurées|Orage dans|Camp|Exposé|Protégé|Restaure d’abord une case voisine.|Provisions insuffisantes.|Terminé|Loutre,Renard,Tortue,Hibou|Restaure la caisse C2 pour ouvrir les routes.|Habitat et route restaurés.|Animal en sécurité.|Provisions +3.|Abri construit.|Orage : les animaux exposés perdent 1 santé.|Sauvetage incomplet|La vallée revit|Choisis une case et une action.|Temps calme",
+      de: "Renaturieren|Retten|Schutz|Vorräte|Zurück|Evakuieren|Aktionen|Gerettet|Erneuert|Sturm in|Basis|Ungeschützt|Geschützt|Erneuere zuerst ein Nachbarfeld.|Zu wenig Vorräte.|Erledigt|Otter,Fuchs,Schildkröte,Eule|Erneuere Kiste C2 für neue Wege.|Lebensraum und Weg erneuert.|Tier in Sicherheit.|Vorräte +3.|Schutz errichtet.|Sturm: ungeschützte Tiere verlieren 1 Gesundheit.|Rettung unvollständig|Das Tal lebt wieder|Feld und Aktion wählen.|Ruhiges Wetter",
+      it: "Ripristina|Salva|Riparo|Scorte|Annulla|Evacua|Azioni|Salvati|Ripristinate|Tempesta tra|Campo|Esposto|Protetto|Ripristina prima una casella vicina.|Scorte insufficienti.|Completato|Lontra,Volpe,Tartaruga,Gufo|Ripristina la cassa C2 per aprire sentieri.|Habitat e sentiero ripristinati.|Animale al sicuro.|Scorte +3.|Riparo costruito.|Tempesta: animali esposti perdono 1 salute.|Salvataggio incompleto|La valle torna a vivere|Scegli casella e azione.|Tempo calmo",
+      ru: "Восстановить|Спасти|Укрытие|Припасы|Отменить|Эвакуация|Ходы|Спасено|Восстановлено|Буря через|Лагерь|Без защиты|Защищено|Сначала восстанови соседнюю клетку.|Мало припасов.|Готово|Выдра,Лиса,Черепаха,Сова|Начни с ящика C2, чтобы открыть пути.|Среда и путь восстановлены.|Животное в безопасности.|Припасы +3.|Укрытие готово.|Буря: незащищённые животные теряют 1 здоровье.|Спасение не завершено|Долина снова жива|Выбери клетку и действие.|Тихая погода",
+      hi: "बहाली|बचाव|आश्रय|सामग्री|वापस|निकासी|शेष चाल|बचाए|बहाल|तूफान|शिविर|असुरक्षित|सुरक्षित|पहले पास का खाना बहाल करें।|सामग्री कम है।|पूरा|ऊदबिलाव,लोमड़ी,कछुआ,उल्लू|पहले C2 की पेटी बहाल करें।|आवास और रास्ता बहाल।|जीव सुरक्षित।|सामग्री +3।|आश्रय तैयार।|तूफान: असुरक्षित जीवों का स्वास्थ्य−1।|बचाव अधूरा|घाटी में जीवन लौटा|खाना और कार्य चुनें।|शांत मौसम",
+      ar: "ترميم|إنقاذ|مأوى|المؤن|تراجع|إخلاء|الإجراءات|تم إنقاذ|تم ترميم|العاصفة بعد|المخيم|مكشوف|محمي|رمم مربعاً مجاوراً أولاً.|المؤن غير كافية.|مكتمل|قضاعة,ثعلب,سلحفاة,بومة|ابدأ بترميم صندوق C2 لفتح المسارات.|تم ترميم الموطن وفتح المسار.|الحيوان بأمان.|المؤن +3.|المأوى جاهز.|عاصفة: يفقد الحيوان المكشوف صحة واحدة.|الإنقاذ غير مكتمل|عادت الحياة للوادي|اختر مربعاً ثم إجراء.|طقس هادئ",
+    };
+  const rescueGuide = {
+      en: "Restore neighbouring tiles to open routes. Rescue costs 1 supply on restored land, 2 otherwise. Shelters protect animals from storms. Refill: +3 supplies for 1 action. Rescue all animals and meet the restoration goal. Three stars: all safe rescues and at least 2 actions left.",
+      "zh-tw":
+        "復育相鄰地塊可開路。復育地救援花 1 補給，緊急救援花 2。庇護所可擋風暴。補給花 1 行動獲得 3 補給。救回全部動物並完成復育目標即過關。全數安全救援、剩至少 2 行動可獲三星。粗糙地塊花 2 補給，先復育相鄰水源可減為 1。",
+      "zh-cn":
+        "复育相邻地块可开路。复育地救援花 1 补给，紧急救援花 2。庇护所可挡风暴。补给花 1 行动获得 3 补给。救回全部动物并完成复育目标即过关。全数安全救援、剩至少 2 行动可获三星。粗糙地块花 2 补给，相邻复育水源可减为 1。",
+    };
+    Object.assign(rescueGuide, {
+      ja: "隣接マスを再生して道を開く。再生済みの救助は物資1、緊急救助は2。避難所は嵐を防ぐ。補給は1行動で物資3。全員救助と再生目標でクリア。安全な全員救助と残り2行動で星3。水源の隣では再生費用が減る。",
+      ko: "인접 타일을 복원해 길을 만드세요. 복원된 곳 구조는 보급품1, 긴급 구조는2. 보호소는 폭풍을 막습니다. 보급은 행동1로 보급품3. 모든 동물과 복원 목표를 달성하세요. 안전 구조와 남은 행동2로 별3. 복원된 물 옆은 복원 비용이 줄어듭니다.",
+      es: "Restaura casillas vecinas para abrir rutas. Rescatar cuesta 1 en terreno restaurado, 2 en emergencia. Refugios protegen de tormentas. Abastecer: 1 acción por 3 suministros. Rescata a todos y cumple la restauración. Tres estrellas: rescate seguro y 2 acciones restantes. El agua restaurada reduce el coste vecino.",
+      "pt-br":
+        "Restaure terrenos vizinhos para abrir rotas. Resgate custa 1 em terreno restaurado, 2 na emergência. Abrigos protegem da tempestade. Abastecer: 1 ação por 3 suprimentos. Resgate todos e restaure a meta. Três estrelas: todos seguros e 2 ações restantes. Água restaurada reduz o custo vizinho.",
+      fr: "Restaure les cases voisines pour ouvrir des routes. Sauver coûte 1 sur terrain restauré, 2 en urgence. Un abri protège de l’orage. Ravitailler : 1 action pour 3 provisions. Sauve tous les animaux et atteins l’objectif. Trois étoiles : sauvetages sûrs et 2 actions restantes. L’eau restaurée réduit le coût voisin.",
+      de: "Erneuere Nachbarfelder für neue Wege. Rettung kostet 1 auf erneuertem Boden, im Notfall 2 Vorräte. Schutz hält Stürme ab. Nachschub: 1 Aktion für 3 Vorräte. Rette alle Tiere und erfülle das Bodenziel. Drei Sterne: sichere Rettungen und 2 Aktionen übrig. Erneuertes Wasser senkt benachbarte Kosten.",
+      it: "Ripristina caselle vicine per aprire sentieri. Salvare costa 1 su terreno ripristinato, 2 in emergenza. I ripari proteggono dalla tempesta. Rifornire: 1 azione per 3 scorte. Salva tutti e raggiungi l’obiettivo. Tre stelle: salvataggi sicuri e 2 azioni rimaste. L’acqua ripristinata riduce il costo vicino.",
+      ru: "Восстанавливай соседние клетки для новых путей. Спасение стоит 1 на восстановленной земле, 2 в экстренном случае. Укрытия защищают от бури. Припасы: 1 ход за 3 единицы. Спаси всех и выполни цель. Три звезды: безопасное спасение и 2 хода в запасе. Вода снижает цену соседней клетки.",
+      hi: "पास के खाने बहाल कर रास्ते खोलें। बहाल जगह बचाव की लागत1, आपात बचाव2। आश्रय तूफान से बचाता है। आपूर्ति में 1 चाल से 3 सामग्री मिलती है। सभी जीव और बहाली लक्ष्य पूरा करें। तीन तारे: सुरक्षित बचाव और 2 चाल शेष। बहाल जल के पास लागत घटती है।",
+      ar: "رمم المربعات المجاورة لفتح المسارات. الإنقاذ يكلف مؤنة على أرض مرممة واثنتين للطوارئ. المأوى يحمي من العاصفة. التموين يكلف إجراء ويمنح3 مؤن. أنقذ الجميع وحقق هدف الترميم. ثلاث نجوم: إنقاذ آمن وإجراءان متبقيان. المياه المرممة تقلل تكلفة المربع المجاور.",
+    });
+  const rescueGuideLabels = {
+    en: ["Habitat Atlas game guide", "Completed expeditions and their results are saved in this browser. Clearing its data may remove that progress; an unfinished rescue is not saved.", "What does Supplies do?", "What happens during a storm?"],
+    "zh-tw": ["棲地圖鑑遊戲指南", "完成的遠征與成果儲存在此瀏覽器。清除瀏覽器資料可能刪除進度；未結算的救援不會保存。", "補給有什麼作用？", "風暴來襲時會怎樣？"],
+    "zh-cn": ["栖地图鉴游戏指南", "完成的远征和成果保存在此浏览器。清除浏览器数据可能删除进度；未结算的救援不会保存。", "补给有什么作用？", "风暴来袭时会怎样？"],
+    ja: ["ハビタット・アトラス ゲームガイド", "完了した遠征と結果はこのブラウザーに保存されます。ブラウザーデータを消すと進行状況を失う場合があります。途中の救助は保存されません。", "補給は何をしますか？", "嵐が来るとどうなりますか？"],
+    ko: ["서식지 아틀라스 게임 안내", "완료한 탐험과 결과는 이 브라우저에 저장됩니다. 브라우저 데이터를 지우면 진행 상황이 사라질 수 있으며, 진행 중인 구조는 저장되지 않습니다.", "보급은 어떤 역할을 하나요?", "폭풍이 오면 어떻게 되나요?"],
+    es: ["Guía de juego de Atlas de Hábitats", "Las expediciones terminadas y sus resultados se guardan en este navegador. Borrar sus datos puede eliminar el progreso; un rescate sin terminar no se guarda.", "¿Para qué sirve Suministros?", "¿Qué ocurre durante una tormenta?"],
+    "pt-br": ["Guia de jogo do Atlas de Habitats", "Expedições concluídas e seus resultados ficam neste navegador. Limpar seus dados pode apagar o progresso; resgates em andamento não são salvos.", "Para que servem os suprimentos?", "O que acontece durante uma tempestade?"],
+    fr: ["Guide de jeu de l’Atlas des Habitats", "Les expéditions terminées et leurs résultats sont enregistrés dans ce navigateur. Effacer ses données peut supprimer la progression ; un sauvetage en cours n’est pas enregistré.", "À quoi sert le ravitaillement ?", "Que se passe-t-il pendant un orage ?"],
+    de: ["Spielhilfe zum Lebensraum-Atlas", "Abgeschlossene Expeditionen und Ergebnisse werden in diesem Browser gespeichert. Beim Löschen seiner Daten kann der Fortschritt verloren gehen; laufende Rettungen werden nicht gespeichert.", "Was bewirkt Nachschub?", "Was passiert bei einem Sturm?"],
+    it: ["Guida di gioco dell’Atlante degli Habitat", "Le spedizioni concluse e i risultati sono salvati in questo browser. Cancellarne i dati può eliminare i progressi; un salvataggio in corso non viene conservato.", "A cosa servono i rifornimenti?", "Cosa succede durante una tempesta?"],
+    ru: ["Руководство по игре «Атлас сред обитания»", "Завершённые экспедиции и результаты сохраняются в этом браузере. Очистка его данных может удалить прогресс; незавершённое спасение не сохраняется.", "Для чего нужны припасы?", "Что происходит во время бури?"],
+    hi: ["हैबिटैट एटलस खेल मार्गदर्शिका", "पूरी की गई यात्राएँ और उनके परिणाम इसी ब्राउज़र में सहेजे जाते हैं। इसका डेटा मिटाने से प्रगति हट सकती है; अधूरा बचाव नहीं सहेजा जाता।", "आपूर्ति से क्या होता है?", "तूफान के समय क्या होता है?"],
+    ar: ["دليل لعبة أطلس المواطن", "تُحفظ البعثات المكتملة ونتائجها في هذا المتصفح. قد يؤدي مسح بياناته إلى حذف التقدم؛ ولا تُحفظ عملية إنقاذ غير مكتملة.", "ما فائدة التموين؟", "ماذا يحدث أثناء العاصفة؟"],
+  };
+  const rescueGuideRecovery = {
+    en: "Each accepted action uses one turn. Rescue every animal and meet the restoration target before turns run out. Undo reverses the last action while a rescue is active. After the result, Retry starts the same expedition again and keeps completed progress.",
+    "zh-tw": "每次有效行動都會消耗一回合，必須在回合用盡前救回所有動物並達成復育目標。救援進行中可用「撤銷」還原上一步；結算後按「重試」會重新開始這場遠征，已完成的進度仍會保留。",
+    "zh-cn": "每次有效行动都会消耗一回合，必须在回合用尽前救回所有动物并达成复育目标。救援进行中可用“撤销”还原上一步；结算后按“重试”会重新开始这场远征，已完成的进度仍会保留。",
+    ja: "有効な行動ごとに残り行動数を1つ使います。使い切る前に全ての動物を救助し、再生目標も達成しましょう。救助中は「戻す」で直前の行動を取り消せます。結果画面の「リトライ」は同じ遠征を最初からやり直し、完了済みの進行状況は残します。",
+    ko: "유효한 행동마다 한 턴을 씁니다. 턴이 끝나기 전에 모든 동물을 구하고 복원 목표도 달성하세요. 구조 중에는 되돌리기로 마지막 행동을 취소할 수 있습니다. 결과 화면에서 재시도하면 같은 탐험을 처음부터 시작하며, 완료한 진행 상황은 유지됩니다.",
+    es: "Cada acción válida consume un turno. Rescata a todos los animales y cumple la meta de restauración antes de agotar los turnos. Deshacer revierte la última acción durante el rescate. Tras el resultado, Reintentar reinicia la misma expedición y conserva el progreso completado.",
+    "pt-br": "Cada ação válida consome um turno. Resgate todos os animais e cumpra a meta de restauração antes que os turnos acabem. Desfazer reverte a última ação durante o resgate. Após o resultado, Tentar novamente reinicia a mesma expedição e mantém o progresso concluído.",
+    fr: "Chaque action valide consomme un tour. Sauve tous les animaux et atteins l’objectif de restauration avant de manquer de tours. Annuler rétablit l’état avant la dernière action pendant le sauvetage. Après le résultat, Réessayer recommence la même expédition et conserve la progression terminée.",
+    de: "Jede gültige Aktion verbraucht einen Zug. Rette alle Tiere und erreiche das Erneuerungsziel, bevor die Züge ausgehen. Zurück macht während der Rettung die letzte Aktion rückgängig. Nach dem Ergebnis startet Erneut versuchen dieselbe Expedition neu; abgeschlossener Fortschritt bleibt erhalten.",
+    it: "Ogni azione valida consuma un turno. Salva tutti gli animali e raggiungi l’obiettivo di ripristino prima che finiscano i turni. Annulla ripristina l’ultima azione durante il salvataggio. Dopo il risultato, Riprova ricomincia la stessa spedizione e mantiene i progressi completati.",
+    ru: "Каждое допустимое действие расходует ход. Спаси всех животных и выполни цель восстановления до окончания ходов. Во время спасения отмена возвращает состояние перед последним действием. После результата повтор начинает ту же экспедицию заново, сохраняя завершённый прогресс.",
+    hi: "हर मान्य कार्रवाई में एक चाल लगती है। चालें खत्म होने से पहले सभी जीवों को बचाएँ और बहाली का लक्ष्य भी पूरा करें। बचाव के दौरान वापस से पिछली कार्रवाई उलट सकते हैं। परिणाम के बाद फिर कोशिश करने पर वही यात्रा नए सिरे से शुरू होती है और पूरी की गई प्रगति बनी रहती है।",
+    ar: "يستهلك كل إجراء صالح دوراً واحداً. أنقذ جميع الحيوانات وحقق هدف الترميم قبل نفاد الأدوار. أثناء الإنقاذ، يعيد التراجع الحالة قبل الإجراء الأخير. بعد النتيجة، تبدأ إعادة المحاولة البعثة نفسها من البداية مع الاحتفاظ بالتقدم المكتمل.",
+  };
+  globalThis.HabitatRescueGuideCopy = Object.fromEntries(locales.map(segment => {
+    const locale = ({ "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" })[segment] || segment;
+    const labels = rescueLabels[segment].split("|");
+    const [guideLabel, save, supplyQuestion, stormQuestion] = rescueGuideLabels[segment];
+    return [locale, { guideLabel, tag0: labels[0], tag1: labels[1], tag2: labels[3],
+      actionsTitle: labels[25], rules: rescueGuide[segment], recovery: rescueGuideRecovery[segment], saveTitle: copy[segment].saved, save,
+      faqTitle: "FAQ", supplyQuestion, supplyAnswer: labels[20], stormQuestion, stormAnswer: labels[22] }];
+  }));
   if (typeof document === "undefined") return;
   const assetBase = new URL(".", document.currentScript.src);
   const stylesheet = document.createElement("link");
@@ -923,45 +999,9 @@
       window.WeightPlayMarketFiveLocale?.locale ||
       document.documentElement.lang ||
       "en";
-    const labels = {
-      en: "Restore|Rescue|Shelter|Supplies|Undo|Evacuate|Actions|Saved|Restored|Storm in|Base|Exposed|Protected|Connect a restored neighbour first.|Not enough supplies.|Completed|Otter,Fox,Turtle,Owl|Restore C2 to collect supplies and open rescue routes.|Habitat restored. New route open.|Wildlife is safe.|Supplies +3.|Shelter built.|Storm: exposed wildlife loses 1 health.|Rescue incomplete|The valley lives again|Choose a tile, then an action.|Calm weather",
-      "zh-tw":
-        "復育|救援|庇護所|補給|撤銷|撤離結算|剩餘行動|已救援|已復育|風暴倒數|營地|暴露中|已保護|先復育相鄰地塊，連通救援路線。|補給不足，先按補給。|已完成|水獺,狐狸,陸龜,貓頭鷹|先復育 C2 補給箱，取得補給並打開救援路線。|棲地恢復了，新的救援路線已連通。|動物平安回家了。|補給送達：+3。|庇護所完成，動物受到保護。|風暴來襲：未保護動物失去 1 體力。|救援尚未完成|這片土地，再次有了生命|點選地塊，再選擇行動。|天氣穩定",
-      "zh-cn":
-        "复育|救援|庇护所|补给|撤销|撤离结算|剩余行动|已救援|已复育|风暴倒数|营地|暴露中|已保护|先复育相邻地块，连通救援路线。|补给不足，先按补给。|已完成|水獭,狐狸,陆龟,猫头鹰|先复育 C2 补给箱，取得补给并打开救援路线。|栖地恢复，新路线已连通。|动物平安回家。|补给送达：+3。|庇护所完成。|风暴：未保护动物失去 1 体力。|救援尚未完成|这片土地，再次有了生命|点选地块，再选择行动。|天气稳定",
-      ja: "再生|救助|避難所|物資|戻す|撤収|残り行動|救助|再生|嵐まで|基地|危険|保護|隣のマスを再生して道をつなごう。|物資不足。補給しよう。|完了|カワウソ,キツネ,カメ,フクロウ|まず C2 の補給箱を再生しよう。|生息地と道が復活！|動物を救助！|物資 +3。|避難所が完成。|嵐：保護されていない動物の体力−1。|救助未完了|谷に命が戻った|マスを選び、行動を選ぼう。|穏やかな天気",
-      ko: "복원|구조|보호소|보급품|되돌리기|철수|남은 행동|구조|복원|폭풍까지|기지|노출|보호|인접 타일을 먼저 복원하세요.|보급품 부족. 보급하세요.|완료|수달,여우,거북,부엉이|먼저 C2 보급 상자를 복원하세요.|서식지와 길 복원!|구조 성공!|보급품 +3.|보호소 완성.|폭풍: 노출 동물 체력−1.|구조 미완료|계곡에 돌아온 생명|타일을 고르고 행동하세요.|맑음",
-      es: "Restaurar|Rescatar|Refugio|Suministros|Deshacer|Evacuar|Acciones|Rescatados|Restauradas|Tormenta en|Base|Expuesto|Protegido|Restaura una casilla vecina primero.|Faltan suministros.|Completado|Nutria,Zorro,Tortuga,Búho|Restaura la caja C2 para abrir rutas.|Hábitat y ruta restaurados.|Animal a salvo.|Suministros +3.|Refugio listo.|Tormenta: fauna expuesta pierde 1 salud.|Rescate incompleto|El valle vuelve a vivir|Elige casilla y acción.|Tiempo tranquilo",
-      "pt-br":
-        "Restaurar|Resgatar|Abrigo|Suprimentos|Desfazer|Evacuar|Ações|Resgatados|Restaurados|Tempestade em|Base|Exposto|Protegido|Restaure um terreno vizinho primeiro.|Faltam suprimentos.|Concluído|Lontra,Raposa,Tartaruga,Coruja|Restaure a caixa C2 para abrir rotas.|Habitat e rota restaurados.|Animal a salvo.|Suprimentos +3.|Abrigo pronto.|Tempestade: animais expostos perdem 1 saúde.|Resgate incompleto|O vale vive de novo|Escolha terreno e ação.|Tempo calmo",
-      fr: "Restaurer|Sauver|Abri|Provisions|Annuler|Évacuer|Actions|Sauvés|Restaurées|Orage dans|Camp|Exposé|Protégé|Restaure d’abord une case voisine.|Provisions insuffisantes.|Terminé|Loutre,Renard,Tortue,Hibou|Restaure la caisse C2 pour ouvrir les routes.|Habitat et route restaurés.|Animal en sécurité.|Provisions +3.|Abri construit.|Orage : les animaux exposés perdent 1 santé.|Sauvetage incomplet|La vallée revit|Choisis une case et une action.|Temps calme",
-      de: "Renaturieren|Retten|Schutz|Vorräte|Zurück|Evakuieren|Aktionen|Gerettet|Erneuert|Sturm in|Basis|Ungeschützt|Geschützt|Erneuere zuerst ein Nachbarfeld.|Zu wenig Vorräte.|Erledigt|Otter,Fuchs,Schildkröte,Eule|Erneuere Kiste C2 für neue Wege.|Lebensraum und Weg erneuert.|Tier in Sicherheit.|Vorräte +3.|Schutz errichtet.|Sturm: ungeschützte Tiere verlieren 1 Gesundheit.|Rettung unvollständig|Das Tal lebt wieder|Feld und Aktion wählen.|Ruhiges Wetter",
-      it: "Ripristina|Salva|Riparo|Scorte|Annulla|Evacua|Azioni|Salvati|Ripristinate|Tempesta tra|Campo|Esposto|Protetto|Ripristina prima una casella vicina.|Scorte insufficienti.|Completato|Lontra,Volpe,Tartaruga,Gufo|Ripristina la cassa C2 per aprire sentieri.|Habitat e sentiero ripristinati.|Animale al sicuro.|Scorte +3.|Riparo costruito.|Tempesta: animali esposti perdono 1 salute.|Salvataggio incompleto|La valle torna a vivere|Scegli casella e azione.|Tempo calmo",
-      ru: "Восстановить|Спасти|Укрытие|Припасы|Отменить|Эвакуация|Ходы|Спасено|Восстановлено|Буря через|Лагерь|Без защиты|Защищено|Сначала восстанови соседнюю клетку.|Мало припасов.|Готово|Выдра,Лиса,Черепаха,Сова|Начни с ящика C2, чтобы открыть пути.|Среда и путь восстановлены.|Животное в безопасности.|Припасы +3.|Укрытие готово.|Буря: незащищённые животные теряют 1 здоровье.|Спасение не завершено|Долина снова жива|Выбери клетку и действие.|Тихая погода",
-      hi: "बहाली|बचाव|आश्रय|सामग्री|वापस|निकासी|शेष चाल|बचाए|बहाल|तूफान|शिविर|असुरक्षित|सुरक्षित|पहले पास का खाना बहाल करें।|सामग्री कम है।|पूरा|ऊदबिलाव,लोमड़ी,कछुआ,उल्लू|पहले C2 की पेटी बहाल करें।|आवास और रास्ता बहाल।|जीव सुरक्षित।|सामग्री +3।|आश्रय तैयार।|तूफान: असुरक्षित जीवों का स्वास्थ्य−1।|बचाव अधूरा|घाटी में जीवन लौटा|खाना और कार्य चुनें।|शांत मौसम",
-      ar: "ترميم|إنقاذ|مأوى|المؤن|تراجع|إخلاء|الإجراءات|تم إنقاذ|تم ترميم|العاصفة بعد|المخيم|مكشوف|محمي|رمم مربعاً مجاوراً أولاً.|المؤن غير كافية.|مكتمل|قضاعة,ثعلب,سلحفاة,بومة|ابدأ بترميم صندوق C2 لفتح المسارات.|تم ترميم الموطن وفتح المسار.|الحيوان بأمان.|المؤن +3.|المأوى جاهز.|عاصفة: يفقد الحيوان المكشوف صحة واحدة.|الإنقاذ غير مكتمل|عادت الحياة للوادي|اختر مربعاً ثم إجراء.|طقس هادئ",
-    };
+    const labels = rescueLabels;
     const tx = (i) => (labels[lang()] || labels.en).split("|")[i];
-    const guide = {
-      en: "Restore neighbouring tiles to open routes. Rescue costs 1 supply on restored land, 2 otherwise. Shelters protect animals from storms. Refill: +3 supplies for 1 action. Rescue all animals and meet the restoration goal. Three stars: all safe rescues and at least 2 actions left.",
-      "zh-tw":
-        "復育相鄰地塊可開路。復育地救援花 1 補給，緊急救援花 2。庇護所可擋風暴。補給花 1 行動獲得 3 補給。救回全部動物並完成復育目標即過關。全數安全救援、剩至少 2 行動可獲三星。粗糙地塊花 2 補給，先復育相鄰水源可減為 1。",
-      "zh-cn":
-        "复育相邻地块可开路。复育地救援花 1 补给，紧急救援花 2。庇护所可挡风暴。补给花 1 行动获得 3 补给。救回全部动物并完成复育目标即过关。全数安全救援、剩至少 2 行动可获三星。粗糙地块花 2 补给，相邻复育水源可减为 1。",
-    };
-    Object.assign(guide, {
-      ja: "隣接マスを再生して道を開く。再生済みの救助は物資1、緊急救助は2。避難所は嵐を防ぐ。補給は1行動で物資3。全員救助と再生目標でクリア。安全な全員救助と残り2行動で星3。水源の隣では再生費用が減る。",
-      ko: "인접 타일을 복원해 길을 만드세요. 복원된 곳 구조는 보급품1, 긴급 구조는2. 보호소는 폭풍을 막습니다. 보급은 행동1로 보급품3. 모든 동물과 복원 목표를 달성하세요. 안전 구조와 남은 행동2로 별3. 복원된 물 옆은 복원 비용이 줄어듭니다.",
-      es: "Restaura casillas vecinas para abrir rutas. Rescatar cuesta 1 en terreno restaurado, 2 en emergencia. Refugios protegen de tormentas. Abastecer: 1 acción por 3 suministros. Rescata a todos y cumple la restauración. Tres estrellas: rescate seguro y 2 acciones restantes. El agua restaurada reduce el coste vecino.",
-      "pt-br":
-        "Restaure terrenos vizinhos para abrir rotas. Resgate custa 1 em terreno restaurado, 2 na emergência. Abrigos protegem da tempestade. Abastecer: 1 ação por 3 suprimentos. Resgate todos e restaure a meta. Três estrelas: todos seguros e 2 ações restantes. Água restaurada reduz o custo vizinho.",
-      fr: "Restaure les cases voisines pour ouvrir des routes. Sauver coûte 1 sur terrain restauré, 2 en urgence. Un abri protège de l’orage. Ravitailler : 1 action pour 3 provisions. Sauve tous les animaux et atteins l’objectif. Trois étoiles : sauvetages sûrs et 2 actions restantes. L’eau restaurée réduit le coût voisin.",
-      de: "Erneuere Nachbarfelder für neue Wege. Rettung kostet 1 auf erneuertem Boden, im Notfall 2 Vorräte. Schutz hält Stürme ab. Nachschub: 1 Aktion für 3 Vorräte. Rette alle Tiere und erfülle das Bodenziel. Drei Sterne: sichere Rettungen und 2 Aktionen übrig. Erneuertes Wasser senkt benachbarte Kosten.",
-      it: "Ripristina caselle vicine per aprire sentieri. Salvare costa 1 su terreno ripristinato, 2 in emergenza. I ripari proteggono dalla tempesta. Rifornire: 1 azione per 3 scorte. Salva tutti e raggiungi l’obiettivo. Tre stelle: salvataggi sicuri e 2 azioni rimaste. L’acqua ripristinata riduce il costo vicino.",
-      ru: "Восстанавливай соседние клетки для новых путей. Спасение стоит 1 на восстановленной земле, 2 в экстренном случае. Укрытия защищают от бури. Припасы: 1 ход за 3 единицы. Спаси всех и выполни цель. Три звезды: безопасное спасение и 2 хода в запасе. Вода снижает цену соседней клетки.",
-      hi: "पास के खाने बहाल कर रास्ते खोलें। बहाल जगह बचाव की लागत1, आपात बचाव2। आश्रय तूफान से बचाता है। आपूर्ति में 1 चाल से 3 सामग्री मिलती है। सभी जीव और बहाली लक्ष्य पूरा करें। तीन तारे: सुरक्षित बचाव और 2 चाल शेष। बहाल जल के पास लागत घटती है।",
-      ar: "رمم المربعات المجاورة لفتح المسارات. الإنقاذ يكلف مؤنة على أرض مرممة واثنتين للطوارئ. المأوى يحمي من العاصفة. التموين يكلف إجراء ويمنح3 مؤن. أنقذ الجميع وحقق هدف الترميم. ثلاث نجوم: إنقاذ آمن وإجراءان متبقيان. المياه المرممة تقلل تكلفة المربع المجاور.",
-    });
+    const guide = rescueGuide;
     const chapter = (i) => chapterRows[i][Math.max(0, locales.indexOf(lang()))];
     const common = (i) =>
       window.wpMarketCommon?.(i) ||
@@ -1048,6 +1088,13 @@
         .slice(0, 2)
         .join(" ");
       $("main-progress").textContent = `${common(8)}: ${best} / 6`;
+      const canonicalLocale = ({ "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" })[lang()] || lang();
+      const guideCopy = globalThis.HabitatRescueGuideCopy[canonicalLocale] || globalThis.HabitatRescueGuideCopy.en;
+      const guideSection = document.querySelector(".m5-guide");
+      guideSection?.setAttribute("aria-label", guideCopy.guideLabel);
+      guideSection?.querySelectorAll("[data-t]").forEach(node => {
+        if (Object.hasOwn(guideCopy, node.dataset.t)) node.textContent = guideCopy[node.dataset.t];
+      });
       document
         .querySelectorAll("[data-wp-habitat-extra]")
         .forEach((n) => (n.textContent = guide[lang()] || guide.en));

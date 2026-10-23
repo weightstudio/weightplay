@@ -77,26 +77,13 @@
           <button id="start-game" class="m5-primary" data-m5-copy="start" data-wp-main-start data-wp-frame-action="primary" type="button">Start Game</button>
         </div>
       </section>
-      <section class="game-page-info game-page-info-static" aria-label="Информация об игре Атлас сред обитания">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Атлас сред обитания</h2><p>Объедините климат, рельеф и животных и найдите среду.</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Географическая дедукция</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Puzzle · Geography · Animal</strong></div></div>
-    </div>
-
-    <div class="game-info-sections"><div class="game-info-section public-guide-expansion"><h3>Открытая игра</h3><p>Играйте в Habitat Atlas бесплатно в браузере, без аккаунта и покупок. Открывайте подсказки о климате и рельефе, выбирайте подходящую среду, а подсказка о животном подтвердит вывод. Шесть экспедиций переходят от ясного первого совпадения к длинным цепочкам подсказок; за меньшее число открытых подсказок вы получаете больше звёзд. Прогресс хранится только в этом браузере.</p></div>
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+      <section class="m5-guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-wp-guide-locales="guide-source.mjs#GUIDE_COPY" data-wp-guide-locale="ru" aria-label="Game guide">
+        <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-t="tag0">Восстановить</span><span data-t="tag1">Спасти</span><span data-t="tag2">Припасы</span></div>
+        <h2 data-t="guideLabel">Руководство по игре «Атлас сред обитания»</h2>
+        <div class="game-info-section"><h3 data-t="actionsTitle">Выбери клетку и действие.</h3><p data-t="rules">Восстанавливай соседние клетки для новых путей. Спасение стоит 1 на восстановленной земле, 2 в экстренном случае. Укрытия защищают от бури. Припасы: 1 ход за 3 единицы. Спаси всех и выполни цель. Три звезды: безопасное спасение и 2 хода в запасе. Вода снижает цену соседней клетки.</p><p data-t="recovery">Каждое допустимое действие расходует ход. Спаси всех животных и выполни цель восстановления до окончания ходов. Во время спасения отмена возвращает состояние перед последним действием. После результата повтор начинает ту же экспедицию заново, сохраняя завершённый прогресс.</p></div>
+        <div class="game-info-section"><h3 data-t="saveTitle">Сохранено на этом устройстве</h3><p data-t="save">Завершённые экспедиции и результаты сохраняются в этом браузере. Очистка его данных может удалить прогресс; незавершённое спасение не сохраняется.</p></div>
+        <div class="game-info-section"><h3 data-t="faqTitle">FAQ</h3><dl><dt data-t="supplyQuestion">Для чего нужны припасы?</dt><dd data-t="supplyAnswer">Припасы +3.</dd><dt data-t="stormQuestion">Что происходит во время бури?</dt><dd data-t="stormAnswer">Буря: незащищённые животные теряют 1 здоровье.</dd></dl></div>
+      </section>
     </div>
   </section>
   <section id="stage-screen" class="screen stage-canvas" data-screen="stage" data-wp-logical-stage-canvas data-wp-frame-play-fill style="background-image:url('assets/animal-habitat-atlas-background.png')" hidden>
@@ -145,7 +132,6 @@
 <script src="../../src/battle-canvas-standard.js"></script>
 <script src="../../src/game-play-ui.js?v=20261021-shared-play1"></script>
 <script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script>
-<script src="/games/animal-habitat-atlas/text-growth-140.js?v=20261021-rescue-valley-v12-i9"></script>
 <script src="/src/edge-guard.js"></script>
 <script src="game.js?v=20261021-habitat-atlas-v12-i9"></script>
 <script src="/src/runtime-locales/ru.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>

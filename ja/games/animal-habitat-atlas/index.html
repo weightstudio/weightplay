@@ -77,26 +77,13 @@
           <button id="start-game" class="m5-primary" data-m5-copy="start" data-wp-main-start data-wp-frame-action="primary" type="button">Start Game</button>
         </div>
       </section>
-      <section class="game-page-info game-page-info-static" aria-label="ハビタット・アトラス ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>ハビタット・アトラス</h2><p>気候・地形・動物の手がかりから生息地を特定しよう。</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>地理推理</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Puzzle · Geography · Animal</strong></div></div>
-    </div>
-
-    <div class="game-info-sections"><div class="game-info-section public-guide-expansion"><h3>公開プレイ</h3><p>アカウントや購入なしで、ブラウザから無料でハビタット・アトラスを遊べます。気候と地形の手がかりを開き、合う生息地を選ぶと、最後に動物の手がかりが推理を確かめます。6つの探検は、明快な最初の一致から長い手がかりの連鎖へ進み、少ない開示で星を獲得できます。進行状況はこのブラウザだけに保存されます。</p></div>
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+      <section class="m5-guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-wp-guide-locales="guide-source.mjs#GUIDE_COPY" data-wp-guide-locale="ja" aria-label="Game guide">
+        <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-t="tag0">再生</span><span data-t="tag1">救助</span><span data-t="tag2">物資</span></div>
+        <h2 data-t="guideLabel">ハビタット・アトラス ゲームガイド</h2>
+        <div class="game-info-section"><h3 data-t="actionsTitle">マスを選び、行動を選ぼう。</h3><p data-t="rules">隣接マスを再生して道を開く。再生済みの救助は物資1、緊急救助は2。避難所は嵐を防ぐ。補給は1行動で物資3。全員救助と再生目標でクリア。安全な全員救助と残り2行動で星3。水源の隣では再生費用が減る。</p><p data-t="recovery">有効な行動ごとに残り行動数を1つ使います。使い切る前に全ての動物を救助し、再生目標も達成しましょう。救助中は「戻す」で直前の行動を取り消せます。結果画面の「リトライ」は同じ遠征を最初からやり直し、完了済みの進行状況は残します。</p></div>
+        <div class="game-info-section"><h3 data-t="saveTitle">この端末に保存済み</h3><p data-t="save">完了した遠征と結果はこのブラウザーに保存されます。ブラウザーデータを消すと進行状況を失う場合があります。途中の救助は保存されません。</p></div>
+        <div class="game-info-section"><h3 data-t="faqTitle">FAQ</h3><dl><dt data-t="supplyQuestion">補給は何をしますか？</dt><dd data-t="supplyAnswer">物資 +3。</dd><dt data-t="stormQuestion">嵐が来るとどうなりますか？</dt><dd data-t="stormAnswer">嵐：保護されていない動物の体力−1。</dd></dl></div>
+      </section>
     </div>
   </section>
   <section id="stage-screen" class="screen stage-canvas" data-screen="stage" data-wp-logical-stage-canvas data-wp-frame-play-fill style="background-image:url('assets/animal-habitat-atlas-background.png')" hidden>
@@ -146,7 +133,6 @@
 <script src="../../src/battle-canvas-standard.js"></script>
 <script src="../../src/game-play-ui.js?v=20261021-shared-play1"></script>
 <script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script>
-<script src="/games/animal-habitat-atlas/text-growth-140.js?v=20261021-rescue-valley-v12-i9"></script>
 <script src="/src/edge-guard.js"></script>
 <script src="game.js?v=20261021-habitat-atlas-v12-i9"></script>
 <script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>

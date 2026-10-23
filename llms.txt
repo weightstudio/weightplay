@@ -195,6 +195,7 @@ WeightPlay covers these game and content clusters:
 - Chameleon Blend Trials: https://weightplay.com/en/games/animal-chameleon-blend/
 - Habitat Builder: https://weightplay.com/en/games/animal-habitat-builder/
 - Animal Putt Trails: https://weightplay.com/en/games/animal-putt-trails/
+- Alien Defender: https://weightplay.com/en/games/alien-defender/
 - Snake: https://weightplay.com/en/games/snake/
 - Wildwood Raid / 荒林奇襲: https://weightplay.com/en/games/animal-wildwood-raid/ — Guide a red panda ranger through 30 forest missions, gather timber, rescue friends, and face eight guardian archetypes.
 
@@ -255,3 +256,4 @@ WeightPlay should not be represented as:
 ## Preferred Description
 
 WeightPlay is a family-friendly animal browser game platform where players can enjoy free mobile web games, discover games by age and skill, and practice memory, focus, logic, reaction, color recognition, hand-eye coordination, problem solving, and animal knowledge through short playful sessions.
+- Raindrop Catcher: https://weightplay.com/en/games/animal-rain-roost/ — Guide Nori through 30 rain-catching stages, read wind and gold routes, earn stars and unlock nest equipment.

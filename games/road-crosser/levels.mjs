@@ -1,0 +1,43 @@
+// Chapter 1: 30 authored crossings. Rows run from the dock (0) to start (8).
+// Layout, docks, cargo, obstacles and lane behaviour define decisions; speed
+// is secondary. No procedural shuffle or repeating difficulty multiplier.
+const L = (id, name, zh, lanes, options = {}) => Object.freeze({
+  id, name, zh, arc: Math.floor((id - 1) / 5), checkpoint: id % 5 === 0,
+  terrain: `D${lanes}G`.split(''), start: 5.5, exits: [], rocks: [],
+  pickups: [[7,5.5],[3,6.5],[1,5.5]], required: [], signals: [],
+  trucks: [], phases: {}, currents: {}, widths: {}, traffic: {},
+  hint: 'cross', budget: 13, charge: id >= 16 ? 1 : 0, ...options,
+});
+export const LEVELS = Object.freeze([
+  L(1,'First steps','第一盞燈','WGGGRGG',{pickups:[[7,5.5],[3,6.5],[1,5.5]], widths:{1:3.4}, traffic:{5:.46}}),
+  L(2,'Two-way street','雙向街道','WWGRGRG',{pickups:[[7,6.5],[3,4.5],[1,5.5]], traffic:{4:-.62,6:.65},budget:15}),
+  L(3,'Left-bank landing','左岸停靠','WWGRRRG',{exits:[2.5],hint:'dock',currents:{1:-.38,2:-.3},pickups:[[7,4.5],[3,2.5],[1,2.5]],budget:16}),
+  L(4,'Island pause','小島歇腳','WGWGRRG',{start:7.5,pickups:[[7,7.5],[4,5.5],[2,6.5]],currents:{1:-.35,3:.32},budget:17}),
+  L(5,'Twin docks','雙碼頭試煉','WWGRRRG',{exits:[2.5,7.5],hint:'dock',rocks:[[3,5.5]],pickups:[[7,4.5],[3,7.5],[1,2.5]],budget:20}),
+  L(6,'Follow the current','順流航線','WWWGRRG',{exits:[7.5],hint:'current',currents:{1:.36,2:.4,3:.32},pickups:[[7,5.5],[4,6.5],[2,7.5]],budget:16}),
+  L(7,'Against the flow','逆流接力','WWGWRGG',{hint:'current',currents:{1:-.44,2:.4,4:-.33},pickups:[[7,4.5],[3,2.5],[1,5.5]],budget:19}),
+  L(8,'Zigzag bank','曲折河岸','WWGRGRG',{rocks:[[5,5.5],[3,3.5]],exits:[7.5],hint:'detour',pickups:[[7,6.5],[5,7.5],[3,6.5]],budget:18}),
+  L(9,'Narrow channel','窄木通道','WWWGRRG',{hint:'current',widths:{1:3.1,2:2.05,3:3.2},currents:{1:-.3,2:.36,3:-.34},pickups:[[7,5.5],[4,3.5],[2,6.5]],budget:20}),
+  L(10,'Ferry crossing','渡船考驗','WWGWWRG',{exits:[1.5],hint:'dock',currents:{1:-.36,2:.4,4:.32,5:-.34},pickups:[[7,4.5],[3,2.5],[1,1.5]],budget:22}),
+  L(11,'Red-light lesson','紅燈路口','WWGRRRG',{hint:'signal',signals:[{row:5,offset:0}],pickups:[[7,5.5],[3,6.5],[1,5.5]]}),
+  L(12,'Green-wave choice','綠波選擇','WGRGRRG',{hint:'signal',signals:[{row:3,offset:3.6},{row:6,offset:0}],pickups:[[7,4.5],[4,4.5],[2,6.5]],budget:18}),
+  L(13,'Freight detour','貨車繞道','WWGRRRG',{trucks:[4,6],rocks:[[3,5.5]],hint:'detour',pickups:[[7,3.5],[3,2.5],[1,4.5]],budget:19}),
+  L(14,'Backstreet shortcut','巷弄捷徑','WWGRGRG',{exits:[7.5],signals:[{row:4,offset:1.4}],rocks:[[5,4.5],[5,5.5],[3,6.5]],hint:'detour',pickups:[[7,7.5],[5,7.5],[3,8.5]],budget:22}),
+  L(15,'Junction relay','交叉口接力','WGRGRRG',{exits:[2.5,7.5],hint:'signal',trucks:[3,6],signals:[{row:3,offset:0},{row:6,offset:3.5}],pickups:[[7,4.5],[4,2.5],[2,7.5]],budget:23}),
+  L(16,'Signal lantern','停車提燈','WWGRRGG',{hint:'charge',signals:[{row:5,offset:3.4}],traffic:{4:-.95},pickups:[[7,5.5],[3,6.5],[1,5.5]]}),
+  L(17,'First delivery','第一份郵件','WWGRRRG',{hint:'cargo',required:[1],pickups:[[7,5.5],[3,2.5],[1,6.5]],rocks:[[3,5.5]]}),
+  L(18,'Return for the parcel','轉角取件','WGWGRRG',{exits:[7.5],hint:'cargo',required:[1],pickups:[[7,5.5],[4,2.5],[2,7.5]],trucks:[6]}),
+  L(19,'Two deliveries','雙燈交付','WWGRGRG',{hint:'cargo',required:[0,1],pickups:[[7,2.5],[3,7.5],[5,5.5]],signals:[{row:4,offset:0}]}),
+  L(20,'Night courier','夜航信差','WWGWRRG',{exits:[7.5],hint:'cargo',required:[1],pickups:[[7,5.5],[4,2.5],[3,6.5]],currents:{4:-.33,2:.37,1:-.32}}),
+  L(21,'Braided river','分流河道','WWRGWRG',{hint:'cargo',required:[1],pickups:[[7,4.5],[4,7.5],[2,5.5]],widths:{1:2.3},signals:[{row:6,offset:0}]}),
+  L(22,'Freight window','貨運空檔','WWGRRRG',{exits:[2.5],hint:'charge',trucks:[4,5],traffic:{4:.8,5:-.82},pickups:[[7,6.5],[3,4.5],[1,2.5]],currents:{1:.4,2:-.4}}),
+  L(23,'Island exchange','島間送件','WGRGWRG',{hint:'cargo',required:[0,1],pickups:[[7,2.5],[4,7.5],[2,5.5]],trucks:[3],currents:{1:-.42,5:.4}}),
+  L(24,'Lantern detour','燈火岔路','WWWGRRG',{exits:[2.5,7.5],hint:'cargo',required:[1],pickups:[[7,2.5],[3,6.5],[4,8.5]],rocks:[[4,5.5]],widths:{2:2.4}}),
+  L(25,'Harbour lights','港灣號誌','WGRGWRG',{exits:[2.5],hint:'signal',required:[0,1],pickups:[[7,7.5],[4,2.5],[2,5.5]],signals:[{row:3,offset:3.4},{row:6,offset:0}],trucks:[3,6]}),
+  L(26,'Long way home','歸途繞行','WWRGWRG',{exits:[8.5],hint:'cargo',required:[0],pickups:[[7,1.5],[3,5.5],[4,7.5]],rocks:[[4,5.5]],signals:[{row:6,offset:2}]}),
+  L(27,'Cross-current mail','逆流郵路','WGWGRRG',{hint:'cargo',required:[1,2],pickups:[[7,5.5],[3,2.5],[1,7.5]],currents:{1:.35,3:-.35},widths:{1:3.05,3:3.05},signals:[{row:5,offset:1.4}]}),
+  L(28,'Freight islands','貨運群島','WGRGRRG',{exits:[2.5,7.5],hint:'detour',trucks:[3,5,6],rocks:[[4,5.5],[2,4.5]],pickups:[[7,5.5],[4,2.5],[2,7.5]],signals:[{row:5,offset:0}]}),
+  L(29,'Last collection','最後收件','WWGRRRG',{hint:'cargo',required:[0,1],pickups:[[7,2.5],[3,7.5],[1,4.5]],signals:[{row:4,offset:0},{row:6,offset:3.5}],trucks:[5],rocks:[[3,5.5]]}),
+  L(30,'Star harbour','星港終章','WWRWRGG',{exits:[7.5],hint:'finale',required:[0,1],pickups:[[6,2.5],[4,6.5],[1,2.5]],signals:[{row:3,offset:3.4},{row:5,offset:0}],trucks:[3,5],currents:{1:-.4,2:.36,4:-.32},widths:{1:2.7,2:2.8,4:3.1},rocks:[[6,5.5]]}),
+]);
+export function levelById(id) { return LEVELS[Math.min(30,Math.max(1,Math.trunc(Number(id))||1))-1]; }

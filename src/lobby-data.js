@@ -4807,12 +4807,11 @@ window.WONDER_LOBBY.games.push(
   {
     id: "alien-defender",
     title: { en: "Alien Defender", "zh-Hant": "星際守衛", "zh-Hans": "星际守卫", ja: "エイリアン・ディフェンダー", ko: "에일리언 디펜더", es: "Defensor Alienígena", "pt-BR": "Defensor Alienígena", fr: "Défenseur Alien", de: "Alien-Verteidiger", it: "Difensore Alieno", ru: "Защитник от пришельцев", hi: "एलियन रक्षक", ar: "مدافع الفضائيين" },
-    status: "planned",
-    statusText: { ...ownerPreviewStatusText },
-    internalTrial: "index.html?preview=1",
+    status: "playable",
+    statusText: {"en": "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", "ja": "プレイ可能", "ko": "플레이 가능", "es": "Disponible", "pt-BR": "Disponível", "fr": "Disponible", "de": "Spielbar", "it": "Disponibile", "ru": "Доступно", "hi": "खेलने योग्य", "ar": "متاحة للعب"},
     type: { en: "Wave Survival Shooter", "zh-Hant": "波次生存射擊", "zh-Hans": "波次生存射击", ja: "ウェーブ生存シューティング", ko: "웨이브 생존 슈팅", es: "Disparos de supervivencia por oleadas", "pt-BR": "Tiro de sobrevivência por ondas", fr: "Tir de survie par vagues", de: "Wellen-Survival-Shooter", it: "Shooter di sopravvivenza a ondate", ru: "Шутер на выживание по волнам", hi: "लहर सर्वाइवल शूटर", ar: "لعبة إطلاق نار للبقاء" },
     categories: ["Classic", "Arcade", "Action"], skills: ["Aim", "Movement", "Reaction"], ages: ["general"], ageLabel: { en: "General", "zh-Hant": "一般玩家", "zh-Hans": "一般玩家", ja: "一般", ko: "일반", es: "General", "pt-BR": "Geral", fr: "Tout public", de: "Allgemein", it: "Generale", ru: "Для всех", hi: "सामान्य", ar: "عام" },
-    href: "games/alien-defender/",
+    href: "games/alien-defender/", previewVideo: "assets/previews/alien-defender-battle.webm",
     description: {"en":"Pilot an otter gunship through 30 orbital battles. Break the fleet, dodge volleys and charge your pulse.","zh-Hant":"駕駛水獺砲艇迎戰 30 關星際艦隊。閃避彈幕、擊破編隊，蓄滿脈衝逆轉戰局。","zh-Hans":"驾驶水獭炮艇迎战 30 关星际舰队。闪避弹幕、击破编队，蓄满脉冲逆转战局。","ja":"ラッコの砲艇で30の宇宙戦へ。弾幕を避け、敵陣を崩し、パルスを放とう。","ko":"수달 전투정으로 30번의 우주 전투에 도전하세요. 탄막을 피하고 함대를 격파해 펄스를 충전하세요.","es":"Pilota la nave de una nutria en 30 batallas. Esquiva descargas, rompe la flota y carga tu pulso.","pt-BR":"Pilote a nave de uma lontra em 30 batalhas. Desvie das rajadas, destrua a frota e carregue o pulso.","fr":"Pilotez la canonnière d’une loutre dans 30 batailles. Évitez les salves et chargez votre impulsion.","de":"Steuere das Otter-Kanonenboot durch 30 Gefechte. Weiche Salven aus und lade deinen Impuls auf.","it":"Pilota la cannoniera di una lontra in 30 battaglie. Schiva le raffiche e carica il tuo impulso.","ru":"Ведите корабль выдры через 30 боёв. Уклоняйтесь от залпов, разбивайте флот и заряжайте импульс.","hi":"ऊदबिलाव की गनशिप से 30 अंतरिक्ष युद्ध लड़ें। गोलियों से बचें, बेड़ा तोड़ें और पल्स चार्ज करें।","ar":"قد سفينة القضاعة في 30 معركة فضائية. تفادَ الرشقات وحطّم الأسطول واشحن النبضة."},
     meta: {"en":["30 Stage","Upgrades","15 diamonds · permanent"],"zh-Hant":["30 關卡","強化","15 鑽石・永久"],"zh-Hans":["30 关卡","强化","15 钻石・永久"],"ja":["30 ステージ","強化","15ダイヤ・永久"],"ko":["30 스테이지","강화","다이아 15개 · 영구"],"es":["30 Fase","Mejoras","15 diamantes · permanente"],"pt-BR":["30 Fase","Melhorias","15 diamantes · permanente"],"fr":["30 Niveau","Améliorations","15 diamants · permanent"],"de":["30 Stufe","Verbesserungen","15 Diamanten · dauerhaft"],"it":["30 Livello","Potenziamenti","15 diamanti · permanente"],"ru":["30 Этап","Усиления","15 алмазов · навсегда"],"hi":["30 स्टेज","अपग्रेड","15 हीरे · स्थायी"],"ar":["30 المرحلة","الترقيات","15 ألماسة · دائم"]},
     art: { kind: "image", background: "assets/interface7-redrawn/alien-defender.webp", hideHero: true },
@@ -5251,22 +5250,21 @@ if (animalBounceBrawlPublic) {
   const planned = {
     id: "animal-rain-roost",
     audience: "general",
-    internalOnly: true,
-    status: "planned",
+    internalOnly: false,
+    status: "playable",
+    previewVideo: "assets/previews/animal-rain-roost-battle.webm",
     title: localize(["Rain Roost", "雨滴棲所", "雨滴栖所", "レイン・ルースト", "빗방울 둥지", "Nido de Lluvia", "Ninho da Chuva", "Nid de Pluie", "Regennest", "Nido di Pioggia", "Дождевое гнездо", "बारिश का घोंसला", "عشّ المطر"]),
-    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
     type: localize(["Rain Catching Arcade", "接雨街機益智", "接雨街机益智", "雨つぶキャッチアーケード", "빗방울 받기 아케이드", "Arcade de gotas de lluvia", "Arcade de gotas de chuva", "Arcade des gouttes de pluie", "Regentropfen-Arcade", "Arcade delle gocce di pioggia", "Аркада ловли капель", "Капли дождя — аркада", "أركيد التقاط قطرات المطر"]),
     description: localize(["Slide Nori's little nest to catch gentle rain while leaves drift past.", "滑動諾里的小巢接住溫柔雨滴，避開飄過的葉片。", "滑动诺里的小巢接住温柔雨滴，避开飘过的叶片。", "ノリの小さな巣を動かし、葉を避けながら雨つぶを受け止めよう。", "노리의 작은 둥지를 움직여 잎을 피하며 빗방울을 받아요.", "Mueve el nido de Nori para atrapar la lluvia y esquivar hojas.", "Mova o ninho da Nori para pegar chuva e desviar das folhas.", "Déplace le petit nid de Nori pour attraper la pluie et éviter les feuilles.", "Bewege Noris kleines Nest, fange Regen und weiche Blättern aus.", "Muovi il piccolo nido di Nori per raccogliere la pioggia ed evitare le foglie.", "Двигайте гнездо Нори, ловите дождь и обходите листья.", "नॉरी का छोटा घोंसला चलाकर बारिश पकड़ें और पत्तों से बचें।", "حرّك عشّ نوري لالتقاط المطر وتجنّب الأوراق."]),
-    meta: localize([["3 Rain Showers", "Drag to Catch", "Calm Retry"], ["3 場雨景", "拖曳接雨", "平靜重試"], ["3 场雨景", "拖曳接雨", "平静重试"], ["3つの雨", "動かして受ける", "穏やかな再挑戦"], ["비 3개", "드래그해서 받기", "차분한 재시도"], ["3 lluvias", "Arrastra para atrapar", "Reintento sereno"], ["3 chuvas", "Arraste para pegar", "Nova tentativa calma"], ["3 pluies", "Glisse pour attraper", "Reprise sereine"], ["3 Regenschauer", "Ziehen und fangen", "Ruhiger Versuch"], ["3 piogge", "Trascina per prendere", "Riprova calma"], ["3 дождя", "Двигайте и ловите", "Спокойная попытка"], ["3 बारिश", "खींचकर पकड़ें", "शांत पुनः попытка"], ["3 زخّات", "اسحب لالتقاطها", "محاولة هادئة"]]),
+    meta: localize([["30 Rain Showers", "Drag to Catch", "Calm Retry"], ["30 場雨景", "拖曳接雨", "平靜重試"], ["30 场雨景", "拖曳接雨", "平静重试"], ["30つの雨", "動かして受ける", "穏やかな再挑戦"], ["비 3개", "드래그해서 받기", "차분한 재시도"], ["30 lluvias", "Arrastra para atrapar", "Reintento sereno"], ["30 chuvas", "Arraste para pegar", "Nova tentativa calma"], ["30 pluies", "Glisse pour attraper", "Reprise sereine"], ["30 Regenschauer", "Ziehen und fangen", "Ruhiger Versuch"], ["30 piogge", "Trascina per prendere", "Riprova calma"], ["30 дождя", "Двигайте и ловите", "Спокойная попытка"], ["30 बारिश", "खींचकर पकड़ें", "शांत पुनः попытка"], ["30 زخّات", "اسحب لالتقاطها", "محاولة هادئة"]]),
     categories: ["Arcade", "Timing", "Focus", "Family", "Animal"],
     skills: ["Hand-Eye Coordination", "Focus", "Timing"],
     ages: ["6", "family"],
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-rain-roost/",
-    internalTrial: "index.html?preview=1",
     art: { kind: "image", background: "assets/lobby-posters/animal-rain-roost-square-v1.webp", hideHero: true }
   };
-  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  for (const field of ["title", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
 })();

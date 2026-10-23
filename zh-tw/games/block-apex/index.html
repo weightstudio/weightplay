@@ -3,6 +3,7 @@
 <head>
 
     <base href="/games/block-apex/" />
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" charset="utf-8" defer></script>
     <link rel="canonical" href="https://weightplay.com/zh-tw/games/block-apex/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/block-apex/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/block-apex/" />
@@ -36,7 +37,7 @@
   <link rel="stylesheet" href="../../src/game-ui-theme.css">
 
 <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
-  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
   <link rel="stylesheet" href="style.css?v=20261023-block-apex-v20-i9-main-progress44">
   <link rel="stylesheet" href="../../src/tutorial.css?v=20260928-block-apex-tutorial1">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
@@ -157,7 +158,7 @@
     </section>
     <select id="localeSelect" hidden aria-label="Language"></select>
   </div>
-  <article id="guide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"></article>
+  <section id="guide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off" data-wp-guide-renderer="guide.mjs#renderStaticGuide" data-wp-guide-locale="zh-Hant"><div class="game-info-title"><h2>方塊極速 — 遊戲指南</h2><div class="game-info-facts"><div class="game-info-fact"><span>難度</span><strong>中等</strong></div><div class="game-info-fact"><span>估計遊玩時間</span><strong>每場賽事約 1–3 分鐘（估計）</strong></div><div class="game-info-fact"><span>訓練技能</span><strong>反應、專注、手眼協調</strong></div></div></div><div class="game-info-sections"><section class="game-info-section"><h3>賽車任務</h3><p>你將駕駛小型賽車，在真正的立體封閉賽道上與方塊動物車手競爭。重點不只是一直加速，而是判斷入彎位置、觀察下一個彎角，決定是否值得用甩尾換取出彎加速。路面、路肩和護欄界定行車空間。金色光環、加速板、濕滑路面和橘色路障都有實際作用。漂浮金色箭頭指向下一個必須通過的檢查點；只有依序通過才能計算圈數。</p></section><section class="game-info-section"><h3>操作與目標</h3><p>車輛自動加速。A/D 或 ←/→ 轉向；S/↓ 煞車；按住空白鍵並轉向可甩尾，放開後加速。Shift/X 使用氮氣。R 回到最後檢查點並加罰 3 秒。觸控可多指同時操作。P/Escape 暫停。 進入關卡前先讀目標。賽事可能要求名次、甩尾累計時間、光環數量、限時或碰撞次數，而且多項條件必須全部達成。直線緊跟前車可獲得尾流效果，但超車就會離開尾流。持續甩尾可累積短暫出彎加速，太早放開則沒有獎勵。氮氣是另一個獨立資源；節能賽不會靠行駛、光環或甩尾補回，但路面加速板仍提供短暫加速。</p></section><section class="game-info-section"><h3>逐步變化的賽事</h3><p>賽道有不同布局，也包含逆向路線。長彎適合控制甩尾，濕滑路面會降低抓地力；收集光環有時必須偏離最快路線。高低差與旗幟標示的側風也會影響操控。賽事會將這些條件與氮氣限制或碰撞上限組合。達成畫面列出的要求才能解鎖下一場，已解鎖賽事可重玩。更快的時間能增加星星，但不能代替實際目標。</p></section><section class="game-info-section"><h3>實用技巧</h3><p>在急彎前先煞車，不要等護欄已擋住去路。保留空間開始甩尾，出彎方向打開再放手。氮氣留給直線，速度無法挽救錯誤的入彎角度。最後一圈結束前注意光環數量。回正是脫困功能，不是捷徑：會清空氮氣並加罰三秒。碰撞包含對手、路障和邊界；短暫冷卻可避免一次持續撞擊每幀都重複計數。</p></section><section class="game-info-section"><h3>設計說明</h3><p>這是街機手感，不是現實駕駛模擬器。玩家與 AI 使用相同的固定時間步進規則；對手真的沿路轉向，不會傳送到預定進度。賽道、坡度、車輛、光源與追蹤鏡頭即時渲染。選車與改裝留在 WeightPlay 共用介面內。車種在速度、加速與抓地力之間取捨；改裝能配合偏好，但不能改變檢查點規則。本版本沒有多人連線、雲端排行榜、每日活動或幽靈車。</p></section><section class="game-info-section"><h3>玩家與存檔資訊</h3><p>需要支援 WebGL 2 的瀏覽器，可用鍵盤、多點觸控或標準手把。手把左搖桿／方向鍵轉向，下方按鈕甩尾，右方按鈕或右扳機使用氮氣，左扳機煞車，Start 暫停。遊戲不要求帳號或付款。進度只存在這個瀏覽器，清除資料可能使進度消失；不是雲端存檔。儲存失敗會顯示警告，當次仍能繼續玩。失去焦點會暫停，不會返回時偷偷快轉。</p></section><section class="game-info-section"><h3>常見問題</h3><details><summary>為什麼跑完卻失敗？</summary><p>完成圈數只是其中一項。請查看結算清單，名次、甩尾、光環、碰撞或時間可能尚未達標。</p></details><details><summary>其他車怎麼解鎖？</summary><p>累積關卡星星。野兔、熊貓、企鵝分別需要 6、18、36 顆；達標後免費選用。</p></details><details><summary>重複按結算按鈕會重複領獎嗎？</summary><p>不會。每場只結算一次；重玩會建立新比賽，不會再次發放上一場獎勵。</p></details><details><summary>3D 畫面失效怎麼辦？</summary><p>模擬會停止並顯示恢復選項。重試會重建比賽，返回關卡則保留既有存檔。</p></details></section></div><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相關遊戲</h3><p>想再玩一場考驗反應與操控的街機遊戲，可以試試：</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="snake" href="/zh-tw/games/snake/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/snake.webp" data-final-src="/assets/weightplay-logo.png" alt="貪食蛇" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">貪食蛇</strong><span>在格線中帶領不斷變長的蛇，保持前方路線暢通。</span></span></a><a class="game-info-related-card" data-game-id="space-rocks" href="/zh-tw/games/space-rocks/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/space-rocks.webp" data-final-src="/assets/weightplay-logo.png" alt="星礦漂流" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">星礦漂流</strong><span>駕駛太空船閃避漂流岩塊，在移動中瞄準。</span></span></a></div></div></section>
   <p id="bootError" class="apex-boot-error" role="alert" hidden>Game initialization failed. <a href="">Reload this preview</a> or <a href="/">return to WeightPlay</a>. No saved progress was intentionally removed.</p>
   <noscript><p>This game requires JavaScript and WebGL 2.</p></noscript>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
@@ -172,25 +173,5 @@
 <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="方塊極速 遊戲資訊">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>方塊極速</h2><p>駕駛方塊賽車挑戰 30 場 3D 賽事，抓準甩尾與加速時機，和方塊動物夥伴一較高下。</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>3D 方塊賽車</strong></div><div class="game-info-fact"><span>類型</span><strong>Action · Arcade · Animal Games</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
 </body>
 </html>

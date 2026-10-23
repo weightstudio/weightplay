@@ -1,12 +1,17 @@
-import { createWorld, requestMove, advance, signalState, readJourney, saveJourney, readBest, buyAurora, BEST_KEY, COST } from './model.mjs?v=22';
-import { createRenderer } from './renderer.mjs?v=22';
-import { EXTRA } from './copy.mjs?v=22';
+import { createWorld, requestMove, advance, signalState, readJourney, saveJourney, readBest, buyAurora, COST, readCampaign, recordClear, CAMPAIGN_KEY, missingCargo, useSignal } from './model.mjs?v=23';
+import { createRenderer } from './renderer.mjs?v=23';
+import { EXTRA } from './copy.mjs?v=23';
+import { LEVELS } from './levels.mjs?v=23';
+import { CAMPAIGN_COPY, stageName } from './campaign-copy.mjs?v=23';
+import { createStageConfig } from './stage-config.mjs?v=23';
+import { LocalPractice } from '../../src/game-local-practice.mjs';
 
 const $ = id => document.getElementById(id);
 const locale = EXTRA[document.documentElement.lang] ? document.documentElement.lang : 'en';
 const copy = window.RoadCrosserCopy[locale] || window.RoadCrosserCopy.en;
 const extra = EXTRA[locale], leaveCopy = window.RoadCrosserLeaveCopy[locale] || window.RoadCrosserLeaveCopy.en;
-const t = key => extra[key] ?? copy[key] ?? key;
+const campaignCopy = CAMPAIGN_COPY[locale];
+const t = key => campaignCopy[key] ?? extra[key] ?? copy[key] ?? key;
 const lifetime = new AbortController();
 const listen = (node, type, listener, options = {}) => node.addEventListener(type, listener, { ...options, signal: lifetime.signal });
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -15,11 +20,12 @@ const play = cue => audio.play(cue);
 let storage;
 try { storage = window.localStorage; } catch { storage = { getItem() { return null; }, setItem() { throw Error('Storage unavailable'); }, removeItem() {} }; }
 let journey = readJourney(storage), best = readBest(storage), screen = 'main', panel = null, ready = false;
+let campaign = readCampaign(storage), selector, practiceMode = false, practiceRun = false, starting = false;
 let world = null, total = 0, runLanterns = 0, raf = 0, last = 0, paused = true, renderer, gesture, generation = 0;
 let purchaseBusy = false, transient = 0, committedRoute = false, resultDone = false, focusReturn;
 const effects = new Set();
 const canvas = $('gameCanvas');
-const main = $('mainScreen'), battle = $('battleScreen'), stageContent = battle.querySelector('.battle-stage');
+const main = $('mainScreen'), stage = $('stageScreen'), battle = $('battleScreen'), stageContent = battle.querySelector('.battle-stage');
 
 document.querySelectorAll('[data-copy]').forEach(node => { if (!node.hasAttribute('data-wp-game-title')) node.textContent = t(node.dataset.copy); });
 document.querySelectorAll('[data-extra]').forEach(node => { node.textContent = t(node.dataset.extra); });
@@ -33,13 +39,27 @@ $('medalList').setAttribute('aria-label',t('medals'));
 $('localeSelect').value = locale;
 canvas.setAttribute('aria-label', window.WEIGHTPLAY_GAME_TITLES?.['road-crosser']?.[locale] || copy.canvasLabel);
 $('leaveTitle').textContent = leaveCopy[0]; $('continueBtn').textContent = leaveCopy[2]; $('leaveBtn').textContent = leaveCopy[3];
+$('homeBtn').textContent = t('stages'); $('stageTab').textContent = t('stages');
+$('nextBtn').textContent = t('nextStage'); $('signalBtn').setAttribute('aria-label',t('signalTool')); $('signalBtn').title=t('charge');
+$('helpCampaign').textContent=t('medalRules'); $('helpCharge').textContent=t('charge'); $('helpCargo').textContent=t('cargo');
+$('resultBestLabel').textContent=t('stageBest');
 for (const node of battle.querySelectorAll('button:not([data-wp-return])')) node.dataset.wpFrameAction = node.matches('#retryBtn,#continueBtn,#confirmBuy') ? 'primary' : 'secondary';
 const frame = window.WeightPlayScreenFrame.mount({ root: $('roadCrosserApp'), localeSelect: $('localeSelect'), playUI: true,
   scenes: { main: { root: main, header: main.querySelector('header'), content: main.querySelector('.hero-card') },
+    stage: {root:stage,header:stage.querySelector('header'),content:$('stageContent')},
     battle: { root: battle, header: battle.querySelector('header'), content: stageContent } } });
 const group = window.WeightPlayScreenFrame.createGroup();
 for (const node of [...$('battleInfo').children]) group.add(node);
 $('battleInfo').remove(); frame.battleTopUI.add(group);
+frame.stageTopUI.add($('stageSummary'));
+const stageConfig=createStageConfig({locale,getSave:()=>campaign,isPractice:()=>practiceMode});
+function showStages() { updateHud(); setScreen('stage'); }
+function renderStages() {
+  $('stageSummary').textContent=`${t('cleared')} ${campaign.medals.filter(v=>v&1).length} / 30`;
+  if(!selector)selector=window.WeightPlayPlayUI.mountStage({page:$('stageContent'),rail:$('stageRail'),config:stageConfig,
+    selected:campaign.unlocked-1,onStart:index=>start(index+1),isActive:()=>screen==='stage'});
+  else selector.refresh(campaign.unlocked-1);
+}
 
 function animate(node, frames, duration = 160) {
   if (!node || document.hidden) return;
@@ -49,36 +69,42 @@ function animate(node, frames, duration = 160) {
 }
 function cancelEffects() { for (const animation of effects) animation.cancel(); effects.clear(); document.querySelectorAll('.reward-flight').forEach(node => node.remove()); }
 function saved() {
+  if(practiceMode||practiceRun)return false;
   try { saveJourney(storage, journey); return true; }
   catch { notice(t('storage'), 4); return false; }
 }
 function notice(text, seconds = 2) { $('battleMessage').textContent = text; transient = seconds; }
 function updateHud() {
-  $('stageValue').textContent = `${world?.stage || 1} / 3`;
+  $('stageValue').textContent = `${world?.stage || 1} / 30`;
   $('scoreValue').textContent = total + (world?.score || 0);
   $('bestValue').textContent = best;
-  $('lanternValue').textContent = runLanterns + (world?.lanterns || 0);
-  $('mainProgress').textContent = `${t('stage')} 1 / 3 · ${Math.min(3, journey.clears.filter(Boolean).length)} / 3`;
+  $('lanternValue').textContent = `${world?.lanterns || 0} / 3`;
+  $('mainProgress').textContent = `${t('cleared')} ${campaign.medals.filter(v=>v&1).length} / 30`;
+  $('signalBtn').hidden = !world?.level.charge;
+  $('signalBtn').disabled = !world?.charges || world?.state!=='playing';
+  $('signalCount').textContent = world?.charges || 0;
 }
 function setScreen(next) {
   generation++; cancelAnimationFrame(raf); cancelEffects(); audio.stop(); gesture = null;
   screen = next; panel = null;
+  if(next!=='stage')selector?.cancel();
   for (const id of ['leaveDialog','helpPanel','campPanel']) $(id).hidden = true;
-  main.hidden = next !== 'main'; battle.hidden = next === 'main';
+  main.hidden = next !== 'main'; stage.hidden = next !== 'stage'; battle.hidden = !['battle','result'].includes(next);
   const result = next === 'result'; $('resultScreen').hidden = !result; $('resultScreen').inert = !result;
   stageContent.hidden = result; stageContent.inert = result;
   document.querySelector('[data-wp-game-guide]').hidden = next !== 'main';
-  document.body.dataset.screen = next === 'main' ? 'main' : 'battle';
+  document.body.dataset.screen = next === 'result' ? 'battle' : next;
   battle.dataset.substate = result ? 'result' : 'play';
-  frame.activate(next === 'main' ? 'main' : 'battle');
+  frame.activate(next === 'result' ? 'battle' : next);
+  if(next==='stage')renderStages();
   paused = true;
   renderer?.clear();
   const ticket = generation;
   requestAnimationFrame(() => {
     if (ticket !== generation || lifetime.signal.aborted) return;
     renderer?.resize(); if (world) renderer?.draw(world, 0, journey.equipped === 'aurora');
-    (next === 'main' ? $('startBtn') : result ? $('retryBtn') : canvas).focus({ preventScroll: true });
-    animate(result ? $('resultScreen').firstElementChild : next === 'main' ? main.querySelector('.hero-card') : stageContent,
+    (next === 'main' ? $('startBtn') : next==='stage' ? $('stageRail').querySelector('[aria-current="true"]') : result ? ($('nextBtn').hidden?$('retryBtn'):$('nextBtn')) : canvas)?.focus({ preventScroll: true });
+    animate(result ? $('resultScreen').firstElementChild : next === 'main' ? main.querySelector('.hero-card') : next==='stage' ? $('stageContent') : stageContent,
       [{ opacity: .65 }, { opacity: 1 }]);
     syncPause();
   });
@@ -92,7 +118,7 @@ function syncPause() {
   else { cancelEffects(); audio.stop(); }
 }
 function openPanel(name, opener) {
-  if (screen === 'main' || purchaseBusy || panel === name) return;
+  if (!['battle','result'].includes(screen) || purchaseBusy || panel === name) return;
   // The shared header remains reachable while a panel is open. Replace the
   // previous panel so Back cannot stack an obscured confirmation beneath it.
   if (panel) $(panel).hidden = true;
@@ -110,10 +136,19 @@ function closePanel() {
   stageContent.inert = screen !== 'battle'; $('resultScreen').inert = screen !== 'result';
   syncPause(); focusReturn?.focus({ preventScroll: true });
 }
-function start() {
-  if (!ready || purchaseBusy) return;
-  total = 0; runLanterns = 0; world = createWorld(1); committedRoute = false; resultDone = false;
-  setScreen('battle'); updateHud(); notice(t('routes')[0], 2.2); play('game.start');
+async function start(id=world?.stage||1, {practice=false}={}) {
+  if (!ready || purchaseBusy || starting) return;
+  id=Number(id);if(!Number.isInteger(id)||id<1||id>30)return;
+  const requestedPractice=practice||practiceMode||practiceRun;
+  if(!requestedPractice&&id>campaign.unlocked)return;
+  starting=true;const ticket=generation;
+  try {
+    if(requestedPractice&&!await LocalPractice.validate())return;
+    if(ticket!==generation||lifetime.signal.aborted)return;
+    practiceRun=requestedPractice;
+    total=0;runLanterns=0;world=createWorld(id);committedRoute=false;resultDone=false;
+    setScreen('battle');updateHud();notice(t(world.level.hint),4);play('game.start');
+  } finally { starting=false; }
 }
 function move(direction) {
   if (isBlocked() || !world) return;
@@ -134,12 +169,18 @@ function consumeEvents() {
   for (const event of world.events.splice(0)) {
     renderer?.event(event);
     if (event.type === 'step') play('movement.jump');
-    if (event.type === 'blocked') { notice(event.reason === 'rock' ? t('roadRock') : t('edge')); play('feedback.error'); }
-    if (event.type === 'pickup') { journey.lanterns++; saved(); notice(`${t('pickup')} +25`); play('reward.collect'); flyLantern(event); }
+    if (event.type === 'blocked') { notice(t(({rock:'roadRock',cargo:'needCargo',dock:'needDock'})[event.reason]||'edge')); play('feedback.error'); }
+    if (event.type === 'pickup') { if(!practiceMode&&!practiceRun){journey.lanterns++;saved();} notice(`${t('pickup')} +25`); play('reward.collect'); flyLantern(event); }
+    if (event.type === 'signal') { notice(t('signalUsed'),2.4);play('game.checkpoint'); }
     if (event.type === 'impact') { notice(t(event.reason === 'water' ? 'roadWater' : 'roadCrash')); play(event.reason === 'water' ? 'water.splash' : 'player.hurt'); }
     if (event.type === 'checkpoint' && !committedRoute) {
-      committedRoute = true; journey.clears[world.stage - 1]++; saved();
-      notice(`${t('roadGoal')} · ${world.stage}/3`, 3); play('game.checkpoint');
+      committedRoute = true;
+      if(!practiceMode&&!practiceRun){
+        recordClear(campaign,world);
+        try { storage.setItem(CAMPAIGN_KEY,JSON.stringify(campaign)); }
+        catch { notice(t('storage'),4); }
+      }
+      notice(`${t('roadGoal')} · ${world.stage}/30`, 3); play('game.checkpoint');
       animate($('stageValue'), [{ opacity: .4 }, { opacity: 1 }], 220);
     }
   }
@@ -149,14 +190,16 @@ function finish(win) {
   if (resultDone) return;
   resultDone = true;
   const finalScore = total + world.score;
-  if (finalScore > best) { best = finalScore; try { storage.setItem(BEST_KEY, String(best)); } catch {} }
   const route = world.stage;
+  $('nextBtn').hidden = !win || route===30;
   setScreen('result'); updateHud();
   $('resultTitle').textContent = t(win ? 'winTitle' : 'loseTitle');
-  $('resultCopy').textContent = win ? t('masteryBody') : `${t(world.reason === 'water' ? 'roadWater' : 'roadCrash')} ${t(route >= 3 ? 'retryGoalStage3' : route === 2 ? 'retryGoalStage2' : 'roadHint')}`;
-  $('resultScore').textContent = finalScore; $('resultBest').textContent = best;
+  $('resultCopy').textContent = win ? route===30?t('complete'):t('medalRules') : `${t(world.reason === 'water' ? 'roadWater' : 'roadCrash')} ${t(world.level.hint)}`;
+  $('resultScore').textContent = finalScore; $('resultBest').textContent = campaign.best[route-1];
   $('resultLanterns').textContent = runLanterns + world.lanterns;
-  $('resultRoute').textContent = t('routes')[route - 1];
+  $('resultRoute').textContent = `${route} / 30 · ${stageName(world.level,locale)}`;
+  const mask=win?(1|(world.lanterns===3?2:0)|((world.level.charge?world.charges===1:world.moves<=world.level.budget)?4:0)):0;
+  $('resultMedals').textContent=[1,2,4].map(bit=>mask&bit?'★':'☆').join(' ');
   $('resultScreen').dataset.outcome = win ? 'win' : 'lose'; play(win ? 'result.win' : 'result.lose');
 }
 function loop(now) {
@@ -165,42 +208,43 @@ function loop(now) {
   advance(world, dt); consumeEvents();
   transient -= dt;
   if (transient <= 0 && world.state === 'playing') {
-    $('battleMessage').textContent = world.stage === 3 && world.player.row >= 4 && world.player.row <= 6
-      ? t(signalState(world) === 'go' ? 'signalGo' : 'signalStop') : world.player.row <= 3 ? t('river') : t('roadHint');
+    const nearSignal=world.level.signals.find(s=>s.row===world.player.row-1||s.row===world.player.row);
+    $('battleMessage').textContent = world.freeze>0?t('signalUsed'):nearSignal?t(signalState(world,nearSignal.row)==='go'?'signalGo':'signalStop'):
+      missingCargo(world)?`${t('cargo')} ${world.level.required.length-missingCargo(world)}/${world.level.required.length}`:
+      world.player.row<3?t('dock'):t(world.level.hint);
   }
   renderer.draw(world, dt, journey.equipped === 'aurora');
   if (world.state === 'impact' && world.phaseTime >= .48) { finish(false); return; }
   if (world.state === 'arriving' && world.phaseTime >= .7) {
-    if (world.stage === 3) { finish(true); return; }
-    total += world.score; runLanterns += world.lanterns;
-    world = createWorld(world.stage + 1); committedRoute = false; renderer.clear(); updateHud();
-    notice(`${t('next')} · ${t('routes')[world.stage - 1]}`, 2.2);
+    finish(true); return;
   }
   raf = requestAnimationFrame(loop);
 }
 function refreshCamp() {
   journey = readJourney(storage);
-  $('masteryCount').textContent = journey.clears.reduce((a,b) => a+b, 0);
+  $('masteryCount').textContent = `${campaign.medals.filter(v=>v&1).length} / 30`;
   $('savedLanterns').textContent = journey.lanterns;
   $('diamondBalance').textContent = window.WeightPlayWallet?.read().diamonds || 0;
-  $('medalList').replaceChildren(...journey.clears.map((count, i) => {
+  $('medalList').replaceChildren(...campaignCopy.arcs.map((name, i) => {
+    const count=campaign.medals.slice(i*5,i*5+5).filter(v=>v&1).length;
     const row = document.createElement('li'), image = document.createElement('span'), label = document.createElement('span'), amount = document.createElement('strong');
     image.className = 'lantern-art'; image.setAttribute('aria-hidden','true'); row.dataset.earned = count > 0;
-    label.textContent = t('routes')[i]; amount.textContent = count > 0 ? `×${count}` : '—'; row.append(image,label,amount); return row;
+    label.textContent = name; amount.textContent = `${count} / 5`; row.append(image,label,amount); return row;
   }));
   $('buyBtn').textContent = journey.aurora ? `${t('equip')} · ${t('aurora')}` : `${t('buy')} · ${COST}`;
-  $('buyBtn').disabled = journey.aurora && journey.equipped === 'aurora';
-  $('equipGold').disabled = journey.equipped === 'gold';
+  $('buyBtn').disabled = practiceMode||practiceRun||(journey.aurora && journey.equipped === 'aurora');
+  $('equipGold').disabled = practiceMode||practiceRun||journey.equipped === 'gold';
   $('ownership').textContent = journey.aurora ? t('owned') : `${COST}`;
   $('campPreview').classList.toggle('aurora', journey.equipped === 'aurora');
 }
 function equip(name) {
+  if(practiceMode||practiceRun)return;
   const prior = journey.equipped; journey.equipped = name;
   if (!saved()) journey.equipped = prior;
   refreshCamp(); renderer?.draw(world, 0, journey.equipped === 'aurora');
 }
 async function purchase() {
-  if (purchaseBusy) return;
+  if (purchaseBusy || practiceMode || practiceRun) return;
   purchaseBusy = true; $('confirmBuy').disabled = true;
   try {
     const transact = () => buyAurora(storage, window.WeightPlayWallet);
@@ -214,10 +258,12 @@ async function purchase() {
   } finally { purchaseBusy = false; $('confirmBuy').disabled = false; $('buyBtn').focus({ preventScroll: true }); }
 }
 
-listen($('startBtn'), 'click', start); listen($('retryBtn'), 'click', start);
-listen($('homeBtn'), 'click', () => setScreen('main'));
-listen($('battleBackBtn'), 'click', () => screen === 'result' ? setScreen('main') : openPanel('leaveDialog'));
-listen($('continueBtn'), 'click', closePanel); listen($('leaveBtn'), 'click', () => setScreen('main'));
+listen($('startBtn'), 'click', showStages); listen($('retryBtn'), 'click', () => start());
+listen($('nextBtn'), 'click', () => start(world.stage+1));
+listen($('homeBtn'), 'click', showStages); listen($('stageBackBtn'),'click',()=>setScreen('main'));
+listen($('battleBackBtn'), 'click', () => screen === 'result' ? showStages() : openPanel('leaveDialog'));
+listen($('continueBtn'), 'click', closePanel); listen($('leaveBtn'), 'click', showStages);
+listen($('signalBtn'),'click',()=>{if(!isBlocked()&&useSignal(world))consumeEvents();});
 listen($('helpBtn'), 'click', () => openPanel('helpPanel', $('helpBtn')));
 listen($('campBtn'), 'click', () => openPanel('campPanel', $('campBtn')));
 listen($('resultCampBtn'), 'click', () => openPanel('campPanel', $('resultCampBtn')));
@@ -256,8 +302,8 @@ listen(canvas,'pointerup', event => {
 listen(window,'weightplay:interaction-state',syncPause);
 listen(document,'visibilitychange',syncPause);
 listen(window,'resize',() => { renderer?.resize(); if (world) renderer?.draw(world,0,journey.equipped === 'aurora'); });
-listen(window,'storage',() => { journey = readJourney(storage); best = readBest(storage); updateHud(); if (panel === 'campPanel') refreshCamp(); });
-listen(window,'pagehide',event => { generation++; cancelAnimationFrame(raf); clearTimeout(loadTimeout); cancelEffects(); paused = true; audio.stop(); if (!event.persisted) { lifetime.abort(); frame.destroy(); audio.dispose(); } });
+listen(window,'storage',() => { journey = readJourney(storage); best = readBest(storage); campaign=readCampaign(storage);updateHud();if(screen==='stage')renderStages(); if (panel === 'campPanel') refreshCamp(); });
+listen(window,'pagehide',event => { generation++; selector?.cancel();cancelAnimationFrame(raf); clearTimeout(loadTimeout); cancelEffects(); paused = true; audio.stop(); if (!event.persisted) { lifetime.abort(); selector?.destroy();frame.destroy(); audio.dispose(); } });
 listen(window,'pageshow',event => { if (event.persisted) syncPause(); });
 // Shared Settings already owns locale navigation. Do not install a competing handler.
 updateHud(); setScreen('main');
@@ -296,9 +342,12 @@ Promise.all([requiredImage(atlas,'/games/road-crosser/art/courier-atlas-v22.webp
   if (loadFailed || lifetime.signal.aborted) return;
   renderer = createRenderer(canvas, atlas, terrain, () => motion.matches); renderer.resize();
   clearTimeout(loadTimeout); ready = true; $('startBtn').disabled = false; loader.ready();
+  LocalPractice.register({gameId:'road-crosser',stageIds:LEVELS.map(l=>l.id),
+    enable:enabled=>{practiceMode=enabled;if(screen==='stage')renderStages();},startStage:id=>start(Number(id),{practice:true})});
 }).catch(failLoad);
 
 // Read-only engineering observation; play always uses the visible controls.
 window.__roadCrosserSmoke = Object.freeze({ snapshot: () => ({ screen, stage: world?.stage || 1, score: total + (world?.score || 0), best,
   player: world ? { ...world.player } : null, traffic: world?.traffic.map(c => c.x), logs: world?.logs.map(l => l.x),
-  paused, leaveOpen: panel === 'leaveDialog', panel, ready, phase: world?.state, journey: { ...journey, clears: [...journey.clears] } }) });
+  paused, leaveOpen: panel === 'leaveDialog', panel, ready, phase: world?.state, journey: { ...journey, clears: [...journey.clears] },
+  campaign:structuredClone(campaign),practiceRun,moves:world?.moves,charges:world?.charges,missingCargo:world?missingCargo(world):0 }) });

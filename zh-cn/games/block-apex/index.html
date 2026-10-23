@@ -3,6 +3,7 @@
 <head>
 
     <base href="/games/block-apex/" />
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" charset="utf-8" defer></script>
     <link rel="canonical" href="https://weightplay.com/zh-cn/games/block-apex/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/block-apex/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/block-apex/" />
@@ -36,7 +37,7 @@
   <link rel="stylesheet" href="../../src/game-ui-theme.css">
 
 <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
-  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
   <link rel="stylesheet" href="style.css?v=20261023-block-apex-v20-i9-main-progress44">
   <link rel="stylesheet" href="../../src/tutorial.css?v=20260928-block-apex-tutorial1">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
@@ -157,7 +158,7 @@
     </section>
     <select id="localeSelect" hidden aria-label="Language"></select>
   </div>
-  <article id="guide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"></article>
+  <section id="guide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off" data-wp-guide-renderer="guide.mjs#renderStaticGuide" data-wp-guide-locale="zh-Hans"><div class="game-info-title"><h2>方块极速 — 游戏指南</h2><div class="game-info-facts"><div class="game-info-fact"><span>难度</span><strong>中等</strong></div><div class="game-info-fact"><span>预计游玩时间</span><strong>每场赛事约 1–3 分钟（估计）</strong></div><div class="game-info-fact"><span>训练技能</span><strong>反应、专注、手眼协调</strong></div></div></div><div class="game-info-sections"><section class="game-info-section"><h3>赛车任务</h3><p>驾驶小型赛车，在立体封闭赛道上与方块动物车手竞争。重点不只是加速，而是判断入弯位置、观察下个弯角，决定是否用漂移换取出弯加速。路面、路肩和护栏界定空间。金色光环、加速板、湿滑路面和橙色路障都有实际作用。金色箭头指向下一检查点；必须依次通过才能计算圈数。</p></section><section class="game-info-section"><h3>操作与目标</h3><p>车辆自动加速。A/D 或 ←/→ 转向；S/↓ 刹车；按住空格键并转向可漂移，松开后加速。Shift/X 使用氮气。R 回到最后检查点并加罚 3 秒。触控可多指同时操作。P/Escape 暂停。 进入前先读目标。名次、漂移时间、光环数量、限时和碰撞上限可能同时存在，必须全部达成。直线紧跟前车可利用尾流，超车就会离开尾流。持续漂移会积累短暂加速，过早松开没有奖励。氮气是独立资源。节能赛不能靠行驶、光环或漂移补充，但路面加速板仍有效。</p></section><section class="game-info-section"><h3>逐步变化的赛事</h3><p>赛道有不同布局，也包含反向路线。长弯适合控制漂移，湿滑路面会降低抓地力；收集光环有时必须偏离最快路线。高低差与旗帜标出的侧风也会影响操控。赛事会将这些条件与氮气限制或碰撞上限组合。达成画面列出的要求才能解锁下一场，已解锁赛事可重玩。更快的时间能增加星星，但不能代替实际目标。</p></section><section class="game-info-section"><h3>实用技巧</h3><p>急弯前先刹车。保留空间开始漂移，出口打开再松开。氮气留给直线。结束最后一圈前核对光环数。复位会清空氮气并罚三秒，不能跳过检查点。对手、路障和边界都计入碰撞，短暂冷却避免持续撞击每帧重复计数。</p></section><section class="game-info-section"><h3>设计说明</h3><p>本作采用街机手感，不是现实驾驶模拟。玩家与 AI 共享固定步进的运动规则，对手沿路转向而非传送。几何、坡度、车辆、灯光和跟随镜头实时渲染。车库和改装使用共用界面。不同车种在速度、加速和抓地力之间取舍，改装不会改变检查点规则。本版本没有多人联机、云端排行榜、每日活动或幽灵车。</p></section><section class="game-info-section"><h3>玩家与存档信息</h3><p>使用支持 WebGL 2 的浏览器、键盘、多点触控或标准手柄。手柄左摇杆或方向键转向，下方按钮漂移，右方按钮或右扳机用氮气，左扳机刹车，Start 暂停。不要求账号或付款。进度只存在此浏览器，清除数据可能导致丢失。保存失败会警告，当次仍能玩。失去焦点会暂停，返回不会快进。</p></section><section class="game-info-section"><h3>常见问题</h3><details><summary>跑完为什么失败？</summary><p>完成圈数只是一个条件。请检查结算中的名次、漂移、光环、碰撞和时间目标。</p></details><details><summary>如何解锁车辆？</summary><p>野兔、熊猫、企鹅分别需要 6、18、36 颗星，达标后可免费选择。</p></details><details><summary>能重复领取同场奖励吗？</summary><p>不能，每场只结算一次。重玩会开始新比赛。</p></details><details><summary>3D 失效怎么办？</summary><p>模拟会停止。重试重建比赛，返回关卡保留已存进度。</p></details></section></div><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><p>想再玩一场考验反应与操控的街机游戏，可以试试：</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="snake" href="/zh-cn/games/snake/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/snake.webp" data-final-src="/assets/weightplay-logo.png" alt="贪吃蛇" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">贪吃蛇</strong><span>在格线中带领不断变长的蛇，保持前方路线畅通。</span></span></a><a class="game-info-related-card" data-game-id="space-rocks" href="/zh-cn/games/space-rocks/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/space-rocks.webp" data-final-src="/assets/weightplay-logo.png" alt="星矿漂流" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">星矿漂流</strong><span>驾驶太空船躲开漂流岩块，在移动中瞄准。</span></span></a></div></div></section>
   <p id="bootError" class="apex-boot-error" role="alert" hidden>Game initialization failed. <a href="">Reload this preview</a> or <a href="/">return to WeightPlay</a>. No saved progress was intentionally removed.</p>
   <noscript><p>This game requires JavaScript and WebGL 2.</p></noscript>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
@@ -172,25 +173,5 @@
 <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-cn.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="方块极速 游戏信息">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>方块极速</h2><p>驾驶方块赛车挑战 30 场 3D 赛事，抓准甩尾与加速时机，和方块动物伙伴一较高下。</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>3D 方块赛车</strong></div><div class="game-info-fact"><span>类型</span><strong>Action · Arcade · Animal Games</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
 </body>
 </html>

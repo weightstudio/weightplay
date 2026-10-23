@@ -1,4 +1,4 @@
-import { signalState, nextLanding } from './model.mjs?v=22';
+import { signalState, nextLanding, missingCargo } from './model.mjs?v=23';
 const FRAMES = { runner: [0, 30, 535, 510], car: [535, 90, 505, 450], truck: [1040, 60, 496, 480],
   log: [0, 560, 600, 440], rock: [600, 560, 490, 440], lantern: [1090, 540, 446, 460] };
 export function createRenderer(canvas, atlas, terrain, reduced) {
@@ -34,7 +34,7 @@ export function createRenderer(canvas, atlas, terrain, reduced) {
     if (!world) return;
     const rh = height / 9, cw = width / 10;
     ctx.clearRect(0, 0, width, height);
-    const textures = [3, 2, 2, 0, 1, 1, 1, 0, 0];
+    const textures = world.level.terrain.map(kind => ({ D:3, W:2, G:0, R:1 })[kind]);
     for (let row = 0; row < 9; row++) {
       const sourceHeight = terrain.naturalHeight / 4;
       const scale = rh / sourceHeight, tileWidth = terrain.naturalWidth * scale;
@@ -47,7 +47,13 @@ export function createRenderer(canvas, atlas, terrain, reduced) {
     // Gates and route markers use the same actual lantern art as pickups.
     for (const x of [.5, 9.5]) sprite('lantern', x * cw, rh * .45, Math.min(42, cw), rh * .75);
     ctx.fillStyle = '#ffde85'; ctx.font = `700 ${Math.max(10, Math.min(14, rh * .3))}px system-ui`;
-    ctx.textAlign = 'center'; ctx.fillText(`${world.stage} / 3`, width / 2, rh * .6);
+    ctx.textAlign = 'center';
+    const docks = world.level.exits.length ? world.level.exits : [4.5,5.5];
+    for (const dock of docks) {
+      ctx.strokeStyle = missingCargo(world) ? '#7ce8ef' : '#ffe3a0'; ctx.lineWidth = 3;
+      ctx.strokeRect((dock-.58)*cw, rh*.18, cw*1.16, rh*.65);
+      ctx.fillStyle = ctx.strokeStyle; ctx.fillText(missingCargo(world) ? `◇${missingCargo(world)}` : '↑', dock*cw, rh*.64);
+    }
     for (const log of world.logs) {
       const x = log.x * cw, y = (log.row + .5) * rh, w = log.width * cw;
       // Segmented timber keeps visible support equal to simulation support,
@@ -72,13 +78,20 @@ export function createRenderer(canvas, atlas, terrain, reduced) {
     }
     for (const pickup of world.pickups) if (!pickup.taken) {
       const lift = reduced() ? 0 : Math.sin(world.time * 2 + pickup.id) * 2;
+      if (pickup.required) {
+        ctx.strokeStyle = '#9cffff'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.ellipse(pickup.x*cw,(pickup.row+.5)*rh,cw*.39,rh*.34,0,0,Math.PI*2);ctx.stroke();
+      }
       sprite('lantern', pickup.x * cw, (pickup.row + .5) * rh + lift, Math.min(cw * .7, 32), rh * .7);
     }
-    if (world.stage === 3) {
-      const stop = signalState(world), y = 5.5 * rh;
+    for (const {row} of world.level.signals) {
+      const stop = signalState(world,row), y = (row+.5) * rh;
       ctx.fillStyle = '#0c2036'; ctx.fillRect(0, y - 13, 26, 26);
       ctx.fillStyle = stop === 'stop' ? '#fb8b7c' : stop === 'warning' ? '#ffd26b' : '#6bf0b7';
       ctx.font = 'bold 15px system-ui'; ctx.fillText(stop === 'stop' ? 'Ⅱ' : stop === 'warning' ? '!' : '→', 13, y + 5);
+    }
+    if (world.freeze > 0) for (let row=1;row<8;row++) if(world.level.terrain[row]==='R') {
+      ctx.strokeStyle='#f5dc7e';ctx.lineWidth=3;ctx.strokeRect(2,row*rh+2,width-4,rh-4);
     }
     const p = world.player;
     if (world.state === 'playing') {
