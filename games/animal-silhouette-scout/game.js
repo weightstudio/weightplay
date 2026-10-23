@@ -55,9 +55,9 @@
   }
   function stageRecord(index) {
     const r=M.rounds[index], mastery=state.progress.mastery[r.id]||0;
-    return {id:r.id,kicker:t('round',{n:r.id,total:30}),title:t(r.nameKey),subtitle:t(`mode_${r.mode}`),
+    return {id:r.id,kicker:t('round',{n:r.id,total:30}),title:t(`mode_${r.mode}`),subtitle:`${r.arc} / 6`,
       status:index>=state.progress.unlocked?t('locked'):mastery?`${t('complete')} · ${'★'.repeat(mastery)}`:t('open'),
-      summary:t(`rule_${r.mode}`),details:[t('masteryHelp'),t(r.clueKey)],locked:index>=state.progress.unlocked,cleared:state.progress.cleared.includes(r.id),poster};
+      summary:t(`rule_${r.mode}`),details:[t('masteryHelp'),t('lookCloser')],locked:index>=state.progress.unlocked,cleared:state.progress.cleared.includes(r.id),poster};
   }
   function renderStages() {
     if(!selector) selector=window.WeightPlayPlayUI.mountStage({page:$('stageWorkspace'),rail:$('stageList'),selected:browse,
@@ -87,7 +87,7 @@
   }
   function renderBattle() {
     const r=round();$('roundLabel').textContent=`${r.id} / 30`;$('roundName').textContent=t(`mode_${r.mode}`);
-    $('targetLabel').textContent=t(`mode_${r.mode}`);$('ruleText').textContent=t(`rule_${r.mode}`);$('clue').textContent=t(r.clueKey);
+    $('targetLabel').textContent=t(`mode_${r.mode}`);$('ruleText').textContent=t(`rule_${r.mode}`);$('clue').textContent=t('lookCloser');
     $('silhouette').className=`silhouette mode-${r.mode}`;$('silhouette').style.setProperty('--target-count',r.targets.length);
     $('silhouette').replaceChildren(...r.targets.map((id,index)=>{
       const target=document.createElement('div');target.className='target-animal';target.append(sprite(id,'target-sprite'));

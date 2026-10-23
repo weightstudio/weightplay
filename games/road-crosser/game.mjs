@@ -40,6 +40,7 @@ $('localeSelect').value = locale;
 canvas.setAttribute('aria-label', window.WEIGHTPLAY_GAME_TITLES?.['road-crosser']?.[locale] || copy.canvasLabel);
 $('leaveTitle').textContent = leaveCopy[0]; $('continueBtn').textContent = leaveCopy[2]; $('leaveBtn').textContent = leaveCopy[3];
 $('leaveBtn').textContent=t('stages');
+$('battleBackBtn').setAttribute('aria-label',t('stages'));
 document.querySelectorAll('[data-extra="masteryBody"]').forEach(node=>node.textContent=t('medalRules'));
 document.querySelectorAll('[data-copy="growth"]').forEach(node=>node.textContent=t('medalRules'));
 $('homeBtn').textContent = t('stages'); $('stageTab').textContent = t('stages');
@@ -207,6 +208,8 @@ function finish(win) {
   const finalScore = total + world.score;
   const route = world.stage;
   $('nextBtn').hidden = !win || route===30;
+  $('nextBtn').dataset.wpFrameAction='primary';
+  $('retryBtn').dataset.wpFrameAction=win&&route<30?'secondary':'primary';
   setScreen('result'); updateHud();
   $('resultTitle').textContent = t(win ? 'winTitle' : 'loseTitle');
   $('resultCopy').textContent = win ? route===30?t('complete'):t('medalRules') : `${t(world.reason === 'water' ? 'roadWater' : 'roadCrash')} ${t(world.level.hint)}`;

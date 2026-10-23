@@ -27,6 +27,8 @@
     battleHeader.replaceChildren(battleBack, battleTitle);
 
     const stageTab = $("stageTabButton");
+    const journalButton = $("journalBtn");
+    const gearButton = $("gearBtn");
     stageTab.dataset.wpFrameAction = "tab";
     stageTab.setAttribute("role", "tab");
     stageTab.setAttribute("aria-selected", "true");
@@ -46,7 +48,7 @@
     const battleGroup = window.WeightPlayScreenFrame.createGroup();
     battleInfo.forEach((node) => battleGroup.add(node));
     frame.battleTopUI.add(battleGroup);
-    frame.commonDownButton.clear().add($("journalBtn")).add(stageTab).add($("gearBtn"));
+    frame.commonDownButton.clear().add(journalButton).add(stageTab).add(gearButton);
     frame.activate("main");
 
     window.addEventListener("pagehide", (event) => {
