@@ -3,3 +3,13 @@
 #battleScene #signalStatus,#battleScene .signal-help{color:#e4f6f5}#battleScene .signal-help{background:#183d50}
 
 #controls button{min-height:max(58px,var(--wp-frame-control-size-physical,44px))}
+#battleContent{position:relative}
+#battleContent[data-result-open]>:not(#signalResult){visibility:hidden;pointer-events:none}
+#signalResult{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:12px;background:#0b1b36e8;animation:signal-dialog-in .18s ease-out}
+#signalResultCard{max-height:100%;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;color:#17354d;background:#f3fafb;border:1px solid #8ba8bc;border-radius:22px;box-shadow:0 20px 80px #04162c60}
+#signalResultTitle{min-height:calc(80px * var(--wp-battle-canvas-inverse-scale,1));margin-top:0}
+#signalResultText{white-space:pre-line;min-height:calc(124px * var(--wp-battle-canvas-inverse-scale,1))}
+#signalResultActions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#signalResultActions button{min-width:0;white-space:normal;overflow-wrap:anywhere;align-self:stretch}
+#signalResultActions button:disabled{opacity:.45;cursor:default}
+@media(prefers-reduced-motion:reduce){#signalResult{animation:none}}

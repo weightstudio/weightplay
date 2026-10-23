@@ -28,7 +28,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-rain-roost/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-rain-roost/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rain-roost/" />
-  <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp" />
   <script src="/src/weightplay-audio.js?v=1.0.0"></script>
   <script src="/src/game-layout-config.js?v=20260919-banner1"></script><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
   <link rel="stylesheet" href="style.css?v=6">
@@ -57,7 +57,7 @@
 <body data-wp-game-owned-guide data-runtime-localize="off" data-wp-game-id="animal-rain-roost" data-wp-audience="general" data-wp-game-version="v6" data-wp-interface-version="9" data-screen="main">
   <div id="app" data-wp-frame-root>
     <main id="mainScreen" data-wp-standard-main-screen data-wp-main-screen data-wp-logical-main-canvas data-wp-game-version="v6" data-wp-interface-version="9">
-      <header class="wp-main-shell-header"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="Back to WeightPlay">←</a><h1 data-wp-frame-title data-wp-game-title>Regentropfen fangen</h1></header>
+      <header class="wp-main-shell-header"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="Zurück">←</a><h1 data-wp-frame-title data-wp-game-title>Regentropfen fangen</h1></header>
       <div id="mainContent" data-wp-frame-content="main">
         <img class="main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-rain-roost.webp" width="1254" height="1254" alt="" fetchpriority="high">
         <div data-wp-frame-copy><p data-copy="intro" data-wp-frame-summary>Führe Noris Nest durch den Mondregen. Fange blaue Tropfen und Gold, weiche Blättern aus.</p><span id="mainProgress" data-wp-frame-progress>0 / 30</span><button id="startButton" data-copy="start" data-wp-main-start data-wp-frame-action="primary" type="button" disabled>Reise beginnen</button></div>
@@ -65,7 +65,7 @@
       </div>
     </main>
     <section id="stageScreen" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-logical-header="stage" data-wp-frame-play-fill data-wp-stage-art="/assets/interface7-redrawn/animal-rain-roost.webp" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-rain-roost.webp')" hidden>
-      <header><button id="stageBack" data-wp-return="stage" type="button" aria-label="Back">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">Regentropfen fangen</strong></header>
+      <header><button id="stageBack" data-wp-return="stage" type="button" aria-label="Zurück">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">Regentropfen fangen</strong></header>
       <div id="stageContent" data-wp-frame-content="stage">
         <span id="stageProgress"></span>
         <section id="journeyPanel" role="tabpanel" aria-labelledby="stagesTab"><div id="stageRail" role="list" data-wp-stage-rail></div></section>
@@ -79,7 +79,7 @@
       <nav data-wp-frame-nav data-wp-frame-stage-nav role="tablist"><button id="stagesTab" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" type="button" role="tab" aria-controls="journeyPanel" aria-selected="true" data-copy="stages">Level</button><button id="nestTab" data-wp-frame-stage-slot="equipment" data-wp-frame-action="tab" type="button" role="tab" aria-controls="nestPanel" aria-selected="false" tabindex="-1" data-copy="equipment">Nest</button></nav>
     </section>
     <section id="battleScreen" data-screen="battle" data-wp-standard-battle-screen data-wp-frame-logical-header="battle" data-wp-frame-play-fill data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="700" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
-      <header><button id="battleBack" data-wp-return="battle" type="button" aria-label="Back">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">Regentropfen fangen</strong></header>
+      <header><button id="battleBack" data-wp-return="battle" type="button" aria-label="Zurück">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">Regentropfen fangen</strong></header>
       <div id="battleContent" data-wp-frame-content="battle">
         <div id="battleInfo" data-wp-frame-info><span><small data-copy="stage">Level</small><b id="stageValue">1</b></span><span><small data-copy="water">Tropfen</small><b id="catchValue">0 / 7</b></span><span><small data-copy="combo">Serie</small><b id="comboValue">0</b></span></div>
         <div id="arena"><canvas id="rainCanvas" tabindex="0" aria-label="Regentropfen fangen"></canvas><div class="rain-hud"><p id="goalLine"></p><p class="weather-line"><span id="windLabel"></span><span id="timeLabel"></span></p></div><div class="landing-cue" id="landingCue"></div><p class="catch-feedback" id="feedback" role="status" aria-live="polite"></p><button class="help-button" id="helpButton" type="button" aria-label="Help">?</button></div>
@@ -91,25 +91,10 @@
     </section>
     <section id="purchaseView" class="rain-modal purchase-modal" role="dialog" aria-modal="true" aria-labelledby="purchaseTitle" hidden><div class="rain-modal-card"><h2 id="purchaseTitle" data-copy="lantern">Auroralaterne</h2><p data-copy="lanternText">Dauerhafte Optik mit violettem Licht und goldenen Wasserspuren. Einmal 15 Diamanten, ohne Einfluss auf die Schwierigkeit.</p><p class="purchase-cost"><img src="/assets/weightplay-diamond.svg" alt="" width="24" height="24"> 15</p><p id="purchaseFeedback" role="status"></p><div class="dialog-actions"><button id="cancelBuy" type="button" data-copy="cancel">Abbrechen</button><button id="confirmBuy" type="button" data-copy="confirm">Bestätigen</button></div></div></section>
   </div>
-  <section class="game-page-info game-page-info-static" aria-label="Informationen zu Regentropfen fangen">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2 data-wp-game-title data-runtime-localize="off">Regentropfen fangen</h2><p>Bewege Noris kleines Nest, fange Regen und weiche Blättern aus.</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Regentropfen-Arcade</strong></div><div class="game-info-fact"><span>Genre</span><strong>Arcade · Timing · Focus · Family · Animal</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true">
+    <div class="game-info-hero"><small data-copy="guide">Spielanleitung</small><h2 data-wp-game-title>Regentropfen fangen</h2><p data-copy="intro">Führe Noris Nest durch den Mondregen. Fange blaue Tropfen und Gold, weiche Blättern aus.</p></div>
+    <div class="game-info-facts"><div class="game-info-fact"><span data-copy="age">Alter</span><strong>6+</strong></div><div class="game-info-fact"><span data-copy="players">Spieler</span><strong>1</strong></div><div class="game-info-fact"><span data-copy="roundTime">Pro Runde</span><strong>20–35 s</strong></div><div class="game-info-fact"><span data-copy="controls">Steuerung</span><strong>← → · 1–5</strong></div></div>
+    <div class="game-info-sections"><section class="game-info-section"><h3 data-copy="world">Das Mondmoor</h3><p data-copy="worldText">Nori bringt das Licht ins Moor zurück. Lies den Wind und bewege das Nest rechtzeitig.</p></section><section class="game-info-section"><h3 data-copy="controls">Steuerung</h3><p data-copy="controlText">Ziehe oder tippe auf das Wasser. Nutze ← → oder die physischen Bahnen 1–5. Die leuchtende Markierung zeigt die nächste Landung.</p></section><section class="game-info-section"><h3 data-copy="goals">Deine Aufgabe</h3><p data-copy="goalText">Erfülle das Ziel vor Regenende. Manche Level verlangen Gold, eine Serie oder ein Blattlimit. Verpasste Tropfen und Blätter unterbrechen Serien. Wiederholen ist kostenlos.</p><p data-copy="starText">Ein Stern für das Ziel, zwei ab 85% gefangenen Tropfen, drei ohne verpasste Tropfen oder Blätter.</p></section><section class="game-info-section"><h3 data-copy="growth">Dein Nest</h3><p data-copy="growthText">Sechs Regionen führen Wind, Blattkorridore, Goldwege und Präzision ein. Sammle Sterne, öffne Level und wähle deinen Korb.</p></section><section class="game-info-section"><h3 data-copy="privacy">Lokaler Fortschritt</h3><p data-copy="privacyText">Fortschritt, Ausrüstung und alter Rekord bleiben ohne Konto in diesem Browser. Andere Geräte haben eigene Spielstände. Speicherfehler werden gemeldet.</p></section><section class="game-info-section"><h3 data-copy="faq">Fragen</h3><details><summary data-copy="stars">Sterne</summary><p data-copy="starText">Ein Stern für das Ziel, zwei ab 85% gefangenen Tropfen, drei ohne verpasste Tropfen oder Blätter.</p></details><details><summary data-copy="equipment">Nest</summary><p data-copy="netText">Nach Level 5: wehrt pro Regen zwei Blätter ab, hat aber einen schmaleren Fangbereich.</p><p data-copy="magnetText">Nach Level 10: zieht ferneres Gold an, blaue Tropfen brauchen mehr Präzision.</p><p data-copy="lanternText">Dauerhafte Optik mit violettem Licht und goldenen Wasserspuren. Einmal 15 Diamanten, ohne Einfluss auf die Schwierigkeit.</p></details></section></div>
   </section>
   <script src="/src/wallet.js"></script>
   <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>

@@ -28,7 +28,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-rain-roost/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-rain-roost/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rain-roost/" />
-  <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp" />
   <script src="/src/weightplay-audio.js?v=1.0.0"></script>
   <script src="/src/game-layout-config.js?v=20260919-banner1"></script><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
   <link rel="stylesheet" href="style.css?v=6">
@@ -57,7 +57,7 @@
 <body data-wp-game-owned-guide data-runtime-localize="off" data-wp-game-id="animal-rain-roost" data-wp-audience="general" data-wp-game-version="v6" data-wp-interface-version="9" data-screen="main">
   <div id="app" data-wp-frame-root>
     <main id="mainScreen" data-wp-standard-main-screen data-wp-main-screen data-wp-logical-main-canvas data-wp-game-version="v6" data-wp-interface-version="9">
-      <header class="wp-main-shell-header"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="Back to WeightPlay">←</a><h1 data-wp-frame-title data-wp-game-title>Attrape les gouttes</h1></header>
+      <header class="wp-main-shell-header"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="Retour">←</a><h1 data-wp-frame-title data-wp-game-title>Attrape les gouttes</h1></header>
       <div id="mainContent" data-wp-frame-content="main">
         <img class="main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-rain-roost.webp" width="1254" height="1254" alt="" fetchpriority="high">
         <div data-wp-frame-copy><p data-copy="intro" data-wp-frame-summary>Guide le nid de Nori sous la lune. Attrape les gouttes bleues et l’or, évite les feuilles.</p><span id="mainProgress" data-wp-frame-progress>0 / 30</span><button id="startButton" data-copy="start" data-wp-main-start data-wp-frame-action="primary" type="button" disabled>Commencer</button></div>
@@ -65,7 +65,7 @@
       </div>
     </main>
     <section id="stageScreen" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-logical-header="stage" data-wp-frame-play-fill data-wp-stage-art="/assets/interface7-redrawn/animal-rain-roost.webp" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-rain-roost.webp')" hidden>
-      <header><button id="stageBack" data-wp-return="stage" type="button" aria-label="Back">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">Attrape les gouttes</strong></header>
+      <header><button id="stageBack" data-wp-return="stage" type="button" aria-label="Retour">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">Attrape les gouttes</strong></header>
       <div id="stageContent" data-wp-frame-content="stage">
         <span id="stageProgress"></span>
         <section id="journeyPanel" role="tabpanel" aria-labelledby="stagesTab"><div id="stageRail" role="list" data-wp-stage-rail></div></section>
@@ -79,7 +79,7 @@
       <nav data-wp-frame-nav data-wp-frame-stage-nav role="tablist"><button id="stagesTab" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" type="button" role="tab" aria-controls="journeyPanel" aria-selected="true" data-copy="stages">Étapes</button><button id="nestTab" data-wp-frame-stage-slot="equipment" data-wp-frame-action="tab" type="button" role="tab" aria-controls="nestPanel" aria-selected="false" tabindex="-1" data-copy="equipment">Nid</button></nav>
     </section>
     <section id="battleScreen" data-screen="battle" data-wp-standard-battle-screen data-wp-frame-logical-header="battle" data-wp-frame-play-fill data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="700" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
-      <header><button id="battleBack" data-wp-return="battle" type="button" aria-label="Back">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">Attrape les gouttes</strong></header>
+      <header><button id="battleBack" data-wp-return="battle" type="button" aria-label="Retour">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">Attrape les gouttes</strong></header>
       <div id="battleContent" data-wp-frame-content="battle">
         <div id="battleInfo" data-wp-frame-info><span><small data-copy="stage">Étape</small><b id="stageValue">1</b></span><span><small data-copy="water">Gouttes</small><b id="catchValue">0 / 7</b></span><span><small data-copy="combo">Série</small><b id="comboValue">0</b></span></div>
         <div id="arena"><canvas id="rainCanvas" tabindex="0" aria-label="Attrape les gouttes"></canvas><div class="rain-hud"><p id="goalLine"></p><p class="weather-line"><span id="windLabel"></span><span id="timeLabel"></span></p></div><div class="landing-cue" id="landingCue"></div><p class="catch-feedback" id="feedback" role="status" aria-live="polite"></p><button class="help-button" id="helpButton" type="button" aria-label="Help">?</button></div>
@@ -91,25 +91,10 @@
     </section>
     <section id="purchaseView" class="rain-modal purchase-modal" role="dialog" aria-modal="true" aria-labelledby="purchaseTitle" hidden><div class="rain-modal-card"><h2 id="purchaseTitle" data-copy="lantern">Lanterne aurore</h2><p data-copy="lanternText">Apparence permanente : lumière violette et traînées dorées. Un achat de 15 diamants, sans effet sur la difficulté.</p><p class="purchase-cost"><img src="/assets/weightplay-diamond.svg" alt="" width="24" height="24"> 15</p><p id="purchaseFeedback" role="status"></p><div class="dialog-actions"><button id="cancelBuy" type="button" data-copy="cancel">Annuler</button><button id="confirmBuy" type="button" data-copy="confirm">Confirmer</button></div></div></section>
   </div>
-  <section class="game-page-info game-page-info-static" aria-label="Informations sur Attrape les gouttes">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Attrape les gouttes</h2><p>Déplace le petit nid de Nori pour attraper la pluie et éviter les feuilles.</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jeu</span><strong>Arcade des gouttes de pluie</strong></div><div class="game-info-fact"><span>Genre</span><strong>Arcade · Timing · Focus · Family · Animal</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true">
+    <div class="game-info-hero"><small data-copy="guide">Guide du jeu</small><h2 data-wp-game-title>Attrape les gouttes</h2><p data-copy="intro">Guide le nid de Nori sous la lune. Attrape les gouttes bleues et l’or, évite les feuilles.</p></div>
+    <div class="game-info-facts"><div class="game-info-fact"><span data-copy="age">Âge</span><strong>6+</strong></div><div class="game-info-fact"><span data-copy="players">Joueurs</span><strong>1</strong></div><div class="game-info-fact"><span data-copy="roundTime">Par partie</span><strong>20–35 s</strong></div><div class="game-info-fact"><span data-copy="controls">Commandes</span><strong>← → · 1–5</strong></div></div>
+    <div class="game-info-sections"><section class="game-info-section"><h3 data-copy="world">Le marais lunaire</h3><p data-copy="worldText">Nori rend sa lumière au marais, pluie après pluie. Lis le vent et déplace le nid à temps.</p></section><section class="game-info-section"><h3 data-copy="controls">Commandes</h3><p data-copy="controlText">Glisse ou touche l’eau. Utilise ← → ou les voies physiques 1–5. La marque lumineuse annonce la prochaine arrivée.</p></section><section class="game-info-section"><h3 data-copy="goals">Ta mission</h3><p data-copy="goalText">Atteins le but avant la fin. Certaines étapes demandent de l’or, une série ou une limite de feuilles. Une goutte ratée ou une feuille brise la série. Rejouer est gratuit.</p><p data-copy="starText">Une étoile pour le but, deux à partir de 85% des gouttes, trois sans goutte ratée ni feuille touchée.</p></section><section class="game-info-section"><h3 data-copy="growth">Ton nid</h3><p data-copy="growthText">Six régions apportent vent, couloirs de feuilles, or et précision. Gagne des étoiles, débloque des étapes et choisis un panier.</p></section><section class="game-info-section"><h3 data-copy="privacy">Progrès locaux</h3><p data-copy="privacyText">Progrès, équipement et ancien record restent dans ce navigateur, sans compte. Chaque appareil garde sa partie. Un échec de sauvegarde est signalé.</p></section><section class="game-info-section"><h3 data-copy="faq">Questions</h3><details><summary data-copy="stars">Étoiles</summary><p data-copy="starText">Une étoile pour le but, deux à partir de 85% des gouttes, trois sans goutte ratée ni feuille touchée.</p></details><details><summary data-copy="equipment">Nid</summary><p data-copy="netText">Termine l’étape 5 : deux feuilles bloquées par pluie, mais une zone plus étroite.</p><p data-copy="magnetText">Termine l’étape 10 : attire l’or éloigné, mais demande plus de précision pour le bleu.</p><p data-copy="lanternText">Apparence permanente : lumière violette et traînées dorées. Un achat de 15 diamants, sans effet sur la difficulté.</p></details></section></div>
   </section>
   <script src="/src/wallet.js"></script>
   <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>

@@ -28,7 +28,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-rain-roost/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-rain-roost/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rain-roost/" />
-  <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp" />
   <script src="/src/weightplay-audio.js?v=1.0.0"></script>
   <script src="/src/game-layout-config.js?v=20260919-banner1"></script><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
   <link rel="stylesheet" href="style.css?v=6">
@@ -57,7 +57,7 @@
 <body data-wp-game-owned-guide data-runtime-localize="off" data-wp-game-id="animal-rain-roost" data-wp-audience="general" data-wp-game-version="v6" data-wp-interface-version="9" data-screen="main">
   <div id="app" data-wp-frame-root>
     <main id="mainScreen" data-wp-standard-main-screen data-wp-main-screen data-wp-logical-main-canvas data-wp-game-version="v6" data-wp-interface-version="9">
-      <header class="wp-main-shell-header"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="Back to WeightPlay">←</a><h1 data-wp-frame-title data-wp-game-title>雨滴接接樂</h1></header>
+      <header class="wp-main-shell-header"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="返回">←</a><h1 data-wp-frame-title data-wp-game-title>雨滴接接樂</h1></header>
       <div id="mainContent" data-wp-frame-content="main">
         <img class="main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-rain-roost.webp" width="1254" height="1254" alt="" fetchpriority="high">
         <div data-wp-frame-copy><p data-copy="intro" data-wp-frame-summary>帶著諾里的小巢穿過月光雨幕。接住藍雨、追逐金雨，讓落葉從身旁飄過。</p><span id="mainProgress" data-wp-frame-progress>0 / 30</span><button id="startButton" data-copy="start" data-wp-main-start data-wp-frame-action="primary" type="button" disabled>開始旅程</button></div>
@@ -65,7 +65,7 @@
       </div>
     </main>
     <section id="stageScreen" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-logical-header="stage" data-wp-frame-play-fill data-wp-stage-art="/assets/interface7-redrawn/animal-rain-roost.webp" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-rain-roost.webp')" hidden>
-      <header><button id="stageBack" data-wp-return="stage" type="button" aria-label="Back">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">雨滴接接樂</strong></header>
+      <header><button id="stageBack" data-wp-return="stage" type="button" aria-label="返回">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">雨滴接接樂</strong></header>
       <div id="stageContent" data-wp-frame-content="stage">
         <span id="stageProgress"></span>
         <section id="journeyPanel" role="tabpanel" aria-labelledby="stagesTab"><div id="stageRail" role="list" data-wp-stage-rail></div></section>
@@ -79,7 +79,7 @@
       <nav data-wp-frame-nav data-wp-frame-stage-nav role="tablist"><button id="stagesTab" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" type="button" role="tab" aria-controls="journeyPanel" aria-selected="true" data-copy="stages">關卡</button><button id="nestTab" data-wp-frame-stage-slot="equipment" data-wp-frame-action="tab" type="button" role="tab" aria-controls="nestPanel" aria-selected="false" tabindex="-1" data-copy="equipment">巢穴</button></nav>
     </section>
     <section id="battleScreen" data-screen="battle" data-wp-standard-battle-screen data-wp-frame-logical-header="battle" data-wp-frame-play-fill data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="700" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
-      <header><button id="battleBack" data-wp-return="battle" type="button" aria-label="Back">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">雨滴接接樂</strong></header>
+      <header><button id="battleBack" data-wp-return="battle" type="button" aria-label="返回">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">雨滴接接樂</strong></header>
       <div id="battleContent" data-wp-frame-content="battle">
         <div id="battleInfo" data-wp-frame-info><span><small data-copy="stage">關卡</small><b id="stageValue">1</b></span><span><small data-copy="water">雨滴</small><b id="catchValue">0 / 7</b></span><span><small data-copy="combo">連擊</small><b id="comboValue">0</b></span></div>
         <div id="arena"><canvas id="rainCanvas" tabindex="0" aria-label="雨滴接接樂"></canvas><div class="rain-hud"><p id="goalLine"></p><p class="weather-line"><span id="windLabel"></span><span id="timeLabel"></span></p></div><div class="landing-cue" id="landingCue"></div><p class="catch-feedback" id="feedback" role="status" aria-live="polite"></p><button class="help-button" id="helpButton" type="button" aria-label="Help">?</button></div>
@@ -91,25 +91,10 @@
     </section>
     <section id="purchaseView" class="rain-modal purchase-modal" role="dialog" aria-modal="true" aria-labelledby="purchaseTitle" hidden><div class="rain-modal-card"><h2 id="purchaseTitle" data-copy="lantern">極光燈</h2><p data-copy="lanternText">永久外觀：紫色燈光與金色水花軌跡。一次花費 15 鑽石，不影響關卡難度。</p><p class="purchase-cost"><img src="/assets/weightplay-diamond.svg" alt="" width="24" height="24"> 15</p><p id="purchaseFeedback" role="status"></p><div class="dialog-actions"><button id="cancelBuy" type="button" data-copy="cancel">取消</button><button id="confirmBuy" type="button" data-copy="confirm">確認</button></div></div></section>
   </div>
-  <section class="game-page-info game-page-info-static" aria-label="雨滴接接樂 遊戲資訊">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2 data-wp-game-title data-runtime-localize="off">雨滴接接樂</h2><p>滑動諾里的小巢接住溫柔雨滴，避開飄過的葉片。</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>接雨街機益智</strong></div><div class="game-info-fact"><span>類型</span><strong>Arcade · Timing · Focus · Family · Animal</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true">
+    <div class="game-info-hero"><small data-copy="guide">遊戲指南</small><h2 data-wp-game-title>雨滴接接樂</h2><p data-copy="intro">帶著諾里的小巢穿過月光雨幕。接住藍雨、追逐金雨，讓落葉從身旁飄過。</p></div>
+    <div class="game-info-facts"><div class="game-info-fact"><span data-copy="age">建議年齡</span><strong>6+</strong></div><div class="game-info-fact"><span data-copy="players">玩家人數</span><strong>1</strong></div><div class="game-info-fact"><span data-copy="roundTime">每場時間</span><strong>20–35 s</strong></div><div class="game-info-fact"><span data-copy="controls">如何操作</span><strong>← → · 1–5</strong></div></div>
+    <div class="game-info-sections"><section class="game-info-section"><h3 data-copy="world">月光濕地</h3><p data-copy="worldText">諾里想用一場又一場小雨，讓濕地重新發光。看懂風向，在雨滴落下前把小巢移到位。</p></section><section class="game-info-section"><h3 data-copy="controls">如何操作</h3><p data-copy="controlText">拖曳或點按水面移動。鍵盤使用 ← →，也可按 1–5 直達實體雨道。發亮的落點會預告下一滴雨的位置。</p></section><section class="game-info-section"><h3 data-copy="goals">雨滴任務</h3><p data-copy="goalText">雨停前接滿目標；部分關卡另有金雨、連擊或落葉上限。漏接雨滴或碰到落葉會中斷連擊，每場雨都能免費重試。</p><p data-copy="starText">達成任務得一星；接住至少 85% 得第二星；全接且不碰落葉得第三星。</p></section><section class="game-info-section"><h3 data-copy="growth">我的巢穴</h3><p data-copy="growthText">六個區域逐步加入風向、落葉走廊、金雨路線與精準挑戰。獲得星星、解鎖下一關，並選擇適合路線的籃巢。</p></section><section class="game-info-section"><h3 data-copy="privacy">本機進度</h3><p data-copy="privacyText">進度、裝備及舊的最佳紀錄保存在目前瀏覽器，不需要帳號。其他裝置使用獨立存檔；儲存失敗時會提示。</p></section><section class="game-info-section"><h3 data-copy="faq">常見問題</h3><details><summary data-copy="stars">星星</summary><p data-copy="starText">達成任務得一星；接住至少 85% 得第二星；全接且不碰落葉得第三星。</p></details><details><summary data-copy="equipment">巢穴</summary><p data-copy="netText">通過第 5 關取得，每場可擋兩片落葉；接雨範圍略窄。</p><p data-copy="magnetText">通過第 10 關取得，能吸引較遠的金雨，但藍雨需要更精準對位。</p><p data-copy="lanternText">永久外觀：紫色燈光與金色水花軌跡。一次花費 15 鑽石，不影響關卡難度。</p></details></section></div>
   </section>
   <script src="/src/wallet.js"></script>
   <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>

@@ -19,4 +19,6 @@
     const copy=window.FlyingTramLocales[locale];keys.forEach((key,i)=>copy[key]=row[i]);
     copy.how3=copy.flightHelp;copy.a4=copy.flightHelp;copy.skillsTitle=copy.garage;copy.skillsText=copy.garageCopy;
   }
+  const controls={en:['Tilt left','Tilt right','Boost','WIND'],'zh-Hant':['向左傾斜','向右傾斜','推進','風'],'zh-Hans':['向左倾斜','向右倾斜','推进','风'],ja:['左に傾ける','右に傾ける','ブースト','風'],ko:['왼쪽 기울기','오른쪽 기울기','부스트','바람'],es:['Inclinar a la izquierda','Inclinar a la derecha','Impulso','VIENTO'],'pt-BR':['Inclinar à esquerda','Inclinar à direita','Impulso','VENTO'],fr:['Incliner à gauche','Incliner à droite','Propulsion','VENT'],de:['Nach links neigen','Nach rechts neigen','Schub','WIND'],it:['Inclina a sinistra','Inclina a destra','Spinta','VENTO'],ru:['Наклон влево','Наклон вправо','Тяга','ВЕТЕР'],hi:['बाएँ झुकें','दाएँ झुकें','बूस्ट','हवा'],ar:['إمالة لليسار','إمالة لليمين','دفع','الريح']};
+  for(const [locale,row] of Object.entries(controls))['tiltLeft','tiltRight','boostLabel','windShort'].forEach((key,i)=>window.FlyingTramLocales[locale][key]=row[i]);
 })();

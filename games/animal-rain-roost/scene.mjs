@@ -145,6 +145,8 @@ export class RainScene {
     this.height=Math.max(7.8,7.4/aspect);this.width=this.height*aspect;
     this.camera.left=-this.width/2;this.camera.right=this.width/2;this.camera.top=this.height/2;this.camera.bottom=-this.height/2;this.camera.updateProjectionMatrix();
     this.span=Math.min(this.width*.78,12.4);this.bottom=-this.height/2+1.45;this.top=this.height/2-1.2;
+    const feedbackPoint=new T.Vector3(0,this.bottom+3.4,1.3).project(this.camera);
+    this.feedbackFraction=Math.max(.2,Math.min(.75,(1-feedbackPoint.y)/2));
     this.pond.position.y=this.bottom-.4;this.pond.scale.x=this.width*1.5;
     this.bank.position.y=this.bottom-.1;this.bank.scale.x=this.width*1.4;
     this.reeds.position.y=this.bottom+.1;this.reeds.scale.x=this.width/7.4;

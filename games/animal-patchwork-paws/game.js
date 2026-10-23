@@ -41,10 +41,11 @@ async function start(index){
  if(!Number.isInteger(index)||index<0||index>=30||(!practice&&index>=progress.unlocked))return;
  if(practice&&!await LocalPractice.validate())return;
  stage=stages[index];rotations=stage.initial.slice();history=[];moves=0;usedHint=false;completed=false;failureMarked=false;checkResult=null;
- show('battle');buildBoard();renderer?.load(stage,rotations,fabric());updateBoard();
  $('status').textContent=t('objective');$('patchTitle').textContent=t(stage.name);$('progressPill').textContent=`${stage.number} / 30`;
  $('ruleText').textContent=t(stage.rule);$('chapterLabel').textContent=t(stage.arc);
  $('masteryTarget').textContent=t('mastery',{n:distance(stage,stage.initial)});
+ // Complete the scene before the shared frame measures its logical canvas.
+ buildBoard();renderer?.load(stage,rotations,fabric());updateBoard();show('battle');
  $('checkBtn').disabled=false;buttons[0]?.focus({preventScroll:true});
  if(!practice)window.WonderAnalytics?.track?.('stage_start',{stage_id:String(stage.number)});
 }

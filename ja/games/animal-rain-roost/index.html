@@ -28,7 +28,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-rain-roost/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-rain-roost/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rain-roost/" />
-  <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp" />
   <script src="/src/weightplay-audio.js?v=1.0.0"></script>
   <script src="/src/game-layout-config.js?v=20260919-banner1"></script><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
   <link rel="stylesheet" href="style.css?v=6">
@@ -57,7 +57,7 @@
 <body data-wp-game-owned-guide data-runtime-localize="off" data-wp-game-id="animal-rain-roost" data-wp-audience="general" data-wp-game-version="v6" data-wp-interface-version="9" data-screen="main">
   <div id="app" data-wp-frame-root>
     <main id="mainScreen" data-wp-standard-main-screen data-wp-main-screen data-wp-logical-main-canvas data-wp-game-version="v6" data-wp-interface-version="9">
-      <header class="wp-main-shell-header"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="Back to WeightPlay">←</a><h1 data-wp-frame-title data-wp-game-title>雨つぶキャッチ</h1></header>
+      <header class="wp-main-shell-header"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="戻る">←</a><h1 data-wp-frame-title data-wp-game-title>雨つぶキャッチ</h1></header>
       <div id="mainContent" data-wp-frame-content="main">
         <img class="main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-rain-roost.webp" width="1254" height="1254" alt="" fetchpriority="high">
         <div data-wp-frame-copy><p data-copy="intro" data-wp-frame-summary>ノリの巣を月夜の雨へ。青いしずくと金の雨を集め、葉をよけよう。</p><span id="mainProgress" data-wp-frame-progress>0 / 30</span><button id="startButton" data-copy="start" data-wp-main-start data-wp-frame-action="primary" type="button" disabled>旅を始める</button></div>
@@ -65,7 +65,7 @@
       </div>
     </main>
     <section id="stageScreen" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-logical-header="stage" data-wp-frame-play-fill data-wp-stage-art="/assets/interface7-redrawn/animal-rain-roost.webp" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-rain-roost.webp')" hidden>
-      <header><button id="stageBack" data-wp-return="stage" type="button" aria-label="Back">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">雨つぶキャッチ</strong></header>
+      <header><button id="stageBack" data-wp-return="stage" type="button" aria-label="戻る">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">雨つぶキャッチ</strong></header>
       <div id="stageContent" data-wp-frame-content="stage">
         <span id="stageProgress"></span>
         <section id="journeyPanel" role="tabpanel" aria-labelledby="stagesTab"><div id="stageRail" role="list" data-wp-stage-rail></div></section>
@@ -79,7 +79,7 @@
       <nav data-wp-frame-nav data-wp-frame-stage-nav role="tablist"><button id="stagesTab" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" type="button" role="tab" aria-controls="journeyPanel" aria-selected="true" data-copy="stages">ステージ</button><button id="nestTab" data-wp-frame-stage-slot="equipment" data-wp-frame-action="tab" type="button" role="tab" aria-controls="nestPanel" aria-selected="false" tabindex="-1" data-copy="equipment">巣</button></nav>
     </section>
     <section id="battleScreen" data-screen="battle" data-wp-standard-battle-screen data-wp-frame-logical-header="battle" data-wp-frame-play-fill data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="700" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
-      <header><button id="battleBack" data-wp-return="battle" type="button" aria-label="Back">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">雨つぶキャッチ</strong></header>
+      <header><button id="battleBack" data-wp-return="battle" type="button" aria-label="戻る">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">雨つぶキャッチ</strong></header>
       <div id="battleContent" data-wp-frame-content="battle">
         <div id="battleInfo" data-wp-frame-info><span><small data-copy="stage">ステージ</small><b id="stageValue">1</b></span><span><small data-copy="water">しずく</small><b id="catchValue">0 / 7</b></span><span><small data-copy="combo">連続</small><b id="comboValue">0</b></span></div>
         <div id="arena"><canvas id="rainCanvas" tabindex="0" aria-label="雨つぶキャッチ"></canvas><div class="rain-hud"><p id="goalLine"></p><p class="weather-line"><span id="windLabel"></span><span id="timeLabel"></span></p></div><div class="landing-cue" id="landingCue"></div><p class="catch-feedback" id="feedback" role="status" aria-live="polite"></p><button class="help-button" id="helpButton" type="button" aria-label="Help">?</button></div>
@@ -91,25 +91,10 @@
     </section>
     <section id="purchaseView" class="rain-modal purchase-modal" role="dialog" aria-modal="true" aria-labelledby="purchaseTitle" hidden><div class="rain-modal-card"><h2 id="purchaseTitle" data-copy="lantern">オーロラ灯</h2><p data-copy="lanternText">紫の灯と金色の水しぶきの永続外観。一度だけ 15 ダイヤ。難易度は変わりません。</p><p class="purchase-cost"><img src="/assets/weightplay-diamond.svg" alt="" width="24" height="24"> 15</p><p id="purchaseFeedback" role="status"></p><div class="dialog-actions"><button id="cancelBuy" type="button" data-copy="cancel">キャンセル</button><button id="confirmBuy" type="button" data-copy="confirm">確認</button></div></div></section>
   </div>
-  <section class="game-page-info game-page-info-static" aria-label="雨つぶキャッチ ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2 data-wp-game-title data-runtime-localize="off">雨つぶキャッチ</h2><p>ノリの小さな巣を動かし、葉を避けながら雨つぶを受け止めよう。</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>雨つぶキャッチアーケード</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Arcade · Timing · Focus · Family · Animal</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true">
+    <div class="game-info-hero"><small data-copy="guide">ゲームガイド</small><h2 data-wp-game-title>雨つぶキャッチ</h2><p data-copy="intro">ノリの巣を月夜の雨へ。青いしずくと金の雨を集め、葉をよけよう。</p></div>
+    <div class="game-info-facts"><div class="game-info-fact"><span data-copy="age">対象年齢</span><strong>6+</strong></div><div class="game-info-fact"><span data-copy="players">プレイ人数</span><strong>1</strong></div><div class="game-info-fact"><span data-copy="roundTime">1回の時間</span><strong>20–35 s</strong></div><div class="game-info-fact"><span data-copy="controls">操作</span><strong>← → · 1–5</strong></div></div>
+    <div class="game-info-sections"><section class="game-info-section"><h3 data-copy="world">月明かりの湿地</h3><p data-copy="worldText">ノリと少しずつ湿地に光を戻そう。風を読み、落下先へ巣を運びます。</p></section><section class="game-info-section"><h3 data-copy="controls">操作</h3><p data-copy="controlText">水面をドラッグかタップ。キーボードは ← → または左から 1–5。光る印が次のしずくの落下先です。</p></section><section class="game-info-section"><h3 data-copy="goals">雨のミッション</h3><p data-copy="goalText">雨が止む前に目標を達成。金の雨、連続キャッチ、葉の上限があるステージも。取り逃しと葉は連続を止めます。再挑戦は無料。</p><p data-copy="starText">目標達成で一つ、85% 以上で二つ、取り逃しも葉もなしで三つの星。</p></section><section class="game-info-section"><h3 data-copy="growth">自分の巣</h3><p data-copy="growthText">六つの地域で風、葉の通路、金の雨、精度を学びます。星と次のステージを解放し、かごを選ぼう。</p></section><section class="game-info-section"><h3 data-copy="privacy">端末の記録</h3><p data-copy="privacyText">記録と装備、以前の最高記録はこのブラウザーに保存。登録不要。別の端末とは共有しません。保存失敗は通知します。</p></section><section class="game-info-section"><h3 data-copy="faq">よくある質問</h3><details><summary data-copy="stars">星</summary><p data-copy="starText">目標達成で一つ、85% 以上で二つ、取り逃しも葉もなしで三つの星。</p></details><details><summary data-copy="equipment">巣</summary><p data-copy="netText">ステージ 5 で解放。毎回二枚の葉を防ぎますが、受け口は少し狭め。</p><p data-copy="magnetText">ステージ 10 で解放。遠い金の雨を引き寄せますが、青いしずくは精密に。</p><p data-copy="lanternText">紫の灯と金色の水しぶきの永続外観。一度だけ 15 ダイヤ。難易度は変わりません。</p></details></section></div>
   </section>
   <script src="/src/wallet.js"></script>
   <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>

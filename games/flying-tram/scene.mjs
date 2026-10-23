@@ -60,12 +60,12 @@ export class TramScene {
     this.body.castShadow=true;
     this.trim=this.box(g,0,.37,0,3.4,.18,1.59,0xffc05c);
     this.box(g,0,-.5,0,2.9,.24,1.3,0x18364c);
-    this.box(g,0,.85,-.58,2.9,1.02,.18,0x174762);
-    for(const x of [-1.43,-.48,.48,1.43])this.box(g,x,.87,0,.13,1.05,1.43,0xffc05c);
-    for(const x of [-.97,0,.97])this.box(g,x,.88,-.72,.74,.69,.06,0x72cdd6,true);
-    this.roof=this.box(g,0,1.45,0,3.5,.23,1.7,0x197498);
-    this.box(g,0,1.61,0,2.7,.1,1.3,0xffc05c);
-    this.box(g,-.85,1.84,0,.18,.45,.18,0x233d55);this.box(g,-.55,2.04,0,.8,.12,.16,0xffc05c);
+    this.box(g,0,1.03,-.58,2.9,1.38,.18,0x174762);
+    for(const x of [-1.43,-.48,.48,1.43])this.box(g,x,1.02,0,.13,1.4,1.43,0xffc05c);
+    for(const x of [-.97,0,.97])this.box(g,x,1.04,-.72,.74,1.03,.06,0x72cdd6,true);
+    this.roof=this.box(g,0,1.83,0,3.5,.23,1.7,0x197498);
+    this.box(g,0,1.99,0,2.7,.1,1.3,0xffc05c);
+    this.box(g,-.85,2.22,0,.18,.45,.18,0x233d55);this.box(g,-.55,2.42,0,.8,.12,.16,0xffc05c);
     for(const x of [-1.8,1.8]) {
       this.box(g,x,-.17,0,.3,.52,1.25,0xffc05c);
       this.box(g,x,.05,.49,.09,.22,.22,0xfff4bf,true);
@@ -79,6 +79,7 @@ export class TramScene {
     this.box(fox,.12,.51,.31,.47,.22,.23,0xffebce);this.box(fox,.22,.55,.45,.17,.13,.09,0x193748);
     for(const x of [-.17,.2])this.box(fox,x,.71,.255,.1,.14,.035,0x18364c);
     this.box(fox,-.29,.58,.26,.13,.09,.045,0xffe1a3);this.box(fox,-.24,.51,.26,.13,.08,.045,0xffe1a3);
+    this.box(fox,-.08,.88,.26,.18,.07,.04,0xffe69d);this.box(fox,-.02,.82,.26,.14,.07,.04,0xffe69d);this.box(fox,-.09,.76,.26,.13,.07,.04,0xffe69d);
     this.box(fox,0,.32,.13,.64,.13,.45,0x47ced0);
     const scarf=this.box(fox,-.48,.28,.06,.55,.15,.18,0x47ced0);scarf.rotation.z=-.25;
     this.box(fox,-.32,.05,.33,.27,.2,.29,0xffddb4);this.box(fox,.34,.05,.33,.27,.2,.29,0xffddb4);
@@ -121,10 +122,10 @@ export class TramScene {
     });
     flight.gates.forEach(h=>{
       const g=new THREE.Group();g.position.set(h.at*60,0,0);this.world.add(g);
-      const low=h.lane==='low', center=low?2.3:8.9;
+      const low=h.lane==='low', center=low?2.3:9.3;
       this.box(g,0,center,0,.55,low?3:3.2,2.2,0x284957);
       for(let i=0;i<4;i++)this.box(g,0,center-1.1+i*.7,1.14,.59,.25,.08,0xff9d5c,true);
-      this.box(g,0,low?4:7.3,0,.8,.12,2.45,0xffa65b,true);
+      this.box(g,0,low?4:7.7,0,.8,.12,2.45,0xffa65b,true);
       this.gates.push(g);
     });
     if(flight.thermal) {
@@ -149,10 +150,10 @@ export class TramScene {
     const rect=this.canvas.getBoundingClientRect();if(rect.width<1||rect.height<1)return;
     this.renderer.setSize(rect.width,rect.height,false);
     const aspect=rect.width/rect.height;
-    const height=this.garage?5.6:aspect>1.4?11.5:aspect>.85?15:21;
+    const height=this.garage?6.2:aspect>1.4?13:aspect>.85?15:21;
     const width=height*aspect;
     this.camera.left=-width/2;this.camera.right=width/2;this.camera.top=height/2;this.camera.bottom=-height/2;
-    const focus=this.garage?new THREE.Vector3(0,2.3,0):new THREE.Vector3(aspect>1.4?3:1.5,aspect>1.4?4.5:5.8,0);
+    const focus=this.garage?new THREE.Vector3(0,2.5,0):new THREE.Vector3(aspect>1.4?3:1.5,aspect>1.4?5.6:5.8,0);
     this.camera.position.copy(focus).add(new THREE.Vector3(3,6,24));this.camera.lookAt(focus);this.camera.updateProjectionMatrix();
   }
   setGarage(value){this.garage=value;this.world.visible=!value;this.city.visible=!value;this.shadow.visible=!value;this.resize();}

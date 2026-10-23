@@ -28,7 +28,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-rain-roost/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-rain-roost/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rain-roost/" />
-  <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp" />
   <script src="/src/weightplay-audio.js?v=1.0.0"></script>
   <script src="/src/game-layout-config.js?v=20260919-banner1"></script><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
   <link rel="stylesheet" href="style.css?v=6">
@@ -57,7 +57,7 @@
 <body data-wp-game-owned-guide data-runtime-localize="off" data-wp-game-id="animal-rain-roost" data-wp-audience="general" data-wp-game-version="v6" data-wp-interface-version="9" data-screen="main">
   <div id="app" data-wp-frame-root>
     <main id="mainScreen" data-wp-standard-main-screen data-wp-main-screen data-wp-logical-main-canvas data-wp-game-version="v6" data-wp-interface-version="9">
-      <header class="wp-main-shell-header"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="Back to WeightPlay">←</a><h1 data-wp-frame-title data-wp-game-title>빗방울 받기</h1></header>
+      <header class="wp-main-shell-header"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="뒤로">←</a><h1 data-wp-frame-title data-wp-game-title>빗방울 받기</h1></header>
       <div id="mainContent" data-wp-frame-content="main">
         <img class="main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-rain-roost.webp" width="1254" height="1254" alt="" fetchpriority="high">
         <div data-wp-frame-copy><p data-copy="intro" data-wp-frame-summary>노리의 둥지로 달빛 속 비를 받아요. 파란 방울과 황금비를 모으고 나뭇잎을 피하세요.</p><span id="mainProgress" data-wp-frame-progress>0 / 30</span><button id="startButton" data-copy="start" data-wp-main-start data-wp-frame-action="primary" type="button" disabled>여정 시작</button></div>
@@ -65,7 +65,7 @@
       </div>
     </main>
     <section id="stageScreen" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-logical-header="stage" data-wp-frame-play-fill data-wp-stage-art="/assets/interface7-redrawn/animal-rain-roost.webp" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-rain-roost.webp')" hidden>
-      <header><button id="stageBack" data-wp-return="stage" type="button" aria-label="Back">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">빗방울 받기</strong></header>
+      <header><button id="stageBack" data-wp-return="stage" type="button" aria-label="뒤로">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">빗방울 받기</strong></header>
       <div id="stageContent" data-wp-frame-content="stage">
         <span id="stageProgress"></span>
         <section id="journeyPanel" role="tabpanel" aria-labelledby="stagesTab"><div id="stageRail" role="list" data-wp-stage-rail></div></section>
@@ -79,7 +79,7 @@
       <nav data-wp-frame-nav data-wp-frame-stage-nav role="tablist"><button id="stagesTab" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" type="button" role="tab" aria-controls="journeyPanel" aria-selected="true" data-copy="stages">스테이지</button><button id="nestTab" data-wp-frame-stage-slot="equipment" data-wp-frame-action="tab" type="button" role="tab" aria-controls="nestPanel" aria-selected="false" tabindex="-1" data-copy="equipment">둥지</button></nav>
     </section>
     <section id="battleScreen" data-screen="battle" data-wp-standard-battle-screen data-wp-frame-logical-header="battle" data-wp-frame-play-fill data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="700" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
-      <header><button id="battleBack" data-wp-return="battle" type="button" aria-label="Back">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">빗방울 받기</strong></header>
+      <header><button id="battleBack" data-wp-return="battle" type="button" aria-label="뒤로">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">빗방울 받기</strong></header>
       <div id="battleContent" data-wp-frame-content="battle">
         <div id="battleInfo" data-wp-frame-info><span><small data-copy="stage">스테이지</small><b id="stageValue">1</b></span><span><small data-copy="water">빗방울</small><b id="catchValue">0 / 7</b></span><span><small data-copy="combo">연속</small><b id="comboValue">0</b></span></div>
         <div id="arena"><canvas id="rainCanvas" tabindex="0" aria-label="빗방울 받기"></canvas><div class="rain-hud"><p id="goalLine"></p><p class="weather-line"><span id="windLabel"></span><span id="timeLabel"></span></p></div><div class="landing-cue" id="landingCue"></div><p class="catch-feedback" id="feedback" role="status" aria-live="polite"></p><button class="help-button" id="helpButton" type="button" aria-label="Help">?</button></div>
@@ -91,25 +91,10 @@
     </section>
     <section id="purchaseView" class="rain-modal purchase-modal" role="dialog" aria-modal="true" aria-labelledby="purchaseTitle" hidden><div class="rain-modal-card"><h2 id="purchaseTitle" data-copy="lantern">오로라 등불</h2><p data-copy="lanternText">보라색 등과 황금 물보라를 주는 영구 외형. 다이아몬드 15개를 한 번 내며 난이도는 변하지 않아요.</p><p class="purchase-cost"><img src="/assets/weightplay-diamond.svg" alt="" width="24" height="24"> 15</p><p id="purchaseFeedback" role="status"></p><div class="dialog-actions"><button id="cancelBuy" type="button" data-copy="cancel">취소</button><button id="confirmBuy" type="button" data-copy="confirm">확인</button></div></div></section>
   </div>
-  <section class="game-page-info game-page-info-static" aria-label="빗방울 받기 게임 정보">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2 data-wp-game-title data-runtime-localize="off">빗방울 받기</h2><p>노리의 작은 둥지를 움직여 잎을 피하며 빗방울을 받아요.</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>빗방울 받기 아케이드</strong></div><div class="game-info-fact"><span>장르</span><strong>Arcade · Timing · Focus · Family · Animal</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true">
+    <div class="game-info-hero"><small data-copy="guide">게임 안내</small><h2 data-wp-game-title>빗방울 받기</h2><p data-copy="intro">노리의 둥지로 달빛 속 비를 받아요. 파란 방울과 황금비를 모으고 나뭇잎을 피하세요.</p></div>
+    <div class="game-info-facts"><div class="game-info-fact"><span data-copy="age">권장 연령</span><strong>6+</strong></div><div class="game-info-fact"><span data-copy="players">플레이 인원</span><strong>1</strong></div><div class="game-info-fact"><span data-copy="roundTime">한 판 시간</span><strong>20–35 s</strong></div><div class="game-info-fact"><span data-copy="controls">조작 방법</span><strong>← → · 1–5</strong></div></div>
+    <div class="game-info-sections"><section class="game-info-section"><h3 data-copy="world">달빛 습지</h3><p data-copy="worldText">노리와 함께 습지를 다시 빛나게 해요. 바람을 읽고 방울이 떨어지기 전에 둥지를 옮기세요.</p></section><section class="game-info-section"><h3 data-copy="controls">조작 방법</h3><p data-copy="controlText">수면을 끌거나 누르세요. 키보드는 ← → 또는 왼쪽부터 1–5입니다. 빛나는 표시는 다음 방울의 착지점이에요.</p></section><section class="game-info-section"><h3 data-copy="goals">빗방울 임무</h3><p data-copy="goalText">비가 끝나기 전에 목표를 채우세요. 황금비, 연속 받기, 나뭇잎 제한이 있는 단계도 있어요. 놓치거나 잎에 닿으면 연속이 끊겨요. 재도전은 무료예요.</p><p data-copy="starText">목표 달성에 별 하나, 85% 이상 받으면 두 개, 놓치거나 잎에 닿지 않으면 세 개예요.</p></section><section class="game-info-section"><h3 data-copy="growth">나의 둥지</h3><p data-copy="growthText">여섯 지역에서 바람, 잎 통로, 황금 길, 정밀 조작을 배워요. 별과 다음 단계를 열고 바구니를 고르세요.</p></section><section class="game-info-section"><h3 data-copy="privacy">로컬 진행</h3><p data-copy="privacyText">진행, 장비, 이전 최고 기록은 이 브라우저에 저장돼요. 계정은 필요 없어요. 다른 기기와 공유되지 않으며 저장 실패는 알려드려요.</p></section><section class="game-info-section"><h3 data-copy="faq">자주 묻는 질문</h3><details><summary data-copy="stars">별</summary><p data-copy="starText">목표 달성에 별 하나, 85% 이상 받으면 두 개, 놓치거나 잎에 닿지 않으면 세 개예요.</p></details><details><summary data-copy="equipment">둥지</summary><p data-copy="netText">5단계 완료 시 해제. 매번 잎 두 개를 막지만 받는 범위는 조금 좁아요.</p><p data-copy="magnetText">10단계 완료 시 해제. 먼 황금비를 끌어오지만 파란 방울은 정확히 받아야 해요.</p><p data-copy="lanternText">보라색 등과 황금 물보라를 주는 영구 외형. 다이아몬드 15개를 한 번 내며 난이도는 변하지 않아요.</p></details></section></div>
   </section>
   <script src="/src/wallet.js"></script>
   <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>

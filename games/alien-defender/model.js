@@ -21,7 +21,7 @@ export function createWorld(stage, upgrades={}, aspect=1.6) {
  const config=stageConfig(stage), enemies=[];
  const add=(x,y,kind,hp)=>enemies.push({id:enemies.length,x,y,px:x,py:y,kind,hp,maxHp:hp,hit:0,telegraph:0});
  if(config.boss) {
-   add(50,.20,'boss',18+config.chapter*6);
+   add(50,.20,'boss',[18,50,90,120,170,240][config.chapter]);
    for(let i=0;i<4;i++)add(23+i*18,.34,i===0||i===3?'relay':'armor',3+config.armor);
  } else {
    for(let r=0;r<config.rows;r++)for(let c=0;c<config.cols;c++) {
@@ -73,7 +73,7 @@ export function step(w,delta,input={}) {
  w.player.x=clamp(w.player.x+travel,7*scale,100-7*scale);
  w.fireTimer=Math.max(0,w.fireTimer-dt);
  if(input.fire&&w.fireTimer<=0){
-   const count=Math.min(4,w.upgrades.firepower);
+   const count=Math.min(10,w.upgrades.firepower);
    for(let i=0;i<count;i++)if(w.shots.length<96)w.shots.push({id:++w.serial,x:w.player.x+(i-(count-1)/2)*2.5*scale,y:w.player.y-.02,vx:(i-(count-1)/2)*3,damage:1+Math.floor((w.upgrades.firepower-1)/5)});
    w.fireTimer=.23-w.upgrades.rapid*.025-Math.max(0,w.upgrades.firepower-4)*.008;event(w,'fire',{x:w.player.x,y:w.player.y});
  }
@@ -89,7 +89,8 @@ export function step(w,delta,input={}) {
    else{e.x+=w.dir*w.config.speed*dt;e.y+=dt*.00065+(edge?.026:0);}
    if(e.y>.76){w.status='lost';event(w,'lose',{reason:'line'});return;}
  }
- const boss=active.find(e=>e.kind==='boss');w.phase=boss?(boss.hp/boss.maxHp<.33?2:boss.hp/boss.maxHp<.66?1:0):0;
+ const boss=active.find(e=>e.kind==='boss'),oldPhase=w.phase;w.phase=boss?(boss.hp/boss.maxHp<.33?2:boss.hp/boss.maxHp<.66?1:0):0;
+ if(boss&&w.phase!==oldPhase)event(w,'phase',{x:boss.x,y:boss.y,phase:w.phase});
  w.enemyTimer-=dt;
  if(w.enemyTimer<=0){
    w.enemyTimer=w.config.fireEvery-(w.config.chapter===5?w.phase*.25:0);

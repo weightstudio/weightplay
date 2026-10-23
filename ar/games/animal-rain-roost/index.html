@@ -28,7 +28,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-rain-roost/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-rain-roost/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rain-roost/" />
-  <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp" />
   <script src="/src/weightplay-audio.js?v=1.0.0"></script>
   <script src="/src/game-layout-config.js?v=20260919-banner1"></script><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
   <link rel="stylesheet" href="style.css?v=6">
@@ -57,7 +57,7 @@
 <body data-wp-game-owned-guide data-runtime-localize="off" data-wp-game-id="animal-rain-roost" data-wp-audience="general" data-wp-game-version="v6" data-wp-interface-version="9" data-screen="main">
   <div id="app" data-wp-frame-root>
     <main id="mainScreen" data-wp-standard-main-screen data-wp-main-screen data-wp-logical-main-canvas data-wp-game-version="v6" data-wp-interface-version="9">
-      <header class="wp-main-shell-header"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="Back to WeightPlay">←</a><h1 data-wp-frame-title data-wp-game-title>التقاط قطرات المطر</h1></header>
+      <header class="wp-main-shell-header"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="رجوع">←</a><h1 data-wp-frame-title data-wp-game-title>التقاط قطرات المطر</h1></header>
       <div id="mainContent" data-wp-frame-content="main">
         <img class="main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-rain-roost.webp" width="1254" height="1254" alt="" fetchpriority="high">
         <div data-wp-frame-copy><p data-copy="intro" data-wp-frame-summary>قد عش نوري تحت ضوء القمر. اجمع القطرات الزرقاء والذهب وتجنب الأوراق.</p><span id="mainProgress" data-wp-frame-progress>0 / 30</span><button id="startButton" data-copy="start" data-wp-main-start data-wp-frame-action="primary" type="button" disabled>ابدأ الرحلة</button></div>
@@ -65,7 +65,7 @@
       </div>
     </main>
     <section id="stageScreen" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-logical-header="stage" data-wp-frame-play-fill data-wp-stage-art="/assets/interface7-redrawn/animal-rain-roost.webp" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-rain-roost.webp')" hidden>
-      <header><button id="stageBack" data-wp-return="stage" type="button" aria-label="Back">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">التقاط قطرات المطر</strong></header>
+      <header><button id="stageBack" data-wp-return="stage" type="button" aria-label="رجوع">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">التقاط قطرات المطر</strong></header>
       <div id="stageContent" data-wp-frame-content="stage">
         <span id="stageProgress"></span>
         <section id="journeyPanel" role="tabpanel" aria-labelledby="stagesTab"><div id="stageRail" role="list" data-wp-stage-rail></div></section>
@@ -79,7 +79,7 @@
       <nav data-wp-frame-nav data-wp-frame-stage-nav role="tablist"><button id="stagesTab" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" type="button" role="tab" aria-controls="journeyPanel" aria-selected="true" data-copy="stages">المراحل</button><button id="nestTab" data-wp-frame-stage-slot="equipment" data-wp-frame-action="tab" type="button" role="tab" aria-controls="nestPanel" aria-selected="false" tabindex="-1" data-copy="equipment">العش</button></nav>
     </section>
     <section id="battleScreen" data-screen="battle" data-wp-standard-battle-screen data-wp-frame-logical-header="battle" data-wp-frame-play-fill data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="700" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
-      <header><button id="battleBack" data-wp-return="battle" type="button" aria-label="Back">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">التقاط قطرات المطر</strong></header>
+      <header><button id="battleBack" data-wp-return="battle" type="button" aria-label="رجوع">←</button><strong data-wp-frame-title hidden data-wp-game-title data-runtime-localize="off">التقاط قطرات المطر</strong></header>
       <div id="battleContent" data-wp-frame-content="battle">
         <div id="battleInfo" data-wp-frame-info><span><small data-copy="stage">مرحلة</small><b id="stageValue">1</b></span><span><small data-copy="water">قطرات</small><b id="catchValue">0 / 7</b></span><span><small data-copy="combo">سلسلة</small><b id="comboValue">0</b></span></div>
         <div id="arena"><canvas id="rainCanvas" tabindex="0" aria-label="التقاط قطرات المطر"></canvas><div class="rain-hud"><p id="goalLine"></p><p class="weather-line"><span id="windLabel"></span><span id="timeLabel"></span></p></div><div class="landing-cue" id="landingCue"></div><p class="catch-feedback" id="feedback" role="status" aria-live="polite"></p><button class="help-button" id="helpButton" type="button" aria-label="Help">?</button></div>
@@ -91,25 +91,10 @@
     </section>
     <section id="purchaseView" class="rain-modal purchase-modal" role="dialog" aria-modal="true" aria-labelledby="purchaseTitle" hidden><div class="rain-modal-card"><h2 id="purchaseTitle" data-copy="lantern">فانوس الشفق</h2><p data-copy="lanternText">مظهر دائم بضوء بنفسجي وآثار ماء ذهبية. يكلف 15 ألماسة مرة واحدة ولا يغير الصعوبة.</p><p class="purchase-cost"><img src="/assets/weightplay-diamond.svg" alt="" width="24" height="24"> 15</p><p id="purchaseFeedback" role="status"></p><div class="dialog-actions"><button id="cancelBuy" type="button" data-copy="cancel">إلغاء</button><button id="confirmBuy" type="button" data-copy="confirm">تأكيد</button></div></div></section>
   </div>
-  <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة التقاط قطرات المطر">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2 data-wp-game-title data-runtime-localize="off">التقاط قطرات المطر</h2><p>حرّك عشّ نوري لالتقاط المطر وتجنّب الأوراق.</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>أركيد التقاط قطرات المطر</strong></div><div class="game-info-fact"><span>النوع</span><strong>Arcade · Timing · Focus · Family · Animal</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true">
+    <div class="game-info-hero"><small data-copy="guide">دليل اللعبة</small><h2 data-wp-game-title>التقاط قطرات المطر</h2><p data-copy="intro">قد عش نوري تحت ضوء القمر. اجمع القطرات الزرقاء والذهب وتجنب الأوراق.</p></div>
+    <div class="game-info-facts"><div class="game-info-fact"><span data-copy="age">العمر</span><strong>6+</strong></div><div class="game-info-fact"><span data-copy="players">اللاعبون</span><strong>1</strong></div><div class="game-info-fact"><span data-copy="roundTime">مدة الجولة</span><strong>20–35 s</strong></div><div class="game-info-fact"><span data-copy="controls">التحكم</span><strong>← → · 1–5</strong></div></div>
+    <div class="game-info-sections"><section class="game-info-section"><h3 data-copy="world">المستنقع القمري</h3><p data-copy="worldText">يعيد نوري النور إلى المستنقع. اقرأ الرياح وحرّك العش قبل هبوط المطر.</p></section><section class="game-info-section"><h3 data-copy="controls">التحكم</h3><p data-copy="controlText">اسحب الماء أو اضغطه. استخدم ← → أو المسارات الفعلية 1–5 من اليسار. العلامة المضيئة تحدد هبوط القطرة التالية.</p></section><section class="game-info-section"><h3 data-copy="goals">مهمتك</h3><p data-copy="goalText">حقق الهدف قبل انتهاء المطر. بعض المراحل تحتاج ذهبًا أو سلسلة أو حدًا للأوراق. تفويت قطرة أو لمس ورقة يقطع السلسلة. الإعادة مجانية.</p><p data-copy="starText">نجمة للهدف، واثنتان لالتقاط 85% على الأقل، وثلاث بلا تفويت قطرات أو لمس أوراق.</p></section><section class="game-info-section"><h3 data-copy="growth">عشك</h3><p data-copy="growthText">ست مناطق تقدم الرياح وممرات الأوراق والذهب والدقة. اجمع النجوم وافتح المراحل واختر السلة.</p></section><section class="game-info-section"><h3 data-copy="privacy">التقدم المحلي</h3><p data-copy="privacyText">يبقى التقدم والمعدات والسجل القديم في هذا المتصفح دون حساب. لكل جهاز حفظ منفصل. يظهر تنبيه عند فشل الحفظ.</p></section><section class="game-info-section"><h3 data-copy="faq">أسئلة</h3><details><summary data-copy="stars">نجوم</summary><p data-copy="starText">نجمة للهدف، واثنتان لالتقاط 85% على الأقل، وثلاث بلا تفويت قطرات أو لمس أوراق.</p></details><details><summary data-copy="equipment">العش</summary><p data-copy="netText">أكمل المرحلة 5: تصد ورقتين في كل زخّة مع مساحة التقاط أضيق.</p><p data-copy="magnetText">أكمل المرحلة 10: يجذب الذهب البعيد لكن الأزرق يحتاج دقة أكبر.</p><p data-copy="lanternText">مظهر دائم بضوء بنفسجي وآثار ماء ذهبية. يكلف 15 ألماسة مرة واحدة ولا يغير الصعوبة.</p></details></section></div>
   </section>
   <script src="/src/wallet.js"></script>
   <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>

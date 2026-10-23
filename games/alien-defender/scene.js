@@ -35,6 +35,7 @@ export class BattleScene {
   const positions=[];for(let i=0;i<130;i++)positions.push(((i*71)%101)-50,((i*43)%211)-105,-30-(i%7));this.starsGeo=new THREE.BufferGeometry();this.starsGeo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));this.starsMat=new THREE.PointsMaterial({color:0xc6deff,size:.19,sizeAttenuation:false,transparent:true,opacity:.55});this.stars=new THREE.Points(this.starsGeo,this.starsMat);this.scene.add(this.stars);
   this.ringGeo=new THREE.RingGeometry(.9,1,48);this.ringPool=Array.from({length:12},()=>{const material=new THREE.MeshBasicMaterial({color:PALETTE.teal,transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide,toneMapped:false});const mesh=new THREE.Mesh(this.ringGeo,material);mesh.visible=false;this.scene.add(mesh);return mesh;});
   this.models={ship:shipParts(),skin:shipParts(true),drone:droneParts('drone'),scout:droneParts('scout'),armor:droneParts('armor'),relay:droneParts('relay'),boss:bossParts()};
+  for(const phase of [1,2])this.models['boss'+phase]=bossParts().map(p=>({...p,color:p.color.clone().lerp(new THREE.Color(phase===1?PALETTE.coral:PALETTE.gold),p.glow?.75:.35)}));
   this.matrix=new THREE.Matrix4();this.actorMatrix=new THREE.Matrix4();this.quaternion=new THREE.Quaternion();this.position=new THREE.Vector3();this.scale=new THREE.Vector3();this.color=new THREE.Color();this.turn=new THREE.Euler();
   this.environment=[];for(const side of [-1,1])for(let i=0;i<4;i++){this.environment.push(part(side*(45+i%2*5),0,-8,8-i,6,3,0x173c54),part(side*(45+i%2*5),0,-6,8-i,.3,3,PALETTE.teal,true));}
  }
@@ -49,6 +50,7 @@ export class BattleScene {
    if(e.type==='block'){this.rings.push({...e,life:.2,max:.2,size:7,color:0x7be5c9});}
    if(e.type==='pulse'){this.pulse=.6;this.rings.push({...e,life:.6,max:.6,size:70,color:PALETTE.teal});}
    if(e.type==='pickup')this.rings.push({...e,life:.4,max:.4,size:6,color:PALETTE.teal});
+   if(e.type==='phase'){this.rings.push({...e,life:.45,max:.45,size:16,color:PALETTE.coral});this.burst(e,this.reduced?3:12,PALETTE.gold);}
  }this.rings=this.rings.slice(-12);}
  draw(w,dt=0){
   if(this.disposed)return;this.resize();if(!this.width)return;
@@ -66,7 +68,7 @@ export class BattleScene {
   const arrival=this.reduced?1:Math.min(1,w.time/.55);
   for(const e of w.enemies)if(e.hp>0){
    const bob=this.reduced?0:Math.sin(w.time*2.3+e.id)*.45*unit, s=enemyScale(w,e)*(1+e.hit*.18);
-   emit(this.models[e.kind],e.x-50,mapY(e.y)+(1-arrival)*22+bob,0,s,Math.sin(w.time+e.id)*.035,e.hit);
+   emit(this.models[e.kind==='boss'&&w.phase?'boss'+w.phase:e.kind],e.x-50,mapY(e.y)+(1-arrival)*22+bob,0,s,Math.sin(w.time+e.id)*.035,e.hit);
    if(e.maxHp>1){emit([part(0,0,0,8,.36,.3,0x27324c),part(-(1-e.hp/e.maxHp)*4,0,.4,8*e.hp/e.maxHp,.36,.3,e.kind==='relay'?0x77e0ac:PALETTE.gold,true)],e.x-50,mapY(e.y)+5.5*s,4,unit,0,0,0);}
    if(shielded(w,e))emit([part(-10,0,0,.35,13,.3,PALETTE.teal,true),part(10,0,0,.35,13,.3,PALETTE.teal,true),part(0,6,0,20,.35,.3,PALETTE.teal,true)],e.x-50,mapY(e.y),5,unit,0,0,0);
   }

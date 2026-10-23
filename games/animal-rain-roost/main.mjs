@@ -29,6 +29,7 @@ function applyLocale(){
   document.title=`${title} | WeightPlay`;
   $('rainCanvas').setAttribute('aria-label',`${title}. ${t('controlText')}`);
   $('helpButton').setAttribute('aria-label',t('help'));
+  document.querySelectorAll('[data-wp-return]').forEach(node=>node.setAttribute('aria-label',t('back')));
   $('laneControls').setAttribute('aria-label',t('controls'));
   for(const button of $('laneControls').children)button.setAttribute('aria-label',`${t('lane')} ${Number(button.dataset.lane)+1}`);
   $('mainReturn').href=`/${({'zh-Hant':'zh-tw','zh-Hans':'zh-cn','pt-BR':'pt-br'})[locale]||locale}/`;
@@ -50,7 +51,7 @@ const stageConfig={gameId:GAME,poster:'/assets/interface7-redrawn/animal-rain-ro
   const s=STAGES[index],locked=!practice&&s.id>save.unlocked;
   return {id:s.id,kicker:`${t('stage')} ${s.id}`,title:t('chapters')[s.arc],subtitle:s.checkpoint?`${t('precision')} · ${t('goal')}`:s.gold?`${t('gold')} · ${t('wind')}`:s.arc? t('wind'):t('calm'),status:locked?t('locked'):save.stars[index]?'★'.repeat(save.stars[index]):t('ready'),summary:objective(s),details:[t('controlText'),t('goalText'),t('starText')],locked,cleared:save.stars[index]>0};
 }};
-function cancelEffects(){for(const item of flights){item.animation.cancel();item.node.remove()}flights.clear();audio.stopAll?.();feedbackUntil=0;}
+function cancelEffects(){for(const item of flights){item.animation.cancel();item.node.remove()}flights.clear();audio.stop();feedbackUntil=0;}
 function resetInputs(){keyboard.clear();if(pointer!==null){try{$('rainCanvas').releasePointerCapture(pointer)}catch{}}pointer=null;}
 function hideModals(){for(const node of modalRoots)node.hidden=true;modal=null;setInert();}
 function setInert(){
@@ -135,6 +136,7 @@ function loop(now){
   }
   const animating=activeRun()||(run?.ended&&settling>0&&!document.hidden);
   scene.render(run,animating?dt:0,{reduced:reduced.matches,lantern:save.lantern&&save.lanternOn});
+  $('feedback').style.top=`${scene.feedbackFraction*100}%`;
   if(run?.ended)settling=Math.max(0,settling-dt);
   if(animating)schedule();else last=0;
 }
@@ -225,7 +227,8 @@ frame.activate('main');applyLocale();
 window.WeightPlayGameEntryLoader?.begin(4);
 scene=new RainScene($('rainCanvas'));await scene.loadBackdrop();scene.render(null);
 window.WeightPlayGameEntryLoader?.assetProgress(1,4);
-await Promise.all(['/assets/interface7-redrawn/animal-rain-roost.webp','/assets/weightplay-character-bubble-fin-otter-block-v1.webp','/assets/weightplay-diamond.svg'].map(async(src,i)=>{const image=new Image();image.src=src;await image.decode();window.WeightPlayGameEntryLoader?.assetProgress(i+2,4)}));
+let decoded=1;
+await Promise.all(['/assets/interface7-redrawn/animal-rain-roost.webp','/assets/weightplay-character-bubble-fin-otter-block-v1.webp','/assets/weightplay-diamond.svg'].map(async src=>{const image=new Image();image.src=src;await image.decode();window.WeightPlayGameEntryLoader?.assetProgress(++decoded,4)}));
 
 listen($('startButton'),'click',()=>{selected=Math.min(29,save.unlocked-1);setTab('journey');showScreen('stage')});
 listen($('stageBack'),'click',()=>{showScreen('main');$('startButton').focus({preventScroll:true})});

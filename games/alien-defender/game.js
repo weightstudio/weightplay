@@ -11,7 +11,7 @@ const on=(node,name,handler,options={})=>node.addEventListener(name,handler,{...
 let locale=COPY[document.documentElement.lang]?document.documentElement.lang:'en';
 const t=(key,vars={})=>Object.entries(vars).reduce((text,[k,v])=>text.replaceAll(`{${k}}`,v),COPY[locale][key]??COPY.en[key]??key);
 let storage;try{storage=window.localStorage;}catch{storage={getItem:()=>null,setItem:()=>{throw Error('Storage unavailable');}};}
-let progress=loadProgress(storage),selected=0,screen='main',world=null,scene=null,raf=0,last=0,ending=0,practice=false,focused=true,disposed=false;
+let progress=loadProgress(storage),selected=0,screen='main',world=null,scene=null,raf=0,last=0,ending=0,messageUntil=5,practice=false,focused=true,disposed=false;
 const keys={},pointers=new Map();let drag=null,targetX=null,pulse=false;
 const audio=window.WeightPlayAudio?.createScope();
 const sound=id=>audio?.play(id);
@@ -43,7 +43,8 @@ function ensureScene(){if(scene)return true;try{scene=new BattleScene(canvas,{re
 function start(index=selected){
  const next=Math.max(0,Math.min(29,Number(index)||0));if(next>=(practice?30:progress.unlocked)){sound('feedback.error');return;}
  selected=next;show('battle');if(!ensureScene())return;
- scene.resize();world=createWorld(next+1,progress,canvas.clientHeight/Math.max(1,canvas.clientWidth));scene.reset();ending=0;last=0;updateHud();
+ scene.resize();world=createWorld(next+1,progress,canvas.clientHeight/Math.max(1,canvas.clientWidth));scene.reset();ending=0;last=0;messageUntil=5;updateHud();
+ window.WeightPlayAudio?.preload?.([...new Set([...Object.values(soundMap),'combat.shield.break','explosion.large','result.win','result.lose'])]);
  $('battleMessage').textContent=`${t(stageConfig(next+1).ruleKey)} · ${t('how2')}`;$('battleMessage').classList.add('is-visible');
  $('leaveDialogTitle').textContent=t('leaveTitle');scene.draw(world,0);
  // The authenticated practice entry can legitimately start at Battle. Its
@@ -58,8 +59,8 @@ function loop(now){raf=0;if(screen!=='battle'||!scene||!world)return;const dt=la
  if(world.status==='playing'){
   const held=key=>keys[key]||[...pointers.values()].includes(key);
   step(world,dt,{left:held('left'),right:held('right'),fire:held('fire')||drag!==null,targetX,pulse});pulse=false;
-  const events=world.events.splice(0);scene.consume(events);for(const e of events){if(soundMap[e.type])sound(e.type==='shield'&&world.shield===0?'combat.shield.break':e.type==='kill'&&e.kind==='boss'?'explosion.large':soundMap[e.type]);}updateHud();
-  if(world.time>5)$('battleMessage').classList.remove('is-visible');
+  const events=world.events.splice(0);scene.consume(events);for(const e of events){if(soundMap[e.type])sound(e.type==='shield'&&world.shield===0?'combat.shield.break':e.type==='kill'&&e.kind==='boss'?'explosion.large':soundMap[e.type]);if(e.type==='phase'){$('battleMessage').textContent=`${t('boss')} · ${['I','II','III'][e.phase]} / III`;messageUntil=world.time+2;$('battleMessage').classList.add('is-visible');}}updateHud();
+  if(world.time>messageUntil)$('battleMessage').classList.remove('is-visible');
  }else{ending+=dt;if(ending>.65){finish();return;}}
  const field=canvas.getBoundingClientRect(),target=$('salvageValue').getBoundingClientRect();scene.rewardTarget={x:100*(target.x+target.width/2-field.x)/field.width,y:(target.y+target.height/2-field.y)/field.height};
  scene.draw(world,dt);kick();
@@ -80,6 +81,7 @@ let pendingAction='leave';
 function pauseDialog(action='leave'){if(screen==='result'){show('stage');return;}release();pendingAction=action;$('leaveDialog').hidden=false;$('leaveBtn').textContent=t(action==='restart'?'restart':'leave');$('continueBtn').focus({preventScroll:true});}
 const frame=window.mountAlienDefenderFrame({t,stageConfig,getSelected:()=>selected,getUnlocked:()=>practice?30:progress.unlocked,getFirepower:()=>progress.firepower,setSelected:index=>selected=index,start});
 document.querySelector('.battle-stage').append($('resultScreen'));
+document.querySelector('.result-actions').prepend($('nextStageBtn'));
 text();show('main');
 on($('startBtn'),'click',()=>{sound('ui.click');show('stage');});on($('stageBackBtn'),'click',()=>show('main'));on($('battleBackBtn'),'click',()=>pauseDialog());on($('restartBtn'),'click',()=>pauseDialog('restart'));
 on($('continueBtn'),'click',()=>{$('leaveDialog').hidden=true;canvas.focus({preventScroll:true});last=0;kick();});on($('leaveBtn'),'click',()=>pendingAction==='restart'?start(selected):show('stage'));

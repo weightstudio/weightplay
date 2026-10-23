@@ -1,103 +1,81 @@
-:root{font-family:Arial,"Noto Sans TC",sans-serif;color-scheme:light;--scale:1;--slot-w:390px;--slot-h:788px;--logical-w:390px;--logical-h:788px}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#315f4c;color:#2b342d}button,select{font:inherit}.hidden{display:none!important}
-.studio-app{width:min(100%,920px);min-height:100vh;margin:0 auto;background:#fff4d8}.main-screen{min-height:0;padding:0;text-align:center;background:linear-gradient(#e9fbf5,#fff4d8)}.main-canvas{width:100%;height:100dvh;min-height:100dvh;display:grid;grid-template-rows:52px minmax(0,390px) auto 44px 48px;align-content:start;gap:8px;padding:14px 16px 22px;overflow:hidden}
-.main-topbar{height:52px;display:grid;grid-template-columns:58px minmax(0,1fr) 104px;gap:8px;align-items:center}.main-topbar h1{font-size:20px;line-height:1.1;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.home-link{width:58px;min-height:44px;display:grid;grid-template-columns:16px 28px;place-items:center;gap:4px;padding:4px;border-radius:10px;background:#fff;color:#275b54;text-decoration:none;font-size:22px;box-shadow:0 3px 10px #2345}.home-link img{width:28px;height:28px;object-fit:contain}.main-topbar select{width:104px;min-height:40px;border:2px solid #5e988c;border-radius:9px;background:#fff;padding:4px}
-.cover{display:block;width:min(100%,390px);height:100%;min-height:0;aspect-ratio:1;object-fit:cover;margin:0 auto;border-radius:14px;box-shadow:0 8px 22px #573e2438}.intro{margin:0 auto;font-size:16px}.primary,.secondary{min-height:48px;border:0;border-radius:11px;padding:0 20px;font-weight:800;cursor:pointer}.primary{background:#ffbe3f;color:#402a08;box-shadow:inset 0 -3px #dc8429}.secondary{background:#fff;color:#275b54;border:2px solid #5e988c}.main-canvas>.primary{width:min(100%,340px);height:48px;margin:0 auto}
-.first-steps{width:min(100%,360px);height:44px;margin:0 auto 8px;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;list-style:none}.first-steps li{min-width:0;display:grid;grid-template-columns:28px minmax(0,1fr);place-items:center;padding:3px 4px;border:2px solid #b7d7cc;border-radius:12px;background:#fff;color:#234e45;font-size:12px;font-weight:800;line-height:1}.first-steps li+li{position:relative}.first-steps li+li::before{content:'\2192';position:absolute;left:-13px;top:12px;width:16px;height:16px;display:grid;place-items:center;border-radius:50%;background:#ffbe3f;color:#402a08;font-size:13px}.first-steps i{display:block;width:26px;height:26px;background-repeat:no-repeat}.step-picture{border-radius:8px;background-image:url('../../assets/animal-coloring-studio-safari-pages/lion.webp');background-position:center 28%;background-size:cover}.step-color{background-image:url('../../assets/animal-coloring-studio-palette-swatches.webp');background-position:left center;background-size:700% 100%}.step-fill{background-image:url('../../assets/animal-coloring-studio-tool-icons.webp');background-position:14.2857% center;background-size:800% 100%}
-.guide{max-width:520px;margin:14px auto 0;padding:10px;display:grid;grid-template-columns:72px 1fr;gap:10px;text-align:left;background:#ffffffd9;border:1px solid #cfdfd4;border-radius:12px}.guide img{width:72px;height:72px;object-fit:contain}.guide h2{font-size:16px;margin:2px 0 4px}.guide p{font-size:13px;line-height:1.35;margin:0}.game-info{padding:18px;background:#fff}.game-info h2{margin:0 0 8px}.game-info p{line-height:1.55;margin:0}
-body.playing :is(.sound-toggle,.game-info,.game-page-info){display:none!important}
-body.playing .first-steps li+li::before{content:none!important}
-.play-shell{position:fixed;inset:0;width:100vw;height:100dvh;display:grid;grid-template-rows:minmax(0,1fr);justify-items:center;overflow:hidden;background:#183d33}.play-shell[data-screen="stage"]{inset:0 auto 0 50%;width:min(100vw,920px);transform:translateX(-50%)}.canvas-slot{position:relative;width:var(--slot-w);height:var(--slot-h);min-width:0;min-height:0;overflow:hidden}.logical-canvas{position:absolute;left:0;top:0;width:var(--logical-w);height:var(--logical-h);transform:scale(var(--scale));transform-origin:top left;overflow:hidden;background:#fff4d8}
-.play-shell[data-screen="battle"] .canvas-slot,.play-shell[data-screen="battle"] .logical-canvas{width:100%;height:100%}.play-shell[data-screen="battle"] .logical-canvas{transform:none}
-.play-return{width:48px;height:48px;border:0;border-radius:10px;background:#fff;color:#25776e;display:grid;place-items:center;font-size:28px;font-weight:800;box-shadow:0 2px 8px #1028}.stage-canvas{display:grid;grid-template-rows:64px 52px minmax(0,1fr) 48px;padding:8px;background-color:#173b34;background-image:linear-gradient(#1f5547dd,#173b34e8),url('../../assets/animal-coloring-studio-cover.webp');background-position:center;background-size:cover;contain:paint;isolation:isolate;backface-visibility:hidden}.stage-header,.battle-header{display:grid;grid-template-columns:52px minmax(0,1fr) 70px;gap:8px;align-items:center;color:#fff}.stage-header h2,.battle-header h2{margin:0;text-align:center;font-size:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.stage-header span,.battle-header span{text-align:right;font-weight:800}.album-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:5px}.tab{border:0;border-radius:9px;background:#f4efe0;color:#244d43;font-weight:800}.tab.active{background:#ffbe3f;color:#3b290d}.page-rail{display:flex;align-items:center;gap:14px;overflow-x:auto;overflow-anchor:none;scroll-snap-type:none;padding:16px calc(50% - 132px);touch-action:none;overscroll-behavior:contain;scrollbar-width:none;contain:layout paint style}.page-rail::-webkit-scrollbar{display:none}.page-card{flex:0 0 264px;height:190px;scroll-snap-align:none;position:relative;border:3px solid #b9d9cf;border-radius:14px;padding:10px;background:#fff;overflow:hidden;overflow-anchor:none;text-align:left;box-shadow:0 7px 18px #1028;cursor:pointer}.page-card.selected{border-color:#ffbe3f}.page-card.is-centered{border-color:#ffe16a;box-shadow:0 0 0 4px #fff1a8,0 0 24px 9px #62e6a7cc,0 7px 18px #1028}.page-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 28%;opacity:.92}.page-card .label{position:absolute;inset:auto 8px 8px;padding:7px 9px;border-radius:8px;background:#173d34e8;color:#fff;font-weight:800}.page-card .done{float:right;color:#ffe05f}.stage-note{margin:0;display:grid;place-items:center;color:#fff;font-weight:800;text-align:center}
-.battle-canvas{display:grid;grid-template:100%/100%;place-items:stretch;padding:0;background:linear-gradient(#e5f6eeea,#fff4d8ee),url('../../assets/animal-coloring-studio-bg.webp') center/cover}.battle-live,.result-canvas{grid-area:1/1;min-width:0;min-height:0;align-self:stretch;justify-self:stretch}.battle-live{width:100%;height:100%;display:grid;grid-template-rows:52px 38px 540px 54px 70px;align-content:center;gap:3px;padding:6px}.battle-header{color:#24453c}.battle-header .play-return{width:48px;height:48px}.objective{display:grid;place-items:center;padding:0 8px;border-radius:9px;background:#fff9dd;font-size:15px;font-weight:800;text-align:center}.board-wrap{position:relative;min-width:0;min-height:0;display:grid;place-items:center}.board-wrap canvas{display:block;width:360px;height:540px;border:4px solid #fff;border-radius:12px;background:#fff;box-shadow:0 8px 22px #2e3d3050;touch-action:none}.board-feedback{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);min-width:140px;max-width:290px;padding:6px 10px;border-radius:9px;background:#173d34e0;color:#fff;text-align:center;font-size:13px;font-weight:800;opacity:0;transition:opacity .15s}.board-feedback.show{opacity:1}.palette{display:grid;grid-template-columns:repeat(7,44px);justify-content:center;align-items:center;gap:7px}.swatch{width:44px;height:44px;border:3px solid #fff;border-radius:10px;background-image:url('../../assets/animal-coloring-studio-palette-swatches.webp');background-size:700% 100%;background-repeat:no-repeat;box-shadow:0 2px 8px #2038}.swatch.active{outline:4px solid #245f56;transform:translateY(-2px)}.board-wrap canvas:focus-visible{outline:5px solid #245f56;outline-offset:3px}.keyboard-cursor{position:absolute;z-index:3;width:22px;height:22px;border:3px solid #fff;border-radius:50%;background:#245f5688;box-shadow:0 0 0 3px #245f56,0 2px 7px #0008;pointer-events:none;opacity:0;transform:translate(-50%,-50%)}.board-wrap:focus-within .keyboard-cursor{opacity:1}
-.tools{display:grid;grid-template-columns:repeat(5,52px) 84px;align-items:center;justify-content:center;gap:5px}.tool{height:70px;min-width:0;border:2px solid #d4e1da;border-radius:9px;background:#fff;color:#315348;font-size:11px;font-weight:800;display:grid;grid-template-rows:38px 18px;place-items:center;padding:3px}.tool.active{border-color:#2c8f80;background:#e1fff7}.tool.confirming{border-color:#d86536;background:#fff0d9;color:#7a2d16}.tool i{width:36px;height:36px;background:url('../../assets/animal-coloring-studio-tool-icons.webp') 0 center/800% 100% no-repeat}.tool span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:48px}.finish{height:70px;padding:0 8px}
-.result-canvas{position:relative;inset:auto;width:100%;height:100%;min-width:0;min-height:0;align-self:stretch;justify-self:stretch;z-index:3;display:grid;grid-template-rows:390px 74px 70px 88px;align-content:center;justify-items:center;gap:14px;padding:34px 22px;text-align:center;background:linear-gradient(#effcf6,#fff1c7)}.result-art{position:relative;width:300px;height:390px}.result-art img{width:100%;height:100%;object-fit:contain}.result-art i{position:absolute;inset:28px;background:url('../../assets/animal-coloring-studio-complete-fx.webp') left center/300% 100% no-repeat;pointer-events:none}.result-canvas h2{font-size:31px;margin:0;align-self:end}.result-canvas p{margin:0;line-height:1.45}.skill{font-weight:800}.result-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;align-items:center}.result-actions button{width:100%;min-width:0;padding-inline:8px}.result-actions button:disabled{cursor:not-allowed;opacity:.52;box-shadow:none}.result-actions button:focus{outline:4px solid #245f56;outline-offset:3px;box-shadow:0 0 0 3px #fff}
-.leave-confirm-canvas{grid-area:1/1;position:relative;z-index:4;width:100%;height:100%;display:grid;place-items:center;padding:20px;background:#173d34a8;backdrop-filter:blur(7px)}.leave-confirm-card{width:min(100%,350px);display:grid;gap:16px;padding:24px;border-radius:20px;background:#fff9e8;color:#29483f;text-align:center;box-shadow:0 20px 50px #102b}.leave-confirm-card h2,.leave-confirm-card p{margin:0}.leave-confirm-card h2{font-size:27px}.leave-confirm-card p{font-size:16px;line-height:1.45;font-weight:700}.leave-confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.leave-confirm-actions button{width:100%;min-width:0;padding-inline:10px}.leave-confirm-actions button:focus{outline:4px solid #245f56;outline-offset:3px;box-shadow:0 0 0 3px #fff}
-@media(max-height:500px){.logical-canvas{box-shadow:0 0 24px #0008}.result-canvas p,.result-actions button{font-size:21px}.result-actions button{min-height:82px}}@media(min-width:700px){.main-canvas{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:52px minmax(0,1fr) 44px 48px;column-gap:12px;padding:10px}.main-topbar{grid-column:1/-1}.main-canvas>.cover{grid-column:1;grid-row:2/5;width:100%;max-width:none;height:100%;aspect-ratio:auto}.main-canvas>.intro{grid-column:2;grid-row:2;align-self:center}.main-canvas>.first-steps{grid-column:2;grid-row:3;width:100%;max-width:360px}.main-canvas>#start{grid-column:2;grid-row:4;width:100%;max-width:340px}}@media(min-width:760px){.studio-app{box-shadow:0 0 40px #0007}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+*{box-sizing:border-box}
+html,body{margin:0;min-width:0;min-height:100%;font-family:Arial,"Noto Sans TC",sans-serif}
+button,select{font:inherit}
+.hidden{display:none!important}
 
-/* Battle header owns the logical canvas top edge; do not vertically center the
-   complete play stack and push the return action into a second visual row. */
-body.playing .battle-live {
-  align-content: start;
+/* The shared Main owns its poster, summary, progress row, and Start action. */
+#main .main-content{display:grid;gap:16px;min-width:0}
+.first-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;width:100%;margin:0;padding:0;list-style:none}
+.first-steps li{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:center;justify-items:center;gap:4px;min-width:0;min-height:44px;padding:4px;border:1px solid var(--wp-ui-line,#47747a);border-radius:10px;background:var(--wp-ui-background,#102c3a);color:var(--wp-ui-text,#f5f2df);font-size:12px;font-weight:700;line-height:1.15;text-align:center}
+.first-steps i{display:block;width:26px;height:26px;flex:none;background-repeat:no-repeat}
+.step-picture{border-radius:7px;background-image:url('../../assets/animal-coloring-studio-safari-pages/lion.webp');background-position:center 28%;background-size:cover}
+.step-color{background-image:url('../../assets/animal-coloring-studio-palette-swatches.webp');background-position:left center;background-size:700% 100%}
+.step-fill{background-image:url('../../assets/animal-coloring-studio-tool-icons.webp');background-position:14.2857% center;background-size:800% 100%}
+
+/* Painting stays game-owned inside the shared Battle scene and Canvas. */
+#battle .battle-content{position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);width:100%;height:100%;min-width:0;min-height:0;overflow:hidden}
+.battle-live{grid-area:1/1;display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;gap:6px;width:100%;height:100%;min-width:0;min-height:0;padding:8px;align-content:stretch}
+.objective{display:grid;place-items:center;min-height:32px;margin:0;padding:4px 8px;border:1px solid var(--wp-ui-line,#47747a);border-radius:10px;background:var(--wp-ui-surface,#123747);color:var(--wp-ui-text,#f5f2df);font-size:calc(14px * var(--wp-battle-canvas-inverse-scale,1));font-weight:700;line-height:1.25;text-align:center}
+.board-wrap{position:relative;display:grid;place-items:center;min-width:0;min-height:0;overflow:hidden}
+.board-wrap canvas{display:block;max-width:100%;max-height:100%;border:3px solid #fff;border-radius:12px;background:#fff;box-shadow:0 6px 18px #06162488;touch-action:none}
+.board-wrap canvas:focus-visible{outline:4px solid var(--wp-i9-focus,#9ff3d6);outline-offset:3px}
+.keyboard-cursor{position:absolute;z-index:2;width:22px;height:22px;border:3px solid #fff;border-radius:50%;background:#247f76aa;box-shadow:0 0 0 3px #124b49,0 2px 7px #0008;pointer-events:none;opacity:0;transform:translate(-50%,-50%)}
+.board-wrap:focus-within .keyboard-cursor{opacity:1}
+.board-feedback{position:absolute;left:50%;bottom:8px;z-index:3;max-width:90%;padding:6px 10px;border-radius:9px;background:#102c3aee;color:#fff;text-align:center;font-size:calc(13px * var(--wp-battle-canvas-inverse-scale,1));font-weight:700;opacity:0;pointer-events:none;transform:translateX(-50%);transition:opacity .15s}
+.board-feedback.show{opacity:1}
+.palette{display:flex;align-items:center;gap:calc(6px * var(--wp-battle-canvas-inverse-scale,1));width:100%;min-width:0;min-height:calc(48px * var(--wp-battle-canvas-inverse-scale,1));overflow-x:auto;overflow-y:hidden;padding:2px;overscroll-behavior-x:contain;scrollbar-width:thin;touch-action:pan-x}
+.swatch{flex:0 0 calc(44px * var(--wp-battle-canvas-inverse-scale,1));width:calc(44px * var(--wp-battle-canvas-inverse-scale,1));height:calc(44px * var(--wp-battle-canvas-inverse-scale,1));min-width:calc(44px * var(--wp-battle-canvas-inverse-scale,1));min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1));border:2px solid #fff;border-radius:10px;background-image:url('../../assets/animal-coloring-studio-palette-swatches.webp');background-size:700% 100%;background-repeat:no-repeat;box-shadow:0 2px 7px #071c27aa;cursor:pointer}
+.swatch.active{outline:3px solid var(--wp-i9-focus,#9ff3d6);outline-offset:2px}
+.swatch:focus-visible,.tool:focus-visible,.result-actions button:focus-visible,.leave-confirm-actions button:focus-visible{outline:3px solid var(--wp-i9-focus,#9ff3d6);outline-offset:2px}
+.tools{display:flex;align-items:stretch;gap:calc(5px * var(--wp-battle-canvas-inverse-scale,1));width:100%;min-width:0;min-height:calc(64px * var(--wp-battle-canvas-inverse-scale,1));overflow-x:auto;overflow-y:hidden;padding:2px;overscroll-behavior-x:contain;scrollbar-width:thin}
+.tool{display:grid;grid-template-rows:calc(34px * var(--wp-battle-canvas-inverse-scale,1)) auto;place-items:center;gap:2px;flex:1 0 calc(48px * var(--wp-battle-canvas-inverse-scale,1));min-width:calc(48px * var(--wp-battle-canvas-inverse-scale,1));min-height:calc(56px * var(--wp-battle-canvas-inverse-scale,1));padding:3px;border:2px solid var(--wp-ui-line,#47747a);border-radius:10px;background:var(--wp-ui-button-image,#164252);color:var(--wp-ui-text,#f5f2df);font-size:calc(10px * var(--wp-battle-canvas-inverse-scale,1));font-weight:700;line-height:1.1;cursor:pointer}
+.tool i{display:block;width:calc(32px * var(--wp-battle-canvas-inverse-scale,1));height:calc(32px * var(--wp-battle-canvas-inverse-scale,1));background:url('../../assets/animal-coloring-studio-tool-icons.webp') 0 center/800% 100% no-repeat}
+.tool span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tool.active{border-color:#75dfc8;background:#164e59}
+.tool.confirming{border-color:#f5a26c;background:#603a35;color:#fff1df}
+.tools .finish{display:grid;place-items:center;flex:1.25 0 calc(64px * var(--wp-battle-canvas-inverse-scale,1));min-width:calc(64px * var(--wp-battle-canvas-inverse-scale,1));min-height:calc(56px * var(--wp-battle-canvas-inverse-scale,1));padding-inline:8px}
+.primary,.secondary{border-radius:10px;font-weight:800;cursor:pointer}
+.primary{border:2px solid #ffd271;background:#e6ad42;color:#2c2518;box-shadow:inset 0 2px #fff5c9,0 3px #754c26}
+.secondary{border:2px solid var(--wp-ui-line,#47747a);background:var(--wp-ui-button-image,#164252);color:var(--wp-ui-text,#f5f2df)}
+
+/* Result and leave decisions remain substates of the shared Battle content. */
+.result-panel,.leave-confirm-panel{position:absolute;inset:0;z-index:5;display:grid;place-items:center;min-width:0;min-height:0;overflow:auto;padding:calc(12px * var(--wp-battle-canvas-inverse-scale,1));background:#071c27cc;backdrop-filter:blur(5px)}
+.result-card,.leave-confirm-card{display:grid;justify-items:center;align-content:center;gap:calc(8px * var(--wp-battle-canvas-inverse-scale,1));width:min(100%,calc(460px * var(--wp-battle-canvas-inverse-scale,1)));max-height:100%;overflow:auto;border:2px solid var(--wp-ui-line,#47747a);border-radius:18px;background:var(--wp-ui-surface,#123747);color:var(--wp-ui-text,#f5f2df);text-align:center}
+.result-art{position:relative;width:min(100%,calc(220px * var(--wp-battle-canvas-inverse-scale,1)));height:calc(230px * var(--wp-battle-canvas-inverse-scale,1));min-height:0}
+.result-art img{display:block;width:100%;height:100%;object-fit:contain}
+.result-art i{position:absolute;inset:0;background:url('../../assets/animal-coloring-studio-complete-fx.webp') center/300% 100% no-repeat;pointer-events:none}
+.result-card h2,.leave-confirm-card h2{margin:0;font-size:calc(26px * var(--wp-battle-canvas-inverse-scale,1));line-height:1.2}
+.result-card p,.leave-confirm-card p{max-width:100%;margin:0;color:var(--wp-ui-muted,#c5d7dc);font-size:calc(14px * var(--wp-battle-canvas-inverse-scale,1));line-height:1.4;overflow-wrap:anywhere}
+.result-card .skill{font-weight:700}
+.result-actions,.leave-confirm-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:calc(8px * var(--wp-battle-canvas-inverse-scale,1));width:100%;margin-top:calc(4px * var(--wp-battle-canvas-inverse-scale,1))}
+.result-actions button,.leave-confirm-actions button{flex:1 1 calc(100px * var(--wp-battle-canvas-inverse-scale,1));min-width:calc(44px * var(--wp-battle-canvas-inverse-scale,1));min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1));padding-inline:calc(8px * var(--wp-battle-canvas-inverse-scale,1));font-size:calc(13px * var(--wp-battle-canvas-inverse-scale,1))}
+.result-actions button:disabled{cursor:not-allowed;opacity:.55;box-shadow:none}
+.leave-confirm-panel{z-index:6}
+.leave-confirm-card{width:min(100%,calc(350px * var(--wp-battle-canvas-inverse-scale,1)));padding:calc(20px * var(--wp-battle-canvas-inverse-scale,1))}
+
+@media (max-width:380px){
+  .first-steps li{grid-template-columns:1fr;gap:1px;font-size:11px}
+  .first-steps i{width:22px;height:22px}
 }
 
-/* The public guide follows the first-play Canvas. Keep the adopted Version 4
-   Main composition at least one live viewport tall, and preserve the game's
-   three visual steps as the child-readable progress row. */
-.main-screen.wp-standard-main-screen .main-canvas.wp-standard-main-flow-node {
-  min-height: 100dvh !important;
+@media (orientation:landscape) and (max-height:480px){
+  .result-card,.leave-confirm-card{min-height:0;gap:calc(5px * var(--wp-battle-canvas-inverse-scale,1))}
+  .result-card h2,.leave-confirm-card h2{font-size:calc(21px * var(--wp-battle-canvas-inverse-scale,1))}
+  .result-actions,.leave-confirm-actions{gap:calc(4px * var(--wp-battle-canvas-inverse-scale,1));margin-top:calc(2px * var(--wp-battle-canvas-inverse-scale,1))}
 }
 
-.main-screen.wp-standard-main-screen .first-steps.wp-standard-main-progress {
-  display: grid !important;
-  height: 44px !important;
-  min-height: 44px !important;
-  max-height: 44px !important;
+@media (orientation:landscape) and (max-height:560px){
+  .battle-live{grid-template-columns:minmax(0,1fr) minmax(calc(220px * var(--wp-battle-canvas-inverse-scale,1)),.62fr);grid-template-rows:auto minmax(0,1fr) auto;gap:4px;padding:6px}
+  .objective{grid-column:1/-1;grid-row:1;min-height:calc(30px * var(--wp-battle-canvas-inverse-scale,1))}
+  .board-wrap{grid-column:1;grid-row:2/4}
+  .palette{grid-column:2;grid-row:2;display:grid;grid-template-columns:repeat(4,minmax(calc(40px * var(--wp-battle-canvas-inverse-scale,1)),1fr));grid-auto-rows:calc(44px * var(--wp-battle-canvas-inverse-scale,1));justify-items:center;align-content:center;justify-content:center;overflow:hidden;gap:calc(4px * var(--wp-battle-canvas-inverse-scale,1));padding:2px}
+  .swatch{flex:none;width:calc(40px * var(--wp-battle-canvas-inverse-scale,1));height:calc(40px * var(--wp-battle-canvas-inverse-scale,1));min-width:calc(40px * var(--wp-battle-canvas-inverse-scale,1));min-height:calc(40px * var(--wp-battle-canvas-inverse-scale,1))}
+  .tools{grid-column:2;grid-row:3;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:calc(52px * var(--wp-battle-canvas-inverse-scale,1));gap:calc(4px * var(--wp-battle-canvas-inverse-scale,1));overflow:visible;padding:0}
+  .tool,.tools .finish{min-width:0;min-height:calc(48px * var(--wp-battle-canvas-inverse-scale,1));font-size:calc(9px * var(--wp-battle-canvas-inverse-scale,1))}
+  .tool{grid-template-rows:calc(28px * var(--wp-battle-canvas-inverse-scale,1)) auto}
+  .tool i{width:calc(26px * var(--wp-battle-canvas-inverse-scale,1));height:calc(26px * var(--wp-battle-canvas-inverse-scale,1))}
+  .tools .finish{flex:none;padding:2px}
+  .result-art{height:calc(70px * var(--wp-battle-canvas-inverse-scale,1))}
 }
 
-.stage-header > .wp-shell-settings {
-  position: relative;
-  z-index: 8;
-  transform: scale(var(--inverse-scale, 1));
-  transform-origin: top right;
-}
-
-@media (max-height: 500px) and (orientation: landscape) {
-  .stage-canvas .album-tabs {
-    padding-right: 112px;
-  }
-}
-
-@media (max-height: 500px) and (min-width: 700px) {
-  .main-screen.wp-standard-main-screen .main-canvas > .wp-standard-main-composition {
-    grid-template-columns: minmax(0, 330px) minmax(0, 1fr) !important;
-    gap: 16px !important;
-    padding: 4px 16px 10px !important;
-  }
-
-  .main-screen.wp-standard-main-screen .wp-standard-main-poster {
-    width: 300px !important;
-    height: 300px !important;
-    justify-self: center;
-  }
-
-  .main-screen.wp-standard-main-screen :is(
-    .wp-standard-main-poster-media,
-    .wp-standard-main-poster-media > img,
-    .wp-standard-main-poster > img
-  ) {
-    width: 300px !important;
-    min-width: 300px !important;
-    max-width: 300px !important;
-    height: 300px !important;
-    min-height: 300px !important;
-    max-height: 300px !important;
-  }
-
-  .main-screen.wp-standard-main-screen .wp-standard-main-copy {
-    height: 280px;
-    gap: 8px;
-  }
-
-  .main-screen.wp-standard-main-screen .wp-standard-main-summary {
-    font-size: 15px;
-    line-height: 1.35;
-  }
-
-  .main-screen.wp-standard-main-screen .first-steps.wp-standard-main-progress {
-    height: 44px !important;
-    min-height: 44px !important;
-    max-height: 44px !important;
-  }
-
-  .main-screen.wp-standard-main-screen .first-steps li {
-    grid-template-columns: 28px minmax(0, 1fr);
-  }
-
-  .main-screen.wp-standard-main-screen .first-steps i {
-    width: 26px;
-    height: 26px;
-  }
-}
+@media(prefers-reduced-motion:reduce){.board-feedback,.swatch,.tool{transition:none!important}}

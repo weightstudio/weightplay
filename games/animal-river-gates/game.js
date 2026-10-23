@@ -70,7 +70,7 @@ function stageRecord(index){
   return {id:p.id,kicker:stageText(p,'arc'),title:stageText(p,'title'),subtitle:copy('stageDemand',{a:p.demands[0],b:p.demands[1]}),
     status:solved?copy('solved'):stageUnlocked(index)?copy('open'):copy('locked'),
     summary:copy('stageReserve',{label:nodeLabel('cistern',p),value:p.reserve,waste:p.wasteMax||0}),
-    details:[stageText(p,'mechanic'),copy('targetMoves',{n:p.par||p.solution.length}),campaign.best[p.id]?copy('bestMoves',{n:campaign.best[p.id]}):''].filter(Boolean),
+    details:[locale==='en'||locales[locale]?.[p.mechanicKey]?stageText(p,'mechanic'):'',copy('targetMoves',{n:p.par||p.solution.length}),campaign.best[p.id]?copy('bestMoves',{n:campaign.best[p.id]}):''].filter(Boolean),
     poster:'/assets/interface7-redrawn/animal-river-gates.webp',locked:!stageUnlocked(index),cleared:solved};
 }
 function renderStages(){
@@ -187,7 +187,7 @@ function renderBattle(){
   }
   const edge=plan.edges.find(e=>e.id===selected);
   $('routeTitle').textContent=edge?copyAction(edge):copy('selectGate');
-  const objective=plan.window?copy('windowGoal',plan.window):plan.order?copy('orderGoal'):copy('reserveGoal',{n:plan.reserve});
+  const objective=[plan.window?copy('windowGoal',plan.window):'',plan.order?copy('orderGoal'):'',!plan.window&&!plan.order?copy('reserveGoal',{n:plan.reserve}):''].filter(Boolean).join(' · ');
   $('routeDetail').textContent=edge?edgeDetail(edge):copy('prompt')+' '+objective+' · '+phaseName(state.beat%2?'odd':'even');
   $('checkBtn').disabled=locked||!edge||Boolean(reasonFor(plan,state,edge))||screen!=='battle';
   $('waitBtn').disabled=locked||state.beat>=plan.beats;
@@ -238,11 +238,13 @@ function renderResult(){
   if(!result)return;const win=result.kind==='win',plan=currentStage();
   $('resultKicker').textContent=plan.id+' / 30 · '+stageText(plan,'title');
   $('resultTitle').textContent=win?copy('resultTitle'):copy('lossTitle');
-  $('resultText').textContent=result.saveFailed?copy('saveError'):win?copy('stageMoves',{n:state.beat}):copy(result.reason);
+  $('resultText').textContent=result.saveFailed?copy('progressSaveError'):win?copy('stageMoves',{n:state.beat}):copy(result.reason);
   $('resultRecord').textContent=win?copy('targetMoves',{n:plan.par||plan.solution.length})+(campaign.best[plan.id]?' · '+copy('bestMoves',{n:campaign.best[plan.id]}):''):copy('undoHelp');
   const hasNext=win&&stageIndex<29&&stageUnlocked(stageIndex+1);
   $('nextBtn').textContent=win?(hasNext?copy('nextStageAction'):copy('stages')):copy('undo');
   $('replayBtn').textContent=win?copy('replay'):copy('retry');
+  $('resultMapBtn').hidden=win&&!hasNext;
+  $('resultScreen').dataset.final=String(win&&!hasNext);
   $('resultScreen').dataset.outcome=result.kind;
 }
 function renderShop(){
