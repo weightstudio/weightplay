@@ -2835,6 +2835,15 @@ if (fourInARowPublic) {
   delete fourInARowPublic.internalTrial;
 }
 
+// Minefield Logic v21 / Interface 9: current source approved by the owner.
+const minefieldLogicPublic = window.WONDER_LOBBY.games.find((game) => game.id === "minefield-logic");
+if (minefieldLogicPublic) {
+  minefieldLogicPublic.status = "playable";
+  minefieldLogicPublic.statusText = classicLogicText(["Playable", "可遊玩", "可游玩", "プレイ可能", "플레이 가능", "Disponible", "Disponível", "Disponible", "Spielbar", "Disponibile", "Доступно", "खेलने योग्य", "متاحة للعب"]);
+  minefieldLogicPublic.previewVideo = "assets/previews/minefield-logic-battle.webm";
+  delete minefieldLogicPublic.internalTrial;
+}
+
 const cleanZhLobbyCopy = {
   "beast-deck": {
     title: "獸王牌組：迷霧森林",

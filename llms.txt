@@ -59,6 +59,8 @@ WeightPlay covers these game and content clusters:
 
 ## Current Playable Games
 
+- Minefield Logic: https://weightplay.com/en/games/minefield-logic/ — Solve 30 fixed minefields or random quick puzzles with visible-clue hints, flags and undo.
+
 - War: High Card: https://weightplay.com/en/games/war/ — A 52-card reveal-and-compare game against the computer. A is low; ties add three face-down cards and one reveal. The guide explains short-deck endings and browser-local completed-game records.
 
 - Hangman: https://weightplay.com/en/games/hangman/

@@ -2974,9 +2974,37 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Мурчащий домик",
     "hi": "म्याऊँ का आशियाना",
     "ar": "بيت الخرخرة"
+  },
+  "signal-snap": {
+    "__localizedExact": true,
+    "en": "Signal Snap",
+    "zh-Hant": "訊光快拍",
+    "zh-Hans": "讯光快拍",
+    "ja": "シグナルスナップ",
+    "ko": "시그널 스냅",
+    "es": "Destello reflejo",
+    "pt-BR": "Sinal Relâmpago",
+    "fr": "Signal éclair",
+    "de": "Signalblitz",
+    "it": "Scatto segnale",
+    "ru": "Сигнальный рывок",
+    "hi": "संकेत झटपट",
+    "ar": "ومضة الإشارة"
+  },
+  "railguard-express": {
+    "__localizedExact": true,
+    "en": "Railguard Express",
+    "zh-Hant": "荒野守護列車",
+    "zh-Hans": "荒野守护列车",
+    "ja": "レールガード・エクスプレス",
+    "ko": "레일가드 익스프레스",
+    "es": "Expreso Guardavía",
+    "pt-BR": "Expresso Guardião",
+    "fr": "Express des sentinelles",
+    "de": "Schienenwacht Express",
+    "it": "Espresso dei guardiani",
+    "ru": "Экспресс стражей",
+    "hi": "रेलरक्षक एक्सप्रेस",
+    "ar": "قطار الحراس"
   }
 };
-
-window.WEIGHTPLAY_GAME_TITLES["signal-snap"] = {"__localizedExact": true, "en": "Signal Snap", "zh-Hant": "訊光快拍", "zh-Hans": "讯光快拍", "ja": "シグナルスナップ", "ko": "시그널 스냅", "es": "Destello reflejo", "pt-BR": "Sinal Relâmpago", "fr": "Signal éclair", "de": "Signalblitz", "it": "Scatto segnale", "ru": "Сигнальный рывок", "hi": "संकेत झटपट", "ar": "ومضة الإشارة"};
-
-window.WEIGHTPLAY_GAME_TITLES["railguard-express"] = {"__localizedExact": true, "en": "Railguard Express", "zh-Hant": "荒野守護列車", "zh-Hans": "荒野守护列车", "ja": "レールガード・エクスプレス", "ko": "레일가드 익스프레스", "es": "Expreso Guardavía", "pt-BR": "Expresso Guardião", "fr": "Express des sentinelles", "de": "Schienenwacht Express", "it": "Espresso dei guardiani", "ru": "Экспресс стражей", "hi": "रेलरक्षक एक्सप्रेस", "ar": "قطار الحراس"};
