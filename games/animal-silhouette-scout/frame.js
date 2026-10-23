@@ -46,7 +46,7 @@
     const battleGroup = window.WeightPlayScreenFrame.createGroup();
     battleInfo.forEach((node) => battleGroup.add(node));
     frame.battleTopUI.add(battleGroup);
-    frame.commonDownButton.clear().add(stageTab);
+    frame.commonDownButton.clear().add($("journalBtn")).add(stageTab).add($("gearBtn"));
     frame.activate("main");
 
     window.addEventListener("pagehide", (event) => {

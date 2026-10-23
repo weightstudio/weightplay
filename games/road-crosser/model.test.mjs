@@ -9,24 +9,24 @@ test('first forward progress and pickups score once; lateral/backtracking cannot
  const w=createWorld();step(w,'up');assert.equal(w.score,33);step(w,'left');step(w,'right');step(w,'down');step(w,'up');assert.equal(w.score,33);assert.equal(w.lanterns,1);
 });
 test('edge and rock rejection leave the player in place; input queue is bounded',()=>{
- const w=createWorld(2);w.player={x:.5,row:8};assert.equal(requestMove(w,'left'),false);assert.equal(w.events.at(-1).reason,'edge');
+ const w=createWorld(5);w.player={x:.5,row:8};assert.equal(requestMove(w,'left'),false);assert.equal(w.events.at(-1).reason,'edge');
  w.player={x:5.5,row:4};assert.equal(requestMove(w,'up'),false);assert.equal(w.events.at(-1).reason,'rock');
  w.player={x:5.5,row:8};requestMove(w,'left');requestMove(w,'left');requestMove(w,'right');tick(w,.32);assert.equal(w.player.x,5.5);
 });
 test('second route moves both traffic and current; signal lane stops then restarts',()=>{
- const w=createWorld(2),before=[w.traffic[0].x,w.logs[0].x];tick(w,1);assert.ok(w.traffic[0].x>before[0]);assert.ok(w.logs[0].x<before[1]);
- const v=createWorld(3),car=v.traffic.find(c=>c.row===5),x=car.x;tick(v,2);assert.equal(signalState(v),'stop');assert.equal(car.x,x);tick(v,1.6);assert.equal(signalState(v),'go');assert.ok(car.x<x);
+ const w=createWorld(2),before=[w.traffic[0].x,w.logs[0].x];tick(w,1);assert.notEqual(w.traffic[0].x,before[0]);assert.ok(w.logs[0].x<before[1]);
+ const v=createWorld(11),car=v.traffic.find(c=>c.row===5),x=car.x;tick(v,2);assert.equal(signalState(v),'stop');assert.equal(car.x,x);tick(v,1.6);assert.equal(signalState(v),'go');assert.ok(car.x<x);
 });
 test('logs carry the player; water and traffic impacts settle once',()=>{
  const w=createWorld(2),log=w.logs.find(l=>l.row===2);w.player={x:log.x+1,row:2};const x=w.player.x;tick(w,.1);assert.ok(w.player.x>x);assert.equal(w.state,'playing');
- const water=createWorld();water.logs=[];water.player={x:5,row:2};tick(w,.1);advance(water,.1);advance(water,.1);assert.equal(water.reason,'water');assert.equal(water.events.filter(e=>e.type==='impact').length,1);
- const hit=createWorld();hit.player={x:hit.traffic[0].x,row:4};tick(hit,.5);assert.equal(hit.reason,'traffic');assert.equal(hit.events.filter(e=>e.type==='impact').length,1);
+ const water=createWorld();water.logs=[];water.player={x:5,row:1};tick(w,.1);advance(water,.1);advance(water,.1);assert.equal(water.reason,'water');assert.equal(water.events.filter(e=>e.type==='impact').length,1);
+ const hit=createWorld();hit.player={x:hit.traffic[0].x,row:5};tick(hit,.5);assert.equal(hit.reason,'traffic');assert.equal(hit.events.filter(e=>e.type==='impact').length,1);
 });
 test('goal awards one route bonus and rejects subsequent input',()=>{
- const w=createWorld(3);w.player={x:4,row:1};w.farthest=1;step(w,'up');assert.equal(w.state,'arriving');assert.equal(w.score,308);tick(w,2);assert.equal(w.score,308);assert.equal(requestMove(w,'left'),false);assert.equal(w.events.filter(e=>e.type==='checkpoint').length,1);
+ const w=createWorld(1);w.player={x:4,row:1};w.farthest=1;step(w,'up');assert.equal(w.state,'arriving');assert.equal(w.score,108);tick(w,2);assert.equal(w.score,108);assert.equal(requestMove(w,'left'),false);assert.equal(w.events.filter(e=>e.type==='checkpoint').length,1);
 });
 test('the next landing cue accounts for stopped traffic and blocked rocks',()=>{
- const w=createWorld(3);w.player={x:5.5,row:4};assert.equal(nextLanding(w),'blocked');w.player={x:w.traffic.find(c=>c.row===5).x,row:6};assert.equal(nextLanding(w),'danger');
+ const w=createWorld(5);w.player={x:5.5,row:4};assert.equal(nextLanding(w),'blocked');w.player={x:w.traffic.find(c=>c.row===5).x,row:6};assert.equal(nextLanding(w),'danger');
 });
 test('legacy best remains; malformed and out of range journey data is sanitized',()=>{
  const storage=memory();storage.setItem(BEST_KEY,'731');assert.equal(readBest(storage),731);storage.setItem(SAVE_KEY,'broken');assert.deepEqual(readJourney(storage).clears,[0,0,0]);

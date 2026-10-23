@@ -1,0 +1,104 @@
+/* Pure campaign/save rules. The browser adapter owns rendering and persistence. */
+(function (root, factory) {
+  const model = factory();
+  if (typeof module === "object" && module.exports) module.exports = model;
+  else root.SilhouetteScoutModel = model;
+})(typeof globalThis === "object" ? globalThis : this, () => {
+  "use strict";
+  const animals = ["fox", "owl", "rabbit", "hare", "badger", "finch", "duck", "deer", "mole", "otter", "bear", "cat"];
+  const authored = [
+    ["shape", "fox", "fox rabbit badger"],
+    ["shape", "owl", "owl finch duck"],
+    ["shape", "hare", "hare deer mole"],
+    ["shape", "rabbit", "rabbit fox hare"],
+    ["mirror", "owl", "owl duck finch"],
+    ["mirror", "deer", "deer hare fox"],
+    ["mirror", "otter", "otter duck badger"],
+    ["mirror", "cat", "cat fox mole"],
+    ["mirror", "bear", "bear badger deer"],
+    ["pair", "rabbit deer", "rabbit deer fox owl"],
+    ["detail", "badger", "badger mole bear"],
+    ["detail", "finch", "finch owl duck"],
+    ["detail", "mole", "mole rabbit cat"],
+    ["detail", "duck", "duck otter finch"],
+    ["sequence", "fox owl", "fox owl rabbit deer"],
+    ["pair", "otter duck", "otter duck bear finch"],
+    ["pair", "cat mole", "cat mole fox rabbit"],
+    ["pair", "deer hare", "deer hare rabbit fox"],
+    ["pair", "bear badger", "bear badger otter mole"],
+    ["pair", "owl duck", "owl duck finch otter"],
+    ["sequence", "hare deer", "hare rabbit deer fox"],
+    ["sequence", "badger mole", "badger bear mole cat"],
+    ["sequence", "rabbit hare", "rabbit hare fox cat"],
+    ["sequence", "fox cat badger", "fox cat badger bear"],
+    ["sequence", "deer bear", "deer bear hare otter"],
+    ["mirror", "owl", "owl finch duck cat"],
+    ["detail", "otter", "otter duck bear mole"],
+    ["mirror", "cat", "cat mole fox rabbit"],
+    ["pair", "fox hare", "fox hare rabbit badger"],
+    ["sequence", "owl deer fox", "owl deer fox bear"],
+  ];
+  const rounds = authored.map(([mode, targets, options], index) => Object.freeze({
+    id: index + 1, arc: Math.floor(index / 5) + 1, mode,
+    targets: Object.freeze(targets.split(" ")), options: Object.freeze(options.split(" ")),
+    checkpoint: (index + 1) % 5 === 0, nameKey: `name${index + 1}`, clueKey: `clue${index + 1}`,
+  }));
+  const saveKey = "weightplay-animal-silhouette-scout-progress-v4";
+  const lensCost = 8;
+  const validId = id => Number.isInteger(id) && id >= 1 && id <= rounds.length;
+  function normalize(raw) {
+    const source = raw && typeof raw === "object" && !Array.isArray(raw) ? raw : {};
+    const cleared = [...new Set((Array.isArray(source.cleared) ? source.cleared : []).map(Number).filter(validId))].sort((a, b) => a - b);
+    const mastery = {};
+    for (const id of cleared) mastery[id] = Math.max(1, Math.min(3, Math.floor(Number(source.mastery?.[id]) || 1)));
+    // Legacy clears prove discovery, but do not prove first-try mastery.
+    const discovered = new Set((Array.isArray(source.discovered) ? source.discovered : []).filter(id => animals.includes(id)));
+    for (const id of cleared) rounds[id - 1].targets.forEach(id => discovered.add(id));
+    return {
+      ...source, schema: 5,
+      unlocked: Math.max(1, Math.min(30, Math.floor(Number(source.unlocked) || 1), 30)),
+      cleared, mastery, discovered: animals.filter(id => discovered.has(id)), lens: source.lens === true,
+    };
+  }
+  function shuffle(items, random = Math.random) {
+    const result = [...items];
+    for (let i = result.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.max(0, Math.min(.999999999, random())) * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+  }
+  function matches(round, selection) {
+    if (selection.length !== round.targets.length || new Set(selection).size !== selection.length) return false;
+    return round.mode === "sequence" ? round.targets.every((id, i) => selection[i] === id) : round.targets.every(id => selection.includes(id));
+  }
+  function complete(progress, round, checks, assisted) {
+    const next = normalize(progress);
+    const rating = checks === 1 && !assisted ? 3 : checks <= 2 ? 2 : 1;
+    if (!next.cleared.includes(round.id)) next.cleared.push(round.id);
+    next.cleared.sort((a, b) => a - b);
+    next.unlocked = Math.max(next.unlocked, Math.min(30, round.id + 1));
+    next.mastery[round.id] = Math.max(next.mastery[round.id] || 0, rating);
+    const newlyDiscovered = round.targets.filter(id => !next.discovered.includes(id));
+    next.discovered = animals.filter(id => next.discovered.includes(id) || round.targets.includes(id));
+    return { progress: next, rating, newlyDiscovered };
+  }
+  function purchaseLens({ readProgress, saveProgress, wallet }) {
+    const current = normalize(readProgress());
+    if (current.lens) return { status: "owned", progress: current };
+    if (!wallet || wallet.read().diamonds < lensCost) return { status: "insufficient", progress: current };
+    // Verify game storage before touching currency; roll back a failed commit.
+    try { saveProgress(current); } catch { return { status: "storage", progress: current }; }
+    try {
+      if (!wallet.spendDiamonds(lensCost)) return { status: "insufficient", progress: current };
+    } catch { return { status: "storage", progress: current }; }
+    const next = { ...current, lens: true };
+    try { saveProgress(next); }
+    catch {
+      wallet.addDiamonds(lensCost);
+      return { status: "storage", progress: current };
+    }
+    return { status: "purchased", progress: next };
+  }
+  return Object.freeze({ animals, rounds, saveKey, lensCost, normalize, shuffle, matches, complete, purchaseLens });
+});

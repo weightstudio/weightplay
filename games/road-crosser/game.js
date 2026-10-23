@@ -29,21 +29,7 @@
   Object.assign(COPY.ru,{retryGoalStage2:"Цель повтора: следи за подсвеченной полосой, дождись окна и доберись до этапа 3.",retryGoalStage3:"Цель повтора: удерживай подсвеченное окно в быстром потоке, затем используй бревно, чтобы добраться до Звёздных ворот."});
   Object.assign(COPY.hi,{retryGoalStage2:"फिर कोशिश का लक्ष्य: उभरी लेन देखें, खाली जगह का इंतज़ार करें और चरण 3 तक पहुँचें।",retryGoalStage3:"फिर कोशिश का लक्ष्य: तेज़ यातायात में उभरी खाली जगह बनाए रखें, फिर नदी के लट्ठे से स्टार गेट तक पहुँचें।"});
   Object.assign(COPY.ar,{retryGoalStage2:"هدف المحاولة التالية: راقب المسار المظلل، انتظر فجوة ثم بلغ المرحلة 3.",retryGoalStage3:"هدف المحاولة التالية: حافظ على الفجوة المظللة وسط السيارات الأسرع، ثم اركب جذع النهر إلى بوابة النجوم."});
-  const MAIN_INTRO={
-    en:'Move one step at a time. Avoid traffic and ride logs across all three routes.',
-    'zh-Hant':'一步步避開車流，踏上浮木，安全穿越三段路線。',
-    'zh-Hans':'一步步避开车流，踏上浮木，安全穿越三段路线。',
-    ja:'一歩ずつ車を避け、丸太に乗って3つの道を渡ろう。',
-    ko:'한 칸씩 차를 피하고 통나무를 타며 세 구간을 건너세요.',
-    es:'Avanza paso a paso. Evita coches y cruza tres rutas sobre troncos.',
-    'pt-BR':'Avance um passo por vez. Desvie dos carros e use troncos nas três rotas.',
-    fr:'Avance pas à pas. Évite les voitures et traverse trois parcours sur les troncs.',
-    de:'Gehe Schritt für Schritt. Meide Autos und überquere drei Routen auf Baumstämmen.',
-    it:'Avanza un passo alla volta. Evita le auto e usa i tronchi sui tre percorsi.',
-    ru:'Шагай по одному шагу. Избегай машин и пересекай три маршрута по брёвнам.',
-    hi:'एक-एक कदम चलें। गाड़ियों से बचें और लट्ठों पर तीन रास्ते पार करें।',
-    ar:'تحرك خطوة خطوة. تجنب السيارات واعبر المسارات الثلاثة على الجذوع.'
-  };
+  const MAIN_INTRO={"en":"Deliver lanterns through 30 handcrafted crossings. Read the traffic, ride the current, and find your own route.","zh-Hant":"穿越 30 道精心設計的車流與河道。觀察空檔、搭乘浮木，把提燈送到碼頭。","zh-Hans":"穿越 30 道精心设计的车流与河道。观察空隙、搭乘浮木，把提灯送到码头。","ja":"30の手作りコースでランタンを届けよう。車のすき間を読み、丸太に乗って波止場へ。","ko":"직접 설계한 30개 길에서 등불을 배달하세요. 차 사이를 지나 통나무를 타고 부두로 가세요.","es":"Entrega faroles en 30 cruces diseñados a mano. Lee el tráfico, monta los troncos y llega al muelle.","pt-BR":"Entregue lanternas em 30 travessias feitas à mão. Observe o trânsito, pegue os troncos e chegue ao cais.","fr":"Livrez des lanternes sur 30 parcours conçus à la main. Observez les voitures et naviguez sur les rondins.","de":"Liefere Laternen auf 30 gestalteten Wegen. Beobachte den Verkehr und fahre auf Baumstämmen zum Kai.","it":"Consegna lanterne in 30 percorsi progettati a mano. Osserva il traffico e sali sui tronchi per raggiungere il molo.","ru":"Доставьте фонари по 30 продуманным маршрутам. Следите за машинами и плывите на брёвнах к причалу.","hi":"हाथ से बनाए 30 पारपथों पर लालटेन पहुँचाएँ। गाड़ियों की चाल देखें और लट्ठों से घाट तक जाएँ।","ar":"سلّم الفوانيس عبر 30 معبراً مصمماً بعناية. راقب السيارات واركب الجذوع إلى الرصيف."};
   for(const [key,text] of Object.entries(MAIN_INTRO))COPY[key].mainIntro=text;
   const ROAD_SESSION_COPY={
     en:{timing:"Watch the highlighted lane. Wait for a gap, then take one step.",crash:"Traffic caught the runner in the highlighted lane. Wait for a gap before the next step."},

@@ -1,292 +1,204 @@
 (() => {
-  "use strict";
-
-  const locales = window.ANIMAL_SILHOUETTE_SCOUT_LOCALES || {};
-  const routeLocaleMap = {
-    en: "en", "zh-tw": "zh-Hant", "zh-hant": "zh-Hant", "zh-cn": "zh-Hans", "zh-hans": "zh-Hans",
-    ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar",
-  };
-  const animals = {
-    fox: "🦊", owl: "🦉", rabbit: "🐇", hare: "🐇", badger: "🦡", finch: "🐦",
-    duck: "🦆", deer: "🦌", mole: "🐭", otter: "🦦", bear: "🐻", cat: "🐈",
-  };
-  const atlasAnimals = new Set(["fox", "rabbit", "owl", "deer"]);
-  const rounds = [
-    { id: 1, arc: 1, nameKey: "name1", clueKey: "clue1", target: "fox", options: ["fox", "rabbit", "badger"], mode: "match" },
-    { id: 2, arc: 1, nameKey: "name2", clueKey: "clue2", target: "owl", options: ["owl", "finch", "duck"], mode: "match" },
-    { id: 3, arc: 1, nameKey: "name3", clueKey: "clue3", target: "hare", options: ["hare", "deer", "mole"], mode: "match" },
-    { id: 4, arc: 1, nameKey: "name4", clueKey: "clue4", target: "rabbit", options: ["rabbit", "fox", "hare"], mode: "habitat" },
-    { id: 5, arc: 1, nameKey: "name5", clueKey: "clue5", target: "owl", options: ["owl", "duck", "finch"], mode: "avoid", checkpoint: true },
-    { id: 6, arc: 2, nameKey: "name6", clueKey: "clue6", target: "deer", options: ["deer", "hare", "fox"], mode: "match" },
-    { id: 7, arc: 2, nameKey: "name7", clueKey: "clue7", target: "otter", options: ["otter", "duck", "badger"], mode: "habitat" },
-    { id: 8, arc: 2, nameKey: "name8", clueKey: "clue8", target: "cat", options: ["cat", "fox", "mole"], mode: "avoid" },
-    { id: 9, arc: 2, nameKey: "name9", clueKey: "clue9", target: "bear", options: ["bear", "badger", "deer"], mode: "match" },
-    { id: 10, arc: 2, nameKey: "name10", clueKey: "clue10", targets: ["rabbit", "deer"], options: ["rabbit", "deer", "fox", "owl"], mode: "pair", checkpoint: true },
-    { id: 11, arc: 3, nameKey: "name11", clueKey: "clue11", target: "badger", options: ["badger", "mole", "bear"], mode: "match" },
-    { id: 12, arc: 3, nameKey: "name12", clueKey: "clue12", target: "finch", options: ["finch", "owl", "duck"], mode: "habitat" },
-    { id: 13, arc: 3, nameKey: "name13", clueKey: "clue13", target: "mole", options: ["mole", "rabbit", "cat"], mode: "avoid" },
-    { id: 14, arc: 3, nameKey: "name14", clueKey: "clue14", target: "duck", options: ["duck", "otter", "finch"], mode: "match" },
-    { id: 15, arc: 3, nameKey: "name15", clueKey: "clue15", targets: ["fox", "owl"], options: ["fox", "owl", "rabbit", "deer"], mode: "sequence", checkpoint: true },
-    { id: 16, arc: 4, nameKey: "name16", clueKey: "clue16", target: "otter", options: ["otter", "duck", "bear"], mode: "match" },
-    { id: 17, arc: 4, nameKey: "name17", clueKey: "clue17", target: "cat", options: ["cat", "mole", "fox"], mode: "habitat" },
-    { id: 18, arc: 4, nameKey: "name18", clueKey: "clue18", target: "deer", options: ["deer", "hare", "rabbit"], mode: "avoid" },
-    { id: 19, arc: 4, nameKey: "name19", clueKey: "clue19", target: "bear", options: ["bear", "badger", "otter"], mode: "match" },
-    { id: 20, arc: 4, nameKey: "name20", clueKey: "clue20", targets: ["owl", "duck"], options: ["owl", "duck", "finch", "otter"], mode: "pair", checkpoint: true },
-    { id: 21, arc: 5, nameKey: "name21", clueKey: "clue21", target: "hare", options: ["hare", "rabbit", "deer"], mode: "match" },
-    { id: 22, arc: 5, nameKey: "name22", clueKey: "clue22", target: "badger", options: ["badger", "bear", "mole"], mode: "habitat" },
-    { id: 23, arc: 5, nameKey: "name23", clueKey: "clue23", target: "rabbit", options: ["rabbit", "hare", "fox"], mode: "avoid" },
-    { id: 24, arc: 5, nameKey: "name24", clueKey: "clue24", target: "fox", options: ["fox", "cat", "badger"], mode: "match" },
-    { id: 25, arc: 5, nameKey: "name25", clueKey: "clue25", targets: ["deer", "bear"], options: ["deer", "bear", "hare", "otter"], mode: "sequence", checkpoint: true },
-    { id: 26, arc: 6, nameKey: "name26", clueKey: "clue26", target: "owl", options: ["owl", "finch", "duck"], mode: "match" },
-    { id: 27, arc: 6, nameKey: "name27", clueKey: "clue27", target: "otter", options: ["otter", "duck", "bear"], mode: "avoid" },
-    { id: 28, arc: 6, nameKey: "name28", clueKey: "clue28", target: "cat", options: ["cat", "mole", "fox"], mode: "habitat" },
-    { id: 29, arc: 6, nameKey: "name29", clueKey: "clue29", targets: ["fox", "hare"], options: ["fox", "hare", "rabbit", "badger"], mode: "pair" },
-    { id: 30, arc: 6, nameKey: "name30", clueKey: "clue30", targets: ["owl", "deer"], options: ["owl", "deer", "fox", "bear"], mode: "sequence", checkpoint: true },
-  ];
-  const state = {
-    locale: "en", round: 0, selected: [], checks: 0, sessionChecks: 0, screen: "main", unlocked: 1, cleared: new Set(),
-  };
-  const $ = (id) => document.getElementById(id);
-  let sharedFrameController;
-  let stageSelector;
-  let stageBrowseIndex = 0;
-  const progressKey = "weightplay-animal-silhouette-scout-progress-v4";
-  const t = (key, vars = {}) => {
-    const table = locales[state.locale] || locales.en || {};
-    let value = table[key] || locales.en?.[key] || key;
-    Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
+  'use strict';
+  const M = window.SilhouetteScoutModel, locales = window.ANIMAL_SILHOUETTE_SCOUT_LOCALES;
+  const $ = id => document.getElementById(id);
+  const poster = '/assets/interface7-redrawn/animal-silhouette-scout.webp';
+  const atlas = '/games/animal-silhouette-scout/assets/scout-field-atlas-v10.webp';
+  const forest = '/games/animal-silhouette-scout/assets/scout-clearing-v10.webp';
+  const routeLocales = {en:'en','zh-tw':'zh-Hant','zh-cn':'zh-Hans',ja:'ja',ko:'ko',es:'es','pt-br':'pt-BR',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'};
+  function loadProgress() { try {return M.normalize(JSON.parse(localStorage.getItem(M.saveKey)));} catch {return M.normalize(null);} }
+  function persist(progress) {localStorage.setItem(M.saveKey, JSON.stringify(progress));}
+  function initialLocale() {
+    const route = routeLocales[location.pathname.split('/')[1]];
+    if (route) return route;
+    try {return localStorage.getItem('weightPlayLocale') || localStorage.getItem('weightplayLocale') || 'en';} catch {return 'en';}
+  }
+  const state = {locale:initialLocale(),progress:loadProgress(),screen:'main',index:0,selected:[],options:[],checks:0,assisted:false,settled:false,lensUsed:false,result:null,saved:true};
+  let frame, selector, browse=0, generation=0, resultTimer=0, previewTimer=0;
+  const animations=new Set(), flights=new Set(), sounds=new Set(), reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  const t = (key, vars={}) => {
+    let value=locales[state.locale]?.[key] || locales.en[key] || key;
+    for(const [name,replacement] of Object.entries(vars)) value=value.replaceAll(`{${name}}`,String(replacement));
     return value;
   };
-  const readProgress = () => {
-    try {
-      const raw = JSON.parse(localStorage.getItem(progressKey) || "null");
-      state.unlocked = Math.max(1, Math.min(rounds.length, Number(raw?.unlocked) || 1));
-      state.cleared = new Set(Array.isArray(raw?.cleared) ? raw.cleared.map(Number).filter((id) => id >= 1 && id <= rounds.length) : []);
-    } catch (_) {}
-  };
-  const saveProgress = () => {
-    try { localStorage.setItem(progressKey, JSON.stringify({ unlocked: state.unlocked, cleared: [...state.cleared].sort((a, b) => a - b) })); } catch (_) {}
-  };
-  const readBest = () => {
-    try {
-      const values = ["weightplay-animal-silhouette-scout-best-v4", "weightplay-animal-silhouette-scout-best-v3"]
-        .map((key) => Number(localStorage.getItem(key))).filter((value) => Number.isFinite(value) && value > 0);
-      return values.length ? Math.min(...values) : null;
-    } catch (_) { return null; }
-  };
-  const saveBest = () => {
-    try {
-      const old = readBest();
-      if (!old || state.sessionChecks < old) localStorage.setItem("weightplay-animal-silhouette-scout-best-v4", String(state.sessionChecks));
-    } catch (_) {}
-  };
-  const show = (screen) => {
-    state.screen = screen;
-    const scene = screen === "result" ? "battle" : screen;
-    $("mainScreen").hidden = scene !== "main";
-    $("stageScreen").hidden = scene !== "stage";
-    $("battleScreen").hidden = scene !== "battle";
-    $("gameGuide").hidden = screen !== "main";
-    $("battlePlayWorkspace").hidden = screen === "result";
-    $("battlePlayWorkspace").inert = screen === "result";
-    $("resultScreen").hidden = screen !== "result";
-    document.body.dataset.screen = screen;
-    sharedFrameController?.activate(scene);
-    if (scene === "stage") renderStages();
-  };
-  const targetsFor = (round) => round.targets || [round.target];
-  const isMulti = (round) => targetsFor(round).length > 1;
-  const selectedFor = () => Array.isArray(state.selected) ? state.selected : (state.selected ? [state.selected] : []);
-  const artClass = (animal, base) => atlasAnimals.has(animal) ? `${base} scout-art scout-art-${animal}` : `${base} scout-target-fallback`;
-  const renderStageProgress = () => {
-    $("progress").textContent = `${t("lookouts")}: ${state.cleared.size} / ${rounds.length}`;
-    $("mainProgress").textContent = `${t("lookouts")}: ${state.cleared.size} / ${rounds.length}`;
-  };
-  const stageRecord = (index) => {
-    const round = rounds[index];
-    const locked = index >= state.unlocked;
-    const cleared = state.cleared.has(round.id);
-    const clue = t(round.clueKey);
-    return {
-      id: round.id,
-      kicker: t("round", { n: round.id, total: rounds.length }),
-      title: t(round.nameKey),
-      subtitle: clue,
-      status: locked ? t("locked") : cleared ? t("complete") : t("open"),
-      summary: clue,
-      details: [clue],
-      poster: "/games/animal-silhouette-scout/assets/animal-silhouette-scout-cover.webp",
-      locked,
-      cleared,
-    };
-  };
-  const openStage = () => { stageBrowseIndex = Math.min(stageBrowseIndex, state.unlocked - 1); show("stage"); };
-  const renderStages = () => {
-    renderStageProgress();
-    const page = $("stageWorkspace");
-    const rail = $("stageList");
-    if (!page || !rail || !window.WeightPlayPlayUI) return;
-    if (!stageSelector) {
-      stageSelector = window.WeightPlayPlayUI.mountStage({
-        page,
-        rail,
-        selected: stageBrowseIndex,
-        config: {
-          count: rounds.length,
-          poster: "/games/animal-silhouette-scout/assets/animal-silhouette-scout-cover.webp",
-          background: "/assets/lobby-block-atmosphere.svg",
-          stage: stageRecord,
-        },
-        isActive: () => sharedFrameController?.active === "stage",
-        onSelect(index) { stageBrowseIndex = index; renderStageProgress(); },
-        onStart(index) { startRound(index); },
-      });
-    } else stageSelector.refresh(stageBrowseIndex);
-  };
-  const renderTarget = (round) => {
-    const targetNode = $("silhouette");
-    const targetAnimals = targetsFor(round);
-    targetNode.className = targetAnimals.length > 1 ? "silhouette target-set" : artClass(targetAnimals[0], "silhouette");
-    targetNode.replaceChildren(...targetAnimals.map((animal, index) => {
-      if (targetAnimals.length === 1) return document.createTextNode(atlasAnimals.has(animal) ? "" : animals[animal]);
-      const node = document.createElement("div");
-      node.className = artClass(animal, "scout-target-art");
-      if (!atlasAnimals.has(animal)) node.textContent = animals[animal];
-      node.setAttribute("aria-label", `${index + 1}. ${t(animal)}`);
-      return node;
-    }));
-  };
-  const renderBattle = () => {
-    const round = rounds[state.round];
-    const selected = selectedFor();
-    $("roundName").textContent = t(round.nameKey);
-    $("roundLabel").textContent = t("round", { n: round.id, total: rounds.length });
-    $("checkCount").textContent = t("checks", { n: state.sessionChecks });
-    $("clue").textContent = t(round.clueKey);
-    $("targetLabel").textContent = t(round.mode === "sequence" ? "sequenceTargetLabel" : round.mode === "pair" ? "pairTargetLabel" : "targetLabel");
-    renderTarget(round);
-    $("choiceGrid").replaceChildren(...round.options.map((animal) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "choice-btn";
-      button.setAttribute("aria-pressed", String(selected.includes(animal)));
-      button.innerHTML = `<span class="choice-emoji${atlasAnimals.has(animal) ? ` scout-art scout-art-${animal}` : ""}" aria-hidden="true">${atlasAnimals.has(animal) ? "" : animals[animal]}</span><strong>${t(animal)}</strong>`;
-      button.onclick = () => {
-        if (isMulti(round)) {
-          const next = [...selected];
-          const existing = next.indexOf(animal);
-          if (existing >= 0) next.splice(existing, 1);
-          else if (next.length < targetsFor(round).length) next.push(animal);
-          state.selected = next;
-        } else state.selected = animal;
-        renderBattle();
-        $("battleStatus").textContent = t("chosen");
-      };
-      return button;
-    }));
-    $("checkBtn").disabled = selected.length < targetsFor(round).length;
-  };
-  const renderResult = () => {
-    const done = state.round === rounds.length - 1;
-    const next = state.round + 1;
-    $("resultTitle").textContent = done ? t("resultTitle") : t("resultPartial");
-    $("resultText").textContent = t("resultText", { count: state.cleared.size, total: rounds.length, checks: state.sessionChecks });
-    $("resultPrimaryBtn").textContent = done ? t("map") : t("next");
-    $("resultPrimaryBtn").onclick = done ? openStage : () => startRound(next, true);
-    $("resultMapBtn").hidden = done;
-  };
-  const startRound = (index, continueSession = false) => {
-    if (index < 0 || index >= rounds.length || index >= state.unlocked) return;
-    state.round = index;
-    stageBrowseIndex = index;
-    state.selected = [];
-    state.checks = 0;
-    if (!continueSession) state.sessionChecks = 0;
-    show("battle");
-    renderBattle();
-    $("battleStatus").textContent = t("waiting");
-  };
-  const check = () => {
-    const round = rounds[state.round];
-    const selected = selectedFor();
-    if (selected.length < targetsFor(round).length) { $("battleStatus").textContent = t("waiting"); return; }
-    state.checks += 1;
-    state.sessionChecks += 1;
-    const expected = targetsFor(round);
-    const correct = round.mode === "sequence"
-      ? selected.length === expected.length && selected.every((animal, index) => animal === expected[index])
-      : selected.length === expected.length && expected.every((animal) => selected.includes(animal));
-    if (!correct) {
-      state.selected = [];
-      renderBattle();
-      $("battleStatus").textContent = t("wrong");
-      return;
-    }
-    state.cleared.add(round.id);
-    state.unlocked = Math.max(state.unlocked, Math.min(rounds.length, round.id + 1));
-    saveProgress();
-    $("battleStatus").textContent = t("correct");
-    if (round.id === rounds.length) { saveBest(); $("bestValue").textContent = readBest() || t("noBest"); }
-    show("result");
-    renderResult();
-  };
-  const resetToMain = () => { state.round = 0; state.selected = []; state.sessionChecks = 0; renderStageProgress(); show("main"); };
-  $("startBtn").onclick = openStage;
-  $("mapBtn").onclick = openStage;
-  $("stageBackBtn").onclick = resetToMain;
-  $("battleBackBtn").onclick = () => { show("stage"); renderStages(); };
-  $("resultMapBtn").onclick = openStage;
-  $("resultHomeBtn").onclick = resetToMain;
-  $("checkBtn").onclick = check;
-  $("clearBtn").onclick = () => { state.selected = []; renderBattle(); $("battleStatus").textContent = t("waiting"); };
-  $("localeSelect").onchange = (event) => {
-    state.locale = locales[event.target.value] ? event.target.value : "en";
-    try {
-      localStorage.setItem("weightPlayLocale", state.locale);
-      localStorage.setItem("weightplayLocale", state.locale);
-    } catch (_) {}
-    applyLocale();
-    window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale: state.locale } }));
-  };
-  const initialLocale = () => {
-    const segment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
-    if (routeLocaleMap[segment] && locales[routeLocaleMap[segment]]) return routeLocaleMap[segment];
-    try {
-      const saved = localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale");
-      if (saved && locales[saved]) return saved;
-    } catch (_) {}
-    return "en";
-  };
-  const applyLocale = () => {
-    document.documentElement.lang = state.locale;
-    document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
-    document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
-    document.querySelectorAll("[data-copy-aria]").forEach((node) => node.setAttribute("aria-label", t(node.dataset.copyAria)));
-    $("localeSelect").value = state.locale;
-    $("localeSelect").setAttribute("aria-label", t("language"));
-    renderStageProgress();
-    $("bestValue").textContent = readBest() || t("noBest");
-    if (state.screen === "stage") renderStages();
-    if (state.screen === "battle" || state.screen === "result") renderBattle();
-    if (state.screen === "result") renderResult();
-    localizeAccessibility();
-  };
-  function localizeAccessibility() {
-    const labels = [["#stageList", "aria-label", "stageSelector"], ["#stageTabs", "aria-label", "lookoutSections"], ["#choiceGrid", "aria-label", "animalChoices"], [".game-page-info", "aria-label", "gameInfo"]];
-    labels.forEach(([selector, attribute, key]) => document.querySelector(selector)?.setAttribute(attribute, t(key)));
-    $("mainPoster")?.setAttribute("alt", t("coverAlt"));
-    document.title = t("pageTitle");
+  const round=()=>M.rounds[state.index];
+  function sound(id) {
+    const handle=window.WeightPlayAudio?.play(id);
+    if(handle){sounds.add(handle);Promise.resolve(handle.ended).finally(()=>sounds.delete(handle));}
   }
-  readProgress();
-  state.locale = initialLocale();
-  applyLocale();
-  sharedFrameController = window.mountAnimalSilhouetteScoutFrame?.() || null;
-  show("main");
-  window.addEventListener("load", () => window.WeightPlayGameEntryLoader?.ready(), { once: true });
-  window.__ANIMAL_SILHOUETTE_SCOUT_TEST__ = {
-    rounds,
-    startRound,
-    check,
-    getState: () => ({ ...state, cleared: [...state.cleared] }),
-  };
+  function animate(node,frames,duration=180) {
+    if(!node?.animate || reduced.matches) return;
+    const animation=node.animate(frames,{duration,easing:'cubic-bezier(.2,.8,.2,1)'});
+    animations.add(animation);animation.finished.catch(()=>{}).finally(()=>animations.delete(animation));
+  }
+  function cancelEffects() {
+    generation++;clearTimeout(resultTimer);clearTimeout(previewTimer);
+    animations.forEach(a=>a.cancel());animations.clear();flights.forEach(n=>n.remove());flights.clear();
+    sounds.forEach(h=>h.stop());sounds.clear();$('silhouette').classList.remove('is-preview');
+  }
+  function sprite(id,className='') {
+    const node=document.createElement('span');node.className=`scout-sprite sprite-${id} ${className}`;node.setAttribute('aria-hidden','true');return node;
+  }
+  function progressUI() {
+    const count=state.progress.cleared.length;
+    $('progress').textContent=`${t('lookouts')}: ${count} / 30`;
+    $('mainProgress').textContent=`${t('lookouts')}: ${count} / 30 · ${t('journal')}: ${state.progress.discovered.length} / 12`;
+    $('discoveryCount').textContent=`${state.progress.discovered.length} / 12`;
+    $('discoveryCount').setAttribute('aria-label',`${t('journal')}: ${state.progress.discovered.length} / 12`);
+  }
+  function show(screen) {
+    cancelEffects();state.screen=screen;const scene=screen==='result'?'battle':screen;
+    for(const key of ['main','stage','battle']) $(`${key}Screen`).hidden=scene!==key;
+    $('gameGuide').hidden=screen!=='main';$('battlePlayWorkspace').hidden=screen==='result';$('battlePlayWorkspace').inert=screen==='result';
+    $('resultScreen').hidden=screen!=='result';document.body.dataset.screen=screen;frame?.activate(scene);progressUI();
+    if(scene==='stage') renderStages();
+  }
+  function stageRecord(index) {
+    const r=M.rounds[index], mastery=state.progress.mastery[r.id]||0;
+    return {id:r.id,kicker:t('round',{n:r.id,total:30}),title:t(r.nameKey),subtitle:t(`mode_${r.mode}`),
+      status:index>=state.progress.unlocked?t('locked'):mastery?`${t('complete')} · ${'★'.repeat(mastery)}`:t('open'),
+      summary:t(`rule_${r.mode}`),details:[t('masteryHelp'),t(r.clueKey)],locked:index>=state.progress.unlocked,cleared:state.progress.cleared.includes(r.id),poster};
+  }
+  function renderStages() {
+    if(!selector) selector=window.WeightPlayPlayUI.mountStage({page:$('stageWorkspace'),rail:$('stageList'),selected:browse,
+      config:{count:30,poster,background:'/assets/lobby-block-atmosphere.svg',stage:stageRecord},
+      isActive:()=>state.screen==='stage'&&!document.querySelector('dialog[open]'),onSelect(index){browse=index;},onStart:startRound});
+    else selector.refresh(browse);
+  }
+  function openStages(){show('stage');}
+  function updateSelection() {
+    for(const button of $('choiceGrid').children){
+      const index=state.selected.indexOf(button.dataset.animal);button.setAttribute('aria-pressed',String(index>=0));
+      button.querySelector('.choice-order').textContent=index<0?'':round().mode==='sequence'?String(index+1):'✓';button.disabled=state.settled;
+    }
+    $('checkBtn').disabled=state.settled||state.selected.length!==round().targets.length;
+    $('clearBtn').disabled=state.settled||!state.selected.length;$('hintBtn').disabled=state.settled;
+    $('checkCount').textContent=t('checks',{n:state.checks});
+  }
+  function choose(animal,node) {
+    if(state.screen!=='battle'||state.settled)return;
+    const at=state.selected.indexOf(animal);
+    if(at>=0)state.selected.splice(at,1);
+    else if(round().targets.length===1)state.selected=[animal];
+    else if(state.selected.length<round().targets.length)state.selected.push(animal);
+    else {$('battleStatus').textContent=t('selectionFull');sound('feedback.error');return;}
+    updateSelection();sound('card.place');$('battleStatus').textContent=t('selectionCount',{n:state.selected.length,total:round().targets.length});
+    animate(node,[{transform:'scale(.96)'},{transform:'scale(1)'}],140);
+  }
+  function renderBattle() {
+    const r=round();$('roundLabel').textContent=`${r.id} / 30`;$('roundName').textContent=t(`mode_${r.mode}`);
+    $('targetLabel').textContent=t(`mode_${r.mode}`);$('ruleText').textContent=t(`rule_${r.mode}`);$('clue').textContent=t(r.clueKey);
+    $('silhouette').className=`silhouette mode-${r.mode}`;$('silhouette').style.setProperty('--target-count',r.targets.length);
+    $('silhouette').replaceChildren(...r.targets.map((id,index)=>{
+      const target=document.createElement('div');target.className='target-animal';target.append(sprite(id,'target-sprite'));
+      if(r.mode==='sequence'){const order=document.createElement('span');order.className='target-order';order.textContent=String(index+1);target.append(order);}
+      target.setAttribute('role','img');target.setAttribute('aria-label',t('outlineNumber',{n:index+1}));return target;
+    }));
+    $('choiceGrid').style.setProperty('--choice-count',state.options.length);
+    $('choiceGrid').replaceChildren(...state.options.map(id=>{
+      const button=document.createElement('button');button.type='button';button.className='choice-btn';button.dataset.animal=id;
+      const label=document.createElement('strong');label.textContent=t(id);const order=document.createElement('span');order.className='choice-order';order.setAttribute('aria-hidden','true');
+      button.append(sprite(id),label,order);button.addEventListener('click',()=>choose(id,button));return button;
+    }));updateSelection();
+  }
+  function startRound(index) {
+    if(!Number.isInteger(index)||index<0||index>=30||index>=state.progress.unlocked)return;
+    state.index=index;browse=index;state.selected=[];state.checks=0;state.assisted=false;state.settled=false;state.lensUsed=false;
+    state.result=null;state.options=M.shuffle(round().options);$('clue').hidden=true;$('hintBtn').setAttribute('aria-expanded','false');
+    show('battle');renderBattle();$('battleStatus').textContent=t('selectionCount',{n:0,total:round().targets.length});
+    sound('game.start');animate($('silhouette'),[{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}]);
+    $('choiceGrid').querySelector('button')?.focus({preventScroll:true});
+  }
+  function flyDiscovery() {
+    if(reduced.matches||!state.result.newlyDiscovered.length)return;
+    const from=$('silhouette').getBoundingClientRect(),to=$('discoveryCount').getBoundingClientRect(),node=sprite(state.result.newlyDiscovered[0],'discovery-flight');
+    Object.assign(node.style,{left:`${from.x+from.width/2-28}px`,top:`${from.y+from.height/2-28}px`});document.body.append(node);flights.add(node);
+    animate(node,[{opacity:1,transform:'translate(0,0) scale(1)'},{opacity:.25,transform:`translate(${to.x+to.width/2-from.x-from.width/2}px,${to.y+to.height/2-from.y-from.height/2}px) scale(.3)`}],440);
+  }
+  function check() {
+    if(state.screen!=='battle'||state.settled||state.selected.length!==round().targets.length)return;
+    state.checks++;
+    if(!M.matches(round(),state.selected)){
+      const selected=[...$('choiceGrid').querySelectorAll('[aria-pressed="true"]')];state.selected=[];updateSelection();sound('feedback.error');$('battleStatus').textContent=t('tryAgain');
+      selected.forEach(node=>animate(node,[{transform:'translateX(0)'},{transform:'translateX(-4px)'},{transform:'translateX(4px)'},{transform:'translateX(0)'}],220));return;
+    }
+    state.settled=true;state.result=M.complete(state.progress,round(),state.checks,state.assisted);state.progress=state.result.progress;state.saved=true;
+    try{persist(state.progress);}catch{state.saved=false;}
+    if(state.saved)window.WonderAnalytics?.completeStage(round().id);
+    updateSelection();progressUI();$('battleStatus').textContent=t('correct');$('silhouette').classList.add('is-revealed');sound('puzzle.match');flyDiscovery();
+    const ownGeneration=generation;resultTimer=setTimeout(()=>{if(generation===ownGeneration&&state.screen==='battle')showResult();},reduced.matches?120:600);
+  }
+  function renderResult() {
+    $('resultTitle').textContent=t(state.progress.cleared.length===30?'resultTitle':'resultPartial');
+    $('resultText').textContent=t('roundResult',{n:state.checks,count:state.progress.cleared.length});
+    $('resultStars').textContent='★'.repeat(state.result.rating)+'☆'.repeat(3-state.result.rating);$('resultStars').setAttribute('aria-label',t('masteryCount',{n:state.result.rating}));
+    $('resultDiscovery').textContent=state.result.newlyDiscovered.length?`${t('newDiscovery')}: ${state.result.newlyDiscovered.map(id=>t(id)).join(' · ')}`:t('masteryHelp');
+    $('saveNotice').hidden=state.saved;$('resultPrimaryBtn').disabled=state.index===29;$('resultPrimaryBtn').textContent=t('next');
+  }
+  function showResult() {
+    show('result');renderResult();sound(round().checkpoint?'game.checkpoint':'result.win');
+    animate($('resultCard'),[{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}]);
+    (state.index===29?$('resultMapBtn'):$('resultPrimaryBtn')).focus({preventScroll:true});
+  }
+  function hint() {
+    if(state.screen!=='battle'||state.settled)return;
+    state.assisted=true;$('clue').hidden=!$('clue').hidden;$('hintBtn').setAttribute('aria-expanded',String(!$('clue').hidden));
+    $('battleStatus').textContent=t('hintUsed');sound('feedback.hint');
+    if(state.progress.lens&&!state.lensUsed){state.lensUsed=true;$('silhouette').classList.add('is-preview');const ownGeneration=generation;
+      previewTimer=setTimeout(()=>{if(generation===ownGeneration)$('silhouette').classList.remove('is-preview');},1600);}
+  }
+  function showDialog(id){sound('ui.open');$(id).showModal();animate($(id),[{opacity:0},{opacity:1}],160);}
+  function collectionSlot(item,id,collected) {
+    const status=document.createElement('span');status.dataset.wpItemCollectionStatus='';
+    const icon=document.createElement('span');icon.dataset.wpItemCollectionIcon='';const label=document.createElement('span');label.dataset.wpItemCollectionLabel='';status.append(icon,label);item.append(status);
+    window.WeightPlayScreenFrame.setItemCollectionStatus(item,{itemId:id,state:collected?'collected':'not-collected',labels:{collected:t('discovered'),'not-collected':t('undiscovered')}});
+  }
+  function renderJournal() {
+    $('journalSummary').textContent=`${state.progress.discovered.length} / 12 · ${Object.values(state.progress.mastery).reduce((sum,n)=>sum+n,0)} / 90 ★`;
+    $('journalGrid').replaceChildren(...M.animals.map(id=>{
+      const item=document.createElement('article');item.className='journal-item';const found=state.progress.discovered.includes(id),name=document.createElement('strong');name.textContent=t(id);
+      item.append(sprite(id,found?'':'undiscovered-art'),name);collectionSlot(item,id,found);return item;
+    }));
+  }
+  function renderGear() {
+    let balance=0;try{balance=window.WeightPlayWallet?.read().diamonds||0;}catch{}
+    $('diamondBalance').textContent=String(balance);$('buyLensBtn').textContent=state.progress.lens?t('owned'):t('buyLens',{n:M.lensCost});$('buyLensBtn').disabled=state.progress.lens;
+    $('gearStatus').textContent=state.progress.lens?t('lensReady'):t('optionalLens');
+  }
+  function buyLens() {
+    let result;
+    try{result=M.purchaseLens({readProgress:loadProgress,saveProgress:persist,wallet:window.WeightPlayWallet});}catch{result={status:'storage',progress:state.progress};}
+    state.progress=result.progress;renderGear();$('gearStatus').textContent=t(result.status==='insufficient'?'insufficient':result.status==='storage'?'saveFailed':'lensReady');
+    sound(result.status==='purchased'?'shop.purchase':result.status==='owned'?'ui.tick':'feedback.error');
+  }
+  function applyLocale() {
+    if(!locales[state.locale])state.locale='en';document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==='ar'?'rtl':'ltr';
+    document.querySelectorAll('[data-copy]').forEach(node=>node.textContent=t(node.dataset.copy));document.querySelectorAll('[data-copy-aria]').forEach(node=>node.setAttribute('aria-label',t(node.dataset.copyAria)));
+    $('localeSelect').value=state.locale;$('localeSelect').setAttribute('aria-label',t('language'));$('mainPoster').alt=t('coverAlt');$('choiceGrid').setAttribute('aria-label',t('animalChoices'));
+    $('stageList').setAttribute('aria-label',t('stageSelector'));$('gameGuide').setAttribute('aria-label',t('gameInfo'));progressUI();
+    if(state.screen==='stage')renderStages();if(state.screen==='battle'||state.screen==='result')renderBattle();if(state.screen==='result')renderResult();renderGear();if($('journalDialog').open)renderJournal();
+  }
+  $('startBtn').onclick=()=>{state.progress=loadProgress();browse=Math.min(29,state.progress.unlocked-1);openStages();};
+  $('stageBackBtn').onclick=()=>show('main');$('battleBackBtn').onclick=()=>state.settled?openStages():showDialog('pauseDialog');
+  $('resumeBtn').onclick=()=>$('pauseDialog').close();$('leaveBtn').onclick=()=>{$('pauseDialog').close();openStages();};
+  $('resultMapBtn').onclick=openStages;$('resultPrimaryBtn').onclick=()=>{if(state.screen==='result'&&state.index<29)startRound(state.index+1);};
+  $('resultReplayBtn').onclick=()=>{if(state.screen==='result')startRound(state.index);};$('checkBtn').onclick=check;$('hintBtn').onclick=hint;
+  $('clearBtn').onclick=()=>{if(!state.settled){state.selected=[];updateSelection();$('battleStatus').textContent=t('selectionCount',{n:0,total:round().targets.length});sound('puzzle.clear');}};
+  $('journalBtn').onclick=()=>{renderJournal();showDialog('journalDialog');};$('gearBtn').onclick=()=>{renderGear();showDialog('gearDialog');};
+  $('stageTabButton').onclick=()=>selector?.refresh(browse);$('buyLensBtn').onclick=buyLens;
+  document.querySelectorAll('[data-close-dialog]').forEach(button=>button.onclick=()=>{button.closest('dialog').close();sound('ui.close');});
+  $('localeSelect').onchange=event=>{state.locale=event.target.value;try{localStorage.setItem('weightPlayLocale',state.locale);localStorage.setItem('weightplayLocale',state.locale);}catch{}
+    applyLocale();window.dispatchEvent(new CustomEvent('wonder:locale-change',{detail:{locale:state.locale}}));};
+  $('resultScreen').addEventListener('keydown',event=>{
+    if(event.key!=='Tab')return;const buttons=[...$('resultScreen').querySelectorAll('button:not(:disabled)')],first=buttons[0],last=buttons.at(-1);
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+  });
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)return;cancelEffects();if(state.settled&&state.screen==='battle'){show('result');renderResult();}});
+  reduced.addEventListener('change',()=>{cancelEffects();if(state.settled&&state.screen==='battle')showResult();});
+  window.addEventListener('pagehide',()=>{cancelEffects();selector?.destroy();},{once:true});
+  window.addEventListener('storage',event=>{if(event.key===M.saveKey&&state.screen!=='battle'){state.progress=loadProgress();progressUI();if(state.screen==='stage')renderStages();}if(event.key===window.WeightPlayWallet?.key)renderGear();});
+  applyLocale();frame=window.mountAnimalSilhouetteScoutFrame();show('main');
+  Promise.all([poster,atlas,forest,'/assets/weightplay-character-moon-cap-owl-block-v1.webp'].map(src=>{const image=new Image();image.src=src;return image.decode();}))
+    .then(()=>{window.WeightPlayGameEntryLoader?.ready();window.addEventListener('load',()=>window.WeightPlayGameEntryLoader?.ready(),{once:true});})
+    .catch(()=>window.WeightPlayGameEntryLoader?.fail());
 })();

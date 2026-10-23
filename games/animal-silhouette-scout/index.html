@@ -48,15 +48,12 @@
         <h1 data-copy="title" data-wp-frame-title data-wp-game-title data-runtime-localize="off">Animal Silhouette Match</h1>
       </header>
       <div class="wp-standard-main-composition">
-        <div class="wp-standard-main-poster"><img id="mainPoster" class="main-poster wp-standard-main-poster-media" src="assets/animal-silhouette-scout-cover.webp" width="900" height="750" alt="Silhouette Scout dawn lookout artwork"></div>
+        <div class="wp-standard-main-poster"><img id="mainPoster" class="main-poster wp-standard-main-poster-media" src="/assets/interface7-redrawn/animal-silhouette-scout.webp" width="1254" height="1254" alt="Silhouette Scout dawn lookout artwork"></div>
         <div class="wp-standard-main-copy main-content">
-          <img class="scout-guide" src="assets/animal-silhouette-scout-guide.png" width="1024" height="1536" alt="" aria-hidden="true" loading="lazy">
           <p class="main-kicker" data-copy="kicker">A calm outline-recognition puzzle</p>
           <p id="mainSummary" class="main-summary wp-standard-main-summary" data-wp-frame-summary data-copy="intro">Read the dawn clue, then match the animal outline to its full-colour card.</p>
           <p id="mainProgress" class="main-progress wp-standard-main-progress" data-wp-frame-progress role="status" aria-live="polite"></p>
           <button id="startBtn" class="primary-btn wp-standard-main-start" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start">Start the first lookout</button>
-          <button id="mapBtn" class="secondary-btn" type="button" data-wp-frame-action="secondary" data-copy="choose">Choose a lookout</button>
-          <p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p>
         </div>
       </div>
     </main>
@@ -75,31 +72,36 @@
     <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-frame-logical-header="stage" data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="/games/animal-silhouette-scout/assets/animal-silhouette-scout-cover.webp" hidden>
       <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" data-copy-aria="back" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong></header>
       <div id="stageWorkspace" class="stage-workspace"><span id="progress" class="stage-progress" role="status" aria-live="polite"></span><div id="stageList" class="stage-rail" data-wp-stage-rail role="list" aria-label="Lookout stages"></div></div>
-      <nav id="stageTabs" class="stage-navigation" data-wp-frame-nav aria-label="Lookout sections"><button id="stageTabButton" type="button" data-wp-frame-action="tab" aria-current="page" data-copy="lookouts">Lookouts</button></nav>
+      <nav id="stageTabs" class="stage-navigation" data-wp-frame-nav aria-label="Lookout sections"><button id="journalBtn" type="button" data-copy="journal">Field guide</button><button id="stageTabButton" type="button" data-wp-frame-action="tab" aria-current="page" data-copy="lookouts">Lookouts</button><button id="gearBtn" type="button" data-copy="gear">Equipment</button></nav>
     </section>
 
     <section id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
-      <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" data-copy-aria="back" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong><div class="battle-hud"><div><span id="roundLabel"></span></div><div><strong id="roundName"></strong></div><div><span id="checkCount"></span></div></div></header>
+      <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" data-copy-aria="back" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong><div class="battle-hud"><div><span id="roundLabel"></span></div><div><strong id="roundName"></strong></div><div><span id="discoveryCount"></span></div></div></header>
       <div id="battleWorkspace" class="battle-workspace">
         <main id="battlePlayWorkspace" class="battle-play-workspace">
-          <p id="clue" class="clue" role="note"></p>
-          <div class="target-card"><h2 id="targetLabel" data-copy="targetLabel">Dawn outline</h2><div id="silhouette" class="silhouette" aria-live="polite"></div></div>
+          <div class="observation-board"><div class="board-caption"><h2 id="targetLabel">Dawn outline</h2><p id="ruleText"></p></div><div id="silhouette" class="silhouette"></div><p id="clue" class="clue" role="note" hidden></p><div class="board-footer"><span id="checkCount"></span><span aria-hidden="true">✦</span><span data-copy="untimed">Take your time</span></div></div>
           <div id="choiceGrid" class="choice-grid" role="group" aria-label="Animal choices"></div>
           <p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p>
-          <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check the match</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear choice</button></div>
+          <div class="battle-actions"><button id="hintBtn" class="secondary-btn" type="button" aria-controls="clue" aria-expanded="false" data-copy="hint">Clue</button><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check the match</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear choice</button></div>
         </main>
         <section id="resultScreen" class="result-screen" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" data-screen="result" hidden>
-          <div class="result-card"><img class="scout-result" src="assets/animal-silhouette-scout-guide.png" width="1024" height="1536" alt="" aria-hidden="true" loading="lazy"><span aria-hidden="true">✦</span><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Lookouts</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to menu</button></div></div>
+          <div id="resultCard" class="result-card"><img class="scout-result" src="/assets/weightplay-character-moon-cap-owl-block-v1.webp" width="1024" height="1024" alt="" aria-hidden="true" loading="lazy"><div class="result-copy"><p id="resultStars" class="result-stars" role="img"></p><h2 id="resultTitle"></h2><p id="resultText"></p><p id="resultDiscovery"></p><p id="saveNotice" data-copy="saveFailed" hidden></p></div><div class="result-actions"><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Lookouts</button><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultReplayBtn" class="secondary-btn" type="button" data-copy="replay">Replay</button></div></div>
         </section>
       </div>
     </section>
 
+    <dialog id="pauseDialog" class="scout-dialog" aria-labelledby="pauseTitle"><h2 id="pauseTitle" data-copy="leaveTitle">Return to lookouts?</h2><p data-copy="leaveCopy">This unfinished observation will restart. Your discoveries stay saved.</p><div class="dialog-actions"><button id="resumeBtn" class="primary-btn" type="button" data-copy="resume">Keep observing</button><button id="leaveBtn" class="secondary-btn" type="button" data-copy="map">Lookouts</button></div></dialog>
+    <dialog id="journalDialog" class="scout-dialog journal-dialog" aria-labelledby="journalTitle"><header class="dialog-heading"><div><h2 id="journalTitle" data-copy="journal">Field guide</h2><p id="journalSummary"></p></div><button type="button" data-close-dialog class="secondary-btn" data-copy="close">Close</button></header><p data-copy="masteryHelp"></p><div id="journalGrid" class="journal-grid"></div></dialog>
+    <dialog id="gearDialog" class="scout-dialog" aria-labelledby="gearTitle"><header class="dialog-heading"><h2 id="gearTitle" data-copy="gear">Equipment</h2><button type="button" data-close-dialog class="secondary-btn" data-copy="close">Close</button></header><div class="lens-art scout-sprite sprite-binoculars" aria-hidden="true"></div><h3 data-copy="lensName">Observation lens</h3><p data-copy="lensEffect"></p><p class="wallet-balance"><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt=""><span data-copy="balance">Balance</span>: <strong id="diamondBalance">0</strong></p><button id="buyLensBtn" class="primary-btn" type="button"></button><p id="gearStatus" role="status"></p></dialog>
     <div hidden><label><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
   </div>
   <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <script src="../../src/i18n.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="locales.js?v=20261021-silhouette-scout-v10-i9-locales1"></script>
+  <script src="field-guide-locales.js?v=20261023-scout-v10"></script>
+  <script src="../../src/wallet.js?v=20261023-scout-v10"></script>
+  <script src="model.js?v=20261023-scout-v10"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
   <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1"></script>

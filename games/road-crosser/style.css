@@ -7,6 +7,16 @@ button,select{font:inherit}
 button:focus-visible,select:focus-visible,canvas:focus-visible{outline:3px solid var(--wp-ui-gold);outline-offset:2px}
 #roadCrosserApp{width:100%;margin:auto;padding:0}
 #mainScreen .main-copy{min-width:0}
+#stageWorkspace{min-height:0;height:100%;overflow:hidden}
+#stageContent{height:100%;min-height:0}
+.kit-content{height:100%;min-height:0;overflow:auto;padding:12px}
+.kit-content .panel-card{width:min(100%,560px);margin:auto;padding:12px;text-align:center;color:var(--wp-ui-text);background:var(--wp-ui-background);border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius)}
+.kit-content h2{font-size:20px;margin:8px 0}
+.kit-content p{font-size:14px;line-height:1.5;overflow-wrap:anywhere}
+.kit-content .save-note{font-size:12px}
+#signalBtn{position:relative}
+#signalCount{position:absolute;inset-inline-end:3px;bottom:0;font-size:12px}
+#resultMedals{font-size:24px;color:var(--wp-ui-gold);letter-spacing:5px}
 #battleScreen{position:relative;container-type:size;container-name:road-battle}
 #battleScreen .battle-stage{display:grid;grid-template-rows:minmax(0,1fr) auto;min-width:0;min-height:0;width:100%;height:100%;overflow:hidden}
 .road-board{position:relative;min-width:0;min-height:0;overflow:hidden;background:#122b38}

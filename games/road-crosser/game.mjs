@@ -34,19 +34,23 @@ for (const [id, label] of [['helpBtn','help'],['campBtn','camp']]) {
   $(id).setAttribute('aria-label', t(label)); $(id).title = t(label);
 }
 $('helpBtn').textContent = '?';
-$('campBtn').replaceChildren(Object.assign(document.createElement('span'), { className: 'lantern-art' }));
+$('campBtn').textContent=t('camp');
 $('medalList').setAttribute('aria-label',t('medals'));
 $('localeSelect').value = locale;
 canvas.setAttribute('aria-label', window.WEIGHTPLAY_GAME_TITLES?.['road-crosser']?.[locale] || copy.canvasLabel);
 $('leaveTitle').textContent = leaveCopy[0]; $('continueBtn').textContent = leaveCopy[2]; $('leaveBtn').textContent = leaveCopy[3];
+$('leaveBtn').textContent=t('stages');
+document.querySelectorAll('[data-extra="masteryBody"]').forEach(node=>node.textContent=t('medalRules'));
+document.querySelectorAll('[data-copy="growth"]').forEach(node=>node.textContent=t('medalRules'));
 $('homeBtn').textContent = t('stages'); $('stageTab').textContent = t('stages');
 $('nextBtn').textContent = t('nextStage'); $('signalBtn').setAttribute('aria-label',t('signalTool')); $('signalBtn').title=t('charge');
 $('helpCampaign').textContent=t('medalRules'); $('helpCharge').textContent=t('charge'); $('helpCargo').textContent=t('cargo');
 $('resultBestLabel').textContent=t('stageBest');
 for (const node of battle.querySelectorAll('button:not([data-wp-return])')) node.dataset.wpFrameAction = node.matches('#retryBtn,#continueBtn,#confirmBuy') ? 'primary' : 'secondary';
+for(const node of $('campPanel').querySelectorAll('button'))node.dataset.wpFrameAction=node.id==='confirmBuy'?'primary':'secondary';
 const frame = window.WeightPlayScreenFrame.mount({ root: $('roadCrosserApp'), localeSelect: $('localeSelect'), playUI: true,
   scenes: { main: { root: main, header: main.querySelector('header'), content: main.querySelector('.hero-card') },
-    stage: {root:stage,header:stage.querySelector('header'),content:$('stageContent')},
+    stage: {root:stage,header:stage.querySelector('header'),content:$('stageWorkspace')},
     battle: { root: battle, header: battle.querySelector('header'), content: stageContent } } });
 const group = window.WeightPlayScreenFrame.createGroup();
 for (const node of [...$('battleInfo').children]) group.add(node);
@@ -54,10 +58,19 @@ $('battleInfo').remove(); frame.battleTopUI.add(group);
 frame.stageTopUI.add($('stageSummary'));
 const stageConfig=createStageConfig({locale,getSave:()=>campaign,isPractice:()=>practiceMode});
 function showStages() { updateHud(); setScreen('stage'); }
+function selectStageTab(kit=false) {
+  $('stageContent').hidden=kit;$('stageContent').classList.toggle('hidden',kit);$('stageContent').inert=kit;$('campPanel').hidden=!kit;
+  $('stageTab').setAttribute('aria-pressed',String(!kit));$('campBtn').setAttribute('aria-pressed',String(kit));
+  for(const [id,selected] of [['stageTab',!kit],['campBtn',kit]]) {
+    if(selected)$(id).setAttribute('aria-current','page');else $(id).removeAttribute('aria-current');
+  }
+  if(kit){selector?.cancel();refreshCamp();}else renderStages();
+}
+function showKit() { if(screen!=='stage')setScreen('stage');selectStageTab(true); }
 function renderStages() {
   $('stageSummary').textContent=`${t('cleared')} ${campaign.medals.filter(v=>v&1).length} / 30`;
   if(!selector)selector=window.WeightPlayPlayUI.mountStage({page:$('stageContent'),rail:$('stageRail'),config:stageConfig,
-    selected:campaign.unlocked-1,onStart:index=>start(index+1),isActive:()=>screen==='stage'});
+    selected:campaign.unlocked-1,onStart:index=>start(index+1),isActive:()=>screen==='stage'&&!$('stageContent').hidden});
   else selector.refresh(campaign.unlocked-1);
 }
 
@@ -96,7 +109,7 @@ function setScreen(next) {
   document.body.dataset.screen = next === 'result' ? 'battle' : next;
   battle.dataset.substate = result ? 'result' : 'play';
   frame.activate(next === 'result' ? 'battle' : next);
-  if(next==='stage')renderStages();
+  if(next==='stage')selectStageTab(false);
   paused = true;
   renderer?.clear();
   const ticket = generation;
@@ -118,6 +131,7 @@ function syncPause() {
   else { cancelEffects(); audio.stop(); }
 }
 function openPanel(name, opener) {
+  if(name==='campPanel'){showKit();return;}
   if (!['battle','result'].includes(screen) || purchaseBusy || panel === name) return;
   // The shared header remains reachable while a panel is open. Replace the
   // previous panel so Back cannot stack an obscured confirmation beneath it.
@@ -131,6 +145,7 @@ function openPanel(name, opener) {
   $(name).querySelector('button')?.focus({ preventScroll: true });
 }
 function closePanel() {
+  if(screen==='stage'){selectStageTab(false);return;}
   if (!panel || purchaseBusy) return;
   $(panel).hidden = true; panel = null; $('purchaseConfirm').hidden = true;
   stageContent.inert = screen !== 'battle'; $('resultScreen').inert = screen !== 'result';
@@ -261,6 +276,7 @@ async function purchase() {
 listen($('startBtn'), 'click', showStages); listen($('retryBtn'), 'click', () => start());
 listen($('nextBtn'), 'click', () => start(world.stage+1));
 listen($('homeBtn'), 'click', showStages); listen($('stageBackBtn'),'click',()=>setScreen('main'));
+listen($('stageTab'),'click',()=>selectStageTab(false));
 listen($('battleBackBtn'), 'click', () => screen === 'result' ? showStages() : openPanel('leaveDialog'));
 listen($('continueBtn'), 'click', closePanel); listen($('leaveBtn'), 'click', showStages);
 listen($('signalBtn'),'click',()=>{if(!isBlocked()&&useSignal(world))consumeEvents();});
