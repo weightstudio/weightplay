@@ -1,0 +1,27 @@
+(() => {
+  "use strict";
+
+  const frame = window.WeightPlayScreenFrame;
+  if (!frame?.mount || !window.WeightPlayPlayUI?.mountStage || !window.AnimalBlockGroveStageConfig) {
+    throw new Error("BLOCK_GROVE_I9_DEPENDENCIES_REQUIRED");
+  }
+
+  const $ = (selector) => document.querySelector(selector);
+  const mounted = frame.mount({
+    root: document.body,
+    localeSelect: $("#localeSelect"),
+    playUI: true,
+    scenes: {
+      main: { root: $("#mainScreen"), header: $(".main-header"), content: $("#mainContent") },
+      stage: { root: $("#stageScreen"), header: $(".stage-header"), content: $("#stagePage") },
+      battle: { root: $(".block-grove-battle-canvas"), header: $(".battle-header"), content: $("#battleContent") },
+    },
+  });
+
+  const group = frame.createGroup();
+  ["#battleStageStat", "#battleGoalStat", "#battleMovesStat", "#battleScoreStat"]
+    .forEach((selector) => group.add($(selector)));
+  mounted.battleTopUI.add(group);
+  mounted.activate("main");
+  window.AnimalBlockGroveFrame = mounted;
+})();

@@ -10,7 +10,7 @@ const PALETTES = [
 ];
 const ALIASES = { bunny:'rabbit', tortoise:'turtle', redPanda:'red-panda', arcticFox:'arctic-fox', snowOwl:'snowy-owl', fennecFox:'fennec', seaOtter:'otter', raccoonDog:'raccoon', moonMoth:'moth' };
 
-export function createScene(container) {
+export function createScene(container, { onReady } = {}) {
   if (!container || !container.appendChild) throw new TypeError('A scene container is required.');
   let THREE, renderer, scene, camera, world, box, observer;
   let alive = true, ready = false, contextLost = false, busyPortrait = false, suspended = false;
@@ -312,7 +312,7 @@ export function createScene(container) {
       canvas.addEventListener('webglcontextlost',lost);canvas.addEventListener('webglcontextrestored',restored);container.prepend(canvas);
       box=new THREE.BoxGeometry(1,1,1);scene=new THREE.Scene();camera=new THREE.OrthographicCamera(-6,6,5,-5,.1,60);
       scene.add(new THREE.HemisphereLight('#fff4d2','#7386a1',1.45));const key=new THREE.DirectionalLight('#fff0ce',2);key.position.set(-4,8,6);scene.add(key);const fill=new THREE.DirectionalLight('#b6d7ed',.65);fill.position.set(5,3,-4);scene.add(fill);
-      ready=true;contextLost=false;showStatus(null);rebuild();
+      ready=true;contextLost=false;showStatus(null);rebuild();if(typeof onReady==='function')Promise.resolve().then(onReady).catch(e=>console.warn('Kindred Habitats art hydration failed:',e?.message||'unknown error'));
     }catch(e){ready=false;error();console.warn('Kindred Habitats 3D unavailable:',e?.message || 'WebGL unavailable');}
     finally{retry.disabled=false;}
   }
