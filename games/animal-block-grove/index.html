@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="../../src/play-viewport.css" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20260922-interface7-review2" />
+  <link rel="stylesheet" href="style.css?v=20261023-interface9" />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 
@@ -67,7 +67,7 @@
     <div id="stagePage" class="stage-canvas" data-wp-canvas-max-width="920">
       <div id="stageRail" class="stage-rail" aria-label="任務選擇" data-i18n-aria="stageRailLabel"></div>
     </div>
-    <nav id="stageModeActions" class="stage-mode-tabs" data-wp-frame-nav aria-label="遊戲模式" data-i18n-aria="stageModeLabel"><button id="campaignTab" type="button" data-stage-mode="campaign" data-i18n="campaignMode">棲地任務</button><button id="challengeTab" type="button" data-stage-mode="challenge" data-i18n="challengeMode">無限森林</button></nav>
+    <nav id="stageModeActions" class="stage-mode-tabs" data-wp-frame-nav data-wp-frame-stage-nav role="tablist" aria-label="遊戲模式" data-i18n-aria="stageModeLabel"><button id="campaignTab" type="button" data-stage-mode="campaign" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" role="tab" aria-selected="true" aria-controls="stageRail" data-i18n="stageNavLabel">關卡</button><button id="challengeTab" type="button" data-stage-mode="challenge" data-wp-frame-action="tab" role="tab" aria-selected="false" aria-controls="stageRail" data-i18n="challengeMode">無限森林</button></nav>
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
@@ -75,8 +75,8 @@
       <header class="battle-header"><button id="battleBackBtn" data-wp-return="battle" type="button" aria-label="返回" data-i18n-aria="back"><span>←</span></button><strong data-wp-frame-title data-i18n="title">Block Grove</strong></header>
       <div id="battleContent" class="battle-content">
       <div id="battleStatsSource" hidden>
-        <div id="battleStageStat" class="battle-stat"><strong id="stageLabel"></strong></div>
-        <div id="battleGoalStat" class="battle-stat"><strong id="goalValue"></strong></div>
+        <div id="battleStageStat" class="battle-stat"><small id="stageKind" data-i18n="missionLabel">Mission</small><strong id="stageLabel"></strong></div>
+        <div id="battleGoalStat" class="battle-stat"><small data-i18n="goalLabel">Goal</small><strong id="goalValue"></strong></div>
         <div id="battleMovesStat" class="battle-stat"><small data-i18n="moves">步數</small><strong id="movesValue">0</strong></div>
         <div id="battleScoreStat" class="battle-stat"><small data-i18n="score">分數</small><strong id="scoreValue">0</strong></div>
       </div>
@@ -85,8 +85,8 @@
       <section id="pieceTray" class="piece-tray" aria-label="可放置方塊" data-i18n-aria="trayLabel"></section>
       <div class="battle-actions"><button id="undoBtn" type="button"><img src="../../assets/animal-block-grove-icon-undo.webp" alt="" /><span data-i18n="undo">復原</span></button><button id="hintBtn" type="button"><img src="../../assets/animal-block-grove-icon-hint.webp" alt="" /><span data-i18n="hint">提示</span></button></div>
 
-      <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" /><small data-i18n="resultKicker">棲地修復報告</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">回到任務</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">下一關</button><button id="retryBtn" type="button" data-i18n="retry">再試一次</button></div></div></section>
-      <section id="leavePanel" class="leave-overlay" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="leave-card"><h2 id="leaveTitle" data-i18n="leaveTitle">要離開這次挑戰嗎？</h2><p data-i18n="leaveText">目前進度會保留在這個畫面，繼續即可回到原本的棋盤。</p><div><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">繼續遊戲</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">回到任務</button></div></div></section>
+      <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" /><small data-i18n="resultKicker">棲地修復報告</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="result-actions" data-wp-frame-logical-actions="battle"><button id="resultStagesBtn" data-wp-frame-action="secondary" type="button" data-i18n="stages">回到任務</button><button id="nextBtn" class="primary-action" data-wp-frame-action="primary" type="button" data-i18n="next">下一關</button><button id="retryBtn" data-wp-frame-action="secondary" type="button" data-i18n="retry">再試一次</button></div></div></section>
+      <section id="leavePanel" class="leave-overlay" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="leave-card"><h2 id="leaveTitle" data-i18n="leaveTitle">要離開這次挑戰嗎？</h2><p data-i18n="leaveText">目前進度會保留在這個畫面，繼續即可回到原本的棋盤。</p><div data-wp-frame-logical-actions="battle"><button id="leaveContinueBtn" class="primary-action" data-wp-frame-action="primary" type="button" data-i18n="continue">繼續遊戲</button><button id="leaveStagesBtn" data-wp-frame-action="secondary" type="button" data-i18n="returnStages">回到任務</button></div></div></section>
       </div>
     </div>
   </section>

@@ -18,6 +18,11 @@
     },
   });
 
+  const campaignTab = $("#campaignTab");
+  const challengeTab = $("#challengeTab");
+  mounted.commonDownButton.add(campaignTab);
+  mounted.commonDownButton.add(challengeTab);
+
   const group = frame.createGroup();
   ["#battleStageStat", "#battleGoalStat", "#battleMovesStat", "#battleScoreStat"]
     .forEach((selector) => group.add($(selector)));

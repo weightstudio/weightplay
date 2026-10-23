@@ -53,7 +53,7 @@ export function applyTideGuide(html, locale) {
   html=html.replace(/<script\b[^>]*data-tide-faq[^>]*>[\s\S]*?<\/script>\n?/gi,'');
   const json=JSON.stringify({'@context':'https://schema.org','@type':'FAQPage',inLanguage:locale,mainEntity:d.faq.map(([name,text])=>({'@type':'Question',name,acceptedAnswer:{'@type':'Answer',text}}))}).replaceAll('<','\\u003c');
   html=html.replace('</head>',`<script type="application/ld+json" data-tide-faq>${json}</script>\n</head>`);
-  // The shared Interface 7 poster rule is in the named wp-frame-contract layer.
+  // Keep the shared poster crop in the named wp-frame-contract layer.
   // Keep this game's square entrance image cropped consistently in that same
   // layer, after the linked shared stylesheet has declared its base rules.
   const posterContract = '<style data-tide-poster-contract>@layer wp-frame-contract { html body[data-wp-game-id="animal-tide-tally"] [data-wp-frame="2"] [data-wp-frame-poster] { object-fit:cover!important; } }</style>\n';
@@ -80,11 +80,12 @@ export function applyTideGuide(html, locale) {
   html=html.replace(/(<button\b[^>]*\bid=["']battleSoundBtn["'][^>]*\baria-label=["'])[^"']*(["'])/gi,`$1${esc(c.sound)}$2`);
   html=html.replace(/(<button\b[^>]*\bid=["']closeSettings["'][^>]*\baria-label=["'])[^"']*(["'])/gi,`$1${esc(c.close)}$2`);
   html=html.replace(/(<(?:nav|div)\b[^>]*(?:class=["']stage-tabs["']|id=["'](?:stageChoices|answerGrid)["'])[^>]*\baria-label=["'])[^"']*(["'])/gi,`$1${esc(c.stages)}$2`);
-  html=html.replace(/(name=["']weightplay-game-version["']\s+content=["'])v\d+/i,'$1v10').replace(/data-wp-game-version=["']v\d+["']/g,'data-wp-game-version="v10"');
-  html=html.replace(/(name=["']weightplay-interface-version["']\s+content=["'])\d+/i,(_,prefix)=>prefix+'7').replace(/data-wp-interface-version=["']\d+["']/g,'data-wp-interface-version="7"');
-  html=html.replace(/((?:style\.css|game\.js|locales\.js)\?v=)[^"']+/g,(_,prefix)=>prefix+'20260926-tide-v10');
+  const declaredGameVersion=html.match(/<meta\s+name=["']weightplay-game-version["'][^>]*content=["']([^"']+)["']/i)?.[1];
+  const declaredInterfaceVersion=html.match(/<meta\s+name=["']weightplay-interface-version["'][^>]*content=["']([^"']+)["']/i)?.[1];
+  if(declaredGameVersion)html=html.replace(/(name=["']weightplay-game-version["']\s+content=["'])[^"']+/i,`$1${declaredGameVersion}`).replace(/data-wp-game-version=["'][^"']+["']/g,`data-wp-game-version="${declaredGameVersion}"`);
+  if(declaredInterfaceVersion)html=html.replace(/(name=["']weightplay-interface-version["']\s+content=["'])[^"']+/i,`$1${declaredInterfaceVersion}`).replace(/data-wp-interface-version=["'][^"']+["']/g,`data-wp-interface-version="${declaredInterfaceVersion}"`);
   html=html.replace(/(<div\b[^>]*\bid=["']app["'])([^>]*>)/i,(_,a,b)=>a+b.replace(/\sdata-wp-frame-root(?:=["'][^"']*["'])?/g,'').replace('>',' data-wp-frame-root>'));
-  html=html.replace(/<div\b([^>]*\bdata-wp-standard-stage-screen[^>]*)>/i,(_,attrs)=>{
+  if(declaredInterfaceVersion!=='9')html=html.replace(/<div\b([^>]*\bdata-wp-standard-stage-screen[^>]*)>/i,(_,attrs)=>{
     attrs=attrs.replace(/\sdata-wp-stage-art=["'][^"']*["']/g,'').replace(/\sstyle=["'][\s\S]*?["'](?=\s|$)/g,'');
     return `<div${attrs} data-wp-stage-art="/assets/interface7-redrawn/animal-tide-tally.webp" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-tide-tally.webp')">`;
   });

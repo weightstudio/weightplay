@@ -158,7 +158,7 @@
   }
   function sheet(name) {
     if ([...document.querySelectorAll('link[rel="stylesheet"]')].some(n=>n.href.split('?')[0].endsWith('/'+name))) return;
-    const link=own('link');link.rel='stylesheet';link.href='/src/'+name+'?v=20260926-tide-v10';document.head.append(link);
+    const link=own('link');link.rel='stylesheet';link.href='/src/'+name+'?v=20261023-tide-i9';document.head.append(link);
   }
   function script(name, ready, base = '/src/') {
     if (ready?.()) return Promise.resolve();
@@ -191,18 +191,12 @@
     // One permanent Guide sibling: never moved during later scene changes.
     const guide=$('gameGuide');app.after(guide);
     const stage=$('stageScreen').querySelector('.stage-canvas'), stageHeader=stage.querySelector('header');
-    stage.dataset.wpStageLandscapeWidth='760';stage.dataset.wpStageLandscapeHeight='334';
-    const updateStageArt=()=>{
-      stage.dataset.wpStageArt=poster.getAttribute('src');
-      stage.style.setProperty('--wp-stage-art',`url("${poster.src}")`);
-    };
-    updateStageArt();listen(poster,'load',updateStageArt);
     const stageTitle=stageHeader.querySelector('h2');stageTitle.dataset.wpFrameTitle='';stageTitle.hidden=true;
-    const workspace=own('div','stageWorkspace','tide-stage-workspace');
-    const rail=$('stageList');rail.className='stage-rail';rail.replaceChildren();rail.dataset.wpStageRail='true';rail.dataset.wpStageVirtualDrag='true';rail.setAttribute('aria-label',text('stages'));
-    workspace.append(rail);stage.querySelector('.panel-intro')?.remove();$('stageChoices')?.remove();
-    const nav=stage.querySelector('.stage-tabs');nav.replaceChildren();nav.dataset.wpFrameStageNav='';nav.setAttribute('aria-label',text('stages'));
-    const tab=button('stagesTab','stages',()=>{});tab.dataset.wpFrameAction='tab';tab.dataset.wpFrameStageSlot='stages';tab.setAttribute('role','tab');tab.setAttribute('aria-selected','true');tab.setAttribute('aria-controls','stageWorkspace');nav.append(tab);
+    const workspace=$('stageWorkspace');
+    const rail=$('stageList');rail.className='stage-rail';rail.replaceChildren();rail.setAttribute('aria-label',text('stages'));
+    stage.querySelector('.panel-intro')?.remove();$('stageChoices')?.remove();
+    const nav=stage.querySelector('.stage-tabs'), tab=$('stagesTab');nav.replaceChildren(tab);nav.dataset.wpFrameStageNav='';nav.setAttribute('aria-label',text('stages'));
+    tab.textContent=text('stages');tab.removeAttribute('data-i18n');tab.dataset.wpFrameAction='tab';tab.dataset.wpFrameStageSlot='stages';tab.setAttribute('role','tab');tab.setAttribute('aria-selected','true');tab.setAttribute('aria-controls','stageWorkspace');
     stage.append(workspace,nav);
     const battle=$('battleScreen').querySelector('.battle-canvas'), battleHeader=battle.querySelector('header');
     // Same logical content tracks at every aspect ratio; shared scaler fits the envelope.
@@ -211,7 +205,7 @@
     const content=own('div','tidePlay','tide-play');
     const info=own('div','tideHud');
     for(const [id,label] of [['tideNoteHud',text('round')],['tideWaveHud',text('mode_waves')],['tideChecksHud',text('checks',{value:''}).split(/[:：]/)[0].trim()]]){
-      const stat=own('div'), caption=own('span'), value=own('b',id);caption.textContent=label;stat.append(caption,value);info.append(stat);
+      const stat=own('div');stat.dataset.wpFrameStat='';const caption=own('span'), value=own('b',id);caption.textContent=label;stat.append(caption,value);info.append(stat);
     }
     content.append(info);
     const prompt=own('p','prompt','tide-prompt');
@@ -221,8 +215,8 @@
     const pools=own('div','tidePools','tide-pools');visual.append(water,event,pools);
     const status=own('p','status','tide-status');status.setAttribute('role','status');status.setAttribute('aria-live','polite');
     const answers=own('div','answerGrid','tide-answers');answers.setAttribute('role','group');answers.setAttribute('aria-labelledby','prompt');
-    const actions=own('div',null,'tide-actions');
-    actions.append(button('waveBtn','watch',()=>{if(!inputLocked()&&run&&advance(run)){renderBattle();}}),button('rewatchBtn','rewatch',()=>{
+    const actions=own('div',null,'tide-actions');actions.dataset.wpFrameLogicalActions='battle';
+    actions.append(button('waveBtn','watch',()=>{if(!inputLocked()&&run&&advance(run)){renderBattle();}},true),button('rewatchBtn','rewatch',()=>{
       if(inputLocked()||!run||run.phase==='result')return;
       run.step=0;run.phase='watch';renderBattle();$('waveBtn').focus();
     }));
@@ -230,12 +224,12 @@
     battle.querySelector('.battle-body').replaceWith(content);
     $('resultScreen').remove();
     // Modal substate lives in the existing Battle canvas, not a fourth scene.
-    const overlay=own('section','tideModal','tide-modal');overlay.hidden=true;overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-labelledby','tideModalTitle');
-    const card=own('div',null,'tide-modal-card');card.append(own('h2','tideModalTitle'),own('div','tideStars','tide-stars'),own('p','tideModalText'),own('p','tideSolution','tide-solution'),own('p','tideSave'),own('div','tideModalActions','tide-modal-actions'));overlay.append(card);battle.append(overlay);
-    const scenes={main:{root:main,header:mainHeader,content:mainContent},stage:{root:stage,header:stageHeader,content:workspace},battle:{root:battle,header:battleHeader,content,headerInfo:info}};
+    const overlay=own('section','tideModal','tide-modal');overlay.hidden=true;overlay.dataset.wpFrameLogicalActions='battle';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-labelledby','tideModalTitle');
+    const card=own('div',null,'tide-modal-card');card.dataset.wpFrameResultCard='';card.append(own('h2','tideModalTitle'),own('div','tideStars','tide-stars'),own('p','tideModalText'),own('p','tideSolution','tide-solution'),own('p','tideSave'),own('div','tideModalActions','tide-modal-actions'));overlay.append(card);battle.append(overlay);
+    const scenes={main:{root:main,header:mainHeader,content:mainContent},stage:{root:stage,header:stageHeader,content:workspace},battle:{root:battle,header:battleHeader,content}};
     Object.assign(sceneRoots, {main:$('mainScreen'),stage:$('stageScreen'),battle:$('battleScreen')});
     $('stageBackBtn').setAttribute('aria-label',text('back'));$('battleBackBtn').setAttribute('aria-label',text('back'));
-    return {scenes,localeSelect:select};
+    return {scenes,localeSelect:select,playUI:true};
   }
   function settingsOpen() {
     return [...app.querySelectorAll('[data-wp-preferences] .wp-frame-popover')].some(n=>!n.hidden);
@@ -278,29 +272,32 @@
     closeModal(false);motion.cancel();visualToken++;busy=false;scene=name;document.body.dataset.screen=name;
     for(const [key,node] of Object.entries(sceneRoots)){node.hidden=key!==name;node.inert=key!==name;}
     $('gameGuide').hidden=name!=='main';frame.activate(name);syncSettingsContract();updateProgress();
-    if(name==='stage') {stageController.refresh();stageController.center(unlocked(progress));$('stageBackBtn').focus({preventScroll:true});
-      // Fade content only: shared drag targets, positions and recycled cards never tween.
-      for(const item of $('stageList').querySelectorAll('.tide-stage-item'))motion.animate(item,[{opacity:.35},{opacity:1}],{duration:280});}
+    if(name==='stage') {stageController.refresh(unlocked(progress));$('stageBackBtn').focus({preventScroll:true});}
     if(name==='main'){$('startBtn').focus({preventScroll:true});for(const node of [app.querySelector('[data-wp-frame-poster]'),app.querySelector('[data-wp-frame-summary]'),$('startBtn')])motion.animate(node,[{opacity:.2},{opacity:1}],{duration:420});}
     syncMotionPause();
   }
-  function stageBind(card,index) {
-    const note=notes[index], locked=index>unlocked(progress), stars=progress.best[index];
-    // Rewrite every recycled-card datum, including false states.
-    card.dataset.tideNote=String(index+1);card.dataset.tideArc=String(note.arc);
-    card.dataset.tideState=locked?'locked':stars?'cleared':'ready';
-    card.dataset.tideCheckpoint=String(note.checkpoint);
-    card.type='button';card.className='stage-card'+(locked?' locked':'');card.disabled=false;card.setAttribute('aria-disabled',String(locked));
-    card.replaceChildren();
-    const title=own('strong'), state=own('span'), objective=own('small'), facts=own('small');
-    title.textContent=`${text('round')} ${index+1}`;state.textContent=text(locked?'locked':stars?'cleared':'ready');
-    objective.textContent=text('mode_'+note.mode);
-    facts.textContent=(note.checkpoint?text('checkpoint')+' · ':'')+text('stars',{value:stars});
-    const group=own('div',null,'tide-stage-item');group.dataset.wpItemContent='';
-    const emblem=own('span',null,'tide-stage-emblem');emblem.setAttribute('aria-hidden','true');emblem.append(own('span',null,'tide-shell'));
-    state.className='tide-stage-state';objective.className='tide-stage-objective';facts.className='tide-stage-facts';
-    group.append(emblem,title,state,objective,facts);card.append(group);
-    if(index===unlocked(progress))card.dataset.wpStageRecommended='true';else delete card.dataset.wpStageRecommended;
+  function stageConfig() {
+    const poster='/games/animal-tide-tally/assets/animal-tide-tally-cover.webp';
+    return {
+      count:notes.length,
+      poster,
+      background:'/assets/lobby-block-atmosphere.svg',
+      stage(index) {
+        const note=notes[index], locked=index>unlocked(progress), stars=progress.best[index]||0;
+        const mode=text('mode_'+note.mode), checkpoint=note.checkpoint?text('checkpoint'):'';
+        return {
+          id:index+1,
+          kicker:`${text('round')} ${index+1}`,
+          title:mode,
+          subtitle:checkpoint,
+          status:text(locked?'locked':stars?'cleared':'ready'),
+          summary:`${mode} · ${text('stars',{value:stars})}`,
+          details:[`${text('round')} ${index+1}`,mode,checkpoint,text('stars',{value:stars})],
+          locked,
+          cleared:Boolean(stars),
+        };
+      },
+    };
   }
   function startNote(index, freshNumbers=false) {
     if(!Number.isInteger(index)||index<0||index>unlocked(progress)||index>=notes.length)return false;
@@ -391,9 +388,9 @@
     $('tideSolution').textContent=result?solution(run.note):'';$('tideSolution').dir='ltr';
     $('tideSave').textContent=result?text(saved?'saved':'sessionOnly'):'';
     if(result){
-      actions.append(button('resultStageBtn','stages',()=>show('stage')));
       const hasNext=run.note.id<notes.length;
-      const next=button('resultNextBtn','next',()=>{if(hasNext)startNote(run.note.id);},true);next.disabled=!hasNext;actions.append(next);
+      actions.append(button('resultStageBtn','stages',()=>show('stage'),!hasNext));
+      const next=button('resultNextBtn','next',()=>{if(hasNext)startNote(run.note.id);},hasNext);next.disabled=!hasNext;actions.append(next);
       actions.append(button('resultReplayBtn','retry',()=>startNote(run.note.id-1,true)));
     }else{
       actions.append(button('keepPlayingBtn','stay',()=>closeModal(),true),button('leaveNoteBtn','stages',()=>{run=null;show('stage');}));
@@ -416,10 +413,14 @@
   async function boot() {
     try {
       document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';
-      for(const name of ['game-screen-frame.css','stage-selector-standard.css','battle-canvas-standard.css'])sheet(name);
-      await Promise.all([script('game-screen-frame.js',()=>window.WeightPlayScreenFrame?.mount),script('stage-virtualization-standard.js',()=>window.WeightPlayStageV6?.install),script('motion.js',()=>window.AnimalTideMotion,'/games/animal-tide-tally/')]);
+      for(const name of ['game-screen-frame.css','stage-rail-i9.css','game-play-ui.css','battle-canvas-standard.css'])sheet(name);
+      await Promise.all([script('game-screen-frame.js',()=>window.WeightPlayScreenFrame?.mount),script('stage-rail-i9.js',()=>window.WeightPlayStageRailI9),script('game-play-ui.js',()=>window.WeightPlayPlayUI?.mountStage),script('motion.js',()=>window.AnimalTideMotion,'/games/animal-tide-tally/')]);
       motion=new window.AnimalTideMotion();
       const slots=normalize();frame=window.WeightPlayScreenFrame.mount({root:app,...slots});
+      const battleStats=window.WeightPlayScreenFrame.createGroup();
+      [...$('tideHud').children].forEach(stat=>battleStats.add(stat));$('tideHud').remove();
+      frame.battleTopUI.add(battleStats);
+      frame.commonDownButton.add($('stagesTab'));
       // Keep the cloned visible selector as the canonical Settings owner;
       // the original source select only relays its change event to routing.
       slots.localeSelect.id='tideLocaleSource';
@@ -428,7 +429,7 @@
         listen(button,'click',syncSettingsContract);
       listen(window,'wonder:locale-change',()=>queueMicrotask(syncSettingsContract));
       listen(window,'weightplay:audio-volume-change',()=>queueMicrotask(syncSettingsContract));
-      stageController=window.WeightPlayStageV6.install($('stageList'),{total:notes.length,poolSize:9,bind:stageBind,initialIndex:()=>unlocked(progress),activate:index=>startNote(index)});
+      stageController=window.WeightPlayPlayUI.mountStage({page:$('stageWorkspace'),rail:$('stageList'),config:stageConfig(),selected:unlocked(progress),onSelect:()=>{},onStart:index=>startNote(index),isActive:()=>scene==='stage'});
       if(!stageController)throw Error('Stage controller unavailable');
       listen($('startBtn'),'click',()=>show('stage'));listen($('stageBackBtn'),'click',()=>show('main'));
       listen($('battleBackBtn'),'click',()=>{if(!modal&&run?.phase!=='result')openModal('leave');});
@@ -448,15 +449,14 @@
         if(e.key==='Escape'&&!settingsOpen()){e.preventDefault();openModal('leave');}
         else if(/^[123]$/.test(e.key)&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&run?.phase==='answer'&&!e.target.closest('select,input,textarea,[contenteditable]')&&!e.target.closest('[data-wp-preferences]')){e.preventDefault();choose(run.answers[Number(e.key)-1]);}
       });
-      await Promise.all([script('stage-selector-standard.js'),script('battle-canvas-standard.js')]);
+      await Promise.all([script('battle-canvas-standard.js')]);
       $('loading').hidden=true;app.hidden=false;show('main');
       window.dispatchEvent(new CustomEvent('wonder:locale-change'));
       // Resize changes only the shared rail's centering, never game contents.
-      const resize=new ResizeObserver(()=>{if(scene==='stage')stageController.center();});resize.observe($('stageList'));
       listen(window,'weightplay:interaction-state',syncMotionPause);
       listen(document,'visibilitychange',syncMotionPause);
       listen(window,'pageshow',()=>{motion.resume('bfcache');syncMotionPause();});
-      listen(window,'pagehide',e=>{if(e.persisted){motion.pause('bfcache');return;}resize.disconnect();motion.destroy();stageController.destroy();frame.destroy();lifecycle.abort();});
+      listen(window,'pagehide',e=>{if(e.persisted){motion.pause('bfcache');return;}motion.destroy();stageController.destroy();frame.destroy();lifecycle.abort();});
       window.__ANIMAL_TIDE_TALLY_TEST__={...model,labels,solution,startNote,motionSnapshot:()=>motion.snapshot(),getState:()=>({noteIndex:run?run.note.id-1:0,solved:progress.best.flatMap((n,i)=>n?[i]:[]),checks:run?.checks||0,screen:scene,phase:run?.phase,step:run?.step,feedback:run?.phase==='result'?'correct':run?.rejected.length?'wrong':'',modal:modal?.kind||null,busy})};
     }catch(error){console.error('Tide Tally startup failed',error);$('loading').hidden=false;$('loading').textContent=text('loadError');app.hidden=true;}
   }

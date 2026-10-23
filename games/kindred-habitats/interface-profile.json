@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "gameId": "kindred-habitats",
   "audience": "general",
-  "interfaceVersion": 9,
+  "interfaceVersion": "9.1",
   "flow": "MAIN_BATTLE",
   "stage": {
     "enabled": false,
