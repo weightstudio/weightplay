@@ -1,341 +1,105 @@
-@import url("./style-v5-base.css?v=20260923-interface7-source-base");
-
-/* Interface 7 shared-flow cleanup for Color Springs.
-   The frozen v5 stylesheet keeps game art/gameplay styling; this layer only
-   restores shared Main / Stage / Battle ownership. */
-
-/* Main: shared Settings owns Language/Sound and the game exposes one compact
-   poster -> summary -> progress -> Start Game sequence. */
-#mainScreen .main-header .locale-control {
-  display: none !important;
+:root {
+  color-scheme: dark;
+  --spring-ink: #f7fff8;
+  --spring-muted: #c9ded7;
+  --spring-mint: #5ff0bc;
+  --spring-gold: #ffd260;
+  --spring-vessel-hue: 0deg;
+  font-family: Inter, "Noto Sans TC", "Noto Sans JP", system-ui, sans-serif;
+  color: var(--spring-ink);
 }
 
-.sound-toggle {
-  display: none !important;
+* { box-sizing: border-box; }
+button, select { font: inherit; }
+button { color: inherit; cursor: pointer; }
+button:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+[hidden] { display: none !important; }
+.loading-panel { z-index: 90; }
+.loading-card { background: rgba(3, 36, 33, .94) !important; border: 1px solid rgba(105, 241, 200, .45); }
+.loading-track i { background: linear-gradient(90deg, #3fe7b3, #ffd260) !important; }
+
+.game-guide { color: #15362f; }
+.game-guide h2 { margin: 5px 0 10px; font-size: 1.65rem; }
+.game-guide p, .game-guide li { line-height: 1.65; }
+.guide-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.game-guide article { padding: 16px; border: 1px solid #ccd9c6; border-radius: 16px; background: #fffdf3; }
+.game-guide h3 { margin: 3px 0 8px; color: #07594b; }
+.game-guide ol { margin: 0; padding-left: 1.3rem; }
+
+.stage-screen, .battle-screen { position: fixed; inset: 0; overflow: hidden; background: transparent; }
+.battle-content { position: relative; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 8px; min-width: 0; min-height: 0; padding: 12px; }
+.lock-notice { z-index: 2; justify-self: center; max-width: 100%; padding: 7px 14px; border: 1px solid #ffd260; border-radius: 999px; background: rgba(69, 45, 6, .92); color: #fff3c3; font-size: .88rem; font-weight: 850; text-align: center; }
+.vessel-board { display: grid; grid-template-columns: repeat(var(--cols, 5), minmax(0, 92px)); justify-content: center; align-content: center; gap: clamp(4px, 1.2vmin, 12px); min-height: 0; overflow: auto; padding: 4px; touch-action: manipulation; }
+.vessel { position: relative; aspect-ratio: 2 / 3; min-width: 0; padding: 0; border-radius: 26%; background: transparent url("../../assets/animal-color-springs/vessel-block-v1.png") center / contain no-repeat; filter: hue-rotate(var(--spring-vessel-hue)) drop-shadow(0 7px 5px rgba(0, 0, 0, .5)); transition: transform .16s, filter .16s; }
+.vessel:hover { transform: translateY(-2px); }
+.vessel.selected { transform: translateY(-8px); filter: hue-rotate(var(--spring-vessel-hue)) drop-shadow(0 0 8px #74ffd7) drop-shadow(0 9px 5px rgba(0, 0, 0, .55)); }
+.vessel.hint-source, .vessel.hint-target { animation: spring-hint-pulse .75s ease-in-out 2; }
+.vessel.sealed::after { position: absolute; inset: 18% 10% 8%; border: 2px solid #d8c6ff; border-radius: 40%; background: linear-gradient(135deg, rgba(133, 102, 255, .15), rgba(182, 142, 255, .7)); box-shadow: inset 0 0 22px #7048d8, 0 0 12px #a988ff; content: ""; pointer-events: none; }
+.vessel.valid-target { box-shadow: inset 0 0 0 3px rgba(255, 226, 112, .86), 0 0 0 2px rgba(3, 27, 26, .75); animation: spring-target-pulse 1.15s ease-in-out infinite; }
+.vessel.transfer-target { filter: hue-rotate(var(--spring-vessel-hue)) drop-shadow(0 0 12px #ffd260) drop-shadow(0 9px 5px rgba(0, 0, 0, .55)); animation: none; }
+.seal-label { position: absolute; z-index: 5; top: 40%; left: 50%; padding: 3px 6px; transform: translate(-50%, -50%); border-radius: 8px; background: #281450; color: #fff; font-size: clamp(.55rem, 2vw, .72rem); font-weight: 950; white-space: nowrap; }
+.orb-stack { position: absolute; right: 20%; bottom: 16%; left: 20%; display: flex; height: 65%; flex-direction: column-reverse; align-items: center; justify-content: flex-start; pointer-events: none; }
+.orb { flex: 0 0 25%; width: auto; aspect-ratio: 1; margin: 0; border-radius: 50%; background: var(--orb-glow) url("../../assets/animal-color-springs/orb-block-v1.png") center / contain no-repeat; background-blend-mode: multiply; filter: saturate(1.3) brightness(1.08) drop-shadow(0 0 4px var(--orb-glow)); }
+.capacity-mark { position: absolute; z-index: 4; right: 10%; bottom: 6%; padding: 2px 4px; border: 1px solid rgba(255, 255, 255, .45); border-radius: 999px; background: #053631; color: #fff; font-size: .62rem; font-weight: 900; }
+.battle-actions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.battle-actions button { display: flex; min-width: 0; min-height: 48px; align-items: center; justify-content: center; gap: 6px; padding: 6px; border: 1px solid rgba(105, 241, 200, .42); border-radius: 12px; background: rgba(4, 55, 49, .94); }
+.battle-actions button:disabled { opacity: .42; cursor: not-allowed; }
+.battle-actions span { color: var(--spring-gold); font-size: 1.3rem; }
+.battle-actions b { overflow: hidden; font-size: .88rem; text-overflow: ellipsis; white-space: nowrap; }
+.battle-screen[data-transferring="true"] .battle-content { pointer-events: none; }
+.orb.transfer-source { opacity: 0; }
+.orb.flying-orb { position: fixed !important; z-index: 80 !important; display: block !important; margin: 0 !important; pointer-events: none !important; animation: none !important; will-change: transform; transform-origin: center; }
+
+.modal-layer { position: absolute; z-index: 20; inset: 0; display: grid; place-items: center; padding: 14px; background: rgba(0, 10, 9, .78); backdrop-filter: blur(4px); }
+.tutorial-layer, .spring-theme-modal { position: fixed; }
+.result-card, .dialog-card, .tutorial-card { position: relative; width: min(100%, 460px); padding: 22px; border: 1px solid #75f7ce; border-radius: 22px; background: linear-gradient(160deg, #073e38, #031f1d); box-shadow: 0 25px 70px #000; text-align: center; }
+.result-card > img, .tutorial-card > img { width: 96px; height: 96px; margin: -6px auto 0; object-fit: contain; }
+.result-card > small { color: var(--spring-gold); font-weight: 900; }
+.result-card h2, .dialog-card h2, .tutorial-card h2 { margin: 6px 0 10px; }
+.result-card p, .dialog-card p { color: var(--spring-muted); line-height: 1.45; }
+.result-stars { color: var(--spring-gold); font-size: 1.8rem; letter-spacing: 3px; }
+.best-text { color: #9fffdc !important; font-weight: 900; }
+.modal-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.dialog-card .modal-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.modal-actions button { min-width: 0; min-height: 44px; padding: 6px; border: 1px solid rgba(105, 241, 200, .38); border-radius: 12px; background: #174f49; font-weight: 900; }
+.modal-actions button:disabled { opacity: .45; cursor: not-allowed; }
+.tutorial-card { text-align: start; }
+.tutorial-card ol { padding-left: 1.35rem; line-height: 1.55; }
+.modal-close { position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border-radius: 50%; background: #174f49; font-size: 1.4rem; }
+.spring-theme-card { text-align: start; }
+.spring-theme-card h2 { margin-top: 0; }
+.spring-theme-card p { margin: 8px 0; }
+.spring-theme-status { min-height: 1.4em; color: #ffe39b !important; font-weight: 800; }
+.spring-theme-card .primary-action { background: linear-gradient(#ffe078, #ffb629); color: #352300; }
+.wp-spring-theme-action { display: inline-flex !important; min-width: 0 !important; align-items: center; justify-content: center; gap: 5px; }
+.wp-spring-theme-action img { width: 18px; height: 18px; object-fit: contain; }
+.wp-spring-theme-action > span { overflow: hidden; font-size: .78rem; text-overflow: ellipsis; white-space: nowrap; }
+.wp-spring-theme-action .wp-spring-theme-balance { font-weight: 900; }
+body[data-spring-theme="moonlit"] { --spring-vessel-hue: 196deg; }
+.toast { position: fixed; z-index: 70; bottom: calc(70px + env(safe-area-inset-bottom)); left: 50%; max-width: min(88vw, 520px); padding: 10px 16px; transform: translate(-50%, 16px); border: 1px solid var(--spring-mint); border-radius: 999px; background: #071c1a; box-shadow: 0 10px 30px #000; opacity: 0; pointer-events: none; text-align: center; font-weight: 850; transition: .2s; }
+.toast.show { transform: translate(-50%, 0); opacity: 1; }
+
+@keyframes spring-hint-pulse { 50% { filter: hue-rotate(var(--spring-vessel-hue)) drop-shadow(0 0 16px #fff) drop-shadow(0 0 22px #ffd260); transform: translateY(-8px); } }
+@keyframes spring-target-pulse { 50% { box-shadow: inset 0 0 0 3px #ffe270, 0 0 15px rgba(255, 210, 96, .82); } }
+@media (max-width: 600px) {
+  .guide-grid { grid-template-columns: minmax(0, 1fr); }
+  .vessel-board { grid-template-columns: repeat(var(--cols, 5), minmax(0, 1fr)); gap: 4px; }
+  .battle-actions { gap: 4px; }
+  .battle-actions button { flex-direction: column; gap: 1px; padding: 3px; }
+  .battle-actions b { font-size: .72rem; }
+  .result-card, .dialog-card, .tutorial-card { padding: 16px; }
+  .result-card .modal-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .result-card .modal-actions button { padding: 5px 3px; font-size: .8rem; }
 }
-
-#mainScreen .main-copy > small:first-child,
-#mainScreen .main-copy > h1 {
-  display: none !important;
-}
-
-#mainScreen .main-copy {
-  padding: 8px 0 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-#mainScreen .main-poster {
-  width: min(100%, 420px) !important;
-  max-width: 420px !important;
-  height: auto !important;
-  aspect-ratio: 1 / 1 !important;
-  justify-self: center !important;
-}
-
-#mainScreen .main-copy .primary-action {
-  box-sizing: border-box !important;
-  height: 52px !important;
-  min-height: 52px !important;
-  max-height: 52px !important;
-  padding-block: 0 !important;
-  border-radius: 14px !important;
-  font: 800 16px/1.2 system-ui, sans-serif !important;
-  white-space: nowrap !important;
-}
-
-@media (max-width: 699px) {
-  #mainScreen .main-hero {
-    grid-template-rows: auto auto !important;
-    align-content: start !important;
-  }
-
-  #mainScreen .main-poster {
-    width: 100% !important;
-    max-width: none !important;
-  }
-}
-
-/* Stage: 48px title-free play-top, one bounded workspace, then one persistent
-   56px three-slot navigation bar. Missing Team / Equipment remain empty. */
-#stageScreen .stage-canvas {
-  grid-template-rows: 48px minmax(0, 1fr) 56px !important;
-  gap: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-}
-
-#stageScreen .stage-header {
-  grid-row: 1 !important;
-  height: 48px !important;
-  min-height: 48px !important;
-  max-height: 48px !important;
-  grid-template-columns: 48px minmax(0, 1fr) 48px !important;
-  gap: 8px !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: rgba(3, 31, 29, .78) !important;
-  box-shadow: none !important;
-}
-
-#stageScreen .stage-header > button {
-  width: 48px !important;
-  height: 48px !important;
-  min-width: 48px !important;
-  min-height: 48px !important;
-  border-radius: 0 !important;
-}
-
-#stageScreen .stage-header > div,
-#stageScreen .stage-header > img {
-  display: none !important;
-}
-
-#stageScreen .stage-header > .wp-shell-settings,
-#stageScreen .stage-header > .wp-frame-utility {
-  display: block !important;
-  grid-column: 3 !important;
-  justify-self: end !important;
-}
-
-#stageScreen .color-springs-stage-workspace {
-  grid-row: 2 !important;
-  position: relative !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  overflow: hidden !important;
-  padding: 12px !important;
-}
-
-#stageScreen .chapter-panel {
-  position: absolute !important;
-  z-index: 2 !important;
-  top: 12px !important;
-  left: 50% !important;
-  width: min(calc(100% - 24px), 620px) !important;
-  transform: translateX(-50%) !important;
-  padding: 10px 14px !important;
-  border-radius: 14px !important;
-}
-
-#stageScreen .stage-summary-line {
-  margin: 0 0 2px !important;
-  color: var(--muted) !important;
-  font-size: .8rem !important;
-  font-weight: 850 !important;
-}
-
-#stageScreen .stage-rail {
-  position: absolute !important;
-  z-index: 3 !important;
-  top: clamp(107px, 38%, calc(100% - 107px)) !important;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
-  height: 198px !important;
-  min-height: 198px !important;
-  margin: 0 !important;
-  transform: translateY(-50%) !important;
-  display: flex !important;
-  grid-template-columns: none !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 12px !important;
-  padding: 4px max(24px, calc((100% - 264px) / 2)) !important;
-  overflow-y: hidden !important;
-  scrollbar-width: none !important;
-  touch-action: none !important;
-}
-
-#stageScreen .stage-rail::-webkit-scrollbar {
-  display: none !important;
-}
-
-#stageScreen .stage-card {
-  box-sizing: border-box !important;
-  flex: 0 0 264px !important;
-  width: 264px !important;
-  min-width: 264px !important;
-  max-width: 264px !important;
-  height: 190px !important;
-  min-height: 190px !important;
-  max-height: 190px !important;
-  scroll-snap-align: center !important;
-}
-
-#stageScreen .stage-card.centered,
-#stageScreen .stage-card.is-centered {
-  border-color: #6fffd0 !important;
-  box-shadow: 0 0 0 3px rgba(111, 255, 208, .28), 0 0 28px #5ff0bc, 0 16px 34px #000 !important;
-}
-
-#stageScreen .stage-tabs {
-  grid-row: 3 !important;
-  align-self: end !important;
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 8px !important;
-  width: 100% !important;
-  height: 56px !important;
-  min-height: 56px !important;
-  margin: 0 !important;
-  padding: 6px !important;
-  background: rgba(3, 31, 29, .92) !important;
-}
-
-#stageScreen .stage-tabs > button {
-  grid-column: 2 !important;
-  width: 100% !important;
-  height: 44px !important;
-  min-height: 44px !important;
-  max-height: 44px !important;
-  border-radius: 14px !important;
-  margin: 0 !important;
-  border: 1px solid var(--line) !important;
-  background: rgba(4, 55, 49, .96) !important;
-  color: var(--ink) !important;
-  font: 700 14px/1.2 system-ui, sans-serif !important;
-  white-space: nowrap !important;
-}
-
-#stageScreen .stage-tabs > button[aria-selected="true"] {
-  border: 2px solid var(--mint) !important;
-  box-shadow: 0 0 0 2px rgba(95, 240, 188, .24), 0 0 18px rgba(95, 240, 188, .25) !important;
-}
-
-@media (min-width: 700px) {
-  #stageScreen .color-springs-stage-workspace {
-    padding: 16px !important;
-  }
-
-  #stageScreen .chapter-panel {
-    top: 16px !important;
-  }
-
-  #stageScreen .stage-rail {
-    display: flex !important;
-    grid-template-columns: none !important;
-  }
-}
-
 @media (max-height: 560px) and (orientation: landscape) {
-  #stageScreen .stage-canvas {
-    grid-template-rows: 48px minmax(0, 1fr) 56px !important;
-    padding: 0 !important;
-  }
-
-  #stageScreen .stage-header {
-    height: 48px !important;
-    min-height: 48px !important;
-    max-height: 48px !important;
-    padding: 0 !important;
-  }
-
-  #stageScreen .chapter-panel {
-    display: none !important;
-  }
-
-  #stageScreen .stage-card {
-    flex-basis: 264px !important;
-    width: 264px !important;
-    min-width: 264px !important;
-    max-width: 264px !important;
-    height: 190px !important;
-    min-height: 190px !important;
-    max-height: 190px !important;
-  }
+  .battle-content { grid-template-rows: auto minmax(0, 1fr) auto; gap: 4px; padding: 6px; }
+  .vessel-board { grid-template-columns: repeat(var(--cols, 5), minmax(0, 72px)); gap: 4px; overflow: hidden; }
+  .battle-actions button { min-height: 42px; }
+  .result-card, .dialog-card { padding: 10px 14px; }
+  .result-card > img { width: 58px; height: 58px; }
+  .result-card h2 { margin: 2px 0; font-size: 1.3rem; }
+  .result-card p { margin: 4px 0; }
 }
-
-/* Battle: the play-top is always 48px. Keep only live Stage/goal/moves state
-   plus shared Settings; Help belongs to gameplay actions, not the top track. */
-#battleScreen .battle-canvas {
-  grid-template-rows: 48px auto minmax(0, 1fr) 72px !important;
-}
-
-#battleScreen .battle-header {
-  height: 48px !important;
-  min-height: 48px !important;
-  max-height: 48px !important;
-  grid-template-columns: 48px minmax(0, 1fr) 62px 48px !important;
-  gap: 8px !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: rgba(3, 31, 29, .78) !important;
-  box-shadow: none !important;
-}
-
-#battleScreen .battle-header > button {
-  width: 48px !important;
-  height: 48px !important;
-  min-width: 48px !important;
-  min-height: 48px !important;
-  border-radius: 0 !important;
-}
-
-#battleScreen .battle-title {
-  min-width: 0 !important;
-  align-content: center !important;
-}
-
-#battleScreen .battle-title small,
-#battleScreen .battle-title strong {
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-}
-
-#battleScreen .battle-actions {
-  grid-template-columns: repeat(3, minmax(0, 1fr)) 48px !important;
-}
-
-#battleScreen .battle-actions #helpBtn {
-  width: 48px !important;
-  min-width: 48px !important;
-  min-height: 48px !important;
-  padding: 0 !important;
-  border: 1px solid var(--line) !important;
-  border-radius: 14px !important;
-  background: rgba(4, 55, 49, .94) !important;
-  color: var(--gold) !important;
-  font-size: 1.2rem !important;
-  font-weight: 950 !important;
-}
-
-#resultPanel .modal-actions {
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-}
-
-#resultPanel .modal-actions > button {
-  box-sizing: border-box !important;
-  min-width: 0 !important;
-  height: 44px !important;
-  min-height: 44px !important;
-  max-height: 44px !important;
-  padding: 0 6px !important;
-  border-radius: 14px !important;
-  font: 700 .82rem/1.2 system-ui, sans-serif !important;
-}
-
-@media (max-height: 560px) and (orientation: landscape) {
-  #battleScreen .battle-canvas {
-    grid-template-rows: 48px auto minmax(0, 1fr) 58px !important;
-  }
-
-  #battleScreen .battle-header {
-    height: 48px !important;
-    min-height: 48px !important;
-    max-height: 48px !important;
-    padding: 0 !important;
-  }
-
-  #battleScreen .battle-header > button {
-    width: 48px !important;
-    height: 48px !important;
-    min-width: 48px !important;
-    min-height: 48px !important;
-  }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }

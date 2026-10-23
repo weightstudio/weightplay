@@ -4,11 +4,8 @@
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-color-springs/" />
-
-    <script src="../../../src/weightplay-audio.js?v=1.0.0"></script>
-
-    <script src="../../../src/game-layout-config.js?v=20260919-banner1"></script>
-
+    <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
+  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <link rel="canonical" href="https://weightplay.com/en/games/animal-color-springs/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-color-springs/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-color-springs/" />
@@ -42,16 +39,18 @@
   <meta name="twitter:description" content="Sort colors across 30 stages by moving matching top orbs into vessels with room. Plan around seals, changing capacities, and move goals." />
   <meta name="twitter:image" content="https://weightplay.com/assets/animal-color-springs/cover-block-v1.png" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Color Springs","description":"Sort colors across 30 stages by moving matching top orbs into vessels with room. Plan around seals, changing capacities, and move goals.","url":"https://weightplay.com/en/games/animal-color-springs/","image":"https://weightplay.com/assets/animal-color-springs/cover-block-v1.png","genre":["Top-orb color sorting","Vessel-capacity planning","Move-goal puzzle"],"inLanguage":"en","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"audience":{"@type":"PeopleAudience","suggestedMinAge":9}}</script>
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261015-color-springs-i9-guide" />
   <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
-  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
-  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+
+
+  <link rel="stylesheet" href="style.css?v=20260729-interface-v4" /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261021-shared-play1">
+  <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261021-stage-rail-i9">
+  <link rel="stylesheet" href="../../src/interface9-shared-screens.css?v=20261023-color-springs-i9-v1">
 <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-screen="loading" data-game-id="animal-color-springs" data-wp-game-owned-guide="true">
+<body data-screen="loading" data-game-id="animal-color-springs" data-wp-frame-root data-wp-play-ui="1" data-wp-interface-candidate="9" data-wp-game-owned-guide="true">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Color Springs</strong><span data-i18n="loading">Waking the forest springs…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
   </section>
@@ -64,7 +63,7 @@
         <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" data-i18n-aria="language" aria-label="Language"><option value="en" selected="selected">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="/assets/animal-color-springs/cover-block-v1.png" data-i18n-alt="posterAlt" alt="An owl and rabbit restoring glowing color springs in a forest"/>
+        <img class="main-poster" src="../../assets/animal-color-springs/cover-block-v1.png" data-i18n-alt="posterAlt" alt="An owl and rabbit restoring glowing color springs in a forest"/>
         <div class="main-copy"><small data-i18n="eyebrow">Forest spring puzzle</small><h1 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Color Springs</h1><p data-i18n="pitch">Gather matching spring orbs into the same vessel and restore the forest's lost colors.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
       </section>
     </main>
@@ -75,8 +74,8 @@
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" style="--wp-stage-art:url('/assets/animal-color-springs/cover-block-v1.png')">
-      <header class="stage-header"><button id="stageBackBtn" data-wp-return="stage" type="button" data-i18n-aria="back" aria-label="Back">←</button><div><strong data-i18n="chooseStage">Choose a Spring</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" style="--wp-stage-art:url('../../assets/animal-color-springs/cover-block-v1.png')">
+      <header class="stage-header"><button id="stageBackBtn" data-wp-return="stage" type="button" data-i18n-aria="back" aria-label="Back">←</button><div><strong data-i18n="chooseStage">Choose a Spring</strong><span id="stageSummary"></span></div><img src="../../assets/animal-color-springs/owl-block-v1.png" alt="" /></header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Spring stage selector"></div>
     </div>
@@ -89,16 +88,22 @@
       <section id="vesselBoard" class="vessel-board" data-i18n-aria="boardLabel" aria-label="Color sorting vessels"></section>
       <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">Undo</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">Restart</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">Hint</b></button></div>
 
-      <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" /><small data-i18n="resultKicker">Spring restored</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions" data-wp-result-actions><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Play Again</button></div></div></section>
+      <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/animal-color-springs/rabbit-block-v1.png" alt="" /><small data-i18n="resultKicker">Spring restored</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions" data-wp-result-actions><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Play Again</button></div></div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Keep this sorting run?</h2><p data-i18n="leaveText">Continue returns to the exact position. Returning to Stages ends this run.</p><div class="modal-actions"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Stages</button></div></div></section>
     </div>
   </section>
 
-  <section id="tutorialPanel" class="modal-layer tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Close">×</button><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Bring matching colors into one spring</h2><ol><li data-i18n="tutorial1">Tap a vessel to select its top matching orbs.</li><li data-i18n="tutorial2">Tap an empty vessel or one with the same top color.</li><li data-i18n="tutorial3">Finish when every non-empty vessel contains one color.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start Stage 1</button></div></section>
+  <section id="tutorialPanel" class="modal-layer tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Close">×</button><img src="../../assets/animal-color-springs/owl-block-v1.png" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Bring matching colors into one spring</h2><ol><li data-i18n="tutorial1">Tap a vessel to select its top matching orbs.</li><li data-i18n="tutorial2">Tap an empty vessel or one with the same top color.</li><li data-i18n="tutorial3">Finish when every non-empty vessel contains one color.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start Stage 1</button></div></section>
 
   <div id="toast" class="toast" aria-live="polite"></div>
-  <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="locales.js?v=20261003-color-springs-text-growth-140-v1"></script><script src="game.js?v=20260926-color-springs-locale13-v1&amp;wp-audio=1.0.0"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><section class="game-page-info game-page-info-static" aria-label="Color Springs game information" data-wp-game-guide data-wp-preserve-static-guide data-runtime-localize="off">
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
+  <script src="locales.js?v=20261003-color-springs-text-growth-140-v1"></script>
+  <script src="interface9-copy.js?v=20261023-color-springs-i9-v1"></script>
+  <script src="../../src/wallet.js?v=20261023-color-springs-diamond-theme1"></script>
+  <script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+  <script src="../../src/game-play-ui.js?v=20261021-shared-play1"></script>
+  <section class="game-page-info game-page-info-static" aria-label="Color Springs game information" data-wp-game-guide data-wp-preserve-static-guide data-runtime-localize="off">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2 data-wp-game-title data-runtime-localize="off">Color Springs</h2><p>Gather matching spring orbs into the same vessel and restore the forest's lost colors. Thirty stages add more colors, sealed vessels, varied capacities, and tighter move goals.</p></div>
@@ -120,6 +125,6 @@
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
-  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+  <script src="game.js?v=20260926-color-springs-locale13-v1&amp;wp-audio=1.0.0"></script>
 </body>
 </html>

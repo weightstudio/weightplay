@@ -1,161 +1,144 @@
 (function () {
   "use strict";
 
-  if (window.__ANIMAL_COLOR_SPRINGS_INTERFACE7_COMPAT__) return;
-  window.__ANIMAL_COLOR_SPRINGS_INTERFACE7_COMPAT__ = true;
+  if (window.__ANIMAL_COLOR_SPRINGS_INTERFACE9_LOADER__) return;
+  window.__ANIMAL_COLOR_SPRINGS_INTERFACE9_LOADER__ = true;
 
-  const GAME_ID = "animal-color-springs";
-  const STAGE_TOTAL = 30;
-  const STAGE_TAB_COPY = {
-    en: "Stages",
-    "zh-Hant": "關卡",
-    "zh-Hans": "关卡",
-    ja: "ステージ",
-    ko: "스테이지",
-    es: "Niveles",
-    "pt-BR": "Fases",
-    fr: "Niveaux",
-    de: "Stufen",
-    it: "Livelli",
-    ru: "Уровни",
-    hi: "स्तर",
-    ar: "المراحل"
-  };
+  const body = document.body;
+  body.dataset.wpGameId = "animal-color-springs";
+  body.dataset.wpPlayUi = "1";
 
-  document.body.dataset.wpGameId = GAME_ID;
-
-  const start = document.getElementById("startBtn");
-  if (start) start.dataset.wpMainStart = "";
+  const mainGroup = document.getElementById("mainGroup");
+  const mainScreen = document.getElementById("mainScreen");
+  if (mainGroup && mainScreen) {
+    const header = mainScreen.querySelector(".main-header");
+    const hero = mainScreen.querySelector(".main-hero");
+    const guide = mainGroup.querySelector(".game-guide");
+    mainGroup.className = "screen main main-screen wp-standard-main-screen";
+    mainGroup.dataset.wpStandardMainScreen = "";
+    mainGroup.setAttribute("role", "region");
+    header?.querySelector("[data-wp-game-title]")?.setAttribute("data-wp-frame-title", "");
+    if (header && hero) {
+      mainScreen.className = "main-content";
+      mainScreen.replaceChildren(hero, ...(guide ? [guide] : []));
+      mainGroup.replaceChildren(header, mainScreen);
+      hero.className = "wp-standard-main-composition";
+      const poster = hero.querySelector(".main-poster");
+      const copy = hero.querySelector(".main-copy");
+      if (poster) {
+        poster.dataset.wpFramePoster = "";
+        const framePoster = document.createElement("div");
+        framePoster.className = "wp-standard-main-poster";
+        poster.before(framePoster);
+        framePoster.append(poster);
+      }
+      if (copy) {
+        copy.className = "wp-standard-main-copy";
+        copy.dataset.wpFrameCopy = "";
+        copy.querySelector("p")?.setAttribute("data-wp-frame-summary", "");
+      }
+      const progress = document.getElementById("mainProgress");
+      if (progress) progress.dataset.wpFrameProgress = "";
+      const start = document.getElementById("startBtn");
+      if (start) {
+        start.dataset.wpMainStart = "";
+        start.dataset.wpFrameAction = "primary";
+      }
+    }
+    if (guide) {
+      guide.classList.add("game-page-info", "game-page-info-static");
+      guide.dataset.wpGameGuide = "";
+      guide.dataset.wpPreserveStaticGuide = "";
+    }
+  }
 
   const stageScreen = document.getElementById("stageScreen");
   const stageCanvas = stageScreen?.querySelector(".stage-canvas");
   const stageHeader = stageCanvas?.querySelector(".stage-header");
-  const stageSummary = document.getElementById("stageSummary");
-  const chapterPanel = stageCanvas?.querySelector(".chapter-panel");
   const stageRail = document.getElementById("stageRail");
+  if (stageCanvas && stageHeader && stageRail) {
+    stageCanvas.dataset.wpLogicalStageCanvas = "";
+    stageCanvas.removeAttribute("style");
+    const back = stageHeader.querySelector('[data-wp-return="stage"]');
+    let title = stageHeader.querySelector("strong");
+    if (!title) title = document.createElement("strong");
+    title.dataset.wpFrameTitle = "";
+    title.dataset.wpGameTitle = "";
+    title.dataset.i18n = "title";
+    title.textContent = window.COLOR_SPRINGS_LOCALES?.[document.documentElement.lang]?.title
+      || window.COLOR_SPRINGS_LOCALES?.en?.title
+      || "Color Springs";
+    stageHeader.replaceChildren(...[back, title].filter(Boolean));
 
-  if (stageCanvas) stageCanvas.dataset.wpLogicalStageCanvas = "";
-  if (stageRail) {
-    stageRail.dataset.wpStageV6Total = String(STAGE_TOTAL);
-    stageRail.dataset.wpStageV6PoolSize = "9";
-  }
-
-  let workspace = stageCanvas?.querySelector(".color-springs-stage-workspace");
-  if (stageCanvas && stageRail && !workspace) {
-    workspace = document.createElement("div");
-    workspace.className = "color-springs-stage-workspace stage-workspace";
+    const workspace = document.createElement("div");
+    workspace.className = "stage-workspace color-springs-stage-workspace";
     workspace.dataset.wpStageWorkspace = "";
-    if (stageHeader?.nextSibling) stageCanvas.insertBefore(workspace, stageHeader.nextSibling);
-    else stageCanvas.append(workspace);
+    const chapterPanel = stageCanvas.querySelector(".chapter-panel");
+    const stageHeaderInfo = document.createElement("div");
+    stageHeaderInfo.id = "stageHeaderInfo";
     if (chapterPanel) workspace.append(chapterPanel);
-    workspace.append(stageRail);
+    workspace.append(stageRail, stageHeaderInfo);
+    stageCanvas.replaceChildren(stageHeader, workspace);
+    stageRail.dataset.wpStageRail = "";
+    stageRail.removeAttribute("data-wp-stage-settle-duration");
+    stageRail.removeAttribute("data-wp-stage-settle-easing");
   }
 
-  if (chapterPanel && stageSummary && !chapterPanel.contains(stageSummary)) {
-    stageSummary.classList.add("stage-summary-line");
-    chapterPanel.prepend(stageSummary);
-  }
+  const battleScreen = document.getElementById("battleScreen");
+  const battleCanvas = battleScreen?.querySelector(".battle-canvas");
+  const battleHeader = battleCanvas?.querySelector(".battle-header");
+  if (battleCanvas && battleHeader) {
+    battleCanvas.dataset.wpLogicalBattleCanvas = "";
+    battleCanvas.removeAttribute("data-wp-canvas-max-width");
+    const back = battleHeader.querySelector('[data-wp-return="battle"]');
+    const title = document.createElement("strong");
+    title.dataset.wpFrameTitle = "";
+    title.dataset.wpGameTitle = "";
+    title.dataset.i18n = "title";
+    title.textContent = window.COLOR_SPRINGS_LOCALES?.[document.documentElement.lang]?.title
+      || window.COLOR_SPRINGS_LOCALES?.en?.title
+      || "Color Springs";
 
-  const normalizeLocale = (raw) => {
-    if (/^zh-(tw|hant)/i.test(raw || "")) return "zh-Hant";
-    if (/^zh/i.test(raw || "")) return "zh-Hans";
-    if (/^pt/i.test(raw || "")) return "pt-BR";
-    const direct = raw || "en";
-    return STAGE_TAB_COPY[direct] ? direct : (STAGE_TAB_COPY[direct.split("-")[0]] ? direct.split("-")[0] : "en");
-  };
+    const content = document.createElement("div");
+    content.className = "battle-content";
+    const headerInfo = document.createElement("div");
+    headerInfo.id = "battleHeaderInfo";
+    const makeStat = (labelKey, id) => {
+      const stat = document.createElement("span");
+      stat.className = "color-springs-battle-stat";
+      const label = document.createElement("small");
+      label.dataset.i18n = labelKey;
+      const value = document.createElement("strong");
+      value.id = id;
+      stat.append(label, value);
+      headerInfo.append(stat);
+      return value;
+    };
+    makeStat("stageHeaderLabel", "stageLabel");
+    makeStat("moveGoalLabel", "stageGoal");
+    makeStat("moves", "movesValue");
 
-  const currentLocale = () => normalizeLocale(
-    window.WonderI18n?.actualLocale?.()
-      || window.WonderI18n?.locale?.()
-      || document.documentElement.lang
-      || "en"
-  );
-
-  let stageTabs = stageCanvas?.querySelector(".stage-tabs[data-wp-color-springs-tabs]");
-  if (stageCanvas && !stageTabs) {
-    stageTabs = document.createElement("nav");
-    stageTabs.className = "stage-tabs";
-    stageTabs.dataset.wpColorSpringsTabs = "";
-    stageTabs.dataset.wpFrameNav = "";
-    const stageTab = document.createElement("button");
-    stageTab.type = "button";
-    stageTab.setAttribute("role", "tab");
-    stageTab.setAttribute("aria-selected", "true");
-    stageTab.dataset.wpFrameAction = "tab";
-    stageTabs.append(stageTab);
-    stageCanvas.append(stageTabs);
-  }
-
-  const updateStageTabCopy = () => {
-    const label = STAGE_TAB_COPY[currentLocale()] || STAGE_TAB_COPY.en;
-    if (!stageTabs) return;
-    stageTabs.setAttribute("aria-label", label);
-    const button = stageTabs.querySelector("button");
-    if (button) {
-      button.textContent = label;
-      button.setAttribute("aria-label", label);
+    const battleActions = battleCanvas.querySelector(".battle-actions");
+    const help = battleHeader.querySelector("#helpBtn");
+    if (help && battleActions) {
+      help.classList.add("battle-help-action");
+      battleActions.append(help);
     }
-  };
-  updateStageTabCopy();
-  window.addEventListener("wonder:locale-change", updateStageTabCopy);
-
-  const battleActions = document.querySelector("#battleScreen .battle-actions");
-  const helpButton = document.getElementById("helpBtn");
-  if (battleActions && helpButton && helpButton.parentElement !== battleActions) {
-    helpButton.classList.add("battle-help-action");
-    battleActions.append(helpButton);
+    const returnButton = back || battleHeader.querySelector("button");
+    battleHeader.replaceChildren(...[returnButton, title].filter(Boolean));
+    content.append(headerInfo);
+    for (const selector of ["#lockNotice", "#vesselBoard", ".battle-actions", "#resultPanel", "#leavePanel"]) {
+      const node = battleCanvas.querySelector(selector);
+      if (node) content.append(node);
+    }
+    battleCanvas.replaceChildren(battleHeader, content);
   }
-
-  const resultPanel = document.getElementById("resultPanel");
-  if (resultPanel) resultPanel.dataset.wpBattleSubstate = "result";
-
-  const leavePanel = document.getElementById("leavePanel");
-  const modalOpen = (panel) => Boolean(panel && !panel.hidden);
-  const syncBattleModalSafety = () => {
-    const covered = modalOpen(leavePanel) || modalOpen(resultPanel);
-    [
-      document.querySelector("#battleScreen .battle-header"),
-      document.querySelector("#battleScreen [data-wp-frame-header='battle']"),
-      document.querySelector("#battleScreen #wp-shared-battle-header"),
-      document.getElementById("lockNotice"),
-      document.getElementById("vesselBoard"),
-      battleActions
-    ].filter(Boolean).forEach((node) => {
-      if (node === leavePanel || node === resultPanel || node.contains(leavePanel) || node.contains(resultPanel)) return;
-      node.inert = covered;
-    });
-  };
-
-  [leavePanel, resultPanel].filter(Boolean).forEach((panel) => {
-    new MutationObserver(syncBattleModalSafety).observe(panel, { attributes: true, attributeFilter: ["hidden"] });
-  });
-  window.addEventListener("weightplay:shell-sync", syncBattleModalSafety);
-  window.addEventListener("weightplay:screen-change", syncBattleModalSafety);
-  syncBattleModalSafety();
 
   const current = document.currentScript;
-  let runtimeLoaded = false;
-  const loadRuntime = () => {
-    if (runtimeLoaded) return;
-    runtimeLoaded = true;
-    const runtime = document.createElement("script");
-    runtime.async = false;
-    runtime.src = new URL("./game-v5-base.js?v=20260926-color-springs-locale13-v1", current?.src || location.href).href;
-    runtime.dataset.wpColorSpringsRuntime = "v5-base";
-    if (current?.parentNode) current.after(runtime);
-    else document.body.append(runtime);
-  };
-
-  if (window.WeightPlayStageV6?.install) {
-    loadRuntime();
-  } else {
-    const virtualizer = document.createElement("script");
-    virtualizer.async = false;
-    virtualizer.src = new URL("../../src/stage-virtualization-standard.js?v=20260809-stage-v6-source-demotion-v8", current?.src || location.href).href;
-    virtualizer.dataset.wpStageVirtualizationStandard = "true";
-    virtualizer.addEventListener("load", loadRuntime, { once: true });
-    virtualizer.addEventListener("error", loadRuntime, { once: true });
-    if (current?.parentNode) current.after(virtualizer);
-    else document.body.append(virtualizer);
-  }
+  const runtime = document.createElement("script");
+  runtime.async = false;
+  runtime.src = new URL("./game-v5-base.js?v=20261023-color-springs-i9-v2", current?.src || location.href).href;
+  runtime.dataset.wpColorSpringsRuntime = "i9";
+  if (current?.parentNode) current.after(runtime);
+  else document.body.append(runtime);
 }());

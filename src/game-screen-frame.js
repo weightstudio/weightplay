@@ -631,7 +631,7 @@
         if(playUI&&['stage','battle'].includes(name)) {
           if(playLayoutFrame)cancelAnimationFrame(playLayoutFrame);
           playLayoutFrame=0;
-          if(name==='battle'&&entries.battle.root.hasAttribute('data-wp-frame-battle-control-size'))window.WeightPlayBattleCanvas?.sync?.();
+          if(name==='battle'&&logicalBattleActionRoot)window.WeightPlayBattleCanvas?.sync?.();
           // Install the scene's physical control/canvas geometry before the
           // transition returns to its caller and before the next paint. Resize
           // observers continue to schedule later viewport changes.
