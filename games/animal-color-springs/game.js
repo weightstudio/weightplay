@@ -137,7 +137,7 @@
   const current = document.currentScript;
   const runtime = document.createElement("script");
   runtime.async = false;
-  runtime.src = new URL("./game-v5-base.js?v=20261023-color-springs-i9-v2", current?.src || location.href).href;
+  runtime.src = new URL("./game-v5-base.js?v=20261023-color-springs-i9-v5", current?.src || location.href).href;
   runtime.dataset.wpColorSpringsRuntime = "i9";
   if (current?.parentNode) current.after(runtime);
   else document.body.append(runtime);

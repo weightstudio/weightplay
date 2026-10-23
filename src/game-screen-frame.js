@@ -484,6 +484,22 @@
         refreshButtons();
       }
     }
+    const adoptLegacySoundControls = () => {
+      document.querySelectorAll("button[data-sound-toggle]:not([data-wp-battle-utility])").forEach((toggle) => {
+        toggle.classList.add("wp-shell-legacy-control");
+        toggle.hidden = true;
+        toggle.setAttribute("aria-hidden", "true");
+        toggle.tabIndex = -1;
+      });
+    };
+    const soundControlObserver = new MutationObserver((records) => {
+      const hasSoundControl = records.some((record) => [...record.addedNodes].some((node) =>
+        node.nodeType === Node.ELEMENT_NODE
+        && (node.matches?.("button[data-sound-toggle]") || node.querySelector?.("button[data-sound-toggle]"))));
+      if (hasSoundControl) adoptLegacySoundControls();
+    });
+    adoptLegacySoundControls();
+    soundControlObserver.observe(document.body, { childList: true, subtree: true });
     let playLayoutFrame = 0;
     const playLayoutProperties = [
       '--wp-frame-control-size', '--wp-frame-control-size-physical', '--wp-frame-physical-control-size',
@@ -644,7 +660,7 @@
       refresh,
       get active() { return active; },
       destroy() {
-        playResize?.disconnect();cancelAnimationFrame(playLayoutFrame);
+        playResize?.disconnect();soundControlObserver.disconnect();cancelAnimationFrame(playLayoutFrame);
         try { window.dispatchEvent(new CustomEvent('weightplay:screen-change', {detail:{owner:root,release:true}})); } catch { /* Optional analytics. */ }
         releaseRootLifecycle(); close(); abort.abort(); Object.values(entries).forEach(entry => entry.destroy());
         if (logicalBattleActionRoot) {
@@ -2010,6 +2026,7 @@
       ...RETURN_SELECTORS,
       ...MAIN_START_SELECTORS,
       ...MAIN_POSTER_SELECTORS,
+      "button[data-sound-toggle]",
       ".wp-shell-settings",
     ].join(",");
     const mutationAffectsPlacement = (record) => {
