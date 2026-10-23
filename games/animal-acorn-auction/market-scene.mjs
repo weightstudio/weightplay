@@ -3,18 +3,24 @@ import * as THREE from './vendor/three/three.module.min.js';
 // Authored block geometry. One renderer and one shared box; no per-frame allocation.
 export class MarketScene {
   constructor(canvas,onPick) {
-    this.canvas=canvas;this.onPick=onPick;this.dead=false;this.active=true;this.frame=0;
+    this.canvas=canvas;this.onPick=onPick;this.dead=false;this.active=true;this.frame=0;this.renderCount=0;
     this.scene=new THREE.Scene();this.scene.background=new THREE.Color('#183b3e');
     this.scene.fog=new THREE.Fog('#183b3e',22,45);
     this.renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'low-power'});
     this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
     this.renderer.outputColorSpace=THREE.SRGBColorSpace;
+    this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+    this.renderer.shadowMap.autoUpdate=false;
+    this.renderer.info.autoReset=false;
     this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.05;
     this.camera=new THREE.OrthographicCamera(-7,7,6,-6,.1,80);
     this.camera.position.set(0,10,16);this.camera.lookAt(0,2.4,0);
     this.box=new THREE.BoxGeometry(1,1,1);this.materials=new Map();this.lots=[];
     this.scene.add(new THREE.HemisphereLight(0xc3f6e6,0x80513a,1.6));
     const sun=new THREE.DirectionalLight(0xffd5a0,2.2);sun.position.set(-6,10,8);this.scene.add(sun);
+    sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);
+    Object.assign(sun.shadow.camera,{left:-9,right:9,top:10,bottom:-9,near:1,far:35});
+    sun.shadow.bias=-.0004;sun.shadow.normalBias=.045;this.sun=sun;
     const rim=new THREE.DirectionalLight(0x58dcdf,2.2);rim.position.set(7,6,-8);this.scene.add(rim);
     this.build();
     this.ray=new THREE.Raycaster();this.pointer=new THREE.Vector2();
@@ -38,7 +44,7 @@ export class MarketScene {
     return this.materials.get(key);
   }
   cube(parent,x,y,z,w,h,d,color,glow=false) {
-    const m=new THREE.Mesh(this.box,this.material(color,glow));m.position.set(x,y,z);m.scale.set(w,h,d);parent.add(m);return m;
+    const m=new THREE.Mesh(this.box,this.material(color,glow));m.position.set(x,y,z);m.scale.set(w,h,d);m.castShadow=!glow;m.receiveShadow=true;parent.add(m);return m;
   }
   build() {
     const s=this.scene;
@@ -124,13 +130,13 @@ export class MarketScene {
     this.renderer.setSize(Math.round(r.width),Math.round(r.height),false);
     const aspect=r.width/r.height,halfWidth=Math.max(6.25,5.1*aspect),halfHeight=halfWidth/aspect;
     this.camera.left=-halfWidth;this.camera.right=halfWidth;this.camera.top=halfHeight;this.camera.bottom=-halfHeight;this.camera.updateProjectionMatrix();this.render();}
-  render(){if(this.dead||!this.active||document.hidden)return;this.renderer.render(this.scene,this.camera);
-    Object.assign(this.canvas.dataset,{renderer:'Three.js r180',drawCalls:String(this.renderer.info.render.calls),triangles:String(this.renderer.info.render.triangles),geometries:String(this.renderer.info.memory.geometries),textures:String(this.renderer.info.memory.textures)});}
+  render(){if(this.dead||!this.active||document.hidden)return;this.renderer.info.reset();this.renderer.shadowMap.needsUpdate=true;this.renderer.render(this.scene,this.camera);
+    Object.assign(this.canvas.dataset,{renderer:'Three.js r180',renderCount:String(++this.renderCount),drawCalls:String(this.renderer.info.render.calls),triangles:String(this.renderer.info.render.triangles),geometries:String(this.renderer.info.memory.geometries),textures:String(this.renderer.info.memory.textures)});}
   stop(){this.active=false;cancelAnimationFrame(this.frame);this.frame=0;this.press=null;}
   resume(){if(this.dead)return;this.active=true;this.resize();this.animate();}
   dispose(){if(this.dead)return;this.stop();this.dead=true;this.resizeObserver.disconnect();
     this.canvas.removeEventListener('pointerdown',this.down);this.canvas.removeEventListener('pointerup',this.up);this.canvas.removeEventListener('pointercancel',this.cancel);this.canvas.removeEventListener('webglcontextlost',this.lost);
     // Reuse the permanent canvas's context after freeing every owned GPU resource.
     // forceContextLoss here would also invalidate the next renderer on that canvas.
-    this.box.dispose();for(const m of this.materials.values())m.dispose();this.materials.clear();this.scene.clear();this.renderer.dispose();}
+    this.box.dispose();for(const m of this.materials.values())m.dispose();this.materials.clear();this.sun.shadow.map?.dispose();this.scene.clear();this.renderer.dispose();}
 }

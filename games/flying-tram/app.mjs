@@ -217,7 +217,7 @@ click('retryBtn',()=>start(selected));click('nextBtn',()=>start(selected+1));cli
 document.querySelectorAll('[data-paint]').forEach(b=>listen(b,'click',()=>{previewPaint=b.dataset.paint;scene.livery(previewPaint);renderGarage();}));
 listen($('localeSelect'),'change',()=>{locale=$('localeSelect').value;translate();selector.refresh(selected);});
 listen(window,'storage',e=>{if(e.key===SAVE_KEY){save=readSave(stored());updateProgress();if(screen==='stage')selector.refresh(selected);}});
-listen($('gameCanvas'),'webglcontextlost',e=>{e.preventDefault();pauseHidden();toast(t('renderError'));});
+listen($('gameCanvas'),'webglcontextlost',e=>{e.preventDefault();pauseHidden();window.WeightPlayGameEntryLoader?.begin?.(1);window.WeightPlayGameEntryLoader?.fail?.(t('renderError'),()=>location.reload());});
 listen($('gameCanvas'),'webglcontextrestored',()=>{location.reload();});
 listen(window,'pagehide',event=>{clearInput();sound?.stop();if(event.persisted){pauseHidden();return;}destroyed=true;cancelAnimationFrame(raf);clearTokens();scene?.dispose();selector?.destroy?.();sound?.dispose();lifetime.abort();});
 translate();

@@ -92,3 +92,18 @@ export function buyEquipment(profile,id) {
   if(!cost||profile[id]||profile.coins<cost)return false;
   profile.coins-=cost;profile[id]=true;return true;
 }
+export function buyGoldenCrates(profile,wallet,commit) {
+  if(profile.gold)return 'owned';
+  if(!wallet||wallet.read().diamonds<8)return 'funds';
+  // Persist the cosmetic before debit: a storage failure can never consume diamonds.
+  // The shared wallet write is synchronous; a thrown write has not charged it.
+  profile.gold=true;
+  try{commit(profile);}catch{profile.gold=false;return 'storage';}
+  try{
+    if(wallet.spendDiamonds(8))return 'bought';
+    profile.gold=false;commit(profile);return 'funds';
+  }catch{
+    profile.gold=false;try{commit(profile);}catch{/* Keep the in-memory rollback. */}
+    return 'storage';
+  }
+}

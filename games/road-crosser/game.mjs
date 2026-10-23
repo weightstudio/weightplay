@@ -92,7 +92,11 @@ function syncPause() {
   else { cancelEffects(); audio.stop(); }
 }
 function openPanel(name, opener) {
-  if (screen === 'main') return;
+  if (screen === 'main' || purchaseBusy || panel === name) return;
+  // The shared header remains reachable while a panel is open. Replace the
+  // previous panel so Back cannot stack an obscured confirmation beneath it.
+  if (panel) $(panel).hidden = true;
+  $('purchaseConfirm').hidden = true;
   panel = name; focusReturn = opener || document.activeElement;
   $(name).hidden = false; stageContent.inert = true; $('resultScreen').inert = true;
   if (name === 'campPanel') refreshCamp();
@@ -205,6 +209,8 @@ async function purchase() {
     else { $('campNotice').textContent = t(result.reason === 'funds' ? 'funds' : 'storage'); play('feedback.error'); }
     $('purchaseConfirm').hidden = true; refreshCamp(); renderer?.draw(world, 0, journey.equipped === 'aurora');
     animate($('campPreview'), [{ opacity: .5 }, { opacity: 1 }], 220);
+  } catch {
+    $('campNotice').textContent = t('storage'); play('feedback.error');
   } finally { purchaseBusy = false; $('confirmBuy').disabled = false; $('buyBtn').focus({ preventScroll: true }); }
 }
 

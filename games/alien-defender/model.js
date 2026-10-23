@@ -69,7 +69,8 @@ export function step(w,delta,input={}) {
  w.comboTimer=Math.max(0,w.comboTimer-dt);if(!w.comboTimer)w.combo=0;
  w.invulnerable=Math.max(0,w.invulnerable-dt);
  const scale=modelScale(w), radiusY=3.8*scale/(100*w.aspect);
- w.player.x=clamp(input.targetX!=null?input.targetX:w.player.x+((input.right?1:0)-(input.left?1:0))*68*dt,7*scale,100-7*scale);
+ const travel=input.targetX!=null?clamp(input.targetX-w.player.x,-68*dt,68*dt):((input.right?1:0)-(input.left?1:0))*68*dt;
+ w.player.x=clamp(w.player.x+travel,7*scale,100-7*scale);
  w.fireTimer=Math.max(0,w.fireTimer-dt);
  if(input.fire&&w.fireTimer<=0){
    const count=Math.min(4,w.upgrades.firepower);
@@ -94,16 +95,16 @@ export function step(w,delta,input={}) {
    w.enemyTimer=w.config.fireEvery-(w.config.chapter===5?w.phase*.25:0);
    const source=active[w.volley++%active.length];
    const count=w.config.chapter===5&&w.phase===2?5:w.config.chapter===1||w.config.chapter>=4?3:1;
-   for(let i=0;i<count;i++)if(w.warnings.length<12)w.warnings.push({x:source.x,y:source.y,tx:clamp(w.player.x+(i-(count-1)/2)*15,5,95),remaining:.85,life:.85,spread:w.config.chapter>=4});
+   for(let i=0;i<count;i++)if(w.warnings.length<12)w.warnings.push({source:source.id,x:source.x,y:source.y,tx:clamp(w.player.x+(i-(count-1)/2)*15,5,95),remaining:.85,life:.85,spread:w.config.chapter>=4});
    event(w,'warning',{x:source.x,y:source.y});
  }
- for(const warn of w.warnings){warn.remaining-=dt;if(warn.remaining<=0&&w.hostile.length<64){
+ for(const warn of w.warnings){const source=w.enemies.find(e=>e.id===warn.source&&e.hp>0);if(!source){warn.remaining=-1;continue;}warn.x=source.x;warn.y=source.y;warn.remaining-=dt;if(warn.remaining<=0&&w.hostile.length<64){
    const speed=.34+w.config.chapter*.025;
    w.hostile.push({id:++w.serial,x:warn.x,y:warn.y,vx:(warn.tx-warn.x)*speed/(w.player.y-warn.y),vy:speed});
  }}
  w.warnings=w.warnings.filter(a=>a.remaining>0);
  for(const b of w.shots){const oldY=b.y;b.y-=dt*.95;b.x+=b.vx*dt;
-   for(const e of active){if(e.hp<=0)continue;const r=e.kind==='boss'?8:3.8;
+   for(const e of active){if(e.hp<=0)continue;
      const es=enemyScale(w,e)/scale;
      if(Math.abs(e.x-b.x)<3.8*enemyScale(w,e)+1 && b.y<=Math.max(e.py,e.y)+radiusY*es && oldY>=Math.min(e.py,e.y)-radiusY*es){
        damageEnemy(w,e,b.damage,b.x,e.y);b.y=-1;break;

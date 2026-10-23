@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {createProfile,normalize,startRun,care,harvest,sunset,buyEquipment,clone,CONTRACTS} from './model.mjs';
+import {createProfile,normalize,startRun,care,harvest,sunset,buyEquipment,buyGoldenCrates,clone,CONTRACTS} from './model.mjs';
 
 assert.equal(normalize('{bad',3).legacyBest,3);
 assert.equal(normalize(null,2).legacyBest,2);
@@ -19,6 +19,15 @@ assert.equal(buyEquipment(upgrade,'compost'),true);assert.equal(upgrade.coins,0)
 startRun(upgrade);upgrade.run.growth[0]=2;
 assert.equal(harvest(upgrade,0),3);assert.equal(harvest(upgrade,0),0);
 care(upgrade,'compost');assert.equal(upgrade.run.resources[2],8);
+const cosmetic=createProfile();let diamonds=10,debits=0;
+const wallet={read:()=>({diamonds}),spendDiamonds(n){debits++;diamonds-=n;return true;}};
+assert.equal(buyGoldenCrates(cosmetic,wallet,()=>{throw Error('storage blocked');}),'storage');
+assert.equal(diamonds,10);assert.equal(debits,0);assert.equal(cosmetic.gold,false);
+assert.equal(buyGoldenCrates(cosmetic,wallet,()=>{}),'bought');assert.equal(diamonds,2);
+assert.equal(buyGoldenCrates(cosmetic,wallet,()=>{}),'owned');assert.equal(debits,1);
+assert.equal(buyGoldenCrates(createProfile(),wallet,()=>{}),'funds');
+const failedWallet={read:()=>({diamonds:10}),spendDiamonds(){throw Error('wallet blocked');}};
+const rollback=createProfile();assert.equal(buyGoldenCrates(rollback,failedWallet,()=>{}),'storage');assert.equal(rollback.gold,false);
 
 // Explore actual legal care choices to prove every seasonal target is reachable
 // from a fresh profile without permanent upgrades or paid cosmetics.

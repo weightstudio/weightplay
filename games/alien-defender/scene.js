@@ -5,7 +5,7 @@ const PALETTE={teal:0x58e8eb,navy:0x17394f,ice:0xb8f9ff,brown:0xa76b40,cream:0xf
 const part=(x,y,z,w,h,d,c,glow=false,angle=0)=>({matrix:new THREE.Matrix4().compose(new THREE.Vector3(x,y,z),new THREE.Quaternion().setFromEuler(new THREE.Euler(0,0,angle)),new THREE.Vector3(w,h,d)),color:new THREE.Color(c),glow});
 export function shipParts(skin=false){const c=skin?0xe7a2ff:PALETTE.teal;return [
  part(0,-1,0,7,5,2,PALETTE.navy),part(0,-2,1,5,4,1,c),part(-4,-2,0,2,4,1.5,PALETTE.navy),part(4,-2,0,2,4,1.5,PALETTE.navy),
- part(-4,-1,1,1.4,2.5,.6,c),part(4,-1,1,1.4,2.5,.6,c),part(-3,-4,.2,1.3,1,1,PALETTE.ice,true),part(3,-4,.2,1.3,1,1,PALETTE.ice,true),
+ part(-4,-1,1,1.4,2.5,.6,c),part(4,-1,1,1.4,2.5,.6,c),part(-3,-4,.2,1.3,1,1,skin?c:PALETTE.ice,true),part(3,-4,.2,1.3,1,1,skin?c:PALETTE.ice,true),
  part(0,1,1,4,3.2,1.8,0xe1e7ee),part(0,3,1.2,2,4,1.5,PALETTE.navy),part(0,4.7,1.3,1.3,.7,1,PALETTE.ice,true),
  part(0,-1,2,2.7,2.4,1.7,c),part(0,.2,3,3.5,2.7,2.5,PALETTE.brown),part(-1.5,1.5,3,1.2,1.2,1.6,PALETTE.brown),part(1.5,1.5,3,1.2,1.2,1.6,PALETTE.brown),
  part(0,-.6,4.4,2.4,1.1,.7,PALETTE.cream),part(0,-.15,4.8,.6,.45,.3,0x2b2531),part(0,.6,4.3,3.6,.9,.5,0x113d53),
@@ -77,7 +77,7 @@ export class BattleScene {
   emit(w.upgrades.skin?this.models.skin:this.models.ship,w.player.x-50,mapY(w.player.y)-this.recoil*12,2,unit*1.4,0,blink?.12:0,.44);
   if(this.recoil>0)emit([part(0,0,0,2,2.5,1,PALETTE.ice,true)],w.player.x-50,mapY(w.player.y)+7*unit,5,unit,0,0,0);
   if(w.shield>0){const ring=this.ringPool[0];ring.visible=true;ring.position.set(w.player.x-50,mapY(w.player.y),5);ring.scale.setScalar(7*unit);ring.material.opacity=.28+Math.sin(w.time*3)*.08;ring.material.color.set(PALETTE.teal);}else this.ringPool[0].visible=false;
-  for(const f of this.fx){f.life-=dt;if(f.collect){const q=1-f.life/f.max,ease=q*q;f.x=f.sx+(7-f.sx)*ease;f.y=f.sy+(.045-f.sy)*ease;}else{f.x+=f.vx*dt;f.y+=f.vy*dt;}emit([part(0,0,0,f.size,f.size,f.size,f.color,true)],f.x-50,mapY(f.y),10,unit*Math.max(.15,f.life/f.max),f.life*4,0,.5);}
+  for(const f of this.fx){f.life-=dt;if(f.collect){const q=1-f.life/f.max,ease=q*q,target=this.rewardTarget||{x:40,y:.045};f.x=f.sx+(target.x-f.sx)*ease;f.y=f.sy+(target.y-f.sy)*ease;}else{f.x+=f.vx*dt;f.y+=f.vy*dt;}emit([part(0,0,0,f.size,f.size,f.size,f.color,true)],f.x-50,mapY(f.y),10,unit*Math.max(.15,f.life/f.max),f.life*4,0,.5);}
   this.fx=this.fx.filter(f=>f.life>0);
   for(let i=1;i<this.ringPool.length;i++){const mesh=this.ringPool[i],r=this.rings[i-1];mesh.visible=!!r;if(!r)continue;r.life-=dt;mesh.position.set(r.x-50,mapY(r.y),7);mesh.scale.setScalar((1-r.life/r.max)*r.size*unit+unit);mesh.material.opacity=Math.max(0,r.life/r.max)*.65;mesh.material.color.set(r.color);}
   this.rings=this.rings.filter(r=>r.life>0);

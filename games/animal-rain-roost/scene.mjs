@@ -12,14 +12,17 @@ export class RainScene {
     this.renderer.toneMapping=T.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.24;
     this.scene=new T.Scene();this.scene.background=new T.Color('#071f34');this.scene.fog=new T.Fog('#071f34',23,42);
     this.camera=new T.OrthographicCamera(-4,4,7,-7,.1,70);
-    this.camera.position.set(0,0,22);this.camera.lookAt(0,0,0);
-    this.box=new T.BoxGeometry(1,1,1);this.sphere=new T.IcosahedronGeometry(1,0);
+    this.camera.position.set(0,6,22);this.camera.lookAt(0,0,0);
+    const outline=new T.Shape();outline.moveTo(-.47,-.47);outline.lineTo(.47,-.47);outline.lineTo(.47,.47);outline.lineTo(-.47,.47);outline.closePath();
+    this.box=new T.ExtrudeGeometry(outline,{depth:.94,bevelEnabled:true,bevelThickness:.03,bevelSize:.03,bevelSegments:1,steps:1});this.box.translate(0,0,-.47);
+    this.sphere=new T.IcosahedronGeometry(1,0);
     this.ringGeo=new T.RingGeometry(.4,.44,40);this.mats=new Map();
-    this.scene.add(new T.HemisphereLight('#afedff','#23435a',2.1));
-    const sun=new T.DirectionalLight('#fff1cc',3.5);sun.position.set(-4,12,10);this.scene.add(sun);
+    this.scene.add(new T.HemisphereLight('#afedff','#122737',1.35));
+    const sun=new T.DirectionalLight('#fff1cc',3.1);sun.position.set(-4,12,10);this.scene.add(sun);
     const rim=new T.DirectionalLight('#47e2f2',2.8);rim.position.set(6,4,-3);this.scene.add(rim);
     this.world=new T.Group();this.scene.add(this.world);
     this.scenery=new T.Group();this.world.add(this.scenery);
+    this.scenery.visible=false; // Authored illustrated depth replaces the prototype scenery.
     this.moon=this.cube(this.scenery,'#d5f8e8',[1.1,1.1,.3],[2,4,-6],{emissive:'#80cacc',emissiveIntensity:.6});this.moon.rotation.z=.13;
     this.moonHalo=this.cube(this.scenery,'#4ea1b5',[1.45,1.45,.1],[2,4,-6.3],{transparent:true,opacity:.12});this.moonHalo.rotation.z=.13;
     this.pond=this.cube(this.scenery,'#124f65',[20,.8,4],[0,-4,-2],{metalness:.5,roughness:.22});
@@ -29,6 +32,14 @@ export class RainScene {
     }
     this.hills=[];for(let i=0;i<9;i++){
       const hill=this.cube(this.scenery,i%2?'#164553':'#103644',[2.1,1.5+(i%3)*.7,1.5],[i*2-8,0,-9]);hill.rotation.z=(i%3-1)*.08;this.hills.push(hill);
+    }
+    this.stars=new T.InstancedMesh(this.box,this.material('#a5dfde',{emissive:'#7ecbcd',emissiveIntensity:.8}),55);
+    this.scenery.add(this.stars);this.starDummy=new T.Object3D();
+    this.trees=new T.Group();this.scenery.add(this.trees);
+    for(let side of [-1,1])for(let i=0;i<3;i++){
+      const tree=new T.Group();tree.position.set(side*(3.5+i*.8),i*.55,-4-i);this.trees.add(tree);
+      this.cube(tree,'#34605c',[.2,2.7,.24],[0,1.1,0]);
+      for(let j=0;j<3;j++){const crown=this.cube(tree,j%2?'#22626a':'#1c535e',[1.35-j*.23,.65,.95],[side*(j%2)*.24,2.1+j*.43,0]);crown.rotation.y=.25*(j+1)}
     }
     this.reeds=new T.Group();this.scenery.add(this.reeds);
     for(let i=0;i<18;i++){
@@ -58,6 +69,7 @@ export class RainScene {
     for(let side of [-1,1])this.cube(this.boat,'#a27a4e',[.13,.35,1],[side*.71,.53,0]);
     this.cube(this.boat,'#54e0d2',[.25,.1,.08],[0,.51,.59],{emissive:'#23999e',emissiveIntensity:.7});
     this.nori=new T.Group();this.nori.position.set(0,.65,-.25);this.nest.add(this.nori);
+    this.nori.rotation.y=-.28;
     this.body=new T.Group();this.nori.add(this.body);
     this.cube(this.body,'#0f8290',[.64,.58,.4],[0,.27,0]);
     this.cube(this.body,'#f3c691',[.35,.4,.05],[0,.28,.24]);
@@ -101,6 +113,7 @@ export class RainScene {
     this.cube(this.tail,'#3bbcc0',[.58,.1,.28],[.63,.06,-.96]);
     this.lantern=this.cube(this.nest,'#bc9fe9',[.19,.27,.19],[-.69,.91,.1],{emissive:'#b480fa',emissiveIntensity:1.2});
     this.lantern.visible=false;
+    this.shadow=this.cube(this.world,'#051b26',[1.65,.08,.7],[0,0,.3],{transparent:true,opacity:.6});
     this.dropPool=Array.from({length:24},()=>{
       const group=new T.Group(),core=new T.Mesh(this.box,this.material('#58d6f3',{metalness:.2,roughness:.16,emissive:'#2884ad',emissiveIntensity:.35}));
       const glint=new T.Mesh(this.box,this.material('#d9fbff',{emissive:'#8fe6ff',emissiveIntensity:.3}));
@@ -113,19 +126,31 @@ export class RainScene {
     this.ripple=new T.Mesh(this.ringGeo,new T.MeshBasicMaterial({color:'#8eeeff',transparent:true,opacity:0,side:T.DoubleSide}));this.world.add(this.ripple);this.rippleTime=0;
     this.resize();
   }
+  async loadBackdrop(){
+    this.backdrop=await new T.TextureLoader().loadAsync(new URL('./assets/moonlit-marsh-v6.webp',import.meta.url).href);
+    this.backdrop.colorSpace=T.SRGBColorSpace;this.scene.background=this.backdrop;this.lastSize='';this.resize();
+  }
   material(color,props={}){const key=color+JSON.stringify(props);if(!this.mats.has(key))this.mats.set(key,new T.MeshStandardMaterial({color,roughness:.72,...props}));return this.mats.get(key);}
   cube(parent,color,size,position,props={}){const mesh=new T.Mesh(this.box,this.material(color,props));mesh.scale.set(...size);mesh.position.set(...position);parent.add(mesh);return mesh;}
   resize(){
     const rect=this.canvas.getBoundingClientRect(),w=rect.width>10?Math.round(rect.width):390,h=rect.height>10?Math.round(rect.height):640;
     if(this.lastSize===`${w}x${h}`)return;this.lastSize=`${w}x${h}`;
     this.renderer.setSize(w,h,false);const aspect=w/h;
+    if(this.backdrop){
+      const sourceAspect=this.backdrop.image.width/this.backdrop.image.height;
+      if(aspect<sourceAspect){this.backdrop.repeat.set(aspect/sourceAspect,1);this.backdrop.offset.set((1-aspect/sourceAspect)/2,0)}
+      else{this.backdrop.repeat.set(1,sourceAspect/aspect);this.backdrop.offset.set(0,.08)}
+      this.backdrop.needsUpdate=true;
+    }
     this.height=Math.max(7.8,7.4/aspect);this.width=this.height*aspect;
     this.camera.left=-this.width/2;this.camera.right=this.width/2;this.camera.top=this.height/2;this.camera.bottom=-this.height/2;this.camera.updateProjectionMatrix();
-    this.span=Math.min(this.width*.78,12.4);this.bottom=-this.height/2+1.1;this.top=this.height/2-1.2;
+    this.span=Math.min(this.width*.78,12.4);this.bottom=-this.height/2+1.45;this.top=this.height/2-1.2;
     this.pond.position.y=this.bottom-.4;this.pond.scale.x=this.width*1.5;
     this.bank.position.y=this.bottom-.1;this.bank.scale.x=this.width*1.4;
     this.reeds.position.y=this.bottom+.1;this.reeds.scale.x=this.width/7.4;
     this.hills.forEach((mesh,i)=>{mesh.position.x=(i-4)*this.width/7;mesh.position.y=this.bottom+2.4+(i%3)*.2;});
+    this.trees.position.y=this.bottom+.1;this.trees.scale.x=this.width/8.5;
+    for(let i=0;i<55;i++){const star=this.starDummy;star.position.set(Math.sin(i*73.17)*this.width*.65,this.bottom+3+((i*17)%53)/53*(this.height-3),-8);star.scale.setScalar(i%9===0?.038:.018);star.rotation.set(.2,.3,.4);star.updateMatrix();this.stars.setMatrixAt(i,star.matrix)}this.stars.instanceMatrix.needsUpdate=true;
     this.clouds.position.y=this.top+.2;this.clouds.scale.x=this.span/5.5;
     this.moon.position.set(this.width*.29,this.top-.4,-7);this.moonHalo.position.copy(this.moon.position);this.moonHalo.position.z-=.1;
     this.reflections.forEach((mesh,i)=>{mesh.position.set(Math.sin(i*7)*this.width*.35,this.bottom-.68+i*.075,1)});
@@ -153,6 +178,7 @@ export class RainScene {
     this.recoil=Math.max(0,this.recoil-dt*4);this.hit=Math.max(0,this.hit-dt*3);
     const x=this.laneX(run?.x??2),time=run?.time||0,velocity=run?(run.targetX-run.x):0;
     this.nest.position.set(x,this.bottom-.06-(reduced?0:Math.sin(this.recoil*Math.PI)*.14),1.3);
+    this.shadow.position.set(x,this.bottom+.03,.55);
     this.nest.rotation.z=reduced?0:-Math.max(-.12,Math.min(.12,velocity*.12))+(this.hit?Math.sin(this.hit*25)*.045:0);
     this.body.rotation.z=reduced?0:Math.sin(time*1.4)*.025;
     this.head.rotation.y=reduced?0:Math.max(-.2,Math.min(.2,velocity*.2));
@@ -165,7 +191,7 @@ export class RainScene {
       const {group,core,glint}=this.dropPool[active++],p=dropPosition(event,time),leaf=event.kind==='leaf',gold=event.kind==='gold';
       group.visible=true;group.position.set(this.laneX(p.lane),this.bottom+.7+p.height*(this.top-this.bottom-.7),1.7);
       group.rotation.set(leaf?.18:0,leaf?.4:Math.PI/4,leaf?Math.sin(p.progress*8+event.id)*.45:Math.PI/4);
-      core.scale.set(leaf?.43:gold?.27:.22,leaf?.13:gold?.34:.29,leaf?.18:.22);
+      core.scale.set(leaf?.55:gold?.36:.3,leaf?.17:gold?.44:.39,leaf?.22:.3);
       core.material=this.material(leaf?'#c38d51':gold?'#f8c361':'#58d6f3',leaf?{}:{metalness:.2,roughness:.16,emissive:gold?'#c38021':'#2884ad',emissiveIntensity:.35});
       glint.scale.set(leaf?.35:.08,leaf?.025:.14,.025);glint.position.set(leaf?0:-.05,leaf?0:.04,leaf?.1:.13);
       glint.material=this.material(leaf?'#efd1a0':gold?'#fff2c2':'#d9fbff',{emissive:leaf?'#000000':gold?'#edbd4e':'#8fe6ff',emissiveIntensity:.3});
@@ -183,5 +209,5 @@ export class RainScene {
     this.renderer.render(this.scene,this.camera);
     this.canvas.dataset.renderer='three-0.180.0';this.canvas.dataset.drawCalls=String(this.renderer.info.render.calls);this.canvas.dataset.triangles=String(this.renderer.info.render.triangles);this.canvas.dataset.geometries=String(this.renderer.info.memory.geometries);
   }
-  dispose(){if(this.disposed)return;this.disposed=true;this.box.dispose();this.sphere.dispose();this.ringGeo.dispose();this.ripple.material.dispose();for(const mat of this.mats.values())mat.dispose();this.renderer.dispose();}
+  dispose(){if(this.disposed)return;this.disposed=true;this.backdrop?.dispose();this.box.dispose();this.sphere.dispose();this.ringGeo.dispose();this.ripple.material.dispose();for(const mat of this.mats.values())mat.dispose();this.renderer.dispose();}
 }

@@ -14,7 +14,7 @@ if(!locales[locale])locale='en';
 const copy=(key,vars={})=>Object.entries(vars).reduce((s,[k,v])=>s.replaceAll('{'+k+'}',String(v)),locales[locale]?.[key]||fallback[key]||key);
 const stageText=(p,field)=>{const key=field==='title'?p.titleKey:field==='arc'?p.arcKey:p.mechanicKey;return copy(key)===key?p[field]:copy(key);};
 const nodeLabel=(node,plan=currentStage())=>copy(plan.nodeLabels?.[node]||node);
-const copyAction=edge=>locales[locale]?.actionLabels?.[edge.label]||edge.label;
+const copyAction=edge=>locales[locale]?.actionLabels?.[edge.label]||(locale==='en'?edge.label:edge.repair?copy('repair'):nodeLabel(edge.from)+' → '+nodeLabel(edge.to));
 const phaseName=phase=>copy(phase==='even'?'evenTideBeats':'oddTideBeats');
 const isLocal=['localhost','127.0.0.1','[::1]'].includes(location.hostname);
 const practiceRequested=isLocal&&new URLSearchParams(location.search).get('practice')==='1';
@@ -59,7 +59,7 @@ function show(next){
   screen=next;document.body.dataset.screen=next;
   $('mainScreen').hidden=next!=='main';$('stageScreen').hidden=next!=='stage';
   $('battleScreen').hidden=next!=='battle'&&next!=='result';
-  $('gameGuide').hidden=next!=='main';
+  document.querySelectorAll('.game-page-info').forEach(guide=>{guide.hidden=next!=='main';});
   frame?.activate(next==='result'?'battle':next,{covered:next==='result'});
   if(next==='stage')renderStages();
   if(next==='main')$('mainProgress').textContent=copy('progress',{current:campaign.solved.length,total:30});
@@ -153,6 +153,8 @@ function buildBoard(){
 function edgeDetail(edge){
   const plan=currentStage(),reason=reasonFor(plan,state,edge);
   const constraints=[];
+  const prerequisite=plan.edges.find(e=>edge.requires?.delivered===e.id||(edge.requiresFlag&&e.setsFlag===edge.requiresFlag));
+  if(prerequisite)constraints.push(copy('order')+': '+copyAction(prerequisite));
   if(edge.phase)constraints.push(phaseName(edge.phase));
   if(edge.once)constraints.push(copy('oneUse'));
   if(edge.beforeBeat!==undefined)constraints.push(copy('tide')+' ≤ '+edge.beforeBeat);

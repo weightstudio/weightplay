@@ -19,7 +19,7 @@ export class TramScene {
     this.city = new THREE.Group(); this.scene.add(this.city); this.buildCity();
     this.world = new THREE.Group(); this.scene.add(this.world);
     this.tram = new THREE.Group(); this.scene.add(this.tram); this.buildTram();
-    this.particles = []; this.rings = []; this.gates = []; this.time=0; this.impact=0;this.frames=0;
+    this.particles = []; this.rings = []; this.gates = []; this.time=0; this.impact=0;this.frames=0;this.landingAge=1;
     this.resizeObserver=new ResizeObserver(()=>this.resize()); this.resizeObserver.observe(canvas);
     this.reset(null); this.resize();
   }
@@ -133,6 +133,7 @@ export class TramScene {
     }
   }
   event(event) {
+    if(event.type==='land')this.landingAge=0;
     if(this.reduced)return;
     this.impact=event.type==='hit'?.18:0;
     const count=event.type==='land'?22:event.type==='hit'?12:9;
@@ -142,7 +143,7 @@ export class TramScene {
       this.particles.push({node:p,life:.65+(i%4)*.12,vx:Math.sin(i*2.4)*3,vy:1.2+(i%4)*.7,vz:Math.cos(i*2.4)*1.2});
     }
   }
-  clearEffects() {for(const p of this.particles)this.scene.remove(p.node);this.particles=[];this.impact=0;}
+  clearEffects() {for(const p of this.particles)this.scene.remove(p.node);this.particles=[];this.impact=0;this.landingAge=1;}
   resize() {
     const rect=this.canvas.getBoundingClientRect();if(rect.width<1||rect.height<1)return;
     this.renderer.setSize(rect.width,rect.height,false);
@@ -159,8 +160,11 @@ export class TramScene {
     if(!frozen)this.time+=dt;
     this.tram.position.set(0,this.garage?1.8:s.y,0);
     this.tram.rotation.set(0,this.garage?-.18:0,this.garage?0:-s.angle);
+    if(!frozen)this.landingAge=Math.min(1,this.landingAge+dt);
+    const compression=this.reduced||this.garage?0:s.phase==='ready'?s.charge*.07:this.landingAge<.4?Math.sin(this.landingAge/.4*Math.PI)*.12:0;
+    this.tram.scale.y=1-compression;
     this.tea.scale.y=Math.max(.1,1-s.spill/110);this.cup.rotation.z=this.garage?0:Math.sin(this.time*5)*Math.min(.17,s.spill/200);
-    this.fox.rotation.z=this.garage?0:Math.sin(this.time*3)*.025;
+    this.fox.rotation.z=this.garage||this.reduced?0:Math.sin(this.time*3)*.025;
     this.jets.forEach((jet,i)=>{jet.visible=!this.garage&&s.jet>.05;jet.scale.y=(.1+s.jet*.9)*(this.reduced?1:1+Math.sin(this.time*35+i)*.14);});
     this.shadow.visible=!this.garage&&s.y<4.5;this.shadow.scale.x=3.1+Math.max(0,s.y-1.2)*.2;
     if(!this.garage){

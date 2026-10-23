@@ -58,6 +58,7 @@ function loop(now){raf=0;if(screen!=='battle'||!scene||!world)return;const dt=la
   const events=world.events.splice(0);scene.consume(events);for(const e of events){if(soundMap[e.type])sound(e.type==='shield'&&world.shield===0?'combat.shield.break':e.type==='kill'&&e.kind==='boss'?'explosion.large':soundMap[e.type]);}updateHud();
   if(world.time>5)$('battleMessage').classList.remove('is-visible');
  }else{ending+=dt;if(ending>.65){finish();return;}}
+ const field=canvas.getBoundingClientRect(),target=$('salvageValue').getBoundingClientRect();scene.rewardTarget={x:100*(target.x+target.width/2-field.x)/field.width,y:(target.y+target.height/2-field.y)/field.height};
  scene.draw(world,dt);kick();
 }
 function finish(){if(screen!=='battle')return;const won=world.status==='won';let result={ok:true,next:progress,earned:0};
@@ -90,7 +91,7 @@ let purchasing=false;on($('confirmSkinBtn'),'click',async()=>{if(purchasing||pra
  if(navigator.locks)await navigator.locks.request('weightplay-alien-defender-purchase',purchase);else purchase();
  }finally{purchasing=false;}});
 for(const key of ['left','right','fire']){const button=$(key+'Btn');on(button,'pointerdown',e=>{if(screen!=='battle'||paused()||e.button>0)return;e.preventDefault();button.setPointerCapture(e.pointerId);pointers.set(e.pointerId,key);button.classList.add('is-held');window.WeightPlayAudio?.unlock?.();});const up=e=>{pointers.delete(e.pointerId);if(![...pointers.values()].includes(key))button.classList.remove('is-held');};for(const name of ['pointerup','pointercancel','lostpointercapture'])on(button,name,up);}
-on($('pulseBtn'),'click',()=>{if(screen==='battle'&&!paused())pulse=true;});
+on($('pulseBtn'),'click',()=>{if(screen==='battle'&&!paused()){pulse=true;canvas.focus({preventScroll:true});}});
 const aim=e=>{const r=canvas.getBoundingClientRect();targetX=(e.clientX-r.left)/r.width*100;};
 on(canvas,'pointerdown',e=>{if(screen!=='battle'||paused()||drag!==null||e.button>0)return;e.preventDefault();drag=e.pointerId;canvas.setPointerCapture(drag);aim(e);window.WeightPlayAudio?.unlock?.();});on(canvas,'pointermove',e=>{if(e.pointerId===drag)aim(e);});for(const event of ['pointerup','pointercancel','lostpointercapture'])on(canvas,event,e=>{if(e.pointerId===drag){drag=null;targetX=null;}});
 const keyMap={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',Space:'fire'};

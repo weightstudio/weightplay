@@ -8,7 +8,9 @@ export function readSave(raw, count = 30) {
   value = value && typeof value === 'object' ? value : {};
   const list = (key, max = 1e8) => Array.from({length: count}, (_, i) => Math.floor(clamp(finite(value[key]?.[i]), 0, max)));
   const liveries = [...new Set(['sunrise', ...(Array.isArray(value.liveries) ? value.liveries : []).filter(v => ['mint', 'midnight'].includes(v))])];
-  return {...value, schema: 2, unlocked: Math.floor(clamp(finite(value.unlocked), 0, count - 1)), best: list('best'), flips: list('flips'), medals: list('medals', 7), liveries, livery: liveries.includes(value.livery) ? value.livery : 'sunrise'};
+  const best=list('best'), medals=list('medals',7).map((bits,i)=>bits||(best[i]>0?1:0));
+  if(best.filter(Boolean).length>=5&&!liveries.includes('mint'))liveries.push('mint');
+  return {...value, schema: 2, unlocked: Math.floor(clamp(finite(value.unlocked), 0, count - 1)), best, flips: list('flips'), medals, liveries, livery: liveries.includes(value.livery) ? value.livery : 'sunrise'};
 }
 export function createFlight(level) {
   return {...level, index: level.id - 1, phase: 'ready', elapsed: 0, charge: 0, y: 1.2, vy: 0,

@@ -1,5 +1,5 @@
 import {COPY,LOCALES} from './copy.mjs?v=20261023-orchard-v6';
-import {SAVE_KEY,FRUITS,TOOLS,CONTRACTS,clone,normalize,startRun,contract,forecast,projected,healthy,care,harvest,sunset,buyEquipment} from './model.mjs?v=20261023-orchard-v6';
+import {SAVE_KEY,FRUITS,TOOLS,CONTRACTS,clone,normalize,startRun,contract,forecast,projected,healthy,care,harvest,sunset,buyEquipment,buyGoldenCrates} from './model.mjs?v=20261023-orchard-v6';
 import {OrchardScene} from './scene.mjs?v=20261023-orchard-v6';
 const $=id=>document.getElementById(id);
 const routeMap={'zh-tw':'zh-Hant','zh-cn':'zh-Hans','pt-br':'pt-BR'};
@@ -141,18 +141,19 @@ function renderShop(){
 }
 function purchase(id){
  if(modal!=='shopDialog'||!saveAvailable||profile[id])return;
- const old=clone(profile);let spent=false;
+ const old=clone(profile);
  try{
   // Establish storage availability before touching the shared wallet.
   localStorage.setItem(SAVE_KEY,JSON.stringify(profile));
   if(id==='gold'){
-   if(!window.WeightPlayWallet?.spendDiamonds(8)){$('shopFeedback').textContent=t('unavailable');audio('feedback.error');return;}
-   spent=true;profile.gold=true;
+   const result=buyGoldenCrates(profile,window.WeightPlayWallet,p=>localStorage.setItem(SAVE_KEY,JSON.stringify(p)));
+   if(result==='funds'){$('shopFeedback').textContent=t('unavailable');audio('feedback.error');return;}
+   if(result==='storage')throw Error('SAVE_FAILED');
   }else if(!buyEquipment(profile,id)){$('shopFeedback').textContent=t('unavailable');audio('feedback.error');return;}
-  if(!save())throw Error('SAVE_FAILED');
+  if(id!=='gold'&&!save())throw Error('SAVE_FAILED');
   audio(id==='gold'?'shop.purchase':'reward.upgrade');$('shopFeedback').textContent=t('owned');renderShop();render('upgrade');
  }catch{
-  profile=old;if(spent)window.WeightPlayWallet?.addDiamonds(8);
+  profile=old;
   saveAvailable=false;$('shopFeedback').textContent=t('saveError');renderShop();
  }
 }

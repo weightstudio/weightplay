@@ -222,7 +222,7 @@ frame.commonDownButton.add($('stagesTab')).add($('nestTab'));
 rail=window.WeightPlayPlayUI.mountStage({page:$('journeyPanel'),rail:$('stageRail'),config:stageConfig,selected,onSelect:index=>{selected=index},onStart:index=>startBattle(index),isActive:()=>screen==='stage'&&tab==='journey'});
 frame.activate('main');applyLocale();
 window.WeightPlayGameEntryLoader?.begin(4);
-scene=new RainScene($('rainCanvas'));scene.render(null);
+scene=new RainScene($('rainCanvas'));await scene.loadBackdrop();scene.render(null);
 window.WeightPlayGameEntryLoader?.assetProgress(1,4);
 await Promise.all(['/assets/interface7-redrawn/animal-rain-roost.webp','/assets/weightplay-character-bubble-fin-otter-block-v1.webp','/assets/weightplay-diamond.svg'].map(async(src,i)=>{const image=new Image();image.src=src;await image.decode();window.WeightPlayGameEntryLoader?.assetProgress(i+2,4)}));
 
