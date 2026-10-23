@@ -6,6 +6,9 @@ const KEY='weightplay.signal-snap.v1';let save,storageOkay=true;
 try{save=normalizeSave(JSON.parse(localStorage.getItem(KEY)||'null'));}catch{save=normalizeSave(null);storageOkay=false;}
 let run=null,scene=null,selected=0,seed=1,warmupEnd=0,active='main',settingsPaused=false,raf=0,endedShown=false,storageTimer=0;
 const scenes={};for(const name of ['main','stage','battle']){const root=$(name+'Scene');scenes[name]={root,header:root.querySelector('header'),content:$(name+'Content')};}
+// The shared Main grid owns the poster/copy composition; Guide remains its sibling.
+scenes.main.content=$('mainContent').querySelector('.wp-standard-main-composition');
+scenes.main.content.querySelector('.wp-standard-main-copy').setAttribute('data-wp-frame-copy','');
 const frame=window.WeightPlayScreenFrame.mount({root:$('app'),scenes,localeSelect:$('localeSource'),playUI:true});
 for(const [id,label] of [['hudProgress',c.stage],['hudErrors',c.errors],['hudChain',c.chain]]){const node=document.createElement('div');node.id=id;node.innerHTML='<span></span><strong></strong>';node.firstElementChild.textContent=label;frame.battleTopUI.add(node);}
 const routes={en:'en','zh-Hant':'zh-tw','zh-Hans':'zh-cn',ja:'ja',ko:'ko',es:'es','pt-BR':'pt-br',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'};

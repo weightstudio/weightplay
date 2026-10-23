@@ -5,6 +5,7 @@
 
     <base href="/games/road-crosser/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
+    <script src="../../src/wallet.js"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ar.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
@@ -12,7 +13,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general" />
-  <meta name="weightplay-game-version" content="v21" />
+  <meta name="weightplay-game-version" content="v22" />
   <meta name="weightplay-interface-version" content="7" />
   <meta name="description" content="عبور الطريق والنهر لعبة توقيت أصلية من WeightPlay. اقرأ السيارات والنهر المتحرك وثلاث مراحل تضيق نوافذ الأمان فيها تدريجياً." />
   <link rel="canonical" href="https://weightplay.com/ar/games/road-crosser/" />
@@ -31,12 +32,12 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/road-crosser/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/road-crosser/" />
     <title>عبور الطريق والنهر | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20261022-road-i9" />
+  <link rel="stylesheet" href="style.css?v=20261023-road-v22" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
-  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261022-road-i9" />
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261023-road-v22" />
 <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261022-road-i9" /><meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261023-road-v22" /><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="عبور الطريق والنهر | WeightPlay" />
     <meta property="og:description" content="عبور الطريق والنهر لعبة توقيت أصلية من WeightPlay. اقرأ السيارات والنهر المتحرك وثلاث مراحل تضيق نوافذ الأمان فيها تدريجياً." />
@@ -50,7 +51,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-wp-game-owned-guide="true" data-wp-game-version="v21" data-wp-interface-version="7" data-wp-interface-candidate="9" data-wp-play-ui="1" data-game-id="road-crosser" data-wp-game-id="road-crosser" data-wp-battle-layout="native" data-wp-combined-sound="true" data-screen="main">
+<body data-wp-game-owned-guide="true" data-wp-game-version="v22" data-wp-interface-version="7" data-wp-interface-candidate="9" data-wp-play-ui="1" data-game-id="road-crosser" data-wp-game-id="road-crosser" data-wp-battle-layout="native" data-wp-combined-sound="true" data-screen="main">
   <main class="classic-game" id="roadCrosserApp" data-wp-frame-root>
 
     <section id="mainScreen" class="screen main-screen">
@@ -60,44 +61,28 @@
       <label class="locale-control locale-picker"><span data-copy="language">اللغة</span><select id="localeSelect" aria-label="اللغة"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
     </header>
 
-      <div class="hero-card" data-wp-frame-content="main"><img class="main-poster" data-wp-frame-poster width="1024" height="1024" src="../../assets/road-crosser-cover-v2.webp" alt="شعار WeightPlay" /><div class="main-copy" data-wp-frame-copy><p class="lead main-summary" data-wp-frame-summary data-copy="mainIntro">تحرك خطوة خطوة. تجنب السيارات واعبر المسارات الثلاثة على الجذوع.</p><p id="mainProgress" data-wp-frame-progress></p><button disabled id="startBtn" class="primary-action" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start">ابدأ العبور</button></div></div>
+      <div class="hero-card" data-wp-frame-content="main"><img class="main-poster" data-wp-frame-poster width="1024" height="1024" src="/assets/interface7-redrawn/road-crosser.webp" alt="شعار WeightPlay" /><div class="main-copy" data-wp-frame-copy><p class="lead main-summary" data-wp-frame-summary data-copy="mainIntro">تحرك خطوة خطوة. تجنب السيارات واعبر المسارات الثلاثة على الجذوع.</p><p id="mainProgress" data-wp-frame-progress></p><button disabled id="startBtn" class="primary-action" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start">ابدأ العبور</button></div></div>
 
     </section>
-      <section class="game-page-info game-page-info-static" data-wp-game-guide aria-label="معلومات لعبة عبور الطريق والنهر">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2 data-wp-game-title data-runtime-localize="off">عبور الطريق والنهر</h2><p>عبور النجمة لعبة توقيت أصلية من WeightPlay. اقرأ السيارات والنهر المتحرك وثلاث مراحل تضيق نوافذ الأمان فيها تدريجياً.</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>لعبة عبور بإيقاع وتوقيت</strong></div><div class="game-info-fact"><span>النوع</span><strong>كلاسيكية · أركيد · حركة</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>سهلة البداية وتزداد تحدياً</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>من دقيقة إلى 4 دقائق للجولة</strong></div><div class="game-info-fact"><span>المهارات المتدرّبة</span><strong>التوقيت · التركيز · التكيف</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>العالم والرسالة</h3><p>يحمل عدّاء النجمة مصباح إشارة صغيراً عبر طريق ليلي. تتحرك السيارات بنبضات يمكن قراءتها، وتتبع جذوع النهر تياراتها الخاصة، وتكشف كل خطوة آمنة قرار التوقيت التالي.</p></div>
-      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>يتحرك العدّاء مساراً واحداً مع كل إدخال. السيارات أخطار، والجذوع تحمل العدّاء، ويسقط في الماء عند غياب الدعم، بينما تسد الصخور المسارات اللاحقة. يؤدي إكمال العبور إلى المرحلة المصممة التالية.</p></div>
-      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>استخدم الأسهم أو WASD على الكمبيوتر؛ وعلى الهاتف اسحب أو اضغط لوحة الاتجاهات.</li><li>راقب مساراً واحداً في كل مرة وتحرك فقط عندما تكون الخانة التالية آمنة.</li><li>في النهر اصعد على جذع متحرك وحافظ على الوسط بينما يحملك التيار.</li><li>اعبر المراحل الثلاث واصل إلى بوابة النجمة؛ ينهي الاصطدام أو الماء أو الخروج من الملعب الجولة.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>راقب دورة كاملة للسيارات قبل الالتزام بعبور طويل.</li><li>استخدم خطوات قصيرة للتوقف بين المسارات وإعادة قراءة الفتحة.</li><li>على الجذوع خطط مع التيار بدلاً من مقاومته بالنقر المتكرر.</li><li>تكافئ المراحل الأخيرة الصبر؛ فالسرعة ليست دائماً أكثر أماناً.</li></ul></div>
-      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تعلمك المرحلة الأولى إيقاع الطريق والنهر. تضيف الثانية سيارات أكثر كثافة وصخوراً. وتجمع الثالثة بين ماء أسرع ومركبات أكثر ونوافذ أمان أضيق.</p></div>
-      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>يستفيد عبور النجمة من فكرة العبور بالتوقيت في ألعاب الأركيد الكلاسيكية، لكنه يستخدم عدّاء النجمة ولوحة الليل والأخطار والنصوص وعناصر التحكم والهندسة الخاصة بـ WeightPlay.</p></div>
-      <div class="game-info-section game-info-parent"><h3>ملاحظة للوالدين</h3><p>لا تتضمن هذه اللعبة العامة حساباً أو شراءً أو دردشة أو لوحة متصدرين أو إعلانات. تبقى النقاط وأفضل نتيجة في هذا المتصفح فقط.</p></div>
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>ما الذي ينهي الجولة؟</dt><dd>ينهي الجولة الاصطدام بمركبة أو السقوط في النهر أو جرف التيار للعدّاء خارج الملعب.</dd></div><div><dt>هل يتحرك النهر عشوائياً؟</dt><dd>لا. تتبع الجذوع أنماط سرعة ظاهرة وقابلة للتكرار.</dd></div><div><dt>ما عناصر التحكم المتاحة؟</dt><dd>الأسهم وWASD والسحب باللمس ولوحة الاتجاهات الظاهرة على الهاتف.</dd></div><div><dt>هل يُحفظ التقدم؟</dt><dd>يُحفظ أفضل سجل محلي فقط في هذا المتصفح.</dd></div></dl></div>
-
-    </div>
-  </section>
+      <section class="game-page-info game-page-info-static" data-wp-game-guide aria-labelledby="roadGuideTitle"><div class="game-info-title"><span class="game-info-kicker">طريقة اللعب</span><h2 id="roadGuideTitle">خطوة آمنة في كل مرة.</h2><p>تحرك خطوة خطوة. تجنب السيارات واعبر المسارات الثلاثة على الجذوع.</p></div><div class="game-info-sections"><article class="game-info-section"><h3>التحكم</h3><ol><li>استخدم الأسهم أو WASD للتحرك خانة واحدة.</li><li>على الهاتف اسحب أو اضغط أزرار الاتجاه.</li><li>راقب مسارات السيارات واصعد على جذع متحرك في النهر.</li><li>تحدد الإطارات المضيئة مساحة المركبات. يشير الإطار التالي المتصل إلى فجوة؛ والمتقطع إلى الانتظار أو التحرك جانباً.</li></ol></article><article class="game-info-section"><h3>إيقاع العبور</h3><p>تضيف المرحلتان 2 و3 سيارات أكثر وماءً أسرع وصخوراً ونوافذ أمان أضيق.</p><ol><li>معبر ضوء القمر</li><li>رصيف التيار المعاكس</li><li>قطار بوابة النجوم</li></ol><p>اركب جذعاً وراقب اتجاه التيار.</p><p>السيارات متوقفة: اعبر مسار الإشارة.</p></article><article class="game-info-section"><h3>الإتقان</h3><p>أكمل المسارات لإضاءة اليوميات. تبقى الفوانيس محفوظة حتى إن خسرت لاحقاً.</p><p>أول تقدم إلى صف: 8 نقاط. الفانوس: 25. الوصول: 100 ثم 200 ثم 300. الخطوات الجانبية أو المكررة لا تضيف نقاطاً.</p></article><article class="game-info-section"><h3>المعدات</h3><p>وهج بنفسجي وفيروزي دائم. مظهر فقط؛ يمكن اجتياز كل المسارات مجاناً.</p><p>فتح دائم مقابل 12 ماسة؟</p></article><article class="game-info-section"><h3>يوميات الساعي</h3><p>تبقى أفضل نتيجة والمسارات والفوانيس والمظاهر في هذا المتصفح.</p></article></div></section>
 
     <section id="battleScreen" class="screen battle-screen" data-wp-logical-battle-canvas data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden aria-label="ساحة لعب عبور النجمة">
       <header class="battle-hud"><button id="battleBackBtn" type="button" data-wp-return="battle" data-copy-aria="back" aria-label="العودة للرئيسية"><span aria-hidden="true">←</span></button><strong hidden data-wp-frame-title></strong></header>
-      <div id="battleInfo"><div><span data-copy="stage">المرحلة</span><strong id="stageValue">1 / 3</strong></div><div><span data-copy="score">النتيجة</span><strong id="scoreValue">0</strong></div><div><span data-copy="best">الأفضل</span><strong id="bestValue">0</strong></div></div>
-      <div class="battle-stage"><button id="restartBtn" class="icon-button" type="button" data-copy-aria="restart" aria-label="إعادة البدء">↻</button><canvas id="gameCanvas" width="920" height="720" tabindex="0" aria-label="ساحة لعب عبور النجمة"></canvas><div class="touch-pad" aria-label="عناصر تحكم الحركة"><button data-move="up" data-copy-aria="up" aria-label="أعلى">↑</button><button data-move="left" data-copy-aria="left" aria-label="يسار">←</button><button data-move="down" data-copy-aria="down" aria-label="أسفل">↓</button><button data-move="right" data-copy-aria="right" aria-label="يمين">→</button></div><p id="battleMessage" class="battle-message" aria-live="polite">اقرأ الطريق.</p></div>
-    <section id="resultScreen" class="result-view" data-wp-battle-substate="result" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultCopy"><div class="result-card"><p class="result-kicker" data-copy="resultKicker">تقرير العبور</p><h2 id="resultTitle">اكتمل المسار</h2><p id="resultCopy"></p><div class="result-stats"><span><b data-copy="score">النتيجة</b><strong id="resultScore">0</strong></span><span><b data-copy="best">الأفضل</b><strong id="resultBest">0</strong></span></div><div class="result-actions"><button id="retryBtn" class="primary-action" type="button" data-copy="retry">حاول مجدداً</button><button id="homeBtn" class="secondary-action" type="button" data-copy="home">العودة للرئيسية</button></div></div></section>
+      <div id="battleInfo"><div><span data-copy="stage">المرحلة</span><strong id="stageValue">1 / 3</strong></div><div><span data-copy="score">النتيجة</span><strong id="scoreValue">0</strong></div><div><span class="lantern-label"><i class="lantern-art" aria-hidden="true"></i><span data-extra="lanterns">Lanterns</span></span><strong id="lanternValue">0</strong></div></div><strong id="bestValue" hidden>0</strong>
+      <div class="battle-stage"><div class="road-board"><canvas id="gameCanvas" width="920" height="720" tabindex="0" aria-label="ساحة لعب عبور النجمة"></canvas></div><div class="road-controls"><p id="battleMessage" class="battle-message" aria-live="polite">اقرأ الطريق.</p><div class="control-actions"><div class="touch-pad" aria-label="عناصر تحكم الحركة"><button data-move="left" data-copy-aria="left" aria-label="يسار">←</button><button data-move="up" data-copy-aria="up" aria-label="أعلى">↑</button><button data-move="down" data-copy-aria="down" aria-label="أسفل">↓</button><button data-move="right" data-copy-aria="right" aria-label="يمين">→</button></div><div class="road-tools"><button id="helpBtn" type="button" data-extra="help">How to play</button><button id="campBtn" type="button" data-extra="camp">Courier kit</button></div></div></div></div>
+      <section id="resultScreen" class="result-view" data-wp-battle-substate="result" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultCopy"><div class="result-card"><span class="courier-art result-portrait" aria-hidden="true"></span><p id="resultRoute" class="result-kicker"></p><h2 id="resultTitle">اكتمل المسار</h2><p id="resultCopy"></p><div class="result-stats"><span><b data-copy="score">النتيجة</b><strong id="resultScore">0</strong></span><span><b data-copy="best">الأفضل</b><strong id="resultBest">0</strong></span><span><b class="lantern-label"><i class="lantern-art" aria-hidden="true"></i><span data-extra="lanterns">Lanterns</span></b><strong id="resultLanterns">0</strong></span></div><div class="result-actions"><button id="retryBtn" type="button" data-copy="retry">حاول مجدداً</button><button id="homeBtn" type="button" data-copy="home">العودة للرئيسية</button><button id="resultCampBtn" type="button" data-extra="camp">Courier kit</button></div></div></section>
       <section id="leaveDialog" class="leave-view" hidden role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveText"><div class="leave-card"><h2 id="leaveTitle"></h2><p id="leaveText"></p><div class="leave-actions"><button id="continueBtn" type="button"></button><button id="leaveBtn" type="button"></button></div></div></section>
+      <section id="helpPanel" class="road-panel" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle"><div class="panel-card"><h2 id="helpTitle" data-extra="help">How to play</h2><ol><li data-copy="how1">استخدم الأسهم أو WASD للتحرك خانة واحدة.</li><li data-copy="how2">على الهاتف اسحب أو اضغط أزرار الاتجاه.</li><li data-extra="river"></li><li data-extra="signalStop"></li></ol><p data-extra="masteryBody"></p><button type="button" data-close-panel data-extra="confirm">Confirm</button></div></section>
+      <section id="campPanel" class="road-panel" hidden role="dialog" aria-modal="true" aria-labelledby="campTitle"><div class="panel-card camp-card"><div class="panel-heading"><h2 id="campTitle" data-extra="campTitle">Courier journal</h2><button type="button" data-close-panel data-extra="confirm">Confirm</button></div><div class="journal-stats"><span><b data-extra="mastery">Mastery</b><strong id="masteryCount">0</strong></span><span><b class="lantern-label"><i class="lantern-art" aria-hidden="true"></i><span data-extra="lanterns">Lanterns</span></b><strong id="savedLanterns">0</strong></span><span><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt="Diamonds"><strong id="diamondBalance">0</strong></span></div><p data-extra="masteryBody"></p><ul id="medalList" aria-label="Route medals"></ul><div class="cosmetic-card"><span id="campPreview" class="courier-art" aria-hidden="true"></span><div><h3 data-extra="aurora">Aurora lantern</h3><p data-extra="auroraBody"></p><p class="price"><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt=""><strong id="ownership">12</strong></p></div></div><div class="panel-actions"><button id="equipGold" type="button" data-extra="gold">Golden lantern</button><button id="buyBtn" type="button">Unlock · 12</button></div><div id="purchaseConfirm" hidden><p data-extra="buyQuestion"></p><div class="panel-actions"><button id="confirmBuy" type="button" data-extra="confirm">Confirm</button><button id="cancelBuy" type="button" data-extra="cancel">Cancel</button></div></div><p id="campNotice" role="status"></p><p class="save-note" data-extra="saveInfo"></p></div></section>
     </section>
 
 
 
   </main>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="/src/game-entry-loader.js?v=20261022-road-i9"></script>
+  <script src="/src/game-entry-loader.js?v=20261023-road-v22"></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
-  <script src="game.js?v=20261022-road-i9&amp;wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261023-road-v22"></script>
+  <script type="module" src="game.mjs?v=20261023-road-v22"></script>
 </body>
 </html>

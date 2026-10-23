@@ -26,14 +26,14 @@
     <meta name="theme-color" content="#061c32" />
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-id" content="animal-deep-sea-salvage" />
-    <meta name="weightplay-game-version" content="v11" />
+    <meta name="weightplay-game-version" content="v12" />
     <meta name="weightplay-interface-version" content="9" />
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="Tiefsee-Bergungsfirma ist ein originales Browser-Idle-Spiel: Schicke ROVs in die Tiefe, verkaufe gewöhnliche Funde und bewahre seltene Entdeckungen in..." />
     <title>Tiefsee-Bergungsfirma | WeightPlay</title>
     <link rel="icon" href="../../assets/weightplay-logo.png" />
-    <link rel="stylesheet" href="style.css?v=20261022-deep-sea-v11-rebuild1" />
-    <link rel="stylesheet" href="art.css?v=20261022-deep-sea-v11-rebuild1" />
+    <link rel="stylesheet" href="style.css?v=20261023-deep-sea-v12-flow1" />
+    <link rel="stylesheet" href="art.css?v=20261023-deep-sea-v12-flow1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" />
 
@@ -80,39 +80,41 @@
 }
     </script>
   </head>
-  <body data-audience="general" data-wp-game-age-tags="13,teen,adult,family" data-wp-game-id="animal-deep-sea-salvage" data-wp-game-version="v11" data-wp-interface-version="9" data-wp-audience="general" data-runtime-localize="off" data-screen="main">
-    <main id="app" class="app" data-screen="main">
+  <body data-audience="general" data-wp-game-age-tags="13,teen,adult,family" data-wp-game-id="animal-deep-sea-salvage" data-wp-game-version="v12" data-wp-interface-version="9" data-wp-audience="general" data-runtime-localize="off" data-screen="main">
+    <main id="app" class="app" data-screen="main" data-wp-frame-root>
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Tiefsee-Bergungsfirma</h1>
-      <header class="topbar wp-shell-header wp-main-shell-header">
+      <section id="mainScreen" data-screen="main">
+      <header id="mainHeader" class="topbar wp-shell-header wp-main-shell-header">
         <a class="back-link wp-shell-return" data-wp-return="main" href="/" data-i18n-aria="backLobby" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
-        <strong id="gameTitle" class="wp-shell-main-title" data-runtime-localize="off">Tiefsee-Bergungsfirma</strong>
+        <strong id="gameTitle" class="wp-shell-main-title" data-wp-frame-title data-runtime-localize="off">Tiefsee-Bergungsfirma</strong>
         <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" data-i18n-aria="language" aria-label="Language"></select></label>
       </header>
 
       <section id="mainLanding" class="wp-standard-main-screen" aria-labelledby="gameTitle">
         <div class="wp-standard-main-composition">
-          <div class="wp-standard-main-poster"><img class="main-poster" src="../../assets/interface7-redrawn/animal-deep-sea-salvage.webp" data-i18n-alt="posterAlt" alt="Spielgrafik zu Tiefsee-Bergungsfirma" draggable="false" /></div>
-          <div class="wp-standard-main-copy">
+          <div class="wp-standard-main-poster" data-wp-frame-poster><img class="main-poster" src="../../assets/interface7-redrawn/animal-deep-sea-salvage.webp" data-i18n-alt="posterAlt" alt="Spielgrafik zu Tiefsee-Bergungsfirma" draggable="false" /></div>
+          <div class="wp-standard-main-copy" data-wp-frame-copy>
             <p class="main-summary" data-i18n="summary">Dispatch ROVs, sell salvage, and explore deeper sea zones to build a living museum.</p>
             <p class="main-progress wp-standard-main-progress" data-wp-main-progress data-i18n="mainProgress">Your automatic expedition is ready.</p>
             <button id="startGameButton" class="primary standard-main-start" type="button" data-wp-main-start data-i18n="startGame">Start Game</button>
           </div>
         </div>
       </section>
+      </section>
 
-      <section id="gameDashboard" hidden>
-      <div class="company-bar">
-        <div class="company-funds"><img data-object="coin" alt="" width="36" height="36"><span><small data-i18n="funds">Funds</small><strong id="fundsValue">120</strong></span></div>
-        <div><small data-i18n="depth">Max depth</small><strong><span id="depthValue">120</span>m</strong></div>
-        <div><small data-i18n="robots">ROV team</small><strong id="robotsValue">1</strong></div>
-        <div><small data-i18n="multiplier">Multiplier</small><strong id="multiplierValue">×1.0</strong></div>
-        <button id="returnMainButton" class="text-button" type="button" data-i18n="returnPort">Return to port</button>
+      <section id="gameDashboard" data-screen="battle" tabindex="-1" aria-labelledby="sceneHeading" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-frame-play-fill data-wp-battle-min-width="390" data-wp-battle-min-height="788" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
+      <header id="battleHeader"><button id="returnMainButton" type="button" data-wp-return="battle" data-i18n-aria="returnPort" aria-label="Return to port"><span aria-hidden="true">←</span></button><strong data-wp-frame-title hidden></strong></header>
+      <div id="battleContent">
+      <div id="battleStats">
+        <div><small data-i18n="funds">Funds</small><strong id="fundsValue">120</strong></div>
+        <div><small data-i18n="depth">Max depth</small><strong id="depthValue">120m</strong></div>
       </div>
+      <div id="expeditionSurface">
       <div class="expedition-grid">
         <section class="ocean-card" aria-labelledby="sceneHeading">
           <div class="card-heading"><div><span class="section-kicker" data-i18n="liveExpedition">LIVE EXPEDITION</span><h2 id="sceneHeading"><span id="zoneName"></span><small id="zoneDepth"></small></h2></div><span id="diveStateBadge" class="state-badge"></span></div>
           <div class="ocean-stage">
-            <canvas id="oceanCanvas" width="640" height="500" role="img" data-i18n-aria="sceneLabel" aria-label="Deep sea salvage expedition"></canvas>
+            <canvas id="oceanCanvas" width="640" height="500" tabindex="-1" role="img" aria-describedby="sonarHint" data-i18n-aria="sceneLabel" aria-label="Deep sea salvage expedition"></canvas>
             <div class="scene-readout"><span data-i18n="depthMeter">Depth</span><strong id="currentDepthValue">0m</strong><small><span data-i18n="targetDepth">Target</span> <b id="targetDepthValue">120m</b></small></div>
             <div id="sceneError" class="scene-error" hidden><p data-i18n="sceneUnavailable">The 3D view could not start. Your company is saved.</p><button id="retrySceneButton" class="secondary" type="button" data-i18n="retryScene">Retry view</button></div>
             <div class="scene-caption"><span class="live-dot" aria-hidden="true"></span><span data-i18n="crewCallsign">NORI · SALVAGE 01</span><span id="cargoValue"></span></div>
@@ -139,12 +141,19 @@
           <section class="active-contract" aria-labelledby="contractTitle"><div class="focus-heading"><span class="section-kicker" data-i18n="currentContract">CURRENT CONTRACT</span><strong id="activeContractCount"></strong></div><h3 id="contractTitle"></h3><p id="contractRequirement"></p><div class="mission-bar"><i id="activeContractProgress"></i></div><div class="contract-actions"><span id="contractReward"></span><button id="contractAction" class="secondary" type="button"></button></div></section>
         </aside>
       </div>
-      <section class="loop-strip"><span><span class="live-dot" aria-hidden="true"></span> <span data-i18n="autoLoop">Automatic salvage loop</span></span><button id="collectButton" class="collect-button" type="button" data-i18n="collectOffline">Collect offline earnings</button><button id="dispatchButton" class="text-button" type="button" data-i18n="pauseExpedition">Pause expedition</button></section>
+      <nav class="battle-actions" data-i18n-aria="sectionsLabel"><button class="secondary" type="button" data-open-panel="explore" data-i18n="explore">Explore</button><button class="secondary" type="button" data-open-panel="upgrades" data-i18n="upgrades">Upgrades</button><button class="secondary" type="button" data-open-panel="museum" data-i18n="museum">Museum</button><button id="dispatchButton" class="secondary" type="button" data-i18n="pauseExpedition">Pause expedition</button></nav>
+      </div>
 
+      <section id="managementPanel" class="management-panel" role="dialog" aria-modal="true" aria-labelledby="managementTitle" hidden>
+      <header class="management-heading"><div><strong id="managementTitle" data-i18n="company">Company</strong><span id="managementFeedback" role="status" aria-live="polite"></span></div><button id="closeManagementButton" class="secondary" type="button" data-i18n="continueDive">Continue expedition</button></header>
       <nav class="tab-nav" data-i18n-aria="sectionsLabel" aria-label="Game sections"><button class="tab-button active" type="button" data-tab="explore" data-i18n="explore">Explore</button><button class="tab-button" type="button" data-tab="upgrades" data-i18n="upgrades">Upgrades</button><button class="tab-button" type="button" data-tab="robots" data-i18n="robotsTab">ROVs</button><button class="tab-button" type="button" data-tab="museum" data-i18n="museum">Museum</button><button class="tab-button" type="button" data-tab="missions" data-i18n="missions">Missions</button><button class="tab-button" type="button" data-tab="achievements" data-i18n="achievements">Achievements</button><button class="tab-button" type="button" data-tab="technology" data-i18n="technology">Technology</button><button class="tab-button" type="button" data-tab="settings" data-i18n="settings">Settings</button></nav>
 
+      <div class="management-scroll">
       <section id="panel-explore" class="tab-panel active" data-panel="explore">
         <div class="panel-heading"><div><span class="section-kicker" data-i18n="selectZone">Select a zone</span><h2 data-i18n="explore">Explore</h2></div><span id="zoneCount" class="muted-count"></span></div>
+        <div id="expeditionPlanning" class="expedition-planning"></div>
+        <div class="fleet-summary"><span><small data-i18n="robots">ROV team</small> <strong id="robotsValue">1</strong></span><span><small data-i18n="multiplier">Multiplier</small> <strong id="multiplierValue">×1.0</strong></span></div>
+        <button id="collectButton" class="collect-button" type="button" data-i18n="collectOffline" hidden>Collect offline earnings</button>
         <div id="zoneList" class="zone-list"></div>
         <div class="log-card"><div class="panel-heading compact"><h3 data-i18n="recentFinds">Recent finds</h3><span id="totalDivesLabel"></span></div><div id="findLog" class="find-log"></div></div>
       </section>
@@ -164,21 +173,25 @@
       <section id="panel-settings" class="tab-panel" data-panel="settings" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="preferences">Preferences</span><h2 data-i18n="settings">Settings</h2></div></div><p class="panel-intro" data-i18n="settingsCopy">Tune the presentation without changing the company balance.</p><div id="settingsList" class="settings-list"></div><div class="setting-row setting-reset-row"><span><strong data-i18n="reset">Reset save</strong><small data-i18n="resetConfirm">Reset this local save? This cannot be undone.</small></span><button id="resetButton" class="secondary" type="button" data-i18n="reset">Reset save</button></div></section>
 
       <footer class="game-footer"><span>◒</span><span data-i18n="autoLoopCopy">A new ROV dive begins as soon as the previous one returns.</span><strong id="saveState">●</strong></footer>
+      </div>
+      </section>
+      <section id="leavePanel" class="leave-panel" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="leave-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Return to port?</h2><p data-i18n="leaveCopy">Your expedition is paused. Returning to port saves it so you can continue later.</p><button id="continueDiveButton" class="primary" type="button" data-i18n="continueDive">Continue expedition</button><button id="confirmReturnButton" class="secondary" type="button" data-i18n="returnPort">Return to port</button></div></section>
+      </div>
       </section>
     </main>
 
     <div id="offlineModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="offlineTitle" hidden><div class="modal-card"><img data-object="crate" width="64" height="64" alt=""><h2 id="offlineTitle" data-i18n="offlineTitle">Welcome back, captain</h2><p data-i18n="offlineCopy">Your crew kept working while you were away.</p><strong id="offlineValue" class="offline-value">+0 credits</strong><button id="offlineCollectButton" class="primary" type="button" data-i18n="collectOffline">Collect offline earnings</button><button id="offlineCloseButton" class="text-button" type="button" data-i18n="close">Close</button></div></div>
     <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
     <noscript><p class="no-script">This game needs JavaScript to run its automatic salvage loop.</p></noscript>
-    <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
+    <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
     <script>window.WONDER_SITE.localization.localeSegments=Object.assign({},window.WONDER_SITE.localization.localeSegments,{en:""});</script>
-    <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+    <script src="/src/i18n.js?v=20261020-deep-sea-v10-locale-root1"></script>
     <script src="/src/runtime-locales/de.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/wallet.js"></script>
-    <script src="rebuild-locales.js?v=20261022-deep-sea-v11-rebuild1"></script>
-    <script src="locales.js?v=20261022-deep-sea-v11-rebuild1"></script>
-    <script type="module" src="game.js?v=20261022-deep-sea-v11-rebuild1"></script>
+    <script src="rebuild-locales.js?v=20261023-deep-sea-v12-flow1"></script>
+    <script src="locales.js?v=20261023-deep-sea-v12-flow1"></script>
+    <script type="module" src="game.js?v=20261014-guide-i9-v12"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
     <section class="game-page-info game-page-info-static" aria-label="Informationen zu Tiefsee-Bergungsfirma">

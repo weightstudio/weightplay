@@ -47,6 +47,7 @@
   window.FlyingTramLevels = Object.freeze(levels);
   window.FlyingTramStageConfig = ({save, text}) => ({
     count: levels.length,
+    background: "/assets/lobby-block-atmosphere.svg",
     poster: "/games/flying-tram/assets/cover-block-v1.webp",
     stage(index) {
       const data = save();

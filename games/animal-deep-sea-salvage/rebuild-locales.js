@@ -18,4 +18,22 @@
   window.DEEP_SEA_REBUILD_COPY = Object.fromEntries(Object.entries(rows).map(([locale, row]) => [locale, Object.fromEntries(row.split('|').map((value, index) => [keys[index], value]))]));
   const movement = ['Cruise speed +{value}%','巡航速度 +{value}%','巡航速度 +{value}%','巡航速度 +{value}%','순항 속도 +{value}%','Velocidad de crucero +{value}%','Velocidade de cruzeiro +{value}%','Vitesse de croisière +{value}%','Reisegeschwindigkeit +{value}%','Velocità di crociera +{value}%','Крейсерская скорость +{value}%','यात्रा गति +{value}%','سرعة الإبحار +{value}%'];
   Object.keys(rows).forEach((locale,index) => { window.DEEP_SEA_REBUILD_COPY[locale].effectMovement = movement[index]; });
+  const navigation = {
+    en: ['Company','Return to port?','Your expedition is paused. Returning to port saves it so you can continue later.','Continue expedition'],
+    'zh-Hant': ['公司管理','返回港口？','航次已暫停。返回港口會保存目前進度，下次開始可接續航次。','繼續打撈'],
+    'zh-Hans': ['公司管理','返回港口？','航次已暂停。返回港口会保存当前进度，下次开始可接续航次。','继续打捞'],
+    ja: ['会社管理','港に戻りますか？','探査は一時停止中です。港に戻ると進行状況が保存され、後から再開できます。','探査を続ける'],
+    ko: ['회사 관리','항구로 돌아갈까요?','탐사가 일시 정지되었습니다. 항구로 돌아가면 진행 상황이 저장되어 나중에 이어갈 수 있습니다.','탐사 계속'],
+    es: ['Compañía','¿Volver al puerto?','La expedición está en pausa. Al volver al puerto se guarda para continuar después.','Continuar expedición'],
+    'pt-BR': ['Companhia','Voltar ao porto?','A expedição está pausada. Ao voltar ao porto, o progresso será salvo para continuar depois.','Continuar expedição'],
+    fr: ['Compagnie','Retourner au port ?','L’expédition est en pause. Le retour au port enregistre votre progression pour la reprendre plus tard.','Continuer l’expédition'],
+    de: ['Unternehmen','Zurück zum Hafen?','Die Expedition pausiert. Im Hafen wird der Fortschritt gespeichert, damit du später fortfahren kannst.','Expedition fortsetzen'],
+    it: ['Compagnia','Tornare al porto?','La spedizione è in pausa. Tornando al porto salvi i progressi per continuare più tardi.','Continua spedizione'],
+    ru: ['Компания','Вернуться в порт?','Экспедиция приостановлена. Возвращение в порт сохранит прогресс для продолжения позже.','Продолжить экспедицию'],
+    hi: ['कंपनी','बंदरगाह पर लौटें?','अभियान रुका हुआ है। बंदरगाह पर लौटने से प्रगति सहेज दी जाएगी ताकि आप बाद में जारी रख सकें।','अभियान जारी रखें'],
+    ar: ['الشركة','العودة إلى الميناء؟','الرحلة متوقفة مؤقتاً. العودة إلى الميناء تحفظ تقدمك لتتابع لاحقاً.','متابعة الرحلة'],
+  };
+  Object.entries(navigation).forEach(([locale, values]) => {
+    ['company','leaveTitle','leaveCopy','continueDive'].forEach((key,index) => { window.DEEP_SEA_REBUILD_COPY[locale][key] = values[index]; });
+  });
 })();

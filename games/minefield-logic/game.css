@@ -49,11 +49,23 @@ html body[data-wp-game-id="minefield-logic"] #logicApp[data-mf-native] .mf-main-
 #logicApp[data-mf-native] .mf-actions button:disabled { opacity: .5; cursor: not-allowed; }
 #logicApp[data-mf-native] .mf-overlay { position: absolute; inset: 0; z-index: 120; display: grid; place-items: center; padding: 16px; box-sizing: border-box; background: rgba(0,0,0,.8); }
 #logicApp[data-mf-native] .mf-overlay[hidden] { display: none; }
-#logicApp[data-mf-native] .mf-dialog { box-sizing: border-box; width: min(100%,480px); max-height: 100%; overflow: auto; padding: 16px; border: 2px solid var(--wp-ui-line); border-radius: var(--wp-ui-radius); background: var(--wp-ui-surface); color: var(--wp-ui-text); }
-#logicApp[data-mf-native] .mf-dialog h2 { margin: 0 0 12px; font-size: 22px; }
-#logicApp[data-mf-native] .mf-dialog p { margin: 0 0 16px; line-height: 1.6; }
-#logicApp[data-mf-native] .mf-dialog-actions { display: grid; gap: 12px; }
-#logicApp[data-mf-native] .mf-dialog-actions.is-result { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+#logicApp[data-mf-native] .mf-dialog {
+  --mf-battle-inverse-scale: var(--wp-battle-canvas-inverse-scale, 1);
+  box-sizing: border-box; width: min(100%,calc(480px * var(--mf-battle-inverse-scale)));
+  max-height: 100%; overflow: auto; padding: calc(16px * var(--mf-battle-inverse-scale));
+  border: 2px solid var(--wp-ui-line); border-radius: var(--wp-ui-radius);
+  background: var(--wp-ui-surface); color: var(--wp-ui-text);
+}
+#logicApp[data-mf-native] .mf-dialog h2 {
+  margin: 0 0 calc(12px * var(--mf-battle-inverse-scale));
+  font-size: calc(22px * var(--mf-battle-inverse-scale));
+}
+#logicApp[data-mf-native] .mf-dialog p {
+  margin: 0 0 calc(16px * var(--mf-battle-inverse-scale));
+  font-size: calc(16px * var(--mf-battle-inverse-scale)); line-height: 1.6;
+}
+#logicApp[data-mf-native] .mf-dialog-actions { display: grid; gap: calc(12px * var(--mf-battle-inverse-scale)); }
+#logicApp[data-mf-native] .mf-dialog-actions.is-result { grid-template-columns: repeat(3,minmax(0,1fr)); gap: calc(8px * var(--mf-battle-inverse-scale)); }
 #logicApp[data-mf-native] .mf-dialog-actions.is-result > button { min-width: 0; padding-inline: 4px !important; white-space: normal; overflow-wrap: anywhere; line-height: 1.1 !important; }
 @media (min-width:700px) and (max-height:540px) {
   #logicApp[data-mf-native] .mf-play { grid-template-columns: minmax(0,1fr) 280px; grid-template-rows: auto minmax(0,1fr) auto; }

@@ -8,7 +8,7 @@
   // legacy DOM-discovery controller while the module graph is loading.
   root.setAttribute('data-wp-frame-root', '');
   const base = new URL('.', document.currentScript.src);
-  const version = '20261020-minefield-v21-i9-guide-cards1';
+  const version = '20261023-minefield-v21-i9-1-result-dialog';
   const asset = name => new URL(`/src/${name}`, location.origin).href;
   document.querySelectorAll('link[rel="stylesheet"][href*="classic-logic-lab.css"]').forEach(link => link.remove());
   function style(url) {

@@ -1,6 +1,6 @@
 import {ROUTES,MODULES,newRun,fit,toggle,usedPower,depart,upgrade,step,drainEvents,normalizeSave,mergeSave,recordWin} from './model.js';
 import {createScene} from './scene.js';
-import {COPY,GUIDE,LOCALES,SEGMENTS,NATIVE} from './i18n.js';
+import {COPY,GUIDE,GUIDE_SECTIONS,LOCALES,SEGMENTS,NATIVE} from './i18n.js';
 const $=id=>document.getElementById(id),GAME='railguard-express',SAVE='weightplay.railguard-express.v1';
 let locale=LOCALES[SEGMENTS.indexOf(location.pathname.split('/')[1])]||'en';
 const t=k=>COPY[locale][k],title=()=>window.WEIGHTPLAY_GAME_TITLES[GAME][locale];
@@ -8,6 +8,7 @@ let save=normalizeSave(null),storageOK=true;
 try{save=normalizeSave(JSON.parse(localStorage.getItem(SAVE)));}catch{storageOK=false;}
 let screen='main',state=null,scene=null,stageController=null,selected=0,paused=false,overlayKind='',last=0,accumulator=0,raf=0;
 let stageSelection=save.unlocked-1;
+let modalReturnFocus=null;
 const sound=window.WeightPlayAudio.createScope(GAME);
 const SFX=['ui.click','feedback.error','board.move','game.start','game.checkpoint','reward.upgrade','weapon.gun.fire','weapon.laser.fire','magic.ice','impact.metal','player.hurt','combat.block','combat.shield.break','magic.shield','magic.heal','enemy.defeat','alert.boss','alert.warning','result.win','result.lose'];
 window.WeightPlayAudio.preload(SFX);
@@ -20,13 +21,15 @@ const frame=window.WeightPlayScreenFrame.mount({root:$('gameFrame'),localeSelect
 }});
 const info=window.WeightPlayScreenFrame.createGroup();[...$('stats').children].forEach(n=>info.add(n));frame.battleTopUI.add(info);
 const progress=window.WeightPlayScreenFrame.createGroup();progress.add($('stageProgress'));frame.stageTopUI.add(progress);
+const stagesTab=document.createElement('button');stagesTab.type='button';stagesTab.id='stagesTab';stagesTab.dataset.t='stages';stagesTab.dataset.wpFrameStageSlot='stages';stagesTab.setAttribute('role','tab');stagesTab.setAttribute('aria-selected','true');stagesTab.addEventListener('click',()=>{if(screen==='stage')showStages();});frame.commonDownButton.add(stagesTab);stagesTab.parentElement.dataset.wpFrameStageNav='';
 function speak(id){sound.play(id);}
 function notice(key){$('notice').textContent=t(key);$('notice').classList.remove('ack');void $('notice').offsetWidth;$('notice').classList.add('ack');}
 function persist(){try{save=mergeSave(save,JSON.parse(localStorage.getItem(SAVE)||'null'));localStorage.setItem(SAVE,JSON.stringify(save));storageOK=true;}catch{storageOK=false;}}
 function translate(){
  document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';document.title=title()+' | WeightPlay';
  document.querySelectorAll('[data-t]').forEach(n=>n.textContent=t(n.dataset.t));$('officialTitle').textContent=title();$('locale').value=locale;
- $('summary').textContent=GUIDE[locale].split(/[。.!]/)[0]+(locale.startsWith('zh')?'。':'.');$('guideText').textContent=GUIDE[locale];
+ $('summary').textContent=GUIDE[locale].split(/[。.!]/)[0]+(locale.startsWith('zh')?'。':'.');$('guideText').replaceChildren();
+ for(const [heading,copy]of GUIDE_SECTIONS[locale]){const section=document.createElement('section');section.className='game-info-section';const h=document.createElement('h3'),p=document.createElement('p');h.textContent=heading;p.textContent=copy;section.append(h,p);$('guideText').append(section);}
  $('saveNote').textContent=t(storageOK?'saved':'storage');$('progress').textContent=`${save.cleared.length} / 12`;
  document.querySelectorAll('[data-wp-gameplay-tags] span').forEach((n,i)=>n.textContent=t(['fit','power','upgrade'][i]));
  $('lobbyBack').href='/'+SEGMENTS[LOCALES.indexOf(locale)]+'/';
@@ -55,16 +58,20 @@ function start(id){
  stageSelection=id-1;
  scene?.dispose();scene=null;
  state=newRun(id);selected=0;paused=false;accumulator=0;change('battle');
- try{scene=createScene($('arena'));$('arenaError').hidden=true;}catch(e){$('arenaError').hidden=false;$('arenaError').textContent='WebGL: '+e.message;paused=true;}
+ const renderFailure=()=>{if(screen!=='battle')return;modal('render-error',t('pause'),t('renderError'),[[t('retry'),()=>start(state.route.id)],[t('stages'),()=>change('stage')]]);};
+ try{scene=createScene($('arena'),{onFailure:renderFailure});$('arenaError').hidden=true;}catch{renderFailure();}
  $('notice').textContent=t('forecast')+': '+forecast(state.route);update();
 }
 function closeOverlay(){
+ const focus=modalReturnFocus;modalReturnFocus=null;
  $('overlay').hidden=true;$('battleContent').inert=false;overlayKind='';paused=false;
  if(screen==='battle')frame.activate('battle');last=performance.now();accumulator=0;
+ if(focus?.isConnected&&focus.getClientRects().length&&!focus.closest('[hidden]'))focus.focus({preventScroll:true});
 }
 function modal(kind,heading,text,actions){
+ if($('overlay').hidden)modalReturnFocus=document.activeElement;
  overlayKind=kind;paused=true;$('modalTitle').textContent=heading;$('modalText').textContent=text;$('modalActions').replaceChildren();
- for(const [label,fn,disabled=false]of actions){const b=document.createElement('button');b.type='button';b.textContent=label;b.disabled=disabled;b.addEventListener('click',()=>{speak('ui.click');fn();});$('modalActions').append(b);}
+ for(const [label,fn,disabled=false,id]of actions){const b=document.createElement('button');b.type='button';b.textContent=label;b.disabled=disabled;if(id)b.id=id;b.addEventListener('click',()=>{speak('ui.click');fn();});$('modalActions').append(b);}
  $('overlay').hidden=false;$('battleContent').inert=true;
  $('overlay').toggleAttribute('data-wp-result-screen',kind==='result');$('modalCard').toggleAttribute('data-wp-result-card',kind==='result');
  frame.activate('battle',{covered:true});$('modalActions').querySelector('button:not(:disabled)')?.focus();
@@ -104,9 +111,11 @@ function events(list){
   }
   if(e.type==='win'||e.type==='lose'){
    const win=e.type==='win';if(win){save=recordWin(save,state.route.id);persist();}
-   speak(win?'result.win':'result.lose');const actions=[];
-   if(win&&state.route.id<12)actions.push([t('next'),()=>start(state.route.id+1)]);
-   actions.push([t('retry'),()=>start(state.route.id)],[t('stages'),()=>change('stage')]);
+   speak(win?'result.win':'result.lose');const actions=[
+    [t('stages'),()=>change('stage'),false,'resultStages'],
+    [t('next'),()=>start(state.route.id+1),!win||state.route.id>=12,'resultNext'],
+    [t('retry'),()=>start(state.route.id),false,'resultReplay']
+   ];
    modal('result',t(win?'won':'lost'),t('hull')+' '+Math.ceil(state.hull)+' / 100 · '+t('route')+' '+state.route.id+(win?'':'. '+t('forecast')+': '+t(state.lastThreat||'scout')+'. '+t('stationOnly')),actions);
   }
  }
@@ -118,7 +127,11 @@ $('battleBack').addEventListener('click',()=>modal('leave',t('pause'),t('stages'
 $('depart').addEventListener('click',()=>{if(depart(state))update();});
 $('pause').addEventListener('click',()=>modal('pause',t('pause'),'',[[t('resume'),closeOverlay],[t('retry'),()=>start(state.route.id)],[t('stages'),()=>change('stage')]]));
 $('help').addEventListener('click',()=>modal('help',t('help'),GUIDE[locale],[[t('close'),closeOverlay]]));
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('overlay').hidden&&!['result','station'].includes(overlayKind)){closeOverlay();e.preventDefault();}});
+document.addEventListener('keydown',e=>{
+ if($('overlay').hidden)return;
+ if(e.key==='Tab'){const buttons=[...$('modalActions').querySelectorAll('button:not(:disabled)')];const first=buttons[0],last=buttons.at(-1);if(!buttons.includes(document.activeElement)||(!e.shiftKey&&document.activeElement===last)){e.preventDefault();first?.focus();}else if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}}
+ if(e.key==='Escape'&&!['result','station','render-error'].includes(overlayKind)){closeOverlay();e.preventDefault();}
+});
 document.addEventListener('visibilitychange',()=>{last=performance.now();accumulator=0;if(document.hidden){sound.stop();if(screen==='battle'&&state?.status==='combat'&&!overlayKind)modal('pause',t('pause'),'',[[t('resume'),closeOverlay]]);}});
 window.addEventListener('storage',e=>{if(e.key===SAVE){try{save=mergeSave(save,JSON.parse(e.newValue));if(screen==='stage')showStages();}catch{}}});
 function animate(now){

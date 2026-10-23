@@ -124,3 +124,65 @@
 }
 @media(min-width:501px) and (max-width:700px) { #gameDashboard .ocean-stage { aspect-ratio:1.6; } }
 body[data-motion="off"] #gameDashboard * { animation:none !important; transition:none !important; }
+
+/* Main and Battle have separate lifecycles. The shared frame owns the shell,
+   viewport fit, header, safe area and Settings; these are content tracks only. */
+#gameDashboard[data-wp-frame-scene="battle"] { padding:0; background:#061e2c; }
+#battleContent { min-width:0; min-height:0; overflow:hidden; }
+#battleContent > .toast { position:absolute; top:52px; bottom:auto; inset-inline-end:16px; max-width:calc(100% - 32px); pointer-events:none; z-index:6; }
+#expeditionSurface { display:grid; grid-template-rows:minmax(0,1fr) 44px; gap:8px; height:100%; padding:8px; }
+#gameDashboard .expedition-grid { display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr) 174px; align-items:stretch; gap:8px; min-width:0; min-height:0; }
+#gameDashboard .ocean-card { display:grid; grid-template-rows:40px minmax(0,1fr) 28px; min-width:0; min-height:0; margin:0; }
+#gameDashboard .card-heading { min-height:0; padding:5px 12px; }
+#gameDashboard .card-heading .section-kicker { display:none; }
+#gameDashboard .card-heading h2 { margin:0; font-size:17px; }
+#gameDashboard .ocean-stage { width:100%; height:100%; min-height:0; aspect-ratio:auto; }
+#gameDashboard #oceanCanvas { width:100%; height:100%; min-height:0; aspect-ratio:auto; }
+#gameDashboard .dive-progress-wrap { padding:4px 12px; }
+#gameDashboard .progress-label { margin:0 0 3px; font-size:10px; line-height:12px; }
+#gameDashboard .haul-receipt { min-height:0; height:60px; padding:6px 10px; overflow:hidden; }
+#gameDashboard .haul-receipt img { width:40px; height:40px; }
+#gameDashboard .haul-receipt div > span { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+#gameDashboard .event-banner { display:none; }
+#gameDashboard .operations-controls { display:grid; grid-template-rows:60px 106px; gap:8px; min-width:0; min-height:0; }
+#gameDashboard .operations-controls > .haul-receipt { grid-row:1; background:var(--panel); border:1px solid var(--edge); border-radius:12px; }
+#gameDashboard .sonar-console { grid-row:2; height:106px; display:grid; grid-template-columns:minmax(0,1fr) 134px; grid-template-rows:18px 20px 32px; gap:5px 12px; padding:10px; }
+#gameDashboard .sonar-console .focus-heading { grid-column:1; grid-row:1; margin:0; overflow:hidden; }
+#gameDashboard .sonar-track { grid-column:1; grid-row:2; height:18px; margin:0; }
+#gameDashboard .sonar-button { grid-column:2; grid-row:1 / 3; width:134px; height:44px; min-height:44px; padding:6px; font-size:13px; line-height:16px; }
+#gameDashboard .sonar-console .bounded-hint { grid-column:1 / -1; grid-row:3; height:32px; min-height:0; margin:0; font-size:11px; line-height:16px; overflow:hidden; }
+.battle-actions { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; min-width:0; }
+#gameDashboard .battle-actions button { height:44px; min-height:44px; min-width:0; padding:5px 3px; font-size:12px; line-height:15px; overflow:hidden; border-radius:9px; }
+.management-panel { position:absolute; inset:0; z-index:3; display:grid; grid-template-rows:52px 62px minmax(0,1fr); background:#061e2c; padding:0 8px 8px; }
+.management-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; min-width:0; }
+.management-heading strong { font-size:16px; }
+.management-heading > div { min-width:0; }
+#managementFeedback { display:block; font-size:11px; line-height:16px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#b1edd2; }
+#gameDashboard .management-heading button { width:156px; height:44px; min-height:44px; padding:6px; font-size:12px; line-height:15px; }
+#gameDashboard .management-panel .tab-nav { margin:0; padding:5px 0 9px; touch-action:pan-x; }
+#gameDashboard .management-panel .tab-button { height:44px; min-height:44px; max-height:44px; }
+.management-scroll { min-height:0; overflow-y:auto; overscroll-behavior:contain; touch-action:pan-y; scrollbar-width:thin; }
+.expedition-planning { display:grid; grid-template-columns:minmax(0,1fr); gap:10px; margin:0 0 12px; }
+.fleet-summary { display:flex; flex-wrap:wrap; gap:14px; margin-bottom:12px; color:#a8cecd; font-size:12px; }
+#gameDashboard .leave-panel { position:absolute; inset:0; z-index:5; display:grid; place-items:center; padding:16px; background:#00111bdf; }
+.leave-card { width:min(100%,340px); padding:22px; border:1px solid #557b83; border-radius:16px; background:#12313c; }
+.leave-card h2 { font-size:22px; margin:0 0 12px; }
+.leave-card p { font-size:14px; line-height:1.65; margin:0 0 20px; }
+#gameDashboard .leave-card button { display:block; width:100%; height:46px; min-height:46px; padding:8px; margin-top:10px; font-size:14px; }
+@media(min-aspect-ratio:3/2) {
+  #gameDashboard .expedition-grid { grid-template-columns:minmax(0,1fr) 264px; grid-template-rows:minmax(0,1fr); }
+  #gameDashboard .ocean-card { grid-template-rows:34px minmax(0,1fr) 24px; position:relative; }
+  #gameDashboard .operations-controls { grid-template-rows:minmax(0,1fr) 60px; }
+  #gameDashboard .operations-controls > .haul-receipt { grid-row:2; }
+  #gameDashboard .haul-receipt img { width:32px; height:32px; }
+  #gameDashboard .sonar-console { grid-row:1; height:100%; grid-template-columns:minmax(0,1fr); grid-template-rows:20px 20px 46px minmax(0,1fr); gap:10px; padding:12px; }
+  #gameDashboard .sonar-console .focus-heading { grid-column:1; grid-row:1; }
+  #gameDashboard .sonar-track { grid-column:1; grid-row:2; }
+  #gameDashboard .sonar-button { grid-column:1; grid-row:3; width:100%; height:46px; }
+  #gameDashboard .sonar-console .bounded-hint { grid-column:1; grid-row:4; height:auto; }
+  .expedition-planning { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .leave-card { width:460px; max-width:100%; padding:16px 22px; }
+  .leave-card h2 { font-size:19px; margin-bottom:6px; }
+  .leave-card p { font-size:13px; margin-bottom:10px; }
+  #gameDashboard .leave-card button { display:inline-block; width:calc(50% - 6px); margin:0 2px; }
+}

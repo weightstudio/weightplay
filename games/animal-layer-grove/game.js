@@ -4,7 +4,7 @@
 (() => {
   'use strict';
   const gameURL = document.currentScript.src;
-  const revision = '20261022-layer-i9';
+  const revision = '20261023-layer-v17';
   const root = document.body;
   const abort = new AbortController();
   const listen = (node, event, fn, options = {}) => node?.addEventListener(event, fn, { ...options, signal: abort.signal });
@@ -114,9 +114,15 @@
     stageCanvas.style.setProperty('--wp-stage-art', 'url("/assets/lobby-block-atmosphere.svg")');
     stageCanvas.dataset.wpStageArt = '/assets/lobby-block-atmosphere.svg';
     stageCanvas.dataset.wpStageLandscapeWidth = '760'; stageCanvas.dataset.wpStageLandscapeHeight = '390';
-    // Same shared scaler; declare enough logical height for five 44px rows.
+    // Preserve the shared logical envelope for the board, clues, cards and toolbar.
     canvas.dataset.wpBattleMinHeight = '844'; canvas.dataset.wpBattleLandscapeWidth = '760'; canvas.dataset.wpBattleLandscapeHeight = '390';
     content.innerHTML = '<section class="puzzle-scene"><h3 data-puzzle-copy="scene"></h3><div class="puzzle-board-wrap"><div id="puzzleBoard" class="puzzle-board" dir="ltr"></div></div></section><section class="puzzle-layers"><div class="puzzle-heading"><h3 data-puzzle-copy="layers"></h3><small data-puzzle-copy="frontBack"></small></div><div id="layerList" class="puzzle-layer-list"></div></section><section class="puzzle-goals"><h3 data-puzzle-copy="clues"></h3><ol id="clueList"></ol><p id="battleStatus" role="status" aria-live="polite"></p></section><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-puzzle-copy="check"></button><button id="undoBtn" class="order-btn" type="button">↶</button><button id="hintBtn" class="order-btn" type="button">?</button><button id="resetBtn" class="order-btn" type="button">⟲</button></div>';
+    // Reading and keyboard order follow the board → clues → layer tray layout.
+    content.insertBefore(content.querySelector('.puzzle-goals'), content.querySelector('.puzzle-layers'));
+    const layerControls = document.createElement('div');
+    layerControls.className = 'layer-controls';
+    layerControls.innerHTML = '<span class="selected-layer" aria-hidden="true"></span><button id="layerForwardBtn" class="order-btn" type="button">↑</button><button id="layerBackwardBtn" class="order-btn" type="button">↓</button><button id="layerRotateBtn" class="order-btn" type="button">↻</button>';
+    content.querySelector('.puzzle-layers').append(layerControls);
     const battleInfo = header.querySelector('.battle-tools');
     content.append(battleInfo);
     for (const node of [stageCanvas.querySelector('.panel-head'), header]) {
@@ -158,15 +164,16 @@
     // A stable row pool preserves focus and control rectangles after every move.
     const rows = Array.from({ length: 5 }, (_, index) => {
       const row = document.createElement('div'); row.className = 'puzzle-layer-row';
-      row.innerHTML = '<button class="layer-inspect" type="button"><span class="layer-symbol" aria-hidden="true"></span><span class="layer-mini" aria-hidden="true"></span></button><button class="order-btn" type="button">↑</button><button class="order-btn" type="button">↓</button><button class="order-btn" type="button">↻</button>';
+      row.innerHTML = '<button class="layer-inspect" type="button"><span class="layer-depth" aria-hidden="true"></span><span class="layer-symbol" aria-hidden="true"></span><span class="layer-turn-hint" aria-hidden="true"></span><span class="layer-mini" aria-hidden="true"></span></button>';
+      row.querySelector('.layer-depth').textContent = String(index + 1).padStart(2, '0');
       for (let p = 0; p < 16; p += 1) row.querySelector('.layer-mini').append(document.createElement('i'));
-      const [inspect, up, down, turn] = row.querySelectorAll('button');
+      const inspect = row.querySelector('button');
       listen(inspect, 'click', () => { if (canPlay()) select(state.puzzle.order[index]); });
-      listen(up, 'click', () => change({ type: 'swap', index, direction: -1 }));
-      listen(down, 'click', () => change({ type: 'swap', index, direction: 1 }));
-      listen(turn, 'click', () => change({ type: 'rotate', index: state.puzzle.order[index] }));
       $('layerList').append(row); return row;
     });
+    listen($('layerForwardBtn'), 'click', () => change({type: 'swap', index: state.puzzle.order.indexOf(state.selected), direction: -1}));
+    listen($('layerBackwardBtn'), 'click', () => change({type: 'swap', index: state.puzzle.order.indexOf(state.selected), direction: 1}));
+    listen($('layerRotateBtn'), 'click', () => change({type: 'rotate', index: state.selected}));
     const clueNodes = Array.from({ length: 4 }, (_, index) => {
       const li = document.createElement('li');
       li.innerHTML = '<button class="clue-action" type="button" aria-pressed="false"><span class="clue-state" aria-hidden="true">○</span><span class="clue-text"></span></button>';
@@ -207,6 +214,8 @@
     function draw(effect = null) {
       const level = current(), evaluated = E.evaluate(level, state.puzzle);
       content.style.setProperty('--grove-layer-count', String(level.masks.length));
+      content.style.setProperty('--grove-clue-rows', String(Math.ceil(level.clues.length / 2)));
+      content.style.setProperty('--grove-card-rows', String(Math.ceil(level.masks.length / 3)));
       const footprint = E.maskAt(level.masks[state.selected], state.puzzle.turns[state.selected]);
       const highlighted = new Set(clueFocus >= 0 ? scope(level.clues[clueFocus]) : checked ? checked.checks.filter(c => !c.met).flatMap(c => scope(c.rule)) : hintCells);
       const changedFaces = [];
@@ -222,22 +231,28 @@
         const id = state.puzzle.order[index]; row.hidden = id === undefined;
         if (id === undefined) return;
         row.dataset.layer = String(id); row.dataset.layerId = String(id);
-        const [inspect, up, down, turn] = row.querySelectorAll('button');
+        const inspect = row.querySelector('button');
         row.querySelector('.layer-symbol').textContent = icon(id);
+        row.querySelector('.layer-turn-hint').textContent = level.rotatable.includes(id) ? '↻' : '';
         const mask = E.maskAt(level.masks[id], state.puzzle.turns[id]);
         [...row.querySelector('.layer-mini').children].forEach((cell, p) => { cell.classList.toggle('solid', Boolean(mask & (1 << p))); });
-        inspect.setAttribute('aria-label', t('inspect', { symbol: icon(id) })); inspect.setAttribute('aria-pressed', String(inspected && id === state.selected));
-        up.disabled = index === 0; down.disabled = index === level.masks.length - 1; turn.disabled = !level.rotatable.includes(id);
-        for (const [button, key] of [[up, 'forward'], [down, 'backward'], [turn, 'rotate']]) { const label = t(key, { symbol: icon(id) }); button.setAttribute('aria-label', label); button.title = button === turn && turn.disabled ? t('rotationLocked') : label; }
+        inspect.setAttribute('aria-label', t('inspect', { symbol: icon(id) })); inspect.setAttribute('aria-pressed', String(id === state.selected));
       });
+      const selectedIndex = state.puzzle.order.indexOf(state.selected);
+      const up = $('layerForwardBtn'), down = $('layerBackwardBtn'), turn = $('layerRotateBtn');
+      up.disabled = selectedIndex === 0; down.disabled = selectedIndex === level.masks.length - 1; turn.disabled = !level.rotatable.includes(state.selected);
+      layerControls.dataset.layer = String(state.selected);
+      layerControls.querySelector('.selected-layer').textContent = icon(state.selected);
+      for (const [button, key] of [[up, 'forward'], [down, 'backward'], [turn, 'rotate']]) { const label = t(key, {symbol: icon(state.selected)}); button.setAttribute('aria-label', label); button.title = button === turn && turn.disabled ? t('rotationLocked') : label; }
       clueNodes.forEach((li, i) => {
         const rule = level.clues[i]; li.hidden = !rule;
         if (!rule) return;
+        li.dataset.layer = String(rule[0] === 'cell' ? rule[2] : rule[0] === 'count' ? rule[1] : rule[1][1]);
         li.querySelector('.clue-text').textContent = description(rule);
         const button = li.firstElementChild;
         button.setAttribute('aria-pressed', String(clueFocus === i));
         button.setAttribute('aria-label', `${t('clues')} ${i + 1}: ${description(rule)}`);
-        li.querySelector('.clue-state').textContent = checked ? (checked.checks[i].met ? '✓' : '×') : '○';
+        li.querySelector('.clue-state').textContent = checked ? (checked.checks[i].met ? '✓' : '×') : icon(Number(li.dataset.layer));
         li.dataset.met = checked ? String(checked.checks[i].met) : '';
       });
       $('groveLabel').textContent = t('stage', { n: state.scene + 1, total: levels.length });

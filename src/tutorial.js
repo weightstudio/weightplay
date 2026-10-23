@@ -1019,7 +1019,11 @@
     },
   };
 
+  if (window.RIVER_GATES_TUTORIAL) tutorials["animal-river-gates"] = window.RIVER_GATES_TUTORIAL;
+  if (window.RAIN_ROOST_TUTORIAL) tutorials["animal-rain-roost"] = window.RAIN_ROOST_TUTORIAL;
   const battleTutorialGames = new Set([
+    "animal-rain-roost",
+    "animal-river-gates",
     "block-apex",
     "castle-cascade",
     "animal-layer-grove",
@@ -1099,7 +1103,7 @@
       </section>
     `;
     const close = (startRequested = false) => {
-      markSeen(gameId);
+      if (tutorial.persistSeen !== false) markSeen(gameId);
       backdrop.remove();
       if (startRequested) {
         window.dispatchEvent(new CustomEvent("weightplay:tutorial-start", { detail: { gameId } }));

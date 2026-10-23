@@ -10,7 +10,7 @@ export const UPGRADES={power:{base:80,zh:'鑽力',en:'Power'},speed:{base:100,zh
 export const AUTO={drill:{price:140,zh:'強化伺服',en:'Auto Drill'},cool:{price:220,zh:'高速洩壓',en:'Auto Vent'},sell:{price:400,zh:'即時輸送',en:'Auto Sell'},smart:{price:520,min:6,zh:'鑽探加速',en:'Smart Pilot'}};
 const finite=(x,d=0)=>Number.isFinite(Number(x))?Number(x):d;
 const int=(x,min,max)=>Math.max(min,Math.min(max,Math.floor(finite(x))));
-export function normalize(raw={}){if(!raw||typeof raw!=='object')raw={};const base={schema:6,coins:int(raw.coins,0,1e9),best:int(raw.best,0,3000),unlocked:int(raw.unlocked||1,1,30),
+export function normalize(raw={}){if(!raw||typeof raw!=='object')raw={};const base={schema:7,coins:int(raw.coins,0,1e9),best:int(raw.best,0,3000),unlocked:int(raw.unlocked||1,1,30),
  cleared:[...new Set((Array.isArray(raw.cleared)?raw.cleared:[]).map(x=>int(x,0,30)).filter(x=>x>0))],
  heads:[0,...[1,2,3].filter(x=>Array.isArray(raw.heads)&&raw.heads.includes(x))],
  head:Array.isArray(raw.heads)&&raw.heads.includes(int(raw.head,0,3))?int(raw.head,0,3):0,
@@ -54,8 +54,19 @@ export function settle(save,r,reason){
 export function cellState(r,row=r.row,lane=r.lane){
  const kind=row===r.row?runSeams(r)[lane]:seams(r.stage,row)[lane];
  const id=`${row}:${lane}`,seal=r.stage.checkpoint&&row===r.stage.layers-1;
- const max=Math.round(90*(seal?1.25+r.stage.arc*.15:(1+r.stage.arc*.65+(row/r.stage.layers*20)*.025)*ROCKS[kind].hard));
- if(!r.tiles[id]||r.tiles[id].kind!==kind)r.tiles[id]={row,lane,kind,max,hp:max,paid:false};
+ const max=10*Math.round(90*(seal?1.25+r.stage.arc*.15:(1+r.stage.arc*.65+(row/r.stage.layers*20)*.025)*ROCKS[kind].hard));
+ if(seal&&row===r.row&&activeSeal(r)&&kind!=='B'){
+  // The moving weak point keeps its damage between cooling windows.
+  // Otherwise the tenfold durability would require clearing it in one window.
+  if(r.seal.targetCell?.phase!==r.seal.phase)r.seal.targetCell={phase:r.seal.phase,row,lane,kind,max,hp:max,paid:false};
+  const cell=r.seal.targetCell;cell.lane=lane;return cell;
+ }
+ if(!r.tiles[id]||r.tiles[id].kind!==kind){
+  const credit=row===r.resumeRow?(r.rowCredit||0)/10:0;
+  // A migrated fractional row was already partly mined and banked in v10.
+  // Retain its drilling credit without replaying the old mineral payout.
+  r.tiles[id]={row,lane,kind,max,hp:max*(1-credit),paid:credit>0};
+ }
  return r.tiles[id];
 }
 export function selectRoute(r,lane){if(lane===r.lane)return;r.lane=Math.max(0,Math.min(4,lane));r.held=0;r.pulse=0;r.progress=1-cellState(r).hp/cellState(r).max;}

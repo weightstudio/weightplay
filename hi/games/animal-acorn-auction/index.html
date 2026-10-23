@@ -33,18 +33,17 @@
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-guide-compatibility-v1" />
   <link rel="stylesheet" href="../../src/interface9-shared-screens.css?v=20261017-interface9-guide-theme1" />
   <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1" />
-  <link rel="stylesheet" href="style.css?v=20261020-acorn-auction-i9-v10-issue-repair" />
-  <link rel="stylesheet" href="style-v3.css?v=20261020-acorn-auction-i9-v10-issue-repair" />
-  <meta name="description" content="अनुरोध पढ़ें, तीन बलूत समूहों की तुलना करें और मात्रा व बजट के अनुसार सही चुनें।" />
+  <link rel="stylesheet" href="style.css?v=20261023-acorn-market-v11" />
+  <meta name="description" content="पेटियाँ जोड़ें। छूट का इंतज़ार करें या प्रतिद्वंद्वी से पहले खरीदें।" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="बलूत नीलामी | WeightPlay" />
-    <meta property="og:description" content="अनुरोध पढ़ें, तीन बलूत समूहों की तुलना करें और मात्रा व बजट के अनुसार सही चुनें।" />
+    <meta property="og:description" content="पेटियाँ जोड़ें। छूट का इंतज़ार करें या प्रतिद्वंद्वी से पहले खरीदें।" />
     <meta property="og:url" content="https://weightplay.com/hi/games/animal-acorn-auction/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-acorn-auction.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="बलूत नीलामी | WeightPlay" />
-    <meta name="twitter:description" content="अनुरोध पढ़ें, तीन बलूत समूहों की तुलना करें और मात्रा व बजट के अनुसार सही चुनें।" />
+    <meta name="twitter:description" content="पेटियाँ जोड़ें। छूट का इंतज़ार करें या प्रतिद्वंद्वी से पहले खरीदें।" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-acorn-auction.webp" />
     <script type="application/ld+json">
 {
@@ -85,52 +84,46 @@
     <section id="mainScreen" class="screen panel" data-screen="main">
       <header class="topbar main-header"><button id="backBtn" class="icon-btn wp-shell-return" type="button" data-wp-return="main" aria-label="Back"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" /></button><strong data-runtime-localize="off" data-wp-game-title data-wp-frame-title>बलूत नीलामी</strong></header>
       <div id="mainContent" class="main-content">
-        <img id="mainPoster" class="main-cover" data-wp-frame-poster src="assets/animal-acorn-auction-cover.webp" alt="" width="1254" height="1254" />
+        <img id="mainPoster" class="main-cover" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-acorn-auction.webp" alt="" width="1254" height="1254" />
         <div class="main-copy" data-wp-frame-copy>
-          <p class="eyebrow" data-i18n="world">Moonlit woodland market</p>
-          <p class="intro main-summary" data-i18n="intro" data-wp-frame-summary>Read each animal's request, then choose the one acorn lot that fits the count and budget.</p>
-          <p id="best" class="best main-progress" data-wp-frame-progress role="status" aria-live="polite" data-i18n="best">Best careful picks: —</p>
-          <div class="main-actions"><button id="startBtn" class="primary" type="button" data-wp-main-start data-wp-frame-action="primary" data-i18n="start">Open the market</button></div>
+          <p id="world" class="eyebrow" data-i18n="world">रक्स का वन बाज़ार</p>
+          <p id="mainSummary" class="intro main-summary" data-i18n="intro" data-wp-frame-summary>पेटियाँ जोड़ें। छूट का इंतज़ार करें या प्रतिद्वंद्वी से पहले खरीदें।</p>
+          <p id="best" class="best main-progress" data-wp-frame-progress role="status" aria-live="polite" data-i18n="best">0/30 ऑर्डर · 0/90 सितारे</p>
+          <div class="main-actions"><button id="startBtn" class="primary" type="button" data-wp-main-start data-wp-frame-action="primary" data-i18n="start">बाज़ार खोलें</button></div>
         </div>
       </div>
     </section>
-    <section class="game-page-info game-page-info-static" aria-label="बलूत नीलामी गेम की जानकारी" data-wp-acorn-auction-guide="true">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>बलूत नीलामी</h2><p>अनुरोध पढ़ें, तीन बलूत समूहों की तुलना करें और मात्रा व बजट के अनुसार सही चुनें।</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>मात्रा और बजट चयन पहेली</strong></div><div class="game-info-fact"><span>शैली</span><strong>पहेली · तर्क · योजना · परिवार · जानवर</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>क्या प्रगति सहेजी जाती है?</dt><dd>हाँ, केवल इसी ब्राउज़र में।</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-acorn-auction-guide="true" data-runtime-localize="off" aria-label="बलूत नीलामी"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay · रक्स का वन बाज़ार</span><h2>बलूत नीलामी</h2><p>पेटियाँ जोड़ें। छूट का इंतज़ार करें या प्रतिद्वंद्वी से पहले खरीदें।</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>लक्ष्य</h3><p>30 ऑर्डर में बलूत की सटीक संख्या, बजट और पेटियों की सीमा मिलाएँ। सुनहरे बलूत कुल संख्या में शामिल हैं। पहेली के टोकन साझा हीरों से अलग हैं।</p></div><div class="game-info-section"><h3>कैसे खेलें</h3><p>खुला ऑर्डर चुनें। 3D पेटी या A, B, C बटन से जोड़ें या हटाएँ। टोकरी का योग देखकर बोली लगाएँ। गलत बोली कारण बताती है; तीन गलतियों पर प्रयास समाप्त होता है। फिर खेलना बाज़ार को शुरुआती स्थिति में लाता है।</p></div><div class="game-info-section"><h3>घंटी और प्रतिद्वंद्वी</h3><p>समय सीमा नहीं है। केवल घंटी बजाने से कीमत बदलती है। हर पेटी पर छूट और बिकने की घंटी लिखी है; चुनी हुई पेटी भी बिक सकती है। अभी खरीदें या दूसरे संयोजन की प्रतीक्षा करें। टोकरी खाली करने से घंटी और गलतियाँ नहीं मिटतीं। ज़रूरी पेटी बिकने पर ऑर्डर से फिर शुरू करें।</p></div><div class="game-info-section"><h3>प्रगति</h3><p>पाँच-पाँच ऑर्डर के छह अध्याय तुलना, संयोजन, सुनहरी गुणवत्ता, छूट, क्षमता और मिले-जुले प्रश्न सिखाते हैं। हर पाँचवाँ ऑर्डर जाँच है। पूरा करने पर अगला खुलता है। पूरा करने, बिना गलती और सभी संभव घंटियों में न्यूनतम कीमत पर एक-एक सितारा मिलता है। दोबारा खेलने से बेहतर रिकॉर्ड नहीं घटता।</p></div><div class="game-info-section"><h3>दुकान</h3><p>ओक शुरू में मिलता है, अंबर 10 ऑर्डर के बाद। चाँदनी के लिए 8 साझा हीरे चाहिए और रंग इसी ब्राउज़र में स्थायी है। खरीद से पहले शेष और कीमत दिखते हैं। रंग कोई खेल लाभ नहीं देते; खरीद आवश्यक नहीं।</p></div><div class="game-info-section"><h3>सहेजना</h3><p>टच, माउस, Tab और Enter काम करते हैं। 3D बिना भी बटन चलते हैं। कम गति सेटिंग केवल प्रभाव बदलती है। ऑर्डर, श्रेष्ठ सितारे, कीमतें और रंग स्थानीय रूप से सहेजते हैं; अधूरी टोकरी नहीं। पुराना वैध रिकॉर्ड सुरक्षित रहता है और पहले तीन ऑर्डर को एक-एक सितारा देता है। सहेजने में विफलता बताई जाती है और सत्र जारी रहता है। क्लाउड नहीं है।</p></div><div class="game-info-section"><h3>प्रश्न</h3><p>क्या सबसे सस्ता सही है? संख्या, गुणवत्ता और क्षमता भी मिलनी चाहिए। क्या प्रतीक्षा बेहतर है? प्रतिद्वंद्वी पहले खरीद सकता है। फिर प्रयास कर सकते हैं? हाँ। वापस जाने से जीत मिटती है? केवल अधूरा प्रयास हटता है।</p></div></div></section>
     <select id="localeSelect" class="frame-source-locale" aria-label="Language" hidden><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select>
     <section id="stageScreen" class="screen panel stage-screen" data-screen="stage" data-wp-frame-play-fill hidden>
       <header class="stage-header"><button id="stageBackBtn" class="icon-btn wp-shell-return" type="button" data-wp-return="stage" aria-label="Back"><span class="wp-shell-return-arrow" aria-hidden="true">←</span></button><strong data-wp-frame-title hidden aria-hidden="true"></strong></header>
-      <div id="stageWorkspace" class="stage-workspace"><div id="stageList" role="tablist" aria-label="Market rounds"></div></div>
+      <div id="stageWorkspace" class="stage-workspace"><div id="stageMarketView"><div id="stageList" role="tablist" aria-label="Contracts"></div></div>
+        <section id="stallPanel" class="stall-panel" hidden aria-labelledby="stallTitle">
+          <div class="stall-heading"><img data-rux alt="" width="76" height="76"><div><h2 id="stallTitle"></h2><p id="stallDescription"></p></div></div>
+          <div class="wallet-balance"><img src="../../assets/weightplay-diamond.svg" alt="" width="26" height="26"><strong id="walletCount">0</strong></div>
+          <div class="skin-list">
+            <article class="skin-choice oak"><span class="skin-swatch" aria-hidden="true"></span><h3 id="skin-oak-title"></h3><button id="skin-oak" type="button"></button></article>
+            <article class="skin-choice amber"><span class="skin-swatch" aria-hidden="true"></span><h3 id="skin-amber-title"></h3><button id="skin-amber" type="button"></button></article>
+            <article class="skin-choice moon"><span class="skin-swatch" aria-hidden="true"></span><h3 id="skin-moon-title"></h3><img class="diamond-cost" src="../../assets/weightplay-diamond.svg" alt="" width="24" height="24"><button id="skin-moon" type="button"></button></article>
+          </div><p id="stallStatus" role="status"></p>
+        </section>
+      </div>
     </section>
     <section id="battleScreen" class="screen panel battle-screen" data-screen="battle" data-wp-frame-play-fill hidden>
       <header class="battle-head battle-header"><button id="battleBackBtn" class="icon-btn wp-shell-return" type="button" data-wp-return="battle" aria-label="Back"><span class="wp-shell-return-arrow" aria-hidden="true">←</span></button><strong data-wp-frame-title hidden aria-hidden="true"></strong></header>
       <div id="battleWorkspace" class="battle-workspace wp-frame-play-content">
-        <div id="battleContent">
-          <span id="roundTitle" class="round-title">Squirrel's basket</span><span id="progressPill" class="pill">1 / 3</span>
-          <div class="request-card"><span class="request-mark" aria-hidden="true">◆</span><div><strong id="requestTitle">Request</strong><p id="requestText" class="request-text"></p></div></div>
-          <div class="feedback-row"><span id="feedbackArt" class="feedback-art" aria-hidden="true" hidden></span><p id="prompt" class="prompt" aria-live="polite"></p></div>
+        <div id="battleContent" class="market-play">
+          <span id="roundTitle" class="round-title"></span><span id="progressPill" class="pill"></span>
+          <div class="request-card"><img data-rux alt="" width="62" height="62"><div><strong id="requestTitle"></strong><p id="requestText"></p><p id="requestExtra"></p></div></div>
+          <div class="market-view"><canvas id="marketCanvas" aria-label="Woodland market"></canvas><div id="sceneFallback" hidden><img src="../../assets/interface7-redrawn/animal-acorn-auction.webp" alt=""><p id="sceneFallbackText"></p></div><div class="market-caption"><span id="marketCaption"></span><span id="bellCount"></span></div></div>
           <div id="lotCards" class="lot-cards" role="group" aria-label="Acorn lots"></div>
-          <div class="battle-actions"><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Start this round over</button></div>
-          <p id="status" class="status" role="status" aria-live="polite"></p>
+          <div id="basket" class="basket"><span id="basketLabel"></span><strong><img src="../../assets/animal-block-grove-icon-acorn.webp" alt="" width="24" height="24"><span id="basketCount"></span></strong><strong><img src="../../assets/animal-rune-reels/block-v1/ui-coin-block-v1.webp" alt="" width="24" height="24"><span id="basketCost"></span></strong><span id="basketGold"></span></div>
+          <p id="status" class="market-status" role="status" aria-live="polite"></p>
+          <div class="market-actions"><button id="resetBtn" class="secondary" type="button"></button><button id="waitBtn" class="secondary" type="button"></button><button id="bidBtn" class="primary" type="button"></button></div>
         </div>
-        <section id="resultScreen" class="result-screen panel" data-screen="result" data-wp-battle-substate="result" hidden><div class="result-art-wrap"><img class="result-art" src="assets/animal-acorn-auction-guide.png" alt="" width="1024" height="1536" /></div><div class="result-icon">◆</div><p class="eyebrow" data-i18n="finished">Market complete</p><h2 id="resultTitle" data-i18n="resultTitle">Every request is ready!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="resultMapBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="choose">Choose a round</button><button id="nextBtn" class="primary" type="button" data-wp-frame-action="primary" data-i18n="next">Next request</button><button id="resultReplayBtn" class="secondary" type="button" data-wp-frame-action="secondary" data-i18n="reset">Start this round over</button></div></section>
+        <section id="resultScreen" class="result-screen" data-screen="result" data-wp-battle-substate="result" hidden>
+          <div id="resultCard" class="result-card"><img class="result-rux" data-rux alt="" width="150" height="150"><p id="resultEyebrow" class="eyebrow"></p><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="starRule"></p><p id="saveNotice" role="status"></p><div class="result-actions"><button id="nextBtn" class="primary" type="button" data-wp-frame-action="primary"></button><button id="resultReplayBtn" class="secondary" type="button"></button><button id="resultMapBtn" class="secondary" type="button"></button></div></div>
+        </section>
       </div>
     </section>
   </main>
@@ -138,9 +131,10 @@
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20261017-interface9-settings-locale-adoption-v1" data-wp-frame-script></script>
-  <script src="locales.js?v=20261020-acorn-auction-i9-v10-issue-repair"></script>
-  <script src="frame.js?v=20261020-acorn-auction-i9-v10-issue-repair"></script>
-  <script src="game.js?v=20261020-acorn-auction-i9-v10-issue-repair"></script>
+  <script src="../../src/wallet.js"></script>
+  <script src="locales.js?v=20261023-acorn-market-v11"></script>
+  <script src="frame.js?v=20261023-acorn-market-v11"></script>
+  <script src="game.js?v=20261014-guide-i9-v10"></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/hi.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>

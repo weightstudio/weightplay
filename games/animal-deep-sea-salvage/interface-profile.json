@@ -2,13 +2,13 @@
   "schemaVersion": 1,
   "gameId": "animal-deep-sea-salvage",
   "audience": "general",
-  "flow": "MAIN_ONLY",
+  "flow": "MAIN_BATTLE",
   "stage": {
     "enabled": false,
     "leftWorkspace": null,
     "rightWorkspace": null
   },
   "battle": {
-    "enabled": false
+    "enabled": true
   }
 }

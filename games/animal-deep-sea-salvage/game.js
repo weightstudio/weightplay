@@ -270,6 +270,9 @@ import { depthFraction, sonarStrength, sonarOutcome, missingRequirements, buyLiv
   let lastRender = 0;
   let panelsDirty = true;
   let scene = null;
+  let screenFrame = null;
+  let managementTrigger = null;
+  let leaveWasPaused = false;
   let frameId = 0;
   let tickId = 0;
   let saveInterval = 0;
@@ -381,6 +384,13 @@ import { depthFraction, sonarStrength, sonarOutcome, missingRequirements, buyLiv
   const showToast = (message) => {
     if (!els.toast) return;
     window.clearTimeout(toastTimer);
+    if (!$('managementPanel').hidden) {
+      els.toast.hidden = true;
+      $('managementFeedback').textContent = message;
+      $('managementFeedback').title = message;
+      toastTimer = window.setTimeout(() => { $('managementFeedback').textContent = ''; }, 2600);
+      return;
+    }
     els.toast.textContent = message;
     els.toast.hidden = false;
     animate(els.toast,[{opacity:0},{opacity:1}],{duration:160});
@@ -902,10 +912,20 @@ import { depthFraction, sonarStrength, sonarOutcome, missingRequirements, buyLiv
 
   const syncSceneVisibility = () => {
     const started = state.started === true;
-    if (els.landing) els.landing.hidden = started;
-    if (els.dashboard) els.dashboard.hidden = !started;
+    const screen = started ? 'battle' : 'main';
+    $('mainScreen').hidden = started;
+    els.dashboard.hidden = !started;
+    if (!started) {
+      $('managementPanel').hidden = true;
+      $('leavePanel').hidden = true;
+      $('expeditionSurface').inert = false;
+      $('managementPanel').inert = false;
+    }
     document.body.classList.toggle("deep-sea-game-started", started);
     document.body.dataset.gameStarted = String(started);
+    document.body.dataset.screen = screen;
+    els.app.dataset.screen = screen;
+    if (screenFrame?.active !== screen) screenFrame?.activate(screen);
   };
 
   const renderLivery = () => {
@@ -931,7 +951,7 @@ import { depthFraction, sonarStrength, sonarOutcome, missingRequirements, buyLiv
     const phase = phaseFor(progress);
     const zone = CONFIG.zones.find(candidate => candidate.id === dive?.zoneId) || activeZone();
     const stats = derived();
-    els.funds.textContent = number(state.coins); els.depth.textContent = number(effectiveMaxDepth());
+    els.funds.textContent = number(state.coins); els.depth.textContent = `${number(effectiveMaxDepth())}${t('metres')}`;
     els.robots.textContent = number(totalRobots()); els.multiplier.textContent = `×${stats.valueMultiplier.toFixed(1)}`;
     els.zoneName.textContent = zoneLabel(zone); els.zoneDepth.textContent = `${zone.minDepth}–${zone.maxDepth}${t('metres')}`;
     els.stateBadge.textContent = state.pausedAt ? t('stopPaused') : phaseText(phase); els.stateBadge.dataset.state = phase;
@@ -995,7 +1015,46 @@ import { depthFraction, sonarStrength, sonarOutcome, missingRequirements, buyLiv
   const setTab = (name) => {
     clearEffects();
     document.querySelectorAll("[data-tab]").forEach((button) => button.classList.toggle("active", button.dataset.tab === name));
+    document.querySelector(`[data-tab="${name}"].active`)?.scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});
     document.querySelectorAll("[data-panel]").forEach((panel) => { const active = panel.dataset.panel === name; panel.hidden = !active; panel.classList.toggle("active", active); if (active) animate(panel,[{opacity:0,transform:"translateY(5px)"},{opacity:1,transform:"translateY(0)"}],{duration:180}); });
+    document.querySelector('.management-scroll').scrollTop = 0;
+  };
+
+  const closeManagement = () => {
+    $('managementPanel').hidden = true;
+    $('expeditionSurface').inert = false;
+    $('battleHeader').inert = false;
+    (managementTrigger || els.dashboard).focus({preventScroll:true});
+  };
+  const closeLeave = (returnToPort = false) => {
+    $('leavePanel').hidden = true;
+    $('battleHeader').inert = false;
+    $('expeditionSurface').inert = false;
+    if (returnToPort) {
+      state.started = false; clearEffects(); els.toast.hidden = true;
+      save(); render(); els.startGame.focus({preventScroll:true}); window.scrollTo(0,0);
+    } else {
+      if (!leaveWasPaused && state.pausedAt) pauseExpedition();
+      $('returnMainButton').focus({preventScroll:true});
+    }
+  };
+  const openLeave = () => {
+    if (!$('leavePanel').hidden) return;
+    leaveWasPaused = !!state.pausedAt;
+    if (!state.pausedAt) pauseExpedition();
+    clearEffects(); els.toast.hidden = true;
+    $('leavePanel').hidden = false;
+    $('expeditionSurface').inert = true;
+    $('battleHeader').inert = true;
+    $('continueDiveButton').focus({preventScroll:true});
+    animate($('leavePanel'),[{opacity:0},{opacity:1}],{duration:160});
+  };
+  const trapPanelFocus = (event, panel) => {
+    if (event.key !== 'Tab') return;
+    const buttons = [...panel.querySelectorAll('button:not(:disabled),a[href],select,input,[tabindex="0"]')].filter(node => node.getClientRects().length);
+    const first = buttons[0], last = buttons.at(-1);
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
   };
 
   const bind = () => {
@@ -1003,11 +1062,28 @@ import { depthFraction, sonarStrength, sonarOutcome, missingRequirements, buyLiv
       state.started = true;
       if (state.pausedAt) pauseExpedition();
       if (!state.currentDive) startDive();
-      save(); render(); els.app.scrollIntoView({block:'start',behavior:'instant'}); animate(els.dashboard,[{opacity:0},{opacity:1}],{duration:180});
+      save(); render(); els.canvas.focus({preventScroll:true}); animate(els.dashboard,[{opacity:0},{opacity:1}],{duration:180});
     });
-    $('returnMainButton').addEventListener('click', () => {
-      if (!state.pausedAt) pauseExpedition();
-      state.started = false; clearEffects(); els.toast.hidden = true; save(); render(); els.startGame.focus({preventScroll:true}); els.app.scrollIntoView({block:'start',behavior:'instant'});
+    $('returnMainButton').addEventListener('click', openLeave);
+    $('continueDiveButton').addEventListener('click', () => closeLeave());
+    $('confirmReturnButton').addEventListener('click', () => closeLeave(true));
+    $('closeManagementButton').addEventListener('click', closeManagement);
+    document.querySelectorAll('[data-open-panel]').forEach(button => button.addEventListener('click', () => {
+      managementTrigger = button;
+      $('managementPanel').hidden = false;
+      setTab(button.dataset.openPanel);
+      $('expeditionSurface').inert = true;
+      $('battleHeader').inert = true;
+      $('closeManagementButton').focus({preventScroll:true});
+      animate($('managementPanel'),[{opacity:0},{opacity:1}],{duration:160});
+    }));
+    document.addEventListener('keydown', event => {
+      if (document.querySelector('.salvage-dialog[open]')) return;
+      const leaveOpen = !$('leavePanel').hidden;
+      const managerOpen = !$('managementPanel').hidden;
+      if (event.key === 'Escape' && (leaveOpen || managerOpen)) {
+        event.preventDefault(); leaveOpen ? closeLeave() : closeManagement();
+      } else if (leaveOpen || managerOpen) trapPanelFocus(event, $(leaveOpen ? 'leavePanel' : 'managementPanel'));
     });
     els.locale?.addEventListener('change', () => { save(); window.deepSeaSetLocale?.(els.locale.value); });
     els.reset?.addEventListener('click', () => confirmAction(t('reset'), t('resetConfirm'), () => {
@@ -1097,6 +1173,16 @@ import { depthFraction, sonarStrength, sonarOutcome, missingRequirements, buyLiv
     getState: () => ({ contractsClaimed: [...state.contractsClaimed], contractProgress: { ...state.contractProgress }, totalDives: state.totalDives }),
     contractGateOpen,
   };
+  $('expeditionPlanning').append($('diveFocusPanel'), document.querySelector('.active-contract'));
+  document.querySelector('.operations-controls').prepend(document.querySelector('.haul-receipt'));
+  $('battleContent').append(els.toast);
+  screenFrame = window.WeightPlayScreenFrame.mount({
+    root: els.app, localeSelect: els.locale, playUI: true,
+    scenes: {
+      main: { root: $('mainScreen'), header: $('mainHeader'), content: document.querySelector('.wp-standard-main-composition') },
+      battle: { root: els.dashboard, header: $('battleHeader'), content: $('battleContent'), headerInfo: $('battleStats') },
+    },
+  });
   applyStaticTranslations();
   applySettings();
   ensureDailyState();

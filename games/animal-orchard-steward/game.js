@@ -1,57 +1,199 @@
-(() => {
-  "use strict";
-  const localeKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
-  const localeNames = { en:"English", "zh-Hant":"繁體中文", "zh-Hans":"简体中文", ja:"日本語", ko:"한국어", es:"Español", "pt-BR":"Português (Brasil)", fr:"Français", de:"Deutsch", it:"Italiano", ru:"Русский", hi:"हिन्दी", ar:"العربية" };
-  const en = { language:"Language", prototype:"Internal prototype", world:"WeightPlay Animal World", title:"Orchard Steward", intro:"Choose one gentle care action each day to balance light, water, and soil.", tagPlan:"Planning", tagBalance:"Balance", tagFamily:"Family", start:"Start the orchard", coverBadge:"3 calm orchard days", guideKicker:"Quick guide", guideTitle:"Read the need, choose the care", guideText:"Each care card shows its exact trade-off. Keep sunlight, water, and soil in their healthy bands for three days.", battleKicker:"Orchard Steward", forecastKicker:"Today's orchard note", resources:"Orchard resources", chooseCare:"Choose one care", exactDeltas:"Exact trade-offs", leaves:"Leaves {value}", day:"Day {current} / {total}", restart:"Restart day", leaveTitle:"Leave the orchard?", leaveText:"This day will reset, but your best leaf count stays on this browser.", continue:"Keep playing", leave:"Leave", resultKicker:"Orchard notes", resultTitle:"A cared-for grove", resultSummary:"You kept the orchard healthy for {value} of 3 days.", leavesLabel:"Healthy days", bestLabel:"Best", replay:"Replay", mainMenu:"Main menu", soundOn:"Sound on", soundOff:"Sound off", good:"The grove is in a healthy band.", needs:"The grove needs another gentle day.", sun:"Sunlight", water:"Water", soil:"Soil", healthy:"Healthy", rain:"Rain barrel", shade:"Shade cloth", sunBasket:"Sun basket", rainDelta:"+2 water · −1 sunlight · +1 soil", shadeDelta:"+2 soil · −1 sunlight · +1 water", sunDelta:"+2 sunlight · −1 water · +1 soil", day1Title:"Clouds gather over the west trees", day1Text:"Water is the urgent need; keep the leaves from drying before the rain arrives.", day2Title:"A bright morning opens the blossoms", day2Text:"The grove can take more sunlight today, but do not let the soil fall behind.", day3Title:"Warm wind crosses the last row", day3Text:"The roots need steady moisture and rich soil before the final harvest.", band:"Goal: {sun} sunlight · {water} water · {soil} soil" };
-  const overrides = {
-    "zh-Hant": { title:"果園守望", intro:"每天選一個照料動作，平衡陽光、水分與土壤。", start:"開始照料果園", coverBadge:"3 天平靜果園", guideTitle:"讀懂需要，選擇照料", chooseCare:"選一項照料", restart:"重新開始今天", good:"果園維持在健康範圍。", needs:"果園還需要溫柔的一天。", sun:"陽光", water:"水分", soil:"土壤", rain:"雨水桶", shade:"遮陽布", sunBasket:"日光籃", day1Title:"西側樹梢聚起雲朵", day1Text:"水分最重要；在雨來以前，別讓葉子乾渴。", day2Title:"明亮早晨打開花朵", day2Text:"今天果園能承受更多陽光，但別讓土壤落後。", day3Title:"暖風穿過最後一排", day3Text:"最後採收前，根部需要穩定水分與肥沃土壤。" },
-    "zh-Hans": { title:"果园守望", intro:"每天选一个照料动作，平衡阳光、水分与土壤。", start:"开始照料果园", coverBadge:"3 天平静果园", guideTitle:"读懂需要，选择照料", chooseCare:"选一项照料", restart:"重新开始今天", good:"果园保持在健康范围。", needs:"果园还需要温柔的一天。", sun:"阳光", water:"水分", soil:"土壤", rain:"雨水桶", shade:"遮阳布", sunBasket:"日光篮", day1Title:"西侧树梢聚起云朵", day1Text:"水分最重要；在雨来以前，别让叶子干渴。", day2Title:"明亮早晨打开花朵", day2Text:"今天果园能承受更多阳光，但别让土壤落后。", day3Title:"暖风穿过最后一排", day3Text:"最后收获前，根部需要稳定水分与肥沃土壤。" },
-    ja: { title:"オーチャード・スチュワード", intro:"毎日ひとつの世話を選び、光・水・土を整えます。", start:"果樹園を始める", guideTitle:"必要を読み、世話を選ぼう", chooseCare:"世話をひとつ選ぶ", restart:"今日をやり直す", good:"果樹園は元気な範囲です。", needs:"もう一日、やさしい世話が必要です。", sun:"日光", water:"水", soil:"土", rain:"雨だる", shade:"日よけ布", sunBasket:"ひかりかご" },
-    ko: { title:"과수원 지킴이", intro:"매일 돌봄 하나를 골라 햇빛·물·흙을 맞춰요.", start:"과수원 시작하기", guideTitle:"필요를 읽고 돌봄을 골라요", chooseCare:"돌봄 하나 선택", restart:"오늘 다시 시작", good:"과수원이 건강한 범위예요.", needs:"과수원에 하루의 돌봄이 더 필요해요.", sun:"햇빛", water:"물", soil:"흙", rain:"빗물통", shade:"그늘막", sunBasket:"햇빛 바구니" },
-    es: { title:"Guardián del Huerto", intro:"Elige un cuidado diario para equilibrar luz, agua y tierra.", start:"Empezar el huerto", guideTitle:"Lee la necesidad y elige", chooseCare:"Elige un cuidado", restart:"Repetir el día", good:"El huerto está en una zona sana.", needs:"El huerto necesita otro día tranquilo.", sun:"Sol", water:"Agua", soil:"Tierra", rain:"Barril de lluvia", shade:"Tela de sombra", sunBasket:"Cesta de sol" },
-    "pt-BR": { title:"Guardião do Pomar", intro:"Escolha um cuidado por dia para equilibrar luz, água e terra.", start:"Começar o pomar", guideTitle:"Leia a necessidade e escolha", chooseCare:"Escolha um cuidado", restart:"Recomeçar o dia", good:"O pomar está numa faixa saudável.", needs:"O pomar precisa de mais um dia calmo.", sun:"Sol", water:"Água", soil:"Terra", rain:"Barril de chuva", shade:"Tela de sombra", sunBasket:"Cesta de sol" },
-    fr: { title:"Gardien du Verger", intro:"Choisissez un soin par jour pour équilibrer lumière, eau et terre.", start:"Commencer le verger", guideTitle:"Lisez le besoin et choisissez", chooseCare:"Choisissez un soin", restart:"Recommencer le jour", good:"Le verger est dans une zone saine.", needs:"Le verger a besoin d'un autre jour doux.", sun:"Soleil", water:"Eau", soil:"Terre", rain:"Baril de pluie", shade:"Toile d'ombre", sunBasket:"Panier de soleil" },
-    de: { title:"Obsthüter", intro:"Wähle täglich eine Pflege, um Licht, Wasser und Erde auszubalancieren.", start:"Obstgarten starten", guideTitle:"Bedarf lesen, Pflege wählen", chooseCare:"Eine Pflege wählen", restart:"Tag neu starten", good:"Der Obstgarten ist im gesunden Bereich.", needs:"Der Obstgarten braucht einen weiteren ruhigen Tag.", sun:"Sonne", water:"Wasser", soil:"Erde", rain:"Regentonne", shade:"Schattensegel", sunBasket:"Sonnenkorb" },
-    it: { title:"Custode del Frutteto", intro:"Scegli una cura al giorno per bilanciare luce, acqua e terra.", start:"Inizia il frutteto", guideTitle:"Leggi il bisogno e scegli", chooseCare:"Scegli una cura", restart:"Ripeti il giorno", good:"Il frutteto è nella fascia sana.", needs:"Il frutteto ha bisogno di un altro giorno calmo.", sun:"Sole", water:"Acqua", soil:"Terra", rain:"Barile della pioggia", shade:"Tela ombreggiante", sunBasket:"Cesto del sole" },
-    ru: { title:"Смотритель сада", intro:"Каждый день выбирайте заботу, чтобы уравновесить свет, воду и почву.", start:"Открыть сад", guideTitle:"Прочитайте нужду и выберите заботу", chooseCare:"Выберите заботу", restart:"Начать день заново", good:"Сад в здоровом диапазоне.", needs:"Саду нужен ещё один спокойный день.", sun:"Свет", water:"Вода", soil:"Почва", rain:"Бочка дождя", shade:"Тент от солнца", sunBasket:"Корзина света" },
-    hi: { title:"बाग़ का रखवाला", intro:"हर दिन एक देखभाल चुनकर धूप, पानी और मिट्टी संतुलित करें।", start:"बाग़ शुरू करें", guideTitle:"ज़रूरत पढ़ें, देखभाल चुनें", chooseCare:"एक देखभाल चुनें", restart:"दिन फिर शुरू करें", good:"बाग़ स्वस्थ सीमा में है।", needs:"बाग़ को एक शांत दिन और चाहिए।", sun:"धूप", water:"पानी", soil:"मिट्टी", rain:"बारिश का पीपा", shade:"छाँव का कपड़ा", sunBasket:"धूप की टोकरी" },
-    ar: { language:"اللغة", prototype:"نموذج داخلي", world:"عالم الحيوانات من WeightPlay", title:"حارس البستان", intro:"اختر عناية لطيفة كل يوم لموازنة الضوء والماء والتربة.", tagPlan:"التخطيط", tagBalance:"التوازن", tagFamily:"العائلة", start:"ابدأ البستان", coverBadge:"ثلاثة أيام هادئة في البستان", guideKicker:"دليل سريع", guideTitle:"اقرأ الحاجة واختر العناية", guideText:"تعرض كل بطاقة عناية أثرها الدقيق. حافظ على الضوء والماء والتربة ضمن النطاق الصحي لثلاثة أيام.", battleKicker:"حارس البستان", forecastKicker:"ملاحظة البستان اليوم", resources:"موارد البستان", chooseCare:"اختر عناية واحدة", exactDeltas:"الآثار الدقيقة", leaves:"أوراق {value}", day:"اليوم {current} / {total}", restart:"أعد اليوم", leaveTitle:"مغادرة البستان؟", leaveText:"سيُعاد هذا اليوم، لكن أفضل عدد من الأوراق سيبقى محفوظًا في هذا المتصفح.", continue:"متابعة اللعب", leave:"مغادرة", resultKicker:"ملاحظات البستان", resultTitle:"بستان مُعتنى به", resultSummary:"حافظت على صحة البستان في {value} من أصل 3 أيام.", leavesLabel:"الأيام الصحية", bestLabel:"أفضل نتيجة", replay:"العب مجددًا", mainMenu:"القائمة الرئيسية", soundOn:"الصوت مفعّل", soundOff:"الصوت متوقف", good:"البستان ضمن النطاق الصحي.", needs:"يحتاج البستان إلى يوم هادئ آخر.", sun:"ضوء الشمس", water:"الماء", soil:"التربة", healthy:"صحي", rain:"برميل المطر", shade:"قماش الظل", sunBasket:"سلة الشمس", rainDelta:"+2 ماء · −1 ضوء الشمس · +1 تربة", shadeDelta:"+2 تربة · −1 ضوء الشمس · +1 ماء", sunDelta:"+2 ضوء الشمس · −1 ماء · +1 تربة", day1Title:"تتجمع الغيوم فوق أشجار الغرب", day1Text:"الماء هو الحاجة العاجلة؛ حافظ على رطوبة الأوراق قبل وصول المطر.", day2Title:"صباح مشرق يفتح الأزهار", day2Text:"يستطيع البستان تحمّل مزيد من ضوء الشمس اليوم، لكن لا تدع التربة تتراجع.", day3Title:"رياح دافئة تعبر الصف الأخير", day3Text:"تحتاج الجذور إلى رطوبة ثابتة وتربة غنية قبل الحصاد الأخير.", band:"الهدف: {sun} ضوء شمس · {water} ماء · {soil} تربة" }
-  };
-  const copy = Object.fromEntries(localeKeys.map((key) => [key, { ...en, ...(overrides[key] || {}) }]));
-  const days = [
-    { start:{sun:3,water:3,soil:2}, min:{sun:2,water:4,soil:3}, title:"day1Title", text:"day1Text" },
-    { start:{sun:4,water:3,soil:3}, min:{sun:5,water:2,soil:4}, title:"day2Title", text:"day2Text" },
-    { start:{sun:3,water:4,soil:4}, min:{sun:3,water:3,soil:5}, title:"day3Title", text:"day3Text" }
-  ];
-  const actions = [
-    { id:"rain", art:"rain", name:"rain", delta:{sun:-1,water:2,soil:1}, deltaKey:"rainDelta" },
-    { id:"shade", art:"shade", name:"shade", delta:{sun:-1,water:1,soil:2}, deltaKey:"shadeDelta" },
-    { id:"sunBasket", art:"sun", name:"sunBasket", delta:{sun:2,water:-1,soil:1}, deltaKey:"sunDelta" }
-  ];
-  const $ = (id) => document.getElementById(id);
-  const state = { locale:"en", day:0, leaves:0, meters:{...days[0].start}, selected:false, best:0 };
-  let dayAdvanceTimer = null;
-  let screenFrame = null;
-  const storage = { get(key){try{return localStorage.getItem(key)}catch(_){return null}}, set(key,value){try{localStorage.setItem(key,value)}catch(_){}} };
-  const routeMap = {en:"en", "zh-tw":"zh-Hant", "zh-hant":"zh-Hant", "zh-cn":"zh-Hans", "zh-hans":"zh-Hans", ja:"ja", ko:"ko", es:"es", "pt-br":"pt-BR", fr:"fr", de:"de", it:"it", ru:"ru", hi:"hi", ar:"ar"};
-  function t(key, vars={}){const value=(key==="title"&&window.WEIGHTPLAY_GAME_TITLES?.["animal-orchard-steward"]?.[state.locale])||(copy[state.locale]||copy.en)[key]||copy.en[key]||key;return value.replace(/\{(\w+)\}/g,(_,name)=>String(vars[name]??""));}
-  function queryLocale(){const route=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();const routed=routeMap[route];const saved=storage.get("weightplay-orchard-steward-locale");return routed||((saved&&copy[saved])?saved:"en");}
-  function applyLocale(){document.documentElement.lang=state.locale;document.title=`${t("title")} | WeightPlay`;document.documentElement.dir=state.locale==="ar"?"rtl":"ltr";document.querySelectorAll("[data-copy]").forEach((node)=>{node.textContent=t(node.dataset.copy)});$("homeFromBattle").setAttribute("aria-label",t("mainMenu"));renderBattle();}
-  function populateLocales(){const select=$("localeSelect");localeKeys.forEach((key)=>{const option=document.createElement("option");option.value=key;option.textContent=localeNames[key];select.append(option)});select.value=state.locale;select.addEventListener("change",()=>{state.locale=select.value;storage.set("weightplay-orchard-steward-locale",state.locale);applyLocale()});}
-  function tone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
-  function showView(view){const onMain=view==="main";const covered=view==="result";$("mainView").hidden=!onMain;$("gameGuide").hidden=!onMain;$("battleView").hidden=onMain;$("resultView").hidden=!covered;$("leaveDialog").hidden=true;$("battleContent").inert=covered;document.body.dataset.screen=onMain?"main":"battle";document.body.dataset.wpOverlay=covered?"result":"";screenFrame?.activate(onMain?"main":"battle",{covered});window.scrollTo(0,0)}
-  function renderMeters(){const labels=["sun","water","soil"];$("meters").innerHTML=labels.map((key)=>{const value=state.meters[key];return `<div class="meter-row"><div class="meter-label"><span id="meter-${key}-label">${t(key)}</span><span class="meter-value">${value} / 6</span></div><div class="meter-track" role="meter" aria-labelledby="meter-${key}-label" aria-valuemin="0" aria-valuemax="6" aria-valuenow="${value}" aria-valuetext="${value} / 6"><div class="meter-fill" style="width:${Math.round(value/6*100)}%"></div></div></div>`;}).join("");}
-  function renderBattle(){if(!$('dayLabel'))return;const day=days[state.day];$("dayLabel").textContent=t("day",{current:state.day+1,total:days.length});$("forecastTitle").textContent=t(day.title);$("forecastText").textContent=`${t(day.text)} ${t("band",{sun:day.min.sun,water:day.min.water,soil:day.min.soil})}`;$("leafCount").textContent=t("leaves",{value:state.leaves});renderMeters();$("actions").innerHTML=actions.map((action,index)=>`<button class="action-button" type="button" data-action="${action.id}" ${index===0?"data-wp-primary-action":""} ${state.selected?"disabled":""}><span class="action-art action-art-${action.art}" aria-hidden="true"></span><span class="action-name">${t(action.name)}</span><span class="action-delta">${t(action.deltaKey)}</span></button>`).join("");$("feedback").textContent=state.feedback||"";$("feedback").className=`feedback ${state.feedbackClass||""}`;$("leafCount").setAttribute("aria-label",t("leaves",{value:state.leaves}));}
-  function cancelDayAdvance(){if(dayAdvanceTimer!==null){window.clearTimeout(dayAdvanceTimer);dayAdvanceTimer=null;}}
-  function start(){cancelDayAdvance();state.day=0;state.leaves=0;state.best=0;startDay();showView("battle");document.querySelector('#actions [data-wp-primary-action]')?.focus({preventScroll:true});}
-  function startDay(){cancelDayAdvance();state.meters={...days[state.day].start};state.selected=false;state.feedback="";state.feedbackClass="";renderBattle();}
-  function restartDay(){const hadPendingAdvance=dayAdvanceTimer!==null;cancelDayAdvance();if(hadPendingAdvance&&state.feedbackClass==="good")state.leaves=Math.max(0,state.leaves-1);startDay();}
-  function choose(id){if(state.selected)return;const action=actions.find((item)=>item.id===id);if(!action)return;state.selected=true;Object.keys(state.meters).forEach((key)=>{state.meters[key]=Math.max(0,Math.min(6,state.meters[key]+action.delta[key]))});const day=days[state.day];const good=Object.keys(day.min).every((key)=>state.meters[key]>=day.min[key]);if(good){state.leaves+=1;state.feedback=t("good");state.feedbackClass="good";tone("feedback.success")}else{state.feedback=t("needs");state.feedbackClass="bad";tone("feedback.error")}renderBattle();dayAdvanceTimer=window.setTimeout(()=>{dayAdvanceTimer=null;if(state.day<days.length-1){state.day+=1;startDay()}else finish()},850)}
-  function finish(){const old=Number(storage.get("weightplay-orchard-steward-best")||0);state.best=Math.max(old,state.leaves);storage.set("weightplay-orchard-steward-best",String(state.best));$("resultTitle").textContent=state.leaves===3?t("resultTitle"):t("needs");$("resultSummary").textContent=t("resultSummary",{value:state.leaves});$("resultLeaves").textContent=String(state.leaves);$("resultBest").textContent=String(state.best);showView("result");$("resultView").focus({preventScroll:true});}
-  function openLeave(){$("battleContent").inert=true;$("leaveDialog").hidden=false;screenFrame?.activate("battle",{covered:true});$("continueButton").focus({preventScroll:true})}
-  function closeLeave(){$("leaveDialog").hidden=true;$("battleContent").inert=false;screenFrame?.activate("battle");$("homeFromBattle").focus({preventScroll:true})}
-  function goHome(){cancelDayAdvance();showView("main");applyLocale();$("startButton").focus({preventScroll:true})}
-  state.locale=queryLocale();
-  document.addEventListener("DOMContentLoaded",()=>{populateLocales();screenFrame=window.OrchardStewardFrame.mount();applyLocale();showView("main");$("startButton").addEventListener("click",start);$("replayButton").addEventListener("click",start);$("restartDay").addEventListener("click",restartDay);$("actions").addEventListener("click",(event)=>{const button=event.target.closest("button[data-action]");if(button)choose(button.dataset.action)});$("homeFromBattle").addEventListener("click",openLeave);$("continueButton").addEventListener("click",closeLeave);$("confirmLeaveButton").addEventListener("click",goHome);$("homeFromResult").addEventListener("click",goHome);});
-  window.ORCHARD_STEWARD_TEST={state,days,actions,start,startDay,choose,applyLocale,showView,finish};
-})();
+import {COPY,LOCALES} from './copy.mjs?v=20261023-orchard-v6';
+import {SAVE_KEY,FRUITS,TOOLS,CONTRACTS,clone,normalize,startRun,contract,forecast,projected,healthy,care,harvest,sunset,buyEquipment} from './model.mjs?v=20261023-orchard-v6';
+import {OrchardScene} from './scene.mjs?v=20261023-orchard-v6';
+const $=id=>document.getElementById(id);
+const routeMap={'zh-tw':'zh-Hant','zh-cn':'zh-Hans','pt-br':'pt-BR'};
+const route=location.pathname.split('/')[1];
+const locale=routeMap[route]||(LOCALES.includes(route)?route:document.documentElement.lang)||'en';
+const c=COPY[locale]||COPY.en;
+const t=key=>c[key]||key;
+const storage={get(key){try{return localStorage.getItem(key);}catch{return null;}}};
+let profile=normalize(storage.get(SAVE_KEY),storage.get('weightplay-orchard-steward-best'));
+let frame,scene,active='main',modal=null,returnFocus=null,saveAvailable=true;
+const animations=new Set();const flights=new Set();
+const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+const total=()=>profile.run?.harvest.reduce((a,b)=>a+b,0)||0;
+const audio=cue=>window.WeightPlayAudio?.play(cue);
+const names=['sun','water','soil'];
+const glyphs=['☀','≋','▥'];
+function deltaMarkup(values) {return values.map((n,i)=>`<span title="${t(names[i])}">${glyphs[i]}${n>0?'+':''}${n}</span>`).join(' · ');}
+function clearEffects(){animations.forEach(a=>a.cancel());animations.clear();flights.forEach(n=>n.remove());flights.clear();}
+function animate(node,keyframes,options={}) {
+ if(!node||reduced.matches)return;
+ const a=node.animate(keyframes,{duration:180,easing:'ease-out',...options});animations.add(a);
+ a.finished.then(()=>animations.delete(a),()=>animations.delete(a));return a;
+}
+function save(){
+ try{localStorage.setItem(SAVE_KEY,JSON.stringify(profile));saveAvailable=true;return true;}
+ catch{saveAvailable=false;return false;}
+}
+function message(text){$('feedback').textContent=text;}
+function applyCopy(){
+ document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';
+ document.querySelectorAll('[data-copy]').forEach(n=>n.textContent=t(n.dataset.copy));
+ const title=window.WEIGHTPLAY_GAME_TITLES?.['animal-orchard-steward']?.[locale];
+ if(title){document.title=`${title} | WeightPlay`;$('mainTitle').textContent=title;}
+ $('homeFromBattle').setAttribute('aria-label',t('main'));
+ $('orchardCanvas').setAttribute('aria-label',`${t('apple')} · ${t('pear')} · ${t('orange')}`);
+}
+function buildControls(){
+ $('meters').innerHTML=names.map((name,i)=>`<div class="meter-row"><div class="meter-label"><span>${t(name)}</span><span class="meter-value" id="value${i}"></span></div><div class="meter-track" role="meter" aria-label="${t(name)}" aria-valuemin="0" aria-valuemax="8" id="meter${i}"><div class="meter-fill" id="fill${i}"></div><div class="meter-goal" id="goal${i}"></div></div></div>`).join('');
+ $('actions').innerHTML=TOOLS.map((tool,i)=>`<button class="action-button" type="button" data-action="${tool.id}" ${i===0?'data-wp-primary-action':''}><span class="action-art action-art-${tool.art}" aria-hidden="true"></span><span class="action-name">${t(['watering','compost','canopy'][i])}</span><span class="action-delta" id="delta${i}"></span></button>`).join('');
+ $('treeTargets').innerHTML=FRUITS.map((f,i)=>`<button class="tree-button" type="button" id="tree${i}" data-tree="${i}"><strong>${t(f.id)}</strong><span></span></button>`).join('');
+ $('fruitGuide').innerHTML=FRUITS.map(f=>`<p><strong>${t(f.id)}</strong> · ${f.bands.map(([lo,hi],i)=>`${t(names[i])} ${lo}–${hi}`).join(' · ')}</p>`).join('');
+ const shop=[['compost','compostUpgrade','compostEffect',20,'shade'],['crates','cratesUpgrade','cratesEffect',30,'basket'],['gold','golden','goldEffect',8,'diamond']];
+ $('shopItems').innerHTML=shop.map(([id,title,effect,cost,art])=>`<article class="shop-item">${art==='shade'?'<span class="action-art action-art-shade" aria-hidden="true"></span>':`<img src="/assets/${art==='diamond'?'weightplay-diamond.svg':'animal-vine-basket.png'}" alt="">`}<div><h3>${t(title)}</h3><p>${t(effect)}</p></div><button type="button" data-buy="${id}" data-cost="${cost}"></button></article>`).join('');
+}
+function progress(){
+ const run=profile.run;
+ $('mainProgress').textContent=saveAvailable?`${t('season')} ${profile.completed+1} · ${t('day')} ${run&&!run.ended?run.day:1} / 8${profile.legacyBest?` · ${t('legacy')} ${profile.legacyBest}/3`:''}`:t('saveError');
+}
+function render(event=''){
+ progress();const run=profile.run;if(!run)return;
+ const co=contract(run),current=CONTRACTS[run.contract].weather[run.day-1];
+ $('dayLabel').innerHTML=`<span>${t('day')}</span><strong>${run.day}/8</strong>`;
+ $('leafCount').innerHTML=`<span>${t('harvest')}</span><strong>${total()}/${co.total}</strong>`;
+ $('contractName').textContent=t(['first','rainy','dry','festival'][run.contract]);
+ $('orderText').textContent=`${t('target')} ${co.total}${co.fruit===null?'':co.fruit==='all'?` · ${t('apple')}/${t('pear')}/${t('orange')} ${co.quota}`:` · ${t(FRUITS[co.fruit].id)} ${co.quota}`}`;
+ $('weatherName').textContent=t(current==='sun'?'sunny':current);
+ $('weatherEffect').innerHTML=`${t('forecast')} ${deltaMarkup(forecast(run).delta)}`;
+ $('careCount').textContent=`${t('actions')} ${run.actions}/2`;
+ const expected=projected(run);$('growthPreview').textContent=`${t('grow')} ${FRUITS.filter((f,i)=>healthy(expected,i)).length}/3`;
+ names.forEach((_,i)=>{
+   $('value'+i).textContent=`${run.resources[i]} / 8`;$('meter'+i).setAttribute('aria-valuenow',run.resources[i]);$('fill'+i).style.width=`${run.resources[i]/8*100}%`;
+   const [lo,hi]=FRUITS[run.selected].bands[i];$('goal'+i).style.left=`${lo/8*100}%`;$('goal'+i).style.width=`${(hi-lo)/8*100}%`;
+ });
+ TOOLS.forEach((tool,i)=>{const delta=[...tool.delta];if(tool.id==='compost'&&profile.compost)delta[2]++;$('delta'+i).innerHTML=deltaMarkup(delta);const button=document.querySelector(`[data-action="${tool.id}"]`);button.setAttribute('aria-disabled',String(!run.actions||run.lastPicking||run.ended));button.setAttribute('aria-label',`${t(['watering','compost','canopy'][i])}: ${delta.map((n,j)=>`${t(names[j])} ${n>0?'+':''}${n}`).join(', ')}`);});
+ FRUITS.forEach((f,i)=>{const button=$('tree'+i),ready=run.growth[i]>=2;button.classList.toggle('is-ready',ready);button.setAttribute('aria-pressed',String(run.selected===i));button.querySelector('span').textContent=ready?t('ready'):`${t('grow')} ${run.growth[i]}/2`;});
+ const selected=FRUITS[run.selected];$('treeInfo').innerHTML=`<b>${t(selected.id)}</b> ${selected.bands.map(([lo,hi],i)=>`<span>${t(names[i])} ${lo}–${hi}</span>`).join('')}`;
+ $('nextDay').textContent=t(run.lastPicking?'settle':'sunset');
+ if(run.lastPicking)message(t('finalPick'));
+ if(event)scene?.update(profile,event);else scene?.update(profile);
+ if(modal==='shopDialog')renderShop();
+}
+function showMain(){
+ clearEffects();modal=null;document.querySelectorAll('.orchard-modal').forEach(n=>n.hidden=true);
+ $('mainView').hidden=false;$('battleView').hidden=true;$('battleContent').inert=false;
+ document.querySelectorAll('.game-page-info').forEach(n=>n.hidden=false);
+ document.body.dataset.screen='main';document.body.dataset.wpOverlay='';active='main';scene?.setActive(false);frame.activate('main');progress();
+ window.scrollTo(0,0);$('startButton').focus({preventScroll:true});
+}
+function enter(index){
+ if(Number.isInteger(index)||!profile.run||profile.run.ended){startRun(profile,index);save();}
+ $('mainView').hidden=true;document.querySelectorAll('.game-page-info').forEach(n=>n.hidden=true);
+ document.querySelectorAll('.orchard-modal').forEach(n=>n.hidden=true);modal=null;$('battleView').hidden=false;$('battleContent').inert=false;
+ document.body.dataset.screen='battle';document.body.dataset.wpOverlay='';active='battle';frame.activate('battle');scene.setActive(true);render('entry');
+ message(saveAvailable?`${t('forecast')} · ${t('actions')} ${profile.run.actions}/2`:t('saveError'));
+ document.querySelector('[data-action]')?.focus({preventScroll:true});
+}
+function canAct(){return active==='battle'&&!modal&&!document.hidden;}
+function doCare(id){
+ if(!canAct())return;
+ if(!care(profile,id)){message(t('noActions'));audio('feedback.error');return;}
+ save();render('care');const tool=TOOLS.find(a=>a.id===id);audio(tool.cue);
+ animate(document.querySelector(`[data-action="${id}"]`),[{filter:'brightness(1.4)'},{filter:'brightness(1)'}]);
+ message(profile.run.actions?`${t('actions')} ${profile.run.actions}/2`:t('noActions'));
+}
+function fly(index,amount){
+ const start=$('tree'+index).getBoundingClientRect(),end=$('leafCount').getBoundingClientRect();
+ animate($('leafCount'),[{filter:'brightness(2)'},{filter:'brightness(1)'}],{duration:320});
+ if(reduced.matches||!start.width||!end.width)return;
+ const node=document.createElement('img');node.src='/assets/animal-vine-basket.png';node.className='harvest-flight';node.alt='';
+ if(profile.gold)node.style.filter='sepia(1) saturate(4) drop-shadow(0 0 6px #ffda62)';
+ node.style.left=`${start.x+start.width/2-14}px`;node.style.top=`${start.y}px`;document.body.append(node);flights.add(node);
+ const x=end.x+end.width/2-start.x-start.width/2,y=end.y-start.y;
+ const a=animate(node,[{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${x*.5}px,${y*.5-45}px) scale(1.3)`,opacity:1},{transform:`translate(${x}px,${y}px) scale(.4)`,opacity:0}],{duration:550,easing:'cubic-bezier(.2,.65,.4,1)'});
+ if(a)a.finished.then(()=>{node.remove();flights.delete(node);},()=>{node.remove();flights.delete(node);});
+}
+function pick(index){
+ if(!canAct())return;profile.run.selected=index;
+ const amount=harvest(profile,index);save();render(amount?'harvest':'select');
+ if(amount){audio('reward.collect');fly(index,amount);message(`${t(FRUITS[index].id)} +${amount} · ${t('coins')} +${amount}`);}
+ else message(`${t(FRUITS[index].id)} · ${t('grow')} ${profile.run.growth[index]}/2`);
+}
+function endDay(){
+ if(!canAct())return;const result=sunset(profile);if(!result)return;save();render('sunset');
+ if(result.kind==='result'){audio(result.won?'result.win':'result.lose');showResult();}
+ else{audio('game.checkpoint');message(profile.run.lastPicking?t('finalPick'):`${t('grow')} ${result.growing.filter(Boolean).length}/3 · ${t('day')} ${profile.run.day}`);}
+}
+function openModal(id,origin){
+ clearEffects();returnFocus=origin||document.activeElement;modal=id;document.body.dataset.wpOverlay=id;
+ $('battleContent').inert=true;frame.activate('battle',{covered:true});scene?.setActive(false);
+ $(id).hidden=false;$(id).scrollTop=0;animate($(id).firstElementChild,[{opacity:0},{opacity:1}]);
+ $(id).querySelector('button:not(:disabled)')?.focus({preventScroll:true});
+}
+function closeModal(){
+ if(!modal||modal==='resultView'||modal==='graphicsDialog')return;
+ $(modal).hidden=true;modal=null;document.body.dataset.wpOverlay='';$('battleContent').inert=false;
+ frame.activate('battle');scene?.setActive(!document.hidden);returnFocus?.focus({preventScroll:true});
+}
+function showResult(){
+ $('resultSeason').textContent=t(['first','rainy','dry','festival'][profile.run.contract]);
+ $('resultTitle').textContent=t(profile.run.won?'win':'lose');
+ $('resultSummary').textContent=`${t('harvest')} ${total()} / ${contract(profile.run).total}`;
+ $('resultFruit').innerHTML=FRUITS.map((f,i)=>`<div>${t(f.id)}<strong>${profile.run.harvest[i]}</strong></div>`).join('');
+ $('resultBest').textContent=`${t('coins')} ${profile.coins} · ${t('harvest')} ${profile.best}`;
+ $('nextSeason').disabled=!profile.run.won;window.WeightPlayScreenFrame?.ShowResultGet?.('animal-orchard-steward',false);openModal('resultView');
+}
+function renderShop(){
+ $('coinBalance').textContent=`${t('coins')} ${profile.coins}`;$('diamondBalance').textContent=String(window.WeightPlayWallet?.read().diamonds||0);
+ document.querySelectorAll('[data-buy]').forEach(button=>{const id=button.dataset.buy;button.textContent=profile[id]?t('owned'):`${t('buy')} · ${button.dataset.cost}`;button.disabled=profile[id]||!saveAvailable;});
+}
+function purchase(id){
+ if(modal!=='shopDialog'||!saveAvailable||profile[id])return;
+ const old=clone(profile);let spent=false;
+ try{
+  // Establish storage availability before touching the shared wallet.
+  localStorage.setItem(SAVE_KEY,JSON.stringify(profile));
+  if(id==='gold'){
+   if(!window.WeightPlayWallet?.spendDiamonds(8)){$('shopFeedback').textContent=t('unavailable');audio('feedback.error');return;}
+   spent=true;profile.gold=true;
+  }else if(!buyEquipment(profile,id)){$('shopFeedback').textContent=t('unavailable');audio('feedback.error');return;}
+  if(!save())throw Error('SAVE_FAILED');
+  audio(id==='gold'?'shop.purchase':'reward.upgrade');$('shopFeedback').textContent=t('owned');renderShop();render('upgrade');
+ }catch{
+  profile=old;if(spent)window.WeightPlayWallet?.addDiamonds(8);
+  saveAvailable=false;$('shopFeedback').textContent=t('saveError');renderShop();
+ }
+}
+function graphicsFailure(){
+ if(active==='battle')openModal('graphicsDialog');
+ else window.WeightPlayGameEntryLoader?.fail?.(t('graphicsError'),()=>location.reload());
+}
+function init(){
+ applyCopy();buildControls();
+ // No private locale navigation: the shared Settings component owns same-game routes.
+ frame=window.OrchardStewardFrame.mount();
+ try{localStorage.setItem(`${SAVE_KEY}-probe`,'1');localStorage.removeItem(`${SAVE_KEY}-probe`);}catch{saveAvailable=false;}
+ try{scene=new OrchardScene($('orchardCanvas'),pick,graphicsFailure);}catch(error){console.error('Orchard renderer:',error);graphicsFailure();return;}
+ $('startButton').addEventListener('click',()=>enter());
+ $('actions').addEventListener('click',e=>{const button=e.target.closest('[data-action]');if(button)doCare(button.dataset.action);});
+ $('treeTargets').addEventListener('click',e=>{const button=e.target.closest('[data-tree]');if(button)pick(Number(button.dataset.tree));});
+ $('nextDay').addEventListener('click',endDay);
+ $('homeFromBattle').addEventListener('click',()=>{if(profile.run?.ended)showMain();else openModal('leaveDialog');});
+ $('continueButton').addEventListener('click',closeModal);$('confirmLeaveButton').addEventListener('click',()=>{save();showMain();});
+ $('helpButton').addEventListener('click',()=>openModal('helpDialog'));
+ $('shopButton').addEventListener('click',()=>{renderShop();$('shopFeedback').textContent=saveAvailable?'':t('saveError');openModal('shopDialog');});
+ document.querySelectorAll('[data-close]').forEach(button=>button.addEventListener('click',closeModal));
+ $('shopItems').addEventListener('click',e=>{const button=e.target.closest('[data-buy]');if(button)purchase(button.dataset.buy);});
+ $('homeFromResult').addEventListener('click',showMain);
+ $('replayButton').addEventListener('click',()=>{const index=profile.run.contract;clearEffects();enter(index);});
+ $('nextSeason').addEventListener('click',()=>{if(profile.run.won){clearEffects();enter(profile.completed%CONTRACTS.length);}});
+ $('reloadButton').addEventListener('click',()=>location.reload());
+ document.addEventListener('keydown',e=>{
+  if(!modal)return;
+  if(e.key==='Escape'&&!['resultView','graphicsDialog'].includes(modal)){e.preventDefault();closeModal();return;}
+  if(e.key==='Tab'){
+   const controls=[...$(modal).querySelectorAll('button:not(:disabled),[tabindex="0"]')].filter(n=>n.getClientRects().length);
+   const first=controls[0],last=controls.at(-1);
+   if(e.shiftKey&&(document.activeElement===first||!$(modal).contains(document.activeElement))){e.preventDefault();last?.focus();}
+   else if(!e.shiftKey&&(document.activeElement===last||!$(modal).contains(document.activeElement))){e.preventDefault();first?.focus();}
+  }
+ });
+ document.addEventListener('visibilitychange',()=>{clearEffects();scene.setActive(active==='battle'&&!modal&&!document.hidden);});
+ window.addEventListener('pagehide',e=>{save();clearEffects();scene.setActive(false);if(!e.persisted)scene.dispose();});
+ window.addEventListener('pageshow',e=>{if(e.persisted)scene.setActive(active==='battle'&&!modal&&!document.hidden);});
+ window.WeightPlayAudio?.preload(['water.splash','impact.soft','board.move','reward.collect','game.checkpoint','reward.upgrade','shop.purchase','feedback.error','result.win','result.lose']);
+ $('startButton').disabled=false;showMain();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();

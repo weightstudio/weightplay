@@ -92,10 +92,10 @@
           <label class="locale" hidden><span data-copy="language">Lingua</span><select id="localeSelect" aria-label="Lingua"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
         </header>
         <section class="hero-card">
-          <img class="main-poster" src="/assets/alien-defender-cover.webp" alt="" aria-hidden="true">
+          <img class="main-poster" src="/assets/interface7-redrawn/alien-defender.webp" width="1254" height="1254" fetchpriority="high" alt="" aria-hidden="true">
           <div class="main-copy">
             <p class="status-pill" data-copy="comingSoon">Prossimamente</p>
-            <p class="lead main-summary" data-copy="guideIntro">Difendi la stazione in 30 livelli. Usa i crediti per migliorare la nave.</p>
+            <p class="lead main-summary" data-copy="guideIntro">Pilota la cannoniera di una lontra in 30 battaglie. Schiva le raffiche e carica il tuo impulso.</p>
           <p id="mainProgress" class="main-progress">1 / 30 unlocked</p>
             <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-copy="start" data-runtime-localize="off">Inizia la difesa</button>
           </div>
@@ -128,6 +128,10 @@
             <button class="upgrade-card" type="button" data-upgrade="hull"><strong data-copy="upgradeHull">Integrità dello scafo</strong><span class="upgrade-level" data-upgrade-level>0 / 3</span><span class="upgrade-price" data-upgrade-cost>Cost: 150</span><span class="upgrade-action" data-upgrade-action>Buy</span></button>
             <button class="upgrade-card" type="button" data-upgrade="rapid"><strong data-copy="upgradeRapid">Ritmo di fuoco</strong><span class="upgrade-level" data-upgrade-level>0 / 4</span><span class="upgrade-price" data-upgrade-cost>Cost: 120</span><span class="upgrade-action" data-upgrade-action>Buy</span></button>
           </div>
+          <button id="skinBtn" class="skin-card" type="button"><span class="skin-swatch" aria-hidden="true"></span><span><strong data-copy="skinTitle">Livrea aurora</strong><small data-copy="skinCopy">Scafo e motori rosa-viola permanenti. Solo estetica.</small><b id="skinPrice" data-copy="skinCost">15 diamanti · permanente</b></span></button>
+          <p class="wallet-line"><img src="/assets/weightplay-diamond.svg" width="20" height="20" alt=""><strong id="diamondBalance">0</strong></p>
+          <p id="shopMessage" class="shop-message" role="status"></p>
+          <div id="skinConfirm" hidden><p data-copy="skinCost">15 diamanti · permanente</p><button id="confirmSkinBtn" class="secondary-action" data-copy="confirm">Conferma</button> <button id="cancelSkinBtn" class="secondary-action" data-copy="cancel">Annulla</button></div>
           <button id="closeShopBtn" class="secondary-action" type="button" data-copy="close">Torna ai livelli</button>
         </aside>
       </div>
@@ -143,14 +147,14 @@
         <div id="battleStats" class="hud-stats" hidden>
           <div class="hud-stat"><span class="hud-label" data-copy="stage">Livello</span><strong id="waveValue">1 / 30</strong></div>
           <div class="hud-stat"><span class="hud-label" data-copy="score">Punteggio</span><strong id="scoreValue">0</strong></div>
-          <div class="hud-stat"><span class="hud-label" data-copy="best">Record</span><strong id="bestValue">0</strong></div>
+          <div class="hud-stat"><span class="hud-label" data-copy="shields">Scudo</span><strong id="shieldValue">1</strong></div>
           <div class="hud-stat"><span class="hud-label" data-copy="lives">Vite</span><strong id="livesValue">5</strong></div>
         </div>
         <div class="battle-stage">
-          <div class="firepower-chip"><span data-copy="firepower">Potenza</span> <strong id="firepowerValue">1</strong></div>
+          <div class="mission-strip"><span><span data-copy="formation">Flotta</span> <strong id="formationValue">0 / 10</strong></span><span><span data-copy="salvage">Pezzi</span> <strong id="salvageValue">0</strong></span><strong id="comboValue"></strong></div>
           <button id="restartBtn" class="restart-button" type="button" data-copy-aria="restart" aria-label="Ricomincia">↻</button>
           <canvas id="gameCanvas" width="920" height="720" tabindex="0" aria-label="Campo di gioco Difensore Alieno"></canvas>
-          <div class="touch-controls" aria-label="Comandi touch"><button id="leftBtn" type="button" data-copy-aria="left" aria-label="Sinistra">◀</button><button id="fireBtn" class="fire-button" type="button" data-copy-aria="fire" aria-label="Fuoco">✦</button><button id="rightBtn" type="button" data-copy-aria="right" aria-label="Destra">▶</button></div>
+          <div class="touch-controls" aria-label="Comandi touch"><button id="leftBtn" type="button" data-copy-aria="left" aria-label="Sinistra">◀</button><button id="rightBtn" type="button" data-copy-aria="right" aria-label="Destra">▶</button><button id="pulseBtn" type="button" class="pulse-button"><span data-copy="pulse">Impulso</span><small id="pulseValue">0 / 6</small></button><button id="fireBtn" class="fire-button" type="button" data-copy-aria="fire" aria-label="Fuoco">✦</button></div>
           <p id="battleMessage" class="battle-message" aria-live="polite">Leggi la regola del livello.</p>
           <div id="leaveDialog" class="leave-dialog" hidden role="dialog" aria-modal="true" aria-labelledby="leaveDialogTitle"><p class="leave-kicker" data-copy="leaveKicker">Difesa in pausa</p><h2 id="leaveDialogTitle" data-copy="leaveTitle">Vuoi uscire da questa difesa?</h2><p data-copy="leaveCopy">Il livello e il punteggio attuali andranno persi tornando alla lista dei livelli.</p><div class="leave-actions"><button id="continueBtn" class="primary-action" type="button" data-copy="continue">Continua a giocare</button><button id="leaveBtn" class="secondary-action" type="button" data-copy="leave">Torna ai livelli</button></div></div>
         </div>
@@ -169,9 +173,10 @@
   <script src="../../src/battle-canvas-standard.js?v=20261020-shared-i9-battle-canvas1" data-wp-battle-standard></script>
   <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
   <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
-  <script src="stage-config.js?v=20261020-alien-defender-v61-i9"></script>
-  <script src="frame.js?v=20261020-alien-defender-v61-i9"></script>
-  <script src="game.js?v=20261020-alien-defender-v61-i9-repair3&wp-audio=1.0.0"></script>
+  <script src="../../src/wallet.js?v=20261023"></script>
+  <script src="stage-config.js?v=20261023-alien-defender-v62"></script>
+  <script src="frame.js?v=20261023-alien-defender-v62"></script>
+  <script type="module" src="game.js?v=20261014-guide-i9-v61&wp-audio=1.0.0"></script>
   <section class="game-page-info game-page-info-static" aria-label="Informazioni su Difensore Alieno">
 
     <div class="game-info-hero">

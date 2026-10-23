@@ -11369,7 +11369,7 @@
     }
     // WP_ANIMAL_HERO_TRIALS_TEXT140_RENDER_END
     const official = window.WEIGHTPLAY_GAME_TITLES?.[id]?.[locale()];
-    return game && official && document.documentElement.hasAttribute?.('data-wp-official-name') ? { ...game, title: official } : game;
+    return game && official && (id === "animal-color-link" || document.documentElement.hasAttribute?.('data-wp-official-name')) ? { ...game, title: official } : game;
   }
 
   function localizedGameContent(id) {
@@ -22725,155 +22725,605 @@
   // directly instead of asking a replacement pass to reinterpret old wave
   // language. Every required locale owns the same player-facing contract.
   const alienV45GuideCopy = {
-    en: {
-      intro: "Alien Defender is an original WeightPlay fixed-screen shooter with 30 Stages. Each Stage is one Battle, and Credits buy persistent firepower and survival upgrades.",
-      story: ["The signal station campaign is arranged as six chapters of five Stages. Clear one formation, collect its Credits, and decide which upgrade will carry the defender into the next frontier."],
-      systems: ["Move the ship left and right and fire upward. Each Stage uses one authored enemy formation; its chapter rule changes the pressure through volleys, captains, relay timing, crossfire, or the final signal-core guardian."],
-      how: ["Choose an unlocked Stage and read its chapter rule before entering Battle.", "Use Left/Right or A/D on desktop and Space to fire; on mobile, hold the movement controls and tap Fire.", "Clear the single formation, then use Result to claim the Stage reward and return to Stage.", "Open Upgrades and spend Credits on firepower, shield, hull, or firing speed. Bullets do not increase automatically because of a Stage number."],
-      strategyTips: ["Read the rule on the Stage card before choosing a firing lane.", "Keep the enemy formation's pressure separate from your own firepower: the first is the Stage challenge, the second is bought with Credits.", "When Credits are low, prioritize firepower for wider coverage; shield, hull, and firing speed help stabilize later chapters.", "Chapter 6 ends at Stage 30 with the signal-core guardian."],
-      progression: ["Thirty Stages are arranged as six chapters of five. Clearing the current frontier unlocks the next Stage; replaying a cleared Stage does not grant automatic bullets, so spend earned Credits in Upgrades."],
-      designNote: "Alien Defender combines readable fixed-screen formations with a 30-Stage, six-chapter campaign and a clear Credit-driven upgrade loop: Stage rules create challenge, while the player owns the firepower choice.",
-      parent: "This public game has no account, payment, chat, leaderboard, or advertising flow. Credits, unlocks, upgrades, and Best stay in the current browser.",
-      faq: [["How many waves are in a Stage?", "Each Stage has one Battle and one formation. The campaign has 30 Stages, not a confusing Stage-to-wave offset."], ["How do bullets increase?", "Earn Credits in Battle and Result, then buy firepower in Upgrades. A Stage number never silently adds bullets."], ["How do I unlock more Stages?", "Clear the current frontier Stage. The next Stage unlocks in order, across six chapters of five."], ["Is progress saved?", "Unlocks, Credits, upgrades, and the local Best are saved in this browser."]]
-    },
-    "zh-Hant": {
-      intro: "星際守衛是 WeightPlay 原創的 30 關固定畫面射擊遊戲。每關就是一場 Battle，能源點可購買持久火力與生存強化。",
-      story: ["訊號站戰役分成六章、每章五關。清除一個敵方編隊後取得能源點，再決定要用哪種強化迎戰下一個前沿。"],
-      systems: ["飛船左右移動並向上射擊。每個 Stage 只有一個設計好的敵方編隊；章節規則會透過齊射、隊長、接力、交叉火網或最後的訊號核心守護者改變壓力。"],
-      how: ["先選擇已解鎖的 Stage，讀懂卡片上的章節規則再進入 Battle。", "桌面用左右鍵或 A/D 移動、Space 射擊；手機按住移動控制並點擊射擊。", "清除這一個編隊後，在 Result 領取關卡獎勵，再回到 Stage。", "打開強化頁，把能源點花在火力、護盾、船體或射擊速度；子彈不會因為關卡編號自動增加。"],
-      strategyTips: ["進入關卡前先看 Stage 卡片上的規則，再決定射擊路線。", "把敵方壓力和自己的火力分開理解：前者是關卡挑戰，後者要用能源點購買。", "能源點不足時先買火力擴散；護盾、船體和射擊速度能讓後面的章節更穩。", "第六章在第 30 關迎戰訊號核心守護者。"],
-      progression: ["30 個關卡分成六章，每章五關。清除當前最前沿關卡會解鎖下一關；重玩已完成關卡不會自動送子彈，請把賺到的能源點花在強化頁。"],
-      designNote: "星際守衛把易讀的固定畫面編隊，和 30 關、六章戰役及清楚的能源點強化循環結合：關卡規則製造挑戰，火力選擇由玩家掌握。",
-      parent: "這款公開遊戲沒有帳號、付款、聊天、排行榜或廣告流程；能源點、解鎖、強化與最佳紀錄只保存在目前瀏覽器。",
-      faq: [["每關有幾波？", "每個 Stage 只有一場 Battle、清除一個編隊。整體是 30 個 Stage，不會再出現關卡和波數錯位。"], ["子彈怎麼增加？", "在 Battle 與 Result 賺取能源點，再到強化頁購買火力；關卡編號不會偷偷增加子彈。"], ["怎麼解鎖更多關卡？", "清除當前最前沿關卡即可依序解鎖下一關；完整戰役是六章、每章五關。"], ["進度會保存嗎？", "解鎖、能源點、強化與本機最佳紀錄會保存在目前瀏覽器。"]]
-    },
-    "zh-Hans": {
-      intro: "星际守卫是 WeightPlay 原创的 30 关固定画面射击游戏。每关就是一场 Battle，能源点可以购买持久火力和生存强化。",
-      story: ["信号站战役分成六章、每章五关。清除一个敌方编队后获得能源点，再决定用哪种强化迎战下一个前沿。"],
-      systems: ["飞船左右移动并向上射击。每个 Stage 只有一个设计好的敌方编队；章节规则会通过齐射、队长、接力、交叉火网或最后的信号核心守护者改变压力。"],
-      how: ["先选择已解锁的 Stage，读懂卡片上的章节规则再进入 Battle。", "桌面用左右键或 A/D 移动、Space 射击；手机按住移动控制并点击射击。", "清除这一个编队后，在 Result 领取关卡奖励，再回到 Stage。", "打开强化页，把能源点花在火力、护盾、船体或射击速度；子弹不会因为关卡编号自动增加。"],
-      strategyTips: ["进入关卡前先看 Stage 卡片上的规则，再决定射击路线。", "把敌方压力和自己的火力分开理解：前者是关卡挑战，后者要用能源点购买。", "能源点不足时先买火力扩散；护盾、船体和射击速度能让后面的章节更稳。", "第六章在第 30 关迎战信号核心守护者。"],
-      progression: ["30 个关卡分成六章，每章五关。清除当前最前沿关卡会解锁下一关；重玩已完成关卡不会自动送子弹，请把赚到的能源点花在强化页。"],
-      designNote: "星际守卫把易读的固定画面编队，和 30 关、六章战役及清楚的能源点强化循环结合：关卡规则制造挑战，火力选择由玩家掌握。",
-      parent: "这款公开游戏没有账号、付款、聊天、排行榜或广告流程；能源点、解锁、强化与最佳记录只保存在当前浏览器。",
-      faq: [["每关有几波？", "每个 Stage 只有一场 Battle、清除一个编队。整体是 30 个 Stage，不会再出现关卡和波数错位。"], ["子弹怎么增加？", "在 Battle 与 Result 赚取能源点，再到强化页购买火力；关卡编号不会偷偷增加子弹。"], ["怎么解锁更多关卡？", "清除当前最前沿关卡即可依次解锁下一关；完整战役是六章、每章五关。"], ["进度会保存吗？", "解锁、能源点、强化与本机最佳记录会保存在当前浏览器。"]]
-    },
-    ja: {
-      intro: "エイリアン・ディフェンダーはWeightPlayオリジナルの全30ステージ固定画面シューティングです。1ステージは1バトルで、クレジットで火力と生存力を強化します。",
-      story: ["信号基地の作戦は6チャプター、各5ステージです。編隊を撃破してクレジットを得たら、次の前線へ持ち込む強化を選びます。"],
-      systems: ["船を左右に動かして上へ撃ちます。各ステージは1つの敵編隊で構成され、斉射、隊長、リレー、クロスファイア、最後のシグナルコア守護者が章ごとの圧力を作ります。"],
-      how: ["解放済みステージを選び、カードの章ルールを読んでからバトルへ進みます。", "デスクトップは左右キーまたはA/Dで移動し、Spaceで撃ちます。モバイルは移動ボタンを押してFireをタップします。", "1つの編隊を倒したらResultで報酬を受け取り、Stageへ戻ります。", "強化画面でクレジットを火力、シールド、船体、射撃速度に使います。ステージ番号で弾が自動的に増えることはありません。"],
-      strategyTips: ["Stageカードのルールを先に読み、射線を決めます。", "敵の圧力と自分の火力を混同しないでください。前者はステージの挑戦、後者はクレジットで購入する成長です。", "クレジットが少ないときは広い火力を優先し、後半はシールド、船体、射撃速度で安定させます。", "第6章はステージ30のシグナルコア守護者で終わります。"],
-      progression: ["30ステージは6チャプター、各5ステージです。最前線をクリアすると次が順番に解放され、クリア済みステージを再挑戦しても弾は自動付与されません。獲得したクレジットを強化に使います。"],
-      designNote: "エイリアン・ディフェンダーは読みやすい固定画面編隊に、30ステージ・6チャプターの進行とクレジット強化を組み合わせます。ステージが挑戦を作り、火力の選択はプレイヤーが決めます。",
-      parent: "この公開ゲームにアカウント、支払い、チャット、ランキング、広告はありません。クレジット、解放、強化、ベストはこのブラウザに保存されます。",
-      faq: [["1ステージに何ウェーブありますか？", "各ステージは1バトル、1編隊です。全体は30ステージで、ステージ番号とウェーブ番号がずれる設計ではありません。"], ["弾を増やすには？", "バトルとResultでクレジットを獲得し、強化画面で火力を購入します。ステージ番号だけで弾は増えません。"], ["次のステージはどう解放しますか？", "現在の最前線ステージをクリアすると、6チャプター各5ステージの順番で次が解放されます。"], ["進行は保存されますか？", "解放、クレジット、強化、ローカルベストがこのブラウザに保存されます。"]]
-    },
-    ko: {
-      intro: "에일리언 디펜더는 WeightPlay 오리지널 30스테이지 고정 화면 슈터입니다. 한 스테이지는 한 번의 Battle이며 크레딧으로 화력과 생존력을 강화합니다.",
-      story: ["신호 기지 작전은 6개 챕터, 챕터당 5개 스테이지로 구성됩니다. 대형을 처치해 크레딧을 얻고 다음 전선에 가져갈 강화를 선택하세요."],
-      systems: ["함선을 좌우로 움직이며 위로 발사합니다. 각 스테이지는 하나의 적 대형으로 구성되고, 일제 사격·대장·릴레이·교차 사격·마지막 신호 코어 수호자가 챕터별 압박을 만듭니다."],
-      how: ["해금된 스테이지를 고르고 카드의 챕터 규칙을 읽은 뒤 Battle에 들어갑니다.", "데스크톱은 방향키나 A/D로 이동하고 Space로 발사합니다. 모바일은 이동 버튼을 누른 뒤 Fire를 탭합니다.", "하나의 대형을 처치하면 Result에서 보상을 받고 Stage로 돌아갑니다.", "강화 화면에서 크레딧을 화력, 실드, 선체, 발사 속도에 사용하세요. 스테이지 번호만으로 탄환이 자동 증가하지 않습니다."],
-      strategyTips: ["Stage 카드의 규칙을 먼저 읽고 사격 위치를 정하세요.", "적의 압박과 내 화력을 구분하세요. 전자는 스테이지 도전이고 후자는 크레딧으로 사는 성장입니다.", "크레딧이 적을 때는 넓은 화력을 우선하고, 후반에는 실드·선체·발사 속도로 안정성을 높이세요.", "6번째 챕터는 30스테이지의 신호 코어 수호자에서 끝납니다."],
-      progression: ["30개 스테이지는 6개 챕터, 챕터당 5개입니다. 현재 전선을 클리어하면 다음 스테이지가 순서대로 열리고, 클리어한 스테이지를 다시 해도 탄환이 자동 지급되지 않습니다. 얻은 크레딧을 강화에 사용하세요."],
-      designNote: "에일리언 디펜더는 읽기 쉬운 고정 화면 대형에 30스테이지·6챕터 진행과 크레딧 강화 루프를 결합합니다. 스테이지가 도전을 만들고 화력 선택은 플레이어가 결정합니다.",
-      parent: "이 공개 게임에는 계정, 결제, 채팅, 순위표, 광고가 없습니다. 크레딧, 해금, 강화, 최고 기록은 이 브라우저에 저장됩니다.",
-      faq: [["한 스테이지에 웨이브가 몇 개 있나요?", "각 스테이지는 한 번의 Battle과 하나의 대형입니다. 전체는 30스테이지이며 스테이지와 웨이브 번호가 어긋나지 않습니다."], ["탄환을 늘리려면 어떻게 하나요?", "Battle과 Result에서 크레딧을 얻고 강화 화면에서 화력을 구매합니다. 스테이지 번호만으로 탄환이 늘지 않습니다."], ["다음 스테이지는 어떻게 열리나요?", "현재 전선 스테이지를 클리어하면 6챕터, 챕터당 5스테이지 순서로 다음이 열립니다."], ["진행 상황이 저장되나요?", "해금, 크레딧, 강화, 로컬 최고 기록이 이 브라우저에 저장됩니다."]]
-    },
-    es: {
-      intro: "Defensor Alienígena es un shooter original de pantalla fija con 30 fases. Cada fase es un solo Battle y los Créditos compran mejoras persistentes de potencia y supervivencia.",
-      story: ["La campaña de la estación está organizada en seis capítulos de cinco fases. Despeja una formación, gana Créditos y decide qué mejora llevarás a la siguiente frontera."],
-      systems: ["Mueve la nave a izquierda y derecha y dispara hacia arriba. Cada fase tiene una formación; sus reglas de capítulo cambian la presión con salvas, capitanes, relevos, fuego cruzado y el guardián del núcleo final."],
-      how: ["Elige una fase desbloqueada y lee su regla de capítulo antes de entrar en Battle.", "Usa izquierda/derecha o A/D y Espacio; en móvil mantén los controles de movimiento y toca Disparar.", "Despeja la única formación, reclama la recompensa en Result y vuelve a Stage.", "Abre Mejoras y gasta Créditos en potencia, escudo, casco o velocidad de disparo. El número de fase no añade balas automáticamente."],
-      strategyTips: ["Lee la regla de la tarjeta Stage antes de elegir tu línea de tiro.", "Separa la presión enemiga de tu potencia: la primera es el reto de la fase y la segunda se compra con Créditos.", "Con pocos Créditos, prioriza la potencia amplia; el escudo, el casco y la velocidad estabilizan los capítulos finales.", "El capítulo 6 termina en la fase 30 con el guardián del núcleo de señal."],
-      progression: ["Las 30 fases se dividen en seis capítulos de cinco. Superar la frontera actual desbloquea la siguiente; repetir una fase superada no entrega balas automáticamente, así que gasta los Créditos ganados en Mejoras."],
-      designNote: "Defensor Alienígena combina formaciones legibles de pantalla fija con una campaña de 30 fases, seis capítulos y un ciclo claro de mejoras con Créditos: la fase crea el reto y el jugador decide la potencia.",
-      parent: "Este juego público no tiene cuenta, pagos, chat, clasificación ni publicidad. Los Créditos, desbloqueos, mejoras y el mejor resultado se guardan en este navegador.",
-      faq: [["¿Cuántas oleadas tiene una fase?", "Cada fase tiene un Battle y una formación. La campaña tiene 30 fases, sin desfases confusos entre fase y oleada."], ["¿Cómo aumentan las balas?", "Gana Créditos en Battle y Result y compra potencia en Mejoras. El número de fase nunca añade balas en secreto."], ["¿Cómo desbloqueo más fases?", "Supera la fase de frontera actual. La siguiente se desbloquea en orden, en seis capítulos de cinco."], ["¿Se guarda el progreso?", "Los desbloqueos, Créditos, mejoras y el mejor resultado local se guardan en este navegador."]]
-    },
-    "pt-BR": {
-      intro: "Defensor Alienígena é um shooter original de tela fixa com 30 fases. Cada fase é um único Battle, e os Créditos compram melhorias persistentes de poder e sobrevivência.",
-      story: ["A campanha da estação tem seis capítulos de cinco fases. Limpe uma formação, ganhe Créditos e escolha qual melhoria levar para a próxima fronteira."],
-      systems: ["Mova a nave para a esquerda e para a direita e atire para cima. Cada fase tem uma formação; as regras de capítulo mudam a pressão com salvas, capitães, revezamento, fogo cruzado e o guardião do núcleo final."],
-      how: ["Escolha uma fase desbloqueada e leia sua regra de capítulo antes de entrar no Battle.", "Use esquerda/direita ou A/D e Espaço; no celular segure os controles de movimento e toque em Atirar.", "Elimine a única formação, receba a recompensa no Result e volte para Stage.", "Abra Melhorias e gaste Créditos em poder de fogo, escudo, casco ou velocidade de tiro. O número da fase não aumenta as balas automaticamente."],
-      strategyTips: ["Leia a regra no cartão Stage antes de escolher sua linha de tiro.", "Separe a pressão inimiga do seu poder de fogo: a primeira é o desafio da fase, o segundo é comprado com Créditos.", "Com poucos Créditos, priorize o poder amplo; escudo, casco e velocidade ajudam nos capítulos finais.", "O capítulo 6 termina na fase 30 com o guardião do núcleo de sinal."],
-      progression: ["As 30 fases são divididas em seis capítulos de cinco. Vencer a fronteira atual desbloqueia a próxima; repetir uma fase concluída não dá balas automáticas, então gaste os Créditos ganhos em Melhorias."],
-      designNote: "Defensor Alienígena combina formações legíveis de tela fixa com uma campanha de 30 fases, seis capítulos e um ciclo claro de melhorias por Créditos: a fase cria o desafio e o jogador escolhe o poder.",
-      parent: "Este jogo público não tem conta, pagamento, chat, ranking ou publicidade. Créditos, desbloqueios, melhorias e o melhor resultado ficam salvos neste navegador.",
-      faq: [["Quantas ondas há em uma fase?", "Cada fase tem um Battle e uma formação. A campanha tem 30 fases, sem confusão entre o número da fase e da onda."], ["Como aumento as balas?", "Ganhe Créditos no Battle e no Result e compre poder em Melhorias. O número da fase nunca adiciona balas escondido."], ["Como desbloqueio mais fases?", "Conclua a fase de fronteira atual. A próxima abre em ordem, em seis capítulos de cinco."], ["O progresso é salvo?", "Desbloqueios, Créditos, melhorias e o melhor resultado local são salvos neste navegador."]]
-    },
-    fr: {
-      intro: "Défenseur Alien est un shooter original à écran fixe de 30 niveaux. Chaque niveau est un seul Battle et les Crédits achètent des améliorations persistantes de puissance et de survie.",
-      story: ["La campagne de la station est organisée en six chapitres de cinq niveaux. Détruis une formation, gagne des Crédits et choisis l'amélioration à emporter vers la prochaine frontière."],
-      systems: ["Déplace le vaisseau à gauche et à droite et tire vers le haut. Chaque niveau possède une formation; ses règles de chapitre changent la pression avec salves, capitaines, relais, tirs croisés et le gardien final du noyau."],
-      how: ["Choisis un niveau débloqué et lis sa règle de chapitre avant d'entrer en Battle.", "Utilise gauche/droite ou A/D et Espace; sur mobile, maintiens les contrôles de déplacement puis touche Tirer.", "Détruis l'unique formation, récupère la récompense dans Result et retourne à Stage.", "Ouvre Améliorations et dépense les Crédits en puissance, bouclier, coque ou cadence. Le numéro du niveau n'ajoute jamais de tirs automatiquement."],
-      strategyTips: ["Lis la règle de la carte Stage avant de choisir ta ligne de tir.", "Sépare la pression ennemie de ta puissance: la première est le défi du niveau, la seconde s'achète avec des Crédits.", "Avec peu de Crédits, privilégie la puissance large; bouclier, coque et cadence stabilisent les chapitres avancés.", "Le chapitre 6 se termine au niveau 30 avec le gardien du noyau de signal."],
-      progression: ["Les 30 niveaux sont répartis en six chapitres de cinq. Réussir la frontière actuelle débloque le suivant; rejouer un niveau réussi ne donne pas de tirs automatiques: dépense les Crédits gagnés dans les Améliorations."],
-      designNote: "Défenseur Alien associe des formations lisibles à écran fixe à une campagne de 30 niveaux, six chapitres et une boucle d'amélioration claire par Crédits: le niveau crée le défi et le joueur choisit sa puissance.",
-      parent: "Ce jeu public n'a ni compte, ni paiement, ni chat, ni classement, ni publicité. Crédits, déblocages, améliorations et meilleur score restent dans ce navigateur.",
-      faq: [["Combien de vagues contient un niveau?", "Chaque niveau contient un Battle et une formation. La campagne compte 30 niveaux, sans décalage confus entre niveau et vague."], ["Comment augmenter les tirs?", "Gagne des Crédits en Battle et dans Result, puis achète de la puissance dans Améliorations. Le numéro du niveau n'ajoute pas de tirs en secret."], ["Comment débloquer les niveaux suivants?", "Réussis le niveau frontière actuel. Le suivant se débloque dans l'ordre, en six chapitres de cinq."], ["La progression est-elle sauvegardée?", "Déblocages, Crédits, améliorations et meilleur score local sont sauvegardés dans ce navigateur."]]
-    },
-    de: {
-      intro: "Alien-Verteidiger ist ein originaler Fixed-Screen-Shooter mit 30 Stufen. Jede Stufe ist ein Battle, und Credits kaufen dauerhafte Feuerkraft- und Überlebens-Upgrades.",
-      story: ["Die Kampagne der Signalstation besteht aus sechs Kapiteln mit je fünf Stufen. Räume eine Formation, verdiene Credits und wähle das Upgrade für die nächste Grenze."],
-      systems: ["Bewege das Schiff nach links und rechts und schieße nach oben. Jede Stufe hat eine Formation; Kapitelregeln verändern den Druck durch Salven, Kapitäne, Relais, Kreuzfeuer und den finalen Signal-Kernwächter."],
-      how: ["Wähle eine freigeschaltete Stufe und lies ihre Kapitelregel vor dem Battle.", "Nutze links/rechts oder A/D und die Leertaste; mobil hältst du die Bewegungssteuerung und tippst Feuer.", "Räume die eine Formation, nimm die Belohnung in Result und kehre zu Stage zurück.", "Öffne Upgrades und gib Credits für Feuerkraft, Schild, Rumpf oder Schusstempo aus. Die Stufennummer erhöht die Munition nicht automatisch."],
-      strategyTips: ["Lies die Regel auf der Stage-Karte, bevor du deine Schusslinie wählst.", "Trenne feindlichen Druck von deiner Feuerkraft: Ersterer ist die Stufenaufgabe, Letztere wird mit Credits gekauft.", "Bei wenigen Credits zuerst breite Feuerkraft kaufen; Schild, Rumpf und Schusstempo stabilisieren spätere Kapitel.", "Kapitel 6 endet in Stufe 30 mit dem Signal-Kernwächter."],
-      progression: ["Die 30 Stufen sind sechs Kapitel mit je fünf Stufen. Wenn du die aktuelle Grenzstufe schaffst, wird die nächste freigeschaltet; ein Wiederholen gibt keine automatische Munition, also investiere verdiente Credits in Upgrades."],
-      designNote: "Alien-Verteidiger verbindet lesbare Fixed-Screen-Formationen mit einer Kampagne aus 30 Stufen, sechs Kapiteln und einer klaren Credit-Upgrade-Schleife: Die Stufe erzeugt die Herausforderung, die Feuerkraft wählt der Spieler.",
-      parent: "Dieses öffentliche Spiel hat kein Konto, keine Zahlung, keinen Chat, keine Rangliste und keine Werbung. Credits, Freischaltungen, Upgrades und Bestwert bleiben in diesem Browser.",
-      faq: [["Wie viele Wellen hat eine Stufe?", "Jede Stufe hat ein Battle und eine Formation. Die Kampagne hat 30 Stufen, ohne verwirrende Verschiebung zwischen Stufe und Welle."], ["Wie bekomme ich mehr Munition?", "Verdiene Credits in Battle und Result und kaufe Feuerkraft bei Upgrades. Die Stufennummer fügt niemals heimlich Munition hinzu."], ["Wie schalte ich weitere Stufen frei?", "Schaffe die aktuelle Grenzstufe. Die nächste wird der Reihe nach freigeschaltet, in sechs Kapiteln mit je fünf Stufen."], ["Wird der Fortschritt gespeichert?", "Freischaltungen, Credits, Upgrades und der lokale Bestwert werden in diesem Browser gespeichert."]]
-    },
-    it: {
-      intro: "Difensore Alieno è uno shooter originale a schermo fisso con 30 livelli. Ogni livello è un solo Battle e i Crediti acquistano potenziamenti persistenti per potenza e sopravvivenza.",
-      story: ["La campagna della stazione è divisa in sei capitoli da cinque livelli. Elimina una formazione, ottieni Crediti e scegli il potenziamento da portare alla frontiera successiva."],
-      systems: ["Muovi la nave a sinistra e destra e spara verso l'alto. Ogni livello ha una formazione; le regole dei capitoli cambiano la pressione con raffiche, capitani, staffette, fuoco incrociato e il guardiano finale del nucleo."],
-      how: ["Scegli un livello sbloccato e leggi la regola del capitolo prima del Battle.", "Usa sinistra/destra o A/D e Spazio; su mobile tieni i controlli di movimento e tocca Fuoco.", "Elimina l'unica formazione, ritira la ricompensa in Result e torna a Stage.", "Apri Potenziamenti e spendi i Crediti per potenza, scudo, scafo o velocità di tiro. Il numero del livello non aggiunge proiettili automaticamente."],
-      strategyTips: ["Leggi la regola sulla scheda Stage prima di scegliere la linea di tiro.", "Separa la pressione nemica dalla tua potenza: la prima è la sfida del livello, la seconda si compra con i Crediti.", "Con pochi Crediti, dai priorità alla potenza ampia; scudo, scafo e velocità rendono più stabili i capitoli avanzati.", "Il capitolo 6 termina al livello 30 con il guardiano del nucleo di segnale."],
-      progression: ["I 30 livelli sono divisi in sei capitoli da cinque. Superare la frontiera attuale sblocca il livello successivo; rigiocare un livello completato non regala proiettili automatici: investi i Crediti nei Potenziamenti."],
-      designNote: "Difensore Alieno unisce formazioni leggibili a schermo fisso con una campagna di 30 livelli, sei capitoli e un ciclo chiaro di potenziamenti a Crediti: il livello crea la sfida e il giocatore sceglie la potenza.",
-      parent: "Questo gioco pubblico non ha account, pagamenti, chat, classifiche o pubblicità. Crediti, sblocchi, potenziamenti e record restano in questo browser.",
-      faq: [["Quante ondate ci sono in un livello?", "Ogni livello ha un Battle e una formazione. La campagna ha 30 livelli, senza confusione tra numero del livello e dell'ondata."], ["Come aumento i proiettili?", "Guadagna Crediti in Battle e Result, poi compra potenza in Potenziamenti. Il numero del livello non aggiunge proiettili di nascosto."], ["Come sblocco altri livelli?", "Completa il livello di frontiera attuale. Il successivo si apre in ordine, in sei capitoli da cinque."], ["I progressi vengono salvati?", "Sblocchi, Crediti, potenziamenti e record locale vengono salvati in questo browser."]]
-    },
-    ru: {
-      intro: "«Защитник от пришельцев» — оригинальный шутер WeightPlay на фиксированном экране с 30 этапами. Каждый этап — один Battle, а кредиты покупают постоянные усиления огневой мощи и выживания.",
-      story: ["Кампания сигнальной станции разделена на шесть глав по пять этапов. Уничтожьте строй, получите кредиты и выберите усиление для следующего рубежа."],
-      systems: ["Двигайте корабль влево и вправо и стреляйте вверх. На каждом этапе есть один строй; правила глав меняют давление залпами, капитанами, релейным огнём, перекрёстным огнём и финальным стражем сигнального ядра."],
-      how: ["Выберите открытый этап и прочитайте правило главы перед Battle.", "Используйте влево/вправо или A/D и пробел; на телефоне удерживайте управление движением и нажимайте огонь.", "Уничтожьте один строй, заберите награду на Result и вернитесь в Stage.", "Откройте усиления и потратьте кредиты на мощь, щит, корпус или скорострельность. Номер этапа сам по себе не добавляет снаряды."],
-      strategyTips: ["Сначала прочитайте правило на карточке Stage и только потом выбирайте линию огня.", "Отделяйте давление врага от своей мощи: первое — испытание этапа, второе покупается за кредиты.", "При малом запасе кредитов сначала берите широкую мощь; щит, корпус и скорострельность помогают в поздних главах.", "Шестая глава заканчивается на этапе 30 стражем сигнального ядра."],
-      progression: ["30 этапов разделены на шесть глав по пять. Победа на текущем передовом этапе открывает следующий; повторное прохождение не выдаёт автоматические снаряды — тратьте заработанные кредиты на усиления."],
-      designNote: "«Защитник от пришельцев» сочетает понятные строи фиксированного экрана с кампанией из 30 этапов, шести глав и ясным циклом усилений за кредиты: этап задаёт испытание, а мощь выбирает игрок.",
-      parent: "В этой публичной игре нет аккаунтов, платежей, чата, рейтинга или рекламы. Кредиты, открытия, усиления и лучший результат сохраняются в этом браузере.",
-      faq: [["Сколько волн в одном этапе?", "В каждом этапе один Battle и один строй. В кампании 30 этапов, без путаницы между номерами этапа и волны."], ["Как увеличить число снарядов?", "Получайте кредиты в Battle и Result, затем покупайте мощь в усилениях. Номер этапа не добавляет снаряды скрытно."], ["Как открыть следующие этапы?", "Пройдите текущий передовой этап. Следующий открывается по порядку: шесть глав по пять этапов."], ["Сохраняется ли прогресс?", "Открытия, кредиты, усиления и локальный лучший результат сохраняются в этом браузере."]]
-    },
-    hi: {
-      intro: "एलियन रक्षक WeightPlay का मौलिक 30-स्टेज फिक्स्ड-स्क्रीन शूटर है। हर स्टेज एक Battle है और क्रेडिट से स्थायी फायरपावर व सर्वाइवल अपग्रेड खरीदे जाते हैं।",
-      story: ["सिग्नल स्टेशन अभियान छह अध्यायों में है, हर अध्याय में पाँच स्टेज। एक गठन साफ़ करें, क्रेडिट पाएँ और अगले मोर्चे के लिए अपग्रेड चुनें।"],
-      systems: ["जहाज़ को बाएँ-दाएँ चलाएँ और ऊपर गोली चलाएँ। हर स्टेज में एक बनाया हुआ शत्रु-गठन है; अध्याय के नियम सलामी, कप्तान, रिले, क्रॉसफ़ायर और अंतिम सिग्नल-कोर रक्षक से दबाव बदलते हैं।"],
-      how: ["अनलॉक किया हुआ स्टेज चुनें और Battle में जाने से पहले उसका अध्याय-नियम पढ़ें।", "डेस्कटॉप पर बाएँ/दाएँ या A/D और Space इस्तेमाल करें; मोबाइल पर चलने वाले नियंत्रण को दबाकर Fire दबाएँ।", "एक गठन साफ़ करें, Result में इनाम लें और Stage पर लौटें।", "अपग्रेड खोलकर क्रेडिट फायरपावर, शील्ड, हुल या फायरिंग स्पीड पर खर्च करें। स्टेज नंबर अपने-आप गोलियाँ नहीं बढ़ाता।"],
-      strategyTips: ["फायरिंग लाइन चुनने से पहले Stage कार्ड का नियम पढ़ें।", "दुश्मन के दबाव और अपनी फायरपावर को अलग समझें: पहला स्टेज की चुनौती है, दूसरी क्रेडिट से खरीदी जाती है।", "क्रेडिट कम हों तो पहले चौड़ी फायरपावर लें; बाद के अध्यायों में शील्ड, हुल और गति मदद करते हैं।", "छठा अध्याय स्टेज 30 के सिग्नल-कोर रक्षक पर समाप्त होता है।"],
-      progression: ["30 स्टेज छह अध्यायों में बाँटे गए हैं, हर अध्याय में पाँच। मौजूदा अग्रिम स्टेज साफ़ करने पर अगला खुलता है; दोबारा खेलने पर गोलियाँ अपने-आप नहीं मिलतीं, इसलिए कमाए क्रेडिट अपग्रेड में लगाएँ।"],
-      designNote: "एलियन रक्षक पढ़ने योग्य फिक्स्ड-स्क्रीन गठन को 30 स्टेज, छह अध्याय और स्पष्ट क्रेडिट-अपग्रेड लूप से जोड़ता है: स्टेज चुनौती बनाता है और फायरपावर का चुनाव खिलाड़ी करता है।",
-      parent: "इस सार्वजनिक गेम में खाता, भुगतान, चैट, लीडरबोर्ड या विज्ञापन नहीं हैं। क्रेडिट, अनलॉक, अपग्रेड और Best इसी ब्राउज़र में रहते हैं।",
-      faq: [["एक स्टेज में कितनी लहरें हैं?", "हर स्टेज में एक Battle और एक गठन है। अभियान 30 स्टेज का है; स्टेज और लहर की संख्या आपस में नहीं उलझती।"], ["गोलियाँ कैसे बढ़ती हैं?", "Battle और Result में क्रेडिट कमाएँ, फिर अपग्रेड में फायरपावर खरीदें। स्टेज नंबर छिपकर गोलियाँ नहीं बढ़ाता।"], ["अगले स्टेज कैसे खुलते हैं?", "मौजूदा अग्रिम स्टेज साफ़ करें। अगला क्रम से खुलेगा: छह अध्याय, हर अध्याय में पाँच स्टेज।"], ["क्या प्रगति सेव होती है?", "अनलॉक, क्रेडिट, अपग्रेड और स्थानीय Best इस ब्राउज़र में सेव होते हैं।"]]
-    },
-    ar: {
-      gameplay: "لعبة إطلاق نار موجية",
-      difficulty: "من السهل إلى التحدي",
-      time: "1-5 دقائق لكل محاولة",
-      genre: ["كلاسيكية", "أركيد", "حركة"],
-      skills: ["التصويب", "الحركة", "رد الفعل"],
-      intro: "مدافع الفضائيين لعبة إطلاق نار أصلية من WeightPlay على شاشة ثابتة تضم 30 مرحلة. كل مرحلة معركة واحدة، وتشتري الاعتمادات ترقيات دائمة للقوة والبقاء.",
-      story: ["تنقسم حملة المحطة الإشارية إلى ستة فصول، في كل فصل خمس مراحل. دمّر تشكيلاً، اجمع الاعتمادات، واختر الترقية التي تحملها إلى الخط التالي."],
-      systems: ["حرّك السفينة يميناً ويساراً وأطلق إلى الأعلى. لكل مرحلة تشكيل واحد؛ وتغيّر قواعد الفصل الضغط عبر الرشقات والقادة والتتابع والنيران المتقاطعة وحارس نواة الإشارة النهائي."],
-      how: ["اختر مرحلة مفتوحة واقرأ قاعدة فصلها قبل دخول المعركة.", "استخدم اليسار/اليمين أو A/D والمسافة؛ على الهاتف اضغط عناصر الحركة ثم إطلاق.", "دمّر التشكيل الواحد، واستلم مكافأة المرحلة في شاشة النتيجة، ثم عد إلى قائمة المراحل.", "افتح الترقيات وأنفق الاعتمادات على القوة أو الدرع أو الهيكل أو سرعة الإطلاق. رقم المرحلة لا يزيد الرصاص تلقائياً."],
-      strategyTips: ["اقرأ قاعدة بطاقة المرحلة قبل اختيار خط الإطلاق.", "افصل بين ضغط العدو وقوتك النارية: الأول تحدي المرحلة، والثاني تشتريه بالاعتمادات.", "عندما تقل الاعتمادات، ابدأ بالقوة الأوسع؛ ويساعد الدرع والهيكل والسرعة في الفصول المتقدمة.", "ينتهي الفصل السادس في المرحلة 30 أمام حارس نواة الإشارة."],
-      progression: ["تنقسم المراحل الثلاثون إلى ستة فصول، في كل فصل خمس مراحل. يفتح اجتياز المرحلة الأمامية الحالية المرحلة التالية؛ وإعادة المرحلة المكتملة لا تمنح رصاصاً تلقائياً، فأنفق الاعتمادات المكتسبة في الترقيات."],
-      designNote: "تجمع مدافع الفضائيين بين تشكيلات الشاشة الثابتة سهلة القراءة وحملة من 30 مرحلة وستة فصول وحلقة ترقيات واضحة بالاعتمادات: المرحلة تصنع التحدي واللاعب يختار القوة.",
-      parent: "لا تحتوي هذه اللعبة العامة على حساب أو دفع أو دردشة أو لوحة متصدرين أو إعلانات. تبقى الاعتمادات وعمليات الفتح والترقيات وأفضل نتيجة في هذا المتصفح.",
-      faq: [["كم موجة في كل مرحلة؟", "كل مرحلة تضم معركة واحدة وتشكيلًا واحدًا. الحملة 30 مرحلة، بلا إزاحة مربكة بين رقم المرحلة والموجة."], ["كيف أزيد الرصاص؟", "اكسب الاعتمادات في المعركة وشاشة النتيجة ثم اشتر القوة من الترقيات. رقم المرحلة لا يضيف الرصاص خفية."], ["كيف أفتح مراحل أخرى؟", "اجتز المرحلة الأمامية الحالية. تفتح التالية بالترتيب ضمن ستة فصول، في كل فصل خمس مراحل."], ["هل يُحفظ التقدم؟", "تُحفظ عمليات الفتح والاعتمادات والترقيات وأفضل نتيجة محلياً في هذا المتصفح."]]
-    }
-  };
+  "en": {
+    "intro": "Pilot an otter gunship through 30 orbital battles. Break the fleet, dodge volleys and charge your pulse.",
+    "story": [
+      "Pilot an otter gunship through 30 orbital battles. Break the fleet, dodge volleys and charge your pulse."
+    ],
+    "systems": [
+      "Six chapters introduce volleys, armor, relay shields, crossfire and six bosses. Defeats charge Pulse; eight defeats restore one shield. Credits permanently improve your ship."
+    ],
+    "how": [
+      "Move with arrows or A/D. Hold Space to fire; press E for a charged pulse.",
+      "Drag the field to steer and fire, or hold the direction and Fire pads.",
+      "Clear each formation before the invaders reach the defense line.",
+      "Spend credits earned in Battle. Upgrades persist between stages."
+    ],
+    "strategyTips": [
+      "Six chapters introduce volleys, armor, relay shields, crossfire and six bosses. Defeats charge Pulse; eight defeats restore one shield. Credits permanently improve your ship."
+    ],
+    "progression": [
+      "Thirty Stages are arranged as six chapters of five. Clearing the current frontier unlocks the next Stage; replaying a cleared Stage does not grant automatic bullets, so spend earned Credits in Upgrades."
+    ],
+    "designNote": "Alien Defender combines readable fixed-screen formations with a 30-Stage, six-chapter campaign and a clear Credit-driven upgrade loop: Stage rules create challenge, while the player owns the firepower choice.",
+    "parent": "Spend credits earned in Battle. Upgrades persist between stages. Permanent pink-violet hull and engine colors. Cosmetic only. 15 diamonds · permanent",
+    "faq": [
+      [
+        "How many waves are in a Stage?",
+        "Each Stage has one Battle and one formation. The campaign has 30 Stages, not a confusing Stage-to-wave offset."
+      ],
+      [
+        "How do bullets increase?",
+        "Earn Credits in Battle and Result, then buy firepower in Upgrades. A Stage number never silently adds bullets."
+      ],
+      [
+        "How do I unlock more Stages?",
+        "Clear the current frontier Stage. The next Stage unlocks in order, across six chapters of five."
+      ],
+      [
+        "Is progress saved?",
+        "Unlocks, Credits, upgrades, and the local Best are saved in this browser."
+      ],
+      [
+        "Aurora livery",
+        "Permanent pink-violet hull and engine colors. Cosmetic only. 15 diamonds · permanent"
+      ]
+    ]
+  },
+  "zh-Hant": {
+    "intro": "駕駛水獺砲艇迎戰 30 關星際艦隊。閃避彈幕、擊破編隊，蓄滿脈衝逆轉戰局。",
+    "story": [
+      "駕駛水獺砲艇迎戰 30 關星際艦隊。閃避彈幕、擊破編隊，蓄滿脈衝逆轉戰局。"
+    ],
+    "systems": [
+      "六大章節帶來彈幕、裝甲、中繼護盾、交叉火力及六位首領。擊破蓄積脈衝，每擊破八架回復一格護盾；零件可永久升級砲艇。"
+    ],
+    "how": [
+      "方向鍵或 A/D 移動，按住空白鍵射擊；E 釋放充能脈衝。",
+      "拖曳戰場即可移動並射擊，也可按住方向與射擊按鈕。",
+      "在敵人抵達防線前清除整個隊形。",
+      "用戰鬥賺到的能源點購買強化，效果會保留到之後的關卡。"
+    ],
+    "strategyTips": [
+      "六大章節帶來彈幕、裝甲、中繼護盾、交叉火力及六位首領。擊破蓄積脈衝，每擊破八架回復一格護盾；零件可永久升級砲艇。"
+    ],
+    "progression": [
+      "30 個關卡分成六章，每章五關。清除當前最前沿關卡會解鎖下一關；重玩已完成關卡不會自動送子彈，請把賺到的能源點花在強化頁。"
+    ],
+    "designNote": "星際守衛把易讀的固定畫面編隊，和 30 關、六章戰役及清楚的能源點強化循環結合：關卡規則製造挑戰，火力選擇由玩家掌握。",
+    "parent": "用戰鬥賺到的能源點購買強化，效果會保留到之後的關卡。 永久解鎖粉紫色船體與引擎光。僅改變外觀。 15 鑽石・永久",
+    "faq": [
+      [
+        "每關有幾波？",
+        "每個 Stage 只有一場 Battle、清除一個編隊。整體是 30 個 Stage，不會再出現關卡和波數錯位。"
+      ],
+      [
+        "子彈怎麼增加？",
+        "在 Battle 與 Result 賺取能源點，再到強化頁購買火力；關卡編號不會偷偷增加子彈。"
+      ],
+      [
+        "怎麼解鎖更多關卡？",
+        "清除當前最前沿關卡即可依序解鎖下一關；完整戰役是六章、每章五關。"
+      ],
+      [
+        "進度會保存嗎？",
+        "解鎖、能源點、強化與本機最佳紀錄會保存在目前瀏覽器。"
+      ],
+      [
+        "極光塗裝",
+        "永久解鎖粉紫色船體與引擎光。僅改變外觀。 15 鑽石・永久"
+      ]
+    ]
+  },
+  "zh-Hans": {
+    "intro": "驾驶水獭炮艇迎战 30 关星际舰队。闪避弹幕、击破编队，蓄满脉冲逆转战局。",
+    "story": [
+      "驾驶水獭炮艇迎战 30 关星际舰队。闪避弹幕、击破编队，蓄满脉冲逆转战局。"
+    ],
+    "systems": [
+      "六大章节带来弹幕、装甲、中继护盾、交叉火力及六位首领。击破蓄积脉冲，每击破八架恢复一格护盾；零件可永久升级炮艇。"
+    ],
+    "how": [
+      "方向键或 A/D 移动，按住空格键射击；E 释放充能脉冲。",
+      "拖曳战场即可移动并射击，也可按住方向与射击按钮。",
+      "在敌人抵达防线前清除整个队形。",
+      "用战斗赚到的能源点购买强化，效果会保留到之后的关卡。"
+    ],
+    "strategyTips": [
+      "六大章节带来弹幕、装甲、中继护盾、交叉火力及六位首领。击破蓄积脉冲，每击破八架恢复一格护盾；零件可永久升级炮艇。"
+    ],
+    "progression": [
+      "30 个关卡分成六章，每章五关。清除当前最前沿关卡会解锁下一关；重玩已完成关卡不会自动送子弹，请把赚到的能源点花在强化页。"
+    ],
+    "designNote": "星际守卫把易读的固定画面编队，和 30 关、六章战役及清楚的能源点强化循环结合：关卡规则制造挑战，火力选择由玩家掌握。",
+    "parent": "用战斗赚到的能源点购买强化，效果会保留到之后的关卡。 永久解锁粉紫色船体与引擎光。仅改变外观。 15 钻石・永久",
+    "faq": [
+      [
+        "每关有几波？",
+        "每个 Stage 只有一场 Battle、清除一个编队。整体是 30 个 Stage，不会再出现关卡和波数错位。"
+      ],
+      [
+        "子弹怎么增加？",
+        "在 Battle 与 Result 赚取能源点，再到强化页购买火力；关卡编号不会偷偷增加子弹。"
+      ],
+      [
+        "怎么解锁更多关卡？",
+        "清除当前最前沿关卡即可依次解锁下一关；完整战役是六章、每章五关。"
+      ],
+      [
+        "进度会保存吗？",
+        "解锁、能源点、强化与本机最佳记录会保存在当前浏览器。"
+      ],
+      [
+        "极光涂装",
+        "永久解锁粉紫色船体与引擎光。仅改变外观。 15 钻石・永久"
+      ]
+    ]
+  },
+  "ja": {
+    "intro": "ラッコの砲艇で30の宇宙戦へ。弾幕を避け、敵陣を崩し、パルスを放とう。",
+    "story": [
+      "ラッコの砲艇で30の宇宙戦へ。弾幕を避け、敵陣を崩し、パルスを放とう。"
+    ],
+    "systems": [
+      "6章で弾幕、装甲、中継シールド、交差射撃と6体のボスに挑戦。撃破でパルスが充填され、8機撃破でシールドが1回復。資材で永久強化。"
+    ],
+    "how": [
+      "矢印かA/Dで移動、Space長押しで射撃、Eで充填したパルス。",
+      "画面をドラッグして移動と射撃。方向と射撃ボタンの長押しも可能。",
+      "侵略者が防衛線に着く前に編隊を倒します。",
+      "バトルで得たエネルギーで購入。強化は次のステージにも残ります。"
+    ],
+    "strategyTips": [
+      "6章で弾幕、装甲、中継シールド、交差射撃と6体のボスに挑戦。撃破でパルスが充填され、8機撃破でシールドが1回復。資材で永久強化。"
+    ],
+    "progression": [
+      "30ステージは6チャプター、各5ステージです。最前線をクリアすると次が順番に解放され、クリア済みステージを再挑戦しても弾は自動付与されません。獲得したクレジットを強化に使います。"
+    ],
+    "designNote": "エイリアン・ディフェンダーは読みやすい固定画面編隊に、30ステージ・6チャプターの進行とクレジット強化を組み合わせます。ステージが挑戦を作り、火力の選択はプレイヤーが決めます。",
+    "parent": "バトルで得たエネルギーで購入。強化は次のステージにも残ります。 ピンクと紫の船体とエンジン光を永久解放。外見のみ変更。 15ダイヤ・永久",
+    "faq": [
+      [
+        "1ステージに何ウェーブありますか？",
+        "各ステージは1バトル、1編隊です。全体は30ステージで、ステージ番号とウェーブ番号がずれる設計ではありません。"
+      ],
+      [
+        "弾を増やすには？",
+        "バトルとResultでクレジットを獲得し、強化画面で火力を購入します。ステージ番号だけで弾は増えません。"
+      ],
+      [
+        "次のステージはどう解放しますか？",
+        "現在の最前線ステージをクリアすると、6チャプター各5ステージの順番で次が解放されます。"
+      ],
+      [
+        "進行は保存されますか？",
+        "解放、クレジット、強化、ローカルベストがこのブラウザに保存されます。"
+      ],
+      [
+        "オーロラ塗装",
+        "ピンクと紫の船体とエンジン光を永久解放。外見のみ変更。 15ダイヤ・永久"
+      ]
+    ]
+  },
+  "ko": {
+    "intro": "수달 전투정으로 30번의 우주 전투에 도전하세요. 탄막을 피하고 함대를 격파해 펄스를 충전하세요.",
+    "story": [
+      "수달 전투정으로 30번의 우주 전투에 도전하세요. 탄막을 피하고 함대를 격파해 펄스를 충전하세요."
+    ],
+    "systems": [
+      "6개 챕터에서 탄막, 장갑, 중계 보호막, 교차 사격과 보스 6기를 만납니다. 격파로 펄스를 충전하고 8기마다 보호막을 하나 회복합니다. 자원으로 영구 강화하세요."
+    ],
+    "how": [
+      "방향키 또는 A/D로 이동, Space를 눌러 발사, E로 충전된 펄스 사용.",
+      "화면을 드래그해 이동하며 발사하거나 방향과 발사 버튼을 누르세요.",
+      "침입자가 방어선에 닿기 전에 대형을 모두 처치하세요.",
+      "전투에서 얻은 에너지로 구매하세요. 강화 효과는 다음 스테이지에도 유지됩니다."
+    ],
+    "strategyTips": [
+      "6개 챕터에서 탄막, 장갑, 중계 보호막, 교차 사격과 보스 6기를 만납니다. 격파로 펄스를 충전하고 8기마다 보호막을 하나 회복합니다. 자원으로 영구 강화하세요."
+    ],
+    "progression": [
+      "30개 스테이지는 6개 챕터, 챕터당 5개입니다. 현재 전선을 클리어하면 다음 스테이지가 순서대로 열리고, 클리어한 스테이지를 다시 해도 탄환이 자동 지급되지 않습니다. 얻은 크레딧을 강화에 사용하세요."
+    ],
+    "designNote": "에일리언 디펜더는 읽기 쉬운 고정 화면 대형에 30스테이지·6챕터 진행과 크레딧 강화 루프를 결합합니다. 스테이지가 도전을 만들고 화력 선택은 플레이어가 결정합니다.",
+    "parent": "전투에서 얻은 에너지로 구매하세요. 강화 효과는 다음 스테이지에도 유지됩니다. 분홍·보라 선체와 엔진 색상을 영구 해제합니다. 외형만 변경됩니다. 다이아 15개 · 영구",
+    "faq": [
+      [
+        "한 스테이지에 웨이브가 몇 개 있나요?",
+        "각 스테이지는 한 번의 Battle과 하나의 대형입니다. 전체는 30스테이지이며 스테이지와 웨이브 번호가 어긋나지 않습니다."
+      ],
+      [
+        "탄환을 늘리려면 어떻게 하나요?",
+        "Battle과 Result에서 크레딧을 얻고 강화 화면에서 화력을 구매합니다. 스테이지 번호만으로 탄환이 늘지 않습니다."
+      ],
+      [
+        "다음 스테이지는 어떻게 열리나요?",
+        "현재 전선 스테이지를 클리어하면 6챕터, 챕터당 5스테이지 순서로 다음이 열립니다."
+      ],
+      [
+        "진행 상황이 저장되나요?",
+        "해금, 크레딧, 강화, 로컬 최고 기록이 이 브라우저에 저장됩니다."
+      ],
+      [
+        "오로라 도색",
+        "분홍·보라 선체와 엔진 색상을 영구 해제합니다. 외형만 변경됩니다. 다이아 15개 · 영구"
+      ]
+    ]
+  },
+  "es": {
+    "intro": "Pilota la nave de una nutria en 30 batallas. Esquiva descargas, rompe la flota y carga tu pulso.",
+    "story": [
+      "Pilota la nave de una nutria en 30 batallas. Esquiva descargas, rompe la flota y carga tu pulso."
+    ],
+    "systems": [
+      "Seis capítulos con descargas, blindaje, escudos de relé, fuego cruzado y seis jefes. Las bajas cargan el pulso; cada ocho restauran un escudo. Mejora la nave con créditos."
+    ],
+    "how": [
+      "Flechas o A/D para moverte, mantén Espacio para disparar y E para el pulso cargado.",
+      "Arrastra para moverte y disparar, o mantén los botones de dirección y disparo.",
+      "Despeja cada formación antes de que llegue a la línea defensiva.",
+      "Gasta la energía ganada en Battle. Las mejoras permanecen entre fases."
+    ],
+    "strategyTips": [
+      "Seis capítulos con descargas, blindaje, escudos de relé, fuego cruzado y seis jefes. Las bajas cargan el pulso; cada ocho restauran un escudo. Mejora la nave con créditos."
+    ],
+    "progression": [
+      "Las 30 fases se dividen en seis capítulos de cinco. Superar la frontera actual desbloquea la siguiente; repetir una fase superada no entrega balas automáticamente, así que gasta los Créditos ganados en Mejoras."
+    ],
+    "designNote": "Defensor Alienígena combina formaciones legibles de pantalla fija con una campaña de 30 fases, seis capítulos y un ciclo claro de mejoras con Créditos: la fase crea el reto y el jugador decide la potencia.",
+    "parent": "Gasta la energía ganada en Battle. Las mejoras permanecen entre fases. Colores rosa y violeta permanentes para casco y motores. Solo cosmético. 15 diamantes · permanente",
+    "faq": [
+      [
+        "¿Cuántas oleadas tiene una fase?",
+        "Cada fase tiene un Battle y una formación. La campaña tiene 30 fases, sin desfases confusos entre fase y oleada."
+      ],
+      [
+        "¿Cómo aumentan las balas?",
+        "Gana Créditos en Battle y Result y compra potencia en Mejoras. El número de fase nunca añade balas en secreto."
+      ],
+      [
+        "¿Cómo desbloqueo más fases?",
+        "Supera la fase de frontera actual. La siguiente se desbloquea en orden, en seis capítulos de cinco."
+      ],
+      [
+        "¿Se guarda el progreso?",
+        "Los desbloqueos, Créditos, mejoras y el mejor resultado local se guardan en este navegador."
+      ],
+      [
+        "Diseño aurora",
+        "Colores rosa y violeta permanentes para casco y motores. Solo cosmético. 15 diamantes · permanente"
+      ]
+    ]
+  },
+  "pt-BR": {
+    "intro": "Pilote a nave de uma lontra em 30 batalhas. Desvie das rajadas, destrua a frota e carregue o pulso.",
+    "story": [
+      "Pilote a nave de uma lontra em 30 batalhas. Desvie das rajadas, destrua a frota e carregue o pulso."
+    ],
+    "systems": [
+      "Seis capítulos com rajadas, blindagem, escudos de relé, fogo cruzado e seis chefes. Abates carregam o pulso; oito abates restauram um escudo. Créditos melhoram a nave."
+    ],
+    "how": [
+      "Setas ou A/D para mover, segure Espaço para atirar e E para o pulso carregado.",
+      "Arraste para mover e atirar, ou segure os botões de direção e tiro.",
+      "Limpe cada formação antes que os invasores alcancem a linha de defesa.",
+      "Gaste a energia ganha na Batalha. As melhorias permanecem entre as fases."
+    ],
+    "strategyTips": [
+      "Seis capítulos com rajadas, blindagem, escudos de relé, fogo cruzado e seis chefes. Abates carregam o pulso; oito abates restauram um escudo. Créditos melhoram a nave."
+    ],
+    "progression": [
+      "As 30 fases são divididas em seis capítulos de cinco. Vencer a fronteira atual desbloqueia a próxima; repetir uma fase concluída não dá balas automáticas, então gaste os Créditos ganhos em Melhorias."
+    ],
+    "designNote": "Defensor Alienígena combina formações legíveis de tela fixa com uma campanha de 30 fases, seis capítulos e um ciclo claro de melhorias por Créditos: a fase cria o desafio e o jogador escolhe o poder.",
+    "parent": "Gaste a energia ganha na Batalha. As melhorias permanecem entre as fases. Cores rosa e violeta permanentes no casco e motores. Apenas visual. 15 diamantes · permanente",
+    "faq": [
+      [
+        "Quantas ondas há em uma fase?",
+        "Cada fase tem um Battle e uma formação. A campanha tem 30 fases, sem confusão entre o número da fase e da onda."
+      ],
+      [
+        "Como aumento as balas?",
+        "Ganhe Créditos no Battle e no Result e compre poder em Melhorias. O número da fase nunca adiciona balas escondido."
+      ],
+      [
+        "Como desbloqueio mais fases?",
+        "Conclua a fase de fronteira atual. A próxima abre em ordem, em seis capítulos de cinco."
+      ],
+      [
+        "O progresso é salvo?",
+        "Desbloqueios, Créditos, melhorias e o melhor resultado local são salvos neste navegador."
+      ],
+      [
+        "Pintura aurora",
+        "Cores rosa e violeta permanentes no casco e motores. Apenas visual. 15 diamantes · permanente"
+      ]
+    ]
+  },
+  "fr": {
+    "intro": "Pilotez la canonnière d’une loutre dans 30 batailles. Évitez les salves et chargez votre impulsion.",
+    "story": [
+      "Pilotez la canonnière d’une loutre dans 30 batailles. Évitez les salves et chargez votre impulsion."
+    ],
+    "systems": [
+      "Six chapitres : salves, blindages, boucliers relais, tirs croisés et six boss. Les destructions chargent l’impulsion ; huit restaurent un bouclier. Les crédits renforcent le vaisseau."
+    ],
+    "how": [
+      "Flèches ou A/D pour bouger, Espace maintenu pour tirer, E pour l’impulsion chargée.",
+      "Faites glisser pour bouger et tirer, ou maintenez les boutons directionnels et de tir.",
+      "Élimine chaque formation avant la ligne de défense.",
+      "Dépense l'énergie gagnée en Battle. Les améliorations restent entre les niveaux."
+    ],
+    "strategyTips": [
+      "Six chapitres : salves, blindages, boucliers relais, tirs croisés et six boss. Les destructions chargent l’impulsion ; huit restaurent un bouclier. Les crédits renforcent le vaisseau."
+    ],
+    "progression": [
+      "Les 30 niveaux sont répartis en six chapitres de cinq. Réussir la frontière actuelle débloque le suivant; rejouer un niveau réussi ne donne pas de tirs automatiques: dépense les Crédits gagnés dans les Améliorations."
+    ],
+    "designNote": "Défenseur Alien associe des formations lisibles à écran fixe à une campagne de 30 niveaux, six chapitres et une boucle d'amélioration claire par Crédits: le niveau crée le défi et le joueur choisit sa puissance.",
+    "parent": "Dépense l'énergie gagnée en Battle. Les améliorations restent entre les niveaux. Coque et moteurs roses et violets permanents. Effet visuel uniquement. 15 diamants · permanent",
+    "faq": [
+      [
+        "Combien de vagues contient un niveau?",
+        "Chaque niveau contient un Battle et une formation. La campagne compte 30 niveaux, sans décalage confus entre niveau et vague."
+      ],
+      [
+        "Comment augmenter les tirs?",
+        "Gagne des Crédits en Battle et dans Result, puis achète de la puissance dans Améliorations. Le numéro du niveau n'ajoute pas de tirs en secret."
+      ],
+      [
+        "Comment débloquer les niveaux suivants?",
+        "Réussis le niveau frontière actuel. Le suivant se débloque dans l'ordre, en six chapitres de cinq."
+      ],
+      [
+        "La progression est-elle sauvegardée?",
+        "Déblocages, Crédits, améliorations et meilleur score local sont sauvegardés dans ce navigateur."
+      ],
+      [
+        "Livrée aurore",
+        "Coque et moteurs roses et violets permanents. Effet visuel uniquement. 15 diamants · permanent"
+      ]
+    ]
+  },
+  "de": {
+    "intro": "Steuere das Otter-Kanonenboot durch 30 Gefechte. Weiche Salven aus und lade deinen Impuls auf.",
+    "story": [
+      "Steuere das Otter-Kanonenboot durch 30 Gefechte. Weiche Salven aus und lade deinen Impuls auf."
+    ],
+    "systems": [
+      "Sechs Kapitel mit Salven, Panzerung, Relais-Schilden, Kreuzfeuer und sechs Bossen. Abschüsse laden den Impuls; acht stellen einen Schild wieder her. Credits verbessern das Schiff dauerhaft."
+    ],
+    "how": [
+      "Pfeile oder A/D zum Bewegen, Leertaste halten zum Schießen, E für den geladenen Impuls.",
+      "Ziehen bewegt und feuert; alternativ Richtungs- und Feuertasten halten.",
+      "Räume jede Formation, bevor sie die Verteidigungslinie erreicht.",
+      "Gib die im Battle verdiente Energie aus. Verbesserungen bleiben zwischen den Stufen erhalten."
+    ],
+    "strategyTips": [
+      "Sechs Kapitel mit Salven, Panzerung, Relais-Schilden, Kreuzfeuer und sechs Bossen. Abschüsse laden den Impuls; acht stellen einen Schild wieder her. Credits verbessern das Schiff dauerhaft."
+    ],
+    "progression": [
+      "Die 30 Stufen sind sechs Kapitel mit je fünf Stufen. Wenn du die aktuelle Grenzstufe schaffst, wird die nächste freigeschaltet; ein Wiederholen gibt keine automatische Munition, also investiere verdiente Credits in Upgrades."
+    ],
+    "designNote": "Alien-Verteidiger verbindet lesbare Fixed-Screen-Formationen mit einer Kampagne aus 30 Stufen, sechs Kapiteln und einer klaren Credit-Upgrade-Schleife: Die Stufe erzeugt die Herausforderung, die Feuerkraft wählt der Spieler.",
+    "parent": "Gib die im Battle verdiente Energie aus. Verbesserungen bleiben zwischen den Stufen erhalten. Dauerhaft rosa-violette Hülle und Triebwerke. Nur kosmetisch. 15 Diamanten · dauerhaft",
+    "faq": [
+      [
+        "Wie viele Wellen hat eine Stufe?",
+        "Jede Stufe hat ein Battle und eine Formation. Die Kampagne hat 30 Stufen, ohne verwirrende Verschiebung zwischen Stufe und Welle."
+      ],
+      [
+        "Wie bekomme ich mehr Munition?",
+        "Verdiene Credits in Battle und Result und kaufe Feuerkraft bei Upgrades. Die Stufennummer fügt niemals heimlich Munition hinzu."
+      ],
+      [
+        "Wie schalte ich weitere Stufen frei?",
+        "Schaffe die aktuelle Grenzstufe. Die nächste wird der Reihe nach freigeschaltet, in sechs Kapiteln mit je fünf Stufen."
+      ],
+      [
+        "Wird der Fortschritt gespeichert?",
+        "Freischaltungen, Credits, Upgrades und der lokale Bestwert werden in diesem Browser gespeichert."
+      ],
+      [
+        "Aurora-Lackierung",
+        "Dauerhaft rosa-violette Hülle und Triebwerke. Nur kosmetisch. 15 Diamanten · dauerhaft"
+      ]
+    ]
+  },
+  "it": {
+    "intro": "Pilota la cannoniera di una lontra in 30 battaglie. Schiva le raffiche e carica il tuo impulso.",
+    "story": [
+      "Pilota la cannoniera di una lontra in 30 battaglie. Schiva le raffiche e carica il tuo impulso."
+    ],
+    "systems": [
+      "Sei capitoli con raffiche, corazze, scudi relè, fuoco incrociato e sei boss. Le eliminazioni caricano l’impulso; otto ripristinano uno scudo. I crediti migliorano la nave."
+    ],
+    "how": [
+      "Frecce o A/D per muoverti, tieni Spazio per sparare ed E per l’impulso carico.",
+      "Trascina per muoverti e sparare, oppure tieni premuti i pulsanti direzione e fuoco.",
+      "Elimina ogni formazione prima che raggiunga la linea difensiva.",
+      "Spendi l'energia ottenuta in Battaglia. I potenziamenti restano tra i livelli."
+    ],
+    "strategyTips": [
+      "Sei capitoli con raffiche, corazze, scudi relè, fuoco incrociato e sei boss. Le eliminazioni caricano l’impulso; otto ripristinano uno scudo. I crediti migliorano la nave."
+    ],
+    "progression": [
+      "I 30 livelli sono divisi in sei capitoli da cinque. Superare la frontiera attuale sblocca il livello successivo; rigiocare un livello completato non regala proiettili automatici: investi i Crediti nei Potenziamenti."
+    ],
+    "designNote": "Difensore Alieno unisce formazioni leggibili a schermo fisso con una campagna di 30 livelli, sei capitoli e un ciclo chiaro di potenziamenti a Crediti: il livello crea la sfida e il giocatore sceglie la potenza.",
+    "parent": "Spendi l'energia ottenuta in Battaglia. I potenziamenti restano tra i livelli. Scafo e motori rosa-viola permanenti. Solo estetica. 15 diamanti · permanente",
+    "faq": [
+      [
+        "Quante ondate ci sono in un livello?",
+        "Ogni livello ha un Battle e una formazione. La campagna ha 30 livelli, senza confusione tra numero del livello e dell'ondata."
+      ],
+      [
+        "Come aumento i proiettili?",
+        "Guadagna Crediti in Battle e Result, poi compra potenza in Potenziamenti. Il numero del livello non aggiunge proiettili di nascosto."
+      ],
+      [
+        "Come sblocco altri livelli?",
+        "Completa il livello di frontiera attuale. Il successivo si apre in ordine, in sei capitoli da cinque."
+      ],
+      [
+        "I progressi vengono salvati?",
+        "Sblocchi, Crediti, potenziamenti e record locale vengono salvati in questo browser."
+      ],
+      [
+        "Livrea aurora",
+        "Scafo e motori rosa-viola permanenti. Solo estetica. 15 diamanti · permanente"
+      ]
+    ]
+  },
+  "ru": {
+    "intro": "Ведите корабль выдры через 30 боёв. Уклоняйтесь от залпов, разбивайте флот и заряжайте импульс.",
+    "story": [
+      "Ведите корабль выдры через 30 боёв. Уклоняйтесь от залпов, разбивайте флот и заряжайте импульс."
+    ],
+    "systems": [
+      "Шесть глав: залпы, броня, релейные щиты, перекрёстный огонь и шесть боссов. Победы заряжают импульс; каждые восемь возвращают щит. Кредиты улучшают корабль навсегда."
+    ],
+    "how": [
+      "Стрелки или A/D — движение, удерживайте пробел для огня, E — заряженный импульс.",
+      "Перетаскивайте поле для движения и стрельбы или удерживайте кнопки направления и огня.",
+      "Уничтожь строй до того, как он достигнет линии обороны.",
+      "Тратьте энергию, заработанную в бою. Усиления сохраняются между этапами."
+    ],
+    "strategyTips": [
+      "Шесть глав: залпы, броня, релейные щиты, перекрёстный огонь и шесть боссов. Победы заряжают импульс; каждые восемь возвращают щит. Кредиты улучшают корабль навсегда."
+    ],
+    "progression": [
+      "30 этапов разделены на шесть глав по пять. Победа на текущем передовом этапе открывает следующий; повторное прохождение не выдаёт автоматические снаряды — тратьте заработанные кредиты на усиления."
+    ],
+    "designNote": "«Защитник от пришельцев» сочетает понятные строи фиксированного экрана с кампанией из 30 этапов, шести глав и ясным циклом усилений за кредиты: этап задаёт испытание, а мощь выбирает игрок.",
+    "parent": "Тратьте энергию, заработанную в бою. Усиления сохраняются между этапами. Розово-фиолетовые корпус и двигатели навсегда. Только внешний вид. 15 алмазов · навсегда",
+    "faq": [
+      [
+        "Сколько волн в одном этапе?",
+        "В каждом этапе один Battle и один строй. В кампании 30 этапов, без путаницы между номерами этапа и волны."
+      ],
+      [
+        "Как увеличить число снарядов?",
+        "Получайте кредиты в Battle и Result, затем покупайте мощь в усилениях. Номер этапа не добавляет снаряды скрытно."
+      ],
+      [
+        "Как открыть следующие этапы?",
+        "Пройдите текущий передовой этап. Следующий открывается по порядку: шесть глав по пять этапов."
+      ],
+      [
+        "Сохраняется ли прогресс?",
+        "Открытия, кредиты, усиления и локальный лучший результат сохраняются в этом браузере."
+      ],
+      [
+        "Окраска «Аврора»",
+        "Розово-фиолетовые корпус и двигатели навсегда. Только внешний вид. 15 алмазов · навсегда"
+      ]
+    ]
+  },
+  "hi": {
+    "intro": "ऊदबिलाव की गनशिप से 30 अंतरिक्ष युद्ध लड़ें। गोलियों से बचें, बेड़ा तोड़ें और पल्स चार्ज करें।",
+    "story": [
+      "ऊदबिलाव की गनशिप से 30 अंतरिक्ष युद्ध लड़ें। गोलियों से बचें, बेड़ा तोड़ें और पल्स चार्ज करें।"
+    ],
+    "systems": [
+      "छह अध्यायों में बौछार, कवच, रिले ढाल, क्रॉसफायर और छह बॉस। दुश्मन हराने से पल्स भरता है; आठ से एक ढाल लौटती है। क्रेडिट से स्थायी सुधार करें।"
+    ],
+    "how": [
+      "तीर या A/D से चलें, गोली के लिए Space दबाए रखें और चार्ज पल्स के लिए E दबाएँ।",
+      "चलने और गोली चलाने के लिए मैदान पर खींचें या दिशा और गोली बटन दबाए रखें।",
+      "घुसपैठियों के रक्षा रेखा तक पहुँचने से पहले गठन साफ़ करें।",
+      "बैटल में मिली ऊर्जा खर्च करें। अपग्रेड अगले स्टेज में भी बने रहते हैं।"
+    ],
+    "strategyTips": [
+      "छह अध्यायों में बौछार, कवच, रिले ढाल, क्रॉसफायर और छह बॉस। दुश्मन हराने से पल्स भरता है; आठ से एक ढाल लौटती है। क्रेडिट से स्थायी सुधार करें।"
+    ],
+    "progression": [
+      "30 स्टेज छह अध्यायों में बाँटे गए हैं, हर अध्याय में पाँच। मौजूदा अग्रिम स्टेज साफ़ करने पर अगला खुलता है; दोबारा खेलने पर गोलियाँ अपने-आप नहीं मिलतीं, इसलिए कमाए क्रेडिट अपग्रेड में लगाएँ।"
+    ],
+    "designNote": "एलियन रक्षक पढ़ने योग्य फिक्स्ड-स्क्रीन गठन को 30 स्टेज, छह अध्याय और स्पष्ट क्रेडिट-अपग्रेड लूप से जोड़ता है: स्टेज चुनौती बनाता है और फायरपावर का चुनाव खिलाड़ी करता है।",
+    "parent": "बैटल में मिली ऊर्जा खर्च करें। अपग्रेड अगले स्टेज में भी बने रहते हैं। गुलाबी-बैंगनी ढाँचे और इंजन के रंग स्थायी रूप से खोलें। केवल रूप बदलता है। 15 हीरे · स्थायी",
+    "faq": [
+      [
+        "एक स्टेज में कितनी लहरें हैं?",
+        "हर स्टेज में एक Battle और एक गठन है। अभियान 30 स्टेज का है; स्टेज और लहर की संख्या आपस में नहीं उलझती।"
+      ],
+      [
+        "गोलियाँ कैसे बढ़ती हैं?",
+        "Battle और Result में क्रेडिट कमाएँ, फिर अपग्रेड में फायरपावर खरीदें। स्टेज नंबर छिपकर गोलियाँ नहीं बढ़ाता।"
+      ],
+      [
+        "अगले स्टेज कैसे खुलते हैं?",
+        "मौजूदा अग्रिम स्टेज साफ़ करें। अगला क्रम से खुलेगा: छह अध्याय, हर अध्याय में पाँच स्टेज।"
+      ],
+      [
+        "क्या प्रगति सेव होती है?",
+        "अनलॉक, क्रेडिट, अपग्रेड और स्थानीय Best इस ब्राउज़र में सेव होते हैं।"
+      ],
+      [
+        "ऑरोरा रंग",
+        "गुलाबी-बैंगनी ढाँचे और इंजन के रंग स्थायी रूप से खोलें। केवल रूप बदलता है। 15 हीरे · स्थायी"
+      ]
+    ]
+  },
+  "ar": {
+    "gameplay": "لعبة إطلاق نار موجية",
+    "difficulty": "من السهل إلى التحدي",
+    "time": "1-5 دقائق لكل محاولة",
+    "genre": [
+      "كلاسيكية",
+      "أركيد",
+      "حركة"
+    ],
+    "skills": [
+      "التصويب",
+      "الحركة",
+      "رد الفعل"
+    ],
+    "intro": "قد سفينة القضاعة في 30 معركة فضائية. تفادَ الرشقات وحطّم الأسطول واشحن النبضة.",
+    "story": [
+      "قد سفينة القضاعة في 30 معركة فضائية. تفادَ الرشقات وحطّم الأسطول واشحن النبضة."
+    ],
+    "systems": [
+      "ستة فصول تضم رشقات ودروعاً وحماية مرحّلات ونيراناً متقاطعة وستة زعماء. التدمير يشحن النبضة؛ كل ثمانية يعيد درعاً. الأرصدة تطور السفينة دائماً."
+    ],
+    "how": [
+      "الأسهم أو A/D للحركة، اضغط مطولاً على المسافة للإطلاق وE للنبضة المشحونة.",
+      "اسحب الميدان للتحرك والإطلاق أو اضغط مطولاً أزرار الاتجاه والإطلاق.",
+      "اقضِ على كل تشكيل قبل وصول الغزاة إلى خط الدفاع.",
+      "أنفق الطاقة التي تكسبها في المعركة. تبقى الترقيات بين المراحل."
+    ],
+    "strategyTips": [
+      "ستة فصول تضم رشقات ودروعاً وحماية مرحّلات ونيراناً متقاطعة وستة زعماء. التدمير يشحن النبضة؛ كل ثمانية يعيد درعاً. الأرصدة تطور السفينة دائماً."
+    ],
+    "progression": [
+      "تنقسم المراحل الثلاثون إلى ستة فصول، في كل فصل خمس مراحل. يفتح اجتياز المرحلة الأمامية الحالية المرحلة التالية؛ وإعادة المرحلة المكتملة لا تمنح رصاصاً تلقائياً، فأنفق الاعتمادات المكتسبة في الترقيات."
+    ],
+    "designNote": "تجمع مدافع الفضائيين بين تشكيلات الشاشة الثابتة سهلة القراءة وحملة من 30 مرحلة وستة فصول وحلقة ترقيات واضحة بالاعتمادات: المرحلة تصنع التحدي واللاعب يختار القوة.",
+    "parent": "أنفق الطاقة التي تكسبها في المعركة. تبقى الترقيات بين المراحل. ألوان وردية وبنفسجية دائمة للهيكل والمحركات. تغيير تجميلي فقط. 15 ألماسة · دائم",
+    "faq": [
+      [
+        "كم موجة في كل مرحلة؟",
+        "كل مرحلة تضم معركة واحدة وتشكيلًا واحدًا. الحملة 30 مرحلة، بلا إزاحة مربكة بين رقم المرحلة والموجة."
+      ],
+      [
+        "كيف أزيد الرصاص؟",
+        "اكسب الاعتمادات في المعركة وشاشة النتيجة ثم اشتر القوة من الترقيات. رقم المرحلة لا يضيف الرصاص خفية."
+      ],
+      [
+        "كيف أفتح مراحل أخرى؟",
+        "اجتز المرحلة الأمامية الحالية. تفتح التالية بالترتيب ضمن ستة فصول، في كل فصل خمس مراحل."
+      ],
+      [
+        "هل يُحفظ التقدم؟",
+        "تُحفظ عمليات الفتح والاعتمادات والترقيات وأفضل نتيجة محلياً في هذا المتصفح."
+      ],
+      [
+        "طلاء الشفق",
+        "ألوان وردية وبنفسجية دائمة للهيكل والمحركات. تغيير تجميلي فقط. 15 ألماسة · دائم"
+      ]
+    ]
+  }
+};
   for (const [code, guide] of Object.entries(alienV45GuideCopy)) {
     localizedGames[code] ||= {};
     localizedGames[code]["alien-defender"] = { ...(localizedGames[code]["alien-defender"] || games["alien-defender"]), ...guide };

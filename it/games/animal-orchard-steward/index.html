@@ -5,6 +5,7 @@
 
     <base href="/games/animal-orchard-steward/" />
   <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
+  <script src="/src/wallet.js"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -14,7 +15,7 @@
   <meta name="weightplay-game-version" content="v5">
   <meta name="weightplay-interface-version" content="9">
   <meta name="weightplay-game-status" content="planned">
-  <meta name="description" content="Scegli una cura al giorno per bilanciare sole, acqua e terra nel frutteto animale." />
+  <meta name="description" content="Cura tre alberi, osserva il meteo e completa un ordine in otto giorni. Fai crescere il frutteto." />
   <title>Risorse del Frutteto | WeightPlay</title>
   <link rel="canonical" href="https://weightplay.com/it/games/animal-orchard-steward/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-orchard-steward/" />
@@ -32,21 +33,21 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-orchard-steward/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-orchard-steward/" />
     <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20261021-orchard-i9-v1">
+  <link rel="stylesheet" href="style.css?v=20261023-orchard-v6">
   <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard>
   <link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-interface9-play-ui-v1">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Risorse del Frutteto | WeightPlay" />
-    <meta property="og:description" content="Scegli una cura al giorno per bilanciare sole, acqua e terra nel frutteto animale." />
+    <meta property="og:description" content="Cura tre alberi, osserva il meteo e completa un ordine in otto giorni. Fai crescere il frutteto." />
     <meta property="og:url" content="https://weightplay.com/it/games/animal-orchard-steward/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-orchard-steward.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Risorse del Frutteto | WeightPlay" />
-    <meta name="twitter:description" content="Scegli una cura al giorno per bilanciare sole, acqua e terra nel frutteto animale." />
+    <meta name="twitter:description" content="Cura tre alberi, osserva il meteo e completa un ordine in otto giorni. Fai crescere il frutteto." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-orchard-steward.webp" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Risorse del Frutteto","alternateName":"Orchard Resource Manager","url":"https://weightplay.com/it/games/animal-orchard-steward/","image":"https://weightplay.com/assets/interface7-redrawn/animal-orchard-steward.webp","description":"Scegli una cura al giorno per bilanciare sole, acqua e terra nel frutteto animale.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"it","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Puzzle","Strategy","Family","Animal"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":6}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Risorse del Frutteto","alternateName":"Orchard Resource Manager","url":"https://weightplay.com/it/games/animal-orchard-steward/","image":"https://weightplay.com/assets/interface7-redrawn/animal-orchard-steward.webp","description":"Cura tre alberi, osserva il meteo e completa un ordine in otto giorni. Fai crescere il frutteto.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"it","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Puzzle","Strategy","Family","Animal"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":6}}</script>
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
@@ -66,81 +67,47 @@
           <img class="main-poster" src="/assets/interface7-redrawn/animal-orchard-steward.webp" width="1254" height="1254" alt="" data-wp-frame-poster>
         </div>
         <div class="hero-copy" data-wp-frame-copy>
-          <p class="lead main-summary" data-copy="intro" data-wp-frame-summary>Choose one gentle care action each day to balance light, water, and soil.</p>
-          <button class="primary-button" id="startButton" data-wp-main-start data-wp-frame-action="primary" type="button" data-copy="start">Start the orchard</button>
+          <p class="lead main-summary" data-copy="intro" data-wp-frame-summary>Care for three fruit trees, read the forecast, and harvest an eight-day order.</p>
+          <p id="mainProgress" data-wp-frame-progress></p>
+          <button class="primary-button" id="startButton" data-wp-main-start data-wp-frame-action="primary" type="button" disabled>Start the orchard</button>
         </div>
       </section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="Informazioni su Risorse del Frutteto">
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-preserve-static-guide data-runtime-localize="off" aria-label="Aiuto"><div class="game-info-hero"><div class="game-info-title"><h2>Aiuto</h2><p>Cura tre alberi, osserva il meteo e completa un ordine in otto giorni. Fai crescere il frutteto.</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>Primo raccolto</h3><p>Fino a due cure al giorno. Al tramonto il meteo cambia le risorse: un albero cresce se i tre valori sono nei suoi intervalli. Dopo due passi i frutti maturano. Tocca per raccogliere e investi i ricavi nell’officina. Frutti e risorse restano. La fioritura raddoppia la crescita sana. Salvataggio automatico.</p></div><div class="game-info-section"><h3>Officina</h3><p>Permanente: concimare aggiunge 1 terra in più. Permanente: ogni raccolto dà 3 invece di 2.</p><p>Casse e scie dorate permanenti. Solo aspetto.</p></div></div></section>
 
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Risorse del Frutteto</h2><p>Scegli una cura al giorno per bilanciare sole, acqua e terra nel frutteto animale.</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gioco</span><strong>Puzzle della cura del frutteto</strong></div><div class="game-info-fact"><span>Genere</span><strong>Puzzle · Strategy · Family · Animal</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
-
-    <section class="screen battle-screen battle-canvas" id="battleView" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
+    <section class="screen battle-screen battle-canvas" id="battleView" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="680" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="350" hidden>
       <header class="screen-heading battle-header">
         <button class="icon-button" id="homeFromBattle" data-wp-return="battle" type="button" aria-label="Back to main"><span aria-hidden="true">←</span></button>
         <strong data-wp-frame-title hidden>Orchard Resource Manager</strong>
       </header>
       <div class="battle-workspace" id="battleContent">
-        <div class="battle-info-source" hidden><span id="dayLabel">Day 1 / 3</span><span id="leafCount">Leaves 0</span></div>
-        <div class="weather-card">
-          <p class="kicker" data-copy="forecastKicker">Today's orchard note</p>
-          <h2 id="forecastTitle"></h2>
-          <p id="forecastText"></p>
+        <div hidden><span id="dayLabel"></span><span id="leafCount"></span></div>
+        <div class="orchard-world" id="orchardWorld">
+          <canvas id="orchardCanvas" aria-label="Interactive orchard" role="img"></canvas>
+          <div class="order-banner"><strong id="contractName"></strong><span id="orderText"></span></div>
+          <div class="tree-targets" id="treeTargets"></div>
+          <div class="tree-info" id="treeInfo"></div>
         </div>
-        <div class="orchard-layout">
-          <section class="meter-card" aria-labelledby="resourcesTitle">
-            <div class="meter-heading"><h3 id="resourcesTitle" data-copy="resources">Orchard resources</h3></div>
-            <div id="meters"></div>
-          </section>
-          <section class="care-card" aria-labelledby="careTitle">
-            <div class="meter-heading"><h3 id="careTitle" data-copy="chooseCare">Choose one care</h3><span data-copy="exactDeltas">Exact trade-offs</span></div>
-            <div class="action-grid" id="actions"></div>
-            <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
-            <button class="secondary-button" id="restartDay" type="button" data-copy="restart">Restart day</button>
-          </section>
+        <div class="care-desk">
+          <div class="forecast"><strong id="weatherName"></strong><span id="weatherEffect"></span></div>
+          <div class="meters" id="meters"></div>
+          <div class="care-heading"><strong id="careCount"></strong><span id="growthPreview"></span></div>
+          <div class="action-grid" id="actions"></div>
+          <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
+          <div class="day-controls"><button id="helpButton" type="button" class="utility-button" data-copy="help">Help</button><button id="shopButton" type="button" class="utility-button" data-copy="workshop">Workshop</button><button class="primary-button" id="nextDay" type="button" data-copy="sunset">End day</button></div>
         </div>
       </div>
-      <div class="leave-dialog" id="leaveDialog" hidden role="dialog" aria-modal="true" aria-labelledby="leaveTitle">
-        <div class="dialog-card">
-          <h2 id="leaveTitle" data-copy="leaveTitle">Leave the orchard?</h2>
-          <p data-copy="leaveText">This day will reset, but your best leaf count stays on this browser.</p>
-          <div class="dialog-actions"><button class="secondary-button" id="continueButton" type="button" data-copy="continue">Keep playing</button><button class="primary-button" id="confirmLeaveButton" type="button" data-copy="leave">Leave</button></div>
-        </div>
-      </div>
-      <section class="result-screen" id="resultView" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultSummary" tabindex="-1" hidden>
-        <div class="result-card">
-          <img class="result-guide" src="assets/animal-orchard-steward-nori-block-v1.png" width="1145" height="1374" alt="" aria-hidden="true">
-          <p class="kicker" data-copy="resultKicker">Orchard notes</p>
-          <h2 id="resultTitle" data-copy="resultTitle">A cared-for grove</h2>
-          <p class="result-summary" id="resultSummary"></p>
-          <div class="result-stats"><div><span data-copy="leavesLabel">Healthy days</span><strong id="resultLeaves">0</strong></div><div><span data-copy="bestLabel">Best</span><strong id="resultBest">0</strong></div></div>
-          <div class="result-actions"><button class="primary-button" id="replayButton" type="button" data-copy="replay">Replay</button><button class="secondary-button" id="homeFromResult" type="button" data-copy="mainMenu">Main menu</button></div>
-        </div>
-      </section>
-      <div class="battle-ad-reserve" data-wp-ad-reserve data-wp-battle-physical-reserve aria-hidden="true"></div>
+      <div class="orchard-modal" id="leaveDialog" hidden role="dialog" aria-modal="true" aria-labelledby="leaveTitle"><div class="dialog-card"><h2 id="leaveTitle" data-copy="leaveTitle"></h2><p data-copy="leaveText"></p><div class="dialog-actions"><button class="primary-button" id="continueButton" type="button" data-copy="continue"></button><button class="secondary-button" id="confirmLeaveButton" type="button" data-copy="leave"></button></div></div></div>
+      <div class="orchard-modal" id="helpDialog" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle"><div class="dialog-card"><h2 id="helpTitle" data-copy="help"></h2><p data-copy="guide"></p><div id="fruitGuide"></div><button class="primary-button" data-close="helpDialog" data-copy="close" type="button"></button></div></div>
+      <div class="orchard-modal" id="shopDialog" hidden role="dialog" aria-modal="true" aria-labelledby="shopTitle"><div class="dialog-card shop-card"><h2 id="shopTitle" data-copy="workshop"></h2><p class="shop-balance"><img src="/assets/animal-vine-basket.png" alt="" width="24" height="24"><span id="coinBalance"></span><img src="/assets/weightplay-diamond.svg" alt="" width="24" height="24"><span id="diamondBalance"></span></p><div id="shopItems"></div><p id="shopFeedback" role="status"></p><button class="secondary-button" data-close="shopDialog" data-copy="close" type="button"></button></div></div>
+      <section class="orchard-modal result-screen" id="resultView" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1" hidden><div class="result-card"><div class="result-art"><img src="/assets/interface7-redrawn/animal-orchard-steward.webp" alt="" width="1254" height="1254"></div><p id="resultSeason" class="kicker"></p><h2 id="resultTitle"></h2><p id="resultSummary"></p><div id="resultFruit" class="result-fruit"></div><p id="resultBest"></p><div class="result-actions"><button class="primary-button" id="nextSeason" type="button" data-copy="next"></button><button class="secondary-button" id="replayButton" type="button" data-copy="retry"></button><button class="secondary-button" id="homeFromResult" type="button" data-copy="main"></button></div></div></section>
+      <div class="orchard-modal" id="graphicsDialog" hidden role="dialog" aria-modal="true" aria-labelledby="graphicsTitle"><div class="dialog-card"><h2 id="graphicsTitle" data-copy="graphicsError"></h2><button id="reloadButton" class="primary-button" data-copy="reload" type="button"></button></div></div>
     </section>
   </div>
   <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
   <script src="/src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="frame.js?v=20261021-orchard-i9-v1"></script>
-  <script src="game.js?v=20261021-orchard-i9-v1&amp;wp-audio=1.0.0"></script>
+  <script src="frame.js?v=20261023-orchard-v6"></script>
+  <script type="module" src="game.js?v=20261014-guide-i9-v5"></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/it.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>

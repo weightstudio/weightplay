@@ -9,7 +9,7 @@
     return {
       gameId: 'alien-defender',
       count,
-      poster: '/assets/alien-defender-cover.webp',
+      poster: '/assets/interface7-redrawn/alien-defender.webp',
       background: '/assets/lobby-block-atmosphere.svg',
       stage(index) {
         const number = index + 1;
@@ -19,7 +19,7 @@
         const goal = t('stageGoal').replace('{stage}', String(number)).replace('{rule}', rule);
         return {
           id: number,
-          kicker: rule,
+          kicker: config.boss ? `${rule} · ${t('boss')}` : rule,
           title: `${t('stage')} ${number}`,
           subtitle: shotLabel(),
           status: locked ? t('stageLocked') : t('stageUnlocked'),
@@ -27,7 +27,7 @@
           details: [goal, shotLabel()],
           locked,
           cleared: index < unlocked() - 1,
-          poster: '/assets/alien-defender-cover.webp',
+          poster: '/assets/interface7-redrawn/alien-defender.webp',
           posterPosition: 'center',
         };
       },

@@ -29,7 +29,7 @@
   <meta name="weightplay-interface-version" content="9" />
   <meta name="theme-color" content="#315c6a" />
   <title>Patchwork Paws | WeightPlay</title>
-  <link rel="stylesheet" href="gameplay-i9.css?v=20261021-patchwork-paws-i9-v12a" />
+  <link rel="stylesheet" href="gameplay-i9.css?v=20261023-patchwork-workshop-v13" />
   
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260902-patchwork-paws-guide-contract" /><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
@@ -42,23 +42,14 @@
   <main id="app" data-wp-frame-root data-wp-play-ui="1">
     <section id="mainScreen" class="screen main-screen" data-screen="main" data-wp-standard-main-screen>
       <header class="main-header"><a id="mainReturn" class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><strong id="mainTitle" data-i18n="title" data-wp-game-title data-wp-frame-title data-runtime-localize="off">Patchwork Paws</strong></header>
-      <img class="main-poster" data-wp-frame-poster src="assets/animal-patchwork-paws-cover.svg" alt="" width="720" height="720" />
+      <div id="mainContent"><img class="main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-patchwork-paws.webp" alt="" width="720" height="720" />
+      <div data-wp-frame-copy>
       <p class="main-summary" data-wp-frame-summary data-i18n="intro">Restore 30 authored habitat stages across six arcs.</p>
       <p id="best" class="main-progress" data-wp-frame-progress role="status" aria-live="polite"></p>
       <button id="startBtn" class="main-start" data-wp-main-start data-wp-frame-action="primary" type="button" data-i18n="start">Open the first stage</button>
+      </div></div>
     </section>
-    <section id="gameGuide" class="game-page-info game-page-info-static" data-screen="main" data-wp-game-guide aria-label="Patchwork Paws game guide">
-      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Patchwork Paws</h2><p>Restore 30 authored habitat stages across six arcs while learning a new trail rule in each chapter.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Edge-Matching Habitat Puzzle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Spatial Logic · Family · Animal</strong></div></div></div>
-      <div class="game-info-sections">
-        <article class="game-info-section"><h3>How to play</h3><ol><li>Open an unlocked stage and study its four tile edges and arc cue.</li><li>Turn each tile clockwise, then check the weave when the neighbouring trails line up.</li><li>Read the result, use Reset when useful, and choose the next stage or return to the map.</li></ol></article>
-        <article class="game-info-section"><h3>Campaign and checkpoints</h3><p>The authored campaign has 30 stages arranged as six five-stage arcs: Meadow Beginnings, Bramble Winds, Echoing Creeks, Compass Canopy, Braided Moonrise, and Guardian Finale. Stages 5, 10, 15, 20, 25, and 30 are checkpoints that introduce the next rule family and celebrate a completed arc. Each stage card names its animal, chapter, and current open or woven state, so the map always explains where to go next.</p></article>
-        <article class="game-info-section"><h3>Reading the board</h3><p>Every patch is a four-tile grid. Compare the east and west edges across each row and the south and north edges down each column. Matching trail colours are the base rule; later arcs add a visible wind, echo, compass, braid, or guardian cue after the weave connects. Study the cue before turning anything, then predict which face should point toward its neighbour. The marked tile and the rule note stay visible while you work.</p></article>
-        <article class="game-info-section"><h3>Safe recovery</h3><p>A wrong check never removes progress or locks a stage. The feedback names the mismatch, so turn a tile and check again, or press Reset patch to restore the authored starting orientation. A completed Result keeps Next stage and Back to stages available for a calm continuation. There is no timer, lives meter, or destructive penalty: every attempt is a small, readable experiment that can be reversed.</p></article>
-        <article class="game-info-section"><h3>Progress and replay</h3><p>Clearing a stage unlocks the next stage and records the woven map in this browser. Completed stages remain open for replay, and the best campaign run records its turn count locally. Replaying a clear is useful for practising a later arc rule or finding a shorter rotation path. No account, purchase, or server save is required, and malformed local values are safely normalized back to the first available stage.</p></article>
-        <article class="game-info-section"><h3>Accessibility and settings</h3><p>Tiles and actions are native buttons with readable labels, and the shared Settings control keeps language and sound choices available in Main, Stage, and Battle without adding a second overlapping control. Arabic routes set RTL direction and preserve the same logical trail relationships. The board remains a compact Canvas with clear status feedback, while the guide and map can be read before entering a stage. Focus stays on the active scene, return arrows remain reachable, and the calm layout leaves room for both short phone sessions and wide desktop planning.</p></article>
-        <article class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many stages are included?</dt><dd>Thirty authored stages form six five-stage arcs with six checkpoints.</dd></div><div><dt>What happens after a mismatch?</dt><dd>The board stays available with clear feedback; turn or reset and try again without penalty.</dd></div><div><dt>Is progress saved?</dt><dd>Cleared stages and the best run are stored only in this browser.</dd></div><div><dt>Can completed stages be replayed?</dt><dd>Yes. Open any cleared stage from the map whenever you want to practise.</dd></div></dl></article>
-      </div>
-    </section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true" data-runtime-localize="off" aria-label="Patchwork Paws · How to play"><div class="game-info-hero"><div class="game-info-title"><h2>Patchwork Paws</h2><p>Stitch 30 little habitats. Turn, connect, and discover six clever ways to weave.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>Stages</span><strong>30 · 2×2 / 3×3</strong></div><div class="game-info-fact"><span>Fabric collection</span><strong>4</strong></div></div></div><div class="game-info-sections"><article class="game-info-section"><h3>How to play</h3><p>Join matching trails. Keep blank hems on the outside. Tap or press Enter on a tile to turn it clockwise. Arrow keys move keyboard focus. Hover or focus previews every linked tile. Undo reverses the whole last move; Reset restores the starting puzzle. A free hint highlights one useful move. Check marks mismatched seams and outer hems without a penalty. After success, choose Stages, Next or Replay.</p></article><article class="game-info-section"><h3>Meadow Beginnings</h3><p>Each tap turns one tile clockwise. Count the little stitches to match trails.</p></article><article class="game-info-section"><h3>Bramble Winds</h3><p>The two A tiles turn together clockwise. Other tiles turn alone.</p></article><article class="game-info-section"><h3>Echoing Creeks</h3><p>Opposite tiles mirror each other: one clockwise, the other counterclockwise.</p></article><article class="game-info-section"><h3>Compass Canopy</h3><p>The compass tile is fixed. Build your weave around it.</p></article><article class="game-info-section"><h3>Braided Moonrise</h3><p>A tile also turns the next tile in its row. The last links back to the first.</p></article><article class="game-info-section"><h3>Guardian Finale</h3><p>A tile turns itself and every touching neighbour. Preview the cross before turning.</p></article><article class="game-info-section"><h3>Progress and personal bests</h3><p>Every clear opens the next stage. Replay any completed stage to improve your personal best or earn mastery within the move target without hints. Your clears, records and fabrics stay in this browser. Old progress is preserved. Five clears unlock fern cloth; ten unlock river cloth. There is no timer or life limit.</p></article><article class="game-info-section"><h3>Fabric collection</h3><p>Choose a permanent cloth. Every puzzle and hint stays free. Permanent fabric · appearance only · 8 diamonds</p></article><article class="game-info-section"><h3>FAQ</h3><dl><dt>Is progress saved?</dt><dd>Every clear opens the next stage. Replay any completed stage to improve your personal best or earn mastery within the move target without hints. Your clears, records and fabrics stay in this browser. Old progress is preserved. Five clears unlock fern cloth; ten unlock river cloth. There is no timer or life limit.</dd><dt>Are purchases required?</dt><dd>Choose a permanent cloth. Every puzzle and hint stays free.</dd></dl></article><div data-wp-guide-related hidden></div></div></section>
     <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill hidden>
       <header id="stageHeader" class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back"><span aria-hidden="true">←</span></button><h2 id="stageTitle" data-wp-frame-title hidden>Choose a stage</h2></header>
       <div id="stageWorkspace"><div id="stageList" class="stage-rail" data-wp-stage-rail data-wp-stage-total="30" aria-label="Stages"></div></div>
@@ -67,14 +58,29 @@
     <section id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-frame-play-fill data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
       <header id="battleHeader" class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back"><span aria-hidden="true">←</span></button><h2 id="battleTitle" data-wp-frame-title hidden></h2></header>
       <div id="battleLive" class="patchwork-battle-content">
-        <p id="prompt" class="prompt"></p>
-        <div class="weave-card"><div id="board" class="board" role="grid" aria-label="Patchwork board"></div><p id="ruleText" class="rule" role="note"></p></div>
-        <p id="status" class="status" role="status" aria-live="polite"></p>
-        <div class="battle-actions"><button id="checkBtn" class="primary" data-wp-primary-action type="button" data-i18n="check">Check the weave</button><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Reset patch</button></div>
-        <section id="resultScreen" class="patchwork-result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" hidden><img class="result-guide" src="/assets/interface7-redrawn/animal-patchwork-paws.webp" alt="" width="1254" height="1254" aria-hidden="true" /><p class="eyebrow" data-i18n="finished">The trails meet!</p><h2 id="resultTitle" data-i18n="resultTitle">A perfect patch</h2><p id="resultText" class="intro"></p><div class="result-actions"><button id="resultMapBtn" class="secondary" type="button" data-i18n="stages">Back to stages</button><button id="nextBtn" class="primary" type="button" data-i18n="next">Next stage</button><button id="replayBtn" class="secondary" type="button" data-i18n="replay">Replay</button></div></section>
-        <section id="leaveConfirm" class="patchwork-leave" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveBody" hidden><h2 id="leaveTitle"></h2><p id="leaveBody"></p><div class="leave-actions"><button type="button" data-wp-leave-continue></button><button type="button" data-wp-leave-confirm></button></div></section>
+        <div class="workshop-info">
+          <p id="chapterLabel" class="eyebrow"></p>
+          <p id="prompt" class="prompt" data-i18n="objective"></p>
+          <div class="stitch-stats"><strong id="seamCount"></strong><span id="moves"></span></div>
+          <p id="ruleText" class="rule" role="note"></p>
+          <p id="masteryTarget" class="mastery-target"></p>
+        </div>
+        <div class="quilt-area"><div id="boardSquare" class="board-square" data-fabric="linen"><div id="quiltScene" class="quilt-scene"></div><div id="board" class="board" role="grid"></div><div id="seamLayer" aria-hidden="true"></div></div></div>
+        <div class="workshop-controls">
+          <p id="status" class="status" role="status" aria-live="polite"></p>
+          <div class="battle-tools"><button id="undoBtn" type="button" data-i18n="undo"></button><button id="hintBtn" type="button" data-i18n="hint"></button><button id="resetBtn" type="button" data-i18n="reset"></button></div>
+          <button id="checkBtn" class="primary check-button" data-wp-primary-action type="button" data-i18n="check"></button>
+        </div>
+        <dialog id="resultScreen" class="patchwork-dialog patchwork-result" data-screen="result" aria-labelledby="resultTitle" aria-describedby="resultText">
+          <img class="result-guide" src="/assets/interface7-redrawn/animal-patchwork-paws.webp" alt="" width="1254" height="1254" />
+          <p id="resultMedal" class="result-medal" aria-hidden="true"></p><h2 id="resultTitle"></h2><p id="resultText"></p><p id="resultBest"></p>
+          <div class="result-actions"><button id="resultMapBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary" type="button" data-i18n="next">Next</button><button id="replayBtn" type="button" data-i18n="replay">Replay</button></div>
+        </dialog>
+        <dialog id="leaveConfirm" class="patchwork-dialog" aria-labelledby="leaveTitle" aria-describedby="leaveBody"><h2 id="leaveTitle"></h2><p id="leaveBody"></p><div class="leave-actions"><button type="button" data-wp-leave-continue></button><button type="button" data-wp-leave-confirm></button></div></dialog>
       </div>
     </section>
+    <dialog id="collectionDialog" class="patchwork-dialog collection-dialog" aria-labelledby="collectionTitle"><div class="collection-heading"><h2 id="collectionTitle" data-i18n="collection"></h2><button id="closeCollection" type="button" data-i18n="close"></button></div><p data-i18n="collectionIntro"></p><strong id="collectionBalance"></strong><div id="fabricCards"></div><p id="collectionStatus" role="status" aria-live="polite"></p></dialog>
+    <p id="saveNotice" class="workshop-notice" role="status" hidden></p><p id="renderNotice" class="workshop-notice" role="status" hidden></p>
     <label id="localeSource" data-wp-frame-locale-source hidden aria-hidden="true"><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
   </main>
   <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1" data-wp-frame-script></script>
@@ -83,7 +89,8 @@
   <script src="locales.js?v=20260908-patchwork-paws-ar-campaign-v5"></script>
   <script src="leave-copy.js?v=20261021-patchwork-paws-leave-copy-i9-v12a"></script>
   <script src="stage-config.js?v=20261021-patchwork-paws-stage-i9-v12a"></script>
-  <script src="frame.js?v=20261021-patchwork-paws-frame-i9-v12a"></script>
-  <script src="game.js?v=20261021-patchwork-paws-i9-v12a"></script>
+  <script src="frame.js?v=20261023-patchwork-frame-v13"></script>
+  <script src="../../src/wallet.js?v=1"></script>
+  <script type="module" src="game.js?v=20261014-guide-i9-v12"></script>
 </body>
 </html>

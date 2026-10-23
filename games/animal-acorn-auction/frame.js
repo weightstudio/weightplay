@@ -75,10 +75,19 @@
     stagesTab.textContent = bridge.getStageTabLabel();
     frame.commonDownButton.clear().add(stagesTab);
 
-    const poster = new URL("/games/animal-acorn-auction/assets/animal-acorn-auction-cover.webp", location.origin).href;
-    const background = new URL("/games/animal-acorn-auction/assets/animal-acorn-auction-background.png", location.origin).href;
+    const stallTab = document.createElement('button');
+    stallTab.id = 'stallNavigationTab'; stallTab.type = 'button';
+    stallTab.dataset.wpFrameAction = 'tab'; stallTab.dataset.wpFrameStageSlot = 'equipment';
+    stallTab.setAttribute('role', 'tab'); stallTab.setAttribute('aria-selected', 'false');
+    stallTab.setAttribute('aria-controls', 'stallPanel'); stallTab.textContent = bridge.getStallTabLabel();
+    frame.commonDownButton.add(stallTab);
+    stagesTab.addEventListener('click', () => bridge.setPanel('stages'));
+    stallTab.addEventListener('click', () => bridge.setPanel('stall'));
+
+    const poster = new URL("/assets/interface7-redrawn/animal-acorn-auction.webp", location.origin).href;
+    const background = new URL("/assets/lobby-block-atmosphere.svg", location.origin).href;
     const stageUI = window.WeightPlayPlayUI.mountStage({
-      page: $("stageWorkspace"),
+      page: $("stageMarketView"),
       rail: $("stageList"),
       config: bridge.getStageConfig({ poster, background }),
       selected: bridge.getState().roundIndex,

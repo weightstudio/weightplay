@@ -2,7 +2,7 @@
 (() => {
   "use strict";
 
-  const POSTER = "/games/animal-cairn-courier/assets/animal-cairn-courier-cover-v2.png";
+  const POSTER = "/assets/interface7-redrawn/animal-cairn-courier.webp";
   const BACKGROUND = "/assets/lobby-block-atmosphere.svg";
 
   window.AnimalCairnCourierStageConfig = function createCairnStageConfig({
@@ -24,9 +24,7 @@
         const cleared = solved.has(plan.id);
         const locked = index > 0 && !solved.has(stages[index - 1].id);
         const rule = ruleText(plan);
-        const checkpoint = plan.checkpointRule
-          ? text("checkpoint") + ": " + stageText(plan, "checkpointRule")
-          : "";
+        const checkpoint = plan.checkpoint ? text("checkpoint") : "";
         return {
           id: plan.id,
           kicker: stageText(plan, "arc"),

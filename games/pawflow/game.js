@@ -31,7 +31,7 @@ function releaseArena(){if(arena){lastResources=arena.stats();arena.dispose();la
 function clearRun(){runEpoch++;clearTimeout(loadTimer);stop();releaseArena();state=null;level=null;modal=null;selectedHint=null;settingsPaused=false;message='';practiceRun=false;for(const v of [...queues,...reserves]){v.motion?.cancel();v.motion=null;v.unitId=null;}$('battleDialog').hidden=true;$('battleContent').inert=false;}
 function toStages(){if(!practiceMode&&!practiceRun)store.clearAttempt();clearRun();progress();activate('stage');setTab(false);}
 listen($('start'),'click',()=>{sound('ui.click');progress();activate('stage');setTab(false);});
-listen($('mainHeader').querySelector('[data-wp-return="main"]'),'click',()=>location.assign(`/${ROUTES[locale]}/?preview=1`));
+listen($('mainHeader').querySelector('[data-wp-return="main"]'),'click',()=>location.assign(`/${ROUTES[locale]}/`));
 listen($('stageHeader').querySelector('[data-wp-return="stage"]'),'click',()=>{sound('ui.click');activate('main');});
 listen($('battleHeader').querySelector('[data-wp-return="battle"]'),'click',()=>{sound('ui.click');if(state?.status==='running')openDialog('leave',d.leave,d.leaveText,[{label:d.stages,fn:toStages},{label:d.resume,fn:closeDialog},{label:d.replay,fn:()=>void startBattle(level,true)}]);else toStages();});
 function actionable(){return scene==='battle'&&state?.status==='running'&&arena&&!modal&&!settingsPaused&&!document.hidden&&!disposed&&(!practiceRun||LocalPractice.enabled);}

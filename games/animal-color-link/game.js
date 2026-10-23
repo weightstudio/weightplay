@@ -111,16 +111,20 @@
       },
     });
   }
+  function updateMainProgress(){
+    const progress=$("#mainProgress");
+    if(progress)progress.textContent=text("progress",{done:Math.min(unlocked-1,30)});
+  }
   function renderStages(){
     const progress=$("#progressBadge");
     if(progress)progress.textContent=text("progress",{done:Math.min(unlocked-1,30)});
+    updateMainProgress();
     stageStartButton && (stageStartButton.disabled=selected+1>unlocked);
     stageUI?.setConfig(createStageConfig(),selected);
   }
   function startLevel(index){
     selected=index;level=levels[index];paths={};active=null;history=[];moves=0;blockedPulse=false;
     $("#grid").style.setProperty("--size",level.size);
-    $("#chapter").textContent=`${level.size} × ${level.size}`;
     $("#stageName").textContent=text("garden",{n:index+1});
     $("#status").textContent=text("draw");
     show("battle");renderBoard();
@@ -190,7 +194,7 @@
   function checkComplete(){
     const cells=new Set(Object.values(paths).flat());
     if(Object.keys(paths).length!==level.count||cells.size!==level.size*level.size)return;
-    if(selected+2>unlocked){unlocked=Math.min(31,selected+2);writeStore(storeKey,String(unlocked))}
+    if(selected+2>unlocked){unlocked=Math.min(31,selected+2);writeStore(storeKey,String(unlocked));updateMainProgress()}
     playTone("puzzle.clear",.08);setTimeout(()=>void 0,90);
     $("#resultBody").textContent=text("resultBody",{n:selected+1,moves});
     resultClaimed=false;
@@ -220,7 +224,9 @@
     stageProgressGroup.add(stageProgress);
 
     const battleStatsGroup=window.WeightPlayScreenFrame.createGroup();
-    for(const id of ["chapter","moves","linkStatus","fillStatus"]){
+    // Keep only the three live counters that fit the shared top-information
+    // track at phone width. The board itself already shows its dimensions.
+    for(const id of ["moves","linkStatus","fillStatus"]){
       const stat=document.createElement("span");
       stat.id=id;
       battleStatsGroup.add(stat);
@@ -269,6 +275,7 @@
     document.querySelectorAll("[data-t]").forEach(node=>node.textContent=text(node.dataset.t));
     document.querySelectorAll("[data-t-aria]").forEach(node=>node.setAttribute("aria-label",text(node.dataset.tAria)));
     document.querySelectorAll("[data-t-alt]").forEach(node=>node.setAttribute("alt",text(node.dataset.tAlt)));
+    updateMainProgress();
     localeSelect.value=locale;
     if(stageStartButton)stageStartButton.textContent=text("start");
     $("#leaveTitle").textContent=ui(3);

@@ -1,5 +1,5 @@
 (() => {
- 'use strict';if(new URLSearchParams(location.search).get('preview')!=='1')return;const base=document.currentScript.src;let abandoned=false;
+ 'use strict';const base=document.currentScript.src;let abandoned=false;
  const fail=()=>{if(!abandoned&&document.documentElement.dataset.pawflowReady!=='true')document.getElementById('bootError').hidden=false;};
  // One shared entry for all locales: refresh only this game's content stylesheet.
  const sheet=document.querySelector('link[href*="/games/pawflow/style.css"]');

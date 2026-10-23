@@ -5,6 +5,7 @@
 
     <base href="/games/road-crosser/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
+    <script src="../../src/wallet.js"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
@@ -12,7 +13,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general" />
-  <meta name="weightplay-game-version" content="v21" />
+  <meta name="weightplay-game-version" content="v22" />
   <meta name="weightplay-interface-version" content="7" />
   <meta name="description" content="차도와 강 건너기는 WeightPlay 오리지널 타이밍 아케이드입니다. 차량 차선과 움직이는 강, 점점 안전 구간이 좁아지는 세 번의 횡단을 읽으세요." />
   <link rel="canonical" href="https://weightplay.com/ko/games/road-crosser/" />
@@ -31,12 +32,12 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/road-crosser/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/road-crosser/" />
     <title>차도와 강 건너기 | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20261022-road-i9" />
+  <link rel="stylesheet" href="style.css?v=20261023-road-v22" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
-  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261022-road-i9" />
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261023-road-v22" />
 <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261022-road-i9" /><meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261023-road-v22" /><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="차도와 강 건너기 | WeightPlay" />
     <meta property="og:description" content="차도와 강 건너기는 WeightPlay 오리지널 타이밍 아케이드입니다. 차량 차선과 움직이는 강, 점점 안전 구간이 좁아지는 세 번의 횡단을 읽으세요." />
@@ -50,7 +51,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-wp-game-owned-guide="true" data-wp-game-version="v21" data-wp-interface-version="7" data-wp-interface-candidate="9" data-wp-play-ui="1" data-game-id="road-crosser" data-wp-game-id="road-crosser" data-wp-battle-layout="native" data-wp-combined-sound="true" data-screen="main">
+<body data-wp-game-owned-guide="true" data-wp-game-version="v22" data-wp-interface-version="7" data-wp-interface-candidate="9" data-wp-play-ui="1" data-game-id="road-crosser" data-wp-game-id="road-crosser" data-wp-battle-layout="native" data-wp-combined-sound="true" data-screen="main">
   <main class="classic-game" id="roadCrosserApp" data-wp-frame-root>
 
     <section id="mainScreen" class="screen main-screen">
@@ -60,44 +61,28 @@
       <label class="locale-control locale-picker"><span data-copy="language">언어</span><select id="localeSelect" aria-label="언어"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
     </header>
 
-      <div class="hero-card" data-wp-frame-content="main"><img class="main-poster" data-wp-frame-poster width="1024" height="1024" src="../../assets/road-crosser-cover-v2.webp" alt="차도와 강 건너기 게임 이미지" /><div class="main-copy" data-wp-frame-copy><p class="lead main-summary" data-wp-frame-summary data-copy="mainIntro">한 칸씩 차를 피하고 통나무를 타며 세 구간을 건너세요.</p><p id="mainProgress" data-wp-frame-progress></p><button disabled id="startBtn" class="primary-action" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start">횡단 시작</button></div></div>
+      <div class="hero-card" data-wp-frame-content="main"><img class="main-poster" data-wp-frame-poster width="1024" height="1024" src="/assets/interface7-redrawn/road-crosser.webp" alt="차도와 강 건너기 게임 이미지" /><div class="main-copy" data-wp-frame-copy><p class="lead main-summary" data-wp-frame-summary data-copy="mainIntro">한 칸씩 차를 피하고 통나무를 타며 세 구간을 건너세요.</p><p id="mainProgress" data-wp-frame-progress></p><button disabled id="startBtn" class="primary-action" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start">횡단 시작</button></div></div>
 
     </section>
-      <section class="game-page-info game-page-info-static" data-wp-game-guide aria-label="차도와 강 건너기 게임 정보">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2 data-wp-game-title data-runtime-localize="off">차도와 강 건너기</h2><p>스타 크로서는 WeightPlay 오리지널 타이밍 아케이드입니다. 차량 차선과 움직이는 강, 점점 안전 구간이 좁아지는 세 번의 횡단을 읽으세요.</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>타이밍 횡단 아케이드</strong></div><div class="game-info-fact"><span>장르</span><strong>클래식 · 아케이드 · 액션</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉽게 시작해 점점 도전적으로</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>한 판 약 1~4분</strong></div><div class="game-info-fact"><span>연습 능력</span><strong>타이밍 · 집중 · 적응</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>세계와 목표</h3><p>스타 러너는 작은 신호등을 들고 밤의 길을 건넙니다. 차량은 읽을 수 있는 리듬으로 움직이고 통나무는 각자의 물살을 따릅니다. 안전한 한 걸음마다 다음 타이밍 판단이 드러납니다.</p></div>
-      <div class="game-info-section"><h3>게임 시스템</h3><p>러너는 입력 한 번에 한 차선만 이동합니다. 차량은 위험 요소이고 통나무는 발판이 됩니다. 발판이 없으면 물에 빠지고 바위는 뒤쪽 경로를 막습니다. 횡단을 끝내면 다음 스테이지로 진행합니다.</p></div>
-      <div class="game-info-section"><h3>게임 방법</h3><ol><li>데스크톱은 방향키나 WASD, 모바일은 스와이프와 방향 버튼을 사용합니다.</li><li>차선을 하나씩 살피고 다음 칸이 안전할 때만 이동합니다.</li><li>강에서는 움직이는 통나무에 올라 물살에 맞춰 위치를 조절합니다.</li><li>세 스테이지를 건너 별 게이트에 도착하세요. 충돌, 물에 빠짐, 화면 밖으로 밀려나면 종료됩니다.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>긴 횡단을 시작하기 전에 차량의 한 주기를 먼저 관찰하세요.</li><li>짧게 움직여 차선 사이에서 멈추고 다음 빈틈을 다시 읽으세요.</li><li>통나무 위에서는 물살을 따라 계획하고 연속 입력으로 거스르지 마세요.</li><li>후반부는 기다림이 유리합니다. 빠르다고 항상 안전한 것은 아닙니다.</li></ul></div>
-      <div class="game-info-section"><h3>진행과 난이도</h3><p>스테이지 1은 도로와 강의 리듬을 가르칩니다. 스테이지 2는 더 빽빽한 차량과 바위를 추가하고, 스테이지 3은 빠른 물살과 더 많은 차량, 좁은 안전 구간을 결합합니다.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>스타 크로서는 클래식 아케이드의 타이밍 횡단에서 영감을 얻었지만 스타 러너, 밤의 색감, 장애물, 문구, 조작, 화면 구조는 WeightPlay 고유의 것입니다.</p></div>
-      <div class="game-info-section game-info-parent"><h3>보호자 안내</h3><p>이 공개 게임에는 계정, 구매, 채팅, 순위표, 광고 흐름이 없습니다. 점수와 최고 기록은 현재 브라우저에만 저장됩니다.</p></div>
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>무엇이 게임을 끝내나요?</dt><dd>차량 충돌, 강에 빠짐, 물살에 밀려 플레이 영역 밖으로 나감이 게임을 끝냅니다.</dd></div><div><dt>강은 무작위로 움직이나요?</dt><dd>아니요. 통나무는 보이는 반복 속도 패턴을 따릅니다.</dd></div><div><dt>어떤 조작을 지원하나요?</dt><dd>방향키, WASD, 터치 스와이프, 화면 방향 버튼을 지원합니다.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>현재 브라우저의 로컬 최고 점수만 저장됩니다.</dd></div></dl></div>
-
-    </div>
-  </section>
+      <section class="game-page-info game-page-info-static" data-wp-game-guide aria-labelledby="roadGuideTitle"><div class="game-info-title"><span class="game-info-kicker">게임 방법</span><h2 id="roadGuideTitle">안전한 한 칸씩 건너세요.</h2><p>한 칸씩 차를 피하고 통나무를 타며 세 구간을 건너세요.</p></div><div class="game-info-sections"><article class="game-info-section"><h3>조작</h3><ol><li>방향키 또는 WASD로 한 칸 이동합니다.</li><li>모바일에서는 스와이프나 방향 버튼을 사용합니다.</li><li>차선을 살피고 강에서는 움직이는 통나무에 올라타세요.</li><li>빛나는 테두리는 차량이 차지하는 범위입니다. 다음 칸의 실선은 빈자리, 점선은 대기 또는 옆 이동을 권합니다.</li></ol></article><article class="game-info-section"><h3>횡단 리듬</h3><p>2, 3단계에서는 차량이 많아지고 물살이 빨라지며 바위와 좁은 안전 시간이 생깁니다.</p><ol><li>달빛 도로</li><li>역류 부두</li><li>별문 급행</li></ol><p>통나무를 타고 물살에 주의하세요.</p><p>차량 정지: 신호 차선을 건너세요.</p></article><article class="game-info-section"><h3>숙련도</h3><p>길을 건너 일지를 밝히세요. 모은 등불은 다음 구간에서 실패해도 남습니다.</p><p>처음 전진한 줄은 8점, 등불은 25점입니다. 도착 보너스는 100, 200, 300점입니다. 옆으로 이동하거나 같은 줄을 반복해도 점수가 오르지 않습니다.</p></article><article class="game-info-section"><h3>배달 장비</h3><p>보라색과 청록색 빛을 영구 해제합니다. 외형만 바뀌며 모든 길은 무료로 통과할 수 있습니다.</p><p>다이아몬드 12개로 영구 해제할까요?</p></article><article class="game-info-section"><h3>배달 일지</h3><p>최고 점수, 통과 횟수, 등불과 외형은 이 브라우저에 저장됩니다.</p></article></div></section>
 
     <section id="battleScreen" class="screen battle-screen" data-wp-logical-battle-canvas data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden aria-label="스타 크로서 플레이 필드">
       <header class="battle-hud"><button id="battleBackBtn" type="button" data-wp-return="battle" data-copy-aria="back" aria-label="메인으로"><span aria-hidden="true">←</span></button><strong hidden data-wp-frame-title></strong></header>
-      <div id="battleInfo"><div><span data-copy="stage">단계</span><strong id="stageValue">1 / 3</strong></div><div><span data-copy="score">점수</span><strong id="scoreValue">0</strong></div><div><span data-copy="best">최고</span><strong id="bestValue">0</strong></div></div>
-      <div class="battle-stage"><button id="restartBtn" class="icon-button" type="button" data-copy-aria="restart" aria-label="다시 시작">↻</button><canvas id="gameCanvas" width="920" height="720" tabindex="0" aria-label="스타 크로서 플레이 필드"></canvas><div class="touch-pad" aria-label="이동 조작"><button data-move="up" data-copy-aria="up" aria-label="위">↑</button><button data-move="left" data-copy-aria="left" aria-label="왼쪽">←</button><button data-move="down" data-copy-aria="down" aria-label="아래">↓</button><button data-move="right" data-copy-aria="right" aria-label="오른쪽">→</button></div><p id="battleMessage" class="battle-message" aria-live="polite">길의 리듬을 읽으세요.</p></div>
-    <section id="resultScreen" class="result-view" data-wp-battle-substate="result" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultCopy"><div class="result-card"><p class="result-kicker" data-copy="resultKicker">횡단 보고서</p><h2 id="resultTitle">경로 완료</h2><p id="resultCopy"></p><div class="result-stats"><span><b data-copy="score">점수</b><strong id="resultScore">0</strong></span><span><b data-copy="best">최고</b><strong id="resultBest">0</strong></span></div><div class="result-actions"><button id="retryBtn" class="primary-action" type="button" data-copy="retry">다시 시도</button><button id="homeBtn" class="secondary-action" type="button" data-copy="home">메인으로 돌아가기</button></div></div></section>
+      <div id="battleInfo"><div><span data-copy="stage">단계</span><strong id="stageValue">1 / 3</strong></div><div><span data-copy="score">점수</span><strong id="scoreValue">0</strong></div><div><span class="lantern-label"><i class="lantern-art" aria-hidden="true"></i><span data-extra="lanterns">Lanterns</span></span><strong id="lanternValue">0</strong></div></div><strong id="bestValue" hidden>0</strong>
+      <div class="battle-stage"><div class="road-board"><canvas id="gameCanvas" width="920" height="720" tabindex="0" aria-label="스타 크로서 플레이 필드"></canvas></div><div class="road-controls"><p id="battleMessage" class="battle-message" aria-live="polite">길의 리듬을 읽으세요.</p><div class="control-actions"><div class="touch-pad" aria-label="이동 조작"><button data-move="left" data-copy-aria="left" aria-label="왼쪽">←</button><button data-move="up" data-copy-aria="up" aria-label="위">↑</button><button data-move="down" data-copy-aria="down" aria-label="아래">↓</button><button data-move="right" data-copy-aria="right" aria-label="오른쪽">→</button></div><div class="road-tools"><button id="helpBtn" type="button" data-extra="help">How to play</button><button id="campBtn" type="button" data-extra="camp">Courier kit</button></div></div></div></div>
+      <section id="resultScreen" class="result-view" data-wp-battle-substate="result" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultCopy"><div class="result-card"><span class="courier-art result-portrait" aria-hidden="true"></span><p id="resultRoute" class="result-kicker"></p><h2 id="resultTitle">경로 완료</h2><p id="resultCopy"></p><div class="result-stats"><span><b data-copy="score">점수</b><strong id="resultScore">0</strong></span><span><b data-copy="best">최고</b><strong id="resultBest">0</strong></span><span><b class="lantern-label"><i class="lantern-art" aria-hidden="true"></i><span data-extra="lanterns">Lanterns</span></b><strong id="resultLanterns">0</strong></span></div><div class="result-actions"><button id="retryBtn" type="button" data-copy="retry">다시 시도</button><button id="homeBtn" type="button" data-copy="home">메인으로 돌아가기</button><button id="resultCampBtn" type="button" data-extra="camp">Courier kit</button></div></div></section>
       <section id="leaveDialog" class="leave-view" hidden role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveText"><div class="leave-card"><h2 id="leaveTitle"></h2><p id="leaveText"></p><div class="leave-actions"><button id="continueBtn" type="button"></button><button id="leaveBtn" type="button"></button></div></div></section>
+      <section id="helpPanel" class="road-panel" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle"><div class="panel-card"><h2 id="helpTitle" data-extra="help">How to play</h2><ol><li data-copy="how1">방향키 또는 WASD로 한 칸 이동합니다.</li><li data-copy="how2">모바일에서는 스와이프나 방향 버튼을 사용합니다.</li><li data-extra="river"></li><li data-extra="signalStop"></li></ol><p data-extra="masteryBody"></p><button type="button" data-close-panel data-extra="confirm">Confirm</button></div></section>
+      <section id="campPanel" class="road-panel" hidden role="dialog" aria-modal="true" aria-labelledby="campTitle"><div class="panel-card camp-card"><div class="panel-heading"><h2 id="campTitle" data-extra="campTitle">Courier journal</h2><button type="button" data-close-panel data-extra="confirm">Confirm</button></div><div class="journal-stats"><span><b data-extra="mastery">Mastery</b><strong id="masteryCount">0</strong></span><span><b class="lantern-label"><i class="lantern-art" aria-hidden="true"></i><span data-extra="lanterns">Lanterns</span></b><strong id="savedLanterns">0</strong></span><span><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt="Diamonds"><strong id="diamondBalance">0</strong></span></div><p data-extra="masteryBody"></p><ul id="medalList" aria-label="Route medals"></ul><div class="cosmetic-card"><span id="campPreview" class="courier-art" aria-hidden="true"></span><div><h3 data-extra="aurora">Aurora lantern</h3><p data-extra="auroraBody"></p><p class="price"><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt=""><strong id="ownership">12</strong></p></div></div><div class="panel-actions"><button id="equipGold" type="button" data-extra="gold">Golden lantern</button><button id="buyBtn" type="button">Unlock · 12</button></div><div id="purchaseConfirm" hidden><p data-extra="buyQuestion"></p><div class="panel-actions"><button id="confirmBuy" type="button" data-extra="confirm">Confirm</button><button id="cancelBuy" type="button" data-extra="cancel">Cancel</button></div></div><p id="campNotice" role="status"></p><p class="save-note" data-extra="saveInfo"></p></div></section>
     </section>
 
 
 
   </main>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="/src/game-entry-loader.js?v=20261022-road-i9"></script>
+  <script src="/src/game-entry-loader.js?v=20261023-road-v22"></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
-  <script src="game.js?v=20261022-road-i9&amp;wp-audio=1.0.0"></script>
+  <script src="game.js?v=20261023-road-v22"></script>
+  <script type="module" src="game.mjs?v=20261023-road-v22"></script>
 </body>
 </html>

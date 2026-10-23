@@ -1,4 +1,4 @@
-/* Shared frame owns navigation and scene geometry. This file owns play content. */
+/* Shared frame owns navigation and scene geometry; game owns play content. */
 :root{font-family:system-ui,sans-serif;color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -8,29 +8,58 @@ button:focus-visible,select:focus-visible,canvas:focus-visible{outline:3px solid
 #roadCrosserApp{width:100%;margin:auto;padding:0}
 #mainScreen .main-copy{min-width:0}
 #battleScreen{position:relative;container-type:size;container-name:road-battle}
-#battleScreen .battle-stage{position:relative;min-width:0;min-height:0;width:100%;height:100%;overflow:hidden}
-#battleScreen canvas{display:block;width:100%;height:100%;touch-action:none}
-#battleScreen #restartBtn{position:absolute;z-index:2;inset:8px 8px auto auto;width:var(--wp-frame-control-size,44px);min-width:var(--wp-frame-control-size,44px);height:var(--wp-frame-control-size,44px);padding:0;cursor:pointer}
-#battleScreen .touch-pad{position:absolute;z-index:2;inset:auto auto 12px 12px;display:grid;grid-template-columns:repeat(3,var(--wp-play-control,48px));grid-template-rows:repeat(2,var(--wp-play-control,48px));gap:8px}
-#battleScreen .touch-pad button{min-width:var(--wp-frame-control-size,44px);min-height:var(--wp-frame-control-size,44px);width:100%;height:100%;padding:0;font-size:20px;cursor:pointer}
-#battleScreen .touch-pad button:first-child{grid-column:2}
-#battleScreen .touch-pad button:nth-child(2){grid-column:1;grid-row:2}
-#battleScreen .touch-pad button:nth-child(3){grid-column:2;grid-row:2}
-#battleScreen .touch-pad button:nth-child(4){grid-column:3;grid-row:2}
-#battleScreen .battle-message{position:absolute;z-index:2;inset:auto 12px 12px auto;width:min(42%,300px);max-height:64px;margin:0;padding:8px;background:var(--wp-ui-background);color:var(--wp-ui-text);border:1px solid var(--wp-ui-line);font-size:13px;line-height:1.3;overflow:auto;pointer-events:none}
-#battleScreen .result-view{grid-row:2;grid-column:1;position:relative;inset:auto;display:flex;min-height:0;width:100%;height:100%;overflow:auto;padding:12px}
-#battleScreen :is(.result-card,.leave-card){width:min(100%,560px);margin:auto;padding:24px;border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-background);color:var(--wp-ui-text);text-align:center}
-#battleScreen :is(.result-card,.leave-card) h2{margin:8px 0;font-size:24px;line-height:1.2}
-#battleScreen :is(.result-card,.leave-card) p{margin:12px 0;font-size:15px;line-height:1.5;overflow-wrap:anywhere}
-#battleScreen .result-stats{display:flex;justify-content:center;gap:12px;margin:16px 0}
-#battleScreen .result-stats span{display:grid;gap:4px;min-width:100px}
-#battleScreen .result-stats strong{font-size:24px}
-#battleScreen :is(.result-actions,.leave-actions){display:flex;justify-content:center;flex-wrap:wrap;gap:12px}
-#battleScreen :is(.result-actions,.leave-actions) button{min-height:44px;min-width:120px;max-width:100%;padding:8px 12px;cursor:pointer}
-#battleScreen .leave-view{position:absolute;z-index:10;inset:var(--wp-frame-play-header-height,56px) 0 0;display:flex;min-height:0;padding:12px;overflow:auto;background:rgba(6,15,27,.7)}
-@container road-battle (height <= 400px){
- #battleScreen :is(.result-card,.leave-card){padding:12px}
- #battleScreen :is(.result-card,.leave-card) h2{font-size:20px;margin:4px 0}
- #battleScreen :is(.result-card,.leave-card) p{font-size:13px;margin:8px 0}
- #battleScreen .result-stats{margin:8px 0}
+#battleScreen .battle-stage{display:grid;grid-template-rows:minmax(0,1fr) auto;min-width:0;min-height:0;width:100%;height:100%;overflow:hidden}
+.road-board{position:relative;min-width:0;min-height:0;overflow:hidden;background:#122b38}
+#gameCanvas{display:block;width:100%;height:100%;touch-action:none}
+.road-controls{padding:8px 12px 12px;border-top:1px solid var(--wp-ui-line);background:var(--wp-ui-background)}
+.battle-message{height:18px;margin:0 0 8px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-align:center;font-size:13px;color:var(--wp-ui-text)}
+.control-actions{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.touch-pad{display:flex;gap:8px;direction:ltr}
+.touch-pad button{width:var(--wp-play-control,48px);height:var(--wp-play-control,48px);min-width:44px;min-height:44px;padding:0;font-size:20px;cursor:pointer}
+.road-tools{display:flex;gap:8px;min-width:0}
+.road-tools button{width:var(--wp-play-control,48px);height:var(--wp-play-control,48px);min-width:44px;min-height:44px;padding:4px;font-size:22px;cursor:pointer}
+.lantern-art{display:inline-block;flex:none;width:24px;height:24px;background:url('./art/courier-atlas-v22.webp') 100% 100%/344.4% 222.6% no-repeat}
+.courier-art{display:block;aspect-ratio:535/510;width:112px;background:url('./art/courier-atlas-v22.webp') 0 5.8%/287.1% 200.8% no-repeat}
+.lantern-label{display:inline-flex;align-items:center;gap:4px}
+.lantern-label .lantern-art{width:16px;height:16px}
+#battleScreen .lantern-label{flex-direction:row;white-space:nowrap;line-height:1.1}
+#battleScreen .lantern-label>.lantern-art{display:none}
+.reward-flight{position:fixed;z-index:50;pointer-events:none}
+#battleScreen .result-view{grid-row:2;grid-column:1;position:relative;display:flex;min-height:0;width:100%;height:100%;overflow:auto;padding:12px}
+#battleScreen :is(.result-card,.leave-card,.panel-card){width:min(100%,560px);margin:auto;padding:24px;border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-background);color:var(--wp-ui-text);text-align:center}
+.result-portrait{margin:auto;width:112px}
+#battleScreen :is(.result-card,.leave-card,.panel-card) h2{margin:8px 0;font-size:24px;line-height:1.2}
+#battleScreen :is(.result-card,.leave-card,.panel-card) p{margin:12px 0;font-size:14px;line-height:1.5;overflow-wrap:anywhere}
+.result-stats,.journal-stats{display:flex;justify-content:space-around;gap:12px;margin:16px 0}
+.result-stats>span,.journal-stats>span{display:grid;gap:4px;min-width:0}
+.result-stats strong,.journal-stats strong{font-size:24px}
+.result-actions,.leave-actions,.panel-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px}
+.result-actions button,.leave-actions button,.panel-actions button{min-height:var(--wp-play-control,48px);min-width:112px;max-width:100%;padding:8px 12px;cursor:pointer}
+.leave-view,.road-panel{position:absolute;z-index:10;inset:var(--wp-frame-play-header-height,56px) 0 0;display:flex;min-height:0;padding:12px;overflow:auto;background:rgba(6,15,27,.78);backdrop-filter:blur(5px)}
+.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.panel-heading button{min-width:var(--wp-play-control,48px);min-height:var(--wp-play-control,48px);padding:6px;cursor:pointer}
+#helpPanel [data-close-panel]{min-width:112px;min-height:var(--wp-play-control,48px)}
+#medalList{list-style:none;margin:12px 0;padding:0;text-align:start}
+#medalList li{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--wp-ui-line)}
+#medalList li span:nth-child(2){flex:1}
+#medalList li[data-earned="false"] .lantern-art{filter:grayscale(1);opacity:.5}
+.cosmetic-card{display:flex;align-items:center;gap:12px;text-align:start;margin:16px 0;padding:12px;border:1px solid var(--wp-ui-line);border-radius:12px}
+.cosmetic-card .courier-art{width:88px;flex:none}
+.cosmetic-card h3{font-size:18px;margin:0}
+#battleScreen .cosmetic-card p{font-size:13px;margin:6px 0}
+.aurora .courier-art,.courier-art.aurora{filter:drop-shadow(0 0 5px #b5a2ff) drop-shadow(0 0 9px #80ffe4)}
+.price{display:inline-flex;align-items:center;gap:4px}
+.price img{width:16px;height:16px}
+#campNotice{min-height:21px;color:var(--wp-ui-gold)}
+#battleScreen .save-note{font-size:12px;opacity:.75}
+#purchaseConfirm{margin:12px 0;padding:12px;border:1px solid var(--wp-ui-gold);border-radius:12px}
+@container road-battle (height <= 420px){
+ .road-controls{padding:4px 12px 8px}
+ .battle-message{font-size:12px;margin-bottom:4px}
+ #battleScreen :is(.result-card,.leave-card,.panel-card){padding:12px}
+ .result-portrait{float:inline-start;width:72px}
+ #battleScreen :is(.result-card,.leave-card,.panel-card) h2{font-size:20px;margin:4px 0}
+ #battleScreen :is(.result-card,.leave-card,.panel-card) p{font-size:13px;margin:8px 0}
+ .result-stats{margin:8px 0}.result-stats strong{font-size:20px}
 }
+@media(prefers-reduced-motion:reduce){.reward-flight{display:none}}

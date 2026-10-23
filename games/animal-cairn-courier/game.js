@@ -49,9 +49,7 @@
     },
   });
 
-  const battleInfo = window.WeightPlayScreenFrame.createGroup().add(battleName).add(battleLabel);
-  frame.battleTopUI.add(battleInfo);
-  frame.commonDownButton.clear();
+  frame.battleTopUI.add(battleName).add(battleLabel);
   frame.activate("main");
   window.__ANIMAL_CAIRN_COURIER_FRAME__ = frame;
 
@@ -77,9 +75,10 @@
 
   const current = document.currentScript;
   const runtime = document.createElement("script");
-  runtime.async = false;
-  runtime.src = new URL("./game-v7-base.js?v=20261020-cairn-courier-v10-start-audio", current?.src || location.href).href;
-  runtime.dataset.wpCairnCourierRuntime = "v7-base";
+  runtime.type = "module";
+  runtime.src = new URL("./runtime.mjs?v=20261023-cairn-v12", current?.src || location.href).href;
+  runtime.dataset.wpCairnCourierRuntime = "v12";
+  runtime.onerror = () => window.WeightPlayGameEntryLoader?.fail("Cairn Courier could not load.", () => location.reload());
   if (current?.parentNode) current.after(runtime);
   else document.body.append(runtime);
 })();

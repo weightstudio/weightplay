@@ -1,65 +1,15 @@
-:root {
-  color-scheme: light;
-  --ink: #183546;
-  --muted: #5e7480;
-  --panel: #f8fcfb;
-  --line: #c7dedb;
-  --accent: #2c7886;
-  --accent-2: #e2b65b;
-  --good: #23765a;
-  --try: #a55b37;
-  font-family: ui-rounded, "Avenir Next", system-ui, sans-serif;
-  color: var(--ink);
-}
-
-body { margin: 0; color: var(--ink); font-family: inherit; }
-*[hidden] { display: none !important; }
-button, select { font: inherit; }
-button { cursor: pointer; }
-button:disabled { opacity: .48; cursor: not-allowed; }
-
-.main-poster { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
-.eyebrow { margin: 0; color: var(--accent); font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
-.intro, .prompt, .rule { max-width: 680px; margin: 0; font-size: 1rem; line-height: 1.5; color: var(--muted); }
-.main-progress, .stage-progress { color: var(--accent); font-weight: 800; }
-.main-actions, .battle-actions, .result-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-.primary, .secondary { min-height: 44px; padding: 10px 16px; border: 1px solid transparent; border-radius: 10px; font-weight: 800; }
-.primary { background: var(--accent); color: #fff; }
-.secondary { border-color: var(--line); background: #fff; color: var(--ink); }
-
-.battle-play-workspace { min-width: 0; min-height: 0; display: grid; align-content: center; justify-items: stretch; gap: 10px; padding: 12px; }
-.gate-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; width: 100%; margin: 0; }
-.gate { min-width: 0; min-height: 104px; display: grid; align-content: center; justify-items: center; gap: 6px; padding: 10px; overflow-wrap: anywhere; border: 2px solid var(--line); border-radius: 14px; background: #fff; color: var(--ink); text-align: center; }
-.gate[aria-pressed="true"] { border-color: var(--accent); background: #e5f3f0; box-shadow: 0 0 0 3px #2c788622; }
-.gate[disabled] { opacity: .56; }
-.gate-icon { display: block; }
-.gate strong { line-height: 1.2; }
-.gate small { max-width: 100%; color: var(--muted); font-size: .78rem; line-height: 1.25; }
-.flow { min-width: 0; margin: 0; color: var(--accent); font-size: .9rem; font-weight: 800; line-height: 1.35; }
-.status { min-height: 1.4em; margin: 0; color: var(--ink); font-weight: 800; }
-.status.good { color: var(--good); }
-.status.try { color: var(--try); }
-.result-icon { text-align: center; font-size: 3rem; color: var(--accent-2); }
-.result-guide-art { display: block; width: min(100%, 120px); max-height: 130px; margin: 0 auto; object-fit: contain; }
-.result-screen { position: fixed; inset: 0; z-index: 120; display: grid; align-content: center; justify-items: center; gap: 12px; overflow: auto; padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); background: #102d43ed; color: #fff; text-align: center; }
-.result-screen h2 { margin: 0; }
-.result-screen .intro { color: #e7f4f6; }
-.result-actions { width: min(100%, 560px); }
-.result-actions button { flex: 1 1 130px; }
-@media (max-width: 480px) {
-  .gate-grid { gap: 7px; }
-  .gate { min-height: 92px; padding: 7px; }
-  .gate small { font-size: .7rem; }
-  .battle-play-workspace { gap: 8px; padding: 8px; }
-  .battle-actions { display: grid; grid-template-columns: 1fr; }
-}
-@media (orientation: landscape) and (max-height: 520px) {
-  .result-screen { gap: 4px; padding: 6px 12px; }
-  .result-guide-art { width: min(100%, 56px); max-height: 64px; }
-  .result-icon { font-size: 1.75rem; line-height: 1; }
-  .result-screen .eyebrow { margin: 0; font-size: .68rem; line-height: 1.1; }
-  .result-screen h2 { font-size: clamp(1.2rem, 4vh, 1.5rem); line-height: 1.1; }
-  .result-screen .intro { margin: 0; font-size: .9rem; line-height: 1.2; }
-  .result-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
-  .result-actions button { min-width: 0; min-height: 44px; padding: 6px 8px; }
-}
+:root{--ink:#173b49;--muted:#55747d;--accent:#237f8b;--line:#c2d9d6;font-family:"Avenir Next",system-ui,sans-serif;color:var(--ink);color-scheme:light}
+body{margin:0;font-family:inherit}*[hidden]{display:none!important}button,select{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{cursor:default;opacity:.5}button:focus-visible{outline:3px solid #ffcb72;outline-offset:3px}.main-poster{display:block;width:100%;aspect-ratio:1;object-fit:cover}.intro{margin:0;line-height:1.5}.main-progress,.stage-progress{font-weight:800}.primary,.secondary{min-height:48px;padding:10px 14px;border:1px solid transparent;border-radius:12px;font-weight:750;line-height:1.2}.primary{background:#237f8b;color:#fff;box-shadow:inset 0 1px #ffffff2e}.secondary{background:#e9f1ee;border-color:#b9ceca;color:#204653}.eyebrow{margin:0;font-size:.76rem;letter-spacing:.09em;text-transform:uppercase;color:#efd19b;font-weight:800}
+.battle-workspace{position:relative;min-width:0;min-height:0;overflow:hidden}.battle-play-workspace{height:100%;width:100%;display:grid;grid-template-rows:58px minmax(0,1fr) 170px;min-height:0;min-width:0;overflow:hidden;background:#102e3d;color:#f0f5ed}
+.river-goals{display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 10px;background:#133747;border-bottom:1px solid #7ba2a332;min-width:0}.goal{display:flex;align-items:center;gap:6px;min-width:0;flex:1;border-inline-end:1px solid #88b5ae38;padding-inline-end:6px}.goal:last-child{border:0}.goal span{font-size:11px;line-height:1.1;color:#c2d5d2;overflow-wrap:anywhere}.goal strong{font-variant-numeric:tabular-nums;font-size:21px;white-space:nowrap;color:#f2cf8e}.goal[data-done=true] strong{color:#8be1ba}
+.river-board{position:relative;min-width:0;min-height:0;overflow:hidden;isolation:isolate}.river-board canvas{display:block;width:100%;height:100%}.node-labels,.gate-grid{position:absolute;inset:0;pointer-events:none;direction:ltr}.node-label{position:absolute;transform:translate(-50%,-50%);padding:4px 7px;background:#0d2c3ee8;border:1px solid #a5c8be66;border-radius:7px;min-width:48px;max-width:118px;text-align:center;box-shadow:0 3px 6px #061e3255;line-height:1.1;pointer-events:none}.node-label span{display:block;font-size:10px;color:#d0e6de;white-space:normal}.node-label strong{display:block;font-size:16px;font-variant-numeric:tabular-nums;color:#fff3cd;margin-top:2px}.node-label[data-done=true]{border-color:#a0e6b6}.gate-pin{position:absolute;transform:translate(-50%,-50%);width:44px;height:44px;min-width:44px;padding:0;pointer-events:auto;border:2px solid #d2be8b;border-radius:12px;background:#183f50;color:#ffe4a8;font-size:19px;font-weight:850;box-shadow:0 4px 0 #0a2733,0 7px 12px #09232b65;transition:background-color .12s,border-color .12s;line-height:1}.gate-pin[aria-pressed=true]{background:#e0ba74;color:#183e4a;border-color:#fff0be}.gate-pin[data-blocked=true]{background:#243f4a;border-color:#687d79;color:#bdd0ce}.gate-pin[data-blocked=true]::after{content:"";position:absolute;bottom:4px;left:18px;width:5px;height:3px;background:currentColor}.gate-pin[aria-pressed=true][data-blocked=true]{border-color:#ffb6a4;color:#ffdacb;background:#704e46}
+.control-deck{background:#f0f3e9;color:#234650;border-top:3px solid #b0c1a7;display:grid;grid-template-rows:68px 48px minmax(0,1fr);gap:5px;padding:8px 12px 6px;box-sizing:border-box;min-width:0;z-index:1}.route-copy{min-width:0;overflow:auto;scrollbar-width:thin;align-content:center}.route-copy strong{display:block;font-size:16px;line-height:1.25}.route-copy p{font-size:12px;line-height:1.35;margin:4px 0 0;color:#536d74;overflow-wrap:anywhere}.battle-actions{display:grid;grid-template-columns:minmax(0,1fr) 54px 54px;gap:8px}.battle-actions button{min-width:0;padding:8px}.battle-actions .secondary{font-size:23px}.status{margin:0;font-size:11px;font-weight:650;line-height:1.35;overflow:auto;min-height:0}.status[data-error=true]{color:#975030}
+.river-dialog{position:absolute;inset:0;z-index:30;display:flex;justify-content:center;align-items:center;padding:16px;box-sizing:border-box;background:#0c263bdc;backdrop-filter:blur(5px);color:#edf6ee;overflow:auto}.dialog-card{width:min(100%,420px);max-height:100%;overflow:auto;display:flex;flex-direction:column;align-items:stretch;gap:12px;text-align:center;padding:22px;box-sizing:border-box;background:#153b4d;border:1px solid #71919575;border-radius:22px;box-shadow:0 16px 50px #0004}.dialog-card h2{font-size:clamp(22px,5vw,30px);margin:0;line-height:1.2}.dialog-card p{font-size:14px;line-height:1.5;margin:0;color:#d2e1dc}.dialog-card .primary{background:#e6bc75;color:#173b49}.dialog-card .secondary{background:#214b59;color:#e0ede4;border-color:#76979577}.result-art{width:112px;height:112px;object-fit:cover;border-radius:18px;align-self:center;border:1px solid #d5bd86}.result-actions{display:grid;gap:8px}.result-actions .primary{order:-1}.station-art{width:140px;height:140px;object-fit:cover;align-self:center;border-radius:18px}.look-card{border:1px solid #789690;border-radius:14px;padding:12px;display:grid;gap:8px}.look-card small{color:#cbded8;font-size:12px}.station-dialog #shopStatus{min-height:20px}.render-recovery{position:absolute;inset:20%;display:grid;align-content:center;gap:12px;padding:20px;background:#133747ee;border:1px solid #839f9c;border-radius:20px;text-align:center;z-index:20}.render-recovery p{margin:0;font-size:14px}
+@media(prefers-reduced-motion:reduce){.gate-pin{transition:none}}
+/* Contain this game's shared tutorial consumer without replacing its renderer. */
+body[data-wp-game-id=animal-river-gates] .wp-tutorial-card{box-sizing:border-box;width:min(100%,430px)}
+body[data-wp-game-id=animal-river-gates] .wp-tutorial-close{width:44px;height:44px}
+/* The shop is a Stage-owned modal, so use the shared inverse scale to keep
+   its text/actions physical size while the shared Stage canvas scales. */
+.station-dialog .dialog-card{transform:scale(var(--wp-stage-canvas-inverse-scale,1));transform-origin:center;width:min(calc(100% / var(--wp-stage-canvas-inverse-scale,1) - 32px),600px);max-height:calc(100% / var(--wp-stage-canvas-inverse-scale,1) - 24px)}
+@media(orientation:landscape) and (max-height:520px){body[data-wp-game-id=animal-river-gates] .wp-tutorial-card{width:min(100%,720px);padding:12px;gap:8px}body[data-wp-game-id=animal-river-gates] .wp-tutorial-steps{grid-template-columns:repeat(3,minmax(0,1fr))}body[data-wp-game-id=animal-river-gates] .wp-tutorial-step{grid-template-columns:1fr;gap:5px;padding:8px;min-height:0}body[data-wp-game-id=animal-river-gates] .wp-tutorial-icon{display:none}body[data-wp-game-id=animal-river-gates] .wp-tutorial-copy span{font-size:12px}}

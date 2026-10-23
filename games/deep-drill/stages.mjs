@@ -21,8 +21,8 @@ const rows = [
 ];
 export const STAGES = rows.map(([zh,en,goal,pattern,quota],i)=>{
  const sectionLayers=[64,72,80,88,96][i%5]+Math.floor(i/5)*16+(i===29?16:0);
- return{id:i+1,zh,en,goal,pattern,quota:quota*50,sectionLayers,sections:50,
- layers:sectionLayers*50,target:sectionLayers*50*5,arc:Math.floor(i/5),checkpoint:i%5===4,pressure:i>=20,shift:i>=25,
+ return{id:i+1,zh,en,goal,pattern,quota:quota*5,sectionLayers,sections:5,
+ layers:sectionLayers*5,target:sectionLayers*5*5,arc:Math.floor(i/5),checkpoint:i%5===4,pressure:i>=20,shift:i>=25,
  decision:['路線與收益','水道與鑽力','熔岩與機殼','短按與完整度','洩壓與補給','多規則地心遠征'][Math.floor(i/5)]};});
 export const ROCKS = Object.freeze({
  S:{zh:'岩石',en:'Stone',color:0x647182,value:3,hard:1,weight:1},

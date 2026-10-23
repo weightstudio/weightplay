@@ -1,10 +1,13 @@
 import * as THREE from '../animal-skyspire-drop/vendor/three/three.module.min.js';
 import {POSITIONS} from './model.js';
 
-export function createScene(host){
+export function createScene(host,{onFailure=()=>{}}={}){
+ let disposed=false,frames=0;
  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'low-power'});
  renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.setClearColor(0x182a35);host.append(renderer.domElement);
  renderer.domElement.setAttribute('aria-label','Three-dimensional train and approaching raiders');
+ const contextLost=e=>{e.preventDefault();if(!disposed)onFailure('context-lost');};
+ renderer.domElement.addEventListener('webglcontextlost',contextLost);
  const world=new THREE.Scene();world.fog=new THREE.Fog(0x182a35,22,65);
  const camera=new THREE.OrthographicCamera(-10,10,8,-8,.1,80);camera.position.set(7,14,16);camera.lookAt(0,0,0);
  world.add(new THREE.HemisphereLight(0xb8e7fa,0x76603e,2.1));
@@ -82,15 +85,16 @@ export function createScene(host){
   recoil.forEach((v,i)=>{recoil[i]=Math.max(0,v-dt);if(barrels[i])barrels[i].position.z=.78-(reduced?0:recoil[i]*1.5);});
   ground.material=mat([0xc5945a,0xb8c8cd,0xad7660][s.route.region]);
   const ids=new Set(s.enemies.map(e=>e.id));for(const [id,g]of enemies)if(!ids.has(id)){world.remove(g);enemies.delete(id);}
-  for(const e of s.enemies){let g=enemies.get(e.id);if(!g){g=enemyModel(e);enemies.set(e.id,g);}g.position.set(e.x,.03+(!reduced&&e.flash>0?.12:0),e.z);g.rotation.z=!reduced&&e.flash>0?Math.sin(e.flash*50)*.12:0;g.scale.y=(e.boss?1.55:1)*Math.min(1,e.age*5);if(e.telegraph>0)g.rotation.z=reduced?0:Math.sin(e.telegraph*16)*.08;if(g.userData.phaseCap)g.userData.phaseCap.material=mat([0xf3d382,0xfb8d62,0xc8a3ff][e.phase||0],true);}
+  for(const e of s.enemies){let g=enemies.get(e.id);if(!g){g=enemyModel(e);enemies.set(e.id,g);}g.position.set(e.x,.03+(!reduced&&e.flash>0?.12:0),e.z);g.rotation.z=!reduced&&e.flash>0?Math.sin(e.flash*50)*.12:0;g.scale.y=(e.boss?1.55:1)*(reduced?1:Math.min(1,e.age*5));if(e.telegraph>0)g.rotation.z=reduced?0:Math.sin(e.telegraph*16)*.08;if(g.userData.phaseCap)g.userData.phaseCap.material=mat([0xf3d382,0xfb8d62,0xc8a3ff][e.phase||0],true);}
   const pids=new Set(s.shots.map(p=>p.id));for(const [id,g]of bullets)if(!pids.has(id)){world.remove(g);bullets.delete(id);}
   for(const p of s.shots){let b=bullets.get(p.id);if(!b){b=box(world,colors[p.type],0,1.8,0,.15,.15,.45,true);bullets.set(p.id,b);}const t=1-p.remaining/p.total;b.position.set(POSITIONS[p.from]+(p.x-POSITIONS[p.from])*t,1.8*(1-t)+.65*t,p.z*t);}
   for(let i=sparks.length-1;i>=0;i--){const p=sparks[i];p.life-=dt;p.mesh.scale.multiplyScalar(Math.max(.01,1-dt*4));if(p.life<=0){world.remove(p.mesh);sparks.splice(i,1);}}
   shield.visible=s.shield>1;shield.material=mat(s.shield>12?0x77b6e4:0x486c87,true);
   renderer.render(world,camera);
+  if(frames++%15===0)host.dataset.renderStats=JSON.stringify({revision:THREE.REVISION,live:1,canvases:host.querySelectorAll('canvas').length,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures});
  }
  function feedback(events){for(const e of events){if(e.type==='hit'||e.type==='defeat'){
    if(sparks.length>=32)continue;const m=box(world,e.type==='defeat'?0xffc765:colors[e.module]||0xffe7bc,e.x,1,e.z,e.type==='defeat'?.8:.4,.5,.5,true);sparks.push({mesh:m,life:.3});
   }if(e.type==='fire')recoil[e.index]=.12;}}
- return {render,feedback,info:()=>({revision:THREE.REVISION,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures}),dispose(){observer.disconnect();world.clear();for(const g of allGeometry)g.dispose();for(const m of materials.values())m.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();}};
+ return {render,feedback,info:()=>({revision:THREE.REVISION,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures}),dispose(){if(disposed)return;disposed=true;observer.disconnect();renderer.domElement.removeEventListener('webglcontextlost',contextLost);world.clear();for(const g of allGeometry)g.dispose();for(const m of materials.values())m.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();host.dataset.renderStats=JSON.stringify({revision:THREE.REVISION,live:0,canvases:host.querySelectorAll('canvas').length,calls:0,triangles:0,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures});}};
 }

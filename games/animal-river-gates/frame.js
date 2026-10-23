@@ -12,6 +12,8 @@
     const mainHeader = main.querySelector(".main-header");
     const stageHeader = stage.querySelector(".stage-header");
     const battleHeader = battle.querySelector(".battle-header");
+    // Keep the Stage-owned shop outside mountStage's inert legacy-source bin.
+    stage.appendChild($("stationDialog"));
     const localeSelect = $("localeSelect");
 
     mainHeader.querySelector("[data-wp-game-title]").dataset.wpFrameTitle = "";
@@ -54,11 +56,15 @@
       .add($("battleTideStat"));
     frame.battleTopUI.add(battleGroup);
 
-    frame.commonDownButton.clear().add(stageTab);
+    const stationTab = $("stationBtn");
+    stationTab.dataset.wpFrameAction = "tab";
+    stationTab.setAttribute("role", "tab");
+    stationTab.setAttribute("aria-selected", "false");
+    frame.commonDownButton.clear().add(stageTab).add(stationTab);
     frame.activate("main");
     window.addEventListener("pagehide", (event) => {
       if (!event.persisted) frame.destroy();
-    }, { once: true });
+    });
     return frame;
   };
 })();

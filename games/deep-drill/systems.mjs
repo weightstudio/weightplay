@@ -3,7 +3,7 @@ import {REGIONS,MODULES,CREW,TOOLS,ACHIEVEMENTS,EXPEDITION_EVENTS} from './conte
 const bounded=(v,max=1e9)=>Math.max(0,Math.min(max,Math.floor(Number.isFinite(Number(v))?Number(v):0)));
 const unique=(value,keys)=>[...new Set((Array.isArray(value)?value:[]).filter(x=>keys.includes(x)))];
 export function migrate(s,raw){
- s.schema=6;s.toolBudget=[0,1,3,5].includes(raw.toolBudget)?raw.toolBudget:0;s.helpers=bounded(raw.helpers,3);s.materials=Object.fromEntries(['copper','crystal','salvage','core'].map(k=>[k,bounded(raw.materials?.[k])]));
+ s.schema=7;s.toolBudget=[0,1,3,5].includes(raw.toolBudget)?raw.toolBudget:0;s.helpers=bounded(raw.helpers,3);s.materials=Object.fromEntries(['copper','crystal','salvage','core'].map(k=>[k,bounded(raw.materials?.[k])]));
  s.modules=unique(raw.modules,Object.keys(MODULES));s.equipped=unique(raw.equipped,s.modules).slice(0,2);
  s.crew=unique(raw.crew,Object.keys(CREW));s.activeCrew=s.crew.includes(raw.activeCrew)?raw.activeCrew:null;
  s.tools=Object.fromEntries(Object.keys(TOOLS).map(k=>[k,raw.tools?bounded(raw.tools[k],99):['coolant','beam'].includes(k)?2:0]));
@@ -14,11 +14,18 @@ export function migrate(s,raw){
  s.recordsV5={};for(const [id,r] of Object.entries(raw.recordsV5||{}))if(+id>=1&&+id<=30&&r&&typeof r==='object')s.recordsV5[id]={stars:bounded(r.stars,3),time:bounded(r.time,36000)};
  s.journeyTools={};for(const [id,count] of Object.entries(raw.journeyTools||{}))if(+id>=1&&+id<=30)s.journeyTools[id]=bounded(count);
  s.recordsV10={};for(const [id,r] of Object.entries(raw.recordsV10||{}))if(+id>=1&&+id<=30&&r&&typeof r==='object')s.recordsV10[id]={stars:bounded(r.stars,3),time:bounded(r.time,1e7)};
+ s.recordsV12={};for(const [id,r] of Object.entries(raw.recordsV12||{}))if(+id>=1&&+id<=30&&r&&typeof r==='object')s.recordsV12[id]={stars:bounded(r.stars,3),time:bounded(r.time,1e7)};
  s.journeys={};for(const [id,j] of Object.entries(raw.journeys||{})){
-  const stage=STAGES[Number(id)-1];if(!stage||!j||j.version!==10||j.stageId!==stage.id||!Number.isInteger(j.row)||j.row<=0||j.row>=stage.layers||j.row%stage.sectionLayers!==0)continue;
-  const stats=Object.fromEntries(['copper','gold','crystal','coolant','quality','vent','magma'].map(k=>[k,bounded(j.stats?.[k],j.row*5)]));
+  const stage=STAGES[Number(id)-1];if(!stage||!j||j.stageId!==stage.id||!Number.isInteger(j.row))continue;
+  const legacy=j.version===10;
+  const anchor=legacy?j.row:j.legacyRow;
+  const validAnchor=Number.isInteger(anchor)&&anchor>0&&anchor<stage.layers*10&&anchor%stage.sectionLayers===0;
+  const row=legacy?Math.floor(j.row/10):j.row,credit=legacy?j.row%10:bounded(j.rowCredit,9);
+  if(legacy?(!validAnchor):(j.version!==12||row<=0||row>=stage.layers||
+    (row%stage.sectionLayers!==0||credit!==0)&&!(validAnchor&&row*10+credit===anchor)))continue;
+  const stats=Object.fromEntries(['copper','gold','crystal','coolant','quality','vent','magma'].map(k=>[k,bounded(j.stats?.[k],(row+(validAnchor?anchor:0))*5)]));
   if(stage.goal==='safe'&&stats.magma)continue;
-  s.journeys[id]={version:10,stageId:stage.id,row:j.row,lane:bounded(j.lane,4),time:bounded(j.time,1e7),toolsUsed:bounded(j.toolsUsed),stats,triggered:unique(j.triggered,Object.values(EXPEDITION_EVENTS).map(e=>e.kind))};
+  s.journeys[id]={version:12,stageId:stage.id,row,rowCredit:credit,...(validAnchor?{legacyRow:anchor}:{}),lane:bounded(j.lane,4),time:bounded(j.time,1e7),toolsUsed:bounded(j.toolsUsed),stats,triggered:unique(j.triggered,Object.values(EXPEDITION_EVENTS).map(e=>e.kind))};
  }
  const eventKeys=Object.entries(EXPEDITION_EVENTS).map(([id,e])=>id+':'+e.kind);
  s.eventClaims=unique([...(Array.isArray(raw.eventClaims)?raw.eventClaims:[]),...s.cleared.filter(id=>EXPEDITION_EVENTS[id]).map(id=>id+':'+EXPEDITION_EVENTS[id].kind)],eventKeys);
@@ -33,13 +40,13 @@ export function restoreJourney(s,r){
  r.journeyToolsUsed=s.journeyTools[r.stage.id]||0;
  r.triggered=s.eventClaims.filter(id=>id.startsWith(r.stage.id+':')).map(id=>id.split(':')[1]);
  const j=s.journeys[r.stage.id];if(!j)return r;
- r.row=j.row;r.depth=j.row*5;r.lane=j.lane;r.time=j.time;r.stats={...j.stats};r.triggered=[...new Set([...r.triggered,...j.triggered])];r.bankedVents=j.stats.vent;r.resumeDepth=r.depth;
+ r.row=j.row;r.resumeRow=j.row;r.rowCredit=j.rowCredit||0;r.legacyRow=j.legacyRow;r.depth=(j.row*10+r.rowCredit)/2;r.progress=r.rowCredit/10;r.lane=j.lane;r.time=j.time;r.stats={...j.stats};r.triggered=[...new Set([...r.triggered,...j.triggered])];r.bankedVents=j.stats.vent;r.resumeDepth=r.depth;
  return r;
 }
 export function saveJourney(s,r){
  if(r.row<=0||r.row>=r.stage.layers||r.row%r.stage.sectionLayers||r.stage.goal==='safe'&&r.stats.magma)return;
  const previous=s.journeys[r.stage.id];if(previous&&previous.row>r.row)return;
- s.journeys[r.stage.id]={version:10,stageId:r.stage.id,row:r.row,lane:r.lane,time:Math.ceil(r.time),toolsUsed:r.journeyToolsUsed,stats:{...r.stats},triggered:[...r.triggered]};
+ s.journeys[r.stage.id]={version:12,stageId:r.stage.id,row:r.row,rowCredit:0,...(r.legacyRow?{legacyRow:r.legacyRow}:{}),lane:r.lane,time:Math.ceil(r.time),toolsUsed:r.journeyToolsUsed,stats:{...r.stats},triggered:[...r.triggered]};
 }
 export const equipped=(s,id)=>s.equipped?.includes(id);
 export function extraCapacity(s){return (equipped(s,'compressor')?24:0)+(s.activeCrew==='bubble'?10:0);}
@@ -94,7 +101,7 @@ export function rescueFraction(s){return equipped(s,'beacon')||s.activeCrew==='b
 export function settleSystems(s,r,reason,first){
  bankMaterials(s,r,['pressure','hull'].includes(reason)?rescueFraction(s):1);
  s.total.trips++;bankSaleStats(s,r,r.settlementEarned);
- if(r.clear){delete s.journeys[r.stage.id];delete s.journeyTools[r.stage.id];const stars=1+(r.hull>=60?1:0)+(r.journeyToolsUsed===0?1:0),old=s.recordsV10[r.stage.id];s.recordsV10[r.stage.id]={stars:Math.max(old?.stars||0,stars),time:Math.min(old?.time??1e7,Math.ceil(r.time))};
+ if(r.clear){delete s.journeys[r.stage.id];delete s.journeyTools[r.stage.id];const stars=1+(r.hull>=60?1:0)+(r.journeyToolsUsed===0?1:0),old=s.recordsV12[r.stage.id];s.recordsV12[r.stage.id]={stars:Math.max(old?.stars||0,stars),time:Math.min(old?.time??1e7,Math.ceil(r.time))};
   if(r.stage.checkpoint&&!s.relics.includes(r.stage.arc)){s.relics.push(r.stage.arc);s.materials.core++;r.events.push({type:'relic',text:`取得遺物：${REGIONS[r.stage.arc].relic}`});}
   if(r.stage.id===30)s.ending=true;
  }

@@ -21,7 +21,6 @@
 
     mountedFrame = window.WeightPlayScreenFrame.mount({
       root,
-      localeSelect: $("localeSelect"),
       playUI: true,
       scenes: {
         main: { root: main, header: mainHeader, content: mainContent },

@@ -742,10 +742,10 @@ function translate(value){
 }
 export function text(key,args={}){
  if(key==='long.resume')return 'Resume from '+args.depth+'m';
- if(key==='long.stop')return 'Survey stop '+args.section+'/50 · Haul banked; hull serviced';
- if(key==='long.section')return 'Sector '+args.section+'/50 · Next stop '+args.stop+'m';
+ if(key==='long.stop')return 'Survey stop '+args.section+'/5 · Haul banked; hull serviced';
+ if(key==='long.section')return 'Sector '+args.section+'/5 · Next stop '+args.stop+'m';
  if(key==='long.title')return 'Long expeditions';
- if(key==='long.guide')return 'Each area has 50 real-distance sectors. Survey stops bank your haul, service the hull and save your return point. Reload resumes only a stop you have reached.';
+ if(key==='long.guide')return 'Each area has 5 real-distance sectors. Survey stops bank your haul, service the hull and save your return point. Reload resumes only a stop you have reached.';
  if(key==='long.savedTitle')return 'Saved survey stop';
  if(key==='long.saved')return 'This expedition resumed from '+args.depth+'m already travelled.';
 

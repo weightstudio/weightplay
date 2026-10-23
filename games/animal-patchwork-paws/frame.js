@@ -24,7 +24,7 @@
       localeSelect: document.getElementById("localeSelect"),
       playUI: true,
       scenes: {
-        main: { root: main, header: main.querySelector(".main-header"), content: main },
+        main: { root: main, header: main.querySelector(".main-header"), content: document.getElementById("mainContent") },
         stage: { root: stage, header: stageHeader, content: stageWorkspace },
         battle: { root: battle, header: battleHeader, content: document.getElementById("battleLive") },
       },

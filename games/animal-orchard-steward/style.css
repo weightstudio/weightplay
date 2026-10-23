@@ -1,345 +1,110 @@
-:root {
-  color-scheme: dark;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+:root {color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+* {box-sizing:border-box;}
+[hidden] {display:none!important;}
+body {margin:0;min-width:280px;}
+button {font:inherit;cursor:pointer;touch-action:manipulation;}
+button:focus-visible {outline:3px solid #ffe7a0;outline-offset:3px;}
+#gameFrame {width:100%;max-width:none;padding:0;margin:0;}
+#mainContent {min-width:0;}
+.cover-card {width:100%;aspect-ratio:1;overflow:hidden;}
+.main-poster {display:block;width:100%;height:100%;object-fit:cover;}
+.hero-copy {min-width:0;}
+#mainProgress {font-size:14px;color:var(--wp-ui-muted);}
+#battleView {container-type:inline-size;}
+.battle-workspace {display:grid;grid-template-rows:minmax(260px,1fr) 298px;gap:0;min-height:0;overflow:hidden;padding:0;color:#f7f1da;}
+.orchard-world {position:relative;min-width:0;min-height:0;isolation:isolate;overflow:hidden;border-radius:8px;}
+#orchardCanvas {display:block;width:100%;height:100%;touch-action:manipulation;}
+.order-banner {position:absolute;inset:8px 8px auto;display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:42px;padding:7px 12px;background:rgba(24,54,43,.9);border:1px solid #a5c99966;border-radius:10px;pointer-events:none;font-size:12px;}
+.order-banner strong {font-size:14px;color:#ffdf94;}
+.order-banner span {text-align:end;}
+.tree-targets {position:absolute;inset:auto 10px 56px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;pointer-events:none;}
+.tree-button {position:relative;width:100%;min-width:0;min-height:48px;padding:5px;border:1px solid #d6e5b7;background:#203d30e8;color:#fff4d5;border-radius:9px;pointer-events:auto;box-shadow:0 3px 0 #1a3426;font-size:12px;line-height:1.2;}
+.tree-button strong,.tree-button span {display:block;}
+.tree-button.is-ready {background:#f0ca66;color:#263f2c;border-color:#fff0b4;}
+.tree-button[aria-pressed="true"] {outline:2px solid #fff3c7;outline-offset:2px;}
+.tree-info {position:absolute;bottom:8px;inset-inline:8px;min-height:37px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:7px;background:#1a382de8;color:#f6efd8;border-radius:8px;padding:5px 8px;font-size:12px;pointer-events:none;}
+.tree-info b {color:#ffdd85;}
+.care-desk {min-width:0;min-height:0;display:grid;grid-template-rows:34px 46px 20px 76px 38px 48px;gap:4px;padding:8px;background:#183a31;border-top:1px solid #aecb8738;}
+.forecast {display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;}
+.forecast strong {font-size:14px;color:#f3d58b;}
+.forecast span {color:#d3e1ca;}
+.meters {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+.meter-label {display:flex;justify-content:space-between;align-items:center;gap:4px;font-size:12px;line-height:1.3;}
+.meter-value {font-variant-numeric:tabular-nums;color:#fff3c9;}
+.meter-track {position:relative;margin-top:7px;height:9px;border-radius:3px;background:#0d241e;overflow:visible;}
+.meter-fill {height:100%;border-radius:3px;background:#e8c35c;transition:width 180ms ease;}
+.meter-row:nth-child(2) .meter-fill {background:#69cad8;}
+.meter-row:nth-child(3) .meter-fill {background:#a0c578;}
+.meter-goal {position:absolute;top:-3px;height:15px;border:1px solid #ffffffb3;border-radius:3px;pointer-events:none;}
+.care-heading {display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;}
+.care-heading span {font-size:11px;color:#c7dcc0;}
+.action-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+.action-button {min-width:0;position:relative;padding:5px 4px;display:grid;grid-template-columns:36px minmax(0,1fr);grid-template-rows:1fr 24px;align-items:center;border:1px solid #a0ba8666;border-radius:9px;background:#355443;color:#fcf4dd;box-shadow:0 3px 0 #10271f;}
+.action-button:active,.utility-button:active {transform:translateY(2px);box-shadow:none;}
+.action-button[aria-disabled="true"] {opacity:.5;}
+.action-art {display:block;width:36px;height:36px;background-image:url('assets/care-tools.svg');background-size:108px 36px;background-repeat:no-repeat;}
+.action-art-shade {background-position-x:-36px;}
+.action-art-sun {background-position-x:-72px;}
+.action-name {font-size:12px;font-weight:750;overflow-wrap:anywhere;}
+.action-delta {grid-column:1/-1;font-size:11px;white-space:nowrap;direction:ltr;}
+.feedback {margin:0;min-height:38px;max-height:38px;display:flex;align-items:center;font-size:12px;line-height:1.25;color:#e9d79b;overflow:hidden;}
+.day-controls {display:grid;grid-template-columns:60px 70px minmax(0,1fr);gap:8px;}
+#battleView :is(.primary-button,.secondary-button,.utility-button) {min-height:44px;border:1px solid #c4d5ac66;border-radius:10px;padding:8px 12px;font-weight:750;font-size:14px;}
+#battleView .primary-button {background:#f2cd72;color:#253b2c;box-shadow:0 3px 0 #b09043;}
+#battleView :is(.secondary-button,.utility-button) {background:#294b3c;color:#f4eed7;}
+.utility-button {padding:4px;font-size:12px;}
+#nextDay {padding:6px;font-size:14px;}
+.orchard-modal {position:absolute;inset:0;z-index:20;display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow:auto;overscroll-behavior:contain;background:rgba(9,25,20,.84);backdrop-filter:blur(6px);}
+.dialog-card,.result-card {width:min(100%,490px);margin:auto;flex-shrink:0;padding:20px;color:#f7efd8;background:linear-gradient(155deg,#294e3c,#16382e);border:1px solid #bcce9477;border-radius:16px;box-shadow:0 8px 36px #07140c66;}
+.dialog-card h2,.result-card h2 {margin:0 0 12px;font-size:24px;color:#ffe3a0;}
+.dialog-card p,.result-card p {font-size:14px;line-height:1.6;}
+.dialog-actions,.result-actions {display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+.orchard-modal button {width:100%;}
+.result-art {width:112px;height:112px;margin:0 auto 12px;border-radius:14px;overflow:hidden;}
+.result-art img {width:100%;height:100%;object-fit:cover;}
+.result-card {text-align:center;}
+.result-card .kicker {margin:0 0 8px;color:#bdd6b7;font-size:12px;}
+.result-fruit {display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 0;}
+.result-fruit div {background:#ffffff0a;border-radius:8px;padding:10px 4px;font-size:14px;}
+.result-fruit strong {display:block;margin-top:6px;font-size:25px;color:#f3d283;}
+#nextSeason:disabled {opacity:.35;box-shadow:none;cursor:default;}
+.shop-balance {display:flex;align-items:center;gap:8px;}
+.shop-balance img {object-fit:contain;}
+.shop-balance img:nth-of-type(2) {margin-inline-start:auto;}
+.shop-item {display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;margin:12px 0;padding:12px;background:#102c2366;border:1px solid #afc59633;border-radius:10px;}
+.shop-item img {width:36px;height:36px;object-fit:contain;}
+.shop-item h3 {margin:0;font-size:15px;}
+.shop-item p {font-size:12px;margin:5px 0;}
+.shop-item button {grid-column:1/-1;}
+.shop-item button {min-height:44px;border:1px solid #c4d5ac66;border-radius:8px;background:#f2cd72;color:#253b2c;font-weight:750;}
+.shop-item button:disabled {background:#294b3c;color:#bdcdb7;cursor:default;}
+#shopFeedback {min-height:20px;margin:4px 0;font-size:13px;color:#ffe2a1;}
+#fruitGuide > p {padding:8px;background:#0c2b2266;border-radius:8px;font-size:13px;}
+.harvest-flight {position:fixed;width:28px;height:28px;z-index:45;pointer-events:none;object-fit:contain;filter:drop-shadow(0 2px 3px #0008);}
+@container (min-width:700px) {
+ .battle-workspace {grid-template-columns:minmax(0,1fr) 320px;grid-template-rows:minmax(0,1fr);}
+ .care-desk {grid-template-rows:34px 46px 20px 76px minmax(38px,1fr) 48px;border-top:0;border-inline-start:1px solid #aecb8738;}
+ .orchard-world {border-radius:0;}
+ .order-banner {flex-direction:column;align-items:start;gap:3px;}
+ .tree-button {font-size:12px;}
 }
-
-* { box-sizing: border-box; }
-[hidden] { display: none !important; }
-button, select { font: inherit; }
-button { cursor: pointer; touch-action: manipulation; }
-
-body[data-wp-game-id="animal-orchard-steward"] {
-  min-width: 280px;
-  margin: 0;
-  color: var(--wp-ui-text);
+@media (prefers-reduced-motion:reduce) {
+ .meter-fill {transition:none;}
+ .action-button:active,.utility-button:active {transform:none;}
 }
-
-#gameFrame.app-shell {
-  width: 100%;
-  max-width: none;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  overflow: visible;
-}
-
-#mainContent {
-  align-items: center;
-  min-height: 0;
-}
-
-.cover-card {
-  position: relative;
-  width: 100%;
-  min-width: 0;
-  aspect-ratio: 1;
-  overflow: hidden;
-}
-
-.main-poster {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.hero-copy {
-  min-width: 0;
-  color: var(--wp-ui-text);
-}
-
-.weather-card .kicker,
-.result-card .kicker {
-  margin: 0;
-  color: var(--wp-ui-gold);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .08em;
-  line-height: 1.35;
-}
-
-.battle-workspace {
-  display: flex;
-  min-width: 0;
-  min-height: 0;
-  flex-direction: column;
-  gap: 10px;
-  overflow: auto;
-  padding: 12px;
-  color: var(--wp-ui-text);
-  overscroll-behavior: contain;
-}
-
-.battle-info-source { display: none !important; }
-
-.weather-card,
-.meter-card,
-.care-card {
-  min-width: 0;
-  border: 1px solid var(--wp-ui-line);
-  border-radius: var(--wp-ui-radius);
-  background: var(--wp-ui-surface);
-  color: var(--wp-ui-text);
-  box-shadow: inset 0 1px 0 var(--wp-ui-highlight), 0 3px 0 var(--wp-ui-shadow);
-}
-
-.weather-card { padding: 12px 14px; }
-.weather-card h2 {
-  margin: 4px 0;
-  color: var(--wp-ui-text);
-  font-size: clamp(16px, 2.2vw, 22px);
-  line-height: 1.3;
-}
-.weather-card p:last-child {
-  margin: 0;
-  color: var(--wp-ui-muted);
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.orchard-layout {
-  display: grid;
-  min-width: 0;
-  min-height: 0;
-  grid-template-columns: minmax(190px, .8fr) minmax(0, 1.2fr);
-  gap: 10px;
-}
-
-.meter-card,
-.care-card { padding: 12px; }
-
-.meter-heading {
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.meter-heading h3 {
-  min-width: 0;
-  margin: 0;
-  color: var(--wp-ui-text);
-  font-size: 15px;
-  line-height: 1.3;
-}
-
-.meter-heading > span {
-  color: var(--wp-ui-muted);
-  font-size: 12px;
-  line-height: 1.3;
-  text-align: end;
-}
-
-.meter-row { margin-block: 10px; }
-.meter-label {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-  color: var(--wp-ui-text);
-  font-size: 13px;
-  line-height: 1.3;
-}
-.meter-value {
-  color: var(--wp-ui-muted);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-.meter-track {
-  height: 9px;
-  margin-top: 5px;
-  overflow: hidden;
-  border: 1px solid var(--wp-ui-line);
-  border-radius: 999px;
-  background: var(--wp-ui-background);
-}
-.meter-fill {
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #62bf98, var(--wp-ui-gold));
-  transition: width 220ms ease;
-}
-
-.action-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.action-button {
-  display: flex;
-  min-width: 0;
-  min-height: 112px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 10px;
-  border: 1px solid var(--wp-ui-line);
-  border-radius: var(--wp-ui-radius);
-  background: var(--wp-ui-button-image);
-  color: var(--wp-ui-text);
-  text-align: start;
-  box-shadow: inset 0 1px 0 var(--wp-ui-highlight), 0 3px 0 var(--wp-ui-shadow);
-  transition: filter 140ms ease, transform 140ms ease;
-}
-.action-button:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
-.action-button:focus-visible,
-.secondary-button:focus-visible,
-.primary-button:focus-visible { outline: 3px solid var(--wp-i9-focus, #9ff3d6); outline-offset: 2px; }
-.action-button:disabled { cursor: default; opacity: .65; }
-
-.action-art {
-  display: block;
-  width: 42px;
-  height: 44px;
-  flex: 0 0 auto;
-  margin-bottom: 5px;
-  background-image: url('assets/animal-orchard-steward-care-tools-atlas-block-v1.png');
-  background-repeat: no-repeat;
-  background-position-y: center;
-  background-size: 126px 44px;
-}
-.action-art-rain { background-position-x: 0; }
-.action-art-shade { background-position-x: -42px; }
-.action-art-sun { background-position-x: -84px; }
-.action-name { color: var(--wp-ui-text); font-weight: 800; line-height: 1.2; }
-.action-delta { margin-top: 3px; color: var(--wp-ui-muted); font-size: 11px; line-height: 1.25; }
-
-.feedback {
-  min-height: 22px;
-  margin: 8px 0;
-  color: var(--wp-ui-text);
-  font-size: 13px;
-  font-weight: 750;
-  line-height: 1.35;
-}
-.feedback.good { color: #9de7bd; }
-.feedback.bad { color: #ffb5a9; }
-
-.primary-button,
-.secondary-button {
-  min-height: 44px;
-  padding: 9px 14px;
-  border: 2px solid var(--wp-ui-line);
-  border-radius: var(--wp-ui-radius);
-  color: var(--wp-ui-text);
-  font-weight: 800;
-  line-height: 1.25;
-  box-shadow: inset 0 2px 0 var(--wp-ui-highlight), 0 3px 0 var(--wp-ui-shadow);
-}
-.primary-button { background: var(--wp-ui-gold); color: #302717; }
-.secondary-button { background: var(--wp-ui-button-image); }
-.primary-button:hover,
-.secondary-button:hover { filter: brightness(1.08); }
-#restartDay { width: 100%; }
-
-.leave-dialog,
-.result-screen {
-  position: absolute;
-  z-index: 120;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  overflow: auto;
-  padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
-  background: #061820bd;
-}
-.dialog-card,
-.result-card {
-  width: min(100%, 620px);
-  max-height: 100%;
-  overflow: auto;
-  padding: 18px;
-  border: 2px solid var(--wp-ui-line);
-  border-radius: var(--wp-i9-radius, 12px);
-  background: var(--wp-ui-surface);
-  color: var(--wp-ui-text);
-  text-align: center;
-  box-shadow: 0 6px 0 var(--wp-ui-shadow);
-}
-.dialog-card h2,
-.result-card h2 { margin: 8px 0; color: var(--wp-ui-text); line-height: 1.2; }
-.dialog-card p,
-.result-summary { color: var(--wp-ui-muted); line-height: 1.5; }
-.dialog-actions,
-.result-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
-.dialog-actions > button,
-.result-actions > button { flex: 1 1 150px; }
-.result-guide {
-  display: block;
-  width: min(132px, 28vw);
-  height: min(132px, 22vh);
-  object-fit: contain;
-  margin: 0 auto 6px;
-}
-.result-stats {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin: 14px 0;
-}
-.result-stats > div {
-  min-width: 118px;
-  padding: 10px;
-  border: 1px solid var(--wp-ui-line);
-  border-radius: var(--wp-ui-radius);
-  background: var(--wp-ui-background);
-}
-.result-stats span,
-.result-stats strong { display: block; }
-.result-stats span { color: var(--wp-ui-muted); font-size: 12px; }
-.result-stats strong { color: var(--wp-ui-text); font-size: 23px; }
-
-[dir="rtl"] .action-button { text-align: right; }
-
-@media (max-width: 700px) {
-  .orchard-layout { grid-template-columns: minmax(0, 1fr); }
-  .action-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .action-button {
-    display: grid;
-    min-height: 82px;
-    grid-template-columns: 42px minmax(0, 1fr);
-    grid-template-rows: auto auto;
-    column-gap: 8px;
-    align-content: center;
-  }
-  .action-button:last-child { grid-column: 1 / -1; }
-  .action-art { grid-row: 1 / span 2; width: 42px; height: 48px; margin: 0; background-size: 126px 48px; }
-  .action-art-shade { background-position-x: -42px; }
-  .action-art-sun { background-position-x: -84px; }
-  .action-name { align-self: end; font-size: 14px; }
-  .action-delta { align-self: start; font-size: 11px; }
-}
-
-@media (orientation: landscape) and (max-height: 560px) {
-  .battle-workspace { gap: 6px; padding: 7px; }
-  .weather-card { padding: 7px 10px; }
-  .weather-card h2 { margin: 2px 0; font-size: 15px; }
-  .weather-card p:last-child { font-size: 11px; line-height: 1.25; }
-  .orchard-layout { gap: 6px; }
-  .meter-card, .care-card { padding: 7px; }
-  .meter-heading { margin-bottom: 4px; }
-  .meter-heading h3 { font-size: 12px; }
-  .meter-heading > span, .meter-label { font-size: 10px; }
-  .meter-row { margin: 5px 0; }
-  .meter-track { height: 7px; margin-top: 2px; }
-  .action-grid { gap: 5px; }
-  .action-button { min-height: 78px; padding: 5px; }
-  .action-art { width: 30px; height: 30px; margin-bottom: 2px; background-size: 90px 30px; }
-  .action-art-shade { background-position-x: -30px; }
-  .action-art-sun { background-position-x: -60px; }
-  .action-name { font-size: 11px; }
-  .action-delta { font-size: 9px; }
-  .feedback { min-height: 16px; margin: 3px 0; font-size: 10px; }
-  #restartDay { min-height: 32px; padding: 4px 8px; font-size: 11px; }
-  .result-guide { width: 72px; height: 64px; margin-bottom: 2px; }
-  .result-card, .dialog-card { padding: 10px; }
-  .result-card h2, .dialog-card h2 { margin: 4px 0; font-size: 20px; }
-  .result-summary, .dialog-card p { margin: 6px 0; font-size: 12px; }
-  .result-stats { margin: 6px 0; }
-  .result-stats > div { padding: 5px; }
-  .result-stats strong { font-size: 17px; }
-  .dialog-actions > button, .result-actions > button { min-height: 36px; padding: 5px 8px; font-size: 12px; }
+@media (orientation:landscape) and (max-height:560px) {
+ .battle-workspace {grid-template-columns:minmax(0,1fr) 320px;grid-template-rows:minmax(0,1fr);}
+ .care-desk {grid-template-rows:30px 40px 18px 64px minmax(30px,1fr) 44px;border-top:0;}
+ .feedback {min-height:30px;max-height:30px;font-size:11px;}
+ .order-banner {min-height:38px;flex-direction:row;align-items:center;}
+ .result-card {width:min(100%,650px);display:grid;grid-template-columns:80px minmax(0,1fr);gap:6px 16px;padding:14px;}
+ .result-art {grid-row:1/4;width:76px;height:76px;margin:0;}
+ .result-card .kicker,.result-card h2,#resultSummary {grid-column:2;margin:0;}
+ .result-card h2 {font-size:22px;}
+ .result-fruit,#resultBest,.result-actions {grid-column:1/-1;}
+ .result-fruit {padding:4px 0;}
+ .result-fruit div {padding:5px;}
+ .result-fruit strong {margin-top:2px;font-size:20px;}
+ #resultBest {margin:0;}
+ .result-actions {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:4px;}
 }

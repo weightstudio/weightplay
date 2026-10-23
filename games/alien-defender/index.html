@@ -33,8 +33,8 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/alien-defender/" />
     <title>Alien Defender | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261017-interface9-guide-theme1">
-  <link rel="stylesheet" href="style.css?v=20261020-alien-defender-v61-i9-repair1">
-  <link rel="stylesheet" href="art.css?v=20261020-alien-defender-i9-battle-art">
+  <link rel="stylesheet" href="style.css?v=20261023-alien-defender-v62">
+  <link rel="stylesheet" href="art.css?v=20261023-alien-defender-v62">
   <script src="../../src/shared-interface-bootstrap.js?v=20261017-interface9-lifecycle-sync-v2" data-wp-shared-interface="7"></script>
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-frame-style>
   <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261017-shared-play-spacing1">
@@ -52,7 +52,7 @@
           <label class="locale" hidden><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
         </header>
         <section class="hero-card">
-          <img class="main-poster" src="/assets/alien-defender-cover.webp" alt="" aria-hidden="true">
+          <img class="main-poster" src="/assets/interface7-redrawn/alien-defender.webp" width="1254" height="1254" fetchpriority="high" alt="" aria-hidden="true">
           <div class="main-copy">
             <p class="status-pill" data-copy="comingSoon">Coming Soon</p>
             <p class="lead main-summary" data-copy="guideIntro">Defend the signal station across 30 authored Stages. Each Stage is one Battle formation; credits buy firepower and survival upgrades.</p>
@@ -88,6 +88,10 @@
             <button class="upgrade-card" type="button" data-upgrade="hull"><strong data-copy="upgradeHull">Hull integrity</strong><span class="upgrade-level" data-upgrade-level>0 / 3</span><span class="upgrade-price" data-upgrade-cost>Cost: 150</span><span class="upgrade-action" data-upgrade-action>Buy</span></button>
             <button class="upgrade-card" type="button" data-upgrade="rapid"><strong data-copy="upgradeRapid">Fire cadence</strong><span class="upgrade-level" data-upgrade-level>0 / 4</span><span class="upgrade-price" data-upgrade-cost>Cost: 120</span><span class="upgrade-action" data-upgrade-action>Buy</span></button>
           </div>
+          <button id="skinBtn" class="skin-card" type="button"><span class="skin-swatch" aria-hidden="true"></span><span><strong data-copy="skinTitle">Aurora livery</strong><small data-copy="skinCopy">Permanent pink-violet hull and engine colors. Cosmetic only.</small><b id="skinPrice" data-copy="skinCost">15 diamonds · permanent</b></span></button>
+          <p class="wallet-line"><img src="/assets/weightplay-diamond.svg" width="20" height="20" alt=""><strong id="diamondBalance">0</strong></p>
+          <p id="shopMessage" class="shop-message" role="status"></p>
+          <div id="skinConfirm" hidden><p data-copy="skinCost">15 diamonds · permanent</p><button id="confirmSkinBtn" class="secondary-action" data-copy="confirm">Confirm</button> <button id="cancelSkinBtn" class="secondary-action" data-copy="cancel">Cancel</button></div>
           <button id="closeShopBtn" class="secondary-action" type="button" data-copy="close">Back to stages</button>
         </aside>
       </div>
@@ -103,14 +107,14 @@
         <div id="battleStats" class="hud-stats" hidden>
           <div class="hud-stat"><span class="hud-label" data-copy="stage">Stage</span><strong id="waveValue">1 / 30</strong></div>
           <div class="hud-stat"><span class="hud-label" data-copy="score">Score</span><strong id="scoreValue">0</strong></div>
-          <div class="hud-stat"><span class="hud-label" data-copy="best">Best</span><strong id="bestValue">0</strong></div>
+          <div class="hud-stat"><span class="hud-label" data-copy="shields">Shield</span><strong id="shieldValue">1</strong></div>
           <div class="hud-stat"><span class="hud-label" data-copy="lives">Lives</span><strong id="livesValue">5</strong></div>
         </div>
         <div class="battle-stage">
-          <div class="firepower-chip"><span data-copy="firepower">Firepower</span> <strong id="firepowerValue">1</strong></div>
+          <div class="mission-strip"><span><span data-copy="formation">Fleet</span> <strong id="formationValue">0 / 10</strong></span><span><span data-copy="salvage">Salvage</span> <strong id="salvageValue">0</strong></span><strong id="comboValue"></strong></div>
           <button id="restartBtn" class="restart-button" type="button" data-copy-aria="restart" aria-label="Restart">↻</button>
           <canvas id="gameCanvas" width="920" height="720" tabindex="0" aria-label="Alien Defender playfield"></canvas>
-          <div class="touch-controls" aria-label="Touch controls"><button id="leftBtn" type="button" data-copy-aria="left" aria-label="Left">◀</button><button id="fireBtn" class="fire-button" type="button" data-copy-aria="fire" aria-label="Fire">✦</button><button id="rightBtn" type="button" data-copy-aria="right" aria-label="Right">▶</button></div>
+          <div class="touch-controls" aria-label="Touch controls"><button id="leftBtn" type="button" data-copy-aria="left" aria-label="Left">◀</button><button id="rightBtn" type="button" data-copy-aria="right" aria-label="Right">▶</button><button id="pulseBtn" type="button" class="pulse-button"><span data-copy="pulse">Pulse</span><small id="pulseValue">0 / 6</small></button><button id="fireBtn" class="fire-button" type="button" data-copy-aria="fire" aria-label="Fire">✦</button></div>
           <p id="battleMessage" class="battle-message" aria-live="polite">Read the Stage rule.</p>
           <div id="leaveDialog" class="leave-dialog" hidden role="dialog" aria-modal="true" aria-labelledby="leaveDialogTitle"><p class="leave-kicker" data-copy="leaveKicker">Pause defense</p><h2 id="leaveDialogTitle" data-copy="leaveTitle">Leave this defense?</h2><p data-copy="leaveCopy">Your current Stage and score will be lost if you return to the Stage list.</p><div class="leave-actions"><button id="continueBtn" class="primary-action" type="button" data-copy="continue">Continue playing</button><button id="leaveBtn" class="secondary-action" type="button" data-copy="leave">Return to stages</button></div></div>
         </div>
@@ -128,9 +132,10 @@
   <script src="../../src/battle-canvas-standard.js?v=20261020-shared-i9-battle-canvas1" data-wp-battle-standard></script>
   <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
   <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
-  <script src="stage-config.js?v=20261020-alien-defender-v61-i9"></script>
-  <script src="frame.js?v=20261020-alien-defender-v61-i9"></script>
-  <script src="game.js?v=20261020-alien-defender-v61-i9-repair3&wp-audio=1.0.0"></script>
+  <script src="../../src/wallet.js?v=20261023"></script>
+  <script src="stage-config.js?v=20261023-alien-defender-v62"></script>
+  <script src="frame.js?v=20261023-alien-defender-v62"></script>
+  <script type="module" src="game.js?v=20261014-guide-i9-v61&wp-audio=1.0.0"></script>
   <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
 </body>
 </html>

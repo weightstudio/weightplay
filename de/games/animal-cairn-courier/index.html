@@ -20,24 +20,25 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-cairn-courier/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-cairn-courier/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-cairn-courier/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow" /><meta name="theme-color" content="#315c6a"><meta name="weightplay-audience" content="general"><meta name="weightplay-game-id" content="animal-cairn-courier"><meta name="weightplay-game-version" content="v11"><meta name="weightplay-interface-version" content="9"><title>Steinmal-Bote | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20261020-cairn-courier-v11-main-margin-reset">
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow" /><meta name="theme-color" content="#315c6a"><meta name="weightplay-audience" content="general"><meta name="weightplay-game-id" content="animal-cairn-courier"><meta name="weightplay-game-version" content="v12"><meta name="weightplay-interface-version" content="9"><title>Steinmal-Bote | WeightPlay</title>
+  <link rel="stylesheet" href="style.css?v=20261023-cairn-v12">
+  <link rel="stylesheet" href="play.css?v=20261023-cairn-v12">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261020-cairn-courier-i9">
   <script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-style>
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261020-cairn-courier-i9">
   <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261016-shared-play1">
   <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
-  <meta name="description" content="Lies den Pfad-Hinweis und stapel drei markierte Steine in sicherer Stützfolge." />
+  <meta name="description" content="Baue 30 Steinmale mit Hinweisen zu Stützen, Paaren und Gewicht. Mache Schritte frei rückgängig und meistere jeden Pfad." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Steinmal-Bote | WeightPlay" />
-    <meta property="og:description" content="Lies den Pfad-Hinweis und stapel drei markierte Steine in sicherer Stützfolge." />
+    <meta property="og:description" content="Baue 30 Steinmale mit Hinweisen zu Stützen, Paaren und Gewicht. Mache Schritte frei rückgängig und meistere jeden Pfad." />
     <meta property="og:url" content="https://weightplay.com/de/games/animal-cairn-courier/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-cairn-courier.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Steinmal-Bote | WeightPlay" />
-    <meta name="twitter:description" content="Lies den Pfad-Hinweis und stapel drei markierte Steine in sicherer Stützfolge." />
+    <meta name="twitter:description" content="Baue 30 Steinmale mit Hinweisen zu Stützen, Paaren und Gewicht. Mache Schritte frei rückgängig und meistere jeden Pfad." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-cairn-courier.webp" />
     <script type="application/ld+json">
 {
@@ -47,7 +48,7 @@
   "alternateName": "Cairn Courier",
   "url": "https://weightplay.com/de/games/animal-cairn-courier/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-cairn-courier.webp",
-  "description": "Lies den Pfad-Hinweis und stapel drei markierte Steine in sicherer Stützfolge.",
+  "description": "Baue 30 Steinmale mit Hinweisen zu Stützen, Paaren und Gewicht. Mache Schritte frei rückgängig und meistere jeden Pfad.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -71,64 +72,61 @@
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-cairn-courier" data-wp-game-version="v11" data-wp-interface-version="9" data-wp-game-owned-guide="true">
-  <section id="loadingPanel" class="loading-panel"><div class="loading-card"><span aria-hidden="true">✦</span><strong data-copy="loading">Waking the trail…</strong></div></section>
+<body data-audience="general" data-wp-game-id="animal-cairn-courier" data-wp-game-version="v12" data-wp-interface-version="9" data-wp-game-owned-guide="true">
+  <section id="loadingPanel" class="loading-panel"><div class="loading-card"><span aria-hidden="true">✦</span><strong data-copy="loading">Der Pfad erwacht…</strong></div></section>
   <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
     <main id="mainScreen" class="screen wp-standard-main-screen" data-screen="main" hidden>
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Steinmal-Bote</h1>
       <header class="main-header">
         <a class="return-link" href="/" data-copy="back" data-wp-return="main" data-aria-copy="returnMain" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"></a>
-        <strong data-wp-frame-title data-copy="title">Cairn Courier</strong>
-        <label class="locale"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
+        <strong data-wp-frame-title data-copy="title">Steinmal-Bote</strong>
+        <label class="locale"><span data-copy="language">Sprache</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
       <section class="wp-standard-main-composition">
-        <div class="wp-standard-main-poster"><img class="cover" data-wp-frame-poster data-alt-copy="coverAlt" src="assets/animal-cairn-courier-cover-v2.png" alt="Spielgrafik zu Steinmal-Bote" width="1254" height="1254"></div>
+        <div class="wp-standard-main-poster"><img class="cover" data-wp-frame-poster data-alt-copy="coverAlt" src="/assets/interface7-redrawn/animal-cairn-courier.webp" alt="Spielgrafik zu Steinmal-Bote" width="1254" height="1254"></div>
         <div class="wp-standard-main-copy">
-          <p class="wp-standard-main-summary" data-copy="intro">Read the trail note, then stack three marked stones from base to cap.</p>
+          <p class="wp-standard-main-summary" data-copy="intro">Lies den Pfad und baue ein Steinmal. Dreißig ruhige Rätsel bis zum Gipfel.</p>
           <p id="mainProgress" class="wp-standard-main-progress main-progress" data-wp-main-progress aria-live="polite">Trail progress: 0 / 30</p>
-          <button id="startBtn" class="wp-standard-main-start" type="button" data-wp-main-start data-copy="start">Build the first cairn</button>
+          <button id="startBtn" class="wp-standard-main-start" type="button" data-wp-main-start data-copy="start">Erstes Steinmal bauen</button>
           <strong id="bestValue" hidden></strong>
         </div>
       </section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="Informationen zu Steinmal-Bote">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Steinmal-Bote</h2><p>Lies den Pfad-Hinweis und stapel drei markierte Steine in sicherer Stützfolge.</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Stützreihenfolge-Pfadpuzzle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Sequenzierung · Spatial Planning · Family · Animal</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-screen="main" data-wp-game-guide data-wp-preserve-static-guide data-aria-copy="guideLabel" aria-label="Cairn Courier game guide">
+      <h2 data-copy="guideTitle">Spielanleitung</h2>
+      <div class="game-info-sections">
+        <div class="game-info-section"><p><b data-copy="guideOne">Lies den Hinweis und finde die Stützfolge.</b></p></div>
+        <div class="game-info-section"><p><b data-copy="guideTwo">Tippe die Steine vom Boden nach oben an.</b></p></div>
+        <div class="game-info-section"><p><b data-copy="guideThree">Prüfe die Regeln. Ein falscher Stapel bleibt stehen: nimm einen Stein zurück und versuche es erneut.</b></p></div>
+        <div class="game-info-section"><h3 data-copy="contracts">Pfadregeln</h3><p data-copy="loadExplain">Last = Gewicht jedes inneren Steins × Höhe (1, 2…). Schwere Steine nach unten.</p></div>
+        <div class="game-info-section"><h3 data-copy="seals">Meisterschaft</h3><p data-copy="masteryGuide">Drei Siegel gibt es ohne Fehler und Rücknahme, zwei nach Korrekturen und eines nach einer fehlgeschlagenen Prüfung. Spiele erneut, um deinen Rekord zu verbessern.</p></div>
+        <div class="game-info-section"><h3 data-copy="faqTitle">Fragen</h3><dl><dt data-copy="saveQuestion">Wird mein Fortschritt gespeichert?</dt><dd data-copy="saveAnswer">Stufen, beste Zugzahlen, Meisterschaft und Designs werden in diesem Browser gespeichert. Das Löschen der Browserdaten entfernt den Fortschritt.</dd><dt data-copy="costQuestion">Brauche ich Diamanten zum Spielen?</dt><dd data-copy="costAnswer">Alle 30 Stufen, Versuche und Rücknahmen sind kostenlos. Alpenmorgen gibt es nach 10 Stufen. Die Polarlichtlaterne ist ein optionales dauerhaftes Design für 12 Diamanten.</dd></dl></div>
+      </div>
+    </section>
     <section id="stageScreen" class="screen panel-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-frame-play-fill data-wp-frame-logical-header="stage" hidden>
-      <header class="panel-head stage-header"><button id="stageBackBtn" class="back-btn" type="button" data-copy="back" data-wp-return="stage" data-aria-copy="backToMain" aria-label="Back to Main">←</button><strong data-wp-frame-title hidden></strong></header>
+      <header class="panel-head stage-header"><button id="stageBackBtn" class="back-btn" type="button" data-copy="back" data-wp-return="stage" data-aria-copy="backToMain" aria-label="Back to Main">Zurück</button><strong data-wp-frame-title hidden></strong></header>
       <div id="stageWorkspace"><div id="stageList" data-wp-stage-rail></div></div>
       <nav id="stageActions" data-wp-frame-nav hidden></nav>
+      <section id="finishPanel" class="cairn-modal" role="dialog" aria-modal="true" aria-labelledby="finishTitle" hidden>
+        <div class="dialog-card finish-card"><h2 id="finishTitle" data-copy="finishTitle">Pfadstile</h2><p data-copy="finishBody">Dauerhafte Stile. Die Rätselregeln bleiben gleich.</p><p class="wallet-line"><img src="/assets/weightplay-diamond.svg" alt="" width="22" height="22"><span id="walletBalance"></span></p><div id="finishChoices"></div><p id="finishStatus" role="status"></p><button id="finishClose" type="button" data-copy="close">Schließen</button></div>
+      </section>
     </section>
     <section id="battleScreen" class="screen panel-screen battle-screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas data-wp-frame-play-fill data-wp-frame-logical-header="battle" hidden>
-      <header class="panel-head battle-header"><button id="battleBackBtn" class="back-btn" type="button" data-copy="back" data-wp-return="battle" data-aria-copy="backToMap" aria-label="Back to Trail map">←</button><div><h2 id="roundName">Cedar Landing</h2><p id="roundLabel" class="round-label"></p></div><strong data-wp-frame-title hidden></strong></header>
+      <header class="panel-head battle-header"><button id="battleBackBtn" class="back-btn" type="button" data-copy="back" data-wp-return="battle" data-aria-copy="backToMap" aria-label="Back to Trail map">Zurück</button><div><h2 id="roundName">Cedar Landing</h2><p id="roundLabel" class="round-label"></p></div><strong data-wp-frame-title hidden></strong></header>
       <div class="battle-content">
-        <p id="trailNote" class="trail-note"></p>
-        <img class="stone-atlas" data-alt-copy="atlasAlt" src="assets/animal-cairn-courier-stone-atlas-v2.png" alt="Three cairn stones and a steady completed cairn" width="2073" height="758">
-        <div class="stack-card"><h3 data-copy="stackLabel">Current stack</h3><div id="stack" class="stack" data-aria-copy="stackLabel" aria-label="Current stack"></div></div>
-        <div class="choice-head"><h3 data-copy="chooseStone">Choose a stone</h3><span id="selectionCount" class="selection-count"></span></div>
+        <div id="playSurface" class="cairn-play-surface">
+          <div class="contract-card"><div class="contract-heading"><strong data-copy="contracts">Pfadregeln</strong><span id="selectionCount"></span></div><div id="ruleList" class="rule-list"></div></div>
+          <div id="cairnScene" class="cairn-scene"></div>
+          <div id="sceneError" class="scene-error" role="alert" hidden><p data-copy="renderError">3D-Ansicht nicht verfügbar. Neu laden; Fortschritt bleibt gespeichert.</p><button id="sceneReload" type="button">↻</button></div>
+          <ol id="stack" class="stack-ledger" aria-live="polite" data-aria-copy="stackLabel" aria-label="Current stack"></ol>
+          <p id="trailNote" class="trail-note"></p>
+        </div>
         <div id="stoneTray" class="stone-tray" role="group" data-aria-copy="chooseStone" aria-label="Choose a stone"></div>
         <p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p>
-        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check the stack</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear stack</button></div>
+        <div class="battle-actions"><button id="undoBtn" type="button" data-copy="undo">Zurücknehmen</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Stapel leeren</button><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Stapel prüfen</button></div>
       </div>
       <section id="resultScreen" class="result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" hidden>
-        <div class="dialog-card"><img class="result-mascot" data-alt-copy="resultAlt" src="assets/animal-cairn-courier-pebble-paw-v2.png" alt="Pebble Paw celebrates a steady cairn" width="1024" height="1536"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-actions"><button id="resultStagesBtn" type="button"></button><button id="resultNextBtn" class="primary-btn" type="button"></button><button id="resultReplayBtn" type="button"></button></div></div>
+        <div class="dialog-card"><img class="result-mascot" data-alt-copy="resultAlt" src="/assets/interface7-redrawn/animal-cairn-courier.webp" alt="Pebble Paw celebrates a steady cairn" width="1254" height="1254"><div id="resultSeals" class="result-seals"></div><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-actions"><button id="resultStagesBtn" type="button"></button><button id="resultNextBtn" class="primary-btn" type="button"></button><button id="resultReplayBtn" type="button"></button></div></div>
       </section>
       <section id="leaveConfirm" class="leave-confirm" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveBody" hidden>
         <div class="dialog-card"><h2 id="leaveTitle"></h2><p id="leaveBody"></p><div class="leave-actions"><button id="leaveContinueBtn" type="button"></button><button id="leaveStagesBtn" class="primary-btn" type="button"></button></div></div>
@@ -142,8 +140,11 @@
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="locales.js?v=20261020-cairn-courier-i9"></script>
   <script src="i9-copy.js?v=20261020-cairn-courier-i9"></script>
-  <script src="stage-config.js?v=20261020-cairn-courier-i9"></script>
-  <script src="game.js?v=20261020-cairn-courier-v10-start-audio"></script>
+  <script src="/src/wallet.js"></script>
+  <script src="model.js?v=20261023-cairn-v12"></script>
+  <script src="rebuild-copy.js?v=20261023-cairn-v12"></script>
+  <script src="stage-config.js?v=20261023-cairn-v12"></script>
+  <script src="game.js?v=20261023-cairn-v12"></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/de.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>

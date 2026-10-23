@@ -12,6 +12,8 @@ body[data-wp-game-id="animal-firefly-folio"] #resultScreen[data-wp-battle-substa
   padding:12px!important;
   overflow:auto!important;
   place-items:center!important;
+  grid-template-columns:minmax(0,1fr);
+  grid-template-rows:minmax(0,1fr);
   background:transparent!important;
 }
 body[data-wp-game-id="animal-firefly-folio"] #resultScreen[data-wp-battle-substate="result"]:not([hidden]){
@@ -78,11 +80,11 @@ body[data-wp-game-id="animal-firefly-folio"] .firefly-leave-actions{
 
 @media(max-height:520px) and (orientation:landscape){
   body[data-wp-game-id="animal-firefly-folio"] #resultScreen[data-wp-battle-substate="result"]{
-    place-items:start center!important;
+    place-items:center!important;
     padding:8px!important;
   }
   body[data-wp-game-id="animal-firefly-folio"] #resultScreen[data-wp-battle-substate="result"]>.result-card{
-    width:min(100%,800px)!important;
+    width:min(100%,560px)!important;
     padding:12px!important;
     display:grid;
     grid-template-columns:88px minmax(0,1fr);
@@ -92,7 +94,8 @@ body[data-wp-game-id="animal-firefly-folio"] .firefly-leave-actions{
   }
   body[data-wp-game-id="animal-firefly-folio"] #resultScreen[data-wp-battle-substate="result"] .result-guide-art{
     grid-column:1;
-    grid-row:1/3;
+    grid-row:1/4;
+    align-self:center;
     width:72px;
     height:96px;
     margin:0 auto;
@@ -111,9 +114,15 @@ body[data-wp-game-id="animal-firefly-folio"] .firefly-leave-actions{
     align-self:end;
     margin:0;
   }
-  body[data-wp-game-id="animal-firefly-folio"] #resultScreen[data-wp-battle-substate="result"] .result-card p{
+  body[data-wp-game-id="animal-firefly-folio"] #resultScreen[data-wp-battle-substate="result"] #resultText{
     grid-column:2;
     grid-row:2;
+    align-self:start;
+    margin:0;
+  }
+  body[data-wp-game-id="animal-firefly-folio"] #resultScreen[data-wp-battle-substate="result"] #resultBest{
+    grid-column:2;
+    grid-row:3;
     align-self:start;
     margin:0;
   }
