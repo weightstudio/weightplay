@@ -127,12 +127,45 @@ const CLUES = {
  hi:'कोमल पत्तियों के किनारों पर ताज़े दाँतों के निशान हैं।|खाने की पगडंडी पर टूटे छिलके बिखरे हैं।|आराम की जगह पर मीठे रस के दाग हैं।|पदचिह्नों के पास चाँदी जैसे शल्क चमकते हैं।|नन्हे पंजों ने नीचे उगी हरी पत्तियाँ झुका दी हैं।|गीले पदचिह्न लहराती सतह की ओर जाते हैं।|पंजों के निशान ऊँचे तने पर घूमते हुए ऊपर चढ़ते हैं।|चौड़ी सपाट सिल पर धूप की गरमाहट बाकी है।|उजले आसमान के नीचे इसकी परछाईं छोटी होती है।|आसमान गुलाबी होने और परछाइयाँ लंबी होने पर यह दिखता है।|सूरज ढल जाने के बाद दूर की टिमटिमाती रोशनी में यह निकलता है।|अचानक हिलने से यह शर्मीला दोस्त दूर भाग जाता है।|यह आपकी खुली हथेली को उत्सुकता से देखता है।|इसके कान एक धीमी दोहराती धुन का पीछा करते हैं।',
  ar:'تظهر آثار قضم حديثة على أطراف الأوراق الطرية.|تتناثر قشور مكسورة على درب الطعام.|يلطخ عصير حلو موضع الراحة.|تلمع حراشف فضية قرب الآثار.|تثني الكفوف الصغيرة النصال الخضراء المنخفضة.|تقود آثار رطبة إلى سطح تعلوه تموجات.|تصعد خدوش المخالب لولبيًا حول جذع طويل.|لا تزال بلاطة عريضة مسطحة تحتفظ بحرارة الشمس.|يقصر ظله تحت سماء ساطعة.|يظهر حين تتلون السماء بالوردي وتطول الظلال.|يخرج تحت أضواء بعيدة بعد غياب الشمس.|تُبعد الحركة المفاجئة هذا الصديق الخجول.|يراقب راحة يدك المفتوحة بفضول.|تتبع أذناه لحنًا ناعمًا متكررًا.'
 };
+// Current rules; keep every route and the in-game guide on the same care rhythm.
+const REBUILD_RULES = {
+ en:'Tap the picture choices and explore to earn supplies. If an approach fails, try again in the same encounter. Care for a newly collected companion immediately; later care needs another expedition. Three correct care actions make it an adult. No combat, real-money purchases or waiting timers.',
+ 'zh-Hant':'點選圖片準備，探索可獲得補給。接近方式不合適時，可在同一次相遇重試。新夥伴收集後可以立即照顧；之後每探索一次可再照顧一次。三次正確照顧便會成年。沒有戰鬥、現金購買或倒數等待。',
+ 'zh-Hans':'点选图片准备，探索可获得补给。接近方式不合适时，可在同一次相遇重试。新伙伴收集后可以立即照顾；之后每探索一次可再照顾一次。三次正确照顾便会成年。没有战斗、现金购买或倒计时等待。',
+ ja:'絵を選んで準備し、探索で物資を集めます。近づき方が違ったら、その出会いで再挑戦できます。新しい仲間はすぐにお世話でき、その後は探索ごとに一度お世話できます。正しいお世話を三回すると成体になります。戦闘、現金購入、待ち時間はありません。',
+ ko:'그림을 골라 준비하고 탐험으로 보급품을 모으세요. 접근에 실패해도 같은 만남에서 다시 시도할 수 있어요. 새 친구는 바로 돌볼 수 있고, 그다음부터는 탐험할 때마다 한 번 돌볼 수 있어요. 알맞은 돌봄 세 번이면 성체가 됩니다. 전투, 현금 결제, 대기 시간은 없어요.',
+ es:'Toca las imágenes para preparar la expedición y ganar provisiones. Si el acercamiento falla, vuelve a intentarlo en el mismo encuentro. Cuida al nuevo compañero inmediatamente; los siguientes cuidados requieren otra expedición. Tres cuidados correctos lo hacen adulto. Sin combate, compras con dinero real ni temporizadores.',
+ 'pt-BR':'Toque nas imagens para preparar a expedição e ganhar suprimentos. Se a aproximação falhar, tente novamente no mesmo encontro. Cuide do novo companheiro imediatamente; os próximos cuidados exigem outra expedição. Três cuidados corretos o tornam adulto. Sem combate, compras com dinheiro real ou temporizadores.',
+ fr:'Touchez les images pour préparer une exploration et gagner des provisions. Si une approche échoue, réessayez pendant la même rencontre. Soignez immédiatement un nouveau compagnon ; les soins suivants demandent une autre exploration. Trois soins adaptés le font grandir. Sans combat, achat en argent réel ni attente.',
+ de:'Wähle Bilder zur Vorbereitung und verdiene Vorräte beim Erkunden. Misslingt eine Annäherung, versuche es bei derselben Begegnung erneut. Pflege einen neuen Gefährten sofort; weitere Pflege braucht jeweils eine neue Expedition. Drei passende Pflegeaktionen machen ihn erwachsen. Kein Kampf, Echtgeldkauf oder Warten.',
+ it:'Tocca le immagini per preparare la spedizione e ottenere scorte. Se un approccio fallisce, riprova nello stesso incontro. Accudisci subito un nuovo compagno; le cure successive richiedono un’altra spedizione. Tre cure corrette lo rendono adulto. Nessun combattimento, acquisto con denaro reale o attesa.',
+ ru:'Выбирайте изображения для подготовки и получайте припасы в экспедициях. Если сближение не удалось, повторите попытку в той же встрече. Нового спутника можно сразу окружить заботой; каждый следующий уход требует новой экспедиции. Три правильных ухода делают его взрослым. Без боёв, покупок за реальные деньги и таймеров.',
+ hi:'तस्वीरें चुनकर तैयारी करें और खोज से सामग्री पाएँ। पास जाने का तरीका गलत हो तो उसी मुलाकात में फिर कोशिश करें। नए साथी की तुरंत देखभाल करें; हर अगली देखभाल से पहले एक और खोज करें। तीन सही देखभाल से वह वयस्क बनता है। कोई लड़ाई, असली पैसे की खरीद या प्रतीक्षा नहीं है।',
+ ar:'اختر الصور للتجهيز واكسب المؤن بالاستكشاف. إذا لم تنجح طريقة الاقتراب، أعد المحاولة في اللقاء نفسه. اعتنِ بالرفيق الجديد فورًا؛ وكل رعاية لاحقة تحتاج إلى رحلة أخرى. ثلاث رعايات صحيحة تجعله بالغًا. لا قتال ولا مشتريات بمال حقيقي ولا مؤقتات انتظار.'
+};
+const TRIP_COMPLETE = {
+ en:'Expedition complete. Supplies +{earned}. Companions can receive care again.',
+ 'zh-Hant':'探索完成，補給 +{earned}。夥伴可以再次接受照顧。',
+ 'zh-Hans':'探索完成，补给 +{earned}。伙伴可以再次接受照顾。',
+ ja:'探索完了。物資 +{earned}。仲間のお世話がまたできます。',
+ ko:'탐험 완료. 보급품 +{earned}. 친구를 다시 돌볼 수 있어요.',
+ es:'Expedición completada. Provisiones +{earned}. Puedes volver a cuidar a tus compañeros.',
+ 'pt-BR':'Expedição concluída. Suprimentos +{earned}. Você pode cuidar dos companheiros novamente.',
+ fr:'Exploration terminée. Provisions +{earned}. Vous pouvez à nouveau soigner vos compagnons.',
+ de:'Expedition abgeschlossen. Vorräte +{earned}. Du kannst deine Gefährten wieder pflegen.',
+ it:'Spedizione completata. Scorte +{earned}. Puoi accudire di nuovo i compagni.',
+ ru:'Экспедиция завершена. Припасы +{earned}. Можно снова заботиться о спутниках.',
+ hi:'खोज पूरी हुई। सामग्री +{earned}। साथियों की फिर देखभाल कर सकते हैं।',
+ ar:'اكتمل الاستكشاف. مؤن +{earned}. يمكنك رعاية الرفاق مجددًا.'
+};
 const copy = {};
 for (const locale of LOCALES) {
  const values = ROWS[locale].split('|');
  if (values.length !== KEYS.length) throw new Error(`Locale shape mismatch: ${locale}`);
  copy[locale] = Object.fromEntries(KEYS.map((key,index) => [key, values[index]]));
  ['guideGoal','guideHow','guideRules','guideFeedback'].forEach((key,index) => {copy[locale][key] = GUIDE[locale][index];});
+ copy[locale].guideRules = REBUILD_RULES[locale];
+ copy[locale].tripComplete = TRIP_COMPLETE[locale];
  copy[locale].title = TITLES[locale];
  for (const [keys, row] of [[EXTRA_KEYS, EXTRA[locale]], [RESULT_KEYS, RESULTS[locale]], [LABEL_KEYS, LABELS[locale]], [SPECIES_KEYS, SPECIES_NAMES[locale]], [CLUE_KEYS, CLUES[locale]]]) {
    const cells = row.split('|');

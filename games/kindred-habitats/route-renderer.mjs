@@ -70,7 +70,7 @@ export function renderKindredHabitatsRoute(locale) {
  const schema = {
    '@context':'https://schema.org','@type':'VideoGame',name:title,description,url,image,
    inLanguage:locale,applicationCategory:'Game',operatingSystem:'Web browser',
-   genre:[c.collection,c.care],isAccessibleForFree:true,softwareVersion:'4',
+   genre:[c.collection,c.care],isAccessibleForFree:true,softwareVersion:template.match(/name="weightplay-game-version" content="(\d+)"/)[1],
    publisher:{'@type':'Organization',name:'WeightPlay',url:origin},
    gamePlatform:'Web browser',numberOfPlayers:{'@type':'QuantitativeValue',minValue:1,maxValue:1},
    offers:{'@type':'Offer',price:'0',priceCurrency:'USD'}

@@ -2976,3 +2976,5 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ar": "بيت الخرخرة"
   }
 };
+
+window.WEIGHTPLAY_GAME_TITLES["signal-snap"] = {"__localizedExact": true, "en": "Signal Snap", "zh-Hant": "訊光快拍", "zh-Hans": "讯光快拍", "ja": "シグナルスナップ", "ko": "시그널 스냅", "es": "Destello reflejo", "pt-BR": "Sinal Relâmpago", "fr": "Signal éclair", "de": "Signalblitz", "it": "Scatto segnale", "ru": "Сигнальный рывок", "hi": "संकेत झटपट", "ar": "ومضة الإشارة"};

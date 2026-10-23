@@ -47,51 +47,34 @@
     panel.innerHTML = '<div class="result-card cafe-leave-card"><h2 id="leaveTitle" data-ui="leaveTitle"></h2><p id="leaveText" data-ui="leaveText"></p><div><button id="continueDayBtn" class="primary-btn" type="button" data-ui="continueDay"></button><button id="leaveDayBtn" class="secondary-btn" type="button" data-ui="leaveDay"></button></div></div>';
     $("playPanel")?.append(panel);
   }
-  const nodes = { locale: $("localeSelect"), menu: $("menuPanel"), stage: $("stagePanel"), play: $("playPanel"), result: $("resultPanel"), leave: $("leavePanel"), leaveTitle: $("leaveTitle"), leaveText: $("leaveText"), continueDay: $("continueDayBtn"), leaveDay: $("leaveDayBtn"), mainStart: $("mainStartBtn"), start: $("startBtn"), stageBack: $("stageBackBtn"), back: $("backToMenuBtn"), day: $("dayText"), coins: $("coinText"), best: $("bestText"), stageDay: $("stageDayText"), stageCoins: $("stageCoinText"), stageBest: $("stageBestText"), dayRail: $("dayRail"), playDay: $("playDay"), playCoins: $("playCoins"), served: $("servedText"), objective: $("objectiveRow"), customers: $("customerRow"), stations: $("stationRow"), tray: $("tray"), message: $("playMessage"), upgrades: $("upgradeCards"), resultTitle: $("resultTitle"), resultText: $("resultText"), skillText: $("skillText"), retry: $("retryBtn"), next: $("nextBtn"), menuBtn: $("menuBtn") };
-  nodes.stage?.setAttribute("data-wp-stage-landscape-width", "760");
-  nodes.stage?.setAttribute("data-wp-stage-landscape-height", "360");
-  nodes.play?.setAttribute("data-wp-battle-landscape-width", "760");
-  nodes.play?.setAttribute("data-wp-battle-landscape-height", "360");
-
-  /* Interface 7 Stage always owns one fixed three-slot tab bar. Cafe Rush has
-     no party-preparation category, so the left slot remains intentionally
-     empty; Stages owns the center and Cafe upgrades owns the right slot. */
+  const nodes = { locale: $("localeSelect"), menu: $("menuPanel"), stage: $("stagePanel"), play: $("playPanel"), result: $("resultPanel"), leave: $("leavePanel"), leaveTitle: $("leaveTitle"), leaveText: $("leaveText"), continueDay: $("continueDayBtn"), leaveDay: $("leaveDayBtn"), mainStart: $("mainStartBtn"), mainProgress: $("mainProgress"), stageBack: $("stageBackBtn"), back: $("backToMenuBtn"), day: $("dayText"), coins: $("coinText"), best: $("bestText"), stageDay: $("stageDayText"), stageCoins: $("stageCoinText"), stageBest: $("stageBestText"), dayRail: $("dayRail"), stagePage: $("stagePage"), stageWorkspace: $("stagePanel").querySelector(".stage-workspace"), upgradePanel: $("upgradeWorkspace"), upgrades: $("upgradeCards"), stageInfo: $("stageHeaderInfo"), playContent: $("playPanel").querySelector(".play-content"), battleInfo: $("battleHeaderInfo"), playDay: $("playDay"), playCoins: $("playCoins"), served: $("servedText"), objective: $("objectiveRow"), customers: $("customerRow"), stations: $("stationRow"), tray: $("tray"), message: $("playMessage"), resultTitle: $("resultTitle"), resultText: $("resultText"), skillText: $("skillText"), retry: $("retryBtn"), next: $("nextBtn"), menuBtn: $("menuBtn") };
+  let screenFrame = null;
+  let stageUI = null;
   const stageTabs = (() => {
-    const workspace = nodes.stage?.querySelector(".stage-workspace");
-    if (!nodes.stage || !workspace || nodes.stage.querySelector(".cafe-stage-tabs")) return null;
-    workspace.setAttribute("data-wp-stage-workspace", "");
+    if (!nodes.stage || !nodes.stageWorkspace || nodes.stage.querySelector("[data-wp-frame-nav]")) return null;
     const nav = document.createElement("nav");
-    nav.className = "stage-tabs cafe-stage-tabs";
+    nav.className = "cafe-stage-tabs";
     nav.setAttribute("data-wp-frame-nav", "");
-    const empty = document.createElement("span");
-    empty.className = "stage-tab-empty";
-    empty.setAttribute("aria-hidden", "true");
+    nav.setAttribute("data-wp-frame-stage-nav", "");
     const stages = document.createElement("button");
     stages.type = "button";
     stages.dataset.wpFrameStageSlot = "stages";
     stages.dataset.wpFrameAction = "tab";
-    stages.setAttribute("aria-current", "page");
+    stages.setAttribute("aria-pressed", "true");
     const upgrades = document.createElement("button");
     upgrades.type = "button";
     upgrades.dataset.wpFrameStageSlot = "equipment";
     upgrades.dataset.wpFrameAction = "tab";
-    nav.append(empty, stages, upgrades);
+    upgrades.setAttribute("aria-pressed", "false");
+    nav.append(stages, upgrades);
     nodes.stage.append(nav);
-
     const labels = {
-      en: ["Stage sections", "Stages", "Upgrades"],
-      "zh-Hant": ["關卡選單", "關卡", "升級"],
-      "zh-Hans": ["关卡选单", "关卡", "升级"],
-      ja: ["ステージメニュー", "ステージ", "アップグレード"],
-      ko: ["스테이지 메뉴", "스테이지", "업그레이드"],
-      es: ["Secciones de niveles", "Niveles", "Mejoras"],
-      "pt-BR": ["Seções de fases", "Fases", "Melhorias"],
-      fr: ["Sections de niveaux", "Niveaux", "Améliorations"],
-      de: ["Stufenbereiche", "Stufen", "Verbesserungen"],
-      it: ["Sezioni livelli", "Livelli", "Potenziamenti"],
-      ru: ["Разделы этапов", "Этапы", "Улучшения"],
-      hi: ["स्टेज अनुभाग", "स्टेज", "अपग्रेड"],
-      ar: ["أقسام المراحل", "المراحل", "الترقيات"],
+      en: ["Stage sections", "Stages", "Upgrades"], "zh-Hant": ["關卡選單", "關卡", "升級"],
+      "zh-Hans": ["关卡选单", "关卡", "升级"], ja: ["ステージメニュー", "ステージ", "アップグレード"],
+      ko: ["스테이지 메뉴", "스테이지", "업그레이드"], es: ["Secciones de niveles", "Niveles", "Mejoras"],
+      "pt-BR": ["Seções de fases", "Fases", "Melhorias"], fr: ["Sections de niveaux", "Niveaux", "Améliorations"],
+      de: ["Stufenbereiche", "Stufen", "Verbesserungen"], it: ["Sezioni livelli", "Livelli", "Potenziamenti"],
+      ru: ["Разделы этапов", "Этапы", "Улучшения"], hi: ["स्टेज अनुभाग", "स्टेज", "अपग्रेड"], ar: ["أقسام المراحل", "المراحل", "الترقيات"],
     };
     const localeCode = () => {
       const raw = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || document.documentElement.lang || "en";
@@ -110,10 +93,12 @@
     const set = (tab, focus = false) => {
       const upgradesActive = tab === "upgrades";
       nodes.stage.classList.toggle("is-upgrades-tab", upgradesActive);
-      stages.toggleAttribute("aria-current", !upgradesActive);
-      upgrades.toggleAttribute("aria-current", upgradesActive);
-      if (!upgradesActive) stages.setAttribute("aria-current", "page");
-      else upgrades.setAttribute("aria-current", "page");
+      nodes.stagePage.hidden = upgradesActive;
+      nodes.stagePage.classList.toggle("hidden", upgradesActive);
+      nodes.upgradePanel.hidden = !upgradesActive;
+      stages.setAttribute("aria-pressed", String(!upgradesActive));
+      upgrades.setAttribute("aria-pressed", String(upgradesActive));
+      if (!upgradesActive) stageUI?.refresh(selectedDay - 1);
       if (focus) (upgradesActive ? upgrades : stages).focus({ preventScroll: true });
       window.dispatchEvent(new Event("weightplay:stage-sync"));
     };
@@ -121,7 +106,6 @@
     upgrades.addEventListener("click", () => set("upgrades", true));
     window.addEventListener("wonder:locale-change", () => queueMicrotask(refresh));
     refresh();
-    set("stages");
     return { set, refresh, nav, stages, upgrades };
   })();
 
@@ -194,7 +178,7 @@
     configurable: true,
     get: () => locale === "es" ? dayTitlesEs[index] : locale === "ja" ? dayTitlesJa[index] : locale === "zh-Hant" ? dayTitles[index][1] : runtimeTranslate(dayTitles[index][0]),
   }));
-  let profile = load(); let run = null; let selectedDay = Math.max(1, Math.min(CAMPAIGN_DAYS, profile.day || 1)); let runTimersSuspended = document.hidden || !document.hasFocus(); let leaveOpen = false; let centeredDayFrame = 0;
+  let profile = load(); let run = null; let selectedDay = Math.max(1, Math.min(CAMPAIGN_DAYS, profile.day || 1)); let runTimersSuspended = document.hidden || !document.hasFocus(); let leaveOpen = false;
   function t(key, vars={}) {
     const localized = flowCopy[locale]?.[key] || copy[locale]?.[key];
     const english = flowCopy.en[key] || copy.en[key] || key;
@@ -233,12 +217,20 @@
   function startRunTimers(activeRun=run) { if(!activeRun || run!==activeRun || activeRun.finishing || runTimersSuspended || document.hidden || activeRun.timerFrame) return; const tick=(now)=>{ if(run!==activeRun || activeRun.finishing){ activeRun.timerFrame=0; return; } if(runTimersSuspended || document.hidden){ activeRun.lastTimerFrame=null; activeRun.timerFrame=requestAnimationFrame(tick); return; } if(activeRun.lastTimerFrame!==null){ const elapsed=Math.max(0,now-activeRun.lastTimerFrame); activeRun.patienceRemaining-=elapsed; activeRun.queueRemaining-=elapsed; activeRun.tasks.forEach((pending)=>pending.remaining-=elapsed); const due=activeRun.tasks.filter((pending)=>pending.remaining<=0); activeRun.tasks=activeRun.tasks.filter((pending)=>pending.remaining>0); for(const pending of due){ if(run!==activeRun || activeRun.finishing) break; pending.task(); } } if(run!==activeRun || activeRun.finishing){ activeRun.timerFrame=0; return; } activeRun.lastTimerFrame=now; if(activeRun.patienceRemaining<=0){ activeRun.patienceRemaining+=1400; if(!tickPatience()){ renderQueue(); updateHud(); } } if(activeRun.queueRemaining<=0){ activeRun.queueRemaining+=2200; if(spawnCustomer()) renderQueue(); } activeRun.timerFrame=requestAnimationFrame(tick); }; activeRun.lastTimerFrame=null; activeRun.timerFrame=requestAnimationFrame(tick); }
   function suspendRunTimers() { runTimersSuspended=true; stopRunTimers(); }
   function resumeRunTimers() { runTimersSuspended=document.hidden || !document.hasFocus(); if(!runTimersSuspended && document.body.classList.contains("is-cafe-playing")) startRunTimers(run); }
-  function setBattleCovered(covered) { [...nodes.play.children].forEach((child)=>{ if(child===nodes.result||child===nodes.leave) return; child.inert=covered; child.setAttribute("aria-hidden",covered?"true":"false"); }); }
+  function setBattleCovered(covered) {
+    [...nodes.play.children].forEach((child) => {
+      if (child === nodes.result || child === nodes.leave) return;
+      child.inert = covered;
+      child.setAttribute("aria-hidden", covered ? "true" : "false");
+    });
+    if (screenFrame?.active === "battle") screenFrame.activate("battle", { covered });
+  }
+
   function setResultPrimary(primary) { [nodes.retry,nodes.next,nodes.menuBtn].forEach((action)=>{ action.classList.toggle("primary-btn",action===primary); action.classList.toggle("secondary-btn",action!==primary); }); primary.focus({preventScroll:true}); }
   function resetLeaveDecision() { (__wpNotifyMeasurement(), leaveOpen=false); (__wpNotifyMeasurement(), nodes.leave.classList.add("is-hidden")); setBattleCovered(false); }
   function openLeaveDecision() { if(leaveOpen||!run||run.finishing||!document.body.classList.contains("is-cafe-playing")) return; (__wpNotifyMeasurement(), leaveOpen=true); suspendRunTimers(); setBattleCovered(true); (__wpNotifyMeasurement(), nodes.leave.classList.remove("is-hidden")); requestAnimationFrame(()=>nodes.continueDay.focus({preventScroll:true})); }
   function closeLeaveDecision(restoreFocus=true) { if(!leaveOpen) return; (__wpNotifyMeasurement(), leaveOpen=false); (__wpNotifyMeasurement(), nodes.leave.classList.add("is-hidden")); setBattleCovered(false); resumeRunTimers(); if(restoreFocus) requestAnimationFrame(()=>nodes.back.focus({preventScroll:true})); }
-  function leaveCafeDay() { const activeDay=run?.day||selectedDay; resetLeaveDecision(); showStage(activeDay); updateCafeBattleScale(); }
+  function leaveCafeDay() { const activeDay=run?.day||selectedDay; resetLeaveDecision(); showStage(activeDay); }
   function keepResultFocus(event) { if(event.key!=="Tab" || nodes.result.classList.contains("is-hidden")) return; const actions=[...nodes.result.querySelectorAll("button:not(:disabled), a[href]")].filter((action)=>!action.classList.contains("is-hidden")&&action.getClientRects().length); if(!actions.length) return; event.preventDefault(); const current=actions.indexOf(document.activeElement); const next=event.shiftKey?(current<=0?actions.length-1:current-1):(current<0||current===actions.length-1?0:current+1); actions[next].focus({preventScroll:true}); }
   function keepLeaveFocus(event) { if(nodes.leave.classList.contains("is-hidden")) return; if(event.repeat&&(event.key==="Enter"||event.key===" ")){ event.preventDefault(); event.stopImmediatePropagation(); return; } if(event.key==="Escape"){ event.preventDefault(); closeLeaveDecision(true); return; } if(event.key!=="Tab") return; event.preventDefault(); const actions=[nodes.continueDay,nodes.leaveDay]; const current=actions.indexOf(document.activeElement); const next=event.shiftKey?(current<=0?actions.length-1:current-1):(current<0||current===actions.length-1?0:current+1); actions[next].focus({preventScroll:true}); }
   function activeRules() { return run?.mode?.rules || []; }
@@ -246,22 +238,139 @@
   function ruleSummary(mode=run?.mode) { const rules=mode?.rules || []; return rules.length ? rules.map((rule)=>t(rule)).join(" + ") : t("basics"); }
   function spawnCustomer() { if(!run || run.queue.length>=10) return false; const index=run.spawned; run.queue.push({ uid:`${Date.now()}-${index}`, id:customers[index % customers.length], order:makeOrder(index), patience:100, leaving:false, priority:index>0&&index%run.mode.priorityEvery===0, table:index%2===0?"A":"B" }); run.spawned+=1; return true; }
   function makeFoodDeck() { return Array.from({length:32}, (_,index)=>food[(index + run.day) % food.length]); }
-  function syncSharedScene(scene) { if(scene==="battle"){ window.dispatchEvent(new Event("weightplay:stage-sync")); window.dispatchEvent(new Event("weightplay:battle-sync")); } else { window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:stage-sync")); } window.dispatchEvent(new Event("weightplay:shell-sync"));
-    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
-      if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
-      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
-      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
-}
-  function startDay(day=selectedDay) { stopRunTimers(); const activeDay=Math.max(1,Math.min(profile.day,Number(day)||1)); run = { day:activeDay, mode:dayMode(activeDay), served:0, coins:0, rating:100, selectedFoods:[], goal:dayGoal(activeDay), spawned:0, queue:[], foodDeck:[], foodBoard:[], timerFrame:0, lastTimerFrame:null, patienceRemaining:1400, queueRemaining:2200, tasks:[], finishing:false, tableTurn:"A", lastServedAnimal:"" }; run.foodDeck=makeFoodDeck(); run.foodBoard=run.foodDeck.splice(0,8); spawnCustomer(); spawnCustomer(); spawnCustomer(); document.body.classList.add("is-cafe-playing"); document.body.classList.remove("is-cafe-stage"); nodes.menu.classList.add("is-hidden"); nodes.stage.classList.add("is-hidden"); nodes.play.classList.remove("is-hidden"); (__wpNotifyMeasurement(), nodes.result.classList.add("is-hidden")); setBattleCovered(false); syncSharedScene("battle"); updateCafeBattleScale(); nodes.message.textContent=t(run.mode.label); runTimersSuspended=document.hidden || !document.hasFocus(); startRunTimers(run); renderPlay(); requestAnimationFrame(()=>nodes.stations.querySelector(".food-tile")?.focus({preventScroll:true})); window.WonderAnalytics?.track?.("cafe_start_day", { day:run.day, mode:run.mode.id, rules:run.mode.rules.join(",") });
+  function syncSharedScene(scene) {
+    if (scene === "battle") {
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+    } else {
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+    }
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+    const nextScreen = ({ main: "main", stage: "stage", battle: "battle" })[scene] ?? null;
+    if (nextScreen === "main" || nextScreen === "stage") {
+      if (__wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) {
+        __wpMeasurement.ended = true;
+        __wpMeasurement.outcome = "abandon";
+      }
+    }
+    __wpMeasurement.screen = nextScreen;
+    __wpNotifyMeasurement();
+    if (screenFrame && nextScreen) {
+      const covered = nextScreen === "battle" && (leaveOpen || !nodes.result.classList.contains("is-hidden"));
+      screenFrame.activate(nextScreen, { covered });
+    }
+  }
+
+  function startDay(day=selectedDay) { stopRunTimers(); const activeDay=Math.max(1,Math.min(profile.day,Number(day)||1)); selectedDay=activeDay; run = { day:activeDay, mode:dayMode(activeDay), served:0, coins:0, rating:100, selectedFoods:[], goal:dayGoal(activeDay), spawned:0, queue:[], foodDeck:[], foodBoard:[], timerFrame:0, lastTimerFrame:null, patienceRemaining:1400, queueRemaining:2200, tasks:[], finishing:false, tableTurn:"A", lastServedAnimal:"" }; run.foodDeck=makeFoodDeck(); run.foodBoard=run.foodDeck.splice(0,8); spawnCustomer(); spawnCustomer(); spawnCustomer(); document.body.classList.add("is-cafe-playing"); document.body.classList.remove("is-cafe-stage"); nodes.menu.classList.add("is-hidden"); nodes.stage.classList.add("is-hidden"); nodes.play.classList.remove("is-hidden"); (__wpNotifyMeasurement(), nodes.result.classList.add("is-hidden")); setBattleCovered(false); syncSharedScene("battle"); nodes.message.textContent=t(run.mode.label); runTimersSuspended=document.hidden || !document.hasFocus(); startRunTimers(run); renderPlay(); requestAnimationFrame(()=>nodes.stations.querySelector(".food-tile")?.focus({preventScroll:true})); window.WonderAnalytics?.track?.("cafe_start_day", { day:run.day, mode:run.mode.id, rules:run.mode.rules.join(",") });
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
-  function renderMenu() { nodes.locale.value = locale; nodes.day.textContent = profile.day; nodes.coins.textContent = profile.coins; nodes.best.textContent = profile.best; renderStage(); }
-  function updateCenteredDayCard() { centeredDayFrame=0; const cards=[...nodes.dayRail.querySelectorAll(".day-card")]; if(!cards.length||!document.body.classList.contains("is-cafe-stage")) return; const railRect=nodes.dayRail.getBoundingClientRect(); const center=railRect.left+railRect.width/2; const nearest=cards.reduce((best,card)=>{ const rect=card.getBoundingClientRect(); const distance=Math.abs(rect.left+rect.width/2-center); return !best||distance<best.distance?{card,distance}:best; },null)?.card; cards.forEach((card)=>{ const centered=card===nearest; card.classList.toggle("is-centered",centered); if(centered) card.setAttribute("aria-current","true"); else card.removeAttribute("aria-current"); }); }
-  function scheduleCenteredDayCard() { if(centeredDayFrame) cancelAnimationFrame(centeredDayFrame); centeredDayFrame=requestAnimationFrame(updateCenteredDayCard); }
-  function renderStage(focusDay=null) { nodes.stageDay.textContent=selectedDay; nodes.stageCoins.textContent=profile.coins; nodes.stageBest.textContent=profile.best; nodes.dayRail.innerHTML=Array.from({length:CAMPAIGN_DAYS},(_,index)=>{ const day=index+1; const mode=dayMode(day); const locked=day>profile.day; const title=locale==="zh-Hant"?mode.titleZh:mode.titleEn; const dayLabel=locale==="ja"?`${day}日目`:`${t("day")} ${day}`; return `<button class="day-card stage-card ${day===selectedDay?"is-selected":""} ${locked?"is-locked":""} ${mode.checkpoint?"is-checkpoint":""}" data-day="${day}" type="button" ${locked?"disabled":""}><span>${dayLabel}${mode.checkpoint?` · ${t("checkpoint")}`:""}</span><strong>${title}</strong><small>${locked?t("lockedDay",{day:day-1}):t("goalLabel",{goal:dayGoal(day)})}</small><em>${ruleSummary(mode)}</em></button>`; }).join(""); nodes.dayRail.querySelectorAll(".day-card:not(.is-locked)").forEach((button)=>button.addEventListener("click",()=>{ selectedDay=Number(button.dataset.day); startDay(selectedDay); })); nodes.upgrades.innerHTML = ""; ["speed","capacity","comfort"].forEach((id) => { const level=profile.upgrades[id]; const cost=8 + level*7; const button=document.createElement("button"); button.className="upgrade-card"; button.disabled=level>=3 || profile.coins<cost; button.innerHTML=`<i class="upgrade-icon upgrade-${id}" aria-hidden="true"></i><span class="upgrade-copy"><b>${t(id)} Lv.${level}</b><span>${level>=3?t("max"):t("buy",{cost})}</span></span>`; button.addEventListener("click",()=>{ if(profile.coins>=cost && level<3){ profile.coins-=cost; profile.upgrades[id]+=1; save(); renderMenu(); window.WonderAnalytics?.track?.("cafe_upgrade",{upgrade:id,level:profile.upgrades[id]}); } }); nodes.upgrades.append(button); }); requestAnimationFrame(()=>{ const selected=nodes.dayRail.querySelector(".is-selected"); selected?.scrollIntoView({inline:"center",block:"nearest"}); scheduleCenteredDayCard(); requestAnimationFrame(scheduleCenteredDayCard); if(Number.isInteger(focusDay)) (nodes.dayRail.querySelector(`.day-card:not(.is-locked)[data-day="${focusDay}"]`)||selected)?.focus({preventScroll:true}); }); }
-  function installDayRailSelection() { nodes.dayRail.addEventListener("scroll",scheduleCenteredDayCard,{passive:true}); nodes.dayRail.addEventListener("wonder:stage-snap",()=>{ const railRect=nodes.dayRail.getBoundingClientRect(); const center=railRect.left+railRect.width/2; const nearest=[...nodes.dayRail.querySelectorAll(".day-card")].reduce((best,card)=>{ const rect=card.getBoundingClientRect(); const distance=Math.abs(rect.left+rect.width/2-center); return !best||distance<best.distance?{card,distance}:best; },null)?.card; if(!nearest) return; nodes.dayRail.querySelectorAll(".day-card").forEach((card)=>card.classList.toggle("is-selected",card===nearest)); if(!nearest.classList.contains("is-locked")) selectedDay=Number(nearest.dataset.day); scheduleCenteredDayCard(); }); window.addEventListener("resize",scheduleCenteredDayCard,{passive:true}); window.visualViewport?.addEventListener("resize",scheduleCenteredDayCard,{passive:true}); }
-  function showMain() { stopRunTimers(); run=null; document.body.classList.remove("is-cafe-playing","is-cafe-stage"); nodes.play.classList.add("is-hidden"); nodes.stage.classList.add("is-hidden"); (__wpNotifyMeasurement(), nodes.result.classList.add("is-hidden")); nodes.menu.classList.remove("is-hidden"); syncSharedScene("main"); renderMenu(); requestAnimationFrame(()=>requestAnimationFrame(()=>nodes.mainStart.focus({preventScroll:true}))); }
-  function showStage(focusDay=selectedDay) { stopRunTimers(); run=null; selectedDay=Math.min(selectedDay,profile.day); document.body.classList.remove("is-cafe-playing"); document.body.classList.add("is-cafe-stage"); nodes.menu.classList.add("is-hidden"); nodes.play.classList.add("is-hidden"); (__wpNotifyMeasurement(), nodes.result.classList.add("is-hidden")); nodes.stage.classList.remove("is-hidden"); syncSharedScene("stage"); renderStage(focusDay); }
+  function renderMenu() { nodes.locale.value = locale; nodes.day.textContent = profile.day; nodes.mainProgress.textContent = `${t("day")} ${profile.day} / ${CAMPAIGN_DAYS}`; nodes.coins.textContent = profile.coins; nodes.best.textContent = profile.best; renderStage(); }
+  function createStageConfig() {
+    return window.AnimalCafeRushStageConfig.create({
+      count: CAMPAIGN_DAYS,
+      stage(index) {
+        const day = index + 1;
+        const mode = dayMode(day);
+        const locked = day > profile.day;
+        const label = locale === "ja" ? `${day}日目` : `${t("day")} ${day}`;
+        return {
+          id: mode.id,
+          kicker: [label, mode.checkpoint ? t("checkpoint") : ""].filter(Boolean).join(" · "),
+          title: mode.titleEn,
+          subtitle: t("goalLabel", { goal: dayGoal(day) }),
+          status: locked ? t("lockedDay", { day: day - 1 }) : "",
+          summary: ruleSummary(mode),
+          details: [t("goalLabel", { goal: dayGoal(day) }), ruleSummary(mode)],
+          locked,
+          cleared: day < profile.day,
+          poster: "/assets/animal-cafe-rush-cover.webp",
+        };
+      },
+    });
+  }
+  function renderStage(focusDay = null) {
+    if (Number.isInteger(focusDay)) selectedDay = Math.max(1, Math.min(CAMPAIGN_DAYS, focusDay));
+    nodes.stageDay.textContent = selectedDay;
+    nodes.stageCoins.textContent = profile.coins;
+    nodes.stageBest.textContent = profile.best;
+    nodes.upgrades.innerHTML = "";
+    ["speed", "capacity", "comfort"].forEach((id) => {
+      const level = profile.upgrades[id];
+      const cost = 8 + level * 7;
+      const button = document.createElement("button");
+      button.className = "upgrade-card";
+      button.disabled = level >= 3 || profile.coins < cost;
+      button.innerHTML = `<i class="upgrade-icon upgrade-${id}" aria-hidden="true"></i><span class="upgrade-copy"><b>${t(id)} Lv.${level}</b><span>${level >= 3 ? t("max") : t("buy", { cost })}</span></span>`;
+      button.addEventListener("click", () => {
+        if (profile.coins >= cost && level < 3) {
+          profile.coins -= cost;
+          profile.upgrades[id] += 1;
+          save();
+          renderMenu();
+          window.WonderAnalytics?.track?.("cafe_upgrade", { upgrade: id, level: profile.upgrades[id] });
+        }
+      });
+      nodes.upgrades.append(button);
+    });
+    stageUI?.setConfig(createStageConfig(), selectedDay - 1);
+    if (Number.isInteger(focusDay) && screenFrame?.active === "stage" && !nodes.stagePage.hidden) {
+      requestAnimationFrame(() => nodes.dayRail.querySelector('[aria-current="true"]')?.focus({ preventScroll: true }));
+    }
+  }
+  function mountSharedInterface() {
+    const app = document.querySelector(".cafe-app");
+    const mainHeader = app.querySelector(".topbar");
+    const stageHeader = nodes.stage.querySelector(".stage-head");
+    const battleHeader = nodes.play.querySelector(".play-head");
+    screenFrame = window.WeightPlayScreenFrame.mount({
+      root: app,
+      localeSelect: nodes.locale,
+      playUI: true,
+      scenes: {
+        main: { root: nodes.menu, header: mainHeader, content: nodes.menu.querySelector(".main-content") },
+        stage: { root: nodes.stage, header: stageHeader, content: nodes.stageWorkspace, headerInfo: nodes.stageInfo },
+        battle: { root: nodes.play, header: battleHeader, content: nodes.playContent, headerInfo: nodes.battleInfo },
+      },
+    });
+    screenFrame.commonDownButton.add(stageTabs.stages).add(stageTabs.upgrades);
+    stageUI = window.WeightPlayPlayUI.mountStage({
+      page: nodes.stagePage,
+      rail: nodes.dayRail,
+      selected: selectedDay - 1,
+      isActive: () => screenFrame.active === "stage" && !nodes.stagePage.hidden,
+      config: createStageConfig(),
+      onSelect(index) { selectedDay = index + 1; },
+      onStart(index) { startDay(index + 1); },
+    });
+    stageTabs.set("stages");
+  }
+  function showMain() {
+    stopRunTimers();
+    run = null;
+    document.body.classList.remove("is-cafe-playing", "is-cafe-stage");
+    nodes.play.classList.add("is-hidden");
+    nodes.stage.classList.add("is-hidden");
+    nodes.result.classList.add("is-hidden");
+    nodes.menu.classList.remove("is-hidden");
+    syncSharedScene("main");
+    renderMenu();
+    requestAnimationFrame(() => requestAnimationFrame(() => nodes.mainStart.focus({ preventScroll: true })));
+  }
+  function showStage(focusDay = selectedDay) {
+    stopRunTimers();
+    run = null;
+    selectedDay = Math.max(1, Math.min(CAMPAIGN_DAYS, Number(focusDay) || selectedDay));
+    document.body.classList.remove("is-cafe-playing");
+    document.body.classList.add("is-cafe-stage");
+    nodes.menu.classList.add("is-hidden");
+    nodes.play.classList.add("is-hidden");
+    nodes.result.classList.add("is-hidden");
+    nodes.stage.classList.remove("is-hidden");
+    stageTabs?.set("stages");
+    syncSharedScene("stage");
+    renderStage(selectedDay);
+  }
   function sameOrder(left, right) { return [...left].sort().join("|")===[...right].sort().join("|"); }
   function orderMatches(order, selected) { return usesRule("sequence") ? order.join("|")===selected.join("|") : sameOrder(order,selected); }
   function orderMarkup(order) { if(usesRule("sequence")) return order.map((item,index)=>`<span class="order-item is-sequence"><b class="recipe-step">${index+1}</b><span class="food-icon food-${item}"></span></span>`).join(""); const counts=new Map(); order.forEach((item)=>counts.set(item,(counts.get(item)||0)+1)); return [...counts].map(([item,count])=>`<span class="order-item"><span class="food-icon food-${item}"></span>${count>1?`<b class="order-count">\u00d7${count}</b>`:""}</span>`).join(""); }
@@ -276,24 +385,21 @@
   function tickPatience() { if(!run || run.finishing) return false; const activeRun=run; const waitLoss=Math.max(2,3-profile.upgrades.comfort-profile.upgrades.speed); const leaving=run.queue.filter((customer)=>!customer.leaving && (customer.patience=Math.max(0,customer.patience-waitLoss))<=0); if(!leaving.length) return false; leaving.forEach((customer)=>{ customer.leaving=true; run.rating=Math.max(0,run.rating-15); }); nodes.message.textContent=t("leaving"); renderQueue(); scheduleRunTask(activeRun,()=>{ if(run!==activeRun || run.finishing) return; const leavingIds=new Set(leaving.map((customer)=>customer.uid)); run.queue=run.queue.filter((customer)=>!leavingIds.has(customer.uid)); if(run.rating<=0) failDay(); else renderPlay(); }, 450); return false; }
   function prepareResult(replayDay, nextEnabled, primary) { nodes.retry.classList.remove("is-hidden"); nodes.next.classList.remove("is-hidden"); nodes.menuBtn.classList.remove("is-hidden"); nodes.retry.disabled=false; nodes.retry.removeAttribute("aria-disabled"); nodes.menuBtn.disabled=false; nodes.menuBtn.removeAttribute("aria-disabled"); nodes.next.disabled=!nextEnabled; nodes.next.setAttribute("aria-disabled",String(!nextEnabled)); nodes.retry.onclick=()=>__wpReplayStart(() => startDay(replayDay)); (__wpNotifyMeasurement(), nodes.result.classList.remove("is-hidden")); setBattleCovered(true); setResultPrimary(primary); }
   function failDay() { if(!run || run.finishing) return; run.finishing=true; const retryDay=run.day; stopRunTimers(); nodes.resultTitle.textContent=t("pause"); nodes.resultText.textContent=t("pauseText"); nodes.skillText.textContent=t("skill"); prepareResult(retryDay,false,nodes.retry); window.WonderAnalytics?.track?.("cafe_day_retry",{day:retryDay}); }
-  function finishDay() { if(!run || run.finishing) return; run.finishing=true; stopRunTimers(); const completedDay=run.day; profile.coins+=run.coins; profile.best=Math.max(profile.best,run.goal); profile.day=Math.min(CAMPAIGN_DAYS,Math.max(profile.day,completedDay+1)); selectedDay=profile.day; save(); updateHud(); nodes.resultTitle.textContent=t("complete"); nodes.resultText.textContent=`${run.goal}/${run.goal} · +${run.coins} ${t("coins")}`; nodes.skillText.textContent=t("skill"); const nextEnabled=completedDay<CAMPAIGN_DAYS; prepareResult(completedDay,nextEnabled,nextEnabled?nodes.next:nodes.menuBtn); window.WonderAnalytics?.track?.("cafe_day_result",{day:completedDay,served:run.goal,coins:run.coins});
+  function finishDay() { if(!run || run.finishing) return; run.finishing=true; stopRunTimers(); const completedDay=run.day; profile.coins+=run.coins; profile.best=Math.max(profile.best,run.goal); profile.day=Math.min(CAMPAIGN_DAYS,Math.max(profile.day,completedDay+1)); selectedDay=completedDay; save(); updateHud(); nodes.resultTitle.textContent=t("complete"); nodes.resultText.textContent=`${run.goal}/${run.goal} · +${run.coins} ${t("coins")}`; nodes.skillText.textContent=t("skill"); const nextEnabled=completedDay<CAMPAIGN_DAYS; prepareResult(completedDay,nextEnabled,nextEnabled?nodes.next:nodes.menuBtn); window.WonderAnalytics?.track?.("cafe_day_result",{day:completedDay,served:run.goal,coins:run.coins});
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
-  function updateCafeBattleScale() { const isStage=document.body.classList.contains("is-cafe-stage"); const isPlaying=document.body.classList.contains("is-cafe-playing"); const active=isPlaying||isStage; if(!active) return; const viewport=window.visualViewport; const visualWidth=Math.round(viewport?.width||0); const visualHeight=Math.round(viewport?.height||0); const useVisual=visualWidth>0&&visualHeight>0&&Math.abs(visualWidth-innerWidth)<=2&&visualHeight<=innerHeight+2; const safeWidth=useVisual?visualWidth:innerWidth; const height=useVisual?visualHeight:innerHeight; const width=Math.min(Math.max(1,safeWidth),920); const shortCanvas=height<=430&&width>height&&(isStage||isPlaying); const minimumWidth=shortCanvas?760:390; const minimumHeight=shortCanvas?360:788; const scale=Math.min(width/minimumWidth,Math.max(1,height)/minimumHeight); const logicalWidth=width/scale; const logicalHeight=height/scale; const root=document.documentElement.style; root.setProperty("--cafe-vw",`${width}px`); root.setProperty("--cafe-vh",`${height}px`); root.setProperty("--cafe-canvas-scale",String(scale)); root.setProperty("--cafe-logical-width",`${logicalWidth}px`); root.setProperty("--cafe-logical-height",`${logicalHeight}px`); root.setProperty("--cafe-canvas-left",`${Math.max(0,(safeWidth-width)/2)}px`); root.setProperty("--cafe-canvas-top","0px"); }
   window.addEventListener("blur",suspendRunTimers); window.addEventListener("focus",resumeRunTimers); window.addEventListener("pagehide",suspendRunTimers); window.addEventListener("pageshow",resumeRunTimers); document.addEventListener("visibilitychange",()=>{ if(document.hidden) suspendRunTimers(); else resumeRunTimers(); });
-  window.addEventListener?.("resize",updateCafeBattleScale,{passive:true}); window.addEventListener?.("orientationchange",updateCafeBattleScale,{passive:true}); window.visualViewport?.addEventListener("resize",updateCafeBattleScale,{passive:true});
-  if(new URLSearchParams(location.search).has("test")) window.__AnimalCafeRushTest={ definitions(){ return dayModes.map((mode)=>({day:mode.day,titleEn:mode.titleEn,titleZh:mode.titleZh,checkpoint:mode.checkpoint,rules:[...mode.rules],goal:dayGoal(mode.day),orders:mode.orders.map((order)=>[...order])})); }, prepareDay(day){ profile.day=CAMPAIGN_DAYS; selectedDay=Math.max(1,Math.min(CAMPAIGN_DAYS,Number(day)||1)); startDay(selectedDay); return this.snapshot(); }, setSelectedFoods(items=[]){ if(!run) return null; run.selectedFoods=[...items]; renderPlay(); return this.snapshot(); }, setLastServedAnimal(id=""){ if(!run) return null; run.lastServedAnimal=id; renderPlay(); return this.snapshot(); }, serveIndex(index=0){ const customer=run?.queue[index]; if(customer) serve(customer.uid); return { message:nodes.message.textContent, ...this.snapshot() }; }, ruleDecision(index=0){ const customer=run?.queue[index]; return customer?{customer:{id:customer.id,priority:customer.priority,table:customer.table,order:[...customer.order]},block:serviceBlock(customer),rules:[...activeRules()],tableTurn:run.tableTurn,lastServedAnimal:run.lastServedAnimal}:null; }, forceComplete(){ if(!run) return null; run.served=run.goal; run.coins=run.goal*3; finishDay(); return { served:run.served, goal:run.goal, finishing:run.finishing, resultVisible:!nodes.result.classList.contains("is-hidden"), profile:JSON.parse(readStorage(saveKey)||"{}") }; }, snapshot(){ return { selectedDay, run:run?{ day:run.day, mode:run.mode.id, modeLabel:t(run.mode.label), ruleSummary:ruleSummary(), rules:[...activeRules()], checkpoint:run.mode.checkpoint, served:run.served, goal:run.goal, finishing:run.finishing, tableTurn:run.tableTurn, lastServedAnimal:run.lastServedAnimal, queue:run.queue.map((customer)=>({id:customer.id,priority:customer.priority,table:customer.table,order:[...customer.order],leaving:customer.leaving})), firstOrder:[...(run.queue[0]?.order||[])], firstOrderBonus:run.queue[0]?orderBonus(run.queue[0].order):0 }:null, profile:JSON.parse(readStorage(saveKey)||"{}") }; } };
+  if(["localhost", "127.0.0.1", "::1"].includes(location.hostname)) window.__AnimalCafeRushTest={ definitions(){ return dayModes.map((mode)=>({day:mode.day,titleEn:mode.titleEn,titleZh:mode.titleZh,checkpoint:mode.checkpoint,rules:[...mode.rules],goal:dayGoal(mode.day),orders:mode.orders.map((order)=>[...order])})); }, prepareDay(day){ profile.day=CAMPAIGN_DAYS; selectedDay=Math.max(1,Math.min(CAMPAIGN_DAYS,Number(day)||1)); startDay(selectedDay); return this.snapshot(); }, setSelectedFoods(items=[]){ if(!run) return null; run.selectedFoods=[...items]; renderPlay(); return this.snapshot(); }, setLastServedAnimal(id=""){ if(!run) return null; run.lastServedAnimal=id; renderPlay(); return this.snapshot(); }, serveIndex(index=0){ const customer=run?.queue[index]; if(customer) serve(customer.uid); return { message:nodes.message.textContent, ...this.snapshot() }; }, ruleDecision(index=0){ const customer=run?.queue[index]; return customer?{customer:{id:customer.id,priority:customer.priority,table:customer.table,order:[...customer.order]},block:serviceBlock(customer),rules:[...activeRules()],tableTurn:run.tableTurn,lastServedAnimal:run.lastServedAnimal}:null; }, forceComplete(){ if(!run) return null; run.served=run.goal; run.coins=run.goal*3; finishDay(); return { served:run.served, goal:run.goal, finishing:run.finishing, resultVisible:!nodes.result.classList.contains("is-hidden"), profile:JSON.parse(readStorage(saveKey)||"{}") }; }, snapshot(){ return { selectedDay, run:run?{ day:run.day, mode:run.mode.id, modeLabel:t(run.mode.label), ruleSummary:ruleSummary(), rules:[...activeRules()], checkpoint:run.mode.checkpoint, served:run.served, goal:run.goal, finishing:run.finishing, tableTurn:run.tableTurn, lastServedAnimal:run.lastServedAnimal, queue:run.queue.map((customer)=>({id:customer.id,priority:customer.priority,table:customer.table,order:[...customer.order],leaving:customer.leaving})), firstOrder:[...(run.queue[0]?.order||[])], firstOrderBonus:run.queue[0]?orderBonus(run.queue[0].order):0 }:null, profile:JSON.parse(readStorage(saveKey)||"{}") }; } };
   nodes.locale.addEventListener("change",()=>{ const requested=nodes.locale.value; window.WonderI18n?.setLocale?.(requested); const resolved=window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested; locale=normalizeLocale(resolved); writeStorage(localeKey,requested); applyLocale(); });
-  nodes.mainStart.addEventListener("click",()=>{ stageTabs?.set("stages"); showStage(selectedDay); updateCafeBattleScale(); });
+  nodes.mainStart.addEventListener("click",()=>showStage(selectedDay));
   nodes.stageBack.addEventListener("click",showMain);
-  nodes.start.addEventListener("click",()=>startDay(selectedDay));
   nodes.back.addEventListener("click",openLeaveDecision);
   nodes.continueDay.addEventListener("click",()=>closeLeaveDecision(true));
   nodes.leaveDay.addEventListener("click",leaveCafeDay);
   nodes.leave.addEventListener("keydown",keepLeaveFocus,true);
   nodes.result.addEventListener("keydown",keepResultFocus);
-  nodes.menuBtn.addEventListener("click",()=>{ stageTabs?.set("stages"); selectedDay=profile.day; showStage(profile.day); updateCafeBattleScale(); });
+  nodes.menuBtn.addEventListener("click",()=>showStage(selectedDay));
   nodes.next.addEventListener("click",()=>startDay(profile.day));
-  installDayRailSelection();
+  mountSharedInterface();
   applyLocale();
 })();

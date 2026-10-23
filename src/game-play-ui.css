@@ -5,6 +5,9 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
   box-sizing:border-box!important;border:0!important;border-radius:0!important;
   height:100vh!important;height:100dvh!important;min-height:100vh!important;min-height:100dvh!important;
 }
+/* The site build label belongs to ordinary page chrome. Keep it out of the
+   shared Stage/Battle control lane while an I9 play scene is active. */
+html.wp-frame-active-play body .weightplay-version-badge {display:none!important}
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-frame-group] {display:contents!important}
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-frame-info][hidden] {display:none!important}
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-frame-header]:is([data-wp-frame-header="stage"],[data-wp-frame-header="battle"]) {

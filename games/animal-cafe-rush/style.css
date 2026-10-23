@@ -1,209 +1,106 @@
 @import url("./style-v3-base.css");
 
-/*
- * Interface 7 compatibility cleanup for Cafe Rush.
- * The legacy v3 stylesheet remains intact in style-v3-base.css so gameplay art
- * and responsive content layouts are preserved. This file only removes or
- * rehomes UI that belongs to the shared Main/Stage/Battle contract.
- */
-
-/* Main is explanatory only. The shared frame restores the mandatory compact
- * stage-progress line, while currency and best-run counters stay in Stage. */
+/* Shared I9 owns the frame, Stage cards, gesture rail, Battle header and Settings.
+   This file styles only Cafe content and its optional Stage management view. */
 body:not(.is-cafe-stage):not(.is-cafe-playing) #menuPanel .profile-grid {
   display: none !important;
 }
 
-/* Interface 7 Stage has one exact 48px title-free control track, one bounded
- * workspace, and one fixed 56px three-slot tab bar. The old hidden Start-Day
- * row must not keep a blank fourth workspace track. */
-body.is-cafe-stage #stagePanel.stage-panel {
-  grid-template-columns: minmax(0, 1fr) !important;
-  grid-template-rows: 48px minmax(0, 1fr) 56px !important;
-  gap: 8px !important;
-  padding: 12px !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-
-body.is-cafe-stage #stagePanel :is(.stage-head, .wp-stage-shell-header) {
-  --wp-frame-play-header-height: 48px !important;
-  box-sizing: border-box !important;
-  grid-row: 1 !important;
-  height: 48px !important;
-  min-height: 48px !important;
-  max-height: 48px !important;
-  margin: 0 !important;
-}
-
-body.is-cafe-stage #stagePanel [data-ui="chooseDay"] {
+#stagePanel .cafe-stage-page[hidden],
+#stagePanel #upgradeWorkspace[hidden] {
   display: none !important;
 }
 
-body.is-cafe-stage #stagePanel .stage-head::after {
-  display: none !important;
-  content: none !important;
+#stagePanel #upgradeWorkspace {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
 }
 
-body.is-cafe-stage #stagePanel .stage-workspace {
-  grid-row: 2 !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-  grid-template-rows: 54px minmax(0, 1fr) !important;
-  gap: 8px !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
+#stagePanel #upgradeWorkspace .upgrade-cards {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
 }
 
-body.is-cafe-stage #stagePanel .stage-profile {
-  grid-column: 1 !important;
-  grid-row: 1 !important;
-  min-width: 0 !important;
+#stagePanel #upgradeWorkspace .upgrade-card {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 72px;
 }
 
-body.is-cafe-stage #stagePanel #dayRail {
-  grid-column: 1 !important;
-  grid-row: 2 !important;
-  width: 100% !important;
-  max-width: 100% !important;
+body.is-cafe-playing #playPanel .play-content {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) minmax(116px, auto) auto;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
-body.is-cafe-stage #stagePanel .upgrade-panel {
-  display: none !important;
-  grid-column: 1 !important;
-  grid-row: 2 !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  overflow: auto !important;
+body.is-cafe-playing #playPanel .cafe-scene {
+  min-width: 0;
+  min-height: 0;
 }
 
-body.is-cafe-stage #stagePanel.is-upgrades-tab #dayRail {
-  display: none !important;
+body.is-cafe-playing #playPanel .prep-row {
+  min-width: 0;
+  min-height: 0;
 }
 
-body.is-cafe-stage #stagePanel.is-upgrades-tab .upgrade-panel {
-  display: grid !important;
+body.is-cafe-playing #playPanel #resultPanel {
+  position: absolute;
+  inset: 0;
+  z-index: 90;
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  overflow: hidden;
 }
 
-body.is-cafe-stage #stagePanel #startBtn {
-  display: none !important;
+body.is-cafe-playing #playPanel #resultPanel .result-card {
+  width: 100%;
+  max-height: 100%;
+  overflow: auto;
 }
 
-body.is-cafe-stage #stagePanel .cafe-stage-tabs {
-  box-sizing: border-box !important;
-  grid-row: 3 !important;
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  align-items: center !important;
-  gap: 8px !important;
-  width: 100% !important;
-  height: 56px !important;
-  min-height: 56px !important;
-  max-height: 56px !important;
-  margin: 0 !important;
-  padding: 6px !important;
-  border: 0 !important;
-  border-top: 1px solid rgb(255 255 255 / 20%) !important;
-  border-radius: 0 !important;
-  background: rgb(15 57 54 / 94%) !important;
-}
-
-body.is-cafe-stage #stagePanel .cafe-stage-tabs > .stage-tab-empty {
-  grid-column: 1 !important;
-  min-width: 0 !important;
-}
-
-body.is-cafe-stage #stagePanel .cafe-stage-tabs > button {
-  box-sizing: border-box !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 100% !important;
-  height: 44px !important;
-  min-height: 44px !important;
-  max-height: 44px !important;
-  margin: 0 !important;
-  padding: 0 10px !important;
-  border: 1px solid #75b8ad !important;
-  border-radius: 8px !important;
-  background: #194b46 !important;
-  color: #fffdf5 !important;
-  font: 700 14px/1.2 "Noto Sans TC", system-ui, sans-serif !important;
-  text-align: center !important;
-  white-space: nowrap !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-}
-
-body.is-cafe-stage #stagePanel .cafe-stage-tabs > button[aria-current="page"] {
-  border-color: #ffe293 !important;
-  background: #fff8de !important;
-  color: #234b46 !important;
-}
-
-body.is-cafe-stage #stagePanel .cafe-stage-tabs > button:focus-visible {
-  outline: 2px solid #fffdf5 !important;
-  outline-offset: 2px !important;
-}
-
-/* The compatibility frame still defaults native Stage/Battle headers to 56px.
- * Cafe Rush is already on the Interface 7 title-free contract, so prevent the
- * later shared stylesheet from enlarging its adopted headers back to 56px. */
-html body.is-cafe-stage #stagePanel .wp-stage-shell-header,
-html[data-wp-shared-interface="7"] body.is-cafe-playing #playPanel .play-head.wp-battle-shell-header:not(.wp-generated-battle-header):not(.hud-row) {
-  --wp-frame-play-header-height: 48px !important;
-  height: 48px !important;
-  min-height: 48px !important;
-  max-height: 48px !important;
-}
-
-/* Battle is the only other fixed play Canvas. Remove the old decorative outer
- * phone-card border while preserving its actual cafe scene, HUD and controls. */
-body.is-cafe-playing #playPanel.play-panel {
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-
-/* Shared frame owns Return/Settings and Battle HUD geometry. Do not revive an
- * old sound toggle if a legacy class is reintroduced. */
 body:is(.is-cafe-stage, .is-cafe-playing) .sound-toggle {
   display: none !important;
 }
 
-@media (min-width: 700px) {
-  body.is-cafe-stage #stagePanel.stage-panel {
-    padding: 16px !important;
+@media (max-height: 430px) and (orientation: landscape) {
+  body.is-cafe-playing #playPanel .play-content {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 6px;
+  }
+
+  body.is-cafe-playing #playPanel .objective-row {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  body.is-cafe-playing #playPanel .cafe-scene {
+    grid-column: 1;
+    grid-row: 1 / 3;
+  }
+
+  body.is-cafe-playing #playPanel .prep-row {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  #stagePanel #upgradeWorkspace .upgrade-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-/* The short-landscape logical Canvas has enough height for a 190px selector
- * only when the compact counters sit beside the active page rather than above
- * it. Keep the same header/tab geometry and move only Stage-owned content. */
-@media (max-height: 430px) and (orientation: landscape) {
-  body.is-cafe-stage #stagePanel.stage-panel {
-    padding: 8px 12px !important;
-  }
-
-  body.is-cafe-stage #stagePanel .stage-workspace {
-    grid-template-columns: 120px minmax(0, 1fr) !important;
-    grid-template-rows: minmax(0, 1fr) !important;
-    gap: 8px !important;
-  }
-
-  body.is-cafe-stage #stagePanel .stage-profile {
-    grid-column: 1 !important;
-    grid-row: 1 !important;
-    grid-template-columns: 1fr !important;
-    align-content: center !important;
-  }
-
-  body.is-cafe-stage #stagePanel #dayRail,
-  body.is-cafe-stage #stagePanel .upgrade-panel {
-    grid-column: 2 !important;
-    grid-row: 1 !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
+@media (max-width: 560px) {
+  #stagePanel #upgradeWorkspace .upgrade-cards {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

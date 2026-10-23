@@ -7610,3 +7610,7 @@ window.WONDER_LOBBY.games.push({
   art: { kind: "image", background: "games/purrch-grove/assets/cover-block-v1.webp", hideHero: true }
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("purrch-grove");
+
+// Signal Snap: scoped original new-game identity.
+window.WONDER_LOBBY.games.push({"id": "signal-snap", "title": {"en": "Signal Snap", "zh-Hant": "訊光快拍", "zh-Hans": "讯光快拍", "ja": "シグナルスナップ", "ko": "시그널 스냅", "es": "Destello reflejo", "pt-BR": "Sinal Relâmpago", "fr": "Signal éclair", "de": "Signalblitz", "it": "Scatto segnale", "ru": "Сигнальный рывок", "hi": "संकेत झटपट", "ar": "ومضة الإشارة"}, "type": {"en": "Reaction Timing", "zh-Hant": "反應時機", "zh-Hans": "反应时机"}, "description": {"en": "Read the two beacons: tap the solid diamond on its side, wait through crossed echoes, and build a clean reaction streak.", "zh-Hant": "看清兩側燈台：實心菱形亮起就拍同側，交叉殘影不出手，練出乾淨俐落的反應連段。", "zh-Hans": "看清两侧灯台：实心菱形亮起就拍同侧，交叉残影不出手，练出干净利落的反应连段。"}, "categories": ["Reaction", "Arcade", "Animal Games"], "skills": ["Reaction", "Timing", "Focus"], "ages": ["9", "family"], "status": "planned", "href": "games/signal-snap/", "internalTrial": "index.html?preview=1", "art": {"kind": "image", "background": "games/signal-snap/poster.png", "hideHero": true}, "meta": {"en": ["Two beacons", "No-go echoes", "30 short stages"], "zh-Hant": ["雙燈反應", "殘影不拍", "30個短關卡"]}});
+window.WONDER_LOBBY.audiences.generalGameIds.push("signal-snap");

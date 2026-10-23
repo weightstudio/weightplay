@@ -88,10 +88,11 @@ export function explore(state, targetId = state.selectedTarget, food = state.foo
   const params = { species: species.id, earned };
   const missing = requirements(state,species)[0];
   if (missing) return result(false,'mismatch',missing.key,{ ...params,...missing.params });
+  // A collected companion's care trip is for gathering, not another encounter.
+  if (petFor(state,species.id).collected) return result(true,'expedition','tripComplete',params);
   if (state.food !== species.food) return result(false,'mismatch','needFood',{ ...params,food: species.food });
   if (state.feature !== species.feature) return result(false,'mismatch','needFeature',{ ...params,feature: species.feature });
   if (species.phase && state.phase !== species.phase) return result(false,'mismatch','needPhase',{ ...params,phase: species.phase });
-  if (petFor(state,species.id).collected) return result(true,'expedition','alreadyCollected',params);
   state.encounter = { speciesId: species.id, turn: state.turn };
   return result(true,'encounter','encounterReady',params,{ encounter: { ...state.encounter } });
 }
@@ -100,16 +101,16 @@ export function approach(state, choice) {
   if (!state.encounter) return result(false,'reject','noEncounter');
   if (!byId(APPROACHES,choice)) return result(false,'reject','invalidApproach');
   const species = byId(SPECIES,state.encounter.speciesId);
-  state.encounter = null; // Every valid choice settles exactly one encounter.
   if (!species) return result(false,'reject','invalidTarget');
   if (choice !== species.approach) return result(false,'mismatch','wrongApproach',{ species: species.id, approach: species.approach });
+  state.encounter = null; // Only the matching approach settles; retries cannot earn another expedition reward.
   const pet = state.pets[species.id] ||= petFor(state,species.id);
   if (pet.collected) return result(true,'expedition','alreadyCollected',{ species: species.id });
   const required = trustNeeded(state,species);
   pet.trust = Math.min(species.trustRequired,pet.trust+1);
   if (pet.trust < required) return result(true,'trust','trustGained',{ species: species.id,trust: pet.trust,required,remaining: required-pet.trust });
   pet.collected = true;
-  pet.careTurn = state.turn;
+  pet.careTurn = state.turn-1; // A new companion can receive its first care immediately.
   state.resources.crystals += 2;
   return result(true,'collected','collected',{ species: species.id,crystals: 2,trust: pet.trust,required });
 }

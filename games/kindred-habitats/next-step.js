@@ -1,5 +1,5 @@
 import {HABITATS,SPECIES} from './data.js';
-import {requirements,currentNeed} from './engine.js';
+import {requirements,currentNeed} from './engine.js?v5';
 
 // Suggestions never prepare food, grant progress or bypass a prerequisite.
 export function suggestedCompanion(state) {
