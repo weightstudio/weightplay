@@ -1,732 +1,290 @@
+/* Animal Quiz styles only its Battle content. Shared I9 owns every shell. */
 :root {
-  color-scheme: light;
+  color-scheme: dark;
   font-family: "Microsoft JhengHei", "Noto Sans TC", system-ui, sans-serif;
-  background: #d8f2c8;
-  color: #233516;
 }
 
-html:has(body.quiz-playing),
-html:has(body.quiz-stage-select),
-body.quiz-playing,
-body.quiz-stage-select {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  min-height: 0;
-  overflow: hidden !important;
-  overscroll-behavior: none;
-}
-
-body.quiz-playing .animal-game,
-body.quiz-stage-select .animal-game {
-  position: fixed;
-  z-index: 50;
-  left: var(--quiz-frame-left, 4px);
-  top: var(--quiz-frame-top, 4px);
-  width: 390px;
-  max-width: none;
-  height: 788px;
-  min-height: 788px;
-  max-height: none;
-  margin: 0;
-  transform: scale(var(--quiz-frame-scale, 1));
-  transform-origin: top left;
-  overflow: hidden;
-}
-
-body.quiz-playing .animal-game {
-  grid-template-rows: 38px minmax(0, 1fr) 120px 34px;
-  padding: 8px;
-  gap: 6px;
-}
-
-body.quiz-playing .level-line { grid-row: 1; }
-body.quiz-playing .quiz-stage { grid-row: 2; min-height: 0; }
-body.quiz-playing .choice-grid { grid-row: 3; min-height: 0; }
-body.quiz-playing .feedback { grid-row: 4; min-height: 0; }
-body.quiz-playing .animal-card { width: 100%; max-height: 100%; }
-
-body.quiz-stage-select .animal-game {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr);
-  padding: 8px;
-  gap: 0;
-}
-
-body.quiz-stage-select .stage-select {
-  width: 100%;
-  height: 100%;
-}
-
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-html,
-body {
-  width: 100%;
-  min-height: 100%;
-  min-height: 100dvh;
-  margin: 0;
-  overflow: hidden;
-  touch-action: manipulation;
-  overscroll-behavior: none;
-}
-
-body.quiz-main {
-  display: block;
-  overflow: auto;
-  touch-action: pan-y;
-}
-
-body.quiz-main .animal-game {
-  width: min(100%, 920px);
-  height: 100dvh;
-  min-height: 100dvh;
-  margin: 0 auto;
-  overflow: hidden;
-}
-
-body.quiz-main .animal-game.wp-standard-main-flow-owner {
-  height: 100dvh !important;
-  min-height: 100dvh !important;
-}
-
-@media (orientation: landscape) and (max-height: 500px) {
-  body.quiz-main .animal-game.wp-standard-main-flow-owner .wp-standard-main-composition {
-    grid-template-columns: 300px minmax(0, 1fr) !important;
-    gap: 12px !important;
-    padding: 8px 14px !important;
-  }
-
-  body.quiz-main .animal-game.wp-standard-main-flow-owner .wp-standard-main-poster,
-  body.quiz-main .animal-game.wp-standard-main-flow-owner .wp-standard-main-poster-media,
-  body.quiz-main .animal-game.wp-standard-main-flow-owner .wp-standard-main-poster-media > img,
-  body.quiz-main .animal-game.wp-standard-main-flow-owner .wp-standard-main-poster > img {
-    width: 300px !important;
-    min-width: 300px !important;
-    max-width: 300px !important;
-    height: 300px !important;
-    min-height: 300px !important;
-    max-height: 300px !important;
-  }
-
-  body.quiz-main .animal-game.wp-standard-main-flow-owner .wp-standard-main-copy {
-    height: 300px !important;
-  }
-}
-
-body {
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(circle at 18% 14%, rgba(255, 209, 96, 0.42), transparent 22%),
-    radial-gradient(circle at 82% 12%, rgba(104, 179, 255, 0.28), transparent 24%),
-    linear-gradient(180deg, #dff7ca 0%, #8fd18a 100%);
-}
-
 button,
-select,
-a {
+select {
   font: inherit;
 }
 
-.animal-game {
+.screen[hidden],
+.hidden {
+  display: none !important;
+}
+
+.quiz-content {
   position: relative;
   display: grid;
-  grid-template-rows: 62px 42px minmax(0, 1fr) 138px 48px;
-  gap: 12px;
-  width: min(100vw, 540px);
-  height: min(100dvh, 940px);
-  padding: max(12px, env(safe-area-inset-top)) 14px calc(18px + env(safe-area-inset-bottom));
-  overflow: hidden;
-  background: linear-gradient(160deg, rgba(8,28,32,.35), rgba(8,28,32,.68)), url("../../assets/animal-quiz-classroom-voxel-v1.png") center/cover;
-}
-
-.topbar {
-  display: grid;
-  grid-template-columns: 50px 1fr 132px;
-  gap: 10px;
-  align-items: center;
-  min-width: 0;
-  height: 62px;
-}
-
-.home-link,
-.language-picker,
-.choice-grid button,
-.feedback strong {
-  border: 3px solid #386b2d;
-  border-radius: 8px;
-  background: #fffbea;
-  box-shadow: 0 5px 0 #6aa45c;
-}
-
-.home-link {
-  display: grid;
-  grid-template-columns: 16px 28px;
-  place-content: center;
-  gap: 4px;
-  width: 58px;
-  height: 50px;
-  color: #233516;
-  font-size: 28px;
-  font-weight: 1000;
-  text-decoration: none;
-}
-
-.home-link img {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-}
-
-.play-return {
-  position: absolute;
-  z-index: 2;
-  top: 8px;
-  left: 8px;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 3px solid #386b2d;
-  border-radius: 10px;
-  background: #fffbea;
-  color: #233516;
-  font-size: 1.45rem;
-  font-weight: 1000;
-}
-
-.quiz-leave-panel { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; padding: 18px; background: rgba(27, 52, 27, .56); backdrop-filter: blur(8px); }
-.quiz-leave-panel.hidden { display: none !important; }
-.quiz-leave-card { width: min(100%, 330px); display: grid; gap: 12px; padding: 20px; border-radius: 24px; background: #fffbea; color: #233516; box-shadow: 0 22px 48px rgba(21, 42, 21, .3); text-align: center; }
-.quiz-leave-card strong { font-size: 1.35rem; }
-.quiz-leave-card p { margin: 0; font-weight: 800; line-height: 1.4; }
-.quiz-leave-card button { min-height: 48px; border: 0; border-radius: 12px; background: #e1f0b6; color: #233516; font: inherit; font-weight: 1000; }
-.quiz-leave-card #leaveStageBtn { background: #ffe0a7; }
-
-.topbar p {
-  margin: 0 0 3px;
-  color: #496b2e;
-  font-size: 13px;
-  font-weight: 1000;
-}
-
-.topbar > div {
-  min-width: 0;
-}
-
-.topbar h1 {
-  overflow: hidden;
-  margin: 0;
-  font-size: clamp(25px, 7vw, 39px);
-  line-height: 1;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.language-picker {
-  display: grid;
-  gap: 5px;
-  padding: 8px;
-}
-
-.language-picker span {
-  color: #496b2e;
-  font-size: 11px;
-  font-weight: 1000;
-}
-
-.language-picker select {
+  grid-template-areas:
+    "progress"
+    "question"
+    "answers"
+    "feedback";
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows:
+    max(8px, calc(8px * var(--wp-battle-canvas-inverse-scale, 1)))
+    minmax(0, 1fr)
+    minmax(calc(128px * var(--wp-battle-canvas-inverse-scale, 1)), auto)
+    minmax(calc(42px * var(--wp-battle-canvas-inverse-scale, 1)), auto);
+  gap: calc(8px * var(--wp-battle-canvas-inverse-scale, 1));
   width: 100%;
-  min-height: 34px;
-  border: 2px solid #386b2d;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #233516;
-  font-size: 13px;
-  font-weight: 1000;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: calc(10px * var(--wp-battle-canvas-inverse-scale, 1));
+  overflow: hidden;
 }
 
 .level-line {
-  grid-row: 2;
-  display: grid;
-  grid-template-columns: minmax(0, 190px) 1fr;
-  gap: 10px;
-  align-items: center;
-  height: 42px;
+  grid-area: progress;
   min-width: 0;
-  color: #2d5123;
-  font-weight: 1000;
-}
-
-.level-line span {
-  display: block;
+  min-height: 0;
   overflow: hidden;
-  min-width: 0;
-  font-size: clamp(12px, 3.2vw, 15px);
-  line-height: 1.15;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  border: 1px solid var(--wp-ui-line, #527b80);
+  border-radius: 999px;
+  background: var(--wp-ui-background, #0b2834);
 }
 
-.level-line div {
-  height: 18px;
-  padding: 3px;
-  border: 3px solid #386b2d;
-  border-radius: 999px;
-  background: #fffbea;
+.level-line > div {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
 }
 
 .level-line i {
   display: block;
-  width: 0%;
+  width: 0;
   height: 100%;
-  border-radius: 999px;
-  background: #ffbf45;
-  transition: width 0.25s ease;
-}
-
-.stage-select {
-  grid-row: 2 / -1;
-  display: grid;
-  grid-template-rows: 48px auto minmax(0, 1fr);
-  gap: 10px;
-  min-height: 0;
-  overflow: hidden;
-  padding: 2px 2px 8px;
-}
-
-.stage-shell-head {
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
-  gap: 10px;
-  align-items: center;
-}
-
-.stage-shell-head > strong {
-  color: #2d5123;
-  font-size: clamp(20px, 5vw, 25px);
-  font-weight: 1000;
-}
-
-.stage-return {
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border: 3px solid #386b2d;
-  border-radius: 10px;
-  background: #fffbea;
-  color: #233516;
-  box-shadow: 0 5px 0 #6aa45c;
-  font-size: 1.4rem;
-  font-weight: 1000;
-}
-
-.stage-setup {
-  display: grid;
-  gap: 3px;
-  padding: 10px 12px;
-  border: 3px solid rgba(56, 107, 45, 0.28);
-  border-radius: 12px;
-  background: rgba(255, 251, 234, 0.78);
-}
-
-.stage-setup strong {
-  color: #2d5123;
-  font-size: 0.95rem;
-}
-
-.stage-setup span {
-  color: #496b2e;
-  font-size: 0.8rem;
-  font-weight: 900;
-}
-
-.stage-grid {
-  display: flex;
-  gap: 12px;
-  min-width: 0;
-  min-height: 0;
-  padding: 4px max(44px, calc((100% - 264px) / 2));
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: max(44px, calc((100% - 264px) / 2));
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-  touch-action: pan-x;
-}
-
-.stage-grid::-webkit-scrollbar {
-  display: none;
-}
-
-.stage-card {
-  display: grid;
-  gap: 4px;
-  flex: 0 0 264px;
-  width: 264px;
-  height: 190px;
-  min-height: 190px;
-  max-height: 190px;
-  padding: 10px;
-  border: 4px solid #386b2d;
-  border-radius: 8px;
-  background: #fffbea;
-  color: #233516;
-  text-align: left;
-  box-shadow: 0 7px 0 #6aa45c;
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
-  overflow: hidden;
-}
-
-.stage-card.is-centered {
-  border-color: #f4b400;
-  box-shadow:
-    0 0 0 4px rgba(255, 244, 164, 0.96),
-    0 0 24px 8px rgba(255, 207, 72, 0.72),
-    0 7px 0 #b67500;
-}
-
-.stage-card.locked.is-centered {
-  border-color: #f4b400;
-  box-shadow:
-    0 0 0 4px rgba(255, 244, 164, 0.96),
-    0 0 24px 8px rgba(255, 207, 72, 0.72),
-    0 7px 0 #8f760f;
-}
-
-.stage-card span {
-  justify-self: start;
-  padding: 4px 9px;
-  border-radius: 999px;
-  background: #ffcf63;
-  color: #233516;
-  font-size: 12px;
-  font-weight: 1000;
-}
-
-.stage-card strong {
-  font-size: 22px;
-  line-height: 1.12;
-}
-
-.stage-card small {
-  color: #496b2e;
-  font-size: 14px;
-  font-weight: 900;
-  line-height: 1.35;
-}
-
-.stage-card em {
-  color: #a35f00;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 1000;
-  line-height: 1.2;
-}
-
-.stage-card.locked {
-  border-color: #7d8979;
-  background: #dde2d8;
-  color: #687165;
-  box-shadow: 0 7px 0 #a3aaa0;
-}
-
-.stage-card.locked span {
-  background: #bdc4b8;
-  color: #586052;
-}
-
-.main-panel {
-  grid-row: 2 / -1;
-  display: grid;
-  align-content: start;
-  gap: 12px;
-  min-height: 0;
-  overflow: hidden;
-  padding: 2px 2px 10px;
-}
-
-.main-cover {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  max-height: 380px;
-  object-fit: cover;
-  border: 4px solid #386b2d;
-  border-radius: 12px;
-  box-shadow: 0 10px 0 #6aa45c;
-}
-
-.main-copy {
-  display: grid;
-  gap: 5px;
-  padding: 14px;
-  border: 3px solid rgba(56, 107, 45, 0.28);
-  border-radius: 12px;
-  background: rgba(255, 251, 234, 0.82);
-}
-
-.main-copy strong { font-size: 1.3rem; }
-.main-copy span { color: #496b2e; font-weight: 900; line-height: 1.4; }
-
-.main-start {
-  min-height: 52px;
-  border: 3px solid #386b2d;
-  border-radius: 12px;
-  background: #ffcf63;
-  color: #233516;
-  box-shadow: 0 6px 0 #b87a1e;
-  font-size: 1rem;
-  font-weight: 1000;
-}
-
-@media (min-width: 700px) {
-  .main-panel {
-    grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
-    grid-template-rows: minmax(0, 1fr) auto;
-    align-content: stretch;
-  }
-
-  .main-cover {
-    grid-column: 1;
-    grid-row: 1 / 3;
-    height: 100%;
-    max-height: none;
-    aspect-ratio: auto;
-  }
-
-  .main-copy,
-  .main-start {
-    grid-column: 2;
-  }
-
-  .main-copy { align-content: start; }
-}
-
-@media (min-width: 700px) and (max-height: 500px) {
-  .main-panel { gap: 8px; padding-bottom: 8px; }
-  .main-copy { gap: 3px; padding: 10px; }
-  .main-copy strong { font-size: 1.05rem; }
-  .main-copy span { font-size: .82rem; line-height: 1.3; }
-  .main-start { min-height: 46px; }
+  border-radius: inherit;
+  background: var(--wp-ui-active, #51cbb8);
+  transition: width 180ms ease-out;
 }
 
 .quiz-stage {
-  grid-row: 3;
+  grid-area: question;
   display: grid;
   place-items: center;
+  min-width: 0;
   min-height: 0;
   overflow: hidden;
 }
 
 .animal-card {
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto 64px;
+  grid-template-rows: minmax(0, 1fr) auto auto;
   justify-items: center;
-  gap: 8px;
-  width: min(100%, 350px);
+  align-content: center;
+  gap: calc(8px * var(--wp-battle-canvas-inverse-scale, 1));
+  width: min(100%, calc(440px * var(--wp-battle-canvas-inverse-scale, 1)));
   height: 100%;
-  max-height: 330px;
-  padding: 14px;
-  border: 4px solid #386b2d;
-  border-radius: 8px;
-  background: #fffbea;
+  min-width: 0;
+  min-height: 0;
+  padding: calc(12px * var(--wp-battle-canvas-inverse-scale, 1));
+  overflow: auto;
+  border: 2px solid var(--wp-ui-line, #527b80);
+  border-radius: var(--wp-ui-radius, 16px);
+  background: var(--wp-ui-surface, #123542);
+  color: var(--wp-ui-text, #f5f4dc);
   text-align: center;
-  box-shadow: 0 10px 0 #6aa45c, 0 18px 26px rgba(42, 88, 34, 0.22);
+  box-shadow: 0 4px 0 var(--wp-ui-shadow, #071a22);
 }
 
 .animal-card img {
-  width: min(54vw, 190px);
-  height: min(100%, 190px);
-  min-height: 0;
+  display: block;
+  width: min(100%, calc(226px * var(--wp-battle-canvas-inverse-scale, 1)));
+  max-height: min(100%, calc(226px * var(--wp-battle-canvas-inverse-scale, 1)));
+  aspect-ratio: 1;
   object-fit: contain;
-  transition: filter 0.2s ease, opacity 0.2s ease;
+  transition: filter 180ms ease, opacity 180ms ease;
 }
 
 .animal-card img.is-mystery {
-  opacity: 0.34;
-  filter: blur(11px) saturate(0.5);
+  opacity: 0.42;
+  filter: blur(8px) saturate(0.6);
 }
 
 .animal-card img.is-silhouette {
   opacity: 0.9;
-  filter: brightness(0) drop-shadow(0 5px 1px rgba(56, 107, 45, 0.28));
-}
-
-.stage-rule {
-  color: #276a42;
-  font-size: 0.74rem;
-  font-weight: 1000;
+  filter: brightness(0) drop-shadow(0 4px 1px rgba(0, 0, 0, 0.25));
 }
 
 .animal-card strong {
-  overflow: hidden;
   max-width: 100%;
-  font-size: clamp(19px, 5vw, 24px);
-  line-height: 1.12;
-  color: #233516;
+  color: var(--wp-ui-text, #f5f4dc);
+  font-size: calc(22px * var(--wp-battle-canvas-inverse-scale, 1));
+  line-height: 1.15;
   overflow-wrap: anywhere;
 }
 
 .animal-card span {
-  display: -webkit-box;
-  overflow: auto;
-  color: #233516;
-  font-size: clamp(12px, 3.5vw, 15px);
-  font-weight: 900;
+  max-width: 100%;
+  color: var(--wp-ui-muted, #c4d8d5);
+  font-size: calc(16px * var(--wp-battle-canvas-inverse-scale, 1));
+  font-weight: 750;
   line-height: 1.35;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: unset;
+  overflow-wrap: anywhere;
 }
 
 .choice-grid {
-  grid-row: 4;
+  grid-area: answers;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-rows: repeat(2, minmax(calc(54px * var(--wp-battle-canvas-inverse-scale, 1)), 1fr));
+  gap: calc(8px * var(--wp-battle-canvas-inverse-scale, 1));
+  min-width: 0;
   min-height: 0;
 }
 
 .choice-grid button {
-  overflow: hidden;
-  min-height: 0;
-  color: #233516;
-  font-size: clamp(17px, 4.8vw, 22px);
-  font-weight: 1000;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: calc(54px * var(--wp-battle-canvas-inverse-scale, 1));
+  padding: calc(6px * var(--wp-battle-canvas-inverse-scale, 1));
+  border: 2px solid var(--wp-ui-line, #527b80);
+  border-radius: var(--wp-ui-radius, 12px);
+  background: var(--wp-ui-button-image, #174653);
+  color: var(--wp-ui-text, #f5f4dc);
+  font-size: calc(18px * var(--wp-battle-canvas-inverse-scale, 1));
+  font-weight: 850;
   line-height: 1.15;
-  padding: 6px 8px;
-  white-space: normal;
+  text-align: center;
   overflow-wrap: anywhere;
+  transition: transform 100ms ease, filter 120ms ease, background-color 120ms ease;
+}
+
+.choice-grid button:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
 }
 
 .choice-grid button.correct {
-  background: #98df75;
-  transform: translateY(2px);
+  border-color: var(--wp-ui-active, #51cbb8);
+  background: var(--wp-ui-active, #51cbb8);
+  color: var(--wp-ui-background, #0b2834);
 }
 
 .choice-grid button.wrong {
-  background: #ff9c8d;
-  animation: shake 0.24s ease;
+  border-color: var(--wp-ui-danger, #e98a78);
+  background: var(--wp-ui-danger, #e98a78);
+  color: var(--wp-ui-background, #0b2834);
+  animation: animal-quiz-shake 220ms ease;
 }
 
-.choice-grid button:focus,
-.result-card button:focus,
-.result-card a:focus {
-  outline: 4px solid #fff2a8;
-  outline-offset: 3px;
+.choice-grid button:active,
+.result-card button:active,
+.quiz-leave-card button:active {
+  transform: translateY(2px) scale(0.985);
 }
 
 .feedback {
-  grid-row: 5;
+  grid-area: feedback;
   display: grid;
   place-items: center;
+  min-width: 0;
   min-height: 0;
+  overflow: auto;
+  border: 1px solid var(--wp-ui-line, #527b80);
+  border-radius: var(--wp-ui-radius, 12px);
+  background: var(--wp-ui-background, #0b2834);
+  color: var(--wp-ui-text, #f5f4dc);
+  text-align: center;
 }
 
 .feedback strong {
-  display: inline-grid;
-  place-items: center;
-  width: min(100%, 260px);
-  min-height: 44px;
-  max-height: 100%;
-  overflow: auto;
-  padding: 8px 12px;
-  color: #233516;
-  font-size: clamp(15px, 4vw, 18px);
-  line-height: 1.2;
-  white-space: normal;
+  max-width: 100%;
+  padding: calc(4px * var(--wp-battle-canvas-inverse-scale, 1)) calc(8px * var(--wp-battle-canvas-inverse-scale, 1));
+  font-size: calc(16px * var(--wp-battle-canvas-inverse-scale, 1));
+  line-height: 1.25;
   overflow-wrap: anywhere;
 }
 
-/* Preserve Animal Quiz's one-screen Kids Main slot after the shared flow owner
-   returns the public Guide to normal document flow. */
-html[data-wp-shared-interface="7"] body.quiz-main
-  .animal-game.wp-standard-main-flow-owner {
-  min-height: 100vh !important;
-  min-height: 100svh !important;
-}
-
 .result-panel,
-.loading-panel {
+.quiz-leave-panel {
   position: absolute;
+  z-index: 20;
   inset: 0;
-  z-index: 30;
   display: grid;
   place-items: center;
-  padding: 20px;
-  background: rgba(216, 242, 200, 0.94);
-}
-
-.result-panel {
-  isolation: isolate;
-  background: #d8f2c8;
+  min-width: 0;
+  min-height: 0;
+  padding: calc(12px * var(--wp-battle-canvas-inverse-scale, 1));
+  overflow: auto;
+  background: var(--wp-ui-backdrop, rgba(4, 18, 26, 0.82));
+  animation: animal-quiz-fade-in 140ms ease-out both;
 }
 
 .result-card,
-.loading-card {
+.quiz-leave-card {
   display: grid;
-  gap: 12px;
-  width: min(100%, 330px);
-  padding: 24px;
-  border: 4px solid #386b2d;
-  border-radius: 8px;
-  background: #fffbea;
-  color: #233516;
+  gap: calc(10px * var(--wp-battle-canvas-inverse-scale, 1));
+  width: min(100%, calc(470px * var(--wp-battle-canvas-inverse-scale, 1)));
+  max-height: 100%;
+  padding: calc(18px * var(--wp-battle-canvas-inverse-scale, 1));
+  overflow: auto;
+  border: 2px solid var(--wp-ui-line, #527b80);
+  border-radius: var(--wp-ui-radius, 16px);
+  background: var(--wp-ui-surface, #123542);
+  color: var(--wp-ui-text, #f5f4dc);
   text-align: center;
-  box-shadow: 0 10px 0 #6aa45c;
+  box-shadow: 0 5px 0 var(--wp-ui-shadow, #071a22);
+  animation: animal-quiz-panel-in 200ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
 }
 
-.result-card strong,
-.loading-card strong {
-  font-size: 36px;
+.result-card > strong,
+.quiz-leave-card > strong {
+  font-size: calc(28px * var(--wp-battle-canvas-inverse-scale, 1));
+  line-height: 1.15;
 }
 
-.result-card span,
-.loading-card span {
-  font-size: 20px;
-  font-weight: 1000;
+.result-card > span,
+.quiz-leave-card p {
+  margin: 0;
+  color: var(--wp-ui-muted, #c4d8d5);
+  font-size: calc(17px * var(--wp-battle-canvas-inverse-scale, 1));
+  font-weight: 750;
+  line-height: 1.35;
 }
 
 .skill-report {
   display: grid;
-  gap: 8px;
-  padding: 12px;
-  border: 3px solid rgba(56, 107, 45, 0.22);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.58);
-  text-align: left;
+  gap: calc(7px * var(--wp-battle-canvas-inverse-scale, 1));
+  padding: calc(10px * var(--wp-battle-canvas-inverse-scale, 1));
+  border: 1px solid var(--wp-ui-line, #527b80);
+  border-radius: var(--wp-ui-radius, 12px);
+  background: var(--wp-ui-background, #0b2834);
+  text-align: start;
+}
+
+.skill-report h2,
+.skill-report p {
+  margin: 0;
 }
 
 .skill-report h2 {
-  margin: 0;
-  color: #2d5123;
-  font-size: 18px;
-  line-height: 1.1;
+  font-size: calc(17px * var(--wp-battle-canvas-inverse-scale, 1));
 }
 
-.skill-report p {
-  margin: 0;
-  color: #496b2e;
-  font-size: 13px;
-  font-weight: 900;
-  line-height: 1.35;
+.skill-report p,
+.skill-report dl {
+  color: var(--wp-ui-muted, #c4d8d5);
+  font-size: calc(13px * var(--wp-battle-canvas-inverse-scale, 1));
+  line-height: 1.3;
 }
 
 .skill-report dl {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 5px 10px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 10px;
   margin: 0;
-  font-size: 13px;
-  font-weight: 1000;
 }
 
 .skill-report dt,
@@ -735,813 +293,116 @@ html[data-wp-shared-interface="7"] body.quiz-main
 }
 
 .skill-report dd {
-  color: #2d5123;
-  text-align: right;
+  color: var(--wp-ui-text, #f5f4dc);
+  text-align: end;
 }
 
-.skill-report .stars {
-  color: #ffad27;
-  letter-spacing: 1px;
-}
-
-.result-card button,
-.result-card a {
+.result-actions,
+.quiz-leave-card > button {
   display: grid;
-  place-items: center;
-  min-height: 50px;
-  border: 3px solid #386b2d;
-  border-radius: 8px;
-  background: #ffcf63;
-  color: #233516;
-  font-size: 18px;
-  font-weight: 1000;
-  text-decoration: none;
+  gap: calc(7px * var(--wp-battle-canvas-inverse-scale, 1));
 }
 
-.result-actions {
-  display: grid;
-  grid-template-rows: repeat(3, 50px);
-  gap: 8px;
+.result-actions > button,
+.quiz-leave-card > button {
   min-width: 0;
+  min-height: calc(48px * var(--wp-battle-canvas-inverse-scale, 1));
+  padding: calc(7px * var(--wp-battle-canvas-inverse-scale, 1));
+  border: 2px solid var(--wp-ui-line, #527b80);
+  border-radius: var(--wp-ui-radius, 12px);
+  background: var(--wp-ui-button-image, #174653);
+  color: var(--wp-ui-text, #f5f4dc);
+  font-size: calc(16px * var(--wp-battle-canvas-inverse-scale, 1));
+  font-weight: 850;
+  overflow-wrap: anywhere;
 }
 
-.result-actions > button {
-  width: 100%;
-  min-width: 0;
-  height: 50px;
-  min-height: 50px;
-  white-space: nowrap;
+.result-actions > .result-primary,
+.quiz-leave-card > button:first-of-type {
+  border-color: var(--wp-ui-active, #51cbb8);
+  background: var(--wp-ui-active, #51cbb8);
+  color: var(--wp-ui-background, #0b2834);
 }
 
-.result-card .result-primary {
-  border-color: #174f2c;
-  background: #71d88b;
-  box-shadow: 0 0 0 4px #fff2a8, 0 7px 0 #2f7f45;
-}
-
-.result-card button.hidden {
-  display: none !important;
-}
-
-.result-card button:disabled {
+.result-actions > button:disabled {
   cursor: not-allowed;
-  opacity: 0.48;
-  box-shadow: none;
+  opacity: 0.55;
 }
 
-.loading-card div {
-  height: 18px;
-  padding: 3px;
-  border: 3px solid #386b2d;
-  border-radius: 999px;
-  background: #ffffff;
+.result-card :is(button, a):focus-visible,
+.quiz-leave-card button:focus-visible,
+.choice-grid button:focus-visible {
+  outline: 3px solid var(--wp-ui-gold, #f1ca71);
+  outline-offset: 3px;
 }
 
-.loading-card i {
-  display: block;
-  width: 0%;
-  height: 100%;
-  border-radius: 999px;
-  background: #ffbf45;
-  transition: width 0.2s ease;
+.quiz-stage.question-entering .animal-card {
+  animation: animal-quiz-question-in 180ms ease-out both;
 }
 
-.loading-panel {
-  animation: quiz-fade-in 0.22s ease;
+@keyframes animal-quiz-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.result-card,
-.loading-card {
-  animation: quiz-panel-pop 0.38s cubic-bezier(0.17, 0.9, 0.28, 1.2);
+@keyframes animal-quiz-panel-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.result-card strong {
-  animation: quiz-title-pop 0.5s ease;
+@keyframes animal-quiz-question-in {
+  from { opacity: 0.55; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.choice-grid button,
-.result-card button,
-.result-card a {
-  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+@keyframes animal-quiz-shake {
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
 }
 
-.choice-grid button:active,
-.result-card button:active,
-.result-card a:active {
-  transform: translateY(3px) scale(0.98);
-  filter: brightness(1.05);
-}
-
-.sound-toggle {
-  position: fixed;
-  z-index: 40;
-  right: max(12px, env(safe-area-inset-right));
-  bottom: max(12px, env(safe-area-inset-bottom));
-  display: grid;
-  place-items: center;
-  width: 50px;
-  height: 50px;
-  border: 3px solid #386b2d;
-  border-radius: 50%;
-  background: #fffbea;
-  color: #233516;
-  font-size: 22px;
-  box-shadow: 0 5px 0 #6aa45c;
-}
-
-body.quiz-playing:has(#resultPanel:not(.hidden), #leavePanel:not(.hidden)) .sound-toggle {
-  display: none !important;
-}
-
-.hidden {
-  display: none !important;
-}
-
-@keyframes shake {
-  25% {
-    transform: translateX(-6px);
+@media (orientation: landscape) and (min-width: 700px) {
+  .quiz-content {
+    grid-template-areas:
+      "progress progress"
+      "question answers"
+      "feedback feedback";
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows:
+      max(8px, calc(8px * var(--wp-battle-canvas-inverse-scale, 1)))
+      minmax(0, 1fr)
+      minmax(calc(42px * var(--wp-battle-canvas-inverse-scale, 1)), auto);
   }
-  75% {
-    transform: translateX(6px);
+
+  .choice-grid {
+    align-self: center;
+    grid-template-rows: repeat(2, minmax(calc(60px * var(--wp-battle-canvas-inverse-scale, 1)), 1fr));
+  }
+
+  .result-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-@keyframes quiz-fade-in {
-  from {
-    opacity: 0;
+@media (max-height: 560px) {
+  .animal-card img {
+    width: min(100%, calc(200px * var(--wp-battle-canvas-inverse-scale, 1)));
+    max-height: min(100%, calc(200px * var(--wp-battle-canvas-inverse-scale, 1)));
   }
-  to {
-    opacity: 1;
-  }
-}
 
-@keyframes quiz-panel-pop {
-  from {
-    opacity: 0;
-    transform: translateY(18px) scale(0.92);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes quiz-title-pop {
-  0% {
-    transform: scale(0.82);
-    filter: brightness(1.4);
-  }
-  65% {
-    transform: scale(1.08);
-  }
-  100% {
-    transform: scale(1);
+  .result-card,
+  .quiz-leave-card {
+    gap: calc(7px * var(--wp-battle-canvas-inverse-scale, 1));
+    padding: calc(12px * var(--wp-battle-canvas-inverse-scale, 1));
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .result-panel,
-  .loading-panel,
-  .result-card,
-  .loading-card,
-  .result-card strong {
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
-}
-
-@media (max-width: 430px) {
-  html:has(body.quiz-playing),
-  body.quiz-playing {
-    overflow: hidden !important;
-    touch-action: none;
-  }
-
-  body.quiz-playing .animal-game {
-    width: 100vw;
-    height: var(--wp-mobile-vh, 100svh);
-    min-height: 0;
-    padding: 7px 9px;
-    gap: 6px;
-  }
-
-  body.quiz-playing .topbar {
-    display: none !important;
-  }
-
-  html:has(body.quiz-stage-select),
-  body.quiz-stage-select {
-    overflow: hidden !important;
-    touch-action: pan-x;
-  }
-
-  body.quiz-stage-select .animal-game {
-    grid-template-rows: minmax(0, 1fr);
-    width: 100vw;
-    height: var(--wp-mobile-vh, 100svh);
-    min-height: var(--wp-mobile-vh, 100svh);
-    max-height: var(--wp-mobile-vh, 100svh);
-    padding: max(4px, env(safe-area-inset-top)) 8px max(4px, env(safe-area-inset-bottom));
-    gap: 6px;
-    overflow: hidden;
-  }
-
-  body.quiz-stage-select .topbar,
-  body.quiz-stage-select .level-line,
-  body.quiz-stage-select .game-page-info,
-  body.quiz-stage-select .wp-tutorial-button {
-    display: none !important;
-  }
-
-  body.quiz-stage-select .stage-select {
-    grid-row: 1;
-    grid-template-rows: 42px auto minmax(0, 1fr);
-    width: calc(100vw - 16px);
-    height: 100%;
-    min-height: 0;
-    margin: 0 auto;
-    padding: 0;
-    gap: 6px;
-  }
-
-  body.quiz-stage-select .stage-shell-head { grid-template-columns: 42px minmax(0, 1fr); gap: 8px; }
-  body.quiz-stage-select .stage-return { width: 42px; height: 42px; font-size: 1.2rem; }
-  body.quiz-stage-select .stage-shell-head > strong { font-size: 1rem; }
-  body.quiz-stage-select .stage-setup { padding: 8px 10px; }
-  body.quiz-stage-select .stage-setup strong { font-size: 0.82rem; }
-  body.quiz-stage-select .stage-setup span { font-size: 0.72rem; }
-
-  body.quiz-stage-select .stage-grid {
-    align-items: center;
-    height: 100%;
-    padding-block: 0;
-    padding-inline: max(44px, calc((100% - 264px) / 2));
-    scroll-padding-inline: max(44px, calc((100% - 264px) / 2));
-  }
-
-  body.quiz-stage-select .stage-card {
-    align-content: center;
-  }
-
-  body.quiz-playing .result-panel {
-    grid-template-rows: minmax(0, 1fr);
-    align-items: stretch;
-    padding: 8px;
-    gap: 6px;
-  }
-
-  body.quiz-playing .result-card {
-    align-self: center;
-    max-height: 100%;
-    overflow: auto;
-  }
-
-  body.quiz-playing .topbar p,
-  body.quiz-playing .language-picker,
-  body.quiz-playing .game-page-info {
-    display: none !important;
-  }
-
-  html body.wp-logical-battle-active.quiz-playing .level-line {
-    margin: 0;
-  }
-
-  .animal-game {
-    grid-template-rows: 58px 38px minmax(0, 1fr) 124px 46px;
-    gap: 9px;
-    padding: max(9px, env(safe-area-inset-top)) 10px calc(12px + env(safe-area-inset-bottom));
-  }
-
-  .topbar {
-    grid-template-columns: 46px 1fr 116px;
-    height: 58px;
-  }
-
-  .home-link {
-    height: 46px;
-  }
-
-  .level-line {
-    grid-template-columns: minmax(0, 164px) 1fr;
-    height: 38px;
-  }
-
-  .choice-grid button {
-    font-size: 19px;
-  }
-
-  .animal-card {
-    max-height: 292px;
-    padding: 12px;
-  }
-
-  .animal-card img {
-    width: min(48vw, 165px);
-    height: min(100%, 165px);
-  }
-
-  body.quiz-playing .animal-game {
-    position: fixed;
-    inset: 0;
-    grid-template-rows: 38px minmax(0, 1fr) 120px 34px;
-    width: 100vw;
-    height: var(--wp-mobile-vh, 100svh);
-    min-height: var(--wp-mobile-vh, 100svh);
-    max-height: var(--wp-mobile-vh, 100svh);
-    padding: max(4px, env(safe-area-inset-top)) 8px max(4px, env(safe-area-inset-bottom));
-    gap: 6px;
-    overflow: hidden;
-  }
-
-  body.quiz-playing .level-line { grid-row: 1; }
-  body.quiz-playing .quiz-stage { grid-row: 2; min-height: 0; }
-  body.quiz-playing .choice-grid { grid-row: 3; }
-  body.quiz-playing .feedback { grid-row: 4; }
-}
-
-@media (max-height: 680px) {
-  .animal-game {
-    grid-template-rows: 52px 34px minmax(0, 1fr) 112px 42px;
-    gap: 8px;
-  }
-
-  .topbar {
-    height: 52px;
-  }
-
-  .topbar h1 {
-    font-size: 24px;
-  }
-
-  .language-picker {
-    padding: 6px;
-  }
-
-  .language-picker span {
-    display: none;
-  }
-
-  .language-picker select {
-    min-height: 31px;
-  }
-
-  .home-link {
-    height: 42px;
-  }
-
-  .level-line {
-    height: 34px;
-  }
-
-  .animal-card {
-    max-height: 246px;
-    padding: 10px;
-  }
-
-  .animal-card img {
-    width: min(42vw, 138px);
-    height: min(100%, 138px);
-  }
-
-  .animal-card strong {
-    font-size: 18px;
-  }
-
-  .animal-card span {
-    font-size: 12px;
-  }
-
-  .choice-grid {
-    gap: 8px;
-  }
-
-  .feedback strong {
-    height: 38px;
-  }
-}
-
-/* Fixed logical Stage/Battle frame; keep this after all legacy viewport rules. */
-body.quiz-playing .animal-game,
-body.quiz-stage-select .animal-game {
-  position: fixed;
-  z-index: 50;
-  left: var(--quiz-frame-left, 4px);
-  top: var(--quiz-frame-top, 4px);
-  width: 390px;
-  max-width: none;
-  height: 788px;
-  min-height: 788px;
-  max-height: none;
-  margin: 0;
-  transform: scale(var(--quiz-frame-scale, 1));
-  transform-origin: top left;
-  overflow: hidden;
-}
-
-body.quiz-playing .animal-game {
-  grid-template-rows: 38px minmax(0, 1fr) 120px 34px;
-  padding: 8px;
-  gap: 6px;
-}
-
-body.quiz-stage-select .animal-game {
-  grid-template-rows: minmax(0, 1fr);
-  padding: 8px;
-  gap: 0;
-}
-
-body.quiz-playing .topbar,
-body.quiz-playing .language-picker,
-body.quiz-playing .game-page-info,
-body.quiz-playing .wp-tutorial-button,
-body.quiz-stage-select .topbar,
-body.quiz-stage-select .level-line,
-body.quiz-stage-select .game-page-info,
-body.quiz-stage-select .wp-tutorial-button {
-  display: none !important;
-}
-
-html,
-body,
-button,
-a,
-canvas,
-[role="button"] {
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-input,
-textarea,
-select,
-[contenteditable="true"] {
-  -webkit-user-select: text;
-  user-select: text;
-}
-
-body.quiz-playing .wp-tutorial-backdrop,
-body.quiz-stage-select .wp-tutorial-backdrop {
-  display: none !important;
-}
-
-/* Canonical Kids owner: one responsive Canvas envelope and no ad geometry. */
-html:has(body.quiz-playing),
-html:has(body.quiz-stage-select),
-body.quiz-playing,
-body.quiz-stage-select {
-  position: fixed !important;
-  inset: 0 !important;
-  width: 100vw !important;
-  height: 100dvh !important;
-  min-height: 0 !important;
-  overflow: hidden !important;
-}
-
-body.quiz-playing .animal-game,
-body.quiz-stage-select .animal-game {
-  position: fixed !important;
-  inset: auto !important;
-  left: 0 !important;
-  top: 0 !important;
-  width: var(--quiz-logical-width, 390px) !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  height: var(--quiz-logical-height, 788px) !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  margin: 0 !important;
-  transform: scale(var(--quiz-frame-scale, 1)) !important;
-  transform-origin: top left !important;
-  overflow: hidden !important;
-}
-
-body.quiz-stage-select .animal-game {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-  grid-template-rows: minmax(0, 1fr) !important;
-  padding: 0 !important;
-  gap: 0 !important;
-}
-
-body.quiz-stage-select .stage-select {
-  grid-row: 1 !important;
-  width: 100% !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  padding: 8px !important;
-}
-
-/* Shared Stage code owns drag/snap only; the game owns the outer envelope. */
-body.wp-stage-select-active.quiz-stage-select #stageSelectPanel.stage-select[data-wp-logical-stage-canvas] {
-  position: static !important;
-  z-index: auto !important;
-  inset: auto !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  transform: none !important;
-}
-
-body.quiz-playing .animal-game {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-  grid-template-rows: 38px minmax(0, 1fr) 120px 34px !important;
-  padding: 8px !important;
-  gap: 6px !important;
-}
-
-body.quiz-playing .level-line { grid-column: 1 !important; grid-row: 1 !important; }
-body.quiz-playing .quiz-stage { grid-column: 1 !important; grid-row: 2 !important; min-height: 0 !important; }
-body.quiz-playing .choice-grid { grid-column: 1 !important; grid-row: 3 !important; min-height: 0 !important; }
-body.quiz-playing .feedback { grid-column: 1 !important; grid-row: 4 !important; min-height: 0 !important; }
-
-body.quiz-playing .result-panel {
-  position: absolute !important;
-  inset: 0 !important;
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-  grid-template-rows: minmax(0, 1fr) !important;
-  padding: 8px !important;
-  overflow: hidden !important;
-}
-
-body.quiz-playing .result-panel.hidden {
-  display: none !important;
-}
-
-body.quiz-playing .result-card {
-  align-self: center !important;
-  max-height: 100% !important;
-  overflow: auto !important;
-}
-
-/* Short landscape keeps the common outer scale but uses the available logical width. */
-@media (max-height: 560px) {
-  html body.wp-logical-battle-active.quiz-playing .animal-game[data-wp-logical-battle-canvas] {
-    grid-template-columns: 700px minmax(0, 1fr) !important;
-    grid-template-rows: 64px minmax(0, 1fr) 96px !important;
-    gap: 14px 24px !important;
-    padding: 18px !important;
-  }
-
-  body.quiz-playing .level-line {
-    grid-column: 1 / -1 !important;
-    grid-row: 1 !important;
-    grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
-    gap: 24px;
-    height: 64px;
-  }
-
-  body.quiz-playing .level-line span { font-size: 30px; }
-  body.quiz-playing .level-line div { height: 28px; border-width: 4px; }
-
-  html body.wp-logical-battle-active.quiz-playing .quiz-stage {
-    grid-column: 1 !important;
-    grid-row: 2 / 4 !important;
-    min-width: 0 !important;
-  }
-
-  body.quiz-playing .animal-card {
-    grid-template-columns: minmax(240px, 0.78fr) minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
-    gap: 18px 24px;
-    width: 100%;
-    max-width: none;
-    max-height: none;
-    padding: 26px;
-  }
-
-  html body.wp-logical-battle-active.quiz-playing .animal-card img {
-    grid-column: 1;
-    grid-row: 1 / 3;
-    width: 100%;
-    height: 100%;
-    max-height: 520px;
-  }
-
-  body.quiz-playing .animal-card strong {
-    grid-column: 2;
-    grid-row: 1;
-    align-self: end;
-    font-size: 36px;
-    white-space: normal;
-  }
-
-  body.quiz-playing .animal-card span {
-    grid-column: 2;
-    grid-row: 2;
-    align-self: start;
-    font-size: 28px;
-    -webkit-line-clamp: 5;
-  }
-
-  html body.wp-logical-battle-active.quiz-playing .choice-grid {
-    grid-column: 2 !important;
-    grid-row: 2 !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-template-rows: minmax(0, 1fr);
-    gap: 16px;
-    min-width: 0 !important;
-  }
-
-  body.quiz-playing .choice-grid button {
-    min-height: 96px;
-    padding: 14px;
-    font-size: 32px;
-    white-space: normal;
-  }
-
-  html body.wp-logical-battle-active.quiz-playing .feedback {
-    grid-column: 2 !important;
-    grid-row: 3 !important;
-  }
-
-  body.quiz-playing .feedback strong {
-    width: 100%;
-    height: 82px;
-    font-size: 28px;
-  }
-
-  body.quiz-playing .result-card {
-    align-self: stretch !important;
-    display: grid;
-    grid-template-columns: minmax(360px, 0.82fr) minmax(520px, 1.18fr) minmax(330px, 0.8fr);
-    grid-template-rows: repeat(4, minmax(0, 1fr));
-    gap: 16px 24px;
-    width: min(100%, 1560px);
-    max-height: none !important;
-    padding: 26px;
-    overflow: hidden !important;
-  }
-
-  body.quiz-playing #resultTitle {
-    grid-column: 1;
-    grid-row: 1 / 3;
-    align-self: end;
-    font-size: 56px;
-  }
-
-  body.quiz-playing #resultText {
-    grid-column: 1;
-    grid-row: 3 / 5;
-    align-self: start;
-    font-size: 32px;
-  }
-
-  body.quiz-playing .skill-report {
-    grid-column: 2;
-    grid-row: 1 / 5;
-    align-content: center;
-    gap: 14px;
-    padding: 22px;
-  }
-
-  body.quiz-playing .skill-report h2 { font-size: 34px; }
-  body.quiz-playing .skill-report dl,
-  body.quiz-playing .skill-report p { font-size: 26px; }
-
-  body.quiz-playing .result-actions {
-    grid-column: 3;
-    grid-row: 1 / 5;
-    display: grid;
-    grid-template-rows: repeat(3, minmax(96px, 1fr));
-    gap: 16px;
-    min-height: 0;
-  }
-
-  body.quiz-playing .result-actions > button {
-    width: 100%;
-    height: 100%;
-    min-height: 96px;
-    font-size: 30px;
-  }
-}
-
-/* Interface 7 may mark the complete legacy Canvas root as its compatibility
-   header. Keep that root in the game-owned Battle grid so sibling rows remain
-   distinct; the actual return control stays independently positioned. */
-html[data-wp-shared-interface="7"] body.wp-logical-battle-active.quiz-playing
-  .animal-game.wp-battle-shell-header[data-wp-logical-battle-canvas] {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-  grid-template-rows: 38px minmax(0, 1fr) 120px 34px !important;
-  align-items: stretch !important;
-  justify-content: stretch !important;
-  gap: 6px !important;
-  padding: 8px !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  background: linear-gradient(160deg, rgba(8, 28, 32, .35), rgba(8, 28, 32, .68)), url("../../assets/animal-quiz-classroom-voxel-v1.png") center/cover !important;
-}
-
-/* Keep short Battle layouts inside the available logical width. At compact
-   widths, answers stay in a reserved track below the clue card; only wider
-   landscape canvases use the side-by-side arrangement. */
-@media (max-height: 560px) and (max-width: 559px) {
-  html[data-wp-shared-interface="7"] body.wp-logical-battle-active.quiz-playing
-    .animal-game.wp-battle-shell-header[data-wp-logical-battle-canvas] {
-    grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-rows: 44px minmax(0, 1fr) 120px 52px !important;
-    gap: 5px !important;
-    padding: 7px !important;
-  }
-
-  body.quiz-playing .level-line {
-    grid-column: 1 !important;
-    grid-row: 1 !important;
-    height: 44px;
-  }
-
-  body.quiz-playing .quiz-stage {
-    grid-column: 1 !important;
-    grid-row: 2 !important;
-  }
-
-  body.quiz-playing .choice-grid {
-    grid-column: 1 !important;
-    grid-row: 3 !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-  }
-
-  body.quiz-playing .feedback { grid-column: 1 !important; grid-row: 4 !important; }
-
-  body.quiz-playing .animal-card {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(0, 1fr) auto minmax(0, 0.6fr);
-    gap: 4px;
-    width: 100%;
-    max-height: none;
-    padding: 7px;
-  }
-
-  body.quiz-playing .animal-card img {
-    grid-column: 1;
-    grid-row: 1;
-    width: min(100%, 170px);
-    height: 100%;
-    max-height: 100%;
-  }
-
-  body.quiz-playing .animal-card strong { grid-column: 1; grid-row: 2; font-size: 23px; }
-  body.quiz-playing .animal-card span { grid-column: 1; grid-row: 3; min-height: 0; font-size: 16px; }
-  body.quiz-playing .choice-grid button { min-height: 48px; font-size: 19px; padding: 4px 6px; }
-  body.quiz-playing .feedback strong { width: 100%; min-height: 44px; font-size: 18px; }
-}
-
-@media (max-height: 560px) and (min-width: 560px) {
-  html[data-wp-shared-interface="7"] body.wp-logical-battle-active.quiz-playing .animal-game.wp-battle-shell-header[data-wp-logical-battle-canvas] {
-    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr) !important;
-    grid-template-rows: 56px minmax(0, 1fr) 64px !important;
-    gap: 8px 12px !important;
-    padding: 10px !important;
-  }
-
-  body.quiz-playing .level-line { grid-column: 1 / -1 !important; grid-row: 1 !important; height: 56px; }
-  html body.wp-logical-battle-active.quiz-playing .quiz-stage { grid-column: 1 !important; grid-row: 2 / 4 !important; }
-  html body.wp-logical-battle-active.quiz-playing .choice-grid {
-    grid-column: 2 !important;
-    grid-row: 2 !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-  html body.wp-logical-battle-active.quiz-playing .feedback { grid-column: 2 !important; grid-row: 3 !important; }
-
-  html[data-wp-shared-interface="7"] body.wp-logical-battle-active.quiz-playing .animal-card span {
-    font-size: 28px !important;
-    -webkit-line-clamp: unset !important;
-  }
-  html[data-wp-shared-interface="7"] body.wp-logical-battle-active.quiz-playing .choice-grid button {
-    min-height: 96px;
-    font-size: 28px !important;
-  }
-  html[data-wp-shared-interface="7"] body.wp-logical-battle-active.quiz-playing .feedback strong {
-    min-height: 56px;
-    font-size: 28px !important;
-  }
-
-  body.quiz-playing .animal-card {
-    grid-template-columns: minmax(100px, 0.65fr) minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
-    gap: 8px 12px;
-    width: 100%;
-    max-width: none;
-    max-height: none;
-    padding: 10px;
-  }
-  html body.wp-logical-battle-active.quiz-playing .animal-card img {
-    grid-column: 1;
-    grid-row: 1 / 3;
-    width: 100%;
-    height: 100%;
-    max-height: 100%;
-  }
-  body.quiz-playing .animal-card strong { grid-column: 2; grid-row: 1; align-self: end; font-size: 30px; white-space: normal; }
-  body.quiz-playing .animal-card span { grid-column: 2; grid-row: 2; align-self: start; min-height: 0; font-size: 20px; }
-  body.quiz-playing .choice-grid button { min-height: 96px; font-size: 24px; padding: 8px; }
-  body.quiz-playing .feedback strong { width: 100%; min-height: 56px; font-size: 20px; }
 }

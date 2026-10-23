@@ -44,6 +44,7 @@
     checkpoint: (index + 1) % 5 === 0, nameKey: `name${index + 1}`, clueKey: `clue${index + 1}`,
   }));
   const saveKey = "weightplay-animal-silhouette-scout-progress-v4";
+  const legacyTargets = ['fox','owl','hare','rabbit','owl','deer','otter','cat','bear','rabbit deer','badger','finch','mole','duck','fox owl','otter','cat','deer','bear','owl duck','hare','badger','rabbit','fox','deer bear','owl','otter','cat','fox hare','owl deer'];
   const lensCost = 8;
   const validId = id => Number.isInteger(id) && id >= 1 && id <= rounds.length;
   function normalize(raw) {
@@ -53,11 +54,12 @@
     for (const id of cleared) mastery[id] = Math.max(1, Math.min(3, Math.floor(Number(source.mastery?.[id]) || 1)));
     // Legacy clears prove discovery, but do not prove first-try mastery.
     const discovered = new Set((Array.isArray(source.discovered) ? source.discovered : []).filter(id => animals.includes(id)));
-    for (const id of cleared) rounds[id - 1].targets.forEach(id => discovered.add(id));
+    if (source.schema !== 5) for (const id of cleared) legacyTargets[id - 1].split(' ').forEach(id => discovered.add(id));
     return {
       ...source, schema: 5,
-      unlocked: Math.max(1, Math.min(30, Math.floor(Number(source.unlocked) || 1), 30)),
+      unlocked: Math.min(30, Math.max(1, Math.floor(Number(source.unlocked) || 1), ...cleared.map(id => id + 1))),
       cleared, mastery, discovered: animals.filter(id => discovered.has(id)), lens: source.lens === true,
+      discoveryHistoryKnown: source.schema === 5 ? source.discoveryHistoryKnown !== false : Object.keys(source).length === 0,
     };
   }
   function shuffle(items, random = Math.random) {

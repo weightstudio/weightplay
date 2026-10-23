@@ -61,6 +61,10 @@ const stageSetupTitle = document.querySelector("#stageSetupTitle");
 const stageSetupText = document.querySelector("#stageSetupText");
 const stageBackBtn = document.querySelector("#stageBackBtn");
 const stageGrid = document.querySelector("#stageGrid");
+const mainScreen = document.querySelector("#mainScreen");
+const stageScreen = document.querySelector("#stageScreen");
+const battleScreen = document.querySelector("#battleScreen");
+const sharedFrame = window.AnimalQuizFrame;
 const levelLine = document.querySelector(".level-line");
 const levelText = document.querySelector("#levelText");
 const levelFill = document.querySelector("#levelFill");
@@ -80,21 +84,6 @@ const againBtn = document.querySelector("#againBtn");
 const nextStageBtn = document.querySelector("#nextStageBtn");
 const stageSelectBtn = document.querySelector("#stageSelectBtn");
 const homeLink = document.querySelector("#homeLink");
-const loadingPanel = document.querySelector("#loadingPanel");
-const loadingTitle = document.querySelector("#loadingTitle");
-const loadingText = document.querySelector("#loadingText");
-const loadingFill = document.querySelector("#loadingFill");
-
-if (!document.querySelector("#leavePanel")) {
-  const panel = document.createElement("section");
-  panel.id = "leavePanel";
-  panel.className = "quiz-leave-panel hidden";
-  panel.setAttribute("role", "dialog");
-  panel.setAttribute("aria-modal", "true");
-  panel.setAttribute("aria-labelledby", "leaveTitle");
-  panel.innerHTML = '<div class="quiz-leave-card"><strong id="leaveTitle"></strong><p id="leaveText"></p><button id="keepPlayingBtn" type="button"></button><button id="leaveStageBtn" type="button"></button></div>';
-  document.querySelector(".animal-game")?.append(panel);
-}
 const leavePanel = document.querySelector("#leavePanel");
 const leaveTitle = document.querySelector("#leaveTitle");
 const leaveText = document.querySelector("#leaveText");
@@ -564,26 +553,26 @@ dictionary.de = {
 };
 
 const animals = [
-  { id: "lion", image: "../../assets/animal-quiz/animal-lion-block-v1.png", clue: "clueLion", action: "actionLion", habitat: "habitatLion", diet: "dietLion" },
-  { id: "hippo", image: "../../assets/animal-quiz/animal-hippo-block-v1.png", clue: "clueHippo", action: "actionHippo", habitat: "habitatHippo", diet: "dietHippo" },
-  { id: "snake", image: "../../assets/animal-quiz/animal-snake-block-v1.png", clue: "clueSnake", action: "actionSnake", habitat: "habitatSnake", diet: "dietSnake" },
-  { id: "rabbit", image: "../../assets/animal-quiz/animal-rabbit-block-v1.png", clue: "clueRabbit", action: "actionRabbit", habitat: "habitatRabbit", diet: "dietRabbit" },
-  { id: "turtle", image: "../../assets/animal-quiz/animal-turtle-block-v1.png", clue: "clueTurtle", action: "actionTurtle", habitat: "habitatTurtle", diet: "dietTurtle" },
-  { id: "elephant", image: "../../assets/animal-quiz/animal-elephant-block-v1.png", clue: "clueElephant", action: "actionElephant", habitat: "habitatElephant", diet: "dietElephant" },
-  { id: "penguin", image: "../../assets/animal-quiz/animal-penguin-block-v1.png", clue: "cluePenguin", action: "actionPenguin", habitat: "habitatPenguin", diet: "dietPenguin" },
-  { id: "monkey", image: "../../assets/animal-quiz/animal-monkey-block-v1.png", clue: "clueMonkey", action: "actionMonkey", habitat: "habitatMonkey", diet: "dietMonkey" },
-  { id: "bear", image: "../../assets/animal-quiz/animal-bear-block-v1.png", clue: "clueBear", action: "actionBear", habitat: "habitatBear", diet: "dietBear" },
-  { id: "cat", image: "../../assets/animal-quiz/animal-cat-block-v1.png", clue: "clueCat", action: "actionCat", habitat: "habitatCat", diet: "dietCat" },
-  { id: "dog", image: "../../assets/animal-quiz/animal-dog-block-v1.png", clue: "clueDog", action: "actionDog", habitat: "habitatDog", diet: "dietDog" },
-  { id: "fox", image: "../../assets/animal-quiz/animal-fox-block-v1.png", clue: "clueFox", action: "actionFox", habitat: "habitatFox", diet: "dietFox" },
-  { id: "giraffe", image: "../../assets/animal-quiz/animal-giraffe-block-v1.png", clue: "clueGiraffe", action: "actionGiraffe", habitat: "habitatGiraffe", diet: "dietGiraffe" },
-  { id: "zebra", image: "../../assets/animal-quiz/animal-zebra-block-v1.png", clue: "clueZebra", action: "actionZebra", habitat: "habitatZebra", diet: "dietZebra" },
-  { id: "panda", image: "../../assets/animal-quiz/animal-panda-block-v1.png", clue: "cluePanda", action: "actionPanda", habitat: "habitatPanda", diet: "dietPanda" },
-  { id: "koala", image: "../../assets/animal-quiz/animal-koala-block-v1.png", clue: "clueKoala", action: "actionKoala", habitat: "habitatKoala", diet: "dietKoala" },
-  { id: "frog", image: "../../assets/animal-quiz/animal-frog-block-v1.png", clue: "clueFrog", action: "actionFrog", habitat: "habitatFrog", diet: "dietFrog" },
-  { id: "whale", image: "../../assets/animal-quiz/animal-whale-block-v1.png", clue: "clueWhale", action: "actionWhale", habitat: "habitatWhale", diet: "dietWhale" },
-  { id: "owl", image: "../../assets/animal-quiz/animal-owl-block-v1.png", clue: "clueOwl", action: "actionOwl", habitat: "habitatOwl", diet: "dietOwl" },
-  { id: "cow", image: "../../assets/animal-quiz/animal-cow-block-v1.png", clue: "clueCow", action: "actionCow", habitat: "habitatCow", diet: "dietCow" },
+  { id: "lion", image: "/assets/animal-quiz/animal-lion-block-v1.png", clue: "clueLion", action: "actionLion", habitat: "habitatLion", diet: "dietLion" },
+  { id: "hippo", image: "/assets/animal-quiz/animal-hippo-block-v1.png", clue: "clueHippo", action: "actionHippo", habitat: "habitatHippo", diet: "dietHippo" },
+  { id: "snake", image: "/assets/animal-quiz/animal-snake-block-v1.png", clue: "clueSnake", action: "actionSnake", habitat: "habitatSnake", diet: "dietSnake" },
+  { id: "rabbit", image: "/assets/animal-quiz/animal-rabbit-block-v1.png", clue: "clueRabbit", action: "actionRabbit", habitat: "habitatRabbit", diet: "dietRabbit" },
+  { id: "turtle", image: "/assets/animal-quiz/animal-turtle-block-v1.png", clue: "clueTurtle", action: "actionTurtle", habitat: "habitatTurtle", diet: "dietTurtle" },
+  { id: "elephant", image: "/assets/animal-quiz/animal-elephant-block-v1.png", clue: "clueElephant", action: "actionElephant", habitat: "habitatElephant", diet: "dietElephant" },
+  { id: "penguin", image: "/assets/animal-quiz/animal-penguin-block-v1.png", clue: "cluePenguin", action: "actionPenguin", habitat: "habitatPenguin", diet: "dietPenguin" },
+  { id: "monkey", image: "/assets/animal-quiz/animal-monkey-block-v1.png", clue: "clueMonkey", action: "actionMonkey", habitat: "habitatMonkey", diet: "dietMonkey" },
+  { id: "bear", image: "/assets/animal-quiz/animal-bear-block-v1.png", clue: "clueBear", action: "actionBear", habitat: "habitatBear", diet: "dietBear" },
+  { id: "cat", image: "/assets/animal-quiz/animal-cat-block-v1.png", clue: "clueCat", action: "actionCat", habitat: "habitatCat", diet: "dietCat" },
+  { id: "dog", image: "/assets/animal-quiz/animal-dog-block-v1.png", clue: "clueDog", action: "actionDog", habitat: "habitatDog", diet: "dietDog" },
+  { id: "fox", image: "/assets/animal-quiz/animal-fox-block-v1.png", clue: "clueFox", action: "actionFox", habitat: "habitatFox", diet: "dietFox" },
+  { id: "giraffe", image: "/assets/animal-quiz/animal-giraffe-block-v1.png", clue: "clueGiraffe", action: "actionGiraffe", habitat: "habitatGiraffe", diet: "dietGiraffe" },
+  { id: "zebra", image: "/assets/animal-quiz/animal-zebra-block-v1.png", clue: "clueZebra", action: "actionZebra", habitat: "habitatZebra", diet: "dietZebra" },
+  { id: "panda", image: "/assets/animal-quiz/animal-panda-block-v1.png", clue: "cluePanda", action: "actionPanda", habitat: "habitatPanda", diet: "dietPanda" },
+  { id: "koala", image: "/assets/animal-quiz/animal-koala-block-v1.png", clue: "clueKoala", action: "actionKoala", habitat: "habitatKoala", diet: "dietKoala" },
+  { id: "frog", image: "/assets/animal-quiz/animal-frog-block-v1.png", clue: "clueFrog", action: "actionFrog", habitat: "habitatFrog", diet: "dietFrog" },
+  { id: "whale", image: "/assets/animal-quiz/animal-whale-block-v1.png", clue: "clueWhale", action: "actionWhale", habitat: "habitatWhale", diet: "dietWhale" },
+  { id: "owl", image: "/assets/animal-quiz/animal-owl-block-v1.png", clue: "clueOwl", action: "actionOwl", habitat: "habitatOwl", diet: "dietOwl" },
+  { id: "cow", image: "/assets/animal-quiz/animal-cow-block-v1.png", clue: "clueCow", action: "actionCow", habitat: "habitatCow", diet: "dietCow" },
 ];
 
 const animalMap = new Map(animals.map((animal) => [animal.id, animal]));
@@ -645,9 +634,15 @@ const state = {
   answered: false,
   completed: false,
   unlockedStage: 0,
+  currentChoices: [],
+  lastChoiceId: "",
+  feedbackKey: "",
+  feedbackAnimal: "",
+  feedbackClue: "",
 };
 let leaveOpen = false;
-let centeredStageFrame = 0;
+let stageController = null;
+let selectedStageIndex = 0;
 let quizGeneration = 0;
 let quizLifecycleSuspended = document.hidden;
 let quizWindowFocused = true;
@@ -743,28 +738,24 @@ function shuffle(items) {
   return [...items].sort(() => Math.random() - 0.5);
 }
 
-function preloadImage(src) {
+function preloadImageWithTimeout(src, timeoutMs = 12000) {
   return new Promise((resolve, reject) => {
+    let settled = false;
+    let timeout = 0;
     const image = new Image();
-    image.onload = () => resolve(image);
-    image.onerror = reject;
-    image.src = src;
-  });
-}
-
-function preloadImageWithTimeout(src, timeoutMs = 900) {
-  let settled = false;
-  return new Promise((resolve) => {
-    const image = new Image();
-    const finish = () => {
+    const finish = (error = null) => {
       if (settled) return;
       settled = true;
-      resolve(image);
+      window.clearTimeout(timeout);
+      image.onload = null;
+      image.onerror = null;
+      if (error) reject(error);
+      else resolve(image);
     };
-    image.onload = finish;
-    image.onerror = finish;
+    image.onload = () => finish();
+    image.onerror = () => finish(new Error(`ANIMAL_QUIZ_ASSET_FAILED:${src}`));
+    timeout = window.setTimeout(() => finish(new Error(`ANIMAL_QUIZ_ASSET_TIMEOUT:${src}`)), timeoutMs);
     image.src = src;
-    window.setTimeout(finish, timeoutMs);
   });
 }
 
@@ -848,33 +839,33 @@ function scoreStars(score, total, offset = 0) {
 }
 
 async function preloadGame() {
+  const loader = window.WeightPlayGameEntryLoader;
+  if (!loader) throw new Error("SHARED_GAME_ENTRY_LOADER_REQUIRED");
+  loader.begin(animals.length);
   let loadedCount = 0;
   await Promise.all(
     animals.map((animal) =>
       preloadImageWithTimeout(animal.image).then(() => {
         loadedCount += 1;
-        const percent = Math.round((loadedCount / animals.length) * 100);
-        loadingText.textContent = `${percent}%`;
-        loadingFill.style.width = `${percent}%`;
+        loader.assetProgress(loadedCount, animals.length);
       }),
     ),
   );
   state.ready = true;
   loadUnlockedStage();
   persistCanonicalProfile();
-  loadingPanel.classList.add("hidden");
+  loader.ready();
   window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
   showMain();
 }
 
-function scheduleReadinessFallback() {
-  window.setTimeout(() => {
-    if (state.ready) return;
-    state.ready = true;
-    loadUnlockedStage();
-    loadingPanel.classList.add("hidden");
-    showMain();
-  }, 1800);
+function activateScene(name, options = {}) {
+  const activeName = name === "result" ? "battle" : name;
+  mainScreen.hidden = activeName !== "main";
+  stageScreen.hidden = activeName !== "stage";
+  battleScreen.hidden = activeName !== "battle";
+  sharedFrame.activate(activeName, options);
+  document.body.dataset.screen = name;
 }
 
 function renderStaticText() {
@@ -897,7 +888,6 @@ function renderStaticText() {
   stageSetupText.textContent = t("stageSetupText");
   promptText.textContent = t("prompt");
   feedbackText.textContent = t("choose");
-  loadingTitle.textContent = t("loading");
   againBtn.textContent = t("again");
   nextStageBtn.textContent = t("nextStage");
   stageSelectBtn.textContent = t("stages");
@@ -913,10 +903,10 @@ function renderStaticText() {
   document.querySelector('meta[name="description"]')?.setAttribute("content", metaDescription);
   document.querySelector('meta[property="og:title"]')?.setAttribute("content", metaTitle);
   document.querySelector('meta[property="og:description"]')?.setAttribute("content", metaDescription);
+  sharedFrame.frame.refresh();
 }
 
 function setQuizVisible(isVisible) {
-  stageSelectPanel.classList.toggle("hidden", isVisible);
   levelLine.classList.toggle("hidden", !isVisible);
   backToStagesBtn.classList.toggle("hidden", !isVisible);
   quizStage.classList.toggle("hidden", !isVisible);
@@ -943,85 +933,16 @@ function showMain() {
   setBattleCovered(false);
   mainPanel.classList.remove("hidden");
   setQuizVisible(false);
-  stageSelectPanel.classList.add("hidden");
-  resetQuizFrame();
-  restoreMainShellFrame();
+  activateScene("main");
   window.dispatchEvent(new Event("weightplay:battle-sync"));
   window.dispatchEvent(new Event("weightplay:stage-sync"));
   window.dispatchEvent(new Event("weightplay:shell-sync"));
-  window.WeightPlayBattleCanvas?.sync?.();
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
       if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
-
-function resetQuizFrame() {
-  const root = document.documentElement.style;
-  [
-    "--quiz-vw",
-    "--quiz-vh",
-    "--quiz-frame-scale",
-    "--quiz-frame-left",
-    "--quiz-frame-top",
-    "--quiz-logical-width",
-    "--quiz-logical-height",
-  ].forEach((property) => root.removeProperty(property));
-  const frame = document.querySelector(".animal-game");
-  if (frame) {
-    delete frame.dataset.logicalWidth;
-    delete frame.dataset.logicalHeight;
-    delete frame.dataset.commonScale;
-    frame.classList.remove("weightplay-active-viewport");
-  }
-  document.body.classList.remove("weightplay-active-viewport", "wp-mobile-game-mode");
-  window.WeightPlayGame?.exitMobileGameMode?.();
-}
-
-function restoreMainShellFrame() {
-  const frame = document.querySelector(".animal-game");
-  if (!frame) return;
-  [
-    "position", "inset", "left", "right", "top", "bottom",
-    "width", "min-width", "max-width", "height", "min-height",
-    "max-height", "margin", "overflow", "transform", "transform-origin",
-  ].forEach((property) => frame.style.removeProperty(property));
-}
-
-function updateQuizFrame() {
-  if (!document.body.classList.contains("quiz-playing") && !document.body.classList.contains("quiz-stage-select")) return;
-  const viewport = window.visualViewport;
-  const visualWidth = Math.round(viewport?.width || 0);
-  const visualHeight = Math.round(viewport?.height || 0);
-  const useVisual = visualWidth > 0
-    && visualHeight > 0
-    && Math.abs(visualWidth - innerWidth) <= 2
-    && visualHeight <= innerHeight + 2;
-  const root = document.documentElement.style;
-  const width = useVisual ? visualWidth : innerWidth;
-  const height = useVisual ? visualHeight : innerHeight;
-  const scale = Math.min(Math.max(1, width) / 390, Math.max(1, height) / 788);
-  const logicalWidth = width / scale;
-  const logicalHeight = height / scale;
-  const frame = document.querySelector(".animal-game");
-  root.setProperty("--quiz-vw", `${width}px`);
-  root.setProperty("--quiz-vh", `${height}px`);
-  root.setProperty("--quiz-frame-scale", String(scale));
-  root.setProperty("--quiz-frame-left", "0px");
-  root.setProperty("--quiz-frame-top", "0px");
-  root.setProperty("--quiz-logical-width", `${logicalWidth}px`);
-  root.setProperty("--quiz-logical-height", `${logicalHeight}px`);
-  if (frame) {
-    frame.dataset.logicalWidth = logicalWidth.toFixed(4);
-    frame.dataset.logicalHeight = logicalHeight.toFixed(4);
-    frame.dataset.commonScale = scale.toFixed(6);
-  }
-}
-
-window.addEventListener?.("resize", updateQuizFrame, { passive: true });
-window.addEventListener?.("orientationchange", updateQuizFrame, { passive: true });
-window.visualViewport?.addEventListener("resize", updateQuizFrame, { passive: true });
 
 function showStageSelect(focusStageIndex = state.unlockedStage) {
   invalidateQuizSession();
@@ -1034,18 +955,15 @@ function showStageSelect(focusStageIndex = state.unlockedStage) {
   setBattleCovered(false);
   document.body.classList.remove("quiz-playing", "quiz-main");
   document.body.classList.add("quiz-stage-select");
+  selectedStageIndex = boundedInteger(focusStageIndex, 0, stages.length - 1);
   mainPanel.classList.add("hidden");
-  updateQuizFrame();
-  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   setQuizVisible(false);
-  renderStageCards();
+  activateScene("stage");
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  renderStageCards(selectedStageIndex);
   window.dispatchEvent(new Event("weightplay:battle-sync"));
   window.dispatchEvent(new Event("weightplay:stage-sync"));
   window.dispatchEvent(new Event("weightplay:shell-sync"));
-  centerLatestUnlockedStage(focusStageIndex);
-  window.requestAnimationFrame(() => {
-    centerLatestUnlockedStage(focusStageIndex, true);
-  });
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["stage"] ?? null;
       if (["result"].includes("stage") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -1053,82 +971,74 @@ function showStageSelect(focusStageIndex = state.unlockedStage) {
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
 
-function renderStageCards() {
-  const progress = loadProgress();
-  stageGrid.replaceChildren(
-    ...stages.map((stage, index) => {
-      const isUnlocked = index <= state.unlockedStage;
-      const stageProgress = progress[String(index)] || {};
-      // Older saves only recorded a play count after a cleared stage.
-      const isComplete = Boolean(stageProgress.cleared || stageProgress.playCount);
-      const total = stage.questions.length;
-      const bestScore = Math.min(Number(stageProgress.bestScore) || 0, total);
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = `stage-card ${isUnlocked ? "unlocked" : "locked"}`;
-      button.dataset.stageIndex = String(index);
-      button.disabled = !isUnlocked;
-      button.innerHTML = `
-        <span>${isComplete ? t("complete") : isUnlocked ? t("start") : t("locked")}</span>
-        <strong>${stageTitle(stage, index)}</strong>
-        <small>${t(stage.description)}</small>
-        <b class="stage-rule">${t(stage.rule)}${stage.checkpoint ? ` · ${t("checkpoint")}` : ""}</b>
-        ${isComplete ? `<em>${t("stageBest", { score: bestScore, total })} ${stars(scoreStars(bestScore, total))}</em>` : ""}
-      `;
-      button.addEventListener("click", () => startStage(index));
-      return button;
-    }),
-  );
-  updateCenteredStageCard();
+function updateStageStatus(index = selectedStageIndex) {
+  sharedFrame.setStageStatus(stageTitle(stages[index], index));
 }
 
-function updateCenteredStageCard() {
-  const cards = [...stageGrid.querySelectorAll(".stage-card")];
-  if (!cards.length) return;
-  const center = stageGrid.scrollLeft + stageGrid.clientWidth / 2;
-  const nearest = cards.reduce((best, card) => {
-    const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
-    return !best || distance < best.distance ? { card, distance } : best;
-  }, null)?.card;
-  cards.forEach((card) => {
-    const centered = card === nearest;
-    card.classList.toggle("is-centered", centered);
-    if (centered) card.setAttribute("aria-current", "true");
-    else card.removeAttribute("aria-current");
-  });
+function stageRecord(index) {
+  const stage = stages[index];
+  const record = loadProgress()[String(index)] || {};
+  const total = stage.questions.length;
+  const bestScore = Math.min(Number(record.bestScore) || 0, total);
+  const cleared = Boolean(record.cleared || record.playCount);
+  const locked = index > state.unlockedStage;
+  const firstAnimal = animalMap.get(stage.questions[0]);
+  const poster = firstAnimal?.image || "/assets/animal-quiz/cover-block-v1.png";
+  return {
+    id: index + 1,
+    kicker: t(stage.chapter),
+    title: stageTitle(stage, index),
+    subtitle: `${t(stage.rule)}${stage.checkpoint ? ` · ${t("checkpoint")}` : ""}`,
+    status: locked ? t("locked") : cleared ? `${t("stageBest", { score: bestScore, total })} ${"★".repeat(scoreStars(bestScore, total))}` : t("start"),
+    summary: t(stage.description),
+    details: [t(stage.description), t(stage.rule), stage.checkpoint ? t("checkpoint") : ""].filter(Boolean),
+    poster,
+    locked,
+    cleared,
+  };
 }
 
-function scheduleCenteredStageCard() {
-  if (centeredStageFrame) return;
-  centeredStageFrame = requestAnimationFrame(() => {
-    centeredStageFrame = 0;
-    updateCenteredStageCard();
-  });
-}
-
-function centerLatestUnlockedStage(stageIndex = state.unlockedStage, shouldFocus = false) {
-  const unlockedCards = [...stageGrid.querySelectorAll(".stage-card.unlocked")];
-  const target = stageGrid.querySelector(`.stage-card.unlocked[data-stage-index="${stageIndex}"]`) || unlockedCards.at(-1);
-  if (!target) return;
-  const desired = target.offsetLeft + target.offsetWidth / 2 - stageGrid.clientWidth / 2;
-  stageGrid.scrollLeft = Math.max(0, Math.min(desired, stageGrid.scrollWidth - stageGrid.clientWidth));
-  updateCenteredStageCard();
-  if (shouldFocus) target.focus({ preventScroll: true });
-}
-
-function initStageRailPresentation() {
-  stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
-  stageGrid.addEventListener("wonder:stage-snap", scheduleCenteredStageCard);
-  stageGrid.addEventListener("dragstart", (event) => event.preventDefault());
+function renderStageCards(selected = selectedStageIndex) {
+  const config = {
+    gameId: "animal-quiz",
+    count: stages.length,
+    poster: "/assets/animal-quiz/cover-block-v1.png",
+    background: "/assets/lobby-block-atmosphere.svg",
+    stage: stageRecord,
+  };
+  selectedStageIndex = boundedInteger(selected, 0, stages.length - 1);
+  if (!stageController) {
+    stageController = window.WeightPlayPlayUI.mountStage({
+      page: sharedFrame.stageWorkspace,
+      rail: sharedFrame.stageRail,
+      config,
+      selected: selectedStageIndex,
+      isActive: () => sharedFrame.frame.active === "stage",
+      onSelect(index) {
+        selectedStageIndex = index;
+        updateStageStatus(index);
+      },
+      onStart(index) { startStage(index); },
+    });
+  } else {
+    stageController.setConfig(config, selectedStageIndex);
+  }
+  updateStageStatus(selectedStageIndex);
 }
 
 function startStage(stageIndex) {
   if (!state.ready || stageIndex > state.unlockedStage) return;
   invalidateQuizSession();
+  selectedStageIndex = stageIndex;
   state.stageIndex = stageIndex;
   state.questionIndex = 0;
   state.score = 0;
   state.completed = false;
+  state.currentChoices = [];
+  state.lastChoiceId = "";
+  state.feedbackKey = "";
+  state.feedbackAnimal = "";
+  state.feedbackClue = "";
   (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
   (__wpNotifyMeasurement(), leaveOpen = false);
   (__wpNotifyMeasurement(), leavePanel.classList.add("hidden"));
@@ -1137,10 +1047,8 @@ function startStage(stageIndex) {
   setQuizVisible(true);
   document.body.classList.remove("quiz-main", "quiz-stage-select");
   document.body.classList.add("quiz-playing");
-  updateQuizFrame();
+  activateScene("battle");
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  window.WeightPlayGame?.exitMobileGameMode?.();
-  quizStage.classList.remove("weightplay-active-viewport");
   window.WonderAnalytics?.track("game_start", {
     game_id: GAME_ID,
     stage: stageIndex + 1,
@@ -1185,6 +1093,11 @@ function renderQuestion(options = {}) {
   const animal = currentAnimal();
   const total = stage.questions.length;
   state.answered = false;
+  state.currentChoices = buildChoices(animal, stage.choiceCount);
+  state.lastChoiceId = "";
+  state.feedbackKey = "";
+  state.feedbackAnimal = "";
+  state.feedbackClue = "";
   levelText.textContent = t("battleQuestion", {
     n: state.stageIndex + 1,
     current: state.questionIndex + 1,
@@ -1199,11 +1112,15 @@ function renderQuestion(options = {}) {
   clueText.textContent = currentClueText(animal);
   feedbackText.textContent = t("choose");
   choiceGrid.setAttribute("aria-busy", "false");
+  quizStage.classList.remove("question-entering");
+  void quizStage.offsetWidth;
+  quizStage.classList.add("question-entering");
 
   choiceGrid.replaceChildren(
-    ...buildChoices(animal, stage.choiceCount).map((choice) => {
+    ...state.currentChoices.map((choice) => {
       const button = document.createElement("button");
       button.type = "button";
+      button.dataset.choiceId = choice.id;
       button.textContent = t(choice.id);
       button.addEventListener("click", () => chooseAnswer(choice.id, animal.id, button));
       return button;
@@ -1228,6 +1145,10 @@ function chooseAnswer(choiceId, answerId, button) {
 
   if (choiceId !== answerId) {
     window.WeightPlayAudio?.play("feedback.error");
+    state.lastChoiceId = choiceId;
+    state.feedbackKey = "wrong";
+    state.feedbackAnimal = "";
+    state.feedbackClue = "";
     feedbackText.textContent = t("wrong");
     button.classList.add("wrong");
     button.setAttribute("aria-invalid", "true");
@@ -1248,6 +1169,10 @@ function chooseAnswer(choiceId, answerId, button) {
   }
 
   state.answered = true;
+  state.lastChoiceId = choiceId;
+  state.feedbackKey = "animalNote";
+  state.feedbackAnimal = answerId;
+  state.feedbackClue = currentClueText(animalMap.get(answerId));
   choiceGrid.setAttribute("aria-busy", "true");
   choiceGrid.querySelectorAll("button").forEach((choice) => { choice.disabled = true; });
   state.score += 1;
@@ -1256,7 +1181,7 @@ function chooseAnswer(choiceId, answerId, button) {
   feedbackText.textContent = answeredAnimal
     ? t("animalNote", {
         animal: t(answeredAnimal.id),
-        clue: currentClueText(answeredAnimal),
+        clue: state.feedbackClue,
       })
     : t("correct");
   button.classList.add("correct");
@@ -1295,6 +1220,7 @@ function finishStage() {
   });
   (__wpNotifyMeasurement(), resultPanel.classList.remove("hidden"));
   setBattleCovered(true);
+  activateScene("battle", { covered: true });
   requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
   window.WeightPlayAudio?.play("result.win");
   window.WonderAnalytics?.track("game_complete", {
@@ -1365,15 +1291,35 @@ function applyLocaleChange() {
     renderResultText();
     return;
   }
-  if (document.body.classList.contains("quiz-main")) {
-    showMain();
-    return;
-  }
-  if (stageSelectPanel.classList.contains("hidden")) {
-    renderQuestion({ track: false, focusChoices: choiceGrid.contains(document.activeElement) });
-  } else {
-    showStageSelect();
-  }
+  renderStaticText();
+  if (sharedFrame.frame.active === "stage") renderStageCards(selectedStageIndex);
+  else if (sharedFrame.frame.active === "battle") refreshBattleText();
+}
+
+function refreshBattleText() {
+  const stage = currentStage();
+  const animal = currentAnimal();
+  const total = stage.questions.length;
+  levelText.textContent = t("battleQuestion", {
+    n: state.stageIndex + 1,
+    current: state.questionIndex + 1,
+    total,
+  });
+  animalImage.alt = t(animal.id);
+  promptText.textContent = t("prompt");
+  clueText.textContent = currentClueText(animal);
+  quizStage.dataset.rule = t(stage.rule);
+  choiceGrid.setAttribute("aria-label", accessibleName("answerChoices"));
+  choiceGrid.querySelectorAll("button[data-choice-id]").forEach((button) => {
+    button.textContent = t(button.dataset.choiceId);
+  });
+  if (state.feedbackKey === "wrong") feedbackText.textContent = t("wrong");
+  else if (state.feedbackKey === "animalNote") {
+    feedbackText.textContent = t("animalNote", {
+      animal: t(state.feedbackAnimal),
+      clue: state.feedbackClue,
+    });
+  } else feedbackText.textContent = t("choose");
 }
 
 localeSelect.addEventListener("change", applyLocaleChange);
@@ -1402,6 +1348,7 @@ function openLeaveDecision() {
   (__wpNotifyMeasurement(), leaveOpen = true);
   suspendQuizTasks();
   setBattleCovered(true);
+  activateScene("battle", { covered: true });
   (__wpNotifyMeasurement(), leavePanel.classList.remove("hidden"));
   keepPlayingBtn.focus({ preventScroll: true });
 }
@@ -1411,6 +1358,7 @@ function closeLeaveDecision() {
   (__wpNotifyMeasurement(), leavePanel.classList.add("hidden"));
   setBattleCovered(false);
   resumeQuizTasks();
+  activateScene("battle");
   requestAnimationFrame(() => backToStagesBtn.focus({ preventScroll: true }));
 }
 const rejectRepeatedScreenActivation = (event) => {
@@ -1418,9 +1366,6 @@ const rejectRepeatedScreenActivation = (event) => {
   event.preventDefault();
 };
 startGameBtn.addEventListener("keydown", rejectRepeatedScreenActivation);
-stageGrid.addEventListener("keydown", (event) => {
-  if (event.target.closest("button")) rejectRepeatedScreenActivation(event);
-});
 startGameBtn.addEventListener("click", showStageSelect);
 stageBackBtn.addEventListener("click", showMain);
 backToStagesBtn.addEventListener("click", openLeaveDecision);
@@ -1466,15 +1411,9 @@ window.addEventListener("wonder:locale-change", () => {
     renderResultText();
     return;
   }
-  if (document.body.classList.contains("quiz-main")) {
-    showMain();
-    return;
-  }
-  if (stageSelectPanel.classList.contains("hidden")) {
-    renderQuestion({ track: false, focusChoices: choiceGrid.contains(document.activeElement) });
-  } else {
-    showStageSelect();
-  }
+  renderStaticText();
+  if (sharedFrame.frame.active === "stage") renderStageCards(selectedStageIndex);
+  else if (sharedFrame.frame.active === "battle") refreshBattleText();
 });
 
 againBtn.addEventListener("click", () => {
@@ -1497,35 +1436,8 @@ stageSelectBtn.addEventListener("click", () => {
   showStageSelect();
 });
 
-if (new URLSearchParams(window.location.search).get("smoke") === "1") {
-  window.__animalQuizSmoke = {
-    stages: stages.map((stage, index) => ({
-      id: index + 1,
-      chapter: stage.chapter,
-      rule: stage.rule,
-      clueKinds: [...stage.clueKinds],
-      choiceCount: stage.choiceCount,
-      mode: stage.mode,
-      checkpoint: stage.checkpoint,
-      questions: [...stage.questions],
-    })),
-    unlockAll: () => {
-      state.unlockedStage = stages.length - 1;
-      safeProfileWrite(UNLOCK_KEY, String(state.unlockedStage));
-      showStageSelect(state.unlockedStage);
-    },
-    startStage: (stageNo) => startStage(Math.max(0, Math.min(stages.length - 1, Number(stageNo) - 1))),
-    state: () => ({ ...state, stage: state.stageIndex + 1, clues: currentClueKeys().map((key) => t(key)) }),
-  };
-}
-
 renderStaticText();
-initStageRailPresentation();
-scheduleReadinessFallback();
 preloadGame().catch((error) => {
   console.error(error);
-  state.ready = true;
-  loadUnlockedStage();
-  loadingPanel.classList.add("hidden");
-  showMain();
+  window.WeightPlayGameEntryLoader?.fail?.(t("loadingFailed"), () => window.location.reload());
 });

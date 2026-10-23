@@ -55,13 +55,15 @@
   }
   function stageRecord(index) {
     const r=M.rounds[index], mastery=state.progress.mastery[r.id]||0;
+    let rewardState='unknown';
+    try{if(window.WeightPlayCastle?.read().completions?.[`animal-silhouette-scout:stage-${r.id}`])rewardState='collected';}catch{}
     return {id:r.id,kicker:t('round',{n:r.id,total:30}),title:t(`mode_${r.mode}`),subtitle:`${r.arc} / 6`,
       status:index>=state.progress.unlocked?t('locked'):mastery?`${t('complete')} · ${'★'.repeat(mastery)}`:t('open'),
-      summary:t(`rule_${r.mode}`),details:[t('masteryHelp'),t('lookCloser')],locked:index>=state.progress.unlocked,cleared:state.progress.cleared.includes(r.id),poster};
+      summary:t(`rule_${r.mode}`),details:[t('masteryHelp'),t('lookCloser')],locked:index>=state.progress.unlocked,cleared:state.progress.cleared.includes(r.id),poster,rewardState};
   }
   function renderStages() {
     if(!selector) selector=window.WeightPlayPlayUI.mountStage({page:$('stageWorkspace'),rail:$('stageList'),selected:browse,
-      config:{count:30,poster,background:'/assets/lobby-block-atmosphere.svg',stage:stageRecord},
+      config:{gameId:'animal-silhouette-scout',count:30,poster,background:'/assets/lobby-block-atmosphere.svg',stage:stageRecord},
       isActive:()=>state.screen==='stage'&&!document.querySelector('dialog[open]'),onSelect(index){browse=index;},onStart:startRound});
     else selector.refresh(browse);
   }
@@ -106,6 +108,7 @@
     state.index=index;browse=index;state.selected=[];state.checks=0;state.assisted=false;state.settled=false;state.lensUsed=false;
     state.result=null;state.options=M.shuffle(round().options);$('clue').hidden=true;$('hintBtn').setAttribute('aria-expanded','false');
     show('battle');renderBattle();$('battleStatus').textContent=t('selectionCount',{n:0,total:round().targets.length});
+    window.WonderAnalytics?.track('stage_start',{game_id:'animal-silhouette-scout',stage_id:round().id});
     sound('game.start');animate($('silhouette'),[{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}]);
     $('choiceGrid').querySelector('button')?.focus({preventScroll:true});
   }
@@ -119,12 +122,13 @@
     if(state.screen!=='battle'||state.settled||state.selected.length!==round().targets.length)return;
     state.checks++;
     if(!M.matches(round(),state.selected)){
-      const selected=[...$('choiceGrid').querySelectorAll('[aria-pressed="true"]')];state.selected=[];updateSelection();sound('feedback.error');$('battleStatus').textContent=t('tryAgain');
+      const selected=[...$('choiceGrid').querySelectorAll('[aria-pressed="true"]')], wrongOrder=round().mode==='sequence'&&round().targets.every(id=>state.selected.includes(id));
+      state.selected=[];updateSelection();sound('feedback.error');$('battleStatus').textContent=t(wrongOrder?'rule_sequence':'tryAgain');
       selected.forEach(node=>animate(node,[{transform:'translateX(0)'},{transform:'translateX(-4px)'},{transform:'translateX(4px)'},{transform:'translateX(0)'}],220));return;
     }
     state.settled=true;state.result=M.complete(state.progress,round(),state.checks,state.assisted);state.progress=state.result.progress;state.saved=true;
     try{persist(state.progress);}catch{state.saved=false;}
-    if(state.saved)window.WonderAnalytics?.completeStage(round().id);
+    if(state.saved)state.result.platformReward=window.WonderAnalytics?.completeStage(round().id);
     updateSelection();progressUI();$('battleStatus').textContent=t('correct');$('silhouette').classList.add('is-revealed');sound('puzzle.match');flyDiscovery();
     const ownGeneration=generation;resultTimer=setTimeout(()=>{if(generation===ownGeneration&&state.screen==='battle')showResult();},reduced.matches?120:600);
   }
@@ -134,6 +138,7 @@
     $('resultStars').textContent='★'.repeat(state.result.rating)+'☆'.repeat(3-state.result.rating);$('resultStars').setAttribute('aria-label',t('masteryCount',{n:state.result.rating}));
     $('resultDiscovery').textContent=state.result.newlyDiscovered.length?`${t('newDiscovery')}: ${state.result.newlyDiscovered.map(id=>t(id)).join(' · ')}`:t('masteryHelp');
     $('saveNotice').hidden=state.saved;$('resultPrimaryBtn').disabled=state.index===29;$('resultPrimaryBtn').textContent=t('next');
+    window.WeightPlayScreenFrame?.showResultGet('animal-silhouette-scout',state.result.platformReward?.credited===true);
   }
   function showResult() {
     show('result');renderResult();sound(round().checkpoint?'game.checkpoint':'result.win');
@@ -151,7 +156,7 @@
   function collectionSlot(item,id,collected) {
     const status=document.createElement('span');status.dataset.wpItemCollectionStatus='';
     const icon=document.createElement('span');icon.dataset.wpItemCollectionIcon='';const label=document.createElement('span');label.dataset.wpItemCollectionLabel='';status.append(icon,label);item.append(status);
-    window.WeightPlayScreenFrame.setItemCollectionStatus(item,{itemId:id,state:collected?'collected':'not-collected',labels:{collected:t('discovered'),'not-collected':t('undiscovered')}});
+    window.WeightPlayScreenFrame.setItemCollectionStatus(item,{itemId:id,state:collected?'collected':state.progress.discoveryHistoryKnown?'not-collected':'unknown',labels:{collected:t('discovered'),'not-collected':t('undiscovered'),unknown:t('historyUnknown')}});
   }
   function renderJournal() {
     $('journalSummary').textContent=`${state.progress.discovered.length} / 12 · ${Object.values(state.progress.mastery).reduce((sum,n)=>sum+n,0)} / 90 ★`;
@@ -178,7 +183,7 @@
     $('stageList').setAttribute('aria-label',t('stageSelector'));$('gameGuide').setAttribute('aria-label',t('gameInfo'));progressUI();
     if(state.screen==='stage')renderStages();if(state.screen==='battle'||state.screen==='result')renderBattle();if(state.screen==='result')renderResult();renderGear();if($('journalDialog').open)renderJournal();
   }
-  $('startBtn').onclick=()=>{state.progress=loadProgress();browse=Math.min(29,state.progress.unlocked-1);openStages();};
+  $('startBtn').onclick=()=>{if(state.saved)state.progress=loadProgress();browse=Math.min(29,state.progress.unlocked-1);openStages();};
   $('stageBackBtn').onclick=()=>show('main');$('battleBackBtn').onclick=()=>state.settled?openStages():showDialog('pauseDialog');
   $('resumeBtn').onclick=()=>$('pauseDialog').close();$('leaveBtn').onclick=()=>{$('pauseDialog').close();openStages();};
   $('resultMapBtn').onclick=openStages;$('resultPrimaryBtn').onclick=()=>{if(state.screen==='result'&&state.index<29)startRound(state.index+1);};
@@ -195,7 +200,7 @@
   });
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)return;cancelEffects();if(state.settled&&state.screen==='battle'){show('result');renderResult();}});
   reduced.addEventListener('change',()=>{cancelEffects();if(state.settled&&state.screen==='battle')showResult();});
-  window.addEventListener('pagehide',()=>{cancelEffects();selector?.destroy();},{once:true});
+  window.addEventListener('pagehide',event=>{cancelEffects();if(!event.persisted)selector?.destroy();});
   window.addEventListener('storage',event=>{if(event.key===M.saveKey&&state.screen!=='battle'){state.progress=loadProgress();progressUI();if(state.screen==='stage')renderStages();}if(event.key===window.WeightPlayWallet?.key)renderGear();});
   applyLocale();frame=window.mountAnimalSilhouetteScoutFrame();show('main');
   Promise.all([poster,atlas,forest,'/assets/weightplay-character-moon-cap-owl-block-v1.webp'].map(src=>{const image=new Image();image.src=src;return image.decode();}))
