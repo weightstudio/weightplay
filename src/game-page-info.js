@@ -10905,16 +10905,19 @@
   const crystalCombatGuides = {
   "en": {
     "intro": "Survive, clear waves or defeat the boss. Collect XP crystals; magic fires automatically.",
-    "metaDescription": "30-stage action survival: survive the timer, clear waves or defeat stage bosses. Collect XP crystals, choose spells and build lasting talents.",
+    "metaDescription": "Action survival: dodge hazards while magic attacks automatically. Collect XP crystals, choose spells and develop permanent talents.",
     "time": "45–180 s",
     "story": [],
     "systems": [
-      "30 stages: the first survival lasts 45 seconds; all stages cap at 3 minutes. Survive the timer, clear 3/5 waves, or defeat the boss before the deadline.",
-      "Drag the virtual joystick to move; release to stop. WASD / arrow keys also work. One point per adventure level. Max each parent to continue. New element paths open at levels 11 and 21. Equip one pet. Adventure XP is awarded after battle; this level persists between runs. Free reset returns all talent points."
+      "The displayed objective determines how a run ends: survive the countdown, clear the required waves, or defeat the boss before time runs out.",
+      "XP crystals fill the battle experience bar. Leveling up pauses the action so you can choose a spell upgrade for that run.",
+      "Battle rewards also raise your permanent adventure level and provide talent points. Fully upgrade a prerequisite to reach the next talent; adventure growth opens more element branches. You can equip one pet and reset spent talent points for free."
     ],
     "how": [
-      "30 stages: the first survival lasts 45 seconds; all stages cap at 3 minutes. Survive the timer, clear 3/5 waves, or defeat the boss before the deadline.",
-      "Drag the virtual joystick to move; release to stop. WASD / arrow keys also work. One point per adventure level. Max each parent to continue. New element paths open at levels 11 and 21. Equip one pet. Adventure XP is awarded after battle; this level persists between runs. Free reset returns all talent points."
+      "Select an unlocked stage and read its objective.",
+      "Drag the virtual joystick to move and release to stop, or use WASD / arrow keys. Attacks fire automatically.",
+      "Move out of attack warnings, collect XP crystals, and choose an upgrade when the selection appears.",
+      "After the result, return to the Rune workshop to spend permanent talent points or change your equipped pet before the next run."
     ],
     "tips": [
       "Root prison: leave the three green circles.",
@@ -10930,16 +10933,19 @@
   },
   "zh-Hant": {
     "intro": "挑戰生存、波次或首領。收集經驗水晶升級，魔法自動施放。",
-    "metaDescription": "30 關動作生存戰役：撐過倒數、清除波次或擊敗首領。收集經驗水晶選擇法術，培養可重置的天賦路線。",
+    "metaDescription": "移動閃避危險，讓魔法自動攻擊。收集經驗水晶選擇法術，並培養永久天賦。",
     "time": "45–180 s",
     "story": [],
     "systems": [
-      "共 30 關，第一關生存 45 秒，每關最長 3 分鐘。依關卡模式撐到倒數結束、清除 3／5 波，或在時限前擊敗首領。",
-      "拖曳虛擬搖桿移動，放手停止；也可使用 WASD／方向鍵。 冒險每升一級獲得 1 點；前置升滿才能繼續。11、21 級開放更多元素路線，可混搭能力。最多攜帶一隻寵物。 冒險經驗於戰鬥結算時取得；冒險等級會永久保留，與局內升級分開。 免費重置，全額退還天賦點。"
+      "依畫面顯示的目標完成挑戰：撐到倒數結束、清除指定波次，或在時限內擊敗首領。",
+      "經驗水晶會填滿本局經驗條。局內升級時戰鬥會暫停，讓你選擇這一局的法術強化。",
+      "戰鬥結算也會累積永久冒險經驗並提供天賦點。前置天賦升滿後才能繼續點下一項；冒險成長會開放更多元素路線。最多裝備一隻寵物，重置天賦可免費退回已分配點數。"
     ],
     "how": [
-      "共 30 關，第一關生存 45 秒，每關最長 3 分鐘。依關卡模式撐到倒數結束、清除 3／5 波，或在時限前擊敗首領。",
-      "拖曳虛擬搖桿移動，放手停止；也可使用 WASD／方向鍵。 冒險每升一級獲得 1 點；前置升滿才能繼續。11、21 級開放更多元素路線，可混搭能力。最多攜帶一隻寵物。 冒險經驗於戰鬥結算時取得；冒險等級會永久保留，與局內升級分開。 免費重置，全額退還天賦點。"
+      "選擇已解鎖的關卡，先看清楚本次目標。",
+      "拖曳虛擬搖桿移動，放手停止；也可使用 WASD／方向鍵。攻擊會自動施放。",
+      "離開攻擊預警範圍，沿路收集經驗水晶，出現升級選項時選擇強化。",
+      "結算後可回符文工坊分配永久天賦點，或更換裝備的寵物，再開始下一局。"
     ],
     "tips": [
       "根牢：離開三個綠色根圈。",
@@ -10955,16 +10961,19 @@
   },
   "zh-Hans": {
     "intro": "挑战生存、波次或首领。收集经验水晶升级，魔法自动施放。",
-    "metaDescription": "30 关动作生存战役：撑过倒计时、清除波次或击败首领。收集经验水晶选择法术，培养可重置的天赋路线。",
+    "metaDescription": "移动躲避危险，让魔法自动攻击。收集经验水晶选择法术，并培养永久天赋。",
     "time": "45–180 s",
     "story": [],
     "systems": [
-      "共 30 关，第一关生存 45 秒，每关最长 3 分钟。按模式撑到倒数结束、清除 3／5 波，或在时限前击败首领。",
-      "拖动虚拟摇杆移动，松手停止；也可使用 WASD／方向键。 冒险每升一级获得 1 点；前置升满才能继续。11、21 级开放更多元素路线，可混搭能力。最多携带一只宠物。 冒险经验在战斗结算时获得；冒险等级永久保留，与局内升级分开。 免费重置，全额退还天赋点。"
+      "按画面显示的目标完成挑战：撑到倒计时结束、清除指定波次，或在时限内击败首领。",
+      "经验水晶会填满本局经验条。局内升级时战斗会暂停，让你选择这一局的法术强化。",
+      "战斗结算也会积累永久冒险经验并提供天赋点。前置天赋升满后才能继续点下一项；冒险成长会开放更多元素路线。最多装备一只宠物，重置天赋可免费退回已分配点数。"
     ],
     "how": [
-      "共 30 关，第一关生存 45 秒，每关最长 3 分钟。按模式撑到倒数结束、清除 3／5 波，或在时限前击败首领。",
-      "拖动虚拟摇杆移动，松手停止；也可使用 WASD／方向键。 冒险每升一级获得 1 点；前置升满才能继续。11、21 级开放更多元素路线，可混搭能力。最多携带一只宠物。 冒险经验在战斗结算时获得；冒险等级永久保留，与局内升级分开。 免费重置，全额退还天赋点。"
+      "选择已解锁的关卡，先看清楚本次目标。",
+      "拖动虚拟摇杆移动，松手停止；也可使用 WASD／方向键。攻击会自动施放。",
+      "离开攻击预警范围，沿路收集经验水晶，出现升级选项时选择强化。",
+      "结算后可回符文工坊分配永久天赋点，或更换装备的宠物，再开始下一局。"
     ],
     "tips": [
       "根牢：离开三个绿色根圈。",
@@ -10980,16 +10989,19 @@
   },
   "ja": {
     "intro": "生存、ウェーブ、ボスに挑戦。経験結晶で強化し、魔法は自動発射。",
-    "metaDescription": "全30ステージのアクションサバイバル。時間まで生存、ウェーブ突破、ボス撃破に挑戦。経験値クリスタルで魔法を選び、才能を育てよう。",
+    "metaDescription": "自動で放つ魔法を使いながら危険を回避。経験結晶で魔法を選び、永続の才能を育てるアクションサバイバル。",
     "time": "45–180 s",
     "story": [],
     "systems": [
-      "全30ステージ。最初は45秒生存、上限は各3分。時間まで生存、3／5ウェーブ撃破、または制限時間内にボスを撃破。",
-      "仮想スティックをドラッグして移動し、離すと停止します。WASD／矢印キーも使えます。 冒険レベルごとに1ポイント。前提を最大にして進みます。レベル11と21で別の属性を解放。ペットは1体。 冒険経験値は戦闘終了時に獲得し、レベルは次の戦闘にも引き継ぎます。 無料リセットで全ポイント返還。"
+      "表示された目標を達成しましょう。制限時間まで生き残る、指定のウェーブを突破する、または時間内にボスを倒します。",
+      "経験結晶を集めると今回の経験値ゲージがたまります。レベルアップ時は戦闘が止まり、そのプレイで使う魔法強化を選べます。",
+      "戦闘報酬は永続する冒険経験値にもなり、才能ポイントを獲得できます。前提の才能を最大まで育てると次へ進め、冒険の成長で別の属性ルートも開きます。ペットは1体まで装備でき、リセットで使用済みポイントが無料で戻ります。"
     ],
     "how": [
-      "全30ステージ。最初は45秒生存、上限は各3分。時間まで生存、3／5ウェーブ撃破、または制限時間内にボスを撃破。",
-      "仮想スティックをドラッグして移動し、離すと停止します。WASD／矢印キーも使えます。 冒険レベルごとに1ポイント。前提を最大にして進みます。レベル11と21で別の属性を解放。ペットは1体。 冒険経験値は戦闘終了時に獲得し、レベルは次の戦闘にも引き継ぎます。 無料リセットで全ポイント返還。"
+      "解放済みのステージを選び、今回の目標を確認します。",
+      "仮想スティックをドラッグして移動し、離すと停止します。WASD・矢印キーも使え、攻撃は自動です。",
+      "攻撃予告の範囲を避けながら経験結晶を集め、選択画面が出たら強化を選びます。",
+      "結果画面の後はルーン工房で永続の才能ポイントを振り分けたり、装備するペットを替えたりして次のプレイに備えます。"
     ],
     "tips": [
       "根の牢：3つの緑の円から離れる。",
@@ -11005,16 +11017,19 @@
   },
   "ko": {
     "intro": "생존, 웨이브, 보스에 도전하세요. 경험 수정으로 강화하며 마법은 자동 발사됩니다.",
-    "metaDescription": "30단계 액션 생존 캠페인: 시간 생존, 웨이브 돌파, 보스 처치에 도전하세요. XP 크리스털을 모아 마법을 선택하고 특성을 키워 보세요.",
+    "metaDescription": "자동 마법 공격과 함께 위험을 피하세요. 경험 수정으로 마법을 고르고 영구 특성을 키우는 액션 생존 게임입니다.",
     "time": "45–180 s",
     "story": [],
     "systems": [
-      "총 30단계. 첫 생존은 45초, 각 단계 최대 3분입니다. 제한 시간 생존, 3/5웨이브 격파 또는 시간 내 보스 처치가 목표입니다.",
-      "가상 조이스틱을 드래그해 이동하고 놓으면 멈춥니다. WASD / 방향키도 사용할 수 있습니다. 모험 레벨마다 1포인트. 이전 능력을 최대로 올려 진행하세요. 11, 21레벨에 새 원소 경로가 열립니다. 펫은 1마리. 모험 경험치는 전투 정산 때 받으며 모험 레벨은 다음 전투에도 유지됩니다. 무료 초기화로 모든 포인트 반환."
+      "표시된 목표에 따라 제한 시간까지 생존하거나, 지정된 웨이브를 정리하거나, 시간 안에 보스를 처치하세요.",
+      "경험 수정을 모으면 이번 전투의 경험치가 쌓입니다. 레벨이 오르면 전투가 멈추고 해당 플레이에 적용할 마법 강화를 고를 수 있습니다.",
+      "전투 보상은 영구 모험 경험치와 특성 포인트로도 이어집니다. 선행 특성을 최대로 올려 다음 특성을 열고, 모험 성장으로 다른 원소 계열도 해금하세요. 펫은 하나만 장착할 수 있으며 무료 초기화로 투자한 특성 포인트를 돌려받습니다."
     ],
     "how": [
-      "총 30단계. 첫 생존은 45초, 각 단계 최대 3분입니다. 제한 시간 생존, 3/5웨이브 격파 또는 시간 내 보스 처치가 목표입니다.",
-      "가상 조이스틱을 드래그해 이동하고 놓으면 멈춥니다. WASD / 방향키도 사용할 수 있습니다. 모험 레벨마다 1포인트. 이전 능력을 최대로 올려 진행하세요. 11, 21레벨에 새 원소 경로가 열립니다. 펫은 1마리. 모험 경험치는 전투 정산 때 받으며 모험 레벨은 다음 전투에도 유지됩니다. 무료 초기화로 모든 포인트 반환."
+      "해금된 스테이지를 선택하고 이번 목표를 확인하세요.",
+      "가상 조이스틱을 드래그해 이동하고 놓으면 멈춥니다. WASD / 방향키도 지원하며 공격은 자동입니다.",
+      "공격 경고 범위를 벗어나며 경험 수정을 모으고, 강화 선택 화면이 뜨면 하나를 고르세요.",
+      "결과 화면 다음에는 룬 공방에서 영구 특성 포인트를 투자하거나 장착한 펫을 바꾸고 다음 플레이를 준비하세요."
     ],
     "tips": [
       "뿌리 감옥: 초록 원 세 개에서 벗어나세요.",
@@ -11030,16 +11045,19 @@
   },
   "es": {
     "intro": "Sobrevive, supera oleadas o vence al jefe. Recoge cristales de XP; la magia es automática.",
-    "metaDescription": "Campaña de acción y supervivencia de 30 niveles: resiste, supera oleadas o derrota al jefe. Recoge cristales de XP, elige hechizos y mejora talentos.",
+    "metaDescription": "Esquiva peligros mientras la magia ataca sola. Recoge cristales de XP, elige hechizos y desarrolla talentos permanentes.",
     "time": "45–180 s",
     "story": [],
     "systems": [
-      "30 etapas: la primera dura 45 segundos y el máximo es 3 minutos. Sobrevive al reloj, supera 3/5 oleadas o derrota al jefe antes del límite.",
-      "Arrastra el joystick virtual para moverte; suelta para parar. También puedes usar WASD o las flechas. Un punto por nivel de aventura. Completa cada requisito. Nuevas rutas elementales en los niveles 11 y 21. Una mascota equipada. La experiencia de aventura se obtiene al terminar y su nivel se conserva entre partidas. Reinicio gratis: se devuelven todos los puntos."
+      "El objetivo mostrado determina cómo completar la partida: resistir hasta que termine el tiempo, superar las oleadas indicadas o derrotar al jefe antes del límite.",
+      "Los cristales de XP llenan la barra de experiencia de la partida. Al subir de nivel, la acción se pausa para que elijas una mejora de magia para ese intento.",
+      "Las recompensas también aumentan el nivel de aventura permanente y conceden puntos de talento. Completa un talento previo para avanzar; el progreso abre más ramas elementales. Puedes equipar una mascota y recuperar gratis los puntos invertidos al reiniciar los talentos."
     ],
     "how": [
-      "30 etapas: la primera dura 45 segundos y el máximo es 3 minutos. Sobrevive al reloj, supera 3/5 oleadas o derrota al jefe antes del límite.",
-      "Arrastra el joystick virtual para moverte; suelta para parar. También puedes usar WASD o las flechas. Un punto por nivel de aventura. Completa cada requisito. Nuevas rutas elementales en los niveles 11 y 21. Una mascota equipada. La experiencia de aventura se obtiene al terminar y su nivel se conserva entre partidas. Reinicio gratis: se devuelven todos los puntos."
+      "Elige un nivel desbloqueado y lee su objetivo.",
+      "Arrastra el joystick virtual para moverte y suéltalo para parar, o usa WASD / las flechas. Los ataques son automáticos.",
+      "Sal de las zonas de aviso, recoge cristales de XP y elige una mejora cuando aparezca la selección.",
+      "Después del resultado, vuelve al Taller de runas para gastar puntos permanentes o cambiar de mascota antes del siguiente intento."
     ],
     "tips": [
       "Prisión de raíces: sal de los tres círculos verdes.",
@@ -11055,16 +11073,19 @@
   },
   "pt-BR": {
     "intro": "Sobreviva, vença ondas ou derrote o chefe. Colete cristais de XP; a magia é automática.",
-    "metaDescription": "Ação e sobrevivência em 30 fases: sobreviva ao tempo, vença ondas ou derrote o chefe. Colete cristais de XP, escolha magias e evolua talentos.",
+    "metaDescription": "Desvie dos perigos enquanto a magia ataca automaticamente. Colete cristais de XP, escolha magias e desenvolva talentos permanentes.",
     "time": "45–180 s",
     "story": [],
     "systems": [
-      "30 fases: a primeira dura 45 segundos, com limite de 3 minutos por fase. Sobreviva, vença 3/5 ondas ou derrote o chefe antes do prazo.",
-      "Arraste o joystick virtual para mover; solte para parar. Também pode usar WASD ou as setas. Um ponto por nível de aventura. Maximize os requisitos. Novas rotas nos níveis 11 e 21. Equipe um pet. A experiência de aventura é recebida ao concluir a batalha e seu nível persiste entre partidas. Redefinição grátis devolve todos os pontos."
+      "O objetivo exibido define como concluir a partida: sobreviver até o fim do tempo, eliminar as ondas indicadas ou derrotar o chefe antes do limite.",
+      "Cristais de XP enchem a barra de experiência da partida. Ao subir de nível, a ação pausa para você escolher uma melhoria de magia para aquela tentativa.",
+      "As recompensas também aumentam o nível de aventura permanente e concedem pontos de talento. Complete o talento anterior para avançar; o progresso abre outros ramos elementais. Você pode equipar um mascote e recuperar gratuitamente os pontos gastos ao redefinir os talentos."
     ],
     "how": [
-      "30 fases: a primeira dura 45 segundos, com limite de 3 minutos por fase. Sobreviva, vença 3/5 ondas ou derrote o chefe antes do prazo.",
-      "Arraste o joystick virtual para mover; solte para parar. Também pode usar WASD ou as setas. Um ponto por nível de aventura. Maximize os requisitos. Novas rotas nos níveis 11 e 21. Equipe um pet. A experiência de aventura é recebida ao concluir a batalha e seu nível persiste entre partidas. Redefinição grátis devolve todos os pontos."
+      "Escolha uma fase liberada e leia o objetivo.",
+      "Arraste o joystick virtual para se mover e solte para parar, ou use WASD / as setas. Os ataques são automáticos.",
+      "Saia das áreas de aviso, colete cristais de XP e escolha uma melhoria quando as opções aparecerem.",
+      "Após o resultado, volte à Oficina de runas para gastar pontos permanentes ou trocar o mascote antes da próxima tentativa."
     ],
     "tips": [
       "Prisão de raízes: saia dos três círculos verdes.",
@@ -11080,16 +11101,19 @@
   },
   "fr": {
     "intro": "Survivez, terminez les vagues ou battez le boss. Ramassez les cristaux XP ; la magie est automatique.",
-    "metaDescription": "Action-survie en 30 niveaux : survivez, terminez les vagues ou battez les boss. Récoltez des cristaux d’XP, choisissez des sorts et développez vos talents.",
+    "metaDescription": "Évitez les dangers pendant que la magie attaque automatiquement. Ramassez des cristaux d’XP, choisissez vos sorts et développez des talents permanents.",
     "time": "45–180 s",
     "story": [],
     "systems": [
-      "30 niveaux : 45 secondes au premier, 3 minutes maximum chacun. Survivez au chrono, terminez 3/5 vagues ou battez le boss avant la limite.",
-      "Déplacez le joystick virtuel pour avancer ; relâchez pour arrêter. WASD ou les flèches fonctionnent aussi. Un point par niveau d’aventure. Maximisez les prérequis. Nouvelles voies aux niveaux 11 et 21. Un seul compagnon équipé. L’expérience d’aventure est gagnée en fin de combat ; ce niveau persiste entre les parties. La réinitialisation gratuite rend tous les points."
+      "L’objectif affiché indique comment terminer la partie : survivre jusqu’à la fin du compte à rebours, éliminer les vagues demandées ou vaincre le boss avant la limite.",
+      "Les cristaux d’XP remplissent la jauge d’expérience de la partie. Un gain de niveau met le combat en pause pour vous laisser choisir une amélioration de magie pour cette tentative.",
+      "Les récompenses augmentent aussi le niveau d’aventure permanent et donnent des points de talent. Améliorez entièrement le talent précédent pour avancer ; votre progression ouvre d’autres branches élémentaires. Vous pouvez équiper un familier et récupérer gratuitement les points dépensés en réinitialisant les talents."
     ],
     "how": [
-      "30 niveaux : 45 secondes au premier, 3 minutes maximum chacun. Survivez au chrono, terminez 3/5 vagues ou battez le boss avant la limite.",
-      "Déplacez le joystick virtuel pour avancer ; relâchez pour arrêter. WASD ou les flèches fonctionnent aussi. Un point par niveau d’aventure. Maximisez les prérequis. Nouvelles voies aux niveaux 11 et 21. Un seul compagnon équipé. L’expérience d’aventure est gagnée en fin de combat ; ce niveau persiste entre les parties. La réinitialisation gratuite rend tous les points."
+      "Choisissez un niveau débloqué et lisez son objectif.",
+      "Glissez le joystick virtuel pour vous déplacer et relâchez pour vous arrêter, ou utilisez WASD / les flèches. Les attaques sont automatiques.",
+      "Quittez les zones d’avertissement, ramassez les cristaux d’XP et choisissez une amélioration lorsque les options apparaissent.",
+      "Après le résultat, retournez à l’Atelier des runes pour attribuer les points permanents ou changer de familier avant la prochaine tentative."
     ],
     "tips": [
       "Prison de racines : sortez des trois cercles verts.",
@@ -11105,16 +11129,19 @@
   },
   "de": {
     "intro": "Überlebe, schaffe Wellen oder besiege den Boss. Sammle EP-Kristalle; Magie feuert automatisch.",
-    "metaDescription": "Action-Survival mit 30 Stufen: Überlebe den Timer, schaffe Wellen oder besiege Bosse. Sammle EP-Kristalle, wähle Zauber und entwickle Talente.",
+    "metaDescription": "Weiche Gefahren aus, während Magie automatisch angreift. Sammle EP-Kristalle, wähle Zauber und entwickle dauerhafte Talente.",
     "time": "45–180 s",
     "story": [],
     "systems": [
-      "30 Stufen: zuerst 45 Sekunden, höchstens 3 Minuten pro Stufe. Überlebe, besiege 3/5 Wellen oder den Boss vor Ablauf der Zeit.",
-      "Ziehe den virtuellen Joystick zum Bewegen; lass los zum Anhalten. WASD oder Pfeiltasten funktionieren ebenfalls. Ein Punkt je Abenteuerstufe. Voraussetzungen maximieren. Neue Elementpfade auf Stufe 11 und 21. Ein Begleiter ausrüstbar. Abenteuer-EP gibt es am Kampfende. Diese Stufe bleibt zwischen Runden erhalten. Kostenloses Zurücksetzen erstattet alle Punkte."
+      "Das angezeigte Ziel bestimmt den Abschluss: Überlebe bis zum Ende des Countdowns, besiege die geforderten Wellen oder bezwinge den Boss vor Ablauf der Zeit.",
+      "EP-Kristalle füllen die Erfahrungsleiste des aktuellen Laufs. Beim Stufenaufstieg pausiert der Kampf, damit du eine Zauberverstärkung für diesen Lauf wählen kannst.",
+      "Kampfbelohnungen erhöhen auch die dauerhafte Abenteuerstufe und geben Talentpunkte. Verbessere ein erforderliches Vorgängertalent vollständig, um weiterzugehen; mit dem Fortschritt öffnen sich weitere Elementzweige. Du kannst ein Begleittier ausrüsten und beim kostenlosen Zurücksetzen alle verteilten Talentpunkte zurückerhalten."
     ],
     "how": [
-      "30 Stufen: zuerst 45 Sekunden, höchstens 3 Minuten pro Stufe. Überlebe, besiege 3/5 Wellen oder den Boss vor Ablauf der Zeit.",
-      "Ziehe den virtuellen Joystick zum Bewegen; lass los zum Anhalten. WASD oder Pfeiltasten funktionieren ebenfalls. Ein Punkt je Abenteuerstufe. Voraussetzungen maximieren. Neue Elementpfade auf Stufe 11 und 21. Ein Begleiter ausrüstbar. Abenteuer-EP gibt es am Kampfende. Diese Stufe bleibt zwischen Runden erhalten. Kostenloses Zurücksetzen erstattet alle Punkte."
+      "Wähle eine freigeschaltete Stufe und lies ihr Ziel.",
+      "Ziehe den virtuellen Joystick zum Bewegen und lasse zum Stoppen los, oder nutze WASD / die Pfeiltasten. Angriffe erfolgen automatisch.",
+      "Verlasse markierte Gefahrenbereiche, sammle EP-Kristalle und wähle eine Verstärkung, sobald die Auswahl erscheint.",
+      "Kehre nach dem Ergebnis zur Runenwerkstatt zurück, um dauerhafte Talentpunkte zu verteilen oder dein Begleittier für den nächsten Lauf zu wechseln."
     ],
     "tips": [
       "Wurzelgefängnis: Verlasse die drei grünen Kreise.",
@@ -11130,16 +11157,19 @@
   },
   "it": {
     "intro": "Sopravvivi, supera ondate o sconfiggi il boss. Raccogli cristalli XP; la magia è automatica.",
-    "metaDescription": "Campagna action-survival di 30 livelli: sopravvivi, supera le ondate o sconfiggi i boss. Raccogli cristalli XP, scegli magie e sviluppa talenti.",
+    "metaDescription": "Evita i pericoli mentre la magia attacca automaticamente. Raccogli cristalli XP, scegli incantesimi e sviluppa talenti permanenti.",
     "time": "45–180 s",
     "story": [],
     "systems": [
-      "30 livelli: il primo dura 45 secondi, massimo 3 minuti ciascuno. Sopravvivi, supera 3/5 ondate o batti il boss entro il limite.",
-      "Trascina il joystick virtuale per muoverti; rilascia per fermarti. Puoi usare anche WASD o le frecce. Un punto per livello avventura. Massimizza i requisiti. Nuovi percorsi ai livelli 11 e 21. Un solo compagno equipaggiato. L’esperienza avventura si ottiene a fine battaglia; questo livello resta tra le partite. Il ripristino gratuito restituisce tutti i punti."
+      "L’obiettivo mostrato indica come completare la partita: sopravvivere fino alla fine del conto alla rovescia, eliminare le ondate richieste o sconfiggere il boss entro il limite.",
+      "I cristalli XP riempiono la barra esperienza della partita. Quando sali di livello, il combattimento si ferma per farti scegliere un potenziamento magico per quel tentativo.",
+      "Le ricompense aumentano anche il livello avventura permanente e concedono punti talento. Completa il talento precedente per proseguire; i progressi aprono altri rami elementali. Puoi equipaggiare un compagno e recuperare gratuitamente i punti spesi ripristinando i talenti."
     ],
     "how": [
-      "30 livelli: il primo dura 45 secondi, massimo 3 minuti ciascuno. Sopravvivi, supera 3/5 ondate o batti il boss entro il limite.",
-      "Trascina il joystick virtuale per muoverti; rilascia per fermarti. Puoi usare anche WASD o le frecce. Un punto per livello avventura. Massimizza i requisiti. Nuovi percorsi ai livelli 11 e 21. Un solo compagno equipaggiato. L’esperienza avventura si ottiene a fine battaglia; questo livello resta tra le partite. Il ripristino gratuito restituisce tutti i punti."
+      "Scegli un livello sbloccato e leggi l’obiettivo.",
+      "Trascina il joystick virtuale per muoverti e rilascialo per fermarti, oppure usa WASD / le frecce. Gli attacchi sono automatici.",
+      "Esci dalle aree di avviso, raccogli cristalli XP e scegli un potenziamento quando appaiono le opzioni.",
+      "Dopo il risultato, torna all’Officina delle rune per assegnare punti permanenti o cambiare il compagno prima del prossimo tentativo."
     ],
     "tips": [
       "Prigione di radici: esci dai tre cerchi verdi.",
@@ -11155,16 +11185,19 @@
   },
   "ru": {
     "intro": "Выживите, пройдите волны или победите босса. Собирайте кристаллы опыта; магия автоматическая.",
-    "metaDescription": "Кампания на 30 этапов: выживайте до конца таймера, проходите волны или побеждайте боссов. Собирайте кристаллы опыта, выбирайте заклинания и таланты.",
+    "metaDescription": "Уклоняйтесь от опасностей, пока магия атакует автоматически. Собирайте кристаллы опыта, выбирайте заклинания и развивайте постоянные таланты.",
     "time": "45–180 s",
     "story": [],
     "systems": [
-      "30 этапов: первый длится 45 секунд, максимум — 3 минуты. Выживите, пройдите 3/5 волн или победите босса до конца времени.",
-      "Перетаскивайте виртуальный джойстик для движения, отпустите для остановки. Также доступны WASD и стрелки. Одно очко за уровень приключения. Улучшайте предыдущий узел до предела. Новые пути на уровнях 11 и 21. Один спутник. Опыт приключения начисляется после боя. Этот уровень сохраняется между боями. Бесплатный сброс возвращает все очки."
+      "Показанная цель определяет завершение попытки: продержитесь до конца отсчёта, пройдите нужные волны или победите босса до истечения времени.",
+      "Кристаллы опыта заполняют шкалу текущей попытки. При повышении уровня бой приостанавливается, чтобы вы выбрали усиление магии для этого захода.",
+      "Боевые награды также повышают постоянный уровень приключения и дают очки талантов. Полностью улучшите предыдущий талант, чтобы двигаться дальше; развитие открывает другие стихийные ветки. Можно экипировать одного питомца и бесплатно вернуть вложенные очки сбросом талантов."
     ],
     "how": [
-      "30 этапов: первый длится 45 секунд, максимум — 3 минуты. Выживите, пройдите 3/5 волн или победите босса до конца времени.",
-      "Перетаскивайте виртуальный джойстик для движения, отпустите для остановки. Также доступны WASD и стрелки. Одно очко за уровень приключения. Улучшайте предыдущий узел до предела. Новые пути на уровнях 11 и 21. Один спутник. Опыт приключения начисляется после боя. Этот уровень сохраняется между боями. Бесплатный сброс возвращает все очки."
+      "Выберите открытый этап и прочитайте цель.",
+      "Тяните виртуальный джойстик для движения и отпустите для остановки либо используйте WASD / стрелки. Атаки выполняются автоматически.",
+      "Выходите из зон предупреждения, собирайте кристаллы опыта и выбирайте усиление, когда появятся варианты.",
+      "После результата вернитесь в Мастерскую рун, чтобы распределить постоянные очки талантов или сменить питомца перед новой попыткой."
     ],
     "tips": [
       "Корневая тюрьма: выйдите из трёх зелёных кругов.",
@@ -11180,16 +11213,19 @@
   },
   "hi": {
     "intro": "जीवित रहें, लहरें पार करें या बॉस हराएँ। XP क्रिस्टल लें; जादू अपने आप चलता है।",
-    "metaDescription": "30 चरणों के एक्शन-सर्वाइवल अभियान में टिकें, लहरें पार करें या बॉस हराएँ। XP क्रिस्टल लें, जादू चुनें और प्रतिभाएँ विकसित करें।",
+    "metaDescription": "जादू अपने आप हमला करता है; आप खतरों से बचें। XP क्रिस्टल लें, जादू चुनें और स्थायी प्रतिभाएँ विकसित करें।",
     "time": "45–180 s",
     "story": [],
     "systems": [
-      "30 चरण: पहला 45 सेकंड, हर चरण अधिकतम 3 मिनट। समय तक बचें, 3/5 लहरें पार करें या समय सीमा में बॉस हराएँ।",
-      "चलने के लिए वर्चुअल जॉयस्टिक खींचें और रुकने के लिए छोड़ें। WASD या तीर कुंजियाँ भी इस्तेमाल कर सकते हैं। हर साहसिक स्तर पर एक अंक। पिछला कौशल पूरा बढ़ाएँ। स्तर 11 और 21 पर नए तत्व मार्ग। एक साथी रख सकते हैं। साहसिक अनुभव लड़ाई के अंत में मिलता है। यह स्तर अगले खेल में भी बना रहता है। मुफ्त रीसेट से सभी अंक वापस मिलते हैं।"
+      "दिखाया गया लक्ष्य तय करता है कि प्रयास कैसे पूरा होगा: समय समाप्त होने तक टिकें, बताई गई लहरें पूरी करें या समय सीमा में बॉस को हराएँ।",
+      "XP क्रिस्टल इस प्रयास की अनुभव पट्टी भरते हैं। स्तर बढ़ने पर लड़ाई रुकती है ताकि आप उसी प्रयास के लिए जादू की एक उन्नति चुन सकें।",
+      "युद्ध के पुरस्कार स्थायी साहसिक स्तर भी बढ़ाते हैं और प्रतिभा अंक देते हैं। अगली प्रतिभा के लिए पिछली आवश्यक प्रतिभा को पूरा उन्नत करें; प्रगति से और तत्त्व शाखाएँ खुलती हैं। एक पालतू साथ रख सकते हैं और मुफ्त रीसेट से लगाए हुए प्रतिभा अंक वापस मिलते हैं।"
     ],
     "how": [
-      "30 चरण: पहला 45 सेकंड, हर चरण अधिकतम 3 मिनट। समय तक बचें, 3/5 लहरें पार करें या समय सीमा में बॉस हराएँ।",
-      "चलने के लिए वर्चुअल जॉयस्टिक खींचें और रुकने के लिए छोड़ें। WASD या तीर कुंजियाँ भी इस्तेमाल कर सकते हैं। हर साहसिक स्तर पर एक अंक। पिछला कौशल पूरा बढ़ाएँ। स्तर 11 और 21 पर नए तत्व मार्ग। एक साथी रख सकते हैं। साहसिक अनुभव लड़ाई के अंत में मिलता है। यह स्तर अगले खेल में भी बना रहता है। मुफ्त रीसेट से सभी अंक वापस मिलते हैं।"
+      "खुला चरण चुनें और उसका लक्ष्य पढ़ें।",
+      "चलने के लिए वर्चुअल जॉयस्टिक खींचें और रुकने के लिए छोड़ दें, या WASD / तीर कुंजियाँ दबाएँ। हमले अपने आप होते हैं।",
+      "चेतावनी वाले क्षेत्र से बाहर निकलें, XP क्रिस्टल लें और विकल्प आने पर एक उन्नति चुनें।",
+      "परिणाम के बाद रून कार्यशाला में स्थायी प्रतिभा अंक लगाएँ या अगले प्रयास के लिए पालतू बदलें।"
     ],
     "tips": [
       "जड़ कैद: तीन हरे घेरों से निकलें।",
@@ -11205,16 +11241,19 @@
   },
   "ar": {
     "intro": "اصمد أو أكمل الموجات أو اهزم الزعيم. اجمع بلورات الخبرة؛ السحر تلقائي.",
-    "metaDescription": "حملة حركة وبقاء من 30 مرحلة: اصمد حتى انتهاء الوقت، أو أكمل الموجات، أو اهزم الزعيم. اجمع بلورات الخبرة واختر السحر وطوّر المواهب.",
+    "metaDescription": "تفادَ الأخطار بينما يهاجم السحر تلقائيًا. اجمع بلورات الخبرة، واختر التعاويذ، وطوّر المواهب الدائمة.",
     "time": "45–180 s",
     "story": [],
     "systems": [
-      "30 مرحلة: الأولى 45 ثانية، والحد الأقصى 3 دقائق لكل مرحلة. اصمد أو أكمل 3/5 موجات أو اهزم الزعيم قبل انتهاء الوقت.",
-      "اسحب عصا التحكم الافتراضية للحركة، واتركها للتوقف. يمكنك أيضًا استخدام WASD أو الأسهم. نقطة لكل مستوى مغامرة. أكمل رتبة المتطلب السابق. مسارات جديدة في المستويين 11 و21. رفيق واحد فقط. تُمنح خبرة المغامرة بعد المعركة ويُحفظ هذا المستوى بين الجولات. إعادة الضبط المجانية تعيد كل النقاط."
+      "يحدد الهدف المعروض طريقة إنهاء الجولة: اصمد حتى انتهاء العد التنازلي، أو أكمل الموجات المطلوبة، أو اهزم الزعيم قبل انتهاء الوقت.",
+      "تملأ بلورات الخبرة شريط خبرة الجولة. عند ارتفاع المستوى يتوقف القتال لتختار ترقية سحرية لهذه المحاولة.",
+      "ترفع مكافآت القتال أيضًا مستوى المغامرة الدائم وتمنح نقاط المواهب. طوّر الموهبة السابقة المطلوبة بالكامل للتقدم؛ وتفتح المغامرة فروع عناصر إضافية. يمكنك تجهيز رفيق واحد واسترداد النقاط الموزعة مجانًا بإعادة ضبط المواهب."
     ],
     "how": [
-      "30 مرحلة: الأولى 45 ثانية، والحد الأقصى 3 دقائق لكل مرحلة. اصمد أو أكمل 3/5 موجات أو اهزم الزعيم قبل انتهاء الوقت.",
-      "اسحب عصا التحكم الافتراضية للحركة، واتركها للتوقف. يمكنك أيضًا استخدام WASD أو الأسهم. نقطة لكل مستوى مغامرة. أكمل رتبة المتطلب السابق. مسارات جديدة في المستويين 11 و21. رفيق واحد فقط. تُمنح خبرة المغامرة بعد المعركة ويُحفظ هذا المستوى بين الجولات. إعادة الضبط المجانية تعيد كل النقاط."
+      "اختر مرحلة مفتوحة واقرأ هدفها.",
+      "اسحب عصا التحكم الافتراضية للحركة واتركها للتوقف، أو استخدم WASD / مفاتيح الأسهم. تنطلق الهجمات تلقائيًا.",
+      "ابتعد عن مناطق التحذير، واجمع بلورات الخبرة، واختر ترقية عندما تظهر الخيارات.",
+      "بعد النتيجة عد إلى ورشة الرون لتوزيع نقاط المواهب الدائمة أو تغيير الرفيق قبل المحاولة التالية."
     ],
     "tips": [
       "سجن الجذور: اخرج من الدوائر الخضراء الثلاث.",
@@ -11234,67 +11273,67 @@
 
   const crystalSeoFaqs = {
     en: [
-      ["What are the stage objectives?", "Each stage shows a goal: survive until the timer ends, clear 3 or 5 waves, or defeat the boss before time runs out. Stage 1 lasts 45 seconds; stages are capped at 3 minutes."],
+      ["What are the stage objectives?", "Read the objective shown before the run: survive the countdown, clear the required waves, or defeat the boss before the deadline."],
       ["Does magic attack automatically?", "Yes. Move to avoid threats and collect XP crystals; choose a spell when you level up while attacks target enemies automatically."],
       ["Is progress saved?", "Stage progress and talents are saved in this browser. Clearing browser data removes the save."],
     ],
     "zh-Hant": [
-      ["每一關的目標是什麼？", "關卡會顯示目標：撐到倒數結束、清除 3 或 5 波，或在時間結束前擊敗首領。第一關 45 秒，每關最長 3 分鐘。"],
+      ["每一關的目標是什麼？", "開始前先看畫面顯示的目標：撐到倒數結束、清除指定波次，或在時限內擊敗首領。"],
       ["魔法會自動攻擊嗎？", "會。移動閃避並收集經驗水晶；升級時選擇法術，魔法會自動鎖定敵人攻擊。"],
       ["進度會保存嗎？", "關卡進度與天賦會保存在此瀏覽器；清除瀏覽器資料會移除存檔。"],
     ],
     "zh-Hans": [
-      ["每一关的目标是什么？", "关卡会显示目标：撑到倒计时结束、清除 3 或 5 波，或在时间结束前击败首领。第一关 45 秒，每关最长 3 分钟。"],
+      ["每一关的目标是什么？", "开始前先看画面显示的目标：撑到倒计时结束、清除指定波次，或在时限内击败首领。"],
       ["魔法会自动攻击吗？", "会。移动躲避并收集经验水晶；升级时选择法术，魔法会自动锁定敌人攻击。"],
       ["进度会保存吗？", "关卡进度与天赋会保存在此浏览器；清除浏览器数据会移除存档。"],
     ],
     ja: [
-      ["各ステージの目標は何ですか？", "ステージごとに、タイマー終了まで生存、3または5ウェーブの突破、時間内のボス撃破のいずれかが表示されます。ステージ1は45秒、各ステージの上限は3分です。"],
+      ["各ステージの目標は何ですか？", "開始前に表示された目標を確認します。制限時間まで生き残る、指定のウェーブを突破する、または時間内にボスを倒します。"],
       ["魔法は自動で攻撃しますか？", "はい。危険を避けて経験値クリスタルを集め、レベルアップ時に魔法を選びます。攻撃は敵を自動で狙います。"],
       ["進行状況は保存されますか？", "ステージの進行状況と才能はこのブラウザーに保存されます。ブラウザーのデータを消去するとセーブも削除されます。"],
     ],
     ko: [
-      ["스테이지 목표는 무엇인가요?", "각 스테이지에는 타이머 종료까지 생존, 3 또는 5개 웨이브 완료, 제한 시간 내 보스 처치 중 하나의 목표가 표시됩니다. 1단계는 45초이며 각 스테이지는 최대 3분입니다."],
+      ["스테이지 목표는 무엇인가요?", "시작 전에 표시된 목표를 확인하세요. 제한 시간까지 생존하거나, 지정된 웨이브를 정리하거나, 시간 안에 보스를 처치하면 됩니다."],
       ["마법은 자동으로 공격하나요?", "네. 위협을 피하고 XP 크리스털을 모은 뒤 레벨 업 시 마법을 선택하세요. 공격은 적을 자동으로 겨냥합니다."],
       ["진행 상황이 저장되나요?", "스테이지 진행과 특성은 이 브라우저에 저장됩니다. 브라우저 데이터를 지우면 저장 내용도 삭제됩니다."],
     ],
     es: [
-      ["¿Cuáles son los objetivos de cada nivel?", "Cada nivel muestra un objetivo: resistir hasta que termine el tiempo, superar 3 o 5 oleadas o derrotar al jefe antes del límite. El nivel 1 dura 45 segundos; cada nivel dura como máximo 3 minutos."],
+      ["¿Cuáles son los objetivos de cada nivel?", "Consulta el objetivo antes de empezar: resistir hasta que termine el tiempo, superar las oleadas indicadas o derrotar al jefe antes del límite."],
       ["¿La magia ataca automáticamente?", "Sí. Muévete para evitar peligros y recoge cristales de XP; elige un hechizo al subir de nivel y los ataques apuntarán automáticamente a los enemigos."],
       ["¿Se guarda el progreso?", "El progreso de los niveles y los talentos se guardan en este navegador. Si borras los datos del navegador, se elimina la partida guardada."],
     ],
     "pt-BR": [
-      ["Quais são os objetivos das fases?", "Cada fase mostra um objetivo: sobreviver até o fim do tempo, concluir 3 ou 5 ondas ou derrotar o chefe antes do limite. A fase 1 dura 45 segundos; cada fase tem no máximo 3 minutos."],
+      ["Quais são os objetivos das fases?", "Confira o objetivo antes de começar: sobreviver até o fim do tempo, eliminar as ondas indicadas ou derrotar o chefe antes do limite."],
       ["A magia ataca automaticamente?", "Sim. Mova-se para evitar ameaças e colete cristais de XP; escolha uma magia ao subir de nível e os ataques mirarão os inimigos automaticamente."],
       ["O progresso fica salvo?", "O progresso das fases e os talentos ficam salvos neste navegador. Apagar os dados do navegador remove o salvamento."],
     ],
     fr: [
-      ["Quels sont les objectifs des niveaux ?", "Chaque niveau affiche un objectif : survivre jusqu’à la fin du compte à rebours, terminer 3 ou 5 vagues, ou battre le boss avant la limite. Le niveau 1 dure 45 secondes ; chaque niveau est limité à 3 minutes."],
+      ["Quels sont les objectifs des niveaux ?", "Lisez l’objectif avant de commencer : survivre jusqu’à la fin du compte à rebours, éliminer les vagues demandées ou vaincre le boss avant la limite."],
       ["La magie attaque-t-elle automatiquement ?", "Oui. Déplacez-vous pour éviter les dangers et récolter des cristaux d’XP ; choisissez un sort à chaque niveau gagné, puis les attaques ciblent automatiquement les ennemis."],
       ["La progression est-elle sauvegardée ?", "La progression des niveaux et les talents sont sauvegardés dans ce navigateur. Effacer ses données supprime la sauvegarde."],
     ],
     de: [
-      ["Welche Ziele gibt es in den Stufen?", "Jede Stufe zeigt ein Ziel: bis zum Timerende überleben, 3 oder 5 Wellen schaffen oder den Boss vor Ablauf der Zeit besiegen. Stufe 1 dauert 45 Sekunden; jede Stufe ist auf 3 Minuten begrenzt."],
+      ["Welche Ziele gibt es in den Stufen?", "Lies vor dem Start das angezeigte Ziel: bis zum Ende des Countdowns überleben, die geforderten Wellen besiegen oder den Boss rechtzeitig bezwingen."],
       ["Greift Magie automatisch an?", "Ja. Weiche Gefahren aus und sammle EP-Kristalle; wähle beim Aufstieg einen Zauber, während Angriffe automatisch Gegner anvisieren."],
       ["Wird der Fortschritt gespeichert?", "Stufenfortschritt und Talente werden in diesem Browser gespeichert. Beim Löschen der Browserdaten geht der Spielstand verloren."],
     ],
     it: [
-      ["Quali sono gli obiettivi dei livelli?", "Ogni livello mostra un obiettivo: sopravvivere fino allo scadere del timer, completare 3 o 5 ondate oppure sconfiggere il boss prima del limite. Il livello 1 dura 45 secondi; ogni livello dura al massimo 3 minuti."],
+      ["Quali sono gli obiettivi dei livelli?", "Leggi l’obiettivo prima di iniziare: sopravvivere fino alla fine del conto alla rovescia, eliminare le ondate richieste o sconfiggere il boss entro il limite."],
       ["La magia attacca automaticamente?", "Sì. Muoviti per evitare i pericoli e raccogli cristalli XP; scegli una magia quando sali di livello e gli attacchi punteranno automaticamente i nemici."],
       ["I progressi vengono salvati?", "I progressi dei livelli e i talenti vengono salvati in questo browser. Cancellare i dati del browser elimina il salvataggio."],
     ],
     ru: [
-      ["Какие цели есть на этапах?", "На каждом этапе указана цель: выжить до конца таймера, пройти 3 или 5 волн либо победить босса до истечения времени. Первый этап длится 45 секунд, каждый этап — не более 3 минут."],
+      ["Какие цели есть на этапах?", "Перед началом прочитайте цель: продержаться до конца отсчёта, пройти нужные волны или победить босса до истечения времени."],
       ["Магия атакует автоматически?", "Да. Уклоняйтесь от опасностей и собирайте кристаллы опыта; при повышении уровня выбирайте заклинание, а атаки сами наводятся на врагов."],
       ["Сохраняется ли прогресс?", "Прогресс этапов и таланты сохраняются в этом браузере. Очистка данных браузера удалит сохранение."],
     ],
     hi: [
-      ["चरणों के लक्ष्य क्या हैं?", "हर चरण में एक लक्ष्य दिखता है: समय समाप्त होने तक टिकें, 3 या 5 लहरें पार करें, या समय सीमा से पहले बॉस को हराएँ। पहला चरण 45 सेकंड का है; हर चरण अधिकतम 3 मिनट का है।"],
+      ["चरणों के लक्ष्य क्या हैं?", "शुरू करने से पहले लक्ष्य पढ़ें: समय समाप्त होने तक टिकना, बताई गई लहरें पूरी करना या समय सीमा में बॉस को हराना।"],
       ["क्या जादू अपने आप हमला करता है?", "हाँ। खतरों से बचने के लिए चलें और XP क्रिस्टल लें; स्तर बढ़ने पर जादू चुनें, फिर हमले अपने आप दुश्मनों को निशाना बनाते हैं।"],
       ["क्या प्रगति सहेजी जाती है?", "चरणों की प्रगति और प्रतिभाएँ इसी ब्राउज़र में सहेजी जाती हैं। ब्राउज़र डेटा मिटाने पर सेव हट जाता है।"],
     ],
     ar: [
-      ["ما أهداف المراحل؟", "تعرض كل مرحلة هدفًا: الصمود حتى انتهاء المؤقت، أو إكمال 3 أو 5 موجات، أو هزيمة الزعيم قبل انتهاء الوقت. تدوم المرحلة الأولى 45 ثانية، ولا تتجاوز أي مرحلة 3 دقائق."],
+      ["ما أهداف المراحل؟", "اقرأ الهدف قبل البدء: الصمود حتى انتهاء العد التنازلي، أو إكمال الموجات المطلوبة، أو هزيمة الزعيم في الوقت المحدد."],
       ["هل يهاجم السحر تلقائيًا؟", "نعم. تحرك لتفادي الأخطار واجمع بلورات الخبرة؛ اختر تعويذة عند رفع المستوى، وتستهدف الهجمات الأعداء تلقائيًا."],
       ["هل يُحفظ التقدم؟", "يُحفظ تقدم المراحل والمواهب في هذا المتصفح. يؤدي مسح بيانات المتصفح إلى حذف الحفظ."],
     ],

@@ -197,3 +197,151 @@ for(const [i,language] of LOCALES.entries()){
  COPY[language].attack_environment=attackLabels[language][6];
  COPY[language].combatant_unknown=clarityMessages[language].unknownSource;
 }
+
+const publicFaqCopy = {
+  "en": [
+    "Frequently Asked Questions",
+    "How do I finish a mission?",
+    "Complete the objectives shown, defeat the guardian, then reach the golden exit. In protection missions, your companion must survive too.",
+    "How do I move and attack?",
+    "Drag the joystick or hold and drag in the arena to steer; release to stop. Use Dash or press Space to dodge. The Ranger Axe attacks nearby targets automatically.",
+    "How do I deal with guardian attacks?",
+    "Leave the warning area before the attack lands. Flank armored enemies or interrupt them; destroy the purple totem before attacking Mosswitch.",
+    "What progress is saved?",
+    "Mission unlocks and permanent growth stay in this browser. Losing or leaving a run keeps those gains; clearing the browser’s site data removes the save."
+  ],
+  "zh-Hant": [
+    "常見問題",
+    "如何完成任務？",
+    "完成畫面上的目標、擊敗守衛，再走到金色出口。守護任務還要確保夥伴存活。",
+    "如何移動與攻擊？",
+    "拖曳搖桿，或在戰場按住拖曳來移動；放手停止。點「閃避」或按空白鍵可躲避攻擊，巡林斧會自動攻擊附近目標。",
+    "如何應對守衛攻擊？",
+    "攻擊落下前離開預警範圍。護甲敵人要繞背或打斷；面對苔巫守衛，先擊破紫色圖騰再攻擊。",
+    "哪些進度會保留？",
+    "任務解鎖與永久成長會儲存在目前瀏覽器。失敗或離開這一局仍會保留；清除瀏覽器的網站資料會移除存檔。"
+  ],
+  "zh-Hans": [
+    "常见问题",
+    "如何完成任务？",
+    "完成画面上的目标、击败守卫，再走到金色出口。守护任务还要确保伙伴存活。",
+    "如何移动与攻击？",
+    "拖动摇杆，或在战场按住拖动来移动；松手停止。点“闪避”或按空格键可躲避攻击，巡林斧会自动攻击附近目标。",
+    "如何应对守卫攻击？",
+    "攻击落下前离开预警范围。护甲敌人要绕背或打断；面对苔巫守卫，先击破紫色图腾再攻击。",
+    "哪些进度会保留？",
+    "任务解锁与永久成长会保存在当前浏览器。失败或离开这一局仍会保留；清除浏览器的网站数据会移除存档。"
+  ],
+  "ja": [
+    "よくある質問",
+    "任務をクリアするには？",
+    "表示された目標を達成して守護者を倒し、金色の出口へ進みます。護衛任務では仲間を守り切る必要もあります。",
+    "移動と攻撃の方法は？",
+    "スティックをドラッグするか、戦場を長押ししてドラッグすると移動し、離すと止まります。「回避」または空白キーで攻撃を避けられます。森の斧は近くの対象を自動で攻撃します。",
+    "守護者の攻撃にはどう対処する？",
+    "攻撃が当たる前に予告範囲から離れます。装甲のある敵は背後へ回るか攻撃を妨害し、苔の魔女には先に紫のトーテムを壊してから攻撃します。",
+    "何が保存されますか？",
+    "解放した任務と永続強化はこのブラウザーに保存されます。敗北や途中退出でも残りますが、サイトの保存データを消すと失われます。"
+  ],
+  "ko": [
+    "자주 묻는 질문",
+    "임무는 어떻게 완료하나요?",
+    "표시된 목표를 달성하고 수호자를 쓰러뜨린 다음 황금 출구로 가세요. 보호 임무에서는 동료도 살아남아야 합니다.",
+    "이동과 공격은 어떻게 하나요?",
+    "조이스틱을 드래그하거나 전장에서 누른 채 드래그해 이동하고, 놓으면 멈춥니다. 회피 버튼이나 스페이스를 사용해 피하세요. 순찰 도끼는 근처 대상을 자동으로 공격합니다.",
+    "수호자 공격은 어떻게 피하나요?",
+    "공격이 닿기 전에 경고 범위를 벗어나세요. 장갑 적은 뒤로 돌아가거나 공격을 끊고, 이끼 마녀는 보라색 토템을 먼저 파괴한 뒤 공격하세요.",
+    "어떤 진행이 저장되나요?",
+    "해금한 임무와 영구 성장은 이 브라우저에 저장됩니다. 패배하거나 나가도 유지되지만 브라우저의 사이트 데이터를 지우면 저장 내용이 사라집니다."
+  ],
+  "es": [
+    "Preguntas frecuentes",
+    "¿Cómo termino una misión?",
+    "Cumple los objetivos mostrados, derrota al guardián y llega a la salida dorada. En las misiones de protección, tu compañero también debe sobrevivir.",
+    "¿Cómo me muevo y ataco?",
+    "Arrastra el joystick o mantén pulsado y arrastra en la arena para moverte; suelta para parar. Pulsa Esquivar o Espacio para evitar ataques. El hacha forestal ataca automáticamente a los objetivos cercanos.",
+    "¿Cómo respondo a los ataques de guardianes?",
+    "Sal de la zona de aviso antes del impacto. Flanquea a los enemigos acorazados o interrúmpelos; destruye el tótem morado antes de atacar a la Bruja del Musgo.",
+    "¿Qué progreso se guarda?",
+    "Las misiones desbloqueadas y las mejoras permanentes quedan en este navegador. Se conservan al perder o abandonar; borrar los datos del sitio elimina la partida guardada."
+  ],
+  "pt-BR": [
+    "Perguntas frequentes",
+    "Como concluo uma missão?",
+    "Cumpra os objetivos exibidos, derrote o guardião e alcance a saída dourada. Nas missões de proteção, seu companheiro também precisa sobreviver.",
+    "Como me movo e ataco?",
+    "Arraste o joystick ou mantenha pressionado e arraste na arena para se mover; solte para parar. Use Esquivar ou Espaço para evitar ataques. O machado florestal ataca alvos próximos automaticamente.",
+    "Como enfrento os ataques dos guardiões?",
+    "Saia da área de aviso antes do impacto. Flanqueie inimigos com armadura ou interrompa-os; destrua o totem roxo antes de atacar a Bruxa do Musgo.",
+    "O que fica salvo?",
+    "Missões liberadas e melhorias permanentes ficam neste navegador. Perder ou sair não apaga esses ganhos; apagar os dados do site remove o salvamento."
+  ],
+  "fr": [
+    "Questions fréquentes",
+    "Comment terminer une mission ?",
+    "Remplissez les objectifs affichés, battez le gardien puis rejoignez la sortie dorée. Dans les missions de protection, votre compagnon doit aussi survivre.",
+    "Comment se déplacer et attaquer ?",
+    "Glissez le joystick ou maintenez le doigt et glissez dans l’arène pour avancer ; relâchez pour vous arrêter. Utilisez Esquive ou Espace pour éviter une attaque. La Hache forestière frappe automatiquement les cibles proches.",
+    "Comment réagir aux attaques des gardiens ?",
+    "Quittez la zone d’avertissement avant l’impact. Contournez les ennemis en armure ou interrompez-les ; détruisez le totem violet avant d’attaquer la Sorcière de Mousse.",
+    "Quelle progression est sauvegardée ?",
+    "Les missions débloquées et les améliorations permanentes restent dans ce navigateur. Une défaite ou un abandon les conserve ; effacer les données du site supprime la sauvegarde."
+  ],
+  "de": [
+    "Häufige Fragen",
+    "Wie schließe ich eine Mission ab?",
+    "Erfülle die angezeigten Ziele, besiege den Wächter und erreiche den goldenen Ausgang. In Schutzmissionen muss auch dein Begleiter überleben.",
+    "Wie bewege ich mich und greife an?",
+    "Ziehe den Joystick oder halte und ziehe in der Arena zum Bewegen; lasse zum Stoppen los. Nutze Ausweichen oder die Leertaste, um Angriffen zu entgehen. Die Waldaxt greift nahe Ziele automatisch an.",
+    "Wie reagiere ich auf Wächterangriffe?",
+    "Verlasse den Warnbereich vor dem Einschlag. Flankiere gepanzerte Gegner oder unterbrich sie; zerstöre das violette Totem, bevor du die Mooshexe angreifst.",
+    "Welcher Fortschritt wird gespeichert?",
+    "Freigeschaltete Missionen und dauerhafte Verbesserungen bleiben in diesem Browser. Niederlagen oder Abbruch erhalten sie; das Löschen der Websitedaten entfernt den Spielstand."
+  ],
+  "it": [
+    "Domande frequenti",
+    "Come completo una missione?",
+    "Completa gli obiettivi mostrati, sconfiggi il guardiano e raggiungi l’uscita dorata. Nelle missioni di protezione deve sopravvivere anche il compagno.",
+    "Come mi muovo e attacco?",
+    "Trascina il joystick oppure tieni premuto e trascina nell’arena per muoverti; rilascia per fermarti. Usa Schivata o Spazio per evitare gli attacchi. L’Ascia forestale colpisce automaticamente i bersagli vicini.",
+    "Come reagisco agli attacchi dei guardiani?",
+    "Esci dall’area di avviso prima dell’impatto. Aggira i nemici corazzati o interrompili; distruggi il totem viola prima di attaccare la Strega del Muschio.",
+    "Quali progressi vengono salvati?",
+    "Missioni sbloccate e miglioramenti permanenti restano in questo browser. Perdere o abbandonare li conserva; cancellare i dati del sito elimina il salvataggio."
+  ],
+  "ru": [
+    "Частые вопросы",
+    "Как завершить задание?",
+    "Выполните показанные цели, победите стража и дойдите до золотого выхода. В заданиях на защиту ваш спутник тоже должен выжить.",
+    "Как двигаться и атаковать?",
+    "Тяните джойстик или зажмите и перетаскивайте указатель на арене для движения; отпустите для остановки. Используйте «Рывок» или пробел, чтобы уклониться. Лесной топор автоматически атакует ближайшие цели.",
+    "Как реагировать на атаки стражей?",
+    "Выйдите из зоны предупреждения до удара. Обходите бронированных врагов или прерывайте их атаки; прежде чем атаковать Моховую ведьму, уничтожьте фиолетовый тотем.",
+    "Какой прогресс сохраняется?",
+    "Открытые задания и постоянные улучшения хранятся в этом браузере. Поражение или выход их не удаляет; очистка данных сайта удалит сохранение."
+  ],
+  "hi": [
+    "अक्सर पूछे जाने वाले प्रश्न",
+    "मिशन कैसे पूरा करें?",
+    "दिखाए गए लक्ष्य पूरे करें, संरक्षक को हराएँ और सुनहरे निकास तक जाएँ। रक्षा मिशन में साथी का जीवित रहना भी ज़रूरी है।",
+    "चलें और हमला कैसे करें?",
+    "चलने के लिए जॉयस्टिक खींचें या मैदान में दबाकर खींचें; रुकने के लिए छोड़ दें। बचने के लिए डॉज बटन या स्पेस दबाएँ। वन कुल्हाड़ी पास के लक्ष्यों पर अपने आप हमला करती है।",
+    "संरक्षक के हमले से कैसे बचें?",
+    "वार पड़ने से पहले चेतावनी क्षेत्र से बाहर जाएँ। कवच वाले दुश्मन के पीछे जाएँ या हमला रोकें; काई चुड़ैल पर वार करने से पहले बैंगनी टोटेम तोड़ें।",
+    "कौन-सी प्रगति सहेजी जाती है?",
+    "खुले मिशन और स्थायी उन्नति इसी ब्राउज़र में रहती हैं। हारने या छोड़ने पर भी बची रहती हैं; साइट का ब्राउज़र डेटा मिटाने से सेव हट जाता है।"
+  ],
+  "ar": [
+    "الأسئلة الشائعة",
+    "كيف أكمل المهمة؟",
+    "أنجز الأهداف المعروضة، واهزم الحارس، ثم بلغ المخرج الذهبي. في مهام الحماية يجب أن ينجو رفيقك أيضًا.",
+    "كيف أتحرك وأهاجم؟",
+    "اسحب عصا التحكم أو اضغط واسحب داخل الساحة للحركة، واترك للتوقف. استخدم زر الاندفاع أو مفتاح المسافة لتفادي الهجمات. يهاجم فأس الغابة الأهداف القريبة تلقائيًا.",
+    "كيف أتعامل مع هجمات الحراس؟",
+    "غادر منطقة التحذير قبل وقوع الضربة. التف حول الأعداء المدرعين أو قاطعهم؛ وحطّم الطوطم البنفسجي قبل مهاجمة ساحرة الطحلب.",
+    "ما التقدم الذي يُحفظ؟",
+    "تبقى المهام المفتوحة والترقيات الدائمة في هذا المتصفح. لا تزيلها الخسارة أو مغادرة الجولة؛ لكن حذف بيانات الموقع من المتصفح يزيل الحفظ."
+  ]
+};
+const publicFaqKeys = ["faqTitle", "faqGoalQuestion", "faqGoalAnswer", "faqMoveQuestion", "faqMoveAnswer", "faqGuardianQuestion", "faqGuardianAnswer", "faqSaveQuestion", "faqSaveAnswer"];
+for (const language of LOCALES) publicFaqKeys.forEach((key, index) => { COPY[language][key] = publicFaqCopy[language][index]; });
