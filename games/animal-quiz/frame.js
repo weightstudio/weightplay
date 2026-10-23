@@ -45,6 +45,9 @@
   stageStatus.id = "stageStatus";
   frame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup().add(stageStatus));
   frame.battleTopUI.add(window.WeightPlayScreenFrame.createGroup().add(document.getElementById("levelText")));
+  const stagesTab = document.getElementById("stagesTab");
+  if (!stagesTab) throw new Error("ANIMAL_QUIZ_SHARED_STAGE_NAV_REQUIRED");
+  frame.commonDownButton.add(stagesTab);
   frame.activate("main");
 
   window.AnimalQuizFrame = Object.freeze({

@@ -54,11 +54,13 @@ const titleText = document.querySelector("#titleText");
 const mainPanel = document.querySelector("#mainPanel");
 const mainTitle = document.querySelector("#mainTitle");
 const mainIntro = document.querySelector("#mainIntro");
+const mainProgress = document.querySelector("#mainProgress");
 const startGameBtn = document.querySelector("#startGameBtn");
 const stageSelectPanel = document.querySelector("#stageSelectPanel");
 const stageSelectTitle = document.querySelector("#stageSelectTitle");
 const stageSetupTitle = document.querySelector("#stageSetupTitle");
 const stageSetupText = document.querySelector("#stageSetupText");
+const stagesTab = document.querySelector("#stagesTab");
 const stageBackBtn = document.querySelector("#stageBackBtn");
 const stageGrid = document.querySelector("#stageGrid");
 const mainScreen = document.querySelector("#mainScreen");
@@ -176,6 +178,7 @@ const dictionary = {
     title: "Animal Quiz",
     language: "Language",
     mainIntro: "Read picture clues and discover animal facts.",
+    mainProgress: "Stages cleared: {count} / {total}",
     startGame: "Start Game",
     chooseStage: "Choose Stage",
     stageSetupTitle: "Pick an animal topic",
@@ -336,6 +339,7 @@ const dictionary = {
     title: "\u52d5\u7269\u5c0f\u535a\u58eb",
     language: "\u8a9e\u8a00",
     mainIntro: "\u770b\u5716\u7247\u7dda\u7d22\uff0c\u4e00\u8d77\u8a8d\u8b58\u52d5\u7269\u5c0f\u77e5\u8b58\u3002",
+    mainProgress: "\u5df2\u5b8c\u6210\u95dc\u5361\uff1a{count} / {total}",
     startGame: "\u958b\u59cb\u904a\u6232",
     chooseStage: "\u9078\u64c7\u95dc\u5361",
     stageSetupTitle: "\u9078\u4e00\u500b\u52d5\u7269\u4e3b\u984c",
@@ -496,6 +500,7 @@ const dictionary = {
 
 dictionary.es = {
   title: "Cuestionario de Animales", language: "Idioma", mainIntro: "Lee las pistas ilustradas y descubre datos sobre los animales.", startGame: "Empezar",
+  mainProgress: "Niveles completados: {count} / {total}",
   chooseStage: "Elegir nivel", stageSetupTitle: "Elige un tema animal", stageSetupText: "Elige una de 30 investigaciones. Cada quinto nivel es una prueba de joven experto.",
   start: "Empezar", locked: "Bloqueado", complete: "Completado", stageBest: "Mejor {score} / {total}", stageLabel: "Nivel {n}: {chapter}", checkpoint: "Prueba de joven experto",
   chapterPicture: "Primeras imágenes", chapterHabitat: "Hogares y hábitats", chapterFeatures: "Detectives de rasgos", chapterActions: "Acciones animales", chapterFood: "Alimentos y familias", chapterExpert: "Mezcla de joven experto",
@@ -537,6 +542,7 @@ Object.assign(dictionary["zh-Hant"], { leaveTitle: "\u8981\u96e2\u958b\u9019\u50
 Object.assign(dictionary.es, { leaveTitle: "\u00bfSalir de este cuestionario?", leaveText: "Tus respuestas de este nivel se reiniciar\u00e1n.", keepPlaying: "Seguir jugando", leaveStage: "Salir del nivel" });
 dictionary.de = {
   title: "Tierquiz", language: "Sprache", mainIntro: "Sieh dir Bilder und Hinweise an und entdecke spannende Tierfakten.", startGame: "Spiel starten",
+  mainProgress: "Abgeschlossene Level: {count} / {total}",
   chooseStage: "Level auswählen", stageSetupTitle: "Tierthema auswählen", stageSetupText: "Wähle eine von 30 Tierforschungen. Jedes fünfte Level ist ein Junior-Expertencheck.",
   start: "Starten", locked: "Gesperrt", complete: "Abgeschlossen", stageBest: "Bestwert {score} / {total}", stageLabel: "Level {n}: {chapter}", checkpoint: "Junior-Expertencheck",
   chapterPicture: "Tierbilder kennenlernen", chapterHabitat: "Lebensräume", chapterFeatures: "Merkmale entdecken", chapterActions: "Tierverhalten", chapterFood: "Nahrung & Tierfamilien", chapterExpert: "Junior-Expertenmix",
@@ -882,10 +888,16 @@ function renderStaticText() {
   titleText.textContent = t("title");
   mainTitle.textContent = t("title");
   mainIntro.textContent = t("mainIntro");
+  if (mainProgress) {
+    const clearedStages = Object.values(loadProgress()).filter((record) => record.cleared).length;
+    mainProgress.textContent = t("mainProgress", { count: clearedStages, total: stages.length });
+  }
   startGameBtn.textContent = t("startGame");
   stageSelectTitle.textContent = t("chooseStage");
   stageSetupTitle.textContent = t("stageSetupTitle");
   stageSetupText.textContent = t("stageSetupText");
+  if (stagesTab) stagesTab.textContent = t("stages");
+  document.querySelector("#stageTabs")?.setAttribute("aria-label", t("stages"));
   promptText.textContent = t("prompt");
   feedbackText.textContent = t("choose");
   againBtn.textContent = t("again");
