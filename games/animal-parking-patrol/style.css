@@ -147,6 +147,10 @@ h1, h2, p { margin: 0; }
   .wp-game-action-row button { min-height: calc(44px * var(--wp-battle-canvas-inverse-scale, 1)); }
   .result-card { gap: 7px; padding: 9px 14px; }
   .result-card > img { width: 52px; height: 52px; }
+  body[data-wp-interface-version="9"] #battleScreen :is(#pausePanel, #leavePanel) .dialog-card,
+  body[data-wp-interface-version="9"] #battleScreen #resultPanel .result-card {
+    transform: scale(var(--wp-battle-canvas-inverse-scale, 1));
+  }
 }
 @layer wp-frame-contract {
   @media (max-height: 560px) and (orientation: landscape) {

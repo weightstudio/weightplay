@@ -50,7 +50,7 @@
   function showResultStage(){const stageIndex=selectedStage;setScreen('stage');renderStage();requestAnimationFrame(()=>stageSelector?.select(stageIndex,{center:true,focus:true,notify:false,source:'programmatic'}))}
   function mountI9Interface(){
     if(!window.WeightPlayScreenFrame||!window.WeightPlayPlayUI||!window.WeightPlayAnimalParkingPatrolStageConfig)throw new Error('ANIMAL_PARKING_PATROL_I9_RUNTIME_REQUIRED');
-    const app=$('app'),mainRoot=$('mainGroup'),mainShell=$('mainScreen'),mainHeader=mainShell.querySelector('.main-header'),mainHero=mainShell.querySelector('.main-hero'),mainTitle=mainHeader?.querySelector('strong'),mainCopy=mainHero?.querySelector('.main-copy'),mainPoster=mainHero?.querySelector('.main-poster'),guide=mainRoot.querySelector('.game-guide');
+    const app=$('app'),mainRoot=$('mainGroup'),mainShell=$('mainScreen'),mainHeader=mainShell.querySelector('.main-header'),mainHero=mainShell.querySelector('.main-hero'),mainTitle=mainHeader?.querySelector('strong'),mainCopy=mainHero?.querySelector('.main-copy'),mainPoster=mainHero?.querySelector('.main-poster'),guide=mainRoot.querySelector('.game-guide,.game-page-info');
     if(!app||!mainRoot||!mainHeader||!mainHero||!mainTitle||!mainCopy||!mainPoster)throw new Error('ANIMAL_PARKING_PATROL_MAIN_SLOTS_REQUIRED');
     localeSelect=$('localeSelect');localeSelect.closest('label')?.remove();
     mainTitle.dataset.wpFrameTitle='';mainCopy.dataset.wpFrameCopy='';mainCopy.querySelector('[data-i18n="pitch"]')?.setAttribute('data-wp-frame-summary','');$('mainProgress').dataset.wpFrameProgress='';$('startBtn').dataset.wpFrameAction='primary';mainPoster.dataset.wpFramePoster='';

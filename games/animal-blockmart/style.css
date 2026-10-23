@@ -35,10 +35,12 @@
 @media(max-height:640px) and (max-width:600px){#app{grid-template-rows:48px minmax(0,1fr) 176px 16px;gap:4px;padding:0 5px 3px}.tabs{height:34px}.placement-controls{height:40px}.card{min-height:40px}.topbar .back{width:32px;height:32px}}
 #gameFrameRoot{min-height:100dvh;max-width:1440px;margin:0 auto}
 .frame-main-screen{min-height:calc(100dvh - 24px);max-width:920px;margin:0 auto;padding:0 8px 12px}
-.frame-main-content{align-items:center}
+.frame-main-screen{align-content:start}
+.frame-main-content{align-items:start;align-content:start}
 .main-poster{display:block;width:min(100%,var(--wp-main-poster-size,220px));aspect-ratio:1;object-fit:cover;border-radius:18px;box-shadow:0 8px 24px #193d5120;justify-self:center}
 .main-summary{max-width:620px;margin:0 auto;color:#526c79;font-size:15px;line-height:1.5;text-align:center}
-#mainStart{width:min(100%,420px);min-height:50px;justify-self:center;font-weight:800}
+#mainStart{width:100%;min-height:52px;font-weight:800}
+#mainContent .main-copy{justify-content:center;align-self:stretch}
 #gameGuide{max-width:920px;margin:0 auto 28px;padding:0 8px}
 body.wp-frame-battle-active #gameGuide{display:none}
 .battle-screen{height:100dvh;max-width:1440px;margin:0 auto;grid-template-columns:minmax(0,1fr);grid-template-rows:52px minmax(0,1fr);gap:8px;padding:0 8px 8px}
@@ -595,5 +597,9 @@ html[dir="rtl"] #app .catalog-row :is(.item-copy,.item-buy,.item-owned-options){
 #app .inventory-place:disabled .inventory-place-mark{background:#d6e0db;color:#465d53}
 #app .fixture-detail-heading{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:7px}
 #app .fixture-selection-close{min-width:calc(44px * var(--wp-battle-canvas-inverse-scale,1));min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1));padding:0}
-#app .achievement-claim{min-width:calc(44px * var(--wp-battle-canvas-inverse-scale,1));min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1));max-width:calc(115px * var(--wp-battle-canvas-inverse-scale,1));padding:calc(6px * var(--wp-battle-canvas-inverse-scale,1));font-size:calc(13px * var(--wp-battle-canvas-inverse-scale,1));border:1px solid #075c4d;border-radius:9px;background:#08745f;color:white;white-space:normal;overflow-wrap:anywhere}
+#app #panel[data-active-tab="achievements"] .achievement-row{grid-template-columns:calc(30px * var(--wp-battle-canvas-inverse-scale,1)) minmax(0,1fr) calc(115px * var(--wp-battle-canvas-inverse-scale,1))}
+#app .achievement-claim{width:calc(115px * var(--wp-battle-canvas-inverse-scale,1));min-height:calc(60px * var(--wp-battle-canvas-inverse-scale,1));height:calc(60px * var(--wp-battle-canvas-inverse-scale,1));padding:calc(6px * var(--wp-battle-canvas-inverse-scale,1));font-size:calc(13px * var(--wp-battle-canvas-inverse-scale,1));border:1px solid #075c4d;border-radius:9px;background:#08745f;color:white;white-space:normal;overflow-wrap:anywhere}
 #app .achievement-claim:disabled{background:#e1e7e3;color:#465d53;border-color:#b1c1ba;opacity:1}
+#app .scene-hud .money{position:relative}
+#app .scene-hud .cash-icon{position:absolute;inset-inline-start:calc(6px * var(--wp-battle-canvas-inverse-scale,1));bottom:calc(5px * var(--wp-battle-canvas-inverse-scale,1));width:calc(24px * var(--wp-battle-canvas-inverse-scale,1));height:calc(24px * var(--wp-battle-canvas-inverse-scale,1));object-fit:contain}
+#app .scene-hud #cash{padding-inline-start:calc(24px * var(--wp-battle-canvas-inverse-scale,1))}

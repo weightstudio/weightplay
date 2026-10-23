@@ -405,6 +405,10 @@
       "date": "2026-09-07T09:01:53+08:00",
       "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
     },
+    "flying-tram": {
+      "date": "2026-10-23T13:29:55.603Z",
+      "evidence": "canonical-public-catalog"
+    },
     "four-in-a-row": {
       "date": "2026-09-07T13:23:52+08:00",
       "evidence": "git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"

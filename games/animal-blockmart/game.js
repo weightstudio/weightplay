@@ -1,11 +1,11 @@
 import * as THREE from './vendor/three/three.module.min.js';
-import {resolveLocale,t} from './locales.js?v=15';
+import {resolveLocale,t} from './locales.js?v=17';
 import {affordableRestockOffer,applySaleRevenue,browseSeconds,checkoutSeconds,customerBudget,migrateEquipmentState,purchaseEquipment,recoveryShipment,stockCapacity,totalStock,appendCashLedger,spendCash} from './economy.js?v=15';
-import {installBlockmartV9} from './blockmart-v9.js?v=15';
+import {installBlockmartV9} from './blockmart-v9.js?v=17';
 import {mergeAchievementStates,recordAchievementEvent} from './blockmart-v9-systems.js?v=12';
 
 const $=id=>document.getElementById(id),canvas=$('world'),cashEl=$('cash'),panel=$('panel'),dialog={hidden:true};
-const locale=resolveLocale(),isOwnerPreview=new URL(location.href).searchParams.get('preview')==='1';document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';document.title=`${t('title')}${isOwnerPreview?` · ${t('ownerPreview',locale)}`:''}`;document.querySelectorAll('[data-l10n]').forEach(node=>{node.textContent=t(node.dataset.l10n,locale)});document.querySelectorAll('[data-l10n-content]').forEach(node=>{node.setAttribute('content',t(node.dataset.l10nContent,locale))});document.querySelectorAll('[data-l10n-alt]').forEach(node=>{node.alt=t(node.dataset.l10nAlt,locale)});$('mainHeader').querySelector('[data-wp-return="main"]').setAttribute('aria-label',t('backToPreview',locale));$('battleBack').setAttribute('aria-label',t('backToMain',locale));document.querySelector('.scene-wrap').setAttribute('aria-label',t('sceneLabel',locale));canvas.setAttribute('aria-label',t('canvasLabel',locale));
+const locale=resolveLocale(),isOwnerPreview=new URL(location.href).searchParams.get('preview')==='1';document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';document.title=`${t('title')}${isOwnerPreview?` · ${t('ownerPreview',locale)}`:''}`;document.querySelectorAll('[data-l10n]').forEach(node=>{node.textContent=t(node.dataset.l10n,locale)});document.querySelectorAll('[data-l10n-content]').forEach(node=>{node.setAttribute('content',t(node.dataset.l10nContent,locale))});document.querySelectorAll('[data-l10n-alt]').forEach(node=>{node.alt=t(node.dataset.l10nAlt,locale)});document.querySelectorAll('[data-l10n-aria]').forEach(node=>{node.setAttribute('aria-label',t(node.dataset.l10nAria,locale))});$('mainHeader').querySelector('[data-wp-return="main"]').setAttribute('aria-label',t('backToPreview',locale));$('battleBack').setAttribute('aria-label',t('backToMain',locale));document.querySelector('.scene-wrap').setAttribute('aria-label',t('sceneLabel',locale));canvas.setAttribute('aria-label',t('canvasLabel',locale));
 const SAVE_KEY='weightplay.animal-blockmart.v1';
 // Retain the last genuinely readable snapshot in this document; never infer lost progress.
 let lastReadableSaveRaw=null,pendingSaveRecovery=null;

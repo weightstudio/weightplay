@@ -131,10 +131,10 @@ const supplementCopy={
 'zh-Hans':['返回主页','原创低多边形动物便利店','WeightPlay 原创游戏指南','现金还不够。让顾客继续购物，或等员工补货。','进货金额','13 × 13 新区已开放，同一间店与进度都会保留。'],
 'ja':['メインに戻る','オリジナルのローポリ動物コンビニ','WeightPlay オリジナルゲームガイド','現金が足りません。買い物客の購入を待つか、補充を待ちましょう。','仕入れ金額','13×13の区画が開き、同じ店舗と進行状況が続きます。'],
 'ko':['메인으로 돌아가기','오리지널 로우폴리 동물 편의점','WeightPlay 오리지널 게임 가이드','현금이 부족해요. 손님의 구매나 재고 보충을 기다리세요.','매입 금액','13×13 확장 구역이 열렸어요. 같은 매장과 진행 상황이 유지돼요.'],
-'es':['Volver a Main','Tienda animal original de baja poligonización','Guía de juegos originales de WeightPlay','Falta efectivo. Espera a que compren los clientes o a que se reponga stock.','pedido por','Se abrió el ala 13 × 13. La misma tienda conserva su progreso.'],
+'es':['Volver al menú','Tienda animal original de baja poligonización','Guía de juegos originales de WeightPlay','Falta efectivo. Espera a que compren los clientes o a que se reponga stock.','pedido por','Se abrió el ala 13 × 13. La misma tienda conserva su progreso.'],
 'pt-BR':['Voltar ao início','Loja animal original em low poly','Guia de jogos originais WeightPlay','Dinheiro insuficiente. Aguarde as vendas ou a reposição do estoque.','pedido por','A ala 13 × 13 está aberta. A mesma loja mantém seu progresso.'],
-'fr':['Retour à Main','Commerce animalier original en low poly','Guide des jeux originaux WeightPlay','Fonds insuffisants. Attendez les ventes ou le réapprovisionnement.','commande pour','L’aile 13 × 13 est ouverte. La même boutique garde sa progression.'],
-'de':['Zurück zu Main','Originaler Tierladen in Low-Poly-Optik','WeightPlay Original-Spielanleitung','Nicht genug Geld. Warte auf Verkäufe oder neue Vorräte.','Bestellung für','Der 13×13-Flügel ist geöffnet. Laden und Fortschritt bleiben erhalten.'],
+'fr':['Retour au menu','Commerce animalier original en low poly','Guide des jeux originaux WeightPlay','Fonds insuffisants. Attendez les ventes ou le réapprovisionnement.','commande pour','L’aile 13 × 13 est ouverte. La même boutique garde sa progression.'],
+'de':['Zurück zum Menü','Originaler Tierladen in Low-Poly-Optik','WeightPlay Original-Spielanleitung','Nicht genug Geld. Warte auf Verkäufe oder neue Vorräte.','Bestellung für','Der 13×13-Flügel ist geöffnet. Laden und Fortschritt bleiben erhalten.'],
 'it':['Torna alla schermata principale','Negozio animalier originale low poly','Guida ai giochi originali WeightPlay','Contanti insufficienti. Attendi le vendite o il rifornimento.','ordine da','L’ala 13 × 13 è aperta. Il negozio conserva i progressi.'],
 'ru':['В меню','Оригинальный магазин с животными в стиле low-poly','Руководство по оригинальным играм WeightPlay','Недостаточно денег. Дождитесь покупок или пополнения запасов.','заказ на','Крыло 13×13 открыто. Магазин и прогресс сохранены.'],
 'hi':['मुख्य मेनू पर लौटें','मौलिक लो-पॉली पशु सुविधा स्टोर','WeightPlay मूल गेम गाइड','पैसे कम हैं। ग्राहकों की खरीद या स्टॉक भरने की प्रतीक्षा करें।','के लिए ऑर्डर','13×13 वाला हिस्सा खुला है। दुकान और प्रगति वही रहती है।'],
@@ -808,7 +808,7 @@ const issueV14GuideRows={
     "操作とルール",
     "ドラッグで移動。「カメラ回転」を有効にしてドラッグすると回転。ホイールやピンチで拡大縮小。Rで選択設備を回転。キャンセルやEscで配置を取り消しても、所有設備は倉庫に残ります。",
     "終了とフィードバック",
-    "支払いで現金と目標が進みます。達成後も営業を続けるか、Mainへ戻って一時停止。進捗はこの端末に保存され、再開店で続けられます。",
+    "支払いで現金と目標が進みます。達成後も営業を続けるか、メニューへ戻って一時停止。進捗はこの端末に保存され、再開店で続けられます。",
     "お店の目標を達成。バッジを見るか、営業を続けよう。",
     "読み取れる進捗を復元しました。破損した元データはこの端末に保管しています。",
     "以前の進捗を読み取れません。元データを保管し、新しいお店を作成しました。",
@@ -823,7 +823,7 @@ const issueV14GuideRows={
     "조작과 규칙",
     "드래그로 이동하고 카메라 회전을 켜면 드래그로 회전합니다. 휠이나 두 손가락으로 확대합니다. R로 선택한 설비를 회전하며 취소나Esc는 배치를 취소합니다. 소유 설비는 창고에 남습니다.",
     "종료와 피드백",
-    "손님 결제로 현금과 목표가 늘어납니다. 목표 달성 후에도 운영하거나 Main으로 돌아가 일시 정지하세요. 진행은 이 기기에 저장되며 다시 개점하면 이어집니다.",
+    "손님 결제로 현금과 목표가 늘어납니다. 목표 달성 후에도 운영하거나 메뉴로 돌아가 일시 정지하세요. 진행은 이 기기에 저장되며 다시 개점하면 이어집니다.",
     "상점 목표 완료. 배지를 확인하거나 운영을 계속하세요.",
     "읽을 수 있는 진행을 복구했습니다. 손상된 원본 저장은 이 기기에 보관됩니다.",
     "이전 진행을 읽을 수 없습니다. 원본 저장을 보관하고 새 상점을 만들었습니다.",
@@ -838,7 +838,7 @@ const issueV14GuideRows={
     "Controles y reglas",
     "Arrastra para desplazar. Activa Girar cámara para rotar al arrastrar; rueda o pellizco para ampliar. R gira el equipo seleccionado. Cancelar oEsc anula la colocación; lo comprado sigue en Almacén.",
     "Final y respuesta",
-    "Los pagos aumentan el efectivo y completan metas. Sigue operando o vuelve a Main para pausar. El progreso queda en este dispositivo y continúa al abrir.",
+    "Los pagos aumentan el efectivo y completan metas. Sigue operando o vuelve al menú para pausar. El progreso queda en este dispositivo y continúa al abrir.",
     "Metas completadas. Abre Insignias o sigue ampliando.",
     "Progreso legible recuperado. El guardado dañado original queda en este dispositivo.",
     "No se pudo leer el progreso anterior. Se conservó el original y se creó una tienda nueva.",
@@ -853,7 +853,7 @@ const issueV14GuideRows={
     "Controles e regras",
     "Arraste para mover. Ative Girar câmera para girar ao arrastar; roda ou pinça para ampliar. R gira o equipamento escolhido. Cancelar ouEsc cancela a colocação; itens comprados ficam no Armazém.",
     "Fim e retorno",
-    "Pagamentos aumentam o caixa e cumprem metas. Continue operando ou volte a Main para pausar. O progresso fica neste dispositivo e continua ao abrir a loja.",
+    "Pagamentos aumentam o caixa e cumprem metas. Continue operando ou volte ao menu para pausar. O progresso fica neste dispositivo e continua ao abrir a loja.",
     "Metas concluídas. Abra Medalhas ou continue crescendo.",
     "Progresso legível recuperado. O arquivo danificado original fica neste dispositivo.",
     "Não foi possível ler o progresso anterior. O original foi preservado e uma nova loja foi criada.",
@@ -868,7 +868,7 @@ const issueV14GuideRows={
     "Commandes et règles",
     "Glissez pour déplacer. Activez Tourner la caméra pour pivoter en glissant ; molette ou pincement pour zoomer. R tourne le meuble choisi. Annuler ouEsc annule sa pose ; le meuble acheté reste en réserve.",
     "Fin et retour",
-    "Les paiements augmentent la caisse et accomplissent les objectifs. Continuez ou revenez à Main pour suspendre. La progression reste sur cet appareil et reprend à l’ouverture.",
+    "Les paiements augmentent la caisse et accomplissent les objectifs. Continuez ou revenez au menu pour suspendre. La progression reste sur cet appareil et reprend à l’ouverture.",
     "Objectifs accomplis. Ouvrez les badges ou continuez.",
     "Progression lisible récupérée. La sauvegarde endommagée originale reste sur cet appareil.",
     "La progression précédente est illisible. L’original est conservé et une nouvelle boutique a été créée.",
@@ -883,7 +883,7 @@ const issueV14GuideRows={
     "Steuerung und Regeln",
     "Ziehen verschiebt die Ansicht. Kamera drehen aktiviert Drehung beim Ziehen; Mausrad oder Pinch zoomt. R dreht das gewählte Objekt. Abbrechen oderEsc beendet das Platzieren; gekaufte Objekte bleiben im Lager.",
     "Abschluss und Rückmeldung",
-    "Zahlungen erhöhen Geld und erfüllen Ziele. Betreibe den Laden weiter oder gehe zum Pausieren zurück zu Main. Der Fortschritt bleibt auf diesem Gerät und läuft beim Öffnen weiter.",
+    "Zahlungen erhöhen Geld und erfüllen Ziele. Betreibe den Laden weiter oder gehe zum Pausieren zurück zum Menü. Der Fortschritt bleibt auf diesem Gerät und läuft beim Öffnen weiter.",
     "Ladenziele geschafft. Öffne Abzeichen oder spiele weiter.",
     "Lesbarer Fortschritt wiederhergestellt. Der beschädigte Originalstand bleibt auf diesem Gerät.",
     "Der alte Fortschritt ist unlesbar. Das Original wurde gesichert und ein neuer Laden erstellt.",
@@ -898,7 +898,7 @@ const issueV14GuideRows={
     "Comandi e regole",
     "Trascina per spostare. Attiva Ruota camera per ruotare trascinando; rotella o pizzico per zoomare. R ruota l’oggetto scelto. Annulla oEsc annulla il posizionamento; gli acquisti restano in Magazzino.",
     "Fine e riscontro",
-    "I pagamenti aumentano cassa e obiettivi. Continua o torna a Main per sospendere. I progressi restano su questo dispositivo e riprendono all’apertura.",
+    "I pagamenti aumentano cassa e obiettivi. Continua o torna al menu per sospendere. I progressi restano su questo dispositivo e riprendono all’apertura.",
     "Obiettivi completati. Apri Distintivi o continua.",
     "Progressi leggibili recuperati. Il salvataggio originale danneggiato resta su questo dispositivo.",
     "I vecchi progressi non sono leggibili. L’originale è conservato ed è stato creato un nuovo negozio.",
@@ -913,7 +913,7 @@ const issueV14GuideRows={
     "Управление и правила",
     "Перетаскивание сдвигает вид. Включите поворот камеры для вращения; колесо или жест двумя пальцами меняет масштаб. R вращает выбранный объект. Отмена илиEsc отменяет размещение; купленное остаётся на складе.",
     "Завершение и отклик",
-    "Оплата увеличивает деньги и выполняет цели. Продолжайте работу или вернитесь в Main для паузы. Прогресс хранится на устройстве и продолжается при открытии.",
+    "Оплата увеличивает деньги и выполняет цели. Продолжайте работу или вернитесь в меню для паузы. Прогресс хранится на устройстве и продолжается при открытии.",
     "Цели выполнены. Откройте значки или продолжайте.",
     "Читаемый прогресс восстановлен. Повреждённый оригинал сохранён на устройстве.",
     "Старый прогресс прочитать нельзя. Оригинал сохранён; создан новый магазин.",
@@ -928,7 +928,7 @@ const issueV14GuideRows={
     "नियंत्रण और नियम",
     "खींचकर दृश्य सरकाएँ। कैमरा घुमाना चालू करके खींचें; पहिए या दो उँगलियों से ज़ूम करें। R चयनित उपकरण घुमाता है। रद्द याEsc से रखना रद्द होता है; खरीदा उपकरण गोदाम में रहता है।",
     "समाप्ति और प्रतिक्रिया",
-    "भुगतान से नकद और लक्ष्य बढ़ते हैं। आगे दुकान चलाएँ या Main लौटकर रोकें। प्रगति इसी उपकरण में बचती है और दुकान खोलने पर जारी रहती है।",
+    "भुगतान से नकद और लक्ष्य बढ़ते हैं। आगे दुकान चलाएँ या मुख्य मेन्यू में लौटकर रोकें। प्रगति इसी उपकरण में बचती है और दुकान खोलने पर जारी रहती है।",
     "दुकान के लक्ष्य पूरे। बैज देखें या आगे बढ़ाएँ।",
     "पढ़ी जा सकने वाली प्रगति लौटाई गई। खराब मूल सेव इसी उपकरण में सुरक्षित है।",
     "पुरानी प्रगति पढ़ी नहीं जा सकी। मूल सेव सुरक्षित रखा गया और नई दुकान बनाई गई।",
@@ -943,7 +943,7 @@ const issueV14GuideRows={
     "التحكم والقواعد",
     "اسحب لتحريك المنظر. فعّل تدوير الكاميرا للدوران بالسحب؛ العجلة أو إصبعان للتكبير. R يدير القطعة المختارة. إلغاء أوEsc يلغي وضعها؛ تبقى المشتريات في المخزن.",
     "الانتهاء والاستجابة",
-    "الدفع يزيد المال ويحقق الأهداف. واصل التشغيل أو عد إلى Main للإيقاف المؤقت. يبقى التقدم على هذا الجهاز ويستأنف عند فتح المتجر.",
+    "الدفع يزيد المال ويحقق الأهداف. واصل التشغيل أو عد إلى القائمة الرئيسية للإيقاف المؤقت. يبقى التقدم على هذا الجهاز ويستأنف عند فتح المتجر.",
     "اكتملت أهداف المتجر. افتح الشارات أو واصل النمو.",
     "استُعيد التقدم القابل للقراءة. يبقى الحفظ الأصلي التالف على هذا الجهاز.",
     "تعذر قراءة التقدم السابق. حُفظ الأصل وأُنشئ متجر جديد.",
@@ -1048,5 +1048,19 @@ const remainingCountLabels=['Remaining','剩餘數量','剩余数量','残り','
 for(const [index,locale]of supportedLocales.entries())dict[locale].remainingCount=remainingCountLabels[index];
 keys.push('remainingCount');
 const aliases={'zh-tw':'zh-Hant','zh-hant':'zh-Hant','zh-cn':'zh-Hans','zh-hans':'zh-Hans','pt-br':'pt-BR'};
-export function resolveLocale(){const q=new URL(location.href).searchParams.get('lang');const ref=(()=>{try{return new URL(document.referrer).pathname.split('/')[1]}catch{return''}})();const here=location.pathname.split('/')[1];const raw=q||ref||here||document.documentElement.lang||'en';const locale=aliases[raw.toLowerCase()]||raw;return supportedLocales.includes(locale)?locale:'en'}
-export function t(key,locale=resolveLocale()){return dict[locale]?.[key]??dict.en[key]??key}
+export function resolveLocale(){
+  const url=new URL(location.href);
+  // A localized entry owns its language. The referring page is never a
+  // preference: Settings navigates from the previous language's route.
+  let saved='';
+  try{saved=localStorage.getItem('weightPlayLocale')||localStorage.getItem('weightplayLocale')||localStorage.getItem('wp-locale')||''}catch{}
+  for(const raw of [url.pathname.split('/')[1],url.searchParams.get('lang'),saved,document.documentElement.lang]){
+    const value=String(raw||'');const locale=aliases[value.toLowerCase()]||value;
+    if(supportedLocales.includes(locale))return locale;
+  }
+  return 'en';
+}
+export function t(key,locale=resolveLocale()){
+  if(key==='title')return globalThis.WEIGHTPLAY_GAME_TITLES?.['animal-blockmart']?.[locale]??dict[locale]?.title??dict.en.title;
+  return dict[locale]?.[key]??dict.en[key]??key;
+}

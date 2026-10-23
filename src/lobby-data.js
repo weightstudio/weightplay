@@ -7446,19 +7446,19 @@ const flyingTramType = {
 };
 const flyingTramDescription = {
   __localizedExact: true,
-  en: "Boost a chunky sky tram, flip for points, keep one bubble tea from sloshing over, then settle onto three tricky rooftop pads.",
-  "zh-Hant": "推進方塊電車、空翻賺分，穩住快灑出的珍奶，再挑戰三條愈來愈難的屋頂航線。",
-  "zh-Hans": "推动方块电车、空翻得分，稳住快洒出的珍奶，再挑战三条越来越难的屋顶航线。",
+  en: "Boost a chunky sky tram, flip for points, keep one bubble tea from sloshing over, then settle onto 30 rooftop routes.",
+  "zh-Hant": "推進方塊電車、空翻賺分，穩住快灑出的珍奶，再挑戰30 條屋頂航線。",
+  "zh-Hans": "推动方块电车、空翻得分，稳住快洒出的珍奶，再挑战30 条屋顶航线。",
   ja: "ブロックのトラムを加速して宙返りで得点。揺れるタピオカをこぼさず、難度が上がる屋上ルートに着陸しよう。",
   ko: "각진 전차를 띄우고 플립으로 점수를 얻으세요. 흔들리는 버블티를 지키며 점점 어려워지는 옥상 활주로에 착륙하세요.",
-  es: "Impulsa un tranvía de bloques, gira para sumar puntos, evita derramar el té y aterriza en tres azoteas cada vez más difíciles.",
-  "pt-BR": "Impulsione um bonde de blocos, gire para pontuar, evite derramar o chá e pouse em três telhados cada vez mais difíceis.",
-  fr: "Propulsez un tram en blocs, enchaînez les flips, gardez le thé dans son gobelet et posez-vous sur trois toits de plus en plus difficiles.",
-  de: "Schubse eine kantige Bahn an, drehe dich für Punkte, halte den Tee im Becher und lande auf drei immer schwierigeren Dächern.",
-  it: "Lancia un tram a blocchi, fai capriole per punti, non rovesciare il tè e atterra su tre tetti sempre più difficili.",
-  ru: "Разгоняйте блочный трамвай, крутитесь ради очков, не расплескайте чай и садитесь на три всё более сложные крыши.",
-  hi: "घनाकार ट्राम को उड़ाएँ, फ़्लिप से अंक पाएँ, चाय छलकने से बचाएँ और तीन कठिन होती छतों पर उतरें।",
-  ar: "ادفع ترامًا مكعبًا، واقلبه لتحصل على النقاط، وحافظ على الشاي ثم اهبط على ثلاثة أسطح تزداد صعوبة.",
+  es: "Impulsa un tranvía de bloques, gira para sumar puntos, evita derramar el té y aterriza en 30 rutas sobre azoteas.",
+  "pt-BR": "Impulsione um bonde de blocos, gire para pontuar, evite derramar o chá e pouse em 30 rotas sobre telhados.",
+  fr: "Propulsez un tram en blocs, enchaînez les flips, gardez le thé dans son gobelet et posez-vous sur 30 parcours sur les toits.",
+  de: "Schubse eine kantige Bahn an, drehe dich für Punkte, halte den Tee im Becher und lande auf 30 Dachrouten.",
+  it: "Lancia un tram a blocchi, fai capriole per punti, non rovesciare il tè e atterra su 30 percorsi sui tetti.",
+  ru: "Разгоняйте блочный трамвай, крутитесь ради очков, не расплескайте чай и садитесь на 30 маршрутов над крышами.",
+  hi: "घनाकार ट्राम को उड़ाएँ, फ़्लिप से अंक पाएँ, चाय छलकने से बचाएँ और 30 छतों पर उतरें।",
+  ar: "ادفع ترامًا مكعبًا، واقلبه لتحصل على النقاط، وحافظ على الشاي ثم اهبط على 30 مسارًا فوق الأسطح.",
 };
 const flyingTramStatusText = {
   en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開",
@@ -7466,9 +7466,9 @@ const flyingTramStatusText = {
   de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
 };
 window.WONDER_LOBBY.games.push({
-  id: "flying-tram", audience: "general", status: "planned", internalOnly: true,
-  internalTrial: "/games/flying-tram/index.html?preview=1",
-  title: flyingTramTitle, statusText: flyingTramStatusText, type: flyingTramType,
+  id: "flying-tram", audience: "general", status: "playable",
+  previewVideo: "assets/previews/flying-tram-battle.webm",
+  title: flyingTramTitle, type: flyingTramType,
   description: flyingTramDescription,
   categories: ["Arcade", "Vehicle Games", "Animal Games"],
   skills: ["Timing", "Focus", "Hand-Eye Coordination"], ages: ["general"], ageTags: ["general"],

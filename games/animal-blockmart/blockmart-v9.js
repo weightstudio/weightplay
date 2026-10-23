@@ -1,5 +1,6 @@
 import {panelElement,reconcilePanel} from './panel-view.js?v=15';
 import {REWARD_TRACKS,normalizeRewards,rewardOffer,claimReward,normalizeOperatingFlow,netProfitPerMinute,decorationTraffic} from './rewards-profit.js?v=15';
+import {canClaimOwner,takeNavigationHandoff,leaveNavigationHandoff} from './ownership.mjs?v=17';
 import * as THREE from './vendor/three/three.module.min.js';
 import {liveElapsedWindow,simulationSteps,migrateEmployees,hireStoreEmployee,changeEmployeeRole,employeeCheckoutSeconds,employeeRestockSeconds,migrateBusinessUpgrades,trainedEmployee,businessUpgradeCost,purchaseBusinessUpgrade,purchaseExpansion,EXPANSIONS,normalizeBusinessPerformance,recordBusinessSale,businessPerformance,visitorCapacity,visitorRenderLimit,shopDemandMultiplier,EMPLOYEE_HIRE_COST,EMPLOYEE_RESTOCK_BATCH} from './economy.js?v=15';
 import {
@@ -2282,7 +2283,8 @@ export function installBlockmartV9(ctx) {
     return enqueue(async()=>{
       await locked(()=>{
         const saved=ctx.readSaved(),reload=performance.getEntriesByType('navigation')[0]?.type==='reload';
-        const allowed=takeover||!saved?.liveOwner||saved.liveOwner.documentId===documentId||(reload&&saved.liveOwner.tabToken===tabToken);
+        let predecessor=null;try{predecessor=takeNavigationHandoff(sessionStorage)}catch{}
+        const allowed=canClaimOwner(saved?.liveOwner,{documentId,tabToken,reload,predecessor,takeover});
         if(!allowed){owned=false;adoptSaved(saved);return;}
         if(saved){setState(ctx.readCompatibleSaved());migrateCurrentState();}restoreRuntime();
         state().liveOwner={documentId,tabToken};state().liveClock={...(state().liveClock||{}),cursor:Date.now(),pendingMs:Math.max(0,state().liveClock?.pendingMs||0)};
@@ -2346,7 +2348,12 @@ export function installBlockmartV9(ctx) {
     window.addEventListener('weightplay:lifecycle-ready',setupLifecycle);setupLifecycle();
     if(!lease){failAdapter(new Error('Shared lifecycle unavailable'));return;}
     claimOwnership();
-    window.addEventListener('pagehide',()=>{lease?.checkpoint();lease?.dispose();lease=null;clearInterval(checkpointTimer);disposed=true;});
+    window.addEventListener('pagehide',()=>{
+      // Only a document that is actually departing grants one continuation
+      // in this tab. A duplicated live tab inherits no such grant.
+      if(owned&&!faulted)try{leaveNavigationHandoff(sessionStorage,documentId)}catch{}
+      lease?.checkpoint();lease?.dispose();lease=null;clearInterval(checkpointTimer);disposed=true;
+    });
     window.addEventListener('pageshow',event=>{if(event.persisted){disposed=false;setupLifecycle();claimOwnership()}});
   }
 
