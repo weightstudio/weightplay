@@ -56,33 +56,31 @@
   <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
   <link rel="stylesheet" href="../../src/tutorial.css">
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2">
-
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261023-color-link-i9-v1">
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261021-shared-play1">
+  <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261021-stage-rail-i9">
+  <link rel="stylesheet" href="../../src/interface9-shared-screens.css?v=20261023-color-link-i9-v1">
 </head>
-<body data-screen="main" data-audience="kids" data-wp-game-id="animal-color-link" data-wp-combined-sound="true" data-runtime-localize="off">
+<body data-screen="main" data-audience="kids" data-wp-game-id="animal-color-link" data-wp-combined-sound="true" data-runtime-localize="off" data-wp-frame-root data-wp-interface-version="6" data-wp-interface-candidate="9">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-t="title">Color Link Garden</strong><span>Loading garden…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
   </section>
-  <main id="main" class="screen main main-screen" data-screen="main">
+  <main id="main" class="screen main main-screen wp-standard-main-screen" data-screen="main">
     <header class="main-header">
       <a class="return" href="/kids/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay Kids">←</a>
-      <strong data-t="title">Color Link Garden</strong>
+      <strong data-wp-frame-title data-t="title">Color Link Garden</strong>
       <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
     </header>
-    <section class="hero">
-      <img src="../../assets/animal-color-link/cover-block-v1.png" data-t-alt="coverAlt" alt="A red panda garden keeper planning colorful non-crossing flower paths">
-      <div class="hero-copy">
-        <p class="eyebrow" data-t="kicker">PANKO'S PUZZLE GARDEN</p>
-        <h1 data-t="title">Color Link Garden</h1>
-        <p class="main-summary" data-t="summary">Connect every matching seed without crossing paths. Fill the whole garden to bloom.</p>
-        <img class="color-link-keeper" src="../../assets/animal-color-link/keeper-block-v1.png" alt="" aria-hidden="true">
-        <button id="start" class="primary" data-t="start">Start Game</button>
-      </div>
-    </section>
-    <section class="game-page-info game-page-info-static" aria-label="Color Link Garden game guide">
+    <div class="main-content">
+      <section class="wp-standard-main-composition" aria-label="Color Link Garden">
+        <div class="wp-standard-main-poster"><img class="main-cover" data-wp-frame-poster src="../../assets/animal-color-link/cover-block-v1.png" data-t-alt="coverAlt" alt="A red panda garden keeper planning colorful non-crossing flower paths"></div>
+        <div class="wp-standard-main-copy">
+          <p class="wp-standard-main-summary" data-wp-frame-summary data-t="summary">Connect every matching seed without crossing paths. Fill the whole garden to bloom.</p>
+          <button id="start" class="primary" data-wp-main-start data-wp-frame-action="primary" data-t="start">Start Game</button>
+        </div>
+      </section>
+      <section class="game-page-info game-page-info-static" data-wp-game-guide aria-label="Color Link Garden game guide">
       <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2 data-t="title">Color Link Garden</h2><p data-t="summary">Connect every matching seed without crossing paths. Fill the whole garden to bloom.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Color-Link Puzzle</span><span>Color Paths</span><span>No Crossings</span><span>Full Board</span></div></div>
       <div class="game-info-sections">
         <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose an unlocked garden from the horizontal Stage rail.</li><li>Drag from either colored flower seed to its matching seed.</li><li>Keep every path separate and fill every board cell.</li><li>Use Undo, Hint, or Reset whenever a route blocks another color.</li><li>Complete the garden to unlock the next of 30 stages.</li></ol></div>
@@ -92,35 +90,28 @@
         <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Recommended for ages 9+ and family puzzle play. Progress is saved only in this browser. No account or advertising is used, and completion feedback is not a formal assessment.</p></div>
         <div class="game-info-section"><h3>Frequently Asked Questions</h3><dl><div><dt>Do all cells need a path?</dt><dd>Yes. Connecting every pair is not enough; the complete board must be filled.</dd></div><div><dt>Can paths cross?</dt><dd>No. Each cell belongs to exactly one color path.</dd></div><div><dt>Are hints limited?</dt><dd>No. Hints do not spend currency. Each hint adds one safe route for a pair that is not yet connected. If all pairs are connected but empty cells remain, Hint cannot fill them; undo or redraw a route first.</dd></div><div><dt>Does the game have ads?</dt><dd>No. Color Link Garden is part of the ad-free Kids lobby.</dd></div><div><dt>Does progress save?</dt><dd>Yes. Unlocks are stored locally in this browser.</dd></div></dl></div>
       </div>
-    </section>
+      </section>
+    </div>
   </main>
 
-  <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-color-link/cover-block-v1.png')" hidden>
+  <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
     <header class="scene-header stage-header">
-      <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
-      <h2 data-t="title">Color Link Garden</h2>
+      <button class="icon-button" type="button" data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
+      <h2 data-wp-frame-title data-t="title">Color Link Garden</h2>
     </header>
     <section class="stage-workspace">
-      <div class="stage-summary"><small data-t="choose">CHOOSE A GARDEN</small><span id="progressBadge" class="badge"></span></div>
-      <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
+      <div id="stageHeaderInfo" aria-live="polite"></div>
+      <section id="stageGrid" class="stage-grid stage-rail" role="group" data-wp-stage-rail data-t-aria="stageList" aria-label="Stage list"></section>
     </section>
-    <nav class="stage-tabs" data-t-aria="stageList" aria-label="Stage list">
-      <button id="previousGroup" type="button" aria-label="Previous gardens">←</button>
-      <button id="stageTab" type="button" class="stage-tab active" aria-current="page">Stages</button>
-      <button id="nextGroup" type="button" aria-label="Next gardens">→</button>
-    </nav>
   </main>
 
   <main id="battle" class="screen canvas battle" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
     <header class="scene-header battle-header">
-      <button class="icon-button" data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">←</button>
-      <h2 id="stageName"></h2>
+      <button class="icon-button" type="button" data-wp-return="battle" data-t-aria="back" aria-label="Back">←</button>
+      <h2 id="stageName" data-wp-frame-title>Color Link Garden</h2>
     </header>
     <section class="battle-content">
-      <div class="hud">
-        <span id="chapter"></span><span id="moves"></span>
-        <span id="linkStatus"></span><span id="fillStatus"></span>
-      </div>
+      <div id="battleHeaderInfo"></div>
       <div id="grid" class="grid" role="grid" tabindex="0" data-t-aria="boardLabel" aria-label="Color Link puzzle board"></div>
       <div class="tools">
         <button id="undo" data-t="undo">Undo path</button>
@@ -163,12 +154,13 @@
   <script src="../../src/tutorial.js?v=20261011-colorlink-140-v1"></script>
   <script src="levels.js"></script>
   <script src="locales.js?v=20261011-colorlink-140-v1"></script>
-  <script src="game.js?v=20261011-colorlink-140-v1&wp-audio=1.0.0"></script>
-  <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
-  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20261011-colorlink-static-guide-140-v1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1"></script>
+  <script src="../../src/game-screen-frame.js?v=20261023-color-link-i9-v1"></script>
+  <script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script>
+  <script src="../../src/game-play-ui.js?v=20261021-shared-play1"></script>
+  <script src="stage-config.js?v=20261023-color-link-i9-v1"></script>
+  <script src="game.js?v=20261023-color-link-i9-v1"></script>
   <script>window.addEventListener("load",()=>{document.getElementById("loadingPanel")?.classList.add("hidden");window.WonderAnalytics?.track?.("game_view",{game_id:"animal-color-link"});},{once:true});</script>
 </body>
 </html>

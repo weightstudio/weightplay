@@ -22,6 +22,7 @@
   const localeOrder=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const storeKey="wp-animal-color-link-v1";
   const $=selector=>document.querySelector(selector);
+  const localeSelect=$("#locale");
   const screens=[...document.querySelectorAll(".screen")];
   const interfaceCopy={
     en:["Stages","Previous gardens","Next gardens","Pause this garden?","Continue keeps every path exactly in place. Returning to Stages ends this attempt.","Continue","Return to Stages","Next garden","Play again"],
@@ -44,6 +45,7 @@
   let unlocked=Number(readStore(storeKey))||1;
   let selected=Math.min(unlocked,30)-1;
   let level=null,paths={},active=null,history=[],moves=0,blockedPulse=false,resultClaimed=false;
+  let screenFrame=null,stageUI=null,stageStartButton=null;
 
   function readStore(key){try{return localStorage.getItem(key)}catch{return null}}
   function writeStore(key,value){try{localStorage.setItem(key,value)}catch{}}
@@ -71,6 +73,7 @@
     setBattleCovered(false,null);
     screens.forEach(screen=>screen.hidden=screen.id!==id);
     document.body.dataset.screen=id;
+    screenFrame?.activate(id);
     if(id==="battle"){
       window.dispatchEvent(new Event("weightplay:stage-sync"));
       window.dispatchEvent(new Event("weightplay:battle-sync"));
@@ -79,7 +82,10 @@
       window.dispatchEvent(new Event("weightplay:stage-sync"));
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
-    if(id==="stage")renderStages();
+    if(id==="stage"){
+      renderStages();
+      stageUI?.refresh(selected);
+    }
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[id] ?? null;
       if (["result"].includes(id) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -87,23 +93,29 @@
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
   const {levels,buildLevel}=window.COLOR_LINK_LEVELS;
-  function renderStages(){
-    $("#progressBadge").textContent=text("progress",{done:Math.min(unlocked-1,30)});
-    $("#stageGrid").innerHTML="";
-    levels.forEach((item,index)=>{
-      const button=document.createElement("button");
-      const locked=index+1>unlocked;
-      button.className=`stage-card${index===selected?" selected":""}${locked?" locked":""}`;
-      button.disabled=locked;
-      button.dataset.index=index;
-      button.classList.toggle("is-centered",index===selected);
-      if(index===selected){button.setAttribute("aria-current","true");button.dataset.wpStageRecommended="true"}
-      button.innerHTML=`<strong>${text("garden",{n:index+1})}</strong><span>${item.size} × ${item.size}</span><span class="dots">${palette.slice(0,item.count).map(c=>`<i style="--c:${c}"></i>`).join("")}</span>`;
-      button.setAttribute("aria-label",`${text("garden",{n:index+1})}, ${item.size} × ${item.size}${locked?", "+text("locked"):""}`);
-      button.onclick=()=>startLevel(index);
-      $("#stageGrid").append(button);
+  function createStageConfig(){
+    return window.AnimalColorLinkStageConfig.create({
+      count:levels.length,
+      stage(index){
+        const item=levels[index],locked=index+1>unlocked;
+        return {
+          id:index+1,
+          kicker:text("choose"),
+          title:text("garden",{n:index+1}),
+          subtitle:`${item.size} × ${item.size}`,
+          status:locked?text("locked"):"",
+          summary:text("draw"),
+          locked,
+          cleared:index+1<unlocked,
+        };
+      },
     });
-    requestAnimationFrame(()=>$("#stageGrid .selected")?.scrollIntoView({block:"nearest",inline:"center"}));
+  }
+  function renderStages(){
+    const progress=$("#progressBadge");
+    if(progress)progress.textContent=text("progress",{done:Math.min(unlocked-1,30)});
+    stageStartButton && (stageStartButton.disabled=selected+1>unlocked);
+    stageUI?.setConfig(createStageConfig(),selected);
   }
   function startLevel(index){
     selected=index;level=levels[index];paths={};active=null;history=[];moves=0;blockedPulse=false;
@@ -201,6 +213,54 @@
     checkComplete();
   }
   const gridCell=cell=>document.querySelector(`[data-cell="${cell}"]`);
+  function mountSharedInterface(){
+    const stageProgress=document.createElement("span");
+    stageProgress.id="progressBadge";
+    const stageProgressGroup=window.WeightPlayScreenFrame.createGroup();
+    stageProgressGroup.add(stageProgress);
+
+    const battleStatsGroup=window.WeightPlayScreenFrame.createGroup();
+    for(const id of ["chapter","moves","linkStatus","fillStatus"]){
+      const stat=document.createElement("span");
+      stat.id=id;
+      battleStatsGroup.add(stat);
+    }
+
+    screenFrame=window.WeightPlayScreenFrame.mount({
+      root:document.body,
+      localeSelect,
+      playUI:true,
+      scenes:{
+        main:{root:$("#main"),header:$("#main .main-header"),content:$("#main .main-content")},
+        stage:{root:$("#stage"),header:$("#stage .stage-header"),content:$("#stage .stage-workspace"),headerInfo:$("#stageHeaderInfo")},
+        battle:{root:$("#battle"),header:$("#battle .battle-header"),content:$("#battle .battle-content"),headerInfo:$("#battleHeaderInfo")},
+      },
+    });
+    screenFrame.stageTopUI.add(stageProgressGroup);
+    screenFrame.battleTopUI.add(battleStatsGroup);
+
+    stageStartButton=document.createElement("button");
+    stageStartButton.id="stageStart";
+    stageStartButton.type="button";
+    stageStartButton.dataset.wpFrameAction="primary";
+    stageStartButton.addEventListener("click",()=>{
+      if(selected+1<=unlocked)startLevel(selected);
+    });
+    screenFrame.commonDownButton.add(stageStartButton);
+
+    stageUI=window.WeightPlayPlayUI.mountStage({
+      page:$("#stage .stage-workspace"),
+      rail:$("#stageGrid"),
+      selected,
+      isActive:()=>screenFrame.active==="stage"&&!$("#stage").hidden,
+      config:createStageConfig(),
+      onSelect(index){
+        selected=index;
+        if(stageStartButton)stageStartButton.disabled=index+1>unlocked;
+      },
+      onStart(index){startLevel(index);},
+    });
+  }
   function applyLocale(){
     const pack=window.COLOR_LINK_LOCALES[locale];
     document.documentElement.lang=locale;
@@ -209,10 +269,8 @@
     document.querySelectorAll("[data-t]").forEach(node=>node.textContent=text(node.dataset.t));
     document.querySelectorAll("[data-t-aria]").forEach(node=>node.setAttribute("aria-label",text(node.dataset.tAria)));
     document.querySelectorAll("[data-t-alt]").forEach(node=>node.setAttribute("alt",text(node.dataset.tAlt)));
-    $("#locale").value=locale;
-    $("#stageTab").textContent=ui(0);
-    $("#previousGroup").setAttribute("aria-label",ui(1));
-    $("#nextGroup").setAttribute("aria-label",ui(2));
+    localeSelect.value=locale;
+    if(stageStartButton)stageStartButton.textContent=text("start");
     $("#leaveTitle").textContent=ui(3);
     $("#leaveText").textContent=ui(4);
     $("#leaveContinue").textContent=ui(5);
@@ -230,32 +288,13 @@
     writeStore("wp-locale",locale);applyLocale()
   };
   $("#start").onclick=()=>show("stage");
-  $("#stage [data-back]").onclick=()=>show("main");
-  $("#battle [data-back]").onclick=()=>{
+  $("#stage [data-wp-return='stage']").onclick=event=>{event.preventDefault();show("main")};
+  $("#battle [data-wp-return='battle']").onclick=()=>{
     if(!$("#result").hidden){$("#resultStages").click();return}
     openBattleModal($("#leavePanel"),$("#leaveContinue"));
   };
-  $("#leaveContinue").onclick=()=>closeBattleModal($("#leavePanel"),$("#battle [data-back]"));
+  $("#leaveContinue").onclick=()=>closeBattleModal($("#leavePanel"),$("#battle [data-wp-return='battle']"));
   $("#leaveStages").onclick=()=>show("stage");
-  $("#stageGrid").addEventListener("wonder:stage-snap",event=>{
-    const index=Number(event.detail?.index);
-    const card=$("#stageGrid").children[index];
-    if(!Number.isInteger(index)||!card)return;
-    if(!card.disabled)selected=index;
-    $("#stageGrid").querySelectorAll(".stage-card").forEach((item,itemIndex)=>{
-      item.classList.toggle("selected",itemIndex===index);
-      item.classList.toggle("is-centered",itemIndex===index);
-      item.toggleAttribute("aria-current",itemIndex===index);
-    });
-  });
-  function scrollToGroup(delta){
-    const index=Math.max(0,Math.min(29,Math.floor(selected/10)*10+delta*10));
-    const card=$("#stageGrid").children[index];
-    card?.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
-  }
-  $("#previousGroup").onclick=()=>scrollToGroup(-1);
-  $("#nextGroup").onclick=()=>scrollToGroup(1);
-  $("#stageTab").onclick=()=>$("#stageGrid").children[selected]?.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
   $("#undo").onclick=()=>{const color=history.pop();if(color!==undefined)delete paths[color];active=null;$("#status").textContent=text("undone");renderBoard()};
   $("#reset").onclick=()=>{paths={};active=null;history=[];moves=0;$("#status").textContent=text("fresh");renderBoard()};
   $("#hint").onclick=hint;
@@ -296,6 +335,7 @@
     if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}
     else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
   },true);
+  mountSharedInterface();
   applyLocale();show("main");
   window.__COLOR_LINK_TEST__={levels,buildLevel,interfaceCopy};
 })();

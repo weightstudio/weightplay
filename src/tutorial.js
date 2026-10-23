@@ -1068,11 +1068,6 @@
     return readStorage(seenKey(gameId)) === "1";
   }
 
-  function isAutomationRun() {
-    const params = new URLSearchParams(window.location.search);
-    return params.has("smoke") || params.has("qa") || params.has("test");
-  }
-
   function renderTutorial(backdrop, gameId, fromButton = false) {
     const tutorial = tutorials[gameId];
     if (!tutorial || !backdrop) return;
@@ -1179,7 +1174,7 @@
     window.addEventListener("wonder:locale-change", applyCommonLabels);
     document.querySelector("#localeSelect")?.addEventListener("change", applyCommonLabels);
     const autoShowEnabled = document.body.dataset.tutorialAutoShow !== "false";
-    if (autoShowEnabled && !hasSeen(gameId) && !isAutomationRun()) {
+    if (autoShowEnabled && !hasSeen(gameId)) {
       if (battleTutorialGames.has(gameId)) {
         window.addEventListener("weightplay:battle-open", () => scheduleFirstShow(gameId), { once: true });
       } else {
