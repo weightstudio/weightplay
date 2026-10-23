@@ -39,7 +39,7 @@
         mountedFrame?.destroy();
         mountedFrame = null;
       }
-    }, { once: true });
+    });
 
     return mountedFrame;
   }

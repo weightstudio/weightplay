@@ -162,7 +162,7 @@ export class RainScene {
   impact(kind,event,reduced=false){
     if(!['rain','gold','leaf','guard','miss'].includes(kind))return;
     const good=kind==='rain'||kind==='gold';this.recoil=good?1:this.recoil;this.hit=kind==='leaf'?1:this.hit;
-    const amount=reduced?3:kind==='gold'?20:good?12:6;const color=kind==='gold'?'#ffd681':kind==='leaf'?'#d99b60':kind==='guard'?'#d6f2b4':'#8cecff';
+    const amount=reduced?3:kind==='gold'?20:good?12:6;const color=kind==='gold'||(this.aurora&&good)?'#ffd681':kind==='leaf'?'#d99b60':kind==='guard'?'#d6f2b4':'#8cecff';
     for(let i=0;i<amount;i++){
       const p=this.particles[this.particleCursor++%72],angle=i/amount*Math.PI*2;
       Object.assign(p,{life:1,duration:.5+(i%4)*.1,x:this.laneX(event.lane),y:this.bottom+.7,z:1.2,vx:Math.cos(angle)*(good?1.4:.8),vy:.9+(i%4)*.45,vz:Math.sin(angle)*.5,size:kind==='gold'?.12:.08});
@@ -174,7 +174,7 @@ export class RainScene {
   reset(){this.recoil=0;this.hit=0;this.rippleTime=0;for(const p of this.particles)p.life=0;for(const d of this.dropPool)d.group.visible=false;}
   render(run,dt=0,{reduced=false,lantern=false}={}){
     if(this.disposed)return;this.resize();this.clock+=dt;
-    this.lantern.visible=lantern;
+    this.lantern.visible=lantern;this.aurora=lantern;
     this.recoil=Math.max(0,this.recoil-dt*4);this.hit=Math.max(0,this.hit-dt*3);
     const x=this.laneX(run?.x??2),time=run?.time||0,velocity=run?(run.targetX-run.x):0;
     this.nest.position.set(x,this.bottom-.06-(reduced?0:Math.sin(this.recoil*Math.PI)*.14),1.3);

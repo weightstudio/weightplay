@@ -99,19 +99,20 @@ export class TramScene {
     const colors=PALETTES[id]||PALETTES.sunrise;
     this.body.material=this.material(colors[0]);this.roof.material=this.material(colors[0]);this.trim.material=this.material(colors[1]);
   }
-  pad(x, departure=false) {
+  pad(x, departure=false, safeWidth=4.8) {
     const g=new THREE.Group();g.position.x=x;this.world.add(g);
-    this.box(g,0,-3,0,5.3,6,4.4,0x335b6f);
-    const top=this.box(g,0,.25,0,5.6,.4,4.7,0x678c93);top.receiveShadow=true;
-    this.box(g,0,.46,0,4.8,.04,2.3,0x284e60);
-    for(const z of [-1.35,1.35])this.box(g,0,.5,z,5.1,.08,.1,departure?0xffc36c:0x78ffcc,true);
-    for(const x of [-2.3,2.3])for(const z of [-1.7,1.7]) {this.box(g,x,.82,z,.16,.75,.16,0xffc05c);this.box(g,x,1.26,z,.25,.18,.25,0x78ffcc,true);}
-    for(const x of [-1.3,0,1.3])this.box(g,x,.49,0,.48,.04,1.35,0xf7dfac);
+    const roofWidth=departure?5.6:8.4;
+    this.box(g,0,-3,0,roofWidth-.3,6,4.4,0x335b6f);
+    const top=this.box(g,0,.25,0,roofWidth,.4,4.7,0x678c93);top.receiveShadow=true;
+    this.box(g,0,.46,0,safeWidth,.04,2.3,0x284e60);
+    for(const z of [-1.35,1.35])this.box(g,0,.5,z,safeWidth,.08,.1,departure?0xffc36c:0x78ffcc,true);
+    for(const x of [-safeWidth/2,safeWidth/2])for(const z of [-1.7,1.7]) {this.box(g,x,.82,z,.16,.75,.16,0xffc05c);this.box(g,x,1.26,z,.25,.18,.25,0x78ffcc,true);}
+    for(const x of [-safeWidth*.28,0,safeWidth*.28])this.box(g,x,.49,0,.35,.04,1.35,0xf7dfac);
     return g;
   }
   reset(flight) {
     this.clearEffects(); this.world.clear();this.rings=[];this.gates=[];this.thermal=null;
-    this.departure=this.pad(0,true);this.arrival=this.pad(55);
+    this.departure=this.pad(0,true);this.arrival=this.pad(55,false,flight?flight.padWidth/35:4.8);
     if(!flight)return;
     flight.pickups.forEach(r=>{
       const g=new THREE.Group();g.position.set((r.at-flight.progress)*60,r.y,0);this.world.add(g);
@@ -120,10 +121,10 @@ export class TramScene {
     });
     flight.gates.forEach(h=>{
       const g=new THREE.Group();g.position.set(h.at*60,0,0);this.world.add(g);
-      const low=h.lane==='low', center=low?2.3:7.8;
-      this.box(g,0,center,0,.55,low?3:3.4,2.2,0x284957);
+      const low=h.lane==='low', center=low?2.3:8.9;
+      this.box(g,0,center,0,.55,low?3:3.2,2.2,0x284957);
       for(let i=0;i<4;i++)this.box(g,0,center-1.1+i*.7,1.14,.59,.25,.08,0xff9d5c,true);
-      this.box(g,0,low?4.2:5.9,0,.8,.12,2.45,0xffa65b,true);
+      this.box(g,0,low?4:7.3,0,.8,.12,2.45,0xffa65b,true);
       this.gates.push(g);
     });
     if(flight.thermal) {
@@ -169,10 +170,13 @@ export class TramScene {
     this.shadow.visible=!this.garage&&s.y<4.5;this.shadow.scale.x=3.1+Math.max(0,s.y-1.2)*.2;
     if(!this.garage){
       this.departure.position.x=-s.progress*60;this.arrival.position.x=padX(s);
+      this.arrival.visible=this.arrival.position.x<=6.8;
       this.city.position.x=-s.progress*7;
-      this.rings.forEach((g,i)=>{g.position.x=(s.pickups[i].at-s.progress)*60;g.visible=!s.pickups[i].collected&&g.position.x>-8;g.rotation.y=this.reduced?0:Math.sin(this.time*1.3)*.15;});
-      this.gates.forEach((g,i)=>{g.position.x=(s.gates[i].at-s.progress)*60;g.visible=g.position.x>-10&&g.position.x<30;});
-      if(this.thermal){this.thermal.position.x=((s.thermal[0]+s.thermal[1])/2-s.progress)*60;this.thermal.position.y=this.reduced?0:Math.sin(this.time*3)*.3;}
+      // The same six-metre lookahead on every aspect ratio: wider screens only
+      // reveal scenery, never earlier route information or collision targets.
+      this.rings.forEach((g,i)=>{g.position.x=(s.pickups[i].at-s.progress)*60;g.visible=!s.pickups[i].collected&&g.position.x>-8&&g.position.x<=6.8;g.scale.setScalar(this.reduced?1:Math.min(1,Math.max(0,(6.8-g.position.x)/.6)));g.rotation.y=this.reduced?0:Math.sin(this.time*1.3)*.15;});
+      this.gates.forEach((g,i)=>{g.position.x=(s.gates[i].at-s.progress)*60;g.visible=g.position.x>-10&&g.position.x<=6.8;});
+      if(this.thermal){this.thermal.position.x=((s.thermal[0]+s.thermal[1])/2-s.progress)*60;this.thermal.visible=this.thermal.position.x<=6.8&&this.thermal.position.x>-8;this.thermal.position.y=this.reduced?0:Math.sin(this.time*3)*.3;}
     }
     if(!frozen) {
       this.impact=Math.max(0,this.impact-dt);

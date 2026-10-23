@@ -45,10 +45,13 @@ function start(index=selected){
  selected=next;show('battle');if(!ensureScene())return;
  scene.resize();world=createWorld(next+1,progress,canvas.clientHeight/Math.max(1,canvas.clientWidth));scene.reset();ending=0;last=0;updateHud();
  $('battleMessage').textContent=`${t(stageConfig(next+1).ruleKey)} · ${t('how2')}`;$('battleMessage').classList.add('is-visible');
- $('leaveDialogTitle').textContent=t('leaveTitle');canvas.focus({preventScroll:true});focused=true;track('stage_start');kick();
+ $('leaveDialogTitle').textContent=t('leaveTitle');scene.draw(world,0);
+ // The authenticated practice entry can legitimately start at Battle. Its
+ // initial GPU frame, rather than a now-hidden Main poster, settles loading.
+ window.WeightPlayGameEntryLoader?.ready?.();canvas.focus({preventScroll:true});focused=true;track('stage_start');kick();
 }
 function kick(){if(!raf&&!disposed&&screen==='battle'&&world&&!document.hidden)raf=requestAnimationFrame(loop);}
-function updateHud(){if(!world)return;$('waveValue').textContent=`${world.config.stage} / 30`;$('scoreValue').textContent=world.score;$('shieldValue').textContent=world.shield;$('livesValue').textContent=world.lives;$('salvageValue').textContent=world.credits;$('formationValue').textContent=`${world.kills} / ${world.total}`;$('comboValue').textContent=world.combo>1?`×${world.combo}`:'';$('pulseValue').textContent=`${world.pulse} / 6`;$('pulseBtn').disabled=world.pulse<6;$('pulseBtn').classList.toggle('ready',world.pulse>=6);canvas.dataset.enemies=world.total-world.kills;canvas.dataset.outcome=world.status;}
+function updateHud(){if(!world)return;$('waveValue').textContent=`${world.config.stage} / 30`;$('scoreValue').textContent=world.score;$('shieldValue').textContent=world.shield;$('livesValue').textContent=world.lives;$('salvageValue').textContent=world.credits;$('formationValue').textContent=`${world.kills} / ${world.total}`;$('comboValue').textContent=world.combo>1?`×${world.combo}`:'';$('pulseValue').textContent=`${Math.floor(world.pulse)} / 6`;$('pulseBtn').disabled=world.pulse<6;$('pulseBtn').classList.toggle('ready',world.pulse>=6);canvas.dataset.enemies=world.total-world.kills;canvas.dataset.outcome=world.status;}
 function loop(now){raf=0;if(screen!=='battle'||!scene||!world)return;const dt=last?Math.min(.033,(now-last)/1000):0;last=now;
  if(paused()){release();last=0;return;}
  world.aspect=scene.resize()||world.aspect;
@@ -104,5 +107,5 @@ on(window,'resize',()=>{if(world&&scene&&screen!=='main'){world.aspect=scene.res
 on(canvas,'webglcontextlost',e=>{e.preventDefault();release();cancelAnimationFrame(raf);raf=0;$('battleMessage').textContent=t('renderError');$('battleMessage').classList.add('is-visible');});
 on(window,'pagehide',event=>{release();audio?.stop();cancelAnimationFrame(raf);raf=0;if(event.persisted)return;disposed=true;settingsObserver.disconnect();abort.abort();scene?.dispose();audio?.dispose();});
 on(window,'pageshow',()=>{focused=document.hasFocus();last=0;kick();});
-window.AlienDefenderDiagnostics=Object.freeze({snapshot:()=>world?{stage:world.config.stage,status:world.status,kills:world.kills,score:world.score,lives:world.lives,shield:world.shield,credits:world.credits,phase:world.phase,time:world.time,practice}:null,resources:()=>scene?.stats()});
+window.AlienDefenderDiagnostics=Object.freeze({snapshot:()=>world?{stage:world.config.stage,status:world.status,kills:world.kills,score:world.score,lives:world.lives,shield:world.shield,credits:world.credits,phase:world.phase,time:world.time,playerX:world.player.x,shots:world.shots.length,practice}:null,resources:()=>scene?.stats()});
 LocalPractice.register({gameId:'alien-defender',stageIds:Array.from({length:TOTAL_STAGES},(_,i)=>i+1),enable:enabled=>{practice=enabled;refresh();frame.stageUI.refresh(selected);},startStage:id=>start(Number(id)-1)});

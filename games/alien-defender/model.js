@@ -47,7 +47,7 @@ function damageEnemy(w,e,damage,x,y) {
  event(w,e.hp===0?'kill':e.kind==='armor'&&before>1&&e.hp<=1?'armor':'hit',{x,y,kind:e.kind,id:e.id});
  if(e.hp===0){w.kills++;w.combo=Math.min(5,w.combo+1);w.comboTimer=2.4;w.score+=(e.kind==='boss'?300:25)*w.combo;w.credits+=e.kind==='boss'?25:5;w.pulse=Math.min(6,w.pulse+1);w.hitstop=e.kind==='boss'?.07:.025;
    if(w.kills%8===0){w.shield=Math.min(1+w.upgrades.shield,w.shield+1);event(w,'pickup',{x,y});}
- } else w.score+=5;
+ } else {w.score+=5;w.pulse=Math.min(6,w.pulse+.16);}
 }
 export function usePulse(w) {
  if(w.status!=='playing'||w.pulse<6)return false;

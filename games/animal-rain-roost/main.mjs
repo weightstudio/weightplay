@@ -33,6 +33,7 @@ function applyLocale(){
   for(const button of $('laneControls').children)button.setAttribute('aria-label',`${t('lane')} ${Number(button.dataset.lane)+1}`);
   $('mainReturn').href=`/${({'zh-Hant':'zh-tw','zh-Hans':'zh-cn','pt-BR':'pt-br'})[locale]||locale}/`;
   renderProgress();renderGear();rail?.refresh(selected);if(run)renderHUD();
+  frame?.activate(screen);
 }
 function renderProgress(){
   $('mainProgress').textContent=`${t('complete')} ${cleared()} / 30 · ${t('stars')} ${totalStars()} / 90`;

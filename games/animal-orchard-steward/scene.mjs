@@ -33,6 +33,8 @@ export class OrchardScene {
     canvas.addEventListener('webglcontextlost',this.lost);
     this.resizeObserver=new ResizeObserver(()=>{this.resize();});this.resizeObserver.observe(canvas.parentElement);
     this.motion=matchMedia('(prefers-reduced-motion: reduce)');
+    this.motionChanged=()=>{if(this.motion.matches){this.effect='';cancelAnimationFrame(this.raf);this.raf=0;this.trees.forEach(t=>t.crown.rotation.z=0);this.deer.rotation.z=0;this.render();}};
+    this.motion.addEventListener('change',this.motionChanged);
     canvas.dataset.renderer=`three-${THREE.REVISION}`;
   }
   material(color) {
@@ -140,7 +142,7 @@ export class OrchardScene {
   setActive(active) {
     this.active=active&&!this.disposed;cancelAnimationFrame(this.raf);this.raf=0;
     if(this.active){this.resize();this.render();this.schedule();}
-    else{this.effect='';this.trees.forEach(t=>t.crown.rotation.z=0);}
+    else{this.effect='';this.trees.forEach(t=>t.crown.rotation.z=0);this.deer.rotation.z=0;}
   }
   schedule() {
     if(!this.active||this.raf||!this.effect)return;
@@ -161,6 +163,7 @@ export class OrchardScene {
     if(this.disposed)return;
     this.setActive(false);this.disposed=true;this.resizeObserver.disconnect();
     this.canvas.removeEventListener('pointerup',this.click);this.canvas.removeEventListener('webglcontextlost',this.lost);
+    this.motion.removeEventListener('change',this.motionChanged);
     this.owned.forEach(resource=>resource.dispose());this.materials.forEach(material=>material.dispose());
     this.sun.shadow.map?.dispose();this.renderer.dispose();this.renderer.forceContextLoss();
   }
