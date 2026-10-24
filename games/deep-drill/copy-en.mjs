@@ -741,6 +741,9 @@ function translate(value){
  return result;
 }
 export function text(key,args={}){
+ if(key==='faq.title')return 'FAQ';
+ if(key==='faq.question')return 'Is progress saved?';
+ if(key==='faq.answer')return 'Yes, only in this browser when storage is available.';
  if(key==='long.resume')return 'Resume from '+args.depth+'m';
  if(key==='long.stop')return 'Survey stop '+args.section+'/5 · Haul banked; hull serviced';
  if(key==='long.section')return 'Sector '+args.section+'/5 · Next stop '+args.stop+'m';

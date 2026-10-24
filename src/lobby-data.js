@@ -89,8 +89,8 @@ window.WONDER_LOBBY = {
       art: { kind: "image", background: "games/kindred-habitats/art/poster.webp", hideHero: true },
     },
     {
-      id: "deep-drill", audience: "general", status: "planned", internalOnly: true,
-      internalTrial: "/games/deep-drill/?preview=1", href: "games/deep-drill/",
+      id: "deep-drill", audience: "general", status: "playable", previewVideo: "assets/previews/deep-drill-battle.webm",
+      href: "games/deep-drill/",
       title: { en: "Deep Drill", "zh-Hant": "地心鑽探" },
       type: { en: "Mining & Upgrades", "zh-Hant": "採礦與升級" },
       description: { en: "Drill deeper, recover ore, upgrade your rig and unlock automatic drilling.", "zh-Hant": "往地心鑽進，帶礦返航、升級與更換鑽頭，解鎖自動鑽掘。" },
@@ -3909,6 +3909,17 @@ for (const [id, titles, categories, skills] of classicOwnerPreviewGames) {
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(id)) window.WONDER_LOBBY.audiences.generalGameIds.push(id);
 }
 
+// Breakout v23: human-approved public opening, 2026-10-24.
+const breakoutPublic = window.WONDER_LOBBY.games.find((game) => game.id === "breakout");
+if (breakoutPublic) {
+  breakoutPublic.status = "playable";
+  breakoutPublic.statusText = classicOwnerPreviewLocalized(["Playable", "可遊玩", "可游玩", "プレイ可能", "플레이 가능", "Disponible", "Disponível", "Disponible", "Spielbar", "Disponibile", "Доступно", "खेलने योग्य", "متاحة للعب"]);
+  breakoutPublic.description = {"en":"Keep the crystal ball alive and restore 30 block-built ruins.","zh-Hant":"接住水晶球，修復 30 座方塊遺跡。","zh-Hans":"接住水晶球，修复 30 座方块遗迹。","ja":"水晶球を受け止め、30 のブロック遺跡を修復しよう。","ko":"수정 구슬을 받아 30개의 블록 유적을 복구하세요.","es":"Mantén la bola de cristal en juego y restaura 30 ruinas de bloques.","pt-BR":"Mantenha a bola de cristal em jogo e restaure 30 ruínas de blocos.","fr":"Gardez la balle de cristal en jeu et restaurez 30 ruines de blocs.","de":"Halte den Kristallball im Spiel und stelle 30 Blockruinen wieder her.","it":"Tieni in gioco la sfera di cristallo e restaura 30 rovine di blocchi.","ru":"Удерживайте кристальный мяч и восстановите 30 блочных руин.","hi":"क्रिस्टल गेंद को बचाकर 30 ब्लॉक खंडहर बहाल करें।","ar":"أبقِ الكرة البلورية في اللعب ورمم 30 أطلالاً من المكعبات."};
+  breakoutPublic.previewVideo = "assets/previews/breakout-battle.webm";
+  breakoutPublic.art = { kind: "image", background: "assets/interface7-redrawn/breakout.webp", hideHero: true };
+  delete breakoutPublic.internalTrial;
+}
+
 // Chess v14 cleared the exact Tester, Reviewer, art, Director, and
 // preflight gates. Keep the other classic owner-preview entries staged while
 // exposing this exact General candidate through public routes.
@@ -4785,14 +4796,13 @@ window.WONDER_LOBBY.games.push(
   {
     id: "road-crosser",
     title: { en: "Road Crosser", "zh-Hant": "星軌過路", "zh-Hans": "星轨过路", ja: "スター・クロッサー", ko: "스타 크로서", es: "Cruce Estelar", "pt-BR": "Travessia Estelar", fr: "Passage Stellaire", de: "Sternenquerung", it: "Attraversamento Stellare", ru: "Звёздный переход", hi: "सितारा पारपथ", ar: "عبور النجمة" },
-    status: "planned",
-    statusText: { ...ownerPreviewStatusText },
-    internalTrial: "index.html?preview=1",
+    status: "playable",
+    statusText: {"en":"Playable","zh-Hant":"可遊玩","zh-Hans":"可游玩","ja":"プレイ可能","ko":"플레이 가능","es":"Disponible","pt-BR":"Disponível","fr":"Disponible","de":"Spielbar","it":"Disponibile","ru":"Доступно","hi":"खेलने योग्य","ar":"متاحة للعب"},
     type: { en: "Timing Crossing Arcade", "zh-Hant": "時機穿越街機", "zh-Hans": "时机穿越街机", ja: "タイミング横断アーケード", ko: "타이밍 횡단 아케이드", es: "Arcade de cruces y tiempo", "pt-BR": "Arcade de travessia e ritmo", fr: "Arcade de traversée rythmée", de: "Timing-Querungs-Arcade", it: "Arcade di attraversamento", ru: "Аркада перехода по времени", hi: "समय-आधारित पारपथ आर्केड", ar: "أركيد عبور بالتوقيت" },
     categories: ["Classic", "Arcade", "Action"], skills: ["Timing", "Focus", "Adaptation"], ages: ["general"], ageLabel: { en: "General", "zh-Hant": "一般玩家", "zh-Hans": "一般玩家", ja: "一般", ko: "일반", es: "General", "pt-BR": "Geral", fr: "Tout public", de: "Allgemein", it: "Generale", ru: "Для всех", hi: "सामान्य", ar: "عام" },
     href: "games/road-crosser/", previewVideo: "assets/previews/road-crosser-battle.webm",
-    description: { en: "Read traffic and river timing, then guide the Star Runner across three routes.", "zh-Hant": "看準車流與河水時機，帶領星行者安全通過三段路線。", "zh-Hans": "读准车流与河水时机，带领星行者安全通过三段路线。", ja: "車と川のタイミングを読み、スターランナーを3つのルートへ導きます。", ko: "차량과 강물의 타이밍을 읽고 별 주자를 세 개의 길로 안내하세요.", es: "Lee el tráfico y el río para guiar al Corredor Estelar por tres rutas.", "pt-BR": "Leia o trânsito e o rio para guiar o Corredor Estelar por três rotas.", fr: "Lis le trafic et la rivière pour guider le Coureur Stellaire sur trois itinéraires.", de: "Lies Verkehr und Flussrhythmus und führe den Sternläufer über drei Routen.", it: "Leggi il ritmo di auto e fiume e guida il Corridore Stellare lungo tre percorsi.", ru: "Следи за движением машин и реки, чтобы провести Звёздного бегуна по трём маршрутам.", hi: "यातायात और नदी की लय समझकर स्टार रनर को तीन रास्तों से ले जाएँ।", ar: "اقرأ توقيت السيارات والنهر وقد عدّاء النجوم عبر ثلاثة مسارات." },
-    meta: { en: ["Three Crossings", "Traffic + River", "Timing Play"], "zh-Hant": ["三段穿越", "車流與河流", "時機玩法"], "zh-Hans": ["三段穿越", "车流与河流", "时机玩法"], ja: ["3つの横断", "車と川", "タイミング"], ko: ["세 번의 횡단", "차량과 강물", "타이밍"], es: ["Tres cruces", "Tráfico y río", "Ritmo"], "pt-BR": ["Três travessias", "Trânsito e rio", "Ritmo"], fr: ["Trois traversées", "Trafic et rivière", "Timing"], de: ["Drei Querungen", "Verkehr + Fluss", "Timing"], it: ["Tre attraversamenti", "Traffico e fiume", "Tempismo"], ru: ["Три перехода", "Машины и река", "Ритм"], hi: ["तीन पारपथ", "यातायात और नदी", "समय"], ar: ["ثلاث مراحل", "سيارات ونهر", "توقيت"] },
+    description: {"en":"Deliver lanterns through 30 handcrafted crossings. Read the traffic, ride the current, and find your own route.","zh-Hant":"穿越 30 道精心設計的車流與河道。觀察空檔、搭乘浮木，把提燈送到碼頭。","zh-Hans":"穿越 30 道精心设计的车流与河道。观察空隙、搭乘浮木，把提灯送到码头。","ja":"30の手作りコースでランタンを届けよう。車のすき間を読み、丸太に乗って波止場へ。","ko":"직접 설계한 30개 길에서 등불을 배달하세요. 차 사이를 지나 통나무를 타고 부두로 가세요.","es":"Entrega faroles en 30 cruces diseñados a mano. Lee el tráfico, monta los troncos y llega al muelle.","pt-BR":"Entregue lanternas em 30 travessias feitas à mão. Observe o trânsito, pegue os troncos e chegue ao cais.","fr":"Livrez des lanternes sur 30 parcours conçus à la main. Observez les voitures et naviguez sur les rondins.","de":"Liefere Laternen auf 30 gestalteten Wegen. Beobachte den Verkehr und fahre auf Baumstämmen zum Kai.","it":"Consegna lanterne in 30 percorsi progettati a mano. Osserva il traffico e sali sui tronchi per raggiungere il molo.","ru":"Доставьте фонари по 30 продуманным маршрутам. Следите за машинами и плывите на брёвнах к причалу.","hi":"हाथ से बनाए 30 पारपथों पर लालटेन पहुँचाएँ। गाड़ियों की चाल देखें और लट्ठों से घाट तक जाएँ।","ar":"سلّم الفوانيس عبر 30 معبراً مصمماً بعناية. راقب السيارات واركب الجذوع إلى الرصيف."},
+    meta: {"en":["30 Stages","Traffic + River","Timing Play"],"zh-Hant":["30 關卡","車流與河流","時機玩法"],"zh-Hans":["30 关卡","车流与河流","时机玩法"],"ja":["30 ステージ","車と川","タイミング"],"ko":["30 스테이지","차량과 강물","타이밍"],"es":["30 niveles","Tráfico y río","Ritmo"],"pt-BR":["30 fases","Trânsito e rio","Ritmo"],"fr":["30 niveaux","Trafic et rivière","Timing"],"de":["30 Level","Verkehr + Fluss","Timing"],"it":["30 livelli","Traffico e fiume","Tempismo"],"ru":["30 уровней","Машины и река","Ритм"],"hi":["30 स्तर","यातायात और नदी","समय"],"ar":["30 مرحلة","سيارات ونهر","توقيت"]},
     searchAliases: [
       "cross the road", "crossing", "traffic", "river", "safe gap", "timing arcade", "runner",
       "過馬路", "过马路", "車流", "车流", "河流", "時機", "时机", "安全空隙", "安全间隙", "節奏", "节奏",
@@ -4802,7 +4812,7 @@ window.WONDER_LOBBY.games.push(
       "attraversare la strada", "traffico", "fiume", "spazio sicuro", "перейти дорогу", "трафик", "река", "безопасный промежуток",
       "सड़क पार करना", "यातायात", "नदी", "सुरक्षित जगह", "عبور الطريق", "المرور", "النهر", "فجوة آمنة"
     ],
-    art: { kind: "image", background: "assets/road-crosser-cover-v2.webp", hideHero: true },
+    art: { kind: "image", background: "assets/interface7-redrawn/road-crosser.webp", hideHero: true },
   },
   {
     id: "alien-defender",

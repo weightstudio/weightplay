@@ -59,6 +59,10 @@ WeightPlay covers these game and content clusters:
 
 ## Current Playable Games
 
+- Traffic and River Crossing: https://weightplay.com/en/games/road-crosser/ — Deliver lanterns through 30 authored crossings, read traffic signals, ride opposing currents, and reach each marked dock.
+
+- Deep Drill: https://weightplay.com/en/games/deep-drill/ — Explore 30 mining areas, collect ore, upgrade four drill heads and buy permanent automation.
+
 - Minefield Logic: https://weightplay.com/en/games/minefield-logic/ — Solve 30 fixed minefields or random quick puzzles with visible-clue hints, flags and undo.
 
 - War: High Card: https://weightplay.com/en/games/war/ — A 52-card reveal-and-compare game against the computer. A is low; ties add three face-down cards and one reveal. The guide explains short-deck endings and browser-local completed-game records.

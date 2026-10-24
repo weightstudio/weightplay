@@ -365,6 +365,10 @@
       "date": "2026-08-01T12:46:15+08:00",
       "evidence": "git:0ba8d88831cc528b1ace58d8cf06c71e14a45385"
     },
+    "breakout": {
+      "date": "2026-10-24T07:39:29.093Z",
+      "evidence": "canonical-public-catalog"
+    },
     "bubble-bakery": {
       "date": "2026-07-01T11:15:16+08:00",
       "evidence": "git:d6894ab4aa79712b9cc80c938fb356f5328f6262"
@@ -408,6 +412,10 @@
     "cribbage": {
       "date": "2026-09-07T09:01:53+08:00",
       "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
+    },
+    "deep-drill": {
+      "date": "2026-10-24T07:27:34.088Z",
+      "evidence": "canonical-public-catalog"
     },
     "flying-tram": {
       "date": "2026-10-23T13:29:55.603Z",
