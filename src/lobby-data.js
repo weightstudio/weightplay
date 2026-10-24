@@ -7654,3 +7654,30 @@ window.WONDER_LOBBY.audiences.generalGameIds.push("signal-snap");
 // Railguard Express: original scoped planned identity.
 window.WONDER_LOBBY.games.push({"id": "railguard-express", "audience": "general", "status": "planned", "internalOnly": true, "internalTrial": "index.html?preview=1", "href": "games/railguard-express/", "title": {"__localizedExact": true, "en": "Railguard Express", "zh-Hant": "荒野守護列車", "zh-Hans": "荒野守护列车", "ja": "レールガード・エクスプレス", "ko": "레일가드 익스프레스", "es": "Expreso Guardavía", "pt-BR": "Expresso Guardião", "fr": "Express des sentinelles", "de": "Schienenwacht Express", "it": "Espresso dei guardiani", "ru": "Экспресс стражей", "hi": "रेलरक्षक एक्सप्रेस", "ar": "قطار الحراس"}, "type": {"en": "Tower Defense", "zh-Hant": "塔防", "zh-Hans": "塔防"}, "description": {"en": "Power a moving fortress. Fit the front, middle and rear carriages, counter incoming raiders and choose upgrades at each station.", "zh-Hant": "調配列車有限電力，配置前中後砲塔，自動迎敵，並在車站選擇下一段旅程的升級。", "zh-Hans": "调配列车有限电力，配置前中后炮塔，自动迎敌，并在车站选择下一段旅程的升级。"}, "categories": ["Strategy", "Tower Defense", "Animal Games"], "skills": ["Planning", "Resource Balance"], "ages": ["9", "family"], "meta": {"en": ["12 routes", "Power & placement", "3 guardians"], "zh-Hant": ["12段路線", "供電與配置", "3位首領"]}, "art": {"kind": "image", "background": "games/railguard-express/assets/cover-block-v1.webp", "hideHero": true}});
 window.WONDER_LOBBY.audiences.generalGameIds.push("railguard-express");
+
+// Current Grove campaign copy supersedes the historical three-loop prototype listing.
+const grovePublicCampaignCopy20261024 = {"en":{"description":"30 route puzzles · progress saved locally","features":["30 route puzzles · progress saved locally","Required / Optional","Bridges / Flips"]},"zh-Hant":{"description":"30 道路線謎題・進度保存在本機","features":["30 道路線謎題・進度保存在本機","必用 / 可選","橋樑 / 翻轉"]},"zh-Hans":{"description":"30 道路线谜题・进度保存在本机","features":["30 道路线谜题・进度保存在本机","必用 / 可选","桥梁 / 翻转"]},"ja":{"description":"30 の経路パズル・進行状況は端末に保存","features":["30 の経路パズル・進行状況は端末に保存","必須 / 任意","橋 / 反転"]},"ko":{"description":"경로 퍼즐 30개 · 진행 상황은 기기에 저장","features":["경로 퍼즐 30개 · 진행 상황은 기기에 저장","필수 / 선택","다리 / 뒤집기"]},"es":{"description":"30 puzles de rutas · progreso guardado localmente","features":["30 puzles de rutas · progreso guardado localmente","Obligatoria / Opcional","Puentes / Giros"]},"pt-BR":{"description":"30 desafios de rotas · progresso salvo localmente","features":["30 desafios de rotas · progresso salvo localmente","Obrigatória / Opcional","Pontes / Viradas"]},"fr":{"description":"30 énigmes de parcours · progression sauvegardée localement","features":["30 énigmes de parcours · progression sauvegardée localement","Obligatoire / Facultative","Ponts / Retournements"]},"de":{"description":"30 Wegerätsel · Fortschritt lokal gespeichert","features":["30 Wegerätsel · Fortschritt lokal gespeichert","Pflicht / Optional","Brücken / Drehungen"]},"it":{"description":"30 rompicapi di percorsi · progressi salvati localmente","features":["30 rompicapi di percorsi · progressi salvati localmente","Obbligatoria / Facoltativa","Ponti / Rotazioni"]},"ru":{"description":"30 головоломок с маршрутами · прогресс хранится на устройстве","features":["30 головоломок с маршрутами · прогресс хранится на устройстве","Обязательно / Необязательно","Мосты / Перевороты"]},"hi":{"description":"30 रास्तों की पहेलियाँ · प्रगति इसी उपकरण पर सहेजी जाती है","features":["30 रास्तों की पहेलियाँ · प्रगति इसी उपकरण पर सहेजी जाती है","अनिवार्य / वैकल्पिक","पुल / पलटाव"]},"ar":{"description":"30 لغز مسارات · يُحفظ التقدم محليًا","features":["30 لغز مسارات · يُحفظ التقدم محليًا","إلزامية / اختيارية","الجسور / القلبات"]}};
+{
+  const game = window.WONDER_LOBBY.games.find(game => game.id === "animal-grove-dominoes");
+  for (const [locale, copy] of Object.entries(grovePublicCampaignCopy20261024)) {
+    game.description[locale] = copy.description;
+    game.meta[locale] = copy.features;
+  }
+}
+
+// Owner-approved Coming Soon batch, task 01a16e15-5b5d-7b63-ac90-1b9541f6ceef.
+const ownerApprovedComingSoonGames = ["wildborn", "kindred-habitats", "animal-postcard-crop", "animal-hollow-fit", "animal-cozy-camp", "animal-orbit-orchard", "animal-habitat-counts", "animal-tideglass", "animal-burrow-builder", "animal-tangle-rescue", "animal-meadow-difference", "animal-footprint-folio", "animal-magnet-meadow", "animal-glyph-garden", "animal-ring-garden", "animal-cloudhook-courier", "animal-twin-switchyard", "animal-moon-market", "animal-kite-keeper", "animal-habitat-blueprint", "animal-river-gates", "animal-acorn-auction", "animal-patchwork-paws", "animal-firefly-folio", "animal-silhouette-scout", "animal-orchard-steward", "animal-grove-dominoes"];
+for (const id of ownerApprovedComingSoonGames) {
+  const game = window.WONDER_LOBBY.games.find((entry) => entry.id === id);
+  if (!game) throw new Error(`Missing approved game: ${id}`);
+  if (game.audience === "general" && !window.WONDER_LOBBY.audiences.generalGameIds.includes(id)) {
+    window.WONDER_LOBBY.audiences.generalGameIds.push(id);
+  }
+  game.status = "playable";
+  game.statusText = {"en": "Play Now", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", "ja": "プレイ可能", "ko": "플레이 가능", "es": "Jugar ahora", "pt-BR": "Jogar agora", "fr": "Jouer", "de": "Jetzt spielen", "it": "Gioca ora", "ru": "Играть", "hi": "अभी खेलें", "ar": "العب الآن"};
+  game.href = `games/${id}/`;
+  game.previewVideo = `assets/previews/${id}-battle.webm`;
+  delete game.internalOnly;
+  delete game.internalTrial;
+  delete game.previewOnly;
+}

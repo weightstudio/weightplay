@@ -6,11 +6,11 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
 // END generated Castle Block reward exclusions
 
 window.WONDER_SITE = {
-  version: "v0.40.51",
+  version: "v0.40.52",
   localization: {
     defaultLocale: "en",
     fallbackLocale: "en",
-    localeSegments: /(?:^|\/)games\/animal-river-gates(?:\/|$)/i.test(window.location?.pathname || "") ? { en: "" } : {},
+    localeSegments: {},
     phaseOneLocales: ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"],
     plannedLocales: [],
     useLocaleRoutes: true,

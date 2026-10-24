@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko" data-wp-official-name>
+<html lang="ko" data-wp-official-name data-wp-publication-locale-completion>
 <head>
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
@@ -9,7 +9,7 @@
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow" />
+  <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-orchard-steward">
   <meta name="weightplay-game-version" content="v6">
@@ -37,6 +37,7 @@
   <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard>
   <link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-interface9-play-ui-v1">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <script type="module" src="/src/game-guide-intro-faq.mjs"></script>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="과수원 자원 관리 | WeightPlay" />
@@ -52,9 +53,9 @@
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-audience="general" data-wp-game-id="animal-orchard-steward" data-wp-game-version="v6" data-wp-interface-version="9" data-screen="main" data-has-stage="false">
+  <h1 data-wp-game-title data-runtime-localize="off" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">과수원 자원 관리</h1>
   <div class="app-shell" id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
     <main class="screen main-screen" id="mainView" data-screen="main" aria-labelledby="mainTitle">
-    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap" data-wp-game-title data-runtime-localize="off">과수원 자원 관리</h1>
       <header class="topbar wp-main-shell-header">
         <a class="brand-link" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span></a>
         <strong class="wp-shell-main-title" id="mainTitle" data-copy="title" data-wp-frame-title data-wp-game-title data-runtime-localize="off">과수원 자원 관리</strong>
@@ -73,7 +74,7 @@
         </div>
       </section>
     </main>
-    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-preserve-static-guide data-runtime-localize="off" aria-label="도움말"><div class="game-info-hero"><div class="game-info-title"><h2>도움말</h2><p>세 과일나무를 돌보고 날씨에 맞춰 8일 주문을 완성하세요. 계절마다 과수원이 자라요.</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>첫 수확</h3><p>하루에 두 번 돌볼 수 있어요. 해질 때 날씨로 자원이 바뀌고 세 수치가 나무의 범위 안에 있으면 자라요. 두 번 자라면 눌러 수확하세요. 수입으로 작업실을 업그레이드해요. 열매와 자원은 이어지며 꽃 피는 날에는 두 칸 자라요. 자동 저장돼요.</p></div><div class="game-info-section"><h3>작업실</h3><p>영구: 퇴비로 흙을 1 더 채워요. 영구: 수확량이 2에서 3으로 늘어요.</p><p>영구 황금 상자와 수확 효과. 외형만 바뀌어요.</p></div></div></section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-preserve-static-guide data-runtime-localize="off" aria-label="도움말"><div class="game-info-hero"><div class="game-info-title"><h2>도움말</h2><p data-wp-intro-faq-source>세 과일나무를 돌보고 날씨에 맞춰 8일 주문을 완성하세요. 계절마다 과수원이 자라요.</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>첫 수확</h3><p>하루에 두 번 돌볼 수 있어요. 해질 때 날씨로 자원이 바뀌고 세 수치가 나무의 범위 안에 있으면 자라요. 두 번 자라면 눌러 수확하세요. 수입으로 작업실을 업그레이드해요. 열매와 자원은 이어지며 꽃 피는 날에는 두 칸 자라요. 자동 저장돼요.</p></div><div class="game-info-section"><h3>작업실</h3><p>영구: 퇴비로 흙을 1 더 채워요. 영구: 수확량이 2에서 3으로 늘어요.</p><p>영구 황금 상자와 수확 효과. 외형만 바뀌어요.</p></div></div><article class="game-info-section" data-wp-intro-faq><h3>자주 묻는 질문</h3><dl><dt>이 게임에서는 무엇을 하나요?</dt><dd>세 과일나무를 돌보고 날씨에 맞춰 8일 주문을 완성하세요. 계절마다 과수원이 자라요.</dd></dl></article></section>
 
     <section class="screen battle-screen battle-canvas" id="battleView" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="680" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="350" hidden>
       <header class="screen-heading battle-header">

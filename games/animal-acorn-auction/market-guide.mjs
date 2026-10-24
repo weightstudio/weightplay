@@ -41,5 +41,8 @@ ar:[['المهمة','أكمل 30 طلبًا بالعدد الدقيق ضمن ا�
 const escape=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 export function guideHTML(locale='en',title='Acorn Auction'){
   const c=COPY[locale]||COPY.en,g=guides[locale]||guides.en;
-  return `<div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay · ${escape(c.market)}</span><h2>${escape(title)}</h2><p>${escape(c.intro)}</p></div></div><div class="game-info-sections">${g.map(([h,p])=>`<div class="game-info-section"><h3>${escape(h)}</h3><p>${escape(p)}</p></div>`).join('')}</div>`;
+  const sections=g.slice(0,-1).map(([h,p])=>`<div class="game-info-section"><h3>${escape(h)}</h3><p>${escape(p)}</p></div>`).join('');
+  const [faqTitle,faqContent]=g[g.length-1];
+  const faq=`<details class="game-info-section game-info-faq"><summary>${escape(faqTitle)}</summary><p>${escape(faqContent)}</p></details>`;
+  return `<div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay · ${escape(c.market)}</span><h2>${escape(title)}</h2><p>${escape(c.intro)}</p></div></div><div class="game-info-sections">${sections}${faq}</div>`;
 }

@@ -13,6 +13,10 @@
       "date": "2026-07-19T23:11:00+08:00",
       "evidence": "git:20ac048c5a6a3be9838f3f9e8931269b70b177fb"
     },
+    "animal-acorn-auction": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-auto-squad": {
       "date": "2026-07-07T21:29:26+08:00",
       "evidence": "git:c52fb0fbbdf1ea248e960bb638222b17de19154c"
@@ -40,6 +44,10 @@
     "animal-bubble-safari": {
       "date": "2026-07-15T23:32:25+08:00",
       "evidence": "git:be690e6616c1c67e92049b2ffe2cbb37ef10c9f8"
+    },
+    "animal-burrow-builder": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
     },
     "animal-bus-jam": {
       "date": "2026-07-27T22:34:17+08:00",
@@ -81,6 +89,10 @@
       "date": "2026-09-12T17:03:06.681Z",
       "evidence": "canonical-public-catalog"
     },
+    "animal-cozy-camp": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-cratebound": {
       "date": "2026-07-26T14:39:48+08:00",
       "evidence": "git:0af3b8a45edfd8e11ede0ead0032a44f3ffbf0a3"
@@ -109,12 +121,20 @@
       "date": "2026-09-12T19:53:33.209Z",
       "evidence": "canonical-public-catalog"
     },
+    "animal-firefly-folio": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-flip-foundry": {
       "date": "2026-08-16T16:15:05+08:00",
       "evidence": "git:4d88486a2386b12b147a049e66a6b9e4460cd81b"
     },
     "animal-folded-field": {
       "date": "2026-09-12T17:23:18.025Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "animal-footprint-folio": {
+      "date": "2026-10-24T16:09:49.375Z",
       "evidence": "canonical-public-catalog"
     },
     "animal-frost-maze": {
@@ -124,6 +144,14 @@
     "animal-gearpack-expedition": {
       "date": "2026-07-12T07:59:26+08:00",
       "evidence": "git:9007bf982e3bf8076e584b718328ec785826116e"
+    },
+    "animal-glyph-garden": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "animal-grove-dominoes": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
     },
     "animal-guard-yard": {
       "date": "2026-07-01T09:20:11+08:00",
@@ -137,9 +165,17 @@
       "date": "2026-09-07T09:01:53+08:00",
       "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
     },
+    "animal-habitat-blueprint": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-habitat-builder": {
       "date": "2026-09-07T09:01:53+08:00",
       "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
+    },
+    "animal-habitat-counts": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
     },
     "animal-habitat-mahjong": {
       "date": "2026-07-15T23:32:25+08:00",
@@ -153,6 +189,10 @@
       "date": "2026-07-01T18:24:07+08:00",
       "evidence": "git:f8f61b5c2d9c5aca8f2af9bb9d21a0859f8f643a"
     },
+    "animal-hollow-fit": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-honey-shield": {
       "date": "2026-08-08T12:32:12+08:00",
       "evidence": "git:45e3a04413a39588697ff244372f6e18d5ecdd5b"
@@ -160,6 +200,10 @@
     "animal-hoop-league": {
       "date": "2026-09-07T10:25:54+08:00",
       "evidence": "git:c10da82b30ee96fdacb0e997ae952c2383d1991b"
+    },
+    "animal-kite-keeper": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
     },
     "animal-lantern-guides": {
       "date": "2026-09-11T19:13:47.168Z",
@@ -173,8 +217,20 @@
       "date": "2026-10-24T07:43:34.253Z",
       "evidence": "canonical-public-catalog"
     },
+    "animal-magnet-meadow": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "animal-meadow-difference": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-mirror-meadow": {
       "date": "2026-09-08T01:42:36.247Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "animal-moon-market": {
+      "date": "2026-10-24T16:09:49.375Z",
       "evidence": "canonical-public-catalog"
     },
     "animal-moonlight-heist": {
@@ -205,9 +261,21 @@
       "date": "2026-07-07T13:36:56+08:00",
       "evidence": "git:ffab92fd42f64675fbb90b2ed51e1ae43f9e71fa"
     },
+    "animal-orbit-orchard": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "animal-orchard-steward": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-parking-patrol": {
       "date": "2026-07-20T20:19:04+08:00",
       "evidence": "git:b44254f8bd2b97a5a81c965571a77387f7b500fe"
+    },
+    "animal-patchwork-paws": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
     },
     "animal-peach-oath": {
       "date": "2026-09-07T16:23:33+08:00",
@@ -216,6 +284,10 @@
     "animal-penalty-cup": {
       "date": "2026-09-06T11:20:00+08:00",
       "evidence": "git:24bede97af3978f173844b18b9de9816ebf121c1"
+    },
+    "animal-postcard-crop": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
     },
     "animal-prism-battalion": {
       "date": "2026-07-23T11:45:49+08:00",
@@ -261,6 +333,14 @@
       "date": "2026-07-23T11:45:49+08:00",
       "evidence": "git:be7ea7110968774814c6f9cd763a1248559fc088"
     },
+    "animal-ring-garden": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "animal-river-gates": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-rootvault-pins": {
       "date": "2026-07-21T18:33:11+08:00",
       "evidence": "git:c946e40e34c1c12fecbcaa376631196379756da7"
@@ -287,6 +367,10 @@
     },
     "animal-signal-scout": {
       "date": "2026-09-12T02:20:17.817Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "animal-silhouette-scout": {
+      "date": "2026-10-24T16:09:49.375Z",
       "evidence": "canonical-public-catalog"
     },
     "animal-sketchwheel-rally": {
@@ -317,9 +401,17 @@
       "date": "2026-07-28T17:29:10+08:00",
       "evidence": "git:63161e4c3943c1b03b0a14ba6755c94aec034e30"
     },
+    "animal-tangle-rescue": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-tangram": {
       "date": "2026-07-29T23:23:04+08:00",
       "evidence": "git:720c6b2b58c524b438c01a336dfd9f8a17258ea9"
+    },
+    "animal-tideglass": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
     },
     "animal-trap-trail": {
       "date": "2026-08-16T16:15:05+08:00",
@@ -473,6 +565,10 @@
       "date": "2026-08-01T12:46:15+08:00",
       "evidence": "git:0ba8d88831cc528b1ace58d8cf06c71e14a45385"
     },
+    "kindred-habitats": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
+    },
     "klondike-solitaire": {
       "date": "2026-08-08T12:32:12+08:00",
       "evidence": "git:45e3a04413a39588697ff244372f6e18d5ecdd5b"
@@ -600,6 +696,10 @@
     "war": {
       "date": "2026-09-07T09:01:53+08:00",
       "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
+    },
+    "wildborn": {
+      "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
     },
     "wonder-crash": {
       "date": "2026-06-29T12:55:21+08:00",

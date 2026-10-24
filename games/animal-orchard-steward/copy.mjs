@@ -1,3 +1,4 @@
+import {appendStaticIntroFaq} from '../../src/game-guide-intro-faq.mjs';
 export const LOCALES = ['en','zh-Hant','zh-Hans','ja','ko','es','pt-BR','fr','de','it','ru','hi','ar'];
 const keys = 'day|season|actions|harvest|target|sun|water|soil|watering|compost|canopy|sunset|settle|ready|grow|help|workshop|close|continue|leaveTitle|leaveText|leave|win|lose|retry|next|main|coins|compostUpgrade|compostEffect|cratesUpgrade|cratesEffect|golden|goldEffect|buy|owned|unavailable|noActions|finalPick|forecast|legacy|saveError|graphicsError|reload|apple|pear|orange|mild|rain|sunny|breeze|bloom|heat|first|rainy|dry|festival'.split('|');
 const rows = {
@@ -37,5 +38,6 @@ export const COPY=Object.fromEntries(LOCALES.map(locale=>{
 const escape = value=>value.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function renderOrchardGuide(locale='en') {
  const c=COPY[locale]||COPY.en;
- return `<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-preserve-static-guide data-runtime-localize="off" aria-label="${escape(c.help)}"><div class="game-info-hero"><div class="game-info-title"><h2>${escape(c.help)}</h2><p>${escape(c.intro)}</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>${escape(c.first)}</h3><p>${escape(c.guide)}</p></div><div class="game-info-section"><h3>${escape(c.workshop)}</h3><p>${escape(c.compostEffect)} ${escape(c.cratesEffect)}</p><p>${escape(c.goldEffect)}</p></div></div></section>`;
+ const guide = `<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-preserve-static-guide data-runtime-localize="off" aria-label="${escape(c.help)}"><div class="game-info-hero"><div class="game-info-title"><h2>${escape(c.help)}</h2><p>${escape(c.intro)}</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>${escape(c.first)}</h3><p>${escape(c.guide)}</p></div><div class="game-info-section"><h3>${escape(c.workshop)}</h3><p>${escape(c.compostEffect)} ${escape(c.cratesEffect)}</p><p>${escape(c.goldEffect)}</p></div></div></section>`;
+ return appendStaticIntroFaq(guide,locale);
 }

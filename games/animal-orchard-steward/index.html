@@ -1,7 +1,8 @@
 <!doctype html>
-<html lang="en" dir="ltr" data-wp-official-name>
+<html data-wp-publication-locale-completion lang="en" dir="ltr" data-wp-official-name>
 <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-orchard-steward/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}catch{location.replace("/en/games/animal-orchard-steward/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}})();</script>
+  <base href="/games/animal-orchard-steward/">
   <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="/src/wallet.js"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
@@ -10,7 +11,7 @@
   <script src="/src/shared-interface-bootstrap.js?v=20261017-shared-dark-loader1" data-wp-shared-interface="7"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="robots" content="index,follow">
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-orchard-steward">
   <meta name="weightplay-game-version" content="v6">
@@ -38,8 +39,10 @@
   <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard>
   <link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-interface9-play-ui-v1">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <script type="module" src="/src/game-guide-intro-faq.mjs"></script>
 </head>
 <body data-audience="general" data-wp-game-id="animal-orchard-steward" data-wp-game-version="v6" data-wp-interface-version="9" data-screen="main" data-has-stage="false">
+  <h1 data-wp-game-title data-runtime-localize="off" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Orchard Resource Manager</h1>
   <div class="app-shell" id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
     <main class="screen main-screen" id="mainView" data-screen="main" aria-labelledby="mainTitle">
       <header class="topbar wp-main-shell-header">
@@ -61,9 +64,9 @@
       </section>
     </main>
     <section class="game-page-info game-page-info-static" id="gameGuide" data-wp-game-guide data-wp-preserve-static-guide aria-label="Orchard Steward game guide">
-      <div class="game-info-hero"><div class="game-info-title"><h2 data-copy="help">Help</h2><p data-copy="intro">Care for three fruit trees, read the forecast, and harvest an eight-day order.</p></div></div>
+      <div class="game-info-hero"><div class="game-info-title"><h2 data-copy="help">Help</h2><p data-copy="intro" data-wp-intro-faq-source>Care for three fruit trees, read the forecast, and harvest an eight-day order.</p></div></div>
       <div class="game-info-sections"><div class="game-info-section"><h3 data-copy="first">First harvest</h3><p data-copy="guide">Use up to two care actions each day. At sunset, weather changes the resources. Two healthy growth steps ripen fruit. Tap ripe trees to harvest and earn income. Progress saves automatically.</p></div><div class="game-info-section"><h3 data-copy="workshop">Workshop</h3><p data-copy="compostEffect">Compost adds one extra soil.</p><p data-copy="cratesEffect">Large crates increase each harvest to three.</p><p data-copy="goldEffect">Golden crates and harvest trails change appearance only.</p></div></div>
-    </section>
+    <article class="game-info-section" data-wp-intro-faq><h3>FAQ</h3><dl><dt>What will I do in this game?</dt><dd>Care for three fruit trees, read the forecast, and harvest an eight-day order.</dd></dl></article></section>
 
     <section class="screen battle-screen battle-canvas" id="battleView" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="680" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="350" hidden>
       <header class="screen-heading battle-header">

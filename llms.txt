@@ -59,6 +59,33 @@ WeightPlay covers these game and content clusters:
 
 ## Current Playable Games
 
+- Wildborn: https://weightplay.com/en/games/wildborn/
+- Kindred Habitats: https://weightplay.com/en/games/kindred-habitats/
+- Postcard Crop: https://weightplay.com/en/games/animal-postcard-crop/
+- Burrow Shape Match: https://weightplay.com/en/games/animal-hollow-fit/
+- Campfire Seating Logic: https://weightplay.com/en/games/animal-cozy-camp/
+- Orbit Orchard: https://weightplay.com/en/games/animal-orbit-orchard/
+- Habitat Counts: https://weightplay.com/en/games/animal-habitat-counts/
+- Tide Level Calibration: https://weightplay.com/en/games/animal-tideglass/
+- Burrow Builder: https://weightplay.com/en/games/animal-burrow-builder/
+- Tangle Rescue: https://weightplay.com/en/games/animal-tangle-rescue/
+- Meadow Find: https://weightplay.com/en/games/animal-meadow-difference/
+- Footprint Sequence Logic: https://weightplay.com/en/games/animal-footprint-folio/
+- Magnet Meadow: https://weightplay.com/en/games/animal-magnet-meadow/
+- Glyph Garden: https://weightplay.com/en/games/animal-glyph-garden/
+- Rotating Ring Puzzles: https://weightplay.com/en/games/animal-ring-garden/
+- Cloudhook Courier: https://weightplay.com/en/games/animal-cloudhook-courier/
+- Moon Market Manager: https://weightplay.com/en/games/animal-moon-market/
+- Kite Keeper: https://weightplay.com/en/games/animal-kite-keeper/
+- Habitat Tile Logic: https://weightplay.com/en/games/animal-habitat-blueprint/
+- River Gate Water Routing: https://weightplay.com/games/animal-river-gates/
+- Acorn Auction: https://weightplay.com/en/games/animal-acorn-auction/
+- Patchwork Paws: https://weightplay.com/en/games/animal-patchwork-paws/
+- Firefly Direction Codes: https://weightplay.com/en/games/animal-firefly-folio/
+- Animal Silhouette Match: https://weightplay.com/en/games/animal-silhouette-scout/
+- Orchard Resource Manager: https://weightplay.com/en/games/animal-orchard-steward/
+- Habitat Domino Chain: https://weightplay.com/en/games/animal-grove-dominoes/
+
 - Traffic and River Crossing: https://weightplay.com/en/games/road-crosser/ — Deliver lanterns through 30 authored crossings, read traffic signals, ride opposing currents, and reach each marked dock.
 
 - Deep Drill: https://weightplay.com/en/games/deep-drill/ — Explore 30 mining areas, collect ore, upgrade four drill heads and buy permanent automation.

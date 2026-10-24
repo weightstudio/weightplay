@@ -1,13 +1,14 @@
 <!doctype html>
-<html lang="en" data-wp-official-name>
+<html data-wp-publication-locale-completion lang="en" data-wp-official-name>
 <head>
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-ring-garden/")}catch{location.replace("/en/games/animal-ring-garden/")}})();</script>
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-ring-garden/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}catch{location.replace("/en/games/animal-ring-garden/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}})();</script>
+  <base href="/games/animal-ring-garden/">
   <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
   <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="robots" content="index,follow">
   <meta name="description" content="Explore 30 moonlit ring puzzles with linked gears, mirrored turns, seals and collectible finishes.">
   <meta name="weightplay-game-id" content="animal-ring-garden">
   <meta name="weightplay-audience" content="general">
@@ -36,6 +37,7 @@
   <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261017-interface9-shell1">
   <link rel="stylesheet" href="style.css?v=20261022-animal-ring-garden-v24-conservatory">
+  <script type="module" src="/src/game-guide-intro-faq.mjs"></script>
 </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="animal-ring-garden" data-wp-game-version="v24" data-wp-interface-version="9" data-wp-combined-sound="true" data-runtime-localize="off">
   <div id="app" class="app-shell" data-wp-frame-root data-wp-play-ui="1">
@@ -65,7 +67,7 @@
       <div class="game-info-title">
         <span class="game-info-kicker" id="guide-kicker">WeightPlay Original Game Guide</span>
         <h2 id="guide-title">How to bloom</h2>
-        <p id="guide-intro">30 moonlit ring puzzles.</p>
+        <p id="guide-intro" data-wp-intro-faq-source>30 moonlit ring puzzles.</p>
       </div>
       <div class="game-info-sections">
         <div class="game-info-section">
@@ -73,7 +75,7 @@
           <ol><li id="guide-one">Read the target petals.</li><li id="guide-two">Turn one ring at a time.</li><li id="guide-three">Reset calmly if the pattern misses.</li></ol>
         </div>
       </div>
-    </section>
+    <article class="game-info-section" data-wp-intro-faq><h3>FAQ</h3><dl><dt>What will I do in this game?</dt><dd>30 moonlit ring puzzles.</dd></dl></article></section>
 
     <main id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" hidden>
       <header class="topbar stage-header">

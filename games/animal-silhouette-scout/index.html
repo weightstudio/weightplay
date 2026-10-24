@@ -1,13 +1,14 @@
 <!doctype html>
-<html lang="en" dir="ltr" data-wp-official-name>
+<html data-wp-publication-locale-completion lang="en" dir="ltr" data-wp-official-name>
 <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-silhouette-scout/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}catch{location.replace("/en/games/animal-silhouette-scout/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}})();</script>
+  <base href="/games/animal-silhouette-scout/">
   <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
   <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="robots" content="index,follow">
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-silhouette-scout">
   <meta name="weightplay-game-version" content="v10">
@@ -39,6 +40,7 @@
   <link rel="stylesheet" href="art.css?v=20261024-scout-v10-final">
   <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
   <script defer src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
+  <script type="module" src="/src/game-guide-intro-faq.mjs"></script>
 </head>
 <body data-runtime-localize="off" data-audience="general" data-wp-game-id="animal-silhouette-scout" data-wp-game-version="v10" data-wp-interface-version="9" data-wp-owned-guide="true" data-wp-combined-sound="true" data-screen="main">
   <div id="app" data-wp-frame-root data-wp-play-ui="1">
@@ -59,7 +61,7 @@
     </main>
 
     <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-locales="locales.js#ANIMAL_SILHOUETTE_SCOUT_LOCALES" aria-label="Silhouette Scout game information">
-      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="originalGuide">WeightPlay · How to play</span><h2 data-wp-game-title data-runtime-localize="off">Animal Silhouette Match</h2><p data-copy="guideSummary">Recognize silhouettes, reflected shapes, partial outlines, pairs and ordered trails. No timer or lives.</p></div></div>
+      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="originalGuide">WeightPlay · How to play</span><h2 data-wp-game-title data-runtime-localize="off">Animal Silhouette Match</h2><p data-copy="guideSummary" data-wp-intro-faq-source>Recognize silhouettes, reflected shapes, partial outlines, pairs and ordered trails. No timer or lives.</p></div></div>
       <div class="game-info-facts"><div class="game-info-fact"><span data-copy="gameplayFact">Gameplay</span><strong data-copy="gameplayValue">Silhouette</strong></div><div class="game-info-fact"><span data-copy="genreFact">Genre</span><strong data-copy="genreValue">Puzzle · Observation · Family</strong></div></div>
       <div class="game-info-sections">
         <article class="game-info-section"><h3 data-copy="guideTitle">How to play</h3><ol><li data-copy="guideOne">Choose the animal with the same outline.</li><li data-copy="guideTwo">Choose the animals in numbered order: 1 → 2 ….</li><li data-copy="guideThree">Recognize silhouettes, reflected shapes, partial outlines, pairs and ordered trails. No timer or lives.</li></ol></article>
@@ -67,7 +69,7 @@
         <article class="game-info-section"><h3 data-copy="tipsTitle">Observation tips</h3><p data-copy="tips">Look at the ears, tail and body shape. Tap a selected card to change it.</p></article>
         <article class="game-info-section game-info-parent"><h3 data-copy="parentTitle">Players and parents</h3><p data-copy="parentBody">For ages 6 and up, together or solo. Progress stays in this browser. All stages are free; optional equipment uses earned diamonds.</p></article>
       </div>
-    </section>
+    <article class="game-info-section" data-wp-intro-faq><h3>FAQ</h3><dl><dt>What will I do in this game?</dt><dd>Recognize silhouettes, reflected shapes, partial outlines, pairs and ordered trails. No timer or lives.</dd></dl></article></section>
 
     <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill data-wp-frame-logical-header="stage" data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="/assets/interface7-redrawn/animal-silhouette-scout.webp" hidden>
       <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" data-copy-aria="back" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong></header>
