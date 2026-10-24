@@ -1,4 +1,11 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "wildborn": {
+    "__localizedExact": true,
+    "en": "Wildborn", "zh-Hant": "荒野輪迴", "zh-Hans": "荒野轮回",
+    "ja": "荒野の輪廻", "ko": "야생의 윤회", "es": "Renacer salvaje",
+    "pt-BR": "Renascer selvagem", "fr": "Renaître sauvage", "de": "Wild geboren",
+    "it": "Rinascita selvaggia", "ru": "Дикий круговорот", "hi": "वन्य पुनर्जन्म", "ar": "ولادة برية"
+  },
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",

@@ -1,0 +1,38 @@
+:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color-scheme:dark;--wb-cream:#fff0cf;--wb-muted:#d6e0d0;--wb-panel:#1d3735;--wb-gold:#f1d59b}
+*{box-sizing:border-box}body{margin:0}button{font:inherit;cursor:pointer}button:disabled{cursor:default}[hidden]{display:none!important}
+#mainScreen #entryError{font-size:14px;line-height:1.5;color:#ffd2b2}#gameGuide .guide-orla{object-fit:contain}
+#battleScreen{position:fixed;inset:0;overflow:hidden}#playContent{position:relative;min-width:0;min-height:0;overflow:hidden;height:100%}
+#world{position:relative;width:100%;height:100%;min-width:0;min-height:0;overflow:hidden;background:#8fae9b;outline:none;touch-action:none}
+#world .wildborn-canvas{display:block;width:100%;height:100%;touch-action:none}
+#world .creature-hud{position:absolute;left:50%;top:45%;width:78px;transform:translate(-50%,-100%);pointer-events:none;z-index:2;filter:drop-shadow(0 1px 2px #20392caa)}
+#world .creature-name{color:var(--wb-cream);font-size:11px;line-height:1.5;font-weight:750;white-space:nowrap;text-align:center;position:relative;left:-36px;width:150px;text-shadow:0 1px 3px #183e2c;opacity:0;transition:opacity .3s}
+#world .creature-hud[data-named="true"] .creature-name{opacity:1}
+#world .meter{height:5px;margin-top:3px;background:#213b35b8;border-radius:3px;overflow:hidden;border:1px solid #28413644}
+#world .meter i{display:block;width:100%;height:100%;transform-origin:left;transition:transform .12s linear}
+#world .vitality i{background:#e9edbd}#world .hunger i{background:#eab97f}#world .growth{height:3px}#world .growth i{background:#9cd8c4}#world .stamina i{background:#d3e1cb}
+#coverStatus{display:block;position:relative;left:-36px;width:150px;color:#fff5cb;text-align:center;font-size:10px;font-weight:700;line-height:1.8;white-space:nowrap}
+#world .action-controls{position:absolute;right:16px;bottom:18px;display:grid;grid-template-columns:72px 72px;grid-template-rows:56px 4px;gap:8px;z-index:3;direction:ltr}
+#world .action-controls>button{height:56px;min-width:64px;border-radius:16px;border:1px solid #f6ebbf88;background:#203c39d9;color:#f7edcf;box-shadow:0 3px 0 #19312c88,inset 0 1px 0 #fff2;font-size:14px;font-weight:700;touch-action:none;transition:background .12s,box-shadow .12s;backdrop-filter:blur(8px)}
+#world .action-controls>button:last-of-type{background:#f0d59b;color:#2a3c33;border-color:#fff0ca}
+#world .action-controls>button:active,#world .action-controls>button.held{background:#557a65;box-shadow:inset 0 2px 0 #17362c77}
+#world .action-controls>button:disabled{opacity:.5}#world .action-controls>button:focus-visible{outline:3px solid #fff4c9;outline-offset:3px}
+#world .action-controls>.stamina{grid-column:1/3;margin:0;height:4px}
+#world .world-notice{position:absolute;top:12%;left:50%;transform:translateX(-50%);width:min(85%,340px);min-height:52px;text-align:center;color:#fff5d4;font-size:16px;font-weight:750;line-height:1.5;text-shadow:0 2px 8px #21382b;pointer-events:none;z-index:3;opacity:0;transition:opacity .25s}
+#world .world-notice[data-visible="true"]{opacity:1}#world .world-notice small{display:block;font-size:12px;font-weight:500;opacity:.9}
+#world .first-hint{position:absolute;bottom:92px;left:50%;transform:translateX(-50%);width:min(82%,330px);color:#ffefd0;background:#1e3934c9;border:1px solid #e1e4bf33;border-radius:10px;font-size:12px;line-height:1.5;text-align:center;padding:10px;pointer-events:none;z-index:3}
+#battleScreen .overlay{position:absolute;inset:0;z-index:30;display:grid;place-items:center;padding:16px;background:#142c31b3;backdrop-filter:blur(7px)}
+#battleScreen .life-dialog{width:min(100%,420px);max-height:100%;overflow:auto;overscroll-behavior:contain;padding:24px;border-radius:20px;background:linear-gradient(145deg,#284740,#1b3332);border:1px solid #d1d6a854;box-shadow:0 24px 80px #102a2955;color:var(--wb-cream)}
+#battleScreen .life-dialog h2{font-size:25px;line-height:1.25;letter-spacing:.015em;margin:0 0 16px;font-weight:750}
+#battleScreen .life-dialog p{font-size:14px;line-height:1.7;margin:12px 0;color:var(--wb-muted)}
+#battleScreen #dialogActions{display:grid;gap:10px;margin-top:20px}
+#battleScreen #dialogActions button{width:100%;height:48px;border-radius:12px;border:1px solid #bacfbf5c;background:#34554a;color:var(--wb-cream);font-size:14px;font-weight:700;padding:0 12px}
+#battleScreen #dialogActions button:first-child{background:var(--wb-gold);color:#243c32;border-color:#f5e5bf}
+#battleScreen #dialogActions button:hover{filter:brightness(1.07)}#battleScreen #dialogActions button:active{filter:brightness(.93)}#battleScreen button:focus-visible{outline:3px solid #fff2bd;outline-offset:3px}
+#battleScreen .life-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#bad3ae24;border:1px solid #bad3ae24;border-radius:12px;overflow:hidden;margin:16px 0}
+#battleScreen .life-stats>div{background:#244239;padding:14px 10px;display:grid;gap:5px;text-align:center}
+#battleScreen .life-stats b{font-size:23px;font-weight:700;font-variant-numeric:tabular-nums}#battleScreen .life-stats span{font-size:11px;color:var(--wb-muted)}
+#battleScreen .life-portrait{display:block;width:100px;height:100px;object-fit:contain;margin:4px auto 12px}
+#battleScreen .diamond-balance{display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;min-height:44px}#battleScreen .diamond-balance img{width:30px;height:30px;object-fit:contain}
+#battleScreen .dialog-status{min-height:28px;font-size:12px;color:#f1c79f}#saveWarning{position:fixed;bottom:0;inset-inline:0;margin:0;padding:10px;background:#743f33;color:#fff;z-index:100;font-size:13px}
+@media(max-height:480px){#battleScreen .overlay{align-items:start}#battleScreen .life-dialog{padding:16px;width:min(100%,520px)}#battleScreen .life-dialog h2{font-size:21px;margin-bottom:8px}#battleScreen .life-dialog p{margin:8px 0}#battleScreen #dialogActions{margin-top:12px;grid-template-columns:repeat(2,minmax(0,1fr))}#battleScreen .life-stats{grid-template-columns:repeat(4,minmax(0,1fr));margin:8px 0}#battleScreen .life-stats>div{padding:8px}#battleScreen .life-portrait{width:64px;height:64px;margin:0 auto}}
+@media(prefers-reduced-motion:reduce){#world .meter i,#world .world-notice,#world .creature-name{transition:opacity .08s}#battleScreen .overlay{backdrop-filter:none}}

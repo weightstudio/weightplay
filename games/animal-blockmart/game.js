@@ -1,5 +1,5 @@
 import * as THREE from './vendor/three/three.module.min.js';
-import {resolveLocale,t} from './locales.js?v=17';
+import {resolveLocale,t} from './locales.js?v=17-public1';
 import {affordableRestockOffer,applySaleRevenue,browseSeconds,checkoutSeconds,customerBudget,migrateEquipmentState,purchaseEquipment,recoveryShipment,stockCapacity,totalStock,appendCashLedger,spendCash} from './economy.js?v=15';
 import {installBlockmartV9} from './blockmart-v9.js?v=17';
 import {mergeAchievementStates,recordAchievementEvent} from './blockmart-v9-systems.js?v=12';
@@ -232,12 +232,7 @@ function installV9(){
   v9.install();
   return v9;
 }
-if(!isOwnerPreview){
-  const gate=document.createElement('main');gate.style.cssText='padding:24px;font:16px system-ui;color:#345';
-  const message=document.createElement('p');message.textContent=t('plannedGuard',locale);
-  const back=document.createElement('a');back.href=`../../index.html?preview=1&lang=${encodeURIComponent(locale)}`;back.textContent=t('returnPreview',locale);
-  gate.append(message,back);$('gameFrameRoot').replaceChildren(gate);
-}else try{frameApi=window.WeightPlayScreenFrame.mount({root:$('gameFrameRoot'),scenes:{main:{root:$('mainScreen'),header:$('mainHeader'),content:$('mainContent')},battle:{root:$('app'),header:$('battleHeader'),content:$('battleContent')}}});frameApi.activate('main');$('app').hidden=true;dialog.hidden=true;makeWorld();installV9();$('day').textContent=state.day;cashEl.textContent=price(state.cash);renderPanel();save();animate()}catch(error){
+try{frameApi=window.WeightPlayScreenFrame.mount({root:$('gameFrameRoot'),scenes:{main:{root:$('mainScreen'),header:$('mainHeader'),content:$('mainContent')},battle:{root:$('app'),header:$('battleHeader'),content:$('battleContent')}}});frameApi.activate('main');$('app').hidden=true;dialog.hidden=true;makeWorld();installV9();$('day').textContent=state.day;cashEl.textContent=price(state.cash);renderPanel();save();animate()}catch(error){
   console.error(error);document.body.replaceChildren();
   const fallback=document.createElement('main');fallback.style.cssText='padding:24px;font:16px system-ui;color:#345';
   const message=document.createElement('p');message.textContent=t('sceneStartError',locale);
