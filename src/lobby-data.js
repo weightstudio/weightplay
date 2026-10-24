@@ -81,13 +81,13 @@ window.WONDER_LOBBY = {
   games: [
     {
       id: "wildborn", audience: "general", status: "planned", internalOnly: true,
-      internalTrial: "/games/wildborn/?preview=1", href: "games/wildborn/",
+      internalTrial: "index.html?preview=1", href: "games/wildborn/",
       title: {"__localizedExact":true,"en":"Wildborn","zh-Hant":"荒野輪迴","zh-Hans":"荒野轮回","ja":"荒野の輪廻","ko":"야생의 윤회","es":"Renacer salvaje","pt-BR":"Renascer selvagem","fr":"Renaître sauvage","de":"Wild geboren","it":"Rinascita selvaggia","ru":"Дикий круговорот","hi":"वन्य पुनर्जन्म","ar":"ولادة برية"},
       type: {"en":"Evolution · Living world","zh-Hant":"進化 · 生態世界","zh-Hans":"进化 · 生态世界","ja":"進化 · 生きた世界","ko":"진화 · 살아있는 세계","es":"Evolución · Mundo vivo","pt-BR":"Evolução · Mundo vivo","fr":"Évolution · Monde vivant","de":"Entwicklung · Lebendige Welt","it":"Evoluzione · Mondo vivente","ru":"Эволюция · Живой мир","hi":"विकास · जीवंत दुनिया","ar":"التطور · عالم حي"},
       description: {"en":"Born small. Forage, hide and evolve in a living wilderness. Death begins a new life.","zh-Hant":"從渺小開始。在荒野覓食、躲藏，慢慢進化。死亡之後，重新投生。","zh-Hans":"从渺小开始。在荒野觅食、躲藏，慢慢进化。死亡之后，重新投生。","ja":"小さな命から。食べ、隠れ、進化しよう。倒れたら新しい命へ。","ko":"작은 생명으로 시작해 먹이를 찾고 숨어 진화하세요. 죽으면 새로 태어납니다.","es":"Nace pequeño. Busca alimento, escóndete y evoluciona. La muerte inicia otra vida.","pt-BR":"Nasça pequeno. Busque comida, esconda-se e evolua. A morte inicia outra vida.","fr":"Naissez petit. Mangez, cachez-vous et évoluez. La mort ouvre une nouvelle vie.","de":"Beginne klein. Suche Nahrung, verstecke dich und entwickle dich. Nach dem Tod beginnt ein neues Leben.","it":"Nasci piccolo. Cerca cibo, nasconditi ed evolvi. La morte apre una nuova vita.","ru":"Начните маленьким. Ищите пищу, прячьтесь и развивайтесь. После смерти — новая жизнь.","hi":"छोटे जीव बनें। भोजन खोजें, छिपें और विकसित हों। मृत्यु पर नया जन्म मिलता है।","ar":"ابدأ صغيرًا. ابحث عن الطعام واختبئ وتطور. الموت بداية حياة جديدة."},
       categories: ["Action", "Adventure", "Animal Games"], skills: ["Reaction", "Planning"], ages: ["general"],
       meta: {"en":["Living world","Random origins","No levels"],"zh-Hant":["生態世界","隨機投生","沒有關卡"],"zh-Hans":["生态世界","随机投生","没有关卡"],"ja":["生きた世界","ランダムな誕生","ステージなし"],"ko":["살아있는 세계","무작위 탄생","스테이지 없음"],"es":["Mundo vivo","Orígenes al azar","Sin niveles"],"pt-BR":["Mundo vivo","Origens aleatórias","Sem fases"],"fr":["Monde vivant","Origines aléatoires","Sans niveaux"],"de":["Lebendige Welt","Zufällige Geburt","Ohne Level"],"it":["Mondo vivente","Origini casuali","Senza livelli"],"ru":["Живой мир","Случайное рождение","Без уровней"],"hi":["जीवंत दुनिया","यादृच्छिक जन्म","कोई स्तर नहीं"],"ar":["عالم حي","أصول عشوائية","بلا مراحل"]},
-      art: { kind: "image", background: "games/wildborn/art/poster.webp", hideHero: true },
+      art: { kind: "image", background: "/games/wildborn/art/poster.webp", hideHero: true },
     },
     {
       id: "kindred-habitats", audience: "general", status: "planned", internalOnly: true,

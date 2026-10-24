@@ -5,16 +5,16 @@ const colors = { meadow: 0x819b67, forest: 0x546f57, marsh: 0x759b80, dryland: 0
 const mix = (a, b, t) => a + (b - a) * t;
 
 class Boxes {
-  constructor(scene, geometry, materialCache, capacity = 2400) {
+  constructor(scene, geometry, materialCache, capacity = 2400, opacity = 1) {
     this.scene = scene; this.geometry = geometry; this.materialCache = materialCache;
-    this.capacity = capacity; this.batches = new Map(); this.dummy = new THREE.Object3D();
+    this.capacity = capacity; this.opacity = opacity; this.batches = new Map(); this.dummy = new THREE.Object3D();
   }
   get(color) {
     if (!this.batches.has(color)) {
-      if (!this.materialCache.has(color)) this.materialCache.set(color, new THREE.MeshStandardMaterial({ color, roughness: .86, metalness: 0 }));
+      if (!this.materialCache.has(color)) this.materialCache.set(color, new THREE.MeshStandardMaterial({ color, roughness: .86, metalness: 0, transparent: this.opacity < 1, opacity: this.opacity, depthWrite: this.opacity === 1 }));
       const mesh = new THREE.InstancedMesh(this.geometry, this.materialCache.get(color), this.capacity);
       mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage); mesh.count = 0;
-      mesh.castShadow = true; mesh.receiveShadow = true; mesh.frustumCulled = false;
+      mesh.castShadow = this.opacity === 1; mesh.receiveShadow = true; mesh.frustumCulled = false;
       this.scene.add(mesh); this.batches.set(color, mesh);
     }
     return this.batches.get(color);
@@ -129,6 +129,7 @@ export function createWorld(container, callbacks = {}) {
   const moon = new THREE.DirectionalLight(0x8eb9ec,.1);moon.position.set(8,13,-9);scene.add(moon);
   const geometry = new THREE.BoxGeometry(1,1,1), materials=new Map();
   const environment = new Boxes(scene,geometry,materials,3500), actors=new Boxes(scene,geometry,materials,700);
+  const ghostMaterials=new Map(), foliage=new Boxes(scene,geometry,materials,400), cutaway=new Boxes(scene,geometry,ghostMaterials,100,.18), trees=[];
   const groundMat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:1});
   const ground=new THREE.Mesh(new THREE.BufferGeometry(),groundMat);ground.receiveShadow=true;scene.add(ground);
   const waterMat=new THREE.MeshStandardMaterial({color:0x75b9b0,roughness:.3,metalness:.12,transparent:true,opacity:.76});
@@ -136,6 +137,9 @@ export function createWorld(container, callbacks = {}) {
   const ringGeometry=new THREE.RingGeometry(.52,.59,48);ringGeometry.rotateX(-Math.PI/2);
   const ringMat=new THREE.MeshBasicMaterial({color:0xffe6a5,transparent:true,opacity:.75,depthWrite:false,side:THREE.DoubleSide});
   const ring=new THREE.Mesh(ringGeometry,ringMat);scene.add(ring);
+  const arcGeometry=new THREE.RingGeometry(.7,1.04,28,1,-Math.PI/2-.9,1.8);arcGeometry.rotateX(-Math.PI/2);
+  const arcMaterial=new THREE.MeshBasicMaterial({color:0xffedba,transparent:true,opacity:.8,depthWrite:false,side:THREE.DoubleSide});
+  const attackArc=new THREE.Mesh(arcGeometry,arcMaterial);attackArc.visible=false;scene.add(attackArc);
   const shadowGeometry=new THREE.CircleGeometry(.5,24);shadowGeometry.rotateX(-Math.PI/2);
   const shadowMat=new THREE.MeshBasicMaterial({color:0x153c30,transparent:true,opacity:.20,depthWrite:false});
   const playerShadow=new THREE.Mesh(shadowGeometry,shadowMat);scene.add(playerShadow);
@@ -162,16 +166,13 @@ export function createWorld(container, callbacks = {}) {
     for(let z=cz-52;z<cz+52;z+=2){const x=riverX(z),x2=riverX(z+2);const y=groundHeight(x,z)+.36,y2=groundHeight(x2,z+2)+.36;
       waterPositions.push(x-2.7,y,z,x2-2.7,y2,z+2,x2+2.7,y2,z+2,x-2.7,y,z,x2+2.7,y2,z+2,x+2.7,y,z);}
     const wg=new THREE.BufferGeometry();wg.setAttribute('position',new THREE.Float32BufferAttribute(waterPositions,3));wg.computeVertexNormals();water.geometry.dispose();water.geometry=wg;
-    environment.begin();
+    environment.begin();trees.length=0;
     const gx=Math.floor(cx/7),gz=Math.floor(cz/7);
     for(let ix=gx-7;ix<=gx+7;ix++)for(let iz=gz-7;iz<=gz+7;iz++){
       const t=treeAt(ix,iz,s.seed);if(!t)continue;const y=groundHeight(t.x,t.z), h=t.height;
+      trees.push(t);
       environment.box(0x755d47,t.x,y+h*.4,t.z,.43,h*.8,.48);
       environment.box(0x9b7958,t.x-.05,y+h*.38,t.z+.255,.12,h*.7,.045);
-      environment.box(0x627a51,t.x,y+h*.78,t.z,2.9,1.3,2.8);
-      environment.box(0x75905a,t.x-.3,y+h*1.0,t.z-.1,2.45,.85,2.2);
-      environment.box(0x8fa667,t.x-.45,y+h*1.13,t.z-.25,1.45,.4,1.6);
-      environment.box(0x4b7156,t.x+.8,y+h*.68,t.z+.1,1.2,.9,1.6);
       environment.box(0x8d7550,t.x+.6,y+h*.55,t.z,.9,.17,.2,0,0,.4);
     }
     for(let x=Math.floor((cx-42)/4.8);x<=(cx+42)/4.8;x++)for(let z=Math.floor((cz-42)/4.8);z<=(cz+42)/4.8;z++){
@@ -285,6 +286,15 @@ export function createWorld(container, callbacks = {}) {
   function render(next,dt=0,appearance=false) {
     if(disposed||lost||!next)return;state=next;visualTime+=Math.min(.05,dt);const p=state.player;
     terrain(state);
+    foliage.begin();cutaway.begin();
+    for(const t of trees){const y=groundHeight(t.x,t.z),h=t.height;
+      const boxes=Math.abs(t.x-p.x)<2.2&&t.z-p.z>-.4&&t.z-p.z<h*1.15?cutaway:foliage;
+      boxes.box(0x627a51,t.x,y+h*.78,t.z,2.9,1.3,2.8);
+      boxes.box(0x75905a,t.x-.3,y+h,t.z-.1,2.45,.85,2.2);
+      boxes.box(0x8fa667,t.x-.45,y+h*1.13,t.z-.25,1.45,.4,1.6);
+      boxes.box(0x4b7156,t.x+.8,y+h*.68,t.z+.1,1.2,.9,1.6);
+    }
+    foliage.end();cutaway.end();
     for(const e of state.events)if(e.id>lastEvent)spawnEffect(e);lastEvent=state.eventId;
     actors.begin();
     for(const f of state.food)drawFood(f,visualTime);
@@ -310,6 +320,7 @@ export function createWorld(container, callbacks = {}) {
     camera.position.set(p.x+sx,y+20,p.z+18);camera.lookAt(p.x,y+.2,p.z);
     sun.position.set(p.x-12,y+23,p.z+9);sun.target.position.set(p.x,y,p.z);
     ring.position.set(p.x,y+.045,p.z);ring.scale.setScalar(p.size*(1+evolution*.45));ringMat.opacity=p.hidden?.28:.72;
+    attackArc.visible=p.attack>0;attackArc.position.set(p.x,y+.12,p.z);attackArc.rotation.y=p.angle;attackArc.scale.setScalar(1+p.form*.24);arcMaterial.opacity=Math.sin(p.attack/.34*Math.PI)*.65;
     playerShadow.position.set(p.x,y+.03,p.z);playerShadow.scale.set(p.size*1.8,1,p.size*1.5);
     renderer.render(scene,camera);
   }
@@ -319,6 +330,6 @@ export function createWorld(container, callbacks = {}) {
     reset(){chunk='';lastEvent=0;effectList.length=0;visualTime=0;shake=0;evolution=0;},
     project(x,y,z){const v=new THREE.Vector3(x,y,z).project(camera);return {x:(v.x*.5+.5)*width,y:(-.5*v.y+.5)*height};},
     inspect(){return {engine:THREE.REVISION,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,programs:renderer.info.programs?.length||0,particles:effectList.length,kitCount:kits.size,contexts:disposed?0:1};},
-    dispose(){if(disposed)return;disposed=true;resizeObserver.disconnect();renderer.domElement.removeEventListener('webglcontextlost',onLost);renderer.domElement.removeEventListener('webglcontextrestored',onRestored);environment.dispose();actors.dispose();ground.geometry.dispose();water.geometry.dispose();geometry.dispose();ringGeometry.dispose();shadowGeometry.dispose();particleGeometry.dispose();groundMat.dispose();waterMat.dispose();ringMat.dispose();shadowMat.dispose();particleMat.dispose();for(const m of materials.values())m.dispose();renderer.dispose();renderer.domElement.remove();effectList.length=0;kits.clear();materials.clear();},
+    dispose(){if(disposed)return;disposed=true;resizeObserver.disconnect();renderer.domElement.removeEventListener('webglcontextlost',onLost);renderer.domElement.removeEventListener('webglcontextrestored',onRestored);environment.dispose();actors.dispose();foliage.dispose();cutaway.dispose();ground.geometry.dispose();water.geometry.dispose();geometry.dispose();ringGeometry.dispose();arcGeometry.dispose();arcMaterial.dispose();shadowGeometry.dispose();particleGeometry.dispose();groundMat.dispose();waterMat.dispose();ringMat.dispose();shadowMat.dispose();particleMat.dispose();for(const m of [...materials.values(),...ghostMaterials.values()])m.dispose();renderer.dispose();renderer.domElement.remove();effectList.length=0;kits.clear();materials.clear();ghostMaterials.clear();},
   };
 }
