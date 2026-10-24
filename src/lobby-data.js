@@ -2275,9 +2275,9 @@ for (const game of window.WONDER_LOBBY.games) {
   const planned = {
     id: "animal-layer-grove",
     audience: "general",
-    status: "planned",
+    status: "playable",
     title: localize(["Layer Grove", "疊影林地", "叠影林地", "レイヤーの森", "겹침 숲", "Bosque de Capas", "Bosque de Camadas", "Bois en couches", "Schichtenhain", "Bosco a strati", "Роща слоёв", "परतों का वन", "بستان الطبقات"]),
-    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    statusText: localize(["Play", "立即遊玩", "立即游玩", "遊ぶ", "플레이", "Jugar", "Jogar", "Jouer", "Spielen", "Gioca", "Играть", "खेलें", "العب"]),
     type: localize(["Habitat layer-order puzzle", "棲地疊影排序益智", "栖地叠影排序益智", "生息地レイヤー順パズル", "서식지 레이어 순서 퍼즐", "Puzzle de capas de hábitat", "Puzzle de camadas de habitat", "Puzzle d’ordre des couches d’habitat", "Habitat-Schichten-Puzzle", "Puzzle dell’ordine degli strati", "Пазл порядка слоёв среды", "Пазल क्रम-परत आवास", "لغز ترتيب طبقات الموطن"]),
     description: localize(["Stack three transparent habitat layers to reveal the animal scene that matches the keeper’s target.", "疊放三層透明棲地圖層，顯現符合守護員目標的動物場景。", "叠放三层透明栖地图层，显现符合守护员目标的动物场景。", "3枚の透明な生息地レイヤーを重ね、守り手の目標に合う動物の景色を見つけよう。", "투명한 서식지 레이어 세 장을 겹쳐 수호자의 목표 동물 장면을 완성해요.", "Apila tres capas transparentes del hábitat para revelar la escena animal objetivo.", "Empilhe três camadas transparentes do habitat para revelar a cena animal desejada.", "Superpose trois couches transparentes pour révéler la scène animale demandée.", "Staple drei transparente Habitat-Schichten, bis die Zielszene sichtbar wird.", "Sovrapponi tre strati trasparenti per rivelare la scena animale richiesta.", "Наложите три прозрачных слоя среды, чтобы открыть нужную сцену с животным.", "तीन पारदर्शी आवास परतें लगाकर लक्ष्य पशु-दृश्य दिखाएँ।", "رتّب ثلاث طبقات شفافة للموطن لتكشف مشهد الحيوان المطلوب."]),
     meta: localize([["3 Grove Scenes", "Layer Order", "Calm Retry"], ["3 個林地場景", "圖層順序", "平靜重試"], ["3 个林地场景", "图层顺序", "平静重试"], ["3つの森の景色", "レイヤー順", "穏やかな再挑戦"], ["숲 장면 3개", "레이어 순서", "차분한 재시도"], ["3 escenas", "Orden de capas", "Reintento sereno"], ["3 cenas", "Ordem das camadas", "Nova tentativa calma"], ["3 scènes", "Ordre des couches", "Reprise sereine"], ["3 Waldszenen", "Schichtenfolge", "Ruhiger Versuch"], ["3 scene", "Ordine degli strati", "Riprova calma"], ["3 сцены", "Порядок слоёв", "Спокойный повтор"], ["3 वन-दृश्य", "परत क्रम", "शांत पुनः प्रयास"], ["3 مشاهد", "ترتيب الطبقات", "محاولة هادئة"]]),
@@ -2286,7 +2286,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ages: ["6", "family"],
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-layer-grove/",
-    internalTrial: "index.html?preview=1",
+    previewVideo: "assets/previews/animal-layer-grove-battle.webm",
     art: { kind: "image", background: "assets/lobby-posters/animal-layer-grove-square-v1.webp", hideHero: true },
   };
   planned.type = localize(["Habitat depth campaign", "棲地深度篇章益智", "栖地深度篇章益智", "生息地の奥行きキャンペーン", "서식지 깊이 캠페인 퍼즐", "Campaña de profundidad del hábitat", "Campanha de profundidade do habitat", "Campagne de profondeur d’habitat", "Habitat-Tiefenkampagne", "Campagna di profondità dell’habitat", "Кампания глубины среды", "अभयारण्य गहराई अभियान", "حملة عمق الموطن"]);
