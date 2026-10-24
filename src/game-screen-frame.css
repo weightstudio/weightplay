@@ -269,7 +269,7 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-actio
     aspect-ratio:1!important;
   }
   html body [data-wp-play-ui="1"][data-wp-frame="2"] [data-wp-frame-content="main"] [data-wp-frame-copy] {
-    gap:1px!important;
+    gap:12px!important;
     height:auto!important;
     min-height:0!important;
     max-height:none!important;
