@@ -1,3 +1,4 @@
+import {SPECIES} from './content.mjs';
 export const LOCALES=['en','zh-Hant','zh-Hans','ja','ko','es','pt-BR','fr','de','it','ru','hi','ar'];
 export const SEGMENTS={en:'en','zh-Hant':'zh-tw','zh-Hans':'zh-cn',ja:'ja',ko:'ko',es:'es','pt-BR':'pt-br',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'};
 const rows={
@@ -74,6 +75,38 @@ world:['Living world','生態世界','生态世界','生きた世界','살아있
 back:['Back','返回','返回','戻る','돌아가기','Volver','Voltar','Retour','Zurück','Indietro','Назад','वापस','رجوع'],
 preview:['Coming soon','敬請期待','敬请期待','近日公開','출시 예정','Próximamente','Em breve','À venir','Demnächst','In arrivo','Скоро','जल्द आ रहा है','قريبًا'],
 };
+Object.assign(rows,{
+continueSave:['Continue this life','繼續這段生命','继续这段生命','この命を続ける','현재 삶 계속','Continuar esta vida','Continuar esta vida','Reprendre cette vie','Dieses Leben fortsetzen','Continua questa vita','Продолжить эту жизнь','यह जीवन जारी रखें','تابع هذه الحياة'],
+saved:['Saved','已存檔','已存档','保存済み','저장됨','Guardado','Salvo','Sauvegardé','Gespeichert','Salvato','Сохранено','सहेजा गया','تم الحفظ'],
+power:['Power','力量','力量','攻撃力','공격력','Poder','Poder','Puissance','Kraft','Potenza','Сила','शक्ति','القوة'],
+legacy:['Inherited power','累積傳承','累积传承','受け継いだ力','누적 계승','Herencia acumulada','Herança acumulada','Héritage cumulé','Geerbte Kraft','Eredità accumulata','Накопленное наследие','संचित विरासत','القوة الموروثة'],
+inheritGain:['Passed to your next life','留給下一世','留给下一世','次の命へ','다음 생명에 계승','Para tu próxima vida','Para a próxima vida','Pour la prochaine vie','Für dein nächstes Leben','Per la prossima vita','Для следующей жизни','अगले जीवन के लिए','لحياتك القادمة'],
+leaveBody:['Paused and saved. Return anytime to continue this creature.','已暫停並存檔。回到主畫面後，可以接續這隻生物。','已暂停并存档。回到主画面后，可以接续这只生物。','一時停止して保存しました。メニューから同じ生き物で再開できます。','일시 정지하고 저장했습니다. 메뉴에서 같은 생명으로 이어갈 수 있습니다.','Pausa y guardado. Vuelve al menú y continúa con esta criatura.','Pausado e salvo. Continue com esta criatura pelo menu.','En pause et sauvegardé. Reprenez cette créature depuis le menu.','Pausiert und gespeichert. Setze dieses Wesen später fort.','In pausa e salvato. Riprendi questa creatura dal menu.','Пауза и сохранение. Продолжите эту жизнь из меню.','रुका और सहेजा गया। मेनू से इसी जीव का जीवन जारी रखें।','متوقف ومحفوظ. تابع حياة هذا المخلوق من القائمة.'],
+progress:['Eat and hunt to evolve along related random branches. Evolution saves automatically. Death starts a different small creature with 20% of this life’s earned power and vitality. Inheritance accumulates; there are no stages or final form.','覓食、狩獵，沿有關聯的隨機分支不斷進化，甚至成為人類、恐龍與神話巨獸。進化自動存檔；死亡後從不同小生物開始，繼承這一世新增力量與生命的 20%。傳承持續累積，沒有關卡與最終形態。','觅食、狩猎，沿有关联的随机分支不断进化，甚至成为人类、恐龙与神话巨兽。进化自动存档；死亡后从不同小生物开始，继承这一世新增力量与生命的 20%。传承持续累积，没有关卡与最终形态。','食べて狩り、つながりのある系統へ進化。進化時に自動保存。死後は別の小さな生き物に、この命で得た力と体力の20%を継承します。最終形態はありません。','먹고 사냥하며 관련된 무작위 종으로 진화하세요. 진화 시 자동 저장됩니다. 죽으면 새로운 작은 생물이 이번 생에서 얻은 힘과 체력의 20%를 계승합니다. 최종 형태는 없습니다.','Come y caza para evolucionar por ramas relacionadas. Se guarda al evolucionar. Al morir, otra criatura pequeña hereda el 20% del poder y vitalidad ganados. Sin forma final.','Coma e cace para evoluir por ramos relacionados. A evolução é salva. Ao morrer, outra criatura pequena herda 20% do poder e vitalidade ganhos. Sem forma final.','Mangez et chassez pour évoluer vers des espèces apparentées. Sauvegarde à chaque évolution. La prochaine petite créature hérite de 20 % des gains de puissance et vitalité. Aucune forme finale.','Friss und jage für verwandte zufällige Entwicklungen. Jede Entwicklung speichert. Nach dem Tod erbt ein anderes kleines Wesen 20 % der neu gewonnenen Kraft und Lebenskraft. Keine Endform.','Mangia e caccia per evolverti lungo rami affini. Ogni evoluzione salva. Alla morte, un’altra piccola creatura eredita il 20% della potenza e vitalità guadagnate. Nessuna forma finale.','Ешьте и охотьтесь, развиваясь по родственным ветвям. Эволюция сохраняется. После смерти другое маленькое существо наследует 20% новых силы и здоровья. Конечной формы нет.','खाएँ और शिकार करके संबंधित जीवों में विकसित हों। विकास अपने-आप सहेजता है। मृत्यु पर दूसरा छोटा जीव अर्जित शक्ति और जीवन का 20% विरासत में पाता है। कोई अंतिम रूप नहीं।','كل واصطد للتطور عبر فروع مترابطة. يُحفظ التطور تلقائيًا. بعد الموت يرث مخلوق صغير مختلف 20% من القوة والحيوية المكتسبة. لا يوجد شكل نهائي.'],
+raptor:['Raptor','迅猛龍','迅猛龙','ラプトル','랩터','Raptor','Raptor','Raptor','Raptor','Raptor','Раптор','रैप्टर','رابتور'],
+dinosaur:['Tyrannosaur','暴龍','暴龙','ティラノサウルス','티라노사우루스','Tiranosaurio','Tiranossauro','Tyrannosaure','Tyrannosaurus','Tirannosauro','Тираннозавр','टायरानोसॉरस','تيرانوصور'],
+human:['Human','人類','人类','人間','인간','Humano','Humano','Humain','Mensch','Umano','Человек','मानव','إنسان'],
+ape:['Great ape','巨猿','巨猿','類人猿','유인원','Gran simio','Grande símio','Grand singe','Menschenaffe','Grande scimmia','Человекообразная обезьяна','वनमानुष','قرد عظيم'],
+mammoth:['Mammoth','猛獁象','猛犸象','マンモス','매머드','Mamut','Mamute','Mammouth','Mammut','Mammut','Мамонт','मैमथ','ماموث'],
+dragon:['Dragon','巨龍','巨龙','ドラゴン','드래곤','Dragón','Dragão','Dragon','Drache','Drago','Дракон','ड्रैगन','تنين'],
+serpent:['Sea serpent','滄海龍蛇','沧海龙蛇','海竜','바다 용','Serpiente marina','Serpente marinha','Serpent marin','Seeschlange','Serpente marino','Морской змей','समुद्री नाग','أفعى البحر'],
+phoenix:['Phoenix','鳳凰','凤凰','不死鳥','불사조','Fénix','Fênix','Phénix','Phönix','Fenice','Феникс','अग्निपक्षी','عنقاء'],
+swan:['Swan','天鵝','天鹅','白鳥','백조','Cisne','Cisne','Cygne','Schwan','Cigno','Лебедь','हंस','بجعة'],
+glider:['Gliding squirrel','飛鼠','飞鼠','モモンガ','날다람쥐','Ardilla voladora','Esquilo voador','Écureuil volant','Flughörnchen','Scoiattolo volante','Летяга','उड़न गिलहरी','سنجاب طائر'],
+mythic:['Mythic','神話','神话','神話','신화','Mítico','Mítico','Mythique','Mythisch','Mitico','Мифический','पौराणिक','أسطوري'],
+astral:['Astral','星界','星界','星界','별의','Astral','Astral','Astral','Astral','Astrale','Астральный','तारकीय','نجمي'],
+});
+const names={
+stagbeetle:['Stag beetle','鍬形蟲','锹形虫'],scarab:['Scarab','聖甲蟲','圣甲虫'],titanmantis:['Titan mantis','巨鐮螳螂','巨镰螳螂'],jadeguardian:['Jade guardian','翡翠甲王','翡翠甲王'],worldscarab:['World scarab','世界聖甲','世界圣甲'],
+silkworm:['Silkworm','蠶寶寶','蚕宝宝'],moth:['Moth','羽蛾','羽蛾'],moonmoth:['Moon moth','月光巨蛾','月光巨蛾'],sunmoth:['Sun moth','日耀彩蛾','日耀彩蛾'],starwing:['Starwing','星河幻蝶','星河幻蝶'],insectdragon:['Chitin dragon','蟲甲飛龍','虫甲飞龙'],
+hen:['Hen','母雞','母鸡'],rooster:['Rooster','雄雞','雄鸡'],duck:['Duck','綠頭鴨','绿头鸭'],mallard:['Wild mallard','荒原野鴨','荒原野鸭'],riverwing:['Riverwing','遠古翼鵝','远古翼鹅'],terrorbird:['Terror bird','恐鳥','恐鸟'],tyrannosaur:['Tyrannosaur','暴龍','暴龙'],plesiosaur:['Plesiosaur','蛇頸龍','蛇颈龙'],wyvern:['Wyvern','雙足飛龍','双足飞龙'],stormdragon:['Storm dragon','雷霆巨龍','雷霆巨龙'],cosmicdragon:['Cosmic dragon','星界龍神','星界龙神'],worldsaur:['Worldsaur','負界巨龍','负界巨龙'],leviathan:['Leviathan','深海利維坦','深海利维坦'],
+pig:['Pig','山地豬','山地猪'],behemoth:['Behemoth','比蒙巨獸','比蒙巨兽'],earthtitan:['Earth titan','大地泰坦','大地泰坦'],fieldmouse:['Field mouse','田野鼠','田野鼠'],primate:['Primate','森林靈猴','森林灵猴'],hunter:['Hunter','荒野獵人','荒野猎人'],shaman:['Shaman','星火巫師','星火巫师'],giant:['Giant','巨人','巨人'],celestial:['Celestial','天穹神裔','天穹神裔'],colossus:['Colossus','擎天神人','擎天神人'],
+};
 export const COPY=Object.fromEntries(LOCALES.map((locale,index)=>[locale,Object.fromEntries(Object.entries(rows).map(([key,values])=>[key,values[index]]))]));
 export function text(locale,key){return COPY[locale]?.[key]??COPY.en[key]??key;}
-export function creatureName(locale,origin,form){return `${text(locale,origin)} · ${text(locale,['young','adult','wild','ancient'][Math.min(3,form)])}`;}
+export function creatureName(locale,id,rank=0){
+  const definition=SPECIES[id],index=locale==='zh-Hant'?1:locale==='zh-Hans'?2:0;
+  let label=names[id]?.[index]||text(locale,id);
+  if(!['en','zh-Hant','zh-Hans'].includes(locale)&&names[id]&&definition){const body=definition.body==='caterpillar'&&definition.variant>=2?'moth':definition.body;label=`${text(locale,body==='moth'?'caterpillar':body)} · ${text(locale,['young','adult','wild','ancient','mythic','astral'][Math.min(5,definition.variant)])}`;}
+  return `${label}${rank>=10?` · ${text(locale,'astral')} ${rank-9}`:''}`;
+}

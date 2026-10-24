@@ -1,21 +1,22 @@
-import { GAME_ID, SAVE_KEY, STEP, AUDIO_EVENTS, groundHeight, habitat } from './content.mjs';
-import { createLife, step, growthProgress, lifeSummary } from './simulation.mjs';
+import { GAME_ID, SAVE_KEY, LEGACY_SAVE_KEY, STEP, AUDIO_EVENTS, groundHeight, habitat } from './content.mjs';
+import { createLife, step, growthProgress, lifeSummary, normalizeRecords,drawOrigin,inheritLife,checkpointLife,restoreLife } from './simulation.mjs';
 import { createWorld } from './world.js';
 import { LOCALES, SEGMENTS, text, creatureName } from './locales.mjs';
 
 const $=id=>document.getElementById(id), abort=new AbortController();
 const listen=(node,event,fn,opts={})=>node.addEventListener(event,fn,{...opts,signal:abort.signal});
 const locale=LOCALES.includes(document.documentElement.lang)?document.documentElement.lang:'en';
-const t=key=>text(locale,key), name=p=>creatureName(locale,p.origin,p.form);
+const t=key=>text(locale,key), name=p=>creatureName(locale,p.species,p.form);
 const title=window.WEIGHTPLAY_GAME_TITLES[GAME_ID][locale];
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const main=$('mainScreen'),battle=$('battleScreen'),worldElement=$('world'),overlay=$('overlay');
 battle.setAttribute('data-runtime-localize','off');
-let records={best:0,lives:0,discoveries:[],moonTrail:false};
-try{const raw=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');if(raw&&typeof raw==='object')records={best:Math.max(0,Number(raw.best)||0),lives:Math.max(0,Number(raw.lives)||0),discoveries:Array.isArray(raw.discoveries)?raw.discoveries.filter(x=>typeof x==='string').slice(0,32):[],moonTrail:raw.moonTrail===true};}catch{}
+let records=normalizeRecords();
+try{let raw,old;try{raw=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');}catch{}try{old=JSON.parse(localStorage.getItem(LEGACY_SAVE_KEY)||'null');}catch{}records=normalizeRecords(raw,old);}catch{}
 let life=createLife(randomSeed()),world=null,scene='main',modal=null,lastFocus=null,frameId=0,lastTime=0,accumulator=0,lastEvent=0,noticeUntil=0,nameUntil=0,hintUntil=0,settingsOpen=false,contextLost=false,settled=false,disposed=false;
-const keys=new Set(),held={attack:false,dash:false};
+const keys=new Set(),held={attack:false,dash:false},queued={attack:false,dash:false};
 let modalAbort=null;
+let lastSaved=0;
 const audio=window.WeightPlayAudio?.createScope();
 
 document.title=`${title} | WeightPlay`;
@@ -34,16 +35,20 @@ const joystick=window.WeightPlayJoystick.create({surface:worldElement,container:
 
 function randomSeed(){const value=new Uint32Array(1);crypto.getRandomValues(value);return value[0];}
 function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(records));return true;}catch{$('saveWarning').hidden=false;$('saveWarning').textContent=t('saveWarning');return false;}}
+function saveLife(){if(scene==='battle'&&life.status==='alive'){records.checkpoint=checkpointLife(life);records.best=Math.max(records.best,Math.floor(life.time));lastSaved=life.time;return save();}return false;}
+function mainAction(){$('startBtn').textContent=t(records.checkpoint?'continueSave':'start');}
+function legacyText(gain=records.legacy){return `${t('health')} +${Math.round(gain.hp)} · ${t('power')} +${gain.power.toFixed(2)}`;}
 function playing(){return scene==='battle'&&life.status==='alive'&&!modal&&!settingsOpen&&!contextLost&&!document.hidden;}
-function clearInput(){keys.clear();held.attack=false;held.dash=false;joystick?.reset();$('attackBtn').classList.remove('held');$('dashBtn').classList.remove('held');accumulator=0;}
+function clearInput(){keys.clear();held.attack=false;held.dash=false;queued.attack=false;queued.dash=false;joystick?.reset();$('attackBtn').classList.remove('held');$('dashBtn').classList.remove('held');accumulator=0;}
 function syncInput(){clearInput();joystick.setEnabled(playing());}
-function enterScene(next){scene=next;clearInput();$('mainGroup').hidden=next!=='main';battle.hidden=next!=='battle';document.body.dataset.screen=next;frame.activate(next);joystick.setEnabled(playing());world?.resize();if(next==='battle'){window.WeightPlayBattleCanvas?.sync?.();worldElement.focus({preventScroll:true});}else{$('startBtn').focus({preventScroll:true});audio?.stop();}}
+function enterScene(next){scene=next;clearInput();$('mainGroup').hidden=next!=='main';battle.hidden=next!=='battle';document.body.dataset.screen=next;frame.activate(next);joystick.setEnabled(playing());world?.resize();if(next==='battle'){window.WeightPlayBattleCanvas?.sync?.();worldElement.focus({preventScroll:true});}else{mainAction();$('startBtn').focus({preventScroll:true});audio?.stop();}}
 function notice(primary,secondary='',seconds=3){$('worldNotice').replaceChildren();const b=document.createElement('span');b.textContent=primary;$('worldNotice').append(b);if(secondary){const small=document.createElement('small');small.textContent=secondary;$('worldNotice').append(small);}$('worldNotice').dataset.visible='true';noticeUntil=life.time+seconds;}
-function beginLife(){
+function beginLife(resume=false){
   if(!world||contextLost)return;
-  closeModal(false);life=createLife(randomSeed());settled=false;lastEvent=0;world.reset();nameUntil=8;hintUntil=records.lives===0?10:0;
+  const restored=resume&&records.checkpoint?restoreLife(records.checkpoint):null;
+  closeModal(false);life=restored||createLife(randomSeed(),{origin:drawOrigin(records),legacy:records.legacy,id:crypto.randomUUID()});settled=false;lastEvent=restored?life.eventId:0;world.reset(lastEvent);nameUntil=life.time+8;hintUntil=records.lives===0&&!restored?10:0;
   enterScene('battle');world.render(life,0,records.moonTrail);audio?.play('game.start');
-  notice(t('born'),name(life.player),4);$('firstHint').textContent=t('controls');$('firstHint').hidden=hintUntil===0;
+  notice(t(restored?'continueSave':'born'),`${name(life.player)}${records.legacy.hp?` · ${t('legacy')}`:''}`,4);$('firstHint').textContent=t('controls');$('firstHint').hidden=hintUntil===0;saveLife();
   updateHud();
 }
 function paragraph(value){const p=document.createElement('p');p.textContent=value;return p;}
@@ -57,9 +62,9 @@ function showModal(kind,heading,nodes,actions){
   $('dialogActions').querySelector('button:not(:disabled)')?.focus({preventScroll:true});
 }
 function closeModal(restore=true){modal=null;overlay.hidden=true;worldElement.inert=false;$('dialog').getAnimations().forEach(a=>a.cancel());if(scene==='battle')frame.activate('battle');syncInput();if(restore)worldElement.focus({preventScroll:true});}
-function pause(){if(scene!=='battle'||life.status!=='alive'||contextLost)return;showModal('pause',t('pause'),[paragraph(name(life.player)),paragraph(`${t('survived')} ${formatTime(life.time)} · ${t('food')} ${life.player.eaten}`),paragraph(t('leaveBody'))],[
+function pause(){if(scene!=='battle'||life.status!=='alive'||contextLost)return;const saved=saveLife();showModal('pause',t('pause'),[paragraph(name(life.player)),paragraph(`${t('survived')} ${formatTime(life.time)} · ${t('food')} ${life.player.eaten}`),paragraph(`${t('legacy')} · ${legacyText()}`),paragraph(t(saved?'leaveBody':'saveWarning'))],[
   {label:t('resume'),run:()=>closeModal()}, {label:t('help'),run:help}, {label:t('appearance'),run:appearance},
-  {label:t('leave'),run:()=>{remember(false);closeModal(false);enterScene('main');}},
+  {label:t('leave'),run:()=>{saveLife();closeModal(false);enterScene('main');}},
 ]);}
 function help(){const orla=document.createElement('img');orla.className='life-portrait';orla.src='/assets/weightplay-character-moon-cap-owl-block-v1.webp';orla.alt='Moon Cap Orla';showModal('help',t('help'),[orla,paragraph(t('rules')),paragraph(t('controls')),paragraph(t('progress'))],[{label:t('resume'),run:()=>closeModal()},{label:t('back'),run:pause}]);}
 function appearance(){
@@ -77,21 +82,25 @@ function appearance(){
   }},{label:t('back'),run:pause}]);
 }
 function remember(died){
-  if(settled)return;settled=true;const summary=lifeSummary(life);records.best=Math.max(records.best,summary.seconds);records.lives++;
-  records.discoveries=[...new Set([...records.discoveries,`${summary.origin}:${summary.form}`])].slice(-32);save();
+  if(settled||!died)return;settled=true;const summary=lifeSummary(life);
+  // Refresh only the settlement ledger to avoid duplicating a death opened in
+  // another tab. Awards and the checkpoint tombstone share one storage write.
+  try{const current=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');if(current?.schema===2&&current.settled?.includes(life.id))records=normalizeRecords(current);}catch{}
+  const gain=inheritLife(records,life);save();mainAction();
   if(died){
     const stats=document.createElement('div');stats.className='life-stats';
     for(const [label,value] of [[t('survived'),formatTime(summary.seconds)],[t('food'),summary.eaten],[t('kills'),summary.kills],[t('best'),formatTime(records.best)]]){const box=document.createElement('div'),b=document.createElement('b'),span=document.createElement('span');b.textContent=String(value);span.textContent=label;box.append(b,span);stats.append(box);}
-    showModal('result',t('death'),[paragraph(name(life.player)),paragraph(`${t('cause')} · ${t(summary.cause)}`),stats],[{label:t('rebirth'),run:beginLife},{label:t('leave'),run:()=>{closeModal(false);enterScene('main');}}]);
+    const inheritance=paragraph(`${t('inheritGain')} · ${legacyText(gain)}\n${t('legacy')} · ${legacyText()}`);inheritance.className='legacy-gain';
+    showModal('result',t('death'),[paragraph(name(life.player)),paragraph(`${t('cause')} · ${t(summary.cause)}`),inheritance,stats],[{label:t('rebirth'),run:()=>beginLife()},{label:t('leave'),run:()=>{closeModal(false);enterScene('main');}}]);
     audio?.play('result.lose');
   }
 }
 function formatTime(seconds){return `${Math.floor(seconds/60)}:${String(Math.floor(seconds%60)).padStart(2,'0')}`;}
 function processEvents(){
   for(const e of life.events){if(e.id<=lastEvent)continue;lastEvent=e.id;
-    const ids={food:'reward.collect',evolution:'reward.upgrade',dash:'movement.dash',hurt:'player.hurt',defeat:'enemy.defeat',water:'water.splash',hungry:'alert.warning',danger:'alert.warning'};
-    if(ids[e.type])audio?.play(ids[e.type]);if(e.type==='hit')audio?.play(e.heavy?'combat.critical':'combat.strike');
-    if(e.type==='evolution'){nameUntil=life.time+6;notice(t('evolved'),`${name(life.player)} · ${t(life.player.adaptation)}`,4);}
+    const ids={food:'reward.collect',evolution:'reward.upgrade',dash:'movement.dash',hurt:'player.hurt',defeat:'enemy.defeat',water:'water.splash',hungry:'alert.warning',danger:'alert.warning',breath:'magic.fire'};
+    if(ids[e.type])audio?.play(ids[e.type]);if(e.type==='hit')audio?.play(e.breath?'magic.hit':e.heavy?'combat.critical':'combat.strike');
+    if(e.type==='evolution'){nameUntil=life.time+6;const saved=saveLife();notice(t('evolved'),`${creatureName(locale,e.from)} → ${creatureName(locale,e.species)}${saved?` · ${t('saved')}`:''}`,4);}
     if(e.type==='habitat')notice(t(e.biome),'',2.5);
     if(e.type==='hungry'||e.type==='danger')notice(t(e.type),'',3);
     if(e.type==='death')remember(true);
@@ -99,7 +108,7 @@ function processEvents(){
 }
 function updateHud(){
   const p=life.player,b=worldElement.getBoundingClientRect();
-  if(world&&b.width>0){const pos=world.project(p.x,groundHeight(p.x,p.z)+p.size*1.75+.1,p.z);$('creatureHud').style.left=`${pos.x/b.width*100}%`;$('creatureHud').style.top=`${pos.y/b.height*100}%`;}
+  if(world&&b.width>0){const pos=world.project(p.x,groundHeight(p.x,p.z)+p.size*2.25+.1,p.z);$('creatureHud').style.left=`${pos.x/b.width*100}%`;$('creatureHud').style.top=`${pos.y/b.height*100}%`;}
   $('creatureName').textContent=name(p);$('creatureHud').dataset.named=String(life.time<nameUntil||p.hidden);
   const values={health:p.hp/p.maxHp,hunger:p.hunger/100,growth:growthProgress(p),stamina:p.stamina/100};
   for(const [key,value]of Object.entries(values)){$(key+'Bar').style.transform=`scaleX(${Math.max(0,value)})`;$(key+'Bar').parentElement.setAttribute('aria-valuenow',String(Math.round(value*100)));}
@@ -110,25 +119,27 @@ function updateHud(){
 function getInput(){
   const j=joystick.getVector();let x=Number(keys.has('KeyD')||keys.has('ArrowRight'))-Number(keys.has('KeyA')||keys.has('ArrowLeft'));
   let z=Number(keys.has('KeyS')||keys.has('ArrowDown'))-Number(keys.has('KeyW')||keys.has('ArrowUp'));
-  if(x===0&&z===0){x=j.x;z=j.y;}return {x,z,attack:held.attack||keys.has('Space'),dash:held.dash||keys.has('ShiftLeft')||keys.has('ShiftRight')};
+  if(x===0&&z===0){x=j.x;z=j.y;}return {x,z,attack:queued.attack||held.attack||keys.has('Space'),dash:queued.dash||held.dash||keys.has('ShiftLeft')||keys.has('ShiftRight')};
 }
 function tick(now){
   if(disposed)return;const dt=lastTime?Math.min(.06,(now-lastTime)/1000):0;lastTime=now;
   if(playing()){
     accumulator=Math.min(.1,accumulator+dt);const input=getInput();let steps=0;
     while(accumulator>=STEP&&steps++<6){step(life,input);accumulator-=STEP;if(life.status==='dead')break;}
+    if(steps>0){queued.attack=false;queued.dash=false;}
     processEvents();
+    if(life.time-lastSaved>=5)saveLife();
   }else accumulator=0;
   if(scene==='battle'&&!document.hidden){world?.render(life,playing()?dt:0,records.moonTrail);updateHud();}
   frameId=requestAnimationFrame(tick);
 }
 
-listen($('startBtn'),'click',beginLife);listen($('battleBackBtn'),'click',pause);
+listen($('startBtn'),'click',()=>beginLife(true));listen($('battleBackBtn'),'click',pause);
 for(const [id,action]of [['attackBtn','attack'],['dashBtn','dash']]){
   const node=$(id);
-  listen(node,'pointerdown',e=>{if(!playing())return;e.preventDefault();node.setPointerCapture(e.pointerId);held[action]=true;node.classList.add('held');});
+  listen(node,'pointerdown',e=>{if(!playing())return;e.preventDefault();node.setPointerCapture(e.pointerId);held[action]=true;queued[action]=true;node.classList.add('held');});
   const release=()=>{held[action]=false;node.classList.remove('held');};listen(node,'pointerup',release);listen(node,'pointercancel',release);listen(node,'lostpointercapture',release);
-  listen(node,'keydown',e=>{if(e.code==='Enter'||e.code==='Space'){e.preventDefault();held[action]=true;node.classList.add('held');}});
+  listen(node,'keydown',e=>{if(e.code==='Enter'||e.code==='Space'){e.preventDefault();held[action]=true;queued[action]=true;node.classList.add('held');}});
   listen(node,'keyup',e=>{if(e.code==='Enter'||e.code==='Space')release();});
 }
 listen(window,'keydown',e=>{
@@ -139,25 +150,25 @@ listen(window,'keydown',e=>{
   }
   if(e.code==='Escape'&&scene==='battle'&&!settingsOpen){e.preventDefault();pause();return;}
   if(!playing()||e.target.closest('button,select,input'))return;
-  if(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowLeft','ArrowDown','ArrowRight','Space','ShiftLeft','ShiftRight'].includes(e.code)){e.preventDefault();keys.add(e.code);}
+  if(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowLeft','ArrowDown','ArrowRight','Space','ShiftLeft','ShiftRight'].includes(e.code)){e.preventDefault();keys.add(e.code);if(e.code==='Space')queued.attack=true;if(e.code.startsWith('Shift'))queued.dash=true;}
 });
 listen(window,'keyup',e=>keys.delete(e.code));
-listen(window,'blur',()=>{clearInput();});
+listen(window,'blur',()=>{saveLife();clearInput();});
 listen(document,'visibilitychange',()=>{if(document.hidden&&scene==='battle'&&!modal&&life.status==='alive')pause();clearInput();lastTime=0;});
 listen(window,'resize',()=>{syncInput();world?.resize();});
 listen(window,'weightplay:interaction-state',()=>{const panel=battle.querySelector('.wp-frame-popover');settingsOpen=!!panel&&!panel.hidden;syncInput();});
 
 function dispose(){if(disposed)return;disposed=true;cancelAnimationFrame(frameId);abort.abort();modalAbort?.abort();joystick.destroy();audio?.dispose();world?.dispose();frame.destroy();}
-listen(window,'pagehide',e=>{audio?.stop();clearInput();if(!e.persisted)dispose();});
+listen(window,'pagehide',e=>{saveLife();audio?.stop();clearInput();if(!e.persisted)dispose();});
 listen(window,'pageshow',()=>{lastTime=0;});
 
 // Read-only instrumentation for resource trend checks; no mutation or test mode.
-window.WildbornDiagnostics=Object.freeze({read:()=>Object.freeze({scene,paused:!playing(),time:life.time,origin:life.player.origin,form:life.player.form,fauna:life.fauna.length,food:life.food.length,render:world?.inspect()||null})});
+window.WildbornDiagnostics=Object.freeze({read:()=>JSON.parse(JSON.stringify({scene,paused:!playing(),time:life.time,origin:life.player.origin,species:life.player.species,form:life.player.form,player:life.player,legacy:records.legacy,checkpoint:!!records.checkpoint,fauna:life.fauna.length,food:life.food.length,nearbyFood:life.food.map(f=>({x:f.x,z:f.z,kind:f.kind})).sort((a,b)=>Math.hypot(a.x-life.player.x,a.z-life.player.z)-Math.hypot(b.x-life.player.x,b.z-life.player.z)).slice(0,12),nearbyFauna:life.fauna.map(a=>({x:a.x,z:a.z,kind:a.kind,power:a.power,hp:a.hp,state:a.state})),render:world?.inspect()||null}))});
 
 try{
   await $('poster').decode();
   world=createWorld(worldElement,{onContextLost(){contextLost=true;showModal('error',t('renderError'),[],[{label:t('retry'),run:()=>location.reload()},{label:t('leave'),run:()=>{closeModal(false);enterScene('main');}}]);},onContextRestored(){contextLost=false;if(modal==='error')pause();}});
-  world.render(life,0);$('startBtn').disabled=false;
+  world.render(life,0);$('startBtn').disabled=false;mainAction();
   window.WeightPlayAudio?.preload(AUDIO_EVENTS);
   window.WeightPlayGameEntryLoader?.ready?.();
   frameId=requestAnimationFrame(tick);
