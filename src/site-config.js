@@ -6,7 +6,7 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
 // END generated Castle Block reward exclusions
 
 window.WONDER_SITE = {
-  version: "v0.40.67",
+  version: "v0.40.68",
   localization: {
     defaultLocale: "en",
     fallbackLocale: "en",

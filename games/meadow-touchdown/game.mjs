@@ -7,6 +7,13 @@ const $=id=>document.getElementById(id),abort=new AbortController();
 const listen=(node,event,fn,options={})=>node.addEventListener(event,fn,{...options,signal:abort.signal});
 const text=(node,value)=>{if(node.textContent!==String(value))node.textContent=String(value);};
 const make=(tag,className='',copy='')=>{const n=document.createElement(tag);n.className=className;n.textContent=copy;return n;};
+const atlasCache=new Map();
+function atlas(kind,index){
+  const canvas=make('canvas','collection-art');canvas.width=canvas.height=256;canvas.setAttribute('aria-hidden','true');
+  if(!atlasCache.has(kind)){const image=new Image();image.src=`/games/meadow-touchdown/assets/${kind}.webp`;atlasCache.set(kind,image.decode().then(()=>image));}
+  atlasCache.get(kind).then(image=>{if(disposed)return;const cols=kind==='icons'?3:2,side=image.width/cols;canvas.getContext('2d').drawImage(image,index%cols*side,Math.floor(index/cols)*side,side,side,0,0,256,256);}).catch(()=>{});
+  return canvas;
+}
 let locale=window.WonderI18n?.actualLocale?.()||'en';
 if(!COPY[locale])locale='en';
 const t=(key,v)=>tr(locale,key,v),copy=()=>COPY[locale];
@@ -43,12 +50,12 @@ function statusSlot(node){const s=make('span');s.dataset.wpItemCollectionStatus=
 function buildCollections(){
   for(const [i,b] of PLAYBOOKS.entries()){
     const card=make('article','collection-card');card.dataset.book=b.id;
-    const img=new Image();img.src=PORTRAITS[['leo','fia','mimi','panko','fia','leo'][i]];img.alt='';img.loading='lazy';
+    const img=atlas('icons',i);
     card.append(img,make('strong'),make('p'));statusSlot(card);const button=make('button');card.append(button);
     listen(button,'click',async()=>{if(!save.unlockedPlaybooks.includes(b.id))return;if(await persist(s=>({...s,selectedPlaybook:b.id})))renderCollections();else text($('shopStatus'),t('storage'));});$('bookCards').append(card);
   }
   for(const [i,item] of COSMETICS.entries()){
-    const card=make('article','collection-card');card.dataset.cosmetic=item.id;const img=new Image();img.src='/games/meadow-touchdown/assets/cover.webp';img.alt='';img.loading='lazy';card.append(img,make('strong'),make('p'));statusSlot(card);const button=make('button');card.append(button);listen(button,'click',()=>chooseCosmetic(item));$('cosmeticCards').append(card);
+    const card=make('article','collection-card');card.dataset.cosmetic=item.id;const img=atlas('cosmetics',i);card.append(img,make('strong'),make('p'));statusSlot(card);const button=make('button');card.append(button);listen(button,'click',()=>chooseCosmetic(item));$('cosmeticCards').append(card);
   }
   const classic=make('button','classic-button');classic.dataset.t='classic';listen(classic,'click',async()=>{await persist(s=>({...s,equippedKit:'classic',equippedStands:'classic'}));renderCollections();});$('lockerPanel').insertBefore(classic,$('pennants'));
   for(let i=0;i<6;i++){const card=make('article');card.dataset.pennant=String(i);const img=new Image();img.src=`/games/meadow-touchdown/assets/arc-${i+1}.webp`;img.alt='';img.loading='lazy';card.append(img,make('strong'));statusSlot(card);$('pennants').append(card);}

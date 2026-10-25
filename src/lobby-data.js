@@ -2,6 +2,8 @@ const pawaxeLobbyReleaseStatus = "playable";
 const wildwoodLobbyReleaseStatus = "playable";
 const crownfallLobbyReleaseStatus = "playable";
 
+// When adding/changing a playable loop, maintain its stable-ID classification
+// in lobby-genres.js; legacy category/theme tags do not drive lobby genres.
 window.WONDER_LOBBY = {
   platform: {
     name: "WeightPlay",
