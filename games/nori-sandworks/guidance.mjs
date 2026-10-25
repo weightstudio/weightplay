@@ -13,7 +13,7 @@ export function boardLesson(level,state){
   case 3:{const port=PORTS.findIndex((_,i)=>level.locks[i]&&!state.delivered.includes(level.locks[i]));return port<0?null:{kind:'lock',tray:level.locks[port],ports:[port]};}
   case 4:{const tray=level.order.find(id=>!state.delivered.includes(id));return tray?{kind:'order',tray}:null;}
   case 5:{const tray=pieces.find(p=>pieces.some(q=>q.id!==p.id&&q.color===p.color&&q.capacity>p.capacity))||first;return {kind:'capacity',tray:tray.id,ports:matchingPorts(state,tray)};}
-  default:return {kind:'basic',tray:first.id,action:state.moves===0?level.witness[0]:null,ports:matchingPorts(state,first)};
+  default:{const action=state.moves===0?level.witness[0]:null,tray=pieces.find(p=>p.id===action?.id)||first;return {kind:'basic',tray:tray.id,action,ports:matchingPorts(state,tray)};}
  }
 }
 const matchingPorts=(state,piece)=>PORTS.flatMap((_,i)=>bottomAt(state,i)?.color===piece.color?[i]:[]);

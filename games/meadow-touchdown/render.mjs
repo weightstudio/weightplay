@@ -132,10 +132,10 @@ export class FieldRenderer{
     this.dynamicN=0;this.lineN=0;this.ringN=0;this.syncEvents(m,time);
     const center=clamp(m.phase==='run'||m.phase==='result'?m.runner?.y+5||m.s+8:m.s+8,7,33);
     this.lastCenter+= (center-this.lastCenter)*.14;
-    const aspect=Math.max(.3,this.width/this.height),wide=aspect>1.5,h=Math.max(wide?20:24,23/aspect),w=h*aspect;
+    const aspect=Math.max(.3,this.width/this.height),wide=aspect>1.5,h=Math.max(wide?16.2:24,23/aspect),w=h*aspect;
     // A lower viewing angle fits the same decision depth in short landscape,
     // preserving world coordinates and giving the block silhouettes more pixels.
-    this.camera.left=-w/2;this.camera.right=w/2;this.camera.top=h/2;this.camera.bottom=-h/2;this.camera.position.set(0,wide?26:40,(wide?32:17)-this.lastCenter);this.camera.lookAt(0,0,-this.lastCenter);this.camera.updateProjectionMatrix();
+    this.camera.left=-w/2;this.camera.right=w/2;this.camera.top=h/2;this.camera.bottom=-h/2;this.camera.position.set(0,wide?21:40,(wide?38:17)-this.lastCenter);this.camera.lookAt(0,0,-this.lastCenter);this.camera.updateProjectionMatrix();
     this.sun.target.position.set(0,0,-this.lastCenter);this.sun.position.set(-17,34,12-this.lastCenter);
     this.character(m.qb,'leo',false,m,time);for(const p of m.receivers)this.character(p,p.id,false,m,time);for(const p of m.defenders)this.character(p,`defender-${p.id}`,true,m,time);
     const b=(...a)=>this.box(this.dynamic,this.dynamicN++,...a);
@@ -160,6 +160,11 @@ export class FieldRenderer{
       // A red diamond distinguishes defense even where jersey colors are small.
       b(d.x,.12,-d.y,1.25,.05,1.25,0x7b263c,0,Math.PI/4);
       b(d.x,.15,-d.y,.68,.05,.68,0xff9872,0,Math.PI/4);
+      // Above-head diamonds stay readable when bodies or ground rings overlap.
+      const interceptor=m.interception?.defender===d.id;
+      b(d.x,4.18,-d.y,.67,.67,.12,0x572536,0,0,Math.PI/4);
+      b(d.x,4.18,-d.y+.08,.43,.43,.14,interceptor?colors.cream:0xff8068,0,0,Math.PI/4);
+      if(interceptor)this.ring(d.x,d.y,1.5,colors.cream);
       if(d.kind==='zone'&&(m.phase==='ready'||m.phase==='live')){for(let i=0;i<48;i+=2){const a=i/48*Math.PI*2,z=(i+1)/48*Math.PI*2;ribbon({x:d.home.x+Math.cos(a)*4.5,y:d.home.y+Math.sin(a)*4.5},{x:d.home.x+Math.cos(z)*4.5,y:d.home.y+Math.sin(z)*4.5},0xf5a27e,.14);}}
       const switching=d.switchTarget!==undefined&&d.switchTarget!==null&&m.elapsed>=.7;
       const feint=m.feintAt&&!m.feintDone;
@@ -177,7 +182,12 @@ export class FieldRenderer{
       this.ring(m.runner.x,m.runner.y,.9,colors.gold);
       const target=m.relayTarget();if(target){this.ring(target.x,target.y,1,0xa3f4ee);this.segment([m.runner.x,1,-m.runner.y],[target.x,1,-target.y],0xa3f4ee);}
     }
-    let ballPos=m.phase==='flight'?flightPoint(m.ball,m.ball.time):m.runner&&['run','result','dead'].includes(m.phase)?{x:m.runner.x+.48,y:m.runner.y,z:1.12}:{x:m.qb.x+.45,y:m.qb.y+.2,z:1.1};
+    if(m.interception){
+      const hit=m.interception;let prev=flightPoint(hit.flight,0);
+      for(let i=1;i<=32;i++){const next=i===32?hit.point:flightPoint(hit.flight,hit.time*i/32);this.segment([prev.x,prev.z,-prev.y],[next.x,next.z,-next.y],colors.red);prev=next;}
+      this.ring(hit.point.x,hit.point.y,.7,colors.cream);
+    }
+    let ballPos=m.interception?.point||(m.phase==='flight'?flightPoint(m.ball,m.ball.time):m.runner&&['run','result','dead'].includes(m.phase)?{x:m.runner.x+.48,y:m.runner.y,z:1.12}:{x:m.qb.x+.45,y:m.qb.y+.2,z:1.1});
     this.ball.visible=true;this.ball.position.set(ballPos.x,ballPos.z,-ballPos.y);this.ball.scale.set(.21,.2,.4);this.ball.rotation.set(m.phase==='flight'?time*15:0,0,.25);
     for(let i=-1;i<=1;i++)b(ballPos.x,ballPos.z+.18,-ballPos.y+i*.1,.18,.03,.025,colors.cream);
     this.effects=this.effects.filter(e=>time-e.at<e.life);

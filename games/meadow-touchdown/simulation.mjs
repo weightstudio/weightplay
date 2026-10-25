@@ -205,7 +205,7 @@ export class Match {
       if(this.defenders.some(d=>distance(d,this.qb)<=.9)){this.endDown(this.s,'sack');return;}
       if(this.elapsed>=this.stage.throwTime)this.endDown(this.s,'timeout');
     }else if(this.phase==='flight'){
-      const ball=this.ball,previous=flightPoint(ball,ball.time);ball.time=Math.min(ball.duration,ball.time+dt);
+      const ball=this.ball,previousTime=ball.time,previous=flightPoint(ball,previousTime);ball.time=Math.min(ball.duration,ball.time+dt);
       const current=flightPoint(ball,ball.time),contacts=[];
       this.receivers.forEach((p,i)=>{
         if(ball.lateral&&(i!==ball.target||i===ball.thrower))return;
@@ -217,7 +217,7 @@ export class Match {
       const hit=contacts[0];
       if(hit){
         if(!hit.attack){
-          const contactTime=ball.time-dt+dt*hit.t;
+          const contactTime=previousTime+(ball.time-previousTime)*hit.t;
           const contact={x:previous.x+(current.x-previous.x)*hit.t,y:previous.y+(current.y-previous.y)*hit.t,z:previous.z+(current.z-previous.z)*hit.t};
           this.interception={defender:hit.p.id,side:contact.x<-2?'Left':contact.x>2?'Right':'Centre',point:contact,time:Math.max(0,contactTime),flight:{...ball,from:{...ball.from},to:{...ball.to}}};
           this.event('intercept',{...contact,defender:hit.p.id});this.finish(false,'intercept');return;

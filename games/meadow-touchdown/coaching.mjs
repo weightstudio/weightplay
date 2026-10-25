@@ -55,9 +55,25 @@ ar:[
   'هبطت الكرة خلف {name}: صوب أبعد للأمام.|تجاوزت الكرة {name}: صوب أقرب.|هبطت يسار {name}: عدّل نحو اليمين.|هبطت يمين {name}: عدّل نحو اليسار.|هبطت قرب {name} دون استلام: غيّر توقيت الرمية.|استلم {n}/2|جانبيات {n}/2|مفتوح: اليسار ←|مفتوح: اليمين →|خطة جديدة|المرحلة التالية تجرب {name}|أبطال المرج! اكتملت الهجمتان والتمريرتان الجانبيتان.|إكمال المرحلة|تجنب المحاولة الرابعة|بلا تمريرات ناقصة أو أخطاء QB|استلم|لم يستلم بعد'
 ]
 };
+const interceptionKeys=['interceptLeft','interceptCentre','interceptRight','viewResult'];
+const interceptionCopy={
+  en:'Left defender cut off the pass.|Centre defender cut off the pass.|Right defender cut off the pass.|View result',
+  'zh-Hant':'左側守衛攔下了這條球路。|中央守衛攔下了這條球路。|右側守衛攔下了這條球路。|查看結果',
+  'zh-Hans':'左侧守卫拦下了这条球路。|中央守卫拦下了这条球路。|右侧守卫拦下了这条球路。|查看结果',
+  ja:'左の守備がパスを遮った。|中央の守備がパスを遮った。|右の守備がパスを遮った。|結果を見る',
+  ko:'왼쪽 수비가 패스를 가로챘어요.|중앙 수비가 패스를 가로챘어요.|오른쪽 수비가 패스를 가로챘어요.|결과 보기',
+  es:'El defensa izquierdo cortó el pase.|El defensa central cortó el pase.|El defensa derecho cortó el pase.|Ver resultado',
+  'pt-BR':'O defensor à esquerda cortou o passe.|O defensor central cortou o passe.|O defensor à direita cortou o passe.|Ver resultado',
+  fr:'Le défenseur à gauche a coupé la passe.|Le défenseur central a coupé la passe.|Le défenseur à droite a coupé la passe.|Voir le résultat',
+  de:'Der linke Verteidiger fing den Pass ab.|Der mittlere Verteidiger fing den Pass ab.|Der rechte Verteidiger fing den Pass ab.|Ergebnis ansehen',
+  it:'Il difensore a sinistra ha intercettato.|Il difensore centrale ha intercettato.|Il difensore a destra ha intercettato.|Vedi risultato',
+  ru:'Защитник слева перехватил пас.|Защитник в центре перехватил пас.|Защитник справа перехватил пас.|Результат',
+  hi:'बाएँ रक्षक ने पास रोक लिया।|बीच के रक्षक ने पास रोक लिया।|दाएँ रक्षक ने पास रोक लिया।|नतीजा देखें',
+  ar:'اعترض المدافع الأيسر التمريرة.|اعترض المدافع الأوسط التمريرة.|اعترض المدافع الأيمن التمريرة.|عرض النتيجة'
+};
 export const COACH={};
 for(const [locale,groups] of Object.entries(raw)){
-  const copy={};[lessonKeys,labelKeys].forEach((keys,i)=>{const values=groups[i].split('|');if(values.length!==keys.length)throw Error(`Coaching copy mismatch: ${locale}/${i}`);keys.forEach((key,j)=>copy[key]=values[j]);});COACH[locale]=Object.freeze(copy);
+  const copy={};[lessonKeys,labelKeys,interceptionKeys].forEach((keys,i)=>{const values=(i===2?interceptionCopy[locale]:groups[i]).split('|');if(values.length!==keys.length)throw Error(`Coaching copy mismatch: ${locale}/${i}`);keys.forEach((key,j)=>copy[key]=values[j]);});COACH[locale]=Object.freeze(copy);
 }
 export function coachText(locale,key,values={}){const text=COACH[locale]?.[key];if(typeof text!=='string')throw Error(`Missing coaching copy: ${locale}/${key}`);return text.replace(/\{(\w+)\}/g,(_,name)=>String(values[name]??''));}
 export const stageLesson={1:'aim',2:'firstDown',3:'space',5:'pair',6:'zone',10:'gate',11:'blitz',15:'change',16:'wind',20:'gust',21:'switch',25:'feint',30:'relay'};
