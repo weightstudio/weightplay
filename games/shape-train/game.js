@@ -237,22 +237,22 @@
     locked: "잠긴 스테이지",
   });
 
-  const trainCarAsset = "../../assets/shape-train/shape-train-car-block-v1.png";
+  const trainCarAsset = "/assets/shape-train/shape-train-car-block-v1.png";
   const shapes = {
-    circle: { token: "../../assets/shape-train/shape-train-badge-circle-block-v1.png" },
-    square: { token: "../../assets/shape-train/shape-train-badge-square-block-v1.png" },
-    triangle: { token: "../../assets/shape-train/shape-train-badge-triangle-block-v1.png" },
-    star: { token: "../../assets/shape-train/shape-train-badge-star-block-v1.png" },
-    diamond: { token: "../../assets/shape-train/shape-train-badge-diamond-block-v1.png" },
-    heart: { token: "../../assets/shape-train/shape-train-badge-heart-block-v1.png" },
+    circle: { token: "/assets/shape-train/shape-train-badge-circle-block-v1.png" },
+    square: { token: "/assets/shape-train/shape-train-badge-square-block-v1.png" },
+    triangle: { token: "/assets/shape-train/shape-train-badge-triangle-block-v1.png" },
+    star: { token: "/assets/shape-train/shape-train-badge-star-block-v1.png" },
+    diamond: { token: "/assets/shape-train/shape-train-badge-diamond-block-v1.png" },
+    heart: { token: "/assets/shape-train/shape-train-badge-heart-block-v1.png" },
   };
   const passengerAnimals = {
-    circle: "../../assets/shape-train/shape-train-passenger-circle-block-v1.png",
-    square: "../../assets/shape-train/shape-train-passenger-square-block-v1.png",
-    triangle: "../../assets/shape-train/shape-train-passenger-triangle-block-v1.png",
-    star: "../../assets/shape-train/shape-train-passenger-star-block-v1.png",
-    diamond: "../../assets/shape-train/shape-train-passenger-diamond-block-v1.png",
-    heart: "../../assets/shape-train/shape-train-passenger-heart-block-v1.png",
+    circle: "/assets/shape-train/shape-train-passenger-circle-block-v1.png",
+    square: "/assets/shape-train/shape-train-passenger-square-block-v1.png",
+    triangle: "/assets/shape-train/shape-train-passenger-triangle-block-v1.png",
+    star: "/assets/shape-train/shape-train-passenger-star-block-v1.png",
+    diamond: "/assets/shape-train/shape-train-passenger-diamond-block-v1.png",
+    heart: "/assets/shape-train/shape-train-passenger-heart-block-v1.png",
   };
 
   const makeStage = (cars, tasks, options = {}) => ({ cars, tasks, rule: "direct", ...options });
@@ -324,13 +324,11 @@
     resultStagesBtn: $("resultStagesBtn"),
     resultLobby: document.querySelector("#resultPanel [data-ui='lobby']"),
     loadingPanel: $("loadingPanel"),
-    loadingText: $("loadingText"),
-    loadingFill: $("loadingFill"),
   };
   const resultActions = document.createElement("div");
   resultActions.className = "result-actions";
   resultActions.append(nodes.resultStagesBtn, nodes.nextStageBtn, nodes.retryBtn);
-  nodes.resultLobby?.before(resultActions);
+  nodes.resultPanel.querySelector(".result-card").append(resultActions);
   (__wpNotifyMeasurement(), nodes.resultLobby?.classList.add("hidden"));
   (__wpNotifyMeasurement(), nodes.resultLobby?.setAttribute("aria-hidden", "true"));
 
@@ -394,7 +392,6 @@
   let feedbackKey = "";
   let lastResult = null;
   let resultSettled = false;
-  let stageEntryToken = 0;
   let taskTransitionToken = 0;
   let taskWindowFocused = true;
   let taskLifecycleSuspended = document.hidden;
@@ -532,8 +529,7 @@
 
   function localizeStatic() {
     document.documentElement.lang = window.WonderI18n?.actualLocale?.() || locale;
-    updatePageMeta();
-    document.querySelectorAll("[data-ui]").forEach((node) => {
+    document.querySelectorAll(".shape-game [data-ui]:not([data-wp-game-title])").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
     nodes.localeSelect.value = locale;
@@ -547,214 +543,90 @@
     nodes.leaveConfirmMessage.textContent = t("leaveMessage");
     nodes.keepPlayingBtn.textContent = t("keepPlaying");
     nodes.leaveStageBtn.textContent = t("leaveStage");
-    const strategy = document.querySelector(".game-info-strategy");
-    if (strategy) {
-      const heading = strategy.querySelector("h3");
-      const tips = strategy.querySelectorAll("li");
-      if (heading) heading.textContent = t("guideStrategy");
-      ["guideTipName", "guideTipLook", "guideTipRetry"].forEach((key, index) => {
-        if (tips[index]) tips[index].textContent = t(key);
-      });
-    }
+    updateStageProgress();
   }
 
   function preserveGameLocaleAfterSharedGuide() {
     queueMicrotask(localizeStatic);
-    setTimeout(localizeStatic, 0);
-    setTimeout(localizeStatic, 260);
-    requestAnimationFrame(positionMainSoundToggle);
-    setTimeout(positionMainSoundToggle, 300);
   }
 
-  function positionMainSoundToggle() {
-    if (document.body.classList.contains("shape-playing") || document.body.classList.contains("wp-standard-stage-page")) return;
-    const toggle = document.querySelector(".sound-toggle");
-    const title = document.querySelector(".title-block")?.getBoundingClientRect();
-    const topbar = document.querySelector(".topbar")?.getBoundingClientRect();
-    if (!toggle || !title || !topbar) return;
-    const rtl = document.documentElement.dir === "rtl";
-    const x = rtl ? title.left + 6 : title.right - 48;
-    toggle.style.setProperty("left", `${Math.round(x)}px`, "important");
-    toggle.style.setProperty("top", `${Math.round(topbar.top + 3)}px`, "important");
-    toggle.style.setProperty("right", "auto", "important");
-    toggle.style.setProperty("bottom", "auto", "important");
+  let screenFrame = null;
+  let stageUI = null;
+  let stageSelection = 0;
+  const stageProgress = document.createElement("div");
+
+  function stageConfiguration() {
+    return {
+      count: stages.length,
+      poster: "/assets/shape-train/cover-block-v1.png",
+      background: "/assets/lobby-block-atmosphere.svg",
+      stage(index) {
+        const stage = stages[index];
+        const number = index + 1;
+        const earned = stars[number] || 0;
+        const locked = number > unlocked;
+        const rule = t(`rules.${stage.rule}`);
+        return {
+          id: number,
+          kicker: rule,
+          title: t("stage", { n: number }),
+          subtitle: stage.cars.map(shape => t(`shapes.${shape}`)).join(" · "),
+          status: locked ? t("locked") : "★".repeat(earned) + "☆".repeat(3 - earned),
+          poster: "/assets/shape-train/cover-block-v1.png",
+          locked,
+          cleared: earned > 0,
+          summary: [rule, stage.checkpoint ? t("checkpoint") : ""].filter(Boolean).join(" · "),
+          details: [rule, stage.checkpoint ? t("checkpoint") : "", locked ? t("locked") : ""].filter(Boolean),
+        };
+      },
+    };
   }
 
-  function updateMetaContent(selector, value) {
-    const node = document.querySelector(selector);
-    if (node) node.setAttribute("content", value);
-  }
-
-  function updatePageMeta() {
-    document.title = t("pageTitle");
-    updateMetaContent('meta[name="description"]', t("metaDescription"));
-    updateMetaContent('meta[property="og:title"]', t("metaOgTitle"));
-    updateMetaContent('meta[property="og:description"]', t("metaOgDescription"));
-    updateMetaContent('meta[name="twitter:title"]', t("metaOgTitle"));
-    updateMetaContent('meta[name="twitter:description"]', t("metaOgDescription"));
-  }
-
-  function activateStageNumber(stageNo) {
-    if (stageNo > unlocked) {
-      showFloatingText(t("locked"));
-      playSound("ui.click");
-      return;
-    }
-    startStage(stageNo - 1);
-  }
-
-  let centeredStageFrame = 0;
-  function updateCenteredStageCard() {
-    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
-    if (!cards.length || !document.body.classList.contains("wp-standard-stage-page")) return;
-    const railRect = nodes.stageGrid.getBoundingClientRect(), railCenter = railRect.left + railRect.width / 2;
-    const centered = cards.reduce((nearest, card) => {
-      const rect = card.getBoundingClientRect(), distance = Math.abs(rect.left + rect.width / 2 - railCenter);
-      return !nearest || distance < nearest.distance ? { card, distance } : nearest;
-    }, null)?.card;
-    cards.forEach((card) => {
-      const isCentered = card === centered;
-      card.classList.toggle("is-centered", isCentered);
-      if (isCentered) card.setAttribute("aria-current", "true"); else card.removeAttribute("aria-current");
-    });
-  }
-
-  function scheduleCenteredStageCard() {
-    cancelAnimationFrame(centeredStageFrame);
-    centeredStageFrame = requestAnimationFrame(updateCenteredStageCard);
-  }
-
-  function centerCurrentStage(token = stageEntryToken) {
-    if (token !== stageEntryToken || !document.body.classList.contains("wp-standard-stage-page")) return;
-    const available = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
-    if (!available) return;
-    const target = available.offsetLeft - (nodes.stageGrid.clientWidth - available.offsetWidth) / 2;
-    nodes.stageGrid.style.setProperty("scroll-behavior", "auto", "important");
-    nodes.stageGrid.style.setProperty("scroll-snap-type", "none", "important");
-    nodes.stageGrid.scrollLeft = target;
-    scheduleCenteredStageCard();
-    requestAnimationFrame(() => {
-      if (token !== stageEntryToken) return;
-      nodes.stageGrid.style.removeProperty("scroll-behavior");
-      nodes.stageGrid.style.removeProperty("scroll-snap-type");
-    });
-  }
-
-  function scheduleCurrentStageCenter() {
-    const token = ++stageEntryToken;
-    centerCurrentStage(token);
-    requestAnimationFrame(() => requestAnimationFrame(() => centerCurrentStage(token)));
-    [160, 600].forEach((delay) => setTimeout(() => centerCurrentStage(token), delay));
-    document.fonts?.ready?.then(() => centerCurrentStage(token));
-  }
-
-  function focusCurrentStage() {
-    const available = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
-    available?.focus({ preventScroll: true });
+  function updateStageProgress() {
+    const progress = `${t("stage", { n: Math.min(unlocked, stages.length) })} / ${stages.length}`;
+    stageProgress.textContent = progress;
+    $("mainProgress").textContent = progress;
   }
 
   function renderStageGrid() {
-    nodes.stageGrid.innerHTML = "";
-    stages.forEach((stage, index) => {
-      const stageNo = index + 1;
-      const button = document.createElement("button");
-      button.className = "stage-card";
-      button.type = "button";
-      button.dataset.stage = String(stageNo);
-      if (stageNo > unlocked) button.classList.add("locked");
-      button.innerHTML = `
-        <b class="stage-shapes">${stage.cars.map((shape) => `<img src="${shapes[shape].token}" alt="" />`).join("")}</b>
-        <strong>${t("stage", { n: stageNo })}</strong>
-        <em>${t(`rules.${stage.rule}`)}${stage.checkpoint ? ` · ${t("checkpoint")}` : ""}</em>
-        <span>${"★".repeat(stars[stageNo] || 0)}${"☆".repeat(3 - (stars[stageNo] || 0))}</span>
-      `;
-      nodes.stageGrid.appendChild(button);
+    updateStageProgress();
+    stageUI?.setConfig(stageConfiguration(), stageSelection);
+  }
+
+  function syncSharedScene(scene) {
+    exitSharedPlayViewport();
+    screenFrame?.activate(scene);
+    window.WeightPlayBattleCanvas?.sync?.();
+    if (scene === "stage") stageUI?.refresh(stageSelection);
+    window.dispatchEvent(new Event("weightplay:battle-sync"));
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+  }
+
+  function mountSharedInterface() {
+    if (!window.WeightPlayScreenFrame || !window.WeightPlayPlayUI || !window.WeightPlayStageRailI9) throw new Error("SHAPE_TRAIN_I9_SHARED_RUNTIME_MISSING");
+    screenFrame = window.WeightPlayScreenFrame.mount({
+      root: $("shapeGame"),
+      localeSelect: nodes.localeSelect,
+      playUI: true,
+      scenes: {
+        main: { root: nodes.menuPanel, header: $("mainHeader"), content: $("mainContent") },
+        stage: { root: nodes.stagePanel, header: $("stageHeader"), content: $("stageContent") },
+        battle: { root: nodes.playPanel, header: $("battleHeader"), content: $("battleContent") },
+      },
     });
-    scheduleCenteredStageCard();
+    screenFrame.stageTopUI.add(stageProgress);
+    const routeInfo = $("routeInfo");
+    routeInfo.hidden = false;
+    screenFrame.battleTopUI.add(routeInfo);
+    stageUI = window.WeightPlayPlayUI.mountStage({
+      page: $("stageContent"), rail: nodes.stageGrid, config: stageConfiguration(), selected: stageSelection,
+      onSelect(index) { stageSelection = index; },
+      onStart(index) { startStage(index); },
+      isActive: () => screenFrame.active === "stage" && !nodes.stagePanel.hidden,
+    });
+    screenFrame.activate("main");
   }
-
-  function updateStageFrame() {
-    if (!document.body.classList.contains("wp-standard-stage-page")) return;
-    const viewport = window.visualViewport;
-    const safeWidth = Math.round(viewport?.width || innerWidth);
-    const width = Math.min(Math.max(1, safeWidth), 920);
-    const height = Math.round(viewport?.height || innerHeight);
-    const scale = Math.min(width / 390, height / 844);
-    const logicalWidth = width / scale;
-    const logicalHeight = height / scale;
-    const root = document.documentElement.style;
-    root.setProperty("--shape-stage-scale", String(scale));
-    root.setProperty("--shape-stage-left", `${(viewport?.offsetLeft || 0) + Math.max(0, (safeWidth - width) / 2)}px`);
-    root.setProperty("--shape-stage-top", "0px");
-    root.setProperty("--shape-stage-logical-width", `${logicalWidth}px`);
-    root.setProperty("--shape-stage-logical-height", `${logicalHeight}px`);
-    nodes.stagePanel.dataset.wpCommonScale = String(scale);
-    nodes.stagePanel.dataset.wpLogicalWidth = String(logicalWidth);
-    nodes.stagePanel.dataset.wpLogicalHeight = String(logicalHeight);
-  }
-
-  function updateShapeFrame() {
-    if (!document.body.classList.contains("shape-playing")) return;
-    const viewport = window.visualViewport;
-    const visualWidth = Math.round(viewport?.width || 0);
-    const visualHeight = Math.round(viewport?.height || 0);
-    const useVisual = visualWidth > 0
-      && visualHeight > 0
-      && Math.abs(visualWidth - innerWidth) <= 2
-      && visualHeight <= innerHeight + 2;
-    const safeWidth = useVisual ? visualWidth : innerWidth;
-    const width = Math.min(Math.max(1, safeWidth), 920);
-    document.documentElement.style.setProperty("--shape-vw", `${width}px`);
-    document.documentElement.style.setProperty("--shape-vh", `${useVisual ? visualHeight : innerHeight}px`);
-    const height = useVisual ? visualHeight : innerHeight;
-    const scale = Math.min(width / 362, height / 710);
-    nodes.playPanel.dataset.wpCommonScale = String(scale);
-    nodes.playPanel.dataset.wpLogicalWidth = String(width / scale);
-    nodes.playPanel.dataset.wpLogicalHeight = String(height / scale);
-    requestAnimationFrame(updateResultControlSize);
-  }
-
-  function updateResultControlSize() {
-    const declaredScale = Number.parseFloat(
-      getComputedStyle(document.documentElement).getPropertyValue("--wp-battle-canvas-scale")
-    );
-    const transform = getComputedStyle(nodes.playPanel).transform;
-    const renderedScale = transform && transform !== "none"
-      ? Math.abs(new DOMMatrixReadOnly(transform).a)
-      : Number.NaN;
-    const scale = Number.isFinite(renderedScale) && renderedScale > 0
-      ? renderedScale
-      : Number.isFinite(declaredScale) && declaredScale > 0 ? declaredScale : 1;
-    const root = document.documentElement.style;
-    root.setProperty(
-      "--shape-result-control-min-height",
-      `${Math.max(50, 50 / scale)}px`
-    );
-    root.setProperty("--shape-result-action-font-size", `${Math.max(14, 13 / scale)}px`);
-    root.setProperty("--shape-result-essential-font-size", `${Math.max(17, 13 / scale)}px`);
-    root.setProperty("--shape-result-detail-font-size", `${Math.max(12, 12 / scale)}px`);
-    requestAnimationFrame(() => calibrateResultControlSize(0));
-  }
-
-  function calibrateResultControlSize(attempt) {
-    if (nodes.resultPanel.classList.contains("hidden") || attempt >= 3) return;
-    const button = nodes.resultPanel.querySelector(".result-actions button");
-    const renderedHeight = button?.getBoundingClientRect().height || 0;
-    if (renderedHeight >= 49) return;
-    const root = document.documentElement.style;
-    const currentHeight = Number.parseFloat(
-      getComputedStyle(document.documentElement).getPropertyValue("--shape-result-control-min-height")
-    ) || 48;
-    root.setProperty(
-      "--shape-result-control-min-height",
-      `${currentHeight * (49.5 / Math.max(1, renderedHeight))}px`
-    );
-    requestAnimationFrame(() => calibrateResultControlSize(attempt + 1));
-  }
-
-  new MutationObserver(() => {
-    if (!nodes.resultPanel.classList.contains("hidden")) updateResultControlSize();
-  }).observe(nodes.resultPanel, { attributes: true, attributeFilter: ["class", "style"] });
 
   function exitSharedPlayViewport() {
     window.WeightPlayGame?.exitMobileGameMode?.();
@@ -764,7 +636,7 @@
   }
 
   function setLeaveConfirmOwnership(active) {
-    [".play-head", ".train-track", ".passenger-area", ".feedback"].forEach((selector) => {
+    ["#battleHeader", "#battleContent"].forEach((selector) => {
       const node = nodes.playPanel.querySelector(selector);
       if (!node) return;
       node.inert = active;
@@ -791,22 +663,13 @@
     suspendTaskTransitions();
     setLeaveConfirmOwnership(true);
     (__wpNotifyMeasurement(), nodes.leaveConfirmPanel.classList.remove("hidden"));
-    requestAnimationFrame(() => nodes.keepPlayingBtn.focus({ preventScroll: true }));
+    nodes.keepPlayingBtn.focus({ preventScroll: true });
   }
 
   function leaveCurrentRoute() {
     closeLeaveConfirm(false);
     showMenu(true);
   }
-
-  window.addEventListener("resize", updateShapeFrame);
-  window.addEventListener("resize", updateStageFrame);
-  window.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
-  window.addEventListener("orientationchange", updateShapeFrame);
-  window.addEventListener("orientationchange", updateStageFrame);
-  window.visualViewport?.addEventListener("resize", updateShapeFrame, { passive: true });
-  window.visualViewport?.addEventListener("resize", updateStageFrame, { passive: true });
-  window.visualViewport?.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
 
   function showMenu(focusStage = true) {
     closeLeaveConfirm(false);
@@ -820,13 +683,12 @@
     document.body.classList.remove("shape-result-active");
     setResultOwnership(false);
     document.body.classList.remove("shape-playing");
-    document.body.classList.add("wp-standard-stage-page");
-    document.querySelector(".shape-game")?.setAttribute("data-play-viewport", "");
+    document.body.classList.add("shape-stage");
+    stageSelection = Math.max(0, unlocked - 1);
     selectedPassenger = false;
+    syncSharedScene("stage");
     renderStageGrid();
-    updateStageFrame();
-    scheduleCurrentStageCenter();
-    if (focusStage) requestAnimationFrame(focusCurrentStage);
+    if (focusStage) requestAnimationFrame(() => nodes.stageGrid.querySelector('[aria-current="true"]')?.focus({ preventScroll: true }));
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["stage"] ?? null;
       if (["result"].includes("stage") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -837,11 +699,16 @@
   function showMain(focusStart = false) {
     clearFloatingText();
     invalidateTaskTransition();
-    stageEntryToken += 1;
     nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
-    document.body.classList.remove("wp-standard-stage-page");
-    requestAnimationFrame(positionMainSoundToggle);
+    nodes.playPanel.classList.add("hidden");
+    nodes.resultPanel.classList.add("hidden");
+    nodes.playPanel.classList.remove("is-result");
+    document.body.classList.remove("shape-stage", "shape-playing", "shape-result-active");
+    setResultOwnership(false);
+    updateStageProgress();
+    syncSharedScene("main");
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     if (focusStart) restoreMainStartFocus();
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
@@ -856,20 +723,13 @@
     }));
   }
 
-  function focusPlayPanel() {
-    const targetY = Math.max(0, nodes.playPanel.getBoundingClientRect().top + window.scrollY - 8);
-    window.scrollTo({ top: targetY, left: 0, behavior: "auto" });
-    requestAnimationFrame(() => {
-      const refreshedY = Math.max(0, nodes.playPanel.getBoundingClientRect().top + window.scrollY - 8);
-      window.scrollTo({ top: refreshedY, left: 0, behavior: "auto" });
-    });
-  }
-
   function startStage(index) {
     closeLeaveConfirm(false);
     clearFloatingText();
     invalidateTaskTransition();
+    if (index + 1 > unlocked) return;
     currentStage = index;
+    stageSelection = index;
     currentTask = 0;
     mistakes = 0;
     firstTryMatches = 0;
@@ -885,21 +745,18 @@
     nodes.playPanel.classList.remove("is-result");
     document.body.classList.remove("shape-result-active");
     setResultOwnership(false);
-    document.body.classList.remove("wp-standard-stage-page");
+    document.body.classList.remove("shape-stage");
     document.body.classList.add("shape-playing");
     nodes.playPanel.dataset.rule = stages[index].rule;
     nodes.ruleBadge.textContent = ruleBadges[stages[index].rule] || ruleBadges.direct;
     nodes.playPanel.classList.toggle("is-outline", Boolean(stages[index].outline));
-    document.querySelector(".shape-game")?.removeAttribute("data-play-viewport");
     renderCars();
     renderTask();
-    exitSharedPlayViewport();
-    updateShapeFrame();
+    syncSharedScene("battle");
     playSound("game.start");
     track("game_start", { level: index + 1 });
     requestAnimationFrame(() => {
-      exitSharedPlayViewport();
-      updateShapeFrame();
+      nodes.carGrid.querySelector("button")?.focus({ preventScroll: true });
     });
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
@@ -1032,7 +889,7 @@
     nodes.playPanel.classList.add("is-result");
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
     document.body.classList.add("shape-result-active");
-    updateResultControlSize();
+    updateStageProgress();
     setResultOwnership(true);
     nodes.playPanel.scrollTop = 0;
     nodes.playPanel.scrollLeft = 0;
@@ -1056,13 +913,15 @@
     nodes.nextStageBtn.classList.remove("hidden");
     nodes.nextStageBtn.disabled = !hasNextStage;
     nodes.nextStageBtn.setAttribute("aria-disabled", String(!hasNextStage));
+    nodes.nextStageBtn.dataset.wpFrameAction = hasNextStage ? "primary" : "secondary";
+    nodes.resultStagesBtn.dataset.wpFrameAction = hasNextStage ? "secondary" : "primary";
     nodes.nextStageBtn.classList.toggle("primary-action", hasNextStage);
     (__wpNotifyMeasurement(), nodes.resultStagesBtn.classList.toggle("primary-action", !hasNextStage));
     nodes.retryBtn.classList.remove("primary-action");
   }
 
   function setResultOwnership(active) {
-    [".play-head", ".train-track", ".passenger-area", ".feedback"].forEach((selector) => {
+    ["#battleHeader", "#battleContent"].forEach((selector) => {
       const node = nodes.playPanel.querySelector(selector);
       if (!node) return;
       node.inert = active;
@@ -1164,42 +1023,25 @@
     });
   }
 
-  function initStageRail() {
-    nodes.stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
-    nodes.stageGrid.addEventListener("wonder:stage-snap", scheduleCenteredStageCard);
-    nodes.stageGrid.addEventListener("pointerdown", (event) => {
-      if (!document.body.classList.contains("wp-standard-stage-page") || event.isPrimary === false || event.button !== 0) return;
-      stageEntryToken += 1;
-    }, true);
-  nodes.stageGrid.addEventListener("click", (event) => {
-      const directHit = event.target.closest?.(".stage-card");
-      const coordinateHit = [...nodes.stageGrid.querySelectorAll(".stage-card")].find((card) => {
-        const rect = card.getBoundingClientRect();
-        return event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
-      });
-      const hit = directHit || coordinateHit;
-      if (!hit) return;
-      event.preventDefault();
-      event.stopPropagation();
-      activateStageNumber(Number(hit.dataset.stage));
-    }, true);
-  }
-
-  function initLoading() {
-    let progress = 0;
-    const timer = setInterval(() => {
-      progress = Math.min(100, progress + 20);
-      nodes.loadingText.textContent = `${progress}%`;
-      nodes.loadingFill.style.width = `${progress}%`;
-      if (progress >= 100) {
-        clearInterval(timer);
-        setTimeout(() => {
-          nodes.loadingPanel.classList.add("hidden");
-          if (!__wpMeasurement.started && __wpMeasurement.screen === null) { __wpMeasurement.screen = "main"; } __wpNotifyMeasurement();
-          track("game_ready");
-        }, 180);
-      }
-    }, 110);
+  async function initLoading() {
+    const assets = ["/assets/shape-train/cover-block-v1.png", "/assets/shape-train/station-background-block-v1.png", trainCarAsset, ...Object.values(shapes).map(shape => shape.token), ...Object.values(passengerAnimals)];
+    try {
+      await Promise.all([...new Set(assets)].map(src => new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => image.decode().then(resolve, reject);
+        image.onerror = () => reject(new Error("SHAPE_TRAIN_REQUIRED_IMAGE_FAILED"));
+        image.src = src;
+      })));
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      nodes.loadingPanel.classList.add("hidden");
+      nodes.loadingPanel.setAttribute("aria-busy", "false");
+      if (!__wpMeasurement.started && __wpMeasurement.screen === null) __wpMeasurement.screen = "main";
+      __wpNotifyMeasurement();
+      track("game_ready");
+    } catch {
+      nodes.loadingPanel.classList.add("has-error");
+      nodes.loadingPanel.setAttribute("aria-busy", "false");
+    }
   }
 
   function bindEvents() {
@@ -1207,9 +1049,6 @@
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     };
     nodes.startGameBtn.addEventListener("keydown", rejectRepeatedScreenActivation);
-    nodes.stageGrid.addEventListener("keydown", (event) => {
-      if (event.target.closest(".stage-card")) rejectRepeatedScreenActivation(event);
-    });
     nodes.startGameBtn.addEventListener("click", () => showMenu(true));
     nodes.stageBackBtn.addEventListener("click", restoreMainStartFocus, true);
     nodes.stageBackBtn.addEventListener("click", () => showMain(true));
@@ -1280,7 +1119,6 @@
 
   localizeStatic();
   window.addEventListener("load", preserveGameLocaleAfterSharedGuide, { once: true });
-  window.addEventListener("resize", () => requestAnimationFrame(positionMainSoundToggle));
   window.addEventListener("blur", () => {
     taskWindowFocused = false;
     suspendTaskTransitions();
@@ -1297,19 +1135,8 @@
   });
   bindEvents();
   initPassenger();
-  initStageRail();
+  mountSharedInterface();
+  showMain();
   renderStageGrid();
   initLoading();
-  if (new URLSearchParams(location.search).has("smoke")) {
-    window.__shapeTrainSmoke = {
-      stages: stages.map((stage, index) => ({ id: index + 1, cars: [...stage.cars], tasks: [...stage.tasks], rule: stage.rule, checkpoint: Boolean(stage.checkpoint), outline: Boolean(stage.outline), moving: Boolean(stage.moving), memory: Boolean(stage.memory), requireSelect: Boolean(stage.requireSelect) })),
-      unlockAll() {
-        unlocked = stages.length;
-        writeStorage(unlockKey, unlocked);
-        showMenu();
-      },
-      startStage(number) { startStage(clamp(Number(number) || 1, 1, stages.length) - 1); },
-      snapshot() { return { stage: currentStage + 1, task: currentTask, shape: currentShape, selectedPassenger, mistakes, acceptingInput }; },
-    };
-  }
 })();
