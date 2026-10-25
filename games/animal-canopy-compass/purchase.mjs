@@ -1,6 +1,8 @@
 // Synchronous delivery under the caller's cross-tab Web Lock. Shared wallet
 // methods own currency storage; this module owns only the permanent skin.
 export function purchaseAurora(storage,wallet,key){
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-canopy-compass:purchase.mjs:purchaseAurora", () => purchaseAurora(...arguments));
+
   let saved;
   try{saved=JSON.parse(storage.getItem(key)||'{}');}catch(error){if(error instanceof SyntaxError)saved={};else throw error;}
   const next={owned:true,theme:'aurora'};

@@ -320,6 +320,7 @@
     if(!purchaseArmed){purchaseArmed=true;$(".appearance-status").textContent="";renderAppearance();return;}
     purchasing=true;renderAppearance();
     const transaction=()=>{
+    const walletAction = () => {
       // Serialize this game's purchases across tabs; re-read ownership under the lock.
       const latest=JSON.parse(readStorage(APPEARANCE_KEY)||"{}");
       if(latest.aurora===true){appearance={aurora:true,equipped:latest.equipped==="aurora"?"aurora":"gold"};return;}
@@ -330,7 +331,10 @@
       const next={aurora:true,equipped:"aurora"};
       if(!writeStorage(APPEARANCE_KEY,JSON.stringify(next))){wallet.addDiamonds(5);throw Error("ownership save failed");}
       appearance=next;sound("reward.unlock");$(".appearance-status").textContent=t("equipped");
+    
     };
+    return window.WeightPlayWallet?.withTransaction ? window.WeightPlayWallet.withTransaction("animal-starlight-trails:game.js:transaction", walletAction) : walletAction();
+};
     try{if(navigator.locks)await navigator.locks.request("starlink-appearance",transaction);else transaction();}
     catch{$(".appearance-status").textContent=t("purchaseError");}
     finally{purchasing=false;purchaseArmed=false;applyAppearance();renderAppearance();}

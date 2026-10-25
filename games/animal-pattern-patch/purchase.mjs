@@ -14,6 +14,8 @@ export function recoverPurchase(storage,wallet,save){
  const next={...save,moonOwned:true,skin:'moon'};storage.setItem(SAVE_KEY,JSON.stringify(next));storage.removeItem(JOURNAL_KEY);return {save:next,blocked:false};
 }
 export function purchaseMoon(storage,wallet,save){
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-pattern-patch:purchase.mjs:purchaseMoon", () => purchaseMoon(...arguments));
+
  if(save.moonOwned)return {save,ok:true,blocked:false};
  let deducted=false;
  try{

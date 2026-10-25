@@ -2500,6 +2500,7 @@
   }
 
   function legacyEndGame(won) {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("shadow-wolf:legacyEndGame", () => legacyEndGame(won));
     if (!state.gameActive) return;
     state.gameActive = false;
     clearActiveInputs();
@@ -2539,6 +2540,7 @@
   }
 
   function endGame(won) {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("shadow-wolf:endGame", () => endGame(won));
     if (!state.gameActive) return;
     cancelPendingSettlement();
     state.gameActive = false;
@@ -3683,6 +3685,7 @@
     });
 
     nodes.amuletBtn.addEventListener("click", () => {
+    const walletAction = () => {
       const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };
       if (wallet.diamonds < amuletCost) {
         clearAmuletConfirmation();
@@ -3704,7 +3707,10 @@
         window.WeightPlayAudio?.play("feedback.success");
       }
       updateDiamondShopUI();
-    });
+    
+    };
+    return window.WeightPlayWallet?.withTransaction ? window.WeightPlayWallet.withTransaction("shadow-wolf:game.js:anonymous@3685", walletAction) : walletAction();
+});
 
     window.addEventListener("wonder:locale-change", () => {
       clearAmuletConfirmation();

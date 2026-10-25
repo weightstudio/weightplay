@@ -25,6 +25,8 @@ export function recoverPurchase(storage,wallet){
   }catch{return false;}
 }
 export function purchaseMoonstone(storage,wallet){
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-ring-garden:economy.mjs:purchaseMoonstone", () => purchaseMoonstone(...arguments));
+
   if(!recoverPurchase(storage,wallet))return {status:'storage'};
   const save=readSave(storage);if(save.owned.includes('moonstone'))return {status:'owned',save};
   const before=wallet.read().diamonds;if(before<FINISH_COST)return {status:'insufficient',save};

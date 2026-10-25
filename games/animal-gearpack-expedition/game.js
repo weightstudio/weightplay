@@ -1197,13 +1197,17 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
         if(addToTray(item)){run.gold-=item.gold;saveRun();stock=randomItems(3);render();}
       },`${t("buy")} ${item.gold} · `)));
       const refresh=choiceButton(refreshUsed?t("refreshUsed"):refreshPending?t("refreshConfirm",{before:balance,after:balance-3}):t("refresh"),()=>{
+    const walletAction = () => {
         if(refreshUsed)return;
         const current=diamondBalance();
         if(current<3){clearConfirmation();$("#modalText").textContent=t("refreshNeed",{balance:current});refresh.classList.remove("is-confirming");return;}
         if(!refreshPending){refreshPending=true;render();beginConfirmation();return;}
         clearConfirmation();
         if(spendDiamonds(3)){refreshUsed=true;sound("reward.upgrade");track("diamond_spend",{sink:"merchant_refresh",amount:3});stock=randomItems(3);render();}
-      });
+      
+    };
+    return window.WeightPlayWallet?.withTransaction ? window.WeightPlayWallet.withTransaction("animal-gearpack-expedition:game.js:anonymous@1199", walletAction) : walletAction();
+});
       refresh.addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});
       refresh.dataset.merchantRefresh="";
       refresh.disabled=refreshUsed||practiceMode;

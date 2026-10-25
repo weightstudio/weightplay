@@ -3345,6 +3345,8 @@ return __wpReturn;
   }
 
   function handleKennelAction(unitId, ownerGrid) {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-guard-yard:game.js:handleKennelAction", () => handleKennelAction(...arguments));
+
     const unit = units.find((item) => item.id === unitId);
     if (!unit) return;
     if (!isOwned(unitId)) {

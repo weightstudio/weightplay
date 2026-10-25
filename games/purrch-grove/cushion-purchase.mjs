@@ -9,6 +9,8 @@ export function recoverCushion(state,storage,wallet){
  }catch{return {ok:false};}
 }
 export function buyCushion(state,storage,wallet){
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("purrch-grove:cushion-purchase.mjs:buyCushion", () => buyCushion(...arguments));
+
  if(state.cushion)return {ok:false,reason:'same'};
  try{if(storage.getItem(JOURNAL)){const r=recoverCushion(state,storage,wallet);return {ok:false,reason:r.ok?'same':'pending'};}
   if(!wallet?.read||!wallet?.spendDiamonds)return {ok:false,reason:'error'};const before=wallet.read().diamonds;if(!Number.isFinite(before)||before<5)return {ok:false,reason:'poor'};

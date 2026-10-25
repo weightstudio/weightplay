@@ -142,11 +142,15 @@ import {LocalPractice as Practice} from '/src/game-local-practice.mjs';
   function saveEquipment(next){try{localStorage.setItem(equipKey,JSON.stringify(next));equipment=next;$('equipmentMessage').textContent=text('saved');sound('ui.click');renderEquipment();}catch{$('equipmentMessage').textContent=text('storageError');}}
   async function purchase(){
     if(practice||purchaseBusy||equipment.aurora)return;purchaseBusy=true;
-    const commit=()=>{const previous=read(equipKey,'{}');let fresh={};try{fresh=JSON.parse(previous)||{};}catch{}if(fresh.aurora){equipment=fresh;return;}
+    const commit=()=>{
+    const walletAction = () => {const previous=read(equipKey,'{}');let fresh={};try{fresh=JSON.parse(previous)||{};}catch{}if(fresh.aurora){equipment=fresh;return;}
       const wallet=window.WeightPlayWallet,before=wallet.read();if(before.diamonds<12){$('equipmentMessage').textContent=text('noFunds');sound('feedback.error');return;}
       let charged=false;try{if(!wallet.spendDiamonds(12))return;charged=true;const next={...fresh,aurora:true,selected:'aurora'};localStorage.setItem(equipKey,JSON.stringify(next));equipment=next;$('equipmentMessage').textContent=text('saved');sound('shop.purchase');}
       catch{if(charged)try{wallet.save(before);}catch{}$('equipmentMessage').textContent=text('storageError');}
+    
     };
+    return window.WeightPlayWallet?.withTransaction ? window.WeightPlayWallet.withTransaction("animal-cloudhook-courier:game.js:commit", walletAction) : walletAction();
+};
     try{if(navigator.locks)await navigator.locks.request('weightplay-wallet-purchase',commit);else commit();}finally{purchaseBusy=false;renderEquipment();}
   }
   function refresh(){

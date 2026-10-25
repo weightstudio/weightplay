@@ -2514,7 +2514,8 @@ body[data-audience="kids"] .challenge-spotlight-section {
   transition: opacity 180ms ease;
 }
 
-.game-card.is-previewing .game-card-preview {
+.game-card.is-previewing .game-card-preview,
+.hero-game-card.is-previewing .game-card-preview {
   opacity: 1;
 }
 

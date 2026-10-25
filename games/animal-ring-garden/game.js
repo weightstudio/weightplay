@@ -199,9 +199,9 @@ function renderCollection(message=''){
 async function buy(){
   if(practiceSession)return;
   $('purchase-buy').disabled=true;
-  const transaction=()=>purchaseMoonstone(storage,window.WeightPlayWallet);
+  const transaction=async ()=>(await purchaseMoonstone(storage,window.WeightPlayWallet));
   let result;
-  try{result=navigator.locks?await navigator.locks.request('animal-ring-garden-finish',transaction):transaction();}catch{result={status:'storage'};}
+  try{result=navigator.locks?await navigator.locks.request('animal-ring-garden-finish',transaction):await transaction();}catch{result={status:'storage'};}
   $('purchase-buy').disabled=false;
   if(result.status==='purchased'||result.status==='owned'){save=result.save;scene?.setFinish(save.finish);if(result.status==='purchased')sound('reward.unlock');renderCollection(t('saved'));}
   else{sound('feedback.error');renderCollection(t(result.status));}

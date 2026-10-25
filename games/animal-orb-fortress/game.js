@@ -3095,6 +3095,8 @@
   }
 
   function rerollChoices() {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-orb-fortress:game.js:rerollChoices", () => rerollChoices(...arguments));
+
     if (state.mode !== "upgrade" || state.rerolled || performance.now() < state.upgradeReadyAt) return;
     const balance = walletDiamonds();
     if (balance < rerollCost) {

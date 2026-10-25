@@ -28,7 +28,16 @@
   function html(code) {
     const c = copy[code] || copy.en;
     const faqs = c.faqItems.map(([q,a]) => `<div><dt>${esc(q)}</dt><dd>${esc(a)}</dd></div>`).join("");
-    return `<section class="game-guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" lang="${esc(code)}" dir="${code === "ar" ? "rtl" : "ltr"}" aria-label="${esc(c.title)} ${esc(c.guide)}"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0">${c.tags.map(t => `<span>${esc(t)}</span>`).join("")}</div><div class="game-info-section"><h2>${esc(c.title)} — ${esc(c.guide)}</h2><p>${esc(c.intro)}</p></div><div class="game-info-section"><h3>${esc(c.how)}</h3><p>${esc(c.rules)}</p><p>${esc(c.plan)}</p><p>${esc(c.tools)}</p></div><div class="game-info-section"><h3>${esc(c.title)}: ${esc(c.guide)}</h3><p>${esc(c.save)}</p><p>${esc(c.parent)}</p></div><div class="game-info-section"><h3>${esc(c.faq)}</h3><dl>${faqs}</dl></div><div class="game-info-section game-info-related-section"><h3>${esc(c.related)}</h3><div class="game-info-related"><a class="game-info-related-card" href="/${esc(code === "zh-Hant" ? "zh-tw" : code === "zh-Hans" ? "zh-cn" : code === "pt-BR" ? "pt-br" : code)}/games/animal-cratebound/"><strong>Cratebound</strong></a><a class="game-info-related-card" href="/${esc(code === "zh-Hant" ? "zh-tw" : code === "zh-Hans" ? "zh-cn" : code === "pt-BR" ? "pt-br" : code)}/games/animal-tangram/"><strong>Panko’s Tangram Trail</strong></a></div></div></section>`;
+    return `<section class="game-guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" lang="${esc(code)}" dir="${code === "ar" ? "rtl" : "ltr"}" aria-label="${esc(c.title)} ${esc(c.guide)}">
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0">${c.tags.map(t => `<span>${esc(t)}</span>`).join("")}</div>
+      <div class="game-info-hero"><div class="game-info-kicker">${esc(c.guide)}</div><h2>${esc(c.title)}</h2><p>${esc(c.intro)}</p></div>
+      <div class="game-info-sections">
+        <div class="game-info-section"><h3>${esc(c.how)}</h3><p>${esc(c.rules)}</p><p>${esc(c.plan)}</p><p>${esc(c.tools)}</p></div>
+        <div class="game-info-section"><h3>${esc(c.title)}: ${esc(c.guide)}</h3><p>${esc(c.save)}</p><p>${esc(c.parent)}</p></div>
+        <div class="game-info-section"><h3>${esc(c.faq)}</h3><dl>${faqs}</dl></div>
+        <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>${esc(c.related)}</h3><div class="game-info-related"><a class="game-info-related-card" href="/${esc(code === "zh-Hant" ? "zh-tw" : code === "zh-Hans" ? "zh-cn" : code === "pt-BR" ? "pt-br" : code)}/games/animal-cratebound/"><strong>Cratebound</strong></a><a class="game-info-related-card" href="/${esc(code === "zh-Hant" ? "zh-tw" : code === "zh-Hans" ? "zh-cn" : code === "pt-BR" ? "pt-br" : code)}/games/animal-tangram/"><strong>Panko’s Tangram Trail</strong></a></div></div>
+      </div>
+    </section>`;
   }
   function apply(code) { const old = document.querySelector(".game-guide[data-wp-game-guide]"); if (old) old.outerHTML = html(code); }
   window.SCREW_WORKSHOP_GUIDE = Object.freeze({copy, html, apply});

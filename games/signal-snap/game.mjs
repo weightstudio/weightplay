@@ -67,8 +67,8 @@ listen($('styleApply'),'click',()=>{
  if(practice)return;
  if(chosenSkin==='violet'&&!save.violet){
   const before=document.activeElement;
-  modal(c.confirm,c.skins.violet+'\n'+c.outfitHelp+'\n'+c.buy,[[c.cancel,()=>before?.focus()],[c.buy,()=>{
-   const bought=purchaseViolet({storage:localStorage,wallet:window.WeightPlayWallet,key:KEY});
+  modal(c.confirm,c.skins.violet+'\n'+c.outfitHelp+'\n'+c.buy,[[c.cancel,()=>before?.focus()],[c.buy,async ()=>{
+   const bought=(await purchaseViolet({storage:localStorage,wallet:window.WeightPlayWallet,key:KEY}));
    if(bought.ok){save=bought.save;audio(bought.charged?'shop.purchase':'ui.click');$('styleNotice').textContent=c.equipped;previewScene?.setSkin(save.skin);}
    else{$('styleNotice').textContent=bought.reason==='funds'?c.insufficient:c.storage;audio('feedback.error');}
    refreshWardrobe();$('styleApply').focus();

@@ -3224,6 +3224,8 @@
   }
 
   function handleBuySkin() {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-auto-squad:game.js:handleBuySkin", () => handleBuySkin(...arguments));
+
     initAudio();
     const balance = getWalletDiamonds();
     if (!skinPurchasePending) {
@@ -3362,6 +3364,8 @@
   }
 
   function handleUnlockAnimal(id) {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-auto-squad:game.js:handleUnlockAnimal", () => handleUnlockAnimal(...arguments));
+
     initAudio();
     clearActionNotice(nodes.stageNotice);
     save = normalizeSave(save);
@@ -5836,6 +5840,8 @@
   }
 
   function handleRevive() {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-auto-squad:game.js:handleRevive", () => handleRevive(...arguments));
+
     initAudio();
     clearActionNotice(nodes.reviveNotice);
     if (getWalletDiamonds() < 5) {

@@ -166,10 +166,10 @@ function renderShop() {
     if(id==='gold')button.setAttribute('aria-pressed',String(save.goldEnabled));
   }
 }
-function purchase(id) {
+async function purchase(id) {
   if(state.practice)return;
   if(id==='gold'&&save.upgrades.gold){const next={...save,goldEnabled:!save.goldEnabled};try{writeSave(localStorage,next);save=next;sound('board.move');}catch{$('shopMessage').textContent=t('saveError');return;}}
-  else {const result=buyUpgrade(localStorage,save,id,window.WeightPlayWallet);if(result.error){$('shopMessage').textContent=t(result.error);sound('feedback.error');return;}save=result.save;sound('shop.purchase');$('shopMessage').textContent=`${t(id+'Name')} · ${t('owned')}`;}
+  else {const result=(await buyUpgrade(localStorage,save,id,window.WeightPlayWallet));if(result.error){$('shopMessage').textContent=t(result.error);sound('feedback.error');return;}save=result.save;sound('shop.purchase');$('shopMessage').textContent=`${t(id+'Name')} · ${t('owned')}`;}
   renderShop();scene?.update(run,save);animate($('upgrade-'+id),[{opacity:.5},{opacity:1}],{duration:220});
 }
 function applyCopy() {

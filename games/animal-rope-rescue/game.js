@@ -881,6 +881,7 @@
     nodes.targetAnimal.src = assets[route.animal];
     nodes.fruit.src = assets[route.fruit];
     nodes.vineButton.classList.remove("cut");
+    nodes.vineButton.disabled = false;
     nodes.cutNowBtn.disabled = false;
     nodes.cutNowBtn.classList.remove("cut");
     nodes.vineButton.style.left = `${route.startX}%`;
@@ -931,6 +932,7 @@
     running = true;
     fruit.cut = true;
     nodes.vineButton.classList.add("cut");
+    nodes.vineButton.disabled = true;
     nodes.cutNowBtn.disabled = true;
     nodes.cutNowBtn.classList.add("cut");
     nodes.playfield.classList.add("is-vine-cut");

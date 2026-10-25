@@ -73,13 +73,17 @@ function appearance(){
   const gem=document.createElement('img');gem.src='/assets/weightplay-diamond.svg';gem.alt=t('balance');const amount=document.createElement('b');amount.textContent=String(window.WeightPlayWallet?.read()?.diamonds||0);wallet.append(gem,amount);
   const status=document.createElement('p');status.className='dialog-status';status.setAttribute('role','status');
   showModal('appearance',t('appearance'),[image,paragraph(t('cosmetic')),wallet,status],[{label:records.moonTrail?t('owned'):t('purchase'),disabled:records.moonTrail,run:()=>{
+    const walletAction = () => {
     const w=window.WeightPlayWallet;if((w?.read()?.diamonds||0)<3){status.textContent=t('noFunds');return;}
     try{
       if(!w.spendDiamonds(3)){status.textContent=t('noFunds');return;}
       records.moonTrail=true;if(!save()){records.moonTrail=false;w.addDiamonds(3);status.textContent=t('saveWarning');return;}
       audio?.play('shop.purchase');appearance();
     }catch{status.textContent=t('saveWarning');}
-  }},{label:t('back'),run:pause}]);
+  
+    };
+    return window.WeightPlayWallet?.withTransaction ? window.WeightPlayWallet.withTransaction("wildborn:game.js:anonymous@75", walletAction) : walletAction();
+}},{label:t('back'),run:pause}]);
 }
 function remember(died){
   if(settled||!died)return;settled=true;const summary=lifeSummary(life);

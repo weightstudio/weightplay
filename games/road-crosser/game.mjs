@@ -265,8 +265,8 @@ async function purchase() {
   if (purchaseBusy || practiceMode || practiceRun) return;
   purchaseBusy = true; $('confirmBuy').disabled = true;
   try {
-    const transact = () => buyAurora(storage, window.WeightPlayWallet);
-    const result = navigator.locks ? await navigator.locks.request('weightplay-road-crosser-purchase', transact) : transact();
+    const transact = async () => (await buyAurora(storage, window.WeightPlayWallet));
+    const result = navigator.locks ? await navigator.locks.request('weightplay-road-crosser-purchase', transact) :await transact();
     if (result.ok) { journey = result.journey; play('shop.purchase'); $('campNotice').textContent = t('owned'); }
     else { $('campNotice').textContent = t(result.reason === 'funds' ? 'funds' : 'storage'); play('feedback.error'); }
     $('purchaseConfirm').hidden = true; refreshCamp(); renderer?.draw(world, 0, journey.equipped === 'aurora');

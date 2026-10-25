@@ -173,14 +173,14 @@ function renderFinishes(){
   }
 }
 let purchasing=false;
-function chooseFinish(name){
+async function chooseFinish(name){
   if(purchasing||state.screen!=='stage')return;
   const owned=name==='moss'||saved.finishes.includes(name)||(name==='alpine'&&solved.size>=10);
   if(!owned&&name!=='aurora')return;
   purchasing=true;
   try{
-    const result=purchaseFinish({saved,solved:[...solved],name,wallet:window.WeightPlayWallet,
-      write:value=>localStorage.setItem(STORE,JSON.stringify({...value,solved:[...solved],updatedAt:new Date().toISOString()}))});
+    const result=(await purchaseFinish({saved,solved:[...solved],name,wallet:window.WeightPlayWallet,
+      write:value=>localStorage.setItem(STORE,JSON.stringify({...value,solved:[...solved],updatedAt:new Date().toISOString()}))}));
     if(result.status==='insufficient'){$('finishStatus').textContent=text('needDiamonds');cue('feedback.error');return;}
     saved=result.saved;$('finishStatus').textContent=text('owned')+' · '+text(name);cue(owned?'ui.click':'reward.unlock');
     scene?.update(state.stack,{skin:name});renderFinishes();flash($('finishChoices'));

@@ -115,12 +115,12 @@ function renderStall(){
     b.dataset.purchase=String(!owned);
   }
 }
-function equip(skin){
+async function equip(skin){
   if(phase!=='stage'||save.theme===skin||(skin==='amber'&&count()<10))return;
   const owned=skin!=='moon'||save.skins.includes('moon');
   if(owned){persist({...save,theme:skin});sound('ui.click');}
   else {
-    let outcome;try{outcome=purchaseMoon(save,localStorage,window.WeightPlayWallet);}catch{outcome={reason:'saveError'};}
+    let outcome;try{outcome=(await purchaseMoon(save,localStorage,window.WeightPlayWallet));}catch{outcome={reason:'saveError'};}
     if(!outcome.purchased){put('stallStatus',text(outcome.reason));sound('feedback.error');return;}
     save=outcome.save;saveFailed=false;sound('shop.purchase');
   }

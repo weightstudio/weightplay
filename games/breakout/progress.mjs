@@ -1,4 +1,6 @@
 export function purchaseAurora({read,write,wallet}) {
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("breakout:progress.mjs:purchaseAurora", () => purchaseAurora(...arguments));
+
   const previous=read();if(previous.aurora)return {ok:true,save:previous,charged:0};
   if(!wallet)return {ok:false,reason:'wallet'};
   const next={...previous,aurora:true,finish:'aurora'};

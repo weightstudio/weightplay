@@ -23,6 +23,8 @@ export function recoverExpansion({state,storage,wallet,key}){
  }catch{return {ok:false,reason:'purchasePending'};}
 }
 export function purchaseExpansion({state,storage,wallet,key,expectedTier}){
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("puppy-haven:capacity-purchase.mjs:purchaseExpansion", () => purchaseExpansion(...arguments));
+
  const cost=expansionCost(state);if(cost===null)return {ok:false,reason:'maxCapacity'};
  if(expectedTier!==state.collectionTier)return {ok:false,reason:'stalePurchase'};
  if(!wallet?.read||!wallet?.spendDiamonds)return {ok:false,reason:'purchaseError'};

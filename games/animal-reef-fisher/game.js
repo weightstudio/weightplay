@@ -2370,6 +2370,8 @@
   }
 
   function buyDiamondItem(type, actionInputType = "unknown") {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-reef-fisher:game.js:buyDiamondItem", () => buyDiamondItem(...arguments));
+
     const cost = type === "lure" ? lureCost : sonarCost;
     if ((type === "lure" && save.lureReady) || (type === "sonar" && save.sonarReady)) { clearDiamondPurchaseConfirmation(); return; }
     const balance = wallet().diamonds;

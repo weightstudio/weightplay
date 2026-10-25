@@ -189,6 +189,8 @@
     $('themeCloseBtn').focus({preventScroll:true});
   }
   function buyTheme() {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-tangle-rescue:game-core.js:buyTheme", () => buyTheme(...arguments));
+
     if(!ownedTheme()) {
       if((window.WeightPlayWallet?.read().diamonds||0)<40) { $('themeStatus').textContent=copy('notEnough');sound('feedback.error');return; }
       // Check persistence before charging; failed wallet writes cannot grant the theme.

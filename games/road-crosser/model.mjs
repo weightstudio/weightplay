@@ -23,6 +23,8 @@ export function readBest(storage) {
 // write cannot charge; a rejected debit restores the exact prior owned value.
 // The caller serializes same-game purchases with Web Locks where supported.
 export function buyAurora(storage, wallet) {
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("road-crosser:model.mjs:buyAurora", () => buyAurora(...arguments));
+
   const current = readJourney(storage);
   if (current.aurora) return { ok: true, alreadyOwned: true, journey: current };
   let previous;

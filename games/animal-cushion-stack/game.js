@@ -205,6 +205,7 @@
     if(!state.confirmBuy){state.confirmBuy=true;renderStudio();return;}
     state.buying=true;renderStudio();
     const transact=()=>{
+    const walletAction = () => {
       try {
         const latest=state.core.normalizeSave(read(SAVE));
         if(latest.moonOwned){state.save={...latest,palette:'moon'};persist();return;}
@@ -217,7 +218,10 @@
         catch(e){state.save.moonOwned=false;state.save.palette='garden';persist(true);if(e.message==='balance'){$('studioStatus').textContent=t('insufficient');return;}throw e;}
         $('studioStatus').textContent=t('purchased');sound('shop.purchase');
       } catch {state.storage=false;$('studioStatus').textContent=t('storage');}
+    
     };
+    return window.WeightPlayWallet?.withTransaction ? window.WeightPlayWallet.withTransaction("animal-cushion-stack:game.js:transact", walletAction) : walletAction();
+};
     try{if(navigator.locks)await navigator.locks.request('weightplay-cushion-purchase',transact);else transact();}
     finally{state.buying=false;state.confirmBuy=false;renderStudio();}
   }

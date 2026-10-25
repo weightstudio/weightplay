@@ -11,6 +11,8 @@ export function ownsAurora(storage, wallet) {
   return false;
 }
 export function purchaseAurora(storage, wallet) {
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-orbit-orchard:orchard-economy.mjs:purchaseAurora", () => purchaseAurora(...arguments));
+
   try {
     if (ownsAurora(storage, wallet)) return { owned: true, status: 'owned' };
     const before = wallet.read().diamonds, journal = read(storage);

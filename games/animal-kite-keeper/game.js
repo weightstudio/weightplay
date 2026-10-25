@@ -179,6 +179,7 @@ async function equip(skin) {
   if (skin !== 'aurora' || !writable) return;
   purchasing = true; renderEquipment();
   const purchase = () => {
+    const walletAction = () => {
     const fresh = normalizeSave(readJSON(SAVE_KEY, save), [...save.solved, ...legacyIds()]);
     if (fresh.aurora) { save = { ...fresh, skin }; persist(); return true; }
     if (walletBalance() < 12) { $('shopStatus').textContent = copy('insufficient', { count: walletBalance() }); sound('feedback.error'); return false; }
@@ -193,7 +194,10 @@ async function equip(skin) {
       try { localStorage.setItem(SAVE_KEY, JSON.stringify(fresh)); } catch { /* Preserve the safe no-charge failure. */ }
       writable = false; storageWarning(); $('shopStatus').textContent = copy('storageError'); return false;
     }
-  };
+  
+    };
+    return window.WeightPlayWallet?.withTransaction ? window.WeightPlayWallet.withTransaction("animal-kite-keeper:game.js:purchase", walletAction) : walletAction();
+};
   try { if (navigator.locks) await navigator.locks.request('weightplay-kite-keeper-aurora', purchase); else purchase(); }
   finally { purchasing = false; scene?.skin(save.skin); renderEquipment(); }
 }

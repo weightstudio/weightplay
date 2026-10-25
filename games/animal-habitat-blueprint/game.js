@@ -390,6 +390,8 @@ import { createHabitatRenderer } from './habitat-3d.mjs';
     $('themeCostIcon').hidden=theme.owned;
   }
   function buyTheme(){
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-habitat-blueprint:game.js:buyTheme", () => buyTheme(...arguments));
+
     if(purchaseBusy||theme.owned)return;
     // Another local tab may already have unlocked this permanent item.
     try {const saved=JSON.parse(localStorage.getItem(themeKey)||'null');if(saved?.owned){theme=saved;$('themeConfirmation').hidden=true;renderTheme('themeReady');return;}}catch{}

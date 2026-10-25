@@ -124,7 +124,11 @@ $('#workPanel').addEventListener('click',e=>{
   if(b.dataset.follow){chooseTarget(byId(SPECIES,b.dataset.follow));render()}
   if(b.dataset.buy)handle(buy(state,b.dataset.buy),b);if(b.dataset.unlock)handle(unlockHabitat(state,b.dataset.unlock),b);
   if(b.dataset.target)chooseFromAlbum(byId(SPECIES,b.dataset.target));
-  if(b.id==='diamondBuy'&&!lantern)showDialog(text('confirmPurchase'),paragraph(text('diamondLanternEffect')+' '+text('diamondPurchase')),[button(text('cancel'),closeDialog,'primary'),button(text('confirm'),()=>{closeDialog();const w=window.WeightPlayWallet;if((w?.read()?.diamonds||0)<3){notice('insufficientDiamonds',{},false);return}try{if(!w.spendDiamonds(3)){notice('insufficientDiamonds',{},false);return}lantern=true;if(!save()){lantern=false;w.addDiamonds(3);throw Error('Save unavailable')}render(false);notice('purchased');sound?.play('shop.purchase')}catch{notice('purchaseFailed',{},false)}})],{kind:'purchase'});
+  if(b.id==='diamondBuy'&&!lantern)showDialog(text('confirmPurchase'),paragraph(text('diamondLanternEffect')+' '+text('diamondPurchase')),[button(text('cancel'),closeDialog,'primary'),button(text('confirm'),()=>{
+    const walletAction = () => {closeDialog();const w=window.WeightPlayWallet;if((w?.read()?.diamonds||0)<3){notice('insufficientDiamonds',{},false);return}try{if(!w.spendDiamonds(3)){notice('insufficientDiamonds',{},false);return}lantern=true;if(!save()){lantern=false;w.addDiamonds(3);throw Error('Save unavailable')}render(false);notice('purchased');sound?.play('shop.purchase')}catch{notice('purchaseFailed',{},false)}
+    };
+    return window.WeightPlayWallet?.withTransaction ? window.WeightPlayWallet.withTransaction("kindred-habitats:game.js:anonymous@127", walletAction) : walletAction();
+})],{kind:'purchase'});
 });
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&modal){e.preventDefault();closeDialog()}

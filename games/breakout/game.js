@@ -147,8 +147,8 @@ listen($('resultStagesBtn'),'click',()=>switchScreen('stage'));listen($('retryBt
 listen($('saveRetry'),'click',()=>{if(saveClear()){$('resultGoal').textContent=t.saved;$('nextStageBtn').disabled=run.level.id===30;}});
 listen($('purchaseCancel'),'click',()=>closeDialog('purchaseDialog'));
 listen($('purchaseConfirm'),'click',async()=>{if(busy||practice||practiceRequested)return;busy=true;$('purchaseConfirm').disabled=true;
-  try{const transact=()=>purchaseAurora({read:()=>normalizeSave(read(SAVE_KEY),read(LEGACY_KEY)),write:next=>localStorage.setItem(SAVE_KEY,JSON.stringify(next)),wallet:window.WeightPlayWallet});
-    const result=navigator.locks?await navigator.locks.request('weightplay-breakout-purchase',transact):transact();
+  try{const transact=async ()=>(await purchaseAurora({read:()=>normalizeSave(read(SAVE_KEY),read(LEGACY_KEY)),write:next=>localStorage.setItem(SAVE_KEY,JSON.stringify(next)),wallet:window.WeightPlayWallet}));
+    const result=navigator.locks?await navigator.locks.request('weightplay-breakout-purchase',transact):await transact();
     if(result.ok){save=result.save;closeDialog('purchaseDialog');renderEquipment();}else $('purchaseStatus').textContent=result.reason==='funds'?t.poor:t.saveError;
   }finally{busy=false;$('purchaseConfirm').disabled=false;}});
 listen($('graphicsRetry'),'click',()=>{if(ensureScene()&&run){scene.setLevel(run,save.finish);fitCourt();startLoop();}});

@@ -193,9 +193,9 @@ function renderTheme() {
 }
 async function buyTheme() {
   if (themeBusy || practice || aurora) return; themeBusy = true;
-  const purchase = () => {
+  const purchase = async () => {
     try {
-      const result = purchaseAurora(localStorage, window.WeightPlayWallet); aurora = result.owned;
+      const result = (await purchaseAurora(localStorage, window.WeightPlayWallet)); aurora = result.owned;
       if (result.status === 'purchased') playSound('shop.purchase');
       else if (!result.owned) { $('themeNotice').textContent = t(result.status); playSound('feedback.error'); }
     } catch { $('themeNotice').textContent = t('saveError'); }

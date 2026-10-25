@@ -233,8 +233,8 @@ $('amberBtn').addEventListener('click',()=>{if(ownsAmber(localStorage))equip('am
 $('purchaseCancelBtn').addEventListener('click',()=>{$('purchaseConfirm').hidden=true;$('amberBtn').focus();});
 $('purchaseBtn').addEventListener('click',async()=>{
   if(purchaseBusy)return;purchaseBusy=true;updateGarden();
-  const operation=()=>unlockAmber(localStorage,window.WeightPlayWallet);
-  let outcome;try{outcome=navigator.locks?await navigator.locks.request('weightplay-magnet-meadow-amber',operation):operation();}catch{outcome={ok:false,reason:'storageError'};}
+  const operation=async ()=>(await unlockAmber(localStorage,window.WeightPlayWallet));
+  let outcome;try{outcome=navigator.locks?await navigator.locks.request('weightplay-magnet-meadow-amber',operation):await operation();}catch{outcome={ok:false,reason:'storageError'};}
   purchaseBusy=false;$('purchaseConfirm').hidden=true;
   if(outcome.ok){equip('amber');$('gardenStatus').textContent=copy('purchased');if(!outcome.alreadyOwned)sound('shop.purchase');}
   else{$('gardenStatus').textContent=copy(outcome.reason);sound('feedback.error');}

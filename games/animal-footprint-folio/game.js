@@ -113,8 +113,8 @@ function renderShop(){
 async function buyMoon(){
   if(shopBusy)return;if(save.moon){save.theme='moon';saveNow();renderShop();return;}
   shopBusy=true;renderShop();
-  const purchase=()=>{
-    const result=purchaseInk({current:save,read:()=>JSON.parse(localStorage.getItem(KEY)||'null'),write:value=>localStorage.setItem(KEY,JSON.stringify(value)),wallet:window.WeightPlayWallet});
+  const purchase=async ()=>{
+    const result=(await purchaseInk({current:save,read:()=>JSON.parse(localStorage.getItem(KEY)||'null'),write:value=>localStorage.setItem(KEY,JSON.stringify(value)),wallet:window.WeightPlayWallet}));
     save=result.save;$('shopFeedback').textContent=t(result.status==='owned'||result.status==='purchased'?'owned':result.status==='insufficient'?'insufficient':'purchaseError');
     if(result.status==='storage-error')storageOK=false;
     updateStorage();sound(result.status==='purchased'?'reward.unlock':'feedback.error');

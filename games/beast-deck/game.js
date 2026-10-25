@@ -1999,6 +1999,8 @@
   }
 
   function drawDiamondPack(event) {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("beast-deck:game.js:drawDiamondPack", () => drawDiamondPack(...arguments));
+
     if (event?.detail > 1 || performance.now() - lastDiamondPackAt < 450) return;
     const wallet = window.WeightPlayWallet;
     const balance = wallet?.read().diamonds || 0;
@@ -2994,6 +2996,8 @@
   }
 
   function buyMistAmulet() {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("beast-deck:game.js:buyMistAmulet", () => buyMistAmulet(...arguments));
+
     const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };
     if (profile.amuletUnlocked || wallet.diamonds < amuletCost) return updateDiamondShopUI();
     if (!amuletConfirmPending) {

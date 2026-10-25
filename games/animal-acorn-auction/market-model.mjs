@@ -88,6 +88,8 @@ export function settle(save,stage,bid,mistakes) {
     best:{...save.best,[stage.id]:Math.min(save.best[stage.id]??Infinity,bid.cost)}};
 }
 export function purchaseMoon(save,storage,wallet) {
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-acorn-auction:market-model.mjs:purchaseMoon", () => purchaseMoon(...arguments));
+
   if(save.skins.includes('moon'))return {save,reason:'owned',purchased:false};
   if(!wallet||wallet.read().diamonds<8)return {save,reason:'insufficient',purchased:false};
   const next={...save,theme:'moon',skins:[...save.skins,'moon']};

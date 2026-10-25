@@ -215,9 +215,9 @@ function studio(){
       if(collection.owned){try{equipAurora(localStorage,true);refresh();message.textContent=t('saved');ease(preview);}catch{message.textContent=t('saveError');}return;}
       if(action.dataset.confirm!=='true'){action.dataset.confirm='true';action.textContent=t('confirm');message.textContent=t('cosmetic');return;}
       purchasing=true;action.disabled=true;
-      const purchase=()=>buyAurora(localStorage,window.WeightPlayWallet);
+      const purchase=async ()=>(await buyAurora(localStorage,window.WeightPlayWallet));
       try{
-        const result=navigator.locks?await navigator.locks.request('firefly-aurora-purchase',purchase):purchase();
+        const result=navigator.locks?await navigator.locks.request('firefly-aurora-purchase',purchase):await purchase();
         message.textContent=result.ok?t('saved'):result.reason==='balance'?t('balance')+' < 12':t('saveError');
         if(result.ok){sound('shop.purchase');ease(preview);}else sound('feedback.error');
       }catch{message.textContent=t('saveError');}

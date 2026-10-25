@@ -183,7 +183,7 @@ async function paint(){
   try{
     if(save.liveries.includes(previewPaint)){if(!saveProgress({...save,livery:previewPaint}))throw Error('save');}
     else if(previewPaint==='midnight'){
-      const purchased=buyLivery(localStorage,window.WeightPlayWallet);
+      const purchased=(await buyLivery(localStorage,window.WeightPlayWallet));
       if(!purchased.ok){$('garageStatus').textContent=t('funds');play('feedback.error');return;}
       save=purchased.save;play('reward.collect');
     }

@@ -2468,6 +2468,8 @@
   }
 
   function activateTraining() {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-rune-tactics:game.js:activateTraining", () => activateTraining(...arguments));
+
     if (profile.training) return;
     const before = Number(wallet().diamonds) || 0;
     if (before < trainingCost) {
@@ -4241,6 +4243,8 @@
   }
 
   function renderRewards(isReroll) {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-rune-tactics:game.js:renderRewards", () => renderRewards(...arguments));
+
     if (isReroll && !spendDiamonds(rerollCost)) {
       log("rerollNeed");
       return;

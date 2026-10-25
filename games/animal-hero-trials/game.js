@@ -1721,6 +1721,8 @@
   }
 
   function rerollBlessings() {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-hero-trials:game.js:rerollBlessings", () => rerollBlessings(...arguments));
+
     if(practiceIsolation || practiceRequested)return;
     if (run.rerollUsed) return updateRerollUi(t("rerollUsed"));
     const balance = window.WeightPlayWallet?.read?.().diamonds || 0;

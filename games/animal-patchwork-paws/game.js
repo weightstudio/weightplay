@@ -133,8 +133,8 @@ function renderCollection(){
    if(owned){progress.fabric=name;if(safeSave()){play('ui.tick');renderer?.setFabric(name);$('boardSquare').dataset.fabric=name;}renderCollection();return;}
    buying=true;renderCollection();
    try{
-    const operation=()=>purchaseMoon(storage,window.WeightPlayWallet);
-    const purchase=navigator.locks?await navigator.locks.request('weightplay-patchwork-fabric-purchase',operation):operation();
+    const operation=async ()=>(await purchaseMoon(storage,window.WeightPlayWallet));
+    const purchase=navigator.locks?await navigator.locks.request('weightplay-patchwork-fabric-purchase',operation):await operation();
     progress=purchase.data;$('collectionStatus').textContent=t({funds:'funds',storage:'saveError',bought:'bought',owned:'bought'}[purchase.status]);
     if(purchase.status==='bought'){play('shop.purchase');renderer?.setFabric(fabric());$('boardSquare').dataset.fabric=fabric();}
    }finally{buying=false;renderCollection();}

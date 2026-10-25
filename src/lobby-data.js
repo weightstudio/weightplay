@@ -74,7 +74,7 @@ window.WONDER_LOBBY = {
     ],
     // Third General hall: short, timely, original games. These IDs also stay in
     // generalGameIds so the Kids catalog's non-General rule excludes them.
-    topicGameIds: ["traffic-jam-diner", "robot-dog-showtime"],
+    topicGameIds: ["traffic-jam-diner", "robot-dog-showtime", "flying-tram"],
     // General games here do not award unrelated Block World materials.
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
@@ -7669,7 +7669,7 @@ const grovePublicCampaignCopy20261024 = {"en":{"description":"30 route puzzles �
 window.WONDER_LOBBY.games.push({
   id: "blade-orbit", audience: "general", status: "planned", internalOnly: true,
   internalTrial: "index.html?preview=1", href: "games/blade-orbit/",
-  title: { en: "Blade Orbit", "zh-Hant": "劍陣無雙", "zh-Hans": "剑阵无双" },
+  title: { __localizedExact: true, en: "Blade Orbit", "zh-Hant": "劍陣無雙", "zh-Hans": "剑阵无双", ja: "ブレードオービット", ko: "블레이드 오비트", es: "Órbita de espadas", "pt-BR": "Órbita de lâminas", fr: "Orbite des lames", de: "Klingenorbit", it: "Orbita di lame", ru: "Орбита клинков", hi: "तलवारों की कक्षा", ar: "مدار السيوف" },
   type: { en: "Sword Survivor", "zh-Hant": "飛劍割草", "zh-Hans": "飞剑割草" },
   description: { en: "Gather blades, accelerate your orbit and forge elemental swords through 30 wild encounters.", "zh-Hant": "撿起飛劍、加速劍陣、進化元素神劍，挑戰 30 個戰區與六大守關首領。", "zh-Hans": "捡起飞剑、加速剑阵、进化元素神剑，挑战 30 个战区与六大守关首领。" },
   categories: ["Action", "Survival", "Animal Games"], skills: ["Reaction", "Focus", "Hand-eye Coordination"], ages: ["9", "family"],
@@ -7677,9 +7677,151 @@ window.WONDER_LOBBY.games.push({
   art: { kind: "image", background: "games/blade-orbit/assets/poster.webp", hideHero: true }
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("blade-orbit");
+window.WONDER_LOBBY.officialTitleOverrides["blade-orbit"] = window.WONDER_LOBBY.games.find(game => game.id === "blade-orbit").title;
+
+// Fia's Hightrail: scoped new-game intake; Coming Soon preview only.
+window.WONDER_LOBBY.games.push({
+  "id": "fia-hightrail",
+  "audience": "general",
+  "status": "planned",
+  "internalOnly": true,
+  "internalTrial": "index.html?preview=1",
+  "href": "games/fia-hightrail/",
+  "title": {
+    "en": "Fia’s Hightrail",
+    "zh-Hant": "菲亞攀峰記",
+    "zh-Hans": "菲亚攀峰记",
+    "ja": "フィアの山登り",
+    "ko": "피아의 산길",
+    "es": "Fia: Rumbo a la cima",
+    "pt-BR": "A Trilha de Fia",
+    "fr": "Fia vers les cimes",
+    "de": "Fias Gipfelpfad",
+    "it": "Fia verso la vetta",
+    "ru": "Фия: путь к вершине",
+    "hi": "फ़िया की शिखर यात्रा",
+    "ar": "فيا ودرب القمة"
+  },
+  "type": {
+    "en": "Climbing Adventure",
+    "zh-Hant": "攀登冒險",
+    "zh-Hans": "攀登冒险",
+    "ja": "クライミングアドベンチャー",
+    "ko": "등반 모험",
+    "es": "Aventura de escalada",
+    "pt-BR": "Aventura de escalada",
+    "fr": "Aventure d’escalade",
+    "de": "Kletterabenteuer",
+    "it": "Avventura di arrampicata",
+    "ru": "Приключение на скалах",
+    "hi": "चढ़ाई का रोमांच",
+    "ar": "مغامرة تسلق"
+  },
+  "description": {
+    "en": "Choose your next handhold, rest on safe ledges and guide Fia through 30 mountain rescue routes.",
+    "zh-Hant": "點選抓點、安排休息，帶菲亞穿越 30 條山間救援路線。",
+    "zh-Hans": "点选抓点、安排休息，带菲亚穿越 30 条山间救援路线。",
+    "ja": "手がかりを選び、安全な足場で休みながら、フィアと30の山岳救助ルートを登ろう。",
+    "es": "Elige agarres, descansa en repisas seguras y acompaña a Fia por 30 rutas de rescate en la montaña.",
+    "fr": "Choisis tes prises, repose-toi sur des replats sûrs et guide Fia sur 30 itinéraires de secours en montagne.",
+    "ko": "손잡이를 고르고 안전한 발판에서 쉬며 피아와 30개의 산악 구조 경로를 오르세요.",
+    "pt-BR": "Escolha apoios, descanse em patamares seguros e guie Fia por 30 rotas de resgate nas montanhas.",
+    "de": "Wähle Griffe, raste auf sicheren Vorsprüngen und begleite Fia auf 30 Bergrettungsrouten.",
+    "it": "Scegli gli appigli, riposa sulle cenge sicure e accompagna Fia in 30 percorsi di soccorso in montagna.",
+    "ru": "Выбирайте зацепы, отдыхайте на безопасных уступах и проведите Фию по 30 горным спасательным маршрутам.",
+    "hi": "पकड़ चुनें, सुरक्षित चट्टानों पर आराम करें और फ़िया के साथ पहाड़ के 30 बचाव रास्ते पूरे करें।",
+    "ar": "اختر مواضع الإمساك واسترح على الحواف الآمنة وقد فيا عبر 30 مسار إنقاذ جبليًا."
+  },
+  "categories": [
+    "Adventure",
+    "Strategy",
+    "Animal Games"
+  ],
+  "skills": [
+    "Planning",
+    "Spatial Reasoning",
+    "Timing"
+  ],
+  "ages": [
+    "general"
+  ],
+  "meta": {
+    "en": [
+      "30 Routes",
+      "Camp",
+      "Equipment"
+    ],
+    "zh-Hant": [
+      "30 路線",
+      "營地",
+      "裝備"
+    ],
+    "zh-Hans": [
+      "30 路线",
+      "营地",
+      "装备"
+    ],
+    "ja": [
+      "30 ルート",
+      "キャンプ",
+      "装備"
+    ],
+    "es": [
+      "30 Rutas",
+      "Campamento",
+      "Equipo"
+    ],
+    "fr": [
+      "30 Itinéraires",
+      "Camp",
+      "Équipement"
+    ],
+    "ko": [
+      "30 경로",
+      "캠프",
+      "장비"
+    ],
+    "pt-BR": [
+      "30 Rotas",
+      "Acampamento",
+      "Equipamento"
+    ],
+    "de": [
+      "30 Routen",
+      "Lager",
+      "Ausrüstung"
+    ],
+    "it": [
+      "30 Percorsi",
+      "Campo",
+      "Equipaggiamento"
+    ],
+    "ru": [
+      "30 Маршруты",
+      "Лагерь",
+      "Снаряжение"
+    ],
+    "hi": [
+      "30 रास्ते",
+      "शिविर",
+      "उपकरण"
+    ],
+    "ar": [
+      "30 المسارات",
+      "المخيم",
+      "المعدات"
+    ]
+  },
+  "art": {
+    "kind": "image",
+    "background": "games/fia-hightrail/assets/cover.webp",
+    "hideHero": true
+  }
+});
+window.WONDER_LOBBY.audiences.generalGameIds.push("fia-hightrail");
 
 // Owner-approved Coming Soon batch, task 01a16e15-5b5d-7b63-ac90-1b9541f6ceef.
-const ownerApprovedComingSoonGames = ["wildborn", "kindred-habitats", "animal-postcard-crop", "animal-hollow-fit", "animal-cozy-camp", "animal-orbit-orchard", "animal-habitat-counts", "animal-tideglass", "animal-burrow-builder", "animal-tangle-rescue", "animal-meadow-difference", "animal-footprint-folio", "animal-magnet-meadow", "animal-glyph-garden", "animal-ring-garden", "animal-cloudhook-courier", "animal-twin-switchyard", "animal-moon-market", "animal-kite-keeper", "animal-habitat-blueprint", "animal-river-gates", "animal-acorn-auction", "animal-patchwork-paws", "animal-firefly-folio", "animal-silhouette-scout", "animal-orchard-steward", "animal-grove-dominoes", "animal-canopy-compass", "animal-cushion-stack", "signal-snap", "railguard-express"];
+const ownerApprovedComingSoonGames = ["wildborn", "kindred-habitats", "animal-postcard-crop", "animal-hollow-fit", "animal-cozy-camp", "animal-orbit-orchard", "animal-habitat-counts", "animal-tideglass", "animal-burrow-builder", "animal-tangle-rescue", "animal-meadow-difference", "animal-footprint-folio", "animal-magnet-meadow", "animal-glyph-garden", "animal-ring-garden", "animal-cloudhook-courier", "animal-twin-switchyard", "animal-moon-market", "animal-kite-keeper", "animal-habitat-blueprint", "animal-river-gates", "animal-acorn-auction", "animal-patchwork-paws", "animal-firefly-folio", "animal-silhouette-scout", "animal-orchard-steward", "animal-grove-dominoes", "animal-canopy-compass", "animal-cushion-stack", "signal-snap", "railguard-express", "animal-tide-tally", "animal-cairn-courier", "animal-deep-sea-salvage", "animal-pattern-patch", "robot-dog-showtime", "traffic-jam-diner"];
 for (const id of ownerApprovedComingSoonGames) {
   const game = window.WONDER_LOBBY.games.find((entry) => entry.id === id);
   if (!game) throw new Error(`Missing approved game: ${id}`);

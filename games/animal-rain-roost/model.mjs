@@ -66,6 +66,8 @@ export function commitResult(storage,save,run) {
 // The caller holds a Web Lock and disables confirmation until this transaction ends.
 // Debit only the shared wallet; rollback the actual debit if game persistence fails.
 export function buyLantern(storage,wallet) {
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-rain-roost:model.mjs:buyLantern", () => buyLantern(...arguments));
+
   const current=readSave(storage);if(current.lantern)return {status:'owned',save:current};
   if(!wallet||wallet.read().diamonds<LANTERN_PRICE)return {status:'funds',save:current};
   let debited=false;

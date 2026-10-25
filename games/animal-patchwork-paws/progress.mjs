@@ -21,6 +21,8 @@ export function mergeProgress(saved,current){
 // entitlement first, then debit; failure restores the previous entitlement.
 // A crash between these operations favors the player and never loses diamonds.
 export function purchaseMoon(storage,wallet) {
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-patchwork-paws:progress.mjs:purchaseMoon", () => purchaseMoon(...arguments));
+
   const data=readProgress(storage);
   if(data.moon)return {status:'owned',data};
   if(!wallet||wallet.read().diamonds<8)return {status:'funds',data};

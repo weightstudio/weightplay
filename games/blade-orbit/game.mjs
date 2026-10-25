@@ -12,7 +12,8 @@ const copy={
  vitality:['堅韌修練','Vitality training'],edge:['劍鋒鍛造','Edge forging'],magnet:['靈晶共鳴','Crystal attunement'],vitalityDesc:['每級永久增加 12 點起始生命','Permanently start with 12 more health per rank.'],edgeDesc:['每級永久增加 2 點基礎劍傷','Permanently gain 2 base sword damage per rank.'],magnetDesc:['每級永久增加 12% 拾取範圍','Permanently gain 12% pickup range per rank.'],buy:['強化','Upgrade'],max:['已達上限','Max rank'],needCoins:['金幣不足，完成戰鬥即可累積','Earn more gold by completing encounters.'],trained:['強化完成，下場戰鬥生效','Upgraded. Applies to your next encounter.'],
  graphics:['3D 暫時無法顯示，請重試或回到關卡。','The 3D scene is unavailable. Retry or return safely.'],saveError:['目前無法保存進度；請確認瀏覽器儲存空間。','Progress could not be saved. Check browser storage.'],coming:['敬請期待','Coming soon'],
 };
-let locale=new URLSearchParams(location.search).get('lang')||read('weightPlayLocale')||'zh-Hant';let zh=locale.startsWith('zh');const t=k=>copy[k]?.[zh?0:1]||k;const label=o=>o[zh?'zh':'en'];
+const routeLocale={en:'en','zh-tw':'zh-Hant','zh-cn':'zh-Hans',ja:'ja',ko:'ko',es:'es','pt-br':'pt-BR',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'}[location.pathname.split('/')[1]];
+let locale=new URLSearchParams(location.search).get('lang')||routeLocale||read('weightPlayLocale')||'zh-Hant';let zh=locale.startsWith('zh');const t=k=>copy[k]?.[zh?0:1]||k;const label=o=>o[zh?'zh':'en'];
 const abort=new AbortController(),listen=(node,event,fn)=>node.addEventListener(event,fn,{signal:abort.signal});
 let frame,selector,world=null,joystick=null,arenaObserver=null,run=null,screen='main',tab='stages',panel='',result=null,last=0,raf=0,uiClock=0,cueUntil=0,selected=save.unlocked-1,practiceMode=false,lostGraphics=false;
 const keys=new Set(),icons={},animations=new Set();const audio=window.WeightPlayAudio?.createScope();const sound=id=>audio?.play(id);
@@ -127,6 +128,6 @@ async function boot(){
  const isPreview=new URLSearchParams(location.search).get('preview')==='1';$('startBtn').disabled=!isPreview;$('startBtn').textContent=t(isPreview?'start':'coming');
  window.WeightPlayGameEntryLoader?.ready();
  LocalPractice.register({gameId:'blade-orbit',stageIds:STAGES.map(s=>s.id),enable:enabled=>{if(enabled){practiceMode=true;$('startBtn').disabled=false;$('startBtn').textContent=t('start');}selector.refresh(selected);},startStage:id=>start(Number(id))});
- window.BladeOrbit=Object.freeze({identity:()=>({game:'blade-orbit',version:'v1',interface:'pending',target:9}),renderStats:()=>world?.stats()||null});
+ window.BladeOrbit=Object.freeze({identity:()=>({game:'blade-orbit',version:'v2',interface:'pending',target:9}),renderStats:()=>world?.stats()||null});
 }
 boot();

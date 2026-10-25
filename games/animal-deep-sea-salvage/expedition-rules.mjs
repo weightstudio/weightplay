@@ -18,6 +18,8 @@ export function missingRequirements(contract, state, depth, robots) {
   return missing;
 }
 export function buyLivery({ state, wallet, persist, cost = 8 }) {
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-deep-sea-salvage:expedition-rules.mjs:buyLivery", () => buyLivery(...arguments));
+
   if (state.auroraOwned) return 'owned';
   if (!wallet || wallet.read().diamonds < cost) return 'insufficient';
   const previous = state.livery;

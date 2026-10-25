@@ -520,8 +520,8 @@ function purchaseDialog() {
       button.disabled = true;
       $("dialogCancel").disabled = true;
       try {
-        const result = await lock(() =>
-          buyMoon(localStorage, window.WeightPlayWallet),
+        const result = await lock(async () =>
+          (await buyMoon(localStorage, window.WeightPlayWallet)),
         );
         save = result.save;
         closeDialog();

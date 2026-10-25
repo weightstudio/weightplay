@@ -1851,6 +1851,16 @@
     dictionaries[locale] = { ...(dictionaries[locale] || {}), "category.Pet Care": label };
   });
 
+  const vehicleGameLabels = {
+    en: "Vehicle Games", "zh-Hant": "載具遊戲", "zh-Hans": "载具游戏",
+    ja: "乗り物ゲーム", ko: "탈것 게임", es: "Juegos de vehículos",
+    "pt-BR": "Jogos de veículos", fr: "Jeux de véhicules", de: "Fahrzeugspiele",
+    it: "Giochi di veicoli", ru: "Игры с транспортом", hi: "वाहन गेम", ar: "ألعاب المركبات",
+  };
+  Object.entries(vehicleGameLabels).forEach(([locale, label]) => {
+    dictionaries[locale] = { ...(dictionaries[locale] || {}), "category.Vehicle Games": label };
+  });
+
 const essentialLobbyCopy = {
     ja: ["すべてのゲーム", "最近プレイ", "お気に入り", "すべてのテーマ", "注目", "どうぶつゲーム", "パズル", "ストラテジー", "アーケードゲーム", "学び"],
     ko: ["모든 게임", "최근 플레이", "즐겨찾기", "모든 주제", "추천", "동물 게임", "퍼즐", "전략", "아케이드 게임", "교육"],

@@ -935,8 +935,8 @@ import { depthFraction, sonarStrength, sonarOutcome, missingRequirements, buyLiv
     $('liveryButton').onclick = () => {
       if (state.auroraOwned) { state.livery = state.livery === 'aurora' ? 'default' : 'aurora'; markSaving(); render(); return; }
       if (!wallet || wallet.read().diamonds < 8) { sound('feedback.error'); showToast(t('insufficientDiamonds')); return; }
-      confirmAction(t('liveryTitle'), `${t('liveryCopy')} ${t('liveryBuy')}`, () => {
-        const result = buyLivery({ state, wallet, persist: () => { state.lastSavedAt = Date.now(); state.pendingOffline = pendingOffline; localStorage.setItem(STORE_KEY, JSON.stringify(state)); } });
+      confirmAction(t('liveryTitle'), `${t('liveryCopy')} ${t('liveryBuy')}`, async () => {
+        const result = (await buyLivery({ state, wallet, persist: () => { state.lastSavedAt = Date.now(); state.pendingOffline = pendingOffline; localStorage.setItem(STORE_KEY, JSON.stringify(state)); } }));
         sound(result === 'purchased' ? 'shop.purchase' : 'feedback.error');
         showToast(t(result === 'purchased' ? 'liveryOwned' : result === 'insufficient' ? 'insufficientDiamonds' : 'purchaseFailed'));
         panelsDirty = true; render();

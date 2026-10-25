@@ -16,7 +16,7 @@ ar:{label:"العربية",shortTitle:"تانغرام",language:"اللغة",ret
 
 // Page-level facts are authored beside the runtime dictionaries so every
 // generated locale route can present the same five verified game facts.
-Object.assign(window.TANGRAM_LOCALES, {
+const tangramGeoCopyByLocale = {
   en: {
     geoFacts: [["Gameplay", "Seven-Piece Spatial Puzzle"], ["Genre", "Puzzle · Spatial · Animal"], ["Difficulty", "Easy to Challenging"], ["Estimated Play Time", "2-6 minutes per shape"], ["Skills Trained", "Spatial Reasoning · Visual Planning · Problem Solving"]],
     geoAccess: "Play for free in your browser; no download is required. WeightPlay is the game platform by WeightStudio."
@@ -69,4 +69,15 @@ Object.assign(window.TANGRAM_LOCALES, {
     geoFacts: [["طريقة اللعب", "لغز مكاني من سبع قطع"], ["النوع", "ألغاز · مكاني · حيوانات"], ["الصعوبة", "من سهل إلى متدرّج التحدي"], ["الوقت التقديري", "٢–٦ دقائق لكل شكل"], ["المهارات التي تتم ممارستها", "التفكير المكاني · التخطيط البصري · حل المشكلات"]],
     geoAccess: "العب مجانًا في المتصفح، دون الحاجة إلى تنزيل. WeightPlay هي منصة الألعاب التابعة لـ WeightStudio."
   }
-});
+};
+for (const [language, copy] of Object.entries(tangramGeoCopyByLocale)) {
+  Object.assign(window.TANGRAM_LOCALES[language] || (window.TANGRAM_LOCALES[language] = {}), copy);
+}
+const tangramProgressLabelByLocale = {
+  en: "Done", "zh-Hant": "已完成", "zh-Hans": "已完成", ja: "クリア", ko: "완료",
+  es: "Completadas", "pt-BR": "Concluídas", fr: "Terminées", de: "Geschafft", it: "Completate",
+  ru: "Пройдено", hi: "पूरे", ar: "المكتمل",
+};
+for (const [language, label] of Object.entries(tangramProgressLabelByLocale)) {
+  Object.assign(window.TANGRAM_LOCALES[language] || (window.TANGRAM_LOCALES[language] = {}), { doneLabel: label });
+}

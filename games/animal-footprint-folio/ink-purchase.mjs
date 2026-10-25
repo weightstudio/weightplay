@@ -4,6 +4,8 @@ import {normalizeSave} from './puzzles.mjs';
 // An unavailable rollback can grant the cosmetic for free, never lose currency.
 // The caller serializes purchases using the same-origin Web Locks API.
 export function purchaseInk({current, read, write, wallet}) {
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-footprint-folio:ink-purchase.mjs:purchaseInk", () => purchaseInk(...arguments));
+
   let saved;
   try {
     const latest = normalizeSave(read());

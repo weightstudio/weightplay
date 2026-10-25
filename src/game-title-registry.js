@@ -1,10 +1,4 @@
 window.WEIGHTPLAY_GAME_TITLES = {
-  "blade-orbit": {
-    "en": "Blade Orbit", "zh-Hant": "劍陣無雙", "zh-Hans": "剑阵无双",
-    "ja": "ブレードオービット", "ko": "블레이드 오비트", "es": "Órbita de espadas",
-    "pt-BR": "Órbita de lâminas", "fr": "Orbite des lames", "de": "Klingenorbit",
-    "it": "Orbita di lame", "ru": "Орбита клинков", "hi": "तलवारों की कक्षा", "ar": "مدار السيوف"
-  },
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",
@@ -3028,5 +3022,37 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Экспресс стражей",
     "hi": "रेलरक्षक एक्सप्रेस",
     "ar": "قطار الحراس"
+  },
+  "blade-orbit": {
+    "__localizedExact": true,
+    "en": "Blade Orbit",
+    "zh-Hant": "劍陣無雙",
+    "zh-Hans": "剑阵无双",
+    "ja": "ブレードオービット",
+    "ko": "블레이드 오비트",
+    "es": "Órbita de espadas",
+    "pt-BR": "Órbita de lâminas",
+    "fr": "Orbite des lames",
+    "de": "Klingenorbit",
+    "it": "Orbita di lame",
+    "ru": "Орбита клинков",
+    "hi": "तलवारों की कक्षा",
+    "ar": "مدار السيوف"
+  },
+  "fia-hightrail": {
+    "__localizedExact": true,
+    "en": "Fia’s Hightrail",
+    "zh-Hant": "菲亞攀峰記",
+    "zh-Hans": "菲亚攀峰记",
+    "ja": "フィアの山登り",
+    "ko": "피아의 산길",
+    "es": "Fia: Rumbo a la cima",
+    "pt-BR": "A Trilha de Fia",
+    "fr": "Fia vers les cimes",
+    "de": "Fias Gipfelpfad",
+    "it": "Fia verso la vetta",
+    "ru": "Фия: путь к вершине",
+    "hi": "फ़िया की शिखर यात्रा",
+    "ar": "فيا ودرب القمة"
   }
 };

@@ -1779,7 +1779,9 @@ function loseLevel() {
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "lose"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
 
-function winLevel() {
+async function winLevel() {
+  if (!state.running) return;
+  state.running = false;
   clearFloatingMessage();
   pauseReturnIntent = false;
   window.WonderCrashFrame?.moveOverlay("battle");
@@ -1789,7 +1791,7 @@ function winLevel() {
   bankRunCoins();
   const wasChallenge = state.level.id === highestUnlocked;
   const drops = rollLevelDrops();
-  const diamondReward = awardBossFirstClearDiamonds(wasChallenge);
+  const diamondReward = await awardBossFirstClearDiamonds(wasChallenge);
   awardTalentPoints(wasChallenge);
   state.running = false;
   state.won = true;
@@ -1820,16 +1822,17 @@ function winLevel() {
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "win"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
 
-function awardBossFirstClearDiamonds(wasChallenge) {
+async function awardBossFirstClearDiamonds(wasChallenge) {
   if (!wasChallenge || !levelHasBoss(state.level)) return 0;
-  if (!window.WeightPlayWallet?.addDiamonds) return 0;
+  if (!window.WeightPlayWallet?.awardOnce) return 0;
   const levelId = Number(state.level.id);
   if (profile.bossDiamondRewards.includes(levelId)) return 0;
+  const credit = await window.WeightPlayWallet.awardOnce("wonder-crash:boss:" + levelId, BOSS_FIRST_CLEAR_DIAMONDS);
+  if (!credit.ok) return 0;
   profile.bossDiamondRewards.push(levelId);
   profile.bossDiamondRewards.sort((a, b) => a - b);
-  window.WeightPlayWallet?.addDiamonds?.(BOSS_FIRST_CLEAR_DIAMONDS);
   saveProfile();
-  return BOSS_FIRST_CLEAR_DIAMONDS;
+  return credit.alreadyClaimed ? 0 : BOSS_FIRST_CLEAR_DIAMONDS;
 }
 
 function awardTalentPoints(wasChallenge) {
@@ -3343,6 +3346,7 @@ function closeWeaponModal() {
 }
 
 function buyProfileUpgrade(type) {
+  if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("wonder-crash:profile-upgrade", () => buyProfileUpgrade(type));
   const cost = getProfileUpgradeCost(type);
   const isDiamondUpgrade = type === "diamondPower";
   const wallet = readWallet();

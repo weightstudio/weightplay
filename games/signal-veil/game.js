@@ -582,6 +582,8 @@
     showToast(t(state.equipped[slot]?"equipmentEquipped":"equipmentRemoved",{item:t(`${slot}Name`)}),1800);
   }
   function buySignalAnchor(){
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("signal-veil:game.js:buySignalAnchor", () => buySignalAnchor(...arguments));
+
     if(state.signalAnchor)return;
     const wallet=window.WeightPlayWallet;
     if(!wallet?.spendDiamonds?.(5)){nodes.anchorStatus.textContent=t("anchorNeed",{n:wallet?.read?.().diamonds || 0});return}

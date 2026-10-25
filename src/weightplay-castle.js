@@ -179,8 +179,17 @@ function turnBlock(id){const b=readBuild();if(b.available===false)return{rotated
 function initializeWorld(){try{const builder=JSON.parse(localStorage.getItem(BUILD)||"null"),store=JSON.parse(localStorage.getItem(STORE)||"null");if(store&&![1,2,3].includes(store.version))return false;if(builder?.version===2&&builder.worldLevel&&builder.presetRevision===2&&store?.worldSchema===1)return true;const b=readBuild(),s=read();if(b.available===false)return false;normalizeStarter(b,s);return commitConstruction(b,s)}catch{return false}}
 function dailyDiamonds(s=read()){return daily[worldLevel(s)-1]}
 function dailyDiamondBonus(s=read()){return dailyDiamonds(s)-daily[0]}
-function dailyRewardState(){const d=new Date(),today=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;try{const old=localStorage.getItem(DAILY),s=JSON.parse(old||"{}")||{};return{today,old,s,claimedToday:s.lastClaimDate===today,available:true,amount:dailyDiamonds()}}catch{return{today,claimedToday:false,available:false,amount:dailyDiamonds()}}}
-function claimNow(){const r=dailyRewardState();if(r.claimedToday)return{claimed:false,reason:"already-claimed"};if(!r.available||!window.WeightPlayWallet?.addDiamonds)return{claimed:false,reason:"storage-unavailable"};try{localStorage.setItem(DAILY,JSON.stringify({...r.s,lastClaimDate:r.today,totalClaims:clean(r.s.totalClaims)+1}));window.WeightPlayWallet.addDiamonds(r.amount)}catch{try{r.old==null?localStorage.removeItem(DAILY):localStorage.setItem(DAILY,r.old)}catch{}return{claimed:false,reason:"storage-unavailable"}}window.WeightPlayAudio?.play?.("feedback.success");render();return{claimed:true,amount:r.amount}}
+function dailyRewardState(){const d=new Date(),today=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;try{const old=localStorage.getItem(DAILY),s=JSON.parse(old||"{}")||{};return{today,old,s,claimedToday:s.lastClaimDate===today||!!window.WeightPlayWallet?.read?.().rewards?.["lobby-daily:"+today],available:true,amount:dailyDiamonds()}}catch{return{today,claimedToday:false,available:false,amount:dailyDiamonds()}}}
+function claimNow(){
+ const wallet=window.WeightPlayWallet;
+ if(wallet?.withTransaction&&!wallet.inTransaction())return wallet.withTransaction("lobby-daily",claimNow);
+ const r=dailyRewardState();if(r.claimedToday)return{claimed:false,reason:"already-claimed"};
+ if(!r.available||!wallet?.creditOnce)return{claimed:false,reason:"storage-unavailable"};
+ let result;try{result=wallet.creditOnce("lobby-daily:"+r.today,r.amount)}catch{return{claimed:false,reason:"storage-unavailable"}}
+ // The wallet receipt is authoritative if this legacy display cache cannot save.
+ try{localStorage.setItem(DAILY,JSON.stringify({...r.s,lastClaimDate:r.today,totalClaims:clean(r.s.totalClaims)+1}))}catch{}
+ window.WeightPlayAudio?.play?.("feedback.success");render();return{claimed:!result.alreadyClaimed,amount:result.receipt.amount}
+}
 async function claimDailyReward(){try{return navigator.locks?.request?await navigator.locks.request("weightplay-daily-reward",claimNow):claimNow()}catch{return{claimed:false,reason:"storage-unavailable"}}}
 // A game with committed shared Result feedback may dismiss its duplicate notice.
 // Keep ownership of the notice markup here; never dismiss another game's reward.

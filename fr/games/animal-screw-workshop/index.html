@@ -12,7 +12,7 @@
   <meta name="weightplay-audience" content="kids" />
   <meta name="theme-color" content="#173329" />
   <title>Atelier des vis | WeightPlay</title>
-  <meta name="description" content="Atelier des vis is a thirty-puzzle spatial logic game led by Gear Horn Rux. Move each brass screw into an open hole, release every layered wooden..." />
+  <meta name="description" content="Déplacez des vis en laiton pour libérer des plaques superposées dans 30 puzzles fixes à limite de coups." />
   <link rel="canonical" href="https://weightplay.com/fr/games/animal-screw-workshop/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-screw-workshop/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-screw-workshop/" />
@@ -28,16 +28,15 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-screw-workshop/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-screw-workshop/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-screw-workshop/" />
-    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
-  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
-  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-page-info.css" />
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><meta property="og:description" content="Atelier des vis is a thirty-puzzle spatial logic game led by Gear Horn Rux. Move each brass screw into an open hole, release every layered wooden..." />
-    <meta name="twitter:description" content="Atelier des vis is a thirty-puzzle spatial logic game led by Gear Horn Rux. Move each brass screw into an open hole, release every layered wooden..." />
-      <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Atelier des vis","url":"https://weightplay.com/fr/games/animal-screw-workshop/","image":"https://weightplay.com/assets/interface7-redrawn/animal-screw-workshop.webp","description":"Déplacez des vis en laiton pour libérer des plaques superposées dans 30 puzzles fixes à limite de coups.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"fr","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Puzzle","Logic","Animal","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9},"alternateName":"Screw Workshop"}</script>
+    <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="style.css?v=20261025-interface9-1" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" />
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261021-shared-play1" />
+  <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261021-stage-rail-i9" />
+  <link rel="stylesheet" href="../../src/interface9-shared-screens.css?v=20261021-shared-play1" /><meta property="og:description" content="Déplacez des vis en laiton pour libérer des plaques superposées dans 30 puzzles fixes à limite de coups." />
+    <meta name="twitter:description" content="Déplacez des vis en laiton pour libérer des plaques superposées dans 30 puzzles fixes à limite de coups." />
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Atelier des vis","url":"https://weightplay.com/fr/games/animal-screw-workshop/","image":"https://weightplay.com/assets/interface7-redrawn/animal-screw-workshop.webp","description":"Déplacez des vis en laiton pour libérer des plaques superposées dans 30 puzzles fixes à limite de coups.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"fr","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Déplacement de vis","Logique de supports superposés","Puzzles à limite de coups"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9},"alternateName":"Screw Workshop"}</script>
 
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Atelier des vis | WeightPlay" />
@@ -48,53 +47,69 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-screw-workshop.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
+<meta name="weightplay-game-version" content="v5">
+<meta name="weightplay-interface-version" content="9">
 </head>
-<body data-game-id="animal-screw-workshop" data-wp-game-owned-guide data-screen="loading">
-  <section id="loadingPanel" class="loading-panel" aria-live="polite">
-    <div class="loading-card"><strong data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Atelier des vis</strong><span data-i18n="loading">Ouverture de l&#39;atelier forêt...</span><div class="loading-track"><i id="loadingFill"></i></div></div>
-  </section>
-
+<body data-wp-combined-sound="true" data-wp-game-id="animal-screw-workshop" data-wp-game-version="v5" data-wp-interface-version="9" data-wp-play-ui="1" data-wp-game-owned-guide data-screen="loading">
+  <main id="gameFrame" class="game-frame" data-wp-frame-root data-wp-main-validation-root data-runtime-localize="off">
   <div id="mainGroup" class="main-group" hidden>
     <main id="mainScreen" class="main-screen">
-      <header class="main-header">
-        <a class="home-link" data-wp-return="main" href="/kids/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
-        <strong data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Atelier des vis</strong>
+      <header id="mainHeader" class="main-header">
+        <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <h1 data-runtime-localize="off" data-wp-frame-title data-wp-game-title data-runtime-localize="off">Atelier des vis</h1>
         <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
-      <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-screw-workshop-cover.webp" data-i18n-alt="posterAlt" alt="Illustration du jeu Atelier des vis" />
-        <div class="main-copy"><small data-i18n="eyebrow">Le banc de puzzle de Gear Horn Rux</small><h1 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Atelier des vis</h1><p data-i18n="pitch">Déplacez chaque vis en laiton dans un trou ouvert. Libérez chaque plaque d&#39;animal en bois sans manquer de mouvements.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Lancer le jeu</button></div>
+      <section id="mainContent" class="main-hero" data-wp-frame-content="main">
+        <img class="main-poster" data-wp-frame-poster src="../../assets/animal-screw-workshop-cover.webp" data-i18n-alt="posterAlt" alt="Illustration du jeu Atelier des vis" />
+        <div class="main-copy" data-wp-frame-copy>
+          <p data-i18n="pitch" data-wp-frame-summary>Déplacez chaque vis en laiton dans un trou ouvert. Libérez chaque plaque d&#39;animal en bois sans manquer de mouvements.</p>
+          <p id="mainProgress" class="main-progress" data-wp-frame-progress data-wp-main-progress role="status" aria-live="polite"></p>
+          <button id="startBtn" class="primary-action" type="button" data-i18n="start" data-wp-main-start data-wp-frame-action="primary" data-wp-primary-action>Lancer le jeu</button>
+        </div>
       </section>
     </main>
-    <section class="game-guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" lang="fr" dir="ltr" aria-label="Atelier des vis Guide du jeu"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Déplacement de vis</span><span>Logique de supports superposés</span><span>Puzzles à limite de coups</span></div><div class="game-info-section"><h2>Atelier des vis — Guide du jeu</h2><p>Déplacez des vis en laiton dans des trous libres pour libérer toutes les plaques en bois représentant des animaux. Résolvez 30 puzzles fixes dans la limite de coups.</p></div><div class="game-info-section"><h3>Comment jouer</h3><p>Choisissez une vis, puis un trou vide lumineux. Une plaque tombe dès que tous ses trous de support sont libres. Libérez toutes les plaques avant la limite affichée, sinon la tentative échoue.</p><p>Avant de déplacer une vis, vérifiez quelles plaques la partagent. Gardez assez de vrais trous libres pour les vis suivantes, surtout avec des couches superposées ou des vis verrouillées. Les six chapitres abordent les premiers coups, les plaques superposées, les vis partagées, les verrous, les parcours serrés et les plateaux mixtes.</p><p>Annuler restaure le coup complet précédent. Indice signale une vis et un trou sûrs sans les déplacer. Recommencer réinitialise le puzzle. Rejouez les puzzles terminés pour améliorer vos étoiles et votre meilleur nombre de coups.</p></div><div class="game-info-section"><h3>Atelier des vis: Guide du jeu</h3><p>Le jeu accepte le tactile, la souris et le clavier. Si le stockage local est disponible, les puzzles terminés, déblocages et meilleurs coups sont enregistrés dans ce navigateur. Aucun compte ni cloud n’est utilisé ; un plateau inachevé peut disparaître au rechargement.</p><p>Note aux parents : ce puzzle logique n’est pas un outil de diagnostic. Il invite à planifier les coups, observer les supports et revoir sa stratégie. Il n’y a pas de compte à rebours ; chaque puzzle a toutefois une limite de coups affichée.</p></div><div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Quel est l’objectif ?</dt><dd>Déplacez les vis vers des trous libres jusqu’à ce que toutes les plaques aient perdu leurs supports, dans la limite de coups affichée.</dd></div><div><dt>Pourquoi une plaque est-elle tombée ?</dt><dd>Elle tombe dès qu’aucune vis ne reste dans ses trous de support. Plusieurs plaques superposées peuvent partager une vis.</dd></div><div><dt>Indice joue-t-il à ma place ?</dt><dd>Non. Il indique une vis sûre et son trou de destination ; vous choisissez de la déplacer. Annuler revient sur un coup effectué.</dd></div><div><dt>Que se passe-t-il à la limite de coups ?</dt><dd>S’il reste une plaque, la tentative échoue. Recommencez et planifiez l’usage des trous libres.</dd></div><div><dt>Où ma progression est-elle enregistrée ?</dt><dd>Si le stockage du navigateur est disponible, les puzzles terminés, déblocages et meilleurs coups restent dans ce navigateur, sans compte synchronisé.</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>Jeux associés</h3><div class="game-info-related"><a class="game-info-related-card" href="/fr/games/animal-cratebound/"><strong>Cratebound</strong></a><a class="game-info-related-card" href="/fr/games/animal-tangram/"><strong>Panko’s Tangram Trail</strong></a></div></div></section>
+    <section class="game-guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" lang="fr" dir="ltr" aria-label="Atelier des vis Guide du jeu">
+      <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Déplacement de vis</span><span>Logique de supports superposés</span><span>Puzzles à limite de coups</span></div>
+      <div class="game-info-hero"><div class="game-info-kicker">Guide du jeu</div><h2>Atelier des vis</h2><p>Déplacez des vis en laiton dans des trous libres pour libérer toutes les plaques en bois représentant des animaux. Résolvez 30 puzzles fixes dans la limite de coups.</p></div>
+      <div class="game-info-sections">
+        <div class="game-info-section"><h3>Comment jouer</h3><p>Choisissez une vis, puis un trou vide lumineux. Une plaque tombe dès que tous ses trous de support sont libres. Libérez toutes les plaques avant la limite affichée, sinon la tentative échoue.</p><p>Avant de déplacer une vis, vérifiez quelles plaques la partagent. Gardez assez de vrais trous libres pour les vis suivantes, surtout avec des couches superposées ou des vis verrouillées. Les six chapitres abordent les premiers coups, les plaques superposées, les vis partagées, les verrous, les parcours serrés et les plateaux mixtes.</p><p>Annuler restaure le coup complet précédent. Indice signale une vis et un trou sûrs sans les déplacer. Recommencer réinitialise le puzzle. Rejouez les puzzles terminés pour améliorer vos étoiles et votre meilleur nombre de coups.</p></div>
+        <div class="game-info-section"><h3>Atelier des vis: Guide du jeu</h3><p>Le jeu accepte le tactile, la souris et le clavier. Si le stockage local est disponible, les puzzles terminés, déblocages et meilleurs coups sont enregistrés dans ce navigateur. Aucun compte ni cloud n’est utilisé ; un plateau inachevé peut disparaître au rechargement.</p><p>Note aux parents : ce puzzle logique n’est pas un outil de diagnostic. Il invite à planifier les coups, observer les supports et revoir sa stratégie. Il n’y a pas de compte à rebours ; chaque puzzle a toutefois une limite de coups affichée.</p></div>
+        <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Quel est l’objectif ?</dt><dd>Déplacez les vis vers des trous libres jusqu’à ce que toutes les plaques aient perdu leurs supports, dans la limite de coups affichée.</dd></div><div><dt>Pourquoi une plaque est-elle tombée ?</dt><dd>Elle tombe dès qu’aucune vis ne reste dans ses trous de support. Plusieurs plaques superposées peuvent partager une vis.</dd></div><div><dt>Indice joue-t-il à ma place ?</dt><dd>Non. Il indique une vis sûre et son trou de destination ; vous choisissez de la déplacer. Annuler revient sur un coup effectué.</dd></div><div><dt>Que se passe-t-il à la limite de coups ?</dt><dd>S’il reste une plaque, la tentative échoue. Recommencez et planifiez l’usage des trous libres.</dd></div><div><dt>Où ma progression est-elle enregistrée ?</dt><dd>Si le stockage du navigateur est disponible, les puzzles terminés, déblocages et meilleurs coups restent dans ce navigateur, sans compte synchronisé.</dd></div></dl></div>
+        
+      </div>
+    </section>
   </div>
 
-  <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="360" data-wp-stage-art="../../assets/animal-screw-workshop-cover.webp" style="--wp-stage-art:url('../../assets/animal-screw-workshop-cover.webp')">
-      <header class="stage-header"><button id="stageBackBtn" data-wp-return="stage" type="button" data-i18n-aria="backMain">←</button><div><strong data-i18n="chooseStage">Choisissez un puzzle d&#39;atelier</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /></header>
-      <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
-      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="first" data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Workshop puzzle selection"></div>
+  <section id="stageScreen" class="stage-screen" hidden data-wp-standard-stage-screen data-wp-canvas-max-width="920">
+    <header id="stageHeader" class="stage-header">
+      <button id="stageBackBtn" data-wp-return="stage" type="button" data-i18n-aria="backMain" aria-label="Back to Main"><span aria-hidden="true">←</span></button>
+      <h2 data-wp-frame-title data-i18n="chooseStage">Choisissez un puzzle d&#39;atelier</h2>
+    </header>
+    <div id="stageWorkspace" class="stage-workspace" data-wp-frame-content="stage">
+      <div id="stageRail" class="stage-rail" data-i18n-aria="stageRailLabel" aria-label="Workshop puzzle selection"></div>
     </div>
   </section>
 
-  <section id="battleScreen" class="battle-screen" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-      <header class="battle-header"><button id="battleBackBtn" data-wp-return="battle" type="button" data-i18n-aria="backStage">←</button><div class="battle-title"><small id="stageLabel"></small><strong id="stageGoal" data-wp-game-title data-runtime-localize="off">Atelier des vis</strong></div><div class="battle-stat"><small data-i18n="moves">Moves</small><strong id="movesValue">0</strong></div><div class="battle-stat"><small data-i18n="plates">Assiettes</small><strong id="platesValue">0</strong></div></header>
+  <section id="battleScreen" class="battle-screen battle-canvas" hidden data-wp-canvas-max-width="920" data-wp-logical-battle-canvas>
+    <header id="battleHeader" class="battle-header">
+      <button id="battleBackBtn" data-wp-return="battle" type="button" data-i18n-aria="backStage" aria-label="Back to stages"><span aria-hidden="true">←</span></button>
+      <h2 data-wp-frame-title>Battle</h2>
+    </header>
+    <div id="battleWorkspace" class="battle-workspace" data-wp-frame-content="battle">
       <section id="objectiveBar" class="objective-bar" aria-live="polite"></section>
       <section id="puzzleBoard" class="puzzle-board" data-i18n-aria="boardLabel" aria-label="Screw puzzle board"></section>
       <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">Undo</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">Restart</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">Hint</b></button></div>
-
-      <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><small data-i18n="resultKicker">Rapport d&#39;atelier</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next</button><button id="retryBtn" type="button" data-i18n="retry">Try again</button></div></div></section>
-      <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Leave this puzzle?</h2><p data-i18n="leaveText">Continuer conserve le tableau exact. Le retour aux étapes met fin à cette tentative.</p><div class="modal-actions"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to stages</button></div></div></section>
+      <section id="resultPanel" class="modal-layer" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card" data-wp-frame-result-card><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><small data-i18n="resultKicker">Rapport d&#39;atelier</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions"><button id="resultStagesBtn" type="button" data-wp-frame-action="secondary" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-wp-frame-action="primary" data-i18n="next">Next</button><button id="retryBtn" type="button" data-wp-frame-action="secondary" data-i18n="retry">Try again</button></div></div></section>
+      <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Leave this puzzle?</h2><p data-i18n="leaveText">Continuer conserve le tableau exact. Le retour aux étapes met fin à cette tentative.</p><div class="modal-actions"><button id="leaveContinueBtn" class="primary-action" type="button" data-wp-frame-action="primary" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-wp-frame-action="secondary" data-i18n="returnStages">Return to stages</button></div></div></section>
     </div>
   </section>
 
   <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Déplacez une vis, libérez une plaque</h2><ol><li data-i18n="tutorial1">Appuyez sur une vis. Il brillera.</li><li data-i18n="tutorial2">Appuyez sur n&#39;importe quel trou vide et lumineux.</li><li data-i18n="tutorial3">Retirez toutes les vis de support pour faire tomber toutes les plaques.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Commencer l&#39;énigme 1</button></div></section>
+  </main>
   <div id="toast" class="toast" aria-live="polite"></div>
 
-  <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/fr.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+  <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/fr.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="locales.js?v=20260720-release-2"></script><script src="game.js?v=20260729-interface-v4-1&amp;wp-audio=1.0.0"></script><script src="guide-locales.js?v=20261003-text140"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260729-screw-landscape-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
-  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+  <script src="locales.js?v=20261025-i9-1"></script><script src="guide-locales.js?v=20261003-text140"></script><script src="../../src/game-page-info.js?v=20261002-coloring-studio-text140-v1"></script><script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script><script src="../../src/game-play-ui.js?v=20261021-shared-play1"></script><script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script><script src="game.js?v=20261014-guide-i9-v5"></script>
 </body>
 </html>

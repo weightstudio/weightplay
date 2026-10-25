@@ -432,6 +432,8 @@
   }
 
   function chooseStyle(id) {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-sanctuary-loop:game.js:chooseStyle", () => chooseStyle(...arguments));
+
     const styleName = t(styleData[id].name);
     if (save.ownedStyles.includes(id)) {
       if (save.selectedStyle === id) {

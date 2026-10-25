@@ -17,6 +17,8 @@ export function settle(storage,progress,world){if(world.settled)return {ok:false
 // Entitlement is saved BEFORE debiting the shared wallet: storage failure can
 // never take diamonds. A failed debit restores the original local record.
 export function buySkin(storage,progress,wallet,cost=15){
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("alien-defender:progress.js:buySkin", () => buySkin(...arguments));
+
  if(progress.skin)return {ok:false,reason:'owned'};
  if(!wallet||wallet.read().diamonds<cost)return {ok:false,reason:'funds'};
  const next={...progress,skin:true};if(!saveProgress(storage,next))return {ok:false,reason:'save'};

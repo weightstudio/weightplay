@@ -68,6 +68,8 @@ export function recordClear(save,index,result){const next=normalizeSave(save);if
 // Both writes are synchronous. Save delivery first so a failed game-save can never
 // debit the shared wallet; compensate delivery if the wallet refuses or throws.
 export function purchaseViolet({storage,wallet,key}){
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("signal-snap:model.mjs:purchaseViolet", () => purchaseViolet(...arguments));
+
  let previous;
  try{
   previous=storage.getItem(key);const state=normalizeSave(JSON.parse(previous||'null'));

@@ -257,14 +257,14 @@ function renderShop(){
 async function purchase(){
   if(purchasing||practiceRequested)return;
   purchasing=true;renderShop();
-  const run=()=>{
+  const run=async ()=>{
     if(look.owned){
       try{const next={owned:true,selected:true};storage.setItem(LOOK_KEY,JSON.stringify(next));look=next;return {ok:true};}catch{return {ok:false,reason:'saveError'};}
     }
-    const purchased=purchaseLook(storage,window.WeightPlayWallet);look=readLook(storage);return purchased;
+    const purchased=(await purchaseLook(storage,window.WeightPlayWallet));look=readLook(storage);return purchased;
   };
   let purchaseResult;
-  try{purchaseResult=navigator.locks?await navigator.locks.request('weightplay-river-station-purchase',run):run();}
+  try{purchaseResult=navigator.locks?await navigator.locks.request('weightplay-river-station-purchase',run):await run();}
   catch{purchaseResult={ok:false,reason:'saveError'};}
   purchasing=false;renderShop();$('shopStatus').textContent=copy(purchaseResult.ok?'purchaseDone':purchaseResult.reason);
   if(purchaseResult.ok)playSound('shop.purchase');else playSound('feedback.error');

@@ -401,7 +401,22 @@ function createDemonEventPreview() {
     hi: ["अभी खेलें", "रोज़ एक खेल · स्थानीय आधी रात", "इस संस्करण में हीरे नहीं मिलते।"],
     ar: ["العب الآن", "جولة يومياً · منتصف الليل المحلي", "هذا الإصدار لا يمنح الألماس."]
   }[locale] || ["Play now", "One run daily · local midnight", "This version awards no diamonds."];
-  strings.reward = daily[2];
+  const rewardDescriptions={
+    en:"Clear the three stages for 3, 5 and 8 diamonds, up to 16 daily. Rewards go straight to your shared wallet.",
+    "zh-Hant":"擊敗三階段可依序獲得 3、5、8 顆鑽石，每日最多 16 顆。獎勵自動存入共用錢包。",
+    "zh-Hans":"击败三阶段可依次获得 3、5、8 颗钻石，每日最多 16 颗。奖励自动存入共用钱包。",
+    ja:"3段階のクリアで順にダイヤ3・5・8個、1日最大16個。共通ウォレットへ自動で入ります。",
+    ko:"세 단계를 완료하면 다이아 3, 5, 8개를 차례로 얻습니다. 하루 최대 16개가 공용 지갑에 자동 지급됩니다.",
+    es:"Supera las tres fases para ganar 3, 5 y 8 diamantes: hasta 16 al día, abonados automáticamente al monedero común.",
+    "pt-BR":"Vença as três fases para ganhar 3, 5 e 8 diamantes: até 16 por dia, creditados automaticamente na carteira compartilhada.",
+    fr:"Terminez les trois étapes pour recevoir 3, 5 et 8 diamants, soit 16 par jour au maximum, versés au portefeuille commun.",
+    de:"Schließe die drei Phasen für 3, 5 und 8 Diamanten ab: täglich bis zu 16, automatisch im gemeinsamen Guthaben.",
+    it:"Supera le tre fasi per ottenere 3, 5 e 8 diamanti: fino a 16 al giorno, accreditati automaticamente nel portafoglio comune.",
+    ru:"Пройдите три этапа и получите 3, 5 и 8 алмазов: до 16 в день, автоматически в общий кошелёк.",
+    hi:"तीनों चरण पूरे करने पर क्रमशः 3, 5 और 8 हीरे पाएँ। रोज़ अधिकतम 16 हीरे साझा वॉलेट में अपने आप जुड़ते हैं।",
+    ar:"أكمل المراحل الثلاث لتحصل على 3 و5 و8 ألماسات، بحد أقصى 16 يومياً، تُضاف تلقائياً إلى محفظتك المشتركة."
+  };
+  strings.reward = rewardDescriptions[locale] || rewardDescriptions.en;
   strings.note = ({"zh-Hant": "1 個已收集方塊＝1 點本場彈藥。每次只射一顆：倍率 m 會扣 m 點彈藥，直接命中惡魔扣 m HP；未命中或撞上護盾也消耗 m。永久收藏與城堡材料不扣除。", "zh-Hans": "1 个已收集方块＝1 点本场弹药。每次只射一颗：倍率 m 会扣 m 点弹药，直接命中恶魔扣 m HP；未命中或撞上护盾也消耗 m。永久收藏和城堡材料不扣除。", "en": "Each collected block gives 1 run ammo. A multiplier m fires one projectile, spends m ammo and deals m HP on a direct Boss hit. Misses and dark shields also cost m. Permanent blocks and castle materials are never spent.", "ja": "収集ブロック1個＝今回の弾薬1。倍率mは1発で弾薬mを使い、ボス直撃でm HPのダメージ。外れや暗黒シールドへの命中もmを消費します。永久ブロックと城素材は減りません。", "ko": "수집 블록 1개는 이번 판 탄약 1입니다. 배율 m은 한 발에 탄약 m을 쓰고 보스 직접 명중 시 HP m을 깎습니다. 빗나가거나 암흑 방패에 맞아도 m을 씁니다. 영구 블록과 성 재료는 차감되지 않습니다.", "es": "Cada bloque recogido da 1 de munición. El multiplicador m dispara un proyectil, gasta m y resta m HP al jefe en impacto directo. Los fallos y escudos oscuros también cuestan m. No se gastan bloques permanentes ni materiales.", "pt-BR": "Cada bloco coletado dá 1 munição. O multiplicador m lança um projétil, gasta m e causa m HP no chefe em acerto direto. Erros e escudos sombrios também custam m. Blocos permanentes e materiais não são gastos.", "fr": "Chaque bloc collecté donne 1 munition. Le multiplicateur m tire un projectile, dépense m et inflige m HP au boss en coup direct. Les ratés et boucliers sombres coûtent aussi m. Les blocs permanents et matériaux restent intacts.", "de": "Jeder gesammelte Block gibt 1 Munition. Multiplikator m feuert ein Projektil, verbraucht m und verursacht beim direkten Bosstreffer m HP Schaden. Fehlschüsse und dunkle Schilde kosten ebenfalls m. Dauerhafte Blöcke und Burgmaterial bleiben erhalten.", "it": "Ogni blocco raccolto dà 1 munizione. Il moltiplicatore m lancia un proiettile, spende m e infligge m HP al boss con un colpo diretto. Mancati colpi e scudi oscuri costano m. Blocchi permanenti e materiali restano intatti.", "ru": "Каждый собранный блок даёт 1 боеприпас. Множитель m выпускает один снаряд, расходует m и снимает m HP при прямом попадании в босса. Промахи и тёмные щиты также стоят m. Постоянные блоки и материалы не расходуются.", "hi": "हर एकत्रित ब्लॉक से 1 बारूद मिलता है। गुणक m एक प्रक्षेप्य छोड़ता है, m बारूद खर्च करता है और सीधे बॉस पर m HP घटाता है। चूक और अंधेरे ढाल भी m खर्च करते हैं। स्थायी ब्लॉक और किले की सामग्री नहीं घटती।", "ar": "كل مكعب مجموع يمنح ذخيرة واحدة. المضاعف m يطلق مقذوفاً واحداً ويستهلك m ويخصم m من صحة الزعيم عند إصابته مباشرة. الإخفاق والدروع المظلمة يستهلكان m أيضاً. المكعبات الدائمة ومواد القلعة لا تُستهلك."})[locale] || "Each collected block gives 1 run ammo. A multiplier m fires one projectile, spends m ammo and deals m HP on a direct Boss hit. Misses and dark shields also cost m. Permanent blocks and castle materials are never spent.";
   const motionPreference = window.matchMedia?.("(prefers-reduced-motion: reduce)");
   const hoverPreference = window.matchMedia?.("(hover: hover) and (pointer: fine)");
@@ -502,9 +517,7 @@ function createDemonEventPreview() {
         window.location.assign(destination.href);
         return;
       }
-      let blocks = "";
-      try { const count = window.WeightPlayCastle?.ownedBlocks?.(); if (Number.isFinite(Number(count)) && Number(count) >= 0) blocks = `&blocks=${encodeURIComponent(Math.floor(Number(count)))}`; } catch {}
-      window.location.href = `${selected.entry.path}?locale=${encodeURIComponent(locale)}${blocks}`;
+      window.location.href = `${selected.entry.path}?locale=${encodeURIComponent(locale)}`;
     });
     dialogActions.append(launchButton);
   }
@@ -1863,6 +1876,11 @@ function createGameCard(game) {
     toggleFavorite(game, title);
   });
 
+  attachLobbyPreview(card);
+  return card;
+}
+
+function attachLobbyPreview(card) {
   const preview = card.querySelector(".game-card-preview");
   if (preview) {
     let previewAttempt = 0;
@@ -1929,7 +1947,6 @@ function createGameCard(game) {
     });
   }
 
-  return card;
 }
 
 // One transition owner commits each decoded hall change once and releases its
@@ -2327,6 +2344,7 @@ function discoveryCards(games, { popular = false, visualIdentity = false, priori
       card.innerHTML = `
         <div class="hero-game-art">
           <img class="hero-game-image" ${lobbyImageAttributes(game.art?.background || "assets/hero.png", { priority })} alt="" />
+          ${isPlayable && topicGameIds.has(game.id) && game.previewVideo ? `<video class="game-card-preview" data-preview-src="${game.previewVideo}" muted loop playsinline preload="none" aria-hidden="true"></video>` : ""}
           ${hasVisualIdentity ? `<span class="hero-game-art-identity" aria-hidden="true"><strong>${title}</strong><small>${type}</small></span>` : ""}
           ${popular && isKidsLobby ? `<span>${rankText}</span>` : ""}
         </div>
@@ -2338,12 +2356,14 @@ function discoveryCards(games, { popular = false, visualIdentity = false, priori
         </div>`}
       `;
       revealDecodedImage(card.querySelector(".hero-game-image"));
+      attachLobbyPreview(card);
       return card;
     });
 }
 
 function renderHeroGames() {
   const popular = hasRankedPopularGames();
+  heroGames.querySelectorAll("video").forEach(video => video.releaseLobbyPreview?.());
   heroGames.replaceChildren(...discoveryCards(popularGames(5), { popular }));
 }
 
@@ -2362,6 +2382,7 @@ function renderLatestGames() {
   latestGamesSection.querySelector("h2").textContent = title;
   latestGamesSection.querySelector(".catalog-jump").textContent = `${i18n.t("library.all_games")} →`;
   latestGamesSection.setAttribute("aria-label", title);
+  latestGames.querySelectorAll("video").forEach(video => video.releaseLobbyPreview?.());
   latestGames.replaceChildren(...discoveryCards(latestPublicGames(), { visualIdentity: true }));
 }
 
@@ -2808,6 +2829,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
     return;
   }
   if (!renderingHallMotion) settleHallMotion();
+  activeGamePreview?.releaseLobbyPreview();
   syncDemonEventPreview();
   renderExploreTypes();
   let upcomingVisibleCount = 0;

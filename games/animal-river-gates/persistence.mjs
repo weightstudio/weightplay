@@ -31,6 +31,8 @@ export function recoverLook(storage,wallet) {
   return look; // ambiguous concurrent wallet activity: do not debit again
 }
 export function purchaseLook(storage,wallet) {
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-river-gates:persistence.mjs:purchaseLook", () => purchaseLook(...arguments));
+
   let look;try{look=recoverLook(storage,wallet);}catch{return {ok:false,reason:'saveError'};}
   if(look.owned)return {ok:true,alreadyOwned:true,look};
   if(look.pending)return {ok:false,reason:'saveError'};

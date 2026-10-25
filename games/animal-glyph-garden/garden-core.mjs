@@ -253,6 +253,8 @@ export function recoverPurchase(storage, wallet) {
   throw new Error("GARDEN_PURCHASE_REVIEW");
 }
 export function buyMoon(storage, wallet) {
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-glyph-garden:garden-core.mjs:buyMoon", () => buyMoon(...arguments));
+
   let save = recoverPurchase(storage, wallet);
   if (save.moon) return { save, status: "owned" };
   const before = wallet.read().diamonds;

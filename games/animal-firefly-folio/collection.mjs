@@ -7,6 +7,8 @@ export function readCollection(storage){
 // Both writes are synchronous. Ownership is staged before the shared wallet is
 // charged; a failed final save refunds through the same wallet API.
 export function buyAurora(storage,wallet){
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-firefly-folio:collection.mjs:buyAurora", () => buyAurora(...arguments));
+
   const before=readCollection(storage);
   if(before.owned)return {ok:true,alreadyOwned:true,value:before};
   if(!wallet||wallet.read().diamonds<AURORA_COST)return {ok:false,reason:'balance'};

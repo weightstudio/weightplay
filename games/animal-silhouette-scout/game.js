@@ -170,9 +170,9 @@
     $('diamondBalance').textContent=String(balance);$('buyLensBtn').textContent=state.progress.lens?t('owned'):t('buyLens',{n:M.lensCost});$('buyLensBtn').disabled=state.progress.lens;
     $('gearStatus').textContent=state.progress.lens?t('lensReady'):t('optionalLens');
   }
-  function buyLens() {
+  async function buyLens() {
     let result;
-    try{result=M.purchaseLens({readProgress:loadProgress,saveProgress:persist,wallet:window.WeightPlayWallet});}catch{result={status:'storage',progress:state.progress};}
+    try{result=(await M.purchaseLens({readProgress:loadProgress,saveProgress:persist,wallet:window.WeightPlayWallet}));}catch{result={status:'storage',progress:state.progress};}
     state.progress=result.progress;renderGear();$('gearStatus').textContent=t(result.status==='insufficient'?'insufficient':result.status==='storage'?'saveFailed':'lensReady');
     sound(result.status==='purchased'?'shop.purchase':result.status==='owned'?'ui.tick':'feedback.error');
   }

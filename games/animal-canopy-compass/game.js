@@ -228,8 +228,8 @@ function renderShop(){
 function saveAppearance(next){localStorage.setItem(APPEARANCE_KEY,JSON.stringify(next));appearance=next;scene?.setTheme(next.theme==='aurora');}
 async function buyOrEquip(){
   if(buying)return;buying=true;renderShop();
-  const transaction=()=>{
-    const result=purchaseAurora(localStorage,window.WeightPlayWallet,APPEARANCE_KEY);
+  const transaction=async ()=>{
+    const result=(await purchaseAurora(localStorage,window.WeightPlayWallet,APPEARANCE_KEY));
     if(result.status==='insufficient'){notify(t('insufficient'));return;}
     appearance=result.appearance;scene?.setTheme(true);
     if(result.status==='purchased')sound('reward.upgrade');

@@ -303,6 +303,8 @@
     }));
   }
   function equipTheme(theme){
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-habitat-counts:game.js:equipTheme", () => equipTheme(...arguments));
+
     if(!['daylight','twilight','aurora'].includes(theme))return;
     if(theme==='twilight'&&!progress.themes.includes(theme))return;
     let charged=false;

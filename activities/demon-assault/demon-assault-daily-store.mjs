@@ -1,3 +1,4 @@
+import {REWARD_CAMPAIGN,rewardKey,validRewards} from './demon-assault-rewards.mjs?v=20261025-rewards-1';
 import {VERSION as LEGACY_VERSION,STAGES,ammoLimit,AMMO_POLICY} from './demon-assault-v4-physics.mjs?v=20261014-ammo-exact-1';
 import {validSave as validLegacy,freshRun,nextStage,settle,launchShot,SAVE_KEY as LEGACY_KEY} from './demon-assault-v4-store.mjs?v=20261014-ammo-exact-1';
 export {freshRun,nextStage,settle,launchShot};
@@ -48,7 +49,7 @@ export function dailyStatus(raw,now=Date.now(),zone=deviceTimeZone()){
 }
 function valid(d){
  const common=[1,2].includes(d?.schemaVersion)&&d.version===VERSION&&Number.isFinite(d.lastSeenAt)&&d.lastSeenAt>=0&&(d.dayKey===null||/^\d{4}-\d{2}-\d{2}$/.test(d.dayKey))&&(d.lastQualifiedDay===null||/^\d{4}-\d{2}-\d{2}$/.test(d.lastQualifiedDay))&&(d.dayKey===null?d.run?.shots===0:d.dayKey===d.lastQualifiedDay)&&validLegacy({...d,version:LEGACY_VERSION},{allowLegacyCapacity:true});
- return common&&(d.schemaVersion===1||(validTimeZone(d.calendarTimeZone)&&(d.dayKey?validTimeZone(d.runTimeZone):d.runTimeZone===null)&&Number.isFinite(d.nextEligibleAt)&&d.nextEligibleAt>=0&&(d.lastQualifiedAt===null||Number.isFinite(d.lastQualifiedAt))));
+ return common&&validRewards(d.rewards)&&(d.run.rewardCampaign===undefined||d.run.rewardCampaign===REWARD_CAMPAIGN)&&(d.schemaVersion===1||(validTimeZone(d.calendarTimeZone)&&(d.dayKey?validTimeZone(d.runTimeZone):d.runTimeZone===null)&&Number.isFinite(d.nextEligibleAt)&&d.nextEligibleAt>=0&&(d.lastQualifiedAt===null||Number.isFinite(d.lastQualifiedAt))));
 }
 export function makeDailyStore({storage,locks,now=Date.now,timeZone=deviceTimeZone}){
  const zone=()=>{const z=typeof timeZone==='function'?timeZone():timeZone;if(!validTimeZone(z))throw Error('TIME_ZONE_INVALID');return z;};
@@ -72,18 +73,24 @@ export function makeDailyStore({storage,locks,now=Date.now,timeZone=deviceTimeZo
    next.calendarTimeZone=old?.calendarTimeZone||tz;next.runTimeZone=newRun?null:(old?.runTimeZone||null);
    next.dayKey=newRun?null:(old?.dayKey||null);next.lastQualifiedDay=old?.lastQualifiedDay||null;next.lastQualifiedAt=old?.lastQualifiedAt||null;next.nextEligibleAt=old?.nextEligibleAt||0;
    if(fire&&!next.dayKey){next.dayKey=dayKey(stamp,tz);next.lastQualifiedDay=next.dayKey;next.lastQualifiedAt=stamp;next.runTimeZone=tz;next.nextEligibleAt=nextMidnight(stamp,tz);}
+   // Eligibility and the earned outbox commit with the actual lethal hit.
+   // Historical preview milestones are never converted into payable rewards.
+   if(old?.dayKey&&old.run.rewardCampaign===REWARD_CAMPAIGN&&old.run.pending&&old.run.hp>0&&next.run.hp===0&&next.run.status==='cleared'&&next.run.id===old.run.id&&next.run.stage===old.run.stage){
+    const key=rewardKey(old.dayKey,old.run.stage);
+    next.rewards={...(old.rewards||{}),[key]:old.rewards?.[key]||{campaign:REWARD_CAMPAIGN,day:old.dayKey,stage:old.run.stage,amount:STAGES[old.run.stage].reward,runId:old.run.id,earnedAt:stamp}};
+   }
    if(!valid(next))throw Error('INVALID_DAILY_TRANSITION');storage.setItem(SAVE_KEY,JSON.stringify(next));return{state:next,changed:true};
   });
  }
- async function open(blocks){return transact(d=>{
-  if(d){if(!d.dayKey&&!d.run.shots&&!d.run.pending&&d.run.blocks!==ammoLimit(blocks))return{...d,run:{...d.run,...freshRun(blocks),id:d.run.id}};if(finished(d)&&dailyStatus(d,now(),zone()).canStart&&d.dayKey)return{...d,run:freshRun(blocks),dayKey:null,runTimeZone:null};return null;}
+ async function open(blocks,{rewardable=false}={}){return transact(d=>{
+  if(d){const activated=rewardable&&!d.run.rewardCampaign&&d.run.cap<=ammoLimit(blocks);if(activated){d.run.rewardCampaign=REWARD_CAMPAIGN;}if(!d.dayKey&&!d.run.shots&&!d.run.pending&&d.run.blocks!==ammoLimit(blocks))return{...d,run:{...d.run,...freshRun(blocks),rewardCampaign:rewardable?REWARD_CAMPAIGN:undefined,id:d.run.id}};if(finished(d)&&dailyStatus(d,now(),zone()).canStart&&d.dayKey)return{...d,run:{...freshRun(blocks),rewardCampaign:rewardable?REWARD_CAMPAIGN:undefined},dayKey:null,runTimeZone:null};return activated?d:null;}
   let legacy=null;try{const raw=JSON.parse(storage.getItem(LEGACY_KEY)||'null');if(validLegacy(raw,{allowLegacyCapacity:true}))legacy=raw;}catch{}
   if(legacy&&!finished(legacy)){const migrated=normalize({schemaVersion:2,version:VERSION,revision:legacy.revision,run:legacy.run,milestones:legacy.milestones,lastSeenAt:now(),calendarTimeZone:zone(),runTimeZone:null,dayKey:null,lastQualifiedDay:null,lastQualifiedAt:null,nextEligibleAt:0},now(),zone());return{run:migrated.run,milestones:legacy.milestones};}
-  return{run:freshRun(blocks),milestones:{}};
+  return{run:{...freshRun(blocks),rewardCampaign:rewardable?REWARD_CAMPAIGN:undefined},milestones:{},rewards:{}};
  },{allowNew:true});}
  return{read,transaction:transact,open};
 }
 const current=()=>makeDailyStore({storage:localStorage,locks:navigator.locks});
 export const readSave=()=>current().read();
 export const transaction=(change,options)=>current().transaction(change,options);
-export const openSession=blocks=>current().open(blocks);
+export const openSession=(blocks,options)=>current().open(blocks,options);

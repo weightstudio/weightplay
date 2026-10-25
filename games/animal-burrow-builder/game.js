@@ -163,6 +163,8 @@ function refreshShop(){
   $('buyLantern').disabled=save.lantern||practice;$('buyLantern').textContent=save.lantern?c.owned:c.buy;
 }
 function buyLantern(){
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-burrow-builder:game.js:buyLantern", () => buyLantern(...arguments));
+
   if(practice||save.lantern)return;
   if(window.WeightPlayWallet.read().diamonds<12){closeModal();refreshShop();$('shopStatus').textContent=c.insufficient;audio.play('feedback.error');return;}
   // Store the promised ownership first. If the shared spend cannot persist,

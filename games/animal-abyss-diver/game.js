@@ -1023,6 +1023,8 @@
     scheduleDive(()=>{$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-escaping");state.busy=false;state.fishBusy=false;renderBattle();if(state.oxygen<=0)finish("fail");else sceneFrame("battle", () => $("leftGate").focus({preventScroll:true}));},700);
   }
   function useBeacon(){
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-abyss-diver:game.js:useBeacon", () => useBeacon(...arguments));
+
     if(state.beaconUsed||!canDiveAct(Boolean(state.fishActive)))return;
     const restored=beaconRestoreTarget();
     if(state.oxygen>=restored){clearBeaconConfirmation();setFeedback(`${icon("beacon")}<b>${restored}</b>`,t("beaconUnavailable"));renderBattle();focusCurrentDiveDecision();return;}

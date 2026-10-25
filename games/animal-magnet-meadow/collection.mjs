@@ -8,6 +8,8 @@ export function ownsAmber(storage) {
  * roll back the entitlement. If even rollback storage is unavailable, retain the cosmetic
  * at no charge rather than risk a second debit or an undelivered purchase. */
 export function unlockAmber(storage, wallet) {
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-magnet-meadow:collection.mjs:unlockAmber", () => unlockAmber(...arguments));
+
   if (ownsAmber(storage)) return {ok:true, alreadyOwned:true};
   if (!wallet || wallet.read().diamonds < price) return {ok:false,reason:'insufficient'};
   try { storage.setItem(collectionKey, JSON.stringify({owned:true,price,version:1})); }

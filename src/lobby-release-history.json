@@ -57,6 +57,10 @@
       "date": "2026-07-11T16:23:08+08:00",
       "evidence": "git:d276c8a622bf3ffe31d9d02b8701cc6ae2bfb081"
     },
+    "animal-cairn-courier": {
+      "date": "2026-10-25T06:01:31.651Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-canopy-compass": {
       "date": "2026-10-25T00:08:06.888Z",
       "evidence": "canonical-public-catalog"
@@ -115,6 +119,10 @@
     },
     "animal-dawn-shutters": {
       "date": "2026-09-13T05:59:04.844Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "animal-deep-sea-salvage": {
+      "date": "2026-10-25T06:01:31.651Z",
       "evidence": "canonical-public-catalog"
     },
     "animal-dewline": {
@@ -285,6 +293,10 @@
       "date": "2026-10-24T16:09:49.375Z",
       "evidence": "canonical-public-catalog"
     },
+    "animal-pattern-patch": {
+      "date": "2026-10-25T06:01:31.651Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-peach-oath": {
       "date": "2026-09-07T16:23:33+08:00",
       "evidence": "git:8c158de03ea0ec27be738b7d4d04ebabc39a56ef"
@@ -416,6 +428,10 @@
     "animal-tangram": {
       "date": "2026-07-29T23:23:04+08:00",
       "evidence": "git:720c6b2b58c524b438c01a336dfd9f8a17258ea9"
+    },
+    "animal-tide-tally": {
+      "date": "2026-10-25T06:01:31.651Z",
+      "evidence": "canonical-public-catalog"
     },
     "animal-tideglass": {
       "date": "2026-10-24T16:09:49.375Z",
@@ -637,6 +653,10 @@
       "date": "2026-08-14T10:42:10+08:00",
       "evidence": "git:97854d4dcada5a01ae4f31d18ee9bc40ed744c1b"
     },
+    "robot-dog-showtime": {
+      "date": "2026-10-25T06:01:31.651Z",
+      "evidence": "canonical-public-catalog"
+    },
     "shadow-wolf": {
       "date": "2026-07-06T21:50:28+08:00",
       "evidence": "git:0bc86363c7aecd54ea6f96b11fbe6efa95af7a1d"
@@ -704,6 +724,10 @@
     "tower-of-hanoi": {
       "date": "2026-09-01T17:15:15+08:00",
       "evidence": "git:73500c6261c0110a54ce3ad99c679deee381cf00"
+    },
+    "traffic-jam-diner": {
+      "date": "2026-10-25T06:05:08.764Z",
+      "evidence": "canonical-public-catalog"
     },
     "tripeaks-solitaire": {
       "date": "2026-08-29T01:12:57+08:00",

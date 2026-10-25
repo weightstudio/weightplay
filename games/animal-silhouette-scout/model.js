@@ -86,6 +86,8 @@
     return { progress: next, rating, newlyDiscovered };
   }
   function purchaseLens({ readProgress, saveProgress, wallet }) {
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-silhouette-scout:model.js:purchaseLens", () => purchaseLens(...arguments));
+
     const current = normalize(readProgress());
     if (current.lens) return { status: "owned", progress: current };
     if (!wallet || wallet.read().diamonds < lensCost) return { status: "insufficient", progress: current };

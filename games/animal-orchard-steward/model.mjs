@@ -93,6 +93,8 @@ export function buyEquipment(profile,id) {
   profile.coins-=cost;profile[id]=true;return true;
 }
 export function buyGoldenCrates(profile,wallet,commit) {
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-orchard-steward:model.mjs:buyGoldenCrates", () => buyGoldenCrates(...arguments));
+
   if(profile.gold)return 'owned';
   if(!wallet||wallet.read().diamonds<8)return 'funds';
   // Persist the cosmetic before debit: a storage failure can never consume diamonds.

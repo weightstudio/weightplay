@@ -203,7 +203,7 @@ async function purchase(){
   if(buying||everPractice)return;buying=true;$('confirmBuy').disabled=true;$('cancelBuy').disabled=true;
   try{
     if(!navigator.locks)throw Error('Storage lock unavailable');
-    const result=await navigator.locks.request('weightplay-wallet',()=>buyLantern(localStorage,window.WeightPlayWallet));
+    const result=await navigator.locks.request('weightplay-wallet',async ()=>(await buyLantern(localStorage,window.WeightPlayWallet)));
     save=result.save;
     if(['bought','owned'].includes(result.status)){closeModal();$('nestFeedback').textContent=t(result.status==='bought'?'purchased':'owned');if(result.status==='bought')play('shop.purchase');}
     else{$('purchaseFeedback').textContent=t(result.status==='funds'?'funds':'saveError');play('feedback.error');}

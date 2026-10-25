@@ -147,10 +147,10 @@ function openModal(id){
 }
 function closeModal(){if(!modal||modal==='resultView')return;const previous=modal;const el=$(previous);el.hidden=true;el.inert=true;modal=null;$('battleContent').inert=false;$('stageContent').inert=false;frame.activate(screen);resumeTimers();$(previous==='workshopModal'?'workshopButton':previous==='helpDialog'?'helpButton':'homeFromBattle').focus({preventScroll:true});}
 function showShop(){if(screen!=='stage'||modal)return;try{$('walletBalance').textContent=window.WeightPlayWallet.read().diamonds;}catch{$('walletBalance').textContent='—';}$('shopStatus').textContent=purchaseBlocked?t('storage'):save.moonOwned?t('owned'):'';$('purchaseSkin').textContent=save.moonOwned?t(save.skin==='moon'?'jade':'equip'):t('buy');$('purchaseSkin').disabled=purchaseBlocked;openModal('workshopModal');}
-function buySkin(){
+async function buySkin(){
  if(modal!=='workshopModal'||busy||purchaseBlocked)return;busy=true;
  if(save.moonOwned){const next={...save,skin:save.skin==='moon'?'jade':'moon'};try{localStorage.setItem(SAVE_KEY,JSON.stringify(next));save=next;document.body.dataset.skin=save.skin;$('shopStatus').textContent=t('owned');}catch{$('shopStatus').textContent=t('storage');}}
- else{const result=purchaseMoon(localStorage,window.WeightPlayWallet,save);save=result.save;purchaseBlocked=result.blocked;$('shopStatus').textContent=t(result.ok?'owned':result.reason==='balance'?'notEnough':result.blocked?'storage':'purchaseFail');if(result.ok)play('reward.unlock');}
+ else{const result=(await purchaseMoon(localStorage,window.WeightPlayWallet,save));save=result.save;purchaseBlocked=result.blocked;$('shopStatus').textContent=t(result.ok?'owned':result.reason==='balance'?'notEnough':result.blocked?'storage':'purchaseFail');if(result.ok)play('reward.unlock');}
  $('walletBalance').textContent=window.WeightPlayWallet.read().diamonds;$('purchaseSkin').textContent=save.moonOwned?t(save.skin==='moon'?'jade':'equip'):t('buy');$('purchaseSkin').disabled=purchaseBlocked;document.body.dataset.skin=save.skin;busy=false;
 }
 function keydown(event){

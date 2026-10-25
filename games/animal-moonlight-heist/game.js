@@ -475,12 +475,16 @@
     return true;
   }
   function rerollOffers(){
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-moonlight-heist:game.js:rerollOffers", () => rerollOffers(...arguments));
+
     if(pendingEconomy!=="reroll"){armEconomy("reroll",3,"rerollDecision");return}
     clearPendingEconomy({render:false});
     if(!spendDiamonds(3)){renderEconomy();economyMessage(t("notEnough"));return}
     gadgetOffers=createOffers();gadget=gadgetOffers[0].id;economyMessage(t("rerolled"));renderGadgets();renderEconomy();updateGadget();playSound("reward.upgrade");
   }
   function buyInsurance(){
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-moonlight-heist:game.js:buyInsurance", () => buyInsurance(...arguments));
+
     if(insuranceActive){clearPendingEconomy();economyMessage(t("alreadyInsured"));return}
     if(pendingEconomy!=="insurance"){armEconomy("insurance",5,"insuranceDecision");return}
     clearPendingEconomy({render:false});

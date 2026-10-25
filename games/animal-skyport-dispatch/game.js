@@ -1442,6 +1442,7 @@
     if (event.repeat && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();
   });
   $('insuranceBtn').onclick = () => {
+    const walletAction = () => {
     if (save.goldFleet) return;
     const balance = window.WeightPlayWallet?.read?.().diamonds || 0;
     if (balance < 5) { clearInsuranceConfirmation(); renderContractControls(t('insuranceNeed', {balance})); return; }
@@ -1471,7 +1472,10 @@
     requestAnimationFrame(() => {
       (document.querySelector(`.stage-card[data-shift="${state.shift}"]`) || document.querySelector('.stage-card[aria-disabled="false"]'))?.focus({preventScroll:true});
     });
-  };
+  
+    };
+    return window.WeightPlayWallet?.withTransaction ? window.WeightPlayWallet.withTransaction("animal-skyport-dispatch:game.js:anonymous@1444", walletAction) : walletAction();
+};
   $('stageBack').onclick = () => { clearInsuranceConfirmation(); renderContractControls(); show('mainScreen'); };
   $('battleBack').onclick = openLeaveConfirm;
   $('leaveCancel').onclick = () => closeLeaveConfirm();

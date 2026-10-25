@@ -139,14 +139,14 @@ function renderShop(){
  $('coinBalance').textContent=`${t('coins')} ${profile.coins}`;$('diamondBalance').textContent=String(window.WeightPlayWallet?.read().diamonds||0);
  document.querySelectorAll('[data-buy]').forEach(button=>{const id=button.dataset.buy;button.textContent=profile[id]?t('owned'):`${t('buy')} · ${button.dataset.cost}`;button.disabled=profile[id]||!saveAvailable;});
 }
-function purchase(id){
+async function purchase(id){
  if(modal!=='shopDialog'||!saveAvailable||profile[id])return;
  const old=clone(profile);
  try{
   // Establish storage availability before touching the shared wallet.
   localStorage.setItem(SAVE_KEY,JSON.stringify(profile));
   if(id==='gold'){
-   const result=buyGoldenCrates(profile,window.WeightPlayWallet,p=>localStorage.setItem(SAVE_KEY,JSON.stringify(p)));
+   const result=(await buyGoldenCrates(profile,window.WeightPlayWallet,p=>localStorage.setItem(SAVE_KEY,JSON.stringify(p))));
    if(result==='funds'){$('shopFeedback').textContent=t('unavailable');audio('feedback.error');return;}
    if(result==='storage')throw Error('SAVE_FAILED');
   }else if(!buyEquipment(profile,id)){$('shopFeedback').textContent=t('unavailable');audio('feedback.error');return;}

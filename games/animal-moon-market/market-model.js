@@ -134,6 +134,8 @@ export function settle(save, run) {
 }
 
 export function buyUpgrade(storage, save, id, wallet) {
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-moon-market:market-model.js:buyUpgrade", () => buyUpgrade(...arguments));
+
   if (!Object.hasOwn(UPGRADE_COST, id)) return { error: 'invalid' };
   // Re-read inside the synchronous transaction to avoid double purchase in another tab.
   const current = readSave(storage);

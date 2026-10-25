@@ -3270,6 +3270,8 @@
   }
 
   function rerollDraftChoices() {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-relic-hunters:game.js:rerollDraftChoices", () => rerollDraftChoices(...arguments));
+
     if (draftRerollUsed) {
       updateDraftRerollUI();
       return;
@@ -5030,6 +5032,7 @@
     });
 
     nodes.amuletBtn.addEventListener("click", () => {
+    const walletAction = () => {
       if (state.amuletUnlocked) return;
       const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };
       if (wallet.diamonds < amuletCost) {
@@ -5051,7 +5054,10 @@
         window.WeightPlayAudio?.play("feedback.success");
         updateDiamondShopUI();
       }
-    });
+    
+    };
+    return window.WeightPlayWallet?.withTransaction ? window.WeightPlayWallet.withTransaction("animal-relic-hunters:game.js:anonymous@5032", walletAction) : walletAction();
+});
 
     // Sync with global i18n
     window.addEventListener("wonder:locale-change", () => {

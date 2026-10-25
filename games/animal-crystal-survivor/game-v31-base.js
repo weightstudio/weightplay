@@ -1753,6 +1753,8 @@
   }
 
   function buyCrystalCharm() {
+    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-crystal-survivor:game-v31-base.js:buyCrystalCharm", () => buyCrystalCharm(...arguments));
+
     if (save.crystalCharm) {
       clearCharmConfirmation();
       updateDiamondShop();

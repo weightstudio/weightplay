@@ -1,0 +1,41 @@
+import {STAGES} from './demon-assault-v4-physics.mjs?v=20261014-ammo-exact-1';
+
+// This campaign is stable across runtime revisions. A new build never reopens
+// an already paid civil date / stage in the same anonymous local wallet.
+export const REWARD_CAMPAIGN='demon-assault:daily-v1';
+export const rewardKey=(day,stage)=>`${REWARD_CAMPAIGN}:${day}:stage:${stage}`;
+export function validRewards(rewards){
+ if(rewards===undefined)return true;
+ if(!rewards||typeof rewards!=='object'||Array.isArray(rewards))return false;
+ return Object.entries(rewards).every(([key,r])=>r&&r.campaign===REWARD_CAMPAIGN&&/^\d{4}-\d{2}-\d{2}$/.test(r.day)&&Number.isInteger(r.stage)&&!!STAGES[r.stage]&&r.amount===STAGES[r.stage].reward&&key===rewardKey(r.day,r.stage)&&typeof r.runId==='string'&&r.runId.length>0&&Number.isFinite(r.earnedAt));
+}
+export function rewardStatus(state,wallet){
+ const rewards=Object.entries(state?.rewards||{}).filter(([,r])=>r.runId===state?.run.id);
+ const ledger=wallet?.read?.(),confirmed=rewards.filter(([key,r])=>ledger?.rewards?.[key]?.amount===r.amount);
+ return{earned:rewards.reduce((sum,[,r])=>sum+r.amount,0),paid:confirmed.reduce((sum,[,r])=>sum+r.amount,0),pending:rewards.length-confirmed.length,balance:ledger?.available?ledger.diamonds:null};
+}
+export async function payRewards(state,wallet){
+ if(!validRewards(state?.rewards)||!wallet?.awardOnce)return false;
+ for(const [key,r]of Object.entries(state?.rewards||{})){
+  const result=await wallet.awardOnce(key,r.amount);
+  if(!result.ok||result.receipt.amount!==r.amount)return false;
+ }
+ return true;
+}
+
+const copy={
+ 'zh-Hant':['擊敗三階段可依序獲得 3、5、8 顆鑽石，每日最多 16 顆。獎勵自動存入共用錢包。','本階段 +{n}','餘額 {n}','本場已入帳 {n} 顆鑽石','獎勵已保存，尚未入帳。請重試領取。','領取鑽石','正在入帳…','此本機測試場不發放鑽石。'],
+ 'zh-Hans':['击败三阶段可依次获得 3、5、8 颗钻石，每日最多 16 颗。奖励自动存入共用钱包。','本阶段 +{n}','余额 {n}','本场已到账 {n} 颗钻石','奖励已保存，尚未到账。请重试领取。','领取钻石','正在到账…','此本地测试场不发放钻石。'],
+ en:['Clear the three stages for 3, 5 and 8 diamonds, up to 16 daily. Rewards go straight to your shared wallet.','Stage +{n}','Balance {n}','{n} diamonds credited this run','Reward saved; credit is pending. Retry to collect.','Collect diamonds','Crediting…','This local test run awards no diamonds.'],
+ ja:['3段階のクリアで順にダイヤ3・5・8個、1日最大16個。共通ウォレットへ自動で入ります。','今回 +{n}','残高 {n}','今回の獲得ダイヤ：{n}個','報酬を保存しました。受け取りを再試行してください。','ダイヤを受け取る','受け取り中…','このローカルテストではダイヤは得られません。'],
+ ko:['세 단계를 완료하면 다이아 3, 5, 8개를 차례로 얻습니다. 하루 최대 16개가 공용 지갑에 자동 지급됩니다.','단계 +{n}','잔액 {n}','이번 판 다이아 {n}개 지급 완료','보상이 저장되었습니다. 다시 눌러 지급받으세요.','다이아 받기','지급 중…','이 로컬 테스트에서는 다이아를 지급하지 않습니다.'],
+ es:['Supera las tres fases para ganar 3, 5 y 8 diamantes: hasta 16 al día, abonados automáticamente al monedero común.','Fase +{n}','Saldo {n}','{n} diamantes abonados en esta partida','Recompensa guardada, abono pendiente. Reintenta cobrar.','Cobrar diamantes','Abonando…','Esta prueba local no entrega diamantes.'],
+ 'pt-BR':['Vença as três fases para ganhar 3, 5 e 8 diamantes: até 16 por dia, creditados automaticamente na carteira compartilhada.','Fase +{n}','Saldo {n}','{n} diamantes creditados nesta partida','Recompensa salva; crédito pendente. Tente resgatar novamente.','Resgatar diamantes','Creditando…','Este teste local não concede diamantes.'],
+ fr:['Terminez les trois étapes pour recevoir 3, 5 et 8 diamants, soit 16 par jour au maximum, versés au portefeuille commun.','Étape +{n}','Solde {n}','{n} diamants reçus dans cette partie','Récompense sauvegardée, versement en attente. Réessayez.','Recevoir les diamants','Versement…','Ce test local ne donne aucun diamant.'],
+ de:['Schließe die drei Phasen für 3, 5 und 8 Diamanten ab: täglich bis zu 16, automatisch im gemeinsamen Guthaben.','Phase +{n}','Guthaben {n}','{n} Diamanten in diesem Lauf erhalten','Belohnung gespeichert, Gutschrift ausstehend. Erneut abholen.','Diamanten abholen','Gutschrift…','Dieser lokale Test vergibt keine Diamanten.'],
+ it:['Supera le tre fasi per ottenere 3, 5 e 8 diamanti: fino a 16 al giorno, accreditati automaticamente nel portafoglio comune.','Fase +{n}','Saldo {n}','{n} diamanti accreditati in questa partita','Premio salvato, accredito in attesa. Riprova a ritirarlo.','Ritira diamanti','Accredito…','Questo test locale non assegna diamanti.'],
+ ru:['Пройдите три этапа и получите 3, 5 и 8 алмазов: до 16 в день, автоматически в общий кошелёк.','Этап +{n}','Баланс {n}','За этот бой зачислено алмазов: {n}','Награда сохранена, зачисление ожидается. Повторите получение.','Получить алмазы','Зачисление…','В этом локальном тесте алмазы не выдаются.'],
+ hi:['तीनों चरण पूरे करने पर क्रमशः 3, 5 और 8 हीरे पाएँ। रोज़ अधिकतम 16 हीरे साझा वॉलेट में अपने आप जुड़ते हैं।','चरण +{n}','शेष {n}','इस खेल में {n} हीरे मिले','पुरस्कार सहेजा गया है। पाने के लिए फिर प्रयास करें।','हीरे पाएँ','हीरे जोड़े जा रहे हैं…','इस स्थानीय परीक्षण में हीरे नहीं मिलते।'],
+ ar:['أكمل المراحل الثلاث لتحصل على 3 و5 و8 ألماسات، بحد أقصى 16 يومياً، تُضاف تلقائياً إلى محفظتك المشتركة.','المرحلة +{n}','الرصيد {n}','أُضيفت {n} ألماسات في هذه الجولة','حُفظت المكافأة ولم تُضف بعد. أعد محاولة استلامها.','استلم الألماس','تُضاف المكافأة…','هذا الاختبار المحلي لا يمنح الألماس.'],
+};
+export function rewardCopy(locale){const row=copy[locale]||copy.en,keys=['info','stage','balance','paid','pending','claim','paying','fixture'];return Object.fromEntries(keys.map((key,i)=>[key,n=>row[i].replaceAll('{n}',String(n??''))]));}

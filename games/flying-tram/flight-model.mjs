@@ -111,6 +111,8 @@ export function awardFlight(save, flight) {
 // Write the entitlement before the shared debit: a quota failure cannot charge
 // without granting the item. On a rejected debit, restore the original save.
 export function buyLivery(storage, wallet) {
+    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("flying-tram:flight-model.mjs:buyLivery", () => buyLivery(...arguments));
+
   const previous = storage.getItem(SAVE_KEY);
   const next = readSave(previous);
   if (next.liveries.includes('midnight')) return {ok:true, save:next, charged:false};
