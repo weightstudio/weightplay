@@ -191,6 +191,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "puppy-haven": "/games/puppy-haven/assets/cover-block-v1.webp"
 });
 window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
+  "/games/meadow-touchdown/assets/cover.webp": "/games/meadow-touchdown/assets/cover-thumb.webp",
   "/games/signal-snap/poster.webp": "/games/signal-snap/poster.webp",
   "/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp": "/assets/lobby-thumbs/w480/assets__animal-sketchwheel-rally__animal-sketchwheel-rally-cover-v18.webp",
   "/assets/fusekeep/poster.webp": "/assets/lobby-thumbs/w480/assets__fusekeep__poster.webp",

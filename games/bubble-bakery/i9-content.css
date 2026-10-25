@@ -11,7 +11,7 @@ body[data-wp-game-id="bubble-bakery"] #battleWorkspace {
   min-height: 0;
   padding: 8px;
   overflow: hidden;
-  background: linear-gradient(155deg, rgba(5, 22, 30, .2), rgba(5, 22, 30, .58)), url("../../assets/bubble-bakery-bakery-voxel-v1.png") center / cover;
+  background: linear-gradient(155deg, rgba(5, 22, 30, .2), rgba(5, 22, 30, .58)), url("/assets/bubble-bakery-bakery-voxel-v1.png") center / cover;
 }
 
 body[data-wp-game-id="bubble-bakery"] #orderBar {
@@ -86,6 +86,54 @@ body[data-wp-game-id="bubble-bakery"] #skillReport {
   background: rgba(4, 20, 28, .7);
 }
 
+body[data-wp-game-id="bubble-bakery"] #resultNextOrder :is(strong, span, em, small) {
+  color: var(--wp-ui-text, #f3f7f5);
+}
+
+body[data-wp-game-id="bubble-bakery"] #resultNextOrder em,
+body[data-wp-game-id="bubble-bakery"] #resultNextOrder small {
+  color: var(--wp-ui-muted, #a4bdb9);
+}
+
+body[data-wp-game-id="bubble-bakery"] #resultNextOrder .result-stamp {
+  background: var(--wp-ui-background, #0b202b);
+  color: var(--wp-ui-gold, #edb74e);
+}
+
+body[data-wp-game-id="bubble-bakery"] #skillReport,
+body[data-wp-game-id="bubble-bakery"] #skillReport > strong,
+body[data-wp-game-id="bubble-bakery"] #skillReport .skill-evidence-row,
+body[data-wp-game-id="bubble-bakery"] #skillReport p {
+  color: var(--wp-ui-text, #f3f7f5);
+}
+
+body[data-wp-game-id="bubble-bakery"] #skillReport .skill-score-row span {
+  color: var(--wp-ui-muted, #a4bdb9);
+}
+
+body[data-wp-game-id="bubble-bakery"] #skillReport .skill-score-row b {
+  color: var(--wp-ui-gold, #edb74e);
+}
+
+body[data-wp-game-id="bubble-bakery"] #resultPanel .result-card {
+  grid-template-columns: minmax(0, 1fr);
+  gap: calc(8px * var(--wp-battle-canvas-inverse-scale, 1));
+}
+
+body[data-wp-game-id="bubble-bakery"] #resultPanel .result-card > .result-actions {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(8px * var(--wp-battle-canvas-inverse-scale, 1));
+  min-width: 0;
+}
+
+body[data-wp-game-id="bubble-bakery"] #resultPanel .result-actions > [data-wp-frame-action] {
+  min-width: 0;
+  padding-inline: calc(6px * var(--wp-battle-canvas-inverse-scale, 1)) !important;
+  white-space: nowrap;
+}
+
 @media (max-height: 430px) and (min-aspect-ratio: 1 / 1) {
   body[data-wp-game-id="bubble-bakery"] #battleWorkspace {
     grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
@@ -103,5 +151,86 @@ body[data-wp-game-id="bubble-bakery"] #skillReport {
     align-self: start;
     max-height: 56px;
     font-size: .78rem;
+  }
+
+  body[data-wp-game-id="bubble-bakery"] #resultPanel {
+    padding: 6px;
+  }
+
+  body[data-wp-game-id="bubble-bakery"] #resultPanel .result-card {
+    box-sizing: border-box;
+    width: min(calc(100% - 12px), 720px);
+    max-width: none;
+    height: calc(100% - 12px);
+    max-height: calc(100% - 12px);
+    padding: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    gap: 4px;
+    overflow: hidden;
+    align-content: center;
+  }
+
+  body[data-wp-game-id="bubble-bakery"] #resultPanel :is(#resultTitle, #starText, #resultText, .result-actions) {
+    grid-column: 1 / -1;
+  }
+
+  body[data-wp-game-id="bubble-bakery"] #resultPanel #resultTitle {
+    font-size: 1.05rem;
+    line-height: 1.1;
+  }
+
+  body[data-wp-game-id="bubble-bakery"] #resultPanel #starText {
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+
+  body[data-wp-game-id="bubble-bakery"] #resultPanel #resultText {
+    font-size: .86rem;
+    line-height: 1.2;
+  }
+
+  body[data-wp-game-id="bubble-bakery"] #resultPanel #resultNextOrder,
+  body[data-wp-game-id="bubble-bakery"] #resultPanel #skillReport {
+    min-width: 0;
+    min-height: 0;
+    padding: 7px;
+    gap: 4px;
+    font-size: .72rem;
+  }
+
+  body[data-wp-game-id="bubble-bakery"] #resultPanel #skillReport {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  body[data-wp-game-id="bubble-bakery"] #resultPanel #resultNextOrder {
+    grid-template-columns: minmax(0, 1fr) auto;
+    text-align: left;
+  }
+
+  body[data-wp-game-id="bubble-bakery"] #resultPanel #resultNextOrder :is(strong, .result-stamp) {
+    grid-column: 1 / -1;
+  }
+
+  body[data-wp-game-id="bubble-bakery"] #resultPanel #resultNextOrder :is(span, em, small) {
+    font-size: .68rem;
+    line-height: 1.15;
+  }
+
+  body[data-wp-game-id="bubble-bakery"] #resultPanel .result-order-icons img {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  body[data-wp-game-id="bubble-bakery"] #resultPanel .result-card > .result-actions {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  body[data-wp-game-id="bubble-bakery"] #resultPanel .result-actions > [data-wp-frame-action] {
+    min-height: 38px;
+    padding-inline: 4px !important;
+    font-size: .74rem;
   }
 }

@@ -70,9 +70,10 @@ RAW.fr.headings[8]='Questions fréquentes';
 RAW.de.tags[0]='Flaggen-Football';
 RAW.it.tags[0]='Football con le bandierine';
 export {RAW};
+const LANE_LABELS={"en":["Move left","Move right"],"zh-Hant":["向左換道","向右換道"],"zh-Hans":["向左变道","向右变道"],"ja":["左のレーンへ","右のレーンへ"],"ko":["왼쪽 차선으로","오른쪽 차선으로"],"es":["Cambiar a la izquierda","Cambiar a la derecha"],"pt-BR":["Mudar para a faixa à esquerda","Mudar para a faixa à direita"],"fr":["Changer de voie à gauche","Changer de voie à droite"],"de":["Nach links wechseln","Nach rechts wechseln"],"it":["Cambia corsia a sinistra","Cambia corsia a destra"],"ru":["Перестроиться влево","Перестроиться вправо"],"hi":["बाईं लेन में जाएँ","दाईं लेन में जाएँ"],"ar":["انتقل إلى المسار الأيسر","انتقل إلى المسار الأيمن"]};
 export const COPY={};
 for(const [locale,data] of Object.entries(RAW)){
-  const copy={...data,stageNames:data.stages};
+  const copy={...data,stageNames:data.stages,leftLane:LANE_LABELS[locale][0],rightLane:LANE_LABELS[locale][1]};
   copy.guideTitle=data.headings[0];copy.guideAria=data.headings[0];copy.guideTags=data.tags;
   data.headings.forEach((value,i)=>copy[`head${i}`]=value);
   data.rules.forEach((value,i)=>copy[`rule${i}`]=value);

@@ -388,11 +388,11 @@
   }
 
   const colors = [
-    { id: "berry", labelKey: "bunny", asset: "../../assets/bubble-bakery/bunny-block-v1.png" },
-    { id: "sky", labelKey: "whale", asset: "../../assets/bubble-bakery/whale-block-v1.png" },
-    { id: "lemon", labelKey: "chick", asset: "../../assets/bubble-bakery/chick-block-v1.png" },
-    { id: "mint", labelKey: "frog", asset: "../../assets/bubble-bakery/frog-block-v1.png" },
-    { id: "grape", labelKey: "fox", asset: "../../assets/bubble-bakery/fox-block-v1.png" },
+    { id: "berry", labelKey: "bunny", asset: "/assets/bubble-bakery/bunny-block-v1.png" },
+    { id: "sky", labelKey: "whale", asset: "/assets/bubble-bakery/whale-block-v1.png" },
+    { id: "lemon", labelKey: "chick", asset: "/assets/bubble-bakery/chick-block-v1.png" },
+    { id: "mint", labelKey: "frog", asset: "/assets/bubble-bakery/frog-block-v1.png" },
+    { id: "grape", labelKey: "fox", asset: "/assets/bubble-bakery/fox-block-v1.png" },
   ];
 
   const bakeryStage = (titleEn, titleZh, ruleEn, ruleZh, moves, palette, orders, rules = {}) => ({
@@ -538,6 +538,7 @@
     stageWorkspace: $("stageWorkspace"),
     stageFeedback: $("stageFeedback"),
     playPanel: $("playPanel"),
+    battleHeader: $("battleHeader"),
     battleWorkspace: $("battleWorkspace"),
     backToStagesBtn: $("backToStagesBtn"),
     movesText: $("movesText"),
@@ -913,7 +914,14 @@
   function setBattleCovered(covered) {
     nodes.battleWorkspace.inert = covered;
     nodes.battleWorkspace.setAttribute("aria-hidden", String(covered));
-    if (activeScene === "battle") screenFrame?.activate("battle", { covered });
+    if (activeScene === "battle") {
+      // Keep the shared header track in the Battle grid while a modal covers
+      // it. Hiding the header reflows the logical Canvas and changes the
+      // puzzle board's measured size underneath the Result/leave overlay.
+      screenFrame?.activate("battle");
+      nodes.battleHeader.inert = covered;
+      nodes.battleHeader.setAttribute("aria-hidden", String(covered));
+    }
   }
 
   function setSceneVisible(node, visible) {
@@ -1682,6 +1690,11 @@
       start(stageId) {
         startStage(clamp(Number(stageId) - 1, 0, stages.length - 1));
         return this.snapshot();
+      },
+      selectStage(stageId) {
+        selectedStage = clamp(Number(stageId) - 1, 0, stages.length - 1);
+        stageUI?.select(selectedStage, { center: true, focus: true, source: "test" });
+        return { selected: selectedStage + 1, config: stageConfig().stage(selectedStage) };
       },
       setBoard(nextBoard) {
         if (!Array.isArray(nextBoard) || nextBoard.length !== rows || nextBoard.some((row) => !Array.isArray(row) || row.length !== cols)) throw new Error("Smoke board must be 10x7.");

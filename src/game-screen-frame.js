@@ -180,7 +180,7 @@
     }
     if (!document.querySelector('script[src*="battle-canvas-standard.js"]')) {
       const script = document.createElement("script");
-      script.src = `${new URL("battle-canvas-standard.js", sharedAssetBase).href}?v=20261025-animal-rescue-i9-canvas-map-v1`;
+      script.src = `${new URL("battle-canvas-standard.js", sharedAssetBase).href}?v=20261025-bubble-bakery-i9-canvas-root-v2`;
       script.dataset.wpBattleStandard = "true";
       document.body.append(script);
     }

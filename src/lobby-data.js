@@ -8012,6 +8012,6 @@ window.WONDER_LOBBY.games.push({
     ar: "اقرأ الدفاع ومرّر الكرة أمام زملائك، ثم راوغ نحو منطقة التسجيل عبر 30 تحديًا."
   },
   categories: ["Sports", "Strategy", "Animal Games"], skills: ["Timing", "Strategy", "Focus"], ages: ["13", "family"],
-  art: { kind: "image", background: "games/meadow-touchdown/assets/cover.webp", hideHero: true }
+  art: { kind: "image", background: "/games/meadow-touchdown/assets/cover.webp", hideHero: true }
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("meadow-touchdown");

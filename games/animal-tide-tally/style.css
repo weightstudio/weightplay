@@ -5,7 +5,7 @@ body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 button,select{font:inherit}
 .loading-screen{min-height:100svh;display:grid;place-content:center;text-align:center;padding:24px}
 .main-screen{margin:0;padding:0}
-.tide-play{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:48px minmax(176px,1fr) 44px 40px 44px;gap:8px;overflow:hidden}
+.tide-play{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:48px minmax(160px,1fr) 44px 40px calc(44px * var(--wp-battle-canvas-inverse-scale,1));gap:8px;overflow:hidden}
 .tide-prompt{margin:0;display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;font-weight:800;line-height:1.35}
 .tide-visual{position:relative;isolation:isolate;display:grid;grid-template-rows:32px minmax(0,1fr);min-width:0;min-height:0;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:linear-gradient(#17243aaa,#17243ae8),url('assets/animal-tide-tally-background.png') center/cover;overflow:hidden}
 .tide-water{position:absolute;z-index:-1;inset:26% -20% -10%;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,#327d9144 0 24px,#89dbdb55 24px 28px,#327d9144 28px 48px);border-top:8px solid #a6f3e944;transform:translate(0,0)}

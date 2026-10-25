@@ -27,7 +27,7 @@ export class FieldRenderer{
     this.ringGeo=new T.TorusGeometry(.8,.045,4,24);this.ringMat=new T.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.85});this.rings=new T.InstancedMesh(this.ringGeo,this.ringMat,24);this.rings.frustumCulled=false;this.scene.add(this.rings);
     this.ballGeo=new T.SphereGeometry(1,14,8);this.ballMat=new T.MeshStandardMaterial({color:0x8e4a27,roughness:.7});this.ball=new T.Mesh(this.ballGeo,this.ballMat);this.ball.castShadow=true;this.scene.add(this.ball);
     this.dummy=new T.Object3D();this.matrix=new T.Matrix4();this.parent=new T.Matrix4();this.color=new T.Color();this.effects=[];this.seenEvent=0;this.animations=new Map();this.palette=-1;this.kit='classic';this.stands='classic';this.elapsed=0;this.closed=false;this.lastCenter=18;
-    this.reduced=matchMedia('(prefers-reduced-motion: reduce)');this.contextLost=e=>{e.preventDefault();onLost();};canvas.addEventListener('webglcontextlost',this.contextLost);
+    this.reduced=matchMedia('(prefers-reduced-motion: reduce)');this.contextLost=e=>{e.preventDefault();this.lost=true;onLost();};canvas.addEventListener('webglcontextlost',this.contextLost);
     this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(canvas.parentElement);this.resize();this.buildScenery(0);
   }
   resize(){const r=this.canvas.parentElement.getBoundingClientRect();if(!r.width||!r.height)return;this.width=Math.round(r.width);this.height=Math.round(r.height);this.renderer.setSize(this.width,this.height,false);}
@@ -176,6 +176,6 @@ export class FieldRenderer{
     this.renderer.render(this.scene,this.camera);
   }
   reset(m){this.seenEvent=0;this.effects.length=0;this.animations.clear();this.lastCenter=clamp(m.s+8,7,33);}
-  stats(){const i=this.renderer.info;return {calls:i.render.calls,triangles:i.render.triangles,geometries:i.memory.geometries,textures:i.memory.textures,particles:this.effects.length,dpr:this.renderer.getPixelRatio(),width:this.width,height:this.height};}
+  stats(){const i=this.renderer.info;return {frame:i.render.frame,calls:i.render.calls,triangles:i.render.triangles,geometries:i.memory.geometries,textures:i.memory.textures,particles:this.effects.length,dpr:this.renderer.getPixelRatio(),width:this.width,height:this.height};}
   dispose(){if(this.closed)return;this.closed=true;this.resizeObserver.disconnect();this.canvas.removeEventListener('webglcontextlost',this.contextLost);this.effects.length=0;for(const resource of [this.geometry,this.mat,this.groundGeo,this.groundMat,this.lineGeo,this.lineMat,this.ringGeo,this.ringMat,this.ballGeo,this.ballMat])resource.dispose();this.sun.shadow.dispose();this.renderer.dispose();}
 }

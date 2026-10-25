@@ -1,0 +1,236 @@
+/* Campus Dash owns runner content and result copy inside the shared I9 frame. */
+body[data-wp-game-id="campus-dash"] #controlChips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+body[data-wp-game-id="campus-dash"] #controlChips span {
+  padding: 6px 9px;
+  border: 1px solid var(--wp-ui-line);
+  border-radius: 8px;
+  background: var(--wp-ui-background);
+  color: var(--wp-ui-text);
+  font: 600 13px/1.25 system-ui, sans-serif;
+}
+
+body[data-wp-game-id="campus-dash"] #startTitle {
+  color: var(--wp-ui-text);
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
+  line-height: 1.2;
+}
+
+body[data-wp-game-id="campus-dash"] .campus-stage-summary h2 {
+  margin: 0;
+  color: var(--wp-ui-text);
+  font-size: 14px;
+  line-height: 1.1;
+  text-align: center;
+}
+
+body[data-wp-game-id="campus-dash"] #battleContent {
+  container-type: size;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body[data-wp-game-id="campus-dash"] .canvas-wrap {
+  position: relative;
+  width: min(100%, 75cqh);
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 2px solid var(--wp-ui-line);
+  border-radius: 12px;
+  background: #102b37;
+  box-shadow: 0 5px 0 var(--wp-ui-shadow);
+}
+
+body[data-wp-game-id="campus-dash"] #gameCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+body[data-wp-game-id="campus-dash"] #laneStatus {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+body[data-wp-game-id="campus-dash"] .game-page-info {
+  display: block;
+}
+
+body[data-wp-game-id="campus-dash"][data-screen="stage"] .game-page-info,
+body[data-wp-game-id="campus-dash"][data-screen="battle"] .game-page-info {
+  display: none;
+}
+
+body[data-wp-game-id="campus-dash"] #resultPanel {
+  position: absolute;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  padding: 12px;
+  background: rgba(4, 16, 23, .76);
+  color: var(--wp-ui-text);
+  backdrop-filter: blur(7px);
+}
+
+body[data-wp-game-id="campus-dash"] #resultPanel .result-card {
+  display: grid;
+  gap: 10px;
+  box-sizing: border-box;
+  width: min(100%, 620px);
+  max-height: 100%;
+  overflow: auto;
+  padding: 18px;
+  border: 2px solid var(--wp-ui-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--wp-ui-surface);
+  color: var(--wp-ui-text);
+  box-shadow: 0 5px 0 var(--wp-ui-shadow);
+}
+
+body[data-wp-game-id="campus-dash"] #resultTitle {
+  font-size: clamp(1.25rem, 4vw, 1.65rem);
+}
+
+body[data-wp-game-id="campus-dash"] #resultText,
+body[data-wp-game-id="campus-dash"] .dash-skill-report p {
+  margin: 0;
+  color: var(--wp-ui-muted);
+  line-height: 1.4;
+}
+
+body[data-wp-game-id="campus-dash"] .dash-skill-report,
+body[data-wp-game-id="campus-dash"] .leaderboard {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--wp-ui-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--wp-ui-background);
+}
+
+body[data-wp-game-id="campus-dash"] .dash-skill-report h3 {
+  margin: 0;
+  color: var(--wp-ui-text);
+  font-size: 1rem;
+}
+
+body[data-wp-game-id="campus-dash"] .dash-skill-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+body[data-wp-game-id="campus-dash"] .dash-skill-grid > div,
+body[data-wp-game-id="campus-dash"] .leaderboard > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--wp-ui-line);
+  border-radius: 8px;
+  color: var(--wp-ui-text);
+}
+
+body[data-wp-game-id="campus-dash"] .dash-skill-grid span,
+body[data-wp-game-id="campus-dash"] .leaderboard span {
+  color: var(--wp-ui-muted);
+  font-size: .8rem;
+  line-height: 1.25;
+}
+
+body[data-wp-game-id="campus-dash"] .dash-skill-grid b,
+body[data-wp-game-id="campus-dash"] .leaderboard strong {
+  overflow-wrap: anywhere;
+  font-size: .9rem;
+}
+
+body[data-wp-game-id="campus-dash"] .leaderboard {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+body[data-wp-game-id="campus-dash"] .leaderboard > div:first-child {
+  grid-column: 1 / -1;
+}
+
+body[data-wp-game-id="campus-dash"] .result-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+body[data-wp-game-id="campus-dash"] .leave-panel {
+  position: absolute;
+  z-index: 130;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  padding: 12px;
+  background: rgba(4, 16, 23, .76);
+  color: var(--wp-ui-text);
+  backdrop-filter: blur(7px);
+}
+
+body[data-wp-game-id="campus-dash"] .leave-card {
+  display: grid;
+  gap: 12px;
+  box-sizing: border-box;
+  width: min(100%, 460px);
+  padding: 18px;
+  border: 2px solid var(--wp-ui-line);
+  border-radius: var(--wp-ui-radius);
+  background: var(--wp-ui-surface);
+  box-shadow: 0 5px 0 var(--wp-ui-shadow);
+}
+
+body[data-wp-game-id="campus-dash"] .leave-card h2,
+body[data-wp-game-id="campus-dash"] .leave-card p {
+  margin: 0;
+}
+
+body[data-wp-game-id="campus-dash"] .leave-card p {
+  color: var(--wp-ui-muted);
+  line-height: 1.4;
+}
+
+body[data-wp-game-id="campus-dash"] .leave-card > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+@media (max-width: 520px) {
+  body[data-wp-game-id="campus-dash"] #resultPanel .result-card {
+    gap: 8px;
+    padding: 12px;
+  }
+
+  body[data-wp-game-id="campus-dash"] .dash-skill-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body[data-wp-game-id="campus-dash"] .result-actions {
+    grid-template-columns: 1fr;
+  }
+}

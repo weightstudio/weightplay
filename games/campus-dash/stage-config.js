@@ -1,0 +1,45 @@
+(() => {
+  "use strict";
+
+  const poster = "/assets/campus-dash/cover-block-v1.png";
+  const background = "/assets/lobby-block-atmosphere.svg";
+
+  window.CampusDashStageConfig = Object.freeze({
+    poster,
+    background,
+    create({ routes, progress, t, routeName, regionName, guardianName, objectiveText, ruleText }) {
+      if (!Array.isArray(routes) || !routes.length || !progress) throw new TypeError("CAMPUS_DASH_STAGE_DATA_REQUIRED");
+      return {
+        gameId: "campus-dash",
+        poster,
+        background,
+        count: routes.length,
+        stage(index) {
+          const route = routes[index];
+          if (!route) throw new RangeError("CAMPUS_DASH_STAGE_INDEX_INVALID");
+          const locked = route.id > progress.unlocked;
+          const cleared = progress.completed.includes(route.id);
+          const rules = route.mechanics.map(ruleText);
+          const objective = objectiveText(route);
+          const guardian = route.checkpoint ? `${t("guardianCheck")} · ${guardianName(route)}` : "";
+          return {
+            id: route.id,
+            kicker: regionName(route),
+            title: `${route.id}. ${routeName(route)}`,
+            subtitle: guardian || objective,
+            status: locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady"),
+            summary: [objective, ...rules].join(" · "),
+            details: [
+              `${t("routeRules")}: ${rules.join(" · ")}`,
+              guardian,
+            ],
+            locked,
+            cleared,
+            poster,
+            posterPosition: "center",
+          };
+        },
+      };
+    },
+  });
+})();
