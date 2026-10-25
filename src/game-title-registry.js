@@ -3089,18 +3089,18 @@ window.WEIGHTPLAY_GAME_TITLES = {
   },
   "smallwood-lives": {
     "__localizedExact": true,
-    "en": "Smallwood Lives",
-    "zh-Hant": "林間一生",
-    "zh-Hans": "林间一生",
-    "ja": "小さな森の一生",
-    "ko": "작은 숲의 일생",
-    "es": "Vidas del bosque",
-    "pt-BR": "Vidas na floresta",
-    "fr": "Vies du petit bois",
-    "de": "Waldleben",
-    "it": "Vite nel bosco",
-    "ru": "Жизни в лесу",
-    "hi": "नन्हे वन का जीवन",
-    "ar": "حياة الغابة الصغيرة"
-  }
+    "en": "A Life in Moments",
+    "zh-Hant": "人間一瞬",
+    "zh-Hans": "人间一瞬",
+    "ja": "一瞬の人生",
+    "ko": "한순간의 삶",
+    "es": "Una vida en instantes",
+    "pt-BR": "Uma vida em instantes",
+    "fr": "Une vie en instants",
+    "de": "Ein Leben in Augenblicken",
+    "it": "Una vita in istanti",
+    "ru": "Жизнь в мгновениях",
+    "hi": "पलों में एक जीवन",
+    "ar": "حياة في لحظات"
+}
 };
