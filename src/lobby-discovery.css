@@ -823,7 +823,7 @@ body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition
 body.general-lobby-page[data-game-hall="topics"] #heroGamesSection { order:8; margin-top:12px; }
 body.general-lobby-page[data-game-hall="topics"] #heroGames { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
 body.general-lobby-page[data-game-hall="topics"] #heroGames .hero-game-art { aspect-ratio:1; }
-body.general-lobby-page[data-game-hall="topics"] :is(#catalogHeading,#gameGrid,#catalogPagination,#mobilePicksSection,#characterShowcaseSection,#freshUpdatesSection,#challengeSpotlightSection,#recommendationsSection,#skillPathsSection,#upcomingGamesSection) { display:none !important; }
+body.general-lobby-page[data-game-hall="topics"] :is(#mobilePicksSection,#characterShowcaseSection,#freshUpdatesSection,#challengeSpotlightSection,#recommendationsSection,#skillPathsSection,#upcomingGamesSection) { display:none !important; }
 @media (max-width:900px) and (max-height:500px) and (orientation:landscape) {
   body.general-lobby-page .game-hall-switch .hall-tab-icon { inset-inline-start:8px; width:22px; height:22px; }
   body.general-lobby-page[data-game-hall="topics"] #heroGamesSection { margin-top:0 !important; }
@@ -840,50 +840,6 @@ body.general-lobby-page .lobby-hero { height:276px !important; min-height:276px 
 @media (max-width:900px) and (max-height:500px) and (orientation:landscape) {
   body.general-lobby-page .lobby-hero { height:160px !important; min-height:160px !important; }
 }
-
-body.general-lobby-page .explore-type-filters {
-  display: flex;
-  order: 9;
-  flex-wrap: wrap;
-  gap: 8px;
-  overflow: visible;
-  margin: 14px 0 4px;
-  padding: 4px 2px 8px;
-  scrollbar-width: thin;
-}
-body.general-lobby-page .explore-type-filters[hidden] { display: none; }
-body.general-lobby-page .explore-type-filters button {
-  flex: 0 0 auto;
-  min-height: 44px;
-  padding: 8px 14px;
-  border: 2px solid var(--lobby-line);
-  border-radius: 999px;
-  background: var(--lobby-panel);
-  color: var(--lobby-ink);
-  font: inherit;
-  font-weight: 700;
-}
-body.general-lobby-page .explore-type-filters button[aria-pressed="true"] {
-  background: var(--lobby-gold, #edc164);
-  color: #17373c;
-}
-body.general-lobby-page .explore-type-shelves { order: 9; display: grid; width: 100%; gap: 18px; margin: 0 0 12px; }
-body.general-lobby-page .explore-type-shelves[hidden] { display: none; }
-body.general-lobby-page .explore-type-shelf { min-width: 0; margin: 0; }
-body.general-lobby-page .explore-type-shelf .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 8px; }
-body.general-lobby-page .explore-type-shelf .section-heading h2 { min-width: 0; margin: 0; color: var(--lobby-ink); font-size: 17px; font-weight: 800; line-height: 1.2; overflow-wrap: anywhere; }
-body.general-lobby-page .explore-type-shelf .explore-type-more { flex: 0 0 auto; min-height: 44px; padding: 6px 2px 6px 8px; border: 0; background: transparent; color: var(--lobby-accent, #67e3ac); font-size: 11px; font-weight: 750; white-space: normal; text-align: end; cursor: pointer; }
-body.general-lobby-page .explore-type-shelf .explore-type-more:hover { color: #f3ce7e; text-decoration: underline; }
-body.general-lobby-page .explore-type-games { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 12px; width: 100%; min-width: 0; }
-body.general-lobby-page .explore-type-games .hero-game-card { display: grid; grid-template-columns: minmax(0,1fr); grid-template-rows: auto 48px; min-width: 0; height: auto; min-height: 0; border: 1px solid var(--lobby-arcade-line, #597775); border-radius: 3px; background: var(--lobby-arcade-surface, #14323d); color: var(--lobby-ink); box-shadow: 0 3px 0 var(--lobby-arcade-shadow, #061820); text-decoration: none; }
-body.general-lobby-page .explore-type-games .hero-game-art { position: relative; width: 100%; min-width: 0; aspect-ratio: 1; overflow: hidden; background: var(--lobby-paper); }
-body.general-lobby-page .explore-type-games .hero-game-image { position: absolute; inset: 0; width: 100%; height: 100%; max-width: 100%; max-height: 100%; object-fit: contain; transform: none; }
-body.general-lobby-page .explore-type-games .hero-game-copy { position: relative; display: grid; min-width: 0; min-height: 48px; align-content: center; padding: 8px; background: var(--lobby-arcade-surface, #14323d); color: var(--lobby-ink); }
-body.general-lobby-page .explore-type-games .hero-game-copy strong { display: -webkit-box; min-width: 0; overflow: hidden; color: var(--lobby-ink); font-size: 12px; line-height: 1.25; text-align: start; overflow-wrap: anywhere; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-body.general-lobby-page .explore-type-games .hero-game-copy :is(small,em) { display: none; }
-body.general-lobby-page .explore-type-games .hero-game-rank { position: static; transform: none; order: -1; padding: 0; background: transparent; color: #f1c86f; font-size: 10px; line-height: 1.15; }
-body.general-lobby-page .explore-type-games .hero-game-card:is(:hover,:focus-visible) { border-color: var(--lobby-arcade-gold, #edb74e); box-shadow: 0 4px 0 var(--lobby-arcade-shadow, #061820); transform: translateY(-1px); }
-body.general-lobby-page .explore-type-games .hero-game-card:focus-visible { outline: 3px solid var(--lobby-arcade-gold, #edb74e); outline-offset: 2px; }
 
 /* Local-only Demon Assault concept card; normal flow on mobile, filter rail on desktop. */
 body.general-lobby-page .demon-event-preview {
@@ -974,20 +930,6 @@ body.general-lobby-page .demon-event-dialog-done { margin-top: 10px; }
 @media (prefers-reduced-motion: reduce) {
   body.general-lobby-page .demon-event-preview * { animation: none !important; transition: none !important; }
 }
-@media (prefers-reduced-motion: reduce) {
-  body.general-lobby-page .explore-type-filters button,
-  body.general-lobby-page .explore-type-games .hero-game-card { transition: none; scroll-behavior: auto; }
-}
-@media (max-width: 720px) {
-  body.general-lobby-page .explore-type-shelves { gap: 13px; margin-bottom: 8px; }
-  body.general-lobby-page .explore-type-shelf .section-heading { gap: 6px; margin-bottom: 6px; }
-  body.general-lobby-page .explore-type-shelf .section-heading h2 { font-size: 15px; }
-  body.general-lobby-page .explore-type-shelf .explore-type-more { max-width: 48%; padding-inline: 4px; font-size: 10px; }
-  body.general-lobby-page .explore-type-games { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(35vw,138px); gap: 9px; overflow-x: auto; overflow-y: hidden; padding: 0 0 7px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: #c6d5c5 transparent; }
-  body.general-lobby-page .explore-type-games .hero-game-card { width: auto; min-width: 0; flex: none; scroll-snap-align: start; }
-  body.general-lobby-page .explore-type-games .hero-game-copy { min-height: 42px; padding: 6px; }
-  body.general-lobby-page .explore-type-games .hero-game-copy strong { font-size: 11px; }
-}
 .demon-event-preview .demon-event-play{cursor:pointer;background:linear-gradient(135deg,#f1bc72,#d78f4e);color:#241c2c;border-color:#ffc980;font-weight:800;opacity:1}
 .demon-event-preview .demon-event-play:hover{filter:brightness(1.08)}
 /* Demon activity: original square poster, one clear primary action. */
@@ -1074,4 +1016,15 @@ body.general-lobby-page .demon-event-dialog .demon-event-count { margin: 0; colo
 @media (prefers-reduced-motion: reduce) {
   body.general-lobby-page .demon-event-track { scroll-behavior: auto; }
   body.general-lobby-page .demon-event-card, body.general-lobby-page .demon-event-chevron { transition: none; }
+}
+
+/* One genre list per responsive surface; long catalogs keep the rail usable. */
+@media (min-width: 721px) {
+  body.general-lobby-page .desktop-filter-rail {
+    max-height: calc(100dvh - 118px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--hall-border, #45646b) transparent;
+  }
 }

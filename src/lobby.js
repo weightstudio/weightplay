@@ -1,6 +1,16 @@
 const lobby = window.WONDER_LOBBY;
+const gameGenres = window.WeightPlayGameGenres;
+if (!gameGenres) throw new Error("Lobby gameplay registry is missing");
 const officialGameTitles = window.WEIGHTPLAY_GAME_TITLES || {};
 lobby.games.forEach((game) => {
+  // Editorial/theme tags are not gameplay genres. Retain them separately for
+  // the existing Featured shortcut and leave hall membership to its registry.
+  game.catalogTags = [...(game.categories || [])];
+  const genre = gameGenres.get(game);
+  game.categories = genre ? [genre.primary, ...genre.secondary.filter((id) => gameGenres.genreIds.includes(id))] : [];
+  game.mechanics = genre?.secondary.filter((id) => !gameGenres.genreIds.includes(id)) || [];
+  game.skills = [...new Set((game.skills || []).map((skill) =>
+    skill === "Hand-eye Coordination" ? "Hand-Eye Coordination" : skill))];
   if (officialGameTitles[game.id]) game.title = officialGameTitles[game.id];
   const interface7Poster = window.WEIGHTPLAY_INTERFACE7_POSTERS?.[game.id];
   if (interface7Poster) {
@@ -29,7 +39,6 @@ const modeHeroGameIds = isKidsLobby
 // Owner-locked General spotlight. See docs/lobby-featured-game-lock.md.
 const modeFeaturedGameId = isKidsLobby ? "color-lunchbox" : "animal-crystal-survivor";
 const tabletopHeroGameIds = ["mahjong-solitaire", "chess", "hearts", "klondike-solitaire", "spades"];
-const topicHeroGameIds = [...topicGameIds];
 lobby.games = catalogGames;
 lobby.heroGameIds = modeHeroGameIds;
 lobby.featuredGameId = modeFeaturedGameId;
@@ -48,32 +57,16 @@ if (!isKidsLobby && topicGameIds.size && gameHallSwitch && !gameHallSwitch.query
   gameHallSwitch.append(topicsButton);
 }
 const hallButtons = document.querySelectorAll("[data-hall-tab]");
-if (!isKidsLobby) {
-  document.querySelectorAll('.topic-filter, .vibe-options').forEach(group => {
-    if (group.querySelector('[data-topic-filter="Action"]')) return;
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.dataset.topicFilter = 'Action';
-    button.dataset.hallOnly = 'games';
-    button.dataset.i18n = 'category.Action';
-    group.insertBefore(button, group.querySelector('[data-topic-filter="Strategy"]'));
-  });
-}
-const topicHallCategories = new Set(catalogGames
-  .filter(game => topicGameIds.has(game.id))
-  .flatMap(game => game.categories || [])
-  .filter(category => !["Animal Games", "Featured"].includes(category)));
-if (!isKidsLobby) {
-  document.querySelectorAll('.topic-filter, .vibe-options').forEach(group => {
-    for (const category of topicHallCategories) {
-      if ([...group.querySelectorAll('[data-topic-filter]')]
-        .some(button => button.dataset.topicFilter === category)) continue;
+if (!isKidsLobby) document.querySelector("#advancedFilters")?.remove();
+{
+  document.querySelectorAll(isKidsLobby ? '.topic-filter' : '.topic-filter, .vibe-options').forEach(group => {
+    group.replaceChildren();
+    for (const id of ["all", "Featured", ...gameGenres.definitions.map((genre) => genre.id)]) {
       const button = document.createElement('button');
       button.type = 'button';
-      button.dataset.topicFilter = category;
-      button.dataset.hallOnly = 'topics';
-      button.dataset.i18n = `category.${category}`;
-      button.hidden = true;
+      button.dataset.topicFilter = id;
+      button.dataset.runtimeLocalize = "off";
+      button.dataset.i18n = id === "all" ? "filter.all_genres" : `category.${id}`;
       group.append(button);
     }
   });
@@ -325,7 +318,6 @@ let activeSkill = "all";
 let activeLibrary = "all";
 let activeAvailability = "all";
 let activeSearch = "";
-let activeExploreType = "all";
 let hallSearchDisplay;
 let toastTimer = null;
 let toastDeadline = 0;
@@ -721,9 +713,9 @@ function createDemonEventPreview() {
 
 function syncDemonEventPreview() {
   if (!demonEventPreview) return;
-  const show = !isKidsLobby && activeHall === "games" && (activeTopic === "all" || activeTopic === "Block")
+  const show = !isKidsLobby && activeHall === "games" && activeTopic === "all"
     && activeFilter === "all" && activeSkill === "all" && activeLibrary === "all"
-    && activeAvailability === "all" && activeSearch === "" && activeExploreType === "all";
+    && activeAvailability === "all" && activeSearch === "";
   const wasHidden = demonEventPreview.hidden;
   demonEventPreview.hidden = !show;
   if (wasHidden !== demonEventPreview.hidden) {
@@ -733,120 +725,22 @@ function syncDemonEventPreview() {
   if (hero && demonEventPreview.previousElementSibling !== hero) hero.after(demonEventPreview);
 }
 
-const exploreTypeRules = [
-  { id: "Pet Care", label: () => categoryText("Pet Care"), matches: (game) => (game.categories || []).includes("Pet Care") },
-  { id: "RPG", label: () => "RPG", matches: (game) => /\bRPG\b/i.test(game.type?.en || "") },
-  { id: "tower-defense", label: () => ({en:"Tower Defense","zh-Hant":"塔防","zh-Hans":"塔防",ja:"タワーディフェンス",ko:"타워 디펜스",es:"Defensa de torres","pt-BR":"Defesa de torre",fr:"Défense de tours",de:"Tower Defense",it:"Difesa della torre",ru:"Защита башни",hi:"टावर डिफेंस",ar:"دفاع الأبراج"}[i18n.actualLocale()] || "Tower Defense"), matches: (game) => /tower defense/i.test(game.type?.en || "") },
-  { id: "Puzzle", label: () => categoryText("Puzzle"), matches: (game) => (game.categories || []).includes("Puzzle") },
-  { id: "Reaction", label: () => skillText("Reaction"), matches: (game) => /reaction/i.test(game.type?.en || "") },
-  { id: "Rhythm", label: () => skillText("Rhythm"), matches: (game) => /rhythm/i.test(game.type?.en || "") },
-];
-function exploreTypesFor(game) {
-  return exploreTypeRules.filter((rule) => rule.matches(game)).map((rule) => rule.id);
+function topicMatches(game, topic) {
+  return topic === "all" || (topic === "Featured"
+    ? game.catalogTags.includes("Featured") : gameGenres.matches(game, topic));
 }
-function exploreableGeneralGames() {
-  return lobby.games.filter((game) => generalGameIds.has(game.id) && game.status === "playable"
-    && !game.internalOnly && !tabletopGameIds.has(game.id) && !topicGameIds.has(game.id));
+
+function filterTopicsFor(game) {
+  return [...game.categories, ...(game.catalogTags.includes("Featured") ? ["Featured"] : [])];
 }
-function ensureExploreTypeShelves() {
-  let container = document.querySelector("#exploreTypeShelves");
-  if (!container) {
-    container = document.createElement("div");
-    container.id = "exploreTypeShelves";
-    container.className = "explore-type-shelves";
-    container.dataset.runtimeLocalize = "off";
-  }
-  const rail = document.querySelector("#exploreTypeFilters");
-  const heading = document.querySelector("#catalogHeading");
-  if (rail) rail.after(container);
-  else heading?.before(container);
-  return container;
-}
-function selectExploreType(type) {
-  activeExploreType = activeExploreType === type ? "all" : type;
-  document.querySelectorAll("#exploreTypeFilters [data-explore-type]").forEach((button) => {
-    button.setAttribute("aria-pressed", String(button.dataset.exploreType === activeExploreType));
+
+function syncGenreFilters() {
+  const eligible = [...catalogGames, ...upcomingPreviewGames()]
+    .filter((game) => gameMatchesHall(game));
+  topicButtons.forEach((button) => {
+    const id = button.dataset.topicFilter;
+    button.hidden = id !== "all" && !eligible.some((game) => topicMatches(game, id));
   });
-  applyFilter({ historyMode: "push" });
-  if (activeExploreType !== "all") {
-    const heading = document.querySelector("#catalogHeading");
-    heading?.focus({ preventScroll: true });
-    heading?.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
-  }
-}
-function renderExploreTypeShelves(isFiltered = false) {
-  if (isKidsLobby) return;
-  const container = ensureExploreTypeShelves();
-  container.hidden = activeHall !== "games" || isFiltered;
-  if (container.hidden) return;
-  const eligible = exploreableGeneralGames();
-  const sections = exploreTypeRules.map((rule) => {
-    const matching = eligible.filter(rule.matches);
-    if (!matching.length) return null;
-    // Only call a category Popular when every card in that category has
-    // positive observed game_start data. Portfolio totals alone do not prove
-    // category popularity, and zero-count games must not receive fallback ranks.
-    const popular = hasRealStats() && matching.every((game) => Number(statFor(game).playsTotal) > 0);
-    if (popular) matching.sort((a, b) => (statFor(b).playsTotal || 0) - (statFor(a).playsTotal || 0)
-      || (statFor(b).plays7d || 0) - (statFor(a).plays7d || 0) || a.id.localeCompare(b.id, "en"));
-    const games = matching.slice(0, 5);
-    const title = `${i18n.t(popular ? "section.hero_games" : "site.featured")} · ${rule.label()}`;
-    const section = document.createElement("section");
-    section.className = "explore-type-shelf";
-    section.dataset.exploreTypeShelf = rule.id;
-    section.dataset.total = String(matching.length);
-    section.dataset.rendered = String(games.length);
-    section.setAttribute("aria-label", title);
-    const allLabel = `${rule.label()} · ${i18n.t("library.all_games")} →`;
-    section.innerHTML = `<div class="section-heading"><h2></h2><button class="catalog-jump explore-type-more" type="button"></button></div><div class="hero-games explore-type-games"></div>`;
-    section.querySelector("h2").textContent = title;
-    const more = section.querySelector(".explore-type-more");
-    more.textContent = allLabel;
-    more.setAttribute("aria-label", allLabel);
-    more.addEventListener("click", () => selectExploreType(rule.id));
-    section.querySelector(".explore-type-games").replaceChildren(...discoveryCards(games, { popular, priority: false }));
-    return section;
-  }).filter(Boolean);
-  container.replaceChildren(...sections);
-}
-function renderExploreTypes() {
-  if (isKidsLobby) return;
-  const existingRail = document.querySelector("#exploreTypeFilters");
-  if (existingRail) {
-    existingRail.hidden = activeHall !== "games";
-    existingRail.querySelectorAll("button").forEach((node) => {
-      const rule = exploreTypeRules.find((item) => item.id === node.dataset.exploreType);
-      if (rule) node.textContent = `${rule.label()} · ${node.dataset.count}`;
-      node.setAttribute("aria-pressed", String(node.dataset.exploreType === activeExploreType));
-    });
-    return;
-  }
-  const eligibleIds = new Set(lobby.audiences.generalGameIds || []);
-  const eligible = lobby.games.filter((game) => eligibleIds.has(game.id) && game.status === "playable"
-    && !game.internalOnly && !lobby.audiences.tabletopGameIds?.includes(game.id)
-    && !lobby.audiences.topicGameIds?.includes(game.id));
-  const rules = exploreTypeRules.map((rule) => ({ ...rule, count: eligible.filter(rule.matches).length }))
-    .filter((rule) => rule.count > 0);
-  if (!rules.length) return;
-  const rail = document.createElement("nav");
-  rail.id = "exploreTypeFilters";
-  rail.hidden = activeHall !== "games";
-  rail.setAttribute("aria-label", i18n.t("aria.topic_filters"));
-  rail.className = "explore-type-filters";
-  for (const rule of rules) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.dataset.exploreType = rule.id;
-    button.dataset.count = String(rule.count);
-    button.setAttribute("aria-pressed", String(activeExploreType === rule.id));
-    button.textContent = `${rule.label()} · ${rule.count}`;
-    button.addEventListener("click", () => {
-      selectExploreType(rule.id);
-    });
-    rail.append(button);
-  }
-  const heading = document.querySelector("#catalogHeading");
-  heading?.before(rail);
 }
 
 function gamesInHall(hall = activeHall) {
@@ -940,7 +834,9 @@ function decodeLobbyImage(source) {
 }
 
 function categoryText(category) {
-  return i18n.t(`category.${category}`);
+  const key = `category.${category}`;
+  const localized = i18n.t(key);
+  return localized === key ? skillText(category) : localized;
 }
 
 function skillText(skill) {
@@ -979,11 +875,7 @@ function syncHallPresentation() {
   document.querySelectorAll("[data-hall-only]").forEach((element) => {
     element.hidden = element.dataset.hallOnly !== activeHall;
   });
-  topicButtons.forEach(button => {
-    button.hidden = Boolean(button.dataset.hallOnly && button.dataset.hallOnly !== activeHall)
-      || (activeHall === 'topics' && button.dataset.topicFilter !== 'all'
-        && !topicHallCategories.has(button.dataset.topicFilter));
-  });
+  syncGenreFilters();
   const catalogHallLabel = document.querySelector("#catalogHallLabel");
   const hallNameKey = `hall.${activeHall}`;
   const hallTitleKey = `hall.${activeHall}_title`;
@@ -1014,15 +906,13 @@ function restoreDiscoveryFiltersFromUrl({ present = true } = {}) {
   const params = new URLSearchParams(window.location.search);
   activeHall = isKidsLobby ? "games" : selectedFilterValue(hallButtons, "hallTab", params.get("hall") || "games");
   activeFilter = selectedFilterValue(filterButtons, "ageFilter", params.get("age") || "all");
-  activeTopic = selectedFilterValue(topicButtons, "topicFilter", params.get("topic") || "all");
-  const activeTopicButton = [...topicButtons].find((button) => button.dataset.topicFilter === activeTopic);
-  if (activeTopicButton?.dataset.hallOnly && activeTopicButton.dataset.hallOnly !== activeHall) activeTopic = "all";
+  activeTopic = selectedFilterValue(topicButtons, "topicFilter", params.get("topic") || (params.get("gameType") === "tower-defense" ? "Tower Defense" : params.get("gameType")) || "all");
+  if (!isKidsLobby && activeTopic !== "all" && ![...catalogGames, ...upcomingPreviewGames()]
+    .some((game) => gameMatchesHall(game) && topicMatches(game, activeTopic))) activeTopic = "all";
   activeSkill = selectedFilterValue(skillButtons, "skillFilter", params.get("skill") || "all");
   if (activeTopic !== "all" && activeSkill !== "all") activeTopic = "all";
   activeLibrary = selectedFilterValue(libraryButtons, "libraryTab", params.get("library") || "all");
   activeAvailability = selectedFilterValue(availabilityButtons, "availabilityFilter", params.get("availability") || "all");
-  const requestedType = params.get("gameType") || "all";
-  activeExploreType = !isKidsLobby && activeHall === "games" && exploreTypeRules.some((rule) => rule.id === requestedType) ? requestedType : "all";
   const query = params.get("q") || "";
   activeSearch = normalizeSearch(query);
   if (!present) { hallSearchDisplay = query; return; }
@@ -1046,7 +936,7 @@ function syncDiscoveryFiltersToUrl(historyMode = "replace") {
     library: activeLibrary,
     availability: activeAvailability,
     q: activeSearch,
-    gameType: activeExploreType,
+    gameType: "all", // Retire old URLs after migrating into the shared topic facet.
   };
   Object.entries(values).forEach(([key, value]) => {
     if (!value || value === "all") url.searchParams.delete(key);
@@ -1070,7 +960,6 @@ function activeDiscoveryLabels() {
   if (activeSkill !== "all") labels.push(selectedButtonLabel(skillButtons, "skillFilter", activeSkill));
   if (activeLibrary !== "all") labels.push(selectedButtonLabel(libraryButtons, "libraryTab", activeLibrary));
   if (activeAvailability !== "all") labels.push(selectedButtonLabel(availabilityButtons, "availabilityFilter", activeAvailability));
-  if (activeExploreType !== "all") labels.push(exploreTypeRules.find((rule) => rule.id === activeExploreType)?.label() || activeExploreType);
   if (activeSearch) labels.push(i18n.t("status.search_term", { query: activeSearch }));
   return labels.filter(Boolean);
 }
@@ -1278,7 +1167,9 @@ function countGamesBy(type, value) {
   }
   if (type === "library") state.library = value;
   if (type === "availability") state.availability = value;
-  return matchingCatalogGames(state).length;
+  const games = [...matchingCatalogGames(state), ...upcomingPreviewGames()
+    .filter((game) => cardMatchesFilterState({ dataset: catalogFilterData(game) }, state))];
+  return new Set(games.map((game) => game.id)).size;
 }
 
 function filterButtonLabel(button, type, value) {
@@ -1428,17 +1319,10 @@ function heroGamesTitleKey() {
 }
 
 function popularGames(limit = 3) {
-  if (!isKidsLobby && activeHall === "topics") {
-    // The Topics shelf is a preview, not a popularity ranking. Its planned
-    // cards are rendered as Coming Soon buttons without rank or play counts.
-    const topicGames = matchingCatalogGames().filter((game) => topicHeroGameIds.includes(game.id));
-    return topicGames.slice(0, limit);
-  }
   const ranked = rankedPopularGames(limit);
   if (ranked.length) return ranked;
   const availableGames = gamesInHall().filter((game) => game.status === "playable");
-  const heroIds = !isKidsLobby && activeHall === "tabletop" ? tabletopHeroGameIds
-    : !isKidsLobby && activeHall === "topics" ? topicHeroGameIds : lobby.heroGameIds;
+  const heroIds = !isKidsLobby && activeHall === "tabletop" ? tabletopHeroGameIds : lobby.heroGameIds;
   return heroIds.map((id) => availableGames.find((game) => game.id === id)).filter(Boolean).slice(0, limit);
 }
 
@@ -1635,6 +1519,13 @@ function openGame(game, title, ageLabel, card = null) {
   window.location.href = targetUrl;
 }
 
+function matchesCatalogSearch(card, query) {
+  if (!query) return true;
+  const genre = gameGenres.definitions.find(({ id }) =>
+    normalizeSearch(id) === query || normalizeSearch(categoryText(id)) === query);
+  return genre ? gameGenres.matches(card.dataset.gameId, genre.id) : card.dataset.search.includes(query);
+}
+
 function cardMatchesFilterState(card, state) {
   const ages = card.dataset.age.split(" ");
   const topics = card.dataset.topic ? card.dataset.topic.split("|") : [];
@@ -1644,14 +1535,13 @@ function cardMatchesFilterState(card, state) {
     matchesAgeFilter(ages, state.age) &&
     (state.topic === "all" || topics.includes(state.topic)) &&
     (state.skill === "all" || skills.includes(state.skill)) &&
-    (!state.search || card.dataset.search.includes(state.search)) &&
+    matchesCatalogSearch(card, state.search) &&
     (state.library === "all" ||
       (state.library === "favorites" && card.dataset.favorite === "true") ||
       (state.library === "recent" && card.dataset.recent === "true")) &&
     (state.availability === "all" ||
       (state.availability === "playable" && card.dataset.status === "playable") ||
-      (state.availability === "preview" && card.dataset.status === "planned")) &&
-    (state.gameType === "all" || card.dataset.gameType.split("|").includes(state.gameType))
+      (state.availability === "preview" && card.dataset.status === "planned"))
   );
 }
 
@@ -1663,7 +1553,6 @@ function quickPickCandidates() {
     activeSkill !== "all" ||
     activeLibrary !== "all" ||
     activeAvailability !== "all" ||
-    activeExploreType !== "all" ||
     Boolean(activeSearch);
   if (visibleGames.length) return { games: visibleGames, usedFallback: false };
   // Quick Pick promises to choose from the current filters. Falling back to
@@ -1737,10 +1626,9 @@ function createGameCard(game) {
   card.className = `game-card ${isPlayable ? "playable" : "coming-soon"}`;
   card.dataset.hall = gameHall(game);
   card.dataset.age = (game.ages || []).join(" ");
-  card.dataset.topic = (game.categories || []).join("|");
+  card.dataset.topic = filterTopicsFor(game).join("|");
   card.dataset.skill = (game.skills || []).join("|");
   card.dataset.status = game.status;
-  card.dataset.gameType = exploreTypesFor(game).join("|");
   card.dataset.gameId = game.id;
   card.dataset.search = catalogSearchText(game);
   card.dataset.favorite = favorite ? "true" : "false";
@@ -2224,7 +2112,7 @@ hallMotionQuery.addEventListener('change', () => { if (hallMotionQuery.matches) 
 
 function renderLobbyContent({ historyMode = "replace" } = {}) {
   recentGameIds = readRecentGames();
-  renderExploreTypes();
+  syncGenreFilters();
   if (gameSearch && hallSearchDisplay !== undefined) gameSearch.value = hallSearchDisplay;
   hallSearchDisplay = undefined;
   setActiveButtons(filterButtons, "ageFilter", activeFilter);
@@ -2364,6 +2252,10 @@ function discoveryCards(games, { popular = false, visualIdentity = false, priori
 function renderHeroGames() {
   const popular = hasRankedPopularGames();
   heroGames.querySelectorAll("video").forEach(video => video.releaseLobbyPreview?.());
+  if (!isKidsLobby && activeHall === "topics") {
+    heroGames.replaceChildren();
+    return;
+  }
   heroGames.replaceChildren(...discoveryCards(popularGames(5), { popular }));
 }
 
@@ -2437,18 +2329,10 @@ function renderUpcomingGames() {
     card.dataset.gameId = game.id;
     card.dataset.hall = gameHall(game);
     card.dataset.age = (game.ages || []).join(" ");
-    card.dataset.topic = (game.categories || []).join("|");
+    card.dataset.topic = filterTopicsFor(game).join("|");
     card.dataset.skill = (game.skills || []).join("|");
     card.dataset.status = game.status;
-    card.dataset.search = normalizeSearch([
-      title,
-      game.title?.en,
-      type,
-      ageLabel,
-      description,
-      ...(game.categories || []).map(categoryText),
-      ...(game.skills || []).map(skillText),
-    ].filter(Boolean).join(" "));
+    card.dataset.search = catalogSearchText(game);
     card.dataset.favorite = isFavorite(game.id) ? "true" : "false";
     card.dataset.recent = isRecent(game.id) ? "true" : "false";
     card.dataset.recentIndex = String(recentGameIds.indexOf(game.id));
@@ -2689,7 +2573,6 @@ function selectSkillPath(skill) {
   activeSkill = skill;
   activeLibrary = "all";
   activeAvailability = "all";
-  activeExploreType = "all";
   activeSearch = "";
   if (gameSearch) gameSearch.value = "";
   setActiveButtons(filterButtons, "ageFilter", "all");
@@ -2721,7 +2604,6 @@ function clearDiscoverySelections({ present = true } = {}) {
   activeSkill = "all";
   activeLibrary = "all";
   activeAvailability = "all";
-  activeExploreType = "all";
   activeSearch = "";
   if (!present) { hallSearchDisplay = ''; return; }
   if (gameSearch) gameSearch.value = "";
@@ -2730,9 +2612,7 @@ function clearDiscoverySelections({ present = true } = {}) {
   setActiveButtons(skillButtons, "skillFilter", "all");
   setActiveButtons(libraryButtons, "libraryTab", "all");
   setActiveButtons(availabilityButtons, "availabilityFilter", "all");
-  document.querySelectorAll("#exploreTypeFilters [data-explore-type]").forEach((button) => {
-    button.setAttribute("aria-pressed", "false");
-  });
+
 }
 
 function resetDiscoveryFilters() {
@@ -2744,7 +2624,7 @@ function resetDiscoveryFilters() {
 
 function currentDiscoveryState() {
   return { hall: isKidsLobby ? "all" : activeHall, age: activeFilter, topic: activeTopic, skill: activeSkill,
-    library: activeLibrary, availability: activeAvailability, search: activeSearch, gameType: activeExploreType };
+    library: activeLibrary, availability: activeAvailability, search: activeSearch };
 }
 
 function renderCatalogDirectory() {
@@ -2777,15 +2657,20 @@ function catalogSearchText(game) {
   return catalogSearchIndex.get(game.id);
 }
 
-function matchingCatalogGames(state = currentDiscoveryState()) {
-  // Filtering and counts must not depend on how many DOM cards were revealed.
-  return lobby.games.filter((game) => cardMatchesFilterState({ dataset: {
+function catalogFilterData(game) {
+  return {
+    gameId: game.id,
     hall: gameHall(game),
-    age: (game.ages || []).join(" "), topic: (game.categories || []).join("|"),
-    skill: (game.skills || []).join("|"), status: game.status, gameType: exploreTypesFor(game).join("|"),
+    age: (game.ages || []).join(" "), topic: filterTopicsFor(game).join("|"),
+    skill: (game.skills || []).join("|"), status: game.status,
     search: catalogSearchText(game), favorite: String(isFavorite(game.id)),
     recent: String(isRecent(game.id)),
-  } }, state));
+  };
+}
+
+function matchingCatalogGames(state = currentDiscoveryState()) {
+  // Filtering and counts must not depend on how many DOM cards were revealed.
+  return lobby.games.filter((game) => cardMatchesFilterState({ dataset: catalogFilterData(game) }, state));
 }
 
 function renderCatalog(isFiltered) {
@@ -2831,7 +2716,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
   if (!renderingHallMotion) settleHallMotion();
   activeGamePreview?.releaseLobbyPreview();
   syncDemonEventPreview();
-  renderExploreTypes();
+  syncGenreFilters();
   let upcomingVisibleCount = 0;
   const isFiltered =
     activeFilter !== "all" ||
@@ -2839,28 +2724,10 @@ function applyFilter({ historyMode = "replace" } = {}) {
     activeSkill !== "all" ||
     activeLibrary !== "all" ||
     activeAvailability !== "all" ||
-    activeExploreType !== "all" ||
     Boolean(activeSearch);
-  renderExploreTypeShelves(isFiltered);
   let visibleCount = renderCatalog(isFiltered);
   document.querySelectorAll("#upcomingGames [data-age]").forEach((card) => {
-    const ages = card.dataset.age.split(" ");
-    const topics = card.dataset.topic ? card.dataset.topic.split("|") : [];
-    const skills = card.dataset.skill ? card.dataset.skill.split("|") : [];
-    const matchesHall = isKidsLobby || card.dataset.hall === activeHall;
-    const matchesAge = matchesAgeFilter(ages, activeFilter);
-    const matchesTopic = activeTopic === "all" || topics.includes(activeTopic);
-    const matchesSkill = activeSkill === "all" || skills.includes(activeSkill);
-    const matchesSearch = !activeSearch || card.dataset.search.includes(activeSearch);
-    const matchesLibrary =
-      activeLibrary === "all" ||
-      (activeLibrary === "favorites" && card.dataset.favorite === "true") ||
-      (activeLibrary === "recent" && card.dataset.recent === "true");
-    const matchesAvailability =
-      activeAvailability === "all" ||
-      (activeAvailability === "playable" && card.dataset.status === "playable") ||
-      (activeAvailability === "preview" && card.dataset.status === "planned");
-    const isVisible = matchesHall && matchesAge && matchesTopic && matchesSkill && matchesSearch && matchesLibrary && matchesAvailability;
+    const isVisible = cardMatchesFilterState(card, currentDiscoveryState());
     card.classList.toggle("hidden", !isVisible);
     if (activeLibrary === "recent" && card.dataset.recentIndex !== "-1") {
       card.style.order = card.dataset.recentIndex;
@@ -2881,9 +2748,8 @@ function applyFilter({ historyMode = "replace" } = {}) {
     activeLibrary === "recent" ? "library.recent" : activeLibrary === "favorites" ? "library.favorites" : "library.all_games"
   );
   if (!isKidsLobby && activeHall === 'topics') renderHeroGames();
-  heroGamesSection.classList.toggle("hidden", activeHall === 'topics'
-    ? heroGames.childElementCount === 0 : isFiltered);
-  latestGamesSection.classList.toggle("hidden", isFiltered || isKidsLobby || latestGames.childElementCount === 0);
+  heroGamesSection.classList.toggle("hidden", isFiltered || (!isKidsLobby && activeHall === "topics"));
+  latestGamesSection.classList.toggle("hidden", isFiltered || isKidsLobby || activeHall === "topics" || latestGames.childElementCount === 0);
   discoverySnapshot?.classList.toggle("hidden", isFiltered);
   continuePlayingSection?.classList.toggle("filtered-out", isFiltered);
   mobilePicksSection?.classList.toggle("hidden", isFiltered);
@@ -3401,7 +3267,7 @@ window.addEventListener("pageshow", (event) => {
 setupKidsLobbyPresentation();
 renderLobby();
 loadGameStats();
-if (!isKidsLobby && !document.querySelector('[data-wp-game-entry-loader-bootstrap="true"]')) {
+if (!document.querySelector('[data-wp-game-entry-loader-bootstrap="true"]')) {
   const entryLoaderScript = document.createElement("script");
   entryLoaderScript.src = "/src/game-entry-loader.js?v=20261025-style-ready-before-paint1";
   entryLoaderScript.dataset.wpGameEntryLoaderBootstrap = "true";

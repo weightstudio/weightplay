@@ -30,6 +30,7 @@ function settle(level,state){
  throw Error('SAND_DID_NOT_SETTLE');
 }
 export function act(level,previous,action){
+ if(!action||typeof action!=='object')return {ok:false,reason:'blocked'};
  const state=copy(previous),p=state.pieces.find(v=>v.id===action.id);
  if(action.type==='switch'){if(!level.shutters)return {ok:false,reason:'blocked'};state.mode=1-state.mode;}
  else if(action.type==='rotate'){if(!p||!canRotate(level,state,p))return {ok:false,reason:'turntable'};p.cells=rotateCells(p.cells);}
@@ -47,17 +48,19 @@ export function pack(s){return {level:s.level,moves:s.moves,mode:s.mode,parity:s
 export function unpack(level,record){
  if(!record||record.level!==level.id||!Number.isSafeInteger(record.moves)||record.moves<0||![0,1].includes(record.mode)||![0,1].includes(record.parity))throw Error('INVALID_RUN');
  const state=createState(level),initialMass=mass(state);if(record.pieces?.length!==state.pieces.length||record.grains?.length!==state.grains.length||!Array.isArray(record.delivered))throw Error('INVALID_RUN');
- const occupied=new Set();state.pieces.forEach((p,i)=>{const [cells,filled,removed]=record.pieces[i];if(!Array.isArray(cells)||cells.length!==SHAPES[p.shape].length||!Number.isInteger(filled)||filled<0||filled>p.capacity||typeof removed!=='boolean'||removed!==(filled===p.capacity))throw Error('INVALID_RUN');for(const cell of cells){if(!Array.isArray(cell)||cell.length!==2||!cell.every(Number.isInteger))throw Error('INVALID_RUN');const [c,r]=cell,k=key(cell);if(c<0||c>=6||r<0||r>=8||level.walls.includes(k)||(!removed&&occupied.has(k)))throw Error('INVALID_RUN');if(!removed)occupied.add(k);}p.cells=copy(cells);p.filled=filled;p.removed=removed;});
+ const normalized=cells=>{const x=Math.min(...cells.map(c=>c[0])),y=Math.min(...cells.map(c=>c[1]));return cells.map(([c,r])=>`${c-x},${r-y}`).sort().join(';');};
+ const occupied=new Set();state.pieces.forEach((p,i)=>{if(!Array.isArray(record.pieces[i]))throw Error('INVALID_RUN');const [cells,filled,removed]=record.pieces[i];if(!Array.isArray(cells)||cells.length!==SHAPES[p.shape].length||!Number.isInteger(filled)||filled<0||filled>p.capacity||typeof removed!=='boolean'||removed!==(filled===p.capacity))throw Error('INVALID_RUN');for(const cell of cells){if(!Array.isArray(cell)||cell.length!==2||!cell.every(Number.isInteger))throw Error('INVALID_RUN');const [c,r]=cell,k=key(cell);if(c<0||c>=6||r<0||r>=8||level.walls.includes(k)||(!removed&&occupied.has(k)))throw Error('INVALID_RUN');if(!removed)occupied.add(k);}let shape=p.cells,valid=false;for(let n=0;n<(level.rotate?4:1);n++){if(normalized(shape)===normalized(cells))valid=true;shape=shape.map(([x,y])=>[-y,x]);}if(!valid||new Set(cells.map(key)).size!==cells.length)throw Error('INVALID_RUN');p.cells=copy(cells);p.filled=filled;p.removed=removed;});
  const sandCells=new Set();state.grains.forEach((g,i)=>{const n=record.grains[i];if(!Number.isInteger(n)||n< -1||n>=384)throw Error('INVALID_RUN');g.alive=n!==-1;if(g.alive){g.x=n%16;g.y=Math.floor(n/16);const k=g.bank*384+n;if(g.x<g.lane*9||g.x>g.lane*9+6||sandCells.has(k))throw Error('INVALID_RUN');sandCells.add(k);}});
  if(initialMass.join()!==mass(state).join()||new Set(record.delivered).size!==record.delivered.length||record.delivered.some(id=>!state.pieces.some(p=>p.id===id&&p.removed))||record.delivered.length!==state.pieces.filter(p=>p.removed).length)throw Error('INVALID_RUN');
+ const ordered=record.delivered.filter(id=>level.order.includes(id));if(ordered.some((id,i)=>id!==level.order[i])||(!level.shutters&&record.mode!==(level.mode??0)))throw Error('INVALID_RUN');
  Object.assign(state,{moves:record.moves,mode:record.mode,parity:record.parity,delivered:[...record.delivered]});return state;
 }
 /* Macro search uses only the public action rules; no teleport, recolor or hidden queue. */
-export function solve(level,initial=createState(level),{budget=3000}={}){
- let visited=0;const dead=new Set();
- function search(state){if(complete(state))return[];if(++visited>budget)return null;const hash=stateKey(state);if(dead.has(hash))return null;dead.add(hash);const candidates=[];
+export function solve(level,initial=createState(level),{budget=3000,maxMs=Infinity}={}){
+ let visited=0;const dead=new Set(),deadline=performance.now()+maxMs;
+ function search(state){if(complete(state))return[];if(++visited>budget||performance.now()>deadline)return null;const hash=stateKey(state);if(dead.has(hash))return null;dead.add(hash);const candidates=[];
   for(const piece of state.pieces){if(piece.removed)continue;const queue=[{cells:piece.cells,path:[]}],seen=new Set([poseKey(piece.cells)]),parking=[];const docked=PORTS.some(port=>piece.cells.some(([c,r])=>c===port.c&&r===port.r));
-   for(let qi=0;qi<queue.length;qi++){const node=queue[qi],virtual={...state,pieces:state.pieces.map(p=>p.id===piece.id?{...p,cells:node.cells}:p)};
+   for(let qi=0;qi<queue.length;qi++){if(performance.now()>deadline)return null;const node=queue[qi],virtual={...state,pieces:state.pieces.map(p=>p.id===piece.id?{...p,cells:node.cells}:p)};
     if(node.path.length&&PORTS.some(port=>node.cells.some(([c,r])=>c===port.c&&r===port.r))){let current=state,absorbed=0,valid=true;for(const a of node.path){const result=act(level,current,a);if(!result.ok){valid=false;break;}current=result.state;absorbed+=result.absorbed;}if(valid&&absorbed)candidates.push({state:current,path:node.path,score:absorbed*3+current.delivered.length*50-node.path.length});}
     if((docked||piece.cells.some(([c,r])=>c>=2&&c<=3&&r>=3&&r<=4))&&node.path.length&&node.path.length<=2&&!PORTS.some(port=>node.cells.some(([c,r])=>c===port.c&&r===port.r))){let current=state,valid=true;for(const action of node.path){const r=act(level,current,action);if(!r.ok){valid=false;break;}current=r.state;}if(valid)parking.push({state:current,path:node.path,score:-50-node.path.length-node.cells.filter(([c,r])=>r>=2&&r<=5&&c>=1&&c<=4).length});}
     for(const action of legalActions(level,virtual,piece.id)){const cells=action.type==='rotate'?rotateCells(node.cells):node.cells.map(([c,r])=>[c+action.dx,r+action.dy]),hash=poseKey(cells);if(!seen.has(hash)){seen.add(hash);queue.push({cells,path:[...node.path,action]});}}

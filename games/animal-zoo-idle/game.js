@@ -614,8 +614,6 @@
     keepParkOpenBtn: $("keepParkOpenBtn"),
     leaveParkBtn: $("leaveParkBtn"),
     loadingPanel: $("loadingPanel"),
-    loadingText: $("loadingText"),
-    loadingFill: $("loadingFill"),
   };
   const resultCard = nodes.resultPanel?.querySelector(".result-card");
   if (resultCard && !resultCard.querySelector(".result-scroll-region")) {
@@ -626,6 +624,35 @@
     resultCard.insertBefore(resultScrollRegion, nodes.closeReportBtn);
   }
   nodes.menuProgress?.classList.add("main-progress");
+
+  const frameRoot = document.querySelector(".zoo-app");
+  const battleTopInfo = document.getElementById("battleTopInfo");
+  const frame = window.WeightPlayScreenFrame?.mountSlots?.({
+    root: frameRoot,
+    main: nodes.menuPanel,
+    battle: { root: nodes.gamePanel, headerInfo: battleTopInfo },
+  });
+  if (!frame?.battleTopUI) throw new Error("Zoo Idle requires the shared I9 frame slots.");
+  const battleInfoGroup = window.WeightPlayScreenFrame.createGroup();
+  const coinStat = document.createElement("div");
+  const coinIcon = document.createElement("img");
+  coinIcon.src = "../../assets/coin.png";
+  coinIcon.alt = "";
+  coinIcon.className = "coin-icon";
+  coinIcon.draggable = false;
+  const coinLabel = document.createElement("span");
+  coinLabel.dataset.ui = "coins";
+  const coinValue = nodes.coinText || document.createElement("b");
+  coinValue.id = "coinText";
+  coinValue.textContent = "0";
+  nodes.coinText = coinValue;
+  coinStat.append(coinIcon, coinLabel, coinValue);
+  battleInfoGroup.add(coinStat);
+  frame.battleTopUI.add(battleInfoGroup);
+  frame.activate("main");
+
+  const sharedBattleHeader = () => document.getElementById("wp-shared-battle-header")
+    || nodes.gamePanel.querySelector(".resource-row");
 
   let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || readStorage(localeKey) || "en";
   if (!text[locale] && locale !== "zh-Hans") locale = "en";
@@ -1854,8 +1881,10 @@
     const resultScrollRegion = nodes.resultPanel.querySelector(".result-scroll-region");
     nodes.gamePanel.classList.add("report-open");
     nodes.habitatGrid.inert = true;
-    nodes.gamePanel.querySelector(".resource-row").inert = true;
+    const header = sharedBattleHeader();
+    if (header) header.inert = true;
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
+    frame.activate("battle", { covered: true });
     requestAnimationFrame(() => {
       if (resultScrollRegion) resultScrollRegion.scrollTop = 0;
       nodes.closeReportBtn.focus({ preventScroll: true });
@@ -1868,7 +1897,9 @@
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     nodes.gamePanel.classList.remove("report-open");
     nodes.habitatGrid.inert = false;
-    nodes.gamePanel.querySelector(".resource-row").inert = false;
+    const header = sharedBattleHeader();
+    if (header) header.inert = false;
+    if (document.body.classList.contains("zoo-playing") && !parkLeaveOpen) frame.activate("battle");
     if (restoreFocus) nodes.gamePanel.querySelector('[data-action="report"]')?.focus({ preventScroll: true });
   }
 
@@ -1917,13 +1948,16 @@
     parkLeaveOpen = Boolean(open);
     (__wpNotifyMeasurement(), nodes.parkLeavePanel.classList.toggle("hidden", !parkLeaveOpen));
     nodes.habitatGrid.inert = parkLeaveOpen;
-    nodes.gamePanel.querySelector(".resource-row").inert = parkLeaveOpen;
+    const header = sharedBattleHeader();
+    if (header) header.inert = parkLeaveOpen;
     if (parkLeaveOpen) {
+      frame.activate("battle", { covered: true });
       cancelAnimalDrag();
       saveGame();
       syncParkLeaveCopy();
       requestAnimationFrame(() => nodes.keepParkOpenBtn.focus({ preventScroll: true }));
     } else if (restoreFocus && document.body.classList.contains("zoo-playing")) {
+      if (nodes.resultPanel.classList.contains("hidden")) frame.activate("battle");
       requestAnimationFrame(() => nodes.backToMenuBtn.focus({ preventScroll: true }));
     }
   }
@@ -1936,6 +1970,7 @@
     nodes.localeSelect.closest(".language-picker")?.setAttribute("aria-hidden", "true");
     nodes.menuPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
+    frame.activate("battle");
     updateZooBattleScale();
     applyOffline();
     render();
@@ -1967,6 +2002,7 @@
     nodes.localeSelect.closest(".language-picker")?.removeAttribute("aria-hidden");
     nodes.gamePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
+    frame.activate("main");
     renderMenuProgress();
     closeReport(false);
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -2013,30 +2049,23 @@
       ASSETS.ticketBooth,
       visitorAssets[0],
     ];
-    let done = 0;
-    const finish = () => {
-      done += 1;
-      const pct = Math.round((done / assets.length) * 100);
-      nodes.loadingText.textContent = `${pct}%`;
-      nodes.loadingFill.style.width = `${pct}%`;
-      if (done >= assets.length) {
-        window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
-        window.setTimeout(() => nodes.loadingPanel.classList.add("hidden"), 180);
-      }
-    };
-    assets.forEach((src) => {
-      const img = new Image();
-      img.onload = finish;
-      img.onerror = finish;
-      img.src = src;
+    nodes.startBtn.disabled = true;
+    nodes.loadingPanel.classList.remove("hidden", "has-error");
+    Promise.all(assets.map((src) => new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(src);
+      image.onerror = () => reject(new Error(`Zoo Idle asset failed to load: ${src}`));
+      image.src = src;
+      if (image.complete && image.naturalWidth > 0) resolve(src);
+    }))).then(() => {
+      nodes.startBtn.disabled = false;
+      nodes.loadingPanel.classList.add("hidden");
+      window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
+    }).catch((error) => {
+      console.error(error);
+      nodes.loadingPanel.classList.add("has-error");
+      window.WeightPlayGameEntryLoader?.fail?.();
     });
-    window.setTimeout(() => {
-      if (!nodes.loadingPanel.classList.contains("hidden")) {
-        nodes.loadingText.textContent = "100%";
-        nodes.loadingFill.style.width = "100%";
-        nodes.loadingPanel.classList.add("hidden");
-      }
-    }, 1400);
   }
 
   nodes.localeSelect.addEventListener("change", () => {

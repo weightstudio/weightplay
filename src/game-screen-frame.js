@@ -768,7 +768,16 @@
     };
     const sync=()=>{const name=Object.keys(scenes).find(k=>visible(scenes[k].root));if(name)activate(name);};
     sync();
-    const api=Object.freeze({activate,sync,refresh:frame.refresh,destroy(){frame.destroy();slotMounts.delete(root);},get active(){return frame.active;}});
+    const api=Object.freeze({
+      stageTopUI:frame.stageTopUI,
+      battleTopUI:frame.battleTopUI,
+      commonDownButton:frame.commonDownButton,
+      activate,
+      sync,
+      refresh:frame.refresh,
+      destroy(){frame.destroy();slotMounts.delete(root);},
+      get active(){return frame.active;},
+    });
     slotMounts.set(root,api);return api;
   }
   // Auto-discovery feeds older game-owned scene DOM into this same Interface 7 runtime.

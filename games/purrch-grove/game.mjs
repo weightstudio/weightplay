@@ -33,7 +33,7 @@ function show(next){
  if(next==='stage'){stageTab('goals');selector.refresh(selectedGoal);requestAnimationFrame(()=>selector.refresh(selectedGoal));}
  update();window.dispatchEvent(new Event(`weightplay:${next}-sync`));
 }
-function start(id){if(!grove.start(id))return;if(id>0)selectedGoal=id-1;disposeRoom();show('battle');lost=false;$('graphicsError').hidden=true;$('feedback').textContent='';
+function start(id){if(!grove.start(id))return;if(id>0)selectedGoal=id-1;disposeRoom();cueTime=0;$('worldCue').textContent='';$('worldCue').classList.remove('show');$('feedback').textContent='';$('panelFeedback').textContent='';show('battle');lost=false;$('graphicsError').hidden=true;
  try{room=new Room($('room'),id=>{if(!blocked()){grove.select(id);update();save();sound('ui.click');}},()=>{lost=true;$('graphicsError').hidden=false;save();});room.renderer.domElement.ariaLabel=t('home');room.render(grove.s,.1);}
  catch(e){lost=true;$('graphicsError').hidden=false;console.error('PURRCH_3D',e.message);}
  last=performance.now();raf=requestAnimationFrame(loop);sound('game.start');update();
@@ -112,6 +112,6 @@ function boot(){
  listen(document,'keydown',e=>{const modal=panel?$('panel'):result?$('resultPanel'):null;if(!modal)return;if(e.key==='Escape'&&panel){e.preventDefault();closePanel();}if(e.key==='Tab'){const list=[...modal.querySelectorAll('button,select,a')].filter(n=>!n.disabled&&n.getClientRects().length);const first=list[0],last=list.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}});
  listen(window,'pagehide',e=>{save();motion.clear();if(!e.persisted){disposeRoom();selector.destroy();frame.destroy();audio?.dispose();manageAbort.abort();panelAbort.abort();abort.abort();}});
  window.WeightPlayAudio?.preload?.(['game.start','ui.click','feedback.success','feedback.error','reward.coin','reward.unlock','shop.purchase','result.win']);copy();show('main');
- window.PurrchGrove=Object.freeze({identity:()=>({game:'purrch-grove',version:'v3',interface:'9',saveKey:STORE}),renderStats:()=>room?{revision:'180',calls:room.renderer.info.render.calls,triangles:room.renderer.info.render.triangles,geometries:room.renderer.info.memory.geometries,textures:room.renderer.info.memory.textures}:null});
+ window.PurrchGrove=Object.freeze({identity:()=>({game:'purrch-grove',version:'v4',interface:'9',saveKey:STORE}),renderStats:()=>room?{revision:'180',calls:room.renderer.info.render.calls,triangles:room.renderer.info.render.triangles,geometries:room.renderer.info.memory.geometries,textures:room.renderer.info.memory.textures}:null});
 }
 boot();

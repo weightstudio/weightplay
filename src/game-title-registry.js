@@ -3054,5 +3054,21 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Фия: путь к вершине",
     "hi": "फ़िया की शिखर यात्रा",
     "ar": "فيا ودرب القمة"
+  },
+  "nori-sandworks": {
+    "__localizedExact": true,
+    "en": "Nori’s Sandworks",
+    "zh-Hant": "諾里砂彩坊",
+    "zh-Hans": "诺里砂彩坊",
+    "ja": "ノリの砂工房",
+    "ko": "노리의 모래 공방",
+    "es": "El taller de arena de Nori",
+    "pt-BR": "Oficina de Areia de Nori",
+    "fr": "L’atelier de sable de Nori",
+    "de": "Noris Sandwerkstatt",
+    "it": "Il laboratorio di sabbia di Nori",
+    "ru": "Песочная мастерская Нори",
+    "hi": "नोरी की रेत कार्यशाला",
+    "ar": "ورشة نوري للرمال"
   }
 };

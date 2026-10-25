@@ -7839,24 +7839,177 @@ for (const id of ownerApprovedComingSoonGames) {
 
 // Nori's Sandworks: scoped new-game intake; internal Coming Soon production.
 window.WONDER_LOBBY.games.push({
-  id: "nori-sandworks", audience: "general", status: "planned", internalOnly: true,
-  internalTrial: "index.html?preview=1", href: "games/nori-sandworks/",
-  title: {
-    __localizedExact: true,
-    en: "Nori’s Sandworks", "zh-Hant": "諾里砂彩坊", "zh-Hans": "诺里砂彩坊",
-    ja: "ノリの砂工房", ko: "노리의 모래 공방", es: "El taller de arena de Nori",
-    "pt-BR": "Oficina de Areia de Nori", fr: "L’atelier de sable de Nori", de: "Noris Sandwerkstatt",
-    it: "Il laboratorio di sabbia di Nori", ru: "Песочная мастерская Нори",
-    hi: "नोरी की रेत कार्यशाला", ar: "ورشة نوري للرمال"
+  "id": "nori-sandworks",
+  "audience": "general",
+  "status": "planned",
+  "internalOnly": true,
+  "internalTrial": "index.html?preview=1",
+  "href": "games/nori-sandworks/",
+  "title": {
+    "__localizedExact": true,
+    "en": "Nori’s Sandworks",
+    "zh-Hant": "諾里砂彩坊",
+    "zh-Hans": "诺里砂彩坊",
+    "ja": "ノリの砂工房",
+    "ko": "노리의 모래 공방",
+    "es": "El taller de arena de Nori",
+    "pt-BR": "Oficina de Areia de Nori",
+    "fr": "L’atelier de sable de Nori",
+    "de": "Noris Sandwerkstatt",
+    "it": "Il laboratorio di sabbia di Nori",
+    "ru": "Песочная мастерская Нори",
+    "hi": "नोरी की रेत कार्यशाला",
+    "ar": "ورشة نوري للرمال"
   },
-  type: { en: "Sand collection puzzle", "zh-Hant": "彩砂收集解謎", "zh-Hans": "彩砂收集解谜" },
-  description: {
-    en: "Slide and turn collectors, uncover colorful sand and build six coastal scenes through 30 puzzles.",
-    "zh-Hant": "滑動與轉向收集器，讓彩砂層層露出，解開 30 關並完成六座海岸景觀。",
-    "zh-Hans": "滑动与转向收集器，让彩砂层层露出，解开 30 关并完成六座海岸景观。"
+  "type": {
+    "en": "Sliding puzzle · Sand layers · Logic",
+    "zh-Hant": "滑動解謎 · 砂層收集 · 邏輯益智",
+    "zh-Hans": "滑动解谜 · 砂层收集 · 逻辑益智",
+    "ja": "スライドパズル · 砂の層 · 論理パズル",
+    "ko": "슬라이드 퍼즐 · 모래층 수집 · 논리",
+    "hi": "खिसकाने की पहेली · रेत की परतें · तर्क",
+    "ar": "ألغاز التحريك · طبقات الرمل · المنطق",
+    "es": "Deslizamiento · Arena por capas · Lógica",
+    "pt-BR": "Deslizamento · Camadas de areia · Lógica",
+    "fr": "Glissement · Couches de sable · Logique",
+    "de": "Schieberätsel · Sandschichten · Logik",
+    "it": "Scorrimento · Strati di sabbia · Logica",
+    "ru": "Сдвиг лотков · Слои песка · Логика"
   },
-  categories: ["Puzzle", "Animal Games"], skills: ["Logic", "Focus", "Problem Solving"], ages: ["13", "family"],
-  meta: { en: ["30 puzzles", "6 coastal scenes", "Free undo"], "zh-Hant": ["30 道謎題", "6 座海岸景觀", "免費撤銷"] },
-  art: { kind: "image", background: "games/nori-sandworks/assets/cover.webp", hideHero: true }
+  "description": {
+    "en": "Slide collectors, uncover colorful sand and build six coastal scenes through 30 thoughtful puzzles.",
+    "zh-Hant": "滑動收集托盤，揭開繽紛砂層，解開 30 道謎題，拼出六座海岸微景。",
+    "zh-Hans": "滑动收集托盘，揭开缤纷砂层，解开 30 道谜题，拼出六座海岸微景。",
+    "ja": "トレーを滑らせ、砂の層を開き、30 のパズルで六つの海岸風景を作りましょう。",
+    "ko": "쟁반을 움직여 모래층을 드러내고 30개 퍼즐로 여섯 해안 풍경을 만드세요.",
+    "hi": "ट्रे खिसकाएँ, रेत की परतें खोलें और 30 पहेलियों में छह तटीय दृश्य बनाएँ।",
+    "ar": "حرّك الصواني واكشف طبقات الرمل وابنِ ستة مشاهد ساحلية عبر 30 لغزًا.",
+    "es": "Desliza bandejas, descubre capas de arena y construye seis paisajes costeros en 30 rompecabezas.",
+    "pt-BR": "Deslize bandejas, revele camadas de areia e monte seis cenários litorâneos em 30 desafios.",
+    "fr": "Faites glisser les bacs, révélez les couches de sable et créez six décors côtiers dans 30 énigmes.",
+    "de": "Verschiebe Schalen, lege Sandschichten frei und baue in 30 Rätseln sechs Küstenszenen.",
+    "it": "Fai scorrere i vassoi, scopri gli strati di sabbia e costruisci sei scene costiere in 30 enigmi.",
+    "ru": "Двигайте лотки, открывайте слои песка и создайте шесть прибрежных сцен в 30 задачах."
+  },
+  "categories": [
+    "Puzzle",
+    "Animal Games"
+  ],
+  "skills": [
+    "Logic",
+    "Focus",
+    "Problem Solving"
+  ],
+  "ages": [
+    "13",
+    "family"
+  ],
+  "meta": {
+    "en": [
+      "30 Puzzles",
+      "6 Coastal scenes",
+      "Finishes · 12 / 20 Diamonds"
+    ],
+    "zh-Hant": [
+      "30 謎題",
+      "6 海岸景觀",
+      "外觀 · 12 / 20 鑽石"
+    ],
+    "zh-Hans": [
+      "30 谜题",
+      "6 海岸景观",
+      "外观 · 12 / 20 钻石"
+    ],
+    "ja": [
+      "30 パズル",
+      "6 海岸の風景",
+      "仕上げ · 12 / 20 ダイヤ"
+    ],
+    "ko": [
+      "30 퍼즐",
+      "6 해안 풍경",
+      "마감 · 12 / 20 다이아몬드"
+    ],
+    "hi": [
+      "30 पहेलियाँ",
+      "6 तटीय दृश्य",
+      "सजावट · 12 / 20 हीरे"
+    ],
+    "ar": [
+      "30 الألغاز",
+      "6 المشاهد الساحلية",
+      "التشطيبات · 12 / 20 الألماس"
+    ],
+    "es": [
+      "30 Rompecabezas",
+      "6 Paisajes costeros",
+      "Acabados · 12 / 20 Diamantes"
+    ],
+    "pt-BR": [
+      "30 Desafios",
+      "6 Cenários litorâneos",
+      "Acabamentos · 12 / 20 Diamantes"
+    ],
+    "fr": [
+      "30 Énigmes",
+      "6 Décors côtiers",
+      "Finitions · 12 / 20 Diamants"
+    ],
+    "de": [
+      "30 Rätsel",
+      "6 Küstenszenen",
+      "Oberflächen · 12 / 20 Diamanten"
+    ],
+    "it": [
+      "30 Enigmi",
+      "6 Scene costiere",
+      "Finiture · 12 / 20 Diamanti"
+    ],
+    "ru": [
+      "30 Задачи",
+      "6 Прибрежные сцены",
+      "Отделка · 12 / 20 Алмазы"
+    ]
+  },
+  "art": {
+    "kind": "image",
+    "background": "games/nori-sandworks/assets/cover.webp",
+    "hideHero": true
+  }
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("nori-sandworks");
+
+// Meadow Touchdown: scoped new-game intake; internal Coming Soon production.
+window.WONDER_LOBBY.games.push({
+  id: "meadow-touchdown", audience: "general", status: "planned", internalOnly: true,
+  internalTrial: "index.html?preview=1", href: "games/meadow-touchdown/",
+  title: { __localizedExact: true,
+    en: "Meadow Touchdown", "zh-Hant": "草原達陣隊", "zh-Hans": "草原达阵队",
+    ja: "草原タッチダウン", ko: "초원 터치다운", es: "Touchdown en la pradera",
+    "pt-BR": "Touchdown no Prado", fr: "Touchdown dans la prairie", de: "Wiesen-Touchdown",
+    it: "Touchdown nel prato", ru: "Тачдаун на лугу", hi: "मैदान का टचडाउन", ar: "فريق المرج للتاتشداون"
+  },
+  type: { __localizedExact: true,
+    en: "Flag football", "zh-Hant": "腰旗美式足球", "zh-Hans": "腰旗美式足球", ja: "フラッグフットボール", ko: "플래그 풋볼",
+    es: "Fútbol bandera", "pt-BR": "Flag football", fr: "Flag football", de: "Flag Football", it: "Flag football",
+    ru: "Флаг-футбол", hi: "फ़्लैग फ़ुटबॉल", ar: "كرة القدم بالعلم"
+  },
+  description: { __localizedExact: true,
+    en: "Read the defense, lead your receivers with a pass, then weave toward the end zone across 30 challenges.",
+    "zh-Hant": "看穿防守、預判隊友跑位傳球，接球後閃身跑向達陣區，挑戰 30 場戰術考驗。",
+    "zh-Hans": "看穿防守、预判队友跑位传球，接球后闪身跑向达阵区，挑战 30 场战术考验。",
+    ja: "守備を読み、味方の進路へパス。キャッチ後は相手をかわし、30の挑戦でエンドゾーンを目指そう。",
+    ko: "수비를 읽고 동료의 이동 경로로 패스하세요. 공을 잡은 뒤 수비를 피해 30개 도전에서 엔드존을 향해 달리세요.",
+    es: "Lee la defensa, pasa hacia la carrera de tus receptores y esquiva hasta la zona de anotación en 30 desafíos.",
+    "pt-BR": "Leia a defesa, antecipe seus recebedores com um passe e desvie até a end zone em 30 desafios.",
+    fr: "Lisez la défense, anticipez vos receveurs avec une passe puis esquivez jusqu’à la zone d’en-but dans 30 défis.",
+    de: "Lies die Verteidigung, passe in den Lauf deiner Mitspieler und weiche auf dem Weg zur Endzone aus. Meistere 30 Herausforderungen.",
+    it: "Leggi la difesa, anticipa i ricevitori con un passaggio e schiva gli avversari fino alla end zone in 30 sfide.",
+    ru: "Читайте защиту, отдавайте пас на ход партнёру и прорывайтесь в зачётную зону в 30 испытаниях.",
+    hi: "रक्षा को पढ़ें, साथी की दौड़ का अनुमान लगाकर पास दें और 30 चुनौतियों में बचते हुए एंड ज़ोन तक पहुँचें।",
+    ar: "اقرأ الدفاع ومرّر الكرة أمام زملائك، ثم راوغ نحو منطقة التسجيل عبر 30 تحديًا."
+  },
+  categories: ["Sports", "Strategy", "Animal Games"], skills: ["Timing", "Strategy", "Focus"], ages: ["13", "family"],
+  art: { kind: "image", background: "games/meadow-touchdown/assets/cover.webp", hideHero: true }
+});
+window.WONDER_LOBBY.audiences.generalGameIds.push("meadow-touchdown");

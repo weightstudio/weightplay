@@ -1,6 +1,6 @@
-import {Run,STORE,normalizeSave,UPGRADES,train} from './model.mjs';
-import {STAGES,ARCS,RULES,HINTS} from './stages.mjs';
-import {World} from './world.mjs';
+import {Run,STORE,normalizeSave,UPGRADES,train} from './model.mjs?v=3';
+import {STAGES,ARCS,RULES,HINTS,ENEMY_HINTS} from './stages.mjs?v=3';
+import {World} from './world.mjs?v=3';
 import {LocalPractice} from '/src/game-local-practice.mjs';
 const $=id=>document.getElementById(id),make=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
 const read=k=>{try{return localStorage.getItem(k);}catch{return null;}};
@@ -10,19 +10,19 @@ const copy={
  start:['開始遊戲','Start game'],stages:['關卡','Stages'],hero:['修練','Training'],gear:['裝備','Equipment'],dash:['閃步','Dash'],next:['下一關','Next stage'],replay:['重玩','Replay'],retry:['重試','Retry'],continue:['繼續遊戲','Continue'],leave:['返回關卡','Return to stages'],pause:['暫停休息','Take a breath'],help:['御劍訣竅','Swordcraft guide'],upgrade:['選擇一項強化','Choose an upgrade'],element:['選擇元素劍系','Choose your element'],
  level:['等級','Level'],blades:['飛劍','Blades'],speed:['轉速','Speed'],stage:['戰區','Encounter'],locked:['尚未解鎖','Locked'],ready:['可挑戰','Ready'],cleared:['已通關','Cleared'],boss:['首領戰','Guardian'],survive:['存活','Survive'],seconds:['秒','s'],won:['劍陣大成！','A flawless orbit!'],lost:['再淬鍊一次','Forge another attempt'],practice:['本機練習，不寫入進度','Local practice — progress is not saved'],coins:['金幣','Gold'],kills:['擊敗','Defeated'],combo:['最高連斬','Best chain'],forge:['神劍覺醒！','Sword awakened!'],swordPickup:['飛劍 +1','Blade +1'],cachePickup:['劍庫開啟 · 飛劍 +3','Cache opened · 3 blades'],healPickup:['生命回復','Health restored'],lit:['烽火點亮','Beacon lit'],nest:['巢穴擊破','Nest destroyed'],
  vitality:['堅韌修練','Vitality training'],edge:['劍鋒鍛造','Edge forging'],magnet:['靈晶共鳴','Crystal attunement'],vitalityDesc:['每級永久增加 12 點起始生命','Permanently start with 12 more health per rank.'],edgeDesc:['每級永久增加 2 點基礎劍傷','Permanently gain 2 base sword damage per rank.'],magnetDesc:['每級永久增加 12% 拾取範圍','Permanently gain 12% pickup range per rank.'],buy:['強化','Upgrade'],max:['已達上限','Max rank'],needCoins:['金幣不足，完成戰鬥即可累積','Earn more gold by completing encounters.'],trained:['強化完成，下場戰鬥生效','Upgraded. Applies to your next encounter.'],
- graphics:['3D 暫時無法顯示，請重試或回到關卡。','The 3D scene is unavailable. Retry or return safely.'],saveError:['目前無法保存進度；請確認瀏覽器儲存空間。','Progress could not be saved. Check browser storage.'],coming:['敬請期待','Coming soon'],
+ graphics:['3D 暫時無法顯示，請重試或回到關卡。','The 3D scene is unavailable. Retry or return safely.'],saveError:['目前無法保存進度；請確認瀏覽器儲存空間。','Progress could not be saved. Check browser storage.'],coming:['敬請期待','Coming soon'],wave:['敵潮加劇','The horde gathers'],elite:['精英來襲 · 留意金色冠飾','Elite incoming · watch the gold crown'],enrage:['首領狂暴 · 抓住攻擊間隙','Guardian enraged · strike between attacks'],
 };
 const routeLocale={en:'en','zh-tw':'zh-Hant','zh-cn':'zh-Hans',ja:'ja',ko:'ko',es:'es','pt-br':'pt-BR',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'}[location.pathname.split('/')[1]];
 let locale=new URLSearchParams(location.search).get('lang')||routeLocale||read('weightPlayLocale')||'zh-Hant';let zh=locale.startsWith('zh');const t=k=>copy[k]?.[zh?0:1]||k;const label=o=>o[zh?'zh':'en'];
 const abort=new AbortController(),listen=(node,event,fn)=>node.addEventListener(event,fn,{signal:abort.signal});
-let frame,selector,world=null,joystick=null,arenaObserver=null,run=null,screen='main',tab='stages',panel='',result=null,last=0,raf=0,uiClock=0,cueUntil=0,selected=save.unlocked-1,practiceMode=false,lostGraphics=false;
+let frame,selector,world=null,joystick=null,arenaObserver=null,run=null,screen='main',tab='stages',panel='',result=null,last=0,raf=0,uiClock=0,cueUntil=0,cuePriority=0,selected=save.unlocked-1,practiceMode=false,lostGraphics=false;
 const keys=new Set(),icons={},animations=new Set();const audio=window.WeightPlayAudio?.createScope();const sound=id=>audio?.play(id);
 function persist(){if(practiceMode)return;try{localStorage.setItem(STORE,JSON.stringify(save));$('saveWarning').hidden=true;}catch{$('saveWarning').hidden=false;$('saveWarning').textContent=t('saveError');}}
 function animate(node,frames,duration=180){if(!node?.animate)return;const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;const a=node.animate(reduced?[{opacity:.3},{opacity:1}]:frames,{duration:reduced?70:duration,easing:'cubic-bezier(.2,.7,.2,1)'});animations.add(a);a.finished.catch(()=>{}).finally(()=>animations.delete(a));return a;}
 function enter(node){animate(node,[{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}]);}
 function image(key,size=56){const n=make('img');n.src=icons[key]||'/assets/weightplay-character-spark-paw-fox-block-v1.webp';n.width=size;n.height=size;n.alt='';return n;}
 function gold(value){const n=make('span',undefined,'currency');n.append(image('coin',24),make('span',String(value)));return n;}
-function cue(text){$('worldFeedback').textContent=text;cueUntil=performance.now()+1800;$('worldFeedback').classList.add('show');}
+function cue(text,priority=0){if(performance.now()<cueUntil&&priority<cuePriority)return;cuePriority=priority;$('worldFeedback').textContent=text;cueUntil=performance.now()+(priority>1?2400:1800);$('worldFeedback').classList.add('show');}
 function clearInput(){keys.clear();joystick?.reset();}
 function settingsOpen(){return Boolean($('gameFrame').querySelector('[data-wp-preferences] .wp-frame-popover:not([hidden])'));}
 function blocked(){return screen!=='battle'||panel||result||lostGraphics||document.hidden||settingsOpen()||run?.state!=='running';}
@@ -48,7 +48,7 @@ function renderManagement(){const c=$('manageContent');c.replaceChildren();$('ma
 async function start(id){
  if(practiceMode||LocalPractice.enabled){if(!await LocalPractice.validate()){cue(t('practice'));return;}practiceMode=true;}
  if(!practiceMode&&id>save.unlocked)return;
- stopWorld();run=new Run(id,save,{practice:practiceMode});selected=id-1;lostGraphics=false;show('battle');$('graphicsError').hidden=true;
+ stopWorld();run=new Run(id,save,{practice:practiceMode});selected=id-1;lostGraphics=false;cueUntil=0;cuePriority=0;show('battle');$('graphicsError').hidden=true;
  try{world=new World($('arena'),()=>{lostGraphics=true;clearInput();$('graphicsError').hidden=false;});world.render(run,0);joystick=window.WeightPlayJoystick.create({surface:world.renderer.domElement,container:$('arena'),mode:'floating',anchor:{left:70,bottom:70},enabled:true,isEnabled:()=>!blocked()});arenaObserver=new ResizeObserver(()=>joystick?.refresh());arenaObserver.observe($('arena'));world.renderer.domElement.focus({preventScroll:true});}
  catch(e){console.error('BLADE_ORBIT_3D',e);lostGraphics=true;$('graphicsError').hidden=false;}
  $('controlHint').textContent=zh?'拖曳 / WASD 移動':'Drag / WASD to move';last=performance.now();uiClock=0;raf=requestAnimationFrame(loop);sound('game.start');cue(HINTS[run.stage.layout][zh?0:1]);update();
@@ -63,24 +63,33 @@ function floater(e){if(!world||$('floaters').childElementCount>=16)return;const 
 function pickupFlight(e){if(!world||matchMedia('(prefers-reduced-motion:reduce)').matches)return;const n=image(e.kind==='xp'?'gem':e.kind==='heal'?'heal':'sword',24),p=world.point(e.x,e.z),arena=$('arena').getBoundingClientRect(),dest=(e.kind==='xp'?$('levelStat'):e.kind==='heal'?$('healthText'):$('bladeStat')).getBoundingClientRect();n.className='pickup-flight';n.style.left=arena.left+p.x+'px';n.style.top=arena.top+p.y+'px';document.body.append(n);const a=animate(n,[{opacity:1,transform:'translate(-50%,-50%)'},{opacity:0,transform:`translate(${dest.left+dest.width/2-arena.left-p.x}px,${dest.top+dest.height/2-arena.top-p.y}px)`}],330);a?.finished.catch(()=>{}).finally(()=>n.remove());}
 function processEvents(){for(const e of run.events.splice(0)){
  world?.feedback(e);
- if(e.type==='hit'){sound(e.critical?'combat.critical':'weapon.sword.hit');floater(e);}
- else if(e.type==='hurt'){sound('player.hurt');if(navigator.vibrate&&!matchMedia('(prefers-reduced-motion:reduce)').matches)navigator.vibrate(18);}
+ if(e.type==='hit'){sound(e.critical?'combat.critical':e.element==='frost'?'magic.ice':'weapon.sword.hit');floater(e);}
+ else if(e.type==='chain'){sound('magic.hit');floater({...e,x:e.toX,z:e.toZ});}
+ else if(e.type==='hurt'){sound('player.hurt');animate($('healthText'),[{color:'#ff758c'},{color:'#e5fff7'}],250);if(navigator.vibrate&&!matchMedia('(prefers-reduced-motion:reduce)').matches)navigator.vibrate(18);}
  else if(e.type==='defeat')sound('enemy.defeat');
  else if(e.type==='block')sound('combat.block');else if(e.type==='break')sound('combat.shield.break');
  else if(e.type==='pickup'){sound(e.kind==='heal'?'magic.heal':'reward.collect');pickupFlight(e);if(e.kind!=='xp')cue(t(e.kind==='sword'?'swordPickup':e.kind==='cache'?'cachePickup':'healPickup'));}
- else if(e.type==='upgrade'){sound('reward.upgrade');openUpgrades();}
+ else if(e.type==='upgrade'){openUpgrades();sound('reward.upgrade');}
  else if(e.type==='choice'){sound(['ember','frost','storm'].includes(e.key)?'reward.unlock':'reward.upgrade');cue(label(UPGRADES[e.key]));}
  else if(e.type==='evolve'){sound('reward.unlock');cue(t('forge'));}
  else if(e.type==='dash')sound('movement.dash');
- else if(e.type==='boss'){sound('alert.boss');cue(label(run.stage));}
+ else if(e.type==='boss'){sound('alert.boss');cue(label(run.stage),3);}
+ else if(e.type==='wave')cue(`${t('wave')} · ${e.wave}`,1);
+ else if(e.type==='enemyIntro')cue(ENEMY_HINTS[e.kind][zh?0:1],2);
+ else if(e.type==='elite'||e.type==='enrage'){sound('alert.warning');cue(t(e.type),3);}
+ else if(e.type==='detonate')sound('explosion.small');
+ else if(e.type==='summon')sound('magic.cast');
+ else if(e.type==='volley')sound('projectile.launch');
+ else if(e.type==='healCast')sound('magic.heal');
  else if(e.type==='objective'){sound('reward.unlock');cue(t(run.stage.rule==='beacons'?'lit':'nest'));}
  else if(e.type==='result')showResult();
  }update();}
-function setPanel(kind,title,summary){panel=kind;clearInput();joystick?.setEnabled(false);$('overlay').hidden=false;$('battleLive').inert=true;frame.activate('battle',{covered:true});$('overlayTitle').textContent=title;$('overlaySummary').textContent=summary;$('overlayBody').replaceChildren();$('overlayActions').replaceChildren();enter($('overlay').firstElementChild);}
+function setPanel(kind,title,summary){panel=kind;clearInput();audio?.stop();joystick?.setEnabled(false);$('overlay').hidden=false;$('battleLive').inert=true;frame.activate('battle',{covered:true});$('overlayTitle').textContent=title;$('overlaySummary').textContent=summary;$('overlayBody').replaceChildren();$('overlayActions').replaceChildren();enter($('overlay').firstElementChild);}
 function action(label,fn){const b=make('button',label);b.addEventListener('click',fn);$('overlayActions').append(b);return b;}
 function closePanel(){panel='';$('overlay').hidden=true;$('battleLive').inert=false;frame.activate('battle');clearInput();last=performance.now();$('battleBackBtn').focus({preventScroll:true});}
 function openPause(help=false){if(screen!=='battle'||result||run.state==='upgrade')return;setPanel(help?'help':'pause',t(help?'help':'pause'),help?(zh?'移動、收集、強化。飛劍會自動攻擊。':'Move, collect and grow. Swords attack automatically.'):(zh?'離開會失去本局劍陣與未結算金幣；已保存的關卡及永久強化會保留。':'Leaving discards this run’s blades and unsettled gold. Saved stages and training remain.'));
  if(help){for(const text of [zh?'金色飛劍：劍數 +1；劍庫：一次 +3。':'Golden swords add one blade. Caches add three.',zh?'靈晶升級時暫停，選擇轉速、劍傷或範圍。':'Crystals pause the game for upgrade choices.',zh?'神劍覺醒：8 把劍 + 淬鍊 3 級 + 轉速 2 級。':'Awakening: 8 blades, Power rank 3 and Speed rank 2.',zh?'空白鍵 / 閃步：短暫無敵，穿越包圍。':'Space / Dash: briefly evade through danger.',HINTS[run.stage.layout][zh?0:1]])$('overlayBody').append(make('p',text));}
+ if(help)for(const kind of Object.keys(ENEMY_HINTS))if(run.stage.enemies.includes(kind))$('overlayBody').append(make('p',ENEMY_HINTS[kind][zh?0:1]));
  const safe=action(t('continue'),closePanel);if(!help)action(t('leave'),()=>show('stage'));safe.focus({preventScroll:true});}
 function openUpgrades(){setPanel('upgrade',t(run.options.includes('ember')?'element':'upgrade'),`${t('level')} ${run.level} · ${zh?'戰鬥已暫停，選完繼續':'Battle paused. Choose to continue.'}`);
  for(const key of run.options){const item=UPGRADES[key],b=make('button',undefined,'upgrade-choice');b.dataset.upgrade=key;b.append(image(item.icon),make('strong',label(item)),make('small',item.desc[zh?0:1]));b.addEventListener('click',()=>{if(run.choose(key)){closePanel();processEvents();}});$('overlayBody').append(b);} $('overlayBody').querySelector('button')?.focus({preventScroll:true});}
@@ -120,7 +129,7 @@ async function boot(){
  });listen(document,'keyup',e=>keys.delete(e.key.toLowerCase()));listen(window,'blur',()=>{clearInput();if(screen==='battle'&&!panel&&!result)openPause();});listen(document,'visibilitychange',()=>{clearInput();last=performance.now();audio?.stop();if(document.hidden&&screen==='battle'&&!panel&&!result)openPause();});
  listen($('localeSelect'),'change',()=>{locale=$('localeSelect').value;try{localStorage.setItem('weightPlayLocale',locale);}catch{}localize();});
  listen(window,'pagehide',e=>{persist();clearInput();audio?.stop();if(!e.persisted){stopWorld();selector.destroy();frame.destroy();audio?.dispose();abort.abort();for(const a of animations)a.cancel();}});
- window.WeightPlayAudio?.preload(['game.start','weapon.sword.hit','combat.critical','combat.block','combat.shield.break','player.hurt','enemy.defeat','reward.collect','reward.upgrade','reward.unlock','movement.dash','magic.heal','alert.boss','shop.purchase','result.win','result.lose','feedback.error']);
+ window.WeightPlayAudio?.preload(['game.start','weapon.sword.hit','combat.critical','combat.block','combat.shield.break','player.hurt','enemy.defeat','reward.collect','reward.upgrade','reward.unlock','movement.dash','magic.heal','magic.ice','magic.hit','magic.cast','projectile.launch','explosion.small','alert.warning','alert.boss','shop.purchase','result.win','result.lose','feedback.error']);
  localize();show('main');$('startBtn').disabled=true;
  if(document.readyState!=='complete')await new Promise(resolve=>window.addEventListener('load',resolve,{once:true,signal:abort.signal}));
  try{await document.querySelector('.main-poster').decode();}catch{window.WeightPlayGameEntryLoader?.fail();return;}
@@ -128,6 +137,6 @@ async function boot(){
  const isPreview=new URLSearchParams(location.search).get('preview')==='1';$('startBtn').disabled=!isPreview;$('startBtn').textContent=t(isPreview?'start':'coming');
  window.WeightPlayGameEntryLoader?.ready();
  LocalPractice.register({gameId:'blade-orbit',stageIds:STAGES.map(s=>s.id),enable:enabled=>{if(enabled){practiceMode=true;$('startBtn').disabled=false;$('startBtn').textContent=t('start');}selector.refresh(selected);},startStage:id=>start(Number(id))});
- window.BladeOrbit=Object.freeze({identity:()=>({game:'blade-orbit',version:'v2',interface:'pending',target:9}),renderStats:()=>world?.stats()||null});
+ window.BladeOrbit=Object.freeze({identity:()=>({game:'blade-orbit',version:'v3',interface:'pending',target:9}),renderStats:()=>world?.stats()||null});
 }
 boot();

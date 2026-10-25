@@ -1,6 +1,11 @@
-import {STAGES} from './stages.mjs';
+import {STAGES} from './stages.mjs?v=3';
 export const STORE='weightplay:blade-orbit:v1';
-export const LIMITS={swords:24,enemies:100,pickups:220,effects:120};
+export const LIMITS={swords:24,enemies:100,pickups:220,effects:120,hazards:48,projectiles:100};
+export const ENEMIES={
+ chaser:{hp:22,speed:1},small:{hp:12,speed:1.45},charger:{hp:26,speed:1.55},
+ guard:{hp:65,speed:.65},ranger:{hp:24,speed:.95},healer:{hp:35,speed:.9},
+ splitter:{hp:38,speed:1},stalker:{hp:21,speed:1.35},bomber:{hp:34,speed:1.05},summoner:{hp:48,speed:.72},
+};
 export const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
 const num=(n,d=0)=>Number.isFinite(Number(n))?Number(n):d;
 export function normalizeSave(raw={}){
@@ -31,7 +36,7 @@ export class Run {
   this.level=1;this.xp=0;this.nextXP=7;this.kills=0;this.runCoins=0;this.objectives=0;this.swords=3;this.rotation=0;
   this.up={speed:0,power:0,reach:0,magnet:0,haste:0,heal:0,blade:0,evolve:0};this.path='';this.chosenPath=false;this.options=[];
   this.player={x:0,z:0,vx:0,vz:0,health:100+save.training.vitality*12,maxHealth:100+save.training.vitality*12,inv:0,dash:0,dashCD:0,face:0};
-  this.spawnClock=1;this.lootClock=7;this.hazardClock=4;this.bossSpawned=false;this.bossDefeated=false;this.settled=false;this.combo=0;this.comboTimer=0;this.bestCombo=0;
+  this.spawnClock=1;this.lootClock=7;this.hazardClock=4;this.wave=0;this.eliteClock=19;this.introduced=new Set();this.bossSpawned=false;this.bossDefeated=false;this.settled=false;this.combo=0;this.comboTimer=0;this.bestCombo=0;
   this.pillars=['pillars','crown'].includes(this.stage.layout)?[[-4,-3],[4,-3],[-4,4],[4,4]].map(([x,z])=>({x,z,r:.8})):[];
   this.goals=[];
   for(let i=0;i<3;i++)this.drop('sword',Math.cos(i*2.1)*2.1,Math.sin(i*2.1)*2.1);
@@ -51,14 +56,22 @@ export class Run {
  get pendingEvolution(){return !this.up.evolve&&this.path&&this.up.power>=3&&this.up.speed>=2&&this.swords>=8;}
  bladePositions(){return Array.from({length:this.swords},(_,i)=>{const outer=i>=12,count=outer?this.swords-12:Math.min(12,this.swords),index=outer?i-12:i,r=this.radius+(outer?.6:0),a=this.rotation*(outer?-.8:1)+index*Math.PI*2/count;return {x:this.player.x+Math.cos(a)*r,z:this.player.z+Math.sin(a)*r,a,r};});}
  drop(kind,x,z,value=1){if(this.pickups.length>=LIMITS.pickups){const same=this.pickups.find(p=>p.kind===kind&&kind==='xp');if(same)same.value+=value;return;}this.pickups.push({id:++this.id,kind,x,z,value,born:this.time});}
- spawn(kind,boss=0,x,z){
+ spawn(kind,boss=0,x,z,elite=false){
   if(this.enemies.length>=LIMITS.enemies)return;
   if(x===undefined){const a=this.random()*Math.PI*2;x=Math.cos(a)*8;z=Math.sin(a)*9.3;}
-  const arc=this.stage.arc,hp=boss?420+boss*140:(kind==='guard'?65:kind==='splitter'?38:kind==='healer'?35:22)+arc*7;
-  const e={id:++this.id,kind,x,z,hp,maxHp:hp,boss,r:boss?1.05:.42,speed:boss?.9:kind==='charger'?1.55:kind==='guard'?.65:1.0+arc*.06,hitCD:0,flash:0,burn:0,slow:0,attack:1+this.random()*2,wind:0,mode:'walk',dx:0,dz:0,born:this.time,phase:0,shield:kind==='guard'?2:0};
+  const arc=this.stage.arc,base=ENEMIES[kind]||ENEMIES.chaser,hp=boss?Math.round((420+boss*140)*1.12):(base.hp+arc*7)*(elite?1.6:1);
+  const e={id:++this.id,kind,x,z,hp,maxHp:hp,boss,elite,r:boss?1.05:elite?.52:.42,speed:(boss?.95:base.speed+arc*.06)*(elite?1.1:1),hitCD:0,flash:0,recoil:0,burn:0,slow:0,attack:1+this.random()*2,wind:0,mode:'walk',dx:0,dz:0,born:this.time,grace:.45,phase:0,shield:kind==='guard'?2:0,flank:this.random()<.5?-1:1};
   this.enemies.push(e);return e;
  }
- dash(x,z){const p=this.player;if(this.state!=='running'||p.dashCD>0)return false;let n=Math.hypot(x,z);if(!n){x=Math.sin(p.face);z=Math.cos(p.face);n=1;}p.vx=x/n*13;p.vz=z/n*13;p.dash=.24;p.inv=Math.max(p.inv,.32);p.dashCD=4.8/(1+.12*this.up.haste);this.emit('dash');return true;}
+ hazard(data){if(this.hazards.length<LIMITS.hazards)this.hazards.push({id:++this.id,...data});}
+ get spawnInterval(){return Math.max(.38,1.1-this.stage.arc*.105-this.time/175);}
+ spawnWave(){
+  const next=Math.floor(this.time/16);if(next<=this.wave)return;
+  this.wave=next;const kinds=this.stage.enemies,count=Math.min(7,2+this.stage.arc+Math.floor(next/2));
+  for(let i=0;i<count;i++)this.spawn(kinds[(i+next)%kinds.length]);
+  this.emit('wave',{wave:next+1,x:this.player.x,z:this.player.z});
+ }
+ dash(x,z){const p=this.player;if(this.state!=='running'||p.dashCD>0)return false;let n=Math.hypot(x,z);if(!n){x=Math.sin(p.face);z=Math.cos(p.face);n=1;}p.vx=x/n*13;p.vz=z/n*13;p.dash=.24;p.inv=Math.max(p.inv,.32);p.dashCD=4.8/(1+.12*this.up.haste);this.emit('dash',{x:p.x,z:p.z,dx:x/n,dz:z/n});return true;}
  tick(dt,input={x:0,y:0}){if(this.state!=='running')return;let left=clamp(dt,0,.1);while(left>0&&this.state==='running'){const step=Math.min(left,1/60);this.step(step,input);left-=step;}}
  step(dt,input){
   const p=this.player;this.time+=dt;p.inv=Math.max(0,p.inv-dt);p.dashCD=Math.max(0,p.dashCD-dt);p.dash=Math.max(0,p.dash-dt);
@@ -68,32 +81,39 @@ export class Run {
   for(const b of this.pillars){const d=Math.hypot(p.x-b.x,p.z-b.z);if(d<b.r+.35&&d>.001){p.x=b.x+(p.x-b.x)/d*(b.r+.35);p.z=b.z+(p.z-b.z)/d*(b.r+.35);}}
   const oldRotation=this.rotation;this.rotation+=this.speed*dt;
   this.spawnClock-=dt;this.lootClock-=dt;this.hazardClock-=dt;
-  if(this.spawnClock<=0){this.spawnClock=Math.max(.34,1.25-this.stage.arc*.12-this.time/180);const count=1+Math.floor(this.time/24);for(let j=0;j<count;j++)this.spawn(this.stage.enemies[Math.floor(this.random()*this.stage.enemies.length)]);}
+  if(this.spawnClock<=0){this.spawnClock=this.spawnInterval;const count=Math.min(5,1+Math.floor(this.time/22));for(let j=0;j<count;j++)this.spawn(this.stage.enemies[Math.floor(this.random()*this.stage.enemies.length)]);}
+  this.spawnWave();
+  for(const kind of ['stalker','bomber','summoner'])if(this.time>=6&&this.stage.enemies.includes(kind)&&!this.introduced.has(kind)){this.introduced.add(kind);this.spawn(kind);this.emit('enemyIntro',{kind});}
+  this.eliteClock-=dt;if(this.stage.id>=7&&this.eliteClock<=0){this.eliteClock=24;const e=this.spawn(this.stage.enemies[this.wave%this.stage.enemies.length],0,undefined,undefined,true);if(e)this.emit('elite',{x:e.x,z:e.z});}
   if(this.lootClock<=0){this.lootClock=8;this.drop('sword',(this.random()-.5)*12,(this.random()-.5)*13);if(this.time>16)this.drop('heal',(this.random()-.5)*11,(this.random()-.5)*12);}
   if(this.stage.boss&&!this.bossSpawned&&this.time>=this.stage.duration*.43){this.bossSpawned=true;this.spawn('boss',this.stage.boss,0,-6.5);this.emit('boss',{boss:this.stage.boss});}
-  if(this.hazardClock<=0){this.hazardClock=4.5;if(['lava','storm','curse','crown'].includes(this.stage.layout)){const isLava=this.stage.layout==='lava';this.hazards.push({id:++this.id,x:isLava?(this.random()<.5?-3.8:3.8):p.x,z:isLava?(this.random()-.5)*12:p.z,r:isLava?2.2:1.65,delay:1.25,life:isLava?2.3:.6,kind:this.stage.layout});}}
+  if(this.hazardClock<=0){this.hazardClock=4.2;if(['lava','storm','curse','crown'].includes(this.stage.layout)){const isLava=this.stage.layout==='lava';this.hazard({x:isLava?(this.random()<.5?-3.8:3.8):p.x,z:isLava?(this.random()-.5)*12:p.z,r:isLava?2.2:1.65,delay:1.25,life:isLava?2.3:.6,kind:this.stage.layout});}}
   for(const e of this.enemies){
-   if(e.hp<=0)continue;e.hitCD=Math.max(0,e.hitCD-dt);e.flash=Math.max(0,e.flash-dt);e.slow=Math.max(0,e.slow-dt);
+   if(e.hp<=0)continue;e.hitCD=Math.max(0,e.hitCD-dt);e.flash=Math.max(0,e.flash-dt);e.recoil=Math.max(0,e.recoil-dt);e.slow=Math.max(0,e.slow-dt);e.grace=Math.max(0,e.grace-dt);
    if(e.burn>0){e.burn-=dt;e.hp-=dt*this.damage*(this.up.evolve?.7:.22);if(e.hp<=0){this.defeat(e);continue;}}
    const dx=p.x-e.x,dz=p.z-e.z,dist=Math.hypot(dx,dz)||1;e.attack-=dt;
-   if(e.mode==='charge'){e.wind-=dt;e.x+=e.dx*dt*9;e.z+=e.dz*dt*9;if(e.wind<=0){e.mode='recover';e.wind=1.3;}}
-   else if(e.mode==='windup'){e.wind-=dt;if(e.wind<=0){e.mode='charge';e.wind=.65;}}
+   if(e.boss&&e.hp<e.maxHp*.5&&!e.enraged){e.enraged=true;e.attack=Math.min(e.attack,1.2);this.emit('enrage',{x:e.x,z:e.z});}
+   if(e.mode==='charge'){e.wind-=dt;const v=e.kind==='stalker'?7.5:9;e.x+=e.dx*dt*v;e.z+=e.dz*dt*v;if(e.wind<=0){e.mode='recover';e.wind=e.kind==='stalker'?.9:1.2;}}
+   else if(e.mode==='windup'){e.wind-=dt;if(e.wind<=0){e.mode='charge';e.wind=e.kind==='stalker'?.42:.65;this.emit('rush',{x:e.x,z:e.z,dx:e.dx,dz:e.dz});}}
+   else if(['detonate','summon','volley','mend'].includes(e.mode)){e.wind-=dt;if(e.wind<=0)this.finishCast(e);}
    else if(e.mode==='recover'){e.wind-=dt;if(e.wind<=0)e.mode='walk';}
    else {
     if(e.boss)this.bossAction(e,dx,dz,dist);
-    else if(e.kind==='charger'&&e.attack<=0){e.mode='windup';e.wind=.8;e.dx=dx/dist;e.dz=dz/dist;e.attack=4;}
-    else if(e.kind==='ranger'&&e.attack<=0){this.shoot(e,dx/dist,dz/dist);e.attack=2.8;}
-    else if(e.kind==='healer'&&e.attack<=0){for(const other of this.enemies)if(other!==e&&!other.boss&&d2(e,other)<16)other.hp=Math.min(other.maxHp,other.hp+12);e.attack=3;this.emit('mend',{x:e.x,z:e.z});}
-    const retreat=e.kind==='ranger'&&dist<4?-1:1,moving=!(e.kind==='ranger'&&dist>=4&&dist<5.5);
-    if(moving){const v=e.speed*(e.slow>0?.42:1)*retreat;e.x+=dx/dist*v*dt;e.z+=dz/dist*v*dt;}
+    else if((e.kind==='charger'||e.kind==='stalker'&&dist<6)&&e.attack<=0){e.mode='windup';e.wind=.85;e.dx=dx/dist;e.dz=dz/dist;e.attack=e.kind==='stalker'?3.2:3.8;}
+    else if(e.kind==='bomber'&&dist<2.9&&e.attack<=0){e.mode='detonate';e.wind=.95;}
+    else if(e.kind==='summoner'&&e.attack<=0){e.mode='summon';e.wind=1.2;e.attack=5.6;}
+    else if(e.kind==='ranger'&&e.attack<=0){e.mode='volley';e.wind=.8;e.dx=dx/dist;e.dz=dz/dist;e.attack=2.6;}
+    else if(e.kind==='healer'&&e.attack<=0){e.mode='mend';e.wind=.9;e.attack=3.2;}
+    const ranged=['ranger','summoner'].includes(e.kind),retreat=ranged&&dist<4?-1:1,moving=e.mode==='walk'&&!(ranged&&dist>=4&&dist<5.5);
+    if(moving){const v=e.speed*(e.slow>0?.42:1)*retreat,flank=e.kind==='stalker'&&dist<7?e.flank*.8:0,radial=flank&&dist<3?.18:1;e.x+=(dx/dist*radial-dz/dist*flank)*v*dt;e.z+=(dz/dist*radial+dx/dist*flank)*v*dt;}
    }
    e.x=clamp(e.x,-8.3,8.3);e.z=clamp(e.z,-9.2,9.2);
    for(const b of this.pillars){const d=Math.hypot(e.x-b.x,e.z-b.z);if(d<b.r+e.r&&d>.01){e.x=b.x+(e.x-b.x)/d*(b.r+e.r);e.z=b.z+(e.z-b.z)/d*(b.r+e.r);}}
-   if(dist<e.r+.35)this.hurt(e.boss?22:12,e);
+   if(e.hp<=0)continue;if(e.grace<=0&&d2(p,e)<(e.r+.35)**2)this.hurt(e.boss?22:e.elite?15:12,e);
    this.swordContact(e,oldRotation,dt);
   }
   this.enemies=this.enemies.filter(e=>e.hp>0);
-  for(const h of this.hazards){h.delay-=dt;if(h.delay<0){h.life-=dt;if(d2(p,h)<h.r*h.r)this.hurt(18,h);}}
+  for(const h of this.hazards){h.delay-=dt;if(h.delay<0){if(!h.triggered){h.triggered=true;this.emit('eruption',{x:h.x,z:h.z,kind:h.kind,r:h.r});}h.life-=dt;if(d2(p,h)<h.r*h.r)this.hurt(h.damage||18,h);}}
   this.hazards=this.hazards.filter(h=>h.life>0);
   for(const b of this.projectiles){b.x+=b.vx*dt;b.z+=b.vz*dt;b.life-=dt;if(d2(p,b)<.38){this.hurt(11,b);b.life=0;}}
   this.projectiles=this.projectiles.filter(b=>b.life>0&&Math.abs(b.x)<10&&Math.abs(b.z)<11);
@@ -109,6 +129,26 @@ export class Run {
   if((this.stage.boss?this.bossDefeated:this.time>=this.stage.duration&&goalReady)){this.state='won';this.emit('result',{won:true});return;}
   if(this.xp>=this.nextXP)this.levelUp();
  }
+ finishCast(e){
+  if(e.hp<=0)return;
+  if(e.mode==='detonate'){
+   this.hazard({x:e.x,z:e.z,r:2.05,delay:0,life:.24,damage:20,kind:'blast'});
+   e.hp=0;e.defeated=true;this.emit('detonate',{x:e.x,z:e.z,kind:e.kind});return;
+  }
+  if(e.mode==='summon'){
+   const count=this.enemies.filter(o=>o.kind==='small'&&o.hp>0).length;
+   for(let i=0;i<Math.min(3,14-count);i++){const a=i*Math.PI*2/3;this.spawn('small',0,clamp(e.x+Math.cos(a)*.9,-8,8),clamp(e.z+Math.sin(a)*.9,-9,9));}
+   this.emit('summon',{x:e.x,z:e.z});
+  }else if(e.mode==='volley'){
+   const aim=Math.atan2(e.dz,e.dx),fan=e.boss?3:0;
+   for(let i=-fan;i<=fan;i++)this.shoot(e,Math.cos(aim+i*.26),Math.sin(aim+i*.26));
+   this.emit('volley',{x:e.x,z:e.z});
+  }else if(e.mode==='mend'){
+   let healed=false;for(const other of this.enemies)if(other!==e&&!other.boss&&other.hp>0&&other.hp<other.maxHp&&d2(e,other)<16){other.hp=Math.min(other.maxHp,other.hp+12);healed=true;this.emit('mend',{x:other.x,z:other.z});}
+   if(healed)this.emit('healCast');
+  }
+  e.mode='recover';e.wind=e.boss?.6:.45;
+ }
  swordContact(e,oldRotation,dt){
   if(e.hitCD>0||e.hp<=0)return;const dx=e.x-this.player.x,dz=e.z-this.player.z,d=Math.hypot(dx,dz),a=Math.atan2(dz,dx),r=e.r||.7;
   for(let i=0;i<this.swords;i++){
@@ -120,12 +160,12 @@ export class Run {
    if(e.boss===5&&this.enemies.some(o=>o!==e&&!o.boss)&&e.mode!=='recover'){e.hitCD=.25;this.emit('block',{x:e.x,z:e.z});return;}
    if(e.shield>0){e.shield--;e.hitCD=.2;this.emit(e.shield?'block':'break',{x:e.x,z:e.z});return;}
    const critical=this.random()<.12,amount=this.damage*(critical?1.7:1)*(e.mode==='recover'?1.4:1);
-   e.hp-=amount;e.hitCD=.16;e.flash=.1;
+   const applied=Math.min(e.hp,amount);e.hp-=amount;e.hitCD=.16;e.flash=.13;e.recoil=.18;e.impactX=dx/Math.max(.01,d);e.impactZ=dz/Math.max(.01,d);
    if(!e.boss&&e.kind!=='nests'&&d>.01){e.x+=dx/d*.16;e.z+=dz/d*.16;}
    if(this.path==='ember')e.burn=this.up.evolve?3:1.8;
    if(this.path==='frost')e.slow=this.up.evolve?3:1.5;
-   if(this.path==='storm'){let links=0;for(const other of this.enemies){if(other!==e&&other.hp>0&&d2(e,other)<(this.up.evolve?16:7)&&links<(this.up.evolve?3:1)){other.hp-=amount*.45;other.flash=.1;this.emit('chain',{x:e.x,z:e.z,toX:other.x,toZ:other.z});links++;if(other.hp<=0)this.defeat(other);}}}
-   this.emit('hit',{x:e.x,z:e.z,amount:Math.round(amount),critical});
+   if(this.path==='storm'){let links=0;for(const other of this.enemies){if(other!==e&&other.hp>0&&d2(e,other)<(this.up.evolve?16:7)&&links<(this.up.evolve?3:1)){const chainDamage=Math.min(other.hp,amount*.45);other.hp-=chainDamage;other.flash=.13;this.emit('chain',{x:e.x,z:e.z,toX:other.x,toZ:other.z,amount:Math.round(chainDamage)});links++;if(other.hp<=0)this.defeat(other);}}}
+   this.emit('hit',{x:e.x,z:e.z,amount:Math.round(applied),critical,element:this.path,angle:a});
    if(e.hp<=0&&e.kind!=='nests')this.defeat(e);return;
   }
  }
@@ -133,17 +173,18 @@ export class Run {
  defeat(e){if(e.defeated)return;e.defeated=true;e.hp=0;this.kills++;this.combo++;this.comboTimer=2;this.bestCombo=Math.max(this.bestCombo,this.combo);this.runCoins+=e.boss?30:1;
   this.drop('xp',e.x,e.z,e.boss?12:1);if(this.kills%4===0)this.drop('sword',e.x+.25,e.z);if(this.kills%19===0)this.drop('heal',e.x,e.z);
   if(e.kind==='splitter'){this.spawn('small',0,e.x-.4,e.z);this.spawn('small',0,e.x+.4,e.z);}
-  if(e.boss)this.bossDefeated=true;this.emit('defeat',{x:e.x,z:e.z,boss:e.boss,kind:e.kind});
+  if(e.boss)this.bossDefeated=true;this.emit('defeat',{x:e.x,z:e.z,boss:e.boss,elite:e.elite,kind:e.kind});
  }
- shoot(e,dx,dz){if(this.projectiles.length<100)this.projectiles.push({id:++this.id,x:e.x,z:e.z,vx:dx*3.8,vz:dz*3.8,life:6});}
+ shoot(e,dx,dz){if(this.projectiles.length<LIMITS.projectiles)this.projectiles.push({id:++this.id,x:e.x,z:e.z,vx:dx*4.2,vz:dz*4.2,life:6});}
  bossAction(e,dx,dz,dist){
   if(e.attack>0)return;e.phase++;
   const type=e.boss===6?1+e.phase%3:e.boss;
-  if(type===2){e.mode='windup';e.wind=1.2;e.dx=dx/dist;e.dz=dz/dist;e.attack=4.7;}
-  else if(type===3){const aim=Math.atan2(dz,dx);for(let i=-3;i<=3;i++)this.shoot(e,Math.cos(aim+i*.26),Math.sin(aim+i*.26));e.attack=3;}
-  else if(type===4){for(let i=0;i<3;i++)this.hazards.push({id:++this.id,x:this.player.x+(i-1)*2.3,z:this.player.z,r:1.4,delay:1+i*.25,life:.4,kind:'storm'});e.attack=3.4;}
-  else if(type===5){if(this.enemies.length<14)for(let i=0;i<5;i++)this.spawn('chaser',0,e.x+Math.cos(i*1.25)*2,e.z+Math.sin(i*1.25)*2);e.mode='recover';e.wind=2;e.attack=6;}
-  else {for(let i=0;i<8;i++){const a=i*Math.PI/4+e.phase*.4;this.hazards.push({id:++this.id,x:e.x+Math.cos(a)*3,z:e.z+Math.sin(a)*3,r:1.3,delay:1.2,life:.5,kind:'ring'});}e.mode='recover';e.wind=1.5;e.attack=4.3;}
+  if(type===2){e.mode='windup';e.wind=1.1;e.dx=dx/dist;e.dz=dz/dist;e.attack=4.2;}
+  else if(type===3){e.mode='volley';e.wind=.9;e.dx=dx/dist;e.dz=dz/dist;e.attack=2.7;}
+  else if(type===4){for(let i=0;i<3;i++)this.hazard({x:this.player.x+(i-1)*2.3,z:this.player.z,r:1.4,delay:1+i*.25,life:.4,kind:'storm'});e.attack=3;}
+  else if(type===5){if(this.enemies.filter(o=>!o.boss).length<14)for(let i=0;i<5;i++)this.spawn(i===0?'stalker':'chaser',0,e.x+Math.cos(i*1.25)*2,e.z+Math.sin(i*1.25)*2);e.mode='recover';e.wind=1.8;e.attack=5.4;}
+  else {for(let i=0;i<8;i++){const a=i*Math.PI/4+e.phase*.4;this.hazard({x:e.x+Math.cos(a)*3,z:e.z+Math.sin(a)*3,r:1.3,delay:1.2,life:.5,kind:'ring'});}e.mode='recover';e.wind=1.4;e.attack=3.8;}
+  if(e.enraged)e.attack*=.84;
   this.emit('bossAttack',{boss:e.boss,pattern:type});
  }
  collect(item){
@@ -163,7 +204,7 @@ export class Run {
  choose(key){if(this.state!=='upgrade'||!this.options.includes(key))return false;
   if(['ember','frost','storm'].includes(key)){this.path=key;this.chosenPath=true;}
   else {this.up[key]++;if(key==='blade')this.swords=Math.min(24,this.swords+2);if(key==='heal')this.player.health=Math.min(this.player.maxHealth,this.player.health+40);}
-  this.options=[];this.state='running';this.emit(key==='evolve'?'evolve':'choice',{key});return true;
+  this.options=[];this.state='running';this.emit(key==='evolve'?'evolve':'choice',{key,x:this.player.x,z:this.player.z});return true;
  }
  settle(){if(this.settled||!['won','lost'].includes(this.state))return null;this.settled=true;const won=this.state==='won',first=!this.save.stars[this.stage.id-1];const stars=won?1+(this.player.health/this.player.maxHealth>=.4?1:0)+(this.player.health/this.player.maxHealth>=.75?1:0):0;
   const gold=this.runCoins+(won?(first?this.stage.reward:Math.floor(this.stage.reward/4)):0);

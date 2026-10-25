@@ -1842,13 +1842,36 @@
 });
 
   const petCareLabels = {
-    en: "Pet Care", "zh-Hant": "養成", "zh-Hans": "养成", ja: "ペット育成",
+    en: "Pet Care", "zh-Hant": "寵物養成", "zh-Hans": "宠物养成", ja: "ペット育成",
     ko: "펫 키우기", es: "Cuidado de mascotas", "pt-BR": "Cuidar de pets",
     fr: "Animaux de compagnie", de: "Tierpflege", it: "Animali domestici",
     ru: "Забота о питомцах", hi: "पालतू जानवरों की देखभाल", ar: "رعاية الحيوانات الأليفة",
   };
   Object.entries(petCareLabels).forEach(([locale, label]) => {
     dictionaries[locale] = { ...(dictionaries[locale] || {}), "category.Pet Care": label };
+  });
+
+  // Gameplay facets are shared by desktop, phone and every hall. Editorial
+  // labels, themes and trained skills remain separate from these genres.
+  const gameplayGenreKeys = ["RPG", "Tower Defense", "Simulation", "Management", "Racing", "Sports", "Reaction"];
+  const gameplayGenreCopy = {
+    en: ["All genres", "RPG", "Tower Defense", "Simulation", "Management", "Racing", "Sports", "Reaction"],
+    "zh-Hant": ["全部類型", "RPG", "塔防", "模擬", "經營", "競速", "運動", "反應"],
+    "zh-Hans": ["全部类型", "RPG", "塔防", "模拟", "经营", "竞速", "运动", "反应"],
+    ja: ["すべてのジャンル", "RPG", "タワーディフェンス", "シミュレーション", "経営", "レース", "スポーツ", "反射神経"],
+    ko: ["모든 장르", "RPG", "타워 디펜스", "시뮬레이션", "경영", "레이싱", "스포츠", "반응"],
+    es: ["Todos los géneros", "Rol", "Defensa de torres", "Simulación", "Gestión", "Carreras", "Deportes", "Reflejos"],
+    "pt-BR": ["Todos os gêneros", "RPG", "Defesa de torres", "Simulação", "Gestão", "Corrida", "Esportes", "Reflexos"],
+    fr: ["Tous les genres", "Jeu de rôle", "Défense de tours", "Simulation", "Gestion", "Course", "Sports", "Réflexes"],
+    de: ["Alle Genres", "Rollenspiel", "Tower Defense", "Simulation", "Management", "Rennen", "Sport", "Reaktion"],
+    it: ["Tutti i generi", "Gioco di ruolo", "Difesa della torre", "Simulazione", "Gestione", "Corse", "Sport", "Riflessi"],
+    ru: ["Все жанры", "Ролевая игра", "Защита башни", "Симулятор", "Управление", "Гонки", "Спорт", "Реакция"],
+    hi: ["सभी शैलियाँ", "रोल-प्लेइंग", "टावर डिफेंस", "सिमुलेशन", "प्रबंधन", "रेसिंग", "खेल", "त्वरित प्रतिक्रिया"],
+    ar: ["كل الأنواع", "تقمص الأدوار", "دفاع الأبراج", "محاكاة", "إدارة", "سباق", "رياضة", "سرعة الاستجابة"],
+  };
+  Object.entries(gameplayGenreCopy).forEach(([locale, [all, ...labels]]) => {
+    dictionaries[locale]["filter.all_genres"] = all;
+    gameplayGenreKeys.forEach((key, index) => { dictionaries[locale][`category.${key}`] = labels[index]; });
   });
 
   const vehicleGameLabels = {
@@ -2007,13 +2030,13 @@ const essentialLobbyCopy = {
   });
 
   const topicPreviewCopy = {
-    en: ["Two Original Games", "Coming Soon"], "zh-Hant": ["兩款原創遊戲", "敬請期待"],
-    "zh-Hans": ["两款原创游戏", "敬请期待"], ja: ["オリジナルゲーム2本", "近日公開"],
-    ko: ["오리지널 게임 2종", "출시 예정"], es: ["Dos juegos originales", "Próximamente"],
-    "pt-BR": ["Dois jogos originais", "Em breve"], fr: ["Deux jeux originaux", "Bientôt"],
-    de: ["Zwei originelle Spiele", "Demnächst"], it: ["Due giochi originali", "Prossimamente"],
-    ru: ["Две оригинальные игры", "Скоро"], hi: ["दो मौलिक गेम", "जल्द"],
-    ar: ["لعبتان أصليتان", "قريبًا"],
+    en: ["Topic Games", "Coming Soon"], "zh-Hant": ["熱梗遊戲", "敬請期待"],
+    "zh-Hans": ["热梗游戏", "敬请期待"], ja: ["話題のゲーム", "近日公開"],
+    ko: ["화제의 게임", "출시 예정"], es: ["Juegos de tendencias", "Próximamente"],
+    "pt-BR": ["Jogos de tendências", "Em breve"], fr: ["Jeux tendance", "Bientôt"],
+    de: ["Trendspiele", "Demnächst"], it: ["Giochi di tendenza", "Prossimamente"],
+    ru: ["Игры на актуальные темы", "Скоро"], hi: ["ट्रेंडिंग गेम", "जल्द"],
+    ar: ["ألعاب رائجة", "قريبًا"],
   };
   Object.entries(topicPreviewCopy).forEach(([locale, [title, preview]]) => {
     dictionaries[locale]["hall.topics_games_title"] = title;

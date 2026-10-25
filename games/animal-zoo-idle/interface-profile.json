@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "gameId": "animal-zoo-idle",
+  "audience": "kids",
+  "interfaceVersion": 9,
+  "flow": "MAIN_BATTLE",
+  "stage": {
+    "enabled": false,
+    "leftWorkspace": null,
+    "rightWorkspace": null
+  },
+  "battle": {
+    "enabled": true
+  }
+}
