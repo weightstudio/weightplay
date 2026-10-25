@@ -945,7 +945,25 @@
     const oldScore = nodes.scoreText.textContent;
     nodes.stageText.textContent = String(activeStage().id);
     nodes.movesText.textContent = String(state.moves);
-    nodes.targetText.textContent = goalProgress();
+    const stage = activeStage();
+    nodes.targetText.replaceChildren();
+    if (stage.goal === "score") {
+      // Score already has its own shared statistic; keep the target readable.
+      nodes.targetText.textContent = String(stage.target);
+    } else if (stage.goal === "dual") {
+      const values = [`${Math.min(state.goalCount, stage.collectTarget)}/${stage.collectTarget}`, String(stage.scoreTarget)];
+      for (const value of values) {
+        const line = document.createElement("small");
+        line.className = "snack-goal-line";
+        line.textContent = value;
+        nodes.targetText.append(line);
+      }
+    } else {
+      const count = stage.goal === "cascade" ? state.bestCascade : stage.goal === "burst" ? state.bestBurst : state.goalCount;
+      nodes.targetText.textContent = `${Math.min(count, stage.target)}/${stage.target}`;
+    }
+    nodes.targetText.title = goalLabel(stage);
+    nodes.targetText.setAttribute("aria-label", `${goalLabel(stage)}. ${goalProgress(stage)}`);
     nodes.scoreText.textContent = String(state.score);
     if (oldScore !== nodes.scoreText.textContent) bump(nodes.scoreText);
   }
