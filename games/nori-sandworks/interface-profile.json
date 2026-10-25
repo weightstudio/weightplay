@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "gameId": "nori-sandworks",
+  "audience": "general",
+  "interfaceVersion": 9,
+  "flow": "MAIN_STAGE_BATTLE",
+  "stage": {
+    "enabled": true,
+    "leftWorkspace": "collection",
+    "rightWorkspace": "finishes"
+  }
+}

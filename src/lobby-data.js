@@ -7836,3 +7836,27 @@ for (const id of ownerApprovedComingSoonGames) {
   delete game.internalTrial;
   delete game.previewOnly;
 }
+
+// Nori's Sandworks: scoped new-game intake; internal Coming Soon production.
+window.WONDER_LOBBY.games.push({
+  id: "nori-sandworks", audience: "general", status: "planned", internalOnly: true,
+  internalTrial: "index.html?preview=1", href: "games/nori-sandworks/",
+  title: {
+    __localizedExact: true,
+    en: "Nori’s Sandworks", "zh-Hant": "諾里砂彩坊", "zh-Hans": "诺里砂彩坊",
+    ja: "ノリの砂工房", ko: "노리의 모래 공방", es: "El taller de arena de Nori",
+    "pt-BR": "Oficina de Areia de Nori", fr: "L’atelier de sable de Nori", de: "Noris Sandwerkstatt",
+    it: "Il laboratorio di sabbia di Nori", ru: "Песочная мастерская Нори",
+    hi: "नोरी की रेत कार्यशाला", ar: "ورشة نوري للرمال"
+  },
+  type: { en: "Sand collection puzzle", "zh-Hant": "彩砂收集解謎", "zh-Hans": "彩砂收集解谜" },
+  description: {
+    en: "Slide and turn collectors, uncover colorful sand and build six coastal scenes through 30 puzzles.",
+    "zh-Hant": "滑動與轉向收集器，讓彩砂層層露出，解開 30 關並完成六座海岸景觀。",
+    "zh-Hans": "滑动与转向收集器，让彩砂层层露出，解开 30 关并完成六座海岸景观。"
+  },
+  categories: ["Puzzle", "Animal Games"], skills: ["Logic", "Focus", "Problem Solving"], ages: ["13", "family"],
+  meta: { en: ["30 puzzles", "6 coastal scenes", "Free undo"], "zh-Hant": ["30 道謎題", "6 座海岸景觀", "免費撤銷"] },
+  art: { kind: "image", background: "games/nori-sandworks/assets/cover.webp", hideHero: true }
+});
+window.WONDER_LOBBY.audiences.generalGameIds.push("nori-sandworks");

@@ -83,7 +83,7 @@
   const gameLocalePreference=readStorage('wordTrailsLocale');
   const platformLocale=readStorage('weightPlayLocale')||readStorage('weightplayLocale');
   const routedLocale=window.WonderI18n?.localeFromPath?.()||'';
-  let lang = supportedLocales.includes(routedLocale)?routedLocale:(supportedLocales.includes(gameLocalePreference)?gameLocalePreference:(supportedLocales.includes(platformLocale)?platformLocale:'en')), stage = 0, path = [], found = new Set(), hints = 0, dragStartLength = 0, boardPointerId = null, leaveConfirmOpen = false, leaveConfirmTrigger = null, resultActionClaimed = false;
+  let lang = supportedLocales.includes(routedLocale)?routedLocale:(supportedLocales.includes(gameLocalePreference)?gameLocalePreference:(supportedLocales.includes(platformLocale)?platformLocale:'en')), stage = 0, path = [], found = new Set(), hints = 0, runStars = 0, dragStartLength = 0, boardPointerId = null, leaveConfirmOpen = false, leaveConfirmTrigger = null, resultActionClaimed = false;
   if(!packs[lang])packs[lang]=packs.en.map(buildLocalizedStage);
   const $ = id => document.getElementById(id);
   const t = (key, values = {}) => String(copy[lang]?.[key] ?? runtimeTranslate(copy.en[key] ?? key))
@@ -140,6 +140,8 @@
       battleStats.trail.value.textContent = `${stage + 1}/${packs[lang].length}`;
       battleStats.words.label.textContent = t('found');
       battleStats.words.value.textContent = `${found.size}/${packs[lang][stage].words.length}`;
+      battleStats.stars.label.textContent = t('stars');
+      battleStats.stars.value.textContent = `★ ${runStars}`;
     }
     if ($('mainProgress')) $('mainProgress').textContent = `${completed}/${packs[lang].length} · ${t('progress')}`;
     if ($('stageProgress') && stageStats) $('stageProgress').setAttribute('aria-label', `${t('progress')} ${completed}/${packs[lang].length}`);
@@ -149,28 +151,28 @@
       throw new Error('ANIMAL_WORD_TRAILS_I9_SHARED_RUNTIME_MISSING');
     }
     screenFrame = window.WeightPlayScreenFrame.mount({
-      root: $('#app'), localeSelect: $('#locale'), playUI: true,
+      root: $('app'), localeSelect: $('locale'), playUI: true,
       scenes: {
-        main: { root: $('#mainGroup'), header: $('#mainHeader'), content: $('#mainContent') },
-        stage: { root: $('#stageScreen'), header: $('#stageHeader'), headerInfo: $('#stageHeaderInfo'), content: $('#stageWorkspace') },
-        battle: { root: $('#battleScreen'), header: $('#battleHeader'), headerInfo: $('#battleHeaderInfo'), content: $('#battleWorkspace') },
+        main: { root: $('mainGroup'), header: $('mainHeader'), content: $('mainContent') },
+        stage: { root: $('stageScreen'), header: $('stageHeader'), headerInfo: $('stageHeaderInfo'), content: $('stageWorkspace') },
+        battle: { root: $('battleScreen'), header: $('battleHeader'), headerInfo: $('battleHeaderInfo'), content: $('battleWorkspace') },
       },
     });
     stageStats = { completed: makeStat(), clues: makeStat() };
     stageStats.completed.stat.id = 'stageProgress';
     screenFrame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup()
       .add(stageStats.completed.stat).add(stageStats.clues.stat));
-    battleStats = { trail: makeStat(), words: makeStat() };
+    battleStats = { trail: makeStat(), words: makeStat(), stars: makeStat() };
     screenFrame.battleTopUI.add(window.WeightPlayScreenFrame.createGroup()
-      .add(battleStats.trail.stat).add(battleStats.words.stat));
+      .add(battleStats.trail.stat).add(battleStats.words.stat).add(battleStats.stars.stat));
     stageUI = window.WeightPlayPlayUI.mountStage({
-      page: $('#stageWorkspace'), rail: $('#stageRail'), config: stageConfig(), selected: stage,
+      page: $('stageWorkspace'), rail: $('stageRail'), config: stageConfig(), selected: stage,
       onSelect(index) { stage = index; updateFrameStats(); },
       onStart(index) { stage = index; renderBattle(); },
-      isActive: () => screenFrame.active === 'stage' && !$('#stageScreen').hidden,
+      isActive: () => screenFrame.active === 'stage' && !$('stageScreen').hidden,
     });
-    screenFrame.commonDownButton.add($('#album'));
-    $('#album').dataset.wpFrameAction = 'secondary';
+    screenFrame.commonDownButton.add($('album'));
+    $('album').dataset.wpFrameAction = 'secondary';
     updateFrameStats();
   }
   function waitForEntryLoader() {
@@ -228,16 +230,16 @@
     const result = name === 'result';
     const scene = result ? 'battle' : name;
     if (scene !== 'battle') { cancelBoardPointer(); cancelBattleTasks(); $('clueReveal')?.classList.add('hidden'); }
-    $('#mainGroup').hidden = scene !== 'main';
-    $('#stageScreen').hidden = scene !== 'stage';
-    $('#battleScreen').hidden = scene !== 'battle';
-    $('#resultPanel').classList.toggle('hidden', !result);
-    $('#resultPanel').hidden = !result;
-    $('#battleLive').classList.toggle('hidden', result);
-    $('#battleLive').hidden = result;
-    $('#battleLive').inert = result;
-    if (result) $('#battleLive').setAttribute('aria-hidden', 'true');
-    else $('#battleLive').removeAttribute('aria-hidden');
+    $('mainGroup').hidden = scene !== 'main';
+    $('stageScreen').hidden = scene !== 'stage';
+    $('battleScreen').hidden = scene !== 'battle';
+    $('resultPanel').classList.toggle('hidden', !result);
+    $('resultPanel').hidden = !result;
+    $('battleLive').classList.toggle('hidden', result);
+    $('battleLive').hidden = result;
+    $('battleLive').inert = result;
+    if (result) $('battleLive').setAttribute('aria-hidden', 'true');
+    else $('battleLive').removeAttribute('aria-hidden');
     document.body.dataset.screen = name;
     document.body.classList.toggle('word-stage', name === 'stage');
     document.body.classList.toggle('word-playing', name === 'battle' || result);
@@ -269,8 +271,8 @@
         ? (window.WeightPlayOfficialName?.title?.() || t(el.dataset.copy)) : t(el.dataset.copy);
     });
     document.querySelectorAll('[data-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.aria)));
-    if ($('#locale')) $('#locale').value = lang;
-    if ($('#mainPoster')) $('#mainPoster').alt = t('title');
+    if ($('locale')) $('locale').value = lang;
+    if ($('mainPoster')) $('mainPoster').alt = t('title');
     updateFrameStats();
   }
   function save(){ writeStorage('wordTrailsLocale',lang); writeStorage('weightPlayLocale',lang); writeStorage('wordTrailsBest',JSON.stringify(readRecord('wordTrailsBest'))); }
@@ -294,6 +296,8 @@
   const baseRenderBattle = renderBattle;
   renderBattle = function(){
     baseRenderBattle();
+    runStars=0;
+    updateFrameStats();
     $('playScene').dataset.habitat=stage>=3&&stage<=4?'safari':'forest';
     const rule=packs[lang][stage].rule;
     if(rule)$('objective').textContent=rule;
@@ -320,7 +324,7 @@
     window.WeightPlayAudio?.play("ui.click");
   }
   const originalSubmit = submit;
-  submit = function(){ const before=found.size; originalSubmit(); if(found.size>before){ const word=[...found].at(-1); const album=readRecord('wordTrailsAlbum'); album[lang+'-'+word]=true; writeStorage('wordTrailsAlbum',JSON.stringify(album)); track('word_trails_word_found', { words_found: found.size, word_length: word.length }); window.WeightPlayAudio?.play("feedback.success"); reveal(word); updateFrameStats(); } else { window.WeightPlayAudio?.play("feedback.error"); } };
+  submit = function(){ const before=found.size; originalSubmit(); if(found.size>before){ runStars=Math.max(1,3-hints); const word=[...found].at(-1); const album=readRecord('wordTrailsAlbum'); album[lang+'-'+word]=true; writeStorage('wordTrailsAlbum',JSON.stringify(album)); track('word_trails_word_found', { words_found: found.size, word_length: word.length }); window.WeightPlayAudio?.play("feedback.success"); reveal(word); updateFrameStats(); } else { window.WeightPlayAudio?.play("feedback.error"); } };
   Object.assign(copy.en, {
     language:'Language', album:'Album', albumTitle:'Animal clues', undo:'Undo', loading:'Loading trail',
     backLobby:'Back to WeightPlay', backMain:'Back to main', backStage:'Back to trails', closeAlbum:'Close album', stages:'Trails', board:'Word board',
@@ -347,8 +351,8 @@
         ? (window.WeightPlayOfficialName?.title?.() || t(el.dataset.copy)) : t(el.dataset.copy);
     });
     document.querySelectorAll('[data-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.aria)));
-    if ($('#locale')) $('#locale').value = lang;
-    if ($('#mainPoster')) $('#mainPoster').alt = t('title');
+    if ($('locale')) $('locale').value = lang;
+    if ($('mainPoster')) $('mainPoster').alt = t('title');
     updateFrameStats();
   };
   const rejectRepeatedActivation=event=>{

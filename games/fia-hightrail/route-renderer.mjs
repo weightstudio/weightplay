@@ -6,7 +6,7 @@ export function renderHightrailRoute(locale){
  const t=BUNDLES[locale],c=PAGE[locale];if(!t||!c)throw Error(`Missing locale ${locale}`);
  const source=fs.readFileSync(new URL('./index.html',import.meta.url),'utf8');
  const canonical=`https://weightplay.com/${SEGMENTS[locale]}/games/fia-hightrail/`,image='https://weightplay.com/games/fia-hightrail/assets/og.webp';
- let html=source.replace(/<html\b[^>]*>/,`<html lang="${locale}" dir="${locale==='ar'?'rtl':'ltr'}" data-wp-interface-version="9">`)
+ let html=source.replace(/\s*<script\b[^>]*data-wp-locale-route[^>]*>[\s\S]*?<\/script>/g,'').replace(/<html\b[^>]*>/,`<html lang="${locale}" dir="${locale==='ar'?'rtl':'ltr'}" data-wp-interface-version="0" data-wp-interface-candidate="9">`)
  .replace(/\s*<base\b[^>]*>/g,'').replace('<head>','<head>\n <base href="/games/fia-hightrail/">')
  .replace(/<title>[\s\S]*?<\/title>/,`<title>${escape(c.title)} | WeightPlay</title>`)
  .replace(/\s*<meta\b[^>]*(?:name="(?:description|twitter:[^"]+)"|property="og:[^"]+")[^>]*>/g,'')
