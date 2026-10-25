@@ -9,10 +9,13 @@ export function mountGuidance(playfield,{dismiss,label}){
  const copy=document.createElement('p');copy.id='boardTip';copy.setAttribute('role','status');copy.setAttribute('aria-live','polite');
  const skip=document.createElement('button');skip.type='button';skip.className='guidance-dismiss';skip.textContent='×';skip.setAttribute('aria-label',label);skip.title=label;skip.addEventListener('pointerdown',e=>e.stopPropagation());skip.addEventListener('click',e=>{e.stopPropagation();dismiss();});
  card.append(copy,skip);layer.append(svg,card);playfield.append(layer);
- const clear=()=>{layer.hidden=true;svg.replaceChildren();copy.textContent='';playfield.removeAttribute('aria-describedby');for(const node of document.querySelectorAll('[data-board-cue]'))delete node.dataset.boardCue;};
- function render(data,view,state,text){
-  clear();if(!data)return;
-  layer.hidden=false;layer.dataset.kind=data.kind||'hint';layer.classList.toggle('landscape',view.landscape);copy.textContent=text;playfield.setAttribute('aria-describedby',copy.id);
+ let contentKey='';
+ const resetMarks=()=>{svg.replaceChildren();for(const node of document.querySelectorAll('[data-board-cue]'))delete node.dataset.boardCue;};
+ const clear=()=>{layer.hidden=true;resetMarks();copy.textContent='';contentKey='';card.getAnimations().forEach(a=>a.cancel());playfield.removeAttribute('aria-describedby');};
+ function render(data,view,state,text,purpose=''){
+  if(!data){clear();return;}resetMarks();
+  layer.hidden=false;layer.dataset.kind=data.kind||'hint';layer.classList.toggle('landscape',view.landscape);
+  const nextKey=JSON.stringify([text,purpose]);if(contentKey!==nextKey){contentKey=nextKey;const step=document.createElement('span');step.className='guidance-step';step.textContent=text;copy.replaceChildren(step);if(purpose){const why=document.createElement('span');why.className='guidance-purpose';why.textContent=purpose;copy.append(why);}card.getAnimations().forEach(a=>a.cancel());card.animate([{opacity:.45},{opacity:1}],{duration:matchMedia('(prefers-reduced-motion: reduce)').matches?80:180});}playfield.setAttribute('aria-describedby',copy.id);
   const left=view.project([[0,0]],.12).x,cellWidth=view.project([[1,0]],.12).x-left,gutter=left-cellWidth/2-24;
   layer.classList.toggle('side',!view.landscape&&gutter>=150);layer.style.setProperty('--guidance-side-width',Math.min(240,gutter)+'px');
   svg.setAttribute('viewBox',`0 0 ${view.width} ${view.height}`);

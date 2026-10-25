@@ -4,6 +4,7 @@ import {routeIndex} from './hints.mjs';
 export class HintClient{
  constructor(factory=()=>new Worker(new URL('./hint-worker.mjs',import.meta.url),{type:'module'})){this.factory=factory;this.cache=new Map();this.pending=null;}
  cancel(){this.pending?.();}
+ continuation(level,state){return (this.cache.get(level.id+':'+stateKey(state))||[]).map(action=>({...action}));}
  request(level,state){
   this.cancel();const cacheKey=level.id+':'+stateKey(state);
   if(this.cache.has(cacheKey))return Promise.resolve(this.cache.get(cacheKey)[0]);

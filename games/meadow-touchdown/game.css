@@ -13,3 +13,18 @@
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
 .result-card{height:560px;max-height:100%;overflow:hidden}.result-body{flex:1 1 auto;min-height:0;overflow:auto;padding:8px 0;display:flex;flex-direction:column;justify-content:safe center}.result-body>*{flex-shrink:0}.result-body>img{display:block;margin:8px auto}.result-actions{position:static}.result-body #retrySave{margin:8px auto}#milestoneArt{position:relative}.milestone-pennant{position:absolute;right:-5px;bottom:-5px;width:36px;height:36px;object-fit:contain;border:2px solid #fff9e9;border-radius:6px}
+
+/* Owned content: preserve the shared control rectangles. */
+#playChoice{width:max-content}#playChoice label{white-space:nowrap}#playSelect{min-width:0}
+.field-caption{height:auto;min-height:48px}.field-caption strong{flex:1 1 auto;min-width:0;max-width:none;max-height:none;overflow:visible;overflow-wrap:anywhere}#fieldCondition{flex:0 0 auto}#fieldCondition:empty{display:none}
+#interceptionReview{margin:8px 18px;padding:8px;border:1px solid #b7c9aa;border-radius:10px;background:#e6eedc;animation:meadow-reveal .16s ease-out}#interceptionDiagram{display:block;width:100%;height:128px}#interceptionLegend{font-size:12px;line-height:1.4;margin-top:5px;color:#294b44}
+@media(orientation:landscape) and (max-height:500px){.field-caption{width:260px;max-width:calc(100% - 260px)}.field-caption strong,.field-caption:has([data-mode="pair"]) strong{max-width:none}.field-caption:has([data-mode="pair"]){width:320px;max-width:calc(100% - 240px)}}
+@media(prefers-reduced-motion:reduce){#interceptionReview{animation:meadow-fade .07s linear}}
+@media(orientation:landscape) and (max-height:500px){
+ .result-card:has(#interceptionReview:not([hidden])) .result-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);grid-template-rows:auto auto auto;align-content:center;align-items:center;gap:8px;padding:12px}
+ .result-card:has(#interceptionReview:not([hidden])) .result-body>img,.result-card:has(#interceptionReview:not([hidden])) .result-body>p:empty{display:none}
+ .result-card:has(#interceptionReview:not([hidden])) #resultStage{grid-column:1;grid-row:1;margin:0}
+ .result-card:has(#interceptionReview:not([hidden])) #resultTitle{grid-column:1;grid-row:2;margin:0}
+ .result-card:has(#interceptionReview:not([hidden])) #resultReason{grid-column:1;grid-row:3;margin:0}
+ .result-card:has(#interceptionReview:not([hidden])) #interceptionReview{grid-column:2;grid-row:1 / 4;margin:0;padding:5px}
+}

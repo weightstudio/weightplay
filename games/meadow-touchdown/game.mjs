@@ -3,6 +3,7 @@ import {Match,DT,normalizeSave,saveWin,unlockedStage,clamp} from './simulation.m
 import {FieldRenderer} from './render.mjs';
 import {COPY,tr,localeSegments} from './i18n.mjs';
 import {coachText,stageLesson} from './coaching.mjs';
+import {drawInterceptionDiagram} from './interception-diagram.mjs';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
 const $=id=>document.getElementById(id),abort=new AbortController();
 const listen=(node,event,fn,options={})=>node.addEventListener(event,fn,{...options,signal:abort.signal});
@@ -118,7 +119,7 @@ function openModal(id){
 }
 function closeModal(restore=true){
   if(!modal)return;$(modal).hidden=true;modal=null;clearInput();$('battleLive').inert=false;$('stageContent').inert=false;$('stageScreen').querySelector('nav').inert=false;$('stageScreen').querySelector('header').inert=false;
-  if(frame)frame.activate(screen);if(restore){const target=modalFocus?.isConnected&&modalFocus.matches('button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled),a[href],[tabindex]:not([tabindex="-1"])')&&modalFocus.getClientRects().length&&!modalFocus.closest('[hidden],[inert]')?modalFocus:screen==='battle'?$('actionBtn'):null;target?.focus({preventScroll:true});}lastFrame=performance.now();announce();
+  if(frame)frame.activate(screen);if(restore){const target=modalFocus?.isConnected&&modalFocus.matches('button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled),a[href],[tabindex]:not([tabindex="-1"])')&&modalFocus.getClientRects().length&&!modalFocus.closest('[hidden],[inert]')?modalFocus:screen==='battle'?$(match?.bookChoiceRequired?'playSelect':'actionBtn'):null;target?.focus({preventScroll:true});}lastFrame=performance.now();announce();
 }
 function renderHelp(){
   const content=lesson?[c(lesson,lessonValues)]:[c(match?.phase==='run'?'run':stageLesson[match?.stage.number]||'aim'),copy().rules[1],copy().rules[2]];
@@ -141,6 +142,7 @@ async function startStage(index,{practice=practiceMode,book=null}={}){
     if(practice&&!await LocalPractice.validate())return;
     setScreen('battle');practiceRun=practice;selection=index;booksBefore=[...save.unlockedPlaybooks];trialBook=null;match=new Match(index+1,book&&save.unlockedPlaybooks.includes(book)?book:save.selectedPlaybook);roundSerial++;eventId=0;visualTime=0;celebrationTime=0;resultPending=false;resultSaved=false;resultReward=false;feedbackUntil=0;
     $('fieldCondition').replaceChildren();delete $('fieldCondition').dataset.mode;
+    $('interceptionReview').hidden=true;drawInterceptionDiagram($('interceptionDiagram'),null);
     if(!match.availableBooks().includes(match.book))match.book='P1';
     renderer??=new FieldRenderer($('field'),()=>{clearInput();openModal('graphicsDialog');});renderer.reset(match);renderer.resize();renderPlayChoices();renderHud();renderer.draw(match,0,cosmetics());
     if(!stageLesson[index+1]||!showLesson(stageLesson[index+1]))$('actionBtn').focus({preventScroll:true});
@@ -151,7 +153,8 @@ function renderPlayChoices(){
   if(!match)return;const selected=match.book;
   const allowed=match.availableBooks().filter(id=>save.unlockedPlaybooks.includes(id));
   if(!allowed.includes(match.book)||match.book===match.blockedBook)match.book=allowed.find(id=>id!==match.blockedBook)||'P1';
-  $('playSelect').replaceChildren(...allowed.map(id=>{const i=PLAYBOOKS.findIndex(b=>b.id===id),option=new Option(copy().bookNames[i],id);option.disabled=id===match.blockedBook;return option;}));$('playSelect').value=match.book;
+  const placeholder=match.bookChoiceRequired?new Option(c('chooseBook'),''):null;if(placeholder)placeholder.disabled=true;
+  $('playSelect').replaceChildren(...(placeholder?[placeholder]:[]),...allowed.map(id=>{const i=PLAYBOOKS.findIndex(b=>b.id===id),option=new Option(copy().bookNames[i],id);option.disabled=id===match.blockedBook;return option;}));$('playSelect').value=match.bookChoiceRequired?'':match.book;
 }
 function renderHud(){
   if(!match)return;const m=match;
@@ -164,9 +167,10 @@ function renderHud(){
     for(const token of condition.children){const caught=m.caught.has(token.dataset.receiver);token.dataset.caught=String(caught);text(token.querySelector('b'),caught?'✓':'○');token.title=`${castName(token.dataset.receiver)} · ${c(caught?'received':'pending')}`;token.setAttribute('aria-label',token.title);}
   }else{text(condition,[m.wind?`${m.wind>0?'→':'←'} ${Math.abs(m.wind)}${m.stage.special==='gust'?' ↔':''}`:'',m.stage.special==='gate'?c(m.gate<0?'openLeft':'openRight'):'',m.stage.special==='relay'?c('relayGoal',{n:m.leg-1+(m.relayed?1:0)}):''].filter(Boolean).join(' · '));}
   $('playChoice').hidden=m.phase!=='ready';$('playSelect').disabled=m.phase!=='ready';
-  $('actionBtn').disabled=!reviewRemaining&&!['ready','live','run'].includes(m.phase);text($('actionBtn'),reviewRemaining?c('viewResult'):t(m.phase==='ready'?'snap':m.phase==='live'?'drag':m.phase==='run'?'stop':'throw'));
+  $('actionBtn').disabled=m.bookChoiceRequired||!reviewRemaining&&!['ready','live','run'].includes(m.phase);text($('actionBtn'),reviewRemaining?c('viewResult'):m.bookChoiceRequired?c('chooseBook'):t(m.phase==='ready'?'snap':m.phase==='live'?'drag':m.phase==='run'?'stop':'throw'));
   $('leftBtn').disabled=m.phase!=='run'||m.lane===0;$('rightBtn').disabled=m.phase!=='run'||m.lane===4;$('relayBtn').disabled=!m.relayTarget();$('relayBtn').style.visibility=m.stage.special==='relay'?'visible':'hidden';
-  if(reviewRemaining)text($('feedback'),interceptionText());
+  if(m.bookChoiceRequired)text($('feedback'),c('chooseBook'));
+  else if(reviewRemaining)text($('feedback'),interceptionText());
   else if(m.lastMiss&&['ready','dead'].includes(m.phase))text($('feedback'),missText());
   else if(m.totalTime>=feedbackUntil)text($('feedback'),m.phase==='ready'?m.blockedBook?copy().rules[12]:t('ready'):m.phase==='live'?`${t('throw')} ${seconds(Math.round(Math.max(0,m.stage.throwTime-m.elapsed)*10)/10)}`:m.phase==='run'?t('catch'):'');
 }
@@ -182,6 +186,7 @@ async function commitResult(){
 }
 function renderResult(){
   if(!match?.result)return;const r=match.result;text($('resultStage'),`${t('stage',{n:match.stage.number})} · ${copy().stageNames[match.stage.number-1]}`);text($('resultTitle'),t(r.won?'win':'lose'));text($('resultReason'),match.interception?interceptionText():t(r.reason));
+  $('interceptionReview').hidden=!match.interception;text($('interceptionLegend'),c('interceptDiagram'));drawInterceptionDiagram($('interceptionDiagram'),match.interception);
   text($('resultMedals'),r.won?`${t('medals')} ${r.medals.filter(Boolean).length} / 3 · ${seconds(Math.round(r.activeMs/1000))}`:'');
   $('medalDetails').hidden=!r.won;
   for(const [i,key] of ['medalClear','medalEarly','medalClean'].entries())text($('medalDetails').children[i],`${r.medals[i]?'✓':'○'} ${c(key)}`);
@@ -212,7 +217,7 @@ function loop(now){
   raf=0;if(disposed||screen!=='battle'||!match)return;const delta=Math.min(.08,Math.max(0,(now-lastFrame)/1000));lastFrame=now;
   if(!paused()&&!match.result){accumulator+=delta;while(accumulator>=DT){
     if(match.phase==='live'){const dx=(keys.has('ArrowRight')?1:0)-(keys.has('ArrowLeft')?1:0),dy=(keys.has('ArrowUp')?1:0)-(keys.has('ArrowDown')?1:0);if(dx||dy)match.setAim(match.aim.x+dx*7*DT,match.aim.y+dy*7*DT);}
-    const phase=match.phase;match.step(DT);visualTime+=DT;accumulator-=DT;if(match.phase==='ready'&&phase!=='ready')renderPlayChoices();if(phase!==match.phase)announce();processEvents();if(match.result){if(match.interception){reviewRemaining=.95;clearInput();announce();}else settle();accumulator=0;break;}if(paused()){accumulator=0;break;}
+    const phase=match.phase;match.step(DT);visualTime+=DT;accumulator-=DT;if(match.phase==='ready'&&phase!=='ready'){renderPlayChoices();if(match.bookChoiceRequired)$('playSelect').focus({preventScroll:true});}if(phase!==match.phase)announce();processEvents();if(match.result){if(match.interception){reviewRemaining=.95;clearInput();announce();}else settle();accumulator=0;break;}if(paused()){accumulator=0;break;}
   }}else accumulator=0;
   if(reviewRemaining&&!paused()){reviewRemaining=Math.max(0,reviewRemaining-delta);if(!reviewRemaining)settle();}
   const celebrating=match.result&&!reviewRemaining&&!document.hidden&&celebrationTime<1.3;
@@ -243,7 +248,7 @@ async function boot(){
   listen($('battleBack'),'click',()=>{if(!match||match.result||!match.snapCount){setScreen('stage');return;}text($('leaveCopy'),copy().rules[11].replace('{stage}',copy().stageNames[selection]));openModal('leaveDialog');});
   listen($('helpBtn'),'click',showHelp);listen($('helpClose'),'click',async()=>{const seen=$('helpDialog').dataset.seen;closeModal();if(seen&&!practiceRun){await persist(s=>({...s,tutorialSeen:[...s.tutorialSeen,seen]}));delete $('helpDialog').dataset.seen;}});
   listen($('continueBtn'),'click',()=>closeModal());listen($('leaveBtn'),'click',()=>setScreen('stage'));
-  listen($('resultStages'),'click',()=>setScreen('stage'));listen($('resultReplay'),'click',()=>{window.WonderAnalytics?.game?.markRestart();startStage(selection,{practice:practiceRun});});listen($('resultNext'),'click',()=>{if(!$('resultNext').disabled)startStage(selection+1,{practice:practiceRun,book:trialBook});});listen($('retrySave'),'click',commitResult);
+  listen($('resultStages'),'click',()=>setScreen('stage'));listen($('resultReplay'),'click',()=>{window.WonderAnalytics?.game?.markRestart();startStage(selection,{practice:practiceRun,book:match?.book});});listen($('resultNext'),'click',()=>{if(!$('resultNext').disabled)startStage(selection+1,{practice:practiceRun,book:trialBook});});listen($('retrySave'),'click',commitResult);
   listen($('playSelect'),'change',()=>{if(match?.selectBook($('playSelect').value))text($('feedback'),copy().bookHints[PLAYBOOKS.findIndex(b=>b.id===match.book)]);});
   listen($('leftBtn'),'click',()=>{if(!paused())match?.changeLane(-1);});listen($('rightBtn'),'click',()=>{if(!paused())match?.changeLane(1);});listen($('relayBtn'),'click',()=>{if(!paused())match?.lateral();});
   listen($('actionBtn'),'click',e=>{if(e.detail===0)action();});

@@ -1,4 +1,4 @@
-import {PORTS,act,rotateCells,stateKey} from './simulation.mjs';
+import {PORTS,act,complete,rotateCells,stateKey} from './simulation.mjs';
 import {bottomAt} from './feedback.mjs';
 
 // Guidance describes the real board; it never commits an action or changes a save.
@@ -36,9 +36,30 @@ export function lessonFinished(lesson,state,action){
  if(lesson.kind==='partial')return !p||p.removed||p.filled!==lesson.filled;
  return !p||p.removed;
 }
-export function bindHint(level,state,action){
+// Describe the next concrete milestone, never an inferred dependency between trays.
+// Replay the entire continuation before exposing a purpose; invalid routes stay silent.
+export function hintPurpose(level,state,action,route=[]){
+ const same=(a,b)=>a&&b&&['type','id','dx','dy'].every(key=>a[key]===b[key]);
+ if(!same(action,route[0]))return null;
+ let current=state,purpose=null;
+ for(let i=0;i<route.length;i++){
+  const next=route[i],result=act(level,current,next);if(!result.ok)return null;
+  if(!purpose&&i<6){
+   const delivered=result.state.pieces.find(p=>p.removed&&!current.pieces.find(q=>q.id===p.id)?.removed);
+   const collected=result.state.pieces.find(p=>p.filled>(current.pieces.find(q=>q.id===p.id)?.filled??0));
+   const port=delivered?PORTS.findIndex((_,index)=>level.locks[index]===delivered.id&&!current.delivered.includes(delivered.id)):-1;
+   if(delivered)purpose={kind:port>=0?'purposeUnlock':'purposeFill',tray:delivered.id,...(port>=0?{port:PORTS[port].id}:{})};
+   else if(collected)purpose={kind:'purposeCollect',tray:collected.id};
+   else if(next.type==='rotate')purpose={kind:'purposeRotate',tray:next.id};
+   else if(next.type==='switch')purpose={kind:'purposeGate'};
+  }
+  current=result.state;
+ }
+ return complete(current)?purpose||(action.id?{kind:'purposePosition',tray:action.id}:null):null;
+}
+export function bindHint(level,state,action,route=[]){
  if(!action||!act(level,state,action).ok)return null;
- return {level:level.id,key:stateKey(state),moves:state.moves,action:{...action}};
+ return {level:level.id,key:stateKey(state),moves:state.moves,action:{...action},purpose:hintPurpose(level,state,action,route)};
 }
 export const hintMatches=(hint,level,state)=>!!hint&&hint.level===level.id&&hint.moves===state.moves&&hint.key===stateKey(state);
 export function actionFootprint(state,action){

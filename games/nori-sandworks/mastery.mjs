@@ -8,6 +8,7 @@ export const MASTER_ROUTES={
 };
 export const masteryTarget=level=>(MASTER_ROUTES[level.id]||level.witness).length;
 export const mastered=(level,moves)=>moves!=null&&moves<=masteryTarget(level);
+export function coastMastered(levels,best,chapter){const coast=levels.map((level,index)=>({level,best:best[index]})).filter(row=>row.level.chapter===chapter);return coast.length===5&&coast.every(row=>mastered(row.level,row.best));}
 export function masteryProgress(level,best){const target=masteryTarget(level);return {target,complete:mastered(level,best),gap:best==null?null:Math.max(0,best-target)};}
 export function coastChallenge(levels,best,chapter){
  const coast=levels.map((level,index)=>({level,index,...masteryProgress(level,best[index])})).filter(row=>row.level.chapter===chapter);

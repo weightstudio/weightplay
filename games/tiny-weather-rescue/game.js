@@ -34,7 +34,6 @@
     hi: "हिन्दी",
     ar: "العربية",
   };
-  document.querySelector(".weather-game")?.setAttribute("data-wp-canvas-max-width", "920");
   const localeKey = "weightplayLocale";
   const canonicalLocaleKey = "weightPlayLocale";
   const unlockKey = "weightplay_weather_unlocked";
@@ -64,17 +63,17 @@
   }
 
   const tools = {
-    umbrella: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-umbrella-block-v1.png", className: "umbrella" },
-    towel: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-towel-block-v1.png", className: "towel" },
-    fan: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-fan-block-v1.png", className: "fan" },
-    lantern: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-lantern-block-v1.png", className: "lantern" },
-    house: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-house-block-v1.png", className: "house" },
-    apple: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-apple-block-v1.png", className: "apple" },
-    boots: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-boots-block-v1.png", className: "boots" },
-    blanket: { icon: "../../assets/tiny-weather-rescue/tiny-weather-tool-blanket-block-v1.png", className: "blanket" },
+    umbrella: { icon: "/assets/tiny-weather-rescue/tiny-weather-tool-umbrella-block-v1.png", className: "umbrella" },
+    towel: { icon: "/assets/tiny-weather-rescue/tiny-weather-tool-towel-block-v1.png", className: "towel" },
+    fan: { icon: "/assets/tiny-weather-rescue/tiny-weather-tool-fan-block-v1.png", className: "fan" },
+    lantern: { icon: "/assets/tiny-weather-rescue/tiny-weather-tool-lantern-block-v1.png", className: "lantern" },
+    house: { icon: "/assets/tiny-weather-rescue/tiny-weather-tool-house-block-v1.png", className: "house" },
+    apple: { icon: "/assets/tiny-weather-rescue/tiny-weather-tool-apple-block-v1.png", className: "apple" },
+    boots: { icon: "/assets/tiny-weather-rescue/tiny-weather-tool-boots-block-v1.png", className: "boots" },
+    blanket: { icon: "/assets/tiny-weather-rescue/tiny-weather-tool-blanket-block-v1.png", className: "blanket" },
   };
 
-  const cueAsset = (name) => `../../assets/tiny-weather-rescue/tiny-weather-cue-${name}-block-v1.png`;
+  const cueAsset = (name) => `/assets/tiny-weather-rescue/tiny-weather-cue-${name}-block-v1.png`;
   const problems = {
     rain: { icon: cueAsset("rain"), tool: "umbrella", scene: "rain" },
     puddle: { icon: cueAsset("puddle"), tool: "towel", scene: "puddle" },
@@ -88,12 +87,12 @@
   };
 
   const animalAssets = {
-    rabbit: "../../assets/tiny-weather-rescue/tiny-weather-animal-rabbit-block-v1.png",
-    fox: "../../assets/tiny-weather-rescue/tiny-weather-animal-fox-block-v1.png",
-    panda: "../../assets/tiny-weather-rescue/tiny-weather-animal-panda-block-v1.png",
-    penguin: "../../assets/tiny-weather-rescue/tiny-weather-animal-penguin-block-v1.png",
-    lion: "../../assets/tiny-weather-rescue/tiny-weather-animal-lion-block-v1.png",
-    koala: "../../assets/tiny-weather-rescue/tiny-weather-animal-koala-block-v1.png",
+    rabbit: "/assets/tiny-weather-rescue/tiny-weather-animal-rabbit-block-v1.png",
+    fox: "/assets/tiny-weather-rescue/tiny-weather-animal-fox-block-v1.png",
+    panda: "/assets/tiny-weather-rescue/tiny-weather-animal-panda-block-v1.png",
+    penguin: "/assets/tiny-weather-rescue/tiny-weather-animal-penguin-block-v1.png",
+    lion: "/assets/tiny-weather-rescue/tiny-weather-animal-lion-block-v1.png",
+    koala: "/assets/tiny-weather-rescue/tiny-weather-animal-koala-block-v1.png",
   };
 
   const openingStages = [
@@ -452,13 +451,17 @@
     loadingFill: $("loadingFill"),
     homeLink: document.querySelector(".home-link"),
   };
+  const shell = document.getElementById("weatherShell");
+  let screenFrame=null, stageUI=null, stageSelection=0, resultActionCommitted=false, entryReady=false;
+  const stageProgress=document.createElement("strong");
+  stageProgress.setAttribute("data-runtime-localize","off");
   const leavePanel = document.createElement("section");
   leavePanel.id = "leavePanel";
   leavePanel.className = "helper-leave-panel hidden";
   (__wpNotifyMeasurement(), leavePanel.setAttribute("role", "dialog"));
   (__wpNotifyMeasurement(), leavePanel.setAttribute("aria-modal", "true"));
   (__wpNotifyMeasurement(), leavePanel.setAttribute("aria-labelledby", "leaveTitle"));
-  leavePanel.innerHTML = '<div class="helper-leave-card"><strong id="leaveTitle"></strong><p id="leaveText"></p><button id="keepHelpingBtn" type="button"></button><button id="leaveMissionBtn" type="button"></button></div>';
+  leavePanel.innerHTML = '<div class="helper-leave-card" data-wp-frame-card><h2 id="leaveTitle"></h2><p id="leaveText"></p><div><button id="keepHelpingBtn" data-wp-frame-action="primary" type="button"></button><button id="leaveMissionBtn" data-wp-frame-action="secondary" type="button"></button></div></div>';
   nodes.playPanel.append(leavePanel);
   nodes.leavePanel = leavePanel;
   nodes.leaveTitle = $("leaveTitle");
@@ -581,10 +584,6 @@
   function localizeStatic() {
     document.documentElement.lang = supportedLocales.includes(locale) ? locale : "en";
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
-    document.title = t("seoTitle");
-    setMeta('meta[name="description"]', "content", t("seoDescription"));
-    setMeta('meta[property="og:title"]', "content", t("ogTitle"));
-    setMeta('meta[property="og:description"]', "content", t("ogDescription"));
     nodes.localeSelect.value = locale;
     nodes.localeSelect.setAttribute("aria-label", t("languageAria"));
     nodes.homeLink.setAttribute("aria-label", t("homeAria"));
@@ -599,6 +598,9 @@
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
+    document.getElementById("mainSummary").textContent=mainSummaries[locale]||mainSummaries.en;
+    updateProgressLabels();
+    updateBattleInfo();
   }
 
   function setMeta(selector, attr, value) {
@@ -616,101 +618,81 @@
     }));
   }
 
-  let centeredStageFrame = 0;
-
-  function updateCenteredStageCard() {
-    const railRect = nodes.stageGrid.getBoundingClientRect();
-    const railCenter = railRect.left + railRect.width / 2;
-    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")]
-      .filter((card) => card.getClientRects().length);
-    const centered = cards.reduce((nearest, card) => {
-      const rect = card.getBoundingClientRect();
-      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
-      return !nearest || distance < nearest.distance ? { card, distance } : nearest;
-    }, null)?.card;
-    cards.forEach((card) => {
-      const active = card === centered;
-      card.classList.toggle("is-centered", active);
-      if (active) card.setAttribute("aria-current", "true");
-      else card.removeAttribute("aria-current");
+  const POSTER="/assets/tiny-weather-rescue/cover-block-v1.png";
+  const headerWords={
+    en:["Mission","Step","Help"],"zh-Hant":["任務","進度","幫助"],"zh-Hans":["任务","进度","帮助"],
+    ja:["ミッション","進み","お助け"],ko:["미션","진행","도움"],es:["Misión","Paso","Ayuda"],
+    "pt-BR":["Missão","Etapa","Ajuda"],fr:["Mission","Étape","Aide"],de:["Mission","Schritt","Hilfe"],
+    it:["Missione","Passo","Aiuti"],ru:["Миссия","Шаг","Помощь"],hi:["मिशन","कदम","मदद"],ar:["المهمة","الخطوة","المساعدة"]
+  };
+  const mainSummaries={
+    en:"Read the picture clues and choose helpful tools in 30 animal-care missions.",
+    "zh-Hant":"觀察圖片線索，選擇合適工具，完成 30 個動物照護任務。",
+    "zh-Hans":"观察图片线索，选择合适工具，完成 30 个动物照护任务。",
+    ja:"絵のヒントを見て道具を選び、30の動物お助けミッションに挑戦。",
+    ko:"그림 단서를 보고 알맞은 도구를 골라 30개 동물 돌봄 미션을 해결하세요.",
+    es:"Observa las pistas y elige herramientas útiles en 30 misiones de cuidado animal.",
+    "pt-BR":"Observe as pistas e escolha ferramentas úteis em 30 missões de cuidado animal.",
+    fr:"Observez les indices et choisissez les bons outils dans 30 missions de soin animal.",
+    de:"Erkenne Bildhinweise und wähle hilfreiche Werkzeuge in 30 Tierpflege-Missionen.",
+    it:"Osserva gli indizi e scegli gli strumenti utili in 30 missioni di cura degli animali.",
+    ru:"Изучайте подсказки и выбирайте полезные предметы в 30 миссиях заботы о животных.",
+    hi:"चित्र संकेत देखकर सही साधन चुनें और जानवरों की देखभाल के 30 मिशन पूरे करें।",
+    ar:"لاحظ الصور واختر الأدوات المناسبة في 30 مهمة للعناية بالحيوانات."
+  };
+  function updateProgressLabels(){
+    const copy=`${(headerWords[locale]||headerWords.en)[0]} ${unlocked} / ${stages.length}`;
+    document.getElementById("mainProgress").textContent=copy;stageProgress.textContent=copy;
+  }
+  function updateBattleInfo(){
+    const stage=stages[currentStage],words=headerWords[locale]||headerWords.en;
+    ["stageLabel","stepLabel","helpLabel"].forEach((id,index)=>document.getElementById(id).textContent=words[index]);
+    document.querySelector('#battleHeader [role="group"]')?.setAttribute("aria-label",words.join(" / "));
+    nodes.stageText.textContent=`${stage.id}/${stages.length}`;
+    nodes.movesText.textContent=`${Math.min(roundIndex+1,stage.rounds.length)}/${stage.rounds.length}`;
+    nodes.starsText.textContent=`${score}/${stage.target}`;
+    nodes.stageText.setAttribute("aria-label",t("stage",{n:stage.id}));
+    nodes.movesText.setAttribute("aria-label",t("progress",{done:Math.min(roundIndex+1,stage.rounds.length),total:stage.rounds.length}));
+    nodes.starsText.setAttribute("aria-label",`${t("calm",{score})} / ${stage.target}`);
+  }
+  function stageConfiguration(){
+    return {count:stages.length,poster:POSTER,background:"/assets/lobby-block-atmosphere.svg",stage(index){
+      const stage=stages[index],best=records[stage.id]||0;
+      return {id:stage.id,poster:POSTER,kicker:stage.checkpoint?t("checkpoint"):ruleLabel(stage),
+        title:t("stage",{n:stage.id}),subtitle:t(stage.animalId),locked:stage.id>unlocked,cleared:best>0,
+        status:stage.id>unlocked?t("locked"):best?"★".repeat(best):t("start"),
+        summary:`${t(stage.animalId)} · ${ruleLabel(stage)}`,details:[ruleLabel(stage),t("progress",{done:stage.target,total:stage.rounds.length})]};
+    }};
+  }
+  function renderStageGrid(focusIndex=null){
+    updateProgressLabels();
+    if(focusIndex!==null)stageSelection=clamp(focusIndex,0,stages.length-1);
+    stageUI?.setConfig(stageConfiguration(),stageSelection);
+    if(screenFrame?.active==="stage"){
+      stageUI?.refresh(stageSelection);
+      if(focusIndex!==null)nodes.stageGrid.querySelector('[aria-current="true"]')?.focus({preventScroll:true});
+    }
+  }
+  function setBattleCovered(covered){
+    [document.getElementById("battleHeader"),document.getElementById("battleContent")].forEach(node=>{
+      node.inert=covered;if(covered)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");
     });
   }
-
-  function requestCenteredStageUpdate() {
-    if (centeredStageFrame) return;
-    centeredStageFrame = requestAnimationFrame(() => {
-      centeredStageFrame = 0;
-      updateCenteredStageCard();
-    });
-  }
-
-  function renderStageGrid(focusIndex = null) {
-    nodes.stageGrid.innerHTML = "";
-    stages.forEach((stage, index) => {
-      const stageNo = index + 1;
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "stage-card";
-      button.dataset.stage = String(stageNo);
-      const locked = stageNo > unlocked;
-      if (locked) {
-        button.classList.add("locked");
-        button.setAttribute("aria-disabled", "true");
-        button.setAttribute("aria-label", `${t("stage", { n: stageNo })}: ${t(stage.animalId)}. ${t("locked")}`);
-      }
-      const best = records[stageNo] || 0;
-      const firstKey = typeof stage.rounds[0] === "string" ? stage.rounds[0] : stage.rounds[0].problem;
-      const firstProblem = problems[firstKey];
-      button.innerHTML = `
-        <b class="stage-animal">
-          <img src="${animalAssets[stage.animalId]}" alt="" />
-          <img class="stage-cue-icon" src="${firstProblem.icon}" alt="" />
-        </b>
-        <strong>${t("stage", { n: stageNo })}${stage.checkpoint ? ` \u00b7 ${t("checkpoint")}` : ""}</strong>
-        <span>${t(stage.animalId)} \u00b7 ${ruleLabel(stage)} \u00b7 ${"\u2605".repeat(best)}${"\u2606".repeat(3 - best)}</span>
-      `;
-      button.addEventListener("click", () => {
-        if (stageNo > unlocked) {
-          showFloatingText(t("locked"));
-          playSound("ui.click");
-          return;
-        }
-        startStage(index);
-      });
-      nodes.stageGrid.append(button);
-    });
-    requestAnimationFrame(() => {
-      const unlockedCard = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
-      const focusCard = focusIndex === null ? null : nodes.stageGrid.querySelector(`[data-stage="${clamp(focusIndex + 1, 1, unlocked)}"]`);
-      const target = focusCard || unlockedCard;
-      target?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
-      focusCard?.focus({ preventScroll: true });
-      requestCenteredStageUpdate();
-    });
-  }
-
-  function updateWeatherFrame() {
-    if (!document.body.classList.contains("helper-playing") && !document.body.classList.contains("wp-standard-stage-page")) return;
-    const viewport = window.visualViewport;
-    const visualWidth = Math.round(viewport?.width || 0);
-    const visualHeight = Math.round(viewport?.height || 0);
-    const useVisual = visualWidth > 0
-      && visualHeight > 0
-      && Math.abs(visualWidth - innerWidth) <= 2
-      && visualHeight <= innerHeight + 2;
-    const safeWidth = useVisual ? visualWidth : innerWidth;
-    const height = useVisual ? visualHeight : innerHeight;
-    const width = Math.min(Math.max(1, safeWidth), 920);
-    const scale = Math.max(0.1, Math.min(width / 390, height / 788));
-    const logicalWidth = width / scale;
-    const logicalHeight = height / scale;
-    document.documentElement.style.setProperty("--weather-frame-scale", String(scale));
-    document.documentElement.style.setProperty("--weather-logical-width", `${logicalWidth}px`);
-    document.documentElement.style.setProperty("--weather-logical-height", `${logicalHeight}px`);
-    document.documentElement.style.setProperty("--weather-frame-left", `${Math.max(0, (safeWidth - width) / 2)}px`);
-    document.documentElement.style.setProperty("--weather-frame-top", "0px");
-    const shell = document.querySelector(".weather-game");
-    ["position", "inset", "left", "top", "width", "height", "min-height", "transform", "transform-origin"].forEach((property) => shell?.style.removeProperty(property));
+  function mountSharedInterface(){
+    if(!window.WeightPlayScreenFrame||!window.WeightPlayPlayUI||!window.WeightPlayStageRailI9)throw new Error("HELPER_QUEST_I9_SHARED_RUNTIME_MISSING");
+    screenFrame=window.WeightPlayScreenFrame.mount({root:shell,localeSelect:nodes.localeSelect,playUI:true,scenes:{
+      main:{root:nodes.menuPanel,header:$("mainHeader"),content:$("mainContent")},
+      stage:{root:nodes.stagePanel,header:$("stageHeader"),content:$("stageContent")},
+      battle:{root:nodes.playPanel,header:$("battleHeader"),content:$("battleContent")}
+    }});
+    screenFrame.stageTopUI.add(stageProgress);
+    const group=window.WeightPlayScreenFrame.createGroup();
+    [...$("gameHud").children].forEach(node=>group.add(node));
+    group.element.setAttribute("role","group");group.element.setAttribute("data-runtime-localize","off");
+    screenFrame.battleTopUI.add(group);
+    stageUI=window.WeightPlayPlayUI.mountStage({page:$("stageContent"),rail:nodes.stageGrid,config:stageConfiguration(),selected:stageSelection,
+      onSelect(index){stageSelection=index;},onStart(index){startStage(index);},isActive:()=>screenFrame.active==="stage"&&!nodes.stagePanel.classList.contains("hidden")});
+    screenFrame.activate("main");
   }
 
   function exitSharedPlayViewport() {
@@ -720,42 +702,13 @@
     if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
   }
 
-  function resetWeatherFrame() {
-    const shell = document.querySelector(".weather-game");
-    [
-      "position",
-      "inset",
-      "left",
-      "top",
-      "width",
-      "min-width",
-      "max-width",
-      "height",
-      "min-height",
-      "max-height",
-      "margin",
-      "overflow",
-      "transform",
-      "transform-origin",
-    ].forEach((property) => shell?.style.removeProperty(property));
-    const rootStyle = document.documentElement.style;
-    [
-      "--weather-frame-scale",
-      "--weather-logical-width",
-      "--weather-logical-height",
-      "--weather-frame-left",
-      "--weather-frame-top",
-    ].forEach((property) => rootStyle.removeProperty(property));
-  }
-
   function syncSharedScene(scene) {
-    if (scene === "battle") {
-      window.dispatchEvent(new Event("weightplay:stage-sync"));
-      window.dispatchEvent(new Event("weightplay:battle-sync"));
-    } else {
-      window.dispatchEvent(new Event("weightplay:battle-sync"));
-      window.dispatchEvent(new Event("weightplay:stage-sync"));
-    }
+    exitSharedPlayViewport();
+    screenFrame?.activate(scene);
+    window.WeightPlayBattleCanvas?.sync?.();
+    if(scene==="stage")stageUI?.refresh(stageSelection);
+    window.dispatchEvent(new Event("weightplay:battle-sync"));
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
     window.dispatchEvent(new Event("weightplay:shell-sync"));
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
@@ -764,19 +717,12 @@
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
 
-  window.addEventListener("resize", updateWeatherFrame);
-  window.addEventListener("orientationchange", updateWeatherFrame);
-  window.visualViewport?.addEventListener("resize", updateWeatherFrame, { passive: true });
-  window.addEventListener("resize", requestCenteredStageUpdate, { passive: true });
-  window.addEventListener("orientationchange", requestCenteredStageUpdate, { passive: true });
-  window.visualViewport?.addEventListener("resize", requestCenteredStageUpdate, { passive: true });
-  nodes.stageGrid.addEventListener("scroll", requestCenteredStageUpdate, { passive: true });
-  nodes.stageGrid.addEventListener("wonder:stage-snap", requestCenteredStageUpdate);
-
   function startStage(index) {
+    if(!entryReady||!stages[index]||index>=unlocked)return;
     invalidateCareTransition();
     cleanupDrag();
     currentStage = index;
+    stageSelection=index;resultActionCommitted=false;leaveOpen=false;setBattleCovered(false);nodes.leavePanel.classList.add("hidden");resumeCareTransitions();
     roundIndex = 0;
     score = 0;
     mistakes = 0;
@@ -792,21 +738,10 @@
     nodes.playPanel.classList.remove("result-active");
     nodes.playPanel.classList.remove("hidden");
     document.body.classList.add("helper-playing");
-    document.querySelector(".weather-game")?.removeAttribute("data-play-viewport");
     nodes.hintText.textContent = t("hint");
     renderRound("", true);
-    exitSharedPlayViewport();
-    updateWeatherFrame();
     syncSharedScene("battle");
     track("game_start", { stage: currentStage + 1 });
-    requestAnimationFrame(() => {
-      exitSharedPlayViewport();
-      updateWeatherFrame();
-    });
-    window.setTimeout(() => {
-      exitSharedPlayViewport();
-      updateWeatherFrame();
-    }, 160);
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
@@ -834,9 +769,7 @@
     const problem = problems[problemKey];
     const percent = progressPercent(stage);
     const choices = toolChoices(stage, task.answer);
-    nodes.stageText.textContent = t("stage", { n: stage.id });
-    nodes.movesText.innerHTML = `<b>${t("progress", { done: roundIndex + 1, total: stage.rounds.length })}</b><i style="width:${percent}%"></i>`;
-    nodes.starsText.textContent = t("calm", { score });
+    updateBattleInfo();
     nodes.board.innerHTML = `
       <div class="weather-scene ${stage.theme} ${problem.scene}">
         <div class="rescue-scene">
@@ -1039,6 +972,7 @@
       nodes.hintText.textContent = t(skipped ? "moveOn" : "wrong");
       playSound("feedback.error");
     }
+    updateBattleInfo();
     track("weather_tool", { stage: stage.id, problem: problemKey, tool, correct, skipped, mistakes, roundMistakes });
     scheduleCareTask(() => {
       busy = false;
@@ -1134,6 +1068,8 @@
     records[stage.id] = Math.max(records[stage.id] || 0, stars);
     if (cleared && stage.id < stages.length) unlocked = Math.max(unlocked, stage.id + 1);
     saveRecords();
+    updateBattleInfo();
+    setBattleCovered(true);
     nodes.playPanel.classList.add("result-active");
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
     nodes.resultTitle.textContent = cleared ? t("clear") : t("failed");
@@ -1149,6 +1085,7 @@
     nodes.nextStageBtn.classList.toggle("result-primary", cleared && !isFinalClear);
     nodes.retryBtn.classList.toggle("result-primary", !cleared);
     (__wpNotifyMeasurement(), nodes.resultStagesBtn.classList.toggle("result-primary", isFinalClear));
+    [nodes.resultStagesBtn,nodes.nextStageBtn,nodes.retryBtn].forEach(node=>node.setAttribute("data-wp-frame-action",node.classList.contains("result-primary")?"primary":"secondary"));
     (isFinalClear ? nodes.resultStagesBtn : cleared ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
     renderStageGrid();
     playSound(cleared ? "result.win" : "result.lose");
@@ -1164,7 +1101,7 @@
     cleanupDrag();
     (__wpNotifyMeasurement(), leaveOpen = false);
     (__wpNotifyMeasurement(), nodes.leavePanel.classList.add("hidden"));
-    [...nodes.playPanel.children].forEach((child) => { if (child !== nodes.leavePanel) { child.inert = false; child.removeAttribute("aria-hidden"); } });
+    setBattleCovered(false);
     resumeCareTransitions();
     nodes.playPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("result-active");
@@ -1173,21 +1110,20 @@
     nodes.stagePanel.classList.remove("hidden");
     document.body.classList.remove("helper-playing");
     document.body.classList.add("wp-standard-stage-page");
-    document.querySelector(".weather-game")?.setAttribute("data-play-viewport", "");
     renderStageGrid(focusIndex);
-    updateWeatherFrame();
     syncSharedScene("stage");
   }
 
   function showMain(focusStart = false) {
     cleanupDrag();
+    nodes.playPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
+    updateProgressLabels();
     document.body.classList.remove("wp-standard-stage-page");
     document.body.classList.remove("helper-playing");
     exitSharedPlayViewport();
     syncSharedScene("main");
-    resetWeatherFrame();
     if (focusStart) nodes.startGameBtn.focus({ preventScroll: true });
   }
 
@@ -1222,43 +1158,32 @@
     }
   });
 
-  function installLoading() {
-    let progress = 0;
-    const id = window.setInterval(() => {
-      progress = Math.min(100, progress + 25);
-      nodes.loadingText.textContent = `${progress}%`;
-      nodes.loadingFill.style.width = `${progress}%`;
-      if (progress >= 100) {
-        window.clearInterval(id);
-        window.setTimeout(() => {
-          nodes.loadingPanel.classList.add("hidden");
-          track("game_ready");
-        }, 100);
-      }
-    }, 80);
+  async function prepareEntry(){
+    try{
+      const sources=[POSTER,"/assets/tiny-weather-rescue/battle-background-block-v1.png",...Object.values(tools).map(tool=>tool.icon),...Object.values(problems).map(problem=>problem.icon),...Object.values(animalAssets)];
+      await Promise.all([...new Set(sources)].map(src=>new Promise((resolve,reject)=>{
+        const image=new Image();image.onload=async()=>{try{await image.decode();resolve();}catch(error){reject(error);}};
+        image.onerror=()=>reject(new Error(`Required artwork could not load: ${src}`));image.src=src;
+      })));
+      await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+      entryReady=true;nodes.loadingPanel.setAttribute("aria-busy","false");nodes.loadingPanel.classList.add("hidden");showMain();track("game_ready");
+    }catch(error){nodes.loadingPanel.classList.add("has-error");nodes.loadingPanel.setAttribute("aria-busy","false");console.error(error);}
   }
 
   const rejectRepeatedScreenActivation = (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   };
   nodes.startGameBtn.addEventListener("keydown", rejectRepeatedScreenActivation);
-  nodes.stageGrid.addEventListener("keydown", (event) => {
-    if (event.target.closest(".stage-card")) rejectRepeatedScreenActivation(event);
-  });
-  nodes.startGameBtn.addEventListener("click", () => showMenu(Math.max(0, unlocked - 1)));
+  nodes.startGameBtn.addEventListener("click", () => {if(entryReady)showMenu(Math.max(0, unlocked - 1));});
   nodes.stageBackBtn.addEventListener("click", () => showMain(true));
   function setLeaveOpen(open, restoreFocus = true) {
     if (open === leaveOpen) return;
     (__wpNotifyMeasurement(), leaveOpen = open);
     cleanupDrag();
     (__wpNotifyMeasurement(), nodes.leavePanel.classList.toggle("hidden", !open));
-    [...nodes.playPanel.children].forEach((child) => {
-      if (child === nodes.leavePanel) return;
-      child.inert = open;
-      if (open) child.setAttribute("aria-hidden", "true"); else child.removeAttribute("aria-hidden");
-    });
-    if (open) { suspendCareTransitions(); requestAnimationFrame(() => nodes.keepHelpingBtn.focus({ preventScroll: true })); }
-    else { resumeCareTransitions(); if (restoreFocus) requestAnimationFrame(() => nodes.backToStagesBtn.focus({ preventScroll: true })); }
+    setBattleCovered(open||nodes.playPanel.classList.contains("result-active"));
+    if(open){suspendCareTransitions();nodes.keepHelpingBtn.focus({preventScroll:true});}
+    else{resumeCareTransitions();if(restoreFocus)nodes.backToStagesBtn.focus({preventScroll:true});}
   }
   nodes.localeSelect.addEventListener("change", (event) => {
     const requested = event.target.value;
@@ -1286,12 +1211,15 @@
     event.preventDefault();
     showMenu(currentStage);
   });
-  nodes.resultStagesBtn.addEventListener("click", () => showMenu(currentStage));
-  nodes.retryBtn.addEventListener("click", () => {
-    track("game_restart", { stage: currentStage + 1 });
-    __wpReplayStart(() => startStage(currentStage));
-  });
-  nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
+  function commitResultAction(action){
+    if(resultActionCommitted||nodes.resultPanel.classList.contains("hidden"))return;
+    resultActionCommitted=true;action();
+  }
+  nodes.resultStagesBtn.addEventListener("click",()=>commitResultAction(()=>showMenu(currentStage)));
+  nodes.retryBtn.addEventListener("click",()=>commitResultAction(()=>{
+    track("game_restart",{stage:currentStage+1});__wpReplayStart(()=>startStage(currentStage));
+  }));
+  nodes.nextStageBtn.addEventListener("click",()=>{if(!nodes.nextStageBtn.disabled)commitResultAction(()=>startStage(Math.min(currentStage+1,stages.length-1)));});
   nodes.resultPanel.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault();
@@ -1313,39 +1241,12 @@
     }
   }, true);
 
-  if (new URLSearchParams(location.search).has("smoke")) {
-    window.__helperQuestSmoke = {
-      stages,
-      startStage(stageNo) {
-        unlocked = stages.length;
-        renderStageGrid();
-        startStage(clamp(Number(stageNo) || 1, 1, stages.length) - 1);
-      },
-      unlockAll() {
-        unlocked = stages.length;
-        saveRecords();
-        renderStageGrid();
-      },
-      snapshot() {
-        const task = running ? roundData() : null;
-        return { stage: currentStage + 1, round: roundIndex, score, mistakes, busy, running, task };
-      },
-      chooseAnswer() {
-        if (!running || busy) return false;
-        const answer = roundData().answer;
-        const button = nodes.board.querySelector(`.tool-btn[data-tool="${answer}"]`);
-        if (!button) return false;
-        chooseTool(answer, button);
-        return true;
-      },
-    };
-  }
-
   const boot = () => {
     ensureLocaleOptions();
+    mountSharedInterface();
     localizeStatic();
     renderStageGrid();
-    installLoading();
+    prepareEntry();
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true });
   else boot();

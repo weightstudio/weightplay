@@ -2,7 +2,7 @@ const copy=v=>JSON.parse(JSON.stringify(v));
 export class Climb {
  constructor(level,kit='base',resume=null){
   this.level=level;this.kit=kit;this.time=0;this.position=level.start;this.energy=100;this.usedClips=0;this.pins=level.pins;this.pinned=[];this.flags=[];this.delivered=[];this.stamps=[];this.cargo=null;this.fragile={};this.dryUses=0;this.arrived=0;this.motion=null;this.status='playing';this.events=[];this.moves=0;
-  this.checkpoint=this.snapshot();if(resume)this.restoreRun(resume);
+  this.checkpoint=this.snapshot();this.resumeRejected=Boolean(resume&&!this.restoreRun(resume));
  }
  node(){return this.level.nodes[this.position];}
  isSafe(id=this.position){return this.level.nodes[id]?.safe||this.pinned.includes(id);}
@@ -32,13 +32,13 @@ export class Climb {
   if(n.id===this.level.end){if(this.complete()){this.status='won';this.emit('win',{seals:[true,this.usedClips===0,this.stamps.length===this.level.stamps.length]});}else this.emit('reject',{reason:'taskMissing'});}
  }
  complete(){return this.level.cargo.every(c=>this.delivered.includes(c.id))&&this.level.anchors.every(a=>this.flags.includes(a));}
- anchor(){const n=this.node();if(this.motion||this.status!=='playing'||!n.anchor||this.flags.includes(n.anchor)||n.needs.some(x=>!this.flags.includes(x)))return false;this.flags.push(n.anchor);this.checkpoint=this.snapshot();this.emit('anchor',{flag:n.anchor});return true;}
- pin(){if(this.motion||this.status!=='playing'||this.pins<1||!this.node().pinSeat||this.isSafe())return false;this.pins--;this.pinned.push(this.position);delete this.fragile[this.position];this.checkpoint=this.snapshot();this.emit('pin');return true;}
+ anchor(){const n=this.node();if(this.motion||this.catchMotion||this.status!=='playing'||!n.anchor||this.flags.includes(n.anchor)||n.needs.some(x=>!this.flags.includes(x)))return false;this.flags.push(n.anchor);this.checkpoint=this.snapshot();this.emit('anchor',{flag:n.anchor});return true;}
+ pin(){if(this.motion||this.catchMotion||this.status!=='playing'||this.pins<1||!this.node().pinSeat||this.isSafe())return false;this.pins--;this.pinned.push(this.position);delete this.fragile[this.position];this.checkpoint=this.snapshot();this.emit('pin');return true;}
  fall(reason){if(this.usedClips<(this.kit==='safety'?2:1)){const used=this.usedClips+1,from=this.position;this.restore(this.checkpoint);this.usedClips=used;this.energy=this.cap();this.arrived=this.time;this.catchMotion={from,elapsed:0,duration:.7};this.emit('catch',{reason});}else{this.status='lost';this.motion=null;this.emit('lose',{reason});}}
  snapshot(){return copy({position:this.position,energy:this.energy,pins:this.pins,pinned:this.pinned,flags:this.flags,delivered:this.delivered,stamps:this.stamps,cargo:this.cargo,fragile:this.fragile,dryUses:this.dryUses,moves:this.moves,time:this.time,arrived:this.arrived});}
  restore(s){Object.assign(this,copy(s));this.motion=null;this.catchMotion=null;this.status='playing';}
- runRecord(){return {schema:1,graph:1,level:this.level.number,kit:this.kit,usedClips:this.usedClips,safe:copy(this.checkpoint)};}
- restoreRun(r){const s=r?.safe;if(r?.schema!==1||r.graph!==1||r.level!==this.level.number||r.kit!==this.kit||!s||!this.level.nodes[s.position])return false;
+ runRecord(){return {schema:1,graph:this.level.revision,level:this.level.number,kit:this.kit,usedClips:this.usedClips,safe:copy(this.checkpoint)};}
+ restoreRun(r){const s=r?.safe;if(r?.schema!==1||r.graph!==this.level.revision||r.level!==this.level.number||r.kit!==this.kit||!s||!this.level.nodes[s.position])return false;
   const domains={pinned:Object.values(this.level.nodes).filter(n=>n.pinSeat&&!n.safe).map(n=>n.id),flags:this.level.anchors,delivered:this.level.cargo.map(c=>c.id),stamps:this.level.stamps};
   for(const[k,valid]of Object.entries(domains))if(!Array.isArray(s[k])||s[k].some(v=>!valid.includes(v))||new Set(s[k]).size!==s[k].length)return false;
   if(!(this.level.nodes[s.position].safe||s.pinned.includes(s.position))||!Number.isFinite(s.energy)||s.energy<0||s.energy>100||!Number.isInteger(s.pins)||s.pins<0||s.pins+s.pinned.length!==this.level.pins||!Number.isInteger(s.dryUses)||s.dryUses<0||!Number.isInteger(s.moves)||s.moves<0||!Number.isFinite(s.time)||s.time<0||!Number.isFinite(s.arrived)||s.arrived<0||s.arrived>s.time||!Number.isInteger(r.usedClips)||r.usedClips<0||r.usedClips>(this.kit==='safety'?2:1))return false;

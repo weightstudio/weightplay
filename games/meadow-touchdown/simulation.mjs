@@ -48,11 +48,11 @@ export function sweptContact(a,b,p,q,r,height=Infinity){
 function makeDefenders(code,s,stage){
   const defs=[];
   const man=i=>defs.push({kind:'man',target:i,cushion:stage.manCushion,x:[-6,0,6][i]+(stage.number===3&&i===0?2:0),y:s+(stage.number===3&&i===1?10:4)});
-  const zone=(x,y,switchTarget=null)=>defs.push({kind:'zone',x,y:s+y,home:point(x,s+y),zoneTarget:null,switchTarget});
+  const zone=(x,y,switchTarget=null,tag='')=>{[x,y]=stage.zoneHomes?.[tag]||[x,y];defs.push({kind:'zone',x,y:s+y,home:point(x,s+y),zoneTarget:null,switchTarget});};
   for(const tag of code.split(' ')){
     if(tag==='M2'){man(0);man(2);}else if(tag==='M3'){man(0);man(1);man(2);}
     else if(tag==='ML')man(0);else if(tag==='MR')man(2);
-    else if(tag==='ZL')zone(-4,9);else if(tag==='ZR')zone(4,9);else if(tag==='ZC')zone(0,12);else if(tag==='ZD')zone(0,15);
+    else if(tag==='ZL')zone(-4,9,null,tag);else if(tag==='ZR')zone(4,9,null,tag);else if(tag==='ZC')zone(0,12,null,tag);else if(tag==='ZD')zone(0,15,null,tag);
     else if(tag==='S'){zone(-4,9,0);zone(4,9,2);}
     else if(tag==='BL'||tag==='BR')defs.push({kind:'blitz',x:tag==='BL'?-5:5,y:s+2});
   }
@@ -84,11 +84,12 @@ export class Match {
     this.wind=(this.stage.special==='relay'&&this.leg===2?2:this.stage.wind)*(this.snapCount%2?-1:1);
     this.gate=this.snapCount%2?-1:1;this.lane=2;this.shift=null;
     if(this.book===this.blockedBook)this.book=this.availableBooks().find(b=>b!==this.blockedBook)||'P1';
+    this.bookChoiceRequired=this.stage.special==='change'&&this.blockedBook!==null;
   }
   availableBooks(){return PLAYBOOKS.slice(0,this.stage.maxBook).map(b=>b.id);}
-  selectBook(id){if(this.phase!=='ready'||!this.availableBooks().includes(id)||id===this.blockedBook)return false;this.book=id;return true;}
+  selectBook(id){if(this.phase!=='ready'||!this.availableBooks().includes(id)||id===this.blockedBook)return false;this.book=id;this.bookChoiceRequired=false;return true;}
   snap(){
-    if(this.phase!=='ready'||this.result)return false;
+    if(this.phase!=='ready'||this.result||this.bookChoiceRequired)return false;
     if(this.clock<=0){this.finish(false,'time');return false;}
     this.phase='live';this.lastMiss=null;this.snapCount++;if(this.down===4)this.medals.early=false;
     this.event('snap');return true;
@@ -163,10 +164,10 @@ export class Match {
       if(d.kind==='blitz'&&this.elapsed<.8)continue;
       if(d.decision<=0){
         d.decision=.25;
-        if(this.phase==='run')d.destination=point(this.runner.x,this.runner.y);
+        if(this.phase==='run')d.destination=point(this.runner.x,Math.min(41,this.runner.y+(d.kind==='zone'?this.stage.contain:0)));
         // Authored cushion coverage tracks the receiver's visible position,
         // never the uncommitted aim. Crosses/feints can pull it out of a lane.
-        else if(d.kind==='man')d.destination=point(this.receivers[d.target].x,Math.min(41,this.receivers[d.target].y+(d.cushion||0)));
+        else if(d.kind==='man')d.destination=point(this.receivers[d.target].x,Math.min(41+(d.cushion||0),this.receivers[d.target].y+(d.cushion||0)));
         else if(d.kind==='zone'){
           let target=d.zoneTarget===null?null:this.receivers[d.zoneTarget];
           if(!target||distance(target,d.home)>4.5){
