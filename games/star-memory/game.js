@@ -58,7 +58,11 @@
   const stageBackBtn = document.querySelector("#stageBackBtn");
   const battleBackBtn = document.querySelector("#battleBackBtn");
   const stageGrid = document.querySelector("#stageGrid");
-  const memoryGame = document.querySelector(".star-memory-game");
+  const memoryGame = document.getElementById("memoryGame");
+  const battlePanel = document.getElementById("battlePanel");
+  const mainProgress = document.getElementById("mainProgress");
+  const stageProgress = document.createElement("strong");
+  let screenFrame = null, stageUI = null, stageSelection = 0;
   
   const gameHud = document.querySelector("#gameHud");
   const levelIndicator = document.querySelector("#levelIndicator");
@@ -94,16 +98,15 @@
   const stageSelectBtn = document.querySelector("#stageSelectBtn");
   
   const loadingPanel = document.querySelector("#loadingPanel");
-  const loadingText = document.querySelector("#loadingText");
-  const loadingFill = document.querySelector("#loadingFill");
   const leaveConfirmPanel = document.createElement("section");
   leaveConfirmPanel.id = "leaveConfirmPanel";
   leaveConfirmPanel.className = "leave-confirm-panel hidden";
   (__wpNotifyMeasurement(), leaveConfirmPanel.setAttribute("role", "dialog"));
   (__wpNotifyMeasurement(), leaveConfirmPanel.setAttribute("aria-modal", "true"));
   (__wpNotifyMeasurement(), leaveConfirmPanel.setAttribute("aria-labelledby", "leaveConfirmTitle"));
-  leaveConfirmPanel.innerHTML = `<div class="leave-confirm-card"><h2 id="leaveConfirmTitle"></h2><p id="leaveConfirmText"></p><div><button id="keepPlayingBtn" type="button"></button><button id="leaveLevelBtn" type="button"></button></div></div>`;
-  memoryGame.append(leaveConfirmPanel);
+  leaveConfirmPanel.innerHTML = `<div class="leave-confirm-card"><h2 id="leaveConfirmTitle"></h2><p id="leaveConfirmText"></p><div><button id="keepPlayingBtn" data-wp-frame-action="primary" type="button"></button><button id="leaveLevelBtn" data-wp-frame-action="secondary" type="button"></button></div></div>`;
+  battlePanel.append(leaveConfirmPanel);
+  leaveConfirmPanel.dataset.wpScenePart = "battle";
   const leaveConfirmTitle = leaveConfirmPanel.querySelector("#leaveConfirmTitle");
   const leaveConfirmText = leaveConfirmPanel.querySelector("#leaveConfirmText");
   const keepPlayingBtn = leaveConfirmPanel.querySelector("#keepPlayingBtn");
@@ -117,27 +120,27 @@
 
   // Card image asset library
   const assetLibrary = {
-    sun: "../../assets/star-memory-sun.svg",
-    moon: "../../assets/star-memory-moon.svg",
-    star: "../../assets/star-memory-star.svg",
-    rocket: "../../assets/star-memory-rocket.svg",
-    ufo: "../../assets/star-memory-ufo.svg",
-    planet: "../../assets/star-memory-planet.svg",
-    donut: "../../assets/star-memory-donut.svg",
-    heart: "../../assets/star-memory-heart.svg",
-    panda: "assets/memory-panda-voxel-v1.png",
-    bear: "assets/memory-bear-voxel-v1.png",
-    lion: "assets/memory-lion-voxel-v1.png",
-    cat: "assets/memory-cat-voxel-v1.png",
-    rabbit: "assets/memory-rabbit-voxel-v1.png",
-    fox: "assets/memory-fox-voxel-v1.png",
-    owl: "assets/memory-owl-voxel-v1.png",
-    frog: "assets/memory-frog-voxel-v1.png",
-    whale: "assets/memory-whale-voxel-v1.png",
-    chick: "assets/memory-chick-voxel-v1.png",
-    penguin: "assets/memory-penguin-voxel-v1.png",
-    koala: "assets/memory-koala-voxel-v1.png",
-    cardBack: "../../assets/star-memory-card-back.svg"
+    sun: "/assets/star-memory-sun.svg",
+    moon: "/assets/star-memory-moon.svg",
+    star: "/assets/star-memory-star.svg",
+    rocket: "/assets/star-memory-rocket.svg",
+    ufo: "/assets/star-memory-ufo.svg",
+    planet: "/assets/star-memory-planet.svg",
+    donut: "/assets/star-memory-donut.svg",
+    heart: "/assets/star-memory-heart.svg",
+    panda: "/games/star-memory/assets/memory-panda-voxel-v1.png",
+    bear: "/games/star-memory/assets/memory-bear-voxel-v1.png",
+    lion: "/games/star-memory/assets/memory-lion-voxel-v1.png",
+    cat: "/games/star-memory/assets/memory-cat-voxel-v1.png",
+    rabbit: "/games/star-memory/assets/memory-rabbit-voxel-v1.png",
+    fox: "/games/star-memory/assets/memory-fox-voxel-v1.png",
+    owl: "/games/star-memory/assets/memory-owl-voxel-v1.png",
+    frog: "/games/star-memory/assets/memory-frog-voxel-v1.png",
+    whale: "/games/star-memory/assets/memory-whale-voxel-v1.png",
+    chick: "/games/star-memory/assets/memory-chick-voxel-v1.png",
+    penguin: "/games/star-memory/assets/memory-penguin-voxel-v1.png",
+    koala: "/games/star-memory/assets/memory-koala-voxel-v1.png",
+    cardBack: "/assets/star-memory-card-back.svg"
   };
 
   // Local Translations Dictionary
@@ -538,7 +541,7 @@
   let resultActionCommitted = false;
   let roundGeneration = 0;
   let windowFocused = document.hasFocus();
-  let roundLifecycleSuspended = document.hidden || !windowFocused;
+  let roundLifecycleSuspended = document.hidden || !windowFocused || leaveConfirmOpen;
   const roundTasks = new Set();
 
   function scheduleRoundTask(task, delay) {
@@ -601,7 +604,7 @@
   }
 
   function resumeRoundTasks() {
-    roundLifecycleSuspended = document.hidden || !windowFocused;
+    roundLifecycleSuspended = document.hidden || !windowFocused || leaveConfirmOpen;
     roundTasks.forEach((task) => { task.lastFrameAt = null; });
   }
 
@@ -612,7 +615,7 @@
   }
 
   function setBattleCovered(covered) {
-    for (const node of [gameHud, gameBoardPanel, gameFeedback]) {
+    for (const node of [document.getElementById("battleHeader"), document.getElementById("battleContent")]) {
       node.inert = covered;
       if (covered) node.setAttribute("aria-hidden", "true");
       else node.removeAttribute("aria-hidden");
@@ -750,7 +753,7 @@
 
   // UI Translating
   function translateStaticUI() {
-    const gameRoot = document.querySelector(".star-memory-game");
+    const gameRoot = memoryGame;
     if (locale() === "de") {
       gameRoot?.setAttribute("data-runtime-localize", "off");
       document.body.setAttribute("data-runtime-localize", "off");
@@ -760,18 +763,16 @@
     }
     document.documentElement.lang = locale();
     localeSelect.value = locale();
-    updateSeoText();
     languageLabel.textContent = t("language");
     localeSelect.setAttribute("aria-label", t("languageAria"));
-    titleText.textContent = t("title");
-    mainTitle.textContent = t("title");
-    mainIntro.textContent = t("mainIntro");
+    mainIntro.textContent = mainSummaries[locale()] || mainSummaries.en;
     startBtn.textContent = t("start");
     stageSelectTitle.textContent = t("chooseLevel");
     
     // HUD Labels
-    document.querySelector("#scoreLabel").textContent = t("score");
-    document.querySelector("#movesLabel").textContent = t("moves");
+    const headerCopy = headerWords[locale()] || headerWords.en;
+    document.querySelector("#scoreLabel").textContent = headerCopy[2];
+    document.querySelector("#movesLabel").textContent = headerCopy[1];
     
     // Button labels
     nextLevelBtn.textContent = t("nextLevel");
@@ -785,6 +786,10 @@
     keepPlayingBtn.textContent = t("keepPlaying");
     leaveLevelBtn.textContent = t("leaveLevel");
     gameHud.setAttribute("aria-label", t("gameStatsAria"));
+    document.getElementById("levelLabel").textContent = stageWord();
+    document.getElementById("pairsLabel").textContent = headerCopy[0];
+    document.querySelector('#battleHeader [role="group"]')?.setAttribute("aria-label",headerCopy[3]);
+    updateStageProgress();
     
     // HUD Level text
     if (!stageSelectPanel.classList.contains("hidden")) {
@@ -811,89 +816,85 @@
     setMeta('meta[property="og:description"]', "content", t("ogDescription"));
   }
 
-  // Loading Simulation
-  function simulateLoading() {
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.floor(Math.random() * 15) + 5;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        state.ready = true;
-        loadProgress();
-        loadingPanel.classList.add("hidden");
-        window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
-        showMain();
-      }
-      loadingText.textContent = `${progress}%`;
-      loadingFill.style.width = `${progress}%`;
-    }, 40);
+  const stageWords = {en:"Stage","zh-Hant":"關卡","zh-Hans":"关卡",ja:"ステージ",ko:"스테이지",es:"Nivel","pt-BR":"Fase",fr:"Niveau",de:"Runde",it:"Livello",ru:"Уровень",hi:"स्तर",ar:"المرحلة"};
+  const headerWords = {
+    en:["Pairs","Moves","Score","Game stats"],"zh-Hant":["配對","步數","分數","遊戲資訊"],"zh-Hans":["配对","步数","分数","游戏信息"],
+    ja:["ペア","手数","スコア","ゲーム情報"],ko:["짝","횟수","점수","게임 정보"],es:["Parejas","Jugadas","Puntos","Datos de la partida"],
+    "pt-BR":["Pares","Jogadas","Pontos","Dados da partida"],fr:["Paires","Coups","Score","Données du jeu"],de:["Paare","Züge","Punkte","Spieldaten"],
+    it:["Coppie","Mosse","Punti","Dati di gioco"],ru:["Пары","Ходы","Счёт","Данные игры"],hi:["जोड़ियाँ","चालें","अंक","खेल की जानकारी"],ar:["الأزواج","الحركات","النقاط","معلومات اللعب"],
+  };
+  const mainSummaries = {
+    en:"Match animal pairs across 30 stages, with previews and ordered challenges.",
+    "zh-Hant":"記住動物卡牌的位置，挑戰 30 關預覽與順序配對。",
+    "zh-Hans":"记住动物卡牌的位置，挑战 30 关预览与顺序配对。",
+    ja:"動物カードの位置を覚えて、プレビューや順番ルールのある30ステージに挑戦。",
+    ko:"동물 카드의 위치를 기억하고 미리보기와 순서 규칙이 있는 30개 스테이지에 도전하세요.",
+    es:"Recuerda las parejas de animales en 30 niveles con vistas previas y orden.",
+    "pt-BR":"Memorize pares de animais em 30 fases com prévias e desafios de ordem.",
+    fr:"Retrouvez les paires d’animaux dans 30 niveaux avec aperçu et ordre imposé.",
+    de:"Merke dir Tierpaare in 30 Runden mit Vorschau und vorgegebener Reihenfolge.",
+    it:"Ricorda le coppie di animali in 30 livelli con anteprime e ordine richiesto.",
+    ru:"Найдите пары животных в 30 уровнях с просмотром и заданным порядком.",
+    hi:"जानवरों की जोड़ियाँ याद रखें और झलक व तय क्रम वाले 30 स्तर पूरे करें।",
+    ar:"تذكّر أزواج الحيوانات في 30 مرحلة مع معاينة وترتيب محدد.",
+  };
+  const POSTER = "/assets/interface7-redrawn/star-memory.webp";
+  function stageWord() { return stageWords[locale()] || stageWords.en; }
+  function updateStageProgress() {
+    const text = `${stageWord()} ${Math.min(state.unlockedLevel, stages.length)} / ${stages.length}`;
+    mainProgress.textContent = text;
+    stageProgress.textContent = text;
   }
-
-  function updateMemoryFrame() {
-    if (!document.body.classList.contains("memory-stage") && !document.body.classList.contains("memory-playing")) return;
-    const viewport = window.visualViewport;
-    const viewportWidth = viewport?.width || window.innerWidth;
-    const viewportHeight = viewport?.height || window.innerHeight;
-    const availableWidth = Math.max(1, Math.min(viewportWidth, 920));
-    const availableHeight = Math.max(1, viewportHeight);
-    const shortLandscape = availableWidth / availableHeight >= 1.5 && availableHeight <= 430;
-    const minimumLogicalWidth = shortLandscape ? 760 : 390;
-    const minimumLogicalHeight = shortLandscape ? 360 : 788;
-    const scale = Math.min(availableWidth / minimumLogicalWidth, availableHeight / minimumLogicalHeight);
-    const logicalWidth = availableWidth / scale;
-    const logicalHeight = availableHeight / scale;
-    const frameLeft = (viewport?.offsetLeft || 0) + Math.max(0, (viewportWidth - availableWidth) / 2);
-    const frameTop = viewport?.offsetTop || 0;
-    document.documentElement.style.setProperty("--memory-frame-scale", String(scale));
-    document.documentElement.style.setProperty("--memory-frame-left", `${frameLeft}px`);
-    document.documentElement.style.setProperty("--memory-frame-top", `${frameTop}px`);
-    document.documentElement.style.setProperty("--memory-frame-width", `${availableWidth}px`);
-    document.documentElement.style.setProperty("--memory-frame-height", `${availableHeight}px`);
-    document.documentElement.style.setProperty("--memory-logical-width", `${logicalWidth}px`);
-    document.documentElement.style.setProperty("--memory-logical-height", `${logicalHeight}px`);
-    memoryGame.dataset.wpCommonScale = String(scale);
-    memoryGame.dataset.wpLogicalWidth = String(logicalWidth);
-    memoryGame.dataset.wpLogicalHeight = String(logicalHeight);
-    memoryGame.dataset.wpLogicalBattleCanvas = `${logicalWidth}x${logicalHeight}`;
-    requestAnimationFrame(() => fitMemoryBoard());
+  function stageConfiguration() {
+    return {count:stages.length,poster:POSTER,background:"/assets/lobby-block-atmosphere.svg",stage(index) {
+      const stage=stages[index],unlocked=stage.id<=state.unlockedLevel,stars=getLevelStars(stage.id);
+      return {id:stage.id,kicker:stage.checkpoint?t("parkCheck"):t(stageRuleKey(stage)),title:`${stageWord()} ${stage.id}`,subtitle:stageCopy(stage,"title"),
+        poster:POSTER,locked:!unlocked,cleared:stars>0,status:unlocked?(stars?"★".repeat(stars):t("play")):t("locked"),
+        summary:stageCopy(stage,"description"),details:[stageCopy(stage,"description"),t(stageRuleKey(stage)),t("highScore",{score:getLevelHighScore(stage.id)})]};
+    }};
   }
-
-  function resetMemoryFrame() {
-    for (const property of ["position", "inset", "left", "top", "width", "min-width", "max-width", "height", "min-height", "max-height", "margin", "overflow", "transform", "transform-origin"]) {
-      memoryGame.style.removeProperty(property);
-    }
-    delete memoryGame.dataset.wpCommonScale;
-    delete memoryGame.dataset.wpLogicalWidth;
-    delete memoryGame.dataset.wpLogicalHeight;
-    delete memoryGame.dataset.wpLogicalBattleCanvas;
-    [
-      "--memory-frame-scale",
-      "--memory-frame-left",
-      "--memory-frame-top",
-      "--memory-frame-width",
-      "--memory-frame-height",
-      "--memory-logical-width",
-      "--memory-logical-height",
-    ].forEach((property) => document.documentElement.style.removeProperty(property));
+  function mountSharedInterface() {
+    if (!window.WeightPlayScreenFrame || !window.WeightPlayPlayUI || !window.WeightPlayStageRailI9) throw new Error("STAR_MEMORY_I9_SHARED_RUNTIME_MISSING");
+    screenFrame=window.WeightPlayScreenFrame.mount({root:memoryGame,localeSelect,playUI:true,scenes:{
+      main:{root:mainPanel,header:document.getElementById("mainHeader"),content:document.getElementById("mainContent")},
+      stage:{root:stageSelectPanel,header:document.getElementById("stageHeader"),content:document.getElementById("stageContent")},
+      battle:{root:battlePanel,header:document.getElementById("battleHeader"),content:document.getElementById("battleContent")},
+    }});
+    screenFrame.stageTopUI.add(stageProgress);
+    const statistics=window.WeightPlayScreenFrame.createGroup();
+    [...gameHud.children].forEach(node=>statistics.add(node));
+    statistics.element.setAttribute("role","group");statistics.element.setAttribute("aria-label",(headerWords[locale()]||headerWords.en)[3]);
+    screenFrame.battleTopUI.add(statistics);
+    stageUI=window.WeightPlayPlayUI.mountStage({page:document.getElementById("stageContent"),rail:stageGrid,config:stageConfiguration(),selected:stageSelection,
+      onSelect(index){stageSelection=index;},onStart(index){startStage(index);},isActive:()=>screenFrame.active==="stage"&&!stageSelectPanel.hidden});
+    new ResizeObserver(()=>fitMemoryBoard()).observe(gameBoardPanel);
+    screenFrame.activate("main");
   }
-
+  async function prepareEntry() {
+    try {
+      const assets=[POSTER,assetLibrary.cardBack,...new Set(stages.flatMap(stage=>stage.symbols).map(symbol=>assetLibrary[symbol]))];
+      await Promise.all(assets.map(src=>new Promise((resolve,reject)=>{
+        const image=new Image();image.onload=async()=>{try{await image.decode();resolve();}catch(error){reject(error);}};
+        image.onerror=()=>reject(new Error(`Required artwork could not load: ${src}`));image.src=src;
+      })));
+      await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+      state.ready=true;loadProgress();loadingPanel.setAttribute("aria-busy","false");loadingPanel.classList.add("hidden");
+      window.WonderAnalytics?.track("game_ready",{game_id:GAME_ID});showMain();
+    } catch(error) {loadingPanel.classList.add("has-error");loadingPanel.setAttribute("aria-busy","false");console.error(error);}
+  }
   function syncSharedScene(scene) {
-    if (scene === "battle") {
-      window.dispatchEvent(new Event("weightplay:stage-sync"));
-      window.dispatchEvent(new Event("weightplay:battle-sync"));
-    } else {
-      window.dispatchEvent(new Event("weightplay:battle-sync"));
-      window.dispatchEvent(new Event("weightplay:stage-sync"));
-    }
+    exitSharedPlayViewport();
+    screenFrame?.activate(scene);
+    window.WeightPlayBattleCanvas?.sync?.();
+    if(scene==="stage")stageUI?.refresh(stageSelection);
+    window.dispatchEvent(new Event("weightplay:battle-sync"));
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
     window.dispatchEvent(new Event("weightplay:shell-sync"));
-    if (scene === "main") resetMemoryFrame();
-
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
       if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
-}
+  }
 
   const MEMORY_CARD_LOGICAL_SIZE = 112;
   const MEMORY_BOARD_MAX_SCALE = 2.25;
@@ -925,32 +926,29 @@
     if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
   }
 
-  window.addEventListener("resize", updateMemoryFrame);
-  window.addEventListener("orientationchange", updateMemoryFrame);
-  window.visualViewport?.addEventListener("resize", updateMemoryFrame);
-  window.visualViewport?.addEventListener("scroll", updateMemoryFrame);
 
   function showMain() {
+    closeLeaveConfirm(false);setBattleCovered(false);
+    battlePanel.classList.add("hidden");
+    updateStageProgress();
     cancelRoundTasks();
     document.body.classList.remove("memory-stage", "memory-playing", "memory-result");
     document.body.classList.add("memory-main");
     (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
     mainPanel.classList.remove("hidden");
     stageSelectPanel.classList.add("hidden");
-    gameHud.classList.add("hidden");
     gameBoardPanel.classList.add("hidden");
     gameFeedback.classList.add("hidden");
     exitSharedPlayViewport();
-    resetMemoryFrame();
     syncSharedScene("main");
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => startBtn.focus({ preventScroll: true }));
-    });
+    startBtn.focus({ preventScroll: true });
   }
 
   // Stage Selection Screen
   function showStageSelect(focusStageIndex = Math.max(0, Math.min(stages.length, state.unlockedLevel) - 1)) {
+    closeLeaveConfirm(false);setBattleCovered(false);stageSelection=focusStageIndex;
+    battlePanel.classList.add("hidden");
     cancelRoundTasks();
     document.body.classList.remove("memory-main");
     document.body.classList.remove("memory-playing");
@@ -958,7 +956,6 @@
     document.body.classList.add("memory-stage");
     (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
     mainPanel.classList.add("hidden");
-    gameHud.classList.add("hidden");
     gameBoardPanel.classList.add("hidden");
     gameFeedback.classList.add("hidden");
     stageSelectPanel.classList.remove("hidden");
@@ -966,82 +963,18 @@
     exitSharedPlayViewport();
     syncSharedScene("stage");
     renderStageGrid(focusStageIndex);
-    updateMemoryFrame();
-    requestAnimationFrame(() => {
-      exitSharedPlayViewport();
-      updateMemoryFrame();
-    });
+
   }
 
   function renderStageGrid(focusStageIndex = null) {
-    stageGrid.replaceChildren(
-      ...stages.map((stage, idx) => {
-        const isUnlocked = stage.id <= state.unlockedLevel;
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = `stage-card ${isUnlocked ? "unlocked" : "locked"}`;
-        button.dataset.index = String(idx);
-        button.setAttribute("aria-disabled", String(!isUnlocked));
-        button.dataset.stageId = String(stage.id);
-        button.dataset.checkpoint = String(stage.checkpoint);
-        button.dataset.rules = [stage.previewMs && "preview", stage.ordered && "order"].filter(Boolean).join(",") || "classic";
-        
-        let starsStr = "";
-        if (isUnlocked) {
-          const starsEarned = getLevelStars(stage.id);
-          starsStr = "⭐".repeat(starsEarned);
-        }
-        
-        const highScoreVal = getLevelHighScore(stage.id);
-        const scoreStr = highScoreVal > 0 ? `<br><small>${t("highScore", { score: highScoreVal })}</small>` : "";
-
-        button.innerHTML = `
-          ${stage.checkpoint ? `<img class="stage-keeper" src="${assetLibrary[stage.checkpointSymbol]}" alt="" draggable="false" />` : ""}
-          <span>${stage.checkpoint ? `${isUnlocked ? "" : `${t("locked")} · `}${t("parkCheck")}` : isUnlocked ? t("play") : t("locked")}</span>
-          <strong>${stageCopy(stage, "title")}</strong>
-          <small>${stageCopy(stage, "description")}</small>
-          <em>${t(stageRuleKey(stage))}</em>
-          ${scoreStr}
-          ${starsStr ? `<div class="stars-badge">${starsStr}</div>` : ""}
-        `;
-        
-        if (isUnlocked) {
-          button.addEventListener("click", () => startStage(idx));
-        }
-        return button;
-      })
-    );
-    requestAnimationFrame(() => {
-      const unlocked = [...stageGrid.querySelectorAll(".stage-card.unlocked")];
-      const target = Number.isInteger(focusStageIndex)
-        ? stageGrid.querySelector(`.stage-card.unlocked[data-index="${focusStageIndex}"]`) || unlocked.at(-1)
-        : unlocked.at(-1);
-      stageGrid.querySelectorAll(".stage-card.selected").forEach((card) => card.classList.remove("selected"));
-      target?.classList.add("selected");
-      target?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
-      if (Number.isInteger(focusStageIndex)) target?.focus({ preventScroll: true });
-    });
+    if(Number.isInteger(focusStageIndex))stageSelection=focusStageIndex;
+    updateStageProgress();stageUI?.setConfig(stageConfiguration(),stageSelection);
+    if(Number.isInteger(focusStageIndex))stageGrid.querySelector('[aria-current="true"]')?.focus({preventScroll:true});
   }
-
-  function nearestStageCard() {
-    const cards = [...stageGrid.querySelectorAll(".stage-card")];
-    const center = stageGrid.scrollLeft + stageGrid.clientWidth / 2;
-    return cards.reduce((best, card) => {
-      const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
-      return !best || distance < best.distance ? { card, distance } : best;
-    }, null)?.card;
-  }
-  function highlightNearestStage() {
-    const nearest = nearestStageCard();
-    if (nearest) {
-      stageGrid.querySelectorAll(".stage-card.selected").forEach((card) => card.classList.remove("selected"));
-      nearest.classList.add("selected");
-    }
-    return nearest;
-  }
-  stageGrid.addEventListener("wonder:stage-snap", highlightNearestStage);
   // Start Gameplay Stage
   function startStage(stageIdx) {
+    if(!state.ready||!stages[stageIdx]||stageIdx>=state.unlockedLevel)return;
+    closeLeaveConfirm(false);setBattleCovered(false);
     cancelRoundTasks();
     const stage = stages[stageIdx];
     state.stageIndex = stageIdx;
@@ -1056,7 +989,6 @@
     document.body.classList.remove("memory-stage");
     document.body.classList.remove("memory-result");
     document.body.classList.add("memory-playing");
-    syncSharedScene("battle");
 
     // Analytics event
     window.WonderAnalytics?.track("game_start", {
@@ -1067,33 +999,36 @@
 
     (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
     stageSelectPanel.classList.add("hidden");
-    gameHud.classList.remove("hidden");
     gameBoardPanel.classList.remove("hidden");
     gameFeedback.classList.remove("hidden");
 
     exitSharedPlayViewport();
-    updateMemoryFrame();
     feedbackText.textContent = t(stageRuleKey(stage));
     comboContainer.classList.add("hidden");
     
     updateHUD();
     generateGameBoard(stage);
     beginStagePreview(stage);
-    requestAnimationFrame(updateMemoryFrame);
+    battlePanel.classList.remove("hidden");
+    syncSharedScene("battle");
+    fitMemoryBoard(stage);
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
 
   function updateHUD() {
     const stage = stages[state.stageIndex];
-    levelIndicator.textContent = t("level", { current: stage.id, total: stages.length });
+    movesText.setAttribute("aria-label",t(stage.limit===Infinity?"movesInfinite":"movesLimit",{current:state.moves,limit:stage.limit}));
+    levelIndicator.textContent = `${stage.id}/${stages.length}`;
+    levelIndicator.setAttribute("aria-label",t("level",{current:stage.id,total:stages.length}));
+    document.getElementById("pairsText").textContent = `${state.matchedPairsCount}/${stage.symbols.length}`;
     levelFill.style.width = `${(state.matchedPairsCount / stage.symbols.length) * 100}%`;
     scoreText.textContent = state.score;
     
     if (stage.limit === Infinity) {
-      movesText.textContent = t("movesInfinite", { current: state.moves });
+      movesText.textContent = `${state.moves}/∞`;
     } else {
-      movesText.textContent = t("movesLimit", { current: state.moves, limit: stage.limit });
+      movesText.textContent = `${state.moves}/${stage.limit}`;
     }
   }
 
@@ -1104,6 +1039,7 @@
     const shuffledPairs = shuffle(pairs);
     
     // Setup grid columns CSS variables
+    cardGrid.dataset.columns=String(stage.grid.c);cardGrid.dataset.rows=String(stage.grid.r);
     cardGrid.style.setProperty("--grid-cols", stage.grid.c);
     cardGrid.style.setProperty("--memory-grid-rows", stage.grid.r);
     cardGrid.style.gridTemplateColumns = `repeat(${stage.grid.c}, 1fr)`;
@@ -1318,6 +1254,7 @@
     // Add remaining moves score bonus
     const movesBonus = stage.limit !== Infinity ? Math.max(0, stage.limit - state.moves) * 50 : 0;
     state.score += movesBonus;
+    updateHUD();
     
     // Save High Scores
     saveLevelHighScore(stage.id, state.score);
@@ -1342,9 +1279,11 @@
     const primaryAction = isFinalStage ? stageSelectBtn : nextLevelBtn;
     [stageSelectBtn, nextLevelBtn, againBtn].forEach((action) => {
       action.classList.toggle("result-primary", action === primaryAction);
+      action.dataset.wpFrameAction=action===primaryAction?"primary":"secondary";
       action.classList.toggle("result-secondary", action !== primaryAction);
     });
     document.body.classList.add("memory-result");
+    setBattleCovered(true);updateStageProgress();
     resultActionCommitted = false;
     (__wpNotifyMeasurement(), resultPanel.classList.remove("hidden"));
     primaryAction.focus({ preventScroll: true });
@@ -1382,9 +1321,11 @@
     nextLevelBtn.setAttribute("aria-disabled", "true");
     [stageSelectBtn, nextLevelBtn, againBtn].forEach((action) => {
       action.classList.toggle("result-primary", action === againBtn);
+      action.dataset.wpFrameAction=action===againBtn?"primary":"secondary";
       action.classList.toggle("result-secondary", action !== againBtn);
     });
     document.body.classList.add("memory-result");
+    setBattleCovered(true);updateStageProgress();
     resultActionCommitted = false;
     (__wpNotifyMeasurement(), resultPanel.classList.remove("hidden"));
     againBtn.focus({ preventScroll: true });
@@ -1424,7 +1365,7 @@
     suspendRoundTasks();
     (__wpNotifyMeasurement(), leaveConfirmPanel.classList.remove("hidden"));
     setBattleCovered(true);
-    requestAnimationFrame(() => keepPlayingBtn.focus({ preventScroll: true }));
+    keepPlayingBtn.focus({ preventScroll: true });
   }
   function closeLeaveConfirm(restoreFocus = true) {
     if (!leaveConfirmOpen) return;
@@ -1432,7 +1373,7 @@
     (__wpNotifyMeasurement(), leaveConfirmPanel.classList.add("hidden"));
     setBattleCovered(false);
     resumeRoundTasks();
-    if (restoreFocus) requestAnimationFrame(focusMemoryCard);
+    if (restoreFocus) focusMemoryCard();
   }
   function leaveCurrentLevel() {
     closeLeaveConfirm(false);
@@ -1443,6 +1384,12 @@
     if (event.target.closest(".stage-card")) rejectRepeatedActivation(event);
   });
   resultPanel.addEventListener("keydown", rejectRepeatedActivation, true);
+  resultPanel.addEventListener("keydown",event=>{
+    if(event.key!=="Tab")return;
+    const actions=[stageSelectBtn,nextLevelBtn,againBtn].filter(node=>!node.disabled);
+    const index=actions.indexOf(document.activeElement),step=event.shiftKey?-1:1;
+    event.preventDefault();actions[(index+step+actions.length)%actions.length]?.focus({preventScroll:true});
+  });
   startBtn.addEventListener("click", () => {
     window.WeightPlayAudio?.play("card.flip");
     showStageSelect();
@@ -1517,8 +1464,9 @@
   });
 
   // Initialization
+  mountSharedInterface();
   translateStaticUI();
   localizeOwnedTutorial();
-  simulateLoading();
+  prepareEntry();
 
 })();
