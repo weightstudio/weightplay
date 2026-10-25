@@ -219,7 +219,8 @@ export class Match {
         if(!hit.attack){
           const contactTime=previousTime+(ball.time-previousTime)*hit.t;
           const contact={x:previous.x+(current.x-previous.x)*hit.t,y:previous.y+(current.y-previous.y)*hit.t,z:previous.z+(current.z-previous.z)*hit.t};
-          this.interception={defender:hit.p.id,side:contact.x<-2?'Left':contact.x>2?'Right':'Centre',point:contact,time:Math.max(0,contactTime),flight:{...ball,from:{...ball.from},to:{...ball.to}}};
+          const origin=beforeDefense[hit.p.id],defenderPoint={x:origin.x+(hit.p.x-origin.x)*hit.t,y:origin.y+(hit.p.y-origin.y)*hit.t};
+          this.interception={defender:hit.p.id,defenderPoint,side:defenderPoint.x<-2?'Left':defenderPoint.x>2?'Right':'Centre',point:contact,time:Math.max(0,contactTime),flight:{...ball,from:{...ball.from},to:{...ball.to}}};
           this.event('intercept',{...contact,defender:hit.p.id});this.finish(false,'intercept');return;
         }
         this.runner=hit.p;this.lane=LANES.reduce((best,x,i)=>Math.abs(x-hit.p.x)<Math.abs(LANES[best]-hit.p.x)?i:best,0);

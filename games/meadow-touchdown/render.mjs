@@ -130,7 +130,8 @@ export class FieldRenderer{
     if(this.closed)return;this.elapsed=time;
     if(this.palette!==m.stage.arc||this.stands!==stands){this.stands=stands;this.buildScenery(m.stage.arc);}this.kit=kit;
     this.dynamicN=0;this.lineN=0;this.ringN=0;this.syncEvents(m,time);
-    const center=clamp(m.phase==='run'||m.phase==='result'?m.runner?.y+5||m.s+8:m.s+8,7,33);
+    // Follow late first downs as well: the old end-zone cap hid deep coverage.
+    const center=Math.max(7,m.phase==='run'||m.phase==='result'?m.runner?.y+5||m.s+8:m.s+8);
     this.lastCenter+= (center-this.lastCenter)*.14;
     const aspect=Math.max(.3,this.width/this.height),wide=aspect>1.5,h=Math.max(wide?16.2:24,23/aspect),w=h*aspect;
     // A lower viewing angle fits the same decision depth in short landscape,
@@ -197,7 +198,7 @@ export class FieldRenderer{
     this.rings.count=this.ringN;this.rings.instanceMatrix.needsUpdate=true;if(this.rings.instanceColor)this.rings.instanceColor.needsUpdate=true;
     this.renderer.render(this.scene,this.camera);
   }
-  reset(m){this.seenEvent=0;this.effects.length=0;this.animations.clear();this.lastCenter=clamp(m.s+8,7,33);}
+  reset(m){this.seenEvent=0;this.effects.length=0;this.animations.clear();this.lastCenter=Math.max(7,m.s+8);}
   stats(){const i=this.renderer.info;return {frame:i.render.frame,calls:i.render.calls,triangles:i.render.triangles,geometries:i.memory.geometries,textures:i.memory.textures,particles:this.effects.length,dpr:this.renderer.getPixelRatio(),width:this.width,height:this.height};}
   dispose(){if(this.closed)return;this.closed=true;this.resizeObserver.disconnect();this.canvas.removeEventListener('webglcontextlost',this.contextLost);this.effects.length=0;for(const resource of [this.geometry,this.mat,this.groundGeo,this.groundMat,this.lineGeo,this.lineMat,this.ringGeo,this.ringMat,this.ballGeo,this.ballMat])resource.dispose();this.sun.shadow.dispose();this.renderer.dispose();}
 }

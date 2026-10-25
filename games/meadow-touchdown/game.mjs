@@ -253,6 +253,7 @@ async function boot(){
   for(const name of ['pointercancel','lostpointercapture'])listen($('actionBtn'),name,()=>clearInput());
   listen(document,'keydown',e=>{
     if(e.key==='Tab'&&modal){const buttons=[...$(modal).querySelectorAll('button:not(:disabled),select')].filter(n=>!n.hidden),first=buttons[0],last=buttons.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}return;}
+    if(e.key==='Escape'&&e.target===$('playSelect'))return;
     if(e.key==='Escape'){if(modal&&modal!=='resultPanel'&&modal!=='graphicsDialog'){e.preventDefault();closeModal();}else if(screen==='battle'&&!paused()&&!match?.result){e.preventDefault();text($('leaveCopy'),copy().rules[11].replace('{stage}',copy().stageNames[selection]));openModal('leaveDialog');}return;}
     if(screen!=='battle'||paused()||!match||e.target.closest('select,input,textarea'))return;
     if([' ','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','a','d','A','D','r','R'].includes(e.key)){e.preventDefault();if(e.repeat)return;keys.add(e.key);if(e.key===' ')action();else if(match.phase==='run'){if(['ArrowLeft','a','A'].includes(e.key))match.changeLane(-1);if(['ArrowRight','d','D'].includes(e.key))match.changeLane(1);if(['r','R'].includes(e.key))match.lateral();}}
