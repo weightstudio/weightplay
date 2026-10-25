@@ -91,6 +91,12 @@ const moveText = document.querySelector("#moveText");
 const fruitText = document.querySelector("#fruitText");
 const stageSelect = document.querySelector("#stageSelect");
 const mainPanel = document.querySelector("#mainPanel");
+const gameFrame = document.querySelector("#gameFrame");
+const mainHeader = document.querySelector("#mainHeader");
+const mainComposition = document.querySelector(".main-composition");
+const stageWorkspace = document.querySelector("#stageWorkspace");
+const battleScreen = document.querySelector("#battleScreen");
+const battleHeader = document.querySelector("#battleHeader");
 const mainTitle = document.querySelector("#mainTitle");
 const mainIntro = document.querySelector("#mainIntro");
 const mainProgress = document.querySelector("#mainProgress");
@@ -105,7 +111,7 @@ mainPreview.innerHTML = `
   <span>→</span>
   <img src="../../assets/tiny-weather-tool-house.svg" alt="" draggable="false" />
 `;
-mainPanel.insertBefore(mainPreview, showStageBtn.parentElement === mainPanel ? showStageBtn : null);
+showStageBtn.before(mainPreview);
 const stageBackBtn = document.querySelector("#stageBackBtn");
 const battleBackBtn = document.querySelector("#battleBackBtn");
 const stageSelectTitle = document.querySelector("#stageSelectTitle");
@@ -133,10 +139,6 @@ const starLine = document.querySelector("#starLine");
 const nextBtn = document.querySelector("#nextBtn");
 const retryBtn = document.querySelector("#retryBtn");
 const trailsBtn = document.querySelector("#trailsBtn");
-const loadingPanel = document.querySelector("#loadingPanel");
-const loadingTitle = document.querySelector("#loadingTitle");
-const loadingText = document.querySelector("#loadingText");
-const loadingFill = document.querySelector("#loadingFill");
 
 function ensureLocaleOptions() {
   const existing = new Map([...localeSelect.options].map((option) => [option.value, option]));
@@ -501,13 +503,18 @@ const levels = baseLevels.map((level, index) => ({ ...level, ...ruleSets[index],
 let unlocked = loadUnlocked();
 let bestStars = loadBestStars();
 let activeIndex = 0;
+let selectedStageIndex = Math.max(0, Math.min(levels.length - 1, unlocked - 1));
 let state = makeState(levels[0]);
 let hintResetTimer = 0;
 let hintResetRemaining = 0;
 let hintResetStartedAt = 0;
 let hintLifecycleSuspended = document.hidden;
 let hintWindowFocused = true;
-let centeredTrailFrame = 0;
+let screenFrame = null;
+let stageUI = null;
+let stageRangeTabs = [];
+let stageInfoLabel = null;
+let stageInfoProgress = null;
 
 function locale() {
   return window.WonderI18n?.locale() || "en";
@@ -606,6 +613,7 @@ function renderStaticText() {
   moveLabel.textContent = t("moves");
   fruitLabel.textContent = t("fruit");
   stageSelectTitle.textContent = t("chooseTrail");
+  if (stageInfoLabel) stageInfoLabel.textContent = t("stage");
   hintText.textContent = t("hint");
   undoBtn.textContent = t("undo");
   resetBtn.textContent = t("reset");
@@ -616,7 +624,6 @@ function renderStaticText() {
   nextBtn.textContent = t("next");
   retryBtn.textContent = t("retry");
   trailsBtn.textContent = t("trails");
-  loadingTitle.textContent = t("loading");
   renderStageSelect();
   renderBoard(restoreBoardFocus);
   updateHud();
@@ -652,91 +659,166 @@ function queueGamePageSupportSync() {
   });
 }
 
-function preload() {
-  let percent = 0;
-  let ready = false;
-  const finish = () => {
-    if (ready) return;
-    ready = true;
-    loadingText.textContent = "100%";
-    loadingFill.style.width = "100%";
-    loadingPanel.classList.add("hidden");
+async function preload() {
+  if (document.readyState === "loading") {
+    await new Promise((resolve) => document.addEventListener("DOMContentLoaded", resolve, { once: true }));
+  }
+  let loader = window.WeightPlayGameEntryLoader;
+  if (!loader?.begin || !loader?.ready || !loader?.fail) {
+    const script = document.querySelector('script[data-wp-game-entry-loader-bootstrap]');
+    if (!script) throw new Error("ANIMAL_RESCUE_SHARED_ENTRY_LOADER_REQUIRED");
+    await new Promise((resolve, reject) => {
+      script.addEventListener("load", resolve, { once: true });
+      script.addEventListener("error", () => reject(new Error("ANIMAL_RESCUE_SHARED_ENTRY_LOADER_FAILED")), { once: true });
+    });
+    loader = window.WeightPlayGameEntryLoader;
+  }
+  if (!loader?.begin || !loader?.ready || !loader?.fail) throw new Error("ANIMAL_RESCUE_SHARED_ENTRY_LOADER_REQUIRED");
+  const images = [...mainPanel.querySelectorAll('img:not([loading="lazy"])')];
+  loader.begin(images.length || undefined);
+  let loaded = 0;
+  try {
+    await Promise.all(images.map(async (image) => {
+      if (!image.complete) {
+        await new Promise((resolve, reject) => {
+          image.addEventListener("load", resolve, { once: true });
+          image.addEventListener("error", () => reject(new Error(`ENTRY_IMAGE_FAILED:${image.currentSrc || image.src}`)), { once: true });
+        });
+      }
+      if (!image.naturalWidth) throw new Error(`ENTRY_IMAGE_FAILED:${image.currentSrc || image.src}`);
+      try { await image.decode?.(); } catch { if (!image.naturalWidth) throw new Error(`ENTRY_IMAGE_FAILED:${image.currentSrc || image.src}`); }
+      loaded += 1;
+      if (images.length) loader.assetProgress(loaded, images.length);
+    }));
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    loader.ready();
     window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
-  };
-  const timer = setInterval(() => {
-    percent += 20;
-    loadingText.textContent = `${Math.min(100, percent)}%`;
-    loadingFill.style.width = `${Math.min(100, percent)}%`;
-    if (percent >= 100) {
-      clearInterval(timer);
-      finish();
-    }
-  }, 70);
-  window.setTimeout(() => {
-    clearInterval(timer);
-    finish();
-  }, 900);
-}
-
-function renderStageSelect() {
-  stageGrid.innerHTML = levels
-    .map((level) => {
-      const locked = level.id > unlocked;
-      const stars = bestStars[level.id] || 0;
-      const animal = animalAssets[level.animal];
-      return `
-        <button class="stage-card ${locked ? "locked" : ""}" type="button" data-stage="${level.id}" aria-disabled="${locked}">
-          <span class="mini-animal">${assetMarkup(animal, t(level.animal))}</span>
-          <span>
-            <em class="stage-chapter">${chapterName(level.chapter)}</em>
-            <strong>${level.id}. ${t(level.animal)}</strong>
-            <span>${t(level.biome)} - ${locked ? t("locked") : stars ? t("complete") : t("start")}</span>
-          </span>
-          <span class="stage-meta" aria-label="${escapeHtml(stageMetaText(level, locked))}">
-            <i>${t("fruitGoal", { count: level.fruits.length })}</i>
-            <i>${t("obstacleGoal", { count: level.blocks.length + (level.water || []).length })}</i>
-            <i>${t("parGoal", { count: level.par })}</i>
-            <i>${locked ? t("locked") : levelRuleLabels(level).join(" + ")}</i>
-          </span>
-          ${level.checkpoint ? `<b class="stage-checkpoint">${t("checkpoint")}</b>` : ""}
-          <span class="stage-stars">${"\u2605".repeat(stars)}${"\u2606".repeat(3 - stars)}</span>
-        </button>
-      `;
-    })
-    .join("");
-  scheduleCenteredTrailCard();
-}
-
-function updateCenteredTrailCard() {
-  centeredTrailFrame = 0;
-  const cards = [...stageGrid.querySelectorAll("[data-stage]")];
-  if (!cards.length || !document.body.classList.contains("rescue-stage-select")) return;
-  const railRect = stageGrid.getBoundingClientRect();
-  const railCenter = railRect.left + railRect.width / 2;
-  const centered = cards.reduce((nearest, card) => {
-    const rect = card.getBoundingClientRect();
-    const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
-    return !nearest || distance < nearest.distance ? { card, distance } : nearest;
-  }, null)?.card;
-  for (const card of cards) {
-    const isCentered = card === centered;
-    card.classList.toggle("is-centered", isCentered);
-    if (isCentered) card.setAttribute("aria-current", "true");
-    else card.removeAttribute("aria-current");
+  } catch (error) {
+    loader.fail();
   }
 }
 
-function scheduleCenteredTrailCard() {
-  if (centeredTrailFrame) cancelAnimationFrame(centeredTrailFrame);
-  centeredTrailFrame = requestAnimationFrame(updateCenteredTrailCard);
+function stageConfig() {
+  return {
+    gameId: GAME_ID,
+    count: levels.length,
+    poster: "/assets/animal-rescue-cover.webp",
+    background: "/assets/lobby-block-atmosphere.svg",
+    stage(index) {
+      const level = levels[index];
+      const locked = level.id > unlocked;
+      const stars = bestStars[level.id] || 0;
+      return {
+        id: level.id,
+        kicker: chapterName(level.chapter),
+        title: `${level.id}. ${t(level.animal)}`,
+        subtitle: `${t(level.biome)}${level.checkpoint ? ` · ${t("checkpoint")}` : ""}`,
+        status: locked ? t("locked") : stars ? t("complete") : t("start"),
+        summary: stageMetaText(level, locked),
+        details: [
+          t("fruitGoal", { count: level.fruits.length }),
+          t("obstacleGoal", { count: level.blocks.length + (level.water || []).length }),
+          t("parGoal", { count: level.par }),
+          locked ? t("locked") : levelRuleLabels(level).join(" + "),
+        ],
+        poster: `/games/${GAME_ID}/${animalAssets[level.animal].src.replace(/^\/+/, "")}`,
+        locked,
+        cleared: stars > 0,
+      };
+    },
+  };
 }
 
-function centerHighestUnlockedTrail(behavior = "auto") {
-  const target = stageGrid.querySelector(`[data-stage="${unlocked}"]`);
-  if (!target) return;
-  const left = target.offsetLeft - (stageGrid.clientWidth - target.offsetWidth) / 2;
-  stageGrid.scrollTo({ left: Math.max(0, Math.min(left, stageGrid.scrollWidth - stageGrid.clientWidth)), behavior });
-  scheduleCenteredTrailCard();
+function syncStageInfo() {
+  if (!stageInfoProgress) return;
+  const level = levels[Math.max(0, Math.min(levels.length - 1, selectedStageIndex))];
+  stageInfoProgress.textContent = `${t("stage")} ${level.id} / ${levels.length}`;
+}
+
+function syncStageRangeTabs(index = selectedStageIndex) {
+  const activeRange = Math.floor(Math.max(0, Math.min(levels.length - 1, index)) / 10);
+  stageRangeTabs.forEach((button, range) => {
+    const selected = range === activeRange;
+    button.setAttribute("aria-selected", String(selected));
+    button.setAttribute("aria-pressed", String(selected));
+    button.tabIndex = selected ? 0 : -1;
+  });
+}
+
+function mountSharedInterface() {
+  if (!window.WeightPlayScreenFrame || !window.WeightPlayPlayUI || !window.WeightPlayStageRailI9) {
+    throw new Error("ANIMAL_RESCUE_I9_SHARED_RUNTIME_MISSING");
+  }
+  screenFrame = window.WeightPlayScreenFrame.mount({
+    root: gameFrame,
+    localeSelect,
+    playUI: true,
+    scenes: {
+      main: { root: mainPanel, header: mainHeader, content: mainComposition },
+      stage: { root: stageSelect, header: stageSelect.querySelector(".stage-shell-head"), content: stageWorkspace },
+      battle: { root: battleScreen, header: battleHeader, content: playArea, headerInfo: hud },
+    },
+  });
+
+  stageInfoLabel = document.createElement("span");
+  stageInfoLabel.textContent = t("stage");
+  stageInfoProgress = document.createElement("strong");
+  screenFrame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup().add(stageInfoLabel).add(stageInfoProgress));
+
+  const battleInfo = window.WeightPlayScreenFrame.createGroup();
+  [...hud.children].forEach((stat) => battleInfo.add(stat));
+  screenFrame.battleTopUI.add(battleInfo);
+  stageUI = window.WeightPlayPlayUI.mountStage({
+    page: stageWorkspace,
+    rail: stageGrid,
+    config: stageConfig(),
+    selected: selectedStageIndex,
+    onSelect(index, { locked, source } = {}) {
+      selectedStageIndex = index;
+      syncStageInfo();
+      syncStageRangeTabs(index);
+      if (locked && source !== "range-tab") showLocked();
+    },
+    onStart(index) { startLevel(index); },
+    isActive: () => screenFrame.active === "stage" && !stageSelect.hidden,
+  });
+  stageRangeTabs = [[0, 9], [10, 19], [20, 29]].map(([first, last], range) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.setAttribute("role", "tab");
+    button.dataset.wpFrameAction = "tab";
+    button.dataset.stageRange = String(range);
+    button.setAttribute("aria-controls", stageGrid.id);
+    button.textContent = `${t("stage")} ${first + 1}–${last + 1}`;
+    button.setAttribute("aria-label", button.textContent);
+    button.addEventListener("click", () => stageUI.select(first, { center: true, source: "range-tab" }));
+    button.addEventListener("keydown", event => {
+      const rtl = getComputedStyle(button).direction === "rtl";
+      let next = null;
+      if (event.key === "ArrowRight") next = (range + (rtl ? 2 : 1)) % stageRangeTabs.length;
+      else if (event.key === "ArrowLeft") next = (range + (rtl ? 1 : 2)) % stageRangeTabs.length;
+      else if (event.key === "Home") next = 0;
+      else if (event.key === "End") next = stageRangeTabs.length - 1;
+      if (next === null) return;
+      event.preventDefault();
+      stageRangeTabs[next]?.focus();
+      stageRangeTabs[next]?.click();
+    });
+    screenFrame.commonDownButton.add(button);
+    return button;
+  });
+  const stageTabList = stageRangeTabs[0]?.parentElement;
+  stageTabList?.setAttribute("role", "tablist");
+  stageTabList?.setAttribute("aria-label", t("trails"));
+  syncStageInfo();
+  syncStageRangeTabs();
+  screenFrame.activate("main");
+}
+
+function renderStageSelect() {
+  if (!stageUI) return;
+  stageUI.refresh(selectedStageIndex);
+  syncStageInfo();
 }
 
 function stageMetaText(level, locked = false) {
@@ -761,6 +843,14 @@ function levelRuleLabels(level) {
   return labels.length ? labels : [ruleLabel("classic")];
 }
 
+function activateScene(name) {
+  mainPanel.hidden = name !== "main";
+  stageSelect.hidden = name !== "stage";
+  battleScreen.hidden = name !== "battle";
+  screenFrame?.activate(name);
+  if (name === "stage") stageUI?.refresh(selectedStageIndex);
+}
+
 function startLevel(index) {
   const level = levels[index];
   if (!level || level.id > unlocked) {
@@ -769,18 +859,13 @@ function startLevel(index) {
   }
   restoreRouteHint();
   activeIndex = index;
+  selectedStageIndex = index;
   state = makeState(level);
-  stageSelect.classList.add("hidden");
-  mainPanel.classList.add("hidden");
   (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
   (__wpNotifyMeasurement(), leavePanel.classList.add("hidden"));
   setResultOwnership(false);
-  playArea.classList.remove("hidden");
-  hud.classList.remove("hidden");
-  document.body.classList.remove("rescue-stage-select");
-  document.body.classList.remove("rescue-result");
-  document.body.classList.add("rescue-playing");
-  hud.prepend(battleBackBtn);
+  activateScene("battle");
+  document.body.dataset.screen = "battle";
   renderAvatar(level.animal);
   animalName.textContent = t(level.animal);
   renderBoard(true);
@@ -788,11 +873,7 @@ function startLevel(index) {
   window.dispatchEvent(new Event("weightplay:battle-sync"));
   window.dispatchEvent(new Event("weightplay:stage-sync"));
   window.dispatchEvent(new Event("weightplay:shell-sync"));
-  window.WeightPlayGame?.exitMobileGameMode?.();
-  document.body.classList.remove("wp-mobile-game-mode", "weightplay-active-viewport");
-  document.querySelector(".rescue-game")?.classList.remove("weightplay-active-viewport");
   window.WeightPlayBattleCanvas?.sync?.();
-  updateBattleScale();
   window.WeightPlayAudio?.play("game.start");
   window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, stage: level.id, locale: locale() });
 
@@ -800,28 +881,18 @@ function startLevel(index) {
 }
 
 function showStageSelect({ focusTrail = false } = {}) {
-  mainPanel.classList.add("hidden");
-  playArea.classList.add("hidden");
-  hud.classList.add("hidden");
   (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
   (__wpNotifyMeasurement(), leavePanel.classList.add("hidden"));
   setResultOwnership(false);
-  stageSelect.classList.remove("hidden");
-  document.body.classList.remove("rescue-playing");
-  document.body.classList.remove("rescue-result");
-  document.body.classList.add("rescue-stage-select");
+  selectedStageIndex = Math.max(0, Math.min(levels.length - 1, unlocked - 1));
+  activateScene("stage");
+  document.body.dataset.screen = "stage";
   renderStageSelect();
-  exitSharedPlayViewport();
   window.dispatchEvent(new Event("weightplay:battle-sync"));
   window.dispatchEvent(new Event("weightplay:stage-sync"));
   window.dispatchEvent(new Event("weightplay:shell-sync"));
-  updateBattleScale();
   requestAnimationFrame(() => {
-    updateBattleScale();
-    requestAnimationFrame(() => {
-      centerHighestUnlockedTrail("auto");
-      if (focusTrail) stageGrid.querySelector(`[data-stage="${unlocked}"]`)?.focus({ preventScroll: true });
-    });
+    if (focusTrail) stageGrid.querySelector('[aria-current="true"]')?.focus({ preventScroll: true });
   });
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["stage"] ?? null;
@@ -831,17 +902,11 @@ function showStageSelect({ focusTrail = false } = {}) {
 }
 
 function showMain({ focusStart = false } = {}) {
-  playArea.classList.add("hidden");
-  hud.classList.add("hidden");
   (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
   (__wpNotifyMeasurement(), leavePanel.classList.add("hidden"));
   setResultOwnership(false);
-  stageSelect.classList.add("hidden");
-  mainPanel.classList.remove("hidden");
-  document.body.classList.remove("rescue-playing", "rescue-stage-select", "rescue-result");
-  resetRescueFrame();
-  restoreMainShellFrame();
-  exitSharedPlayViewport();
+  activateScene("main");
+  document.body.dataset.screen = "main";
   window.dispatchEvent(new Event("weightplay:battle-sync"));
   window.dispatchEvent(new Event("weightplay:stage-sync"));
   window.dispatchEvent(new Event("weightplay:shell-sync"));
@@ -859,10 +924,12 @@ function showMain({ focusStart = false } = {}) {
 
 function showLocked() {
   window.WeightPlayAudio?.play("feedback.error");
-  const original = stageSelectTitle.textContent;
-  stageSelectTitle.textContent = t("lockedToast");
+  const original = stageInfoProgress?.textContent || stageSelectTitle.textContent;
+  if (stageInfoProgress) stageInfoProgress.textContent = t("lockedToast");
+  else stageSelectTitle.textContent = t("lockedToast");
   setTimeout(() => {
-    stageSelectTitle.textContent = original;
+    if (stageInfoProgress) syncStageInfo();
+    else stageSelectTitle.textContent = original;
   }, 1200);
 }
 
@@ -1115,7 +1182,7 @@ function finishLevel() {
   });
   (__wpNotifyMeasurement(), resultPanel.classList.remove("hidden"));
   setResultOwnership(true);
-  document.body.classList.add("rescue-result");
+  document.body.dataset.screen = "battle";
   requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
   window.WeightPlayAudio?.play("result.win");
   window.WonderAnalytics?.track("game_complete", {
@@ -1208,77 +1275,14 @@ localeSelect.addEventListener("input", () => {
 window.addEventListener("wonder:locale-change", renderStaticText);
 window.addEventListener("wonder:locale-change", queueGamePageSupportSync);
 
-function updateBattleScale() {
-  const viewport = window.visualViewport;
-  const innerWidth = Math.max(1, window.innerWidth);
-  const innerHeight = Math.max(1, window.innerHeight);
-  const visualWidth = viewport?.width || 0;
-  const visualHeight = viewport?.height || 0;
-  const visualViewportIsCurrent = visualWidth > 0 && visualHeight > 0
-    && Math.abs(visualWidth - innerWidth) <= 2
-    && Math.abs(visualHeight - innerHeight) <= 2;
-  const viewportWidth = visualViewportIsCurrent ? visualWidth : innerWidth;
-  const viewportHeight = visualViewportIsCurrent ? visualHeight : innerHeight;
-  if (!document.body.classList.contains("rescue-playing") && !document.body.classList.contains("rescue-stage-select")) return;
-  document.body.classList.add("rescue-expanded-canvas");
-  const canvasWidth = Math.min(viewportWidth, 920);
-  const scale = Math.max(0.1, Math.min(canvasWidth / 390, viewportHeight / 788));
-  const width = canvasWidth / scale;
-  const contentHeight = viewportHeight / scale;
-  document.documentElement.style.setProperty("--rescue-battle-scale", String(scale));
-  document.documentElement.style.setProperty("--rescue-battle-width", `${width}px`);
-  document.documentElement.style.setProperty("--rescue-battle-height", `${contentHeight}px`);
-  document.documentElement.style.setProperty("--rescue-battle-content-height", `${contentHeight}px`);
-  document.documentElement.style.setProperty("--rescue-battle-left", `${Math.max(0, (viewportWidth - canvasWidth) / 2)}px`);
-  document.documentElement.style.setProperty("--rescue-battle-top", "0px");
-}
-
-function resetRescueFrame() {
-  for (const name of ["--rescue-battle-scale", "--rescue-battle-width", "--rescue-battle-height", "--rescue-battle-content-height", "--rescue-battle-left", "--rescue-battle-top"]) document.documentElement.style.removeProperty(name);
-  document.body.classList.remove("rescue-expanded-canvas");
-}
-
-function restoreMainShellFrame() {
-  const frame = document.querySelector(".rescue-game");
-  if (!frame) return;
-  [
-    "position", "inset", "left", "right", "top", "bottom",
-    "width", "min-width", "max-width", "height", "min-height",
-    "max-height", "margin", "overflow", "transform", "transform-origin",
-  ].forEach((property) => frame.style.removeProperty(property));
-}
-
-function exitSharedPlayViewport() {
-  window.WeightPlayGame?.exitMobileGameMode?.();
-  document.body.classList.remove("weightplay-active-viewport", "wp-mobile-game-mode");
-  document.querySelector(".rescue-game")?.classList.remove("weightplay-active-viewport");
-}
-
-updateBattleScale();
-window.addEventListener("resize", updateBattleScale);
-window.addEventListener("orientationchange", updateBattleScale);
-window.visualViewport?.addEventListener("resize", updateBattleScale);
-window.visualViewport?.addEventListener("scroll", updateBattleScale);
-stageGrid.addEventListener("scroll", scheduleCenteredTrailCard, { passive: true });
-stageGrid.addEventListener("wonder:stage-snap", scheduleCenteredTrailCard);
-window.addEventListener("resize", scheduleCenteredTrailCard, { passive: true });
-window.visualViewport?.addEventListener("resize", scheduleCenteredTrailCard, { passive: true });
 const rejectRepeatedScreenActivation = (event) => {
   if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
 };
 showStageBtn.addEventListener("keydown", rejectRepeatedScreenActivation);
 battleBackBtn.addEventListener("keydown", rejectRepeatedScreenActivation);
-stageGrid.addEventListener("keydown", (event) => {
-  if (event.target.closest("[data-stage]")) rejectRepeatedScreenActivation(event);
-});
 showStageBtn.addEventListener("click", () => showStageSelect({ focusTrail: true }));
 stageBackBtn.addEventListener("click", () => showMain({ focusStart: true }));
 battleBackBtn.addEventListener("click", openLeaveDecision);
-stageGrid.addEventListener("click", (event) => {
-  const card = event.target.closest("[data-stage]");
-  if (!card) return;
-  startLevel(Number(card.dataset.stage) - 1);
-});
 board.addEventListener("click", (event) => {
   const tile = event.target.closest(".tile");
   if (!tile) return;
@@ -1362,12 +1366,13 @@ document.addEventListener("visibilitychange", () => {
 });
 
 ensureLocaleOptions();
+mountSharedInterface();
 renderStaticText();
 queueGamePageSupportSync();
 showMain();
-preload();
+void preload();
 
-if (new URLSearchParams(location.search).has("smoke")) {
+if (window.__WEIGHTPLAY_TEST_HOOKS__ === true) {
   window.__animalRescueSmoke = {
     levels: structuredClone(levels),
     startLevel: (index) => {

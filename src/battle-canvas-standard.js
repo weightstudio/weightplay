@@ -77,6 +77,9 @@
     "hexa-sort": [".battle-canvas", 390, 788, 760, 334],
     "animal-block-grove": [".block-grove-battle-canvas", 390, 844],
     "animal-color-springs": [".battle-canvas", 390, 788, 760, 334],
+    // Rescue Trail's 5×5 board and actions stay at shared touch size in the
+    // common wide envelope when Stage/Battle runs in landscape or desktop.
+    "animal-rescue": ["#battleScreen", 390, 788, 760, 334],
     "animal-tangram": [".battle", 390, 788, 760, 334],
     "animal-bamboo-pipes": ["#battle", 390, 788, 760, 334],
     "animal-abyss-diver": [".battle-canvas", 390, 788, 760, 334],
@@ -132,7 +135,6 @@
     "animal-quiz": [".animal-game", 390, 788],
     "animal-reef-fisher": [".battle-shell", 382, 780, 760, 334],
     "animal-relic-hunters": ["#gamePanel", 382, 780],
-    "animal-rescue": [".rescue-game", 382, 780],
     "animal-rope-rescue": ["#gamePanel", 382, 780],
     "animal-rootvault-pins": [".battle-canvas", 390, 788, 760, 334],
     "animal-sketchwheel-rally": [".battle-canvas", 390, 788, 760, 334],
@@ -227,6 +229,9 @@
     "animal-kite-keeper": 1.25,
     "animal-habitat-builder": 1.25,
     "animal-folded-field": 1.25,
+    // Rescue Trail keeps its square board legible on wide desktop screens
+    // after the common Canvas applies the project-wide 920px width cap.
+    "animal-rescue": 0.82,
     "animal-gust-garden": 1.25,
     "animal-tideglass": 1.25,
     "animal-layer-grove": 1.25,

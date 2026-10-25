@@ -88,17 +88,9 @@ body:not(.rescue-playing):not(.rescue-stage-select) .rescue-game { width: min(10
 .main-panel { grid-row: 2 / -1; display: grid; align-content: start; gap: 12px; min-height: 0; overflow: hidden; padding: 2px 2px 12px; }
 .main-cover { width: 100%; max-height: 380px; aspect-ratio: 1; object-fit: contain; border: 4px solid #3e702d; border-radius: 12px; box-shadow: 0 8px 0 #6ca75b; }
 .main-copy { display: grid; gap: 5px; padding: 14px; border: 3px solid rgba(62,112,45,.28); border-radius: 12px; background: rgba(255,251,234,.82); }.main-copy strong { font-size: 1.3rem; }.main-copy span { color: #496b2e; font-weight: 900; line-height: 1.4; }.main-start { min-height: 52px; border: 3px solid #3e702d; border-radius: 12px; color:#24351b; background:#ffd866; box-shadow:0 6px 0 #b87a1e; font-weight:1000; }
-.rescue-main-preview { min-height: 82px; padding: 8px 14px; display: grid; grid-template-columns: minmax(0, 1fr) 26px minmax(0, .72fr) 26px minmax(0, 1fr); align-items: center; gap: 6px; overflow: hidden; border: 3px solid rgba(62,112,45,.34); border-radius: 16px; background: linear-gradient(135deg, rgba(255,251,234,.94), rgba(220,247,207,.9)); box-shadow: inset 0 0 0 2px rgba(255,255,255,.58); }
+.rescue-main-preview { min-height: 82px; padding: 8px 14px; display: grid; grid-template-columns: minmax(0, 1fr) 26px minmax(0, .72fr) 26px minmax(0, 1fr); align-items: center; gap: 6px; overflow: hidden; background: transparent; border: 0; box-shadow: none; }
 .rescue-main-preview img { width: 100%; height: 66px; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(42,77,31,.2)); }
-.rescue-main-preview span { color: #3e702d; font-size: 1.55rem; font-weight: 1000; text-align: center; }
-
-html body[data-wp-game-id="animal-rescue"] #stageSelect.wp-stage-art-shell {
-  background-color: #17243a !important;
-  background-image: var(--wp-stage-scrim), var(--wp-stage-art) !important;
-  background-position: center, center !important;
-  background-size: cover, contain !important;
-  background-repeat: no-repeat, no-repeat !important;
-}
+.rescue-main-preview span { color: inherit; font-size: 1.55rem; font-weight: 1000; text-align: center; }
 
 @media (min-width: 700px) {
   .main-panel {
@@ -148,7 +140,7 @@ html body[data-wp-game-id="animal-rescue"] #stageSelect.wp-stage-art-shell {
   }
 
   html body[data-wp-game-id="animal-rescue"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: min(294px, calc(100dvh - 96px));
+    --wp-main-landscape-poster-size: 420px;
     grid-template-columns: var(--wp-main-landscape-poster-size) minmax(0, 1fr) !important;
   }
 
@@ -176,7 +168,6 @@ html body[data-wp-game-id="animal-rescue"] #stageSelect.wp-stage-art-shell {
   .rescue-main-preview { min-height: 62px; padding: 5px 10px; }
   .rescue-main-preview img { height: 48px; }
   .rescue-main-preview span { font-size: 1.2rem; }
-  .main-start { min-height: 46px; }
 }
 
 :is(.main-start, .stage-return, .battle-return, .stage-card, .result-card button, .result-card a):focus-visible {
@@ -259,188 +250,14 @@ html body[data-wp-game-id="animal-rescue"] #stageSelect.wp-stage-art-shell {
 
 .stage-shell-head { display:grid; grid-template-columns:48px minmax(0,1fr); align-items:center; gap:10px; }.stage-shell-head > strong { font-size:clamp(20px,5vw,27px); }.stage-return,.battle-return { display:grid; place-items:center; width:44px; height:44px; padding:0; border:3px solid #3e702d; border-radius:10px; color:#24351b; background:#fffbea; font-size:1.4rem; font-weight:1000; }.stage-setup-text { margin:0 2px; padding:6px 9px; border-radius:8px; background:rgba(255,251,234,.9); color:#315b35; font-size:.78rem; font-weight:900; line-height:1.2; }.battle-return { position:absolute; z-index:3; top:8px; left:8px; }
 
-.stage-select > strong {
-  font-size: clamp(28px, 8vw, 42px);
-  line-height: 1;
-  text-align: center;
-}
-
-.stage-grid {
-  display: flex;
-  gap: 10px;
-  min-width: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 12px max(44px, calc((100% - 264px) / 2));
-  scroll-snap-type: x mandatory !important;
-  scrollbar-width: none;
-  touch-action: pan-x;
-  overscroll-behavior-x: contain;
-}
-
-.stage-grid::-webkit-scrollbar { display: none; }
-
-.stage-card {
-  position: relative;
-  display: grid;
-  grid-template-columns: 58px 1fr;
-  grid-template-rows: minmax(58px, auto) minmax(20px, auto) 20px;
-  gap: 8px;
-  flex: 0 0 264px;
-  width: 264px;
-  min-width: 264px;
-  max-width: 264px;
-  min-height: 196px;
-  padding: 10px;
-  box-sizing: border-box;
-  color: inherit;
-  text-align: left;
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
-}
-
-.stage-card.locked {
-  filter: grayscale(1);
-  opacity: 0.62;
-}
-
-body.rescue-stage-select .stage-card.is-centered {
-  border-color: #ffe36b;
-  box-shadow:
-    0 0 0 3px rgba(255, 227, 107, 0.92),
-    0 0 18px 7px rgba(105, 255, 139, 0.72),
-    0 10px 26px rgba(39, 91, 49, 0.38);
-}
-
-body.rescue-stage-select .stage-card.locked.is-centered {
-  filter: none;
-  opacity: 0.76;
-}
-
-.stage-card .mini-animal {
-  display: grid;
-  place-items: center;
-  width: 58px;
-  height: 58px;
-  border-radius: 8px;
-  background: #dff7ca;
-  overflow: hidden;
-}
-
-.mini-animal img {
-  width: 92%;
-  height: 92%;
-  object-fit: contain;
-  filter: drop-shadow(0 4px 3px rgba(47, 76, 32, 0.2));
-}
-
-.stage-card strong {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 16px;
-  line-height: 1.1;
-}
-
-.stage-card span {
-  color: #5b7448;
-  font-size: 12px;
-  font-weight: 900;
-  line-height: 1.25;
-}
-
-.stage-card .stage-chapter {
-  display: block;
-  margin-bottom: 2px;
-  color: #315b35;
-  font-size: 10px;
-  font-style: normal;
-  font-weight: 1000;
-}
-
-.stage-stars {
-  grid-column: 1 / -1;
-  align-self: center;
-  min-height: 20px;
-  color: #f5a623;
-  font-size: 18px;
-  line-height: 1;
-  letter-spacing: 1px;
-}
-
-.stage-meta {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  min-width: 0;
-}
-
-.stage-meta i {
-  min-width: 0;
-  padding: 3px 6px;
-  border-radius: 999px;
-  background: rgba(142, 199, 111, 0.28);
-  color: #3d612d;
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 1000;
-  line-height: 1.1;
-}
-
-.stage-checkpoint {
-  grid-column: 1 / -1;
-  justify-self: start;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: #ffe075;
-  color: #315b35;
-  font-size: 11px;
-  line-height: 1;
-}
-
-/* Stage is a self-contained rail on every viewport, not a resized Main page. */
-html:has(body.rescue-stage-select),
-body.rescue-stage-select {
-  overflow: hidden !important;
-  touch-action: pan-x;
-}
-
-body.rescue-stage-select .topbar,
-body.rescue-stage-select .game-page-info,
-body.rescue-stage-select .wp-tutorial-button {
-  display: none !important;
-}
-
-body.rescue-stage-select .rescue-game {
-  position: fixed;
-  left: var(--rescue-battle-left, 0px);
-  top: var(--rescue-battle-top, 0px);
-  grid-template-rows: minmax(0, 1fr);
-  width: var(--rescue-battle-width, 390px);
-  height: var(--rescue-battle-content-height, 788px);
-  min-height: 0;
-  padding: 0;
-  gap: 0;
-  overflow: hidden;
-  transform: scale(var(--rescue-battle-scale, 1));
-  transform-origin: top left;
-}
-
-body.rescue-stage-select .stage-select {
-  grid-row: 1;
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  padding: 6px 8px;
-  grid-template-rows: 44px auto minmax(0, 1fr);
-  overflow: hidden;
-}
-
 .play-area {
-  grid-row: 3;
+  grid-row: auto;
   display: grid;
   grid-template-rows: 88px minmax(0, 1fr) 54px;
   gap: 10px;
+  position: relative;
+  container-type: size;
+  min-width: 0;
 }
 
 .animal-panel {
@@ -488,7 +305,7 @@ body.rescue-stage-select .stage-select {
   grid-template-columns: repeat(5, minmax(0, 1fr));
   grid-template-rows: repeat(5, minmax(0, 1fr));
   align-self: center;
-  width: 100%;
+  width: min(100%, 86cqh);
   max-height: 100%;
   aspect-ratio: 1;
   gap: 7px;
@@ -775,14 +592,6 @@ body.rescue-stage-select .stage-select {
   display: none !important;
 }
 
-body[data-wp-game-id="animal-rescue"]:not(.rescue-playing) #hud {
-  display: none !important;
-}
-
-body.rescue-playing .game-page-info {
-  display: none !important;
-}
-
 @keyframes rescue-fade-in {
   from {
     opacity: 0;
@@ -829,68 +638,6 @@ body.rescue-playing .game-page-info {
 }
 
 @media (max-width: 420px) {
-  html:has(body.rescue-playing),
-  body.rescue-playing {
-    overflow: hidden !important;
-    overscroll-behavior: none;
-    touch-action: none;
-  }
-
-  body.rescue-playing .rescue-game {
-    width: 100vw;
-    height: var(--wp-mobile-vh, 100svh);
-    min-height: 0;
-    padding: calc(7px + env(safe-area-inset-top)) 9px calc(7px + env(safe-area-inset-bottom));
-    grid-template-rows: 50px minmax(0, 1fr);
-    gap: 6px;
-  }
-
-  body.rescue-playing .topbar {
-    display: none;
-  }
-
-  body.rescue-playing .topbar p,
-  body.rescue-playing .language-picker {
-    display: none;
-  }
-
-  body.rescue-playing .topbar h1 {
-    font-size: clamp(1.05rem, 5.2vw, 1.35rem);
-  }
-
-  body.rescue-playing .play-area {
-    grid-row: 2;
-    grid-template-rows: 72px minmax(0, 1fr) 42px;
-    gap: 6px;
-  }
-
-  body.rescue-playing .hud { grid-row: 1; }
-
-  body.rescue-playing .animal-panel {
-    grid-template-columns: 54px minmax(0, 1fr);
-    gap: 7px;
-    padding: 7px;
-  }
-
-  body.rescue-playing .animal-avatar {
-    width: 50px;
-    height: 50px;
-  }
-
-  body.rescue-playing .animal-panel strong {
-    font-size: 1rem;
-  }
-
-  body.rescue-playing .animal-panel span {
-    margin-top: 3px;
-    font-size: 0.72rem;
-  }
-
-  body.rescue-playing .action-row button {
-    min-height: 40px;
-    font-size: 0.86rem;
-  }
-
   .rescue-game {
     grid-template-rows: 56px 52px minmax(0, 1fr);
     gap: 8px;
@@ -915,471 +662,58 @@ body.rescue-playing .game-page-info {
   }
 }
 
-/* Battle uses one fixed portrait composition plus a physical ad reserve. */
-body.rescue-playing {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100dvh;
-  min-height: 100dvh;
-  max-height: 100dvh;
-  overflow: hidden !important;
-  overscroll-behavior: none;
-  touch-action: none;
-}
-
-body.rescue-playing .rescue-game,
-body.wp-mobile-game-mode.rescue-playing .rescue-game.weightplay-active-viewport {
-  position: fixed !important;
-  inset: auto !important;
-  top: 50% !important;
-  left: 50% !important;
-  display: block;
-  width: var(--rescue-battle-width, 382px) !important;
-  max-width: none !important;
-  height: var(--rescue-battle-height, 826px) !important;
-  min-height: 0;
-  max-height: none !important;
-  margin: 0 !important;
-  padding: 0;
-  overflow: hidden;
-  border: 0;
-  box-shadow: none;
-  transform: translate(-50%, -50%);
-}
-
-body.rescue-playing .topbar,
-body.rescue-playing .game-page-info,
-body.rescue-playing .wp-tutorial-button {
-  display: none !important;
-}
-
-body.rescue-playing.rescue-result #hud,
-body.rescue-playing.rescue-result #playArea > .animal-panel,
-body.rescue-playing.rescue-result #playArea > #board,
-body.rescue-playing.rescue-result #playArea > .action-row {
-  visibility: hidden;
-}
-
-body.rescue-playing .result-panel {
-  position: absolute !important;
-  inset: calc(-6px - 59px) -6px -6px !important;
-  width: auto !important;
-  height: auto !important;
-  max-height: none !important;
-  overflow: hidden !important;
-}
-
-body.rescue-playing .result-card {
-  max-height: calc(100% - 24px);
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-body.rescue-playing #hud,
-body.rescue-playing #playArea {
-  position: absolute;
-  left: var(--rescue-battle-left, 4px);
-  width: 390px;
-  margin: 0;
-  transform: scale(var(--rescue-battle-scale, 1));
-  transform-origin: top left;
-}
-
-body.rescue-playing #hud {
-  top: var(--rescue-battle-top, 8px);
-  display: grid;
-  height: 50px;
-}
-
-body.rescue-playing #playArea {
-  top: calc(var(--rescue-battle-top, 8px) + 56px * var(--rescue-battle-scale, 1));
-  display: grid;
-  grid-template-rows: 72px minmax(0, 1fr) 42px;
-  gap: 6px;
-  height: 732px;
-  min-height: 0;
-  padding: 0 8px 4px;
-  overflow: hidden;
-}
-
-body.rescue-playing .board {
-  width: min(100%, 602px);
-  height: auto;
-  max-height: 100%;
-  aspect-ratio: 1;
-  margin: auto;
-}
-
-body.rescue-playing #hud {
-  grid-template-columns: 44px repeat(3, minmax(0, 1fr));
-  gap: 6px;
-}
-
-body.rescue-playing .battle-return {
-  position: static;
-  width: 44px;
-  min-width: 44px;
-  height: 44px;
-  min-height: 44px;
-  align-self: center;
-  font-size: 22px;
-  line-height: 26px;
-}
-
-/* Desktop/web keeps a bounded Canvas, but never offsets or scales its children twice. */
-html body.rescue-playing:not(.rescue-expanded-canvas) main.rescue-game {
-  position: fixed !important;
-  inset: auto !important;
-  left: var(--rescue-battle-left, 4px) !important;
-  top: var(--rescue-battle-top, 4px) !important;
-  display: grid !important;
-  grid-template-rows: 54px minmax(0, 1fr) !important;
-  gap: 5px !important;
-  width: 390px !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  height: 788px !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  margin: 0 !important;
-  padding: 6px !important;
-  overflow: hidden !important;
-  transform: scale(var(--rescue-battle-scale, 1)) !important;
-  transform-origin: top left !important;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
-body.rescue-playing:not(.rescue-expanded-canvas) #hud,
-body.rescue-playing:not(.rescue-expanded-canvas) #playArea {
-  position: static;
-  left: auto;
-  top: auto;
-  width: 100%;
-  margin: 0;
-  transform: none;
-}
-
-body.rescue-playing:not(.rescue-expanded-canvas) #hud {
-  grid-row: 1;
-  display: grid;
-  grid-template-columns: 44px repeat(3, minmax(0, 1fr));
-  gap: 5px;
-  height: 54px;
-  min-height: 54px;
-}
-
-body.rescue-playing:not(.rescue-expanded-canvas) #hud div {
-  min-width: 0;
-  height: 54px;
-  min-height: 54px;
-  padding: 5px 6px;
-  overflow: hidden;
-}
-
-body.rescue-playing:not(.rescue-expanded-canvas) #hud span {
-  font-size: 10px;
-  line-height: 13px;
-}
-
-body.rescue-playing:not(.rescue-expanded-canvas) #hud strong {
-  font-size: 18px;
-  line-height: 20px;
-  white-space: nowrap;
-}
-
-body.rescue-playing:not(.rescue-expanded-canvas) #playArea {
-  grid-row: 2;
-  display: grid;
-  grid-template-rows: 72px minmax(0, 1fr) 42px;
-  gap: 6px;
-  height: auto;
-  min-height: 0;
-  padding: 0 2px 2px;
-  overflow: hidden;
-}
-
-body.rescue-playing:not(.rescue-expanded-canvas) .animal-panel {
-  grid-template-columns: 54px minmax(0, 1fr);
-  gap: 7px;
-  height: 72px;
-  min-height: 72px;
-  padding: 7px;
-  overflow: hidden;
-}
-
-body.rescue-playing:not(.rescue-expanded-canvas) .animal-avatar {
-  width: 50px;
-  height: 50px;
-}
-
-body.rescue-playing:not(.rescue-expanded-canvas) .animal-panel strong {
-  font-size: 16px;
-  line-height: 19px;
-}
-
-body.rescue-playing:not(.rescue-expanded-canvas) .animal-panel span {
-  max-height: 32px;
-  margin-top: 2px;
-  overflow: hidden;
-  font-size: 11px;
-  line-height: 15px;
-}
-
-body.rescue-playing:not(.rescue-expanded-canvas) .board {
-  width: min(100%, 591px);
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  aspect-ratio: 1;
-  align-self: center;
-  justify-self: center;
-}
-
-body.rescue-playing:not(.rescue-expanded-canvas) .action-row,
-body.rescue-playing:not(.rescue-expanded-canvas) .action-row button {
-  height: 42px;
-  min-height: 42px;
-}
-
-/* Phone Battle uses one Expanded Canvas with a separate physical reserve. */
-html body.rescue-playing.rescue-expanded-canvas main.rescue-game,
-html body.wp-mobile-game-mode.rescue-playing.rescue-expanded-canvas main.rescue-game.weightplay-active-viewport {
-  position: fixed !important;
-  inset: auto !important;
-  left: var(--rescue-battle-left, 4px) !important;
-  top: var(--rescue-battle-top, 4px) !important;
-  display: grid !important;
-  grid-template-rows: 54px minmax(0, 1fr) !important;
-  gap: 5px !important;
-  width: var(--rescue-battle-width, calc(100vw - 8px)) !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  height: var(--rescue-battle-content-height, 788px) !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  margin: 0 !important;
-  padding: 6px !important;
-  overflow: hidden !important;
-  transform: scale(var(--rescue-battle-scale, 1)) !important;
-  transform-origin: top left !important;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
-body.rescue-playing.rescue-expanded-canvas #hud,
-body.rescue-playing.rescue-expanded-canvas #playArea {
-  position: static;
-  left: auto;
-  top: auto;
-  width: 100%;
-  margin: 0;
-  transform: none;
-}
-
-body.rescue-playing.rescue-expanded-canvas .result-panel {
-  inset: 0 !important;
-}
-
-body.rescue-playing.rescue-expanded-canvas #hud {
-  grid-row: 1;
-  display: grid;
-  grid-template-columns: 44px repeat(3, minmax(0, 1fr));
-  gap: 5px;
-  height: 54px;
-  min-height: 54px;
-}
-
-body.rescue-playing.rescue-expanded-canvas #hud div {
-  min-width: 0;
-  min-height: 54px;
-  height: 54px;
-  padding: 5px 6px;
-  overflow: hidden;
-}
-
-body.rescue-playing.rescue-expanded-canvas #hud span {
-  font-size: 10px;
-  line-height: 13px;
-}
-
-body.rescue-playing.rescue-expanded-canvas #hud strong {
-  font-size: 18px;
-  line-height: 20px;
-  white-space: nowrap;
-}
-
-body.rescue-playing.rescue-expanded-canvas #playArea {
-  grid-row: 2;
-  display: grid;
-  grid-template-rows: 72px minmax(0, 1fr) 42px;
-  gap: 6px;
-  height: auto;
-  min-height: 0;
-  padding: 0 2px 2px;
-  overflow: hidden;
-}
-
-body.rescue-playing.rescue-expanded-canvas .animal-panel {
-  grid-template-columns: 54px minmax(0, 1fr);
-  gap: 7px;
-  height: 72px;
-  min-height: 72px;
-  padding: 7px;
-  overflow: hidden;
-}
-
-body.rescue-playing.rescue-expanded-canvas .animal-avatar {
-  width: 50px;
-  height: 50px;
-}
-
-body.rescue-playing.rescue-expanded-canvas .animal-panel strong {
-  font-size: 16px;
-  line-height: 19px;
-}
-
-body.rescue-playing.rescue-expanded-canvas .animal-panel span {
-  max-height: 32px;
-  margin-top: 2px;
-  overflow: hidden;
-  font-size: 11px;
-  line-height: 15px;
-}
-
-body.rescue-playing.rescue-expanded-canvas .board {
-  width: min(100%, calc(var(--rescue-battle-content-height, 780px) - 208px));
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  aspect-ratio: 1;
-  align-self: center;
-  justify-self: center;
-}
-
-body.rescue-playing.rescue-expanded-canvas .action-row {
-  height: 42px;
-  min-height: 42px;
-  gap: 6px;
-}
-
-body.rescue-playing.rescue-expanded-canvas .action-row button {
-  height: 42px;
-  min-height: 42px;
-  font-size: 14px;
-  line-height: 18px;
-}
-
-body.rescue-playing .weightplay-version-badge,
-body.rescue-playing .sound-toggle,
-body.rescue-playing .wp-tutorial-button,
-body.rescue-playing .wp-shell-settings {
-  display: none !important;
-}
-
-@media (max-height: 430px) {
-  html body.rescue-playing.rescue-expanded-canvas main.rescue-game,
-  html body.wp-mobile-game-mode.rescue-playing.rescue-expanded-canvas main.rescue-game.weightplay-active-viewport {
-    grid-template-rows: 48px minmax(0, 1fr) !important;
-    gap: 4px !important;
-    padding: 4px !important;
+@media (orientation: landscape), (min-width: 700px) {
+  .play-area {
+    grid-template-columns: minmax(112px, 1fr) minmax(0, 2fr) minmax(112px, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    align-items: center;
+    gap: 14px;
+    padding: 10px 12px;
   }
 
-  body.rescue-playing.rescue-expanded-canvas #hud {
-    grid-template-columns: 38px repeat(3, minmax(0, 1fr));
-    height: 48px;
-    min-height: 48px;
-    gap: 4px;
+  .animal-panel {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    height: fit-content;
+    max-width: 260px;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px;
   }
 
-  body.rescue-playing.rescue-expanded-canvas .battle-return {
-    width: 38px;
-    min-width: 38px;
-    height: 38px;
-    min-height: 38px;
-    font-size: 20px;
+  .animal-avatar {
+    width: 52px;
+    height: 52px;
   }
 
-  body.rescue-playing.rescue-expanded-canvas #hud div {
-    height: 48px;
-    min-height: 48px;
-    padding: 3px 5px;
+  .animal-panel strong { font-size: 18px; }
+  .animal-panel span { font-size: 12px; }
+
+  .board {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: center;
+    width: min(100%, 84cqh, 420px);
+    height: auto;
   }
 
-  body.rescue-playing.rescue-expanded-canvas #hud span {
-    font-size: 9px;
-    line-height: 11px;
-  }
-
-  body.rescue-playing.rescue-expanded-canvas #hud strong {
-    font-size: 16px;
-    line-height: 18px;
-  }
-
-  body.rescue-playing.rescue-expanded-canvas #playArea {
-    grid-template-rows: 60px minmax(0, 1fr) 36px;
-    gap: 4px;
-    padding: 0 2px 2px;
-  }
-
-  body.rescue-playing.rescue-expanded-canvas .animal-panel {
-    grid-template-columns: 44px minmax(0, 1fr);
-    height: 60px;
-    min-height: 60px;
-    padding: 5px;
-  }
-
-  body.rescue-playing.rescue-expanded-canvas .animal-avatar {
-    width: 40px;
-    height: 40px;
-  }
-
-  body.rescue-playing.rescue-expanded-canvas .animal-panel strong {
-    font-size: 14px;
-    line-height: 17px;
-  }
-
-  body.rescue-playing.rescue-expanded-canvas .animal-panel span {
-    max-height: 28px;
-    font-size: 10px;
-    line-height: 13px;
-  }
-
-  body.rescue-playing.rescue-expanded-canvas .board {
-    width: min(100%, calc(var(--rescue-battle-content-height, 320px) - 176px));
-  }
-
-  body.rescue-playing.rescue-expanded-canvas .action-row,
-  body.rescue-playing.rescue-expanded-canvas .action-row button {
-    height: 36px;
-    min-height: 36px;
-    font-size: 13px;
-  }
-
-  body.rescue-playing.rescue-expanded-canvas #resultPanel .result-card {
-    width: min(1500px, calc(100% - 48px));
-    padding: 18px 24px;
-    gap: 10px;
-  }
-
-  body.rescue-playing.rescue-expanded-canvas #resultPanel .result-card h2 {
-    font-size: 42px;
-  }
-
-  body.rescue-playing.rescue-expanded-canvas #resultPanel .result-card > p {
-    font-size: 26px;
-  }
-
-  body.rescue-playing.rescue-expanded-canvas #resultPanel .star-line {
-    font-size: 48px;
-  }
-
-  body.rescue-playing.rescue-expanded-canvas #resultPanel .result-actions button {
-    min-height: 88px;
-    font-size: 26px;
+  .action-row {
+    grid-column: 3;
+    grid-row: 1;
+    align-self: center;
+    height: fit-content;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
+
+#hud[inert][aria-hidden="true"],
+.animal-panel[inert][aria-hidden="true"],
+#board[inert][aria-hidden="true"],
+.action-row[inert][aria-hidden="true"] {
+  visibility: hidden !important;
+}
+
 html,
 body,
 button,

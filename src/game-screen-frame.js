@@ -16,7 +16,7 @@
   installEarlyGameScriptFailureBridge();
 
   function ensureEntryLoader() {
-    if (!/\/games\/[a-z0-9-]+(?:\/|\/index\.html)?$/.test(location.pathname)
+    if (!/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?games\/[a-z0-9-]+(?:\/|\/index\.html)?$/i.test(location.pathname)
       || window.WeightPlayGameEntryLoader?.isActive
       || document.querySelector('script[src*="/game-entry-loader.js"]')) return;
     // If the parser is still loading, wait only until a body exists. Deferring
@@ -180,7 +180,7 @@
     }
     if (!document.querySelector('script[src*="battle-canvas-standard.js"]')) {
       const script = document.createElement("script");
-      script.src = `${new URL("battle-canvas-standard.js", sharedAssetBase).href}?v=20261022-shared-battle-canvas-restore-mode-v1`;
+      script.src = `${new URL("battle-canvas-standard.js", sharedAssetBase).href}?v=20261025-animal-rescue-i9-canvas-map-v1`;
       script.dataset.wpBattleStandard = "true";
       document.body.append(script);
     }
