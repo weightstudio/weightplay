@@ -39,7 +39,7 @@ export function renderGuide(locale='en'){
  <article class="game-info-section"><h3>${escape(c.collection)}</h3><p>${escape(g.collection)}</p></article>
  <article class="game-info-section"><h3>${escape(c.stages)}</h3><ol>${[0,5,10,15,20,25].map(i=>`<li>${escape(c.arcs[i/5])} — ${escape(c.wishes[i])}</li>`).join('')}</ol></article>
  <article class="game-info-section"><h3>${escape(c.help)}</h3><dl>${g.faq.map(([q,a])=>`<dt>${escape(q)}</dt><dd>${escape(a)}</dd>`).join('')}</dl></article></div>
- <div class="game-info-related-section" data-wp-guide-related-interface="9"><h3>${escape(g.related)}</h3><div class="game-info-related-grid">${['animal-blockmart','animal-orbit-orchard'].map(id=>`<a class="game-info-related-card" href="/${route}/games/${id}/" data-game-id="${id}"><span class="game-info-related-poster"><img loading="lazy" src="/games/${id}/assets/cover.webp" alt=""></span><strong>${id}</strong></a>`).join('')}</div></div></section>`;
+ <div class="game-info-related-section" data-wp-guide-related-interface="9"><h3>${escape(g.related)}</h3><div class="game-info-related-grid">${['kindred-habitats','animal-zoo-idle'].map(id=>`<a class="game-info-related-card" href="/${route}/games/${id}/" data-game-id="${id}"><span class="game-info-related-poster"><img loading="lazy" src="/games/${id}/assets/cover.webp" alt=""></span><strong>${id}</strong></a>`).join('')}</div></div></section>`;
 }
 // Scoped finalization after the canonical route generator: only game-owned
 // copy markers are changed; shared controls and related-card records retain

@@ -155,7 +155,7 @@ export class SmallwoodScene {
    this.draw();if(this.active)this.raf=requestAnimationFrame(tick);
   };this.raf=requestAnimationFrame(tick);}
  stop(){this.active=false;cancelAnimationFrame(this.raf);this.raf=0;this.action=null;if(this.actor){this.actor.position.y=.1;this.actor.rotation.y=0;this.actor.scale.y=this.actor.userData.baseScale;for(const arm of this.actor.userData.arms)arm.rotation.x=0;}}
- draw(){if(this.renderer&&!this.renderer.getContext().isContextLost())this.renderer.render(this.scene,this.camera);}
+ draw(){if(this.renderer&&!this.renderer.getContext().isContextLost()){this.renderer.render(this.scene,this.camera);const m=this.metrics();Object.assign(this.container.dataset,{drawCalls:m.calls,triangles:m.triangles,geometries:m.geometries,textures:m.textures,frameP95:m.p95FrameMs??'',frameSamples:m.animationSamples,animationActive:String(this.active),threeRevision:THREE.REVISION,reducedMotion:String(this.reduced)});}}
  thumbnail(index,complete=true){
   const key=index+':'+complete;if(this.thumbnails.has(key))return this.thumbnails.get(key);
   this.stop();const scene=new THREE.Scene();scene.background=new THREE.Color(0xe5dfc9);scene.add(new THREE.HemisphereLight(0xfff0cd,0x688785,2.8));const light=new THREE.DirectionalLight(0xffe4ac,4);light.position.set(-3,5,5);scene.add(light);const model=memoryModel(index,complete);scene.add(model);

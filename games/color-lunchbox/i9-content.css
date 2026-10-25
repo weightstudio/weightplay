@@ -287,10 +287,10 @@ body[data-wp-game-id="color-lunchbox"] .leave-confirm-card #keepSortingBtn {
   body[data-wp-game-id="color-lunchbox"] #resultPanel .result-card {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
     width: min(100%, 560px);
     max-height: 100%;
-    padding: 8px;
+    padding: 6px;
   }
 
   body[data-wp-game-id="color-lunchbox"] #resultPanel .result-card h2 {
@@ -299,16 +299,16 @@ body[data-wp-game-id="color-lunchbox"] .leave-confirm-card #keepSortingBtn {
   }
 
   body[data-wp-game-id="color-lunchbox"] #resultPanel .reward-parade {
-    min-height: 28px;
+    min-height: 24px;
   }
 
   body[data-wp-game-id="color-lunchbox"] #resultPanel .reward-parade img {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
   }
 
   body[data-wp-game-id="color-lunchbox"] #resultPanel .result-report {
-    gap: 3px;
+    gap: 2px;
   }
 
   body[data-wp-game-id="color-lunchbox"] #resultPanel .result-summary {

@@ -150,6 +150,7 @@ function showDetails(){
  r.echoes.forEach(e=>body.append(echoNode(e,r)));body.append(para(text('seed',{n:r.seed})));dialog(c.wish,body);
 }
 function owned(id){try{return !!window.WeightPlayWallet?.owns(`${GAME_ID}:${id}`);}catch{return false;}}
+function walletBalance(){const node=para(text('price',{n:window.WeightPlayWallet?.read().diamonds??0})),icon=document.createElement('img');node.className='wallet-balance';icon.src='/assets/weightplay-diamond.svg';icon.alt='';node.prepend(icon);return node;}
 function renderCollection(){
  const s=save;$('collectionCount').textContent=`${s.cleared.length} / 30`;
  $('collectionTabs').replaceChildren(...[['album',c.objects],['room',text('room',{n:1})],['shop',c.cosmetics]].map(([id,name])=>button(name,()=>{collectionMode=id;renderCollection();},{'aria-pressed':String(collectionMode===id)})));
@@ -163,7 +164,7 @@ function renderCollection(){
    for(let j=0;j<5;j++){const slot=room*5+j,id=s.displays[slot],i=STAGES.findIndex(x=>x.id===id);const b=button('',()=>chooseDisplay(slot),{class:'display-slot'});if(i>=0){const img=document.createElement('img');img.src=scene.thumbnail(i,!!s.album[id].wish);img.alt=c.items[i];b.append(img,document.createTextNode(c.items[i]));}else b.textContent=c.empty;b.dataset.slot=slot;grid.append(b);}body.append(grid);
   }
  }else{
-  const grid=document.createElement('div');grid.className='collection-grid';COSMETICS.forEach((item,i)=>{const card=document.createElement('article');card.className='collection-card';const img=document.createElement('img');img.src=scene.thumbnail(item.model);img.alt=c.cosmeticItems[i][0];const h=document.createElement('h3');h.textContent=c.cosmeticItems[i][0];card.append(img,h,para(c.cosmeticItems[i][1]),para(owned(item.id)?c.owned:text('price',{n:item.cost})));
+  body.append(walletBalance());const grid=document.createElement('div');grid.className='collection-grid';COSMETICS.forEach((item,i)=>{const card=document.createElement('article');card.className='collection-card';const img=document.createElement('img');img.src=scene.thumbnail(item.model);img.alt=c.cosmeticItems[i][0];const h=document.createElement('h3');h.textContent=c.cosmeticItems[i][0];card.append(img,h,para(c.cosmeticItems[i][1]),para(owned(item.id)?c.owned:text('price',{n:item.cost})));
    const locked=s.cleared.length<item.unlock,have=owned(item.id);if(locked)card.append(para(text('needClear',{n:item.unlock})));card.append(button(have?(s.cosmetics.includes(item.id)?c.off:c.on):c.buy,()=>purchase(item,i),{...(locked||practicing?{disabled:''}:{})}));grid.append(card);});body.append(grid);
  }
 }
@@ -173,7 +174,7 @@ function chooseDisplay(slot){const body=document.createDocumentFragment();for(co
 async function purchase(item,index){
  if(practicing||save.cleared.length<item.unlock||busy)return;
  if(owned(item.id)){if(await transact(s=>setCosmetic(s,item.id,!s.cosmetics.includes(item.id),sku=>window.WeightPlayWallet.owns(sku)))){renderCollection();sound('feedback.success');}return;}
- const body=document.createDocumentFragment(),img=document.createElement('img');img.src=scene.thumbnail(item.model);img.alt=c.cosmeticItems[index][0];body.append(img,para(c.cosmeticItems[index][1]),para(text('price',{n:item.cost})));
+ const body=document.createDocumentFragment(),img=document.createElement('img');img.src=scene.thumbnail(item.model);img.alt=c.cosmeticItems[index][0];body.append(img,para(c.cosmeticItems[index][1]),para(text('price',{n:item.cost})),walletBalance());
  dialog(c.cosmeticItems[index][0],body,[{label:c.cancel,run:closeDialog},{label:c.buy,primary:true,run:async()=>{if(busy)return;busy=true;let result;try{result=await window.WeightPlayWallet.purchasePermanent(`${GAME_ID}:${item.id}`,item.cost);}finally{busy=false;}closeDialog();if(!result?.ok){error(result?.reason==='insufficient'?'notEnough':'shopError');return;}const ok=await transact(s=>setCosmetic(s,item.id,true,sku=>window.WeightPlayWallet.owns(sku)));if(ok){sound('shop.purchase');renderCollection();}}}]);
 }
 function trapResult(event){if($('resultPanel').hidden||$('choiceDialog').open||settingsOpen())return;if(event.key==='Escape'){event.preventDefault();if(resultSaved){showScreen('stage');showChapters();}return;}if(event.key==='Tab'){const controls=[...$('resultPanel').querySelectorAll('button:not(:disabled)')].filter(n=>!n.hidden),first=controls[0],last=controls.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}}
