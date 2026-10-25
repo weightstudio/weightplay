@@ -24,15 +24,15 @@
   const dropSettleDuration = 360;
   const snacks = ["ST", "CK", "JM", "GR", "CH", "PR"];
   const snackArt = {
-    ST: { label: "Strawberry", asset: "assets/tile-strawberry.png" },
-    CK: { label: "Cookie", asset: "assets/tile-cookie.png" },
-    JM: { label: "Candy", asset: "assets/tile-candy.png" },
-    GR: { label: "Grape", asset: "assets/tile-grape.png" },
-    CH: { label: "Cheese", asset: "assets/tile-cheese.png" },
-    PR: { label: "Pretzel", asset: "assets/tile-pretzel.png" },
+    ST: { label: "Strawberry", asset: "/games/snack-blocks/assets/tile-strawberry.png" },
+    CK: { label: "Cookie", asset: "/games/snack-blocks/assets/tile-cookie.png" },
+    JM: { label: "Candy", asset: "/games/snack-blocks/assets/tile-candy.png" },
+    GR: { label: "Grape", asset: "/games/snack-blocks/assets/tile-grape.png" },
+    CH: { label: "Cheese", asset: "/games/snack-blocks/assets/tile-cheese.png" },
+    PR: { label: "Pretzel", asset: "/games/snack-blocks/assets/tile-pretzel.png" },
   };
   const effectArt = {
-    matchBurst: "assets/effect-match-burst.png",
+    matchBurst: "/games/snack-blocks/assets/effect-match-burst.png",
   };
   const canonicalLocaleKey = "weightPlayLocale";
   const legacyLocaleKey = "weightplayLocale";
@@ -203,7 +203,6 @@
     menuTitle: "選擇零食關卡",
     menuText: "用完所有步數、達成目標，並挑戰自己的最佳分數。",
     start: "開始遊戲",
-    stageHelp: "左右滑動，選擇已解鎖的關卡。",
     stageName: "第 {stage} 關",
     locked: "尚未解鎖",
     best: "最佳 {score}",
@@ -353,13 +352,13 @@
     panel.setAttribute("aria-labelledby", "leaveConfirmTitle");
     panel.setAttribute("aria-describedby", "leaveConfirmText");
     panel.innerHTML = `<div class="leave-confirm-card"><strong id="leaveConfirmTitle"></strong><p id="leaveConfirmText"></p><div><button id="keepPlayingBtn" type="button"></button><button id="leaveStageBtn" type="button"></button></div></div>`;
-    document.querySelector(".snack-game")?.append(panel);
+    panel.dataset.wpScenePart = "battle";
+    document.getElementById("playPanel")?.append(panel);
   }
 
   const nodes = {
     homeLink: document.getElementById("homeLink"),
     titleText: document.getElementById("titleText"),
-    brandText: document.getElementById("brandText"),
     languageLabel: document.getElementById("languageLabel"),
     localeSelect: document.getElementById("localeSelect"),
     hud: document.getElementById("hud"),
@@ -375,12 +374,9 @@
     stagePanel: document.getElementById("stagePanel"),
     startBtn: document.getElementById("startBtn"),
     stageBackBtn: document.getElementById("stageBackBtn"),
-    stageTabs: document.getElementById("stageTabs"),
-    stagesTabBtn: document.getElementById("stagesTabBtn"),
     battleBackBtn: document.getElementById("battleBackBtn"),
     pauseBtn: document.getElementById("pauseBtn"),
     stageTitle: document.getElementById("stageTitle"),
-    stageHelp: document.getElementById("stageHelp"),
     menuTitle: document.getElementById("menuTitle"),
     menuText: document.getElementById("menuText"),
     stageGrid: document.getElementById("stageGrid"),
@@ -397,8 +393,6 @@
     menuBtn: document.getElementById("menuBtn"),
     loadingPanel: document.getElementById("loadingPanel"),
     loadingTitle: document.getElementById("loadingTitle"),
-    loadingText: document.getElementById("loadingText"),
-    loadingFill: document.getElementById("loadingFill"),
     leaveConfirmPanel: document.getElementById("leaveConfirmPanel"),
     leaveConfirmTitle: document.getElementById("leaveConfirmTitle"),
     leaveConfirmText: document.getElementById("leaveConfirmText"),
@@ -478,7 +472,7 @@
   }
 
   function setBattleCovered(covered) {
-    for (const node of [nodes.hud, nodes.playPanel]) {
+    for (const node of [document.getElementById("battleHeader"), document.getElementById("battleContent")]) {
       node.inert = covered;
       if (covered) node.setAttribute("aria-hidden", "true");
       else node.removeAttribute("aria-hidden");
@@ -718,18 +712,14 @@
   }
 
   function applyText() {
-    nodes.brandText.textContent = t("brand");
-    nodes.titleText.textContent = t("title");
     nodes.languageLabel.textContent = t("language");
     nodes.stageLabel.textContent = t("stage");
     nodes.movesLabel.textContent = t("moves");
     nodes.targetLabel.textContent = t("target");
     nodes.scoreLabel.textContent = t("score");
-    nodes.menuTitle.textContent = t("title");
     nodes.menuText.textContent = t("menuText");
     nodes.startBtn.textContent = state.locale === "zh-Hant" ? "\u958b\u59cb\u904a\u6232" : t("start");
     nodes.stageTitle.textContent = t("menuTitle");
-    nodes.stageHelp.textContent = state.locale === "zh-Hant" ? "\u5de6\u53f3\u6ed1\u52d5\uff0c\u9078\u64c7\u5df2\u89e3\u9396\u7684\u95dc\u5361\u3002" : t("stageHelp");
     nodes.hintText.textContent = t("hint");
     nodes.loadingTitle.textContent = t("loading");
     nodes.nextBtn.textContent = t("next");
@@ -740,10 +730,9 @@
     nodes.hud.setAttribute("aria-label", t("gameStatsAria"));
     nodes.stagePanel.setAttribute("aria-label", t("stageSelectAria"));
     nodes.stageBackBtn.setAttribute("aria-label", t("stageBackAria"));
-    nodes.stageTabs.setAttribute("aria-label", t("stageSelectAria"));
-    nodes.stagesTabBtn.textContent = t("menu");
     nodes.battleBackBtn.setAttribute("aria-label", t("battleBackAria"));
-    (__wpNotifyMeasurement(), nodes.pauseBtn.setAttribute("aria-label", t("pauseAria")));
+    nodes.pauseBtn.setAttribute("aria-label", t("pauseAria"));
+    nodes.pauseBtn.textContent = t("pauseAria");
     nodes.board.setAttribute("aria-label", t("boardAria"));
     applyDecisionText();
     renderStageGrid();
@@ -800,135 +789,68 @@
     }
   }
 
+  let screenFrame = null;
+  let stageUI = null;
+  let stageSelection = 0;
+  const stageProgress = document.createElement("div");
+
+  function updateStageProgress() {
+    const progress = `${t("stage")} ${loadUnlocked()} / ${stages.length}`;
+    stageProgress.textContent = progress;
+    document.getElementById("mainProgress").textContent = progress;
+  }
+
+  function stageConfiguration() {
+    return {
+      count: stages.length, poster: "/assets/interface7-redrawn/snack-blocks.webp", background: "/assets/lobby-block-atmosphere.svg",
+      stage(index) {
+        const stage = stages[index], unlocked = index < loadUnlocked(), record = loadRecords()[stage.id];
+        return { id: stage.id, kicker: goalKindLabel(stage), title: `${t("stage")} ${stage.id}`, subtitle: stageDisplayName(stage),
+          status: unlocked ? t("best", { score: bestScoreFromRecord(record) }) : t("locked"),
+          poster: "/assets/interface7-redrawn/snack-blocks.webp", locked: !unlocked, cleared: bestScoreFromRecord(record) > 0,
+          summary: goalLabel(stage), details: [goalLabel(stage), `${t("moves")} ${stage.moves}`, t("best", { score: bestScoreFromRecord(record) })] };
+      },
+    };
+  }
+
   function renderStageGrid(focusIndex = null) {
-    const unlocked = loadUnlocked();
-    const records = loadRecords();
-    nodes.stageGrid.innerHTML = "";
-    stages.forEach((stage, index) => {
-      const button = document.createElement("button");
-      const isUnlocked = index < unlocked;
-      button.type = "button";
-      button.dataset.stageIndex = String(index);
-      button.className = `stage-card ${stage.checkpoint ? "checkpoint" : ""} ${isUnlocked ? "" : "locked"}`;
-      button.setAttribute("aria-disabled", String(!isUnlocked));
-      button.innerHTML = `
-        <strong>${stage.id}</strong>
-        <small class="stage-goal-kind ${stage.goal}">${goalKindLabel(stage)}</small>
-        <span>${stageDisplayName(stage)}</span>
-        <em>${isUnlocked ? `${goalLabel(stage)} · ${t("best", { score: bestScoreFromRecord(records[stage.id]) })}` : t("locked")}</em>
-      `;
-      button.addEventListener("click", () => {
-        if (!isUnlocked || nodes.stageGrid.dataset.dragged === "true") return;
-        startStage(index);
-      });
-      nodes.stageGrid.append(button);
-    });
-    requestAnimationFrame(() => {
-      const unlockedCard = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
-      scrollStageCardToCenter(unlockedCard, "auto");
-      if (Number.isInteger(focusIndex)) {
-        const focusCard = nodes.stageGrid.querySelector(`.stage-card:not(.locked)[data-stage-index="${focusIndex}"]`) || unlockedCard;
-        focusCard?.focus({ preventScroll: true });
-        scrollStageCardToCenter(focusCard, "auto");
-      }
-      scheduleCenteredStageCard();
-    });
+    if (Number.isInteger(focusIndex)) stageSelection = focusIndex;
+    updateStageProgress();
+    stageUI?.setConfig(stageConfiguration(), stageSelection);
   }
 
   function rejectRepeatedScreenActivation(event) {
-    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    }
+    if (event.repeat && ["Enter", " "].includes(event.key)) { event.preventDefault(); event.stopImmediatePropagation(); }
   }
 
-  function scrollStageCardToCenter(card, behavior = "smooth") {
-    if (!card) return;
-    const left = Math.max(0, Math.min(
-      card.offsetLeft + card.offsetWidth / 2 - nodes.stageGrid.clientWidth / 2,
-      nodes.stageGrid.scrollWidth - nodes.stageGrid.clientWidth
-    ));
-    nodes.stageGrid.scrollTo({ left, behavior });
+  function syncSharedScene(scene) {
+    exitSharedPlayViewport();
+    screenFrame?.activate(scene);
+    window.WeightPlayBattleCanvas?.sync?.();
+    if (scene === "stage") stageUI?.refresh(stageSelection);
+    window.dispatchEvent(new Event("weightplay:battle-sync"));
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
   }
 
-  function centerNearestStage() {
-    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
-    if (!cards.length) return;
-    const center = nodes.stageGrid.scrollLeft + nodes.stageGrid.clientWidth / 2;
-    const nearest = cards.reduce((best, card) => {
-      const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
-      return !best || distance < best.distance ? { card, distance } : best;
-    }, null)?.card;
-    scrollStageCardToCenter(nearest);
-  }
-
-  let centeredStageFrame = 0;
-  function updateCenteredStageCard() {
-    centeredStageFrame = 0;
-    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
-    if (!cards.length || !document.body.classList.contains("snack-stage")) return;
-    const railRect = nodes.stageGrid.getBoundingClientRect();
-    const railCenter = railRect.left + railRect.width / 2;
-    const nearest = cards.reduce((best, card) => {
-      const cardRect = card.getBoundingClientRect();
-      const distance = Math.abs(cardRect.left + cardRect.width / 2 - railCenter);
-      return !best || distance < best.distance ? { card, distance } : best;
-    }, null)?.card;
-    cards.forEach((card) => {
-      const centered = card === nearest;
-      card.classList.toggle("is-centered", centered);
-      if (centered) card.setAttribute("aria-current", "true");
-      else card.removeAttribute("aria-current");
+  function mountSharedInterface() {
+    if (!window.WeightPlayScreenFrame || !window.WeightPlayPlayUI || !window.WeightPlayStageRailI9) throw new Error("SNACK_BLOCKS_I9_SHARED_RUNTIME_MISSING");
+    screenFrame = window.WeightPlayScreenFrame.mount({ root: document.getElementById("snackGame"), localeSelect: nodes.localeSelect, playUI: true,
+      scenes: {
+        main: { root: nodes.menuPanel, header: document.getElementById("mainHeader"), content: document.getElementById("mainContent") },
+        stage: { root: nodes.stagePanel, header: document.getElementById("stageHeader"), content: document.getElementById("stageContent") },
+        battle: { root: nodes.playPanel, header: document.getElementById("battleHeader"), content: document.getElementById("battleContent") },
+      },
     });
-  }
-
-  function scheduleCenteredStageCard() {
-    if (centeredStageFrame) return;
-    centeredStageFrame = requestAnimationFrame(updateCenteredStageCard);
-  }
-
-  function installStageCenterCue() {
-    nodes.stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
-    nodes.stageGrid.addEventListener("wonder:stage-snap", scheduleCenteredStageCard);
-    window.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
-    window.visualViewport?.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
-  }
-
-  function installStageDrag() {
-    nodes.stageGrid.dataset.stageDragInstalled = "true";
-    let pointerId = null;
-    let startX = 0;
-    let startScroll = 0;
-    let moved = false;
-    nodes.stageGrid.addEventListener("pointerdown", (event) => {
-      if (nodes.stageGrid.dataset.wpStageRail === "true") return;
-      pointerId = event.pointerId;
-      startX = event.clientX;
-      startScroll = nodes.stageGrid.scrollLeft;
-      moved = false;
-      nodes.stageGrid.classList.add("dragging");
-    });
-    nodes.stageGrid.addEventListener("pointermove", (event) => {
-      if (event.pointerId !== pointerId) return;
-      const delta = event.clientX - startX;
-      if (Math.abs(delta) > 6 && !moved) {
-        moved = true;
-        nodes.stageGrid.setPointerCapture?.(pointerId);
-      }
-      if (!moved) return;
-      nodes.stageGrid.scrollLeft = startScroll - delta;
-    });
-    const finish = (event) => {
-      if (event.pointerId !== pointerId) return;
-      if (nodes.stageGrid.hasPointerCapture?.(pointerId)) nodes.stageGrid.releasePointerCapture(pointerId);
-      pointerId = null;
-      nodes.stageGrid.classList.remove("dragging");
-      if (moved) nodes.stageGrid.dataset.dragged = "true";
-      centerNearestStage();
-      setTimeout(() => { delete nodes.stageGrid.dataset.dragged; }, 120);
-    };
-    nodes.stageGrid.addEventListener("pointerup", finish);
-    nodes.stageGrid.addEventListener("pointercancel", finish);
+    screenFrame.stageTopUI.add(stageProgress);
+    const statistics = window.WeightPlayScreenFrame.createGroup();
+    [...nodes.hud.children].forEach(node => statistics.add(node));
+    screenFrame.battleTopUI.add(statistics);
+    stageUI = window.WeightPlayPlayUI.mountStage({ page: document.getElementById("stageContent"), rail: nodes.stageGrid,
+      config: stageConfiguration(), selected: stageSelection, onSelect(index) { stageSelection = index; },
+      onStart(index) { startStage(index); }, isActive: () => screenFrame.active === "stage" && !nodes.stagePanel.hidden });
+    new ResizeObserver(() => updateBoardLayout()).observe(document.getElementById("battleContent"));
+    screenFrame.activate("main");
   }
 
   function showStage(focusIndex = null) {
@@ -946,15 +868,13 @@
     state.leaveConfirmOpen = false;
     state.decisionMode = null;
     setBattleCovered(false);
-    nodes.hud.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
     document.body.classList.remove("snack-playing");
     document.body.classList.add("snack-stage");
+    stageSelection = stageToFocus;
+    syncSharedScene("stage");
     renderStageGrid(stageToFocus);
-    exitSharedPlayViewport();
-    updateSnackFrame();
-    requestAnimationFrame(updateSnackFrame);
-    refreshSharedScreenGeometry();
+    nodes.stageGrid.querySelector('[aria-current="true"]')?.focus({ preventScroll: true });
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["stage"] ?? null;
       if (["result"].includes("stage") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -968,21 +888,17 @@
     state.busy = false;
     nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
-    document.body.classList.remove("snack-stage");
-    resetSnackFrame();
-    nodes.startBtn.focus({ preventScroll: true });
-    refreshSharedScreenGeometry();
-    requestAnimationFrame(() => {
-      // Stage Canvas restores the inline style snapshot on its first inactive
-      // frame. Clear that delayed snapshot before Main is measured.
-      resetSnackFrame();
-      refreshSharedScreenGeometry();
-      requestAnimationFrame(() => {
-        resetSnackFrame();
-        refreshSharedScreenGeometry();
-        nodes.startBtn.focus({ preventScroll: true });
-      });
-    });
+    nodes.playPanel.classList.add("hidden");
+    nodes.resultPanel.classList.add("hidden");
+    nodes.leaveConfirmPanel.classList.add("hidden");
+    state.leaveConfirmOpen = false;
+    state.decisionMode = null;
+    setBattleCovered(false);
+    document.body.classList.remove("snack-stage", "snack-playing");
+    updateStageProgress();
+    syncSharedScene("main");
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    if (screenFrame) nodes.startBtn.focus({ preventScroll: true });
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
       if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -1273,110 +1189,25 @@
     trySwap(target);
   }
 
-  function updateSnackFrame() {
-    if (!document.body.classList.contains("snack-stage") && !document.body.classList.contains("snack-playing")) return;
-    const viewport = window.visualViewport;
-    const layoutWidth = Math.max(1, document.documentElement.clientWidth || 0, innerWidth || 0, viewport?.width || 0);
-    const viewportHeight = Math.max(1, document.documentElement.clientHeight || 0, innerHeight || 0, viewport?.height || 0);
-    const viewportWidth = Math.min(layoutWidth, 920);
-    const frameLeft = Math.max(0, (layoutWidth - viewportWidth) / 2);
-    const shell = document.querySelector(".snack-game");
-    shell?.classList.remove("weightplay-active-viewport");
-    const shortLandscape = viewportWidth / viewportHeight >= 1.5 && viewportHeight <= 430;
-    const nextColumns = shortLandscape ? 10 : 7;
-    const nextRows = shortLandscape ? 7 : 10;
-    const boardOrientationChanged = columns !== nextColumns || rows !== nextRows;
-    columns = nextColumns;
-    rows = nextRows;
-    nodes.board.dataset.columns = String(columns);
-    nodes.board.dataset.rows = String(rows);
-    const baseWidth = shortLandscape ? 760 : 390;
-    const baseHeight = shortLandscape ? 350 : 788;
-    const scale = Math.min(Math.max(1, viewportWidth) / baseWidth, Math.max(1, viewportHeight) / baseHeight);
-    const logicalWidth = viewportWidth / scale;
-    const logicalHeight = viewportHeight / scale;
-    document.documentElement.style.setProperty("--snack-frame-scale", String(scale));
-    document.documentElement.style.setProperty("--snack-frame-left", `${frameLeft}px`);
-    document.documentElement.style.setProperty("--snack-frame-top", "0px");
-    document.documentElement.style.setProperty("--snack-logical-width", `${logicalWidth}px`);
-    document.documentElement.style.setProperty("--snack-logical-height", `${logicalHeight}px`);
-    document.documentElement.style.setProperty("--snack-frame-width", `${viewportWidth}px`);
-    document.documentElement.style.setProperty("--snack-frame-height", `${viewportHeight}px`);
-    shell?.style.setProperty("position", "fixed", "important");
-    shell?.style.setProperty("inset", "auto", "important");
-    shell?.style.setProperty("left", `${frameLeft}px`, "important");
-    shell?.style.setProperty("top", "0px", "important");
-    shell?.style.setProperty("width", `${logicalWidth}px`, "important");
-    shell?.style.setProperty("min-width", "0px", "important");
-    shell?.style.setProperty("max-width", `${logicalWidth}px`, "important");
-    shell?.style.setProperty("height", `${logicalHeight}px`, "important");
-    shell?.style.setProperty("min-height", "0px", "important");
-    shell?.style.setProperty("max-height", "none", "important");
-    shell?.style.setProperty("transform", `scale(${scale})`, "important");
-    shell?.style.setProperty("transform-origin", "top left", "important");
-    if (shell) {
-      shell.dataset.logicalWidth = logicalWidth.toFixed(4);
-      shell.dataset.logicalHeight = logicalHeight.toFixed(4);
-      shell.dataset.commonScale = scale.toFixed(6);
-    }
-    if (boardOrientationChanged && state.running && !state.busy && state.board.length === columns * rows) {
-      clearBoardPointer();
-      renderBoard();
-    }
-  }
-
-  function resetSnackFrame() {
-    const shell = document.querySelector(".snack-game");
-    for (const property of ["position", "inset", "left", "top", "width", "min-width", "max-width", "height", "min-height", "max-height", "margin", "overflow", "transform", "transform-origin"]) shell?.style.removeProperty(property);
-    if (shell) {
-      delete shell.dataset.logicalWidth;
-      delete shell.dataset.logicalHeight;
-      delete shell.dataset.commonScale;
-    }
-    const rootStyle = document.documentElement.style;
-    [
-      "--snack-frame-scale",
-      "--snack-frame-left",
-      "--snack-frame-top",
-      "--snack-logical-width",
-      "--snack-logical-height",
-      "--snack-frame-width",
-      "--snack-frame-height",
-    ].forEach((property) => rootStyle.removeProperty(property));
+  function updateBoardLayout() {
+    const width = Math.min(document.documentElement.clientWidth || innerWidth, 920);
+    const height = document.documentElement.clientHeight || innerHeight;
+    const landscape = width / height >= 1.5 && height <= 430;
+    const nextColumns = landscape ? 10 : 7, nextRows = landscape ? 7 : 10;
+    const changed = columns !== nextColumns || rows !== nextRows;
+    columns = nextColumns; rows = nextRows;
+    nodes.board.dataset.columns = String(columns); nodes.board.dataset.rows = String(rows);
+    nodes.board.style.setProperty("--snack-columns", String(columns));
+    nodes.board.style.setProperty("--snack-rows", String(rows));
+    nodes.board.style.setProperty("--snack-board-ratio", String(columns / rows));
+    if (changed && state.running && !state.busy && state.board.length === columns * rows) { clearBoardPointer(); renderBoard(); }
   }
 
   function exitSharedPlayViewport() {
     window.WeightPlayGame?.exitMobileGameMode?.();
-    document.body.classList.remove("weightplay-active-viewport", "wp-mobile-game-mode");
-    document.querySelector(".snack-game")?.classList.remove("weightplay-active-viewport");
     if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
     if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
   }
-
-  function refreshSharedScreenGeometry(battle = false) {
-    const refresh = () => {
-      if (battle) {
-        window.dispatchEvent(new Event("weightplay:stage-sync"));
-        window.dispatchEvent(new Event("weightplay:battle-sync"));
-      } else {
-        window.dispatchEvent(new Event("weightplay:battle-sync"));
-        window.dispatchEvent(new Event("weightplay:stage-sync"));
-      }
-      window.dispatchEvent(new Event("weightplay:shell-sync"));
-      window.dispatchEvent(new Event("resize"));
-      if (!document.body.classList.contains("snack-stage") && !document.body.classList.contains("snack-playing")) {
-        resetSnackFrame();
-      }
-      if (battle) window.dispatchEvent(new Event("weightplay:battle-open"));
-    };
-    refresh();
-    requestAnimationFrame(refresh);
-  }
-
-  window.addEventListener("resize", updateSnackFrame);
-  window.addEventListener("orientationchange", updateSnackFrame);
-  window.visualViewport?.addEventListener("resize", updateSnackFrame);
-  window.visualViewport?.addEventListener("scroll", updateSnackFrame);
 
   function startStage(index) {
     if (index >= loadUnlocked()) return;
@@ -1395,6 +1226,7 @@
     state.selected = null;
     state.running = true;
     state.busy = false;
+    updateBoardLayout();
     buildCleanBoard();
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
@@ -1403,26 +1235,19 @@
     state.leaveConfirmOpen = false;
     state.decisionMode = null;
     setBattleCovered(false);
-    nodes.hud.classList.remove("hidden");
     nodes.playPanel.classList.remove("hidden");
     document.body.classList.remove("snack-stage");
     document.body.classList.add("snack-playing");
-    document.querySelector(".snack-game")?.removeAttribute("data-play-viewport");
     updateHud();
     renderBoard();
     nodes.hintText.textContent = t("hint");
-    exitSharedPlayViewport();
-    updateSnackFrame();
-    refreshSharedScreenGeometry(true);
+    syncSharedScene("battle");
     window.WonderAnalytics?.track("game_start", {
       game_id: GAME_ID,
       stage: activeStage().id,
       goal: activeStage().goal,
     });
-    requestAnimationFrame(() => {
-      exitSharedPlayViewport();
-      updateSnackFrame();
-    });
+    focusBoardTile();
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
@@ -1459,11 +1284,12 @@
       : nodes.againBtn;
     [nodes.nextBtn, nodes.againBtn, nodes.menuBtn].forEach((action) => {
       action.classList.toggle("primary-action", action === primaryAction);
+      action.dataset.wpFrameAction = action === primaryAction ? "primary" : "secondary";
     });
-    nodes.hud.classList.add("hidden");
-    nodes.playPanel.classList.add("hidden");
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
-    requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
+    setBattleCovered(true);
+    updateStageProgress();
+    primaryAction.focus({ preventScroll: true });
     window.WeightPlayAudio?.play(cleared ? "result.win" : "result.lose");
     window.WonderAnalytics?.track("game_complete", {
       game_id: GAME_ID,
@@ -1497,10 +1323,6 @@
 
   function showMenu() {
     showStage(state.currentStageIndex);
-    const shell = document.querySelector(".snack-game");
-    shell?.setAttribute("data-play-viewport", "");
-    updateSnackFrame();
-    requestAnimationFrame(updateSnackFrame);
     window.WonderAnalytics?.track("game_menu", { game_id: GAME_ID });
   }
 
@@ -1517,7 +1339,7 @@
     applyDecisionText();
     (__wpNotifyMeasurement(), nodes.leaveConfirmPanel.classList.remove("hidden"));
     setBattleCovered(true);
-    requestAnimationFrame(() => nodes.keepPlayingBtn.focus({ preventScroll: true }));
+    nodes.keepPlayingBtn.focus({ preventScroll: true });
   }
 
   function closeLeaveConfirm(restoreFocus = true) {
@@ -1537,46 +1359,16 @@
     showStage(state.currentStageIndex);
   }
 
-  function installLoading() {
-    let progress = 0;
-    const id = window.setInterval(() => {
-      progress = Math.min(100, progress + 20);
-      nodes.loadingText.textContent = `${progress}%`;
-      nodes.loadingFill.style.width = `${progress}%`;
-      if (progress >= 100) {
-        window.clearInterval(id);
-        window.setTimeout(() => {
-          nodes.loadingPanel.classList.add("hidden");
-          if (!__wpMeasurement.started && __wpMeasurement.screen === null) { __wpMeasurement.screen = "main"; } __wpNotifyMeasurement();
-          window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
-        }, 120);
-      }
-    }, 70);
+  async function installLoading() {
+    const required = ["/assets/interface7-redrawn/snack-blocks.webp", "/games/snack-blocks/assets/board-frame-7x10.webp", effectArt.matchBurst, ...Object.values(snackArt).map(snack => snack.asset)];
+    try {
+      await Promise.all(required.map(src => new Promise((resolve, reject) => { const image = new Image(); image.onload = () => image.decode().then(resolve, reject); image.onerror = () => reject(new Error("SNACK_BLOCKS_REQUIRED_IMAGE_FAILED")); image.src = src; })));
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      nodes.loadingPanel.classList.add("hidden"); nodes.loadingPanel.setAttribute("aria-busy", "false");
+      if (!__wpMeasurement.started && __wpMeasurement.screen === null) __wpMeasurement.screen = "main";
+      __wpNotifyMeasurement(); window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
+    } catch { nodes.loadingPanel.classList.add("has-error"); nodes.loadingPanel.setAttribute("aria-busy", "false"); }
   }
-
-  window.__snackBlocksSmoke = {
-    stageCatalog() {
-      return stages.map((stage) => ({ ...stage, pool: [...stage.pool], snacks: stage.snacks ? [...stage.snacks] : undefined }));
-    },
-    readState() {
-      return {
-        stage: activeStage().id,
-        score: state.score,
-        moves: state.moves,
-        combo: state.combo,
-        selected: state.selected,
-        busy: state.busy,
-        board: state.board.map((tile) => tile.type),
-        goalCount: state.goalCount,
-        bestCascade: state.bestCascade,
-        bestBurst: state.bestBurst,
-        goal: goalLabel(),
-      };
-    },
-    finishStage(cleared) {
-      finishStage(Boolean(cleared));
-    },
-  };
 
   function commitResultAction(action) {
     if (state.resultActionCommitted) return;
@@ -1599,7 +1391,6 @@
   });
   nodes.menuBtn.addEventListener("click", () => commitResultAction(showMenu));
   nodes.startBtn.addEventListener("keydown", rejectRepeatedScreenActivation, true);
-  nodes.stageGrid.addEventListener("keydown", rejectRepeatedScreenActivation, true);
   nodes.startBtn.addEventListener("click", () => showStage());
   nodes.stageBackBtn.addEventListener("click", showMain);
   nodes.battleBackBtn.addEventListener("click", () => openBattleDecision("leave"));
@@ -1625,6 +1416,13 @@
       nodes.keepPlayingBtn.focus({ preventScroll: true });
     }
   });
+  nodes.resultPanel.addEventListener("keydown", event => {
+    if (event.repeat && ["Enter", " "].includes(event.key)) { event.preventDefault(); event.stopImmediatePropagation(); return; }
+    if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
+    const actions = [nodes.menuBtn, nodes.nextBtn, nodes.againBtn].filter(node => !node.disabled);
+    const index = actions.indexOf(document.activeElement);
+    event.preventDefault(); actions[(index + (event.shiftKey ? actions.length - 1 : 1)) % actions.length].focus({ preventScroll: true });
+  });
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.homeLink.addEventListener("click", (event) => {
     if (state.running || !nodes.resultPanel.classList.contains("hidden")) {
@@ -1645,7 +1443,7 @@
   });
 
   setLocale(window.WonderI18n?.actualLocale?.() || readStorage(canonicalLocaleKey) || readStorage(legacyLocaleKey) || window.WonderI18n?.locale?.() || "en");
-  installStageDrag();
-  installStageCenterCue();
+  mountSharedInterface();
+  showMain();
   installLoading();
 })();
