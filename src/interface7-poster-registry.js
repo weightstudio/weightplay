@@ -1,6 +1,7 @@
 // Canonical poster delivery. Pending redraws retain original artwork.
 // Only individually generated and inspected images replace originals.
 window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
+  "meadow-touchdown": "/games/meadow-touchdown/assets/cover.webp",
   "signal-snap": "/games/signal-snap/poster.webp",
   "fusekeep": "/assets/fusekeep/poster.webp",
   "alien-defender": "/assets/interface7-redrawn/alien-defender.webp",

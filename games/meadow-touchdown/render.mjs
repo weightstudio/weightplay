@@ -66,6 +66,13 @@ export class FieldRenderer{
       const x=((i*137)%197)/197*19-9.5,y=((i*71)%211)/211*43;
       b(x,.055,-y,.055,.05,.24,i%2?0x76a95b:0x528b48);
     }
+    // A different end-zone landmark identifies each cup without changing the field.
+    if(arc===0)for(const x of [-9,-6,6,9]){b(x,.22,-44.8,1.6,.45,1,0xb47d52);for(let k=0;k<3;k++){b(x-.5+k*.5,.65,-44.8,.08,.6,.08,0x43815a);b(x-.5+k*.5,1,-44.8,.38,.32,.38,k%2?0xf7d776:0xf2b9a5);}}
+    if(arc===1){b(0,.05,-45.5,12,.15,2,0x62c6d1);for(const x of [-7,7]){b(x,1.1,-45.3,2,2.2,1.4,0x8a9f9c);b(x,1.4,-44.6,1.1,2.3,.15,0xa8e4dd);}}
+    if(arc===2){for(const x of [-4,4])b(x,1.4,-45.4,.25,2.8,.25,0x80533c);b(0,2.8,-45.4,8.6,.35,.6,colors.gold);for(const x of [-2.8,0,2.8])b(x,2.1,-45.4,1.2,.8,.2,colors.teal);}
+    if(arc===3)for(const x of [-7,7]){b(x,1.5,-45.8,.25,3,.25,0x825b48);b(x,3,-45.8,2.4,.23,.25,colors.white,0,0,.6);b(x,3,-45.8,.23,2.4,.25,colors.gold,0,0,.6);}
+    if(arc===4)for(const x of [-8,-4,4,8]){b(x,1.1,-45.5,.32,2.2,.32,0x8b614a);b(x,2.3,-45.5,2.1,1.1,1.3,x%8===0?0xd6774f:0xe8b85c);b(x,3,-45.5,1.3,.7,1,0xc88264);}
+    if(arc===5){b(0,.5,-45.8,3.2,1,2,0x56638d);b(0,1.2,-45.8,1.4,.3,1.1,colors.gold);b(0,1.8,-45.8,.45,1,.45,colors.gold);b(0,2.6,-45.8,1.65,.8,1.25,colors.gold);for(const x of [-1,1])b(x,2.6,-45.8,.5,.75,.35,colors.gold);}
     this.static.count=n;this.static.instanceMatrix.needsUpdate=true;this.static.instanceColor.needsUpdate=true;this.static.computeBoundingSphere();
   }
   segment(a,b,color){if(this.lineN+6>this.linePositions.length)return;this.color.set(color);for(const p of [a,b]){this.linePositions.set(p,this.lineN);this.lineColors.set([this.color.r,this.color.g,this.color.b],this.lineN);this.lineN+=3;}}
@@ -77,7 +84,7 @@ export class FieldRenderer{
     const moving=active&&(id!=='leo')&&!catching,cycle=time*13+(p.index||0),swing=moving?Math.sin(cycle)*.65:Math.sin(time*2)*.03;
     const bounce=this.reduced.matches?0:celebrate?Math.abs(Math.sin(time*6))*.3:moving?Math.abs(Math.sin(cycle))*.06:Math.sin(time*2)*.02;
     // Articulated body, paws, muzzles, eyes, ears, and species motifs are all 3D geometry.
-    const heading=id==='leo'?0:runner?0:p.heading||0;
+    const heading=id==='leo'?0:!enemy&&m.phase==='ready'?Math.PI:runner?0:p.heading||0;
     this.parent.makeRotationY(-heading);this.parent.scale(new T.Vector3(1.4,1.4,1.4));this.parent.setPosition(p.x,bounce,-p.y);
     const b=(x,y,z,sx,sy,sz,color,rx=0,ry=0,rz=0)=>this.box(this.dynamic,this.dynamicN++,x,y,z,sx,sy,sz,color,rx,ry,rz,this.parent);
     const species=enemy?['fia','panko','mimi'][p.id%3]:id;

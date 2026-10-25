@@ -60,7 +60,7 @@ function makeDefenders(code,s,stageNumber){
 }
 export class Match {
   constructor(stageNumber=1,book='P1'){
-    this.stage=STAGES[clamp(stageNumber-1,0,29)];this.book=book;this.clock=this.stage.time;
+    this.stage=STAGES[clamp(Number.isFinite(stageNumber)?Math.floor(stageNumber)-1:0,0,29)];this.book=book;this.clock=this.stage.time;
     this.totalTime=0;this.leg=1;this.down=1;this.snapCount=0;this.s=40-this.stage.distance;
     this.firstDown=Math.min(40,this.s+10);this.caught=new Set();this.medals={clean:true,early:true};
     this.events=[];this.eventSeq=0;this.result=null;this.blockedBook=null;this.pendingBlock=null;
@@ -178,6 +178,7 @@ export class Match {
     if(this.phase==='ready'||this.phase==='result')return;
     if(this.phase==='dead'){this.deadTimer-=dt;if(this.deadTimer<=0)this.setup();return;}
     this.clock=Math.max(0,this.clock-dt);this.totalTime+=dt;this.elapsed+=dt;
+    if(this.clock<=0){this.finish(false,'time');return;}
     const beforePlayers=this.receivers.map(p=>point(p.x,p.y));
     const beforeDefense=this.defenders.map(p=>point(p.x,p.y));
     if(this.phase==='run'){

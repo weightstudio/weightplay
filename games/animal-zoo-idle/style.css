@@ -752,11 +752,9 @@ body.zoo-playing .game-page-info {
 
 .facility-list {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(160px, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
   gap: 8px;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
+  overflow: visible;
   padding: 1px 2px 7px;
   scrollbar-width: thin;
 }
@@ -1709,12 +1707,10 @@ body.zoo-playing .savanna-stage {
 
 .animal-shop {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(86px, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 96px), 1fr));
   gap: 8px;
-  overflow-x: auto;
+  overflow: visible;
   padding: 2px 2px 8px;
-  overscroll-behavior-x: contain;
   scrollbar-width: thin;
 }
 
@@ -1984,10 +1980,10 @@ body.zoo-playing .facility-board > strong {
 }
 
 body.zoo-playing .facility-list {
-  grid-auto-columns: minmax(154px, 176px);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
   gap: 6px;
   padding-bottom: 4px;
-  scroll-behavior: auto;
+  overflow: visible;
 }
 
 body.zoo-playing .facility-card {
@@ -2018,10 +2014,11 @@ body.zoo-playing .facility-card em {
 }
 
 body.zoo-playing .animal-shop {
-  grid-auto-columns: minmax(86px, 108px);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 96px), 1fr));
   gap: 6px;
   padding-bottom: 4px;
   min-height: 76px;
+  overflow: visible;
 }
 
 body.zoo-playing .animal-shop-card {
@@ -2229,10 +2226,7 @@ body.zoo-playing .animal-shop-card small {
     min-height: 0 !important;
     height: 100% !important;
     max-height: 100% !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    overscroll-behavior: contain !important;
-    touch-action: pan-y !important;
+    overflow: hidden !important;
     border-radius: 0 !important;
     box-shadow: none !important;
   }
@@ -2287,12 +2281,6 @@ body.zoo-playing .animal-shop-card small {
 
   body.zoo-playing .care-panel::-webkit-scrollbar {
     display: none;
-  }
-
-  body.zoo-playing .facility-list,
-  body.zoo-playing .animal-shop {
-    touch-action: pan-x;
-    cursor: grab;
   }
 
   body.zoo-playing .zoo-actions {
@@ -2367,11 +2355,11 @@ body.zoo-playing .animal-shop-card small {
   }
 
   body.zoo-playing .facility-list {
-    grid-auto-columns: minmax(178px, 198px);
-    min-height: 90px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x proximity;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+    grid-auto-flow: row;
+    min-height: 0;
+    overflow: visible;
+    scroll-snap-type: none;
     scrollbar-width: none;
   }
 
@@ -2384,7 +2372,7 @@ body.zoo-playing .animal-shop-card small {
     height: 84px;
     min-height: 84px;
     max-height: 84px;
-    scroll-snap-align: start;
+    scroll-snap-align: none;
     align-content: center;
   }
 
@@ -2556,10 +2544,7 @@ body.zoo-playing #resultPanel #closeReportBtn {
 body.zoo-playing #habitatGrid.habitat-grid {
   min-height: 0;
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  touch-action: pan-y;
+  overflow: hidden;
 }
 
 body.zoo-playing .zoo-stage-card {
@@ -2708,10 +2693,7 @@ body.zoo-playing #habitatGrid.habitat-grid {
   width: 100% !important;
   height: 100% !important;
   min-height: 0 !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  overscroll-behavior: contain !important;
-  touch-action: pan-y !important;
+  overflow: hidden !important;
 }
 
 body.zoo-playing .care-panel {
@@ -2760,11 +2742,11 @@ body.zoo-playing .savanna-stage {
   }
 
   body.zoo-playing .animal-shop {
-    height: 100px !important;
-    min-height: 100px !important;
+    height: auto !important;
+    min-height: 0 !important;
     padding-bottom: 8px !important;
     align-items: start;
-    overflow-y: hidden !important;
+    overflow: visible !important;
   }
 
   body.zoo-playing .animal-shop-card {
@@ -2774,138 +2756,7 @@ body.zoo-playing .savanna-stage {
   }
 }
 
-/* 30-challenge Stage: one responsive Kids Canvas with the shared rail controller. */
-body.zoo-stage {
-  width: 100%;
-  height: 100dvh;
-  overflow: hidden;
-  overscroll-behavior: none;
-}
-
-body.zoo-stage .topbar,
-body.zoo-stage .menu-panel,
-body.zoo-stage .game-panel,
-body.zoo-stage .game-page-info,
-body.zoo-stage .language-picker,
-body.zoo-stage .sound-toggle,
-body.zoo-stage .help-button,
-body.zoo-stage .wp-tutorial-button {
-  display: none !important;
-}
-
-body.zoo-stage .challenge-stage-panel {
-  position: fixed !important;
-  left: var(--zoo-stage-left, 0) !important;
-  top: var(--zoo-stage-top, 0) !important;
-  z-index: 60;
-  width: var(--zoo-stage-logical-width, 390px) !important;
-  height: var(--zoo-stage-logical-height, 788px) !important;
-  min-width: var(--zoo-stage-logical-width, 390px) !important;
-  min-height: var(--zoo-stage-logical-height, 788px) !important;
-  display: grid !important;
-  grid-template-rows: 64px minmax(0, 1fr);
-  gap: 12px;
-  padding: 12px 0 18px;
-  overflow: hidden;
-  color: #f8fafc;
-  background:
-    linear-gradient(rgba(8, 27, 22, .76), rgba(8, 27, 22, .9)),
-    url("../../assets/animal-zoo-idle-cover.webp") center / cover no-repeat;
-  box-shadow: inset 0 0 0 2px rgba(255,255,255,.22);
-  transform: scale(var(--zoo-stage-scale, 1)) !important;
-  transform-origin: top left !important;
-}
-
-.challenge-stage-head {
-  margin: 0 12px;
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
-  align-items: center;
-  gap: 10px;
-  padding: 7px;
-  border: 1px solid rgba(255,255,255,.26);
-  border-radius: 14px;
-  background: rgba(4, 17, 14, .9);
-}
-
-.challenge-stage-head button {
-  width: 48px;
-  height: 48px;
-  border: 0;
-  border-radius: 12px;
-  color: #1677bb;
-  background: #f8fafc;
-  font-size: 1.5rem;
-  font-weight: 950;
-}
-
-.challenge-stage-head strong {
-  overflow: hidden;
-  font-size: 1.2rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.challenge-rail.stage-rail {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 264px;
-  align-items: center;
-  gap: 14px;
-  height: 100%;
-  padding: 0 63px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  touch-action: pan-x;
-  overscroll-behavior-inline: contain;
-}
-
-.challenge-rail::-webkit-scrollbar { display: none; }
-
-.challenge-card {
-  position: relative;
-  width: 264px !important;
-  height: 190px !important;
-  min-width: 264px !important;
-  min-height: 190px !important;
-  display: grid;
-  grid-template-columns: 78px minmax(0, 1fr);
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
-  column-gap: 10px;
-  align-content: end;
-  padding: 12px;
-  overflow: hidden;
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
-  border: 2px solid rgba(255,255,255,.34);
-  border-radius: 18px;
-  color: #fff;
-  background: linear-gradient(155deg, rgba(20,70,51,.96), rgba(4,24,18,.98));
-  box-shadow: 0 12px 30px rgba(0,0,0,.42);
-  text-align: left;
-}
-
-.challenge-card img {
-  grid-row: 1 / 5;
-  width: 78px;
-  height: 126px;
-  align-self: center;
-  object-fit: contain;
-  filter: drop-shadow(0 7px 8px rgba(0,0,0,.38));
-}
-
-.challenge-card > strong { color: #ffd966; font-size: .72rem; }
-.challenge-card > b { font-size: 1.02rem; line-height: 1.08; }
-.challenge-card > span { overflow: hidden; color: #dff7e8; font-size: .69rem; line-height: 1.25; }
-.challenge-card > small { color: #fff1a9; font-weight: 900; }
-.challenge-card > em { position: absolute; right: 10px; top: 9px; padding: 3px 7px; border-radius: 999px; color: #09251b; background: #79f0ba; font-size: .62rem; font-style: normal; font-weight: 950; }
-.challenge-card.locked { filter: grayscale(.72) brightness(.72); }
-.challenge-card.selected,
-.challenge-card.is-browsed { border-color: #73f1bc; box-shadow: 0 0 0 4px rgba(115,241,188,.22), 0 15px 34px rgba(0,0,0,.48); }
-
-/* Keep the active challenge visible while the care panel remains the one
+/* Keep the next park milestone visible while the care panel remains the one
    vertical scroll owner for park management. */
 body.zoo-playing .tour-board {
   display: grid !important;
@@ -2921,6 +2772,7 @@ body.zoo-playing .care-route-actions { order: 1 !important; }
 body.zoo-playing .facility-board { order: 3 !important; }
 body.zoo-playing .animal-shop-head { order: 4 !important; }
 body.zoo-playing .animal-shop { order: 5 !important; }
+
 body.zoo-playing .tour-list { gap: 4px !important; }
 body.zoo-playing .tour-list span { min-height: 29px !important; padding: 4px 6px !important; }
 body.zoo-playing .tour-board button { min-height: 34px !important; height: 34px !important; }
@@ -3072,4 +2924,161 @@ body.zoo-playing #closeReportBtn {
     grid-row: 1 / 6;
     padding: 0 6px 6px 0;
   }
+}
+
+/* I9 keeps Zoo's park artwork while applying the shared play-surface palette
+   to its game-owned HUD and management controls. */
+body.zoo-playing #gamePanel .zoo-stage-card {
+  border: 1px solid var(--wp-ui-border, rgba(255, 255, 255, .16));
+  border-radius: 16px;
+  color: var(--wp-ui-text, #f8fafc);
+  background: var(--wp-ui-surface, rgba(15, 29, 49, .92));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .13), 0 6px 0 rgba(0, 0, 0, .3);
+}
+
+body.zoo-playing #gamePanel .park-hud > *,
+body.zoo-playing #gamePanel :is(.happy-meter, .daily-focus-card, .zoo-task-board,
+  .park-plan-card, .tour-board, .habitat-bonus-card, .facility-board,
+  .zoo-milestone-board) {
+  border: 1px solid var(--wp-ui-border, rgba(255, 255, 255, .16));
+  color: var(--wp-ui-text, #f8fafc);
+  background: var(--wp-ui-surface, rgba(15, 29, 49, .92));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
+}
+
+body.zoo-playing #gamePanel :is(.park-hud, .happy-meter, .daily-focus-card,
+  .zoo-task-board, .park-plan-card, .tour-board, .habitat-bonus-card,
+  .facility-board, .zoo-milestone-board) :is(small, em, p, span, .muted) {
+  color: var(--wp-ui-muted, #cbd5e1);
+}
+
+body.zoo-playing #gamePanel :is(.park-hud, .happy-meter, .daily-focus-card,
+  .zoo-task-board, .park-plan-card, .tour-board, .habitat-bonus-card,
+  .facility-board, .zoo-milestone-board) :is(strong, b) {
+  color: var(--wp-ui-text, #f8fafc);
+}
+
+body.zoo-playing #gamePanel .happy-meter {
+  color: var(--wp-ui-text, #f8fafc);
+}
+
+body.zoo-playing #gamePanel .park-milestone-card {
+  border: 1px solid var(--wp-ui-border, rgba(255, 255, 255, .16));
+  color: var(--wp-ui-text, #f8fafc);
+  background: var(--wp-ui-surface, rgba(15, 29, 49, .92));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
+}
+
+body.zoo-playing #gamePanel .park-milestone-card :is(b, strong) {
+  color: var(--wp-ui-text, #f8fafc);
+}
+
+body.zoo-playing #gamePanel .park-milestone-card :is(small, span) {
+  color: var(--wp-ui-muted, #cbd5e1);
+}
+
+body.zoo-playing #gamePanel .tour-head > span {
+  border: 1px solid var(--wp-ui-border, rgba(255, 255, 255, .16));
+  color: var(--wp-ui-muted, #cbd5e1);
+  background: var(--wp-ui-shell, #17243a);
+}
+
+body.zoo-playing #gamePanel .facility-card,
+body.zoo-playing #gamePanel .animal-shop-card {
+  border: 1px solid var(--wp-ui-border, rgba(255, 255, 255, .16));
+  color: var(--wp-ui-control-text, #176a9d);
+  background: var(--wp-ui-control, #f8fafc);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .72), 0 4px 0 rgba(0, 0, 0, .3);
+}
+
+body.zoo-playing #gamePanel .facility-card.ready,
+body.zoo-playing #gamePanel .facility-card.maxed,
+body.zoo-playing #gamePanel .animal-shop-card.owned {
+  color: #1f2937;
+  background: var(--wp-ui-accent, #63e6be);
+}
+
+body.zoo-playing #gamePanel :is(.zoo-actions button, .care-route-actions button,
+  .tour-board button, .zoo-task-board button, .zoo-milestone-board button,
+  #closeReportBtn, #keepParkOpenBtn, #leaveParkBtn) {
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 14px;
+  color: var(--wp-ui-primary-text, #1f2937);
+  background: var(--wp-ui-primary, #f5c84c);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 4px 0 rgba(0, 0, 0, .32);
+  font-weight: 800;
+}
+
+body.zoo-playing #gamePanel :is(.zoo-actions button, .care-route-actions button,
+  .tour-board button, .zoo-task-board button, .zoo-milestone-board button,
+  #closeReportBtn, #keepParkOpenBtn, #leaveParkBtn):is(:hover, :focus-visible) {
+  filter: brightness(1.06);
+}
+
+body.zoo-playing #gamePanel .tour-board button,
+body.zoo-playing #gamePanel #closeReportBtn {
+  height: 44px !important;
+  min-height: 44px !important;
+}
+
+body.zoo-playing #gamePanel :is(.result-card, .park-leave-card) {
+  border: 1px solid var(--wp-ui-border, rgba(255, 255, 255, .16));
+  color: var(--wp-ui-text, #f8fafc);
+  background: var(--wp-ui-surface, rgba(15, 29, 49, .96));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12), 0 6px 0 rgba(0, 0, 0, .36);
+}
+
+body.zoo-playing #gamePanel :is(.result-card, .park-leave-card) :is(p, small, em) {
+  color: var(--wp-ui-muted, #cbd5e1);
+}
+
+body.zoo-playing #gamePanel .park-leave-card button.secondary {
+  color: var(--wp-ui-control-text, #176a9d);
+  background: var(--wp-ui-control, #f8fafc);
+}
+
+/* Keep the detailed milestone report inside the same readable I9 palette. */
+body.zoo-playing #gamePanel .tour-report,
+body.zoo-playing #gamePanel .animal-album {
+  border-color: var(--wp-ui-border, rgba(255, 255, 255, .16));
+  color: var(--wp-ui-text, #f8fafc);
+  background: var(--wp-ui-shell, #0b202b);
+}
+
+body.zoo-playing #gamePanel :is(.tour-report-head, .tour-reputation, .animal-album-head) :is(strong, b) {
+  color: var(--wp-ui-text, #f8fafc);
+}
+
+body.zoo-playing #gamePanel :is(.tour-report-head, .tour-reputation, .tour-report-list, .animal-album-head) :is(span, small) {
+  color: var(--wp-ui-muted, #cbd5e1);
+}
+
+body.zoo-playing #gamePanel .park-milestone-report-list > div {
+  border: 1px solid var(--wp-ui-border, rgba(255, 255, 255, .16));
+  color: var(--wp-ui-text, #f8fafc);
+  background: var(--wp-ui-surface, rgba(15, 29, 49, .92));
+}
+
+body.zoo-playing #gamePanel .park-milestone-report-list > div.ready {
+  color: var(--wp-ui-primary-text, #1f2937);
+  background: var(--wp-ui-accent, #63e6be);
+}
+
+body.zoo-playing #gamePanel .park-milestone-report-list > div.claimed {
+  color: var(--wp-ui-muted, #cbd5e1);
+  opacity: .82;
+}
+
+body.zoo-playing #gamePanel .park-milestone-report-list button {
+  min-height: 44px;
+}
+
+body.zoo-playing #gamePanel .animal-album-card {
+  border-color: var(--wp-ui-border, rgba(255, 255, 255, .16));
+  background: var(--wp-ui-control, #f8fafc);
+}
+
+body.zoo-playing #gamePanel #closeReportBtn {
+  box-shadow: 0 -8px 12px rgba(4, 14, 20, .72);
 }

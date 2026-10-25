@@ -9317,7 +9317,8 @@ select,
 }
 .kids-lobby-page .kids-advanced-filter-toggle:hover { background: #d8efc9; }
 .kids-lobby-page .kids-advanced-filter-toggle:active { transform: translateY(2px); box-shadow: 0 1px 0 #a9cb91; }
-.kids-lobby-page .kids-advanced-filter-panel[hidden] { display: none !important; }
+.kids-lobby-page .kids-advanced-filter-panel[hidden],
+.kids-lobby-page [data-topic-filter][hidden] { display: none !important; }
 .kids-lobby-page .kids-advanced-filter-panel:not([hidden]) { display: grid; gap: 12px; }
 
 @media (max-width: 720px) {

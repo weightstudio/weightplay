@@ -555,6 +555,9 @@ body.wp-frame-battle-active #gameGuide{display:none}
 #gameFrameRoot :is(#mainScreen,#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice)[hidden] *{pointer-events:none!important}
 @starting-style{#gameFrameRoot :is(#mainScreen,#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice){opacity:0}}
 #mainScreen button:active{filter:brightness(.82)}
+@media(prefers-reduced-motion:reduce){.sale-pop.show{animation:pop-reduced .55s ease-out}}
+@keyframes pop-reduced{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
+#app #salePop{top:calc(96px * var(--wp-battle-canvas-inverse-scale,1));z-index:7}
 @media(prefers-reduced-motion:reduce){#gameFrameRoot :is(#mainScreen,#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice){transition-duration:.08s,.08s}}
 
 /* v14: session controls stack by their actual translated height. */

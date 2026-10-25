@@ -21,8 +21,9 @@ export function renderEntry(source,locale){const t=TEXT[locale],e=escape;if(!t)t
  s=s.replace(/<script\b[^>]*data-wp-nori-locale[^>]*>[\s\S]*?<\/script>/gi,'');
  s=s.replace(/<script\b[^>]*data-wp-locale-route[^>]*>[\s\S]*?<\/script>/gi,'');
  s=s.replace(/<meta\b(?=[^>]*(?:name|property)="(?:og:url|og:type|og:image:width|og:image:height|twitter:card|twitter:image)")[^>]*>/gi,'');
+ s=s.replace(/<meta\b(?=[^>]*name="(?:twitter:title|twitter:description)")[^>]*>/gi,'');
  const url=`https://weightplay.com/${SEGMENTS[locale]}/games/nori-sandworks/`;
- s=s.replace(/<head>/i,`<head>\n<script data-wp-nori-locale>window.__WEIGHTPLAY_ROUTE_LOCALE__=${JSON.stringify(locale)};try{localStorage.setItem('wp-locale',${JSON.stringify(locale)});localStorage.setItem('weightPlayLocale',${JSON.stringify(locale)});}catch{}</script>`);
+ s=s.replace(/<head>/i,`<head>\n<meta name="twitter:title" content="${e(t.title)} | WeightPlay"><meta name="twitter:description" content="${e(t.summary)}">\n<script data-wp-nori-locale>window.__WEIGHTPLAY_ROUTE_LOCALE__=${JSON.stringify(locale)};try{localStorage.setItem('wp-locale',${JSON.stringify(locale)});localStorage.setItem('weightPlayLocale',${JSON.stringify(locale)});}catch{}</script>`);
  s=s.replace(/<\/head>/i,`<meta property="og:url" content="${url}"><meta property="og:type" content="website"><meta property="og:image:width" content="1254"><meta property="og:image:height" content="1254"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://weightplay.com/games/nori-sandworks/assets/og.webp">\n<link rel="canonical" href="${url}">\n${Object.entries(SEGMENTS).map(([lang,seg])=>`<link rel="alternate" hreflang="${lang}" href="https://weightplay.com/${seg}/games/nori-sandworks/">`).join('\n')}\n<link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/nori-sandworks/">\n<script type="application/ld+json">${JSON.stringify(schema(locale))}</script>\n</head>`);
  return s;
 }

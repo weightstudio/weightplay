@@ -327,54 +327,54 @@ window.WeightPlayGameInfoLocales.es = {
       "title": "Zoológico de animales inactivo",
       "age": "6+",
       "difficulty": "Fácil a medio",
-      "time": "4-12 minutos por desafío",
+      "time": "Partida continua de gestión",
       "skills": [
         "Planificación",
         "Enfoque",
         "Secuenciación",
         "Cuidado de animales"
       ],
-      "intro": "Zoológico Idle es un juego de gestión de parques pausado, organizado en 30 desafíos guardados. Los visitantes ingresan al prado, compran boletos y llenan una taquilla mientras el jugador cuida a los animales, mejora el puesto de refrigerios, la plataforma de visualización y el puesto de cuidador, expande la puerta y organiza los hábitats. Al final, doce animales podrán vivir en el parque. Cada quinto desafío es una revisión amistosa, que brinda a la economía continua un viaje claro de seis partes desde la primera recogida de entradas hasta el Gran Festival Safari.",
+      "intro": "Zoológico Idle es un juego tranquilo de gestión continua de un parque, con 30 hitos persistentes que avanzan a la vez. Los visitantes ingresan al prado, compran boletos y llenan una taquilla mientras el jugador cuida a los animales, mejora el puesto de refrigerios, la plataforma de visualización y el puesto de cuidador, expande la puerta y organiza los hábitats. Al final, doce animales podrán vivir en el parque. Los hitos incluyen revisiones amistosas del parque y permiten mejorar el mismo espacio guardado a tu propio ritmo.",
       "story": [
         "La pradera comienza como un pequeño parque de animales con una puerta sencilla, unos pocos residentes y espacio para crecer. El jugador es su joven guardaparque. Un parque duradero necesita más que una entrada concurrida: los animales necesitan cuidados regulares, los espacios de hábitat deben estar cuidadosamente organizados y las instalaciones para los huéspedes deben seguir el ritmo de la creciente multitud.",
-        "Mimi, Panko, un inspector de nutrias, un cuidador de rinocerontes y el equipo del desfile de pingüinos visitan los puntos de control de cinco etapas. Pasar una revisión significa que el parque ha demostrado cuidado básico, servicio de picnic, espacio de observación, apoyo de los cuidadores, capacidad para desfiles o la planificación equilibrada necesaria para el festival final."
+        "Mimi, Panko, el inspector de nutrias, el cuidador de rinocerontes y el equipo del desfile de pingüinos aparecen en revisiones amistosas de hitos. Pasar una revisión significa que el parque ha demostrado cuidado básico, servicio de picnic, espacio de observación, apoyo de los cuidadores, capacidad para desfiles o la planificación equilibrada necesaria para el festival final."
       ],
       "how": [
-        "Selecciona un desafío desbloqueado en la lista horizontal de desafíos.",
+        "Selecciona Empezar para entrar en el mismo parque continuo.",
         "Lee cada objetivo antes de recoger o gastar boletos.",
         "Usa Tidy Habitat para mejorar el bienestar de los animales o Enrichment Time para obtener ingresos por boletos.",
-        "Mejora la puerta, recluta animales, mejora las instalaciones o arrastra animales a las nuevas posiciones de hábitat que pida el desafío.",
-        "Reclama la recompensa después de completar cada objetivo y luego continúa con el siguiente desafío."
+        "Mejora la puerta, recluta animales, mejora las instalaciones o arrastra animales a nuevas posiciones del hábitat que indiquen los hitos.",
+        "Reclama cualquier hito completado; los demás objetivos y el progreso del parque continúan a la vez."
       ],
       "systems": [
-        "Los visitantes dejan continuamente monedas en la caja. Al completar cada desafío por primera vez, recibes una pequeña recompensa única en monedas.",
+        "Los visitantes dejan continuamente monedas en la caja. Cada hito reclamado añade una pequeña bonificación permanente a los ingresos.",
         "Tidy Habitat aumenta el bienestar de los animales y Enrichment Time otorga boletos. Ambas acciones comparten el mismo tiempo breve de recarga; deja que el objetivo actual guíe tu elección.",
         "La puerta tiene ocho niveles. Los animales reclutados y las tres instalaciones de cuatro niveles permanecen guardados en este navegador.",
         "Los objetivos de disposición del hábitat cuentan el movimiento real de los animales en el prado en lugar de simplemente presionar un botón.",
-        "El Informe de crecimiento resume el parque. Al completar un desafío, el Resultado desbloquea el siguiente y permite continuar o repetir uno anterior."
+        "El Informe de crecimiento resume el parque y los 30 hitos. Reclamar uno da monedas, pero no desbloquea niveles ni reinicia el parque."
       ],
       "progression": [
-        "Los desafíos 1 a 5 enseñan boletos, cuidados y movimiento del hábitat antes de la primera revisión de Mimi. Los desafíos 6 a 10 comparan opciones de cuidado, piden mantener lista la caja de boletos e introducen el puesto de refrigerios antes del picnic de Panko.",
-        "Los desafíos 11 a 15 presentan el Mirador, una distribución más amplia y objetivos de felicidad. Los desafíos 16 a 20 incorporan el puesto del cuidador y combinan cuidados, recuento de animales y planificación de instalaciones para la revisión del cuidador de rinocerontes.",
-        "Los desafíos 21 a 25 hacen crecer la puerta y la lista de animales para un desfile de pingüinos. Los desafíos 26 al 30 combinan gastos cuidadosos, las tres instalaciones, felicidad, arreglo e ingresos en el final del Gran Festival Safari."
+        "Los 30 hitos cubren entradas, cuidado animal, organización del hábitat, ampliación de la puerta, nuevos animales y mejoras de instalaciones.",
+        "Los hitos combinan estas actividades y añaden revisiones amistosas del parque.",
+        "Todos los objetivos avanzan juntos en el mismo parque guardado. El Informe de crecimiento muestra todos los hitos y la pantalla de Battle destaca uno actual."
       ],
       "strategyTips": [
         "Lee todos los objetivos antes de gastar, porque los de animales e instalaciones pueden competir por los mismos boletos.",
         "Elige Tidy Habitat cuando necesites mejorar el bienestar; usa Enrichment Time cuando te falten boletos.",
-        "No recojas una taquilla llena cuando el desafío actual te pida que la tengas lista.",
+        "No recojas una taquilla llena cuando un hito activo te pida que la tengas lista.",
         "Mueve al animal lo suficiente para que el cambio de posición cuente.",
-        "Las mejoras permanentes se conservan; cada desafío otorga su recompensa en monedas una sola vez, al completarlo por primera vez."
+        "Las mejoras permanentes y las recompensas de hitos reclamadas se conservan en el mismo parque."
       ],
-      "designNote": "La economía continua permite a los niños observar la causa y el efecto sin cronómetro ni combate. Esperar por sí sola no es la actividad principal: cada desafío requiere una combinación de recoger, elegir cuidados, organizar animales, reclutar y mejorar. El selector horizontal de desafíos convierte el parque en un recorrido visible de 30 pasos, y el guardado local evita reconstruir el mismo recorrido en cada visita. Los botones grandes y el arrastre directo permiten jugar con la pantalla táctil o el ratón. Las revisiones amistosas de los puntos de control sustituyen a los jefes porque la fantasía central consiste en mejorar un espacio compartido para los animales.",
-      "parent": "Este juego puede apoyar la planificación, la atención, la secuenciación y la discusión simples sobre el cuidado de los animales. Los adultos pueden preguntar por qué el jugador guardó boletos, seleccionó una actividad de cuidado o movió un animal. No hay combates, presión de clasificación, requisitos de cuenta ni solicitudes de publicidad en esta página para niños. El progreso, las actualizaciones y los informes del desafío son comentarios locales divertidos, no una evaluación escolar, de salud o de desarrollo.",
+      "designNote": "La economía continua permite a los niños observar la causa y el efecto sin cronómetro ni combate. Esperar por sí sola no es la actividad principal: los hitos animan a recoger, elegir cuidados, organizar animales, reclutar y mejorar. Los 30 hitos siguen activos en el mismo parque guardado y no forman una ruta de niveles bloqueados. El guardado local conserva la misma partida entre visitas. Los botones grandes y el arrastre directo permiten jugar con la pantalla táctil o el ratón. Las revisiones amistosas de los puntos de control sustituyen a los jefes porque la fantasía central consiste en mejorar un espacio compartido para los animales.",
+      "parent": "Este juego puede apoyar la planificación, la atención, la secuenciación y la discusión simples sobre el cuidado de los animales. Los adultos pueden preguntar por qué el jugador guardó boletos, seleccionó una actividad de cuidado o movió un animal. No hay combates, presión de clasificación, requisitos de cuenta ni solicitudes de publicidad en esta página para niños. El progreso, las actualizaciones y los informes de hitos son comentarios locales divertidos, no una evaluación escolar, de salud o de desarrollo.",
       "faq": [
         [
-          "¿Cuántos desafíos hay?",
-          "Hay 30 desafíos guardados, organizados en seis grupos de cinco. Los desafíos 5, 10, 15, 20, 25 y 30 son revisiones amistosas del parque."
+          "¿Cuántos hitos hay?",
+          "Hay 30 hitos persistentes. Todos avanzan a la vez en el mismo parque guardado."
         ],
         [
           "¿Por qué debo dejar la taquilla llena?",
-          "Algunos desafíos piden al parque que prepare una caja lista. Recoge solo después de que se haya cumplido ese objetivo."
+          "Algunos hitos activos piden preparar entradas en la caja. Recoge solo después de que se haya cumplido ese objetivo."
         ],
         [
           "¿Cuál es la diferencia entre las acciones de cuidado?",
@@ -385,12 +385,12 @@ window.WeightPlayGameInfoLocales.es = {
           "Arrastra un animal a una posición en el prado notablemente diferente; un pequeño movimiento accidental no cuenta."
         ],
         [
-          "¿Superar un desafío restablece mi parque?",
-          "No. Los animales, los niveles de las puertas, las instalaciones, las monedas y los desafíos desbloqueados permanecen en el guardado local."
+          "¿Reclamar un hito restablece mi parque?",
+          "No. Los animales, los niveles de las puertas, las instalaciones, las monedas y el progreso de los demás hitos permanece en el guardado local."
         ],
         [
-          "¿Puedo volver a jugar un desafío anterior?",
-          "Sí. Puedes volver a jugar cualquier desafío desbloqueado, aunque la bonificación única por completarlo solo se concede una vez."
+          "¿Tengo que desbloquear el siguiente nivel?",
+          "No. No hay una ruta de niveles numerados; sigue mejorando el mismo parque y reclama los hitos cuando estén listos."
         ],
         [
           "¿El juego requiere iniciar sesión o mostrar anuncios?",

@@ -1,6 +1,6 @@
 import * as T from '../purrch-grove/vendor/three/three.module.min.js';
-import {ARCS} from './stages.mjs?v=3';
-import {LIMITS} from './model.mjs?v=3';
+import {ARCS} from './stages.mjs?v=4';
+import {LIMITS} from './model.mjs?v=4';
 const PALETTE={ember:0xffac52,frost:0x82e7ff,storm:0xb9a3ff,iron:0xc6e8ec};
 const ENEMY_COLORS={guard:0x667e91,charger:0xd85b85,ranger:0x9b6bd1,healer:0x4fc1aa,splitter:0x9877ed,small:0x9e7ac4,chaser:0x6852a1,stalker:0x32a9bc,bomber:0xd77c35,summoner:0x72993f};
 export class World {
@@ -56,7 +56,7 @@ export class World {
   this.finish('floor');this.finish('scenery');
  }
  fit(){const rect=this.host.getBoundingClientRect();if(rect.width<1||rect.height<1)return;this.width=rect.width;this.height=rect.height;this.renderer.setSize(rect.width,rect.height,false);const aspect=rect.width/rect.height;const halfH=Math.max(5.4,6/aspect);this.camera.left=-halfH*aspect;this.camera.right=halfH*aspect;this.camera.top=halfH;this.camera.bottom=-halfH;this.camera.updateProjectionMatrix();}
- sword(x,y,z,a,color,tier=0,scale=1){const s=scale,c=Math.cos(a),q=Math.sin(a);this.part('sword',x,y,z,1.05*s,.12*s,(.14+tier*.025)*s,color,0,-a);this.part('swordTip',x+c*.65*s,y,z+q*.65*s,.22*s,.35*s,.17*s,color,0,-a,-Math.PI/2);this.part('sword',x-c*.38*s,y,z-q*.38*s,.13*s,.17*s,.45*s,0xe6b85a,0,-a);this.part('sword',x-c*.58*s,y,z-q*.58*s,.27*s,.13*s,.13*s,0x805236,0,-a);}
+ sword(x,y,z,a,color,tier=0,scale=1,guardColor=0xe6b85a){const s=scale,c=Math.cos(a),q=Math.sin(a);this.part('sword',x,y,z,1.05*s,.12*s,(.14+tier*.025)*s,color,0,-a);this.part('swordTip',x+c*.65*s,y,z+q*.65*s,.22*s,.35*s,.17*s,color,0,-a,-Math.PI/2);this.part('sword',x-c*.38*s,y,z-q*.38*s,.13*s,.17*s,.45*s,guardColor,0,-a);this.part('sword',x-c*.58*s,y,z-q*.58*s,.27*s,.13*s,.13*s,0x805236,0,-a);}
  enemy(e,fade=1){const boss=e.boss,s=(boss?1.7:e.kind==='small'?.55:e.elite?1.2:1)*fade,reaction=this.reduced?0:(e.recoil||0)/.18;
   const y=.42+(this.reduced?0:Math.sin((this.time-e.born)*8)*.045),base=boss?[0,0x6554b8,0x94704f,0x6ea3bf,0x8068bc,0x975391,0xb78857][boss]:ENEMY_COLORS[e.kind],color=e.flash>0?0xfff1d6:base||0x8b6eae;
   const slim=e.kind==='stalker'?.7:e.kind==='bomber'?1.2:1;
@@ -105,7 +105,7 @@ export class World {
   const walk=Math.min(1,Math.hypot(p.vx,p.vz)/3.2)*(this.reduced?.3:1);this.hero.userData.rightLeg.rotation.x=Math.sin(this.time*14)*.5*walk;this.hero.userData.leftLeg.rotation.x=-Math.sin(this.time*14)*.5*walk;this.hero.userData.body.position.y=Math.abs(Math.sin(this.time*14))*.05*walk;this.hero.userData.scarf.rotation.x=this.reduced?0:Math.sin(this.time*7)*.16;
   this.part('shadow',p.x,.013,p.z,.6,.5,1,0x061d28,-Math.PI/2);
   const bladeColor=run.up.evolve?0xffd26b:PALETTE[run.path||'iron'];
-  const blades=run.bladePositions();for(let i=0;i<blades.length;i++){const b=blades[i];this.sword(b.x,.72,b.z,b.a,bladeColor,run.tier);if(!this.reduced){const a=-b.a-(i>=12?.48:0);this.part('trail',p.x,.69,p.z,b.r,b.r,1,bladeColor,-Math.PI/2,0,a);}}
+  const blades=run.bladePositions();for(let i=0;i<blades.length;i++){const b=blades[i];this.sword(b.x,.72,b.z,b.a,bladeColor,run.tier,1,run.save.prismInlayOwned&&run.save.prismInlayEquipped?0x72e8ff:0xe6b85a);if(!this.reduced){const a=-b.a-(i>=12?.48:0);this.part('trail',p.x,.69,p.z,b.r,b.r,1,bladeColor,-Math.PI/2,0,a);}}
   this.part('pulse',p.x,.045,p.z,run.radius,run.radius,1,bladeColor,-Math.PI/2);
   if(p.dash>0&&!this.reduced)for(let i=1;i<=3;i++)this.part('fx',p.x-p.vx*i*.025,.5,p.z-p.vz*i*.025,.25,.45,.25,0x94eaff);
   for(const e of run.enemies)this.enemy(e);
@@ -135,10 +135,10 @@ export class World {
  portraits(){
   const result={};const visible=this.scene.children.map(n=>[n,n.visible]);for(const [n]of visible)if(n.isMesh||n===this.hero)n.visible=false;
   const object=new T.Group();this.scene.add(object);const oldBackground=this.scene.background;this.scene.background=null;this.renderer.setClearColor(0x172d41,0);this.renderer.setSize(96,96,false);const cam=new T.OrthographicCamera(-1,1,1,-1,.1,20);cam.position.set(2,2.4,4);cam.lookAt(0,0,0);
-  for(const key of ['sword','power','reach','speed','ember','frost','storm','evolve','gem','heal','coin']){
+  for(const key of ['sword','prism','power','reach','speed','ember','frost','storm','evolve','gem','heal','coin']){
    object.clear();const col=PALETTE[key]|| (key==='evolve'?0xffd16a:0xc6e9ed);
-   if(['sword','power','ember','frost','storm','evolve'].includes(key)){
-    this.cube(object,col,[.18,1.05,.12],[0,.12,0],-.45);this.cube(object,0xefbd55,[.6,.12,.18],[-.22,-.32,0],-.45);this.cube(object,0x866143,[.12,.35,.12],[-.32,-.5,0],-.45);const tip=new T.Mesh(this.tip,this.material(col));tip.position.set(.3,.73,0);tip.scale.set(.24,.35,.2);tip.rotation.z=-.45;object.add(tip);
+   if(['sword','prism','power','ember','frost','storm','evolve'].includes(key)){
+    this.cube(object,col,[.18,1.05,.12],[0,.12,0],-.45);this.cube(object,key==='prism'?0x72e8ff:0xefbd55,[.6,.12,.18],[-.22,-.32,0],-.45);this.cube(object,0x866143,[.12,.35,.12],[-.32,-.5,0],-.45);const tip=new T.Mesh(this.tip,this.material(col));tip.position.set(.3,.73,0);tip.scale.set(.24,.35,.2);tip.rotation.z=-.45;object.add(tip);
    }else if(key==='heal'){this.cube(object,0xff8ca7,[.85,.24,.22],[0,0,0]);this.cube(object,0xff8ca7,[.24,.85,.22],[0,0,0]);}
    else if(key==='coin'){const m=new T.Mesh(this.geo(new T.CylinderGeometry(.55,.55,.18,8)),this.material(0xffcd59));m.rotation.x=Math.PI/2;object.add(m);this.cube(object,0xfff19b,[.18,.48,.06],[0,0,.13]);}
    else if(key==='gem'){const m=new T.Mesh(this.gem,this.material(0x67f8d7));m.scale.set(.9,1.4,.9);object.add(m);}

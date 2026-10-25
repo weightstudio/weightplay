@@ -18,18 +18,13 @@
   __wpNotifyMeasurement();
 
   const GAME_ID = "bubble-bakery";
-  const canvasRoot = document.querySelector(".bakery-game");
-  if (canvasRoot) {
-    canvasRoot.dataset.wpCanvasMaxWidth = "920";
-    window.dispatchEvent(new Event("resize"));
-  }
   const localeKey = "weightplayLocale";
   const sharedLocaleKey = "weightPlayLocale";
   const unlockKey = "weightplay_bubble_bakery_unlocked";
   const starKey = "weightplay_bubble_bakery_stars";
   const progressKey = "weightplay_bubble_bakery_progress";
   const statsKey = "weightplay_bubble_bakery_stats";
-  const smokeMode = new URLSearchParams(location.search).has("smoke");
+  const smokeMode = window.__WP_TEST_MODE__ === true;
 
   const text = {
     en: {
@@ -539,11 +534,11 @@
     stagePanel: $("stagePanel"),
     startGameBtn: $("startGameBtn"),
     stageBackBtn: $("stageBackBtn"),
-    recommendedOrder: $("recommendedOrder"),
-    bakeryProgress: $("bakeryProgress"),
     stageGrid: $("stageGrid"),
+    stageWorkspace: $("stageWorkspace"),
     stageFeedback: $("stageFeedback"),
     playPanel: $("playPanel"),
+    battleWorkspace: $("battleWorkspace"),
     backToStagesBtn: $("backToStagesBtn"),
     movesText: $("movesText"),
     orderBar: $("orderBar"),
@@ -558,20 +553,21 @@
     nextStageBtn: $("nextStageBtn"),
     retryBtn: $("retryBtn"),
     resultStagesBtn: $("resultStagesBtn"),
-    loadingPanel: $("loadingPanel"),
-    loadingText: $("loadingText"),
-    loadingFill: $("loadingFill"),
   };
-  const gameRoot = document.querySelector(".bakery-game");
-  gameRoot?.setAttribute("data-wp-stage-landscape-width", "760");
-  gameRoot?.setAttribute("data-wp-stage-landscape-height", "360");
+  let screenFrame = null;
+  let stageUI = null;
+  let activeScene = null;
+  let stageStats = null;
+  let battleStats = null;
+  let loaderGeneration = 0;
   const leavePanel = document.createElement("section");
   leavePanel.className = "bakery-leave-panel hidden";
+  leavePanel.dataset.wpResultScreen = "";
   (__wpNotifyMeasurement(), leavePanel.setAttribute("role", "dialog"));
   (__wpNotifyMeasurement(), leavePanel.setAttribute("aria-modal", "true"));
   (__wpNotifyMeasurement(), leavePanel.setAttribute("aria-labelledby", "bakeryLeaveTitle"));
-  leavePanel.innerHTML = `<div class="bakery-leave-card"><h2 id="bakeryLeaveTitle"></h2><p id="bakeryLeaveText"></p><div><button id="keepBakingBtn" type="button"></button><button id="leaveOrderBtn" type="button"></button></div></div>`;
-  nodes.playPanel.insertAdjacentElement("afterend", leavePanel);
+  leavePanel.innerHTML = `<div class="bakery-leave-card" data-wp-frame-result-card><h2 id="bakeryLeaveTitle"></h2><p id="bakeryLeaveText"></p><div><button id="keepBakingBtn" type="button" data-wp-frame-action="primary"></button><button id="leaveOrderBtn" type="button" data-wp-frame-action="secondary"></button></div></div>`;
+  nodes.playPanel.append(leavePanel);
   nodes.leaveTitle = leavePanel.querySelector("#bakeryLeaveTitle");
   nodes.leaveText = leavePanel.querySelector("#bakeryLeaveText");
   nodes.keepBakingBtn = leavePanel.querySelector("#keepBakingBtn");
@@ -609,6 +605,7 @@
   let unlocked = clamp(Number(storageRead(unlockKey)) || 1, 1, stages.length);
   let stars = readStars();
   let currentStage = 0;
+  let selectedStage = null;
   let board = [];
   let orders = {};
   let initialOrders = {};
@@ -624,7 +621,6 @@
   let leaveConfirmOpen = false;
   let roundLifecycleSuspended = document.hidden;
   let lastResult = null;
-  let centeredStageFrame = 0;
   const popMs = 620;
   const dropMs = 920;
 
@@ -787,81 +783,8 @@
     nodes.leaveText.textContent = t("leaveText");
     nodes.keepBakingBtn.textContent = t("keepBaking");
     nodes.leaveOrderBtn.textContent = t("leaveOrder");
-  }
-
-  function renderStageGrid() {
-    nodes.stageGrid.innerHTML = "";
-    stages.forEach((stage, index) => {
-      const stageNo = index + 1;
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "stage-card";
-      const isLocked = stageNo > unlocked;
-      if (isLocked) {
-        button.classList.add("locked");
-        button.setAttribute("aria-disabled", "true");
-      }
-      if (index === recommendedStageIndex()) button.classList.add("is-selected");
-      const orderIcons = stageOrderIds(stage).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
-      const got = stars[stageNo] || 0;
-      const badgeKey = isLocked ? "locked" : got >= 3 ? "stageMastered" : got > 0 ? "stageImprove" : "stageNew";
-      const unlockRequirement = isLocked ? t("unlockRequirement", { stage: t("stage", { n: stageNo - 1 }) }) : "";
-      button.innerHTML = `
-        <b class="stage-icons">${orderIcons}</b>
-        <strong>${t("stage", { n: stageNo })}</strong>
-        <small>${stageTitle(stage)} · ${t("movesCount", { n: stage.moves })}</small>
-        <span class="stage-rule">${stageRule(stage)}</span>
-        <span class="stage-stars">${starIcons(got, 3)}</span>
-        <span class="stage-badge">${t(badgeKey)}</span>
-        ${isLocked ? `<span class="stage-lock-requirement">${unlockRequirement}</span>` : ""}
-        ${stage.checkpoint ? `<em class="panko-check"><img src="../../assets/bubble-bakery/panko-block-v1.png" alt="" />${t("pankoCheck")}</em>` : ""}
-      `;
-      if (isLocked) {
-        const comma = locale === "zh-Hant" ? "，" : ", ";
-        const period = locale === "zh-Hant" ? "。" : ". ";
-        button.setAttribute("aria-label", `${t("stage", { n: stageNo })}${comma}${stageTitle(stage)}${period}${t("locked")}${period}${unlockRequirement}`);
-      }
-      button.dataset.unlockAfter = String(stageNo - 1);
-      button.addEventListener("click", () => {
-        if (isLocked) {
-          announceLockedStage(stageNo);
-          return;
-        }
-        startStage(index);
-      });
-      nodes.stageGrid.appendChild(button);
-    });
-    updateCenteredStageCard();
-    const centerSelectedStage = () => {
-      const selected = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
-      if (!selected) return;
-      nodes.stageGrid.scrollTo({
-        left: selected.offsetLeft - (nodes.stageGrid.clientWidth - selected.offsetWidth) / 2,
-        behavior: "auto",
-      });
-      updateCenteredStageCard();
-    };
-    centerSelectedStage();
-    window.requestAnimationFrame(() => window.requestAnimationFrame(centerSelectedStage));
-  }
-
-  function updateCenteredStageCard() {
-    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
-    if (!cards.length) return;
-    const center = nodes.stageGrid.scrollLeft + nodes.stageGrid.clientWidth / 2;
-    const nearest = cards.reduce((best, card) => {
-      const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
-      return !best || distance < best.distance ? { card, distance } : best;
-    }, null)?.card;
-    cards.forEach((card) => card.classList.toggle("is-centered", card === nearest));
-  }
-
-  function scheduleCenteredStageCard() {
-    if (centeredStageFrame) return;
-    centeredStageFrame = requestAnimationFrame(() => {
-      centeredStageFrame = 0;
-      updateCenteredStageCard();
-    });
+    if (stageUI) stageUI.setConfig(stageConfig(), selectedStage ?? recommendedStageIndex());
+    updateFrameStats();
   }
 
   function recommendedStageIndex() {
@@ -873,50 +796,92 @@
     return clamp(unlocked - 1, 0, stages.length - 1);
   }
 
-  function renderRecommendedOrder() {
-    const index = recommendedStageIndex();
-    const stageNo = index + 1;
-    const stage = stages[index];
-    const got = stars[stageNo] || 0;
-    const reasonKey = got >= 3 ? "recommendedMastered" : got > 0 ? "recommendedImprove" : "recommendedNew";
-    const orderIcons = stageOrderIds(stage).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
-    nodes.recommendedOrder.innerHTML = `
-      <div>
-        <strong>${t("recommendedTitle")}</strong>
-        <span>${t("recommendedCopy", { stage: t("stage", { n: stageNo }), theme: stageTitle(stage) })}</span>
-        <em>${t(reasonKey)}</em>
-      </div>
-      <b class="recommend-icons">${orderIcons}</b>
-    `;
+  function stageConfig() {
+    return window.BubbleBakeryStageConfig.create({
+      count: stages.length,
+      stage(index) {
+        const stage = stages[index];
+        const stageNo = index + 1;
+        const earned = Number(stars[stageNo] || 0);
+        const locked = stageNo > unlocked;
+        const status = locked ? t("locked") : earned >= 3 ? t("stageMastered") : earned > 0 ? t("stageImprove") : t("stageNew");
+        const animals = stageOrderIds(stage).map((id) => t(colorData(id).labelKey)).join(" · ");
+        return {
+          id: stageNo,
+          kicker: stage.checkpoint ? t("pankoCheck") : t("stage", { n: stageNo }),
+          title: t("stage", { n: stageNo }),
+          subtitle: stageTitle(stage),
+          status,
+          summary: stageRule(stage),
+          details: [animals, t("movesCount", { n: stage.moves }), ...(earned ? [starIcons(earned, 3)] : [])],
+          poster: colorData(stageOrderIds(stage)[0]).asset,
+          locked,
+          cleared: earned > 0,
+        };
+      },
+    });
   }
 
-  function renderBakeryProgress() {
-    const totalStars = stages.length * 3;
-    const earnedStars = stages.reduce((sum, _, index) => sum + (stars[index + 1] || 0), 0);
-    const cleared = stages.reduce((sum, _, index) => sum + ((stars[index + 1] || 0) > 0 ? 1 : 0), 0);
-    const mastered = stages.reduce((sum, _, index) => sum + ((stars[index + 1] || 0) >= 3 ? 1 : 0), 0);
-    const stamp = stampProgress(readStats());
-    const nextClearStage = Math.min(stages.length, Math.max(1, cleared + 1));
-    const nextMasterStage = stages.findIndex((_, index) => (stars[index + 1] || 0) < 3 && index + 1 <= unlocked) + 1;
-    const nextLabel = nextMasterStage > 0
-      ? t("nextPerfectGoal", { stage: t("stage", { n: nextMasterStage }) })
-      : cleared >= stages.length
-      ? t("allOrdersDone")
-      : t("nextGoal", { stage: t("stage", { n: nextClearStage }) });
-    nodes.bakeryProgress.innerHTML = `
-      <strong>${t("bakeryProgress")}</strong>
-      <span>${t("clearedStages", { done: cleared, total: stages.length })}</span>
-      <span>${t("totalStars", { stars: earnedStars, total: totalStars })}</span>
-      <span>${t("perfectOrders", { done: mastered, total: stages.length })}</span>
-      <em>${nextLabel}</em>
-      <div class="stamp-card" aria-label="${t("customerStamps")}">
-        <b>${t("customerStamps")}</b>
-        <span>${t("stampOrders", { orders: stamp.orders })}</span>
-        <span>${t("stampStickers", { stickers: stamp.stickers })}</span>
-        <i><span style="transform: scaleX(${stamp.ratio})"></span></i>
-        <small>${stamp.nextText}</small>
-      </div>
-    `;
+  function makeStat() {
+    const stat = document.createElement("div");
+    const label = document.createElement("span");
+    const value = document.createElement("strong");
+    stat.append(label, value);
+    return { stat, label, value };
+  }
+
+  function updateFrameStats() {
+    if (stageStats) {
+      const cleared = stages.reduce((total, _, index) => total + (Number(stars[index + 1] || 0) > 0 ? 1 : 0), 0);
+      const earned = stages.reduce((total, _, index) => total + Number(stars[index + 1] || 0), 0);
+      stageStats.progress.label.textContent = t("bakeryProgress");
+      stageStats.progress.value.textContent = `${cleared}/${stages.length}`;
+      stageStats.stars.label.textContent = "★";
+      stageStats.stars.value.textContent = `★ ${earned}/${stages.length * 3}`;
+      stageStats.stars.stat.setAttribute("aria-label", t("totalStars", { stars: earned, total: stages.length * 3 }));
+    }
+    if (battleStats) {
+      battleStats.stage.label.textContent = t("stage", { n: currentStage + 1 });
+      battleStats.stage.value.textContent = stageTitle(stages[currentStage]);
+      battleStats.moves.label.textContent = t("moves");
+      battleStats.moves.value.textContent = String(moves);
+    }
+  }
+
+  function mountSharedInterface() {
+    if (!window.WeightPlayScreenFrame || !window.WeightPlayPlayUI || !window.WeightPlayStageRailI9 || !window.BubbleBakeryStageConfig) {
+      throw new Error("BUBBLE_BAKERY_I9_SHARED_RUNTIME_MISSING");
+    }
+    screenFrame = window.WeightPlayScreenFrame.mount({
+      root: $("gameFrame"),
+      localeSelect: nodes.localeSelect,
+      playUI: true,
+      scenes: {
+        main: { root: nodes.mainPanel, header: $("mainHeader"), content: $("mainContent") },
+        stage: { root: nodes.stagePanel, header: $("stageHeader"), content: nodes.stageWorkspace },
+        battle: { root: nodes.playPanel, header: $("battleHeader"), content: nodes.battleWorkspace },
+      },
+    });
+    stageStats = { progress: makeStat(), stars: makeStat() };
+    screenFrame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup()
+      .add(stageStats.progress.stat).add(stageStats.stars.stat));
+    battleStats = { stage: makeStat(), moves: makeStat() };
+    screenFrame.battleTopUI.add(window.WeightPlayScreenFrame.createGroup()
+      .add(battleStats.stage.stat).add(battleStats.moves.stat));
+    stageUI = window.WeightPlayPlayUI.mountStage({
+      page: nodes.stageWorkspace,
+      rail: nodes.stageGrid,
+      config: stageConfig(),
+      selected: selectedStage,
+      onSelect(index, { locked } = {}) {
+        selectedStage = index;
+        updateFrameStats();
+        if (locked) announceLockedStage(index + 1);
+      },
+      onStart(index) { startStage(index); },
+      isActive: () => activeScene === "stage" && !nodes.stagePanel.hidden,
+    });
+    updateFrameStats();
   }
 
   function stampProgress(stats) {
@@ -946,9 +911,14 @@
   }
 
   function setBattleCovered(covered) {
-    nodes.playPanel.inert = covered;
-    if (covered) nodes.playPanel.setAttribute("aria-hidden", "true");
-    else nodes.playPanel.removeAttribute("aria-hidden");
+    nodes.battleWorkspace.inert = covered;
+    nodes.battleWorkspace.setAttribute("aria-hidden", String(covered));
+    if (activeScene === "battle") screenFrame?.activate("battle", { covered });
+  }
+
+  function setSceneVisible(node, visible) {
+    node.hidden = !visible;
+    node.classList.toggle("hidden", !visible);
   }
 
   function setLeaveConfirmOpen(open, restoreFocus = true) {
@@ -969,6 +939,9 @@
       window.dispatchEvent(new Event("weightplay:stage-sync"));
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
+    activeScene = scene;
+    screenFrame?.activate(scene, { covered: scene === "battle" && (leaveConfirmOpen || !nodes.resultPanel.classList.contains("hidden")) });
+    document.body.dataset.screen = scene;
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
       if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -978,46 +951,19 @@
 
   function showMain(restoreStartFocus = false) {
     setLeaveConfirmOpen(false, false);
-    document.body.classList.remove("is-bakery-playing", "is-bakery-stage-select", "is-bakery-result");
+    document.body.classList.remove("is-bakery-battle-content", "is-bakery-stage-content", "is-bakery-result");
     document.body.classList.remove("wp-stage-select-active");
     window.WEIGHTPLAY_BUBBLE_BAKERY_ACTIVE = false;
     window.dispatchEvent(new CustomEvent("bubble-bakery:play-state", { detail: { playing: false } }));
-    nodes.mainPanel.classList.remove("hidden");
-    nodes.stagePanel.classList.add("hidden");
-    nodes.playPanel.classList.add("hidden");
+    setSceneVisible(nodes.mainPanel, true);
+    setSceneVisible(nodes.stagePanel, false);
+    setSceneVisible(nodes.playPanel, false);
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     setBattleCovered(false);
     busy = false;
-    updateBakeryFrame();
     syncSharedScene("main");
     if (restoreStartFocus) requestAnimationFrame(() => nodes.startGameBtn.focus({ preventScroll: true }));
   }
-
-  function updateBakeryFrame() {
-    const isStage = document.body.classList.contains("is-bakery-stage-select");
-    if (!document.body.classList.contains("is-bakery-playing") && !isStage) return;
-    const viewport = window.visualViewport;
-    const safeWidth = viewport?.width || innerWidth;
-    const viewportHeight = viewport?.height || innerHeight;
-    const viewportWidth = Math.min(Math.max(1, safeWidth), 920);
-    const shortStage = isStage && viewportHeight <= 430 && viewportWidth > viewportHeight;
-    const minimumWidth = shortStage ? 760 : 390;
-    const minimumHeight = shortStage ? 360 : 788;
-    const scale = Math.max(0.1, Math.min(viewportWidth / minimumWidth, viewportHeight / minimumHeight));
-    const logicalWidth = viewportWidth / scale;
-    const logicalHeight = viewportHeight / scale;
-    const root = document.documentElement.style;
-    root.setProperty("--bakery-frame-scale", String(scale));
-    root.setProperty("--bakery-logical-width", `${logicalWidth}px`);
-    root.setProperty("--bakery-logical-height", `${logicalHeight}px`);
-    root.setProperty("--bakery-frame-left", `${Math.max(0, (safeWidth - viewportWidth) / 2)}px`);
-    root.setProperty("--bakery-frame-top", "0px");
-  }
-
-  addEventListener("resize", updateBakeryFrame, { passive: true });
-  addEventListener("orientationchange", updateBakeryFrame, { passive: true });
-  visualViewport?.addEventListener("resize", updateBakeryFrame, { passive: true });
-  visualViewport?.addEventListener("scroll", updateBakeryFrame, { passive: true });
 
   let lockedAnnouncementAt = 0;
 
@@ -1033,33 +979,28 @@
 
   function showStageSelect(focusStageIndex = null) {
     setLeaveConfirmOpen(false, false);
-    document.body.classList.remove("is-bakery-playing", "is-bakery-result");
-    document.body.classList.add("is-bakery-stage-select");
+    document.body.classList.remove("is-bakery-battle-content", "is-bakery-result");
+    document.body.classList.add("is-bakery-stage-content");
     window.WEIGHTPLAY_BUBBLE_BAKERY_ACTIVE = false;
     window.dispatchEvent(new CustomEvent("bubble-bakery:play-state", { detail: { playing: false } }));
-    nodes.mainPanel.classList.add("hidden");
-    nodes.stagePanel.classList.remove("hidden");
-    nodes.playPanel.classList.add("hidden");
+    setSceneVisible(nodes.mainPanel, false);
+    setSceneVisible(nodes.stagePanel, true);
+    setSceneVisible(nodes.playPanel, false);
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     setBattleCovered(false);
-    updateBakeryFrame();
-    syncSharedScene("stage");
     busy = false;
     nodes.stageFeedback.textContent = "";
-    renderRecommendedOrder();
-    renderBakeryProgress();
-    renderStageGrid();
+    selectedStage = Number.isInteger(focusStageIndex) ? focusStageIndex : selectedStage ?? recommendedStageIndex();
+    stageUI.setConfig(stageConfig(), selectedStage);
+    syncSharedScene("stage");
+    stageUI.select(selectedStage, { center: true, focus: true, source: "return" });
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    requestAnimationFrame(() => {
-      const cards = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")];
-      const exact = Number.isInteger(focusStageIndex) ? cards.find((card) => [...nodes.stageGrid.children].indexOf(card) === focusStageIndex) : null;
-      (exact || nodes.stageGrid.querySelector(".stage-card.is-selected:not(.locked)") || cards.at(-1))?.focus({ preventScroll: true });
-    });
   }
 
   function startStage(index) {
     setLeaveConfirmOpen(false, false);
     currentStage = index;
+    selectedStage = index;
     const stage = stages[index];
     recipeIndex = 0;
     orders = { ...stage.recipes[recipeIndex] };
@@ -1074,25 +1015,20 @@
     busy = false;
     lastResult = null;
     board = makeBoard(stage.palette, stage.minOrderGroup || 2);
-    document.body.classList.remove("is-bakery-stage-select", "is-bakery-result");
-    document.body.classList.add("is-bakery-playing");
+    document.body.classList.remove("is-bakery-stage-content", "is-bakery-result");
+    document.body.classList.add("is-bakery-battle-content");
     window.WEIGHTPLAY_BUBBLE_BAKERY_ACTIVE = true;
     window.dispatchEvent(new CustomEvent("bubble-bakery:play-state", { detail: { playing: true } }));
-    nodes.mainPanel.classList.add("hidden");
-    nodes.stagePanel.classList.add("hidden");
-    nodes.playPanel.classList.remove("hidden");
+    setSceneVisible(nodes.mainPanel, false);
+    setSceneVisible(nodes.stagePanel, false);
+    setSceneVisible(nodes.playPanel, true);
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
     setBattleCovered(false);
-    window.WeightPlayGame?.exitMobileGameMode?.();
-    nodes.playPanel.classList.remove("weightplay-active-viewport");
-    updateBakeryFrame();
     syncSharedScene("battle");
     nodes.hintText.textContent = stageRule(stage);
     nodes.orderBar.dataset.theme = t("stage", { n: index + 1 });
     renderAll();
     requestAnimationFrame(() => {
-      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-      nodes.playPanel.scrollIntoView?.({ block: "start", inline: "nearest", behavior: "auto" });
       nodes.board.querySelector(".bubble")?.focus({ preventScroll: true });
     });
     playSound("game.start");
@@ -1456,6 +1392,7 @@
 
   function updateHud() {
     nodes.movesText.textContent = moves;
+    updateFrameStats();
   }
 
   function finish(won) {
@@ -1477,6 +1414,8 @@
         storageWrite(unlockKey, unlocked);
       }
     }
+    stageUI?.setConfig(stageConfig(), selectedStage ?? currentStage);
+    updateFrameStats();
     const stamp = recordFinishStats(won, stageNo);
     const report = recordSkillReport({ stageNo, won, earned, previousBest });
     lastResult = { won, stageNo, earned, unlockedStageNo, stamp, moves, report };
@@ -1591,42 +1530,59 @@
     window.setTimeout(() => bubble.remove(), 850);
   }
 
-  function initLoading() {
-    const assets = [
-      "../../assets/bubble-bakery/cover-block-v1.png",
-      "../../assets/bubble-bakery/panko-block-v1.png",
-      "assets/order-target-ring.png",
-      ...colors.map((item) => item.asset),
-    ];
-    let loaded = 0;
-    let released = false;
-    const update = () => {
-      const pct = Math.min(100, Math.round((loaded / assets.length) * 100));
-      nodes.loadingText.textContent = `${pct}%`;
-      nodes.loadingFill.style.width = `${pct}%`;
-      if (pct >= 100 && !released) {
-        released = true;
-        nodes.loadingPanel.classList.add("hidden");
-        track("game_ready");
-      }
-    };
-    assets.forEach((src) => {
-      const image = new Image();
-      image.onload = image.onerror = () => {
-        loaded += 1;
-        update();
+  function waitForEntryLoader() {
+    const loader = window.WeightPlayGameEntryLoader;
+    if (loader?.begin && loader?.ready) return Promise.resolve(loader);
+    const script = document.querySelector('script[data-wp-game-entry-loader-bootstrap="true"]');
+    if (!script) return Promise.resolve(loader || null);
+    return new Promise((resolve) => {
+      let settled = false;
+      const done = () => {
+        if (settled) return;
+        settled = true;
+        resolve(window.WeightPlayGameEntryLoader || null);
       };
-      image.src = src;
+      script.addEventListener("load", done, { once: true });
+      script.addEventListener("error", done, { once: true });
+      if (window.WeightPlayGameEntryLoader?.begin) done();
     });
-    update();
-    window.setTimeout(() => {
-      if (released) return;
-      released = true;
-      nodes.loadingText.textContent = "100%";
-      nodes.loadingFill.style.width = "100%";
-      nodes.loadingPanel.classList.add("hidden");
-      track("game_ready", { fallback: true });
-    }, 1200);
+  }
+
+  async function initLoading() {
+    const generation = ++loaderGeneration;
+    const loader = await waitForEntryLoader();
+    if (generation !== loaderGeneration) return;
+    if (!loader?.begin || !loader?.assetProgress || !loader?.ready || !loader?.fail) {
+      throw new Error("BUBBLE_BAKERY_SHARED_ENTRY_LOADER_MISSING");
+    }
+    const assets = [...new Set([
+      "/assets/bubble-bakery/cover-block-v1.png",
+      "/assets/bubble-bakery/panko-block-v1.png",
+      "/games/bubble-bakery/assets/order-target-ring.png",
+      ...colors.map((item) => new URL(item.asset, location.href).pathname),
+    ])];
+    loader.begin(assets.length);
+    let loaded = 0;
+    try {
+      await Promise.all(assets.map((src) => new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => {
+          if (generation !== loaderGeneration) return resolve();
+          loaded += 1;
+          loader.assetProgress(loaded, assets.length);
+          resolve();
+        };
+        image.onerror = () => reject(new Error(`Required bakery image failed: ${src}`));
+        image.src = src;
+      })));
+      if (generation !== loaderGeneration) return;
+      loader.ready();
+      document.body.dataset.screen = "main";
+      track("game_ready");
+    } catch (error) {
+      if (generation !== loaderGeneration) return;
+      loader.fail(error instanceof Error ? error.message : "Bakery art could not be loaded.", () => { void initLoading(); });
+    }
   }
 
   nodes.localeSelect.addEventListener("change", () => {
@@ -1635,9 +1591,6 @@
     locale = window.WonderI18n?.locale?.() || requested;
     syncSharedLocale();
     localizeStatic();
-    renderRecommendedOrder();
-    renderBakeryProgress();
-    renderStageGrid();
     if (!nodes.resultPanel.classList.contains("hidden") && lastResult) {
       renderResult(lastResult);
     } else if (!nodes.playPanel.classList.contains("hidden")) {
@@ -1651,11 +1604,23 @@
     event.stopImmediatePropagation();
   }
 
+  function keepFocusInDialog(dialog, event) {
+    if (event.key !== "Tab") return;
+    const controls = [...dialog.querySelectorAll("button:not(:disabled), a[href], [tabindex]:not([tabindex='-1'])")]
+      .filter((node) => !node.hidden && node.getClientRects().length > 0);
+    if (!controls.length) return;
+    const first = controls[0];
+    const last = controls.at(-1);
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus({ preventScroll: true });
+    }
+  }
+
   nodes.startGameBtn.addEventListener("keydown", rejectRepeatedScreenActivation, true);
-  nodes.stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
-  nodes.stageGrid.addEventListener("keydown", (event) => {
-    if (event.target.closest(".stage-card")) rejectRepeatedScreenActivation(event);
-  }, true);
   nodes.startGameBtn.addEventListener("click", showStageSelect);
   window.addEventListener("weightplay:tutorial-start", (event) => {
     if (event.detail?.gameId !== GAME_ID || nodes.mainPanel.classList.contains("hidden")) return;
@@ -1668,9 +1633,7 @@
   leavePanel.addEventListener("keydown", (event) => {
     rejectRepeatedScreenActivation(event);
     if (event.key === "Escape") { event.preventDefault(); setLeaveConfirmOpen(false); return; }
-    if (event.key !== "Tab") return;
-    if (event.shiftKey && document.activeElement === nodes.keepBakingBtn) { event.preventDefault(); nodes.leaveOrderBtn.focus({ preventScroll:true }); }
-    else if (!event.shiftKey && document.activeElement === nodes.leaveOrderBtn) { event.preventDefault(); nodes.keepBakingBtn.focus({ preventScroll:true }); }
+    keepFocusInDialog(leavePanel, event);
   }, true);
   nodes.resultStagesBtn.addEventListener("click", () => showStageSelect(currentStage));
   nodes.retryBtn.addEventListener("click", () => __wpReplayStart(() => startStage(currentStage)));
@@ -1679,7 +1642,9 @@
     if (event.repeat && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault();
       event.stopImmediatePropagation();
+      return;
     }
+    keepFocusInDialog(nodes.resultPanel, event);
   }, true);
   if (smokeMode) {
     window.__bubbleBakerySmoke = {
@@ -1755,6 +1720,9 @@
           resultVisible: !nodes.resultPanel.classList.contains("hidden"),
           resultTitle: nodes.resultTitle.textContent,
           bubbleCount: nodes.board.querySelectorAll(".bubble").length,
+          activeScene,
+          frameScene: screenFrame?.active || null,
+          selectedStage,
           activeTarget: activeSequenceTarget(),
           activeSequenceChips: nodes.orderBar.querySelectorAll(".order-chip.is-sequence-active").length,
           groupGoalText: nodes.orderBar.querySelector(".group-goal")?.textContent || "",
@@ -1770,10 +1738,8 @@
   });
 
   syncSharedLocale();
+  mountSharedInterface();
   localizeStatic();
   showMain();
-  renderRecommendedOrder();
-  renderBakeryProgress();
-  renderStageGrid();
-  initLoading();
+  void initLoading();
 })();

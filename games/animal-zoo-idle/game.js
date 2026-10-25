@@ -640,13 +640,11 @@
   coinIcon.alt = "";
   coinIcon.className = "coin-icon";
   coinIcon.draggable = false;
-  const coinLabel = document.createElement("span");
-  coinLabel.dataset.ui = "coins";
   const coinValue = nodes.coinText || document.createElement("b");
   coinValue.id = "coinText";
   coinValue.textContent = "0";
   nodes.coinText = coinValue;
-  coinStat.append(coinIcon, coinLabel, coinValue);
+  coinStat.append(coinIcon, coinValue);
   battleInfoGroup.add(coinStat);
   frame.battleTopUI.add(battleInfoGroup);
   frame.activate("main");
@@ -659,7 +657,6 @@
   let save = loadSave();
   let tickCount = 0;
   let newlyRecruitedAnimalId = "";
-  let facilityScrollLeft = 0;
   let careRouteChoiceOpen = false;
   let parkLeaveOpen = false;
 
@@ -1342,8 +1339,6 @@
 
   function renderFacilityBoard(container) {
     if (!container) return;
-    const existingList = container.querySelector(".facility-list");
-    if (existingList) facilityScrollLeft = existingList.scrollLeft;
     const signature = facilities.map((facility) => {
       const level = facilityLevel(facility);
       const cost = facilityCost(facility);
@@ -1352,8 +1347,6 @@
       return `${facility.id}:${level}:${cost}:${ready}:${maxed}`;
     }).join("|") + `:${locale}`;
     if (container.dataset.facilityBoardSignature === signature) return;
-    const now = Date.now();
-    if (Number(container.dataset.userScrollingUntil || 0) > now) return;
     container.dataset.facilityBoardSignature = signature;
     container.innerHTML = `
       <strong>${t("facilityBoard")}</strong>
@@ -1381,23 +1374,6 @@
         }).join("")}
       </div>
     `;
-    const newList = container.querySelector(".facility-list");
-    if (newList) {
-      newList.scrollLeft = facilityScrollLeft;
-      requestAnimationFrame(() => {
-        newList.scrollLeft = facilityScrollLeft;
-      });
-      newList.addEventListener("scroll", () => {
-        facilityScrollLeft = newList.scrollLeft;
-        container.dataset.userScrollingUntil = String(Date.now() + 1800);
-      }, { passive: true });
-      newList.addEventListener("pointerdown", () => {
-        container.dataset.userScrollingUntil = String(Date.now() + 1800);
-      }, { passive: true });
-      newList.addEventListener("touchstart", () => {
-        container.dataset.userScrollingUntil = String(Date.now() + 1800);
-      }, { passive: true });
-    }
     container.querySelectorAll("[data-facility]").forEach((button) => {
       button.addEventListener("click", () => upgradeFacility(button.dataset.facility));
     });
@@ -1964,7 +1940,6 @@
 
   function startPark() {
     setParkLeaveOpen(false, false);
-    document.body.classList.remove("zoo-stage");
     document.body.classList.add("zoo-playing");
     document.querySelector(".zoo-app")?.classList.add("is-playing");
     nodes.localeSelect.closest(".language-picker")?.setAttribute("aria-hidden", "true");
@@ -1997,7 +1972,6 @@
     cancelAnimalDrag();
     setParkLeaveOpen(false, false);
     document.body.classList.remove("zoo-playing");
-    document.body.classList.remove("zoo-stage");
     document.querySelector(".zoo-app")?.classList.remove("is-playing");
     nodes.localeSelect.closest(".language-picker")?.removeAttribute("aria-hidden");
     nodes.gamePanel.classList.add("hidden");

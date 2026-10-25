@@ -1,4 +1,4 @@
-import {STAGES} from './stages.mjs?v=3';
+import {STAGES} from './stages.mjs?v=4';
 export const STORE='weightplay:blade-orbit:v1';
 export const LIMITS={swords:24,enemies:100,pickups:220,effects:120,hazards:48,projectiles:100};
 export const ENEMIES={
@@ -12,7 +12,7 @@ export function normalizeSave(raw={}){
  if(!raw||typeof raw!=='object')raw={};
  const stars=Array.from({length:30},(_,i)=>clamp(Math.floor(num(raw.stars?.[i])),0,3));
  const cleared=stars.reduce((max,n,i)=>n?Math.max(max,i+1):max,0);
- return {version:1,unlocked:clamp(Math.max(1,Math.floor(num(raw.unlocked,1)),cleared+1),1,30),stars,coins:clamp(Math.floor(num(raw.coins)),0,999999),training:{vitality:clamp(Math.floor(num(raw.training?.vitality)),0,5),edge:clamp(Math.floor(num(raw.training?.edge)),0,5),magnet:clamp(Math.floor(num(raw.training?.magnet)),0,5)},path:['ember','frost','storm'].includes(raw.path)?raw.path:'ember',tutorial:raw.tutorial===true};
+ return {version:1,unlocked:clamp(Math.max(1,Math.floor(num(raw.unlocked,1)),cleared+1),1,30),stars,coins:clamp(Math.floor(num(raw.coins)),0,999999),training:{vitality:clamp(Math.floor(num(raw.training?.vitality)),0,5),edge:clamp(Math.floor(num(raw.training?.edge)),0,5),magnet:clamp(Math.floor(num(raw.training?.magnet)),0,5)},path:['ember','frost','storm'].includes(raw.path)?raw.path:'ember',tutorial:raw.tutorial===true,prismInlayOwned:raw.prismInlayOwned===true,prismInlayEquipped:raw.prismInlayOwned===true&&raw.prismInlayEquipped!==false};
 }
 export const UPGRADES = {
  blade:{zh:'飛劍 +2',en:'Two more blades',desc:['追加兩把飛劍，填滿劍陣空隙','Add two swords to close gaps in your orbit.'],cap:12,icon:'sword'},

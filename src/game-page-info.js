@@ -651,40 +651,39 @@
       title: "Animal Zoo Idle",
       age: "6+",
       difficulty: "Easy to Medium",
-      time: "4-12 minutes per challenge",
+      time: "Open-ended park play",
       skills: ["Planning", "Focus", "Sequencing", "Animal Care"],
       relatedIds: ["animal-block-grove", "animal-tangram"],
       intro:
-        "Animal Zoo Idle is a gentle park-management game built around 30 saved challenges. Visitors enter the meadow, buy tickets, and fill a ticket box while the player cares for animals, improves the Snack Stand, View Deck, and Keeper Post, expands the gate, and arranges habitats. Twelve animals can eventually live in the park. Every fifth challenge is a friendly review, giving the continuing economy a clear six-part journey from the first ticket collection to the Grand Safari Festival.",
+        "Animal Zoo Idle is a gentle, continuous park-management game with 30 persistent milestones. Visitors enter the meadow, buy tickets, and fill a ticket box while the player cares for animals, improves the Snack Stand, View Deck, and Keeper Post, expands the gate, and arranges habitats. Twelve animals can eventually live in the same saved park. Every milestone tracks alongside the others, so players choose what to improve without selecting or unlocking numbered levels.",
       story: [
         "The meadow begins as a small animal park with a simple gate, a few residents, and room to grow. The player is its young park keeper. A lasting park needs more than a busy entrance: animals need regular care, habitat spaces must be thoughtfully arranged, and guest facilities must keep pace with the growing crowd.",
-        "Mimi, Panko, an otter inspector, a rhino keeper, and the penguin parade team visit at five-stage checkpoints. Passing a review means the park has demonstrated basic care, picnic service, viewing space, keeper support, parade capacity, or the balanced planning needed for the final festival.",
+        "Mimi, Panko, an otter inspector, a rhino keeper, and the penguin parade team appear in friendly milestone reviews. Their goals celebrate basic care, picnic service, viewing space, keeper support, parade capacity, and the balanced planning needed for the festival park.",
       ],
-      how: ["Choose an unlocked challenge from the horizontal Stage rail.", "Read every goal before collecting or spending tickets.", "Use Tidy Habitat for happiness or Enrichment Time for ticket income.", "Improve the gate, recruit animals, upgrade facilities, or drag animals to new habitat positions as requested.", "Claim the reward after every goal is complete, then continue to the next challenge."],
+      how: ["Choose Start Game to enter the same continuing park.", "Review the available milestones before collecting or spending tickets.", "Use Tidy Habitat for happiness or Enrichment Time for ticket income.", "Improve the gate, recruit animals, upgrade facilities, or drag animals to new habitat positions.", "Claim any completed milestone; the other goals and park progress continue together."],
       systems: [
-        "Visitors continuously contribute tickets to the collection box. Each uniquely cleared challenge also adds a small permanent income bonus.",
+        "Visitors continuously contribute tickets to the collection box. Each claimed milestone adds a small permanent income bonus.",
         "Tidy Habitat raises happiness, while Enrichment Time awards tickets. Both share a short care cooldown, so the current goal should guide the choice.",
         "The gate has eight levels. Recruited animals and the three four-level facilities remain in this browser save.",
         "Habitat arrangement goals count real animal movement in the meadow rather than a simple button press.",
-        "The Growth Report summarizes the park, while challenge Result unlocks the next Stage and offers Next Challenge or Challenges.",
+        "The Growth Report summarizes the park and all 30 milestones. Claiming a completed milestone awards coins but does not unlock a level or reset the park.",
       ],
       progression: [
-        "Challenges 1-5 teach tickets, care, and habitat movement before Mimi's first review. Challenges 6-10 compare care choices, ask the player to hold a ready ticket box, and introduce the Snack Stand before Panko's picnic.",
-        "Challenges 11-15 introduce the View Deck, larger arrangements, and happiness targets. Challenges 16-20 add the Keeper Post and combine care, animal count, and facility planning for the rhino keeper audit.",
-        "Challenges 21-25 grow the gate and animal roster for a penguin parade. Challenges 26-30 combine careful spending, all three facilities, happiness, arrangement, and income in the Grand Safari Festival finale.",
+        "The 30 milestones cover ticket collection, animal care, habitat movement, gate growth, recruiting, and facility improvements. Later goals combine these activities and add friendly park reviews.",
+        "All milestone goals track together in the same park. The Growth Report shows every goal, while the Battle panel highlights a current milestone to make the next useful action easy to spot.",
       ],
-      strategyTips: ["Read all goals before spending because animal and facility goals may compete for the same tickets.", "Choose Tidy Habitat when happiness is required, but Enrichment Time when income is the bottleneck.", "Do not collect a full ticket box when the current challenge asks you to keep it ready.", "Move an animal far enough for the rearrangement to count.", "Permanent upgrades carry forward, while the unique-clear income bonus is awarded only once per challenge."],
+      strategyTips: ["Review the available goals before spending because animal and facility improvements may compete for the same tickets.", "Choose Tidy Habitat when happiness is required, but Enrichment Time when income is the bottleneck.", "Do not collect a full ticket box when an active milestone asks you to keep it ready.", "Move an animal far enough for the rearrangement to count.", "Permanent upgrades carry forward, and each milestone reward can be claimed once."],
       designNote:
-        "The continuing economy lets children observe cause and effect without a harsh timer or combat. Waiting alone is not the main activity: each challenge asks for a factual combination of collecting, choosing care, arranging animals, recruiting, and upgrading. The Stage rail makes the park a visible 30-step journey, and local saving avoids rebuilding the same review each visit. Large buttons and direct dragging support touch and mouse play. Friendly checkpoint reviews replace boss fights because the central fantasy is improving a shared animal space.",
+        "The continuing economy lets children observe cause and effect without a harsh timer or combat. Waiting alone is not the main activity: milestones celebrate collecting, choosing care, arranging animals, recruiting, and upgrading. All goals advance in one locally saved park, with no numbered level path or Stage selection. Large buttons and direct dragging support touch and mouse play. Friendly park reviews fit the central fantasy of improving a shared animal space.",
       parent:
-        "This game may support simple planning, attention, sequencing, and discussion about animal care. Adults can ask why the player saved tickets, selected one care activity, or moved an animal. There is no combat, ranking pressure, account requirement, or advertising request on this Kids page. Challenge progress, upgrades, and reports are playful local feedback, not a school, health, or developmental assessment.",
+        "This game may support simple planning, attention, sequencing, and discussion about animal care. Adults can ask why the player saved tickets, selected one care activity, or moved an animal. There is no combat, ranking pressure, account requirement, or advertising request on this Kids page. Milestone progress, upgrades, and reports are playful local feedback, not a school, health, or developmental assessment.",
       faq: [
-        ["How many challenges are there?", "There are 30 saved challenges in six groups of five. Challenges 5, 10, 15, 20, 25, and 30 are friendly park check-ins."],
-        ["Why should I leave the ticket box full?", "Some challenges ask the park to prepare a ready box. Collect only after that goal is satisfied."],
+        ["How many milestones are there?", "There are 30 persistent park milestones. All of them track together in the same saved park."],
+        ["Why should I leave the ticket box full?", "Some active milestones ask you to prepare tickets in the box. Collect after that goal is satisfied."],
         ["What is the difference between the care actions?", "Tidy Habitat raises happiness. Enrichment Time awards tickets. Both share a short cooldown."],
         ["How does habitat arranging count?", "Drag an animal to a noticeably different meadow position; tiny accidental movement does not count."],
-        ["Does clearing a challenge reset my park?", "No. Animals, gate levels, facilities, coins, and unlocked challenges remain in the local save."],
-        ["Can I replay an earlier challenge?", "Yes. Any unlocked Stage can be replayed, although its unique-clear income bonus is awarded once."],
+        ["Does claiming a milestone reset my park?", "No. Animals, gate levels, facilities, coins, and other milestone progress remain in the local save."],
+        ["Do I need to unlock the next level?", "No. There is no numbered level path; continue improving the same park and claim goals when ready."],
         ["Does the game require login or show ads?", "No. This Kids game requires no account and makes no advertising request."],
         ["Where is progress stored?", "It is stored in this browser. Clearing site data or switching devices may remove or separate the save."],
         ["Is the Growth Report an ability test?", "No. It is only an in-game summary, not a formal assessment."],
@@ -4039,16 +4038,16 @@
       "color-lunchbox": zhGuide("動物顏色便當盒", "顏色分類", ["觀察食物或動物圖案的顏色。", "把物品拖到相同顏色的便當盒。", "完成每關指定題目即可進入下一關。"]),
       "bubble-bakery": zhGuide("動物泡泡烘焙坊", "泡泡連線益智", ["點擊兩顆以上相連的同色泡泡。", "消除泡泡後，上方泡泡會落下補位。", "在步數內完成關卡目標。"]),
       "animal-zoo-idle": {
-        title: "動物小小樂園", age: "6+", difficulty: "簡單至中等", time: "每個挑戰約 4 至 12 分鐘", skills: ["規劃", "專注", "順序思考", "動物照顧"],
-        intro: "動物小小樂園是一款有 30 個存檔挑戰的溫和樂園經營遊戲。遊客走進草原、購買門票並慢慢裝滿售票箱；玩家則照顧動物、升級點心攤、觀景台與保育員站、擴建入口，並重新安排棲地。最後可讓獅子、長頸鹿、大象、貓熊、企鵝等十二種動物加入。每五關都有一次友善的樂園審查，讓持續成長有明確目標，而不是只等待數字增加。",
-        story: ["草原起初只有簡單入口、少數動物與大片可運用空間。玩家擔任年輕的樂園管理員。真正長久的樂園不只需要遊客：動物要定期照顧，棲地位置要妥善安排，服務設施也必須跟上人潮。", "Mimi、Panko、水獺觀察員、犀牛保育員與企鵝遊行隊會在每五關前來檢查。通過審查代表樂園已學會基礎照顧、野餐服務、觀景規劃、保育支援、遊行接待，最後完成盛大草原節所需的整體平衡。"],
-        how: ["從橫向關卡列選擇已解鎖的挑戰。", "進入樂園前先讀完所有目標，再決定是否收票或花費。", "整理棲地可提高快樂值，豐富活動則可取得門票收入。", "依目標升級入口、招募動物、改善設施，或拖曳動物改變棲地位置。", "所有目標完成後領取獎勵，再前往下一個挑戰。"],
-        systems: ["遊客會持續把門票放入售票箱；每個首次完成的挑戰還會提供少量永久收入加成。", "整理棲地與豐富活動共用短暫冷卻時間，因此要依當前目標選擇。", "入口共有八級；招募的動物與三種各四級的設施會保留在這個瀏覽器存檔。", "棲地排列目標會計算草原中真正的位置變化，不是只按一下按鈕。", "成長報告整理目前樂園狀況；挑戰結果會解鎖下一關，並提供下一個挑戰或返回關卡。"],
-        progression: ["第 1 至 5 關教授收票、照顧與移動棲地，最後接受 Mimi 審查。第 6 至 10 關比較兩種照顧方式、要求保留裝滿的售票箱，並在 Panko 野餐前加入點心攤。", "第 11 至 15 關加入觀景台、更大的排列任務與快樂值目標。第 16 至 20 關加入保育員站，並在犀牛保育審查中混合照顧、動物數量與設施規劃。", "第 21 至 25 關擴大入口與動物陣容，準備企鵝遊行。第 26 至 30 關把預算、三種設施、快樂值、棲地排列與收入整合成盛大草原節。"],
-        strategyTips: ["花費前先讀全部目標，招募動物與升級設施可能會爭用同一筆門票。", "需要快樂值時選整理棲地；收入不足時選豐富活動。", "若目標要求售票箱已滿，不要太早把票收走。", "拖曳動物時要移動明顯距離，才會算一次重新排列。", "永久升級會帶到後續關卡，但每關的首次完成收入加成只會發放一次。"],
-        designNote: "遊戲使用持續運作的經濟，讓孩子在沒有嚴格倒數或戰鬥的情況下觀察因果。等待不是唯一活動；每關都要求收集、照顧選擇、棲地排列、招募與升級的真實組合。30 關橫向關卡列讓成長旅程清楚可見，本機存檔則避免每次回來都重建同一個樂園。大按鈕與直接拖曳同時照顧手機觸控和滑鼠操作。檢查點採友善樂園審查，而不是首領戰，因為核心想像是一起改善動物生活空間。",
-        parent: "本作可用來練習簡單規劃、注意、順序思考，並和孩子討論動物照顧。大人可詢問為何要保留門票、選擇某種照顧方式，或把動物移到另一個位置。遊戲沒有戰鬥、排名壓力、帳號要求，也不會在 Kids 頁面發出廣告請求。挑戰進度、升級與報告只是在本機保存的遊戲回饋，不是學校、健康或發展評量。",
-        faq: [["共有幾個挑戰？", "共有六段 30 關，並在第 5、10、15、20、25、30 關進行友善樂園審查。"], ["為什麼有時不能立刻收售票箱？", "部分挑戰要求先準備一個裝滿的售票箱；完成該目標後再收取。"], ["兩種照顧行動有什麼差別？", "整理棲地提高快樂值，豐富活動提供門票，兩者共用短暫冷卻。"], ["怎樣才算重新安排棲地？", "把動物拖到明顯不同的位置；很小的誤觸移動不會計算。"], ["過關後樂園會重置嗎？", "不會。動物、入口、設施、金幣與已解鎖關卡都會留在本機存檔。"], ["可以重玩以前的關卡嗎？", "可以重玩任何已解鎖關卡，但首次通關的永久收入加成只會取得一次。"], ["需要登入或會顯示廣告嗎？", "不需要帳號；這款 Kids 遊戲也不會發出廣告請求。"], ["進度存在哪裡？", "進度存在目前瀏覽器；清除網站資料或更換裝置可能會失去或分開存檔。"], ["成長報告是能力測驗嗎？", "不是，它只是遊戲內摘要，不是正式評量。"]],
+        title: "動物小小樂園", age: "6+", difficulty: "簡單至中等", time: "持續經營樂園", skills: ["規劃", "專注", "順序思考", "動物照顧"],
+        intro: "動物小小樂園是一款持續經營的樂園遊戲，包含 30 個會同步追蹤的里程碑。遊客走進草原、購買門票並慢慢裝滿售票箱；玩家則照顧動物、升級點心攤、觀景台與保育員站、擴建入口，並重新安排棲地。最後可讓獅子、長頸鹿、大象、貓熊、企鵝等十二種動物加入。每五項里程碑會有一次友善樂園檢視，讓孩子能按自己的步調持續成長。",
+        story: ["草原起初只有簡單入口、少數動物與大片可運用空間。玩家擔任年輕的樂園管理員。真正長久的樂園不只需要遊客：動物要定期照顧，棲地位置要妥善安排，服務設施也必須跟上人潮。", "Mimi、Panko、水獺觀察員、犀牛保育員與企鵝遊行隊會出現在友善的里程碑檢視中。通過審查代表樂園已學會基礎照顧、野餐服務、觀景規劃、保育支援、遊行接待，最後完成盛大草原節所需的整體平衡。"],
+        how: ["按下開始遊戲，進入同一座持續經營的樂園。", "進入樂園前先讀完所有目標，再決定是否收票或花費。", "整理棲地可提高快樂值，豐富活動則可取得門票收入。", "依目標升級入口、招募動物、改善設施，或拖曳動物改變棲地位置。", "任何里程碑完成後都可領取獎勵，其他目標會繼續同步累積。"],
+        systems: ["遊客會持續把門票放入售票箱；每次領取里程碑還會增加少量永久收入加成。", "整理棲地與豐富活動共用短暫冷卻時間，因此要依當前目標選擇。", "入口共有八級；招募的動物與三種各四級的設施會保留在這個瀏覽器存檔。", "棲地排列目標會計算草原中真正的位置變化，不是只按一下按鈕。", "成長報告整理樂園與全部 30 項里程碑；領取里程碑獎勵不會解鎖關卡或重置樂園。"],
+        progression: ["30 項里程碑涵蓋收票、動物照顧、棲地移動、大門擴建、招募動物與設施升級，後續目標會組合這些活動並加入友善樂園檢視。", "所有目標在同一座樂園中同步累積；成長報告顯示全部里程碑，Battle 面板會突顯目前可採取的目標。", "領取任一里程碑都不會鎖定或解鎖其他目標，也不會重置樂園。"],
+        strategyTips: ["花費前先讀全部目標，招募動物與升級設施可能會爭用同一筆門票。", "需要快樂值時選整理棲地；收入不足時選豐富活動。", "若目標要求售票箱已滿，不要太早把票收走。", "拖曳動物時要移動明顯距離，才會算一次重新排列。", "永久升級和已領取的里程碑獎勵都會留在同一座樂園。"],
+        designNote: "遊戲使用持續運作的經濟，讓孩子在沒有嚴格倒數或戰鬥的情況下觀察因果。等待不是唯一活動；里程碑鼓勵收集、照顧選擇、棲地排列、招募與升級。30 項目標在同一座本機樂園中同步累積，不需要選擇或解鎖關卡，本機存檔則避免每次回來都重建同一個樂園。大按鈕與直接拖曳同時照顧手機觸控和滑鼠操作。檢查點採友善樂園審查，而不是首領戰，因為核心想像是一起改善動物生活空間。",
+        parent: "本作可用來練習簡單規劃、注意、順序思考，並和孩子討論動物照顧。大人可詢問為何要保留門票、選擇某種照顧方式，或把動物移到另一個位置。遊戲沒有戰鬥、排名壓力、帳號要求，也不會在 Kids 頁面發出廣告請求。里程碑進度、升級與報告只是在本機保存的遊戲回饋，不是學校、健康或發展評量。",
+        faq: [["共有幾個里程碑？", "共有 30 項持續追蹤的樂園里程碑，全部都在同一座存檔樂園中同步累積。"], ["為什麼有時不能立刻收售票箱？", "部分進行中的里程碑要求先準備好售票箱；完成該目標後再收取。"], ["兩種照顧行動有什麼差別？", "整理棲地提高快樂值，豐富活動提供門票，兩者共用短暫冷卻。"], ["怎樣才算重新安排棲地？", "把動物拖到明顯不同的位置；很小的誤觸移動不會計算。"], ["領取里程碑後樂園會重置嗎？", "不會。動物、入口、設施、金幣與其他里程碑進度都會留在本機存檔。"], ["需要解鎖下一關嗎？", "不需要。沒有編號關卡路徑；繼續經營同一座樂園，準備好時領取任何已完成的里程碑。"], ["需要登入或會顯示廣告嗎？", "不需要帳號；這款 Kids 遊戲也不會發出廣告請求。"], ["進度存在哪裡？", "進度存在目前瀏覽器；清除網站資料或更換裝置可能會失去或分開存檔。"], ["成長報告是能力測驗嗎？", "不是，它只是遊戲內摘要，不是正式評量。"]],
       },
       "animal-rope-rescue": zhGuide("動物藤蔓救援", "藤蔓物理解謎", ["觀察藤蔓與目標位置。", "切斷正確藤蔓讓道具落下。", "幫助動物取得需要的物品。"]),
       "star-memory": {
@@ -7907,54 +7906,54 @@
     "title": "动物小小乐园",
     "age": "6+",
     "difficulty": "简单至中等",
-    "time": "每个挑战约 4 至 12 分钟",
+    "time": "持续经营乐园",
     "skills": [
       "规划",
       "专注",
       "顺序思考",
       "动物照顾"
     ],
-    "intro": "动物小小乐园是一款有 30 个存档挑战的温和乐园经营游戏。游客走进草原、购买门票并慢慢装满售票箱；玩家则照顾动物、升级点心摊、观景台与保育员站、扩建入口，并重新安排栖地。最后可让狮子、长颈鹿、大象、猫熊、企鹅等十二种动物加入。每五关都有一次友善的乐园审查，让持续成长有明确目标，而不是只等待数字增加。",
+    "intro": "动物小小乐园是一款持续经营的乐园游戏，包含 30 个会同步追踪的里程碑。游客走进草原、购买门票并慢慢装满售票箱；玩家则照顾动物、升级点心摊、观景台与保育员站、扩建入口，并重新安排栖地。最后可让狮子、长颈鹿、大象、猫熊、企鹅等十二种动物加入。每五项里程碑会有一次友善乐园检视，让孩子能按自己的步调持续成长。",
     "story": [
       "草原起初只有简单入口、少数动物与大片可运用空间。玩家担任年轻的乐园管理员。真正长久的乐园不只需要游客：动物要定期照顾，栖地位置要妥善安排，服务设施也必须跟上人潮。",
-      "Mimi、Panko、水獭观察员、犀牛保育员与企鹅游行队会在每五关前来检查。通过审查代表乐园已学会基础照顾、野餐服务、观景规划、保育支援、游行接待，最后完成盛大草原节所需的整体平衡。"
+      "Mimi、Panko、水獭观察员、犀牛保育员与企鹅游行队会出现在友善的里程碑检视中。通过审查代表乐园已学会基础照顾、野餐服务、观景规划、保育支援、游行接待，最后完成盛大草原节所需的整体平衡。"
     ],
     "how": [
-      "从横向关卡列选择已解锁的挑战。",
+      "按下开始游戏，进入同一座持续经营的乐园。",
       "进入乐园前先读完所有目标，再决定是否收票或花费。",
       "整理栖地可提高快乐值，丰富活动则可取得门票收入。",
       "依目标升级入口、招募动物、改善设施，或拖曳动物改变栖地位置。",
-      "所有目标完成后领取奖励，再前往下一个挑战。"
+      "任何里程碑完成后都可领取奖励，其他目标会继续同步累积。"
     ],
     "systems": [
-      "游客会持续把门票放入售票箱；每个首次完成的挑战还会提供少量永久收入加成。",
+      "游客会持续把门票放入售票箱；每次领取里程碑还会增加少量永久收入加成。",
       "整理栖地与丰富活动共用短暂冷却时间，因此要依当前目标选择。",
       "入口共有八级；招募的动物与三种各四级的设施会保留在这个浏览器存档。",
       "栖地排列目标会计算草原中真正的位置变化，不是只按一下按钮。",
-      "成长报告整理目前乐园状况；挑战结果会解锁下一关，并提供下一个挑战或返回关卡。"
+      "成长报告整理乐园与全部 30 项里程碑；领取里程碑奖励不会解锁关卡或重置乐园。"
     ],
     "progression": [
-      "第 1 至 5 关教授收票、照顾与移动栖地，最后接受 Mimi 审查。第 6 至 10 关比较两种照顾方式、要求保留装满的售票箱，并在 Panko 野餐前加入点心摊。",
-      "第 11 至 15 关加入观景台、更大的排列任务与快乐值目标。第 16 至 20 关加入保育员站，并在犀牛保育审查中混合照顾、动物数量与设施规划。",
-      "第 21 至 25 关扩大入口与动物阵容，准备企鹅游行。第 26 至 30 关把预算、三种设施、快乐值、栖地排列与收入整合成盛大草原节。"
+      "30 项里程碑涵盖收票、动物照顾、栖地移动、大门扩建、招募动物与设施升级，后续目标会组合这些活动并加入友善乐园检视。",
+      "所有目标在同一座乐园中同步累积；成长报告显示全部里程碑，Battle 面板会突出目前可采取的目标。",
+      "领取任一里程碑都不会锁定或解锁其他目标，也不会重置乐园。"
     ],
     "strategyTips": [
       "花费前先读全部目标，招募动物与升级设施可能会争用同一笔门票。",
       "需要快乐值时选整理栖地；收入不足时选丰富活动。",
       "若目标要求售票箱已满，不要太早把票收走。",
       "拖曳动物时要移动明显距离，才会算一次重新排列。",
-      "永久升级会带到后续关卡，但每关的首次完成收入加成只会发放一次。"
+      "永久升级和已领取的里程碑奖励都会留在同一座乐园。"
     ],
-    "designNote": "游戏使用持续运作的经济，让孩子在没有严格倒数或战斗的情况下观察因果。等待不是唯一活动；每关都要求收集、照顾选择、栖地排列、招募与升级的真实组合。30 关横向关卡列让成长旅程清楚可见，本机存档则避免每次回来都重建同一个乐园。大按钮与直接拖曳同时照顾手机触控和滑鼠操作。检查点采友善乐园审查，而不是首领战，因为核心想像是一起改善动物生活空间。",
-    "parent": "本作可用来练习简单规划、注意、顺序思考，并和孩子讨论动物照顾。大人可询问为何要保留门票、选择某种照顾方式，或把动物移到另一个位置。游戏没有战斗、排名压力、帐号要求，也不会在 Kids 页面发出广告请求。挑战进度、升级与报告只是在本机保存的游戏回馈，不是学校、健康或发展评量。",
+    "designNote": "游戏使用持续运作的经济，让孩子在没有严格倒数或战斗的情况下观察因果。等待不是唯一活动；里程碑鼓励收集、照顾选择、栖地排列、招募与升级。30 项目标在同一座本机乐园中同步累积，不需要选择或解锁关卡，本机存档则避免每次回来都重建同一个乐园。大按钮与直接拖曳同时照顾手机触控和滑鼠操作。检查点采友善乐园审查，而不是首领战，因为核心想像是一起改善动物生活空间。",
+    "parent": "本作可用来练习简单规划、注意、顺序思考，并和孩子讨论动物照顾。大人可询问为何要保留门票、选择某种照顾方式，或把动物移到另一个位置。游戏没有战斗、排名压力、帐号要求，也不会在 Kids 页面发出广告请求。里程碑进度、升级与报告只是在本机保存的游戏回馈，不是学校、健康或发展评量。",
     "faq": [
       [
-        "共有几个挑战？",
-        "共有六段 30 关，并在第 5、10、15、20、25、30 关进行友善乐园审查。"
+        "共有几个里程碑？",
+        "共有 30 项持续追踪的乐园里程碑，全部都在同一座存档乐园中同步累积。"
       ],
       [
         "为什么有时不能立刻收售票箱？",
-        "部分挑战要求先准备一个装满的售票箱；完成该目标后再收取。"
+        "部分进行中的里程碑要求先准备好售票箱；完成该目标后再收取。"
       ],
       [
         "两种照顾行动有什么差别？",
@@ -7965,12 +7964,12 @@
         "把动物拖到明显不同的位置；很小的误触移动不会计算。"
       ],
       [
-        "过关后乐园会重置吗？",
-        "不会。动物、入口、设施、金币与已解锁关卡都会留在本机存档。"
+        "领取里程碑后乐园会重置吗？",
+        "不会。动物、入口、设施、金币与其他里程碑进度都会留在本机存档。"
       ],
       [
-        "可以重玩以前的关卡吗？",
-        "可以重玩任何已解锁关卡，但首次通关的永久收入加成只会取得一次。"
+        "需要解锁下一关吗？",
+        "不需要。没有编号关卡路径；继续经营同一座乐园，准备好时领取任何已完成的里程碑。"
       ],
       [
         "需要登入或会显示广告吗？",
@@ -12606,7 +12605,7 @@
     },
     "animal-zoo-idle": {
       title: "Зоопарк животных",
-      intro: "«Зоопарк животных» — спокойная игра об управлении парком с 30 сохраняемыми заданиями."
+      intro: "«Зоопарк животных» — спокойная игра о непрерывном управлении одним парком с 30 постоянными этапами развития, которые выполняются одновременно."
     },
     "animal-skyport-dispatch": {
       title: "Диспетчер небесного порта",

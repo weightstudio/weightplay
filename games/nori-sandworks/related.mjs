@@ -1,4 +1,4 @@
-/* Snapshot of official related titles; verified against the catalog at production. */
+/* Current playable General catalog snapshot; titles copied from official registry. */
 export const RELATED=[
   {
     "id": "animal-unblock",
@@ -21,23 +21,23 @@ export const RELATED=[
     }
   },
   {
-    "id": "animal-color-springs",
-    "poster": "/games/animal-color-springs/assets/animal-color-springs-cover.webp",
+    "id": "block-blast",
+    "poster": "/assets/block-blast/cover.webp",
     "titles": {
       "__localizedExact": true,
-      "en": "Color Springs",
-      "zh-Hant": "彩泉",
-      "zh-Hans": "彩泉",
-      "ja": "彩泉パズル",
-      "ko": "컬러 스프링스",
-      "es": "Resortes de Colores",
-      "pt-BR": "Fontes de Cores",
-      "fr": "Sources de couleurs",
-      "de": "Farbenquellen",
-      "it": "Sorgenti di colori",
-      "ru": "Цветные источники животных",
-      "hi": "रंगीन झरने",
-      "ar": "ينابيع الألوان الحيوانية"
+      "en": "Block Blast",
+      "zh-Hant": "方塊爆破",
+      "zh-Hans": "方块爆破",
+      "ja": "ブロックブラスト",
+      "ko": "블록 블라스트",
+      "es": "Explosión de bloques",
+      "pt-BR": "Explosão de blocos",
+      "fr": "Explosion de blocs",
+      "de": "Blockexplosion",
+      "it": "Esplosione di blocchi",
+      "ru": "Взрыв блоков",
+      "hi": "ब्लॉक ब्लास्ट",
+      "ar": "تفجير المكعبات"
     }
   },
   {

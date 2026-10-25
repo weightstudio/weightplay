@@ -3070,5 +3070,21 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Песочная мастерская Нори",
     "hi": "नोरी की रेत कार्यशाला",
     "ar": "ورشة نوري للرمال"
+  },
+  "meadow-touchdown": {
+    "__localizedExact": true,
+    "en": "Meadow Touchdown",
+    "zh-Hant": "草原達陣隊",
+    "zh-Hans": "草原达阵队",
+    "ja": "草原タッチダウン",
+    "ko": "초원 터치다운",
+    "es": "Touchdown en la pradera",
+    "pt-BR": "Touchdown no Prado",
+    "fr": "Touchdown dans la prairie",
+    "de": "Wiesen-Touchdown",
+    "it": "Touchdown nel prato",
+    "ru": "Тачдаун на лугу",
+    "hi": "मैदान का टचडाउन",
+    "ar": "فريق المرج للتاتشداون"
   }
 };
