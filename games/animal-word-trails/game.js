@@ -85,8 +85,124 @@
   const routedLocale=window.WonderI18n?.localeFromPath?.()||'';
   let lang = supportedLocales.includes(routedLocale)?routedLocale:(supportedLocales.includes(gameLocalePreference)?gameLocalePreference:(supportedLocales.includes(platformLocale)?platformLocale:'en')), stage = 0, path = [], found = new Set(), hints = 0, dragStartLength = 0, boardPointerId = null, leaveConfirmOpen = false, leaveConfirmTrigger = null, resultActionClaimed = false;
   if(!packs[lang])packs[lang]=packs.en.map(buildLocalizedStage);
-  const $ = id => document.getElementById(id); const t = key => copy[lang]?.[key]??runtimeTranslate(copy.en[key]??key);
+  const $ = id => document.getElementById(id);
+  const t = (key, values = {}) => String(copy[lang]?.[key] ?? runtimeTranslate(copy.en[key] ?? key))
+    .replace(/\{(\w+)\}/gu, (_whole, name) => values[name] ?? '');
   const track = (event, details = {}) => window.WonderAnalytics?.track(event, { game_id: 'animal-word-trails', locale: lang, stage: stage + 1, ...details });
+  let screenFrame = null, stageUI = null, stageStats = null, battleStats = null;
+  function makeStat() {
+    const stat = document.createElement('div');
+    const label = document.createElement('span');
+    const value = document.createElement('strong');
+    stat.append(label, value);
+    return { stat, label, value };
+  }
+  function stagePoster(index) {
+    if (index <= 2) return '/assets/animal-word-trails-forest-bg.webp';
+    if (index <= 4) return '/assets/animal-word-trails-safari-bg.webp';
+    if (index === 9) return '/assets/animal-word-trails-clue-cards.webp';
+    return '/assets/interface7-redrawn/animal-word-trails.webp';
+  }
+  function stageConfig() {
+    return {
+      gameId: 'animal-word-trails', count: packs[lang].length,
+      poster: '/assets/animal-word-trails-cover.webp',
+      background: '/assets/lobby-block-atmosphere.svg',
+      stage(index) {
+        const item = packs[lang][index];
+        const best = readRecord('wordTrailsBest');
+        const locked = index > 0 && !best[lang + '-' + (index - 1)];
+        const cleared = Boolean(best[lang + '-' + index]);
+        return {
+          id: index + 1, kicker: t('trailNumber', { n: index + 1 }),
+          title: item.name, subtitle: `${item.words.length} ${t('words')}`,
+          status: locked ? t('locked') : cleared ? t('completed') : t('available'),
+          summary: item.rule || t('stageSummary', { n: item.words.length }),
+          details: [item.words.join(' · '), item.rule || ''],
+          poster: stagePoster(index), locked, cleared,
+        };
+      },
+    };
+  }
+  function updateFrameStats() {
+    const best = readRecord('wordTrailsBest');
+    const album = readRecord('wordTrailsAlbum');
+    const completed = Object.keys(best).filter(key => key.startsWith(lang + '-')).length;
+    const clues = Object.keys(album).filter(key => key.startsWith(lang + '-')).length;
+    if (stageStats) {
+      stageStats.completed.label.textContent = t('progress');
+      stageStats.completed.value.textContent = `${completed}/${packs[lang].length}`;
+      stageStats.clues.label.textContent = t('cards');
+      stageStats.clues.value.textContent = String(clues);
+    }
+    if (battleStats) {
+      battleStats.trail.label.textContent = t('trail');
+      battleStats.trail.value.textContent = `${stage + 1}/${packs[lang].length}`;
+      battleStats.words.label.textContent = t('found');
+      battleStats.words.value.textContent = `${found.size}/${packs[lang][stage].words.length}`;
+    }
+    if ($('mainProgress')) $('mainProgress').textContent = `${completed}/${packs[lang].length} · ${t('progress')}`;
+    if ($('stageProgress') && stageStats) $('stageProgress').setAttribute('aria-label', `${t('progress')} ${completed}/${packs[lang].length}`);
+  }
+  function mountSharedInterface() {
+    if (!window.WeightPlayScreenFrame || !window.WeightPlayPlayUI || !window.WeightPlayStageRailI9) {
+      throw new Error('ANIMAL_WORD_TRAILS_I9_SHARED_RUNTIME_MISSING');
+    }
+    screenFrame = window.WeightPlayScreenFrame.mount({
+      root: $('#app'), localeSelect: $('#locale'), playUI: true,
+      scenes: {
+        main: { root: $('#mainGroup'), header: $('#mainHeader'), content: $('#mainContent') },
+        stage: { root: $('#stageScreen'), header: $('#stageHeader'), headerInfo: $('#stageHeaderInfo'), content: $('#stageWorkspace') },
+        battle: { root: $('#battleScreen'), header: $('#battleHeader'), headerInfo: $('#battleHeaderInfo'), content: $('#battleWorkspace') },
+      },
+    });
+    stageStats = { completed: makeStat(), clues: makeStat() };
+    stageStats.completed.stat.id = 'stageProgress';
+    screenFrame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup()
+      .add(stageStats.completed.stat).add(stageStats.clues.stat));
+    battleStats = { trail: makeStat(), words: makeStat() };
+    screenFrame.battleTopUI.add(window.WeightPlayScreenFrame.createGroup()
+      .add(battleStats.trail.stat).add(battleStats.words.stat));
+    stageUI = window.WeightPlayPlayUI.mountStage({
+      page: $('#stageWorkspace'), rail: $('#stageRail'), config: stageConfig(), selected: stage,
+      onSelect(index) { stage = index; updateFrameStats(); },
+      onStart(index) { stage = index; renderBattle(); },
+      isActive: () => screenFrame.active === 'stage' && !$('#stageScreen').hidden,
+    });
+    screenFrame.commonDownButton.add($('#album'));
+    $('#album').dataset.wpFrameAction = 'secondary';
+    updateFrameStats();
+  }
+  function waitForEntryLoader() {
+    const loader = window.WeightPlayGameEntryLoader;
+    if (loader?.begin && loader?.ready) return Promise.resolve(loader);
+    const script = document.querySelector('script[data-wp-game-entry-loader-bootstrap="true"]');
+    if (!script) return Promise.resolve(loader || null);
+    return new Promise(resolve => {
+      let settled = false;
+      const done = () => { if (settled) return; settled = true; resolve(window.WeightPlayGameEntryLoader || null); };
+      script.addEventListener('load', done, { once: true });
+      script.addEventListener('error', done, { once: true });
+      if (window.WeightPlayGameEntryLoader?.begin) done();
+    });
+  }
+  async function loadGameAssets() {
+    const assets = [
+      '/assets/animal-word-trails-cover.webp', '/assets/animal-word-trails-forest-bg.webp',
+      '/assets/animal-word-trails-safari-bg.webp', '/assets/interface7-redrawn/animal-word-trails.webp',
+      '/assets/animal-word-trails-clue-cards.webp', '/assets/animal-word-trails-letter-tiles.webp',
+      '/assets/animal-word-trails-lion-guide.webp', '/assets/animal-word-trails-word-clear-fx.webp',
+    ];
+    const loader = await waitForEntryLoader();
+    loader?.begin?.(assets.length);
+    let loaded = 0;
+    await Promise.all(assets.map(src => new Promise(resolve => {
+      const image = new Image();
+      const complete = () => { loaded += 1; loader?.assetProgress?.(loaded, assets.length); resolve(); };
+      image.onload = complete; image.onerror = complete; image.src = src;
+    })));
+    loader?.ready?.();
+  }
   const battleTasks = new Map();
   let battleTasksPaused = document.hidden;
   function cancelBattleTask(key) { const task=battleTasks.get(key); if(!task)return; if(task.frame)cancelAnimationFrame(task.frame); battleTasks.delete(key); }
@@ -108,15 +224,57 @@
   function resumeBattleTasks(){ if(!battleTasksPaused||leaveConfirmOpen)return; (__wpNotifyMeasurement(), battleTasksPaused=false); battleTasks.forEach(task=>{if(!task.frame)task.frame=requestAnimationFrame(task.step);}); }
   function restoreBoardPath(length=dragStartLength){path=path.slice(0,length);document.querySelectorAll('.tile').forEach(tile=>tile.classList.toggle('selected',path.includes(Number(tile.dataset.index))));}
   function cancelBoardPointer(event){if(boardPointerId===null||(event&&event.pointerId!==boardPointerId))return;const board=$('board');const pointerId=boardPointerId;boardPointerId=null;restoreBoardPath();try{if(board.hasPointerCapture?.(pointerId))board.releasePointerCapture(pointerId)}catch{/* The browser may already have released an interrupted pointer. */}}
-  function screen(name) { const result=name==='result'; if(name!=='battle'){cancelBoardPointer();cancelBattleTasks();$('clueReveal')?.classList.add('hidden');} document.querySelector('[data-screen="main"]').classList.toggle('hidden',name!=='main'); document.querySelector('[data-screen="stage"]').classList.toggle('hidden',name!=='stage'); document.querySelector('[data-screen="battle"]').classList.toggle('hidden',name!=='battle'&&!result); (__wpNotifyMeasurement(), $('resultPanel').classList.toggle('hidden',!result)); $('battleLive').classList.toggle('hidden',result); $('battleLive').inert=result;if(result)$('battleLive').setAttribute('aria-hidden','true');else $('battleLive').removeAttribute('aria-hidden'); document.body.classList.toggle('word-stage',name==='stage'); document.body.classList.toggle('word-playing',name==='battle'||result); document.body.classList.toggle('word-result',result); if(name==='battle'||result){window.dispatchEvent(new Event('weightplay:stage-sync'));window.dispatchEvent(new Event('weightplay:battle-sync'))}else{window.dispatchEvent(new Event('weightplay:battle-sync'));window.dispatchEvent(new Event('weightplay:stage-sync'))}window.dispatchEvent(new Event('weightplay:shell-sync'));
-    { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
-      if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
-      else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
-      __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
-}
-  function translate(){ document.documentElement.lang=lang; document.querySelectorAll('[data-copy]').forEach(el=>el.textContent=t(el.dataset.copy)); }
+  function screen(name) {
+    const result = name === 'result';
+    const scene = result ? 'battle' : name;
+    if (scene !== 'battle') { cancelBoardPointer(); cancelBattleTasks(); $('clueReveal')?.classList.add('hidden'); }
+    $('#mainGroup').hidden = scene !== 'main';
+    $('#stageScreen').hidden = scene !== 'stage';
+    $('#battleScreen').hidden = scene !== 'battle';
+    $('#resultPanel').classList.toggle('hidden', !result);
+    $('#resultPanel').hidden = !result;
+    $('#battleLive').classList.toggle('hidden', result);
+    $('#battleLive').hidden = result;
+    $('#battleLive').inert = result;
+    if (result) $('#battleLive').setAttribute('aria-hidden', 'true');
+    else $('#battleLive').removeAttribute('aria-hidden');
+    document.body.dataset.screen = name;
+    document.body.classList.toggle('word-stage', name === 'stage');
+    document.body.classList.toggle('word-playing', name === 'battle' || result);
+    document.body.classList.toggle('word-result', result);
+    screenFrame?.activate(scene);
+    if (scene === 'stage' && stageUI) {
+      stageUI.refresh(stage);
+      stageUI.select(stage, { center: true, notify: false });
+    }
+    updateFrameStats();
+    window.dispatchEvent(new Event('weightplay:battle-sync'));
+    window.dispatchEvent(new Event('weightplay:stage-sync'));
+    window.dispatchEvent(new Event('weightplay:shell-sync'));
+    const nextScreen = result ? null : scene;
+    if (result && __wpMeasurement.started && !__wpMeasurement.ended) {
+      __wpMeasurement.ended = true; __wpMeasurement.outcome = 'complete';
+    } else if ((nextScreen === 'main' || nextScreen === 'stage')
+      && __wpMeasurement.screen === 'battle' && __wpMeasurement.started && !__wpMeasurement.ended) {
+      __wpMeasurement.ended = true; __wpMeasurement.outcome = 'abandon';
+    }
+    __wpMeasurement.screen = nextScreen;
+    __wpNotifyMeasurement();
+  }
+  function translate(){
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.querySelectorAll('[data-copy]').forEach(el => {
+      el.textContent = el.hasAttribute('data-wp-game-title')
+        ? (window.WeightPlayOfficialName?.title?.() || t(el.dataset.copy)) : t(el.dataset.copy);
+    });
+    document.querySelectorAll('[data-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.aria)));
+    if ($('#locale')) $('#locale').value = lang;
+    if ($('#mainPoster')) $('#mainPoster').alt = t('title');
+    updateFrameStats();
+  }
   function save(){ writeStorage('wordTrailsLocale',lang); writeStorage('weightPlayLocale',lang); writeStorage('wordTrailsBest',JSON.stringify(readRecord('wordTrailsBest'))); }
-  function renderStages(){ const rail=$('stageRail'); rail.innerHTML=''; const best=readRecord('wordTrailsBest'); packs[lang].forEach((item,i)=>{ const card=document.createElement('button'); card.className='stage-card'+(i===stage?' selected':'')+(i>0&&!best[lang+'-'+(i-1)]?' locked':''); card.disabled=i>0&&!best[lang+'-'+(i-1)]; card.innerHTML=`<strong>${i+1}. ${item.name}</strong><span>${item.words.length} ${t('words')}</span>`; card.onclick=()=>{stage=i;renderStages()};rail.append(card); }); $('stageProgress').textContent=`${stage+1} / ${packs[lang].length} · ${t('cards')} ${Object.keys(readRecord('wordTrailsAlbum')).filter(key=>key.startsWith(lang+'-')).length}`; }
+  function renderStages(){ if(!stageUI)return; stageUI.refresh(stage); stageUI.select(stage,{center:true}); updateFrameStats(); }
   function neighbors(a,b){ const size=packs[lang][stage].size||4;return Math.abs(Math.floor(a/size)-Math.floor(b/size))<=1 && Math.abs(a%size-b%size)<=1; }
   function renderBattle(){ const data=packs[lang][stage]; path=[]; found=new Set(); hints=0; $('battleTitle').textContent=data.name; $('objective').textContent=t('objective'); $('foundCount').textContent=`0/${data.words.length}`; $('starCount').textContent='★ 0'; $('targets').innerHTML=data.words.map(w=>`<span class="target" data-word="${w}">${w}</span>`).join(''); const board=$('board'); board.innerHTML=''; data.board.forEach((letter,i)=>{const b=document.createElement('button');b.className='tile';b.dataset.index=i;b.textContent=letter;b.addEventListener('click',()=>select(i));b.addEventListener('pointerenter',e=>{if(e.buttons)select(i)});board.append(b)}); board.onpointerdown=e=>{if(e.target.matches('.tile')){dragStartLength=path.length;board.setPointerCapture(e.pointerId);select(+e.target.dataset.index)}}; board.onpointerup=()=>{if(path.length-dragStartLength>1)submit()}; $('feedback').textContent=t('connect'); screen('battle'); }
   function select(i){ const data=packs[lang][stage]; if(data.blocked?.includes(i)||path.includes(i)) return; if(path.length && !neighbors(path.at(-1),i)){ path=[i]; $('feedback').textContent=t('newPath'); document.querySelectorAll('.tile').forEach(x=>x.classList.toggle('selected',path.includes(+x.dataset.index))); return; } if(data.oneWay?.index===i && path.length && path.at(-1)!==data.oneWay.from){ $('feedback').textContent=t('oneWay'); return; } path.push(i); document.querySelectorAll('.tile').forEach(x=>x.classList.toggle('selected',path.includes(+x.dataset.index))); }
@@ -124,12 +282,12 @@
   function submit(){ const data=packs[lang][stage], word=path.map(i=>data.board[i]).join(''); if(!data.words.includes(word)||found.has(word)){ $('feedback').textContent=t('try'); clear(); return; } found.add(word); document.querySelector(`[data-word="${word}"]`).classList.add('done'); path.forEach(i=>document.querySelector(`.tile[data-index="${i}"]`).classList.add('correct')); $('feedback').textContent=t('great'); $('foundCount').textContent=`${found.size}/${data.words.length}`; $('starCount').textContent=`★ ${Math.max(1,3-hints)}`; if(found.size===data.words.length) setTimeout(result,450); else setTimeout(clear,420); }
   function hint(){ const data=packs[lang][stage], word=data.words.find(w=>!found.has(w)); if(!word)return; hints++; track('word_trails_hint_used', { hints_used: hints }); window.WeightPlayAudio?.play("ui.click"); const ix=data.board.findIndex(l=>l===word[0]); clear(); select(ix); $('feedback').textContent=`${t('hint')}: ${word[0]}`; }
   function result(){ const key=lang+'-'+stage, best=readRecord('wordTrailsBest'), stars=Math.max(1,3-hints); best[key]=Math.max(best[key]||0,stars);writeStorage('wordTrailsBest',JSON.stringify(best)); $('resultSummary').textContent=`${found.size} ${t('found')} · ★ ${stars}`; screen('result'); }
-  function renderStages(){ const rail=$('stageRail'); rail.innerHTML=''; const best=readRecord('wordTrailsBest'); const album=readRecord('wordTrailsAlbum'); const cards=Object.keys(album).filter(key=>key.startsWith(lang+'-')).length; packs[lang].forEach((item,i)=>{ const card=document.createElement('button'); const locked=i>0&&!best[lang+'-'+(i-1)]; card.className='stage-card'+(i===stage?' selected':'')+(locked?' locked':''); card.disabled=locked; card.innerHTML=`<strong>${i+1}. ${item.name}</strong><span>${item.words.length} ${t('words')}</span>`; card.onclick=()=>{stage=i;renderStages()};rail.append(card); }); $('stageProgress').textContent=`${stage+1}/${packs[lang].length} · ${t('cards')} ${cards}`; }
+  function renderStages(){ if(!stageUI)return; stageUI.refresh(stage); stageUI.select(stage,{center:true}); updateFrameStats(); }
   function renderBattle(){ cancelBoardPointer(); cancelBattleTasks(); $('clueReveal')?.classList.add('hidden'); const data=packs[lang][stage]; path=[]; found=new Set(); hints=0; $('battleTitle').textContent=data.name; $('objective').textContent=t('objective'); $('foundCount').textContent=`0/${data.words.length}`; $('starCount').textContent='\u2605 0'; $('targets').innerHTML=data.words.map(w=>`<span class="target" data-word="${w}">${w}</span>`).join(''); const board=$('board'); board.style.setProperty('--grid-size',String(data.size||4));board.innerHTML=''; data.board.forEach((letter,i)=>{const b=document.createElement('button');b.className='tile'+(data.blocked?.includes(i)?' blocked':'');b.disabled=Boolean(data.blocked?.includes(i));b.dataset.index=i;b.textContent=letter;b.addEventListener('click',()=>select(i));board.append(b)}); board.onpointerdown=e=>{const wrongMouseButton=e.pointerType==='mouse'&&e.button!==0;if(!e.target.matches('.tile')||!e.isPrimary||wrongMouseButton||boardPointerId!==null||leaveConfirmOpen)return;boardPointerId=e.pointerId;dragStartLength=path.length;try{board.setPointerCapture?.(e.pointerId)}catch{/* Synthetic and already-ended pointers cannot be captured. */}select(+e.target.dataset.index)}; board.onpointermove=e=>{if(e.pointerId!==boardPointerId)return;const tile=document.elementFromPoint(e.clientX,e.clientY)?.closest('.tile');if(tile&&board.contains(tile))select(+tile.dataset.index)}; board.onpointerup=e=>{if(e.pointerId!==boardPointerId)return;const shouldSubmit=path.length-dragStartLength>1;const pointerId=boardPointerId;boardPointerId=null;try{if(board.hasPointerCapture?.(pointerId))board.releasePointerCapture(pointerId)}catch{/* The browser may already have released the pointer. */}if(shouldSubmit)submit()}; board.onpointercancel=cancelBoardPointer; board.onlostpointercapture=e=>cancelBoardPointer(e); $('feedback').textContent=t('connect'); screen('battle'); requestAnimationFrame(()=>board.querySelector('.tile:not(:disabled)')?.focus({preventScroll:true}));
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
   function submit(){ const data=packs[lang][stage], word=path.map(i=>data.board[i]).join(''); if(!data.words.includes(word)||found.has(word)){ $('feedback').textContent=t('try'); clear(); return; } found.add(word); document.querySelector(`[data-word="${word}"]`).classList.add('done'); path.forEach(i=>document.querySelector(`.tile[data-index="${i}"]`).classList.add('correct')); $('feedback').textContent=t('great'); $('foundCount').textContent=`${found.size}/${data.words.length}`; $('starCount').textContent=`\u2605 ${Math.max(1,3-hints)}`; scheduleBattleTask('transition',found.size===data.words.length?450:420,found.size===data.words.length?result:clear); }
-  function result(){ const key=lang+'-'+stage, best=readRecord('wordTrailsBest'), stars=Math.max(1,3-hints), terminal=stage>=packs[lang].length-1; best[key]=Math.max(best[key]||0,stars);writeStorage('wordTrailsBest',JSON.stringify(best)); track('word_trails_stage_complete', { words_found: found.size, hints_used: hints, stars }); window.WeightPlayAudio?.play("result.win"); $('resultSummary').textContent=`${found.size} ${t('found')} \u00b7 \u2605 ${stars}`; $('next').disabled=terminal; $('next').setAttribute('aria-disabled',String(terminal)); $('next').classList.toggle('primary',!terminal); $('next').classList.toggle('secondary',terminal); (__wpNotifyMeasurement(), $('resultsBack').classList.toggle('primary',terminal)); (__wpNotifyMeasurement(), $('resultsBack').classList.toggle('secondary',!terminal)); $('replay').classList.remove('primary'); $('replay').classList.add('secondary'); resultActionClaimed=false; screen('result'); requestAnimationFrame(()=>(terminal?$('resultsBack'):$('next')).focus({preventScroll:true}));
+  function result(){ const key=lang+'-'+stage, best=readRecord('wordTrailsBest'), stars=Math.max(1,3-hints), terminal=stage>=packs[lang].length-1; best[key]=Math.max(best[key]||0,stars);writeStorage('wordTrailsBest',JSON.stringify(best)); stageUI?.refresh(stage); updateFrameStats(); track('word_trails_stage_complete', { words_found: found.size, hints_used: hints, stars }); window.WeightPlayAudio?.play("result.win"); $('resultSummary').textContent=`${found.size} ${t('found')} \u00b7 \u2605 ${stars}`; $('next').disabled=terminal; $('next').setAttribute('aria-disabled',String(terminal)); $('next').classList.toggle('primary',!terminal); $('next').classList.toggle('secondary',terminal); (__wpNotifyMeasurement(), $('resultsBack').classList.toggle('primary',terminal)); (__wpNotifyMeasurement(), $('resultsBack').classList.toggle('secondary',!terminal)); $('replay').classList.remove('primary'); $('replay').classList.add('secondary'); resultActionClaimed=false; screen('result'); requestAnimationFrame(()=>(terminal?$('resultsBack'):$('next')).focus({preventScroll:true}));
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
   function claimResultAction(){ if($('resultPanel').classList.contains('hidden')||resultActionClaimed)return false; resultActionClaimed=true; return true; }
@@ -140,37 +298,11 @@
     const rule=packs[lang][stage].rule;
     if(rule)$('objective').textContent=rule;
   };
-  function showLockedStage(index){
-    stage=index;
-    renderStages();
-    $('stageFeedback').textContent=t('lockedStage');
-    requestAnimationFrame(()=>document.querySelector('.stage-card.selected')?.focus({preventScroll:true}));
-  }
   renderStages = function(){
-    const rail=$('stageRail'), best=readRecord('wordTrailsBest'), album=readRecord('wordTrailsAlbum');
-    const cards=Object.keys(album).filter(key=>key.startsWith(lang+'-')).length;
-    rail.innerHTML='';
-    $('stageFeedback').textContent='';
-    packs[lang].forEach((item,i)=>{
-      const card=document.createElement('button'), locked=i>0&&!best[lang+'-'+(i-1)];
-      card.className='stage-card'+(i===stage?' selected':'')+(locked?' locked':'');
-      card.setAttribute('aria-disabled',String(locked));
-      if(locked) card.setAttribute('aria-describedby','stageFeedback');
-      card.dataset.stage=String(i);
-      card.innerHTML='<strong>'+String(i+1)+'. '+item.name+'</strong><span>'+String(item.words.length)+' '+t('words')+'</span>';
-      card.onclick=()=>{
-        if(rail.dataset.dragging==='true') return;
-        if(locked){
-          showLockedStage(i);
-          return;
-        }
-        stage=i;
-        renderBattle();
-      };
-      rail.append(card);
-    });
-    scheduleCenteredStageCard();
-    $('stageProgress').textContent=(stage+1)+'/'+packs[lang].length+' · '+t('cards')+' '+cards;
+    if (!stageUI) return;
+    stageUI.refresh(stage);
+    stageUI.select(stage, { center:true });
+    updateFrameStats();
   };
   function reveal(word){
     const panel=$('clueReveal');
@@ -188,73 +320,67 @@
     window.WeightPlayAudio?.play("ui.click");
   }
   const originalSubmit = submit;
-  submit = function(){ const before=found.size; originalSubmit(); if(found.size>before){ const word=[...found].at(-1); const album=readRecord('wordTrailsAlbum'); album[lang+'-'+word]=true; writeStorage('wordTrailsAlbum',JSON.stringify(album)); track('word_trails_word_found', { words_found: found.size, word_length: word.length }); window.WeightPlayAudio?.play("feedback.success"); reveal(word); } else { window.WeightPlayAudio?.play("feedback.error"); } };
+  submit = function(){ const before=found.size; originalSubmit(); if(found.size>before){ const word=[...found].at(-1); const album=readRecord('wordTrailsAlbum'); album[lang+'-'+word]=true; writeStorage('wordTrailsAlbum',JSON.stringify(album)); track('word_trails_word_found', { words_found: found.size, word_length: word.length }); window.WeightPlayAudio?.play("feedback.success"); reveal(word); updateFrameStats(); } else { window.WeightPlayAudio?.play("feedback.error"); } };
   Object.assign(copy.en, {
     language:'Language', album:'Album', albumTitle:'Animal clues', undo:'Undo', loading:'Loading trail',
     backLobby:'Back to WeightPlay', backMain:'Back to main', backStage:'Back to trails', closeAlbum:'Close album', stages:'Trails', board:'Word board',
     lockedStage:'Finish the previous trail to unlock this one.', leaveTitle:'Leave this trail?', leaveMessage:'Found words, the current path, and star progress in this run will reset.', keepReading:'Keep reading', leaveTrail:'Leave trail',
-    seoTitle:'Animal Word Trails - WeightPlay', seoDescription:'Connect animal and habitat words in a calm reading puzzle.', words:'words', cards:'Cards', objective:'Find the animal words', connect:'Connect adjacent tiles.', newPath:'New path started here.', oneWay:'Follow the leaf direction.', clueFound:'Clue found:'
+    seoTitle:'Animal Word Trails - WeightPlay', seoDescription:'Connect animal and habitat words in a calm reading puzzle.', words:'words', cards:'Cards', objective:'Find the animal words', connect:'Connect adjacent tiles.', newPath:'New path started here.', oneWay:'Follow the leaf direction.', clueFound:'Clue found:',
+    progress:'Trails completed', trail:'Trail', trailNumber:'Trail {n}', stageSummary:'Find {n} words to complete this trail.', locked:'Finish the previous trail to unlock this one.', completed:'Completed', available:'Ready', stars:'Stars'
   });
   Object.assign(copy['zh-Hant'], {
     language:'\u8a9e\u8a00', album:'\u7dda\u7d22\u5361', albumTitle:'\u52d5\u7269\u7dda\u7d22\u5361', undo:'\u5fa9\u539f', loading:'\u6e96\u5099\u5c0f\u5f91',
     backLobby:'\u8fd4\u56de WeightPlay \u5927\u5ef3', backMain:'\u8fd4\u56de\u9996\u9801', backStage:'\u8fd4\u56de\u5c0f\u5f91\u9078\u55ae', closeAlbum:'\u95dc\u9589\u7dda\u7d22\u5361',
     stages:'\u5c0f\u5f91\u9078\u55ae', board:'\u5b57\u8a5e\u68cb\u76e4', seoTitle:'\u52d5\u7269\u5b57\u8a5e\u5c0f\u5f91 - WeightPlay', words:'\u500b\u5b57\u8a5e', cards:'\u7dda\u7d22\u5361', objective:'\u627e\u51fa\u52d5\u7269\u5b57\u8a5e', connect:'\u9023\u63a5\u76f8\u9130\u7684\u5b57\u8a5e\u683c\u3002', newPath:'\u5df2\u5f9e\u9019\u4e00\u683c\u91cd\u65b0\u958b\u59cb\u3002', oneWay:'\u8acb\u9806\u8457\u8449\u7247\u65b9\u5411\u524d\u9032\u3002', clueFound:'\u627e\u5230\u52d5\u7269\u7dda\u7d22\uff1a',
     lockedStage:'\u5b8c\u6210\u524d\u4e00\u689d\u5c0f\u5f91\uff0c\u5c31\u80fd\u89e3\u9396\u9019\u4e00\u95dc\u3002', leaveTitle:'\u8981\u96e2\u958b\u9019\u689d\u5c0f\u5f91\u55ce\uff1f', leaveMessage:'\u9019\u4e00\u5c40\u627e\u5230\u7684\u5b57\u8a5e\u3001\u76ee\u524d\u8def\u5f91\u548c\u661f\u661f\u9032\u5ea6\u90fd\u6703\u91cd\u8a2d\u3002', keepReading:'\u7e7c\u7e8c\u627e\u5b57', leaveTrail:'\u96e2\u958b\u5c0f\u5f91',
-    seoDescription:'\u9023\u7dda\u627e\u51fa\u52d5\u7269\u8207\u68f2\u5730\u5b57\u8a5e\u7684\u8f15\u9b06\u95b1\u8b80\u904a\u6232\u3002'
+    seoDescription:'\u9023\u7dda\u627e\u51fa\u52d5\u7269\u8207\u68f2\u5730\u5b57\u8a5e\u7684\u8f15\u9b06\u95b1\u8b80\u904a\u6232\u3002',
+    progress:'\u5df2\u5b8c\u6210\u5c0f\u5f91', trail:'\u5c0f\u5f91', trailNumber:'\u7b2c {n} \u689d\u5c0f\u5f91',
+    stageSummary:'\u627e\u51fa {n} \u500b\u5b57\u8a5e\uff0c\u5b8c\u6210\u9019\u689d\u5c0f\u5f91\u3002',
+    locked:'\u5b8c\u6210\u524d\u4e00\u689d\u5c0f\u5f91\u5c31\u80fd\u89e3\u9396\u3002', completed:'\u5df2\u5b8c\u6210', available:'\u53ef\u6311\u6230', stars:'\u661f\u661f'
   });
   translate = function(){
-    document.documentElement.lang=lang;
-    app.dataset.locale=lang;
-    document.querySelectorAll('[data-copy]').forEach(el=>el.textContent=el.hasAttribute('data-wp-game-title')?(window.WeightPlayOfficialName?.title?.()||t(el.dataset.copy)):t(el.dataset.copy));
-    document.querySelectorAll('[data-aria]').forEach(el=>el.setAttribute('aria-label',t(el.dataset.aria)));
-    $('loadingTitle').textContent=t('loading');
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    app.dataset.locale = lang;
+    document.querySelectorAll('[data-copy]').forEach(el => {
+      el.textContent = el.hasAttribute('data-wp-game-title')
+        ? (window.WeightPlayOfficialName?.title?.() || t(el.dataset.copy)) : t(el.dataset.copy);
+    });
+    document.querySelectorAll('[data-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.aria)));
+    if ($('#locale')) $('#locale').value = lang;
+    if ($('#mainPoster')) $('#mainPoster').alt = t('title');
+    updateFrameStats();
   };
-  const rail=$('stageRail');
-  let centerCueFrame=0;
-  function updateCenteredStageCard(){
-    centerCueFrame=0;
-    const cards=[...rail.querySelectorAll('.stage-card')];
-    if(!cards.length)return;
-    const rect=rail.getBoundingClientRect(),center=rect.left+rect.width/2;
-    const centered=cards.reduce((best,card)=>Math.abs(card.getBoundingClientRect().left+card.getBoundingClientRect().width/2-center)<Math.abs(best.getBoundingClientRect().left+best.getBoundingClientRect().width/2-center)?card:best,cards[0]);
-    cards.forEach(card=>{const current=card===centered;card.classList.toggle('is-centered',current);if(current)card.setAttribute('aria-current','true');else card.removeAttribute('aria-current')});
-  }
-  function scheduleCenteredStageCard(){if(centerCueFrame)return;centerCueFrame=requestAnimationFrame(updateCenteredStageCard)}
-  rail.addEventListener('scroll',scheduleCenteredStageCard,{passive:true});
-  window.addEventListener('wonder:stage-snap',scheduleCenteredStageCard);
-  window.addEventListener('resize',scheduleCenteredStageCard,{passive:true});
-  window.visualViewport?.addEventListener('resize',scheduleCenteredStageCard,{passive:true});
   const rejectRepeatedActivation=event=>{
     if(event.repeat&&(event.key==='Enter'||event.key===' ')){event.preventDefault();event.stopImmediatePropagation();}
   };
-  const focusSelectedStage=()=>requestAnimationFrame(()=>document.querySelector('.stage-card.selected')?.focus({preventScroll:true}));
+  const focusSelectedStage=()=>requestAnimationFrame(()=>document.querySelector('.stage-card[aria-current="true"]')?.focus({preventScroll:true}));
   function setLeaveConfirmOpen(open,restoreFocus=true){
     if(open===leaveConfirmOpen)return;
     const panel=$('leaveConfirmPanel'),live=$('battleLive');
     (__wpNotifyMeasurement(), leaveConfirmOpen=open);
-    panel.classList.toggle('hidden',!open);
+    panel.classList.toggle('hidden',!open);panel.hidden=!open;
     live.inert=open;
     if(open){
       leaveConfirmTrigger=document.activeElement instanceof HTMLElement?document.activeElement:$('battleBack');
       pauseBattleTasks();
       live.setAttribute('aria-hidden','true');
+      screenFrame?.activate('battle',{covered:true});
       requestAnimationFrame(()=>$('keepReading').focus({preventScroll:true}));
     }else{
       live.removeAttribute('aria-hidden');
+      screenFrame?.activate('battle');
       resumeBattleTasks();
       const trigger=leaveConfirmTrigger;
       leaveConfirmTrigger=null;
       if(restoreFocus&&trigger?.isConnected)trigger.focus({preventScroll:true});
     }
   }
-  function returnToTrails(){renderStages();screen('stage');focusSelectedStage();}
+  function returnToTrails(){screen('stage');stageUI?.select(stage,{center:true,focus:true});}
   function requestBattleReturn(){if(path.length===0&&found.size===0&&hints===0&&battleTasks.size===0){returnToTrails();return}setLeaveConfirmOpen(true)}
   function leaveCurrentTrail(){setLeaveConfirmOpen(false,false);returnToTrails()}
   $('start').addEventListener('keydown',rejectRepeatedActivation);
   $('battleBack').addEventListener('keydown',rejectRepeatedActivation);
-  rail.addEventListener('keydown',event=>{
-    if(event.target.closest('.stage-card'))rejectRepeatedActivation(event);
-  });
   $('resultPanel').addEventListener('keydown',event=>{
     rejectRepeatedActivation(event);
     if(event.defaultPrevented||event.key!=='Tab'||$('resultPanel').classList.contains('hidden'))return;
@@ -263,8 +389,7 @@
     if(actions.length===0)return;
     const first=actions[0],last=actions[actions.length-1];
     if((event.shiftKey&&document.activeElement===first)||(!event.shiftKey&&document.activeElement===last)){
-      event.preventDefault();
-      (event.shiftKey?last:first).focus({preventScroll:true});
+      event.preventDefault();(event.shiftKey?last:first).focus({preventScroll:true});
     }
   },true);
   $('leaveConfirmPanel').addEventListener('keydown',event=>{
@@ -276,74 +401,21 @@
     const next=event.shiftKey?(index<=0?actions.length-1:index-1):(index>=actions.length-1?0:index+1);
     event.preventDefault();actions[next].focus({preventScroll:true});
   },true);
-  let railStartX=0;
-  let railStartScroll=0;
-  let railPointerActive=false;
-  let railStartStage=null;
-  const stageCardAtClientX=clientX=>[...rail.querySelectorAll('.stage-card')].find(card=>{
-    const rect=card.getBoundingClientRect();
-    return clientX>=rect.left&&clientX<=rect.right;
-  });
-  rail.addEventListener('pointerdown',event=>{
-    if(rail.dataset.wpStageRail==='true') return;
-    railStartX=event.clientX;
-    railStartScroll=rail.scrollLeft;
-    railPointerActive=true;
-    railStartStage=stageCardAtClientX(event.clientX)?.dataset.stage ?? null;
-    rail.dataset.dragging='false';
-    rail.setPointerCapture?.(event.pointerId);
-  });
-  rail.addEventListener('pointermove',event=>{
-    if(!railPointerActive) return;
-    const scale=Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--wp-stage-canvas-scale'))||1;
-    const delta=(event.clientX-railStartX)/scale;
-    if(Math.abs(delta)<=10) return;
-    rail.dataset.dragging='true';
-    rail.scrollLeft=railStartScroll-delta;
-  });
-  rail.addEventListener('pointerup',event=>{
-    const tappedStage=railStartStage;
-    const dragged=rail.dataset.dragging==='true';
-    railPointerActive=false;
-    railStartStage=null;
-    rail.releasePointerCapture?.(event.pointerId);
-    const cards=[...rail.querySelectorAll('.stage-card')];
-    const center=rail.scrollLeft+rail.clientWidth/2;
-    const nearest=cards.reduce((best,card)=>Math.abs(card.offsetLeft+card.offsetWidth/2-center)<Math.abs(best.offsetLeft+best.offsetWidth/2-center)?card:best,cards[0]);
-    nearest?.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
-    if(tappedStage!==null && !dragged) {
-      const tappedCard=rail.querySelector(`.stage-card[data-stage="${tappedStage}"]`);
-      setTimeout(()=>{
-        if(tappedCard?.classList.contains('locked')) showLockedStage(Number(tappedStage));
-        else { stage=Number(tappedStage); renderBattle(); }
-      },0);
-    }
-    setTimeout(()=>{rail.dataset.dragging='false';},0);
-  });
-  rail.addEventListener('click',event=>{
-    const card=event.target.closest('.stage-card:not(.locked)');
-    if(!card || rail.dataset.dragging==='true') return;
-    stage=Number(card.dataset.stage);
-    renderBattle();
-  });
-  function finishLoading(){
-    const panel=$('loadingPanel');
-    if(panel.classList.contains('hidden')) return;
-    $('loadingFill').style.width='100%';
-    $('loadingText').textContent='100%';
-    setTimeout(()=>panel.classList.add('hidden'),120);
-  }
-  locale.value=lang; translate();
-  $('loadingFill').style.width='72%';
-  $('loadingText').textContent='72%';
-  if(document.readyState==='complete') finishLoading(); else window.addEventListener('load',finishLoading,{once:true});
-  setTimeout(finishLoading,1800);
-  addEventListener('blur',()=>{cancelBoardPointer();pauseBattleTasks()});addEventListener('focus',resumeBattleTasks);addEventListener('pagehide',()=>{cancelBoardPointer();pauseBattleTasks()});addEventListener('pageshow',resumeBattleTasks);document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelBoardPointer();pauseBattleTasks()}else resumeBattleTasks();});
-  track('game_view');
-  locale.onchange=()=>{const next=locale.value;writeStorage('wordTrailsLocale',next);writeStorage('weightPlayLocale',next);if(window.WonderI18n?.setLocale){window.WonderI18n.setLocale(next);return;}lang=next;if(!packs[lang])packs[lang]=packs.en.map(buildLocalizedStage);stage=0;save();translate();};
-  $('start').onclick=()=>{track('game_start');renderStages();screen('stage');focusSelectedStage();};
+  addEventListener('blur',()=>{cancelBoardPointer();pauseBattleTasks()});
+  addEventListener('focus',resumeBattleTasks);
+  addEventListener('pagehide',()=>{cancelBoardPointer();pauseBattleTasks()});
+  addEventListener('pageshow',resumeBattleTasks);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelBoardPointer();pauseBattleTasks()}else resumeBattleTasks();});
+  const localeControl=$('locale');
+  localeControl.onchange=()=>{
+    const next=localeControl.value;
+    writeStorage('wordTrailsLocale',next);writeStorage('weightPlayLocale',next);
+    if(window.WonderI18n?.setLocale){window.WonderI18n.setLocale(next);return;}
+    lang=next;if(!packs[lang])packs[lang]=packs.en.map(buildLocalizedStage);
+    stage=0;save();translate();stageUI?.refresh(stage);stageUI?.select(stage,{center:true});
+  };
+  $('start').onclick=()=>{track('game_start');screen('stage');stageUI.select(stage,{center:true,focus:true});};
   $('stageBack').onclick=()=>{screen('main');requestAnimationFrame(()=>requestAnimationFrame(()=>$('start').focus({preventScroll:true})));};
-  $('playStage').onclick=renderBattle;
   $('battleBack').onclick=requestBattleReturn;
   $('keepReading').onclick=()=>setLeaveConfirmOpen(false,true);
   $('leaveTrail').onclick=leaveCurrentTrail;
@@ -353,8 +425,21 @@
   $('submit').onclick=submit;
   $('replay').onclick=()=>{if(!claimResultAction())return;__wpReplayStart(() => renderBattle());};
   $('next').onclick=()=>{if(!claimResultAction())return;stage=Math.min(stage+1,packs[lang].length-1);renderBattle();};
-  $('resultsBack').onclick=()=>{if(!claimResultAction())return;renderStages();screen('stage');focusSelectedStage();};
+  $('resultsBack').onclick=()=>{if(!claimResultAction())return;screen('stage');stageUI.select(stage,{center:true,focus:true});};
   $('album').onclick=()=>{const album=readRecord('wordTrailsAlbum');const words=[...new Set(packs[lang].flatMap(x=>x.words))];$('albumList').innerHTML=words.map((word,index)=>{const x=(index%4)*33.333,y=Math.floor(index/4)*50;return `<span class="${album[lang+'-'+word]?'card':'locked'}" style="background-position:${x}% ${y}%">${album[lang+'-'+word]?word:'?'}</span>`}).join('');(__wpNotifyMeasurement(), $('albumDialog').showModal());};
   $('closeAlbum').onclick=()=>(__wpNotifyMeasurement(), $('albumDialog').close());
-  window.__animalWordTrailsTest={snapshot:()=>({stage,path:[...path],found:[...found],hints,tasks:[...battleTasks.keys()],tasksPaused:battleTasksPaused,leaveConfirmOpen})};
+  window.__animalWordTrailsTest={snapshot:()=>({stage,path:[...path],found:[...found],hints,tasks:[...battleTasks.keys()],tasksPaused:battleTasksPaused,leaveConfirmOpen,activeScene:screenFrame?.active||null})};
+  async function boot(){
+    mountSharedInterface();
+    translate();
+    stageUI.refresh(stage);
+    screen('main');
+    window.WonderI18n?.setLocale?.(lang,{navigate:false});
+    track('game_view');
+    await loadGameAssets();
+  }
+  boot().catch(error=>{
+    window.WeightPlayGameEntryLoader?.fail?.();
+    console.error('ANIMAL_WORD_TRAILS_I9_BOOT_FAILED',error);
+  });
 })();
