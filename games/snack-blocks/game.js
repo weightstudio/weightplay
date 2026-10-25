@@ -351,7 +351,7 @@
     panel.setAttribute("aria-modal", "true");
     panel.setAttribute("aria-labelledby", "leaveConfirmTitle");
     panel.setAttribute("aria-describedby", "leaveConfirmText");
-    panel.innerHTML = `<div class="leave-confirm-card"><strong id="leaveConfirmTitle"></strong><p id="leaveConfirmText"></p><div><button id="keepPlayingBtn" type="button"></button><button id="leaveStageBtn" type="button"></button></div></div>`;
+    panel.innerHTML = `<div class="leave-confirm-card"><strong id="leaveConfirmTitle"></strong><p id="leaveConfirmText"></p><div><button id="keepPlayingBtn" data-wp-frame-action="primary" type="button"></button><button id="leaveStageBtn" data-wp-frame-action="secondary" type="button"></button></div></div>`;
     panel.dataset.wpScenePart = "battle";
     document.getElementById("playPanel")?.append(panel);
   }
@@ -845,6 +845,8 @@
     screenFrame.stageTopUI.add(stageProgress);
     const statistics = window.WeightPlayScreenFrame.createGroup();
     [...nodes.hud.children].forEach(node => statistics.add(node));
+    statistics.element.setAttribute("role", "group");
+    statistics.element.setAttribute("aria-label", t("gameStatsAria"));
     screenFrame.battleTopUI.add(statistics);
     stageUI = window.WeightPlayPlayUI.mountStage({ page: document.getElementById("stageContent"), rail: nodes.stageGrid,
       config: stageConfiguration(), selected: stageSelection, onSelect(index) { stageSelection = index; },
@@ -1421,7 +1423,8 @@
     if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
     const actions = [nodes.menuBtn, nodes.nextBtn, nodes.againBtn].filter(node => !node.disabled);
     const index = actions.indexOf(document.activeElement);
-    event.preventDefault(); actions[(index + (event.shiftKey ? actions.length - 1 : 1)) % actions.length].focus({ preventScroll: true });
+    const next = event.shiftKey ? (index <= 0 ? actions.length - 1 : index - 1) : (index < 0 || index === actions.length - 1 ? 0 : index + 1);
+    event.preventDefault(); actions[next].focus({ preventScroll: true });
   });
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.homeLink.addEventListener("click", (event) => {
