@@ -85,7 +85,11 @@ export function settle(save){
 function validRun(r){
  if(!r||r.version!==2||typeof r.id!=='string'||r.id.length>100||!COUNTRY_BY_ID.has(r.country)||!Number.isInteger(r.seed)||r.seed<0||r.seed>0xffffffff||!Number.isInteger(r.age)||r.age<0||r.age>10000||typeof r.finished!=='boolean'||!Array.isArray(r.events)||r.events.length>40||!r.home)throw Error('saveCorrupt');
  if(r.finished&&!DATA.causeKeys.includes(r.cause))throw Error('saveCorrupt');
+ if(!r.finished&&r.cause!==null)throw Error('saveCorrupt');
+ for(const key of ['urban','water','sanitation','electricity'])if(r.home[key]!==null&&typeof r.home[key]!=='boolean')throw Error('saveCorrupt');
  for(const e of r.events)if(!Number.isInteger(e.age)||e.age<0||e.age>r.age||!['story','context'].includes(e.kind)||!(Number.isInteger(e.key)&&e.key>=0&&e.key<26||['birth','urban','water','sanitation','electricity'].includes(e.key)))throw Error('saveCorrupt');
+ if(r.events[0]?.key!=='birth'||r.events[0]?.age!==0||r.events.some((e,i)=>i>0&&e.age<=r.events[i-1].age))throw Error('saveCorrupt');
+ for(const e of r.events)if(e.kind==='context'?!['urban','water','sanitation','electricity'].includes(e.key):!(e.key==='birth'||Number.isInteger(e.key)))throw Error('saveCorrupt');
  return r;
 }
 export function validateSave(s){

@@ -29,6 +29,6 @@ export function localizeShell(html,locale='en'){
  out=out.replace(/(<img\b[^>]*\bid="mainPoster"[^>]*\balt=")[^"]*(")/,`$1${escape(c.title)}$2`);
  out=out.replace(/<script\b[^>]*type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>\n?/g,'');
  out=out.replace(/\s*<script\s+data-wp-locale-route[^>]*>[\s\S]*?<\/script>/g,'');
- const schema={'@context':'https://schema.org','@type':'VideoGame',name:c.title,description:c.intro,inLanguage:l,genre:['Simulation'],gamePlatform:'Web browser',author:{'@type':'Organization',name:'WeightPlay'},image:'https://weightplay.com/games/smallwood-lives/assets/cover-v2.webp'};
+ const schema={'@context':'https://schema.org','@type':'VideoGame',name:c.title,description:c.intro,inLanguage:l,genre:['Simulation'],gamePlatform:'Web browser',author:{'@type':'Organization',name:'WeightPlay'},image:'https://weightplay.com/games/smallwood-lives/assets/cover.webp?v=20261025-life-v2'};
  return out.replace('</head>',`<script type="application/ld+json">${JSON.stringify(schema).replaceAll('<','\\u003c')}</script>\n</head>`);
 }
